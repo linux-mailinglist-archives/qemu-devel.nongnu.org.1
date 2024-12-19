@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27D5D9F7777
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:36:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 894609F777C
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:36:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOByp-0006uy-LV; Thu, 19 Dec 2024 03:33:59 -0500
+	id 1tOByr-0006wI-29; Thu, 19 Dec 2024 03:34:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOByl-0006pl-MA
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:55 -0500
+ id 1tOByp-0006vN-Lg
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:59 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOByk-0005H8-4c
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:55 -0500
+ id 1tOByn-0005Hf-Vf
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734597233;
+ s=mimecast20190719; t=1734597237;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VTPmYEtJQTF4LhpsXLNB3KolsGRJJ0DGDHYuyRBvOuI=;
- b=Rc7h8eiyUTqJKL1bzZpTau8hrGpUqW1jd1RaUN39oWs+rnxzvsH5s5zEC3WIl/x6QptrtW
- CtQO7koRvtFEsLfPb/4Zl2lq7BeS7FHjnoFWfd0+mqNCberryGDURlDJ66eA+TTs1CAeOG
- Y+FCQ0eR/zzIB9a5K0mrnfrZNiH8VBQ=
+ bh=nXPLw6Fjx2MSrvo34JfpWPClVUh4XC4K5EVI43tzIqo=;
+ b=SatD91oIzzrQ5AA5LSMHH0Y+4pwnfnI15s82n6H6++BmUM/HmSn6KVjB8nWhMlPYuTEPuS
+ VeoWBmD5hBVfUZACg6ft2lOa+TEkjVDhjfx1eaEd3JWBbNbh7eiFavHfzOROMgEp9tVSuN
+ He3l0ZhVMRIVe5SZymPkW3cWeD7pumA=
 Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
  [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-9vpJtQ6cN0aiRgCQVpbAGw-1; Thu, 19 Dec 2024 03:33:51 -0500
-X-MC-Unique: 9vpJtQ6cN0aiRgCQVpbAGw-1
-X-Mimecast-MFC-AGG-ID: 9vpJtQ6cN0aiRgCQVpbAGw
+ us-mta-377-M3KqLv1ANSmHADDiUq9uMQ-1; Thu, 19 Dec 2024 03:33:54 -0500
+X-MC-Unique: M3KqLv1ANSmHADDiUq9uMQ-1
+X-Mimecast-MFC-AGG-ID: M3KqLv1ANSmHADDiUq9uMQ
 Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-388d1f6f3b2so223123f8f.0
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:50 -0800 (PST)
+ ffacd0b85a97d-385d7611ad3so307664f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734597229; x=1735202029;
+ d=1e100.net; s=20230601; t=1734597232; x=1735202032;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VTPmYEtJQTF4LhpsXLNB3KolsGRJJ0DGDHYuyRBvOuI=;
- b=VLrL1IH5x4lpnaTbjJENXRsf6Iq/LqARDQhg1DZ+uCfu5gvYlhF9DXqfukXwBSilEF
- p+IuHNwXw1QkBOrCGDyWHn77wt3qdOTRtUBwse7fUTxI60441FuxSiAx/OKD3MEWN6Pj
- f/ZTZYDF5Qum1ui0s5l1ttzfbVARTA/f0+9kCnwTrO6Pv2lBzMnwf28cUBH1+3I6+znz
- gMTYOQX/ENKbIGQrO9nMnfpEaJJT4XImSPu5lfRWoHcDUXuuxoD2TOpyy2b9PTc9kI7q
- AeWVXxrsg8BY1XD+9Bn9hybINhst+moHYju+ZMk5kMvJUda8pcl0a0Z4ayd++0kOorrF
- 4HaA==
-X-Gm-Message-State: AOJu0Yyw7mMnOXcGqGvdIdFM0kROaH22hk+FNNeYDIZi0wxyljgvkQ+L
- YjrQ/gkrBmKaqiWPz7oFUUk7h8HnL5B6l7DlI79XWGflG+KsOcBdlAmodpcz1lL59srSej/nVgv
- 86f0sEgEKlTaYddXr0LCJlArkarwx+li1FlSDzB3ebRDyit8cKwg5bUB66UNpZSZefwkJl3WngZ
- 6z4fYWuJb/zExU0D56anYMe7awm1QlJjN6wzEf
-X-Gm-Gg: ASbGncsK/GUhNYkz/oGrAdcqzBH+4NDP4EfcCY4ITN3pTulzx/6SjSdUfmo4pcDZNrD
- xXEzLmV5GLwpIURz32b+NuvAcoa87xgFsNXGK1n/efgK6Nx6CorZt4qK7RzyZukAR3I3UnIgbrl
- /8rXM4nD/p0z02m/q+coEdhTVLmvHUlEpT/LcKU9fUm7CFOquy7G5dlFfzKKmrrUE60QlVMR5Wv
- KTLSOdiMEaNut1LBq4AsETeAh/dG/zX+oH8E6+tp86ijpT98vDoJsObnuvn
-X-Received: by 2002:a05:6000:400f:b0:385:fa2e:a33e with SMTP id
- ffacd0b85a97d-388e4d8e54cmr6067061f8f.43.1734597229621; 
- Thu, 19 Dec 2024 00:33:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHiEagldsvaItOrlaSC7E7lbqh9Up6o720Ukb43YCjE88wzTVoXQ+ZEPO35x7L8ncb62Tw51w==
-X-Received: by 2002:a05:6000:400f:b0:385:fa2e:a33e with SMTP id
- ffacd0b85a97d-388e4d8e54cmr6067027f8f.43.1734597229229; 
- Thu, 19 Dec 2024 00:33:49 -0800 (PST)
+ bh=nXPLw6Fjx2MSrvo34JfpWPClVUh4XC4K5EVI43tzIqo=;
+ b=dqFfYwQcvFyBhwEHFNXgpOhQJ95w11ePmRRjFtkgwpz9a0P/zj7MozB+GQSf6MtZWQ
+ NiyygbLLXu0JoVOnvwrgNZvwSUdn8TzHNlaoVfYmkB7oFwg6t7G/wIkPdtH7T60gEpCQ
+ Q47rfDcOl5pX9oJNmgY4ptlWfrMOpSlxar9TnqKGil/azmwWF40ZsEsQNm4hTIRCADkz
+ 2wJkQJnSENbMdCeHBKvkXCadd1ba+OFaiVagly/yy4MxOnC/gl+/NsSSQR8+dqtTJpzt
+ TC5FTNjgSZpV9NTB4sw7i8C7qBj/35o+OlTQD+ltSwq7q3TnhELdBcSTQ1HWi7iueIqk
+ iIoQ==
+X-Gm-Message-State: AOJu0Yxlr3iLd1waOFsWbY9njJNXHR8KAYA9H03dH5DSfhgjYqHBjbQF
+ dfFVIgWSnQTmK38q/MEBtmwEJctVe4t3LysczwNWo7VciaUqiC3CT49VQdLy1v2n71ZfWG2Ty7C
+ JZ0T1P0AS9s3TWo0cCw8ThTWOoyxoLUit3YHR2Lyx+qlDPF2b/BH2oJilaPPzv5UyDE7DJ/cveP
+ XlhYsA43Nam+DX9Z/3avk832VlAQGdBEOY4KLi
+X-Gm-Gg: ASbGncuf1wYWpdC/IAJ9g/28jwAXelzMqk1NiQLYaZ9cU9ufklLCaGVaE6/h0omVflx
+ DdXfdaRHCn4k31AXlXLzHNQsgTupDJj8ftxVBxIbCl4943LmJc9MLa27Kx0RIXteDKA4KhsI5Wj
+ 3D0b81GRsttNy5jmXFLEye6TMfTf6P5nlXPmbEkxLV50G/hvYYCLi4/UCZiyL10GlM9qbbdlLdK
+ EYDy7MOmZku+3T1m2UHYrAJIMWUHJIzoq6y9AcS/+HOae+HD55oxFQDJSJh
+X-Received: by 2002:a05:6000:1f81:b0:385:e94d:b152 with SMTP id
+ ffacd0b85a97d-388e4d9af78mr5009201f8f.54.1734597232161; 
+ Thu, 19 Dec 2024 00:33:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF0JY2FVrauI0OcLzl4tIBneuvgAEnUpMI12cxK4eQqLJNHwH9lDeBxhcXY9hLRYfFqiliSkQ==
+X-Received: by 2002:a05:6000:1f81:b0:385:e94d:b152 with SMTP id
+ ffacd0b85a97d-388e4d9af78mr5009161f8f.54.1734597231687; 
+ Thu, 19 Dec 2024 00:33:51 -0800 (PST)
 Received: from [192.168.10.47] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c847263sm987383f8f.50.2024.12.19.00.33.46
+ ffacd0b85a97d-38a1c89e150sm970982f8f.66.2024.12.19.00.33.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 00:33:46 -0800 (PST)
+ Thu, 19 Dec 2024 00:33:49 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 37/41] rust: pl011: always use reset() method on registers
-Date: Thu, 19 Dec 2024 09:32:24 +0100
-Message-ID: <20241219083228.363430-38-pbonzini@redhat.com>
+Subject: [PULL 38/41] rust: pl011: fix break errors and definition of Data
+ struct
+Date: Thu, 19 Dec 2024 09:32:25 +0100
+Message-ID: <20241219083228.363430-39-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219083228.363430-1-pbonzini@redhat.com>
 References: <20241219083228.363430-1-pbonzini@redhat.com>
@@ -107,112 +108,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For CR, the ugly-ish "0.into()" idiom is already hidden within the
-reset method.  Do not repeat it.
-
-For FR, standardize on reset() being equivalent to "*self = Self::default()"
-and let reset_fifo toggle only the bits that are related to FIFOs.  This
-commit also reproduces C commit 02b1f7f6192 ("hw/char/pl011: Split RX/TX
-path of pl011_reset_fifo()", 2024-09-13).
+The Data struct is wrong, and does not show how bits 8-15 of DR
+are the receive status.  Fix it, and use it to fix break
+errors ("c >> 8" in the C code does not translate to
+"c.to_be_bytes()[3]").
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs | 23 ++++++++++++++++-------
- rust/hw/char/pl011/src/lib.rs    | 13 +++++--------
- 2 files changed, 21 insertions(+), 15 deletions(-)
+ rust/hw/char/pl011/src/device.rs | 15 ++++++------
+ rust/hw/char/pl011/src/lib.rs    | 41 ++++++++++++++++++++++----------
+ 2 files changed, 36 insertions(+), 20 deletions(-)
 
 diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 960ee38ed69..f2ee8763d8f 100644
+index f2ee8763d8f..5e3a9c6f581 100644
 --- a/rust/hw/char/pl011/src/device.rs
 +++ b/rust/hw/char/pl011/src/device.rs
-@@ -262,7 +262,7 @@ pub fn write(&mut self, offset: hwaddr, value: u64) {
-                 self.update();
-             }
-             Ok(RSR) => {
--                self.receive_status_error_clear = 0.into();
-+                self.receive_status_error_clear.reset();
-             }
-             Ok(FR) => {
-                 // flag writes are ignored
-@@ -283,7 +283,8 @@ pub fn write(&mut self, offset: hwaddr, value: u64) {
-                 if bool::from(self.line_control.fifos_enabled())
-                     ^ bool::from(new_val.fifos_enabled())
-                 {
--                    self.reset_fifo();
-+                    self.reset_rx_fifo();
-+                    self.reset_tx_fifo();
+@@ -30,8 +30,6 @@
+ /// Fractional Baud Rate Divider, `UARTFBRD`
+ const FBRD_MASK: u32 = 0x3f;
+ 
+-const DATA_BREAK: u32 = 1 << 10;
+-
+ /// QEMU sourced constant.
+ pub const PL011_FIFO_DEPTH: usize = 16_usize;
+ 
+@@ -75,7 +73,7 @@ pub struct PL011State {
+     pub dmacr: u32,
+     pub int_enabled: u32,
+     pub int_level: u32,
+-    pub read_fifo: [u32; PL011_FIFO_DEPTH],
++    pub read_fifo: [registers::Data; PL011_FIFO_DEPTH],
+     pub ilpr: u32,
+     pub ibrd: u32,
+     pub fbrd: u32,
+@@ -210,10 +208,11 @@ pub fn read(&mut self, offset: hwaddr, _size: c_uint) -> std::ops::ControlFlow<u
+                     self.int_level &= !registers::INT_RX;
                  }
-                 if self.line_control.send_break() ^ new_val.send_break() {
-                     let mut break_enable: c_int = new_val.send_break().into();
-@@ -442,16 +443,24 @@ pub fn reset(&mut self) {
-         self.read_trigger = 1;
-         self.ifl = 0x12;
-         self.control.reset();
--        self.flags = 0.into();
--        self.reset_fifo();
-+        self.flags.reset();
-+        self.reset_rx_fifo();
-+        self.reset_tx_fifo();
+                 // Update error bits.
+-                self.receive_status_error_clear = c.to_be_bytes()[3].into();
++                self.receive_status_error_clear.set_from_data(c);
+                 self.update();
+                 // Must call qemu_chr_fe_accept_input, so return Continue:
+-                return std::ops::ControlFlow::Continue(c.into());
++                let c = u32::from(c);
++                return std::ops::ControlFlow::Continue(u64::from(c));
+             }
+             Ok(RSR) => u8::from(self.receive_status_error_clear).into(),
+             Ok(FR) => u16::from(self.flags).into(),
+@@ -406,7 +405,7 @@ fn loopback_mdmctrl(&mut self) {
+ 
+     fn loopback_break(&mut self, enable: bool) {
+         if enable {
+-            self.loopback_tx(DATA_BREAK);
++            self.loopback_tx(registers::Data::BREAK.into());
+         }
      }
  
--    pub fn reset_fifo(&mut self) {
-+    pub fn reset_rx_fifo(&mut self) {
-         self.read_count = 0;
-         self.read_pos = 0;
+@@ -470,7 +469,7 @@ pub fn can_receive(&self) -> bool {
  
--        /* Reset FIFO flags */
--        self.flags.reset();
-+        // Reset FIFO flags
-+        self.flags.set_receive_fifo_full(false);
-+        self.flags.set_receive_fifo_empty(true);
-+    }
-+
-+    pub fn reset_tx_fifo(&mut self) {
-+        // Reset FIFO flags
-+        self.flags.set_transmit_fifo_full(false);
-+        self.flags.set_transmit_fifo_empty(true);
+     pub fn event(&mut self, event: QEMUChrEvent) {
+         if event == bindings::QEMUChrEvent::CHR_EVENT_BREAK && !self.loopback_enabled() {
+-            self.put_fifo(DATA_BREAK);
++            self.put_fifo(registers::Data::BREAK.into());
+         }
      }
  
-     pub fn can_receive(&self) -> bool {
+@@ -497,7 +496,7 @@ pub fn put_fifo(&mut self, value: c_uint) {
+         let depth = self.fifo_depth();
+         assert!(depth > 0);
+         let slot = (self.read_pos + self.read_count) & (depth - 1);
+-        self.read_fifo[slot] = value;
++        self.read_fifo[slot] = registers::Data::from(value);
+         self.read_count += 1;
+         self.flags.set_receive_fifo_empty(false);
+         if self.read_count == depth {
 diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
-index d5089f78854..e3eacb0e6b9 100644
+index e3eacb0e6b9..463ae60543b 100644
 --- a/rust/hw/char/pl011/src/lib.rs
 +++ b/rust/hw/char/pl011/src/lib.rs
-@@ -230,7 +230,7 @@ pub struct ReceiveStatusErrorClear {
+@@ -139,6 +139,21 @@ pub mod registers {
+     //! unused thus treated as zero when read or written.
+     use bilge::prelude::*;
+ 
++    /// Receive Status Register / Data Register common error bits
++    ///
++    /// The `UARTRSR` register is updated only when a read occurs
++    /// from the `UARTDR` register with the same status information
++    /// that can also be obtained by reading the `UARTDR` register
++    #[bitsize(8)]
++    #[derive(Clone, Copy, Default, DebugBits, FromBits)]
++    pub struct Errors {
++        pub framing_error: bool,
++        pub parity_error: bool,
++        pub break_error: bool,
++        pub overrun_error: bool,
++        _reserved_unpredictable: u4,
++    }
++
+     // TODO: FIFO Mode has different semantics
+     /// Data Register, `UARTDR`
+     ///
+@@ -181,16 +196,18 @@ pub mod registers {
+     ///
+     /// # Source
+     /// ARM DDI 0183G 3.3.1 Data Register, UARTDR
+-    #[bitsize(16)]
+-    #[derive(Clone, Copy, DebugBits, FromBits)]
++    #[bitsize(32)]
++    #[derive(Clone, Copy, Default, DebugBits, FromBits)]
+     #[doc(alias = "UARTDR")]
+     pub struct Data {
+-        _reserved: u4,
+         pub data: u8,
+-        pub framing_error: bool,
+-        pub parity_error: bool,
+-        pub break_error: bool,
+-        pub overrun_error: bool,
++        pub errors: Errors,
++        _reserved: u16,
++    }
++
++    impl Data {
++        // bilge is not very const-friendly, unfortunately
++        pub const BREAK: Self = Self { value: 1 << 10 };
+     }
+ 
+     // TODO: FIFO Mode has different semantics
+@@ -220,14 +237,14 @@ pub struct Data {
+     #[bitsize(8)]
+     #[derive(Clone, Copy, DebugBits, FromBits)]
+     pub struct ReceiveStatusErrorClear {
+-        pub framing_error: bool,
+-        pub parity_error: bool,
+-        pub break_error: bool,
+-        pub overrun_error: bool,
+-        _reserved_unpredictable: u4,
++        pub errors: Errors,
+     }
+ 
      impl ReceiveStatusErrorClear {
++        pub fn set_from_data(&mut self, data: Data) {
++            self.set_errors(data.errors());
++        }
++
          pub fn reset(&mut self) {
              // All the bits are cleared to 0 on reset.
--            *self = 0.into();
-+            *self = Self::default();
-         }
-     }
- 
-@@ -297,19 +297,16 @@ pub struct Flags {
- 
-     impl Flags {
-         pub fn reset(&mut self) {
--            // After reset TXFF, RXFF, and BUSY are 0, and TXFE and RXFE are 1
--            self.set_receive_fifo_full(false);
--            self.set_transmit_fifo_full(false);
--            self.set_busy(false);
--            self.set_receive_fifo_empty(true);
--            self.set_transmit_fifo_empty(true);
-+            *self = Self::default();
-         }
-     }
- 
-     impl Default for Flags {
-         fn default() -> Self {
-             let mut ret: Self = 0.into();
--            ret.reset();
-+            // After reset TXFF, RXFF, and BUSY are 0, and TXFE and RXFE are 1
-+            ret.set_receive_fifo_empty(true);
-+            ret.set_transmit_fifo_empty(true);
-             ret
-         }
-     }
+             *self = Self::default();
 -- 
 2.47.1
 
