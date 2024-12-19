@@ -2,91 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3949D9F7899
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 10:36:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63D459F789F
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 10:38:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOCwJ-0001TC-83; Thu, 19 Dec 2024 04:35:27 -0500
+	id 1tOCyh-0002Hm-3A; Thu, 19 Dec 2024 04:37:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1tOCwH-0001Sn-Gl
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 04:35:25 -0500
+ id 1tOCyf-0002HZ-Mq
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 04:37:53 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1tOCwF-0002PD-JE
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 04:35:25 -0500
+ id 1tOCye-0002Y4-5P
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 04:37:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734600922;
+ s=mimecast20190719; t=1734601071;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TRYyCqZfvQdX4M1TT8Ahjz8812RNiR3DOAdMOQ7S+zQ=;
- b=goXrb0C7frAdObnifBkQF1UUHym7uZI05aEQDKIf9KmFqhxUtUdFtUQ+BUJsPuzdnIb0HN
- 3XO46/GUFxzEWhhN+SyDh9azLne0qrRRN7M3CSCYGxEWhshht8AZWVKOu7h7KPrA1HBjyR
- YT54uSCr0Puvxs8ZcQz60J0SAieNoqE=
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=exEmLkFBZ/EX8nDvgkhyf8SSU8q65KmXS2QQRy40M7A=;
+ b=hx1JH6zROxXvETUVe5R2WVgjBJwwzLBSmza6+hIk4lmzQjW3rQA9iKU46mpAuYd9WxTkU8
+ wntDPkEyG9bTWiyv+5FkzJceV+PObYHhMHUCtQOmtzD+b2eV7+OT0RC5UgeFWeNLS8Ux1x
+ OyipgGB5TqCtNFOpqaSPCgUVIyqC89A=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-189-PDmX8SN_P5Ofbt-KC-xaOA-1; Thu, 19 Dec 2024 04:35:20 -0500
-X-MC-Unique: PDmX8SN_P5Ofbt-KC-xaOA-1
-X-Mimecast-MFC-AGG-ID: PDmX8SN_P5Ofbt-KC-xaOA
-Received: by mail-pf1-f199.google.com with SMTP id
- d2e1a72fcca58-725e3c6ad0dso967748b3a.0
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 01:35:20 -0800 (PST)
+ us-mta-695-fLrS-7jEOkm5CnK7iUnUdA-1; Thu, 19 Dec 2024 04:37:49 -0500
+X-MC-Unique: fLrS-7jEOkm5CnK7iUnUdA-1
+X-Mimecast-MFC-AGG-ID: fLrS-7jEOkm5CnK7iUnUdA
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-2ef91d5c863so635422a91.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 01:37:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734600919; x=1735205719;
+ d=1e100.net; s=20230601; t=1734601068; x=1735205868;
  h=to:references:message-id:content-transfer-encoding:cc:date
  :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TRYyCqZfvQdX4M1TT8Ahjz8812RNiR3DOAdMOQ7S+zQ=;
- b=RQyj+CMw27cuyBUe+Nnnu5qUKSN2tCCb8NLH7EIhxESehgKjzhJbr1HNM9aEqFT3fC
- bXx9bUcOItQcrZRengx5ShoELHjD0bF42JfO5Rvl/ND8/HyficopUGwRajutvAg8zjVv
- SZmhbeMUb3zLCQCJ5VOcEa8w3IkLEQR6jv9rNr3wNPVLGik4fI0zFs7W+42n82BpAxhG
- k1UVNbBdcmqrtLQb/SVCBVJsyGEjI4H9bpnPLDGQOE7UpFqw7vMEOGvbXFjU0+a/H6LE
- eP+SP+hhgY6hbfrBh3qszvyLtvfo7OYgswEJSSpaoNS39LQfnFlJbp/yZdg4FsIoHKYD
- UuPw==
+ bh=exEmLkFBZ/EX8nDvgkhyf8SSU8q65KmXS2QQRy40M7A=;
+ b=bfvYJ7pg8UKMBOjK/v/LTqaY2XkulEzKXIaVXQCj3vTfBODO9ZOTd39BrNqzBF67N6
+ g/nN9tQYhduDseFK5RXhvcsr9MZ2qsx9psUq80a13Z4X5Tfg1+iqRP+UaWNzDhmxeN6m
+ IElM8XU7Ko+7UhtnCf7Qj410vIlrVukBDL9TNYY5Dw7WDFamWCbT/M+WUEjUUujtuKLc
+ Zi4TEhZPJK9Npq4Ct9Gj11VTxNavkdZwhIduXT90vZTpOE+3dtZ8wCSC0pIYJIMHEKxz
+ 9A4VhzmQAy163zDgl6Xxx6XDulhQv+VPxh/2sLqgpH/eb6uQ51UP6p954WbS1jr41iKk
+ aPew==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU9h9nNis2atDB1ptnGWy8XyGp8PmQl+JPbqeR7g2L58HmPqBu2EPcVm+WIeOWUWOyB0H+zmxN9i6i2@nongnu.org
-X-Gm-Message-State: AOJu0YxPx4YzEDESVHcHpd/p6OKjwRpfSokSc2meBVbEYpOPBHvRHfas
- rtpuxY3oBzLcsfa1dW2sdEdLd+3egO3Fjhy4W/78bC7CGhfv6JmGAGAKgEEeT4ghXbGWzYYBW4J
- lw+8sTD0mQgZ0+AIlhy5sbvyptntGjuARQtmxrI2f7H1MRSbAiSRj
-X-Gm-Gg: ASbGncumitA0ESl5fs/XU29ET4/BVxJkHsClrBeYLi9nH5SX2ZL/M7PT94V9vgUmdDC
- DyuO40v4z6Kqd795gZBlKyXg28KoLYuFRwt27s9ow5JQ7UqggV/LlAPi3WcKwFZ7poyCirGMDPo
- +eqDsVTx6T+sZT1Yfd3nX9aVB5dw5zDtGkM8ftHXRbv0xINtfhfp8/CeundukG85ObBsTEMBQFm
- 8bFObE8CVE6q+kmDNMcbF+/XGpDpKuxjrYVtcgg5t1dTzSlTLPs2R4bKwLK1wZ68PPLHbSeUg==
-X-Received: by 2002:a05:6a00:398a:b0:725:e499:5b88 with SMTP id
- d2e1a72fcca58-72a8d2c9b7emr9208063b3a.25.1734600919402; 
- Thu, 19 Dec 2024 01:35:19 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF0gz5LMWoidsMO9FYWabga4L0dzROPDNh4jSdL8z09CNMuAl9qVaJ+luvgTsWDfDCNh36v8w==
-X-Received: by 2002:a05:6a00:398a:b0:725:e499:5b88 with SMTP id
- d2e1a72fcca58-72a8d2c9b7emr9208036b3a.25.1734600918990; 
- Thu, 19 Dec 2024 01:35:18 -0800 (PST)
+ AJvYcCVCvvjkln7J4rGqlLkBEcwXLd0gNGj+p2jlbiJixah/A3BtWQ2xWPY6BGEL8hyPScnmQIGlmqhqiO3U@nongnu.org
+X-Gm-Message-State: AOJu0YzFkdSG+dMr1c640PYfV1lfE7z3z6ccDo8Obb4GA2Et2lrWl6qy
+ 6/Q99VNs4ZRJgJjLi5YM4PVl4E+xPghz2uHTvx1J4XnK7Jgm1Y3PwD3KgeaE3P8x3A2WGSALXTB
+ Osj23mXU+bl4brWlB55n4HxuuOwip8CmlHoHaLtIF3KGSX605EhjV
+X-Gm-Gg: ASbGncuUtnW5ygAdR6y4WiNhDOSoKqBPks/ffuJTl49t5aYHCpV5wU5PmVDsQJXWuXs
+ CB0yZfY+j8ITFlDa3StvXwkqU+vnIC0s8etFsX+hsbdYm/2EXvHl6rEGJvp79i9uUr5KhPpMct+
+ MCt6sCX8PXWN5sAxiyIknB9+yGLPdOrsckvJsAjhhoxzYqMLvM6DrE9oXholwyT6fWZTVDNG9ZD
+ sLyf5aQL+qG1ZjfWqt+Rvw4ROcfaMXdn93lkmICJO1ly8INZsanXMCd+uGC+jtL6JNAneBbWA==
+X-Received: by 2002:a17:90b:50c3:b0:2ee:f19b:86e5 with SMTP id
+ 98e67ed59e1d1-2f443ce9ae5mr4138511a91.14.1734601068273; 
+ Thu, 19 Dec 2024 01:37:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFLxlUeCj71xhe+ynW7gsRYwjC0hExnBYVQr6TOhNxfLZ5M7If+Iphi2XTxMaK56p/W42XUzw==
+X-Received: by 2002:a17:90b:50c3:b0:2ee:f19b:86e5 with SMTP id
+ 98e67ed59e1d1-2f443ce9ae5mr4138482a91.14.1734601067939; 
+ Thu, 19 Dec 2024 01:37:47 -0800 (PST)
 Received: from smtpclient.apple ([116.73.135.226])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad8fd7afsm858508b3a.139.2024.12.19.01.35.15
+ 98e67ed59e1d1-2f4477c8537sm919487a91.21.2024.12.19.01.37.45
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 19 Dec 2024 01:35:18 -0800 (PST)
+ Thu, 19 Dec 2024 01:37:47 -0800 (PST)
 Content-Type: text/plain;
 	charset=utf-8
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.1\))
 Subject: Re: [PATCH v2] hw/misc/vmfwupdate: Introduce hypervisor fw-cfg
  interface support
 From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <61096f4d-7b5f-48fd-9840-caf058db2201@linaro.org>
-Date: Thu, 19 Dec 2024 15:05:03 +0530
+In-Reply-To: <rnhi7vmax2vicc56xpaltjbfnffto3k7awaum4eblqlts4uhd2@ivqgxapmdnj2>
+Date: Thu, 19 Dec 2024 15:07:33 +0530
 Cc: Alexander Graf <graf@amazon.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, qemu-devel <qemu-devel@nongnu.org>,
- Daniel Berrange <berrange@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <2933CCF9-F9D6-46D1-9658-07B85104011D@redhat.com>
+Message-Id: <A29831BB-032B-4F8B-9935-69439BD1DD1B@redhat.com>
 References: <20241216114841.1025070-1-anisinha@redhat.com>
- <61096f4d-7b5f-48fd-9840-caf058db2201@linaro.org>
-To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ <rnhi7vmax2vicc56xpaltjbfnffto3k7awaum4eblqlts4uhd2@ivqgxapmdnj2>
+To: Gerd Hoffmann <kraxel@redhat.com>
 X-Mailer: Apple Mail (2.3776.700.51.11.1)
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -115,172 +114,99 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-> On 18 Dec 2024, at 11:13=E2=80=AFPM, Philippe Mathieu-Daud=C3=A9 =
-<philmd@linaro.org> wrote:
+> On 17 Dec 2024, at 8:51=E2=80=AFPM, Gerd Hoffman <kraxel@redhat.com> =
+wrote:
 >=20
-> On 16/12/24 12:48, Ani Sinha wrote:
->> VM firmware update is a mechanism where the virtual machines can use =
-their
->> preferred and trusted firmware image in their execution environment =
-without
->> having to depend on a untrusted party to provide the firmware bundle. =
-This is
->> particularly useful for confidential virtual machines that are =
-deployed in the
->> cloud where the tenant and the cloud provider are two different =
-entities. In
->> this scenario, virtual machines can bring their own trusted firmware =
-image
->> bundled as a part of their filesystem (using UKIs for example[1]) and =
-then use
->> this hypervisor interface to update to their trusted firmware image. =
-This also
->> allows the guests to have a consistent measurements on the firmware =
-image.
->> This change introduces basic support for the fw-cfg based hypervisor =
-interface
->> and the corresponding device. The change also includes the
->> specification document for this interface. The interface is made =
-generic
->> enough so that guests are free to use their own ABI to pass required
->> information between initial and trusted execution contexts (where =
-they are
->> running their own trusted firmware image) without the hypervisor =
-getting
->> involved in between. In subsequent patches, we will introduce other =
-minimal
->> changes on the hypervisor that are required to make the mechanism =
-work.
->> [1] See systemd pull requests =
-https://github.com/systemd/systemd/pull/35091
->> and https://github.com/systemd/systemd/pull/35281 for some =
-discussions on
->> how we can bundle firmware image within an UKI.
->> CC: Alex Graf <graf@amazon.com>
->> CC: Paolo Bonzini <pbonzini@redhat.com>
->> CC: Gerd Hoffman <kraxel@redhat.com>
->> CC: Igor Mammedov <imammedo@redhat.com>
->> CC: Vitaly Kuznetsov <vkuznets@redhat.com>
->> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->> ---
->>  MAINTAINERS                  |   9 ++
->>  docs/specs/index.rst         |   1 +
->>  docs/specs/vmfwupdate.rst    | 109 ++++++++++++++++++++++++
->>  hw/misc/meson.build          |   2 +
->>  hw/misc/vmfwupdate.c         | 157 =
-+++++++++++++++++++++++++++++++++++
->>  include/hw/misc/vmfwupdate.h | 103 +++++++++++++++++++++++
->>  6 files changed, 381 insertions(+)
->>  create mode 100644 docs/specs/vmfwupdate.rst
->>  create mode 100644 hw/misc/vmfwupdate.c
->>  create mode 100644 include/hw/misc/vmfwupdate.h
+>  Hi,
 >=20
+>> +Fw-cfg Files
+>> +************
+>> +
+>> +Guests drive vmfwupdate through special ``fw-cfg`` files that =
+control its flow
+>> +followed by a standard system reset operation. When vmfwupdate is =
+available,
+>> +it provides the following ``fw-cfg`` files:
+>> +
+>> +* ``vmfwupdate/cap`` (``u64``) - Read-only Little Endian encoded =
+bitmap of additional
+>> +  capabilities the interface supports. List of available =
+capabilities:
+>> +
+>> +     ``VMFWUPDATE_CAP_BIOS_RESIZE        0x0000000000000001``
+>> +
+>> +* ``vmfwupdate/bios-size`` (``u32``) - Little Endian encoded size of =
+the BIOS region.
+>> +  Read-only by default. Optionally Read-write if ``vmfwupdate/cap`` =
+contains
+>> +  ``VMFWUPDATE_CAP_BIOS_RESIZE``. On write, the BIOS region may =
+resize. Guests are
+>> +  required to read the value after writing and compare it with the =
+requested size
+>> +  to determine whether the resize was successful. Note, x86 BIOS =
+regions always
+>> +  start at 4GiB - bios-size.
+>> +
+>> +* ``vmfwupdate/opaque`` (``1024 bytes``) - A 1KiB buffer that =
+survives the BIOS replacement
+>> +  flow. Can be used by the guest to propagate guest physical =
+addresses of payloads
+>> +  to its BIOS stage. It=E2=80=99s recommended to make the new BIOS =
+clear this file on boot
+>> +  if it exists. Contents of this file are under control by the =
+hypervisor. In an
+>> +  environment that considers the hypervisor outside of its trust =
+boundary, guests
+>> +  are advised to validate its contents before consumption.
+>> +
+>> +* ``vmfwupdate/disable`` (``u8``) - Indicates whether the interface =
+is disabled.
+>> +  Returns 0 for enabled, 1 for disabled. Writing any value disables =
+it. Writing is
+>> +  only allowed if the value is 0. When the interface is disabled, =
+the replace file
+>> +  is ignored on reset. This value resets to 0 on system reset.
+>> +
+>> +* ``vmfwupdate/bios-addr`` (``u64``) - A 64bit Little Endian encoded =
+guest physical address
+>> +  at the beginning of the replacement BIOS region. The provided =
+payload must reside
+>> +  in shared memory. 0 on system reset.
 >=20
->> +static void vmfwupdate_realize(DeviceState *dev, Error **errp)
->> +{
->> +    VMFwUpdateState *s =3D VMFWUPDATE(dev);
->> +    FWCfgState *fw_cfg =3D fw_cfg_find();
->> +
->> +    /* multiple devices are not supported */
->> +    if (!vmfwupdate_find()) {
->> +        error_setg(errp, "at most one %s device is permitted",
->> +                   TYPE_VMFWUPDATE);
->> +        return;
->> +    }
->> +
->> +    /* fw_cfg with DMA support is necessary to support this device =
-*/
->> +    if (!fw_cfg || !fw_cfg_dma_enabled(fw_cfg)) {
->> +        error_setg(errp, "%s device requires fw_cfg",
->> +                   TYPE_VMFWUPDATE);
->> +        return;
->> +    }
->> +
->> +    memset(&s->fw_blob, 0, sizeof(s->fw_blob));
->> +    memset(&s->opaque_blobs, 0, sizeof(s->opaque_blobs));
->> +
->> +    fw_cfg_add_file_callback(fw_cfg, FILE_VMFWUPDATE_OBLOB,
->> +                             NULL, NULL, s,
->> +                             &s->opaque_blobs,
->> +                             sizeof(s->opaque_blobs),
->> +                             false);
->> +
->> +    fw_cfg_add_file_callback(fw_cfg, FILE_VMFWUPDATE_FWBLOB,
->> +                             NULL, fw_blob_write, s,
->> +                             &s->fw_blob,
->> +                             sizeof(s->fw_blob),
->> +                             false);
->> +
->> +    /*
->> +     * Add global capability fw_cfg file. This will be used by the =
-guest to
->> +     * check capability of the hypervisor.
->> +     */
->> +    s->capability =3D cpu_to_le16(CAP_VMFWUPD_MASK | =
-VMFWUPDATE_CAP_EDKROM);
->> +    fw_cfg_add_file(fw_cfg, FILE_VMFWUPDATE_CAP,
->> +                    &s->capability, sizeof(s->capability));
->> +
->> +    s->plat_bios_size =3D get_max_fw_size(); /* for non-pc, this is =
-0 */
->> +    /* size of bios region for the platform - read only by the guest =
-*/
->> +    fw_cfg_add_file(fw_cfg, FILE_VMFWUPDATE_BIOS_SIZE,
->> +                    &s->plat_bios_size, sizeof(s->plat_bios_size));
->> +    /*
->> +     * add fw cfg control file to disable the hypervisor interface.
->> +     */
->> +    fw_cfg_add_file_callback(fw_cfg, FILE_VMFWUPDATE_CONTROL,
->> +                             NULL, NULL, s,
->> +                             &s->disable,
->> +                             sizeof(s->disable),
->> +                             false);
->> +    /*
->> +     * This device requires to register a global reset because it is
->> +     * not plugged to a bus (which, as its QOM parent, would reset =
-it).
->> +     */
->> +    qemu_register_reset(fw_update_reset, dev);
+> I'd suggest to make all integers u64 (little endian).
 >=20
-> Shouldn't we use qemu_register_resettable() instead?
+> Any specific reason why vmfwupdate/opaque is 1024 bytes?
+> How about using 4096 (aka PAGE_SIZE) bytes?
+>=20
+>> +On reset, the hypervisor evaluates whether ``vmfwupdate/disable`` is =
+``1``. If it is, it ignores
+>> +any other vmfwupdate values and performs a standard system reset.
+>> +
+>> +If ``vmfwupdate/disable`` is ``0``, the hypervisor checks if =
+bios-addr is ``0``. If it is, it
+>> +performs a standard system reset.
+>=20
+> What is 'standard system reset' in SEV-SNP mode?  I think qemu does =
+not
+> support it right now and will simply poweroff the guest instead.  Will
+> that continue to be the case? =20
 
-OK will do in v3.
+No. Work is in progress to support VM resets even in SEV-SNP.
+
+> Or should qemu re-create the VM context
+> in that case, simliar to the firmware update case,
+> except that qemu
+> would have to use the default firmware image then?
+
+Fw update works both in coco and non-coco cases. Will update the doc in =
+v3.
 
 >=20
->> +}
->> +
->> +static Property vmfwupdate_properties[] =3D {
->> +    DEFINE_PROP_UINT8("disable", VMFwUpdateState, disable, 0),
->> +    DEFINE_PROP_END_OF_LIST(),
->> +};
->> +
->> +static void vmfwupdate_device_class_init(ObjectClass *klass, void =
-*data)
->> +{
->> +    DeviceClass *dc =3D DEVICE_CLASS(klass);
->> +
->> +    /* we are not interested in migration - so no need to populate =
-dc->vmsd */
->> +    dc->desc =3D "VM firmware blob update device";
->> +    dc->realize =3D vmfwupdate_realize;
->> +    dc->hotpluggable =3D false;
->> +    device_class_set_props(dc, vmfwupdate_properties);
->> +    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
->> +}
->> +
->> +static const TypeInfo vmfwupdate_device_info =3D {
->> +    .name          =3D TYPE_VMFWUPDATE,
->> +    .parent        =3D TYPE_DEVICE,
->=20
-> What is the qdev API used here? Why not use a plain object?
+> Will the vmfwupdate be supported without SEV-SNP too?  Might be useful
+> for development + testing.  If so the spec should clarify what happens
+> in that case, because the concept of "shared memory" does not exist
+> then.
 
-I wrote this taking vmcoreinfo device as starting point. I will leave =
-this as is for now unless anyone has strong opinions.
-
->=20
->> +    .instance_size =3D sizeof(VMFwUpdateState),
->> +    .class_init    =3D vmfwupdate_device_class_init,
->> +};
-
+Will update the doc in v3.
 
 
