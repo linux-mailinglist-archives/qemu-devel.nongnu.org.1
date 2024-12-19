@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 553809F7FDD
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:33:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD7D9F7F8A
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:24:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJIV-0000EH-8i; Thu, 19 Dec 2024 11:22:47 -0500
+	id 1tOJFa-0001nw-1R; Thu, 19 Dec 2024 11:19:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOIck-0004pC-0I
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:39:38 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOIcp-0004pZ-5Z
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:39:43 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOIci-0004Vo-B9
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:39:37 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4361a50e337so6978315e9.0
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 07:39:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOIcn-0004X8-Is
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:39:42 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-385deda28b3so664779f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 07:39:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734622774; x=1735227574; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734622780; x=1735227580; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RMGv7qvi3m/JTiz7jQ63fQU4SttU7iapPs3aSHWSfWE=;
- b=h4cTGGIAoYun2ASXFD9Je9JoqpR0sujEsWKg6rtpwHMN5ZqE4nM1yuqLRbgiKszQe3
- l5McV6Arp9LIsCHfCeBbJGz2qj/wVdDICbu8zTt5wWUUMrX6m4pXGLKaS481Q99G3CQH
- 5D1iRlwnCzH5za0YdopyByt5xVz/W247unu2z1+UGihBe2EQBpuPe+MuvuqAiYNiBsN9
- TZldclw0cBlCdM4DzdN25YK4jvD1x1KRv5k/O3YWSidPKS+Y85rZsxfdbiWT0DREeUSU
- 3fURLdIF1Aw6+HUj1pu7MsbgusJE/NSEYJJy82ckwLJtd5JffcIc9lnw8BJvn4AI4wfO
- yQNQ==
+ bh=W5xIB6Q3xpywMwriwl34zxXU4p+OU3fl2Ms6nSvvP3g=;
+ b=IF0sZ6imUo0Nt32KEIsnrsr2lESHBCWmAsxIV35rEbfrceUSyspSG1EZ3M0dzc4k4D
+ yBo1AxEy/NvVjrNNOSPj8bqGFuc9EDMIBS6VZsFEphCbMZdbZNY16zpa2g9JJfRMTEMY
+ 742kYi+dypjb32BY0NIJemHhJ6+BSrCQwVypGl7qM9vXYrmYWmLYDexEoV7DRiDwyjYp
+ hsaYHFXks0ABcpDjuLTq7G8nNFgNQRejEkIwyNrvNBITNcfSlYEckCWTyiR4M355ln1z
+ oWPP1v82GcXNT004Zs+KQzJFfga2UEAjnMdG8gLrOFiTfLSLo+CSlAYalGTpRzCNVLIy
+ +yzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734622774; x=1735227574;
+ d=1e100.net; s=20230601; t=1734622780; x=1735227580;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RMGv7qvi3m/JTiz7jQ63fQU4SttU7iapPs3aSHWSfWE=;
- b=pB5n4ngxJIkLSg3JNtIlUUzdpPLCWn2NH20s8xraQ67Jvsc+eS/3zPa37kK2MYYCtS
- n6KE3rbEOvHmhDlrYjIfmBnohRh9dHOuKAhIOP4kbfHx3GJwfnrDMqVCjtF1mTUhRRw2
- vFLsNxr1LZSgB7B90rvlQcs/sq7a0WqyJlXOxnxHNWALhgPr8TG7ssyPRNvPD/yk9C0K
- 55jzLCXq5x+Twlnr5Kv+Q4m1KEHSeLsCaiXFmYhWnUVYBKF/PhT4tHwuYJyMwkVqaBkr
- j/zrSgBfIisXQDA1xkaOLFyU696Bwy7Sk8r9Bg1b+6knIxLwHXIk6HRNB2Gx067HTx25
- uytA==
-X-Gm-Message-State: AOJu0YyA+zuK1/ZwExSU7Vou1iggOJstkyOTeG5yP58MCD67ICVXjRXJ
- CMTiy5reKWGv/wM7EkxABDfQujOgzogtpzj/BV3OueIzq67yrH/eHmPhWsCWIcgN9+J11oR1/DS
- W
-X-Gm-Gg: ASbGncvQeAmk+EaL3tyivB9muC2qJ+skKAFK3UdouWNr425Al7a206ks2EjkYpHLmMh
- zl8mzFTSNw5nr289HjjRAkCdBUYkEdTW19V7q6DDa+s2ivnl+J4XOGx9teAJF/qL5YISMa8sLPa
- upwEnr6AJfmy1DsAsPTZekaRdqVw6nVOLKXtagAP3gI3W2lV7K6GDvGib4pfSxpIyeWvavBNqLR
- ZqPsJ3YwJzrSV36WQe4r6q1o0xlqADH2P4sWE7N8wTTlQzY8qWwMEX7lxBBhhq5UQH28U388CfK
- POj0
-X-Google-Smtp-Source: AGHT+IGh0eZIZPaxTiz7UGfEy8XHE6o5ObgLI9iwFFlqzABUoKuS/Dmnu9cBOUOHJL67G2wHfkMXog==
-X-Received: by 2002:a05:600c:4fd3:b0:436:346a:fa9b with SMTP id
- 5b1f17b1804b1-4365c7c9707mr27726955e9.20.1734622774615; 
- Thu, 19 Dec 2024 07:39:34 -0800 (PST)
+ bh=W5xIB6Q3xpywMwriwl34zxXU4p+OU3fl2Ms6nSvvP3g=;
+ b=kqznLITWAKWEf0ObBi+jOniOECPi/JNMg6N071PBiA9jMEF8px52PR2Kch/BlmPy1O
+ DCZsA2VwJZDuEKwn2Uiq4LViacWIsRnSlxAtpTG45p6T73erhI4mhdS8zcNAPRBuRI6F
+ ugx/gP91UGB8DSesu+pm/F79NiJkw5MCyu8v/+C5jvHsAcFT0+nFfQzMWBcg6SjPBja3
+ Y84jwIgPeq2EfM+iedizA57UkX9s9sByuDhQ6con1fpW63a3/ZUr7UzuaEM1zcKEjW6o
+ oxlJ6uQLTkpYzJa94mE4MVm5CCgcQ3nLayANQ70xJgo/k2/hB5YVjLMG3FleRjSdTHz2
+ bEag==
+X-Gm-Message-State: AOJu0YyBAPgF98uPPRPC+yvyx+Pcpf/nTtVEfiOGOEmegrtYxkHjaz32
+ slRo04JK1DbnOvM7XFlbtpAf3s5fvZP7jHYQxbBdPu/Sdp3h2HEJPbxZ9wBIBOh4LXrwJX6WziB
+ d
+X-Gm-Gg: ASbGncuCQ7W2fCp/3YbWjxOVXyFhLQoMrDLahnAy32PuK98y+S9E0Q9LOKHxR0sXIsx
+ 1uRfiC4J9bn2ibcu6zoqYrJJ4zIRCZJMOUvpoY/3XgK3PAcI0KjEiPqmpbsFsv4+/bRwv4RDwkW
+ G9e64L9KDx56rYza0esjD1/Y4m6Iw0tbCZhjf3t6Poq4aT2fIRR99unuCcc7pSLnGs4JZuyL8/R
+ 0qP8mXQ3IEhJN5r1JYJ9IlCSv0m/W6WiPsNl8pQ/AttrXAtdD/44gM5WZjWC7KExm0M38z9n+/U
+ zrIV
+X-Google-Smtp-Source: AGHT+IGv5rd7ZLJrA7Ng7P1DhJdT3DlR3L1JZzaGzslknhJylDOfRM57TjnrYcXF/hgefogMGL1mfw==
+X-Received: by 2002:a5d:47cf:0:b0:385:d852:29ed with SMTP id
+ ffacd0b85a97d-388e4d8e083mr6933410f8f.36.1734622779863; 
+ Thu, 19 Dec 2024 07:39:39 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c8474a9sm1805633f8f.52.2024.12.19.07.39.33
+ 5b1f17b1804b1-43656b4274csm55636845e9.38.2024.12.19.07.39.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Dec 2024 07:39:34 -0800 (PST)
+ Thu, 19 Dec 2024 07:39:39 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  devel@lists.libvirt.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 06/10] hw/misc/vmcoreinfo: Move vmstate_vmcoreinfo[] around
-Date: Thu, 19 Dec 2024 16:38:53 +0100
-Message-ID: <20241219153857.57450-7-philmd@linaro.org>
+Subject: [RFC PATCH 07/10] hw/misc/vmcoreinfo: Factor
+ vmcoreinfo_device_realize() out
+Date: Thu, 19 Dec 2024 16:38:54 +0100
+Message-ID: <20241219153857.57450-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219153857.57450-1-philmd@linaro.org>
 References: <20241219153857.57450-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,60 +100,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In order to simplify the next commit,
-move vmstate_vmcoreinfo[] around.
+In preparation of implementing a UserCreatable callback
+in the next commit, factor vmcoreinfo_device_realize() out.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/misc/vmcoreinfo.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ hw/misc/vmcoreinfo.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/hw/misc/vmcoreinfo.c b/hw/misc/vmcoreinfo.c
-index 093bede655e..55f9d437a94 100644
+index 55f9d437a94..a0511ea0da4 100644
 --- a/hw/misc/vmcoreinfo.c
 +++ b/hw/misc/vmcoreinfo.c
-@@ -18,6 +18,20 @@
- #include "migration/vmstate.h"
- #include "hw/misc/vmcoreinfo.h"
+@@ -49,9 +49,8 @@ static void vmcoreinfo_reset_hold(Object *obj, ResetType type)
+     s->vmcoreinfo.host_format = cpu_to_le16(FW_CFG_VMCOREINFO_FORMAT_ELF);
+ }
  
-+static const VMStateDescription vmstate_vmcoreinfo = {
-+    .name = "vmcoreinfo",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_BOOL(has_vmcoreinfo, VMCoreInfoState),
-+        VMSTATE_UINT16(vmcoreinfo.host_format, VMCoreInfoState),
-+        VMSTATE_UINT16(vmcoreinfo.guest_format, VMCoreInfoState),
-+        VMSTATE_UINT32(vmcoreinfo.size, VMCoreInfoState),
-+        VMSTATE_UINT64(vmcoreinfo.paddr, VMCoreInfoState),
-+        VMSTATE_END_OF_LIST()
-+    },
-+};
-+
- static void fw_cfg_vmci_write(void *opaque, off_t offset, size_t len)
+-static void vmcoreinfo_realize(DeviceState *dev, Error **errp)
++static void vmcoreinfo_realize(VMCoreInfoState *s, Error **errp)
  {
-     VMCoreInfoState *s = opaque;
-@@ -70,20 +84,6 @@ static void vmcoreinfo_realize(DeviceState *dev, Error **errp)
+-    VMCoreInfoState *s = VMCOREINFO_DEVICE(dev);
+     FWCfgState *fw_cfg = fw_cfg_find();
+     /* for gdb script dump-guest-memory.py */
+     static VMCoreInfoState * volatile vmcoreinfo_state G_GNUC_UNUSED;
+@@ -84,13 +83,18 @@ static void vmcoreinfo_realize(DeviceState *dev, Error **errp)
      vmcoreinfo_state = s;
  }
  
--static const VMStateDescription vmstate_vmcoreinfo = {
--    .name = "vmcoreinfo",
--    .version_id = 1,
--    .minimum_version_id = 1,
--    .fields = (const VMStateField[]) {
--        VMSTATE_BOOL(has_vmcoreinfo, VMCoreInfoState),
--        VMSTATE_UINT16(vmcoreinfo.host_format, VMCoreInfoState),
--        VMSTATE_UINT16(vmcoreinfo.guest_format, VMCoreInfoState),
--        VMSTATE_UINT32(vmcoreinfo.size, VMCoreInfoState),
--        VMSTATE_UINT64(vmcoreinfo.paddr, VMCoreInfoState),
--        VMSTATE_END_OF_LIST()
--    },
--};
--
++static void vmcoreinfo_device_realize(DeviceState *dev, Error **errp)
++{
++    vmcoreinfo_realize(VMCOREINFO_DEVICE(dev), errp);
++}
++
  static void vmcoreinfo_device_class_init(ObjectClass *klass, void *data)
  {
      DeviceClass *dc = DEVICE_CLASS(klass);
+     ResettableClass *rc = RESETTABLE_CLASS(klass);
+ 
+     dc->vmsd = &vmstate_vmcoreinfo;
+-    dc->realize = vmcoreinfo_realize;
++    dc->realize = vmcoreinfo_device_realize;
+     dc->hotpluggable = false;
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+     rc->phases.hold = vmcoreinfo_reset_hold;
 -- 
 2.47.1
 
