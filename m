@@ -2,95 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59BB79F7F49
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:21:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0AE99F7FD9
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:33:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJGl-0003IR-5Y; Thu, 19 Dec 2024 11:20:59 -0500
+	id 1tOJGo-0003ZK-DW; Thu, 19 Dec 2024 11:21:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1tOHKH-00010d-Ls
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 09:16:29 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1tOHKC-0006PL-Pg
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 09:16:29 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-385d7f19f20so427154f8f.1
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 06:16:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734617783; x=1735222583; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xh4y+WQ9eMdjdzRhDj8FZbbXuTTw6o1hds5obhvcwis=;
- b=jhti0eMJG4/TFKHAV73GSyPWZbxRpbEXB+AoVjlfonZA9XG5I9GKFWMycy4hHtzRwp
- 0NLXtFdaRMlmVgdYP404YiFYBRTywNfBw5bNSZqSuv268eBObTwOHaGerzAilAEjXqe9
- Gv4pOmmNFrUq1F/eZr0Oj3k9essLYfTokphEn+FZDNQ/yWF2y+VAbI6ATBuySiA7Q5a0
- GjOxtlX31KHeCsvj32ni9IJWttDo88hcYWoXuB3+GnMZg3NQdCd0955xCklroHsKddAC
- c48u3G/3uXTVdW8fCI1pov+se9slRCQY9RMyhWtKb26D/5cKX+opkF4lWQv6v+BGZ3EK
- nTIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734617783; x=1735222583;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xh4y+WQ9eMdjdzRhDj8FZbbXuTTw6o1hds5obhvcwis=;
- b=PNVYFyIXXj/Nn4uRVmh9rLvSUc1D2nanASOsyrgYpQd4cBbhzGSP+vNoTLPxRSqEqP
- 9DNyQMwDlun5xro00UMSJztFASJeLU8fBwR61KwWpNVIk28uvjBiu2dA05DAuaP45OfM
- yHXsY61SWxZvBs8dJ/kIIi0RzZwNIwDQAvrAcSswK9h1zbGKWPRqAAIBwJbWUCYxHCyR
- x5g8peD4rymCHgkekEO0oNpVPfjiAaKzc6rMmU6xO9XdL6FwW6ZmlbQIKVz2kN41Lj+l
- nZy034lJyySwVkIEd+nAcvgPzAEjiRdiqG/fT3mKp8LyLD94FzCrmMauVMHPSF4epmwM
- Q+JQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX4yIpT8ddJz4hlP199xJuKGHZWe2vPMaptRD8ikibEST/VKI+nayEQno1FbtQo6qnnchUr+Wp/8M0H@nongnu.org
-X-Gm-Message-State: AOJu0Yx2b3p9ZLDRCTu+CfE0TNxHt/o/roAHumwwvaOZrpaeVKYW5B63
- ws7ytRG/Xz0S/9eLOmZNcaHLyvN0hPcEhfbJmH7Haqj90+Q6aUpb
-X-Gm-Gg: ASbGnctJIq2ol94GLurBj1zJslNLuvikuYzSoLrdMpemFoo9uWbXoNs8cC5jh/QkKlZ
- OdhtnmIDnn6spSYD0PXjmatdKt+/kyni3CwhkCJ+nE/MNfLy5Ye4m1jAAuaKPIYw2ZoTpBaZKFB
- VBL78PxmfRahxZfDdNWIy/ScDsc9FXjgF6GyufivwWIGWW2hnfiipmOlEhcfIesJ3L38G37qZ+C
- DFr3hirY7Opw6T6Fans9ED3lq7SLVGAF9rtoNnky7xikFURcYRmjryeEfbW+LoB9vfLLMeFYrS9
- KP1NWGFQ2D35yumpP5gRawh3JSKWwac=
-X-Google-Smtp-Source: AGHT+IHGwuRC6/XDNQlJPXOZ0L/prmw4JG/Sqb+PxdInQ+mfIRwDtNmnOwaZ+i+0Ql8YwjfJ4Y8pMA==
-X-Received: by 2002:a5d:47a3:0:b0:385:fb66:faee with SMTP id
- ffacd0b85a97d-388e4d42ce4mr5960163f8f.18.1734617782493; 
- Thu, 19 Dec 2024 06:16:22 -0800 (PST)
-Received: from [127.0.0.1] (dynamic-077-191-068-081.77.191.pool.telefonica.de.
- [77.191.68.81]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c89e1cesm1609195f8f.64.2024.12.19.06.16.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Dec 2024 06:16:22 -0800 (PST)
-Date: Thu, 19 Dec 2024 14:16:20 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>,
- Phil Dennis-Jordan <phil@philjordan.eu>
-CC: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_1/2=5D_hw/usb/hcd-xhci-p?=
- =?US-ASCII?Q?ci=3A_Make_PCI_device_more_configurable?=
-In-Reply-To: <ba2749f3-8cc4-0ea6-57dd-aa122403b937@eik.bme.hu>
-References: <20241212085207.1439501-1-npiggin@gmail.com>
- <20241212085207.1439501-2-npiggin@gmail.com>
- <CAAibmn3NsDewTEFdWoR=VpTRSb5C67bFMYXnf74zBQOwWCLi1Q@mail.gmail.com>
- <D6EFJHL1PDCX.2TZC2E8DZLNU3@gmail.com>
- <CAAibmn3STc4hWJPfDtdp2rDscx_8cO=cO4JA=qhneif03Jf9QA@mail.gmail.com>
- <ba2749f3-8cc4-0ea6-57dd-aa122403b937@eik.bme.hu>
-Message-ID: <5FF37BC7-D27E-439C-97CA-D3E397056404@gmail.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tOHRc-0001dx-Ux
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 09:24:04 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tOHRb-0007NG-6k
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 09:24:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1734618241;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=PNHwBXHWEGQ6K3D4TEZBS4BdyLRsyYlRDVLQl3aWPsM=;
+ b=QlWAylu1Xb4Dy5MME3sfL2JFCmH2OAngfysATDVOA5ruCjndiUSv1KhErSCsWf4cB4qMiy
+ ONkLCRMznGgTLbf8LK4tGGxqazwuCVVNdMNbvs9/WMLBdoYFBsFggT4z2/4U/KH6Ke7/U8
+ Nzmk2PRWO1cpaimcZP+tWUVAiXvpPBk=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-URR_6VBbO-yNOXaf_475bg-1; Thu,
+ 19 Dec 2024 09:24:00 -0500
+X-MC-Unique: URR_6VBbO-yNOXaf_475bg-1
+X-Mimecast-MFC-AGG-ID: URR_6VBbO-yNOXaf_475bg
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 49D22195608C
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 14:23:59 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.54])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8EF1F1956053; Thu, 19 Dec 2024 14:23:57 +0000 (UTC)
+Date: Thu, 19 Dec 2024 14:23:53 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH] hw/virtio: reset virtio balloon stats on machine reset
+Message-ID: <Z2QsebYwZ51ohas7@redhat.com>
+References: <20241218172912.4170899-1-berrange@redhat.com>
+ <d2730488-8468-4639-876c-18a860c6469e@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d2730488-8468-4639-876c-18a860c6469e@redhat.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,141 +84,123 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, Dec 19, 2024 at 02:51:21PM +0100, David Hildenbrand wrote:
+> On 18.12.24 18:29, Daniel P. Berrangé wrote:
+> > When a machine is first booted, all virtio balloon stats are initialized
+> > to their default value -1 (18446744073709551615 when represented as
+> > unsigned).
+> > 
+> > They remain that way while the firmware is loading, and early phase of
+> > guest OS boot, until the virtio-balloon driver is activated. Thereafter
+> > the reported stats reflect the guest OS activity.
+> > 
+> > When a machine reset is performed, however, the virtio-balloon stats are
+> > left unchanged by QEMU, despite the guest OS no longer updating them,
+> > nor indeed even still existing.
+> > 
+> > IOW, the mgmt app keeps getting stale stats until the guest OS starts
+> > once more and loads the virtio-balloon driver (if ever). At that point
+> > the app will see a discontinuity in the reported values as they sudden
+> > jump from the stale value to the new value. This jump is indigituishable
+> > from a valid data update.
+> > 
+> > While there is an "last-updated" field to report on the freshness of
+> > the stats, that does not unambiguously tell the mgmt app whether the
+> > stats are still conceptually relevant to the current running workload.
+> > 
+> > It is more conceptually useful to reset the stats to their default
+> > values on machine reset, given that the previous guest workload the
+> > stats reflect no longer exists. The mgmt app can now clearly identify
+> > that there are is no stats information available from the current
+> > executing workload.
+> > 
+> > The 'last-updated' time is also reset back to 0.
+> > 
+> > IOW, on every machine reset, the virtio stats are in the same clean
+> > state they were when the macine first powered on.
+> > 
+> > A functional test is added to validate this behaviour with a real
+> > world guest OS.
+> > > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > ---
+> > 
+> > One side-thought I have, is whether it makes sense to add a
+> > 'reset-count' field in the virtio stats, alongside the
+> > 'last-updated' field. While apps can infer a reset from seeing
+> > the stats all go back to their defaults, an explicit flag is
+> > simpler...
+> > 
+> >   MAINTAINERS                             |   1 +
+> >   hw/virtio/virtio-balloon.c              |  30 ++++-
+> >   include/hw/virtio/virtio-balloon.h      |   4 +
+> >   tests/functional/test_virtio_balloon.py | 161 ++++++++++++++++++++++++
+> >   4 files changed, 195 insertions(+), 1 deletion(-)
+> >   create mode 100755 tests/functional/test_virtio_balloon.py
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 822f34344b..1380d53d03 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -2234,6 +2234,7 @@ F: include/hw/virtio/virtio-balloon.h
+> >   F: system/balloon.c
+> >   F: include/sysemu/balloon.h
+> >   F: tests/qtest/virtio-balloon-test.c
+> > +F: tests/functional/test_virtio_balloon.py
+> >   virtio-9p
+> >   M: Greg Kurz <groug@kaod.org>
+> > diff --git a/hw/virtio/virtio-balloon.c b/hw/virtio/virtio-balloon.c
+> > index ab2ee30475..fe0854e198 100644
+> > --- a/hw/virtio/virtio-balloon.c
+> > +++ b/hw/virtio/virtio-balloon.c
+> > @@ -31,7 +31,7 @@
+> >   #include "trace.h"
+> >   #include "qemu/error-report.h"
+> >   #include "migration/misc.h"
+> > -
+> > +#include "sysemu/reset.h"
+> >   #include "hw/virtio/virtio-bus.h"
+> >   #include "hw/virtio/virtio-access.h"
+> > @@ -910,6 +910,8 @@ static void virtio_balloon_device_realize(DeviceState *dev, Error **errp)
+> >       }
+> >       reset_stats(s);
+> > +    s->stats_last_update = 0;
+> > +    qemu_register_resettable(OBJECT(dev));
+> >   }
+> >   static void virtio_balloon_device_unrealize(DeviceState *dev)
+> > @@ -917,6 +919,7 @@ static void virtio_balloon_device_unrealize(DeviceState *dev)
+> >       VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+> >       VirtIOBalloon *s = VIRTIO_BALLOON(dev);
+> > +    qemu_unregister_resettable(OBJECT(dev));
+> >       if (s->free_page_bh) {
+> >           qemu_bh_delete(s->free_page_bh);
+> >           object_unref(OBJECT(s->iothread));
+> > @@ -987,6 +990,27 @@ static void virtio_balloon_set_status(VirtIODevice *vdev, uint8_t status)
+> >       }
+> >   }
+> 
+> Using qemu_register_resettable() can have unfortunate side effects that this
+> code is triggered when the device is reset, not necessarily when the
+> complete machine.
+> 
+> For virtio-mem at least that's an issue, and here is how I'll fix it:
+> 
+> https://lore.kernel.org/qemu-devel/20241218105303.1966303-2-david@redhat.com/
 
+IIUC, the scenario wrt kDump on s390x will be OK in this scenario. If
+you're resetting the balloon device across a kDump, I think it is likely
+desirable for the virtio balloon stats to be reset. The OS which populated
+those stats no longer exists, and has been replaced by the kExec kernel
+performing the kDump IIUC.
 
-Am 19=2E Dezember 2024 09:23:13 UTC schrieb BALATON Zoltan <balaton@eik=2E=
-bme=2Ehu>:
->On Wed, 18 Dec 2024, Phil Dennis-Jordan wrote:
->> On Wed, 18 Dec 2024 at 02:19, Nicholas Piggin <npiggin@gmail=2Ecom> wro=
-te:
->>> On Thu Dec 12, 2024 at 8:41 PM AEST, Phil Dennis-Jordan wrote:
->>>> Hey Nicholas,
->>>>=20
->>>> I'm not an XHCI & PCI expert (yet?) so apologies if I've got some of =
-this
->>>> wrong, but I've asked some questions and made some comments inline:
->>>=20
->>> Hey Phil,
->>>=20
->>> Thanks for the review, looks like you are the expert now :)
->>>=20
->>=20
->> The "hot potato" method for determining maintainership=2E :-)
->
->That's how I got some parts I'm maintainer of now=2E :-)
->
->[=2E=2E=2E]
->>>> On Thu, 12 Dec 2024 at 09:52, Nicholas Piggin <npiggin@gmail=2Ecom> w=
-rote:
->>>> Surely we should only propagate the error and fail realize() iff s->m=
-six
->>> is
->>>> ON_OFF_AUTO_ON?
->>>>=20
->>>> For ON_OFF_AUTO_AUTO, msix_init returning failure isn't a critical er=
-ror=2E
->>>=20
->>> Yep you're right=2E=2E=2E you had been testing with msix disabled=2E I=
- wonder if
->>> there is a good way to force fail this in qtests?
->>>=20
->>=20
->> I'm really the wrong person to ask about qtest, I'm only just beginning=
- to
->> get to grips with it=2E It seems the only real reason msix_init fails o=
-ther
->> than misconfiguration of the device/BAR is when msi_nonbroken =3D false=
-=2E
->>=20
->> At least on x86(-64), msi_nonbroken=3Dtrue is unconditionally set in
->> apic_realize()=2E (I think real hardware would not support MSI(-X) on t=
-he
->> i440FX chipset - I was fairly certain it was the PCI root/southbridge
->> catching the writes to the reserved memory region, and I didn't think t=
-he
->> PIIX did this; but at least in QEMU it doesn't seem to be implemented i=
-n a
->> chipset-dependent way=2E) I'm not sure it's possible to run QEMU withou=
-t an
->> APIC?
->
->There's isapc but you can't attach PCI card to that=2E It seems according=
- to -machine pc,help that there's a PIC=3D<OnOffAuto> option but no similar=
- for APIC=2E Maybe that could be added but not sure it would work=2E (Addin=
-g Bernhard to cc to quickly pass on the potato=2E)
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
-I agree, the only x86 machine with no APIC is the isapc machine=2E All oth=
-ers (i440fx, q35, microvm) have it always enabled=2E I guess there is just =
-no point in disabling it since the APIC is part of the architecture for age=
-s and SMP requires it=2E Although PIIX3+ didn't have an APIC built-in it ha=
-d interfaces for handling a dedicated one which is basically what QEMU emul=
-ates=2E
-
-Best regards,
-Bernhard
-
->
->Regards,
->BALATON Zoltan
->
->> On aarch64, the GICv3 needs to explicitly enable support (via the ITS),=
- so
->> perhaps it's possible to set up an aarch64 qtest with ITS disabled? It
->> looks like the 'virt' machine type only supports the ITS from version 6=
-=2E2,
->> so older versions will disable it=2E
->>=20
->> Sorry, clutching at straws here=2E
->>=20
->>=20
->>>>> +
->>>>> +        pci_register_bar(dev, s->msix_bar_nr,
->>>>> +                         PCI_BASE_ADDRESS_SPACE_MEMORY |
->>>>> +                         PCI_BASE_ADDRESS_MEM_TYPE_64,
->>>>> +                         msix_bar);
->>>>>=20
->>>>=20
->>>> Is it safe to call pci_register_bar() again for the msix_bar_nr =3D 0=
- case?
->>>> Even if it is safe, is it sensible? If we're calling it twice for the
->>> same
->>>> BAR, and the arguments of either of the calls changes in future, the
->>> other
->>>> needs to change too=2E Doesn't seem ideal=2E
->>>=20
->>> Good catch=2E It looks like it "works" so long as the bar wasn't mappe=
-d,
->>> but I'm sure bad practice=2E=2E=2E Interesting there is no assertion i=
-n
->>> there though=2E I'll fix it though=2E
->>>=20
->>=20
->> I notice there's a msix_init_exclusive_bar()=E2=80=A6 I wonder if it'd =
-be simpler
->> to use that and modify it so it allows you to choose a size and layout =
-for
->> the BAR, rather than adding all that extra code to deal with the extra =
-BAR
->> in the XHCI?
->> (It already calls pci_register_bar() and msix_init() internally, but se=
-ems
->> to set the BAR's size to 4096 and places the PBA at halfway through the
->> BAR=2E Perhaps rename it to something like
->> msix_init_exclusive_bar_with_layout and pass the bar_size and
->> bar_pba_offset in as parameters; then make msix_init_exclusive_bar() a
->> wrapper for that function with the existing defaults for those variable=
-s?)
->>=20
->> Just kicking around some ideas here, I have no idea if that actually en=
-ds
->> up making things simpler=E2=80=A6
->>=20
->>=20
->>> Thanks,
->>> Nick
->>>=20
->> 
 
