@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6894F9F7784
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:37:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27D5D9F7777
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:36:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOByo-0006tW-3J; Thu, 19 Dec 2024 03:33:58 -0500
+	id 1tOByp-0006uy-LV; Thu, 19 Dec 2024 03:33:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOByk-0006iB-AD
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:54 -0500
+ id 1tOByl-0006pl-MA
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:55 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOByi-0005GS-Pa
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:54 -0500
+ id 1tOByk-0005H8-4c
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734597230;
+ s=mimecast20190719; t=1734597233;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8AAp/S2v8W3fPum66lzAfsVl337fXfIWb2U5k64KdL0=;
- b=HehjXZxonx2cjglWoU7nlnNc6dMFRq23s8qa24EQoZD/UN2qkScziYzHogz2N/t3AlR2pW
- XGw2BzEQdK0chcUjSall3Ufv7xkkbLzKJHEXub72uQ7UgSZYFP6qM6hBq9vbPMoWnBsa3q
- +xrXKyuVMa5UrToP4ZUmHkM2KB4jTpA=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=VTPmYEtJQTF4LhpsXLNB3KolsGRJJ0DGDHYuyRBvOuI=;
+ b=Rc7h8eiyUTqJKL1bzZpTau8hrGpUqW1jd1RaUN39oWs+rnxzvsH5s5zEC3WIl/x6QptrtW
+ CtQO7koRvtFEsLfPb/4Zl2lq7BeS7FHjnoFWfd0+mqNCberryGDURlDJ66eA+TTs1CAeOG
+ Y+FCQ0eR/zzIB9a5K0mrnfrZNiH8VBQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-9oDyKbxXNey8Cjv-i94plA-1; Thu, 19 Dec 2024 03:33:48 -0500
-X-MC-Unique: 9oDyKbxXNey8Cjv-i94plA-1
-X-Mimecast-MFC-AGG-ID: 9oDyKbxXNey8Cjv-i94plA
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-436219070b4so2729865e9.1
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:48 -0800 (PST)
+ us-mta-655-9vpJtQ6cN0aiRgCQVpbAGw-1; Thu, 19 Dec 2024 03:33:51 -0500
+X-MC-Unique: 9vpJtQ6cN0aiRgCQVpbAGw-1
+X-Mimecast-MFC-AGG-ID: 9vpJtQ6cN0aiRgCQVpbAGw
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-388d1f6f3b2so223123f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734597226; x=1735202026;
+ d=1e100.net; s=20230601; t=1734597229; x=1735202029;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8AAp/S2v8W3fPum66lzAfsVl337fXfIWb2U5k64KdL0=;
- b=k4pcsAorNqnguAZd7q+eoJkHrYdzlRMTod2aIfXaEq47C/n3nFDUUEhAuQ7vFJcAe0
- BQ/jIXhfeX0leblvbINPmHHfZk9OeYLXLPjTkOT1ydNdm3zgK1DUErt0qCRlsSC86DHA
- gX+T/FEL+vZrDkXXy3t8YauoxpfC+7hzXlcGxV9JrjquDQjYC62SqLyPZ4J0PaVzD2dV
- 8KKhUoR1sS1m2nJktr1bHiNXsvY/IIBvybPQTcke6RzSL+lgFZmTIyrFrFK1ruc6KMrX
- MxXj/c+VlnIpj3aCvn1bXVEngEa8ziudPlb8ciVV7vij8qo35KuHkNLfN2ebZc2rXEwE
- kUfA==
-X-Gm-Message-State: AOJu0YxX30VmSlrzzQrc3xpv/KwRLPkTEUnrO49trCQUNhFyrLMKseQ1
- iU3TiNH+pXFgDg+UQy3i1j3CmVonQiRS+dTsaITCa7qVvIiwSHW6I0leQckrQUC0n26zsU032Zz
- ZE8yIaHNz7pn69Wf6xRVOaZAcPyPbJEAK96n04A4uhBTT4jso2RFqr7CJsmnFheY5Y4wBm3mQxp
- CjKIqvViPQWsJglYiE2rrMj0cvC2bnD6KnSO9G
-X-Gm-Gg: ASbGncsWFOHAqHVN3R98qus5XzCVNi1VETGADKXAKmSSeo6xmABMuvlx2Kwl371iMxZ
- PBaB8aP/ZYThjFhSIy8ppLLRwnniLBjPxg8U36XSBDomz+w/ipYd/MDE44QcgQ+iNBVR7vB6U3w
- CFTP6nG5XmaHh1wD5rWJKSsly2OWQudhQC/Zb7nIIq3NcbV6S5yaW3m8jMAF97fLZIcBSKTvf9J
- 2eOrh8Tipv+q6/Wq1LXdMCtAawB0Rrw8alXwBGPvOEVXCfhDa6YAGLOBFXO
-X-Received: by 2002:a05:600c:4f84:b0:434:f0df:a14 with SMTP id
- 5b1f17b1804b1-436553487famr54228145e9.2.1734597226542; 
- Thu, 19 Dec 2024 00:33:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE4H4vRHZk2XSkCrzocY6aLyz8yOIxWULqVjb1iPoLK6Z+chHqCfIJSfdI5UiTgDNqac6ftwQ==
-X-Received: by 2002:a05:600c:4f84:b0:434:f0df:a14 with SMTP id
- 5b1f17b1804b1-436553487famr54227885e9.2.1734597226195; 
- Thu, 19 Dec 2024 00:33:46 -0800 (PST)
+ bh=VTPmYEtJQTF4LhpsXLNB3KolsGRJJ0DGDHYuyRBvOuI=;
+ b=VLrL1IH5x4lpnaTbjJENXRsf6Iq/LqARDQhg1DZ+uCfu5gvYlhF9DXqfukXwBSilEF
+ p+IuHNwXw1QkBOrCGDyWHn77wt3qdOTRtUBwse7fUTxI60441FuxSiAx/OKD3MEWN6Pj
+ f/ZTZYDF5Qum1ui0s5l1ttzfbVARTA/f0+9kCnwTrO6Pv2lBzMnwf28cUBH1+3I6+znz
+ gMTYOQX/ENKbIGQrO9nMnfpEaJJT4XImSPu5lfRWoHcDUXuuxoD2TOpyy2b9PTc9kI7q
+ AeWVXxrsg8BY1XD+9Bn9hybINhst+moHYju+ZMk5kMvJUda8pcl0a0Z4ayd++0kOorrF
+ 4HaA==
+X-Gm-Message-State: AOJu0Yyw7mMnOXcGqGvdIdFM0kROaH22hk+FNNeYDIZi0wxyljgvkQ+L
+ YjrQ/gkrBmKaqiWPz7oFUUk7h8HnL5B6l7DlI79XWGflG+KsOcBdlAmodpcz1lL59srSej/nVgv
+ 86f0sEgEKlTaYddXr0LCJlArkarwx+li1FlSDzB3ebRDyit8cKwg5bUB66UNpZSZefwkJl3WngZ
+ 6z4fYWuJb/zExU0D56anYMe7awm1QlJjN6wzEf
+X-Gm-Gg: ASbGncsK/GUhNYkz/oGrAdcqzBH+4NDP4EfcCY4ITN3pTulzx/6SjSdUfmo4pcDZNrD
+ xXEzLmV5GLwpIURz32b+NuvAcoa87xgFsNXGK1n/efgK6Nx6CorZt4qK7RzyZukAR3I3UnIgbrl
+ /8rXM4nD/p0z02m/q+coEdhTVLmvHUlEpT/LcKU9fUm7CFOquy7G5dlFfzKKmrrUE60QlVMR5Wv
+ KTLSOdiMEaNut1LBq4AsETeAh/dG/zX+oH8E6+tp86ijpT98vDoJsObnuvn
+X-Received: by 2002:a05:6000:400f:b0:385:fa2e:a33e with SMTP id
+ ffacd0b85a97d-388e4d8e54cmr6067061f8f.43.1734597229621; 
+ Thu, 19 Dec 2024 00:33:49 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHiEagldsvaItOrlaSC7E7lbqh9Up6o720Ukb43YCjE88wzTVoXQ+ZEPO35x7L8ncb62Tw51w==
+X-Received: by 2002:a05:6000:400f:b0:385:fa2e:a33e with SMTP id
+ ffacd0b85a97d-388e4d8e54cmr6067027f8f.43.1734597229229; 
+ Thu, 19 Dec 2024 00:33:49 -0800 (PST)
 Received: from [192.168.10.47] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436611ea423sm11356045e9.2.2024.12.19.00.33.45
+ ffacd0b85a97d-38a1c847263sm987383f8f.50.2024.12.19.00.33.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 00:33:45 -0800 (PST)
+ Thu, 19 Dec 2024 00:33:46 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 36/41] rust: pl011: match break logic of C version
-Date: Thu, 19 Dec 2024 09:32:23 +0100
-Message-ID: <20241219083228.363430-37-pbonzini@redhat.com>
+Subject: [PULL 37/41] rust: pl011: always use reset() method on registers
+Date: Thu, 19 Dec 2024 09:32:24 +0100
+Message-ID: <20241219083228.363430-38-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219083228.363430-1-pbonzini@redhat.com>
 References: <20241219083228.363430-1-pbonzini@redhat.com>
@@ -107,33 +107,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Check loopback_enabled(), not fifo_enabled(), like the C code.
+For CR, the ugly-ish "0.into()" idiom is already hidden within the
+reset method.  Do not repeat it.
 
-Also, set_break_error() must not happen until the break is read from
-the FIFO.
+For FR, standardize on reset() being equivalent to "*self = Self::default()"
+and let reset_fifo toggle only the bits that are related to FIFOs.  This
+commit also reproduces C commit 02b1f7f6192 ("hw/char/pl011: Split RX/TX
+path of pl011_reset_fifo()", 2024-09-13).
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ rust/hw/char/pl011/src/device.rs | 23 ++++++++++++++++-------
+ rust/hw/char/pl011/src/lib.rs    | 13 +++++--------
+ 2 files changed, 21 insertions(+), 15 deletions(-)
 
 diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index e85d13c5a2b..960ee38ed69 100644
+index 960ee38ed69..f2ee8763d8f 100644
 --- a/rust/hw/char/pl011/src/device.rs
 +++ b/rust/hw/char/pl011/src/device.rs
-@@ -460,9 +460,8 @@ pub fn can_receive(&self) -> bool {
+@@ -262,7 +262,7 @@ pub fn write(&mut self, offset: hwaddr, value: u64) {
+                 self.update();
+             }
+             Ok(RSR) => {
+-                self.receive_status_error_clear = 0.into();
++                self.receive_status_error_clear.reset();
+             }
+             Ok(FR) => {
+                 // flag writes are ignored
+@@ -283,7 +283,8 @@ pub fn write(&mut self, offset: hwaddr, value: u64) {
+                 if bool::from(self.line_control.fifos_enabled())
+                     ^ bool::from(new_val.fifos_enabled())
+                 {
+-                    self.reset_fifo();
++                    self.reset_rx_fifo();
++                    self.reset_tx_fifo();
+                 }
+                 if self.line_control.send_break() ^ new_val.send_break() {
+                     let mut break_enable: c_int = new_val.send_break().into();
+@@ -442,16 +443,24 @@ pub fn reset(&mut self) {
+         self.read_trigger = 1;
+         self.ifl = 0x12;
+         self.control.reset();
+-        self.flags = 0.into();
+-        self.reset_fifo();
++        self.flags.reset();
++        self.reset_rx_fifo();
++        self.reset_tx_fifo();
      }
  
-     pub fn event(&mut self, event: QEMUChrEvent) {
--        if event == bindings::QEMUChrEvent::CHR_EVENT_BREAK && !self.fifo_enabled() {
-+        if event == bindings::QEMUChrEvent::CHR_EVENT_BREAK && !self.loopback_enabled() {
-             self.put_fifo(DATA_BREAK);
--            self.receive_status_error_clear.set_break_error(true);
+-    pub fn reset_fifo(&mut self) {
++    pub fn reset_rx_fifo(&mut self) {
+         self.read_count = 0;
+         self.read_pos = 0;
+ 
+-        /* Reset FIFO flags */
+-        self.flags.reset();
++        // Reset FIFO flags
++        self.flags.set_receive_fifo_full(false);
++        self.flags.set_receive_fifo_empty(true);
++    }
++
++    pub fn reset_tx_fifo(&mut self) {
++        // Reset FIFO flags
++        self.flags.set_transmit_fifo_full(false);
++        self.flags.set_transmit_fifo_empty(true);
+     }
+ 
+     pub fn can_receive(&self) -> bool {
+diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
+index d5089f78854..e3eacb0e6b9 100644
+--- a/rust/hw/char/pl011/src/lib.rs
++++ b/rust/hw/char/pl011/src/lib.rs
+@@ -230,7 +230,7 @@ pub struct ReceiveStatusErrorClear {
+     impl ReceiveStatusErrorClear {
+         pub fn reset(&mut self) {
+             // All the bits are cleared to 0 on reset.
+-            *self = 0.into();
++            *self = Self::default();
          }
      }
  
+@@ -297,19 +297,16 @@ pub struct Flags {
+ 
+     impl Flags {
+         pub fn reset(&mut self) {
+-            // After reset TXFF, RXFF, and BUSY are 0, and TXFE and RXFE are 1
+-            self.set_receive_fifo_full(false);
+-            self.set_transmit_fifo_full(false);
+-            self.set_busy(false);
+-            self.set_receive_fifo_empty(true);
+-            self.set_transmit_fifo_empty(true);
++            *self = Self::default();
+         }
+     }
+ 
+     impl Default for Flags {
+         fn default() -> Self {
+             let mut ret: Self = 0.into();
+-            ret.reset();
++            // After reset TXFF, RXFF, and BUSY are 0, and TXFE and RXFE are 1
++            ret.set_receive_fifo_empty(true);
++            ret.set_transmit_fifo_empty(true);
+             ret
+         }
+     }
 -- 
 2.47.1
 
