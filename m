@@ -2,60 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEB239F71FC
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 02:45:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ACE99F7226
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 02:52:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tO5Zu-00067B-Oj; Wed, 18 Dec 2024 20:43:50 -0500
+	id 1tO5gp-0000ts-Rf; Wed, 18 Dec 2024 20:50:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tO5Zr-00066d-DM; Wed, 18 Dec 2024 20:43:47 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tO5Zn-0000CQ-RC; Wed, 18 Dec 2024 20:43:46 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 18D4F4E603D;
- Thu, 19 Dec 2024 02:43:39 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id 61uOT4suAI_u; Thu, 19 Dec 2024 02:43:36 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id D68364E602D; Thu, 19 Dec 2024 02:43:36 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id D4685757B1C;
- Thu, 19 Dec 2024 02:43:36 +0100 (CET)
-Date: Thu, 19 Dec 2024 02:43:36 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Nicholas Piggin <npiggin@gmail.com>
-cc: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
- =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, 
- qemu-ppc@nongnu.org, 
- =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH v3 7/7] hw/ppc/epapr: Do not swap ePAPR magic value
-In-Reply-To: <D6F93NM6OW2L.2FDO88L38PABR@gmail.com>
-Message-ID: <6525790b-a637-e81c-1885-281b6c7e3d66@eik.bme.hu>
-References: <20241218182106.78800-1-philmd@linaro.org>
- <20241218182106.78800-8-philmd@linaro.org>
- <277eeed4-0467-1529-f52d-2c128d8d46bb@eik.bme.hu>
- <D6F93NM6OW2L.2FDO88L38PABR@gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-436307701-1734572616=:93270"
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tO5gi-0000tS-SU
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 20:50:52 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tO5gf-0001IF-Bf
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 20:50:51 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-21649a7bcdcso2329025ad.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 17:50:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1734573047; x=1735177847; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hyqB/yemDdd+bXN+c/VxhblpGJJ9RAhVBo1KCY2BifU=;
+ b=Knvo6v//30YkfBLGbPU964TprAIPYj9P7c7+pWUaLiqBFcAC4X/2qyEpEdV0oaZLGk
+ fUSrOewxR4EUD5P9/MOJiQqpyuUW6lCkJu2gRY/VehZ1CVgkWyuisAPFHTe7xJXWLGFz
+ 8yYTQSLqXG0EPKEV8U/brL3H/ZV0PqBwaqwTtG2iEr48ZUz0eH0aWtC+9ySLnJRftjwy
+ 67/3nMd2rmjROJFsnbZg05VLNnN8cMJgoM/QngbpbNG0UZI8U/vu4HHN2VRHzDZGkOZL
+ CrpwNw7XUk+Q2zTpAcXuhDMkO23u2chtq5CIM+HrYWiDZlfLo/nYDvtEYWMpMP1/2iCR
+ 2S4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734573047; x=1735177847;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=hyqB/yemDdd+bXN+c/VxhblpGJJ9RAhVBo1KCY2BifU=;
+ b=VRTeYOggNxlJHhVEXj+FPvU/tCigsX4nzz7TcPFdYLjkjDacLxgJQykon0XK3Br+HA
+ 2TZe+DCYgc6p2TrGXbZU8M8d6wXB6ouPs1sERAjcxxaNWzLtpJjdkFssI0sqi9fDSmHB
+ dVS9iIF0RNQ9C80DlL03+fPc5n+9R1SK6IuojkWwEQqCOtZsMYSLHJ+V/3JMbym8j7Q7
+ FTOVM4KVm09AToAQqtS9YLLuqxRMCfR6WVbQS7E48VKvWXTq6saBKvYH5SKvrh5A9plU
+ 05fdOtlkCnYxghybGMIIPl74WUVcEIZ7r3WoRO27IDzps0UKG+4ZopKpz+TRQ1D2cuvH
+ f+fQ==
+X-Gm-Message-State: AOJu0YzOvZ2UNW1q/6bqk9uiGHtL4WkC/oROIBYu4NBDCCIkgxaV8djo
+ Hb1AhWSFOEXFF0zEuK47RuOR/gYCu+0RBcWYGqg48RYId931pM67MbuhNg==
+X-Gm-Gg: ASbGncu1EIdFeurHYh1adLMYjRtnvFjytsgeWXp43OdTE5yyqbkziD5nouLGMwY1d9P
+ +aUksSa7pL/RkTYhUsKj8xkKIj+04RnlywHOIrm4QPVNa+h4Sfyr602e29MwhLpZVZ56t0dv4r5
+ pvoKYPqCp+V7Ce0YBSZdjA9tY0LAq+C/sGhmxXe+PnBx3RFfXlTt/F5giGfmNgJvkUqyS2PmBNf
+ X1vhJZaR+mBdIQ8e1QPiYQNuJmIGfkqy+FAHhEMYG2j38gEDbppdDM0TRAl7I1c4TxDE7DQAJI=
+X-Google-Smtp-Source: AGHT+IFoIZQRrsV0TxdRJRp4/MgSXrngRh/5XLCzhY/il8hD3zTtyx03ZEpiZO9oW+NjJ+XMfEk4Ow==
+X-Received: by 2002:a17:902:e883:b0:215:8dd3:536a with SMTP id
+ d9443c01a7336-218d6fd5e99mr65525215ad.4.1734573046886; 
+ Wed, 18 Dec 2024 17:50:46 -0800 (PST)
+Received: from localhost (14-200-18-130.tpgi.com.au. [14.200.18.130])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-219dc96291bsm1909155ad.14.2024.12.18.17.50.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 18 Dec 2024 17:50:46 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Dec 2024 11:50:40 +1000
+Message-Id: <D6FATQ1ETHB0.2WZ09SFCLAH5B@gmail.com>
+Cc: <qemu-devel@nongnu.org>, "Michael S. Tsirkin" <mst@redhat.com>, "Marcel
+ Apfelbaum" <marcel.apfelbaum@gmail.com>, "Fabiano Rosas" <farosas@suse.de>,
+ "Laurent Vivier" <lvivier@redhat.com>, "Paolo Bonzini"
+ <pbonzini@redhat.com>, "Dmitry Fleytman" <dmitry.fleytman@gmail.com>,
+ "Akihiko Odaki" <akihiko.odaki@daynix.com>, "Sriram Yagnaraman"
+ <sriram.yagnaraman@ericsson.com>
+Subject: Re: [PATCH 5/8] hw/usb/xhci: Move HCD constants to a header and add
+ register constants
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Phil Dennis-Jordan" <lists@philjordan.eu>
+X-Mailer: aerc 0.18.2
+References: <20241212083502.1439033-1-npiggin@gmail.com>
+ <20241212083502.1439033-6-npiggin@gmail.com>
+ <CAGCz3vuUoRPk1UN2+_SqLtn_q5qu-RM7kmwTgNeRM2Mf75hoeg@mail.gmail.com>
+In-Reply-To: <CAGCz3vuUoRPk1UN2+_SqLtn_q5qu-RM7kmwTgNeRM2Mf75hoeg@mail.gmail.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,91 +102,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Thu Dec 19, 2024 at 1:08 AM AEST, Phil Dennis-Jordan wrote:
+> This looks sensible to me overall.
+>
+> For the new symbolic constants for MMIO register offsets such as
+> XHCI_OPER_*, XHCI_INTR_* and so on, I'm wondering if it would be clearer =
+to
+> give them all an _OFFSET suffix. It's not perfectly consistent to do so
+> across the code base, but quite a few device types do follow that
+> convention. In my opinion it improves readability, especially in the head=
+er
+> file, where these offset constants are frequently mixed in with constant
+> values that can be written to or read from these registers.
 
---3866299591-436307701-1734572616=:93270
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+I'm not strongly attached. I slightly prefer suffix, like
+XHCI_HCCAP_REG_CAPLENGTH) for MMIO regs, so all the common
+part of the name lines up.
 
-On Thu, 19 Dec 2024, Nicholas Piggin wrote:
-> On Thu Dec 19, 2024 at 5:18 AM AEST, BALATON Zoltan wrote:
->> On Wed, 18 Dec 2024, Philippe Mathieu-Daudé wrote:
->>> The ePAPR magic value in $r6 doesn't need to be byte swapped.
->>>
->>> See ePAPR-v1.1.pdf chapter 5.4.1 "Boot CPU Initial Register State"
->>> and the following mailing-list thread:
->>> https://lore.kernel.org/qemu-devel/CAFEAcA_NR4XW5DNL4nq7vnH4XRH5UWbhQCxuLyKqYk6_FCBrAA@mail.gmail.com/
->>>
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>> hw/ppc/sam460ex.c     | 2 +-
->>> hw/ppc/virtex_ml507.c | 2 +-
->>> 2 files changed, 2 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
->>> index 78e2a46e753..db9c8f3fa6e 100644
->>> --- a/hw/ppc/sam460ex.c
->>> +++ b/hw/ppc/sam460ex.c
->>> @@ -234,7 +234,7 @@ static void main_cpu_reset(void *opaque)
->>>
->>>         /* Create a mapping for the kernel.  */
->>>         booke_set_tlb(&env->tlb.tlbe[0], 0, 0, 1 << 31);
->>> -        env->gpr[6] = tswap32(EPAPR_MAGIC);
->>> +        env->gpr[6] = EPAPR_MAGIC;
->>
->> I don't know how to test this (or if anything actually uses it).
->
-> The Linux kernel boot wrapper tests it AFAIKS. Does this mean
-> they never worked on LE hosts?
+Should the entire codebase have a guideline for memory offset
+naming conventions? Or does it not matter that much.
 
-Linux boots on the sam460ex on LE host, I don't know if it works on BE 
-host as I don't have any so this could be broken on BE host but should 
-work on LE host. If this breaks Linux boot somebody may report it, I don't 
-have time to try testing it now.
+[snip]
 
-Regards,
-BALATON Zoltan
+> > -    case 0x0c: /* HCSPARAMS 3 */
+> > +    case XHCI_HCCAP_HCSPARAMS3:
+> >          ret =3D 0x00000000;
+> >          break;
+> > -    case 0x10: /* HCCPARAMS */
+> > -        if (sizeof(dma_addr_t) =3D=3D 4) {
+> > -            ret =3D 0x00080000 | (xhci->max_pstreams_mask << 12);
+> > -        } else {
+> > -            ret =3D 0x00080001 | (xhci->max_pstreams_mask << 12);
+> > +    case XHCI_HCCAP_HCCPARAMS1:
+> > +        ret =3D (XHCI_HCCAP_EXTCAP_START >> 2) | (xhci->max_pstreams_m=
+ask
+> > << 12);
+> >
+>
+> This doesn't look like it's equivalent to the original code. I think you
+> want
+> ((XHCI_HCCAP_EXTCAP_START >> 2) << 16) | (xhci->max_pstreams_mask << 12);
 
->> not sure about is what endianness env->gpr is? It's a host array so maybe
->> it needs to match the host endianness which is little endian most of the
->> time as opposed to PPC big endian on this machine. So maybe tswap is wrong
->> but is removing it right? Maybe we need to only swap on LE hosts. I think
->> it's only used by Linux kernels so maybe trying to boot one could test
->> this change but I'm not sure.
+Good catch.
+
 >
-> Yes env->gpr is host-endian, and emulated target code will see
-> the same value that the host does. It can't be correct because
-> the machine running in emulation can't possibly know what endian
-> the host is.
+> That's=E2=80=A6 not particularly readable either though, so if we're goin=
+g to break
+> up the magic numbers here, how about something like:
 >
-> I think we should just take it, it looks trivially correct
-> (always dangerous words when dealing with early boot code, lol).
->
-> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
->
->>
->> Regards,
->> BALATON Zoltan
->>
->>>         env->gpr[7] = (16 * MiB) - 8; /* bi->ima_size; */
->>>
->>>     } else {
->>> diff --git a/hw/ppc/virtex_ml507.c b/hw/ppc/virtex_ml507.c
->>> index f378e5c4a90..6197d31d88f 100644
->>> --- a/hw/ppc/virtex_ml507.c
->>> +++ b/hw/ppc/virtex_ml507.c
->>> @@ -119,7 +119,7 @@ static void main_cpu_reset(void *opaque)
->>>     /* Create a mapping spanning the 32bit addr space. */
->>>     booke_set_tlb(&env->tlb.tlbe[0], 0, 0, 1U << 31);
->>>     booke_set_tlb(&env->tlb.tlbe[1], 0x80000000, 0x80000000, 1U << 31);
->>> -    env->gpr[6] = tswap32(EPAPR_MAGIC);
->>> +    env->gpr[6] = EPAPR_MAGIC;
->>>     env->gpr[7] = bi->ima_size;
->>> }
->>>
->>>
+> ret =3D (XHCI_HCCAP_EXTCAP_START / 4) << XHCI_HCCPARAM_EXTPTR_SHIFT;
+> ret |=3D xhci->max_pstreams_mask << XHCI_HCCPARAM_MAXPSASIZE_SHIFT;
 >
 >
---3866299591-436307701-1734572616=:93270--
+> > +        if (sizeof(dma_addr_t) =3D=3D 8) {
+> > +            ret |=3D 0x00000001; /* AC64 */
+> >
+>
+> and then this can become
+> ret |=3D XHCI_HCCPARAM_AC64;
+>
+> or something like that.
+
+Sure.
+
+[snip]
+
+> >      switch (reg) {
+> > -    case 0x00: /* PORTSC */
+> > +    case XHCI_PORT_PORTSC:
+> >          ret =3D port->portsc;
+> >          break;
+> > -    case 0x04: /* PORTPMSC */
+> > -    case 0x08: /* PORTLI */
+> > +    case XHCI_PORT_PORTPMSC:
+> > +    case XHCI_PORT_PORTLI:
+> >          ret =3D 0;
+> >          break;
+> > -    case 0x0c: /* reserved */
+> >
+>
+> I think it's worth keeping explicitly unhandled case labels documented li=
+ke
+> this. (This one appears to be XHCI_PORT_PORTHLPMC nowadays, I assume it w=
+as
+> reserved in an earlier spec version.)
+
+Okay.
+
+>      default:
+> >          trace_usb_xhci_unimplemented("port read", reg);
+> >          ret =3D 0;
+> > @@ -2829,7 +2668,7 @@ static void xhci_port_write(void *ptr, hwaddr reg=
+,
+> >      trace_usb_xhci_port_write(port->portnr, reg, val);
+> >
+> >      switch (reg) {
+> > -    case 0x00: /* PORTSC */
+> > +    case XHCI_PORT_PORTSC:
+> >          /* write-1-to-start bits */
+> >          if (val & PORTSC_WPR) {
+> >              xhci_port_reset(port, true);
+> > @@ -2880,8 +2719,6 @@ static void xhci_port_write(void *ptr, hwaddr reg=
+,
+> >              xhci_port_notify(port, notify);
+> >          }
+> >          break;
+> > -    case 0x04: /* PORTPMSC */
+> > -    case 0x08: /* PORTLI */
+> >
+>
+> Hmm. Looks like PORTLI is actually a read-only register, so writing this
+> ought to trigger a LOG_GUEST_ERROR. And I don't think it's a bad thing to
+> explicitly document PORTPMSC as unimplemented. (And I guess that ought to
+> be a LOG_UNIMP, not a trace, sigh.) The improved logging can be a separat=
+e
+> commit - in fact I don't mind tagging that fix onto my own pending XHCI
+> patch set, but I think for this commit we ought to keep the case labels
+> (with the new symbolic constants).
+
+Okay I'll add back the reserved cases.
+
+Yeah, memory access handling in drivers is really inconsistent all over
+the tree. It would be nice if there was some helpers or something that
+added common template for access tracing, unimp and guest error logs,
+etc.
+
+Thanks,
+Nick
 
