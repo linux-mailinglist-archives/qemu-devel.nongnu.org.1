@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B49149F834D
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 19:33:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 029359F834F
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 19:33:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOLJy-0002xH-64; Thu, 19 Dec 2024 13:32:26 -0500
+	id 1tOLJy-0002yt-S4; Thu, 19 Dec 2024 13:32:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tOLJq-0002wT-Cd
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 13:32:19 -0500
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1tOLJt-0002wj-DT
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 13:32:21 -0500
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tOLJo-0002aA-5Z
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 13:32:17 -0500
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-7265c18d79bso1330782b3a.3
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 10:32:15 -0800 (PST)
+ id 1tOLJo-0002aI-HG
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 13:32:19 -0500
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-728f337a921so1230871b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 10:32:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734633134; x=1735237934; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=NoMVdzf7dEnl3NQdwGbML5tlJY5JdwY7hUGe8zVB6Tk=;
- b=ZBgWtrMlvKb39i6v0ZmtnGMt8pyJoS81VWnjLD0eE3Q9IvsIjUEjuER+5HjmobFPJU
- wCLXxa2bSI5eiC+i0SN7sphjPOKkVIMC7e2oz4BnlUtszfV5xUGlND0xI8aYkICt27Pp
- 7xqHQl9iTQ0mhHMHnksoqPX8yzmBN1uqiyQTtZRAcHwp4VhdHTsJvO3njEP9tB+sUQfG
- c98iVfC9U5FDapr5fGgbu55rhuA5WhJSTque6L5V3iRFTyZiuZkqfp3rpvMFsDnH6e3e
- 0+T1X4tTkSO1qL/wDWtySqHzjWR9lmRT9Po5xdYCLhlpd5ThsSRLyUeVINqElP6noOaN
- JZUQ==
+ d=linaro.org; s=google; t=1734633135; x=1735237935; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bgg3DZOeSktQgwpMFQWYfQpPjrdNqQXpM4wVQei4S9U=;
+ b=EHb7JArwr4gT8ZL/1ZtLzvZHiRm11C2rh3qflZ7KufVmLF/11BIJK5rTZs7DTdZqN6
+ DwDCMj34yJhuEpAGho3D4I6HDhZOdpV7KlQTd58h+jabqtIXTqXASkhnQKxqWNmH8Mx8
+ 2cWiy1PNkK1UWQo88TlQzADQSQLd6PnSH1HIBtOdYrQU2Hebo5k/4WQE7msgd91rUS9N
+ Sw6od+sDTK+EXeAZhVThtQLVuUwC89Rw+nSHDRAwD6NI3lfOcbTflyRhPWZz+5fwIi1w
+ pICx8Rt6OYYuFGlghUCOHMbECMXzjGiRy4DUeNUPZayGBbKTBdFyXB/d/Om8C2rr9A5y
+ Bxrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734633134; x=1735237934;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=NoMVdzf7dEnl3NQdwGbML5tlJY5JdwY7hUGe8zVB6Tk=;
- b=en7DhvtYJA9VqJH55seTWn8cOm+L2ZBbAsFuI+L6Kwlc36mAShrwRuvDMV/Qj1lc2H
- tL27cDhwaugzVL2BigLnBzVq/1AzxhajsrPqQWaneJUsBiRF0crxAXEUazHjLc9zak3t
- VaW/One+yvz51mAjxz8/8GWDBigRO08L0qQalm6akURMozPBMm2f4asVk4wLcanXwn30
- OTZki+vuxcDQKsXAtrPZ4gD6yYohOZLg/iPKH140X81nvU/JVjq4Ul9elLVu486Ujsfs
- AEwc6rfnJW/02ax/6S5GuW/eB4r5AIzUJg52GOK6KTQc98mlFt2t0IH3qlcTYHhiuRaT
- 0KBQ==
-X-Gm-Message-State: AOJu0YxC6LmmtXSImV3sb2ao5hKznCbPzNqiNj4PEMI27001KB4g+tEs
- i5IoEZc/zuFMDkiiCN2b/SlOl+a0CrOUgdcTHB7M/tWx9y40MXAyKznBW9RLkcoGbXLjzg2W7Vf
- 1sTc=
-X-Gm-Gg: ASbGncu1klf6ml0jooJQrpZhqFkQIG4GsfazfgWuh9EhbaC7lzDzxBE7ajG9tUsw8WT
- lWy3UlwJCBNnOdneJWib2Mt2edSTdai1FSF1IUS89+Jqp57lDjnsQMlx5MJljhD95Jou7bIXwsA
- 8oLsaOvEK9dylumGCJjS43/HReiI/ZaSNV3JF/6yW5d2FCAqftQZg8QZ+r4K4DeLdFgX0LY7hOC
- /I2wmeGijGkHMz+9W4VlTpmUZjkI8Y4+A0pP93saXS5egfS1xbUhg8A
-X-Google-Smtp-Source: AGHT+IH1RIHjckoVdXLtfDrC5JBvOGaa4S0Ps3ubbOqCu3ObdCi9E/lTdV0oqoo+Bj/Hh71Yf2zrdg==
-X-Received: by 2002:a05:6a20:d80d:b0:1e0:d848:9e8f with SMTP id
- adf61e73a8af0-1e5e046decbmr235871637.13.1734633134142; 
- Thu, 19 Dec 2024 10:32:14 -0800 (PST)
+ d=1e100.net; s=20230601; t=1734633135; x=1735237935;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bgg3DZOeSktQgwpMFQWYfQpPjrdNqQXpM4wVQei4S9U=;
+ b=huZCKzlL5xb3mHWMUQCfSh/KwIj34+U8+2g9LL/X5bC3D4gs2Cmo8Z1jdYQZwIYVR+
+ gxXHsw66oW3ZrU/4d/2oPUHqIb9raaERuB/Q/19ydzMXen7otHvOOUPKP/0GPg76IiTP
+ 1ooqXRfW3JNfYG0/qzzdYM8xyq6ZQWDrDwdmT1nabEKPXCF2dThAVdZNp0kXNA1EMRdw
+ ek4/AaEh+ajbEGL9DeUKpaZ0E9cnAh9FYYu9oamAodJT8PU3dP3YNaZSgvFPFZCs2Ilu
+ UrmFTUA9vg4Wlwjgmko9xhL3mI8oSuyuQ5ivCKNeVQJ081sgM/P5ILPpuke69KcqZhNZ
+ alxw==
+X-Gm-Message-State: AOJu0YxK/abRbx/7F1DQ6HRego9UUq9J2VI7Zxdoy1h10p3+55RsS+IK
+ s7MRdVZEL149DvHFHRmjkqwTicMhUpNloKaTD48bo2LHFLOXY5CcRTcNBzBULbte/W570TNPwLU
+ TenA=
+X-Gm-Gg: ASbGnctCwe6lu/ALhTZqrqBMh/vCd2RUMJ1lFKqH+Kb2QVZPF0QcSLA4MfcMSVNq0wm
+ GoXQ7kvX5VYEKkDyqbhDcQxZX50JvM45+E2hNrlNu4GmbjSxaTr1xSgHm5tLVtjR5F8KYR/KArq
+ P3HvhNC7qUr3XqmjDmVB1Zh98yzNMb3gm7tPPK9tyE/L+b2hmr+chOhO0tLX17YVU3HRZF3kNNc
+ UhleTgV3z7ECNCaFH8E3IB2Ztm/1GEuaFYf1x0XbE327IrwsFTyqwEl
+X-Google-Smtp-Source: AGHT+IGF+rRqeIO/bCUN5wAwJFBz7SmxzQKFiaqqz696UQGWaKpxx8rf70FBqiqEPKLWfIIKZTyu+Q==
+X-Received: by 2002:a05:6a00:1909:b0:71e:6b8:2f4a with SMTP id
+ d2e1a72fcca58-72aa8d3a152mr6906058b3a.12.1734633135047; 
+ Thu, 19 Dec 2024 10:32:15 -0800 (PST)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad90b302sm1624733b3a.175.2024.12.19.10.32.13
+ d2e1a72fcca58-72aad90b302sm1624733b3a.175.2024.12.19.10.32.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 10:32:13 -0800 (PST)
+ Thu, 19 Dec 2024 10:32:14 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>, Fabiano Rosas <farosas@suse.de>,
@@ -70,23 +71,23 @@ Cc: Eduardo Habkost <eduardo@habkost.net>, Fabiano Rosas <farosas@suse.de>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 0/3] Change default pointer authentication algorithm on
- aarch64 to impdef
-Date: Thu, 19 Dec 2024 10:32:08 -0800
-Message-Id: <20241219183211.3493974-1-pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 1/3] target/arm: add new property to select pauth-qarma5
+Date: Thu, 19 Dec 2024 10:32:09 -0800
+Message-Id: <20241219183211.3493974-2-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20241219183211.3493974-1-pierrick.bouvier@linaro.org>
+References: <20241219183211.3493974-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,38 +103,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu-system-aarch64 default pointer authentication (QARMA5) is expensive, we
-spent up to 50% of the emulation time running it (when using TCG).
+Before changing default pauth algorithm, we need to make sure current
+default one (QARMA5) can still be selected.
 
-Switching to pauth-impdef=on is often given as a solution to speed up execution.
-Thus we talked about making it the new default.
+$ qemu-system-aarch64 -cpu max,pauth-qarma5=on ...
 
-The first patch introduce a new property (pauth-qarma5) to allow to select
-current default algorithm.
-The second one change the default.
-The third one updates documentation.
-
-v2:
-- ensure we don't break migration compatibility, by using a specific backward
-  compatible property.
-- added some documentation about migration for arm virt machine model.
-
-Pierrick Bouvier (3):
-  target/arm: add new property to select pauth-qarma5
-  target/arm: change default pauth algorithm to impdef
-  docs/system/arm/virt: mention specific migration information
-
- docs/system/arm/cpu-features.rst |  7 ++++--
- docs/system/arm/virt.rst         | 14 +++++++++---
- docs/system/introduction.rst     |  2 +-
- target/arm/cpu.h                 |  4 ++++
- hw/core/machine.c                |  4 +++-
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ docs/system/arm/cpu-features.rst |  5 ++++-
+ target/arm/cpu.h                 |  1 +
  target/arm/arm-qmp-cmds.c        |  2 +-
- target/arm/cpu.c                 |  2 ++
- target/arm/cpu64.c               | 38 +++++++++++++++++++++++---------
- tests/qtest/arm-cpu-features.c   | 15 +++++++++----
- 9 files changed, 66 insertions(+), 22 deletions(-)
+ target/arm/cpu64.c               | 20 ++++++++++++++------
+ tests/qtest/arm-cpu-features.c   | 15 +++++++++++----
+ 5 files changed, 31 insertions(+), 12 deletions(-)
 
+diff --git a/docs/system/arm/cpu-features.rst b/docs/system/arm/cpu-features.rst
+index a5fb929243c..d69ebc2b852 100644
+--- a/docs/system/arm/cpu-features.rst
++++ b/docs/system/arm/cpu-features.rst
+@@ -219,7 +219,10 @@ Below is the list of TCG VCPU features and their descriptions.
+ ``pauth-qarma3``
+   When ``pauth`` is enabled, select the architected QARMA3 algorithm.
+ 
+-Without either ``pauth-impdef`` or ``pauth-qarma3`` enabled,
++``pauth-qarma5``
++  When ``pauth`` is enabled, select the architected QARMA5 algorithm.
++
++Without ``pauth-impdef``, ``pauth-qarma3`` or ``pauth-qarma5`` enabled,
+ the architected QARMA5 algorithm is used.  The architected QARMA5
+ and QARMA3 algorithms have good cryptographic properties, but can
+ be quite slow to emulate.  The impdef algorithm used by QEMU is
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index d86e641280d..b7500bebd7f 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1062,6 +1062,7 @@ struct ArchCPU {
+     bool prop_pauth;
+     bool prop_pauth_impdef;
+     bool prop_pauth_qarma3;
++    bool prop_pauth_qarma5;
+     bool prop_lpa2;
+ 
+     /* DCZ blocksize, in log_2(words), ie low 4 bits of DCZID_EL0 */
+diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
+index 3cc8cc738bb..33cea080d11 100644
+--- a/target/arm/arm-qmp-cmds.c
++++ b/target/arm/arm-qmp-cmds.c
+@@ -94,7 +94,7 @@ static const char *cpu_model_advertised_features[] = {
+     "sve640", "sve768", "sve896", "sve1024", "sve1152", "sve1280",
+     "sve1408", "sve1536", "sve1664", "sve1792", "sve1920", "sve2048",
+     "kvm-no-adjvtime", "kvm-steal-time",
+-    "pauth", "pauth-impdef", "pauth-qarma3",
++    "pauth", "pauth-impdef", "pauth-qarma3", "pauth-qarma5",
+     NULL
+ };
+ 
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index ec77c5b34ad..9a193d2b489 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -520,9 +520,12 @@ void arm_cpu_pauth_finalize(ARMCPU *cpu, Error **errp)
+         }
+ 
+         if (cpu->prop_pauth) {
+-            if (cpu->prop_pauth_impdef && cpu->prop_pauth_qarma3) {
++            if ((cpu->prop_pauth_impdef && cpu->prop_pauth_qarma3) ||
++                (cpu->prop_pauth_impdef && cpu->prop_pauth_qarma5) ||
++                (cpu->prop_pauth_qarma3 && cpu->prop_pauth_qarma5)) {
+                 error_setg(errp,
+-                           "cannot enable both pauth-impdef and pauth-qarma3");
++                           "cannot enable pauth-impdef, pauth-qarma3 and "
++                           "pauth-qarma5 at the same time");
+                 return;
+             }
+ 
+@@ -532,13 +535,15 @@ void arm_cpu_pauth_finalize(ARMCPU *cpu, Error **errp)
+             } else if (cpu->prop_pauth_qarma3) {
+                 isar2 = FIELD_DP64(isar2, ID_AA64ISAR2, APA3, features);
+                 isar2 = FIELD_DP64(isar2, ID_AA64ISAR2, GPA3, 1);
+-            } else {
++            } else { /* default is pauth-qarma5 */
+                 isar1 = FIELD_DP64(isar1, ID_AA64ISAR1, APA, features);
+                 isar1 = FIELD_DP64(isar1, ID_AA64ISAR1, GPA, 1);
+             }
+-        } else if (cpu->prop_pauth_impdef || cpu->prop_pauth_qarma3) {
+-            error_setg(errp, "cannot enable pauth-impdef or "
+-                       "pauth-qarma3 without pauth");
++        } else if (cpu->prop_pauth_impdef ||
++                   cpu->prop_pauth_qarma3 ||
++                   cpu->prop_pauth_qarma5) {
++            error_setg(errp, "cannot enable pauth-impdef, pauth-qarma3 or "
++                       "pauth-qarma5 without pauth");
+             error_append_hint(errp, "Add pauth=on to the CPU property list.\n");
+         }
+     }
+@@ -553,6 +558,8 @@ static const Property arm_cpu_pauth_impdef_property =
+     DEFINE_PROP_BOOL("pauth-impdef", ARMCPU, prop_pauth_impdef, false);
+ static const Property arm_cpu_pauth_qarma3_property =
+     DEFINE_PROP_BOOL("pauth-qarma3", ARMCPU, prop_pauth_qarma3, false);
++static Property arm_cpu_pauth_qarma5_property =
++    DEFINE_PROP_BOOL("pauth-qarma5", ARMCPU, prop_pauth_qarma5, false);
+ 
+ void aarch64_add_pauth_properties(Object *obj)
+ {
+@@ -573,6 +580,7 @@ void aarch64_add_pauth_properties(Object *obj)
+     } else {
+         qdev_property_add_static(DEVICE(obj), &arm_cpu_pauth_impdef_property);
+         qdev_property_add_static(DEVICE(obj), &arm_cpu_pauth_qarma3_property);
++        qdev_property_add_static(DEVICE(obj), &arm_cpu_pauth_qarma5_property);
+     }
+ }
+ 
+diff --git a/tests/qtest/arm-cpu-features.c b/tests/qtest/arm-cpu-features.c
+index cfd6f773535..98d6c970ea5 100644
+--- a/tests/qtest/arm-cpu-features.c
++++ b/tests/qtest/arm-cpu-features.c
+@@ -419,21 +419,28 @@ static void pauth_tests_default(QTestState *qts, const char *cpu_type)
+     assert_has_feature_enabled(qts, cpu_type, "pauth");
+     assert_has_feature_disabled(qts, cpu_type, "pauth-impdef");
+     assert_has_feature_disabled(qts, cpu_type, "pauth-qarma3");
++    assert_has_feature_disabled(qts, cpu_type, "pauth-qarma5");
+     assert_set_feature(qts, cpu_type, "pauth", false);
+     assert_set_feature(qts, cpu_type, "pauth", true);
+     assert_set_feature(qts, cpu_type, "pauth-impdef", true);
+     assert_set_feature(qts, cpu_type, "pauth-impdef", false);
+     assert_set_feature(qts, cpu_type, "pauth-qarma3", true);
+     assert_set_feature(qts, cpu_type, "pauth-qarma3", false);
++    assert_set_feature(qts, cpu_type, "pauth-qarma5", true);
++    assert_set_feature(qts, cpu_type, "pauth-qarma5", false);
+     assert_error(qts, cpu_type,
+-                 "cannot enable pauth-impdef or pauth-qarma3 without pauth",
++                 "cannot enable pauth-impdef, pauth-qarma3 or pauth-qarma5 without pauth",
+                  "{ 'pauth': false, 'pauth-impdef': true }");
+     assert_error(qts, cpu_type,
+-                 "cannot enable pauth-impdef or pauth-qarma3 without pauth",
++                 "cannot enable pauth-impdef, pauth-qarma3 or pauth-qarma5 without pauth",
+                  "{ 'pauth': false, 'pauth-qarma3': true }");
+     assert_error(qts, cpu_type,
+-                 "cannot enable both pauth-impdef and pauth-qarma3",
+-                 "{ 'pauth': true, 'pauth-impdef': true, 'pauth-qarma3': true }");
++                 "cannot enable pauth-impdef, pauth-qarma3 or pauth-qarma5 without pauth",
++                 "{ 'pauth': false, 'pauth-qarma5': true }");
++    assert_error(qts, cpu_type,
++                 "cannot enable pauth-impdef, pauth-qarma3 and pauth-qarma5 at the same time",
++                 "{ 'pauth': true, 'pauth-impdef': true, 'pauth-qarma3': true,"
++                 "  'pauth-qarma5': true }");
+ }
+ 
+ static void test_query_cpu_model_expansion(const void *data)
 -- 
 2.39.5
 
