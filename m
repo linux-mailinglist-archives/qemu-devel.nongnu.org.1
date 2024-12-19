@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D1E9F7FBE
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:29:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF839F7FB4
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:27:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJIo-00025a-9T; Thu, 19 Dec 2024 11:23:06 -0500
+	id 1tOJHY-00058a-Su; Thu, 19 Dec 2024 11:21:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOI2Z-0005sm-9U
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:02:15 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOI2d-0005t4-AJ
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:02:19 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOI2W-0005jc-L6
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:02:13 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43622354a3eso6526015e9.1
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 07:02:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOI2b-0005kO-LT
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:02:19 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-38634c35129so678859f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 07:02:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734620531; x=1735225331; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734620535; x=1735225335; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Sj4tna4Z0twHl9GwjSd+TF0OnlVxhb9xhFrT4hAdmYU=;
- b=f28fNMXpPGltBNUX4znb33GkaeFcWV1tvtyAPrcQ/KtnIxph4q3w1F/qfJUg+kf6yk
- 1b9YkRBzyOUfL4vp2iou7irplMCNuDpNIuJoOIuasnskH6TXFN+CLPaets1qmBbmHg8V
- DFoykRUbzD61R/4jweUOJLNi1ylr/pOoS1y3y7vfiVa76pOOrLQ/L0kwnV+8CnRxoA78
- 7T+vgXaZegBhPAYmSYay26SdZUMfoc9s20LenJLATyPzCkJLVIvJa3eLZsBqa3oxOyqg
- T3zrmkQA7gdMMM4yKwoFUNC/XnUV62ysyCVGwcajMPySkDy6RyE2EdTqQ+3uJfzXkL45
- IN9g==
+ bh=VPqPkmRu06PLtD07PG3Rk588BhAhOdUz1634l2fW0GY=;
+ b=HWVeSetfFUiiaGFShKJ7nQq6n/5+r9gwKz1nTF0+8ZRbKq4iTn1/37l0YXtpDgRwI8
+ 0NzoPGkfWwoCQYpHBajN3PPEcBO83Ywzg5H8YePBp6zQdbmvyiLlv6CVfX2442vKWiXA
+ eB9HqJWI773z5ROP/rZPT2TTJv/l66IP/zLbetJUjMnAQDFjAwJSZ7Z1uJpMaq1NCMPF
+ Za4WXmOI79P3T4UIikMAi/x3+s4a2iQ2YaMytzQtdDyEpxfZzweFHkWb/yQfosIvrbLu
+ UG293jcxESo5CYOV+L5XmproxvgQ9W78OLItmeM1jV8qU6GSjhigM35Qdy96MKdAjjYk
+ kmPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734620531; x=1735225331;
+ d=1e100.net; s=20230601; t=1734620535; x=1735225335;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Sj4tna4Z0twHl9GwjSd+TF0OnlVxhb9xhFrT4hAdmYU=;
- b=WBO/A/FamVHw9i88inPvpW6b2pz3TuRuOb3+liLFNx+xI2HKUxYT/DV771Ps+kDWKt
- selOLEBtuQQOTujXMWpOveqbIegHU91sOh+1QqsRB/Q7ngOfKLgOeshv7QHO3k2j7qsv
- ilDCOtg8nM6Fh/48YO1lTMmWRKnLoQsJgp4drLqE3xA7xej4FiMmMzvMjI0qUViCPu7R
- h3TClIVHTjqWiN4CwW+XP0pSADE/Korz7ApQiCOqd4ObnfILkX+Fi8rXgHUtVGQ2bqNG
- +ccH5ny1g1P0Qag//pv5Ba/oJ0a8Jp4e+s6s7M+eMCNi7l5Wc8Y8ay0XfJXJXHzFwE6/
- Qqng==
-X-Gm-Message-State: AOJu0YxtII2rVH6HqD+vPC5zLmbCYSAjj8qjSbrnIl2ljwCIRR0f0KZk
- BooqHZakGDYCUYdvEgT2UkWE6AsoQi9pK/f3RRcJbH8ZhBpkgRTVzlIPhO4FgZKyUZwnUlqoWcp
- D
-X-Gm-Gg: ASbGncu2OJ8N/rZjPL2nEounxt0i/UcRo5EkvPwTVZHyH6n4nuvan5prvKNVIFPl5fV
- vf+LCz5p5F29fjU6Wdyaz1Loiw96vKntpzlsTIyhuZlP+9ohaQmg70C3uigxdr0h8BVbBhbINr6
- srbHum4n+iEd7kWEjRpX/3iDUofUg1LihwakkU2BbdiQNK0Lh4vRvRCBz1c2jSv0kdXN09obDHX
- RSd3tj8lKXoti9JupWWJ7k6p0pl/4wWD4bLKhTAYCjl77pMfXLlfIHw1NLwNPTFGYyBT0CXLCa8
- 9TbI
-X-Google-Smtp-Source: AGHT+IE7KKHSAzT043Xr0dOkTrTFtwkzJ9UJzR94dSa8EbX+7orbrwwrIwFTK7EPSax8fFTpnplgrg==
-X-Received: by 2002:a05:600c:1909:b0:434:a525:7257 with SMTP id
- 5b1f17b1804b1-4365c7c9684mr29636245e9.21.1734620530460; 
- Thu, 19 Dec 2024 07:02:10 -0800 (PST)
+ bh=VPqPkmRu06PLtD07PG3Rk588BhAhOdUz1634l2fW0GY=;
+ b=owvHU67I2JZa8mavBWD7KC6IYgmsjDLMBDjHfds3CmWTODCTCgZu0MX5qe2xjngpwR
+ VA37qnm9+VgpP9VZswmQtZDK0Nel6sLIICBBIyPffoEYS0mjlNVVSVWjog60KrfelprZ
+ jGvLzZRZ7EtwqYFKBZ328h9HkQsB8zmGgutwdLOiTxB4mjsM/Awh76R4QzGpKyhM3AxH
+ xSwJUat3DBcSSKcQTr8SmZJJ3qjj5GwqCy4+0HrUHAHEGRAPBdoU9idOzWq3iEwH7vsy
+ 3I9C+pUM02IjZt6PTOkW9M2Zfx+IIrjEoizyiAO79OSdLqE0wTrYn8WaaOHUoYyBVrdv
+ aeVA==
+X-Gm-Message-State: AOJu0YyZDG3Sl9dVVwvmDSPVl4OO//oSlFF6Dt+grrIg3p2dKIrRuKB7
+ vdpaKSv+yuCr8BHCMHzFbwWOcfOLIBYYec112/n+bnBD8j69jlbAEP7/2XItixq2D0xFe6p5cLT
+ Y
+X-Gm-Gg: ASbGncubeuxBzvS8UK+15PVIbFtKrZpDmz3QWUrLfQMFiKnj2Z/+WU7/CzJX87hzF7a
+ bxKXokL6jMINDCdQq4hoUTd1OOSwNvw9jE+iYHm6mlgeJz7cAoTo0DX2XnH5A85CZPqnAg6E0vY
+ F4eQTvZOZ90oUqkQJsPSqea+1ppgGYHGMohMo5YCuig/qOsgFRIr2C5KOV1dE+1Dn3OQvvFgyCr
+ JBt2NltG/spK0Zb/j7Ebvrrn+fVNamuFhsU8HkXGM++YKrObcoxibUjF2fwoiYD66NlbEyvdCW5
+ 1N7u
+X-Google-Smtp-Source: AGHT+IGLoCDAI7+7/qRP8XJ1Hp27f6ADvI/B9bhtUf3E7A2xeNPLoE1KMGzGhPOyBtMhXVXNSi2cew==
+X-Received: by 2002:a5d:64a7:0:b0:385:f560:7924 with SMTP id
+ ffacd0b85a97d-388e4d30f16mr5741383f8f.4.1734620535409; 
+ Thu, 19 Dec 2024 07:02:15 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c8472casm1777613f8f.45.2024.12.19.07.02.09
+ 5b1f17b1804b1-4366127c493sm19969735e9.28.2024.12.19.07.02.14
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Dec 2024 07:02:10 -0800 (PST)
+ Thu, 19 Dec 2024 07:02:14 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -67,18 +67,17 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, qemu-trivial@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/3] docs: Correct '-runas' and '-fsdev/-virtfs proxy'
- indentation
-Date: Thu, 19 Dec 2024 16:02:01 +0100
-Message-ID: <20241219150203.55212-2-philmd@linaro.org>
+Subject: [PATCH 2/3] docs: Correct release of TCG trace-events removal
+Date: Thu, 19 Dec 2024 16:02:02 +0100
+Message-ID: <20241219150203.55212-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219150203.55212-1-philmd@linaro.org>
 References: <20241219150203.55212-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,40 +100,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the same style for deprecated / removed commands.
+TCG trace-events were deprecated before the v6.2 release,
+and removed for v7.0.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- docs/about/deprecated.rst       | 2 +-
- docs/about/removed-features.rst | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ docs/about/removed-features.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 267892b62f2..d6809f94ea1 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -75,7 +75,7 @@ marked deprecated since 9.0, users have to ensure that all the topology members
- described with -smp are supported by the target machine.
- 
- ``-runas`` (since 9.1)
------------------------
-+''''''''''''''''''''''
- 
- Use ``-run-with user=..`` instead.
- 
 diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index 9bebee795c0..68fe0b47f9f 100644
+index 68fe0b47f9f..e3a87f3f555 100644
 --- a/docs/about/removed-features.rst
 +++ b/docs/about/removed-features.rst
-@@ -518,7 +518,7 @@ and later do not support it because the virtio-scsi device was introduced for
- full SCSI support.  Use virtio-scsi instead when SCSI passthrough is required.
+@@ -1087,8 +1087,8 @@ processor IP (see `Intel discontinuance notification`_).
+ TCG introspection features
+ --------------------------
  
- ``-fsdev proxy`` and ``-virtfs proxy`` (since 9.2)
--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+''''''''''''''''''''''''''''''''''''''''''''''''''
+-TCG trace-events (since 6.2)
+-''''''''''''''''''''''''''''
++TCG trace-events (removed in 7.0)
++'''''''''''''''''''''''''''''''''
  
- The 9p ``proxy`` filesystem backend driver was originally developed to
- enhance security by dispatching low level filesystem operations from 9p
+ The ability to add new TCG trace points had bit rotted and as the
+ feature can be replicated with TCG plugins it was removed. If
 -- 
 2.47.1
 
