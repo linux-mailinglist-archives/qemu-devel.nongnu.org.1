@@ -2,110 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A7E89F838F
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 19:54:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04CCD9F8616
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 21:42:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOLeU-0002sE-Cp; Thu, 19 Dec 2024 13:53:39 -0500
+	id 1tONKf-0000pq-9C; Thu, 19 Dec 2024 15:41:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tOLeR-0002s1-EZ
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 13:53:35 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <dan.carpenter@linaro.org>)
+ id 1tOIB5-0007Ja-VE
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:11:03 -0500
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tOLeL-0005Vo-H9
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 13:53:34 -0500
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id EC2FA1F460;
- Thu, 19 Dec 2024 18:53:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1734634406; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fSEINbWH7JBpLBFW/Wi1my6rhCBjVygh6iwG/VAhums=;
- b=o+xf5MbBVQvgbnKhhXpKpwrJ66+5DopedHEjlyPmqOFNvtTciN9mnLy4DncWAjkD9hGDUk
- qulgbt//XAe6WjcFJizoYm+1nUI0pTRdzD8y5C/SAOJ/cT6QKj0yydmtr9EEI/aUb3VaRv
- zmCVUE9jGkx71/PU8F83sDe4Sv9ShbQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1734634406;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fSEINbWH7JBpLBFW/Wi1my6rhCBjVygh6iwG/VAhums=;
- b=/+6lRWD5Ttsw4j+UXGRpqbhXLohqNJC/hvhCpWr+38+bew+FPCS4QB5/XgJekUfJs8BsGY
- MCIZDhZN6GZlTABQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1734634405; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fSEINbWH7JBpLBFW/Wi1my6rhCBjVygh6iwG/VAhums=;
- b=ufdA4xszq3iRUgVTFQ058KHoZ1xzQ4k2kOxYMUt/J5iC//bThBECYRliDYdt4PUD0AgiKN
- TK/RPlTtNk663rNFayZMVmD72Wa+zPBchR8PIhhtdMNQBIf4WqHvckAW+QtaKkXrivUPpH
- FxRG4UDmXsF6rLxvogNTLtBLdVU/lAU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1734634405;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fSEINbWH7JBpLBFW/Wi1my6rhCBjVygh6iwG/VAhums=;
- b=4r8JKgWTNCtzJIW15wEvt4AZeA5O+vAeZKzY/adzBKLZZfNa40Lj5MxYp6Oev88H7FFiO3
- u3i0iUZwTcoqNjDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 711D913A32;
- Thu, 19 Dec 2024 18:53:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 8ksADqVrZGdTdQAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 19 Dec 2024 18:53:25 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Thomas Huth
- <thuth@redhat.com>
-Subject: Re: [PULL 00/17] Migration patches for 2024-12-17
-In-Reply-To: <20241219123213.GA692742@fedora>
-References: <20241217174855.24971-1-farosas@suse.de>
- <20241219123213.GA692742@fedora>
-Date: Thu, 19 Dec 2024 15:53:22 -0300
-Message-ID: <87zfkrtsgt.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <dan.carpenter@linaro.org>)
+ id 1tOIB4-0007w3-Ex
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:11:03 -0500
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-aa6aad76beeso133722366b.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 07:11:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1734621060; x=1735225860; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=a8c0Ewl7BQkquEtJaiXqSJPyhaxk2Iz2kiqNEhnfoII=;
+ b=tUz1u1gDrViBOUryTe0JqZpJq7x2YCoWcYM5z/f090l5qkQ/vm400Dcfygg39/5kEN
+ LB5DVz0j6/9sjCSCudwFwjhNYYmnynC0CWWub65eSNxx0pgsG5APVYXP4J8O9/ExRTuN
+ bgIUwdeZiLxSMQccxs3h+G2FcjC8ddA8w4sE9tka+wZbvIkY6U2yZqrzOe3/ptVHr6BG
+ qb+sTebMnzyFx5DMHk6aIY37ydZCFILKWzBJQs3sg2pIJjbcMb4R/FfF0zDbgz02gwRI
+ m8pNfRPPUl93dHaInBUPF7AxtRClHYxBivs15nwVmTquEzN2vaaOLslvFRBTC/3silxI
+ zwVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734621060; x=1735225860;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=a8c0Ewl7BQkquEtJaiXqSJPyhaxk2Iz2kiqNEhnfoII=;
+ b=Bd9f9+tREQkuprTFPGOmY8UMRZsIPFsNpGEjg0myYWwO2BzL91BnkUoVUoop2I7NdV
+ oJ5y5TBW1ZPJiin91MgzvfMCvUuMrnoFA293L6T6HoH5ObBD0PNllVlNht7ZhvJyBOBz
+ IxM7RziCmBuNs9bxtNn3XYEvl0CmK2HWA6UR3G3pFnf/A+jVLnHC2fKm5w2GIisln1Qo
+ XHRtcduZp7RMDc17Qy+frEX2PBk2sGZ+ejtlrLM54N75IvPBE5LVwiLDeUthakv7Ky1d
+ Moxo1DiP+bDzdLrD1e0jnbYgdlvEzCycmbzsHxZyy9V2a1Q6R7PefLKpg2/J9ZCQOIX8
+ XXIg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWrWdZfDuEGz370pnZUpQpCcK8Z7dAE784uD6uEdDVI8l3jXqT8//p66pjYjSDdNFsynGpqeXXEnV9B@nongnu.org
+X-Gm-Message-State: AOJu0YzsuL2pUqtk10nRC0l1gkjDY+/3NLq/up/TpcJoJuxgCC+XaEIq
+ h2BEjT98mkU71bcx2RuiMiCAdsvdiZ33VY41LYH1Wc8tzi6qdEr0O9JJKI5xoK0=
+X-Gm-Gg: ASbGncv5JpEJ5YLIS1MQe8GjQGwIEpWNec0ZdeZqhqYAy7uoP2b9Tml1yE+LaKnr05G
+ iDsFO82gLhnFWjfdgFXfQgmbWahOHdPjIZ6L7LxYeiGe2gGFpIKH2xWEOQnGboU74g5Q46Wv4zt
+ mi90MOmoswQ3WuUmbHsyTFmqsOVjeQu3Xi5eCwy5ppHj5fBVp7V4Xl0x4VkSxg6GMfMVH+173rj
+ rfeNwF/nP8MfwUpRym79UWXyxxi8XIwCY4195kAgIEWpWbdaA+vB+mDg25Dtg==
+X-Google-Smtp-Source: AGHT+IEpIUPQqVgupeRzlOrpnAifiL/wITich3F10TXkppCOZb1lR3IE5oC8DUkcXCbnI2ox83X/9w==
+X-Received: by 2002:a17:906:3092:b0:aa6:b5e0:8c59 with SMTP id
+ a640c23a62f3a-aabf47f6a50mr576895266b.35.1734621060458; 
+ Thu, 19 Dec 2024 07:11:00 -0800 (PST)
+Received: from localhost ([196.207.164.177]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-aac0e8301bdsm74864266b.31.2024.12.19.07.10.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Dec 2024 07:10:59 -0800 (PST)
+Date: Thu, 19 Dec 2024 18:10:56 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, qemu-devel@nongnu.org,
+ open list <linux-kernel@vger.kernel.org>,
+ Linux Regressions <regressions@lists.linux.dev>,
+ linux-ext4 <linux-ext4@vger.kernel.org>,
+ lkft-triage@lists.linaro.org, linux-mm <linux-mm@kvack.org>,
+ Linux btrfs <linux-btrfs@vger.kernel.org>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Anders Roxell <anders.roxell@linaro.org>,
+ Arnd Bergmann <arnd@arndb.de>, Qu Wenruo <wqu@suse.com>,
+ David Sterba <dsterba@suse.com>
+Subject: Re: qemu-arm64: CONFIG_ARM64_64K_PAGES=y kernel crash on qemu-arm64
+ with Linux next-20241210 and above
+Message-ID: <a3406049-7ab5-45b9-80bf-46f73ef73a4f@stanley.mountain>
+References: <CA+G9fYvf0YQw4EY4gsHdQ1gCtSgQLPYo8RGnkbo=_XnAe7ORhw@mail.gmail.com>
+ <CA+G9fYv7_fMKOxA8DB8aUnsDjQ9TX8OQtHVRcRQkFGqdD0vjNQ@mail.gmail.com>
+ <ac1e1168-d3af-43c5-9df7-4ef5a1dbd698@gmx.com>
+ <feecfdc2-4df6-47cf-8f96-5044858dc881@gmx.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
- TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_THREE(0.00)[4]; RCVD_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid]
-X-Spam-Score: -4.30
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <feecfdc2-4df6-47cf-8f96-5044858dc881@gmx.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=dan.carpenter@linaro.org; helo=mail-ej1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 19 Dec 2024 15:41:13 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,79 +111,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stefan Hajnoczi <stefanha@redhat.com> writes:
+On Thu, Dec 19, 2024 at 10:44:12AM +1030, Qu Wenruo wrote:
+> 
+> 
+> 在 2024/12/19 06:37, Qu Wenruo 写道:
+> > 
+> > 
+> > 在 2024/12/19 02:22, Naresh Kamboju 写道:
+> > > On Wed, 18 Dec 2024 at 17:33, Naresh Kamboju
+> > > <naresh.kamboju@linaro.org> wrote:
+> > > > 
+> > > > The following kernel crash noticed on qemu-arm64 while running the
+> > > > Linux next-20241210 tag (to next-20241218) kernel built with
+> > > >   - CONFIG_ARM64_64K_PAGES=y
+> > > >   - CONFIG_ARM64_16K_PAGES=y
+> > > > and running LTP smoke tests.
+> > > > 
+> > > > First seen on Linux next-20241210.
+> > > >    Good: next-20241209
+> > > >    Bad:  next-20241210 and next-20241218
+> > > > 
+> > > > qemu-arm64: 9.1.2
+> > > > 
+> > > > Anyone noticed this ?
+> > > > 
+> > > 
+> > > Anders bisected this reported regression and found,
+> > > # first bad commit:
+> > >    [9c1d66793b6faa00106ae4c866359578bfc012d2]
+> > >    btrfs: validate system chunk array at btrfs_validate_super()
+> > 
+> > Weird, I run daily fstests with 64K page sized aarch64 VM.
+> > 
+> > But never hit a crash on this.
+> > 
+> > And the original crash call trace only points back to ext4, not btrfs.
+> > 
 
-> Hi Fabiano,
-> Please take a look at this CI failure:
->
->>>> MALLOC_PERTURB_=3D61 QTEST_QEMU_BINARY=3D./qemu-system-s390x UBSAN_OPT=
-IONS=3Dhalt_on_error=3D1:abort_on_error=3D1:print_summary=3D1:print_stacktr=
-ace=3D1 QTEST_QEMU_IMG=3D./qemu-img MESON_TEST_ITERATION=3D1 MSAN_OPTIONS=
-=3Dhalt_on_error=3D1:abort_on_error=3D1:print_summary=3D1:print_stacktrace=
-=3D1 ASAN_OPTIONS=3Dhalt_on_error=3D1:abort_on_error=3D1:print_summary=3D1 =
-PYTHON=3D/home/gitlab-runner/builds/4S3awx_3/0/qemu-project/qemu/build/pyve=
-nv/bin/python3 QTEST_QEMU_STORAGE_DAEMON_BINARY=3D./storage-daemon/qemu-sto=
-rage-daemon G_TEST_DBUS_DAEMON=3D/home/gitlab-runner/builds/4S3awx_3/0/qemu=
--project/qemu/tests/dbus-vmstate-daemon.sh /home/gitlab-runner/builds/4S3aw=
-x_3/0/qemu-project/qemu/build/tests/qtest/migration-test --tap -k
-> =E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95 =E2=9C=80  =E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95
-> stderr:
-> Traceback (most recent call last):
->   File "/home/gitlab-runner/builds/4S3awx_3/0/qemu-project/qemu/build/scr=
-ipts/analyze-migration.py", line 688, in <module>
->     dump.read(dump_memory =3D args.memory)
->   File "/home/gitlab-runner/builds/4S3awx_3/0/qemu-project/qemu/build/scr=
-ipts/analyze-migration.py", line 625, in read
->     section.read()
->   File "/home/gitlab-runner/builds/4S3awx_3/0/qemu-project/qemu/build/scr=
-ipts/analyze-migration.py", line 461, in read
->     field['data'] =3D reader(field, self.file)
->   File "/home/gitlab-runner/builds/4S3awx_3/0/qemu-project/qemu/build/scr=
-ipts/analyze-migration.py", line 434, in __init__
->     for field in self.desc['struct']['fields']:
-> KeyError: 'fields'
+Yeah.  But it's in the memory allocator so it looks like memory
+corruption.  After the ext4 crash then random other stuff starts
+crashing as well when it allocates memory.
 
-This is the command line that runs only this specific test:
+> > Mind to test it with KASAN enabled?
+> 
 
-PYTHON=3D/usr/bin/python3.11 QTEST_QEMU_BINARY=3D./qemu-system-s390x
-./tests/qtest/migration-test -p /s390x/migration/analyze-script
+Anders is going to try that later and report back.
 
-I cannot reproduce in migration-next nor in the detached HEAD that the
-pipeline ran in (had to download the tarball from gitlab).
+> Another thing is, how do you enable both 16K and 64K page size at the
+> same time?
+> 
+> The Kconfig should only select one page size IIRC.
 
-The only s390 patch in this PR is one that I can test just fine with
-TCG, so there shouldn't be any difference from KVM (i.e. there should be
-no state being migrated with KVM that is not already migrated with TCG).
+Right.  We tested 4k, 16k and 64k.  4k pages worked.
 
-> warning: fd: migration to a file is deprecated. Use file: instead.
-> warning: fd: migration to a file is deprecated. Use file: instead.
+> 
+> And for the bisection, does it focus on the test failure or the crash?
+> 
 
-This is harmless.
+The crash.
 
-> **
-> ERROR:../tests/qtest/migration-test.c:36:main: assertion failed (ret =3D=
-=3D 0): (1 =3D=3D 0)
-> (test program exited with status code -6)
+regards,
+dan carpenter
 
-This is the assert at the end of the tests, irrelevant.
-
->
-> https://gitlab.com/qemu-project/qemu/-/jobs/8681858344#L8190
->
-> If you find this pull request caused the failure, please send a new
-> revision. Otherwise please let me know so we can continue to
-> investigate.
-
-I don't have an s390x host at hand so the only thing I can to is to drop
-that patch and hope that resolves the problem. @Peter, @Thomas, any
-other ideas? Can you verify this on your end?
 
