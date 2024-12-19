@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 243299F777D
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:36:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19CA99F7769
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:35:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOByt-0007BZ-Vh; Thu, 19 Dec 2024 03:34:04 -0500
+	id 1tOByv-0007Gx-3w; Thu, 19 Dec 2024 03:34:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOByr-00070S-Qj
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:34:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tOByr-00070x-Vt
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:34:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOByp-0005Ht-Sc
+ id 1tOByq-0005I2-9L
  for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:34:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1734597239;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=j8Hmi+GykNL3FXbMwL0qg3+bnuuJSORXl/Ac00UuXSo=;
- b=MF0GdCkV0HIFN+s6JXan9nXV2allKhBfM5FZ2ugdDbuDsaYf+zB27J53SDFanBZrOJ4Bmz
- UpcT2EQCp21Iqp7NAJkfKcI1b6B1/FbuoyapeXmefQJN55LRqObBWP4b6WSpiUtOqkFARt
- 8WKKgAo+HQUBgMuoexDq/QjIMjgDwQw=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=U+S3jYqRgwAQ1T9HC2IL/MfLkL7BjAjJkf+HWEFlTLA=;
+ b=WypAOm3ZCnMOgXxtYJGzARGySAQao+5X2Xzmw6bg+rIXDlyVjQze4uqfzZZ2uy0KX04gC5
+ JjUjRdOgfqqVqvD2Xkn6vlOoDTHt+4G223m/+NR1Kzn5FzoOnUrFzv8vuA9OQOMKvrTwIV
+ xVnNfgIonJuwW6CF8FsDOxKitSd62Ps=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-617-45JvSyWDOSa7ZlZJ9marNg-1; Thu, 19 Dec 2024 03:33:57 -0500
-X-MC-Unique: 45JvSyWDOSa7ZlZJ9marNg-1
-X-Mimecast-MFC-AGG-ID: 45JvSyWDOSa7ZlZJ9marNg
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3878ad4bf8cso319783f8f.1
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:57 -0800 (PST)
+ us-mta-692-at6QnB2jNGCoK7TnqPqeww-1; Thu, 19 Dec 2024 03:33:58 -0500
+X-MC-Unique: at6QnB2jNGCoK7TnqPqeww-1
+X-Mimecast-MFC-AGG-ID: at6QnB2jNGCoK7TnqPqeww
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4362f893bfaso2906595e9.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734597235; x=1735202035;
+ d=1e100.net; s=20230601; t=1734597236; x=1735202036;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=j8Hmi+GykNL3FXbMwL0qg3+bnuuJSORXl/Ac00UuXSo=;
- b=RXcHtrLfzF0WjyGcjYyvrez7jqT+qdHEIQcoNU6LJ0O8MmFtmRaQ+tOjW5S2FjVyOC
- 9p9RLBkcw7smzlriYkz0s02qURbh9qsnflfVjfRSRnYZxkvLb2Jo5GazYveB1Qgom2k8
- zNie2M8FNb3lK3wf+3V977mZj8at8SPg0pvzROWv1tciAZ0u8cKdlEbkjfQf7Sb+2GBF
- d9MsRFC8R61D+8B+12RxKXgbhLtDYk/sED7WKbln43QthV/lPH+WhyBDro1Odo7UemyI
- WYuStZOdpBDZfxpD0WFY3Q/WMhIFmym7pKW67APQyIufFetRiYLDsfI3OlPVY1iaXYEA
- k8OQ==
-X-Gm-Message-State: AOJu0YyD7Wa4DI+tlCQyWUmvZuXzFdendG3EQFIq8jQT3698Parxt5cp
- S2ybB1cEWzAqj6pXZ3zw+IITcZ4Scm58IFxE+ZyiuQzQS759vOPHDuxwjD2hfprSjLD8217oPpy
- kWCnNKNGcLTX6KgQwoe2FIj8IofMHaakD8aq+oel1hxqkUmqm/nSBrg8TpxkO4NvRUq2FR6bcaO
- ilHa5S9Qc9ZVid0BSXU2K76WBYIN5enpIFxex0
-X-Gm-Gg: ASbGnctbwmmuUxRxxf6vSL8ZJuYPue0tvkc91KaudKw/8+NwGTjtUv41O7A6i7Sfg83
- iE5CQyUdb6PeVJjsGUof3UbG+VLEvPKU2yVmpzmXOjj8UcqHrI6MjlgjzEaON3hQGiajxu4a1rS
- fxFE9CFjT+p5QpkJUuPq/wlpeXQUOdNBPoqgUJvwhREqwn89R3puq2+hgiIcWyfXSl7o/3LUjXR
- 9K4Loet00EqIoVxU5X7/GrlgkTGPEqGwamNh5YiZNw/RKsIKAvojsGAj1L5
-X-Received: by 2002:a5d:584c:0:b0:385:ea11:dd92 with SMTP id
- ffacd0b85a97d-388e4d42bf8mr5551473f8f.15.1734597235189; 
+ bh=U+S3jYqRgwAQ1T9HC2IL/MfLkL7BjAjJkf+HWEFlTLA=;
+ b=WHJmUxvV4VtVA6Kocsv+fMM/9WOR4yUY0tSOvYZoNE/bAqfCd2uP8BW6DEHnz3FCcD
+ UASkpAH9aVGBeLqS60U41Bx2fsd+UhWxcy8M72D5QaIcB8oSJ9wIuIVb3rKWsxoD1Xj/
+ VmdMe0TDIExWJCVRIQ549bhRIfsd2Rinrn8LlMts+tLeGXj7KaxU623BoD4NHENBntwh
+ 0iQ4TOfqFnG8UMdfZ/DtL4ubMGda2apIcLvj9bz6ClsKcN1KVulVOZlc1Dqy9xZ0pdnr
+ /upeANIxBP3yfGb0uB2IjDUSkqaR5SpyBpiajPosaxlNCibdddPS/zRNi3Jh4Zq8/Lfn
+ 96XA==
+X-Gm-Message-State: AOJu0Yx7edM837mzpE+RYyZy2eAM8ZPk436kptc5Wa3TeTZxE0fs6wcr
+ w8pzdCbajgOwR7DPkFJKYXXGPURNSwGjNjbjRTVDM5LWgcEd9+bDZikTKcOd9hmfGJBMtGIUkZl
+ JluV14aPSYtVck/ACZ97V2imPoj4zeByLXSkXLoUIHsCzX2SdCUaR03Q4ZRjvDuIGKQH1M8jpup
+ WTBuPIilFLgYvinSscnD8C6QaDFtqvoiUSyPRU
+X-Gm-Gg: ASbGncsz0wb8JJDEEmiD9qGCIVybAH71sYD8ls+/3tMdd2LZjburoQj5UL17OMTAkNe
+ J13/1uXllD90Qj7b7/4zx/tro3v6hlUcoCzv9iyu4herrnAHN5n/BUcJHNoysMW7XR/3WtGPS99
+ GHZgo1qMgVfq4CkkpQsHhrjCe8l4ULWdk8NeUxJWcFjGTmDvci0MruHpJ8E7NPu6DjfLtxcSd4f
+ gPw1FWNuCycTSz+m7ML/1ZkC41dd5zRA4GRk5MUp+qFz9SE2QiBp/nR56iA
+X-Received: by 2002:a5d:64ad:0:b0:386:4a0d:bb21 with SMTP id
+ ffacd0b85a97d-388e4d65d0dmr4627776f8f.22.1734597236252; 
+ Thu, 19 Dec 2024 00:33:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFM1AtXbKz73wxXgesHASBpqMGQ97i3i/Tbv+mU2IvhyozYT/k0oF9ppraZFqb8AJLAu1v3/A==
+X-Received: by 2002:a5d:64ad:0:b0:386:4a0d:bb21 with SMTP id
+ ffacd0b85a97d-388e4d65d0dmr4627746f8f.22.1734597235793; 
  Thu, 19 Dec 2024 00:33:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGH7Knlh0i/Tn3orSfT+92gKRmkMzrdmN+3cbZnV6bfuhrz37LsZXrx4DiOgTBM2zyruBOx1Q==
-X-Received: by 2002:a5d:584c:0:b0:385:ea11:dd92 with SMTP id
- ffacd0b85a97d-388e4d42bf8mr5551438f8f.15.1734597234665; 
- Thu, 19 Dec 2024 00:33:54 -0800 (PST)
 Received: from [192.168.10.47] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c8a6e19sm972226f8f.100.2024.12.19.00.33.52
+ 5b1f17b1804b1-4366127c493sm10990055e9.28.2024.12.19.00.33.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 00:33:52 -0800 (PST)
+ Thu, 19 Dec 2024 00:33:55 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 39/41] rust: pl011: extend registers to 32 bits
-Date: Thu, 19 Dec 2024 09:32:26 +0100
-Message-ID: <20241219083228.363430-40-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 40/41] rust: pl011: fix migration stream
+Date: Thu, 19 Dec 2024 09:32:27 +0100
+Message-ID: <20241219083228.363430-41-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219083228.363430-1-pbonzini@redhat.com>
 References: <20241219083228.363430-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -107,189 +105,164 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The PL011 Technical Reference Manual lists the "real" size of the
-registers in table 3-1, and only rounds up to the next byte when
-describing the registers; for example, UARTDR is listed as having
-width 12/8 (12 bits read, 8 written) and only bits 15:0 are listed
-in "Table 3-2 UARTDR Register".
+The Rust vmstate macros lack the type-safety of their C equivalents (so
+safe, much abstraction), and therefore they were predictably wrong.
 
-However, in practice these are 32-bit registers, accessible only
-through 32-bit MMIO accesses; preserving the fiction that they're
-smaller introduces multiple casts (to go from the bilge bitfield
-type to e.g u16 to u64) and more importantly it breaks the
-migration stream because the Rust vmstate macros are not yet
-type safe.
+The registers have already been changed to 32-bits in the previous patch,
+but read_pos/read_count/read_trigger also have to be u32 instead of usize.
+The easiest way to do so is to let the FIFO use u32 indices instead
+of usize.
 
-So, just make everything 32-bits wide.
+My plan for making VMStateField typesafe is to have a trait to retrieve
+a basic VMStateField; for example something like vmstate_uint32 would
+become an implementation of the VMState trait on u32.  Then you'd write
+something like "vmstate_of!(Type, field).with_version_id(2)".  That is,
+vmstate_of retrieves the basic VMStateField and fills in the offset,
+and then more changes can be applied on top.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs | 36 ++++++++++++++------------------
- rust/hw/char/pl011/src/lib.rs    | 23 +++++++++-----------
- 2 files changed, 26 insertions(+), 33 deletions(-)
+ rust/hw/char/pl011/src/device.rs       | 38 ++++++++++++++++++++++----
+ rust/hw/char/pl011/src/device_class.rs | 10 +++----
+ rust/qemu-api/src/vmstate.rs           | 22 ---------------
+ 3 files changed, 37 insertions(+), 33 deletions(-)
 
 diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 5e3a9c6f581..090e5d64504 100644
+index 090e5d64504..4d620b442ed 100644
 --- a/rust/hw/char/pl011/src/device.rs
 +++ b/rust/hw/char/pl011/src/device.rs
-@@ -186,9 +186,9 @@ unsafe fn init(&mut self) {
-     pub fn read(&mut self, offset: hwaddr, _size: c_uint) -> std::ops::ControlFlow<u64, u64> {
-         use RegisterOffset::*;
+@@ -31,7 +31,7 @@
+ const FBRD_MASK: u32 = 0x3f;
  
--        std::ops::ControlFlow::Break(match RegisterOffset::try_from(offset) {
-+        let value = match RegisterOffset::try_from(offset) {
-             Err(v) if (0x3f8..0x400).contains(&(v >> 2)) => {
--                u64::from(self.device_id[(offset - 0xfe0) >> 2])
-+                u32::from(self.device_id[(offset - 0xfe0) >> 2])
-             }
-             Err(_) => {
-                 // qemu_log_mask(LOG_GUEST_ERROR, "pl011_read: Bad offset 0x%x\n", (int)offset);
-@@ -214,27 +214,25 @@ pub fn read(&mut self, offset: hwaddr, _size: c_uint) -> std::ops::ControlFlow<u
-                 let c = u32::from(c);
-                 return std::ops::ControlFlow::Continue(u64::from(c));
-             }
--            Ok(RSR) => u8::from(self.receive_status_error_clear).into(),
--            Ok(FR) => u16::from(self.flags).into(),
--            Ok(FBRD) => self.fbrd.into(),
--            Ok(ILPR) => self.ilpr.into(),
--            Ok(IBRD) => self.ibrd.into(),
--            Ok(LCR_H) => u16::from(self.line_control).into(),
--            Ok(CR) => {
--                // We exercise our self-control.
--                u16::from(self.control).into()
--            }
--            Ok(FLS) => self.ifl.into(),
--            Ok(IMSC) => self.int_enabled.into(),
--            Ok(RIS) => self.int_level.into(),
--            Ok(MIS) => u64::from(self.int_level & self.int_enabled),
-+            Ok(RSR) => u32::from(self.receive_status_error_clear),
-+            Ok(FR) => u32::from(self.flags),
-+            Ok(FBRD) => self.fbrd,
-+            Ok(ILPR) => self.ilpr,
-+            Ok(IBRD) => self.ibrd,
-+            Ok(LCR_H) => u32::from(self.line_control),
-+            Ok(CR) => u32::from(self.control),
-+            Ok(FLS) => self.ifl,
-+            Ok(IMSC) => self.int_enabled,
-+            Ok(RIS) => self.int_level,
-+            Ok(MIS) => self.int_level & self.int_enabled,
-             Ok(ICR) => {
-                 // "The UARTICR Register is the interrupt clear register and is write-only"
-                 // Source: ARM DDI 0183G 3.3.13 Interrupt Clear Register, UARTICR
-                 0
-             }
--            Ok(DMACR) => self.dmacr.into(),
--        })
-+            Ok(DMACR) => self.dmacr,
-+        };
-+        std::ops::ControlFlow::Break(value.into())
+ /// QEMU sourced constant.
+-pub const PL011_FIFO_DEPTH: usize = 16_usize;
++pub const PL011_FIFO_DEPTH: u32 = 16;
+ 
+ #[derive(Clone, Copy, Debug)]
+ enum DeviceId {
+@@ -56,6 +56,32 @@ impl DeviceId {
+     const PL011_ID_LUMINARY: [c_uchar; 8] = [0x11, 0x00, 0x18, 0x01, 0x0d, 0xf0, 0x05, 0xb1];
+ }
+ 
++// FIFOs use 32-bit indices instead of usize, for compatibility with
++// the migration stream produced by the C version of this device.
++#[repr(transparent)]
++#[derive(Debug, Default)]
++pub struct Fifo([registers::Data; PL011_FIFO_DEPTH as usize]);
++
++impl Fifo {
++    const fn len(&self) -> u32 {
++        self.0.len() as u32
++    }
++}
++
++impl std::ops::IndexMut<u32> for Fifo {
++    fn index_mut(&mut self, idx: u32) -> &mut Self::Output {
++        &mut self.0[idx as usize]
++    }
++}
++
++impl std::ops::Index<u32> for Fifo {
++    type Output = registers::Data;
++
++    fn index(&self, idx: u32) -> &Self::Output {
++        &self.0[idx as usize]
++    }
++}
++
+ #[repr(C)]
+ #[derive(Debug, qemu_api_macros::Object, qemu_api_macros::offsets)]
+ /// PL011 Device Model in QEMU
+@@ -73,14 +99,14 @@ pub struct PL011State {
+     pub dmacr: u32,
+     pub int_enabled: u32,
+     pub int_level: u32,
+-    pub read_fifo: [registers::Data; PL011_FIFO_DEPTH],
++    pub read_fifo: Fifo,
+     pub ilpr: u32,
+     pub ibrd: u32,
+     pub fbrd: u32,
+     pub ifl: u32,
+-    pub read_pos: usize,
+-    pub read_count: usize,
+-    pub read_trigger: usize,
++    pub read_pos: u32,
++    pub read_count: u32,
++    pub read_trigger: u32,
+     #[doc(alias = "chr")]
+     pub char_backend: CharBackend,
+     /// QEMU interrupts
+@@ -480,7 +506,7 @@ pub fn loopback_enabled(&self) -> bool {
      }
  
-     pub fn write(&mut self, offset: hwaddr, value: u64) {
-@@ -276,7 +274,6 @@ pub fn write(&mut self, offset: hwaddr, value: u64) {
-                 self.fbrd = value;
-             }
-             Ok(LCR_H) => {
--                let value = value as u16;
-                 let new_val: registers::LineControl = value.into();
-                 // Reset the FIFO state on FIFO enable or disable
-                 if bool::from(self.line_control.fifos_enabled())
-@@ -303,7 +300,6 @@ pub fn write(&mut self, offset: hwaddr, value: u64) {
-             }
-             Ok(CR) => {
-                 // ??? Need to implement the enable bit.
--                let value = value as u16;
-                 self.control = value.into();
-                 self.loopback_mdmctrl();
-             }
-diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
-index 463ae60543b..0747e130cae 100644
---- a/rust/hw/char/pl011/src/lib.rs
-+++ b/rust/hw/char/pl011/src/lib.rs
-@@ -131,12 +131,6 @@ const fn _assert_exhaustive(val: RegisterOffset) {
- pub mod registers {
-     //! Device registers exposed as typed structs which are backed by arbitrary
-     //! integer bitmaps. [`Data`], [`Control`], [`LineControl`], etc.
--    //!
--    //! All PL011 registers are essentially 32-bit wide, but are typed here as
--    //! bitmaps with only the necessary width. That is, if a struct bitmap
--    //! in this module is for example 16 bits long, it should be conceived
--    //! as a 32-bit register where the unmentioned higher bits are always
--    //! unused thus treated as zero when read or written.
-     use bilge::prelude::*;
+     #[inline]
+-    pub fn fifo_depth(&self) -> usize {
++    pub fn fifo_depth(&self) -> u32 {
+         // Note: FIFO depth is expected to be power-of-2
+         if self.fifo_enabled() {
+             return PL011_FIFO_DEPTH;
+diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
+index 975c3d42be7..7f3ca895071 100644
+--- a/rust/hw/char/pl011/src/device_class.rs
++++ b/rust/hw/char/pl011/src/device_class.rs
+@@ -6,8 +6,8 @@
+ use std::os::raw::{c_int, c_void};
  
-     /// Receive Status Register / Data Register common error bits
-@@ -234,10 +228,11 @@ impl Data {
-     /// # Source
-     /// ARM DDI 0183G 3.3.2 Receive Status Register/Error Clear Register,
-     /// UARTRSR/UARTECR
--    #[bitsize(8)]
-+    #[bitsize(32)]
-     #[derive(Clone, Copy, DebugBits, FromBits)]
-     pub struct ReceiveStatusErrorClear {
-         pub errors: Errors,
-+        _reserved_unpredictable: u24,
-     }
+ use qemu_api::{
+-    bindings::*, c_str, vmstate_clock, vmstate_fields, vmstate_int32, vmstate_subsections,
+-    vmstate_uint32, vmstate_uint32_array, vmstate_unused, zeroable::Zeroable,
++    bindings::*, c_str, vmstate_clock, vmstate_fields, vmstate_subsections, vmstate_uint32,
++    vmstate_uint32_array, vmstate_unused, zeroable::Zeroable,
+ };
  
-     impl ReceiveStatusErrorClear {
-@@ -257,7 +252,7 @@ fn default() -> Self {
-         }
-     }
+ use crate::device::{PL011State, PL011_FIFO_DEPTH};
+@@ -64,9 +64,9 @@ extern "C" fn pl011_post_load(opaque: *mut c_void, version_id: c_int) -> c_int {
+         vmstate_uint32!(ibrd, PL011State),
+         vmstate_uint32!(fbrd, PL011State),
+         vmstate_uint32!(ifl, PL011State),
+-        vmstate_int32!(read_pos, PL011State),
+-        vmstate_int32!(read_count, PL011State),
+-        vmstate_int32!(read_trigger, PL011State),
++        vmstate_uint32!(read_pos, PL011State),
++        vmstate_uint32!(read_count, PL011State),
++        vmstate_uint32!(read_trigger, PL011State),
+     },
+     subsections: vmstate_subsections! {
+         VMSTATE_PL011_CLOCK
+diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
+index 25c68b703ea..63c897abcdf 100644
+--- a/rust/qemu-api/src/vmstate.rs
++++ b/rust/qemu-api/src/vmstate.rs
+@@ -106,28 +106,6 @@ macro_rules! vmstate_uint32 {
+     }};
+ }
  
--    #[bitsize(16)]
-+    #[bitsize(32)]
-     #[derive(Clone, Copy, DebugBits, FromBits)]
-     /// Flag Register, `UARTFR`
-     #[doc(alias = "UARTFR")]
-@@ -309,7 +304,7 @@ pub struct Flags {
-         pub transmit_fifo_empty: bool,
-         /// `RI`, is `true` when `nUARTRI` is `LOW`.
-         pub ring_indicator: bool,
--        _reserved_zero_no_modify: u7,
-+        _reserved_zero_no_modify: u23,
-     }
- 
-     impl Flags {
-@@ -328,7 +323,7 @@ fn default() -> Self {
-         }
-     }
- 
--    #[bitsize(16)]
-+    #[bitsize(32)]
-     #[derive(Clone, Copy, DebugBits, FromBits)]
-     /// Line Control Register, `UARTLCR_H`
-     #[doc(alias = "UARTLCR_H")]
-@@ -382,8 +377,8 @@ pub struct LineControl {
-         /// the PEN bit disables parity checking and generation. See Table 3-11
-         /// on page 3-14 for the parity truth table.
-         pub sticky_parity: bool,
--        /// 15:8 - Reserved, do not modify, read as zero.
--        _reserved_zero_no_modify: u8,
-+        /// 31:8 - Reserved, do not modify, read as zero.
-+        _reserved_zero_no_modify: u24,
-     }
- 
-     impl LineControl {
-@@ -454,7 +449,7 @@ pub enum WordLength {
-     ///
-     /// # Source
-     /// ARM DDI 0183G, 3.3.8 Control Register, `UARTCR`, Table 3-12
--    #[bitsize(16)]
-+    #[bitsize(32)]
-     #[doc(alias = "UARTCR")]
-     #[derive(Clone, Copy, DebugBits, FromBits)]
-     pub struct Control {
-@@ -532,6 +527,8 @@ pub struct Control {
-         /// CTS hardware flow control is enabled. Data is only transmitted when
-         /// the `nUARTCTS` signal is asserted.
-         pub cts_hardware_flow_control_enable: bool,
-+        /// 31:16 - Reserved, do not modify, read as zero.
-+        _reserved_zero_no_modify2: u16,
-     }
- 
-     impl Control {
+-#[doc(alias = "VMSTATE_INT32_V")]
+-#[macro_export]
+-macro_rules! vmstate_int32_v {
+-    ($field_name:ident, $struct_name:ty, $version_id:expr) => {{
+-        $crate::vmstate_single!(
+-            $field_name,
+-            $struct_name,
+-            $version_id,
+-            ::core::ptr::addr_of!($crate::bindings::vmstate_info_int32),
+-            ::core::mem::size_of::<i32>()
+-        )
+-    }};
+-}
+-
+-#[doc(alias = "VMSTATE_INT32")]
+-#[macro_export]
+-macro_rules! vmstate_int32 {
+-    ($field_name:ident, $struct_name:ty) => {{
+-        $crate::vmstate_int32_v!($field_name, $struct_name, 0)
+-    }};
+-}
+-
+ #[doc(alias = "VMSTATE_ARRAY")]
+ #[macro_export]
+ macro_rules! vmstate_array {
 -- 
 2.47.1
 
