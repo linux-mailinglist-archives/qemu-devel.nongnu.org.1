@@ -2,90 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F229F7FCD
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:30:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7FF69F7FA5
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:26:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJHx-00061Q-4V; Thu, 19 Dec 2024 11:22:14 -0500
+	id 1tOJGL-0002Xf-ID; Thu, 19 Dec 2024 11:20:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOI2l-0005tf-MC
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:02:27 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOI2j-0005ld-Tp
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:02:27 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-385dece873cso397933f8f.0
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 07:02:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734620544; x=1735225344; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=a5X1+M6+3UyvBYMYaayfcaUwM70oCSQurIK4F7x4Fws=;
- b=UmHm2BcEjyvAR9svCPTdB0X4L7Bl8MeLu2TfCAcoC40xcYf0nIhyBr2AN25k9/9g7R
- jWZbt/rcUj0hRt3uCCiGAazNWKgdXIcaam1bWAeCcylu1n3cK9KQSSeox2rtV3BpKH1n
- HIvbvd2XSVjTXGuDdXKrCgvkefJa/z8CBKluMqrOPi/nh2CMcRmMmBhoFSGo4JViiiKW
- LBzfOcGpoH0WmAIdrnuabikzeLyB/0yv7l4Y2/U3z9XixNpGKZksH3ZcxfEYTTBmOy6F
- +LaLrbS90Y/n39vtIFZfFY3DEY8CAwREzHINng3WVga+vt8rHHZRy137Ji79I88656Ti
- U3gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734620544; x=1735225344;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=a5X1+M6+3UyvBYMYaayfcaUwM70oCSQurIK4F7x4Fws=;
- b=w2sohEnJh1XkIMKdycDpYXNP5UtFZ3eTN+3Gtj2DYQIjstx5P8pDpZGzm2nj53/Xpy
- quz/f16AXlxX0G7isOcFD74WhmygKwhrmGwenbQ0FZEEdDyeSMALGfyoBoYTOxOKjzWB
- 2lzusehhcxt31UObuvR3PC7OVz7zW/diucD8fg8umq+ZCYBzqhBWduIZ2ds13R1aVm8q
- 9wIhxGoJ5ZIZUuOQnMmrgsChpjaQO4pAWoRVj64bNqGnW+m10vozMu2JsE5Yw968yVch
- skhbb7j2SVYzp7sUQ6d2JXSV8MmI60UsCXAClSW6jMpfF5krAZ/Btgk+ADszvCHJhYH7
- JAjA==
-X-Gm-Message-State: AOJu0YyxlKuy8b3FPTUC29JtiaRZCNSkplpPZpprSvsEVBiRGsFlFlj5
- QeaFlxBuiEeU9uMuUrcAGAcWVw2tpvjd0mOtiIa7jNIMtTvlPvKbJBE2BEA6c0/iEtnX3hx2Osh
- 6
-X-Gm-Gg: ASbGncsNVvU/0EXhmayWMzyqrODYCmlHmRWIb20EWy9U5mijRu28jHxZO1vxLTZuczK
- /jTReW7Re4m6pumHWTHjBClsRkZMqTt96VcHSIoz5fTXNs15nVK9DZSMtnLvs+rZRvOLBQdqi7A
- ObBhu7YroCNbU9rjFmTh45H7KBdSgkcbxuST+wcuH1zQ0bmJQRi8TVheO4Dx9pmxixhZve8/F6Q
- lSAX5qodarWZ91tEVf8dhhpsOhlO23I1GdOkeQnHMGxC/A/8WERsKGxycIVIXXplOz7N431VMKV
- qa9W
-X-Google-Smtp-Source: AGHT+IEXIlOmW9o9lr+s2h5UeeagPMa271FjIw/v9/nqmuTLQ26hTPtgYOmqI0JTqbYE7cTGLtpzIA==
-X-Received: by 2002:a5d:5984:0:b0:386:4277:6cf1 with SMTP id
- ffacd0b85a97d-388e4d8e7edmr6587031f8f.39.1734620540285; 
- Thu, 19 Dec 2024 07:02:20 -0800 (PST)
-Received: from localhost.localdomain ([78.196.4.158])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4366127c493sm19971545e9.28.2024.12.19.07.02.19
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Dec 2024 07:02:19 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>, devel@lists.libvirt.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, qemu-trivial@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 3/3] docs: Replace 'since' -> 'removed in' in
- removed-features.rst
-Date: Thu, 19 Dec 2024 16:02:03 +0100
-Message-ID: <20241219150203.55212-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241219150203.55212-1-philmd@linaro.org>
-References: <20241219150203.55212-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <kchamart@redhat.com>)
+ id 1tOI7x-0006vG-HX
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:07:49 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kchamart@redhat.com>)
+ id 1tOI7u-0007R8-NV
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:07:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1734620863;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wqJBuYXBM5bGC0okEKv667agh0vor0ZISW3sxUS0Cc8=;
+ b=Rl20GiG7JO6D9p4GBnFSALJt8a64kIb9chr8W2oUnlSF4AvfyBgFU/gDvbQpTTnRcwfTI2
+ g+/+oDo/SbYLV+d3ELagViHO/PDz7vbs0uvOEaUWbJDRmnPYCC84WfKE/oSijr/aAd5L/X
+ J5yFrF6kpue0aB2q4LwqZePmK0x2Mc0=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-258-g6hoKwx6OmivKsEvNQtaLw-1; Thu,
+ 19 Dec 2024 10:07:40 -0500
+X-MC-Unique: g6hoKwx6OmivKsEvNQtaLw-1
+X-Mimecast-MFC-AGG-ID: g6hoKwx6OmivKsEvNQtaLw
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C5F8E195608A; Thu, 19 Dec 2024 15:07:37 +0000 (UTC)
+Received: from gezellig (unknown [10.39.193.32])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2F83C195608A; Thu, 19 Dec 2024 15:07:28 +0000 (UTC)
+Date: Thu, 19 Dec 2024 16:07:25 +0100
+From: Kashyap Chamarthy <kchamart@redhat.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: Eric Auger <eric.auger@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Daniel =?iso-8859-1?B?IlAuIEJlcnJhbmfpIg==?= <berrange@redhat.com>,
+ eric.auger.pro@gmail.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, kvmarm@lists.linux.dev,
+ peter.maydell@linaro.org, richard.henderson@linaro.org,
+ alex.bennee@linaro.org, oliver.upton@linux.dev, sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
+ abologna@redhat.com, jdenemar@redhat.com, shahuang@redhat.com,
+ mark.rutland@arm.com, philmd@linaro.org, pbonzini@redhat.com
+Subject: Re: [PATCH RFCv2 00/20] kvm/arm: Introduce a customizable aarch64
+ KVM host model
+Message-ID: <Z2Q2rWj9cV0W_XVq@gezellig>
+References: <20241206112213.88394-1-cohuck@redhat.com>
+ <edc12140-6345-4868-938d-c80c4d2c2004@redhat.com>
+ <Z1qoa8yXscTSAJ9e@redhat.com> <8734it1bv6.fsf@redhat.com>
+ <1fea79e4-7a31-4592-8495-7b18cd82d02b@redhat.com>
+ <Z2QE9AqZnpGM5sWD@gezellig> <8634ijrh8q.wl-maz@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+In-Reply-To: <8634ijrh8q.wl-maz@kernel.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kchamart@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,65 +96,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-DaudÃ© <philmd@linaro.org>
----
- docs/about/removed-features.rst | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+On Thu, Dec 19, 2024 at 12:26:29PM +0000, Marc Zyngier wrote:
+> On Thu, 19 Dec 2024 11:35:16 +0000,
+> Kashyap Chamarthy <kchamart@redhat.com> wrote:
 
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index e3a87f3f555..cb1388049a8 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -403,13 +403,13 @@ Sound card devices should be created using ``-device`` or ``-audio``.
- The exception is ``pcspk`` which can be activated using ``-machine
- pcspk-audiodev=<name>``.
- 
--``-watchdog`` (since 7.2)
--'''''''''''''''''''''''''
-+``-watchdog`` (removed in 7.2)
-+''''''''''''''''''''''''''''''
- 
- Use ``-device`` instead.
- 
--Hexadecimal sizes with scaling multipliers (since 8.0)
--''''''''''''''''''''''''''''''''''''''''''''''''''''''
-+Hexadecimal sizes with scaling multipliers (removed in 8.0)
-+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
- 
- Input parameters that take a size value should only use a size suffix
- (such as 'k' or 'M') when the base is written in decimal, and not when
-@@ -510,15 +510,15 @@ than zero.
- 
- Removed along with the ``compression`` migration capability.
- 
--``-device virtio-blk,scsi=on|off`` (since 9.1)
--''''''''''''''''''''''''''''''''''''''''''''''
-+``-device virtio-blk,scsi=on|off`` (removed in 9.1)
-+'''''''''''''''''''''''''''''''''''''''''''''''''''
- 
- The virtio-blk SCSI passthrough feature is a legacy VIRTIO feature.  VIRTIO 1.0
- and later do not support it because the virtio-scsi device was introduced for
- full SCSI support.  Use virtio-scsi instead when SCSI passthrough is required.
- 
--``-fsdev proxy`` and ``-virtfs proxy`` (since 9.2)
--''''''''''''''''''''''''''''''''''''''''''''''''''
-+``-fsdev proxy`` and ``-virtfs proxy`` (removed in 9.2)
-+'''''''''''''''''''''''''''''''''''''''''''''''''''''''
- 
- The 9p ``proxy`` filesystem backend driver was originally developed to
- enhance security by dispatching low level filesystem operations from 9p
-@@ -532,8 +532,8 @@ security model option, or switch to ``virtiofs``.   The virtiofs daemon
- ``virtiofsd`` uses vhost to eliminate the high latency costs of the 9p
- ``proxy`` backend.
- 
--``-portrait`` and ``-rotate`` (since 9.2)
--'''''''''''''''''''''''''''''''''''''''''
-+``-portrait`` and ``-rotate`` (removed in 9.2)
-+''''''''''''''''''''''''''''''''''''''''''''''
- 
- The ``-portrait`` and ``-rotate`` options were documented as only
- working with the PXA LCD device, and all the machine types using
+[...]
+
+> > Consider this:
+> > 
+> > Say, there's a serious security issue in a released ARM CPU.  As part of
+> > the fix, two new CPU flags need to be exposed to the guest OS, call them
+> > "secflag1" and "secflag2".  Here, the user is configuring a baseline
+> > model + two extra CPU flags, not to get close to some other CPU model
+> > but to mitigate itself against a serious security flaw.
+> 
+> If there's such a security issue, that the hypervisor's job to do so,
+> not userspace. 
+
+I don't disagree.  Probably that has always been the case on ARM.  I
+asked the above based on how QEMU on x86 handles it today.
+
+> See what KVM does for CSV3, for example (and all the
+> rest of the side-channel stuff).
+
+Noted.  From a quick look in the kernel tree, I assume you're referring
+to these commits[1].
+
+> You can't rely on userspace for security, that'd be completely
+> ludicrous.
+
+As Dan Berrangé points out, it's the bog-standard way QEMU deals with
+some of the CPU-related issues on x86 today.  See this "important CPU
+flags"[2] section in the QEMU docs.  
+
+Mind you, I'm _not_ saying this is how ARM should do it.  I don't know
+enough about ARM to make such remarks.
+
+    * * *
+
+To reply to your other question on this thread[3] about "which ABI?"  I
+think Dan is talking about the *guest* ABI: the virtual "chipset" that
+is exposed to a guest (e.g. PCI(e) topology, ACPI tables, CPU model,
+etc).  As I understand it, this "guest ABI" should remain predictable,
+regardless of:
+
+  - whether you're updating KVM, QEMU, or the underlying physical
+    hardware itself; or
+  - if the guest is migrated, live or offline
+
+(As you might know, QEMU's "machine types" concept allows to create a
+stable guest ABI.)
+
+
+[1] "CVE3"-related commits:
+    - 471470bc7052 (arm64: errata: Add Cortex-A520 speculative
+      unprivileged load workaround, 2023-09-21)
+    - 4f1df628d4ec (KVM: arm64: Advertise ID_AA64PFR0_EL1.CSV3=1 if the
+      CPUs are Meltdown-safe, 2020-11-26)
+[2] https://www.qemu.org/docs/master/system/i386/cpu.html#important-cpu-features-for-intel-x86-hosts
+    - "Important CPU features for Intel x86 hosts"
+[3] https://lists.nongnu.org/archive/html/qemu-arm/2024-12/msg01224.html
+
 -- 
-2.47.1
+/kashyap
 
 
