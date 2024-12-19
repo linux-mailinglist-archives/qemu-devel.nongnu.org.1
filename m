@@ -2,85 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A2979F7FCA
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:30:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 506ED9F7F8B
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:24:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJI9-00072h-6l; Thu, 19 Dec 2024 11:22:26 -0500
+	id 1tOJIY-0000Tu-R4; Thu, 19 Dec 2024 11:22:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kchamart@redhat.com>)
- id 1tOEq0-0008W9-OT
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 06:37:04 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
+ id 1tOEwi-00018R-PG
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 06:44:01 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kchamart@redhat.com>)
- id 1tOEpy-0001gB-N6
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 06:37:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734608221;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Yq+VKCJRuzaPj/tEAEpk5ad2XnMB+1nVIjSVaI1/maE=;
- b=ZJKOR//8PFW4bfLBT2dnWko9uXGHmg82T4jNu51KlwN8r4ZtmrWT2N0Ve//c51mzWJ9W1i
- 1dYHlZAgCBGr+PJlrduwOgXZxb9CDMEn09mtXV4z23++PogLjxi7bsoSwU9zPmpl4oFAWm
- Z6UtRbmnLmYcAh9Gblop3Z0P95rhx/w=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-365-6TGaY4NcOJSmusE8GbInrg-1; Thu,
- 19 Dec 2024 06:35:32 -0500
-X-MC-Unique: 6TGaY4NcOJSmusE8GbInrg-1
-X-Mimecast-MFC-AGG-ID: 6TGaY4NcOJSmusE8GbInrg
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3678719560B3; Thu, 19 Dec 2024 11:35:29 +0000 (UTC)
-Received: from gezellig (unknown [10.39.193.32])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ED11630044C1; Thu, 19 Dec 2024 11:35:20 +0000 (UTC)
-Date: Thu, 19 Dec 2024 12:35:16 +0100
-From: Kashyap Chamarthy <kchamart@redhat.com>
-To: Eric Auger <eric.auger@redhat.com>
-Cc: Cornelia Huck <cohuck@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- eric.auger.pro@gmail.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, kvmarm@lists.linux.dev,
- peter.maydell@linaro.org, richard.henderson@linaro.org,
- alex.bennee@linaro.org, maz@kernel.org, oliver.upton@linux.dev,
- sebott@redhat.com, shameerali.kolothum.thodi@huawei.com,
- armbru@redhat.com, abologna@redhat.com, jdenemar@redhat.com,
- shahuang@redhat.com, mark.rutland@arm.com, philmd@linaro.org,
- pbonzini@redhat.com
-Subject: Re: [PATCH RFCv2 00/20] kvm/arm: Introduce a customizable aarch64
- KVM host model
-Message-ID: <Z2QE9AqZnpGM5sWD@gezellig>
-References: <20241206112213.88394-1-cohuck@redhat.com>
- <edc12140-6345-4868-938d-c80c4d2c2004@redhat.com>
- <Z1qoa8yXscTSAJ9e@redhat.com> <8734it1bv6.fsf@redhat.com>
- <1fea79e4-7a31-4592-8495-7b18cd82d02b@redhat.com>
+ (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
+ id 1tOEwh-0002u4-00
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 06:44:00 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BJ85Wta031388;
+ Thu, 19 Dec 2024 11:43:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=jZS1Km
+ dco3P+X79ssnwdR9nJDtlWY+lquRHVWVkIJLc=; b=Y0lVwzdfMcrawTL6qRo1EF
+ VLmpAhE5bzljotb2GxidmLGCRJWZmzZRjnWuRV8EFcY2qW9+rZBOlM7FQLQR1ggu
+ Hmicfy5l4uJknr7V3yrCVzehV3SmHsnkjoHu7secfdyfaFuD3jKQorJKLN/oKBfV
+ 1WFMtd5YfC2KI9rY8IrxXTrp/EHwjZH2KFqKGPZvr3y3LF6yhZnk+1E+RwSo+R0e
+ mQYUhIk3YhuQ+oGp+A6mOy1B2DvQSIUblkAiH6jleEknoK4CKToIIXUIfOr6rbQc
+ Xu6yDFBHrLU2GjPrVVO4vANcThRZjy3r7Ox2kUvs1CCX6snMkPd3JsYAO2uaZFXQ
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43mfp28xr0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Dec 2024 11:43:56 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BJBhuxw009671;
+ Thu, 19 Dec 2024 11:43:56 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43mfp28xqy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Dec 2024 11:43:56 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BJAgxuB014412;
+ Thu, 19 Dec 2024 11:43:55 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 43hq21vjec-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Dec 2024 11:43:55 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4BJBhpZe49676622
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 19 Dec 2024 11:43:52 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D4BEC2004D;
+ Thu, 19 Dec 2024 11:43:51 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A0F432004B;
+ Thu, 19 Dec 2024 11:43:51 +0000 (GMT)
+Received: from [9.152.224.86] (unknown [9.152.224.86])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 19 Dec 2024 11:43:51 +0000 (GMT)
+Message-ID: <ed949070-bb79-4357-b379-9374c40433bc@linux.ibm.com>
+Date: Thu, 19 Dec 2024 12:43:51 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1fea79e4-7a31-4592-8495-7b18cd82d02b@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kchamart@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 00/15] Host Memory Backends and Memory devices queue
+ 2024-12-18
+To: David Hildenbrand <david@redhat.com>, Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-devel@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>
+References: <20241218105303.1966303-1-david@redhat.com>
+ <CAJSP0QUoerckBWX=0PD_82jFwVbmtvftWf5QqSWxpK0Ttc+uvQ@mail.gmail.com>
+ <2e6400d9-6fee-41ed-a317-329f275912c6@redhat.com>
+ <d19ab3d3-737d-4faa-a7d7-639b4ea3b172@redhat.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <d19ab3d3-737d-4faa-a7d7-639b4ea3b172@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 9QcGf-K6gFBeLqr_EHmBCU33molv8bRs
+X-Proofpoint-GUID: l2rFfMCGhY2dWATeDg7XOTTOg3Gze5f8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 spamscore=0
+ phishscore=0 lowpriorityscore=0 suspectscore=0 priorityscore=1501
+ adultscore=0 bulkscore=0 malwarescore=0 impostorscore=0 mlxlogscore=791
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412190092
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=borntraeger@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
 X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=-1.116, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,76 +122,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 12, 2024 at 11:04:30AM +0100, Eric Auger wrote:
+Am 19.12.24 um 12:18 schrieb David Hildenbrand:
+> The following on top seems to make everything happy. I wish the
+> CONFIG_S390_CCW_VIRTIO stuff would't have to be so complicated, just to
+> handle odd configs that don't really make sense.
 
-Hi Eric,
-
-> On 12/12/24 10:36, Cornelia Huck wrote:
-> > On Thu, Dec 12 2024, Daniel P. Berrangé <berrange@redhat.com> wrote:
-
-[...]
-
-> >> Consider you mgmt app wants to set a CPU model that's common across
-> >> heterogeneous hardware. They don't neccessarily want/need to be
-> >> able to live migrate between heterogeneous CPUs, but for simplicity
-> >> of configuration desire to set a single named CPU across all guests,
-> >> irrespective of what host hey are launched on. The ARM spec baseline
-> >> named models would give you that config simplicity.
-> > If we use architecture extensions (i.e. Armv8.x/9.x) as baseline, I'm
-> > seeing some drawbacks:
-> > - a lot of work before we can address some specific use cases
-> > - old models can get new optional features
-> > - a specific cpu might have a huge set of optional features on top of
-> >   the baseline model
-> >
-> > Using a reference core such as Neoverse-V2 probably makes more sense
-> > (easier to get started, less feature diff?) It would still make a good
-> > starting point for a simple config.
-> >
-> Actually from a dev point of view I am not sure it changes much to have
-> either ARM spec rev baseline or CPU ref core named model.
-> 
-> One remark is that if you look at
-> https://developer.arm.com/documentation/109697/2024_09?lang=en
-> you will see there are quite a lot of spec revisions and quite a few of
-> them are actually meaningful in the light of currently avaiable and
-> relevant HW we want to address. What I would like to avoid is to be
-> obliged to look at all of them in a generic manner while we just want to
-> address few cpu ref models.
-> 
-> Also starting from the ARM spec rev baseline the end-user may need to
-> add more feature opt-ins to be close to a specific cpu model. So I
-> foresee extra complexity for the end-user.
-
-(Assuming I'm parsing your last para right; correct me if not.)
-
-Isn't a user wanting to add extra CPU flags (on top of a baseline) a
-"normal behaviour" and not "extra complexity"?  Besides coming close to
-a specific CPU model, there's the additional important use-case of CPU
-flags that provide security mitigation.
-
-Consider this:
-
-Say, there's a serious security issue in a released ARM CPU.  As part of
-the fix, two new CPU flags need to be exposed to the guest OS, call them
-"secflag1" and "secflag2".  Here, the user is configuring a baseline
-model + two extra CPU flags, not to get close to some other CPU model
-but to mitigate itself against a serious security flaw.
-
-An example that comes to mind is the infamous "speculative store bypass"
-(SSB) vulnerability and how QEMU addressed it[1][2] in x86.  I'm sure,
-as you know, it also affects ARM[3].
-
-
-[1] https://lists.gnu.org/archive/html/qemu-devel/2018-05/msg04796.html
-    — i386: define the 'ssbd' CPUID feature bit (CVE-2018-3639)
-
-[2] https://lists.gnu.org/archive/html/qemu-devel/2018-05/msg04797.html
-    — i386: Define the Virt SSBD MSR and handling of it (CVE-2018-3639)
-
-[3] https://developer.arm.com/documentation/ddi0601/2024-06/AArch64-Registers/SSBS--Speculative-Store-Bypass-Safe
-
--- 
-/kashyap
-
+WOuld it be possible to rid of this config?
 
