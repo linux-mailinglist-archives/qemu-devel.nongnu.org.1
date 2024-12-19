@@ -2,52 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2829F7669
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 08:56:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10AEF9F75C2
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 08:37:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOBNd-0003pJ-0n; Thu, 19 Dec 2024 02:55:33 -0500
+	id 1tOB5Z-0000CB-Vw; Thu, 19 Dec 2024 02:36:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1tOBNa-0003nr-Oi
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 02:55:30 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1tOBNZ-0004qi-0Y
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 02:55:30 -0500
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8Dxfa9k0WNnnnhYAA--.18371S3;
- Thu, 19 Dec 2024 15:55:16 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMAxQMZX0WNnSCkCAA--.12762S16;
- Thu, 19 Dec 2024 15:55:16 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-devel@nongnu.org,
-	Song Gao <gaosong@loongson.cn>
-Subject: [PULL 14/18] hw/intc/loongarch_extioi: Add unrealize interface
-Date: Thu, 19 Dec 2024 15:54:58 +0800
-Message-Id: <20241219075502.3164644-15-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20241219075502.3164644-1-maobibo@loongson.cn>
-References: <20241219075502.3164644-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tOB5T-0008Vv-2d; Thu, 19 Dec 2024 02:36:47 -0500
+Received: from mgamail.intel.com ([198.175.65.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tOB5R-0000Lc-4E; Thu, 19 Dec 2024 02:36:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1734593805; x=1766129805;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Gvc0SwrNU+az+om9HHFCHVWCt6tpqRvu0V8LhzumCaQ=;
+ b=dy/XwAGHrQlxUYYJMTOuBYQyPUcgyJYB4uD/7T6P78pvahOO3sYQdpb4
+ msh/dliixSmuz5er1meqIqbaPrZpcCZJ20OHep400zdwMsbdNCknLCfbh
+ NapBR3A7d8XlrXvo/SJXmD8W+vKOTU00UCA6hSPrsONpYWdAoesdEmr8O
+ Sc9iyBxTFcRZLwTxR1q2wfTZUomGBwrIue1AT7SI+TNT7V/0/ijGPqhLY
+ spT3Q+1cMgEUacz2FSU3te/1mqE+bvtCsHCXk48gZaY8FMSGK0xeLmDzu
+ Z5JfD3G31UP2Tnugdw4aiS9J3ylkzz5IRcIyand9WrdRFWk/GlZh2XyZ7 g==;
+X-CSE-ConnectionGUID: 6IHJ7FJwQVe6l9CIDz/gsg==
+X-CSE-MsgGUID: rcfn521zSxOrVKYbGSumlw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="52501878"
+X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; d="scan'208";a="52501878"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2024 23:36:42 -0800
+X-CSE-ConnectionGUID: Iqt26HL5RCukxSoZhzGQUg==
+X-CSE-MsgGUID: 92/48LjAQry/y59yfZf+tA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="129089182"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa001.fm.intel.com with ESMTP; 18 Dec 2024 23:36:41 -0800
+Date: Thu, 19 Dec 2024 15:55:21 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 7/7] rust: pl011: simplify handling of the FIFO enabled
+ bit in LCR
+Message-ID: <Z2PRaazDXAkN65hF@intel.com>
+References: <20241212172209.533779-1-pbonzini@redhat.com>
+ <20241212172209.533779-8-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMAxQMZX0WNnSCkCAA--.12762S16
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241212172209.533779-8-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,49 +80,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For loongarch extioi emulation driver, add unrealize interface and
-remove instance_finalize interface and move the code to unrealize
-interface.
+On Thu, Dec 12, 2024 at 06:22:04PM +0100, Paolo Bonzini wrote:
+> Date: Thu, 12 Dec 2024 18:22:04 +0100
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 7/7] rust: pl011: simplify handling of the FIFO enabled bit
+>  in LCR
+> X-Mailer: git-send-email 2.47.1
+> 
+> Use ==/!= instead of going through bool and xor.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  rust/hw/char/pl011/src/device.rs | 6 ++----
+>  rust/hw/char/pl011/src/lib.rs    | 6 ------
+>  2 files changed, 2 insertions(+), 10 deletions(-)
+> 
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
----
- hw/intc/loongarch_extioi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/hw/intc/loongarch_extioi.c b/hw/intc/loongarch_extioi.c
-index dcc278a214..d759b7f57d 100644
---- a/hw/intc/loongarch_extioi.c
-+++ b/hw/intc/loongarch_extioi.c
-@@ -372,9 +372,9 @@ static void loongarch_extioi_realize(DeviceState *dev, Error **errp)
-     }
- }
- 
--static void loongarch_extioi_finalize(Object *obj)
-+static void loongarch_extioi_unrealize(DeviceState *dev)
- {
--    LoongArchExtIOI *s = LOONGARCH_EXTIOI(obj);
-+    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI(dev);
- 
-     g_free(s->cpu);
- }
-@@ -456,6 +456,7 @@ static void loongarch_extioi_class_init(ObjectClass *klass, void *data)
-     DeviceClass *dc = DEVICE_CLASS(klass);
- 
-     dc->realize = loongarch_extioi_realize;
-+    dc->unrealize = loongarch_extioi_unrealize;
-     device_class_set_legacy_reset(dc, loongarch_extioi_reset);
-     device_class_set_props(dc, extioi_properties);
-     dc->vmsd = &vmstate_loongarch_extioi;
-@@ -466,7 +467,6 @@ static const TypeInfo loongarch_extioi_info = {
-     .parent        = TYPE_SYS_BUS_DEVICE,
-     .instance_size = sizeof(struct LoongArchExtIOI),
-     .class_init    = loongarch_extioi_class_init,
--    .instance_finalize = loongarch_extioi_finalize,
- };
- 
- static void loongarch_extioi_register_types(void)
--- 
-2.43.5
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
