@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5383A9F7772
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:35:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD7199F7773
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:35:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOByF-0004p5-9N; Thu, 19 Dec 2024 03:33:23 -0500
+	id 1tOByF-0004p7-JF; Thu, 19 Dec 2024 03:33:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOByD-0004lk-Ei
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tOByC-0004lQ-Up
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:20 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOByB-0005B4-Ub
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:21 -0500
+ id 1tOByB-0005Ay-5G
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734597199;
+ s=mimecast20190719; t=1734597198;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YGo68GKQt2yaNvuhV+blTkjMLtUKgFZE8YyZBqUmje8=;
- b=fuxeoYQGo1ddxNSCGfI1JYMfGua9hHS1zTTHJ9ZP7Ax2uPkMbvCDL9npf0F+R+Lro0petg
- 3/MVwHohAMitFTC7izQDMeeEvK5DDWdSkSJ3r8yqzXZjI84Kf00gAylD3u0yR+qQh0NP73
- Sw7vsUlU9bIaf5mAf8b8BsG+rxDKb9g=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mbyntGtYpHsSrSs698oFtn5IEUzoH+5caUeaY/RmSYI=;
+ b=M/HAknR3EraJuKrgVKMPvqYAc1Za5nkBWLCOcw6AsXOY0SZbwjvsPjDRp46souN53gWALv
+ j68vNgb8viWOufweJofgmcCcefH6Nn7Fuh6TP7URkB3h1W+YXXsvnLjuHduw/waaXys3b+
+ /ITSqCuEfPiqPGApJybgcTPDX/fiCkQ=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-453--XHByr-7M7OP7N9HlQ6hgQ-1; Thu, 19 Dec 2024 03:33:17 -0500
-X-MC-Unique: -XHByr-7M7OP7N9HlQ6hgQ-1
-X-Mimecast-MFC-AGG-ID: -XHByr-7M7OP7N9HlQ6hgQ
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-385e00ebb16so221742f8f.3
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:17 -0800 (PST)
+ us-mta-210-R8F32i5KPSWwhYb6OTf-mA-1; Thu, 19 Dec 2024 03:33:16 -0500
+X-MC-Unique: R8F32i5KPSWwhYb6OTf-mA-1
+X-Mimecast-MFC-AGG-ID: R8F32i5KPSWwhYb6OTf-mA
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4362b9c15d8so2896555e9.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:16 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1734597194; x=1735201994;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YGo68GKQt2yaNvuhV+blTkjMLtUKgFZE8YyZBqUmje8=;
- b=rvGT0iyg4ukiS4qk+XCLl8b3u9i45x3vyY/9EWH8ae8kZQzEkpZneRiWQ3zKgYlXEw
- PStu+5HR5qStC9Vuxbay/azXjBdsjRWiXc/t5JuG/02tqHar06Cda0XkMz0/4gtia5c+
- gDdMCB8GRCa+6bwj4eGkgnunUYbHMAjKAPpfDZYlEw5AIZ6Kj874P1TYwWFPB7/cSviD
- rnpfUgAwblkHbTAvymExR9QcAou5TW82ojFv0sToiA6rXrDFbt0GbmjNYXpLxlTxxb3/
- QBPe4iFDb8Y+bSCbfJL9VPoqr2bksnE8Ga2tiymCAmqRFtQZWmQnAlViBIzZmtIEeQZ/
- NR4g==
-X-Gm-Message-State: AOJu0YwmbVqJ2ckz8N5B8c+xkO0olriVFcMVTQolZPPleAr9g1gT3P5g
- H0n3IA8bVJxJtWLm8PzkbbwWB1u54jRibnITP2Iz0eC54/g42yaxUAZ3h9lrJDMrT6idR6oljKr
- NfVOO1yT6Cu9BS+9q5lcwiyJIPRPRp4dj6wRXQVa8n9JL3n85Kihv2knHK8s6/IXAx8k/Kdez17
- RpBAEddGTcePWErTBs1wKiEk/f9KhtLl0qKSTo
-X-Gm-Gg: ASbGncvWOs7xtPyD5gVTPoNsVVKlfJLd8y8971leQ8iTIbVdPelNsjOKez/PU5V/loS
- im5UkSi0Xj2DziFZZXhyEjxt740CTlfWZ3lQOzqs/Tuhsof/Bd93bRqk1qm/0G0V+jXt11x5E/k
- 9mAqQyrZBEzmMMVd5C5SbBROFZrDANqgqjgp3Sq9zMWxm4MJUL5LSOUj2Ra/Ca7JXgYmwhBqgny
- T6XYHvurrLFcukBV1EB7Cgu5r5GMdOobdxbTYkhdPK38VhDlM5EOm3DEdaA
-X-Received: by 2002:a05:6000:1449:b0:385:f3fb:46aa with SMTP id
- ffacd0b85a97d-38a19b373d5mr2230036f8f.43.1734597193173; 
+ bh=mbyntGtYpHsSrSs698oFtn5IEUzoH+5caUeaY/RmSYI=;
+ b=pohGNA9tRHv0ZNDlhxE7nSeD8NSG9EkgWnSdrWyXLzv8yq60UiHalG9gWV5Ln64+7O
+ rEFCBdTMCvLFdbrT2g2ymOcVHeQIYrAlBVhir9sfiAxOpU8oTiXUi5sIUlqv14Aac5KU
+ ABA0RmHumrMQFfCKVZcuXvCbsBZ16bxtn5jsCNnk5vz2DsgvIAIMwtOy9WjmYJpUW2NE
+ aoArdrQl6GpP6FWfe9f2ilV/ZwIM/KE2kgqhR0S8pOr3NtXO96pu7JvnDgSIeZcXinsO
+ UZc9UUg8foUECMXHj73ouS+MRu6q/scz3ersKM+CMBm7RpM1QPEuBpjiOigFVDLfNF12
+ krJw==
+X-Gm-Message-State: AOJu0YxkNeIFNnZ9S1LYbxMT8VDB1Ady6hB3zWmf7J/I5DpPe+EgHRpW
+ ACWaI6lP99OYa1Ic5a/au7km1EDrzv8fzQSSlboDI1Si+Td2w+kkMax1VKm7iGXcIiTvlhmK7gu
+ hKQfB80cigma9kGgY8mRYv4bThkEI0vugT14MUMnAq693xTfC/1sIsCjc2fD1dWrqWZZdPsicPi
+ 8IQWKofAV79RSbuwK6An5dEpufNcutdlSHwFvW
+X-Gm-Gg: ASbGncs/ME7nyg1y+4xuiaViJjhdZEbyo+HvxSMJh4cSUP0+I9NZw9Jeh7wRxpdoa83
+ iCl9bvqxG+mtXlMzhcSHH255UnJvHAyw/fGCaVesackTXKwcoPUUQ4pKBSNdgvudKElIg2UdKUi
+ udQvBqouGFJjK5CIWmYUL3U2oOnr5GNC5S1Vuvqa8K+QF0sN8sikseAZ+TUzkXhtPLDspbPyY6Z
+ r2OOpkInxP/WMWZcVaAUL9kfkQpwlUHydNsn2kDDdPGd8juT7G1lHrXaGgU
+X-Received: by 2002:a05:600c:4f15:b0:436:30e4:4590 with SMTP id
+ 5b1f17b1804b1-4365540cd9emr48113235e9.32.1734597194271; 
+ Thu, 19 Dec 2024 00:33:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHWfazPnguJEwALqI+CCvmNXE2Rq8USpfKvrbXr66pIPLzYS2ZIJCMUpdLvYDfsmgf+UZaPNQ==
+X-Received: by 2002:a05:600c:4f15:b0:436:30e4:4590 with SMTP id
+ 5b1f17b1804b1-4365540cd9emr48112955e9.32.1734597193831; 
  Thu, 19 Dec 2024 00:33:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF458w2rB/jba9OyVCFQhwtp9itQ68U5m2QOZTBBkDc9Ocstmd+dCO3/cDDsx33va0UzLJuAQ==
-X-Received: by 2002:a05:6000:1449:b0:385:f3fb:46aa with SMTP id
- ffacd0b85a97d-38a19b373d5mr2229996f8f.43.1734597192734; 
- Thu, 19 Dec 2024 00:33:12 -0800 (PST)
 Received: from [192.168.10.47] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c832c45sm981633f8f.32.2024.12.19.00.33.12
+ 5b1f17b1804b1-43656b3b1e8sm45823375e9.30.2024.12.19.00.33.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 00:33:12 -0800 (PST)
+ Thu, 19 Dec 2024 00:33:13 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 21/41] include/hw/qdev-properties: Shrink struct Property
-Date: Thu, 19 Dec 2024 09:32:08 +0100
-Message-ID: <20241219083228.363430-22-pbonzini@redhat.com>
+Subject: [PULL 22/41] hw/core/qdev-properties: Constify Property argument to
+ object_field_prop_ptr
+Date: Thu, 19 Dec 2024 09:32:09 +0100
+Message-ID: <20241219083228.363430-23-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219083228.363430-1-pbonzini@redhat.com>
 References: <20241219083228.363430-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -107,95 +108,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Before, via pahole:
-
-arm32, a 32-bit host which aligns uint64_t:
-
-struct Property {
-        const char  *              name;                 /*     0     4 */
-        const PropertyInfo  *      info;                 /*     4     4 */
-        ptrdiff_t                  offset;               /*     8     4 */
-        uint8_t                    bitnr;                /*    12     1 */
-        /* XXX 3 bytes hole, try to pack */
-        uint64_t                   bitmask;              /*    16     8 */
-        _Bool                      set_default;          /*    24     1 */
-        /* XXX 7 bytes hole, try to pack */
-        union {
-                int64_t            i;                    /*    32     8 */
-                uint64_t           u;                    /*    32     8 */
-        } defval;                                        /*    32     8 */
-        int                        arrayoffset;          /*    40     4 */
-        const PropertyInfo  *      arrayinfo;            /*    44     4 */
-        int                        arrayfieldsize;       /*    48     4 */
-        const char  *              link_type;            /*    52     4 */
-        /* size: 56, cachelines: 1, members: 11 */
-        /* sum members: 46, holes: 2, sum holes: 10 */
-};
-
-arm64, an arbitrary 64-bit host:
-
-struct Property {
-        const char  *              name;                 /*     0     8 */
-        const PropertyInfo  *      info;                 /*     8     8 */
-        ptrdiff_t                  offset;               /*    16     8 */
-        uint8_t                    bitnr;                /*    24     1 */
-        /* XXX 7 bytes hole, try to pack */
-        uint64_t                   bitmask;              /*    32     8 */
-        _Bool                      set_default;          /*    40     1 */
-        /* XXX 7 bytes hole, try to pack */
-        union {
-                int64_t            i;                    /*    48     8 */
-                uint64_t           u;                    /*    48     8 */
-        } defval;                                        /*    48     8 */
-        int                        arrayoffset;          /*    56     4 */
-        /* XXX 4 bytes hole, try to pack */
-        const PropertyInfo  *      arrayinfo;            /*    64     8 */
-        int                        arrayfieldsize;       /*    72     4 */
-        /* XXX 4 bytes hole, try to pack */
-        const char  *              link_type;            /*    80     8 */
-        /* size: 88, cachelines: 2, members: 11 */
-        /* sum members: 66, holes: 4, sum holes: 22 */
-};
-
-Afterward there are no holes in either structure.
-For arm32, size 48, padding 2, saved 8 bytes.
-For arm64, size 72, padding 6, saved 16 bytes.
-
-Saves 20k from qemu-system-aarch64 on a 64-bit host.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Link: https://lore.kernel.org/r/20241216035109.3486070-22-richard.henderson@linaro.org
+Link: https://lore.kernel.org/r/20241216035109.3486070-23-richard.henderson@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/qdev-properties.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/hw/qdev-properties.h | 2 +-
+ hw/core/qdev-properties.c    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
-index ef3fd7b4ae2..3680cd239fb 100644
+index 3680cd239fb..447767688b6 100644
 --- a/include/hw/qdev-properties.h
 +++ b/include/hw/qdev-properties.h
-@@ -16,17 +16,17 @@ struct Property {
-     const char   *name;
-     const PropertyInfo *info;
-     ptrdiff_t    offset;
--    uint8_t      bitnr;
-+    const char   *link_type;
-     uint64_t     bitmask;
--    bool         set_default;
-     union {
-         int64_t i;
-         uint64_t u;
-     } defval;
--    int          arrayoffset;
-     const PropertyInfo *arrayinfo;
-+    int          arrayoffset;
-     int          arrayfieldsize;
--    const char   *link_type;
-+    uint8_t      bitnr;
-+    bool         set_default;
- };
+@@ -201,7 +201,7 @@ void qdev_prop_set_enum(DeviceState *dev, const char *name, int value);
+ /* Takes ownership of @values */
+ void qdev_prop_set_array(DeviceState *dev, const char *name, QList *values);
  
- struct PropertyInfo {
+-void *object_field_prop_ptr(Object *obj, Property *prop);
++void *object_field_prop_ptr(Object *obj, const Property *prop);
+ 
+ void qdev_prop_register_global(GlobalProperty *prop);
+ const GlobalProperty *qdev_find_global_prop(Object *obj,
+diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+index a3d49e20202..61929b2865a 100644
+--- a/hw/core/qdev-properties.c
++++ b/hw/core/qdev-properties.c
+@@ -51,7 +51,7 @@ void qdev_prop_allow_set_link_before_realize(const Object *obj,
+     }
+ }
+ 
+-void *object_field_prop_ptr(Object *obj, Property *prop)
++void *object_field_prop_ptr(Object *obj, const Property *prop)
+ {
+     void *ptr = obj;
+     ptr += prop->offset;
 -- 
 2.47.1
 
