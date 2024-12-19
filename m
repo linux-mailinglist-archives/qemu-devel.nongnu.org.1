@@ -2,94 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDB5F9F7FF2
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:36:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09DE59F8016
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:40:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJIf-000119-4Y; Thu, 19 Dec 2024 11:22:57 -0500
+	id 1tOJFm-0001s3-KA; Thu, 19 Dec 2024 11:20:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOIeR-0005e1-1v
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:41:23 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOIeO-0004tx-Lq
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:41:22 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-385de59c1a0so567533f8f.2
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 07:41:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734622879; x=1735227679; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=230voEAVIdoM3GiK2Lk/6qE75mi3X3jK00czcVLjJHM=;
- b=NJs9iwepgZ9SkjIld9rzM35Zto1E1VUGfWhRQFo5iY7aSrLga5QNDdqzzs0T+Lxx7Y
- V182fIQcx16gSLnuqs8Uh2MPs3ItWKspWZxIxjG9/T2E9e0m2QjU9X9FOYo7kJ2tCBiJ
- D/+GwW23Nro0leqksOlK7+dl8psynNpLP7aqZkWUQhPxalNRrU1jUB7ZWt8SxMwhb8Ox
- MBmT/u0e92lASPy+07wEcIWQH6C10MJfGLM29EDCte9pKsF0Et7X8P3HriEnNrA2D5mg
- NKUg5rfeNHY79IlMKPjuowkMBSXnEKhCHkvIGxWibyCtGU7LfMhRK6ISyxZIO+2WL0BU
- xx+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734622879; x=1735227679;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=230voEAVIdoM3GiK2Lk/6qE75mi3X3jK00czcVLjJHM=;
- b=bjkDzi8o+5YRMIylDW2P7T80HS1f2mJ1hQue/58YwTZlVBkh78bQtKHQ99hfTxJHJR
- /a4YEPjKM2skVKqeCybm5R/qB5xjY7GQaxDLHLt6rCTrW74D6hZkb4XchxO83uge6Ank
- ERVr1HLSz3bcph/mFRFSCr2aRWJnLu2KvuQeNGGu1+cxUP8puhGX5RTYPNBAAuMyxbIl
- YCCTmQouRwse4oj1Vmq72Hu9o9Wtj1L6qODW/ETotr9wlmF8rAxx/EvyX0RgVmKfEc1W
- sHQp+3ODLFARvSvmq0ZhbUuiT2xAsuzUQlsgoHYU3dILj21QOqSqzgZ1IRXl77QmsPv2
- D8uQ==
-X-Gm-Message-State: AOJu0YwHBiRchSLtjww3Q6x54R69F0/926lXFGIWgxY+jnHoaYg3ycUe
- YDV3OHGf8gHCKD/OTM7VNTq3/RyDf3q5D7xCczOMndYHvSv+bA62k1k4PhMQhf8=
-X-Gm-Gg: ASbGncv/l8EprxZP+c36Yer7ccv/gd/239ZvhXZAuGetThZXeFtn8OQAWtOmVTSGd6c
- t3ZX/jRvE5ZgBqtjw7ZDbfwmHaA/JBmV38p+UFVTnjIHJgsDp6aLjaVTv8xcrtUREe2IqbijE0h
- KvVOjue4Qo44std3fxuPrzXFxH5A2RJbJdGPm96ED3XcoiETqxtk2PZ0/idppJ/4wkuozI5E8pZ
- vMTBu/Qfy83+UuT3aVAZXCB1Z53sGZpbbL/ev//CydmebzuR2xb9oyC25ytsN0nxfK9TkI=
-X-Google-Smtp-Source: AGHT+IGw9wLPsUC1lVFMDShijNyJD3LuSIx1BfJ0c+rxN6rVJs/z27L+ARehDuPZZSW9uFPbDeO8Qg==
-X-Received: by 2002:a05:6000:18a4:b0:385:e013:b842 with SMTP id
- ffacd0b85a97d-388e4d42b6emr8066863f8f.14.1734622878841; 
- Thu, 19 Dec 2024 07:41:18 -0800 (PST)
-Received: from [192.168.1.67] ([78.196.4.158])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c828f8fsm1809189f8f.12.2024.12.19.07.41.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Dec 2024 07:41:18 -0800 (PST)
-Message-ID: <bd138636-6895-4e71-8cd8-715799f3c28b@linaro.org>
-Date: Thu, 19 Dec 2024 16:41:16 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/15] Host Memory Backends and Memory devices queue
- 2024-12-18
-To: David Hildenbrand <david@redhat.com>, Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-devel@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Michael S . Tsirkin" <mst@redhat.com>
-References: <20241218105303.1966303-1-david@redhat.com>
- <CAJSP0QUoerckBWX=0PD_82jFwVbmtvftWf5QqSWxpK0Ttc+uvQ@mail.gmail.com>
- <2e6400d9-6fee-41ed-a317-329f275912c6@redhat.com>
- <d19ab3d3-737d-4faa-a7d7-639b4ea3b172@redhat.com>
- <4080b391-95d3-4cd8-a9fc-d68fda6bc160@linaro.org>
- <ea932dfd-df30-43d8-9cdb-ecbb5db92a7e@redhat.com>
- <233f096f-5707-4a18-858e-50471ecebf67@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <233f096f-5707-4a18-858e-50471ecebf67@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <maz@kernel.org>)
+ id 1tOIf5-0005fo-Nz; Thu, 19 Dec 2024 10:42:05 -0500
+Received: from nyc.source.kernel.org ([147.75.193.91])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <maz@kernel.org>)
+ id 1tOIf3-0004y6-Qu; Thu, 19 Dec 2024 10:42:03 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by nyc.source.kernel.org (Postfix) with ESMTP id 311EAA42009;
+ Thu, 19 Dec 2024 15:40:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F5EC4CECE;
+ Thu, 19 Dec 2024 15:41:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1734622919;
+ bh=JT6efBVKqubwl6mff1iO/fWWnelB4X1FDGSeUIpzVXY=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=YtuUEpUrjVn8+lKZ7otJAzgavXmA+SvAYu0KyW4vdH1VbreJ1cJKqVJvuq9QP16fW
+ 0UKeGlyTG3T/66OwubbvqpUfWa7xSwzAKORIbC/qVSavLi9/uaRWFUPTrHxoAwFCBW
+ anOTfhikMvHolmG8is56+dzfppsoWEXGLd1eXrl2pzw1/MQD1QSkF297wpqR3pr3Od
+ yoK/0qenK7+PdmErk4OM1dpVQASpd8sbfVGaPKk+DIOu3cNo/5W6AC9rQKDMm+rDai
+ aCUyWcbSsxSF1Eb+uZH9X1qium+y6ToYTTAhR/5KfgwYDAVJhfml3gsm1HXQBvahnU
+ JgemaMgfiWVqA==
+Received: from sofa.misterjones.org ([185.219.108.64]
+ helo=goblin-girl.misterjones.org)
+ by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.95)
+ (envelope-from <maz@kernel.org>) id 1tOIez-005J4X-4n;
+ Thu, 19 Dec 2024 15:41:57 +0000
+Date: Thu, 19 Dec 2024 15:41:56 +0000
+Message-ID: <86zfkrptmj.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Kashyap Chamarthy <kchamart@redhat.com>
+Cc: Eric Auger <eric.auger@redhat.com>,	Cornelia Huck <cohuck@redhat.com>,
+ Daniel =?UTF-8?B?IlAuIEJlcnJhbmfDqSI=?= <berrange@redhat.com>,
+ eric.auger.pro@gmail.com,	qemu-devel@nongnu.org,	qemu-arm@nongnu.org,
+ kvmarm@lists.linux.dev,	peter.maydell@linaro.org,
+ richard.henderson@linaro.org,	alex.bennee@linaro.org,
+ oliver.upton@linux.dev,	sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com,	armbru@redhat.com,
+ abologna@redhat.com,	jdenemar@redhat.com,	shahuang@redhat.com,
+ mark.rutland@arm.com,	philmd@linaro.org,	pbonzini@redhat.com
+Subject: Re: [PATCH RFCv2 00/20] kvm/arm: Introduce a customizable aarch64 KVM
+ host model
+In-Reply-To: <Z2Q2rWj9cV0W_XVq@gezellig>
+References: <20241206112213.88394-1-cohuck@redhat.com>
+ <edc12140-6345-4868-938d-c80c4d2c2004@redhat.com>
+ <Z1qoa8yXscTSAJ9e@redhat.com> <8734it1bv6.fsf@redhat.com>
+ <1fea79e4-7a31-4592-8495-7b18cd82d02b@redhat.com>
+ <Z2QE9AqZnpGM5sWD@gezellig> <8634ijrh8q.wl-maz@kernel.org>
+ <Z2Q2rWj9cV0W_XVq@gezellig>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kchamart@redhat.com, eric.auger@redhat.com,
+ cohuck@redhat.com, berrange@redhat.com, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvmarm@lists.linux.dev,
+ peter.maydell@linaro.org, richard.henderson@linaro.org, alex.bennee@linaro.org,
+ oliver.upton@linux.dev, sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com, armbru@redhat.com, abologna@redhat.com,
+ jdenemar@redhat.com, shahuang@redhat.com, mark.rutland@arm.com,
+ philmd@linaro.org, pbonzini@redhat.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
+ SAEximRunCond expanded to false
+Received-SPF: pass client-ip=147.75.193.91; envelope-from=maz@kernel.org;
+ helo=nyc.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,265 +102,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/12/24 15:05, David Hildenbrand wrote:
-> On 19.12.24 14:11, David Hildenbrand wrote:
->> On 19.12.24 14:04, Philippe Mathieu-Daudé wrote:
->>> Hi,
->>>
->>> On 19/12/24 12:18, David Hildenbrand wrote:
->>>> On 19.12.24 01:04, David Hildenbrand wrote:
->>>>> On 18.12.24 22:09, Stefan Hajnoczi wrote:
->>>>>> On Wed, 18 Dec 2024 at 05:55, David Hildenbrand <david@redhat.com>
->>>
->>>
->>>>>> Please take a look at the following s390x-related CI failures:
->>>>>
->>>>> Thanks, most of them seem related to this PULL.
->>>>>
->>>>>
->>>>>> https://gitlab.com/qemu-project/qemu/-/jobs/8679972912
->>>>>> https://gitlab.com/qemu-project/qemu/-/jobs/8679972809
->>>>>> https://gitlab.com/qemu-project/qemu/-/jobs/8679972931
->>>>>
->>>>> ../hw/s390x/s390-virtio-ccw.c: In function ‘s390_set_memory_limit’:
->>>>> ../hw/s390x/s390-virtio-ccw.c:138:9: error: ‘hw_limit’ may be used
->>>>> uninitialized [-Werror=maybe-uninitialized]
->>>>>       138 |         error_report("host supports a maximum of %" 
->>>>> PRIu64 "
->>>>> GB",
->>>>>           |
->>>>> ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->>>>>       139 |                      hw_limit / GiB);
->>>>>           |                      ~~~~~~~~~~~~~~~
->>>>> ../hw/s390x/s390-virtio-ccw.c:130:14: note: ‘hw_limit’ declared here
->>>>>       130 |     uint64_t hw_limit;
->>>>>           |              ^~~~~~~~
->>>>>
->>>>> Looks weird. Without kvm_enabled() ret = 0, so ret cannot be
->>>>> -E2BIG and consequently that code won't be executed.
->>>>>
->>>>> Anyhow, I'll simply initialize hw_limit to 0 to silence the warning.
->>>>>
->>>>>
->>>>>>
->>>>>> https://gitlab.com/qemu-project/qemu/-/jobs/8679972861
->>>>>
->>>>> /usr/bin/ld: libqemu-s390x-softmmu.a.p/hw_s390x_s390-skeys.c.o: in
->>>>> function `qemu_s390_enable_skeys':
->>>>> /builds/qemu-project/qemu/build/../hw/s390x/s390-skeys.c:256:
->>>>> undefined reference to `s390_get_memory_limit'
->>>>> /usr/bin/ld: libqemu-s390x-softmmu.a.p/hw_s390x_s390-hypercall.c.o: in
->>>>> function `handle_virtio_ccw_notify':
->>>>> /builds/qemu-project/qemu/build/../hw/s390x/s390-hypercall.c:46:
->>>>> undefined reference to `virtio_ccw_get_vdev'
->>>>> /usr/bin/ld: /builds/qemu-project/qemu/build/../hw/s390x/s390-
->>>>> hypercall.c:47: undefined reference to `virtio_queue_get_num'
->>>>> /usr/bin/ld: /builds/qemu-project/qemu/build/../hw/s390x/s390-
->>>>> hypercall.c:56: undefined reference to `virtio_queue_notify'
->>>>> /usr/bin/ld: libqemu-s390x-softmmu.a.p/hw_s390x_s390-hypercall.c.o: in
->>>>> function `handle_storage_limit':
->>>>> /builds/qemu-project/qemu/build/../hw/s390x/s390-hypercall.c:64:
->>>>> undefined reference to `s390_get_memory_limit'
->>>>> /usr/bin/ld: libqemu-s390x-softmmu.a.p/hw_s390x_s390-hypercall.c.o: in
->>>>> function `handle_virtio_ccw_notify':
->>>>> /builds/qemu-project/qemu/build/../hw/s390x/s390-hypercall.c:52:
->>>>> undefined reference to `virtio_get_queue'
->>>>> /usr/bin/ld: /builds/qemu-project/qemu/build/../hw/s390x/s390-
->>>>> hypercall.c:52: undefined reference to
->>>>> `virtio_queue_set_shadow_avail_idx'
->>>>>
->>>>> We're building with "--without-default-devices' '--without-default-
->>>>> feature".
->>>>> Consequently, we won't even have CONFIG_S390_CCW_VIRTIO
->>>>>
->>>>> So we won't compile s390-virtio-ccw.c, but we will compile things like
->>>>> s390-stattrib.c,
->>>>> s390-hypercall.c, ... which to me is extremely odd.
->>>>>
->>>>> Is this maybe a leftover from the time when we had the old machine
->>>>> type? What value
->>>>> is it to compile all these files without even having a machine that
->>>>> could make use
->>>>> of these?
->>>
->>>
->>>> The following on top seems to make everything happy. I wish the
->>>> CONFIG_S390_CCW_VIRTIO stuff would't have to be so complicated, just to
->>>> handle odd configs that don't really make sense.
->>>>
->>>>
->>>> I'll do some more testing, then squash the changes into the respective
->>>> patches and resend.
->>>>
->>>>
->>>> diff --git a/hw/s390x/meson.build b/hw/s390x/meson.build
->>>> index 094435cd3b..3bbebfd817 100644
->>>> --- a/hw/s390x/meson.build
->>>> +++ b/hw/s390x/meson.build
->>>> @@ -12,7 +12,6 @@ s390x_ss.add(files(
->>>>       's390-pci-inst.c',
->>>>       's390-skeys.c',
->>>>       's390-stattrib.c',
->>>> -  's390-hypercall.c',
->>>>       'sclp.c',
->>>>       'sclpcpu.c',
->>>>       'sclpquiesce.c',
->>>> @@ -28,7 +27,10 @@ s390x_ss.add(when: 'CONFIG_KVM', if_true: files(
->>>>     s390x_ss.add(when: 'CONFIG_TCG', if_true: files(
->>>>       'tod-tcg.c',
->>>>     ))
->>>> -s390x_ss.add(when: 'CONFIG_S390_CCW_VIRTIO', if_true: files('s390-
->>>> virtio-ccw.c'))
->>>> +s390x_ss.add(when: 'CONFIG_S390_CCW_VIRTIO', if_true: files(
->>>> +  's390-virtio-ccw.c',
->>>> +  's390-hypercall.c',
->>>> +))
->>>>     s390x_ss.add(when: 'CONFIG_TERMINAL3270', if_true: files('3270- 
->>>> ccw.c'))
->>>>     s390x_ss.add(when: 'CONFIG_VFIO', if_true: files('s390-pci- 
->>>> vfio.c'))
->>>>
->>>> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
->>>> index 248566f8dc..097ec78826 100644
->>>> --- a/hw/s390x/s390-virtio-ccw.c
->>>> +++ b/hw/s390x/s390-virtio-ccw.c
->>>> @@ -127,7 +127,7 @@ static void subsystem_reset(void)
->>>>     static void s390_set_memory_limit(S390CcwMachineState *s390ms,
->>>>                                       uint64_t new_limit)
->>>>     {
->>>> -    uint64_t hw_limit;
->>>> +    uint64_t hw_limit = 0;
->>>>         int ret = 0;
->>>>
->>>>         assert(!s390ms->memory_limit && new_limit);
->>>> @@ -145,13 +145,6 @@ static void
->>>> s390_set_memory_limit(S390CcwMachineState *s390ms,
->>>>         s390ms->memory_limit = new_limit;
->>>>     }
->>>>
->>>> -uint64_t s390_get_memory_limit(S390CcwMachineState *s390ms)
->>>> -{
->>>> -    /* We expect to be called only after the limit was set. */
->>>> -    assert(s390ms->memory_limit);
->>>> -    return s390ms->memory_limit;
->>>> -}
->>>> -
->>>>     static void s390_set_max_pagesize(S390CcwMachineState *s390ms,
->>>>                                       uint64_t pagesize)
->>>>     {
->>>> diff --git a/include/hw/s390x/s390-virtio-ccw.h b/include/hw/s390x/ 
->>>> s390-
->>>> virtio-ccw.h
->>>> index 5a730f5d07..599740a998 100644
->>>> --- a/include/hw/s390x/s390-virtio-ccw.h
->>>> +++ b/include/hw/s390x/s390-virtio-ccw.h
->>>> @@ -35,7 +35,12 @@ struct S390CcwMachineState {
->>>>         SCLPDevice *sclp;
->>>>     };
->>>>
->>>> -uint64_t s390_get_memory_limit(S390CcwMachineState *s390ms);
->>>
->>> Pre-existing, I'm surprised this hw/ declaration is used
->>> in s390_pv_vm_try_disable_async() in target/s390x/kvm/pv.c.
->>
->> That is added in patch #12, though.
->>
->>>
->>>
->>> In hw/s390x/Kconfig, S390_CCW_VIRTIO doesn't depend on KVM,
->>
->> Right.
->>
->>> but due to this call, KVM depends on S390_CCW_VIRTIO...
->>
->> Right, that's why I opted for inlining for now.
->>
->>>
->>>> +static inline uint64_t s390_get_memory_limit(S390CcwMachineState 
->>>> *s390ms)
->>>> +{
->>>> +    /* We expect to be called only after the limit was set. */
->>>> +    assert(s390ms->memory_limit);
->>>> +    return s390ms->memory_limit;
->>>> +}
->>>
->>> Short term, no better suggestion than inlining :(
->>
->> Yes. And I suspect we do have similar compilation problems, that simply
->> nobody noticed so far.
->>
->> For example, hpage_1m_allowed() resides in hw/s390x/s390-virtio-ccw.c,
->> but is called from target/s390x/kvm/kvm.c ...
->>
->> So building QEMU with KVM but without CONFIG_S390_CCW_VIRTIO should make
->> the linker unhappy :/ :(
-> 
-> And indeed with KVM, what a mess.
-> 
-> /usr/bin/ld: libqemu-s390x-softmmu.a.p/target_s390x_kvm_kvm.c.o: in 
-> function `kvm_s390_set_max_pagesize':
-> /home/dhildenb/qemu/build/../target/s390x/kvm/kvm.c:300: undefined 
-> reference to `hpage_1m_allowed'
-> /usr/bin/ld: libqemu-s390x-softmmu.a.p/target_s390x_kvm_kvm.c.o: in 
-> function `kvm_arch_init':
-> /home/dhildenb/qemu/build/../target/s390x/kvm/kvm.c:376: undefined 
-> reference to `ri_allowed'
-> /usr/bin/ld: /home/dhildenb/qemu/build/../target/s390x/kvm/kvm.c:381: 
-> undefined reference to `cpu_model_allowed'
-> /usr/bin/ld: /home/dhildenb/qemu/build/../target/s390x/kvm/kvm.c:391: 
-> undefined reference to `cpu_model_allowed'
-> /usr/bin/ld: /home/dhildenb/qemu/build/../target/s390x/kvm/kvm.c:381: 
-> undefined reference to `cpu_model_allowed'
-> /usr/bin/ld: /home/dhildenb/qemu/build/../target/s390x/kvm/kvm.c:391: 
-> undefined reference to `cpu_model_allowed'
-> /usr/bin/ld: libqemu-s390x-softmmu.a.p/target_s390x_kvm_kvm.c.o: in 
-> function `handle_diag':
-> /home/dhildenb/qemu/build/../target/s390x/kvm/kvm.c:1590: undefined 
-> reference to `handle_diag_500'
-> /usr/bin/ld: libqemu-s390x-softmmu.a.p/target_s390x_kvm_kvm.c.o: in 
-> function `kvm_s390_cpu_models_supported':
-> /home/dhildenb/qemu/build/../target/s390x/kvm/kvm.c:2354: undefined 
-> reference to `cpu_model_allowed'
-> 
-> I can fix the handle_diag_500() similarly up here as done for TCG, 
-> although I think
-> we want to clean this up differently.
-> 
-> Most code doesn't make any sense without an actual s390x machine.
+On Thu, 19 Dec 2024 15:07:25 +0000,
+Kashyap Chamarthy <kchamart@redhat.com> wrote:
+>=20
+> On Thu, Dec 19, 2024 at 12:26:29PM +0000, Marc Zyngier wrote:
+> > On Thu, 19 Dec 2024 11:35:16 +0000,
+> > Kashyap Chamarthy <kchamart@redhat.com> wrote:
+>=20
+> [...]
+>=20
+> > > Consider this:
+> > >=20
+> > > Say, there's a serious security issue in a released ARM CPU.  As part=
+ of
+> > > the fix, two new CPU flags need to be exposed to the guest OS, call t=
+hem
+> > > "secflag1" and "secflag2".  Here, the user is configuring a baseline
+> > > model + two extra CPU flags, not to get close to some other CPU model
+> > > but to mitigate itself against a serious security flaw.
+> >=20
+> > If there's such a security issue, that the hypervisor's job to do so,
+> > not userspace.=20
+>=20
+> I don't disagree.  Probably that has always been the case on ARM.  I
+> asked the above based on how QEMU on x86 handles it today.
+>=20
+> > See what KVM does for CSV3, for example (and all the
+> > rest of the side-channel stuff).
+>=20
+> Noted.  From a quick look in the kernel tree, I assume you're referring
+> to these commits[1].
+>=20
+> > You can't rely on userspace for security, that'd be completely
+> > ludicrous.
+>=20
+> As Dan Berrang=C3=A9 points out, it's the bog-standard way QEMU deals with
+> some of the CPU-related issues on x86 today.  See this "important CPU
+> flags"[2] section in the QEMU docs.
 
-Agreed, don't waste time on that now, I'll likely have a look at
-that in few months.
+I had a look, and we do things quite differently. For example, the
+spec-ctrl equivalent in implemented in FW and in KVM, and is exposed
+by default if the HW is vulnerable. Userspace could hide that the
+mitigation is there, but that's the extent of the configurability.
 
-> 
-> diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-> index dd0322c43a..32cf70bb19 100644
-> --- a/target/s390x/kvm/kvm.c
-> +++ b/target/s390x/kvm/kvm.c
-> @@ -51,6 +51,7 @@
->   #include "hw/s390x/s390-virtio-ccw.h"
->   #include "hw/s390x/s390-virtio-hcall.h"
->   #include "target/s390x/kvm/pv.h"
-> +#include CONFIG_DEVICES
-> 
->   #define kvm_vm_check_mem_attr(s, attr) \
->       kvm_vm_check_attr(s, KVM_S390_VM_MEM_CTRL, attr)
-> @@ -1494,9 +1495,11 @@ static int handle_e3(S390CPU *cpu, struct kvm_run 
-> *run, uint8_t ipbl)
->   static int handle_hypercall(S390CPU *cpu, struct kvm_run *run)
->   {
->       CPUS390XState *env = &cpu->env;
-> -    int ret;
-> +    int ret = -EINVAL;
-> 
-> +#ifdef CONFIG_S390_CCW_VIRTIO
->       ret = s390_virtio_hypercall(env);
-> +#endif /* CONFIG_S390_CCW_VIRTIO */
->       if (ret == -EINVAL) {
->           kvm_s390_program_interrupt(cpu, PGM_SPECIFICATION);
->           return 0;
-> 
-> stupid "none"-only configs that probably nobody needs ...
+>=20
+> Mind you, I'm _not_ saying this is how ARM should do it.  I don't know
+> enough about ARM to make such remarks.
+>=20
+>     * * *
+>=20
+> To reply to your other question on this thread[3] about "which ABI?"  I
+> think Dan is talking about the *guest* ABI: the virtual "chipset" that
+> is exposed to a guest (e.g. PCI(e) topology, ACPI tables, CPU model,
+> etc).  As I understand it, this "guest ABI" should remain predictable,
+> regardless of:
+>=20
+>   - whether you're updating KVM, QEMU, or the underlying physical
+>     hardware itself; or
+>   - if the guest is migrated, live or offline
+>=20
+> (As you might know, QEMU's "machine types" concept allows to create a
+> stable guest ABI.)
 
-I'm using it as starting point for heterogeneous machines...
-This is why I noticed your PR comment and jumped in =)
+All of this is under control of QEMU, *except* for the "maximum" of
+the architectural features exposed to the guest. All you can do is
+*downgrade* from there, and only to a limited extent.
+
+That, in turn has a direct impact on what you call the "CPU model",
+which for the ARM architecture really doesn't exist. All we have is a
+bag of discrete features, with intricate dependencies between them.
+
+Even ignoring virtualisation: you can readily find two machines using
+the same CPUs (let's say Neoverse-N1), integrated by the same vendor
+(let's say, Ampere), in SoCs that bear the same name (Altra), and
+realise that they have a different feature set. Fun, isn't it?
+
+That's why I don't see CPU models as a viable thing in terms of ABI.
+They are an approximation of what you could have, but the ABI is
+elsewhere.
+
+Thanks,
+
+	M.
+
+--=20
+Without deviation from the norm, progress is not possible.
 
