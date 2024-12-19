@@ -2,79 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A76D9F7708
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:15:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6039A9F7774
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:35:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOBgH-0005wX-VJ; Thu, 19 Dec 2024 03:14:49 -0500
+	id 1tOC0K-0002sv-Sh; Thu, 19 Dec 2024 03:35:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tOBgF-0005nM-33
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:14:47 -0500
-Received: from mgamail.intel.com ([192.198.163.19])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tOC09-0002Ro-3l
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:35:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tOBgD-0000Kl-8P
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:14:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734596085; x=1766132085;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=HyQNL2QRST3bzAofC6NdSneNk+dJQgGE9UE8ka+3X3M=;
- b=bFObPyP/42X7hgOEHVtaSX83maSx9ppMIQejSEWnOoFb0g5HkrShqR8U
- 5ye71wVYUtAWLFZYscryg7jLVrP9cA56IHpr08dV8W4y3Aug3OHikkC1A
- O3J2el2XswgibO57hQPtpaS197odVARFtkxr9CowJCTsODIuItsQxBO49
- ZPMw5qE7dAkajwo/Bl7ZSF3SMQeZk6HB5KCMJXv1bAXSDNYn1Old01xD2
- MVpVrEVC0/0koaTP5VJjq/DncpeQOUHsEJcwXEcI83O0f7dfeh+GQsaEy
- JYyQMCrlKNB/I1Ud89+Nm1WJMAB3ExjJTT8CXivRij2IRK6rJnia3An9W w==;
-X-CSE-ConnectionGUID: RdvtOebYSZqXDQ33SVV2bg==
-X-CSE-MsgGUID: AC8qWGOkQ6CusS2tIgz3vQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="34378675"
-X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; d="scan'208";a="34378675"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Dec 2024 00:14:29 -0800
-X-CSE-ConnectionGUID: 6Zn6Kp97QoubQDBwujTxcw==
-X-CSE-MsgGUID: 3p7A14JdQe+SIqaC6tm+xg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="129097570"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 19 Dec 2024 00:14:26 -0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Alireza Sanaee <alireza.sanaee@huawei.com>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v6 4/4] i386/cpu: add has_caches flag to check smp_cache
- configuration
-Date: Thu, 19 Dec 2024 16:32:37 +0800
-Message-Id: <20241219083237.265419-5-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241219083237.265419-1-zhao1.liu@intel.com>
-References: <20241219083237.265419-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tOC07-0005bV-Fn
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:35:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1734597318;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=p1WB+QCi8QxvAnIXxLlq4yzNvrA/qS+1fasfpQsEHcc=;
+ b=WEENaWGNbGfW/Qs9rHKdc4sSWdNZ3IVI+0klCHHbo3HqqEc/qDyD9MQv2h/aBxD1JzlHEO
+ OrdoG4C8gAlEk5/PZa+CTmrFfCPxXEdWQHdjuPqtHBXPPklzaCRc4JGHwMFFcY+KlHQ4bA
+ ssVK5PFEke73gcMMXV3c3UFX+MSRDrk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-148-a91hB2DcMtanN13mmarEfw-1; Thu, 19 Dec 2024 03:35:17 -0500
+X-MC-Unique: a91hB2DcMtanN13mmarEfw-1
+X-Mimecast-MFC-AGG-ID: a91hB2DcMtanN13mmarEfw
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-436219070b4so2737985e9.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:35:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734597316; x=1735202116;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=p1WB+QCi8QxvAnIXxLlq4yzNvrA/qS+1fasfpQsEHcc=;
+ b=Osera6KnAqxLFOPRVPUZJ4NuqOIT3YxAMWJBgYidnNQABtiS4uNAX4wvATWURt+S5R
+ BE79f53HoaMxIKr98vJep2aPJ5kW0ssx0skJ/TS2qKcitXpgvt454blVzkBTSOZJlmVT
+ fMfaYN9rYldkZlA4hsNTIJTeT/DCGD2ocskV7O6ZjynBar4Q+TqDrOtpVwK7Nbh1Sl0F
+ MuxHr5iaizQLXYvdqTjBIW63YqzjhXgMlRS8tqMLMHR6nN3CB4FoEdcL4NnnaB3V65zm
+ 9xnKyFesiAcrUzKkRcWSEE3HoPxjPTr/PaKQtxaSP+q7eFwD+fcjqMt6htfeKhVFNWTy
+ Ty3Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVuIc8fsUPngQqbEfeI4LBBNIln8xI7stb7MWNjRzT3amtPt6Ree8cj9sjS6csmJPsZwIxyNsAsKaZy@nongnu.org
+X-Gm-Message-State: AOJu0Ywu2Po4XbrCRxtok6Tg6tGVdlCQr/B63CU/EYr5/PcppRB1SzuH
+ fxLX9VhcoSPeBC6BRG0zcESGH7Ij+9zTVahyaDtx/9ZwHIi0dG6vd2QL80P5IFpcpJuL6pMeuDW
+ LssH9yt1kRuV1bdAeS5+yYg3mfiGFACFF+zMeNGtfqCepLt1WMhw2E2kMp8W/
+X-Gm-Gg: ASbGncsHtJqJNxhxHYd1epf/w3a/X5bDTEAd1JGT3xdGJlhQDpPtxMHgxXaFVzilvRB
+ 9XdJFKuY9oh19O6W/76pxU9hZV9dfC1mkU34bFTJrkPdjWYp0PMxAvPT7NRW5lFEjdMKxoiU6hW
+ v8fyLtxz2pnj0t9+BuayolJeR19t+s9JXwnkmxeoppri20Jc9OorU6elvtohurgerAIi0/uXq9p
+ JSXuX8TerlFh80MbQEnVZ0dhV/WmxavG/hI0qsDkeiOAUhHhxWNoHuTYobXJCQiNmo3a2mSxNl0
+ wdpJGAlQMBhA
+X-Received: by 2002:a05:600c:198d:b0:434:ff08:202b with SMTP id
+ 5b1f17b1804b1-43655360633mr55622925e9.12.1734597316304; 
+ Thu, 19 Dec 2024 00:35:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHkd5VAIhmxLX4Qs1QWoZVsvBrvVNs052BQgRpeSkivXk+KFru5irjKMjuJZMosWnO814yCvg==
+X-Received: by 2002:a05:600c:198d:b0:434:ff08:202b with SMTP id
+ 5b1f17b1804b1-43655360633mr55622715e9.12.1734597315970; 
+ Thu, 19 Dec 2024 00:35:15 -0800 (PST)
+Received: from [192.168.0.6] (ip-109-42-49-186.web.vodafone.de.
+ [109.42.49.186]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4366127c4b0sm11144115e9.35.2024.12.19.00.35.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 19 Dec 2024 00:35:14 -0800 (PST)
+Message-ID: <7e6fd4ed-ee93-48eb-ab12-fd9aa30e6898@redhat.com>
+Date: Thu, 19 Dec 2024 09:35:13 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests/functional: Convert the kvm_xen_guest avocado test
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
+Cc: Paul Durrant <paul@xen.org>
+References: <20241218113255.232356-1-thuth@redhat.com>
+ <9B5DDDDB-769B-4654-BEF1-D3F853EA05E5@infradead.org>
+ <1d4faf8e-b2cd-42b8-a6a7-9034b9512b86@redhat.com>
+ <8cef1bf9ffde6779ad322534c4469e6687b9c9d7.camel@infradead.org>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <8cef1bf9ffde6779ad322534c4469e6687b9c9d7.camel@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,88 +153,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alireza Sanaee <alireza.sanaee@huawei.com>
+On 18/12/2024 23.14, David Woodhouse wrote:
+> On Wed, 2024-12-18 at 16:54 +0100, Thomas Huth wrote:
+>> On 18/12/2024 12.48, David Woodhouse wrote:
+>>> On 18 December 2024 12:32:49 CET, Thomas Huth <thuth@redhat.com> wrote:
+>>>> Use the serial console to execute the commands in the guest instead
+>>>> of using ssh since we don't have ssh support in the functional
+>>>> framework yet.
+>>>>
+>>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>>>
+>>> Hm, but serial is lossy and experience shows that it leads to flaky tests if the guest (or host) misses bytes. While SSH would just go slower.
+>>
+>> I now noticed some issue with the serial console in this test, too.
+>> Looks like the "Starting dropbear sshd: OK" is not print in an atomic way by
+>> the guest, sometimes there are other kernel messages between the ":" and the
+>> "OK". It works reliable when removing the "OK" from the string.
+> 
+> Nah, that still isn't atomic; you just got lucky because the race
+> window is smaller. It's not like serial ports are at a premium; can't
+> you have a separate port for kernel vs. userspace messages?
 
-Add has_caches flag to SMPCompatProps, which helps in avoiding
-extra checks for every single layer of caches in x86 (and ARM in
-future).
+Maybe easiest solution: Simply add "quiet" to the kernel command line, then 
+it does not write the kernel messages to the serial console anymore.
 
-Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
-Note: Picked from Alireza's series with the changes:
- * Moved the flag to SMPCompatProps with a new name "has_caches".
-   This way, it remains consistent with the function and style of
-   "has_clusters" in SMPCompatProps.
- * Dropped my previous TODO with the new flag.
----
-Changes since Patch v2:
- * Picked a new patch frome Alireza's ARM smp-cache series.
----
- hw/core/machine-smp.c |  2 ++
- include/hw/boards.h   |  3 +++
- target/i386/cpu.c     | 11 +++++------
- 3 files changed, 10 insertions(+), 6 deletions(-)
-
-diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
-index b954eb849027..fe66961341fe 100644
---- a/hw/core/machine-smp.c
-+++ b/hw/core/machine-smp.c
-@@ -325,6 +325,8 @@ bool machine_parse_smp_cache(MachineState *ms,
-             return false;
-         }
-     }
-+
-+    mc->smp_props.has_caches = true;
-     return true;
- }
- 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index 5723ee76bdea..c647e507d1a9 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -156,6 +156,8 @@ typedef struct {
-  * @modules_supported - whether modules are supported by the machine
-  * @cache_supported - whether cache (l1d, l1i, l2 and l3) configuration are
-  *                    supported by the machine
-+ * @has_caches - whether cache properties are explicitly specified in the
-+ *               user provided smp-cache configuration
-  */
- typedef struct {
-     bool prefer_sockets;
-@@ -166,6 +168,7 @@ typedef struct {
-     bool drawers_supported;
-     bool modules_supported;
-     bool cache_supported[CACHE_LEVEL_AND_TYPE__MAX];
-+    bool has_caches;
- } SMPCompatProps;
- 
- /**
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index bd5620dcc086..a9700fba991f 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -8039,13 +8039,12 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
- 
- #ifndef CONFIG_USER_ONLY
-     MachineState *ms = MACHINE(qdev_get_machine());
-+    MachineClass *mc = MACHINE_GET_CLASS(ms);
- 
--    /*
--     * TODO: Add a SMPCompatProps.has_caches flag to avoid useless updates
--     * if user didn't set smp_cache.
--     */
--    if (!x86_cpu_update_smp_cache_topo(ms, cpu, errp)) {
--        return;
-+    if (mc->smp_props.has_caches) {
-+        if (!x86_cpu_update_smp_cache_topo(ms, cpu, errp)) {
-+            return;
-+        }
-     }
- 
-     qemu_register_reset(x86_cpu_machine_reset_cb, cpu);
--- 
-2.34.1
+  Thomas
 
 
