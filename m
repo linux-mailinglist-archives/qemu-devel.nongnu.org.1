@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C9E59F7FD2
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:30:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF5C49F7FAF
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:26:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJH1-0004oL-1F; Thu, 19 Dec 2024 11:21:17 -0500
+	id 1tOJFQ-0001mI-IN; Thu, 19 Dec 2024 11:19:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOFOP-00066L-3A
+ id 1tOFOP-00066M-MW
  for qemu-devel@nongnu.org; Thu, 19 Dec 2024 07:12:38 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOFOM-000899-DY
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 07:12:36 -0500
+ id 1tOFON-00089d-Vg
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 07:12:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734610352;
+ s=mimecast20190719; t=1734610355;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MFM1GOCm15L/cPIdOg468IxeTeTqWnTkcNuwrJVlvEk=;
- b=eJ76o8+IAa1ACvFyaYt7Fy4koZidTho5lhScALrt1YwMyBM4qBfd4q6THgDNkID4FFjV+q
- vMXSm7U7OL91TM/cSbS6wEGf3fCKi5PiMDgH4d8kdqzDuiEuNEXOL8wfiPMTD8APlKjVls
- 2mUY+9gLc+VgD0mdWHNHxiX+3TpUaIo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=s6nygS97dluqx/BeGp3uSmNclmtr8ycVi93iMqAtirw=;
+ b=ZY/IY5mHC74yyMzxsyHsm2szV1iMhebsxpz2DjHLMtDBdkDPjWGTmRLHa6i8Vj/X1a5n0W
+ CJYssrnHfyvhWhNGfnLiaPLcaiC8RF/nZxrkJLchnJ3EQ3Jm5lSQrU7BGDzRF4TB7rFFtw
+ ZEN76AUDE3NyKfBEhWPgcsVHFJ0Lpa4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-365-eFX-leFHO8GeYyZkCN4oJQ-1; Thu, 19 Dec 2024 07:12:31 -0500
-X-MC-Unique: eFX-leFHO8GeYyZkCN4oJQ-1
-X-Mimecast-MFC-AGG-ID: eFX-leFHO8GeYyZkCN4oJQ
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4362f893bfaso4300335e9.1
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 04:12:31 -0800 (PST)
+ us-mta-688-LX4o54gSPBaM84RnFei4Qw-1; Thu, 19 Dec 2024 07:12:34 -0500
+X-MC-Unique: LX4o54gSPBaM84RnFei4Qw-1
+X-Mimecast-MFC-AGG-ID: LX4o54gSPBaM84RnFei4Qw
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-43625ceae52so4351855e9.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 04:12:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734610349; x=1735215149;
+ d=1e100.net; s=20230601; t=1734610352; x=1735215152;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MFM1GOCm15L/cPIdOg468IxeTeTqWnTkcNuwrJVlvEk=;
- b=UJhnTsUeW5Ax5p4KeW5TY5P/iG7Z6WAsC3K4bmDiD23YNLyBKfL+t2fgf3/OGuEMMT
- sf3WL9KhAlQEYrw2MHT9/n27hvhnzGegCP4NtBS05WWzggGK4PI+0JLODuAsaUMskQ9N
- kPH2dcv9+K8yI9+Vcet0mxPzeomMh2SWO3DhTotw8IOrkBMUfZmEeuvEqkeZF64GIfUq
- ybdJ9MHoXae8DTsEU4Nenrz+pQMHv06lKW7m1EwiMawL47Jk8IRV3tvH8CRJjCSUA2ia
- CobqZrokowE2WynzciNCcPFf3otrtrEo0lhG0FYrFdui/0S8jvu5nqwilN07nJUoj8us
- FoqA==
-X-Gm-Message-State: AOJu0YzIEVg/RLKpzwl6C9kwgeyG1xsDT1Tum2s6miXpsEoephFtQlZn
- n8MPYF1limpb+sqcCneyG8QtuPRU2Gns2e903lbWy0vbG2/fsXiZN7psBJnay5I/Hvcds0ZY3D4
- KmIA4vPaaWK29STQI3efGQjtKoLHAdKgyc1+cYfzXKAlg3Ddf8pcw8sWv0HHRZmc+q7SLWoJd6H
- U1boMc3oBGtLEi5ZNptCmMYYGo/c6aU1TjPxqd
-X-Gm-Gg: ASbGnct+Xoex8MKIPi8tfXua3TNIcX1Cmj89kjVscmZ+EriN+/d472j9t0YfVfxHaFr
- wv5aeqbX84VXSmObvOGl+lUH8mKirk0PITL9Lb7gcfpZx8P+aAyUzCb56/CXXHMzE/v/cOelWHx
- F0XSRHSHcCM5mrkLniI6d2Cn8vRZhnBqCDf2wFYqsbjYDLxs0hNPGJCeowBFKeIB5CS2U53fHPB
- Vqgz+bIrFAQwwEB9xJB7WHQKMk+zJwLcqmMkRi2KBwwkxNc3yZNHNTIKGkX
-X-Received: by 2002:a05:600c:4e8d:b0:434:a59c:43c6 with SMTP id
- 5b1f17b1804b1-436553fe252mr49982355e9.26.1734610349669; 
- Thu, 19 Dec 2024 04:12:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGqqjoeSmDmnBsO3Xk+9gkFZGZo+5L/bZKpFkIrRTdwIgTgSfw5+ohJf2luSFozGEh4bD2WAw==
-X-Received: by 2002:a05:600c:4e8d:b0:434:a59c:43c6 with SMTP id
- 5b1f17b1804b1-436553fe252mr49982175e9.26.1734610349230; 
- Thu, 19 Dec 2024 04:12:29 -0800 (PST)
+ bh=s6nygS97dluqx/BeGp3uSmNclmtr8ycVi93iMqAtirw=;
+ b=e8LXmcg6aYsM2M54fszjkVOSlTWgrrDBwkWhT+gPf6ltHicPxLg49n1MxYnIaO8dm+
+ /IV63oouP4Fd7OKtVm8yA/idkhalpJNa4tX1rQNnDdDxdlQALcsHusNFEWe7YTDQWHWv
+ v1dXi/tSC++IxSx63krLX5UjtP6UixnSPkxW/GKE+GiP3R9n/6fEsi9EbLgWSxtwoZdY
+ TE0Zb9mmbaTv+LIFG6q1jq9p2CHapQWh/vf61xKk5y69Lu4YmQ3hD+McsUxt+DbEfAtW
+ GP3QrGfiCzYu6PTONghurJ/TyTISPjqSy/iCjLECQt7XAEqmVFak0Od+SBzON67+l6T/
+ lBJg==
+X-Gm-Message-State: AOJu0Yyu+MvvHZEjI7E8hT5Gc6GBbmIprgSJ8PgLwcZT03RGUH0IICiO
+ l7lEMI5Nj1XeWYCvtfcaPZFu9BdqMRkz3fxXSBNJWseDz0zcJF+UHLmX2BiCjNbQjLMFsWYkpXz
+ ShHTLpVKg+bEwE3TTuKLYrLOW5XGcH6QYN16Xi2b4QiHMxNioOo0X5nLFAgX7LSyJsXS7fgc4zw
+ lxgz2FI5WY2qCWflCsklCBuIrjfo5YGyJmREv+
+X-Gm-Gg: ASbGncs8S7jbHZz7SFSbVxlb4QEezOn1Po5nD9JCOosrq5X3isnCRbJeQN+8vlnxyhw
+ f8D0jf/YGJ+6aNq64JI1RLFRMtuT40prfkgAVsYxacXwWtjH7EZx4ipC4XXZrqA++tIgQEbXiF7
+ 4lwj5kAtzlhT01zqNePBHlnigV9ihDRmNCydRmXTJdSMLwAZghB/ByQPZjVXz9gm6TVQ7MztFHK
+ tLyBXgoozA7lyrVYl8p1GeoCvWcQFe4xmPEhtXEXE3R+p5LSB+QeCBFKkZL
+X-Received: by 2002:a05:6000:156c:b0:385:f220:f788 with SMTP id
+ ffacd0b85a97d-388e4dad7b7mr6318064f8f.48.1734610351694; 
+ Thu, 19 Dec 2024 04:12:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGXLEWpbID6WJom2RkjUcAVDjCHTbt5/SVlufliM1MucKhzTOpUxdcYhp/FoZZdM13qfJFoaw==
+X-Received: by 2002:a05:6000:156c:b0:385:f220:f788 with SMTP id
+ ffacd0b85a97d-388e4dad7b7mr6318033f8f.48.1734610351240; 
+ Thu, 19 Dec 2024 04:12:31 -0800 (PST)
 Received: from [192.168.10.47] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436611ea387sm16221995e9.6.2024.12.19.04.12.28
+ ffacd0b85a97d-38a1c832e1bsm1427795f8f.31.2024.12.19.04.12.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 04:12:28 -0800 (PST)
+ Thu, 19 Dec 2024 04:12:29 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: zhao1.liu@intel.com
-Subject: [PATCH 05/10] rust: qom: automatically use Drop trait to implement
- instance_finalize
-Date: Thu, 19 Dec 2024 13:12:11 +0100
-Message-ID: <20241219121216.416905-6-pbonzini@redhat.com>
+Subject: [PATCH 06/10] rust: qom: move device_id to PL011 class side
+Date: Thu, 19 Dec 2024 13:12:12 +0100
+Message-ID: <20241219121216.416905-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219121216.416905-1-pbonzini@redhat.com>
 References: <20241219121216.416905-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -106,53 +105,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace the customizable INSTANCE_FINALIZE with a generic function
-that drops the Rust object.
+There is no need to monkeypatch DeviceId::Luminary into the already-initialized
+PL011State.  Instead, now that we can define a class hierarchy, we can define
+PL011Class and make device_id a field in there.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+There is also no need anymore to have "Arm" as zero, so change DeviceId into a
+wrapper for the array; all it does is provide an Index<hwaddr> implementation
+because arrays can only be indexed by usize.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/qom.rs | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ rust/hw/char/pl011/src/device.rs | 59 +++++++++++++++-----------------
+ 1 file changed, 28 insertions(+), 31 deletions(-)
 
-diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
-index 1341a173893..861f1e50ac4 100644
---- a/rust/qemu-api/src/qom.rs
-+++ b/rust/qemu-api/src/qom.rs
-@@ -180,6 +180,16 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
-     T::class_init(unsafe { &mut *klass.cast::<T::Class>() })
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index 689202f4550..215f94a6e4a 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -5,7 +5,7 @@
+ use core::ptr::{addr_of_mut, NonNull};
+ use std::{
+     ffi::CStr,
+-    os::raw::{c_int, c_uchar, c_uint, c_void},
++    os::raw::{c_int, c_uint, c_void},
+ };
+ 
+ use qemu_api::{
+@@ -14,7 +14,7 @@
+     irq::InterruptSource,
+     prelude::*,
+     qdev::DeviceImpl,
+-    qom::{ObjectImpl, ParentField},
++    qom::{ClassInitImpl, ObjectImpl, ParentField},
+ };
+ 
+ use crate::{
+@@ -33,27 +33,20 @@
+ /// QEMU sourced constant.
+ pub const PL011_FIFO_DEPTH: u32 = 16;
+ 
+-#[derive(Clone, Copy, Debug)]
+-enum DeviceId {
+-    #[allow(dead_code)]
+-    Arm = 0,
+-    Luminary,
+-}
++#[derive(Clone, Copy)]
++struct DeviceId(&'static [u8; 8]);
+ 
+ impl std::ops::Index<hwaddr> for DeviceId {
+-    type Output = c_uchar;
++    type Output = u8;
+ 
+     fn index(&self, idx: hwaddr) -> &Self::Output {
+-        match self {
+-            Self::Arm => &Self::PL011_ID_ARM[idx as usize],
+-            Self::Luminary => &Self::PL011_ID_LUMINARY[idx as usize],
+-        }
++        &self.0[idx as usize]
+     }
  }
  
-+unsafe extern "C" fn drop_object<T: ObjectImpl>(obj: *mut Object) {
-+    // SAFETY: obj is an instance of T, since drop_object<T> is called
-+    // from the QOM core function object_deinit() as the instance_finalize
-+    // function for class T.  Note that while object_deinit() will drop the
-+    // superclass field separately after this function returns, `T` must
-+    // implement the unsafe trait ObjectType; the safety rules for the
-+    // trait mandate that the parent field is manually dropped.
-+    unsafe { std::ptr::drop_in_place(obj.cast::<T>()) }
+ impl DeviceId {
+-    const PL011_ID_ARM: [c_uchar; 8] = [0x11, 0x10, 0x14, 0x00, 0x0d, 0xf0, 0x05, 0xb1];
+-    const PL011_ID_LUMINARY: [c_uchar; 8] = [0x11, 0x00, 0x18, 0x01, 0x0d, 0xf0, 0x05, 0xb1];
++    const ARM: Self = Self(&[0x11, 0x10, 0x14, 0x00, 0x0d, 0xf0, 0x05, 0xb1]);
++    const LUMINARY: Self = Self(&[0x11, 0x00, 0x18, 0x01, 0x0d, 0xf0, 0x05, 0xb1]);
+ }
+ 
+ // FIFOs use 32-bit indices instead of usize, for compatibility with
+@@ -126,17 +119,28 @@ pub struct PL011State {
+     pub clock: NonNull<Clock>,
+     #[doc(alias = "migrate_clk")]
+     pub migrate_clock: bool,
+-    /// The byte string that identifies the device.
+-    device_id: DeviceId,
+ }
+ 
+ qom_isa!(PL011State : SysBusDevice, DeviceState, Object);
+ 
++pub struct PL011Class {
++    parent_class: <SysBusDevice as ObjectType>::Class,
++    /// The byte string that identifies the device.
++    device_id: DeviceId,
 +}
 +
- /// Trait exposed by all structs corresponding to QOM objects.
- ///
- /// # Safety
-@@ -438,7 +448,6 @@ pub trait ObjectImpl: ObjectType + ClassInitImpl<Self::Class> {
+ unsafe impl ObjectType for PL011State {
+-    type Class = <SysBusDevice as ObjectType>::Class;
++    type Class = PL011Class;
+     const TYPE_NAME: &'static CStr = crate::TYPE_PL011;
+ }
  
-     /// Whether the object can be instantiated
-     const ABSTRACT: bool = false;
--    const INSTANCE_FINALIZE: Option<unsafe extern "C" fn(obj: *mut Object)> = None;
++impl ClassInitImpl<PL011Class> for PL011State {
++    fn class_init(klass: &mut PL011Class) {
++        klass.device_id = DeviceId::ARM;
++        <Self as ClassInitImpl<SysBusDeviceClass>>::class_init(&mut klass.parent_class);
++    }
++}
++
+ impl ObjectImpl for PL011State {
+     type ParentType = SysBusDevice;
  
-     /// Function that is called to initialize an object.  The parent class will
-     /// have already been initialized so the type is only responsible for
-@@ -474,7 +483,7 @@ pub trait ObjectImpl: ObjectType + ClassInitImpl<Self::Class> {
-             None => None,
-             Some(_) => Some(rust_instance_post_init::<Self>),
-         },
--        instance_finalize: Self::INSTANCE_FINALIZE,
-+        instance_finalize: Some(drop_object::<Self>),
-         abstract_: Self::ABSTRACT,
-         class_size: core::mem::size_of::<Self::Class>(),
-         class_init: Some(rust_class_init::<Self>),
+@@ -214,7 +218,8 @@ pub fn read(&mut self, offset: hwaddr, _size: c_uint) -> std::ops::ControlFlow<u
+ 
+         let value = match RegisterOffset::try_from(offset) {
+             Err(v) if (0x3f8..0x400).contains(&(v >> 2)) => {
+-                u32::from(self.device_id[(offset - 0xfe0) >> 2])
++                let device_id = self.get_class().device_id;
++                u32::from(device_id[(offset - 0xfe0) >> 2])
+             }
+             Err(_) => {
+                 // qemu_log_mask(LOG_GUEST_ERROR, "pl011_read: Bad offset 0x%x\n", (int)offset);
+@@ -648,16 +653,10 @@ pub struct PL011Luminary {
+     parent_obj: ParentField<PL011State>,
+ }
+ 
+-impl PL011Luminary {
+-    /// Initializes a pre-allocated, unitialized instance of `PL011Luminary`.
+-    ///
+-    /// # Safety
+-    ///
+-    /// We expect the FFI user of this function to pass a valid pointer, that
+-    /// has the same size as [`PL011Luminary`]. We also expect the device is
+-    /// readable/writeable from one thread at any time.
+-    unsafe fn init(&mut self) {
+-        self.parent_obj.device_id = DeviceId::Luminary;
++impl ClassInitImpl<PL011Class> for PL011Luminary {
++    fn class_init(klass: &mut PL011Class) {
++        klass.device_id = DeviceId::LUMINARY;
++        <Self as ClassInitImpl<SysBusDeviceClass>>::class_init(&mut klass.parent_class);
+     }
+ }
+ 
+@@ -670,8 +669,6 @@ unsafe impl ObjectType for PL011Luminary {
+ 
+ impl ObjectImpl for PL011Luminary {
+     type ParentType = PL011State;
+-
+-    const INSTANCE_INIT: Option<unsafe fn(&mut Self)> = Some(Self::init);
+ }
+ 
+ impl DeviceImpl for PL011Luminary {}
 -- 
 2.47.1
 
