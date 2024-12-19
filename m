@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B47BB9F7374
+	by mail.lfdr.de (Postfix) with ESMTPS id 667AE9F7372
 	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 04:42:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tO7P8-00071e-SR; Wed, 18 Dec 2024 22:40:50 -0500
+	id 1tO7PC-000745-87; Wed, 18 Dec 2024 22:40:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tO7P7-00071K-0O; Wed, 18 Dec 2024 22:40:49 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1tO7PA-00072A-4x; Wed, 18 Dec 2024 22:40:52 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tO7P5-0004I2-Fe; Wed, 18 Dec 2024 22:40:48 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-21661be2c2dso2811105ad.1; 
- Wed, 18 Dec 2024 19:40:46 -0800 (PST)
+ id 1tO7P8-0004IR-Ek; Wed, 18 Dec 2024 22:40:51 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-2166f1e589cso3871365ad.3; 
+ Wed, 18 Dec 2024 19:40:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734579645; x=1735184445; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1734579648; x=1735184448; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bMMfLBkMrY+DVueinUNWjTYlxFYKuSCnv3bBp02CQwM=;
- b=U2Y92zaV5fGD5GM0qatzVdDrcZoaW1Pm4jkrcrQyr3IDzP62aOuWO1mSIZonBChThp
- b/20kPfuW7FbLTW4m3k67JlZys7lNIBI6BIBVFUPfakJNskX2qtQtwifN1GbxMnTOGGT
- zp65Kv1BnDcA4KpDzCx0zjYpS43/Rr8kzKGKZT2i0USzDASPVfvOIacbvLeMSg4+uexi
- L1K8GdtTxNS3XYuQRNRn3x7RmIb6pIXt5XoI4/7TTsyvphXAkRWTfSeuknrda9nO8ktl
- IY2UXmg9M3UnHCW0YH8E+1o6bC5ZI0uCl0MKRq6VMwZmEpZ9qJT/uzobow4XBa2zB9Fn
- AycA==
+ bh=Wq3Jl1AW0pq6Ra+sjmnRZba6A1rNlSx3/9ckGBwUM5k=;
+ b=N1I6fBynfxunFEfO3agZjbvaAIghid4dFT0XZW/G2zKld0C5XyFp9fizZaOWaFKsQe
+ pPFB25OZBgy/PBVra1JO0Udp02zRI3pggtpSGZBToTJ8wcgx9tFqORELJg+YoK4hSJAM
+ cyMObqymc1bkbtnIDQlEVknpreZQYK1+sd9wj1uamyLc+Bt6E/8hE6dV0tT9fv8wEBhk
+ 6Yuif5zOcWAbQq/HeRYI3QFJymEjt20lj8LWqJLlezXC1t3yjUlGUHy87jDvctQyDMKF
+ CTJ3cPeo9kH/CmBQUtbsW09v8CGAI7kuAqQUJIagIoC2HW8aCTNFZJmktoSvlEQNcusx
+ 6p2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734579645; x=1735184445;
+ d=1e100.net; s=20230601; t=1734579648; x=1735184448;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bMMfLBkMrY+DVueinUNWjTYlxFYKuSCnv3bBp02CQwM=;
- b=t5if93kib7S4HeFTw4ley4KzhaD83cIKHpkwg/EmsUzdjs1WzsSF5NLrVGkxtJd+M4
- nK2ruWswlE25JLW/R5hcD+SOvcspkJcuk2qmbAosQMYqG/wYj/EuNP+tBDtYucm5YrvR
- 6e7+ciXR0NLXzrwjr0SrWN7Hq8i/DtU9xH5KPWJvgtRPxG6oyQCw6BzLacLx8YE7/L/D
- 7jsp+hN315hEcmLdZ6FCsWNNuU3SZmXw3A/qd/tEbVCeuLI1WvDxSm1xyYO9KqJBOmIY
- ffi6Ml2hVndmsNKMUx2X0v9poef0D4QgLaG6KPq0KEwjhMkkNjlIql8gjihwaa3LRRBI
- nRVA==
+ bh=Wq3Jl1AW0pq6Ra+sjmnRZba6A1rNlSx3/9ckGBwUM5k=;
+ b=JrWJsWRPyiZZfZDAnUg1CyqweZKjGrG5du6FZlVhaB1WjH2Nm8WVQVqFN9B+xOPEDp
+ oL8R6RmAqeQQgvSYlovt/OXyVbTwvtjSq1gGfNKtAPLh2Rq3ta6KTIwAB0qHEWukUQyi
+ agGebiensHjegHJzCqaLKre1eB92WbnVNN+yW9eNf9pwKC8bk6vDcs/fru+QzxM4rXxr
+ vu6rxqKngydnHHFMjz5/rKbBoSwJJ1u/ZnRt9Op7l5QuB+EYPSPJSPT9uXhuLcv6PL2B
+ INU6J4SYQ6vwOQFKl1w2wxajAa7A12tdzka3wfTNsVz+NJMy6/3+xvaiv4VgoeBTigqN
+ UGGQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUMPZay9dzk2w/0BSdBn7NQP3z1JZh3bsYsTccQ9YAQEA78noNudo9crZPAm/zQ+jIicgnILJI4luO2@nongnu.org
-X-Gm-Message-State: AOJu0YyZxYeHFi9+cqBEJN3u+h7TvV++DBsQ3AA8baRZKhaG18uha58f
- bwZrmlVKvd5oGrtAmA4ylDg7tiTFqBrtr784I94HFSjUm5ROEq1oFdGBbg==
-X-Gm-Gg: ASbGncuGYTd4Uk5J78xmYV5P/HriNWq/ejuRH89hqJPISnes6u0xWjwKaSjF+UYXzXn
- H45pDdMWXf8KcIvcMfdX894drUtqZ1+HtNqDVpNavEb/iMTk73xRQMgMX7HMsYytkmlkToyr9LT
- HmiLzgqeY3nFr0IScf8Gu+rx/sh8R0LK7n9+OCpWLjdfd4TIUWnwQgZc/YPLD7X4z/Lufxj/om/
- EIfGZbfkU561ioUH2mLcR/EJFjRAmRwU7nBWP1nwohRbfFOAuGTiAtrt1DzAzMPadt//wVT8/hF
- 90g/npN9Vw==
-X-Google-Smtp-Source: AGHT+IHENSiFOOdEy02BNmlcsQw58GCu7Pl88csHFEWpDIAD2ABmzkov+HZv4gu3uEiRhUnzK8aClA==
-X-Received: by 2002:a17:902:f541:b0:216:6769:9ed7 with SMTP id
- d9443c01a7336-219d96928bbmr33144815ad.40.1734579645535; 
- Wed, 18 Dec 2024 19:40:45 -0800 (PST)
+ AJvYcCWO545UsORJXuqKRiQc+lkAk9tqHFjrxftTbOghPbcXcBAiQqksAum8CjABZjppcNgDSXSa2WYFUmb0@nongnu.org
+X-Gm-Message-State: AOJu0YyIDsR+c4yd+HlTAvtSTVqZik2vdZfw9slWoJQDj8XawKg4GZJs
+ iS9uAEJOB72yQWHg8GKkhtQherxtEMT78exsYgiODyh6+6d7e+CLVAmWjA==
+X-Gm-Gg: ASbGncuRGhLZNgvFFvAOfLe8gOuK+sU6BkA3/d+bA06lCkJtnzzRiSAgG91awwfAY2h
+ slbmEvHYByloXol9p2UMeW7G6+bxc+ojIf+NaRkGgvVLmkHYny4PIno71H5M+8SRKx6K2labmVw
+ J/TmEmPe8aI4tLg8SYoGtbUzR0DmH+lAVpLnPOJ1nKrwRmJNdQh1Tpv4dAsL+tB+Y/cS/7In+rQ
+ e2aY7mNIleVOqfMZpr60kwiL0mQAAIzo6pOA5UnYJKzch4sw+TtI/vO3IAy3nr2i9rWqj4uvxn/
+ FTaAGnngmw==
+X-Google-Smtp-Source: AGHT+IEgl+l2kBLREVhNKE/n+rGiSiHtu/ZEc+oamSnL8zzqkTbnPmWbsC76IBjrhuScDNDKLkwelA==
+X-Received: by 2002:a17:902:db0f:b0:217:89da:fd54 with SMTP id
+ d9443c01a7336-218d722f88fmr88039025ad.33.1734579648472; 
+ Wed, 18 Dec 2024 19:40:48 -0800 (PST)
 Received: from wheely.local0.net (14-200-18-130.tpgi.com.au. [14.200.18.130])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-219dc970520sm2881595ad.75.2024.12.18.19.40.43
+ d9443c01a7336-219dc970520sm2881595ad.75.2024.12.18.19.40.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 19:40:45 -0800 (PST)
+ Wed, 18 Dec 2024 19:40:48 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
-Subject: [PATCH 1/5] target/ppc: fix timebase register reset state
-Date: Thu, 19 Dec 2024 13:40:31 +1000
-Message-ID: <20241219034035.1826173-2-npiggin@gmail.com>
+Subject: [PATCH 2/5] spapr: Fix vpa dispatch count for record-replay
+Date: Thu, 19 Dec 2024 13:40:32 +1000
+Message-ID: <20241219034035.1826173-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241219034035.1826173-1-npiggin@gmail.com>
 References: <20241219034035.1826173-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,49 +98,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-(H)DEC and PURR get reset before icount does, which causes them to be
-skewed and not match the init state. This can cause replay to not
-match the recorded trace exactly. For DEC and HDEC this is usually not
-noticable since they tend to get programmed before affecting the
-target machine. PURR has been observed to cause replay bugs when
-running Linux.
+The dispatch count is a field in guest memory that the hypervisor
+increments when preempting and dispatching the guest. This was not
+being done deterministically with respect to icount, because tcg
+exec exit is not deterministic (e.g., an async event could cause it).
 
-Fix this by resetting using a time of 0.
+Change vpa dispatch count increment to keep track of whether the
+vCPU is considered dispatched or not, and only consider it preempted
+when calling cede / confer / join / stop-self / etc.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/ppc.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ include/hw/ppc/spapr_cpu_core.h |  3 +++
+ hw/ppc/spapr.c                  | 36 ++-------------------------------
+ hw/ppc/spapr_hcall.c            | 33 ++++++++++++++++++++++++++++++
+ hw/ppc/spapr_rtas.c             |  1 +
+ 4 files changed, 39 insertions(+), 34 deletions(-)
 
-diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-index b86b5847de6..51ae3358d12 100644
---- a/hw/ppc/ppc.c
-+++ b/hw/ppc/ppc.c
-@@ -1123,16 +1123,21 @@ void cpu_ppc_tb_reset(CPUPPCState *env)
-         timer_del(tb_env->hdecr_timer);
-         ppc_set_irq(cpu, PPC_INTERRUPT_HDECR, 0);
-         tb_env->hdecr_next = 0;
-+        _cpu_ppc_store_hdecr(cpu, 0, 0, 0, 64);
-     }
- 
-     /*
-      * There is a bug in Linux 2.4 kernels:
-      * if a decrementer exception is pending when it enables msr_ee at startup,
-      * it's not ready to handle it...
-+     *
-+     * On machine reset, this is called before icount is reset, so for
-+     * icount-mode, setting TB registers using now == qemu_clock_get_ns()
-+     * results in them being garbage after icount is reset. Use an
-+     * explicit now == 0 to get a consistent reset state.
-      */
--    cpu_ppc_store_decr(env, -1);
--    cpu_ppc_store_hdecr(env, -1);
--    cpu_ppc_store_purr(env, 0x0000000000000000ULL);
-+    _cpu_ppc_store_decr(cpu, 0, 0, -1, 64);
-+    _cpu_ppc_store_purr(env, 0, 0);
+diff --git a/include/hw/ppc/spapr_cpu_core.h b/include/hw/ppc/spapr_cpu_core.h
+index 68f70834832..feba3446194 100644
+--- a/include/hw/ppc/spapr_cpu_core.h
++++ b/include/hw/ppc/spapr_cpu_core.h
+@@ -46,6 +46,7 @@ typedef struct SpaprCpuState {
+     uint64_t vpa_addr;
+     uint64_t slb_shadow_addr, slb_shadow_size;
+     uint64_t dtl_addr, dtl_size;
++    bool dispatched; /* for vpa dispatch counter tracking */
+     bool prod; /* not migrated, only used to improve dispatch latencies */
+     struct ICPState *icp;
+     struct XiveTCTX *tctx;
+@@ -60,4 +61,6 @@ static inline SpaprCpuState *spapr_cpu_state(PowerPCCPU *cpu)
+     return (SpaprCpuState *)cpu->machine_data;
  }
  
- void cpu_ppc_tb_free(CPUPPCState *env)
++void vpa_dispatch(CPUState *cs, SpaprCpuState *spapr_cpu, bool dispatch);
++
+ #endif
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 3b022e8da9e..fa05e0c5156 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -4519,47 +4519,15 @@ static void spapr_cpu_exec_enter(PPCVirtualHypervisor *vhyp, PowerPCCPU *cpu)
+ {
+     SpaprCpuState *spapr_cpu = spapr_cpu_state(cpu);
+ 
+-    /* These are only called by TCG, KVM maintains dispatch state */
+-
+     spapr_cpu->prod = false;
+-    if (spapr_cpu->vpa_addr) {
++    if (!spapr_cpu->dispatched) {
+         CPUState *cs = CPU(cpu);
+-        uint32_t dispatch;
+-
+-        dispatch = ldl_be_phys(cs->as,
+-                               spapr_cpu->vpa_addr + VPA_DISPATCH_COUNTER);
+-        dispatch++;
+-        if ((dispatch & 1) != 0) {
+-            qemu_log_mask(LOG_GUEST_ERROR,
+-                          "VPA: incorrect dispatch counter value for "
+-                          "dispatched partition %u, correcting.\n", dispatch);
+-            dispatch++;
+-        }
+-        stl_be_phys(cs->as,
+-                    spapr_cpu->vpa_addr + VPA_DISPATCH_COUNTER, dispatch);
++        vpa_dispatch(cs, spapr_cpu, true);
+     }
+ }
+ 
+ static void spapr_cpu_exec_exit(PPCVirtualHypervisor *vhyp, PowerPCCPU *cpu)
+ {
+-    SpaprCpuState *spapr_cpu = spapr_cpu_state(cpu);
+-
+-    if (spapr_cpu->vpa_addr) {
+-        CPUState *cs = CPU(cpu);
+-        uint32_t dispatch;
+-
+-        dispatch = ldl_be_phys(cs->as,
+-                               spapr_cpu->vpa_addr + VPA_DISPATCH_COUNTER);
+-        dispatch++;
+-        if ((dispatch & 1) != 1) {
+-            qemu_log_mask(LOG_GUEST_ERROR,
+-                          "VPA: incorrect dispatch counter value for "
+-                          "preempted partition %u, correcting.\n", dispatch);
+-            dispatch++;
+-        }
+-        stl_be_phys(cs->as,
+-                    spapr_cpu->vpa_addr + VPA_DISPATCH_COUNTER, dispatch);
+-    }
+ }
+ 
+ static void spapr_machine_class_init(ObjectClass *oc, void *data)
+diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
+index 5e1d020e3df..907e09c2c36 100644
+--- a/hw/ppc/spapr_hcall.c
++++ b/hw/ppc/spapr_hcall.c
+@@ -487,6 +487,36 @@ static target_ulong h_register_vpa(PowerPCCPU *cpu, SpaprMachineState *spapr,
+     return ret;
+ }
+ 
++void vpa_dispatch(CPUState *cs, SpaprCpuState *spapr_cpu, bool dispatch)
++{
++    uint32_t counter;
++
++    if (!dispatch) {
++        assert(spapr_cpu->dispatched);
++    } else {
++        assert(!spapr_cpu->dispatched);
++    }
++    spapr_cpu->dispatched = dispatch;
++
++    return;
++
++    if (!spapr_cpu->vpa_addr) {
++        return;
++    }
++
++    /* These are only called by TCG, KVM maintains dispatch state */
++    counter = ldl_be_phys(cs->as, spapr_cpu->vpa_addr + VPA_DISPATCH_COUNTER);
++    counter++;
++    if ((counter & 1) != dispatch) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "VPA: incorrect dispatch counter value for "
++                      "%s partition %u, correcting.\n",
++                      dispatch ? "preempted" : "running", counter);
++        counter++;
++    }
++    stl_be_phys(cs->as, spapr_cpu->vpa_addr + VPA_DISPATCH_COUNTER, counter);
++}
++
+ static target_ulong h_cede(PowerPCCPU *cpu, SpaprMachineState *spapr,
+                            target_ulong opcode, target_ulong *args)
+ {
+@@ -505,6 +535,7 @@ static target_ulong h_cede(PowerPCCPU *cpu, SpaprMachineState *spapr,
+ 
+     if (!cpu_has_work(cs)) {
+         cs->halted = 1;
++        vpa_dispatch(cs, spapr_cpu, false);
+         cs->exception_index = EXCP_HLT;
+         cs->exit_request = 1;
+         ppc_maybe_interrupt(env);
+@@ -531,6 +562,8 @@ static target_ulong h_confer_self(PowerPCCPU *cpu)
+     cs->exit_request = 1;
+     ppc_maybe_interrupt(&cpu->env);
+ 
++    vpa_dispatch(cs, spapr_cpu, false);
++
+     return H_SUCCESS;
+ }
+ 
+diff --git a/hw/ppc/spapr_rtas.c b/hw/ppc/spapr_rtas.c
+index f329693c554..8ce42302234 100644
+--- a/hw/ppc/spapr_rtas.c
++++ b/hw/ppc/spapr_rtas.c
+@@ -216,6 +216,7 @@ static void rtas_stop_self(PowerPCCPU *cpu, SpaprMachineState *spapr,
+      */
+     env->spr[SPR_PSSCR] |= PSSCR_EC;
+     cs->halted = 1;
++    vpa_dispatch(cs, spapr_cpu_state(cpu), false);
+     ppc_store_lpcr(cpu, env->spr[SPR_LPCR] & ~pcc->lpcr_pm);
+     kvmppc_set_reg_ppc_online(cpu, 0);
+     qemu_cpu_kick(cs);
 -- 
 2.45.2
 
