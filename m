@@ -2,103 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C179F7F59
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:22:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80DE49F7FDB
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:33:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJGG-0001tG-Ik; Thu, 19 Dec 2024 11:20:28 -0500
+	id 1tOJFe-0001pN-RF; Thu, 19 Dec 2024 11:19:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yanghliu@redhat.com>)
- id 1tOG9P-0007bB-S4
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 08:01:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <maz@kernel.org>)
+ id 1tOG9j-0007cu-AS; Thu, 19 Dec 2024 08:01:31 -0500
+Received: from nyc.source.kernel.org ([2604:1380:45d1:ec00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yanghliu@redhat.com>)
- id 1tOG9K-0000Wl-US
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 08:01:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734613265;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=KGkKVaPODV83lxyFfjK9Te+LbPVqMXmKuxMKzLBF2TE=;
- b=YmOhs+Hh7xDOzZ4DuuAgxQzf+5DPyhdkAYMPy25TGPwhBWzfdquCGszcJPkRknTsI/tsn0
- 9jcuJ18XxvOfiTqhNBU3BL3aCZC8BXvOzkfTA0Tf0WAmWfI/+urWgSpwwVWTFq8RFewnsn
- lBtxBaPO9CkRCfGxl6OwaGQb8JIwda8=
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
- [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-uErNmljdNi2RmRZ84R9jWA-1; Thu, 19 Dec 2024 08:01:03 -0500
-X-MC-Unique: uErNmljdNi2RmRZ84R9jWA-1
-X-Mimecast-MFC-AGG-ID: uErNmljdNi2RmRZ84R9jWA
-Received: by mail-oi1-f197.google.com with SMTP id
- 5614622812f47-3eb9c1ce675so586647b6e.0
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 05:01:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734613262; x=1735218062;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=KGkKVaPODV83lxyFfjK9Te+LbPVqMXmKuxMKzLBF2TE=;
- b=rYVqKUJ/K62vMpazdTwbhq8L2axT5qYu72egb0O68S/2heCimgXro2jwkR/dpf7QB7
- CTgETSAv0O8F2H25Pyl7VtCXFkfAj59/0800h0Xv+pwPYlSIA95Nu3VSpAQ3hveRcOqv
- DCAPJZvMP6GyGig/Ear37jNEeUUNOozQvOIpaBpFIwweMCFavK00sCBsTin+vzpGVnTZ
- ZW9O5f7LllD4iawVP+DmKhVr2Z8FJd9Of2BPVswVqUYv5JgXSLWvBZ4Z7KLeR43gLAyk
- 43uSScsVvi1oZmaYqEtOEt5EvcvcvxuggXmVjSL9g0z1yb59XH+WDSteFtWWaaYeVax2
- BidQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWwDUKHZxS5R8BmbhBvcLcCrhCd5bg1+lrCJVOJSwNjuqCcihL1JcyoMhwfq1wNfRSdhkPIgcgxjIc0@nongnu.org
-X-Gm-Message-State: AOJu0Yx0xSEsmL4VtO1MgD2UYN/EOkVV01DGkqF6ze2/IT9gMom4zgAn
- UzdH5j2vy9rZ1O0E1I8+43ooAeguBncJm0TNBYB6jDZb7bDTZSnqQcbtyksBLLMO3q3K51KhaNM
- w6Okh+fiibvBLE898DVJkEQd8uCPQm8Hk8jsnjShZyBxbQRvW8DVhf8mEYO7fh2Fn7mokTIn3vH
- 1TRZYfa8Av4etOEerS5Clssi8Yfks=
-X-Gm-Gg: ASbGnctiRhxC7dG960g3PWGvuCfTFbYCu531iqNMxfkCVj8z++fK+bqZRkRMSPRLOVM
- ypbm8C6vpgVaaW8WTDqarQsOC11CJ3ekAZ9hGjBs=
-X-Received: by 2002:a05:6808:218a:b0:3e6:5a7f:e102 with SMTP id
- 5614622812f47-3eccbf2fddemr4609160b6e.9.1734613262482; 
- Thu, 19 Dec 2024 05:01:02 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGem+u4pXMY2/fxMERtjxOD/e4n9ZDzvIrCCP3AGa2QsHt8m2uZ/JX6QkxHHtxhC488RElcTIfAldR7RJ1gblE=
-X-Received: by 2002:a05:6808:218a:b0:3e6:5a7f:e102 with SMTP id
- 5614622812f47-3eccbf2fddemr4609138b6e.9.1734613262197; Thu, 19 Dec 2024
- 05:01:02 -0800 (PST)
-MIME-Version: 1.0
-References: <cover.1731773021.git.maciej.szmigiero@oracle.com>
- <Z1CpIA7_o7s-NzJ_@x1n>
- <23398782-6d92-48ae-99f3-855b405f366f@maciej.szmigiero.name>
- <Z1N4qYOsEcfsC-H5@x1n>
- <5c6a0bc3-ab9a-4514-8feb-f3c17978d3af@maciej.szmigiero.name>
- <Z1se0X6eq1DRYLa0@x1n>
- <CAGYh1E89i-AeHMOt5ddmB_-oGVYqBHr1Oj55OUDyhpzor9bDuQ@mail.gmail.com>
- <44e311d9-3af1-4a84-a2cd-da3a64cb8a94@redhat.com>
-In-Reply-To: <44e311d9-3af1-4a84-a2cd-da3a64cb8a94@redhat.com>
-From: Yanghang Liu <yanghliu@redhat.com>
-Date: Thu, 19 Dec 2024 21:00:51 +0800
-Message-ID: <CAGYh1E81ZgmaB0CK3bdovSU8FtTOzvMBwpYUgwc2X5Y9PF-_ww@mail.gmail.com>
-Subject: =?UTF-8?Q?Re=3A_=5BPATCH_v3_00=2F24=5D_Multifd_=F0=9F=94=80_device_state_trans?=
- =?UTF-8?Q?fer_support_with_VFIO_consumer?=
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>,
- "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>, 
- Fabiano Rosas <farosas@suse.de>, Alex Williamson <alex.williamson@redhat.com>, 
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
- qemu-devel@nongnu.org, Chao Yang <chayang@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+ (Exim 4.90_1) (envelope-from <maz@kernel.org>)
+ id 1tOG9g-0000cv-CK; Thu, 19 Dec 2024 08:01:30 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by nyc.source.kernel.org (Postfix) with ESMTP id 72168A424F2;
+ Thu, 19 Dec 2024 12:59:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D95EC4CECE;
+ Thu, 19 Dec 2024 13:01:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1734613285;
+ bh=O3IkwvJlk6EBCbr2lI7kMh54S9htt+kwglnpdJT+ukE=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=h3TIdzt5xtQnJM11PaGOl95b1BWvsSe+ZHJeBjhc31RHJgMZejnO1qDTuQfovc7TA
+ VwHy4cegzvveiwVKVCUJsqpLT01aPf5OQHz1VAZZVabKGxvMvzhy8EKN8Au0F8v132
+ d0/mAoKgfZ6P+JW+yHGxDSlAAQNt5pbN5mmVnIHXkIPfFXGCaDnbsmgggvYFmJcgQ6
+ 45lWnARrnByJ+BayzFIMnEciYmiq+crassTiJ4f295vWgONIvnY1+k+6XkBlXyu+Ly
+ voDsBzEOce4+quovWgOWv7uxL8WXfIXeJODctp9WBgyOtiq96yqT0PHADbAkeFqLil
+ vqSFVTU2CBidw==
+Received: from sofa.misterjones.org ([185.219.108.64]
+ helo=goblin-girl.misterjones.org)
+ by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.95)
+ (envelope-from <maz@kernel.org>) id 1tOG9b-005GyE-BC;
+ Thu, 19 Dec 2024 13:01:23 +0000
+Date: Thu, 19 Dec 2024 13:01:22 +0000
+Message-ID: <861py3rfml.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Daniel =?UTF-8?B?IlAuIEJlcnJhbmfDqSI=?= <berrange@redhat.com>
+Cc: Kashyap Chamarthy <kchamart@redhat.com>,
+ Eric Auger <eric.auger@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ kvmarm@lists.linux.dev, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, alex.bennee@linaro.org,
+ oliver.upton@linux.dev, sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
+ abologna@redhat.com, jdenemar@redhat.com, shahuang@redhat.com,
+ mark.rutland@arm.com, philmd@linaro.org, pbonzini@redhat.com
+Subject: Re: [PATCH RFCv2 00/20] kvm/arm: Introduce a customizable aarch64 KVM
+ host model
+In-Reply-To: <Z2QT2tPbC1GsTJVL@redhat.com>
+References: <20241206112213.88394-1-cohuck@redhat.com>
+ <edc12140-6345-4868-938d-c80c4d2c2004@redhat.com>
+ <Z1qoa8yXscTSAJ9e@redhat.com> <8734it1bv6.fsf@redhat.com>
+ <1fea79e4-7a31-4592-8495-7b18cd82d02b@redhat.com>
+ <Z2QE9AqZnpGM5sWD@gezellig> <8634ijrh8q.wl-maz@kernel.org>
+ <Z2QT2tPbC1GsTJVL@redhat.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=yanghliu@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: berrange@redhat.com, kchamart@redhat.com,
+ eric.auger@redhat.com, cohuck@redhat.com, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvmarm@lists.linux.dev,
+ peter.maydell@linaro.org, richard.henderson@linaro.org, alex.bennee@linaro.org,
+ oliver.upton@linux.dev, sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com, armbru@redhat.com, abologna@redhat.com,
+ jdenemar@redhat.com, shahuang@redhat.com, mark.rutland@arm.com,
+ philmd@linaro.org, pbonzini@redhat.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
+ SAEximRunCond expanded to false
+Received-SPF: pass client-ip=2604:1380:45d1:ec00::3;
+ envelope-from=maz@kernel.org; helo=nyc.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,198 +101,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sorry for the inconvenience.  Let me try to re-send my data via my Gmail cl=
-ient.
+On Thu, 19 Dec 2024 12:38:50 +0000,
+Daniel "P. Berrang=C3=A9" <berrange@redhat.com> wrote:
+>=20
+> On Thu, Dec 19, 2024 at 12:26:29PM +0000, Marc Zyngier wrote:
+> > On Thu, 19 Dec 2024 11:35:16 +0000,
+> > Kashyap Chamarthy <kchamart@redhat.com> wrote:
+> > >=20
+> > > On Thu, Dec 12, 2024 at 11:04:30AM +0100, Eric Auger wrote:
+> > >=20
+> > > Hi Eric,
+> > >=20
+> > > > On 12/12/24 10:36, Cornelia Huck wrote:
+> > > > > On Thu, Dec 12 2024, Daniel P. Berrang=C3=A9 <berrange@redhat.com=
+> wrote:
+> > >=20
+> > > [...]
+> > >=20
+> > > > >> Consider you mgmt app wants to set a CPU model that's common acr=
+oss
+> > > > >> heterogeneous hardware. They don't neccessarily want/need to be
+> > > > >> able to live migrate between heterogeneous CPUs, but for simplic=
+ity
+> > > > >> of configuration desire to set a single named CPU across all gue=
+sts,
+> > > > >> irrespective of what host hey are launched on. The ARM spec base=
+line
+> > > > >> named models would give you that config simplicity.
+> > > > > If we use architecture extensions (i.e. Armv8.x/9.x) as baseline,=
+ I'm
+> > > > > seeing some drawbacks:
+> > > > > - a lot of work before we can address some specific use cases
+> > > > > - old models can get new optional features
+> > > > > - a specific cpu might have a huge set of optional features on to=
+p of
+> > > > >   the baseline model
+> > > > >
+> > > > > Using a reference core such as Neoverse-V2 probably makes more se=
+nse
+> > > > > (easier to get started, less feature diff?) It would still make a=
+ good
+> > > > > starting point for a simple config.
+> > > > >
+> > > > Actually from a dev point of view I am not sure it changes much to =
+have
+> > > > either ARM spec rev baseline or CPU ref core named model.
+> > > >=20
+> > > > One remark is that if you look at
+> > > > https://developer.arm.com/documentation/109697/2024_09?lang=3Den
+> > > > you will see there are quite a lot of spec revisions and quite a fe=
+w of
+> > > > them are actually meaningful in the light of currently avaiable and
+> > > > relevant HW we want to address. What I would like to avoid is to be
+> > > > obliged to look at all of them in a generic manner while we just wa=
+nt to
+> > > > address few cpu ref models.
+> > > >=20
+> > > > Also starting from the ARM spec rev baseline the end-user may need =
+to
+> > > > add more feature opt-ins to be close to a specific cpu model. So I
+> > > > foresee extra complexity for the end-user.
+> > >=20
+> > > (Assuming I'm parsing your last para right; correct me if not.)
+> > >=20
+> > > Isn't a user wanting to add extra CPU flags (on top of a baseline) a
+> > > "normal behaviour" and not "extra complexity"?  Besides coming close =
+to
+> > > a specific CPU model, there's the additional important use-case of CPU
+> > > flags that provide security mitigation.
+> > >=20
+> > > Consider this:
+> > >=20
+> > > Say, there's a serious security issue in a released ARM CPU.  As part=
+ of
+> > > the fix, two new CPU flags need to be exposed to the guest OS, call t=
+hem
+> > > "secflag1" and "secflag2".  Here, the user is configuring a baseline
+> > > model + two extra CPU flags, not to get close to some other CPU model
+> > > but to mitigate itself against a serious security flaw.
+> >=20
+> > If there's such a security issue, that the hypervisor's job to do so,
+> > not userspace. See what KVM does for CSV3, for example (and all the
+> > rest of the side-channel stuff).
+> >=20
+> > You can't rely on userspace for security, that'd be completely
+> > ludicrous.
+>=20
+> Actually that's a normal situation QEMU has to deal with.
+>=20
+> QEMU needs to be able to expose a deterministic fixed ABI to the guest
+> VM, and that includes control over what CPU features are exposed to
+> it. In most cases, the hypervisor cannot arbitrary force enable new
+> guest features without agreement from QEMU.
 
-Test environment:
-Host : Dell 7625
-CPU : EPYC-Genoa
-VM config : 4 vCPU, 8G memory
-Network Device: MT2910
+Which ABI? The only ABI that matters is what is defined by the
+architecture. When it comes to CPU features, new features are exposed
+by default. If QEMU wants to turn it off, it can in most (but not all)
+cases. But that's the extent of the "agreement" we have with
+userspace, QEMU or otherwise.
 
-Test report:
-+------------------+---------------+----------------+
-| multifd=3D0        |     outgoing migration         |
-+------------------+---------------+----------------+
-| VF(s) number     | 1             | 4              |
-| Time elapsed     | 10194 ms      | 10650 ms       |
-| Memory processed | 903.911 MiB   | 783.698 MiB    |
-| Memory bandwidth | 108.722 MiB/s | 101.978 MiB/s  |
-| Iteration        | 4             | 6              |
-| Normal data      | 881.297 MiB   | 747.613 MiB    |
-| Total downtime   | 358ms         | 518ms          |
-| Setup time       | 52ms          | 450ms          |
-+------------------+---------------+----------------+
+If a feature is deemed broken or unsafe, KVM will turn it at least
+hide it from the guest without userspace's intervention, and if
+possible actively turn it off.
 
-+------------------+---------------+----------------+
-| multifd=3D0        |     incoming migration         |
-+------------------+---------------+----------------+
-| VF(s) number     | 1             | 4              |
-| Time elapsed     | 10161 ms      | 10569 ms       |
-| Memory processed | 903.881 MiB   | 785.400 MiB    |
-| Memory bandwidth | 107.952 MiB/s | 100.512 MiB/s  |
-| Iteration        | 4             | 7              |
-| Normal data      | 881.262 MiB   | 749.297 MiB    |
-| Total downtime   | 315ms         | 513ms          |
-| Setup time       | 47ms          | 414ms          |
-+------------------+---------------+----------------+
+> If a guest happens to be using '-cpu host', then when a new CPU flag
+> arrives as part of a security fix, there is at least no CPU config
+> change required. QEMU may or may not need changes, in order that
+> the behaviour associated with the new CPU flag is correctly handled.
 
+How is that "flag" visible from the guest? The only way to expose
+properties is through the ID registers, and you can't invent your own,
+nor expose something that is not already handled by the host.
 
-
-+------------------+---------------+---------------+
-| multifd=3D1        |     outgoing migration        |
-+------------------+---------------+---------------+
-| VF(s) number     | 1             | 1             |
-| Channel          | 4             | 5             |
-| Time elapsed     | 10962 ms      | 10071 ms      |
-| Memory processed | 908.968 MiB   | 908.424 MiB   |
-| Memory bandwidth | 108.378 MiB/s | 110.109 MiB/s |
-| Iteration        | 4             | 4             |
-| Normal data      | 882.852 MiB   | 882.566 MiB   |
-| Total downtime   | 318ms         | 255ms         |
-| Setup time       | 54ms          | 43ms          |
-+------------------+---------------+---------------+
-
-
-+------------------+---------------+----------------+
-| multifd=3D1        |     incoming migration         |
-+------------------+---------------+----------------+
-| VF(s) number     | 1             | 1              |
-| Channel          | 4             | 5              |
-| Time elapsed     | 10064ms       | 10072 ms       |
-| Memory processed | 909.786 MiB   | 923.746 MiB    |
-| Memory bandwidth | 109.997 MiB/s | 111.308 MiB/s  |
-| Iteration        | 4             | 4              |
-| Normal data      | 883.664 MiB   | 897.848 MiB    |
-| Total downtime   | 313ms         | 328ms          |
-| Setup time       | 46ms          | 47ms           |
-+------------------+---------------+----------------+
-
-
-+------------------+---------------+----------------+
-| multifd=3D1        |     outgoing migration         |
-+------------------+---------------+----------------+
-| VF(s) number     | 4             | 4              |
-| Channel          | 8             | 16             |
-| Time elapsed     | 10805 ms      | 10943 ms       |
-| Memory processed | 786.334 MiB   | 784.926 MiB    |
-| Memory bandwidth | 109.062 MiB/s | 108.610 MiB/s  |
-| Iteration        | 5             | 7              |
-| Normal data      | 746.758 MiB   | 744.938 MiB    |
-| Total downtime   | 344 ms        | 335ms          |
-| Setup time       | 445 ms        | 463ms          |
-+------------------+---------------+----------------+
-
-
-+------------------+---------------+------------------+
-| multifd=3D1        |     incoming migration           |
-+------------------+---------------+------------------+
-| VF(s) number     | 4             | 4                |
-| Channel          | 8             | 16               |
-| Time elapsed     | 10126 ms      | 9941 ms          |
-| Memory processed | 791.308 MiB   | 779.560 MiB      |
-| Memory bandwidth | 108.876 MiB/s | 110.170 MiB/s    |
-| Iteration        | 7             | 5                |
-| Normal data      | 751.672 MiB   | 739.680 MiB      |
-| Total downtime   | 304 ms        | 309ms            |
-| Setup time       | 442 ms        | 446ms            |
-+------------------+---------------+------------------+
-
-Best Regards,
-Yanghang Liu
-
-
-On Thu, Dec 19, 2024 at 4:53=E2=80=AFPM C=C3=A9dric Le Goater <clg@redhat.c=
-om> wrote:
+> If the guest is using a named CPU model, as well as modifying QEMU
+> to know about the new flag, the host admin needs to explicitly
+> decide whether & when to expose the new CPU flag for each guest VM
+> on the host.
 >
-> Hello Yanghang
->
-> On 12/19/24 08:55, Yanghang Liu wrote:
-> > FYI.  The following data comes from the first ping-pong mlx VF
-> > migration after rebooting the host.
-> >
-> >
-> > 1. Test for multifd=3D0:
-> >
-> > 1.1 Outgoing migration:
-> > VF number:                     1 VF                           4 VF
-> > Time elapsed:             10194 ms                   10650 ms
-> > Memory processed:    903.911 MiB             783.698 MiB
-> > Memory bandwidth:    108.722 MiB/s          101.978 MiB/s
-> > Iteration:                               4                             =
- 6
-> > Normal data:                881.297 MiB             747.613 MiB
-> > Total downtime                358ms                       518ms
-> > Setup time                        52ms                        450ms
-> >
-> > 1.2 In coming migration:
-> > VF number:                       1 VF                            4 VF
-> > Time elapsed:                10161 ms                    10569 ms
-> > Memory processed:     903.881 MiB                785.400 MiB
-> > Memory bandwidth:     107.952 MiB/s             100.512 MiB/s
-> > Iteration:                               4                             =
-   7
-> > Normal data:                 881.262 MiB               749.297 MiB
-> > Total downtime                315ms                        513ms
-> > Setup time                        47ms                         414ms
-> >
-> >
-> > 2. Test for multifd=3D1:
-> >
-> > 2.1 Outgoing migration:
-> > VF number                     1 VF                           1 VF
-> > Channel number               4                                  5
-> > Time elapsed:              10962 ms                  10071 ms
-> > Memory processed:     908.968 MiB             908.424 MiB
-> > Memory bandwidth:     108.378 MiB/s         110.109 MiB/s
-> > Iteration:                               4
-> >    4
-> > Normal data:               882.852 MiB              882.566 MiB
-> > Total downtime                318ms                       255ms
-> > Setup time                         54ms                        43ms
-> >
-> >
-> > VF number                    4 VFs                        4 VFs
-> > Channel number             8                               16
-> > Time elapsed:            10805 ms                  10943 ms
-> > Setup time                   445 ms                       463ms
-> > Memory processed:  786.334 MiB            784.926 MiB
-> > Memory bandwidth   109.062 MiB/s         108.610 MiB/s
-> > Iteration:                              5                           7
-> > Normal data:            746.758 MiB             744.938 MiB
-> > Total downtime            344 ms                     335ms
-> >
-> >
-> > 2.2 Incoming migration:
-> > VF number                       1 VF                      1 VF
-> > Channel number                4                            5
-> > Time elapsed:                10064ms               10072 ms
-> > Memory processed:     909.786 MiB           923.746 MiB
-> > Memory bandwidth:      109.997 MiB/s       111.308 MiB/s
-> > Iteration:                               4                          4
-> > Normal data:               883.664 MiB            897.848 MiB
-> > Total downtime                 313ms                   328ms
-> > Setup time                        46ms                      47ms
-> >
-> > VF number                   4 VFs                        4 VFs
-> > Channel number             8                              16
-> > Time elapsed:             10126 ms                 9941 ms
-> > Memory processed:   791.308 MiB           779.560 MiB
-> > Memory bandwidth:  108.876 MiB/s         110.170 MiB/s
-> > Iteration:                          7                               5
-> >   Normal data:             751.672 MiB           739.680 MiB
-> > Total downtime             304 ms                    309ms
-> > Setup time                    442 ms                    446ms
-> >
->
-> This is difficult to read. Could you please resend with a fixed
-> indentation ?
->
-> We would need more information on the host and vm config too.
->
-> Thanks,
->
-> C.
->
+> Until the new CPU flag is exposed to the guest, while the host itself
+> may be able to remain protected to the new security issue, the guest
+> OS is likely remain vulnerable, or have degraded operation in some way.
 
+I think that's the point where we talk past each other. There is no
+"flag" that can be exposed to a guest as part of the architecture. We
+have a set of architectural features, and in 99% of the cases, we can
+only expose to the guest a feature that both exists on the host and
+that the hypervisor understands.
+
+Thanks,
+
+	M.
+
+--=20
+Without deviation from the norm, progress is not possible.
 
