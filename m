@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D399F7785
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:37:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0D39F778C
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:38:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOBym-0006pi-6p; Thu, 19 Dec 2024 03:33:56 -0500
+	id 1tOByn-0006rp-0H; Thu, 19 Dec 2024 03:33:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOByi-0006Zy-5S
+ id 1tOByi-0006Zz-6Y
  for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:52 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOByc-0005FR-9U
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:48 -0500
+ id 1tOByd-0005Fc-Fe
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734597225;
+ s=mimecast20190719; t=1734597226;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YoHuc/NNuJdIOvWlSl/Djx2vhx2e2wqt0iw58ph2W7s=;
- b=E/IGkmaRTBBsRyDTj9LE3MkKXn1fyW+WGA1h70PnLyl6Idf37uQQV1QEzXDdY+yhnIh9LR
- iZh3t3ldD900iJzq/HqK51jgv9HSUzkh+oh2BO1NAHB0D66PAcjX3O5IgB/LU+sEBsnSQ+
- iE2Sq6e3iyCPBQHQZbEVdIE0oXDVgyc=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=eJDnjE/BAkbJeQX/EK6vVThXGUwkUNVfjMYxPU0nzCU=;
+ b=IduSYHbNauy6dDG16Lspygm2AHqZrCQzXzsapRFd3KbGqbQ1ZPGoE4xgEQlqsHpE4aqD7q
+ dGKIHG9140SElMY0JshTqWHymaRdZRxxWmZukWKzm3b4spPMQ7yILBdT+4fxH0sZpIZzjA
+ Y8vkXKmMdZXJ3V6cY4XhSj8oB4u3TMk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-686-u4b6v_otMjGhFw3IxKOWzw-1; Thu, 19 Dec 2024 03:33:44 -0500
-X-MC-Unique: u4b6v_otMjGhFw3IxKOWzw-1
-X-Mimecast-MFC-AGG-ID: u4b6v_otMjGhFw3IxKOWzw
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4362b9c15d8so2899015e9.3
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:43 -0800 (PST)
+ us-mta-592-9_x_s7QuPyWE9KPKWPihsA-1; Thu, 19 Dec 2024 03:33:45 -0500
+X-MC-Unique: 9_x_s7QuPyWE9KPKWPihsA-1
+X-Mimecast-MFC-AGG-ID: 9_x_s7QuPyWE9KPKWPihsA
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-43625ceae52so2956695e9.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734597222; x=1735202022;
+ d=1e100.net; s=20230601; t=1734597223; x=1735202023;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YoHuc/NNuJdIOvWlSl/Djx2vhx2e2wqt0iw58ph2W7s=;
- b=SDu8+7vnI5faHV5VDa8qR2ior2oV59PmkaVvjnXIyGayeghk3HzXcT5ehXm6tVpOuT
- sFo0pLZuAga5eccGxzS5DUfRJ1Nu1zyuxScKNp2rFl1J3ffIFcfO4qYNre2lOqmWUGsz
- mzucNHr2q/Da12dA9V+71JL11NU1WDOuBwoq7ibSge5EupS1TO5Nx/6kFj/0ztUp8SLb
- cKYw3KGrNtoSGDe8AgegwAM3tO7dAdeF1cw1J0Bxhz1+OZ5M2wbqjqXEWdxXK2FFkO8w
- bEtqIhOpdG1cWMbGGBGP+rlGOxddBb3+XeXy8b8xz2plczJseG0IdCrzPNJcSOQSxctp
- 69eQ==
-X-Gm-Message-State: AOJu0YymuL4QolkUYpgIuQyRQbgfheeOwri5gP6j87/7zGPrsfI4HIlX
- 2uopFxOMdXeb1Ljf+TPkQoW2RIkYgG9Dh7EkXm9qVKX5hFzk7U29Pp6e6G8YCZPb07DGmcqAdbQ
- whZTRtchKoTWNAVEMCbe3bVcIB5YX+8jHRr3PUBqqvT/HaMwJAl2d9NY1njXk9oROLDP+DIQKTE
- XqxQ/icKw1mvbr7Kgmi/JAsxozPubL92cYIVHs
-X-Gm-Gg: ASbGncvs5lrOEzWdMF9jyoo671qoCIk5HE89PxreTsPkjSSnvKVDOJ+GTFXoJv3Vg0o
- hhmRxjWeztCq6v/rQN0DQehb4LWPw+WlsEdUeEHPVpEX922iD6psWzQUZE6i3BBWangSuCwpJ7m
- aBGsl9vgTtA5y+wu0FpwkwBeSRM2sVNmr1IZd0o4VkxFKuqZEYdDd+k+Zs7HHdZhnmjiNVbkXnB
- wGbvhA3KqI5xvbG9FYrwSbVQT20gR+wGstU9c7F/4dbJeSOHpSgUGf/VgcK
-X-Received: by 2002:adf:e194:0:b0:385:e1e5:fff3 with SMTP id
- ffacd0b85a97d-388e4d9760bmr5351046f8f.57.1734597222181; 
+ bh=eJDnjE/BAkbJeQX/EK6vVThXGUwkUNVfjMYxPU0nzCU=;
+ b=YQoB2fYKUl1ZvIyBz7dO8syj2DdFJKz58DjTBXFUMehKRrvSqxBHwP2I3UuWhfiW3s
+ dEtIQKwsXsy22vbjbj5LkGoF7PBkR8ctT9tFE0v92WNnuQBrNABqvVcPTnxtRLdcjZ6b
+ aWTKUCFoCXDh1jqJXVuuah9aV2jCWG+17DFiShQ4wuHgab0Kc9XjJWLGoTSWgdhYqYAa
+ UxlAJizyfN/F/7VjCNdntqpfVx5JwnsVKO58xbMnG3y1H5UQEtdWB3l1RHGcSZrtmg0w
+ FT8DOYKn9xBaVvBYYOB8tkEyajj58rY99cMwLpBFk3oyNQFtfl0Aw9fH0fquKbGveWz1
+ eL/w==
+X-Gm-Message-State: AOJu0YzQDMmsSqnP1DjpTwxG/9QFlkguNjcQCG0l81TNse8vGsghnSkD
+ 0XcKydRZ+b3D/ZlzNYF3u2VQ59+LU/j+prLNdOo5MEjOn2qxB4K5QLxavC0013oVt2SsaIzCnWX
+ ZGh5mbnnYNP3ebAxjpBdXr+MRZmvbkooSasyzny60Oc7QLU2O04LExHuCEnBXJeuy56yoHN8aVx
+ BWApRDPJRfDdWErn0ey3SlTbiJAt9hAgBsZU4i
+X-Gm-Gg: ASbGnctgZzStKWyD9fvz+8c4juV/LE7cl+JD0n2HiZOa7eHT5cYUNEpwXrikwqTG26K
+ taP6PU5qSbsKYZjMkoNOvFAwMFBM6CZxKwVO6M508tAHJtF85uNRbL4y/POty6ODE3CoBxzm+cu
+ 5piIb2fo92FvZhssuKeED7gyYrFyMVN5O6n0VuNQi4jZEZv3v+a4n0bvB4fF03dmtG93kKm5ZT2
+ O12HTR+d7emiOlejx5MBFJYLW/vXckuMyjUXQrEFfU0OxNHfZX2GWT6FrtA
+X-Received: by 2002:a5d:6c63:0:b0:386:1c13:30d5 with SMTP id
+ ffacd0b85a97d-388e4d4a602mr6275736f8f.7.1734597223389; 
+ Thu, 19 Dec 2024 00:33:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF8mfBgfoZsrrEsn4jt5aFybkYtKfHi1/1tkA+F7sZdfhtu/u96vEX9Umy6mVUC62rFH/zt1A==
+X-Received: by 2002:a5d:6c63:0:b0:386:1c13:30d5 with SMTP id
+ ffacd0b85a97d-388e4d4a602mr6275686f8f.7.1734597222876; 
  Thu, 19 Dec 2024 00:33:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF7Ud9Haahs+4ElvTqlfVsQCbil0VZ4GGmHR3RxWETKYN2EYD3XOt3DTAnfNmxhgVN4k3ItRg==
-X-Received: by 2002:adf:e194:0:b0:385:e1e5:fff3 with SMTP id
- ffacd0b85a97d-388e4d9760bmr5351012f8f.57.1734597221682; 
- Thu, 19 Dec 2024 00:33:41 -0800 (PST)
 Received: from [192.168.10.47] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656b013a1sm46067165e9.11.2024.12.19.00.33.38
- for <qemu-devel@nongnu.org>
+ ffacd0b85a97d-38a1c8ac974sm968353f8f.91.2024.12.19.00.33.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 00:33:38 -0800 (PST)
+ Thu, 19 Dec 2024 00:33:42 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 33/41] kvm: consistently return 0/-errno from kvm_convert_memory
-Date: Thu, 19 Dec 2024 09:32:20 +0100
-Message-ID: <20241219083228.363430-34-pbonzini@redhat.com>
+Cc: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+Subject: [PULL 34/41] target/i386: Reset TSCs of parked vCPUs too on VM reset
+Date: Thu, 19 Dec 2024 09:32:21 +0100
+Message-ID: <20241219083228.363430-35-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219083228.363430-1-pbonzini@redhat.com>
 References: <20241219083228.363430-1-pbonzini@redhat.com>
@@ -105,50 +105,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In case of incorrect parameters, kvm_convert_memory() was returning
--1 instead of -EINVAL.  The guest won't notice because it will move
-anyway to RUN_STATE_INTERNAL_ERROR, but fix this for consistency and
-clarity.
+From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
+Since commit 5286c3662294 ("target/i386: properly reset TSC on reset")
+QEMU writes the special value of "1" to each online vCPU TSC on VM reset
+to reset it.
+
+However parked vCPUs don't get that handling and due to that their TSCs
+get desynchronized when the VM gets reset.
+This in turn causes KVM to turn off PVCLOCK_TSC_STABLE_BIT in its exported
+PV clock.
+Note that KVM has no understanding of vCPU being currently parked.
+
+Without PVCLOCK_TSC_STABLE_BIT the sched clock is marked unstable in
+the guest's kvm_sched_clock_init().
+This causes a performance regressions to show in some tests.
+
+Fix this issue by writing the special value of "1" also to TSCs of parked
+vCPUs on VM reset.
+
+Reproducing the issue:
+1) Boot a VM with "-smp 2,maxcpus=3" or similar
+
+2) device_add host-x86_64-cpu,id=vcpu,node-id=0,socket-id=0,core-id=2,thread-id=0
+
+3) Wait a few seconds
+
+4) device_del vcpu
+
+5) Inside the VM run:
+# echo "t" >/proc/sysrq-trigger; dmesg | grep sched_clock_stable
+Observe the sched_clock_stable() value is 1.
+
+6) Reboot the VM
+
+7) Once the VM boots once again run inside it:
+# echo "t" >/proc/sysrq-trigger; dmesg | grep sched_clock_stable
+Observe the sched_clock_stable() value is now 0.
+
+Fixes: 5286c3662294 ("target/i386: properly reset TSC on reset")
+Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+Link: https://lore.kernel.org/r/5a605a88e9a231386dc803c60f5fed9b48108139.1734014926.git.maciej.szmigiero@oracle.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/kvm/kvm-all.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ configs/targets/i386-softmmu.mak   |  1 +
+ configs/targets/x86_64-softmmu.mak |  1 +
+ include/sysemu/kvm.h               |  8 ++++++++
+ accel/kvm/kvm-all.c                | 11 +++++++++++
+ target/i386/kvm/kvm.c              | 15 +++++++++++++++
+ 5 files changed, 36 insertions(+)
 
+diff --git a/configs/targets/i386-softmmu.mak b/configs/targets/i386-softmmu.mak
+index 2ac69d5ba37..2eb0e862500 100644
+--- a/configs/targets/i386-softmmu.mak
++++ b/configs/targets/i386-softmmu.mak
+@@ -1,4 +1,5 @@
+ TARGET_ARCH=i386
+ TARGET_SUPPORTS_MTTCG=y
+ TARGET_KVM_HAVE_GUEST_DEBUG=y
++TARGET_KVM_HAVE_RESET_PARKED_VCPU=y
+ TARGET_XML_FILES= gdb-xml/i386-32bit.xml
+diff --git a/configs/targets/x86_64-softmmu.mak b/configs/targets/x86_64-softmmu.mak
+index e12ac3dc59b..920e9a42006 100644
+--- a/configs/targets/x86_64-softmmu.mak
++++ b/configs/targets/x86_64-softmmu.mak
+@@ -2,4 +2,5 @@ TARGET_ARCH=x86_64
+ TARGET_BASE_ARCH=i386
+ TARGET_SUPPORTS_MTTCG=y
+ TARGET_KVM_HAVE_GUEST_DEBUG=y
++TARGET_KVM_HAVE_RESET_PARKED_VCPU=y
+ TARGET_XML_FILES= gdb-xml/i386-64bit.xml
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index c3a60b28909..ab17c09a551 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -377,6 +377,14 @@ int kvm_arch_init(MachineState *ms, KVMState *s);
+ int kvm_arch_init_vcpu(CPUState *cpu);
+ int kvm_arch_destroy_vcpu(CPUState *cpu);
+ 
++#ifdef TARGET_KVM_HAVE_RESET_PARKED_VCPU
++void kvm_arch_reset_parked_vcpu(unsigned long vcpu_id, int kvm_fd);
++#else
++static inline void kvm_arch_reset_parked_vcpu(unsigned long vcpu_id, int kvm_fd)
++{
++}
++#endif
++
+ bool kvm_vcpu_id_is_valid(int vcpu_id);
+ 
+ /* Returns VCPU ID to be used on KVM_CREATE_VCPU ioctl() */
 diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 801cff16a5a..77d811ca70c 100644
+index 77d811ca70c..4ab277cc84a 100644
 --- a/accel/kvm/kvm-all.c
 +++ b/accel/kvm/kvm-all.c
-@@ -2999,17 +2999,17 @@ int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
-     MemoryRegion *mr;
-     RAMBlock *rb;
-     void *addr;
--    int ret = -1;
-+    int ret = -EINVAL;
+@@ -437,6 +437,16 @@ int kvm_unpark_vcpu(KVMState *s, unsigned long vcpu_id)
+     return kvm_fd;
+ }
  
-     trace_kvm_convert_memory(start, size, to_private ? "shared_to_private" : "private_to_shared");
- 
-     if (!QEMU_PTR_IS_ALIGNED(start, qemu_real_host_page_size()) ||
-         !QEMU_PTR_IS_ALIGNED(size, qemu_real_host_page_size())) {
--        return -1;
-+        return ret;
++static void kvm_reset_parked_vcpus(void *param)
++{
++    KVMState *s = param;
++    struct KVMParkedVcpu *cpu;
++
++    QLIST_FOREACH(cpu, &s->kvm_parked_vcpus, node) {
++        kvm_arch_reset_parked_vcpu(cpu->vcpu_id, cpu->kvm_fd);
++    }
++}
++
+ int kvm_create_vcpu(CPUState *cpu)
+ {
+     unsigned long vcpu_id = kvm_arch_vcpu_id(cpu);
+@@ -2728,6 +2738,7 @@ static int kvm_init(MachineState *ms)
      }
  
-     if (!size) {
--        return -1;
-+        return ret;
-     }
+     qemu_register_reset(kvm_unpoison_all, NULL);
++    qemu_register_reset(kvm_reset_parked_vcpus, s);
  
-     section = memory_region_find(get_system_memory(), start, size);
-@@ -3027,7 +3027,7 @@ int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
-         if (!to_private) {
-             return 0;
-         }
--        return -1;
-+        return ret;
+     if (s->kernel_irqchip_allowed) {
+         kvm_irqchip_create(s);
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 8e17942c3ba..2ff618fbf13 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2415,6 +2415,21 @@ void kvm_arch_after_reset_vcpu(X86CPU *cpu)
      }
+ }
  
-     if (!memory_region_has_guest_memfd(mr)) {
++void kvm_arch_reset_parked_vcpu(unsigned long vcpu_id, int kvm_fd)
++{
++    g_autofree struct kvm_msrs *msrs = NULL;
++
++    msrs = g_malloc0(sizeof(*msrs) + sizeof(msrs->entries[0]));
++    msrs->entries[0].index = MSR_IA32_TSC;
++    msrs->entries[0].data = 1; /* match the value in x86_cpu_reset() */
++    msrs->nmsrs++;
++
++    if (ioctl(kvm_fd, KVM_SET_MSRS, msrs) != 1) {
++        warn_report("parked vCPU %lu TSC reset failed: %d",
++                    vcpu_id, errno);
++    }
++}
++
+ void kvm_arch_do_init_vcpu(X86CPU *cpu)
+ {
+     CPUX86State *env = &cpu->env;
 -- 
 2.47.1
 
