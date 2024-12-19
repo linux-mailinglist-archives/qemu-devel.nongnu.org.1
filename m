@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032A39F7376
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 04:42:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5186B9F7377
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 04:42:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tO7PJ-00076L-Hk; Wed, 18 Dec 2024 22:41:01 -0500
+	id 1tO7PW-00077i-4x; Wed, 18 Dec 2024 22:41:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tO7PF-00075T-UO; Wed, 18 Dec 2024 22:40:58 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1tO7PM-00076i-El; Wed, 18 Dec 2024 22:41:04 -0500
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tO7PE-0004Iv-B0; Wed, 18 Dec 2024 22:40:57 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-21683192bf9so3405345ad.3; 
- Wed, 18 Dec 2024 19:40:55 -0800 (PST)
+ id 1tO7PH-0004JD-81; Wed, 18 Dec 2024 22:41:04 -0500
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-7fd49d85f82so184919a12.3; 
+ Wed, 18 Dec 2024 19:40:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734579654; x=1735184454; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1734579657; x=1735184457; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Vwlpe1MB5sgsXYOFPBQEhsgxZTpLhzeJKWOWZzIcj+E=;
- b=db5PAK6hvpNrSUJ8WNibKh11xgdJvDq2G6dqYkJSC1tNvaGRmEW39HbNzWuNxn1I87
- rtCwMrDdSC/Nl5fk10dpFycKqzvTsBPcE9Ezc7S3MeyzAtTKk+KyBCuMMJBLOQCZjNBA
- Li2w+ttDAyLn/l3SEBByuLw1yTcIIRN69qSLSiOpGYpwNVLLgOY7OmfnqNXuGb0sh6GP
- KQ99hHlwceR4gWJ5JPkES/NCDqM/hiIAzcb86mnaRX0py8YFV+a1Rjrd4/B0mnZ8v+XI
- 6uU7XuUszKD4q9tGoRzffRwGfIIGR0r6qz5/e5ByFeYR/wDoXVMp6usTb1XrtDYmDlmd
- jKtQ==
+ bh=dH0e3/pZqO5cSRapQt3yCMopH0TKWEFkSF3QFzJFiLE=;
+ b=ibY8tRH0x64xikGaqRFhewe1HfIR8LRyNyG8dx2Prh14oygF8Oj8Um+uf7XS65clV8
+ NIJHYVKWnGz+lg6FCatnZC6kCcmlXNtX9/zyG3/QoNNs+inR5Fwcjk3Y+o3ftsIh/Tms
+ b5wn6b2QsISi4LKqGIcgcdLMGqy4RuZQ1Yfgbq2y6AjSrCk/hx7PePO/tqu4kT274gjL
+ BjXyAOWnWI3Ts9s6SYgh7mi3II2h4og2qnBU9PM8vwVAZM/rmlH+TE++0aF8XTRR2tU7
+ FBZ9Y6MC16xj2SH5rB4gHkSMqiSGZQ2/pXb6oEUOn3Tm9qmxyXeDDhXp8gz+RTQebJSb
+ biZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734579654; x=1735184454;
+ d=1e100.net; s=20230601; t=1734579657; x=1735184457;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Vwlpe1MB5sgsXYOFPBQEhsgxZTpLhzeJKWOWZzIcj+E=;
- b=QdcO2TWQa05wIvoYhx+Og9+lfD26s++pDom/+JaV3qqGIm/tasG/oEQnYOrpMSSNum
- 9zz+g/Nbe5bmrBSJeyPMBREZdePze6dbhOrNkVNcP44JgGQ8H53+t8Jauqww8ZLC4DGH
- 4WDvP4GHXpvtIr4dZ6HGDMDD8ufk6t08p3Tlh/7p5TyXWqC6wxSqryVAkezGlX3d4Hnm
- 7TFFbnwSijom3dAIu/LG5ciSw/R35e/83j2819VDFN6mahDpP0l5R0hua9HAm6MGQ8bd
- fsbb+yB+X8px+sGyNESI080qeoHXP1llIyt1FkGXymFez6GpbuhFb5Tx1iFWTlqbSh8f
- ryFw==
+ bh=dH0e3/pZqO5cSRapQt3yCMopH0TKWEFkSF3QFzJFiLE=;
+ b=bB1uOACURmwt8NfveagC4s0p0bw8aLtkBurnkk9plyrwsEbdQ0VqTvFTEhDFnDt1Fm
+ WrYGESlHb5HepBZFcTz9Ol6UAGNzMhZgrPIarJD/pZoAU075Xm9ZtXQQNy6j+rFs57tz
+ O+EAaPnEbIfrEekKF1k7MLG5NnRAKuXn8jM+H/3xgJW4lMpypk46Rx3VrDUsgYowccei
+ gSg2+dYUx3uUm4XFx+Vfwradd10TuSJSXYjj5RFkZijGiOpsLVlan95L97fh87GHlB9K
+ s1BBROCtrFT2GjsmcNDm0KhbO9vnubbOmmSFX2p+BEEG8ocP3Cqk5PJt6rAh0Pql9U1z
+ GAYw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX4gXP5bER6CJbhJc0dCnuxCDON4z44b4t0fYM1b+eVCcY7YZWrql731Ss2jtA2bVjiJDpBeRMjaryD@nongnu.org
-X-Gm-Message-State: AOJu0YwD3KAMxZfdetexD1SlPqUItmMDl33GUzbNYWtmMhwK3i47CLIa
- zLP6+6hSC4RUrlPDQpKxjDfaJNgva9oQlydi5yTIW2bbtoZwB+g/qn1aSQ==
-X-Gm-Gg: ASbGncs8TKuOMgrj4BKl8nZLC7yuPx9uvFurDlmhAdokc0NikaJ+11RLDXw3cAN1NgA
- 2KdMAPVn86kJUBXtvmCY2rdbP3FPOLhjjxdJOYa7eboGYkxICxGyrRMQbX8wftRIWUr4qi2RGlj
- vssQ0CyfNQiXwpbK1JDn2Rjv2QSpb9Xzyi2uK2mdKw6si1U2xDV8OfdvMpjyzgpeNEXsjMb5C4K
- h9mvpFXQMosvO8sM6Thkp+n+D7vI831ExqL4aF0Lw+lp8vH07vrPBm89IbzW9dpEniFmpSZzkcF
- 2nafm18n9Q==
-X-Google-Smtp-Source: AGHT+IH2M/jisU1OzVQI0W7JexlH48qVb/oF3O9VlP9AZCZ4bUIl3TvcYLglPfAnMi/z+IrdWz3N1A==
-X-Received: by 2002:a17:902:e741:b0:216:2dc4:50ab with SMTP id
- d9443c01a7336-218d6fd5f54mr65907225ad.2.1734579654338; 
- Wed, 18 Dec 2024 19:40:54 -0800 (PST)
+ AJvYcCUOZs8GJ27DNti2wAddh32LIrPLH2dN53oeSBTMm0AUTIVc0dUVyQ8mWUQ+JCrf+mBVomgsUUtHivY4@nongnu.org
+X-Gm-Message-State: AOJu0YyR15PkcOL0FNl2VxQ1kEMaBD3T7vDUjevUCIw7aLK7I31HILm3
+ BqWbAmjmg1lBiLCYPtrxk3XCBd7bjAj7GWKHaGzKIMMF65YaW3efwphwfA==
+X-Gm-Gg: ASbGnctkKKKVm9+wWQRgvhHiwKbwKWxCM1JAvOczOcexCwdd0StQNJl0NYAJ1Cm5u7v
+ icDqgIYKUdq7+hbqql6afH3nfjdR/4A1LgToJg453dvS9FnC/ifgt1nCmyBEFQdU4L3xG1oWSny
+ sKj5OSzX2KreXKjWxFfJ9An4AVAzaqaCVmykHzPh2AmXBCrcGj0QcqZfzU8sqi1tjSU0PQm+I3o
+ W4LE6yGhHr4VQnrJXKHMRtPV/9nv5azfugaRN3NGNr+KM6lUASdlf1wosUPbz0qLx/7j/AiTKSs
+ Wa5noendUw==
+X-Google-Smtp-Source: AGHT+IF4F7xuIiB3HLAG4AJh4EeOoDe/9AIZQJAWe7c9SZj3c95DgHtuhbX1LEERG3D+53XZRg9AWA==
+X-Received: by 2002:a17:902:ea08:b0:215:2f00:67b1 with SMTP id
+ d9443c01a7336-218d6fd4be7mr65976105ad.6.1734579657231; 
+ Wed, 18 Dec 2024 19:40:57 -0800 (PST)
 Received: from wheely.local0.net (14-200-18-130.tpgi.com.au. [14.200.18.130])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-219dc970520sm2881595ad.75.2024.12.18.19.40.51
+ d9443c01a7336-219dc970520sm2881595ad.75.2024.12.18.19.40.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 19:40:54 -0800 (PST)
+ Wed, 18 Dec 2024 19:40:56 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
-Subject: [PATCH 4/5] target/ppc: Avoid warning message for zero process table
- entries
-Date: Thu, 19 Dec 2024 13:40:34 +1000
-Message-ID: <20241219034035.1826173-5-npiggin@gmail.com>
+Subject: [PATCH 5/5] target/ppc: Wire up BookE ATB registers for e500 family
+Date: Thu, 19 Dec 2024 13:40:35 +1000
+Message-ID: <20241219034035.1826173-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241219034035.1826173-1-npiggin@gmail.com>
 References: <20241219034035.1826173-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,41 +98,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A translation that encounters a process table entry that is zero is
-something that Linux does to cause certain kernel NULL pointer
-dereferences to fault. It is not itself a programming error, so avoid
-the guest error log.
+From the Freescale PowerPC Architecture Primer:
+
+  Alternate time base APU. This APU, implemented on the e500v2, defines
+  a 64-bit time base counter that differs from the PowerPC defined time
+  base in that it is not writable and counts at a different, and
+  typically much higher, frequency. The alternate time base always
+  counts up, wrapping when the 64-bit count overflows.
+
+This implementation of ATB uses the same frequency as the TB. The
+existing spr_read_atbu/l functions are unused without this patch
+to wire them into the SPR.
+
+RTEMS uses this SPR on the e6500, though this hasn't been tested.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu-radix64.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ target/ppc/cpu_init.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
-index be7a45f2549..02099300358 100644
---- a/target/ppc/mmu-radix64.c
-+++ b/target/ppc/mmu-radix64.c
-@@ -571,6 +571,20 @@ static int ppc_radix64_process_scoped_xlate(PowerPCCPU *cpu,
-         prtbe0 = ldq_phys(cs->as, h_raddr);
-     }
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 1253dbf622c..4f0a64e7f99 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -922,6 +922,18 @@ static void register_BookE206_sprs(CPUPPCState *env, uint32_t mas_mask,
+ #endif
+ }
  
-+    /*
-+     * Some Linux uses a zero process table entry in PID!=0 for kernel context
-+     * without userspace in order to fault on NULL dereference, because using
-+     * PIDR=0 for the kernel causes the Q0 page table to be used to translate
-+     * Q3 as well. Check for that case here to avoid the invalid configuration
-+     * message.
-+     */
-+    if (unlikely(!prtbe0)) {
-+        if (guest_visible) {
-+            ppc_radix64_raise_si(cpu, access_type, eaddr, DSISR_R_BADCONFIG);
-+        }
-+        return 1;
++static void register_atb_sprs(CPUPPCState *env)
++{
++    spr_register(env, SPR_ATBL, "ATBL",
++                 &spr_read_atbl, SPR_NOACCESS,
++                 &spr_read_atbl, SPR_NOACCESS,
++                 0x00000000);
++    spr_register(env, SPR_ATBU, "ATBU",
++                 &spr_read_atbu, SPR_NOACCESS,
++                 &spr_read_atbu, SPR_NOACCESS,
++                 0x00000000);
++}
++
+ /* SPR specific to PowerPC 440 implementation */
+ static void register_440_sprs(CPUPPCState *env)
+ {
+@@ -2911,6 +2923,11 @@ static void init_proc_e500(CPUPPCState *env, int version)
+     register_BookE206_sprs(env, 0x000000DF, tlbncfg, mmucfg);
+     register_usprgh_sprs(env);
+ 
++    if (version != fsl_e500v1) {
++        /* e500v1 has no support for alternate timebase */
++        register_atb_sprs(env);
 +    }
 +
-     /* Walk Radix Tree from Process Table Entry to Convert EA to RA */
-     *g_page_size = PRTBE_R_GET_RTS(prtbe0);
-     base_addr = prtbe0 & PRTBE_R_RPDB;
+     spr_register(env, SPR_HID0, "HID0",
+                  SPR_NOACCESS, SPR_NOACCESS,
+                  &spr_read_generic, &spr_write_generic,
 -- 
 2.45.2
 
