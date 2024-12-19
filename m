@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C3969F7780
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:37:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 744EF9F777F
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:37:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOBxq-0004Vx-Se; Thu, 19 Dec 2024 03:32:58 -0500
+	id 1tOBxs-0004Wg-4e; Thu, 19 Dec 2024 03:33:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOBxo-0004Ud-0k
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:32:56 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tOBxp-0004Vm-Cl
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:32:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOBxm-00056d-8j
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:32:55 -0500
+ id 1tOBxn-00056w-I5
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:32:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734597172;
+ s=mimecast20190719; t=1734597175;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=V/ENCW2ZbKsFmMbQzc45gFjdcifV8MZLOt5dduiBsBs=;
- b=RtWAtRQyb8h91gFSbC9OHiwsBc9Kx6EoeitqMgjgvauc2A5fV8sk9fXLbwmjPdYuIJ7oDt
- xCuJntnRjyCy2jAz8yHqSAbySnscIFdBrlCEfS1riqDVOsz74Ww6b60qH2QrVVCdUGjj7F
- BpgLDVqS429sPN29jHid6B8KvhFThi0=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=BRvXaOIiQljc+ZwkCS91Aq82+cVbl1J4OCKByiO2hkw=;
+ b=HzxEuJPsYJPiHcnngpOs14x7B0HVKNAp4Q2NsYAv6PSageFa6Du4BcSAjgaDRjR0d8gas6
+ MSXkl86dWtbYsfMBMQVeLLPW9NAq+n9R3Dzr046Ygi0yngA3i+fc7TvZ2aT81/whO4hM0y
+ jGZz9lm0keD80zUuNL4cgNUiXEbFJj8=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-269-me-VUX5AOXWAHkvO4-wAPg-1; Thu, 19 Dec 2024 03:32:51 -0500
-X-MC-Unique: me-VUX5AOXWAHkvO4-wAPg-1
-X-Mimecast-MFC-AGG-ID: me-VUX5AOXWAHkvO4-wAPg
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4361fc2b2d6so2983505e9.3
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:32:51 -0800 (PST)
+ us-mta-570-GW3S7Ww-NSqGBZ1UG82NMw-1; Thu, 19 Dec 2024 03:32:53 -0500
+X-MC-Unique: GW3S7Ww-NSqGBZ1UG82NMw-1
+X-Mimecast-MFC-AGG-ID: GW3S7Ww-NSqGBZ1UG82NMw
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-385df115300so257124f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:32:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734597169; x=1735201969;
+ d=1e100.net; s=20230601; t=1734597172; x=1735201972;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=V/ENCW2ZbKsFmMbQzc45gFjdcifV8MZLOt5dduiBsBs=;
- b=YmmLtnxSW5WF28qor+baCwaje4nnh0JYtuVlqrF1sCCpjm91v5vNjoQpe8U7lfUusJ
- paZIymDEa5kwpS38Aw6Zni8xeBR+w2F4PxEmx0CsJ6S9eHW99IbFhK9qiHrj6ykzi90c
- yEDekkUNsqxk8IXFU78S5Elj+1t8cnSTgwJFJHAZVYCPY8q7yoSxjbGPZH+aVGW/pwfu
- 7klrLAIDFBpw3nspOkvS46HW6bu2U+owz7z3Rvau5Vr03Hl0Z6SO/9xB1dYQ6oky0Mak
- R94Rg2VMKozhfJ5hfRG13Wf2DeCBGXLzULdiW2xMxeRkGEhmiIW7XeLR29xJU79kxpXJ
- SNPg==
-X-Gm-Message-State: AOJu0Yy1lm+6Z3k/Mjy6pnLI/NkYT/Q8osXSpHKE61ZxF0n1k/GuH/3C
- UvHzqHRm+XVxwHjD5uvmq6e3h9RC5KYB3pUsLXWizktaibgswHg96XsrqRwLXUY39v6A5Qhrv4d
- F0CB+/QUhnJDxZTwN+qWU8i16nQn3AD1D5JTNu+AUFNpphIb2i1wEryQRVURYIOTxzM4XiF/3ze
- fD8kvopaP4hs4HVksnTG5/NAJ7AvbVr0kFL75R
-X-Gm-Gg: ASbGncsOEsQOK+/svKZJfdQ2VgXh5dRmYRm2SQ52KNVgnim0T7dr6a5DMVmra/a9GG0
- HjGXnRe6TVLOL7ektm4a8JqH+ttXuKHlWGlzLEHMzQsYwLS7E1sFKVjTW+H4LGYvTo1/ULmUSiE
- QQpjtiRtcgBUTo7KV0BlbvpOZYOQMWLMGN68pdVhxRWp9O1dnrdEvSuFp58Q1Se3kCU1xrNz6mW
- 99DPOHcWbEK1eg0icd7EYFEhCmVlQa3Fh/g6jNhMzB0klQoY7EC21raQVZk
-X-Received: by 2002:a7b:cde1:0:b0:436:5165:f21f with SMTP id
- 5b1f17b1804b1-4365c7c9713mr14808285e9.26.1734597169705; 
- Thu, 19 Dec 2024 00:32:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGcjR+VMxAu0nFHCgL4AzVlqS/5SaastdJGcxUUecubn4xtJRVQYzz0CHTdDnXcZOqc/2/u+Q==
-X-Received: by 2002:a7b:cde1:0:b0:436:5165:f21f with SMTP id
- 5b1f17b1804b1-4365c7c9713mr14808035e9.26.1734597169333; 
- Thu, 19 Dec 2024 00:32:49 -0800 (PST)
+ bh=BRvXaOIiQljc+ZwkCS91Aq82+cVbl1J4OCKByiO2hkw=;
+ b=egXkdGDbP02XaX1zfILcAceJn5lMcIzQKblU9rTwCC3L9GyD8d+avnIvBaigvQKGlB
+ czSqKBf4uLJWEhy+Dqp5cEfNqWV09iOHMhEXn2oAfcsJQBD14iXzsDNK74GvQcBZwOUj
+ jEXWKPkI3/aP4w4R+e/d5/+DilTzSP3biI5ReRBGUOy1WU7jWqovA879w2EkqGHYDIpS
+ K4TfWH/dR1A+I1a3QhBjnbXxBp+xBkGfXgucqcF7RhajEbEAEAnByiDzEvSDgQeQ8otZ
+ UNELxVSf9rn9twr5exBoHVGGgIcooI86hz3+a90m4rLHZtSmC3okAxwk6+3QUpYOX+ZA
+ wevA==
+X-Gm-Message-State: AOJu0YwRZZUNXSzg0Gt3ZK9lPr/TJtg6lLtWE2ECK8Yj+ilOfjRqJWiX
+ 0VyxP6mgDzTnIslBY1ZduV1uBcsuGYuGcyblb/kFwHr4bVCOQQ4Gv1btplSOaD+TDRBOWf3fqeK
+ WPYnxiXm7S75qx/AqUv2kKPjVoQiKTlJMUNxtA9SmQaqO9QZWKM8qjyYahjjBS74McekK+AlEKp
+ YZesNmYOsQMJm54EY9KWfNPM5b5Sey5OVIIfwx
+X-Gm-Gg: ASbGnct2y76S1fKCxCGFcmXF9vHwESTo0p5852SnNN9TqP4nCsWo+gwW1faJU56k9Lo
+ CLLEi7UITNk877KjGaDOVqUHhlp2CVpOegCtXDgo8rqXca34XKskLcnLngYArP6oXdGlKN3r/PZ
+ 976hfK0k5MFDCkiI4O6wAZjnN35E+i0bp07W5y7+aeufU1QcbQ/7uGl0ZOyU4oHWnM1DySTCiSI
+ 6QtUdeRQwgV7f71Zm6VPsUUeKdhiXSbhuJICU/ISGcMcLOEYMZz0CyBdTGN
+X-Received: by 2002:a5d:59a3:0:b0:374:c4e2:3ca7 with SMTP id
+ ffacd0b85a97d-388e4d4b63cmr5617955f8f.5.1734597171799; 
+ Thu, 19 Dec 2024 00:32:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFJ09Z+lsYrzmr5vyDxKKNjJvs02a0DcXYW666qQbSnNJ3MgDr8R8G96myg3ZKg4BSKuWpmGQ==
+X-Received: by 2002:a5d:59a3:0:b0:374:c4e2:3ca7 with SMTP id
+ ffacd0b85a97d-388e4d4b63cmr5617929f8f.5.1734597171359; 
+ Thu, 19 Dec 2024 00:32:51 -0800 (PST)
 Received: from [192.168.10.47] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436612008bcsm11140035e9.16.2024.12.19.00.32.47
+ ffacd0b85a97d-38a1c89e2d2sm988883f8f.71.2024.12.19.00.32.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 00:32:48 -0800 (PST)
+ Thu, 19 Dec 2024 00:32:49 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 10/41] hw/sparc: Remove empty Property lists
-Date: Thu, 19 Dec 2024 09:31:57 +0100
-Message-ID: <20241219083228.363430-11-pbonzini@redhat.com>
+Subject: [PULL 11/41] hw/virtio: Remove empty Property lists
+Date: Thu, 19 Dec 2024 09:31:58 +0100
+Message-ID: <20241219083228.363430-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219083228.363430-1-pbonzini@redhat.com>
 References: <20241219083228.363430-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -108,53 +108,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Richard Henderson <richard.henderson@linaro.org>
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Link: https://lore.kernel.org/r/20241216035109.3486070-11-richard.henderson@linaro.org
+Link: https://lore.kernel.org/r/20241216035109.3486070-12-richard.henderson@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/sparc/sun4m.c   | 5 -----
- hw/sparc64/sun4u.c | 5 -----
+ hw/virtio/vdpa-dev-pci.c       | 5 -----
+ hw/virtio/vhost-user-snd-pci.c | 5 -----
  2 files changed, 10 deletions(-)
 
-diff --git a/hw/sparc/sun4m.c b/hw/sparc/sun4m.c
-index d52e6a7213f..7ec346533e2 100644
---- a/hw/sparc/sun4m.c
-+++ b/hw/sparc/sun4m.c
-@@ -732,15 +732,10 @@ static void prom_realize(DeviceState *ds, Error **errp)
-     sysbus_init_mmio(dev, &s->prom);
+diff --git a/hw/virtio/vdpa-dev-pci.c b/hw/virtio/vdpa-dev-pci.c
+index 5446e6b393e..787926801a1 100644
+--- a/hw/virtio/vdpa-dev-pci.c
++++ b/hw/virtio/vdpa-dev-pci.c
+@@ -48,10 +48,6 @@ static void vhost_vdpa_device_pci_instance_init(Object *obj)
+                               "bootindex");
  }
  
--static Property prom_properties[] = {
--    {/* end of property list */},
+-static Property vhost_vdpa_device_pci_properties[] = {
+-    DEFINE_PROP_END_OF_LIST(),
 -};
 -
- static void prom_class_init(ObjectClass *klass, void *data)
+ static int vhost_vdpa_device_pci_post_init(VhostVdpaDevice *v, Error **errp)
  {
-     DeviceClass *dc = DEVICE_CLASS(klass);
+     VhostVdpaDevicePCI *dev = container_of(v, VhostVdpaDevicePCI, vdev);
+@@ -80,7 +76,6 @@ static void vhost_vdpa_device_pci_class_init(ObjectClass *klass, void *data)
+     VirtioPCIClass *k = VIRTIO_PCI_CLASS(klass);
  
--    device_class_set_props(dc, prom_properties);
-     dc->realize = prom_realize;
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+-    device_class_set_props(dc, vhost_vdpa_device_pci_properties);
+     k->realize = vhost_vdpa_device_pci_realize;
  }
  
-diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
-index 7088ac273ea..05b8c7369e2 100644
---- a/hw/sparc64/sun4u.c
-+++ b/hw/sparc64/sun4u.c
-@@ -471,15 +471,10 @@ static void prom_realize(DeviceState *ds, Error **errp)
-     sysbus_init_mmio(dev, &s->prom);
- }
+diff --git a/hw/virtio/vhost-user-snd-pci.c b/hw/virtio/vhost-user-snd-pci.c
+index d61cfdae631..0cb86b7d85d 100644
+--- a/hw/virtio/vhost-user-snd-pci.c
++++ b/hw/virtio/vhost-user-snd-pci.c
+@@ -23,10 +23,6 @@ typedef struct VHostUserSoundPCI VHostUserSoundPCI;
+ DECLARE_INSTANCE_CHECKER(VHostUserSoundPCI, VHOST_USER_SND_PCI,
+                          TYPE_VHOST_USER_SND_PCI)
  
--static Property prom_properties[] = {
--    {/* end of property list */},
+-static Property vhost_user_snd_pci_properties[] = {
+-    DEFINE_PROP_END_OF_LIST(),
 -};
 -
- static void prom_class_init(ObjectClass *klass, void *data)
+ static void vhost_user_snd_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
  {
-     DeviceClass *dc = DEVICE_CLASS(klass);
- 
--    device_class_set_props(dc, prom_properties);
-     dc->realize = prom_realize;
- }
- 
+     VHostUserSoundPCI *dev = VHOST_USER_SND_PCI(vpci_dev);
+@@ -44,7 +40,6 @@ static void vhost_user_snd_pci_class_init(ObjectClass *klass, void *data)
+     PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
+     k->realize = vhost_user_snd_pci_realize;
+     set_bit(DEVICE_CATEGORY_SOUND, dc->categories);
+-    device_class_set_props(dc, vhost_user_snd_pci_properties);
+     pcidev_k->vendor_id = PCI_VENDOR_ID_REDHAT_QUMRANET;
+     pcidev_k->device_id = 0; /* Set by virtio-pci based on virtio id */
+     pcidev_k->revision = 0x00;
 -- 
 2.47.1
 
