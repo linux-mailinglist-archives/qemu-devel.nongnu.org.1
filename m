@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E694F9F7786
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:37:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74F149F7753
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:33:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOBy5-0004aX-H2; Thu, 19 Dec 2024 03:33:13 -0500
+	id 1tOBy8-0004bG-9B; Thu, 19 Dec 2024 03:33:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOBy2-0004ZQ-St
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:10 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tOBy4-0004am-R2
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:13 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOBy0-000592-TX
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:10 -0500
+ id 1tOBy3-00059Y-9f
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:12 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734597188;
+ s=mimecast20190719; t=1734597190;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VfN/9GQVfhxdzR3tEbIrQoWnaMvt0ggSFeNUo7cpLhw=;
- b=AaAN+piWo676q/qSFOGnbVABo5D2pCahVqd8jQfSOayBKn62f/1I0oFR0rprOgojAUlAof
- eW2cgJDWxYEPoaz//tcYzZNnlaxwj/2wyPSql8brq4JF5J7yTXBaJtUVBiT+yncFL56q+K
- sV6QzWKYtk8SKPyhcGvgzP9y7JGZgUE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uej8kMO7NCkobLHrnQz1TU29MyTwJWko3Jex+3x88Oc=;
+ b=azw6T7YTS1KqvF/pltIk/ANJxGWRZJwQgBeI2xVWNZ4oO9EFieQ17DaQJgN4D2zFVenrKK
+ +UCcZed/AjcOcgL/vFzZbcvCJIywET3wlvv2QV26xyQdTjbvzl8KseUZ4FdUkb4HM2vkc3
+ DVy6Rq8E024fDlVlEDqNisD/fRyoJ/s=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-173-nkFEBQSDNbqI8M91HITnnA-1; Thu, 19 Dec 2024 03:33:07 -0500
-X-MC-Unique: nkFEBQSDNbqI8M91HITnnA-1
-X-Mimecast-MFC-AGG-ID: nkFEBQSDNbqI8M91HITnnA
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-385e27c5949so347204f8f.3
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:06 -0800 (PST)
+ us-mta-392-g2X_1CkCP_ajmaPxF22G4Q-1; Thu, 19 Dec 2024 03:33:09 -0500
+X-MC-Unique: g2X_1CkCP_ajmaPxF22G4Q-1
+X-Mimecast-MFC-AGG-ID: g2X_1CkCP_ajmaPxF22G4Q
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4362b9c15d8so2896065e9.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734597185; x=1735201985;
+ d=1e100.net; s=20230601; t=1734597187; x=1735201987;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VfN/9GQVfhxdzR3tEbIrQoWnaMvt0ggSFeNUo7cpLhw=;
- b=JnK11wIw1bBHk2lBSxbIo0k+2xfRuwNyFPoTX7x0ZqxaoKvVDU20dKMdjruaIbFzEb
- IzVjq6XpGDBt4TPcKGR9rLbkUjOU0Qavi9pE8Rc84mv9aQzNLMJn9qcOdf0CEuwUNcFV
- e7eBmtu0Dlm50ny3n00ZJ5RN0Rxl65B+nEU4/g5kYS821FuCrWH4Cyil6nvmpaL/Rfqa
- oFSQnkAOOYdqb5OyaGsQ8K2zpzcgNwbW9um0bZ6far9GE1CoNY2mzIZr/3XlauEdgtPM
- 8e2lQT/2pCnsK5cranYICZethLV8paklIzkK0NN3vMNInBsULMHF5DG8y9WDfei7QkE6
- /kYw==
-X-Gm-Message-State: AOJu0YyrvBrcPTV70eKtDqjDLXqhF9lapsYCAjRpKBYn1yQZJKbTgC5U
- R0zhmNktc/624Jpn0tCxgqi+1z11MGCTs1ZSVBeOW+zZpojSpcKLQKLamYFtLpek5KWJHrZhkd3
- TsG94FCIuK4KgOrm9juRJnlPg2/+ENndOPj2Ehq1EEMf1XeD0RzpattqH/A0fCo11yYwbMjVc7j
- CnrcvM0u0rJ65pB84k5Kwmj1zs3JdxrtPiR7FS
-X-Gm-Gg: ASbGncseQdM3EfSuwG7aeHg+7u4ZnPWtTZNhx9GGwOakr4KgZFDzSQZ5mRTyPG3xpS+
- pYIXp8U80jvWS5Os8hdc+n1nZVFF8DoPXl3mu8RCz2Pnbz5iZpylHAUq0lWbJgI4wfkLKX3SHBR
- 4J0zhgPhwJlXgM66onp2qQSrSkVUbitmEfqt8u042Ieszv77kcTTadET11J0qkObZ7YTCPHtQrn
- /FVB1iqGlqlVuQOHdcdJlb2lBCjWFelQAM19vF46wl9trmrgPyfC8muCfPq
-X-Received: by 2002:a05:6000:4916:b0:386:37f5:99e7 with SMTP id
- ffacd0b85a97d-388e4d64938mr5959489f8f.33.1734597185072; 
- Thu, 19 Dec 2024 00:33:05 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH6tZMVwBA7gyFZ5L/qy4qkPy8xuADDK7kUaGu2ZLlU02ZkIR5eJwLLWgmHCt5KQePV7L8Eow==
-X-Received: by 2002:a05:6000:4916:b0:386:37f5:99e7 with SMTP id
- ffacd0b85a97d-388e4d64938mr5959455f8f.33.1734597184659; 
- Thu, 19 Dec 2024 00:33:04 -0800 (PST)
+ bh=uej8kMO7NCkobLHrnQz1TU29MyTwJWko3Jex+3x88Oc=;
+ b=NxBEurRdFgouSzWcX+gSfpm+F+7Z4PkT6Ib7+DKq71bQMfheEgsHY1TkdYbHeP8pTF
+ nN9BiJeAv1LggqncJ8gJ+f9B74+lz4bjB1DwmI/8b4hJS5lO1L9LKCfiGiH3N5u+WVbB
+ LfllJqGPl5L3HDZO4MIG4HtfR4mMULezvA1nNIlVEl71JcznotofsycuZeJJP93UZw7I
+ 5baJF0UASrfTIw3nXdVbUZGj+jZUiEvFTSIfVSFFJHNeZf/s+uE4tmG2kzR7TXD/XRF6
+ ypkFg84pZy0UuE3JWDpPYkTZkA9j0Um7Imi+0l0CNRwPnU+T3u1h2I0xFL5qhTRIgrWD
+ dv2A==
+X-Gm-Message-State: AOJu0YwaUvQ9ZHCyOxqXpJEG7nr4toznHrpZ1VAQAvvh3qKpJoyZDG33
+ qTF9s58XoUc9Y7DTkM1hfguncZNDQa4jV7/hQr0CX3LGeWha9xcyTgF8GNFTBfBDjeoA2R4g6pm
+ GaGvtiWe8QWEC+qC+79AcdoXLxNJb8VWvbEonxQv6/NlOEZiIHFK0m/k5JngbBCIkwBvyqcG1G2
+ d4izpmkwPFzL9mN/BnlaD8I5etK4MMWVf0YJtw
+X-Gm-Gg: ASbGncsqkgx1PMcNO8/ea2V9sOAtI4GI3/gewq5B9RE8LqvOPvOfTk6ro5cyfQVnCA7
+ KxpGg4GyERf36lwuWWhEwyjCWnCwfwCZlWPY08oMb/i3ylfEPTxBhMxqQK8yB2QE7XWbU1owhBa
+ PwLauFKjuW8KGLCTMJfiA3S6L59Uqt+Fky5i5VVgIX46jfJ9dfBoFBj7sdy5KphKdCOqufh14z8
+ j+e/GZ0fafCSO7IErP2u/c9Gf8dqIN+Bh8S+CUq64+eSHhsEkrNucixijbH
+X-Received: by 2002:a05:600c:510f:b0:436:1b08:4c78 with SMTP id
+ 5b1f17b1804b1-43655401b49mr58588065e9.31.1734597187090; 
+ Thu, 19 Dec 2024 00:33:07 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFuDqkZNP9JNxZMMT+1kXsDPde+6BfP4PEWrSyz5Xen2nIGPkpognO7hlfhI5420tdMt6GHBg==
+X-Received: by 2002:a05:600c:510f:b0:436:1b08:4c78 with SMTP id
+ 5b1f17b1804b1-43655401b49mr58587725e9.31.1734597186686; 
+ Thu, 19 Dec 2024 00:33:06 -0800 (PST)
 Received: from [192.168.10.47] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c8add5asm964519f8f.107.2024.12.19.00.33.02
+ 5b1f17b1804b1-43656b119d7sm44931385e9.20.2024.12.19.00.33.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 00:33:02 -0800 (PST)
+ Thu, 19 Dec 2024 00:33:05 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
-	qemu-rust@nongnu.org
-Subject: [PULL 17/41] rust/qemu-api: Use device_class_set_props_n
-Date: Thu, 19 Dec 2024 09:32:04 +0100
-Message-ID: <20241219083228.363430-18-pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 18/41] hw/core: Replace device_class_set_props with a macro
+Date: Thu, 19 Dec 2024 09:32:05 +0100
+Message-ID: <20241219083228.363430-19-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219083228.363430-1-pbonzini@redhat.com>
 References: <20241219083228.363430-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -108,68 +107,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-This means we can update declare_properties to drop the
-zero terminator at the end of the array as well.
+Use ARRAY_SIZE to implement as device_class_set_props_n.
+Remove any DEFINE_PROP_END_OF_LIST terminator from the count.
 
-Cc: qemu-rust@nongnu.org
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20241216035109.3486070-18-richard.henderson@linaro.org
+Link: https://lore.kernel.org/r/20241216035109.3486070-19-richard.henderson@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/device_class.rs | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ include/hw/qdev-core.h    | 21 +++++++++++++--------
+ hw/core/qdev-properties.c | 16 ----------------
+ 2 files changed, 13 insertions(+), 24 deletions(-)
 
-diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_class.rs
-index 03d03feee83..c98f0b2c7da 100644
---- a/rust/qemu-api/src/device_class.rs
-+++ b/rust/qemu-api/src/device_class.rs
-@@ -7,7 +7,6 @@
- use crate::{
-     bindings::{self, DeviceClass, DeviceState, Error, ObjectClass, Property, VMStateDescription},
-     prelude::*,
--    zeroable::Zeroable,
- };
+diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+index cd0ddf84ca5..5dc46402585 100644
+--- a/include/hw/qdev-core.h
++++ b/include/hw/qdev-core.h
+@@ -941,20 +941,25 @@ char *qdev_get_own_fw_dev_path_from_handler(BusState *bus, DeviceState *dev);
+ /**
+  * device_class_set_props(): add a set of properties to an device
+  * @dc: the parent DeviceClass all devices inherit
+- * @props: an array of properties, terminate by DEFINE_PROP_END_OF_LIST()
++ * @props: an array of properties
+  *
+  * This will add a set of properties to the object. It will fault if
+  * you attempt to add an existing property defined by a parent class.
+  * To modify an inherited property you need to use????
++ *
++ * Validate that @props has at least one Property plus the terminator.
++ * Validate that @props is an array, not a pointer, via ARRAY_SIZE.
++ * Validate that the array is terminated at compile-time (with -O2),
++ * which requires the array to be const.
+  */
+-void device_class_set_props(DeviceClass *dc, const Property *props);
+-
+-/* Validate at least one Property, plus the terminator. */
+-#define device_class_set_props(DC, PROPS) \
++#define device_class_set_props(dc, props) \
+     do {                                                                \
+-        QEMU_BUILD_BUG_ON(sizeof(PROPS) != sizeof(const Property *) &&  \
+-                          sizeof(PROPS) < 2 * sizeof(Property));        \
+-        (device_class_set_props)(DC, PROPS);                            \
++        QEMU_BUILD_BUG_ON(sizeof(props) < 2 * sizeof(Property));        \
++        size_t props_count_ = ARRAY_SIZE(props) - 1;                    \
++        if ((props)[props_count_].name != NULL) {                       \
++            qemu_build_not_reached();                                   \
++        }                                                               \
++        device_class_set_props_n((dc), (props), props_count_);          \
+     } while (0)
  
- /// Trait providing the contents of [`DeviceClass`].
-@@ -31,7 +30,7 @@ pub trait DeviceImpl {
-     /// device.  Not a `const` because referencing statics in constants
-     /// is unstable until Rust 1.83.0.
-     fn properties() -> &'static [Property] {
--        &[Zeroable::ZERO; 1]
-+        &[]
-     }
- 
-     /// A `VMStateDescription` providing the migration format for the device
-@@ -87,7 +86,10 @@ fn vmsd() -> Option<&'static VMStateDescription> {
-         if let Some(vmsd) = <T as DeviceImpl>::vmsd() {
-             dc.vmsd = vmsd;
-         }
--        bindings::device_class_set_props(dc, <T as DeviceImpl>::properties().as_ptr());
-+        let prop = <T as DeviceImpl>::properties();
-+        if !prop.is_empty() {
-+            bindings::device_class_set_props_n(dc, prop.as_ptr(), prop.len());
-+        }
-     }
+ /**
+diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+index 31e3072b559..a3d49e20202 100644
+--- a/hw/core/qdev-properties.c
++++ b/hw/core/qdev-properties.c
+@@ -1058,22 +1058,6 @@ static void qdev_class_add_legacy_property(DeviceClass *dc, const Property *prop
+         NULL, NULL, (Property *)prop);
  }
  
-@@ -134,7 +136,7 @@ macro_rules! define_property {
- macro_rules! declare_properties {
-     ($ident:ident, $($prop:expr),*$(,)*) => {
-         pub static $ident: [$crate::bindings::Property; {
--            let mut len = 1;
-+            let mut len = 0;
-             $({
-                 _ = stringify!($prop);
-                 len += 1;
-@@ -142,7 +144,6 @@ macro_rules! declare_properties {
-             len
-         }] = [
-             $($prop),*,
--            $crate::zeroable::Zeroable::ZERO,
-         ];
-     };
- }
+-void (device_class_set_props)(DeviceClass *dc, const Property *props)
+-{
+-    const Property *prop;
+-    size_t n;
+-
+-    dc->props_ = props;
+-    for (prop = props, n = 0; prop && prop->name; prop++, n++) {
+-        qdev_class_add_legacy_property(dc, prop);
+-        qdev_class_add_property(dc, prop->name, prop);
+-    }
+-
+-    /* We used a hole in DeviceClass because that's still a lot. */
+-    assert(n <= UINT16_MAX);
+-    dc->props_count_ = n;
+-}
+-
+ void device_class_set_props_n(DeviceClass *dc, const Property *props, size_t n)
+ {
+     /* We used a hole in DeviceClass because that's still a lot. */
 -- 
 2.47.1
 
