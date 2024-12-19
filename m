@@ -2,47 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F4119F8873
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 00:22:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 139B99F8924
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 01:57:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOPpE-0002rR-HY; Thu, 19 Dec 2024 18:21:00 -0500
+	id 1tORIx-0006H4-6X; Thu, 19 Dec 2024 19:55:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quwenruo.btrfs@gmx.com>)
- id 1tOPpC-0002r1-6G
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 18:20:58 -0500
-Received: from mout.gmx.net ([212.227.17.20])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quwenruo.btrfs@gmx.com>)
- id 1tOPpA-0001pl-AP
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 18:20:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
- s=s31663417; t=1734650451; x=1735255251; i=quwenruo.btrfs@gmx.com;
- bh=95G7uHNvHD21KqOF0kX1P8YJBPPFiYC4Iu84WTTA8BE=;
- h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
- References:From:In-Reply-To:Content-Type:
- Content-Transfer-Encoding:cc:content-transfer-encoding:
- content-type:date:from:message-id:mime-version:reply-to:subject:
- to;
- b=XyYgYs0Sod0ALWgJONQKyIX9ae/EJY03zrjzz56buwm8kynBX1RRUq4tUiKFdrXQ
- GGv4cErxUWd3af/KXCe4XGCRdqs3OgIix3PUF1OQsulJ8zgz7FUpU0MVEt+olrCpM
- ormmJY+/EgOmOSakMe2hXIcrQelZ4iY46GKFoLmGRFWRazEZnnTQ1/jCaw3A3xWYb
- ElZ69EYlATbF4yQ0OILVD4o0JRv4dLP+UyrWv2Z2VCH+9TTiYF2kHvb1qHiXDc3im
- 6W/g+CSF2lQXGsTqAuBz/jQPjLsWI8fO6ZdH7MM+J1YxWv44myQGkxuQDHWz46JDh
- dd4cYWBGRWWuhM307w==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [172.16.0.191] ([159.196.52.54]) by mail.gmx.net (mrgmx104
- [212.227.17.174]) with ESMTPSA (Nemesis) id 1N2V4J-1tZ22015Bv-00zmna; Fri, 20
- Dec 2024 00:20:51 +0100
-Message-ID: <4ae3fd71-c22e-48b6-bc86-fa494a1841a6@gmx.com>
-Date: Fri, 20 Dec 2024 09:50:44 +1030
+ (Exim 4.90_1) (envelope-from <wqu@suse.com>) id 1tOQ1E-0005Tn-P2
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 18:33:24 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <wqu@suse.com>) id 1tOQ1A-0003yD-QU
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 18:33:24 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-38634c35129so993779f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 15:33:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=suse.com; s=google; t=1734651196; x=1735255996; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=plXzy0mqccglcjN60lQtMmRi6JM3/4v7bNfZ+B+BCEo=;
+ b=Xsq3j/M2RcNLGK0nWzJdaV69rI2ilVB9uivOr3DIGDHL3EIz1gZc3LZ1ipJa0H3CGv
+ yUNprB7wim2tkQyChknFaDDXGsCr8tF8lBZnl34g7vTnlD+q8p97Z/7assrUKO4sBZgm
+ fLcT0XNjKnHBRJezPplG506JJfvgknivW8DOozbaJTw13pdhHT5fNsCvN2Qzuxj29y3B
+ Tq64jYqn530rUZAT+05bm0g4vUWEoMQiYfq24FM3hlE/lxSsbCwlTGyY6j9L1wj4kJGE
+ 2FPXKWQ2ZUVr8lu1H28/9h92fOMKJOW9wLTaA2ftOG9saBe1A5rZEcL2zQ2ITGe6Bphg
+ QI+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734651196; x=1735255996;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=plXzy0mqccglcjN60lQtMmRi6JM3/4v7bNfZ+B+BCEo=;
+ b=JgmePle2M0zwHVoIrEaeLSueESPQr4pnfJOG4gGHNcEyLZIJEJf6eit1lVrUnbkqXd
+ tIGdEmHFCe7K5SxpIlLZsP1IMtH/c83SS4hoE17HWsnm9t7+U/keDG36ipp4bZU4JdX6
+ snN8LC+LmZw5Ot7gih6vRuuhI7vS9xE/Y4LNQKkfG6DlrcAm8K73n+yx2JZf4XL/R3N8
+ f4jVqzaQb3e4wsaQXRyTPl0aXy7A4OevHPLeTvilObaDCBlYZ9jk8RSw9bB232VJTRPl
+ ESO7X8FAcnBkBdlOlUvS0h3Gn10ZxepwEgzM+HGNBf1n3p4iHXLJTp/K5rNo1lIV2XZh
+ TE/g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU4Ki2CHwhmQnh6C8At3PAK54dtJyN8E95Atu1Fj4JxXKIbZNAb7WAAYvZxM5UwSukttlxiO9fcKy5i@nongnu.org
+X-Gm-Message-State: AOJu0Yy4e+fojFkpfzB2rYLq473N2dY96a2lS9zcNsIUIepRvesOctOD
+ nQKkOXTqp8F7eC7rMUBRzEsB25fkRcL4IJO+r0+ghQW0/XU6QfbFCKo6K9cJEC4=
+X-Gm-Gg: ASbGncsX0gxssNefMFDgzBMJm6oG/B58lKTA/pXUViR5KCUqi2vKTIS7LRwnFcRZ1LO
+ +65gv+xiHUcmQ8BbWOWiFSe92tUT1lO9jCLJeV9zSUY4dZrFgtWq5HbRUyuBniwLSt11xHtPImW
+ QNt+Ix6+/TlGy8eXtRCu7QH4NShf87r/y00HrAPoNJhSLucZRKuoRErT8SbgxTSRHzo/dTgTxYi
+ RGk+RU0fhY9XP+fn0VA1KeKRyzOILQjlrGrkhsFi9u1d9WyOqAS2rlNjEC0EshHURivcGwhk3oe
+ FJwVFQln
+X-Google-Smtp-Source: AGHT+IF6jsLKrygiCsaqg3pCcyY8MzhIQvO7tqSo5RX2vJWoS0uQZfdMN1myWFcxAw/3ExiSRCwNfw==
+X-Received: by 2002:a5d:5e09:0:b0:385:f16d:48b4 with SMTP id
+ ffacd0b85a97d-38a223f7510mr934878f8f.40.1734651196065; 
+ Thu, 19 Dec 2024 15:33:16 -0800 (PST)
+Received: from ?IPV6:2403:580d:fda1::299?
+ (2403-580d-fda1--299.ip6.aussiebb.net. [2403:580d:fda1::299])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-72aad8162d0sm1883546b3a.12.2024.12.19.15.33.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 19 Dec 2024 15:33:15 -0800 (PST)
+Message-ID: <023311e6-9666-4fe0-9c22-6a8409065539@suse.com>
+Date: Fri, 20 Dec 2024 10:03:08 +1030
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: qemu-arm64: CONFIG_ARM64_64K_PAGES=y kernel crash on qemu-arm64
  with Linux next-20241210 and above
-To: Dan Carpenter <dan.carpenter@linaro.org>
+To: Dan Carpenter <dan.carpenter@linaro.org>,
+ Qu Wenruo <quwenruo.btrfs@gmx.com>
 Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, qemu-devel@nongnu.org,
  open list <linux-kernel@vger.kernel.org>,
  Linux Regressions <regressions@lists.linux.dev>,
@@ -50,73 +78,53 @@ Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, qemu-devel@nongnu.org,
  linux-mm <linux-mm@kvack.org>, Linux btrfs <linux-btrfs@vger.kernel.org>,
  =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Anders Roxell <anders.roxell@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
- Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>
+ David Sterba <dsterba@suse.com>
 References: <CA+G9fYvf0YQw4EY4gsHdQ1gCtSgQLPYo8RGnkbo=_XnAe7ORhw@mail.gmail.com>
  <CA+G9fYv7_fMKOxA8DB8aUnsDjQ9TX8OQtHVRcRQkFGqdD0vjNQ@mail.gmail.com>
  <ac1e1168-d3af-43c5-9df7-4ef5a1dbd698@gmx.com>
  <feecfdc2-4df6-47cf-8f96-5044858dc881@gmx.com>
  <a3406049-7ab5-45b9-80bf-46f73ef73a4f@stanley.mountain>
+ <0c46224b-ed2b-4c8e-aa96-d8f657f59b9f@stanley.mountain>
 Content-Language: en-US
-From: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
+From: Qu Wenruo <wqu@suse.com>
+Autocrypt: addr=wqu@suse.com; keydata=
  xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
  8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
  1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
  9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
  gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNIlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT7CwJQEEwEIAD4CGwMFCwkI
- BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1YAUJEP5a
- sQAKCRDCPZHzoSX+qF+mB/9gXu9C3BV0omDZBDWevJHxpWpOwQ8DxZEbk9b9LcrQlWdhFhyn
- xi+l5lRziV9ZGyYXp7N35a9t7GQJndMCFUWYoEa+1NCuxDs6bslfrCaGEGG/+wd6oIPb85xo
- naxnQ+SQtYLUFbU77WkUPaaIU8hH2BAfn9ZSDX9lIxheQE8ZYGGmo4wYpnN7/hSXALD7+oun
- tZljjGNT1o+/B8WVZtw/YZuCuHgZeaFdhcV2jsz7+iGb+LsqzHuznrXqbyUQgQT9kn8ZYFNW
- 7tf+LNxXuwedzRag4fxtR+5GVvJ41Oh/eygp8VqiMAtnFYaSlb9sjia1Mh+m+OBFeuXjgGlG
- VvQFzsBNBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
- CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
- /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
- GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
- q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
- ABEBAAHCwHwEGAEIACYCGwwWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1gQUJEP5a0gAK
- CRDCPZHzoSX+qHGpB/kB8A7M7KGL5qzat+jBRoLwB0Y3Zax0QWuANVdZM3eJDlKJKJ4HKzjo
- B2Pcn4JXL2apSan2uJftaMbNQbwotvabLXkE7cPpnppnBq7iovmBw++/d8zQjLQLWInQ5kNq
- Vmi36kmq8o5c0f97QVjMryHlmSlEZ2Wwc1kURAe4lsRG2dNeAd4CAqmTw0cMIrR6R/Dpt3ma
- +8oGXJOmwWuDFKNV4G2XLKcghqrtcRf2zAGNogg3KulCykHHripG3kPKsb7fYVcSQtlt5R6v
- HZStaZBzw4PcDiaAF3pPDBd+0fIKS6BlpeNRSFG94RYrt84Qw77JWDOAZsyNfEIEE0J6LSR/
-In-Reply-To: <a3406049-7ab5-45b9-80bf-46f73ef73a4f@stanley.mountain>
+ AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
+ FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
+ Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
+ fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
+ 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
+ V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
+ rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
+ rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
+ Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
+ E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
+ vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
+ g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
+ AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
+ cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
+ qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
+ /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
+ o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
+ JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
+In-Reply-To: <0c46224b-ed2b-4c8e-aa96-d8f657f59b9f@stanley.mountain>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:cQlIl5GOqLf2ibS/Z9iRkgOa1VDWVcAAmT2oQVEDXrLgjBCPye1
- d52w58oCwr9zeR0OlUb7bAVTYTHIhPKfJb32puDmEGks00WcH1OlMBxbKTemL+LFSLu/gj9
- iTIIwYtvdK28FX6W+4KeWWh+AdyFmJVxOL9lGn5bs5ldU3+aLYqtYn4JNJYfP2vbTALfHBB
- Qg9Ky93Bf0UwHOVkv5nVg==
-UI-OutboundReport: notjunk:1;M01:P0:d2UuVHxTIvw=;6T3uBityxrfuSydR5DdpsJvSDtA
- Wx2cRDU5H08Uop6xJUCFZzh71BAMjBwYViboFs2kBG7/HJd8A/hiYOis+Sf7v1SroOJsL5X2N
- ONVpqq7RQ/WA+nyiKFLj/N90akIyiqXU/6ypDaDCz7qOgFup+kvVZuMpbB+P+PN15/LJwHQxJ
- W5I2Gux2mHARJlEeO54jV2ZWsljgnvxYnyb6Com+u3y6JEqimPSSmOtDWQDyNHPPxZDo4TmJl
- dlhnvsqwxHG93Xxm4YojHVRUXOEP30wpNLC3N+7efTAzNMZdQBWFiI23P1AH/JETgHqN9SyD4
- WVho/HaHp98rRsXLkdbxgYI3yF7Zh5j3U2I+1xVzhiJCcRSk3a/6nOaelqhWp2Nt/RPuxyosb
- iEGZrocLNBpvUwI5BGx1h0HBs0Y0zooKKXFKIqCMrnmUFV1GeJaZ1CUWHM6zWNsv3CEtaK92U
- bNPcL1fPsH5ubUOA+t40zwuRTh2Ek9WxhfXosX2C8zQHiu2I+zPAIq7NxbzcG4Lg0gFXlFrAn
- aelhsj5fJN/j+xjgtLA+w2Qi2IUu/dnpKiy9wAz1nmN32v/chJ+AbW6W7qDJwFOJue8JGGulc
- /2MgPYIsKaiHRjLpifm8b0MovjToys7JaMS2ehtS82eHRRrofrLNIJFLZPOkKuAsq8dAES45I
- //q+O++AvGlc5qq9b83zjWNCaCSn6f+NU4oVhT5qz3ptG6zDD5QVQXGYfd6OL1qwlQJuTvQsz
- xE4vtz2HWGme3ss/TZMRvRxxL0JXRgeCIExdNF3h4WjYENVekuh9sjNK/zPcMQmrBS9PEdA4q
- Y3q5UnKDo3LXKVTkhULy66d2KqKixe3SBVZOGnFPbeblkzOaloqHvoA4wcnpafBUdSe5m4Uol
- 7o8nJ3nVwG1j7GhO0E46dZfEdKrAs9qdpOij00g+o0P5zw15lmO7pvMrNqD1fP3ux3at4WIHz
- j+o6hynt5gVMIdMPFqhU881m0JsbsgyIEzcr3gptP1fjDwUuSXItLLilWg41XXUShlZ0tbD0o
- 6KCHELDMkY5jNzpkSUUuhsjg0Fl0ELZpNQRBfBJuneeVw5Ran8ObcVSat4MsSGU6Vkpsp6nBe
- zndolC/tmhcdOWerT9qHc6AgLKRR43
-Received-SPF: pass client-ip=212.227.17.20;
- envelope-from=quwenruo.btrfs@gmx.com; helo=mout.gmx.net
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-1.116,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::433; envelope-from=wqu@suse.com;
+ helo=mail-wr1-x433.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 19 Dec 2024 19:55:45 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -133,89 +141,78 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-=E5=9C=A8 2024/12/20 01:40, Dan Carpenter =E5=86=99=E9=81=93:
-> On Thu, Dec 19, 2024 at 10:44:12AM +1030, Qu Wenruo wrote:
->>
->>
->> =E5=9C=A8 2024/12/19 06:37, Qu Wenruo =E5=86=99=E9=81=93:
+在 2024/12/20 02:07, Dan Carpenter 写道:
+> On Thu, Dec 19, 2024 at 06:10:56PM +0300, Dan Carpenter wrote:
+>>>> Mind to test it with KASAN enabled?
 >>>
->>>
->>> =E5=9C=A8 2024/12/19 02:22, Naresh Kamboju =E5=86=99=E9=81=93:
->>>> On Wed, 18 Dec 2024 at 17:33, Naresh Kamboju
->>>> <naresh.kamboju@linaro.org> wrote:
->>>>>
->>>>> The following kernel crash noticed on qemu-arm64 while running the
->>>>> Linux next-20241210 tag (to next-20241218) kernel built with
->>>>>  =C2=A0 - CONFIG_ARM64_64K_PAGES=3Dy
->>>>>  =C2=A0 - CONFIG_ARM64_16K_PAGES=3Dy
->>>>> and running LTP smoke tests.
->>>>>
->>>>> First seen on Linux next-20241210.
->>>>>  =C2=A0=C2=A0 Good: next-20241209
->>>>>  =C2=A0=C2=A0 Bad:=C2=A0 next-20241210 and next-20241218
->>>>>
->>>>> qemu-arm64: 9.1.2
->>>>>
->>>>> Anyone noticed this ?
->>>>>
->>>>
->>>> Anders bisected this reported regression and found,
->>>> # first bad commit:
->>>>  =C2=A0=C2=A0 [9c1d66793b6faa00106ae4c866359578bfc012d2]
->>>>  =C2=A0=C2=A0 btrfs: validate system chunk array at btrfs_validate_su=
-per()
->>>
->>> Weird, I run daily fstests with 64K page sized aarch64 VM.
->>>
->>> But never hit a crash on this.
->>>
->>> And the original crash call trace only points back to ext4, not btrfs.
->>>
->
-> Yeah.  But it's in the memory allocator so it looks like memory
-> corruption.  After the ext4 crash then random other stuff starts
-> crashing as well when it allocates memory.
->
->>> Mind to test it with KASAN enabled?
 >>
->
-> Anders is going to try that later and report back.
->
->> Another thing is, how do you enable both 16K and 64K page size at the
->> same time?
+>> Anders is going to try that later and report back.
 >>
->> The Kconfig should only select one page size IIRC.
->
-> Right.  We tested 4k, 16k and 64k.  4k pages worked.
->
->>
->> And for the bisection, does it focus on the test failure or the crash?
->>
->
-> The crash.
+> 
+> Anders ran it and emailed me.  I was going to tell him to respond to
+> the thread but I decided to steal the credit.  #GreatArtists
+> 
+>   BTRFS info (device loop0): using crc32c (crc32c-arm64) checksum algorithm
+>   ==================================================================
+>   BUG: KASAN: slab-out-of-bounds in __bitmap_set+0xf8/0x100
+>   Read of size 8 at addr fff0000020e4a3c8 by task chdir01/479
+>   
+>   CPU: 1 UID: 0 PID: 479 Comm: chdir01 Not tainted 6.13.0-rc3-next-20241218 #1
+>   Hardware name: linux,dummy-virt (DT)
+>   Call trace:
+>    show_stack+0x20/0x38 (C)
+>    dump_stack_lvl+0x8c/0xd0
+>    print_report+0x118/0x5e0
+>    kasan_report+0xb4/0x100
+>    __asan_report_load8_noabort+0x20/0x30
+>    __bitmap_set+0xf8/0x100
+>    btrfs_subpage_set_uptodate+0xd8/0x1d0 [btrfs]
+>    set_extent_buffer_uptodate+0x1ac/0x288 [btrfs]
+>    __alloc_dummy_extent_buffer+0x2cc/0x488 [btrfs]
 
-For the failure part, I got the reason, it's indeed the patch, where we
-call btrfs_check_chunk_valid() but fs_info->sectorsize is still in the
-default value (4096), not the real one from the superblock.
+Thanks a lot. The problem is still inside the dummy extent buffer 
+allocation.
 
-Thus it will always report false alerts if the on-disk super block is
-not using 4K sectorsize.
+This time it's again related to the uninitialized fs_info->* variables.
 
-I'll fix it soon.
+In this case, it's the fs_info->sectorsize_bits which is not 
+initialized, thus its default value is 0.
 
-But sorry I didn't see why the false alert is related to the crash, the
-only new memory allocation done in that patch is for a dummy extent
-buffer, which should always be freed.
+Then in btrfs_subpage_set_uptodate(), we use (len >> sectorsize_bits) to 
+calculate how many bits must be set.
 
-Anyway in the next version I'll get rid of the memory allocation completel=
-y.
+But since sectorsize_bits is 0, the @len (4K) is utilized, resulting the 
+out-of-boundary access.
 
-Thanks,
+The root cause is the same as the initial failure, that we can not use a 
+lot of functions to do such early verification, thus I'll create a 
+dedicated helper to do the sanity check to avoid memory allocation nor 
+early access to fs_info.
+
+Thanks everyone involved in exposing this bug!
 Qu
->
+
+>    alloc_dummy_extent_buffer+0x4c/0x78 [btrfs]
+>    btrfs_check_system_chunk_array+0x30/0x308 [btrfs]
+>    btrfs_validate_super+0x7e8/0xd40 [btrfs]
+>    open_ctree+0x958/0x3c98 [btrfs]
+>    btrfs_get_tree+0xce4/0x13d8 [btrfs]
+>    vfs_get_tree+0x7c/0x290
+>    fc_mount+0x20/0xa8
+>    btrfs_get_tree+0x72c/0x13d8 [btrfs]
+>    vfs_get_tree+0x7c/0x290
+>    path_mount+0x748/0x1518
+>    __arm64_sys_mount+0x234/0x4f8
+>    invoke_syscall.constprop.0+0x78/0x1f0
+>    do_el0_svc+0xcc/0x1d8
+>    el0_svc+0x38/0xa8
+>    el0t_64_sync_handler+0x10c/0x138
+>    el0t_64_sync+0x198/0x1a0
+> 
+> Here are the full logs.
+> https://people.linaro.org/~anders.roxell/next-20241218-issue-arm64-64k+kasan/
+> 
 > regards,
 > dan carpenter
->
->
 
 
