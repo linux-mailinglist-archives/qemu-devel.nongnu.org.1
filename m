@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA0D39F778C
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:38:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6AE99F775F
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:34:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOByn-0006rp-0H; Thu, 19 Dec 2024 03:33:57 -0500
+	id 1tOByn-0006sT-Od; Thu, 19 Dec 2024 03:33:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOByi-0006Zz-6Y
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1tOByj-0006gQ-Jq
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOByd-0005Fc-Fe
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:49 -0500
+ id 1tOByg-0005G2-6z
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734597226;
+ s=mimecast20190719; t=1734597229;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eJDnjE/BAkbJeQX/EK6vVThXGUwkUNVfjMYxPU0nzCU=;
- b=IduSYHbNauy6dDG16Lspygm2AHqZrCQzXzsapRFd3KbGqbQ1ZPGoE4xgEQlqsHpE4aqD7q
- dGKIHG9140SElMY0JshTqWHymaRdZRxxWmZukWKzm3b4spPMQ7yILBdT+4fxH0sZpIZzjA
- Y8vkXKmMdZXJ3V6cY4XhSj8oB4u3TMk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HLrfooTNBj4iNgOLqb5Ydjdi9unX3dn8owNvgl6hDAs=;
+ b=ezccKb+tHaJxiQGbINl/9m6X48MapNa9nnk9PGl0REhwm7wl490WG5bHWUZJG5fu3l7bhd
+ SDquZdA236FgXkSj/a2R4y4PkweFtoRWWEuTF72Uhd1USzKMzzDQNYhK2YXqiKUU93OIXu
+ IJnubanH0rZHrDOo58ZqIRi0x0l8LBo=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-592-9_x_s7QuPyWE9KPKWPihsA-1; Thu, 19 Dec 2024 03:33:45 -0500
-X-MC-Unique: 9_x_s7QuPyWE9KPKWPihsA-1
-X-Mimecast-MFC-AGG-ID: 9_x_s7QuPyWE9KPKWPihsA
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-43625ceae52so2956695e9.0
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:45 -0800 (PST)
+ us-mta-659-BG5j7_ByP4CkC7YF_6_gNQ-1; Thu, 19 Dec 2024 03:33:48 -0500
+X-MC-Unique: BG5j7_ByP4CkC7YF_6_gNQ-1
+X-Mimecast-MFC-AGG-ID: BG5j7_ByP4CkC7YF_6_gNQ
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4361f371908so4283395e9.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734597223; x=1735202023;
+ d=1e100.net; s=20230601; t=1734597226; x=1735202026;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eJDnjE/BAkbJeQX/EK6vVThXGUwkUNVfjMYxPU0nzCU=;
- b=YQoB2fYKUl1ZvIyBz7dO8syj2DdFJKz58DjTBXFUMehKRrvSqxBHwP2I3UuWhfiW3s
- dEtIQKwsXsy22vbjbj5LkGoF7PBkR8ctT9tFE0v92WNnuQBrNABqvVcPTnxtRLdcjZ6b
- aWTKUCFoCXDh1jqJXVuuah9aV2jCWG+17DFiShQ4wuHgab0Kc9XjJWLGoTSWgdhYqYAa
- UxlAJizyfN/F/7VjCNdntqpfVx5JwnsVKO58xbMnG3y1H5UQEtdWB3l1RHGcSZrtmg0w
- FT8DOYKn9xBaVvBYYOB8tkEyajj58rY99cMwLpBFk3oyNQFtfl0Aw9fH0fquKbGveWz1
- eL/w==
-X-Gm-Message-State: AOJu0YzQDMmsSqnP1DjpTwxG/9QFlkguNjcQCG0l81TNse8vGsghnSkD
- 0XcKydRZ+b3D/ZlzNYF3u2VQ59+LU/j+prLNdOo5MEjOn2qxB4K5QLxavC0013oVt2SsaIzCnWX
- ZGh5mbnnYNP3ebAxjpBdXr+MRZmvbkooSasyzny60Oc7QLU2O04LExHuCEnBXJeuy56yoHN8aVx
- BWApRDPJRfDdWErn0ey3SlTbiJAt9hAgBsZU4i
-X-Gm-Gg: ASbGnctgZzStKWyD9fvz+8c4juV/LE7cl+JD0n2HiZOa7eHT5cYUNEpwXrikwqTG26K
- taP6PU5qSbsKYZjMkoNOvFAwMFBM6CZxKwVO6M508tAHJtF85uNRbL4y/POty6ODE3CoBxzm+cu
- 5piIb2fo92FvZhssuKeED7gyYrFyMVN5O6n0VuNQi4jZEZv3v+a4n0bvB4fF03dmtG93kKm5ZT2
- O12HTR+d7emiOlejx5MBFJYLW/vXckuMyjUXQrEFfU0OxNHfZX2GWT6FrtA
-X-Received: by 2002:a5d:6c63:0:b0:386:1c13:30d5 with SMTP id
- ffacd0b85a97d-388e4d4a602mr6275736f8f.7.1734597223389; 
- Thu, 19 Dec 2024 00:33:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF8mfBgfoZsrrEsn4jt5aFybkYtKfHi1/1tkA+F7sZdfhtu/u96vEX9Umy6mVUC62rFH/zt1A==
-X-Received: by 2002:a5d:6c63:0:b0:386:1c13:30d5 with SMTP id
- ffacd0b85a97d-388e4d4a602mr6275686f8f.7.1734597222876; 
- Thu, 19 Dec 2024 00:33:42 -0800 (PST)
+ bh=HLrfooTNBj4iNgOLqb5Ydjdi9unX3dn8owNvgl6hDAs=;
+ b=AZQl1q5HFMjVm/Ev/9aUJ8TNO0UEnrbYA1rt+mRLBqX9vEEwrIHzv/3kY+np9HIEoH
+ fYNktil80DYnlimWT+W+nJEd9PC4YyfY+5cIV/DFCFL4tzN/FKf5Y4GEpv18PXB3fMLZ
+ 5jIIAq461ycAI6unLRXPF48Htk5B0R2eQk/hy4v3qdGwmeD4SphVZuHbg7+LiltJcSfM
+ dCiifoc2bT9mTyq/3YZSnpcg9MRG4IzLcOgL4dZUek3O3NgMKjtvX/InCWq4fWdLZSB8
+ DrjYCL9C0/FzCtLMyUclXhkd3gYh8DTgKTJP4OA934ttBfTgLMVP6crZAYLOVuG+bmxi
+ MPLg==
+X-Gm-Message-State: AOJu0YznCjKN5pyvx+ZYymQm1fDxEHusOweNX7vCzgia9zaeZ5ldjj4T
+ dwmZ62daHUlCFtqgG8d4VnZMDjLa1J0Zd32go/DlSic+9cNa0jf90AWm2MBvHWcXxlHrNKBQ5NI
+ rhiYKobbDx4d9HGt/tOd8FuRaio7oIMMy2VPCodQhP9j50Z3ufbNCr9T7e7DDhR9qnjgnNeh4Iv
+ baEdetkrDCUi7A50AAPM4oTH4BBikU1E4Eln0L
+X-Gm-Gg: ASbGncsfJEY2mR69xVVsgfORBSe4jadGcnxjXa/y4Qp389VfgvlOsEnztH4wrRKr974
+ LEka0Kcn2hIAY2BhL+FhaBmmNQEtvD/P7hEKfM6FfhKMlT9sKxxjl5sSJZezAYtfwHsuxKFnHYi
+ QxrUMVdeL9V+WGHlqrnqT0xUv7c49sJill8EkiQ2HvWfKoL3kbZxM2lnlsVvctjOMtxEyUwYMzR
+ 4ztQzxz6VR3mhvTtgofnnFrC+i7/8J0Aip+WFN2cPzcS73UCSwcrGp6oy9+
+X-Received: by 2002:a05:600c:4586:b0:434:f586:753c with SMTP id
+ 5b1f17b1804b1-43655341348mr47632745e9.7.1734597225601; 
+ Thu, 19 Dec 2024 00:33:45 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGJTxGPQXyWfsoNvpTggTdyX7K8DAvvijr2gt16sCgoGWG/brNtkf9fEokzDOh0TlRipa9iSg==
+X-Received: by 2002:a05:600c:4586:b0:434:f586:753c with SMTP id
+ 5b1f17b1804b1-43655341348mr47632395e9.7.1734597225026; 
+ Thu, 19 Dec 2024 00:33:45 -0800 (PST)
 Received: from [192.168.10.47] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c8ac974sm968353f8f.91.2024.12.19.00.33.42
+ ffacd0b85a97d-38a1c8acc02sm973305f8f.104.2024.12.19.00.33.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 00:33:42 -0800 (PST)
+ Thu, 19 Dec 2024 00:33:43 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
-Subject: [PULL 34/41] target/i386: Reset TSCs of parked vCPUs too on VM reset
-Date: Thu, 19 Dec 2024 09:32:21 +0100
-Message-ID: <20241219083228.363430-35-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 35/41] rust: pl011: fix declaration of LineControl bits
+Date: Thu, 19 Dec 2024 09:32:22 +0100
+Message-ID: <20241219083228.363430-36-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219083228.363430-1-pbonzini@redhat.com>
 References: <20241219083228.363430-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -105,150 +107,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+The bits in the LineControl struct were backwards. :(
 
-Since commit 5286c3662294 ("target/i386: properly reset TSC on reset")
-QEMU writes the special value of "1" to each online vCPU TSC on VM reset
-to reset it.
-
-However parked vCPUs don't get that handling and due to that their TSCs
-get desynchronized when the VM gets reset.
-This in turn causes KVM to turn off PVCLOCK_TSC_STABLE_BIT in its exported
-PV clock.
-Note that KVM has no understanding of vCPU being currently parked.
-
-Without PVCLOCK_TSC_STABLE_BIT the sched clock is marked unstable in
-the guest's kvm_sched_clock_init().
-This causes a performance regressions to show in some tests.
-
-Fix this issue by writing the special value of "1" also to TSCs of parked
-vCPUs on VM reset.
-
-Reproducing the issue:
-1) Boot a VM with "-smp 2,maxcpus=3" or similar
-
-2) device_add host-x86_64-cpu,id=vcpu,node-id=0,socket-id=0,core-id=2,thread-id=0
-
-3) Wait a few seconds
-
-4) device_del vcpu
-
-5) Inside the VM run:
-# echo "t" >/proc/sysrq-trigger; dmesg | grep sched_clock_stable
-Observe the sched_clock_stable() value is 1.
-
-6) Reboot the VM
-
-7) Once the VM boots once again run inside it:
-# echo "t" >/proc/sysrq-trigger; dmesg | grep sched_clock_stable
-Observe the sched_clock_stable() value is now 0.
-
-Fixes: 5286c3662294 ("target/i386: properly reset TSC on reset")
-Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-Link: https://lore.kernel.org/r/5a605a88e9a231386dc803c60f5fed9b48108139.1734014926.git.maciej.szmigiero@oracle.com
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configs/targets/i386-softmmu.mak   |  1 +
- configs/targets/x86_64-softmmu.mak |  1 +
- include/sysemu/kvm.h               |  8 ++++++++
- accel/kvm/kvm-all.c                | 11 +++++++++++
- target/i386/kvm/kvm.c              | 15 +++++++++++++++
- 5 files changed, 36 insertions(+)
+ rust/hw/char/pl011/src/lib.rs | 82 +++++++++++++++++------------------
+ 1 file changed, 41 insertions(+), 41 deletions(-)
 
-diff --git a/configs/targets/i386-softmmu.mak b/configs/targets/i386-softmmu.mak
-index 2ac69d5ba37..2eb0e862500 100644
---- a/configs/targets/i386-softmmu.mak
-+++ b/configs/targets/i386-softmmu.mak
-@@ -1,4 +1,5 @@
- TARGET_ARCH=i386
- TARGET_SUPPORTS_MTTCG=y
- TARGET_KVM_HAVE_GUEST_DEBUG=y
-+TARGET_KVM_HAVE_RESET_PARKED_VCPU=y
- TARGET_XML_FILES= gdb-xml/i386-32bit.xml
-diff --git a/configs/targets/x86_64-softmmu.mak b/configs/targets/x86_64-softmmu.mak
-index e12ac3dc59b..920e9a42006 100644
---- a/configs/targets/x86_64-softmmu.mak
-+++ b/configs/targets/x86_64-softmmu.mak
-@@ -2,4 +2,5 @@ TARGET_ARCH=x86_64
- TARGET_BASE_ARCH=i386
- TARGET_SUPPORTS_MTTCG=y
- TARGET_KVM_HAVE_GUEST_DEBUG=y
-+TARGET_KVM_HAVE_RESET_PARKED_VCPU=y
- TARGET_XML_FILES= gdb-xml/i386-64bit.xml
-diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-index c3a60b28909..ab17c09a551 100644
---- a/include/sysemu/kvm.h
-+++ b/include/sysemu/kvm.h
-@@ -377,6 +377,14 @@ int kvm_arch_init(MachineState *ms, KVMState *s);
- int kvm_arch_init_vcpu(CPUState *cpu);
- int kvm_arch_destroy_vcpu(CPUState *cpu);
- 
-+#ifdef TARGET_KVM_HAVE_RESET_PARKED_VCPU
-+void kvm_arch_reset_parked_vcpu(unsigned long vcpu_id, int kvm_fd);
-+#else
-+static inline void kvm_arch_reset_parked_vcpu(unsigned long vcpu_id, int kvm_fd)
-+{
-+}
-+#endif
-+
- bool kvm_vcpu_id_is_valid(int vcpu_id);
- 
- /* Returns VCPU ID to be used on KVM_CREATE_VCPU ioctl() */
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 77d811ca70c..4ab277cc84a 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -437,6 +437,16 @@ int kvm_unpark_vcpu(KVMState *s, unsigned long vcpu_id)
-     return kvm_fd;
- }
- 
-+static void kvm_reset_parked_vcpus(void *param)
-+{
-+    KVMState *s = param;
-+    struct KVMParkedVcpu *cpu;
-+
-+    QLIST_FOREACH(cpu, &s->kvm_parked_vcpus, node) {
-+        kvm_arch_reset_parked_vcpu(cpu->vcpu_id, cpu->kvm_fd);
-+    }
-+}
-+
- int kvm_create_vcpu(CPUState *cpu)
- {
-     unsigned long vcpu_id = kvm_arch_vcpu_id(cpu);
-@@ -2728,6 +2738,7 @@ static int kvm_init(MachineState *ms)
+diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
+index 4dc0e8f345f..d5089f78854 100644
+--- a/rust/hw/char/pl011/src/lib.rs
++++ b/rust/hw/char/pl011/src/lib.rs
+@@ -319,32 +319,21 @@ fn default() -> Self {
+     /// Line Control Register, `UARTLCR_H`
+     #[doc(alias = "UARTLCR_H")]
+     pub struct LineControl {
+-        /// 15:8 - Reserved, do not modify, read as zero.
+-        _reserved_zero_no_modify: u8,
+-        /// 7 SPS Stick parity select.
+-        /// 0 = stick parity is disabled
+-        /// 1 = either:
+-        /// • if the EPS bit is 0 then the parity bit is transmitted and checked
+-        /// as a 1 • if the EPS bit is 1 then the parity bit is
+-        /// transmitted and checked as a 0. This bit has no effect when
+-        /// the PEN bit disables parity checking and generation. See Table 3-11
+-        /// on page 3-14 for the parity truth table.
+-        pub sticky_parity: bool,
+-        /// WLEN Word length. These bits indicate the number of data bits
+-        /// transmitted or received in a frame as follows: b11 = 8 bits
+-        /// b10 = 7 bits
+-        /// b01 = 6 bits
+-        /// b00 = 5 bits.
+-        pub word_length: WordLength,
+-        /// FEN Enable FIFOs:
+-        /// 0 = FIFOs are disabled (character mode) that is, the FIFOs become
+-        /// 1-byte-deep holding registers 1 = transmit and receive FIFO
+-        /// buffers are enabled (FIFO mode).
+-        pub fifos_enabled: Mode,
+-        /// 3 STP2 Two stop bits select. If this bit is set to 1, two stop bits
+-        /// are transmitted at the end of the frame. The receive
+-        /// logic does not check for two stop bits being received.
+-        pub two_stops_bits: bool,
++        /// BRK Send break.
++        ///
++        /// If this bit is set to `1`, a low-level is continually output on the
++        /// `UARTTXD` output, after completing transmission of the
++        /// current character. For the proper execution of the break command,
++        /// the software must set this bit for at least two complete
++        /// frames. For normal use, this bit must be cleared to `0`.
++        pub send_break: bool,
++        /// 1 PEN Parity enable:
++        ///
++        /// - 0 = parity is disabled and no parity bit added to the data frame
++        /// - 1 = parity checking and generation is enabled.
++        ///
++        /// See Table 3-11 on page 3-14 for the parity truth table.
++        pub parity_enabled: bool,
+         /// EPS Even parity select. Controls the type of parity the UART uses
+         /// during transmission and reception:
+         /// - 0 = odd parity. The UART generates or checks for an odd number of
+@@ -355,21 +344,32 @@ pub struct LineControl {
+         /// and generation. See Table 3-11 on page 3-14 for the parity
+         /// truth table.
+         pub parity: Parity,
+-        /// 1 PEN Parity enable:
+-        ///
+-        /// - 0 = parity is disabled and no parity bit added to the data frame
+-        /// - 1 = parity checking and generation is enabled.
+-        ///
+-        /// See Table 3-11 on page 3-14 for the parity truth table.
+-        pub parity_enabled: bool,
+-        /// BRK Send break.
+-        ///
+-        /// If this bit is set to `1`, a low-level is continually output on the
+-        /// `UARTTXD` output, after completing transmission of the
+-        /// current character. For the proper execution of the break command,
+-        /// the software must set this bit for at least two complete
+-        /// frames. For normal use, this bit must be cleared to `0`.
+-        pub send_break: bool,
++        /// 3 STP2 Two stop bits select. If this bit is set to 1, two stop bits
++        /// are transmitted at the end of the frame. The receive
++        /// logic does not check for two stop bits being received.
++        pub two_stops_bits: bool,
++        /// FEN Enable FIFOs:
++        /// 0 = FIFOs are disabled (character mode) that is, the FIFOs become
++        /// 1-byte-deep holding registers 1 = transmit and receive FIFO
++        /// buffers are enabled (FIFO mode).
++        pub fifos_enabled: Mode,
++        /// WLEN Word length. These bits indicate the number of data bits
++        /// transmitted or received in a frame as follows: b11 = 8 bits
++        /// b10 = 7 bits
++        /// b01 = 6 bits
++        /// b00 = 5 bits.
++        pub word_length: WordLength,
++        /// 7 SPS Stick parity select.
++        /// 0 = stick parity is disabled
++        /// 1 = either:
++        /// • if the EPS bit is 0 then the parity bit is transmitted and checked
++        /// as a 1 • if the EPS bit is 1 then the parity bit is
++        /// transmitted and checked as a 0. This bit has no effect when
++        /// the PEN bit disables parity checking and generation. See Table 3-11
++        /// on page 3-14 for the parity truth table.
++        pub sticky_parity: bool,
++        /// 15:8 - Reserved, do not modify, read as zero.
++        _reserved_zero_no_modify: u8,
      }
  
-     qemu_register_reset(kvm_unpoison_all, NULL);
-+    qemu_register_reset(kvm_reset_parked_vcpus, s);
- 
-     if (s->kernel_irqchip_allowed) {
-         kvm_irqchip_create(s);
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 8e17942c3ba..2ff618fbf13 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2415,6 +2415,21 @@ void kvm_arch_after_reset_vcpu(X86CPU *cpu)
-     }
- }
- 
-+void kvm_arch_reset_parked_vcpu(unsigned long vcpu_id, int kvm_fd)
-+{
-+    g_autofree struct kvm_msrs *msrs = NULL;
-+
-+    msrs = g_malloc0(sizeof(*msrs) + sizeof(msrs->entries[0]));
-+    msrs->entries[0].index = MSR_IA32_TSC;
-+    msrs->entries[0].data = 1; /* match the value in x86_cpu_reset() */
-+    msrs->nmsrs++;
-+
-+    if (ioctl(kvm_fd, KVM_SET_MSRS, msrs) != 1) {
-+        warn_report("parked vCPU %lu TSC reset failed: %d",
-+                    vcpu_id, errno);
-+    }
-+}
-+
- void kvm_arch_do_init_vcpu(X86CPU *cpu)
- {
-     CPUX86State *env = &cpu->env;
+     impl LineControl {
 -- 
 2.47.1
 
