@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 576059F7FD0
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:30:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 958B69F7FAE
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:26:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJFS-0001mS-5H; Thu, 19 Dec 2024 11:19:38 -0500
+	id 1tOJGq-0003qh-Qm; Thu, 19 Dec 2024 11:21:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOIcT-0004bQ-85
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:39:21 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOIcY-0004c0-Rk
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:39:26 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOIcR-0004Rg-OP
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:39:21 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4361fe642ddso9578555e9.2
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 07:39:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOIcX-0004SO-Ei
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:39:26 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43623f0c574so6770955e9.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 07:39:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734622758; x=1735227558; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734622764; x=1735227564; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fSUrXqY3vKb6Y+xc3NUnoWjHDPec55tB8oXd/H8ApGI=;
- b=LgDSwqTUptkWoSEP2LpMySbEDAwN/XC0aVneMvdtHhMW23R2273cc0aw4AewyrNgzS
- nKM7vSR+W0EDxCt9l1BpYmVAjziPpNghuB5acCVxzugll8LlsDC4LfDWi06iFTzj3sOP
- b7I1mazZNPNqLsBdteXm21rANWMJNs282K97gqIBzREANRNN2+rjeSB+QiM6IkPzmjKy
- mYynOY1dL+k7uz2SvAnjt7YmJWYiIvT5sers7pU4i5pgiGaFwP0nkoX9ixflhwX+XBgq
- DvCr5tAIJpX21Ylkcw/rdf9+CROkj3rVagJSUuhQsQPJq9xLViNniVbXg60rRQWUOWqn
- 1L2A==
+ bh=ltkM6wv4nnewbtt7Wl7DzeFeRkwimvs0bnn2crm+6CQ=;
+ b=jPuJDHxmUdmGyU9OLHk8iuTuWp3JW2kZ4F9XDyzMqxyINfVIknTQPoHkYTrYXozAJE
+ 5qEmr1yfKyi0tpM0jGMNHEYyfgcPOAegg4FTTn8wQPu8tKjRWKG4iagGIDjynnnNVoYM
+ 3V1Vl/cpHItfxvi0Nq2L3nHcTBb2ndMFSms2e7A2v8y30LUl43HYeuX1WrR+UDu+gPIC
+ nwNrsaEcDNG72AcNNEWlGiIpuvpEABniF0LExBtgDtlnb8YVLWgTGwAnbZxeHzTguW/d
+ T/zGsvel3qRG3gRJXqmO9DkjzQTbJN6ni3+p87swLx4qW4gtmmUHQC7Z4YtEyyqUNyrI
+ VSWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734622758; x=1735227558;
+ d=1e100.net; s=20230601; t=1734622764; x=1735227564;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fSUrXqY3vKb6Y+xc3NUnoWjHDPec55tB8oXd/H8ApGI=;
- b=kfKMe8IrksycSkXzZWbV147lxJ47Onv8+mIFsnR080AbW12OMqWFYV0Kf1/fm7Saqr
- 8+PqSDR0nOfIWc06XJIiBFFbQQDF3Ypmb/SPpkkF+FHpw2D8wq8BoITV8Ol0FF3YSwtw
- ql57U/CmeDTMOEPXdMtJXJB+1Bm7DuHZgurFT4xPvIxuJTjlbjpPBebHn2mbli1J6R9Q
- CgQVIvLcA47FREhdru9LXcHbt/GMPCvrpVmlmbaDRWrR8CQ9C0J8Yu7dopboJ0kBhjcx
- uQWeucjKglSI9BLwC4zzGObGqzxbhDZrZzbqEMTWWqf1WRKoJOkGRkdEOD6DtOGpZcSa
- NmXA==
-X-Gm-Message-State: AOJu0YzDwxytzi8o6ekx+OBLr6pjaeAcnjEBJ3FVgzVf1IbmCt/3QsTe
- GOABZYrVX8QNhdvkm1DxQmCqDV/fxdGAK5PejO7130knppCVJJBwEXo4KJPz/d2l1JGjnoZPkZK
- p
-X-Gm-Gg: ASbGncvtjiscO1KorKguCYve6OTA+ipZWEf6ZQJJ/bk2w2tvmW1kxLjzVus7JqakAZn
- GsyxwFj5QetSHs0MeIqONJswv5lTPT0gfFd1uOyrsz/1rmjjhN+VFZ1gFf8B/nHun+D4c9uBa/P
- Z6slMiLsyUttj6YnKZxVWsww9aHwfCwmUGMnoZuHZd6MBV+FxhH+KeSyOCjl7JGEKP9gzMBtxgX
- 0nqXb0FWzKx4QyTf5IF9R2qeQfSfoWfWQxggLo35H2rozDZvnwOBBRKiobKYXyVfvfxysFoPh/0
- +vn9
-X-Google-Smtp-Source: AGHT+IGvWED1Jq74g7NcAbgkQDk9YzBZGMpsFWZ3LtiDorAumzm0I2si7sK1vs6So0DMLBM16lnmYw==
-X-Received: by 2002:a05:600c:524f:b0:434:fddf:5c0a with SMTP id
- 5b1f17b1804b1-436553452d7mr74615505e9.3.1734622758007; 
- Thu, 19 Dec 2024 07:39:18 -0800 (PST)
+ bh=ltkM6wv4nnewbtt7Wl7DzeFeRkwimvs0bnn2crm+6CQ=;
+ b=Bc1G66UmBj20OlKRnrUP5zqijg4Ktx5IMjhRpHpCrvu7JbtnOhub3wJJX17wy1udR0
+ 3lVmUmfwmIqXnxj8Cf1M3Pitcg6VBrTIfnZ1ij6KKHmkh5PauRqHq0mjL4340Fci+vo0
+ 0xY7RL7TnkRcLvVMfx/WNkBExKG8tMIwhXnQYfNGbnsIwH7Dyhgb6TYQp2+WJ+Xos69R
+ efyU3Y32Z0TPnbQK6DCKaCmOIcRtxfNMk90CzMQJ8tWYn7GpJ7Zvfd7j05779jCRVLta
+ HNM0zC4itnj5L9CyAuqt9staprqKHeJkGun9yiL3Tk3F5Tdu2ms5+D3wlrRIPbOzivg5
+ pSTQ==
+X-Gm-Message-State: AOJu0Yzx8d2C8te2mGoKgmDIf20EcSdaARgkMQ+9N58ZLc6sG9Ej28eB
+ pFP9Br9pR/SmDeXFOPqQuM1+W4i1wy8TutZNNkpCLTX9SCgmEzh1BAYXE457RmfD1tiM3zMuEsO
+ J
+X-Gm-Gg: ASbGncvnT6HdgiD8hKMWhLyR5/cOEqo/gPnEler+GKOVPSKEhvXVpjq7c3O7A3nY+DF
+ xfX7CEo7lx8N0SRtDZ1qjXD/wD9BvWOQn2wcWtakfO0w3XvL8hLd8BAMxIbCuBKTQoWBLaq9n/y
+ wv6tE0Lbyu8EXRxdnO0NRG2JItjVywE4gZoxSAxhk/y03BFclPig8RWI76BZh0TxPlLv2lqRtJZ
+ D2zBs95FeS11GVqnHSKdCq/I8yWVWfq5DlIBRcqf/CHmRWUYv1NEXg+Ig20138PQCz68FB4214c
+ Hrq6
+X-Google-Smtp-Source: AGHT+IHqT2aqNU6znhJmAnu6BPD6sDUBEfCZ/4rUkgoJAGrbRO4KYM8P8HUa1iOsstTrLxK5eACAcw==
+X-Received: by 2002:a05:600c:4586:b0:436:1c04:aa9a with SMTP id
+ 5b1f17b1804b1-43655370395mr72815995e9.14.1734622763724; 
+ Thu, 19 Dec 2024 07:39:23 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c8471dcsm1822152f8f.48.2024.12.19.07.39.17
+ 5b1f17b1804b1-436604e9c2csm22880975e9.43.2024.12.19.07.39.22
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Dec 2024 07:39:17 -0800 (PST)
+ Thu, 19 Dec 2024 07:39:23 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  devel@lists.libvirt.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 03/10] hw/misc/vmcoreinfo: Un-inline vmcoreinfo_find()
-Date: Thu, 19 Dec 2024 16:38:50 +0100
-Message-ID: <20241219153857.57450-4-philmd@linaro.org>
+Subject: [RFC PATCH 04/10] hw/misc/vmcoreinfo: Rename VMCOREINFO_DEVICE ->
+ TYPE_VMCOREINFO_DEVICE
+Date: Thu, 19 Dec 2024 16:38:51 +0100
+Message-ID: <20241219153857.57450-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219153857.57450-1-philmd@linaro.org>
 References: <20241219153857.57450-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,68 +100,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Follow the assumed QOM type definition style, prefixing with 'TYPE_'.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/misc/vmcoreinfo.h | 13 ++++++-------
- hw/misc/vmcoreinfo.c         | 16 +++++++++++++---
- 2 files changed, 19 insertions(+), 10 deletions(-)
+ include/hw/misc/vmcoreinfo.h | 6 +++---
+ hw/misc/vmcoreinfo.c         | 8 ++++----
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/include/hw/misc/vmcoreinfo.h b/include/hw/misc/vmcoreinfo.h
-index 0b7b55d400a..da1066d540c 100644
+index da1066d540c..122c69686b0 100644
 --- a/include/hw/misc/vmcoreinfo.h
 +++ b/include/hw/misc/vmcoreinfo.h
-@@ -30,12 +30,11 @@ struct VMCoreInfoState {
-     FWCfgVMCoreInfo vmcoreinfo;
- };
+@@ -16,10 +16,10 @@
+ #include "standard-headers/linux/qemu_fw_cfg.h"
+ #include "qom/object.h"
  
--/* returns NULL unless there is exactly one device */
--static inline VMCoreInfoState *vmcoreinfo_find(void)
--{
--    Object *o = object_resolve_path_type("", VMCOREINFO_DEVICE, NULL);
--
--    return o ? VMCOREINFO(o) : NULL;
--}
-+/**
-+ * vmcoreinfo_find:
-+ *
-+ * Returns NULL unless there is exactly one instance.
-+ */
-+VMCoreInfoState *vmcoreinfo_find(void);
+-#define VMCOREINFO_DEVICE "vmcoreinfo"
++#define TYPE_VMCOREINFO_DEVICE "vmcoreinfo"
+ typedef struct VMCoreInfoState VMCoreInfoState;
+-DECLARE_INSTANCE_CHECKER(VMCoreInfoState, VMCOREINFO,
+-                         VMCOREINFO_DEVICE)
++DECLARE_INSTANCE_CHECKER(VMCoreInfoState, VMCOREINFO_DEVICE,
++                         TYPE_VMCOREINFO_DEVICE)
  
- #endif
+ typedef struct fw_cfg_vmcoreinfo FWCfgVMCoreInfo;
+ 
 diff --git a/hw/misc/vmcoreinfo.c b/hw/misc/vmcoreinfo.c
-index ad5a4dec596..c5bb5c9fa52 100644
+index c5bb5c9fa52..9822615cfed 100644
 --- a/hw/misc/vmcoreinfo.c
 +++ b/hw/misc/vmcoreinfo.c
-@@ -42,11 +42,12 @@ static void vmcoreinfo_realize(DeviceState *dev, Error **errp)
+@@ -37,7 +37,7 @@ static void vmcoreinfo_reset(void *opaque)
+ 
+ static void vmcoreinfo_realize(DeviceState *dev, Error **errp)
+ {
+-    VMCoreInfoState *s = VMCOREINFO(dev);
++    VMCoreInfoState *s = VMCOREINFO_DEVICE(dev);
+     FWCfgState *fw_cfg = fw_cfg_find();
      /* for gdb script dump-guest-memory.py */
      static VMCoreInfoState * volatile vmcoreinfo_state G_GNUC_UNUSED;
- 
--    /* Given that this function is executing, there is at least one VMCOREINFO
--     * device. Check if there are several.
-+    /*
-+     * Given that this function is executing, there is at least one
-+     * VMCOREINFO instance. Check if there are several.
+@@ -48,13 +48,13 @@ static void vmcoreinfo_realize(DeviceState *dev, Error **errp)
       */
      if (!vmcoreinfo_find()) {
--        error_setg(errp, "at most one %s device is permitted",
-+        error_setg(errp, "at most one %s instance is permitted",
-                    VMCOREINFO_DEVICE);
+         error_setg(errp, "at most one %s instance is permitted",
+-                   VMCOREINFO_DEVICE);
++                   TYPE_VMCOREINFO_DEVICE);
          return;
      }
-@@ -103,3 +104,12 @@ static const TypeInfo vmcoreinfo_types[] = {
- };
  
- DEFINE_TYPES(vmcoreinfo_types)
-+
-+VMCoreInfoState *vmcoreinfo_find(void)
-+{
-+    Object *obj;
-+
-+    obj = object_resolve_path_type("", TYPE_VMCOREINFO_DEVICE, NULL);
-+
-+    return obj ? (VMCoreInfoState *)obj : NULL;
-+}
+     if (!fw_cfg || !fw_cfg->dma_enabled) {
+         error_setg(errp, "%s device requires fw_cfg with DMA",
+-                   VMCOREINFO_DEVICE);
++                   TYPE_VMCOREINFO_DEVICE);
+         return;
+     }
+ 
+@@ -96,7 +96,7 @@ static void vmcoreinfo_device_class_init(ObjectClass *klass, void *data)
+ 
+ static const TypeInfo vmcoreinfo_types[] = {
+     {
+-        .name           = VMCOREINFO_DEVICE,
++        .name           = TYPE_VMCOREINFO_DEVICE,
+         .parent         = TYPE_DEVICE,
+         .instance_size  = sizeof(VMCoreInfoState),
+         .class_init     = vmcoreinfo_device_class_init,
 -- 
 2.47.1
 
