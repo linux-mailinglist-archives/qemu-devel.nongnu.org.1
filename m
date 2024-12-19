@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2776A9F7782
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:37:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 794929F7787
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:38:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOByO-0005R4-6H; Thu, 19 Dec 2024 03:33:32 -0500
+	id 1tOByP-0005Yk-Ce; Thu, 19 Dec 2024 03:33:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOByL-0005Fq-7j
+ id 1tOByL-0005KC-Lt
  for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:29 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOByH-0005CV-Tk
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:28 -0500
+ id 1tOByI-0005Cf-EI
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1734597205;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aHBhwWJYWLCM+IT8fIYvlM911wPuFL5jw1R80OYjRAo=;
- b=CahL8/DY+NCRcDnf0xOOxnTg5ehmTzbE/NYQTaHrw0kKZnu+huIzDCD9vpGDUeAcYAzO0O
- XDMQ+nc/LUVQm+c2eL8z9Hu5KQAeTYuz4LPct5O+2X1HqKfeGe3Ijm9WpqfPf87uESQTi8
- QqNwbl1CalAXNZj6k0VKiC4Ubi5x22A=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=b57K8ft544UoM6GCsiUjVHuM32CJVDdNlM86iQYtbsk=;
+ b=NJWJK2tB9vmUUO2naBIx1l33YLkgvfpLBo6cOHFCMf8+OeyASgLN7qqXVTSXwvsgRRqTRr
+ LYs8eIMSfN9k6hy82Ev9oQa2ZQdw7FUp7My6plH0o6YpUVaXq4B/9g0o5DvXEWxBVdfIl+
+ Eam7dHlMN4mgztIfvC06pC3WcpjEjVM=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-340-3-FxsmsAO2iDIvM88rkGEg-1; Thu, 19 Dec 2024 03:33:24 -0500
-X-MC-Unique: 3-FxsmsAO2iDIvM88rkGEg-1
-X-Mimecast-MFC-AGG-ID: 3-FxsmsAO2iDIvM88rkGEg
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-385dc37cb3eso295656f8f.0
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:23 -0800 (PST)
+ us-mta-466-VPyAlxKXOEyD9lCJqWjPfg-1; Thu, 19 Dec 2024 03:33:24 -0500
+X-MC-Unique: VPyAlxKXOEyD9lCJqWjPfg-1
+X-Mimecast-MFC-AGG-ID: VPyAlxKXOEyD9lCJqWjPfg
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4361b090d23so2998825e9.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734597201; x=1735202001;
+ d=1e100.net; s=20230601; t=1734597203; x=1735202003;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aHBhwWJYWLCM+IT8fIYvlM911wPuFL5jw1R80OYjRAo=;
- b=TnQFNZJEvt9Tqz9Ok2ZI/9wnU6EjnW94iuWQXLXUaw6M245sLO3GfT1Ge1albLe9r1
- DyOymHeII2yHnMNG/qpvb5AP5LAzrNd2szXWjjj7PstuRoNMQkcEnXohv8ZwfW1s0FkI
- J5Ian2DzqT/nSkA6Qyn9ghAuVEWko+LQ3JsECfl5COaCqCMpBdtmR4wObX5Tf9A2zX0R
- MicayCk6SpVslBXa6ddS2iCzhjzfBs94RdE31FtLG2QkLIDcNdyWRGa655b++mlmylR8
- raDzHCOtcE4gK5rJoOIq3rsSIBxvE9JiGOKopvpq871eixMJq8od5vIBLIR+iJe3PLxl
- VsZA==
-X-Gm-Message-State: AOJu0YxXbSLNIYOJccLPKkd1ITUTmbASjKJd/qpUcpQ8dPPaX3ons/Kh
- fWswp1y4pSKxMalxlU7hkcTtABpPOEpCChoeGVDdg5TQi3LE4oJcT58mX4jcF3wyxY3EavmC7f2
- yclhJzuqTCxowhJ3nR0/o+V5n4hC2hD4/YZMDXLVgp7ZojifZMCURXwLW6VvaP+GC+61sLjCvcP
- 2zKCHfPpCody1Y75lUeROWc30ycTCboeWFZ1yv
-X-Gm-Gg: ASbGncsn7tD2kxM0WaYdBaMF8gNhGtElnHsta/0KhhZGopUMksNBd3q4TcVhTzoG0F6
- wTJBxFA65sRaB3rcydNlu6VCXyUqj6a0CUhNxyWXsLbUlhTV2o26GFzSehHjsdJL7SkuceyXfr7
- +Msu6YZr0xb0l7RGPrNfIm/zcLecSe2IgSK5D0Pf2wIhlOdkZCiLnpu0KanUU+oUWB3Z5ozKcOT
- cUsAnICva/QedoCp6wFAPW77O3aAQb04/BzBH2UXSZxumAupj9yBkI7xLrA
-X-Received: by 2002:a5d:64e7:0:b0:385:e0d6:fb6e with SMTP id
- ffacd0b85a97d-388e4d8dd78mr4888520f8f.37.1734597201187; 
+ bh=b57K8ft544UoM6GCsiUjVHuM32CJVDdNlM86iQYtbsk=;
+ b=tvDhHvilaHA+o1A7aKgT5Q3NRuHFQ4UHs/JgpuoNuAZFVFn5ndHIp+3myk6TGw9+hN
+ 80o3i0tJ9RfNpR45L0xvVEsH/uX28LkCF7/xL9RnBR5sxuyeiW9HpjxN4Po0EGTdmJCE
+ RjXZn+Fai5HA+24pM8JNvdQ8frw+1np/osEHYvXa9WJ24G4MKY8aGTA/Lgzo7JYUsfrA
+ xgMm7h58bjfDkqiolHnueDohkm6sGbvr47WrqYwtL/GbXInDdmJ4t9LlDpWHECVadUCA
+ c7dmBPMB4O0LWknMVUA7+1qrYBdYJJCtfhjaEP2b6NfMb4jedm0ZOxsJluGqkt1r3atk
+ fPbg==
+X-Gm-Message-State: AOJu0YzWDOwbJnbnVPoEpj3EZjr9tNHWb+tlTLEuhBgq4UySUP9xsc/m
+ Tsu7xtTM0BzCexyzlEQV5bJu51K5oYtuQnp6za7AZXb5pWDQHW5zH9UIxesUMNsLbPAhTIsxy5F
+ 3DPlCoFPEd8DtsVBTgH9avcSAwtwoMoLHktBHnTGNUw55t/xUxX15Z15GXy6RkHsKF4hRAiU9GX
+ vw6k77I0pJjHTaAHde12X1Yej5BvJkLf0Sgogl
+X-Gm-Gg: ASbGncvH2Bjv2Ei1Gd4HcOyQFj6ivJAV07tI4a7fnR6rs5sFFj5ivQTbww9eqRaCY5v
+ 1zyiWTKd3F0M+VIHSVnrUXrOcX1aaif9UxN+M/2Iw1YxMB/iBhzBpqgE8OSzARxzuSSlaS3RLkM
+ CB6cWH/Y3QBzjWWrFYRIVLfC5cFWX1Li+IbuWw5kHzU8KZsW8dhn2OuLg0XbnK8E+xAQ5Ad5n0g
+ EcgODFY/qXQGbhh9zlJlxlna5YUtBgzMFezHQgKhozWoHJLxZ3wRAHXDBzi
+X-Received: by 2002:a05:600c:3b88:b0:434:a315:19c with SMTP id
+ 5b1f17b1804b1-4365c77e436mr20928235e9.3.1734597202542; 
+ Thu, 19 Dec 2024 00:33:22 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFNm4V+wCPC8C8YlTwEY3j1RvRU4QPiJVvIqVqepXMFPBRnP5BomYS5hLq+nyO10IQ07ZDN7Q==
+X-Received: by 2002:a05:600c:3b88:b0:434:a315:19c with SMTP id
+ 5b1f17b1804b1-4365c77e436mr20927685e9.3.1734597201851; 
  Thu, 19 Dec 2024 00:33:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFfQu5P3fhr0xWGkdS4xbN5P7MhztBfQr4NoU/LdwvR0ikeOgNFyq5z48Sv6jrUBQebNcvx0g==
-X-Received: by 2002:a5d:64e7:0:b0:385:e0d6:fb6e with SMTP id
- ffacd0b85a97d-388e4d8dd78mr4888485f8f.37.1734597200526; 
- Thu, 19 Dec 2024 00:33:20 -0800 (PST)
 Received: from [192.168.10.47] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436611ea423sm11344415e9.2.2024.12.19.00.33.19
+ 5b1f17b1804b1-4366127c515sm11222895e9.30.2024.12.19.00.33.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 00:33:19 -0800 (PST)
+ Thu, 19 Dec 2024 00:33:21 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 24/41] Constify all opaque Property pointers
-Date: Thu, 19 Dec 2024 09:32:11 +0100
-Message-ID: <20241219083228.363430-25-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 25/41] rust: qom: put class_init together from multiple
+ ClassInitImpl<>
+Date: Thu, 19 Dec 2024 09:32:12 +0100
+Message-ID: <20241219083228.363430-26-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219083228.363430-1-pbonzini@redhat.com>
 References: <20241219083228.363430-1-pbonzini@redhat.com>
@@ -105,743 +106,432 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+Parameterize the implementation of ClassInitImpl so that it is
+possible to call up the chain of implementations, one superclass at
+a time starting at ClassInitImpl<Self::Class>.
 
-  s/  Property [*]/  const Property */
+In order to avoid having to implement (for example)
+ClassInitImpl<PL011Class>, also remove the dummy PL011Class and
+PL011LuminaryClass structs and specify the same ObjectType::Class as
+the superclass.  In the future this default behavior can be handled by
+a procedural macro, by looking at the first field in the struct.
 
-Basically all of these only feed object_field_prop_ptr,
-which now takes a const pointer itself.
+Note that the new trait is safe: the calls are started by
+rust_class_init<>(), which is not public and can convert the class
+pointer to a Rust reference.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Link: https://lore.kernel.org/r/20241216035109.3486070-25-richard.henderson@linaro.org
+Since CLASS_BASE_INIT applies to the type that is being defined,
+and only to it, move it to ObjectImpl.
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- backends/tpm/tpm_util.c          |  4 +-
- hw/block/xen-block.c             |  4 +-
- hw/core/qdev-properties-system.c | 48 ++++++++++----------
- hw/core/qdev-properties.c        | 78 ++++++++++++++++----------------
- hw/misc/xlnx-versal-trng.c       |  2 +-
- hw/nvme/nguid.c                  |  4 +-
- hw/s390x/css.c                   |  4 +-
- hw/s390x/s390-pci-bus.c          |  4 +-
- hw/vfio/pci-quirks.c             |  4 +-
- 9 files changed, 76 insertions(+), 76 deletions(-)
+ rust/hw/char/pl011/src/device.rs  |  19 +----
+ rust/qemu-api/src/definitions.rs  | 111 ++++++++++++++++++++++++------
+ rust/qemu-api/src/device_class.rs |  50 +++++---------
+ rust/qemu-api/src/sysbus.rs       |  18 ++++-
+ rust/qemu-api/tests/tests.rs      |   9 +--
+ 5 files changed, 127 insertions(+), 80 deletions(-)
 
-diff --git a/backends/tpm/tpm_util.c b/backends/tpm/tpm_util.c
-index cf138551df1..485982b17b6 100644
---- a/backends/tpm/tpm_util.c
-+++ b/backends/tpm/tpm_util.c
-@@ -46,7 +46,7 @@ static void get_tpm(Object *obj, Visitor *v, const char *name, void *opaque,
- static void set_tpm(Object *obj, Visitor *v, const char *name, void *opaque,
-                     Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     TPMBackend *s, **be = object_field_prop_ptr(obj, prop);
-     char *str;
- 
-@@ -66,7 +66,7 @@ static void set_tpm(Object *obj, Visitor *v, const char *name, void *opaque,
- 
- static void release_tpm(Object *obj, const char *name, void *opaque)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     TPMBackend **be = object_field_prop_ptr(obj, prop);
- 
-     if (*be) {
-diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
-index 56a67136604..ec3413f116a 100644
---- a/hw/block/xen-block.c
-+++ b/hw/block/xen-block.c
-@@ -485,7 +485,7 @@ static char *disk_to_vbd_name(unsigned int disk)
- static void xen_block_get_vdev(Object *obj, Visitor *v, const char *name,
-                                void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     XenBlockVdev *vdev = object_field_prop_ptr(obj, prop);
-     char *str;
- 
-@@ -545,7 +545,7 @@ static int vbd_name_to_disk(const char *name, const char **endp,
- static void xen_block_set_vdev(Object *obj, Visitor *v, const char *name,
-                                void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     XenBlockVdev *vdev = object_field_prop_ptr(obj, prop);
-     char *str, *p;
-     const char *end;
-diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-index 1034e9b5809..1bae1352766 100644
---- a/hw/core/qdev-properties-system.c
-+++ b/hw/core/qdev-properties-system.c
-@@ -90,7 +90,7 @@ bool qdev_prop_sanitize_s390x_loadparm(uint8_t *loadparm, const char *str,
- static void get_drive(Object *obj, Visitor *v, const char *name, void *opaque,
-                       Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     void **ptr = object_field_prop_ptr(obj, prop);
-     const char *value;
-     char *p;
-@@ -116,7 +116,7 @@ static void set_drive_helper(Object *obj, Visitor *v, const char *name,
-                              void *opaque, bool iothread, Error **errp)
- {
-     DeviceState *dev = DEVICE(obj);
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     void **ptr = object_field_prop_ptr(obj, prop);
-     char *str;
-     BlockBackend *blk;
-@@ -225,7 +225,7 @@ static void set_drive_iothread(Object *obj, Visitor *v, const char *name,
- static void release_drive(Object *obj, const char *name, void *opaque)
- {
-     DeviceState *dev = DEVICE(obj);
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     BlockBackend **ptr = object_field_prop_ptr(obj, prop);
- 
-     if (*ptr) {
-@@ -269,7 +269,7 @@ static void set_chr(Object *obj, Visitor *v, const char *name, void *opaque,
-                     Error **errp)
- {
-     ERRP_GUARD();
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     CharBackend *be = object_field_prop_ptr(obj, prop);
-     Chardev *s;
-     char *str;
-@@ -305,7 +305,7 @@ static void set_chr(Object *obj, Visitor *v, const char *name, void *opaque,
- 
- static void release_chr(Object *obj, const char *name, void *opaque)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     CharBackend *be = object_field_prop_ptr(obj, prop);
- 
-     qemu_chr_fe_deinit(be, false);
-@@ -329,7 +329,7 @@ const PropertyInfo qdev_prop_chr = {
- static void get_mac(Object *obj, Visitor *v, const char *name, void *opaque,
-                     Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     MACAddr *mac = object_field_prop_ptr(obj, prop);
-     char buffer[2 * 6 + 5 + 1];
-     char *p = buffer;
-@@ -344,7 +344,7 @@ static void get_mac(Object *obj, Visitor *v, const char *name, void *opaque,
- static void set_mac(Object *obj, Visitor *v, const char *name, void *opaque,
-                     Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     MACAddr *mac = object_field_prop_ptr(obj, prop);
-     int i, pos;
-     char *str;
-@@ -406,7 +406,7 @@ void qdev_prop_set_macaddr(DeviceState *dev, const char *name,
- static void get_netdev(Object *obj, Visitor *v, const char *name,
-                        void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     NICPeers *peers_ptr = object_field_prop_ptr(obj, prop);
-     char *p = g_strdup(peers_ptr->ncs[0] ? peers_ptr->ncs[0]->name : "");
- 
-@@ -417,7 +417,7 @@ static void get_netdev(Object *obj, Visitor *v, const char *name,
- static void set_netdev(Object *obj, Visitor *v, const char *name,
-                        void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     NICPeers *peers_ptr = object_field_prop_ptr(obj, prop);
-     NetClientState **ncs = peers_ptr->ncs;
-     NetClientState *peers[MAX_QUEUE_NUM];
-@@ -485,7 +485,7 @@ const PropertyInfo qdev_prop_netdev = {
- static void get_audiodev(Object *obj, Visitor *v, const char* name,
-                          void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     QEMUSoundCard *card = object_field_prop_ptr(obj, prop);
-     char *p = g_strdup(audio_get_id(card));
- 
-@@ -496,7 +496,7 @@ static void get_audiodev(Object *obj, Visitor *v, const char* name,
- static void set_audiodev(Object *obj, Visitor *v, const char* name,
-                          void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     QEMUSoundCard *card = object_field_prop_ptr(obj, prop);
-     AudioState *state;
-     g_autofree char *str = NULL;
-@@ -578,7 +578,7 @@ static void qdev_propinfo_set_losttickpolicy(Object *obj, Visitor *v,
-                                              const char *name, void *opaque,
-                                              Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     int *ptr = object_field_prop_ptr(obj, prop);
-     int value;
- 
-@@ -614,7 +614,7 @@ const PropertyInfo qdev_prop_losttickpolicy = {
- static void set_blocksize(Object *obj, Visitor *v, const char *name,
-                           void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint32_t *ptr = object_field_prop_ptr(obj, prop);
-     uint64_t value;
- 
-@@ -737,7 +737,7 @@ const PropertyInfo qdev_prop_zero_page_detection = {
- static void get_reserved_region(Object *obj, Visitor *v, const char *name,
-                                 void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     ReservedRegion *rr = object_field_prop_ptr(obj, prop);
-     char buffer[64];
-     char *p = buffer;
-@@ -753,7 +753,7 @@ static void get_reserved_region(Object *obj, Visitor *v, const char *name,
- static void set_reserved_region(Object *obj, Visitor *v, const char *name,
-                                 void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     ReservedRegion *rr = object_field_prop_ptr(obj, prop);
-     const char *endptr;
-     uint64_t lob, upb;
-@@ -815,7 +815,7 @@ const PropertyInfo qdev_prop_reserved_region = {
- static void set_pci_devfn(Object *obj, Visitor *v, const char *name,
-                           void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     g_autofree GenericAlternate *alt;
-     int32_t value, *ptr = object_field_prop_ptr(obj, prop);
-     unsigned int slot, fn, n;
-@@ -895,7 +895,7 @@ const PropertyInfo qdev_prop_pci_devfn = {
- static void get_pci_host_devaddr(Object *obj, Visitor *v, const char *name,
-                                  void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     PCIHostDeviceAddress *addr = object_field_prop_ptr(obj, prop);
-     char buffer[] = "ffff:ff:ff.f";
-     char *p = buffer;
-@@ -921,7 +921,7 @@ static void get_pci_host_devaddr(Object *obj, Visitor *v, const char *name,
- static void set_pci_host_devaddr(Object *obj, Visitor *v, const char *name,
-                                  void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     PCIHostDeviceAddress *addr = object_field_prop_ptr(obj, prop);
-     char *str, *p;
-     char *e;
-@@ -1011,7 +1011,7 @@ const PropertyInfo qdev_prop_off_auto_pcibar = {
- static void get_prop_pcielinkspeed(Object *obj, Visitor *v, const char *name,
-                                    void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     PCIExpLinkSpeed *p = object_field_prop_ptr(obj, prop);
-     int speed;
- 
-@@ -1045,7 +1045,7 @@ static void get_prop_pcielinkspeed(Object *obj, Visitor *v, const char *name,
- static void set_prop_pcielinkspeed(Object *obj, Visitor *v, const char *name,
-                                    void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     PCIExpLinkSpeed *p = object_field_prop_ptr(obj, prop);
-     int speed;
- 
-@@ -1093,7 +1093,7 @@ const PropertyInfo qdev_prop_pcie_link_speed = {
- static void get_prop_pcielinkwidth(Object *obj, Visitor *v, const char *name,
-                                    void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     PCIExpLinkWidth *p = object_field_prop_ptr(obj, prop);
-     int width;
- 
-@@ -1130,7 +1130,7 @@ static void get_prop_pcielinkwidth(Object *obj, Visitor *v, const char *name,
- static void set_prop_pcielinkwidth(Object *obj, Visitor *v, const char *name,
-                                    void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     PCIExpLinkWidth *p = object_field_prop_ptr(obj, prop);
-     int width;
- 
-@@ -1181,7 +1181,7 @@ const PropertyInfo qdev_prop_pcie_link_width = {
- static void get_uuid(Object *obj, Visitor *v, const char *name, void *opaque,
-                      Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     QemuUUID *uuid = object_field_prop_ptr(obj, prop);
-     char buffer[UUID_STR_LEN];
-     char *p = buffer;
-@@ -1196,7 +1196,7 @@ static void get_uuid(Object *obj, Visitor *v, const char *name, void *opaque,
- static void set_uuid(Object *obj, Visitor *v, const char *name, void *opaque,
-                     Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     QemuUUID *uuid = object_field_prop_ptr(obj, prop);
-     char *str;
- 
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index 61929b2865a..434a76f5036 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -61,7 +61,7 @@ void *object_field_prop_ptr(Object *obj, const Property *prop)
- static void field_prop_get(Object *obj, Visitor *v, const char *name,
-                            void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     return prop->info->get(obj, v, name, opaque, errp);
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index 3e29442a625..d9e9f35f456 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -13,7 +13,6 @@
+     c_str,
+     definitions::ObjectImpl,
+     device_class::DeviceImpl,
+-    impl_device_class,
+     irq::InterruptSource,
+     prelude::*,
+ };
+@@ -108,7 +107,7 @@ pub struct PL011State {
  }
  
-@@ -78,7 +78,7 @@ static ObjectPropertyAccessor *field_prop_getter(const PropertyInfo *info)
- static void field_prop_set(Object *obj, Visitor *v, const char *name,
-                            void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
- 
-     if (!qdev_prop_allow_set(obj, name, prop->info, errp)) {
-         return;
-@@ -100,7 +100,7 @@ static ObjectPropertyAccessor *field_prop_setter(const PropertyInfo *info)
- void qdev_propinfo_get_enum(Object *obj, Visitor *v, const char *name,
-                             void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     int *ptr = object_field_prop_ptr(obj, prop);
- 
-     visit_type_enum(v, name, ptr, prop->info->enum_table, errp);
-@@ -109,7 +109,7 @@ void qdev_propinfo_get_enum(Object *obj, Visitor *v, const char *name,
- void qdev_propinfo_set_enum(Object *obj, Visitor *v, const char *name,
-                             void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     int *ptr = object_field_prop_ptr(obj, prop);
- 
-     visit_type_enum(v, name, ptr, prop->info->enum_table, errp);
-@@ -131,13 +131,13 @@ const PropertyInfo qdev_prop_enum = {
- 
- /* Bit */
- 
--static uint32_t qdev_get_prop_mask(Property *prop)
-+static uint32_t qdev_get_prop_mask(const Property *prop)
- {
-     assert(prop->info == &qdev_prop_bit);
-     return 0x1 << prop->bitnr;
+ unsafe impl ObjectType for PL011State {
+-    type Class = PL011Class;
++    type Class = <SysBusDevice as ObjectType>::Class;
+     const TYPE_NAME: &'static CStr = crate::TYPE_PL011;
  }
  
--static void bit_prop_set(Object *obj, Property *props, bool val)
-+static void bit_prop_set(Object *obj, const Property *props, bool val)
- {
-     uint32_t *p = object_field_prop_ptr(obj, props);
-     uint32_t mask = qdev_get_prop_mask(props);
-@@ -151,7 +151,7 @@ static void bit_prop_set(Object *obj, Property *props, bool val)
- static void prop_get_bit(Object *obj, Visitor *v, const char *name,
-                          void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint32_t *p = object_field_prop_ptr(obj, prop);
-     bool value = (*p & qdev_get_prop_mask(prop)) != 0;
- 
-@@ -161,7 +161,7 @@ static void prop_get_bit(Object *obj, Visitor *v, const char *name,
- static void prop_set_bit(Object *obj, Visitor *v, const char *name,
-                          void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     bool value;
- 
-     if (!visit_type_bool(v, name, &value, errp)) {
-@@ -185,13 +185,13 @@ const PropertyInfo qdev_prop_bit = {
- 
- /* Bit64 */
- 
--static uint64_t qdev_get_prop_mask64(Property *prop)
-+static uint64_t qdev_get_prop_mask64(const Property *prop)
- {
-     assert(prop->info == &qdev_prop_bit64);
-     return 0x1ull << prop->bitnr;
+@@ -118,11 +117,6 @@ impl ObjectImpl for PL011State {
+     const INSTANCE_INIT: Option<unsafe fn(&mut Self)> = Some(Self::init);
  }
  
--static void bit64_prop_set(Object *obj, Property *props, bool val)
-+static void bit64_prop_set(Object *obj, const Property *props, bool val)
- {
-     uint64_t *p = object_field_prop_ptr(obj, props);
-     uint64_t mask = qdev_get_prop_mask64(props);
-@@ -205,7 +205,7 @@ static void bit64_prop_set(Object *obj, Property *props, bool val)
- static void prop_get_bit64(Object *obj, Visitor *v, const char *name,
-                            void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint64_t *p = object_field_prop_ptr(obj, prop);
-     bool value = (*p & qdev_get_prop_mask64(prop)) != 0;
- 
-@@ -215,7 +215,7 @@ static void prop_get_bit64(Object *obj, Visitor *v, const char *name,
- static void prop_set_bit64(Object *obj, Visitor *v, const char *name,
-                            void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     bool value;
- 
-     if (!visit_type_bool(v, name, &value, errp)) {
-@@ -237,7 +237,7 @@ const PropertyInfo qdev_prop_bit64 = {
- static void get_bool(Object *obj, Visitor *v, const char *name, void *opaque,
-                      Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     bool *ptr = object_field_prop_ptr(obj, prop);
- 
-     visit_type_bool(v, name, ptr, errp);
-@@ -246,7 +246,7 @@ static void get_bool(Object *obj, Visitor *v, const char *name, void *opaque,
- static void set_bool(Object *obj, Visitor *v, const char *name, void *opaque,
-                      Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     bool *ptr = object_field_prop_ptr(obj, prop);
- 
-     visit_type_bool(v, name, ptr, errp);
-@@ -264,7 +264,7 @@ const PropertyInfo qdev_prop_bool = {
- static void get_uint8(Object *obj, Visitor *v, const char *name, void *opaque,
-                       Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint8_t *ptr = object_field_prop_ptr(obj, prop);
- 
-     visit_type_uint8(v, name, ptr, errp);
-@@ -273,7 +273,7 @@ static void get_uint8(Object *obj, Visitor *v, const char *name, void *opaque,
- static void set_uint8(Object *obj, Visitor *v, const char *name, void *opaque,
-                       Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint8_t *ptr = object_field_prop_ptr(obj, prop);
- 
-     visit_type_uint8(v, name, ptr, errp);
-@@ -303,7 +303,7 @@ const PropertyInfo qdev_prop_uint8 = {
- static void get_uint16(Object *obj, Visitor *v, const char *name,
-                        void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint16_t *ptr = object_field_prop_ptr(obj, prop);
- 
-     visit_type_uint16(v, name, ptr, errp);
-@@ -312,7 +312,7 @@ static void get_uint16(Object *obj, Visitor *v, const char *name,
- static void set_uint16(Object *obj, Visitor *v, const char *name,
-                        void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint16_t *ptr = object_field_prop_ptr(obj, prop);
- 
-     visit_type_uint16(v, name, ptr, errp);
-@@ -330,7 +330,7 @@ const PropertyInfo qdev_prop_uint16 = {
- static void get_uint32(Object *obj, Visitor *v, const char *name,
-                        void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint32_t *ptr = object_field_prop_ptr(obj, prop);
- 
-     visit_type_uint32(v, name, ptr, errp);
-@@ -339,7 +339,7 @@ static void get_uint32(Object *obj, Visitor *v, const char *name,
- static void set_uint32(Object *obj, Visitor *v, const char *name,
-                        void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint32_t *ptr = object_field_prop_ptr(obj, prop);
- 
-     visit_type_uint32(v, name, ptr, errp);
-@@ -348,7 +348,7 @@ static void set_uint32(Object *obj, Visitor *v, const char *name,
- void qdev_propinfo_get_int32(Object *obj, Visitor *v, const char *name,
-                              void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     int32_t *ptr = object_field_prop_ptr(obj, prop);
- 
-     visit_type_int32(v, name, ptr, errp);
-@@ -357,7 +357,7 @@ void qdev_propinfo_get_int32(Object *obj, Visitor *v, const char *name,
- static void set_int32(Object *obj, Visitor *v, const char *name, void *opaque,
-                       Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     int32_t *ptr = object_field_prop_ptr(obj, prop);
- 
-     visit_type_int32(v, name, ptr, errp);
-@@ -382,7 +382,7 @@ const PropertyInfo qdev_prop_int32 = {
- static void get_uint64(Object *obj, Visitor *v, const char *name,
-                        void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint64_t *ptr = object_field_prop_ptr(obj, prop);
- 
-     visit_type_uint64(v, name, ptr, errp);
-@@ -391,7 +391,7 @@ static void get_uint64(Object *obj, Visitor *v, const char *name,
- static void set_uint64(Object *obj, Visitor *v, const char *name,
-                        void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint64_t *ptr = object_field_prop_ptr(obj, prop);
- 
-     visit_type_uint64(v, name, ptr, errp);
-@@ -400,7 +400,7 @@ static void set_uint64(Object *obj, Visitor *v, const char *name,
- static void get_int64(Object *obj, Visitor *v, const char *name,
-                       void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     int64_t *ptr = object_field_prop_ptr(obj, prop);
- 
-     visit_type_int64(v, name, ptr, errp);
-@@ -409,7 +409,7 @@ static void get_int64(Object *obj, Visitor *v, const char *name,
- static void set_int64(Object *obj, Visitor *v, const char *name,
-                       void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     int64_t *ptr = object_field_prop_ptr(obj, prop);
- 
-     visit_type_int64(v, name, ptr, errp);
-@@ -432,7 +432,7 @@ const PropertyInfo qdev_prop_int64 = {
- static void set_uint64_checkmask(Object *obj, Visitor *v, const char *name,
-                       void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint64_t *ptr = object_field_prop_ptr(obj, prop);
- 
-     visit_type_uint64(v, name, ptr, errp);
-@@ -452,14 +452,14 @@ const PropertyInfo qdev_prop_uint64_checkmask = {
- 
- static void release_string(Object *obj, const char *name, void *opaque)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     g_free(*(char **)object_field_prop_ptr(obj, prop));
+-#[repr(C)]
+-pub struct PL011Class {
+-    _inner: [u8; 0],
+-}
+-
+ impl DeviceImpl for PL011State {
+     fn properties() -> &'static [Property] {
+         &device_class::PL011_PROPERTIES
+@@ -134,8 +128,6 @@ fn vmsd() -> Option<&'static VMStateDescription> {
+     const RESET: Option<fn(&mut Self)> = Some(Self::reset);
  }
  
- static void get_string(Object *obj, Visitor *v, const char *name,
-                        void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     char **ptr = object_field_prop_ptr(obj, prop);
+-impl_device_class!(PL011State);
+-
+ impl PL011State {
+     /// Initializes a pre-allocated, unitialized instance of `PL011State`.
+     ///
+@@ -627,11 +619,6 @@ pub struct PL011Luminary {
+     parent_obj: PL011State,
+ }
  
-     if (!*ptr) {
-@@ -473,7 +473,7 @@ static void get_string(Object *obj, Visitor *v, const char *name,
- static void set_string(Object *obj, Visitor *v, const char *name,
-                        void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     char **ptr = object_field_prop_ptr(obj, prop);
-     char *str;
+-#[repr(C)]
+-pub struct PL011LuminaryClass {
+-    _inner: [u8; 0],
+-}
+-
+ impl PL011Luminary {
+     /// Initializes a pre-allocated, unitialized instance of `PL011Luminary`.
+     ///
+@@ -646,7 +633,7 @@ unsafe fn init(&mut self) {
+ }
  
-@@ -507,7 +507,7 @@ const PropertyInfo qdev_prop_on_off_auto = {
- void qdev_propinfo_get_size32(Object *obj, Visitor *v, const char *name,
-                               void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint32_t *ptr = object_field_prop_ptr(obj, prop);
-     uint64_t value = *ptr;
+ unsafe impl ObjectType for PL011Luminary {
+-    type Class = PL011LuminaryClass;
++    type Class = <PL011State as ObjectType>::Class;
+     const TYPE_NAME: &'static CStr = crate::TYPE_PL011_LUMINARY;
+ }
  
-@@ -517,7 +517,7 @@ void qdev_propinfo_get_size32(Object *obj, Visitor *v, const char *name,
- static void set_size32(Object *obj, Visitor *v, const char *name, void *opaque,
-                        Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint32_t *ptr = object_field_prop_ptr(obj, prop);
-     uint64_t value;
+@@ -657,5 +644,3 @@ impl ObjectImpl for PL011Luminary {
+ }
  
-@@ -557,7 +557,7 @@ struct ArrayElementList {
-  * specific element of the array. Arrays are backed by an uint32_t length field
-  * and an element array. @elem points at an element in this element array.
-  */
--static Property array_elem_prop(Object *obj, Property *parent_prop,
-+static Property array_elem_prop(Object *obj, const Property *parent_prop,
-                                 const char *name, char *elem)
- {
-     return (Property) {
-@@ -582,7 +582,7 @@ static Property array_elem_prop(Object *obj, Property *parent_prop,
-  */
- static void release_prop_array(Object *obj, const char *name, void *opaque)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint32_t *alenptr = object_field_prop_ptr(obj, prop);
-     void **arrayptr = (void *)obj + prop->arrayoffset;
-     char *elem = *arrayptr;
-@@ -609,7 +609,7 @@ static void set_prop_array(Object *obj, Visitor *v, const char *name,
-                            void *opaque, Error **errp)
- {
-     ERRP_GUARD();
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint32_t *alenptr = object_field_prop_ptr(obj, prop);
-     void **arrayptr = (void *)obj + prop->arrayoffset;
-     ArrayElementList *list, *elem, *next;
-@@ -685,7 +685,7 @@ static void get_prop_array(Object *obj, Visitor *v, const char *name,
-                            void *opaque, Error **errp)
- {
-     ERRP_GUARD();
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint32_t *alenptr = object_field_prop_ptr(obj, prop);
-     void **arrayptr = (void *)obj + prop->arrayoffset;
-     char *elemptr = *arrayptr;
-@@ -928,7 +928,7 @@ void qdev_prop_set_globals(DeviceState *dev)
- static void get_size(Object *obj, Visitor *v, const char *name, void *opaque,
-                      Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint64_t *ptr = object_field_prop_ptr(obj, prop);
+ impl DeviceImpl for PL011Luminary {}
+-
+-impl_device_class!(PL011Luminary);
+diff --git a/rust/qemu-api/src/definitions.rs b/rust/qemu-api/src/definitions.rs
+index df91a2e31a9..13f8f6fd2a9 100644
+--- a/rust/qemu-api/src/definitions.rs
++++ b/rust/qemu-api/src/definitions.rs
+@@ -26,6 +26,16 @@
+     T::INSTANCE_POST_INIT.unwrap()(unsafe { &mut *obj.cast::<T>() })
+ }
  
-     visit_type_size(v, name, ptr, errp);
-@@ -937,7 +937,7 @@ static void get_size(Object *obj, Visitor *v, const char *name, void *opaque,
- static void set_size(Object *obj, Visitor *v, const char *name, void *opaque,
-                      Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint64_t *ptr = object_field_prop_ptr(obj, prop);
++unsafe extern "C" fn rust_class_init<T: ObjectType + ClassInitImpl<T::Class>>(
++    klass: *mut ObjectClass,
++    _data: *mut c_void,
++) {
++    // SAFETY: klass is a T::Class, since rust_class_init<T>
++    // is called from QOM core as the class_init function
++    // for class T
++    T::class_init(unsafe { &mut *klass.cast::<T::Class>() })
++}
++
+ /// Trait exposed by all structs corresponding to QOM objects.
+ ///
+ /// # Safety
+@@ -50,7 +60,8 @@
+ /// - likewise, the first field of the `Class` must be of the class struct
+ ///   corresponding to the superclass, which is `ObjectImpl::ParentType::Class`.
+ pub unsafe trait ObjectType: Sized {
+-    /// The QOM class object corresponding to this struct.  Not used yet.
++    /// The QOM class object corresponding to this struct.  This is used
++    /// to automatically generate a `class_init` method.
+     type Class;
  
-     visit_type_size(v, name, ptr, errp);
-@@ -1020,7 +1020,7 @@ static void qdev_get_legacy_property(Object *obj, Visitor *v,
-                                      const char *name, void *opaque,
-                                      Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
+     /// The name of the type, which can be passed to `object_new()` to
+@@ -59,7 +70,7 @@ pub unsafe trait ObjectType: Sized {
+ }
  
-     char buffer[1024];
-     char *ptr = buffer;
-diff --git a/hw/misc/xlnx-versal-trng.c b/hw/misc/xlnx-versal-trng.c
-index 0419f648b7a..dbd9b58a4ec 100644
---- a/hw/misc/xlnx-versal-trng.c
-+++ b/hw/misc/xlnx-versal-trng.c
-@@ -641,7 +641,7 @@ static void trng_prop_fault_event_set(Object *obj, Visitor *v,
-                                       const char *name, void *opaque,
-                                       Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint32_t *events = object_field_prop_ptr(obj, prop);
+ /// Trait a type must implement to be registered with QEMU.
+-pub trait ObjectImpl: ObjectType + ClassInitImpl {
++pub trait ObjectImpl: ObjectType + ClassInitImpl<Self::Class> {
+     /// The parent of the type.  This should match the first field of
+     /// the struct that implements `ObjectImpl`:
+     type ParentType: ObjectType;
+@@ -80,6 +91,15 @@ pub trait ObjectImpl: ObjectType + ClassInitImpl {
+     /// `INSTANCE_INIT` functions have been called.
+     const INSTANCE_POST_INIT: Option<fn(&mut Self)> = None;
  
-     if (!visit_type_uint32(v, name, events, errp)) {
-diff --git a/hw/nvme/nguid.c b/hw/nvme/nguid.c
-index 829832bd9f4..be63cb75e16 100644
---- a/hw/nvme/nguid.c
-+++ b/hw/nvme/nguid.c
-@@ -149,7 +149,7 @@ static void nvme_nguid_stringify(const NvmeNGUID *nguid, char *out)
- static void get_nguid(Object *obj, Visitor *v, const char *name, void *opaque,
-                       Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     NvmeNGUID *nguid = object_field_prop_ptr(obj, prop);
-     char buffer[NGUID_STR_LEN];
-     char *p = buffer;
-@@ -162,7 +162,7 @@ static void get_nguid(Object *obj, Visitor *v, const char *name, void *opaque,
- static void set_nguid(Object *obj, Visitor *v, const char *name, void *opaque,
-                       Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     NvmeNGUID *nguid = object_field_prop_ptr(obj, prop);
-     char *str;
++    /// Called on descendent classes after all parent class initialization
++    /// has occurred, but before the class itself is initialized.  This
++    /// is only useful if a class is not a leaf, and can be used to undo
++    /// the effects of copying the contents of the parent's class struct
++    /// to the descendants.
++    const CLASS_BASE_INIT: Option<
++        unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut c_void),
++    > = None;
++
+     const TYPE_INFO: TypeInfo = TypeInfo {
+         name: Self::TYPE_NAME.as_ptr(),
+         parent: Self::ParentType::TYPE_NAME.as_ptr(),
+@@ -96,37 +116,86 @@ pub trait ObjectImpl: ObjectType + ClassInitImpl {
+         instance_finalize: Self::INSTANCE_FINALIZE,
+         abstract_: Self::ABSTRACT,
+         class_size: core::mem::size_of::<Self::Class>(),
+-        class_init: <Self as ClassInitImpl>::CLASS_INIT,
+-        class_base_init: <Self as ClassInitImpl>::CLASS_BASE_INIT,
++        class_init: Some(rust_class_init::<Self>),
++        class_base_init: Self::CLASS_BASE_INIT,
+         class_data: core::ptr::null_mut(),
+         interfaces: core::ptr::null_mut(),
+     };
+ }
  
-diff --git a/hw/s390x/css.c b/hw/s390x/css.c
-index b2d5327dbf4..4e27b2961b8 100644
---- a/hw/s390x/css.c
-+++ b/hw/s390x/css.c
-@@ -2463,7 +2463,7 @@ void css_reset(void)
- static void get_css_devid(Object *obj, Visitor *v, const char *name,
-                           void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     CssDevId *dev_id = object_field_prop_ptr(obj, prop);
-     char buffer[] = "xx.x.xxxx";
-     char *p = buffer;
-@@ -2492,7 +2492,7 @@ static void get_css_devid(Object *obj, Visitor *v, const char *name,
- static void set_css_devid(Object *obj, Visitor *v, const char *name,
-                           void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     CssDevId *dev_id = object_field_prop_ptr(obj, prop);
-     char *str;
-     int num, n1, n2;
-diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
-index 5fbbf41a3db..94b1a5f6398 100644
---- a/hw/s390x/s390-pci-bus.c
-+++ b/hw/s390x/s390-pci-bus.c
-@@ -1453,7 +1453,7 @@ static void s390_pci_device_reset(DeviceState *dev)
- static void s390_pci_get_fid(Object *obj, Visitor *v, const char *name,
-                          void *opaque, Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint32_t *ptr = object_field_prop_ptr(obj, prop);
+-/// Trait used to fill in a class struct.
++/// Internal trait used to automatically fill in a class struct.
+ ///
+ /// Each QOM class that has virtual methods describes them in a
+ /// _class struct_.  Class structs include a parent field corresponding
+ /// to the vtable of the parent class, all the way up to [`ObjectClass`].
+-/// Each QOM type has one such class struct.
++/// Each QOM type has one such class struct; this trait takes care of
++/// initializing the `T` part of the class struct, for the type that
++/// implements the trait.
+ ///
+-/// The Rust implementation of methods will usually come from a trait
+-/// like [`ObjectImpl`] or [`DeviceImpl`](crate::device_class::DeviceImpl).
+-pub trait ClassInitImpl {
+-    /// Function that is called after all parent class initialization
+-    /// has occurred.  On entry, the virtual method pointers are set to
++/// Each struct will implement this trait with `T` equal to each
++/// superclass.  For example, a device should implement at least
++/// `ClassInitImpl<`[`DeviceClass`](crate::bindings::DeviceClass)`>`.
++/// Such implementations are made in one of two ways.
++///
++/// For most superclasses, `ClassInitImpl` is provided by the `qemu-api`
++/// crate itself.  The Rust implementation of methods will come from a
++/// trait like [`ObjectImpl`] or
++/// [`DeviceImpl`](crate::device_class::DeviceImpl), and `ClassInitImpl` is
++/// provided by blanket implementations that operate on all implementors of the
++/// `*Impl`* trait.  For example:
++///
++/// ```ignore
++/// impl<T> ClassInitImpl<DeviceClass> for T
++/// where
++///     T: DeviceImpl,
++/// ```
++///
++/// The other case is when manual implementation of the trait is needed.
++/// This covers the following cases:
++///
++/// * if a class implements a QOM interface, the Rust code _has_ to define its
++///   own class struct `FooClass` and implement `ClassInitImpl<FooClass>`.
++///   `ClassInitImpl<FooClass>`'s `class_init` method will then forward to
++///   multiple other `class_init`s, for the interfaces as well as the
++///   superclass. (Note that there is no Rust example yet for using interfaces).
++///
++/// * for classes implemented outside the ``qemu-api`` crate, it's not possible
++///   to add blanket implementations like the above one, due to orphan rules. In
++///   that case, the easiest solution is to implement
++///   `ClassInitImpl<YourSuperclass>` for each subclass and not have a
++///   `YourSuperclassImpl` trait at all.
++///
++/// ```ignore
++/// impl ClassInitImpl<YourSuperclass> for YourSubclass {
++///     fn class_init(klass: &mut YourSuperclass) {
++///         klass.some_method = Some(Self::some_method);
++///         <Self as ClassInitImpl<SysBusDeviceClass>>::class_init(&mut klass.parent_class);
++///     }
++/// }
++/// ```
++///
++///   While this method incurs a small amount of code duplication,
++///   it is generally limited to the recursive call on the last line.
++///   This is because classes defined in Rust do not need the same
++///   glue code that is needed when the classes are defined in C code.
++///   You may consider using a macro if you have many subclasses.
++pub trait ClassInitImpl<T> {
++    /// Initialize `klass` to point to the virtual method implementations
++    /// for `Self`.  On entry, the virtual method pointers are set to
+     /// the default values coming from the parent classes; the function
+     /// can change them to override virtual methods of a parent class.
+-    const CLASS_INIT: Option<unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut c_void)>;
+-
+-    /// Called on descendent classes after all parent class initialization
+-    /// has occurred, but before the class itself is initialized.  This
+-    /// is only useful if a class is not a leaf, and can be used to undo
+-    /// the effects of copying the contents of the parent's class struct
+-    /// to the descendants.
+-    const CLASS_BASE_INIT: Option<
+-        unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut c_void),
+-    >;
++    ///
++    /// The virtual method implementations usually come from another
++    /// trait, for example [`DeviceImpl`](crate::device_class::DeviceImpl)
++    /// when `T` is [`DeviceClass`](crate::bindings::DeviceClass).
++    ///
++    /// On entry, `klass`'s parent class is initialized, while the other fields
++    /// are all zero; it is therefore assumed that all fields in `T` can be
++    /// zeroed, otherwise it would not be possible to provide the class as a
++    /// `&mut T`.  TODO: add a bound of [`Zeroable`](crate::zeroable::Zeroable)
++    /// to T; this is more easily done once Zeroable does not require a manual
++    /// implementation (Rust 1.75.0).
++    fn class_init(klass: &mut T);
+ }
  
-     visit_type_uint32(v, name, ptr, errp);
-@@ -1463,7 +1463,7 @@ static void s390_pci_set_fid(Object *obj, Visitor *v, const char *name,
-                          void *opaque, Error **errp)
- {
-     S390PCIBusDevice *zpci = S390_PCI_DEVICE(obj);
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint32_t *ptr = object_field_prop_ptr(obj, prop);
+ #[macro_export]
+diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_class.rs
+index c98f0b2c7da..dcec5488291 100644
+--- a/rust/qemu-api/src/device_class.rs
++++ b/rust/qemu-api/src/device_class.rs
+@@ -2,10 +2,11 @@
+ // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ // SPDX-License-Identifier: GPL-2.0-or-later
  
-     if (!visit_type_uint32(v, name, ptr, errp)) {
-diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
-index d37f722cce0..c8e60475d51 100644
---- a/hw/vfio/pci-quirks.c
-+++ b/hw/vfio/pci-quirks.c
-@@ -1499,7 +1499,7 @@ static void get_nv_gpudirect_clique_id(Object *obj, Visitor *v,
-                                        const char *name, void *opaque,
-                                        Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint8_t *ptr = object_field_prop_ptr(obj, prop);
+-use std::{ffi::CStr, os::raw::c_void};
++use std::ffi::CStr;
  
-     visit_type_uint8(v, name, ptr, errp);
-@@ -1509,7 +1509,7 @@ static void set_nv_gpudirect_clique_id(Object *obj, Visitor *v,
-                                        const char *name, void *opaque,
-                                        Error **errp)
- {
--    Property *prop = opaque;
-+    const Property *prop = opaque;
-     uint8_t value, *ptr = object_field_prop_ptr(obj, prop);
+ use crate::{
+-    bindings::{self, DeviceClass, DeviceState, Error, ObjectClass, Property, VMStateDescription},
++    bindings::{self, DeviceClass, DeviceState, Error, Property, VMStateDescription},
++    definitions::ClassInitImpl,
+     prelude::*,
+ };
  
-     if (!visit_type_uint8(v, name, &value, errp)) {
+@@ -44,7 +45,7 @@ fn vmsd() -> Option<&'static VMStateDescription> {
+ /// # Safety
+ ///
+ /// This function is only called through the QOM machinery and
+-/// the `impl_device_class!` macro.
++/// used by the `ClassInitImpl<DeviceClass>` trait.
+ /// We expect the FFI user of this function to pass a valid pointer that
+ /// can be downcasted to type `T`. We also expect the device is
+ /// readable/writeable from one thread at any time.
+@@ -65,48 +66,31 @@ fn vmsd() -> Option<&'static VMStateDescription> {
+     T::RESET.unwrap()(unsafe { &mut *state });
+ }
+ 
+-/// # Safety
+-///
+-/// We expect the FFI user of this function to pass a valid pointer that
+-/// can be downcasted to type `DeviceClass`, because `T` implements
+-/// `DeviceImpl`.
+-pub unsafe extern "C" fn rust_device_class_init<T: DeviceImpl>(
+-    klass: *mut ObjectClass,
+-    _: *mut c_void,
+-) {
+-    let mut dc = ::core::ptr::NonNull::new(klass.cast::<DeviceClass>()).unwrap();
+-    unsafe {
+-        let dc = dc.as_mut();
++impl<T> ClassInitImpl<DeviceClass> for T
++where
++    T: DeviceImpl,
++{
++    fn class_init(dc: &mut DeviceClass) {
+         if <T as DeviceImpl>::REALIZE.is_some() {
+             dc.realize = Some(rust_realize_fn::<T>);
+         }
+         if <T as DeviceImpl>::RESET.is_some() {
+-            bindings::device_class_set_legacy_reset(dc, Some(rust_reset_fn::<T>));
++            unsafe {
++                bindings::device_class_set_legacy_reset(dc, Some(rust_reset_fn::<T>));
++            }
+         }
+         if let Some(vmsd) = <T as DeviceImpl>::vmsd() {
+             dc.vmsd = vmsd;
+         }
+         let prop = <T as DeviceImpl>::properties();
+         if !prop.is_empty() {
+-            bindings::device_class_set_props_n(dc, prop.as_ptr(), prop.len());
++            unsafe {
++                bindings::device_class_set_props_n(dc, prop.as_ptr(), prop.len());
++            }
+         }
+     }
+ }
+ 
+-#[macro_export]
+-macro_rules! impl_device_class {
+-    ($type:ty) => {
+-        impl $crate::definitions::ClassInitImpl for $type {
+-            const CLASS_INIT: Option<
+-                unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut ::std::os::raw::c_void),
+-            > = Some($crate::device_class::rust_device_class_init::<$type>);
+-            const CLASS_BASE_INIT: Option<
+-                unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut ::std::os::raw::c_void),
+-            > = None;
+-        }
+-    };
+-}
+-
+ #[macro_export]
+ macro_rules! define_property {
+     ($name:expr, $state:ty, $field:ident, $prop:expr, $type:ty, default = $defval:expr$(,)*) => {
+@@ -148,8 +132,8 @@ macro_rules! declare_properties {
+     };
+ }
+ 
+-unsafe impl ObjectType for bindings::DeviceState {
+-    type Class = bindings::DeviceClass;
++unsafe impl ObjectType for DeviceState {
++    type Class = DeviceClass;
+     const TYPE_NAME: &'static CStr =
+         unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_DEVICE) };
+ }
+diff --git a/rust/qemu-api/src/sysbus.rs b/rust/qemu-api/src/sysbus.rs
+index 5ee068541cf..5d15b317405 100644
+--- a/rust/qemu-api/src/sysbus.rs
++++ b/rust/qemu-api/src/sysbus.rs
+@@ -6,7 +6,13 @@
+ 
+ pub use bindings::{SysBusDevice, SysBusDeviceClass};
+ 
+-use crate::{bindings, cell::bql_locked, irq::InterruptSource, prelude::*};
++use crate::{
++    bindings::{self, DeviceClass},
++    cell::bql_locked,
++    definitions::ClassInitImpl,
++    irq::InterruptSource,
++    prelude::*,
++};
+ 
+ unsafe impl ObjectType for SysBusDevice {
+     type Class = SysBusDeviceClass;
+@@ -14,6 +20,16 @@ unsafe impl ObjectType for SysBusDevice {
+         unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_SYS_BUS_DEVICE) };
+ }
+ 
++// TODO: add SysBusDeviceImpl
++impl<T> ClassInitImpl<SysBusDeviceClass> for T
++where
++    T: ClassInitImpl<DeviceClass>,
++{
++    fn class_init(sdc: &mut SysBusDeviceClass) {
++        <T as ClassInitImpl<DeviceClass>>::class_init(&mut sdc.parent_class);
++    }
++}
++
+ impl SysBusDevice {
+     /// Return `self` cast to a mutable pointer, for use in calls to C code.
+     const fn as_mut_ptr(&self) -> *mut SysBusDevice {
+diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
+index 278efe967fe..ed3a555e76d 100644
+--- a/rust/qemu-api/tests/tests.rs
++++ b/rust/qemu-api/tests/tests.rs
+@@ -26,11 +26,6 @@ pub struct DummyState {
+         pub migrate_clock: bool,
+     }
+ 
+-    #[repr(C)]
+-    pub struct DummyClass {
+-        pub _parent: DeviceClass,
+-    }
+-
+     declare_properties! {
+         DUMMY_PROPERTIES,
+             define_property!(
+@@ -43,7 +38,7 @@ pub struct DummyClass {
+     }
+ 
+     unsafe impl ObjectType for DummyState {
+-        type Class = DummyClass;
++        type Class = <DeviceState as ObjectType>::Class;
+         const TYPE_NAME: &'static CStr = c_str!("dummy");
+     }
+ 
+@@ -61,8 +56,6 @@ fn vmsd() -> Option<&'static VMStateDescription> {
+         }
+     }
+ 
+-    impl_device_class!(DummyState);
+-
+     unsafe {
+         module_call_init(module_init_type::MODULE_INIT_QOM);
+         object_unref(object_new(DummyState::TYPE_NAME.as_ptr()).cast());
 -- 
 2.47.1
 
