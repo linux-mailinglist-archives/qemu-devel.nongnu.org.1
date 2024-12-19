@@ -2,68 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F50B9F75B7
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 08:35:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 479549F766F
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 08:56:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOB37-0007Iu-SZ; Thu, 19 Dec 2024 02:34:21 -0500
+	id 1tOBNU-0003ki-6a; Thu, 19 Dec 2024 02:55:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tOB2y-0007Fz-24; Thu, 19 Dec 2024 02:34:16 -0500
-Received: from mgamail.intel.com ([198.175.65.13])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tOB2w-0008Hs-6n; Thu, 19 Dec 2024 02:34:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734593651; x=1766129651;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=VSXnfC/+nR0iFTlqbuV2xSEtbkIHUp5UGQVwwn/8ZoE=;
- b=CpmF1QvZGOmtzjxGskwCbbf4UKwX5W4flXOSPbboXwFO7JtMU/MAMZ8A
- hdl4UVinlLiMgL2pj2zbfZOVE9+eLodjuOMJGHyPJxSkvdKlnM8K3Bait
- xE3bthntyoUPlY5hQG0wGsSWFTZkxUDLp12RKOs1D8SzlyX4PoIifPx/p
- RaWP2vyUEp9W7VSCjozDU29jtHmR7bVRS+nULfwQgVvAjZXur/sktQ5Rr
- z2jUr5+trke9HEeKMly3sYc/p+Km3XBQNn55ATm7F7OZR+WGQRPB5hwvl
- Ef1qqJJjwrlMI21Oa6zi7SLcN6bTpT1RydBfyx4VVcVTqJDVdsVfpRhtC g==;
-X-CSE-ConnectionGUID: lDqKUYgXQL61Z0dkTvONOA==
-X-CSE-MsgGUID: O6Yez/ByS6C4rS/E8DVMww==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="46100296"
-X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; d="scan'208";a="46100296"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 23:34:06 -0800
-X-CSE-ConnectionGUID: 0lqVE+CcSoiO6tdt4Y203w==
-X-CSE-MsgGUID: JhoetIzvSrKUVMGAgJS5Lg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; d="scan'208";a="102966802"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa004.fm.intel.com with ESMTP; 18 Dec 2024 23:34:06 -0800
-Date: Thu, 19 Dec 2024 15:52:45 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 6/7] rust: pl011: fix migration stream
-Message-ID: <Z2PQzYc3aoyElDSn@intel.com>
-References: <20241212172209.533779-1-pbonzini@redhat.com>
- <20241212172209.533779-7-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1tOBNO-0003gJ-B5
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 02:55:18 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1tOBNK-0004pK-T2
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 02:55:17 -0500
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8Axjq9Y0WNnf3hYAA--.18597S3;
+ Thu, 19 Dec 2024 15:55:04 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by front1 (Coremail) with SMTP id qMiowMAxQMZX0WNnSCkCAA--.12762S2;
+ Thu, 19 Dec 2024 15:55:03 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-devel@nongnu.org,
+	Song Gao <gaosong@loongson.cn>
+Subject: [PULL 00/18] loongarch-to-apply queue
+Date: Thu, 19 Dec 2024 15:54:44 +0800
+Message-Id: <20241219075502.3164644-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241212172209.533779-7-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMAxQMZX0WNnSCkCAA--.12762S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,53 +61,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 12, 2024 at 06:22:03PM +0100, Paolo Bonzini wrote:
-> Date: Thu, 12 Dec 2024 18:22:03 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 6/7] rust: pl011: fix migration stream
-> X-Mailer: git-send-email 2.47.1
-> 
-> The Rust vmstate macros lack the type-safety of their C equivalents (so
-> safe, much abstraction), and therefore they were predictably wrong.
+The following changes since commit 8032c78e556cd0baec111740a6c636863f9bd7c8:
 
-Yes, this makes Rust more unsafe than C code...
+  Merge tag 'firmware-20241216-pull-request' of https://gitlab.com/kraxel/qemu into staging (2024-12-16 14:20:33 -0500)
 
-> The registers have already been changed to 32-bits in the previous patch,
-> but read_pos/read_count/read_trigger also have to be u32 instead of usize.
-> The easiest way to do so is to let the FIFO use u32 indices instead
-> of usize.
-> 
-> My plan for making VMStateField typesafe is to have a trait to retrieve
-> a basic VMStateField; for example something like vmstate_uint32 would
-> become an implementation of the VMState trait on u32.  Then you'd write
-> something like "vmstate_of!(Type, field).with_version_id(2)".  That is,
-> vmstate_of retrieves the basic VMStateField and fills in the offset,
-> and then more changes can be applied on top.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/hw/char/pl011/src/device.rs       | 38 ++++++++++++++++++++++----
->  rust/hw/char/pl011/src/device_class.rs |  8 +++---
->  rust/qemu-api/src/vmstate.rs           | 22 ---------------
->  3 files changed, 36 insertions(+), 32 deletions(-)
-> 
-> @@ -64,9 +64,9 @@ extern "C" fn pl011_post_load(opaque: *mut c_void, version_id: c_int) -> c_int {
->          vmstate_uint32!(ibrd, PL011State),
->          vmstate_uint32!(fbrd, PL011State),
->          vmstate_uint32!(ifl, PL011State),
-> -        vmstate_int32!(read_pos, PL011State),
-> -        vmstate_int32!(read_count, PL011State),
-> -        vmstate_int32!(read_trigger, PL011State),
-> +        vmstate_uint32!(read_pos, PL011State),
-> +        vmstate_uint32!(read_count, PL011State),
-> +        vmstate_uint32!(read_trigger, PL011State),
+are available in the Git repository at:
 
-uint32 and int32 types both use `qemu_put_be32s` and `qemu_get_be32s`
-to save and store vmstate, so I think it's safe to convert
-vmstate_int32! to vmstate_uint32! here.
+  https://gitlab.com/bibo-mao/qemu.git tags/pull-loongarch-20241219
 
->      },
+for you to fetch changes up to 6f6006ad07243543595c7607ffbeee7f45b94b80:
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+  hw/intc/loongarch_extioi: Code cleanup about loongarch_extioi (2024-12-19 15:23:30 +0800)
+
+----------------------------------------------------------------
+pull-loongarch-20241219
+  v2 .. v3:
+      1. Fix make check issue on freeBSD 14
+
+  v1 .. v2:
+      1. Push patch again since forgot to push to upstream
+
+----------------------------------------------------------------
+Bibo Mao (18):
+      include: Add loongarch_pic_common header file
+      include: Move struct LoongArchPCHPIC to loongarch_pic_common header file
+      hw/intc/loongarch_pch: Merge instance_init() into realize()
+      hw/intc/loongarch_pch: Rename LoongArchPCHPIC with LoongArchPICCommonState
+      hw/intc/loongarch_pch: Move some functions to file loongarch_pic_common
+      hw/intc/loongarch_pch: Inherit from loongarch_pic_common
+      hw/intc/loongarch_pch: Add pre_save and post_load interfaces
+      hw/intc/loongarch_pch: Code cleanup about loongarch_pch_pic
+      include: Add loongarch_extioi_common header file
+      include: Move struct LoongArchExtIOI to header file loongarch_extioi_common
+      include: Rename LoongArchExtIOI with LoongArchExtIOICommonState
+      hw/intc/loongarch_extioi: Rename LoongArchExtIOI with LoongArchExtIOICommonState
+      hw/intc/loongarch_extioi: Add common realize interface
+      hw/intc/loongarch_extioi: Add unrealize interface
+      hw/intc/loongarch_extioi: Add common file loongarch_extioi_common
+      hw/intc/loongarch_extioi: Inherit from loongarch_extioi_common
+      hw/intc/loongarch_extioi: Add pre_save interface
+      hw/intc/loongarch_extioi: Code cleanup about loongarch_extioi
+
+ hw/intc/loongarch_extioi.c                | 112 ++++++++++-------------------
+ hw/intc/loongarch_extioi_common.c         | 113 ++++++++++++++++++++++++++++++
+ hw/intc/loongarch_pch_pic.c               | 106 +++++++++-------------------
+ hw/intc/loongarch_pic_common.c            |  97 +++++++++++++++++++++++++
+ hw/intc/meson.build                       |   4 +-
+ hw/loongarch/virt.c                       |   2 +-
+ include/hw/intc/loongarch_extioi.h        |  84 +++-------------------
+ include/hw/intc/loongarch_extioi_common.h |  98 ++++++++++++++++++++++++++
+ include/hw/intc/loongarch_pch_pic.h       |  70 ++++--------------
+ include/hw/intc/loongarch_pic_common.h    |  82 ++++++++++++++++++++++
+ 10 files changed, 490 insertions(+), 278 deletions(-)
+ create mode 100644 hw/intc/loongarch_extioi_common.c
+ create mode 100644 hw/intc/loongarch_pic_common.c
+ create mode 100644 include/hw/intc/loongarch_extioi_common.h
+ create mode 100644 include/hw/intc/loongarch_pic_common.h
 
 
