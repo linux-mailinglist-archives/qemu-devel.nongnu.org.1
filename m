@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7199F7773
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:35:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA7A29F7778
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:36:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOByF-0004p7-JF; Thu, 19 Dec 2024 03:33:23 -0500
+	id 1tOByK-00059k-D0; Thu, 19 Dec 2024 03:33:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOByC-0004lQ-Up
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1tOByG-0004zj-RH
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:24 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOByB-0005Ay-5G
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:20 -0500
+ id 1tOByF-0005Bt-7k
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734597198;
+ s=mimecast20190719; t=1734597202;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mbyntGtYpHsSrSs698oFtn5IEUzoH+5caUeaY/RmSYI=;
- b=M/HAknR3EraJuKrgVKMPvqYAc1Za5nkBWLCOcw6AsXOY0SZbwjvsPjDRp46souN53gWALv
- j68vNgb8viWOufweJofgmcCcefH6Nn7Fuh6TP7URkB3h1W+YXXsvnLjuHduw/waaXys3b+
- /ITSqCuEfPiqPGApJybgcTPDX/fiCkQ=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kgfb1jJ+uI0m2LNzjpbnbFnNCYuuMLTRbLqF62ceNkc=;
+ b=dHoNFIlOLrD6VJlkMVd2l7XQiqCLp7VRkLNTp533cPe2IXSjU3LUuEXJkYkwOhNJwIs2Ax
+ MVzUDQ/0GBqFqLzNfZQPd9OzKTeDXH3DoH6EBVF2fRZYjDJsL7KNf8fr15PeFKHNfH51xi
+ 2GArAyrOz8myu4yutliHLie7dJeVM0E=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-210-R8F32i5KPSWwhYb6OTf-mA-1; Thu, 19 Dec 2024 03:33:16 -0500
-X-MC-Unique: R8F32i5KPSWwhYb6OTf-mA-1
-X-Mimecast-MFC-AGG-ID: R8F32i5KPSWwhYb6OTf-mA
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4362b9c15d8so2896555e9.3
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:16 -0800 (PST)
+ us-mta-263-7lPD2bOZNzqfbRve80DOkw-1; Thu, 19 Dec 2024 03:33:20 -0500
+X-MC-Unique: 7lPD2bOZNzqfbRve80DOkw-1
+X-Mimecast-MFC-AGG-ID: 7lPD2bOZNzqfbRve80DOkw
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-436289a570eso4202735e9.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734597194; x=1735201994;
+ d=1e100.net; s=20230601; t=1734597199; x=1735201999;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mbyntGtYpHsSrSs698oFtn5IEUzoH+5caUeaY/RmSYI=;
- b=pohGNA9tRHv0ZNDlhxE7nSeD8NSG9EkgWnSdrWyXLzv8yq60UiHalG9gWV5Ln64+7O
- rEFCBdTMCvLFdbrT2g2ymOcVHeQIYrAlBVhir9sfiAxOpU8oTiXUi5sIUlqv14Aac5KU
- ABA0RmHumrMQFfCKVZcuXvCbsBZ16bxtn5jsCNnk5vz2DsgvIAIMwtOy9WjmYJpUW2NE
- aoArdrQl6GpP6FWfe9f2ilV/ZwIM/KE2kgqhR0S8pOr3NtXO96pu7JvnDgSIeZcXinsO
- UZc9UUg8foUECMXHj73ouS+MRu6q/scz3ersKM+CMBm7RpM1QPEuBpjiOigFVDLfNF12
- krJw==
-X-Gm-Message-State: AOJu0YxkNeIFNnZ9S1LYbxMT8VDB1Ady6hB3zWmf7J/I5DpPe+EgHRpW
- ACWaI6lP99OYa1Ic5a/au7km1EDrzv8fzQSSlboDI1Si+Td2w+kkMax1VKm7iGXcIiTvlhmK7gu
- hKQfB80cigma9kGgY8mRYv4bThkEI0vugT14MUMnAq693xTfC/1sIsCjc2fD1dWrqWZZdPsicPi
- 8IQWKofAV79RSbuwK6An5dEpufNcutdlSHwFvW
-X-Gm-Gg: ASbGncs/ME7nyg1y+4xuiaViJjhdZEbyo+HvxSMJh4cSUP0+I9NZw9Jeh7wRxpdoa83
- iCl9bvqxG+mtXlMzhcSHH255UnJvHAyw/fGCaVesackTXKwcoPUUQ4pKBSNdgvudKElIg2UdKUi
- udQvBqouGFJjK5CIWmYUL3U2oOnr5GNC5S1Vuvqa8K+QF0sN8sikseAZ+TUzkXhtPLDspbPyY6Z
- r2OOpkInxP/WMWZcVaAUL9kfkQpwlUHydNsn2kDDdPGd8juT7G1lHrXaGgU
-X-Received: by 2002:a05:600c:4f15:b0:436:30e4:4590 with SMTP id
- 5b1f17b1804b1-4365540cd9emr48113235e9.32.1734597194271; 
- Thu, 19 Dec 2024 00:33:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHWfazPnguJEwALqI+CCvmNXE2Rq8USpfKvrbXr66pIPLzYS2ZIJCMUpdLvYDfsmgf+UZaPNQ==
-X-Received: by 2002:a05:600c:4f15:b0:436:30e4:4590 with SMTP id
- 5b1f17b1804b1-4365540cd9emr48112955e9.32.1734597193831; 
- Thu, 19 Dec 2024 00:33:13 -0800 (PST)
+ bh=kgfb1jJ+uI0m2LNzjpbnbFnNCYuuMLTRbLqF62ceNkc=;
+ b=PHW4BjhMypvM/sTSrfkkvsfuELEVLIDHD2sEI2hv/rkgNX0pjQL7tRFAad/vsqFIjb
+ tpub3XdWK3/dgSP606shxSDK+bAMU9rAqSnNGxzeplMObHpUuKqlglH8vgnnPUFdMx75
+ V6259ut2a/1HR6sWQ5QhABsoS4bqqwP8fym0hsmjdUXBEsWOYizHn5s2X+cCeALrcO1J
+ cj488bhO8g2EpooNN2on/KEhhlxjncAt5hPDhTibVHbgnjUB39SY4ADFyOqaIPwJ9kaf
+ yzqDg9GozUhO0fopNbLF1SU1M+T9Zp5xk8JpgJDAEtepk1Ofl3apBghv7+iMGNGo5whi
+ 8yUQ==
+X-Gm-Message-State: AOJu0YziB2cF4/BE3JGh2KUmjmrf1tIdf9Vy2yEUm0KovJgpvxF1km4f
+ gjZzRN0C0sNND03CHm2+BQ6R6VhMxxcJG7VgLGJl/FjMxGt9zYWtzLhhxoYM/bCAZEKozycNFmR
+ gFm2C81fZntmp10r/G8A8Nwq83ilfAV80Upz+lxAsh0rWaDoA/03t6bk7jfItHkioJRITocfxBy
+ NNC8pgQ8guX/CeJhQ2c8+17N97jGcHJ2JlLLB0
+X-Gm-Gg: ASbGnctuF+JDRVWG2IlIUwLtyQgKSb7GZb/i5W5kgFN3qgCGf8VWzEn+85XEDJlG6OB
+ KqxybXUrT7NK0vYZ5BgQGlbwDROLSBs44NMB5S7BXg0J9HAiIbqx3w+5pIBR7SVu0CjwBM9aSzr
+ 7lisLNO+3t07XWM6hPfGDACxXizTvZquxKWBMc5js8XYEBZqb1ZPiXCD6+OvyHWcX7+2YRDY8wS
+ UuHRVZeGGhRjgQEqGwEK+0vht8qTYHpEvQmnYoR6+3WC6pToAWL48Me3jy6
+X-Received: by 2002:a5d:6da1:0:b0:388:c75d:be97 with SMTP id
+ ffacd0b85a97d-38a19af8799mr2341174f8f.11.1734597199199; 
+ Thu, 19 Dec 2024 00:33:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFyOEAzzbAZB7fZ7XYd/3ZVSXNKlsaiYFHZyTUHlIqM5M3NCaIhdrEGs4TeDStthbDaktxzLw==
+X-Received: by 2002:a5d:6da1:0:b0:388:c75d:be97 with SMTP id
+ ffacd0b85a97d-38a19af8799mr2341148f8f.11.1734597198765; 
+ Thu, 19 Dec 2024 00:33:18 -0800 (PST)
 Received: from [192.168.10.47] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656b3b1e8sm45823375e9.30.2024.12.19.00.33.13
+ ffacd0b85a97d-38a1c828e7asm986991f8f.21.2024.12.19.00.33.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 00:33:13 -0800 (PST)
+ Thu, 19 Dec 2024 00:33:14 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 22/41] hw/core/qdev-properties: Constify Property argument to
- object_field_prop_ptr
-Date: Thu, 19 Dec 2024 09:32:09 +0100
-Message-ID: <20241219083228.363430-23-pbonzini@redhat.com>
+Subject: [PULL 23/41] hw/core/qdev-properties: Constify Property argument to
+ PropertyInfo.print
+Date: Thu, 19 Dec 2024 09:32:10 +0100
+Message-ID: <20241219083228.363430-24-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219083228.363430-1-pbonzini@redhat.com>
 References: <20241219083228.363430-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -108,40 +108,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
+There is exactly one instance of this method: print_pci_devfn.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Link: https://lore.kernel.org/r/20241216035109.3486070-23-richard.henderson@linaro.org
+Link: https://lore.kernel.org/r/20241216035109.3486070-24-richard.henderson@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/qdev-properties.h | 2 +-
- hw/core/qdev-properties.c    | 2 +-
+ include/hw/qdev-properties.h     | 2 +-
+ hw/core/qdev-properties-system.c | 2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
-index 3680cd239fb..447767688b6 100644
+index 447767688b6..bf27375a3cc 100644
 --- a/include/hw/qdev-properties.h
 +++ b/include/hw/qdev-properties.h
-@@ -201,7 +201,7 @@ void qdev_prop_set_enum(DeviceState *dev, const char *name, int value);
- /* Takes ownership of @values */
- void qdev_prop_set_array(DeviceState *dev, const char *name, QList *values);
- 
--void *object_field_prop_ptr(Object *obj, Property *prop);
-+void *object_field_prop_ptr(Object *obj, const Property *prop);
- 
- void qdev_prop_register_global(GlobalProperty *prop);
- const GlobalProperty *qdev_find_global_prop(Object *obj,
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index a3d49e20202..61929b2865a 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -51,7 +51,7 @@ void qdev_prop_allow_set_link_before_realize(const Object *obj,
-     }
+@@ -34,7 +34,7 @@ struct PropertyInfo {
+     const char *description;
+     const QEnumLookup *enum_table;
+     bool realized_set_allowed; /* allow setting property on realized device */
+-    int (*print)(Object *obj, Property *prop, char *dest, size_t len);
++    int (*print)(Object *obj, const Property *prop, char *dest, size_t len);
+     void (*set_default_value)(ObjectProperty *op, const Property *prop);
+     ObjectProperty *(*create)(ObjectClass *oc, const char *name,
+                               const Property *prop);
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index 22ea1ed3583..1034e9b5809 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -869,7 +869,7 @@ out:
+     visit_end_alternate(v, (void **) &alt);
  }
  
--void *object_field_prop_ptr(Object *obj, Property *prop)
-+void *object_field_prop_ptr(Object *obj, const Property *prop)
+-static int print_pci_devfn(Object *obj, Property *prop, char *dest,
++static int print_pci_devfn(Object *obj, const Property *prop, char *dest,
+                            size_t len)
  {
-     void *ptr = obj;
-     ptr += prop->offset;
+     int32_t *ptr = object_field_prop_ptr(obj, prop);
 -- 
 2.47.1
 
