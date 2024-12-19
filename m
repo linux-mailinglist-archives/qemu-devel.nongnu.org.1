@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AD7D9F7F8A
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:24:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E23FD9F7FB9
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:28:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJFa-0001nw-1R; Thu, 19 Dec 2024 11:19:46 -0500
+	id 1tOJIY-0000cC-SY; Thu, 19 Dec 2024 11:22:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOIcp-0004pZ-5Z
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:39:43 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOIcu-0004q4-LG
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:39:48 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOIcn-0004X8-Is
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:39:42 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-385deda28b3so664779f8f.0
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 07:39:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOIcs-0004Y4-SQ
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:39:48 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-385deda28b3so664876f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 07:39:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734622780; x=1735227580; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734622785; x=1735227585; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=W5xIB6Q3xpywMwriwl34zxXU4p+OU3fl2Ms6nSvvP3g=;
- b=IF0sZ6imUo0Nt32KEIsnrsr2lESHBCWmAsxIV35rEbfrceUSyspSG1EZ3M0dzc4k4D
- yBo1AxEy/NvVjrNNOSPj8bqGFuc9EDMIBS6VZsFEphCbMZdbZNY16zpa2g9JJfRMTEMY
- 742kYi+dypjb32BY0NIJemHhJ6+BSrCQwVypGl7qM9vXYrmYWmLYDexEoV7DRiDwyjYp
- hsaYHFXks0ABcpDjuLTq7G8nNFgNQRejEkIwyNrvNBITNcfSlYEckCWTyiR4M355ln1z
- oWPP1v82GcXNT004Zs+KQzJFfga2UEAjnMdG8gLrOFiTfLSLo+CSlAYalGTpRzCNVLIy
- +yzg==
+ bh=ISSyZu80+Z0LOt9qrMxsW+Lah1hE0o+0ErPwOcAlXN4=;
+ b=tV/VXglmIF027UnmiObX02RWTvIWB2IeOErnf+nEh3k42wAvXhQi+BHvFReGtE4o2d
+ NUhDZ8FVj3foKFXkkMOGKu9Df5EyfNUndrH82+4hHgTXylTckZpyBuN65tSM2Ef26Eon
+ 8FLbB5ibhC34D0R7glNGhaI4fqHxCxkMKqDkBaUoRgBKrRuBEaWD8YN5MJob6QcHhO5r
+ nf7h6EwCUTj2QLt6Nvj9ggxxLo5g9f9kkX6joCauID8Lf1i0MDkKdd3+bme7j9/tQon0
+ +j/txj/NXVPBZrCQl11wSTH64Jb/Exc9XKgfeuHKtTN5k1wHR8GGmO75Oc8s/8OSKtvS
+ mVgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734622780; x=1735227580;
+ d=1e100.net; s=20230601; t=1734622785; x=1735227585;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=W5xIB6Q3xpywMwriwl34zxXU4p+OU3fl2Ms6nSvvP3g=;
- b=kqznLITWAKWEf0ObBi+jOniOECPi/JNMg6N071PBiA9jMEF8px52PR2Kch/BlmPy1O
- DCZsA2VwJZDuEKwn2Uiq4LViacWIsRnSlxAtpTG45p6T73erhI4mhdS8zcNAPRBuRI6F
- ugx/gP91UGB8DSesu+pm/F79NiJkw5MCyu8v/+C5jvHsAcFT0+nFfQzMWBcg6SjPBja3
- Y84jwIgPeq2EfM+iedizA57UkX9s9sByuDhQ6con1fpW63a3/ZUr7UzuaEM1zcKEjW6o
- oxlJ6uQLTkpYzJa94mE4MVm5CCgcQ3nLayANQ70xJgo/k2/hB5YVjLMG3FleRjSdTHz2
- bEag==
-X-Gm-Message-State: AOJu0YyBAPgF98uPPRPC+yvyx+Pcpf/nTtVEfiOGOEmegrtYxkHjaz32
- slRo04JK1DbnOvM7XFlbtpAf3s5fvZP7jHYQxbBdPu/Sdp3h2HEJPbxZ9wBIBOh4LXrwJX6WziB
- d
-X-Gm-Gg: ASbGncuCQ7W2fCp/3YbWjxOVXyFhLQoMrDLahnAy32PuK98y+S9E0Q9LOKHxR0sXIsx
- 1uRfiC4J9bn2ibcu6zoqYrJJ4zIRCZJMOUvpoY/3XgK3PAcI0KjEiPqmpbsFsv4+/bRwv4RDwkW
- G9e64L9KDx56rYza0esjD1/Y4m6Iw0tbCZhjf3t6Poq4aT2fIRR99unuCcc7pSLnGs4JZuyL8/R
- 0qP8mXQ3IEhJN5r1JYJ9IlCSv0m/W6WiPsNl8pQ/AttrXAtdD/44gM5WZjWC7KExm0M38z9n+/U
- zrIV
-X-Google-Smtp-Source: AGHT+IGv5rd7ZLJrA7Ng7P1DhJdT3DlR3L1JZzaGzslknhJylDOfRM57TjnrYcXF/hgefogMGL1mfw==
-X-Received: by 2002:a5d:47cf:0:b0:385:d852:29ed with SMTP id
- ffacd0b85a97d-388e4d8e083mr6933410f8f.36.1734622779863; 
- Thu, 19 Dec 2024 07:39:39 -0800 (PST)
+ bh=ISSyZu80+Z0LOt9qrMxsW+Lah1hE0o+0ErPwOcAlXN4=;
+ b=XrYs17oe17u4lgcptoAzm028K0y7p7iiYbjD2iaslakhSuqMoDCXb5sHu+grkqoBK2
+ PDca/OSq25OcOgK47OV6jHlKGNsRu1crFGMIqaWx9jCzLQdRqinU6VfUZmzAdz9lXwMc
+ ZKikpNdqnQuaDUawtnYqTC/sahrJ8bLSyOSblZvbErz2N/C+mSkGytr24uTT+/l7sFgZ
+ Smst/G4xvGPwxYm17je59yFR6squGM9NFTCGcgvEqEUkAAGyWhbDjrYRlypTisYrMDCG
+ HZ/CRc0wX/vLUzdEP/qQRNwWbXyxcNtMysM/qin46YlRIyiwPtVSwCOFaTbDMtTosray
+ ApqA==
+X-Gm-Message-State: AOJu0YxcjUQAV/4uAOED6eb9Du2vi2zDr80J8UzjSoFjs1GgLdiCMAh4
+ XVbSsCGOSihlOqDuW0C3hdu4/RLvTdtx5egR26giqLLBmZw5edavvBO9sgEald0o5kQNfqwHt0E
+ +
+X-Gm-Gg: ASbGncukkxq8h+eaLnG5e4kcvSlEK4MIB7FcWu5zoCL8gxTeGVWkXMFh+XF03TK+jG9
+ PFJJ/ZZHcq2gDXN7iWKoDl1fA1//G5WxqKvGKkSeUvsyathUBSv3VvZw6O3otTRj/XEaAm6bTlE
+ 6EYxEw3AiaWPs2Z8Zz5DUDqJ4uqMUPHXNYbTrVOahm6V5DZoAdYhjC/6rIgfUhPvD6IxtFmxKXH
+ 1gP131pEiWSs3RL0ykuPES+VjAxr6iyQHylupqcagEvRY0fuZnem+gmtMKRqQ36iyYGcdFzGTKG
+ v/OF
+X-Google-Smtp-Source: AGHT+IGsBFx3gRdGZ8dbbmXiiGC5S8eUniiw7NRzNAZmFthEqd6n6t7RPGfaSDyl3FduFf+EbjAdGg==
+X-Received: by 2002:a5d:47c8:0:b0:382:3754:38fa with SMTP id
+ ffacd0b85a97d-388e4d96c35mr8177590f8f.51.1734622785043; 
+ Thu, 19 Dec 2024 07:39:45 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656b4274csm55636845e9.38.2024.12.19.07.39.38
+ ffacd0b85a97d-38a1c828ba0sm1802220f8f.14.2024.12.19.07.39.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Dec 2024 07:39:39 -0800 (PST)
+ Thu, 19 Dec 2024 07:39:44 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  devel@lists.libvirt.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 07/10] hw/misc/vmcoreinfo: Factor
- vmcoreinfo_device_realize() out
-Date: Thu, 19 Dec 2024 16:38:54 +0100
-Message-ID: <20241219153857.57450-8-philmd@linaro.org>
+Subject: [RFC PATCH 08/10] hw/misc/vmcoreinfo: Implement 'vmcore-info' object
+Date: Thu, 19 Dec 2024 16:38:55 +0100
+Message-ID: <20241219153857.57450-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219153857.57450-1-philmd@linaro.org>
 References: <20241219153857.57450-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,49 +99,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation of implementing a UserCreatable callback
-in the next commit, factor vmcoreinfo_device_realize() out.
+'vmcore-info' object allow to transition from '-device'
+to 'object', following the deprecation process.
+
+No need to modify VMCoreInfoState since DeviceState
+already inherits from Object state.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/misc/vmcoreinfo.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ include/hw/misc/vmcoreinfo.h |  4 ++-
+ hw/misc/vmcoreinfo.c         | 48 +++++++++++++++++++++++++++++++++++-
+ 2 files changed, 50 insertions(+), 2 deletions(-)
 
+diff --git a/include/hw/misc/vmcoreinfo.h b/include/hw/misc/vmcoreinfo.h
+index 122c69686b0..d4cce42cee6 100644
+--- a/include/hw/misc/vmcoreinfo.h
++++ b/include/hw/misc/vmcoreinfo.h
+@@ -16,8 +16,10 @@
+ #include "standard-headers/linux/qemu_fw_cfg.h"
+ #include "qom/object.h"
+ 
++#define TYPE_VMCOREINFO "vmcore-info"
++OBJECT_DECLARE_SIMPLE_TYPE(VMCoreInfoState, VMCOREINFO)
++
+ #define TYPE_VMCOREINFO_DEVICE "vmcoreinfo"
+-typedef struct VMCoreInfoState VMCoreInfoState;
+ DECLARE_INSTANCE_CHECKER(VMCoreInfoState, VMCOREINFO_DEVICE,
+                          TYPE_VMCOREINFO_DEVICE)
+ 
 diff --git a/hw/misc/vmcoreinfo.c b/hw/misc/vmcoreinfo.c
-index 55f9d437a94..a0511ea0da4 100644
+index a0511ea0da4..e2258e08fb1 100644
 --- a/hw/misc/vmcoreinfo.c
 +++ b/hw/misc/vmcoreinfo.c
-@@ -49,9 +49,8 @@ static void vmcoreinfo_reset_hold(Object *obj, ResetType type)
-     s->vmcoreinfo.host_format = cpu_to_le16(FW_CFG_VMCOREINFO_FORMAT_ELF);
- }
+@@ -12,11 +12,11 @@
  
--static void vmcoreinfo_realize(DeviceState *dev, Error **errp)
-+static void vmcoreinfo_realize(VMCoreInfoState *s, Error **errp)
- {
--    VMCoreInfoState *s = VMCOREINFO_DEVICE(dev);
-     FWCfgState *fw_cfg = fw_cfg_find();
-     /* for gdb script dump-guest-memory.py */
-     static VMCoreInfoState * volatile vmcoreinfo_state G_GNUC_UNUSED;
-@@ -84,13 +83,18 @@ static void vmcoreinfo_realize(DeviceState *dev, Error **errp)
-     vmcoreinfo_state = s;
- }
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+-#include "qemu/module.h"
+ #include "sysemu/reset.h"
+ #include "hw/nvram/fw_cfg.h"
+ #include "migration/vmstate.h"
+ #include "hw/misc/vmcoreinfo.h"
++#include "qom/object_interfaces.h"
  
-+static void vmcoreinfo_device_realize(DeviceState *dev, Error **errp)
+ static const VMStateDescription vmstate_vmcoreinfo = {
+     .name = "vmcoreinfo",
+@@ -32,6 +32,11 @@ static const VMStateDescription vmstate_vmcoreinfo = {
+     },
+ };
+ 
++static char *vmcoreinfo_get_vmstate_id(VMStateIf *vmif)
 +{
-+    vmcoreinfo_realize(VMCOREINFO_DEVICE(dev), errp);
++    return g_strdup(TYPE_VMCOREINFO);
++}
++
+ static void fw_cfg_vmci_write(void *opaque, off_t offset, size_t len)
+ {
+     VMCoreInfoState *s = opaque;
+@@ -88,6 +93,32 @@ static void vmcoreinfo_device_realize(DeviceState *dev, Error **errp)
+     vmcoreinfo_realize(VMCOREINFO_DEVICE(dev), errp);
+ }
+ 
++static bool vmcoreinfo_can_be_deleted(UserCreatable *uc)
++{
++    return false;
++}
++
++static void vmcoreinfo_complete(UserCreatable *uc, Error **errp)
++{
++    if (vmstate_register_any(VMSTATE_IF(uc), &vmstate_vmcoreinfo, uc) < 0) {
++        error_setg(errp, "%s: Failed to register vmstate", TYPE_VMCOREINFO);
++    }
++
++    vmcoreinfo_realize(VMCOREINFO(uc), errp);
++}
++
++static void vmcoreinfo_class_init(ObjectClass *oc, void *data)
++{
++    UserCreatableClass *ucc = USER_CREATABLE_CLASS(oc);
++    VMStateIfClass *vc = VMSTATE_IF_CLASS(oc);
++    ResettableClass *rc = RESETTABLE_CLASS(oc);
++
++    ucc->complete = vmcoreinfo_complete;
++    ucc->can_be_deleted = vmcoreinfo_can_be_deleted;
++    vc->get_id = vmcoreinfo_get_vmstate_id;
++    rc->phases.hold = vmcoreinfo_reset_hold;
 +}
 +
  static void vmcoreinfo_device_class_init(ObjectClass *klass, void *data)
  {
      DeviceClass *dc = DEVICE_CLASS(klass);
-     ResettableClass *rc = RESETTABLE_CLASS(klass);
+@@ -106,6 +137,18 @@ static const TypeInfo vmcoreinfo_types[] = {
+         .parent         = TYPE_DEVICE,
+         .instance_size  = sizeof(VMCoreInfoState),
+         .class_init     = vmcoreinfo_device_class_init,
++    },
++    {
++        .name           = TYPE_VMCOREINFO,
++        .parent         = TYPE_OBJECT,
++        .instance_size  = sizeof(VMCoreInfoState),
++        .class_init     = vmcoreinfo_class_init,
++        .interfaces = (InterfaceInfo[]) {
++            { TYPE_RESETTABLE_INTERFACE },
++            { TYPE_USER_CREATABLE },
++            { TYPE_VMSTATE_IF },
++            { }
++        }
+     }
+ };
  
-     dc->vmsd = &vmstate_vmcoreinfo;
--    dc->realize = vmcoreinfo_realize;
-+    dc->realize = vmcoreinfo_device_realize;
-     dc->hotpluggable = false;
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-     rc->phases.hold = vmcoreinfo_reset_hold;
+@@ -116,6 +159,9 @@ VMCoreInfoState *vmcoreinfo_find(void)
+     Object *obj;
+ 
+     obj = object_resolve_path_type("", TYPE_VMCOREINFO_DEVICE, NULL);
++    if (!obj) {
++        obj = object_resolve_path_type("", TYPE_VMCOREINFO, NULL);
++    }
+ 
+     return obj ? (VMCoreInfoState *)obj : NULL;
+ }
 -- 
 2.47.1
 
