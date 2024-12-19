@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B1189F7F4A
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:21:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C75179F7F8E
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:25:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJGJ-0002Rn-7o; Thu, 19 Dec 2024 11:20:31 -0500
+	id 1tOJIt-0002IU-JU; Thu, 19 Dec 2024 11:23:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOFsX-0002KC-Si
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 07:43:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tOFOb-0006F8-Qn
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 07:12:49 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOFsW-0006R5-Cg
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 07:43:45 -0500
+ id 1tOFOa-0008Ig-1E
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 07:12:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734612222;
+ s=mimecast20190719; t=1734610367;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Szoag27KIkqUli3n0xSrTUcaxn0aravcRGL/6Nt+Rm8=;
- b=BB6HSiZPiNwrHDpP0Y/io6IihDGxJoF+jkQiEI+PSG4ho+qxUoRcVVG7bDOL3xpTVDNYaW
- 4DdQ3+d1Vi7pBF+JPt4aI1Wq3MGAa24yPC1imdRTLQAZscf/3nV7MnCsHA9l2qQAz85LKW
- 4ngMOGXOVsRQVffdHU/UyK2S4WoHvJk=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5CE9shW3ftWbl1V1SBQeRNzap/cYi489BVwR842VWpQ=;
+ b=RAuV5t8jrKb+CdzFcJ2QhSgHE8z2tOojpORD3sFEG0QVWfRUFpfc4/bDt5msqkCg3xPDEZ
+ /zdAVxtjFhJXvduHC839ZebRklmX5lgo0vqCi52kqVFLgoNT0WUnuNOWCa5KKWkcIzW3G3
+ dpOPm2QGlTXv3U32DqrCDPp+YGr5wdg=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-341-zWV4_998OiWkrToLU5q9kg-1; Thu, 19 Dec 2024 07:43:41 -0500
-X-MC-Unique: zWV4_998OiWkrToLU5q9kg-1
-X-Mimecast-MFC-AGG-ID: zWV4_998OiWkrToLU5q9kg
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-3023f0f1852so4072261fa.1
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 04:43:41 -0800 (PST)
+ us-mta-474-RoehPfcONdid58Ylk8sDRw-1; Thu, 19 Dec 2024 07:12:43 -0500
+X-MC-Unique: RoehPfcONdid58Ylk8sDRw-1
+X-Mimecast-MFC-AGG-ID: RoehPfcONdid58Ylk8sDRw
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-43623bf2a83so6110855e9.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 04:12:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734612219; x=1735217019;
+ d=1e100.net; s=20230601; t=1734610361; x=1735215161;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Szoag27KIkqUli3n0xSrTUcaxn0aravcRGL/6Nt+Rm8=;
- b=prfouKt2IxEwhiL/deMFH7+MXAEh2dRWefA/Cch9C0IJAoDQBRtsxdKfY/JGCCtxBC
- A+jkpDzlYPkiRKH31e9CG+hP/zmq92GxiTCkkR53r5KgCU4qiKc3K7LHnX8zPH/M8qQC
- FiWEoDatj2czGRDVNE0wLVeRG+5dPQyyHUQXDX0H7HN3Q8kOx1hXzD4sRlGsNlFcx4ub
- TspBgeSKxuiHMFf/a03dggzD+PA11TOo7YXR395r+I3RHjoS8cTWBR1+yp8xehYYNOPd
- XkRLSEiv9HqGw6NSMVFNQfczlMzg+j9icQSVsf0DXNeoVe1ScNLK4zPOEE9vPy9UGLYy
- j77g==
-X-Gm-Message-State: AOJu0YzOH8ZEkwepmgtdPLxmGMXVUJxnbuZBBTta34dzu28Mh6F2xdcG
- VDjT1oPdXfInVq35N2xR9pS74qtyXMP6woTn7S3u5PBUzxQGn6JpO0vqSOVA+05wTvkQiNWhq1T
- ccnxVqlYVqrhcC32CB1vP7YbC8eRLEDuvHwkbrzd/7pk2t+eGIci9e11eAH47Liq7Okr6rEGtZK
- vm4Tdf0qeBIergaS82XXxNpYee8ottqMsPIcNG
-X-Gm-Gg: ASbGncuqRvMjgCMHrRV1ZNugjEyv2jyLwnLxZe+NZISG5Si4+BLDkuksZAsNEN6W86O
- yVJguMiGHIPTodbqN4tK0JeE+MQ9JVfnAgfxMS1j01FlhGGyhSavl/ZsFCteFt7loLlb4etNtCc
- v5+HWE+vQttPubuqnQvgUR/ZMjojEmboYPsvtC5wdiBT6iHrRaO1ha8kTTHm4QlFKDhc3pbGRQ1
- ufejjtAbctchFe6NWAVp9Bc4z/si8LytwQjkdrruBz3+T3kcdMx5OB1+SDG
-X-Received: by 2002:a05:600c:2303:b0:434:f335:83b with SMTP id
- 5b1f17b1804b1-4365c77e441mr26215515e9.5.1734610359393; 
- Thu, 19 Dec 2024 04:12:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFp8w+yg9TiVsrWbDzZp13nv15+EZCExns15U2PsP9opFPSacpvlxA3rOl0ZzAZrcvWhUDiFg==
-X-Received: by 2002:a05:600c:2303:b0:434:f335:83b with SMTP id
- 5b1f17b1804b1-4365c77e441mr26215205e9.5.1734610358873; 
- Thu, 19 Dec 2024 04:12:38 -0800 (PST)
+ bh=5CE9shW3ftWbl1V1SBQeRNzap/cYi489BVwR842VWpQ=;
+ b=Z20wXL1gmDRFHs2mH1i0SuLoXmr2pljddTmZO3CgrDPYKRggvnrNmLusGnbRMNiVIx
+ y10ZLqD6yLMdM1LFZ3KNTzkcjB3rpUuilHyAM6J1YvZg+TqLjGyzS+c6JiBZz46mK1iK
+ ze5iXzZo88Vz+5J30yInP+L9isA85WUMNzPO1UTd5pG1v4NUx9vp6OsrsSWSHgetS3LY
+ RVd3NsuHfFKfdkY8ofQWcM4jcLam7e9nFu9FPJ2Kzy3GyNCU7/51Q69cGYEHnL1w0wpV
+ JfNx6s9WyTaMKKE+Go9XoJz8Lm9wDwIiicDOPQfxH0/VNw893cLDrN5f4xWK3yK5EzVp
+ Iiqw==
+X-Gm-Message-State: AOJu0YxAGThBvkVvwziKvFwRlc4qR9b939/SaoJLdlHt6Lknjsrg+jZp
+ SbjADor3cfb+xODzq/r84+vIH7LfRiyoWi03YjG/lUhGnwm1m3oyMWmFiopDd4VHJxFlF9zm8DS
+ kqVpcgosj3SSAuw4Ip/a6C4Tt17YG7+qDlWl+YGiYELyHFXRxbrDZ5t4jiTOudbo4vRwUyVLGYZ
+ BNb/Y8jGsAF5fzqM+VDTH7YX8HDJHNb3wXnL2i
+X-Gm-Gg: ASbGncts4/dWTEGCPoUs2MdLx6M2uTv6NH6XexrWDqyU6d17qHujJBdtERO72KvewxP
+ VPAFYdJsX/pY9fNwWv2BTYXIZG6yF8NPE++oIl2ASW4cSVTHRs6NjUPqgcFvbDcB47XyCbk5/Rw
+ thzjSqec7tbIQ0m5RmbjCqeuT4X4x9Kme+jGM3JGq1wKTVdVlKebWIdFf0L5uXq5j7dwYSQVi6Y
+ VeEG/qRKdYesfFKo5JPaB/bDKnKIlMO0/1jGr4GWXDZlcS1daKaorAnFgSf
+X-Received: by 2002:a05:600c:3ca1:b0:434:fd77:5436 with SMTP id
+ 5b1f17b1804b1-4365536f8eemr73738815e9.15.1734610360565; 
+ Thu, 19 Dec 2024 04:12:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFkPkv1lZx0+WC10VUGiiF9xcKhQWsT7rQcdcJRSaghwVuOXGOEhUoIP4n7wShv7b5j9hzDWQ==
+X-Received: by 2002:a05:600c:3ca1:b0:434:fd77:5436 with SMTP id
+ 5b1f17b1804b1-4365536f8eemr73738435e9.15.1734610360083; 
+ Thu, 19 Dec 2024 04:12:40 -0800 (PST)
 Received: from [192.168.10.47] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c828897sm1416417f8f.20.2024.12.19.04.12.36
+ 5b1f17b1804b1-43661218f43sm16579525e9.19.2024.12.19.04.12.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 04:12:36 -0800 (PST)
+ Thu, 19 Dec 2024 04:12:39 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: zhao1.liu@intel.com
-Subject: [PATCH 09/10] rust: qemu-api-macros: extend error reporting facility
- to parse errors
-Date: Thu, 19 Dec 2024 13:12:15 +0100
-Message-ID: <20241219121216.416905-10-pbonzini@redhat.com>
+Subject: [PATCH 10/10] rust: qemu-api-macros: add automatic TryFrom/TryInto
+ derivation
+Date: Thu, 19 Dec 2024 13:12:16 +0100
+Message-ID: <20241219121216.416905-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219121216.416905-1-pbonzini@redhat.com>
 References: <20241219121216.416905-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -106,127 +106,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Generalize the CompileError tuple to an enum, that can be either an error
-message or a parse error from syn.
+This is going to be fairly common. Using a custom procedural macro
+provides better error messages and automatically finds the right
+type.
+
+Note that this is different from the same-named macro in the
+derive_more crate.  That one provides conversion from e.g. tuples
+to enums with tuple variants, not from integers to enums.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api-macros/src/lib.rs   | 27 ++++++++++-----------------
- rust/qemu-api-macros/src/utils.rs | 26 ++++++++++++++++++++++++++
- 2 files changed, 36 insertions(+), 17 deletions(-)
- create mode 100644 rust/qemu-api-macros/src/utils.rs
+ rust/hw/char/pl011/src/lib.rs   | 28 +------------
+ rust/qemu-api-macros/src/lib.rs | 74 ++++++++++++++++++++++++++++++++-
+ 2 files changed, 73 insertions(+), 29 deletions(-)
 
-diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
-index 0f04cca3841..539c48df298 100644
---- a/rust/qemu-api-macros/src/lib.rs
-+++ b/rust/qemu-api-macros/src/lib.rs
-@@ -3,57 +3,50 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
+index 69064d6929b..0a89d393e0f 100644
+--- a/rust/hw/char/pl011/src/lib.rs
++++ b/rust/hw/char/pl011/src/lib.rs
+@@ -45,7 +45,7 @@
+ #[doc(alias = "offset")]
+ #[allow(non_camel_case_types)]
+ #[repr(u64)]
+-#[derive(Debug)]
++#[derive(Debug, qemu_api_macros::TryInto)]
+ pub enum RegisterOffset {
+     /// Data Register
+     ///
+@@ -102,32 +102,6 @@ pub enum RegisterOffset {
+     //Reserved = 0x04C,
+ }
  
- use proc_macro::TokenStream;
--use proc_macro2::Span;
--use quote::{quote, quote_spanned};
-+use quote::quote;
- use syn::{
-     parse_macro_input, parse_quote, punctuated::Punctuated, token::Comma, Data, DeriveInput, Field,
-     Fields, Ident, Type, Visibility,
- };
- 
--struct CompileError(String, Span);
+-impl core::convert::TryFrom<u64> for RegisterOffset {
+-    type Error = u64;
 -
--impl From<CompileError> for proc_macro2::TokenStream {
--    fn from(err: CompileError) -> Self {
--        let CompileError(msg, span) = err;
--        quote_spanned! { span => compile_error!(#msg); }
+-    fn try_from(value: u64) -> Result<Self, Self::Error> {
+-        macro_rules! case {
+-            ($($discriminant:ident),*$(,)*) => {
+-                /* check that matching on all macro arguments compiles, which means we are not
+-                 * missing any enum value; if the type definition ever changes this will stop
+-                 * compiling.
+-                 */
+-                const fn _assert_exhaustive(val: RegisterOffset) {
+-                    match val {
+-                        $(RegisterOffset::$discriminant => (),)*
+-                    }
+-                }
+-
+-                match value {
+-                    $(x if x == Self::$discriminant as u64 => Ok(Self::$discriminant),)*
+-                     _ => Err(value),
+-                }
+-            }
+-        }
+-        case! { DR, RSR, FR, FBRD, ILPR, IBRD, LCR_H, CR, FLS, IMSC, RIS, MIS, ICR, DMACR }
 -    }
 -}
-+mod utils;
-+use utils::MacroError;
+-
+ pub mod registers {
+     //! Device registers exposed as typed structs which are backed by arbitrary
+     //! integer bitmaps. [`Data`], [`Control`], [`LineControl`], etc.
+diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
+index 539c48df298..7ec218202f4 100644
+--- a/rust/qemu-api-macros/src/lib.rs
++++ b/rust/qemu-api-macros/src/lib.rs
+@@ -5,8 +5,8 @@
+ use proc_macro::TokenStream;
+ use quote::quote;
+ use syn::{
+-    parse_macro_input, parse_quote, punctuated::Punctuated, token::Comma, Data, DeriveInput, Field,
+-    Fields, Ident, Type, Visibility,
++    parse_macro_input, parse_quote, punctuated::Punctuated, spanned::Spanned, token::Comma, Data,
++    DeriveInput, Field, Fields, Ident, Meta, Path, Token, Type, Variant, Visibility,
+ };
  
- fn get_fields<'a>(
-     input: &'a DeriveInput,
-     msg: &str,
--) -> Result<&'a Punctuated<Field, Comma>, CompileError> {
-+) -> Result<&'a Punctuated<Field, Comma>, MacroError> {
-     if let Data::Struct(s) = &input.data {
-         if let Fields::Named(fs) = &s.fields {
-             Ok(&fs.named)
-         } else {
--            Err(CompileError(
-+            Err(MacroError::Message(
-                 format!("Named fields required for {}", msg),
-                 input.ident.span(),
-             ))
-         }
-     } else {
--        Err(CompileError(
-+        Err(MacroError::Message(
-             format!("Struct required for {}", msg),
-             input.ident.span(),
-         ))
-     }
+ mod utils;
+@@ -98,3 +98,73 @@ pub fn derive_offsets(input: TokenStream) -> TokenStream {
+ 
+     TokenStream::from(expanded)
  }
- 
--fn is_c_repr(input: &DeriveInput, msg: &str) -> Result<(), CompileError> {
-+fn is_c_repr(input: &DeriveInput, msg: &str) -> Result<(), MacroError> {
-     let expected = parse_quote! { #[repr(C)] };
- 
-     if input.attrs.iter().any(|attr| attr == &expected) {
-         Ok(())
-     } else {
--        Err(CompileError(
-+        Err(MacroError::Message(
-             format!("#[repr(C)] required for {}", msg),
-             input.ident.span(),
-         ))
-     }
- }
- 
--fn derive_object_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream, CompileError> {
-+fn derive_object_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream, MacroError> {
-     is_c_repr(&input, "#[derive(Object)]")?;
- 
-     let name = &input.ident;
-@@ -80,7 +73,7 @@ pub fn derive_object(input: TokenStream) -> TokenStream {
- }
- 
- #[rustfmt::skip::macros(quote)]
--fn derive_offsets_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream, CompileError> {
-+fn derive_offsets_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream, MacroError> {
-     is_c_repr(&input, "#[derive(offsets)]")?;
- 
-     let name = &input.ident;
-diff --git a/rust/qemu-api-macros/src/utils.rs b/rust/qemu-api-macros/src/utils.rs
-new file mode 100644
-index 00000000000..02c91aed7f6
---- /dev/null
-+++ b/rust/qemu-api-macros/src/utils.rs
-@@ -0,0 +1,26 @@
-+// Procedural macro utilities.
-+// Author(s): Paolo Bonzini <pbonzini@redhat.com>
-+// SPDX-License-Identifier: GPL-2.0-or-later
 +
-+use proc_macro2::Span;
-+use quote::quote_spanned;
-+
-+pub enum MacroError {
-+    Message(String, Span),
-+    ParseError(syn::Error),
-+}
-+
-+impl From<syn::Error> for MacroError {
-+    fn from(err: syn::Error) -> Self {
-+        MacroError::ParseError(err)
-+    }
-+}
-+
-+impl From<MacroError> for proc_macro2::TokenStream {
-+    fn from(err: MacroError) -> Self {
-+        match err {
-+            MacroError::Message(msg, span) => quote_spanned! { span => compile_error!(#msg); },
-+            MacroError::ParseError(err) => err.into_compile_error(),
++#[allow(non_snake_case)]
++fn get_repr_uN(input: &DeriveInput, msg: &str) -> Result<Path, MacroError> {
++    let repr = input.attrs.iter().find(|attr| attr.path().is_ident("repr"));
++    if let Some(repr) = repr {
++        let nested = repr.parse_args_with(Punctuated::<Meta, Token![,]>::parse_terminated)?;
++        for meta in nested {
++            match meta {
++                Meta::Path(path) if path.is_ident("u8") => return Ok(path),
++                Meta::Path(path) if path.is_ident("u16") => return Ok(path),
++                Meta::Path(path) if path.is_ident("u32") => return Ok(path),
++                Meta::Path(path) if path.is_ident("u64") => return Ok(path),
++                _ => {}
++            }
 +        }
 +    }
++
++    Err(MacroError::Message(
++        format!("#[repr(u8/u16/u32/u64) required for {}", msg),
++        input.ident.span(),
++    ))
++}
++
++fn get_variants(input: &DeriveInput) -> Result<&Punctuated<Variant, Comma>, MacroError> {
++    if let Data::Enum(e) = &input.data {
++        if let Some(v) = e.variants.iter().find(|v| v.fields != Fields::Unit) {
++            return Err(MacroError::Message(
++                "Cannot derive TryInto for enum with non-unit variants.".to_string(),
++                v.fields.span(),
++            ));
++        }
++        Ok(&e.variants)
++    } else {
++        Err(MacroError::Message(
++            "Cannot derive TryInto for union or struct.".to_string(),
++            input.ident.span(),
++        ))
++    }
++}
++
++#[rustfmt::skip::macros(quote)]
++fn derive_tryinto_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream, MacroError> {
++    let repr = get_repr_uN(&input, "#[derive(TryInto)]")?;
++
++    let name = &input.ident;
++    let variants = get_variants(&input)?;
++    let discriminants: Vec<&Ident> = variants.iter().map(|f| &f.ident).collect();
++
++    Ok(quote! {
++        impl core::convert::TryFrom<#repr> for #name {
++            type Error = #repr;
++
++            fn try_from(value: #repr) -> Result<Self, Self::Error> {
++                #(const #discriminants: #repr = #name::#discriminants as #repr;)*;
++                match value {
++                    #(#discriminants => Ok(Self::#discriminants),)*
++                    _ => Err(value),
++                }
++            }
++        }
++    })
++}
++
++#[proc_macro_derive(TryInto)]
++pub fn derive_tryinto(input: TokenStream) -> TokenStream {
++    let input = parse_macro_input!(input as DeriveInput);
++    let expanded = derive_tryinto_or_error(input).unwrap_or_else(Into::into);
++
++    TokenStream::from(expanded)
 +}
 -- 
 2.47.1
