@@ -2,89 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24AC09F7FA8
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:26:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E88F29F7F8D
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:24:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJGr-0003y6-Kp; Thu, 19 Dec 2024 11:21:05 -0500
+	id 1tOJGM-0002Xr-8F; Thu, 19 Dec 2024 11:20:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1tOHBd-0000E0-SG
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 09:07:33 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tOHCh-0000Ii-25
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 09:08:40 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1tOHBc-00041U-8T
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 09:07:33 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tOHCe-0004Hv-NW
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 09:08:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734617250;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1734617315;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0VOZOqTYjuBQWSRbaodVkgoqbpVNKqGHG8LBQQLmWQQ=;
- b=H+W/C/3LfClGEzekN3MLI8o4RPg1z2kxeF3og1CGNX9aamPYErVKK2rtS8lzGhO2IoXM8Z
- ygCO+kgSKOl9CBtuon+6pYGxBNRz7HGBqFzD+atR7XwF0gZhk5A05C3mtgxAVIlpG83+kW
- 103QDXnelL11xkwXwmzg4s+bGMp1AX4=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-168-rWnqeOEhNZKsnDv-0ZdfOw-1; Thu, 19 Dec 2024 09:07:27 -0500
-X-MC-Unique: rWnqeOEhNZKsnDv-0ZdfOw-1
-X-Mimecast-MFC-AGG-ID: rWnqeOEhNZKsnDv-0ZdfOw
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-5412ceadaa3so397373e87.3
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 06:07:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734617245; x=1735222045;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0VOZOqTYjuBQWSRbaodVkgoqbpVNKqGHG8LBQQLmWQQ=;
- b=c/2Sg8AxXXf9ymY0LjfVYL/IlAd7Rc0iPDKa3aJKGeuDjZor9bT8TOpTncPG6AvXNM
- WfvNeXS4SecfAOFTahTYzYtzA7QNmdryTi1l+sQeStj4qBMYio5PEyxrjvh8sKIp1xGl
- fUsaJLPV5sJkK29urylsZDTda+S34u5r8YVMdOsTGaSPPNEJ79sl91X5zELoRVj0m2gX
- 04h3GC/iledECZILnHZC7TOpv07ouVR0e4CHMJDyNCdqBFG3UVrFsZGQkXC0Voq1rJjo
- lA3l/n2zTQa51lEx5Q1wJqcCOaGsIQH0s/SqjxUtb+mU8T0wbDLRPwFalil8fWDJly/y
- tAYg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWhhUgFK9aOmu1SFWruY8AJ5ZlVCwMz3B9oVSOeHCUlbNCUPbrrzLvzW6KL/eLFtC/UXSm4OwnjwWm1@nongnu.org
-X-Gm-Message-State: AOJu0YxFSjP4cBhKWQmsyRAxqMC4iZPsfuNXhjFr3IqJb7+EFKh5rTZ9
- kLq05xDIuqFS0aRqaYlq2oR+6UZv3+BFzq+4wL38Q7/UKffSC+if7Y+u2uhVk4fOaRnDxgsUg0G
- 9ZKJjVuVo9i7AL1p4wC57UIaGxyh+0McSYO3fkaAo++AdZ/I01HRnzMiqdKw2EvhXbvrQg0JsgW
- dB+7/pDeB8o88NN+dOhBJv9h/G/L8=
-X-Gm-Gg: ASbGnctR+P9YJMHv1cajmm3DjGpCbz47fNCNm89Z4FmpFbglEpBgcMN48iYRaVs7grK
- Ipr+w75HRHNRaaTyHbVQYRkRbk7fJfR08InxSX6w=
-X-Received: by 2002:a05:6512:39ce:b0:542:2486:6977 with SMTP id
- 2adb3069b0e04-542248669c2mr692379e87.19.1734617245234; 
- Thu, 19 Dec 2024 06:07:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFcAMvTLxSY1+GLJkuonTmESrsvV+wwEEdyE1vUIFzVSrS318AwzLkS3ie1nPQXh6E3MSAkYugxZTQ+zdKfPTs=
-X-Received: by 2002:a05:6512:39ce:b0:542:2486:6977 with SMTP id
- 2adb3069b0e04-542248669c2mr692349e87.19.1734617244860; Thu, 19 Dec 2024
- 06:07:24 -0800 (PST)
+ bh=7u8FOwPCDk3qvRQVrnHYOqkRK2ICyRqa+iw16x3hrD8=;
+ b=EdoTo5bY0IPDduDTwe4UEMIk0K3Atod4hnYXXXOEDJW35GtBD3DDw/U20XpM4Hj4Sh15Sl
+ oR/C+dFvGfkN7ttruImltNPod/9x+igJLWf8gG2+XisB18IPznN2qmei3MxXJ49HgN0mVI
+ 68LzPVqHjssJf/7r49UKI5bLeMS3e9Q=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-472-shu5hLkQMTKfCkpoFx6VHg-1; Thu,
+ 19 Dec 2024 09:08:34 -0500
+X-MC-Unique: shu5hLkQMTKfCkpoFx6VHg-1
+X-Mimecast-MFC-AGG-ID: shu5hLkQMTKfCkpoFx6VHg
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A54101955F28
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 14:08:32 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.54])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0CF631953953; Thu, 19 Dec 2024 14:08:30 +0000 (UTC)
+Date: Thu, 19 Dec 2024 14:08:27 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH] hw/virtio: reset virtio balloon stats on machine reset
+Message-ID: <Z2Qo27nyv0uZkUGT@redhat.com>
+References: <20241218172912.4170899-1-berrange@redhat.com>
+ <d2730488-8468-4639-876c-18a860c6469e@redhat.com>
 MIME-Version: 1.0
-References: <20241216114841.1025070-1-anisinha@redhat.com>
- <61096f4d-7b5f-48fd-9840-caf058db2201@linaro.org>
- <2933CCF9-F9D6-46D1-9658-07B85104011D@redhat.com>
- <6eed1b13-f41a-4590-8254-dbfb1f9c7a5b@linaro.org>
- <CAMxuvawa3G_G4DvSNdF_y2anTtte0ayVaANsvo9Gh_TKP3bEbA@mail.gmail.com>
-In-Reply-To: <CAMxuvawa3G_G4DvSNdF_y2anTtte0ayVaANsvo9Gh_TKP3bEbA@mail.gmail.com>
-From: Ani Sinha <anisinha@redhat.com>
-Date: Thu, 19 Dec 2024 19:37:12 +0530
-Message-ID: <CAK3XEhPu1mg3KWWDViw0bSQHq=+wxmB0ZDu=Yf7-Z2889sW=yg@mail.gmail.com>
-Subject: Re: [PATCH v2] hw/misc/vmfwupdate: Introduce hypervisor fw-cfg
- interface support
-To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Alexander Graf <graf@amazon.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, 
- Igor Mammedov <imammedo@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
- qemu-devel <qemu-devel@nongnu.org>, Daniel Berrange <berrange@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d2730488-8468-4639-876c-18a860c6469e@redhat.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -106,64 +84,126 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 19, 2024 at 6:25=E2=80=AFPM Marc-Andr=C3=A9 Lureau
-<marcandre.lureau@redhat.com> wrote:
->
-> Hi
->
-> On Thu, Dec 19, 2024 at 2:03=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
-> <philmd@linaro.org> wrote:
-> > >>> +static const TypeInfo vmfwupdate_device_info =3D {
-> > >>> +    .name          =3D TYPE_VMFWUPDATE,
-> > >>> +    .parent        =3D TYPE_DEVICE,
-> > >>
-> > >> What is the qdev API used here? Why not use a plain object?
-> > >
-> > > I wrote this taking vmcoreinfo device as starting point. I will leave=
- this as is for now unless anyone has strong opinions.
-> >
-> > We shouldn't blindly copy/paste & spread possible design mistakes.
-> >
-> > Marc-Andr=C3=A9, any particular reason to implement vmcoreinfo using qd=
-ev
-> > and not plain object?
-> >
->
-> I don't remember (damn 8y ago..). It seems the design changed over
-> time during review, qdev might have been necessary and stayed this
-> way.
+On Thu, Dec 19, 2024 at 02:51:21PM +0100, David Hildenbrand wrote:
+> On 18.12.24 18:29, Daniel P. Berrangé wrote:
+> > When a machine is first booted, all virtio balloon stats are initialized
+> > to their default value -1 (18446744073709551615 when represented as
+> > unsigned).
+> > 
+> > They remain that way while the firmware is loading, and early phase of
+> > guest OS boot, until the virtio-balloon driver is activated. Thereafter
+> > the reported stats reflect the guest OS activity.
+> > 
+> > When a machine reset is performed, however, the virtio-balloon stats are
+> > left unchanged by QEMU, despite the guest OS no longer updating them,
+> > nor indeed even still existing.
+> > 
+> > IOW, the mgmt app keeps getting stale stats until the guest OS starts
+> > once more and loads the virtio-balloon driver (if ever). At that point
+> > the app will see a discontinuity in the reported values as they sudden
+> > jump from the stale value to the new value. This jump is indigituishable
+> > from a valid data update.
+> > 
+> > While there is an "last-updated" field to report on the freshness of
+> > the stats, that does not unambiguously tell the mgmt app whether the
+> > stats are still conceptually relevant to the current running workload.
+> > 
+> > It is more conceptually useful to reset the stats to their default
+> > values on machine reset, given that the previous guest workload the
+> > stats reflect no longer exists. The mgmt app can now clearly identify
+> > that there are is no stats information available from the current
+> > executing workload.
+> > 
+> > The 'last-updated' time is also reset back to 0.
+> > 
+> > IOW, on every machine reset, the virtio stats are in the same clean
+> > state they were when the macine first powered on.
+> > 
+> > A functional test is added to validate this behaviour with a real
+> > world guest OS.
+> > > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > ---
+> > 
+> > One side-thought I have, is whether it makes sense to add a
+> > 'reset-count' field in the virtio stats, alongside the
+> > 'last-updated' field. While apps can infer a reset from seeing
+> > the stats all go back to their defaults, an explicit flag is
+> > simpler...
+> > 
+> >   MAINTAINERS                             |   1 +
+> >   hw/virtio/virtio-balloon.c              |  30 ++++-
+> >   include/hw/virtio/virtio-balloon.h      |   4 +
+> >   tests/functional/test_virtio_balloon.py | 161 ++++++++++++++++++++++++
+> >   4 files changed, 195 insertions(+), 1 deletion(-)
+> >   create mode 100755 tests/functional/test_virtio_balloon.py
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 822f34344b..1380d53d03 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -2234,6 +2234,7 @@ F: include/hw/virtio/virtio-balloon.h
+> >   F: system/balloon.c
+> >   F: include/sysemu/balloon.h
+> >   F: tests/qtest/virtio-balloon-test.c
+> > +F: tests/functional/test_virtio_balloon.py
+> >   virtio-9p
+> >   M: Greg Kurz <groug@kaod.org>
+> > diff --git a/hw/virtio/virtio-balloon.c b/hw/virtio/virtio-balloon.c
+> > index ab2ee30475..fe0854e198 100644
+> > --- a/hw/virtio/virtio-balloon.c
+> > +++ b/hw/virtio/virtio-balloon.c
+> > @@ -31,7 +31,7 @@
+> >   #include "trace.h"
+> >   #include "qemu/error-report.h"
+> >   #include "migration/misc.h"
+> > -
+> > +#include "sysemu/reset.h"
+> >   #include "hw/virtio/virtio-bus.h"
+> >   #include "hw/virtio/virtio-access.h"
+> > @@ -910,6 +910,8 @@ static void virtio_balloon_device_realize(DeviceState *dev, Error **errp)
+> >       }
+> >       reset_stats(s);
+> > +    s->stats_last_update = 0;
+> > +    qemu_register_resettable(OBJECT(dev));
+> >   }
+> >   static void virtio_balloon_device_unrealize(DeviceState *dev)
+> > @@ -917,6 +919,7 @@ static void virtio_balloon_device_unrealize(DeviceState *dev)
+> >       VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+> >       VirtIOBalloon *s = VIRTIO_BALLOON(dev);
+> > +    qemu_unregister_resettable(OBJECT(dev));
+> >       if (s->free_page_bh) {
+> >           qemu_bh_delete(s->free_page_bh);
+> >           object_unref(OBJECT(s->iothread));
+> > @@ -987,6 +990,27 @@ static void virtio_balloon_set_status(VirtIODevice *vdev, uint8_t status)
+> >       }
+> >   }
+> 
+> Using qemu_register_resettable() can have unfortunate side effects that this
+> code is triggered when the device is reset, not necessarily when the
+> complete machine.
+> 
+> For virtio-mem at least that's an issue, and here is how I'll fix it:
+> 
+> https://lore.kernel.org/qemu-devel/20241218105303.1966303-2-david@redhat.com/
 
-I changed it to TYPE_OBJECT and we get a crash here:
+Urgh, that's a rather horrible situation. While your patch works around
+it quite effectively, it is pretty heavy weight, and of course relies on
+maintainers knowing this scenario exists - they won't learn this easily
+from the Resettable API design, nor its docs :-(
 
-#3  0x0000aaaaab207a48 [PAC] in object_class_dynamic_cast_assert
-    (class=3D0xaaaaac608880, typename=3Dtypename@entry=3D0xaaaaab4b9630
-"device", file=3Dfile@entry=3D0xaaaaab4300d0
-"/workspace/qemu-ani/include/hw/qdev-core.h", line=3Dline@entry=3D77,
-func=3Dfunc@entry=3D0xaaaaab595a90 <__func__.0> "DEVICE_CLASS") at
-../qom/object.c:1021
-#4  0x0000aaaaaaec2d74 in DEVICE_CLASS (klass=3D<optimized out>) at
-/workspace/qemu-ani/include/hw/qdev-core.h:77
-#5  vmcoreinfo_device_class_init (klass=3D<optimized out>,
-data=3D<optimized out>) at ../hw/misc/vmcoreinfo.c:88
+Shouldn't we put to extend the Resettable design to make this scenario
+more explicity distinguishable in the Resettable callback implementations.
 
-Basically doing this would be illegal for vmcoreinfo and we need to
-adjust the code :
 
-   DeviceClass *dc =3D DEVICE_CLASS(klass);
-
-    dc->vmsd =3D &vmstate_vmcoreinfo;
-    dc->realize =3D vmcoreinfo_realize;
-    dc->hotpluggable =3D false;
-    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-
-Anyway, for vmfwupdate, it is actually like a device with device properties=
-:
-
-+    device_class_set_props(dc, vmfwupdate_properties);
-
-So I prefer to make it qdev type for now.
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
