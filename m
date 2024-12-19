@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5A509F7775
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:35:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C80629F7781
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:37:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOByk-0006ev-Lk; Thu, 19 Dec 2024 03:33:54 -0500
+	id 1tOByl-0006mj-Gp; Thu, 19 Dec 2024 03:33:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOByf-0006WM-CM
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:49 -0500
+ id 1tOByg-0006X1-8J
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:51 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOBya-0005FF-Hm
+ id 1tOBya-0005FB-04
  for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:33:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1734597223;
@@ -24,57 +24,58 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3f/tK+ZTxZZI3fMVdifM4kT9MvIwtAUXIGT42T0zO+Y=;
- b=PHbdgEYbJlWuv3ydBst52CSTyK/2ug3fwQ23OikBuq0Fg3R63ZFbBzOpKJJ4aTLSogknUr
- cij8zTyWrQHOKSSMc6CjDy1wTBQrzWsCX8MmcmfBZzqLVRTfuuHBYmO8rcSPtpvV0W5GcF
- UP5KcXxnGBrQSRkeFrws9NTSbREg5+8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=G0DmIjvH8PGHsDKbo/jlvryd2McqZ2wVPERdSF97HVM=;
+ b=SuDGtt8Q12KTK7vUX0i9KqUokxokSX3+UWV67TJKPOrCqobWXK20Xa1GzSi06inOMuxL8J
+ 4xd3DwwChhJqyehMrQMFPqU3orWSi62idC3UL99SUjboNCHn8EU5E6sOzuwh9HLwkDoLIJ
+ Fk1t+YdrDAnbJMsVGV8SO0dCWMWO2Os=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-694-BqYw3DFOP1Sf0gDMppJZ4Q-1; Thu, 19 Dec 2024 03:33:40 -0500
-X-MC-Unique: BqYw3DFOP1Sf0gDMppJZ4Q-1
-X-Mimecast-MFC-AGG-ID: BqYw3DFOP1Sf0gDMppJZ4Q
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4359206e1e4so4083805e9.2
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:40 -0800 (PST)
+ us-mta-646-KQm1mt0nOIeYRAL4xGzAxw-1; Thu, 19 Dec 2024 03:33:41 -0500
+X-MC-Unique: KQm1mt0nOIeYRAL4xGzAxw-1
+X-Mimecast-MFC-AGG-ID: KQm1mt0nOIeYRAL4xGzAxw
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-43619b135bcso2940315e9.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:33:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734597217; x=1735202017;
+ d=1e100.net; s=20230601; t=1734597218; x=1735202018;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3f/tK+ZTxZZI3fMVdifM4kT9MvIwtAUXIGT42T0zO+Y=;
- b=rBbulK5aIVoFcBDLs+Lx3k5RILpOQquBXJcli9Hn1uJLHOokjTZKobkRwJJnufEgaC
- FvPnYb+Oo4yRKr4r896WG/f+43j5wFOhv2h0QWxE4hmiS6TaJUU6K9/UwlEdphMEVpaK
- 5ARdjX8vSOznU+9hUVRIqFJ4gVqhCMPzfBdsYi4XSifegosHCA+fIqm0dD9W6uNlkt/3
- vetyW5bis6tPChCY6FZbkZZ/g/lOpQtGtCWXfnUx8WdCbwXCe9gk/SdsHlGpYTSnCagY
- ouhFExzOyZPO0eZ93BpJpZezQiYtkgSnFSdUY22AJbWk1NM1agQ/49akoYWSvWljYooJ
- H8kA==
-X-Gm-Message-State: AOJu0YzAcxhTAnSlJNvA4lnl3c75HlQb3otl7tR1F7uLZxvMxGpCotN7
- FrtNwSLG/w8LeU8TJt8GbbX8RYD0T8irZ0oBwQss+kJ6eOTpYuEXi4TI2h/Oyt5mNuVXVYurhP3
- Fvfpy/O12X+trswbW2nhL4l6NUfgzc9/kKBjlk+K9EF2R+Arh3kj5jnnZYkKv47qCP2bK5KGteK
- vFLXJLbQOeTDQeo7c3SQ7lv0xS/TDTyYl7jra5
-X-Gm-Gg: ASbGncs+L8pDlrCH/irUtxK0ijooqu1wfPXK4pBZhdbZ0pmK1kC/6JsUBVRRy6bo5+A
- GUP1cBsZP5qkjMCVwyoeszL08EFpY4DEmWbVrqOKBxU8he1uNmoYnCCE0wdhI9Y7df83lahE3Tl
- c6cvtFps5CDMUIpEIwAAG3gDHY/CDxyFcT6bRP8BHQywbOeqcYp1VRUQbaJPpse8MJnc3oBIGHt
- BsGugPKIv6ZRGkZRrnKjSotKwLQ7V017Nf3f7mhqDJ0rFE4X+MoepkW9ARE
-X-Received: by 2002:a05:6000:186f:b0:386:1ab5:f0e1 with SMTP id
- ffacd0b85a97d-38a19b050a5mr2431249f8f.14.1734597216864; 
- Thu, 19 Dec 2024 00:33:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH1D9nY5fIZLSfIgL12fieezyJCMj6kNP4Ops0+CGUpQBrGy4e6Z3JqkaZa5J/0ZrRybXZUYQ==
-X-Received: by 2002:a05:6000:186f:b0:386:1ab5:f0e1 with SMTP id
- ffacd0b85a97d-38a19b050a5mr2431215f8f.14.1734597216446; 
- Thu, 19 Dec 2024 00:33:36 -0800 (PST)
+ bh=G0DmIjvH8PGHsDKbo/jlvryd2McqZ2wVPERdSF97HVM=;
+ b=el+FDxI71biWB6Dp15sUi35A+UJ7wucHo7XnHOFNdtKTxRxcSmfa49aAbZVIhyfFJ4
+ iSaVPz1fNRfGDzGTfCoH5Go18S+cGGCtFf3Y9As5ssq8lG/aOSLRIODcmre6ffML2tZP
+ QniOY0KbmrC38EUEWRyb1+AJHcuXo7MMQb5sXjscke2QR9HZ0pvW45QofRo/FcGoJ3a6
+ RS7aaWc61UcfNVp++6HZAPEsnBm739yj1Ie+TtC8CaEEofGtC2p05tYyeJPPVlzi53Xw
+ ZQ3nBKewfFasvBdZL/bFW+t4V6K6cgva1fJGOrNyExx5LqDSgbXi2m8OGew3s7GrcNPm
+ e85w==
+X-Gm-Message-State: AOJu0Yw2eq4BZ14IKy2JgaNnFADaKrlWpajrAOdqxrirzrls5iIi9B4x
+ vDS3Q9jb3Xjles00khKVt5Lp1fdmtI3PMGy6vszr17xH3QFXhnchSPoafV/NM1pUXINLAIFLtDX
+ jK5cebhdUTYDLrcW2IoV6lNhh0bnGaoTfugzN8No9lsuqEn0i0S4xMRlVQTfKzPxCY22JvdpsWC
+ WbamAVeNSQmaawuAukxxjR7FzR+yr8YJP3+YyC
+X-Gm-Gg: ASbGncsysGEICSEWlrJsYyVpQ1yx1WjhCHMpbljc57SEz1v1aJbqJNUTnnqTJU+hW6L
+ LqmcEJrEm+j1fPUyI0QOrvTERilhYeHIaGuAcnVESM2oqsjbN4Q5sNcigLdzX49XbJ4TLufF8yr
+ d5ivgW6/7rhDlR7Mbe9qYkpqbM584pYhpCFlQVmJVDmKpQ3Rf1WErjqOef8nwsdGpVDEm7V4TdR
+ B3Lxr958GwAX3fZ9HVEWpIIHgrSvN2lSgHfLE+8x70L9D7ZL88Y6RrIlYkE
+X-Received: by 2002:a05:600c:4f92:b0:434:a711:ace4 with SMTP id
+ 5b1f17b1804b1-4365536f5f6mr56976165e9.17.1734597218045; 
+ Thu, 19 Dec 2024 00:33:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEk6APoaMosiqZ+Y16u4ivz/C53JaiMHSnjZYz1DEpsgZhu5IksThkYqnLaMYqpoHsnjSTMCA==
+X-Received: by 2002:a05:600c:4f92:b0:434:a711:ace4 with SMTP id
+ 5b1f17b1804b1-4365536f5f6mr56975795e9.17.1734597217569; 
+ Thu, 19 Dec 2024 00:33:37 -0800 (PST)
 Received: from [192.168.10.47] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436604e9c2csm12851605e9.43.2024.12.19.00.33.34
+ 5b1f17b1804b1-436611ea4a7sm11194365e9.3.2024.12.19.00.33.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 00:33:34 -0800 (PST)
+ Thu, 19 Dec 2024 00:33:37 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 31/41] rust: qom: add initial subset of methods on Object
-Date: Thu, 19 Dec 2024 09:32:18 +0100
-Message-ID: <20241219083228.363430-32-pbonzini@redhat.com>
+Subject: [PULL 32/41] rust: qemu-api: add a module to wrap functions and
+ zero-sized closures
+Date: Thu, 19 Dec 2024 09:32:19 +0100
+Message-ID: <20241219083228.363430-33-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219083228.363430-1-pbonzini@redhat.com>
 References: <20241219083228.363430-1-pbonzini@redhat.com>
@@ -105,146 +106,205 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add an example of implementing instance methods and converting the
-result back to a Rust type.  In this case the returned types are a
-string (actually a Cow<str>; but that's transparent as long as it derefs
-to &str) and a QOM class.
+One recurring issue when writing Rust bindings is how to convert a Rust
+function ("fn" or "impl Fn") to a C function, and how to pass around
+"self" to a C function that only takes a void*.
+
+An easy solution would be to store on the heap a pair consisting of
+a pointer to the Rust function and the pointer to "self", but it is
+possible to do better.  If an "Fn" has zero size (that is, if it is a
+zero-capture closures or a function pointer---which in turn includes all
+methods), it is possible to build a generic Rust function that calls it
+even if you only have the type; you don't need either the pointer to the
+function itself (because the address of the code is part of the type)
+or any closure data (because it has size zero).
+
+Introduce a wrapper that provides the functionality of calling the
+function given only its type.
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/prelude.rs |  1 +
- rust/qemu-api/src/qom.rs     | 56 ++++++++++++++++++++++++++++++++++--
- rust/qemu-api/tests/tests.rs | 12 ++++++++
- 3 files changed, 66 insertions(+), 3 deletions(-)
+ rust/qemu-api/meson.build      |   1 +
+ rust/qemu-api/src/callbacks.rs | 144 +++++++++++++++++++++++++++++++++
+ rust/qemu-api/src/lib.rs       |   1 +
+ 3 files changed, 146 insertions(+)
+ create mode 100644 rust/qemu-api/src/callbacks.rs
 
-diff --git a/rust/qemu-api/src/prelude.rs b/rust/qemu-api/src/prelude.rs
-index a0a71fcd6bc..6f32deeb2ed 100644
---- a/rust/qemu-api/src/prelude.rs
-+++ b/rust/qemu-api/src/prelude.rs
-@@ -12,6 +12,7 @@
- pub use crate::qom::ObjectCast;
- pub use crate::qom::ObjectCastMut;
- pub use crate::qom::ObjectDeref;
-+pub use crate::qom::ObjectMethods;
- pub use crate::qom::ObjectType;
- 
- pub use crate::qom_isa;
-diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
-index 74ea5721f77..7d5fbef1e17 100644
---- a/rust/qemu-api/src/qom.rs
-+++ b/rust/qemu-api/src/qom.rs
-@@ -5,8 +5,8 @@
- //! Bindings to access QOM functionality from Rust.
- //!
- //! The QEMU Object Model (QOM) provides inheritance and dynamic typing for QEMU
--//! devices. This module makes QOM's features available in Rust through two main
--//! mechanisms:
-+//! devices. This module makes QOM's features available in Rust through three
-+//! main mechanisms:
- //!
- //! * Automatic creation and registration of `TypeInfo` for classes that are
- //!   written in Rust, as well as mapping between Rust traits and QOM vtables.
-@@ -15,6 +15,11 @@
- //!   trait and methods such as [`upcast`](ObjectCast::upcast) and
- //!   [`downcast`](ObjectCast::downcast).
- //!
-+//! * Automatic delegation of parent class methods to child classes. When a
-+//!   trait uses [`IsA`] as a bound, its contents become available to all child
-+//!   classes through blanket implementations. This works both for class methods
-+//!   and for instance methods accessed through references or smart pointers.
-+//!
- //! # Structure of a class
- //!
- //! A leaf class only needs a struct holding instance state. The struct must
-@@ -37,6 +42,16 @@
- //!   `ClassInitImpl<DeviceClass>`. This fills the vtable in the class struct;
- //!   the source for this is the `*Impl` trait; the associated consts and
- //!   functions if needed are wrapped to map C types into Rust types.
-+//!
-+//! * a trait for instance methods, for example `DeviceMethods`. This trait is
-+//!   automatically implemented for any reference or smart pointer to a device
-+//!   instance.  It calls into the vtable provides access across all subclasses
-+//!   to methods defined for the class.
-+//!
-+//! * optionally, a trait for class methods, for example `DeviceClassMethods`.
-+//!   This provides access to class-wide functionality that doesn't depend on
-+//!   instance data. Like instance methods, these are automatically inherited by
-+//!   child classes.
- 
- use std::{
-     ffi::CStr,
-@@ -46,7 +61,7 @@
- 
- pub use bindings::{Object, ObjectClass};
- 
--use crate::bindings::{self, object_dynamic_cast, TypeInfo};
-+use crate::bindings::{self, object_dynamic_cast, object_get_class, object_get_typename, TypeInfo};
- 
- /// Marker trait: `Self` can be statically upcasted to `P` (i.e. `P` is a direct
- /// or indirect parent of `Self`).
-@@ -532,3 +547,38 @@ unsafe impl ObjectType for Object {
-     const TYPE_NAME: &'static CStr =
-         unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_OBJECT) };
- }
+diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+index 7ff408ad68e..8c82c5e96c2 100644
+--- a/rust/qemu-api/meson.build
++++ b/rust/qemu-api/meson.build
+@@ -17,6 +17,7 @@ _qemu_api_rs = static_library(
+       'src/lib.rs',
+       'src/bindings.rs',
+       'src/bitops.rs',
++      'src/callbacks.rs',
+       'src/cell.rs',
+       'src/c_str.rs',
+       'src/irq.rs',
+diff --git a/rust/qemu-api/src/callbacks.rs b/rust/qemu-api/src/callbacks.rs
+new file mode 100644
+index 00000000000..314f9dce962
+--- /dev/null
++++ b/rust/qemu-api/src/callbacks.rs
+@@ -0,0 +1,144 @@
++// SPDX-License-Identifier: MIT
 +
-+/// Trait for methods exposed by the Object class.  The methods can be
-+/// called on all objects that have the trait `IsA<Object>`.
++//! Utility functions to deal with callbacks from C to Rust.
++
++use std::{mem, ptr::NonNull};
++
++/// Trait for functions (types implementing [`Fn`]) that can be used as
++/// callbacks. These include both zero-capture closures and function pointers.
 +///
-+/// The trait should only be used through the blanket implementation,
-+/// which guarantees safety via `IsA`
-+pub trait ObjectMethods: ObjectDeref
-+where
-+    Self::Target: IsA<Object>,
-+{
-+    /// Return the name of the type of `self`
-+    fn typename(&self) -> std::borrow::Cow<'_, str> {
-+        let obj = self.upcast::<Object>();
-+        // SAFETY: safety of this is the requirement for implementing IsA
-+        // The result of the C API has static lifetime
-+        unsafe {
-+            let p = object_get_typename(obj.as_mut_ptr());
-+            CStr::from_ptr(p).to_string_lossy()
++/// In Rust, calling a function through the `Fn` trait normally requires a
++/// `self` parameter, even though for zero-sized functions (including function
++/// pointers) the type itself contains all necessary information to call the
++/// function. This trait provides a `call` function that doesn't require `self`,
++/// allowing zero-sized functions to be called using only their type.
++///
++/// This enables zero-sized functions to be passed entirely through generic
++/// parameters and resolved at compile-time. A typical use is a function
++/// receiving an unused parameter of generic type `F` and calling it via
++/// `F::call` or passing it to another function via `func::<F>`.
++///
++/// QEMU uses this trick to create wrappers to C callbacks.  The wrappers
++/// are needed to convert an opaque `*mut c_void` into a Rust reference,
++/// but they only have a single opaque that they can use.  The `FnCall`
++/// trait makes it possible to use that opaque for `self` or any other
++/// reference:
++///
++/// ```ignore
++/// // The compiler creates a new `rust_bh_cb` wrapper for each function
++/// // passed to `qemu_bh_schedule_oneshot` below.
++/// unsafe extern "C" fn rust_bh_cb<T, F: for<'a> FnCall<(&'a T,)>>(
++///     opaque: *mut c_void,
++/// ) {
++///     // SAFETY: the opaque was passed as a reference to `T`.
++///     F::call((unsafe { &*(opaque.cast::<T>()) }, ))
++/// }
++///
++/// // The `_f` parameter is unused but it helps the compiler build the appropriate `F`.
++/// // Using a reference allows usage in const context.
++/// fn qemu_bh_schedule_oneshot<T, F: for<'a> FnCall<(&'a T,)>>(_f: &F, opaque: &T) {
++///     let cb: unsafe extern "C" fn(*mut c_void) = rust_bh_cb::<T, F>;
++///     unsafe {
++///         bindings::qemu_bh_schedule_oneshot(cb, opaque as *const T as *const c_void as *mut c_void)
++///     }
++/// }
++/// ```
++///
++/// Each wrapper is a separate instance of `rust_bh_cb` and is therefore
++/// compiled to a separate function ("monomorphization").  If you wanted
++/// to pass `self` as the opaque value, the generic parameters would be
++/// `rust_bh_cb::<Self, F>`.
++///
++/// `Args` is a tuple type whose types are the arguments of the function,
++/// while `R` is the returned type.
++///
++/// # Examples
++///
++/// ```
++/// # use qemu_api::callbacks::FnCall;
++/// fn call_it<F: for<'a> FnCall<(&'a str,), String>>(_f: &F, s: &str) -> String {
++///     F::call((s,))
++/// }
++///
++/// let s: String = call_it(&str::to_owned, "hello world");
++/// assert_eq!(s, "hello world");
++/// ```
++///
++/// Note that the compiler will produce a different version of `call_it` for
++/// each function that is passed to it.  Therefore the argument is not really
++/// used, except to decide what is `F` and what `F::call` does.
++///
++/// Attempting to pass a non-zero-sized closure causes a compile-time failure:
++///
++/// ```compile_fail
++/// # use qemu_api::callbacks::FnCall;
++/// # fn call_it<'a, F: FnCall<(&'a str,), String>>(_f: &F, s: &'a str) -> String {
++/// #     F::call((s,))
++/// # }
++/// let x: &'static str = "goodbye world";
++/// call_it(&move |_| String::from(x), "hello workd");
++/// ```
++///
++/// # Safety
++///
++/// Because `Self` is a zero-sized type, all instances of the type are
++/// equivalent. However, in addition to this, `Self` must have no invariants
++/// that could be violated by creating a reference to it.
++///
++/// This is always true for zero-capture closures and function pointers, as long
++/// as the code is able to name the function in the first place.
++pub unsafe trait FnCall<Args, R = ()>: 'static + Sync + Sized {
++    /// Referring to this internal constant asserts that the `Self` type is
++    /// zero-sized.  Can be replaced by an inline const expression in
++    /// Rust 1.79.0+.
++    const ASSERT_ZERO_SIZED: () = { assert!(mem::size_of::<Self>() == 0) };
++
++    /// Call the function with the arguments in args.
++    fn call(a: Args) -> R;
++}
++
++macro_rules! impl_call {
++    ($($args:ident,)* ) => (
++        // SAFETY: because each function is treated as a separate type,
++        // accessing `FnCall` is only possible in code that would be
++        // allowed to call the function.
++        unsafe impl<F, $($args,)* R> FnCall<($($args,)*), R> for F
++        where
++            F: 'static + Sync + Sized + Fn($($args, )*) -> R,
++        {
++            #[inline(always)]
++            fn call(a: ($($args,)*)) -> R {
++                let _: () = Self::ASSERT_ZERO_SIZED;
++
++                // SAFETY: the safety of this method is the condition for implementing
++                // `FnCall`.  As to the `NonNull` idiom to create a zero-sized type,
++                // see https://github.com/rust-lang/libs-team/issues/292.
++                let f: &'static F = unsafe { &*NonNull::<Self>::dangling().as_ptr() };
++                let ($($args,)*) = a;
++                f($($args,)*)
++            }
 +        }
-+    }
-+
-+    fn get_class(&self) -> &'static <Self::Target as ObjectType>::Class {
-+        let obj = self.upcast::<Object>();
-+
-+        // SAFETY: all objects can call object_get_class; the actual class
-+        // type is guaranteed by the implementation of `ObjectType` and
-+        // `ObjectImpl`.
-+        let klass: &'static <Self::Target as ObjectType>::Class =
-+            unsafe { &*object_get_class(obj.as_mut_ptr()).cast() };
-+
-+        klass
-+    }
++    )
 +}
 +
-+impl<R: ObjectDeref> ObjectMethods for R where R::Target: IsA<Object> {}
-diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
-index 5d9f13b15d4..41ea4026b83 100644
---- a/rust/qemu-api/tests/tests.rs
-+++ b/rust/qemu-api/tests/tests.rs
-@@ -94,6 +94,18 @@ fn test_object_new() {
-     }
- }
++impl_call!(_1, _2, _3, _4, _5,);
++impl_call!(_1, _2, _3, _4,);
++impl_call!(_1, _2, _3,);
++impl_call!(_1, _2,);
++impl_call!(_1,);
++impl_call!();
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    // The `_f` parameter is unused but it helps the compiler infer `F`.
++    fn do_test_call<'a, F: FnCall<(&'a str,), String>>(_f: &F) -> String {
++        F::call(("hello world",))
++    }
++
++    #[test]
++    fn test_call() {
++        assert_eq!(do_test_call(&str::to_owned), "hello world")
++    }
++}
+diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
+index 124bece0449..4b43e02c0f9 100644
+--- a/rust/qemu-api/src/lib.rs
++++ b/rust/qemu-api/src/lib.rs
+@@ -14,6 +14,7 @@
  
-+#[test]
-+/// Try invoking a method on an object.
-+fn test_typename() {
-+    init_qom();
-+    let p: *mut DummyState = unsafe { object_new(DummyState::TYPE_NAME.as_ptr()).cast() };
-+    let p_ref: &DummyState = unsafe { &*p };
-+    assert_eq!(p_ref.typename(), "dummy");
-+    unsafe {
-+        object_unref(p_ref.as_object_mut_ptr().cast::<c_void>());
-+    }
-+}
-+
- // a note on all "cast" tests: usually, especially for downcasts the desired
- // class would be placed on the right, for example:
- //
+ pub mod bitops;
+ pub mod c_str;
++pub mod callbacks;
+ pub mod cell;
+ pub mod irq;
+ pub mod module;
 -- 
 2.47.1
 
