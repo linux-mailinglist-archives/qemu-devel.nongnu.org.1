@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 711E49F8089
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:49:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10F889F80B3
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:51:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJhp-0001go-4r; Thu, 19 Dec 2024 11:48:57 -0500
+	id 1tOJjz-0003z3-88; Thu, 19 Dec 2024 11:51:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOJhk-0001cl-V2
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 11:48:53 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOJjw-0003yq-JK
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 11:51:08 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOJhj-0000tt-4V
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 11:48:52 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-43624b2d453so11181745e9.2
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 08:48:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOJju-0001QP-QG
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 11:51:08 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-385eed29d17so544552f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 08:51:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734626929; x=1735231729; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734627065; x=1735231865; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Ocx7qdl0qz6hEaNGfL041PjZf18c8GiFLa5c3758680=;
- b=olc1AREWkkuKpZ5pMdTfKB7lk2ZsqTe2UTsFxS4H5pLscd/EnPf6NeVImyUXiYQ44I
- gs6mv1Bwx97QKiu6S3hCujNSQYnf9Ccwq2OlLvU8xKA1n0smcLqXiTxhF5W6pPAUajyT
- W+bEXuuVZiS04YO1vDD1OATKGZuPPN0z5qFJbi0TVMor4Yh69cPxH+XOYHGeRLqcZdCT
- i1Ha8Pb95tutc6vCRPZJyTXQ78sG/G6MZW6avT9xtWH43FeiLN/ZBXop8PhthgbtS2rY
- rwAfkrXiWWga5kfxMqWvYke1LyZ9LJz4Fsb9negLK6FVCmp3jjQiXnxYe4TtHWilwhD9
- cWOQ==
+ bh=bPt9RD/n21L80mrsXqcoiJ/QMHctQ7VEza37YY1LWvs=;
+ b=TlEGR9krYgW9CckEo7xQhAqV1OQ83TIVgqZw1SmnYr8hwSqghFjKSpqzaOe9xCg6VF
+ zuG2JRYiR78cu4wmqkXm81TPVdqc7wFFTzHEc0ANrMUE3UIcnOCQPNXjsfV9MX79/lm2
+ kq6HHVo22sEqugN6JPtkDo3Tfk4GtkmboKG6ItbHywfObNgSCESOuyb4n7ulggfSYw1w
+ 1pAS/wx+K+mP3+1LNvSKT5Z8YJ3+MCiaVQ9r288BQRQNdOyGsgsctlbR2x5BDP40vVQN
+ 2Na53swtLLcQdTZqO2ZLFggxvUXaGsdXgtKh3ispLK1OWyaMz6babLa0m1pzzxtWIrN/
+ jZ+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734626929; x=1735231729;
+ d=1e100.net; s=20230601; t=1734627065; x=1735231865;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ocx7qdl0qz6hEaNGfL041PjZf18c8GiFLa5c3758680=;
- b=clKk7ki1i0HiG0I1CTvCwJNGNmtQeSBImZy6X2Prz51iKGfxkLuuDJQ8WlLcDGhDIv
- b19f+3Dh0xLG6BXufq62Tpo4Jro/Oml/7P+k2icA6lSp0S0hAeHq0EhOlICoMmBPqWw4
- a4SYmDCI/De43/QcLDGB08crVLNmkMVhNNIJCHAGRgfE6vyJmiLoAFMbgQPWH4hM0rPx
- QZfK0ZKeN/ubYdvqE/1OqR/D4dOE2DPa2L3WWogvEjc7Fu11lOIJqdmDhVnYTC95+aJj
- X1RlOWK3l6RsaZWhg1pCLQRf3uCXDptVqAJpmxS0PoW1kma0l5e6UgJrJR3oXzxdvjON
- 6PXQ==
-X-Gm-Message-State: AOJu0YyQeUXN+iVDZp1vfwPR6d5ZS+EsKzjQsVY8Gy864PSFA7OHIqPO
- Cb3KJiSEpmcfV0RmSX5ZH4kb++2Zz7i7zs/7a0g6bU1APM/fb1ThpievIIa7D9c=
-X-Gm-Gg: ASbGncuHaKoI0awJD963M911qrQ9/959abw6FpSjrnxpWGFoTn6zLWoMNLo53Dqy4nZ
- Ja55CyE3Gbw8x+qhc7dR+YjkyfTKjf0otstABIWfvspYEwJA8KLR8//QGLegOWGEDNs5dy5yYHj
- xv4tZswjcA1Q/9IOTRtlt2bbpxnZLp/kn9MmRXJUQQpyWfyOXGvLPWwZ2VJfmPmuZV3I2Je9Po0
- j09oC+HKI9edHDmmNsjvHmOkFi/LjmMtrOOS8htv7QmYg7W3q7gkHSvSAEMyMAr4/WGMSM=
-X-Google-Smtp-Source: AGHT+IGj0+dl3hpqP/svNHShxAMf+modiwUI8vp+t5LRoEvZyg9OmFiQCFC6LF6uIdhQNwOEmiKTcg==
-X-Received: by 2002:a05:6000:18a5:b0:388:c61d:43e4 with SMTP id
- ffacd0b85a97d-38a19b34c3cmr3579538f8f.45.1734626929306; 
- Thu, 19 Dec 2024 08:48:49 -0800 (PST)
+ bh=bPt9RD/n21L80mrsXqcoiJ/QMHctQ7VEza37YY1LWvs=;
+ b=LW+DWHmqqu9z2IOArtg04okwzqoSxcrz7TUW64RvlhveszNCMfuj9YFKmjRw6qqImD
+ 0vtsCSQW7+tDq8rzRmdhonkkVS4P77GSiidzxB+woXBzXktSxgSymCZlDO8KbvThRvtu
+ 8n0ap4rwD9p8CckMkCiTpbM1mtQ2JYKPe+tQi9WfAywWYATwif6Z8AVTYLIUfiV8KO+6
+ NOWaZdXsUMFoxnbpHgUGmTh3L46S92OvZCApzxldjEoVxsXsEr+H5XAXQ9N+xs7OhRHK
+ q507H6v0sBplziZzEfdl4ndVm+QTL8Vc7X4r5z9BNLSshFOrazp012CtldOjW7BIHZe6
+ PAyA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUEB0w8b/sc2kl+8Bvp44N9+ibAfSI/+Xo8W9W1Fegw93HgkEjsxwcfPSLzmMAOw67DO6EgUX/ALGL5@nongnu.org
+X-Gm-Message-State: AOJu0Ywt9dHa1QMIwDiWkS9OYWkhRKpfB9pMarVsaj/0FhbMcn1XW+lg
+ 1BuaU1FEPxtxTgAcR9Ll/88PSw9DqGVrJvudZQ4AGb7dPGCkHd0wp82ha1S4t1o=
+X-Gm-Gg: ASbGncvKz2DqOPA/o1fHgP1oU68XnsGGOPlU6H0EHGd423+T+paK7fdxfAOEVkZ3P6U
+ JmACKmD40wq/gjCaUvKToP7IYdOpBeOHyqnVgH6Usv21PPwkV6oxrnwVQVv1gkRCxWHNnenNxHv
+ UE5DWbzyMHUdDjq3Xm3ne2r4cj9VKVXQ2JHkxAUJI9nJdHOSa+i+N82vQ4UhLcTmxOE5zVIY77O
+ /KBbeNxm2s1l9FCoJfnrorGhqmpeND+0nhgGfShHNoPJra2tMIe1ZkvrY6SQDQ/MKa3le8=
+X-Google-Smtp-Source: AGHT+IHY+DkwlwNi8isfynOXubpL6W9QVsf2PW8IteFPicM4n0GIZLyuhqTYM8R5FKqTEQBpm1u8hA==
+X-Received: by 2002:adf:9582:0:b0:38a:19a4:ca9e with SMTP id
+ ffacd0b85a97d-38a19a4caacmr2899765f8f.29.1734627065194; 
+ Thu, 19 Dec 2024 08:51:05 -0800 (PST)
 Received: from [192.168.1.67] ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436612008casm22684365e9.14.2024.12.19.08.48.48
+ 5b1f17b1804b1-4366127c4d7sm22464755e9.34.2024.12.19.08.51.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Dec 2024 08:48:48 -0800 (PST)
-Message-ID: <2ae4799b-f78d-4fde-becb-9ee7f767e8f1@linaro.org>
-Date: Thu, 19 Dec 2024 17:48:47 +0100
+ Thu, 19 Dec 2024 08:51:04 -0800 (PST)
+Message-ID: <55f6dfe7-cadf-4942-81e8-18b15938c349@linaro.org>
+Date: Thu, 19 Dec 2024 17:51:03 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 00/10] hw/misc/vmcoreinfo: Convert from QDev to plain
- Object
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Ani Sinha <anisinha@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- devel@lists.libvirt.org
-References: <20241219153857.57450-1-philmd@linaro.org>
- <Z2RCaZrwjYSM3NpV@redhat.com>
+Subject: Re: [PATCH v2] hw/misc/vmfwupdate: Introduce hypervisor fw-cfg
+ interface support
+To: Ani Sinha <anisinha@redhat.com>
+Cc: Alex Graf <graf@amazon.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Gerd Hoffman <kraxel@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
+References: <20241216114841.1025070-1-anisinha@redhat.com>
+ <3b2e9941-e5a3-4981-adda-f5121bc98e9a@linaro.org>
+ <CAK3XEhNVXZDD0i3pxpSgnogheyJO7dfQ4p0UdvhqU3DrFXJ_ZA@mail.gmail.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <Z2RCaZrwjYSM3NpV@redhat.com>
+In-Reply-To: <CAK3XEhNVXZDD0i3pxpSgnogheyJO7dfQ4p0UdvhqU3DrFXJ_ZA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,39 +102,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/12/24 16:57, Daniel P. Berrangé wrote:
-> On Thu, Dec 19, 2024 at 04:38:47PM +0100, Philippe Mathieu-Daudé wrote:
->> No reason for vmcoreinfo to be based on QDev, since it
->> doesn't use any QDev API. Demote to plain Object.
+On 19/12/24 17:16, Ani Sinha wrote:
 > 
-> I'm not especially convinced by that rationale, at least in the short
-> term[1].
 > 
-> As a user of QEMU, I would tend to view -device  as being the way to
-> create devices that are visible to the guest, and -object as being
-> for dealing with host backends.
-
-Hmm.
-
-> vmcoreinfo is quite an unusal device, in that if only exists as a
-> fwcfg field, but that's an internal impl detail from a user's POV,
-> and it is still a guest visible device type.
+> On Thu, 19 Dec, 2024, 9:22 pm Philippe Mathieu-Daudé, <philmd@linaro.org 
+> <mailto:philmd@linaro.org>> wrote:
 > 
-> So while it may not leverage QDev API, I still feel it is more of
-> a fit for -device, than -object.  Is there any functional benefit
-> to moving it to -object, that outweighs the disruption ?
+>     On 16/12/24 12:48, Ani Sinha wrote:
+> 
+>      > diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+>      > index d02d96e403..4c5bdb0de2 100644
+>      > --- a/hw/misc/meson.build
+>      > +++ b/hw/misc/meson.build
+>      > @@ -148,6 +148,8 @@ specific_ss.add(when: 'CONFIG_MAC_VIA',
+>     if_true: files('mac_via.c'))
+>      >   specific_ss.add(when: 'CONFIG_MIPS_CPS', if_true:
+>     files('mips_cmgcr.c', 'mips_cpc.c'))
+>      >   specific_ss.add(when: 'CONFIG_MIPS_ITU', if_true:
+>     files('mips_itu.c'))
+>      >
+>      > +specific_ss.add(when: 'CONFIG_FW_CFG_DMA', if_true:
+>     files('vmfwupdate.c'))
+> 
+>     FW_CFG_DMA is offered by multiple targets ...:
+> 
+>     $ git grep -w FW_CFG_DMA
+>     hw/arm/Kconfig:19:    select FW_CFG_DMA
+>     hw/i386/Kconfig:82:    select FW_CFG_DMA
+>     hw/i386/Kconfig:113:    select FW_CFG_DMA
+>     hw/loongarch/Kconfig:22:    select FW_CFG_DMA
+>     hw/riscv/Kconfig:59:    select FW_CFG_DMA
+> 
+>      > diff --git a/hw/misc/vmfwupdate.c b/hw/misc/vmfwupdate.c
+>      > new file mode 100644
+>      > index 0000000000..1e29a610c0
+>      > --- /dev/null
+>      > +++ b/hw/misc/vmfwupdate.c
+>      > @@ -0,0 +1,157 @@
+>      > +/*
+>      > + * Guest driven VM boot component update device
+>      > + * For details and specification, please look at docs/specs/
+>     vmfwupdate.rst.
+>      > + *
+>      > + * Copyright (C) 2024 Red Hat, Inc.
+>      > + *
+>      > + * Authors: Ani Sinha <anisinha@redhat.com
+>     <mailto:anisinha@redhat.com>>
+>      > + *
+>      > + * This work is licensed under the terms of the GNU GPL, version
+>     2 or later.
+>      > + * See the COPYING file in the top-level directory.
+>      > + *
+>      > + */
+>      > +
+>      > +#include "qemu/osdep.h"
+>      > +#include "qapi/error.h"
+>      > +#include "qemu/module.h"
+>      > +#include "sysemu/reset.h"
+>      > +#include "hw/nvram/fw_cfg.h"
+>      > +#include "hw/i386/pc.h"
+> 
+>     ... however ...
+> 
+>      > +#include "hw/qdev-properties.h"
+>      > +#include "hw/misc/vmfwupdate.h"
+>      > +#include "qemu/error-report.h"
+>      > +
+>      > +static void fw_update_reset(void *dev)
+>      > +{
+>      > +    /* a NOOP at present */
+>      > +    return;
+>      > +}
+>      > +
+>      > +
+>      > +static uint64_t get_max_fw_size(void)
+>      > +{
+>      > +    Object *m_obj = qdev_get_machine();
+>      > +    PCMachineState *pcms = PC_MACHINE(m_obj);
+>      > +
+>      > +    if (pcms) {
+>      > +        return pcms->max_fw_size;
+> 
+>     ... this code depends on x86/PC.
+> 
+>     Could it be wiser to add a new VM_FWUPDATE Kconfig
+>     symbol, having it depending on FW_CFG_DMA && I386?
+> 
+> 
+> There is no reason why vmfwupdate would be limited to x86 only. There is 
+> minimal support needed from hypervisor side for this mechanism. That 
+> mechanism has little dependency on specific platform.
 
-No.
+OK, then please remove that PCMachineState use.
 
-Patches 1-5 are still useful cleanups although.
-
-> [1] I say "short term", because overall I'm of the opinion that
-> -device, -machine, -cpu, -chardev, etc should not exist, and
-> -object ought to be made capable of instantiating any type of
-> object whatever subclass it might be. I doubt that will change
-> any time in the forseeable future though, so it is more of a
-> hypothetical point.
-
-Agreed.
+What about the FW_CFG_DMA dependency?
 
 
