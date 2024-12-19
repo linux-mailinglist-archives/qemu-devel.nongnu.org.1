@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3FBE9F7A35
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 12:18:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AFDD9F7A2D
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 12:17:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOEVo-0004a1-MA; Thu, 19 Dec 2024 06:16:12 -0500
+	id 1tOEVo-0004YN-3C; Thu, 19 Dec 2024 06:16:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tOEVb-0004Vy-UV
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 06:16:00 -0500
+ id 1tOEVd-0004WT-KS
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 06:16:02 -0500
 Received: from mgamail.intel.com ([198.175.65.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tOEVZ-0005Hq-O1
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 06:15:59 -0500
+ id 1tOEVb-0005H9-SA
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 06:16:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734606958; x=1766142958;
+ t=1734606960; x=1766142960;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=hGrOY+aNrIOBOmNFWeGMrcHfpcpocdtMH4I0QQYaVbU=;
- b=gv1BFoMFLXIO0vp2k9mtC5B/8EKzi2Rm1pzaWmL+ZW17P6FVZOhHDXuw
- yk/s7WcayS34/L0AWLwSX2Fsx7Ln5BVPyOlHN6E0Nc4Kim4u+aa5frBz1
- Rjnocf4XObyY77UvnesdkqIjZnV9LiUkdMEBAgVmceFQbmQYeuVPHu4IN
- ETpP6JfuYm8Ix8MvW7creQhYv2z17Azodvp/HXrKT7HVq740JBpepBVM4
- vhiUkGp0qW0fiAyz19qDqiBpbgezDwB2nktgRA8rx3H/2IGd86FkRWcI1
- UwjcAufHU9JPJb/BJsRZ3GBM3Cf4VTUKNK5PmvF1xeJNsFt3NyVAJiPls g==;
-X-CSE-ConnectionGUID: j1Z6gqtaQKO1A4uBRcD5uQ==
-X-CSE-MsgGUID: brA0zVM6Q5iyt/kXFRtkEA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="34994936"
-X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; d="scan'208";a="34994936"
+ bh=6HpxBDbI/9GKhzbGJA3ef0PtUFQ2lSE7HfhNWpqrw2g=;
+ b=UrxFuh/CYrEv/i9CZh1r9ygLdZUXnLcJgeL5M4oFhIU7h9X/jy/GEs5t
+ l+o+2SbNSpyO2PDViFMMpLggp+4Xgg34eXI4WIIPXO7D65Jq+JncyjibV
+ uu/0/Pcf+RbAALGua7pAV8eACkW0F8YaiZBfz1fOFBnu25Y0izmb6ZAU6
+ ENa1AVa+vd6uNAR3dOWzTwFWuIAjcR11rV+af+1XELE5/6ns7i/WrmGb7
+ 1bEFa+/C0qzQq6eHYWomULH7NYESBgUA87eICatW6mAGMs7s5s7K7p9jO
+ R94OhLJCKuvMB1Z7UARZp4FOT4a4J+c+9cjCqUA794SCztzrWH+9rAQ2i A==;
+X-CSE-ConnectionGUID: W7yG2nrPS6aqpr1QI+xGWw==
+X-CSE-MsgGUID: cFUZWSXzQVKPaMO8Y0zghg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="34994942"
+X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; d="scan'208";a="34994942"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Dec 2024 03:15:57 -0800
-X-CSE-ConnectionGUID: 5rMX38JKSW25WC+VA1ccpg==
-X-CSE-MsgGUID: 8lFa2maCSp+EKjOnCa9BEQ==
+ 19 Dec 2024 03:16:00 -0800
+X-CSE-ConnectionGUID: klXGd20tTbe5rItSGbY+Jw==
+X-CSE-MsgGUID: limWjYT1SPGUx1IbFuSEQA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; d="scan'208";a="97956125"
+X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; d="scan'208";a="97956148"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa006.fm.intel.com with ESMTP; 19 Dec 2024 03:15:53 -0800
+ by fmviesa006.fm.intel.com with ESMTP; 19 Dec 2024 03:15:56 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -50,10 +50,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
 Cc: qemu-devel@nongnu.org, Yanan Wang <wangyanan55@huawei.com>,
  Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, xiaoyao.li@intel.com
-Subject: [PATCH v2 02/10] i386/cpu: Drop the variable smp_cores and
- smp_threads in x86_cpu_pre_plug()
-Date: Thu, 19 Dec 2024 06:01:17 -0500
-Message-Id: <20241219110125.1266461-3-xiaoyao.li@intel.com>
+Subject: [PATCH v2 03/10] i386/cpu: Drop cores_per_pkg in cpu_x86_cpuid()
+Date: Thu, 19 Dec 2024 06:01:18 -0500
+Message-Id: <20241219110125.1266461-4-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241219110125.1266461-1-xiaoyao.li@intel.com>
 References: <20241219110125.1266461-1-xiaoyao.li@intel.com>
@@ -84,50 +83,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No need to define smp_cores and smp_threads, just using ms->smp.cores
-and ms->smp.threads is straightforward. It's also consistent with other
-checks of socket/die/module.
+Local variable cores_per_pkg is only used to calculate threads_per_pkg.
+No need for it. Drop it and open-code it instead.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- hw/i386/x86-common.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ target/i386/cpu.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
-index 3f7818269234..32a8d7a9db87 100644
---- a/hw/i386/x86-common.c
-+++ b/hw/i386/x86-common.c
-@@ -248,8 +248,6 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
-     CPUX86State *env = &cpu->env;
-     MachineState *ms = MACHINE(hotplug_dev);
-     X86MachineState *x86ms = X86_MACHINE(hotplug_dev);
--    unsigned int smp_cores = ms->smp.cores;
--    unsigned int smp_threads = ms->smp.threads;
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 525339945920..ad6889abdf5e 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6498,7 +6498,6 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+     uint32_t limit;
+     uint32_t signature[3];
      X86CPUTopoInfo topo_info;
+-    uint32_t cores_per_pkg;
+     uint32_t threads_per_pkg;
  
-     if (!object_dynamic_cast(OBJECT(cpu), ms->cpu_type)) {
-@@ -329,17 +327,17 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
-         if (cpu->core_id < 0) {
-             error_setg(errp, "CPU core-id is not set");
-             return;
--        } else if (cpu->core_id > (smp_cores - 1)) {
-+        } else if (cpu->core_id > (ms->smp.cores - 1)) {
-             error_setg(errp, "Invalid CPU core-id: %u must be in range 0:%u",
--                       cpu->core_id, smp_cores - 1);
-+                       cpu->core_id, ms->smp.cores - 1);
-             return;
-         }
-         if (cpu->thread_id < 0) {
-             error_setg(errp, "CPU thread-id is not set");
-             return;
--        } else if (cpu->thread_id > (smp_threads - 1)) {
-+        } else if (cpu->thread_id > (ms->smp.threads - 1)) {
-             error_setg(errp, "Invalid CPU thread-id: %u must be in range 0:%u",
--                       cpu->thread_id, smp_threads - 1);
-+                       cpu->thread_id, ms->smp.threads - 1);
-             return;
-         }
+     topo_info.dies_per_pkg = env->nr_dies;
+@@ -6506,9 +6505,8 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+     topo_info.cores_per_module = cs->nr_cores / env->nr_dies / env->nr_modules;
+     topo_info.threads_per_core = cs->nr_threads;
  
+-    cores_per_pkg = topo_info.cores_per_module * topo_info.modules_per_die *
+-                    topo_info.dies_per_pkg;
+-    threads_per_pkg = cores_per_pkg * topo_info.threads_per_core;
++    threads_per_pkg = topo_info.threads_per_core * topo_info.cores_per_module *
++                      topo_info.modules_per_die * topo_info.dies_per_pkg;
+ 
+     /* Calculate & apply limits for different index ranges */
+     if (index >= 0xC0000000) {
 -- 
 2.34.1
 
