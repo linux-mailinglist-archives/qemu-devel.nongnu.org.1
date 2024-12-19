@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF839F7FB4
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:27:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F229F7FCD
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:30:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJHY-00058a-Su; Thu, 19 Dec 2024 11:21:49 -0500
+	id 1tOJHx-00061Q-4V; Thu, 19 Dec 2024 11:22:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOI2d-0005t4-AJ
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:02:19 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOI2l-0005tf-MC
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:02:27 -0500
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOI2b-0005kO-LT
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:02:19 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-38634c35129so678859f8f.3
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 07:02:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOI2j-0005ld-Tp
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:02:27 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-385dece873cso397933f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 07:02:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734620535; x=1735225335; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734620544; x=1735225344; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VPqPkmRu06PLtD07PG3Rk588BhAhOdUz1634l2fW0GY=;
- b=HWVeSetfFUiiaGFShKJ7nQq6n/5+r9gwKz1nTF0+8ZRbKq4iTn1/37l0YXtpDgRwI8
- 0NzoPGkfWwoCQYpHBajN3PPEcBO83Ywzg5H8YePBp6zQdbmvyiLlv6CVfX2442vKWiXA
- eB9HqJWI773z5ROP/rZPT2TTJv/l66IP/zLbetJUjMnAQDFjAwJSZ7Z1uJpMaq1NCMPF
- Za4WXmOI79P3T4UIikMAi/x3+s4a2iQ2YaMytzQtdDyEpxfZzweFHkWb/yQfosIvrbLu
- UG293jcxESo5CYOV+L5XmproxvgQ9W78OLItmeM1jV8qU6GSjhigM35Qdy96MKdAjjYk
- kmPQ==
+ bh=a5X1+M6+3UyvBYMYaayfcaUwM70oCSQurIK4F7x4Fws=;
+ b=UmHm2BcEjyvAR9svCPTdB0X4L7Bl8MeLu2TfCAcoC40xcYf0nIhyBr2AN25k9/9g7R
+ jWZbt/rcUj0hRt3uCCiGAazNWKgdXIcaam1bWAeCcylu1n3cK9KQSSeox2rtV3BpKH1n
+ HIvbvd2XSVjTXGuDdXKrCgvkefJa/z8CBKluMqrOPi/nh2CMcRmMmBhoFSGo4JViiiKW
+ LBzfOcGpoH0WmAIdrnuabikzeLyB/0yv7l4Y2/U3z9XixNpGKZksH3ZcxfEYTTBmOy6F
+ +LaLrbS90Y/n39vtIFZfFY3DEY8CAwREzHINng3WVga+vt8rHHZRy137Ji79I88656Ti
+ U3gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734620535; x=1735225335;
+ d=1e100.net; s=20230601; t=1734620544; x=1735225344;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VPqPkmRu06PLtD07PG3Rk588BhAhOdUz1634l2fW0GY=;
- b=owvHU67I2JZa8mavBWD7KC6IYgmsjDLMBDjHfds3CmWTODCTCgZu0MX5qe2xjngpwR
- VA37qnm9+VgpP9VZswmQtZDK0Nel6sLIICBBIyPffoEYS0mjlNVVSVWjog60KrfelprZ
- jGvLzZRZ7EtwqYFKBZ328h9HkQsB8zmGgutwdLOiTxB4mjsM/Awh76R4QzGpKyhM3AxH
- xSwJUat3DBcSSKcQTr8SmZJJ3qjj5GwqCy4+0HrUHAHEGRAPBdoU9idOzWq3iEwH7vsy
- 3I9C+pUM02IjZt6PTOkW9M2Zfx+IIrjEoizyiAO79OSdLqE0wTrYn8WaaOHUoYyBVrdv
- aeVA==
-X-Gm-Message-State: AOJu0YyZDG3Sl9dVVwvmDSPVl4OO//oSlFF6Dt+grrIg3p2dKIrRuKB7
- vdpaKSv+yuCr8BHCMHzFbwWOcfOLIBYYec112/n+bnBD8j69jlbAEP7/2XItixq2D0xFe6p5cLT
- Y
-X-Gm-Gg: ASbGncubeuxBzvS8UK+15PVIbFtKrZpDmz3QWUrLfQMFiKnj2Z/+WU7/CzJX87hzF7a
- bxKXokL6jMINDCdQq4hoUTd1OOSwNvw9jE+iYHm6mlgeJz7cAoTo0DX2XnH5A85CZPqnAg6E0vY
- F4eQTvZOZ90oUqkQJsPSqea+1ppgGYHGMohMo5YCuig/qOsgFRIr2C5KOV1dE+1Dn3OQvvFgyCr
- JBt2NltG/spK0Zb/j7Ebvrrn+fVNamuFhsU8HkXGM++YKrObcoxibUjF2fwoiYD66NlbEyvdCW5
- 1N7u
-X-Google-Smtp-Source: AGHT+IGLoCDAI7+7/qRP8XJ1Hp27f6ADvI/B9bhtUf3E7A2xeNPLoE1KMGzGhPOyBtMhXVXNSi2cew==
-X-Received: by 2002:a5d:64a7:0:b0:385:f560:7924 with SMTP id
- ffacd0b85a97d-388e4d30f16mr5741383f8f.4.1734620535409; 
- Thu, 19 Dec 2024 07:02:15 -0800 (PST)
+ bh=a5X1+M6+3UyvBYMYaayfcaUwM70oCSQurIK4F7x4Fws=;
+ b=w2sohEnJh1XkIMKdycDpYXNP5UtFZ3eTN+3Gtj2DYQIjstx5P8pDpZGzm2nj53/Xpy
+ quz/f16AXlxX0G7isOcFD74WhmygKwhrmGwenbQ0FZEEdDyeSMALGfyoBoYTOxOKjzWB
+ 2lzusehhcxt31UObuvR3PC7OVz7zW/diucD8fg8umq+ZCYBzqhBWduIZ2ds13R1aVm8q
+ 9wIhxGoJ5ZIZUuOQnMmrgsChpjaQO4pAWoRVj64bNqGnW+m10vozMu2JsE5Yw968yVch
+ skhbb7j2SVYzp7sUQ6d2JXSV8MmI60UsCXAClSW6jMpfF5krAZ/Btgk+ADszvCHJhYH7
+ JAjA==
+X-Gm-Message-State: AOJu0YyxlKuy8b3FPTUC29JtiaRZCNSkplpPZpprSvsEVBiRGsFlFlj5
+ QeaFlxBuiEeU9uMuUrcAGAcWVw2tpvjd0mOtiIa7jNIMtTvlPvKbJBE2BEA6c0/iEtnX3hx2Osh
+ 6
+X-Gm-Gg: ASbGncsNVvU/0EXhmayWMzyqrODYCmlHmRWIb20EWy9U5mijRu28jHxZO1vxLTZuczK
+ /jTReW7Re4m6pumHWTHjBClsRkZMqTt96VcHSIoz5fTXNs15nVK9DZSMtnLvs+rZRvOLBQdqi7A
+ ObBhu7YroCNbU9rjFmTh45H7KBdSgkcbxuST+wcuH1zQ0bmJQRi8TVheO4Dx9pmxixhZve8/F6Q
+ lSAX5qodarWZ91tEVf8dhhpsOhlO23I1GdOkeQnHMGxC/A/8WERsKGxycIVIXXplOz7N431VMKV
+ qa9W
+X-Google-Smtp-Source: AGHT+IEXIlOmW9o9lr+s2h5UeeagPMa271FjIw/v9/nqmuTLQ26hTPtgYOmqI0JTqbYE7cTGLtpzIA==
+X-Received: by 2002:a5d:5984:0:b0:386:4277:6cf1 with SMTP id
+ ffacd0b85a97d-388e4d8e7edmr6587031f8f.39.1734620540285; 
+ Thu, 19 Dec 2024 07:02:20 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4366127c493sm19969735e9.28.2024.12.19.07.02.14
+ 5b1f17b1804b1-4366127c493sm19971545e9.28.2024.12.19.07.02.19
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Dec 2024 07:02:14 -0800 (PST)
+ Thu, 19 Dec 2024 07:02:19 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -67,17 +67,18 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, qemu-trivial@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/3] docs: Correct release of TCG trace-events removal
-Date: Thu, 19 Dec 2024 16:02:02 +0100
-Message-ID: <20241219150203.55212-3-philmd@linaro.org>
+Subject: [PATCH 3/3] docs: Replace 'since' -> 'removed in' in
+ removed-features.rst
+Date: Thu, 19 Dec 2024 16:02:03 +0100
+Message-ID: <20241219150203.55212-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219150203.55212-1-philmd@linaro.org>
 References: <20241219150203.55212-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,29 +101,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TCG trace-events were deprecated before the v6.2 release,
-and removed for v7.0.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- docs/about/removed-features.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ docs/about/removed-features.rst | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index 68fe0b47f9f..e3a87f3f555 100644
+index e3a87f3f555..cb1388049a8 100644
 --- a/docs/about/removed-features.rst
 +++ b/docs/about/removed-features.rst
-@@ -1087,8 +1087,8 @@ processor IP (see `Intel discontinuance notification`_).
- TCG introspection features
- --------------------------
+@@ -403,13 +403,13 @@ Sound card devices should be created using ``-device`` or ``-audio``.
+ The exception is ``pcspk`` which can be activated using ``-machine
+ pcspk-audiodev=<name>``.
  
--TCG trace-events (since 6.2)
--''''''''''''''''''''''''''''
-+TCG trace-events (removed in 7.0)
-+'''''''''''''''''''''''''''''''''
+-``-watchdog`` (since 7.2)
+-'''''''''''''''''''''''''
++``-watchdog`` (removed in 7.2)
++''''''''''''''''''''''''''''''
  
- The ability to add new TCG trace points had bit rotted and as the
- feature can be replicated with TCG plugins it was removed. If
+ Use ``-device`` instead.
+ 
+-Hexadecimal sizes with scaling multipliers (since 8.0)
+-''''''''''''''''''''''''''''''''''''''''''''''''''''''
++Hexadecimal sizes with scaling multipliers (removed in 8.0)
++'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+ Input parameters that take a size value should only use a size suffix
+ (such as 'k' or 'M') when the base is written in decimal, and not when
+@@ -510,15 +510,15 @@ than zero.
+ 
+ Removed along with the ``compression`` migration capability.
+ 
+-``-device virtio-blk,scsi=on|off`` (since 9.1)
+-''''''''''''''''''''''''''''''''''''''''''''''
++``-device virtio-blk,scsi=on|off`` (removed in 9.1)
++'''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+ The virtio-blk SCSI passthrough feature is a legacy VIRTIO feature.  VIRTIO 1.0
+ and later do not support it because the virtio-scsi device was introduced for
+ full SCSI support.  Use virtio-scsi instead when SCSI passthrough is required.
+ 
+-``-fsdev proxy`` and ``-virtfs proxy`` (since 9.2)
+-''''''''''''''''''''''''''''''''''''''''''''''''''
++``-fsdev proxy`` and ``-virtfs proxy`` (removed in 9.2)
++'''''''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+ The 9p ``proxy`` filesystem backend driver was originally developed to
+ enhance security by dispatching low level filesystem operations from 9p
+@@ -532,8 +532,8 @@ security model option, or switch to ``virtiofs``.   The virtiofs daemon
+ ``virtiofsd`` uses vhost to eliminate the high latency costs of the 9p
+ ``proxy`` backend.
+ 
+-``-portrait`` and ``-rotate`` (since 9.2)
+-'''''''''''''''''''''''''''''''''''''''''
++``-portrait`` and ``-rotate`` (removed in 9.2)
++''''''''''''''''''''''''''''''''''''''''''''''
+ 
+ The ``-portrait`` and ``-rotate`` options were documented as only
+ working with the PXA LCD device, and all the machine types using
 -- 
 2.47.1
 
