@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F099E9F962D
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:17:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D5329F9623
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:16:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOffg-0005ok-Lh; Fri, 20 Dec 2024 11:16:12 -0500
+	id 1tOffp-0005y7-2H; Fri, 20 Dec 2024 11:16:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOffe-0005oE-AC
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:10 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOffk-0005qs-Kp
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:16 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOffc-0006cJ-Ky
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:09 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-38632b8ae71so1618388f8f.0
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:16:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOffh-0006ga-BF
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:15 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4361d5dcf5bso22623705e9.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:16:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711367; x=1735316167; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734711371; x=1735316171; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PQRaAxonstRNg+zJNWvBOScLNgnEhfzST5TP3my+hhE=;
- b=i9BU1xqm4WPFYftFAkMABmV0FxJuCa/pd+88XY7Xy1JrmY88Qq1ZKWa3XWUwAIuRvP
- 4Q18njdwG+HMNQSq8gaZ8rfehpDIA5z2qbSWBiJIqKHutNl9ftYBuGIhznMzotbu4nnT
- FEEx9jXr71mywDnQVSTMQAWkZ9yfVLNZgYvhPlEmI5iK/qR6s6rcoflnuGfBAiM8+96H
- WNcGxeic1MN4RuJutX9LCI3bgSLr02UVE1mgowXGwL1oXCLEZjI6XpS46ZbImendXjez
- Hwe3mb0L1Xru0MI8zQCEW8U3C901qhEgJhd7Ng98co9jHIz523yBwMtuYxF2cUkpXsfO
- Tgdw==
+ bh=YaupKmRaiQE1rQ0k1M3YCIRubFuxasmL5+OyAuZAyCQ=;
+ b=g1b0a9LqnPoufcmEXzmugZ9A2Hhiqgu9rv51cg5YIFvRsomTWGX1U/GEFsOFCLUkHT
+ xmIm3jG4IAaF/zxwr/qAt1IiUpI20EmhPKpy5FpSm8zFOeOFJ3gjWq1KIJhlCraSrvlD
+ b8V7zrs92Sozh+D581mTMuBsF7cmBoHyGSU8rluleKOL5G/3JqG71odI9ALzxruogDj5
+ XlEn5zxZ9QuEDtORjil5TA4R3qPmZODRJ/WH2E39kkIgIvqouPbmZR3baVta1AvJ3q2n
+ KIZuJl5Dmj5D6ZOfgyehecDM0S/U4sqP4zTMWkRS9acHeWWKnIyvfubPa5LiiWaouElD
+ STWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711367; x=1735316167;
+ d=1e100.net; s=20230601; t=1734711371; x=1735316171;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PQRaAxonstRNg+zJNWvBOScLNgnEhfzST5TP3my+hhE=;
- b=HZmBX2pLMACjandpxx40HeTnjynVu/j/qb+/lPvF6n/6KxlM6d2Ngh0y/GgPhfhD5u
- PDeso04XA0EZLezVOp+NkdigJhSeWX/eSVtpt8h/SOuSoPIHy0iPI7RdEq4bf0XNK0SQ
- BDaJazGCSLjiq9ScDWqYrGPHeyWY6KmTB29rOL0r4PlNzgY0RzaF6VtYupyEiNkDHKQ5
- 8mcDl5VWJdJv5i3Kuae0NZmJtAe4WqjOiPDo1VEgY/kfShuAwP+jLSj7ybGExfMgpGzp
- 3+DK6PLHyQh3AhrSSuGnJrG2RuwYWi1uoPCV9DArGFf5WHt+2ibVp2aWzKMKZPwFNvhP
- /7qw==
-X-Gm-Message-State: AOJu0YwahqYYM4o60aWcoZAgZTWym1NiRowlOLcOgYQvPyzYPMjvDRSQ
- 1swYp6klbfMncFDXhdXAsCcX/BOtJm3GXxJlcT3SK7bSU7mJHbcHaulyjHeE54TuZn2eVa8gaKC
- K
-X-Gm-Gg: ASbGncufSPNHurBs+XC8dSwM0y0FAH/8ffzj5v8iGX6fQDGvdKCv/gXQITwcylJ2TlX
- 9BD59taBisT/RuTpfWRyKyWcJB2PgQ/lHC+j9S4GHCutKt+cddi2B3x+T7iyBHCYX1H6elGRKio
- pjUQ6NPxw2L26GbLjDM8Re4SldxATu1fJiRShSoAQtgFbHuIXTde1/CRbd1h3SVbgJjPp6C/a0p
- ukor6AeSAsOabCKjq2Jjaql+MajKs3wTSC1oj+gcZyvcKLprm36VQNXealrPipeeefO86AGynk=
-X-Google-Smtp-Source: AGHT+IFIL8mrL3rA9rOVwpl7/tAwN8DtbL0XKtxkhL7KkWwFEEEkjg1vTXyr/HIHdXvvXQeGbs0n0Q==
-X-Received: by 2002:a5d:5e09:0:b0:385:f16d:48b4 with SMTP id
- ffacd0b85a97d-38a223f7510mr4128347f8f.40.1734711366904; 
- Fri, 20 Dec 2024 08:16:06 -0800 (PST)
+ bh=YaupKmRaiQE1rQ0k1M3YCIRubFuxasmL5+OyAuZAyCQ=;
+ b=kC0Rw1Q18MRdgxrBvIQ93/jpCHbZSB/VwjPWTDV5wED1h71KgrCojTCTm0sndeZK6g
+ 9X1ifFTZWH6lCmzlhx0yUkCd5wjDFhzz2HSfkpab5k5GqQ1W+QWOTp1BIIU9C+8EpIvc
+ UAEbL9bpOh7w+2IdDN0FIbNwHPy1YTuhMyxoDbDX63tYZYB/i/BLbH/zutxhlVvapOde
+ LlyQv8rGYhHJ71YabbHecn2oQ1ENZi6PgItI/u1ipQKv/Z1evU/rc/FoDVnvC/Limn9N
+ nC68HQbeOAaospxoza1qi4E4jRj/eE2lxxP/Rdr9J9juH/mC+Q1ZRjVp0wVmCm1wnOVf
+ S3tw==
+X-Gm-Message-State: AOJu0YwqxQULVExxBooq+NNUvqrrF0MfaweiGFcr0w4kBUbjUh3fAOXQ
+ qcUo890O7BXDDj3+3r3fW0w0/7G4ItSq3+zZPj075Z5RNsB1y+YgUvApDWJRT056SktzJt9Faef
+ 3
+X-Gm-Gg: ASbGncuAME5eP71vMSbK3A8ah+pnZsWfjvLbN1pClrD26xxs4P0+IsRVIpH1vXMz4Ya
+ AveYKLBejg5NYRcvS6m4GvggQs5UMK748R9CmczHWER+9GTGQX27l2MC4Gj+B+xB0nZHHNAeyAE
+ h3ffVNm7eESbdFUlrLIyHO+WYLMMz+dp5N8PH0uHKg+Iwf2fuG+D+wmYmWdWfFWGOPHVfvQGjOI
+ R1/YaKPW+oWoqsoq+HMao8vp1dsa3QVOXcImOuXQOs7HZrbIA4F+f6YCsa7/HdPCzpyyrFa8AI=
+X-Google-Smtp-Source: AGHT+IE8JGDdkcwwUfQec342dLGKmWiBQpXQGKzUz+SS/+NnGz2gnoxLK5zwlQ/wR3kQTp9aBCe9xQ==
+X-Received: by 2002:a05:6000:4a11:b0:385:dedb:a148 with SMTP id
+ ffacd0b85a97d-38a223f5c90mr3454151f8f.46.1734711371349; 
+ Fri, 20 Dec 2024 08:16:11 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656af6d02sm85408715e9.1.2024.12.20.08.16.06
+ ffacd0b85a97d-38a1c8add5asm4318399f8f.107.2024.12.20.08.16.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:16:06 -0800 (PST)
+ Fri, 20 Dec 2024 08:16:10 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 03/59] qom: Add TYPE_CONTAINER macro
-Date: Fri, 20 Dec 2024 17:14:54 +0100
-Message-ID: <20241220161551.89317-4-philmd@linaro.org>
+Cc: Peter Xu <peterx@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 04/59] qom: New object_property_add_new_container()
+Date: Fri, 20 Dec 2024 17:14:55 +0100
+Message-ID: <20241220161551.89317-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
 References: <20241220161551.89317-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,90 +98,74 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-Provide a macro for the container type across QEMU source tree, rather than
-hard code it every time.
+To move towards explicit creations of containers, starting that by
+providing a helper for creating container objects.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
-Message-ID: <20241121192202.4155849-2-peterx@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20241121192202.4155849-3-peterx@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/qom/object.h | 1 +
- hw/arm/stellaris.c   | 2 +-
- qom/container.c      | 4 ++--
- qom/object.c         | 4 ++--
- 4 files changed, 6 insertions(+), 5 deletions(-)
+ include/qom/object.h | 12 ++++++++++++
+ qom/container.c      | 14 +++++++++++---
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
 diff --git a/include/qom/object.h b/include/qom/object.h
-index a201c9712a1..de02e16817c 100644
+index de02e16817c..95d6e064d9b 100644
 --- a/include/qom/object.h
 +++ b/include/qom/object.h
-@@ -26,6 +26,7 @@ typedef struct InterfaceClass InterfaceClass;
- typedef struct InterfaceInfo InterfaceInfo;
+@@ -2019,6 +2019,18 @@ int object_child_foreach_recursive(Object *obj,
+  */
+ Object *container_get(Object *root, const char *path);
  
- #define TYPE_OBJECT "object"
-+#define TYPE_CONTAINER "container"
- 
- typedef struct ObjectProperty ObjectProperty;
- 
-diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
-index 7fc13d96c9b..e31884b23e9 100644
---- a/hw/arm/stellaris.c
-+++ b/hw/arm/stellaris.c
-@@ -1053,7 +1053,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
-     flash_size = (((board->dc0 & 0xffff) + 1) << 1) * 1024;
-     sram_size = ((board->dc0 >> 18) + 1) * 1024;
- 
--    soc_container = object_new("container");
-+    soc_container = object_new(TYPE_CONTAINER);
-     object_property_add_child(OBJECT(ms), "soc", soc_container);
- 
-     /* Flash programming is done via the SCU, so pretend it is ROM.  */
++/**
++ * object_property_add_new_container:
++ * @obj: the parent object
++ * @name: the name of the parent object's property to add
++ *
++ * Add a newly created container object to a parent object.
++ *
++ * Returns: the newly created container object.  Its reference count is 1,
++ * and the reference is owned by the parent object.
++ */
++Object *object_property_add_new_container(Object *obj, const char *name);
++
+ /**
+  * object_property_help:
+  * @name: the name of the property
 diff --git a/qom/container.c b/qom/container.c
-index 455e8410c66..cfec92a9447 100644
+index cfec92a9447..20ab74b0e8d 100644
 --- a/qom/container.c
 +++ b/qom/container.c
-@@ -15,7 +15,7 @@
- #include "qemu/module.h"
+@@ -24,6 +24,16 @@ static void container_register_types(void)
+     type_register_static(&container_info);
+ }
  
- static const TypeInfo container_info = {
--    .name          = "container",
-+    .name          = TYPE_CONTAINER,
-     .parent        = TYPE_OBJECT,
- };
- 
-@@ -37,7 +37,7 @@ Object *container_get(Object *root, const char *path)
++Object *object_property_add_new_container(Object *obj, const char *name)
++{
++    Object *child = object_new(TYPE_CONTAINER);
++
++    object_property_add_child(obj, name, child);
++    object_unref(child);
++
++    return child;
++}
++
+ Object *container_get(Object *root, const char *path)
+ {
+     Object *obj, *child;
+@@ -37,9 +47,7 @@ Object *container_get(Object *root, const char *path)
      for (i = 1; parts[i] != NULL; i++, obj = child) {
          child = object_resolve_path_component(obj, parts[i]);
          if (!child) {
--            child = object_new("container");
-+            child = object_new(TYPE_CONTAINER);
-             object_property_add_child(obj, parts[i], child);
-             object_unref(child);
+-            child = object_new(TYPE_CONTAINER);
+-            object_property_add_child(obj, parts[i], child);
+-            object_unref(child);
++            child = object_property_add_new_container(obj, parts[i]);
          }
-diff --git a/qom/object.c b/qom/object.c
-index c7660f9a097..c9f8442b136 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -1734,7 +1734,7 @@ Object *object_get_root(void)
-     static Object *root;
- 
-     if (!root) {
--        root = object_new("container");
-+        root = object_new(TYPE_CONTAINER);
      }
  
-     return root;
-@@ -1750,7 +1750,7 @@ Object *object_get_internal_root(void)
-     static Object *internal_root;
- 
-     if (!internal_root) {
--        internal_root = object_new("container");
-+        internal_root = object_new(TYPE_CONTAINER);
-     }
- 
-     return internal_root;
 -- 
 2.47.1
 
