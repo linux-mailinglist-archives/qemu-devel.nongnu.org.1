@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E135B9F9636
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:19:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC1939F9643
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:21:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOfi5-0000uu-Gq; Fri, 20 Dec 2024 11:18:42 -0500
+	id 1tOfiS-0001fK-If; Fri, 20 Dec 2024 11:19:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfhn-0000RK-Hs
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:18:23 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfhr-0000d5-SX
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:18:29 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfhl-00089b-Up
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:18:23 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4361c705434so15608745e9.3
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:18:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfhq-0008A8-4P
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:18:27 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3862a921123so1493935f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:18:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711500; x=1735316300; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734711504; x=1735316304; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1hV0gRaFv2VBQtuTxUa/ulndjRXYAGisn/eeSilawuU=;
- b=HlZBhiFGne6p1UDwjGk7atGL37dombwgDZ431ib1jla7Q9xQXCAjpAS02nnxlj2WVE
- q7AMmZpWxg6XP7zLvAKHt1+uoaVHOaeWnjkFk3vNOtprCnexZjQOWhTyj8TJfsL4UFTb
- sYLACsMv0WrmLuJCNMxFlaTL2qbQNo8YQETMfj+/wi+ElVArE7W5N9JuDQOYKbK8vYiD
- Fgau+or5b0glghr+SspqYzIJXWM7ZKvdrE/kep4heR9moxZM+SWO43NjsCbNMEaPM0Yt
- eFl2dV8ElCniDWbyhWiM5T0hR7vaGbO0Zi1zL1KwKZcNWk7bt4Yp8MyknxrwJSncLAL9
- WSvA==
+ bh=tifxFPID9bghi7hq01IeGacsDjpsOnZMZbgcEaKOJwE=;
+ b=osKZFulOeuNpwsLcCrB7SLydz7WacRnuV/zpSlAhzHnC5PyWiC38sbKMN5RPI2K7uf
+ DbAoP7QawN69grfcWM7DhcSvpKqCL1XbF1JvRrr1ojLbqB5WCyGlhn/GY3sARTLSGsOL
+ IFRcLdzm3uQTCwawpbxLw951Hm7PDafK6+7aoGuqNUxto0Z6EH60eWAVF1fZPzDuqPey
+ Lzxhig/Dm7ZCBflEYxq/M4GJDUUI34UBO5zHGAorPygNLvdFUDT1iwJAnOh1AMuUycXP
+ syKfhgW41jzN6RhS3uZg2obl1yOUluQ0EKAlGScnguU0UH66So43CdmLfQt37hANBP2b
+ UWCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711500; x=1735316300;
+ d=1e100.net; s=20230601; t=1734711504; x=1735316304;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1hV0gRaFv2VBQtuTxUa/ulndjRXYAGisn/eeSilawuU=;
- b=Te4e8iay1/JueiHF/2ygmHGjNr4PEXu4oih70uUXvK3S40eRLhT7BcgPm9qBS1n4EG
- qM4ijMy7gSdIn5pexVFUsbgszW1i70/hMRY6LVbvzoF38vKQv3Z8IxQgF4zlFEyR7j3N
- 1n7JvjPNH7YUZ3pdHF0kZTBLHTjrqx3PD7H0l1McEw5+whdrQc7IH0Dy+qWQ+5tFHAzZ
- UdmeGPDmKDgx3Ux5mzSJWZ2vFdtAJH0i2o1kf5GKfhK5i7C5LHcxm6Nn9Q0uWGQTqJXu
- ePjUTwDWerMA2eGhZWcrprdJ1o1jYaYd/p306t2o4G5zo+wLRARG1wWLid8mEjWTyp1l
- CPCA==
-X-Gm-Message-State: AOJu0YwOV6S7RuYkznZ6QU3NdT96BIag0HxE4/u5RI07rlnn4Fdgc4ai
- KVSQQpAEBf5gii8NTaoTGWBy7GDNG3cTesxX1HnyNvE8+LFOSHbk9un+xx7LQwI04GkwmDYQQ79
- 7
-X-Gm-Gg: ASbGncuCoOxoec+5Ln0HUb6Mudpq3cN18QQ8+yEFngg3DY0rhdiLN84u1ra5yhRrraG
- 32hBn9H9JQ5Dulp/qEekjRyAxXEZ+1/Oto/frEnWjs+kzvHTkmShRyzWeCiZrvvg0D9VlCCpUXc
- t7xYOH8TibphLjsIEVc/0XEMhvc0EhdipabKtzPFhWMHlqTMYODl2lkRlGpYYv4vLri+D/cZ4mU
- gffEUx3FU6HUhCEvAZ/LVnoNlFxef5ZVYKkh8/AXmIC9r1amA8Qzr9VnhkHyt4uxFVhJf6mvxk=
-X-Google-Smtp-Source: AGHT+IF8yttbmiTXC1SGiVb+1Ak7qgni2UmrV8zy3v+uJNU37pFjzn+19ZAVgTjJ4hFKBeaRfZlZ1g==
-X-Received: by 2002:a05:6000:471e:b0:382:31a1:8dc3 with SMTP id
- ffacd0b85a97d-38a222007dcmr3447843f8f.35.1734711500087; 
- Fri, 20 Dec 2024 08:18:20 -0800 (PST)
+ bh=tifxFPID9bghi7hq01IeGacsDjpsOnZMZbgcEaKOJwE=;
+ b=djwxndJOk45j64WgI1a2Yu2Uni+aTEQqxuLeXgPbomxeWgpuOKL+Uo1qTw1RNI0dYO
+ wC1/2Cw5IVzNyWs4VzIGIKydKM7In1vYnUyynH/Eus8tXV+4VqvX2swNg1TxM1O2yTcM
+ 8NeAJN3wLbMr5TnHpGTYyCQL8MiS1FRRqJfn58E+ALQpOaVDRrYaKUsQiYXO+HI08DZV
+ odviombrGa53FfbIDCVbhgZ8UBSSnQSmuN1a6QjxIcW5b4pPvFZ6SoOezC98UDwG02zO
+ Sf/Djca7f3imcSLR1utZb//sMZOC7wI+cmlGTtiUOC9+JUkwNltLi4zlNKQ2aB2+bd3Y
+ M73A==
+X-Gm-Message-State: AOJu0YzZysahc4+TZyEqwvlKm8z2eacXY0Agq6TwlRUJ3ERznriP5/5s
+ gUeU9zUbNncYta9lntNjDzYa8Fpd/qFjip3fa4eXnSe45DUL2F4hzsed4fh81AFe3MTKYlZKqaG
+ l
+X-Gm-Gg: ASbGncvSjTb60ql8qylTO5LrSi0vcC8SOA1rEjE3hwoXd8bgMCq5vPB8KUKVQEFFOlr
+ CbrjzKKd3gB6oLWCfCL4Jw5DuJ6O+PLwV28vSZPGubuoTNisAk6BQFgXFEGkc25+bG90RiM8B/R
+ CehlM+63RnXwBQn98Q3r8YAz540BGs0pdSnCXkWD2tMzE10xzvY/X6Jam2Op6w7AcWjZoTgEk+n
+ 5zu+jIbezyU7lHXXWj88tOd4uL6Sbd5dEQQMt0XJTsVaBG4mJTmMi8y1Y0D+zsSlUH3OILDyN0=
+X-Google-Smtp-Source: AGHT+IEhNsiUTNOMqkuYqQsbDql0+svXU9BGupJUsxZRmHyUuPSV2y0GVvhV01a5sl6WBwZsQ9Yo7g==
+X-Received: by 2002:a5d:59af:0:b0:385:deca:f7cf with SMTP id
+ ffacd0b85a97d-38a221e1ff0mr3295515f8f.8.1734711504479; 
+ Fri, 20 Dec 2024 08:18:24 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43664b15365sm33602635e9.7.2024.12.20.08.18.18
+ ffacd0b85a97d-38a1c847513sm4416421f8f.49.2024.12.20.08.18.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:18:18 -0800 (PST)
+ Fri, 20 Dec 2024 08:18:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 32/59] accel/tcg: Really restrict cpu_io_recompile() to system
- emulation
-Date: Fri, 20 Dec 2024 17:15:23 +0100
-Message-ID: <20241220161551.89317-33-philmd@linaro.org>
+Subject: [PULL 33/59] accel/tcg: Move user-related declarations out of
+ 'exec/cpu-all.h' (1/4)
+Date: Fri, 20 Dec 2024 17:15:24 +0100
+Message-ID: <20241220161551.89317-34-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
 References: <20241220161551.89317-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,33 +98,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 38fc4b11e03 ("accel/tcg: Restrict cpu_io_recompile() to
-system emulation") inadvertently restricted cpu_io_recompile()
-to SoftMMU. Correct to restrict to system emulation.
+Move declarations related to page protection under user
+emulation from "exec/cpu-all.h" to "user/page-protection.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241216160514.56630-1-philmd@linaro.org>
+Message-Id: <20241212185341.2857-12-philmd@linaro.org>
 ---
- accel/tcg/internal-target.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/exec/cpu-all.h         | 5 -----
+ include/user/page-protection.h | 8 ++++++++
+ bsd-user/main.c                | 1 +
+ bsd-user/mmap.c                | 1 +
+ linux-user/main.c              | 1 +
+ linux-user/mmap.c              | 1 +
+ linux-user/syscall.c           | 1 +
+ 7 files changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/accel/tcg/internal-target.h b/accel/tcg/internal-target.h
-index 1cfa318dc6c..3ed81e740d3 100644
---- a/accel/tcg/internal-target.h
-+++ b/accel/tcg/internal-target.h
-@@ -36,9 +36,9 @@ static inline void page_table_config_init(void) { }
- void page_table_config_init(void);
+diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
+index 1c8e0446d06..3d97323893b 100644
+--- a/include/exec/cpu-all.h
++++ b/include/exec/cpu-all.h
+@@ -127,11 +127,6 @@ extern const TargetPageBits target_page;
+ #define TARGET_PAGE_ALIGN(addr) ROUND_UP((addr), TARGET_PAGE_SIZE)
+ 
+ #if defined(CONFIG_USER_ONLY)
+-void page_dump(FILE *f);
+-
+-typedef int (*walk_memory_regions_fn)(void *, target_ulong,
+-                                      target_ulong, unsigned long);
+-int walk_memory_regions(void *, walk_memory_regions_fn);
+ 
+ int page_get_flags(target_ulong address);
+ 
+diff --git a/include/user/page-protection.h b/include/user/page-protection.h
+index 448c7a03449..ea11cf9e328 100644
+--- a/include/user/page-protection.h
++++ b/include/user/page-protection.h
+@@ -12,9 +12,17 @@
+ #error Cannot include this header from system emulation
  #endif
  
--#ifdef CONFIG_SOFTMMU
-+#ifndef CONFIG_USER_ONLY
- G_NORETURN void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr);
--#endif /* CONFIG_SOFTMMU */
-+#endif /* CONFIG_USER_ONLY */
++#include "cpu-param.h"
++#include "exec/target_long.h"
+ #include "exec/translation-block.h"
  
- /**
-  * tcg_req_mo:
+ void page_protect(tb_page_addr_t page_addr);
+ int page_unprotect(tb_page_addr_t address, uintptr_t pc);
++typedef int (*walk_memory_regions_fn)(void *, target_ulong,
++                                      target_ulong, unsigned long);
++
++int walk_memory_regions(void *, walk_memory_regions_fn);
++
++void page_dump(FILE *f);
+ 
+ #endif
+diff --git a/bsd-user/main.c b/bsd-user/main.c
+index 61ca73c4781..0a5bc578365 100644
+--- a/bsd-user/main.c
++++ b/bsd-user/main.c
+@@ -38,6 +38,7 @@
+ #include "qemu/plugin.h"
+ #include "exec/exec-all.h"
+ #include "user/guest-base.h"
++#include "user/page-protection.h"
+ #include "tcg/startup.h"
+ #include "qemu/timer.h"
+ #include "qemu/envlist.h"
+diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
+index 775e905960b..346f2cefd32 100644
+--- a/bsd-user/mmap.c
++++ b/bsd-user/mmap.c
+@@ -18,6 +18,7 @@
+  */
+ #include "qemu/osdep.h"
+ #include "exec/page-protection.h"
++#include "user/page-protection.h"
+ 
+ #include "qemu.h"
+ 
+diff --git a/linux-user/main.c b/linux-user/main.c
+index b09af8d4365..06037304cb1 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -39,6 +39,7 @@
+ #include "qemu/module.h"
+ #include "qemu/plugin.h"
+ #include "user/guest-base.h"
++#include "user/page-protection.h"
+ #include "exec/exec-all.h"
+ #include "exec/gdbstub.h"
+ #include "gdbstub/user.h"
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index e4bf5d5f39c..4e0444b4cbc 100644
+--- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -22,6 +22,7 @@
+ #include "exec/log.h"
+ #include "exec/page-protection.h"
+ #include "qemu.h"
++#include "user/page-protection.h"
+ #include "user-internals.h"
+ #include "user-mmap.h"
+ #include "target_mman.h"
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 1ce4c79784f..c54b199b6d3 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -135,6 +135,7 @@
+ #include "signal-common.h"
+ #include "loader.h"
+ #include "user-mmap.h"
++#include "user/page-protection.h"
+ #include "user/safe-syscall.h"
+ #include "qemu/guest-random.h"
+ #include "qemu/selfmap.h"
 -- 
 2.47.1
 
