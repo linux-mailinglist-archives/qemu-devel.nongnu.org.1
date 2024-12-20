@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 694879F9625
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:16:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F099E9F962D
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:17:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOffe-0005o3-Un; Fri, 20 Dec 2024 11:16:10 -0500
+	id 1tOffg-0005ok-Lh; Fri, 20 Dec 2024 11:16:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOffa-0005nN-K2
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:06 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOffe-0005oE-AC
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:10 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOffY-0006RN-EQ
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:06 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-435f8f29f8aso15599925e9.2
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:16:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOffc-0006cJ-Ky
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:09 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-38632b8ae71so1618388f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:16:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711362; x=1735316162; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734711367; x=1735316167; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4I2sgc4zyVzNmVJJfP05uF241HGHYdnQL3Ka9kt1v/E=;
- b=uW+fNup3Akd8tquDah1QOw8oRzbIiDSKMV8OLMeNjY9EqrtiY82bxcyTtJiJijWV1V
- S7P29WUktypFHZBmpbRl2NBlvYLGfMYZjrIdHU2fLMBgFggFIXNFOiGwUMeRBaQcJFFv
- tO3HRVOFRbL7GyeXfzJJR3o1ns8gMijxxeVwWA41vziTBh5WL5Rh8rqR4PJ3gFV6gs4t
- MxXnm7vKNz4KpId5h6/LCoYt83IgUR4KLVFFGzWAnBMiBQrV2aacK/kCkt+eDxWYBPoU
- OlqXfyqaIRuymV7LpwXXV1vnImX0ueGeOAbfaOrSNYdVOzkgpK1H1E72wPlfoRG17rR+
- njCg==
+ bh=PQRaAxonstRNg+zJNWvBOScLNgnEhfzST5TP3my+hhE=;
+ b=i9BU1xqm4WPFYftFAkMABmV0FxJuCa/pd+88XY7Xy1JrmY88Qq1ZKWa3XWUwAIuRvP
+ 4Q18njdwG+HMNQSq8gaZ8rfehpDIA5z2qbSWBiJIqKHutNl9ftYBuGIhznMzotbu4nnT
+ FEEx9jXr71mywDnQVSTMQAWkZ9yfVLNZgYvhPlEmI5iK/qR6s6rcoflnuGfBAiM8+96H
+ WNcGxeic1MN4RuJutX9LCI3bgSLr02UVE1mgowXGwL1oXCLEZjI6XpS46ZbImendXjez
+ Hwe3mb0L1Xru0MI8zQCEW8U3C901qhEgJhd7Ng98co9jHIz523yBwMtuYxF2cUkpXsfO
+ Tgdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711362; x=1735316162;
+ d=1e100.net; s=20230601; t=1734711367; x=1735316167;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4I2sgc4zyVzNmVJJfP05uF241HGHYdnQL3Ka9kt1v/E=;
- b=xFsuulLE+TAO4R3ZadIIxLTmXLvW+jybi5yqlFNzMkIBPLmoX2GvFyf1Q72sgz9mPu
- fXDrKIaqEEhsh4X5xUEJIjF7krcozzq5wvo+PMHJ3GQJiTtF9wfhA/RYnKSR4WdAXEas
- elEM//pU7aNxvmxHG/q6HIgl2Wd0DNG8G7MRYxjaijbIrxmHUeJrZycEFpi8qzseLwTQ
- VLE3FI2KmBImsPuDQpBE/VO7r0sP3Ko1QhKn0zwVcMhFZmc5Hpt6t1coL6cg6R+zvCMv
- VSSTxmZqJ9eZnpcdROkTAP8ugUzxISFqa+O+gtpo644lx3AXVlj+AimiTyUtGUkghlsy
- qy5w==
-X-Gm-Message-State: AOJu0YzLxu2KdNvT0qfR/wbfZVI28FnioDbNf6cMyILnTs3KMKYoLJMu
- MraigvAFwLRYn2dYO4x9AMO1VgGWL20C3erLdNE/LuptMpvl8CHatpc4dCVNHUYpH0DHG06tNUD
- V
-X-Gm-Gg: ASbGnctrmCHq4EDO0j41clJLYOgkU4S6rftcR90WM7bZ1zEhaEFBRh2KZluPcTysQ8J
- P2AfbNYQnMCOdJIJ/Da03SWDDP+6l5xRQo201eXF94q0gW8cuuh7XGFCxbT/fcTNepXWu4MW3xw
- IZD3GLNlikzNLlcEKrWDj5ooPKK05twTUxMFvZTSCZAqTL9axcos8ifRbvxw/CO0Md/hQNn3d3j
- OQrV9f4vxy8sAry3J0a0SKPXYzqsBEg14q28e7wj4EJkOPecr7ks/tgmNVp1mH2AjJl1QNAzcs=
-X-Google-Smtp-Source: AGHT+IFQSoZp/8oJRS+VDOVhyo8LI6gm1KaHtaXfOq3/U73OCzNCEhgI39el8YdFPVolR/cN/D5mRw==
-X-Received: by 2002:a05:6000:1848:b0:386:459e:655d with SMTP id
- ffacd0b85a97d-38a221fa039mr3845269f8f.20.1734711362402; 
- Fri, 20 Dec 2024 08:16:02 -0800 (PST)
+ bh=PQRaAxonstRNg+zJNWvBOScLNgnEhfzST5TP3my+hhE=;
+ b=HZmBX2pLMACjandpxx40HeTnjynVu/j/qb+/lPvF6n/6KxlM6d2Ngh0y/GgPhfhD5u
+ PDeso04XA0EZLezVOp+NkdigJhSeWX/eSVtpt8h/SOuSoPIHy0iPI7RdEq4bf0XNK0SQ
+ BDaJazGCSLjiq9ScDWqYrGPHeyWY6KmTB29rOL0r4PlNzgY0RzaF6VtYupyEiNkDHKQ5
+ 8mcDl5VWJdJv5i3Kuae0NZmJtAe4WqjOiPDo1VEgY/kfShuAwP+jLSj7ybGExfMgpGzp
+ 3+DK6PLHyQh3AhrSSuGnJrG2RuwYWi1uoPCV9DArGFf5WHt+2ibVp2aWzKMKZPwFNvhP
+ /7qw==
+X-Gm-Message-State: AOJu0YwahqYYM4o60aWcoZAgZTWym1NiRowlOLcOgYQvPyzYPMjvDRSQ
+ 1swYp6klbfMncFDXhdXAsCcX/BOtJm3GXxJlcT3SK7bSU7mJHbcHaulyjHeE54TuZn2eVa8gaKC
+ K
+X-Gm-Gg: ASbGncufSPNHurBs+XC8dSwM0y0FAH/8ffzj5v8iGX6fQDGvdKCv/gXQITwcylJ2TlX
+ 9BD59taBisT/RuTpfWRyKyWcJB2PgQ/lHC+j9S4GHCutKt+cddi2B3x+T7iyBHCYX1H6elGRKio
+ pjUQ6NPxw2L26GbLjDM8Re4SldxATu1fJiRShSoAQtgFbHuIXTde1/CRbd1h3SVbgJjPp6C/a0p
+ ukor6AeSAsOabCKjq2Jjaql+MajKs3wTSC1oj+gcZyvcKLprm36VQNXealrPipeeefO86AGynk=
+X-Google-Smtp-Source: AGHT+IFIL8mrL3rA9rOVwpl7/tAwN8DtbL0XKtxkhL7KkWwFEEEkjg1vTXyr/HIHdXvvXQeGbs0n0Q==
+X-Received: by 2002:a5d:5e09:0:b0:385:f16d:48b4 with SMTP id
+ ffacd0b85a97d-38a223f7510mr4128347f8f.40.1734711366904; 
+ Fri, 20 Dec 2024 08:16:06 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4364a379d69sm102095765e9.0.2024.12.20.08.16.01
+ 5b1f17b1804b1-43656af6d02sm85408715e9.1.2024.12.20.08.16.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:16:01 -0800 (PST)
+ Fri, 20 Dec 2024 08:16:06 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: BALATON Zoltan <balaton@eik.bme.hu>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/59] log: Add separate debug option for logging invalid
- memory accesses
-Date: Fri, 20 Dec 2024 17:14:53 +0100
-Message-ID: <20241220161551.89317-3-philmd@linaro.org>
+Cc: Peter Xu <peterx@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 03/59] qom: Add TYPE_CONTAINER macro
+Date: Fri, 20 Dec 2024 17:14:54 +0100
+Message-ID: <20241220161551.89317-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
 References: <20241220161551.89317-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,95 +97,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+From: Peter Xu <peterx@redhat.com>
 
-Currently -d guest_errors enables logging of different invalid actions
-by the guest such as misusing hardware, accessing missing features or
-invalid memory areas. The memory access logging can be quite verbose
-which obscures the other messages enabled by this debug switch so
-separate it by adding a new -d invalid_mem option to make it possible
-to control it independently of other guest error logs.
+Provide a macro for the container type across QEMU source tree, rather than
+hard code it every time.
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-ID: <1bb0d0e91ba14aca13056df3b0a774f89cbf966c.1730549443.git.balaton@eik.bme.hu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Message-ID: <20241121192202.4155849-2-peterx@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/qemu/log.h | 1 +
- system/memory.c    | 6 +++---
- system/physmem.c   | 2 +-
- util/log.c         | 2 ++
- 4 files changed, 7 insertions(+), 4 deletions(-)
+ include/qom/object.h | 1 +
+ hw/arm/stellaris.c   | 2 +-
+ qom/container.c      | 4 ++--
+ qom/object.c         | 4 ++--
+ 4 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/include/qemu/log.h b/include/qemu/log.h
-index e10e24cd4fc..60da703e670 100644
---- a/include/qemu/log.h
-+++ b/include/qemu/log.h
-@@ -37,6 +37,7 @@ bool qemu_log_separate(void);
- #define LOG_PER_THREAD     (1 << 20)
- #define CPU_LOG_TB_VPU     (1 << 21)
- #define LOG_TB_OP_PLUGIN   (1 << 22)
-+#define LOG_INVALID_MEM    (1 << 23)
+diff --git a/include/qom/object.h b/include/qom/object.h
+index a201c9712a1..de02e16817c 100644
+--- a/include/qom/object.h
++++ b/include/qom/object.h
+@@ -26,6 +26,7 @@ typedef struct InterfaceClass InterfaceClass;
+ typedef struct InterfaceInfo InterfaceInfo;
  
- /* Lock/unlock output. */
+ #define TYPE_OBJECT "object"
++#define TYPE_CONTAINER "container"
  
-diff --git a/system/memory.c b/system/memory.c
-index 85f6834cb3c..a789064fbfa 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -1412,7 +1412,7 @@ bool memory_region_access_valid(MemoryRegion *mr,
- {
-     if (mr->ops->valid.accepts
-         && !mr->ops->valid.accepts(mr->opaque, addr, size, is_write, attrs)) {
--        qemu_log_mask(LOG_GUEST_ERROR, "Invalid %s at addr 0x%" HWADDR_PRIX
-+        qemu_log_mask(LOG_INVALID_MEM, "Invalid %s at addr 0x%" HWADDR_PRIX
-                       ", size %u, region '%s', reason: rejected\n",
-                       is_write ? "write" : "read",
-                       addr, size, memory_region_name(mr));
-@@ -1420,7 +1420,7 @@ bool memory_region_access_valid(MemoryRegion *mr,
-     }
+ typedef struct ObjectProperty ObjectProperty;
  
-     if (!mr->ops->valid.unaligned && (addr & (size - 1))) {
--        qemu_log_mask(LOG_GUEST_ERROR, "Invalid %s at addr 0x%" HWADDR_PRIX
-+        qemu_log_mask(LOG_INVALID_MEM, "Invalid %s at addr 0x%" HWADDR_PRIX
-                       ", size %u, region '%s', reason: unaligned\n",
-                       is_write ? "write" : "read",
-                       addr, size, memory_region_name(mr));
-@@ -1434,7 +1434,7 @@ bool memory_region_access_valid(MemoryRegion *mr,
+diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
+index 7fc13d96c9b..e31884b23e9 100644
+--- a/hw/arm/stellaris.c
++++ b/hw/arm/stellaris.c
+@@ -1053,7 +1053,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+     flash_size = (((board->dc0 & 0xffff) + 1) << 1) * 1024;
+     sram_size = ((board->dc0 >> 18) + 1) * 1024;
  
-     if (size > mr->ops->valid.max_access_size
-         || size < mr->ops->valid.min_access_size) {
--        qemu_log_mask(LOG_GUEST_ERROR, "Invalid %s at addr 0x%" HWADDR_PRIX
-+        qemu_log_mask(LOG_INVALID_MEM, "Invalid %s at addr 0x%" HWADDR_PRIX
-                       ", size %u, region '%s', reason: invalid size "
-                       "(min:%u max:%u)\n",
-                       is_write ? "write" : "read",
-diff --git a/system/physmem.c b/system/physmem.c
-index dc1db3a3846..4bc0228a504 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -2745,7 +2745,7 @@ static bool flatview_access_allowed(MemoryRegion *mr, MemTxAttrs attrs,
-     if (memory_region_is_ram(mr)) {
-         return true;
-     }
--    qemu_log_mask(LOG_GUEST_ERROR,
-+    qemu_log_mask(LOG_INVALID_MEM,
-                   "Invalid access to non-RAM device at "
-                   "addr 0x%" HWADDR_PRIX ", size %" HWADDR_PRIu ", "
-                   "region '%s'\n", addr, len, memory_region_name(mr));
-diff --git a/util/log.c b/util/log.c
-index 6219819855c..b87d399e4cb 100644
---- a/util/log.c
-+++ b/util/log.c
-@@ -503,6 +503,8 @@ const QEMULogItem qemu_log_items[] = {
-       "open a separate log file per thread; filename must contain '%d'" },
-     { CPU_LOG_TB_VPU, "vpu",
-       "include VPU registers in the 'cpu' logging" },
-+    { LOG_INVALID_MEM, "invalid_mem",
-+      "log invalid memory accesses" },
-     { 0, NULL, NULL },
+-    soc_container = object_new("container");
++    soc_container = object_new(TYPE_CONTAINER);
+     object_property_add_child(OBJECT(ms), "soc", soc_container);
+ 
+     /* Flash programming is done via the SCU, so pretend it is ROM.  */
+diff --git a/qom/container.c b/qom/container.c
+index 455e8410c66..cfec92a9447 100644
+--- a/qom/container.c
++++ b/qom/container.c
+@@ -15,7 +15,7 @@
+ #include "qemu/module.h"
+ 
+ static const TypeInfo container_info = {
+-    .name          = "container",
++    .name          = TYPE_CONTAINER,
+     .parent        = TYPE_OBJECT,
  };
  
+@@ -37,7 +37,7 @@ Object *container_get(Object *root, const char *path)
+     for (i = 1; parts[i] != NULL; i++, obj = child) {
+         child = object_resolve_path_component(obj, parts[i]);
+         if (!child) {
+-            child = object_new("container");
++            child = object_new(TYPE_CONTAINER);
+             object_property_add_child(obj, parts[i], child);
+             object_unref(child);
+         }
+diff --git a/qom/object.c b/qom/object.c
+index c7660f9a097..c9f8442b136 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -1734,7 +1734,7 @@ Object *object_get_root(void)
+     static Object *root;
+ 
+     if (!root) {
+-        root = object_new("container");
++        root = object_new(TYPE_CONTAINER);
+     }
+ 
+     return root;
+@@ -1750,7 +1750,7 @@ Object *object_get_internal_root(void)
+     static Object *internal_root;
+ 
+     if (!internal_root) {
+-        internal_root = object_new("container");
++        internal_root = object_new(TYPE_CONTAINER);
+     }
+ 
+     return internal_root;
 -- 
 2.47.1
 
