@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41AFA9F963B
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:20:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC919F9631
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:18:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOfhb-0007nW-8Y; Fri, 20 Dec 2024 11:18:11 -0500
+	id 1tOfhn-0008Tn-DI; Fri, 20 Dec 2024 11:18:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfgr-0007Zw-PP
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:29 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfgv-0007da-NI
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:30 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfgo-000809-Tj
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:24 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-436202dd730so15406195e9.2
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:17:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfgt-00081J-NZ
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:29 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-436281c8a38so15396685e9.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:17:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711441; x=1735316241; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734711446; x=1735316246; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eN/chgeK5TLllxsnxAEr9sTVcOcj0cFLmrLq0ykzav8=;
- b=iEhMIMfQEPzeEASF8EYJZHFADVjp8zskYZuEifn0Q1o8fLoXw8mxQXoHs0iGZKPMXy
- wF8JH9rPH6YVH7TvLkQ4H5lHFOt6nxsBKjlD3i3L4JdvgrqtnriDEDxWJJNFgeEWGF6s
- eDdY82Ra0Fz/wQq5AsObNFh031ULoybFEwN58maNsAy2hjKARMM1C4OIuO6DFggm76Pf
- lxKIRWlhyI8LmxkTzydVGZ4dWxjs8RPFQMfDiW92Aq6bCfb0Xul26cyKWMedTAiO7Pxx
- je9nR4dXI/7RuU8updmcRJniQRE2he8n2Z849CP/kinzsDTeWP0rxbOUsfxTVZ6Wl6gH
- wlTg==
+ bh=K5FRDH0gT4B7UQ0jomsp7+xsvPjqSK3/SJlM1JYZrYg=;
+ b=IjCp+Z0f62OWHVo8YCljdf9nR5dawDbVBa2f8bwKag4PSBIqBRpr0Y1/ba+tpfjU8k
+ c11vkXkK3JEvC8Sm9LrCILMQ6FmIhiLfH9yNmnctSJfHWyfDePJIDbxsg2LnkRS33oD6
+ zZ0cTMuORWwbEgrinXRKDA9/3X9D9ci2YhXIykIKx0RzDV6r2lT2hSnJ3C4LD17WJMb9
+ 5sTeAmyA6BpMlhJejRcncct9GV6+Mg96BW9CN3VW4jls0RnwcRcD/36V04j1SB2lJQoy
+ WPOxpeDKl9YLsdN/qjO5oyhY6N7YVIJdnTxDUFeJqdRsQZB+xIbw/4CkGtKfiJSBFC6s
+ B3TQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711441; x=1735316241;
+ d=1e100.net; s=20230601; t=1734711446; x=1735316246;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eN/chgeK5TLllxsnxAEr9sTVcOcj0cFLmrLq0ykzav8=;
- b=IaW9k5fUAhrQmVuANNj6+iDJwlbjJxwHBSC8MFUj4uZrY3snrqCyODZ266OBo/o6xV
- Coy1YO2K77xE4mPNqZvG3xp0kvZHxqu0p8DnIU9PXS6oq5TuDL+y9lCUs2CxB2aYdvDa
- 2j/wRCL1MFuMtB0p4qh/dDERswOWZfvnaB4a50jnAvv+5uebKCrWJ+vYmqtq/BFobBXx
- yiAP19n19zbzjX2kZbk2qRwCeCfRFtZ0SPeydFflnCBhu99FzR/UuPv6ecU3X6VpUtdV
- Fm71damNvo0Zs9EpTrGYIyEmgjGhGUxcGm1YIhR4R6vcJ2I5/1MohQpWsSuzAYmQErMj
- Tbpg==
-X-Gm-Message-State: AOJu0YzkwXWv22u9YFbGycYFsXQDSNve/GAh4XUXAX1c6cfdbrOi8eay
- 0OB7oQpGRXF+MeW8juBArqeJJZaSH6L/wLoCgExmnDYOVEWiPFOhUhyM7lEOlXDYBkj4Sx1q45V
- s
-X-Gm-Gg: ASbGnct0JTspqQvmXwbIyMrFwr9CI5wFRjexL0mINOcbyKCGNi6+aNKuNafy4biVutT
- ADT3DoU+Ea+Ux9BPdh+kJxUbIQeZHlcVVjV+maex8XkLpe4cLQuXldOTtEziNmjQzqbFALafWkN
- P8xKxtJD56b0RE1Dr5wSWoYxTGicbR1KQ1r8MYq/L00acSuB8Yq0KwJckX2LDpWAOnMnOE3NOhl
- nrOIaRX7klYw121MLk2QF5vKqnk53X/H6pWokmz98+1rafmBs4v7fsZ/D4XvFaLyKrFUAFwvzM=
-X-Google-Smtp-Source: AGHT+IFrPX+V/UrYTi0VRYsuFFzH/nKQs5oKW/Gtyco9kwenqHcvb8lzy0GVcJvPSdxgpqbxtBlzpA==
-X-Received: by 2002:a5d:5e09:0:b0:385:e328:890a with SMTP id
- ffacd0b85a97d-38a223fd7e1mr3271942f8f.49.1734711441035; 
- Fri, 20 Dec 2024 08:17:21 -0800 (PST)
+ bh=K5FRDH0gT4B7UQ0jomsp7+xsvPjqSK3/SJlM1JYZrYg=;
+ b=m808QthZYuH+J224p0iRD60b2VHSBlAU/QBlJ3TSe4Ebyk1PRbh6hz2Qdp9cVXcq1W
+ swkxK9KYpH4s0WKpoHo7kwBDbDBPZMBhxmlU8U6ZUvV6cZO87PJE25SaBTxRDoSuzYWp
+ IbUnWekNGnjAyWMB7dkM9LUOLBJggoSwSF+npia3fSuygq9ROJbMIN8h7V1F/1YioInd
+ S/rnVdq6m1s9C2rUdrj5qScjYY7iWSwAk3gobeUuKSJFQRFrFWJVy1ISkRSSahGNh45i
+ vIm9MI72kG6QspH/PvdT8UL48/5bnJ2K7mkfMy0+Z4QsIHjZlZjxobZ9axqiCYfwVX3n
+ STzQ==
+X-Gm-Message-State: AOJu0YyBHpr62gJsPozUJmUpo13xPkaewjZQyJpqDa8iIbUx/Wbfg48h
+ vKIbptpYy1SQuHmji14IfhIz5OFgtfmi3/T7bwF7Nh+dR/mXLaYdUsbcjmWDQ5qjkem6Ai/yUAV
+ E
+X-Gm-Gg: ASbGncvhOdBBktsjssjg5eGD9/Vwfp93dOHjtqvitx3yyu3Vcl8gzeqWXuilSghi5ML
+ 5utGoEm1n7vFkQSrRlm8lcFXI0xD4DZft9Hm3pnPLtbf00hsEs5VX0H5ZWTlAvDs4FtaQOvJ+gl
+ z3PDyBBbQjV6/fxdD1jEalq1vWPdBOIF6mpnvfwVh2Mt01+zcJ4E9SWRKYU8H5ltL1FklXl0+Zj
+ xQ9aNikopF/8CA74BsgenPpNfn5uziIiZ8ndJZCRQ33jV/VwhmOAXPE83p4hOM1+hc2okFEhuk=
+X-Google-Smtp-Source: AGHT+IFN+pfVtQNNjro8TRNErF9sQnPI0AGKja/cV6yC4j9L9tktRdo75ntHu7BETsPrCipIwE5sEg==
+X-Received: by 2002:a05:600c:3150:b0:434:9fac:b158 with SMTP id
+ 5b1f17b1804b1-4366854718emr24861435e9.1.1734711445518; 
+ Fri, 20 Dec 2024 08:17:25 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c8292f4sm4473730f8f.3.2024.12.20.08.17.20
+ 5b1f17b1804b1-4366127c515sm49852675e9.30.2024.12.20.08.17.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:17:20 -0800 (PST)
+ Fri, 20 Dec 2024 08:17:25 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 19/59] linux-user/aarch64: Include missing 'user/abitypes.h'
- header
-Date: Fri, 20 Dec 2024 17:15:10 +0100
-Message-ID: <20241220161551.89317-20-philmd@linaro.org>
+Subject: [PULL 20/59] user: Introduce 'user/guest-host.h' header
+Date: Fri, 20 Dec 2024 17:15:11 +0100
+Message-ID: <20241220161551.89317-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
 References: <20241220161551.89317-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,36 +97,216 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-arm_set_mte_tcf0() uses the abi_long type which is defined
-in "user/abitypes.h". Include it in order to avoid when
-refactoring:
-
-  In file included from ../../target/arm/gdbstub64.c:28:
-  ../linux-user/aarch64/mte_user_helper.h:30:42: error: unknown type name ‘abi_long’; did you mean ‘u_long’?
-     30 | void arm_set_mte_tcf0(CPUArchState *env, abi_long value);
-        |                                          ^~~~~~~~
+Extract all declarations related to 'guest from/to host'
+address translation to a new "user/guest-host.h" header.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241212185341.2857-3-philmd@linaro.org>
+Message-Id: <20241212185341.2857-2-philmd@linaro.org>
 ---
- linux-user/aarch64/mte_user_helper.h | 2 ++
- 1 file changed, 2 insertions(+)
+ include/exec/cpu-all.h    | 34 +--------------
+ include/exec/cpu_ldst.h   | 47 +--------------------
+ include/user/guest-host.h | 87 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 89 insertions(+), 79 deletions(-)
+ create mode 100644 include/user/guest-host.h
 
-diff --git a/linux-user/aarch64/mte_user_helper.h b/linux-user/aarch64/mte_user_helper.h
-index 8685e5175a2..0c53abda222 100644
---- a/linux-user/aarch64/mte_user_helper.h
-+++ b/linux-user/aarch64/mte_user_helper.h
-@@ -9,6 +9,8 @@
- #ifndef AARCH64_MTE_USER_HELPER_H
- #define AARCH64_MTE USER_HELPER_H
+diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
+index 1c40e276728..1c8e0446d06 100644
+--- a/include/exec/cpu-all.h
++++ b/include/exec/cpu-all.h
+@@ -64,39 +64,7 @@
  
-+#include "user/abitypes.h"
+ /* MMU memory access macros */
+ 
+-#if defined(CONFIG_USER_ONLY)
+-#include "user/abitypes.h"
+-
+-/*
+- * If non-zero, the guest virtual address space is a contiguous subset
+- * of the host virtual address space, i.e. '-R reserved_va' is in effect
+- * either from the command-line or by default.  The value is the last
+- * byte of the guest address space e.g. UINT32_MAX.
+- *
+- * If zero, the host and guest virtual address spaces are intermingled.
+- */
+-extern unsigned long reserved_va;
+-
+-/*
+- * Limit the guest addresses as best we can.
+- *
+- * When not using -R reserved_va, we cannot really limit the guest
+- * to less address space than the host.  For 32-bit guests, this
+- * acts as a sanity check that we're not giving the guest an address
+- * that it cannot even represent.  For 64-bit guests... the address
+- * might not be what the real kernel would give, but it is at least
+- * representable in the guest.
+- *
+- * TODO: Improve address allocation to avoid this problem, and to
+- * avoid setting bits at the top of guest addresses that might need
+- * to be used for tags.
+- */
+-#define GUEST_ADDR_MAX_                                                 \
+-    ((MIN_CONST(TARGET_VIRT_ADDR_SPACE_BITS, TARGET_ABI_BITS) <= 32) ?  \
+-     UINT32_MAX : ~0ul)
+-#define GUEST_ADDR_MAX    (reserved_va ? : GUEST_ADDR_MAX_)
+-
+-#else
++#if !defined(CONFIG_USER_ONLY)
+ 
+ #include "exec/hwaddr.h"
+ 
+diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
+index c1dd424dc1b..769e9fc4404 100644
+--- a/include/exec/cpu_ldst.h
++++ b/include/exec/cpu_ldst.h
+@@ -73,52 +73,7 @@
+ #include "qemu/int128.h"
+ 
+ #if defined(CONFIG_USER_ONLY)
+-
+-#include "user/guest-base.h"
+-
+-#ifndef TARGET_TAGGED_ADDRESSES
+-static inline abi_ptr cpu_untagged_addr(CPUState *cs, abi_ptr x)
+-{
+-    return x;
+-}
+-#endif
+-
+-/* All direct uses of g2h and h2g need to go away for usermode softmmu.  */
+-static inline void *g2h_untagged(abi_ptr x)
+-{
+-    return (void *)((uintptr_t)(x) + guest_base);
+-}
+-
+-static inline void *g2h(CPUState *cs, abi_ptr x)
+-{
+-    return g2h_untagged(cpu_untagged_addr(cs, x));
+-}
+-
+-static inline bool guest_addr_valid_untagged(abi_ulong x)
+-{
+-    return x <= GUEST_ADDR_MAX;
+-}
+-
+-static inline bool guest_range_valid_untagged(abi_ulong start, abi_ulong len)
+-{
+-    return len - 1 <= GUEST_ADDR_MAX && start <= GUEST_ADDR_MAX - len + 1;
+-}
+-
+-#define h2g_valid(x) \
+-    (HOST_LONG_BITS <= TARGET_VIRT_ADDR_SPACE_BITS || \
+-     (uintptr_t)(x) - guest_base <= GUEST_ADDR_MAX)
+-
+-#define h2g_nocheck(x) ({ \
+-    uintptr_t __ret = (uintptr_t)(x) - guest_base; \
+-    (abi_ptr)__ret; \
+-})
+-
+-#define h2g(x) ({ \
+-    /* Check if given address fits target address space */ \
+-    assert(h2g_valid(x)); \
+-    h2g_nocheck(x); \
+-})
+-
++#include "user/guest-host.h"
+ #endif /* CONFIG_USER_ONLY */
+ 
+ uint32_t cpu_ldub_data(CPUArchState *env, abi_ptr ptr);
+diff --git a/include/user/guest-host.h b/include/user/guest-host.h
+new file mode 100644
+index 00000000000..8d2079bbbba
+--- /dev/null
++++ b/include/user/guest-host.h
+@@ -0,0 +1,87 @@
++/* SPDX-License-Identifier: LGPL-2.1-or-later */
++/*
++ * guest <-> host helpers.
++ *
++ *  Copyright (c) 2003 Fabrice Bellard
++ */
 +
- #ifndef PR_MTE_TCF_SHIFT
- # define PR_MTE_TCF_SHIFT       1
- # define PR_MTE_TCF_NONE        (0UL << PR_MTE_TCF_SHIFT)
++#ifndef USER_GUEST_HOST_H
++#define USER_GUEST_HOST_H
++
++#include "user/abitypes.h"
++#include "user/guest-base.h"
++#include "cpu.h"
++
++/*
++ * If non-zero, the guest virtual address space is a contiguous subset
++ * of the host virtual address space, i.e. '-R reserved_va' is in effect
++ * either from the command-line or by default.  The value is the last
++ * byte of the guest address space e.g. UINT32_MAX.
++ *
++ * If zero, the host and guest virtual address spaces are intermingled.
++ */
++extern unsigned long reserved_va;
++
++/*
++ * Limit the guest addresses as best we can.
++ *
++ * When not using -R reserved_va, we cannot really limit the guest
++ * to less address space than the host.  For 32-bit guests, this
++ * acts as a sanity check that we're not giving the guest an address
++ * that it cannot even represent.  For 64-bit guests... the address
++ * might not be what the real kernel would give, but it is at least
++ * representable in the guest.
++ *
++ * TODO: Improve address allocation to avoid this problem, and to
++ * avoid setting bits at the top of guest addresses that might need
++ * to be used for tags.
++ */
++#define GUEST_ADDR_MAX_                                                 \
++    ((MIN_CONST(TARGET_VIRT_ADDR_SPACE_BITS, TARGET_ABI_BITS) <= 32) ?  \
++     UINT32_MAX : ~0ul)
++#define GUEST_ADDR_MAX    (reserved_va ? : GUEST_ADDR_MAX_)
++
++#ifndef TARGET_TAGGED_ADDRESSES
++static inline abi_ptr cpu_untagged_addr(CPUState *cs, abi_ptr x)
++{
++    return x;
++}
++#endif
++
++/* All direct uses of g2h and h2g need to go away for usermode softmmu.  */
++static inline void *g2h_untagged(abi_ptr x)
++{
++    return (void *)((uintptr_t)(x) + guest_base);
++}
++
++static inline void *g2h(CPUState *cs, abi_ptr x)
++{
++    return g2h_untagged(cpu_untagged_addr(cs, x));
++}
++
++static inline bool guest_addr_valid_untagged(abi_ulong x)
++{
++    return x <= GUEST_ADDR_MAX;
++}
++
++static inline bool guest_range_valid_untagged(abi_ulong start, abi_ulong len)
++{
++    return len - 1 <= GUEST_ADDR_MAX && start <= GUEST_ADDR_MAX - len + 1;
++}
++
++#define h2g_valid(x) \
++    (HOST_LONG_BITS <= TARGET_VIRT_ADDR_SPACE_BITS || \
++     (uintptr_t)(x) - guest_base <= GUEST_ADDR_MAX)
++
++#define h2g_nocheck(x) ({ \
++    uintptr_t __ret = (uintptr_t)(x) - guest_base; \
++    (abi_ptr)__ret; \
++})
++
++#define h2g(x) ({ \
++    /* Check if given address fits target address space */ \
++    assert(h2g_valid(x)); \
++    h2g_nocheck(x); \
++})
++
++#endif
 -- 
 2.47.1
 
