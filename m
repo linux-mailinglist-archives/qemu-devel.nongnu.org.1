@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE6A19F9650
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:22:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF9D9F9673
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:25:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOfjU-0005df-Uc; Fri, 20 Dec 2024 11:20:10 -0500
+	id 1tOfjW-0005ga-Ql; Fri, 20 Dec 2024 11:20:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfj7-00058E-Ug
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:19:48 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfjB-00059Q-7Y
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:19:50 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfj4-0008Ie-No
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:19:45 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3862d6d5765so1334550f8f.3
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:19:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfj9-0008JC-Bs
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:19:48 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-388cae9eb9fso1272342f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:19:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711581; x=1735316381; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734711585; x=1735316385; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=z2q6hztruFV/rEotOSts69LdsvL+mRG0yRstG2pV9uo=;
- b=TEBo3kwIaHTyzVIVOEv0Q3X7HZA6oYy6AhqaSjF0G/lVxfY6WmhJnmQ5KQltSZeiwZ
- g2CX6gBrbMj3EfdQfhEhozT9j34CxJ+Hc3yICURXDMlzpzJOXe5IfRqs1A2/O7vBt2Np
- 4L4FID3Bv748JxvNLbtdX9yENeBfpgQkyM79hFJgeb+uhik1dEBQdD928mbtsdkJ8bCP
- h8gz6/Wfz+yMd6XD1p2c07uV5BE2LFTRGHmvC9L114+GvVRxnzPgPoe+jKPbzh9aCU1v
- PoH+tJG/j7AfzO1g+/kquXYgBP7uok397S/20X4/iqhcd+wMEoh1YLrMlMSZrawFh0kW
- cXtw==
+ bh=zb712QFkXMyJHgZrNJU9p7a0+PEvQntNQaexSv2HpdI=;
+ b=lRoe73xI8DHMozFx1aDv5Xa1/Q099ipHIb0EcdPK8yY4tUb7BcFuJHTDuujZEQOAo1
+ f6ZTiDF5/2qXeqk9xvDACfrMO71VGVkRDoeeauVi+/b743xZ97MG2nPCdiXRTPU+ozPt
+ A/CZfnb0sHVpd25Z1uIphWlh6mhx+SdZCHWx+2hCnENv7j8hy5+IRBO06/0VF0ie5Neo
+ dHwYUnL5enRcMy4DwSFrobKOhc5g5sLGXRpRHmtYf75XuteMNNVJwdE2quZoO3rYq2hO
+ FELX0ExQMKdO6S0WJ9LdnDPbg4/3pCfRgnL8nrruYM4LYo22caat21ySj129WwW/dgLH
+ hBoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711581; x=1735316381;
+ d=1e100.net; s=20230601; t=1734711585; x=1735316385;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=z2q6hztruFV/rEotOSts69LdsvL+mRG0yRstG2pV9uo=;
- b=W14vA20eZnbZ3EQTOJcJRQN2miY+9xouHctxbHp75Z/swOQkL0JJZqYOGS9EowTDQG
- IXWTji7eFx2dzIz9LraeyZwdHDwBXnKQ83Q4eGg+nG/JYEf8pouVh+sRJhsbok4NYe9E
- 36YY853GvJa4sFpVxkbfqW5RHi9NaHMdRbDoNSZR1H9jZT9/R2gZuw2Yn1OHa6Vt5FRa
- stEpyKH9PBG10J4TIjmVY5gpqRamV9NycASZwDA+dL2p5WJwn8dTCKUfix+pSCewtoZW
- NYlmrzN4Flr5qbhRb9B0sKqtv/AzX8NUU3zMvEebtr7raWGVFh3/3KFN7CqsvF7ndbsZ
- IGrQ==
-X-Gm-Message-State: AOJu0YxSqo002RukP/hgjss4anMY4Xe/J8BBpwXwgPhgFRpLuuHHGaPW
- IWfAWgZbk0pJlpHXJu+giULDokNHiIBHUe7ZZsgz6kz/B9naB+cFMbcplIk6KGKmP6oYSTFufhL
- d
-X-Gm-Gg: ASbGncv/9mdiVSPHWj/iyJMWjCXwp2d11LVUxDFZvJvk0+5iyIz3dLj1XdTyBMlWEpr
- JykBAEC89K8ZaRxwcKnSAoGbqXl6Q/AFxK8gyWqec9AKcr7A8y09Ep2XnifEMObT+m6qsdwbaRt
- 9gkjH8tCtL6qNPe6/UtdfippUEz4xdvgPhfZV7HTzWSENHuob48192i8HInWj5nHUVdl7nqAqs1
- z7QdYuXOPVtmmtEwT5edhQokYyZ/wpfI2TZQg6MnMTQHq2IqJpQ7pyGCbv7PgzqjLuiGoJEazI=
-X-Google-Smtp-Source: AGHT+IGGVsqdH+Q181SXn/LFx9R2IMswebc4X+iz8QCUOts8uxi300c/tOUbN9u5rPwZjNijnLxVJQ==
-X-Received: by 2002:a05:6000:4607:b0:385:f13c:570f with SMTP id
- ffacd0b85a97d-38a22201424mr3385514f8f.33.1734711580874; 
- Fri, 20 Dec 2024 08:19:40 -0800 (PST)
+ bh=zb712QFkXMyJHgZrNJU9p7a0+PEvQntNQaexSv2HpdI=;
+ b=hkmODOG/PCfHPTi0+GnHC1AkW9wvG2cEmLmWUiYQpIKOGotziGAiJnkGFq62JyrwTh
+ sAxxfTdTxdmxzJKU7KCr8dVKcXytfL6w7DPvt8GMhn4qLz0Q4NWZhvAmGjhdmHSWVPxV
+ hXOeL+ArOwgC7OOt8AslqW0RLDIRN1Ylby4e3oluKeaTR1GztQW5ogJ6yvtm1i9+5DTi
+ pfPl7Zy/iWDpyXFOP3ulTRImlEcR2E6KiuvO4HoaCwfUsz68hdGbKrmXe6AcDXJ8CswQ
+ C8D1aNgv8KGHpW0gd8CXiMsah9De1AHxoZiUxzO8qRVQnTda9K7AvH+0tbfOmoocxYHx
+ 9wUQ==
+X-Gm-Message-State: AOJu0YzBxfIGMILIoPzET7VECKmHjChjHWOxGPBFSsxtQTrCvDSOZuSd
+ 8rYg5mKMSFJRhQOYPv1TNgmG/CoeB/EskKEVbhMe1N00RuDAXlZhJY5BPbUSaElxi2YGudVbvil
+ f
+X-Gm-Gg: ASbGncttEJkKy8KgNtUGE8m1FcUR4cJH7wuzKV8cl+JSsjx4iLbzlGit/mkebZM3RVs
+ /tW+abulICsvhd+YjuPP4MnbWpvhTzrrNS3191v2jAsy+ZwBSpyiFT30dbXy99X+4Lv4Hh+q4Pc
+ MdIWdJutvZW3VHM8wrOkvtM+WjTuNYpijqJODi0tqEr/3dq/W7x8KMrNHAquIUhm3Z69bfk7XSG
+ Y843E/W33tQL7skWNAlFUffUCj6S+OCi0uFTcr5jjQ+cIHc8xOCeVYf63rHTN9WQLYFms3HpK0=
+X-Google-Smtp-Source: AGHT+IE8+2zwMUgwsM0oDS5BETlQG+MfVNhu19iXa6IvhASczAjr9OZeYXdKka+gKotCcHl2W+cQHA==
+X-Received: by 2002:adf:8b11:0:b0:38a:2628:2e90 with SMTP id
+ ffacd0b85a97d-38a26282ed0mr225996f8f.2.1734711585499; 
+ Fri, 20 Dec 2024 08:19:45 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c89e1a1sm4339770f8f.69.2024.12.20.08.19.40
+ ffacd0b85a97d-38a1c847214sm4381767f8f.46.2024.12.20.08.19.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:19:40 -0800 (PST)
+ Fri, 20 Dec 2024 08:19:45 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 50/59] accel/tcg: Include missing 'exec/translation-block.h'
- header
-Date: Fri, 20 Dec 2024 17:15:41 +0100
-Message-ID: <20241220161551.89317-51-philmd@linaro.org>
+Subject: [PULL 51/59] accel/tcg: Un-inline translator_is_same_page()
+Date: Fri, 20 Dec 2024 17:15:42 +0100
+Message-ID: <20241220161551.89317-52-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
 References: <20241220161551.89317-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,372 +96,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TB compile flags, tb_page_addr_t type, tb_cflags() and few
-other methods are defined in "exec/translation-block.h".
-
-All these files don't include "exec/translation-block.h" but
-include "exec/exec-all.h" which include it. Explicitly include
-"exec/translation-block.h" to be able to remove it from
-"exec/exec-all.h" later when it won't be necessary. Otherwise
-we'd get errors such:
-
-  accel/tcg/internal-target.h:59:20: error: a parameter list without types is only allowed in a function definition
-     59 | void tb_lock_page0(tb_page_addr_t);
-        |                    ^
-  accel/tcg/tb-hash.h:64:23: error: unknown type name 'tb_page_addr_t'
-     64 | uint32_t tb_hash_func(tb_page_addr_t phys_pc, vaddr pc,
-        |                       ^
-  accel/tcg/tcg-accel-ops.c:62:36: error: use of undeclared identifier 'CF_CLUSTER_SHIFT'
-     62 |     cflags = cpu->cluster_index << CF_CLUSTER_SHIFT;
-        |                                    ^
-  accel/tcg/watchpoint.c:102:47: error: use of undeclared identifier 'CF_NOIRQ'
-    102 |                     cpu->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(cpu);
-        |                                               ^
-  target/i386/helper.c:536:28: error: use of undeclared identifier 'CF_PCREL'
-    536 |     if (tcg_cflags_has(cs, CF_PCREL)) {
-        |                            ^
-  target/rx/cpu.c:51:21: error: incomplete definition of type 'struct TranslationBlock'
-     51 |     cpu->env.pc = tb->pc;
-        |                   ~~^
-  system/physmem.c:2977:9: error: call to undeclared function 'tb_invalidate_phys_range'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-   2977 |         tb_invalidate_phys_range(addr, addr + length - 1);
-        |         ^
-  plugins/api.c:96:12: error: call to undeclared function 'tb_cflags'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     96 |     return tb_cflags(tcg_ctx->gen_tb) & CF_MEMI_ONLY;
-        |            ^
+Remove the single target-specific definition used in
+"exec/translator.h" (TARGET_PAGE_MASK) by un-inlining
+is_same_page().
+Rename the method as translator_is_same_page() and
+improve its documentation.
+Use it in translator_use_goto_tb().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241114011310.3615-5-philmd@linaro.org>
+Message-Id: <20241218154145.71353-1-philmd@linaro.org>
 ---
- accel/tcg/internal-target.h   | 1 +
- accel/tcg/tb-hash.h           | 1 +
- target/arm/tcg/translate.h    | 1 +
- cpu-target.c                  | 1 +
- linux-user/elfload.c          | 1 +
- plugins/api.c                 | 1 +
- system/physmem.c              | 1 +
- target/alpha/cpu.c            | 1 +
- target/alpha/translate.c      | 1 +
- target/arm/helper.c           | 1 +
- target/avr/translate.c        | 1 +
- target/hppa/translate.c       | 1 +
- target/i386/tcg/tcg-cpu.c     | 1 +
- target/i386/tcg/translate.c   | 1 +
- target/m68k/translate.c       | 1 +
- target/microblaze/translate.c | 1 +
- target/openrisc/translate.c   | 1 +
- target/ppc/translate.c        | 1 +
- target/riscv/translate.c      | 1 +
- target/rx/translate.c         | 1 +
- target/s390x/tcg/translate.c  | 1 +
- target/sh4/translate.c        | 1 +
- target/sparc/translate.c      | 1 +
- target/tricore/translate.c    | 1 +
- target/xtensa/translate.c     | 1 +
- 25 files changed, 25 insertions(+)
+ include/exec/translator.h    | 15 +++++++--------
+ accel/tcg/translator.c       |  7 ++++++-
+ target/i386/tcg/translate.c  |  6 +++---
+ target/riscv/translate.c     |  4 ++--
+ target/s390x/tcg/translate.c |  4 ++--
+ 5 files changed, 20 insertions(+), 16 deletions(-)
 
-diff --git a/accel/tcg/internal-target.h b/accel/tcg/internal-target.h
-index 3ed81e740d3..a664be02cc7 100644
---- a/accel/tcg/internal-target.h
-+++ b/accel/tcg/internal-target.h
-@@ -10,6 +10,7 @@
- #define ACCEL_TCG_INTERNAL_TARGET_H
+diff --git a/include/exec/translator.h b/include/exec/translator.h
+index d8dcb77b5f4..41e2a41180f 100644
+--- a/include/exec/translator.h
++++ b/include/exec/translator.h
+@@ -267,16 +267,15 @@ bool translator_st(const DisasContextBase *db, void *dest,
+  */
+ size_t translator_st_len(const DisasContextBase *db);
  
- #include "exec/exec-all.h"
-+#include "exec/translation-block.h"
- #include "tb-internal.h"
+-#ifdef COMPILING_PER_TARGET
+-/*
+- * Return whether addr is on the same page as where disassembly started.
++/**
++ * translator_is_same_page
++ * @db: disassembly context
++ * @addr: virtual address within TB
++ *
++ * Return whether @addr is on the same page as where disassembly started.
+  * Translators can use this to enforce the rule that only single-insn
+  * translation blocks are allowed to cross page boundaries.
+  */
+-static inline bool is_same_page(const DisasContextBase *db, vaddr addr)
+-{
+-    return ((addr ^ db->pc_first) & TARGET_PAGE_MASK) == 0;
+-}
+-#endif
++bool translator_is_same_page(const DisasContextBase *db, vaddr addr);
  
- /*
-diff --git a/accel/tcg/tb-hash.h b/accel/tcg/tb-hash.h
-index a0c61f25cda..a5382f460dc 100644
---- a/accel/tcg/tb-hash.h
-+++ b/accel/tcg/tb-hash.h
-@@ -22,6 +22,7 @@
+ #endif /* EXEC__TRANSLATOR_H */
+diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
+index ce5eae4349e..ef1538b4fcd 100644
+--- a/accel/tcg/translator.c
++++ b/accel/tcg/translator.c
+@@ -104,6 +104,11 @@ static void gen_tb_end(const TranslationBlock *tb, uint32_t cflags,
+     }
+ }
  
- #include "exec/cpu-defs.h"
- #include "exec/exec-all.h"
-+#include "exec/translation-block.h"
- #include "qemu/xxhash.h"
- #include "tb-jmp-cache.h"
++bool translator_is_same_page(const DisasContextBase *db, vaddr addr)
++{
++    return ((addr ^ db->pc_first) & TARGET_PAGE_MASK) == 0;
++}
++
+ bool translator_use_goto_tb(DisasContextBase *db, vaddr dest)
+ {
+     /* Suppress goto_tb if requested. */
+@@ -112,7 +117,7 @@ bool translator_use_goto_tb(DisasContextBase *db, vaddr dest)
+     }
  
-diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
-index 9b9abf19925..2d37d7c9f21 100644
---- a/target/arm/tcg/translate.h
-+++ b/target/arm/tcg/translate.h
-@@ -6,6 +6,7 @@
- #include "tcg/tcg-op-gvec.h"
- #include "exec/exec-all.h"
- #include "exec/translator.h"
-+#include "exec/translation-block.h"
- #include "exec/helper-gen.h"
- #include "internals.h"
- #include "cpu-features.h"
-diff --git a/cpu-target.c b/cpu-target.c
-index 7a2efa890c4..beec7737907 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
-@@ -42,6 +42,7 @@
- #include "exec/cpu-common.h"
- #include "exec/exec-all.h"
- #include "exec/tb-flush.h"
-+#include "exec/translation-block.h"
- #include "exec/log.h"
- #include "hw/core/accel-cpu.h"
- #include "trace/trace-root.h"
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index effd3ab47ef..a2c152e5ad1 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -10,6 +10,7 @@
- #include "user/tswap-target.h"
- #include "user/page-protection.h"
- #include "exec/page-protection.h"
-+#include "exec/translation-block.h"
- #include "user/guest-base.h"
- #include "user-internals.h"
- #include "signal-common.h"
-diff --git a/plugins/api.c b/plugins/api.c
-index 24ea64e2de5..4110cfaa237 100644
---- a/plugins/api.c
-+++ b/plugins/api.c
-@@ -43,6 +43,7 @@
- #include "tcg/tcg.h"
- #include "exec/exec-all.h"
- #include "exec/gdbstub.h"
-+#include "exec/translation-block.h"
- #include "exec/translator.h"
- #include "disas/disas.h"
- #include "plugin.h"
-diff --git a/system/physmem.c b/system/physmem.c
-index 1459dd15eb5..c76503aea82 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -34,6 +34,7 @@
- #include "exec/exec-all.h"
- #include "exec/page-protection.h"
- #include "exec/target_page.h"
-+#include "exec/translation-block.h"
- #include "hw/qdev-core.h"
- #include "hw/qdev-properties.h"
- #include "hw/boards.h"
-diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
-index 70f67e6fd4e..9fa506bff9f 100644
---- a/target/alpha/cpu.c
-+++ b/target/alpha/cpu.c
-@@ -24,6 +24,7 @@
- #include "qemu/qemu-print.h"
- #include "cpu.h"
- #include "exec/exec-all.h"
-+#include "exec/translation-block.h"
- #include "fpu/softfloat.h"
+     /* Check for the dest on the same page as the start of the TB.  */
+-    return ((db->pc_first ^ dest) & TARGET_PAGE_MASK) == 0;
++    return translator_is_same_page(db, dest);
+ }
  
- 
-diff --git a/target/alpha/translate.c b/target/alpha/translate.c
-index 660788d5c3c..629ff3cde92 100644
---- a/target/alpha/translate.c
-+++ b/target/alpha/translate.c
-@@ -26,6 +26,7 @@
- #include "exec/helper-proto.h"
- #include "exec/helper-gen.h"
- #include "exec/translator.h"
-+#include "exec/translation-block.h"
- #include "exec/log.h"
- 
- #define HELPER_H "helper.h"
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 449e69a6e39..5b595f951b4 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -20,6 +20,7 @@
- #include "qemu/crc32c.h"
- #include "qemu/qemu-print.h"
- #include "exec/exec-all.h"
-+#include "exec/translation-block.h"
- #include <zlib.h> /* for crc32 */
- #include "hw/irq.h"
- #include "system/cpu-timers.h"
-diff --git a/target/avr/translate.c b/target/avr/translate.c
-index 2d518921159..f13b997f8d9 100644
---- a/target/avr/translate.c
-+++ b/target/avr/translate.c
-@@ -23,6 +23,7 @@
- #include "tcg/tcg.h"
- #include "cpu.h"
- #include "exec/exec-all.h"
-+#include "exec/translation-block.h"
- #include "tcg/tcg-op.h"
- #include "exec/helper-proto.h"
- #include "exec/helper-gen.h"
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 51c1762435a..d13f80fe3e4 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -27,6 +27,7 @@
- #include "exec/helper-proto.h"
- #include "exec/helper-gen.h"
- #include "exec/translator.h"
-+#include "exec/translation-block.h"
- #include "exec/log.h"
- 
- #define HELPER_H "helper.h"
-diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
-index cca19cd40e8..231ecac37d1 100644
---- a/target/i386/tcg/tcg-cpu.c
-+++ b/target/i386/tcg/tcg-cpu.c
-@@ -22,6 +22,7 @@
- #include "helper-tcg.h"
- #include "qemu/accel.h"
- #include "hw/core/accel-cpu.h"
-+#include "exec/translation-block.h"
- 
- #include "tcg-cpu.h"
- 
+ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index ea7995106fb..57e83873934 100644
+index 57e83873934..903553dc88e 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -21,6 +21,7 @@
- #include "qemu/host-utils.h"
- #include "cpu.h"
- #include "exec/exec-all.h"
-+#include "exec/translation-block.h"
- #include "tcg/tcg-op.h"
- #include "tcg/tcg-op-gvec.h"
- #include "exec/translator.h"
-diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index ad3ce345014..077151c62d9 100644
---- a/target/m68k/translate.c
-+++ b/target/m68k/translate.c
-@@ -21,6 +21,7 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
- #include "exec/exec-all.h"
-+#include "exec/translation-block.h"
- #include "tcg/tcg-op.h"
- #include "qemu/log.h"
- #include "qemu/qemu-print.h"
-diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
-index 4beaf69e76a..d53995c26d1 100644
---- a/target/microblaze/translate.c
-+++ b/target/microblaze/translate.c
-@@ -26,6 +26,7 @@
- #include "exec/helper-proto.h"
- #include "exec/helper-gen.h"
- #include "exec/translator.h"
-+#include "exec/translation-block.h"
- #include "qemu/qemu-print.h"
+@@ -1512,7 +1512,7 @@ static uint64_t advance_pc(CPUX86State *env, DisasContext *s, int num_bytes)
  
- #include "exec/log.h"
-diff --git a/target/openrisc/translate.c b/target/openrisc/translate.c
-index ca566847cb4..028ba66631f 100644
---- a/target/openrisc/translate.c
-+++ b/target/openrisc/translate.c
-@@ -26,6 +26,7 @@
- #include "qemu/bitops.h"
- #include "qemu/qemu-print.h"
- #include "exec/translator.h"
-+#include "exec/translation-block.h"
+     /* This is a subsequent insn that crosses a page boundary.  */
+     if (s->base.num_insns > 1 &&
+-        !is_same_page(&s->base, s->pc + num_bytes - 1)) {
++        !translator_is_same_page(&s->base, s->pc + num_bytes - 1)) {
+         siglongjmp(s->jmpbuf, 2);
+     }
  
- #include "exec/helper-proto.h"
- #include "exec/helper-gen.h"
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 47ca50a064b..8ab87f42d67 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -30,6 +30,7 @@
- #include "exec/helper-gen.h"
- 
- #include "exec/translator.h"
-+#include "exec/translation-block.h"
- #include "exec/log.h"
- #include "qemu/atomic128.h"
- #include "spr_common.h"
+@@ -2226,7 +2226,7 @@ static void gen_jmp_rel(DisasContext *s, MemOp ot, int diff, int tb_num)
+          * no extra masking to apply (data16 branch in code32, see above),
+          * then we have also proven that the addition does not wrap.
+          */
+-        if (!use_goto_tb || !is_same_page(&s->base, new_pc)) {
++        if (!use_goto_tb || !translator_is_same_page(&s->base, new_pc)) {
+             tcg_gen_andi_tl(cpu_eip, cpu_eip, mask);
+             use_goto_tb = false;
+         }
+@@ -3763,7 +3763,7 @@ static void i386_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
+              * chance to happen.
+              */
+             dc->base.is_jmp = DISAS_EOB_NEXT;
+-        } else if (!is_same_page(&dc->base, dc->base.pc_next)) {
++        } else if (!translator_is_same_page(&dc->base, dc->base.pc_next)) {
+             dc->base.is_jmp = DISAS_TOO_MANY;
+         }
+     }
 diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index bccaf8e89a6..5fedde363f7 100644
+index 5fedde363f7..a76f67c5dd0 100644
 --- a/target/riscv/translate.c
 +++ b/target/riscv/translate.c
-@@ -25,6 +25,7 @@
- #include "exec/helper-gen.h"
+@@ -1305,7 +1305,7 @@ static void riscv_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
  
- #include "exec/translator.h"
-+#include "exec/translation-block.h"
- #include "exec/log.h"
- #include "semihosting/semihost.h"
+     /* Only the first insn within a TB is allowed to cross a page boundary. */
+     if (ctx->base.is_jmp == DISAS_NEXT) {
+-        if (ctx->itrigger || !is_same_page(&ctx->base, ctx->base.pc_next)) {
++        if (ctx->itrigger || !translator_is_same_page(&ctx->base, ctx->base.pc_next)) {
+             ctx->base.is_jmp = DISAS_TOO_MANY;
+         } else {
+             unsigned page_ofs = ctx->base.pc_next & ~TARGET_PAGE_MASK;
+@@ -1315,7 +1315,7 @@ static void riscv_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
+                     translator_lduw(env, &ctx->base, ctx->base.pc_next);
+                 int len = insn_len(next_insn);
  
-diff --git a/target/rx/translate.c b/target/rx/translate.c
-index 9aade2b6e5c..4f43654bad0 100644
---- a/target/rx/translate.c
-+++ b/target/rx/translate.c
-@@ -25,6 +25,7 @@
- #include "exec/helper-proto.h"
- #include "exec/helper-gen.h"
- #include "exec/translator.h"
-+#include "exec/translation-block.h"
- #include "exec/log.h"
- 
- #define HELPER_H "helper.h"
+-                if (!is_same_page(&ctx->base, ctx->base.pc_next + len - 1)) {
++                if (!translator_is_same_page(&ctx->base, ctx->base.pc_next + len - 1)) {
+                     ctx->base.is_jmp = DISAS_TOO_MANY;
+                 }
+             }
 diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index bcfff40b255..e78815c4f7f 100644
+index e78815c4f7f..81554f2ad9d 100644
 --- a/target/s390x/tcg/translate.c
 +++ b/target/s390x/tcg/translate.c
-@@ -40,6 +40,7 @@
- #include "exec/helper-gen.h"
- 
- #include "exec/translator.h"
-+#include "exec/translation-block.h"
- #include "exec/log.h"
- #include "qemu/atomic128.h"
- 
-diff --git a/target/sh4/translate.c b/target/sh4/translate.c
-index 53b092175dc..f076da9bac8 100644
---- a/target/sh4/translate.c
-+++ b/target/sh4/translate.c
-@@ -23,6 +23,7 @@
- #include "tcg/tcg-op.h"
- #include "exec/helper-proto.h"
- #include "exec/helper-gen.h"
-+#include "exec/translation-block.h"
- #include "exec/translator.h"
- #include "exec/log.h"
- #include "qemu/qemu-print.h"
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index ac063772310..9be26c804ed 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -27,6 +27,7 @@
- #include "tcg/tcg-op-gvec.h"
- #include "exec/helper-gen.h"
- #include "exec/translator.h"
-+#include "exec/translation-block.h"
- #include "exec/log.h"
- #include "fpu/softfloat.h"
- #include "asi.h"
-diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 4a12d2ca191..2b67395c09e 100644
---- a/target/tricore/translate.c
-+++ b/target/tricore/translate.c
-@@ -30,6 +30,7 @@
- 
- #include "tricore-opcodes.h"
- #include "exec/translator.h"
-+#include "exec/translation-block.h"
- #include "exec/log.h"
- 
- #define HELPER_H "helper.h"
-diff --git a/target/xtensa/translate.c b/target/xtensa/translate.c
-index f4da4a40f94..3c62c99b4fe 100644
---- a/target/xtensa/translate.c
-+++ b/target/xtensa/translate.c
-@@ -37,6 +37,7 @@
- #include "qemu/qemu-print.h"
- #include "semihosting/semihost.h"
- #include "exec/translator.h"
-+#include "exec/translation-block.h"
- 
- #include "exec/helper-proto.h"
- #include "exec/helper-gen.h"
+@@ -6423,8 +6423,8 @@ static void s390x_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+     dc->base.is_jmp = translate_one(env, dc);
+     if (dc->base.is_jmp == DISAS_NEXT) {
+         if (dc->ex_value ||
+-            !is_same_page(dcbase, dc->base.pc_next) ||
+-            !is_same_page(dcbase, get_next_pc(env, dc, dc->base.pc_next))) {
++            !translator_is_same_page(dcbase, dc->base.pc_next) ||
++            !translator_is_same_page(dcbase, get_next_pc(env, dc, dc->base.pc_next))) {
+             dc->base.is_jmp = DISAS_TOO_MANY;
+         }
+     }
 -- 
 2.47.1
 
