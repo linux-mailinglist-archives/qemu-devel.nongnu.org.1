@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70DE49F9098
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 11:46:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D511F9F90B5
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 11:51:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOaWB-0002ZK-5r; Fri, 20 Dec 2024 05:46:04 -0500
+	id 1tOaae-00062W-QQ; Fri, 20 Dec 2024 05:50:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOaVC-0001pN-R3
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 05:45:08 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOaac-00062K-NC
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 05:50:38 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOaVA-0005sq-05
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 05:45:01 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-43622354a3eso12047025e9.1
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 02:44:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOaab-0000G0-1f
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 05:50:38 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4361dc6322fso12019985e9.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 02:50:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734691498; x=1735296298; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734691835; x=1735296635; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ByA+t6wtE4y6Ap+K/de248nOE77Dr9SDbhFGzaHg81Q=;
- b=w5WSWvZFe3W/eqcx8aS5ZTSsidhPmgEIEawEwtpSG1j/+ps0i+tGpPh/NznfVCypQx
- 0H7GM54yuxf3K7qiF2Q/ySqSp/0XgCXg3gf67GXDo8kMmTPcqFvAwb0pM6wPE243Xj63
- 2epyoBbGizOpkBd7fJ+PEJ3rm+DEQEeJl4jcJ9MJcU2F0WmatFwcIJswCrUqJPXhEdqJ
- on6EuyMwSPyt+m+60YZrDsEO+7mnADU531da0bqvteW56/NjVjyejqvXicpQ9JT552iN
- zd6bBia3JAiX05vyyJY/syem+Ld01mLy3hMaG59XfooIO6IITmUEMeXSH/ES2vPg2yvm
- JoVQ==
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=4A6CNkM0JZP75dVobsqU+WcjQDgjCU182F092ynRV1g=;
+ b=kA3LHFNVbRQIVV/huCaA64D/9O5DRYR7Z/ShsghQpRB+SorYukwtnrgfGI9xcp6N3j
+ fGU2G8Opt71UCpQqAyIpfeHPSeYnc6hmwncyCtFWE7sn6ruGEOSgNxGrwql+4ZVS3En7
+ r0GkP/nai19yYL60beIGNhYnmsg5okcZD8amD3BFPlU1GuG29kI34+rqDrETR/Pyu0OX
+ 151Nd0FCPucNEuJYlopqFCZ7fkU5nnHPbfuFqiX+sFC8ZsrizKPowep7d/Xiu206UewB
+ ljGssJt9DIynNQF1o2LsxouZj6K1BRIaLamtoOTTHRjYzeQ7rVItRuWhwdIpqViqztVC
+ hqow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734691498; x=1735296298;
+ d=1e100.net; s=20230601; t=1734691835; x=1735296635;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ByA+t6wtE4y6Ap+K/de248nOE77Dr9SDbhFGzaHg81Q=;
- b=tI94iiufQ1Doo3KvOtOAPh62fJuHUdBe9GuYAxo/R+c02/mgD79uRsTxvoC/OYNpX7
- v2NIP9E1Gw2dGTb5U1i6DdCme3CTQk6BAP0aP8ZViwpxvEfltxyWC6TkfoguiJ9Ec1Jk
- cvDlE8RE57/ZDwWAGhuGEJoWme6B1b/w0i9I5cW70KbTp+cu52nbvCnln2nQJT8HO88C
- NLvl0RBkpnlRbFVQRVI3STRB59YgnzOiS/51sU4DLXLygOnt/dqrUHFC/g1/ykPfuhgM
- OrJ1zOxLz2c3MMjFtrqehRBhppPE2KnlMX017jD0u0svlOQUs9l0MmBwOW7vRWcArC8o
- KDzw==
+ bh=4A6CNkM0JZP75dVobsqU+WcjQDgjCU182F092ynRV1g=;
+ b=DR25kfCdIAKG4Tk6u10TnF2N6bm1R7ZOLNTHbyBQ3rXcg73Lcgdfmg+mchDHz+BKWd
+ N1kPj4VIr+34qoWjKR5XWeGIPPXkAC3iTjcWD9sSuO+kMCVGjouzoxEsoXa4uxbkdTOt
+ hNTavNhvYDu0FufTSNTZcohmdvakhCF8bXywh3btZcCb3PHJ6f4Bgw/qT0+Onsa1QzwJ
+ 3/eIbEo+g2xqjzqvtLUyHqyUt7C6NJs/WR1J0lZG3xnYDh+iSFQ6r6RRaYaTGlbM+P6l
+ 2phSa3duiVIU7GKddFPo9WdvoO1nfJJlKdZc4D4qF07+1RIMc2fO4BAgE5iali5e3ATi
+ 7FGg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVp7C8sHOLZKpiSYuJKOsXhS6emcRZNKATLQ39vPonXZvhhIz5ZK/LEJsvB+RZ9RcW+r4SYpOLWGFcp@nongnu.org
-X-Gm-Message-State: AOJu0Yx/yXy8ool5TBg45N46It4MNenzsqea3CEj4z5lFw/nY+Vpr3Qy
- /Au+Xj6rVztyyVfTR5PElWjXqG0STgfGjLaYtX5VIoWBQ6q63hyFzyglzljr7HLLQiEdAUP6JpJ
- x
-X-Gm-Gg: ASbGncszCeONQ3UmrCBbpyg91rCBaHZtKukQ5Tq+19be02wm5QcX+m57uQqeEV8r7jn
- hYqrhR2lzFX0ryoYpoY3fG3RLDduRReY5UNz8Kbq/u4iDF6o+imHhLUxUzk0Gkfkgb9la5Bw+kQ
- Wcmv0z3z/hlUaQU2Yq4ValVJlPr0Y0ISzDbPy8csHTFRef8D1gO0mMeYd2mSNTbY+u3COZyL9uf
- O0LYpvCK6P9dEuhgo7gnI8b0w52ue7LmrmLbg9zBvQcE5Vfox7Ev1VoNAOFlnkdE4vFGug=
-X-Google-Smtp-Source: AGHT+IE7vZWRIu7DvYZp4jGhqSTpTz7yExQx0NnDiNKNqGKCUGGMBNMpV047c+uq71/EeXAfij6psQ==
-X-Received: by 2002:a05:600c:1c0b:b0:435:9ed3:5688 with SMTP id
- 5b1f17b1804b1-43668646750mr21065475e9.18.1734691498179; 
- Fri, 20 Dec 2024 02:44:58 -0800 (PST)
+ AJvYcCV4HwuyUkqwp7gcFE3gYA9GuYA0zzBaQZdUM6LeYo9YDp7Esf4PqQ09pbDzSVQz2MMmMP81GnpOsGNT@nongnu.org
+X-Gm-Message-State: AOJu0YxueXNkfOr9mwgpJJvWotv1XHlHVgqlU7MS4bb7gm0lFSiKmxCs
+ +mKFzLgjqHBvkEpjX8MHagcPt3I041ssRdN+8I14SV4GD8VHuxl1L9FkXo3KfNc=
+X-Gm-Gg: ASbGncuuUGZfZVG6JNTw6G+eDgW7GzvY5Fiv2983R85wxKO7f8uCOgx8JHRnWeB3tto
+ uVK0oefY22zX6M4Rk2f9jfa+MeYIK4p27aLCcVYAHeahQ8jxhLaFrTjmrKbov+N0awJVsW03BBp
+ rLBLjPicgKsaNzVlkTLFGAuWAReKR889mC1avItPbmnb2HS5Ux+R4DHNn4DmuEEoESLz7wwPaDC
+ b5YsXzh49eaDF5WKqMTal0Qq8FMmZQqrCMykWlk3I2pNDs49yAOl1Eu3INdF1CcIbqpDIg=
+X-Google-Smtp-Source: AGHT+IGeyQcHac3HyW/mnpSv5DhHfvayzrpYJgn2HwexDMCrc+Zrgl74lAodnIuqXNVGyhJwWzGfZA==
+X-Received: by 2002:a05:600c:3505:b0:434:fafe:edb with SMTP id
+ 5b1f17b1804b1-43668b5f326mr17131445e9.24.1734691834883; 
+ Fri, 20 Dec 2024 02:50:34 -0800 (PST)
 Received: from [192.168.1.67] ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656b3b1f6sm77453515e9.31.2024.12.20.02.44.57
+ ffacd0b85a97d-38a1c829348sm3754834f8f.22.2024.12.20.02.50.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 20 Dec 2024 02:44:57 -0800 (PST)
-Message-ID: <07199b31-d791-48f1-b5f9-021cee8e2101@linaro.org>
-Date: Fri, 20 Dec 2024 11:44:57 +0100
+ Fri, 20 Dec 2024 02:50:34 -0800 (PST)
+Message-ID: <b853ab30-fc7a-4e03-82da-0ed97fd4aa0b@linaro.org>
+Date: Fri, 20 Dec 2024 11:50:33 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/arm_sysctl: fix extraxting 31th bit of val
-To: Anastasia Belova <abelova@astralinux.ru>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, sdl.qemu@linuxtesting.org
-References: <20241220103320.83385-1-abelova@astralinux.ru>
+Subject: Re: Test assets not available anymore for
+ tests/functional/test_rx_gdbsim.py
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Peter Maydell <peter.maydell@linaro.org>,
+ Cleber Rosa <crosa@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+References: <5f571195-39b9-45e5-ba03-fd835afb5012@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241220103320.83385-1-abelova@astralinux.ru>
+In-Reply-To: <5f571195-39b9-45e5-ba03-fd835afb5012@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,36 +102,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/12/24 11:33, Anastasia Belova wrote:
-> 1 << 31 is casted to uint64_t while bitwise and with val.
-> So this value may become 0xffffffff80000000 but only
-> 31th "start" bit is required.
+On 19/12/24 20:47, Pierrick Bouvier wrote:
+> Hi all,
 > 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> assets for tests/functional/test_rx_gdbsim.py are not available anymore.
 > 
-> Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-> ---
->   hw/misc/arm_sysctl.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/misc/arm_sysctl.c b/hw/misc/arm_sysctl.c
-> index 69e379fa10..ce8be44b6e 100644
-> --- a/hw/misc/arm_sysctl.c
-> +++ b/hw/misc/arm_sysctl.c
-> @@ -520,7 +520,7 @@ static void arm_sysctl_write(void *opaque, hwaddr offset,
->            * as zero.
->            */
->           s->sys_cfgctrl = val & ~((3 << 18) | (1 << 31));
-> -        if (val & (1 << 31)) {
-> +        if (val & (1ULL << 31)) {
+> It seems that the directory "https://acc.dl.osdn.jp/users" vanished from 
+> the web, and it's not a temporary issue.
+> If someone still has those assets on their local cache, maybe it's a 
+> good time to upload them somewhere else, and update the test.
 
-Alternatively clearer using the bitfield extract() API ...:
+I posted a patch for that 4 years ago but it got lost:
+https://lore.kernel.org/qemu-devel/20200630202631.7345-1-f4bug@amsat.org/
 
-            if (extract64(val, 31, 1)) {
-
->               /* Start bit set -- actually do something */
->               unsigned int dcc = extract32(s->sys_cfgctrl, 26, 4);
->               unsigned int function = extract32(s->sys_cfgctrl, 20, 6);
-
-... which we already use in this file   ^^^^^^^.
+I'll respin, thanks for noticing.
 
