@@ -2,88 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C3E79F8A33
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 03:47:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D24BA9F8B27
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 05:18:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOT2P-0001yJ-2j; Thu, 19 Dec 2024 21:46:49 -0500
+	id 1tOUM6-0008LM-7M; Thu, 19 Dec 2024 23:11:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tOT2M-0001xJ-Ek; Thu, 19 Dec 2024 21:46:46 -0500
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tOUM2-0008Ji-Uf
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 23:11:11 -0500
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tOT2K-0000JU-RM; Thu, 19 Dec 2024 21:46:46 -0500
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-72764c995e5so893280b3a.2; 
- Thu, 19 Dec 2024 18:46:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tOUM0-0006Fw-4Z
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 23:11:10 -0500
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-2ee397a82f6so1397958a91.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 20:11:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734662802; x=1735267602; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ozzd5pDOTq1/IYcv7geWeZ29LCOfsyB2PUifZhowjvc=;
- b=Ak+3AfPfA8eOzx6zG6nDmC5GV6b+Pmaec7L56lfZMvhzITlvKYDkdmkaxQ6JhRDaDv
- UVT9pGA7bI+QhaWjRMAkfsEWgNANHTZR4RYgawHNDwQz7s2jH6vuPvVrdCWvuIhRGXwT
- 1ZhutXaCnzzC0qILhFiXqljoYd86u60ReW6VQgobh+09tueKkxyuTwFifIGrwPYs6+aW
- K/ES+/dc04zgcF+OML8XaS9rGv3QEm0J/jgKTqHMLrj256FKVQfVMyPmypt00C/KoZSq
- 8jRdDul4AaFhl+hvBLf1A3LAQuqISrAZaGXxwg1V9cXG18X7acHeFiI1C9L7a3qJKrYH
- eqiQ==
+ d=linaro.org; s=google; t=1734667867; x=1735272667; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7T6q101ST/GzSlfq3xqwhdERPg88KHcGu7l3IJfyC/4=;
+ b=BE8DKlTh/5DdxDY18c35MigqPr2PTnFXIAtpNDje17mtRaHaO2RBrbdHb8/pP7OgDk
+ IFTUnpLEo8qdggB0v+R7u/5kZTb88aVCIOUiebzkUz3EtScMcHYVBeqeh+XSi7DZK8kT
+ 8YACBAF871HnRP+Uko4qAuv+TYNE4w1sH0D3LOQ0du436lS+HLpC9Iu33DLXnkfDftKX
+ Ll8ujOLroxO9Jz7OwE13D/+/6DH3oTMXTnMVfJ0mUFJahh6PAyBll23UdZPfRYkIoKhv
+ rf3YGIe2rb3gMYFqtCgOEph1LZ12U9KrRPxGVKiS/fAqpalyynTvfC9YeC6uxmpHafVN
+ dBwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734662802; x=1735267602;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Ozzd5pDOTq1/IYcv7geWeZ29LCOfsyB2PUifZhowjvc=;
- b=M5iAkz8xpMeVgj5mKM4PzRgjLCXGxaHE23HC6V3yagVXFRDEHnsdnDL+iDwGzj8NAE
- nBWZ797cy87v1H76Zd4iDe1iJoKPoVlhOsmkvHR+COnLRMNZvhpuS9LBsvtkfHuA7iXo
- Q1104u9UfSU2KWr1XZ3PYSIz6SJzSAgZDwFGfrZ/cdYd+36tmvwtIBrF//zRo0PV1MGK
- ii428wNIzehy8yGSN580iht7bHo/SXqbQ2mCmljZHmb/ynVadRu77Auh2s0QvvyXyyHb
- LRVS1VizczLAQnID3VCBN4+UUf0LX+EBkHJvqiv7vD/5XRdJ5yyF64qIBIx6rVNvWe5P
- siOA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUHUWKTUL7CECgbzbRRj689YrgockaJ0JPj53s6sdaiE2eaMWVJxF6OBycSFbQ4EoPZyrlkJ61pJg==@nongnu.org
-X-Gm-Message-State: AOJu0YyeWDxjA5GK76btkUptLCDdNBKWmIrCufVStSCBTssX2/iRRV0e
- sRZ3EkD6uHRAhZdYeDMX0mWqnMchUvHcuw30c9I0qtY4w8228xvXo3iGYg==
-X-Gm-Gg: ASbGncsV5Muv4b55DjamkSMLJXLgvbVzOc4RDTceA6of9wSch8lmxbZjMgezuZR97qW
- eEacXlD1L0C3vFFcW17I1NxV0jAQJqY0Qbx25ELlNlmFiJlMrSuvrImSXBTvkQUyl4l+SPAqJbl
- rNnhKyvwFYYu6r9xfuy6wNjdqwQCg+7rD+MTB6dUfkjDQLRDhu3gvJVu3R+j0dwKi4XxImPmxJd
- moGkfb7Mf4zCdHmzfkyW3m15nJFSy3dTPP91PQefxvH3F/UxJrPCr4hTn8GfjtRqQxuxiVAot9A
- FGhGEYXfdg==
-X-Google-Smtp-Source: AGHT+IEIL17gJrwBAmS8zSAsb7500PRFyMoNAEbNGFGn4aMC7cB0tYnN1hW647/+XwXIbmdoRYXL+g==
-X-Received: by 2002:a05:6a21:c8c:b0:1e1:a48f:1246 with SMTP id
- adf61e73a8af0-1e5e0818c00mr2421680637.45.1734662802561; 
- Thu, 19 Dec 2024 18:46:42 -0800 (PST)
-Received: from wheely.local0.net (14-200-18-130.tpgi.com.au. [14.200.18.130])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad8dba99sm2037830b3a.92.2024.12.19.18.46.38
+ d=1e100.net; s=20230601; t=1734667867; x=1735272667;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7T6q101ST/GzSlfq3xqwhdERPg88KHcGu7l3IJfyC/4=;
+ b=F9uE6wy0aUVFcq9Lxfs2I7UUzJpvk0SrHU9Qtu8fK0FZ9+e3S5JTBxuxT5IonXyU7L
+ IwsmbN8OVCWqh/H273JggjLMUpIVLDN1lv1jnXZY+MnNH1GD++UHnRpzDVWmZYCEpbFQ
+ 80WkM+2VqFA3Sg3kOe70/7JXXW6Vhpa2ngTXJxxxLaRKeUsz7dCbrKUdJDgRJ07WXE8/
+ L/I1uPPtoNIB2NGzEi94IXAEKAhFB/vVTJ6/poL/fxqAVyrpX7n4a4XHr/nIUisVYtb1
+ PH2EXmGthNJmpgQ7i6ka24zfA/AF3oZf2uLYAheyalffrhXivI0S0EtuUPSy+Hs6YQJM
+ UfoQ==
+X-Gm-Message-State: AOJu0YyskM8mB4BZqe2pTrTpbesNplywkzrzNtwdtPW7/x7EJoHZM9cg
+ jW9vBD7GvwgRzGkkVt4TdfanZHZo9BHAgesWzxl1arBlhKrVjC5mAP6RbnDAp5qGW2V6ZDKaVqu
+ g
+X-Gm-Gg: ASbGncsv6JkIESSqJjlQ3M6gycMUrMXmmDkE96vLZk+o4hIVotLQrIvLmZvt8+NAiza
+ TbjjNNljeYbJsOC6qaobgfLOUxMqbLUemFz1H3qrjytgaQCq1kXlq5wJdewis7DKNgsPdccsjRr
+ EYx2XMJFyFDO9WU9R+FPY+tltkj07JKBEWJJ0VsKfNMEM7v2vSiWopzFKGg3TAtPaaNBULsKU09
+ e0fmv7KZNVnWg43ojZwFp/wl8cOvkZorSl4TbXrfAGSRTEHZX6aOYLmPRDkksc=
+X-Google-Smtp-Source: AGHT+IHjHAC2umfW6p5+dcr1ck0yzm30TlqaznBGrJG83bxcsdgwPgfFSG2kTTIP+N28gRIOjHKc5A==
+X-Received: by 2002:a17:90b:1f8a:b0:2ee:ad18:b309 with SMTP id
+ 98e67ed59e1d1-2f452def24cmr2107091a91.3.1734667865486; 
+ Thu, 19 Dec 2024 20:11:05 -0800 (PST)
+Received: from stoup.. ([71.212.144.252]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2f2ee26fc22sm4165260a91.51.2024.12.19.20.11.04
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 18:46:42 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
+ Thu, 19 Dec 2024 20:11:05 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-ppc@nongnu.org
-Subject: [PATCH 4/4] tests/functional/test_ppc64_hv: Update to Alpine 3.21.0
-Date: Fri, 20 Dec 2024 12:46:17 +1000
-Message-ID: <20241220024617.1968556-5-npiggin@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241220024617.1968556-1-npiggin@gmail.com>
-References: <20241220024617.1968556-1-npiggin@gmail.com>
+Subject: [PATCH v2 00/51] tcg: Remove in-flight mask data from OptContext
+Date: Thu, 19 Dec 2024 20:10:12 -0800
+Message-ID: <20241220041104.53105-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,38 +91,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- tests/functional/test_ppc64_hv.py | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+The desire is to start re-using some of the fold_* functions
+while lowering or simplifying operations during tcg_optmize.
 
-diff --git a/tests/functional/test_ppc64_hv.py b/tests/functional/test_ppc64_hv.py
-index 62e1a0f3a2d..f5ff0993ff5 100755
---- a/tests/functional/test_ppc64_hv.py
-+++ b/tests/functional/test_ppc64_hv.py
-@@ -56,9 +56,9 @@ class HypervisorTest(QemuSystemTest):
-     good_message = 'VFS: Cannot open root device'
- 
-     ASSET_ISO = Asset(
--        ('https://dl-cdn.alpinelinux.org/alpine/v3.18/'
--         'releases/ppc64le/alpine-standard-3.18.4-ppc64le.iso'),
--        'c26b8d3e17c2f3f0fed02b4b1296589c2390e6d5548610099af75300edd7b3ff')
-+        ('https://dl-cdn.alpinelinux.org/alpine/v3.21/'
-+         'releases/ppc64le/alpine-standard-3.21.0-ppc64le.iso'),
-+        '7651ab4e3027604535c0b36e86c901b4695bf8fe97b908f5b48590f6baae8f30')
- 
-     def extract_from_iso(self, iso, path):
-         """
-@@ -143,7 +143,7 @@ def do_test_kvm(self, hpt=False):
-                            '-initrd /media/nvme0n1/boot/initramfs-lts '
-                            '-kernel /media/nvme0n1/boot/vmlinuz-lts '
-                            '-append \'usbcore.nousb ' + append + '\'')
--        # Alpine 3.18 kernel seems to crash in XHCI USB driver.
-+        # Alpine 3.21 kernel seems to crash in XHCI USB driver.
-         ps1='localhost:~#'
-         wait_for_console_pattern(self, 'localhost login:')
-         exec_command_and_wait_for_pattern(self, 'root', ps1)
+Many of these fold_* functions set z_mask, s_mask, and a_mask,
+which hang around until the end of the tcg_optmize loop and
+are applied by finish_folding.  This disconnect between set
+and apply is a problem -- we would no longer be applying the
+masks to the correct opcode.
+
+Fix this by making the masks local variables, passed down to
+be applied immediately to the opcode being processed.
+
+Changes for v2:
+  - Introduce fold_affected_mask, to handle a_mask separately from both
+    z_mask and s_mask.  There are only a couple of places where we can
+    compute a_mask, and handling that separately simplifies some things.
+    This means that fold_masks_zsa is gone, and fold_masks_za need not
+    be created.
+
+  - Introduce fold_masks_s, as suggested in review.
+
+  - In many places, fetch the TempOptInfo pointers once.  This doesn't
+    affect the resulting optimized code, but it's easier to read.
+
+  - There are a couple of logic fixes, separated out to new patches.
+  - There are a couple of logic improvements for fold_count_zero
+    and fold_deposit.
+
+Patches lacking review:
+  02-tcg-optimize-Split-out-fold_affected_mask.patch
+  04-tcg-optimize-Split-out-fold_masks_zs.patch
+  05-tcg-optimize-Augment-s_mask-from-z_mask-in-fold_m.patch
+  10-tcg-optimize-Use-fold_masks_zs-in-fold_count_zero.patch
+  13-tcg-optimize-Compute-sign-mask-in-fold_deposit.patch
+  29-tcg-optimize-Use-fold_masks_zs-in-fold_qemu_ld.patch
+  35-tcg-optimize-Fix-sign-mask-in-fold_negsetcond.patch
+  40-tcg-optimize-Canonicalize-s_mask-in-fold_exts-fol.patch
+  42-tcg-optimize-Simplify-sign-bit-test-in-fold_shift.patch
+
+
+r~
+
+
+Richard Henderson (51):
+  tcg/optimize: Split out finish_bb, finish_ebb
+  tcg/optimize: Split out fold_affected_mask
+  tcg/optimize: Copy mask writeback to fold_masks
+  tcg/optimize: Split out fold_masks_zs
+  tcg/optimize: Augment s_mask from z_mask in fold_masks_zs
+  tcg/optimize: Use finish_folding in fold_add, fold_add_vec,
+    fold_addsub2
+  tcg/optimize: Use fold_masks_zs in fold_and
+  tcg/optimize: Use fold_masks_zs in fold_andc
+  tcg/optimize: Use fold_masks_zs in fold_bswap
+  tcg/optimize: Use fold_masks_zs in fold_count_zeros
+  tcg/optimize: Use fold_masks_z in fold_ctpop
+  tcg/optimize: Use fold_and and fold_masks_z in fold_deposit
+  tcg/optimize: Compute sign mask in fold_deposit
+  tcg/optimize: Use finish_folding in fold_divide
+  tcg/optimize: Use finish_folding in fold_dup, fold_dup2
+  tcg/optimize: Use fold_masks_s in fold_eqv
+  tcg/optimize: Use fold_masks_z in fold_extract
+  tcg/optimize: Use finish_folding in fold_extract2
+  tcg/optimize: Use fold_masks_zs in fold_exts
+  tcg/optimize: Use fold_masks_z in fold_extu
+  tcg/optimize: Use fold_masks_zs in fold_movcond
+  tcg/optimize: Use finish_folding in fold_mul*
+  tcg/optimize: Use fold_masks_s in fold_nand
+  tcg/optimize: Use fold_masks_z in fold_neg_no_const
+  tcg/optimize: Use fold_masks_s in fold_nor
+  tcg/optimize: Use fold_masks_s in fold_not
+  tcg/optimize: Use fold_masks_zs in fold_or
+  tcg/optimize: Use fold_masks_zs in fold_orc
+  tcg/optimize: Use fold_masks_zs in fold_qemu_ld
+  tcg/optimize: Return true from fold_qemu_st, fold_tcg_st
+  tcg/optimize: Use finish_folding in fold_remainder
+  tcg/optimize: Distinguish simplification in fold_setcond_zmask
+  tcg/optimize: Use fold_masks_z in fold_setcond
+  tcg/optimize: Use fold_masks_s in fold_negsetcond
+  tcg/optimize: Fix sign mask in fold_negsetcond
+  tcg/optimize: Use fold_masks_z in fold_setcond2
+  tcg/optimize: Use finish_folding in fold_cmp_vec
+  tcg/optimize: Use finish_folding in fold_cmpsel_vec
+  tcg/optimize: Use fold_masks_zs in fold_sextract
+  tcg/optimize: Canonicalize s_mask in fold_exts, fold_sextract
+  tcg/optimize: Use fold_masks_zs, fold_masks_s in fold_shift
+  tcg/optimize: Simplify sign bit test in fold_shift
+  tcg/optimize: Use finish_folding in fold_sub, fold_sub_vec
+  tcg/optimize: Use fold_masks_zs in fold_tcg_ld
+  tcg/optimize: Use finish_folding in fold_tcg_ld_memcopy
+  tcg/optimize: Use fold_masks_zs in fold_xor
+  tcg/optimize: Use finish_folding in fold_bitsel_vec
+  tcg/optimize: Use finish_folding as default in tcg_optimize
+  tcg/optimize: Remove z_mask, s_mask from OptContext
+  tcg/optimize: Move fold_bitsel_vec into alphabetic sort
+  tcg/optimize: Move fold_cmp_vec, fold_cmpsel_vec into alphabetic sort
+
+ tcg/optimize.c | 776 +++++++++++++++++++++++++++----------------------
+ 1 file changed, 425 insertions(+), 351 deletions(-)
+
 -- 
-2.45.2
+2.43.0
 
 
