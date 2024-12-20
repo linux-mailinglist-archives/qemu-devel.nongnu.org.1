@@ -2,64 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9580B9F918D
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 12:44:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB82C9F919E
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 12:47:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tObPE-0007wH-1V; Fri, 20 Dec 2024 06:42:56 -0500
+	id 1tObSi-0000Vb-16; Fri, 20 Dec 2024 06:46:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1tObP3-0007vk-W2; Fri, 20 Dec 2024 06:42:46 -0500
-Received: from mail.ispras.ru ([83.149.199.84])
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1tObP1-0008ON-Iw; Fri, 20 Dec 2024 06:42:45 -0500
-Received: from [10.35.8.9] (unknown [80.250.189.26])
- by mail.ispras.ru (Postfix) with ESMTPSA id 797AA518E788;
- Fri, 20 Dec 2024 11:42:35 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 797AA518E788
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
- s=default; t=1734694956;
- bh=dSRqGQtO13PL2fUIjbQNUoHQ+E9epfdVau3MGnTx+oI=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=cjiliVPNHP17dSLt2dieOvwR3AWYV1RgLf6P0EqC+VTHuAwhnN+BHeSJ4UH5mkJkA
- JQMXW2fio7LwigT5DOtWRmgUq9/Ty/fCcXsFFhRV7cXQ0JhXuZNVWJdX8dNY6747fY
- QoPlg3kWAk969EAHFWHlpNMu/b8q0+B9DdDKOgGs=
-Message-ID: <71250e4e-ac3e-4df6-ac7a-5ed53fc8cd35@ispras.ru>
-Date: Fri, 20 Dec 2024 14:42:34 +0300
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1tObSV-0000Uf-51
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 06:46:19 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1tObSO-00029L-F4
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 06:46:18 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-21631789fcdso19594235ad.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 03:46:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1734695169; x=1735299969;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=YPoiLD8gKBehzlKwj6kAkLuVYOeeDhdIj7RO75oG5x8=;
+ b=qaV1OdMPl5dv4e8+YUKEgDnRO5+iBN6ufloIXHPuzlF5IkrsQXazFqfmFOGznzFO4g
+ BstTtMc55DADzwiHjQOkiRWYQjfLToLE0uijLVqTRWSmGWsNamorwm4MEzZrALpDoi9g
+ zaXjqL7CiV1xfq8GRQWMFwEQS5a/8BWPOV4gVDKpLpSU4HAXJqRbRAFvj6xH4urC0RZo
+ 07Dw0UWVNvapJz9E35KrTTOR7KfNaon1N3WX05+r6+o86Bd3h7z1h3mzgzsStbTyenOv
+ uo5jVEpSZqSXyteU4ZZq4hwgZHDkr2XL6yzIwbS1mcNqj09o0gYrEzMs1gKWD9aSeezo
+ 7+TA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734695169; x=1735299969;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=YPoiLD8gKBehzlKwj6kAkLuVYOeeDhdIj7RO75oG5x8=;
+ b=lpnbEEuOdk4NX5ja4t2SPHNwKaUSHK91+m40fAKnubtjPOewTYbbdmGgkWC9HhddzE
+ br+6+UAHju3NnXc3HwEh72jTvn/IdjPhOiIslp+T5CDhdSRgdGZErSf5cWRFCDs1UxZv
+ o6eCRHjmkKHr3bk623SdV++j7m+gIyOMwk9r1naVs1Ft7oD722Vm4upLtdCoNI7HyIES
+ iWdheypJd/cfNQTbQY/HZNsd0enEHualV0tpud+CVrfpXXUkBL3RFWZY+wqtxHVHCIGj
+ LDqSBgNSMtJeOPJ8XqvVSgBHL5/CIQmRPVbIzR5wk08uASdzhlzBRc9ye6Skj91D1/R+
+ ukwQ==
+X-Gm-Message-State: AOJu0YykAM+uqdKfWKPgo6rOCIBJz9iPScM/qYhPk4crcDskzokaiFOE
+ WVTjAZSnN/H3QTOj3ZkvBP4osZFhiYsfVFgTxptpOHYBH3DXEZPcd2US+yjoBcpwhVXeNC6ujvF
+ Hev0=
+X-Gm-Gg: ASbGncs88YNZKuX+QvnHHeOjNHlQJwoEjGZicC7BUeyXHjmGh+Kwex+TvrYhskwVK+1
+ J7AXLxYgPQk+SBds1YLL1nXO+wS8s3OCBpvvqvoQSKcToBpyOy+cfLS1P3oQ+jQJuD6TgVsAfMt
+ CC06zwLZMNOM53AxXMytle498zT/U+Uougxm3S4KhEuz0oFuu2qRexRonrXcOs/S/DxxBuiSGeG
+ uZuQ9hUKMweWQU4VazlyzbdUkvp+yq5zQyvKlY2N1DeLpfj5kRKL+YeN3Qqwza9RH9P/ec=
+X-Google-Smtp-Source: AGHT+IEmPAogRnmrkJKWHQ4GUNw1qoNhMd3rCOUhVH+jRsf7UEBAKQFw5ZwtEP29+WWG0A0rFS8J1g==
+X-Received: by 2002:a17:903:2cc:b0:215:6c5f:d142 with SMTP id
+ d9443c01a7336-219e6d5997dmr38435465ad.20.1734695168702; 
+ Fri, 20 Dec 2024 03:46:08 -0800 (PST)
+Received: from localhost.localdomain ([125.71.92.133])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-219dc9cde7esm27162215ad.152.2024.12.20.03.46.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 20 Dec 2024 03:46:08 -0800 (PST)
+From: Hyman Huang <yong.huang@smartx.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, yong.huang@smartx.com,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 1/2] qxl: Do not use C99 // comments
+Date: Fri, 20 Dec 2024 19:45:59 +0800
+Message-Id: <155c8974fd72403b9b32d3e2827850b7f08937f3.1734695085.git.yong.huang@smartx.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/17] replay: Fixes and avocado test updates
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Fam Zheng <fam@euphon.net>, Ronnie Sahlberg <ronniesahlberg@gmail.com>,
- John Snow <jsnow@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>
-References: <20241220104220.2007786-1-npiggin@gmail.com>
-Content-Language: en-US
-From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
-In-Reply-To: <20241220104220.2007786-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=83.149.199.84;
- envelope-from=pavel.dovgalyuk@ispras.ru; helo=mail.ispras.ru
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x630.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,95 +97,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
+Do not use C99 // comments to fix the checkpatch.pl error
 
-On 20.12.2024 13:42, Nicholas Piggin wrote:
-> Hi,
-> 
-> This is another round of replay fixes posted here
-> 
-> https://lore.kernel.org/qemu-devel/20240813050638.446172-1-npiggin@gmail.com/
-> 
-> A bunch of those fixes have been merged, but there are still some
-> outstanding here.
-> 
-> Dropped from the series is the net announce change, which seemed to
-> be the main issue Pavel had so far:
-> 
-> https://lore.kernel.org/qemu-devel/6e9b8e49-f00f-46fc-bbf8-4af27e0c3906@ispras.ru/
-> 
-> New in this series is a reworking of the replay BH APIs because people
-> didn't like the replay_xxx APIs throughout the tree. These new APIs
-> also have some assertions added to catch un-converted users when replay
-> is enabled, because it is far harder to debug it when it surfaces as a
-> replay failure.
-> 
-> These new API assertions caught a hw/ide replay bug which solves some
-> replay_linux test hangs. Couple of fixes in the replay_linux test case,
-> and now all tests are passing including aarch64 tests, see here
-> 
->    https://gitlab.com/npiggin/qemu/-/jobs/8695386122
-> 
-> (In that run a couple of the x86_64 tests were disabled to fit the
-> aarch64 tests in because gitlab seems to kill the job after 1 hour
-> so we can't fit them all in)
-> 
-> ppc64 also passes replay_linux after a couple of ppc64 fixes I'll post
-> a patch to add the ppc64 test later after everything works through.
-> 
-> Thanks,
-> Nick
-> 
-> 
-> Nicholas Piggin (17):
->    replay: Fix migration use of clock for statistics
->    replay: Fix migration replay_mutex locking
->    async: rework async event API for replay
->    util/main-loop: Convert to new bh API
->    util/thread-pool: Convert to new bh API
->    util/aio-wait: Convert to new bh API
->    async/coroutine: Convert to new bh API
->    migration: Convert to new bh API
->    monitor: Convert to new bh API
->    qmp: Convert to new bh API
->    block: Convert to new bh API
->    hw/ide: Fix record-replay and convert to new bh API
->    hw/scsi: Convert to new bh API
->    async: add debugging assertions for record/replay in bh APIs
->    tests/avocado/replay_linux: Fix compile error
->    tests/avocado/replay_linux: Fix cdrom device setup
->    tests/avocado/replay_linux: remove the timeout expected guards
-> 
->   docs/devel/replay.rst              |  7 +--
->   include/block/aio.h                | 44 ++++++++++++++++--
->   include/sysemu/replay.h            |  2 +-
->   backends/rng-builtin.c             |  2 +-
->   block.c                            |  4 +-
->   block/blkreplay.c                  | 10 +++-
->   block/block-backend.c              | 24 ++++++----
->   block/io.c                         |  5 +-
->   block/iscsi.c                      |  5 +-
->   block/nfs.c                        | 10 ++--
->   block/null.c                       |  4 +-
->   block/nvme.c                       |  8 ++--
->   hw/ide/core.c                      |  9 ++--
->   hw/net/virtio-net.c                | 14 +++---
->   hw/scsi/scsi-bus.c                 | 14 ++++--
->   job.c                              |  3 +-
->   migration/migration.c              | 17 +++++--
->   migration/savevm.c                 | 15 +++---
->   monitor/monitor.c                  |  3 +-
->   monitor/qmp.c                      |  5 +-
->   qapi/qmp-dispatch.c                |  5 +-
->   replay/replay-events.c             | 29 +++++-------
->   stubs/replay-tools.c               |  2 +-
->   util/aio-wait.c                    |  3 +-
->   util/async.c                       | 75 ++++++++++++++++++++++++++++--
->   util/main-loop.c                   |  2 +-
->   util/thread-pool.c                 |  8 ++--
->   scripts/block-coroutine-wrapper.py |  3 +-
->   tests/avocado/replay_linux.py      |  9 ++--
->   29 files changed, 245 insertions(+), 96 deletions(-)
-> 
+Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/display/qxl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hw/display/qxl.c b/hw/display/qxl.c
+index 949949d374..ae2d983299 100644
+--- a/hw/display/qxl.c
++++ b/hw/display/qxl.c
+@@ -50,7 +50,7 @@
+ #undef ALIGN
+ #define ALIGN(a, b) (((a) + ((b) - 1)) & ~((b) - 1))
+ 
+-#define PIXEL_SIZE 0.2936875 //1280x1024 is 14.8" x 11.9" 
++#define PIXEL_SIZE 0.2936875 /* 1280x1024 is 14.8" x 11.9" */
+ 
+ #define QXL_MODE(_x, _y, _b, _o)                  \
+     {   .x_res = _x,                              \
+-- 
+2.39.1
 
 
