@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DEF69F9672
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:25:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D50E59F965F
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:24:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOfjp-0007Zf-98; Fri, 20 Dec 2024 11:20:29 -0500
+	id 1tOfjw-0008EC-18; Fri, 20 Dec 2024 11:20:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfjh-0007CK-MS
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:20:21 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfjn-0007g8-EH
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:20:27 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfjf-00008e-Tk
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:20:21 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-435f8f29f8aso15634405e9.2
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:20:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfjk-00009T-DO
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:20:27 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3863703258fso2032840f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:20:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711618; x=1735316418; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734711623; x=1735316423; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eS7XCn1x67fCSopIP8en6mFUhhP2kj3st4Xc0cwgiaM=;
- b=HPVhmtaHEZjKuaKTZgIEYZbn6CzIZ019/vA6aTMz1PduZ6qLvpr1ZkYBkbg+G+bHib
- +I+PW+vIiVyx442Spb8yeigjrvObOXPqytLlOPK/Gx1uoT8TVx6a0khM5+OZDiwDI/pG
- 1T8DfzkeJI1AijVHcs0zoUVFlUJXJkVP7xkPxwOzxf1yi7HKWvasL3ZRIcV2eBtm1UIG
- 68gXu5oUg1nvZiGmjhbwnNMNFplnsylwGxlg59IsgfFPWg3KHoLXxdyeHsVntq7DcN5e
- TMNdVBF6kySSXkNA0S4mUvUFomgoFdn5/40HpGaaOKg0Y1cZmQ3hptRBAdtahNq11BMF
- nGpg==
+ bh=mvOlQMApDBDzAhIP13yF4ecCm+qCv+xsSCDO/Ma+hPI=;
+ b=Kb1itnsytYW2zYrmUd4If4A/ktwPffgenKgGa6iuXVpZ0F+G3C3njnJgWEHlYKF2rf
+ FIsWH/oKi1HX0GioNYUT2a9FtmKABomKwlgcZZSVRH2/W3vMq+Xbbm49XZiovfiOVlPt
+ vRhdTfigAZjQTThPYVGbI5SV6yKUm7I2zZJlUiCm3dKZbYf4QgAOMU2Xixhvw/vFssfj
+ PL89wGuvhzbFnvM3X1MGcFJrIybFi/9nu+tq3yt9DdRAXpL6ydrLpkF9wokKCWB2XTgO
+ dE484TmxSQS8muV+bwjT1Oy+U0EZ5Y5RIfGJ6YMMDtuixtKyo79bgyWDatBjRMl01Qt6
+ Vl/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711618; x=1735316418;
+ d=1e100.net; s=20230601; t=1734711623; x=1735316423;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eS7XCn1x67fCSopIP8en6mFUhhP2kj3st4Xc0cwgiaM=;
- b=SYU+/42sgrrePOKmP9tQlTTcJ9xZs1L/mUwPqx6tuclDC4EGGUpdadXK+hS+EC39E9
- tQ0fv7M8NEvGIvh8cgefxr5RNosyLxMf9+pB5uO7EW+IoRGtQNsomMRMvqFzaDdrJaCp
- SNE93+pLpO9h8DFs9axCNq7Y3fX8YAOrAaT4OKE05wj7a4K8oYWOzYL5NL9o1COZzOSv
- vOYsx6GAcHDmXQMIpFQSUpKWyq0OMalfOPnfRe9QwuHtogBKdx+wTH2zcIupz9MEiz4u
- Eln9MiEsyZcpMTPaSUY+pSIcdIkhiDO5mtE7TnqK1bHsDPFo3ci6bGJgD7wWilEpv/Cv
- Y4sQ==
-X-Gm-Message-State: AOJu0Ywe7+OrNxQJ0cPr7USrNWQdyK3nP9wMZ3vbzDlu7p+W0376GYcD
- kd4HVESggVA+ok9xdWkIatSTa2jml5GtMulDD0K3BPElOeKFR6m+sgV3Lx9PCi357xp8viAfAYi
- i
-X-Gm-Gg: ASbGnctxGgShMp7Mps+dtEcbNTbZDqHHK0FX5CWIeE0sLn0fwJIbXrjxWsNuWiSl+ax
- 9DUYdwku9HMXuxG8N2NOWL1Cu5Js2OH3dQYKVoE9dKxJmJN+Ww9WvM7jcim8yM1SP7BsGnywBR8
- CZQZD2rPPEbgTvZonSIO5bqjDnH/Q38Is/4LVjSOhxqcWiALQ9EF/JtbD9IG27voeT+/Z1jtdQI
- 15jRE8afauU9DqiDEWgWsAXoLrBikF2N1c5690VC2gO/HIAiccy6NJt0oq8jBFLNYky55ujelg=
-X-Google-Smtp-Source: AGHT+IEzERc/Xpj953bRSwrRCheaj27yO52tSd6hG3HwY5mNx7f8WVLNqRU0H4jjei3U9Xc6N5bT4w==
-X-Received: by 2002:a05:600c:450d:b0:434:a367:2bd9 with SMTP id
- 5b1f17b1804b1-43668643616mr33012925e9.14.1734711618125; 
- Fri, 20 Dec 2024 08:20:18 -0800 (PST)
+ bh=mvOlQMApDBDzAhIP13yF4ecCm+qCv+xsSCDO/Ma+hPI=;
+ b=LcotOi22HUKAfOyetN1mIw5pdAiBHMUSA1hHJTH5UOhCLvksWi9htT/dB3w5YW6cmM
+ cZOtdSNrh/Z47uMeEZdnZ7Qnxf0B7c7T4i+DfFPhcLsZXg1Oa/sBcUt+OW6GqtiqVSzd
+ Zhrqc8GcH57zZNrlwPwl/usUn63Dok6O70tAtEAZ+85VNvug/kDEQkUY0065bcZAUUwJ
+ Fe8aA2Y1HeGyXaFQOyn2TevEUdeyKYENDvZCuofcPLvMHlJwC3uWCQtnxJK3pdo6Lcgv
+ EktvHzBLcAh9G/lhnMkb0nhUSypJKqOH57weSYN3PnuFF0+p2rZrEtA4x/wn4/nooJvn
+ evUw==
+X-Gm-Message-State: AOJu0Yw0XOUzQ3oGpD/0pCGy6tkryuioAZlfOrym8sJixmv9XfNE/ka9
+ K/FxRaOX1hbCdQkWOyZz4TCr92aAGMA0iW6XzEHNL0ShphL6kSnQfs5bEahdd9UWdkjiJ+wgPXy
+ d
+X-Gm-Gg: ASbGncvqzi88BeJJmNZedJb4yfcAAHIgriG96DjenIR5gYKCPNWUv7tBhXbBaHKGl3k
+ Rk6EU2CmNVrx3ATMstStuXvwA6KIY7/ODv5fRIowlv3eLAYqIvc7BzZSwotC+K78jIxi5CqEN8K
+ ppNY4X8dm7f9H4cmsOyYG+mfIe9PZB7Q0EzCKU/os/WO67YmK354baiFq/s5PBFGdWL/+zipy8m
+ DQjSIXxpvn3gOhMRxen8UIQIfz3yXa/v0Q7bhyN9Zv9Qa1qQtPZAgFQ7qvDV3UoNwVY3DbPxUI=
+X-Google-Smtp-Source: AGHT+IGf4ptPck+zkjlU0RwXwXavGCMpmbIWgvaT7oVUlXPi84+AJ5u6BPRlHYQRP6GQzy6fJfMt1Q==
+X-Received: by 2002:a5d:59a4:0:b0:385:df17:2148 with SMTP id
+ ffacd0b85a97d-38a1a2641b7mr6521380f8f.20.1734711622602; 
+ Fri, 20 Dec 2024 08:20:22 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656b11495sm83498655e9.19.2024.12.20.08.20.17
+ ffacd0b85a97d-38a1c8acabbsm4363424f8f.93.2024.12.20.08.20.21
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:20:17 -0800 (PST)
+ Fri, 20 Dec 2024 08:20:22 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 58/59] meson: Do not define CONFIG_DEVICES on user emulation
-Date: Fri, 20 Dec 2024 17:15:49 +0100
-Message-ID: <20241220161551.89317-59-philmd@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 59/59] util/qemu-timer: fix indentation
+Date: Fri, 20 Dec 2024 17:15:50 +0100
+Message-ID: <20241220161551.89317-60-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
 References: <20241220161551.89317-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,37 +96,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CONFIG_DEVICES is not generated on user emulation, so
-do not define it.
+From: Alex Bennée <alex.bennee@linaro.org>
 
+Purely cosmetic.
+
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20241218162104.3493551-17-alex.bennee@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241218151256.68625-1-philmd@linaro.org>
 ---
- meson.build | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ util/qemu-timer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/meson.build b/meson.build
-index 6149b50db28..f4109cd3cae 100644
---- a/meson.build
-+++ b/meson.build
-@@ -4110,7 +4110,7 @@ foreach target : target_dirs
-   arch_deps = []
-   c_args = ['-DCOMPILING_PER_TARGET',
-             '-DCONFIG_TARGET="@0@-config-target.h"'.format(target),
--            '-DCONFIG_DEVICES="@0@-config-devices.h"'.format(target)]
-+  ]
-   link_args = emulator_link_args
+diff --git a/util/qemu-timer.c b/util/qemu-timer.c
+index 16f847ff983..0e8a453eaa1 100644
+--- a/util/qemu-timer.c
++++ b/util/qemu-timer.c
+@@ -680,7 +680,7 @@ int64_t qemu_clock_advance_virtual_time(int64_t dest)
+     aio_context = qemu_get_aio_context();
  
-   target_inc = [include_directories('target' / config_target['TARGET_BASE_ARCH'])]
-@@ -4130,6 +4130,7 @@ foreach target : target_dirs
-       arch_deps += hw.dependencies()
-     endif
- 
-+    c_args += ['-DCONFIG_DEVICES="@0@-config-devices.h"'.format(target)]
-     arch_srcs += config_devices_h[target]
-     link_args += ['@block.syms', '@qemu.syms']
-   else
+     deadline = qemu_clock_deadline_ns_all(QEMU_CLOCK_VIRTUAL,
+-                                                      QEMU_TIMER_ATTR_ALL);
++                                          QEMU_TIMER_ATTR_ALL);
+     /*
+      * A deadline of < 0 indicates this timer is not enabled, so we
+      * won't get far trying to run it forward.
 -- 
 2.47.1
 
