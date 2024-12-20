@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC1939F9643
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:21:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E80769F9680
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:26:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOfiS-0001fK-If; Fri, 20 Dec 2024 11:19:05 -0500
+	id 1tOfiZ-00026z-8n; Fri, 20 Dec 2024 11:19:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfhr-0000d5-SX
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:18:29 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfhx-0000jY-Dp
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:18:34 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfhq-0008A8-4P
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:18:27 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3862a921123so1493935f8f.3
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:18:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfhv-0008AR-J0
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:18:33 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3862d161947so1091131f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:18:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711504; x=1735316304; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734711509; x=1735316309; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tifxFPID9bghi7hq01IeGacsDjpsOnZMZbgcEaKOJwE=;
- b=osKZFulOeuNpwsLcCrB7SLydz7WacRnuV/zpSlAhzHnC5PyWiC38sbKMN5RPI2K7uf
- DbAoP7QawN69grfcWM7DhcSvpKqCL1XbF1JvRrr1ojLbqB5WCyGlhn/GY3sARTLSGsOL
- IFRcLdzm3uQTCwawpbxLw951Hm7PDafK6+7aoGuqNUxto0Z6EH60eWAVF1fZPzDuqPey
- Lzxhig/Dm7ZCBflEYxq/M4GJDUUI34UBO5zHGAorPygNLvdFUDT1iwJAnOh1AMuUycXP
- syKfhgW41jzN6RhS3uZg2obl1yOUluQ0EKAlGScnguU0UH66So43CdmLfQt37hANBP2b
- UWCw==
+ bh=wjQsKFSPnrMo0qfcXdcQ0jhEDeij4rKLey65pvPCxLY=;
+ b=PfaiWawAo1Jq2GN4KG+eeVPOLL6DiiUwV7+icODPDtPDYTUo60FsMi6y3JyhX3s4Dl
+ NOcpXd9XLIiToqS2Jzv660cjNTTTFsfFxvMDb8yUq9kcsmLYHIusYocvcuLJsMZhFBRB
+ ITmxLhllfI06NYdlVAEGvldOHDcWfxk4C7p6kd2Rk2fFDaRAZlIuaJiyIBq8dtU6Rz9o
+ f4i2Wy4VCZcSwsALRyQwO23Pjdr1V7YQSC4Qf1q2afVH/a4SeELUgDMfYiXqG4GBbrQl
+ FAlpV3YkQCd8CZDLMsl7dg3kPbG+CkPNdsBsEnvxhGIFHRpUzEvdDtb+AxPSC7qREJf/
+ GlgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711504; x=1735316304;
+ d=1e100.net; s=20230601; t=1734711509; x=1735316309;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tifxFPID9bghi7hq01IeGacsDjpsOnZMZbgcEaKOJwE=;
- b=djwxndJOk45j64WgI1a2Yu2Uni+aTEQqxuLeXgPbomxeWgpuOKL+Uo1qTw1RNI0dYO
- wC1/2Cw5IVzNyWs4VzIGIKydKM7In1vYnUyynH/Eus8tXV+4VqvX2swNg1TxM1O2yTcM
- 8NeAJN3wLbMr5TnHpGTYyCQL8MiS1FRRqJfn58E+ALQpOaVDRrYaKUsQiYXO+HI08DZV
- odviombrGa53FfbIDCVbhgZ8UBSSnQSmuN1a6QjxIcW5b4pPvFZ6SoOezC98UDwG02zO
- Sf/Djca7f3imcSLR1utZb//sMZOC7wI+cmlGTtiUOC9+JUkwNltLi4zlNKQ2aB2+bd3Y
- M73A==
-X-Gm-Message-State: AOJu0YzZysahc4+TZyEqwvlKm8z2eacXY0Agq6TwlRUJ3ERznriP5/5s
- gUeU9zUbNncYta9lntNjDzYa8Fpd/qFjip3fa4eXnSe45DUL2F4hzsed4fh81AFe3MTKYlZKqaG
- l
-X-Gm-Gg: ASbGncvSjTb60ql8qylTO5LrSi0vcC8SOA1rEjE3hwoXd8bgMCq5vPB8KUKVQEFFOlr
- CbrjzKKd3gB6oLWCfCL4Jw5DuJ6O+PLwV28vSZPGubuoTNisAk6BQFgXFEGkc25+bG90RiM8B/R
- CehlM+63RnXwBQn98Q3r8YAz540BGs0pdSnCXkWD2tMzE10xzvY/X6Jam2Op6w7AcWjZoTgEk+n
- 5zu+jIbezyU7lHXXWj88tOd4uL6Sbd5dEQQMt0XJTsVaBG4mJTmMi8y1Y0D+zsSlUH3OILDyN0=
-X-Google-Smtp-Source: AGHT+IEhNsiUTNOMqkuYqQsbDql0+svXU9BGupJUsxZRmHyUuPSV2y0GVvhV01a5sl6WBwZsQ9Yo7g==
-X-Received: by 2002:a5d:59af:0:b0:385:deca:f7cf with SMTP id
- ffacd0b85a97d-38a221e1ff0mr3295515f8f.8.1734711504479; 
- Fri, 20 Dec 2024 08:18:24 -0800 (PST)
+ bh=wjQsKFSPnrMo0qfcXdcQ0jhEDeij4rKLey65pvPCxLY=;
+ b=X4cjngGOoWAJI6xIYR5fG2Se78Ld9hOMLfnHrq8iBcWkKEh7Hz6DTZ/zlCLCRruZKJ
+ reglm//x031qKr7hYRU4jMUipkel/yE+4tzX6nAFrvYx3WhZ7239vexoab4vCpW40D94
+ DMw42QVkzR85Y8Al0BU6Cn8R8focc31fzgJFbX7qne68PJwZCCC/M/m0tAZBRhXtg+XY
+ lVzl9LNA+WSE+ClNpTFXhXwGbuHivv2eJ0DRWjifQ0fD3kVbYtfVOZD9h7WcCIoKaZqJ
+ lcXOIoVpBPFZqPj9KpgMM2TDmMId1rMIEaG2tiWolT6Cx1dnGLzVAfLPxmDSEQacMUCB
+ oFlw==
+X-Gm-Message-State: AOJu0YwtbSbR7LOrhwNOp9/tgDYaIZWMy5CFFQzLYRhM84jN/AIq9MGP
+ PAzumuykuNT2cmIGsHlo70TqALvsmHMTfm5miy4DeXxzWs2ZcU1j9r2B1SXEpO9A8E0URMUIWfS
+ Y
+X-Gm-Gg: ASbGncspPGyZedgEzLCyF/eQP3ftk209wpRO1DQsjh09sM0JAkK7X2sZnicATdcobbY
+ qJZg9O4CK7jyKUbyn474LihR2+ZhpI4SsDU05mUegTimeIlvA1/XL9xRbv4W+b+i1afUWC4zCOT
+ FlJbGTicpnfP0kPEjQMDdjm5++xlBZmiEUC4OKtKAaHwvIyzaz8Xh+rdHZ7SJSsp4qSwARFaYCt
+ 8+wpnTIGJJy1/AJNJtwkoUZfVepIi4SualGOfzkOO+o2k/1Zw+H7hYUdrETnc051DgOYygTGVE=
+X-Google-Smtp-Source: AGHT+IEFbZ7loz4KgataK9+Tt+7cG3QAhA8OzpmELW1G0yZDHuSl7s8btekJccqSSA4v6FA1wgoRKA==
+X-Received: by 2002:a5d:5f8b:0:b0:385:fc70:826 with SMTP id
+ ffacd0b85a97d-38a223fd808mr3373144f8f.52.1734711508925; 
+ Fri, 20 Dec 2024 08:18:28 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c847513sm4416421f8f.49.2024.12.20.08.18.23
+ ffacd0b85a97d-38a1c89e278sm4455830f8f.75.2024.12.20.08.18.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:18:24 -0800 (PST)
+ Fri, 20 Dec 2024 08:18:28 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 33/59] accel/tcg: Move user-related declarations out of
- 'exec/cpu-all.h' (1/4)
-Date: Fri, 20 Dec 2024 17:15:24 +0100
-Message-ID: <20241220161551.89317-34-philmd@linaro.org>
+Subject: [PULL 34/59] accel/tcg: Move user-related declarations out of
+ 'exec/cpu-all.h' (2/4)
+Date: Fri, 20 Dec 2024 17:15:25 +0100
+Message-ID: <20241220161551.89317-35-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
 References: <20241220161551.89317-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,115 +104,182 @@ emulation from "exec/cpu-all.h" to "user/page-protection.h".
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241212185341.2857-12-philmd@linaro.org>
+Message-Id: <20241212185341.2857-13-philmd@linaro.org>
 ---
- include/exec/cpu-all.h         | 5 -----
- include/user/page-protection.h | 8 ++++++++
- bsd-user/main.c                | 1 +
- bsd-user/mmap.c                | 1 +
- linux-user/main.c              | 1 +
- linux-user/mmap.c              | 1 +
- linux-user/syscall.c           | 1 +
- 7 files changed, 13 insertions(+), 5 deletions(-)
+ bsd-user/bsd-mem.h             |  1 +
+ include/exec/cpu-all.h         | 55 --------------------------------
+ include/user/page-protection.h | 57 ++++++++++++++++++++++++++++++++++
+ target/arm/tcg/mte_helper.c    |  4 ++-
+ 4 files changed, 61 insertions(+), 56 deletions(-)
 
+diff --git a/bsd-user/bsd-mem.h b/bsd-user/bsd-mem.h
+index eef6b222d9e..f5ec0de24ca 100644
+--- a/bsd-user/bsd-mem.h
++++ b/bsd-user/bsd-mem.h
+@@ -57,6 +57,7 @@
+ 
+ #include "qemu-bsd.h"
+ #include "exec/page-protection.h"
++#include "user/page-protection.h"
+ 
+ extern struct bsd_shm_regions bsd_shm_regions[];
+ extern abi_ulong target_brk;
 diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index 1c8e0446d06..3d97323893b 100644
+index 3d97323893b..86cd40020c9 100644
 --- a/include/exec/cpu-all.h
 +++ b/include/exec/cpu-all.h
-@@ -127,11 +127,6 @@ extern const TargetPageBits target_page;
- #define TARGET_PAGE_ALIGN(addr) ROUND_UP((addr), TARGET_PAGE_SIZE)
- 
- #if defined(CONFIG_USER_ONLY)
--void page_dump(FILE *f);
--
--typedef int (*walk_memory_regions_fn)(void *, target_ulong,
--                                      target_ulong, unsigned long);
--int walk_memory_regions(void *, walk_memory_regions_fn);
+@@ -130,21 +130,6 @@ extern const TargetPageBits target_page;
  
  int page_get_flags(target_ulong address);
  
-diff --git a/include/user/page-protection.h b/include/user/page-protection.h
-index 448c7a03449..ea11cf9e328 100644
---- a/include/user/page-protection.h
-+++ b/include/user/page-protection.h
-@@ -12,9 +12,17 @@
- #error Cannot include this header from system emulation
+-/**
+- * page_set_flags:
+- * @start: first byte of range
+- * @last: last byte of range
+- * @flags: flags to set
+- * Context: holding mmap lock
+- *
+- * Modify the flags of a page and invalidate the code if necessary.
+- * The flag PAGE_WRITE_ORG is positioned automatically depending
+- * on PAGE_WRITE.  The mmap_lock should already be held.
+- */
+-void page_set_flags(target_ulong start, target_ulong last, int flags);
+-
+-void page_reset_target_data(target_ulong start, target_ulong last);
+-
+ /**
+  * page_check_range
+  * @start: first byte of range
+@@ -157,46 +142,6 @@ void page_reset_target_data(target_ulong start, target_ulong last);
+  */
+ bool page_check_range(target_ulong start, target_ulong last, int flags);
+ 
+-/**
+- * page_check_range_empty:
+- * @start: first byte of range
+- * @last: last byte of range
+- * Context: holding mmap lock
+- *
+- * Return true if the entire range [@start, @last] is unmapped.
+- * The memory lock must be held so that the caller will can ensure
+- * the result stays true until a new mapping can be installed.
+- */
+-bool page_check_range_empty(target_ulong start, target_ulong last);
+-
+-/**
+- * page_find_range_empty
+- * @min: first byte of search range
+- * @max: last byte of search range
+- * @len: size of the hole required
+- * @align: alignment of the hole required (power of 2)
+- *
+- * If there is a range [x, x+@len) within [@min, @max] such that
+- * x % @align == 0, then return x.  Otherwise return -1.
+- * The memory lock must be held, as the caller will want to ensure
+- * the returned range stays empty until a new mapping can be installed.
+- */
+-target_ulong page_find_range_empty(target_ulong min, target_ulong max,
+-                                   target_ulong len, target_ulong align);
+-
+-/**
+- * page_get_target_data(address)
+- * @address: guest virtual address
+- *
+- * Return TARGET_PAGE_DATA_SIZE bytes of out-of-band data to associate
+- * with the guest page at @address, allocating it if necessary.  The
+- * caller should already have verified that the address is valid.
+- *
+- * The memory will be freed when the guest page is deallocated,
+- * e.g. with the munmap system call.
+- */
+-void *page_get_target_data(target_ulong address)
+-    __attribute__((returns_nonnull));
  #endif
  
-+#include "cpu-param.h"
-+#include "exec/target_long.h"
- #include "exec/translation-block.h"
+ CPUArchState *cpu_copy(CPUArchState *env);
+diff --git a/include/user/page-protection.h b/include/user/page-protection.h
+index ea11cf9e328..d21fab1aaf9 100644
+--- a/include/user/page-protection.h
++++ b/include/user/page-protection.h
+@@ -18,6 +18,63 @@
  
  void page_protect(tb_page_addr_t page_addr);
  int page_unprotect(tb_page_addr_t address, uintptr_t pc);
-+typedef int (*walk_memory_regions_fn)(void *, target_ulong,
-+                                      target_ulong, unsigned long);
 +
-+int walk_memory_regions(void *, walk_memory_regions_fn);
++/**
++ * page_set_flags:
++ * @start: first byte of range
++ * @last: last byte of range
++ * @flags: flags to set
++ * Context: holding mmap lock
++ *
++ * Modify the flags of a page and invalidate the code if necessary.
++ * The flag PAGE_WRITE_ORG is positioned automatically depending
++ * on PAGE_WRITE.  The mmap_lock should already be held.
++ */
++void page_set_flags(target_ulong start, target_ulong last, int flags);
 +
-+void page_dump(FILE *f);
++void page_reset_target_data(target_ulong start, target_ulong last);
++
++/**
++ * page_check_range_empty:
++ * @start: first byte of range
++ * @last: last byte of range
++ * Context: holding mmap lock
++ *
++ * Return true if the entire range [@start, @last] is unmapped.
++ * The memory lock must be held so that the caller will can ensure
++ * the result stays true until a new mapping can be installed.
++ */
++bool page_check_range_empty(target_ulong start, target_ulong last);
++
++/**
++ * page_find_range_empty
++ * @min: first byte of search range
++ * @max: last byte of search range
++ * @len: size of the hole required
++ * @align: alignment of the hole required (power of 2)
++ *
++ * If there is a range [x, x+@len) within [@min, @max] such that
++ * x % @align == 0, then return x.  Otherwise return -1.
++ * The memory lock must be held, as the caller will want to ensure
++ * the returned range stays empty until a new mapping can be installed.
++ */
++target_ulong page_find_range_empty(target_ulong min, target_ulong max,
++                                   target_ulong len, target_ulong align);
++
++/**
++ * page_get_target_data(address)
++ * @address: guest virtual address
++ *
++ * Return TARGET_PAGE_DATA_SIZE bytes of out-of-band data to associate
++ * with the guest page at @address, allocating it if necessary.  The
++ * caller should already have verified that the address is valid.
++ *
++ * The memory will be freed when the guest page is deallocated,
++ * e.g. with the munmap system call.
++ */
++__attribute__((returns_nonnull))
++void *page_get_target_data(target_ulong address);
++
+ typedef int (*walk_memory_regions_fn)(void *, target_ulong,
+                                       target_ulong, unsigned long);
  
+diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
+index b017b26d07b..7943ae2d608 100644
+--- a/target/arm/tcg/mte_helper.c
++++ b/target/arm/tcg/mte_helper.c
+@@ -23,7 +23,9 @@
+ #include "internals.h"
+ #include "exec/exec-all.h"
+ #include "exec/page-protection.h"
+-#ifndef CONFIG_USER_ONLY
++#ifdef CONFIG_USER_ONLY
++#include "user/page-protection.h"
++#else
+ #include "exec/ram_addr.h"
  #endif
-diff --git a/bsd-user/main.c b/bsd-user/main.c
-index 61ca73c4781..0a5bc578365 100644
---- a/bsd-user/main.c
-+++ b/bsd-user/main.c
-@@ -38,6 +38,7 @@
- #include "qemu/plugin.h"
- #include "exec/exec-all.h"
- #include "user/guest-base.h"
-+#include "user/page-protection.h"
- #include "tcg/startup.h"
- #include "qemu/timer.h"
- #include "qemu/envlist.h"
-diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
-index 775e905960b..346f2cefd32 100644
---- a/bsd-user/mmap.c
-+++ b/bsd-user/mmap.c
-@@ -18,6 +18,7 @@
-  */
- #include "qemu/osdep.h"
- #include "exec/page-protection.h"
-+#include "user/page-protection.h"
- 
- #include "qemu.h"
- 
-diff --git a/linux-user/main.c b/linux-user/main.c
-index b09af8d4365..06037304cb1 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -39,6 +39,7 @@
- #include "qemu/module.h"
- #include "qemu/plugin.h"
- #include "user/guest-base.h"
-+#include "user/page-protection.h"
- #include "exec/exec-all.h"
- #include "exec/gdbstub.h"
- #include "gdbstub/user.h"
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index e4bf5d5f39c..4e0444b4cbc 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -22,6 +22,7 @@
- #include "exec/log.h"
- #include "exec/page-protection.h"
- #include "qemu.h"
-+#include "user/page-protection.h"
- #include "user-internals.h"
- #include "user-mmap.h"
- #include "target_mman.h"
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 1ce4c79784f..c54b199b6d3 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -135,6 +135,7 @@
- #include "signal-common.h"
- #include "loader.h"
- #include "user-mmap.h"
-+#include "user/page-protection.h"
- #include "user/safe-syscall.h"
- #include "qemu/guest-random.h"
- #include "qemu/selfmap.h"
+ #include "exec/cpu_ldst.h"
 -- 
 2.47.1
 
