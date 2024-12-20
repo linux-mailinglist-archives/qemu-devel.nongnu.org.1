@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 639069F89C9
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 02:57:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B2459F89D2
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 02:59:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOSG8-0001q3-UM; Thu, 19 Dec 2024 20:56:57 -0500
+	id 1tOSHK-000357-Cv; Thu, 19 Dec 2024 20:58:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tOSG2-0001bL-3W
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:56:50 -0500
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1tOSG4-0001mc-QF
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:56:53 -0500
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tOSG0-0004jZ-A4
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:56:49 -0500
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-725c86bbae7so1287701b3a.3
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 17:56:47 -0800 (PST)
+ id 1tOSG3-0004mV-2p
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:56:52 -0500
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-728ea1573c0so1260190b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 17:56:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734659807; x=1735264607; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1734659810; x=1735264610; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Oo9albpqZecO7rjAPj/A5+mIyg1TEhQK/19ldiN/n/Y=;
- b=EP8EWVoW829RagkfMec1OWAZh+lbHxcn1+zOhwMmgPHIswVYA1CZQvvpFvcTIgaTjY
- LBYV6ju3H6gp/9TEmC4l8CbQ/VEPpBoKTUPo8oXXLLo7mOdOXXVtPdI7NCyesP+ToW/g
- w2HInZzZ0WBMgXhmtopAFHVfnLIH0bscSLQiZ9RYjhBEV7gy+8WT2iIBcANWffg17upz
- f5xuQKezfaylV3uVjvW8Ir1rxmBL39VGSU6G2SxdertVp0DQG4UpphXsgCBxEVYvNmYa
- 7BLrTg/v1sdKSxMk1IFuzH87ziLoFP6OpPCT199PklqYRiPkmkmVgh8Gm6UKPYS8wWDM
- utIQ==
+ bh=Q91CPRzhK1oN/ujwAJK2FZ7kmB/x/zQicuDmdvSPzQY=;
+ b=RKXfHEAz8wPZxYdQqAPIajKl+PkLeta3hIBuFhJ+kQI1ly0FeBaX9H7HPnKmyMURUb
+ hFlGJxH1l7mMYzf2giSjt4IeCzs/UzBdNnsmAAUg3ACDrbohEMK7K2rEX97ToDSUZzLa
+ Eh94ubzESZh9NGKYxrmFDyZqeGT2q93s4MM51p+jZCoOeU9YLUapav5hoFG3dOS85CCX
+ /bbIYMhggMOFtMOHc2n3IYm6LRe16bOGLTqrR1RfORCUsIiDl1vHzBD0XoNHzi1z/yvw
+ CWpHvfQJ/H+Lto30uy3FCwN7azygdkbZmNFKc5VIkCT1iIy3T/609VDmzvJUXod2k68Z
+ yQ3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734659807; x=1735264607;
+ d=1e100.net; s=20230601; t=1734659810; x=1735264610;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Oo9albpqZecO7rjAPj/A5+mIyg1TEhQK/19ldiN/n/Y=;
- b=SR0dV0K63OavMJG1udAgPootGCOJroWlwvlomtyLDGbXnC04p12o8b0oATgGrvi2AG
- 3aBAMRijRpipYyQQKOXcZXk2+c9i5JNgy+wF7z+nyoIjh5GY0Ss7AFeRIrMvbEje4jwY
- LS8c6ZW2k5+u5qRoJaPxstF4Zwduj9ogniNr/5GlXI77NEsDP6x3jJcbxlcWYwPBctod
- PTtQgWLD5JmpnSwym7zPvv39XkN3nxaRnJYa6+KBFjPGSO+LcWV/BblIfGaZRtaLzrLZ
- 9xJVwHL7GtezAiJ1gfm5qFJvXYUhVpHsaa3Wy5pCU/MsCrJXechkYzUsxR4MeMULsQhT
- MDrA==
-X-Gm-Message-State: AOJu0YxBSSXFxmO+57g2hBf3s7csNbe6kbst0p0KjM2r49HuaAVfG4YT
- al983ZNB4MsBVoKVdQ2VkFwfR7E558Y+pTI2X9uXu4bqPo4wvPBZBgD4+n+N
-X-Gm-Gg: ASbGnct3IE4JacInXctHm8HQJTfkYDtTWUIb5n27/jlm4pGi0TbF4Xv+5Z5KIZX88Tf
- Azp3EFF1DLLc0XmmLVlniEkxasNWX4flGoS1W8zhzbzDfjHVREnT0VG6gneAPooNRmduTXEs30P
- qJcOxHf/K2xu+Gcte5a2329fvlR7w/9I4TgxZAzT4jJcC78w+YS7z8PCdDaTY7dUYCk8yI4GrBW
- 8qrEXAw7HNGZTd708BaSktOTolXQnmZXp/TgauWjGQXL6Mvw/bPAA1sUfbBBZlJbCr/RKYIckrP
- CeFhiPKJTMSIzgLEeU3z/9/uHcPtVMOD+sOwTCstKx3Mwm1IEnWL+sS23dqaUa0=
-X-Google-Smtp-Source: AGHT+IFSfnQk5P1jCoqHlCcSPmG3mNR9MoRZT2rYG4HLSSQEdrDF2wJ+M2B6RYulpBEtvQI69Puwzg==
-X-Received: by 2002:a05:6a20:e68e:b0:1e1:becc:1c9c with SMTP id
- adf61e73a8af0-1e5e0802b15mr1826349637.28.1734659806583; 
- Thu, 19 Dec 2024 17:56:46 -0800 (PST)
+ bh=Q91CPRzhK1oN/ujwAJK2FZ7kmB/x/zQicuDmdvSPzQY=;
+ b=KftllEbd2ZnXLlEO9dGyKIQctxCwcOJcU96hOVdsu0TldDNCTWBmVk2u5ARtxBPXM9
+ yPqP08O677hprHvIiPhSk+0sRptSts3EwfLA6HxkFp/AX5/fNH1uH0mJS6vETF8CiwKd
+ kXbpPkMEuE0XusaZAvke4wlT20bVuacLYRHf/zutJkEE20P+8QVJ9ztn/F1Skv0mZ+kU
+ h009HGh3AybbTT2hyY+1BVxh7MiSw2qMI0QRxzxY0ghlp/FaS/FLZx/wZ7SPmnQg5fRc
+ 62eN4qghkc+E3RO6nPFju12r+WWQFhzhsiRRIXKw6ksUO78uDh2D9QWhBVnLUdAczF0P
+ aVCw==
+X-Gm-Message-State: AOJu0Yw3rPGD98z4B/c//SAmZHa/JYTx1oCVScHA08wpZS5iOeUtj43R
+ kGmTNvvvvV/AOQt8CsaozjtJvPXmF/G1TgKoGuXSXp+1nHjuxnhzh5e1a6Nc
+X-Gm-Gg: ASbGncu7xGD5Q4JjAe0QXJFzr2Hai1CEb4CXYcLfcQLKCwK6sHuxSaEGu1/eFO+fawf
+ spZxeDJLg3umWA69KTki3o3801XtWgjDji53H22SKELQzYHUYpexiOzW7O7gyWhCip9QHnQ7/Dl
+ fsd6ZJQmKflnBvAT05dfcfMgChPnE41JW1saNY89trt9o0xkcW/sYz3ZIvay/y2u92fP2qMqIDE
+ XNoOEPkniy6Fg6VRLOjeqkSU7DM6Pq7P0tsUxY1m/N8DVE2nWBAoT23+VMgHEOMSEgr2Pp4BpAZ
+ xgntWh958YmxwSx1Sa4+IgMO6riRzr6vD3JQtI2ZCSqgzUPcbJY0P0IRoUcFCy4=
+X-Google-Smtp-Source: AGHT+IFDOFjQnGp1ANq8A9mRq2tqQFgZyAmYP/+39ifBj1KlBtmEsYe4KyfP5ayirzqDY09DWzhWYA==
+X-Received: by 2002:a05:6a20:1593:b0:1db:eecb:f7a1 with SMTP id
+ adf61e73a8af0-1e5e0481aeamr1681452637.17.1734659809603; 
+ Thu, 19 Dec 2024 17:56:49 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad8164d3sm2002539b3a.15.2024.12.19.17.56.43
+ d2e1a72fcca58-72aad8164d3sm2002539b3a.15.2024.12.19.17.56.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 17:56:45 -0800 (PST)
+ Thu, 19 Dec 2024 17:56:49 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 37/39] target/riscv/tcg: hide warn for named feats when
- disabling via priv_ver
-Date: Fri, 20 Dec 2024 11:54:37 +1000
-Message-ID: <20241220015441.317236-38-alistair.francis@wdc.com>
+ Alistair Francis <alistair.francis@wdc.com>,
+ Andrew Jones <ajones@ventanamicro.com>
+Subject: [PULL v2 38/39] target/riscv: add ssstateen
+Date: Fri, 20 Dec 2024 11:54:38 +1000
+Message-ID: <20241220015441.317236-39-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220015441.317236-1-alistair.francis@wdc.com>
 References: <20241220015441.317236-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -104,58 +104,85 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Commit 68c9e54bea handled a situation where a warning was being shown
-when using the 'sifive_e' cpu when disabling the named extension zic64b.
-It makes little sense to show user warnings for named extensions that
-users can't control, and the solution taken was to disable zic64b
-manually in riscv_cpu_update_named_features().
+ssstateen is defined in RVA22 as:
 
-This solution won't scale well when adding more named features, and can
-eventually end up repeating riscv_cpu_disable_priv_spec_isa_exts().
+"Supervisor-mode view of the state-enable extension. The supervisor-mode
+(sstateen0-3) and hypervisor-mode (hstateen0-3) state-enable registers
+must be provided."
 
-Change riscv_cpu_disable_priv_spec_isa_exts() to not show warnings when
-disabling a named feature. This will accomplish the same thing we're
-doing today while avoiding having two points where we're disabling
-exts via priv_ver mismatch.
+Add ssstateen as a named feature that is available if we also have
+smstateen.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20241113171755.978109-2-dbarboza@ventanamicro.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Message-ID: <20241113171755.978109-3-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/tcg/tcg-cpu.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ target/riscv/cpu_cfg.h     | 1 +
+ target/riscv/cpu.c         | 2 ++
+ target/riscv/tcg/tcg-cpu.c | 9 ++++++++-
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index d8771ca641..a1457ab4f4 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -140,6 +140,7 @@ struct RISCVCPUConfig {
+     /* Named features  */
+     bool ext_svade;
+     bool ext_zic64b;
++    bool ext_ssstateen;
+ 
+     /*
+      * Always 'true' booleans for named features
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 18f4d94b6e..d7b830d489 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -191,6 +191,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(ssccptr, PRIV_VERSION_1_11_0, has_priv_1_11),
+     ISA_EXT_DATA_ENTRY(sscofpmf, PRIV_VERSION_1_12_0, ext_sscofpmf),
+     ISA_EXT_DATA_ENTRY(sscounterenw, PRIV_VERSION_1_12_0, has_priv_1_12),
++    ISA_EXT_DATA_ENTRY(ssstateen, PRIV_VERSION_1_12_0, ext_ssstateen),
+     ISA_EXT_DATA_ENTRY(sstc, PRIV_VERSION_1_12_0, ext_sstc),
+     ISA_EXT_DATA_ENTRY(sstvala, PRIV_VERSION_1_12_0, has_priv_1_12),
+     ISA_EXT_DATA_ENTRY(sstvecd, PRIV_VERSION_1_12_0, has_priv_1_12),
+@@ -1677,6 +1678,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
+  */
+ const RISCVCPUMultiExtConfig riscv_cpu_named_features[] = {
+     MULTI_EXT_CFG_BOOL("zic64b", ext_zic64b, true),
++    MULTI_EXT_CFG_BOOL("ssstateen", ext_ssstateen, true),
+ 
+     DEFINE_PROP_END_OF_LIST(),
+ };
 diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 3b99c8c9e3..48a55ba1d8 100644
+index 48a55ba1d8..cbf2cf1963 100644
 --- a/target/riscv/tcg/tcg-cpu.c
 +++ b/target/riscv/tcg/tcg-cpu.c
-@@ -304,6 +304,15 @@ static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
-             }
- 
-             isa_ext_update_enabled(cpu, edata->ext_enable_offset, false);
-+
-+            /*
-+             * Do not show user warnings for named features that users
-+             * can't enable/disable in the command line. See commit
-+             * 68c9e54bea for more info.
-+             */
-+            if (cpu_cfg_offset_is_named_feat(edata->ext_enable_offset)) {
-+                continue;
-+            }
- #ifndef CONFIG_USER_ONLY
-             warn_report("disabling %s extension for hart 0x" TARGET_FMT_lx
-                         " because privilege spec version does not match",
-@@ -331,11 +340,9 @@ static void riscv_cpu_update_named_features(RISCVCPU *cpu)
-         cpu->cfg.has_priv_1_13 = true;
+@@ -204,10 +204,15 @@ static void riscv_cpu_enable_named_feat(RISCVCPU *cpu, uint32_t feat_offset)
+       * All other named features are already enabled
+       * in riscv_tcg_cpu_instance_init().
+       */
+-    if (feat_offset == CPU_CFG_OFFSET(ext_zic64b)) {
++    switch (feat_offset) {
++    case CPU_CFG_OFFSET(ext_zic64b):
+         cpu->cfg.cbom_blocksize = 64;
+         cpu->cfg.cbop_blocksize = 64;
+         cpu->cfg.cboz_blocksize = 64;
++        break;
++    case CPU_CFG_OFFSET(ext_ssstateen):
++        cpu->cfg.ext_smstateen = true;
++        break;
      }
+ }
  
--    /* zic64b is 1.12 or later */
+@@ -343,6 +348,8 @@ static void riscv_cpu_update_named_features(RISCVCPU *cpu)
      cpu->cfg.ext_zic64b = cpu->cfg.cbom_blocksize == 64 &&
                            cpu->cfg.cbop_blocksize == 64 &&
--                          cpu->cfg.cboz_blocksize == 64 &&
--                          cpu->cfg.has_priv_1_12;
-+                          cpu->cfg.cboz_blocksize == 64;
+                           cpu->cfg.cboz_blocksize == 64;
++
++    cpu->cfg.ext_ssstateen = cpu->cfg.ext_smstateen;
  }
  
  static void riscv_cpu_validate_g(RISCVCPU *cpu)
