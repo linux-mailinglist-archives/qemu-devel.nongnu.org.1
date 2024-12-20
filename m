@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 210B29F9072
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 11:43:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 210419F9071
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 11:43:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOaTf-0003Td-Pt; Fri, 20 Dec 2024 05:43:27 -0500
+	id 1tOaTn-0004A9-1d; Fri, 20 Dec 2024 05:43:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tOaTc-0003LQ-8R; Fri, 20 Dec 2024 05:43:24 -0500
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1tOaTk-0003xQ-1M; Fri, 20 Dec 2024 05:43:32 -0500
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tOaTa-0005Ho-KM; Fri, 20 Dec 2024 05:43:23 -0500
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-2ef28f07dbaso1233023a91.2; 
- Fri, 20 Dec 2024 02:43:21 -0800 (PST)
+ id 1tOaTi-0005Ii-G7; Fri, 20 Dec 2024 05:43:31 -0500
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-2ee709715d9so1258535a91.3; 
+ Fri, 20 Dec 2024 02:43:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734691400; x=1735296200; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1734691408; x=1735296208; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zksXftHHwiMlh0b8VvEId2Ivj+FLbCTYmyX55d90oHA=;
- b=Gd1lPxw4Z7HqQG6bw/Zn8NioIy2CA1UXuYQQ9yH6agmHjD1fiKUgjIMxPdJ9LJnIj3
- 3dI3nyBfj2Hs1LWJrUMs6OWDkrxL2tOHxuG4Xblf4yb6iykyg/IiRPH9UJwAFMZwzQZW
- LRbchVrrnJQX5ltXZzWgjbXYETXkNI3f1gIQMgEF4sg9djybiCened/5lg/uR0x8jd3o
- lOUc+7rEVSjsM/4Ashfet8WK5R3KUnNu0YnFsjfsCObJu7dbEuVzAsJVnQFX140ntdBZ
- ECOQE945BZmy4ghyVHg4OL/vlZd+Y1ClMXBQ3Lu5Rcq840RLoDDf/PpJ6X/E6kKURLWB
- YtEg==
+ bh=QBfCSDwU8LQFcTcaCgA2fhYXCIcXyYzKBDWtkVyojeU=;
+ b=UMjBvM5hrgaMu+hIgdIxaka0q+cLJrV/RVky8EF5veGyIfV4xeyixVhibYUY+TENPs
+ nitOjK9Lbu2gJvWZsKGSmIQxgnMnLtfvrMrO9bAw3UYG1iV79KlgVheTmGVIPLUJLdyn
+ s6SVDecocF0sHW9LDcS1X1ETglJPtGHn/xspihx4NlGg1ZsmZTA3TiAbm3gDkAudMJLf
+ 0RhGyQy/CGgdhNNF23CEdpoIqIXu1b4uDtIOMwwCUvNixiz4cWytQb1zW0O6CghPU5Qm
+ jYwGIbHJUb68yh3ZMQPdtzlJ36IzIIuUcwxOcF9jIdMCDIoKwuBcqgK84hp3Y6JMVpTN
+ Ycwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734691400; x=1735296200;
+ d=1e100.net; s=20230601; t=1734691408; x=1735296208;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zksXftHHwiMlh0b8VvEId2Ivj+FLbCTYmyX55d90oHA=;
- b=N27SwVBcXRkIBF0Wd7DrydHAqkmpdXlwe56qPGu8F9MpDWWUTty6x44DdRJO+GVmAG
- fe+80BHxPFznCg6vfoVCtvnh81AJ1qig0eYnnNUmbSJrr8m4dqUh13AlcZ0uiN4P7Jlf
- UVKMcMkO864Xkyn3XakiHYYdFuu8a/SDjqJZB4d9WH5bpIDlLfgwmt8qLxVxj9edIRJD
- leUdph7Cwh+IFewW6k/SbIMsZJoAI8J5IDswvanyUm5cNsT57qJy6PvfIg6kuifNbjiR
- Ys2aYyDolsGU8HgcINaGkIhqlO3RUDxZ1PHlCLfJD8Xk4xXjp4ke2NjyS0dX1OgmmIsy
- nrQw==
+ bh=QBfCSDwU8LQFcTcaCgA2fhYXCIcXyYzKBDWtkVyojeU=;
+ b=Ny7LQbjLr/Ith9sL4tdyW6ZbZBNHtLNBytuemEG1tvoRJ/L5qi/4AMZYziYDRBhKyG
+ Hri0gtW3Bg5WS1ZdVfsUlYb3BTLixXsei7Y7yOqIjTN4O/2MVApvoGfSn5XeycTwGRvc
+ KoUFnGbnruQ0P9fnnh+OjiUT8n3spZuZEMm6BCAzuNtZoqBHdywBm4izW84OmgSnveV5
+ 1irZtCMIltzCDhc5xGSoFZpshbRH8HzjnmR29um4UgS5xdkdxJwIEWHhqRR/A0eegqiB
+ yd6zEA1sgyoWPtpP531oiD4uVFOS+Z9FOcmOFGvdEE31Q+Jyl0rk8y+F2YIlGBmHGoOt
+ tpnw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV2iGKpnV/TeH9nUVJtF6rwlZuhdoNMw7V/4KqJvfCedIGqr6DJtvXZ8DJIhH9QlABjQdknRn4AYBh0@nongnu.org
-X-Gm-Message-State: AOJu0YwFIvFih5VHlPLlVCEEHmXxNgiAgkvy4uVTn2ngqIZd3NGBRBAK
- HWq2mc2xY4E+c0VrIxkqPiMxfSFLtI11mmox9deNeInocpq5O5NuRpnYZQ==
-X-Gm-Gg: ASbGncuVRror67onntK1QLQcZkJ6iCqIzNWaKAwhGvW/pDmp3UVmagfK/5Mzg4z3bZQ
- Xpqh+fzjyRkvUiM/ETDo3/xL6gPPNa98/FsGsthNWaEeffPRsefOvZ4GkzM/JoWE0oFJO7e8mKu
- yMif4J/kqrfH3oxdn6sCd0ghQsWHY9ScZRNgVG6xIGNYYKnu1XE4Xfljf7N68A6MQvBJBod+40v
- zrUha8gZ4/5rwJWN0/zu3wPfbLZlvjzCeXyB7O6ICS1eKttJTdbYM76RbYjqSxrPO7SrxvFjxNb
- gaakoUmgdg==
-X-Google-Smtp-Source: AGHT+IHiVTvCdG8c+tqi1QzE1itrqIdqMLNwmktRH+xJ4aSdg114C7HWjkLMwJf8tbeM+EZ1JcD7nA==
-X-Received: by 2002:a17:90a:d00b:b0:2ee:9a82:5a93 with SMTP id
- 98e67ed59e1d1-2f452e1d13amr4007490a91.14.1734691400492; 
- Fri, 20 Dec 2024 02:43:20 -0800 (PST)
+ AJvYcCXyPbQSDlFK2a5DPrTgIlOnKhDwS5hRuVu3aVe7H7rnii096Q1P3s1FjajrLSI+PgRxAAQQbdrm2gs+@nongnu.org
+X-Gm-Message-State: AOJu0Yw5j7Klhu99sqcgytxr+PTyUhQBMgHLCIJFr6KXzbYbDVt7S8U4
+ drgUUrU+e1D8OHD6GnFM1FhGlJdaZZlPG/RrzWr3klGnnueqddam50bG8Q==
+X-Gm-Gg: ASbGncs/Xll0IFrk3UUiVPBUspo+V1O5RXu+utjfFLaIdfby0YS4pXwULZTWjXtTWKX
+ WEOgMEINldXhSXGYNZJ79FS88DEngMBtA3LmBl2eDiMF+tSV645Kn9avzXdn2p9lGYGHdOEzuHM
+ ZUrshGbvDNkYr5cw9z/tLyGxG2blfxVPdHDEChQn0qHzsbO0wxb3AuzjQoTEle9IHih7M4h5nIX
+ YXoLd9vYNBf0zsHrlM8UxUgfhttcVRhwNyXlaYS2By+v8gKWDACKP2z23H7OOBdCeODo2BxG6Zp
+ BM/pCWxApw==
+X-Google-Smtp-Source: AGHT+IElEt/zuUs5W64t2CXQPKauNpjjfBqCIxRvI+xKK5wXhQOGNM88/BRn+nIaRajHENsjTcXH6Q==
+X-Received: by 2002:a17:90b:538e:b0:2ee:f80c:6884 with SMTP id
+ 98e67ed59e1d1-2f452eed77emr3868617a91.33.1734691408238; 
+ Fri, 20 Dec 2024 02:43:28 -0800 (PST)
 Received: from wheely.local0.net (14-200-18-130.tpgi.com.au. [14.200.18.130])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f2ee06dfd3sm5376942a91.32.2024.12.20.02.43.13
+ 98e67ed59e1d1-2f2ee06dfd3sm5376942a91.32.2024.12.20.02.43.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Dec 2024 02:43:20 -0800 (PST)
+ Fri, 20 Dec 2024 02:43:27 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
@@ -76,16 +76,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
  "Dr. David Alan Gilbert" <dave@treblig.org>,
  Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH 06/17] util/aio-wait: Convert to new bh API
-Date: Fri, 20 Dec 2024 20:42:08 +1000
-Message-ID: <20241220104220.2007786-7-npiggin@gmail.com>
+Subject: [PATCH 07/17] async/coroutine: Convert to new bh API
+Date: Fri, 20 Dec 2024 20:42:09 +1000
+Message-ID: <20241220104220.2007786-8-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241220104220.2007786-1-npiggin@gmail.com>
 References: <20241220104220.2007786-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1029.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,31 +108,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert qemu_bh_schedule() to qemu_bh_schedule_event(), which can
+Convert qemu_bh_schedule() to qemu_bh_schedule_event() and
+aio_bh_schedule_oneshot() to aio_bh_schedule_oneshot_event(), which can
 specify the clock type, making it compatible with record-replay.
 
-aio_wait_kick does not affect target machine state, so it should use
-QEMU_CLOCK_REALTIME so it is not recorded and replayed.
+Coroutine scheduling does not affect target machine state, so it should
+use QEMU_CLOCK_REALTIME so it is not recorded and replayed.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- util/aio-wait.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ job.c                              | 3 ++-
+ util/async.c                       | 2 +-
+ scripts/block-coroutine-wrapper.py | 3 ++-
+ 3 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/util/aio-wait.c b/util/aio-wait.c
-index b5336cf5fd2..2137abd4d29 100644
---- a/util/aio-wait.c
-+++ b/util/aio-wait.c
-@@ -51,7 +51,8 @@ void aio_wait_kick(void)
-     smp_mb();
- 
-     if (qatomic_read(&global_aio_wait.num_waiters)) {
--        aio_bh_schedule_oneshot(qemu_get_aio_context(), dummy_bh_cb, NULL);
-+        aio_bh_schedule_oneshot_event(qemu_get_aio_context(), dummy_bh_cb,
-+                                      NULL, QEMU_CLOCK_REALTIME);
+diff --git a/job.c b/job.c
+index 660ce22c56b..45e9d9fc096 100644
+--- a/job.c
++++ b/job.c
+@@ -1109,7 +1109,8 @@ static void coroutine_fn job_co_entry(void *opaque)
+         job->deferred_to_main_loop = true;
+         job->busy = true;
      }
+-    aio_bh_schedule_oneshot(qemu_get_aio_context(), job_exit, job);
++    aio_bh_schedule_oneshot_event(qemu_get_aio_context(), job_exit, job,
++                                  QEMU_CLOCK_REALTIME);
  }
  
+ void job_start(Job *job)
+diff --git a/util/async.c b/util/async.c
+index b88083ecbe7..6ac994effec 100644
+--- a/util/async.c
++++ b/util/async.c
+@@ -683,7 +683,7 @@ void aio_co_schedule(AioContext *ctx, Coroutine *co)
+ 
+     QSLIST_INSERT_HEAD_ATOMIC(&ctx->scheduled_coroutines,
+                               co, co_scheduled_next);
+-    qemu_bh_schedule(ctx->co_schedule_bh);
++    qemu_bh_schedule_event(ctx->co_schedule_bh, QEMU_CLOCK_REALTIME);
+ 
+     aio_context_unref(ctx);
+ }
+diff --git a/scripts/block-coroutine-wrapper.py b/scripts/block-coroutine-wrapper.py
+index dbbde99e39e..c111c322487 100644
+--- a/scripts/block-coroutine-wrapper.py
++++ b/scripts/block-coroutine-wrapper.py
+@@ -292,7 +292,8 @@ def gen_no_co_wrapper(func: FuncDecl) -> str:
+     }};
+     assert(qemu_in_coroutine());
+ 
+-    aio_bh_schedule_oneshot(qemu_get_aio_context(), {name}_bh, &s);
++    aio_bh_schedule_oneshot_event(qemu_get_aio_context(), {name}_bh, &s,
++                                  QEMU_CLOCK_REALTIME);
+     qemu_coroutine_yield();
+ 
+     {func.ret}
 -- 
 2.45.2
 
