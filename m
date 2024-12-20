@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1779F89C3
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 02:56:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 516DE9F89D0
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 02:58:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOSEm-0006Cd-Dx; Thu, 19 Dec 2024 20:55:33 -0500
+	id 1tOSEw-0006EQ-Tx; Thu, 19 Dec 2024 20:55:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tOSEb-0006BM-RY
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:55:22 -0500
+ id 1tOSEf-0006Ck-10
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:55:26 -0500
 Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tOSEa-0004QH-1X
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:55:21 -0500
+ id 1tOSEc-0004Qg-LZ
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:55:24 -0500
 Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-728f28744c5so1424132b3a.1
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 17:55:19 -0800 (PST)
+ d2e1a72fcca58-728e78c4d7bso1114835b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 17:55:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734659718; x=1735264518; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1734659721; x=1735264521; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IfFoOJd9Kg+qJnKuQUnSgKDQ30ARBalkJ/bo73xPJYs=;
- b=frT9+O+PKzn63MSuKx+112dlfdD93Q3CWpzp0OJCb7xSDSJfgnZ8iDp/CwKV8wG8MG
- jRKM79k/4ZziF1uDmLPvJ1AgVTQecZ2W3d04QHwltAyn5olOhwSX9Yojp9HDSjP3Jxai
- QfFdwaZ0Q6n4aPbrxDjuPFcuGAihiovR0+AtKsAcHuD6uwZgipFWFRMxcDn5lJgBn+KW
- W0pLX2Px7L7SXHR/uixucvH1Lq9XksAIOmes4VLd8olPrOMs3PkkgrXVGKX0d5My85Sr
- 0moyoQt+TU6DtawIEx0lPfJVxqnSkP9x6SSQjNcjiDdTjzA3lDXzQUOx28uEn5XR69UU
- gbLQ==
+ bh=iGnnwtesRR6qrK2pwm9E2IBrIFTqB9mxOjCMrHowRaI=;
+ b=IY1R25R8TxvHGI3nt8dGUSsIvGFCO4BTWTEwRE2BiXZ0dYYijWX2nHpuHd3YYdR2Ak
+ t6aSMtc62vFNBz6xYxRkag4CtV34vDjLj9EY7MZxUxkYgJAOzmDDu0qNy+womTNvh02P
+ Q7Ph3ACD7Wvv1weMjf5bN74jRR3Mjve5QvNDXeMFAgcF2H9tHIKHeelrFQZc5WpgtcBW
+ 083jdItJt8iJ7QcSQCIsnXHsPltK2baPFyqBUGJqlAmMg+PoVKpt6G7EKs1tyQE5JNTm
+ 96ScQrJMajdGXyDa77ZCYHF4NhyEcFugPyDWuNLIL09+MQH8QJXnGcfOY7B9qGqzo1qd
+ 58vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734659718; x=1735264518;
+ d=1e100.net; s=20230601; t=1734659721; x=1735264521;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IfFoOJd9Kg+qJnKuQUnSgKDQ30ARBalkJ/bo73xPJYs=;
- b=CXXHGjy6gpyt4IGwnGmuaD7tz0EpIb+W9lKeDzszEdfV6t3BtD8dlclfqMFiGG0ZYR
- X+NjSwz3GHpYO15cz/m5eHaiLPS0T89gHlSy96gl1sis0iwWiqx9ExQ9Kqcw2TdBykmO
- Y3Qfz/3e7Fc3uyHFTzaz2v0ENCOxwiA/XPgh1/9Oa7FkBbXwc/vUl8AZpLd5mRyy6RxG
- wfE+DvOZh5iXKw7zY5lNb82cvm5/UbFAlqmZIMCN2Y3kUzQnl0TQeBXiQfKW/w8+0VwE
- 5/8S3ncQHGyUW9urqWxSKb5eFPnEHXZpPKXq8e52cP9LgCFWfD3GwmPN+11P11g+RrFO
- IJVg==
-X-Gm-Message-State: AOJu0YxvJpMZY7Va0XS5u+br5TMEFXpElwdRU89oXBo4nzwuaHvswjvs
- ARxetPmsLM7wGfqET1H9w3vS6JjovcelF1uZRVRyDQo19b2TInFL3wL7EQYg
-X-Gm-Gg: ASbGncsCg6ry3JiWUiOEpTpp9wvqvwiYPJbAOpO18lh8nWEhwTBGV8N0ciKWeYK/V3j
- kISuW9rVZwYTWtTlqALoTfR+YSJ8cNuxuMFFs6cX3iTpmaR/UkFpFMoDTZxp7xHX38ltMuYnJtB
- F6oczMIj/5VZ87UiLqwTmDb+A2IWAGexndD57trWdFrxargFPMAzcsT4Fq26JavSIc30pgFLzPj
- 5AjECLIw7qJZhnOEj8/FsdE7pn7x0t8qRrweVHLTY5uQoBY+5MeTzSRjs2yoie74c00ouFqRdpQ
- 8xTNfhqSzlrpzeNNC0v8PVbgDb/2deS5A3JtS/z7oX0vWgXikk1glrwb1yHKBxg=
-X-Google-Smtp-Source: AGHT+IFwxzRI8uy5O3SE8g1518QKlA6d1J7965dJyTbdleikiZL7PFkEfMZoIQt8QT43Jvbi82rzkQ==
-X-Received: by 2002:a05:6a20:c70b:b0:1e1:c054:4c58 with SMTP id
- adf61e73a8af0-1e5e0450020mr2052533637.2.1734659718161; 
- Thu, 19 Dec 2024 17:55:18 -0800 (PST)
+ bh=iGnnwtesRR6qrK2pwm9E2IBrIFTqB9mxOjCMrHowRaI=;
+ b=qZATswBF2SltYWNf3iyzol5PJC1AFsLIAS4j415YgOzUgEruIFudV31uLg6RyJ/3cH
+ o9lvJrLskeUUHva7T5yCVKDc+jYKL7L0bgNUPp5C09g5Ka0HJtwvy1Q+lXMwYaAnCVW9
+ 7hOMjtMNJTiHwenKIHxmsSTjD8kXqDs9f1A6bEF1esApMtobr90Hwd5ZbG4c/WXTFBut
+ vl4knlc3cPFEGLZMeUjAoJq3peC54hYbp0tYpFsyXD1YeYUf0WuXTgx6RePitb5xm+wd
+ i52+K9hnAVwOtD+8qloH1EydRrhInxCpHxNZPnjVy+P1axCvGtNAna4zpqFPveq70wF7
+ C/Zg==
+X-Gm-Message-State: AOJu0Yxgi9HhH8HqWbeYSgvVhP+jenUpwD/JW2tfUl78qfcL/PeYBNNy
+ I5tj0KmIGsS73aNZRODKPELLjJ24KtHP0UFCxQ/rCZmwLRZsEbfj9u3VdNvE
+X-Gm-Gg: ASbGnctskwtBoJdG5pxyE4QK1DBKuq1uqXwYicRDK1ulMkemx3zd40lWycEHxgmrYXD
+ 7DZx//+1+yOP6djQkE97jN4kHyH41n4t6ifLFt3PUHxF1YCzopu/PLd3N2PB1WTHGh2/6a9UM3b
+ +xciLBL5o5nr8DdPHuwny9aWTnB5XsiP2UFnnSLU/0LODVM8mCzQ2s0KvTmzwbt35rfHpb1foyD
+ v3kc/Fd9aFbiWbVWF/v0vaOfxyffuilLIvQJEJohQk2S1hWYzB1FxgoeNIkHNCb/zyaZwZQzRMs
+ MhF5VoQa3PjJk7VWVViDbr/HkD3YBuYN6RowSRaq12FqMSQNzgUa5xdhE74nIJc=
+X-Google-Smtp-Source: AGHT+IE5DIGR/p6isxk0AX6aIm5TiMB4VHxxu2eQhngnZVvIwNF1PLtAFsUM04bJQ6B2E3jLQmUcIg==
+X-Received: by 2002:a05:6a00:948b:b0:725:4301:ed5a with SMTP id
+ d2e1a72fcca58-72abdab8856mr1458664b3a.2.1734659720964; 
+ Thu, 19 Dec 2024 17:55:20 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad8164d3sm2002539b3a.15.2024.12.19.17.55.15
+ d2e1a72fcca58-72aad8164d3sm2002539b3a.15.2024.12.19.17.55.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 17:55:17 -0800 (PST)
+ Thu, 19 Dec 2024 17:55:20 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 08/39] hw/riscv/riscv-iommu: implement reset protocol
-Date: Fri, 20 Dec 2024 11:54:08 +1000
-Message-ID: <20241220015441.317236-9-alistair.francis@wdc.com>
+Subject: [PULL v2 09/39] docs/specs: add riscv-iommu-sys information
+Date: Fri, 20 Dec 2024 11:54:09 +1000
+Message-ID: <20241220015441.317236-10-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220015441.317236-1-alistair.francis@wdc.com>
 References: <20241220015441.317236-1-alistair.francis@wdc.com>
@@ -103,204 +103,91 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Add a riscv_iommu_reset() helper in the base emulation code that
-implements the expected reset behavior as defined by the riscv-iommu
-spec.
-
-Devices can then use this helper in their own reset callbacks.
-
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20241106133407.604587-7-dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20241106133407.604587-8-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/riscv-iommu.h     |  1 +
- include/hw/riscv/iommu.h   |  6 ++++--
- hw/riscv/riscv-iommu-pci.c | 20 ++++++++++++++++++++
- hw/riscv/riscv-iommu-sys.c | 20 ++++++++++++++++++++
- hw/riscv/riscv-iommu.c     | 35 +++++++++++++++++++++++++++++++++++
- hw/riscv/trace-events      |  2 ++
- 6 files changed, 82 insertions(+), 2 deletions(-)
+ docs/specs/riscv-iommu.rst | 30 +++++++++++++++++++++++++++---
+ docs/system/riscv/virt.rst | 10 ++++++++++
+ 2 files changed, 37 insertions(+), 3 deletions(-)
 
-diff --git a/hw/riscv/riscv-iommu.h b/hw/riscv/riscv-iommu.h
-index f9f2827808..9424989df4 100644
---- a/hw/riscv/riscv-iommu.h
-+++ b/hw/riscv/riscv-iommu.h
-@@ -89,6 +89,7 @@ struct RISCVIOMMUState {
- void riscv_iommu_pci_setup_iommu(RISCVIOMMUState *iommu, PCIBus *bus,
-          Error **errp);
- void riscv_iommu_set_cap_igs(RISCVIOMMUState *s, riscv_iommu_igs_mode mode);
-+void riscv_iommu_reset(RISCVIOMMUState *s);
+diff --git a/docs/specs/riscv-iommu.rst b/docs/specs/riscv-iommu.rst
+index 463f4cffb6..b1538c9ead 100644
+--- a/docs/specs/riscv-iommu.rst
++++ b/docs/specs/riscv-iommu.rst
+@@ -6,9 +6,9 @@ RISC-V IOMMU support for RISC-V machines
+ QEMU implements a RISC-V IOMMU emulation based on the RISC-V IOMMU spec
+ version 1.0 `iommu1.0`_.
  
- /* private helpers */
+-The emulation includes a PCI reference device, riscv-iommu-pci, that QEMU
+-RISC-V boards can use.  The 'virt' RISC-V machine is compatible with this
+-device.
++The emulation includes a PCI reference device (riscv-iommu-pci) and a platform
++bus device (riscv-iommu-sys) that QEMU RISC-V boards can use.  The 'virt'
++RISC-V machine is compatible with both devices.
  
-diff --git a/include/hw/riscv/iommu.h b/include/hw/riscv/iommu.h
-index 8a8acfc3f0..b03339d75c 100644
---- a/include/hw/riscv/iommu.h
-+++ b/include/hw/riscv/iommu.h
-@@ -30,12 +30,14 @@ typedef struct RISCVIOMMUState RISCVIOMMUState;
- typedef struct RISCVIOMMUSpace RISCVIOMMUSpace;
+ riscv-iommu-pci reference device
+ --------------------------------
+@@ -83,6 +83,30 @@ Several options are available to control the capabilities of the device, namely:
+ - "s-stage": enable s-stage support
+ - "g-stage": enable g-stage support
  
- #define TYPE_RISCV_IOMMU_PCI "riscv-iommu-pci"
--OBJECT_DECLARE_SIMPLE_TYPE(RISCVIOMMUStatePci, RISCV_IOMMU_PCI)
-+OBJECT_DECLARE_TYPE(RISCVIOMMUStatePci, RISCVIOMMUPciClass, RISCV_IOMMU_PCI)
- typedef struct RISCVIOMMUStatePci RISCVIOMMUStatePci;
-+typedef struct RISCVIOMMUPciClass RISCVIOMMUPciClass;
++riscv-iommu-sys device
++----------------------
++
++This device implements the RISC-V IOMMU emulation as a platform bus device that
++RISC-V boards can use.
++
++For the 'virt' board the device is disabled by default.  To enable it use the
++'iommu-sys' machine option:
++
++.. code-block:: bash
++
++  $ qemu-system-riscv64 -M virt,iommu-sys=on (...)
++
++There is no options to configure the capabilities of this device in the 'virt'
++board using the QEMU command line.  The device is configured with the following
++riscv-iommu options:
++
++- "ioatc-limit": default value (2Mb)
++- "intremap": enabled
++- "ats": enabled
++- "off": on (DMA disabled)
++- "s-stage": enabled
++- "g-stage": enabled
++
+ .. _iommu1.0: https://github.com/riscv-non-isa/riscv-iommu/releases/download/v1.0/riscv-iommu.pdf
  
- #define TYPE_RISCV_IOMMU_SYS "riscv-iommu-device"
--OBJECT_DECLARE_SIMPLE_TYPE(RISCVIOMMUStateSys, RISCV_IOMMU_SYS)
-+OBJECT_DECLARE_TYPE(RISCVIOMMUStateSys, RISCVIOMMUSysClass, RISCV_IOMMU_SYS)
- typedef struct RISCVIOMMUStateSys RISCVIOMMUStateSys;
-+typedef struct RISCVIOMMUSysClass RISCVIOMMUSysClass;
+ .. _linux-v8: https://lore.kernel.org/linux-riscv/cover.1718388908.git.tjeznach@rivosinc.com/
+diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
+index 8e9a2e4dda..537aac0340 100644
+--- a/docs/system/riscv/virt.rst
++++ b/docs/system/riscv/virt.rst
+@@ -94,6 +94,12 @@ command line:
  
- #define FDT_IRQ_TYPE_EDGE_LOW 1
+   $ qemu-system-riscv64 -M virt -device riscv-iommu-pci (...)
  
-diff --git a/hw/riscv/riscv-iommu-pci.c b/hw/riscv/riscv-iommu-pci.c
-index a95d0f74c8..2c1ae72461 100644
---- a/hw/riscv/riscv-iommu-pci.c
-+++ b/hw/riscv/riscv-iommu-pci.c
-@@ -31,6 +31,7 @@
- #include "cpu_bits.h"
- #include "riscv-iommu.h"
- #include "riscv-iommu-bits.h"
-+#include "trace.h"
++It also has support for the riscv-iommu-sys platform device:
++
++.. code-block:: bash
++
++  $ qemu-system-riscv64 -M virt,iommu-sys=on (...)
++
+ Refer to :ref:`riscv-iommu` for more information on how the RISC-V IOMMU support
+ works.
  
- /* RISC-V IOMMU PCI Device Emulation */
- #define RISCV_PCI_CLASS_SYSTEM_IOMMU     0x0806
-@@ -66,6 +67,12 @@ typedef struct RISCVIOMMUStatePci {
-     RISCVIOMMUState  iommu;   /* common IOMMU state */
- } RISCVIOMMUStatePci;
+@@ -129,6 +135,10 @@ The following machine-specific options are supported:
+   having AIA IMSIC (i.e. "aia=aplic-imsic" selected). When not specified,
+   the default number of per-HART VS-level AIA IMSIC pages is 0.
  
-+struct RISCVIOMMUPciClass {
-+    /*< public >*/
-+    DeviceRealize parent_realize;
-+    ResettablePhases parent_phases;
-+};
++- iommu-sys=[on|off]
 +
- /* interrupt delivery callback */
- static void riscv_iommu_pci_notify(RISCVIOMMUState *iommu, unsigned vector)
- {
-@@ -167,10 +174,23 @@ static const Property riscv_iommu_pci_properties[] = {
-     DEFINE_PROP_END_OF_LIST(),
- };
++  Enables the riscv-iommu-sys platform device. Defaults to 'off'.
++
+ Running Linux kernel
+ --------------------
  
-+static void riscv_iommu_pci_reset_hold(Object *obj, ResetType type)
-+{
-+    RISCVIOMMUStatePci *pci = RISCV_IOMMU_PCI(obj);
-+    RISCVIOMMUState *iommu = &pci->iommu;
-+
-+    riscv_iommu_reset(iommu);
-+
-+    trace_riscv_iommu_pci_reset_hold(type);
-+}
-+
- static void riscv_iommu_pci_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
-+    ResettableClass *rc = RESETTABLE_CLASS(klass);
-+
-+    rc->phases.hold = riscv_iommu_pci_reset_hold;
- 
-     k->realize = riscv_iommu_pci_realize;
-     k->exit = riscv_iommu_pci_exit;
-diff --git a/hw/riscv/riscv-iommu-sys.c b/hw/riscv/riscv-iommu-sys.c
-index a0ef67a20b..605979a0ac 100644
---- a/hw/riscv/riscv-iommu-sys.c
-+++ b/hw/riscv/riscv-iommu-sys.c
-@@ -54,6 +54,12 @@ struct RISCVIOMMUStateSys {
-     uint8_t *msix_pba;
- };
- 
-+struct RISCVIOMMUSysClass {
-+    /*< public >*/
-+    DeviceRealize parent_realize;
-+    ResettablePhases parent_phases;
-+};
-+
- static uint64_t msix_table_mmio_read(void *opaque, hwaddr addr,
-                                      unsigned size)
- {
-@@ -212,9 +218,23 @@ static Property riscv_iommu_sys_properties[] = {
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-+static void riscv_iommu_sys_reset_hold(Object *obj, ResetType type)
-+{
-+    RISCVIOMMUStateSys *sys = RISCV_IOMMU_SYS(obj);
-+    RISCVIOMMUState *iommu = &sys->iommu;
-+
-+    riscv_iommu_reset(iommu);
-+
-+    trace_riscv_iommu_sys_reset_hold(type);
-+}
-+
- static void riscv_iommu_sys_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-+    ResettableClass *rc = RESETTABLE_CLASS(klass);
-+
-+    rc->phases.hold = riscv_iommu_sys_reset_hold;
-+
-     dc->realize = riscv_iommu_sys_realize;
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-     device_class_set_props(dc, riscv_iommu_sys_properties);
-diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-index 9137217cb7..72e607c9eb 100644
---- a/hw/riscv/riscv-iommu.c
-+++ b/hw/riscv/riscv-iommu.c
-@@ -2262,6 +2262,41 @@ static void riscv_iommu_unrealize(DeviceState *dev)
-     g_hash_table_unref(s->ctx_cache);
- }
- 
-+void riscv_iommu_reset(RISCVIOMMUState *s)
-+{
-+    uint32_t reg_clr;
-+    int ddtp_mode;
-+
-+    /*
-+     * Clear DDTP while setting DDTP_mode back to user
-+     * initial setting.
-+     */
-+    ddtp_mode = s->enable_off ?
-+                RISCV_IOMMU_DDTP_MODE_OFF : RISCV_IOMMU_DDTP_MODE_BARE;
-+    s->ddtp = set_field(0, RISCV_IOMMU_DDTP_MODE, ddtp_mode);
-+    riscv_iommu_reg_set64(s, RISCV_IOMMU_REG_DDTP, s->ddtp);
-+
-+    reg_clr = RISCV_IOMMU_CQCSR_CQEN | RISCV_IOMMU_CQCSR_CIE |
-+              RISCV_IOMMU_CQCSR_CQON | RISCV_IOMMU_CQCSR_BUSY;
-+    riscv_iommu_reg_mod32(s, RISCV_IOMMU_REG_CQCSR, 0, reg_clr);
-+
-+    reg_clr = RISCV_IOMMU_FQCSR_FQEN | RISCV_IOMMU_FQCSR_FIE |
-+              RISCV_IOMMU_FQCSR_FQON | RISCV_IOMMU_FQCSR_BUSY;
-+    riscv_iommu_reg_mod32(s, RISCV_IOMMU_REG_FQCSR, 0, reg_clr);
-+
-+    reg_clr = RISCV_IOMMU_PQCSR_PQEN | RISCV_IOMMU_PQCSR_PIE |
-+              RISCV_IOMMU_PQCSR_PQON | RISCV_IOMMU_PQCSR_BUSY;
-+    riscv_iommu_reg_mod32(s, RISCV_IOMMU_REG_PQCSR, 0, reg_clr);
-+
-+    riscv_iommu_reg_mod64(s, RISCV_IOMMU_REG_TR_REQ_CTL, 0,
-+                          RISCV_IOMMU_TR_REQ_CTL_GO_BUSY);
-+
-+    riscv_iommu_reg_set32(s, RISCV_IOMMU_REG_IPSR, 0);
-+
-+    g_hash_table_remove_all(s->ctx_cache);
-+    g_hash_table_remove_all(s->iot_cache);
-+}
-+
- static const Property riscv_iommu_properties[] = {
-     DEFINE_PROP_UINT32("version", RISCVIOMMUState, version,
-         RISCV_IOMMU_SPEC_DOT_VER),
-diff --git a/hw/riscv/trace-events b/hw/riscv/trace-events
-index 525fd5b730..7bcbb03d08 100644
---- a/hw/riscv/trace-events
-+++ b/hw/riscv/trace-events
-@@ -17,3 +17,5 @@ riscv_iommu_ats_inval(const char *id) "%s: dev-iotlb invalidate"
- riscv_iommu_ats_prgr(const char *id) "%s: dev-iotlb page request group response"
- riscv_iommu_sys_irq_sent(uint32_t vector) "IRQ sent to vector %u"
- riscv_iommu_sys_msi_sent(uint32_t vector, uint64_t msi_addr, uint32_t msi_data, uint32_t result) "MSI sent to vector %u msi_addr 0x%"PRIx64" msi_data 0x%x result %u"
-+riscv_iommu_sys_reset_hold(int reset_type) "reset type %d"
-+riscv_iommu_pci_reset_hold(int reset_type) "reset type %d"
 -- 
 2.47.1
 
