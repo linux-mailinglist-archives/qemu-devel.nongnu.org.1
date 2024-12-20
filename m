@@ -2,72 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1B9E9F9682
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:26:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D22B9F9693
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:28:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOfkP-0001Yv-Jb; Fri, 20 Dec 2024 11:21:05 -0500
+	id 1tOfro-00008o-NE; Fri, 20 Dec 2024 11:28:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tOfkI-0001F8-Og
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:21:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tOfkH-0000Dd-89
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:20:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734711655;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=UrRHC/6G/EOar4rFTLATSV4Px7fRM4Xig0ejfkJGGS8=;
- b=bSITYr58uBizI6xgQewSdY0q3sQecusEtPTB+RAqyaBE6+MdjeBxIguvbGUaTm2QHhgfuG
- FkhXWDYxvy2WF2Irz0+Unc7QMHGZnv6HO6lgbJZX40E3GXAmu0gbIZVLcV71UnqRsE/CdD
- YxfHeuHDHJYDkadjnM5UGUGQZqOVC4o=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-1-jZy5iSuwOo2V0LfOhzM0wQ-1; Fri,
- 20 Dec 2024 11:20:49 -0500
-X-MC-Unique: jZy5iSuwOo2V0LfOhzM0wQ-1
-X-Mimecast-MFC-AGG-ID: jZy5iSuwOo2V0LfOhzM0wQ
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EEAB01944B0B; Fri, 20 Dec 2024 16:20:47 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.126])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E7FE719560AD; Fri, 20 Dec 2024 16:20:46 +0000 (UTC)
-Date: Fri, 20 Dec 2024 11:20:44 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Stefan Hajnoczi <stefanha@gmail.com>, qemu-devel@nongnu.org,
- Song Gao <gaosong@loongson.cn>
-Subject: Re: [PULL 00/18] loongarch-to-apply queue
-Message-ID: <20241220162044.GA731185@fedora>
-References: <20241219075502.3164644-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tOfrm-00008P-Lm
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:28:42 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tOfrk-0001qP-N8
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:28:42 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-2163dc5155fso20416355ad.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:28:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1734712119; x=1735316919; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=udENEynPBHDOzD5HmEf366V/0YdRrDGVZxSULZeESUo=;
+ b=L8ODg2MaDWt5A/FXw7DZu+UntQrARHeA9IhFhKy+uop78FbKFKFBRjEIRrWCyJms1O
+ ekYZDQtx5+8qr6rTpjujO4ZaOEQgW3Cv2PoojkME4g9Q4f8q7zBVkBJQTnrVzKQR2Z+/
+ qsrSuNhyArXBlRgdSYYaGi0xGBGpSzjIpwMr02Tg8xdmyL+E/GYMoGPE0V8it9PgkTL8
+ hh8GjBMCsbnP5t9TmklTn/CE66xA1E8vMR/ZFpEEghL8XN1YexlCfNzokRk2l0LO/VYG
+ FCvylJOR0CvhO9mZEk5S7jm+23Ei2NxON0xPy0jOh7bare1VPcn6LTUiTLdhbp9VyqTn
+ E+QA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734712119; x=1735316919;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=udENEynPBHDOzD5HmEf366V/0YdRrDGVZxSULZeESUo=;
+ b=SwF668ZteWSmO9/RaMz2WPqj78wMiiurpuSuTzOhHELbs0ep2hEQAmOHmfkW+VPF9q
+ RFu43+qUrDKFZmnRmZfF2yZpwcO0kHujZauuPHQS0qUPlPPwRQrY/N85NrR8Gi9611tU
+ WFmrRHSQkgjX514BYkVK7Nejip8GvpCwzvfGErXcdnunPARcWS2QxLNnhpvpTw5fIQui
+ czt1jGQx+7Pr6oqB/S5N8miTorhrK9ma1O6I2gYf05S4o4rY4niq8VE5yY40CFBFQelZ
+ IVXHzzR0C91iKz9qVjtFVxJK6k29q9XvEV9JhHaajU1YiqMZpku5y6qLLGeZVD7bp2tG
+ 5+4g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVcSc9kHcevEzcRsS0TsYWIHCJcq3aVVMTWD6Kusen1F0zqTmFYyzyAbTCiqTmuykjoJrdSCv13aPmo@nongnu.org
+X-Gm-Message-State: AOJu0YzmGmVBFKR0vecA1CwJNumKctWIAEIYpQINUeerI4O286dsCBKh
+ sdMMNJWqVlvhHv9edItaoiYg8P/6+aSswpwWQsm+J7lJiO+zUOX/S7Wr633HthrM5yfrXAwgeGL
+ 9
+X-Gm-Gg: ASbGncsjTIWm/fZbQ+a1UvXdZ4hTWLd/yHKGFzsdsp0Aohag30UVoaxfXPpBnB4Qlgc
+ M0QVVdiQKQzQzQs9zvlqXmTcictaxUc/gOLcHlNtz++FlM+/OLHjFmK5VO+cWCasN0LsMlwTiHT
+ 1cbZCd50equRNneCUU9ZBI4Q0ZbOnFIFbP++KP8RxsLYP/hTUifN533f0mob8KIFCykD054f/9a
+ zPKXkiVbuEB0TeOg/kxe6Xbuq0++4L0zqPwPCHSF3xnjgE0SZd1B5NhKJfarRicIeKogs0=
+X-Google-Smtp-Source: AGHT+IEmp/dHGHkXFCFWTK2lK8BGASIiUFVOS46Fs7OJC17y7DmEhJhKBpCxqt3Tkr39JyAZN9c81Q==
+X-Received: by 2002:a17:902:c941:b0:215:4d90:4caf with SMTP id
+ d9443c01a7336-219e6ea1bb5mr38796725ad.14.1734712119139; 
+ Fri, 20 Dec 2024 08:28:39 -0800 (PST)
+Received: from [192.168.0.4] ([71.212.144.252])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-219dc9cdeccsm31051235ad.144.2024.12.20.08.28.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 20 Dec 2024 08:28:38 -0800 (PST)
+Message-ID: <ac1efe23-1920-45d1-97f1-3fd80d11039e@linaro.org>
+Date: Fri, 20 Dec 2024 08:28:37 -0800
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="uFelMDjAQIjmk2oK"
-Content-Disposition: inline
-In-Reply-To: <20241219075502.3164644-1-maobibo@loongson.cn>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.129,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/1] target/riscv: rvv: Use wider accesses for unit
+ stride load/store
+To: Craig Blackmore <craig.blackmore@embecosm.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+References: <20241220122109.2083215-1-craig.blackmore@embecosm.com>
+ <20241220122109.2083215-2-craig.blackmore@embecosm.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20241220122109.2083215-2-craig.blackmore@embecosm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,30 +102,189 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 12/20/24 04:21, Craig Blackmore wrote:
+> Use atomic load/store functions to access multiple elements from host.
+> 
+> Co-authored-by: Paolo Savini <paolo.savini@embecosm.com>
+> 
+> Signed-off-by: Paolo Savini <paolo.savini@embecosm.com>
+> Signed-off-by: Craig Blackmore <craig.blackmore@embecosm.com>
+> ---
+>   target/riscv/vector_helper.c | 107 +++++++++++++++++++++++++++++++++--
+>   1 file changed, 101 insertions(+), 6 deletions(-)
+> 
+> diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+> index a85dd1d200..c0179165ce 100644
+> --- a/target/riscv/vector_helper.c
+> +++ b/target/riscv/vector_helper.c
+> @@ -206,10 +206,102 @@ vext_continus_ldst_tlb(CPURISCVState *env, vext_ldst_elem_fn_tlb *ldst_tlb,
+>       }
+>   }
+>   
+> +#if !HOST_BIG_ENDIAN
+> +/* Atomic operations for load/store */
+> +
+> +/*
+> + * Return true if there are enough elements for this size access and the
+> + * pointer is aligned to the required atomicity.
+> + */
+> +
+> +static inline QEMU_ALWAYS_INLINE bool
+> +ok_for_atomic(uint32_t size, void *host, uint32_t reg_start, uint32_t evl,
+> +              uint32_t log2_esz)
+> +{
+> +    return (reg_start + (size >> log2_esz)) <= evl
+> +            && ((uintptr_t) host % size) == 0;
+> +}
+> +
+> +#define GEN_VEXT_LDST_ATOMIC_HOST(SIZE, TYPE)                             \
+> +static inline QEMU_ALWAYS_INLINE void                                     \
+> +vext_ldst_atom_##SIZE##_host(void *vd, uint32_t byte_offset, TYPE *host,  \
+> +                             bool is_load)                                \
+> +{                                                                         \
+> +    TYPE *vd_ptr = (TYPE *) (vd + byte_offset);                           \
+> +    if (is_load) {                                                        \
+> +        *vd_ptr = qatomic_read__nocheck(host);                            \
+> +    } else {                                                              \
+> +        qatomic_set__nocheck(host, *vd_ptr);                              \
+> +    }                                                                     \
+> +}                                                                         \
+> +
+> +GEN_VEXT_LDST_ATOMIC_HOST(2, uint16_t)
+> +GEN_VEXT_LDST_ATOMIC_HOST(4, uint32_t)
+> +#ifdef CONFIG_ATOMIC64
+> +GEN_VEXT_LDST_ATOMIC_HOST(8, uint64_t)
+> +#endif
+> +
+> +#ifdef CONFIG_INT128_TYPE
+> +static inline QEMU_ALWAYS_INLINE void
+> +vext_ldst_atom_16_host(void *vd, uint32_t byte_offset, Int128 *host,
+> +                       bool is_load)
+> +{
+> +    Int128 *vd_ptr = (Int128 *) (vd + byte_offset);
+> +    if (is_load) {
+> +        *vd_ptr = atomic16_read_ro(host);
+> +    } else {
+> +        atomic16_set(host, *vd_ptr);
+> +    }
+> +}
+> +#endif
+> +#endif
 
---uFelMDjAQIjmk2oK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Using CONFIG_INT128_TYPE is peeking under the hood a bit too far.
+As it happens, the ifdef should not be required, because the atomic16_{read,set} symbols 
+are always present.
 
-Applied, thanks.
+> +#ifdef CONFIG_INT128_TYPE
+> +    if (((is_load && HAVE_ATOMIC128_RO) || (!is_load && HAVE_ATOMIC128_RW))
+> +        && ok_for_atomic(16, host, reg_start, evl, log2_esz)) {
+> +        vext_ldst_atom_16_host(vd, byte_offset, host, is_load);
+> +        return 16;
+> +    }
+> +#endif
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/10.0 for any user-visible changes.
+The tricky part is that if !HAVE_ATOMIC128_RO, then atomic16_set may be implemented with a 
+16-byte compare and store loop.  This is expensive, and you certainly don't want to use 
+that.  You'd prefer two 8-byte stores.
 
---uFelMDjAQIjmk2oK
-Content-Type: application/pgp-signature; name="signature.asc"
+So I think the condition should be
 
------BEGIN PGP SIGNATURE-----
+     if (HAVE_ATOMIC128_RO && (is_load || HAVE_ATOMIC128_RW))
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmdlmVwACgkQnKSrs4Gr
-c8i9JggAthJl6cUUSBVOn287hTD+La6yHP06QpvgQls1e/5yDQ1UqRojifsmleth
-fhz9pKtndHaQn+J2D/G9PERu4RlgQCj0ZdTdwMzHmbhnMMYGO9I5XX95Is+mnoqv
-47t8wqVtfaREhgRO3ZEWA9AppRvY+BRoU1Sbwxz/pltGtrTdqCA55GlGUN2VKIi2
-fUu5yhiAeEHoB8eJ5D32BTQ5X5C01FJUxU6Z9WK6JCZYA5nOkydUkG9Y5wXv9HnY
-iziZo8mxb9RvOzGEE8Se7Rd+xhLQjQDIMFAaAvsAh7PUZQCXj4AmILfb9gLKr02W
-OARcZDX1LjDjpmGmFymKwQNKDP9TQA==
-=i/SI
------END PGP SIGNATURE-----
+with the above paragraph added as a comment.
 
---uFelMDjAQIjmk2oK--
+That said, RVV does not have 128-bit elements, so at no point do you actually require 
+128-bit atomicity.
 
+> +
+> +#ifdef CONFIG_ATOMIC64
+> +    if (ok_for_atomic(8, host, reg_start, evl, log2_esz)) {
+> +        vext_ldst_atom_8_host(vd, byte_offset, host, is_load);
+> +        return 8;
+> +    }
+> +#endif
+> +
+> +    if (ok_for_atomic(4, host, reg_start, evl, log2_esz)) {
+> +        vext_ldst_atom_4_host(vd, byte_offset, host, is_load);
+> +        return 4;
+> +    }
+> +
+> +    if (ok_for_atomic(2, host, reg_start, evl, log2_esz)) {
+> +        vext_ldst_atom_2_host(vd, byte_offset, host, is_load);
+> +        return 2;
+> +    }
+> +#endif
+> +
+> +    ldst_host(vd, reg_start, host);
+> +    return 1;
+> +}
+> +
+>   static inline QEMU_ALWAYS_INLINE void
+>   vext_continus_ldst_host(CPURISCVState *env, vext_ldst_elem_fn_host *ldst_host,
+>                           void *vd, uint32_t evl, uint32_t reg_start, void *host,
+> -                        uint32_t esz, bool is_load)
+> +                        uint32_t esz, bool is_load, uint32_t log2_esz)
+>   {
+>   #if HOST_BIG_ENDIAN
+>       for (; reg_start < evl; reg_start++, host += esz) {
+> @@ -225,10 +317,13 @@ vext_continus_ldst_host(CPURISCVState *env, vext_ldst_elem_fn_host *ldst_host,
+>           } else {
+>               memcpy(host, vd + byte_offset, size);
+>           }
+> -    } else {
+> -        for (; reg_start < evl; reg_start++, host += esz) {
+> -            ldst_host(vd, reg_start, host);
+> -        }
+> +        return;
+> +    }
+> +    uint32_t chunk = 0;
+> +    for (; reg_start < evl; reg_start += (chunk >> log2_esz),
+> +                            host += chunk) {
+> +        chunk = vext_ldst_atomic_chunk_host(env, ldst_host, vd, evl, reg_start,
+> +                                            host, esz, is_load, log2_esz);
+>       }
+
+My guess is the arrangement of the loop is not great, in that ok_for_atomic is buried at 
+the bottom of the call stack within this loop.
+
+It would be better to test for alignment once, here at the outside.  If the alignment is 
+below esz, then the individual elements are misaligned, at which point the architecture 
+does not require *any* atomicity.  At which point, I believe you could use the memcpy path 
+just above.
+
+Perhaps something like
+
+     uint32_t byte_offset = reg_start * esz;
+     uint32_t size = (evl - reg_start) * esz;
+     uint32_t test = (uintptr_t)host;
+
+     if (esz == 1 || unlikely(test % esz != 0)) {
+         if (is_load) {
+             memcpy(vd + byte_offset, host, size);
+         } else {
+             memcpy(host, vd + byte_offset, size);
+         }
+         return;
+     }
+
+     /* Test that both alignment and size are multiples. */
+     test |= size;
+     if (HAVE_ATOMIC128_RO && (is_load || HAVE_ATOMIC128_RW) && (test % 16 == 0) {
+         do {
+             vext_ldst_atom_16_host(vd, reg_offset, host, is_load);
+             reg_offset += 16 >> log2_esz;
+             host += 16;
+         } while (reg_offset < evl);
+         return;
+     }
+     if (esz < 8 && test % 8 == 0) {
+         ...
+     }
+     ...
+     for (; reg_start < evl; reg_start++, host += esz) {
+         ldst_host(vd, reg_start, host);
+     }
+
+
+r~
 
