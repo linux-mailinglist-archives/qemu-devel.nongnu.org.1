@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F04B09F89D1
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 02:58:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 995109F89C1
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 02:56:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOSEK-0005wR-0N; Thu, 19 Dec 2024 20:55:04 -0500
+	id 1tOSEM-00062S-KG; Thu, 19 Dec 2024 20:55:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tOSEH-0005vT-PK
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:55:01 -0500
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ id 1tOSEJ-0005wW-Q3
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:55:03 -0500
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tOSEG-0004BV-7i
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:55:01 -0500
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-7fc88476a02so1109104a12.2
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 17:54:59 -0800 (PST)
+ id 1tOSEI-0004Bm-8h
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:55:03 -0500
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-728ea1573c0so1259604b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 17:55:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734659697; x=1735264497; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1734659700; x=1735264500; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gPuLbZvSp6+8tc9tl8q4PUHJAk1piLXuGGcNU0EdvfA=;
- b=fUqZDbFSxK2TtHtpjVV/gluN/I1E1Jm5xhUeiZcsJNHYnkOl1lLRCuO2FZcOwP5J2u
- wwI1L6NGH0tpmBYqLghdqti8dMZL6+Ncl/Km0yZJwl3j/HMOniuN4fatsndTdbz53wAK
- WvSemcaffBIVCHIdHc/4TffhGJ5G0xb5gTMFuBETMWgIXh/R0lMKJsTiPnQoMKG9LLVH
- MSOrNFzMq8831dxrZTecuGT9qE2wS10C7Xe+Tm/gzmomVN0507tLo6mWZi2cY65uirNb
- o/JGT/dHPSUxQxZtHGP2HZoPaYtXw6z8C3/bc0GzqMZyu/qnq2hi9oYTqIQgxA0gVWPd
- U7qw==
+ bh=pZX0TgFMJ8uN9pbvITB6VLJTDE458zw/ldNK20g8Glo=;
+ b=IZX8v8RFeA5UutkRoc+B8Y5zUjS7uyy/vTybv9N+U/jzIdD52qG0XzODm/22MvPmlU
+ gWQJkUhEQOnJoEHmXj4OKQ2zmC26sMS9mETeqIs4mOaUK+iy/KGGQMvV8BLgoK/ybybu
+ VUh/PIMUbKSvMtgA1gmmIX1VN1SBumoL3wE6Wb2q0WxqO/uvVXzEmkNcNW4r7IT4ooWp
+ YMkAb2tGtjnXptLTiJ8+HE0tE6qrRloN6C7MVVVoNfUyNcpGRhX+4v0+gCGCJxlAIU+o
+ ZErT5h8Jl7Xx/txX6haru5MzCEm49KDJktbHTOg09kweef/1YcyvJ5NHggbMWNN0DUtS
+ uMgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734659697; x=1735264497;
+ d=1e100.net; s=20230601; t=1734659700; x=1735264500;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gPuLbZvSp6+8tc9tl8q4PUHJAk1piLXuGGcNU0EdvfA=;
- b=Lp3XmMt+bIqzjN4bvItR4YfCpKxjJuy/giYpl83BErJdLgYVI4OOs/voZf2MunAJwk
- nO0MVUvEd/9Xaa/q33jJMgNdpbOgslgtAXWMNiOCGVjp3sJ+iMmAJ/4HxuzYnqjGWqTy
- gkw7fnv0CwhDftSz2JKEFyRtyWEMx6BK17rYSbR0qsi+YMnjhSvWIndPassXd2Fu9BPb
- q1j4QZUYPjhBBJKj7pADA1n0Tn6zmR+RKaTgJMDWMsihuq5o/RHXsOcz4vwaCDGDNSmZ
- S2MKPXC6wANyoKCVq2IVDKoOH52vNnfqJFao0BlI54pN7wxR/eW4LItppzJZUPP1+pxv
- GQ0w==
-X-Gm-Message-State: AOJu0YyhsfplS+Ep3qArN31xpOSNxC8f6UXnMZkEl+xMpHF2USD9p4yB
- MPeHZheJjnAVhrGXRy5ZdHYhwxYQVzBU8YBByEG5AtntT2fbjp1RUlIpS9KV
-X-Gm-Gg: ASbGncug3cF12sGkjQQenI2ksGaZdmzUXg83x3b5XsyVgQeQRKR1GmQQCSYWoV7DuC3
- BXc0bzbtiOHUmDCpLMNMb4XA23TN/ATM7xZeK0jldiHjR0tYpIYk9jYHhxWiDxr9QC3UyJIL+iG
- fE8QAJaGjeaoaQ4Fy6C3xTUxuxve1xxxGyhQhyDpLai56vuFdwsknd9Sv7DWDltJEpPW38rg44q
- 1VA93GiNdXjdKXkOsTa9MPUhDtn5T3TXZGqCA1K58QZZ8H136ZKlOEYIJ8TPCkF6yLELGRky6kw
- AtCIvxeLB5v4uLRBJEkl9PfJP7UWZV1fgr5wQQ+X5paq1q3bVcW4CH7TlmnYmY0=
-X-Google-Smtp-Source: AGHT+IGJ4m6qftyu9+sZIxmE0dWWZPlgSNn93hOfNyjgrMw9KGcq17kLjqEp/in2EQNYorp2DQvdYw==
-X-Received: by 2002:a05:6a20:2d07:b0:1e1:b44f:cff1 with SMTP id
- adf61e73a8af0-1e5e07f9c06mr2050865637.33.1734659697423; 
- Thu, 19 Dec 2024 17:54:57 -0800 (PST)
+ bh=pZX0TgFMJ8uN9pbvITB6VLJTDE458zw/ldNK20g8Glo=;
+ b=EkhQNQ31y/GhNl/E4jKKUVn01Eor+tadCv9MtkwqVzt/jOeIWd36qqiq8SC71TGYkf
+ FLVYuPgmOWuNuimIDHZJ45tfEaHi2IjKobJdnYvtlEjhlGaVtNvSgNUO61IjlfqM0+z0
+ 01iDkTNRRW887CHtIMjVJ2EcVjQkLY1CCQ5q/xmeMTX6EdobkNw71Um2xvABHVrbtd/3
+ V8OIbadSDL/22lCSLkwAQ/kVTJoTwhFARrway6bwkyLW5107jOAfnNLQcHdcdF/93c2i
+ 5X8F08LqcMX9hYfxahsPE5RUuepSZCJtm3t6sjVela4P8VEgCC4JMX+cogoZBO+QPXVx
+ 2qww==
+X-Gm-Message-State: AOJu0YzU4TLqi8vaYLaUg7xlCtvEu718EUGkbF+0FOLqo050Xk3dLE0K
+ GOx8sEIPk0JDYlp594aEDMoxJui/uiT+YD3g1J5qZIf7x2fQMYsP/V/JO39s
+X-Gm-Gg: ASbGncsA+wgkIrzo/V/Vo0Q7douoZWdkmEygseD4zj8xD2kTbZVjqIWat7sYM6CbRLA
+ IQC5fNSaKWeyx1brkT79pV9cbGxwYPWmtEjZA4l4pWJYnjL1L+HtkKiWSUJpG928jlmdAg6dOES
+ Tej/X6TxgKqfizc0qsEoLfK71NZEtUt0hcrKRGqNFN433IxOjdMGhhEKDuUYu1vDnE4pVzDGIlb
+ HUhSb1hyQAszKI4xlQjrJX6dPcFadn7LCPsrBNCiJBnh/HognqLXYEkFbFBf/v+9MGhwTmWs7+5
+ 9AwfoNB0GmKJb9TtmTYzCO6A2RXfJ0MlUQPssFhyAb+a/CGcqhwgzbVF89LY/Sk=
+X-Google-Smtp-Source: AGHT+IHCxWWVP3s6/NNLM5jO7dj6FtfJmTJKjAqxIZIx/EHqBVoTgr6a6X6zj2/iIfj4xUByw4tOaQ==
+X-Received: by 2002:a05:6a00:a908:b0:72a:bcc2:eefb with SMTP id
+ d2e1a72fcca58-72abdd502bcmr1490311b3a.2.1734659700489; 
+ Thu, 19 Dec 2024 17:55:00 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad8164d3sm2002539b3a.15.2024.12.19.17.54.54
+ d2e1a72fcca58-72aad8164d3sm2002539b3a.15.2024.12.19.17.54.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 17:54:56 -0800 (PST)
+ Thu, 19 Dec 2024 17:54:59 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Jason Chien <jason.chien@sifive.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: alistair23@gmail.com, Yong-Xuan Wang <yongxuan.wang@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 01/39] hw/riscv/riscv-iommu.c: Correct the validness check
- of iova
-Date: Fri, 20 Dec 2024 11:54:01 +1000
-Message-ID: <20241220015441.317236-2-alistair.francis@wdc.com>
+Subject: [PULL v2 02/39] hw/intc/riscv_aplic: Fix APLIC in_clrip and clripnum
+ write emulation
+Date: Fri, 20 Dec 2024 11:54:02 +1000
+Message-ID: <20241220015441.317236-3-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220015441.317236-1-alistair.francis@wdc.com>
 References: <20241220015441.317236-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x52f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -103,73 +102,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jason Chien <jason.chien@sifive.com>
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-From RISCV IOMMU spec section 2.1.3:
-When SXL is 1, the following rules apply:
-- If the first-stage is not Bare, then a page fault corresponding to the
-original access type occurs if the IOVA has bits beyond bit 31 set to 1.
-- If the second-stage is not Bare, then a guest page fault corresponding
-to the original access type occurs if the incoming GPA has bits beyond bit
-33 set to 1.
+In the section "4.7 Precise effects on interrupt-pending bits"
+of the RISC-V AIA specification defines that:
 
-From RISCV IOMMU spec section 2.3 step 17:
-Use the process specified in Section "Two-Stage Address Translation" of
-the RISC-V Privileged specification to determine the GPA accessed by the
-transaction.
+"If the source mode is Level1 or Level0 and the interrupt domain
+is configured in MSI delivery mode (domaincfg.DM = 1):
+The pending bit is cleared whenever the rectified input value is
+low, when the interrupt is forwarded by MSI, or by a relevant
+write to an in_clrip register or to clripnum."
 
-From RISCV IOMMU spec section 2.3 step 19:
-Use the second-stage address translation process specified in Section
-"Two-Stage Address Translation" of the RISC-V Privileged specification
-to translate the GPA A to determine the SPA accessed by the transaction.
+Update the riscv_aplic_set_pending() to match the spec.
 
-This commit adds the iova check with the following rules:
-- For Sv32, Sv32x4, Sv39x4, Sv48x4 and Sv57x4, the iova must be zero
-extended.
-- For Sv39, Sv48 and Sv57, the iova must be signed extended with most
-significant bit.
-
-Signed-off-by: Jason Chien <jason.chien@sifive.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20241114065617.25133-1-jason.chien@sifive.com>
+Fixes: bf31cf06eb ("hw/intc/riscv_aplic: Fix setipnum_le write emulation for APLIC MSI-mode")
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20241029085349.30412-1-yongxuan.wang@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/riscv-iommu.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ hw/intc/riscv_aplic.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-index 07fed36986..b6b9477129 100644
---- a/hw/riscv/riscv-iommu.c
-+++ b/hw/riscv/riscv-iommu.c
-@@ -392,9 +392,26 @@ static int riscv_iommu_spa_fetch(RISCVIOMMUState *s, RISCVIOMMUContext *ctx,
+diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
+index 353eec8136..3edab64b97 100644
+--- a/hw/intc/riscv_aplic.c
++++ b/hw/intc/riscv_aplic.c
+@@ -248,9 +248,12 @@ static void riscv_aplic_set_pending(RISCVAPLICState *aplic,
  
-         /* Address range check before first level lookup */
-         if (!sc[pass].step) {
--            const uint64_t va_mask = (1ULL << (va_skip + va_bits)) - 1;
--            if ((addr & va_mask) != addr) {
--                return RISCV_IOMMU_FQ_CAUSE_DMA_DISABLED;
-+            const uint64_t va_len = va_skip + va_bits;
-+            const uint64_t va_mask = (1ULL << va_len) - 1;
-+
-+            if (pass == S_STAGE && va_len > 32) {
-+                target_ulong mask, masked_msbs;
-+
-+                mask = (1L << (TARGET_LONG_BITS - (va_len - 1))) - 1;
-+                masked_msbs = (addr >> (va_len - 1)) & mask;
-+
-+                if (masked_msbs != 0 && masked_msbs != mask) {
-+                    return (iotlb->perm & IOMMU_WO) ?
-+                                RISCV_IOMMU_FQ_CAUSE_WR_FAULT_S :
-+                                RISCV_IOMMU_FQ_CAUSE_RD_FAULT_S;
-+                }
-+            } else {
-+                if ((addr & va_mask) != addr) {
-+                    return (iotlb->perm & IOMMU_WO) ?
-+                                RISCV_IOMMU_FQ_CAUSE_WR_FAULT_VS :
-+                                RISCV_IOMMU_FQ_CAUSE_RD_FAULT_VS;
-+                }
-             }
+     if ((sm == APLIC_SOURCECFG_SM_LEVEL_HIGH) ||
+         (sm == APLIC_SOURCECFG_SM_LEVEL_LOW)) {
+-        if (!aplic->msimode || (aplic->msimode && !pending)) {
++        if (!aplic->msimode) {
+             return;
          }
++        if (aplic->msimode && !pending) {
++            goto noskip_write_pending;
++        }
+         if ((aplic->state[irq] & APLIC_ISTATE_INPUT) &&
+             (sm == APLIC_SOURCECFG_SM_LEVEL_LOW)) {
+             return;
+@@ -261,6 +264,7 @@ static void riscv_aplic_set_pending(RISCVAPLICState *aplic,
+         }
+     }
+ 
++noskip_write_pending:
+     riscv_aplic_set_pending_raw(aplic, irq, pending);
+ }
  
 -- 
 2.47.1
