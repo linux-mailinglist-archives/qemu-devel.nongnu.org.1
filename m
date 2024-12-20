@@ -2,82 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B969F89E5
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 03:01:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A519F89DB
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 03:01:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOSG0-00016h-9F; Thu, 19 Dec 2024 20:56:48 -0500
+	id 1tOSGD-00021s-4e; Thu, 19 Dec 2024 20:57:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tOSFt-0000nJ-Uz
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:56:41 -0500
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1tOSFv-0000xh-IW
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:56:43 -0500
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tOSFs-0004du-Bz
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:56:41 -0500
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-725c86bbae7so1287661b3a.3
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 17:56:39 -0800 (PST)
+ id 1tOSFu-0004e0-0I
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:56:43 -0500
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-725ed193c9eso1283904b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 17:56:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734659799; x=1735264599; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1734659800; x=1735264600; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TduC2J/yNmTTE2R5ICRn5/t9vkcz5PWA+UR8MkeO9Bs=;
- b=GYw0aKsUjHxL+d2cOshj4/39QuYKKvfaLlVDowRzM7ZS3u6ct/TEE7GqLp+uJtRX3D
- omH90dqLoStMCgR/eVwSAVdh5L+HalPY9SHacInImjzrCsAL2V7sHjdK21FYDTW0ghjy
- NcQvex/2Rsm5u0RUebb+JRVsopiNZ1T+bvDGwyU4u7ib8zLcE1uHxM4OdmFpbu4e7iRK
- XM+RLhYgfk71Elyc7XLtrz5/Lqv0xLw08poR9efMErgj8FHYbtYYmSqvkeNrsRBSkehF
- HMm+kriNFwQg+fiQJa98aee/kHGkgeARg6sTr4wU4JJIrsamL2GaS458Ow8I4NInhjJq
- ZVAA==
+ bh=Hja11IV5nNA1bZBHCKOlY+QF4apsmUpXaGb/2G3nPWw=;
+ b=ilZZK2XfjsEoYjAsCMnc3o+BeXVDFeKjO7xi45xxDuEZtRXGafMrLNR9oVXx1eeMf3
+ 4/GRLQ6EQ/AActpFeqUUay0+pVFH7P37zv32sfxXOqWCtGC1de1qXlcrc/uKV6EmZ+bn
+ bDIMDvia1bwr+KrtZi8q/WHe1urQCM5iZmXIbvMC6qvIRixA6GBej2PQlBiWClEkMuyN
+ UY4gYBsTJm872iSKGN890/8Skn6yHjP2A5KoLLTy8tlWiTxj63/oLIJGfPwHQcoteZSg
+ xTxw0sSQx9/kR7aBUVe7MhvLtKCstXUvVIMuAaJebCyYB5iYUTEQVYNNopJxQ/ujrF+L
+ jtnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734659799; x=1735264599;
+ d=1e100.net; s=20230601; t=1734659800; x=1735264600;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TduC2J/yNmTTE2R5ICRn5/t9vkcz5PWA+UR8MkeO9Bs=;
- b=xNL+R5hYVmJiX4kpcyx2TiRTXvVvsRxA9f/YPYQwIy7DqBOVbK5eEWxk0p6HXFJ2xc
- 3e0jzwPrDP/G0HI4clPNUBGro/1c9TT+YpwJC/DzRFOfpeLgvX/d7FDr9Uo/2kLaiNC0
- k9/hs8AMyOu+945+0t4r5mcz4lvi2r3ZvYICni1CvdpyAxKg0lWYuI2pZwUpRVKR2sPv
- cqaZErnAKgiNUIyY7RnKqyt84Bvje9z/jLhXSDk1n66VT8BRamapaKD1M1gAIPfXesMp
- gpcFmW6xduw1LQ1RH214DL8+GRjR8AcE1O6BHyjSHTkgVVXOSHLDB04MBNJIQnExDDIR
- SwwQ==
-X-Gm-Message-State: AOJu0YwClaJlSDwjqP2qef2MOLYNbloAryzzg8azqpsZZ3guQ8Itw8TG
- AnveJ6WIXH3rIi6zKXUD74qO9jOstSDvsCKWkXto1YZ5Z/vXLMhA95r1AYKS
-X-Gm-Gg: ASbGncsw0s+cYRmgFuS3SSTf9dber6cDg1bw+MgSpZ2HKr33zu5bQ/WtxPUk8ITfHWb
- DRkEDA8jdMyuOEi78WUvI3HZhTLZkq0ZBCZCF9mW1wItMPHQPvYbk0UTrJCDXsqFV0wjrSx/aa6
- Xb/EuBL8hllLwaWCC1B07EaIwq3kvmWQ8JW3HTOIQwipiQf3GBjFY2LwKh5+DjnFw+gRkkgq4zE
- cLXtMVldlqnh7h8ZkUy/a5fmRqEuj9lTpUMsLrAx5Kf31r2eRfvEUM4+kJpJ9qQ9h8jokIOtbuE
- ViUMi03pQbcQHKHAiHBsNs2KRIifqFsyzXpEe8J+Mlt7wB082OQPOY5WQ3rFYWw=
-X-Google-Smtp-Source: AGHT+IEYwgriLNeRWG1b3q15zTPw+p33sAFUVZbfrC8zsQjAhxXPw3EwYQS3+kOnsF0LVNEOcF/WdQ==
-X-Received: by 2002:a05:6a00:44cb:b0:725:1d37:ebff with SMTP id
- d2e1a72fcca58-72abe0960c6mr1322463b3a.22.1734659797604; 
- Thu, 19 Dec 2024 17:56:37 -0800 (PST)
+ bh=Hja11IV5nNA1bZBHCKOlY+QF4apsmUpXaGb/2G3nPWw=;
+ b=LsyJrbzcFgFF8/XzpwC7ARjJODUCs37iF9X+wEIRKOcsNlS7bkEevibJjK6JeVJPhE
+ Cxrp/d6grTrDjjlEjJc4dN4yjkHLOMI6Rtet2Lfj0M81QPWkyEKzHqYgaQCVSMBFJH8j
+ hIhqtevdNA6HS31Gdhmp8PAX/c8o5t24B1aAjQ7nUSR/L5wURaww9qkFXhlVrZxwGNhw
+ E+5NM0+yvv+tYzQMp79xnLN4vUxlX/p98LoKkbiZJooNuLK91QRAgtVzy7O3H0C4tvQO
+ ZjkUoKGBc7iobjqMBysmP4aooiusG5dhqe40HlUzpv/J7QYighLk6LB7eIwrALE57UG4
+ vHCQ==
+X-Gm-Message-State: AOJu0YyAUiO6rnLqQ7KSmhkg/NhTNiJHoT7PKYH3Muj8qLCKt4VxB5dx
+ tkDnt67FtMg5aIQr3P8NAvkPBo4kUctHagIkf/hNHV7ahjBH8JCllK+TA81K
+X-Gm-Gg: ASbGnctD5pmWN/T9Rg/bpeapJvNgyFD6F6HB2mWvkvr/a/OPD3evZY9gZtL1KEB8f0i
+ K0secWlX97JtF8a7rq9ZI7MacfNw8mlFLfkqzSUxRbrLL4YIJAYRpgcoCWixniaMSSmWb7JX4pv
+ edKEblILKsM3jOafw++ZxwA99/iytjkCfIp1+4vMT1edAKOtOjgbz2/hXHvhxyHtiBWeXxzQvxN
+ fQR+ULRCVdUyjRZmFRABoZmpGasICFZXSCnALZV2RCFYJpPL3Ok3ZZ7mWi7XR4qs/tlOtLoavYS
+ ZZ4OrSn7dg7x33ayWxk4rAU0d9wlSmA46GBYcFhrxM1Ux2wmo1uFpWXJULQ5Gu4=
+X-Google-Smtp-Source: AGHT+IHsn+jw4yQGh9Q3zguckdd3dIUaevudysAAdzt6GjEm8Ve/k2ZuFBDq6Iqj/5le8xd7tkH79w==
+X-Received: by 2002:a05:6a21:394a:b0:1e0:df27:10d6 with SMTP id
+ adf61e73a8af0-1e5e0497c5fmr2020057637.23.1734659800481; 
+ Thu, 19 Dec 2024 17:56:40 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad8164d3sm2002539b3a.15.2024.12.19.17.56.35
+ d2e1a72fcca58-72aad8164d3sm2002539b3a.15.2024.12.19.17.56.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 17:56:37 -0800 (PST)
+ Thu, 19 Dec 2024 17:56:40 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, "Fea.Wang" <fea.wang@sifive.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 34/39] target/riscv: Check svukte is not enabled in RV32
-Date: Fri, 20 Dec 2024 11:54:34 +1000
-Message-ID: <20241220015441.317236-35-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PULL v2 35/39] target/riscv: Include missing headers in
+ 'vector_internals.h'
+Date: Fri, 20 Dec 2024 11:54:35 +1000
+Message-ID: <20241220015441.317236-36-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220015441.317236-1-alistair.francis@wdc.com>
 References: <20241220015441.317236-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -101,35 +105,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Fea.Wang" <fea.wang@sifive.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The spec explicitly says svukte doesn't support RV32. So check that it
-is not enabled in RV32.
+Rather than relying on implicit includes, explicit them,
+in order to avoid when refactoring unrelated headers:
 
-Signed-off-by: Fea.Wang <fea.wang@sifive.com>
+  target/riscv/vector_internals.h:36:12: error: call to undeclared function 'FIELD_EX32'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     36 |     return FIELD_EX32(simd_data(desc), VDATA, NF);
+        |            ^
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20241203034932.25185-7-fea.wang@sifive.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-ID: <20241203200828.47311-2-philmd@linaro.org>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/tcg/tcg-cpu.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ target/riscv/vector_internals.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index c62c221696..3b99c8c9e3 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -652,6 +652,11 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         return;
-     }
+diff --git a/target/riscv/vector_internals.h b/target/riscv/vector_internals.h
+index 9e1e15b575..a11cc8366d 100644
+--- a/target/riscv/vector_internals.h
++++ b/target/riscv/vector_internals.h
+@@ -20,6 +20,7 @@
+ #define TARGET_RISCV_VECTOR_INTERNALS_H
  
-+    if (mcc->misa_mxl_max == MXL_RV32 && cpu->cfg.ext_svukte) {
-+        error_setg(errp, "svukte is not supported for RV32");
-+        return;
-+    }
-+
-     /*
-      * Disable isa extensions based on priv spec after we
-      * validated and set everything we need.
+ #include "qemu/bitops.h"
++#include "hw/registerfields.h"
+ #include "cpu.h"
+ #include "tcg/tcg-gvec-desc.h"
+ #include "internals.h"
 -- 
 2.47.1
 
