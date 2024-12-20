@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283749F9662
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:24:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E5479F9656
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:23:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOfib-0002NQ-MV; Fri, 20 Dec 2024 11:19:13 -0500
+	id 1tOfik-0003VN-CZ; Fri, 20 Dec 2024 11:19:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfiB-0001WA-6R
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:18:50 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfiF-0001eI-5F
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:18:55 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfi8-0008C6-Aq
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:18:46 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-436202dd7f6so22851595e9.0
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:18:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfiD-0008CZ-14
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:18:50 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-385deda28b3so1628410f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:18:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711522; x=1735316322; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734711527; x=1735316327; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9N5R4jVOn9EmqTq+klLXLHYEgnhRoHrMyBiXguPuoE4=;
- b=rPIOrGxgdt46y/Vz1We+dO0Hw4oisP9Brr1/oR2d3/HVNF+GPViMzQcimS8BCVW0JC
- LPrfEvJzDTYw+yrwpTkHuTIlR3FAnmqkEI4DGKI6ujTLDRGCBLqjN+ImeTC81aLPWbdB
- 5lVqXU5iZ51z2mlCnt/cRvk9QzeFpA4L3cw5LEzx38VlPIWCeYDmGb3NyGbV2mrHtgY8
- JSZTyBicl13Tf1EQ8GXyBhGof6AeH7Hk/tTOxoPJ1Ex92mA7vNZ1gkdfzryi9KW4Xyn/
- G2/e12AbRt0uTYroNpBS5FUgbPyiZF8stijdXBTrFbUwidH2xI2t2zh+91H/r3yVwKYX
- RG8g==
+ bh=UJ6sY5XUhLHbRNTmaDxbD9cJFw1tn4dnsQbphdheGMc=;
+ b=PLu6AUMOYPZ73H2se66gxhVmGLKVpmpkqRpltnySQgXDUvDo7hxVOGLK53bFs+WXCU
+ qnIlnABbFp5iiOvbpXFHZ+9KhYdYY6Few090YU4wvKF5/ntk9PvO0RHePtqXU2Wm1bHO
+ sSglJgO3PM1/2gzad84xIZQ3B+EX5lspMV43uQIIiLfDePK96N33PwLiSpberASV7+MN
+ tJu9gQPLM/rlHhzgz6IWANxoQSD/pj7Mat8t9sHN8izyJEO26iqtsxtY42945TDYqtP+
+ BT6mOE5UgxCCxW5o716nwypFes+QAXeCIZAgnESyfN7UeMhK2HAgrvqJUdeySfkj1a4/
+ yqeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711522; x=1735316322;
+ d=1e100.net; s=20230601; t=1734711527; x=1735316327;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9N5R4jVOn9EmqTq+klLXLHYEgnhRoHrMyBiXguPuoE4=;
- b=mD15MKXceGMm+L2GKK7dmmAWJK8kujGYYb6yr7Kd5Hz8gbjnSz08c6OytztEzzrnoS
- +Ro3MSLIL6rpLpTx43ny8wSyQ9IQY+kuGdQAziodFOEusreKh7utH+fEFaHRm7InKddb
- 5XTJmEdmN+lf94fzJbi8UAAO9GC2Fx5n7lNboPz5O2K3ZDk8tfR7U92dHFAXR4vPV2xI
- EQobEnganOWkvp5GDf65BR9cU7xBXcHm/e5j3Q9j3TZXrhymHw2JRSxCrWW9oQOOAZdU
- 3spqRWjphxWzbM1hcS440qemfZiij3aJdOe191n3oa6K9XxPP2/Np323RqO/awl1rzN0
- vpFw==
-X-Gm-Message-State: AOJu0YyehcKB0IHbvBJectLL5dLttkKBhn5Ekrr8t4BrbCG+hqG7Q3K0
- NJGQeZ0OO5BifGBlpCYnAw1aH7NQ/j8R3Fet+inacYkaS8bE+zgaTz43HoyZW41bUcP6hgLogIz
- m
-X-Gm-Gg: ASbGnctyFkCFygxOnRoTB3nVcqZ54I9l9WBh1XoNUbd68XT4KAyFG2ipDfgbOiTjwQH
- 8sYj8MRcdfDdJcESljj22V4iMzxVhnY0prtvf4PDtjWJgK1Gz5jB20CK/X2eYoysSkz33v7yEJA
- m4UPrlPq9kodPkzINAE+aPEJHWF8JgCSlBXLfttBuHOaJX3xX3+yfHz82F/ft1LOj+4wJAGwCoZ
- ofsmx/JxIL+zKJ0+2+Kfwu5aJ5Plr/LoqdVZf+VtqgCQHVgJ0pRoM5XBDRcuoNIAzM8t2ozxRM=
-X-Google-Smtp-Source: AGHT+IHNEcCcUfN577eqIyswEmNP4qTBovaBjplPO6C3q+ZxuKF3Ku+dm5Z8nP56DDXd6ZWMfcfzUg==
-X-Received: by 2002:a05:600c:1913:b0:434:f396:525e with SMTP id
- 5b1f17b1804b1-4366b2fa0a6mr28443355e9.9.1734711522542; 
- Fri, 20 Dec 2024 08:18:42 -0800 (PST)
+ bh=UJ6sY5XUhLHbRNTmaDxbD9cJFw1tn4dnsQbphdheGMc=;
+ b=WYUqQE0jONlu0UxEiAbKNLqVFC/1QJ6iQDbfdhMHe8rftJJRZRIuRUGc1PeesT27jp
+ ItvXrKSpfRRgfvW/9ALYay0Qxr04n46bsbWzKMvdpU4sMrPXTt+jQ5wGksZI65+It/nI
+ dFF5EQS02ym1uh6W6AJ0cWA9VZjZCA2G94FG5hZh93y+8ecwH+9JRNrxPLCksu4W+xob
+ mfAgGFYUYptfCr3e5S8ywQHyzOVr6bwX4D4RnVUUI/TaGx5L74S5rpDA85nA9aVKAheo
+ zo9Gy2c3D36/5aFpwXzXVIoONbWqPbgWmdI2NZ4qhMkUUv3DRpeOViwWctI/d5s/tTos
+ ukiQ==
+X-Gm-Message-State: AOJu0YwmllJFIZtaWv60RxTkiO1PL+wZ55x6xZZlAOrUbPAMPqZ21jJf
+ +AcE1dVXHRwewP8MVetF+NKSoqLFa7XbbhQBr5eQxfBAe93PldC5jkkJai5bdwmsWPHwas0PTo5
+ Z
+X-Gm-Gg: ASbGnctixRxy6GqECX7RX6XpvUGfhYMQBd+jGG43FTQ4BosEUOf+p013lKcmxwB5HZ5
+ OOkleJenyI7FoLWkwnXUg4PQxmXLt4T1Ujriue/vCYl/bZ0TMg6U4DqFANO/GjFwdpr399JWZ+u
+ vc9mhGCVf9TtXlvzsy61sBrCfioh0rz+h38f6TPVBsvcW+zTp6czGI8wH6/95goWlu3k5uOBQnM
+ fuQmSUJQtYfEL/OxNP8UpaAL8OK00tahAA/o+gvNnXN2W/EyLQG5U7x9n64zSG9fEKbRlvcrUU=
+X-Google-Smtp-Source: AGHT+IGP9U8koon1A6z6XBMOs8bjTpH0xW0vcgy3QM38YR28WD067XPkEggVojvMvp2pW1aZP9+72A==
+X-Received: by 2002:a05:6000:400c:b0:385:f23a:2fe1 with SMTP id
+ ffacd0b85a97d-38a221f92c9mr3835774f8f.26.1734711527089; 
+ Fri, 20 Dec 2024 08:18:47 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a2432e587sm1480525f8f.95.2024.12.20.08.18.41
+ ffacd0b85a97d-38a1c8a636asm4500534f8f.88.2024.12.20.08.18.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:18:42 -0800 (PST)
+ Fri, 20 Dec 2024 08:18:46 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 37/59] user: Forward declare target_cpu_copy_regs structure
-Date: Fri, 20 Dec 2024 17:15:28 +0100
-Message-ID: <20241220161551.89317-38-philmd@linaro.org>
+Subject: [PULL 38/59] user: Move 'linux-user/cpu_loop-common.h' ->
+ 'user/cpu_loop.h'
+Date: Fri, 20 Dec 2024 17:15:29 +0100
+Message-ID: <20241220161551.89317-39-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
 References: <20241220161551.89317-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,266 +98,307 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+"linux-user/cpu_loop-common.h" is generic enough to be used by
+bsd-user, so rename it as "user/cpu_loop.h".
+
+Mechanical change running:
+
+  $ sed -i -e 's,cpu_loop-common.h,user/cpu_loop.h,' \
+                $(git grep -l cpu_loop-common.h)
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241212185341.2857-16-philmd@linaro.org>
+Message-Id: <20241212185341.2857-17-philmd@linaro.org>
 ---
- linux-user/cpu_loop-common.h      | 5 ++++-
- linux-user/aarch64/cpu_loop.c     | 2 +-
- linux-user/alpha/cpu_loop.c       | 2 +-
- linux-user/arm/cpu_loop.c         | 2 +-
- linux-user/hexagon/cpu_loop.c     | 2 +-
- linux-user/hppa/cpu_loop.c        | 2 +-
- linux-user/i386/cpu_loop.c        | 2 +-
- linux-user/loongarch64/cpu_loop.c | 2 +-
- linux-user/m68k/cpu_loop.c        | 2 +-
- linux-user/microblaze/cpu_loop.c  | 2 +-
- linux-user/mips/cpu_loop.c        | 2 +-
- linux-user/openrisc/cpu_loop.c    | 2 +-
- linux-user/ppc/cpu_loop.c         | 2 +-
- linux-user/riscv/cpu_loop.c       | 2 +-
- linux-user/s390x/cpu_loop.c       | 2 +-
- linux-user/sh4/cpu_loop.c         | 2 +-
- linux-user/sparc/cpu_loop.c       | 2 +-
- linux-user/xtensa/cpu_loop.c      | 2 +-
- 18 files changed, 21 insertions(+), 18 deletions(-)
+ linux-user/cpu_loop-common.h => include/user/cpu_loop.h | 4 ++--
+ linux-user/aarch64/cpu_loop.c                           | 2 +-
+ linux-user/alpha/cpu_loop.c                             | 2 +-
+ linux-user/arm/cpu_loop.c                               | 2 +-
+ linux-user/hexagon/cpu_loop.c                           | 2 +-
+ linux-user/hppa/cpu_loop.c                              | 2 +-
+ linux-user/i386/cpu_loop.c                              | 2 +-
+ linux-user/loongarch64/cpu_loop.c                       | 2 +-
+ linux-user/m68k/cpu_loop.c                              | 2 +-
+ linux-user/main.c                                       | 2 +-
+ linux-user/microblaze/cpu_loop.c                        | 2 +-
+ linux-user/mips/cpu_loop.c                              | 2 +-
+ linux-user/openrisc/cpu_loop.c                          | 2 +-
+ linux-user/ppc/cpu_loop.c                               | 2 +-
+ linux-user/riscv/cpu_loop.c                             | 2 +-
+ linux-user/s390x/cpu_loop.c                             | 2 +-
+ linux-user/sh4/cpu_loop.c                               | 2 +-
+ linux-user/sparc/cpu_loop.c                             | 2 +-
+ linux-user/syscall.c                                    | 2 +-
+ linux-user/xtensa/cpu_loop.c                            | 2 +-
+ 20 files changed, 21 insertions(+), 21 deletions(-)
+ rename linux-user/cpu_loop-common.h => include/user/cpu_loop.h (95%)
 
-diff --git a/linux-user/cpu_loop-common.h b/linux-user/cpu_loop-common.h
-index e644d2ef909..aca51f53238 100644
+diff --git a/linux-user/cpu_loop-common.h b/include/user/cpu_loop.h
+similarity index 95%
+rename from linux-user/cpu_loop-common.h
+rename to include/user/cpu_loop.h
+index aca51f53238..8e2df232758 100644
 --- a/linux-user/cpu_loop-common.h
-+++ b/linux-user/cpu_loop-common.h
-@@ -27,5 +27,8 @@ void target_exception_dump(CPUArchState *env, const char *fmt, int code);
- #define EXCP_DUMP(env, fmt, code) \
-     target_exception_dump(env, fmt, code)
++++ b/include/user/cpu_loop.h
+@@ -17,8 +17,8 @@
+  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
+  */
  
--void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs);
-+typedef struct target_pt_regs target_pt_regs;
-+
-+void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs);
-+
- #endif
+-#ifndef CPU_LOOP_COMMON_H
+-#define CPU_LOOP_COMMON_H
++#ifndef USER_CPU_LOOP_H
++#define USER_CPU_LOOP_H
+ 
+ #include "exec/log.h"
+ #include "special-errno.h"
 diff --git a/linux-user/aarch64/cpu_loop.c b/linux-user/aarch64/cpu_loop.c
-index 71cdc8be50c..77f857a8216 100644
+index 77f857a8216..c5d8a483a3f 100644
 --- a/linux-user/aarch64/cpu_loop.c
 +++ b/linux-user/aarch64/cpu_loop.c
-@@ -185,7 +185,7 @@ void cpu_loop(CPUARMState *env)
-     }
- }
- 
--void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
-+void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
-     ARMCPU *cpu = env_archcpu(env);
-     CPUState *cs = env_cpu(env);
+@@ -20,7 +20,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu.h"
+ #include "user-internals.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ #include "signal-common.h"
+ #include "qemu/guest-random.h"
+ #include "semihosting/common-semi.h"
 diff --git a/linux-user/alpha/cpu_loop.c b/linux-user/alpha/cpu_loop.c
-index 2ea039aa71f..b5403ed0e46 100644
+index b5403ed0e46..80ad536c5f2 100644
 --- a/linux-user/alpha/cpu_loop.c
 +++ b/linux-user/alpha/cpu_loop.c
-@@ -173,7 +173,7 @@ void cpu_loop(CPUAlphaState *env)
-     }
- }
+@@ -20,7 +20,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu.h"
+ #include "user-internals.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ #include "signal-common.h"
  
--void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
-+void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
-     int i;
- 
+ void cpu_loop(CPUAlphaState *env)
 diff --git a/linux-user/arm/cpu_loop.c b/linux-user/arm/cpu_loop.c
-index 709f718a99d..be1f11022a7 100644
+index be1f11022a7..10d8561f9b9 100644
 --- a/linux-user/arm/cpu_loop.c
 +++ b/linux-user/arm/cpu_loop.c
-@@ -513,7 +513,7 @@ void cpu_loop(CPUARMState *env)
-     }
- }
- 
--void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
-+void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
-     CPUState *cpu = env_cpu(env);
-     TaskState *ts = get_task_state(cpu);
+@@ -21,7 +21,7 @@
+ #include "qemu.h"
+ #include "user-internals.h"
+ #include "elf.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ #include "signal-common.h"
+ #include "semihosting/common-semi.h"
+ #include "exec/page-protection.h"
 diff --git a/linux-user/hexagon/cpu_loop.c b/linux-user/hexagon/cpu_loop.c
-index 40db596301a..750150a78db 100644
+index 750150a78db..e18a0183b50 100644
 --- a/linux-user/hexagon/cpu_loop.c
 +++ b/linux-user/hexagon/cpu_loop.c
-@@ -79,7 +79,7 @@ void cpu_loop(CPUHexagonState *env)
-     }
- }
+@@ -21,7 +21,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu.h"
+ #include "user-internals.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ #include "signal-common.h"
+ #include "internal.h"
  
--void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
-+void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
-     env->gpr[HEX_REG_PC] = regs->sepc;
-     env->gpr[HEX_REG_SP] = regs->sp;
 diff --git a/linux-user/hppa/cpu_loop.c b/linux-user/hppa/cpu_loop.c
-index 23b38ff9b28..503a204460e 100644
+index 503a204460e..890e758cd1c 100644
 --- a/linux-user/hppa/cpu_loop.c
 +++ b/linux-user/hppa/cpu_loop.c
-@@ -188,7 +188,7 @@ void cpu_loop(CPUHPPAState *env)
-     }
- }
+@@ -20,7 +20,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu.h"
+ #include "user-internals.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ #include "signal-common.h"
  
--void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
-+void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
-     int i;
-     for (i = 1; i < 32; i++) {
+ static abi_ulong hppa_lws(CPUHPPAState *env)
 diff --git a/linux-user/i386/cpu_loop.c b/linux-user/i386/cpu_loop.c
-index 7a35215278a..e06aa23de4c 100644
+index e06aa23de4c..d96d5553faf 100644
 --- a/linux-user/i386/cpu_loop.c
 +++ b/linux-user/i386/cpu_loop.c
-@@ -331,7 +331,7 @@ static void target_cpu_free(void *obj)
-     g_free(obj);
- }
+@@ -21,7 +21,7 @@
+ #include "qemu.h"
+ #include "qemu/timer.h"
+ #include "user-internals.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ #include "signal-common.h"
+ #include "user-mmap.h"
  
--void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
-+void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
-     CPUState *cpu = env_cpu(env);
-     bool is64 = (env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) != 0;
 diff --git a/linux-user/loongarch64/cpu_loop.c b/linux-user/loongarch64/cpu_loop.c
-index 73d7b6796a4..935d5bcf2c8 100644
+index 935d5bcf2c8..0614d3de224 100644
 --- a/linux-user/loongarch64/cpu_loop.c
 +++ b/linux-user/loongarch64/cpu_loop.c
-@@ -97,7 +97,7 @@ void cpu_loop(CPULoongArchState *env)
-     }
- }
+@@ -8,7 +8,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu.h"
+ #include "user-internals.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ #include "signal-common.h"
  
--void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
-+void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
-     int i;
- 
+ void cpu_loop(CPULoongArchState *env)
 diff --git a/linux-user/m68k/cpu_loop.c b/linux-user/m68k/cpu_loop.c
-index f79b8e4ab05..69cdce95518 100644
+index 69cdce95518..5da91b997ae 100644
 --- a/linux-user/m68k/cpu_loop.c
 +++ b/linux-user/m68k/cpu_loop.c
-@@ -92,7 +92,7 @@ void cpu_loop(CPUM68KState *env)
-     }
- }
+@@ -20,7 +20,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu.h"
+ #include "user-internals.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ #include "signal-common.h"
  
--void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
-+void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
-     CPUState *cpu = env_cpu(env);
-     TaskState *ts = get_task_state(cpu);
+ void cpu_loop(CPUM68KState *env)
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 06037304cb1..b97634a32dd 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -50,7 +50,7 @@
+ #include "elf.h"
+ #include "trace/control.h"
+ #include "target_elf.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ #include "crypto/init.h"
+ #include "fd-trans.h"
+ #include "signal-common.h"
 diff --git a/linux-user/microblaze/cpu_loop.c b/linux-user/microblaze/cpu_loop.c
-index 212e62d0a62..ee4ba768691 100644
+index ee4ba768691..87236c166f2 100644
 --- a/linux-user/microblaze/cpu_loop.c
 +++ b/linux-user/microblaze/cpu_loop.c
-@@ -127,7 +127,7 @@ void cpu_loop(CPUMBState *env)
-     }
- }
+@@ -20,7 +20,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu.h"
+ #include "user-internals.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ #include "signal-common.h"
  
--void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
-+void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
-     env->regs[0] = regs->r0;
-     env->regs[1] = regs->r1;
+ void cpu_loop(CPUMBState *env)
 diff --git a/linux-user/mips/cpu_loop.c b/linux-user/mips/cpu_loop.c
-index 462387a0737..1331a9a2b8d 100644
+index 1331a9a2b8d..6405806eb02 100644
 --- a/linux-user/mips/cpu_loop.c
 +++ b/linux-user/mips/cpu_loop.c
-@@ -211,7 +211,7 @@ done_syscall:
-     }
- }
- 
--void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
-+void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
-     CPUState *cpu = env_cpu(env);
-     TaskState *ts = get_task_state(cpu);
+@@ -20,7 +20,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu.h"
+ #include "user-internals.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ #include "signal-common.h"
+ #include "elf.h"
+ #include "internal.h"
 diff --git a/linux-user/openrisc/cpu_loop.c b/linux-user/openrisc/cpu_loop.c
-index a7aa586c8f9..1bf9542d16a 100644
+index 1bf9542d16a..306b4f8eb43 100644
 --- a/linux-user/openrisc/cpu_loop.c
 +++ b/linux-user/openrisc/cpu_loop.c
-@@ -83,7 +83,7 @@ void cpu_loop(CPUOpenRISCState *env)
-     }
- }
+@@ -20,7 +20,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu.h"
+ #include "user-internals.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ #include "signal-common.h"
  
--void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
-+void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
-     int i;
- 
+ void cpu_loop(CPUOpenRISCState *env)
 diff --git a/linux-user/ppc/cpu_loop.c b/linux-user/ppc/cpu_loop.c
-index 02204ad8beb..e168f1ce947 100644
+index e168f1ce947..2a0efaffcd6 100644
 --- a/linux-user/ppc/cpu_loop.c
 +++ b/linux-user/ppc/cpu_loop.c
-@@ -378,7 +378,7 @@ void cpu_loop(CPUPPCState *env)
-     }
- }
+@@ -21,7 +21,7 @@
+ #include "qemu.h"
+ #include "qemu/timer.h"
+ #include "user-internals.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ #include "signal-common.h"
  
--void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
-+void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
-     int i;
- 
+ static inline uint64_t cpu_ppc_get_tb(CPUPPCState *env)
 diff --git a/linux-user/riscv/cpu_loop.c b/linux-user/riscv/cpu_loop.c
-index 0af533e186f..a72bc76da3d 100644
+index a72bc76da3d..3ac8bbfec1f 100644
 --- a/linux-user/riscv/cpu_loop.c
 +++ b/linux-user/riscv/cpu_loop.c
-@@ -94,7 +94,7 @@ void cpu_loop(CPURISCVState *env)
-     }
- }
- 
--void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
-+void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
-     CPUState *cpu = env_cpu(env);
-     TaskState *ts = get_task_state(cpu);
+@@ -21,7 +21,7 @@
+ #include "qemu/error-report.h"
+ #include "qemu.h"
+ #include "user-internals.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ #include "signal-common.h"
+ #include "elf.h"
+ #include "semihosting/common-semi.h"
 diff --git a/linux-user/s390x/cpu_loop.c b/linux-user/s390x/cpu_loop.c
-index 8b7ac2879ef..42e4d24102e 100644
+index 42e4d24102e..c9124444ed2 100644
 --- a/linux-user/s390x/cpu_loop.c
 +++ b/linux-user/s390x/cpu_loop.c
-@@ -180,7 +180,7 @@ void cpu_loop(CPUS390XState *env)
-     }
- }
+@@ -20,7 +20,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu.h"
+ #include "user-internals.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ #include "signal-common.h"
  
--void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
-+void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
-     int i;
-     for (i = 0; i < 16; i++) {
+ 
 diff --git a/linux-user/sh4/cpu_loop.c b/linux-user/sh4/cpu_loop.c
-index c805f9db110..937d9fa265d 100644
+index 937d9fa265d..ee9eff3428a 100644
 --- a/linux-user/sh4/cpu_loop.c
 +++ b/linux-user/sh4/cpu_loop.c
-@@ -81,7 +81,7 @@ void cpu_loop(CPUSH4State *env)
-     }
- }
+@@ -20,7 +20,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu.h"
+ #include "user-internals.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ #include "signal-common.h"
  
--void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
-+void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
-     int i;
- 
+ void cpu_loop(CPUSH4State *env)
 diff --git a/linux-user/sparc/cpu_loop.c b/linux-user/sparc/cpu_loop.c
-index 50424a54df5..58a2464da9f 100644
+index 58a2464da9f..68f1e8ecd43 100644
 --- a/linux-user/sparc/cpu_loop.c
 +++ b/linux-user/sparc/cpu_loop.c
-@@ -357,7 +357,7 @@ void cpu_loop (CPUSPARCState *env)
-     }
- }
+@@ -20,7 +20,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu.h"
+ #include "user-internals.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ #include "signal-common.h"
  
--void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
-+void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
-     int i;
-     env->pc = regs->pc;
+ #define SPARC64_STACK_BIAS 2047
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index c54b199b6d3..1b335688f12 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -143,7 +143,7 @@
+ #include "special-errno.h"
+ #include "qapi/error.h"
+ #include "fd-trans.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ 
+ #ifndef CLONE_IO
+ #define CLONE_IO                0x80000000      /* Clone io context */
 diff --git a/linux-user/xtensa/cpu_loop.c b/linux-user/xtensa/cpu_loop.c
-index d51ce053926..7564e25a966 100644
+index 7564e25a966..c0fcf743e70 100644
 --- a/linux-user/xtensa/cpu_loop.c
 +++ b/linux-user/xtensa/cpu_loop.c
-@@ -238,7 +238,7 @@ void cpu_loop(CPUXtensaState *env)
-     }
- }
+@@ -20,7 +20,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu.h"
+ #include "user-internals.h"
+-#include "cpu_loop-common.h"
++#include "user/cpu_loop.h"
+ #include "signal-common.h"
  
--void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
-+void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
-     int i;
-     for (i = 0; i < 16; ++i) {
+ static void xtensa_rfw(CPUXtensaState *env)
 -- 
 2.47.1
 
