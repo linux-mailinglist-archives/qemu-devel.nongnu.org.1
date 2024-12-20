@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A67D9F89E6
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 03:01:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A68F9F89F2
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 03:02:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOSG1-0001Id-KP; Thu, 19 Dec 2024 20:56:49 -0500
+	id 1tOSG6-0001fb-SG; Thu, 19 Dec 2024 20:56:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tOSFn-0000FN-BD
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:56:35 -0500
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1tOSFq-0000Wo-6B
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:56:39 -0500
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tOSFl-0004bO-D6
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:56:35 -0500
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-725ce7b82cbso1711020b3a.0
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 17:56:33 -0800 (PST)
+ id 1tOSFo-0004be-Iq
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:56:37 -0500
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-725f2f79ed9so1192971b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 17:56:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734659792; x=1735264592; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1734659795; x=1735264595; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QQS//T0GoR55hAf+FcAjZTbaJGtVUJI7ZxjrQ9eUp70=;
- b=guAuf3zt9xT7EQ5xYXd6igJA0YR3r2WGDN749Jhm6KwBt/D9TJiwLHfcYndvxVe0Y2
- qnX+mly1E85Lx61K4WUIpRjqsFTORcC2O94tiGst1w77fEVP5EXruIUdIb/bataDR50q
- 19Wr5GtjP712BrXUriH15Icz500NtlDS4J8vCHAXRj/zRhtZR0RxaKe9tlgq8f2ryvRe
- ShW79U9KVofQ/cAGSdSexe1WEW10Y9xQqCWhoU55n+9iDdKb6lBelikRbCbwdZKO5g2v
- KLL5PL+nxz47Ofx4VnYhq+QSz00/2YIysNB74EOZJDt+m5mHXHRcJHExQ7pDnUE9EaeV
- UJOA==
+ bh=DYkEPiVTZPcrOR2pDmsygVgNKgeEe5hJGYqQAVm5GOs=;
+ b=UTIViYdsyQS60YKeF5LsIYkhM462v0/uljM/rZGVoL1EOKNa8divgwVly+2JsQDG+H
+ B+RQtLOP51X3QpPzU9Ndr5KctqDSA5LiQkuCI9IO8OOTfXDCZaR8YyyFT8OOiCdu9wxB
+ ENA+IpWHX1S1F2YQlkKqYtR3lL6pKdB3xrYAOT807pljnd0V/min5FgdZxO5fNvyYz7W
+ VVBp3CXp9pZCNFmzVThoP+L7xvrUtIN9M5mEgDJ7RHa73ibYdR7SwVmSaY1EybTXt1bO
+ MLuYjKsJUCEX8vK9XjmPAhe2wsSNluSAa1rXuT66Da0roA0+2y9OaXuzj+D4Ertdg85g
+ UMtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734659792; x=1735264592;
+ d=1e100.net; s=20230601; t=1734659795; x=1735264595;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QQS//T0GoR55hAf+FcAjZTbaJGtVUJI7ZxjrQ9eUp70=;
- b=cpPYurYc7+RUV10GfYmLPmI6tcZAe8qntLYbCfBmNgP3qO1uEYqctBWuSKoWFRLV40
- N7/dOBIiHwfyD+h+SNQMwysZS4VRlRJwm/tHvD2xZpRJBDX4gcBF4NQbiwwW3w35ntPW
- feDHGQZEfU9WxVMnlZZOIZncaHN4NSZ5ifQ1LrIa7bEjdiBZIktKKTSZFe6L6OTAaoQl
- 2Ed7YWTs7ACpU1PiaCIM+tGUiteE1rR7+PC2216sGBeM4wHs+rxhjuzH17OWo/YWAy8Z
- /fZ1k7Owmzpp0zxUqbfa+iQFh3zm+T4gtSXLgeuLLKAR5HPw5mZrHbDVJhbcKcLB6naj
- 2oNw==
-X-Gm-Message-State: AOJu0Yx371Ncr2azx4HwGTctVNIUCXd0A/W2v11GLYr3HUqd6UX0ZPhq
- re9WouoyTX5CaCqg5VO6K+80x/U7T5qkSDhyLSVl2eGIcf6x9DJmq83annC6
-X-Gm-Gg: ASbGncs3dm66ZrXka3HkEodgUS6tv57tHzV3FMgtEjW0yDLs6knjOrF/6SQSziF0rTJ
- 7q6RFe6sVvGvNYJ5j6hFcjoObZn5hHOAYYF5PmS8YKHtcQefxAF0loN1nD5h62mQ2gjs4dlZMIs
- XMKTkW+C1s2mkGlrXbpDnu+ZLdXRwBiZLmz1g65Onqz/5h6EBXUD2DP/e714by8HZpQMVy5+fBN
- nOl469GcVK80Qku0LSgoVOjp/eZu9W2d1pjy/++XtCZKUvacj6d9IaiGuyHJnCshRRYCWT1sPC5
- 4OtEfSMCcjcuWnAfbTO1ZgAj3vT4BAsgqYsEE+gEAG2JTMpAumZy5cjL7oWRHLU=
-X-Google-Smtp-Source: AGHT+IE55mt7DO3RWxj3kXcbY5uEPu3BwY+mCh9aihNZaseidsXdt90HyvJ/HK8AS7RvXaUDh9Tghw==
-X-Received: by 2002:a05:6a20:6a24:b0:1db:ff9d:1560 with SMTP id
- adf61e73a8af0-1e5e0484baemr2196547637.18.1734659791640; 
- Thu, 19 Dec 2024 17:56:31 -0800 (PST)
+ bh=DYkEPiVTZPcrOR2pDmsygVgNKgeEe5hJGYqQAVm5GOs=;
+ b=WNdho9UnyN3HEv7/fDf2yIJWls73Y0ivNHuV+Sv6+G7UFcNaAm9ew4Rf8GNCfN1Iba
+ kFuDHujixeS1yr1ksVY+DEQyZus5ln6k+/JlLmidR/V+ziNdLhWdM4cc5ff5rSgGfVsl
+ TJA3/WhA/RzCH6yPIESyJdTTmADwtXaORJ5cTPcIl3HqcoC2cVS6nsGJ75pzbOsUWPBb
+ /M6xfrSWQQt/7kkXbiI1cWbufQn+H3ZWOyYM+oA4ogSvD4szGf5l/MhUYPzBJDZ8FqpF
+ 48SeRV14d2ufYaK6viBusGFDtlu1nR3dYjBbPjg8noF4gQYesxxzMiuzyfrQMQd7pr+E
+ owDQ==
+X-Gm-Message-State: AOJu0YwXJHrP5vZ8JYX+pcIEwuSrLRvGMYJ8hpc9ugBqnTmIgR9hUPct
+ 9ECTr3xrfxStFN9a8KEbuvfljB4XW3KtliEwOAtjO63M5AxdgcM/8qmUaKNH
+X-Gm-Gg: ASbGnctkMuHkXT7xDBiZLdYR3NazvKkDBEa77IROYZZttbzjqweBnjQNYiXpoxBxV8G
+ tCieB9dQSRxyW1bUWubpzOw/gX47TwJzqGa6Q3daJrlSW0X8ZYyj1u/Df8vnvRFU1RQ7rQjp3nU
+ yX/sg0wlgPzVYh04Av6QcCcRNwZqyfo8GdP6CEMbAizhgyE3ofYIN2Im3rPGayBChLdbGKN4h3a
+ cVpu41iAf8NzmmDyxOPch7TXN4SWUDiMhtzNonOksJyOo7O8sMkGsKbvA3/e5MD7ABULRXiE9PO
+ hg9NL3I/GIkU4t8ww3ri2lTaNaNoMGkc7K6XyvbfKHcwlQh5bxkC90xJvT04jTA=
+X-Google-Smtp-Source: AGHT+IEU1sEra7OD1L1E3G9QVw1WITBVTEoC2JBvh2EzsqfAUsH4dPlt8W/g9R094HZ/vYMIzMJW8Q==
+X-Received: by 2002:a05:6a00:8d8c:b0:71e:a3:935b with SMTP id
+ d2e1a72fcca58-72abdee2117mr1476662b3a.25.1734659794960; 
+ Thu, 19 Dec 2024 17:56:34 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad8164d3sm2002539b3a.15.2024.12.19.17.56.28
+ d2e1a72fcca58-72aad8164d3sm2002539b3a.15.2024.12.19.17.56.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 17:56:31 -0800 (PST)
+ Thu, 19 Dec 2024 17:56:34 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, "Fea.Wang" <fea.wang@sifive.com>,
- Frank Chang <frank.chang@sifive.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Jim Shu <jim.shu@sifive.com>, Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 32/39] target/riscv: Check memory access to meet svukte rule
-Date: Fri, 20 Dec 2024 11:54:32 +1000
-Message-ID: <20241220015441.317236-33-alistair.francis@wdc.com>
+ Frank Chang <frank.chang@sifive.com>, Jim Shu <jim.shu@sifive.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL v2 33/39] target/riscv: Expose svukte ISA extension
+Date: Fri, 20 Dec 2024 11:54:33 +1000
+Message-ID: <20241220015441.317236-34-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220015441.317236-1-alistair.francis@wdc.com>
 References: <20241220015441.317236-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -105,110 +104,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Fea.Wang" <fea.wang@sifive.com>
 
-Follow the Svukte spec, do the memory access address checking
+Add "svukte" in the ISA string when svukte extension is enabled.
 
-1. Include instruction fetches or explicit memory accesses
-2. System run in effective privilege U or VU
-3. Check senvcfg[UKTE] being set, or hstatus[HUKTE] being set if
-instruction is HLV, HLVX, HSV and execute from U mode to VU mode
-4. Depend on Sv39 and check virtual addresses bit[SXLEN-1]
-5. Raises a page-fault exception corresponding to the original access
-type.
-
-Ref: https://github.com/riscv/riscv-isa-manual/pull/1564/files
-
-Signed-off-by: Frank Chang <frank.chang@sifive.com>
 Signed-off-by: Fea.Wang <fea.wang@sifive.com>
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Frank Chang <frank.chang@sifive.com>
 Reviewed-by: Jim Shu <jim.shu@sifive.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20241203034932.25185-5-fea.wang@sifive.com>
+Message-ID: <20241203034932.25185-6-fea.wang@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_helper.c | 55 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+ target/riscv/cpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 45806f5ab0..750c0537ca 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -857,6 +857,55 @@ static int get_physical_address_pmp(CPURISCVState *env, int *prot, hwaddr addr,
-     return TRANSLATE_SUCCESS;
- }
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 66e00ed260..18f4d94b6e 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -199,6 +199,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
+     ISA_EXT_DATA_ENTRY(svnapot, PRIV_VERSION_1_12_0, ext_svnapot),
+     ISA_EXT_DATA_ENTRY(svpbmt, PRIV_VERSION_1_12_0, ext_svpbmt),
++    ISA_EXT_DATA_ENTRY(svukte, PRIV_VERSION_1_13_0, ext_svukte),
+     ISA_EXT_DATA_ENTRY(svvptc, PRIV_VERSION_1_13_0, ext_svvptc),
+     ISA_EXT_DATA_ENTRY(xtheadba, PRIV_VERSION_1_11_0, ext_xtheadba),
+     ISA_EXT_DATA_ENTRY(xtheadbb, PRIV_VERSION_1_11_0, ext_xtheadbb),
+@@ -1663,6 +1664,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[] = {
  
-+/* Returns 'true' if a svukte address check is needed */
-+static bool do_svukte_check(CPURISCVState *env, bool first_stage,
-+                             int mode, bool virt)
-+{
-+    /* Svukte extension depends on Sv39. */
-+    if (!(env_archcpu(env)->cfg.ext_svukte ||
-+        !first_stage ||
-+        VM_1_10_SV39 != get_field(env->satp, SATP64_MODE))) {
-+        return false;
-+    }
-+
-+    /*
-+     * Check hstatus.HUKTE if the effective mode is switched to VU-mode by
-+     * executing HLV/HLVX/HSV in U-mode.
-+     * For other cases, check senvcfg.UKTE.
-+     */
-+    if (env->priv == PRV_U && !env->virt_enabled && virt) {
-+        if (!get_field(env->hstatus, HSTATUS_HUKTE)) {
-+            return false;
-+        }
-+    } else if (!get_field(env->senvcfg, SENVCFG_UKTE)) {
-+        return false;
-+    }
-+
-+    /*
-+     * Svukte extension is qualified only in U or VU-mode.
-+     *
-+     * Effective mode can be switched to U or VU-mode by:
-+     *   - M-mode + mstatus.MPRV=1 + mstatus.MPP=U-mode.
-+     *   - Execute HLV/HLVX/HSV from HS-mode + hstatus.SPVP=0.
-+     *   - U-mode.
-+     *   - VU-mode.
-+     *   - Execute HLV/HLVX/HSV from U-mode + hstatus.HU=1.
-+     */
-+    if (mode != PRV_U) {
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
-+static bool check_svukte_addr(CPURISCVState *env, vaddr addr)
-+{
-+    /* svukte extension excludes RV32 */
-+    uint32_t sxlen = 32 * riscv_cpu_sxl(env);
-+    uint64_t high_bit = addr & (1UL << (sxlen - 1));
-+    return !high_bit;
-+}
-+
- /*
-  * get_physical_address - get the physical address for this virtual address
-  *
-@@ -894,6 +943,7 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
-     MemTxResult res;
-     MemTxAttrs attrs = MEMTXATTRS_UNSPECIFIED;
-     int mode = mmuidx_priv(mmu_idx);
-+    bool virt = mmuidx_2stage(mmu_idx);
-     bool use_background = false;
-     hwaddr ppn;
-     int napot_bits = 0;
-@@ -901,6 +951,11 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
-     bool is_sstack_idx = ((mmu_idx & MMU_IDX_SS_WRITE) == MMU_IDX_SS_WRITE);
-     bool sstack_page = false;
+ /* These are experimental so mark with 'x-' */
+ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
++    MULTI_EXT_CFG_BOOL("x-svukte", ext_svukte, false),
+     DEFINE_PROP_END_OF_LIST(),
+ };
  
-+    if (do_svukte_check(env, first_stage, mode, virt) &&
-+        !check_svukte_addr(env, addr)) {
-+        return TRANSLATE_FAIL;
-+    }
-+
-     /*
-      * Check if we should use the background registers for the two
-      * stage translation. We don't need to check if we actually need
 -- 
 2.47.1
 
