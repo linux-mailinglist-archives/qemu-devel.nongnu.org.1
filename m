@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 516DE9F89D0
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 02:58:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEBB29F89E1
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 03:01:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOSEw-0006EQ-Tx; Thu, 19 Dec 2024 20:55:42 -0500
+	id 1tOSEx-0006G6-E3; Thu, 19 Dec 2024 20:55:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tOSEf-0006Ck-10
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:55:26 -0500
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1tOSEi-0006Db-Lj
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:55:28 -0500
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tOSEc-0004Qg-LZ
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:55:24 -0500
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-728e78c4d7bso1114835b3a.0
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 17:55:22 -0800 (PST)
+ id 1tOSEg-0004Qo-Ln
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:55:28 -0500
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-725ea1e19f0so1278592b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 17:55:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734659721; x=1735264521; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1734659724; x=1735264524; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iGnnwtesRR6qrK2pwm9E2IBrIFTqB9mxOjCMrHowRaI=;
- b=IY1R25R8TxvHGI3nt8dGUSsIvGFCO4BTWTEwRE2BiXZ0dYYijWX2nHpuHd3YYdR2Ak
- t6aSMtc62vFNBz6xYxRkag4CtV34vDjLj9EY7MZxUxkYgJAOzmDDu0qNy+womTNvh02P
- Q7Ph3ACD7Wvv1weMjf5bN74jRR3Mjve5QvNDXeMFAgcF2H9tHIKHeelrFQZc5WpgtcBW
- 083jdItJt8iJ7QcSQCIsnXHsPltK2baPFyqBUGJqlAmMg+PoVKpt6G7EKs1tyQE5JNTm
- 96ScQrJMajdGXyDa77ZCYHF4NhyEcFugPyDWuNLIL09+MQH8QJXnGcfOY7B9qGqzo1qd
- 58vw==
+ bh=W+a5eLWtazjKjyGdseEIBKLBcCSyugHNCLmPRqaOCVY=;
+ b=L75dT5An23yZYu+HZKgnQ7qyfPDxJVzUX/wJEew6aJot7enDkeAYT0cmBfHocG4XbS
+ B1fyGUTrbatto5qPPuVGo0noG1crDtXRGGe2Z7WyEzfemBzO0UkSs+jGV8HQXBvKpLF9
+ XFJINlyj84LDwSn0nxgbVD+XnGIWDxkO1Dryu22Rh6KiNhfl8vvJF6iIa324zgxxC4CS
+ hH9sWF1aP+y9d4tTXUJEPok9vnsPdJuE4Z94vntIu/Rf/7UV8E/zGBWdd2hyg3uFy54j
+ 9Vo9QskA/s7S5gw7NeEl0hni2nu2a8e2B1ynvmPlopw2cNjY2HnEfH/Vjfnb8EshEEtj
+ 0N/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734659721; x=1735264521;
+ d=1e100.net; s=20230601; t=1734659724; x=1735264524;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iGnnwtesRR6qrK2pwm9E2IBrIFTqB9mxOjCMrHowRaI=;
- b=qZATswBF2SltYWNf3iyzol5PJC1AFsLIAS4j415YgOzUgEruIFudV31uLg6RyJ/3cH
- o9lvJrLskeUUHva7T5yCVKDc+jYKL7L0bgNUPp5C09g5Ka0HJtwvy1Q+lXMwYaAnCVW9
- 7hOMjtMNJTiHwenKIHxmsSTjD8kXqDs9f1A6bEF1esApMtobr90Hwd5ZbG4c/WXTFBut
- vl4knlc3cPFEGLZMeUjAoJq3peC54hYbp0tYpFsyXD1YeYUf0WuXTgx6RePitb5xm+wd
- i52+K9hnAVwOtD+8qloH1EydRrhInxCpHxNZPnjVy+P1axCvGtNAna4zpqFPveq70wF7
- C/Zg==
-X-Gm-Message-State: AOJu0Yxgi9HhH8HqWbeYSgvVhP+jenUpwD/JW2tfUl78qfcL/PeYBNNy
- I5tj0KmIGsS73aNZRODKPELLjJ24KtHP0UFCxQ/rCZmwLRZsEbfj9u3VdNvE
-X-Gm-Gg: ASbGnctskwtBoJdG5pxyE4QK1DBKuq1uqXwYicRDK1ulMkemx3zd40lWycEHxgmrYXD
- 7DZx//+1+yOP6djQkE97jN4kHyH41n4t6ifLFt3PUHxF1YCzopu/PLd3N2PB1WTHGh2/6a9UM3b
- +xciLBL5o5nr8DdPHuwny9aWTnB5XsiP2UFnnSLU/0LODVM8mCzQ2s0KvTmzwbt35rfHpb1foyD
- v3kc/Fd9aFbiWbVWF/v0vaOfxyffuilLIvQJEJohQk2S1hWYzB1FxgoeNIkHNCb/zyaZwZQzRMs
- MhF5VoQa3PjJk7VWVViDbr/HkD3YBuYN6RowSRaq12FqMSQNzgUa5xdhE74nIJc=
-X-Google-Smtp-Source: AGHT+IE5DIGR/p6isxk0AX6aIm5TiMB4VHxxu2eQhngnZVvIwNF1PLtAFsUM04bJQ6B2E3jLQmUcIg==
-X-Received: by 2002:a05:6a00:948b:b0:725:4301:ed5a with SMTP id
- d2e1a72fcca58-72abdab8856mr1458664b3a.2.1734659720964; 
- Thu, 19 Dec 2024 17:55:20 -0800 (PST)
+ bh=W+a5eLWtazjKjyGdseEIBKLBcCSyugHNCLmPRqaOCVY=;
+ b=aZBJcKrMROE7TSfErDG0Y945aopK05aN88Ef9AIKRAofx+qsJ9VCjHotUqYluhOWXw
+ S6v2TfFWKoMzMigc4ifsyrwU8jz0TRME/f3mgaLpO4me4twu1m/8HiCa6tslxUNZQF5I
+ RSppIGbl8Dgs3svj1oOdbmfM0Q3b8z57yBTY56gci53AcpNT6d8RCLTlGyoRX8tw+ndI
+ HuLGvnV4Ij1XWwJOM6lCRZvVaRjZnC3RlYDRcjJ/VkEW+9erAG5+7pkAODGNF93borEU
+ 96pEft/W7B0p16yeabT07/29tKwA4PqLGqEZQV1z73IsvrYmsFYSAgX8I8SRPsIsHvEr
+ JLFw==
+X-Gm-Message-State: AOJu0YwKAtb6QHlxeupl0z/F428h8jMqUd5T8tqy7E+6+MnDmaYs0vgZ
+ 1JiXfUu/TllXjrH8jOY+r1aOgC+qWlvj74tjlM/8lTljNMc90zmHnyhWwg/u
+X-Gm-Gg: ASbGnctesj+qwSGxuGYJ4Eb+V5NyCiSsVYoMWcImex9fyB1gfKGowzBUtZuQS7kzPBn
+ l4wgwTIPbMGzn/OJ4EAwcWYjrKwYJQ6Th/UdT8FFXbGlXkUUTdV1aGzovPTN66k4hBOz8v+cm/L
+ dfAD25md7esXlxN2PSPsLYdeQ3RV61r/5bBmtzi2A0ImLfF9S+IiNz2aCsEWPlAif4bu4jHt8Mc
+ 5iw8lcIzYEmaOgqhUL5MH6zkgnq1o2RElNoe0R90lgdws2L8psaxNvJRQKavYN092yQIVogiJqP
+ Gv+8BW1ezaPhZA8PZXlQ/fhDMOlEUj8W23gMuqELDbXzkY/V4OYkUUlnbtiswlo=
+X-Google-Smtp-Source: AGHT+IF7pu5sOzVMQagBNFw2HSUyf58p0ionaciagDP4g8Z39+gaCWnk9djx1OYyIJt66Ie0rKzQFg==
+X-Received: by 2002:a05:6a00:4096:b0:729:c7b:9385 with SMTP id
+ d2e1a72fcca58-72abdd7bdecmr1443652b3a.6.1734659723952; 
+ Thu, 19 Dec 2024 17:55:23 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad8164d3sm2002539b3a.15.2024.12.19.17.55.18
+ d2e1a72fcca58-72aad8164d3sm2002539b3a.15.2024.12.19.17.55.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 17:55:20 -0800 (PST)
+ Thu, 19 Dec 2024 17:55:23 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 09/39] docs/specs: add riscv-iommu-sys information
-Date: Fri, 20 Dec 2024 11:54:09 +1000
-Message-ID: <20241220015441.317236-10-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Anton Blanchard <antonb@tenstorrent.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PULL v2 10/39] target/riscv: Add Tenstorrent Ascalon CPU
+Date: Fri, 20 Dec 2024 11:54:10 +1000
+Message-ID: <20241220015441.317236-11-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220015441.317236-1-alistair.francis@wdc.com>
 References: <20241220015441.317236-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -101,93 +102,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Anton Blanchard <antonb@tenstorrent.com>
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20241106133407.604587-8-dbarboza@ventanamicro.com>
+Add a CPU entry for the Tenstorrent Ascalon CPU, a series of 2 wide to
+8 wide RV64 cores. More details can be found at
+https://tenstorrent.com/ip/tt-ascalon
+
+Signed-off-by: Anton Blanchard <antonb@tenstorrent.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-ID: <20241113110459.1607299-1-antonb@tenstorrent.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- docs/specs/riscv-iommu.rst | 30 +++++++++++++++++++++++++++---
- docs/system/riscv/virt.rst | 10 ++++++++++
- 2 files changed, 37 insertions(+), 3 deletions(-)
+ target/riscv/cpu-qom.h |  1 +
+ target/riscv/cpu.c     | 67 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 68 insertions(+)
 
-diff --git a/docs/specs/riscv-iommu.rst b/docs/specs/riscv-iommu.rst
-index 463f4cffb6..b1538c9ead 100644
---- a/docs/specs/riscv-iommu.rst
-+++ b/docs/specs/riscv-iommu.rst
-@@ -6,9 +6,9 @@ RISC-V IOMMU support for RISC-V machines
- QEMU implements a RISC-V IOMMU emulation based on the RISC-V IOMMU spec
- version 1.0 `iommu1.0`_.
+diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+index 62115375cd..6547642287 100644
+--- a/target/riscv/cpu-qom.h
++++ b/target/riscv/cpu-qom.h
+@@ -49,6 +49,7 @@
+ #define TYPE_RISCV_CPU_SIFIVE_U54       RISCV_CPU_TYPE_NAME("sifive-u54")
+ #define TYPE_RISCV_CPU_THEAD_C906       RISCV_CPU_TYPE_NAME("thead-c906")
+ #define TYPE_RISCV_CPU_VEYRON_V1        RISCV_CPU_TYPE_NAME("veyron-v1")
++#define TYPE_RISCV_CPU_TT_ASCALON       RISCV_CPU_TYPE_NAME("tt-ascalon")
+ #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
  
--The emulation includes a PCI reference device, riscv-iommu-pci, that QEMU
--RISC-V boards can use.  The 'virt' RISC-V machine is compatible with this
--device.
-+The emulation includes a PCI reference device (riscv-iommu-pci) and a platform
-+bus device (riscv-iommu-sys) that QEMU RISC-V boards can use.  The 'virt'
-+RISC-V machine is compatible with both devices.
+ OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 4329015076..66e00ed260 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -579,6 +579,72 @@ static void rv64_veyron_v1_cpu_init(Object *obj)
+ #endif
+ }
  
- riscv-iommu-pci reference device
- --------------------------------
-@@ -83,6 +83,30 @@ Several options are available to control the capabilities of the device, namely:
- - "s-stage": enable s-stage support
- - "g-stage": enable g-stage support
- 
-+riscv-iommu-sys device
-+----------------------
++/* Tenstorrent Ascalon */
++static void rv64_tt_ascalon_cpu_init(Object *obj)
++{
++    CPURISCVState *env = &RISCV_CPU(obj)->env;
++    RISCVCPU *cpu = RISCV_CPU(obj);
 +
-+This device implements the RISC-V IOMMU emulation as a platform bus device that
-+RISC-V boards can use.
++    riscv_cpu_set_misa_ext(env, RVG | RVC | RVS | RVU | RVH | RVV);
++    env->priv_ver = PRIV_VERSION_1_13_0;
 +
-+For the 'virt' board the device is disabled by default.  To enable it use the
-+'iommu-sys' machine option:
++    /* Enable ISA extensions */
++    cpu->cfg.mmu = true;
++    cpu->cfg.vlenb = 256 >> 3;
++    cpu->cfg.elen = 64;
++    cpu->env.vext_ver = VEXT_VERSION_1_00_0;
++    cpu->cfg.rvv_ma_all_1s = true;
++    cpu->cfg.rvv_ta_all_1s = true;
++    cpu->cfg.misa_w = true;
++    cpu->cfg.pmp = true;
++    cpu->cfg.cbom_blocksize = 64;
++    cpu->cfg.cbop_blocksize = 64;
++    cpu->cfg.cboz_blocksize = 64;
++    cpu->cfg.ext_zic64b = true;
++    cpu->cfg.ext_zicbom = true;
++    cpu->cfg.ext_zicbop = true;
++    cpu->cfg.ext_zicboz = true;
++    cpu->cfg.ext_zicntr = true;
++    cpu->cfg.ext_zicond = true;
++    cpu->cfg.ext_zicsr = true;
++    cpu->cfg.ext_zifencei = true;
++    cpu->cfg.ext_zihintntl = true;
++    cpu->cfg.ext_zihintpause = true;
++    cpu->cfg.ext_zihpm = true;
++    cpu->cfg.ext_zimop = true;
++    cpu->cfg.ext_zawrs = true;
++    cpu->cfg.ext_zfa = true;
++    cpu->cfg.ext_zfbfmin = true;
++    cpu->cfg.ext_zfh = true;
++    cpu->cfg.ext_zfhmin = true;
++    cpu->cfg.ext_zcb = true;
++    cpu->cfg.ext_zcmop = true;
++    cpu->cfg.ext_zba = true;
++    cpu->cfg.ext_zbb = true;
++    cpu->cfg.ext_zbs = true;
++    cpu->cfg.ext_zkt = true;
++    cpu->cfg.ext_zvbb = true;
++    cpu->cfg.ext_zvbc = true;
++    cpu->cfg.ext_zvfbfmin = true;
++    cpu->cfg.ext_zvfbfwma = true;
++    cpu->cfg.ext_zvfh = true;
++    cpu->cfg.ext_zvfhmin = true;
++    cpu->cfg.ext_zvkng = true;
++    cpu->cfg.ext_smaia = true;
++    cpu->cfg.ext_smstateen = true;
++    cpu->cfg.ext_ssaia = true;
++    cpu->cfg.ext_sscofpmf = true;
++    cpu->cfg.ext_sstc = true;
++    cpu->cfg.ext_svade = true;
++    cpu->cfg.ext_svinval = true;
++    cpu->cfg.ext_svnapot = true;
++    cpu->cfg.ext_svpbmt = true;
 +
-+.. code-block:: bash
++#ifndef CONFIG_USER_ONLY
++    set_satp_mode_max_supported(cpu, VM_1_10_SV57);
++#endif
++}
 +
-+  $ qemu-system-riscv64 -M virt,iommu-sys=on (...)
-+
-+There is no options to configure the capabilities of this device in the 'virt'
-+board using the QEMU command line.  The device is configured with the following
-+riscv-iommu options:
-+
-+- "ioatc-limit": default value (2Mb)
-+- "intremap": enabled
-+- "ats": enabled
-+- "off": on (DMA disabled)
-+- "s-stage": enabled
-+- "g-stage": enabled
-+
- .. _iommu1.0: https://github.com/riscv-non-isa/riscv-iommu/releases/download/v1.0/riscv-iommu.pdf
- 
- .. _linux-v8: https://lore.kernel.org/linux-riscv/cover.1718388908.git.tjeznach@rivosinc.com/
-diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
-index 8e9a2e4dda..537aac0340 100644
---- a/docs/system/riscv/virt.rst
-+++ b/docs/system/riscv/virt.rst
-@@ -94,6 +94,12 @@ command line:
- 
-   $ qemu-system-riscv64 -M virt -device riscv-iommu-pci (...)
- 
-+It also has support for the riscv-iommu-sys platform device:
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-riscv64 -M virt,iommu-sys=on (...)
-+
- Refer to :ref:`riscv-iommu` for more information on how the RISC-V IOMMU support
- works.
- 
-@@ -129,6 +135,10 @@ The following machine-specific options are supported:
-   having AIA IMSIC (i.e. "aia=aplic-imsic" selected). When not specified,
-   the default number of per-HART VS-level AIA IMSIC pages is 0.
- 
-+- iommu-sys=[on|off]
-+
-+  Enables the riscv-iommu-sys platform device. Defaults to 'off'.
-+
- Running Linux kernel
- --------------------
- 
+ #ifdef CONFIG_TCG
+ static void rv128_base_cpu_init(Object *obj)
+ {
+@@ -2984,6 +3050,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_U54, MXL_RV64,  rv64_sifive_u_cpu_init),
+     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SHAKTI_C,   MXL_RV64,  rv64_sifive_u_cpu_init),
+     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_THEAD_C906, MXL_RV64,  rv64_thead_c906_cpu_init),
++    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_TT_ASCALON, MXL_RV64,  rv64_tt_ascalon_cpu_init),
+     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_VEYRON_V1,  MXL_RV64,  rv64_veyron_v1_cpu_init),
+ #ifdef CONFIG_TCG
+     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,   MXL_RV128, rv128_base_cpu_init),
 -- 
 2.47.1
 
