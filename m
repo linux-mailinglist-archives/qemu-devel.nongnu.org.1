@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC279F89D4
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 02:59:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31FA49F89C4
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 02:56:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOSFe-00070T-JI; Thu, 19 Dec 2024 20:56:26 -0500
+	id 1tOSFg-0007WV-BK; Thu, 19 Dec 2024 20:56:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tOSFE-0006t4-Dl
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:56:00 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1tOSFH-0006zw-FU
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:56:03 -0500
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tOSFC-0004X8-96
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:55:59 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-7292a83264eso1286161b3a.0
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 17:55:57 -0800 (PST)
+ id 1tOSFF-0004XY-89
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:56:02 -0500
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-725ea1e19f0so1278803b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 17:56:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734659756; x=1735264556; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1734659759; x=1735264559; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tXiMs7faKyZmCOi20Vpzvry683l81D2FYIjjSmSNVsA=;
- b=fFxQDNGa8n0t1z4/SuqX1POSyZHlBPSMnS7MvhVB8tsvXKl2i3ZRN5zfsq3o00XKag
- rr55OPPiFT0rE71ySacOycmRiHxA7SxN8SbQajP5ZUs6nx+I2EmRarTaxsf8hYxb0s4z
- Xm0qInoa+VKii/6Sw6LHcCHN5cq+nRrR7Sp1IktofY7PzMU5zquVR8fEDxstaLyluwUL
- 1y6LLx2u3icW1sk5IWhOmWsqNa9b7mzJnS1IzBK/YvLG1vlX9BiXXwT5evtWlRWc1VDL
- kjmebhT/SWPMg+veFJnf3LqSUlU0DDA4TLIr4CpiZCx/49k2N0S9pmNzoxEeevCJ5ENm
- yYcg==
+ bh=k+u/esspkIM84/pIeM30BE8iVEgZ0neo/04y/t2IyJ4=;
+ b=jAdztPi2d5p+V1pdHkmkJGjIpAR65P9EhWwzB2IhslWsw6I/BLEEkyOeVWAfFJXtFF
+ VR1/9pQq4h+IxsxfqxxmxJ+NyL4qqHw6z9nRnhpBBxon0uAXIJaxqTQGxyZRGPFh71KV
+ z3TdGe4S4qRyx2TqTKbGpMUDj0SHLBuH96h6fkVR2B7pG0gGhQDfe39pJYWuPyWAJjVy
+ v3EYB9UfPP+5ptd+qISTvXJ5oqa/5UoS6g+cgqqt9EA+e1rROazyxgivCyMStazY+SwH
+ ntLWWdtvmaxlAsSLC4BhGAhMtpvdLj3tExFnwVd8mV1A37EycNGt3csgRN0y7Uxzo+Cn
+ fEXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734659756; x=1735264556;
+ d=1e100.net; s=20230601; t=1734659759; x=1735264559;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tXiMs7faKyZmCOi20Vpzvry683l81D2FYIjjSmSNVsA=;
- b=atbOqJpH/cGIkceJGZ/c4G/D2SN8fVQ6e04icoVTvGS7CH0Meqj6s2idfDoodaGAty
- C0VNOn3FCVfOvK/xVBPM8nRCt2SWyuroWmz1CcEJzfRRS3/Agw1rMfOTzZ4WBPvKgtih
- 6+MfqwCL9qOwthxNU8KozNHMYOgy5hNfQPQSLQL7p8LYwiydDAxIwA+l6fTp1B7gu9SD
- Vq3BljvblZeBiFxTmBOnvsrGzKlvcNx0wbd5CnX8Xl71eFOae4BhW+fXzvjBaqZBoKix
- mz8oygmodXEAbzDfVWFiAXLHGIvaa20fbSadpFkZ6zzB21Je99rFnEovrDrt32dRnfT7
- fNgA==
-X-Gm-Message-State: AOJu0YweilywKoDblkfwHmCro+6rOSdhStWfoufd55shlDHxwr/5gmIg
- UoeiqWd8QgnAZzjyfp2v5X5u8IgwU45Yckq/jv8CYGafMGw897+HbzZuxHmZ
-X-Gm-Gg: ASbGncsLbBh34YhCFOvkPgRvYhcAzdE3yKws4GxPVAqqMKW4iSif/MJ3w9naC+x4Jkl
- W/smzB6asmPc6AUoxTzIPRPeXY2X2s7+QggCAFJzUE09Mek1F3PuvHOd6uWpk9DiCF/dLnpNVYn
- BKxDuKOpzV07MtZodCkrE0EkgHXdttW0wuV1m53ewNgXqVnU5K0vTD0uh7vdvM0Um0eLptaQ3bD
- BjgvdqdvJQquAMgclCF+WZIycU0UrWDnbKPwZn/niG/uosKPq4C+hpnQ1byikE7uceMAv+wiXuI
- /9GEGmGh/+qv+20zwvCFd93z3kQjlus5eQ/W5O8Che1kGFMxAPFdPulKgh6KUdo=
-X-Google-Smtp-Source: AGHT+IFG0sALG0TeOvgtU/+54c2HD+0APaKoWN6SmTH99y6hVjOBEe23Sk7+GXpqgCK5FNeUo0Ouxg==
-X-Received: by 2002:a05:6a20:728f:b0:1e1:aef4:9cdd with SMTP id
- adf61e73a8af0-1e5e0450013mr2267177637.1.1734659756518; 
- Thu, 19 Dec 2024 17:55:56 -0800 (PST)
+ bh=k+u/esspkIM84/pIeM30BE8iVEgZ0neo/04y/t2IyJ4=;
+ b=ZMaqeKW7jc2Ezm/iTt3Vu3G8CbNLVfY7PEP3g6ygxjgXgWBI8LA8aMVs5ka64MVtPB
+ Gef5yN3ns5AB7jfKjMui/oyEGjicZSlL+b2W02W2uGd1f1tEktrbq1sknna+Jp/u1ju8
+ 3BJY4koctq9+y00EbsNgELff1NoQWJc11wnl+T/tn2PI5CFgefQ0PNTRdZTg39XXXJ6A
+ gLVyiRLLXHcB+ZTwr6eT1D1vZXfRK9baBfi8/3IBaRlc6j5laP7nh7kSkzbj1u5g4zPP
+ 7U5xwd3DBFFsYkMK1Enkw/9VCIGsrEt9CP9j0J3E7lkb25gwRNuXKPFMGH1gIqBTfcOB
+ ku7A==
+X-Gm-Message-State: AOJu0YzoAhchjhgqhPP3UV8Ejlh9w0tLqZUX1f/Ix0oFTMzJs5PlGpkd
+ +gih2ZsHWc3k3ze58hA2EhT0x5tMnRHNvJPIYihmmaQlKMrMrgA/bo9s5vnm
+X-Gm-Gg: ASbGncuQDl7X48fNSsLTZ4VsNwHRGv4tk50+MlAwZ5LBcM/x1iNn12dhuyGfo49D9oA
+ nq1+95uckLo3qgoKWu/4qcG7yL8u7+qDii4/o1QNNi7mF/2dXkgk3ra10sTXSKrKvlznOkxlEFp
+ E6mLt3fKwzVVlsVszbTIMv/L1xlBmwWe0imSt5Jrp/Mqese/78sh2+zwzVwtKDMi/QYnw4yyQmZ
+ qSqRDtAe3e+YzBuXt/AiniTC+t3t8B0lJOn8JvZVhiF/h4EXiUdYRvlSJ1AogzQYbJID5JcpCrd
+ 8FLDXsNCPv3jwSqjMPuqUJzD4OXMeBQOU2W692KPesMCFTJA/5BPoQvLiWAog9A=
+X-Google-Smtp-Source: AGHT+IGsXbYo0VFEllg66DBB/FurrtlbZp4NAVlo35dQX5vc9RRIPsi4nKjeomFy2XrF31IZfO7/ew==
+X-Received: by 2002:a05:6a00:4391:b0:728:927b:7de2 with SMTP id
+ d2e1a72fcca58-72abdd7cbaemr1694132b3a.8.1734659759536; 
+ Thu, 19 Dec 2024 17:55:59 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad8164d3sm2002539b3a.15.2024.12.19.17.55.53
+ d2e1a72fcca58-72aad8164d3sm2002539b3a.15.2024.12.19.17.55.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 17:55:56 -0800 (PST)
+ Thu, 19 Dec 2024 17:55:59 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Sia Jee Heng <jeeheng.sia@starfivetech.com>,
  Sunil V L <sunilvl@ventanamicro.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL v2 21/39] hw/acpi: Upgrade ACPI SPCR table to support SPCR
- table revision 4 format
-Date: Fri, 20 Dec 2024 11:54:21 +1000
-Message-ID: <20241220015441.317236-22-alistair.francis@wdc.com>
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL v2 22/39] tests/qtest/bios-tables-test: Update virt SPCR golden
+ reference for RISC-V
+Date: Fri, 20 Dec 2024 11:54:22 +1000
+Message-ID: <20241220015441.317236-23-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220015441.317236-1-alistair.francis@wdc.com>
 References: <20241220015441.317236-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -106,177 +105,106 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sia Jee Heng <jeeheng.sia@starfivetech.com>
 
-Update the SPCR table to accommodate the SPCR Table revision 4 [1].
-The SPCR table has been modified to adhere to the revision 4 format [2].
+Update the virt SPCR golden reference file for RISC-V to accommodate the
+SPCR Table revision 4 [1], utilizing the iasl binary compiled from the
+latest ACPICA repository. The SPCR table has been modified to
+adhere to the revision 4 format [2].
 
 [1]: https://learn.microsoft.com/en-us/windows-hardware/drivers/serports/serial-port-console-redirection-table
 [2]: https://github.com/acpica/acpica/pull/931
 
+Diffs from iasl:
+/*
+  * Intel ACPI Component Architecture
+  * AML/ASL+ Disassembler version 20200925 (64-bit version)
+  * Copyright (c) 2000 - 2020 Intel Corporation
+  *
+- * Disassembly of tests/data/acpi/riscv64/virt/SPCR, Wed Aug 28 18:28:19 2024
++ * Disassembly of /tmp/aml-MN0NS2, Wed Aug 28 18:28:19 2024
+  *
+  * ACPI Data Table [SPCR]
+  *
+  * Format: [HexOffset DecimalOffset ByteLength]  FieldName : FieldValue
+  */
+
+ [000h 0000   4]                    Signature : "SPCR"    [Serial Port Console Redirection table]
+-[004h 0004   4]                 Table Length : 00000050
+-[008h 0008   1]                     Revision : 02
+-[009h 0009   1]                     Checksum : B9
++[004h 0004   4]                 Table Length : 0000005A
++[008h 0008   1]                     Revision : 04
++[009h 0009   1]                     Checksum : 13
+ [00Ah 0010   6]                       Oem ID : "BOCHS "
+ [010h 0016   8]                 Oem Table ID : "BXPC    "
+ [018h 0024   4]                 Oem Revision : 00000001
+ [01Ch 0028   4]              Asl Compiler ID : "BXPC"
+ [020h 0032   4]        Asl Compiler Revision : 00000001
+
+-[024h 0036   1]               Interface Type : 00
++[024h 0036   1]               Interface Type : 12
+ [025h 0037   3]                     Reserved : 000000
+
+ [028h 0040  12]         Serial Port Register : [Generic Address Structure]
+ [028h 0040   1]                     Space ID : 00 [SystemMemory]
+ [029h 0041   1]                    Bit Width : 20
+ [02Ah 0042   1]                   Bit Offset : 00
+ [02Bh 0043   1]         Encoded Access Width : 01 [Byte Access:8]
+ [02Ch 0044   8]                      Address : 0000000010000000
+
+ [034h 0052   1]               Interrupt Type : 10
+ [035h 0053   1]          PCAT-compatible IRQ : 00
+ [036h 0054   4]                    Interrupt : 0000000A
+ [03Ah 0058   1]                    Baud Rate : 07
+ [03Bh 0059   1]                       Parity : 00
+ [03Ch 0060   1]                    Stop Bits : 01
+ [03Dh 0061   1]                 Flow Control : 00
+ [03Eh 0062   1]                Terminal Type : 00
+ [04Ch 0076   1]                     Reserved : 00
+ [040h 0064   2]                PCI Device ID : FFFF
+ [042h 0066   2]                PCI Vendor ID : FFFF
+ [044h 0068   1]                      PCI Bus : 00
+ [045h 0069   1]                   PCI Device : 00
+ [046h 0070   1]                 PCI Function : 00
+ [047h 0071   4]                    PCI Flags : 00000000
+ [04Bh 0075   1]                  PCI Segment : 00
+-[04Ch 0076   4]                     Reserved : 00000000
++[04Ch 0076 004h]             Uart Clock Freq : 00000000
++[050h 0080 004h]           Precise Baud rate : 00000000
++[054h 0084 002h]       NameSpaceStringLength : 0002
++[056h 0086 002h]       NameSpaceStringOffset : 0058
++[058h 0088 002h]             NamespaceString : "."
+
+-Raw Table Data: Length 80 (0x50)
++Raw Table Data: Length 90 (0x5A)
+
+-    0000: 53 50 43 52 50 00 00 00 02 B9 42 4F 43 48 53 20  // SPCRP.....BOCHS
++    0000: 53 50 43 52 5A 00 00 00 04 13 42 4F 43 48 53 20  // SPCRZ.....BOCHS
+     0010: 42 58 50 43 20 20 20 20 01 00 00 00 42 58 50 43  // BXPC    ....BXPC
+-    0020: 01 00 00 00 00 00 00 00 00 20 00 01 00 00 00 10  // ......... ......
++    0020: 01 00 00 00 12 00 00 00 00 20 00 01 00 00 00 10  // ......... ......
+     0030: 00 00 00 00 10 00 0A 00 00 00 07 00 01 00 00 03  // ................
+     0040: FF FF FF FF 00 00 00 00 00 00 00 00 00 00 00 00  // ................
++    0050: 00 00 00 00 02 00 58 00 2E 00                    // ......X...
+
 Signed-off-by: Sia Jee Heng <jeeheng.sia@starfivetech.com>
 Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <20241028015744.624943-3-jeeheng.sia@starfivetech.com>
+Message-ID: <20241028015744.624943-4-jeeheng.sia@starfivetech.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- include/hw/acpi/acpi-defs.h |  7 +++++--
- include/hw/acpi/aml-build.h |  2 +-
- hw/acpi/aml-build.c         | 20 ++++++++++++++++----
- hw/arm/virt-acpi-build.c    |  8 ++++++--
- hw/loongarch/acpi-build.c   |  6 +++++-
- hw/riscv/virt-acpi-build.c  | 12 +++++++++---
- 6 files changed, 42 insertions(+), 13 deletions(-)
+ tests/qtest/bios-tables-test-allowed-diff.h |   1 -
+ tests/data/acpi/riscv64/virt/SPCR           | Bin 80 -> 90 bytes
+ 2 files changed, 1 deletion(-)
 
-diff --git a/include/hw/acpi/acpi-defs.h b/include/hw/acpi/acpi-defs.h
-index 0e6e82b339..2e6e341998 100644
---- a/include/hw/acpi/acpi-defs.h
-+++ b/include/hw/acpi/acpi-defs.h
-@@ -112,7 +112,6 @@ typedef struct AcpiSpcrData {
-     uint8_t flow_control;
-     uint8_t terminal_type;
-     uint8_t language;
--    uint8_t reserved1;
-     uint16_t pci_device_id;    /* Must be 0xffff if not PCI device */
-     uint16_t pci_vendor_id;    /* Must be 0xffff if not PCI device */
-     uint8_t pci_bus;
-@@ -120,7 +119,11 @@ typedef struct AcpiSpcrData {
-     uint8_t pci_function;
-     uint32_t pci_flags;
-     uint8_t pci_segment;
--    uint32_t reserved2;
-+    uint32_t uart_clk_freq;
-+    uint32_t precise_baudrate;
-+    uint32_t namespace_string_length;
-+    uint32_t namespace_string_offset;
-+    char namespace_string[];
- } AcpiSpcrData;
- 
- #define ACPI_FADT_ARM_PSCI_COMPLIANT  (1 << 0)
-diff --git a/include/hw/acpi/aml-build.h b/include/hw/acpi/aml-build.h
-index 4fd5da49e7..c18f681342 100644
---- a/include/hw/acpi/aml-build.h
-+++ b/include/hw/acpi/aml-build.h
-@@ -507,5 +507,5 @@ void build_tpm2(GArray *table_data, BIOSLinker *linker, GArray *tcpalog,
- 
- void build_spcr(GArray *table_data, BIOSLinker *linker,
-                 const AcpiSpcrData *f, const uint8_t rev,
--                const char *oem_id, const char *oem_table_id);
-+                const char *oem_id, const char *oem_table_id, const char *name);
- #endif
-diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
-index 72282b173e..e4d58d7051 100644
---- a/hw/acpi/aml-build.c
-+++ b/hw/acpi/aml-build.c
-@@ -2078,7 +2078,7 @@ static void build_processor_hierarchy_node(GArray *tbl, uint32_t flags,
- 
- void build_spcr(GArray *table_data, BIOSLinker *linker,
-                 const AcpiSpcrData *f, const uint8_t rev,
--                const char *oem_id, const char *oem_table_id)
-+                const char *oem_id, const char *oem_table_id, const char *name)
- {
-     AcpiTable table = { .sig = "SPCR", .rev = rev, .oem_id = oem_id,
-                         .oem_table_id = oem_table_id };
-@@ -2124,9 +2124,21 @@ void build_spcr(GArray *table_data, BIOSLinker *linker,
-     build_append_int_noprefix(table_data, f->pci_flags, 4);
-     /* PCI Segment */
-     build_append_int_noprefix(table_data, f->pci_segment, 1);
--    /* Reserved */
--    build_append_int_noprefix(table_data, 0, 4);
--
-+    if (rev < 4) {
-+        /* Reserved */
-+        build_append_int_noprefix(table_data, 0, 4);
-+    } else {
-+        /* UartClkFreq */
-+        build_append_int_noprefix(table_data, f->uart_clk_freq, 4);
-+        /* PreciseBaudrate */
-+        build_append_int_noprefix(table_data, f->precise_baudrate, 4);
-+        /* NameSpaceStringLength */
-+        build_append_int_noprefix(table_data, f->namespace_string_length, 2);
-+        /* NameSpaceStringOffset */
-+        build_append_int_noprefix(table_data, f->namespace_string_offset, 2);
-+        /* NamespaceString[] */
-+        g_array_append_vals(table_data, name, f->namespace_string_length);
-+    }
-     acpi_table_end(linker, &table);
- }
- /*
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 620992c92c..e92d3bddc8 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -463,8 +463,12 @@ spcr_setup(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-         .pci_flags = 0,
-         .pci_segment = 0,
-     };
--
--    build_spcr(table_data, linker, &serial, 2, vms->oem_id, vms->oem_table_id);
-+    /*
-+     * Passing NULL as the SPCR Table for Revision 2 doesn't support
-+     * NameSpaceString.
-+     */
-+    build_spcr(table_data, linker, &serial, 2, vms->oem_id, vms->oem_table_id,
-+               NULL);
- }
- 
- /*
-diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
-index 50709bda0f..4e04f7b6c1 100644
---- a/hw/loongarch/acpi-build.c
-+++ b/hw/loongarch/acpi-build.c
-@@ -276,8 +276,12 @@ spcr_setup(GArray *table_data, BIOSLinker *linker, MachineState *machine)
-     };
- 
-     lvms = LOONGARCH_VIRT_MACHINE(machine);
-+    /*
-+     * Passing NULL as the SPCR Table for Revision 2 doesn't support
-+     * NameSpaceString.
-+     */
-     build_spcr(table_data, linker, &serial, 2, lvms->oem_id,
--               lvms->oem_table_id);
-+               lvms->oem_table_id, NULL);
- }
- 
- typedef
-diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-index 36d6a3a412..68ef15acac 100644
---- a/hw/riscv/virt-acpi-build.c
-+++ b/hw/riscv/virt-acpi-build.c
-@@ -200,14 +200,15 @@ acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
- 
- /*
-  * Serial Port Console Redirection Table (SPCR)
-- * Rev: 1.07
-+ * Rev: 1.10
-  */
- 
- static void
- spcr_setup(GArray *table_data, BIOSLinker *linker, RISCVVirtState *s)
- {
-+    const char name[] = ".";
-     AcpiSpcrData serial = {
--        .interface_type = 0,       /* 16550 compatible */
-+        .interface_type = 0x12,       /* 16550 compatible */
-         .base_addr.id = AML_AS_SYSTEM_MEMORY,
-         .base_addr.width = 32,
-         .base_addr.offset = 0,
-@@ -229,9 +230,14 @@ spcr_setup(GArray *table_data, BIOSLinker *linker, RISCVVirtState *s)
-         .pci_function = 0,
-         .pci_flags = 0,
-         .pci_segment = 0,
-+        .uart_clk_freq = 0,
-+        .precise_baudrate = 0,
-+        .namespace_string_length = sizeof(name),
-+        .namespace_string_offset = 88,
-     };
- 
--    build_spcr(table_data, linker, &serial, 2, s->oem_id, s->oem_table_id);
-+    build_spcr(table_data, linker, &serial, 4, s->oem_id, s->oem_table_id,
-+               name);
- }
- 
- /* RHCT Node[N] starts at offset 56 */
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index aae973048a..dfb8523c8b 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1,2 +1 @@
+ /* List of comma-separated changed AML files to ignore */
+-"tests/data/acpi/riscv64/virt/SPCR",
+diff --git a/tests/data/acpi/riscv64/virt/SPCR b/tests/data/acpi/riscv64/virt/SPCR
+index 4da9daf65f..09617f8793 100644
+Binary files a/tests/data/acpi/riscv64/virt/SPCR and b/tests/data/acpi/riscv64/virt/SPCR differ
 -- 
 2.47.1
 
