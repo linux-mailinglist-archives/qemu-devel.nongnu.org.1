@@ -2,87 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32E129F8904
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 01:35:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1779F8992
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 02:34:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOQyF-0003YI-BY; Thu, 19 Dec 2024 19:34:23 -0500
+	id 1tORt6-0001ZY-HE; Thu, 19 Dec 2024 20:33:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <davidsondfgl@gmail.com>)
- id 1tOQy7-0003Xp-64
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 19:34:15 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <davidsondfgl@gmail.com>)
- id 1tOQy3-00069K-Fo
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 19:34:14 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-2165448243fso14825025ad.1
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 16:34:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734654850; x=1735259650; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=Ca67b9v/fbnTzVf2qL36WFf3JL7LFtadx1XacdGNUDs=;
- b=LWrG7grtEZqJstSp3PID1zlgXol3ABsfrjXRQrVl+pzT39XaxXuool5Vzuk/v7us2N
- hxOE8y75k++bnt3jpt3jbnnboQe66b2JsWPm+N9begulQ5lcY4H0m0RfVCfta+//UPTD
- LHXB2mrMuyjXkmITfRxV6AELWO/dORLMIughXJwGJZ70TcvPMugcP5pTHwzESPUZr0Ux
- FfVKIb9IPHm8eN8bJISqfteJASx/bDAw8FlJucxA1zkehDVXrnHoRla67PrG4eYpQukT
- 81Bwp4u9WFP7+7C3EgLiVbFDMz9GJYHHOfkWeHSHshcd+8ADX6zLOrqmkMa/ky87oEzX
- dqSA==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1tORt3-0001ZF-MQ
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:33:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1tORt1-0007qj-9Y
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:33:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1734658380;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WmEliLdIe0QSgVv7hFYjszT4WehYmbWktJrUWaA5FYM=;
+ b=PXzkBDtUeO7JpUekECjEvMOI5MQRT0ylUAlezgJ9BnxSId7eBXuVBH1pW6qRI66wKjuaDR
+ CKAe8fmx9fxC6rrv7mZIowTw0IOYVxAgIuaxH/ZWzkZb7q3XTf089LQzTzEB+IFWKPu4Vy
+ dcNLVlgG56ZT5rN9SG1L109z76D2d5U=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-589-9wXIibnlPkihOp5FDyBHYQ-1; Thu, 19 Dec 2024 20:32:58 -0500
+X-MC-Unique: 9wXIibnlPkihOp5FDyBHYQ-1
+X-Mimecast-MFC-AGG-ID: 9wXIibnlPkihOp5FDyBHYQ
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-aa69e84128aso108746766b.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 17:32:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734654850; x=1735259650;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ca67b9v/fbnTzVf2qL36WFf3JL7LFtadx1XacdGNUDs=;
- b=eJ9LoExMq9b1jLNVkNndm/4ftEnD7stDCxxxmgWOwEz8ymJGheIzY0kP4vujSI4XiV
- irfRqiqvznyRGXe5QVjk9u+RWjos8HCHd9M89MGzubaEdHf8i+2Lfb3LHc4m23q/R2uS
- BpCS065Eww21LmpEk2XrMJYudzuvw0NOO/dc7ePxL85trD8u1utrcC4FQSWfNU2oTu9L
- Zy7Y4uVngml8+KKzk2pKW4qpSYHDnqrZWi1vtz8Ho+UyQpEJ3KGQ3KHMwEZuaKZ4W0el
- 0LXy7Ft76UFPv1MfBAdmPNQdjDN6GPlpvpFmPirJ5Ceb7voyuadPzNlghhyTN/AtBcFU
- rwzw==
-X-Gm-Message-State: AOJu0YxCCTToVVO32+ktT8z0rPm/7eajtM+uE5sT+vAVGloKja9Hb8jG
- B1OF/vzImGFX8qDaqPbR45r5jFdPFjbxBmQZvPelXzBkaTOW8G5q
-X-Gm-Gg: ASbGnctyrMWJ8tfGxmWvdbujerCzPGp5KrzFptEGhMn17L0QxrTZEriocW6CWXsc11h
- mk+8ENOfJbSkpv39JMzFsNXCedYvDKhcQUTQcX84l+0vyJ1lWxdsUONQXi/xvzeWqeaBacpfYCu
- cmNGU3Lh3k+OCYFsj25GeKHB3ydPRkpTzbppfl9UskCxrOIJ4Egza1H8ZzMVV1SqArqEovvqdDA
- YK4u58NLleNrdKCUfQsiFYCFrizLAWcyhPFjWWawLQ4o2vrQEKXLsUwLs8CdRVbhtZwFnB3D5V2
- SEkATRyT2opKJw==
-X-Google-Smtp-Source: AGHT+IE63soaceRGaIxn8boT7Sz1UlLuqx8bKSkQzHVi2HU5LigG7WvuqtoWV8k2cS2YnkzexFUGcw==
-X-Received: by 2002:a17:903:32c6:b0:216:25a2:2ebe with SMTP id
- d9443c01a7336-219e6e9fb3amr11728375ad.19.1734654849748; 
- Thu, 19 Dec 2024 16:34:09 -0800 (PST)
-Received: from darkstar (189-71-161-74.user3p.vtal.net.br. [189.71.161.74])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-219dc962cddsm18313905ad.48.2024.12.19.16.34.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 16:34:09 -0800 (PST)
-Date: Thu, 19 Dec 2024 21:34:26 -0300
-From: Davidson Francis <davidsondfgl@gmail.com>
-To: Warner Losh <imp@bsdimp.com>
-Cc: QEMU Development <qemu-devel@nongnu.org>
-Subject: Re: Ideas to Improve GDB Stub in Qemu for i8086
-Message-ID: <20241220003426.GA2475@darkstar>
-References: <20241219013535.GB4298@darkstar>
- <CANCZdfodkH0Mf8jkxs3Gybh8-nOAm79X+QXrbAvo0RHR9tBfXg@mail.gmail.com>
+ d=1e100.net; s=20230601; t=1734658378; x=1735263178;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=WmEliLdIe0QSgVv7hFYjszT4WehYmbWktJrUWaA5FYM=;
+ b=AIEjNtmbYAIClvuwc6nI/Ino/nwPVt/XHonshICi7eW2I+NimMSGuxcgaGQVduwZny
+ AhXgXY1hFTeHAbPCD7lnQZ0Vw3H5/lVD44/hIYxDk6gNn0hjzxDkb405WIaQ/BZtF9h5
+ pymLZN4TA460xWQyqRBMCMWK9ZxyMWgKZGV1geu2DigXtP0mwPbNtuUjLHudIrUBHn6s
+ zFUe7qhIBhm085umemV2CJe58uAYuY7JL6nTX5+qV8UJaHSnCb8Uj93huoKWyBf21TQs
+ dLo/ssHg+fYg29fL4r7sMY0XnC+RFTR3tIyPSICBAdutNrqNJBhtYAXJJZ0ViPF7QD3a
+ lLkw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVTufneSW2KucHADkFLeAfLJf/mnpBhJxdXUW9QOhNLUqWlPCx3+visixZ/G+Y7UCtfVloTcizNa4Ew@nongnu.org
+X-Gm-Message-State: AOJu0YyROKakcOxGSShV8onwbnvP5HQ9A8vKyeHj8aZBbkQXV7F/mNGR
+ 3jSm4Mp4WWkGZ5R+Mp2wkaLQXo7VySk7QLBHn1YpfDdUGMKlU/Dx3v8CAfCdJSYuvI3jBha3unn
+ JZcUdLUAEjN9dX2uKdfia5VlKgq6BIe3XVuXrv3HuRxyL3+xj/uFMitOSAGLIx9eKAmRjXnhXo8
+ lS/MSBJYWMW1NgxouxJ4cMGRWJudk=
+X-Gm-Gg: ASbGnctY/MHY2i8NCwUxFlR33awnOMDwUnpDrvo69GTySmcMIJjXudwe3WbeuIOEXvZ
+ Ouq8pirEUi+Qypf1w5/RYWUyPGQ8N6UtM1eU=
+X-Received: by 2002:a17:907:c2a:b0:aa6:79fa:b480 with SMTP id
+ a640c23a62f3a-aac2713135bmr76204266b.10.1734658377621; 
+ Thu, 19 Dec 2024 17:32:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH9JKIvbxOsSPu14R4V6YRlj8tgDbh0vmCcRUc+86AzP0ucqBe+K6Y42PYsCGBOiUZTivS8Ip6yt+oWSOyyw4k=
+X-Received: by 2002:a17:907:c2a:b0:aa6:79fa:b480 with SMTP id
+ a640c23a62f3a-aac2713135bmr76202766b.10.1734658377259; Thu, 19 Dec 2024
+ 17:32:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANCZdfodkH0Mf8jkxs3Gybh8-nOAm79X+QXrbAvo0RHR9tBfXg@mail.gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=davidsondfgl@gmail.com; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+References: <20241216114841.1025070-1-anisinha@redhat.com>
+ <3b2e9941-e5a3-4981-adda-f5121bc98e9a@linaro.org>
+ <CAK3XEhNVXZDD0i3pxpSgnogheyJO7dfQ4p0UdvhqU3DrFXJ_ZA@mail.gmail.com>
+ <55f6dfe7-cadf-4942-81e8-18b15938c349@linaro.org>
+ <CAK3XEhNN9EO75vgsdRboMZ7nwZbaL0eenSwSy-7Hze-ukyTZsQ@mail.gmail.com>
+ <7c1a7e86-8996-43ab-aa07-6763387b2bc5@linaro.org>
+In-Reply-To: <7c1a7e86-8996-43ab-aa07-6763387b2bc5@linaro.org>
+From: Ani Sinha <anisinha@redhat.com>
+Date: Fri, 20 Dec 2024 07:02:44 +0530
+Message-ID: <CAK3XEhOZ50Co0hAS31KYyQA+mgwXSoGCxMu_vhZXmpP0RwT6Mw@mail.gmail.com>
+Subject: Re: [PATCH v2] hw/misc/vmfwupdate: Introduce hypervisor fw-cfg
+ interface support
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Alex Graf <graf@amazon.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Gerd Hoffman <kraxel@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ Vitaly Kuznetsov <vkuznets@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,38 +108,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 19, 2024 at 09:51:13AM -0700, Warner Losh wrote:
-> I might be interested in debugging some i8086 stuff for my Venix/86
-> emulation
-> project.
-> 
-> I'm curious, though. I see special cases just for EIP being returned as (CS
-> << 4):EIP
-> and similar for ESP being just (SS << 4):SP. What does the debugger do,
-> though,
-> for other cases where you need segment:offset addresses? Does it translate
-> properly
-> behind the scenes in ways it doesn't do for ESP/EIP or do you have to
-> examine those
-> addresses by hand as well? If I'm chasing a linked list with 16-bit
-> addresses that assume
-> a particular DS, how does that work?
+On Thu, Dec 19, 2024 at 10:46=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
 >
+> On 19/12/24 18:08, Ani Sinha wrote:
+> >
+> >
+> > On Thu, 19 Dec, 2024, 10:21 pm Philippe Mathieu-Daud=C3=A9,
+> > <philmd@linaro.org <mailto:philmd@linaro.org>> wrote:
+> >
+> >     On 19/12/24 17:16, Ani Sinha wrote:
+> >      >
+> >      >
+> >      > On Thu, 19 Dec, 2024, 9:22 pm Philippe Mathieu-Daud=C3=A9,
+> >     <philmd@linaro.org <mailto:philmd@linaro.org>
+> >      > <mailto:philmd@linaro.org <mailto:philmd@linaro.org>>> wrote:
+> >      >
+> >      >     On 16/12/24 12:48, Ani Sinha wrote:
+> >      >
+> >      >      > diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+> >      >      > index d02d96e403..4c5bdb0de2 100644
+> >      >      > --- a/hw/misc/meson.build
+> >      >      > +++ b/hw/misc/meson.build
+> >      >      > @@ -148,6 +148,8 @@ specific_ss.add(when: 'CONFIG_MAC_VIA=
+',
+> >      >     if_true: files('mac_via.c'))
+> >      >      >   specific_ss.add(when: 'CONFIG_MIPS_CPS', if_true:
+> >      >     files('mips_cmgcr.c', 'mips_cpc.c'))
+> >      >      >   specific_ss.add(when: 'CONFIG_MIPS_ITU', if_true:
+> >      >     files('mips_itu.c'))
+> >      >      >
+> >      >      > +specific_ss.add(when: 'CONFIG_FW_CFG_DMA', if_true:
+> >      >     files('vmfwupdate.c'))
+> >      >
+> >      >     FW_CFG_DMA is offered by multiple targets ...:
+> >      >
+> >      >     $ git grep -w FW_CFG_DMA
+> >      >     hw/arm/Kconfig:19:    select FW_CFG_DMA
+> >      >     hw/i386/Kconfig:82:    select FW_CFG_DMA
+> >      >     hw/i386/Kconfig:113:    select FW_CFG_DMA
+> >      >     hw/loongarch/Kconfig:22:    select FW_CFG_DMA
+> >      >     hw/riscv/Kconfig:59:    select FW_CFG_DMA
+> >      >
+> >      >      > diff --git a/hw/misc/vmfwupdate.c b/hw/misc/vmfwupdate.c
+> >      >      > new file mode 100644
+> >      >      > index 0000000000..1e29a610c0
+> >      >      > --- /dev/null
+> >      >      > +++ b/hw/misc/vmfwupdate.c
+> >      >      > @@ -0,0 +1,157 @@
+> >      >      > +/*
+> >      >      > + * Guest driven VM boot component update device
+> >      >      > + * For details and specification, please look at docs/sp=
+ecs/
+> >      >     vmfwupdate.rst.
+> >      >      > + *
+> >      >      > + * Copyright (C) 2024 Red Hat, Inc.
+> >      >      > + *
+> >      >      > + * Authors: Ani Sinha <anisinha@redhat.com
+> >     <mailto:anisinha@redhat.com>
+> >      >     <mailto:anisinha@redhat.com <mailto:anisinha@redhat.com>>>
+> >      >      > + *
+> >      >      > + * This work is licensed under the terms of the GNU GPL,
+> >     version
+> >      >     2 or later.
+> >      >      > + * See the COPYING file in the top-level directory.
+> >      >      > + *
+> >      >      > + */
+> >      >      > +
+> >      >      > +#include "qemu/osdep.h"
+> >      >      > +#include "qapi/error.h"
+> >      >      > +#include "qemu/module.h"
+> >      >      > +#include "sysemu/reset.h"
+> >      >      > +#include "hw/nvram/fw_cfg.h"
+> >      >      > +#include "hw/i386/pc.h"
+> >      >
+> >      >     ... however ...
+> >      >
+> >      >      > +#include "hw/qdev-properties.h"
+> >      >      > +#include "hw/misc/vmfwupdate.h"
+> >      >      > +#include "qemu/error-report.h"
+> >      >      > +
+> >      >      > +static void fw_update_reset(void *dev)
+> >      >      > +{
+> >      >      > +    /* a NOOP at present */
+> >      >      > +    return;
+> >      >      > +}
+> >      >      > +
+> >      >      > +
+> >      >      > +static uint64_t get_max_fw_size(void)
+> >      >      > +{
+> >      >      > +    Object *m_obj =3D qdev_get_machine();
+> >      >      > +    PCMachineState *pcms =3D PC_MACHINE(m_obj);
+> >      >      > +
+> >      >      > +    if (pcms) {
+> >      >      > +        return pcms->max_fw_size;
+> >      >
+> >      >     ... this code depends on x86/PC.
+> >      >
+> >      >     Could it be wiser to add a new VM_FWUPDATE Kconfig
+> >      >     symbol, having it depending on FW_CFG_DMA && I386?
+> >      >
+> >      >
+> >      > There is no reason why vmfwupdate would be limited to x86 only.
+> >     There is
+> >      > minimal support needed from hypervisor side for this mechanism. =
+That
+> >      > mechanism has little dependency on specific platform.
+> >
+> >     OK, then please remove that PCMachineState use
+> >
+> >
+> > That is used because the max_fw_size property only exists for pc
+> > machines. Do you have a better idea to get this value in a platform
+> > agnostic way? Like I said in the previous reply I do not know how to ge=
+t
+> > this value reliably for all machines. If anyone has better ideas, I'm
+> > all ears.
+>
+> Either add the I386 dependency or don't use PC_MACHINE, because on
+> non-x86 targets PC_MACHINE(qdev_get_machine()) will crash.
 
-You've brought up a very interesting point. Indeed, in the case of 
-linked lists and similar structures, there’s no way for GDB or QEMU to 
-reliably determine which segment an address might belong to—perhaps 
-only guesses, which are far from ideal.  
+Ah this is where we have a disconnect. I assumed that
+> pcms =3D PC_MACHINE(m_obj)
 
-That said, the approach I'm proposing doesn’t solve all problems and 
-still requires users to handle these conversions manually or through GDB 
-scripts.  
+would return NULL on non-x86.
 
-The main goal of my idea is simply to reduce the initial effort required 
-to debug i8086 code, avoiding workarounds with architecture XML files, 
-and proper instruction disassembly and stack dumps out-of-the-box.
+Seems a better way to do this (as is done in vga.c) is to use
+object_dynamic_cast()
+How about
 
-Kind regards,
-Davidson Francis.
+diff --git a/hw/misc/vmfwupdate.c b/hw/misc/vmfwupdate.c
+index 0e90bd10e1..19d042b929 100644
+--- a/hw/misc/vmfwupdate.c
++++ b/hw/misc/vmfwupdate.c
+@@ -32,9 +32,11 @@ static inline VMFwUpdateState *vmfwupdate_find(void)
+ static uint64_t get_max_fw_size(void)
+ {
+     Object *m_obj =3D qdev_get_machine();
+-    PCMachineState *pcms =3D PC_MACHINE(m_obj);
++    MachineState *ms =3D MACHINE(m_obj);
++    PCMachineState *pcms;
+-    if (pcms) {
++    if (object_dynamic_cast(OBJECT(ms), TYPE_X86_MACHINE)) {
++        pcms =3D PC_MACHINE(m_obj);
+         return pcms->max_fw_size;
+     } else {
+         return 0;
+
+As I said before, if this is not the best way, please suggest an
+alternative to get max_fw_size for any platform.
+
+>
+> >     What about the FW_CFG_DMA dependency?
+
+If you read the spec,
+
++ The ``fw-cfg`` interface must support the
++     DMA interface. It may only support the DMA interface for write operat=
+ions.
+
+So we need that.
+
+> >
+>
+> I wasted enough time on this so I'll stop reviewing this work.
+
+Well up to you but I have tried to incorporate most of your
+suggestions here (as it has been with other patches that you review).
+I am off for the year-end break so won't be sending any more versions
+of this patch in the next few days. So if you change your mind, feel
+free to comment.
+Have a good year-end break.
 
 
