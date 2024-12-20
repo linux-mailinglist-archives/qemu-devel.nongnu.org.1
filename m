@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C7519F9648
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:22:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C60479F9645
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:21:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOfi0-0000VD-Sj; Fri, 20 Dec 2024 11:18:37 -0500
+	id 1tOfiG-0001Cw-LA; Fri, 20 Dec 2024 11:18:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfh2-0007gh-ID
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:42 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfhA-0007nf-PM
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:47 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfgy-00082E-Uj
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:35 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4363ae65100so22856135e9.0
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:17:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfh2-00082y-BH
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:42 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-385f07cd1a4so1413831f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:17:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711450; x=1735316250; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734711454; x=1735316254; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VtUy2p0Yr1y8g66umpd+7dvBQ8sKl+YDsMvxmxMTBX4=;
- b=bnHIFn6iwIMY9g9LGcmeBkr2ljs8NV3tnvQOkCge0317aQSyChiWZS9wOdYet2H5L9
- /caPbjYF2NWbBDe7gONCyF/PfLTionDSBnIsd4qrhBl59AqdYysVWTWMrM5mTSgoHFaH
- opZMdEyb9oNN+jD19XTJ+TCfEEINCHFUxL3Ct8kncV9s+7ITOjtZa4WDrMdilI9m34Oi
- Yo0Y4YOsU9JmloeV6BkUakUemkztLaVGZeGeyJ8IhBc9wEMiKzTQgvrEMf2rYTeoW6cP
- gecxa8Yklxsg7SILt2IRMf/UouR9XJlsv3Wt72d39WsFsdesRfPJZeWs1JbJoAARBl4F
- 1FQw==
+ bh=OFNvPYQIcnNtHhjWZM0/erUE8dZXW2FGWS1U/u140gI=;
+ b=bhO9Hi/FPLXiPKjtdBpS1ZxXLo74XYwB4Adl+SuOOKWvyLyRSNzOGPVunuxkYUVOzh
+ kaGpQ9gM/WXS3tbEqf3rIE1hMihGihJasjoVGRPt5nVgd2dLN/g7r689VkEeXuV2tyIu
+ 2zKThcGIoLGrf5lUO00JU4akRZ1X1Gpte1o+JP3KGREVd0VKJuCiEJCFdpGhco550KrL
+ FPD0/GLonrWX2pfHzdUD1WhgvgimABE33wslEGETv2mZmEokQ5qQ4BUdOY4v3SFXHq6m
+ ckm7RQau7IPjo7hZH2JgBdLXDE2KVXZddmmR2agW03xDf+Z8m/LcsagbJD3jX88mXtFV
+ UCcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711450; x=1735316250;
+ d=1e100.net; s=20230601; t=1734711454; x=1735316254;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VtUy2p0Yr1y8g66umpd+7dvBQ8sKl+YDsMvxmxMTBX4=;
- b=Om8K9kEsdrCBSLT3o/APtXU34Nb6CyLR++W5zyPu5lB/oC5YddIbkRmvEOMoOWpjg5
- yq1iV/XFkKCTyn/YPl891dD4pOMmeEsPBRSbTX931tapDBL4+M3ieFp53+CvpoHn5MgE
- ydMjqDPdO27LO8cnk95KxaBf0Iy5rxaMbOeuBaF2t8YtXxqQk70NbM1idSJ/zYULbiT8
- hZzobrWNsUhUt2JslWFaQT61pAwCB5VUiOrAi1PbOPYfirxf2zdDRvzzYuPSUGjyInQP
- /Qljaihht03mOngOtT6HDg4n23MK0UF8Q0Gcle/TVcYBC3BCLV2W/RB2lWPmwUPSVMRH
- rHdQ==
-X-Gm-Message-State: AOJu0Yx2FmkEQcCZ9b0Pq1F/5/xzoxUNXgnVij3QuUMLGPhFnYMwa07+
- MebLjgMt9kJsMBLV3dKGRDfcoaEKUiaYgu7O5K89BniE+/qp8+QsiZKzmIVu9fwcdTo/64Yvl2R
- O
-X-Gm-Gg: ASbGncv6WWCFlnSJSTMtGEZgO3wM8xQOw5oM/44N1NCB/uJyvu3Tgl1zwTe3EYPjbn6
- GfTiNsqDkT2fqILrITPGy88XA6tkyGmaOrdCprUpFwIC28PbFhrFkVe80f5U7S4ziRrgkIBKa7Q
- r8LZ6G7bumbMOAnsVkKnyDgnF4PvtnEau1M1yiL+QJM4QrQAUnly/SrJg5+Al44doIw0ZyMIIAu
- R2cdj9/JmvDiSxk3jwWM9qDr0HN+3wpfO/kSBaXNi3XfA+1Ag7ZXyuYb/PvuAnQlAx2v+QBxtM=
-X-Google-Smtp-Source: AGHT+IGW6XupRdw1fXoVn9qrRuNesRSwlFEtroe3y0G3HttrxKyxFPn4iSj7Zc7b9QuORehBPh9j8w==
-X-Received: by 2002:a5d:5e09:0:b0:385:f909:eb2c with SMTP id
- ffacd0b85a97d-38a223f7548mr4018741f8f.38.1734711449962; 
- Fri, 20 Dec 2024 08:17:29 -0800 (PST)
+ bh=OFNvPYQIcnNtHhjWZM0/erUE8dZXW2FGWS1U/u140gI=;
+ b=lf2pgtisBhUpnBBnLCmKvYLLulMpejBBk138f296J3MaK2CyXuFR+9woZteaJVX3XL
+ 82HoONNBqVDobRJqxUj996WODGvYYCkF+K9s37S1M7pcy0NOn0/0U1N3+PW8yCAorMLL
+ OtcUDDy+7J0nFqjbAqvd1PWLOqLXcnCKgnCNOS7jcP0x98DyD3DcYDf0XqiUkCIhagz0
+ Md9cjeVm0MPMc5iFd39A5VuqLIMcErhYcvjHoC+FfAXNDw1Fw+U+C+21wuoBu+evhijZ
+ mb78m594rZybvwmqcXga6AStRTMGY7X1zstU6cJd1FNR3tZziz7VfTa34MeCbyUCzPrb
+ rf1g==
+X-Gm-Message-State: AOJu0Yz9opIfeZ5Pd13pzC1279321XT+KZFGtHPbV9lBDTQ2wPmwk60I
+ T3w4th+p41K2OXf2UGX64PyZc3+OrE3wpYb/jX9jS+To7YH1xcahkO4F/9bbz4sn+8fvgltRlLF
+ k
+X-Gm-Gg: ASbGnct3BH/dgsciOT3x4PQRLXM5mn/BDWhW6LqDV1SqBNlMZunX09aUADHVp6dBdXI
+ hvkDs3ibhOnI280rZQ9J1CzPq8Z5zmRvs97ABfQm8vgrMGsKLNRv4dPJU6Z/05jaFLsuATlNeOg
+ Z0dawoapZTbOum2p84F3LMYfACq+CtUJFXCjAozxVO2TTptJa8QfXkqIXCM5K1j6wheDPSTOhwm
+ g5TjG9f+GqMITyFpn2chH3xPH25zwIicff7oipVOxDqCj1huhmG14k08jBBgr91XC52TNEJoc4=
+X-Google-Smtp-Source: AGHT+IFGNR7WGOQKl0jFud/huoSkEpdYJkmIVbk11wOhQRT7Zpd7Iikr/wi96VUfIoHTNCMTlvr+JA==
+X-Received: by 2002:a05:6000:4a03:b0:385:f638:c68a with SMTP id
+ ffacd0b85a97d-38a221f9f58mr3513886f8f.30.1734711454409; 
+ Fri, 20 Dec 2024 08:17:34 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c89e43dsm4461706f8f.70.2024.12.20.08.17.29
+ ffacd0b85a97d-38a1c89e1cesm4305271f8f.64.2024.12.20.08.17.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:17:29 -0800 (PST)
+ Fri, 20 Dec 2024 08:17:33 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 21/59] target/arm/cpu: Restrict cpu_untagged_addr() to user
+Subject: [PULL 22/59] target/arm/mte: Restrict 'exec/ram_addr.h' to system
  emulation
-Date: Fri, 20 Dec 2024 17:15:12 +0100
-Message-ID: <20241220161551.89317-22-philmd@linaro.org>
+Date: Fri, 20 Dec 2024 17:15:13 +0100
+Message-ID: <20241220161551.89317-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
 References: <20241220161551.89317-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,41 +98,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the #endif guard where it belongs to restrict
-the cpu_untagged_addr() implementation to user
-emulation.
+"exec/ram_addr.h" contains system specific declarations.
+Restrict its inclusion to sysemu to avoid build errors
+when refactoring.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241114011310.3615-11-philmd@linaro.org>
+Message-Id: <20241114011310.3615-10-philmd@linaro.org>
 ---
- target/arm/cpu.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ target/arm/tcg/mte_helper.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index d86e641280d..12b84665427 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -3355,8 +3355,8 @@ extern const uint64_t pred_esz_masks[5];
- #define TAG_GRANULE      (1 << LOG2_TAG_GRANULE)
- 
- #ifdef CONFIG_USER_ONLY
-+
- #define TARGET_PAGE_DATA_SIZE (TARGET_PAGE_SIZE >> (LOG2_TAG_GRANULE + 1))
--#endif
- 
- #ifdef TARGET_TAGGED_ADDRESSES
- /**
-@@ -3382,6 +3382,7 @@ static inline target_ulong cpu_untagged_addr(CPUState *cs, target_ulong x)
-     }
-     return x;
- }
--#endif
-+#endif /* TARGET_TAGGED_ADDRESSES */
-+#endif /* CONFIG_USER_ONLY */
- 
- #endif
+diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
+index 9d2ba287eeb..b017b26d07b 100644
+--- a/target/arm/tcg/mte_helper.c
++++ b/target/arm/tcg/mte_helper.c
+@@ -23,7 +23,9 @@
+ #include "internals.h"
+ #include "exec/exec-all.h"
+ #include "exec/page-protection.h"
++#ifndef CONFIG_USER_ONLY
+ #include "exec/ram_addr.h"
++#endif
+ #include "exec/cpu_ldst.h"
+ #include "exec/helper-proto.h"
+ #include "hw/core/tcg-cpu-ops.h"
 -- 
 2.47.1
 
