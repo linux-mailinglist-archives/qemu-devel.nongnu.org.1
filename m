@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4F2A9F9668
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:25:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C31879F964E
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:22:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOfie-0002iz-7A; Fri, 20 Dec 2024 11:19:16 -0500
+	id 1tOfio-0003nl-3e; Fri, 20 Dec 2024 11:19:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfiR-0001tr-Fw
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:19:03 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfiW-0002CW-Ik
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:19:09 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfiQ-0008Ds-17
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:19:03 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3862d6d5765so1333843f8f.3
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:19:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfiU-0008EP-Qu
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:19:08 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3862ca8e0bbso1610480f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:19:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711540; x=1735316340; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734711545; x=1735316345; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lbzYiRlcz/dvJTCmvfG6T6ZqIFZDB9nvnEc2KqmD5q4=;
- b=bVYzKsacwbQGHIHUX9yDkN0DJrUa6jQGSNXiy2RcbPSYgUK+W9R2epu1SqUD1VQbhO
- U433GViqHkJP3EpRw6UWYtyR4YUcr/FZquEuG1FUbjKgtENryICsTf/QLqFGqUzGLViL
- FJcA8iFaiAs7Cq5aWiN3x7iNQTsm1VGzX8Fw2kDFo9g8IfA41sW1P3kaXJskK54ZHUzV
- 9+cUVUpsR+JkmdIuyRshElRcXkZ4b5hXHpvhLM2zD0wOM/tWUPqsDcs4JGDapGqugC9e
- gj1OgvS4rAzvipUT0tIH3ncFof/oW7HjYbKJ9m1Xf/Wgg+NIjjMA8lMgOo55vDLWvb6W
- 11QQ==
+ bh=ObB9h5ClA82vSBh+n3DvAS5J1rT6h/dh6ysnz8owrU4=;
+ b=TJKYjpqUv6zTaAgIZZKAkwC8Ufegn5+m+Wg/fYDhg+lfGXLYkLMee5eZjACZvqZ9Tn
+ Ig0WbLfNc+oYftu70X0x7Qyo8BmcS5euIG5eVQmWHgbYsI4zFdUIJlyTpIjJb7pbsYDB
+ YvAkw7u4zFOQnzob/z9Eo+cRAcKt1RqEO4V9ssP1x1IgoUFJJ9Sch4iR9cfLn41AI9Kf
+ haT7V3Rm7N3oqAlRHbxBO7rBrGgZ6iAnX3GtsiyiC4V6gFZ8EjYTuqW7D+bFIMYfei4C
+ ydoJ4uMoev9M88pA+6vv4R9dBMksMQw0xCVfB+c6/bM26cEZDAdOzhlSn5Q6dmA+w2qc
+ x1xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711540; x=1735316340;
+ d=1e100.net; s=20230601; t=1734711545; x=1735316345;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lbzYiRlcz/dvJTCmvfG6T6ZqIFZDB9nvnEc2KqmD5q4=;
- b=ePgZzRXFb+Lh28gaiiFll82910qEcYj6VqWlvxmBlZ5ypNTy61BHoE0owsfQa5yd/z
- h0T4JipXWj3QrVNsQM3Xd5ajrDueRrnTJR/BobrXz3B/ftebYCLlYkLYdT4KsQyBzgo1
- kTRrOWUchl/0qoUh0bNhHxAYHagozThhgYFJfIcQCrWTHfRHGisjQo1jV2oHNgnxGn3t
- 5cPsJA5iYO6gYutwsigDVEU/L1ogG3VNdpMmSnGXsNVXS6AwebAgSGcHjjeb7v1YQO0o
- 4erjCcpq14zKh4LjaRK+C3udDRBqvbhqRT6/N7DcNNaVcs+aaig4Kn5VzeIJ+0xxXh1U
- jwcA==
-X-Gm-Message-State: AOJu0Ywkt4LKG/8yRqofyxI8rymL+WdKuCqewulSogWDp6Bzu56KjMdb
- BNs8apAi3rj24nqkBgasWCbYSz9xTlQHcLGVUMSDWc5MNJ/NIVzMtu632EPg8KtXdgbjnfHloZx
- e
-X-Gm-Gg: ASbGncuitK7fv8iTcGtbPOujVWzT52AfdFRGbVaAT85j21xu6RlOU0NFalHsRILg7b1
- 9PLSiIFMEkWxBHGH38jkt64o4zOkmYmmHa3+GgsqqtSUdRWHkH9T4m/cqIKEDZCg/KAWP6IKiCn
- vJbFQJcziML5vhKqy22ZjMrfVoZpv0TiR2j/QjPBTynItpRluDbQKgNNTAHvggydWLuTyVks2Dq
- jt/GDBMMcNihzkokyvSoLP5kifx8YmggpxkPMFiuNYZjgziJEiFsP70usCJY/SM6+gHXeml4cs=
-X-Google-Smtp-Source: AGHT+IEQxUSCQy2C6GF2Z5wAmpEmVAtNgSy7nfyV499ktDEQtelRdXQUkH/fhAfePzurPMJbRNeqRw==
-X-Received: by 2002:a05:6000:2c5:b0:385:f195:27f with SMTP id
- ffacd0b85a97d-38a221f339emr3518322f8f.5.1734711540410; 
- Fri, 20 Dec 2024 08:19:00 -0800 (PST)
+ bh=ObB9h5ClA82vSBh+n3DvAS5J1rT6h/dh6ysnz8owrU4=;
+ b=Ea8D44YLH4s424OtppKKojKcmCXpAwYsPi1ebI/KiaODViCGcJTsvKF3c9UBj0kax5
+ GWSDRZTglf8ZUjWJjfuGOBjMCX4kpCIAonNxYsVnI0KMz1VVpON0a+730FwIFbK003ym
+ e2zG1b3CP1P7g5fXSaENKklQG4jMl0stYsqe+f9WeoFk+t7v1AbmgXLrN6B+jmmP6lFM
+ OxcvTL2s/4eNVUZcBT8to9knHIuO0pLheEF4aU6RFgjTBWBJ+lG4sb+ZyqJahtrzoK+A
+ G5zsESNzEHc71esde9Qf4gP6x/orHVEUb9riZx2dWBm5jeaMR2D/MGg9HJeUNtL/PM0z
+ P2aw==
+X-Gm-Message-State: AOJu0Yw1fWnTdaHShAf4PZwKD8NZmkbnl3qg3SZZ346pNygcSpeoCKwR
+ I486ML34cJhSM4sr0R3QmFo/bFpT1WZvEaCdESwaejU/bMTde1YKjwPe+Cb2DOE0XVgi2J1TJ18
+ r
+X-Gm-Gg: ASbGncu+Z3V6Yei67Y0aOe6Rt+F8cMTUmNBk0U7c3gWF4JgaM9zyPZw/2Kvk/aLY2qs
+ TqNs6qPW+kE6s9zNLJNYdJwNl25P4NNafn+y3RtgpnINWDwv/7y91DB3wW8b3cgQQ54vT1v7D4h
+ L64N0i2QQ2aAwEl5XpIDLZZVylQmro6BZtVwe0jfCJ8f9AghSrNJEsWW/cmxoNG/tJ0fV8PTO7r
+ UfjLLw/hES33N2RBD78sToOFxSS4NNEVxarT6YSCgSfFHwoJBv/oEqDGthHl93chDvycZpaWNY=
+X-Google-Smtp-Source: AGHT+IG0H4WKbnDMxjcypPt0obg8g5lL0mNzHOD5wQv/HKGPZI/yNSMzBRKHhQrPJJQM1Wv+Q36Z8w==
+X-Received: by 2002:a5d:6f16:0:b0:382:40ad:44b2 with SMTP id
+ ffacd0b85a97d-38a221fadadmr3791555f8f.34.1734711544863; 
+ Fri, 20 Dec 2024 08:19:04 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436612008casm49729575e9.14.2024.12.20.08.18.59
+ 5b1f17b1804b1-4366120086bsm50474225e9.12.2024.12.20.08.19.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:18:59 -0800 (PST)
+ Fri, 20 Dec 2024 08:19:04 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 41/59] target/loongarch: Declare loongarch_cpu_dump_state()
- locally
-Date: Fri, 20 Dec 2024 17:15:32 +0100
-Message-ID: <20241220161551.89317-42-philmd@linaro.org>
+Cc: Anton Johansson <anjo@rev.ng>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 42/59] target/sparc: Uninline cpu_get_tb_cpu_state()
+Date: Fri, 20 Dec 2024 17:15:33 +0100
+Message-ID: <20241220161551.89317-43-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
 References: <20241220161551.89317-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,44 +97,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-loongarch_cpu_dump_state() is not used outside of cpu.c,
-no need to expose its prototype.
+From: Anton Johansson <anjo@rev.ng>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Required to compile accel/tcg/translate-all.c once for softmmu targets.
+The function gets quite big for some targets so uninlining makes sense.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241115152053.66442-3-philmd@linaro.org>
+Signed-off-by: Anton Johansson<anjo@rev.ng>
+Message-Id: <20240119144024.14289-14-anjo@rev.ng>
+[PMD: Only take SPARC part]
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/loongarch/internals.h | 2 --
- target/loongarch/cpu.c       | 2 +-
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ target/sparc/cpu.h | 39 ++-------------------------------------
+ target/sparc/cpu.c | 38 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 40 insertions(+), 37 deletions(-)
 
-diff --git a/target/loongarch/internals.h b/target/loongarch/internals.h
-index 1a02427627d..0655ac948b1 100644
---- a/target/loongarch/internals.h
-+++ b/target/loongarch/internals.h
-@@ -18,8 +18,6 @@
+diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
+index f517e5a383b..e9ccec6175f 100644
+--- a/target/sparc/cpu.h
++++ b/target/sparc/cpu.h
+@@ -747,43 +747,8 @@ trap_state* cpu_tsptr(CPUSPARCState* env);
+ #define TB_FLAG_FSR_QNE      (1 << 8)
+ #define TB_FLAG_ASI_SHIFT    24
  
- void loongarch_translate_init(void);
+-static inline void cpu_get_tb_cpu_state(CPUSPARCState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *pflags)
+-{
+-    uint32_t flags;
+-    *pc = env->pc;
+-    *cs_base = env->npc;
+-    flags = cpu_mmu_index(env_cpu(env), false);
+-#ifndef CONFIG_USER_ONLY
+-    if (cpu_supervisor_mode(env)) {
+-        flags |= TB_FLAG_SUPER;
+-    }
+-#endif
+-#ifdef TARGET_SPARC64
+-#ifndef CONFIG_USER_ONLY
+-    if (cpu_hypervisor_mode(env)) {
+-        flags |= TB_FLAG_HYPER;
+-    }
+-#endif
+-    if (env->pstate & PS_AM) {
+-        flags |= TB_FLAG_AM_ENABLED;
+-    }
+-    if ((env->pstate & PS_PEF) && (env->fprs & FPRS_FEF)) {
+-        flags |= TB_FLAG_FPU_ENABLED;
+-    }
+-    flags |= env->asi << TB_FLAG_ASI_SHIFT;
+-#else
+-    if (env->psref) {
+-        flags |= TB_FLAG_FPU_ENABLED;
+-    }
+-#ifndef CONFIG_USER_ONLY
+-    if (env->fsr_qne) {
+-        flags |= TB_FLAG_FSR_QNE;
+-    }
+-#endif /* !CONFIG_USER_ONLY */
+-#endif /* TARGET_SPARC64 */
+-    *pflags = flags;
+-}
++void cpu_get_tb_cpu_state(CPUSPARCState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *pflags);
  
--void loongarch_cpu_dump_state(CPUState *cpu, FILE *f, int flags);
--
- void G_NORETURN do_raise_exception(CPULoongArchState *env,
-                                    uint32_t exception,
-                                    uintptr_t pc);
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 078766feafc..fa838dce2e4 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -742,7 +742,7 @@ static ObjectClass *loongarch_cpu_class_by_name(const char *cpu_model)
-     return oc;
+ static inline bool tb_fpu_enabled(int tb_flags)
+ {
+diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
+index 8f494c286ae..b11f3248d82 100644
+--- a/target/sparc/cpu.c
++++ b/target/sparc/cpu.c
+@@ -713,6 +713,44 @@ static void sparc_cpu_synchronize_from_tb(CPUState *cs,
+     cpu->env.npc = tb->cs_base;
  }
  
--void loongarch_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-+static void loongarch_cpu_dump_state(CPUState *cs, FILE *f, int flags)
++void cpu_get_tb_cpu_state(CPUSPARCState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *pflags)
++{
++    uint32_t flags;
++    *pc = env->pc;
++    *cs_base = env->npc;
++    flags = cpu_mmu_index(env_cpu(env), false);
++#ifndef CONFIG_USER_ONLY
++    if (cpu_supervisor_mode(env)) {
++        flags |= TB_FLAG_SUPER;
++    }
++#endif
++#ifdef TARGET_SPARC64
++#ifndef CONFIG_USER_ONLY
++    if (cpu_hypervisor_mode(env)) {
++        flags |= TB_FLAG_HYPER;
++    }
++#endif
++    if (env->pstate & PS_AM) {
++        flags |= TB_FLAG_AM_ENABLED;
++    }
++    if ((env->pstate & PS_PEF) && (env->fprs & FPRS_FEF)) {
++        flags |= TB_FLAG_FPU_ENABLED;
++    }
++    flags |= env->asi << TB_FLAG_ASI_SHIFT;
++#else
++    if (env->psref) {
++        flags |= TB_FLAG_FPU_ENABLED;
++    }
++#ifndef CONFIG_USER_ONLY
++    if (env->fsr_qne) {
++        flags |= TB_FLAG_FSR_QNE;
++    }
++#endif /* !CONFIG_USER_ONLY */
++#endif /* TARGET_SPARC64 */
++    *pflags = flags;
++}
++
+ static bool sparc_cpu_has_work(CPUState *cs)
  {
-     CPULoongArchState *env = cpu_env(cs);
-     int i;
+     return (cs->interrupt_request & CPU_INTERRUPT_HARD) &&
 -- 
 2.47.1
 
