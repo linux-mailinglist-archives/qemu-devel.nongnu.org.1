@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 967D89F962E
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:18:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CECF49F967F
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:26:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOfgf-0007AW-SH; Fri, 20 Dec 2024 11:17:14 -0500
+	id 1tOfhH-0007Rx-BE; Fri, 20 Dec 2024 11:17:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfgZ-0006r7-6R
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:07 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfgd-0007Gk-8o
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:12 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfgW-0007ld-Tp
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:06 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4361c705434so15598605e9.3
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:17:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfgb-0007yA-Jg
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:10 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-436341f575fso22755935e9.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:17:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711423; x=1735316223; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734711428; x=1735316228; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5bc8CBnaM1oPkkMtIF7NNuH0SHv+cE5U0NdgeR9oFnE=;
- b=bXFm1qG8k1Yg3fpS24cjbKQYiCiK0Fof/47EqDryQ+1LqomirQX+MY5oBXuJQBo1CK
- GXU9E6ubsX0z6u9zL6X5zvH83Gg8LryjD9CJNKAGthKOTcbXBTuX/c/BHC41MhAa1WZC
- OFH2EZHv7qnZkc/hn3f0VDJxR+nRGoJENP9Y0T4NsGn1m8Aqf0iv4y3OZGj9ttW1Aqgn
- XLWwlXTvScQQDLtwrsMrLqcQz1zU7oPHRmG7eO9JO62LX8+dOeJZy5D/fDOclp0cB538
- XcnGpLXh2jhwTTKCSv/UwqzHPT5G8bLvExMTHq6OeWUADaN1gDdfUypVtW+D0lz1oeKj
- p60g==
+ bh=AAijDkm3Xd2tCsSGiuQSmawH8n8MmwtVpeR9il534Fw=;
+ b=wurX5ENkrgKeGP2CPnF1guxXbgUudEdWovONE9zclUiXJoVoPXjO03bnID7KXDuD0d
+ onZWfCNTaWhd34z+RdJsREmuo+2snzC7Y21Vk2ekFq7EDUzFdif2JFyO/TIIZMXPAb71
+ I5u7vag4uQQh5XkpZY7EYFi1Ef9hfjGDHxtAcaTmTrY+CmFKmhOPjb16VGVeSioS71Q3
+ FsWguSyLNvh4BAI8LCib4DfTV027Zhw4EBRHa0LOjbfC2kLljMDhsD3uKOoVASCGRwla
+ 9sVLOVoyTaFo9S0ROvBBbHLEVNp1Ms2aeikr/2A8Tpu5nQR/uIP/6FLctgCG+Osu8D1c
+ Y+3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711423; x=1735316223;
+ d=1e100.net; s=20230601; t=1734711428; x=1735316228;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5bc8CBnaM1oPkkMtIF7NNuH0SHv+cE5U0NdgeR9oFnE=;
- b=g4saONcJHD3N05Llfutz5rs3maMMvgx0ySfDPmgZdoQJEcAV1H0ycP9z3LoKPrvJMq
- vgxcWbQlda+O96++a/Szc9Vt6AxOsNBUCpXrDxyoJSKWRVKzeE6TxLWqMkfSSbOXPQ1M
- myOtuTHtEkxMxhZoIOUsgPNxlAQaugJ4pule1HDmx81c8EgUmkZ4Z36J4hAfxj1MHyJJ
- wmIf/+tABquWQKoAfDC849erWnn3AXlpTRdfp3hBOh6qztnePFQwopxPDXa2VW0xVsZT
- Ymu3kd6MT+/QnAFzOKcdzYrqALC/Dw5FmXbXePX9QWd2MS8ROwZ9ATORC0YnrhkodUco
- Q6wA==
-X-Gm-Message-State: AOJu0YxTPMgd0jqNlE+P+1vu+wj+MbkHDnC/fSgNP3WH41B450doGA2b
- Oae4Bw97p19Onq0RB2yf+DuuIJ8b+h+g4BPQyC+nnQ0qeddpfG8PbSzAtdpDy25Xe1Mgkv1Ub70
- V
-X-Gm-Gg: ASbGncsNtYTMS8s9gVXjOqcAbZfm790npCkl0n/JImxkKOtBCwXX7IOX2QoWxLrLTS0
- Ze/73ZJZdz1qqAtY5O2y5H+ENKBHL0cevysuHtpBecZ+CIATygxHtC0Ioi8mcPKHSzsCuP8BbaT
- m6LTCLaLqFSYmlg/qqtqaV7KXkbuGwmAiLOGu6UhGeJsP8XBsuGJTRkerUHEQgabmuNWs55ex2o
- ig+cRRtpjCk8Xxai7pIblT+eiPo6d+FeQH/4PMdfOJ+Jd5a53oH3ymOd2KdH2NO6/gE1ZGAB3Q=
-X-Google-Smtp-Source: AGHT+IGGeO11V59UQGAcc+MlzF94h+HnyTGJ4FZfC+O6f47XqYOtth6uRX0QbyWR8vz9kInm/MCRzQ==
-X-Received: by 2002:a05:600c:46ce:b0:431:55c1:f440 with SMTP id
- 5b1f17b1804b1-43668b7a2cfmr33935025e9.30.1734711423249; 
- Fri, 20 Dec 2024 08:17:03 -0800 (PST)
+ bh=AAijDkm3Xd2tCsSGiuQSmawH8n8MmwtVpeR9il534Fw=;
+ b=lqE/AZVydwvRB5iMLiUmQx8Mz0NXvx2/DfXDXkl6HNunY12Tw2gJvZuObJRIcCVoVC
+ Vz23NiizgAC/nAfIBSX9JlrRAQTrsYZsHk6EtwLoQcIAcppkKmYXzgdifaOZcfuwebWO
+ 0FOxCPNqC1nd+jTra11dpn3IDhst7DNwUpRkbudCr/D1aCj3DA0JoLtaaMbQ2FsdJ70u
+ Oflr/Tout2jF3KYR1I7YQTNEjp1CRTdWU8Vger9uHEOrg/xrI9/j77EvizPxi9TYTWfL
+ D5drMgaiuGXedEpuxTEP4e7gMy4iT77rQnlu4RDM87TKLJ7bUOUCnuT9zfL1/sH7mS+T
+ 0HyQ==
+X-Gm-Message-State: AOJu0Yw+hu8rfjrpwhTrdzFCI6FFiSqI8od7Uv95YSFKGjyftftMfNP8
+ OZQd4dHQMkO1XaJfLuuBF/Jb2kPy6b09mj1nddU7ACEdHWKe65wAzxj3CovX09sHMMmEzo4FN2S
+ i
+X-Gm-Gg: ASbGncv55BnZgHABAx6bWcHOfP8rQZCAO5J/MSQ3IgiG/rO2hJbRZf3maLScMMzMee0
+ L4JJK9y5sp96JDBq2+Z0BL360tSGJLiPzRi+hfSx9MkfCoVf1Qwajq3k4wco8Ck+Y8ttclFj9hJ
+ 3phk8X3+CfS2lwNg+vvJN+V9md/dRaMFANNxCTTZpLWntWgRtEpJdGTw1Tom8Jsa10x59Ta2gVc
+ QbBb9txVJMmKvCypf3VwwNB7S+UhWzQFUeDHHKn/vJLyQYSZcsM6vujnZgeTYjv+mKHn9MU8lk=
+X-Google-Smtp-Source: AGHT+IEj5fIbZqWi6GL7HjXWm2yFhcEqTRRR8XiCbMsBCuoWbWgUsZPZLjM4j4w4kGoY3WHVKcERvQ==
+X-Received: by 2002:a05:600c:1c25:b0:434:f4fa:83c4 with SMTP id
+ 5b1f17b1804b1-43668b5f691mr33173635e9.29.1734711427658; 
+ Fri, 20 Dec 2024 08:17:07 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656b4471bsm83510675e9.44.2024.12.20.08.17.02
+ 5b1f17b1804b1-4366128a62asm48908805e9.44.2024.12.20.08.17.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:17:02 -0800 (PST)
+ Fri, 20 Dec 2024 08:17:07 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 15/59] accel/tcg: Have tlb_vaddr_to_host() use vaddr type
-Date: Fri, 20 Dec 2024 17:15:06 +0100
-Message-ID: <20241220161551.89317-16-philmd@linaro.org>
+Subject: [PULL 16/59] exec/cpu-all: Include missing 'exec/cpu-defs.h' header
+Date: Fri, 20 Dec 2024 17:15:07 +0100
+Message-ID: <20241220161551.89317-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
 References: <20241220161551.89317-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,55 +97,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-abi_ptr is expected to be used in user emulation.
-tlb_vaddr_to_host() uses it, but can be used in
-system emulation. Replace the type by 'vaddr' which
-is equivalent on user emulation but also works on
-system.
+TARGET_PAGE_BITS is defined in each target "cpu-param.h",
+itself included by "exec/cpu-defs.h".
+Include the latter in order to avoid when refactoring:
+
+  In file included from ../../system/watchpoint.c:23:
+  include/exec/cpu-all.h:356:19: error: use of undeclared identifier 'TARGET_PAGE_BITS'
+    356 | QEMU_BUILD_BUG_ON(TLB_FLAGS_MASK & TLB_SLOW_FLAGS_MASK);
+        |                   ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241114011310.3615-13-philmd@linaro.org>
+Message-Id: <20241114011310.3615-2-philmd@linaro.org>
 ---
- include/exec/cpu_ldst.h | 3 ++-
- accel/tcg/cputlb.c      | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ include/exec/cpu-all.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
-index dac12bd8eb3..c1dd424dc1b 100644
---- a/include/exec/cpu_ldst.h
-+++ b/include/exec/cpu_ldst.h
-@@ -67,6 +67,7 @@
+diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
+index 45e66769380..1c40e276728 100644
+--- a/include/exec/cpu-all.h
++++ b/include/exec/cpu-all.h
+@@ -136,7 +136,7 @@ static inline void stl_phys_notdirty(AddressSpace *as, hwaddr addr, uint32_t val
  #endif
  
- #include "exec/memopidx.h"
-+#include "exec/vaddr.h"
- #include "exec/abi_ptr.h"
- #include "exec/mmu-access-type.h"
- #include "qemu/int128.h"
-@@ -375,7 +376,7 @@ static inline void *tlb_vaddr_to_host(CPUArchState *env, abi_ptr addr,
-     return g2h(env_cpu(env), addr);
- }
- #else
--void *tlb_vaddr_to_host(CPUArchState *env, abi_ptr addr,
-+void *tlb_vaddr_to_host(CPUArchState *env, vaddr addr,
-                         MMUAccessType access_type, int mmu_idx);
- #endif
- 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index b76a4eac4e0..080cbcb34d0 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -1504,7 +1504,7 @@ void *probe_access(CPUArchState *env, vaddr addr, int size,
-     return host;
- }
- 
--void *tlb_vaddr_to_host(CPUArchState *env, abi_ptr addr,
-+void *tlb_vaddr_to_host(CPUArchState *env, vaddr addr,
-                         MMUAccessType access_type, int mmu_idx)
- {
-     CPUTLBEntryFull *full;
+ /* page related stuff */
+-
++#include "exec/cpu-defs.h"
+ #ifdef TARGET_PAGE_BITS_VARY
+ # include "exec/page-vary.h"
+ extern const TargetPageBits target_page;
 -- 
 2.47.1
 
