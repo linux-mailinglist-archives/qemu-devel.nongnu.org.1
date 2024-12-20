@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABE4C9F962F
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:18:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DF3C9F9630
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:18:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOfgF-0006Jo-9s; Fri, 20 Dec 2024 11:16:47 -0500
+	id 1tOfgZ-0006iw-1P; Fri, 20 Dec 2024 11:17:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfg5-0006F8-By
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:37 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfgA-0006Rj-Ta
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:45 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfg3-0007E3-IH
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:37 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-4362f61757fso20262045e9.2
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:16:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfg8-0007JV-OT
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:42 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4362bae4d7dso15446655e9.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:16:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711394; x=1735316194; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734711399; x=1735316199; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=55AKXx89HlzplcYp2oBjo0MnM9odtmQqSPwrBjg6+7I=;
- b=jJYYKhaTdx6ou52ilbFDy8KrLK1biBpUqt2swxgj9oyoyPkmYH3jEYtFDsql7E87Rh
- POP1nXfUd/mzOtwssQcJ9PP+U7qwFfRv5qutSacrstLeYKe+OCOS8KWlyKsus1kfCbaJ
- YzLacUweNZjNdOYtLFXEv+r95KeIIaq6nCfuai6GNTdYsZoJy4CYFg8wcZKxLayUFAWU
- pHluGwMzwsW4kb4UVs/cJTrUhOJDwvRVtwKok8L/1nCEqUvzAaBuRwXD0e90HHjHW12Y
- P7R6sia38HZJKF+yuhfsw32LbOE3bM+Y1ulxbV7ft/NGPqQQ9mmluhzKncM5ryQ27aBH
- U1UQ==
+ bh=Zb+0VQxzILhCFrzwEvDqpARJdylYJT6AW0M63nRZSlg=;
+ b=wwd0O7sVlwfvccMYYfAO6xnt9cTbdKg/+q5UXqtvFoztmqodOpGLgzlIeCPIGlXpAV
+ mkLjvpo6IeK/pe+NoIyIEQOsEmIUDoMd4GCQPGX/vHoGGobz4w8/qaL7nsgtTAdasLvs
+ rW3+9Mm9RHpNa+l+trAZgKUsETUeLTBdX+8oYHn3yH+MB/eX15hVZ3ZuqsEx1iRgVYRb
+ Ub+dYms/wkMPRoXVTmsQrT7o+I10PjU3Y45XUTnJ5d8VLbor4fmhP0w1nR50hzUMVJvc
+ UZZ+tMTQ25vjJ4K3GAMndFUCH1VVevpvzPPTN3EkFN/rOWUXmRZ4QbXb95lWDNqr7AQl
+ +OhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711394; x=1735316194;
+ d=1e100.net; s=20230601; t=1734711399; x=1735316199;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=55AKXx89HlzplcYp2oBjo0MnM9odtmQqSPwrBjg6+7I=;
- b=UyJYCMnMkJYJBg7eYFCFZ/tm1TQs0UO8YTDu0OjQO/0Bf2UfePdPc1keFv/nT7z1TA
- L+AtuYqNqL2fbk+L8eTHnv0RhZozgT11Ke8GvzSmhocT0sZt49wYiuNSLhxQrGUnMEXO
- do2Y1ODucTvW/xvYaaonjT+PZS9fsxk+VVjoYb2fh1fRdaKlN28Sywm1saZ0HUCyH70W
- V9wiktOHg7cTYwDFIW8wLk4fLrv3Li1N2O98ABlgWInYwg6LW4npulAqwI+DyJZcopA8
- fVJtHlQAABm2pRZ03Qn9KpyYAdGmBWKOzHe8uoFHfOgxK0PgxhMwI7PNGWxxi1J5FCF+
- ZczA==
-X-Gm-Message-State: AOJu0Yz2NHpVQtZkWuakilJhzh4ZV75eCKfNBaDnqy+jm6eg7h7XpBSC
- OgLEa9I3trigaTg3Ey5WcjCXc3Qjd9oMbSvWXVxeAaWUxBV9taNABadI3cYBDoUXDq6eeicp4c+
- z
-X-Gm-Gg: ASbGncspBCUCqc+kd4RttR4zKQeU/67d8s8OD0sImY4y89TTDS0Ni1cC37c5YE8bn+O
- jEevDF+nCtA2Bcz+BtFVMatE22qJvCHaRwom2obgsmalVQmZgRfXlOoBHk6qWtrKzRy26QceUk+
- 7Y0sT8TtTKk+QwoYUhv9F9034RGE/4zoYY8cZ1v4YAS0ZmjwlLhagbcBh8rmU5bI/sK3xKedsNZ
- wYdtC7oBn50xLZPZTyossU8snmyde0hiq03jyqjRNjNiCuHc4Sd0C37wM/FEaC9vVR4VUC4NW0=
-X-Google-Smtp-Source: AGHT+IHEPXLNfcnqbyjB7U2V8CIDP16ggmfGb8R1MuiJwUhSiQucR5vFObtdwEklpNlVW5x0L/n/hA==
-X-Received: by 2002:a05:600c:3150:b0:436:17e4:ad4c with SMTP id
- 5b1f17b1804b1-4366835ebefmr29582145e9.6.1734711393829; 
- Fri, 20 Dec 2024 08:16:33 -0800 (PST)
+ bh=Zb+0VQxzILhCFrzwEvDqpARJdylYJT6AW0M63nRZSlg=;
+ b=vMKs2ri84evJ92+JjoAJ5yeaLl8JmWHj4VQ4q1RrvT6GxLGwpExY8zDfoJ5c5lOiXD
+ 9QwZKTcylhUYapIPGifjUZ4BUp1/3OokMR+ONKiAWf7bEoyi75Ok6+IEhce5t6ock/La
+ OU4kNTC8FnJ5L2ttwwF8tBvNan1/9LXKCuZqNHn8nbW9Pc59HlBhxEn2Sd8TOY6I+EGQ
+ mnlwoLl+BepDRzbk63PJ9cQ8+XbXl1F5gtTnEXyBCbHrSaKys1wFZDNVs1aUx/CIjrz+
+ X6NpFQiQZALR3OChvkfbfUnoPpDQxmMzljQM9MOxflBeQ+aRgmZje3p/A6O6yJA7wD/Q
+ 3ruA==
+X-Gm-Message-State: AOJu0YzKkKBaWOVweYVTjDNLad0bpreW3+uD6Dl1WzIS09KlWUy/t2sm
+ v0HJ1bWP2bWFUxNq2rc/KKv637+cbzxceT/U5gXwQwgSLSPB34t6QgNJKgPDprYQGwIxtDHDFaz
+ Y
+X-Gm-Gg: ASbGncsob9SDwYKaDNxuSEg6RAYfxSNeqfFnjgdWlXvcDDvuB09t+E3IHWaafyj0oav
+ 8jZbg1Mwlm4PwDVhSdgyUSxlrCtzbITLvSE6apOdVtylaheir1niHUjpJ+mcd4/Y7ZZh7GRbjkH
+ DqLElBgAq5MMZmRlnzXSlmyHExHOh0tzAMdYW98jt8o/DiEfMKOo2n8rA5pb5nHonwybAFrT05C
+ cz+pnql7DJYnYVvqEEOG1fZEmrGj5PCt3fxOPz7qL3t+cgaPvChe9XVru49gI6LuEZlcOSKla4=
+X-Google-Smtp-Source: AGHT+IEA47CGMOvRVjBDWV+cvg1Ve/2QZIQQscjjpU+lWNQRHQs/s3In5Tyh2hsnJz3T7rMBExCFmQ==
+X-Received: by 2002:a05:600c:1d25:b0:434:fdf3:2c26 with SMTP id
+ 5b1f17b1804b1-43668646362mr31307445e9.19.1734711399050; 
+ Fri, 20 Dec 2024 08:16:39 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656b013ecsm83764965e9.16.2024.12.20.08.16.33
+ 5b1f17b1804b1-43656b3b295sm85627725e9.33.2024.12.20.08.16.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:16:33 -0800 (PST)
+ Fri, 20 Dec 2024 08:16:37 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 09/59] qom: Create system containers explicitly
-Date: Fri, 20 Dec 2024 17:15:00 +0100
-Message-ID: <20241220161551.89317-10-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 10/59] target/i386/sev: Reduce system specific declarations
+Date: Fri, 20 Dec 2024 17:15:01 +0100
+Message-ID: <20241220161551.89317-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
 References: <20241220161551.89317-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,122 +96,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Xu <peterx@redhat.com>
+"system/confidential-guest-support.h" is not needed,
+remove it. Reorder #ifdef'ry to reduce declarations
+exposed on user emulation.
 
-Always explicitly create QEMU system containers upfront.
-
-Root containers will be created when trying to fetch the root object the
-1st time.  They are:
-
-  /objects
-  /chardevs
-  /backend
-
-Machine sub-containers will be created only until machine is being
-initialized.  They are:
-
-  /machine/unattached
-  /machine/peripheral
-  /machine/peripheral-anon
-
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241121192202.4155849-8-peterx@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Message-Id: <20241218155913.72288-3-philmd@linaro.org>
 ---
- hw/core/machine.c |  3 ---
- qom/object.c      | 24 +++++++++++++++++++++++-
- system/vl.c       | 16 ++++++++++++++++
- 3 files changed, 39 insertions(+), 4 deletions(-)
+ target/i386/sev.h  | 29 ++++++++++++++++-------------
+ hw/i386/pc_sysfw.c |  2 +-
+ 2 files changed, 17 insertions(+), 14 deletions(-)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index d970f753e37..3d734f8c18d 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -1229,9 +1229,6 @@ static void machine_initfn(Object *obj)
-     MachineState *ms = MACHINE(obj);
-     MachineClass *mc = MACHINE_GET_CLASS(obj);
+diff --git a/target/i386/sev.h b/target/i386/sev.h
+index 858005a119c..373669eaace 100644
+--- a/target/i386/sev.h
++++ b/target/i386/sev.h
+@@ -18,7 +18,17 @@
+ #include CONFIG_DEVICES /* CONFIG_SEV */
+ #endif
  
--    container_get(obj, "/peripheral");
--    container_get(obj, "/peripheral-anon");
+-#include "exec/confidential-guest-support.h"
++#if !defined(CONFIG_SEV) || defined(CONFIG_USER_ONLY)
++#define sev_enabled() 0
++#define sev_es_enabled() 0
++#define sev_snp_enabled() 0
++#else
++bool sev_enabled(void);
++bool sev_es_enabled(void);
++bool sev_snp_enabled(void);
++#endif
++
++#if !defined(CONFIG_USER_ONLY)
+ 
+ #define TYPE_SEV_COMMON "sev-common"
+ #define TYPE_SEV_GUEST "sev-guest"
+@@ -45,18 +55,6 @@ typedef struct SevKernelLoaderContext {
+     size_t cmdline_size;
+ } SevKernelLoaderContext;
+ 
+-#ifdef CONFIG_SEV
+-bool sev_enabled(void);
+-bool sev_es_enabled(void);
+-bool sev_snp_enabled(void);
+-#else
+-#define sev_enabled() 0
+-#define sev_es_enabled() 0
+-#define sev_snp_enabled() 0
+-#endif
 -
-     ms->dump_guest_core = true;
-     ms->mem_merge = (QEMU_MADV_MERGEABLE != QEMU_MADV_INVALID);
-     ms->enable_graphics = true;
-diff --git a/qom/object.c b/qom/object.c
-index c9f8442b136..b4c52d055d9 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -1729,12 +1729,34 @@ const char *object_property_get_type(Object *obj, const char *name, Error **errp
-     return prop->type;
- }
+-uint32_t sev_get_cbit_position(void);
+-uint32_t sev_get_reduced_phys_bits(void);
+ bool sev_add_kernel_loader_hashes(SevKernelLoaderContext *ctx, Error **errp);
  
-+static const char *const root_containers[] = {
-+    "chardevs",
-+    "objects",
-+    "backend"
-+};
-+
-+static Object *object_root_initialize(void)
-+{
-+    Object *root = object_new(TYPE_CONTAINER);
-+    int i;
-+
-+    /*
-+     * Create all QEMU system containers.  "machine" and its sub-containers
-+     * are only created when machine initializes (qemu_create_machine()).
-+     */
-+    for (i = 0; i < ARRAY_SIZE(root_containers); i++) {
-+        object_property_add_new_container(root, root_containers[i]);
-+    }
-+
-+    return root;
-+}
-+
- Object *object_get_root(void)
- {
-     static Object *root;
+ int sev_encrypt_flash(hwaddr gpa, uint8_t *ptr, uint64_t len, Error **errp);
+@@ -68,4 +66,9 @@ void sev_es_set_reset_vector(CPUState *cpu);
  
-     if (!root) {
--        root = object_new(TYPE_CONTAINER);
-+        root = object_root_initialize();
-     }
+ void pc_system_parse_sev_metadata(uint8_t *flash_ptr, size_t flash_size);
  
-     return root;
-diff --git a/system/vl.c b/system/vl.c
-index 09202b57e73..85fcc8f96e6 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2113,6 +2113,21 @@ static void parse_memory_options(void)
-     loc_pop(&loc);
- }
++#endif /* !CONFIG_USER_ONLY */
++
++uint32_t sev_get_cbit_position(void);
++uint32_t sev_get_reduced_phys_bits(void);
++
+ #endif
+diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
+index ef80281d28b..e6271e10208 100644
+--- a/hw/i386/pc_sysfw.c
++++ b/hw/i386/pc_sysfw.c
+@@ -36,7 +36,7 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/block/flash.h"
+ #include "sysemu/kvm.h"
+-#include "sev.h"
++#include "target/i386/sev.h"
  
-+static const char *const machine_containers[] = {
-+    "unattached",
-+    "peripheral",
-+    "peripheral-anon"
-+};
-+
-+static void qemu_create_machine_containers(Object *machine)
-+{
-+    int i;
-+
-+    for (i = 0; i < ARRAY_SIZE(machine_containers); i++) {
-+        object_property_add_new_container(machine, machine_containers[i]);
-+    }
-+}
-+
- static void qemu_create_machine(QDict *qdict)
- {
-     MachineClass *machine_class = select_machine(qdict, &error_fatal);
-@@ -2121,6 +2136,7 @@ static void qemu_create_machine(QDict *qdict)
-     current_machine = MACHINE(object_new_with_class(OBJECT_CLASS(machine_class)));
-     object_property_add_child(object_get_root(), "machine",
-                               OBJECT(current_machine));
-+    qemu_create_machine_containers(OBJECT(current_machine));
-     object_property_add_child(container_get(OBJECT(current_machine),
-                                             "/unattached"),
-                               "sysbus", OBJECT(sysbus_get_default()));
+ #define FLASH_SECTOR_SIZE 4096
+ 
 -- 
 2.47.1
 
