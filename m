@@ -2,85 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D50E59F965F
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:24:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C92C9F9638
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:20:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOfjw-0008EC-18; Fri, 20 Dec 2024 11:20:36 -0500
+	id 1tOfi3-0000lW-9q; Fri, 20 Dec 2024 11:18:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfjn-0007g8-EH
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:20:27 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfjk-00009T-DO
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:20:27 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3863703258fso2032840f8f.1
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:20:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711623; x=1735316423; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mvOlQMApDBDzAhIP13yF4ecCm+qCv+xsSCDO/Ma+hPI=;
- b=Kb1itnsytYW2zYrmUd4If4A/ktwPffgenKgGa6iuXVpZ0F+G3C3njnJgWEHlYKF2rf
- FIsWH/oKi1HX0GioNYUT2a9FtmKABomKwlgcZZSVRH2/W3vMq+Xbbm49XZiovfiOVlPt
- vRhdTfigAZjQTThPYVGbI5SV6yKUm7I2zZJlUiCm3dKZbYf4QgAOMU2Xixhvw/vFssfj
- PL89wGuvhzbFnvM3X1MGcFJrIybFi/9nu+tq3yt9DdRAXpL6ydrLpkF9wokKCWB2XTgO
- dE484TmxSQS8muV+bwjT1Oy+U0EZ5Y5RIfGJ6YMMDtuixtKyo79bgyWDatBjRMl01Qt6
- Vl/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711623; x=1735316423;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mvOlQMApDBDzAhIP13yF4ecCm+qCv+xsSCDO/Ma+hPI=;
- b=LcotOi22HUKAfOyetN1mIw5pdAiBHMUSA1hHJTH5UOhCLvksWi9htT/dB3w5YW6cmM
- cZOtdSNrh/Z47uMeEZdnZ7Qnxf0B7c7T4i+DfFPhcLsZXg1Oa/sBcUt+OW6GqtiqVSzd
- Zhrqc8GcH57zZNrlwPwl/usUn63Dok6O70tAtEAZ+85VNvug/kDEQkUY0065bcZAUUwJ
- Fe8aA2Y1HeGyXaFQOyn2TevEUdeyKYENDvZCuofcPLvMHlJwC3uWCQtnxJK3pdo6Lcgv
- EktvHzBLcAh9G/lhnMkb0nhUSypJKqOH57weSYN3PnuFF0+p2rZrEtA4x/wn4/nooJvn
- evUw==
-X-Gm-Message-State: AOJu0Yw0XOUzQ3oGpD/0pCGy6tkryuioAZlfOrym8sJixmv9XfNE/ka9
- K/FxRaOX1hbCdQkWOyZz4TCr92aAGMA0iW6XzEHNL0ShphL6kSnQfs5bEahdd9UWdkjiJ+wgPXy
- d
-X-Gm-Gg: ASbGncvqzi88BeJJmNZedJb4yfcAAHIgriG96DjenIR5gYKCPNWUv7tBhXbBaHKGl3k
- Rk6EU2CmNVrx3ATMstStuXvwA6KIY7/ODv5fRIowlv3eLAYqIvc7BzZSwotC+K78jIxi5CqEN8K
- ppNY4X8dm7f9H4cmsOyYG+mfIe9PZB7Q0EzCKU/os/WO67YmK354baiFq/s5PBFGdWL/+zipy8m
- DQjSIXxpvn3gOhMRxen8UIQIfz3yXa/v0Q7bhyN9Zv9Qa1qQtPZAgFQ7qvDV3UoNwVY3DbPxUI=
-X-Google-Smtp-Source: AGHT+IGf4ptPck+zkjlU0RwXwXavGCMpmbIWgvaT7oVUlXPi84+AJ5u6BPRlHYQRP6GQzy6fJfMt1Q==
-X-Received: by 2002:a5d:59a4:0:b0:385:df17:2148 with SMTP id
- ffacd0b85a97d-38a1a2641b7mr6521380f8f.20.1734711622602; 
- Fri, 20 Dec 2024 08:20:22 -0800 (PST)
-Received: from localhost.localdomain ([78.196.4.158])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c8acabbsm4363424f8f.93.2024.12.20.08.20.21
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:20:22 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 59/59] util/qemu-timer: fix indentation
-Date: Fri, 20 Dec 2024 17:15:50 +0100
-Message-ID: <20241220161551.89317-60-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
-References: <20241220161551.89317-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1tOfgp-0007Zj-De
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1tOfgm-0007zR-Lj
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1734711434;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=RwN5A8m4ojC8zocdAFvRxWYXijSSWi5WNEXx5l/wHI4=;
+ b=C3MuYbfyWN/Aczv/m+uPrxUy+5qjtxfIVdMQU6Y78exzmpsPqS1n/livPPMpZcSRSIvtXs
+ g2NEolaigrXkEUwz3qeSGa4wtPl4utnArwYwqlHJO9rr3wfc7sZ+6L/gtqEIIrRh6VkOg8
+ mnwq7oeKjRXEFzA2KMycgGjlx3bTZEA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-208-inbgGH3gNGycdQ_GQQdWKQ-1; Fri,
+ 20 Dec 2024 11:17:11 -0500
+X-MC-Unique: inbgGH3gNGycdQ_GQQdWKQ-1
+X-Mimecast-MFC-AGG-ID: inbgGH3gNGycdQ_GQQdWKQ
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E32571944D32; Fri, 20 Dec 2024 16:17:07 +0000 (UTC)
+Received: from localhost (dhcp-192-244.str.redhat.com [10.33.192.244])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 661581956053; Fri, 20 Dec 2024 16:17:05 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: Kashyap Chamarthy <kchamart@redhat.com>, Marc Zyngier <maz@kernel.org>
+Cc: Eric Auger <eric.auger@redhat.com>, Daniel =?utf-8?Q?P=2E_Berrang?=
+ =?utf-8?Q?=C3=A9?=
+ <berrange@redhat.com>, eric.auger.pro@gmail.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, kvmarm@lists.linux.dev, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, alex.bennee@linaro.org,
+ oliver.upton@linux.dev, sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
+ abologna@redhat.com, jdenemar@redhat.com, shahuang@redhat.com,
+ mark.rutland@arm.com, philmd@linaro.org, pbonzini@redhat.com
+Subject: Re: [PATCH RFCv2 00/20] kvm/arm: Introduce a customizable aarch64
+ KVM host model
+In-Reply-To: <Z2Vak-hbCMaxm-JJ@gezellig>
+Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
+ Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
+ 153243,
+ =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
+ Michael O'Neill, Amy Ross"
+References: <20241206112213.88394-1-cohuck@redhat.com>
+ <edc12140-6345-4868-938d-c80c4d2c2004@redhat.com>
+ <Z1qoa8yXscTSAJ9e@redhat.com> <8734it1bv6.fsf@redhat.com>
+ <1fea79e4-7a31-4592-8495-7b18cd82d02b@redhat.com>
+ <Z2QE9AqZnpGM5sWD@gezellig> <8634ijrh8q.wl-maz@kernel.org>
+ <Z2Q2rWj9cV0W_XVq@gezellig> <86zfkrptmj.wl-maz@kernel.org>
+ <Z2Vak-hbCMaxm-JJ@gezellig>
+User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
+Date: Fri, 20 Dec 2024 17:17:02 +0100
+Message-ID: <87cyhmba81.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.129,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,32 +99,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Bennée <alex.bennee@linaro.org>
+On Fri, Dec 20 2024, Kashyap Chamarthy <kchamart@redhat.com> wrote:
 
-Purely cosmetic.
+> Related tangent on CPU feature discoverability on ARM:
+>
+> Speaking of "Neoverse-N1", looking at a system that I have access to,
+> the `lscpu` output does not say anything about who the integrator is; it
+> only says:
+>
+>     ...
+>     Vendor ID:                ARM
+>     Model name:             Neoverse-N1
+>     ...
+>
+> I realize, `lscpu` displays only whatever the kernel knows.  Nothing in
+> `dmidecode` either.
+>
+> Also, it looks like there's no equivalent of a "CPUID" instruction (I
+> realize it is x86-specific) on ARM.  Although, I came across a Google
+> Git repo that seems to implement a bespoke, "aarch64_cpuid".  From a
+> what I see, it seems to fetch the "Main ID Register" (MIDR_EL1) - I
+> don't know enough about it to understand its implications:
+>
+>     https://github.com/google/cpu_features/blob/main/src/impl_aarch64_cpuid.c
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241218162104.3493551-17-alex.bennee@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- util/qemu-timer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+My guess is that this is mostly for "we have code that looks for a cpuid
+like on x86, let's provide some code on arm that gives something that is
+at least somewhat useful."
 
-diff --git a/util/qemu-timer.c b/util/qemu-timer.c
-index 16f847ff983..0e8a453eaa1 100644
---- a/util/qemu-timer.c
-+++ b/util/qemu-timer.c
-@@ -680,7 +680,7 @@ int64_t qemu_clock_advance_virtual_time(int64_t dest)
-     aio_context = qemu_get_aio_context();
- 
-     deadline = qemu_clock_deadline_ns_all(QEMU_CLOCK_VIRTUAL,
--                                                      QEMU_TIMER_ATTR_ALL);
-+                                          QEMU_TIMER_ATTR_ALL);
-     /*
-      * A deadline of < 0 indicates this timer is not enabled, so we
-      * won't get far trying to run it forward.
--- 
-2.47.1
+For "CPU feature discoverability", I don't think that there's any way
+other than looking at the actual id registers. It would be nice if you
+could at least know that "there are some <unspecified> differences in
+features" by comparing MIDR/REVIDR/AIDR, but that's not the case IIRC?
+
+[Anyway, I'm off for the year :)]
 
 
