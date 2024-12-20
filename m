@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7A9D9F963C
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:20:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A7C09F963A
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:20:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOfje-0006c8-Ty; Fri, 20 Dec 2024 11:20:19 -0500
+	id 1tOfjf-0006ef-OP; Fri, 20 Dec 2024 11:20:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfjQ-0005oD-2a
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:20:06 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfjU-0005zj-Nq
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:20:08 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfjO-0008L1-Cm
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:20:03 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-385e27c75f4so1586246f8f.2
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:20:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfjS-0008WJ-IQ
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:20:08 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43622354a3eso14735525e9.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:20:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711600; x=1735316400; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734711605; x=1735316405; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=igXVq9mHKJYGFhSJ/gMBUb0qBjttUIOYNiO0oS/Sxg0=;
- b=zaBwUMKJeUR9v/vN3yafdn418S73yp4X3YOgDCOrfAW0Nzyh5Yc3YqtanfDLd77NbI
- BbOBv18HoLy6b8fyVBaNHwBC2cRR7cslm/SUQvW+xURnD2BnMW6AK1fvaZgi/Y+iubIM
- UYkL1bmxFwbDlMdvv23SRi7l4i2Ur0WnjxzN43Ry16tLofLCN64i7P+Nuug1EmxXANKe
- 0sABjlSHPmAFkaoXb4PN3Xb/YjfL0hAm7S7xjxAOiM8Adzgsr/kKIcCfjN67Xqkee6G+
- kdQfoWI2Da+aPfsq1JVrdnwK1gCDCQZNT05YbyeYQbGW/Bu3NeE/o3p+PFMRzoYL/y9v
- BmGw==
+ bh=tJTjio8+pXQAHERezjDiK/6t+nq1maFyCp7d1MeiRF0=;
+ b=U5lyFh3JbehTz/7/p1hL5WHNvBif7rwYpmKRfmgxCRGIU7ryHUzarYuAcytyDzG6MF
+ pUyqKwnbImMn+G/21/j397hnLYktROhYf1O9tkCp4WqjsdQrda5w4lGYXPqcTeB9gMfm
+ xEDyWWtg48OY+IoVt60HLcO7UWSkPr1g2TDG8HFQgZ0Aut78dsnjhpKDpss+TKDt3UGi
+ Jz46b6XJTlyUiTwOBXb3Xt8qm8sHBKvId4VeeRcXagnt0S1UhEV2wqP7Wxt3L7Wxu7oq
+ kXbI/MUzfIB3ZKY2K9/40P+KQ3FQkxNoBtZ/CzRYUzvx1mTKd0OhueeR2+jzheyB44fA
+ VznA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711600; x=1735316400;
+ d=1e100.net; s=20230601; t=1734711605; x=1735316405;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=igXVq9mHKJYGFhSJ/gMBUb0qBjttUIOYNiO0oS/Sxg0=;
- b=dSrcRQz/aWItv/WVyCKQkIE9vL04agokwbiLppnHe9oe3LJVQqTc9pTfnx9Z0TDCpP
- 0rh15zr8L35Y1Fgp2pgAxZ0/r7ORFq/1nppWre+WGHc0bfSWYN184DMnlYYDaP0DMP7R
- n0oUxsrl/6ItXw5/Xk8+lj6fQhKVctvvo07QzHzx6ji2lfVi93R3Tdk0Ec25s/i75H60
- 9WLalU63IDtNZJvdP1kikWqQnmp+qwirSJxCz9NmV2A9LPvbBftqheqAPk88uw9OQwCn
- 8Xt1Bq0+8q2NS8R9w7bnFBQMVTrYl7FGbvoaLHraFNeBbNMN4+uf1hy0ZBsVvrbm8wXF
- yCSw==
-X-Gm-Message-State: AOJu0YzD+5AGYqs4TPzRaD7sumgOJbaVw5h2prvFAr7NU2vTa0k737k2
- Ju90XPHeysMac04oEhVrLJYXc/yEeGjYA4o4sMz9ysthY/JycAV6jaEEkcAmmsXuxSIVJKULryO
- S
-X-Gm-Gg: ASbGncvjtoSgnWSwO1aLVDvdghmAkZcn8fpHKhij4pKGAzE6Igm19Sv4zzg+KdgXVDp
- xm+sjx6bZhdN7nhMRxxqv+fp66cBGreRkjwdA8ZRA++zzXf0hp5xJWaFjodPtQ+jjz/bNb+jHa6
- zoRBDJJQd1Pzy+0bp7NnikQcw/CHLIG2n/fAwjKc3o0zG6F64QXpEwvc0K4hVHk42MripLsN/WD
- kouOLQ4KV6nTEbC5NLIMyMfXUCIsXxwUMCVGVxnNP7ks96sFNpolbovJPGH+4T9XiuMUYFHJ8A=
-X-Google-Smtp-Source: AGHT+IFvoBVar9lM1WXqT9hhX105NCmkFZryKPUMJ3LkjGE+BEssNmzUEuO6pEHSKc369ze3t0sApg==
-X-Received: by 2002:a5d:6d84:0:b0:385:f1d9:4b90 with SMTP id
- ffacd0b85a97d-38a221ea720mr3450937f8f.13.1734711600280; 
- Fri, 20 Dec 2024 08:20:00 -0800 (PST)
+ bh=tJTjio8+pXQAHERezjDiK/6t+nq1maFyCp7d1MeiRF0=;
+ b=gZ0sUHeanKPytrGHufpGwMXOCVL9qZeKdavjWnbm063suPXbjw4VriOXRnX5sNklSh
+ 2NpEiEIkTXPFzLUZs+y007iyJNFaso41zFwU0mWdDyorB9L5a8lrxdeF9ZtCxnh9mT9Q
+ Ep8OjY+iFv2TEUswGj4ZDvvqqYpqrDF3vNaGnOT+r3TdC9k89yMVJQLf2UvN3c+40AOJ
+ 5uXSMp6MZk862WrpqS1S32cGz4X9vX8feOAP3WtcHVxUMDm8rkqZYh4sXmjDbYHDgI5e
+ HHA7buFY+1HCsjgprGoCnPHyK4Q/VoeyMU/YMfsUTuzS6ZmVTwheyYJv/xCdhtDlMgxU
+ heiA==
+X-Gm-Message-State: AOJu0YyFKpBoqw14jRa//NntbH6xIEiwmiLaQjyDjX0eV5x9oWnErBM6
+ Gvkf5LNWcvbYRRmDnobH3+UPSZFRnOL7nFSY0a6EiPwCttty+lJ8ejooxYjE4uVRH9x5muTLYU0
+ l
+X-Gm-Gg: ASbGncvQrpFn2A5pOpE2Bi0xYSS1DIpXXiGQHercmbYwslo1hRB362WRwa+SNTx7x8Q
+ LgvY1KhhyudQUHJEKu0401rKFRoFX9ns7rFJa7IzJ1RnhcCr1YKvxK5x/1DQgGAuNswO7D5Trx5
+ sR5mQiuoT3V4Pn8K/j823t8ynqFNAK+X4nAB6IjqqSKGFJqZwfvNXOZ8xnGVnUdh8oizbxdqBh6
+ xTIZQ8N7JYzbS9Uct2mjLJUwhMuJLB6ongA7y2tlG/Du9rMSznUvG/fUv1JyZwYF12yQFvZjU8=
+X-Google-Smtp-Source: AGHT+IF64Ba9LUb/m7gFvn1NJJHIcz4XN4bYMSy34/vn5lWzCOTleCUUVN4QBBqvwrQmPidaBkIigw==
+X-Received: by 2002:a05:600c:470a:b0:434:feb1:adae with SMTP id
+ 5b1f17b1804b1-43668547fdcmr34034565e9.3.1734711604718; 
+ Fri, 20 Dec 2024 08:20:04 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436611ea40csm49674045e9.1.2024.12.20.08.19.59
+ 5b1f17b1804b1-43656b0145csm83874735e9.15.2024.12.20.08.20.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:19:59 -0800 (PST)
+ Fri, 20 Dec 2024 08:20:04 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 54/59] target/mips: Drop left-over comment about Jazz machine
-Date: Fri, 20 Dec 2024 17:15:45 +0100
-Message-ID: <20241220161551.89317-55-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 55/59] hw/xen: Remove unnecessary 'exec/cpu-common.h' header
+Date: Fri, 20 Dec 2024 17:15:46 +0100
+Message-ID: <20241220161551.89317-56-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
 References: <20241220161551.89317-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,34 +97,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 3803b6b427 ("target/mips: Fold jazz behaviour into
-mips_cpu_do_transaction_failed") removed update on TCGCPUOps
-and commit 119065574d ("hw/core: Constify TCGCPUOps") made
-it const. Remove the now irrelevant comment.
+Nothing requires definitions from "exec/cpu-common.h",
+do not include this header.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241115152053.66442-2-philmd@linaro.org>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Message-Id: <20241217151305.29196-2-philmd@linaro.org>
 ---
- target/mips/cpu.c | 4 ----
- 1 file changed, 4 deletions(-)
+ include/hw/xen/xen.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index 441067060fd..270611ce96d 100644
---- a/target/mips/cpu.c
-+++ b/target/mips/cpu.c
-@@ -546,10 +546,6 @@ static const Property mips_cpu_properties[] = {
+diff --git a/include/hw/xen/xen.h b/include/hw/xen/xen.h
+index ecb89ecfc14..e94c6e5a318 100644
+--- a/include/hw/xen/xen.h
++++ b/include/hw/xen/xen.h
+@@ -24,8 +24,6 @@
+ #define __XEN_INTERFACE_VERSION__ 0x00040e00
+ #endif
  
- #ifdef CONFIG_TCG
- #include "hw/core/tcg-cpu-ops.h"
--/*
-- * NB: cannot be const, as some elements are changed for specific
-- * mips hardware (see hw/mips/jazz.c).
-- */
- static const TCGCPUOps mips_tcg_ops = {
-     .initialize = mips_tcg_init,
-     .synchronize_from_tb = mips_cpu_synchronize_from_tb,
+-#include "exec/cpu-common.h"
+-
+ /* xen-machine.c */
+ enum xen_mode {
+     XEN_DISABLED = 0, /* xen support disabled (default) */
 -- 
 2.47.1
 
