@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A2E9F9094
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 11:45:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CDD89F9096
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 11:45:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOaVO-0001O4-21; Fri, 20 Dec 2024 05:45:16 -0500
+	id 1tOaVk-0001vl-R6; Fri, 20 Dec 2024 05:45:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tOaUr-0001Cv-8g; Fri, 20 Dec 2024 05:44:41 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1tOaV0-0001Uw-Ba; Fri, 20 Dec 2024 05:44:52 -0500
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tOaUp-0005ia-SG; Fri, 20 Dec 2024 05:44:41 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-2161eb95317so16527515ad.1; 
- Fri, 20 Dec 2024 02:44:39 -0800 (PST)
+ id 1tOaUy-0005qx-Oo; Fri, 20 Dec 2024 05:44:50 -0500
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-2ee709715d9so1259202a91.3; 
+ Fri, 20 Dec 2024 02:44:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734691478; x=1735296278; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1734691486; x=1735296286; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ptTgrJ3AAjPAgcSpVyralWA7dIyvJHWNmDfWV22XPFk=;
- b=C2QJKjQIti8ootOiKpJws+u3bioig3hLdvI7G1J43AID3xcYg8OfkEsXiarXUhNlKQ
- Thbrg38oanvRpzXQ0f06UsuVVDLZuF/4ASpa5V1TBl0tqPdPbTYRb0FR9fMjIzi8FOYj
- RMBOOu/9EJD8pcYu/WDB79OLeipiJp1RJKAXcW+rDbgBswmKXEXpwYYwI/8V14aPFaUb
- ZYNiIZ+6E3awXNX1g2CxBVZVnhP+x6OfEQNeLr4QBApwFaAzya/U45A+b6QjEPXD7YZ9
- aoYWWzI2AFzg2tg3icqLIQ2BhEJB246gP4EtvKI1gPviHPr50oOEFyyj5s0W/d4Fa8Kz
- d4TQ==
+ bh=GUyed0Mv317RslXBhQnrdsiMxqOOIApYdyBw9bEw7WQ=;
+ b=EEUx1MeuYPUTO2EtZyMY1RbJ7RrL2OD+m0tcqJoCboCOQrs1BsyyLxrtTAjpL9Y+0j
+ 80bRUUQK8zxlgeGzFblWTjp3vqazeGlZ1f7K/Cqq3nKYik7pSJdymsTakd0ZjEQu9X/e
+ MQ3D9JrTmQDG58cZrAxgEkEYf9FZq1g/VQOlQVe24S1llbiJF5UPmVl3aTf8Xx43kcqr
+ pHw0sKJnMSBG4uR++/9GgG0PE4PkQzQybNJ47TLVLvbyiNepG1ipZFloTF27n/vsOt2x
+ ip7yUR4KnVSLuX7O3pvH3sI9m9lOS9hq3YTULAYNNCdTaLUdfm5GWGGsHDEFLodItHQf
+ uaTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734691478; x=1735296278;
+ d=1e100.net; s=20230601; t=1734691486; x=1735296286;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ptTgrJ3AAjPAgcSpVyralWA7dIyvJHWNmDfWV22XPFk=;
- b=RD5Nip/w5D6s3rkZs8em2pxmzh9ufoxStdKU20Q69ayfR3abX3ykNrJaf6JDlWMX+6
- SK+ShpHpPafY3gFN3gW7Xm3xmhKjKQ4JfebKUVRQSeSpJNyfmouvRkB1qXydqzmSAzFJ
- FKJP0kt7X5jBT2M0PvT17ibooyAqMvDO6UvOV8Hd6yeLdQUpfLjv/j20aVcjZTTjnAMV
- SBdc/BTR0PDaO2z09PJSm6lRsI9JWS68rdGWp7zQAQOiVxb+XqnclqgPGhbcDRUMpMMk
- 9hYilpehC1YltgeIe3WsspeOrV32fYLMFOSpQEjKWQUhziSnJvKU/0kOfpfxaZtXezui
- He0Q==
+ bh=GUyed0Mv317RslXBhQnrdsiMxqOOIApYdyBw9bEw7WQ=;
+ b=r0KJhd55ttoLA199tg6Zue+eB7pcyoJJujNw0G6d07nnJSYUOmkHzRNNCr0VGgIMCl
+ a2BRhvCs+ZsG1DFfBHPh01zI/L9Hc0YDihAyRBVPem3OPpLuxoK8+Hb4L6QnU4XsXgk2
+ XkZvy6vLSqC+OPV0EvjcYvWTJ7gPWi8Q1vgOhqZN373tZspxEeq4yaQmqpDzOyiTkQtj
+ 42lqoxX7vbWMukcm5uLpDkAgXVhQ9Ef9b1LHXQshBYbiOTjFNPPNUUcndZ1V+FMo2Ihb
+ yf4BhFeRZ0f63Q/hpHXT1Qgb2cDB7djYeNeRb1ogW7BQpsG2xYSgWQnvVFhS+60Zhaxf
+ 42EQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUtuuB163RrxYMBZGm9+RRsxgdDWIbypWPSfpdfqMy8g58g7MiHUyq28292btO4E50nlltD73lp68P/@nongnu.org
-X-Gm-Message-State: AOJu0YyJsFILEetojO2ctJMSF4IzfiaKXNZzTYEVq2yypzYptfS9iPrf
- ixszL+sTgGprfN1HSRL3wADxqccdx1iRnE2XkVSd4LJxz3CInTVthXmhvg==
-X-Gm-Gg: ASbGncvLqxeUY2IpcjTLOiAeRmPG/jwh+GVcRJXD0Uo1jHJkok9bfM6YF/uM/tCJ1NB
- J4fvw73U2+8rkfOfKpMWbctZfJLxvmR52P5OgknsLv88cr73bZT2wT5sl3sQP1CP+VDn4fz/Joh
- SeoplLZQReQMOeZJ2uLte6dZskxQxVZNJWrcKOnXOanih4pJN1JXkNT83o8XInc7gQ2urIaM6nz
- KPA+W9ECZ6gEKINy4mLt7M8QEaxOV1OC6bKkbngCX+O3vV231UG4sqMnyYAcXJzDrue5rNEMRYH
- R/RTNHZ1bw==
-X-Google-Smtp-Source: AGHT+IHHFjbJJDnydvH/EeyeQ+EbHqUtfiWYhPxLLlnL+4fEaaPAKUcotO2zlojz6R7w3hCvT3m/Dg==
-X-Received: by 2002:a17:90b:2e10:b0:2ee:fd53:2b03 with SMTP id
- 98e67ed59e1d1-2f452ec6ec7mr3462445a91.25.1734691478132; 
- Fri, 20 Dec 2024 02:44:38 -0800 (PST)
+ AJvYcCVS3sIe8VweecTrXVku77Sqy8861AzFx3+gpAsAqYDEz7Ga6l2gyxHUEUGGeXvErgArR9jzIWFrSf00@nongnu.org
+X-Gm-Message-State: AOJu0YyUk83u7O9mChqjbLizdNYgsTiHwfk7HNS6XC6wIjmZYWYlS5No
+ Gji6KQgbv9kYjEvopE48odmd9q7TS4QuehhgwvXXtzWZUutWz400o+Lg0A==
+X-Gm-Gg: ASbGncuewSOdE2euHNECHtP5JPe8iVvus2CNZhIh3hwECT0Hj1EyOQYZ+Qex+/9v1Re
+ KPovnxysKz3VSltarUVGDwQrr3VXb6P4l1wZkZOVTYE1C/5yzv6IfSwFebn/a9Ts/j8/tJVk5N8
+ 7P2j83MqdUPH8PUPoRLK+wce0TBVh6CiiTQRTE94+1GghWT9IXhHG4EyxwvR9kfYyYqyWA373P0
+ 9lE/IJa6enjuYameoUyCKL/ozMFQG0x/BxybH8b/s+QLtYugoScO1ob+CJIzguWLS8wLQJG7Wf2
+ 8TFSE3bNcg==
+X-Google-Smtp-Source: AGHT+IHaJWUjKlKfFU0Xe2l8iFS7/kb2KReHUIV9zbBygCXiPtl4R3UW1nNRiM5jOFdjHacHtPp/3Q==
+X-Received: by 2002:a17:90b:5183:b0:2ee:5111:a54b with SMTP id
+ 98e67ed59e1d1-2f452eec7dcmr3095432a91.31.1734691485846; 
+ Fri, 20 Dec 2024 02:44:45 -0800 (PST)
 Received: from wheely.local0.net (14-200-18-130.tpgi.com.au. [14.200.18.130])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f2ee06dfd3sm5376942a91.32.2024.12.20.02.44.30
+ 98e67ed59e1d1-2f2ee06dfd3sm5376942a91.32.2024.12.20.02.44.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Dec 2024 02:44:37 -0800 (PST)
+ Fri, 20 Dec 2024 02:44:45 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
@@ -76,16 +76,18 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
  "Dr. David Alan Gilbert" <dave@treblig.org>,
  Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH 16/17] tests/avocado/replay_linux: Fix cdrom device setup
-Date: Fri, 20 Dec 2024 20:42:18 +1000
-Message-ID: <20241220104220.2007786-17-npiggin@gmail.com>
+Subject: [PATCH 17/17] tests/avocado/replay_linux: remove the timeout expected
+ guards
+Date: Fri, 20 Dec 2024 20:42:19 +1000
+Message-ID: <20241220104220.2007786-18-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241220104220.2007786-1-npiggin@gmail.com>
 References: <20241220104220.2007786-1-npiggin@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,26 +110,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The cdrom device was not being added to the command line.
+replay_linux tests on is becoming more reliable now, so remove the
+timeout expected tag.
 
+These tests take about 400-800 seconds each, so add the SPEED=slow
+guard.
+
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tests/avocado/replay_linux.py | 2 ++
- 1 file changed, 2 insertions(+)
+Note that Alex gave R-B tag for previous version which marked
+a few things as flaky. They are passing in gitlab CI now so
+hopefully it's okay to keep the review.
+
+Thanks,
+Nick
+---
+ tests/avocado/replay_linux.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/tests/avocado/replay_linux.py b/tests/avocado/replay_linux.py
-index 38b6f8e6652..6c08ddaaff1 100644
+index 6c08ddaaff1..362e35c8849 100644
 --- a/tests/avocado/replay_linux.py
 +++ b/tests/avocado/replay_linux.py
-@@ -57,6 +57,8 @@ def vm_add_disk(self, vm, path, id, device):
+@@ -121,7 +121,7 @@ def run_replay_dump(self, replay_path):
+         except subprocess.CalledProcessError:
+             self.fail('replay-dump.py failed')
  
-     def vm_add_cdrom(self, vm, path, id, device):
-         vm.add_args('-drive', 'file=%s,id=disk%s,if=none,media=cdrom' % (path, id))
-+        vm.add_args('-device',
-+            '%s,drive=disk%s' % (device, id))
+-@skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
++@skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
+ class ReplayLinuxX8664(ReplayLinux):
+     """
+     :avocado: tags=arch:x86_64
+@@ -142,7 +142,7 @@ def test_pc_q35(self):
+         """
+         self.run_rr(shift=3)
  
-     def launch_and_wait(self, record, args, shift):
-         self.require_netdev('user')
+-@skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
++@skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
+ class ReplayLinuxX8664Virtio(ReplayLinux):
+     """
+     :avocado: tags=arch:x86_64
+@@ -168,7 +168,7 @@ def test_pc_q35(self):
+         """
+         self.run_rr(shift=3)
+ 
+-@skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
++@skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
+ class ReplayLinuxAarch64(ReplayLinux):
+     """
+     :avocado: tags=accel:tcg
 -- 
 2.45.2
 
