@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B38089F89BE
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 02:56:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F04B09F89D1
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 02:58:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOSEH-0005v9-Gw; Thu, 19 Dec 2024 20:55:01 -0500
+	id 1tOSEK-0005wR-0N; Thu, 19 Dec 2024 20:55:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tOSEF-0005v1-Gf
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:54:59 -0500
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1tOSEH-0005vT-PK
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:55:01 -0500
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tOSED-0004BI-8a
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:54:59 -0500
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-7fdc6e04411so922217a12.2
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 17:54:56 -0800 (PST)
+ id 1tOSEG-0004BV-7i
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 20:55:01 -0500
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-7fc88476a02so1109104a12.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 17:54:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734659694; x=1735264494; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=OB/NU3ycGgOaUP9hsWJcl3zGwGKcP7EBFauCdVFumGQ=;
- b=OStGZB7G33venKI88zWeJEOvGe6EwHdlDx8+P7YqAxdRLS14HxTR7k6GRv4U+Jdn6i
- Dj9r6R8w8SILMFEDqwlITKYO1FLX2PvoeTG1nBAt1/hRw2ZOa57bgG25lzbIztCDM7Oe
- Y6XGCiQawnr4oehj5kIwpYStHYnU6vAVQJuXB/h8ftl0sLqUJVc6em6DkS4F8jhjIS09
- fJa5Z1IR/rSJ6xDm+jMqu6CtbntCWSYSCqrf/adtwlYK8z54dhqa/RBgb4o0GjFSwRyn
- n33wtGWtoa5yVRh7hfmkbpZv+uCyKZhOerSy6mrF2sMNGQamFnM4/dI3eRjmOJKKXJZS
- Yfuw==
+ d=gmail.com; s=20230601; t=1734659697; x=1735264497; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=gPuLbZvSp6+8tc9tl8q4PUHJAk1piLXuGGcNU0EdvfA=;
+ b=fUqZDbFSxK2TtHtpjVV/gluN/I1E1Jm5xhUeiZcsJNHYnkOl1lLRCuO2FZcOwP5J2u
+ wwI1L6NGH0tpmBYqLghdqti8dMZL6+Ncl/Km0yZJwl3j/HMOniuN4fatsndTdbz53wAK
+ WvSemcaffBIVCHIdHc/4TffhGJ5G0xb5gTMFuBETMWgIXh/R0lMKJsTiPnQoMKG9LLVH
+ MSOrNFzMq8831dxrZTecuGT9qE2wS10C7Xe+Tm/gzmomVN0507tLo6mWZi2cY65uirNb
+ o/JGT/dHPSUxQxZtHGP2HZoPaYtXw6z8C3/bc0GzqMZyu/qnq2hi9oYTqIQgxA0gVWPd
+ U7qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734659694; x=1735264494;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OB/NU3ycGgOaUP9hsWJcl3zGwGKcP7EBFauCdVFumGQ=;
- b=nqzxQ2StyfFzPBmBsbzXYwueb00Z/xaWpLf6xWAASomnNoAhDx2OH8cTOFodx9z7qc
- OioQZBtGJp/2Iep46aX95EYzm80iViZZnrnfltXegzAm1UZEmEbgHfflk7Nqzm6euIuV
- blAWGe3hwQF0dXZqqLvtbD3rzItC2zSp7yPR29SVU4l2vZzfNa328HWQsgK1bbeTed1n
- rsWiskwVvFcoETxTQ2ILmLXLdQmo7jWLv7PcjXcZkLYy3+1dBqvVQpJ9X6vVNJHLt64Z
- 6ZquODXEQV8G1dUaAq/0bU7Izl/M8YC6pKHS+2PrXFXAoVqSFSuLXBf25Tpbhi9dyVp3
- O3Xg==
-X-Gm-Message-State: AOJu0YxgKHbFUNpxBj5wMcW3R6EOupIXMtcamvPz0LEXXvcqkkT1yvyM
- HSCbMmCOpCXqp2+QRy8Oe+mWgoUWlN2fxrFpgP5EaoURj809MKM2yAVPYImw
-X-Gm-Gg: ASbGncuGPwyIpDJILnyQmdQvhWRVHggdSPC5157CQ1C9jdKOx0JMrechRQf8nZPnQ25
- BtaRxrYxkAX/6D7w3KYax6ajh8F5b7PTdWx5Hsn0TUM/EcNzEKQ0NbAqeHtUUKrvErWq5+GYJ4C
- JFJJlboLk4RqX0lgj3iGkFIxAvZVYNkeczDY8gw4QNdtvSrUdne+pPAbl0cS7zdFeQ/t4jfn2J7
- 37wAwgszU/YHGuvk7iipfOXBngJeYoiLsCTTHWSLRwKZVauLDGnj1wSWRyVaWb44/6DOs3VcYLb
- y3WrL+ULapOM7y9TdIAmZaUqs4KwFcAHwfUguef4Y5b0c5w6170ErtVf6VxYfZU=
-X-Google-Smtp-Source: AGHT+IFoIJxqgNW9FAPpS34aDMFc3yW302/dbmQy7vD2LQU8M8lpZJhC1dgW/B47hVJ/QEdt+UyUhA==
-X-Received: by 2002:a05:6a21:8dc2:b0:1e1:ccf3:a72 with SMTP id
- adf61e73a8af0-1e5e07ffd40mr1721552637.28.1734659694404; 
- Thu, 19 Dec 2024 17:54:54 -0800 (PST)
+ d=1e100.net; s=20230601; t=1734659697; x=1735264497;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=gPuLbZvSp6+8tc9tl8q4PUHJAk1piLXuGGcNU0EdvfA=;
+ b=Lp3XmMt+bIqzjN4bvItR4YfCpKxjJuy/giYpl83BErJdLgYVI4OOs/voZf2MunAJwk
+ nO0MVUvEd/9Xaa/q33jJMgNdpbOgslgtAXWMNiOCGVjp3sJ+iMmAJ/4HxuzYnqjGWqTy
+ gkw7fnv0CwhDftSz2JKEFyRtyWEMx6BK17rYSbR0qsi+YMnjhSvWIndPassXd2Fu9BPb
+ q1j4QZUYPjhBBJKj7pADA1n0Tn6zmR+RKaTgJMDWMsihuq5o/RHXsOcz4vwaCDGDNSmZ
+ S2MKPXC6wANyoKCVq2IVDKoOH52vNnfqJFao0BlI54pN7wxR/eW4LItppzJZUPP1+pxv
+ GQ0w==
+X-Gm-Message-State: AOJu0YyhsfplS+Ep3qArN31xpOSNxC8f6UXnMZkEl+xMpHF2USD9p4yB
+ MPeHZheJjnAVhrGXRy5ZdHYhwxYQVzBU8YBByEG5AtntT2fbjp1RUlIpS9KV
+X-Gm-Gg: ASbGncug3cF12sGkjQQenI2ksGaZdmzUXg83x3b5XsyVgQeQRKR1GmQQCSYWoV7DuC3
+ BXc0bzbtiOHUmDCpLMNMb4XA23TN/ATM7xZeK0jldiHjR0tYpIYk9jYHhxWiDxr9QC3UyJIL+iG
+ fE8QAJaGjeaoaQ4Fy6C3xTUxuxve1xxxGyhQhyDpLai56vuFdwsknd9Sv7DWDltJEpPW38rg44q
+ 1VA93GiNdXjdKXkOsTa9MPUhDtn5T3TXZGqCA1K58QZZ8H136ZKlOEYIJ8TPCkF6yLELGRky6kw
+ AtCIvxeLB5v4uLRBJEkl9PfJP7UWZV1fgr5wQQ+X5paq1q3bVcW4CH7TlmnYmY0=
+X-Google-Smtp-Source: AGHT+IGJ4m6qftyu9+sZIxmE0dWWZPlgSNn93hOfNyjgrMw9KGcq17kLjqEp/in2EQNYorp2DQvdYw==
+X-Received: by 2002:a05:6a20:2d07:b0:1e1:b44f:cff1 with SMTP id
+ adf61e73a8af0-1e5e07f9c06mr2050865637.33.1734659697423; 
+ Thu, 19 Dec 2024 17:54:57 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad8164d3sm2002539b3a.15.2024.12.19.17.54.52
+ d2e1a72fcca58-72aad8164d3sm2002539b3a.15.2024.12.19.17.54.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 17:54:53 -0800 (PST)
+ Thu, 19 Dec 2024 17:54:56 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com,
-	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 00/39] riscv-to-apply queue
-Date: Fri, 20 Dec 2024 11:54:00 +1000
-Message-ID: <20241220015441.317236-1-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Jason Chien <jason.chien@sifive.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL v2 01/39] hw/riscv/riscv-iommu.c: Correct the validness check
+ of iova
+Date: Fri, 20 Dec 2024 11:54:01 +1000
+Message-ID: <20241220015441.317236-2-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241220015441.317236-1-alistair.francis@wdc.com>
+References: <20241220015441.317236-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x533.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x52f.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,147 +103,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 3e9793ab01904144c204589811e0e879109a9713:
+From: Jason Chien <jason.chien@sifive.com>
 
-  Merge tag 'qga-pull-2024-12-18' of https://github.com/kostyanf14/qemu into staging (2024-12-18 20:24:59 -0500)
+From RISCV IOMMU spec section 2.1.3:
+When SXL is 1, the following rules apply:
+- If the first-stage is not Bare, then a page fault corresponding to the
+original access type occurs if the IOVA has bits beyond bit 31 set to 1.
+- If the second-stage is not Bare, then a guest page fault corresponding
+to the original access type occurs if the incoming GPA has bits beyond bit
+33 set to 1.
 
-are available in the Git repository at:
+From RISCV IOMMU spec section 2.3 step 17:
+Use the process specified in Section "Two-Stage Address Translation" of
+the RISC-V Privileged specification to determine the GPA accessed by the
+transaction.
 
-  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20241220
+From RISCV IOMMU spec section 2.3 step 19:
+Use the second-stage address translation process specified in Section
+"Two-Stage Address Translation" of the RISC-V Privileged specification
+to translate the GPA A to determine the SPA accessed by the transaction.
 
-for you to fetch changes up to 2fc8f50eadad5dcc99bc5de1333808b9de47a097:
+This commit adds the iova check with the following rules:
+- For Sv32, Sv32x4, Sv39x4, Sv48x4 and Sv57x4, the iova must be zero
+extended.
+- For Sv39, Sv48 and Sv57, the iova must be signed extended with most
+significant bit.
 
-  target/riscv: add support for RV64 Xiangshan Nanhu CPU (2024-12-20 11:22:47 +1000)
+Signed-off-by: Jason Chien <jason.chien@sifive.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-ID: <20241114065617.25133-1-jason.chien@sifive.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ hw/riscv/riscv-iommu.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-----------------------------------------------------------------
-RISC-V PR for 10.0
+diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
+index 07fed36986..b6b9477129 100644
+--- a/hw/riscv/riscv-iommu.c
++++ b/hw/riscv/riscv-iommu.c
+@@ -392,9 +392,26 @@ static int riscv_iommu_spa_fetch(RISCVIOMMUState *s, RISCVIOMMUContext *ctx,
+ 
+         /* Address range check before first level lookup */
+         if (!sc[pass].step) {
+-            const uint64_t va_mask = (1ULL << (va_skip + va_bits)) - 1;
+-            if ((addr & va_mask) != addr) {
+-                return RISCV_IOMMU_FQ_CAUSE_DMA_DISABLED;
++            const uint64_t va_len = va_skip + va_bits;
++            const uint64_t va_mask = (1ULL << va_len) - 1;
++
++            if (pass == S_STAGE && va_len > 32) {
++                target_ulong mask, masked_msbs;
++
++                mask = (1L << (TARGET_LONG_BITS - (va_len - 1))) - 1;
++                masked_msbs = (addr >> (va_len - 1)) & mask;
++
++                if (masked_msbs != 0 && masked_msbs != mask) {
++                    return (iotlb->perm & IOMMU_WO) ?
++                                RISCV_IOMMU_FQ_CAUSE_WR_FAULT_S :
++                                RISCV_IOMMU_FQ_CAUSE_RD_FAULT_S;
++                }
++            } else {
++                if ((addr & va_mask) != addr) {
++                    return (iotlb->perm & IOMMU_WO) ?
++                                RISCV_IOMMU_FQ_CAUSE_WR_FAULT_VS :
++                                RISCV_IOMMU_FQ_CAUSE_RD_FAULT_VS;
++                }
+             }
+         }
+ 
+-- 
+2.47.1
 
-* Correct the validness check of iova
-* Fix APLIC in_clrip and clripnum write emulation
-* Support riscv-iommu-sys device
-* Add Tenstorrent Ascalon CPU
-* Add AIA userspace irqchip_split support
-* Add Microblaze V generic board
-* Upgrade ACPI SPCR table to support SPCR table revision 4 format
-* Remove tswap64() calls from HTIF
-* Support 64-bit address of initrd
-* Introduce svukte ISA extension
-* Support ssstateen extension
-* Support for RV64 Xiangshan Nanhu CPU
-
-----------------------------------------------------------------
-Anton Blanchard (1):
-      target/riscv: Add Tenstorrent Ascalon CPU
-
-Daniel Henrique Barboza (15):
-      hw/riscv/riscv-iommu.c: add riscv_iommu_instance_init()
-      hw/riscv/riscv-iommu: parametrize CAP.IGS
-      hw/riscv/virt.c, riscv-iommu-sys.c: add MSIx support
-      hw/riscv/riscv-iommu: implement reset protocol
-      docs/specs: add riscv-iommu-sys information
-      hw/intc/riscv_aplic: rename is_kvm_aia()
-      hw/riscv/virt.c: reduce virt_use_kvm_aia() usage
-      hw/riscv/virt.c: rename helper to virt_use_kvm_aia_aplic_imsic()
-      target/riscv/kvm: consider irqchip_split() in aia_create()
-      hw/riscv/virt.c, riscv_aplic.c: add 'emulated_aplic' helpers
-      hw/intc/riscv_aplic: add kvm_msicfgaddr for split mode aplic-imsic
-      target/riscv/kvm: remove irqchip_split() restriction
-      docs: update riscv/virt.rst with kernel-irqchip=split support
-      target/riscv/tcg: hide warn for named feats when disabling via priv_ver
-      target/riscv: add ssstateen
-
-Fea.Wang (6):
-      target/riscv: Add svukte extension capability variable
-      target/riscv: Support senvcfg[UKTE] bit when svukte extension is enabled
-      target/riscv: Support hstatus[HUKTE] bit when svukte extension is enabled
-      target/riscv: Check memory access to meet svukte rule
-      target/riscv: Expose svukte ISA extension
-      target/riscv: Check svukte is not enabled in RV32
-
-Jason Chien (1):
-      hw/riscv/riscv-iommu.c: Correct the validness check of iova
-
-Jim Shu (3):
-      hw/riscv: Support to load DTB after 3GB memory on 64-bit system.
-      hw/riscv: Add a new struct RISCVBootInfo
-      hw/riscv: Add the checking if DTB overlaps to kernel or initrd
-
-MollyChen (1):
-      target/riscv: add support for RV64 Xiangshan Nanhu CPU
-
-Philippe Mathieu-Daudé (5):
-      MAINTAINERS: Cover RISC-V HTIF interface
-      hw/char/riscv_htif: Explicit little-endian implementation
-      hw/char/riscv_htif: Clarify MemoryRegionOps expect 32-bit accesses
-      target/riscv: Include missing headers in 'vector_internals.h'
-      target/riscv: Include missing headers in 'internals.h'
-
-Sai Pavan Boddu (1):
-      hw/riscv: Add Microblaze V generic board
-
-Sia Jee Heng (3):
-      qtest: allow SPCR acpi table changes
-      hw/acpi: Upgrade ACPI SPCR table to support SPCR table revision 4 format
-      tests/qtest/bios-tables-test: Update virt SPCR golden reference for RISC-V
-
-Sunil V L (1):
-      hw/riscv/virt: Add IOMMU as platform device if the option is set
-
-Tomasz Jeznach (1):
-      hw/riscv: add riscv-iommu-sys platform device
-
-Yong-Xuan Wang (1):
-      hw/intc/riscv_aplic: Fix APLIC in_clrip and clripnum write emulation
-
- MAINTAINERS                                |   8 +
- docs/specs/index.rst                       |   1 +
- docs/specs/riscv-aia.rst                   |  83 ++++++++++
- docs/specs/riscv-iommu.rst                 |  30 +++-
- docs/system/riscv/microblaze-v-generic.rst |  42 +++++
- docs/system/riscv/virt.rst                 |  17 ++
- docs/system/target-riscv.rst               |   1 +
- hw/riscv/riscv-iommu-bits.h                |   6 +
- hw/riscv/riscv-iommu.h                     |   5 +
- include/hw/acpi/acpi-defs.h                |   7 +-
- include/hw/acpi/aml-build.h                |   2 +-
- include/hw/intc/riscv_aplic.h              |   8 +
- include/hw/riscv/boot.h                    |  28 +++-
- include/hw/riscv/iommu.h                   |  10 +-
- include/hw/riscv/virt.h                    |   6 +-
- target/riscv/cpu-qom.h                     |   2 +
- target/riscv/cpu_bits.h                    |   2 +
- target/riscv/cpu_cfg.h                     |   2 +
- target/riscv/internals.h                   |   3 +
- target/riscv/vector_internals.h            |   1 +
- hw/acpi/aml-build.c                        |  20 ++-
- hw/arm/virt-acpi-build.c                   |   8 +-
- hw/char/riscv_htif.c                       |  15 +-
- hw/intc/riscv_aplic.c                      |  74 +++++++--
- hw/loongarch/acpi-build.c                  |   6 +-
- hw/riscv/boot.c                            | 100 +++++++----
- hw/riscv/microblaze-v-generic.c            | 184 +++++++++++++++++++++
- hw/riscv/microchip_pfsoc.c                 |  13 +-
- hw/riscv/opentitan.c                       |   4 +-
- hw/riscv/riscv-iommu-pci.c                 |  21 +++
- hw/riscv/riscv-iommu-sys.c                 | 256 +++++++++++++++++++++++++++++
- hw/riscv/riscv-iommu.c                     | 137 ++++++++++-----
- hw/riscv/sifive_e.c                        |   4 +-
- hw/riscv/sifive_u.c                        |  18 +-
- hw/riscv/spike.c                           |  14 +-
- hw/riscv/virt-acpi-build.c                 |  12 +-
- hw/riscv/virt.c                            | 159 +++++++++++++++---
- target/riscv/cpu.c                         | 101 ++++++++++++
- target/riscv/cpu_helper.c                  |  55 +++++++
- target/riscv/csr.c                         |   7 +
- target/riscv/kvm/kvm-cpu.c                 |  43 ++---
- target/riscv/tcg/tcg-cpu.c                 |  27 ++-
- hw/riscv/Kconfig                           |   8 +
- hw/riscv/meson.build                       |   3 +-
- hw/riscv/trace-events                      |   4 +
- tests/data/acpi/riscv64/virt/SPCR          | Bin 80 -> 90 bytes
- 46 files changed, 1380 insertions(+), 177 deletions(-)
- create mode 100644 docs/specs/riscv-aia.rst
- create mode 100644 docs/system/riscv/microblaze-v-generic.rst
- create mode 100644 hw/riscv/microblaze-v-generic.c
- create mode 100644 hw/riscv/riscv-iommu-sys.c
 
