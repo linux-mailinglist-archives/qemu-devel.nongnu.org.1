@@ -2,79 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C92C9F9638
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:20:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B9E9F9682
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:26:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOfi3-0000lW-9q; Fri, 20 Dec 2024 11:18:39 -0500
+	id 1tOfkP-0001Yv-Jb; Fri, 20 Dec 2024 11:21:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1tOfgp-0007Zj-De
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tOfkI-0001F8-Og
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:21:00 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1tOfgm-0007zR-Lj
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:22 -0500
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tOfkH-0000Dd-89
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:20:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734711434;
+ s=mimecast20190719; t=1734711655;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=RwN5A8m4ojC8zocdAFvRxWYXijSSWi5WNEXx5l/wHI4=;
- b=C3MuYbfyWN/Aczv/m+uPrxUy+5qjtxfIVdMQU6Y78exzmpsPqS1n/livPPMpZcSRSIvtXs
- g2NEolaigrXkEUwz3qeSGa4wtPl4utnArwYwqlHJO9rr3wfc7sZ+6L/gtqEIIrRh6VkOg8
- mnwq7oeKjRXEFzA2KMycgGjlx3bTZEA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=UrRHC/6G/EOar4rFTLATSV4Px7fRM4Xig0ejfkJGGS8=;
+ b=bSITYr58uBizI6xgQewSdY0q3sQecusEtPTB+RAqyaBE6+MdjeBxIguvbGUaTm2QHhgfuG
+ FkhXWDYxvy2WF2Irz0+Unc7QMHGZnv6HO6lgbJZX40E3GXAmu0gbIZVLcV71UnqRsE/CdD
+ YxfHeuHDHJYDkadjnM5UGUGQZqOVC4o=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-208-inbgGH3gNGycdQ_GQQdWKQ-1; Fri,
- 20 Dec 2024 11:17:11 -0500
-X-MC-Unique: inbgGH3gNGycdQ_GQQdWKQ-1
-X-Mimecast-MFC-AGG-ID: inbgGH3gNGycdQ_GQQdWKQ
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-1-jZy5iSuwOo2V0LfOhzM0wQ-1; Fri,
+ 20 Dec 2024 11:20:49 -0500
+X-MC-Unique: jZy5iSuwOo2V0LfOhzM0wQ-1
+X-Mimecast-MFC-AGG-ID: jZy5iSuwOo2V0LfOhzM0wQ
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E32571944D32; Fri, 20 Dec 2024 16:17:07 +0000 (UTC)
-Received: from localhost (dhcp-192-244.str.redhat.com [10.33.192.244])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 661581956053; Fri, 20 Dec 2024 16:17:05 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: Kashyap Chamarthy <kchamart@redhat.com>, Marc Zyngier <maz@kernel.org>
-Cc: Eric Auger <eric.auger@redhat.com>, Daniel =?utf-8?Q?P=2E_Berrang?=
- =?utf-8?Q?=C3=A9?=
- <berrange@redhat.com>, eric.auger.pro@gmail.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, kvmarm@lists.linux.dev, peter.maydell@linaro.org,
- richard.henderson@linaro.org, alex.bennee@linaro.org,
- oliver.upton@linux.dev, sebott@redhat.com,
- shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
- abologna@redhat.com, jdenemar@redhat.com, shahuang@redhat.com,
- mark.rutland@arm.com, philmd@linaro.org, pbonzini@redhat.com
-Subject: Re: [PATCH RFCv2 00/20] kvm/arm: Introduce a customizable aarch64
- KVM host model
-In-Reply-To: <Z2Vak-hbCMaxm-JJ@gezellig>
-Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
- Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
- 153243,
- =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
- Michael O'Neill, Amy Ross"
-References: <20241206112213.88394-1-cohuck@redhat.com>
- <edc12140-6345-4868-938d-c80c4d2c2004@redhat.com>
- <Z1qoa8yXscTSAJ9e@redhat.com> <8734it1bv6.fsf@redhat.com>
- <1fea79e4-7a31-4592-8495-7b18cd82d02b@redhat.com>
- <Z2QE9AqZnpGM5sWD@gezellig> <8634ijrh8q.wl-maz@kernel.org>
- <Z2Q2rWj9cV0W_XVq@gezellig> <86zfkrptmj.wl-maz@kernel.org>
- <Z2Vak-hbCMaxm-JJ@gezellig>
-User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
-Date: Fri, 20 Dec 2024 17:17:02 +0100
-Message-ID: <87cyhmba81.fsf@redhat.com>
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EEAB01944B0B; Fri, 20 Dec 2024 16:20:47 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.126])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id E7FE719560AD; Fri, 20 Dec 2024 16:20:46 +0000 (UTC)
+Date: Fri, 20 Dec 2024 11:20:44 -0500
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: Stefan Hajnoczi <stefanha@gmail.com>, qemu-devel@nongnu.org,
+ Song Gao <gaosong@loongson.cn>
+Subject: Re: [PULL 00/18] loongarch-to-apply queue
+Message-ID: <20241220162044.GA731185@fedora>
+References: <20241219075502.3164644-1-maobibo@loongson.cn>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="uFelMDjAQIjmk2oK"
+Content-Disposition: inline
+In-Reply-To: <20241219075502.3164644-1-maobibo@loongson.cn>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -99,39 +83,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Dec 20 2024, Kashyap Chamarthy <kchamart@redhat.com> wrote:
 
-> Related tangent on CPU feature discoverability on ARM:
->
-> Speaking of "Neoverse-N1", looking at a system that I have access to,
-> the `lscpu` output does not say anything about who the integrator is; it
-> only says:
->
->     ...
->     Vendor ID:                ARM
->     Model name:             Neoverse-N1
->     ...
->
-> I realize, `lscpu` displays only whatever the kernel knows.  Nothing in
-> `dmidecode` either.
->
-> Also, it looks like there's no equivalent of a "CPUID" instruction (I
-> realize it is x86-specific) on ARM.  Although, I came across a Google
-> Git repo that seems to implement a bespoke, "aarch64_cpuid".  From a
-> what I see, it seems to fetch the "Main ID Register" (MIDR_EL1) - I
-> don't know enough about it to understand its implications:
->
->     https://github.com/google/cpu_features/blob/main/src/impl_aarch64_cpuid.c
+--uFelMDjAQIjmk2oK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-My guess is that this is mostly for "we have code that looks for a cpuid
-like on x86, let's provide some code on arm that gives something that is
-at least somewhat useful."
+Applied, thanks.
 
-For "CPU feature discoverability", I don't think that there's any way
-other than looking at the actual id registers. It would be nice if you
-could at least know that "there are some <unspecified> differences in
-features" by comparing MIDR/REVIDR/AIDR, but that's not the case IIRC?
+Please update the changelog at https://wiki.qemu.org/ChangeLog/10.0 for any user-visible changes.
 
-[Anyway, I'm off for the year :)]
+--uFelMDjAQIjmk2oK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmdlmVwACgkQnKSrs4Gr
+c8i9JggAthJl6cUUSBVOn287hTD+La6yHP06QpvgQls1e/5yDQ1UqRojifsmleth
+fhz9pKtndHaQn+J2D/G9PERu4RlgQCj0ZdTdwMzHmbhnMMYGO9I5XX95Is+mnoqv
+47t8wqVtfaREhgRO3ZEWA9AppRvY+BRoU1Sbwxz/pltGtrTdqCA55GlGUN2VKIi2
+fUu5yhiAeEHoB8eJ5D32BTQ5X5C01FJUxU6Z9WK6JCZYA5nOkydUkG9Y5wXv9HnY
+iziZo8mxb9RvOzGEE8Se7Rd+xhLQjQDIMFAaAvsAh7PUZQCXj4AmILfb9gLKr02W
+OARcZDX1LjDjpmGmFymKwQNKDP9TQA==
+=i/SI
+-----END PGP SIGNATURE-----
+
+--uFelMDjAQIjmk2oK--
 
 
