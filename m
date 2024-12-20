@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D8E9F9646
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:21:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABE4C9F962F
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:18:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOfg6-0006F3-QG; Fri, 20 Dec 2024 11:16:38 -0500
+	id 1tOfgF-0006Jo-9s; Fri, 20 Dec 2024 11:16:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfg0-00065u-NE
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:35 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfg5-0006F8-By
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:37 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOffy-00078V-WB
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:32 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-434b3e32e9dso22642255e9.2
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:16:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfg3-0007E3-IH
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:37 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4362f61757fso20262045e9.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:16:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711389; x=1735316189; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734711394; x=1735316194; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=39Stqqln0eIwK3ikIDeW6/zeaX2x6CtdpFdvigljE7Q=;
- b=riY5FcO0xnsqbS1MkSXZ8UCqkWO0HhG4RYj3zFKrd6qn6IEURf9aNAwUv4th8vD9GM
- MiJtCPY7PPFkJFtSt2u6KbWHk0uCxteA3x2jUQFZVXEZ6PEEfV3BU99a4BCm42jPZV+k
- 3A7wpkvG8qBLGsxY/OoXRVADUn4f8yJDrHUT2FMYjd9dXJ4x6LOswn55V0a/uD1Be80E
- GPQBc3Nz9Xdj1R5VRAifQcvjIYfV7vrzi+cdd221HTruD4nzWqMuXRDZp/IX0SOs3iwl
- 0ilg+KYtXp0oIvYFd3Y8/tLfGogLnVHp8rJn5/PUcsTpd0sBxXovt/1w8oIbYELMf/EY
- mr2Q==
+ bh=55AKXx89HlzplcYp2oBjo0MnM9odtmQqSPwrBjg6+7I=;
+ b=jJYYKhaTdx6ou52ilbFDy8KrLK1biBpUqt2swxgj9oyoyPkmYH3jEYtFDsql7E87Rh
+ POP1nXfUd/mzOtwssQcJ9PP+U7qwFfRv5qutSacrstLeYKe+OCOS8KWlyKsus1kfCbaJ
+ YzLacUweNZjNdOYtLFXEv+r95KeIIaq6nCfuai6GNTdYsZoJy4CYFg8wcZKxLayUFAWU
+ pHluGwMzwsW4kb4UVs/cJTrUhOJDwvRVtwKok8L/1nCEqUvzAaBuRwXD0e90HHjHW12Y
+ P7R6sia38HZJKF+yuhfsw32LbOE3bM+Y1ulxbV7ft/NGPqQQ9mmluhzKncM5ryQ27aBH
+ U1UQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711389; x=1735316189;
+ d=1e100.net; s=20230601; t=1734711394; x=1735316194;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=39Stqqln0eIwK3ikIDeW6/zeaX2x6CtdpFdvigljE7Q=;
- b=n8OtqBxK5fCvotJ+CCzr+8R/lFyOOjyRhUY7sBmgyMyvLiM9e0ac6ei63pEMBUI0AW
- pSzdbTN3dnWrwf7q1TltDRIgTXE+FJixXPITuZD6SXr8R1Oq5Nhb04Nf6o902Cd3VBt7
- GDiRM+heC2+/8YT6UsZCpLJMgtLEWEwrPfZAeUJ8JKVdtpJDCdcrdIz4H9Eemg9LaBb1
- EInMEVrVVrCVULpHlxNcj+nj7+Ulpqh1f5namscBEu3UwAVH7xkt+r4aAG6NOQjQfZ1e
- rMsOmMbeZgfYcmXO6ZSrKlG//tryO7NfvfT/GWLOTiMbNLw7sN6uJqncmTNL3MZgtn8i
- kMug==
-X-Gm-Message-State: AOJu0Yy022w37vpKBEhZ4x422uJeJn1s4hz0dlNM5WHwtMa4/WNBzvv9
- 7qxtm9c1JdGZnkC3PNq+ms15UCRNaK6UqmDqpmgbzXmMq85OVpl2olm4HLCltzk6D+ip4O0JhQb
- b
-X-Gm-Gg: ASbGncsWXXTkkwDBdHDsHK4/qBgPkDQ60aJe0CU2fG9LO40N+/ArjMt7ZXMedjHEYDw
- UJ6HkogaVPsD1sckjGYZ5ZzghzKjUL9/kMJTeLUazOcmmiSeXqWR4LFwHqs32LJDxGZn7VOtre/
- qD2Ibz8Zb2T+31v8gqJNldJ5acou8nBmAewKYLo+tkKI/zQHnmxwFUxvFw91g//R84SVwW1dFAB
- fHlXdrsvNMePC3lIj2smXznYbQIi3ZoGq1nHLZBMZ9K9RmroN0yt0TcbfXD3d3yRE1Psv6rMuI=
-X-Google-Smtp-Source: AGHT+IFN1G4FyN2lt1cGDzEC4SkhvFF6A7kKTtEMgkJpvtIE2YkMfEp/dAZIv1OOcQZuIRKzzNWqqA==
-X-Received: by 2002:a05:600c:5254:b0:436:18e5:6917 with SMTP id
- 5b1f17b1804b1-4366790f200mr37219925e9.0.1734711389265; 
- Fri, 20 Dec 2024 08:16:29 -0800 (PST)
+ bh=55AKXx89HlzplcYp2oBjo0MnM9odtmQqSPwrBjg6+7I=;
+ b=UyJYCMnMkJYJBg7eYFCFZ/tm1TQs0UO8YTDu0OjQO/0Bf2UfePdPc1keFv/nT7z1TA
+ L+AtuYqNqL2fbk+L8eTHnv0RhZozgT11Ke8GvzSmhocT0sZt49wYiuNSLhxQrGUnMEXO
+ do2Y1ODucTvW/xvYaaonjT+PZS9fsxk+VVjoYb2fh1fRdaKlN28Sywm1saZ0HUCyH70W
+ V9wiktOHg7cTYwDFIW8wLk4fLrv3Li1N2O98ABlgWInYwg6LW4npulAqwI+DyJZcopA8
+ fVJtHlQAABm2pRZ03Qn9KpyYAdGmBWKOzHe8uoFHfOgxK0PgxhMwI7PNGWxxi1J5FCF+
+ ZczA==
+X-Gm-Message-State: AOJu0Yz2NHpVQtZkWuakilJhzh4ZV75eCKfNBaDnqy+jm6eg7h7XpBSC
+ OgLEa9I3trigaTg3Ey5WcjCXc3Qjd9oMbSvWXVxeAaWUxBV9taNABadI3cYBDoUXDq6eeicp4c+
+ z
+X-Gm-Gg: ASbGncspBCUCqc+kd4RttR4zKQeU/67d8s8OD0sImY4y89TTDS0Ni1cC37c5YE8bn+O
+ jEevDF+nCtA2Bcz+BtFVMatE22qJvCHaRwom2obgsmalVQmZgRfXlOoBHk6qWtrKzRy26QceUk+
+ 7Y0sT8TtTKk+QwoYUhv9F9034RGE/4zoYY8cZ1v4YAS0ZmjwlLhagbcBh8rmU5bI/sK3xKedsNZ
+ wYdtC7oBn50xLZPZTyossU8snmyde0hiq03jyqjRNjNiCuHc4Sd0C37wM/FEaC9vVR4VUC4NW0=
+X-Google-Smtp-Source: AGHT+IHEPXLNfcnqbyjB7U2V8CIDP16ggmfGb8R1MuiJwUhSiQucR5vFObtdwEklpNlVW5x0L/n/hA==
+X-Received: by 2002:a05:600c:3150:b0:436:17e4:ad4c with SMTP id
+ 5b1f17b1804b1-4366835ebefmr29582145e9.6.1734711393829; 
+ Fri, 20 Dec 2024 08:16:33 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43661200abesm49504195e9.18.2024.12.20.08.16.28
+ 5b1f17b1804b1-43656b013ecsm83764965e9.16.2024.12.20.08.16.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:16:28 -0800 (PST)
+ Fri, 20 Dec 2024 08:16:33 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
+Cc: Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 08/59] hw/ppc: Explicitly create the drc container
-Date: Fri, 20 Dec 2024 17:14:59 +0100
-Message-ID: <20241220161551.89317-9-philmd@linaro.org>
+Subject: [PULL 09/59] qom: Create system containers explicitly
+Date: Fri, 20 Dec 2024 17:15:00 +0100
+Message-ID: <20241220161551.89317-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
 References: <20241220161551.89317-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,116 +98,120 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-QEMU will start to not rely on implicit creations of containers soon.  Make
-PPC drc devices follow by explicitly create the container whenever a drc
-device is realized, dropping container_get() calls.
+Always explicitly create QEMU system containers upfront.
 
-No functional change intended.
+Root containers will be created when trying to fetch the root object the
+1st time.  They are:
 
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Cc: qemu-ppc@nongnu.org
+  /objects
+  /chardevs
+  /backend
+
+Machine sub-containers will be created only until machine is being
+initialized.  They are:
+
+  /machine/unattached
+  /machine/peripheral
+  /machine/peripheral-anon
+
 Signed-off-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241121192202.4155849-7-peterx@redhat.com>
+Message-ID: <20241121192202.4155849-8-peterx@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/spapr_drc.c | 29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ hw/core/machine.c |  3 ---
+ qom/object.c      | 24 +++++++++++++++++++++++-
+ system/vl.c       | 16 ++++++++++++++++
+ 3 files changed, 39 insertions(+), 4 deletions(-)
 
-diff --git a/hw/ppc/spapr_drc.c b/hw/ppc/spapr_drc.c
-index 1484e3209d9..7868048bb9d 100644
---- a/hw/ppc/spapr_drc.c
-+++ b/hw/ppc/spapr_drc.c
-@@ -27,7 +27,7 @@
- #include "sysemu/reset.h"
- #include "trace.h"
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index d970f753e37..3d734f8c18d 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -1229,9 +1229,6 @@ static void machine_initfn(Object *obj)
+     MachineState *ms = MACHINE(obj);
+     MachineClass *mc = MACHINE_GET_CLASS(obj);
  
--#define DRC_CONTAINER_PATH "/dr-connector"
-+#define DRC_CONTAINER_PATH "dr-connector"
- #define DRC_INDEX_TYPE_SHIFT 28
- #define DRC_INDEX_ID_MASK ((1ULL << DRC_INDEX_TYPE_SHIFT) - 1)
+-    container_get(obj, "/peripheral");
+-    container_get(obj, "/peripheral-anon");
+-
+     ms->dump_guest_core = true;
+     ms->mem_merge = (QEMU_MADV_MERGEABLE != QEMU_MADV_INVALID);
+     ms->enable_graphics = true;
+diff --git a/qom/object.c b/qom/object.c
+index c9f8442b136..b4c52d055d9 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -1729,12 +1729,34 @@ const char *object_property_get_type(Object *obj, const char *name, Error **errp
+     return prop->type;
+ }
  
-@@ -514,6 +514,16 @@ static const VMStateDescription vmstate_spapr_drc = {
++static const char *const root_containers[] = {
++    "chardevs",
++    "objects",
++    "backend"
++};
++
++static Object *object_root_initialize(void)
++{
++    Object *root = object_new(TYPE_CONTAINER);
++    int i;
++
++    /*
++     * Create all QEMU system containers.  "machine" and its sub-containers
++     * are only created when machine initializes (qemu_create_machine()).
++     */
++    for (i = 0; i < ARRAY_SIZE(root_containers); i++) {
++        object_property_add_new_container(root, root_containers[i]);
++    }
++
++    return root;
++}
++
+ Object *object_get_root(void)
+ {
+     static Object *root;
+ 
+     if (!root) {
+-        root = object_new(TYPE_CONTAINER);
++        root = object_root_initialize();
      }
- };
  
-+static void drc_container_create(void)
-+{
-+    object_property_add_new_container(object_get_root(), DRC_CONTAINER_PATH);
-+}
-+
-+static Object *drc_container_get(void)
-+{
-+    return object_resolve_path_component(object_get_root(), DRC_CONTAINER_PATH);
-+}
-+
- static void drc_realize(DeviceState *d, Error **errp)
- {
-     SpaprDrc *drc = SPAPR_DR_CONNECTOR(d);
-@@ -529,7 +539,7 @@ static void drc_realize(DeviceState *d, Error **errp)
-      * inaccessible by the guest, since lookups rely on this path
-      * existing in the composition tree
-      */
--    root_container = container_get(object_get_root(), DRC_CONTAINER_PATH);
-+    root_container = drc_container_get();
-     child_name = object_get_canonical_path_component(OBJECT(drc));
-     trace_spapr_drc_realize_child(spapr_drc_index(drc), child_name);
-     object_property_add_alias(root_container, link_name,
-@@ -543,12 +553,10 @@ static void drc_unrealize(DeviceState *d)
- {
-     SpaprDrc *drc = SPAPR_DR_CONNECTOR(d);
-     g_autofree gchar *name = g_strdup_printf("%x", spapr_drc_index(drc));
--    Object *root_container;
- 
-     trace_spapr_drc_unrealize(spapr_drc_index(drc));
-     vmstate_unregister(VMSTATE_IF(drc), &vmstate_spapr_drc, drc);
--    root_container = container_get(object_get_root(), DRC_CONTAINER_PATH);
--    object_property_del(root_container, name);
-+    object_property_del(drc_container_get(), name);
+     return root;
+diff --git a/system/vl.c b/system/vl.c
+index 09202b57e73..85fcc8f96e6 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -2113,6 +2113,21 @@ static void parse_memory_options(void)
+     loc_pop(&loc);
  }
  
- SpaprDrc *spapr_dr_connector_new(Object *owner, const char *type,
-@@ -585,6 +593,8 @@ static void spapr_dr_connector_class_init(ObjectClass *k, void *data)
- {
-     DeviceClass *dk = DEVICE_CLASS(k);
- 
-+    drc_container_create();
++static const char *const machine_containers[] = {
++    "unattached",
++    "peripheral",
++    "peripheral-anon"
++};
 +
-     dk->realize = drc_realize;
-     dk->unrealize = drc_unrealize;
-     /*
-@@ -796,9 +806,8 @@ static const TypeInfo spapr_drc_pmem_info = {
- SpaprDrc *spapr_drc_by_index(uint32_t index)
++static void qemu_create_machine_containers(Object *machine)
++{
++    int i;
++
++    for (i = 0; i < ARRAY_SIZE(machine_containers); i++) {
++        object_property_add_new_container(machine, machine_containers[i]);
++    }
++}
++
+ static void qemu_create_machine(QDict *qdict)
  {
-     Object *obj;
--    g_autofree gchar *name = g_strdup_printf("%s/%x", DRC_CONTAINER_PATH,
--                                             index);
--    obj = object_resolve_path(name, NULL);
-+    g_autofree gchar *name = g_strdup_printf("%x", index);
-+    obj = object_resolve_path_component(drc_container_get(), name);
- 
-     return !obj ? NULL : SPAPR_DR_CONNECTOR(obj);
- }
-@@ -860,7 +869,7 @@ int spapr_dt_drc(void *fdt, int offset, Object *owner, uint32_t drc_type_mask)
-     /* aliases for all DRConnector objects will be rooted in QOM
-      * composition tree at DRC_CONTAINER_PATH
-      */
--    root_container = container_get(object_get_root(), DRC_CONTAINER_PATH);
-+    root_container = drc_container_get();
- 
-     object_property_iter_init(&iter, root_container);
-     while ((prop = object_property_iter_next(&iter))) {
-@@ -953,7 +962,7 @@ void spapr_drc_reset_all(SpaprMachineState *spapr)
-     ObjectProperty *prop;
-     ObjectPropertyIterator iter;
- 
--    drc_container = container_get(object_get_root(), DRC_CONTAINER_PATH);
-+    drc_container = drc_container_get();
- restart:
-     object_property_iter_init(&iter, drc_container);
-     while ((prop = object_property_iter_next(&iter))) {
+     MachineClass *machine_class = select_machine(qdict, &error_fatal);
+@@ -2121,6 +2136,7 @@ static void qemu_create_machine(QDict *qdict)
+     current_machine = MACHINE(object_new_with_class(OBJECT_CLASS(machine_class)));
+     object_property_add_child(object_get_root(), "machine",
+                               OBJECT(current_machine));
++    qemu_create_machine_containers(OBJECT(current_machine));
+     object_property_add_child(container_get(OBJECT(current_machine),
+                                             "/unattached"),
+                               "sysbus", OBJECT(sysbus_get_default()));
 -- 
 2.47.1
 
