@@ -2,78 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F4A59F8B09
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 05:16:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFDDA9F8BF8
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 06:48:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOUQY-00022y-1V; Thu, 19 Dec 2024 23:15:51 -0500
+	id 1tOVqo-00012k-0Z; Fri, 20 Dec 2024 00:47:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tOUPX-0001Yf-Ku
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 23:14:50 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
+ id 1tOVqk-00012Z-Ql
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 00:46:59 -0500
+Received: from mail-yw1-x112e.google.com ([2607:f8b0:4864:20::112e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tOUPV-0006rk-Lx
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 23:14:46 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-72764c995e5so916821b3a.2
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 20:14:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
+ id 1tOVqg-0001ZB-3V
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 00:46:58 -0500
+Received: by mail-yw1-x112e.google.com with SMTP id
+ 00721157ae682-6eff8289d0eso14668097b3.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 21:46:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734668084; x=1735272884; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=bytedance.com; s=google; t=1734673607; x=1735278407; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jeaDhdgh49HwDL7JKkbuMtxfcE1xBL3FzDC+L5uqhuU=;
- b=az/e7WiTyBU6GWbHaOWKF+fW0NAOE7ipcGRvHTVnEBOgqw1evvgETq/qCpMPD+Hp/U
- nq1uqk6uvQEnqz6HPrGrewpckEPS4wnFz+0Ca1G71q7XyjdmiIadziBo7Q9v9Lg4+hGi
- 6WPcmQ3Gh22eNSQXCwO7LDR088ElAK5pfRPED5FJbz2DiJCxOhbTNrchmZJNq4lnr7B/
- s+UEH0Ct9WvFSKCg449rfLfjunMWCaI5NGKMkUzHERiRBnE1LJ7ynZ5bhwlSNazeKX+y
- xg2bd+RSf8rbJTfhv8Tc88tq3zh4pEojnSVTK04FBD6VOntLDNxYH1F0AebrR4xCLb5Y
- lREQ==
+ bh=6HmCbW4cbYGRh6sWnELe0P12Q8AqFw2UZNKcD46rN0s=;
+ b=PwfR9BUiGaVP3ODAFfOM16hInMlzxJ4GMJC1NAFPLZRzjlRP6KOT0Cf83bBq4L/yyw
+ Q+yKg3GuMWHlY6aRLfb6WA2IY15B0RCsVuB9jsehAcnF101190nwBiyjhwfrTE/VEbXs
+ wmG0OCdxnJHPKKaFnHowcA4u+nrDTL8CX0+37yxCgOZBwFZiKyPfqlqHwFJmviZOTvsz
+ 18YoOCRFIMEeUZl6VWDEF88TuPBDW2vRPAGc/y7FxHAJnaG8L1SEXJPmofIrnv6BCcnJ
+ QAWBJWde2mvu8vrMrv+CL474f7Wm74OyF7Dh2iWdqzaaP0bT3eut6tWVLsnwYadl0Plu
+ geIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734668084; x=1735272884;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1734673607; x=1735278407;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jeaDhdgh49HwDL7JKkbuMtxfcE1xBL3FzDC+L5uqhuU=;
- b=pbX5tQhRZB4UwuEZn05CPGnrR757+Je7ewhP2GZTKYKffJYVHQU25vsV7tNOgYv11s
- EkrZyE6a3bauAMIUooEFcfkUctXV8yexrmNfGbo6+GAsog1f/U7nKDNCLIFuhbIieNYF
- OsxEK5WndZi+3dTvuzZCFyU1abvR9VR8/YIxVQchw42p6sjT9niK2BK24obpE6bbCUGV
- whyXoD17KYfqm1zrnqy17u1jNyTVX6wK0pUVGbMuVW1yazc1YtXOns9gPeMtkJvPMY2h
- jexba8liWAXlZRqj+sJSnDXsz8kYz6XjXzmRBdvxBdWVclNuvh6ZNcSo9SIULX6z9YVo
- X52A==
-X-Gm-Message-State: AOJu0YzrOdZsu/q0x/omLze9ImKKWMRhQN5U2h98y3FePaREykc+brk0
- fmbYH9yE4RUoGuxMX1fgz2tQMf+3iVHNytFYpA8Ju9qq0PK9PVtYflS0Wrg1ZqNwYnGqyNp1SsZ
- 4
-X-Gm-Gg: ASbGncuslQ9sz3OpT2u1+C/KRF4AQPscypUMnXo7OAlXwK0kH60l18p9zt3P4gHJrBa
- LQqHOr29h4TOTMTLXxiBKbXLlKjHzy53j78x7rg1cw14tyrDJWuYCIZmdJ9IuV8T/QSniIQE5pA
- mbEubLZgEszs9YLEl7lMklC9Y7bnLFFUy2sjCko7FvGkLruHT68eWOQ3vVEYHLZKkgkiuVMeqe0
- ujXvXEqiHYOvOuZZtMjHXVdpJ51PMZEin0bgCdGLUvFZL9oKd7Man+SuiE3Qyw=
-X-Google-Smtp-Source: AGHT+IHT3J90bjDvyZLE3DHgD6hE3bP85A5oxadrtb2zqTh0ZmjRQVbisOPyivxLSRvP6yP11weC8Q==
-X-Received: by 2002:a05:6a00:240f:b0:728:e40d:c5fc with SMTP id
- d2e1a72fcca58-72abdeb6267mr1442069b3a.22.1734668084085; 
- Thu, 19 Dec 2024 20:14:44 -0800 (PST)
-Received: from stoup.. ([71.212.144.252]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-8529e78a55dsm506952a12.80.2024.12.19.20.14.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 20:14:43 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 51/51] tcg/optimize: Move fold_cmp_vec,
- fold_cmpsel_vec into alphabetic sort
-Date: Thu, 19 Dec 2024 20:11:03 -0800
-Message-ID: <20241220041104.53105-52-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241220041104.53105-1-richard.henderson@linaro.org>
-References: <20241220041104.53105-1-richard.henderson@linaro.org>
+ bh=6HmCbW4cbYGRh6sWnELe0P12Q8AqFw2UZNKcD46rN0s=;
+ b=Y6KnWlrxWA6lLMSYz6yuPeiNP6DZ82E4Xf8etUF2TmnUl3ElF/L3bAXosEfZvvacTp
+ 7JiCCfsuuuqDHCdQ4xakZKasTFRfftd5XEUhK1Abvfg8Vg1oEGoroXGxy801K8pBwTsX
+ /Ob2sH44UMqXJjAKEdkjwjtndf0sEFcyTNKAP1+mxIzP5judMmjEjhGiNeXfWVXfyupc
+ iaJl4tl0HJywJwyxKHx7nLLNTnrzZZnL9/n+3Y3qwF91Xnu7QcKtfka3StsqsM46a/3V
+ Gj1tE6bo+gvcttgPTG+Zw/5fZa7BQCs2wma9+nAzRxbZMQLhIjBQL+zE0GiJFWPc9jgI
+ mf8g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWHEFYf2WPQmP5u/npzLgHLChbqDCoqKE1DAQHZyJK2Pvamjf3At/4P8p8V6MvWpDyWJPpD0T28tcCv@nongnu.org
+X-Gm-Message-State: AOJu0Ywk3wPfKSYTuYBAJzu4ICo5gMqzrwGQn9ZLPoZUypgyoAMHXifQ
+ RY/Ol8xBhx+Mr33eo97GkEEvR56ouM2i3E4My5LG/enJmpZXhiZQv7xN5H1fhm3p3CVmJgGJY5G
+ hIMH2Euq+dbpAaTdSLY/P5OlAa7Nx488P8OQpFw==
+X-Gm-Gg: ASbGnctJN3LP0mK7dOwWAIga0Ve5fUGhKORPNWvW3JpKyOLKP0vt5fEBQW9vVHwqSbY
+ vwTwQaC/VEfMM4/BI12tnlkvYa7x3/WZKmsf6oJ9eOhxOnHmDS8vOuZAFQhrWKS8ZZOX/Z4c=
+X-Google-Smtp-Source: AGHT+IEh+06kg+5Z4pi5IbpZs63KAqAT/viBOkFeu3TUc1qix+Te7dKFq7QVsVUos32SDQPui3OW3zLojRBKdwDn+N8=
+X-Received: by 2002:a05:690c:7007:b0:6ef:6536:bb8c with SMTP id
+ 00721157ae682-6f3f8141cc8mr9798517b3.21.1734673607399; Thu, 19 Dec 2024
+ 21:46:47 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+References: <20241204021142.24184-1-yichen.wang@bytedance.com>
+ <20241204021142.24184-10-yichen.wang@bytedance.com> <87wmfyurat.fsf@suse.de>
+In-Reply-To: <87wmfyurat.fsf@suse.de>
+From: Yichen Wang <yichen.wang@bytedance.com>
+Date: Thu, 19 Dec 2024 21:46:36 -0800
+Message-ID: <CAHObMVZWAToy9b=OhMPwFOkRdz9e01JB1fgG4g3jnMeOOGKdMw@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v8 09/12] migration/multifd: Enable DSA
+ offloading in multifd sender path.
+To: Fabiano Rosas <farosas@suse.de>
+Cc: Peter Xu <peterx@redhat.com>, "Dr. David Alan Gilbert" <dave@treblig.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ qemu-devel@nongnu.org, 
+ Hao Xiang <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>, 
+ Shivam Kumar <shivam.kumar1@nutanix.com>, 
+ "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112e;
+ envelope-from=yichen.wang@bytedance.com; helo=mail-yw1-x112e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,93 +103,409 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The big comment just above says functions should be sorted.
+On Tue, Dec 17, 2024 at 9:56=E2=80=AFAM Fabiano Rosas <farosas@suse.de> wro=
+te:
+>
+> Yichen Wang <yichen.wang@bytedance.com> writes:
+>
+> > From: Hao Xiang <hao.xiang@linux.dev>
+> >
+> > Multifd sender path gets an array of pages queued by the migration
+> > thread. It performs zero page checking on every page in the array.
+> > The pages are classfied as either a zero page or a normal page. This
+> > change uses Intel DSA to offload the zero page checking from CPU to
+> > the DSA accelerator. The sender thread submits a batch of pages to DSA
+> > hardware and waits for the DSA completion thread to signal for work
+> > completion.
+> >
+> > Signed-off-by: Hao Xiang <hao.xiang@linux.dev>
+> > Signed-off-by: Yichen Wang <yichen.wang@bytedance.com>
+> > ---
+> >  migration/multifd-zero-page.c | 149 ++++++++++++++++++++++++++++++----
+> >  migration/multifd.c           |  15 +++-
+> >  migration/multifd.h           |   6 ++
+> >  migration/options.c           |  13 +++
+> >  migration/options.h           |   1 +
+> >  5 files changed, 168 insertions(+), 16 deletions(-)
+> >
+> > diff --git a/migration/multifd-zero-page.c b/migration/multifd-zero-pag=
+e.c
+> > index f1e988a959..08e7fc3d92 100644
+> > --- a/migration/multifd-zero-page.c
+> > +++ b/migration/multifd-zero-page.c
+> > @@ -21,7 +21,9 @@
+> >
+> >  static bool multifd_zero_page_enabled(void)
+> >  {
+> > -    return migrate_zero_page_detection() =3D=3D ZERO_PAGE_DETECTION_MU=
+LTIFD;
+> > +    ZeroPageDetection curMethod =3D migrate_zero_page_detection();
+> > +    return (curMethod =3D=3D ZERO_PAGE_DETECTION_MULTIFD ||
+> > +            curMethod =3D=3D ZERO_PAGE_DETECTION_DSA_ACCEL);
+> >  }
+> >
+> >  static void swap_page_offset(ram_addr_t *pages_offset, int a, int b)
+> > @@ -37,26 +39,49 @@ static void swap_page_offset(ram_addr_t *pages_offs=
+et, int a, int b)
+> >      pages_offset[b] =3D temp;
+> >  }
+> >
+> > +#ifdef CONFIG_DSA_OPT
+> > +
+> > +static void swap_result(bool *results, int a, int b)
+> > +{
+> > +    bool temp;
+> > +
+> > +    if (a =3D=3D b) {
+> > +        return;
+> > +    }
+> > +
+> > +    temp =3D results[a];
+> > +    results[a] =3D results[b];
+> > +    results[b] =3D temp;
+> > +}
+> > +
+> >  /**
+> > - * multifd_send_zero_page_detect: Perform zero page detection on all p=
+ages.
+> > + * zero_page_detect_dsa: Perform zero page detection using
+> > + * Intel Data Streaming Accelerator (DSA).
+> >   *
+> > - * Sorts normal pages before zero pages in p->pages->offset and update=
+s
+> > - * p->pages->normal_num.
+> > + * Sorts normal pages before zero pages in pages->offset and updates
+> > + * pages->normal_num.
+> >   *
+> >   * @param p A pointer to the send params.
+> >   */
+> > -void multifd_send_zero_page_detect(MultiFDSendParams *p)
+> > +static void zero_page_detect_dsa(MultiFDSendParams *p)
+> >  {
+> >      MultiFDPages_t *pages =3D &p->data->u.ram;
+> >      RAMBlock *rb =3D pages->block;
+> > -    int i =3D 0;
+> > -    int j =3D pages->num - 1;
+> > +    bool *results =3D p->dsa_batch_task->results;
+> >
+> > -    if (!multifd_zero_page_enabled()) {
+> > -        pages->normal_num =3D pages->num;
+> > -        goto out;
+> > +    for (int i =3D 0; i < pages->num; i++) {
+> > +        p->dsa_batch_task->addr[i] =3D
+> > +            (ram_addr_t)(rb->host + pages->offset[i]);
+> >      }
+> >
+> > +    buffer_is_zero_dsa_batch_sync(p->dsa_batch_task,
+> > +                                  (const void **)p->dsa_batch_task->ad=
+dr,
+> > +                                  pages->num,
+> > +                                  multifd_ram_page_size());
+> > +
+> > +    int i =3D 0;
+> > +    int j =3D pages->num - 1;
+> > +
+> >      /*
+> >       * Sort the page offset array by moving all normal pages to
+> >       * the left and all zero pages to the right of the array.
+> > @@ -64,23 +89,59 @@ void multifd_send_zero_page_detect(MultiFDSendParam=
+s *p)
+> >      while (i <=3D j) {
+> >          uint64_t offset =3D pages->offset[i];
+> >
+> > -        if (!buffer_is_zero(rb->host + offset, multifd_ram_page_size()=
+)) {
+> > +        if (!results[i]) {
+> >              i++;
+> >              continue;
+> >          }
+> >
+> > +        swap_result(results, i, j);
+> >          swap_page_offset(pages->offset, i, j);
+> >          ram_release_page(rb->idstr, offset);
+> >          j--;
+> >      }
+> >
+> >      pages->normal_num =3D i;
+> > +}
+> >
+> > -out:
+> > -    stat64_add(&mig_stats.normal_pages, pages->normal_num);
+> > -    stat64_add(&mig_stats.zero_pages, pages->num - pages->normal_num);
+> > +int multifd_dsa_setup(MigrationState *s, Error *local_err)
+> > +{
+> > +    g_autofree strList *dsa_parameter =3D g_malloc0(sizeof(strList));
+> > +    migrate_dsa_accel_path(dsa_parameter);
+> > +    if (qemu_dsa_init(dsa_parameter, &local_err)) {
+> > +        migrate_set_error(s, local_err);
+> > +        return -1;
+> > +    } else {
+> > +        qemu_dsa_start();
+> > +    }
+> > +
+> > +    return 0;
+> > +}
+> > +
+> > +void multifd_dsa_cleanup(void)
+> > +{
+> > +    qemu_dsa_cleanup();
+> > +}
+> > +
+> > +#else
+> > +
+> > +static void zero_page_detect_dsa(MultiFDSendParams *p)
+> > +{
+> > +    g_assert_not_reached();
+> >  }
+> >
+> > +int multifd_dsa_setup(MigrationState *s, Error *local_err)
+> > +{
+> > +    g_assert_not_reached();
+> > +    return -1;
+> > +}
+> > +
+> > +void multifd_dsa_cleanup(void)
+> > +{
+> > +    return ;
+> > +}
+> > +
+> > +#endif
+> > +
+> >  void multifd_recv_zero_page_process(MultiFDRecvParams *p)
+> >  {
+> >      for (int i =3D 0; i < p->zero_num; i++) {
+> > @@ -92,3 +153,63 @@ void multifd_recv_zero_page_process(MultiFDRecvPara=
+ms *p)
+> >          }
+> >      }
+> >  }
+> > +
+> > +/**
+> > + * zero_page_detect_cpu: Perform zero page detection using CPU.
+> > + *
+> > + * Sorts normal pages before zero pages in p->pages->offset and update=
+s
+> > + * p->pages->normal_num.
+> > + *
+> > + * @param p A pointer to the send params.
+> > + */
+> > +static void zero_page_detect_cpu(MultiFDSendParams *p)
+> > +{
+> > +    MultiFDPages_t *pages =3D &p->data->u.ram;
+> > +    RAMBlock *rb =3D pages->block;
+> > +    int i =3D 0;
+> > +    int j =3D pages->num - 1;
+> > +
+> > +    /*
+> > +     * Sort the page offset array by moving all normal pages to
+> > +     * the left and all zero pages to the right of the array.
+> > +     */
+> > +    while (i <=3D j) {
+> > +        uint64_t offset =3D pages->offset[i];
+> > +
+> > +        if (!buffer_is_zero(rb->host + offset, multifd_ram_page_size()=
+)) {
+> > +            i++;
+> > +            continue;
+> > +        }
+> > +
+> > +        swap_page_offset(pages->offset, i, j);
+> > +        ram_release_page(rb->idstr, offset);
+> > +        j--;
+> > +    }
+> > +
+> > +    pages->normal_num =3D i;
+> > +}
+> > +
+> > +/**
+> > + * multifd_send_zero_page_detect: Perform zero page detection on all p=
+ages.
+> > + *
+> > + * @param p A pointer to the send params.
+> > + */
+> > +void multifd_send_zero_page_detect(MultiFDSendParams *p)
+> > +{
+> > +    MultiFDPages_t *pages =3D &p->data->u.ram;
+> > +
+> > +    if (!multifd_zero_page_enabled()) {
+> > +        pages->normal_num =3D pages->num;
+> > +        goto out;
+> > +    }
+> > +
+> > +    if (qemu_dsa_is_running()) {
+> > +        zero_page_detect_dsa(p);
+> > +    } else {
+> > +        zero_page_detect_cpu(p);
+> > +    }
+> > +
+> > +out:
+> > +    stat64_add(&mig_stats.normal_pages, pages->normal_num);
+> > +    stat64_add(&mig_stats.zero_pages, pages->num - pages->normal_num);
+> > +}
+> > diff --git a/migration/multifd.c b/migration/multifd.c
+> > index 498e71fd10..946144fc2f 100644
+> > --- a/migration/multifd.c
+> > +++ b/migration/multifd.c
+> > @@ -13,6 +13,7 @@
+> >  #include "qemu/osdep.h"
+> >  #include "qemu/cutils.h"
+> >  #include "qemu/rcu.h"
+> > +#include "qemu/dsa.h"
+> >  #include "exec/target_page.h"
+> >  #include "sysemu/sysemu.h"
+> >  #include "exec/ramblock.h"
+> > @@ -462,6 +463,8 @@ static bool multifd_send_cleanup_channel(MultiFDSen=
+dParams *p, Error **errp)
+> >      p->name =3D NULL;
+> >      g_free(p->data);
+> >      p->data =3D NULL;
+> > +    buffer_zero_batch_task_destroy(p->dsa_batch_task);
+> > +    p->dsa_batch_task =3D NULL;
+> >      p->packet_len =3D 0;
+> >      g_free(p->packet);
+> >      p->packet =3D NULL;
+> > @@ -493,6 +496,8 @@ void multifd_send_shutdown(void)
+> >
+> >      multifd_send_terminate_threads();
+> >
+> > +    multifd_dsa_cleanup();
+> > +
+> >      for (i =3D 0; i < migrate_multifd_channels(); i++) {
+> >          MultiFDSendParams *p =3D &multifd_send_state->params[i];
+> >          Error *local_err =3D NULL;
+> > @@ -814,11 +819,17 @@ bool multifd_send_setup(void)
+> >      uint32_t page_count =3D multifd_ram_page_count();
+> >      bool use_packets =3D multifd_use_packets();
+> >      uint8_t i;
+> > +    Error *local_err =3D NULL;
+> >
+> >      if (!migrate_multifd()) {
+> >          return true;
+> >      }
+> >
+> > +    if (s &&
+> > +        s->parameters.zero_page_detection =3D=3D ZERO_PAGE_DETECTION_D=
+SA_ACCEL) {
+> > +        ret =3D multifd_dsa_setup(s, local_err);
+>
+> This leaves the local_err set and will cause an assert if the code below
+> tries to set it again. We should at the very least report the error here
+> and free it. But that's not ideal because it allows the code to
+> continue.
+>
+> Can you move this whole block after the channels loop as suggested
+> previously but this time take the p->dsa_batch_task along and put it the
+> ->send_setup() loop?
+>
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/optimize.c | 60 +++++++++++++++++++++++++-------------------------
- 1 file changed, 30 insertions(+), 30 deletions(-)
+I am trying to make this change. If I put the p->dsa_batch_task into
+the multifd_dsa_setup() in multifd-zero-page.c, things are a little
+tricky. I will need to pass thread_count and multifd_send_state into
+multifd_dsa_setup(), but multifd_send_state is a multifd.c only data
+structure/variable. I have to make the whole struct into multifd.h,
+and not sure if that is a good idea?
 
-diff --git a/tcg/optimize.c b/tcg/optimize.c
-index 4ec70130a9..c708e50bc2 100644
---- a/tcg/optimize.c
-+++ b/tcg/optimize.c
-@@ -1635,6 +1635,36 @@ static bool fold_call(OptContext *ctx, TCGOp *op)
-     return true;
- }
- 
-+static bool fold_cmp_vec(OptContext *ctx, TCGOp *op)
-+{
-+    /* Canonicalize the comparison to put immediate second. */
-+    if (swap_commutative(NO_DEST, &op->args[1], &op->args[2])) {
-+        op->args[3] = tcg_swap_cond(op->args[3]);
-+    }
-+    return finish_folding(ctx, op);
-+}
-+
-+static bool fold_cmpsel_vec(OptContext *ctx, TCGOp *op)
-+{
-+    /* If true and false values are the same, eliminate the cmp. */
-+    if (args_are_copies(op->args[3], op->args[4])) {
-+        return tcg_opt_gen_mov(ctx, op, op->args[0], op->args[3]);
-+    }
-+
-+    /* Canonicalize the comparison to put immediate second. */
-+    if (swap_commutative(NO_DEST, &op->args[1], &op->args[2])) {
-+        op->args[5] = tcg_swap_cond(op->args[5]);
-+    }
-+    /*
-+     * Canonicalize the "false" input reg to match the destination,
-+     * so that the tcg backend can implement "move if true".
-+     */
-+    if (swap_commutative(op->args[0], &op->args[4], &op->args[3])) {
-+        op->args[5] = tcg_invert_cond(op->args[5]);
-+    }
-+    return finish_folding(ctx, op);
-+}
-+
- static bool fold_count_zeros(OptContext *ctx, TCGOp *op)
- {
-     uint64_t z_mask, s_mask;
-@@ -2536,36 +2566,6 @@ static bool fold_setcond2(OptContext *ctx, TCGOp *op)
-     return tcg_opt_gen_movi(ctx, op, op->args[0], i);
- }
- 
--static bool fold_cmp_vec(OptContext *ctx, TCGOp *op)
--{
--    /* Canonicalize the comparison to put immediate second. */
--    if (swap_commutative(NO_DEST, &op->args[1], &op->args[2])) {
--        op->args[3] = tcg_swap_cond(op->args[3]);
--    }
--    return finish_folding(ctx, op);
--}
--
--static bool fold_cmpsel_vec(OptContext *ctx, TCGOp *op)
--{
--    /* If true and false values are the same, eliminate the cmp. */
--    if (args_are_copies(op->args[3], op->args[4])) {
--        return tcg_opt_gen_mov(ctx, op, op->args[0], op->args[3]);
--    }
--
--    /* Canonicalize the comparison to put immediate second. */
--    if (swap_commutative(NO_DEST, &op->args[1], &op->args[2])) {
--        op->args[5] = tcg_swap_cond(op->args[5]);
--    }
--    /*
--     * Canonicalize the "false" input reg to match the destination,
--     * so that the tcg backend can implement "move if true".
--     */
--    if (swap_commutative(op->args[0], &op->args[4], &op->args[3])) {
--        op->args[5] = tcg_invert_cond(op->args[5]);
--    }
--    return finish_folding(ctx, op);
--}
--
- static bool fold_sextract(OptContext *ctx, TCGOp *op)
- {
-     uint64_t z_mask, s_mask, s_mask_old;
--- 
-2.43.0
-
+> > +    }
+> > +
+> >      thread_count =3D migrate_multifd_channels();
+> >      multifd_send_state =3D g_malloc0(sizeof(*multifd_send_state));
+> >      multifd_send_state->params =3D g_new0(MultiFDSendParams, thread_co=
+unt);
+> > @@ -829,12 +840,12 @@ bool multifd_send_setup(void)
+> >
+> >      for (i =3D 0; i < thread_count; i++) {
+> >          MultiFDSendParams *p =3D &multifd_send_state->params[i];
+> > -        Error *local_err =3D NULL;
+> >
+> >          qemu_sem_init(&p->sem, 0);
+> >          qemu_sem_init(&p->sem_sync, 0);
+> >          p->id =3D i;
+> >          p->data =3D multifd_send_data_alloc();
+> > +        p->dsa_batch_task =3D buffer_zero_batch_task_init(page_count);
+> >
+> >          if (use_packets) {
+> >              p->packet_len =3D sizeof(MultiFDPacket_t)
+> > @@ -865,7 +876,6 @@ bool multifd_send_setup(void)
+> >
+> >      for (i =3D 0; i < thread_count; i++) {
+> >          MultiFDSendParams *p =3D &multifd_send_state->params[i];
+> > -        Error *local_err =3D NULL;
+> >
+> >          ret =3D multifd_send_state->ops->send_setup(p, &local_err);
+> >          if (ret) {
+> > @@ -1047,6 +1057,7 @@ void multifd_recv_cleanup(void)
+> >              qemu_thread_join(&p->thread);
+> >          }
+> >      }
+> > +    multifd_dsa_cleanup();
+> >      for (i =3D 0; i < migrate_multifd_channels(); i++) {
+> >          multifd_recv_cleanup_channel(&multifd_recv_state->params[i]);
+> >      }
+> > diff --git a/migration/multifd.h b/migration/multifd.h
+> > index 50d58c0c9c..da53b0bdfd 100644
+> > --- a/migration/multifd.h
+> > +++ b/migration/multifd.h
+> > @@ -15,6 +15,7 @@
+> >
+> >  #include "exec/target_page.h"
+> >  #include "ram.h"
+> > +#include "qemu/dsa.h"
+> >
+> >  typedef struct MultiFDRecvData MultiFDRecvData;
+> >  typedef struct MultiFDSendData MultiFDSendData;
+> > @@ -155,6 +156,9 @@ typedef struct {
+> >      bool pending_sync;
+> >      MultiFDSendData *data;
+> >
+> > +    /* Zero page checking batch task */
+> > +    QemuDsaBatchTask *dsa_batch_task;
+> > +
+> >      /* thread local variables. No locking required */
+> >
+> >      /* pointer to the packet */
+> > @@ -313,6 +317,8 @@ void multifd_send_fill_packet(MultiFDSendParams *p)=
+;
+> >  bool multifd_send_prepare_common(MultiFDSendParams *p);
+> >  void multifd_send_zero_page_detect(MultiFDSendParams *p);
+> >  void multifd_recv_zero_page_process(MultiFDRecvParams *p);
+> > +int multifd_dsa_setup(MigrationState *s, Error *local_err);
+> > +void multifd_dsa_cleanup(void);
+> >
+> >  static inline void multifd_send_prepare_header(MultiFDSendParams *p)
+> >  {
+> > diff --git a/migration/options.c b/migration/options.c
+> > index ca89fdc4f4..cc40d3dfea 100644
+> > --- a/migration/options.c
+> > +++ b/migration/options.c
+> > @@ -817,6 +817,19 @@ const strList *migrate_accel_path(void)
+> >      return s->parameters.accel_path;
+> >  }
+> >
+> > +void migrate_dsa_accel_path(strList *dsa_accel_path)
+> > +{
+> > +    MigrationState *s =3D migrate_get_current();
+> > +    strList *accel_path =3D s->parameters.accel_path;
+> > +    strList **tail =3D &dsa_accel_path;
+> > +    while (accel_path) {
+> > +        if (strncmp(accel_path->value, "dsa:", 4) =3D=3D 0) {
+> > +            QAPI_LIST_APPEND(tail, &accel_path->value[4]);
+> > +        }
+> > +        accel_path =3D accel_path->next;
+> > +    }
+> > +}
+> > +
+> >  const char *migrate_tls_hostname(void)
+> >  {
+> >      MigrationState *s =3D migrate_get_current();
+> > diff --git a/migration/options.h b/migration/options.h
+> > index 3d1e91dc52..5e34b7c997 100644
+> > --- a/migration/options.h
+> > +++ b/migration/options.h
+> > @@ -85,6 +85,7 @@ const char *migrate_tls_hostname(void);
+> >  uint64_t migrate_xbzrle_cache_size(void);
+> >  ZeroPageDetection migrate_zero_page_detection(void);
+> >  const strList *migrate_accel_path(void);
+> > +void migrate_dsa_accel_path(strList *dsa_accel_path);
+> >
+> >  /* parameters helpers */
 
