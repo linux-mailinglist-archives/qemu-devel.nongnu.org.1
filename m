@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60E559F9633
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:19:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 077B69F9635
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:19:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOfhj-000882-JH; Fri, 20 Dec 2024 11:18:19 -0500
+	id 1tOfhw-0000R3-B1; Fri, 20 Dec 2024 11:18:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfgi-0007SE-GT
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:24 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfgp-0007Zm-NQ
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:28 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfgg-0007zJ-3j
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:15 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-385de9f789cso1631081f8f.2
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:17:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfgm-0007zr-M8
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:17:23 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-37ed3bd6114so989093f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:17:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711432; x=1735316232; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734711436; x=1735316236; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mpB4OZyWBhd1PT/tVcpqHdcUkkCs6TvRmlAnArs5Gjg=;
- b=G5ur1wturxKblRXCSbfI9Ekrrs0rl/bZo6i7+nZv0bVhb9Xwc07gLerMEr9Y4NKOKI
- DGRuEtiA3d5ADcLfxitnFPIMb/0963Ud5L3kFedB8vTDa+WcEsV7YbOF5tF/XXrmPFmP
- zHx/R7b/xyHpHrPzzqfjae50Jn417DOz8jEkaSE2DP928QFHWDI82/AMqW3c9KHXJEll
- 8oJGoTvKwCe9n1fqB/43uw/nu+f9xP+sk3+YrZjytkaa2DCXtZ8K/35LYqJsiNRwDMbq
- oyiC8ORCdVTA6CW+5S5j/uTbkM8zI+nCHIu7sFo5lZDGhpbe49OaYIAfd02sZzIfEJR9
- kheQ==
+ bh=t48vEQ5OnozhVllpD7L+ytn5qFi6DPWUpTegHz2iL4s=;
+ b=icgQ//Xr1RKQsYB/Ew+W/MB/TxfUeOgXapZf4YvOlRagEirYTGEsJuDVppRBckrjnh
+ ZVBjAt1vlV7MdlLYwhIz/f5KE7x7n8LUoDcIYoGIspE115kDyIok9mzeOjUqPLCfOgf4
+ 5vQVf3yWQkV5I4a8ZZBZMM50ib9Vf9ElhcmwxIw5QBOgd/H9ECGU+7gMea+RDAH4rVv3
+ HyCSFWx9+6uJn8ZdLHjdrHwr4tHvwVTkaZEKrro+e4s6ddJyvTCopAPRKkL6P7iau0z/
+ mo/i62SKIFWQaLVtupeyAb/R3Bw3y/YfLgNkXkv7nisdnMZxFX3MhbdWwthvlHHyIz4C
+ JSEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711432; x=1735316232;
+ d=1e100.net; s=20230601; t=1734711436; x=1735316236;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mpB4OZyWBhd1PT/tVcpqHdcUkkCs6TvRmlAnArs5Gjg=;
- b=KURqG9Rzk3VcOoxhvDBQ8WukfxeCl21o73SJLsF5671DbMCQMUanis0SX6uLxJWOQ3
- JYIIJpxZAW1jdvq/PtoeAzo1600t2exummIuiUQkfrLVmVWf1JnxVWQ406QETMsJEPTV
- q9SA3pzsR99re6rm9703JLFQH79dXmmx2EN3mOh8X/r3aSiqqgOcqUKUOZV8kmSuMJew
- BrmzSV1ZU54zXqY7XyVj8QPNMhqXZF1zXEmAdlxcUseHkzaseUF/zaenAZW5kjDfhqia
- 9YFu1gtBiivASUbVCAqLR5Jr6oreDbgEy9IJXDLC8hsMHfFlShcOQrp7ODxTPYA4sXtq
- 8zaA==
-X-Gm-Message-State: AOJu0YxhbZL43t4/fS5pXFinMbXxlRDqzCUN2ktFGI8n56deAwpuKdyx
- utnBQ3ONExoF3CKO77cHQuFkoAnZfTpBPGNie5lsEeOtna0YM5N3zE0gySjfUlf+6ozxeZ0W6Jc
- U
-X-Gm-Gg: ASbGnctUTXOxFUT22yIq4Jtvz2d0q4hxsUvslBmWQxSnKoHQlppzQjdewIdsRzMH7n4
- TO9chEYf7JjyPZ5pqM9LY9U8m+CeW2foeBnl6jB+uzON48HnS/1sNMikRDi3Ppgn66GDZpd40R/
- 8hRB6mPBRxiNcamDLJWjgGSvsG5MJHnXa1seTPXBYoWo+qaCp38kZdoyDsVqMv8M/V5MCKN352r
- vlPb0ZXbSPBP9jxHekZkrEKUp25UABXw8//bYGc3P85v17oxCjkrLdKbXvJJVRAl+FCK+6jQQg=
-X-Google-Smtp-Source: AGHT+IGbLCT37XmiSDwmpS4kh5LRfMRrZGHsYgWa2JJmXkmkLupQKcfhEXxdrag0nASXhymdnViFzg==
-X-Received: by 2002:a5d:6c61:0:b0:385:fc70:80e with SMTP id
- ffacd0b85a97d-38a221ed282mr3874138f8f.3.1734711432102; 
- Fri, 20 Dec 2024 08:17:12 -0800 (PST)
+ bh=t48vEQ5OnozhVllpD7L+ytn5qFi6DPWUpTegHz2iL4s=;
+ b=rsCOBIdPCObkpHAv4XKPRk7okN6flpZ+TgIrbUattrzdrEawUx6ZL2E0emOLCjBRu/
+ hy0cnTxcp+T+vAx7JC+Ci8YJbZ7EjXMQFfR6s/fwd5/q7O4mvuk97IYYvpveVJxrRJOk
+ J0WGGkMiHJ7be+WTcj3PxWKl7dgBdxY0A4jqlhqaKxLHe5isByPZghWxGZCxhHL3IIWR
+ GLOCfOaMnKFyNeeq8j1oEGvcMcUFOjA5h4dw7bjNGNFwIWakMEtbrgxyujgJI8o41lfj
+ VtxHVGZogM+xTxh/3ytGSFjs5dWKgJsI7zBvsM9xufh3cQR17y7Xr7nK863kA5E813EX
+ BMBw==
+X-Gm-Message-State: AOJu0YytjV2fzr/376k3SZfuq5zDf5TBi0MT627mCtbigg/dMyvN4T4F
+ uDyD47TYIOmvn5WO/b92FNMpl7YxwnX7P3th6ieLow8AWaOYiLMrl2fLAS6Q1s+W77STyDqXiKI
+ V
+X-Gm-Gg: ASbGncvKY7+KLHAuOJ32/Qv/R5zGLWhj3hSmCS/Z8LjwaElCRVUmZ1e+6cjK6AN+Phv
+ hfj0g9jJZObVxabwyAyVa1y+NfwAgBN7qVNvLx+IHeKvQlW2B7anVWvxFun43lCN89wdLartwSp
+ YXQyf5waDUfTki9rN5wJT5enexa++mV9FsCbpxz8lrEJrYeKrKBhZkaVwHqowqtWUruoGMqycR7
+ Mb4iDmtbOTl5Si+JhMPAC5iiR61rVK7jwPREdfrH3PFttzgMdu3lc+Od6xzd4GPdEZY9ZhAqtM=
+X-Google-Smtp-Source: AGHT+IEEZ0wwAf7dJ7xNfd+/R3Yv8ermY52FOOkOf4qgHbigjRvMOFz03W4wZ8T3Fd0j0rgiiwdfpw==
+X-Received: by 2002:a05:6000:1785:b0:385:fd07:85f8 with SMTP id
+ ffacd0b85a97d-38a222003abmr3308454f8f.29.1734711436588; 
+ Fri, 20 Dec 2024 08:17:16 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43661200abesm49520575e9.18.2024.12.20.08.17.11
+ 5b1f17b1804b1-4364b053e91sm117393185e9.1.2024.12.20.08.17.15
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:17:11 -0800 (PST)
+ Fri, 20 Dec 2024 08:17:16 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 17/59] exec/cpu-defs: Remove unnecessary headers
-Date: Fri, 20 Dec 2024 17:15:08 +0100
-Message-ID: <20241220161551.89317-18-philmd@linaro.org>
+Subject: [PULL 18/59] exec/translation-block: Include missing 'exec/vaddr.h'
+ header
+Date: Fri, 20 Dec 2024 17:15:09 +0100
+Message-ID: <20241220161551.89317-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
 References: <20241220161551.89317-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,37 +98,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"exec/cpu-defs.h" should be kept as minimal as possible;
-besides these includes don't seem necessary. Remove them.
+'vaddr' type is declared in "exec/vaddr.h".
+"exec/translation-block.h" uses this type without including
+the corresponding header. It works because this header is
+indirectly included, but won't work when the other headers
+are refactored:
+
+  include/exec/translation-block.h:56:5: error: unknown type name 'vaddr'
+     56 |     vaddr pc;
+        |     ^
+
+Explitly include "exec/vaddr.h" to avoid such problem in a
+few commits.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Tested-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241114011310.3615-3-philmd@linaro.org>
+Message-Id: <20241114011310.3615-4-philmd@linaro.org>
 ---
- include/exec/cpu-defs.h | 8 --------
- 1 file changed, 8 deletions(-)
+ include/exec/translation-block.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/exec/cpu-defs.h b/include/exec/cpu-defs.h
-index 0dbef3010cb..ae18398fa99 100644
---- a/include/exec/cpu-defs.h
-+++ b/include/exec/cpu-defs.h
-@@ -23,14 +23,6 @@
- #error cpu.h included from common code
+diff --git a/include/exec/translation-block.h b/include/exec/translation-block.h
+index a6d1af6e9be..b99afb00779 100644
+--- a/include/exec/translation-block.h
++++ b/include/exec/translation-block.h
+@@ -9,6 +9,7 @@
+ 
+ #include "qemu/thread.h"
+ #include "exec/cpu-common.h"
++#include "exec/vaddr.h"
+ #ifdef CONFIG_USER_ONLY
+ #include "qemu/interval-tree.h"
  #endif
- 
--#include "qemu/host-utils.h"
--#include "qemu/thread.h"
--#ifndef CONFIG_USER_ONLY
--#include "exec/hwaddr.h"
--#endif
--#include "exec/memattrs.h"
--#include "hw/core/cpu.h"
--
- #include "cpu-param.h"
- 
- #ifndef TARGET_LONG_BITS
 -- 
 2.47.1
 
