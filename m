@@ -2,105 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBC629F97CE
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 18:25:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8157E9F995B
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 19:21:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOgkB-0000Lb-1n; Fri, 20 Dec 2024 12:24:55 -0500
+	id 1tOhay-0005Id-W1; Fri, 20 Dec 2024 13:19:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tOgk4-0000Kn-DH
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 12:24:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <prvs=077b2128c=graf@amazon.de>)
+ id 1tOhau-0005IT-Ni
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 13:19:24 -0500
+Received: from smtp-fw-6002.amazon.com ([52.95.49.90])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tOgk2-0002Wh-L8
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 12:24:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734715484;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nlYJaGZvxhT+59D9zsDgpov38HXed8A0vZ1hKlymbyY=;
- b=DCzf3mJMp3B1aWcMF67WeHBfeELFWWEQ//1UZecmMGuU4BbgUsuwvix8yCCtg0RB0+3Bpu
- xJvp7eki5Bbf/7DgRcMzdFyRd9/aNIm39E4C/9THvS/lovIeO+Gyyhg/Ezo/VFJfbEzQ71
- XiaSgJZpuEUThtrbxabODOF9b6TDILY=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-166-zthq06-vNpWPi3XLcims3Q-1; Fri, 20 Dec 2024 12:24:43 -0500
-X-MC-Unique: zthq06-vNpWPi3XLcims3Q-1
-X-Mimecast-MFC-AGG-ID: zthq06-vNpWPi3XLcims3Q
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-467b19b55d6so25940981cf.2
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 09:24:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734715483; x=1735320283;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nlYJaGZvxhT+59D9zsDgpov38HXed8A0vZ1hKlymbyY=;
- b=gSzYsMqWI96YwCpHsHLUTwN+daSF1sJmmd3Ov+76fkAvEtElpgqCv4nfFurJDM/7D+
- w5CaHXtTiDXF/hCeiKypXYbAoairD89nYO9l4npdGJUJHcmIroDtfI/i7Xf67cUBDkOo
- jPs2oAXo6UkjbXQdTsAb1dEwFQH8qEphcQVoha1qUga+IfyUimvFHLlOe4/S7YEzKnO9
- W6jJ0HQPln9XaoNZDVHL2E4de/8naOgTmtfLaRkRrjKBhHJTfwikDZRnq7OJjOpuwprY
- BCmO7eq1IauEpCL/qcNw9H5VFfZNiwC9/eeoeKzf0XJwH7svG/ZUjhZXtRck7IiX7sXg
- WzqQ==
-X-Gm-Message-State: AOJu0YxoeHyngb9YJJFzxTMltqJTFNeRxlwo2adCM3O1DQ+NQ4PjtTk2
- U/xlKnGByaJsbhTioQ/s5wsAFMS1TuJ//aUf8PKmAxu9bTRJhNcL94QAaltzVxOVuByjo1fRsbb
- Nr7zWyCce8RRGx6E1gB/wKuwwLv95LdZsgAI2fbo8sZIDy481q5es
-X-Gm-Gg: ASbGncu+bIILANmmrOcthCxWQIWBv4UeFNTafj2g6da3ORwHoCxqJTHeOsz4e94mdOP
- Zsc3v1kGfRpSEhJqWXkZUUFmlfTGWfDvAs2l2N9SGur/mraJhj0wr+S/5EaSjRJvJe5pt/INden
- 0sPNGoWRMkA6OVAEPtMMzIUrwN8LyW8pO7REwtWW8LlZ5oJSS2FEp8wGfsbLTy6glw1Zl3HN00Q
- ryX2C+752clPM9r1KCO5yFIw/e74dFQzlOwdSOrsjYIv7xYyoMKWvxV6LcdRhxDpyGCpU15jlOp
- HJqhvK1vwYX9VMyocw==
-X-Received: by 2002:a05:622a:1a9f:b0:467:4f0a:1b5d with SMTP id
- d75a77b69052e-46a4a989b51mr58416811cf.42.1734715482778; 
- Fri, 20 Dec 2024 09:24:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGLeHeK9I+EyM4jZijhZwJRbpVMNqNTMySYBMt5WHcWTDFBha5MMXcHKzot0A9A1seIZgWk8g==
-X-Received: by 2002:a05:622a:1a9f:b0:467:4f0a:1b5d with SMTP id
- d75a77b69052e-46a4a989b51mr58416401cf.42.1734715482338; 
- Fri, 20 Dec 2024 09:24:42 -0800 (PST)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-46a3e64cb04sm18656721cf.8.2024.12.20.09.24.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Dec 2024 09:24:41 -0800 (PST)
-Date: Fri, 20 Dec 2024 12:24:39 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Juraj Marcin <jmarcin@redhat.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH v2 08/13] qdev: Make qdev_get_machine() not use
- container_get()
-Message-ID: <Z2WoVxB8GfdJj6KM@x1n>
-References: <20241121192202.4155849-1-peterx@redhat.com>
- <20241121192202.4155849-9-peterx@redhat.com>
- <dbe21846-ea9e-47b6-83c4-6ee350e891e5@linaro.org>
- <a0e5950d-2de8-4500-8376-88c231818aed@linaro.org>
- <fe9d34bf-5a68-42e3-ad00-c8f22551865c@linaro.org>
+ (Exim 4.90_1) (envelope-from <prvs=077b2128c=graf@amazon.de>)
+ id 1tOhat-0004a4-0o
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 13:19:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+ t=1734718764; x=1766254764;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=lT9bvBBGgdXF8bBXGniOmeasBAxn3YwgBtU1NSrp3Qg=;
+ b=F01WW4K/EN+8/CL2oFRZnEhWu9Oclgn+ekh+Onucd+ssuL4F4352ipyi
+ NZG9IS0YQ5SDGrk3mMvB+Uq9EVqAqP6Q6wGdiJtRelVfW9HDprkd1ipVW
+ Kjh6uZCW/oqL6Ived0jAoDA2cYrUUzxlo0QFtCaiA16pKx0t54nz+Dpiv Q=;
+X-IronPort-AV: E=Sophos;i="6.12,251,1728950400"; d="scan'208";a="457708970"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO
+ smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+ by smtp-border-fw-6002.iad6.amazon.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 18:19:20 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [10.0.38.20:46391]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.2.75:2525] with
+ esmtp (Farcaster)
+ id 61690754-8cb3-495f-af7f-7eb265e151fb; Fri, 20 Dec 2024 18:19:18 +0000 (UTC)
+X-Farcaster-Flow-ID: 61690754-8cb3-495f-af7f-7eb265e151fb
+Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Fri, 20 Dec 2024 18:19:06 +0000
+Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
+ (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39; Fri, 20 Dec 2024
+ 18:19:05 +0000
+Message-ID: <8d616de4-3083-45e9-81b9-f9e9a00dbe71@amazon.com>
+Date: Fri, 20 Dec 2024 19:19:02 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fe9d34bf-5a68-42e3-ad00-c8f22551865c@linaro.org>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.129,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] hw/misc/vmfwupdate: Introduce hypervisor fw-cfg
+ interface support
+To: Ani Sinha <anisinha@redhat.com>
+CC: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, Gerd Hoffman <kraxel@redhat.com>, Igor Mammedov
+ <imammedo@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, qemu-devel
+ <qemu-devel@nongnu.org>
+References: <20241216114841.1025070-1-anisinha@redhat.com>
+ <3b2e9941-e5a3-4981-adda-f5121bc98e9a@linaro.org>
+ <CAK3XEhNVXZDD0i3pxpSgnogheyJO7dfQ4p0UdvhqU3DrFXJ_ZA@mail.gmail.com>
+ <55f6dfe7-cadf-4942-81e8-18b15938c349@linaro.org>
+ <CAK3XEhNN9EO75vgsdRboMZ7nwZbaL0eenSwSy-7Hze-ukyTZsQ@mail.gmail.com>
+ <7c1a7e86-8996-43ab-aa07-6763387b2bc5@linaro.org>
+ <CAK3XEhOZ50Co0hAS31KYyQA+mgwXSoGCxMu_vhZXmpP0RwT6Mw@mail.gmail.com>
+ <CAK3XEhOAD1cueixs6w2ojvudOwz5YrTxzN4x_kgZTkg_EfFXsA@mail.gmail.com>
+ <1bbf92cf-d9d0-421e-b674-fb216cb7216a@amazon.com>
+ <CAK3XEhOmpQULP6xCetkrwHC_FzSMRs7LSsCyzeUpvqRkw-zkOA@mail.gmail.com>
+Content-Language: en-US
+From: Alexander Graf <graf@amazon.com>
+In-Reply-To: <CAK3XEhOmpQULP6xCetkrwHC_FzSMRs7LSsCyzeUpvqRkw-zkOA@mail.gmail.com>
+X-Originating-IP: [10.253.83.51]
+X-ClientProxiedBy: EX19D044UWB002.ant.amazon.com (10.13.139.188) To
+ EX19D020UWC004.ant.amazon.com (10.13.138.149)
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=52.95.49.90;
+ envelope-from=prvs=077b2128c=graf@amazon.de; helo=smtp-fw-6002.amazon.com
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.248, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,136 +100,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Dec 20, 2024 at 12:25:44PM +0100, Philippe Mathieu-Daudé wrote:
-> On 19/12/24 19:27, Philippe Mathieu-Daudé wrote:
-> > On 19/12/24 19:20, Philippe Mathieu-Daudé wrote:
-> > > On 21/11/24 20:21, Peter Xu wrote:
-> > > > Currently, qdev_get_machine() has a slight misuse on container_get(), as
-> > > > the helper says "get a container" but in reality the goal is to get the
-> > > > machine object.  It is still a "container" but not strictly.
-> > > > 
-> > > > Note that it _may_ get a container (at "/machine") in our
-> > > > current unit test
-> > > > of test-qdev-global-props.c before all these changes, but it's probably
-> > > > unexpected and worked by accident.
-> > > > 
-> > > > Switch to an explicit object_resolve_path_component(), with a
-> > > > side benefit
-> > > > that qdev_get_machine() can happen a lot, and we don't need to split the
-> > > > string ("/machine") every time.  This also paves way for making
-> > > > the helper
-> > > > container_get() never try to return a non-container at all.
-> > > > 
-> > > > Signed-off-by: Peter Xu <peterx@redhat.com>
-> > > > ---
-> > > >   hw/core/qdev.c | 7 ++++++-
-> > > >   1 file changed, 6 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-> > > > index 5f13111b77..b622be15ee 100644
-> > > > --- a/hw/core/qdev.c
-> > > > +++ b/hw/core/qdev.c
-> > > > @@ -817,7 +817,12 @@ Object *qdev_get_machine(void)
-> > > >       static Object *dev;
-> > > >       if (dev == NULL) {
-> > > > -        dev = container_get(object_get_root(), "/machine");
-> > > > +        dev = object_resolve_path_component(object_get_root(),
-> > > > "machine");
-> > > > +        /*
-> > > > +         * Any call to this function before machine is created
-> > > > is treated
-> > > > +         * as a programming error as of now.
-> > > > +         */
-> > > > +        assert(dev);
-> > > 
-> > > This fails for user-emulation:
-> > > 
-> > > ./qemu-x86_64 /bin/echo foo
-> > > qemu-x86_64: ../../hw/core/qdev.c:825: qdev_get_machine: Assertion
-> > > `dev' failed.
-> 
-> OK so I guess I might have found a "fix" which is to simply not
-> call qdev_get_machine() for user emulation, but this involves some
-> invasive refactoring -- so will take time --.
-
-Thanks for taking a look, Phil.  Yes this sounds clean.
-
-> 
-> I'm dropping this series for now, planning to merge it again on top
-> of my refactor once it is ready. Any clever / simpler fix is
-> obviously welcomed first.
-
-I initially thought about this, which could also be clean but I then
-noticed LINUX_USER is poisoned..
-
-===8<===
-diff --git a/qom/object.c b/qom/object.c
-index 58897a79a7..da26e8d69b 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -1729,7 +1729,19 @@ const char *object_property_get_type(Object *obj, const char *name, Error **errp
-     return prop->type;
- }
-
-+/*
-+ * Create all QEMU default containers.
-+ *
-+ * For system emulations, "machine" and its sub-containers are only created
-+ * when machine initializes (qemu_create_machine()).
-+ *
-+ * For user emulations, create "machine" before hand to make qdev realize()
-+ * work by default.
-+ */
- static const char *const root_containers[] = {
-+#ifdef CONFIG_LINUX_USER
-+    "machine",
-+#endif
-     "chardevs",
-     "objects",
-     "backend"
-@@ -1740,10 +1752,6 @@ static Object *object_root_initialize(void)
-     Object *root = object_new(TYPE_CONTAINER);
-     int i;
-
--    /*
--     * Create all QEMU system containers.  "machine" and its sub-containers
--     * are only created when machine initializes (qemu_create_machine()).
--     */
-     for (i = 0; i < ARRAY_SIZE(root_containers); i++) {
-         object_property_add_new_container(root, root_containers[i]);
-     }
-===8<===
-
-Maybe we could still move it somewhere that LINUX_USER is not poisoned
-(plus "unattached" be created too, more below)?
-
-OTOH, this works for me:
-
-===8<===
-diff --git a/linux-user/main.c b/linux-user/main.c
-index b09af8d436..009b7695f2 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -819,6 +819,11 @@ int main(int argc, char **argv, char **envp)
-     set_preferred_target_page_bits(ctz32(host_page_size));
-     finalize_target_page_bits();
- 
-+    Object *fake_obj = object_property_add_new_container(object_get_root(),
-+                                                         "machine");
-+    object_property_add_new_container(fake_obj, "unattached");
-+
-     cpu = cpu_create(cpu_type);
-     env = cpu_env(cpu);
-     cpu_reset(cpu);
-===8<===
-
-So we need both "/machine" and "/machine/unattached" so far to make
-linux-user work.  Not sure if bsd-user/main.c needs similar care, but none
-of these look as clean.
-
-Thanks,
-
--- 
-Peter Xu
+Ck9uIDIwLjEyLjI0IDE0OjMxLCBBbmkgU2luaGEgd3JvdGU6Cj4gT24gRnJpLCBEZWMgMjAsIDIw
+MjQgYXQgNTowM+KAr1BNIEFsZXhhbmRlciBHcmFmIDxncmFmQGFtYXpvbi5jb20+IHdyb3RlOgo+
+Pgo+PiBPbiAyMC4xMi4yNCAxMTowMCwgQW5pIFNpbmhhIHdyb3RlOgo+Pj4+PiBFaXRoZXIgYWRk
+IHRoZSBJMzg2IGRlcGVuZGVuY3kgb3IgZG9uJ3QgdXNlIFBDX01BQ0hJTkUsIGJlY2F1c2Ugb24K
+Pj4+Pj4gbm9uLXg4NiB0YXJnZXRzIFBDX01BQ0hJTkUocWRldl9nZXRfbWFjaGluZSgpKSB3aWxs
+IGNyYXNoLgo+Pj4+IEFoIHRoaXMgaXMgd2hlcmUgd2UgaGF2ZSBhIGRpc2Nvbm5lY3QuIEkgYXNz
+dW1lZCB0aGF0Cj4+Pj4+IHBjbXMgPSBQQ19NQUNISU5FKG1fb2JqKQo+Pj4+IHdvdWxkIHJldHVy
+biBOVUxMIG9uIG5vbi14ODYuCj4+Pj4KPj4+PiBTZWVtcyBhIGJldHRlciB3YXkgdG8gZG8gdGhp
+cyAoYXMgaXMgZG9uZSBpbiB2Z2EuYykgaXMgdG8gdXNlCj4+Pj4gb2JqZWN0X2R5bmFtaWNfY2Fz
+dCgpCj4+Pj4gSG93IGFib3V0Cj4+Pj4KPj4+PiBkaWZmIC0tZ2l0IGEvaHcvbWlzYy92bWZ3dXBk
+YXRlLmMgYi9ody9taXNjL3ZtZnd1cGRhdGUuYwo+Pj4+IGluZGV4IDBlOTBiZDEwZTEuLjE5ZDA0
+MmI5MjkgMTAwNjQ0Cj4+Pj4gLS0tIGEvaHcvbWlzYy92bWZ3dXBkYXRlLmMKPj4+PiArKysgYi9o
+dy9taXNjL3ZtZnd1cGRhdGUuYwo+Pj4+IEBAIC0zMiw5ICszMiwxMSBAQCBzdGF0aWMgaW5saW5l
+IFZNRndVcGRhdGVTdGF0ZSAqdm1md3VwZGF0ZV9maW5kKHZvaWQpCj4+Pj4gICAgc3RhdGljIHVp
+bnQ2NF90IGdldF9tYXhfZndfc2l6ZSh2b2lkKQo+Pj4+ICAgIHsKPj4+PiAgICAgICAgT2JqZWN0
+ICptX29iaiA9IHFkZXZfZ2V0X21hY2hpbmUoKTsKPj4+PiAtICAgIFBDTWFjaGluZVN0YXRlICpw
+Y21zID0gUENfTUFDSElORShtX29iaik7Cj4+Pj4gKyAgICBNYWNoaW5lU3RhdGUgKm1zID0gTUFD
+SElORShtX29iaik7Cj4+Pj4gKyAgICBQQ01hY2hpbmVTdGF0ZSAqcGNtczsKPj4+PiAtICAgIGlm
+IChwY21zKSB7Cj4+Pj4gKyAgICBpZiAob2JqZWN0X2R5bmFtaWNfY2FzdChPQkpFQ1QobXMpLCBU
+WVBFX1g4Nl9NQUNISU5FKSkgewo+Pj4+ICsgICAgICAgIHBjbXMgPSBQQ19NQUNISU5FKG1fb2Jq
+KTsKPj4+PiAgICAgICAgICAgIHJldHVybiBwY21zLT5tYXhfZndfc2l6ZTsKPj4+PiAgICAgICAg
+fSBlbHNlIHsKPj4+PiAgICAgICAgICAgIHJldHVybiAwOwo+Pj4+Cj4+PiBGb3IgdGhlIHJlY29y
+ZHMsIEkgdGVzdGVkIHRoaXMgd2l0aCBhcm0gYW5kIHRoZSBmb2xsb3dpbmcgY29tbWFuZCBsaW5l
+Cj4+PiBkb2VzIG5vdCBjcmFzaCBRRU1VOwo+Pj4KPj4+IC4vcWVtdS1zeXN0ZW0tYXJtIC1tYWNo
+aW5lIHZpcnQtOS4yIC1kZXZpY2Ugdm1md3VwZGF0ZQo+Pj4KPj4+IEkgaGF2ZSBhbHNvIGFkZGVk
+IGEgc2VwYXJhdGUgZnVuY3Rpb25hbCB0ZXN0IHRvIGV4ZXJjaXNlIGJhc2ljIGRldmljZQo+Pj4g
+Y3JlYXRpb24gd2hpY2ggd2lsbCBiZSBwYXJ0IG9mIHY1IHdoZW4gSSBzZW5kIGl0IG91dC4KPj4K
+Pj4gWW91IGFyZSBjdXJyZW50bHkgbm90IGltcGxlbWVudGluZyB0aGUgcmVzZXQgbG9naWMgcmVx
+dWlyZWQgdG8gYWN0dWFsbHkKPj4gbWFrZSB2bWZ3dXBkYXRlIHdvcmsuCj4gWWVzIHRoYXQgaXMg
+Y29ycmVjdCBhbmQgdGhhdCBpcyBieSBkZXNpZ24uIFRoZSByZXNldCBsb2dpYyBvbiBDb0NvCj4g
+ZGVwZW5kcyBvbiB0aGUgbGFyZ2VyIHBpZWNlIG9mIHdvcmsgb24gaG93IHRvIGVuYWJsZSByZXNl
+dCBhbmQKPiByZS1pbnN0YW50aWF0aW9uIG9mIHRoZSBWTSB3aXRob3V0IHNpbXBseSB0ZXJtaW5h
+dGluZy4gSSBkaWQgbm90IHdhbnQKPiB0byB3YWl0IHVudGlsIGFsbCB0aG9zZSBjb21wbGljYXRl
+ZCBiaXRzIHdlcmUgc29ydGVkIG91dCBmaXJzdC4gSQo+IHdhbnRlZCB0byBtYWtlIHN1cmUgdGhh
+dCB0aGUgaHlwZXJ2aXNvci9ndWVzdCBpbnRlcmZhY2UgaXMgcHV0IGluCj4gcGxhY2UuCgoKVGhp
+cyBsb2dpYyBoYXMgbm8gZGVwZW5kZW5jeSBvbiBDb0NvLgoKCj4KPiBUaGF0IG1lYW5zIHRlY2hu
+aWNhbGx5LCB0aGUgZGV2aWNlIHNob3VsZCBub3QgYmUKPj4gaW5zdGFudGlhYmxlIG9uICphbnkq
+IHBsYXRmb3JtIGF0IHRoZSBtb21lbnQuIEZvciBleGFtcGxlIHdpdGggdGhlCj4+IGNvbW1hbmQg
+bGluZSBhYm92ZSB5b3Ugd291bGQgYWR2ZXJ0aXNlIHRoZSBjYXBhYmlsaXR5IHRvIHVwZGF0ZSBm
+aXJtd2FyZQo+PiBpbiBmdy1jZmcsIGJ1dCB0aGVuIG5vdCBiYWNrIGl0IGJ5IGZ1bmN0aW9uYWxp
+dHkuCj4gT0sgc28gaWYgd2Ugd2FudGVkIHRvIHB1dCB0aGlzIHdvcmsgcGVhY2UgbWVhbCBpbiBz
+bWFsbGVyIGNodW5rcywgY2FuCj4gd2UgaGF2ZSBhbiBhZGRpdGlvbmFsIGNhcGFiaWxpdHkgYml0
+IHRoYXQgYWN0dWFsbHkgYWR2ZXJ0aXplcyB0aGlzCj4gZnVuY3Rpb25hbGl0eSBvbiBjZXJ0YWlu
+IG1hY2hpbmUgdHlwZXMvcGxhdGZvcm1zPwoKCk1heWJlLiBUaGUgcHJvcGVydHkgd2UgbmVlZCBp
+cyB0aGF0IHNwYXduaW5nIHRoaXMgZGV2aWNlIG9uIGEgbWFjaGluZSAKdHlwZSB0aGF0IGRvZXMg
+bm90IHN1cHBvcnQgcmVzZXQgZW5saWdodGVubWVudCBmb3IgaXQgc2hvdWxkIGZhaWwgCmxhdW5j
+aGluZy4gSSBkb24ndCByZWFsbHkgY2FyZSBob3cgeW91IGJ1aWxkIHRoYXQuIEJ1dCB0b2RheSwg
+YWRkaW5nIAotZGV2aWNlIHZtZnd1cGRhdGUgc2hvdWxkIGZhaWwgb24gYW55IHRhcmdldCBzeXN0
+ZW0uCgoKPgo+IElmIFFFTVUgd2VyZSB0byBtZXJnZQo+PiB0aGlzIHBhdGNoLCBpdCB3b3VsZCBq
+dXN0IGNyZWF0ZSBhIGJyb2tlbiBkZXZpY2UuCj4gQXJlIHlvdSB0YWxraW5nIGFib3V0IENvQ28g
+b3Igbm9uLUNvQ28/CgoKQWx3YXlzLiBUaGUgZ3Vlc3Qgd291bGQgc2VlIHRoZSBpbnRlcmZhY2Us
+IHRyeSB0byBkcml2ZSBpdCBhbmQgdGhlbiB3ZSAKaWdub3JlIGl0cyBpbnB1dHMuIFdlIGhhdmUg
+dG8gcHJldmVudCB0aGF0IGZyb20gaGFwcGVuaW5nIGlmIHdlIHdhbnQgdG8gCm1lcmdlIHRoZSBi
+YXNlIGxvZ2ljIHdpdGhvdXQgYm9hcmQgYmFja2VuZCBjb2RlLgoKSSBwZXJzb25hbGx5IHRoaW5r
+IHRoZSBib2FyZCBiYWNrZW5kIGNvZGUgZm9yIHBjIGlzIHNpbXBsZSBlbm91Z2ggdGhhdCAKaXQg
+bWFrZXMgc2Vuc2UgdG8gZm9sZCBpbnRvIHRoaXMgcGF0Y2ggdGhvdWdoIHNvIHRoYXQgeW91IGhh
+dmUgYXQgbGVhc3QgCm9uZSB3b3JraW5nIGJvYXJkLgoKCkFsZXgKCgoKCgpBbWF6b24gV2ViIFNl
+cnZpY2VzIERldmVsb3BtZW50IENlbnRlciBHZXJtYW55IEdtYkgKS3JhdXNlbnN0ci4gMzgKMTAx
+MTcgQmVybGluCkdlc2NoYWVmdHNmdWVocnVuZzogQ2hyaXN0aWFuIFNjaGxhZWdlciwgSm9uYXRo
+YW4gV2Vpc3MKRWluZ2V0cmFnZW4gYW0gQW10c2dlcmljaHQgQ2hhcmxvdHRlbmJ1cmcgdW50ZXIg
+SFJCIDI1Nzc2NCBCClNpdHo6IEJlcmxpbgpVc3QtSUQ6IERFIDM2NSA1MzggNTk3Cg==
 
 
