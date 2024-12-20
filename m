@@ -2,103 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 852279F8ED0
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 10:18:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26BA99F8F25
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 10:38:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOZ87-0006HV-B0; Fri, 20 Dec 2024 04:17:07 -0500
+	id 1tOZS4-0002Q9-6W; Fri, 20 Dec 2024 04:37:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1tOZ82-0006CI-1s; Fri, 20 Dec 2024 04:17:02 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
+ id 1tOZS2-0002Pz-G3
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 04:37:42 -0500
+Received: from jedlik.phy.bme.hu ([152.66.102.83])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1tOZ80-0003MH-Dv; Fri, 20 Dec 2024 04:17:01 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BJNbeAe010906;
- Fri, 20 Dec 2024 09:16:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=NsmbT8
- FDmR6KIqrcwY17U3paoKwiVaXtRYMj1B8lt64=; b=DaeMPwGEqARGQxjXygERbz
- ED3/LTpEIVCNEGXSUTPgA6Wo0VbJ1eWSNIVrT8wEu/gvWV58UHcwbnPqI9x9sWOc
- dpZ2dy/85QlaiVJl0LmXxZHGkfHN028BYD6JCXVTJ9KP3f9R1s1trbknIksHm9wZ
- dBPlXdFhflz7a/oyMzJoFuZU5QQfxXrryrt2ARhCQ9ag5S+/TwBDAZ60iRgaLRu+
- LVxmsKCDkMgjxLPIOWU7U3b78e6M0IyfF3SEKVYcEM7mVcWKZKpU1oHoYH8S8/sh
- xrzHBqGHMckfifdHD+MwxlaUY5j1wbi3sBqVoGE83uH7bIUCRc4zkfn7L56DrjbA
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43mwaahx01-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 Dec 2024 09:16:58 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BK97EgL017880;
- Fri, 20 Dec 2024 09:16:58 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43mwaahwyx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 Dec 2024 09:16:58 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BK8Qg5r029326;
- Fri, 20 Dec 2024 09:16:57 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 43hmbt1p36-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 Dec 2024 09:16:57 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
- [10.241.53.105])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4BK9GvPr131712
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 20 Dec 2024 09:16:57 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3740458059;
- Fri, 20 Dec 2024 09:16:57 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A6E0458043;
- Fri, 20 Dec 2024 09:16:55 +0000 (GMT)
-Received: from [9.124.215.200] (unknown [9.124.215.200])
- by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 20 Dec 2024 09:16:55 +0000 (GMT)
-Message-ID: <3566256a-6149-42fd-9a88-06972e419658@linux.ibm.com>
-Date: Fri, 20 Dec 2024 14:46:54 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] spapr: Generate random HASHPKEYR for spapr machines
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-devel@nongnu.org
+ (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
+ id 1tOZS0-0000Ea-J4
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 04:37:42 -0500
+Received: by jedlik.phy.bme.hu (Postfix, from userid 1000)
+ id EAB64A013F; Fri, 20 Dec 2024 10:29:30 +0100 (CET)
+Date: Fri, 20 Dec 2024 10:29:30 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>
+cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 2/5] spapr: Fix vpa dispatch count for record-replay
+In-Reply-To: <4b3897e1-c9dd-45aa-bb6f-d8679fc78d25@linux.ibm.com>
+Message-ID: <alpine.LMD.2.03.2412201027180.18242@eik.bme.hu>
 References: <20241219034035.1826173-1-npiggin@gmail.com>
- <20241219034035.1826173-4-npiggin@gmail.com>
-Content-Language: en-US
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20241219034035.1826173-4-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: q1osRQxyi9rG5QizCeXrK4EvzWAAyxaS
-X-Proofpoint-GUID: 29cRTK_MvmF4EibqEwvQnP3xHv-Rq-uO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0
- bulkscore=0 mlxscore=0 priorityscore=1501 suspectscore=0
- lowpriorityscore=0 adultscore=0 impostorscore=0 mlxlogscore=999
- phishscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412200074
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=-1.116, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ <20241219034035.1826173-3-npiggin@gmail.com>
+ <4b3897e1-c9dd-45aa-bb6f-d8679fc78d25@linux.ibm.com>
+User-Agent: Alpine 2.03 (LMD 1266 2009-07-14)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.102.83;
+ envelope-from=balaton@jedlik.phy.bme.hu; helo=jedlik.phy.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,61 +57,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Fri, 20 Dec 2024, Harsh Prateek Bora wrote:
+> Hi Nick,
+>
+> On 12/19/24 09:10, Nicholas Piggin wrote:
+>> The dispatch count is a field in guest memory that the hypervisor
+>> increments when preempting and dispatching the guest. This was not
+>> being done deterministically with respect to icount, because tcg
+>> exec exit is not deterministic (e.g., an async event could cause it).
+>> 
+>> Change vpa dispatch count increment to keep track of whether the
+>> vCPU is considered dispatched or not, and only consider it preempted
+>> when calling cede / confer / join / stop-self / etc.
+>> 
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>   include/hw/ppc/spapr_cpu_core.h |  3 +++
+>>   hw/ppc/spapr.c                  | 36 ++-------------------------------
+>>   hw/ppc/spapr_hcall.c            | 33 ++++++++++++++++++++++++++++++
+>>   hw/ppc/spapr_rtas.c             |  1 +
+>>   4 files changed, 39 insertions(+), 34 deletions(-)
+>> 
+>
+> <snipped>
+>
+>> diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
+>> index 5e1d020e3df..907e09c2c36 100644
+>> --- a/hw/ppc/spapr_hcall.c
+>> +++ b/hw/ppc/spapr_hcall.c
+>> @@ -487,6 +487,36 @@ static target_ulong h_register_vpa(PowerPCCPU *cpu, 
+>> SpaprMachineState *spapr,
+>>       return ret;
+>>   }
+>>   +void vpa_dispatch(CPUState *cs, SpaprCpuState *spapr_cpu, bool dispatch)
+>> +{
+>> +    uint32_t counter;
+>> +
+>> +    if (!dispatch) {
+>> +        assert(spapr_cpu->dispatched);
+>> +    } else {
+>> +        assert(!spapr_cpu->dispatched);
+>> +    }
+>
+> Would it look better as:
+>       assert(!(dispatch == spapr_cpu->dispatched));
 
+That's more cryptic than the one above. Maybe with ternary operator to 
+avoid the if? Like
+assert(dispatch ? spapr_cpu->dispatched : !spapr_cpu->dispatched)
 
-On 12/19/24 09:10, Nicholas Piggin wrote:
-> The hypervisor is expected to create a value for the HASHPKEY SPR for
-> each partition. Currently it uses zero for all partitions, use a
-> random number instead, which in theory might make kernel ROP protection
-> more secure.
-> 
-> Signed-of-by: Nicholas Piggin <npiggin@gmail.com>
+Regards,
+BALATON Zoltan
 
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-
-> ---
->   include/hw/ppc/spapr.h  | 1 +
->   hw/ppc/spapr.c          | 3 +++
->   hw/ppc/spapr_cpu_core.c | 2 ++
->   3 files changed, 6 insertions(+)
-> 
-> diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-> index af4aa1cb0fb..db44893689b 100644
-> --- a/include/hw/ppc/spapr.h
-> +++ b/include/hw/ppc/spapr.h
-> @@ -201,6 +201,7 @@ struct SpaprMachineState {
->       uint32_t fdt_initial_size;
->       void *fdt_blob;
->       uint8_t fdt_rng_seed[32];
-> +    uint64_t hashpkey_val;
->       long kernel_size;
->       bool kernel_le;
->       uint64_t kernel_addr;
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index fa05e0c5156..34934afd551 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -2888,6 +2888,9 @@ static void spapr_machine_init(MachineState *machine)
->           spapr_ovec_set(spapr->ov5, OV5_XIVE_EXPLOIT);
->       }
->   
-> +    qemu_guest_getrandom_nofail(&spapr->hashpkey_val,
-> +                                sizeof(spapr->hashpkey_val));
-> +
->       /* init CPUs */
->       spapr_init_cpus(spapr);
->   
-> diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
-> index 88d743a3c3f..bf9f29f4ff3 100644
-> --- a/hw/ppc/spapr_cpu_core.c
-> +++ b/hw/ppc/spapr_cpu_core.c
-> @@ -273,6 +273,8 @@ static bool spapr_realize_vcpu(PowerPCCPU *cpu, SpaprMachineState *spapr,
->       env->spr_cb[SPR_PIR].default_value = cs->cpu_index;
->       env->spr_cb[SPR_TIR].default_value = thread_index;
->   
-> +    env->spr_cb[SPR_HASHPKEYR].default_value = spapr->hashpkey_val;
-> +
->       cpu_ppc_set_1lpar(cpu);
->   
->       /* Set time-base frequency to 512 MHz. vhyp must be set first. */
+>> +    spapr_cpu->dispatched = dispatch;
+>> +
+>> +    return;
+>
+> Returning here unconditionally makes below code unreachable.
+>
+>> +
+>> +    if (!spapr_cpu->vpa_addr) {
+>> +        return;
+>> +    }
+>
+> This could be moved to beginning or just after assert.
+>
+> regards,
+> Harsh
+>
+>> +
+>> +    /* These are only called by TCG, KVM maintains dispatch state */
+>> +    counter = ldl_be_phys(cs->as, spapr_cpu->vpa_addr + 
+>> VPA_DISPATCH_COUNTER);
+>> +    counter++;
+>> +    if ((counter & 1) != dispatch) {
+>> +        qemu_log_mask(LOG_GUEST_ERROR,
+>> +                      "VPA: incorrect dispatch counter value for "
+>> +                      "%s partition %u, correcting.\n",
+>> +                      dispatch ? "preempted" : "running", counter);
+>> +        counter++;
+>> +    }
+>> +    stl_be_phys(cs->as, spapr_cpu->vpa_addr + VPA_DISPATCH_COUNTER, 
+>> counter);
+>> +}
+>> +
+>>   static target_ulong h_cede(PowerPCCPU *cpu, SpaprMachineState *spapr,
+>>                              target_ulong opcode, target_ulong *args)
+>>   {
+>> @@ -505,6 +535,7 @@ static target_ulong h_cede(PowerPCCPU *cpu, 
+>> SpaprMachineState *spapr,
+>>         if (!cpu_has_work(cs)) {
+>>           cs->halted = 1;
+>> +        vpa_dispatch(cs, spapr_cpu, false);
+>>           cs->exception_index = EXCP_HLT;
+>>           cs->exit_request = 1;
+>>           ppc_maybe_interrupt(env);
+>> @@ -531,6 +562,8 @@ static target_ulong h_confer_self(PowerPCCPU *cpu)
+>>       cs->exit_request = 1;
+>>       ppc_maybe_interrupt(&cpu->env);
+>>   +    vpa_dispatch(cs, spapr_cpu, false);
+>> +
+>>       return H_SUCCESS;
+>>   }
+>>   diff --git a/hw/ppc/spapr_rtas.c b/hw/ppc/spapr_rtas.c
+>> index f329693c554..8ce42302234 100644
+>> --- a/hw/ppc/spapr_rtas.c
+>> +++ b/hw/ppc/spapr_rtas.c
+>> @@ -216,6 +216,7 @@ static void rtas_stop_self(PowerPCCPU *cpu, 
+>> SpaprMachineState *spapr,
+>>        */
+>>       env->spr[SPR_PSSCR] |= PSSCR_EC;
+>>       cs->halted = 1;
+>> +    vpa_dispatch(cs, spapr_cpu_state(cpu), false);
+>>       ppc_store_lpcr(cpu, env->spr[SPR_LPCR] & ~pcc->lpcr_pm);
+>>       kvmppc_set_reg_ppc_online(cpu, 0);
+>>       qemu_cpu_kick(cs);
+>
+>
 
