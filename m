@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED609F906F
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 11:43:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0316D9F9070
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 11:43:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOaTO-0002Al-8D; Fri, 20 Dec 2024 05:43:10 -0500
+	id 1tOaTX-00031Z-W7; Fri, 20 Dec 2024 05:43:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tOaTL-00026I-OL; Fri, 20 Dec 2024 05:43:07 -0500
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ id 1tOaTV-0002yJ-56; Fri, 20 Dec 2024 05:43:17 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tOaTJ-0005Ev-Vl; Fri, 20 Dec 2024 05:43:07 -0500
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-801986033f9so1086230a12.1; 
- Fri, 20 Dec 2024 02:43:05 -0800 (PST)
+ id 1tOaTT-0005GK-J5; Fri, 20 Dec 2024 05:43:16 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-2166360285dso16684995ad.1; 
+ Fri, 20 Dec 2024 02:43:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734691384; x=1735296184; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1734691393; x=1735296193; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rmIt+w92XaivxUque0yXLMfcfuiQLuXv/FcE3kAIH5M=;
- b=hAgmrFIeMSC7F4k+KFlP9Z/2FFkLR94tQdrIZy6cigiUM0glu+eKSSS598DQ+apo8w
- MLcQUKbizR+uGQQQQkxosYTa7A07jK4U6K8uMHZeMeewdx1Nhu7cAldKDndzpDsd0DBY
- 2oxL33gqBtmrMdDVjpq3n1ltuqJdkv6XPU4yxH6IxnpaRkyDu/8WxGt28TDsuYNlSvaE
- MGF4Y6UcAs2+WqSWq6cXhLk2O3YUSF/B2JtSQLdn9e9I7vnsypschH51jyKTC13Y/gh/
- tpXeZ9YGZJbMVBpy/krvCccgiyJG02j43zfFOlSWEXgeB7wQdZGn5JPO4p+qYwn6zl/O
- qHhw==
+ bh=qqqVPjhisoejpakdnzFLtY2uBOq7jpbxi6SFzwY7o/A=;
+ b=RKrV9DC83Z+Iy/E+BcMtbaBdGlikH3kXd7bri9ZZiZe3ZBHMUexCveMBCgbg3JixcD
+ qviP6OrG8rylXzejYqQeDNd76ZP1qfVmsamBzZkkoIzpMxbZ3/l4hzObQgN3lSdfs8zN
+ Pw+5OIwWhzKPEChYcvl8qFiJxxTreBICU9E0DvlnhOnEkLyblU+FtUtEOVORGg8He0XT
+ wnsvwZVGGf9ESbjs8xnfkMeIUExUWQ94fGSKB/Ojq6KpGtDw8jdqYKugwFyne0ms1uHD
+ K8D7IV8v97MQn8lcXbOBIZgToy/EbVEMuNZIzgs16z/L7pcxiYZiib1QvbHcqlpaPfKw
+ 3b3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734691384; x=1735296184;
+ d=1e100.net; s=20230601; t=1734691393; x=1735296193;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rmIt+w92XaivxUque0yXLMfcfuiQLuXv/FcE3kAIH5M=;
- b=DBk3LEnRPVTqcTaeUAqiH/5yb2pmKUZR5GnHFhd9rvoSw0huCNuRyDYp1XJmxLhKuH
- bxBr3hMOmHpnQh2CwOcdmr7aGS5H9Fx+ZaysAzOPeGFmgd30JWECz2oqbEqSB+y5x7p9
- JbG2AD1C2sVekiI8nrbu8Mk8b+EWqtkKc0paFFh30tipz7+ROFG9OImsuVnqv/t7nR/L
- 3IfveqMI8/4ArTN1F/GpONHQNNYhH70LFgSUxE+4QXdcy0ctxg3qZu2Un361H6LDLRbb
- M964e34nnVfa726Cq0WGpDei64+zTYIBy7wcfj4egPOBuLQjvtrLcU2Gh+nhTAKFaewy
- UIiQ==
+ bh=qqqVPjhisoejpakdnzFLtY2uBOq7jpbxi6SFzwY7o/A=;
+ b=HB7mAtbVNqDVY/fEYUjWpoq8KrdJffh8f2EwM4lSxccxmr6OOYwBS7CsiI0ddlDjcV
+ 9YAVqUo37Rnvn/MHH1C9yh2tvNSrPxKkg9t6yqPnY91E+KQPp9X4N3GIqmkoZYVw+iSc
+ HI8GNyxdfWRS4/5L8RBiEYC/awTYQvOHvV8ExUQvbRBwi0E9cssSdDShrLDbiSEfOngu
+ 7Xj+sKKDOrw2ABdIuswb26lFrUPKx/mGg6g02oE54qOXHy/V1YKoub7otF0pDTrsTHBA
+ 5lMLP1wc1t1sup+XgbnigMiwsUl5ERKlivT6bFJpsF7wm9cTArdrWIWTsMRDP+025kWt
+ oDww==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV03gUaJ9/B37pn43t2DqW/7C0a32pXOBk1iIZ+cv9K8NfmkagvRvs7r+bg51zyzkxmqLxIaRXTeUHh@nongnu.org
-X-Gm-Message-State: AOJu0YwqjNccEp2+zHcVKDACXJ1p9jiyI5lPNDAn2u/LfhYhAFA+8Y8M
- mvoJ34xd381/EJcVDStat7VjL6GX1XXR9r7mW8ucUg5KGBIkghA/NWb80Q==
-X-Gm-Gg: ASbGncu5BGSPw9HBndn4DhyEqgTxZXxhYzxsQsNg37YBmoVI4v0PN2mxBo8XMdBWsOg
- iJhVqbTYr6tkIqNVCPDj3bwS9qRqGzv9yO1VvfULWMrdQpbvx+bjHU/JQH36wjZUcYR2yV9P5Ya
- Gs/+GYqQe1GpTvedfK6n14ZDzW430mhq5N3Jhdy6vjWdsgw3X7/BwaAslrTn3WMYsNhv/IC0zcC
- A6wl8/8Se+SH1FVNgqVk3/zK2hyC5EQwkqJ29Imi/XQ/fTtUnvNK2kL2Y6cGWnVi0W50ps/pJIu
- ksQ+5KZ75w==
-X-Google-Smtp-Source: AGHT+IEeO0yTP2vWGhKbv7rX2frFeEeF23qt7RPC0w32ViOPm0biwVYsXXb/Ut9rNfBedi3q3UN8tg==
-X-Received: by 2002:a17:90a:da8e:b0:2ee:fdf3:38dd with SMTP id
- 98e67ed59e1d1-2f452ec2919mr3435905a91.23.1734691383996; 
- Fri, 20 Dec 2024 02:43:03 -0800 (PST)
+ AJvYcCW6gDdPW3TRdw1aJVjtyw8WmK74eD8uz2y97TzCLaWt+KzLivUKmvmwNP22NJFa4BA3CSW2khQM3oh9@nongnu.org
+X-Gm-Message-State: AOJu0Yzlng8/Zs2xZwlb76/IkfFv8FcAJHA0WsU/m/4z3Loha36/Ds62
+ AFVlivDELeMiAHRGlJ71ENmtVhkDMSyPIXD+HRwJ1bpOiZ10ifDWHiY0ig==
+X-Gm-Gg: ASbGncvg9T/FICPazUFBVJnnpy2Ax3ckOQPPrwP82r9idqajmJdMvw5/hVDyKHgTcU8
+ IIdLcBJbSQ8687d8cKjjHTbCrrS5y5Uu1uOVOkf4fwxHjelowBombkTBtFlypN8iptdCUcIbEAk
+ Us8Sh0PrmPzvu0c0wBDlLqsxdUzpsmgdFs5EhUH1/CKMYw/tUl4gjtrS6NouVe6C8bC6cviw3TV
+ T5MMglDY1s9LB/+i6PP7m0z4E6+NcV/BfVr/djypNvR1T6YeO8N37OhUDE8KFqjDnM8pw/JRna3
+ hA0zsulSxw==
+X-Google-Smtp-Source: AGHT+IHvuPhQtfGfPl/FhyQDI1QhJnqg8A5k80OSOsRQ16uzRV3BdG9q3NEZiOVj5aYsiS4WJs3rEg==
+X-Received: by 2002:a17:90b:5184:b0:2ee:d824:b594 with SMTP id
+ 98e67ed59e1d1-2f452eeb56cmr3146804a91.31.1734691392777; 
+ Fri, 20 Dec 2024 02:43:12 -0800 (PST)
 Received: from wheely.local0.net (14-200-18-130.tpgi.com.au. [14.200.18.130])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f2ee06dfd3sm5376942a91.32.2024.12.20.02.42.56
+ 98e67ed59e1d1-2f2ee06dfd3sm5376942a91.32.2024.12.20.02.43.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Dec 2024 02:43:03 -0800 (PST)
+ Fri, 20 Dec 2024 02:43:12 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
@@ -76,16 +76,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-block@nongnu.org,
  "Dr. David Alan Gilbert" <dave@treblig.org>,
  Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH 04/17] util/main-loop: Convert to new bh API
-Date: Fri, 20 Dec 2024 20:42:06 +1000
-Message-ID: <20241220104220.2007786-5-npiggin@gmail.com>
+Subject: [PATCH 05/17] util/thread-pool: Convert to new bh API
+Date: Fri, 20 Dec 2024 20:42:07 +1000
+Message-ID: <20241220104220.2007786-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241220104220.2007786-1-npiggin@gmail.com>
 References: <20241220104220.2007786-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x535.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,27 +111,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Convert qemu_bh_schedule() to qemu_bh_schedule_event(), which can
 specify the clock type, making it compatible with record-replay.
 
-The notify event does not affect target machine state, so it should
-use QEMU_CLOCK_REALTIME so it is not recorded and replayed.
+The thread pool management does not affect target machine state,
+so it should use QEMU_CLOCK_REALTIME so it is not recorded and
+replayed.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- util/main-loop.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ util/thread-pool.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/util/main-loop.c b/util/main-loop.c
-index a0386cfeb60..6180a183f50 100644
---- a/util/main-loop.c
-+++ b/util/main-loop.c
-@@ -148,7 +148,7 @@ void qemu_notify_event(void)
-     if (!qemu_aio_context) {
-         return;
+diff --git a/util/thread-pool.c b/util/thread-pool.c
+index 27eb777e855..010eb4ad9a6 100644
+--- a/util/thread-pool.c
++++ b/util/thread-pool.c
+@@ -115,7 +115,7 @@ static void *worker_thread(void *opaque)
+         smp_wmb();
+         req->state = THREAD_DONE;
+ 
+-        qemu_bh_schedule(pool->completion_bh);
++        qemu_bh_schedule_event(pool->completion_bh, QEMU_CLOCK_REALTIME);
+         qemu_mutex_lock(&pool->lock);
      }
--    qemu_bh_schedule(qemu_notify_bh);
-+    qemu_bh_schedule_event(qemu_notify_bh, QEMU_CLOCK_REALTIME);
+ 
+@@ -167,7 +167,7 @@ static void spawn_thread(ThreadPool *pool)
+      * inherit the correct affinity instead of the vcpu affinity.
+      */
+     if (!pool->pending_threads) {
+-        qemu_bh_schedule(pool->new_thread_bh);
++        qemu_bh_schedule_event(pool->new_thread_bh, QEMU_CLOCK_REALTIME);
+     }
  }
  
- static GArray *gpollfds;
+@@ -195,7 +195,7 @@ restart:
+             /* Schedule ourselves in case elem->common.cb() calls aio_poll() to
+              * wait for another request that completed at the same time.
+              */
+-            qemu_bh_schedule(pool->completion_bh);
++            qemu_bh_schedule_event(pool->completion_bh, QEMU_CLOCK_REALTIME);
+ 
+             elem->common.cb(elem->common.opaque, elem->ret);
+ 
+@@ -225,7 +225,7 @@ static void thread_pool_cancel(BlockAIOCB *acb)
+     QEMU_LOCK_GUARD(&pool->lock);
+     if (elem->state == THREAD_QUEUED) {
+         QTAILQ_REMOVE(&pool->request_list, elem, reqs);
+-        qemu_bh_schedule(pool->completion_bh);
++        qemu_bh_schedule_event(pool->completion_bh, QEMU_CLOCK_REALTIME);
+ 
+         elem->state = THREAD_DONE;
+         elem->ret = -ECANCELED;
 -- 
 2.45.2
 
