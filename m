@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4F19F9667
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:25:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDFFD9F9647
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:21:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOfio-0003ox-4V; Fri, 20 Dec 2024 11:19:26 -0500
+	id 1tOfis-0004E5-Ct; Fri, 20 Dec 2024 11:19:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfiJ-0001eN-6I
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:18:58 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfiO-0001fT-LA
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:19:00 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfiH-0008Cu-BQ
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:18:54 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-436341f575fso22781965e9.1
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:18:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfiL-0008DG-SQ
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:19:00 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4362bae4d7dso15465945e9.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:18:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711531; x=1735316331; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734711536; x=1735316336; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ySncAU20DLIPtQBH3XLZd0BEdgpTbpYKBukLqC+aRo0=;
- b=siuiBF49udzuJeKPE7n308Tu7YuYdLgqJvb3KuqTI5xcLDAxj3IjRSPzqmdct3tnsa
- CCJlvRMBJH31Hc2RUHfnI0Qbret7SsM+4YLDt/UY9+YYp6Ure1tNzVa6xgGZtKsXH79l
- 0CEHu3sIsf72roxCektX19KUS0VwUJm9TRd90UNyUASrMIocrzDezP5hoYWlgVZ7U0VW
- /1EdhYE7IybPr4M8003SQqXx3VOg3Yuhqo5N70AWJY3tJHGUY/pco3n2gE2iazhDwtta
- yBJfBfjjXGxMR/b8laTu0edVmp/51vq9zuHOZ0082LZGgYGSRGLlwj/poOW4EUQfCE3p
- YBog==
+ bh=CSg6nJkqBZOFefSO7//FjeQFGjAGcvh8KtA7IGaHfG0=;
+ b=bNU3BjPinX6AxBSNTJAknNlfn8PmjvV0zmibo8W8ZtcmB7WKLx252PQUnlUVt1WHPZ
+ e1UQFk+MVJrXCcHgRky/5Ub9PYS5ppzZNAZUBgD0HX/OErzSHYrNTYLC1+7Y9ck22Yhz
+ NaRjyHhqKg6msA0O/BlcFqFlgLnqewoc8ATvQcn+9pO/Uuoy+1Cqf0I1aXLsHYUNZHW1
+ uGom+DSG86/gU8nFd28rVgabSXuzPAezlROfl4HKMszhl2V56us7OLLCMVqDw+W/AQ59
+ hTf9j7I3VkUBCSrnKGsV9Oxd0HYTgIHUTT4gpv4N50SI1MOgcfqfM2tdoAWlfbYQww8y
+ DO3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711531; x=1735316331;
+ d=1e100.net; s=20230601; t=1734711536; x=1735316336;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ySncAU20DLIPtQBH3XLZd0BEdgpTbpYKBukLqC+aRo0=;
- b=vXvCP360R1mL1OGh4kwNdadu+I6XmDJf9XERPhBNLXXngoi0i6Xg/6yRIfQekvjY3w
- 09upuhNxDcZ/kkXWk2+7Jvtg9Ekt437/epGBCJSPm6pRVncvTm+S/jwbPTjm8Po+79Kp
- 7pBYLNf/1awRJDQHrhcWa69MvUJQg8yjupEFDRezoqgiNg4DFOGSxXkZm/31H8EElB2O
- 9/QWQosyym6P5xDRsopuGLLthVtd+cGCtbT5GqaTUxdRNBsFPx5Lx01JnbDR32nqu2i0
- Mp26/bJ7k0ncecBOcC1CO7jfrHwjgGDAsMcype/qm54i/tt+Gkmn0x8ETW7eC5aO887X
- 0qqw==
-X-Gm-Message-State: AOJu0YxEdzzViLbRFN1/ye/2qOQLho2aYmGTZGp/JxegkkAqZTdAu1kj
- 0tdDVKdxTgeZttxIMmYpzvYDHV9SdtrgiYIjp498jzwRIK2mk+rlvsCCkztdK3AUaJyoiQ56Vbr
- n
-X-Gm-Gg: ASbGnctgsqgnPnkphSdLz5H7499I3mfzde834kVRCzyhlryMFM+Ay9mp1CIuCXD04kg
- fzCDhdcQW7+8ygTRRE+H4/nV1jBrBFcOH5hBqGV+xjmkXkaEFxywH9AUAwibprakhx+tz04Ikpj
- QG4Astd3GUM3MsgCsgDbFgO/dwnvLLq/SnS2EXqDmAazcMHd1QlqEfDqlJanEsezTotWizyeB42
- Js2/INmoP++yO8bpzsuoQgiDmeLVh41HRyZzVe0FTV73oeZCrhlI8brW+l6bFirLg0am4TRevo=
-X-Google-Smtp-Source: AGHT+IENLO0LeQA8UuQvxmVTi6bZbrSpLeh/7W4UnDmqZOOkav8AUogDnDuhjK+PA3GCvREbUyIgHw==
-X-Received: by 2002:a5d:47cc:0:b0:386:144d:680f with SMTP id
- ffacd0b85a97d-38a223ff30cmr3604669f8f.54.1734711531528; 
- Fri, 20 Dec 2024 08:18:51 -0800 (PST)
+ bh=CSg6nJkqBZOFefSO7//FjeQFGjAGcvh8KtA7IGaHfG0=;
+ b=rOycnoC+VsRcj4bD5Fneiub37E+YyVTsQ25lo1jop8V0C8P387lydSOBujk2nVE9jk
+ HxNf8sPcfZFGT5cgiTl/zUtwh+bnB+h/JZgEL5nu102NwxyJ3xLxQtzclxxx5iGs1zA9
+ ElLAMuWON8gF2WNpfzEPmO+xmlNsQq1tZFsqyYCrutuUiYMCx7HRAio3o0lSgPT7olRt
+ wBWp7Y00AdJYqwXfEdr23HcDtqDKZi6w46PDv8Aut929dNZ1gRyxDJQO5/ajR2peXNNj
+ FdV70g00ZKWN2+SNZ/emZqdvQiZZYlgUFEaZGOelSTR0esu9T44VoNs/JCHqXrFhL7iP
+ nusg==
+X-Gm-Message-State: AOJu0YwOkgDgr9n0ZMjCdVB6fIVZEyocmzghguizgh/VAKpoDuHTgFye
+ hItkiFzZ/HJl8j354GmsJ5ytR8QmkHZVJZR1xMOQjXIXguEIFhy9xG2xkVNPOTk9DdwVv8Y76Fm
+ S
+X-Gm-Gg: ASbGncsTVw58vlNHsiu3zbNXO3SSZA02bxs5pHiHk3Q4/9fwHQruIKLbbOHtPZqQhgA
+ q96Iua0Xm9WBpfWvUQOO/xHnbcXfErOeMN5YY/fenmwnkcUHiRS1Vyg+CVyKegXojuJcFH5j8DC
+ HUvwcQyfZOAsPa2Kc344XwKd+ymZMmJgrDatm2gNATzYD05iVD8A+t11EP6LW5mUENLF4R5zAGn
+ QWl2VU+zCDj+8c9DsVdQLJp7RDUDS65LYDwsZPt6p3RcMuRe0/jfZfVJJVIjExbSEXizYYzyzQ=
+X-Google-Smtp-Source: AGHT+IEIqfiMdUQOCfXwmuOVJaohcJJO8jOufyX5KNuTqO/PkffGYBy2wiF5LvhBiyFwtN+3Y164ew==
+X-Received: by 2002:a05:600c:1994:b0:435:306:e5dd with SMTP id
+ 5b1f17b1804b1-43668b5dfaamr28292085e9.22.1734711536005; 
+ Fri, 20 Dec 2024 08:18:56 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43661218f43sm49922625e9.19.2024.12.20.08.18.50
+ 5b1f17b1804b1-43656b3b214sm85137395e9.28.2024.12.20.08.18.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:18:51 -0800 (PST)
+ Fri, 20 Dec 2024 08:18:55 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 39/59] user: Declare cpu_loop() once in 'user/cpu_loop.h'
-Date: Fri, 20 Dec 2024 17:15:30 +0100
-Message-ID: <20241220161551.89317-40-philmd@linaro.org>
+Subject: [PULL 40/59] user: Move various declarations out of 'exec/exec-all.h'
+Date: Fri, 20 Dec 2024 17:15:31 +0100
+Message-ID: <20241220161551.89317-41-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
 References: <20241220161551.89317-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,134 +97,212 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Declare cpu_loop() once in "user/cpu_loop.h".
-bsd-user gets the G_NORETURN attribute.
+Move various declarations related to user emulation
+from "exec/exec-all.h" to "user/cpu_loop.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241212185341.2857-18-philmd@linaro.org>
+Message-Id: <20241212185341.2857-19-philmd@linaro.org>
 ---
- bsd-user/aarch64/target_arch_cpu.h | 2 +-
- bsd-user/arm/target_arch_cpu.h     | 2 +-
- bsd-user/i386/target_arch_cpu.h    | 2 +-
- bsd-user/qemu.h                    | 2 +-
- bsd-user/riscv/target_arch_cpu.h   | 2 +-
- bsd-user/x86_64/target_arch_cpu.h  | 2 +-
- include/user/cpu_loop.h            | 2 ++
- linux-user/user-internals.h        | 1 -
- 8 files changed, 8 insertions(+), 7 deletions(-)
+ include/exec/exec-all.h     | 55 +------------------------------------
+ include/user/cpu_loop.h     | 54 ++++++++++++++++++++++++++++++++++++
+ accel/tcg/user-exec.c       |  1 +
+ bsd-user/signal.c           |  1 +
+ linux-user/signal.c         |  1 +
+ target/arm/tcg/mte_helper.c |  1 +
+ 6 files changed, 59 insertions(+), 54 deletions(-)
 
-diff --git a/bsd-user/aarch64/target_arch_cpu.h b/bsd-user/aarch64/target_arch_cpu.h
-index b288e0d069b..87fbf6d6775 100644
---- a/bsd-user/aarch64/target_arch_cpu.h
-+++ b/bsd-user/aarch64/target_arch_cpu.h
-@@ -43,7 +43,7 @@ static inline void target_cpu_init(CPUARMState *env,
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index b5ea607cf45..c4a6ad3af2d 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -22,7 +22,6 @@
+ 
+ #include "cpu.h"
+ #if defined(CONFIG_USER_ONLY)
+-#include "exec/abi_ptr.h"
+ #include "exec/cpu_ldst.h"
+ #endif
+ #include "exec/mmu-access-type.h"
+@@ -518,60 +517,8 @@ static inline tb_page_addr_t get_page_addr_code(CPUArchState *env,
+     return get_page_addr_code_hostp(env, addr, NULL);
  }
  
+-#if defined(CONFIG_USER_ONLY)
++#if !defined(CONFIG_USER_ONLY)
  
--static inline void target_cpu_loop(CPUARMState *env)
-+static inline G_NORETURN void target_cpu_loop(CPUARMState *env)
- {
-     CPUState *cs = env_cpu(env);
-     int trapnr, ec, fsc, si_code, si_signo;
-diff --git a/bsd-user/arm/target_arch_cpu.h b/bsd-user/arm/target_arch_cpu.h
-index 517d0087644..bc2eaa0bf4e 100644
---- a/bsd-user/arm/target_arch_cpu.h
-+++ b/bsd-user/arm/target_arch_cpu.h
-@@ -37,7 +37,7 @@ static inline void target_cpu_init(CPUARMState *env,
-     }
- }
+-/**
+- * adjust_signal_pc:
+- * @pc: raw pc from the host signal ucontext_t.
+- * @is_write: host memory operation was write, or read-modify-write.
+- *
+- * Alter @pc as required for unwinding.  Return the type of the
+- * guest memory access -- host reads may be for guest execution.
+- */
+-MMUAccessType adjust_signal_pc(uintptr_t *pc, bool is_write);
+-
+-/**
+- * handle_sigsegv_accerr_write:
+- * @cpu: the cpu context
+- * @old_set: the sigset_t from the signal ucontext_t
+- * @host_pc: the host pc, adjusted for the signal
+- * @host_addr: the host address of the fault
+- *
+- * Return true if the write fault has been handled, and should be re-tried.
+- */
+-bool handle_sigsegv_accerr_write(CPUState *cpu, sigset_t *old_set,
+-                                 uintptr_t host_pc, abi_ptr guest_addr);
+-
+-/**
+- * cpu_loop_exit_sigsegv:
+- * @cpu: the cpu context
+- * @addr: the guest address of the fault
+- * @access_type: access was read/write/execute
+- * @maperr: true for invalid page, false for permission fault
+- * @ra: host pc for unwinding
+- *
+- * Use the TCGCPUOps hook to record cpu state, do guest operating system
+- * specific things to raise SIGSEGV, and jump to the main cpu loop.
+- */
+-G_NORETURN void cpu_loop_exit_sigsegv(CPUState *cpu, target_ulong addr,
+-                                      MMUAccessType access_type,
+-                                      bool maperr, uintptr_t ra);
+-
+-/**
+- * cpu_loop_exit_sigbus:
+- * @cpu: the cpu context
+- * @addr: the guest address of the alignment fault
+- * @access_type: access was read/write/execute
+- * @ra: host pc for unwinding
+- *
+- * Use the TCGCPUOps hook to record cpu state, do guest operating system
+- * specific things to raise SIGBUS, and jump to the main cpu loop.
+- */
+-G_NORETURN void cpu_loop_exit_sigbus(CPUState *cpu, target_ulong addr,
+-                                     MMUAccessType access_type,
+-                                     uintptr_t ra);
+-
+-#else
+ void tlb_reset_dirty(CPUState *cpu, ram_addr_t start1, ram_addr_t length);
+ void tlb_reset_dirty_range_all(ram_addr_t start, ram_addr_t length);
  
--static inline void target_cpu_loop(CPUARMState *env)
-+static inline G_NORETURN void target_cpu_loop(CPUARMState *env)
- {
-     int trapnr, si_signo, si_code;
-     CPUState *cs = env_cpu(env);
-diff --git a/bsd-user/i386/target_arch_cpu.h b/bsd-user/i386/target_arch_cpu.h
-index 9bf2c4244b7..5d4c931decd 100644
---- a/bsd-user/i386/target_arch_cpu.h
-+++ b/bsd-user/i386/target_arch_cpu.h
-@@ -102,7 +102,7 @@ static inline void target_cpu_init(CPUX86State *env,
-     env->segs[R_FS].selector = 0;
- }
- 
--static inline void target_cpu_loop(CPUX86State *env)
-+static inline G_NORETURN void target_cpu_loop(CPUX86State *env)
- {
-     CPUState *cs = env_cpu(env);
-     int trapnr;
-diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-index 04faee459df..3eaa14f3f56 100644
---- a/bsd-user/qemu.h
-+++ b/bsd-user/qemu.h
-@@ -26,6 +26,7 @@
- #include "exec/exec-all.h"
- 
- #include "user/abitypes.h"
-+#include "user/cpu_loop.h"
- #include "user/page-protection.h"
- 
- extern char **environ;
-@@ -187,7 +188,6 @@ abi_long do_openbsd_syscall(void *cpu_env, int num, abi_long arg1,
-                             abi_long arg5, abi_long arg6);
- void gemu_log(const char *fmt, ...) G_GNUC_PRINTF(1, 2);
- extern __thread CPUState *thread_cpu;
--void cpu_loop(CPUArchState *env);
- char *target_strerror(int err);
- int get_osversion(void);
- void fork_start(void);
-diff --git a/bsd-user/riscv/target_arch_cpu.h b/bsd-user/riscv/target_arch_cpu.h
-index a93ea3915a1..ef92f004803 100644
---- a/bsd-user/riscv/target_arch_cpu.h
-+++ b/bsd-user/riscv/target_arch_cpu.h
-@@ -37,7 +37,7 @@ static inline void target_cpu_init(CPURISCVState *env,
-     env->pc = regs->sepc;
- }
- 
--static inline void target_cpu_loop(CPURISCVState *env)
-+static inline G_NORETURN void target_cpu_loop(CPURISCVState *env)
- {
-     CPUState *cs = env_cpu(env);
-     int trapnr;
-diff --git a/bsd-user/x86_64/target_arch_cpu.h b/bsd-user/x86_64/target_arch_cpu.h
-index 4094d61da1a..f82042e30af 100644
---- a/bsd-user/x86_64/target_arch_cpu.h
-+++ b/bsd-user/x86_64/target_arch_cpu.h
-@@ -110,7 +110,7 @@ static inline void target_cpu_init(CPUX86State *env,
-     cpu_x86_load_seg(env, R_GS, 0);
- }
- 
--static inline void target_cpu_loop(CPUX86State *env)
-+static inline G_NORETURN void target_cpu_loop(CPUX86State *env)
- {
-     CPUState *cs = env_cpu(env);
-     int trapnr;
 diff --git a/include/user/cpu_loop.h b/include/user/cpu_loop.h
-index 8e2df232758..b0d4704018d 100644
+index b0d4704018d..589c66543fc 100644
 --- a/include/user/cpu_loop.h
 +++ b/include/user/cpu_loop.h
-@@ -23,6 +23,8 @@
+@@ -20,9 +20,63 @@
+ #ifndef USER_CPU_LOOP_H
+ #define USER_CPU_LOOP_H
+ 
++#include "exec/abi_ptr.h"
++#include "exec/mmu-access-type.h"
  #include "exec/log.h"
++#include "exec/target_long.h"
  #include "special-errno.h"
  
-+G_NORETURN void cpu_loop(CPUArchState *env);
++/**
++ * adjust_signal_pc:
++ * @pc: raw pc from the host signal ucontext_t.
++ * @is_write: host memory operation was write, or read-modify-write.
++ *
++ * Alter @pc as required for unwinding.  Return the type of the
++ * guest memory access -- host reads may be for guest execution.
++ */
++MMUAccessType adjust_signal_pc(uintptr_t *pc, bool is_write);
 +
++/**
++ * handle_sigsegv_accerr_write:
++ * @cpu: the cpu context
++ * @old_set: the sigset_t from the signal ucontext_t
++ * @host_pc: the host pc, adjusted for the signal
++ * @host_addr: the host address of the fault
++ *
++ * Return true if the write fault has been handled, and should be re-tried.
++ */
++bool handle_sigsegv_accerr_write(CPUState *cpu, sigset_t *old_set,
++                                 uintptr_t host_pc, abi_ptr guest_addr);
++
++/**
++ * cpu_loop_exit_sigsegv:
++ * @cpu: the cpu context
++ * @addr: the guest address of the fault
++ * @access_type: access was read/write/execute
++ * @maperr: true for invalid page, false for permission fault
++ * @ra: host pc for unwinding
++ *
++ * Use the TCGCPUOps hook to record cpu state, do guest operating system
++ * specific things to raise SIGSEGV, and jump to the main cpu loop.
++ */
++G_NORETURN void cpu_loop_exit_sigsegv(CPUState *cpu, target_ulong addr,
++                                      MMUAccessType access_type,
++                                      bool maperr, uintptr_t ra);
++
++/**
++ * cpu_loop_exit_sigbus:
++ * @cpu: the cpu context
++ * @addr: the guest address of the alignment fault
++ * @access_type: access was read/write/execute
++ * @ra: host pc for unwinding
++ *
++ * Use the TCGCPUOps hook to record cpu state, do guest operating system
++ * specific things to raise SIGBUS, and jump to the main cpu loop.
++ */
++G_NORETURN void cpu_loop_exit_sigbus(CPUState *cpu, target_ulong addr,
++                                     MMUAccessType access_type,
++                                     uintptr_t ra);
++
+ G_NORETURN void cpu_loop(CPUArchState *env);
+ 
  void target_exception_dump(CPUArchState *env, const char *fmt, int code);
- #define EXCP_DUMP(env, fmt, code) \
-     target_exception_dump(env, fmt, code)
-diff --git a/linux-user/user-internals.h b/linux-user/user-internals.h
-index 46ffc093f40..b9b05c1d11f 100644
---- a/linux-user/user-internals.h
-+++ b/linux-user/user-internals.h
-@@ -65,7 +65,6 @@ abi_long do_syscall(CPUArchState *cpu_env, int num, abi_long arg1,
-                     abi_long arg5, abi_long arg6, abi_long arg7,
-                     abi_long arg8);
- extern __thread CPUState *thread_cpu;
--G_NORETURN void cpu_loop(CPUArchState *env);
- abi_long get_errno(abi_long ret);
- const char *target_strerror(int err);
- int get_osversion(void);
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index 815a39503f3..0561c4f6dc7 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -24,6 +24,7 @@
+ #include "qemu/bitops.h"
+ #include "qemu/rcu.h"
+ #include "exec/cpu_ldst.h"
++#include "user/cpu_loop.h"
+ #include "qemu/main-loop.h"
+ #include "user/page-protection.h"
+ #include "exec/page-protection.h"
+diff --git a/bsd-user/signal.c b/bsd-user/signal.c
+index edbcd461bfa..b4e1458237a 100644
+--- a/bsd-user/signal.c
++++ b/bsd-user/signal.c
+@@ -21,6 +21,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/log.h"
+ #include "qemu.h"
++#include "user/cpu_loop.h"
+ #include "exec/page-protection.h"
+ #include "user/page-protection.h"
+ #include "user/tswap-target.h"
+diff --git a/linux-user/signal.c b/linux-user/signal.c
+index a191e9b26f2..087c4d270e4 100644
+--- a/linux-user/signal.c
++++ b/linux-user/signal.c
+@@ -33,6 +33,7 @@
+ #include "trace.h"
+ #include "signal-common.h"
+ #include "host-signal.h"
++#include "user/cpu_loop.h"
+ #include "user/page-protection.h"
+ #include "user/safe-syscall.h"
+ #include "tcg/tcg.h"
+diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
+index 7943ae2d608..f72ce2ae0d4 100644
+--- a/target/arm/tcg/mte_helper.c
++++ b/target/arm/tcg/mte_helper.c
+@@ -24,6 +24,7 @@
+ #include "exec/exec-all.h"
+ #include "exec/page-protection.h"
+ #ifdef CONFIG_USER_ONLY
++#include "user/cpu_loop.h"
+ #include "user/page-protection.h"
+ #else
+ #include "exec/ram_addr.h"
 -- 
 2.47.1
 
