@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2159F9681
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:26:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D8E9F9646
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:21:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOffy-00064B-Cu; Fri, 20 Dec 2024 11:16:30 -0500
+	id 1tOfg6-0006F3-QG; Fri, 20 Dec 2024 11:16:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOffw-00063M-3R
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:28 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfg0-00065u-NE
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:35 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOffu-0006zp-IP
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:27 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-385d7f19f20so1106871f8f.1
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:16:26 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOffy-00078V-WB
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:16:32 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-434b3e32e9dso22642255e9.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:16:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711385; x=1735316185; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734711389; x=1735316189; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MpUTAuW1kXEuNRtJRYL3FXGH/kmNDhNOdnBKMvX74f4=;
- b=r6T9QqeInxiheU1b+nJczlGqbFm201FFl4mYpY4aNFHe6uerNlpc0SpZUJTI1pz66z
- EwL07NVPN4JVq23gtnodLWWjHL8A3gEajiduJRPpIrEPRJLjcWtpiX/uVbcvRYIjSMb8
- iY2QxdemXqgsJRPgMiwJXf7n8U/iPDeN/aONa2CTtLeU67ttEDtX+JxiH8ofRnIzcloJ
- fK+8Smh9c0BvGS2EzF8DlM9Rp8Kx3fc+PaIfu7DQE/93nglg18ELpx9tClWgQ9uqArir
- cdeTfr+q/LrjBnRVxVjxEoLH9qc6aUnT5aPjWNiURDIl4/T//dJOdEjZvtKZh+AVGUsq
- LyNA==
+ bh=39Stqqln0eIwK3ikIDeW6/zeaX2x6CtdpFdvigljE7Q=;
+ b=riY5FcO0xnsqbS1MkSXZ8UCqkWO0HhG4RYj3zFKrd6qn6IEURf9aNAwUv4th8vD9GM
+ MiJtCPY7PPFkJFtSt2u6KbWHk0uCxteA3x2jUQFZVXEZ6PEEfV3BU99a4BCm42jPZV+k
+ 3A7wpkvG8qBLGsxY/OoXRVADUn4f8yJDrHUT2FMYjd9dXJ4x6LOswn55V0a/uD1Be80E
+ GPQBc3Nz9Xdj1R5VRAifQcvjIYfV7vrzi+cdd221HTruD4nzWqMuXRDZp/IX0SOs3iwl
+ 0ilg+KYtXp0oIvYFd3Y8/tLfGogLnVHp8rJn5/PUcsTpd0sBxXovt/1w8oIbYELMf/EY
+ mr2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711385; x=1735316185;
+ d=1e100.net; s=20230601; t=1734711389; x=1735316189;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MpUTAuW1kXEuNRtJRYL3FXGH/kmNDhNOdnBKMvX74f4=;
- b=ECp5Ic4IrVmltDw43IXbIwjqqob5bPzGzmPM3GxnC6hsMtk3DhKR6WplK5nBE1ICNG
- x9VXnEVNRupbcOs3/4DMBBca2HmNiRTUsri005xfCnFOENDBuqW8oPs0uuonQ83dxFzq
- koLSo8RR0OHLduIW5MnUhockqISsKDf3lGxRmwGU1ThzpwvLhVR+YkP1ciig21jkAPm+
- okaLeb7XV6ieuTonhxyutdIzxX1EBfuEszTWi9mmxqnLI0JB1ljbEmwqmOo4ljOC8wfk
- Y58AeXIfGo1Rpy9GL/PcYeiwZ+Rezyrgjq1UoiG1eKXnjDDFPB6S97SzGBMOacaQihXF
- PzZw==
-X-Gm-Message-State: AOJu0YwCGhgrVGJqEayVOCY0c+NIKq2B6XISBJY4583+f9T1xGNjtzcj
- Fqmregiwih9xMwYjl48PYV2LrVk0+Xbu6QPhCTdbBas8UhZBsrfiZdBBRY4PTDSiTpZHALIZkUq
- B
-X-Gm-Gg: ASbGnctwIF+2Ekh2z8EDEvuGMsdzDtmxAynueaA4+g0qjphNaSFqlJoEl09VnveAuW+
- JwTeY0tsVt8vWTmp0CEaB/CxmWtL8uRu5ZUuX/ndrq2ztc8DzVUqH+HhoFTME9I2DTjFc3TIvNn
- yyECpbjCdlAo0bThBEOHjTZnSUp0EGKJlDFFLyb45EJ8scZU5B+T8Fsd+LMA0HWcrBI0WQMwYti
- VuiDJg5O1U9j+4SpjC9MfrM7Yug2i7Yitq48uNCyPbP656Mz67VSAFqrN4uFzCWHXft+k6vrSk=
-X-Google-Smtp-Source: AGHT+IEVN3dsqae3OutgvLvncpOu4Z8dxQ2IFhmn6E/JjqS13Yv1/fwQnw/LjuVJFsQOkw2IsqUxzA==
-X-Received: by 2002:a05:6000:184e:b0:385:dd10:215d with SMTP id
- ffacd0b85a97d-38a223fd770mr3095502f8f.44.1734711384809; 
- Fri, 20 Dec 2024 08:16:24 -0800 (PST)
+ bh=39Stqqln0eIwK3ikIDeW6/zeaX2x6CtdpFdvigljE7Q=;
+ b=n8OtqBxK5fCvotJ+CCzr+8R/lFyOOjyRhUY7sBmgyMyvLiM9e0ac6ei63pEMBUI0AW
+ pSzdbTN3dnWrwf7q1TltDRIgTXE+FJixXPITuZD6SXr8R1Oq5Nhb04Nf6o902Cd3VBt7
+ GDiRM+heC2+/8YT6UsZCpLJMgtLEWEwrPfZAeUJ8JKVdtpJDCdcrdIz4H9Eemg9LaBb1
+ EInMEVrVVrCVULpHlxNcj+nj7+Ulpqh1f5namscBEu3UwAVH7xkt+r4aAG6NOQjQfZ1e
+ rMsOmMbeZgfYcmXO6ZSrKlG//tryO7NfvfT/GWLOTiMbNLw7sN6uJqncmTNL3MZgtn8i
+ kMug==
+X-Gm-Message-State: AOJu0Yy022w37vpKBEhZ4x422uJeJn1s4hz0dlNM5WHwtMa4/WNBzvv9
+ 7qxtm9c1JdGZnkC3PNq+ms15UCRNaK6UqmDqpmgbzXmMq85OVpl2olm4HLCltzk6D+ip4O0JhQb
+ b
+X-Gm-Gg: ASbGncsWXXTkkwDBdHDsHK4/qBgPkDQ60aJe0CU2fG9LO40N+/ArjMt7ZXMedjHEYDw
+ UJ6HkogaVPsD1sckjGYZ5ZzghzKjUL9/kMJTeLUazOcmmiSeXqWR4LFwHqs32LJDxGZn7VOtre/
+ qD2Ibz8Zb2T+31v8gqJNldJ5acou8nBmAewKYLo+tkKI/zQHnmxwFUxvFw91g//R84SVwW1dFAB
+ fHlXdrsvNMePC3lIj2smXznYbQIi3ZoGq1nHLZBMZ9K9RmroN0yt0TcbfXD3d3yRE1Psv6rMuI=
+X-Google-Smtp-Source: AGHT+IFN1G4FyN2lt1cGDzEC4SkhvFF6A7kKTtEMgkJpvtIE2YkMfEp/dAZIv1OOcQZuIRKzzNWqqA==
+X-Received: by 2002:a05:600c:5254:b0:436:18e5:6917 with SMTP id
+ 5b1f17b1804b1-4366790f200mr37219925e9.0.1734711389265; 
+ Fri, 20 Dec 2024 08:16:29 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c828989sm4425707f8f.18.2024.12.20.08.16.23
+ 5b1f17b1804b1-43661200abesm49504195e9.18.2024.12.20.08.16.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:16:24 -0800 (PST)
+ Fri, 20 Dec 2024 08:16:28 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Bharat Bhushan <r65777@freescale.com>,
- qemu-ppc@nongnu.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+Cc: Peter Xu <peterx@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 07/59] ppc/e500: Avoid abuse of container_get()
-Date: Fri, 20 Dec 2024 17:14:58 +0100
-Message-ID: <20241220161551.89317-8-philmd@linaro.org>
+Subject: [PULL 08/59] hw/ppc: Explicitly create the drc container
+Date: Fri, 20 Dec 2024 17:14:59 +0100
+Message-ID: <20241220161551.89317-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
 References: <20241220161551.89317-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,37 +100,116 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-container_get() is going to become strict on not allowing to return a
-non-container.
+QEMU will start to not rely on implicit creations of containers soon.  Make
+PPC drc devices follow by explicitly create the container whenever a drc
+device is realized, dropping container_get() calls.
 
-Switch the e500 user to use object_resolve_path_component() explicitly.
+No functional change intended.
 
-Cc: Bharat Bhushan <r65777@freescale.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Cc: qemu-ppc@nongnu.org
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
-Message-ID: <20241121192202.4155849-6-peterx@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20241121192202.4155849-7-peterx@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/pci-host/ppce500.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/ppc/spapr_drc.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
-diff --git a/hw/pci-host/ppce500.c b/hw/pci-host/ppce500.c
-index 54071fc125a..67b22537c59 100644
---- a/hw/pci-host/ppce500.c
-+++ b/hw/pci-host/ppce500.c
-@@ -418,8 +418,8 @@ static const VMStateDescription vmstate_ppce500_pci = {
- static void e500_pcihost_bridge_realize(PCIDevice *d, Error **errp)
- {
-     PPCE500PCIBridgeState *b = PPC_E500_PCI_BRIDGE(d);
--    PPCE500CCSRState *ccsr = CCSR(container_get(qdev_get_machine(),
--                                  "/e500-ccsr"));
-+    PPCE500CCSRState *ccsr = CCSR(
-+        object_resolve_path_component(qdev_get_machine(), "e500-ccsr"));
+diff --git a/hw/ppc/spapr_drc.c b/hw/ppc/spapr_drc.c
+index 1484e3209d9..7868048bb9d 100644
+--- a/hw/ppc/spapr_drc.c
++++ b/hw/ppc/spapr_drc.c
+@@ -27,7 +27,7 @@
+ #include "sysemu/reset.h"
+ #include "trace.h"
  
-     memory_region_init_alias(&b->bar0, OBJECT(ccsr), "e500-pci-bar0", &ccsr->ccsr_space,
-                              0, int128_get64(ccsr->ccsr_space.size));
+-#define DRC_CONTAINER_PATH "/dr-connector"
++#define DRC_CONTAINER_PATH "dr-connector"
+ #define DRC_INDEX_TYPE_SHIFT 28
+ #define DRC_INDEX_ID_MASK ((1ULL << DRC_INDEX_TYPE_SHIFT) - 1)
+ 
+@@ -514,6 +514,16 @@ static const VMStateDescription vmstate_spapr_drc = {
+     }
+ };
+ 
++static void drc_container_create(void)
++{
++    object_property_add_new_container(object_get_root(), DRC_CONTAINER_PATH);
++}
++
++static Object *drc_container_get(void)
++{
++    return object_resolve_path_component(object_get_root(), DRC_CONTAINER_PATH);
++}
++
+ static void drc_realize(DeviceState *d, Error **errp)
+ {
+     SpaprDrc *drc = SPAPR_DR_CONNECTOR(d);
+@@ -529,7 +539,7 @@ static void drc_realize(DeviceState *d, Error **errp)
+      * inaccessible by the guest, since lookups rely on this path
+      * existing in the composition tree
+      */
+-    root_container = container_get(object_get_root(), DRC_CONTAINER_PATH);
++    root_container = drc_container_get();
+     child_name = object_get_canonical_path_component(OBJECT(drc));
+     trace_spapr_drc_realize_child(spapr_drc_index(drc), child_name);
+     object_property_add_alias(root_container, link_name,
+@@ -543,12 +553,10 @@ static void drc_unrealize(DeviceState *d)
+ {
+     SpaprDrc *drc = SPAPR_DR_CONNECTOR(d);
+     g_autofree gchar *name = g_strdup_printf("%x", spapr_drc_index(drc));
+-    Object *root_container;
+ 
+     trace_spapr_drc_unrealize(spapr_drc_index(drc));
+     vmstate_unregister(VMSTATE_IF(drc), &vmstate_spapr_drc, drc);
+-    root_container = container_get(object_get_root(), DRC_CONTAINER_PATH);
+-    object_property_del(root_container, name);
++    object_property_del(drc_container_get(), name);
+ }
+ 
+ SpaprDrc *spapr_dr_connector_new(Object *owner, const char *type,
+@@ -585,6 +593,8 @@ static void spapr_dr_connector_class_init(ObjectClass *k, void *data)
+ {
+     DeviceClass *dk = DEVICE_CLASS(k);
+ 
++    drc_container_create();
++
+     dk->realize = drc_realize;
+     dk->unrealize = drc_unrealize;
+     /*
+@@ -796,9 +806,8 @@ static const TypeInfo spapr_drc_pmem_info = {
+ SpaprDrc *spapr_drc_by_index(uint32_t index)
+ {
+     Object *obj;
+-    g_autofree gchar *name = g_strdup_printf("%s/%x", DRC_CONTAINER_PATH,
+-                                             index);
+-    obj = object_resolve_path(name, NULL);
++    g_autofree gchar *name = g_strdup_printf("%x", index);
++    obj = object_resolve_path_component(drc_container_get(), name);
+ 
+     return !obj ? NULL : SPAPR_DR_CONNECTOR(obj);
+ }
+@@ -860,7 +869,7 @@ int spapr_dt_drc(void *fdt, int offset, Object *owner, uint32_t drc_type_mask)
+     /* aliases for all DRConnector objects will be rooted in QOM
+      * composition tree at DRC_CONTAINER_PATH
+      */
+-    root_container = container_get(object_get_root(), DRC_CONTAINER_PATH);
++    root_container = drc_container_get();
+ 
+     object_property_iter_init(&iter, root_container);
+     while ((prop = object_property_iter_next(&iter))) {
+@@ -953,7 +962,7 @@ void spapr_drc_reset_all(SpaprMachineState *spapr)
+     ObjectProperty *prop;
+     ObjectPropertyIterator iter;
+ 
+-    drc_container = container_get(object_get_root(), DRC_CONTAINER_PATH);
++    drc_container = drc_container_get();
+ restart:
+     object_property_iter_init(&iter, drc_container);
+     while ((prop = object_property_iter_next(&iter))) {
 -- 
 2.47.1
 
