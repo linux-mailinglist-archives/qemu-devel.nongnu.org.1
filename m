@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DE629F8A30
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F5D79F8A31
 	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 03:47:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOT2B-0001n5-94; Thu, 19 Dec 2024 21:46:35 -0500
+	id 1tOT2B-0001nz-Ox; Thu, 19 Dec 2024 21:46:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tOT27-0001mb-Hl; Thu, 19 Dec 2024 21:46:31 -0500
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1tOT2A-0001nO-4j; Thu, 19 Dec 2024 21:46:34 -0500
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tOT26-0000Gz-2C; Thu, 19 Dec 2024 21:46:31 -0500
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-728e78c4d7bso1135439b3a.0; 
- Thu, 19 Dec 2024 18:46:28 -0800 (PST)
+ id 1tOT28-0000He-Kq; Thu, 19 Dec 2024 21:46:33 -0500
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-7f46d5d1ad5so1032261a12.3; 
+ Thu, 19 Dec 2024 18:46:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734662787; x=1735267587; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=3lvSKK+435kbQZaCpAH5OUYgwsxyTh6C6VnzyfHBWOw=;
- b=URumiUxTEyygbQunhMrCOqX1AssRN8O4Ts1FBNzCuJfS30oMfNo0GUK4sQNsmT8/+l
- 8Kihv+5UyRFT6/R9rmTyLg+4UzCuen8aNwRLIt8InCIvMRezexbYcZkvh3l9hc5QAAI/
- Cw64lLMr6JyZwgpJapKxwh2pRhSWDMJ0JTbP4qySsEn74YmD+uNM+q9vDB8wU9y03dVu
- uhatm/9+0zb4xrmDb8Gnc5Dth2+qIevqi2tacKyvu3WivtynVEcz5Dobibx+C2yGckEs
- sLap+l60dh9y7ax4oOA3ZEbovyV6j+TEUXx8mHLbQyYf4JJVD2c92kz3YwdddkLX4DwO
- HozA==
+ d=gmail.com; s=20230601; t=1734662790; x=1735267590; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=6vzF34pQlizNqgzOprBJ7Xal/hRzhdpRE+opT1pviwc=;
+ b=dyZOaxL287GF65W5uATQ0e2BfLFqBqrmHvqNngQnxGhBGK2AWT068OVt16vjmp3ytE
+ UQt3ynjyDvVQlkhm9oE/c41qaOqTBYpw+KJbrxRXv1O8pG88SZHHzBs3Up4RJiCrSTdb
+ De6Xykcoy2VfFQu1z/yOJdu/KnaK5iyy5XPxIqOeEl5mFKNflXtU3rb7ZISAlWiBV3jY
+ A8n9DwuSFfz2Mececim0zUqcUEviJRhDAOMYc7YbfDh/4hZUCxhFKfNGBgPOvkggtxEI
+ nlAgOxB3Y2gwjFG1v9YR1UxneNkcPP1Ns31qBTxy1C10amGGFZbUz0K8DlDTk8WYtWB0
+ bBgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734662787; x=1735267587;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3lvSKK+435kbQZaCpAH5OUYgwsxyTh6C6VnzyfHBWOw=;
- b=cW0HQvwBkJN/FPTMsLqLlJic0f0k5GYFWfoHGs/5jVZqwKRdwAk/R538uoLhdn4rYq
- UUN6sS9E1WgLDtbaQGBFvph8ya31GmRWmGvOJjGQPJB7H3wbToKR5B2OoYYptcx689Fw
- T9/MOr3TKDJIc4v4EhHjTtKwyxob0QmSukrRlOBY4qvXp0p49rsN3GPZRJ0YOkLQiGcf
- DuzquD6rEqMl73o1sUev/zcgfPs2pvfT2UomW4RjSNQm7bEQETgl1V3YCgLMLsX1UEHa
- EsCoEoQpSPuA9fpyOsIrhmwFPePvOQbyuNkrg06AtxVsuS1q9tmfh+ndfYdbQkhvmbEo
- J2tg==
+ d=1e100.net; s=20230601; t=1734662790; x=1735267590;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=6vzF34pQlizNqgzOprBJ7Xal/hRzhdpRE+opT1pviwc=;
+ b=ZDZHnpNRnhKVkXSz0X02khOySMMYuqznrA+JXNw0f5SCd6iBTlJPaE9GUWP5dfeZ9b
+ +8ErPYX1Xv70OybVIXMWZv1Cqvi4+w2gE1bjByLK4GJG/KcA0SnxFbNpV0bhYzQBckEh
+ oTCNhxm1FsGlvJyHc/aHkCr7T00PkcvTzJwFAU0m8zS+9HDZDm7RWOMA1deu9ltAgxPf
+ 3yX9ryHueAO6WN1WvAzQOq38B/Mwqb5wKh/0g8lUAZnH7d2RsK7hqeTBKwELnIUlJtJv
+ DGU+puDFhgJ+G6wAj2N5xQu5E/vflg3xtduE7GepGa5IULPo7lstB55zP8gEnyZwffCN
+ 8nwg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVmV+q9wK/o0cCdl19OQfo8Do3v13KfJvuSoocaK1RcL2b86xf9URJAkomM0j2vfW+PpNVGVXQxHw==@nongnu.org
-X-Gm-Message-State: AOJu0Ywu0pq1pGX6Ho/+/wAzbfHxnuwc5qEBp2PqQ8Oiv9x0zlCXHCXB
- vgDF7nwSnBGXeFNj7jQPjKFyEuDSfoGy+j1wVhp6eIXMg41RdI39yZFbPQ==
-X-Gm-Gg: ASbGncsA98fkVKaWvhaghXM3Pm5ZcfcYN1tVMrG/hOlVryjIIbnwjR4jgjGcGX2e3q7
- EGZjrHG8nDZ2wDMXtDYH/R+V8cm0+P5drZBaubxvl2cLsvLTTtgWKbyqxEYr7lo/7vHdCTG6hjb
- rcbePzpXTxvRYl28ymaIxqUtgjonJUyx1NMWZZZuonXN/pEJZqWbdogiJiYsMLXzNOybL02BIMg
- aRBdQ4L3uzdtCx7pvePNw7m/6THsLEzczM8Wu6OVdfrr9JA0EKXl9oWSmArPepEf3mYMtEerNpV
- pTKBUrsFqA==
-X-Google-Smtp-Source: AGHT+IGV2MNS8wzzmBeYVVss22YW60YmiajwAbYjd2A58kdwaf9RmPZS2Px/ACE/kRT/BQqekCljUw==
-X-Received: by 2002:a05:6a00:bd1:b0:725:ebc2:c321 with SMTP id
- d2e1a72fcca58-72aa9a29ebbmr7746235b3a.4.1734662786604; 
- Thu, 19 Dec 2024 18:46:26 -0800 (PST)
+ AJvYcCUf6PrW2hFxTbJ82yv3ku5efZZB6hEARFmWEVLSb40KUZQt6ZZWXe/sYFbdpYPyM7Bn8UDJwvLNfQ==@nongnu.org
+X-Gm-Message-State: AOJu0YymAvmhlIYAL3eGs9rR9/oMe3sK5F96P6OP8w2qgu3pYxpIuaf8
+ thNt5I1e20Z2tZ0zmEuz9+8x8FUD9i7XU0tzNkYkSfLpN2TYc/KLgu6uEQ==
+X-Gm-Gg: ASbGnctTI1EbKjyQhzK4vUp3guJ4g8vNoO66hNDnp50AO5/HMQNz2cGGB//SbdvSt9C
+ Eb7+uG3hZ4SRSq2xRY6tT05f/7nvrCULG12Dkb4Xk6o2Q8OHF3wU4jkmzD22pgfBp1BB4YlAWCF
+ SvjDB+i/FKKOkk8EOyiUEB8OeBsmJzmqwwtKv6yB3aB8vkOKIqxhuk+fZlvM8A1Uvym53ctR0KY
+ k0GB57TWacjio/EGyODxZ17RMpd+mg7gFJBb0lDop9QTC0fSY9Veh8MHGfqytJlcUo06+H9UZ6O
+ 1mL1P9FH6A==
+X-Google-Smtp-Source: AGHT+IEftn4n0MISXaBfqwq4/icw4vxQsRl6dSYGaCwLrA2cFFnCPe2C/ex2ih4Mxxcc54YZVxdLWQ==
+X-Received: by 2002:a05:6a21:680d:b0:1e1:ac4f:d322 with SMTP id
+ adf61e73a8af0-1e5e0484559mr2467555637.14.1734662790558; 
+ Thu, 19 Dec 2024 18:46:30 -0800 (PST)
 Received: from wheely.local0.net (14-200-18-130.tpgi.com.au. [14.200.18.130])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad8dba99sm2037830b3a.92.2024.12.19.18.46.22
+ d2e1a72fcca58-72aad8dba99sm2037830b3a.92.2024.12.19.18.46.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 18:46:25 -0800 (PST)
+ Thu, 19 Dec 2024 18:46:30 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, Thomas Huth <thuth@redhat.com>,
@@ -68,14 +69,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, Thomas Huth <thuth@redhat.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-ppc@nongnu.org
-Subject: [PATCH 0/4] tests/functional: ppc update and download fail fix
-Date: Fri, 20 Dec 2024 12:46:13 +1000
-Message-ID: <20241220024617.1968556-1-npiggin@gmail.com>
+Subject: [PATCH 1/4] tests/functional: Don't fail the whole test if a
+ pre-cache fetch fails
+Date: Fri, 20 Dec 2024 12:46:14 +1000
+Message-ID: <20241220024617.1968556-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241220024617.1968556-1-npiggin@gmail.com>
+References: <20241220024617.1968556-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,26 +102,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This updates test_ppc64_hv to the character-based console handling,
-tidies up repo handling, and updates the image.
+If any pre-cache downloads fail, the entire functional test run
+is failed.
 
-Also add a patch that keeps other functional tests working when some
-assets can't be pre-cached because test_rx_gdbsim started failing for
-me.
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ tests/functional/qemu_test/asset.py | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-Thanks,
-Nick
-
-Nicholas Piggin (4):
-  tests/functional: Don't fail the whole test if a pre-cache fetch fails
-  tests/functional/test_ppc64_hv: Simplify console handling
-  tests/functional/test_ppc64_hv: Update repo management
-  tests/functional/test_ppc64_hv: Update to Alpine 3.21.0
-
- tests/functional/qemu_test/asset.py | 11 ++++--
- tests/functional/test_ppc64_hv.py   | 52 +++++++++++++----------------
- 2 files changed, 33 insertions(+), 30 deletions(-)
-
+diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
+index f126cd5863a..f82b07e7027 100644
+--- a/tests/functional/qemu_test/asset.py
++++ b/tests/functional/qemu_test/asset.py
+@@ -102,7 +102,8 @@ def fetch(self):
+             return str(self.cache_file)
+ 
+         if os.environ.get("QEMU_TEST_NO_DOWNLOAD", False):
+-            raise Exception("Asset cache is invalid and downloads disabled")
++            raise Exception("Failed to fetch asset %s, not found in cache "
++                            "and downloads are disabled", self.url)
+ 
+         self.log.info("Downloading %s to %s...", self.url, self.cache_file)
+         tmp_cache_file = self.cache_file.with_suffix(".download")
+@@ -162,7 +163,13 @@ def precache_test(test):
+         for name, asset in vars(test.__class__).items():
+             if name.startswith("ASSET_") and type(asset) == Asset:
+                 log.info("Attempting to cache '%s'" % asset)
+-                asset.fetch()
++                try:
++                    asset.fetch()
++                except:
++                    # Asset pre-cache should not be fatal. An error is printed
++                    # and the test itself will fail if it is unable to get the
++                    # assert.
++                    pass
+         log.removeHandler(handler)
+ 
+     def precache_suite(suite):
 -- 
 2.45.2
 
