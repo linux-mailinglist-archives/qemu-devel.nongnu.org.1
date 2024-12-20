@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7C09F963A
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:20:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E255A9F9678
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Dec 2024 17:26:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOfjf-0006ef-OP; Fri, 20 Dec 2024 11:20:19 -0500
+	id 1tOfjg-0006sr-NS; Fri, 20 Dec 2024 11:20:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfjU-0005zj-Nq
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:20:08 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfjZ-0006K5-Al
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:20:13 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfjS-0008WJ-IQ
- for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:20:08 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-43622354a3eso14735525e9.1
- for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:20:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOfjX-00006S-Hg
+ for qemu-devel@nongnu.org; Fri, 20 Dec 2024 11:20:13 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-385de9f789cso1633349f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Dec 2024 08:20:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734711605; x=1735316405; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734711609; x=1735316409; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tJTjio8+pXQAHERezjDiK/6t+nq1maFyCp7d1MeiRF0=;
- b=U5lyFh3JbehTz/7/p1hL5WHNvBif7rwYpmKRfmgxCRGIU7ryHUzarYuAcytyDzG6MF
- pUyqKwnbImMn+G/21/j397hnLYktROhYf1O9tkCp4WqjsdQrda5w4lGYXPqcTeB9gMfm
- xEDyWWtg48OY+IoVt60HLcO7UWSkPr1g2TDG8HFQgZ0Aut78dsnjhpKDpss+TKDt3UGi
- Jz46b6XJTlyUiTwOBXb3Xt8qm8sHBKvId4VeeRcXagnt0S1UhEV2wqP7Wxt3L7Wxu7oq
- kXbI/MUzfIB3ZKY2K9/40P+KQ3FQkxNoBtZ/CzRYUzvx1mTKd0OhueeR2+jzheyB44fA
- VznA==
+ bh=26di7DaWtmPDXYxMPM19+KQ0TF1cDrCICXH3PHxzoEg=;
+ b=SwUUC83fjsYHYRLKBWIN98Uk6w3JsyTwR+9a1V122iYsBTU19t3R3rV1yD6vFpUBpC
+ MRG2mUgZggNj8gtQGuhoWuY9i90H61ykh3bclVgYAyabXcIEv+bkF43Hws1DN7o6g3RI
+ +f+mYmmX9+/sA+jjEvznzdzfiXsuOqtUN/LC9UuetZr2VjBXVP4U8dvV+hiq20UQMPrg
+ KuVKRr9v4Sl1NLr8mI3FDs3IzTe8tSFTmP/iDLPVJ+QO4qwLhZDSuf42lG2OBdXvTdNN
+ FsQEfgCMZkEu7aS1Kw4lWFcUA/JbsatP/R2tIMsJtj3a4cyjuYznqpeWqKF42+1Qos0p
+ W3mA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734711605; x=1735316405;
+ d=1e100.net; s=20230601; t=1734711609; x=1735316409;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tJTjio8+pXQAHERezjDiK/6t+nq1maFyCp7d1MeiRF0=;
- b=gZ0sUHeanKPytrGHufpGwMXOCVL9qZeKdavjWnbm063suPXbjw4VriOXRnX5sNklSh
- 2NpEiEIkTXPFzLUZs+y007iyJNFaso41zFwU0mWdDyorB9L5a8lrxdeF9ZtCxnh9mT9Q
- Ep8OjY+iFv2TEUswGj4ZDvvqqYpqrDF3vNaGnOT+r3TdC9k89yMVJQLf2UvN3c+40AOJ
- 5uXSMp6MZk862WrpqS1S32cGz4X9vX8feOAP3WtcHVxUMDm8rkqZYh4sXmjDbYHDgI5e
- HHA7buFY+1HCsjgprGoCnPHyK4Q/VoeyMU/YMfsUTuzS6ZmVTwheyYJv/xCdhtDlMgxU
- heiA==
-X-Gm-Message-State: AOJu0YyFKpBoqw14jRa//NntbH6xIEiwmiLaQjyDjX0eV5x9oWnErBM6
- Gvkf5LNWcvbYRRmDnobH3+UPSZFRnOL7nFSY0a6EiPwCttty+lJ8ejooxYjE4uVRH9x5muTLYU0
- l
-X-Gm-Gg: ASbGncvQrpFn2A5pOpE2Bi0xYSS1DIpXXiGQHercmbYwslo1hRB362WRwa+SNTx7x8Q
- LgvY1KhhyudQUHJEKu0401rKFRoFX9ns7rFJa7IzJ1RnhcCr1YKvxK5x/1DQgGAuNswO7D5Trx5
- sR5mQiuoT3V4Pn8K/j823t8ynqFNAK+X4nAB6IjqqSKGFJqZwfvNXOZ8xnGVnUdh8oizbxdqBh6
- xTIZQ8N7JYzbS9Uct2mjLJUwhMuJLB6ongA7y2tlG/Du9rMSznUvG/fUv1JyZwYF12yQFvZjU8=
-X-Google-Smtp-Source: AGHT+IF64Ba9LUb/m7gFvn1NJJHIcz4XN4bYMSy34/vn5lWzCOTleCUUVN4QBBqvwrQmPidaBkIigw==
-X-Received: by 2002:a05:600c:470a:b0:434:feb1:adae with SMTP id
- 5b1f17b1804b1-43668547fdcmr34034565e9.3.1734711604718; 
- Fri, 20 Dec 2024 08:20:04 -0800 (PST)
+ bh=26di7DaWtmPDXYxMPM19+KQ0TF1cDrCICXH3PHxzoEg=;
+ b=F2IeqkLeTt7Gu1TTytL/0DHmbQvXBN7+ZhEVZJNJ6Ikk+443P9mYpMSIw++O1NVLl2
+ 4xmDf0ZvT4LuAlfLDsL3rJqCUB03siblIVKUQCgG00nGT+LyqI/zvP/8jezT0Xzmp78Z
+ 9Eux+Mpct85JGfcd/AgwENixx5maQ/pBQO5D5uGCf1JweLdIXsCXZA+O4s+Rcba7g4zA
+ wLHIN2XrEgtflba1WDXbkVI+Mtv/kATcb7n/LqvTcBeVzKqIaCEYpaUU3xDHcpUQ3n+u
+ R155kGrsRSPxi9Lxn+deTHuVtRK4F40a9+TndZu2SqdqXXruycHavIR1OjnkhfxpI1eQ
+ bGiA==
+X-Gm-Message-State: AOJu0YyCpouuZu2Uz2w9AOYfiESMTJ/rSCEL+nG1pEUO0IJnOy74V3Lu
+ fkwe32vyRJIvW4XmgOFtGwVoH4kucTCaEzf1VSCJhExWJxe8UqanJ+Dbab+cvLtyoi5Dso9K9+V
+ R
+X-Gm-Gg: ASbGncva/UmHLNtz/mhtyvmZdHKmaxN/Ot8BybfEMkZqNeJxTlIw/boAMN56uRydt4a
+ TT0YRYVuSbKqibx1X9Fe0Nz6nJB4aqvxYLi7Tue0p0hnEpFyXoXQRUw7sn8Zr0lmAoUXC+fSgh1
+ x4iJmajRrBDkTRG4rFntiRsGjvwJVgnKH+B99IuZeedP8dMujF7h//QDXJPgkGm1g1Ivmc0xNzI
+ oCmeri1p1jPYeQ91RgIG1SScSjytQ9q1VwIWzGSiQtNI3VmK9erT7YgJLpiQBEp1aquQgQnLYg=
+X-Google-Smtp-Source: AGHT+IHwO1tQmV3DVFycsq7AtPrZmiJDftYjIohq3F0DaNj8O2jcyJ5l/Js4VtK5qCs1VOYqLMEeIw==
+X-Received: by 2002:a05:6000:70a:b0:37d:4647:154e with SMTP id
+ ffacd0b85a97d-38a221eca99mr3629315f8f.9.1734711609138; 
+ Fri, 20 Dec 2024 08:20:09 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656b0145csm83874735e9.15.2024.12.20.08.20.04
+ ffacd0b85a97d-38a1c8a6cb1sm4499987f8f.89.2024.12.20.08.20.08
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Dec 2024 08:20:04 -0800 (PST)
+ Fri, 20 Dec 2024 08:20:08 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 55/59] hw/xen: Remove unnecessary 'exec/cpu-common.h' header
-Date: Fri, 20 Dec 2024 17:15:46 +0100
-Message-ID: <20241220161551.89317-56-philmd@linaro.org>
+Subject: [PULL 56/59] system/numa: Remove unnecessary 'exec/cpu-common.h'
+ header
+Date: Fri, 20 Dec 2024 17:15:47 +0100
+Message-ID: <20241220161551.89317-57-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241220161551.89317-1-philmd@linaro.org>
 References: <20241220161551.89317-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,24 +104,23 @@ do not include this header.
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20241217151305.29196-2-philmd@linaro.org>
+Message-Id: <20241217151305.29196-3-philmd@linaro.org>
 ---
- include/hw/xen/xen.h | 2 --
- 1 file changed, 2 deletions(-)
+ include/system/numa.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/hw/xen/xen.h b/include/hw/xen/xen.h
-index ecb89ecfc14..e94c6e5a318 100644
---- a/include/hw/xen/xen.h
-+++ b/include/hw/xen/xen.h
-@@ -24,8 +24,6 @@
- #define __XEN_INTERFACE_VERSION__ 0x00040e00
- #endif
+diff --git a/include/system/numa.h b/include/system/numa.h
+index 96d4ff9b85a..1044b0eb6e9 100644
+--- a/include/system/numa.h
++++ b/include/system/numa.h
+@@ -3,7 +3,6 @@
  
+ #include "qemu/bitmap.h"
+ #include "qapi/qapi-types-machine.h"
 -#include "exec/cpu-common.h"
--
- /* xen-machine.c */
- enum xen_mode {
-     XEN_DISABLED = 0, /* xen support disabled (default) */
+ 
+ struct CPUArchId;
+ 
 -- 
 2.47.1
 
