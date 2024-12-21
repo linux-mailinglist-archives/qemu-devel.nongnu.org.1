@@ -2,94 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF9F19FA21A
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Dec 2024 20:13:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4920C9FA222
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Dec 2024 20:23:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tP4tv-00012b-PN; Sat, 21 Dec 2024 14:12:35 -0500
+	id 1tP53O-0002Lg-6F; Sat, 21 Dec 2024 14:22:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1tP4tu-00012M-8S
- for qemu-devel@nongnu.org; Sat, 21 Dec 2024 14:12:34 -0500
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1tP4ts-00075A-94
- for qemu-devel@nongnu.org; Sat, 21 Dec 2024 14:12:33 -0500
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-aab6fa3e20eso513319166b.2
- for <qemu-devel@nongnu.org>; Sat, 21 Dec 2024 11:12:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734808350; x=1735413150; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7u9qwtsXNo/JnvYxqV3MY2CeWlrbvpxo+1Tlwe+hBxk=;
- b=CNO8JVDwvRSPypwOm0jDwA6E2TWar5V59uDbqLk0SfI3J6/J8yydaKGXoAl6G59Cxx
- b/u2Z8aPTExfrV/A5V78XOZCc3nRAOzq4MvMYV7NquTFL9SOznmTUNAVbuDwzxQo4WM8
- jI5IN2YlZyWrQhB0THvojTpCpSbZpW7PkaO4omyKkfVqvgJokcgZjWa5Kt+qreE7lHSi
- aZhTTLzaTwampVJio4h1lYEAmyqyqDpPqpTKmJJlbHZQIEJtLWkXvLLv+Sz6ue5RpFjN
- FGDIYtJn+87DiKgpfHoD4HdT+KoPbbrXejpQgRBnlOCssvMg2ddVOf5sDDz/dX0TNxOW
- Zszw==
+ (Exim 4.90_1) (envelope-from <dhildenb@redhat.com>)
+ id 1tP53L-0002LT-TV
+ for qemu-devel@nongnu.org; Sat, 21 Dec 2024 14:22:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dhildenb@redhat.com>)
+ id 1tP53K-00007z-33
+ for qemu-devel@nongnu.org; Sat, 21 Dec 2024 14:22:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1734808936;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Wh/XJcDLG4haZ0I99kxZxm6Q4mRwSI+Ko/QTidmvGPs=;
+ b=HLCDift8ScoAFoWHGJInyofm0kiHfyBXZCPtuMLJIWVzbDH+UJdMiU7f2e7U9yG3PHScX2
+ /fixXwTTt+f1WrESTUR+AAqqfLWorVBXUVe0KykWAo3xxlr0L+JI58I+8jkOPTfKydTArg
+ Nt7HRcr6vYSzrEgWKtuHCEu8vvy2SMg=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-113-Sl_ChOrgOD-9AZK-bpPdAw-1; Sat, 21 Dec 2024 14:22:14 -0500
+X-MC-Unique: Sl_ChOrgOD-9AZK-bpPdAw-1
+X-Mimecast-MFC-AGG-ID: Sl_ChOrgOD-9AZK-bpPdAw
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-385ed79291eso1985288f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 21 Dec 2024 11:22:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734808350; x=1735413150;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7u9qwtsXNo/JnvYxqV3MY2CeWlrbvpxo+1Tlwe+hBxk=;
- b=WjBvZKSUE0rkHyB9kl1GIgRIzygoJTf8IUhEAJ4c5bTOB3haPqXz9MmOgKEONWUCBE
- UEqGvlifTjmr7qMjJzBX2h8RKSJCFz5ujm3npGrUTK4x4HMjQAoSLX0grDLYr4ktq8Oy
- 73X6MpIDFnhKTRHsBbx2EUqzovZvH50+7I6yF4sbiH6wgn3ZlPGIlwyh9eLV+IAOAgZS
- 1D5oCurpV+DUaQZa/5FR1+soLt9KA99MubRBsfGmfdGvQwJk79/FhGH1KQMSo2RMKz2/
- DvnnjPb2vQexaHQbs54r1Xd+c9AYDE6ehPoxcEjbWojRcu1AUkL1RiwcysqOt2CL+uj+
- W4ow==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWCK+FCToS6SpgVt8NHOB5EVaezNlFJZqdu8rd50fKB0qKlhdGueOOXaeX0zbrrmiCdIdDjqMIm0Z3W@nongnu.org
-X-Gm-Message-State: AOJu0YyFNIRgp/O//P42YwRHmKtfMFuNJaEYmluttJbSmnUsnVWpJXBc
- NCDa2GcCFxtjJl4UOiUDidYJj40xPG6OcDr/h8VGLmoJUoeDmI4A
-X-Gm-Gg: ASbGncvJgMvlXTfZqufKhPMGq+v8AL+UNEPmYfzihsGtB4RW8FkRbXin8+W5Mk9PkEC
- xoN2N4QpAdWfhmIrIj+j3f0iB3gO24zTJtvBfbPOZ7V/4DM2d+csGwLVpPqxA+1ta7nfDOA3J4c
- 83jYJ02gCRZMHskrQk71OOnDqPRSAcPaH7pkm8OQ0KE5wT1IrWA3WDxAocXmJRFz+1F3rMLWavu
- b5Uvvklu1z49/rkWRVdubKezYQZe8SHwW2C07O7Fx2fOop4py1ztkQ3r7ZjFDt0UsyohR1V2reH
- Aw1X7B9LXA8C6P3KRySa1JWusl1H
-X-Google-Smtp-Source: AGHT+IE7RtayVfunI0SDwN8qe5ZhKl7E//HdCqyZcWCmCVFrQFtRj1xLDJr6JbPjHo7DqZ+rDOT8xg==
-X-Received: by 2002:a17:907:60d5:b0:aab:eefc:92e5 with SMTP id
- a640c23a62f3a-aac33415e24mr620255466b.14.1734808349664; 
- Sat, 21 Dec 2024 11:12:29 -0800 (PST)
-Received: from [127.0.0.1] (dynamic-078-054-221-009.78.54.pool.telefonica.de.
- [78.54.221.9]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aac0e89617bsm307483166b.76.2024.12.21.11.12.28
+ d=1e100.net; s=20230601; t=1734808933; x=1735413733;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Wh/XJcDLG4haZ0I99kxZxm6Q4mRwSI+Ko/QTidmvGPs=;
+ b=lYXHOw9pwPKT7+w1nJHBtMYX9bVk79ksXe8WwhASb4o1hUnQvCZRN3XyeUblfqmKyA
+ FhiC2JTmImYj2bOB7AeBwC7Iz8ZGBDAACDlbWz/mLtg5tct5Oxb1jtCLnqiq6NVaYzHY
+ KHQBxrAgP6rJJOjLLDsh4mehRXNYMZ73EeRHKdzx4QIiJ2FV4We0bFJnTm3b6JHls7W0
+ xJdOEuSNmjRdyqcqRAfp7LNfw6zI+6SRQ3laD27bgF6qbeIEL3v1xGFq9hXsCH+Y74tp
+ UnS+8fLG7cYvWgBqbAp3y9aa/7Dz0NnOId9jWqHVtDLU+1243+OoalWSV2UTzbBLsB5c
+ dRfw==
+X-Gm-Message-State: AOJu0YzMviimI9Po300wY3k7uG+c3I249Fbr85qkys4aPRuQVUuZijZ5
+ cMlbHSrDGuJCCKTKsLK8Mf57nuqwc8Nseur++ISygH2HX2ui4mNtlPIWfXzX+GaHlim8u1zCuTM
+ gPqBTqP8H+lY8m75y5ToVxCH8YOUTDkuA+Vah8RLBbo5JcW6qJaEHI9A1Kc+Wviuwp/NK+5wK/e
+ jDfQVzVWFwx8Idg21pdIpGLa108RO88YeP
+X-Gm-Gg: ASbGncsDvS/3c4RmJhduSSE7qUfradFy2N6yBTqqhKKi6ojCBQVYH6nemopTEgXD/BH
+ ax3AfN2MdDiQApY5ZMUEnt9dr/sdqntjLdbbvHBgZ5BjXyROEUyyMO20H4Mn/Vx2OMb3BfBJMpv
+ HL634SCob7b4P6p1QBTJL944+gYJH5jXOE5FH14asy1GB4CJuuC+zTwuDvkR3SEIhzJpptVZ0Wk
+ YKQ1mF/+ALyaqU5aa5Ituk8/W4DgrWfzBarJoiguVtnPekFwSBDki7U/PJ/z/vz+Od8pXQ+5XJG
+ SEH4S8H1sXvkOfnFbxEtANuWrqlgSUn785AY+Xg=
+X-Received: by 2002:a05:600c:198a:b0:434:fe3c:c662 with SMTP id
+ 5b1f17b1804b1-43669a22e68mr64678555e9.12.1734808933391; 
+ Sat, 21 Dec 2024 11:22:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEOi41GylqZyjhRSi0PpqPb9bTOccR25IdBY9hAT1xG/hjuaeT+dgjQ2h9tO1Zm7RBJXFpr2g==
+X-Received: by 2002:a05:600c:198a:b0:434:fe3c:c662 with SMTP id
+ 5b1f17b1804b1-43669a22e68mr64678395e9.12.1734808932964; 
+ Sat, 21 Dec 2024 11:22:12 -0800 (PST)
+Received: from localhost
+ (p200300cbc7137800820d0e9f08ce52bd.dip0.t-ipconnect.de.
+ [2003:cb:c713:7800:820d:e9f:8ce:52bd])
+ by smtp.gmail.com with UTF8SMTPSA id
+ 5b1f17b1804b1-43661219a08sm83579355e9.25.2024.12.21.11.22.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 21 Dec 2024 11:12:29 -0800 (PST)
-Date: Sat, 21 Dec 2024 18:49:41 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-CC: =?ISO-8859-1?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>,
- Junjie Mao <junjie.mao@hotmail.com>, Kevin Wolf <kwolf@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PULL 12/40] rust: build integration test for the qemu_api crate
-In-Reply-To: <1132197a-17ab-4b70-ad70-c6a033e18647@redhat.com>
-References: <20241104172721.180255-1-pbonzini@redhat.com>
- <20241104172721.180255-13-pbonzini@redhat.com>
- <A90FCF2F-C8D9-49B7-A881-B0F849AC11A0@gmail.com>
- <05747238-adac-4be1-b516-358a04aca803@redhat.com>
- <1132197a-17ab-4b70-ad70-c6a033e18647@redhat.com>
-Message-ID: <5C20A676-F66F-40A7-ACD3-BEFAD3F43A75@gmail.com>
+ Sat, 21 Dec 2024 11:22:11 -0800 (PST)
+From: David Hildenbrand <david@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ David Hildenbrand <david@redhat.com>
+Subject: [PULL v2 00/15] Host Memory Backends and Memory devices queue
+ 2024-12-21
+Date: Sat, 21 Dec 2024 20:21:54 +0100
+Message-ID: <20241221192209.3979595-1-david@redhat.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=dhildenb@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.177,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,83 +111,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi,
 
+this is the updated pull request from 2024-12-18; gitlab-ci seems to
+be happy with it (container,build,avocado tests).
 
-Am 20=2E Dezember 2024 10:42:09 UTC schrieb Paolo Bonzini <pbonzini@redhat=
-=2Ecom>:
->
->
->On Thu, Dec 19, 2024 at 12:22=E2=80=AFPM Paolo Bonzini <pbonzini@redhat=
-=2Ecom> wrote:
->>=20
->> On 12/19/24 10:53, Bernhard Beschow wrote:
->> >
->> >
->> > Am 4=2E November 2024 17:26:51 UTC schrieb Paolo Bonzini <pbonzini@re=
-dhat=2Ecom>:
->> >> Adjust the integration test to compile with a subset of QEMU object
->> >> files, and make it actually create an object of the class it defines=
-=2E
->> >>
->> >> Follow the Rust filesystem conventions, where tests go in tests/ if
->> >> they use the library in the same way any other code would=2E
->> >>
->> >> Reviewed-by: Junjie Mao <junjie=2Emao@hotmail=2Ecom>
->> >> Reviewed-by: Kevin Wolf <kwolf@redhat=2Ecom>
->> >> Signed-off-by: Paolo Bonzini <pbonzini@redhat=2Ecom>
->> >> ---
->> >> meson=2Ebuild                  | 10 ++++-
->> >> rust/qemu-api/meson=2Ebuild    | 26 ++++++++++--
->> >> rust/qemu-api/src/lib=2Ers     |  3 --
->> >> rust/qemu-api/src/tests=2Ers   | 49 ----------------------
->> >> rust/qemu-api/tests/tests=2Ers | 78 ++++++++++++++++++++++++++++++++=
-++++
->> >> 5 files changed, 110 insertions(+), 56 deletions(-)
->> >> delete mode 100644 rust/qemu-api/src/tests=2Ers
->> >> create mode 100644 rust/qemu-api/tests/tests=2Ers
->> >
->> > When `--enable-modules` is passed to configure, this patch results in=
- numerous undefined symbols=2E
->>=20
->> Thanks for the report=2E=2E=2E This doesn't seem easy to fix without ad=
-ding
->> more hacks on top, but I'll try to do it right=2E
->
->Which might very well be doing it in Meson=2E  One needs to teach Meson
->to add --start-group/--end-group options for rustc just like Meson does
->for the C compiler; or alternatively to support "objects: =2E=2E=2E" for
->Rust executables=2E
->
->For example, with https://github=2Ecom/mesonbuild/meson/pull/14026, the f=
-ix
->is simply this:
->
->diff --git a/rust/qemu-api/meson=2Ebuild b/rust/qemu-api/meson=2Ebuild
->index 9425ba7100c=2E=2E0c08d2e51f5 100644
->--- a/rust/qemu-api/meson=2Ebuild
->+++ b/rust/qemu-api/meson=2Ebuild
->@@ -59,7 +59,8 @@ test('rust-qemu-api-integration',
->         rust_args: ['--test'],
->         install: false,
->         dependencies: [qemu_api, qemu_api_macros],
->-        link_whole: [rust_qemu_api_objs, libqemuutil]),
->+        link_with: libqemuutil,
->+        link_whole: [rust_qemu_api_objs]),
->     args: [
->         '--test', '--test-threads', '1',
->         '--format', 'pretty',
->
->Until then, --enable-modules is broken together with Rust=2E
+The following changes since commit 9863d46a5a25bfff7d2195ad5e3127ab3bae0a2b:
 
-Thanks for figuring this out! Your latest patches really motivated me to t=
-ry out the Rust support=2E I especially liked the patch leveraging GATs for=
- storing metadata inside the type system which seems like idiomatic Rust to=
- me=2E Great work!
+  Merge tag 'pull-loongarch-20241219' of https://gitlab.com/bibo-mao/qemu into staging (2024-12-19 15:46:43 -0500)
 
-Best regards,
-Bernhard
+are available in the Git repository at:
 
->
->Paolo
->
+  https://github.com/davidhildenbrand/qemu.git tags/mem-2024-12-21
+
+for you to fetch changes up to aa910c20ec5f3b10551da19e441b3e2b54406e25:
+
+  s390x: virtio-mem support (2024-12-21 20:15:06 +0100)
+
+----------------------------------------------------------------
+Hi,
+
+"Host Memory Backends" and "Memory devices" queue ("mem"):
+- Fixup handling of virtio-mem unplug during system resets, as
+  preparation for s390x support (especially kdump in the Linux guest)
+- virtio-mem support for s390x
+
+----------------------------------------------------------------
+David Hildenbrand (15):
+      virtio-mem: unplug memory only during system resets, not device resets
+      s390x/s390-virtio-ccw: don't crash on weird RAM sizes
+      s390x/s390-virtio-hcall: remove hypercall registration mechanism
+      s390x/s390-virtio-hcall: prepare for more diag500 hypercalls
+      s390x: rename s390-virtio-hcall* to s390-hypercall*
+      s390x/s390-virtio-ccw: move setting the maximum guest size from sclp to machine code
+      s390x: introduce s390_get_memory_limit()
+      s390x/s390-hypercall: introduce DIAG500 STORAGE_LIMIT
+      s390x/s390-stattrib-kvm: prepare for memory devices and sparse memory layouts
+      s390x/s390-skeys: prepare for memory devices
+      s390x/s390-virtio-ccw: prepare for memory devices
+      s390x/pv: prepare for memory devices
+      s390x: remember the maximum page size
+      s390x/virtio-ccw: add support for virtio based memory devices
+      s390x: virtio-mem support
+
+ MAINTAINERS                        |   5 +
+ hw/s390x/Kconfig                   |   1 +
+ hw/s390x/meson.build               |  10 +-
+ hw/s390x/s390-hypercall.c          |  85 ++++++++++++++
+ hw/s390x/s390-hypercall.h          |  25 ++++
+ hw/s390x/s390-skeys.c              |   6 +-
+ hw/s390x/s390-stattrib-kvm.c       |  67 +++++++----
+ hw/s390x/s390-virtio-ccw.c         | 160 +++++++++++++++++---------
+ hw/s390x/s390-virtio-hcall.c       |  41 -------
+ hw/s390x/s390-virtio-hcall.h       |  25 ----
+ hw/s390x/sclp.c                    |  17 +--
+ hw/s390x/virtio-ccw-md-stubs.c     |  24 ++++
+ hw/s390x/virtio-ccw-md.c           | 153 +++++++++++++++++++++++++
+ hw/s390x/virtio-ccw-md.h           |  44 ++++++++
+ hw/s390x/virtio-ccw-mem.c          | 226 +++++++++++++++++++++++++++++++++++++
+ hw/s390x/virtio-ccw-mem.h          |  34 ++++++
+ hw/virtio/Kconfig                  |   1 +
+ hw/virtio/virtio-mem.c             | 107 ++++++++++++------
+ include/hw/s390x/s390-virtio-ccw.h |   9 ++
+ include/hw/virtio/virtio-mem.h     |  13 ++-
+ target/s390x/cpu-sysemu.c          |  15 ---
+ target/s390x/cpu.h                 |   2 -
+ target/s390x/kvm/kvm.c             |  21 +---
+ target/s390x/kvm/pv.c              |   2 +-
+ target/s390x/tcg/misc_helper.c     |  10 +-
+ 25 files changed, 874 insertions(+), 229 deletions(-)
+ create mode 100644 hw/s390x/s390-hypercall.c
+ create mode 100644 hw/s390x/s390-hypercall.h
+ delete mode 100644 hw/s390x/s390-virtio-hcall.c
+ delete mode 100644 hw/s390x/s390-virtio-hcall.h
+ create mode 100644 hw/s390x/virtio-ccw-md-stubs.c
+ create mode 100644 hw/s390x/virtio-ccw-md.c
+ create mode 100644 hw/s390x/virtio-ccw-md.h
+ create mode 100644 hw/s390x/virtio-ccw-mem.c
+ create mode 100644 hw/s390x/virtio-ccw-mem.h
+
+-- 
+2.47.1
+
 
