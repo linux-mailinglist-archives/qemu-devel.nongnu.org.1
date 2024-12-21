@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 805099FA224
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Dec 2024 20:23:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A55A9FA223
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Dec 2024 20:23:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tP53i-0002QZ-EF; Sat, 21 Dec 2024 14:22:42 -0500
+	id 1tP53g-0002Pz-SO; Sat, 21 Dec 2024 14:22:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dhildenb@redhat.com>)
- id 1tP53g-0002Po-3J
- for qemu-devel@nongnu.org; Sat, 21 Dec 2024 14:22:40 -0500
+ id 1tP53f-0002PZ-Bq
+ for qemu-devel@nongnu.org; Sat, 21 Dec 2024 14:22:39 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dhildenb@redhat.com>)
- id 1tP53e-0000Fh-I2
+ id 1tP53d-0000FP-VL
  for qemu-devel@nongnu.org; Sat, 21 Dec 2024 14:22:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734808958;
+ s=mimecast20190719; t=1734808957;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WGu+ZgEzN6rOk3pd4wJ9ZrVZQ7N/0arOChZXYIBy5JE=;
- b=QNWRXC8s802hZY3I+MNCIyev4J6i8LkX36AonToHunU0OOJmpj5p90PTcE6Jymzcvl+ZQ1
- kzE4vkkKue+m9KETA3APX9DY6+U4pdk+PxYrUZILGduYl0czVtFyM2RJ/ovyfzuWqu0Tcu
- Dz279e74CI/p1oL4BTc6Q8sOXAuqWjM=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rqKCWQR3QB2io/MyyfabdA53d/IBhffWJa6uY0wK/vs=;
+ b=LQdJ2NjTNOYjppsIN3KDFrNqWZ73hJRZA6aixhfO0A9+zTHrt5QwlSKvXCxsuOvIBQ6jfg
+ oRr79QGlq5S/MWRybqD7g9GOrWBaetaMy9BL84A2JNO0HhKL5ywoJdy5s9V1FZ3V06wp6W
+ kCmyF9X+rO4xQZ/6ak8QW9gI14XW2tw=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-70-2CqSwec5PWSxhKUuhVQUmA-1; Sat, 21 Dec 2024 14:22:33 -0500
-X-MC-Unique: 2CqSwec5PWSxhKUuhVQUmA-1
-X-Mimecast-MFC-AGG-ID: 2CqSwec5PWSxhKUuhVQUmA
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4361d4e8359so24050805e9.3
- for <qemu-devel@nongnu.org>; Sat, 21 Dec 2024 11:22:33 -0800 (PST)
+ us-mta-382-FtsSCamHOyaOxWv7MENjwQ-1; Sat, 21 Dec 2024 14:22:35 -0500
+X-MC-Unique: FtsSCamHOyaOxWv7MENjwQ-1
+X-Mimecast-MFC-AGG-ID: FtsSCamHOyaOxWv7MENjwQ
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-436289a570eso24136085e9.0
+ for <qemu-devel@nongnu.org>; Sat, 21 Dec 2024 11:22:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734808952; x=1735413752;
+ d=1e100.net; s=20230601; t=1734808954; x=1735413754;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WGu+ZgEzN6rOk3pd4wJ9ZrVZQ7N/0arOChZXYIBy5JE=;
- b=jzuVwf4p9sRQs/VFZKnTToQ1Le04FBuVgTs4gZc9h0GxofDgNYtWClMrP8uP8fLYXg
- R6XTHhCHDKTmGT/GA5mlNvTYHWKGC2o2uu6NzzOZT0CMItT4yIrQWebs9lG+gaUCAJhn
- V1prVhqPng2X7wXEwM6SpuKZ9hTWXk8jJ2U/rDGRu3p4ifh3wbVE+xJfdPjyu0q/oHyK
- TDdyAe7G2yshCMCwdSDpN77e6mH+pmUqPBsoActxZWGCk2LwtGk/pQSMCo0J9ki6RBs1
- 6HKq9MC+Q2IYH5fhRYFYxycojxZcFAakpOjOCn7vdxm9SiST3Pu5+yitPb3SsfecymLc
- 604g==
-X-Gm-Message-State: AOJu0YyVpH4fyOXYjO6h8vEDez9Pqw3E/qFz0ljXcy05St7TgK81PAwA
- UxXpmgysFonExcHFdhAVIn/uOHJpJYuqZnaf7o0beJT0cU15GcaUBjMIt5baFJlLK+5odnE5Q9i
- X3E5LqKHCCU8TAvwWenPxnhSieC3rfM8GDNJ1ZFPAH75FV51bPzf3W+MFAbW7mTUZL1qpbKzk/7
- jcXSicCnU62xDZpCZZC+vYZLuvwt2ruwOH
-X-Gm-Gg: ASbGnctMGZmNDPGmEP87/gCs/nvA8WPezyPz/SAw2+/hTpfbHDHnHQ7u5AoYO2+yjop
- 1vaghclXx6fFO+CQhGmEHqHh7BXK3frlZNwfwWPEgH07HnwsSW2v7knI6rH+bNYgDkV4HSsNlgN
- /ZK2KO2Y5Qy5CHjV+iVyDREMI/BPmOh4qi9OpgmoPsdv3hSB93ZdJ5Dtvf2mNXeK5sANWSLoBlv
- UaZfX3Wyu6PMjI80Nl9yZxWOHEO4am49bytJRaPomYm+sOPrGgpU8XT1vqomBlYIeqKJTVanUw7
- ap9a1Y0EspwCEH86opHBnNnSI4uDBUrFCfkAf9o=
-X-Received: by 2002:a05:600c:1c9f:b0:435:32e:8270 with SMTP id
- 5b1f17b1804b1-43668642f9dmr64362115e9.14.1734808952329; 
- Sat, 21 Dec 2024 11:22:32 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHbcpUo2QHaH1qNNe1W6Y0nGzocSMkcNLPSdOhbQKDjoS8NwH56ptqwQBRL5iaJo6gKThICug==
-X-Received: by 2002:a05:600c:1c9f:b0:435:32e:8270 with SMTP id
- 5b1f17b1804b1-43668642f9dmr64361995e9.14.1734808951918; 
- Sat, 21 Dec 2024 11:22:31 -0800 (PST)
+ bh=rqKCWQR3QB2io/MyyfabdA53d/IBhffWJa6uY0wK/vs=;
+ b=CQEkS76HkQTWz471hNZFgrHlp559nMGMEJTaXRuxFXlOHR11A+E8bliK1/ySl+65Dk
+ QenGWZIA5GsoeUZ3ATISK/uCfV0/ESiz2U2aqEfWBazS6PiuX7OIRZRUIdPlHpYkJwYJ
+ MRNTKaSPwUPZorE5k4tJGRVg/Zp2zFKoK1xyDTRkF1rR/NVKQib2QSOeGYVGQ+USSN2t
+ ur4DHma0gpnMNwD0+q4qZ1d3TspY8ghJ1FoUMOob6XxelKQatfvCt2FT4XLhySrSmfGF
+ sQ0fNGl5JAx2EkGNDhFipGopWtvhf3BA7FTT419dKpM6es8sPlpsnGF3bIH8LflAJsSG
+ Ovgg==
+X-Gm-Message-State: AOJu0YxWw7OORPaiCBux+FhgrRIa8tvF2RNjBS4GGHc0BG3h4tJEw3I2
+ hW4IgH1FZl4MzTHroeZnsoAwuCCNtlL20dt906WaXQxTM55TQOwMhVUMfMVdFFHOHLuhqtTf3wd
+ TAxsl8oXyQv18rp+3wri95NIJ2iId1f/qoannXlR76gPHcHq3mZ8kiV/8B/tTMAikQM1DdnWy0r
+ sBYiRod6gXobj6hlRWHA5EDYhyeOIJYvas
+X-Gm-Gg: ASbGncvUMeXDxVggT+YP+EdVzLA9lZxl5oEvXRAETXDpO0P87schQhnPLTAWyKhKlbR
+ T92ryqrXctzqoHxX09AvFPZ7m9OTXaf1EcnLpZEIqhcC2+2Ua9VcFWfFWldQKjaLg4BzU7gfsFb
+ o00qJ4PVQkNQGhDbXwFH5SlGadTvmXWxajb8SF1yqHu19G/D73kouxucoKZpgIzhuKIzb3qTKYj
+ DhAAwpPbIw7PLGbjTKHLdrGuDSZ6sr4RViT/2NDy7XhQczAab9SG4tljgGuS8Bq8wVBGPpyPeiE
+ uA2g+KJiIidtJPYBHDlL8SUE/4gAB4FQ25nwqnA=
+X-Received: by 2002:a5d:584c:0:b0:385:d7f9:f16c with SMTP id
+ ffacd0b85a97d-38a223f758emr6888107f8f.46.1734808954547; 
+ Sat, 21 Dec 2024 11:22:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFkftMM59mvDXCH8p49S8A7Ny/OME7qNNogDTT/MUi6oCR3zMBAP698T0J34AXc74CpSLn6Vw==
+X-Received: by 2002:a5d:584c:0:b0:385:d7f9:f16c with SMTP id
+ ffacd0b85a97d-38a223f758emr6888083f8f.46.1734808954127; 
+ Sat, 21 Dec 2024 11:22:34 -0800 (PST)
 Received: from localhost
  (p200300cbc7137800820d0e9f08ce52bd.dip0.t-ipconnect.de.
  [2003:cb:c713:7800:820d:e9f:8ce:52bd])
  by smtp.gmail.com with UTF8SMTPSA id
- 5b1f17b1804b1-43656b013e1sm116101925e9.12.2024.12.21.11.22.30
+ 5b1f17b1804b1-4366120088esm82859165e9.13.2024.12.21.11.22.32
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 21 Dec 2024 11:22:30 -0800 (PST)
+ Sat, 21 Dec 2024 11:22:33 -0800 (PST)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Halil Pasic <pasic@linux.ibm.com>,
@@ -80,9 +80,9 @@ Cc: Halil Pasic <pasic@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  "Michael S . Tsirkin" <mst@redhat.com>,
  David Hildenbrand <david@redhat.com>
-Subject: [PULL v2 07/15] s390x: introduce s390_get_memory_limit()
-Date: Sat, 21 Dec 2024 20:22:01 +0100
-Message-ID: <20241221192209.3979595-8-david@redhat.com>
+Subject: [PULL v2 08/15] s390x/s390-hypercall: introduce DIAG500 STORAGE_LIMIT
+Date: Sat, 21 Dec 2024 20:22:02 +0100
+Message-ID: <20241221192209.3979595-9-david@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241221192209.3979595-1-david@redhat.com>
 References: <20241221192209.3979595-1-david@redhat.com>
@@ -113,133 +113,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's add s390_get_memory_limit(), to query what has been successfully
-set via s390_set_memory_limit(). Allow setting the limit only once.
+A guest OS that supports memory hotplug / memory devices must during
+boot be aware of the maximum possible physical memory address that it might
+have to handle at a later stage during its runtime.
 
-We'll remember the limit in the machine state. Move
-s390_set_memory_limit() to machine code, merging it into
-set_memory_limit(), because this really is a machine property.
+For example, the maximum possible memory address might be required to
+prepare the kernel virtual address space accordingly (e.g., select page
+table hierarchy depth).
 
-Message-ID: <20241219144115.2820241-7-david@redhat.com>
+On s390x there is currently no such mechanism that is compatible with
+paravirtualized memory devices, because the whole SCLP interface was
+designed around the idea of "storage increments" and "standby memory".
+Paravirtualized memory devices we want to support, such as virtio-mem, have
+no intersection with any of that, but could co-exist with them in the
+future if ever needed.
+
+In particular, a guest OS must never detect and use device memory
+without the help of a proper device driver. Device memory must not be
+exposed in any firmware-provided memory map (SCLP or diag260 on s390x).
+For this reason, these memory devices will be places in memory *above*
+the "maximum storage increment" exposed via SCLP.
+
+Let's provide a new diag500 subcode to query the memory limit determined in
+s390_memory_init().
+
+Message-ID: <20241219144115.2820241-8-david@redhat.com>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- hw/s390x/s390-virtio-ccw.c         | 17 ++++++++++++-----
- include/hw/s390x/s390-virtio-ccw.h |  8 ++++++++
- target/s390x/cpu-sysemu.c          |  8 --------
- target/s390x/cpu.h                 |  1 -
- 4 files changed, 20 insertions(+), 14 deletions(-)
+ hw/s390x/s390-hypercall.c | 12 +++++++++++-
+ hw/s390x/s390-hypercall.h |  1 +
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index a28e615c5a..1c56b70dcd 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -45,6 +45,7 @@
- #include "migration/blocker.h"
- #include "qapi/visitor.h"
- #include "hw/s390x/cpu-topology.h"
-+#include "kvm/kvm_s390x.h"
- #include CONFIG_DEVICES
+diff --git a/hw/s390x/s390-hypercall.c b/hw/s390x/s390-hypercall.c
+index f816c2b1ef..ac1b08b2cd 100644
+--- a/hw/s390x/s390-hypercall.c
++++ b/hw/s390x/s390-hypercall.c
+@@ -11,7 +11,7 @@
  
- static Error *pv_mig_blocker;
-@@ -121,12 +122,16 @@ static void subsystem_reset(void)
-     }
+ #include "qemu/osdep.h"
+ #include "cpu.h"
+-#include "hw/boards.h"
++#include "hw/s390x/s390-virtio-ccw.h"
+ #include "hw/s390x/s390-hypercall.h"
+ #include "hw/s390x/ioinst.h"
+ #include "hw/s390x/css.h"
+@@ -57,6 +57,13 @@ static int handle_virtio_ccw_notify(uint64_t subch_id, uint64_t data)
+     return 0;
  }
  
--static void set_memory_limit(uint64_t new_limit)
-+static void s390_set_memory_limit(S390CcwMachineState *s390ms,
-+                                  uint64_t new_limit)
- {
--    uint64_t hw_limit;
--    int ret;
-+    uint64_t hw_limit = 0;
-+    int ret = 0;
- 
--    ret = s390_set_memory_limit(new_limit, &hw_limit);
-+    assert(!s390ms->memory_limit && new_limit);
-+    if (kvm_enabled()) {
-+        ret = kvm_s390_set_mem_limit(new_limit, &hw_limit);
-+    }
-     if (ret == -E2BIG) {
-         error_report("host supports a maximum of %" PRIu64 " GB",
-                      hw_limit / GiB);
-@@ -135,10 +140,12 @@ static void set_memory_limit(uint64_t new_limit)
-         error_report("setting the guest size failed");
-         exit(EXIT_FAILURE);
-     }
-+    s390ms->memory_limit = new_limit;
- }
- 
- static void s390_memory_init(MachineState *machine)
- {
-+    S390CcwMachineState *s390ms = S390_CCW_MACHINE(machine);
-     MemoryRegion *sysmem = get_system_memory();
-     MemoryRegion *ram = machine->ram;
-     uint64_t ram_size = memory_region_size(ram);
-@@ -154,7 +161,7 @@ static void s390_memory_init(MachineState *machine)
-         exit(EXIT_FAILURE);
-     }
- 
--    set_memory_limit(ram_size);
-+    s390_set_memory_limit(s390ms, ram_size);
- 
-     /* Map the initial memory. Must happen after setting the memory limit. */
-     memory_region_add_subregion(sysmem, 0, ram);
-diff --git a/include/hw/s390x/s390-virtio-ccw.h b/include/hw/s390x/s390-virtio-ccw.h
-index 996864a34e..de04336c5a 100644
---- a/include/hw/s390x/s390-virtio-ccw.h
-+++ b/include/hw/s390x/s390-virtio-ccw.h
-@@ -29,10 +29,18 @@ struct S390CcwMachineState {
-     bool dea_key_wrap;
-     bool pv;
-     uint8_t loadparm[8];
-+    uint64_t memory_limit;
- 
-     SCLPDevice *sclp;
- };
- 
-+static inline uint64_t s390_get_memory_limit(S390CcwMachineState *s390ms)
++static uint64_t handle_storage_limit(void)
 +{
-+    /* We expect to be called only after the limit was set. */
-+    assert(s390ms->memory_limit);
-+    return s390ms->memory_limit;
++    S390CcwMachineState *s390ms = S390_CCW_MACHINE(qdev_get_machine());
++
++    return s390_get_memory_limit(s390ms) - 1;
 +}
 +
- #define S390_PTF_REASON_NONE (0x00 << 8)
- #define S390_PTF_REASON_DONE (0x01 << 8)
- #define S390_PTF_REASON_BUSY (0x02 << 8)
-diff --git a/target/s390x/cpu-sysemu.c b/target/s390x/cpu-sysemu.c
-index 1cd30c1d84..3118a25fee 100644
---- a/target/s390x/cpu-sysemu.c
-+++ b/target/s390x/cpu-sysemu.c
-@@ -255,14 +255,6 @@ unsigned int s390_cpu_set_state(uint8_t cpu_state, S390CPU *cpu)
-     return s390_count_running_cpus();
- }
- 
--int s390_set_memory_limit(uint64_t new_limit, uint64_t *hw_limit)
--{
--    if (kvm_enabled()) {
--        return kvm_s390_set_mem_limit(new_limit, hw_limit);
--    }
--    return 0;
--}
--
- void s390_set_max_pagesize(uint64_t pagesize, Error **errp)
+ void handle_diag_500(S390CPU *cpu, uintptr_t ra)
  {
-     if (kvm_enabled()) {
-diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
-index 5ef61b1f75..b4506539f0 100644
---- a/target/s390x/cpu.h
-+++ b/target/s390x/cpu.h
-@@ -881,7 +881,6 @@ static inline void s390_do_cpu_load_normal(CPUState *cs, run_on_cpu_data arg)
+     CPUS390XState *env = &cpu->env;
+@@ -69,6 +76,9 @@ void handle_diag_500(S390CPU *cpu, uintptr_t ra)
+     case DIAG500_VIRTIO_CCW_NOTIFY:
+         env->regs[2] = handle_virtio_ccw_notify(env->regs[2], env->regs[3]);
+         break;
++    case DIAG500_STORAGE_LIMIT:
++        env->regs[2] = handle_storage_limit();
++        break;
+     default:
+         s390_program_interrupt(env, PGM_SPECIFICATION, ra);
+     }
+diff --git a/hw/s390x/s390-hypercall.h b/hw/s390x/s390-hypercall.h
+index 2fa81dbfdd..4f07209128 100644
+--- a/hw/s390x/s390-hypercall.h
++++ b/hw/s390x/s390-hypercall.h
+@@ -18,6 +18,7 @@
+ #define DIAG500_VIRTIO_RESET            1 /* legacy */
+ #define DIAG500_VIRTIO_SET_STATUS       2 /* legacy */
+ #define DIAG500_VIRTIO_CCW_NOTIFY       3 /* KVM_S390_VIRTIO_CCW_NOTIFY */
++#define DIAG500_STORAGE_LIMIT           4
  
- /* cpu.c */
- void s390_crypto_reset(void);
--int s390_set_memory_limit(uint64_t new_limit, uint64_t *hw_limit);
- void s390_set_max_pagesize(uint64_t pagesize, Error **errp);
- void s390_cmma_reset(void);
- void s390_enable_css_support(S390CPU *cpu);
+ void handle_diag_500(S390CPU *cpu, uintptr_t ra);
+ 
 -- 
 2.47.1
 
