@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF7889FA5BB
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Dec 2024 14:11:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A543F9FA5A3
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Dec 2024 14:05:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tPLda-00033M-EH; Sun, 22 Dec 2024 08:04:50 -0500
+	id 1tPLdG-0000UU-Cu; Sun, 22 Dec 2024 08:04:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tPLZm-00059I-85
- for qemu-devel@nongnu.org; Sun, 22 Dec 2024 08:01:13 -0500
+ id 1tPLZp-00059l-QZ
+ for qemu-devel@nongnu.org; Sun, 22 Dec 2024 08:01:20 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tPLZj-0000ee-Q8
- for qemu-devel@nongnu.org; Sun, 22 Dec 2024 08:00:54 -0500
+ id 1tPLZo-0000fJ-34
+ for qemu-devel@nongnu.org; Sun, 22 Dec 2024 08:00:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=E/pfqFvdsP9MiR8LN9oP2WCnoBSOLOXXfYq6hy6i4Vw=; b=f6/C1VN69fd7kouBmfAyUr6kWN
- +Efg0n2mA5Tr3u666XreUSkH3Mqp/1nzCfXEHabSteYaxCsQlHbLhKokP9FxqtGZBQs8vSckZKX8O
- 1O4IgcYQ+PfKQ23+ERqF3ykQHkjzw1e2GeKhXR08KDCjg3H0uwJw8JlAIpc0OtlCcQ4B3hW98ZBAO
- r4TxupozgDqvMZRyHUGMrFT66jfdzj6YpAJmqAxOVVssVGNXCgsHNfpmbekq3h0Daw0GzbtY78EwT
- Mfs3Wk3OGk9HzaYzr7JyMB57OPS5vXVX9qM6jayfWWQk7tcD6efV1IgmtfoKX6A6Eyo/R+BBS2UPh
- SrXCQ1lI1LL8OrMxXZgCNR/mHdpwf+w8sD02cFSLg7WSQQuXz7e65mhYLhVreFwg+/kD43Elu76ug
- KBXhTGd9uLzMvOXyr9UD0GL8OGbTnC6TzvlWcsonG9mJZ4LrVJlKUCPB4pnjzivIGj18iNEYn6aHl
- A6CszoNKPmddX29KazvQStd0LWNKTsMLimUEGsTNwck6GUq8MvlKHIIVmMLG39nUbq8u/rJaQZJjW
- a2q2vkzdLzbyUXmSfTrfrVpMuAlR9K650S/ZbzNxjyRJl7VmN5mHBQrEKy8iB3vpLUtx8NGJ1hAXv
- L28Edvab2HDXrcWuz0z0eDic7+bLq/kADjScUlg+0=;
+ bh=87tidG3WgbLhzqX0KNVuxmSDQyGLjTh7LZAY1x5QHEo=; b=NjvGDbtw/E9d1g4ecU7TEc2qIg
+ 1bno3h40OPW3l0i60ZCMMjsrYliXPb0+BDvmIIA9yTxAocaPcQecpb+M0ZqOkVdcWftWlBNjc7hiw
+ Hi4TnpmRbveQs5lb0W2eoVlmwRMZsRns7Zq4TGLo5PicCiJhftOpePdPLdMsJFOtYr8kbOFBh5XSO
+ khphBXUpoUwvi2LY8OkOH0kAT5ruQ3FUBVErPmGiPMEEWDu0JxY6su1QcCvTS1ozGxD5axkJrFKBN
+ aKVsRdFnnaw1tTVnk+xfSPUr85nM1VmTQxplsW+kkLisLAHOfpDsxJwGJLaxIzb/BHxUoBXpFqn+N
+ 4o3Q5ptaXAVuAFu4tzvkOAJcybGs9tyuUiYpGFz/RMid1J4GU4jfJXP7qw8hXP/Gx/88zERhjz7m2
+ Ykq/nrovMSBUSOSsJNlBBezOkP9AWPsF1fj/xyWWCwh4yMGNwdPXY4ZcX4LJrFxdKPS8EYq1Kw3Mg
+ 9sIzA6eadaBS17l4VcoQkdaaZ4fHCeagjNWNqUCj448AGaLqsfG6ik7fJ0Sj0emHIRNFXW3PeeOsp
+ eyhGKn6U48dJwp2gLi7JWtCrlbZmSLGOq1g2GVCsFqDq9BW0L8Fz3gKdWm6q5GivHxAcpO6teKAKL
+ /dbmiTxyeILPLJm3R/vNsWovuWtPdVt8mZEDv7mPU=;
 Received: from [2a02:8012:2f01:0:33a9:475d:1cd9:884]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tPLZ5-0002L7-Vc; Sun, 22 Dec 2024 13:00:15 +0000
+ id 1tPLZD-0002L7-VI; Sun, 22 Dec 2024 13:00:20 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: huth@tuxfamily.org,
 	qemu-devel@nongnu.org
-Date: Sun, 22 Dec 2024 12:59:46 +0000
-Message-Id: <20241222130012.1013374-8-mark.cave-ayland@ilande.co.uk>
+Date: Sun, 22 Dec 2024 12:59:48 +0000
+Message-Id: <20241222130012.1013374-10-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241222130012.1013374-1-mark.cave-ayland@ilande.co.uk>
 References: <20241222130012.1013374-1-mark.cave-ayland@ilande.co.uk>
@@ -50,8 +50,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:2f01:0:33a9:475d:1cd9:884
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v3 07/33] next-cube: move SCSI CSRs from next-pc to the
- next-scsi device
+Subject: [PATCH v3 09/33] next-cube: move floppy disk MMIO to separate memory
+ region in next-pc
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,101 +77,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The SCSI CSRs are located within the SCSI subsystem of the NeXT PC (Peripheral
-Contoller) which is now modelled as a separate QEMU device. Add a new memory
-region subregion to contain the SCSI CSRs that simply store and retrieve the
-register values.
-
-Add a new VMStateDescription for the next-scsi device to enable the SCSI CSRs
-to be migrated.
+The dummy floppy disk device is part of the next-pc device, and not related to
+the NeXTCube SCRs.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 ---
- hw/m68k/next-cube.c | 88 +++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 78 insertions(+), 10 deletions(-)
+ hw/m68k/next-cube.c | 61 ++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 49 insertions(+), 12 deletions(-)
 
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index 248cd5b776..84307e88e2 100644
+index 60b4290238..9c0ddf91f8 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -93,6 +93,10 @@ struct NeXTSCSI {
-     MemoryRegion scsi_mem;
+@@ -108,6 +108,7 @@ struct NeXTPC {
  
-     SysBusESPState sysbus_esp;
-+
-+    MemoryRegion scsi_csr_mem;
-+    uint8_t scsi_csr_1;
-+    uint8_t scsi_csr_2;
- };
+     M68kCPU *cpu;
  
- #define TYPE_NEXT_PC "next-pc"
-@@ -115,8 +119,6 @@ struct NeXTPC {
-     uint32_t led;
++    MemoryRegion floppy_mem;
+     MemoryRegion mmiomem;
+     MemoryRegion scrmem;
  
-     NeXTSCSI next_scsi;
--    uint8_t scsi_csr_1;
--    uint8_t scsi_csr_2;
- 
-     qemu_irq scsi_reset;
-     qemu_irq scsi_dma;
-@@ -364,6 +366,7 @@ static const MemoryRegionOps next_mmio_ops = {
- static uint64_t next_scr_readfn(void *opaque, hwaddr addr, unsigned size)
- {
-     NeXTPC *s = NEXT_PC(opaque);
-+    NeXTSCSI *ns = NEXT_SCSI(&s->next_scsi);
+@@ -368,11 +369,6 @@ static uint64_t next_scr_readfn(void *opaque, hwaddr addr, unsigned size)
      uint64_t val;
  
      switch (addr) {
-@@ -373,12 +376,12 @@ static uint64_t next_scr_readfn(void *opaque, hwaddr addr, unsigned size)
-         break;
- 
-     case 0x14020:
--        DPRINTF("SCSI 4020  STATUS READ %X\n", s->scsi_csr_1);
--        val = s->scsi_csr_1;
-+        DPRINTF("SCSI 4020  STATUS READ %X\n", ns->scsi_csr_1);
-+        val = ns->scsi_csr_1;
-         break;
- 
-     case 0x14021:
--        DPRINTF("SCSI 4021 STATUS READ %X\n", s->scsi_csr_2);
-+        DPRINTF("SCSI 4021 STATUS READ %X\n", ns->scsi_csr_2);
-         val = 0x40;
-         break;
- 
-@@ -411,6 +414,7 @@ static void next_scr_writefn(void *opaque, hwaddr addr, uint64_t val,
+-    case 0x14108:
+-        DPRINTF("FD read @ %x\n", (unsigned int)addr);
+-        val = 0x40 | 0x04 | 0x2 | 0x1;
+-        break;
+-
+     /*
+      * These 4 registers are the hardware timer, not sure which register
+      * is the latch instead of data, but no problems so far.
+@@ -402,13 +398,6 @@ static void next_scr_writefn(void *opaque, hwaddr addr, uint64_t val,
                               unsigned size)
  {
-     NeXTPC *s = NEXT_PC(opaque);
-+    NeXTSCSI *ns = NEXT_SCSI(&s->next_scsi);
- 
      switch (addr) {
-     case 0x14108:
-@@ -445,7 +449,7 @@ static void next_scr_writefn(void *opaque, hwaddr addr, uint64_t val,
-             DPRINTF("SCSICSR Reset\n");
-             /* I think this should set DMADIR. CPUDMA and INTMASK to 0 */
-             qemu_irq_raise(s->scsi_reset);
--            s->scsi_csr_1 &= ~(SCSICSR_INTMASK | 0x80 | 0x1);
-+            ns->scsi_csr_1 &= ~(SCSICSR_INTMASK | 0x80 | 0x1);
-             qemu_irq_lower(s->scsi_reset);
-         }
-         if (val & SCSICSR_DMADIR) {
-@@ -838,6 +842,54 @@ static void nextscsi_write(void *opaque, uint8_t *buf, int size)
-     nextdma_write(opaque, buf, size, NEXTDMA_SCSI);
- }
+-    case 0x14108:
+-        DPRINTF("FDCSR Write: %"PRIx64 "\n", val);
+-        if (val == 0x0) {
+-            /* qemu_irq_raise(s->fd_irq[0]); */
+-        }
+-        break;
+-
+     /* Hardware timer latch - not implemented yet */
+     case 0x1a000:
+     default:
+@@ -948,6 +937,47 @@ static const TypeInfo next_scsi_info = {
+     .class_init = next_scsi_class_init,
+ };
  
-+static void next_scsi_csr_write(void *opaque, hwaddr addr, uint64_t val,
-+                                unsigned size)
++static void next_floppy_write(void *opaque, hwaddr addr, uint64_t val,
++                              unsigned size)
 +{
-+    NeXTSCSI *s = NEXT_SCSI(opaque);
-+
 +    switch (addr) {
 +    case 0:
-+        s->scsi_csr_1 = val;
-+        break;
-+
-+    case 1:
-+        s->scsi_csr_2 = val;
++        DPRINTF("FDCSR Write: %"PRIx64 "\n", val);
++        if (val == 0x0) {
++            /* qemu_irq_raise(s->fd_irq[0]); */
++        }
 +        break;
 +
 +    default:
@@ -179,18 +144,14 @@ index 248cd5b776..84307e88e2 100644
 +    }
 +}
 +
-+static uint64_t next_scsi_csr_read(void *opaque, hwaddr addr, unsigned size)
++static uint64_t next_floppy_read(void *opaque, hwaddr addr, unsigned size)
 +{
-+    NeXTSCSI *s = NEXT_SCSI(opaque);
 +    uint64_t val;
 +
 +    switch (addr) {
 +    case 0:
-+        val = s->scsi_csr_1;
-+        break;
-+
-+    case 1:
-+        val = s->scsi_csr_2;
++        DPRINTF("FD read @ %x\n", (unsigned int)addr);
++        val = 0x40 | 0x04 | 0x2 | 0x1;
 +        break;
 +
 +    default:
@@ -200,78 +161,38 @@ index 248cd5b776..84307e88e2 100644
 +    return val;
 +}
 +
-+static const MemoryRegionOps next_scsi_csr_ops = {
-+    .read = next_scsi_csr_read,
-+    .write = next_scsi_csr_write,
++static const MemoryRegionOps next_floppy_ops = {
++    .read = next_floppy_read,
++    .write = next_floppy_write,
 +    .valid.min_access_size = 1,
-+    .valid.max_access_size = 1,
++    .valid.max_access_size = 4,
 +    .endianness = DEVICE_BIG_ENDIAN,
 +};
 +
- static void next_scsi_init(Object *obj)
+ static void next_escc_init(DeviceState *pcdev)
  {
-     NeXTSCSI *s = NEXT_SCSI(obj);
-@@ -845,6 +897,9 @@ static void next_scsi_init(Object *obj)
+     DeviceState *dev;
+@@ -1006,6 +1036,10 @@ static void next_pc_realize(DeviceState *dev, Error **errp)
  
-     object_initialize_child(obj, "esp", &s->sysbus_esp, TYPE_SYSBUS_ESP);
- 
-+    memory_region_init_io(&s->scsi_csr_mem, obj, &next_scsi_csr_ops,
-+                          s, "csrs", 2);
+     s->scsi_reset = qdev_get_gpio_in(d, 0);
+     s->scsi_dma = qdev_get_gpio_in(d, 1);
 +
-     memory_region_init(&s->scsi_mem, obj, "next.scsi", 0x40);
-     sysbus_init_mmio(sbd, &s->scsi_mem);
- }
-@@ -874,15 +929,30 @@ static void next_scsi_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion(&s->scsi_mem, 0x0,
-                                 sysbus_mmio_get_region(sbd, 0));
- 
-+    /* SCSI CSRs */
-+    memory_region_add_subregion(&s->scsi_mem, 0x20, &s->scsi_csr_mem);
-+
-     scsi_bus_legacy_handle_cmdline(&s->sysbus_esp.esp.bus);
++    /* Floppy */
++    memory_region_add_subregion(&s->scrmem, 0x14108,
++                                &s->floppy_mem);
  }
  
-+static const VMStateDescription next_scsi_vmstate = {
-+    .name = "next-scsi",
-+    .version_id = 0,
-+    .minimum_version_id = 0,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT8(scsi_csr_1, NeXTSCSI),
-+        VMSTATE_UINT8(scsi_csr_2, NeXTSCSI),
-+        VMSTATE_END_OF_LIST()
-+    },
-+};
-+
- static void next_scsi_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
+ static void next_pc_init(Object *obj)
+@@ -1024,6 +1058,9 @@ static void next_pc_init(Object *obj)
+     sysbus_init_mmio(sbd, &s->scrmem);
  
-     dc->desc = "NeXT SCSI Controller";
-     dc->realize = next_scsi_realize;
-+    dc->vmsd = &next_scsi_vmstate;
+     object_initialize_child(obj, "next-scsi", &s->next_scsi, TYPE_NEXT_SCSI);
++
++    memory_region_init_io(&s->floppy_mem, OBJECT(s), &next_floppy_ops, s,
++                          "next.floppy", 4);
  }
  
- static const TypeInfo next_scsi_info = {
-@@ -999,8 +1069,8 @@ static const VMStateDescription next_rtc_vmstate = {
- 
- static const VMStateDescription next_pc_vmstate = {
-     .name = "next-pc",
--    .version_id = 2,
--    .minimum_version_id = 2,
-+    .version_id = 3,
-+    .minimum_version_id = 3,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(scr1, NeXTPC),
-         VMSTATE_UINT32(scr2, NeXTPC),
-@@ -1008,8 +1078,6 @@ static const VMStateDescription next_pc_vmstate = {
-         VMSTATE_UINT32(int_mask, NeXTPC),
-         VMSTATE_UINT32(int_status, NeXTPC),
-         VMSTATE_UINT32(led, NeXTPC),
--        VMSTATE_UINT8(scsi_csr_1, NeXTPC),
--        VMSTATE_UINT8(scsi_csr_2, NeXTPC),
-         VMSTATE_STRUCT(rtc, NeXTPC, 0, next_rtc_vmstate, NextRtc),
-         VMSTATE_END_OF_LIST()
-     },
+ /*
 -- 
 2.39.5
 
