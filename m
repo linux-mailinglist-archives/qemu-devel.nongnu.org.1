@@ -2,53 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 462F89FA5F9
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Dec 2024 15:19:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5824A9FA6A2
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Dec 2024 17:26:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tPMmK-00055h-3H; Sun, 22 Dec 2024 09:17:56 -0500
+	id 1tPOlL-0002Yr-4r; Sun, 22 Dec 2024 11:25:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <09cc84e5561f66b6a8cf49b3532c6c78a6acc806@kylie.crudebyte.com>)
- id 1tPMmH-00055V-Av
- for qemu-devel@nongnu.org; Sun, 22 Dec 2024 09:17:53 -0500
-Received: from kylie.crudebyte.com ([5.189.157.229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <09cc84e5561f66b6a8cf49b3532c6c78a6acc806@kylie.crudebyte.com>)
- id 1tPMmF-0004dO-9b
- for qemu-devel@nongnu.org; Sun, 22 Dec 2024 09:17:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:Message-Id:Content-Type:
- Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Content-ID:
- Content-Description; bh=1Vu3Tsy2Xx1QYYu6yz9C6lTpEiU4xYMdQple0NsyNfc=; b=MU3Ox
- muBB91NIUFzyjWWQGx8PCPDUGigsv3u+GLGVeh80ecps+lZmCjFitV82iAQsOY0MdCMWhFGB/bML4
- 2cqJ5u7AVTyIrDXPAZtGi8GW7AZCeqhDlFFNxqYaSM/oKHC9CGF7NIql3D9RgAr9Zl1PZBhBr8DbQ
- zwP5qLRPod0w80mP3hIMM0qZstfg/YLCIUSaGTqmdpRfeXUoGmjM4Y/G6a1SkdHliCPYoHxTJyEcH
- xJrlo0r9zTD4VKhRb1dLFsSkO3kPLfDvPVdArgnEM/Pvq0pyHHQwrgRJtpc5I1MCemBO3nT3sxp3e
- uckEOgMjqMbvLOn2fHJ1G87R5oO0zZv0oHr0DjagKNuOG35yBqzWd+07cIkfNL2fjQLGKPnQ1S9FW
- HGWcImk/kS836ninDQaXG0ZmwejVhLYaocDxA0UbqoAx+TiLTZU0M6Lpj2NfZ9/VVMAQViTjiyM6R
- 6GG416Eex6yAMQas5R+Rw6j5aS7qSJEkwtGyBpH56c35V9lcElAXYZipArMu0SI5jJPqxnFeN8RCn
- Jl4i3b+DsSm1nuxp1Tl8CtjO7rpOIM6EVwvTARNBw3N940La92NcxgX0roAFenFHI347ibPRgLfo6
- LalHz9XiXlRYZTjwS/AHNb4c0CCeU2tzjMAVv/SwAwBINC2YZBjAm1GdvjuAsA=;
-Message-Id: <09cc84e5561f66b6a8cf49b3532c6c78a6acc806.1734876877.git.qemu_oss@crudebyte.com>
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Date: Sun, 22 Dec 2024 15:10:44 +0100
-Subject: [PATCH] 9pfs: make multidevs=remap default
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tPOlA-0002Y3-IZ
+ for qemu-devel@nongnu.org; Sun, 22 Dec 2024 11:24:52 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tPOl7-0002wX-SJ
+ for qemu-devel@nongnu.org; Sun, 22 Dec 2024 11:24:51 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-21649a7bcdcso31420245ad.1
+ for <qemu-devel@nongnu.org>; Sun, 22 Dec 2024 08:24:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1734884688; x=1735489488; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=iMHeSlbz0591ATzYmtVcUUaYYddFxbpBuy2TMLDdpkQ=;
+ b=Q90erX/IxysZ44JIaTPMV+v19VtfXs5cYYlxwOL70KgEA4Zx3syMJ6nNuc5sQ4lKIG
+ XCEKSO0CzGugr1ntkB8UMUWqScjpxgrMbnpxAQ7Whl3yGDFzt1yqy5O34k9Awo3L+Pw6
+ VI52lxpWRhlQ+ru/kg1zkbZezUo8BmHZK+yxsM4lNNRRIWYL6Gsbt93byQvWd2ShTqLR
+ 2915QpwFQ6ANGC+ufMUW1+RjQPPlfJN2MSRIS3OUbRC8PN+thUqaMWvQVydCbZr2mN+o
+ 0LicyZfB05dSyQl8vuNJANoWVk7rEDWqIj+YMq1fuC9RlojFDjHxS+5GkjLvGSPQOKKf
+ TEJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734884688; x=1735489488;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=iMHeSlbz0591ATzYmtVcUUaYYddFxbpBuy2TMLDdpkQ=;
+ b=wShmEIUZ72Yfp5Hw4RX+X33OBhziprXGV00fb9k+IEvOZ41H+tg5ODjkvYp3Iv1ZI6
+ aDkzsdYE11Ih43RNqejzD5lxxFzN7GazvfCO4xLzPqTdBinDmqkvX3OfVz8awK3gp/Ys
+ q/sAG8U/j6DhGtTCS+6gIe16asgE80YfkMtEhZ5ZWbQfNl/dB0e1nTOc/OIhB4ndYVAP
+ JNZNVaO2ipp5kAIL/CTOV8AAanXkI5blsAl+wzQ1mcDiJ7mtAGzbYiwn1gGxMWvikKIj
+ ebK6s/5J9gUumUmK3YhRTXLIE8vhz+FBgmOFy0QYLwKhGVsYToq7yT20CFuh4gGC17XP
+ eMTQ==
+X-Gm-Message-State: AOJu0YzTDjd6mY5TXw/VvjqnbLRNa78RqbZDM9GQ7/aZ16dfL94f8gBS
+ KyJVZOJmU+v7rlR6sNAGIP7uaQypkG0ZYwTcOP00FSGq9n2CmrJU9hXWyIX7PQvByVh5SCAYm5o
+ ULEQ=
+X-Gm-Gg: ASbGncsNwzeXCqnEO4vaaheiMsPnGe8im2clg/sTUVAk8CFZ3sxy54d8sIol9WP/pYb
+ +tVj1F+cHSa05mLrGei1q5czw+mvsbw/JPlgpt4h4RoZAiFmnjoxhR5KR4B/VtWDRoilx68/lf2
+ DH1KuApuFnlm3hVWKa6xskXe+rp21CLVXJJdJh69Rpehdt6FOoNLQCg3dFvj7O3Kpx5A2113frA
+ BAPY+zlgBip53+Y6IMxZ+uuc2Y/k9+t7drdbdnnN2ZitRSM/OiC4KsAM2141/k=
+X-Google-Smtp-Source: AGHT+IGtS8X7bef8sTXBY/M3O0CIITHZVtIekCKrNggQQH2OiN78DjhoNfyqlcI+jqER1t4VHgaL4Q==
+X-Received: by 2002:a17:902:ce83:b0:216:5b8b:9062 with SMTP id
+ d9443c01a7336-219e70dd21cmr147192875ad.54.1734884687888; 
+ Sun, 22 Dec 2024 08:24:47 -0800 (PST)
+Received: from stoup.. ([71.212.144.252]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-219dc971814sm58461385ad.79.2024.12.22.08.24.47
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 22 Dec 2024 08:24:47 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Greg Kurz <groug@kaod.org>
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=09cc84e5561f66b6a8cf49b3532c6c78a6acc806@kylie.crudebyte.com;
- helo=kylie.crudebyte.com
+Subject: [PATCH v3 00/51] tcg: Remove in-flight mask data from OptContext
+Date: Sun, 22 Dec 2024 08:23:55 -0800
+Message-ID: <20241222162446.2415717-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,110 +91,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-1a6ed33cc5 introduced option multidevs=remap|forbid|warn and made
-"warn" the default option.
+The desire is to start re-using some of the fold_* functions
+while lowering or simplifying operations during tcg_optmize.
 
-As it turned out though, e.g. by several reports in conjunction with
-following 9p client issue:
+Many of these fold_* functions set z_mask, s_mask, and a_mask,
+which hang around until the end of the tcg_optmize loop and
+are applied by finish_folding.  This disconnect between set
+and apply is a problem -- we would no longer be applying the
+masks to the correct opcode.
 
-https://github.com/torvalds/linux/commit/850925a8133c73c4a2453c360b2c3beb3bab67c9
+Fix this by making the masks local variables, passed down to
+be applied immediately to the opcode being processed.
 
-Many people are just ignoring this warning, or even do not notice the
-warning at all. Therefore make multidevs=remap the new default option to
-prevent people to run into such kind of severe misbehaviours in the first
-place.
+Changes for v3:
+  - Testing on non-x86 hosts with full-featured deposit ops showed
+    some issues with some of the new computations of sign mask, which
+    turn out to be a representational issue which leads to easy
+    off-by-one errors.
 
-From performance PoV the runtime overhead of multidevs=remap is
-neglectable with few or even just only one device being shared with the
-same 9p export, expected to be constant Theta(1). The inode numbers
-emitted to guest also just loose one bit (since 6b6aa8285d) for the 1st
-device being shared.
+    Change the representation of s_mask to include the sign itself
+    not just repetitions.  Disable optimizations based on s_mask
+    until the conversion is complete.
 
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
----
- hw/9pfs/9p-local.c |  3 +++
- qemu-options.hx    | 49 +++++++++++++++++++++++++---------------------
- 2 files changed, 30 insertions(+), 22 deletions(-)
+    Bitwise logical operations require no change.
 
-diff --git a/hw/9pfs/9p-local.c b/hw/9pfs/9p-local.c
-index 1b1f3b9ec8..928523afcc 100644
---- a/hw/9pfs/9p-local.c
-+++ b/hw/9pfs/9p-local.c
-@@ -1538,6 +1538,9 @@ static int local_parse_opts(QemuOpts *opts, FsDriverEntry *fse, Error **errp)
-                               "[remap|forbid|warn]\n");
-             return -1;
-         }
-+    } else {
-+        fse->export_flags &= ~V9FS_FORBID_MULTIDEVS;
-+        fse->export_flags |= V9FS_REMAP_INODES;
-     }
- 
-     if (!path) {
-diff --git a/qemu-options.hx b/qemu-options.hx
-index dacc9790a4..67ad0464fb 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -1938,32 +1938,37 @@ SRST
-         Specifies the tag name to be used by the guest to mount this
-         export point.
- 
--    ``multidevs=multidevs``
--        Specifies how to deal with multiple devices being shared with a
--        9p export. Supported behaviours are either "remap", "forbid" or
--        "warn". The latter is the default behaviour on which virtfs 9p
--        expects only one device to be shared with the same export, and
--        if more than one device is shared and accessed via the same 9p
--        export then only a warning message is logged (once) by qemu on
--        host side. In order to avoid file ID collisions on guest you
--        should either create a separate virtfs export for each device to
--        be shared with guests (recommended way) or you might use "remap"
--        instead which allows you to share multiple devices with only one
--        export instead, which is achieved by remapping the original
--        inode numbers from host to guest in a way that would prevent
--        such collisions. Remapping inodes in such use cases is required
-+    ``multidevs=remap|forbid|warn``
-+        Specifies how to deal with multiple devices being shared with
-+        the same 9p export in order to avoid file ID collisions on guest.
-+        Supported behaviours are either "remap" (default), "forbid" or
-+        "warn".
-+
-+        ``remap`` : assumes the possibility that more than one device is
-+        shared with the same 9p export. Therefore inode numbers from host
-+        are remapped for guest in a way that would prevent file ID
-+        collisions on guest. Remapping inodes in such cases is required
-         because the original device IDs from host are never passed and
-         exposed on guest. Instead all files of an export shared with
--        virtfs always share the same device id on guest. So two files
-+        virtfs always share the same device ID on guest. So two files
-         with identical inode numbers but from actually different devices
-         on host would otherwise cause a file ID collision and hence
--        potential misbehaviours on guest. "forbid" on the other hand
--        assumes like "warn" that only one device is shared by the same
--        export, however it will not only log a warning message but also
--        deny access to additional devices on guest. Note though that
--        "forbid" does currently not block all possible file access
--        operations (e.g. readdir() would still return entries from other
--        devices).
-+        potential severe misbehaviours on guest.
-+
-+        ``warn`` : virtfs 9p expects only one device to be shared with
-+        the same export. If however more than one device is shared and
-+        accessed via the same 9p export then only a warning message is
-+        logged (once) by qemu on host side. No further action is performed
-+        in this case that would prevent file ID collisions on guest. This
-+        could thus lead to severe misbehaviours in this case like wrong
-+        files being accessed and data corruption on the exported tree.
-+
-+        ``forbid`` : assumes like "warn" that only one device is shared
-+        by the same 9p export, however it will not only log a warning
-+        message but also deny access to additional devices on guest. Note
-+        though that "forbid" does currently not block all possible file
-+        access operations (e.g. readdir() would still return entries from
-+        other devices).
- ERST
- 
- DEF("iscsi", HAS_ARG, QEMU_OPTION_iscsi,
+    Extension, and sign-extending loads, now use INTn_MIN instead
+    of MAKE_64BIT_MASK(n, 64 - n).
+
+    The existing shift and the new deposit s_mask operations require
+    no change, but that's only because they were buggy before.
+
+Patches 6 and 49 are new.  Minor changes scattered in between.
+
+
+r~
+
+
+Richard Henderson (51):
+  tcg/optimize: Split out finish_bb, finish_ebb
+  tcg/optimize: Split out fold_affected_mask
+  tcg/optimize: Copy mask writeback to fold_masks
+  tcg/optimize: Split out fold_masks_zs
+  tcg/optimize: Augment s_mask from z_mask in fold_masks_zs
+  tcg/optimize: Change representation of s_mask
+  tcg/optimize: Use finish_folding in fold_add, fold_add_vec,
+    fold_addsub2
+  tcg/optimize: Use fold_masks_zs in fold_and
+  tcg/optimize: Use fold_masks_zs in fold_andc
+  tcg/optimize: Use fold_masks_zs in fold_bswap
+  tcg/optimize: Use fold_masks_zs in fold_count_zeros
+  tcg/optimize: Use fold_masks_z in fold_ctpop
+  tcg/optimize: Use fold_and and fold_masks_z in fold_deposit
+  tcg/optimize: Compute sign mask in fold_deposit
+  tcg/optimize: Use finish_folding in fold_divide
+  tcg/optimize: Use finish_folding in fold_dup, fold_dup2
+  tcg/optimize: Use fold_masks_s in fold_eqv
+  tcg/optimize: Use fold_masks_z in fold_extract
+  tcg/optimize: Use finish_folding in fold_extract2
+  tcg/optimize: Use fold_masks_zs in fold_exts
+  tcg/optimize: Use fold_masks_z in fold_extu
+  tcg/optimize: Use fold_masks_zs in fold_movcond
+  tcg/optimize: Use finish_folding in fold_mul*
+  tcg/optimize: Use fold_masks_s in fold_nand
+  tcg/optimize: Use fold_masks_z in fold_neg_no_const
+  tcg/optimize: Use fold_masks_s in fold_nor
+  tcg/optimize: Use fold_masks_s in fold_not
+  tcg/optimize: Use fold_masks_zs in fold_or
+  tcg/optimize: Use fold_masks_zs in fold_orc
+  tcg/optimize: Use fold_masks_zs in fold_qemu_ld
+  tcg/optimize: Return true from fold_qemu_st, fold_tcg_st
+  tcg/optimize: Use finish_folding in fold_remainder
+  tcg/optimize: Distinguish simplification in fold_setcond_zmask
+  tcg/optimize: Use fold_masks_z in fold_setcond
+  tcg/optimize: Use fold_masks_s in fold_negsetcond
+  tcg/optimize: Use fold_masks_z in fold_setcond2
+  tcg/optimize: Use finish_folding in fold_cmp_vec
+  tcg/optimize: Use finish_folding in fold_cmpsel_vec
+  tcg/optimize: Use fold_masks_zs in fold_sextract
+  tcg/optimize: Use fold_masks_zs, fold_masks_s in fold_shift
+  tcg/optimize: Simplify sign bit test in fold_shift
+  tcg/optimize: Use finish_folding in fold_sub, fold_sub_vec
+  tcg/optimize: Use fold_masks_zs in fold_tcg_ld
+  tcg/optimize: Use finish_folding in fold_tcg_ld_memcopy
+  tcg/optimize: Use fold_masks_zs in fold_xor
+  tcg/optimize: Use finish_folding in fold_bitsel_vec
+  tcg/optimize: Use finish_folding as default in tcg_optimize
+  tcg/optimize: Remove z_mask, s_mask from OptContext
+  tcg/optimize: Re-enable sign-mask optimizations
+  tcg/optimize: Move fold_bitsel_vec into alphabetic sort
+  tcg/optimize: Move fold_cmp_vec, fold_cmpsel_vec into alphabetic sort
+
+ tcg/optimize.c | 834 +++++++++++++++++++++++++------------------------
+ 1 file changed, 432 insertions(+), 402 deletions(-)
+
 -- 
-2.39.5
+2.43.0
 
 
