@@ -2,84 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90709FA6DF
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Dec 2024 17:33:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 053339FA6E8
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Dec 2024 17:45:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tPOpd-0005Rc-7b; Sun, 22 Dec 2024 11:29:29 -0500
+	id 1tPP3r-0000IJ-QV; Sun, 22 Dec 2024 11:44:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tPOod-00051p-0l
- for qemu-devel@nongnu.org; Sun, 22 Dec 2024 11:28:29 -0500
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tPOoa-0003kO-O4
- for qemu-devel@nongnu.org; Sun, 22 Dec 2024 11:28:26 -0500
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-728ea1e0bdbso3145058b3a.0
- for <qemu-devel@nongnu.org>; Sun, 22 Dec 2024 08:28:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734884903; x=1735489703; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qQH+PLeOfmKV/hMlw3a5mreXmP+mpfARLWnXc9y+J+4=;
- b=eUvpJs0LE63PL7s3ZJnmUQTBU3wmhe5a5hj7+6oEhpQOvJnRaDW4ov9PEg2ilzvd9Z
- P2ITmp6+KMEU/80ras5zdSDBCWcO7EHoW5HmxyS5xabCRgNcQxKjemFzQTelzrSYPmxj
- TEphB5GgGNWpxH0tcW6tJlawD/f2Mv7Mc1WfS9UDS8JoYtahyGAf6yFTxLwj+fZFTv9s
- 4RbJx5WUqC/LPVwmPsKpSzp3OgL6x6//IyW07xPMBBC8LzYY4kzmLI+Mlhv63QCebUgj
- CAEOnCJUYYsjMMdUni5C4RNDnOZewpt2j/PFRMBw+mAy0e4q9dN6VXHaSIOzjaXnyB5l
- k0EA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734884903; x=1735489703;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qQH+PLeOfmKV/hMlw3a5mreXmP+mpfARLWnXc9y+J+4=;
- b=Y8WHzC8CwHl7fT9jFS8LVUIzXYYbEmawuWOCE75n5pDI2/SyLJYy5x2Z79DB7mvx5f
- ZYo0sFej7YvdnzfEjHs51+Wfm3h/ARWJFEo2xJddxX6jj8MmfMMpXMd1TxyqcK0BkRYZ
- lHtyKtG+iXNZs6aNWY0YI5B4wx6ScmAaVTbqeK9jCrJHclPT+eFdm5/23oUrHz/6LCtN
- jmqC78zsdCaz/gqslBfjIX+2uUPPWU/ojEwpdli8msIEjg/B94267csJuM25Pl+q+sWN
- l9HZZeQz1bqu16XioDGVnUS/tuAMLonz70vNFdeYt2PGU9AW9mkwCusdRtQx22NGmtGh
- Fdfw==
-X-Gm-Message-State: AOJu0YwW/7tgcGfX6Uju+63+o6iVKG5OePoSpULPHluBKNQnVNO1csor
- /61UnfMLXRMOjmoDWOhwSVEiCCj44LcaiBemcG6Zw4AD+qLqXpEKKAG6abZCUyHicP42qGtxq4v
- bAvI=
-X-Gm-Gg: ASbGnctoyuPB+BRz95fczdJCf9mQF/dR5GEF+IWcPX2tJL38w7ruHulxnMBDUEP9ko/
- e49ZkDUs2Ne8D0/SZaSM4qgtm7mOoBONkcQey3p3iyd1CvlFALU8td1hO8cGpAu2JjZyIzXg2zc
- ZijQiC35qpFW99eZb1d+3F+NBl/hhbJHvywsczZFybHWutLxGUnmgnT2qrxd6TarAR7czFiLgGi
- Fe6u3XBb2WSmMxvp/U0huoEHhyhGkqlBxqVp/J5NCztxPaAcc5Wtv1JRTbS/xc=
-X-Google-Smtp-Source: AGHT+IF0bWbSlEG5YE5v++2YzUlqLdqMq4M2OQX1WDgkIrRID/z1JJOXV7P7r0JP+mEru9PGQhZTVg==
-X-Received: by 2002:a05:6a20:e68e:b0:1e1:becc:1c81 with SMTP id
- adf61e73a8af0-1e5e0801191mr18594050637.32.1734884903544; 
- Sun, 22 Dec 2024 08:28:23 -0800 (PST)
-Received: from stoup.. ([71.212.144.252]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-842dcaca43bsm5848808a12.66.2024.12.22.08.28.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Dec 2024 08:28:23 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v3 51/51] tcg/optimize: Move fold_cmp_vec,
- fold_cmpsel_vec into alphabetic sort
-Date: Sun, 22 Dec 2024 08:24:46 -0800
-Message-ID: <20241222162446.2415717-52-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241222162446.2415717-1-richard.henderson@linaro.org>
-References: <20241222162446.2415717-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1tPP3n-0000Hs-HR
+ for qemu-devel@nongnu.org; Sun, 22 Dec 2024 11:44:07 -0500
+Received: from fhigh-b7-smtp.messagingengine.com ([202.12.124.158])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1tPP3l-0005Ak-L9
+ for qemu-devel@nongnu.org; Sun, 22 Dec 2024 11:44:07 -0500
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal
+ [10.202.2.46])
+ by mailfhigh.stl.internal (Postfix) with ESMTP id A440625400C4;
+ Sun, 22 Dec 2024 11:44:02 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+ by phl-compute-06.internal (MEProxy); Sun, 22 Dec 2024 11:44:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+ cc:cc:content-transfer-encoding:content-type:content-type:date
+ :date:from:from:in-reply-to:message-id:mime-version:reply-to
+ :subject:subject:to:to; s=fm3; t=1734885842; x=1734972242; bh=EY
+ v3NM6J9V+TRoNHxO+wmEqvvVzFfR/+nzW4zgPsRic=; b=hLUU8It9E2TVrf0waF
+ DqqsntvoVW2EN3YA8v7PbS3Y0gfEjd9EXrEd9yjFUO1J/o6X0CUbA25YWQj6Oruv
+ JdKCDyXhjeG0WxPs+88lrD7bYQ5wg9l5pg9KGsvazU2zoDnXmH9YLxWzdcbCFMra
+ UOGjir/Vn/3vuP/NqqZn9w4SfbaK3DKEmzr/8koMBkM2c1F+T1Sy7hLVglTH8Etq
+ nvucWyaX/Bn2nmBAq6B5+tvXYxrbgS3EC2DP9ie53gXnFJNhZR4XPtmTjKpc7Drb
+ fNLz9CLzxAXfdK8gRkYNkh77pr2ivVp6IJ8iqfGmP9zZl+IdYijjzj99ixE8Dmb6
+ euHw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+ fm2; t=1734885842; x=1734972242; bh=EYv3NM6J9V+TRoNHxO+wmEqvvVzF
+ fR/+nzW4zgPsRic=; b=pZYTxdM2rKtWPrH+G80OPxZUxsbOfqViz5jhVu0KKT3D
+ cyyCrFDPlzJxbc5tAMDVpvrVieX3QC3os9pbkcDBCH9fG/2Mc9sTJQlItPffQYKE
+ e6PqbmvVEYghIgmzjUwkW034MzVKwtQ7YuJwWBpBHLwtVy4Jg74ZACenK5JSmvxv
+ 6eRJSQ6bVRIOUCmBx+V9K5kZjV8huS5D39ca21tAy/Scqcx9aS1+6SbHmYQga6X+
+ YqX56gako9+fdm7erIbGHp0rraIwjSJxL+qUPsCiKUDgIANPo4bJ+56FfggUUoYV
+ v6/4XywuZcvLwVmqEu+pfSlV7nHOup+Q+DqUmaa1TA==
+X-ME-Sender: <xms:0UFoZxdEJXivqvLp2qxOAAmCrDF3tv9ZPPIEEElyacSYxGXTsRQmiw>
+ <xme:0UFoZ_PDNKJTHtqm-N1hNEapYxPHXt-Bp2A0zMvNjm3rkX7PqPaKIa_3jLddvengd
+ gQ42dvcBcZ0E4xrumc>
+X-ME-Received: <xmr:0UFoZ6gY6M1zV4JZGrLRumXIBY9gi-piIxqmRh5FYJ86zKj9g-Co_Kc7>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddtkedgleduucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+ rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+ htshculddquddttddmnecujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecu
+ hfhrohhmpeflihgrgihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgoh
+ grthdrtghomheqnecuggftrfgrthhtvghrnhepudffffffhfeuheevhffgleevkeeugeet
+ feegieeijeehfeekheekveduveeigeeunecuvehluhhsthgvrhfuihiivgeptdenucfrrg
+ hrrghmpehmrghilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtgho
+ mhdpnhgspghrtghpthhtohepgedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmh
+ grohgsihgsoheslhhoohhnghhsohhnrdgtnhdprhgtphhtthhopehqvghmuhdquggvvhgv
+ lhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepjhhirgiguhhnrdihrghnghesfhhlhi
+ hgohgrthdrtghomhdprhgtphhtthhopehgrghoshhonhhgsehlohhonhhgshhonhdrtghn
+X-ME-Proxy: <xmx:0UFoZ6_bvOHkuHsWY5lyiEASXv8nqz60FJyy8xwHcFeNBhJmw3Q-BQ>
+ <xmx:0UFoZ9uHYE7Ko9xNRWbOnefD_hTFzcVkbwVBen-lrQOExcVNRGHZRQ>
+ <xmx:0UFoZ5E288G9dWCStRkBJOYc6UVK2epsOsQ2aQXJI72Tk_VyjmNKIQ>
+ <xmx:0UFoZ0MT3pWviW1VxO4QeYM6-N5YNnxZvw8M2hmILGBTjkh5yHeXuw>
+ <xmx:0kFoZ3KnN_rzcHTtoN-G51ZrrazgTi1faEozzl5okVSey4MJ0cGGPYMt>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 22 Dec 2024 11:44:00 -0500 (EST)
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH v2 0/2] hw/loongarch/booting: Booting protocol refactoring
+Date: Sun, 22 Dec 2024 16:43:58 +0000
+Message-Id: <20241222-la-booting-v2-0-bef2ea7d3b32@flygoat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAM5BaGcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
+ vPSU3UzU4B8JSMDIxNDI0NL3ZxE3aT8/JLMvHTdFLMUCxMj80Rzc0sDJaCGgqLUtMwKsGHRsbW
+ 1ACp2sUVcAAAA
+X-Change-ID: 20241219-la-booting-d6d8427a7790
+To: qemu-devel@nongnu.org
+Cc: Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=787;
+ i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
+ bh=uRmR2uGTHaChwBhju7xxKfpl1OFHUbqS9HyNA7mFYcQ=;
+ b=owGbwMvMwCXmXMhTe71c8zDjabUkhvQMx4vpX9wfC3joPNnac+X7BQOJKy8lW3tFp5QdCE8/z
+ 7kznfN4RykLgxgXg6yYIkuIgFLfhsaLC64/yPoDM4eVCWQIAxenAExENZ/hn8JS991sNaYT7to4
+ /ntZePRzDddJAc+Me2vk6k01yidu82X4XyO5P+ubr3ZdpkddmPryylsNWx4ZsojNy10nXqn61ew
+ LGwA=
+X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
+ fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
+Received-SPF: pass client-ip=202.12.124.158;
+ envelope-from=jiaxun.yang@flygoat.com; helo=fhigh-b7-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,93 +120,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The big comment just above says functions should be sorted.
+Hi all,
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+This series refactored booting protocol generation code
+to better accommodate different host ABI / Alignment and
+endianess.
+
+It also enhanced LoongArch32 support.
+
+Thanks
+
 ---
- tcg/optimize.c | 60 +++++++++++++++++++++++++-------------------------
- 1 file changed, 30 insertions(+), 30 deletions(-)
+v2: Fix building on 32 bit host
 
-diff --git a/tcg/optimize.c b/tcg/optimize.c
-index 312cbac690..2a9c87eb07 100644
---- a/tcg/optimize.c
-+++ b/tcg/optimize.c
-@@ -1603,6 +1603,36 @@ static bool fold_call(OptContext *ctx, TCGOp *op)
-     return true;
- }
- 
-+static bool fold_cmp_vec(OptContext *ctx, TCGOp *op)
-+{
-+    /* Canonicalize the comparison to put immediate second. */
-+    if (swap_commutative(NO_DEST, &op->args[1], &op->args[2])) {
-+        op->args[3] = tcg_swap_cond(op->args[3]);
-+    }
-+    return finish_folding(ctx, op);
-+}
-+
-+static bool fold_cmpsel_vec(OptContext *ctx, TCGOp *op)
-+{
-+    /* If true and false values are the same, eliminate the cmp. */
-+    if (args_are_copies(op->args[3], op->args[4])) {
-+        return tcg_opt_gen_mov(ctx, op, op->args[0], op->args[3]);
-+    }
-+
-+    /* Canonicalize the comparison to put immediate second. */
-+    if (swap_commutative(NO_DEST, &op->args[1], &op->args[2])) {
-+        op->args[5] = tcg_swap_cond(op->args[5]);
-+    }
-+    /*
-+     * Canonicalize the "false" input reg to match the destination,
-+     * so that the tcg backend can implement "move if true".
-+     */
-+    if (swap_commutative(op->args[0], &op->args[4], &op->args[3])) {
-+        op->args[5] = tcg_invert_cond(op->args[5]);
-+    }
-+    return finish_folding(ctx, op);
-+}
-+
- static bool fold_count_zeros(OptContext *ctx, TCGOp *op)
- {
-     uint64_t z_mask, s_mask;
-@@ -2502,36 +2532,6 @@ static bool fold_setcond2(OptContext *ctx, TCGOp *op)
-     return tcg_opt_gen_movi(ctx, op, op->args[0], i);
- }
- 
--static bool fold_cmp_vec(OptContext *ctx, TCGOp *op)
--{
--    /* Canonicalize the comparison to put immediate second. */
--    if (swap_commutative(NO_DEST, &op->args[1], &op->args[2])) {
--        op->args[3] = tcg_swap_cond(op->args[3]);
--    }
--    return finish_folding(ctx, op);
--}
--
--static bool fold_cmpsel_vec(OptContext *ctx, TCGOp *op)
--{
--    /* If true and false values are the same, eliminate the cmp. */
--    if (args_are_copies(op->args[3], op->args[4])) {
--        return tcg_opt_gen_mov(ctx, op, op->args[0], op->args[3]);
--    }
--
--    /* Canonicalize the comparison to put immediate second. */
--    if (swap_commutative(NO_DEST, &op->args[1], &op->args[2])) {
--        op->args[5] = tcg_swap_cond(op->args[5]);
--    }
--    /*
--     * Canonicalize the "false" input reg to match the destination,
--     * so that the tcg backend can implement "move if true".
--     */
--    if (swap_commutative(op->args[0], &op->args[4], &op->args[3])) {
--        op->args[5] = tcg_invert_cond(op->args[5]);
--    }
--    return finish_folding(ctx, op);
--}
--
- static bool fold_sextract(OptContext *ctx, TCGOp *op)
- {
-     uint64_t z_mask, s_mask, s_mask_old;
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+
+---
+Jiaxun Yang (2):
+      hw/loongarch/boot: Refactor EFI booting protocol generation
+      hw/loongarch/boot: Rework boot code generation
+
+ hw/loongarch/boot.c         | 323 ++++++++++++++++++++++++++++----------------
+ include/hw/loongarch/boot.h | 106 ++++++++++++---
+ 2 files changed, 295 insertions(+), 134 deletions(-)
+---
+base-commit: 3e9793ab01904144c204589811e0e879109a9713
+change-id: 20241219-la-booting-d6d8427a7790
+
+Best regards,
 -- 
-2.43.0
+Jiaxun Yang <jiaxun.yang@flygoat.com>
 
 
