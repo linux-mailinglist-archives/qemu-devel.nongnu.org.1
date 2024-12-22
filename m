@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E079FA6BF
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Dec 2024 17:30:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF98D9FA6DB
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Dec 2024 17:33:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tPOpO-00058O-D0; Sun, 22 Dec 2024 11:29:17 -0500
+	id 1tPOpV-0005H0-Dk; Sun, 22 Dec 2024 11:29:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tPOoW-0004sy-Nl
- for qemu-devel@nongnu.org; Sun, 22 Dec 2024 11:28:21 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1tPOoY-0004tg-6v
+ for qemu-devel@nongnu.org; Sun, 22 Dec 2024 11:28:23 -0500
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tPOoV-0003jP-5f
- for qemu-devel@nongnu.org; Sun, 22 Dec 2024 11:28:20 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-2164b1f05caso31209485ad.3
- for <qemu-devel@nongnu.org>; Sun, 22 Dec 2024 08:28:18 -0800 (PST)
+ id 1tPOoW-0003jh-M9
+ for qemu-devel@nongnu.org; Sun, 22 Dec 2024 11:28:21 -0500
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-725dc290c00so3427392b3a.0
+ for <qemu-devel@nongnu.org>; Sun, 22 Dec 2024 08:28:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734884898; x=1735489698; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734884899; x=1735489699; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XK7HdFgJI1aoovKqrgnwds0J6drlE9NjhtggGFHKYgY=;
- b=m5/9KCZmKC7J5ya7dzFr0BLepydnzgq/7AoWLGXoHm0xoqhlYXO4oBwr6u9tG/PLpJ
- QsLsTt2khA5XuYte3NlgEA3pGi/uJKkY+pjDSJHUw4WDl2ryXt14i+yg4yzXn8OF3y+V
- lHad86WVvumVrTDiCQeyrOdELsSUh/OAdw/9NbHrMcx4lT3B+pDRBkLo1kwSB8NZ6i84
- zFyA9kGwUTXozbj/s264O1Kbd0jDa+xmnLMWeiFvQKtRYpSR1nmSQGIalWlrq/IqycY9
- Zi+/TKvyK11oy2HpvWz56dt736HG+GIDpJ3x+4T7DHSxRvB0BL2ufk3c3l6Q8dSBqj3t
- QSZw==
+ bh=8zVWcITCeVJyEn34BQ871RDWCXs0aBbyojaqRkW2N2M=;
+ b=y5POr8X1p3NIkJNRgI7xISqANSS51bGyhBk72u7fmDzNwpRjJMd7bIxSmZyYFHzF9Z
+ 9QgctC54l6aDlmrRvDA795ES4/DDx0q57j9PnQzSX7Pj+aA5OaC8B3vcQUGWZsXYiRYO
+ SSAbRKRdgN97Mmcn4AEpzKe/JelbunFSYT+cC5pSVUIIoC4uYHVeNd3x+HSi3FHYSy3Y
+ HqgVhnjAvcZjmUg/synDow0rHt8qrFVd7Qwgahosw4eM15xWs4d3TzZ+pi8YUzuMAaYf
+ UEAc7+CNDPht4u6QHhAceVQlHCV9eCuUnaaAlVsEK86qcBfEoLV/SWDdDENsFQB6TsSm
+ cq5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734884898; x=1735489698;
+ d=1e100.net; s=20230601; t=1734884899; x=1735489699;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XK7HdFgJI1aoovKqrgnwds0J6drlE9NjhtggGFHKYgY=;
- b=Tc3IC4XXhEgLcVCuLuZGxB7Rr1ui4KSAD3GueMPEXtRJkY67VKu5xKISRNqf6uKrVF
- MOGa144VESb4ZsoYJBoQiICBimQP8+rByO1sfh4PLHbHMKvQuJUbba75Q2Wca1o/Jn5Y
- GDHOafsBNq6KfdlaF1wJOH35Kx+heAl/4A0QQ9je04OQ2Cy06Imt2waVuQmb9YhTVDsD
- rdoobxZhkKuzVOM9TVMydUeqryejCiluyrXiqrytPbgo+U6dqeHZ0THd3bmuPDEmQseD
- JO/5g7Z6edgh/awiQM8ooehsXFveuGVBVxb8WkHGqMBPJcCXLDAcitKIL94YPSMzi+Z5
- P/jg==
-X-Gm-Message-State: AOJu0Yxs3aGoA6KoBhLQEC5f7Tw/fcwJhugCRTQ1xnMZm10NLXdgibwY
- rmRZ8CYhzgDmQo0jOha5s1PQ9RZryFEEO5c3dj8sibpuZL7d6+Jbw6rpMXotTIO8p7pZa7dE/Sh
- 7N7w=
-X-Gm-Gg: ASbGncseCwgNEdAFg/qyNDwABndQ6sUN1JIcVGcR1ihEZJPC4Jm6oMHzPSaUEMrmUPr
- yXq9N4gJNbwDQHuBoZSR0jxhWPseB6+8CQKwAZFLTDFm93Uqa2apWZrxEKb5O8yV54OhDixTbIk
- ugLICwN9V3zB1mkF5b5jeghZ5WIFPkNRq/d6IMq0UeaCzI/PaV7Co1Kyubw8B/qs7zlEkFOk0sy
- wHIh8XF+niLx6JGpPVfpBL0ev2gXGccpu1cZdY+LvQ95aPoZFy8hzGi/bCKWgY=
-X-Google-Smtp-Source: AGHT+IGiEdWdZUnraBq2kVlozGbMMpVMExMyKeHZCFp4pUBMfJ6BVev8QakyHJm4Do4k5PcKTu3M4A==
-X-Received: by 2002:a17:903:1c2:b0:216:2c3b:61ba with SMTP id
- d9443c01a7336-219e6f3320dmr113457375ad.56.1734884897926; 
- Sun, 22 Dec 2024 08:28:17 -0800 (PST)
+ bh=8zVWcITCeVJyEn34BQ871RDWCXs0aBbyojaqRkW2N2M=;
+ b=P42st92SGobY6hOJtIJPdcPbnhaFGcRFTBQZIb+0aQqweIvRh6YDsx5gtxtMVTHH2H
+ 0CP0rpob2vCTCIAC6w1EFwSY5asCme4+4w0b2padIuyQ0fTsoFKyg+YnfnMjyKOt7T0X
+ tejvt8Czv6mJdwjPL63ulc4kNvjov23JqKN9uJ8V0hgUsfdCraMYs0Px1Uliq7S+OhmH
+ IQ5IXIEh+Mw5aBSfQGE3I5ko6zDtLa8X/a1h/cwwTuUNnXS/cIan+NEzvafRl9I02PLm
+ pG6ZbWVzOlPhGVs+g+7xze4LMmv1VSr2/Dv6TSzWa3ZvXDuZHP2b79mrpzyj6m8T70aC
+ 9f7A==
+X-Gm-Message-State: AOJu0Yx9AMlrY59QqTorTssFVvD0XN8DI+9Dj1vZKKj8VsfDNFuBZ5qk
+ z9CGkS4tbNoafJISPVc2EiyZy6fnK8w2HpWCvWJJK3kNXGGCNk4jJmo85qApXjuFn+MckYN6Woo
+ xZIs=
+X-Gm-Gg: ASbGncsyZhrGAV5M7bWPk62Scbjp0JGutnx+6jkCKJdQbctx020b9xEMW8WBX1SWTkw
+ ZwkQ+lTLuSVM5RvUSo68E6rvryAkHqjR46T6oIVnTvYXjrZ7PcxG+9Hy2/xuf4VP1GlZjb/4njF
+ zVqXlJsIFUEmHbbkc2INbm7679JmS385ZIg3mwK5mE+dlwe0SYZwfoZHU2F5BBu9bhLeH5e9Gpw
+ gITyq42yuGjvEZmJD9Ter/GbbURJ0cOqXXsSo1X7ghexM7ruECfA4arXCVkoF8=
+X-Google-Smtp-Source: AGHT+IGfX6H9NhqGRq3Z26rznESHhyQP6YFOmP4g7CXhD6tKf+/PDZxNRVlO3a3SouJ8yTScbljN0Q==
+X-Received: by 2002:a05:6a20:7290:b0:1e1:b062:f408 with SMTP id
+ adf61e73a8af0-1e5c6fd3cd5mr17190220637.17.1734884899122; 
+ Sun, 22 Dec 2024 08:28:19 -0800 (PST)
 Received: from stoup.. ([71.212.144.252]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-842dcaca43bsm5848808a12.66.2024.12.22.08.28.17
+ 41be03b00d2f7-842dcaca43bsm5848808a12.66.2024.12.22.08.28.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Dec 2024 08:28:17 -0800 (PST)
+ Sun, 22 Dec 2024 08:28:18 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v3 45/51] tcg/optimize: Use fold_masks_zs in fold_xor
-Date: Sun, 22 Dec 2024 08:24:40 -0800
-Message-ID: <20241222162446.2415717-46-richard.henderson@linaro.org>
+Subject: [PATCH v3 46/51] tcg/optimize: Use finish_folding in fold_bitsel_vec
+Date: Sun, 22 Dec 2024 08:24:41 -0800
+Message-ID: <20241222162446.2415717-47-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241222162446.2415717-1-richard.henderson@linaro.org>
 References: <20241222162446.2415717-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,58 +95,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avoid the use of the OptContext slots.  Find TempOptInfo once.
-Remove fold_masks as the function becomes unused.
-
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/optimize.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ tcg/optimize.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tcg/optimize.c b/tcg/optimize.c
-index 48324f122a..0cdbd1e262 100644
+index 0cdbd1e262..3bb208d6e9 100644
 --- a/tcg/optimize.c
 +++ b/tcg/optimize.c
-@@ -1063,11 +1063,6 @@ static bool fold_masks_s(OptContext *ctx, TCGOp *op, uint64_t s_mask)
-     return fold_masks_zs(ctx, op, -1, s_mask);
- }
- 
--static bool fold_masks(OptContext *ctx, TCGOp *op)
--{
--    return fold_masks_zs(ctx, op, ctx->z_mask, ctx->s_mask);
--}
--
- /*
-  * An "affected" mask bit is 0 if and only if the result is identical
-  * to the first input.  Thus if the entire mask is 0, the operation
-@@ -2752,6 +2747,9 @@ static bool fold_tcg_st_memcopy(OptContext *ctx, TCGOp *op)
- 
- static bool fold_xor(OptContext *ctx, TCGOp *op)
- {
-+    uint64_t z_mask, s_mask;
-+    TempOptInfo *t1, *t2;
-+
-     if (fold_const2_commutative(ctx, op) ||
-         fold_xx_to_i(ctx, op, 0) ||
-         fold_xi_to_x(ctx, op, 0) ||
-@@ -2759,11 +2757,11 @@ static bool fold_xor(OptContext *ctx, TCGOp *op)
-         return true;
+@@ -2816,7 +2816,7 @@ static bool fold_bitsel_vec(OptContext *ctx, TCGOp *op)
+             return fold_orc(ctx, op);
+         }
      }
- 
--    ctx->z_mask = arg_info(op->args[1])->z_mask
--                | arg_info(op->args[2])->z_mask;
--    ctx->s_mask = arg_info(op->args[1])->s_mask
--                & arg_info(op->args[2])->s_mask;
--    return fold_masks(ctx, op);
-+    t1 = arg_info(op->args[1]);
-+    t2 = arg_info(op->args[2]);
-+    z_mask = t1->z_mask | t2->z_mask;
-+    s_mask = t1->s_mask & t2->s_mask;
-+    return fold_masks_zs(ctx, op, z_mask, s_mask);
+-    return false;
++    return finish_folding(ctx, op);
  }
  
- static bool fold_bitsel_vec(OptContext *ctx, TCGOp *op)
+ /* Propagate constants and copies, fold constant expressions. */
 -- 
 2.43.0
 
