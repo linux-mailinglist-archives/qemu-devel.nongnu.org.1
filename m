@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2299A9FA5A4
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Dec 2024 14:06:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A78F9FA5AC
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Dec 2024 14:10:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tPLdE-0007gY-6P; Sun, 22 Dec 2024 08:04:28 -0500
+	id 1tPLdR-0001sV-Ll; Sun, 22 Dec 2024 08:04:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tPLb9-0006NH-Hd
- for qemu-devel@nongnu.org; Sun, 22 Dec 2024 08:02:19 -0500
+ id 1tPLb9-0006NF-Hm
+ for qemu-devel@nongnu.org; Sun, 22 Dec 2024 08:02:20 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tPLb7-0000tN-Gm
+ id 1tPLb7-0000tT-NF
  for qemu-devel@nongnu.org; Sun, 22 Dec 2024 08:02:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=Dhd9q4dprri5dDCffEVAkY2Gue7Wh4bBs8kcdbwy3j4=; b=VbLla8GiXoDnsF76VSCwDimzwJ
- IBvtjSCUcdDH5K4mo2WCWcAAE8fm7MrtYrOVgOwqPRWgcmbaghJrT8/fqA4tAR5Uj2GKR5HfX/iLS
- AOn8jBeeoZhOrPl4TiE2VEGVFfIpzhxHw+S2395JpC4i+ShBYcgo4ggrkUm67f0OHdYMow4dGDlds
- 5nUjnCKgyRMWTZciOAoK3LKQHkZGsVdMEVAud/wjuHBgjL2RzCO+WGncEqOtQu9a1j8N0Yto4SvkY
- UsnB5AnnRGDFieToiGNJ12K7b+7mSITD9jaBdPyHvq4+VmYgSA2eQjfd4x4yrUmjk0fZA/tiRl+YH
- d7aYnAv9IkYSqJYSSG6kq/qy57XUWYCuR7Sa/+73qx8OHxX9Pw6obxScgT+hmc5poMbzCOFr/otnZ
- PcTRHJFE5SK3D9tlqAkA+XofHiCRXHIgAbWLi52qsA34uUOJ+Em7D4RJO+7SsL+4AwPPfiYSqiT6N
- 07iUR3JATHnp2SbLWFrG0MOCW0u1xM1GCgjhpsQSr7GLbRmp4pBOW0M5OMkrGmFYmyNqEzvDfetu8
- bLSqy1Ht0OuOMabLJYPdOQY/L6kjhSNUdz4gbRsQZ8WEckpEm5CgZLaMM8DKvAvGl7QAF8cAWiUiv
- 0JbrGyzXtLt7TlgtcQIHIa1M3xDistf3oqV6b9fA8=;
+ bh=9W9nGoS9zRh1QbxQ6+mZmtS/iLAXsaHPTOpqXpFYFMc=; b=CRfXSfH3vkyvx8Hk4cWupvodTM
+ FXKMKDVa0oTVxxL8rc96Zv66/7MavEgU+RaGTCrh9N3dEidKWxbPP/CHUnMmv8gK+YFEuE29TN8Ex
+ OQcHp1Y4pm2r0F7p8aJuIMHOTpmRPicclR/V8xxLR0Rhz/ax5pzA5a2xSE43ODcfn5jkkOoWqZMoK
+ lRbcbYKi5JIs9T2ChouypK3M8lGerjXvJ+T63klLG1PDWDVLqs+7nF5zYiqIaghmYBGYHjXl6Xfra
+ t7LDD6Nh1BpkJ74RCRhYa+bBAdHB2KIW0q6Qj8M/vYraAu+I2lfyVwKVh0NqAyI52FRXZywZqB2ld
+ CrjliR3W8eKwLYh6GPLjmwEIegBJwbAix/7uzh9g4gEn5FiUjtoq3t2GAPpAm+Q2aZP9Owe8RRcV+
+ sQY0rP9iVrlE/UZgZvPPp47pBmvFKWGeLsHaJs2+7jYzkEDm0WAjtb4pnfhs4ZKST10npDU8o3824
+ emjlOkBcQmP9UW+bFm1rcY+FWcNLZI1yOLlYNsDIdWJgD6lcgoKbO2tSP+iFR+S315gxQFVfhj3z1
+ 8G6wKE/s2Dfh3vv5X/akEbs4WdM2BsQ4cv2BYCVY4mqSYRJFWCEaYE4hm1c7WngoUVuUeLcp8G96E
+ GMEuwXZUpPgmdZdEE8G5S2RWrQXgVtqBwQAHMWcro=;
 Received: from [2a02:8012:2f01:0:33a9:475d:1cd9:884]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tPLaO-0002L7-1n; Sun, 22 Dec 2024 13:01:32 +0000
+ id 1tPLaO-0002L7-Bf; Sun, 22 Dec 2024 13:01:32 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: huth@tuxfamily.org,
 	qemu-devel@nongnu.org
-Date: Sun, 22 Dec 2024 13:00:08 +0000
-Message-Id: <20241222130012.1013374-30-mark.cave-ayland@ilande.co.uk>
+Date: Sun, 22 Dec 2024 13:00:09 +0000
+Message-Id: <20241222130012.1013374-31-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241222130012.1013374-1-mark.cave-ayland@ilande.co.uk>
 References: <20241222130012.1013374-1-mark.cave-ayland@ilande.co.uk>
@@ -50,8 +50,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:2f01:0:33a9:475d:1cd9:884
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v3 29/33] next-cube: add rtc-cmd-reset named gpio to reset the
- rtc state machine
+Subject: [PATCH v3 30/33] next-cube: add rtc-power-out named gpio to trigger
+ the NEXT_PWR_I interrupt
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,89 +78,76 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This allows us to decouple the next-pc and next-rtc devices from each
-other in next_scr2_rtc_update().
+other in next_rtc_data_in_irq().
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/m68k/next-cube.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ hw/m68k/next-cube.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index 8edf51198e..ba8c6bb1cd 100644
+index ba8c6bb1cd..dd7a98b603 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -108,6 +108,7 @@ struct NeXTPC {
+@@ -58,6 +58,7 @@ struct NeXTRTC {
+     uint8_t retval;
+ 
+     qemu_irq data_out_irq;
++    qemu_irq power_irq;
+ };
+ 
+ #define TYPE_NEXT_SCSI "next-scsi"
+@@ -106,7 +107,6 @@ struct NeXTPC {
+     ESCCState escc;
+ 
      NeXTRTC rtc;
-     qemu_irq rtc_power_irq;
+-    qemu_irq rtc_power_irq;
      qemu_irq rtc_data_irq;
-+    qemu_irq rtc_cmd_reset_irq;
+     qemu_irq rtc_cmd_reset_irq;
  };
- 
- typedef struct next_dma {
-@@ -264,7 +265,6 @@ static void next_rtc_data_in_irq(void *opaque, int n, int level)
- static void next_scr2_rtc_update(NeXTPC *s)
+@@ -184,7 +184,6 @@ static bool next_rtc_cmd_is_write(uint8_t cmd)
+ static void next_rtc_data_in_irq(void *opaque, int n, int level)
  {
-     uint8_t old_scr2, scr2_2;
--    NeXTRTC *rtc = &s->rtc;
+     NeXTRTC *rtc = NEXT_RTC(opaque);
+-    NeXTPC *s = NEXT_PC(container_of(rtc, NeXTPC, rtc));
  
-     old_scr2 = extract32(s->old_scr2, 8, 8);
-     scr2_2 = extract32(s->scr2, 8, 8);
-@@ -282,9 +282,7 @@ static void next_scr2_rtc_update(NeXTPC *s)
+     if (rtc->phase < 8) {
+         rtc->command = (rtc->command << 1) | level;
+@@ -256,7 +255,7 @@ static void next_rtc_data_in_irq(void *opaque, int n, int level)
+             if (rtc->value & 0x04) {
+                 /* clear FTU */
+                 rtc->status = rtc->status & (~0x18);
+-                qemu_irq_lower(s->rtc_power_irq);
++                qemu_irq_lower(rtc->power_irq);
+             }
          }
-     } else {
-         /* else end or abort */
--        rtc->phase = 0;
--        rtc->command = 0;
--        rtc->value = 0;
-+        qemu_irq_raise(s->rtc_cmd_reset_irq);
      }
- }
- 
-@@ -1015,6 +1013,17 @@ static const MemoryRegionOps next_dummy_en_ops = {
-     .endianness = DEVICE_BIG_ENDIAN,
- };
- 
-+static void next_rtc_cmd_reset_irq(void *opaque, int n, int level)
-+{
-+    NeXTRTC *rtc = NEXT_RTC(opaque);
-+
-+    if (level) {
-+        rtc->phase = 0;
-+        rtc->command = 0;
-+        rtc->value = 0;
-+    }
-+}
-+
- static void next_rtc_reset_hold(Object *obj, ResetType type)
- {
-     NeXTRTC *rtc = NEXT_RTC(obj);
-@@ -1033,6 +1042,8 @@ static void next_rtc_init(Object *obj)
-                             "rtc-data-in", 1);
-     qdev_init_gpio_out_named(DEVICE(obj), &rtc->data_out_irq,
+@@ -1044,6 +1043,8 @@ static void next_rtc_init(Object *obj)
                               "rtc-data-out", 1);
-+    qdev_init_gpio_in_named(DEVICE(obj), next_rtc_cmd_reset_irq,
-+                            "rtc-cmd-reset", 1);
+     qdev_init_gpio_in_named(DEVICE(obj), next_rtc_cmd_reset_irq,
+                             "rtc-cmd-reset", 1);
++    qdev_init_gpio_out_named(DEVICE(obj), &rtc->power_irq,
++                             "rtc-power-out", 1);
  }
  
  static const VMStateDescription next_rtc_vmstate = {
-@@ -1143,6 +1154,8 @@ static void next_pc_realize(DeviceState *dev, Error **errp)
-     qdev_connect_gpio_out_named(d, "rtc-data-out", 0,
-                                 qdev_get_gpio_in_named(dev,
+@@ -1156,6 +1157,8 @@ static void next_pc_realize(DeviceState *dev, Error **errp)
                                                         "rtc-data-in", 0));
-+    qdev_connect_gpio_out_named(dev, "rtc-cmd-reset", 0,
-+                                qdev_get_gpio_in_named(d, "rtc-cmd-reset", 0));
+     qdev_connect_gpio_out_named(dev, "rtc-cmd-reset", 0,
+                                 qdev_get_gpio_in_named(d, "rtc-cmd-reset", 0));
++    qdev_connect_gpio_out_named(d, "rtc-power-out", 0,
++                                qdev_get_gpio_in(dev, NEXT_PWR_I));
  }
  
  static void next_pc_init(Object *obj)
-@@ -1183,6 +1196,8 @@ static void next_pc_init(Object *obj)
+@@ -1191,7 +1194,6 @@ static void next_pc_init(Object *obj)
+ 
+     object_initialize_child(obj, "rtc", &s->rtc, TYPE_NEXT_RTC);
+ 
+-    s->rtc_power_irq = qdev_get_gpio_in(DEVICE(obj), NEXT_PWR_I);
+     qdev_init_gpio_in_named(DEVICE(obj), next_pc_rtc_data_in_irq,
                              "rtc-data-in", 1);
      qdev_init_gpio_out_named(DEVICE(obj), &s->rtc_data_irq,
-                              "rtc-data-out", 1);
-+    qdev_init_gpio_out_named(DEVICE(obj), &s->rtc_cmd_reset_irq,
-+                             "rtc-cmd-reset", 1);
- }
- 
- /*
 -- 
 2.39.5
 
