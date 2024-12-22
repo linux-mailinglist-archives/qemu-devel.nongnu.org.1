@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD929FA4F0
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Dec 2024 10:13:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D4F9FA4F1
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Dec 2024 10:14:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tPI0K-0004W5-Gf; Sun, 22 Dec 2024 04:12:04 -0500
+	id 1tPI22-0005GR-Rm; Sun, 22 Dec 2024 04:13:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tPI0F-0004Vf-3y; Sun, 22 Dec 2024 04:12:00 -0500
+ id 1tPI1z-0005Fv-FG; Sun, 22 Dec 2024 04:13:48 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tPI0C-0003kd-O2; Sun, 22 Dec 2024 04:11:58 -0500
+ id 1tPI1y-0003zr-2C; Sun, 22 Dec 2024 04:13:47 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F3022C8CC0;
- Sun, 22 Dec 2024 12:11:20 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0DE92C8CCB;
+ Sun, 22 Dec 2024 12:13:12 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 9375C18DB71;
- Sun, 22 Dec 2024 12:11:51 +0300 (MSK)
-Message-ID: <514c2c90-4c0f-486e-857d-fa0360c47d38@tls.msk.ru>
-Date: Sun, 22 Dec 2024 12:11:51 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id A7C1318DB72;
+ Sun, 22 Dec 2024 12:13:42 +0300 (MSK)
+Message-ID: <6f1dcbe9-3a7e-475b-92ef-14f1d04ffc2e@tls.msk.ru>
+Date: Sun, 22 Dec 2024 12:13:42 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] contrib/plugins/bbv.c: Start bb index from 1
-To: ckf104 <1900011634@pku.edu.cn>, qemu-trivial@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour
- <ma.mandourr@gmail.com>, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- QEMU-Devel <qemu-devel@nongnu.org>
-References: <20241217142413.148978-1-1900011634@pku.edu.cn>
+Subject: Re: [PATCH] qmp: update vhost-user protocol feature maps
+To: Jonah Palmer <jonah.palmer@oracle.com>,
+ Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, qemu-trivial@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>, aesteve@redhat.com, hreitz@redhat.com
+References: <20241216170914.1346403-1-lvivier@redhat.com>
+ <c9341f03-ecc2-4a62-860a-35ff2b660651@oracle.com>
 Content-Language: en-US, ru-RU
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
@@ -78,7 +78,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
  ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
  3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
-In-Reply-To: <20241217142413.148978-1-1900011634@pku.edu.cn>
+In-Reply-To: <c9341f03-ecc2-4a62-860a-35ff2b660651@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -104,16 +104,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-17.12.2024 17:24, ckf104 wrote:
-> Standard simpoint tool reqeusts that index of basic block index starts from 1.
+16.12.2024 20:30, Jonah Palmer wrote:
+...
 
-While this patch is a trivial one-liner, but the underlying issue requires at least
-a minimal understanding of what it is all about, what *is* bbv to begin with, what
-`simpoint' is.  I'm not sure it really is a trivial material?
-
-> Signed-off-by: ckf104 <1900011634@pku.edu.cn>
-
-Do we accept such SoBs these days?
+> Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
+Should this be a Reviewed-by instead?
 
 Thanks,
 
