@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 054399FA5B9
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Dec 2024 14:11:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88BC29FA5B0
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Dec 2024 14:10:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tPLdV-00025C-Ai; Sun, 22 Dec 2024 08:04:45 -0500
+	id 1tPLdM-0001Hc-8Z; Sun, 22 Dec 2024 08:04:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tPLaz-0006Hj-SG
- for qemu-devel@nongnu.org; Sun, 22 Dec 2024 08:02:16 -0500
+ id 1tPLb5-0006L2-37
+ for qemu-devel@nongnu.org; Sun, 22 Dec 2024 08:02:17 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tPLay-0000rT-BT
- for qemu-devel@nongnu.org; Sun, 22 Dec 2024 08:02:09 -0500
+ id 1tPLb3-0000sL-6z
+ for qemu-devel@nongnu.org; Sun, 22 Dec 2024 08:02:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=32Hsyr/YReiq//ufLSelktznFqNXWwpKnH9enfCHALA=; b=odNkuqA3wB3H8xnx2AqUbf6nTi
- CnmhCszISkyBTRfNjidConCosI0BpdgDkYUiRsYkbbbL8fGU3sDi5LmKf5A3vqka9nSqbYNjKDegS
- P8cFWBegB5tJfQxkrFkwZtVGgx5D0jJimPUPPRUyyUMMde2imMdsAlxIdfVW9xJnAIrFa8IedxpOJ
- eslZmfD5LkPFH/8IucDDixfY05zfyB7bPTo5ZMADxKU+ejkeM8T+lpOVcT0/XjuEFeUGFRC/xDec5
- MZOlxBVd5h7Jb0N8eYqwQGOQ68CYZ1E1ZJyZ4017TbOB65psEwVPuh1oi03ctbc7l0oa9R48UHAJC
- ioJW4SzEU5yHhE4iCH4fMHcAvGtPeSMRWClMmFLbs1hNYiQL3bTHwQ+20HgNCyObYKYb1WHN60XjJ
- kYgG9P76ys3/FcEqu+X04BSeVfruQssH8W4ZlfR6DaMFZOvXD/oCxnXkBSTbR/qe2q2lGVk0aFDR8
- PqEbH6sWtgmZnnHPoucd5nsXk+nT59sBSmcHjRmwCIZ+E9zW1GHSNhj/13d+A0aDgw1+Rv87HYyqa
- 0i12k5cOy70Fk0ISa3ii5PmZQ/YqKG/Q6XO7OK7E15hlMh1HKz9P1AI+A2wrram58Q85L3MK7fjnG
- /MMFvXyql/6ZE+fkwQqa9DKIhL6VSgVfBlSQZQxVA=;
+ bh=K97lbeRS4xQ22bFEISfzmTr2/QkmHp3EkpGPCvXbVrw=; b=vKEC4ynbBuEvWc1VvNSzry/3fa
+ yRGj9JTgT/5q3Lc6f8l7Rg3T1AVQ/4y/K0B+5FLNk65kqgHfKoHZM+4rYIObb00cD91rYHriW2lV3
+ xBy46eesNLCwO6nE29HjhjguDU2owwYOhDccVZylrGWjqC476QzG6NN61SQPztKBswhK/55ljr0ml
+ UC+Rgwus9mKrQ3O3ceRacZCxL7aHdaiAObse920bvoWT4utleH6qtfTCSkutzETsb+iGzwRlrm9hu
+ 0W5lFWapbqzP+KTd25kM3UE2/aodbLYOyDRcv6WmMHefzMGe9KAEt5iMlQt00uPb+kOlG/CHHzBaH
+ ZR/deTeFgqPEhl9VBWcB/fqCKeSi8wFwL5Mx6bks27xGKaCykbCz4mHcZg4OnyBbmCKyPKbPf2MDK
+ rTksjHHaTe/eP6Ns/5c6yZZrGkyCdX71kB5tiEXGahbPexUYJMFBxejf0sr/bBCZudTwtLkSPgCMZ
+ JHR4xhUEd1twiIGy/VUaxZkyh0oXu4GEQwGLjbijwCJg2/XiSwzKOka/v4cEErZPamzV7yP5JlIHN
+ ZsGMhb0Zdq3z5sXVug2t1VfIcEJgqN14lCATveePPM6cXzXL+FHLVJkwyfJvtshKXiRD2ukNuXeCH
+ /rygBE7+wl9d5Z9g3dIqKm+h4e7F5AJTVTBHENqjY=;
 Received: from [2a02:8012:2f01:0:33a9:475d:1cd9:884]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tPLaB-0002L7-1y; Sun, 22 Dec 2024 13:01:23 +0000
+ id 1tPLaF-0002L7-AK; Sun, 22 Dec 2024 13:01:27 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: huth@tuxfamily.org,
 	qemu-devel@nongnu.org
-Date: Sun, 22 Dec 2024 13:00:04 +0000
-Message-Id: <20241222130012.1013374-26-mark.cave-ayland@ilande.co.uk>
+Date: Sun, 22 Dec 2024 13:00:05 +0000
+Message-Id: <20241222130012.1013374-27-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241222130012.1013374-1-mark.cave-ayland@ilande.co.uk>
 References: <20241222130012.1013374-1-mark.cave-ayland@ilande.co.uk>
@@ -50,7 +50,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:2f01:0:33a9:475d:1cd9:884
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v3 25/33] next-cube: QOMify NeXTRTC
+Subject: [PATCH v3 26/33] next-cube: move reset of next-rtc fields from
+ next-pc to next-rtc
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -76,147 +77,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is to allow the RTC functionality to be maintained within its own separate
-device rather than as part of the next-pc device.
-
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 ---
- hw/m68k/next-cube.c | 71 +++++++++++++++++++++++++++++++--------------
- 1 file changed, 50 insertions(+), 21 deletions(-)
+ hw/m68k/next-cube.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index 9daf2207a5..075c525d24 100644
+index 075c525d24..a279754643 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -42,7 +42,13 @@
- #define RAM_SIZE    0x4000000
- #define ROM_FILE    "Rev_2.5_v66.bin"
- 
--typedef struct NeXTRTC {
-+
-+#define TYPE_NEXT_RTC "next-rtc"
-+OBJECT_DECLARE_SIMPLE_TYPE(NeXTRTC, NEXT_RTC)
-+
-+struct NeXTRTC {
-+    SysBusDevice parent_obj;
-+
-     int8_t phase;
-     uint8_t ram[32];
-     uint8_t command;
-@@ -50,7 +56,7 @@ typedef struct NeXTRTC {
-     uint8_t status;
-     uint8_t control;
-     uint8_t retval;
--} NeXTRTC;
-+};
- 
- #define TYPE_NEXT_SCSI "next-scsi"
- OBJECT_DECLARE_SIMPLE_TYPE(NeXTSCSI, NEXT_SCSI)
-@@ -1012,6 +1018,37 @@ static const MemoryRegionOps next_dummy_en_ops = {
+@@ -1018,6 +1018,16 @@ static const MemoryRegionOps next_dummy_en_ops = {
      .endianness = DEVICE_BIG_ENDIAN,
  };
  
-+static const VMStateDescription next_rtc_vmstate = {
-+    .name = "next-rtc",
-+    .version_id = 3,
-+    .minimum_version_id = 3,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_INT8(phase, NeXTRTC),
-+        VMSTATE_UINT8_ARRAY(ram, NeXTRTC, 32),
-+        VMSTATE_UINT8(command, NeXTRTC),
-+        VMSTATE_UINT8(value, NeXTRTC),
-+        VMSTATE_UINT8(status, NeXTRTC),
-+        VMSTATE_UINT8(control, NeXTRTC),
-+        VMSTATE_UINT8(retval, NeXTRTC),
-+        VMSTATE_END_OF_LIST()
-+    },
-+};
-+
-+static void next_rtc_class_init(ObjectClass *klass, void *data)
++static void next_rtc_reset_hold(Object *obj, ResetType type)
 +{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
++    NeXTRTC *rtc = NEXT_RTC(obj);
 +
-+    dc->desc = "NeXT RTC";
-+    dc->vmsd = &next_rtc_vmstate;
++    rtc->status = 0x90;
++
++    /* Load RTC RAM - TODO: provide possibility to load contents from file */
++    memcpy(rtc->ram, rtc_ram2, 32);
 +}
 +
-+static const TypeInfo next_rtc_info = {
-+    .name = TYPE_NEXT_RTC,
-+    .parent = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(NeXTRTC),
-+    .class_init = next_rtc_class_init,
-+};
-+
- static void next_pc_rtc_data_in_irq(void *opaque, int n, int level)
+ static const VMStateDescription next_rtc_vmstate = {
+     .name = "next-rtc",
+     .version_id = 3,
+@@ -1037,9 +1047,11 @@ static const VMStateDescription next_rtc_vmstate = {
+ static void next_rtc_class_init(ObjectClass *klass, void *data)
  {
-     NeXTPC *s = NEXT_PC(opaque);
-@@ -1078,6 +1115,12 @@ static void next_pc_realize(DeviceState *dev, Error **errp)
-     }
-     sysbus_connect_irq(sbd, 0, qdev_get_gpio_in(dev, NEXT_SCC_I));
-     sysbus_connect_irq(sbd, 1, qdev_get_gpio_in(dev, NEXT_SCC_DMA_I));
-+
-+    /* RTC */
-+    d = DEVICE(&s->rtc);
-+    if (!sysbus_realize(SYS_BUS_DEVICE(d), errp)) {
-+        return;
-+    }
+     DeviceClass *dc = DEVICE_CLASS(klass);
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
+ 
+     dc->desc = "NeXT RTC";
+     dc->vmsd = &next_rtc_vmstate;
++    rc->phases.hold = next_rtc_reset_hold;
  }
  
- static void next_pc_init(Object *obj)
-@@ -1111,6 +1154,8 @@ static void next_pc_init(Object *obj)
-                           "next.timer", 4);
-     sysbus_init_mmio(sbd, &s->timer_mem);
- 
-+    object_initialize_child(obj, "rtc", &s->rtc, TYPE_NEXT_RTC);
-+
-     s->rtc_power_irq = qdev_get_gpio_in(DEVICE(obj), NEXT_PWR_I);
-     qdev_init_gpio_in_named(DEVICE(obj), next_pc_rtc_data_in_irq,
-                             "pc-rtc-data-in", 1);
-@@ -1128,26 +1173,10 @@ static const Property next_pc_properties[] = {
-     DEFINE_PROP_LINK("cpu", NeXTPC, cpu, TYPE_M68K_CPU, M68kCPU *),
- };
- 
--static const VMStateDescription next_rtc_vmstate = {
--    .name = "next-rtc",
--    .version_id = 2,
--    .minimum_version_id = 2,
--    .fields = (const VMStateField[]) {
--        VMSTATE_INT8(phase, NeXTRTC),
--        VMSTATE_UINT8_ARRAY(ram, NeXTRTC, 32),
--        VMSTATE_UINT8(command, NeXTRTC),
--        VMSTATE_UINT8(value, NeXTRTC),
--        VMSTATE_UINT8(status, NeXTRTC),
--        VMSTATE_UINT8(control, NeXTRTC),
--        VMSTATE_UINT8(retval, NeXTRTC),
--        VMSTATE_END_OF_LIST()
--    },
--};
+ static const TypeInfo next_rtc_info = {
+@@ -1072,11 +1084,6 @@ static void next_pc_reset_hold(Object *obj, ResetType type)
+     s->scr1 = 0x00011102;
+     s->scr2 = 0x00ff0c80;
+     s->old_scr2 = s->scr2;
 -
- static const VMStateDescription next_pc_vmstate = {
-     .name = "next-pc",
--    .version_id = 3,
--    .minimum_version_id = 3,
-+    .version_id = 4,
-+    .minimum_version_id = 4,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(scr1, NeXTPC),
-         VMSTATE_UINT32(scr2, NeXTPC),
-@@ -1155,7 +1184,6 @@ static const VMStateDescription next_pc_vmstate = {
-         VMSTATE_UINT32(int_mask, NeXTPC),
-         VMSTATE_UINT32(int_status, NeXTPC),
-         VMSTATE_UINT32(led, NeXTPC),
--        VMSTATE_STRUCT(rtc, NeXTPC, 0, next_rtc_vmstate, NeXTRTC),
-         VMSTATE_END_OF_LIST()
-     },
- };
-@@ -1304,6 +1332,7 @@ static void next_register_type(void)
-     type_register_static(&next_typeinfo);
-     type_register_static(&next_pc_info);
-     type_register_static(&next_scsi_info);
-+    type_register_static(&next_rtc_info);
+-    s->rtc.status = 0x90;
+-
+-    /* Load RTC RAM - TODO: provide possibility to load contents from file */
+-    memcpy(s->rtc.ram, rtc_ram2, 32);
  }
  
- type_init(next_register_type)
+ static void next_pc_realize(DeviceState *dev, Error **errp)
 -- 
 2.39.5
 
