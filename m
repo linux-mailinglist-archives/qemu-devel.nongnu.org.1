@@ -2,87 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1139FA58E
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Dec 2024 13:57:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E199FA591
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Dec 2024 14:01:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tPLVl-0004Fj-Vr; Sun, 22 Dec 2024 07:56:46 -0500
+	id 1tPLZV-00051i-1u; Sun, 22 Dec 2024 08:00:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tPLVj-0004FL-U8
- for qemu-devel@nongnu.org; Sun, 22 Dec 2024 07:56:43 -0500
+ id 1tPLZI-000517-3R
+ for qemu-devel@nongnu.org; Sun, 22 Dec 2024 08:00:28 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tPLVi-0008NN-7w
- for qemu-devel@nongnu.org; Sun, 22 Dec 2024 07:56:43 -0500
+ id 1tPLZG-0000YU-52
+ for qemu-devel@nongnu.org; Sun, 22 Dec 2024 08:00:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID;
- bh=xWfvLosilgIA8otj8XWrVzSqR2isSh4HhFpZJddL3hs=; b=sHxBnhJIdnXeHANDGEY8NqLw/w
- TWW4TYXoFlQY4dJXK5hUc4ooZ1qXOtmrjZfjir2GGpDwIEDaG5gWTl4Hz3ruMhk1URy5dwGb41/2r
- ef1LkmZOspNHHkLOK3QfNl5y0rQjllpd25R+s1i6OHMy3CVIE5dQFn8nI0M/saKSISvwetgW7rmR2
- OeyNEoY+PSNAd5EzSE5gqEiorPf8wrQibSCsQo4N0PXfD+TnTJBFbaHz2heYM5nQiia7bVufmhpLv
- 7SjKPmvaGjg9BiLH0rKs/CSF9MUr3QnRYrndGtLIPF0QetGptdVHUpen0R4sMBsCljnZ7rhBQfK06
- Li9wUQjIw60IZG1wnjkr/IKRqpWCewzjbpL1B6q6ibx9fgo8v+MAL+qAGcGo9cnSRqVe69eOfypi5
- fj2iS/A2gQAaMLuqQjyx7OsFGT1B3HwWEWpjyfvmjiN1R/8N9guJuab6mlqAdNPUHBVIVzcB5vJtb
- ZhhQkW/5zwLL5i8rua6V+tyQm5hvYeGjsVGmGirpcfJ6zfXKLzp/3CHzCL0XRsDExD9ZNx8q3lloF
- 75UvtaEdC1VqBH6mvsuD5J4LqAHeVmyJ+De34med+bObuKHs3Pgtb9t6wT7wblQltNLk2SXzUbsr5
- hxEra1kr8CukjWvu9QM+aVOdaf+TDi9Ojyo3YObWE=;
+ MIME-Version:Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References;
+ bh=KqzAwKHTveouGEQvOj5DSs5g/Bu2ZAxMF6M+gboZO4M=; b=b8XgQnm/X7GAxNVpbRwLm/m70+
+ 5tR62LdLDEerTz7eCVvWLMS4RjwaxFW9vs7oWRmIWIE991iHdkbyU2wyEL82dzy8F2ErlvhvgECtQ
+ NdGL0ZzWu/EzGJ/55O477q8rDMt8rRGaUhKMZqukQ/Hry5rflEaY9i3L4Q9vEY9tol4M6YNEJX8LL
+ PG4RR67bIIajrm+EjE2uNxoWXFH3WH4SKmd9NjVFkis0kr+ostgSKtlD8nGDGciIu0aw+WQyXybMS
+ T//yFYyg4tkjbIx6ZyScPpCtBcPdWEoed6z3+syR4mxZ0JGi4YraMyOMhnugMaifNoXWCEM43C7XR
+ 3s18lIkQmKw95ynjntkam0MSnlocheWT5Nw9eJ9JnUD9oQBZ5rApFPNe/zj5Pp3TT36Ift6xM+bDA
+ 2VSOUzEKzIsxptNKynt2j4Nl1YL3fBYil7Nx2C860MkgLzOvMhuk3IO5r+qQiU2LugDq2Ooe9LWFl
+ h7NQ2jqyrZPKiGCB1VTg0rW5Y82xHmhiR5GptY4QFCY12cPBS742gzlOFE14ynp4Cq1AIvd+PKAnI
+ LThxjzvaP/0foV02/4gmuPlORTnEc/Gw7FYXEzZAgt9j82m1oqOSTAWBHU4QUcd+31ehjLPfAKNTj
+ qYC/ryuG0BeB+CkXT3UvWLHiHrKrR00WQC3fdhtrQ=;
 Received: from [2a02:8012:2f01:0:33a9:475d:1cd9:884]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (helo=localhost.localdomain)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tPLV0-0002JE-53; Sun, 22 Dec 2024 12:56:01 +0000
-Message-ID: <011c5274-08d8-49d7-96d4-29d177c3e18d@ilande.co.uk>
-Date: Sun, 22 Dec 2024 12:56:28 +0000
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>
-Cc: huth@tuxfamily.org, qemu-devel@nongnu.org
-References: <20241212114620.549285-1-mark.cave-ayland@ilande.co.uk>
- <20241212114620.549285-35-mark.cave-ayland@ilande.co.uk>
- <Z1sdIURVdJL8p6cC@redhat.com>
- <fa8ce465-e539-48ec-abf8-d7296ae42b8a@ilande.co.uk>
- <Z2ADHbndSn-vrYsK@redhat.com>
- <dbb457a1-9eb6-4d71-a5e4-84f6679cd9fe@redhat.com>
-Content-Language: en-US
+ id 1tPLYc-0002L7-Qs; Sun, 22 Dec 2024 12:59:46 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <dbb457a1-9eb6-4d71-a5e4-84f6679cd9fe@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: huth@tuxfamily.org,
+	qemu-devel@nongnu.org
+Date: Sun, 22 Dec 2024 12:59:39 +0000
+Message-Id: <20241222130012.1013374-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.39.5
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:2f01:0:33a9:475d:1cd9:884
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v2 34/34] next-cube: replace boiler-plate GPL 2.0 or later
- license text with SPDX identifier
+Subject: [PATCH v3 00/33] next-cube: more tidy-ups and improvements
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -108,73 +75,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/12/2024 11:17, Thomas Huth wrote:
+This series contains a number of tidy-ups and improvements to the NeXTCube machine
+which include:
 
-> On 16/12/2024 11.38, Daniel P. Berrangé wrote:
->> On Sat, Dec 14, 2024 at 08:38:06PM +0000, Mark Cave-Ayland wrote:
->>> On 12/12/2024 17:28, Daniel P. Berrangé wrote:
->>>
->>>> On Thu, Dec 12, 2024 at 11:46:20AM +0000, Mark Cave-Ayland wrote:
->>>>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->>>>> ---
->>>>>    hw/m68k/next-cube.c | 5 +----
->>>>>    1 file changed, 1 insertion(+), 4 deletions(-)
->>>>>
->>>>> diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
->>>>> index 1e96bb02f8..3c2f3e295c 100644
->>>>> --- a/hw/m68k/next-cube.c
->>>>> +++ b/hw/m68k/next-cube.c
->>>>> @@ -4,10 +4,7 @@
->>>>>     * Copyright (c) 2011 Bryce Lanham
->>>>>     * Copyright (c) 2024 Mark Cave-Ayland
->>>>>     *
->>>>> - * This code is free software; you can redistribute it and/or modify
->>>>> - * it under the terms of the GNU General Public License as published
->>>>> - * by the Free Software Foundation; either version 2 of the License,
->>>>> - * or (at your option) any later version.
->>>>> + * SPDX-License-Identifier: GPL-2.0-or-later
->>>>>     */
->>>>
->>>> While adding a SPDX-License-Identifier alongside existing header text
->>>> is acceptable, my view is that we should stay away from removing existing
->>>> license headers. There are some difficult questions wrt interpretation
->>>> of the GPL in this area & avoiding opening that can of worms would be
->>>> nice.
->>>
->>> I remember you mentioned this before, but I wasn't sure if this would be
->>> mitigated by the fact that the code originated from GSoC? I'm sure I've seen
->>> at least one recent patch that made a similar change, but if there really
->>> are legal reasons not to allow changes of this type then I shall drop it
->>> from the series.
->>
->> GSoC isn't really important. The challenging problem here is GPL clause 1
->> which says
->>
->>    "keep intact all the notices that refer to this License and to the
->>     absence of any warranty"
->>
->> there are differing opinions on how strictly to interpret the "keep intact"
->> language there.
->>
->> While we could have a debate over this and come to some project opinion
->> IMHO it is a better use of our time to just not remove existing notices.
-> 
-> I generally agree with Daniel here ... but in this special case, I should maybe 
-> mention that Bryce's original file only had a "This code is licensed under the GPL" 
-> statement in it:
-> 
->   https://github.com/blanham/qemu-NeXT/blob/next-cube/hw/next-cube.c#L12
-> 
-> IIRC it was me who replaced that with the usual boilerplate when I picked up his work 
-> to get it included in the upstream QEMU. And for me, it's fine if we switch to SPDX 
-> here, so in this special case, it might be OK to replace it?
+  - Bringing the code up-to-date with our latest coding standards/APIs, in particular
+    related to the board configuration and IRQ wiring
 
-Seeing as there still seems to be some questions over this patch, I'll drop it from 
-the v3 series.
+  - Remove the remaining overlapping memory regions and consolidating multiple
+    register implementations into a single place
 
+  - Add a new next-scsi device containing the ESP device and its associated
+    CSRs
 
-ATB,
+  - Adding the empty_slot device to fill unimplemented devices and removing
+    the "catch-all" next.scr memory region
 
-Mark.
+  - QOMifying the next-rtc device and wiring it up with gpios as required
+
+The next-cube machine looks in fairly good shape now, the main remaining work is to
+create a separate device for the DMA controller and update the wiring of the IRQs
+(including to the CPU) accordingly.
+
+There is no change to the behaviour of the next-cube machine with this series in
+that the next-cube machine with a suitable ROM image can now load the kernel from
+a pre-installed NeXTStep image and start executing it.
+
+Note that due to the device model changes this is a migration break, however since
+the next-cube machine is currently unable to boot anything useful, I don't see
+this as an issue.
+
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+
+[Patches still needing review: 21, 25, 28, 29, 30]
+
+v3:
+- Rebase onto master
+- Fix addresses in comments for patch 2 as noted by Thomas
+- Add R-B tags from Thomas and Phil
+- Use s->rtc directly in patch 25 rather than object_resolve_path_component()
+- Use s->escc directly in patch 11 rather than object_resolve_path_component()
+- Add numeric suffixes for empty slot names in patch 14
+- Drop patch 34 due to legal uncertainty of replace boilerplate licence text
+  with SPDX equivalent as indicated by Daniel
+
+v2:
+- Rebase onto master
+- Drop patches 1 and 4 (these have been merged separately as bugfixes)
+- Add R-B tags from Thomas and Phil
+- Update commit message in patch 2
+- Add comments containing system register addresses as requested by Thomas in
+  patch 2
+- Update description for patch 7 explaining that the SCSI CSRs are also now
+  modelled as standard registers (similar to Previous)
+- Update description for patch 8 explaining why the previously hardcoded value
+  has been dropped
+- Add comments suggesting unimplemented devices in patch 14
+- Remove next_rtc_vmstate from next_pc_vmstate in patch 25
+- Fix cut/paste error in patch 30 headline
+
+Mark Cave-Ayland (33):
+  next-cube: remove 0x14020 dummy value from next_mmio_read()
+  next-cube: remove overlap between next.dma and next.mmio memory
+    regions
+  next-cube: create new next.scsi container memory region
+  next-cube: move next_scsi_init() to next_pc_realize()
+  next-cube: introduce next_pc_init() object init function
+  next-cube: introduce next-scsi device
+  next-cube: move SCSI CSRs from next-pc to the next-scsi device
+  next-cube: move SCSI 4020/4021 logic from next-pc device to next-scsi
+    device
+  next-cube: move floppy disk MMIO to separate memory region in next-pc
+  next-cube: map ESCC registers as a subregion of the next.scr memory
+    region
+  next-cube: move ESCC to be QOM child of next-pc device
+  next-cube: move timer MMIO to separate memory region on next-pc device
+  next-cube: move en ethernet MMIO to separate memory region on next-pc
+    device
+  next-cube: add empty slots for unknown accesses to next.scr memory
+    region
+  next-cube: remove unused next.scr memory region
+  next-cube: rearrange NeXTState declarations to improve readability
+  next-cube: convert next-pc device to use Resettable interface
+  next-cube: rename typedef struct NextRtc to NeXTRTC
+  next-cube: use qemu_irq to drive int_status in next_scr2_rtc_update()
+  next-cube: separate rtc read and write shift logic
+  next-cube: always use retval to return rtc read values
+  next-cube: use named gpio to set RTC data bit in scr2
+  next-cube: use named gpio to read RTC data bit in scr2
+  next-cube: don't use rtc phase value of -1
+  next-cube: QOMify NeXTRTC
+  next-cube: move reset of next-rtc fields from next-pc to next-rtc
+  next-cube: move rtc-data-in gpio from next-pc to next-rtc device
+  next-cube: use named gpio output for next-rtc data
+  next-cube: add rtc-cmd-reset named gpio to reset the rtc state machine
+  next-cube: add rtc-power-out named gpio to trigger the NEXT_PWR_I
+    interrupt
+  next-cube: move next_rtc_cmd_is_write() and next_rtc_data_in_irq()
+    functions
+  next-cube: rename old_scr2 and scr2_2 in next_scr2_rtc_update()
+  next-cube: add my copyright to the top of the file
+
+ hw/m68k/Kconfig     |    1 +
+ hw/m68k/next-cube.c | 1021 ++++++++++++++++++++++++++++---------------
+ 2 files changed, 658 insertions(+), 364 deletions(-)
+
+-- 
+2.39.5
 
 
