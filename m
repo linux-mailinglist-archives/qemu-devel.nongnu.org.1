@@ -2,63 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0702F9FA9DA
+	by mail.lfdr.de (Postfix) with ESMTPS id 04FDD9FA9D9
 	for <lists+qemu-devel@lfdr.de>; Mon, 23 Dec 2024 05:11:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tPZlT-0000Ge-0b; Sun, 22 Dec 2024 23:09:55 -0500
+	id 1tPZlU-0000HU-UH; Sun, 22 Dec 2024 23:09:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1tPZlQ-0000G7-Nx
- for qemu-devel@nongnu.org; Sun, 22 Dec 2024 23:09:52 -0500
-Received: from mail-pl1-f178.google.com ([209.85.214.178])
+ id 1tPZlR-0000GN-TE
+ for qemu-devel@nongnu.org; Sun, 22 Dec 2024 23:09:53 -0500
+Received: from mail-pl1-f179.google.com ([209.85.214.179])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1tPZlP-0001PD-4N
- for qemu-devel@nongnu.org; Sun, 22 Dec 2024 23:09:52 -0500
-Received: by mail-pl1-f178.google.com with SMTP id
- d9443c01a7336-2165cb60719so34737635ad.0
- for <qemu-devel@nongnu.org>; Sun, 22 Dec 2024 20:09:50 -0800 (PST)
+ id 1tPZlQ-0001PM-B3
+ for qemu-devel@nongnu.org; Sun, 22 Dec 2024 23:09:53 -0500
+Received: by mail-pl1-f179.google.com with SMTP id
+ d9443c01a7336-21675fd60feso44372655ad.2
+ for <qemu-devel@nongnu.org>; Sun, 22 Dec 2024 20:09:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734926989; x=1735531789;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JPRqhMMf2OJZ/4ZGMyzVwFYbZ4UoQtphtP2rZJZe5+M=;
- b=KNwR5AvJyAB4G1JIv1EhJbD8jEHuX86/sWbH//9DKlCNIedGNvh9fQIudp9fQNOANk
- 2vyW0CTUREA4rid8kDW3opAL7pkfs+Oh7EYrUkQJGH++svJqHTeTsHoDIjRuxEXs5mR8
- jrtNqrPR8d1PsNGqfHZaVdG7+Xm8otxQctG6mFIWyJsp3SQ7NjTFlCoOzxtIpsJ9ExU1
- Z1hPaRlGeefE2YjATv5GTKIQMFTC0jF3cQqgkDAxq676am+brd68J1jqqYC4/soXR4J5
- EZGae6B3rMWAeUN6/EGemc2gnDC09C5M0xTojxxRkG+SMTmlqyDAJIhY3o1e+X06/zag
- O7nw==
-X-Gm-Message-State: AOJu0Yy8ALy1HfOCYv699vhAfuKlNY1+wmn7DZVcKv9b64VfStHyMiXk
- ClILFMxJ8CNVr5jerOH/ZUcmeTm0g0lt+yGfmG8xAz7hUtXea5P92aGjRA==
-X-Gm-Gg: ASbGncsGi6nxy4Ua0FIg5IGZsEOPs6zMYnaK343RLYuiVYvvmoL5o+DKsw+pzluNOh1
- k+0+TU0LKKdJDcSDOL5lGnj5EDHlbGm0jvQzhKiNWUMQFxm2chP8SUA4CqT2KPKS5dJZb5xMg2U
- PKssEg/by+itfOHYj4QOAfnq1lEqbv0L3rxrj+XZOsHy8urrCb3hIxAEEjdc8Rv3DIWH3OEpeo+
- TJjbkWFDmlSeEElbgxoBayMoTHjgst7T79mn2tE4YJTPPFiDDjiTpYj/PA5EDgh4fqu4ttNLyUA
- zGWAwNjThA==
-X-Google-Smtp-Source: AGHT+IE3nCayNwWz6yG4y8B0PREhN0nlQrWAvJzmpFAzUBnmnhkdaBRkq7nTN4Ok8YLVjCY2iQYJ9Q==
-X-Received: by 2002:a17:903:2acb:b0:215:6b4c:89fa with SMTP id
- d9443c01a7336-219e6e85aacmr149220195ad.8.1734926988612; 
- Sun, 22 Dec 2024 20:09:48 -0800 (PST)
+ d=1e100.net; s=20230601; t=1734926990; x=1735531790;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=CEkjq0W66WCq5brXRIKY0Ob+ncJIl6VOgGA08W2xzgo=;
+ b=oa2U1EC8zjAi1S96y2qSDdPtnNO9X1pG/gB/AfvPj7keXuzbnFrDz+poJ66VZ28otQ
+ 5YkfmplWlzxVZsdl6ln0rmfp4d5L5YBB4jJdsPUgU/g4V0mGdaOLbCJgJXnztNdhu7jr
+ syjcy832X6+KSieXTl63Sfjc0YhMQB3Mx0LmqNzxqxEVjY+75DspxjceZyK2ltY78AdO
+ K/365bhcPD0K3e7XAM9TtHv6zKx8bqi3Fd5FkEjARfuWZsCq+qBkDQ1pc/S6EWPF4qkt
+ vXrOJpAAO6u88i0v5WWQbzHp8pS6Mf8HfUMd/1TEOVFh8FWILzk3uQVi283i7cJhcy+B
+ 5Y7w==
+X-Gm-Message-State: AOJu0YyHRmZJODs3nji3qfkGaGXWMORpj4OQ9D5S7euL19OW3sCv4L41
+ 8nucP12JW/SvBHjIVpqZZEEnNnT62Lb4yulINJ2DL0mtTBWIkLJkIY48oqvQ
+X-Gm-Gg: ASbGncuBc8cCGHmBbdJfSF42egi8SJXqS/uuNV2C/LY2pEplRNMrnmf/IwKFh6plSlM
+ MePGDIe0sjsvtyR8Jj5iyC0aRF0f8NEKo8EeOz0duPMxchYSIxAK4XWFyu9N3XzzTIpwsUoaCqV
+ jBaJZwC5ax77e7s1MB0NVPqrzG+7T67peNeHot/SvvliKDz+yOdLBpFsHbb8y1k/+L+YEJSX6Ng
+ iU6RLbEoo+Zxis3b13hhQ8Qed83NGiUr8tS198ecWAYBVb1LjC8DzMU+o936sYm1Gxbj1x9tV7c
+ r7wEa4lUfg==
+X-Google-Smtp-Source: AGHT+IE42LHgYuthXRv5QS47k4tJYEmG+mBA2qVN8LcARdg4iKgbEE5uJORdd1U8ubKPZNNb3Nseeg==
+X-Received: by 2002:a17:902:ecc2:b0:216:6435:5001 with SMTP id
+ d9443c01a7336-219e6f3ab68mr131110755ad.57.1734926990302; 
+ Sun, 22 Dec 2024 20:09:50 -0800 (PST)
 Received: from localhost.localdomain ([2601:642:4c02:c8b4:911f:687c:35b2:bc4e])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-219dc9f4429sm63921115ad.173.2024.12.22.20.09.47
- for <qemu-devel@nongnu.org>
+ d9443c01a7336-219dc9f4429sm63921115ad.173.2024.12.22.20.09.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 22 Dec 2024 20:09:48 -0800 (PST)
+ Sun, 22 Dec 2024 20:09:50 -0800 (PST)
 From: Joelle van Dyne <j@getutm.app>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 0/2] Disable unavailable features on older macOS
-Date: Sun, 22 Dec 2024 20:09:43 -0800
-Message-ID: <20241223040945.82871-1-j@getutm.app>
+Cc: Joelle van Dyne <j@getutm.app>, Jason Wang <jasowang@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 1/2] vmnet: disable unavailable features on older macOS
+Date: Sun, 22 Dec 2024 20:09:44 -0800
+Message-ID: <20241223040945.82871-2-j@getutm.app>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20241223040945.82871-1-j@getutm.app>
+References: <20241223040945.82871-1-j@getutm.app>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.214.178; envelope-from=osy86dev@gmail.com;
- helo=mail-pl1-f178.google.com
+Received-SPF: pass client-ip=209.85.214.179; envelope-from=osy86dev@gmail.com;
+ helo=mail-pl1-f179.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -83,23 +87,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some features require APIs introduced in a recent version of macOS. Currently,
-this is not checked anywhere and so either the build will fail (if building with
-an older version of Xcode) or will throw a warning and then crash if run on an
-older machine. The correct way to handle this is with availabilty checks. The
-checks are a clang extension that only works on Apple platforms but these files
-are only built for Apple platforms already and link with Apple frameworks.
+Some options require macOS 11 or newer APIs. Instead of crashing (target
+version not set) or failing to compile (target version set), we will just
+return an error when the user tries to use the option.
 
-Joelle van Dyne (2):
-  vmnet: disable unavailable features on older macOS
-  hvf: arm: disable unavailable features on older macOS
+Signed-off-by: Joelle van Dyne <j@getutm.app>
+---
+ net/vmnet-host.c    | 48 +++++++++++++++++++++++++++++++--------------
+ net/vmnet-shared.c  | 23 +++++++++++++++++-----
+ net/vmnet-bridged.m | 18 ++++++++++++++---
+ 3 files changed, 66 insertions(+), 23 deletions(-)
 
- net/vmnet-host.c     | 48 ++++++++++++++++++++++++++------------
- net/vmnet-shared.c   | 23 ++++++++++++++----
- target/arm/hvf/hvf.c | 55 ++++++++++++++++++++++++++++----------------
- net/vmnet-bridged.m  | 18 ++++++++++++---
- 4 files changed, 101 insertions(+), 43 deletions(-)
-
+diff --git a/net/vmnet-host.c b/net/vmnet-host.c
+index 49fb25c224..f3f0ac89e4 100644
+--- a/net/vmnet-host.c
++++ b/net/vmnet-host.c
+@@ -21,12 +21,28 @@
+ static bool validate_options(const Netdev *netdev, Error **errp)
+ {
+     const NetdevVmnetHostOptions *options = &(netdev->u.vmnet_host);
+-    QemuUUID net_uuid;
+ 
+-    if (options->net_uuid &&
+-        qemu_uuid_parse(options->net_uuid, &net_uuid) < 0) {
+-        error_setg(errp, "Invalid UUID provided in 'net-uuid'");
+-        return false;
++    if (__builtin_available(macOS 11, *)) {
++        QemuUUID net_uuid;
++        if (options->net_uuid &&
++            qemu_uuid_parse(options->net_uuid, &net_uuid) < 0) {
++            error_setg(errp, "Invalid UUID provided in 'net-uuid'");
++            return false;
++        }
++    } else {
++        if (options->has_isolated) {
++            error_setg(errp,
++                       "vmnet-host.isolated feature is "
++                       "unavailable: outdated vmnet.framework API");
++            return false;
++        }
++
++        if (options->net_uuid) {
++            error_setg(errp,
++                       "vmnet-host.net-uuid feature is "
++                       "unavailable: outdated vmnet.framework API");
++            return false;
++        }
+     }
+ 
+     if ((options->start_address ||
+@@ -53,16 +69,18 @@ static xpc_object_t build_if_desc(const Netdev *netdev)
+                               vmnet_operation_mode_key,
+                               VMNET_HOST_MODE);
+ 
+-    xpc_dictionary_set_bool(if_desc,
+-                            vmnet_enable_isolation_key,
+-                            options->isolated);
+-
+-    QemuUUID net_uuid;
+-    if (options->net_uuid) {
+-        qemu_uuid_parse(options->net_uuid, &net_uuid);
+-        xpc_dictionary_set_uuid(if_desc,
+-                                vmnet_network_identifier_key,
+-                                net_uuid.data);
++    if (__builtin_available(macOS 11, *)) {
++        xpc_dictionary_set_bool(if_desc,
++                                vmnet_enable_isolation_key,
++                                options->isolated);
++
++        QemuUUID net_uuid;
++        if (options->net_uuid) {
++            qemu_uuid_parse(options->net_uuid, &net_uuid);
++            xpc_dictionary_set_uuid(if_desc,
++                                    vmnet_network_identifier_key,
++                                    net_uuid.data);
++        }
+     }
+ 
+     if (options->start_address) {
+diff --git a/net/vmnet-shared.c b/net/vmnet-shared.c
+index 4726b07253..e6c65f3417 100644
+--- a/net/vmnet-shared.c
++++ b/net/vmnet-shared.c
+@@ -21,6 +21,17 @@ static bool validate_options(const Netdev *netdev, Error **errp)
+ {
+     const NetdevVmnetSharedOptions *options = &(netdev->u.vmnet_shared);
+ 
++    if (__builtin_available(macOS 11, *)) {
++        /* clang requires a true branch */
++    } else {
++        if (options->has_isolated) {
++            error_setg(errp,
++                       "vmnet-shared.isolated feature is "
++                       "unavailable: outdated vmnet.framework API");
++            return false;
++        }
++    }
++
+     if ((options->start_address ||
+          options->end_address ||
+          options->subnet_mask) &&
+@@ -66,11 +77,13 @@ static xpc_object_t build_if_desc(const Netdev *netdev)
+                                   options->subnet_mask);
+     }
+ 
+-    xpc_dictionary_set_bool(
+-        if_desc,
+-        vmnet_enable_isolation_key,
+-        options->isolated
+-    );
++    if (__builtin_available(macOS 11, *)) {
++        xpc_dictionary_set_bool(
++            if_desc,
++            vmnet_enable_isolation_key,
++            options->isolated
++        );
++    }
+ 
+     return if_desc;
+ }
+diff --git a/net/vmnet-bridged.m b/net/vmnet-bridged.m
+index a04a14fa11..13fa2d16b6 100644
+--- a/net/vmnet-bridged.m
++++ b/net/vmnet-bridged.m
+@@ -88,6 +88,16 @@ static bool validate_options(const Netdev *netdev, Error **errp)
+         return false;
+     }
+ 
++    if (__builtin_available(macOS 11, *)) {
++        /* clang requires a true branch */
++    } else {
++        if (options->has_isolated) {
++            error_setg(errp,
++                       "vmnet-bridged.isolated feature is "
++                       "unavailable: outdated vmnet.framework API");
++            return false;
++        }
++    }
+     return true;
+ }
+ 
+@@ -106,9 +116,11 @@ static xpc_object_t build_if_desc(const Netdev *netdev)
+                               vmnet_shared_interface_name_key,
+                               options->ifname);
+ 
+-    xpc_dictionary_set_bool(if_desc,
+-                            vmnet_enable_isolation_key,
+-                            options->isolated);
++    if (__builtin_available(macOS 11, *)) {
++        xpc_dictionary_set_bool(if_desc,
++                                vmnet_enable_isolation_key,
++                                options->isolated);
++    }
+ 
+     return if_desc;
+ }
 -- 
 2.41.0
 
