@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8253E9FBF8C
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 16:19:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 732429FBF84
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 16:17:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQ6e7-0007ca-DS; Tue, 24 Dec 2024 10:16:31 -0500
+	id 1tQ6e8-0007jb-H3; Tue, 24 Dec 2024 10:16:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6dy-0007ID-5z
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:16:26 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6e3-0007NH-2D
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:16:27 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6dw-00045D-EO
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:16:21 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6e0-00045b-Bl
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:16:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1735053379;
+ s=mimecast20190719; t=1735053383;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=77QBj1Y7bNfhgedyYJEptps/L2oTvIdmai50MTIxpNE=;
- b=ck9VOlcDkBJ3EyEpNHBG5awl4Tq3EONL+KmwBg6WYbBt/QVN7kpp0EgikLqzxUjJnX+lNF
- fiQChP+iozq6UujZUbMXsbC5zfhBWj16lXI05u0LT/LgrVIJkuz7iwBpCSwm5zIlOyeEfd
- iTiwS6T5nOGKRt9xnQA9UI7pdNkyuLg=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Bs/aFUrZ8wbjvHaRoKXd0EGyk9aLkCzj1babD8hMHsI=;
+ b=A24Fv/YjGg7kHg0ImqTqpDJ3EO3ltBjXhkweE9rho4BYR5iGLPNvHzSbV0SEhmdt++Ke5N
+ cbd4iAvCzEdDd+tXOtWWXlWrvWO2tVz38yXErh6hzJARa/On5ZuLcR9X+ZMwev3qnR0MMF
+ gyRXAYEvUr1kGfDA5GUIDz3bdJ1cuAc=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-534-SMSWJQLmPgOdkyhc3ZVU8w-1; Tue,
- 24 Dec 2024 10:16:18 -0500
-X-MC-Unique: SMSWJQLmPgOdkyhc3ZVU8w-1
-X-Mimecast-MFC-AGG-ID: SMSWJQLmPgOdkyhc3ZVU8w
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-574-FhuQZByDN1CdCYZ_QAInWQ-1; Tue,
+ 24 Dec 2024 10:16:20 -0500
+X-MC-Unique: FhuQZByDN1CdCYZ_QAInWQ-1
+X-Mimecast-MFC-AGG-ID: FhuQZByDN1CdCYZ_QAInWQ
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 467A91956088; Tue, 24 Dec 2024 15:16:17 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 65D1D1956086; Tue, 24 Dec 2024 15:16:19 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.6])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7BA413000197; Tue, 24 Dec 2024 15:16:15 +0000 (UTC)
+ id ABA16300F9B5; Tue, 24 Dec 2024 15:16:17 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 12/17] vfio/migration: Refactor
- vfio_devices_all_dirty_tracking() logic
-Date: Tue, 24 Dec 2024 16:15:42 +0100
-Message-ID: <20241224151547.386529-13-clg@redhat.com>
+Subject: [PULL 13/17] vfio/migration: Refactor
+ vfio_devices_all_running_and_mig_active() logic
+Date: Tue, 24 Dec 2024 16:15:43 +0100
+Message-ID: <20241224151547.386529-14-clg@redhat.com>
 In-Reply-To: <20241224151547.386529-1-clg@redhat.com>
 References: <20241224151547.386529-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -86,81 +86,132 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Avihai Horon <avihaih@nvidia.com>
 
-During dirty page log sync, vfio_devices_all_dirty_tracking() is used to
-check if dirty tracking has been started in order to avoid errors. The
-current logic checks if migration is in ACTIVE or DEVICE states to
-ensure dirty tracking has been started.
+During DMA unmap with vIOMMU, vfio_devices_all_running_and_mig_active()
+is used to check whether a dirty page log sync of the unmapped pages is
+required. Such log sync is needed during migration pre-copy phase, and
+the current logic detects it by checking if migration is active and if
+the VFIO devices are running.
 
 However, recently there has been an effort to simplify the migration
 status API and reduce it to a single migration_is_running() function.
 
-To accommodate this, refactor vfio_devices_all_dirty_tracking() logic so
-it won't use migration_is_active() and migration_is_device(). Instead,
-use internal VFIO dirty tracking flags.
+To accommodate this, refactor vfio_devices_all_running_and_mig_active()
+logic so it won't use migration_is_active(). Do it by simply checking if
+dirty tracking has been started using internal VFIO flags.
 
-As a side effect, now that migration status is no longer used to detect
-dirty tracking status, VFIO log syncs are untied from migration. This
-will make calc-dirty-rate more accurate as now it will also include VFIO
-dirty pages.
+This should be equivalent to the previous logic as during migration
+dirty tracking is active and when the guest is stopped there shouldn't
+be DMA unmaps coming from it.
 
-While at it, as VFIODevice->dirty_tracking is now used to detect dirty
-tracking status, add a comment that states how it's protected.
+As a side effect, now that migration status is no longer used, DMA unmap
+log syncs are untied from migration. This will make calc-dirty-rate more
+accurate as now it will also include VFIO dirty pages that were DMA
+unmapped.
+
+Also rename the function to properly reflect its new logic and extract
+common code from vfio_devices_all_dirty_tracking().
 
 Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
 Tested-by: Joao Martins <joao.m.martins@oracle.com>
-Link: https://lore.kernel.org/r/20241218134022.21264-3-avihaih@nvidia.com
+Link: https://lore.kernel.org/r/20241218134022.21264-4-avihaih@nvidia.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-common.h |  2 +-
- hw/vfio/common.c              | 17 ++++++++++++++++-
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ include/hw/vfio/vfio-common.h |  4 ++--
+ hw/vfio/common.c              | 40 +++++++----------------------------
+ hw/vfio/container.c           |  2 +-
+ 3 files changed, 11 insertions(+), 35 deletions(-)
 
 diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index d57111843dafbc215da8f9de43780227e572dd54..a9a68e3fd9a2a570856193cb290cc252b46093de 100644
+index a9a68e3fd9a2a570856193cb290cc252b46093de..0c60be5b15c70168f4f94ad7054d9bd750a162d3 100644
 --- a/include/hw/vfio/vfio-common.h
 +++ b/include/hw/vfio/vfio-common.h
-@@ -143,7 +143,7 @@ typedef struct VFIODevice {
-     OnOffAuto pre_copy_dirty_page_tracking;
-     OnOffAuto device_dirty_page_tracking;
-     bool dirty_pages_supported;
--    bool dirty_tracking;
-+    bool dirty_tracking; /* Protected by BQL */
-     bool iommu_dirty_tracking;
-     HostIOMMUDevice *hiod;
-     int devid;
+@@ -296,8 +296,8 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp);
+ void vfio_migration_exit(VFIODevice *vbasedev);
+ 
+ int vfio_bitmap_alloc(VFIOBitmap *vbmap, hwaddr size);
+-bool
+-vfio_devices_all_running_and_mig_active(const VFIOContainerBase *bcontainer);
++bool vfio_devices_all_dirty_tracking_started(
++    const VFIOContainerBase *bcontainer);
+ bool
+ vfio_devices_all_device_dirty_tracking(const VFIOContainerBase *bcontainer);
+ int vfio_devices_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
 diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 598272f4dd2708f8241733f5a994d0ea135c4e39..fd24b7ced83d241445c0b3dbd014b125b41a0927 100644
+index fd24b7ced83d241445c0b3dbd014b125b41a0927..9b5524377ce01a0a982157b314ad60add371bac6 100644
 --- a/hw/vfio/common.c
 +++ b/hw/vfio/common.c
-@@ -170,11 +170,26 @@ bool vfio_device_state_is_precopy(VFIODevice *vbasedev)
-            migration->device_state == VFIO_DEVICE_STATE_PRE_COPY_P2P;
+@@ -184,12 +184,18 @@ static bool vfio_devices_all_device_dirty_tracking_started(
+     return true;
  }
  
-+static bool vfio_devices_all_device_dirty_tracking_started(
++bool vfio_devices_all_dirty_tracking_started(
 +    const VFIOContainerBase *bcontainer)
 +{
-+    VFIODevice *vbasedev;
-+
-+    QLIST_FOREACH(vbasedev, &bcontainer->device_list, container_next) {
-+        if (!vbasedev->dirty_tracking) {
-+            return false;
-+        }
-+    }
-+
-+    return true;
++    return vfio_devices_all_device_dirty_tracking_started(bcontainer) ||
++           bcontainer->dirty_pages_started;
 +}
 +
  static bool vfio_devices_all_dirty_tracking(VFIOContainerBase *bcontainer)
  {
      VFIODevice *vbasedev;
  
--    if (!migration_is_active() && !migration_is_device()) {
-+    if (!(vfio_devices_all_device_dirty_tracking_started(bcontainer) ||
-+          bcontainer->dirty_pages_started)) {
+-    if (!(vfio_devices_all_device_dirty_tracking_started(bcontainer) ||
+-          bcontainer->dirty_pages_started)) {
++    if (!vfio_devices_all_dirty_tracking_started(bcontainer)) {
          return false;
      }
  
+@@ -225,36 +231,6 @@ bool vfio_devices_all_device_dirty_tracking(const VFIOContainerBase *bcontainer)
+     return true;
+ }
+ 
+-/*
+- * Check if all VFIO devices are running and migration is active, which is
+- * essentially equivalent to the migration being in pre-copy phase.
+- */
+-bool
+-vfio_devices_all_running_and_mig_active(const VFIOContainerBase *bcontainer)
+-{
+-    VFIODevice *vbasedev;
+-
+-    if (!migration_is_active()) {
+-        return false;
+-    }
+-
+-    QLIST_FOREACH(vbasedev, &bcontainer->device_list, container_next) {
+-        VFIOMigration *migration = vbasedev->migration;
+-
+-        if (!migration) {
+-            return false;
+-        }
+-
+-        if (vfio_device_state_is_running(vbasedev) ||
+-            vfio_device_state_is_precopy(vbasedev)) {
+-            continue;
+-        } else {
+-            return false;
+-        }
+-    }
+-    return true;
+-}
+-
+ static bool vfio_listener_skipped_section(MemoryRegionSection *section)
+ {
+     return (!memory_region_is_ram(section->mr) &&
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 78a3c2d55fcd0f53c9b679167ad8d1b557f72358..4ebb5268088d0a2006e0ed04afec0ee746ed2c1d 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -131,7 +131,7 @@ static int vfio_legacy_dma_unmap(const VFIOContainerBase *bcontainer,
+     int ret;
+     Error *local_err = NULL;
+ 
+-    if (iotlb && vfio_devices_all_running_and_mig_active(bcontainer)) {
++    if (iotlb && vfio_devices_all_dirty_tracking_started(bcontainer)) {
+         if (!vfio_devices_all_device_dirty_tracking(bcontainer) &&
+             bcontainer->dirty_pages_supported) {
+             return vfio_dma_unmap_bitmap(container, iova, size, iotlb);
 -- 
 2.47.1
 
