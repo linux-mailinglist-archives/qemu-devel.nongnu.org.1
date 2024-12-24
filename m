@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A90019FBF90
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 16:20:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D90C9FBF8D
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 16:19:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQ6e7-0007cA-22; Tue, 24 Dec 2024 10:16:31 -0500
+	id 1tQ6e4-0007SP-Un; Tue, 24 Dec 2024 10:16:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6dv-0007CV-Au
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6dv-0007CU-9z
  for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:16:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6ds-00044v-CI
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6ds-00044s-5m
  for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:16:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1735053375;
@@ -22,52 +22,52 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Bk4u7HAtBWIrwwdMO6YCY2RA9uiddWkPGXGAxXMR4WI=;
- b=QO/N77hUK3uzF/86bNjqcKZqAVKXFzRxr221RuWrS1oIOe7K7oC+KSUW3PWVS+UoNeufvZ
- 6yq0M8FbMqrX2Lpbn0yCBvxXa8KwyJzls3m6VJvnrgiGTqiiu8+Jjz9tHi/MRHTjFfHoXR
- yLTETGJDef38aqbsysRGtphxHfTxdnc=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Z5qYckvgIIGDs1pm0GDTPxd8uouPXLvudJ9dPfuOTcI=;
+ b=hc+NfkTXCJSSo+HverysWu7RKRLHGkZI96chvMMuTe5yE5W+xPVjy1ytakWiGG4ivCcbzT
+ 0Pa3lteqnu+D0MCZqq0JBhx3aK+2V29I1yG+42ooPI4Hc5Dqp2vq509xoTGFIb6Fui0mWx
+ gqNN3cGvfRxZEKFwEiTyrzD4fsUDqW8=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-wkuIVRxSNCOlkTelF6wRig-1; Tue,
- 24 Dec 2024 10:16:12 -0500
-X-MC-Unique: wkuIVRxSNCOlkTelF6wRig-1
-X-Mimecast-MFC-AGG-ID: wkuIVRxSNCOlkTelF6wRig
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-36-SUl30bHyNASTjmOlHY3R_w-1; Tue,
+ 24 Dec 2024 10:16:14 -0500
+X-MC-Unique: SUl30bHyNASTjmOlHY3R_w-1
+X-Mimecast-MFC-AGG-ID: SUl30bHyNASTjmOlHY3R_w
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1ACCE1956058; Tue, 24 Dec 2024 15:16:11 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3673A19560AF; Tue, 24 Dec 2024 15:16:13 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.6])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 841483000197; Tue, 24 Dec 2024 15:16:09 +0000 (UTC)
+ id B9D9A3000197; Tue, 24 Dec 2024 15:16:11 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Tomita Moeko <tomitamoeko@gmail.com>,
- =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 09/17] vfio/igd: emulate BDSM in mmio bar0 for gen 6-10 devices
-Date: Tue, 24 Dec 2024 16:15:39 +0100
-Message-ID: <20241224151547.386529-10-clg@redhat.com>
+Subject: [PULL 10/17] vfio/igd: add x-igd-gms option back to set DSM region
+ size for guest
+Date: Tue, 24 Dec 2024 16:15:40 +0100
+Message-ID: <20241224151547.386529-11-clg@redhat.com>
 In-Reply-To: <20241224151547.386529-1-clg@redhat.com>
 References: <20241224151547.386529-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,72 +85,74 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Tomita Moeko <tomitamoeko@gmail.com>
 
-A recent commit in i915 driver [1] claims the BDSM register at 0x1080c0
-of mmio bar0 has been there since gen 6. Mirror this register to the 32
-bit BDSM register at 0x5c in pci config space for gen6-10 devices.
+DSM region is likely to store framebuffer in Windows, a small DSM
+region may cause display issues (e.g. half of the screen is black).
+Since 971ca22f041b ("vfio/igd: don't set stolen memory size to zero"),
+the x-igd-gms option was functionally removed, QEMU uses host's
+original value, which is determined by DVMT Pre-Allocated option in
+Intel FSP of host bios.
 
-[1] https://patchwork.freedesktop.org/patch/msgid/20240202224340.30647-7-ville.syrjala@linux.intel.com
+However, some vendors do not expose this config item to users. In
+such cases, x-igd-gms option can be used to manually set the data
+stolen memory size for guest. So this commit brings this option back,
+keeping its old behavior. When it is not specified, QEMU uses host's
+value.
 
-Reviewed-by: Corvin Köhne <c.koehne@beckhoff.com>
+When DVMT Pre-Allocated option is available in host BIOS, user should
+set DSM region size there instead of using x-igd-gms option.
+
 Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
-Link: https://lore.kernel.org/r/20241206122749.9893-10-tomitamoeko@gmail.com
+Link: https://lore.kernel.org/r/20241206122749.9893-11-tomitamoeko@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/igd.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ hw/vfio/igd.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 12e0553e830aab31980586ebf572070186ac38ad..73c06bbf64d85b8dbf1575dac34ef8b7e64a3490 100644
+index 73c06bbf64d85b8dbf1575dac34ef8b7e64a3490..b0fef90240ca6dcc0ead7ed536202d618546b4b1 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -489,7 +489,8 @@ static const MemoryRegionOps vfio_igd_quirk_mirror_##name = {           \
- };
- 
- VFIO_IGD_QUIRK_MIRROR_REG(IGD_GMCH, ggc)
--VFIO_IGD_QUIRK_MIRROR_REG(IGD_BDSM_GEN11, bdsm)
-+VFIO_IGD_QUIRK_MIRROR_REG(IGD_BDSM, bdsm)
-+VFIO_IGD_QUIRK_MIRROR_REG(IGD_BDSM_GEN11, bdsm64)
- 
- #define IGD_GGC_MMIO_OFFSET     0x108040
- #define IGD_BDSM_MMIO_OFFSET    0x1080C0
-@@ -516,7 +517,7 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
-      * into MMIO space and read from MMIO space by the Windows driver.
-      */
-     gen = igd_gen(vdev);
--    if (gen < 11) {
-+    if (gen < 6) {
-         return;
-     }
- 
-@@ -530,12 +531,21 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
-                                         IGD_GGC_MMIO_OFFSET, &quirk->mem[0],
-                                         1);
- 
--    memory_region_init_io(&quirk->mem[1], OBJECT(vdev),
--                          &vfio_igd_quirk_mirror_bdsm, vdev,
--                          "vfio-igd-bdsm-quirk", 8);
--    memory_region_add_subregion_overlap(vdev->bars[0].region.mem,
--                                        IGD_BDSM_MMIO_OFFSET, &quirk->mem[1],
--                                        1);
-+    if (gen < 11) {
-+        memory_region_init_io(&quirk->mem[1], OBJECT(vdev),
-+                              &vfio_igd_quirk_mirror_bdsm, vdev,
-+                              "vfio-igd-bdsm-quirk", 4);
-+        memory_region_add_subregion_overlap(vdev->bars[0].region.mem,
-+                                            IGD_BDSM_MMIO_OFFSET,
-+                                            &quirk->mem[1], 1);
-+    } else {
-+        memory_region_init_io(&quirk->mem[1], OBJECT(vdev),
-+                              &vfio_igd_quirk_mirror_bdsm64, vdev,
-+                              "vfio-igd-bdsm-quirk", 8);
-+        memory_region_add_subregion_overlap(vdev->bars[0].region.mem,
-+                                            IGD_BDSM_MMIO_OFFSET,
-+                                            &quirk->mem[1], 1);
-+    }
+@@ -14,6 +14,7 @@
+ #include "qemu/units.h"
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
++#include "qapi/qmp/qerror.h"
+ #include "hw/hw.h"
+ #include "hw/nvram/fw_cfg.h"
+ #include "pci.h"
+@@ -722,6 +723,31 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
  
      QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, quirk, next);
- }
+ 
++    /*
++     * Allow user to override dsm size using x-igd-gms option, in multiples of
++     * 32MiB. This option should only be used when the desired size cannot be
++     * set from DVMT Pre-Allocated option in host BIOS.
++     */
++    if (vdev->igd_gms) {
++        if (gen < 8) {
++            if (vdev->igd_gms <= 0x10) {
++                gmch &= ~(IGD_GMCH_GEN6_GMS_MASK << IGD_GMCH_GEN6_GMS_SHIFT);
++                gmch |= vdev->igd_gms << IGD_GMCH_GEN6_GMS_SHIFT;
++            } else {
++                error_report(QERR_INVALID_PARAMETER_VALUE,
++                             "x-igd-gms", "0~0x10");
++            }
++        } else {
++            if (vdev->igd_gms <= 0x40) {
++                gmch &= ~(IGD_GMCH_GEN8_GMS_MASK << IGD_GMCH_GEN8_GMS_SHIFT);
++                gmch |= vdev->igd_gms << IGD_GMCH_GEN8_GMS_SHIFT;
++            } else {
++                error_report(QERR_INVALID_PARAMETER_VALUE,
++                             "x-igd-gms", "0~0x40");
++            }
++        }
++    }
++
+     ggms_size = igd_gtt_memory_size(gen, gmch);
+     gms_size = igd_stolen_memory_size(gen, gmch);
+ 
 -- 
 2.47.1
 
