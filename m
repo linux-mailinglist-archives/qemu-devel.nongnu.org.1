@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B829FC21C
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 21:16:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C03399FC225
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 21:18:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQBDy-0001F3-Pe; Tue, 24 Dec 2024 15:09:50 -0500
+	id 1tQBE1-0001eE-88; Tue, 24 Dec 2024 15:09:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tQBDf-0007TQ-Er
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 15:09:31 -0500
-Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ id 1tQBDg-0007Wn-Qr
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 15:09:33 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tQBDd-00030Y-UK
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 15:09:31 -0500
-Received: by mail-pj1-x102c.google.com with SMTP id
- 98e67ed59e1d1-2ee397a82f6so5866840a91.2
- for <qemu-devel@nongnu.org>; Tue, 24 Dec 2024 12:09:29 -0800 (PST)
+ id 1tQBDf-00030k-0U
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 15:09:32 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-21675fd60feso73587425ad.2
+ for <qemu-devel@nongnu.org>; Tue, 24 Dec 2024 12:09:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735070968; x=1735675768; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735070969; x=1735675769; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RKTTrx8B/icquGiBXqUA5XkQlJqGmYAEi37JaPi9ziQ=;
- b=FBjx8nIWslRurdSEhHxyqL00uZZjCLvPBbPOZ/K1wXFUgH5X3d61Je5wnD8Tx55Pf/
- zD/8lLWJfWKW1iWyNtDBW1tPY5GRs7DKXS28fFzV9NlEhwrhSYDDSd7bsqCV6NkAQiPT
- V0Q2IUcq7KAP5J6uGpuQ6WHTH5p+CTAvVzo7gtWRglMhF3/h3/Hbi92Og6PjKsr2QkX5
- ubV3hSmPHmcQLgm/NfydpDJuWojIgE/QSj2tewTT7qd0fGMUV8a1oceRoCsC4AuwnTip
- CHLL+lhZKgj8LsqN0bMGttZEmGHB0xbMdYCDw1oOzUwN8H0DjA+vMne20ZlwSHOpp4a7
- kICw==
+ bh=zmgwYYyv+juXwg/CgaDAXGKo2B+5k9ACWJHCK3pXUJ4=;
+ b=HL7R1URW8hSYKtS8mqC7XPJm3HLZ53Ggibg5hmtTiG9DAUnzfRO0iU9khoiSQc4hd/
+ hZyFzx3aoyThexULHkC7cvtJiyUs8mFxW+X49ulvEwmpFmBchctfWVbozd1Njf1LODyw
+ 7L2Wc3oT6rGqlQMgltMDDEeejCHpcbRWlVf3PmXjytR6k6R5xhh7QCbOrvjcOjmFCc6G
+ iVMXIdv2+W1yrzwQ9LysXOdplZezbq6LgjgQVTunz04ZtNBGKgW8Ulw29PUIvAtcy/SJ
+ ItBjMotDVWDiA4a1sHEuX3kx79w+p4A+xDKK8HbnIuvOUrOXCk0dcznY0N0FB06garrE
+ h3AQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735070968; x=1735675768;
+ d=1e100.net; s=20230601; t=1735070969; x=1735675769;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RKTTrx8B/icquGiBXqUA5XkQlJqGmYAEi37JaPi9ziQ=;
- b=uXv7eQcUNplo7HsSBMZtENa2xdfiz01N/ke3wf1JZvqgqX2B2xOLjIbQXwhW4rmT38
- EDWAJ85YSWFxCYjMDdWV5KG7WbuUEP7mpm99COxhb0MRKJD3izBkqgBLn4R5SZfOIcD7
- GuyS6g0fZbuZBmB8Mt9DxoOIgR75WKx4EU3WRsIBs87mwQp84H+BjhQjJBjjku3kkWrc
- BnKJ6seBttkaJje5LRGkfFoqY6XECTbJl5Vwjzw9hPdh11PRg/ToQnFdReoF0PpS1Cr3
- SIMUJNAcBFJ3hipxHpiyWg6N64gyH5vmy17qteLu3RmPzBAzLOfdaprKM/XHe56pr01v
- Q8rQ==
-X-Gm-Message-State: AOJu0YyHWRgHUQGri8Pi5feWYy6wS6RB8zqVnkcGHRTR7FD4ABJBEXKI
- H1WRVPXSkEE3UNoRTzcuxu6UgeCdswAS7CMWXIF6NZazSjbkHC9vSP1D664zATy38dmCpxv9A61
- XVhU=
-X-Gm-Gg: ASbGncuCj2vPSVDU8iqbFdXoQTJywUzGV8pCeo10UpUQLZ0L8gXlfc7r4KaRK5jyCpH
- 0qBGymPmRe2BrLQA9eVPR3NCDyV3RRZFdJ5sphGK2gkUUyRiaTaYQSygFnCY78xj2Sjr5yoirRw
- 5rTJShfaMPeecsuMHvCRp5R5ZfMBKuxDXDvVTQUzFU7GSGUvwz2ZQ2bBOaN3ooaSyVZBVSGqDcN
- s1R7SJKGuqn5LJC5HPYDifIn1d4JJW75R4r6wB3/s1tj+DnNBRg/5A9VMyLiV4h1UaIDZsj/MQl
- QBXc6OlTe8hQfIacDkTwuZnrxw==
-X-Google-Smtp-Source: AGHT+IH8sBYGma8KW8VFaxhKiL5C8+1aN2Cn4B0G1vI+xbm+lJt8SEGmeb5MDNMzyJNrybxDsKioXw==
-X-Received: by 2002:a05:6a20:8427:b0:1e0:ca95:3cb2 with SMTP id
- adf61e73a8af0-1e5e0458eb9mr32037304637.8.1735070968572; 
- Tue, 24 Dec 2024 12:09:28 -0800 (PST)
+ bh=zmgwYYyv+juXwg/CgaDAXGKo2B+5k9ACWJHCK3pXUJ4=;
+ b=bUCIX/elFqyw1NGyrEEkBVzOzW1q1IXpk5McZ0HZDBGZZt4I52odqV25/CSSxE6Q2k
+ moe9ovb9gwR3ERDzxg8hbbjUwIUkvBib/mwtNMo9vkJYoaWYVulkmTpMa6ljwGh5DCra
+ dU7Qnl2xqSHiFmP9T0UMrzXEPt0whb9HgVluOqSRemSrU43qVQDXX/h8fVmGqvO+bGlP
+ MX2FtYTH4EA+RxxGgUuRTXRMPZ/uOzHhpSwDQARh5zxCqDNHra+cZmDYwKpjuydm3qpp
+ gbfy/46r2OV8WS9bNBRHAC5Q6qN0OToZC3HY8f+5tPLhDjfqSfB9M4bDALGBsqcZ6XGS
+ Whmw==
+X-Gm-Message-State: AOJu0YxT66L0OjJCJFWQmkZ1P6cQ2ghN3ZLdV6wW+0h4KeD+5TBea5NF
+ CusoX8hkHsCMPAls4CzqWRQ6P83SAcY/+btcZxv5e1xTaqxYWrfvRrFoUcx0rxkFB3CRNsqxmdc
+ vT9o=
+X-Gm-Gg: ASbGncuYRURORK0eSSBDvjkuasB1wMc1ivOmi/9WyhDHaiUidN/hS1j4QBu0JMJR0im
+ bFGUMsLU4UbMDaT7CTFrWDBG6mq3ap1JfExvrlPGdUlnJkheRPP2WoYpwHDX2zwz0ybTzyLLvdF
+ 9h10i8mPbb4OQ1IX7dlbLU2ZsKG06aGi8UD2cb6i610YX4eK2jUmpBkm1ioZ10At5rQG2NYDLVY
+ 9XuifzvAWVGy8HHdhndqtOz+y2tnB5tZUyAF/KPR91yr2m07QCfErrzHE1E9/prJRpSPeoXH9Ey
+ ZKm+XAgN+ChzndBBvch4ItEUbA==
+X-Google-Smtp-Source: AGHT+IEVS2yGwfGET3F2CBJPDM2m79vZwPbnMFrTSEP3CxXiTjd2wu9Cv4QqN4W5YysirLJP6kWvFQ==
+X-Received: by 2002:a05:6a20:7289:b0:1e0:d4f4:5b39 with SMTP id
+ adf61e73a8af0-1e5e04a0ee8mr31050261637.24.1735070969558; 
+ Tue, 24 Dec 2024 12:09:29 -0800 (PST)
 Received: from stoup.. (syn-156-019-246-023.biz.spectrum.com. [156.19.246.23])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad8309acsm10033521b3a.45.2024.12.24.12.09.27
+ d2e1a72fcca58-72aad8309acsm10033521b3a.45.2024.12.24.12.09.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Dec 2024 12:09:28 -0800 (PST)
+ Tue, 24 Dec 2024 12:09:29 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Brian Cain <brian.cain@oss.qualcomm.com>
-Subject: [PULL 68/72] target/hexagon: Remove Float
-Date: Tue, 24 Dec 2024 12:05:17 -0800
-Message-ID: <20241224200521.310066-69-richard.henderson@linaro.org>
+Subject: [PULL 69/72] target/hexagon: Remove Double
+Date: Tue, 24 Dec 2024 12:05:18 -0800
+Message-ID: <20241224200521.310066-70-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241224200521.310066-1-richard.henderson@linaro.org>
 References: <20241224200521.310066-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,51 +98,104 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This structure, with bitfields, is incorrect for big-endian.
-Use the existing float32_getexp_raw which uses extract32.
+Use extract64 and deposit64 instead.
 
 Reviewed-by: Brian Cain <brian.cain@oss.qualcomm.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hexagon/fma_emu.c | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ target/hexagon/fma_emu.c | 46 ++++++++++++++--------------------------
+ 1 file changed, 16 insertions(+), 30 deletions(-)
 
 diff --git a/target/hexagon/fma_emu.c b/target/hexagon/fma_emu.c
-index 0769de43de..2a8f72fee3 100644
+index 2a8f72fee3..ddc793fe14 100644
 --- a/target/hexagon/fma_emu.c
 +++ b/target/hexagon/fma_emu.c
-@@ -53,16 +53,6 @@ typedef union {
-     };
- } Double;
+@@ -43,39 +43,29 @@
+ 
+ #define WAY_BIG_EXP 4096
  
 -typedef union {
--    float f;
--    uint32_t i;
+-    double f;
+-    uint64_t i;
 -    struct {
--        uint32_t mant:23;
--        uint32_t exp:8;
--        uint32_t sign:1;
+-        uint64_t mant:52;
+-        uint64_t exp:11;
+-        uint64_t sign:1;
 -    };
--} Float;
+-} Double;
 -
  static uint64_t float64_getmant(float64 f64)
  {
-     Double a = { .i = f64 };
-@@ -92,12 +82,12 @@ int32_t float64_getexp(float64 f64)
+-    Double a = { .i = f64 };
++    uint64_t mant = extract64(f64, 0, 52);
+     if (float64_is_normal(f64)) {
+-        return a.mant | 1ULL << 52;
++        return mant | 1ULL << 52;
+     }
+     if (float64_is_zero(f64)) {
+         return 0;
+     }
+     if (float64_is_denormal(f64)) {
+-        return a.mant;
++        return mant;
+     }
+     return ~0ULL;
+ }
  
- int32_t float32_getexp(float32 f32)
+ int32_t float64_getexp(float64 f64)
  {
--    Float a = { .i = f32 };
-+    int exp = float32_getexp_raw(f32);
-     if (float32_is_normal(f32)) {
+-    Double a = { .i = f64 };
++    int exp = extract64(f64, 52, 11);
+     if (float64_is_normal(f64)) {
 -        return a.exp;
 +        return exp;
      }
-     if (float32_is_denormal(f32)) {
+     if (float64_is_denormal(f64)) {
 -        return a.exp + 1;
 +        return exp + 1;
      }
      return -1;
  }
+@@ -346,6 +336,8 @@ float32 infinite_float32(uint8_t sign)
+ /* Return a maximum finite value with the requested sign */
+ static float64 accum_round_float64(Accum a, float_status *fp_status)
+ {
++    uint64_t ret;
++
+     if ((int128_gethi(a.mant) == 0) && (int128_getlo(a.mant) == 0)
+         && ((a.guard | a.round | a.sticky) == 0)) {
+         /* result zero */
+@@ -455,22 +447,16 @@ static float64 accum_round_float64(Accum a, float_status *fp_status)
+         }
+     }
+     /* Underflow? */
+-    if (int128_getlo(a.mant) & (1ULL << DF_MANTBITS)) {
++    ret = int128_getlo(a.mant);
++    if (ret & (1ULL << DF_MANTBITS)) {
+         /* Leading one means: No, we're normal. So, we should be done... */
+-        Double ret;
+-        ret.i = 0;
+-        ret.sign = a.sign;
+-        ret.exp = a.exp;
+-        ret.mant = int128_getlo(a.mant);
+-        return ret.i;
++        ret = deposit64(ret, 52, 11, a.exp);
++    } else {
++        assert(a.exp == 1);
++        ret = deposit64(ret, 52, 11, 0);
+     }
+-    assert(a.exp == 1);
+-    Double ret;
+-    ret.i = 0;
+-    ret.sign = a.sign;
+-    ret.exp = 0;
+-    ret.mant = int128_getlo(a.mant);
+-    return ret.i;
++    ret = deposit64(ret, 63, 1, a.sign);
++    return ret;
+ }
+ 
+ float64 internal_mpyhh(float64 a, float64 b,
 -- 
 2.43.0
 
