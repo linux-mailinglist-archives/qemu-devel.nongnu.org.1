@@ -2,72 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B749FBF8F
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 16:19:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4CFE9FBF91
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 16:20:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQ6eX-0008HU-Ui; Tue, 24 Dec 2024 10:16:57 -0500
+	id 1tQ6hi-0007PN-O1; Tue, 24 Dec 2024 10:20:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6eD-00086n-Kd
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:16:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tQ6ha-00077U-73
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:20:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6eC-00046w-49
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:16:37 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tQ6hY-0004Kc-Cr
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:20:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1735053395;
+ s=mimecast20190719; t=1735053601;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FYAgSPx+tQZ1O5jCx7JvRgyXDxTkENCIvo38zAs5EIs=;
- b=F3yZ9OvI4yyz29/xLZ7TtM7CNW4SqYNyYUd9xYSKsoWg29CqVF5/HKrnXisoBH/8D2swkU
- IDRQUXFuzFGB4HZxyDzPfbdE0U/dVcXftp/ypCOkh/ZquIdyNaqnDmR90pYqtpLSnk6U3n
- r1ms/0ZuTLKqCFitFE3bTvczT3BJ/XM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-391-FZ4eh4TYP4CVMAJdRhWpfA-1; Tue,
- 24 Dec 2024 10:16:31 -0500
-X-MC-Unique: FZ4eh4TYP4CVMAJdRhWpfA-1
-X-Mimecast-MFC-AGG-ID: FZ4eh4TYP4CVMAJdRhWpfA
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 61B7319560A2; Tue, 24 Dec 2024 15:16:29 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.39.192.6])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 72B443000197; Tue, 24 Dec 2024 15:16:27 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Peter Xu <peterx@redhat.com>, Joao Martins <joao.m.martins@oracle.com>
-Subject: [PULL 17/17] migration: Unexport migration_is_active()
-Date: Tue, 24 Dec 2024 16:15:47 +0100
-Message-ID: <20241224151547.386529-18-clg@redhat.com>
-In-Reply-To: <20241224151547.386529-1-clg@redhat.com>
-References: <20241224151547.386529-1-clg@redhat.com>
+ bh=Hn7yu/BVBdWyu2ZDvEn6R3F57DF6oyoeS4fA9JFJVSI=;
+ b=KL86VeZATQ1JzzpESMEEFup39310Ptu06FUFyWDlufTCsszjywcxAkCNOlt3M5dbmTF+fA
+ LaQJYoiveVxwi1en6E6b99+Be7SYWjsW7B6Fn9s/+cEfu/lHer+NkDJz0p3bwE8tQoh+pY
+ CJjiMozaT7/eVNbQmuCikopP0MISTiM=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-184-UbuZPQSlMNaBJOHQwx2uJQ-1; Tue, 24 Dec 2024 10:19:56 -0500
+X-MC-Unique: UbuZPQSlMNaBJOHQwx2uJQ-1
+X-Mimecast-MFC-AGG-ID: UbuZPQSlMNaBJOHQwx2uJQ
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-467c08e67easo112339381cf.1
+ for <qemu-devel@nongnu.org>; Tue, 24 Dec 2024 07:19:56 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1735053595; x=1735658395;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Hn7yu/BVBdWyu2ZDvEn6R3F57DF6oyoeS4fA9JFJVSI=;
+ b=qR3FwGhbM10FVPvU0Eph66VIaPAgl6SaOBdw78MjxljPfSbWG0DkLmRqpHn9YcBxNS
+ a8pw+l3f4h4qR6LOYSRFd/OHox/3m03wxBPGMoNMXZOeenqCY5ZiRYSvR5vTV1xfjM+s
+ qrJuZG3g6ByumUd3mHnEgHkoMd4k6AN3KRsrvnD8xAEpCDzZwWIALk1+OXi0WI8RluaA
+ Olrfl3p7yGyiHA4HJQvXgZ133kmmerC937fANLq11jPg5kko0fG4OnpuFsRT4REVmL1+
+ lxPUXU7xFCJIp9Lc3VXFToB/98I4Z6fJrhUKOWWEDkCav4HCodGelp4xs9VtJq5NEqVL
+ LYuA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXT6DpE83zBoUxWmH4D8OVjWMZNb6Cg9zNmUQbrVvHd4kHP2slmJYFAyac3A4/U6EAejKgfYaHTY3fB@nongnu.org
+X-Gm-Message-State: AOJu0YwgdAFWPxKB6NFxGGCIUR6RU4p1mJpWmza4CEw9rKH1Y6v9dU57
+ Wd1A7DRi0/g0E0M3LErQP7HNO5xT0tZDH0JMhJ1AOype25dKfHo8grjmsy6k2bvQo2bQ097YGZo
+ 59o+i8K4sgjdb4xrQLzaocv9rE1xCOLG7eY71LJn82i9Z5XWbkZsm
+X-Gm-Gg: ASbGncuULt0wu/SyanAVetBOqpiAX/qGwMGoeoBm4BnXZmLJFi2gXXCKCVTdBVqxHoo
+ M+c1x4y51FezCt+MbBL8z0Be0aWXNsiD88dRuLwwuPSyngoZ3nbUBMMJNsE20A1Z4th236X+fQx
+ gwSmpRqtb3nZ8FOTl9IlhYT9rvsACJutqr37TWPWuq/a1KLgU2rGk20Rzl7WPmZLaD7EfKBIxCd
+ DrQwFfIDGCXFHQlg9fIME6NuWMciXiZJz/TkRnAE7HTjXY9kwcbrD6vTHcqwnbXwAJvUl1cMhtu
+ ox+UatJIwAoKWFHPNg==
+X-Received: by 2002:a05:6214:20eb:b0:6d8:a4fd:d247 with SMTP id
+ 6a1803df08f44-6dd23306875mr273840926d6.7.1735053595406; 
+ Tue, 24 Dec 2024 07:19:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEBlT6u9zDI14ChRtAcsVX+0ic5ezS2vyxjMTb3yZMK0eULrfSLIvF9K9bdWfpd7nvknG6yKA==
+X-Received: by 2002:a05:6214:20eb:b0:6d8:a4fd:d247 with SMTP id
+ 6a1803df08f44-6dd23306875mr273840536d6.7.1735053595082; 
+ Tue, 24 Dec 2024 07:19:55 -0800 (PST)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6dd18137419sm53605736d6.69.2024.12.24.07.19.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 24 Dec 2024 07:19:54 -0800 (PST)
+Date: Tue, 24 Dec 2024 10:19:52 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+ John Snow <jsnow@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Fabiano Rosas <farosas@suse.de>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>
+Subject: Re: [PATCH 01/17] replay: Fix migration use of clock for statistics
+Message-ID: <Z2rRGK09N1ujK5NV@x1n>
+References: <20241220104220.2007786-1-npiggin@gmail.com>
+ <20241220104220.2007786-2-npiggin@gmail.com> <Z2Wb7T8oH0xbk576@x1n>
+ <D6H1LG4QEYL3.3B6MWT5ZTMAQG@gmail.com> <Z2mdNtwd9UzAUVBB@x1n>
+ <51af6ae2-db61-44f5-bde0-bf2eb98923eb@ispras.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <51af6ae2-db61-44f5-bde0-bf2eb98923eb@ispras.ru>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,72 +121,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Avihai Horon <avihaih@nvidia.com>
+On Tue, Dec 24, 2024 at 10:24:51AM +0300, Pavel Dovgalyuk wrote:
+> On 23.12.2024 20:26, Peter Xu wrote:
+> > On Sat, Dec 21, 2024 at 01:02:01PM +1000, Nicholas Piggin wrote:
+> > > On Sat Dec 21, 2024 at 2:31 AM AEST, Peter Xu wrote:
+> > > > On Fri, Dec 20, 2024 at 08:42:03PM +1000, Nicholas Piggin wrote:
+> > > > > Migration reads CLOCK_HOST when not holding the replay_mutex, which
+> > > > > asserts when recording a trace. These are not guest visible so should
+> > > > > be CLOCK_REALTIME like other statistics in MigrationState, which do
+> > > > > not require the replay_mutex.
+> > > > 
+> > > > Irrelevant of the change, should we document such lock implications in
+> > > > timer.h?
+> > > 
+> > > I guess the intention was to try to avoid caller caring too much
+> > > about replay internals, so I'm not sure if that will help or
+> > > hinder understanding :(
+> > 
+> > CLOCK_HOST should be the wall clock in QEMU, IIUC.  If any QEMU caller
+> > tries to read host wall clock requires some mutex to be held.. then I don't
+> > see how we can avoid mentioning it.  It's indeed weird if we need to take a
+> > feature specific mutex just to read the wallclock.. But maybe I misread the
+> > context somewhere..
+> > 
+> > > 
+> > > I think the big rule is something like "if it affects guest state,
+> > > then you must use HOST or VIRTUAL*, if it does not affect guest state
+> > 
+> > HOST clock logically shouldn't be relevant to guest-state?
+> 
+> CLOCK_HOST is used for rtc by default. As the rtc affects the guest state,
+> therefore CLOCK_HOST affects guest state too.
 
-After being removed from VFIO and dirty limit, migration_is_active() no
-longer has any users outside the migration subsystem, and in fact, it's
-only used in migration.c.
+It's not obvious to me that HOST should only be used for rtc, and it's part
+of guest state.  If that's a must, I'd still suggest we add that into doc.
+But then it means we lose one way to fetch host wallclock in the time API;
+I still see some other users use it, I'm guessing in the way to fetch host
+wall clock.
 
-Unexport it and also relocate it so it can be made static.
+> 
+> Migration is not related to guest state change, therefore it should either
+> use realtime clock, or set some flag to make host clock reads not tracked by
+> record/replay.
 
-Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Acked-by: Peter Xu <peterx@redhat.com>
-Tested-by: Joao Martins <joao.m.martins@oracle.com>
-Link: https://lore.kernel.org/r/20241218134022.21264-8-avihaih@nvidia.com
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- include/migration/misc.h |  1 -
- migration/migration.c    | 16 ++++++++--------
- 2 files changed, 8 insertions(+), 9 deletions(-)
+In migration's case, realtime clock suites more.  But maybe we still need
+another clock indeed just to fetch host wall clock without any lock
+implications.  So maybe the better way is making the tracked one to be
+CLOCK_GUEST_RTC, put rich documentatation to avoid abuse, then keep HOST
+the simple definition.
 
-diff --git a/include/migration/misc.h b/include/migration/misc.h
-index ad1e25826aebefd9f21b638a9f4be7dbc50edb95..c0e23fdac9d0c73a9b284b2e231990fb33464c03 100644
---- a/include/migration/misc.h
-+++ b/include/migration/misc.h
-@@ -53,7 +53,6 @@ void dump_vmstate_json_to_file(FILE *out_fp);
- void migration_object_init(void);
- void migration_shutdown(void);
- 
--bool migration_is_active(void);
- bool migration_is_running(void);
- bool migration_thread_is_self(void);
- 
-diff --git a/migration/migration.c b/migration/migration.c
-index 3606d1e26302e52de22185ba2438df1972dc0430..df61ca4e938457d5586caec08c27587b46631d0d 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1139,6 +1139,14 @@ bool migration_is_running(void)
-     }
- }
- 
-+static bool migration_is_active(void)
-+{
-+    MigrationState *s = current_migration;
-+
-+    return (s->state == MIGRATION_STATUS_ACTIVE ||
-+            s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE);
-+}
-+
- static bool migrate_show_downtime(MigrationState *s)
- {
-     return (s->state == MIGRATION_STATUS_COMPLETED) || migration_in_postcopy();
-@@ -1637,14 +1645,6 @@ bool migration_in_bg_snapshot(void)
-     return migrate_background_snapshot() && migration_is_running();
- }
- 
--bool migration_is_active(void)
--{
--    MigrationState *s = current_migration;
--
--    return (s->state == MIGRATION_STATUS_ACTIVE ||
--            s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE);
--}
--
- bool migration_thread_is_self(void)
- {
-     MigrationState *s = current_migration;
+Thanks,
+
 -- 
-2.47.1
+Peter Xu
 
 
