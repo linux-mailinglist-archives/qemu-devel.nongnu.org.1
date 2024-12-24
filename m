@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB04A9FBF8A
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 16:18:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A90019FBF90
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 16:20:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQ6e2-00078x-Os; Tue, 24 Dec 2024 10:16:26 -0500
+	id 1tQ6e7-0007cA-22; Tue, 24 Dec 2024 10:16:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6dq-00075z-Lx
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:16:14 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6dv-0007CV-Au
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:16:20 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6dp-00044T-4G
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:16:14 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6ds-00044v-CI
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:16:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1735053371;
+ s=mimecast20190719; t=1735053375;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8TbpuTXj3ymVz1dIlCfBgLXx/Ehp/E/rCS9FSGIZm7M=;
- b=ThvYnpvDYS+YQpOakFx0u28INliOcg992Jugi+1eV553zRNa6RoKL036yCApLM8OVL7c0B
- Y66eFELqgBiGnaivVd7PXEhLY09U4XupjwMCDxPu6lKIpxkDUoeg09mPh9VTPmck+hbKQP
- 2HT9sXLr8crHddIg5kFz/fweO5MAK4I=
+ bh=Bk4u7HAtBWIrwwdMO6YCY2RA9uiddWkPGXGAxXMR4WI=;
+ b=QO/N77hUK3uzF/86bNjqcKZqAVKXFzRxr221RuWrS1oIOe7K7oC+KSUW3PWVS+UoNeufvZ
+ 6yq0M8FbMqrX2Lpbn0yCBvxXa8KwyJzls3m6VJvnrgiGTqiiu8+Jjz9tHi/MRHTjFfHoXR
+ yLTETGJDef38aqbsysRGtphxHfTxdnc=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-659-XpFnzunmMcOJpT6Tf1N8Cg-1; Tue,
- 24 Dec 2024 10:16:09 -0500
-X-MC-Unique: XpFnzunmMcOJpT6Tf1N8Cg-1
-X-Mimecast-MFC-AGG-ID: XpFnzunmMcOJpT6Tf1N8Cg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-wkuIVRxSNCOlkTelF6wRig-1; Tue,
+ 24 Dec 2024 10:16:12 -0500
+X-MC-Unique: wkuIVRxSNCOlkTelF6wRig-1
+X-Mimecast-MFC-AGG-ID: wkuIVRxSNCOlkTelF6wRig
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 006EA1956096; Tue, 24 Dec 2024 15:16:09 +0000 (UTC)
+ id 1ACCE1956058; Tue, 24 Dec 2024 15:16:11 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.6])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 683FD3000197; Tue, 24 Dec 2024 15:16:07 +0000 (UTC)
+ id 841483000197; Tue, 24 Dec 2024 15:16:09 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Tomita Moeko <tomitamoeko@gmail.com>,
+ =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 08/17] vfio/igd: emulate GGC register in mmio bar0
-Date: Tue, 24 Dec 2024 16:15:38 +0100
-Message-ID: <20241224151547.386529-9-clg@redhat.com>
+Subject: [PULL 09/17] vfio/igd: emulate BDSM in mmio bar0 for gen 6-10 devices
+Date: Tue, 24 Dec 2024 16:15:39 +0100
+Message-ID: <20241224151547.386529-10-clg@redhat.com>
 In-Reply-To: <20241224151547.386529-1-clg@redhat.com>
 References: <20241224151547.386529-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -84,62 +85,72 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Tomita Moeko <tomitamoeko@gmail.com>
 
-The GGC register at 0x50 of pci config space is a mirror of the same
-register at 0x108040 of mmio bar0 [1]. i915 driver also reads that
-register from mmio bar0 instead of config space. As GGC is programmed
-and emulated by qemu, the mmio address should also be emulated, in the
-same way of BDSM register.
+A recent commit in i915 driver [1] claims the BDSM register at 0x1080c0
+of mmio bar0 has been there since gen 6. Mirror this register to the 32
+bit BDSM register at 0x5c in pci config space for gen6-10 devices.
 
-[1] 4.1.28, 12th Generation Intel Core Processors Datasheet Volume 2
-    https://www.intel.com/content/www/us/en/content-details/655259
+[1] https://patchwork.freedesktop.org/patch/msgid/20240202224340.30647-7-ville.syrjala@linux.intel.com
 
+Reviewed-by: Corvin Köhne <c.koehne@beckhoff.com>
 Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
-Link: https://lore.kernel.org/r/20241206122749.9893-9-tomitamoeko@gmail.com
+Link: https://lore.kernel.org/r/20241206122749.9893-10-tomitamoeko@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/igd.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ hw/vfio/igd.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 18d159aa8ecde3bb384dd6d3bd90e2110434335b..12e0553e830aab31980586ebf572070186ac38ad 100644
+index 12e0553e830aab31980586ebf572070186ac38ad..73c06bbf64d85b8dbf1575dac34ef8b7e64a3490 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -488,8 +488,10 @@ static const MemoryRegionOps vfio_igd_quirk_mirror_##name = {           \
-     .endianness = DEVICE_LITTLE_ENDIAN,                                 \
+@@ -489,7 +489,8 @@ static const MemoryRegionOps vfio_igd_quirk_mirror_##name = {           \
  };
  
-+VFIO_IGD_QUIRK_MIRROR_REG(IGD_GMCH, ggc)
- VFIO_IGD_QUIRK_MIRROR_REG(IGD_BDSM_GEN11, bdsm)
+ VFIO_IGD_QUIRK_MIRROR_REG(IGD_GMCH, ggc)
+-VFIO_IGD_QUIRK_MIRROR_REG(IGD_BDSM_GEN11, bdsm)
++VFIO_IGD_QUIRK_MIRROR_REG(IGD_BDSM, bdsm)
++VFIO_IGD_QUIRK_MIRROR_REG(IGD_BDSM_GEN11, bdsm64)
  
-+#define IGD_GGC_MMIO_OFFSET     0x108040
+ #define IGD_GGC_MMIO_OFFSET     0x108040
  #define IGD_BDSM_MMIO_OFFSET    0x1080C0
- 
- void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
-@@ -518,14 +520,21 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
+@@ -516,7 +517,7 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
+      * into MMIO space and read from MMIO space by the Windows driver.
+      */
+     gen = igd_gen(vdev);
+-    if (gen < 11) {
++    if (gen < 6) {
          return;
      }
  
--    quirk = vfio_quirk_alloc(1);
-+    quirk = vfio_quirk_alloc(2);
-     quirk->data = vdev;
- 
-     memory_region_init_io(&quirk->mem[0], OBJECT(vdev),
-+                          &vfio_igd_quirk_mirror_ggc, vdev,
-+                          "vfio-igd-ggc-quirk", 2);
-+    memory_region_add_subregion_overlap(vdev->bars[0].region.mem,
-+                                        IGD_GGC_MMIO_OFFSET, &quirk->mem[0],
-+                                        1);
-+
-+    memory_region_init_io(&quirk->mem[1], OBJECT(vdev),
-                           &vfio_igd_quirk_mirror_bdsm, vdev,
-                           "vfio-igd-bdsm-quirk", 8);
-     memory_region_add_subregion_overlap(vdev->bars[0].region.mem,
--                                        IGD_BDSM_MMIO_OFFSET, &quirk->mem[0],
-+                                        IGD_BDSM_MMIO_OFFSET, &quirk->mem[1],
+@@ -530,12 +531,21 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
+                                         IGD_GGC_MMIO_OFFSET, &quirk->mem[0],
                                          1);
  
+-    memory_region_init_io(&quirk->mem[1], OBJECT(vdev),
+-                          &vfio_igd_quirk_mirror_bdsm, vdev,
+-                          "vfio-igd-bdsm-quirk", 8);
+-    memory_region_add_subregion_overlap(vdev->bars[0].region.mem,
+-                                        IGD_BDSM_MMIO_OFFSET, &quirk->mem[1],
+-                                        1);
++    if (gen < 11) {
++        memory_region_init_io(&quirk->mem[1], OBJECT(vdev),
++                              &vfio_igd_quirk_mirror_bdsm, vdev,
++                              "vfio-igd-bdsm-quirk", 4);
++        memory_region_add_subregion_overlap(vdev->bars[0].region.mem,
++                                            IGD_BDSM_MMIO_OFFSET,
++                                            &quirk->mem[1], 1);
++    } else {
++        memory_region_init_io(&quirk->mem[1], OBJECT(vdev),
++                              &vfio_igd_quirk_mirror_bdsm64, vdev,
++                              "vfio-igd-bdsm-quirk", 8);
++        memory_region_add_subregion_overlap(vdev->bars[0].region.mem,
++                                            IGD_BDSM_MMIO_OFFSET,
++                                            &quirk->mem[1], 1);
++    }
+ 
      QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, quirk, next);
+ }
 -- 
 2.47.1
 
