@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D90C9FBF8D
+	by mail.lfdr.de (Postfix) with ESMTPS id 20FDA9FBF8E
 	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 16:19:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQ6e4-0007SP-Un; Tue, 24 Dec 2024 10:16:29 -0500
+	id 1tQ6e6-0007XH-57; Tue, 24 Dec 2024 10:16:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6dv-0007CU-9z
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:16:20 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6dz-0007IN-7Y
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:16:26 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6ds-00044s-5m
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:16:17 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6dx-00045J-I2
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:16:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1735053375;
+ s=mimecast20190719; t=1735053381;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Z5qYckvgIIGDs1pm0GDTPxd8uouPXLvudJ9dPfuOTcI=;
- b=hc+NfkTXCJSSo+HverysWu7RKRLHGkZI96chvMMuTe5yE5W+xPVjy1ytakWiGG4ivCcbzT
- 0Pa3lteqnu+D0MCZqq0JBhx3aK+2V29I1yG+42ooPI4Hc5Dqp2vq509xoTGFIb6Fui0mWx
- gqNN3cGvfRxZEKFwEiTyrzD4fsUDqW8=
+ bh=IEgAdogEzbKyknL1BFXfkTdpSmiNeDGhUW7lvmH4k1k=;
+ b=XK9vAkpWlNLk/hYSbSFWfyvmHE8sbNJceBJLMBspvhuNENBKcG6NL4llD48BNC5dUrdw7j
+ BGnAk/C+vvCRtSoUX08JZlXC6J/DeMJOAGXN6JvUImOI73tqW6i40dnsG0P4cqol7DB3a+
+ UYOF3XXFE+839JjGloHTajba0qm/Mz0=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-36-SUl30bHyNASTjmOlHY3R_w-1; Tue,
- 24 Dec 2024 10:16:14 -0500
-X-MC-Unique: SUl30bHyNASTjmOlHY3R_w-1
-X-Mimecast-MFC-AGG-ID: SUl30bHyNASTjmOlHY3R_w
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-NMO3wECEMEWt8HUqODVc0g-1; Tue,
+ 24 Dec 2024 10:16:16 -0500
+X-MC-Unique: NMO3wECEMEWt8HUqODVc0g-1
+X-Mimecast-MFC-AGG-ID: NMO3wECEMEWt8HUqODVc0g
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3673A19560AF; Tue, 24 Dec 2024 15:16:13 +0000 (UTC)
+ id 1502019560AB; Tue, 24 Dec 2024 15:16:15 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.6])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B9D9A3000197; Tue, 24 Dec 2024 15:16:11 +0000 (UTC)
+ id 7F3E73000197; Tue, 24 Dec 2024 15:16:13 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- Tomita Moeko <tomitamoeko@gmail.com>,
+ Avihai Horon <avihaih@nvidia.com>,
+ Joao Martins <joao.m.martins@oracle.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 10/17] vfio/igd: add x-igd-gms option back to set DSM region
- size for guest
-Date: Tue, 24 Dec 2024 16:15:40 +0100
-Message-ID: <20241224151547.386529-11-clg@redhat.com>
+Subject: [PULL 11/17] vfio/container: Add dirty tracking started flag
+Date: Tue, 24 Dec 2024 16:15:41 +0100
+Message-ID: <20241224151547.386529-12-clg@redhat.com>
 In-Reply-To: <20241224151547.386529-1-clg@redhat.com>
 References: <20241224151547.386529-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -83,76 +83,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Tomita Moeko <tomitamoeko@gmail.com>
+From: Avihai Horon <avihaih@nvidia.com>
 
-DSM region is likely to store framebuffer in Windows, a small DSM
-region may cause display issues (e.g. half of the screen is black).
-Since 971ca22f041b ("vfio/igd: don't set stolen memory size to zero"),
-the x-igd-gms option was functionally removed, QEMU uses host's
-original value, which is determined by DVMT Pre-Allocated option in
-Intel FSP of host bios.
+Add a flag to VFIOContainerBase that indicates whether dirty tracking
+has been started for the container or not.
 
-However, some vendors do not expose this config item to users. In
-such cases, x-igd-gms option can be used to manually set the data
-stolen memory size for guest. So this commit brings this option back,
-keeping its old behavior. When it is not specified, QEMU uses host's
-value.
+This will be used in the following patches to allow dirty page syncs
+only if dirty tracking has been started.
 
-When DVMT Pre-Allocated option is available in host BIOS, user should
-set DSM region size there instead of using x-igd-gms option.
-
-Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
-Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
-Link: https://lore.kernel.org/r/20241206122749.9893-11-tomitamoeko@gmail.com
+Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+Tested-by: Joao Martins <joao.m.martins@oracle.com>
+Link: https://lore.kernel.org/r/20241218134022.21264-2-avihaih@nvidia.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/igd.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ include/hw/vfio/vfio-container-base.h |  1 +
+ hw/vfio/container-base.c              | 12 +++++++++++-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 73c06bbf64d85b8dbf1575dac34ef8b7e64a3490..b0fef90240ca6dcc0ead7ed536202d618546b4b1 100644
---- a/hw/vfio/igd.c
-+++ b/hw/vfio/igd.c
-@@ -14,6 +14,7 @@
- #include "qemu/units.h"
- #include "qemu/error-report.h"
- #include "qapi/error.h"
-+#include "qapi/qmp/qerror.h"
- #include "hw/hw.h"
- #include "hw/nvram/fw_cfg.h"
- #include "pci.h"
-@@ -722,6 +723,31 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+index 62a8b60d87db263225147a21eff2ef6e21cb22df..4cff9943ab4861a25d07b5ebd1200509ebfab12d 100644
+--- a/include/hw/vfio/vfio-container-base.h
++++ b/include/hw/vfio/vfio-container-base.h
+@@ -44,6 +44,7 @@ typedef struct VFIOContainerBase {
+     unsigned long pgsizes;
+     unsigned int dma_max_mappings;
+     bool dirty_pages_supported;
++    bool dirty_pages_started; /* Protected by BQL */
+     QLIST_HEAD(, VFIOGuestIOMMU) giommu_list;
+     QLIST_HEAD(, VFIORamDiscardListener) vrdl_list;
+     QLIST_ENTRY(VFIOContainerBase) next;
+diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+index 6f86c37d971ec38426dacd471bca837c0d0df806..749a3fd29dd6fc9143f14edf7e4ac6238315fcce 100644
+--- a/hw/vfio/container-base.c
++++ b/hw/vfio/container-base.c
+@@ -64,13 +64,23 @@ int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
+                                            bool start, Error **errp)
+ {
+     VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
++    int ret;
  
-     QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, quirk, next);
+     if (!bcontainer->dirty_pages_supported) {
+         return 0;
+     }
  
-+    /*
-+     * Allow user to override dsm size using x-igd-gms option, in multiples of
-+     * 32MiB. This option should only be used when the desired size cannot be
-+     * set from DVMT Pre-Allocated option in host BIOS.
-+     */
-+    if (vdev->igd_gms) {
-+        if (gen < 8) {
-+            if (vdev->igd_gms <= 0x10) {
-+                gmch &= ~(IGD_GMCH_GEN6_GMS_MASK << IGD_GMCH_GEN6_GMS_SHIFT);
-+                gmch |= vdev->igd_gms << IGD_GMCH_GEN6_GMS_SHIFT;
-+            } else {
-+                error_report(QERR_INVALID_PARAMETER_VALUE,
-+                             "x-igd-gms", "0~0x10");
-+            }
-+        } else {
-+            if (vdev->igd_gms <= 0x40) {
-+                gmch &= ~(IGD_GMCH_GEN8_GMS_MASK << IGD_GMCH_GEN8_GMS_SHIFT);
-+                gmch |= vdev->igd_gms << IGD_GMCH_GEN8_GMS_SHIFT;
-+            } else {
-+                error_report(QERR_INVALID_PARAMETER_VALUE,
-+                             "x-igd-gms", "0~0x40");
-+            }
-+        }
+     g_assert(vioc->set_dirty_page_tracking);
+-    return vioc->set_dirty_page_tracking(bcontainer, start, errp);
++    if (bcontainer->dirty_pages_started == start) {
++        return 0;
 +    }
 +
-     ggms_size = igd_gtt_memory_size(gen, gmch);
-     gms_size = igd_stolen_memory_size(gen, gmch);
++    ret = vioc->set_dirty_page_tracking(bcontainer, start, errp);
++    if (!ret) {
++        bcontainer->dirty_pages_started = start;
++    }
++
++    return ret;
+ }
  
+ int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
 -- 
 2.47.1
 
