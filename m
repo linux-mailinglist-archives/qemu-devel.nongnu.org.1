@@ -2,88 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE20A9FB848
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 02:29:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CFD9FB8B2
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 03:33:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tPtjK-0004Wh-D6; Mon, 23 Dec 2024 20:29:05 -0500
+	id 1tPuic-0003S6-Hb; Mon, 23 Dec 2024 21:32:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tPtjF-0004WK-Tf
- for qemu-devel@nongnu.org; Mon, 23 Dec 2024 20:28:58 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tPtjE-00021q-1h
- for qemu-devel@nongnu.org; Mon, 23 Dec 2024 20:28:57 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-2162c0f6a39so53346375ad.0
- for <qemu-devel@nongnu.org>; Mon, 23 Dec 2024 17:28:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735003734; x=1735608534; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=vuVPMIGlpVw9+dL5VBg3Geq49iODNqiO+bQW6XoXBzY=;
- b=uyoqt/fUVVEMsixgmz2Ph/BEKIaVIlWnZfu6hI+ZymClLxILVTjGFh3fCdVv9iirA+
- mO7f/K1khC0RDRcxS1QabXFabLAAYCKJDjTSLDlgX8TeVkpJcbojtZXSzRfZUmmv6XP7
- y3Wtz5kr66oUhUSd4g7hhF3HKtrGIVYQZjl4ITysnBpG2WN/V6qB7pdz+zf8ne8olWEq
- EdUqFxVVHT9sAeofQ2M8nRf+LrcB5aA8bbnyFSxp4VWlMFCaZX1DD8J0fScrW4IG9Cjj
- YIIiKlnGNN+JxYbemHZSBLtbd3Mfna/B+fc/ACqDT0q5Eod8C0kYGstBnP+nhF131Agf
- 11/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735003734; x=1735608534;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vuVPMIGlpVw9+dL5VBg3Geq49iODNqiO+bQW6XoXBzY=;
- b=hm8K0+ktUYRJwVT+RpCfsH0KKwhdJYwy+pCdZUQvscaipLLy78j9fCzlvvFbOeqOO3
- hQWZaXr4O0kT7paMvpb/opGUqDS7jJo4naZqi25zE6NcQkxud/naVNFl5VmmtboJ8rRS
- xFKqOog8YUsw3zRXWQdQfsHIaz+ubpJ3mXKwYUR0l+2HvDaqGqW9kjJJe6T4TL60gMjs
- Hq1z9r6n+ieczBhLc18fZmdddLH1vkJrMhMc70kO8u/k8IF0A3iZO7YAFw2NsWju3Nw2
- 2aRADUB90xu9s7fdmgOyVKozbwVe1fHQgX3eQTdtREJ2HhpvqHGKD9jnR/exs/IWGDEc
- rzvw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV7CrNY+xncyU5+CcEi+w8isR7jFftTdEKwCfr+x8L3+7dFvtOlgzff2CTzgQy0u1bisNnmGFWYq6Q0@nongnu.org
-X-Gm-Message-State: AOJu0YyLXOJkFi0HrSXwb/GmVkux8k9mam8YzTIEAJgMkNGDTtV+Ae4O
- TANA8kaY9dC/UmIiuFKQmtgsMS9yhklqv8FCm95jRCpBkqEIYZLqrP9eOsVRH01csR1guFsABYk
- F
-X-Gm-Gg: ASbGncsaRAOyHCi2WGEl8CRldx65T0notxUDvJWgo17aqAab66kCJ5fwKTJSUM9b2Di
- tme3QjEXEVwYqhamMuGNKZsmtOo6cg6KvIzzQab0t6bCWxhL9X+vw8bD4XXDXVhHCvkSMJ0Ft1Y
- QGkVBz4i5vwFgk9mYyo3+uZXsCwN/PGFqeljrm4yd3/2iwAJ50C52nA2/vkcgTjyU8XeGvGScSM
- t8ZhGBNJqf7CwZ8UeBfjXodkyifYQyEWK1VnDhJUXwwbXXfJJNw+z1UqT01V8AxoVC35g==
-X-Google-Smtp-Source: AGHT+IFKZCU9ghdS6sUee7Ob2MGj587qdOXaAAYw874HFIps+c2GJeyT4jf7F4B9eUepYKMdn2Ddbw==
-X-Received: by 2002:a05:6a20:a122:b0:1e1:b220:63db with SMTP id
- adf61e73a8af0-1e5e1f56b34mr24306751637.16.1735003734228; 
- Mon, 23 Dec 2024 17:28:54 -0800 (PST)
-Received: from [192.168.1.67] ([38.39.164.180])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad8163fdsm8562458b3a.6.2024.12.23.17.28.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 23 Dec 2024 17:28:53 -0800 (PST)
-Message-ID: <f4a9764f-2a1c-4ccb-97fc-2e445571ed9c@linaro.org>
-Date: Mon, 23 Dec 2024 17:28:53 -0800
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1tPuiZ-0003Rx-8t
+ for qemu-devel@nongnu.org; Mon, 23 Dec 2024 21:32:19 -0500
+Received: from fhigh-a3-smtp.messagingengine.com ([103.168.172.154])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1tPuiW-0008Ue-LF
+ for qemu-devel@nongnu.org; Mon, 23 Dec 2024 21:32:18 -0500
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal
+ [10.202.2.49])
+ by mailfhigh.phl.internal (Postfix) with ESMTP id 8145111400DB;
+ Mon, 23 Dec 2024 21:32:15 -0500 (EST)
+Received: from phl-imap-12 ([10.202.2.86])
+ by phl-compute-09.internal (MEProxy); Mon, 23 Dec 2024 21:32:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+ cc:cc:content-transfer-encoding:content-type:content-type:date
+ :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1735007535;
+ x=1735093935; bh=FGtUmBFm6zJOlhqlP9gf/hdMjVH1qmHXMPB3RdgRWwE=; b=
+ Xb/rM7M4nYVaEXXAn6BAd9In+wCCCywItSM0pDys3Qc98QUP/QicO9yaHQheEsjS
+ ctBQJQc8JyAul9wxhUhnj0CA0NaZ15y8gN+LdthyopoBL7qoY5IxzUJDQGHGAc9v
+ op0unpP+By+1HnBxqgXSVQT3yyOX321lpDKY2EybonZS1vKenejzbznLlU1P74dq
+ gYgDnZFdHbaBzPewksAPtH7tfsxsaMViih8fPKwndiHozmbOX60HLXNuL5dV3hLf
+ W98Q8aC/c3bJz7r8/IIbPWKB/KwDPgmymgaKGh43Z04eVUokfbtYX+Pbd6hcLyAc
+ ZOi0X4ChMxPb0IlhPs6ddg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1735007535; x=
+ 1735093935; bh=FGtUmBFm6zJOlhqlP9gf/hdMjVH1qmHXMPB3RdgRWwE=; b=P
+ wwL6hhLl17sonHOri+4IUtzirIUbgltetdL8I3tzdEbevIfXH/iKozAHKRTo/Tbv
+ O9ObfNOflQ1KO0+yUFOtz2XBdEtKcZElDLYNfKD2qkoKdvX2jHflrj6Vbgpe22Ma
+ MFH+LWCB4Wmn4BFbNLuC/iP6n147TM5rj0dbi9USeYmVAW4+GcFzLnjPGuaLT1lD
+ PovEllAEqIplrqxS0FG7qK6MkqbzKrEXns1Dhuotf00xPzTGktZixGnqvEsysZaa
+ +cscWM5lZ/SOfAZhBrnNtZaIifqw/P/X3hrpMQOdSwAlhQGIO7GqqOw+uxbD0F1A
+ Pm3uyInKJHfQPI70JO2og==
+X-ME-Sender: <xms:Lh1qZ3_YTWgspFewfXyz3hvBusf-AsZ1KVSq2XWV5gSjn927Obfq5w>
+ <xme:Lh1qZztksVhyDNzhJ6dPSyFdwRLdVOb9gU6UCX0u8dvHXu5g-kj2tBXD8SwjUJLV6
+ wxRH5nwgVEEFL7lNZU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddufedggeeiucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+ rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+ htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
+ necuhfhrohhmpedflfhirgiguhhnucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfh
+ hlhihgohgrthdrtghomheqnecuggftrfgrthhtvghrnhepvdeikedvgeejgefhuddtkeff
+ keffvedvfeegjeejfefhheevuedvleevffekjedvnecuffhomhgrihhnpegvfhhirdhsuh
+ hpphhorhhtpdhkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgr
+ rhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtoh
+ hmpdhnsggprhgtphhtthhopeefpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehg
+ rghoshhonhhgsehlohhonhhgshhonhdrtghnpdhrtghpthhtohepmhgrohgsihgsoheslh
+ hoohhnghhsohhnrdgtnhdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhu
+ rdhorhhg
+X-ME-Proxy: <xmx:Lh1qZ1AHWavtJV1Laga5xiHh8YiVnFtFLuyk0uy_1inIpV7nYQss6A>
+ <xmx:Lh1qZzdpHVRe7CWa1t_4mfi-thzF6EmSheF-kQ0qmam70nM0kDj7_A>
+ <xmx:Lh1qZ8P6BCoqD6CS0YEmCrpMYwikEEHnTcMwtgToFtTLWatV0dDViQ>
+ <xmx:Lh1qZ1mTFCTjlblHT96rYhmyrFu03FEPjWNVio2JS9eBwumJajqMrA>
+ <xmx:Lx1qZ1Z9XZoZA0F9H0UnFzKi70ha9igRTTynvFPGqEHT_a-uczbmao8J>
+Feedback-ID: ifd894703:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+ id 3FAFC1C20066; Mon, 23 Dec 2024 21:32:14 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/51] tcg/optimize: Change representation of s_mask
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20241222162446.2415717-1-richard.henderson@linaro.org>
- <20241222162446.2415717-7-richard.henderson@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20241222162446.2415717-7-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Date: Tue, 24 Dec 2024 02:31:54 +0000
+From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
+To: "Bibo Mao" <maobibo@loongson.cn>, "QEMU devel" <qemu-devel@nongnu.org>
+Cc: "Song Gao" <gaosong@loongson.cn>
+Message-Id: <8cc6f6eb-21df-4f0c-a3ae-34115a5b83c7@app.fastmail.com>
+In-Reply-To: <0d114d5f-44af-9823-aa7f-80410a781b98@loongson.cn>
+References: <20241223-la-direct-kernel-boot-v1-1-a79995d8b15e@flygoat.com>
+ <81a42119-741f-6ab6-e88d-05c9e609670f@loongson.cn>
+ <7ade5370-c5e1-4340-8ed7-80cd489798ae@app.fastmail.com>
+ <0d114d5f-44af-9823-aa7f-80410a781b98@loongson.cn>
+Subject: Re: [PATCH] hw/loongarch/boot: Support Linux raw boot image
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=103.168.172.154;
+ envelope-from=jiaxun.yang@flygoat.com; helo=fhigh-a3-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,178 +112,177 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/22/24 08:24, Richard Henderson wrote:
-> Change the representation from sign bit repetitions to all bits equal
-> to the sign bit, including the sign bit itself.
-> 
-> The previous format has a problem in that it is difficult to recreate
-> a valid sign mask after a shift operation: the "repetitions" part of
-> the previous format meant that applying the same shift as for the value
-> lead to an off-by-one value.
-> 
-> The new format, including the sign bit itself, means that the sign mask
-> can be manipulated in exactly the same way as the value, canonicalization
-> is easier.
-> 
-> Canonicalize the s_mask in fold_masks_zs, rather than requiring callers
-> to do so.  Treat 0 as a non-canonical but typeless input for no sign
-> information, which will be reset as appropriate for the data type.
-> We can easily fold in the data from z_mask while canonicalizing.
-> 
-> Temporarily disable optimizations using s_mask while each operation is
-> converted to use fold_masks_zs and to the new form.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   tcg/optimize.c | 64 ++++++++++++--------------------------------------
->   1 file changed, 15 insertions(+), 49 deletions(-)
-> 
-> diff --git a/tcg/optimize.c b/tcg/optimize.c
-> index d8f6542c4f..fbc0dc5588 100644
-> --- a/tcg/optimize.c
-> +++ b/tcg/optimize.c
-> @@ -52,7 +52,7 @@ typedef struct TempOptInfo {
->       QSIMPLEQ_HEAD(, MemCopyInfo) mem_copy;
->       uint64_t val;
->       uint64_t z_mask;  /* mask bit is 0 if and only if value bit is 0 */
-> -    uint64_t s_mask;  /* a left-aligned mask of clrsb(value) bits. */
-> +    uint64_t s_mask;  /* mask bit is 1 if value bit matches msb */
->   } TempOptInfo;
->   
->   typedef struct OptContext {
-> @@ -65,49 +65,10 @@ typedef struct OptContext {
->   
->       /* In flight values from optimization. */
->       uint64_t z_mask;  /* mask bit is 0 iff value bit is 0 */
-> -    uint64_t s_mask;  /* mask of clrsb(value) bits */
-> +    uint64_t s_mask;  /* mask bit is 1 if value bit matches msb */
->       TCGType type;
->   } OptContext;
->   
-> -/* Calculate the smask for a specific value. */
-> -static uint64_t smask_from_value(uint64_t value)
-> -{
-> -    int rep = clrsb64(value);
-> -    return ~(~0ull >> rep);
-> -}
-> -
-> -/*
-> - * Calculate the smask for a given set of known-zeros.
-> - * If there are lots of zeros on the left, we can consider the remainder
-> - * an unsigned field, and thus the corresponding signed field is one bit
-> - * larger.
-> - */
-> -static uint64_t smask_from_zmask(uint64_t zmask)
-> -{
-> -    /*
-> -     * Only the 0 bits are significant for zmask, thus the msb itself
-> -     * must be zero, else we have no sign information.
-> -     */
-> -    int rep = clz64(zmask);
-> -    if (rep == 0) {
-> -        return 0;
-> -    }
-> -    rep -= 1;
-> -    return ~(~0ull >> rep);
-> -}
-> -
-> -/*
-> - * Recreate a properly left-aligned smask after manipulation.
-> - * Some bit-shuffling, particularly shifts and rotates, may
-> - * retain sign bits on the left, but may scatter disconnected
-> - * sign bits on the right.  Retain only what remains to the left.
-> - */
-> -static uint64_t smask_from_smask(int64_t smask)
-> -{
-> -    /* Only the 1 bits are significant for smask */
-> -    return smask_from_zmask(~smask);
-> -}
-> -
->   static inline TempOptInfo *ts_info(TCGTemp *ts)
->   {
->       return ts->state_ptr;
-> @@ -173,7 +134,7 @@ static void init_ts_info(OptContext *ctx, TCGTemp *ts)
->           ti->is_const = true;
->           ti->val = ts->val;
->           ti->z_mask = ts->val;
-> -        ti->s_mask = smask_from_value(ts->val);
-> +        ti->s_mask = INT64_MIN >> clrsb64(ts->val);
->       } else {
->           ti->is_const = false;
->           ti->z_mask = -1;
-> @@ -992,7 +953,6 @@ static void finish_folding(OptContext *ctx, TCGOp *op)
->            */
->           if (i == 0) {
->               ts_info(ts)->z_mask = ctx->z_mask;
-> -            ts_info(ts)->s_mask = ctx->s_mask;
->           }
->       }
->   }
-> @@ -1051,11 +1011,12 @@ static bool fold_const2_commutative(OptContext *ctx, TCGOp *op)
->    * The passed s_mask may be augmented by z_mask.
->    */
->   static bool fold_masks_zs(OptContext *ctx, TCGOp *op,
-> -                          uint64_t z_mask, uint64_t s_mask)
-> +                          uint64_t z_mask, int64_t s_mask)
->   {
->       const TCGOpDef *def = &tcg_op_defs[op->opc];
->       TCGTemp *ts;
->       TempOptInfo *ti;
-> +    int rep;
->   
->       /* Only single-output opcodes are supported here. */
->       tcg_debug_assert(def->nb_oargs == 1);
-> @@ -1069,7 +1030,7 @@ static bool fold_masks_zs(OptContext *ctx, TCGOp *op,
->        */
->       if (ctx->type == TCG_TYPE_I32) {
->           z_mask = (int32_t)z_mask;
-> -        s_mask |= MAKE_64BIT_MASK(32, 32);
-> +        s_mask |= INT32_MIN;
->       }
->   
->       if (z_mask == 0) {
-> @@ -1081,7 +1042,13 @@ static bool fold_masks_zs(OptContext *ctx, TCGOp *op,
->   
->       ti = ts_info(ts);
->       ti->z_mask = z_mask;
-> -    ti->s_mask = s_mask | smask_from_zmask(z_mask);
-> +
-> +    /* Canonicalize s_mask and incorporate data from z_mask. */
-> +    rep = clz64(~s_mask);
-> +    rep = MAX(rep, clz64(z_mask));
-> +    rep = MAX(rep - 1, 0);
-> +    ti->s_mask = INT64_MIN >> rep;
-> +
->       return true;
->   }
->   
-> @@ -1807,7 +1774,7 @@ static bool fold_exts(OptContext *ctx, TCGOp *op)
->   
->       ctx->z_mask = z_mask;
->       ctx->s_mask = s_mask;
-> -    if (!type_change && fold_affected_mask(ctx, op, s_mask & ~s_mask_old)) {
-> +    if (0 && !type_change && fold_affected_mask(ctx, op, s_mask & ~s_mask_old)) {
->           return true;
->       }
->   
-> @@ -2509,7 +2476,7 @@ static bool fold_sextract(OptContext *ctx, TCGOp *op)
->       s_mask |= MAKE_64BIT_MASK(len, 64 - len);
->       ctx->s_mask = s_mask;
->   
-> -    if (pos == 0 && fold_affected_mask(ctx, op, s_mask & ~s_mask_old)) {
-> +    if (0 && pos == 0 && fold_affected_mask(ctx, op, s_mask & ~s_mask_old)) {
->           return true;
->       }
->   
-> @@ -2535,7 +2502,6 @@ static bool fold_shift(OptContext *ctx, TCGOp *op)
->           ctx->z_mask = do_constant_folding(op->opc, ctx->type, z_mask, sh);
->   
->           s_mask = do_constant_folding(op->opc, ctx->type, s_mask, sh);
-> -        ctx->s_mask = smask_from_smask(s_mask);
->   
->           return fold_masks(ctx, op);
->       }
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
+=E5=9C=A82024=E5=B9=B412=E6=9C=8824=E6=97=A5=E5=8D=81=E4=BA=8C=E6=9C=88 =
+=E4=B8=8A=E5=8D=881:25=EF=BC=8Cbibo mao=E5=86=99=E9=81=93=EF=BC=9A
+> On 2024/12/24 =E4=B8=8A=E5=8D=889:15, Jiaxun Yang wrote:
+>>=20
+>>=20
+>> =E5=9C=A82024=E5=B9=B412=E6=9C=8824=E6=97=A5=E5=8D=81=E4=BA=8C=E6=9C=88=
+ =E4=B8=8A=E5=8D=8812:56=EF=BC=8Cbibo mao=E5=86=99=E9=81=93=EF=BC=9A
+>>> Sorry, I do not know the background.
+>>> Now kernel image with EFI format can boot if uefi bios is provided.
+>>>
+>>> What is this patch to do?  is it to direct boot kernel with EFI form=
+at
+>>> without UEFI bios parameter?
+>>=20
+>> Yes, it=E2=80=99s now capable for booting vmlinux.efi without BIOS, a=
+s well as raw kernel built without EFI STUB.
+>   Is efi boottime service used by vmlinux.efi? such as=20
+> handle_protocol/allocate_pages etc.
+
+Short answer: no.
+
+To explain, we are jumping directly to kernel=E2=80=99s
+entry instead of EFISTUB entry.
+
+So it basically it works in the same manner as ELF booting, kernel won=E2=
+=80=99t call EFI service if non-EFI booting environment is detected via =
+a0 argument.
+
+Thanks
+>
+> Regards
+> Bibo Mao
+>>=20
+>> Thanks
+>>=20
+>>>
+>>> Regards
+>>> Bibo Mao
+>>>
+>>> On 2024/12/23 =E4=B8=8A=E5=8D=888:30, Jiaxun Yang wrote:
+>>>> Many distros are shipping raw kernel images (i.e. vmlinux.efi).
+>>>>
+>>>> Support booting such image by parsing header as per Linux's
+>>>> specification [1].
+>>>>
+>>>> [1]: https://docs.kernel.org/arch/loongarch/booting.html
+>>>>
+>>>> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+>>>> ---
+>>>> It is based on my previous booting protocol patch
+>>>> ---
+>>>>    hw/loongarch/boot.c         | 45 +++++++++++++++++++++++++++++++=
+++++++++++++++
+>>>>    include/hw/loongarch/boot.h | 17 +++++++++++++++++
+>>>>    2 files changed, 62 insertions(+)
+>>>>
+>>>> diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
+>>>> index 93847b0eaf8e50ce1a990b91267780e6785e1c2f..5bc889c51fafa9c6d37=
+426b9bee9709c12183927 100644
+>>>> --- a/hw/loongarch/boot.c
+>>>> +++ b/hw/loongarch/boot.c
+>>>> @@ -260,6 +260,43 @@ static uint64_t cpu_loongarch_virt_to_phys(voi=
+d *opaque, uint64_t addr)
+>>>>        return addr & MAKE_64BIT_MASK(0, TARGET_PHYS_ADDR_SPACE_BITS=
+);
+>>>>    }
+>>>>   =20
+>>>> +static int64_t get_linux_image_info(struct loongarch_boot_info *in=
+fo,
+>>>> +                                    uint64_t *kernel_entry,
+>>>> +                                    uint64_t *kernel_low,
+>>>> +                                    uint64_t *kernel_high)
+>>>> +{
+>>>> +    int fd;
+>>>> +    struct loongarch_linux_hdr hdr;
+>>>> +    int64_t kernel_size =3D -1;
+>>>> +
+>>>> +    fd =3D open(info->kernel_filename, O_RDONLY | O_BINARY);
+>>>> +    if (fd < 0) {
+>>>> +        return -1;
+>>>> +    }
+>>>> +
+>>>> +    if (read(fd, &hdr, sizeof(hdr)) !=3D sizeof(hdr)) {
+>>>> +        close(fd);
+>>>> +        return -1;
+>>>> +    }
+>>>> +
+>>>> +    if ((le32_to_cpu(hdr.mz_magic) & 0xffff) !=3D MZ_MAGIC ||
+>>>> +        le32_to_cpu(hdr.linux_pe_magic) !=3D LINUX_PE_MAGIC) {
+>>>> +        close(fd);
+>>>> +        return -1;
+>>>> +    }
+>>>> +
+>>>> +    *kernel_entry =3D le64_to_cpu(hdr.kernel_entry);
+>>>> +    /* Early kernel versions may have those fields in virtual addr=
+ess */
+>>>> +    *kernel_entry &=3D MAKE_64BIT_MASK(0, TARGET_PHYS_ADDR_SPACE_B=
+ITS);
+>>>> +    *kernel_low =3D le64_to_cpu(hdr.load_offset);
+>>>> +    *kernel_low &=3D MAKE_64BIT_MASK(0, TARGET_PHYS_ADDR_SPACE_BIT=
+S);
+>>>> +    kernel_size =3D le64_to_cpu(hdr.kernel_size);
+>>>> +    *kernel_high =3D *kernel_low + kernel_size;
+>>>> +
+>>>> +    close(fd);
+>>>> +    return kernel_size;
+>>>> +}
+>>>> +
+>>>>    static int64_t load_kernel_info(struct loongarch_boot_info *info)
+>>>>    {
+>>>>        uint64_t kernel_entry, kernel_low, kernel_high;
+>>>> @@ -270,6 +307,14 @@ static int64_t load_kernel_info(struct loongar=
+ch_boot_info *info)
+>>>>                               &kernel_entry, &kernel_low,
+>>>>                               &kernel_high, NULL, 0,
+>>>>                               EM_LOONGARCH, 1, 0);
+>>>> +    if (kernel_size < 0) {
+>>>> +        kernel_size =3D get_linux_image_info(info, &kernel_entry,
+>>>> +                                           &kernel_low, &kernel_hi=
+gh);
+>>>> +        if (kernel_size >=3D 0) {
+>>>> +            kernel_size =3D load_image_targphys(info->kernel_filen=
+ame,
+>>>> +                                              kernel_low, kernel_s=
+ize);
+>>>> +        }
+>>>> +    }
+>>>>   =20
+>>>>        if (kernel_size < 0) {
+>>>>            error_report("could not load kernel '%s': %s",
+>>>> diff --git a/include/hw/loongarch/boot.h b/include/hw/loongarch/boo=
+t.h
+>>>> index 96ec15016a314499acf65c6c47e0c4932aa99d01..5e8bd4dd73bbb27abcc=
+fa1fa577df52aed15b6a2 100644
+>>>> --- a/include/hw/loongarch/boot.h
+>>>> +++ b/include/hw/loongarch/boot.h
+>>>> @@ -8,6 +8,23 @@
+>>>>    #ifndef HW_LOONGARCH_BOOT_H
+>>>>    #define HW_LOONGARCH_BOOT_H
+>>>>   =20
+>>>> +/* Linux Image Format */
+>>>> +#define LINUX_PE_MAGIC  0x818223cd
+>>>> +#define MZ_MAGIC        0x5a4d /* "MZ" */
+>>>> +
+>>>> +struct loongarch_linux_hdr {
+>>>> +    uint32_t mz_magic;
+>>>> +    uint32_t res0;
+>>>> +    uint64_t kernel_entry;
+>>>> +    uint64_t kernel_size;
+>>>> +    uint64_t load_offset;
+>>>> +    uint64_t res1;
+>>>> +    uint64_t res2;
+>>>> +    uint64_t res3;
+>>>> +    uint32_t linux_pe_magic;
+>>>> +    uint32_t pe_header_offset;
+>>>> +} QEMU_PACKED;
+>>>> +
+>>>>    /* UEFI 2.10 */
+>>>>    #define EFI_SYSTEM_TABLE_SIGNATURE       0x5453595320494249
+>>>>    #define EFI_2_100_SYSTEM_TABLE_REVISION  ((2<<16) | (100))
+>>>>
+>>>> ---
+>>>> base-commit: c69612063e1844b76ac01e3a781b979548c3585c
+>>>> change-id: 20241222-la-direct-kernel-boot-c598264710e7
+>>>>
+>>>> Best regards,
+>>>>
+>>
+
+--=20
+- Jiaxun
 
