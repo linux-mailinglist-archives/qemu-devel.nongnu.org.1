@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B10359FC006
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 17:18:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4656F9FC011
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 17:19:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQ7bX-0003V4-9V; Tue, 24 Dec 2024 11:17:55 -0500
+	id 1tQ7bT-0003OR-FO; Tue, 24 Dec 2024 11:17:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tQ7bF-0003K2-8M
+ id 1tQ7bG-0003KD-CA
  for qemu-devel@nongnu.org; Tue, 24 Dec 2024 11:17:39 -0500
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tQ7bD-0003CN-By
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 11:17:36 -0500
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BOEfkII021231;
- Tue, 24 Dec 2024 16:17:21 GMT
+ id 1tQ7bD-0003CZ-TR
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 11:17:38 -0500
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BOEfZIj018357;
+ Tue, 24 Dec 2024 16:17:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=4gIWxPFgf2h3M9o/MJFnfwJS+kybBOrOWFfnyKyvziU=; b=
- GYdSJiEiw6GzR/JL9NCHESiMlds7xzXzZW1n6N5gapIrhY1OA+m07Dz8ztxpRWoh
- vvptwYRwgVk+j1l/OteeAIqd4iV+relnLvsMktzF6mP1H5/m033CgybyPA85s61Q
- HpQ5dEkWL6gjax9kkdFB4eTdUh6z0WGi1CDnf15VEkvk+vaRM+fpdJDXR0F7bCG7
- v+mUBijy8yWejjC+PGHrOTDLJWwC2/+dOfUfRlFFORAGjhrKayq28SQcqsrunO6I
- oavrK/i4236Pfwktk4HakBMFCRxsovuuPRDBs8LwTvvM8U+GyguPPsHSM7XAjHPK
- yixJDMJdBLs7qinZ0DWJqw==
+ corp-2023-11-20; bh=x1r3MHbwhGu9+6WhSICUvyGJtjt1NsH8cLxIw6fO/EI=; b=
+ MJSlXycsYp6QCt3SiNl9RPaK+SWLvbuAHwOQqdKLvPtcfwMJA3sZnWd80EcFovX3
+ 8ltCkamwG03iFPms05vSxR1Xpth1uAYhBmmM1kZBWzPGtOr+FsxgeEYxfxt/sHok
+ AD+cELDe8tw5NXyvxJpnBPWJIO2Nv+n8CJiuRBAHU5ZlOeRLhbKbL62oiv2DaIV2
+ d8XevmDrZ2gQ+gntxd0F+v5WQpQoROK4D2xJfNjbGUsc4YOxoeA82QP2PFWXpoAj
+ UsNAB0rNBZUa1r+t+YeXwWS8NRD4vqJe3kOnaxA5G1saolQ7zrc/KAh/L/sHXvwf
+ DWCtLKpv8Sm87kFAwd+Q2w==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43nq7c4f11-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43nq7rmg0j-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Tue, 24 Dec 2024 16:17:21 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 4BODQVRQ023281; Tue, 24 Dec 2024 16:17:20 GMT
+ with ESMTP id 4BOF0MYx022579; Tue, 24 Dec 2024 16:17:21 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 43nm484gn9-1
+ 43nm484gne-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 24 Dec 2024 16:17:20 +0000
+ Tue, 24 Dec 2024 16:17:21 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4BOGH9Xm021973;
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4BOGH9Xo021973;
  Tue, 24 Dec 2024 16:17:20 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 43nm484ggj-17; Tue, 24 Dec 2024 16:17:20 +0000
+ ESMTP id 43nm484ggj-18; Tue, 24 Dec 2024 16:17:20 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,9 +62,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V5 16/23] migration-test: memory_backend
-Date: Tue, 24 Dec 2024 08:17:01 -0800
-Message-Id: <1735057028-308595-17-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V5 17/23] tests/qtest: optimize migrate_set_ports
+Date: Tue, 24 Dec 2024 08:17:02 -0800
+Message-Id: <1735057028-308595-18-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1735057028-308595-1-git-send-email-steven.sistare@oracle.com>
 References: <1735057028-308595-1-git-send-email-steven.sistare@oracle.com>
@@ -76,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  suspectscore=0 malwarescore=0 adultscore=0 bulkscore=0 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
  definitions=main-2412240141
-X-Proofpoint-GUID: i4hRZZAurqp5yb5cmWQsA1J6RHDAKO4U
-X-Proofpoint-ORIG-GUID: i4hRZZAurqp5yb5cmWQsA1J6RHDAKO4U
+X-Proofpoint-GUID: Ha7TK6qYHx-1iWuDXVso7IfQjOoVkhAY
+X-Proofpoint-ORIG-GUID: Ha7TK6qYHx-1iWuDXVso7IfQjOoVkhAY
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -103,88 +103,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow each migration test to define its own memory backend, replacing
-the standard "-m <size>" specification.
+Do not query connection parameters if all port numbers are known.  This is
+more efficient, and also solves a problem for the cpr-transfer test.
+At the point where cpr-transfer calls migrate_qmp and migrate_set_ports,
+the monitor is not connected and queries are not allowed.  Port=0 is
+never used for cpr-transfer.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration/framework.c | 15 +++++++++++----
- tests/qtest/migration/framework.h |  5 +++++
- 2 files changed, 16 insertions(+), 4 deletions(-)
+ tests/qtest/migration/migration-util.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index a902936..89a3344 100644
---- a/tests/qtest/migration/framework.c
-+++ b/tests/qtest/migration/framework.c
-@@ -212,6 +212,7 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-     const char *machine_alias, *machine_opts = "";
-     g_autofree char *machine = NULL;
-     const char *bootpath;
-+    g_autofree char *memory_backend = NULL;
+diff --git a/tests/qtest/migration/migration-util.c b/tests/qtest/migration/migration-util.c
+index 525bf1e..ed46fab 100644
+--- a/tests/qtest/migration/migration-util.c
++++ b/tests/qtest/migration/migration-util.c
+@@ -131,25 +131,32 @@ migrate_get_connect_qdict(QTestState *who)
  
-     if (args->use_shmem) {
-         if (!g_file_test("/dev/shm", G_FILE_TEST_IS_DIR)) {
-@@ -287,6 +288,12 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-             memory_size, shmem_path);
-     }
+ void migrate_set_ports(QTestState *to, QList *channel_list)
+ {
+-    QDict *addr;
++    g_autoptr(QDict) addr = NULL;
+     QListEntry *entry;
+     const char *addr_port = NULL;
  
-+    if (args->memory_backend) {
-+        memory_backend = g_strdup_printf(args->memory_backend, memory_size);
-+    } else {
-+        memory_backend = g_strdup_printf("-m %s ", memory_size);
-+    }
+-    addr = migrate_get_connect_qdict(to);
+-
+     QLIST_FOREACH_ENTRY(channel_list, entry) {
+         QDict *channel = qobject_to(QDict, qlist_entry_obj(entry));
+         QDict *addrdict = qdict_get_qdict(channel, "addr");
+ 
+-        if (qdict_haskey(addrdict, "port") &&
+-            qdict_haskey(addr, "port") &&
+-            (strcmp(qdict_get_str(addrdict, "port"), "0") == 0)) {
++        if (!qdict_haskey(addrdict, "port") ||
++            strcmp(qdict_get_str(addrdict, "port"), "0")) {
++            continue;
++        }
 +
-     if (args->use_dirty_ring) {
-         kvm_opts = ",dirty-ring-size=4096";
++        /*
++         * Fetch addr only if needed, so tests that are not yet connected to
++         * the monitor do not query it.  Such tests cannot use port=0.
++         */
++        if (!addr) {
++            addr = migrate_get_connect_qdict(to);
++        }
++
++        if (qdict_haskey(addr, "port")) {
+             addr_port = qdict_get_str(addr, "port");
+             qdict_put_str(addrdict, "port", addr_port);
+         }
      }
-@@ -305,12 +312,12 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-     cmd_source = g_strdup_printf("-accel kvm%s -accel tcg "
-                                  "-machine %s,%s "
-                                  "-name source,debug-threads=on "
--                                 "-m %s "
-+                                 "%s "
-                                  "-serial file:%s/src_serial "
-                                  "%s %s %s %s %s",
-                                  kvm_opts ? kvm_opts : "",
-                                  machine, machine_opts,
--                                 memory_size, tmpfs,
-+                                 memory_backend, tmpfs,
-                                  arch_opts ? arch_opts : "",
-                                  arch_source ? arch_source : "",
-                                  shmem_opts ? shmem_opts : "",
-@@ -326,13 +333,13 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-     cmd_target = g_strdup_printf("-accel kvm%s -accel tcg "
-                                  "-machine %s,%s "
-                                  "-name target,debug-threads=on "
--                                 "-m %s "
-+                                 "%s "
-                                  "-serial file:%s/dest_serial "
-                                  "-incoming %s "
-                                  "%s %s %s %s %s",
-                                  kvm_opts ? kvm_opts : "",
-                                  machine, machine_opts,
--                                 memory_size, tmpfs, uri,
-+                                 memory_backend, tmpfs, uri,
-                                  arch_opts ? arch_opts : "",
-                                  arch_target ? arch_target : "",
-                                  shmem_opts ? shmem_opts : "",
-diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
-index e9fc4ec..d368fcf 100644
---- a/tests/qtest/migration/framework.h
-+++ b/tests/qtest/migration/framework.h
-@@ -109,6 +109,11 @@ typedef struct {
-     const char *opts_target;
-     /* suspend the src before migrating to dest. */
-     bool suspend_me;
-+    /*
-+     * Format string for the main memory backend, containing one %s where the
-+     * size is plugged in.  If omitted, "-m %s" is used.
-+     */
-+    const char *memory_backend;
- } MigrateStart;
+-
+-    qobject_unref(addr);
+ }
  
- typedef enum PostcopyRecoveryFailStage {
+ bool migrate_watch_for_events(QTestState *who, const char *name,
 -- 
 1.8.3.1
 
