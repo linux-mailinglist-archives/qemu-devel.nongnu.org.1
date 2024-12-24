@@ -2,101 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D068C9FB83F
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 02:23:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F3B9FB843
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 02:26:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tPtdj-0002OD-MO; Mon, 23 Dec 2024 20:23:15 -0500
+	id 1tPtgr-0003so-OJ; Mon, 23 Dec 2024 20:26:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tPtdf-0002Ny-Gp
- for qemu-devel@nongnu.org; Mon, 23 Dec 2024 20:23:11 -0500
-Received: from fout-a7-smtp.messagingengine.com ([103.168.172.150])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tPtdd-0001HF-Qd
- for qemu-devel@nongnu.org; Mon, 23 Dec 2024 20:23:11 -0500
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal
- [10.202.2.49])
- by mailfout.phl.internal (Postfix) with ESMTP id B08EC13801DD;
- Mon, 23 Dec 2024 20:23:08 -0500 (EST)
-Received: from phl-imap-12 ([10.202.2.86])
- by phl-compute-09.internal (MEProxy); Mon, 23 Dec 2024 20:23:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
- cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm3; t=1735003388;
- x=1735089788; bh=Tp/TbYK93/7pA/Oa2ra0BmabbGHJ1d3Txj1F3oQQIDA=; b=
- cSz+CqUmLG6ry/QkotbhVIGb/yvkFg+7vCsXZ+vLXxn/v4LfzXDDJSjbLMNYe0YM
- VafSRFQoCUPs00SMroFYA9hbPZ2aTl8OiqThuIrjUvUcqrQLBRFMyOpQzcr4pBsl
- YDkLY6I7kfxYHBJ1Z4Dqbj6ScGsCYbXU0om0KTer6DlM1UjwU3HmSCeb25eviPn0
- dkiPUAgaVkQTeE7DbHXsKdSLXeJT+CvYemgaPSURh9iW5+GH4gFiN4kcwu57BtVI
- oFMsOUjNDKFQIxKbA+d0+SqsOwiqJf0qnb69EsJNXj3hidt+teJMgVrp5eqDIIqw
- xCPeV03MbwkGDx9NdWy/hQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1735003388; x=
- 1735089788; bh=Tp/TbYK93/7pA/Oa2ra0BmabbGHJ1d3Txj1F3oQQIDA=; b=N
- kMED1udyEQgupJkV6zBZX19tUkYduSCY9U+ERQYHrqBG8/lhMI/MbhF2QLgQkUp1
- FnCNPwP+vErQR9HTfKJu/bDqsBxV8ky8L1BJI6ctZHcjMv4KnPeHpJfAXph95EYs
- txFHIBpg4mA8VaR3skxOrjEtFhqmHtylGsCw7dI21BLzkSOZGkYQIArM0tVvUx7H
- eaOS1kfu8PpnZOUO85nav8PEiE+12+SKNahCA1cqs9Fkzm2ghD0XDw7ebweucB6n
- 529IfPeNoDv6QtHbcgv02jceW02n4spGx5VEqHTdgPBCpl6WwimAWllKsZyepMMl
- t5IEBOPqPLyJPkwV3D65g==
-X-ME-Sender: <xms:_AxqZxQhvvMB2LncsMiT6D7uXKYvDPQBxAJQNbYFVfEUsuIpLDRmPw>
- <xme:_AxqZ6wpErjQ59Fid0pHjOgIdiAGoCGAx5hn6p2nj55_cJLI7PIrjwCoBCpcEPWN5
- XTSKl3Rx4aj8Y7QtbY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddufedgfeefucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
- rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
- htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
- necuhfhrohhmpedflfhirgiguhhnucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfh
- hlhihgohgrthdrtghomheqnecuggftrfgrthhtvghrnhepjeehfeduvddtgffgvdffkeet
- hefhlefgvdevvdekuefffeekheehgeevhfevteejnecuvehluhhsthgvrhfuihiivgepud
- enucfrrghrrghmpehmrghilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgr
- thdrtghomhdpnhgspghrtghpthhtohepfedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
- htohepphhhihhlmhgusehlihhnrghrohdrohhrghdprhgtphhtthhopehgrghoshhonhhg
- sehlohhonhhgshhonhdrtghnpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhngh
- hnuhdrohhrgh
-X-ME-Proxy: <xmx:_AxqZ22eHDsMPiIqQ43HgrvRhwJb-dsciTXH-DPECU0kFn4Cj0yFVA>
- <xmx:_AxqZ5DO5LhIfg27FNQ_aanZZ6ZPH7-cObMep2fsMNCZgTT8kz7vTA>
- <xmx:_AxqZ6gXBdScSsHvk6QcBF04ITWx8xGUC0ulz-makv2QGjz9-gEabQ>
- <xmx:_AxqZ9qeMtkKwJztg-p8LvYJEhpBm1tElp4Iq7CWMltcWiQU9B8d7A>
- <xmx:_AxqZ9txbP5FUXmG8YnkaJyOktM1sQ5ZbSXr8roCbNpZTQ0DPiaRQwrG>
-Feedback-ID: ifd894703:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
- id 6A9111C20068; Mon, 23 Dec 2024 20:23:08 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1tPtgi-0003sR-2H
+ for qemu-devel@nongnu.org; Mon, 23 Dec 2024 20:26:20 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1tPtgb-0001YY-V2
+ for qemu-devel@nongnu.org; Mon, 23 Dec 2024 20:26:18 -0500
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8DxGeGpDWpnZOhZAA--.45736S3;
+ Tue, 24 Dec 2024 09:26:01 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowMBxXcemDWpnfloHAA--.39958S3;
+ Tue, 24 Dec 2024 09:25:58 +0800 (CST)
+Subject: Re: [PATCH] hw/loongarch/boot: Support Linux raw boot image
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>, QEMU devel <qemu-devel@nongnu.org>
+Cc: Song Gao <gaosong@loongson.cn>
+References: <20241223-la-direct-kernel-boot-v1-1-a79995d8b15e@flygoat.com>
+ <81a42119-741f-6ab6-e88d-05c9e609670f@loongson.cn>
+ <7ade5370-c5e1-4340-8ed7-80cd489798ae@app.fastmail.com>
+From: bibo mao <maobibo@loongson.cn>
+Message-ID: <0d114d5f-44af-9823-aa7f-80410a781b98@loongson.cn>
+Date: Tue, 24 Dec 2024 09:25:11 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Date: Tue, 24 Dec 2024 01:22:48 +0000
-From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "QEMU devel" <qemu-devel@nongnu.org>
-Cc: "Song Gao" <gaosong@loongson.cn>
-Message-Id: <860f3202-c6e6-4080-9f8c-eeee5dfe6b29@app.fastmail.com>
-In-Reply-To: <e0ade58a-51b8-43c5-88f1-0dd8b3c9611e@linaro.org>
-References: <20241222-la32-fixes1-v1-0-8c62b7e594db@flygoat.com>
- <20241222-la32-fixes1-v1-1-8c62b7e594db@flygoat.com>
- <e0ade58a-51b8-43c5-88f1-0dd8b3c9611e@linaro.org>
-Subject: Re: [PATCH 1/3] target/loongarch: Enable rotr.w/rotri.w for
- LoongArch32
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=103.168.172.150;
- envelope-from=jiaxun.yang@flygoat.com; helo=fout-a7-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
+In-Reply-To: <7ade5370-c5e1-4340-8ed7-80cd489798ae@app.fastmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMBxXcemDWpnfloHAA--.39958S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxXFW8WFW8ur4fCw4xJFWxZrc_yoWrtryrpr
+ y8AFn8ArW8Jr17uwnaqwn09F90vw1xGr4agFnrGryFvrZFvr1xXry8ury7uFyvvr4rKr1Y
+ vrn8Gw4ag3W5J3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUU9Fb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
+ 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AK
+ xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
+ AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AK
+ xVWUXVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67
+ AF67kF1VAFwI0_Jrv_JF1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI
+ 42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMI
+ IF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2
+ KfnxnUUI43ZEXa7IU1wL05UUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.856,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,63 +83,143 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-=E5=9C=A82024=E5=B9=B412=E6=9C=8823=E6=97=A5=E5=8D=81=E4=BA=8C=E6=9C=88 =
-=E4=B8=8B=E5=8D=8812:46=EF=BC=8CPhilippe Mathieu-Daud=C3=A9=E5=86=99=E9=81=
-=93=EF=BC=9A
-> On 23/12/24 00:40, Jiaxun Yang wrote:
->> As per "LoongArch Reference Manual Volume 1: Basic Architecture" v1.1=
-.0,
->> "2.2 Table 2. Application-level basic integer instructions in LA32",
->> rotr.w and rotri.w is a part of LA32 basic integer instructions.
->>=20
->> Make it available to ALL.
->>=20
->> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
->> ---
->>   target/loongarch/tcg/insn_trans/trans_shift.c.inc | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->>=20
->> diff --git a/target/loongarch/tcg/insn_trans/trans_shift.c.inc b/targ=
-et/loongarch/tcg/insn_trans/trans_shift.c.inc
->> index 377307785aab4837bc181f1691632e7970a9889d..136c4c845527f0e63902a=
-8306dcaf136dd4dd3fc 100644
->> --- a/target/loongarch/tcg/insn_trans/trans_shift.c.inc
->> +++ b/target/loongarch/tcg/insn_trans/trans_shift.c.inc
->> @@ -78,7 +78,7 @@ TRANS(sra_w, ALL, gen_rrr, EXT_SIGN, EXT_NONE, EXT_=
-SIGN, gen_sra_w)
->>   TRANS(sll_d, 64, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_sll_d)
->>   TRANS(srl_d, 64, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_srl_d)
->>   TRANS(sra_d, 64, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_sra_d)
->> -TRANS(rotr_w, 64, gen_rrr, EXT_ZERO, EXT_NONE, EXT_SIGN, gen_rotr_w)
->> +TRANS(rotr_w, ALL, gen_rrr, EXT_ZERO, EXT_NONE, EXT_SIGN, gen_rotr_w)
->
-> Using 'ALL' disables the availability check, is that what we want here?
-> (I don't know, maybe it is, I couldn't see any LA32R/LA32 instructions
-> checked).
-
-I think it=E2=80=99s indeed not checked presently.
-
-I discovered that when I was getting LA32 kernel to run on QEMU.
-
-Those two instructions exist on LA32 but not LA32R.
-
-For LA32R, I=E2=80=99ll take care of it later.
-
-Thanks
->
->>   TRANS(rotr_d, 64, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_rotr_d)
->>   TRANS(slli_w, ALL, gen_rri_c, EXT_NONE, EXT_SIGN, tcg_gen_shli_tl)
->>   TRANS(slli_d, 64, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_shli_tl)
->> @@ -86,5 +86,5 @@ TRANS(srli_w, ALL, gen_rri_c, EXT_ZERO, EXT_SIGN, t=
-cg_gen_shri_tl)
->>   TRANS(srli_d, 64, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_shri_tl)
->>   TRANS(srai_w, ALL, gen_rri_c, EXT_NONE, EXT_NONE, gen_sari_w)
->>   TRANS(srai_d, 64, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_sari_tl)
->> -TRANS(rotri_w, 64, gen_rri_v, EXT_NONE, EXT_NONE, gen_rotr_w)
->> +TRANS(rotri_w, ALL, gen_rri_v, EXT_NONE, EXT_NONE, gen_rotr_w)
->>   TRANS(rotri_d, 64, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_rotri_tl)
+On 2024/12/24 上午9:15, Jiaxun Yang wrote:
+> 
+> 
+> 在2024年12月24日十二月 上午12:56，bibo mao写道：
+>> Sorry, I do not know the background.
+>> Now kernel image with EFI format can boot if uefi bios is provided.
 >>
+>> What is this patch to do?  is it to direct boot kernel with EFI format
+>> without UEFI bios parameter?
+> 
+> Yes, it’s now capable for booting vmlinux.efi without BIOS, as well as raw kernel built without EFI STUB.
+  Is efi boottime service used by vmlinux.efi? such as 
+handle_protocol/allocate_pages etc.
 
---=20
-- Jiaxun
+Regards
+Bibo Mao
+> 
+> Thanks
+> 
+>>
+>> Regards
+>> Bibo Mao
+>>
+>> On 2024/12/23 上午8:30, Jiaxun Yang wrote:
+>>> Many distros are shipping raw kernel images (i.e. vmlinux.efi).
+>>>
+>>> Support booting such image by parsing header as per Linux's
+>>> specification [1].
+>>>
+>>> [1]: https://docs.kernel.org/arch/loongarch/booting.html
+>>>
+>>> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+>>> ---
+>>> It is based on my previous booting protocol patch
+>>> ---
+>>>    hw/loongarch/boot.c         | 45 +++++++++++++++++++++++++++++++++++++++++++++
+>>>    include/hw/loongarch/boot.h | 17 +++++++++++++++++
+>>>    2 files changed, 62 insertions(+)
+>>>
+>>> diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
+>>> index 93847b0eaf8e50ce1a990b91267780e6785e1c2f..5bc889c51fafa9c6d37426b9bee9709c12183927 100644
+>>> --- a/hw/loongarch/boot.c
+>>> +++ b/hw/loongarch/boot.c
+>>> @@ -260,6 +260,43 @@ static uint64_t cpu_loongarch_virt_to_phys(void *opaque, uint64_t addr)
+>>>        return addr & MAKE_64BIT_MASK(0, TARGET_PHYS_ADDR_SPACE_BITS);
+>>>    }
+>>>    
+>>> +static int64_t get_linux_image_info(struct loongarch_boot_info *info,
+>>> +                                    uint64_t *kernel_entry,
+>>> +                                    uint64_t *kernel_low,
+>>> +                                    uint64_t *kernel_high)
+>>> +{
+>>> +    int fd;
+>>> +    struct loongarch_linux_hdr hdr;
+>>> +    int64_t kernel_size = -1;
+>>> +
+>>> +    fd = open(info->kernel_filename, O_RDONLY | O_BINARY);
+>>> +    if (fd < 0) {
+>>> +        return -1;
+>>> +    }
+>>> +
+>>> +    if (read(fd, &hdr, sizeof(hdr)) != sizeof(hdr)) {
+>>> +        close(fd);
+>>> +        return -1;
+>>> +    }
+>>> +
+>>> +    if ((le32_to_cpu(hdr.mz_magic) & 0xffff) != MZ_MAGIC ||
+>>> +        le32_to_cpu(hdr.linux_pe_magic) != LINUX_PE_MAGIC) {
+>>> +        close(fd);
+>>> +        return -1;
+>>> +    }
+>>> +
+>>> +    *kernel_entry = le64_to_cpu(hdr.kernel_entry);
+>>> +    /* Early kernel versions may have those fields in virtual address */
+>>> +    *kernel_entry &= MAKE_64BIT_MASK(0, TARGET_PHYS_ADDR_SPACE_BITS);
+>>> +    *kernel_low = le64_to_cpu(hdr.load_offset);
+>>> +    *kernel_low &= MAKE_64BIT_MASK(0, TARGET_PHYS_ADDR_SPACE_BITS);
+>>> +    kernel_size = le64_to_cpu(hdr.kernel_size);
+>>> +    *kernel_high = *kernel_low + kernel_size;
+>>> +
+>>> +    close(fd);
+>>> +    return kernel_size;
+>>> +}
+>>> +
+>>>    static int64_t load_kernel_info(struct loongarch_boot_info *info)
+>>>    {
+>>>        uint64_t kernel_entry, kernel_low, kernel_high;
+>>> @@ -270,6 +307,14 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
+>>>                               &kernel_entry, &kernel_low,
+>>>                               &kernel_high, NULL, 0,
+>>>                               EM_LOONGARCH, 1, 0);
+>>> +    if (kernel_size < 0) {
+>>> +        kernel_size = get_linux_image_info(info, &kernel_entry,
+>>> +                                           &kernel_low, &kernel_high);
+>>> +        if (kernel_size >= 0) {
+>>> +            kernel_size = load_image_targphys(info->kernel_filename,
+>>> +                                              kernel_low, kernel_size);
+>>> +        }
+>>> +    }
+>>>    
+>>>        if (kernel_size < 0) {
+>>>            error_report("could not load kernel '%s': %s",
+>>> diff --git a/include/hw/loongarch/boot.h b/include/hw/loongarch/boot.h
+>>> index 96ec15016a314499acf65c6c47e0c4932aa99d01..5e8bd4dd73bbb27abccfa1fa577df52aed15b6a2 100644
+>>> --- a/include/hw/loongarch/boot.h
+>>> +++ b/include/hw/loongarch/boot.h
+>>> @@ -8,6 +8,23 @@
+>>>    #ifndef HW_LOONGARCH_BOOT_H
+>>>    #define HW_LOONGARCH_BOOT_H
+>>>    
+>>> +/* Linux Image Format */
+>>> +#define LINUX_PE_MAGIC  0x818223cd
+>>> +#define MZ_MAGIC        0x5a4d /* "MZ" */
+>>> +
+>>> +struct loongarch_linux_hdr {
+>>> +    uint32_t mz_magic;
+>>> +    uint32_t res0;
+>>> +    uint64_t kernel_entry;
+>>> +    uint64_t kernel_size;
+>>> +    uint64_t load_offset;
+>>> +    uint64_t res1;
+>>> +    uint64_t res2;
+>>> +    uint64_t res3;
+>>> +    uint32_t linux_pe_magic;
+>>> +    uint32_t pe_header_offset;
+>>> +} QEMU_PACKED;
+>>> +
+>>>    /* UEFI 2.10 */
+>>>    #define EFI_SYSTEM_TABLE_SIGNATURE       0x5453595320494249
+>>>    #define EFI_2_100_SYSTEM_TABLE_REVISION  ((2<<16) | (100))
+>>>
+>>> ---
+>>> base-commit: c69612063e1844b76ac01e3a781b979548c3585c
+>>> change-id: 20241222-la-direct-kernel-boot-c598264710e7
+>>>
+>>> Best regards,
+>>>
+> 
+
 
