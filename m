@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ACE49FC1FF
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 21:09:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1CE19FC227
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 21:19:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQBDp-0000Mn-VB; Tue, 24 Dec 2024 15:09:42 -0500
+	id 1tQBDx-00019I-Ta; Tue, 24 Dec 2024 15:09:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tQBDW-000732-Jv
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 15:09:23 -0500
+ id 1tQBDY-00073P-Uk
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 15:09:25 -0500
 Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tQBDU-0002yf-Tp
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 15:09:22 -0500
+ id 1tQBDV-0002yv-W5
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 15:09:23 -0500
 Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-216634dd574so40016175ad.2
- for <qemu-devel@nongnu.org>; Tue, 24 Dec 2024 12:09:20 -0800 (PST)
+ d9443c01a7336-2163dc5155fso55567595ad.0
+ for <qemu-devel@nongnu.org>; Tue, 24 Dec 2024 12:09:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735070960; x=1735675760; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735070961; x=1735675761; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=qMWHCU8E787jJTfENdcTGiVxd4zzSlvdX30p3jl01M4=;
- b=GffYiqBNLAzxx3KVZWPF2Dj7oSAR+LbBeZkxm7SDygpT4kYdh37DH7aO8rDMykmEyQ
- iVAyJ1NAiRsCGpIPQxMugFyt65Daprwv2dJz3oSgnM2uG3JlK1rEiZxtdmUfg6jVseet
- o9rWkaUeY6/8vmFqY4yJtvzgYMYpB8UKom/4rL1nNv8WHrGWqHyHpwQb1KCDSfMSzFGp
- q8zV11EihlFqEGxLFMNsHmucUdvIS2H+gfkLVEBz8cJVBEZybMBBYid3e/EncpDhqydS
- 9KaIB8V4f/I8JIRygOJDHvAaE/xCOI8+hynTlWmf1NftX1h+oQJMeyUlJa7eIXh+DizD
- cCMA==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dTGDXG/LHK+cbArsNVQoTZPhYd/l2OlGD8Apa8yjd5c=;
+ b=imwiTqt55KHmMFeNaE75nII/ZaBDuPy4V2/0CiYKrGhPJvZP3fo5s52aC3fAaCl/nI
+ j7p3BAT7W1iST011QE1d4DXMdkLgOgCfa5fRNJJs8Uo7FNQHDrWjVoYmwUPIJTRhQ4pJ
+ vkFs+tKIaOXDq4a6QeGaZswt/h73Sw75jK7REzqhFlLiSYwIFYyvjmaGwD+zFOaLhfcn
+ BMGJOtQuCTdDR+aeumsK8xT76gM26uRH+v6AL6Yte7vLEbzv/K+VFSr54EKyXkBz8GZz
+ xOrjVALZWUueqs84l5SaIn58YwXecIj5bbG7SmLgErS+xC7+C8FQ1bTFB6UQIsXzXPff
+ ftbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735070960; x=1735675760;
+ d=1e100.net; s=20230601; t=1735070961; x=1735675761;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qMWHCU8E787jJTfENdcTGiVxd4zzSlvdX30p3jl01M4=;
- b=WCtj3/uewzLnK9FHss2dCGWIS6R0SD6GpV7CVR7DgWz12eFW5ZcTZESsamcbWz48WY
- Sbv7TDMp+ru+noiKaHozqG3WUCcSFDozGDAgWJfijkWLYFB5hyxBY2u8+ogjKBYtvVIl
- BezkvyoKZKdDxdf9XpYAeH5Zh18EJUAzqeP9TIItXInz01Ld/4GZDSNXpbYxA3cu3SQA
- ZrkP/garK5s5q59S5RHGqIhGx6y+mzvCmFmmtwTZSv+yi/c2ILLsRbBf5upo31tWFXwn
- bQ60nHOFPAcFmFJ7Qre039I3UmIr6zWIIkG0PPyLEElZuFwZN6C6bkXR6+vpJoOpJd2K
- tzdA==
-X-Gm-Message-State: AOJu0Yw9bn0h6GMn+sitm2SMKk8X0ywEJ05PfUv1OeXK9DrR+roafQXt
- n+QCK+hsENcZMxlyYZ11jdTDMHnb0PQlqp/8w+KtOZIHnwa35hlTNv5aVZSN3KnaYEpCgR4SRkw
- yNwA=
-X-Gm-Gg: ASbGncvAOqoNs49svkejSzHMNH0epRhNbK/2siSNljhNMy2JEHah7cZmsHaQ+eb5vUA
- ZrfShC9nNeDXxLnO6WDEcCXAQqxY/wjUkTblHE2OC78HLtoxbMIXt91R1bww5jHuqj1hObeaPwx
- wQ+zErjKPgULD/jw6TYHHcdtMPcZgiWWR6g5xIn8C4FHRTtuj77i08eOOCIqQOd0CGC5R56ACN1
- 4gUudfZLoguaLzcTaLfxeb/2OjJQjyc7M98VlyGCj3Fpk3VzIL/0gVElC6oqfV5yuKrEgcGBy5s
- s9yqqhd/wGn+vsIMBygYeJFs0w==
-X-Google-Smtp-Source: AGHT+IFdtV4HZG6C5IKjSmTWi7b+ImB6uEVWHa9QsEgWvkjEBxTZvCGOAzp+zpRtgGJOQ9Slu6e7fQ==
-X-Received: by 2002:a05:6a21:6f87:b0:1db:c20f:2c4d with SMTP id
- adf61e73a8af0-1e5e044b1c1mr27570093637.2.1735070959723; 
- Tue, 24 Dec 2024 12:09:19 -0800 (PST)
+ bh=dTGDXG/LHK+cbArsNVQoTZPhYd/l2OlGD8Apa8yjd5c=;
+ b=NHVsSth9vzU778W/Kk2Y1v7EdVLkAMSzp9NllZXFVkjB2ez9hEshBiw8ReRIG0l9S1
+ OFH6TKfVav1ro4GWPMDDSC8AygH6s4VekW5xw+bC4kRKQqobRDs8GegMpY3CszChZ2mM
+ DTjipaUYDTwL/LJ6UDBbJ5A2DFjEROUOZfrpJzX+I3EQTsZImw7dZ6fcjoxec0IsWgs5
+ RRANxG/fMjlDWYBpAnQ8C1EmuRhDOfvv9iWzksC8L1YSlA5vb8focMIwMMptdcLuG8b4
+ Y+jD7n+AMVjl9PPdiAGq1iCWaNpxJTJwMJXCZFkHhuctL10OuHCF78z4uXTXTM04+Q1R
+ 84+A==
+X-Gm-Message-State: AOJu0YyrZFzuy11SuNdC9z3/h0z+4QiNvdhOt8ChQtlV2aQrtEzwgs5K
+ oOZx6sXJbTFrHWpyE71scjm4x1qJjHK+kEMdP2wquc4wfM+X3XqWg1hXomJRusjyYo0QXeHMsP/
+ 1++U=
+X-Gm-Gg: ASbGncub3ERq56oZkJiLTCj90ck1uHcfI4x0CLi/nk6VunFUuQm2EGA2iEf9O4tbO1N
+ cqx2Aw0/TOKVQJbSLgyBFOMEzKJiuI4fD7Xn796gqKUE1vnwypP1hCLthPQWq15VjHZWVCdjkCO
+ dcIZrR4JApxvV7/9yDvJvf2w3YZqb30VtJDxh+7z+1mbgUn4OuYuRClgQf5v1anF3hCw98bCdRs
+ GJPkFVtcMTFIw586eJBasXk2/g43wfLLcNhXvPcPfA4sMSsDus5wWvDoLWnd7Hd67mX9fWhEclC
+ yQGCX2GWspSxLJdpW3XxAL4hCg==
+X-Google-Smtp-Source: AGHT+IFRCWpNSIzAmDr6P7A4FDXFnFAvgrsxGpgNR/bkTlhB+xuygYXOj2HYo4kFWq24oiREhUpjFw==
+X-Received: by 2002:a05:6a00:a95:b0:725:d956:aa6f with SMTP id
+ d2e1a72fcca58-72abdd5eea8mr28794770b3a.5.1735070960766; 
+ Tue, 24 Dec 2024 12:09:20 -0800 (PST)
 Received: from stoup.. (syn-156-019-246-023.biz.spectrum.com. [156.19.246.23])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad8309acsm10033521b3a.45.2024.12.24.12.09.19
- for <qemu-devel@nongnu.org>
+ d2e1a72fcca58-72aad8309acsm10033521b3a.45.2024.12.24.12.09.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Dec 2024 12:09:19 -0800 (PST)
+ Tue, 24 Dec 2024 12:09:20 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 60/72] softfloat: Add float_muladd_suppress_add_product_zero
-Date: Tue, 24 Dec 2024 12:05:09 -0800
-Message-ID: <20241224200521.310066-61-richard.henderson@linaro.org>
+Cc: Brian Cain <brian.cain@oss.qualcomm.com>
+Subject: [PULL 61/72] target/hexagon: Use float32_mul in helper_sfmpy
+Date: Tue, 24 Dec 2024 12:05:10 -0800
+Message-ID: <20241224200521.310066-62-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241224200521.310066-1-richard.henderson@linaro.org>
 References: <20241224200521.310066-1-richard.henderson@linaro.org>
@@ -96,66 +97,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Certain Hexagon instructions suppress changes to the result
-when the product of fma() is a true zero.
+There are no special cases for this instruction.
+Remove internal_mpyf as unused.
 
+Reviewed-by: Brian Cain <brian.cain@oss.qualcomm.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/fpu/softfloat.h   | 5 +++++
- fpu/softfloat.c           | 3 +++
- fpu/softfloat-parts.c.inc | 4 +++-
- 3 files changed, 11 insertions(+), 1 deletion(-)
+ target/hexagon/fma_emu.h   | 1 -
+ target/hexagon/fma_emu.c   | 8 --------
+ target/hexagon/op_helper.c | 2 +-
+ 3 files changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/include/fpu/softfloat.h b/include/fpu/softfloat.h
-index aa69aecfb0..09a40b4310 100644
---- a/include/fpu/softfloat.h
-+++ b/include/fpu/softfloat.h
-@@ -120,11 +120,16 @@ bfloat16 bfloat16_squash_input_denormal(bfloat16 a, float_status *status);
- | Using these differs from negating an input or output before calling
- | the muladd function in that this means that a NaN doesn't have its
- | sign bit inverted before it is propagated.
-+|
-+| With float_muladd_suppress_add_product_zero, if A or B is zero
-+| such that the product is a true zero, then return C without addition.
-+| This preserves the sign of C when C is +/- 0.  Used for Hexagon.
- *----------------------------------------------------------------------------*/
- enum {
-     float_muladd_negate_c = 1,
-     float_muladd_negate_product = 2,
-     float_muladd_negate_result = 4,
-+    float_muladd_suppress_add_product_zero = 8,
- };
+diff --git a/target/hexagon/fma_emu.h b/target/hexagon/fma_emu.h
+index 91591d6050..ad5df5d038 100644
+--- a/target/hexagon/fma_emu.h
++++ b/target/hexagon/fma_emu.h
+@@ -32,7 +32,6 @@ int32_t float32_getexp(float32 f32);
+ float32 infinite_float32(uint8_t sign);
+ float32 internal_fmafx(float32 a, float32 b, float32 c,
+                        int scale, float_status *fp_status);
+-float32 internal_mpyf(float32 a, float32 b, float_status *fp_status);
+ float64 internal_mpyhh(float64 a, float64 b,
+                        unsigned long long int accumulated,
+                        float_status *fp_status);
+diff --git a/target/hexagon/fma_emu.c b/target/hexagon/fma_emu.c
+index 05a56d8c10..35971b8b99 100644
+--- a/target/hexagon/fma_emu.c
++++ b/target/hexagon/fma_emu.c
+@@ -655,14 +655,6 @@ float32 internal_fmafx(float32 a, float32 b, float32 c, int scale,
+     return accum_round_float32(result, fp_status);
+ }
  
- /*----------------------------------------------------------------------------
-diff --git a/fpu/softfloat.c b/fpu/softfloat.c
-index 6967fb5c9f..8d75d66817 100644
---- a/fpu/softfloat.c
-+++ b/fpu/softfloat.c
-@@ -2274,6 +2274,9 @@ float32_muladd(float32 xa, float32 xb, float32 xc, int flags, float_status *s)
-     if (unlikely(!can_use_fpu(s))) {
-         goto soft;
-     }
-+    if (unlikely(flags & float_muladd_suppress_add_product_zero)) {
-+        goto soft;
-+    }
- 
-     float32_input_flush3(&ua.s, &ub.s, &uc.s, s);
-     if (unlikely(!f32_is_zon3(ua, ub, uc))) {
-diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
-index 37d046cfe9..ebde42992f 100644
---- a/fpu/softfloat-parts.c.inc
-+++ b/fpu/softfloat-parts.c.inc
-@@ -615,7 +615,9 @@ static FloatPartsN *partsN(muladd_scalbn)(FloatPartsN *a, FloatPartsN *b,
-             goto return_normal;
-         }
-         if (c->cls == float_class_zero) {
--            if (a->sign != c->sign) {
-+            if (flags & float_muladd_suppress_add_product_zero) {
-+                a->sign = c->sign;
-+            } else if (a->sign != c->sign) {
-                 goto return_sub_zero;
-             }
-             goto return_zero;
+-float32 internal_mpyf(float32 a, float32 b, float_status *fp_status)
+-{
+-    if (float32_is_zero(a) || float32_is_zero(b)) {
+-        return float32_mul(a, b, fp_status);
+-    }
+-    return internal_fmafx(a, b, float32_zero, 0, fp_status);
+-}
+-
+ float64 internal_mpyhh(float64 a, float64 b,
+                       unsigned long long int accumulated,
+                       float_status *fp_status)
+diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
+index 01d1a1b1a7..d257097091 100644
+--- a/target/hexagon/op_helper.c
++++ b/target/hexagon/op_helper.c
+@@ -1045,7 +1045,7 @@ float32 HELPER(sfmpy)(CPUHexagonState *env, float32 RsV, float32 RtV)
+ {
+     float32 RdV;
+     arch_fpop_start(env);
+-    RdV = internal_mpyf(RsV, RtV, &env->fp_status);
++    RdV = float32_mul(RsV, RtV, &env->fp_status);
+     arch_fpop_end(env);
+     return RdV;
+ }
 -- 
 2.43.0
 
