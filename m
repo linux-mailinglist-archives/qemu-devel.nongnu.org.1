@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF269FC00B
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 17:18:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29D5F9FC007
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 17:18:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQ7b8-0003Bs-Bl; Tue, 24 Dec 2024 11:17:30 -0500
+	id 1tQ7b3-00033Z-2q; Tue, 24 Dec 2024 11:17:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tQ7az-000329-Mk
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 11:17:22 -0500
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ id 1tQ7ay-00031R-3A
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 11:17:20 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tQ7ax-00039M-2Z
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 11:17:21 -0500
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BOEfaqL018369;
- Tue, 24 Dec 2024 16:17:13 GMT
+ id 1tQ7aw-00039q-3T
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 11:17:19 -0500
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BOEfZBE013114;
+ Tue, 24 Dec 2024 16:17:14 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=ij0ojZCIufqVfnoPuLHcYr7bT/6mNddCwguQ3c7xs4k=; b=
- MmtyPCY+9M3UTnjdYEqjXcpO7IFrNDIELtaLq+2854or5AwgKJC63GEf3SXRIfrk
- kual4RRsqmyd2x/PHu6H/UrV4G6z+KgeMtCQ+Ai+QhxV0F1srHeqhYGgSRlsf8SO
- 8/ijtEuGwyWXASwfw9JTwudeJceTrbztRAcgUByJxovySf3q/z46Sc2EPAHULy6V
- mv6ufEsNU0CvjhEv080PD/gaPtB03bgYciBGot0y2Ani32tfHmQJ4cp6IRWfICkV
- /P655jClC3Par7QaqvczWjUWGvAQQeZrY42NbA1xKPriW6U0NXDc6lgBcg9EkXkm
- /Q27rOgvccBex/by87B24A==
+ corp-2023-11-20; bh=X7tlMCUS/pe0rYbAxZWEdnFp1ET9KC5GRBfBDrcPckc=; b=
+ bi1VttGFh8EuFsKEKZZUJweB8DaXliE9r8x6CuvSTONGh1pYTv/Zp9hR/RtaxUNg
+ vdD3UIZDExfyV8yiVfKCl+1gOeYmwwR42VyGVCYZ5qmPiNKO6fBlCZ3zh2wP+tqI
+ pUXlloEdvWp73gMn+uSYcIwT3NrXtWIM1YyBpZdxZJRiylod5ODdrtN2A7goHUpK
+ Nmj49MR/Okz5GwHd4CaL6rETEl2HQmiUI0a0NNAGooSU+b1TjYczqzAS66ZW47Px
+ iKDkbDFwrxS+1q+2zZzyEx0Y83DUWXBqbaNggv57Etxd6aD8FzTkda7Rk6nVyQfJ
+ Raw71SkAoU0yCkIPLKgqAw==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43nq7rmg08-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43nq6sch4f-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 24 Dec 2024 16:17:13 +0000 (GMT)
+ Tue, 24 Dec 2024 16:17:14 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 4BOF0MYu022579; Tue, 24 Dec 2024 16:17:12 GMT
+ with ESMTP id 4BOFLbUQ022596; Tue, 24 Dec 2024 16:17:13 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 43nm484gj3-1
+ 43nm484gja-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 24 Dec 2024 16:17:12 +0000
+ Tue, 24 Dec 2024 16:17:13 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4BOGH9XO021973;
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4BOGH9XQ021973;
  Tue, 24 Dec 2024 16:17:12 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 43nm484ggj-5; Tue, 24 Dec 2024 16:17:12 +0000
+ ESMTP id 43nm484ggj-6; Tue, 24 Dec 2024 16:17:12 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,9 +62,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V5 04/23] memory: add RAM_PRIVATE
-Date: Tue, 24 Dec 2024 08:16:49 -0800
-Message-Id: <1735057028-308595-5-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V5 05/23] machine: aux-ram-share option
+Date: Tue, 24 Dec 2024 08:16:50 -0800
+Message-Id: <1735057028-308595-6-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1735057028-308595-1-git-send-email-steven.sistare@oracle.com>
 References: <1735057028-308595-1-git-send-email-steven.sistare@oracle.com>
@@ -76,19 +76,18 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  suspectscore=0 malwarescore=0 adultscore=0 bulkscore=0 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
  definitions=main-2412240141
-X-Proofpoint-GUID: 6FkJ6XG6GSe2dKQAon3J5yLpKGcqLEu6
-X-Proofpoint-ORIG-GUID: 6FkJ6XG6GSe2dKQAon3J5yLpKGcqLEu6
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Proofpoint-ORIG-GUID: 7jWrwsd0gCC4xwwOP3_ynMlmkpXlaQsq
+X-Proofpoint-GUID: 7jWrwsd0gCC4xwwOP3_ynMlmkpXlaQsq
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_FILL_THIS_FORM_SHORT=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,140 +103,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define the RAM_PRIVATE flag.
+Allocate auxilliary guest RAM as an anonymous file that is shareable
+with an external process.  This option applies to memory allocated as
+a side effect of creating various devices. It does not apply to
+memory-backend-objects, whether explicitly specified on the command
+line, or implicitly created by the -m command line option.
 
-In RAMBlock creation functions, if MAP_SHARED is 0 in the flags parameter,
-in a subsequent patch the implementation may still create a shared mapping
-if other conditions require it.  Callers who specifically want a private
-mapping, eg for objects specified by the user, must pass RAM_PRIVATE.
-
-After RAMBlock creation, MAP_SHARED in the block's flags indicates whether
-the block is shared or private, and MAP_PRIVATE is omitted.
+This option is intended to support new migration modes, in which the
+memory region can be transferred in place to a new QEMU process, by sending
+the memfd file descriptor to the process.  Memory contents are preserved,
+and if the mode also transfers device descriptors, then pages that are
+locked in memory for DMA remain locked.  This behavior is a pre-requisite
+for supporting vfio, vdpa, and iommufd devices with the new modes.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- backends/hostmem-epc.c   |  2 +-
- backends/hostmem-file.c  |  2 +-
- backends/hostmem-memfd.c |  2 +-
- backends/hostmem-ram.c   |  2 +-
- include/exec/memory.h    | 10 ++++++++++
- system/physmem.c         | 15 ++++++++++++---
- 6 files changed, 26 insertions(+), 7 deletions(-)
+ hw/core/machine.c   | 20 ++++++++++++++++++++
+ include/hw/boards.h |  1 +
+ qemu-options.hx     | 11 +++++++++++
+ system/physmem.c    |  3 +++
+ 4 files changed, 35 insertions(+)
 
-diff --git a/backends/hostmem-epc.c b/backends/hostmem-epc.c
-index eb4b95d..1fa2d03 100644
---- a/backends/hostmem-epc.c
-+++ b/backends/hostmem-epc.c
-@@ -36,7 +36,7 @@ sgx_epc_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
- 
-     backend->aligned = true;
-     name = object_get_canonical_path(OBJECT(backend));
--    ram_flags = (backend->share ? RAM_SHARED : 0) | RAM_PROTECTED;
-+    ram_flags = (backend->share ? RAM_SHARED : RAM_PRIVATE) | RAM_PROTECTED;
-     return memory_region_init_ram_from_fd(&backend->mr, OBJECT(backend), name,
-                                           backend->size, ram_flags, fd, 0, errp);
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index c949af9..75c8cba 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -455,6 +455,20 @@ static void machine_set_mem_merge(Object *obj, bool value, Error **errp)
+     ms->mem_merge = value;
  }
-diff --git a/backends/hostmem-file.c b/backends/hostmem-file.c
-index 46321fd..691a827 100644
---- a/backends/hostmem-file.c
-+++ b/backends/hostmem-file.c
-@@ -82,7 +82,7 @@ file_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
  
-     backend->aligned = true;
-     name = host_memory_backend_get_name(backend);
--    ram_flags = backend->share ? RAM_SHARED : 0;
-+    ram_flags = backend->share ? RAM_SHARED : RAM_PRIVATE;
-     ram_flags |= fb->readonly ? RAM_READONLY_FD : 0;
-     ram_flags |= fb->rom == ON_OFF_AUTO_ON ? RAM_READONLY : 0;
-     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
-diff --git a/backends/hostmem-memfd.c b/backends/hostmem-memfd.c
-index d4d0620..1672da9 100644
---- a/backends/hostmem-memfd.c
-+++ b/backends/hostmem-memfd.c
-@@ -52,7 +52,7 @@ memfd_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
- 
-     backend->aligned = true;
-     name = host_memory_backend_get_name(backend);
--    ram_flags = backend->share ? RAM_SHARED : 0;
-+    ram_flags = backend->share ? RAM_SHARED : RAM_PRIVATE;
-     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
-     ram_flags |= backend->guest_memfd ? RAM_GUEST_MEMFD : 0;
-     return memory_region_init_ram_from_fd(&backend->mr, OBJECT(backend), name,
-diff --git a/backends/hostmem-ram.c b/backends/hostmem-ram.c
-index 39aac6b..868ae6c 100644
---- a/backends/hostmem-ram.c
-+++ b/backends/hostmem-ram.c
-@@ -28,7 +28,7 @@ ram_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
-     }
- 
-     name = host_memory_backend_get_name(backend);
--    ram_flags = backend->share ? RAM_SHARED : 0;
-+    ram_flags = backend->share ? RAM_SHARED : RAM_PRIVATE;
-     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
-     ram_flags |= backend->guest_memfd ? RAM_GUEST_MEMFD : 0;
-     return memory_region_init_ram_flags_nomigrate(&backend->mr, OBJECT(backend),
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 9458e28..0ac21cc 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -246,6 +246,16 @@ typedef struct IOMMUTLBEvent {
- /* RAM can be private that has kvm guest memfd backend */
- #define RAM_GUEST_MEMFD   (1 << 12)
- 
-+/*
-+ * In RAMBlock creation functions, if MAP_SHARED is 0 in the flags parameter,
-+ * the implementation may still create a shared mapping if other conditions
-+ * require it.  Callers who specifically want a private mapping, eg objects
-+ * specified by the user, must pass RAM_PRIVATE.
-+ * After RAMBlock creation, MAP_SHARED in the block's flags indicates whether
-+ * the block is shared or private, and MAP_PRIVATE is omitted.
-+ */
-+#define RAM_PRIVATE (1 << 13)
++static bool machine_get_aux_ram_share(Object *obj, Error **errp)
++{
++    MachineState *ms = MACHINE(obj);
 +
- static inline void iommu_notifier_init(IOMMUNotifier *n, IOMMUNotify fn,
-                                        IOMMUNotifierFlag flags,
-                                        hwaddr start, hwaddr end,
++    return ms->aux_ram_share;
++}
++
++static void machine_set_aux_ram_share(Object *obj, bool value, Error **errp)
++{
++    MachineState *ms = MACHINE(obj);
++
++    ms->aux_ram_share = value;
++}
++
+ static bool machine_get_usb(Object *obj, Error **errp)
+ {
+     MachineState *ms = MACHINE(obj);
+@@ -1160,6 +1174,12 @@ static void machine_class_init(ObjectClass *oc, void *data)
+     object_class_property_set_description(oc, "mem-merge",
+         "Enable/disable memory merge support");
+ 
++#ifdef CONFIG_POSIX
++    object_class_property_add_bool(oc, "aux-ram-share",
++                                   machine_get_aux_ram_share,
++                                   machine_set_aux_ram_share);
++#endif
++
+     object_class_property_add_bool(oc, "usb",
+         machine_get_usb, machine_set_usb);
+     object_class_property_set_description(oc, "usb",
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 2ad711e..e1f41b2 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -410,6 +410,7 @@ struct MachineState {
+     bool enable_graphics;
+     ConfidentialGuestSupport *cgs;
+     HostMemoryBackend *memdev;
++    bool aux_ram_share;
+     /*
+      * convenience alias to ram_memdev_id backend memory region
+      * or to numa container memory region
+diff --git a/qemu-options.hx b/qemu-options.hx
+index cc694d3..b1f56b7 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -38,6 +38,9 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
+     "                nvdimm=on|off controls NVDIMM support (default=off)\n"
+     "                memory-encryption=@var{} memory encryption object to use (default=none)\n"
+     "                hmat=on|off controls ACPI HMAT support (default=off)\n"
++#ifdef CONFIG_POSIX
++    "                aux-ram-share=on|off allocate auxiliary guest RAM as shared (default: off)\n"
++#endif
+     "                memory-backend='backend-id' specifies explicitly provided backend for main RAM (default=none)\n"
+     "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n",
+     QEMU_ARCH_ALL)
+@@ -101,6 +104,14 @@ SRST
+         Enables or disables ACPI Heterogeneous Memory Attribute Table
+         (HMAT) support. The default is off.
+ 
++    ``aux-ram-share=on|off``
++        Allocate auxiliary guest RAM as an anonymous file that is
++        shareable with an external process.  This option applies to
++        memory allocated as a side effect of creating various devices.
++        It does not apply to memory-backend-objects, whether explicitly
++        specified on the command line, or implicitly created by the -m
++        command line option.  The default is off.
++
+     ``memory-backend='id'``
+         An alternative to legacy ``-mem-path`` and ``mem-prealloc`` options.
+         Allows to use a memory backend as main RAM.
 diff --git a/system/physmem.c b/system/physmem.c
-index 40dcd03..eb1c3a7 100644
+index eb1c3a7..0e629ee 100644
 --- a/system/physmem.c
 +++ b/system/physmem.c
-@@ -1952,7 +1952,11 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, ram_addr_t max_size,
-     ERRP_GUARD();
-     RAMBlock *new_block;
-     Error *local_err = NULL;
--    int64_t file_size, file_align;
-+    int64_t file_size, file_align, share_flags;
-+
-+    share_flags = ram_flags & (RAM_PRIVATE | RAM_SHARED);
-+    assert(share_flags != (RAM_SHARED | RAM_PRIVATE));
-+    ram_flags &= ~RAM_PRIVATE;
+@@ -2112,6 +2112,9 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
  
-     /* Just support these ram flags by now. */
-     assert((ram_flags & ~(RAM_SHARED | RAM_PMEM | RAM_NORESERVE |
-@@ -2095,7 +2099,11 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
- {
-     RAMBlock *new_block;
-     Error *local_err = NULL;
--    int align;
-+    int align, share_flags;
-+
-+    share_flags = ram_flags & (RAM_PRIVATE | RAM_SHARED);
-+    assert(share_flags != (RAM_SHARED | RAM_PRIVATE));
-+    ram_flags &= ~RAM_PRIVATE;
- 
-     assert((ram_flags & ~(RAM_SHARED | RAM_RESIZEABLE | RAM_PREALLOC |
-                           RAM_NORESERVE | RAM_GUEST_MEMFD)) == 0);
-@@ -2170,7 +2178,8 @@ RAMBlock *qemu_ram_alloc_from_ptr(ram_addr_t size, void *host,
- RAMBlock *qemu_ram_alloc(ram_addr_t size, uint32_t ram_flags,
-                          MemoryRegion *mr, Error **errp)
- {
--    assert((ram_flags & ~(RAM_SHARED | RAM_NORESERVE | RAM_GUEST_MEMFD)) == 0);
-+    assert((ram_flags & ~(RAM_SHARED | RAM_NORESERVE | RAM_GUEST_MEMFD |
-+                          RAM_PRIVATE)) == 0);
-     return qemu_ram_alloc_internal(size, size, NULL, NULL, ram_flags, mr, errp);
- }
- 
+ #ifdef CONFIG_POSIX         /* ignore RAM_SHARED for Windows */
+     if (!host) {
++        if (!share_flags && current_machine->aux_ram_share) {
++            ram_flags |= RAM_SHARED;
++        }
+         if (ram_flags & RAM_SHARED) {
+             const char *name = memory_region_name(mr);
+             int fd = qemu_ram_get_shared_fd(name, errp);
 -- 
 1.8.3.1
 
