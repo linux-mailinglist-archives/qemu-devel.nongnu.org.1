@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B921C9FC013
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 17:20:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 585A99FC00E
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 17:19:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQ7b7-0003AV-Db; Tue, 24 Dec 2024 11:17:29 -0500
+	id 1tQ7b6-00038E-Ej; Tue, 24 Dec 2024 11:17:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tQ7b0-00032B-3I
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 11:17:22 -0500
+ id 1tQ7b1-00033n-U9
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 11:17:24 -0500
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tQ7ax-00038t-2z
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 11:17:21 -0500
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BOEfa1H021661;
- Tue, 24 Dec 2024 16:17:11 GMT
+ id 1tQ7aw-000393-0Q
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 11:17:23 -0500
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BOEfaSW018368;
+ Tue, 24 Dec 2024 16:17:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :date:from:message-id:subject:to; s=corp-2023-11-20; bh=/MwKViCe
- snyCaThj9VY4WOZV0216X6BqpSUwTmmIO1s=; b=Rr+3XyLGBgDiV13upSQUSJrj
- /3wPSs2tLagy49SKYygBzWxeIrKSVn6vocM7lY2R+CBiUgiYHU42X/TnCNAbE9mL
- lXw1qp322BTeqbTawch5RtE6xJ7K6Q0jQWQTojV2vW5hit09H1oCAcdu3CdyF9lj
- nnLQir7Bsmr/uhJr6VVt3iR6nQyqQfWxsbGr7+TXIVUrhHu/VBcpHRE3qN7h+YJv
- k07EZhSln4CV24ZrQu0vPmW09AMSHDX1i3R1hR4BH4Q/oOg7p2P3Zzgl3OnLC5YN
- fgAUBMuNAd1+Sp4wJGcddAExZIgLrd9CY6P1uoALBpDAT5UUm+VGmoF5igGLZg==
+ :date:from:in-reply-to:message-id:references:subject:to; s=
+ corp-2023-11-20; bh=gkHB7N+nwVURAjFPG1Ui/YTtS4+YxcEgyAGzDGPvKhU=; b=
+ Z6yQg2gT8CIo4pUr5sg25sSMUcyUdXjJgvhaSVTjpMJw2UdtBeTXkoEgkqF75DRi
+ F58XGgm/KZtsq5C2I3AZWWTO5NREIPkDO0mXWuJsoYHjUvymJWaoBzxbYhEfItj4
+ yJp5Wn0zWP7wt/nQLa1KiP5GoYsLnOIfcfOkHiHdhDh+pujZnzYNAJGQ2N2Qhq49
+ BXT8RHtBWUltXXDtDRhCzTdlrIR0Ge53sbDX1gXoLNILBnIXWx4POYdvHo8t1hvs
+ iWddZvHdVTwJJI7Smc0cfTEOLX7M8cjgljmP4MKnRTH0SbJKY+1Dq0RopYxmoA7x
+ +WDIIxULOqS3wQQQ0XMPww==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43nq74cgjf-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43nq7rmg06-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 24 Dec 2024 16:17:10 +0000 (GMT)
+ Tue, 24 Dec 2024 16:17:11 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 4BOGG6RW022588; Tue, 24 Dec 2024 16:17:10 GMT
+ with ESMTP id 4BODq1ZQ023321; Tue, 24 Dec 2024 16:17:11 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 43nm484ggx-1
+ 43nm484gh9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Tue, 24 Dec 2024 16:17:10 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4BOGH9XG021973;
- Tue, 24 Dec 2024 16:17:09 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4BOGH9XI021973;
+ Tue, 24 Dec 2024 16:17:10 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 43nm484ggj-1; Tue, 24 Dec 2024 16:17:09 +0000
+ ESMTP id 43nm484ggj-2; Tue, 24 Dec 2024 16:17:10 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -61,10 +62,13 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V5 00/23] Live update: cpr-transfer
-Date: Tue, 24 Dec 2024 08:16:45 -0800
-Message-Id: <1735057028-308595-1-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V5 01/23] backends/hostmem-shm: factor out allocation of
+ "anonymous shared memory with an fd"
+Date: Tue, 24 Dec 2024 08:16:46 -0800
+Message-Id: <1735057028-308595-2-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1735057028-308595-1-git-send-email-steven.sistare@oracle.com>
+References: <1735057028-308595-1-git-send-email-steven.sistare@oracle.com>
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2024-12-24_06,2024-12-24_01,2024-11-22_01
@@ -73,8 +77,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  suspectscore=0 malwarescore=0 adultscore=0 bulkscore=0 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
  definitions=main-2412240141
-X-Proofpoint-ORIG-GUID: thSCaQpMKK7esghCRGeqfFKeoxv2MVYi
-X-Proofpoint-GUID: thSCaQpMKK7esghCRGeqfFKeoxv2MVYi
+X-Proofpoint-GUID: jQJX00NAKlAmHXDIinelcHEIUP6EVT1v
+X-Proofpoint-ORIG-GUID: jQJX00NAKlAmHXDIinelcHEIUP6EVT1v
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -100,269 +104,201 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-What?
+Let's factor it out so we can reuse it.
 
-This patch series adds the live migration cpr-transfer mode, which
-allows the user to transfer a guest to a new QEMU instance on the same
-host with minimal guest pause time, by preserving guest RAM in place,
-albeit with new virtual addresses in new QEMU, and by preserving device
-file descriptors.
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ backends/hostmem-shm.c | 45 ++++--------------------------------------
+ include/qemu/osdep.h   |  1 +
+ meson.build            |  8 ++++++--
+ util/oslib-posix.c     | 53 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ util/oslib-win32.c     |  6 ++++++
+ 5 files changed, 70 insertions(+), 43 deletions(-)
 
-The new user-visible interfaces are:
-  * cpr-transfer (MigMode migration parameter)
-  * cpr (MigrationChannelType)
-  * incoming MigrationChannel (command-line argument)
-  * aux-ram-share (machine option)
-
-The user sets the mode parameter before invoking the migrate command.
-In this mode, the user starts new QEMU on the same host as old QEMU, with
-the same arguments as old QEMU, plus two -incoming options; one for the main
-channel, and one for the CPR channel.  The user issues the migrate command to 
-old QEMU, which stops the VM, saves state to the migration channels, and 
-enters the postmigrate state.  Execution resumes in new QEMU.
-
-Memory-backend objects must have the share=on attribute, but memory-backend-epc
-is not supported.  The VM must be started with the '-machine aux-ram-share=on' 
-option, which allows auxilliary guest memory to be transferred in place to the 
-new process.
-
-This mode requires a second migration channel of type "cpr", in the channel
-arguments on the outgoing side, and in a second -incoming command-line 
-parameter on the incoming side. The channel must be a type, such as unix 
-socket, that supports SCM_RIGHTS.
-
-Why?
-
-This mode has less impact on the guest than any other method of updating
-in place.  The pause time is much lower, because devices need not be torn
-down and recreated, DMA does not need to be drained and quiesced, and minimal
-state is copied to new QEMU.  Further, there are no constraints on the guest.
-By contrast, cpr-reboot mode requires the guest to support S3 suspend-to-ram,
-and suspending plus resuming vfio devices adds multiple seconds to the
-guest pause time.
-
-These benefits all derive from the core design principle of this mode,
-which is preserving open descriptors.  This approach is very general and
-can be used to support a wide variety of devices that do not have hardware
-support for live migration, including but not limited to: vfio, chardev,
-vhost, vdpa, and iommufd.  Some devices need new kernel software interfaces
-to allow a descriptor to be used in a process that did not originally open it.
-
-How?
-
-All memory that is mapped by the guest is preserved in place.  Indeed,
-it must be, because it may be the target of DMA requests, which are not
-quiesced during cpr-transfer.  All such memory must be mmap'able in new QEMU.
-This is easy for named memory-backend objects, as long as they are mapped
-shared, because they are visible in the file system in both old and new QEMU.
-Anonymous memory must be allocated using memfd_create rather than MAP_ANON,
-so the memfd's can be sent to new QEMU.  Pages that were locked in memory
-for DMA in old QEMU remain locked in new QEMU, because the descriptor of
-the device that locked them remains open.
-
-cpr-transfer preserves descriptors by sending them to new QEMU via the CPR
-channel, which must support SCM_RIGHTS, and by sending the unique name of
-each descriptor to new QEMU via CPR state.
-
-For device descriptors, new QEMU reuses the descriptor when creating the
-device, rather than opening it again.  For memfd descriptors, new QEMU
-mmap's the preserved memfd when a ramblock is created.
-
-CPR state cannot be sent over the normal migration channel, because devices
-and backends are created prior to reading the channel, so this mode sends
-CPR state over a second "cpr" migration channel.  New QEMU reads the second 
-channel prior to creating devices or backends.
-
-Example:
-
-In this example, we simply restart the same version of QEMU, but in
-a real scenario one would use a new QEMU binary path in terminal 2.
-
-  Terminal 1: start old QEMU
-  # qemu-kvm -qmp stdio -object
-  memory-backend-file,id=ram0,size=4G,mem-path=/dev/shm/ram0,share=on
-  -m 4G -machine aux-ram-share=on ...
-
-  Terminal 2: start new QEMU
-  # qemu-kvm -monitor stdio ... -incoming tcp:0:44444
-    -incoming '{"channel-type": "cpr",
-                "addr": { "transport": "socket", "type": "unix",
-                          "path": "cpr.sock"}}'
-
-  Terminal 1:
-  {"execute":"qmp_capabilities"}
-
-  {"execute": "query-status"}
-  {"return": {"status": "running",
-              "running": true}}
-
-  {"execute":"migrate-set-parameters",
-   "arguments":{"mode":"cpr-transfer"}}
-
-  {"execute": "migrate", "arguments": { "channels": [
-    {"channel-type": "main",
-     "addr": { "transport": "socket", "type": "inet",
-               "host": "0", "port": "44444" }},
-    {"channel-type": "cpr",
-     "addr": { "transport": "socket", "type": "unix",
-               "path": "cpr.sock" }}]}}
-
-  {"execute": "query-status"}
-  {"return": {"status": "postmigrate",
-              "running": false}}
-
-  Terminal 2:
-  QEMU 10.0.50 monitor - type 'help' for more information
-  (qemu) info status
-  VM status: running
-
-This patch series implements a minimal version of cpr-transfer.  Additional
-series are ready to be posted to deliver the complete vision described
-above, including
-  * vfio
-  * chardev
-  * vhost and tap
-  * blockers
-  * cpr-exec mode
-  * iommufd
-
-Changes in V2:
-  * cpr-transfer is the first new mode proposed, and cpr-exec is deferred
-  * anon-alloc does not apply to memory-backend-object
-  * replaced hack with proper synchronization between source and target
-  * defined QEMU_CPR_FILE_MAGIC
-  * addressed misc review comments
-
-Changes in V3:
-  * added cpr-transfer to migration-test
-  * documented cpr-transfer in CPR.rst
-  * fix size_t trace format for 32-bit build
-  * drop explicit fd value in VMSTATE_FD
-  * defer cpr_walk_fd() and cpr_resave_fd() to later series
-  * drop "migration: save cpr mode".
-    delete mode from cpr state, and use cpr_uri to infer transfer mode.
-  * drop "migration: stop vm earlier for cpr"
-  * dropped cpr helpers, to be re-added later when needed
-  * fixed an unreported bug for cpr-transfer and migrate cancel
-  * documented cpr-transfer restrictions in qapi
-  * added trace for cpr_state_save and cpr_state_load
-  * added ftruncate to "preserve ram blocks"
-
-Changes in V4:
-  * cleaned up qtest deferred connection code
-  * renamed pass_fd -> can_pass_fd
-  * squashed patch "split qmp_migrate"
-  * deleted cpr-uri and its patches
-  * added cpr channel and its patches
-  * added patch "hostmem-shm: preserve for cpr"
-  * added patch "fd-based shared memory"
-  * added patch "factor out allocation of anonymous shared memory"
-  * added RAM_PRIVATE and its patch
-  * added aux-ram-share and its patch
-
-Changes in V5:
-  * added patch 'enhance migrate_uri_parse'
-  * supported dotted keys for -incoming channel,
-    and rewrote incoming_option_parse
-  * moved migrate_fd_cancel -> vm_resume to "stop vm earlier for cpr"
-    in a future series.
-  * updated command-line definition for aux-ram-share
-  * added patch "resizable qemu_ram_alloc_from_fd"
-  * rewrote patch "fd-based shared memory"
-  * fixed error message in qemu_shm_alloc
-  * added patch 'tests/qtest: optimize migrate_set_ports'
-  * added patch 'tests/qtest: enhance migration channels'
-  * added patch 'tests/qtest: assert qmp_ready'
-  * modified patch 'migration-test: cpr-transfer'
-  * polished the documentation in CPR.rst, qapi, and the
-    cpr-transfer mode commit message
-  * updated to master, and resolved massive context diffs for migration tests
-
-The first 9 patches below are foundational and are needed for both cpr-transfer
-mode and the proposed cpr-exec mode.  The next 6 patches are specific to
-cpr-transfer and implement the mechanisms for sharing state across a socket
-using SCM_RIGHTS.  The last 8 patches supply tests and documentation.
-
-Steve Sistare (23):
-  backends/hostmem-shm: factor out allocation of "anonymous shared
-    memory with an fd"
-  physmem: qemu_ram_alloc_from_fd extensions
-  physmem: fd-based shared memory
-  memory: add RAM_PRIVATE
-  machine: aux-ram-share option
-  migration: cpr-state
-  physmem: preserve ram blocks for cpr
-  hostmem-memfd: preserve for cpr
-  hostmem-shm: preserve for cpr
-  migration: enhance migrate_uri_parse
-  migration: incoming channel
-  migration: SCM_RIGHTS for QEMUFile
-  migration: VMSTATE_FD
-  migration: cpr-transfer save and load
-  migration: cpr-transfer mode
-  migration-test: memory_backend
-  tests/qtest: optimize migrate_set_ports
-  tests/qtest: defer connection
-  migration-test: defer connection
-  tests/qtest: enhance migration channels
-  tests/qtest: assert qmp_ready
-  migration-test: cpr-transfer
-  migration: cpr-transfer documentation
-
- backends/hostmem-epc.c                 |   2 +-
- backends/hostmem-file.c                |   2 +-
- backends/hostmem-memfd.c               |  14 ++-
- backends/hostmem-ram.c                 |   2 +-
- backends/hostmem-shm.c                 |  51 ++------
- docs/devel/migration/CPR.rst           | 182 ++++++++++++++++++++++++++-
- hw/core/machine.c                      |  20 +++
- include/exec/memory.h                  |  10 ++
- include/exec/ram_addr.h                |  13 +-
- include/hw/boards.h                    |   1 +
- include/migration/cpr.h                |  33 +++++
- include/migration/misc.h               |   7 ++
- include/migration/vmstate.h            |   9 ++
- include/qemu/osdep.h                   |   1 +
- meson.build                            |   8 +-
- migration/cpr-transfer.c               |  76 +++++++++++
- migration/cpr.c                        | 224 +++++++++++++++++++++++++++++++++
- migration/meson.build                  |   2 +
- migration/migration.c                  | 137 +++++++++++++++++++-
- migration/migration.h                  |   4 +-
- migration/options.c                    |   8 +-
- migration/qemu-file.c                  |  83 +++++++++++-
- migration/qemu-file.h                  |   2 +
- migration/ram.c                        |   2 +
- migration/trace-events                 |  11 ++
- migration/vmstate-types.c              |  24 ++++
- qapi/migration.json                    |  43 ++++++-
- qemu-options.hx                        |  34 +++++
- stubs/vmstate.c                        |   7 ++
- system/memory.c                        |   4 +-
- system/physmem.c                       | 144 ++++++++++++++++++---
- system/trace-events                    |   1 +
- system/vl.c                            |  43 ++++++-
- tests/qtest/libqtest.c                 |  92 +++++++++-----
- tests/qtest/libqtest.h                 |  19 ++-
- tests/qtest/migration/cpr-tests.c      |  60 +++++++++
- tests/qtest/migration/framework.c      |  74 +++++++++--
- tests/qtest/migration/framework.h      |  11 ++
- tests/qtest/migration/migration-qmp.c  |  53 ++++++--
- tests/qtest/migration/migration-qmp.h  |  10 +-
- tests/qtest/migration/migration-util.c |  23 ++--
- tests/qtest/migration/misc-tests.c     |   9 +-
- tests/qtest/migration/precopy-tests.c  |   6 +-
- tests/qtest/virtio-net-failover.c      |   8 +-
- util/memfd.c                           |  16 ++-
- util/oslib-posix.c                     |  53 ++++++++
- util/oslib-win32.c                     |   6 +
- 47 files changed, 1474 insertions(+), 170 deletions(-)
- create mode 100644 include/migration/cpr.h
- create mode 100644 migration/cpr-transfer.c
- create mode 100644 migration/cpr.c
-
-base-commit: aa3a285b5bc56a4208b3b57d4a55291e9c260107
-
+diff --git a/backends/hostmem-shm.c b/backends/hostmem-shm.c
+index 5551ba7..fabee41 100644
+--- a/backends/hostmem-shm.c
++++ b/backends/hostmem-shm.c
+@@ -25,11 +25,9 @@ struct HostMemoryBackendShm {
+ static bool
+ shm_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
+ {
+-    g_autoptr(GString) shm_name = g_string_new(NULL);
+     g_autofree char *backend_name = NULL;
+     uint32_t ram_flags;
+-    int fd, oflag;
+-    mode_t mode;
++    int fd;
+ 
+     if (!backend->size) {
+         error_setg(errp, "can't create shm backend with size 0");
+@@ -41,48 +39,13 @@ shm_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
+         return false;
+     }
+ 
+-    /*
+-     * Let's use `mode = 0` because we don't want other processes to open our
+-     * memory unless we share the file descriptor with them.
+-     */
+-    mode = 0;
+-    oflag = O_RDWR | O_CREAT | O_EXCL;
+-    backend_name = host_memory_backend_get_name(backend);
+-
+-    /*
+-     * Some operating systems allow creating anonymous POSIX shared memory
+-     * objects (e.g. FreeBSD provides the SHM_ANON constant), but this is not
+-     * defined by POSIX, so let's create a unique name.
+-     *
+-     * From Linux's shm_open(3) man-page:
+-     *   For  portable  use,  a shared  memory  object should be identified
+-     *   by a name of the form /somename;"
+-     */
+-    g_string_printf(shm_name, "/qemu-" FMT_pid "-shm-%s", getpid(),
+-                    backend_name);
+-
+-    fd = shm_open(shm_name->str, oflag, mode);
++    fd = qemu_shm_alloc(backend->size, errp);
+     if (fd < 0) {
+-        error_setg_errno(errp, errno,
+-                         "failed to create POSIX shared memory");
+-        return false;
+-    }
+-
+-    /*
+-     * We have the file descriptor, so we no longer need to expose the
+-     * POSIX shared memory object. However it will remain allocated as long as
+-     * there are file descriptors pointing to it.
+-     */
+-    shm_unlink(shm_name->str);
+-
+-    if (ftruncate(fd, backend->size) == -1) {
+-        error_setg_errno(errp, errno,
+-                         "failed to resize POSIX shared memory to %" PRIu64,
+-                         backend->size);
+-        close(fd);
+         return false;
+     }
+ 
++    /* Let's do the same as memory-backend-ram,share=on would do. */
++    backend_name = host_memory_backend_get_name(backend);
+     ram_flags = RAM_SHARED;
+     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
+ 
+diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+index b94fb5f..112ebdf 100644
+--- a/include/qemu/osdep.h
++++ b/include/qemu/osdep.h
+@@ -509,6 +509,7 @@ int qemu_daemon(int nochdir, int noclose);
+ void *qemu_anon_ram_alloc(size_t size, uint64_t *align, bool shared,
+                           bool noreserve);
+ void qemu_anon_ram_free(void *ptr, size_t size);
++int qemu_shm_alloc(size_t size, Error **errp);
+ 
+ #ifdef _WIN32
+ #define HAVE_CHARDEV_SERIAL 1
+diff --git a/meson.build b/meson.build
+index 3c91ff4..fcc13a1 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3701,9 +3701,13 @@ libqemuutil = static_library('qemuutil',
+                              build_by_default: false,
+                              sources: util_ss.sources() + stub_ss.sources() + genh,
+                              dependencies: [util_ss.dependencies(), libm, threads, glib, socket, malloc])
++qemuutil_deps = [event_loop_base]
++if host_os != 'windows'
++  qemuutil_deps += [rt]
++endif
+ qemuutil = declare_dependency(link_with: libqemuutil,
+                               sources: genh + version_res,
+-                              dependencies: [event_loop_base])
++                              dependencies: qemuutil_deps)
+ 
+ if have_system or have_user
+   decodetree = generator(find_program('scripts/decodetree.py'),
+@@ -4357,7 +4361,7 @@ if have_tools
+   subdir('contrib/elf2dmp')
+ 
+   executable('qemu-edid', files('qemu-edid.c', 'hw/display/edid-generate.c'),
+-             dependencies: qemuutil,
++             dependencies: [qemuutil, rt],
+              install: true)
+ 
+   if have_vhost_user
+diff --git a/util/oslib-posix.c b/util/oslib-posix.c
+index 7a542cb..69ba65a 100644
+--- a/util/oslib-posix.c
++++ b/util/oslib-posix.c
+@@ -931,3 +931,56 @@ void qemu_close_all_open_fd(const int *skip, unsigned int nskip)
+         qemu_close_all_open_fd_fallback(skip, nskip, open_max);
+     }
+ }
++
++int qemu_shm_alloc(size_t size, Error **errp)
++{
++    g_autoptr(GString) shm_name = g_string_new(NULL);
++    int fd, oflag, cur_sequence;
++    static int sequence;
++    mode_t mode;
++
++    cur_sequence = qatomic_fetch_inc(&sequence);
++
++    /*
++     * Let's use `mode = 0` because we don't want other processes to open our
++     * memory unless we share the file descriptor with them.
++     */
++    mode = 0;
++    oflag = O_RDWR | O_CREAT | O_EXCL;
++
++    /*
++     * Some operating systems allow creating anonymous POSIX shared memory
++     * objects (e.g. FreeBSD provides the SHM_ANON constant), but this is not
++     * defined by POSIX, so let's create a unique name.
++     *
++     * From Linux's shm_open(3) man-page:
++     *   For  portable  use,  a shared  memory  object should be identified
++     *   by a name of the form /somename;"
++     */
++    g_string_printf(shm_name, "/qemu-" FMT_pid "-shm-%d", getpid(),
++                    cur_sequence);
++
++    fd = shm_open(shm_name->str, oflag, mode);
++    if (fd < 0) {
++        error_setg_errno(errp, errno,
++                         "failed to create POSIX shared memory");
++        return -1;
++    }
++
++    /*
++     * We have the file descriptor, so we no longer need to expose the
++     * POSIX shared memory object. However it will remain allocated as long as
++     * there are file descriptors pointing to it.
++     */
++    shm_unlink(shm_name->str);
++
++    if (ftruncate(fd, size) == -1) {
++        error_setg_errno(errp, errno,
++                         "failed to resize POSIX shared memory to %" PRIu64,
++                         size);
++        close(fd);
++        return -1;
++    }
++
++    return fd;
++}
+diff --git a/util/oslib-win32.c b/util/oslib-win32.c
+index b623830..b735163 100644
+--- a/util/oslib-win32.c
++++ b/util/oslib-win32.c
+@@ -877,3 +877,9 @@ void qemu_win32_map_free(void *ptr, HANDLE h, Error **errp)
+     }
+     CloseHandle(h);
+ }
++
++int qemu_shm_alloc(size_t size, Error **errp)
++{
++    error_setg(errp, "Shared memory is not supported.");
++    return -1;
++}
 -- 
 1.8.3.1
 
