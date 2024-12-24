@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF249FC21F
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 21:17:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C04549FC223
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 21:18:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQBDk-0007bv-S7; Tue, 24 Dec 2024 15:09:37 -0500
+	id 1tQBEE-0003cw-Vu; Tue, 24 Dec 2024 15:10:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tQBDb-0007DQ-18
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 15:09:27 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1tQBDb-0007GO-Tt
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 15:09:28 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tQBDZ-0002ze-Hw
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 15:09:26 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-215770613dbso41216155ad.2
+ id 1tQBDa-0002zt-6D
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 15:09:27 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-21636268e43so70684755ad.2
  for <qemu-devel@nongnu.org>; Tue, 24 Dec 2024 12:09:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735070964; x=1735675764; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735070965; x=1735675765; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pM1P4H8kwtouAZ2NoWkwRl0qCbuYni4Pia78By+9+hY=;
- b=QTp3ms79A+LVU76nAD4T4SzLQpRH75f+g+bJmTfbLlrbbniM5d9/AhIKJokpHfCWe/
- ITMe5Bb3IAxG28sRl1FW/uQgeksN5EdBdylAhqRPd8a7ISWbDUW1OzT6QblG/PoC5MA3
- ALvd/naTSy8cp/dmjIUDVEvEBFD17Z+T2bpemCCe93tCxjhgGomsm43X2d/5bd0cYcjN
- mQ8G7ybZ8X3yrWAw3FY2Y3EKXV2evTr8f2JhYa3a2wtz7V13vd7sQJEsMm2BU77w04ZL
- vfKK4wxxJ6B5u/sf0Dr7cHB2rXbgYYKc0/4COKkhvOMB1W+Y0vAxmzn5tjL/RvjbU+e9
- tQ6A==
+ bh=nBCIoQniDOPCXed8/3lUiDnf86jkv18W9RdRy76zZxA=;
+ b=EpHfixSyo8Faa66pziac9HuCTWLYbZrwKwE+1+DQKqGgfzNCo0MEyqVYMrVc0jF2LN
+ N8hDBUFA/B5xTo2yF6oXxlK/TF70sDw1FDGf4rKP+gIXTMGdPu4JkWjDqxOpQIxwgVFT
+ kGCuiVQeDCY8MaCqM5tMBwF4qC4HbmFEpcansymcC9I3TKgBVBNRQ50Zs82fvxAO6Tf+
+ eutoD+ms8bE/HeYsCPGutqCYb5DpJ9dCy4r4zhcJTilMrHn9oEAjUy7V+jjTKxYr0qmA
+ zMB8xgmAB8koaW6ZocK4qHVklowdO7DoJMKsQvmkwja7vWRtr/6yHFpPUvpofYf/6Onc
+ gPdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735070964; x=1735675764;
+ d=1e100.net; s=20230601; t=1735070965; x=1735675765;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pM1P4H8kwtouAZ2NoWkwRl0qCbuYni4Pia78By+9+hY=;
- b=sCmdn2sl2yi+HkkQQH8aqb6GK+SwU6QAwEj6nqxiHplPcf989AR0mW+daPPd54bnGk
- NPxHX0lLP47KmYABEK8qKQeC86TNqLjlQnRYodTLuktfc/boo90PikqDXF1galxn2YS3
- 9pGRb13ppOYVJZ/QI3tKJReGj8SThjGBpe2js0GNBTuJkyuDBo4UpD5NPujZQ2OX8902
- rXq6xUNcgt4Q/Vz4F7t/UNJruRuLrAR7eqDwNgZMLx1wZN3YivDTTgN+DUbYf0JvzRzW
- eA2elNdM7/7JUR4/uo85H75C+Chwd6cMJum91r8Hd+CMOytp+2RQtubAl+px5suc/+gA
- b+og==
-X-Gm-Message-State: AOJu0Yw4+Mu7+xKHT8lRc1hpL7EPvu87cIX/l+cIxcp9T3LChq0etV8l
- MI/uuxCP0zlWyJxHTBKi21h316LQwBBSD5tUkZ+HTtX4QRsi6/26Qw53O5tvU14FIkI3SsLcbaQ
- queU=
-X-Gm-Gg: ASbGnctOciuU5qvpcXLDXRj85kgVMLydxTe345QYEP4MsTbp0ITBY/qxxpT2u8+pmLK
- ybCHi7i44HZkkDzXgU34A2zBJFMV41fkuzM8mZWo/36Dpb3v1sMZnrbM5j+3i2dKVG35Npe1I4m
- 7536bxqXw4wSMz9h/JOeCO9hY3gUn2oDoKqfaFyRVvgCZ2KUhI/PeA5Sc/wGZa9iBVJwFpNlAmK
- hGLccbIf9e2eC+x7qLId3CpDn+ed88gt/2KXByM2zqenSD6/rFq/ZqHvKI7zeJNGbGPzsBYIw//
- 1WzixX1U+ebrzeSaH/Ego8h0tQ==
-X-Google-Smtp-Source: AGHT+IEPNAkpa+ZAxpg2BfRC8jxoRhCkHmdZVsedT9ZGErNX3et8yx1rHrmXhGchT8VKOwzuGBEy3Q==
-X-Received: by 2002:a05:6a00:4096:b0:729:c7b:9385 with SMTP id
- d2e1a72fcca58-72abdd7bdecmr26688209b3a.6.1735070964271; 
- Tue, 24 Dec 2024 12:09:24 -0800 (PST)
+ bh=nBCIoQniDOPCXed8/3lUiDnf86jkv18W9RdRy76zZxA=;
+ b=GpvF71tyVDeHW6pDcfHSoIY6lyeJWwQ/cCVZ793t7l4ErNnZdjXjaZI9zoFSx+89kB
+ 8fBkuiKWhNciYVITuvb2xynnouP65kujfV5oWSVYGVWJY/eCYpR9vTol9qlih0a7fRzU
+ qU+1nGCx29RaPkJyINaCAcYoNnib+4p/ufbHTUfkWsAI2p7sllAdV54yg0DVrJT+xXZ0
+ IGpllbO8iTRfMFRNlQ5FxW1NNHnxUOCVXXmHhYiIIw9o/peC7UUivFvbhUQeHSSq6OF6
+ M/uN6d21QtYBkxlHx3AVWRQyvfwG9gwba7bm+Y1Aaik51pE1Iz8hqFY2tz1SVm/emwuJ
+ r0TA==
+X-Gm-Message-State: AOJu0YxZYfckSUcHJfu++/uEdgBFb2J6IT+AtEoV/oKKOMzzmAafAZJr
+ b+j4siBBVXrK4vhT7e8QO/PrqEf0QHzbYYpuBAsX/85fc/u+FQQ5YaPq5xXedJBpknH9SVxntIi
+ SZqY=
+X-Gm-Gg: ASbGncvjpxdV5kdn7/Yy2miZCm9XW/2oQTJumjtUAyQgG6ZsR2tBX5kVqGjUhClqRe2
+ rGBSzKJtxZdmeLzYJ9hYMjf9lvQEtBBdwXqAX5jg4PZ3lRO/GPyFFaxzP9Xza8c1z5t5GnTIaSO
+ aCY4b+H38Z/X8P7tfpXbG9xxBZ6V63O2zwq735LBfYQAu1GVHt5cdhULaUv6B9P+GTV/hcM9uaY
+ w1oYZ9mhjVLasAirqbJOyEZDqEmyWjf11rNiTca475Q3a9ywVMxjanTnPyPB4h6pTefadctmsxu
+ lS6FMt7ajJP0vdhyE0TzwHiZwQ==
+X-Google-Smtp-Source: AGHT+IFpT5SJ5/A+GrfOeoK7DQ6JA+b4lWcJPELegzK02zTEKK1ip+FpOUq/IypTa+u+VGNAO1r4Rw==
+X-Received: by 2002:a05:6a20:6f06:b0:1e1:9ba5:80d8 with SMTP id
+ adf61e73a8af0-1e5e080df22mr25488906637.33.1735070965000; 
+ Tue, 24 Dec 2024 12:09:25 -0800 (PST)
 Received: from stoup.. (syn-156-019-246-023.biz.spectrum.com. [156.19.246.23])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad8309acsm10033521b3a.45.2024.12.24.12.09.23
+ d2e1a72fcca58-72aad8309acsm10033521b3a.45.2024.12.24.12.09.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Dec 2024 12:09:23 -0800 (PST)
+ Tue, 24 Dec 2024 12:09:24 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Brian Cain <brian.cain@oss.qualcomm.com>
-Subject: [PULL 64/72] target/hexagon: Use float32_muladd_scalbn for
- helper_sffma_sc
-Date: Tue, 24 Dec 2024 12:05:13 -0800
-Message-ID: <20241224200521.310066-65-richard.henderson@linaro.org>
+Subject: [PULL 65/72] target/hexagon: Use float32_muladd for
+ helper_sffm[as]_lib
+Date: Tue, 24 Dec 2024 12:05:14 -0800
+Message-ID: <20241224200521.310066-66-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241224200521.310066-1-richard.henderson@linaro.org>
 References: <20241224200521.310066-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,40 +98,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This instruction has a special case that 0 * x + c returns c
-without the normal sign folding that comes with 0 + -0.
-Use the new float_muladd_suppress_add_product_zero to
-describe this.
+There are multiple special cases for this instruction.
+(1) The saturate to normal maximum instead of overflow to infinity is
+    handled by the new float_round_nearest_even_max rounding mode.
+(2) The 0 * n + c special case is handled by the new
+    float_muladd_suppress_add_product_zero flag.
+(3) The Inf - Inf -> 0 special case can be detected after the fact
+    by examining float_flag_invalid_isi.
 
 Reviewed-by: Brian Cain <brian.cain@oss.qualcomm.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hexagon/op_helper.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ target/hexagon/op_helper.c | 105 +++++++++----------------------------
+ 1 file changed, 26 insertions(+), 79 deletions(-)
 
 diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
-index 95bfa5d029..53c65e852e 100644
+index 53c65e852e..6da8db8ea5 100644
 --- a/target/hexagon/op_helper.c
 +++ b/target/hexagon/op_helper.c
-@@ -1080,15 +1080,10 @@ static float32 check_nan(float32 dst, float32 x, float_status *fp_status)
+@@ -1059,24 +1059,6 @@ float32 HELPER(sffma)(CPUHexagonState *env, float32 RxV,
+     return RxV;
+ }
+ 
+-static bool is_zero_prod(float32 a, float32 b)
+-{
+-    return ((float32_is_zero(a) && is_finite(b)) ||
+-            (float32_is_zero(b) && is_finite(a)));
+-}
+-
+-static float32 check_nan(float32 dst, float32 x, float_status *fp_status)
+-{
+-    float32 ret = dst;
+-    if (float32_is_any_nan(x)) {
+-        if (extract32(x, 22, 1) == 0) {
+-            float_raise(float_flag_invalid, fp_status);
+-        }
+-        ret = make_float32(0xffffffff);    /* nan */
+-    }
+-    return ret;
+-}
+-
  float32 HELPER(sffma_sc)(CPUHexagonState *env, float32 RxV,
                           float32 RsV, float32 RtV, float32 PuV)
  {
--    size4s_t tmp;
-     arch_fpop_start(env);
+@@ -1098,78 +1080,43 @@ float32 HELPER(sffms)(CPUHexagonState *env, float32 RxV,
+     return RxV;
+ }
+ 
+-static bool is_inf_prod(int32_t a, int32_t b)
++static float32 do_sffma_lib(CPUHexagonState *env, float32 RxV,
++                            float32 RsV, float32 RtV, int negate)
+ {
+-    return (float32_is_infinity(a) && float32_is_infinity(b)) ||
+-           (float32_is_infinity(a) && is_finite(b) && !float32_is_zero(b)) ||
+-           (float32_is_infinity(b) && is_finite(a) && !float32_is_zero(a));
++    int flags;
++
++    arch_fpop_start(env);
++
++    set_float_rounding_mode(float_round_nearest_even_max, &env->fp_status);
++    RxV = float32_muladd(RsV, RtV, RxV,
++                         negate | float_muladd_suppress_add_product_zero,
++                         &env->fp_status);
++
++    flags = get_float_exception_flags(&env->fp_status);
++    if (flags) {
++        /* Flags are suppressed by this instruction. */
++        set_float_exception_flags(0, &env->fp_status);
++
++        /* Return 0 for Inf - Inf. */
++        if (flags & float_flag_invalid_isi) {
++            RxV = 0;
++        }
++    }
++
++    arch_fpop_end(env);
++    return RxV;
+ }
+ 
+ float32 HELPER(sffma_lib)(CPUHexagonState *env, float32 RxV,
+                           float32 RsV, float32 RtV)
+ {
+-    bool infinp;
+-    bool infminusinf;
+-    float32 tmp;
+-
+-    arch_fpop_start(env);
+-    set_float_rounding_mode(float_round_nearest_even, &env->fp_status);
+-    infminusinf = float32_is_infinity(RxV) &&
+-                  is_inf_prod(RsV, RtV) &&
+-                  (fGETBIT(31, RsV ^ RxV ^ RtV) != 0);
+-    infinp = float32_is_infinity(RxV) ||
+-             float32_is_infinity(RtV) ||
+-             float32_is_infinity(RsV);
 -    RxV = check_nan(RxV, RxV, &env->fp_status);
 -    RxV = check_nan(RxV, RsV, &env->fp_status);
 -    RxV = check_nan(RxV, RtV, &env->fp_status);
--    tmp = internal_fmafx(RsV, RtV, RxV, fSXTN(8, 64, PuV), &env->fp_status);
+-    tmp = internal_fmafx(RsV, RtV, RxV, 0, &env->fp_status);
 -    if (!(float32_is_zero(RxV) && is_zero_prod(RsV, RtV))) {
 -        RxV = tmp;
 -    }
-+    RxV = float32_muladd_scalbn(RsV, RtV, RxV, fSXTN(8, 64, PuV),
-+                                float_muladd_suppress_add_product_zero,
-+                                &env->fp_status);
-     arch_fpop_end(env);
-     return RxV;
+-    set_float_exception_flags(0, &env->fp_status);
+-    if (float32_is_infinity(RxV) && !infinp) {
+-        RxV = RxV - 1;
+-    }
+-    if (infminusinf) {
+-        RxV = 0;
+-    }
+-    arch_fpop_end(env);
+-    return RxV;
++    return do_sffma_lib(env, RxV, RsV, RtV, 0);
  }
+ 
+ float32 HELPER(sffms_lib)(CPUHexagonState *env, float32 RxV,
+                           float32 RsV, float32 RtV)
+ {
+-    bool infinp;
+-    bool infminusinf;
+-    float32 tmp;
+-
+-    arch_fpop_start(env);
+-    set_float_rounding_mode(float_round_nearest_even, &env->fp_status);
+-    infminusinf = float32_is_infinity(RxV) &&
+-                  is_inf_prod(RsV, RtV) &&
+-                  (fGETBIT(31, RsV ^ RxV ^ RtV) == 0);
+-    infinp = float32_is_infinity(RxV) ||
+-             float32_is_infinity(RtV) ||
+-             float32_is_infinity(RsV);
+-    RxV = check_nan(RxV, RxV, &env->fp_status);
+-    RxV = check_nan(RxV, RsV, &env->fp_status);
+-    RxV = check_nan(RxV, RtV, &env->fp_status);
+-    float32 minus_RsV = float32_sub(float32_zero, RsV, &env->fp_status);
+-    tmp = internal_fmafx(minus_RsV, RtV, RxV, 0, &env->fp_status);
+-    if (!(float32_is_zero(RxV) && is_zero_prod(RsV, RtV))) {
+-        RxV = tmp;
+-    }
+-    set_float_exception_flags(0, &env->fp_status);
+-    if (float32_is_infinity(RxV) && !infinp) {
+-        RxV = RxV - 1;
+-    }
+-    if (infminusinf) {
+-        RxV = 0;
+-    }
+-    arch_fpop_end(env);
+-    return RxV;
++    return do_sffma_lib(env, RxV, RsV, RtV, float_muladd_negate_product);
+ }
+ 
+ float64 HELPER(dfmpyfix)(CPUHexagonState *env, float64 RssV, float64 RttV)
 -- 
 2.43.0
 
