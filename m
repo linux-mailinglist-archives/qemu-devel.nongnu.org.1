@@ -2,99 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A329FC1D8
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 21:03:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23AE19FC219
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 21:16:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQB6w-00015A-B0; Tue, 24 Dec 2024 15:02:34 -0500
+	id 1tQB9t-0002kg-JK; Tue, 24 Dec 2024 15:05:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tQB6i-00014k-Ir
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 15:02:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tQB6h-0001gs-9V
- for qemu-devel@nongnu.org; Tue, 24 Dec 2024 15:02:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1735070538;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=iHRSL7g1qaxeHGQpwU5xzhSki/QEOcFt54VgH/4iZWM=;
- b=Ir0w0YIQ+Um8AR1ug3oOquGozXZjLDWnPJ0FtsX4bqkBL+NnVG69zDuNi0otpUHwg5nsWX
- j73sFYo2Cp624Ykujw9SbHDn7GnMWE8BtzdCwhrrGAydiVbzweBK1yTANNahJS7Ulse9YR
- uSCGgNw0Iu7KrSrUspqYeBDTb5BH2As=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-74-lTfxXY-3Nb-m9W5vrkRYcA-1; Tue, 24 Dec 2024 15:02:14 -0500
-X-MC-Unique: lTfxXY-3Nb-m9W5vrkRYcA-1
-X-Mimecast-MFC-AGG-ID: lTfxXY-3Nb-m9W5vrkRYcA
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6d89154adabso101381516d6.0
- for <qemu-devel@nongnu.org>; Tue, 24 Dec 2024 12:02:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tQB9i-0002jM-TE
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 15:05:27 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tQB9g-0002UZ-SG
+ for qemu-devel@nongnu.org; Tue, 24 Dec 2024 15:05:26 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-21675fd60feso73522345ad.2
+ for <qemu-devel@nongnu.org>; Tue, 24 Dec 2024 12:05:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1735070723; x=1735675523; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2jxIuXphk2p1Sj9EERk4+AzkFM+txRkx+yf5xQplj+4=;
+ b=k41fhPK2hg70pFb3WhU4n/huqZCTZ4HCV711wOsOfhKr/I0/Vyc3k/zWxQQNvyTmTu
+ p1xChcWUcYokgHMqsmXmVcYbofbUtJOCd5VERsSpi9tkuZrj9eHxfnkUqRCJ87iJNHJR
+ upcBIhIfOQKvkjfmbwnoxmLJ275BF1sweiCKdWZkG5sydeFYpdtbllRk8AQfVR738B8f
+ hPhOAEQAVzQUtaVSI2VLzytRTBID9o10QXUtVY7iOE+i3wiuSYWjHGMaGqWoEpZE6ybM
+ G/KyKDv2KeLhJAFX8nCT9DvuQ0gzB6i+JyA7W942xSoXpRikRtvhaovtc6b8dRojNUl6
+ dlTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735070534; x=1735675334;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iHRSL7g1qaxeHGQpwU5xzhSki/QEOcFt54VgH/4iZWM=;
- b=mHen+BH3xEKjDTAwrpJNyZk+Ekh53BTsaqfiMWrrTWWg+BbzEpPB/9xRHPQPbGG3FR
- v0EGdddmhmK4P4AZ8cnQWl/6I5Lsf26jzTxJoHSUg+uZseqL/Ov2rGqye6XeH1UfvaVI
- d5aQu8wnXR/yTaxTs2Cse7u9EpFQJqHuf0jlIpz++NVrhtZlA5GcuBekUPrf8XZvBVMl
- jRrGiSKvLtgB9PXOO6e0Qt+af6a9EdCEfdWdr9fEe10RUIpvfjn2p7Jo3duRWiYbc6Ls
- Cp75Mve28tO+LGCEPQ5HQuIAYTkrUzlYjR+e+1+PsFVvZrte4gAFk063RtfWSGl6g3Mr
- /00w==
-X-Gm-Message-State: AOJu0Yy4UnZOBse0Tka4K/0Lj4ve4d3L2fl+yE0M0A9PHk6iFUSEFcsH
- 4r+H8smBLE9P9uynJjjMILe+LfzciJXe0M8/ZK2Vcv2Qppl/eChWcvblSDUv5Bv+xMMCw6xXjtN
- l8YSp6kftjf0INaEzTYYCBCjxUhF9S5jHRLL947zHOQT4VLU+y8Z2
-X-Gm-Gg: ASbGnctC8Sq6n9d7f0rU1UKxtMV/zpS8DHJ8Pw1REejhEcGhb8uGySXd1b7XaocjLc6
- y7QsiHzwcgzw0Tu3yjDcRrB+xVfbEArwBw3PV7fqVKk3gTrhZFRn2pjUnCqymBjEvk2tHWBmhTQ
- IbqDoRRjwmQrvX48ei8SmPeNLBRxEwophJWHzJgref8YxnmioL1R5jVxx1y8oN76+6cP+42PsMI
- dTfhTJPti/NPK9WNWUpT+rh7MSQSSXByvCo8aoJE/yNPOp7hiZ51EYDkaHs2OcEQ1Xu4eHvlCZR
- T/F+P09eXRLpC4sHYg==
-X-Received: by 2002:a05:6214:238c:b0:6d4:243f:6c9c with SMTP id
- 6a1803df08f44-6dd2330c5aamr331907726d6.9.1735070534243; 
- Tue, 24 Dec 2024 12:02:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEAdLidTJkne0t3YPtZV7iPCwBPzvvvhJDau/Q6W0RqNHSeLQmqIlJqAIpJDvmSaqXyTXxNpw==
-X-Received: by 2002:a05:6214:238c:b0:6d4:243f:6c9c with SMTP id
- 6a1803df08f44-6dd2330c5aamr331907486d6.9.1735070534007; 
- Tue, 24 Dec 2024 12:02:14 -0800 (PST)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6dd181d5308sm55577016d6.111.2024.12.24.12.02.11
+ d=1e100.net; s=20230601; t=1735070723; x=1735675523;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=2jxIuXphk2p1Sj9EERk4+AzkFM+txRkx+yf5xQplj+4=;
+ b=gyJSnMDAr2CxYJQjjNW12vBJaJCATlyqQfMK0K5t1Itxe5orFzYW4yaI++asA7s75/
+ RsIuoZmbHZTUvLMqwkcUJHCayQwokMCOo6dG6b/Im4a8PgNviqX8qkNST6VU7SZpB6xo
+ 0hy7cD6TTwzibo3sJkYLpEakY6NiMSAjnQS5924+L2Dp6EKw2kHUzT10tJ5Kv1Jp9qhJ
+ Scf5TbvKqKyUJZpnFVEFHa2M/HY4IeHBujuHwP7rCmsZ0cQ4LDTBz/VuHDQ9KOWCAVfi
+ O5Bq2c1idTW+LRuaoSiJdymn1wQeEFmEmdqWiKnW2RU15Oqrk8uwMIZCgIJ2+cidejNM
+ tPRQ==
+X-Gm-Message-State: AOJu0Yykc9Ix57eLjImuDaz/47zNENAdOfaRD5yKaJ3/gvtfoabh/4XD
+ LjS5DyZaCRsJib6W1SXIHxfSxwL36DMlIlKH8CUg5AECs/WQIEeERhlYn5aae0Fk/paW3kBTQhM
+ oxZw=
+X-Gm-Gg: ASbGncs+la6l3gunO9Pl1QEDQRQjjYRNERZ1nVAIdHNOw2zwzq0S5NrBNmyCQG3Z97g
+ m464PJQhcTIEqWrooeI9VGcCRYJWACP5F3fwnmGukl1phrosSN9cbELXm1VR+t/qbiDp4qtDobx
+ gyxGsUhRj8BKNKr14dRdwWX8xxn81a4BzOOkwQYp7CFgw8CiFuM3xzTulMuQdf2dE/UuP63rSFW
+ uQx0mwkIp7igB8+ThUHz9BebbyLvkquK2IhNu/zmoTGUhvqKPIe3QvRzu0tMyOjikoSkeShjTCm
+ 5kHj0jzmyuoHuhNREtQZ9CPrtA==
+X-Google-Smtp-Source: AGHT+IEXRR/sJwuzGpFFIHrMezuIbkKNhzVKO/0QEu7JKmadhik9wlYgzvTvIGAyTih+WSG+3fJKEA==
+X-Received: by 2002:a05:6a21:7899:b0:1e1:bf3d:a18a with SMTP id
+ adf61e73a8af0-1e5e0801d78mr30940171637.32.1735070722712; 
+ Tue, 24 Dec 2024 12:05:22 -0800 (PST)
+Received: from stoup.. (syn-156-019-246-023.biz.spectrum.com. [156.19.246.23])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-72aad8fb895sm10027159b3a.162.2024.12.24.12.05.22
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Dec 2024 12:02:13 -0800 (PST)
-Date: Tue, 24 Dec 2024 15:02:11 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- David Hildenbrand <david@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH V5 23/23] migration: cpr-transfer documentation
-Message-ID: <Z2sTQ6KHmh50QENV@x1n>
-References: <1735057028-308595-1-git-send-email-steven.sistare@oracle.com>
- <1735057028-308595-24-git-send-email-steven.sistare@oracle.com>
+ Tue, 24 Dec 2024 12:05:22 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/72] tcg patch queue
+Date: Tue, 24 Dec 2024 12:04:09 -0800
+Message-ID: <20241224200521.310066-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1735057028-308595-24-git-send-email-steven.sistare@oracle.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,14 +94,180 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 24, 2024 at 08:17:08AM -0800, Steve Sistare wrote:
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+The following changes since commit aa3a285b5bc56a4208b3b57d4a55291e9c260107:
 
-(Not suggested to have empty commit log; can say something!)
+  Merge tag 'mem-2024-12-21' of https://github.com/davidhildenbrand/qemu into staging (2024-12-22 14:33:27 -0500)
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+are available in the Git repository at:
 
--- 
-Peter Xu
+  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20241224
 
+for you to fetch changes up to e4a8e093dc74be049f4829831dce76e5edab0003:
+
+  accel/tcg: Move gen_intermediate_code to TCGCPUOps.translate_core (2024-12-24 08:32:15 -0800)
+
+----------------------------------------------------------------
+tcg/optimize: Remove in-flight mask data from OptContext
+fpu: Add float*_muladd_scalbn
+fpu: Remove float_muladd_halve_result
+fpu: Add float_round_nearest_even_max
+fpu: Add float_muladd_suppress_add_product_zero
+target/hexagon: Use float32_muladd
+accel/tcg: Move gen_intermediate_code to TCGCPUOps.translate_core
+
+----------------------------------------------------------------
+Ilya Leoshkevich (1):
+      tests/tcg: Do not use inttypes.h in multiarch/system/memory.c
+
+Pierrick Bouvier (1):
+      plugins: optimize cpu_index code generation
+
+Richard Henderson (70):
+      tcg/optimize: Split out finish_bb, finish_ebb
+      tcg/optimize: Split out fold_affected_mask
+      tcg/optimize: Copy mask writeback to fold_masks
+      tcg/optimize: Split out fold_masks_zs
+      tcg/optimize: Augment s_mask from z_mask in fold_masks_zs
+      tcg/optimize: Change representation of s_mask
+      tcg/optimize: Use finish_folding in fold_add, fold_add_vec, fold_addsub2
+      tcg/optimize: Introduce const value accessors for TempOptInfo
+      tcg/optimize: Use fold_masks_zs in fold_and
+      tcg/optimize: Use fold_masks_zs in fold_andc
+      tcg/optimize: Use fold_masks_zs in fold_bswap
+      tcg/optimize: Use fold_masks_zs in fold_count_zeros
+      tcg/optimize: Use fold_masks_z in fold_ctpop
+      tcg/optimize: Use fold_and and fold_masks_z in fold_deposit
+      tcg/optimize: Compute sign mask in fold_deposit
+      tcg/optimize: Use finish_folding in fold_divide
+      tcg/optimize: Use finish_folding in fold_dup, fold_dup2
+      tcg/optimize: Use fold_masks_s in fold_eqv
+      tcg/optimize: Use fold_masks_z in fold_extract
+      tcg/optimize: Use finish_folding in fold_extract2
+      tcg/optimize: Use fold_masks_zs in fold_exts
+      tcg/optimize: Use fold_masks_z in fold_extu
+      tcg/optimize: Use fold_masks_zs in fold_movcond
+      tcg/optimize: Use finish_folding in fold_mul*
+      tcg/optimize: Use fold_masks_s in fold_nand
+      tcg/optimize: Use fold_masks_z in fold_neg_no_const
+      tcg/optimize: Use fold_masks_s in fold_nor
+      tcg/optimize: Use fold_masks_s in fold_not
+      tcg/optimize: Use fold_masks_zs in fold_or
+      tcg/optimize: Use fold_masks_zs in fold_orc
+      tcg/optimize: Use fold_masks_zs in fold_qemu_ld
+      tcg/optimize: Return true from fold_qemu_st, fold_tcg_st
+      tcg/optimize: Use finish_folding in fold_remainder
+      tcg/optimize: Distinguish simplification in fold_setcond_zmask
+      tcg/optimize: Use fold_masks_z in fold_setcond
+      tcg/optimize: Use fold_masks_s in fold_negsetcond
+      tcg/optimize: Use fold_masks_z in fold_setcond2
+      tcg/optimize: Use finish_folding in fold_cmp_vec
+      tcg/optimize: Use finish_folding in fold_cmpsel_vec
+      tcg/optimize: Use fold_masks_zs in fold_sextract
+      tcg/optimize: Use fold_masks_zs, fold_masks_s in fold_shift
+      tcg/optimize: Simplify sign bit test in fold_shift
+      tcg/optimize: Use finish_folding in fold_sub, fold_sub_vec
+      tcg/optimize: Use fold_masks_zs in fold_tcg_ld
+      tcg/optimize: Use finish_folding in fold_tcg_ld_memcopy
+      tcg/optimize: Use fold_masks_zs in fold_xor
+      tcg/optimize: Use finish_folding in fold_bitsel_vec
+      tcg/optimize: Use finish_folding as default in tcg_optimize
+      tcg/optimize: Remove z_mask, s_mask from OptContext
+      tcg/optimize: Re-enable sign-mask optimizations
+      tcg/optimize: Move fold_bitsel_vec into alphabetic sort
+      tcg/optimize: Move fold_cmp_vec, fold_cmpsel_vec into alphabetic sort
+      softfloat: Add float{16,32,64}_muladd_scalbn
+      target/arm: Use float*_muladd_scalbn
+      target/sparc: Use float*_muladd_scalbn
+      softfloat: Remove float_muladd_halve_result
+      softfloat: Add float_round_nearest_even_max
+      softfloat: Add float_muladd_suppress_add_product_zero
+      target/hexagon: Use float32_mul in helper_sfmpy
+      target/hexagon: Use float32_muladd for helper_sffma
+      target/hexagon: Use float32_muladd for helper_sffms
+      target/hexagon: Use float32_muladd_scalbn for helper_sffma_sc
+      target/hexagon: Use float32_muladd for helper_sffm[as]_lib
+      target/hexagon: Remove internal_fmafx
+      target/hexagon: Expand GEN_XF_ROUND
+      target/hexagon: Remove Float
+      target/hexagon: Remove Double
+      target/hexagon: Use mulu64 for int128_mul_6464
+      target/hexagon: Simplify internal_mpyhh setup
+      accel/tcg: Move gen_intermediate_code to TCGCPUOps.translate_core
+
+ include/exec/translator.h           |  14 -
+ include/fpu/softfloat-types.h       |   2 +
+ include/fpu/softfloat.h             |  14 +-
+ include/hw/core/tcg-cpu-ops.h       |  13 +
+ target/alpha/cpu.h                  |   2 +
+ target/arm/internals.h              |   2 +
+ target/avr/cpu.h                    |   2 +
+ target/hexagon/cpu.h                |   2 +
+ target/hexagon/fma_emu.h            |   3 -
+ target/hppa/cpu.h                   |   2 +
+ target/i386/tcg/helper-tcg.h        |   2 +
+ target/loongarch/internals.h        |   2 +
+ target/m68k/cpu.h                   |   2 +
+ target/microblaze/cpu.h             |   2 +
+ target/mips/tcg/tcg-internal.h      |   2 +
+ target/openrisc/cpu.h               |   2 +
+ target/ppc/cpu.h                    |   2 +
+ target/riscv/cpu.h                  |   3 +
+ target/rx/cpu.h                     |   2 +
+ target/s390x/s390x-internal.h       |   2 +
+ target/sh4/cpu.h                    |   2 +
+ target/sparc/cpu.h                  |   2 +
+ target/sparc/helper.h               |   4 +-
+ target/tricore/cpu.h                |   2 +
+ target/xtensa/cpu.h                 |   2 +
+ accel/tcg/cpu-exec.c                |   8 +-
+ accel/tcg/plugin-gen.c              |   9 +
+ accel/tcg/translate-all.c           |   8 +-
+ fpu/softfloat.c                     |  63 +--
+ target/alpha/cpu.c                  |   1 +
+ target/alpha/translate.c            |   4 +-
+ target/arm/cpu.c                    |   1 +
+ target/arm/tcg/cpu-v7m.c            |   1 +
+ target/arm/tcg/helper-a64.c         |   6 +-
+ target/arm/tcg/translate.c          |   5 +-
+ target/avr/cpu.c                    |   1 +
+ target/avr/translate.c              |   6 +-
+ target/hexagon/cpu.c                |   1 +
+ target/hexagon/fma_emu.c            | 496 ++++++---------------
+ target/hexagon/op_helper.c          | 125 ++----
+ target/hexagon/translate.c          |   4 +-
+ target/hppa/cpu.c                   |   1 +
+ target/hppa/translate.c             |   4 +-
+ target/i386/tcg/tcg-cpu.c           |   1 +
+ target/i386/tcg/translate.c         |   5 +-
+ target/loongarch/cpu.c              |   1 +
+ target/loongarch/tcg/translate.c    |   4 +-
+ target/m68k/cpu.c                   |   1 +
+ target/m68k/translate.c             |   4 +-
+ target/microblaze/cpu.c             |   1 +
+ target/microblaze/translate.c       |   4 +-
+ target/mips/cpu.c                   |   1 +
+ target/mips/tcg/translate.c         |   4 +-
+ target/openrisc/cpu.c               |   1 +
+ target/openrisc/translate.c         |   4 +-
+ target/ppc/cpu_init.c               |   1 +
+ target/ppc/translate.c              |   4 +-
+ target/riscv/tcg/tcg-cpu.c          |   1 +
+ target/riscv/translate.c            |   4 +-
+ target/rx/cpu.c                     |   1 +
+ target/rx/translate.c               |   4 +-
+ target/s390x/cpu.c                  |   1 +
+ target/s390x/tcg/translate.c        |   4 +-
+ target/sh4/cpu.c                    |   1 +
+ target/sh4/translate.c              |   4 +-
+ target/sparc/cpu.c                  |   1 +
+ target/sparc/fop_helper.c           |   8 +-
+ target/sparc/translate.c            |  84 ++--
+ target/tricore/cpu.c                |   1 +
+ target/tricore/translate.c          |   5 +-
+ target/xtensa/cpu.c                 |   1 +
+ target/xtensa/translate.c           |   4 +-
+ tcg/optimize.c                      | 857 +++++++++++++++++++-----------------
+ tests/tcg/multiarch/system/memory.c |   9 +-
+ fpu/softfloat-parts.c.inc           |  16 +-
+ 75 files changed, 866 insertions(+), 1009 deletions(-)
 
