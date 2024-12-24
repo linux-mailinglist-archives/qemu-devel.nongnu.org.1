@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A8359FBF80
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 16:16:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 783159FBF7F
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Dec 2024 16:16:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQ6dg-0006xp-Q4; Tue, 24 Dec 2024 10:16:04 -0500
+	id 1tQ6dh-0006yc-Gn; Tue, 24 Dec 2024 10:16:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6dd-0006xH-Ea
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6dd-0006xG-Dd
  for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:16:01 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6db-00042t-Jm
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tQ6db-00042s-K6
  for qemu-devel@nongnu.org; Tue, 24 Dec 2024 10:16:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1735053358;
@@ -22,36 +22,36 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xd7+HZloy5NBlP2roMtyXsOP0rdnx7TYyLZj9Bk972o=;
- b=Lr+fgqyp3yN+BA3jrq+58M6ZXKdF41/6B1wcZnMV9JqyuMKLQl0BGPNBk0YDqyRDceWUI+
- NrIw26VKzwJTMuwrKGVPNiaerPRE2irganmm96uwp0UPMrPZPYhgPm72ZE3UfO2Ou8jLM4
- sd0Y61kuG/7GoHvIGTFQ3KmtYGvH/pQ=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=E8LVIlBW683vDKRuQIBD2Zcn8Iuf6hNj3qTi5kY2/o0=;
+ b=WzFHh4uaF4GZCAaeHCyAOIUE1ybNHnQtonRZCnLjvr6ZtQCQAcsdZANApIeRYVSI1A4+Jm
+ 0OCe0OeidvpsNx2Ls+P6V9EPDzITxAOS5kZjS18GVubRvQd8LBM22ESMlvCTd1u/tuYbl0
+ CgGA2wBdBEWGOPz/21aG4saT4fQYmwc=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-262-sakZUxDaNM2k3yaXsUAEQw-1; Tue,
- 24 Dec 2024 10:15:54 -0500
-X-MC-Unique: sakZUxDaNM2k3yaXsUAEQw-1
-X-Mimecast-MFC-AGG-ID: sakZUxDaNM2k3yaXsUAEQw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-374-jSuwJ4ApMY2RYpcUnFsezA-1; Tue,
+ 24 Dec 2024 10:15:56 -0500
+X-MC-Unique: jSuwJ4ApMY2RYpcUnFsezA-1
+X-Mimecast-MFC-AGG-ID: jSuwJ4ApMY2RYpcUnFsezA
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 88E9C19560BA; Tue, 24 Dec 2024 15:15:53 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CB5E51956096; Tue, 24 Dec 2024 15:15:55 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.6])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C464A3000197; Tue, 24 Dec 2024 15:15:51 +0000 (UTC)
+ id 294C83000197; Tue, 24 Dec 2024 15:15:53 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Tomita Moeko <tomitamoeko@gmail.com>,
+ =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 01/17] vfio/igd: fix GTT stolen memory size calculation for gen
- 8+
-Date: Tue, 24 Dec 2024 16:15:31 +0100
-Message-ID: <20241224151547.386529-2-clg@redhat.com>
+Subject: [PULL 02/17] vfio/igd: remove unsupported device ids
+Date: Tue, 24 Dec 2024 16:15:32 +0100
+Message-ID: <20241224151547.386529-3-clg@redhat.com>
 In-Reply-To: <20241224151547.386529-1-clg@redhat.com>
 References: <20241224151547.386529-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -85,45 +85,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Tomita Moeko <tomitamoeko@gmail.com>
 
-On gen 8 and later devices, the GTT stolen memory size when GGMS equals
-0 is 0 (no preallocated memory) rather than 1MB [1].
+Since e433f208973f ("vfio/igd: return an invalid generation for unknown
+devices"), the default return of igd_gen() was changed to unsupported.
+There is no need to filter out those unsupported devices.
 
-[1] 3.1.13, 5th Generation Intel Core Processor Family Datasheet Vol. 2
-    https://www.intel.com/content/www/us/en/content-details/330835
-
-Fixes: c4c45e943e51 ("vfio/pci: Intel graphics legacy mode assignment")
-
-Reported-By: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
-Link: https://lore.kernel.org/r/20241206122749.9893-2-tomitamoeko@gmail.com
+Reviewed-by: Corvin Köhne <c.koehne@beckhoff.com>
+Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+Link: https://lore.kernel.org/r/20241206122749.9893-3-tomitamoeko@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/igd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/vfio/igd.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 4047f4f0717f82f48f8e255873f9895a157e210a..73ed1ec8e6af60ed58fe6546f750d07fc972193e 100644
+index 73ed1ec8e6af60ed58fe6546f750d07fc972193e..059ed56439f127c92cd9df33c6368a8792f07675 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -268,7 +268,7 @@ static int vfio_igd_gtt_max(VFIOPCIDevice *vdev)
- 
-     gmch = vfio_pci_read_config(&vdev->pdev, IGD_GMCH, sizeof(gmch));
-     ggms = (gmch >> (gen < 8 ? 8 : 6)) & 0x3;
--    if (gen > 6) {
-+    if (gen > 6 && ggms != 0) {
-         ggms = 1 << ggms;
+@@ -64,16 +64,6 @@ static int igd_gen(VFIOPCIDevice *vdev)
      }
  
-@@ -678,7 +678,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
- 
-     /* Determine the size of stolen memory needed for GTT */
-     ggms_mb = (gmch >> (gen < 8 ? 8 : 6)) & 0x3;
--    if (gen > 6) {
-+    if (gen > 6 && ggms_mb != 0) {
-         ggms_mb = 1 << ggms_mb;
-     }
- 
+     switch (vdev->device_id & 0xff00) {
+-    /* Old, untested, unavailable, unknown */
+-    case 0x0000:
+-    case 0x2500:
+-    case 0x2700:
+-    case 0x2900:
+-    case 0x2a00:
+-    case 0x2e00:
+-    case 0x3500:
+-    case 0xa000:
+-        return -1;
+     /* SandyBridge, IvyBridge, ValleyView, Haswell */
+     case 0x0100:
+     case 0x0400:
 -- 
 2.47.1
 
