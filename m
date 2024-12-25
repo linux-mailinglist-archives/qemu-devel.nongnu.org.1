@@ -2,87 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 050919FC3CB
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Dec 2024 07:34:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 661289FC43F
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Dec 2024 09:38:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQKxl-00088b-8R; Wed, 25 Dec 2024 01:33:45 -0500
+	id 1tQMu6-0002dL-GJ; Wed, 25 Dec 2024 03:38:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1tQKxh-00085U-Hz
- for qemu-devel@nongnu.org; Wed, 25 Dec 2024 01:33:41 -0500
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1tQKxf-0001vd-Sq
- for qemu-devel@nongnu.org; Wed, 25 Dec 2024 01:33:41 -0500
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-2f44353649aso4954082a91.0
- for <qemu-devel@nongnu.org>; Tue, 24 Dec 2024 22:33:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1735108418; x=1735713218; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=LnL9L8+E9JeJnL0Qgv7sIBT9ZPbbiwKfmj1i8Doe7uY=;
- b=DsycIl/fgOkSHuwyVWb3eiH5vZFZQ3t8I22mODEhWYHXiCddZquvB0/fqPXtJwJTVu
- XRoCET7QurH42KDfXQTHdqbKgeBrC1gBLHD91xnBtHVWo0wkol1NH5W/D3jZqJ8RDY/U
- SafJw2QNM92XkgEHR5u1A4FSYvoHpZj9kDGLqhYcNXWerZ3BdyENvA8l+DCYqijqP6vD
- wy/RnjninsHX1D9aEJoNrbN+TA0ZVG1yxXlKTwCfYXJKHmkynl1GFug8xn/mzfYYd3CK
- JclnIOvGh9wPybnlMfggSibck3PQsIx23lL054FV+y2X2Lhp8GZVh+G/vJo09ivh/+so
- kH9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735108418; x=1735713218;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LnL9L8+E9JeJnL0Qgv7sIBT9ZPbbiwKfmj1i8Doe7uY=;
- b=dwqWqzk6n5/+B7ZJjReaT7zECMG03DrvCDhAM3S2EFvf4F+o0oi5Q0pWos6RnGRtYZ
- CrBhsO4N39uXC1PP2CN3ZTCjWxypPZhllaa54QL4M136n/pFdDT/kptwjJM1d4O0J9M4
- DLl+0soHnI2Jr+DMI45sREXDoXgPNhzW/tan+IxLsrcofioqw8PcYSzW7meMkhaIvws3
- Y1F4TcLVpK+jn7BRqXcgNLiyEyTCUlki16sG3sSFVL0AsCN33miLY/QdwamdouUWLsun
- /ysDWbUiTLoR0lgNO3DsZHpDu00ZXY/oF0kHLhTjgUC6cvKqzLEXPDBZGJAZkC4jZVBj
- DDwA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWSuWSmTB0Dp/APJlgWhX8h1ZI/+uWEKl3HNm89p+gXbFKZy89lVHzZSBRbJNs+n6A//s8FSjSZ8jZh@nongnu.org
-X-Gm-Message-State: AOJu0YxjHboZGHk9vwgpo6KtLlmedk0fSScHsnlVfkGFj7lBhoG0ASHK
- 3CgCoKLYeQUb1Lp5NktVnrpZXG/K4tfpYhs4yySB7b31ro7pbV1cUT+VAHyj/KU=
-X-Gm-Gg: ASbGncsRi7/jYcy2pwfOuiHw574+VaTgvKf+MZxtTH+eMRBcmGVh3ec/q8GxBejVmaN
- zOV5oeZbjY6HtdDmJFvIAruwjYzKXQik8HI7avVeRdEGZaS0S7S60tdpb1ceWWfoze4Tlka3PPF
- +bReBibGryCL1RJvbfkLpFfgbWHtBQ/7envzYS6k/GVrxsDzYR1VybZE8EjAjdXZgGWy4W5y7vs
- xgRQy9UefmjdECqXS7shvAFoLKHToXrJZ/UkwBRxqSY8o1uLLRbPx9xThBZ4w==
-X-Google-Smtp-Source: AGHT+IGFiN5CDdaIChuSewvmfUkhapD8nIrbvolWvEd+C3DRoK2xVzqULSHMdPeQjD6v0SRstHWaHw==
-X-Received: by 2002:a17:90b:2c8c:b0:2ea:3f34:f190 with SMTP id
- 98e67ed59e1d1-2f452ec6fd2mr26065004a91.25.1735108418504; 
- Tue, 24 Dec 2024 22:33:38 -0800 (PST)
-Received: from [10.3.43.196] ([61.213.176.6]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f2ed52d227sm13361037a91.2.2024.12.24.22.33.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 24 Dec 2024 22:33:38 -0800 (PST)
-Message-ID: <3a2eec42-e2a4-40c0-b655-f4a52f0f8305@bytedance.com>
-Date: Wed, 25 Dec 2024 14:33:36 +0800
+ (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1tQMu2-0002cj-Ox
+ for qemu-devel@nongnu.org; Wed, 25 Dec 2024 03:38:03 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1tQMu0-0004Wl-Cd
+ for qemu-devel@nongnu.org; Wed, 25 Dec 2024 03:38:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1735115878;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=MyJFkDoeUbyNu6pFuHgrzeTcWJQh+2xOk2sQbPsr/kw=;
+ b=PRGDdAqvxHE7CeQjXj9NT4/J+YPItgUe6hbVsaoyyVMEctWInklI8uU9TzDGQrpq4PFEKS
+ 0ISh/jFjskB/QWbVgCwUIUYmMy5kda37kjnmW8wjQ4w3C98GqT6I2o/1gw54XtlVyQ/TMj
+ PAmxzKuf/ZsaSWw15x6E4JoYIPUDswY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-F9YqC7vzM5yn0YO4Z7tH_A-1; Wed,
+ 25 Dec 2024 03:37:54 -0500
+X-MC-Unique: F9YqC7vzM5yn0YO4Z7tH_A-1
+X-Mimecast-MFC-AGG-ID: F9YqC7vzM5yn0YO4Z7tH_A
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 87B7F195608C; Wed, 25 Dec 2024 08:37:53 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.72.116.77])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6C9D21956052; Wed, 25 Dec 2024 08:37:49 +0000 (UTC)
+From: Dehan Meng <demeng@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: demeng@redhat.com,
+	kkostiuk@redhat.com,
+	michael.roth@amd.com
+Subject: [PATCH] qemu-ga: Optimize freeze-hook script logic of logging error
+Date: Wed, 25 Dec 2024 16:37:44 +0800
+Message-Id: <20241225083744.277374-1-demeng@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] backends/cryptodev-vhost-user: Fix local_error leaks
-To: Gabriel Barrantes <gabriel.barrantes.dev@outlook.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "arei.gonglei@huawei.com" <arei.gonglei@huawei.com>
-References: <DM8PR13MB5078933D25141B3F23ECA782B3022@DM8PR13MB5078.namprd13.prod.outlook.com>
-Content-Language: en-US
-From: zhenwei pi <pizhenwei@bytedance.com>
-In-Reply-To: <DM8PR13MB5078933D25141B3F23ECA782B3022@DM8PR13MB5078.namprd13.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=pizhenwei@bytedance.com; helo=mail-pj1-x1029.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=demeng@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.133,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,45 +78,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-LGTM, thanks.
+Make sure the error log of fsfreeze hooks
+when freeze/thaw/snapshot could be logged
+to system logs if the default logfile of
+qga can't be written or other situations
 
-Reviewed-by: zhenwei pi <pizhenwei@bytedance.com>
+Signed-off-by: Dehan Meng <demeng@redhat.com>
+---
+ scripts/qemu-guest-agent/fsfreeze-hook | 36 +++++++++++++++++++++++---
+ 1 file changed, 32 insertions(+), 4 deletions(-)
 
-On 12/24/24 07:46, Gabriel Barrantes wrote:
->  From c808fa797942b9bd32221594b7eef690a7558b14 Mon Sep 17 00:00:00 2001
-> From: Gabriel Barrantes <gabriel.barrantes.dev@outlook.com>
-> Date: Mon, 23 Dec 2024 14:58:12 -0600
-> Subject: [PATCH] backends/cryptodev-vhost-user: Fix local_error leaks
-> 
-> Do not propagate error to the upper, directly output the error to
-> avoid leaks.
-> 
-> Closes: #2714
-> 
-> Signed-off-by: Gabriel Barrantes <gabriel.barrantes.dev@outlook.com>
-> ---
-> backends/cryptodev-vhost-user.c | 4 ++--
-> 1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/backends/cryptodev-vhost-user.c b/backends/cryptodev-vhost- 
-> user.c
-> index 43efdf9747..09bfbddb47 100644
-> --- a/backends/cryptodev-vhost-user.c
-> +++ b/backends/cryptodev-vhost-user.c
-> @@ -281,8 +281,8 @@ static int cryptodev_vhost_user_create_session(
->          break;
-> 
->      default:
-> -        error_setg(&local_error, "Unsupported opcode :%" PRIu32 "",
-> -                   sess_info->op_code);
-> +        error_report("Unsupported opcode :%" PRIu32 "",
-> +                     sess_info->op_code);
->          return -VIRTIO_CRYPTO_NOTSUPP;
->      }
-> 
-> -- 
-> 2.43.0
-> 
-> 
+diff --git a/scripts/qemu-guest-agent/fsfreeze-hook b/scripts/qemu-guest-agent/fsfreeze-hook
+index 13aafd4845..c1feb6f5ce 100755
+--- a/scripts/qemu-guest-agent/fsfreeze-hook
++++ b/scripts/qemu-guest-agent/fsfreeze-hook
+@@ -19,15 +19,43 @@ is_ignored_file() {
+     return 1
+ }
+ 
++USE_SYSLOG=0
++# if log file is not writable, fallback to syslog
++[ ! -w "$LOGFILE" ] && USE_SYSLOG=1
++# try to update log file and fallback to syslog if it fails
++touch "$LOGFILE" &>/dev/null || USE_SYSLOG=1
++
++# Ensure the log file is writable, fallback to syslog if not
++log_message() {
++    local message="$1"
++    if [ "$USE_SYSLOG" -eq 0 ]; then
++        printf "%s: %s\n" "$(date)" "$message" >>"$LOGFILE"
++    else
++        logger -t qemu-ga-freeze-hook "$message"
++    fi
++}
++
+ # Iterate executables in directory "fsfreeze-hook.d" with the specified args
+ [ ! -d "$FSFREEZE_D" ] && exit 0
++
+ for file in "$FSFREEZE_D"/* ; do
+     is_ignored_file "$file" && continue
+     [ -x "$file" ] || continue
+-    printf "$(date): execute $file $@\n" >>$LOGFILE
+-    "$file" "$@" >>$LOGFILE 2>&1
+-    STATUS=$?
+-    printf "$(date): $file finished with status=$STATUS\n" >>$LOGFILE
++
++    log_message "Executing $file $@"
++    if [ "$USE_SYSLOG" -eq 0 ]; then
++        "$file" "$@" >>"$LOGFILE" 2>&1
++        STATUS=$?
++    else
++        "$file" "$@" 2>&1 | logger -t qemu-ga-freeze-hook
++        STATUS=${PIPESTATUS[0]}
++    fi
++
++    if [ $STATUS -ne 0 ]; then
++        log_message "Error: $file finished with status=$STATUS"
++    else
++        log_message "$file finished successfully"
++    fi
+ done
+ 
+ exit 0
+-- 
+2.40.1
 
 
