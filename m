@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E869F9FCDE1
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Dec 2024 22:21:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 021729FCDDC
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Dec 2024 22:21:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQvHN-0003qg-JW; Thu, 26 Dec 2024 16:20:25 -0500
+	id 1tQvHT-0003uK-2o; Thu, 26 Dec 2024 16:20:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tQvHK-0003q7-69
- for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:22 -0500
+ id 1tQvHL-0003qF-4L
+ for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:23 -0500
 Received: from fout-a1-smtp.messagingengine.com ([103.168.172.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tQvHI-0003D9-95
- for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:21 -0500
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal
- [10.202.2.45])
- by mailfout.phl.internal (Postfix) with ESMTP id 984A713801E6;
- Thu, 26 Dec 2024 16:20:18 -0500 (EST)
+ id 1tQvHJ-0003DI-8f
+ for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:22 -0500
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal
+ [10.202.2.46])
+ by mailfout.phl.internal (Postfix) with ESMTP id B6BBD13801EF;
+ Thu, 26 Dec 2024 16:20:20 -0500 (EST)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-05.internal (MEProxy); Thu, 26 Dec 2024 16:20:18 -0500
+ by phl-compute-06.internal (MEProxy); Thu, 26 Dec 2024 16:20:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
  cc:cc:content-transfer-encoding:content-type:content-type:date
  :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm3; t=1735248018;
- x=1735334418; bh=mK00rNU3uUZqwx6EGUl+GHsiUe4Y9J4gnVo/RMfXeas=; b=
- e7CIFt/WFYZ8Xsv8uD0xGVUkgGOGN0PzzObEmmFgT8i8rQWoHlsWzJsAnhIWmLoG
- 61tk2IbkvBVHIjnlMTjqblOF9IeEnDOGk3plMjTo1hDUsbem3rG/N6gSW/twji06
- e8W5SIut2TTLQMqa3IH42BA9FWiop3dI5Z0he2IcGM8if4amCjZa6KmgkRAuw7iE
- LbWQMoPDWsqKPYO2GbAKgB5ADRavToGmNcIBfRivMAIoK9K4cT6jDCzLD3xif8+z
- 6nid+9PYYWMsYSTIqiO0Kd3EFkTTdA1jzaqdPXFl36ya9zWURAb1MF4y6XX0h++0
- FacIz6UjR8wU9QO8dP4Fgw==
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1735248020;
+ x=1735334420; bh=/R+UYBT9JTRjyVyhZ6ww+fL1pd+McXtjlSxujDrHCn0=; b=
+ mtES/GS9TPT9OYkHQxmKb72BiwaMCXCeAD0howm4+FCBeUWDpilrPn05ynOru5XD
+ e52PacEH3EMt8wY1nPqnBI4zck+lXumBcB+WqxnONYTrqn9v4Cx3gGYCZeovuRo4
+ RH6LWZjn+++F4it3uDSaLoZrBisy98NiuRDNIFqIlc/2jSlrQzRYuwo5izCSd8vm
+ zT1DIamPlcQQ2ceSa7dehq7MRRVzqHC1IB5Yi+RAVBDqonRqQ9xkLvLT+jpaHheC
+ f4pyiEtw8OQCLv0TShO8F9JnPhtcMmsCrF0XRHG+yJ3WEY0C9L/YYPe3IjcFTtTp
+ 0Ccj8wU5Gp+PSDQfWiU6LQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
  :from:from:in-reply-to:in-reply-to:message-id:mime-version
  :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1735248018; x=
- 1735334418; bh=mK00rNU3uUZqwx6EGUl+GHsiUe4Y9J4gnVo/RMfXeas=; b=G
- ffrSj1o2flVEwBoBB3GYJaXsjwKdMHBhM4vvw9v9m7vXzvLoBl9E6Q/AJLefN6a6
- Bq+DaBGqZilJIX4bbcMUrV5zyVqAOm+drET+3gMerh74sP3hnWAlG9D85Ty+MzNP
- KCfSs2FtSMis4EvWs+ZvXD4xOYj7oos0v2pL1gzo1r4hLHgbnhPFuddIwtDcwpcm
- 7UZHRLIsj+OiV2VoCikXVolGdu9p3icJjWENPqJnta3XlMxQ3n7SWf5G/NmP+9VS
- WMw5DQHnhPMJu/bxRSKXMEy5jbjNdqQbU3VTq291rUdVjF9JLkbIX7SO7ILuKdZk
- npH3BEPSMorrHosSSaQ6Q==
-X-ME-Sender: <xms:kshtZ5gtCxGRkLN9FvFNYp9V1RspFZXDYbHrW2DbGWA643_5OWLerg>
- <xme:kshtZ-AVz2x5dph-1rPXvfRv_tnMtoZnj8mhFBXf55hWZYqNaMrpj-RSeH3bjgw8L
- wuu0O_7ym1erZwMat8>
-X-ME-Received: <xmr:kshtZ5Hos8NzpSHiHZHlwcrtJ0JVSCwygFjM-gPOQJR5nbpB3JJaMexG>
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1735248020; x=
+ 1735334420; bh=/R+UYBT9JTRjyVyhZ6ww+fL1pd+McXtjlSxujDrHCn0=; b=C
+ KqYf0ADtSaTrepRqqGA17XAddVMh1vx4P49pHcl/OVjyNWSGPNhQVTDihCzT8to9
+ jW2WQES5fkxWK1pj32bEOwS3sI65Zn/mGKO3u2XrryJb9gaLaRqxjyUlR4oSXiUs
+ tVUqE3frPTL6nVHKoTglzU/sMF4+ngCglpXV0JFERkINs5mgJupnD3H3zb7C129e
+ QvRn/RZYeu5NqjgwJfHsOdH+OSsSCqc0SQ85ilOocF0vYIs+kcQvCCDaIj8NBs5N
+ y071LtcDwKpAPF2khUalb7khMPX+yXSnlsK6g3NLHC7brDziIjKaAy/kqo/00GMR
+ tB0IFdR8joKH0cCdKwOFw==
+X-ME-Sender: <xms:lMhtZ5aTD1k7I4qAGV3U50n3t-3RyWjTKAcGcmXM7mByMgxKHF-Kgg>
+ <xme:lMhtZwa3eFRAH3DzcTdKoywGy056syIBOvTq_AL4UgnNnJx3flr3cPoai9tsdjvAe
+ 5ycVBLzT9rvCPVx4yY>
+X-ME-Received: <xmr:lMhtZ7-pvVAroCc3YBC41bsFQed9UYc97fv623BBVTyuXT3V9mpamFPN>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddukedgudegjecutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
  uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
  hnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredt
  jeenucfhrhhomheplfhirgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflh
  ihghhorghtrdgtohhmqeenucggtffrrghtthgvrhhnpedvkeeihfefveekueevteefleff
- keegudeghfdtuddugefhueevgeffgedukeejleenucevlhhushhtvghrufhiiigvpeefne
+ keegudeghfdtuddugefhueevgeffgedukeejleenucevlhhushhtvghrufhiiigvpedune
  curfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorght
  rdgtohhmpdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmhhtphhouhhtpdhrtghpth
  htohepmhgrohgsihgsoheslhhoohhnghhsohhnrdgtnhdprhgtphhtthhopehmrghrtggv
@@ -69,22 +69,22 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddukedgudegjecutefuodetgg
  vghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepfigrnhhghigrnh
  grnhehheeshhhurgifvghirdgtohhmpdhrtghpthhtohepiihhrghouddrlhhiuhesihhn
  thgvlhdrtghomh
-X-ME-Proxy: <xmx:kshtZ-S3G1_4Pyp5oiMtd65-ST-e2ZI6g5zAl2iDvhqM840Y-esCcQ>
- <xmx:kshtZ2zod-B7hXlNHb-bUSHhGLjHrGbAP0FL2loDSFNJMFweev7z2g>
- <xmx:kshtZ06aVbpfeAvkEXHPX2lZdqFsVOXJohOZRT7dOKCkagAz5xJkxg>
- <xmx:kshtZ7xYmpWquV61HA3DRVVk3C-6OwuhueazD88GAxfZZ6lpaxNq5g>
- <xmx:kshtZxoAvoyEKQw0Y4XNZaJdsHZauR_6KV5_LYCQVTrrg8ke0HV74OIK>
+X-ME-Proxy: <xmx:lMhtZ3pMOir2MU5kOetelFebaNQWT9fkK4SXNR68OwNYk7wj6ifMUg>
+ <xmx:lMhtZ0rwQ-QmNo2D5GMkf9E46OYdG8gyABslEJOVXTYoAwIGnqyLyA>
+ <xmx:lMhtZ9Rn7mtbCv9dqN95B1zjaDhXbFDDRrdaabonVYYMZ6QtJ9HYRw>
+ <xmx:lMhtZ8o-2CfiqYMfiFrNZ2ysTLT1rnK8ekYJMG2LREagDPD51CqaoQ>
+ <xmx:lMhtZ6iFmaiNYQ0vcKcqJPSXsOI4-GLnp57fJq19XOYzN_yVDUktsJQQ>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 26 Dec 2024 16:20:16 -0500 (EST)
+ 26 Dec 2024 16:20:18 -0500 (EST)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Thu, 26 Dec 2024 21:19:48 +0000
-Subject: [PATCH v2 17/23] target/loongarch: Refactoring is_la64/is_va32 for
- LoongArch32
+Date: Thu, 26 Dec 2024 21:19:49 +0000
+Subject: [PATCH v2 18/23] target/loongarch: ifdef out 64 bit CPUs on 32 bit
+ builds
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241226-la32-fixes1-v2-17-0414594f8cb5@flygoat.com>
+Message-Id: <20241226-la32-fixes1-v2-18-0414594f8cb5@flygoat.com>
 References: <20241226-la32-fixes1-v2-0-0414594f8cb5@flygoat.com>
 In-Reply-To: <20241226-la32-fixes1-v2-0-0414594f8cb5@flygoat.com>
 To: qemu-devel@nongnu.org
@@ -96,13 +96,13 @@ Cc: Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
  Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>, 
  Paolo Bonzini <pbonzini@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1435;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4395;
  i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=3fvPVcmduevZWpvYs3fGnpSI9/FSXVdg+OVVSEa4VNs=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhvTcE9kiaxcssl2j3pvI5S5Xt/vlp+ALnKLt17z6TgdvT
- HFZeepaRykLgxgXg6yYIkuIgFLfhsaLC64/yPoDM4eVCWQIAxenAEwkV42RYfqpTSeErVf+sU6o
- ePg1kG35/k1FZ79Kn1FJYrEO7n1xegHDP62kK9vPOjbnHOnRWyPLvSI40Hr++61RF5xLtJXk1Na
- fZwMA
+ bh=r6c46xv1jpn2ABIYObG2TFnqZDRs36DnvEiW/1NNqFk=;
+ b=kA0DAAoWQ3EMfdd3KcMByyZiAGdtyGui2w9Zo8WjPniWum+OYSzouy1DaLd69A/+fKAbLdFfH
+ oh1BAAWCgAdFiEEVBAijrCB0aDX4Gr8Q3EMfdd3KcMFAmdtyGsACgkQQ3EMfdd3KcORzgD/Z4SP
+ kvqFGu8V2EJvbx0uhO5o86psuGUezcy0GihF6qQA/Ag5JabV85dYbJItmmFXuCT5upFmSjNztia
+ DpN+gjccH
 X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
  fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
 Received-SPF: pass client-ip=103.168.172.144;
@@ -130,50 +130,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-is_la64 should be wired to false on LA32 build.
-VA32 CSR check shouldn't be performed in LA32 mode.
+They are not available on 32 bit builds.
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- target/loongarch/cpu.h | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ target/loongarch/cpu.c | 68 ++++++++++++++++++++++++++++----------------------
+ 1 file changed, 38 insertions(+), 30 deletions(-)
 
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 4f542a3376831141d012f177dc46a0e928afc85c..a2d416b6634b7f6787c93eac2b777a2f6c71bebf 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -438,18 +438,26 @@ struct LoongArchCPUClass {
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index 82412f8867a50a6cd25cff511def0f24d2b10b49..720f5b97698abe454c79c2f8fb2a36d0113c5c24 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -375,6 +375,36 @@ static int loongarch_cpu_mmu_index(CPUState *cs, bool ifetch)
+     return MMU_DA_IDX;
+ }
  
- static inline bool is_la64(CPULoongArchState *env)
- {
++static void loongarch_la132_initfn(Object *obj)
++{
++    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
++    CPULoongArchState *env = &cpu->env;
++
++    int i;
++
++    for (i = 0; i < 21; i++) {
++        env->cpucfg[i] = 0x0;
++    }
++
++    cpu->dtb_compatible = "loongarch,Loongson-1C103";
++    env->cpucfg[0] = 0x148042;  /* PRID */
++
++    uint32_t data = 0;
++    data = FIELD_DP32(data, CPUCFG1, ARCH, 1); /* LA32 */
++    data = FIELD_DP32(data, CPUCFG1, PGMMU, 1);
++    data = FIELD_DP32(data, CPUCFG1, IOCSR, 1);
++    data = FIELD_DP32(data, CPUCFG1, PALEN, 0x1f); /* 32 bits */
++    data = FIELD_DP32(data, CPUCFG1, VALEN, 0x1f); /* 32 bits */
++    data = FIELD_DP32(data, CPUCFG1, UAL, 1);
++    data = FIELD_DP32(data, CPUCFG1, RI, 0);
++    data = FIELD_DP32(data, CPUCFG1, EP, 0);
++    data = FIELD_DP32(data, CPUCFG1, RPLV, 0);
++    data = FIELD_DP32(data, CPUCFG1, HP, 1);
++    data = FIELD_DP32(data, CPUCFG1, IOCSR_BRD, 1);
++    env->cpucfg[1] = data;
++}
++
 +#ifdef TARGET_LOONGARCH64
-     return FIELD_EX32(env->cpucfg[1], CPUCFG1, ARCH) == CPUCFG1_ARCH_LA64;
-+#endif
-+    return false;
- }
- 
- static inline bool is_va32(CPULoongArchState *env)
+ static void loongarch_la464_initfn(Object *obj)
  {
-     /* VA32 if !LA64 or VA32L[1-3] */
--    bool va32 = !is_la64(env);
--    uint64_t plv = FIELD_EX64(env->CSR_CRMD, CSR_CRMD, PLV);
--    if (plv >= 1 && (FIELD_EX64(env->CSR_MISC, CSR_MISC, VA32) & (1 << plv))) {
--        va32 = true;
-+    if (is_la64(env)) {
-+        uint64_t plv = FIELD_EX64(env->CSR_CRMD, CSR_CRMD, PLV);
-+
-+        if (plv >= 1 &&
-+            extract64(FIELD_EX64(env->CSR_MISC, CSR_MISC, VA32), plv, 1)) {
-+            return true;
-+        }
-+        return false;
-     }
--    return va32;
-+
-+    return true;
+     LoongArchCPU *cpu = LOONGARCH_CPU(obj);
+@@ -473,40 +503,12 @@ static void loongarch_la464_initfn(Object *obj)
+     loongarch_cpu_post_init(obj);
  }
  
- static inline void set_pc(CPULoongArchState *env, uint64_t value)
+-static void loongarch_la132_initfn(Object *obj)
+-{
+-    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
+-    CPULoongArchState *env = &cpu->env;
+-
+-    int i;
+-
+-    for (i = 0; i < 21; i++) {
+-        env->cpucfg[i] = 0x0;
+-    }
+-
+-    cpu->dtb_compatible = "loongarch,Loongson-1C103";
+-    env->cpucfg[0] = 0x148042;  /* PRID */
+-
+-    uint32_t data = 0;
+-    data = FIELD_DP32(data, CPUCFG1, ARCH, 1); /* LA32 */
+-    data = FIELD_DP32(data, CPUCFG1, PGMMU, 1);
+-    data = FIELD_DP32(data, CPUCFG1, IOCSR, 1);
+-    data = FIELD_DP32(data, CPUCFG1, PALEN, 0x1f); /* 32 bits */
+-    data = FIELD_DP32(data, CPUCFG1, VALEN, 0x1f); /* 32 bits */
+-    data = FIELD_DP32(data, CPUCFG1, UAL, 1);
+-    data = FIELD_DP32(data, CPUCFG1, RI, 0);
+-    data = FIELD_DP32(data, CPUCFG1, EP, 0);
+-    data = FIELD_DP32(data, CPUCFG1, RPLV, 0);
+-    data = FIELD_DP32(data, CPUCFG1, HP, 1);
+-    data = FIELD_DP32(data, CPUCFG1, IOCSR_BRD, 1);
+-    env->cpucfg[1] = data;
+-}
+-
+ static void loongarch_max_initfn(Object *obj)
+ {
+     /* '-cpu max' for TCG: we use cpu la464. */
+     loongarch_la464_initfn(obj);
+ }
++#endif
+ 
+ static void loongarch_cpu_reset_hold(Object *obj, ResetType type)
+ {
+@@ -870,6 +872,7 @@ static void loongarch32_cpu_class_init(ObjectClass *c, void *data)
+     cc->gdb_arch_name = loongarch32_gdb_arch_name;
+ }
+ 
++#ifdef TARGET_LOONGARCH64
+ static const gchar *loongarch64_gdb_arch_name(CPUState *cs)
+ {
+     return "loongarch64";
+@@ -882,6 +885,7 @@ static void loongarch64_cpu_class_init(ObjectClass *c, void *data)
+     cc->gdb_core_xml_file = "loongarch-base64.xml";
+     cc->gdb_arch_name = loongarch64_gdb_arch_name;
+ }
++#endif
+ 
+ #define DEFINE_LOONGARCH_CPU_TYPE(size, model, initfn) \
+     { \
+@@ -909,6 +913,7 @@ static const TypeInfo loongarch_cpu_type_infos[] = {
+         .abstract = true,
+         .class_init = loongarch32_cpu_class_init,
+     },
++#ifdef TARGET_LOONGARCH64
+     {
+         .name = TYPE_LOONGARCH64_CPU,
+         .parent = TYPE_LOONGARCH_CPU,
+@@ -916,9 +921,12 @@ static const TypeInfo loongarch_cpu_type_infos[] = {
+         .abstract = true,
+         .class_init = loongarch64_cpu_class_init,
+     },
+-    DEFINE_LOONGARCH_CPU_TYPE(64, "la464", loongarch_la464_initfn),
++#endif
+     DEFINE_LOONGARCH_CPU_TYPE(32, "la132", loongarch_la132_initfn),
++#ifdef TARGET_LOONGARCH64
++    DEFINE_LOONGARCH_CPU_TYPE(64, "la464", loongarch_la464_initfn),
+     DEFINE_LOONGARCH_CPU_TYPE(64, "max", loongarch_max_initfn),
++#endif
+ };
+ 
+ DEFINE_TYPES(loongarch_cpu_type_infos)
 
 -- 
 2.43.0
