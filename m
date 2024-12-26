@@ -2,117 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2392F9FCDE3
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Dec 2024 22:21:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE5F9FCDF5
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Dec 2024 22:25:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQvHe-0003z6-AH; Thu, 26 Dec 2024 16:20:42 -0500
+	id 1tQvLt-0000ho-MN; Thu, 26 Dec 2024 16:25:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tQvHT-0003w6-ME
- for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:32 -0500
-Received: from fhigh-a4-smtp.messagingengine.com ([103.168.172.155])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tQvHS-0003Ey-A8
- for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:31 -0500
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal
- [10.202.2.46])
- by mailfhigh.phl.internal (Postfix) with ESMTP id C5BFF11401A0;
- Thu, 26 Dec 2024 16:20:29 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-06.internal (MEProxy); Thu, 26 Dec 2024 16:20:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
- cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm3; t=1735248029;
- x=1735334429; bh=4SuT/ejVgzQsl7vXnic05xBWiNs6QkN+U6Fe72PfgOo=; b=
- YmOgBQwySScZRuCeFKLikTuAW28l3FYcl9zRiITN4ZiV9J92tp4t+M/q5PTWbJwQ
- aa7HywGPQEFdjmOI2Rx0atQ1uaXGL5Q1Qw73Ji0Q/IA9sbmNiVjv1bdzTPm64J89
- bbE5y1AX03o/USNQ1R4tzukjw0qOLjqJBRi3jH8PMnnpj4c0Mr7qHtZqcQBG5all
- UlNLvGXwcqlPQwgJDkXfVrPWkNU6ki80MECiMxi3nAPvou4MmrMgt2ooozneEPRx
- jIIpCWAff39uq5tGZ7JF5xY1YMlrEIL6ajXKOzyG5i+fQnCDarQusdwxn2V6IfWA
- WYFmzy5gp/7YKSvzzTghkA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1735248029; x=
- 1735334429; bh=4SuT/ejVgzQsl7vXnic05xBWiNs6QkN+U6Fe72PfgOo=; b=A
- fnm7p9RCxnpTaMRKsHG5cUOj9OABQRO46d1Pq+DMgneTI2EkQvUg82H4jQzV7dgJ
- XvYCjoj81rYguYrJw5freMeWEAYXHoCtHQZuVkIpkEfqGSEeiYfVwkMh4NdK71t2
- lW5TVon93MbarQkA0oBpvwqpR5R+ygZY57CEpC15YAR6AgsFw79T1EtF3yi2nlxW
- /5O9RrmYPa0zC2irk7aLVQV/koHfemBhZWHK1RdCDLyHR9X1qBJEWVgwakFF0mCD
- fXUkqpgBwb9BexogL1W54lAGMDjtjUOrXO1XEOOq5wb93Biweio4KScQslEH5uHR
- epkJ6xofHSwyLA4rGKhJg==
-X-ME-Sender: <xms:nchtZ2ufr98xSu-z6c-lAl5fq2uzMatuBlOzI1NuejSJBI2w0IDiuQ>
- <xme:nchtZ7cemw8cAhVc0fz7kr1yIwCTef7WEsFPJuhGwZuqRSkANnDcHV8SP8eyep-mE
- 0QMgTnURL88eVLoU9s>
-X-ME-Received: <xmr:nchtZxzWuPyIv54u7zRsYspj8nsOT8Riy6A_WyDVzX3zlYK4UjrFiupz>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddukedgudegkecutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
- uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
- hnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredt
- jeenucfhrhhomheplfhirgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflh
- ihghhorghtrdgtohhmqeenucggtffrrghtthgvrhhnpedvkeeihfefveekueevteefleff
- keegudeghfdtuddugefhueevgeffgedukeejleenucevlhhushhtvghrufhiiigvpedtne
- curfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorght
- rdgtohhmpdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmhhtphhouhhtpdhrtghpth
- htohepmhgrohgsihgsoheslhhoohhnghhsohhnrdgtnhdprhgtphhtthhopehmrghrtggv
- lhdrrghpfhgvlhgsrghumhesghhmrghilhdrtghomhdprhgtphhtthhopehpsghonhiiih
- hnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepghgrohhsohhngheslhhoohhnghhs
- ohhnrdgtnhdprhgtphhtthhopegvsghlrghkvgesrhgvughhrghtrdgtohhmpdhrtghpth
- htohepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomhdprhgtphhtthhopehq
- vghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepfigrnhhghigrnh
- grnhehheeshhhurgifvghirdgtohhmpdhrtghpthhtohepiihhrghouddrlhhiuhesihhn
- thgvlhdrtghomh
-X-ME-Proxy: <xmx:nchtZxO-w5m6PDNlvvMBVbwcMIFVBM4Bk8ZfW3B7IkfB08c3ZIAvWg>
- <xmx:nchtZ2_E5EQ0zOjH6_IlLPADMPaXVDUwJTgv0Aj-SLXo2BnCv-f-Tw>
- <xmx:nchtZ5X5Hbe71V6FtY84OKrlVoM67Q6v6cGbO_i7TuQ2jJg5YedUhQ>
- <xmx:nchtZ_ez-KM57gv31_y6HK6ZQfUYM4H0zQfHI9xvnPk4nUPYA8ZJ-A>
- <xmx:nchtZxWgJWZNUX5oDT2nqmE1U_rUwSrQTiHff7_RSySR6KP4fypEMAeh>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 26 Dec 2024 16:20:28 -0500 (EST)
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Thu, 26 Dec 2024 21:19:54 +0000
-Subject: [PATCH v2 23/23] config: Add loongarch32-softmmu target
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tQvLr-0000gz-9E
+ for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:25:03 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tQvLp-0003VV-H7
+ for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:25:03 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-2166f1e589cso96071515ad.3
+ for <qemu-devel@nongnu.org>; Thu, 26 Dec 2024 13:25:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1735248300; x=1735853100; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=axpLL/8zFkOviCjNAAqzFNv57PnInBizEh6hvv+69uM=;
+ b=XAh87Y0HRStOwOQ5zs80oBJbWmgVGAaFB9sfw0+bfNpcMOnNxBkOyg3NDPMNJlFtW/
+ 8hmxs4Yw1iHFeRktWxNWdXwDiXOp+W898bykoid+NtXsDX2bpWvyuouKNpRdO3E9exta
+ SovKHMhKm4KJRz+9Du8fEeMqo/fuKLFg7va8Qr/EoRzioOBzbjn3g28c+v5nZkMXOYUx
+ 0mn86nY3t/C1PxNVobia9WHPTOrvj+jNOMfDRjSo4NeaaP/eFuzcuUJr8Qh7A88AEfiB
+ JRcglAtVrp3JfblIPtIHwEu7C/X6iYFO8d0l4Xw7Ps2HuSJO6gHSJ+zOlyvUNQaze8yu
+ GEfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1735248300; x=1735853100;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=axpLL/8zFkOviCjNAAqzFNv57PnInBizEh6hvv+69uM=;
+ b=gDO8qjluLiwDbAfqn13SpEjaye/KCqsyoG/IHjI3STIp5NW7xV1pRuELnsm0JYUHm1
+ qzsGfNl++bAxDownuH2Xv8gYNODcQhU2hGdvHE6K+4sPsV78aGELybIUuP06CzxFHa8E
+ svHjMpJuaKMI76qNBHIsIB/nrw1QklEf0NrdVpMGwJsYIoEs3CFwJfom4y2L52sN+fss
+ U58Tvzn98CS4eaDJZqpVC6yUrWBF9j3F9NkMwlB/hvNx+85DFi63FaCnND+sOzAVFxhm
+ 4Kn5QKa/SA8HiWpJsEubpgpxhJ0fOAJx8C3Y2IFU3mirdda4lr4dHZr+BZTQkiBCu5ZY
+ vK+Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWFc8oZ/cGMqltjn+rEn8uJEqMeLwboNRcDxyaAsekNlQltw93WLqKxJf9F6XTA86Qg2+9wujlTF/Ep@nongnu.org
+X-Gm-Message-State: AOJu0Yyou2rEVuVOC+JqOgsyDlvkS8ODHDSir56GeP3b9MaJPb4nkAZ0
+ +gbNKS5eniY4uluNun3BDHzTRcPGoRysaTI6IDpfzhtifYMJvuGLXKYwqWuHdak/WfjoG3Gt4tQ
+ RKIA=
+X-Gm-Gg: ASbGnctDE11doM8Y4zAhUwwbO1oEikMMgZbMEgKuuMXN49TaQ2+6jGKGeuGGE4QLfCk
+ zY7e/54Cip8t6I4GLL+jjITM2nVo9kxdnbm6LXuHM3+rlVXDQttkRRpUIoC0JddrKxSpHUmvooy
+ oE7UFBp0Q7Tj9P0lDxGAsZl47SudWXp/H+nnK3l50VODVJaSBoRN/xklOsHtbUd4eVDs5bhOBiJ
+ uWWV/a5eLHUDyLBS4OWBx/ScCqsL/p75zvqQU8KFL3F0FrVYNhZSlRNpVwo9TJ1DuWb3UlL92sW
+ JjLjfPp5xZ2GipVYuEmqr0SeVXSfZOtj2vqugGE=
+X-Google-Smtp-Source: AGHT+IFy75dcv062d0hLdsS98QBcpa2N8zwdH9qnWJUZVDeCQg+jbEVhlmYPfS66coYNXq4zRIVXXg==
+X-Received: by 2002:a05:6a20:158c:b0:1e0:d6ef:521a with SMTP id
+ adf61e73a8af0-1e5e043f6c0mr38303693637.1.1735248299923; 
+ Thu, 26 Dec 2024 13:24:59 -0800 (PST)
+Received: from [192.168.125.227] (syn-156-019-246-023.biz.spectrum.com.
+ [156.19.246.23]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-72aad8dbb5asm13265074b3a.93.2024.12.26.13.24.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 26 Dec 2024 13:24:59 -0800 (PST)
+Message-ID: <fca63b16-9750-4116-bbb6-8ae1d3b5e5eb@linaro.org>
+Date: Thu, 26 Dec 2024 13:24:56 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241226-la32-fixes1-v2-23-0414594f8cb5@flygoat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/23] target/loongarch: Enable rotr.w/rotri.w for
+ LoongArch32
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
+Cc: Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
 References: <20241226-la32-fixes1-v2-0-0414594f8cb5@flygoat.com>
-In-Reply-To: <20241226-la32-fixes1-v2-0-0414594f8cb5@flygoat.com>
-To: qemu-devel@nongnu.org
-Cc: Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2058;
- i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=JNYj8ZyURlcFCCdBmVClS5y27OylWlkDj1ACXlLsUCM=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhvTcE9kiE7qn9kq7/ArnzH/AfuSsblD/xOXPg8TPbfmvb
- h6qUjWvo5SFQYyLQVZMkSVEQKlvQ+PFBdcfZP2BmcPKBDKEgYtTACay6TIjwzQrzk+zW98281pf
- t+USvDjr3H/X8DNfljL13w25HpEbFMTwk3HZWpbi3jNV7ZUfF0xZ5eIbYdWQ2l25J68l6VBmS9B
- LRgA=
-X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
- fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
-Received-SPF: pass client-ip=103.168.172.155;
- envelope-from=jiaxun.yang@flygoat.com; helo=fhigh-a4-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+ <20241226-la32-fixes1-v2-1-0414594f8cb5@flygoat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20241226-la32-fixes1-v2-1-0414594f8cb5@flygoat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -129,56 +109,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
----
- MAINTAINERS                                     | 4 ++--
- configs/devices/loongarch32-softmmu/default.mak | 7 +++++++
- configs/targets/loongarch32-softmmu.mak         | 7 +++++++
- 3 files changed, 16 insertions(+), 2 deletions(-)
+On 12/26/24 13:19, Jiaxun Yang wrote:
+> As per "LoongArch Reference Manual Volume 1: Basic Architecture" v1.1.0,
+> "2.2 Table 2. Application-level basic integer instructions in LA32",
+> rotr.w and rotri.w is a part of LA32 basic integer instructions.
+> 
+> Note that those instructions are indeed not in LA32R subset, however QEMU
+> is not performing any check against LA32R so far.
+> 
+> Make it available to ALL.
+> 
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+>   target/loongarch/tcg/insn_trans/trans_shift.c.inc | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8839f22e3ed306a598da1e4ab2f9f1899f574275..0c45d28508015d448c0b8a46cdb83e3974da2e28 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1210,8 +1210,8 @@ M: Bibo Mao <maobibo@loongson.cn>
- R: Jiaxun Yang <jiaxun.yang@flygoat.com>
- S: Maintained
- F: docs/system/loongarch/virt.rst
--F: configs/targets/loongarch64-softmmu.mak
--F: configs/devices/loongarch64-softmmu/default.mak
-+F: configs/targets/loongarch*-softmmu.mak
-+F: configs/devices/loongarch*-softmmu/default.mak
- F: hw/loongarch/
- F: include/hw/loongarch/virt.h
- F: include/hw/intc/loongarch_*.h
-diff --git a/configs/devices/loongarch32-softmmu/default.mak b/configs/devices/loongarch32-softmmu/default.mak
-new file mode 100644
-index 0000000000000000000000000000000000000000..b28b5c7c9e2195cffe065716ee33ec2bf26e2b31
---- /dev/null
-+++ b/configs/devices/loongarch32-softmmu/default.mak
-@@ -0,0 +1,7 @@
-+# Default configuration for loongarch32-softmmu
-+
-+# Uncomment the following lines to disable these optional devices:
-+# CONFIG_PCI_DEVICES=n
-+
-+# Boards are selected by default, uncomment to keep out of the build.
-+# CONFIG_LOONGARCH_VIRT=n
-diff --git a/configs/targets/loongarch32-softmmu.mak b/configs/targets/loongarch32-softmmu.mak
-new file mode 100644
-index 0000000000000000000000000000000000000000..50e0075a24ac6bf3717db967b03b816b52a25964
---- /dev/null
-+++ b/configs/targets/loongarch32-softmmu.mak
-@@ -0,0 +1,7 @@
-+TARGET_ARCH=loongarch32
-+TARGET_BASE_ARCH=loongarch
-+TARGET_KVM_HAVE_GUEST_DEBUG=y
-+TARGET_SUPPORTS_MTTCG=y
-+TARGET_XML_FILES= gdb-xml/loongarch-base32.xml gdb-xml/loongarch-fpu.xml gdb-xml/loongarch-lsx.xml gdb-xml/loongarch-lasx.xml
-+# all boards require libfdt
-+TARGET_NEED_FDT=y
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
--- 
-2.43.0
-
+r~
 
