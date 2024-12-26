@@ -2,72 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 095E09FCEDF
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Dec 2024 23:50:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8362B9FCEE9
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Dec 2024 23:57:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQwfk-0004Ck-4U; Thu, 26 Dec 2024 17:49:40 -0500
+	id 1tQwlu-0006rh-JI; Thu, 26 Dec 2024 17:56:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tQwfe-00047W-Kv
- for qemu-devel@nongnu.org; Thu, 26 Dec 2024 17:49:34 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tQwls-0006rF-Qk
+ for qemu-devel@nongnu.org; Thu, 26 Dec 2024 17:56:00 -0500
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tQwfZ-0004q4-6o
- for qemu-devel@nongnu.org; Thu, 26 Dec 2024 17:49:30 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4361dc6322fso43772675e9.3
- for <qemu-devel@nongnu.org>; Thu, 26 Dec 2024 14:49:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tQwlr-0005d6-8K
+ for qemu-devel@nongnu.org; Thu, 26 Dec 2024 17:56:00 -0500
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-2efb17478adso7942606a91.1
+ for <qemu-devel@nongnu.org>; Thu, 26 Dec 2024 14:55:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735253367; x=1735858167; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735253758; x=1735858558; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=b9ShI2YHF42ob5+9ZOaTMqjyPvB2mBMZNGLhlpNYVHI=;
- b=PTXc1+I5noBkgDCkVjxW85AkJIpuZWOs5cRBwPtRGD/y4vEXgH+ZQ7f6kLObJbpZjU
- L6y3B8tTjFgbc0S7AzfvHBy4Ytvwq/20LnjowrzA2QUQHloLuv5/mhO2LYhjyqxxt+Cc
- Hbq5n4A9UHUnppIPv5xqDJ1q4uprts+yJo4xyycUXZ3uM5Z8xa+F4rcJ/Yhu46dwHbL6
- qe8iquHdDKwpboT4Ggcjh/+Sj4/+z3mq/tPkFfsTXUX/ri3TY4thzbzV0zWJDE3vI/Rl
- vW1Aiz5wwp90CcDrhVIN+anvehYdywqR0ZdqghELDU3hvoDddAlFEf/7zYzDXlYs7VPv
- WSFQ==
+ bh=x32kWxMma690Uq+kbpx987xzi7TC1UEivuZD0gxrIZ0=;
+ b=Jmunfk6xdW2CP0bfgu18q/toFx9OdPBk7Su1Aow2mNQCGUjZ7X5nXdolAXTDmUXhiy
+ 5cJcpoCkjdGjsDsxZ8hr6y/ISl1CrUxakV/USiObGXRGMkXa2399eykBnHlYGPjOxP7A
+ bsCPfdUqYomdzr+vPJEBH/zk6TZORLWPGwq13O6B7vT9UhvMjpUzutv/zQHkEiDP45eM
+ 6X0K+a7NLLbee9qwqqlDGIO0lYbfYVplZR6EiidSpm9Pt0GM3S7CK1DbVqcaH8CysNGp
+ MpVaKIsqdBpOAQnOFogrLGqpUD/xBcjVD6jIkB6j0x92wRJ7TU3xafVHw2RA6d6vwtz1
+ PgqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735253367; x=1735858167;
+ d=1e100.net; s=20230601; t=1735253758; x=1735858558;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=b9ShI2YHF42ob5+9ZOaTMqjyPvB2mBMZNGLhlpNYVHI=;
- b=QVvbx33hWEZ2i0uX/EjHyRdp5rV31jh4aPnIv1xFdlyuZIBm3q4BtAgnhnLxzOvUh1
- 6qBTwgEMp/9Ptcal2tEDsw9cTgbnzA8+XwIy8nOE3pl1E45YFmAZjfNeG4QT0/5An4kF
- IipgWjYcJhLf2wSr+60MrJi2C00S0fEZfAb6uc2OFGgLKVXhBO4EJPaIJdjeuTzRiEk9
- UXFYgK/QQ+7VDuWOuBPjXkzheuYGmpAt4/aPcIkChl13ND6s4yVmtCC8Kb4vU75ESUVE
- oVwu+Ph+L42hPqJMsieqXiTEph8zyyuDdJDTvCFXX5Ew+BwZ/xHn8Fe7YxYfqhqPKwkJ
- 9U8g==
+ bh=x32kWxMma690Uq+kbpx987xzi7TC1UEivuZD0gxrIZ0=;
+ b=dh4n5ym2ND2MDD3EQqN460WU58WqFSGhR3DuN7/0osSy0H0YYcWG8B/TBALXctxYWT
+ f8r8rLs92avaiC7vXgaYNwHJ3Evz7sbqV+SeUcsnYOpOXFwwYyfng5uyWdd28N8BJaba
+ xFhuL64KAlph1kE57sGXXzS9FrFzb2ExoyxgMiAust5PNsO1Y2LKzkTw4GFW4rlkQyWo
+ uAMh3ikdFXnBDzA9dBAOUo3y8emwfraoI/x3rQfrRUZi7n3o3t9Fjk0uCDhhrtZw2nvL
+ MbUkXk3c5bigiJe7aI2mL72SBzp0PQ8KH+cNSzt4Je1lV8zMzPAq1NVXztRluZub5oli
+ diSQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWPwbk5Dd5GG9HyemyVVdfcOrNsrB68bP8XGwZeS8cVa/K9/Izr7hglZoXPiVpEj3S8ki4T5kRc37Fs@nongnu.org
-X-Gm-Message-State: AOJu0YyT8WuWnE+x1jE2RdL0JPoUCY0pbzYnnQfxrZ51daVYfj7f3vHV
- SqBNIfGdyTXkw77IBYIC5+VBvZCnAXQ9G6FeRzcqsQrJfsax++3O4rxQVxk5T/J1wALMqzoUREG
- QF5M=
-X-Gm-Gg: ASbGnctK13kamDlX5Wzhxwi5PIo8e///JbwCFTNsc8xnCyhn6CSKjoNKDmj6SAAUEnN
- SZA0c5wJoR/xKvEiLckbcyfN17xcpoAeMP3Ggts0MdFZaYQ65/QBrNsVUy3BeBaW+1mCfMmknde
- VfpXUrQIObkBSxhuWNvFkxeO4kuxBJFO4MTQLhLG+4WHvDOKJXco8xWnT8P83L938LttNXJ1dwz
- 9PVfa55tKGpj50aapE7oqoVc1IFrCQNbXlUcrN8zD7M6r/sVnQwTa7AHWNryShzFdhyDZPBMCcj
- LjTZccwj6Jl9pFq+wPGwzQ==
-X-Google-Smtp-Source: AGHT+IHsb4OuQKpgzawbCUM6jx2INolhKQWzvsghk9oT+LvNtYcLbFxIKX7gMgfJpAfJufPBE0Lo/w==
-X-Received: by 2002:a05:600c:3ba1:b0:434:a315:19c with SMTP id
- 5b1f17b1804b1-436685488bfmr216679635e9.3.1735253367510; 
- Thu, 26 Dec 2024 14:49:27 -0800 (PST)
-Received: from [192.168.1.74] (88-187-86-199.subs.proxad.net. [88.187.86.199])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656b013ecsm280100365e9.16.2024.12.26.14.49.25
+ AJvYcCWMk8XSnfha3s13AkXXBdB1G5OSsrjsBvqBxzXbFacit6zQboDTriwTgkFRxSuvfFIyugv7koHs3Kr4@nongnu.org
+X-Gm-Message-State: AOJu0Yz/q8pe+1wFcqvoCwPsHNC94r04D6hAeLMzwDu0ECoF6/uFIQOz
+ 6Gtwcc+8T5Po0vvttZgcv6L7zy6c6B/NUuAxjOGWkLGspRA7e5ZN6XdBkSUJZzU=
+X-Gm-Gg: ASbGnctXHZdT2c8CoWwNP6k4t3ijofZW2z9oci2bZBWrwhvhtGLo/v8RPj2COeFeWMR
+ d1L1VREpDINxiuiRxajGiXYC1IK52TARuRUrvOyIo2Rn3Eb32XgRXLtYD6aICiwctY1sAvStUez
+ a20G10chbD9SL2cp91ZwCtUEolQpMdUpY4rGaHKTeZAA+3n3xN+b/V6AOZmYih/HiC6vKZ/DOgF
+ vXIV2/L/a5BIJrO3m9ibOPD+xG2wwE8pZjIMiC8Hw0homCpYyrxSbInlNn0+l1W1Lg7H7zSzRX/
+ 3dwAetFaCO291jL3rvMFB9+Louk5XA==
+X-Google-Smtp-Source: AGHT+IEY4Tb/XwzfEAoVSUR62U9Uyb2fA7YRc4Q3EdElEg9Z2WvmV9/U83bmmRZkTP+lmouB8eiAOg==
+X-Received: by 2002:a05:6a00:301a:b0:72a:a7a4:9c6d with SMTP id
+ d2e1a72fcca58-72abdeb6fc1mr40596493b3a.24.1735253757695; 
+ Thu, 26 Dec 2024 14:55:57 -0800 (PST)
+Received: from [192.168.69.132] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-72aad8fb941sm13413548b3a.160.2024.12.26.14.55.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 26 Dec 2024 14:49:27 -0800 (PST)
-Message-ID: <d24de12e-f4ae-481c-8eb0-16aff4780ab4@linaro.org>
-Date: Thu, 26 Dec 2024 23:49:25 +0100
+ Thu, 26 Dec 2024 14:55:57 -0800 (PST)
+Message-ID: <490e3bc8-ef3b-4bec-b9c1-55706c1b3a77@linaro.org>
+Date: Thu, 26 Dec 2024 23:55:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 08/23] target/loongarch: Fix some modifiers for log
- formatting
+Subject: Re: [PATCH v2 19/23] target/loongarch: Introduce max32 CPU type
 To: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
 Cc: Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
@@ -76,14 +74,14 @@ Cc: Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
  Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
  Paolo Bonzini <pbonzini@redhat.com>
 References: <20241226-la32-fixes1-v2-0-0414594f8cb5@flygoat.com>
- <20241226-la32-fixes1-v2-8-0414594f8cb5@flygoat.com>
+ <20241226-la32-fixes1-v2-19-0414594f8cb5@flygoat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241226-la32-fixes1-v2-8-0414594f8cb5@flygoat.com>
+In-Reply-To: <20241226-la32-fixes1-v2-19-0414594f8cb5@flygoat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=philmd@linaro.org; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,17 +105,29 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 26/12/24 22:19, Jiaxun Yang wrote:
-> target_ulong -> TARGET_FMT_ld
-> vaddr -> VADDR_PRIx
-> uint32_t -> PRIx32
+> Introduce max32 CPU type as it's necessary to demonstrate all
+> features we have in LA32.
 > 
 > Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 > ---
->   target/loongarch/tcg/insn_trans/trans_atomic.c.inc | 2 +-
->   target/loongarch/tcg/tlb_helper.c                  | 2 +-
->   target/loongarch/tcg/translate.c                   | 5 ++---
->   3 files changed, 4 insertions(+), 5 deletions(-)
+>   target/loongarch/cpu.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 92 insertions(+)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+>   #ifdef TARGET_LOONGARCH64
+>   static void loongarch_la464_initfn(Object *obj)
+>   {
+> @@ -923,6 +1014,7 @@ static const TypeInfo loongarch_cpu_type_infos[] = {
+>       },
+>   #endif
+>       DEFINE_LOONGARCH_CPU_TYPE(32, "la132", loongarch_la132_initfn),
+> +    DEFINE_LOONGARCH_CPU_TYPE(32, "max32", loongarch_max32_initfn),
+
+What about "la32max"?
+
+>   #ifdef TARGET_LOONGARCH64
+>       DEFINE_LOONGARCH_CPU_TYPE(64, "la464", loongarch_la464_initfn),
+>       DEFINE_LOONGARCH_CPU_TYPE(64, "max", loongarch_max_initfn),
+> 
 
 
