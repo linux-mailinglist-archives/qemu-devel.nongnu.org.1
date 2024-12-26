@@ -2,91 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F909FCDDF
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Dec 2024 22:21:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 929EE9FCDD8
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Dec 2024 22:20:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQvGp-0003dJ-27; Thu, 26 Dec 2024 16:19:51 -0500
+	id 1tQvGp-0003dc-OO; Thu, 26 Dec 2024 16:19:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tQvGm-0003ci-SY
- for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:19:48 -0500
+ id 1tQvGn-0003ck-0B
+ for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:19:49 -0500
 Received: from fout-a1-smtp.messagingengine.com ([103.168.172.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tQvGk-0002vr-Kx
+ id 1tQvGl-0002vv-HU
  for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:19:48 -0500
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal
- [10.202.2.51])
- by mailfout.phl.internal (Postfix) with ESMTP id 75BB713801CD;
- Thu, 26 Dec 2024 16:19:43 -0500 (EST)
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal
+ [10.202.2.45])
+ by mailfout.phl.internal (Postfix) with ESMTP id B907213801C7;
+ Thu, 26 Dec 2024 16:19:45 -0500 (EST)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-11.internal (MEProxy); Thu, 26 Dec 2024 16:19:43 -0500
+ by phl-compute-05.internal (MEProxy); Thu, 26 Dec 2024 16:19:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
  cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:message-id:mime-version:reply-to
- :subject:subject:to:to; s=fm3; t=1735247983; x=1735334383; bh=9T
- fa1rDNwXRupn9JzeRFLaFDM4uveGgn0m7nX3vBjdQ=; b=R7LP437+PAJlLYZVnv
- pK2g5qafm1bzrYp93aldwzt8dZlsqrnT/F+zVf98JeUnjOr1Wcc1Mk2OUDvdhZmR
- iMmf4j1UF4INWeO0ZCCMKp9BeZZpCiBubIHfsr1FyTAfbWJ4c5hSkt5mQYXFCMvY
- d4akgrzveGAIk/8cK5iGiKElugxkL8vGOl6mv12xotR4NTJynOTpObncp+7KxxMc
- WuUZRw0NpBNbZN5KVnvHoyTad8QlSPebaplULGu3jQ6kOrBnPlidRz920OZT3lkW
- fXtb7Ljzct7E9rZQFnRDvNB4WWEbstzAxIFHetIBoYK4cMmzTCo+o6AiKjazmkhs
- azGw==
+ :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1735247985;
+ x=1735334385; bh=J5Os7FcfxuL0lY+KefWBE+pEYPFluDZ4pINxkioG6GM=; b=
+ dQCa1fS/mmuwJjQslVjZj3ymp10szoAZi278yjEsjYn3h2n0MJO4M+T9pDitiyc4
+ UXV7Mbrw30TqT5yQXn0/wO8b77HiGYbg1f2xzInm5flXe90VP8eMLLcQfWG2kEpR
+ AKUCKrPGFUQ3cN18CbBHnTRd8FFL266QQ+N+4Vy8cczCWuq8VnLKhWjpG8zmdcT9
+ 6QJILRAIuLYpprnuk2W+ekQs/pOmWJraF1J7Z1rw2BNITydZPJy+7pcE0Bzh1dKa
+ 2VtjNQy1nBjVB4mfhEWIWoB4litTAuvvRyYiYECRVjnz7nqS5Wum3fM6hh3y8PL6
+ 8szWP0D1FpFpFh1D7/lyZw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:message-id:mime-version:reply-to:subject
- :subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm2; t=1735247983; x=1735334383; bh=9Tfa1rDNwXRupn9JzeRFLaFDM4uv
- eGgn0m7nX3vBjdQ=; b=cqUuOGfGgh5ghGg2aWeDkX4lJVGYw/AcV+9uHfQmESDU
- 8ACs1ymK0NtEiAY2xliGKdLARCUEEduCJGiFtqcSvsh3x7FoEhdYH0apQOLWPS+o
- 6Q/F4gCjG89xQm+wgWG52FU2uBcYIowHM9CqAA5T6PAL8LxZ92nrFq4bmI5vtOmd
- D/T0kN046Uu/HPn2sozBMJ6DTFLO73qVFEHVc9hkKHe79aIiWTHTupZiH8Qx8X2A
- FzmLOlyaX/4av3MX0Wxfj3o3rTLxj/xZgy8Egzyw00pa/I5f2g9I4iro5jycfjOY
- LL8MxUxAxPXHGAAm7K2io7V/cO7Rm47yuhUylnBN/g==
-X-ME-Sender: <xms:bchtZwVSsncurSKfDVBP6vwBo5adED9EnGEk9a-3Y4WM7nBjCfFiTQ>
- <xme:bchtZ0mGL2fWmt9VnZqjKOhuO8uDXKXMOhgAkiCXi2mVW-RBpsiEw4LsPEyauC8Fb
- YmjpEAyR3SqFqFIjJA>
-X-ME-Received: <xmr:bchtZ0YbjrK8wysfTnNj7ItzgRM_TDTOYpTXc-alDbMY0E_EK_f5Vtnx>
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1735247985; x=
+ 1735334385; bh=J5Os7FcfxuL0lY+KefWBE+pEYPFluDZ4pINxkioG6GM=; b=a
+ 0y6bbBZPX+peVBnlRzoYZ5d+z3yN3A4lO019lICeNdW5BZXYEA+AEF/t5u+VZpyA
+ vu9zRsDPd6y0gsiIMQ41RXE4cDe4DOekFdckmP0kzuDelxDIUDq3NsmdIrFeqQO0
+ dJghXIr1f4VKZ/SbppTALj7IsybCycDi8sfIXQuZ1J2jug+j66JgLEIZfrmXA+if
+ +rs3xGKriNwmouJcvr6nN032KA6bHW9teT84sJLWKeMJODB3bNASyjHsXVAiDm0D
+ PaEd6XVfplydyDh/JpkdoKwJHzx34A7Z2Y7SsqRTZbjSaLynUqm1gBdyLGQ+Gi81
+ ZaU3ShJbC5JJeAIBNyzmw==
+X-ME-Sender: <xms:cchtZ_mh1gUb_MFnt2mkdQlTVyY_YedkD53f6LWeIsDj7a4em95wQw>
+ <xme:cchtZy3JatnISzqoUFOpaU_gBVdycq8p1D31lHCxtp1JBhvgxjeoD9L8o2LpbLqXR
+ SkKh3C7Cs__1bSeXnI>
+X-ME-Received: <xmr:cchtZ1puEvbH7I6NlkLPKL4zCa_f24RuQi_wfq1xPLfyzHFFLfUlNJAL>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddukedgudegjecutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
  uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
- hnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthejredtredtjeen
- ucfhrhhomheplfhirgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflhihgh
- horghtrdgtohhmqeenucggtffrrghtthgvrhhnpefgveffjeetgeejfeelgfekteelkefh
- uefggedvueeujeekjeetkeekvdffffefudenucffohhmrghinhepkhgvrhhnvghlrdhorh
- hgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhhi
- rgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomhdpnhgspghrtghpthhtohepuddvpd
- hmohguvgepshhmthhpohhuthdprhgtphhtthhopehmrghosghisghosehlohhonhhgshho
- nhdrtghnpdhrtghpthhtohepmhgrrhgtvghlrdgrphhfvghlsggruhhmsehgmhgrihhlrd
- gtohhmpdhrtghpthhtohepphgsohhniihinhhisehrvgguhhgrthdrtghomhdprhgtphht
- thhopehgrghoshhonhhgsehlohhonhhgshhonhdrtghnpdhrtghpthhtohepvggslhgrkh
- gvsehrvgguhhgrthdrtghomhdprhgtphhtthhopehjihgrgihunhdrhigrnhhgsehflhih
- ghhorghtrdgtohhmpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdroh
- hrghdprhgtphhtthhopeifrghnghihrghnrghnheehsehhuhgrfigvihdrtghomhdprhgt
- phhtthhopeiihhgrohdurdhlihhusehinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:bchtZ_XsbdB3pK_Jq1UBZ7xFESoKNdwkTS80JIWLfoK88aF2pR9neg>
- <xmx:bshtZ6nG0aVPDnOn0uIBG88I37hNoF9jCQPBQ4oxypntnkFW7ryNvA>
- <xmx:bshtZ0cIgEW2uH2Dhoq8atct3ACnwKtKcR4MoD7nKONvfhEko_lCig>
- <xmx:bshtZ8HhBEUPCMpIy1oBZG66dXwx7DBa_qkAVEeJJEw7kmxUMNJ4ww>
- <xmx:b8htZ1_UIOJSw-lzVFtumfK005__CJZyjc9NgNV3vVjAzlZ9dFIexLGT>
+ hnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredt
+ jeenucfhrhhomheplfhirgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflh
+ ihghhorghtrdgtohhmqeenucggtffrrghtthgvrhhnpedvkeeihfefveekueevteefleff
+ keegudeghfdtuddugefhueevgeffgedukeejleenucevlhhushhtvghrufhiiigvpedtne
+ curfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorght
+ rdgtohhmpdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmhhtphhouhhtpdhrtghpth
+ htohepmhgrohgsihgsoheslhhoohhnghhsohhnrdgtnhdprhgtphhtthhopehmrghrtggv
+ lhdrrghpfhgvlhgsrghumhesghhmrghilhdrtghomhdprhgtphhtthhopehpsghonhiiih
+ hnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepghgrohhsohhngheslhhoohhnghhs
+ ohhnrdgtnhdprhgtphhtthhopegvsghlrghkvgesrhgvughhrghtrdgtohhmpdhrtghpth
+ htohepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomhdprhgtphhtthhopehq
+ vghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepfigrnhhghigrnh
+ grnhehheeshhhurgifvghirdgtohhmpdhrtghpthhtohepiihhrghouddrlhhiuhesihhn
+ thgvlhdrtghomh
+X-ME-Proxy: <xmx:cchtZ3lE2WBzcl9rFKcGtN-R9352EGs2M3h-pqnQYw0Ry6jYVclExQ>
+ <xmx:cchtZ92h1rl08N-qQoPIqTJYlS6UI1LKBFaPx732saOjoRcVIp7MRg>
+ <xmx:cchtZ2sVclRu2W0XuD1SaNwYpckuukxtjz1-gZeY35GS_3OjF_ffHA>
+ <xmx:cchtZxXSEm907GSouqgXWJ2DeOTKLmMaRqP0J8gFnUt8s3XZ7Hc4Ig>
+ <xmx:cchtZ7OBmxEKRQdf4jp7YqNpsjNTMvxLnUChuMiOAd2zqi58YngFip0k>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 26 Dec 2024 16:19:40 -0500 (EST)
+ 26 Dec 2024 16:19:43 -0500 (EST)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH v2 00/23] target/loongarch: LoongArch32 fixes 1
-Date: Thu, 26 Dec 2024 21:19:31 +0000
-Message-Id: <20241226-la32-fixes1-v2-0-0414594f8cb5@flygoat.com>
+Date: Thu, 26 Dec 2024 21:19:32 +0000
+Subject: [PATCH v2 01/23] target/loongarch: Enable rotr.w/rotri.w for
+ LoongArch32
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGPIbWcC/22MwQ6DIBAFf8XsuTSwUoo99T8aDwirklgxYEyN4
- d9LPfc472XmgETRU4JHdUCkzScf5gJ4qcCOZh6IeVcYkKMUiMgmUyPr/YeSYLXS1grpeKMVFGO
- JdD5FeLWFR5/WEPczvonf+r+zCcaZtgq7O90a6bpnP+1DMOvVhje0OecvPyLAs6gAAAA=
-X-Change-ID: 20241222-la32-fixes1-368cc14d0986
+Message-Id: <20241226-la32-fixes1-v2-1-0414594f8cb5@flygoat.com>
+References: <20241226-la32-fixes1-v2-0-0414594f8cb5@flygoat.com>
+In-Reply-To: <20241226-la32-fixes1-v2-0-0414594f8cb5@flygoat.com>
 To: qemu-devel@nongnu.org
 Cc: Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>, 
@@ -96,13 +96,13 @@ Cc: Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
  Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>, 
  Paolo Bonzini <pbonzini@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4602;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2013;
  i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=qkAwBPvCGYmgd2GcEqE5EO56ATPfJyQyIj1xUYeSbz8=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhvTcE9ludlrhCs861Q5kbDrJeLt4mmronnbOB3H7JM4UB
- DxgX/C3o5SFQYyLQVZMkSVEQKlvQ+PFBdcfZP2BmcPKBDKEgYtTACZido+R4X/i//ymFsUXZ9mX
- n8j39Elgd1V//WIi78ZPS+aqfM45e52R4UbmP8GHbB8vfVu0fYW2UlnExd6Ai2ou7W+EnLtq4v7
- 28gMA
+ bh=BoEFL5mTmPnLaZ8ShfI5yw4/wyM2it5eCmOUPeHemfM=;
+ b=owGbwMvMwCXmXMhTe71c8zDjabUkhvTcE9lulrLmE1bNce6cUu5StcvfXzb92MdUBpM9+7Y2x
+ km8fJvTUcrCIMbFICumyBIioNS3ofHigusPsv7AzGFlAhnCwMUpABNJ28XIsMvoxuRbM7f8rgub
+ 1f1ZNXGySYw20yXnWU1/axWsp/F+vMvwm/0r5yFDvypFH5f3G3cZ+AVlr9p9iytSe9nMzkOCuw4
+ dZwAA
 X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
  fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
 Received-SPF: pass client-ip=103.168.172.144;
@@ -130,99 +130,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all,
+As per "LoongArch Reference Manual Volume 1: Basic Architecture" v1.1.0,
+"2.2 Table 2. Application-level basic integer instructions in LA32",
+rotr.w and rotri.w is a part of LA32 basic integer instructions.
 
-It's boxing day so time to dump big stuff!
+Note that those instructions are indeed not in LA32R subset, however QEMU
+is not performing any check against LA32R so far.
 
-This series is a collection of small fixes I made to TCG for
-getting LoongArch32 build to work.
-
-There are still many thing broken, especially on CSRs. More
-series following. A brief todo would be:
-- Refactoring CSR handling to perform sign extention and handle RO
-  fields.
-- Refectoring TLB code to allow MTLB only configuration as well as
-  special TLBELO format for LA32.
-- Check instruction availability for LA32R.
-- Handle LA32R priviliged modifications.
-
-LoongArch maintainers, feel free to take subsets as most patches
-in this series don't have dependency on each other, and I don't
-want to take a pile of patches time by time.
-
-There is a checkpatch error in trans_vec.c.inc inherited from
-existing code style.
-
-Thanks for revivewing!
+Make it available to ALL.
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
-Changes in v2:
-- Dump all patches made ready so far.
-- Split LLSC patch into two (Richard, philmd)
-- Link to v1: https://lore.kernel.org/r/20241222-la32-fixes1-v1-0-8c62b7e594db@flygoat.com
+ target/loongarch/tcg/insn_trans/trans_shift.c.inc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
----
-Jiaxun Yang (23):
-      target/loongarch: Enable rotr.w/rotri.w for LoongArch32
-      target/loongarch: Fix address generation for gen_sc
-      target/loongarch: Fix PGD CSR for LoongArch32
-      target/loongarch: Perform sign extension for IOCSR reads
-      target/loongarch: Use target_ulong for iocsrrd helper results
-      target/loongarch: Store some uint64_t values as target_ulong
-      target/loongarch: Cast address to 64bit before DMW_64_VSEG shift
-      target/loongarch: Fix some modifiers for log formatting
-      target/loongarch: Use target_ulong for CSR helpers
-      target/loongarch: Scrutinise TCG float translation for 32 bit build
-      target/loongarch: Scrutinise TCG vector translation for 32 bit build
-      target/loongarch: Scrutinise TCG bitops translation for 32 bit build
-      target/loongarch: Fix rdtimer on 32bit build
-      target/loongarch: Scrutinise TCG arithmetic translation for 32 bit build
-      target/loongarch: Fix load type for gen_ll
-      target/loongarch: Define address space information for LoongArch32
-      target/loongarch: Refactoring is_la64/is_va32 for LoongArch32
-      target/loongarch: ifdef out 64 bit CPUs on 32 bit builds
-      target/loongarch: Introduce max32 CPU type
-      hw/loongarch/virt: Default to max32 CPU for LoongArch 32 build
-      qapi/machine: Replace TARGET_LOONGARCH64 with TARGET_LOONGARCH
-      target/loongarch: Wire up LoongArch32 Kconfigs
-      config: Add loongarch32-softmmu target
+diff --git a/target/loongarch/tcg/insn_trans/trans_shift.c.inc b/target/loongarch/tcg/insn_trans/trans_shift.c.inc
+index 377307785aab4837bc181f1691632e7970a9889d..136c4c845527f0e63902a8306dcaf136dd4dd3fc 100644
+--- a/target/loongarch/tcg/insn_trans/trans_shift.c.inc
++++ b/target/loongarch/tcg/insn_trans/trans_shift.c.inc
+@@ -78,7 +78,7 @@ TRANS(sra_w, ALL, gen_rrr, EXT_SIGN, EXT_NONE, EXT_SIGN, gen_sra_w)
+ TRANS(sll_d, 64, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_sll_d)
+ TRANS(srl_d, 64, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_srl_d)
+ TRANS(sra_d, 64, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_sra_d)
+-TRANS(rotr_w, 64, gen_rrr, EXT_ZERO, EXT_NONE, EXT_SIGN, gen_rotr_w)
++TRANS(rotr_w, ALL, gen_rrr, EXT_ZERO, EXT_NONE, EXT_SIGN, gen_rotr_w)
+ TRANS(rotr_d, 64, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_rotr_d)
+ TRANS(slli_w, ALL, gen_rri_c, EXT_NONE, EXT_SIGN, tcg_gen_shli_tl)
+ TRANS(slli_d, 64, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_shli_tl)
+@@ -86,5 +86,5 @@ TRANS(srli_w, ALL, gen_rri_c, EXT_ZERO, EXT_SIGN, tcg_gen_shri_tl)
+ TRANS(srli_d, 64, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_shri_tl)
+ TRANS(srai_w, ALL, gen_rri_c, EXT_NONE, EXT_NONE, gen_sari_w)
+ TRANS(srai_d, 64, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_sari_tl)
+-TRANS(rotri_w, 64, gen_rri_v, EXT_NONE, EXT_NONE, gen_rotr_w)
++TRANS(rotri_w, ALL, gen_rri_v, EXT_NONE, EXT_NONE, gen_rotr_w)
+ TRANS(rotri_d, 64, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_rotri_tl)
 
- MAINTAINERS                                        |   4 +-
- configs/devices/loongarch32-softmmu/default.mak    |   7 +
- configs/targets/loongarch32-softmmu.mak            |   7 +
- hw/loongarch/Kconfig                               |   2 +-
- hw/loongarch/virt.c                                |   4 +
- qapi/machine-target.json                           |   8 +-
- target/loongarch/Kconfig                           |   3 +
- target/loongarch/cpu-param.h                       |  12 +-
- target/loongarch/cpu.c                             | 194 ++++++++++++++++-----
- target/loongarch/cpu.h                             | 150 ++++++++--------
- target/loongarch/cpu_helper.c                      |   2 +-
- target/loongarch/helper.h                          |  22 +--
- target/loongarch/machine.c                         | 120 ++++++-------
- target/loongarch/tcg/csr_helper.c                  |   2 +-
- target/loongarch/tcg/insn_trans/trans_arith.c.inc  |  25 ++-
- target/loongarch/tcg/insn_trans/trans_atomic.c.inc |   8 +-
- target/loongarch/tcg/insn_trans/trans_bit.c.inc    |  34 ++--
- target/loongarch/tcg/insn_trans/trans_extra.c.inc  |   8 +-
- target/loongarch/tcg/insn_trans/trans_farith.c.inc |  53 +++---
- target/loongarch/tcg/insn_trans/trans_fcmp.c.inc   |  16 +-
- .../loongarch/tcg/insn_trans/trans_fmemory.c.inc   |  34 ++--
- target/loongarch/tcg/insn_trans/trans_fmov.c.inc   |  83 ++++-----
- target/loongarch/tcg/insn_trans/trans_shift.c.inc  |   4 +-
- target/loongarch/tcg/insn_trans/trans_vec.c.inc    |  70 ++++----
- target/loongarch/tcg/iocsr_helper.c                |  20 +--
- target/loongarch/tcg/op_helper.c                   |   4 +-
- target/loongarch/tcg/tlb_helper.c                  |   2 +-
- target/loongarch/tcg/translate.c                   |  11 +-
- 28 files changed, 537 insertions(+), 372 deletions(-)
----
-base-commit: 65cb7129f4160c7e07a0da107f888ec73ae96776
-change-id: 20241222-la32-fixes1-368cc14d0986
-
-Best regards,
 -- 
-Jiaxun Yang <jiaxun.yang@flygoat.com>
+2.43.0
 
 
