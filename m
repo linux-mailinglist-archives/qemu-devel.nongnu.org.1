@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A639FCDE9
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Dec 2024 22:22:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F5349FCDEB
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Dec 2024 22:22:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQvHD-0003oE-Uv; Thu, 26 Dec 2024 16:20:15 -0500
+	id 1tQvHE-0003oe-Jf; Thu, 26 Dec 2024 16:20:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tQvH8-0003mp-7e
- for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:11 -0500
-Received: from fout-a1-smtp.messagingengine.com ([103.168.172.144])
+ id 1tQvHB-0003o0-IJ
+ for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:14 -0500
+Received: from fhigh-a4-smtp.messagingengine.com ([103.168.172.155])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tQvH6-0003BU-K7
- for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:09 -0500
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal
- [10.202.2.43])
- by mailfout.phl.internal (Postfix) with ESMTP id 2D14113801EB;
- Thu, 26 Dec 2024 16:20:08 -0500 (EST)
+ id 1tQvH8-0003Bm-EP
+ for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:11 -0500
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal
+ [10.202.2.44])
+ by mailfhigh.phl.internal (Postfix) with ESMTP id 002E5114018F;
+ Thu, 26 Dec 2024 16:20:10 -0500 (EST)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-03.internal (MEProxy); Thu, 26 Dec 2024 16:20:08 -0500
+ by phl-compute-04.internal (MEProxy); Thu, 26 Dec 2024 16:20:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
  cc:cc:content-transfer-encoding:content-type:content-type:date
  :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm3; t=1735248008;
- x=1735334408; bh=6l3LIdh4Ax+Fdtk2OiropCXlcNte8uxjPLdCcQLxLQI=; b=
- Qdsf66LumW6+mbax+8swojAl+NT97JrY23ASPsohyhx5R/IYqOmKqRRxwG2oNecz
- tKpOT8lh0SVFiO7XXkYEWzUTmcZd9uslA0RXw61VFuz1aENKseId2YptZ2BtPm1x
- 30xogz3W+rbZgzzQQUQ1yzmL8XcnCqLgCTDgj/SyAt3HmOXT1iNCmgGvnVEZqMek
- XpS5Xkmc0wCbu9ACO6wf31u9lW1QohlfcgO22XXoPCSOfhhZj0+S3wU+aP+DTmMa
- gdCXeqXnS05ytGcRhdUSSwwvbJvdREZFcU/qN5mrm9i8AO+z24yYQU1V3ovrAS8i
- kQRyWQECMhS2vtSOzcIEOQ==
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1735248009;
+ x=1735334409; bh=M3agoKfwtNZT3tIbqyd6WdpZVjvJbxjbx3xjLJb8/7U=; b=
+ sDddRUi+GlrwEA0L4zkWs8slarPJjnPNe5/A1pzUtofWrtPeAnljOifMiH8b5+1Z
+ rH4JY9O50U/glIkcX13VI8bwzuTAVo4fx9pIUy6E9tPz9vvUR6i4ts1JNyesqsOS
+ cvcR4kZn7L7yhB91ttrbPVJQ7Mp8vpECn/lqh9Vq1JZ0GtO7+ifpM604iFhI0Z5k
+ TnMNIvSoeorzzmof90PClSd68WdbGQzOhtob1njIfwHnlIcz/2/yzgaYI3crpeWc
+ NpvjykGSoHwEtrA0W1Rg7GUvRT7ZMfhhF4Yt/4WHmGU7Lazn7R+IulHSsGfHMHoa
+ dBctDiWUW4NEiU1aZy4zFQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
  :from:from:in-reply-to:in-reply-to:message-id:mime-version
  :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1735248008; x=
- 1735334408; bh=6l3LIdh4Ax+Fdtk2OiropCXlcNte8uxjPLdCcQLxLQI=; b=k
- ZcHDRIszTsOL6+cbFBmzzA6UQbE8pXN8228xmQ/ieOePA5O4HoXzPmyVojlEOKpH
- Kr53V9d7elP+jRJnFYR1QIh5bjjYKK4raD9gmCAE7ThK4wQgSRhgJ9238k2tVSqb
- ahk7qnInEkpGplcf+vs42I5t8DJRjzNzvxEqwpriQJIS1YiSQytbpAwvcW11I6vi
- 8Z6zly8GKIG+2/TCHX5gr9EQkroUT8G3U3CzY/c0HFCN/UGtAF23FgEkaO8N/LWn
- fofKdKzxlQ9i9b8Lxn/fXLxjBJUwec0Pkjp7VyoToIgQFVnYhzdSb6BTjkHEGLsa
- zmp4ymc/CieXXyLEWYl5Q==
-X-ME-Sender: <xms:h8htZ_wES33wKftx0DIDaBbqvr4gpfdBxzZFwzzc3SmUti4mg53dqQ>
- <xme:h8htZ3SjsSfJuKlat7dZa39ay16pkFAmQZ_3pyJL--sapq2J2Xv3et6Pdie7TJb8q
- 5nrvf8AxL3tmGCo4yc>
-X-ME-Received: <xmr:h8htZ5Uozb2y6e06xkPjT0UBBqQMaMhEAZh_lr3Si6wakn_pZ9M8D5mf>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddukedgudegjecutefuodetggdotefrod
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1735248009; x=
+ 1735334409; bh=M3agoKfwtNZT3tIbqyd6WdpZVjvJbxjbx3xjLJb8/7U=; b=i
+ Av95beNJuvNlP3qQlcj0ACid2nsxTj1LmnQZ71nps851On5tdMOb6Z3liD46QW9k
+ FMfCnKh7Wh61if7gTbIFzhlR+JcKZoITqVDobewmjCj/pxjPeRdsn3p07NqHf3yu
+ zlQx3ZB7Dx4ZBapvjzGjfcgw9KTAfLJGnuQYUFtg/eRXeUmTNh1EQ4afNwfeJFnQ
+ BFyeFPXSV64oZEGUvFZtu6ceyjhlBo1WzHLhqW/ZzU72yNopUMFyZkgqzE5/6pkE
+ bkd1ND/SK4uDH7IevhAWhdxaL7mWS3MwMNploTSYeb6pRPvypUduGfBoESnNFsAN
+ lkN4Mxf+eNmlDzy1tzMMg==
+X-ME-Sender: <xms:ichtZ5RVUtL4EY6muG6UPoRQEQoEsuxaZsqq8vTCzQfJ7xBlH_zkEA>
+ <xme:ichtZyyEVwqy2rg98JLBT2YkZjYq8qS5PTfEPulx2Cm4nwZCPs99mrRU4TfkmzCO4
+ QT_dQDnafydHCLoiUE>
+X-ME-Received: <xmr:ichtZ-0m8__dRPemBNvE6e45Efsy_ExMHg9tjDS59mVlBIdoOzxj1epZ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddukedgudegkecutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
  uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
  hnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredt
  jeenucfhrhhomheplfhirgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflh
  ihghhorghtrdgtohhmqeenucggtffrrghtthgvrhhnpedvkeeihfefveekueevteefleff
- keegudeghfdtuddugefhueevgeffgedukeejleenucevlhhushhtvghrufhiiigvpedtne
+ keegudeghfdtuddugefhueevgeffgedukeejleenucevlhhushhtvghrufhiiigvpedune
  curfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorght
  rdgtohhmpdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmhhtphhouhhtpdhrtghpth
  htohepmhgrohgsihgsoheslhhoohhnghhsohhnrdgtnhdprhgtphhtthhopehmrghrtggv
@@ -69,22 +69,21 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddukedgudegjecutefuodetgg
  vghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepfigrnhhghigrnh
  grnhehheeshhhurgifvghirdgtohhmpdhrtghpthhtohepiihhrghouddrlhhiuhesihhn
  thgvlhdrtghomh
-X-ME-Proxy: <xmx:h8htZ5iRDwdcZdHJQpJnl9QNYruNgBtpIaRAfJJXc8PfgGpNWBJMyA>
- <xmx:h8htZxBS00JOkTkAZJpAA744SBy-s0nPOmmUUjvq0CxwQUSjXZ5bFw>
- <xmx:h8htZyLtWleShvcmH4VSgRMQ-juaCs4ttnblLS0etx92kIlAwrHxow>
- <xmx:h8htZwAVuWzXfBFpYE6avat48DpEKeiTxUlT7NIacS9zOG7b3LXVWQ>
- <xmx:iMhtZ15V1Dc_PKZQYrYwc5UYg59Es0ZPhm4SFCWGhrDZBokyjk-zKEmi>
+X-ME-Proxy: <xmx:ichtZxDt3xzRYxeqORTwpVFQpkNjRHeSdf6Y_PFNw7NA6mWLRyhRHQ>
+ <xmx:ichtZygUWCHz-PP0XMKXG4a1KkLLziAqo1svps-rXjmieQORkry41Q>
+ <xmx:ichtZ1ohYxqXY_xje_C5RygVODspaz06koMNV4DXeDe7JsqfktQB4Q>
+ <xmx:ichtZ9igwYnF3XimqN2wEuDtM2y5-emvv-nqiJ3Lk6F4grWKKp-zXQ>
+ <xmx:ichtZzaH9wVz-y_2Z9Nh0E8JzscfhvcQs0P8qqUaX9h1Xj0BCoEBjnLL>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 26 Dec 2024 16:20:06 -0500 (EST)
+ 26 Dec 2024 16:20:08 -0500 (EST)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Thu, 26 Dec 2024 21:19:43 +0000
-Subject: [PATCH v2 12/23] target/loongarch: Scrutinise TCG bitops
- translation for 32 bit build
+Date: Thu, 26 Dec 2024 21:19:44 +0000
+Subject: [PATCH v2 13/23] target/loongarch: Fix rdtimer on 32bit build
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241226-la32-fixes1-v2-12-0414594f8cb5@flygoat.com>
+Message-Id: <20241226-la32-fixes1-v2-13-0414594f8cb5@flygoat.com>
 References: <20241226-la32-fixes1-v2-0-0414594f8cb5@flygoat.com>
 In-Reply-To: <20241226-la32-fixes1-v2-0-0414594f8cb5@flygoat.com>
 To: qemu-devel@nongnu.org
@@ -96,17 +95,17 @@ Cc: Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
  Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>, 
  Paolo Bonzini <pbonzini@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3897;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1304;
  i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=LoLAL627BxLCze3ZeL8YpKlbo0GtOQXjE4HP5ezEovE=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhvTcE9kTlkY0JblOmNmZ4FCS6shoK9Sx9AfjmcMmtQUWc
- zYvW2/VUcrCIMbFICumyBIioNS3ofHigusPsv7AzGFlAhnCwMUpABNx+crIcHS/wFn2hwV1xUvm
- 79zx7svqoBvmrXM7k2tFrD6IZf/TusDw3+Vb5t70qlffrinUZTqs2ZR2e9u1jR3fpZ/f83HRFdU
- 25QMA
+ bh=e8KJe3ckOME7jpdGuarkSAXJviJf0h3QG8AzFQR7IKk=;
+ b=owGbwMvMwCXmXMhTe71c8zDjabUkhvTcE9k+/yJYt/Hnbg+bkzDDk8s37mytp+npaC/e8GmPO
+ iT0Ojk6SlkYxLgYZMUUWUIElPo2NF5ccP1B1h+YOaxMIEMYuDgFYCIFvIwMC+zXJv09G/Ty8eSm
+ vdlex66XP0l6r/NS/7Uxv+7Zqxuf7GVkuO7d9vO4bCVvTMiW3kkfOOfKaH74rX/8ekSLZ772FRk
+ hPgA=
 X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
  fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
-Received-SPF: pass client-ip=103.168.172.144;
- envelope-from=jiaxun.yang@flygoat.com; helo=fout-a1-smtp.messagingengine.com
+Received-SPF: pass client-ip=103.168.172.155;
+ envelope-from=jiaxun.yang@flygoat.com; helo=fhigh-a4-smtp.messagingengine.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -130,108 +129,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use tl variant whenever possible.
-
-Silent compiler warnings by performing casting for come consts.
+Use TCGv_i64 for intermediate values and perform truncation as necessary.
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- target/loongarch/tcg/insn_trans/trans_bit.c.inc | 34 ++++++++++++++-----------
- 1 file changed, 19 insertions(+), 15 deletions(-)
+ target/loongarch/tcg/insn_trans/trans_extra.c.inc | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/target/loongarch/tcg/insn_trans/trans_bit.c.inc b/target/loongarch/tcg/insn_trans/trans_bit.c.inc
-index ee5fa003ce06a1910f826c3eb96d1d532c32e02c..a40346a670be31a123848e8ea5f7b94f8372976b 100644
---- a/target/loongarch/tcg/insn_trans/trans_bit.c.inc
-+++ b/target/loongarch/tcg/insn_trans/trans_bit.c.inc
-@@ -18,13 +18,17 @@ static bool gen_rr(DisasContext *ctx, arg_rr *a,
- 
- static void gen_bytepick_w(TCGv dest, TCGv src1, TCGv src2, target_long sa)
+diff --git a/target/loongarch/tcg/insn_trans/trans_extra.c.inc b/target/loongarch/tcg/insn_trans/trans_extra.c.inc
+index cfa361fecfa9ba569034b2c591b910ae7a3c6427..f9fb828ce51f2ee925edde7330d3054da534ecb3 100644
+--- a/target/loongarch/tcg/insn_trans/trans_extra.c.inc
++++ b/target/loongarch/tcg/insn_trans/trans_extra.c.inc
+@@ -46,13 +46,15 @@ static bool gen_rdtime(DisasContext *ctx, arg_rr *a,
  {
-+#ifdef TARGET_LOONGARCH64
-     tcg_gen_concat_tl_i64(dest, src1, src2);
-     tcg_gen_sextract_i64(dest, dest, (32 - sa * 8), 32);
-+#else
-+    tcg_gen_extract2_tl(dest, src1, src2, (32 - sa * 8));
-+#endif
+     TCGv dst1 = gpr_dst(ctx, a->rd, EXT_NONE);
+     TCGv dst2 = gpr_dst(ctx, a->rj, EXT_NONE);
++    TCGv_i64 val = tcg_temp_new_i64();
+ 
+     translator_io_start(&ctx->base);
+-    gen_helper_rdtime_d(dst1, tcg_env);
++    gen_helper_rdtime_d(val, tcg_env);
+     if (word) {
+-        tcg_gen_sextract_tl(dst1, dst1, high ? 32 : 0, 32);
++        tcg_gen_sextract_i64(val, val, high ? 32 : 0, 32);
++        tcg_gen_trunc_i64_tl(dst1, val);
+     }
+-    tcg_gen_ld_i64(dst2, tcg_env, offsetof(CPULoongArchState, CSR_TID));
++    tcg_gen_ld_tl(dst2, tcg_env, offsetof(CPULoongArchState, CSR_TID));
+ 
+     return true;
  }
- 
- static void gen_bytepick_d(TCGv dest, TCGv src1, TCGv src2, target_long sa)
- {
--    tcg_gen_extract2_i64(dest, src1, src2, (64 - sa * 8));
-+    tcg_gen_extract2_tl(dest, src1, src2, (64 - sa * 8));
- }
- 
- static bool gen_bstrins(DisasContext *ctx, arg_rr_ms_ls *a,
-@@ -85,7 +89,7 @@ static void gen_cto_w(TCGv dest, TCGv src1)
- 
- static void gen_clz_d(TCGv dest, TCGv src1)
- {
--    tcg_gen_clzi_i64(dest, src1, TARGET_LONG_BITS);
-+    tcg_gen_clzi_tl(dest, src1, TARGET_LONG_BITS);
- }
- 
- static void gen_clo_d(TCGv dest, TCGv src1)
-@@ -107,8 +111,8 @@ static void gen_cto_d(TCGv dest, TCGv src1)
- 
- static void gen_revb_2w(TCGv dest, TCGv src1)
- {
--    tcg_gen_bswap64_i64(dest, src1);
--    tcg_gen_rotri_i64(dest, dest, 32);
-+    tcg_gen_bswap_tl(dest, src1);
-+    tcg_gen_rotri_tl(dest, dest, 32);
- }
- 
- static void gen_revb_2h(TCGv dest, TCGv src1)
-@@ -126,7 +130,7 @@ static void gen_revb_2h(TCGv dest, TCGv src1)
- 
- static void gen_revb_4h(TCGv dest, TCGv src1)
- {
--    TCGv mask = tcg_constant_tl(0x00FF00FF00FF00FFULL);
-+    TCGv mask = tcg_constant_tl((target_ulong)0x00FF00FF00FF00FFULL);
-     TCGv t0 = tcg_temp_new();
-     TCGv t1 = tcg_temp_new();
- 
-@@ -139,22 +143,22 @@ static void gen_revb_4h(TCGv dest, TCGv src1)
- 
- static void gen_revh_2w(TCGv dest, TCGv src1)
- {
--    TCGv_i64 t0 = tcg_temp_new_i64();
--    TCGv_i64 t1 = tcg_temp_new_i64();
--    TCGv_i64 mask = tcg_constant_i64(0x0000ffff0000ffffull);
-+    TCGv t0 = tcg_temp_new();
-+    TCGv t1 = tcg_temp_new();
-+    TCGv mask = tcg_constant_tl((target_ulong)0x0000ffff0000ffffull);
- 
--    tcg_gen_shri_i64(t0, src1, 16);
--    tcg_gen_and_i64(t1, src1, mask);
--    tcg_gen_and_i64(t0, t0, mask);
--    tcg_gen_shli_i64(t1, t1, 16);
--    tcg_gen_or_i64(dest, t1, t0);
-+    tcg_gen_shri_tl(t0, src1, 16);
-+    tcg_gen_and_tl(t1, src1, mask);
-+    tcg_gen_and_tl(t0, t0, mask);
-+    tcg_gen_shli_tl(t1, t1, 16);
-+    tcg_gen_or_tl(dest, t1, t0);
- }
- 
- static void gen_revh_d(TCGv dest, TCGv src1)
- {
-     TCGv t0 = tcg_temp_new();
-     TCGv t1 = tcg_temp_new();
--    TCGv mask = tcg_constant_tl(0x0000FFFF0000FFFFULL);
-+    TCGv mask = tcg_constant_tl((target_ulong)0x0000FFFF0000FFFFULL);
- 
-     tcg_gen_shri_tl(t1, src1, 16);
-     tcg_gen_and_tl(t1, t1, mask);
-@@ -191,7 +195,7 @@ TRANS(ctz_d, 64, gen_rr, EXT_NONE, EXT_NONE, gen_ctz_d)
- TRANS(revb_2h, ALL, gen_rr, EXT_NONE, EXT_SIGN, gen_revb_2h)
- TRANS(revb_4h, 64, gen_rr, EXT_NONE, EXT_NONE, gen_revb_4h)
- TRANS(revb_2w, 64, gen_rr, EXT_NONE, EXT_NONE, gen_revb_2w)
--TRANS(revb_d, 64, gen_rr, EXT_NONE, EXT_NONE, tcg_gen_bswap64_i64)
-+TRANS(revb_d, 64, gen_rr, EXT_NONE, EXT_NONE, tcg_gen_bswap_tl)
- TRANS(revh_2w, 64, gen_rr, EXT_NONE, EXT_NONE, gen_revh_2w)
- TRANS(revh_d, 64, gen_rr, EXT_NONE, EXT_NONE, gen_revh_d)
- TRANS(bitrev_4b, ALL, gen_rr, EXT_ZERO, EXT_SIGN, gen_helper_bitswap)
 
 -- 
 2.43.0
