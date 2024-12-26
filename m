@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CCD49FCDDE
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Dec 2024 22:21:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 915A79FCDE5
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Dec 2024 22:22:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQvHY-0003wI-6t; Thu, 26 Dec 2024 16:20:36 -0500
+	id 1tQvHb-0003xW-Fs; Thu, 26 Dec 2024 16:20:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tQvHP-0003uW-1l
- for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:27 -0500
+ id 1tQvHQ-0003ue-0x
+ for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:28 -0500
 Received: from fhigh-a4-smtp.messagingengine.com ([103.168.172.155])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tQvHN-0003EE-Nw
- for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:26 -0500
+ id 1tQvHO-0003EP-Iv
+ for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:27 -0500
 Received: from phl-compute-05.internal (phl-compute-05.phl.internal
  [10.202.2.45])
- by mailfhigh.phl.internal (Postfix) with ESMTP id 5D66B1140198;
- Thu, 26 Dec 2024 16:20:24 -0500 (EST)
+ by mailfhigh.phl.internal (Postfix) with ESMTP id 281291140191;
+ Thu, 26 Dec 2024 16:20:26 -0500 (EST)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-05.internal (MEProxy); Thu, 26 Dec 2024 16:20:24 -0500
+ by phl-compute-05.internal (MEProxy); Thu, 26 Dec 2024 16:20:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
  cc:cc:content-transfer-encoding:content-type:content-type:date
  :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm3; t=1735248024;
- x=1735334424; bh=Wn81zmb/wOHLnmGIuhH/D0MryJOnpofku8vcL5IQi2Q=; b=
- b5VDN0YSe7pkrxrItX9alysjbnDdmoLdvSg4NBujDoP065dTUzyoB5avyEl/Dkn2
- 7sAIBIZCM/J7EoNcdoYgLjD2wClBNcuahHEQLgEd5e60A2BcKQT3CzcogKhzpgwS
- 5itLJ23/HWzXlThNeS/0OJ+XVs5xVhH3hTz7xjyfzvX29Srhl/ZnWPuYPvgoDipF
- 7FW7c5OjkEr4tZt/L+n/T1zpBwtGLj7dLxE018ArVGF9/efN5GdbBjK25NHsod+U
- 9y2m6jxgqagy7Q8iASzO6m9w8YaJRJnaqEgOeLxt2CAs1ztmBLL9HWfuK1Hc3xHa
- 553XiwtfgZSqx+FaGfu96w==
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1735248026;
+ x=1735334426; bh=xe9BuqPS0CARoFfo8D7AEtwCqEeGIBNkINPPVMFXfNw=; b=
+ ZkR2jAO+pZznP+W0jFlYSvqBoiu5Xu7RP6djZcuGeXHYS5dVTV9QT0RHgfRdC5GE
+ 1iBU/jkCLIw3HAznkY4vgJfn3OK2lM44ICgAQ00xj1jBXqo8rlbik3RCpQ1qL1JG
+ QeCkAetnZbWbAQBFDqV7ePrK6AScO4GDRl5yM6j102a3rHuoY+cYDhcArhNEebrB
+ xqZp3sCgTUW3R+YJczMX1dedyL8aAvJIfzVMWOw4Fg5l/TXxPNWAMf3DN/1q3xoL
+ bLM+XeqY/eP1r84zRx11e5Uz/SsTT+syv0I4i9CW2zQNtSVR5IMLOrclnoSk+cft
+ RfnsgR0AXLZmIEnciJcrQQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
  :from:from:in-reply-to:in-reply-to:message-id:mime-version
  :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1735248024; x=
- 1735334424; bh=Wn81zmb/wOHLnmGIuhH/D0MryJOnpofku8vcL5IQi2Q=; b=b
- jSeP1pC9id9WQ5Pi7fxa8h0mRFQTxNtEoY8HM4Mq7GSsbZPpb9VX0Q8782HtGksf
- S0qhmBAXvfOgL4YfcsocMV2HbaMSWY3fPwKH0CZmHOwXZQAPOL73TiY5H81XiwBs
- pizgFvtxGRUDqM9TgdIfbnQ5uikOvkySxDEDkd7ib76bam576ziy4UgFOvRBp6Ia
- D7sED0krHh4SLtWq1IvtV5uFaBVZw2GDV2ZJRldQtNZx4zPTIFiEYa/+rashBLtK
- gLpBguf/hpdWKzKGIrN7ecLSDC53FdZw7gdvoLNWlQjCAGHoGLMIOaL5twU1Vasl
- PCXDvTJni+edAFnDuTYIw==
-X-ME-Sender: <xms:mMhtZ2TAnv98re70izgXOGGgdVH9RUKLgjehgC89Uo9c6bM4xpqP3g>
- <xme:mMhtZ7zel9OS3wZlmrTVdUx_u4v1B9neVPkiK7QF0DUduFtCT5qMS1LYZDvzADPPC
- pDD85gOBAHjg1WKXTQ>
-X-ME-Received: <xmr:mMhtZz0Wd9698yzjnM2nvscbME_pp_-qA12dsh0eYJrxoLi-zEFC4H9K>
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1735248026; x=
+ 1735334426; bh=xe9BuqPS0CARoFfo8D7AEtwCqEeGIBNkINPPVMFXfNw=; b=N
+ 0YGZlWjgJY0SSPMsddjMa6xRkvZio9FxA82IEZTL91qWWYUNAtwW2j0ulosl10yT
+ cjMQEmo/rTVzDOFvKuodsdO1ac2qebdNhCBwlplSKB8R5z+1jaYm3acNYoN0BuPl
+ JdnZ9lN78YOIyspDrwdyrUig1zTrUlHFNq8n9RsUNTX/oWDaIAxSM9EnHDl5yETs
+ d8UEYaRy4++2bg65Pz5u3rSdrbdeBGTS/OCe9+hF33V2eT+5j4iew3S7qMgj1Vbu
+ VV8vgePAHS1p8Mx7aRpvdKHlJFcq9Eh74n9O1RrDeytkKNTQ9fMf9Wi+Mu16ttR0
+ U4nk+e4CR0AeN++AmyIyQ==
+X-ME-Sender: <xms:mshtZ6AT2Y-hm2gJBSMHig4VUwRfexdJVdhviRNTrxD1C7hO9Lr2Ow>
+ <xme:mshtZ0g3hWadIVD-IMtmX9rsndSbc6k873qIHS_yuevWxMR6kCH5Grdv6GKYSJsGO
+ hSKFg_aM3oBCXlJbbA>
+X-ME-Received: <xmr:mshtZ9mRI7Qq_letCyAcq5GvYIN4nWqOb0SRwz_se-TN6XQLLf51sik8>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddukedgudegjecutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
  uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
@@ -69,22 +69,22 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddukedgudegjecutefuodetgg
  vghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepfigrnhhghigrnh
  grnhehheeshhhurgifvghirdgtohhmpdhrtghpthhtohepiihhrghouddrlhhiuhesihhn
  thgvlhdrtghomh
-X-ME-Proxy: <xmx:mMhtZyCyzmHiRWbsIBHMoU4Q5NeRH5AN77Wb8QwkFlGpRhZquMQEcQ>
- <xmx:mMhtZ_hbzopGMNLntX3abxa-DQk_8Ah3vaAOP64veADsxI1b0ibdzg>
- <xmx:mMhtZ-qUBNr4mNM6uMxHrNfDyDGMXp5iN7k9xOsPzWGRDx0eCicYTw>
- <xmx:mMhtZyg1E5h9YLXFYV_z7JzrdOcbRhzQFScX4MRpxwDuJiNU-2sEBg>
- <xmx:mMhtZ4bPFoCqcwY0yNsGlRgsHDHVXuJQvpoBmQWK9GzX2UEWdiZqIYQ3>
+X-ME-Proxy: <xmx:mshtZ4x7HY_1AWLK-aCdlKEySzzboEDCz8jFo4AHl--K0Ny9X0ycUg>
+ <xmx:mshtZ_Qm4fUSMymRpPMonKYXAIiRERrhHKf_FXaMhZzRaSRxkD5Grg>
+ <xmx:mshtZzZqs_tGQyAUpL9CTJ9VE9ZNJ03z0jomT54gfzGk6kEecvN45w>
+ <xmx:mshtZ4RONo0Vo3r9XwrnuA5NmAikj49xtxhk_nmr11LHePzDqOKjog>
+ <xmx:mshtZ-L34gFNMDW0LWazkQdwvErAA7E-MSOyrN_DdspdJrg7G7SE8ZeJ>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 26 Dec 2024 16:20:22 -0500 (EST)
+ 26 Dec 2024 16:20:24 -0500 (EST)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Thu, 26 Dec 2024 21:19:51 +0000
-Subject: [PATCH v2 20/23] hw/loongarch/virt: Default to max32 CPU for
- LoongArch 32 build
+Date: Thu, 26 Dec 2024 21:19:52 +0000
+Subject: [PATCH v2 21/23] qapi/machine: Replace TARGET_LOONGARCH64 with
+ TARGET_LOONGARCH
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241226-la32-fixes1-v2-20-0414594f8cb5@flygoat.com>
+Message-Id: <20241226-la32-fixes1-v2-21-0414594f8cb5@flygoat.com>
 References: <20241226-la32-fixes1-v2-0-0414594f8cb5@flygoat.com>
 In-Reply-To: <20241226-la32-fixes1-v2-0-0414594f8cb5@flygoat.com>
 To: qemu-devel@nongnu.org
@@ -96,13 +96,13 @@ Cc: Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
  Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>, 
  Paolo Bonzini <pbonzini@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=946;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1616;
  i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=FBUn2ePNQYQFLuMxPG6+QOkSyR+VuhIkJlorSkF3OU8=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhvTcE9lPJ62MUTnKd+xXsJ1pb9dTsVn6Dezc8RE/74ZfL
- rHfI2XZUcrCIMbFICumyBIioNS3ofHigusPsv7AzGFlAhnCwMUpABM5Xs/wPzdrY/1JSf1n+6Z9
- X/FJvKcwlyU0ZDYjo5j/mykBuz31Qxn+VxXnnpQN+VV5uKhlWmHg05Mi511PTalIu7XvedcJq2Y
- XNgA=
+ bh=iYUi8NSJen0z2KRIyUqEbFujGU6IWLS1XfkvXr0NRPs=;
+ b=owGbwMvMwCXmXMhTe71c8zDjabUkhvTcE9lPxb0PPj4TkZA+saslaU1V/1+jIJ5c3m8rhZZ3N
+ QeKbZjfUcrCIMbFICumyBIioNS3ofHigusPsv7AzGFlAhnCwMUpABP56sfwV2LyqhKVZzdep8ct
+ KJW7etA28+jsqZd8RFy9Pba72n9LuMfwV4zdUEV4k5H23A1cpfL3DIPXX3tpt+oXq0Ci+jPZxxK
+ 3OAE=
 X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
  fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
 Received-SPF: pass client-ip=103.168.172.155;
@@ -130,30 +130,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-la464 CPU is not available on LoongArch32. Use max32 which makes
-more sense here.
+All TARGET_LOONGARCH64 qapis are also available for LoongArch32 as we
+are reusing the same CPU backend implemenation.
+
+Use TARGET_LOONGARCH to identify LoongArch.
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- hw/loongarch/virt.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ qapi/machine-target.json | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 3a905cf71d46e3c5a29672f7bb73faedf1d29444..343d2e745e155d59f0ff17124b3c77ec9b3c111e 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -1440,7 +1440,11 @@ static void virt_class_init(ObjectClass *oc, void *data)
-     HotplugHandlerClass *hc = HOTPLUG_HANDLER_CLASS(oc);
+diff --git a/qapi/machine-target.json b/qapi/machine-target.json
+index 541f93eeb78f67c7eac83d8a2722000976e38a33..b00c3f59b6a5f6e3ad9d7197d462e928ffc4c152 100644
+--- a/qapi/machine-target.json
++++ b/qapi/machine-target.json
+@@ -260,7 +260,7 @@
+   'if': { 'any': [ 'TARGET_S390X',
+                    'TARGET_I386',
+                    'TARGET_ARM',
+-                   'TARGET_LOONGARCH64',
++                   'TARGET_LOONGARCH',
+                    'TARGET_RISCV' ] } }
  
-     mc->init = virt_init;
-+#if defined(TARGET_LOONGARCH64)
-     mc->default_cpu_type = LOONGARCH_CPU_TYPE_NAME("la464");
-+#elif defined(TARGET_LOONGARCH32)
-+    mc->default_cpu_type = LOONGARCH_CPU_TYPE_NAME("max32");
-+#endif
-     mc->default_ram_id = "loongarch.ram";
-     mc->desc = "QEMU LoongArch Virtual Machine";
-     mc->max_cpus = LOONGARCH_MAX_CPUS;
+ ##
+@@ -314,7 +314,7 @@
+   'if': { 'any': [ 'TARGET_S390X',
+                    'TARGET_I386',
+                    'TARGET_ARM',
+-                   'TARGET_LOONGARCH64',
++                   'TARGET_LOONGARCH',
+                    'TARGET_RISCV' ] } }
+ 
+ ##
+@@ -383,7 +383,7 @@
+                    'TARGET_I386',
+                    'TARGET_S390X',
+                    'TARGET_MIPS',
+-                   'TARGET_LOONGARCH64',
++                   'TARGET_LOONGARCH',
+                    'TARGET_RISCV' ] } }
+ 
+ ##
+@@ -401,7 +401,7 @@
+                    'TARGET_I386',
+                    'TARGET_S390X',
+                    'TARGET_MIPS',
+-                   'TARGET_LOONGARCH64',
++                   'TARGET_LOONGARCH',
+                    'TARGET_RISCV' ] } }
+ 
+ ##
 
 -- 
 2.43.0
