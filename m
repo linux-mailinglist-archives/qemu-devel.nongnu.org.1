@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6140A9FCDDD
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Dec 2024 22:21:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9768F9FCDE7
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Dec 2024 22:22:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQvH0-0003fu-1J; Thu, 26 Dec 2024 16:20:02 -0500
+	id 1tQvH2-0003hL-4i; Thu, 26 Dec 2024 16:20:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tQvGx-0003fW-NL
- for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:19:59 -0500
+ id 1tQvGz-0003gR-R7
+ for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:01 -0500
 Received: from fhigh-a4-smtp.messagingengine.com ([103.168.172.155])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tQvGw-0002xa-Cm
- for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:19:59 -0500
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal
- [10.202.2.46])
- by mailfhigh.phl.internal (Postfix) with ESMTP id E5BB01140122;
- Thu, 26 Dec 2024 16:19:57 -0500 (EST)
+ id 1tQvGy-0002xr-Bm
+ for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:01 -0500
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal
+ [10.202.2.52])
+ by mailfhigh.phl.internal (Postfix) with ESMTP id E467D114018A;
+ Thu, 26 Dec 2024 16:19:59 -0500 (EST)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-06.internal (MEProxy); Thu, 26 Dec 2024 16:19:57 -0500
+ by phl-compute-12.internal (MEProxy); Thu, 26 Dec 2024 16:19:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
  cc:cc:content-transfer-encoding:content-type:content-type:date
  :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm3; t=1735247997;
- x=1735334397; bh=zFX/R/2OBNMM/usy/SvwghUXl01SL+AnQBH94JO8ndM=; b=
- k4JwZQycTGhkh00mumnBFpmbw65DuoYf0v5KwNsvc4mk7kxoCOBwql0owQQ9u/T2
- z6QU9vzfS4WbiOHLToRQ+1EWg32eQNGJwwCGVEBS2YfWvZTafTxa70dXPnh/Uwu8
- bA3gtg/SeWYLEmvHaRcs5hLrIItUBg9eS6KcFGET+apohpNPE/jrXwtpp0t/CjFj
- 71oZbgT7PVrfAIRcEJrw1AbVv2SH4tISEK9jdc4FTv5Fn8l3zBvwWL/m4Jz6SfIo
- lEy0BMqbQTfIlxJ0pccYYAQ4gGPD8Wlq41BW2h4HVJ8Q/Kg2cVSyJiBi1+YfYwKL
- YYKiF9Po2qZSRsBhBh9Ihg==
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1735247999;
+ x=1735334399; bh=xq7uqmFNSO+Bhhp9oqXUJHdfuDZb5OWrQSgSK4Sc8OI=; b=
+ qzTI8IU46HlstiDRlHznpdb5PCTwl0vELPbToyx2Fx6O+2fAW3HtCQFEsNDjDZVJ
+ rQuhO1SfR/0J6g/On1Hf+m7agC5tadkC/L840DBG107ojwTflSpc8lyT+3sxPU5J
+ sHtxQPLiYUkOYpzX6t+B8+5LAhFHIwz2giH6osZgt10Lb++ueGUmeunxGgOAz5R7
+ iVLntWo7CyeVHL2fm443/iTt+HL8HqWBYTENskLmLa/FiDprz4w6vut5a1aoIUXX
+ M6FicNvQ8oGT8YGBCYPTNnRxadZx/aBkKmzvx+45RMfJrrC1ISwKczbz6JOVVSwS
+ EdDKUib8Dq1QUs/KIefQJA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
  :from:from:in-reply-to:in-reply-to:message-id:mime-version
  :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1735247997; x=
- 1735334397; bh=zFX/R/2OBNMM/usy/SvwghUXl01SL+AnQBH94JO8ndM=; b=x
- HEY4DpIO6O+UQPHBIWm2ZNfuRsVpaLK/0QLsjP5/UP4CxtcDWmI4fRWxja7LnkWk
- lWFxRVfcGnZxQjj2PZuray6SHZDMhlvlzMbGdqjmQOMnwCo6bvh3pr3mBM0jNpnz
- BI9BM5wfO+Xn+NX3w0QYkcxf692mFm60Ag+grwnylWchQI6wDtLtbje531obLfKu
- XaB1yEYnKSkZf7OpGq5xKlWgjrgpnvrsrhLTxwVxuZZz2RGL+u9j9wYCFeMyxcyd
- /60Tmv0IdRcsEnLj8zoLV6roAeY6XgIC2SGLydSUgjOlfb9UMYYO4hMnU+2EyTCi
- 1NPFoVV1vqeW3QZdQ+tbA==
-X-ME-Sender: <xms:fchtZzC8654PgM5N9W8JQcA29pDZ6za-RoOVVpsfXq-Ss1r3Ynw7Ag>
- <xme:fchtZ5hcqNkOISuGPFmDj1KsulC3Lui1GyZ1cSmskjz6Ogezr1Ok61tXblzJI9aDL
- CraMAY7cMrZcFSZcb4>
-X-ME-Received: <xmr:fchtZ-lUYBPWCYxwjHRJiHRd2WHS-mN3VfW7i-Iur9faIr2LjttIv2_N>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddukedgudegjecutefuodetggdotefrod
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1735247999; x=
+ 1735334399; bh=xq7uqmFNSO+Bhhp9oqXUJHdfuDZb5OWrQSgSK4Sc8OI=; b=b
+ aaAggyoQIzTIOScUHcQUFykoTXxIdi7OVjyStDfCaKCYhHna/Iw1xGDg4i6ItJ8d
+ HT0gsqoIuIKUrtKYegkoGcsBDQUywxWth+g/AycrdqXuBLLAaFoAYXW3SD3D3GmO
+ QyEbhYLPjzSVLUssjt3rE8sGM2zn7uySjOsJmesw8sBMDc4EK5eRB8CHbZvSqlkb
+ we8U24Yu8awHbbgWrLezC+xOE6HW2WGc3siQwxElwfcpGxGBw7w/pK0z2jRuxPMp
+ fLQUXup9R5BSDYJlzomhl57p9w8RERDyYbc6EsAW3oAbXBUtlzm2/shfUKx92O7z
+ /BY7q+ZT9ag8O+Oavp+6g==
+X-ME-Sender: <xms:f8htZ3p133Zr72d9rgRkpg16ucyfVMgDcKqlhVIsjIeqSZ_CrfMz3A>
+ <xme:f8htZxq9HsF-rjbgw4-ZBOgTsMKGy2rhc2ldkMgaNKQORu5op-wPwX6ax69qnT6eo
+ 5FbFxj0RlB81Z4B1po>
+X-ME-Received: <xmr:f8htZ0M4VK-XGZl2adD3tlUkmqzyQcaXI6QJKDlbfKKmR9foNKAVkRbZ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddukedgudegkecutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
  uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
  hnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredt
  jeenucfhrhhomheplfhirgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflh
  ihghhorghtrdgtohhmqeenucggtffrrghtthgvrhhnpedvkeeihfefveekueevteefleff
- keegudeghfdtuddugefhueevgeffgedukeejleenucevlhhushhtvghrufhiiigvpedtne
+ keegudeghfdtuddugefhueevgeffgedukeejleenucevlhhushhtvghrufhiiigvpedune
  curfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorght
  rdgtohhmpdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmhhtphhouhhtpdhrtghpth
  htohepmhgrohgsihgsoheslhhoohhnghhsohhnrdgtnhdprhgtphhtthhopehmrghrtggv
@@ -69,22 +69,22 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddukedgudegjecutefuodetgg
  vghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepfigrnhhghigrnh
  grnhehheeshhhurgifvghirdgtohhmpdhrtghpthhtohepiihhrghouddrlhhiuhesihhn
  thgvlhdrtghomh
-X-ME-Proxy: <xmx:fchtZ1zp_GV1YOV6yVXwI3BanRlLi-n0nzVv6rGTyzVUiSOLjaoTkg>
- <xmx:fchtZ4TIa8sTqa3NJaFtRL9TtSXyWodPAJNiIgH0YxezzCuFWOAo_Q>
- <xmx:fchtZ4aUoUVNEHGQ1Y0iMB7XOmF3sQ-6oc6ckKAx3kjLYEz9Gx5HGg>
- <xmx:fchtZ5QyYmP5WK6saQguH9wzQD5EuHvsjjhHqVLFTmwOLX-TJc6GQA>
- <xmx:fchtZ_L_DxIL2Y8JpKZsk6wba8MzL3_ZyWRY6ebsw77CfSD3ESnzvBhj>
+X-ME-Proxy: <xmx:f8htZ66SD45DplDZnYSlP2R_G8aNgiYv767lvBR7vBg53q7pYMRZRA>
+ <xmx:f8htZ26MFdP5KBWFbh52XeMwYLqTUMsEWuXYtoiAaege-ozq02q_zQ>
+ <xmx:f8htZyg7ppY6wMlNxfT3RwkqpqcBin53gOi3T7rlg0YzfsE2WUuPuA>
+ <xmx:f8htZ46xainoIOslPgpDqIOlb6_eIz-cyMn7RCAQGOaxpKKh_TsSwg>
+ <xmx:f8htZ2wxfrTmL-l2olZHbRkAVn_iZyYaFP-u7qJY4OZ7KohS29oGUg_S>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 26 Dec 2024 16:19:55 -0500 (EST)
+ 26 Dec 2024 16:19:58 -0500 (EST)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Thu, 26 Dec 2024 21:19:38 +0000
-Subject: [PATCH v2 07/23] target/loongarch: Cast address to 64bit before
- DMW_64_VSEG shift
+Date: Thu, 26 Dec 2024 21:19:39 +0000
+Subject: [PATCH v2 08/23] target/loongarch: Fix some modifiers for log
+ formatting
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241226-la32-fixes1-v2-7-0414594f8cb5@flygoat.com>
+Message-Id: <20241226-la32-fixes1-v2-8-0414594f8cb5@flygoat.com>
 References: <20241226-la32-fixes1-v2-0-0414594f8cb5@flygoat.com>
 In-Reply-To: <20241226-la32-fixes1-v2-0-0414594f8cb5@flygoat.com>
 To: qemu-devel@nongnu.org
@@ -96,13 +96,13 @@ Cc: Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
  Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>, 
  Paolo Bonzini <pbonzini@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=862;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2683;
  i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=hDOvSXO+z0VzV0fEPlaxByL62UfL44EDg9vVWEzf4c4=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhvTcE9lT5L0TLD/ON7P+l9AWx3JYP3FN6CGRyNuvK07f6
- PGxP9/SUcrCIMbFICumyBIioNS3ofHigusPsv7AzGFlAhnCwMUpABMxPc3wT5kt+IAoo4wdw1cB
- kR+zsrZ/f5CedUdb4WSq0qG1foaHOhn+8H2O1vC/HsVz913znqv3NGRKvq18t0U7Jjmjm6HIrMS
- VBQA=
+ bh=K1JbyjmDeOq+zI7mf6qjyyMmhZTtw0g8gsLmCp1McfA=;
+ b=owGbwMvMwCXmXMhTe71c8zDjabUkhvTcE9m9Xz/Wn374ZUnCq0e8895/KLFzYlkhUcFhbcUx0
+ fj322mJHaUsDGJcDLJiiiwhAkp9GxovLrj+IOsPzBxWJpAhDFycAjCR4u8M/7PXMF/d8kBhwaz7
+ 34KfJhZE9c6V8lNMdmx7qRSvuC5LV4bhD6fI2ZoPyflph7R/l+2ezd5mXTH7Vrzvxp+1Yr8cz/K
+ lMwMA
 X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
  fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
 Received-SPF: pass client-ip=103.168.172.155;
@@ -130,26 +130,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avoid compiler warning on 32bit. This code path won't be taken anyway.
+target_ulong -> TARGET_FMT_ld
+vaddr -> VADDR_PRIx
+uint32_t -> PRIx32
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- target/loongarch/cpu_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/loongarch/tcg/insn_trans/trans_atomic.c.inc | 2 +-
+ target/loongarch/tcg/tlb_helper.c                  | 2 +-
+ target/loongarch/tcg/translate.c                   | 5 ++---
+ 3 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/target/loongarch/cpu_helper.c b/target/loongarch/cpu_helper.c
-index 580362ac3e9ffbe6c8523cf57902dcda018ceed5..b8da136eb0554ba661a15e3069ee0d6bae61af86 100644
---- a/target/loongarch/cpu_helper.c
-+++ b/target/loongarch/cpu_helper.c
-@@ -196,7 +196,7 @@ int get_physical_address(CPULoongArchState *env, hwaddr *physical,
- 
-     plv = kernel_mode | (user_mode << R_CSR_DMW_PLV3_SHIFT);
-     if (is_la64(env)) {
--        base_v = address >> R_CSR_DMW_64_VSEG_SHIFT;
-+        base_v = (uint64_t)address >> R_CSR_DMW_64_VSEG_SHIFT;
-     } else {
-         base_v = address >> R_CSR_DMW_32_VSEG_SHIFT;
+diff --git a/target/loongarch/tcg/insn_trans/trans_atomic.c.inc b/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
+index c35f6f3ce47877ab6ad84fa2cbc50b46c0b23ad1..8584441b543712af8a56aa234c90fd6370c8df01 100644
+--- a/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
++++ b/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
+@@ -56,7 +56,7 @@ static bool gen_am(DisasContext *ctx, arg_rrr *a,
+     if (a->rd != 0 && (a->rj == a->rd || a->rk == a->rd)) {
+         qemu_log_mask(LOG_GUEST_ERROR,
+                       "Warning: source register overlaps destination register"
+-                      "in atomic insn at pc=0x" TARGET_FMT_lx "\n",
++                      "in atomic insn at pc=0x%016"VADDR_PRIx"\n",
+                       ctx->base.pc_next - 4);
+         return false;
      }
+diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
+index 97f38fc391338ba4b76115b142fa76d89e45cd62..a1426b46f36c99e300ab924cb487875ec21ab226 100644
+--- a/target/loongarch/tcg/tlb_helper.c
++++ b/target/loongarch/tcg/tlb_helper.c
+@@ -517,7 +517,7 @@ target_ulong helper_lddir(CPULoongArchState *env, target_ulong base,
+ 
+     if (unlikely((level == 0) || (level > 4))) {
+         qemu_log_mask(LOG_GUEST_ERROR,
+-                      "Attepted LDDIR with level %"PRId64"\n", level);
++                      "Attepted LDDIR with level "TARGET_FMT_ld"\n", level);
+         return base;
+     }
+ 
+diff --git a/target/loongarch/tcg/translate.c b/target/loongarch/tcg/translate.c
+index 1fca4afc731c048816618d87610a0cc0fe7579b1..3939670e18d01bd9fc08861532166882fbd3f890 100644
+--- a/target/loongarch/tcg/translate.c
++++ b/target/loongarch/tcg/translate.c
+@@ -287,9 +287,8 @@ static void loongarch_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+     ctx->opcode = translator_ldl(cpu_env(cs), &ctx->base, ctx->base.pc_next);
+ 
+     if (!decode(ctx, ctx->opcode)) {
+-        qemu_log_mask(LOG_UNIMP, "Error: unknown opcode. "
+-                      TARGET_FMT_lx ": 0x%x\n",
+-                      ctx->base.pc_next, ctx->opcode);
++        qemu_log_mask(LOG_UNIMP, "Error: unknown opcode. %016"VADDR_PRIx
++                      ": 0x%08"PRIx32"\n", ctx->base.pc_next, ctx->opcode);
+         generate_exception(ctx, EXCCODE_INE);
+     }
+ 
 
 -- 
 2.43.0
