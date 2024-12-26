@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2576A9FCDDA
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Dec 2024 22:21:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E869F9FCDE1
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Dec 2024 22:21:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQvHJ-0003pn-Hi; Thu, 26 Dec 2024 16:20:21 -0500
+	id 1tQvHN-0003qg-JW; Thu, 26 Dec 2024 16:20:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tQvHF-0003p7-RQ
- for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:17 -0500
+ id 1tQvHK-0003q7-69
+ for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:22 -0500
 Received: from fout-a1-smtp.messagingengine.com ([103.168.172.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tQvHE-0003Ca-GD
- for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:17 -0500
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal
- [10.202.2.43])
- by mailfout.phl.internal (Postfix) with ESMTP id 100EB13801E9;
- Thu, 26 Dec 2024 16:20:16 -0500 (EST)
+ id 1tQvHI-0003D9-95
+ for qemu-devel@nongnu.org; Thu, 26 Dec 2024 16:20:21 -0500
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal
+ [10.202.2.45])
+ by mailfout.phl.internal (Postfix) with ESMTP id 984A713801E6;
+ Thu, 26 Dec 2024 16:20:18 -0500 (EST)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-03.internal (MEProxy); Thu, 26 Dec 2024 16:20:16 -0500
+ by phl-compute-05.internal (MEProxy); Thu, 26 Dec 2024 16:20:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
  cc:cc:content-transfer-encoding:content-type:content-type:date
  :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm3; t=1735248016;
- x=1735334416; bh=AhnS5xcIEHt3sg+hD9qiLsPw6/y/gPWY/teXoXiJ66s=; b=
- ScVZNN6p4pBj/uJ1h+SKXlwalQgm+Hp1YDIn1hK5WcIVO1rA7Ub585cZ80OnvVSa
- HgHma6JBp027p1kRImnyN8ZDfP+f6DIN1QwRupjTZU4pekJ8hTcKi9tAIaCDhm5K
- o3ROENfDUD8PFOscAI4KjSRsTDlGeyv9rOcqz21ZGy3bsbu9ivwxcCUfLDW4WZbZ
- XSlvz3Tf8fPM4lU8kOULvoofJ7a35dWggF9wkLbfNVHgVIi27U5fzDV9wE/8OBeD
- F/0jEOlvT3vkVUQebHCC9wWeOzVBkFjyIDpWNlR7/G2F0NrIeBYyw3RkNogwNsf+
- updDpRjyxDmdqG4e24dJbw==
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1735248018;
+ x=1735334418; bh=mK00rNU3uUZqwx6EGUl+GHsiUe4Y9J4gnVo/RMfXeas=; b=
+ e7CIFt/WFYZ8Xsv8uD0xGVUkgGOGN0PzzObEmmFgT8i8rQWoHlsWzJsAnhIWmLoG
+ 61tk2IbkvBVHIjnlMTjqblOF9IeEnDOGk3plMjTo1hDUsbem3rG/N6gSW/twji06
+ e8W5SIut2TTLQMqa3IH42BA9FWiop3dI5Z0he2IcGM8if4amCjZa6KmgkRAuw7iE
+ LbWQMoPDWsqKPYO2GbAKgB5ADRavToGmNcIBfRivMAIoK9K4cT6jDCzLD3xif8+z
+ 6nid+9PYYWMsYSTIqiO0Kd3EFkTTdA1jzaqdPXFl36ya9zWURAb1MF4y6XX0h++0
+ FacIz6UjR8wU9QO8dP4Fgw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
  :from:from:in-reply-to:in-reply-to:message-id:mime-version
  :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1735248016; x=
- 1735334416; bh=AhnS5xcIEHt3sg+hD9qiLsPw6/y/gPWY/teXoXiJ66s=; b=I
- 7SScYZl7UEHPL4uGg/VxgYJCDBg7rTOSEGck73xMbrc3B/YZu95GRbjtIMYJOy0c
- dV+sM45KcDkVCEABkNGabMvLH+mK2Z8rBpooXx7Ho5JQXr6pndFTYsIjq87jeRb1
- n/Jc3wzOn95m2i9CIhLZl2GUatOTMrGqz0lctslVRGUwUjdhQz9cdz6peRKII0Wu
- +mnNpAnT0VGdhFSOdxOMhM2YSchlnKNSGjGKzDus1yo+gUvPA49LGJ36ehfGuGjG
- fumEa+LE6TUGtPOzof9llZ4XR0HCHqQlvwOFpke0uA9Cygf/qNwExE6aFONxPW8y
- 0t8SS25dYuefg/v33YdAw==
-X-ME-Sender: <xms:j8htZ9PbyWdyjyl2ZdHY1Qj9HPmYDc6P8jjD0E2JNlZfsl3BdqLE9w>
- <xme:j8htZ_9G7HRDu9pdS_9dB4lEQnWQnPWRYfKvBqbyAJicu7Z3yWg9eqq_0ezbobnv4
- chbG5FPH320jj91JHU>
-X-ME-Received: <xmr:j8htZ8Ss15w3OtLkGPzflqfuPwUI5E9qtTL0zDY4GGS4kyjjNzzoGpMh>
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1735248018; x=
+ 1735334418; bh=mK00rNU3uUZqwx6EGUl+GHsiUe4Y9J4gnVo/RMfXeas=; b=G
+ ffrSj1o2flVEwBoBB3GYJaXsjwKdMHBhM4vvw9v9m7vXzvLoBl9E6Q/AJLefN6a6
+ Bq+DaBGqZilJIX4bbcMUrV5zyVqAOm+drET+3gMerh74sP3hnWAlG9D85Ty+MzNP
+ KCfSs2FtSMis4EvWs+ZvXD4xOYj7oos0v2pL1gzo1r4hLHgbnhPFuddIwtDcwpcm
+ 7UZHRLIsj+OiV2VoCikXVolGdu9p3icJjWENPqJnta3XlMxQ3n7SWf5G/NmP+9VS
+ WMw5DQHnhPMJu/bxRSKXMEy5jbjNdqQbU3VTq291rUdVjF9JLkbIX7SO7ILuKdZk
+ npH3BEPSMorrHosSSaQ6Q==
+X-ME-Sender: <xms:kshtZ5gtCxGRkLN9FvFNYp9V1RspFZXDYbHrW2DbGWA643_5OWLerg>
+ <xme:kshtZ-AVz2x5dph-1rPXvfRv_tnMtoZnj8mhFBXf55hWZYqNaMrpj-RSeH3bjgw8L
+ wuu0O_7ym1erZwMat8>
+X-ME-Received: <xmr:kshtZ5Hos8NzpSHiHZHlwcrtJ0JVSCwygFjM-gPOQJR5nbpB3JJaMexG>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddukedgudegjecutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
  uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
  hnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredt
  jeenucfhrhhomheplfhirgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflh
  ihghhorghtrdgtohhmqeenucggtffrrghtthgvrhhnpedvkeeihfefveekueevteefleff
- keegudeghfdtuddugefhueevgeffgedukeejleenucevlhhushhtvghrufhiiigvpedune
+ keegudeghfdtuddugefhueevgeffgedukeejleenucevlhhushhtvghrufhiiigvpeefne
  curfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorght
  rdgtohhmpdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmhhtphhouhhtpdhrtghpth
  htohepmhgrohgsihgsoheslhhoohhnghhsohhnrdgtnhdprhgtphhtthhopehmrghrtggv
@@ -69,22 +69,22 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddukedgudegjecutefuodetgg
  vghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepfigrnhhghigrnh
  grnhehheeshhhurgifvghirdgtohhmpdhrtghpthhtohepiihhrghouddrlhhiuhesihhn
  thgvlhdrtghomh
-X-ME-Proxy: <xmx:j8htZ5sToA7Inf7uxwExZKE4Mb8KhSpr3CuqCqJ3haUCQZo0ajN5dA>
- <xmx:j8htZ1df7cTbVWDvxnXz040UFv4UYpw-BiyOkpu4CcLKaZyHUeXzJw>
- <xmx:j8htZ11e1PP6FdcVgN8ref_OVKN9qtj2fqC1OMiK4fmgt_DNFcjxiQ>
- <xmx:j8htZx9NjbTPUO2CgdpEJyVyegtb9zra6smYBPzH9Xv-g0iPM-2rww>
- <xmx:kMhtZz3TMisqa1MeGbm2J37fcfSpbqfHYd2ZUEl_rnhx4UfySSSOqqpt>
+X-ME-Proxy: <xmx:kshtZ-S3G1_4Pyp5oiMtd65-ST-e2ZI6g5zAl2iDvhqM840Y-esCcQ>
+ <xmx:kshtZ2zod-B7hXlNHb-bUSHhGLjHrGbAP0FL2loDSFNJMFweev7z2g>
+ <xmx:kshtZ06aVbpfeAvkEXHPX2lZdqFsVOXJohOZRT7dOKCkagAz5xJkxg>
+ <xmx:kshtZ7xYmpWquV61HA3DRVVk3C-6OwuhueazD88GAxfZZ6lpaxNq5g>
+ <xmx:kshtZxoAvoyEKQw0Y4XNZaJdsHZauR_6KV5_LYCQVTrrg8ke0HV74OIK>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 26 Dec 2024 16:20:14 -0500 (EST)
+ 26 Dec 2024 16:20:16 -0500 (EST)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Thu, 26 Dec 2024 21:19:47 +0000
-Subject: [PATCH v2 16/23] target/loongarch: Define address space
- information for LoongArch32
+Date: Thu, 26 Dec 2024 21:19:48 +0000
+Subject: [PATCH v2 17/23] target/loongarch: Refactoring is_la64/is_va32 for
+ LoongArch32
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241226-la32-fixes1-v2-16-0414594f8cb5@flygoat.com>
+Message-Id: <20241226-la32-fixes1-v2-17-0414594f8cb5@flygoat.com>
 References: <20241226-la32-fixes1-v2-0-0414594f8cb5@flygoat.com>
 In-Reply-To: <20241226-la32-fixes1-v2-0-0414594f8cb5@flygoat.com>
 To: qemu-devel@nongnu.org
@@ -96,13 +96,13 @@ Cc: Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
  Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>, 
  Paolo Bonzini <pbonzini@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1046;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1435;
  i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=Z9HPXaAj3Emaei2yrxiSNSaeHVLQ6AGl79stCMSes2I=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhvTcE9m5PgVMBZIpcaoneF+Jck1cLP/bNeBHH5O0SHmH3
- yEGoxkdpSwMYlwMsmKKLCECSn0bGi8uuP4g6w/MHFYmkCEMXJwCMBHlXYwMCzSL1sZwfsyYdHeL
- tPaL/0dNdinVJZ8+/3Wt7DSlhKwpDxn+Cm6QOVH5a6F6rXCvQGfddX8pa81pEs9m3XiwUHvmxlJ
- /BgA=
+ bh=3fvPVcmduevZWpvYs3fGnpSI9/FSXVdg+OVVSEa4VNs=;
+ b=owGbwMvMwCXmXMhTe71c8zDjabUkhvTcE9kiaxcssl2j3pvI5S5Xt/vlp+ALnKLt17z6TgdvT
+ HFZeepaRykLgxgXg6yYIkuIgFLfhsaLC64/yPoDM4eVCWQIAxenAEwkV42RYfqpTSeErVf+sU6o
+ ePg1kG35/k1FZ79Kn1FJYrEO7n1xegHDP62kK9vPOjbnHOnRWyPLvSI40Hr++61RF5xLtJXk1Na
+ fZwMA
 X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
  fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
 Received-SPF: pass client-ip=103.168.172.144;
@@ -130,37 +130,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-LoongArch32 have 32 bit vaddr and 36 bit paddr as per architecture
-specification.
+is_la64 should be wired to false on LA32 build.
+VA32 CSR check shouldn't be performed in LA32 mode.
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- target/loongarch/cpu-param.h | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ target/loongarch/cpu.h | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/target/loongarch/cpu-param.h b/target/loongarch/cpu-param.h
-index db5ad1c69fafaf368ad7f0c960afecb5a96ddcf2..48512883e550c80570eb2bf02c802f4979151008 100644
---- a/target/loongarch/cpu-param.h
-+++ b/target/loongarch/cpu-param.h
-@@ -8,9 +8,15 @@
- #ifndef LOONGARCH_CPU_PARAM_H
- #define LOONGARCH_CPU_PARAM_H
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index 4f542a3376831141d012f177dc46a0e928afc85c..a2d416b6634b7f6787c93eac2b777a2f6c71bebf 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -438,18 +438,26 @@ struct LoongArchCPUClass {
  
--#define TARGET_LONG_BITS 64
--#define TARGET_PHYS_ADDR_SPACE_BITS 48
--#define TARGET_VIRT_ADDR_SPACE_BITS 48
-+#if defined(TARGET_LOONGARCH64)
-+# define TARGET_LONG_BITS 64
-+# define TARGET_PHYS_ADDR_SPACE_BITS 48
-+# define TARGET_VIRT_ADDR_SPACE_BITS 48
-+#elif defined(TARGET_LOONGARCH32)
-+# define TARGET_LONG_BITS 32
-+# define TARGET_PHYS_ADDR_SPACE_BITS 36
-+# define TARGET_VIRT_ADDR_SPACE_BITS 32
+ static inline bool is_la64(CPULoongArchState *env)
+ {
++#ifdef TARGET_LOONGARCH64
+     return FIELD_EX32(env->cpucfg[1], CPUCFG1, ARCH) == CPUCFG1_ARCH_LA64;
 +#endif
++    return false;
+ }
  
- #define TARGET_PAGE_BITS 12
+ static inline bool is_va32(CPULoongArchState *env)
+ {
+     /* VA32 if !LA64 or VA32L[1-3] */
+-    bool va32 = !is_la64(env);
+-    uint64_t plv = FIELD_EX64(env->CSR_CRMD, CSR_CRMD, PLV);
+-    if (plv >= 1 && (FIELD_EX64(env->CSR_MISC, CSR_MISC, VA32) & (1 << plv))) {
+-        va32 = true;
++    if (is_la64(env)) {
++        uint64_t plv = FIELD_EX64(env->CSR_CRMD, CSR_CRMD, PLV);
++
++        if (plv >= 1 &&
++            extract64(FIELD_EX64(env->CSR_MISC, CSR_MISC, VA32), plv, 1)) {
++            return true;
++        }
++        return false;
+     }
+-    return va32;
++
++    return true;
+ }
  
+ static inline void set_pc(CPULoongArchState *env, uint64_t value)
 
 -- 
 2.43.0
