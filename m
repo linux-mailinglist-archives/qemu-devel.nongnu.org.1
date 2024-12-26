@@ -2,92 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B3D9FCEEB
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Dec 2024 23:59:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DC449FCF06
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Dec 2024 00:01:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tQwoa-0008LT-On; Thu, 26 Dec 2024 17:58:48 -0500
+	id 1tQwqz-0001XD-LW; Thu, 26 Dec 2024 18:01:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tQwoY-0008Kx-Fm
- for qemu-devel@nongnu.org; Thu, 26 Dec 2024 17:58:46 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tQwoW-0005wf-NK
- for qemu-devel@nongnu.org; Thu, 26 Dec 2024 17:58:46 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-216281bc30fso93615595ad.0
- for <qemu-devel@nongnu.org>; Thu, 26 Dec 2024 14:58:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735253923; x=1735858723; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0cIwE37iPsAJ+XHGsmT+5/VtB+UGmfDP2BekpC7UvyY=;
- b=vs489DoDQxysc7T8sowpcncM3FNBgdnunjw4cQkxU7wNv7MCfh+1hGVOx+vzlkdpF4
- z0s6mKvI5541UgHfPRLS3jeSK2BK7iJdCUHNxj1L66H3u84xa0Hu3iZQcCkgvv87TYgX
- GFDClq7V63L3WAb+kFpg1IuGHJyW6G/Lg5CejHDh6rdAicpnIpUhtGVY0rOw4FZ4yujd
- AhbVUBzhkxdWnaW5JC8TRmCPNVd4nAZLxEsLHDd5yMefUXVIBai1qgjip/GGf6f/4Wya
- 2rerbN7q51NubxlGIs4daYCZYXTghXpnXoGOazmImQkWbQafIfQ2SpM+mgz6IDNfBwde
- M6JA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735253923; x=1735858723;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0cIwE37iPsAJ+XHGsmT+5/VtB+UGmfDP2BekpC7UvyY=;
- b=SVsIrJ5SWv6MpF7OiS0MWUfYoVr6rvdkWsTlQWvz08kPebWsWrxTCEL0i0i8YVq3ve
- MpJ7yOyQK7lqTCuhxihlOdasSCKmNoKGvS/hEgNdPs3F8JQDEwemtW5dAc1/V68sSaSd
- d/TSTwh2xkvWgOzkBx4ZrPGyOoZ/ioEX1FNoVsmnsI0oqVjDe6MVCVMukhgXMKz97DZP
- nk1jpZfCnWQDui6XmNzVS7mP8lNi1OKqspE/zajtPYzlXdO3BA5A1rHF2po1cpZjyCr2
- 6d2LB7nA6qhZJpU+j5qRd7V3M5yV/opcUVPYmCSEMCtaIm2A5nKJyv44QIa5aySvWj0/
- zWrQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUw5g0V+cREyVDPIeDhJK5bIQHigpGOXky1NjF/wMTfesDSpnYTF16cK4QMU6BsM5y0tktpOHvYAoGV@nongnu.org
-X-Gm-Message-State: AOJu0Yx6qz3tHr3W8E/ov42OMGKM5bHcEQf1lJ/UyBEsrWxkbwTvYecZ
- oE0oOMtAxkhiGGszjuGGHf3wCCtyNy4y3lefhYdMnXqlarfkwCEMVDZLSzulZKQ=
-X-Gm-Gg: ASbGncuRaRRnzkGXBgo3G4L0aswV649n/HAX6QuZkcWyerTamXp59hPqB4y4WXUVUT4
- It2lv0YFloqvMhDrdUf/YbiJZmdawKM9su2opVjThlfAtcf83bQA6TxFH24lWMRzFK9CHIaZNOj
- NdiLqaO/EkqUMV3PD1DPexRmUkC9eRew/+SchkyLTA72lg7YsFgWu3jfsdJDqjGjfFUSXzZzuAq
- ZOCZ+Lq2w67KyNI37abmgkepGFlBcvt7KKpfyzMpi6ulVRXrnSRavKNzllrdhLRWDUmUtiu6cwm
- SbCae3QnxSErDpTX8r4UycnnBCYIAg==
-X-Google-Smtp-Source: AGHT+IHXRYJ4jI4nm45gh1Gu5faJPGJIzlGimzQ78Bcr7hggOMG6XctKOb9wvZIz+kN6A0oBiJAJtA==
-X-Received: by 2002:a05:6a00:b87:b0:726:54f1:d133 with SMTP id
- d2e1a72fcca58-72abddb19ccmr35405457b3a.12.1735253923541; 
- Thu, 26 Dec 2024 14:58:43 -0800 (PST)
-Received: from [192.168.69.132] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad90b949sm13404529b3a.176.2024.12.26.14.58.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 26 Dec 2024 14:58:43 -0800 (PST)
-Message-ID: <f332d6b4-66c0-481c-8936-12892664d24f@linaro.org>
-Date: Thu, 26 Dec 2024 23:58:36 +0100
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1tQwqx-0001X2-Kt
+ for qemu-devel@nongnu.org; Thu, 26 Dec 2024 18:01:15 -0500
+Received: from fhigh-a5-smtp.messagingengine.com ([103.168.172.156])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1tQwqw-0006QP-5A
+ for qemu-devel@nongnu.org; Thu, 26 Dec 2024 18:01:15 -0500
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal
+ [10.202.2.49])
+ by mailfhigh.phl.internal (Postfix) with ESMTP id 92F9A1140101;
+ Thu, 26 Dec 2024 18:01:13 -0500 (EST)
+Received: from phl-imap-12 ([10.202.2.86])
+ by phl-compute-09.internal (MEProxy); Thu, 26 Dec 2024 18:01:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+ cc:cc:content-transfer-encoding:content-type:content-type:date
+ :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1735254073;
+ x=1735340473; bh=fE1bu75dsTu28qP52uJvgXyCjl8XbRzecdvNTqU15SM=; b=
+ Iba4xdHeMYNdqp1qz3MbkpiS1eJpaKNsYBIU6/b/5bUoNC/fvPFAfbGvdqMmZ1bE
+ 1ILAoVY23zivFfz1+5w5XCB6fguPphOoTDTI1hbsRKDDEswuXzYF+PbAkpRVnV/P
+ Q+Z8YVptv5vALljtoabNO7sSxhuEoVxp3+hD8ksoY43yU+OPSXDLAnMN8vTPM9E3
+ 5YpG3xT3KWyN/9VRsClh9Nt3y+stlAGl0FJQbtngQy1shRdXbADQp3Qq0oQ+6Qvw
+ P9XyjeDO6n+11jEAEc38HlRinP0JgVpePkzXWqPWt26azvdiCUfs6LZDfe5AalfJ
+ CmgjwbKzCWRyFjK26+IK2g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1735254073; x=
+ 1735340473; bh=fE1bu75dsTu28qP52uJvgXyCjl8XbRzecdvNTqU15SM=; b=M
+ p5lNvKYD5H6i+KCKgGq1C32EwbuzqHfdsSOoY5yuJQ2KIWTYjAlTPg3F7tDAHMVa
+ kXAxAHcJOu1+Rt0n89LYyxZ7/9TO6B/e1OPB7qlUZ30BrEV7QVO3+xN1nMQObpgL
+ 9pPfsCkx/0b86mN5Y3PxOLq935eqbPndD5K5uoYnOzY6sSnSoFI5SbYYrM60JqY2
+ qhptEJsViq6jQRXJl0rAABTcsqAfdQkjzAcY2dRppTfZAWkx48viKwjqm15zpKwe
+ ZbosV6V1jGU0OCaaVhQ9WpXC6M0RcOI21K58wDDoyUymz/haeSB4DB28sfJ1qWbv
+ gSifKMhlYMtgaPhFTqHaQ==
+X-ME-Sender: <xms:OeBtZ297Pk53It_xcuSl9ZN1Vy3KJVpEqjpNRRjmEZL3p24LnkTLAg>
+ <xme:OeBtZ2tkyscoa354qcNh7lFNxbKI6CKTHHeWldxtfwXkfhsJw5jOJzIx8jB5uADVJ
+ hpgPI8rKxVyPEez3pM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudduledgtdehucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+ rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+ htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
+ necuhfhrohhmpedflfhirgiguhhnucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfh
+ hlhihgohgrthdrtghomheqnecuggftrfgrthhtvghrnhepjeehfeduvddtgffgvdffkeet
+ hefhlefgvdevvdekuefffeekheehgeevhfevteejnecuvehluhhsthgvrhfuihiivgepud
+ enucfrrghrrghmpehmrghilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgr
+ thdrtghomhdpnhgspghrtghpthhtohepuddupdhmohguvgepshhmthhpohhuthdprhgtph
+ htthhopehmrghrtggvlhdrrghpfhgvlhgsrghumhesghhmrghilhdrtghomhdprhgtphht
+ thhopegvughurghrughosehhrggskhhoshhtrdhnvghtpdhrtghpthhtohepfigrnhhghi
+ grnhgrnhehheeshhhurgifvghirdgtohhmpdhrtghpthhtohepiihhrghouddrlhhiuhes
+ ihhnthgvlhdrtghomhdprhgtphhtthhopehphhhilhhmugeslhhinhgrrhhordhorhhgpd
+ hrtghpthhtohepghgrohhsohhngheslhhoohhnghhsohhnrdgtnhdprhgtphhtthhopehm
+ rghosghisghosehlohhonhhgshhonhdrtghnpdhrtghpthhtohepqhgvmhhuqdguvghvvg
+ hlsehnohhnghhnuhdrohhrghdprhgtphhtthhopegrrhhmsghruhesrhgvughhrghtrdgt
+ ohhm
+X-ME-Proxy: <xmx:OeBtZ8A7aTu8uwq2T1P6g3lNYigSA-qzMWTheTqrO7OMlJLTaqRHRw>
+ <xmx:OeBtZ-dcYLHmkrei0ZFEuVW4TCxEirWj3sV-iC9iPhLGigo4dysuAw>
+ <xmx:OeBtZ7PctkxjCD6c8-Dd2tmLEwma4fdjU87k8ISIXFcVCYHYtgjNew>
+ <xmx:OeBtZ4lmDyQRRPSQVa9hBmIzUJNZFMfoFfH8ICisEMv3Ym3XbnWDLA>
+ <xmx:OeBtZ8EBqpngth_bOdy9ShkcraIPpd9NMLGSVihwPG4ARcqmFDKkUZJd>
+Feedback-ID: ifd894703:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+ id E940B1C20066; Thu, 26 Dec 2024 18:01:12 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 23/23] config: Add loongarch32-softmmu target
-To: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
-Cc: Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 26 Dec 2024 23:00:52 +0000
+From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "QEMU devel" <qemu-devel@nongnu.org>
+Cc: "Song Gao" <gaosong@loongson.cn>, "Bibo Mao" <maobibo@loongson.cn>,
+ "Eric Blake" <eblake@redhat.com>, "Markus Armbruster" <armbru@redhat.com>,
+ "Eduardo Habkost" <eduardo@habkost.net>,
+ "Marcel Apfelbaum" <marcel.apfelbaum@gmail.com>,
+ "Yanan Wang" <wangyanan55@huawei.com>, "Zhao Liu" <zhao1.liu@intel.com>,
+ "Paolo Bonzini" <pbonzini@redhat.com>
+Message-Id: <5da76fbd-90a4-4f91-b132-56d6ab3d2b4d@app.fastmail.com>
+In-Reply-To: <490e3bc8-ef3b-4bec-b9c1-55706c1b3a77@linaro.org>
 References: <20241226-la32-fixes1-v2-0-0414594f8cb5@flygoat.com>
- <20241226-la32-fixes1-v2-23-0414594f8cb5@flygoat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241226-la32-fixes1-v2-23-0414594f8cb5@flygoat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=philmd@linaro.org; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ <20241226-la32-fixes1-v2-19-0414594f8cb5@flygoat.com>
+ <490e3bc8-ef3b-4bec-b9c1-55706c1b3a77@linaro.org>
+Subject: Re: [PATCH v2 19/23] target/loongarch: Introduce max32 CPU type
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=103.168.172.156;
+ envelope-from=jiaxun.yang@flygoat.com; helo=fhigh-a5-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,30 +121,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/12/24 22:19, Jiaxun Yang wrote:
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> ---
->   MAINTAINERS                                     | 4 ++--
->   configs/devices/loongarch32-softmmu/default.mak | 7 +++++++
->   configs/targets/loongarch32-softmmu.mak         | 7 +++++++
->   3 files changed, 16 insertions(+), 2 deletions(-)
 
 
-> diff --git a/configs/targets/loongarch32-softmmu.mak b/configs/targets/loongarch32-softmmu.mak
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..50e0075a24ac6bf3717db967b03b816b52a25964
-> --- /dev/null
-> +++ b/configs/targets/loongarch32-softmmu.mak
-> @@ -0,0 +1,7 @@
-> +TARGET_ARCH=loongarch32
-> +TARGET_BASE_ARCH=loongarch
-> +TARGET_KVM_HAVE_GUEST_DEBUG=y
-> +TARGET_SUPPORTS_MTTCG=y
-> +TARGET_XML_FILES= gdb-xml/loongarch-base32.xml gdb-xml/loongarch-fpu.xml gdb-xml/loongarch-lsx.xml gdb-xml/loongarch-lasx.xml
-> +# all boards require libfdt
-> +TARGET_NEED_FDT=y
-> 
+=E5=9C=A82024=E5=B9=B412=E6=9C=8826=E6=97=A5=E5=8D=81=E4=BA=8C=E6=9C=88 =
+=E4=B8=8B=E5=8D=8810:55=EF=BC=8CPhilippe Mathieu-Daud=C3=A9=E5=86=99=E9=81=
+=93=EF=BC=9A
+> On 26/12/24 22:19, Jiaxun Yang wrote:
+>> Introduce max32 CPU type as it's necessary to demonstrate all
+>> features we have in LA32.
+>>=20
+>> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+>> ---
+>>   target/loongarch/cpu.c | 92 +++++++++++++++++++++++++++++++++++++++=
++++++++++++
+>>   1 file changed, 92 insertions(+)
+>
+>
+>>   #ifdef TARGET_LOONGARCH64
+>>   static void loongarch_la464_initfn(Object *obj)
+>>   {
+>> @@ -923,6 +1014,7 @@ static const TypeInfo loongarch_cpu_type_infos[]=
+ =3D {
+>>       },
+>>   #endif
+>>       DEFINE_LOONGARCH_CPU_TYPE(32, "la132", loongarch_la132_initfn),
+>> +    DEFINE_LOONGARCH_CPU_TYPE(32, "max32", loongarch_max32_initfn),
+>
+> What about "la32max"?
 
-I'd really like, if possible, to not add a new target, but make the
-current loongarch64-softmmu.mak evolve to support both 32/64 modes.
+I'm actually thinking about "max32" for la32 and "max32r" la32r to keep =
+it concise
+(and somehow aligned with existing RISC-V naming).
+
+Thanks
+>
+>>   #ifdef TARGET_LOONGARCH64
+>>       DEFINE_LOONGARCH_CPU_TYPE(64, "la464", loongarch_la464_initfn),
+>>       DEFINE_LOONGARCH_CPU_TYPE(64, "max", loongarch_max_initfn),
+>>
+
+--=20
+- Jiaxun
 
