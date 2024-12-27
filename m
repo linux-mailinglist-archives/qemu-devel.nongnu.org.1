@@ -2,77 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 373299FD351
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Dec 2024 11:57:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5907A9FD420
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Dec 2024 13:15:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tR80Y-00021F-BL; Fri, 27 Dec 2024 05:55:54 -0500
+	id 1tR9Ea-0002zL-De; Fri, 27 Dec 2024 07:14:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tsogomonian@astralinux.ru>)
- id 1tR80T-00020B-3h; Fri, 27 Dec 2024 05:55:49 -0500
-Received: from mail-gw01.astralinux.ru ([37.230.196.243])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tsogomonian@astralinux.ru>)
- id 1tR80R-0003ot-31; Fri, 27 Dec 2024 05:55:48 -0500
-Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
- by mail-gw01.astralinux.ru (Postfix) with ESMTP id 3BE4B24B61;
- Fri, 27 Dec 2024 13:55:41 +0300 (MSK)
-Received: from new-mail.astralinux.ru (gca-yc-ruca-srv-mail03.astralinux.ru
- [10.177.185.108])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
- Fri, 27 Dec 2024 13:55:40 +0300 (MSK)
-Received: from [10.198.18.100] (unknown [10.198.18.100])
- by new-mail.astralinux.ru (Postfix) with ESMTPA id 4YKMpz4q5nz1h0CG;
- Fri, 27 Dec 2024 13:55:39 +0300 (MSK)
-Message-ID: <e2773daa-f819-4b71-b5c7-7ff8efc8d6b6@astralinux.ru>
-Date: Fri, 27 Dec 2024 13:55:28 +0300
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1tR9E9-0002v3-AV
+ for qemu-devel@nongnu.org; Fri, 27 Dec 2024 07:14:04 -0500
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1tR9Dz-0005FS-P2
+ for qemu-devel@nongnu.org; Fri, 27 Dec 2024 07:13:55 -0500
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-a9e44654ae3so1163405366b.1
+ for <qemu-devel@nongnu.org>; Fri, 27 Dec 2024 04:13:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1735301624; x=1735906424;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=tzaam/nGV/lsyhD2IkbRADjyZNYlfrfs4BxSJyTg/mY=;
+ b=fdVoEpyVAIP0MHEzsUJyKDLbAyMqQNghTFIdhV+btJsqlnmhnCSreZJdJ7A2+KIrUI
+ U+N567ZQkUjgwnsCGzU5c+w+x5rwoWWl/8k677gyQaiq0ZBCjPpBL7B6tRhVipQ+xC5R
+ Jr4duBAvB1FHSJPT4Z7YH0qx9dInjktU5JMd9necxWdp/Yh/IhXz2wOjWuM1Zxi51qbC
+ HjeVtwgT3kOP8DdZO0CtBaAiCt60Qu1LO1R0uDcWYNt7SCUpAz982UBNZUd26xfVshmW
+ JgKdwg87u8RAPYmcQh8IgQp51I+jQry7L28BTxt75B0HpQ6zezW9cOSP7j3lQ8usouG9
+ wHLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1735301624; x=1735906424;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tzaam/nGV/lsyhD2IkbRADjyZNYlfrfs4BxSJyTg/mY=;
+ b=cDsvxSfLPy/3gBqzhgxzDJINhQ+qBTuYCFn7i9lESrYJKK7hYSfJlLytAzvaeKGm/7
+ NL6wPhlX187TNZF0jwSXBu2UvBb6rYekJdap2ezHXdwQHt14xAOxd0IMglzYrVsoZuvo
+ 0tClf2Dj0yoKSrvPt3yDjGkfIb/lUOsC9Okx9foMa3Gpq8O4XN1kreNBdI2ad0BNgPGL
+ x3vRVSeg12Yo4oTHyed91QDkR64FXpb9JmfBFAAYfJeh4qqPCvilF25mqKo5IYhqnwtO
+ n7Z2LM+1ZzjbUIoeY4ky0TuY2vRd15gawih235YdVtM3tCwpzYs/2p9FvalwvtFeH7U1
+ eF+Q==
+X-Gm-Message-State: AOJu0YycuWE2RlMeQgIdPo/5idoE1G2eHv8Xsbh9bfMafL1DWHGjiFir
+ NRLXCKuRr1sHU6xObVP2OTzEc98yJZ446z/apT2RMsFK88piCG6pZRO+5TuzhJw0FnmiuuMiQDA
+ =
+X-Gm-Gg: ASbGncssH8QiihC/FZFyariN+8ILyib/a6RyU6B/gUAyt9JpSHL3hb5oQo3O8AGwYTS
+ 6GDhU+0i5T+z/pChkO/IPV1/YpUGkuZWJfoWFY58ayOiMPaNsQR6+0qLGcEPf3lZKa9LKNwn86+
+ SWS1AMrnkQ+QiMT2vLEJdj8rsknHzmrkKaVzQyI5r1+OJSV3h58VuS8KjHy57B9RYzhejsyr7OC
+ QUiRi61SawhY6eZDYPVMnf9opwCRP2dArtX/JSSMomjlUsidSJvZxhRRM/2UIJURyC5mzWvx43N
+ 8HTJpzIFOsgX3AjgGYC/SepZiVFcEkdT
+X-Google-Smtp-Source: AGHT+IF3w2JggRZgD0FbZLPCmGRUT5l4cYHujePTS0TXQQVccL+57i6Mms/qF89RkEgitHZMC/QFpw==
+X-Received: by 2002:a17:907:d09:b0:aab:73c5:837 with SMTP id
+ a640c23a62f3a-aac3366a0ccmr2122677666b.52.1735301624178; 
+ Fri, 27 Dec 2024 04:13:44 -0800 (PST)
+Received: from localhost.localdomain (h082218084190.host.wavenet.at.
+ [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-aac0e82ede9sm1098662766b.2.2024.12.27.04.13.42
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 27 Dec 2024 04:13:43 -0800 (PST)
+From: Phil Dennis-Jordan <phil@philjordan.eu>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, philmd@linaro.org, thuth@redhat.com,
+ zhao1.liu@intel.com, imammedo@redhat.com, akihiko.odaki@daynix.com,
+ npiggin@gmail.com, Phil Dennis-Jordan <phil@philjordan.eu>
+Subject: [PATCH v3 0/6] hw/usb/hcd-xhci: Fixes, improvements,
+ and macOS workaround
+Date: Fri, 27 Dec 2024 13:13:30 +0100
+Message-Id: <20241227121336.25838-1-phil@philjordan.eu>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
-User-Agent: RuPost Desktop
-Subject: Re: [PATCH] hw/misc: cast nand_getio value to uint64_t
-Content-Language: ru
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: peter.maydell@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- sdl.qemu@linuxtesting.org
-References: <20241226141626.28722-1-tsogomonian@astralinux.ru>
- <87msgikqkq.fsf@draig.linaro.org>
-From: =?UTF-8?B?0KLQuNCz0YDQsNC9INCh0L7Qs9C+0LzQvtC90Y/QvQ==?=
- <tsogomonian@astralinux.ru>
-In-Reply-To: <87msgikqkq.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: tsogomonian@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 49 0.3.49
- 28b3b64a43732373258a371bd1554adb2caa23cb, {Tracking_arrow_text},
- {Tracking_from_domain_doesnt_match_to}, new-mail.astralinux.ru:7.1.1;
- d41d8cd98f00b204e9800998ecf8427e.com:7.1.1; 127.0.0.199:7.1.2;
- astralinux.ru:7.1.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 190100 [Dec 27 2024]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.7
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854,
- bases: 2024/12/27 07:57:00 #26921502
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
-Received-SPF: pass client-ip=37.230.196.243;
- envelope-from=tsogomonian@astralinux.ru; helo=mail-gw01.astralinux.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Received-SPF: neutral client-ip=2a00:1450:4864:20::629;
+ envelope-from=phil@philjordan.eu; helo=mail-ej1-x629.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,23 +98,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-27/12/24 01:49, Alex Bennée пишет:
-> Tigran Sogomonian <tsogomonian@astralinux.ru> writes:
->
->> s->buswidth = nand_flash_ids[s->chip_id].width >> 3;
->> <= 16 >> 3 <= 2.
->> x <= s->ioaddr[offset] << (s->buswidth << 3)
->> <= max_uint8_t << 16
->> With x << 24 overflow is possible.
->> Other cases are similar.
->> Thus, need to cast return value to uint64_t.
->>
->> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->>
->> Signed-off-by: Tigran Sogomonian <tsogomonian@astralinux.ru>
-> This code was removed in 192f75ad11 (hw/misc: Remove omap_gpmc)
-Yes, I saw that upstream master doesn't have this code, but some users 
-use stable-9.1. I suggest adding these changes not to the main branch, 
-but to the stable-9.1 branch.
+For a while now, I've been chasing the problem of macOS's XHCI guest driver not
+working properly with QEMU's PCI XHCI controller when MSI-X is unavailable.
+I've finally figured out the cause, and I think an acceptable solution. I've
+explained the problem and quoted the relevant sections of the XHCI spec in more
+detail in the linked GitLab issue:
+
+https://gitlab.com/qemu-project/qemu/-/issues/2705
+
+Essentially, the macOS driver attempts to use XHCI event rings 1 and 2 even
+when there is only a single pin-based interrupt available. The interrupts for
+rings 1 and 2 are dropped, and so events are only handled after a timeout.
+The driver appears to expect the device to act as if interrupter mapping was
+not supported - the spec only mentions that interrupter mapping should be
+disabled if only one **interrupter** is enabled, not one **interrupt**,
+although there is some ambiguity in the spec's wording around enabling and
+disabling interrupters.
+
+After feedback to my initial RFC submission and discovering some more unhandled
+edge cases, I've now split this up into 6 different patches.
+
+Ultimately, for macOS to be able to drive the XHCI controller with MSI(-X)
+disabled, we need to disable interrupter mapping (in the sense of XHCI spec
+section 4.17.1) when using a pin-based interrupt.
+
+ 1. Fixes an assertion failure crash when XHCI attempts to raise an interrupt
+    on a MSI vector higher than the maximum allocated. It turns out the
+    spec says the MSI vector needs to be computed from the interrupter
+    number by modulo arithmetic, so this patch implements that behaviour.
+ 2. Moves the msi/msix toggles from the NEC XHCI controller to the generic
+    hci-xhci-pci superclass for consistency. This makes testing with MSI-X
+    and/or MSI disabled easier when using the qemu-xhci device variant.
+ 3. Implements interrupter mapping disabling as per XHCI spec, when numintrs==1.
+ 4. Switches from tracing to LOG_UNIMP and LOG_GUEST_ERROR for certain
+    cases of unhandled MMIO. (This is not comprehensive, but came up in
+    review of one of Nicholas Piggin's XHCI patch sets.)
+ 5. Add a new boolean property to hcd-xhci-pci, "conditional-intr-mapping",
+    which defaults to false, retaining existing behaviour. When set to true,
+    additional constraints for enabling interrupter mapping are enabled,
+    so it is disabled in pin-based mode. This works around the macOS guest
+    driver quirks.
+ 6. Enables the "conditional-intr-mapping" property in the VMApple machine
+    type, which does not support MSI-X or MSI and has previously suffered
+    from the macOS guest driver quirk.
+
+Of course, patch 6 can only be applied once the VMApple patch set is also
+applied: https://patchew.org/QEMU/20241223221645.29911-1-phil@philjordan.eu/
+
+Patches 2 and 4 are optional for the purposes of fixing the issue I
+set out to fix, but seem sensible enough to include in this series.
+
+You can reproduce the problems being fixed as follows:
+
+ * Assertion failure crash fixed in patch 1: Use a x86-64 VM with macOS guest
+   and machine type Q35. For USB, use: -device nec-usb-xhci,msix=off
+   QEMU will crash with a failed assertion, "vector < nr_vectors" on guest boot.
+ * macOS guest not driving the XHCI controller correctly with pin-based
+   interrupts: Either as above but with -device nec-usb-xhci,msix=off,msi=off
+   or by following the instructions to boot aarch64 macOS 12 on the VMApple
+   machine type.
+
+History:
+
+RFC -> v1:
+
+ * Gated conditional interrupter mapping support behind a property, enabled
+   that property in the VMApple machine type.
+ * Added patch to fix the MSI vector assertion failure.
+ * Moved msi and msix properties from NEC XHCI controller to generic xhci-pci
+   superclass as that also seems useful.
+ * Broke the workaround up into 2 patches, one for mapping disabling required
+   by the standard, and one for the conditional disabling workaround.
+
+v1 -> v2:
+
+ * 1/6: Switch to modulo arithmetic for MSI vector number, as per spec.
+ * 6/6: Set the "conditional-intr-mapping" property via compat_props.
+ * Commit message tweaks
+
+v2 -> v3:
+
+ * 2/6: In line with recent upstream changes, the property table is now
+   const and no longer carries an end-of-list marker.
+ * The indentation fix (previously 5/6) has already been merged, so is no
+   longer included.
+ * Added patch fixing up logging of certain unhandled MMIO cases. (4/6)
+ * 6/6: Moved the compat global property table into vmapple patch set -v16;
+   we now just add the conditional-intr-mapping property to it in this
+   patch. We also set the property on any device implementing the abstract
+   TYPE_XHCI_PCI rather than only the TYPE_QEMU_XHCI device specifically.
+
+Phil Dennis-Jordan (6):
+  hw/usb/hcd-xhci-pci: Use modulo to select MSI vector as per spec
+  hw/usb/hcd-xhci-pci: Move msi/msix properties from NEC to superclass
+  hw/usb/hcd-xhci-pci: Use event ring 0 if mapping unsupported
+  hw/usb/hcd-xhci: Unimplemented/guest error logging for port MMIO
+  hw/usb/hcd-xhci-pci: Adds property for disabling mapping in IRQ mode
+  hw/vmapple: XHCI controller's interrupt mapping workaround for macOS
+
+ hw/usb/hcd-xhci-nec.c |  2 --
+ hw/usb/hcd-xhci-pci.c | 31 +++++++++++++++++++++++++++++++
+ hw/usb/hcd-xhci-pci.h |  1 +
+ hw/usb/hcd-xhci.c     | 30 +++++++++++++++++++++++++++---
+ hw/usb/hcd-xhci.h     |  5 +++++
+ hw/vmapple/vmapple.c  |  8 +++++++-
+ 6 files changed, 71 insertions(+), 6 deletions(-)
+
+-- 
+2.39.5 (Apple Git-154)
 
 
