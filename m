@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EDD29FD7A6
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Dec 2024 21:26:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 159949FD7A7
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Dec 2024 21:26:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tRGt1-0004Ep-Id; Fri, 27 Dec 2024 15:24:43 -0500
+	id 1tRGt5-0004Fh-No; Fri, 27 Dec 2024 15:24:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tRGsz-0004EU-Ev
- for qemu-devel@nongnu.org; Fri, 27 Dec 2024 15:24:41 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tRGt3-0004FM-En
+ for qemu-devel@nongnu.org; Fri, 27 Dec 2024 15:24:45 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tRGsy-0004z2-0o
- for qemu-devel@nongnu.org; Fri, 27 Dec 2024 15:24:41 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-385e3621518so3503906f8f.1
- for <qemu-devel@nongnu.org>; Fri, 27 Dec 2024 12:24:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tRGt1-0004zw-Uw
+ for qemu-devel@nongnu.org; Fri, 27 Dec 2024 15:24:45 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-385e3621518so3503927f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 27 Dec 2024 12:24:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735331077; x=1735935877; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=9MrOGxf4wy56MqIqYLeWo/x8/KYygjnPnkZEDiH+gag=;
- b=moZbsCY8XiubuG1ZLjGwHfW3boPkwYj8GLN6OjV4RBIIurFakaw9k2o1F/YgXMy4pV
- 6+UfjxDdfeQ1m9ihqrs0HiC//T0m4aV+QiLhYHZFZGfyPg7by8RU+0kuqdOEe2EU2UD3
- K/6cxR8lcXjpuHwyg9m6dwrPspfj3CMRcBiasOQ/2iRtrcw+klfgOT3Mz4HP+oDX2xRY
- 0NzToIJFT21hy4qKlzLPA+piiMjaX+oC6erqzzSEkBwPDRNTNDVuMVNOWVrh81UEM596
- zg+h/N9oHmgXv3seIbGo9gT9bZLfeWMLJtD0q3RP3RBw/CAJVQ9GHPX9u8fBKaePcKmL
- hjAw==
+ d=linaro.org; s=google; t=1735331082; x=1735935882; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=xe+vcyPZJWzPRyHwRPCh0MVBHckAA2MYIwBQH2GfQr0=;
+ b=bEsaKvVVe5X8+bFImiTQ5fJ176p49Mn8ZOjBz0MUb8IHhAStE+qse74pde9gJnBV8b
+ qHpLxPImek/wzwJ2y7E0rONjpzgZUqUd3YjB5TySGskX8ishBHFXGaW9TAV5eK1om1IZ
+ H0cjlEzh1cfttaKJ1aoNPuoB6kWiihr2t0Pky07UHhWjPbqjvg2HVZU7rZh5oJjQdgFG
+ K/yOcjOe/HdzBtm5l945L9Tmo82YDRsvdkfPCGm+9dYGD85bpwCuxbU9esoaGMsplK8z
+ vFWn3JnakBh1Lm0+kZ4GmKf/8Hm1XV00yzSTb6BlS+FSjcmLOKojDmyh8ZkCZMn2BYao
+ UMgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735331077; x=1735935877;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9MrOGxf4wy56MqIqYLeWo/x8/KYygjnPnkZEDiH+gag=;
- b=J2WL5LUahQB0rlSw+rxa1YhY+UnXexVYOausSpOwMmq4gQ04sZMH25QXJKSnRYiUy2
- mLxVWrvgaE1DVAbeKu5KzN+tBtHw+WEc3dqNf4KEvb3v6pthUakukSXwhNhARdYeI2FF
- sBwP23ILqhb5WaUNDensVxku3fv+Isi9+980+lCOQPg6THMO4uAAx0tp2B2OuV3J5hwP
- edHGhBmWfVWPgD9TPdcb8q2NBpgkIu5ivs9EkiB+Y0VjVh/lbVrPPRCwcTGWJM9JCudX
- nMzezPbXnw8ZKeu1JuBzWE7DFEi98MqPXqBmjStaHk/uMWlUeB6QKULebo6zvuEP7T80
- NwXA==
-X-Gm-Message-State: AOJu0YweKVy3leJWk1P0oQaUNLhV2fOplnBoDrepf5RYaKCCxFgjtCXK
- qHYyGfDg2f8SHFHnpsJxrryKpbWdCnQJRpZRfPgzjfJ9okrswdA2THxC97VUGAJcL9LNVkl6+Rl
- 1
-X-Gm-Gg: ASbGncsqOe/4wciNbRKeV8aqa94nPz2Fd/5mUfvCInwA1uPq3Q2RSaWQQjSzvUZgrUJ
- FijKU+KEEol8akzSTa7DfGok5S2BO21gJwz0RlV2W4EZmQ1/2viUplI1CyyJSoc5lVx6yHvxT8l
- SNt/8u9/vdGA/XMgVNqhqYz9Ym3jQM6PuW8mjFSAjZHWpKj3amg+SsQT8CNNjI9cgO6V+bB+hmm
- /LODuo7f/DYGt8PBvzci5Xf0FcJh+UAxhfdEPma7D21a8rcT/tjcN1Kwt/1qm0xiajadQpFtf1+
- MGi2kjTrhotMnxPPr3163OuXHN3d0eA=
-X-Google-Smtp-Source: AGHT+IFr4qRvZIgwmhqzqRTz43jjdJU7zMglA86N32rHIjoeGT8jIhvIfGbk0b8VpPy6EW2gMt2iRg==
-X-Received: by 2002:a5d:5e09:0:b0:385:faec:d94d with SMTP id
- ffacd0b85a97d-38a223fd75amr25716130f8f.51.1735331077451; 
- Fri, 27 Dec 2024 12:24:37 -0800 (PST)
+ d=1e100.net; s=20230601; t=1735331082; x=1735935882;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=xe+vcyPZJWzPRyHwRPCh0MVBHckAA2MYIwBQH2GfQr0=;
+ b=Zl78PdXK9RVexRFvNim0v8Oiw7DY9faikRKCp7kn59FP9iywLRoia7FsIl252BdBc8
+ OOMtn22drIkaibSLrVhLh81zBGhZtM53Hft48NxN0EHOFGqrBIkc22sbxF5M3rnQW9D9
+ dr4tWNQW3mYcPhoYTem/u0M5q6ShtgjTEdLe0x+ifBlsParTb1l8rB8F4vDgf97wwSh/
+ Cv1/Q690UDq8xd08uceQMPuUVfgDUnYxASRG1wtx6Ycr6LZvA6b2m/CzUN0nj52m1j4O
+ WA7GtPSwU4Z8pW5ydlTn22V50cUNYSWKyoAYPInWO4ZQu2NnbInSG4rH+k9eCJjrDhmg
+ gH5g==
+X-Gm-Message-State: AOJu0YwMCV0il5Kllk40BEY9fNeeN2aWITTLBMEUfb2TpVbi75206WVt
+ a4xPLPhWgoDcey4rGEAqLlhMmZ5NCF+y5AfmDv2Gi02W1BOHlnPaFy1M96UuEAMtwkrE0jC8XZ8
+ n
+X-Gm-Gg: ASbGncvGzKueig+0LnhLw4I/xZxvsvqaNE6TNxzGRpHJMJlocYbZCyjOA6UgvRDryNy
+ X1tb5tgbZvKPkz76dtgZAnt1ADZ2potf14h466gASqDALqGQoxBIDfcbXfTlL1p6FQAK+W/aWP4
+ 7IStevQI0G4L6Dkb0lvPr8CudEuWYqhy1ReqFD1LOOKvVkl0+wbP/8JFL+jgss8qSe3Cm85Z2Rm
+ TLUAp1IgLHgo5tELSCzTD8SQ7Bv77rP5iPWyD9+kdAp2jenSChIxPw7Gs3i8OpEP4Xw/b4cPwAU
+ ayt7VQmh05nM81QpPMZoCZz3pfd/fmU=
+X-Google-Smtp-Source: AGHT+IF7VI5o5zK9VzVp9fsHGuwzMppUPfWWedn/AcwuIs7l5f5PQnnQVdLLESYuUFdNo9D4wsFP2g==
+X-Received: by 2002:a5d:588b:0:b0:385:f573:1f78 with SMTP id
+ ffacd0b85a97d-38a221f2042mr24720949f8f.24.1735331082158; 
+ Fri, 27 Dec 2024 12:24:42 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c89e2b0sm23419435f8f.82.2024.12.27.12.24.36
+ ffacd0b85a97d-38a1c8acadcsm22713871f8f.105.2024.12.27.12.24.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 27 Dec 2024 12:24:36 -0800 (PST)
+ Fri, 27 Dec 2024 12:24:41 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Phil Dennis-Jordan <phil@philjordan.eu>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/2] hw/intc: Select generic ARM_GICV3 when KVM is not
- available
-Date: Fri, 27 Dec 2024 21:24:33 +0100
-Message-ID: <20241227202435.48055-1-philmd@linaro.org>
+Subject: [PATCH 1/2] hw/intc: Remove TCG dependency on ARM_GICV3
+Date: Fri, 27 Dec 2024 21:24:34 +0100
+Message-ID: <20241227202435.48055-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241227202435.48055-1-philmd@linaro.org>
+References: <20241227202435.48055-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,16 +99,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ARM_GICV3 is not restricted to TCG and can be used on HVF.
+The TYPE_ARM_GICV3 model doesn't have any particular
+dependency on TCG, remove it. Rename the Kconfig selector
+ARM_GICV3_TCG -> ARM_GICV3.
 
-Philippe Mathieu-Daudé (2):
-  hw/intc: Remove TCG dependency on ARM_GICV3
-  hw/intc: Have ARM_GIC select ARM_GICV3 when KVM is not available
-
+Fixes: a8a5546798c ("hw/intc/arm_gicv3: Introduce CONFIG_ARM_GIC_TCG Kconfig selector")
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
  hw/intc/Kconfig     | 6 +++---
  hw/intc/meson.build | 4 ++--
  2 files changed, 5 insertions(+), 5 deletions(-)
 
+diff --git a/hw/intc/Kconfig b/hw/intc/Kconfig
+index dd405bdb5d2..7547528f2c2 100644
+--- a/hw/intc/Kconfig
++++ b/hw/intc/Kconfig
+@@ -23,13 +23,13 @@ config APIC
+ 
+ config ARM_GIC
+     bool
+-    select ARM_GICV3_TCG if TCG
++    select ARM_GICV3 if TCG
+     select ARM_GIC_KVM if KVM
+     select MSI_NONBROKEN
+ 
+-config ARM_GICV3_TCG
++config ARM_GICV3
+     bool
+-    depends on ARM_GIC && TCG
++    depends on ARM_GIC
+ 
+ config ARM_GIC_KVM
+     bool
+diff --git a/hw/intc/meson.build b/hw/intc/meson.build
+index 510fdfb6886..602da304b02 100644
+--- a/hw/intc/meson.build
++++ b/hw/intc/meson.build
+@@ -6,7 +6,7 @@ system_ss.add(when: 'CONFIG_ARM_GIC', if_true: files(
+   'arm_gicv3_common.c',
+   'arm_gicv3_its_common.c',
+ ))
+-system_ss.add(when: 'CONFIG_ARM_GICV3_TCG', if_true: files(
++system_ss.add(when: 'CONFIG_ARM_GICV3', if_true: files(
+   'arm_gicv3.c',
+   'arm_gicv3_dist.c',
+   'arm_gicv3_its.c',
+@@ -39,7 +39,7 @@ endif
+ 
+ specific_ss.add(when: 'CONFIG_APIC', if_true: files('apic.c', 'apic_common.c'))
+ specific_ss.add(when: 'CONFIG_ARM_GIC', if_true: files('arm_gicv3_cpuif_common.c'))
+-specific_ss.add(when: 'CONFIG_ARM_GICV3_TCG', if_true: files('arm_gicv3_cpuif.c'))
++specific_ss.add(when: 'CONFIG_ARM_GICV3', if_true: files('arm_gicv3_cpuif.c'))
+ specific_ss.add(when: 'CONFIG_ARM_GIC_KVM', if_true: files('arm_gic_kvm.c'))
+ specific_ss.add(when: ['CONFIG_ARM_GIC_KVM', 'TARGET_AARCH64'], if_true: files('arm_gicv3_kvm.c', 'arm_gicv3_its_kvm.c'))
+ specific_ss.add(when: 'CONFIG_ARM_V7M', if_true: files('armv7m_nvic.c'))
 -- 
 2.47.1
 
