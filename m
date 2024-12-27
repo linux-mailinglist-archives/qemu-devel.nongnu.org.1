@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 181AA9FD423
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Dec 2024 13:15:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D46309FD425
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Dec 2024 13:16:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tR9EU-0002wt-CS; Fri, 27 Dec 2024 07:14:22 -0500
+	id 1tR9Ed-00030w-Gp; Fri, 27 Dec 2024 07:14:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tR9E9-0002v4-As
+ id 1tR9E9-0002v2-AT
  for qemu-devel@nongnu.org; Fri, 27 Dec 2024 07:14:04 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tR9Dz-0005Fi-P4
+ id 1tR9Dz-0005Fu-P6
  for qemu-devel@nongnu.org; Fri, 27 Dec 2024 07:13:55 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5d4e2aa7ea9so12823979a12.2
- for <qemu-devel@nongnu.org>; Fri, 27 Dec 2024 04:13:48 -0800 (PST)
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-aaec61d0f65so941578366b.1
+ for <qemu-devel@nongnu.org>; Fri, 27 Dec 2024 04:13:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1735301627; x=1735906427;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1735301628; x=1735906428;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DvyTgK6t3B/LAOc7k9FPUxri4XHAiPyQyzliFGxQfm4=;
- b=04RyiATREN7rSFdXDxLc9Ova0iUNMV5MM8+8mhH7MF+3+YQ8/1AmD7Ivzwf121hSiz
- yJ9Lq8qxDT9vc1rCEHnI0ZjpBFWZvveiWZ0q6PBlbeDeTfFEVKWMC0EAt8rmB59DZgQA
- wp4f/vKAXPWcBzXun2oe5jxvvvqzB/QOM1/gFpc9DttzJKUyVn6G033U4QTwSkd1QlC7
- MNaYkxt8pgPosYzB/gQD7okySyJ8BcyZ9tQqZ0Ys91d9EN2yiCgCQ/j+pAOro3G0OgmK
- wJR9+Qm8VDwmxoM7ZpCs0Td1BEZwnSDPxBYKfDiubs14H1Gp+5pyU+6b+f+u3IzEyrUM
- E3Eg==
+ bh=/cZzMlorZxepNwBN9OE1rEkxv6kXqEyMS3VAO9/DPjk=;
+ b=YCO8JANzQYkZ1f0Sf05+iATSdesLm4kUkdc7wIf3Tkd2FNfvU30Mewrk29WDbFFDT8
+ DhGn8rl1+sOhBGrYhRg8ljQsiMWjZNBPjU1ryNKdksoKXqdnbpUDK0JzwPVOkUu0jns1
+ x3o7kPHU1UHXQiv6H+HYij+HmAzuQIERCMN/IewVVvHo+MXKswQOBNOTza06DvuAYOsv
+ 8H0/jnSrmVcyWYxhINJLSCUvaTsc9S9A/S3P3Dfu21vybe7pqGuiZvzShtnTsV2mF8Uu
+ pUqPRkweNOORdavC/7AZF6Vdm6EDmhPLYH4ZpFG9Nr0b9cFkw3NPbwm50xpq5BLSyLqr
+ ZD0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735301627; x=1735906427;
+ d=1e100.net; s=20230601; t=1735301628; x=1735906428;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DvyTgK6t3B/LAOc7k9FPUxri4XHAiPyQyzliFGxQfm4=;
- b=UmeAFhjU+/AuGNKhiBPPOA9K/DiiupMy2rvPF3Ri2EqUHz6I7kYtS0b828pVSGV3Xg
- 85JSlFh4KEFtXCR8k+5u5YpqPDFpfuihcRLW734DLCEe8xmNSyBC3yHrwxh81t3EC/Rx
- ZTncL7zrsiEDDKfXYaIEype7hddARrWV0LdO0vo3YcFCuefvKGIBZx5fuGLvPI0eEIbu
- enqW2TTe6r2oH5baBcTS9+7FN5uoCV9zEfxHmAI6ZtQC/x65e8GuYNhqhWLyk1UobcEb
- VJQ6YT20iNXrV+otCyQ0jf3jOrZuj4q1DNCW6CjihSrhOqOWmmEkU13rQpSUx60eRPS1
- 1Dtw==
-X-Gm-Message-State: AOJu0Yy+CnrK0FTRpORMfAG5Vf62MEztpVNEaUwBhnR5H+VTjYv6S6Jq
- i2GNe4fgEHh2/jx/jriSYni0gEHjjruacaGsmhnPTB8uAKAVLnuNZUwT2DrXNRPrYV4wVT8vtf8
+ bh=/cZzMlorZxepNwBN9OE1rEkxv6kXqEyMS3VAO9/DPjk=;
+ b=hI/hkWf+BVOTZv4b6g7li6WTWv2VjeRSDPZ5apIPVDPcAF1AYkTdI0UopsRt5B3sm4
+ yr9qLfCePu/Nc7UtaSxhAmQ601qpPf1bJZxDSbokyibkScvO+TYBMtsWHy7eiIqV4wX8
+ Q8GBMRIbR63Ewkcd/w/L9CoLWfwlJCNnSf0AAGTGLjUKqVsYskEZUCazszKES8L+000f
+ ZpGUB5pgc6+jPFsOk1PMZ0yOlxxx2zVGFZiCI7w4kEddrLtDAnVej3lLgh2Q6hLDHG1C
+ GbARBSzn6jZNIPDLdjdFVTltrOfok+9MaVFqfms292P9u1nMhh7eCUZgVFf+XqqiVcpA
+ 7K1g==
+X-Gm-Message-State: AOJu0Yw+s9NnMUe1WrOHOb5rKQkZFJV5c9heT7g3Kn91/o/tn6RynSc5
+ sOUMfz6JB8XLd/a876sanRPoBkqNK9JfbZR3b3chIC7DDjcFbEdINiK5MzrrZ8SfbjQU8+9fSHI
  =
-X-Gm-Gg: ASbGncuZOqlKkK706nWAk2EO96hnthIlTp4Vc2lCA/0htupQ60acCfA6AiQV+rs+Txr
- x0+PzA1yNLBmNjbSwMoUMDju3YPzKHmwyuB2PROxaBXTvpycnP8tDrbrGVC/b5QD4OkV0ZBIzYP
- g8z9SrsrTdx8147FuiObQApsdW/RNZ/yu3vAqCGX69YlGB9GtLICjFtjjCioQb5xTUSHignwe36
- rND1AUSZyNYIb9zTt77e2jAC6PlNsGCmw/CpWWByQDdLowLZWQoyDej+o4BND+LzBc191BUUFkp
- Mx7o2xVNy7LNNSIdLIp7FN13T5QpbbHR
-X-Google-Smtp-Source: AGHT+IECabCWXX5coRCLilR7ADB0xMkJJxQRD3mKaU6vQp/E1ZL62ADfF5ytdkPMoyvmQZvTLRZdzA==
-X-Received: by 2002:a05:6402:5255:b0:5d3:cfd0:8d4b with SMTP id
- 4fb4d7f45d1cf-5d81de38c45mr23117436a12.33.1735301627022; 
+X-Gm-Gg: ASbGncsInHuitNbBr7N65Zq8KZZRDF5kimtyCDgoQhSnLGGA/FFCamJxQ7DzGfwA/9Y
+ +y58xSmetH3bjZkr5p2BNkMV0RafMtPhE0pNUMmIB3QNZ3ValgbVEKqBPU9liRP887ldMdaUV76
+ bQ262+yQwFbeIQqhrmVvGv+n1SlUB34tVecYKswRDv73BZ8HEz4oiv4NW8EfMEsoIAIBLReDUVc
+ YArHCYExotMdLzG4uDv2VrOOWih4POYo+QNcYqnbktX8x5QbmKQHiBn3BYPnagn4XoZZZiWHuVK
+ ypDmsFeWgtblWWNWHdBcgkLNLcXdGcjo
+X-Google-Smtp-Source: AGHT+IE5dK31E6/U/uH+HBvl95wXI8KbV1zJZaXpDRO9NAL4sjOO3k6TsmtHXfAhvELhIewyO20jRg==
+X-Received: by 2002:a17:906:7311:b0:aac:278:98fd with SMTP id
+ a640c23a62f3a-aac2ad80073mr2447233466b.17.1735301627989; 
  Fri, 27 Dec 2024 04:13:47 -0800 (PST)
 Received: from localhost.localdomain (h082218084190.host.wavenet.at.
  [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aac0e82ede9sm1098662766b.2.2024.12.27.04.13.46
+ a640c23a62f3a-aac0e82ede9sm1098662766b.2.2024.12.27.04.13.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 27 Dec 2024 04:13:46 -0800 (PST)
+ Fri, 27 Dec 2024 04:13:47 -0800 (PST)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, philmd@linaro.org, thuth@redhat.com,
  zhao1.liu@intel.com, imammedo@redhat.com, akihiko.odaki@daynix.com,
  npiggin@gmail.com, Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PATCH v3 3/6] hw/usb/hcd-xhci-pci: Use event ring 0 if mapping
- unsupported
-Date: Fri, 27 Dec 2024 13:13:33 +0100
-Message-Id: <20241227121336.25838-4-phil@philjordan.eu>
+Subject: [PATCH v3 4/6] hw/usb/hcd-xhci: Unimplemented/guest error logging for
+ port MMIO
+Date: Fri, 27 Dec 2024 13:13:34 +0100
+Message-Id: <20241227121336.25838-5-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20241227121336.25838-1-phil@philjordan.eu>
 References: <20241227121336.25838-1-phil@philjordan.eu>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::52f;
- envelope-from=phil@philjordan.eu; helo=mail-ed1-x52f.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::62c;
+ envelope-from=phil@philjordan.eu; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -100,36 +101,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The XHCI specification, section 4.17.1 specifies that "If the
-Number of Interrupters (MaxIntrs) field is greater than 1, then
-Interrupter Mapping shall be supported." and "If Interrupter
-Mapping is not supported, the Interrupter Target field shall be
-ignored by the xHC and all Events targeted at Interrupter 0."
-
-QEMU's XHCI device has so far not specially addressed this case,
-so we add a check to xhci_event() to redirect to event ring and
-interrupt 0 if mapping is disabled.
+The XHCI device code uses tracing rather than logging on various code
+paths that are so far unimplemented. In some cases, these code paths
+actually indicate faulty guest software. This patch switches instances
+in the read and write handlers for the port MMIO region to use
+qemu_log_mask() with LOG_UNIMP or LOG_GUEST_ERROR, as appropriate in
+each case.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
- hw/usb/hcd-xhci.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/usb/hcd-xhci.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
 diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
-index 3719c0f190..011c445443 100644
+index 011c445443..00d5bc3779 100644
 --- a/hw/usb/hcd-xhci.c
 +++ b/hw/usb/hcd-xhci.c
-@@ -644,6 +644,10 @@ static void xhci_event(XHCIState *xhci, XHCIEvent *event, int v)
-     dma_addr_t erdp;
-     unsigned int dp_idx;
+@@ -2814,9 +2814,15 @@ static uint64_t xhci_port_read(void *ptr, hwaddr reg, unsigned size)
+     case 0x08: /* PORTLI */
+         ret = 0;
+         break;
+-    case 0x0c: /* reserved */
++    case 0x0c: /* PORTHLPMC */
++        ret = 0;
++        qemu_log_mask(LOG_UNIMP, "%s: read from port register PORTHLPMC",
++                      __func__);
++        break;
+     default:
+-        trace_usb_xhci_unimplemented("port read", reg);
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: read from port offset 0x%" HWADDR_PRIx,
++                      __func__, reg);
+         ret = 0;
+     }
  
-+    if (xhci->numintrs == 1) {
-+        v = 0;
-+    }
-+
-     if (v >= xhci->numintrs) {
-         DPRINTF("intr nr out of range (%d >= %d)\n", v, xhci->numintrs);
-         return;
+@@ -2885,9 +2891,22 @@ static void xhci_port_write(void *ptr, hwaddr reg,
+         }
+         break;
+     case 0x04: /* PORTPMSC */
++    case 0x0c: /* PORTHLPMC */
++        qemu_log_mask(LOG_UNIMP,
++                      "%s: write 0x%" PRIx64
++                      " (%u bytes) to port register at offset 0x%" HWADDR_PRIx,
++                      __func__, val, size, reg);
++        break;
+     case 0x08: /* PORTLI */
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Write to read-only PORTLI register",
++                      __func__);
++        break;
+     default:
+-        trace_usb_xhci_unimplemented("port write", reg);
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: write 0x%" PRIx64 " (%u bytes) to unknown port "
++                      "register at offset 0x%" HWADDR_PRIx,
++                      __func__, val, size, reg);
++        break;
+     }
+ }
+ 
 -- 
 2.39.5 (Apple Git-154)
 
