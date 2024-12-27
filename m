@@ -2,89 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DC979FD7A5
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Dec 2024 21:26:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2E9E9FD7A8
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Dec 2024 21:27:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tRGtA-0004Gm-Gq; Fri, 27 Dec 2024 15:24:52 -0500
+	id 1tRGva-0006RY-Fu; Fri, 27 Dec 2024 15:27:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tRGt8-0004GQ-MJ
- for qemu-devel@nongnu.org; Fri, 27 Dec 2024 15:24:50 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tRGvX-0006RM-UQ
+ for qemu-devel@nongnu.org; Fri, 27 Dec 2024 15:27:19 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tRGt7-00051E-2v
- for qemu-devel@nongnu.org; Fri, 27 Dec 2024 15:24:50 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-43622354a3eso52042515e9.1
- for <qemu-devel@nongnu.org>; Fri, 27 Dec 2024 12:24:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tRGvV-0005ZV-Sg
+ for qemu-devel@nongnu.org; Fri, 27 Dec 2024 15:27:19 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-43621d27adeso52006595e9.2
+ for <qemu-devel@nongnu.org>; Fri, 27 Dec 2024 12:27:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735331087; x=1735935887; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tOiBkjb8mh+lWuc5hL1sFnWxqlY1hmRaS9nt/JCya4M=;
- b=P9lmwGmTDKeOMBVmx4pIn1O1WZ9Q33RqOq8nKZLMYQWIiKe9+y31/brpMlvg0/oohc
- TyN2NsIzkB2ByCsFVACQaHvMJHd22EEY1qqLdwwHBer66v9OZZbyf/GAZG7eagw+ME3h
- 3/RDgZOT+M8kJsTJFgzkJEeij/NwBtbIt0oEzpb+9yN0Y2lXiFiHPz9dHqgJ6nZkUfmp
- KV1C3+/WBWm4qBKAf38Fy515M/V6Tsx6JM3LY50ewm3XsoN1hmRrzEUbz7Id/0FAsn+l
- cHOUuuah6oT/RsNB95MEVOIL25/RqC/ADffbEjDgnGCTtRDiCk5nqMON8UbDQP1Fdl0/
- 4KUA==
+ d=linaro.org; s=google; t=1735331235; x=1735936035; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=p4O0vXcvFQi6NCehCovkZ2NkjvDyPab5DadoVABTZvw=;
+ b=V8AZASbcUzB8YLX3WoFirEujwqf85o3MYEySvGoRm11iPjCzd4YNnJf3DFduiKPpa7
+ Cu6MNdxPNwt2vN3jn4oslLwaWZNiZTqGvHMUJVkN86CXgKnODKP/dsXjFh4B8vAJ9Vy8
+ VB5fMXSsVhP99lQARQw1dWIJie/tnSb27Sb8Iy8X5ihyLBjzgwV0mSoiXvVeJG1DNAV3
+ dto/6ERQe8SGrZzkhkVctOd7dEUVUsPdMPGr1Zj733SdCr3mtZTg4ZJO3VoICWsSLVhn
+ mWgK0Jnv5FWho292j+n89kFeZnHzwMDYFFq7v25P/xp8SwQW/X4qj/HaRf9+2Yl1My7i
+ c2pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735331087; x=1735935887;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=tOiBkjb8mh+lWuc5hL1sFnWxqlY1hmRaS9nt/JCya4M=;
- b=FWHOpWpW5aHj4EgXHR3hB9qRdq+dUaYt19cB+gd6x+nicUfabeUgrtKer4r/jEs7Hv
- ebg5gOMnp9NBe8ErN/fRp69c4+kmJt3rHlLENSc/yvnmLLE5lkuIJZaqjYzjvHj1e4gB
- DB0/3vMiahguRDalHo9lCnTxxUqC+dbtn0TyzpCeHeUmeZtKMp0miDFyAtQ1AAXkr+Ld
- ZMCF7QVzMw+t+MMmSyR92xyCw6JuYa1b1EooRCqoGYj3EAovLdp5AnadMUSYyQxeTORs
- SdvHfZ1UOFsLnhQexHIOlPmbbmEjDuV5LZg+petvRYIg8km6546C6hR7kdO6QJNoIETG
- HRtw==
-X-Gm-Message-State: AOJu0YyATwj7V6IifuP15tv43ICehcMsxP7cg8+ehHoSIsZWiuTm/l4g
- JMlzcgGS1E/wiIOIEEpzT5ameq7H5v/K5DBlFTQdPrZAOeWk4mMPNL22cihKz3fQ10jkpyUNEYx
- b
-X-Gm-Gg: ASbGncuqDv08IcuovnF4xD/EgJLmh2FEEDNiq6fWK7nLMjmNWxKAi3lUZRAv43qUiYY
- eRDfa2ThvG1d+UVmU+BDGHdMS8QLs/O2ZAW6124W5/+cai80GkDm3sPGFX+N/DzGiZ6bJC0p6G8
- a0JjFJj+B+j4xB9VtkdyPLl58BBXQPHFatlB0fJmwqSjkHv+Oxsow8u0LVWSr74sqyXQkOAkLD/
- zEuOO7J703g5IX+/ocvpKZcJ29kCF+GUdjMA+Dkkcazl511GjQvNNP8KQUcsZQ/sNW6msPzSgGT
- 92krADNMMohM7lC8mvFmFFSscGzcnWA=
-X-Google-Smtp-Source: AGHT+IGPviQGedOb/mJoWgd0EluiNKPk2wrWCU6GYbwmg5vkdtDrPyfrYgO7t01He1/0J2LJNKr9Mw==
-X-Received: by 2002:a05:600c:350c:b0:434:fdaf:af2d with SMTP id
- 5b1f17b1804b1-43668b7850emr246307105e9.30.1735331087390; 
- Fri, 27 Dec 2024 12:24:47 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1735331235; x=1735936035;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=p4O0vXcvFQi6NCehCovkZ2NkjvDyPab5DadoVABTZvw=;
+ b=h6qB7ViiTpnN3UOomAk4INDM0j2kKxKPt+C95Ro8HbR9olfwBFGdMmgWRPxpS5pHOQ
+ EFOztv+7+WdG9w5szMe3JAJDR+eL1+tbdB4eDx6oEm6n7Xqhdr785IP/F+sZ6Bsl2G4H
+ brDh62XzQb7XvWcqEA1gHwcQ2d8UEmkg/vCCDNB+o+assoiaXmPMdr6bMKC43PmuOKuo
+ pAVN8c/eMYr+ooW78SElPgEo25uARvEaLxUljpYx8y5GG1VYFRTgRuk4xXm5q5KM9t0p
+ u2fcSpD14+QNL/zmX3c7p3kffX6sJjoxS7RvhlFCkFYeZOANG4kxWQP6MRLB2rCNS3or
+ dnVQ==
+X-Gm-Message-State: AOJu0Ywe0SPcZKKHsHqBc22uPEUxdVf8KO7Yh79OhwEv9zZ0oUNinIxS
+ OaxYa60IxT6T+zfieUDIOwRe5cvGSOzOm9pEa7nRE2Xhz7JID2Iloh/cAGnKyuY=
+X-Gm-Gg: ASbGnctq0PQyqUjr7yhx+jQ3dfWNc1Eb+PXu5vh8k/7/7wXl/fjSjFpIQRMl1j6Ejr0
+ 1iLqDX2GXiL5Hy2A7IijnbQV64tV2A+71I2+PPR741u6h55SfHFzuBBlNjR+qpGcPS9pdMVhg02
+ 54RRotaekeJSkGMZ7ZAAMcQWKxsKee9fvh1xy8DVUKqtZA3gJVB7R+G9Z28xzmsv2poRLUvz/gZ
+ tzyGa8DI0z48QEhrx0jpg8kqmlR04OQ113QI76wZvL5jMwafTJl5mB633XA9adpWGHG5Qultubp
+ T0kUK6qyo7CdAMTbXOoyzVfS
+X-Google-Smtp-Source: AGHT+IFjPxSsDmsGUTcuJzTPnD+75U9wiDaPuotiE0Sg6UDEzqOtQ7g3Js4CxLg4+kVRGttqmpGT3g==
+X-Received: by 2002:a05:600c:468d:b0:436:346a:fa9b with SMTP id
+ 5b1f17b1804b1-43668b499aamr204793705e9.20.1735331235514; 
+ Fri, 27 Dec 2024 12:27:15 -0800 (PST)
+Received: from [192.168.69.103] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656b0145csm310239725e9.15.2024.12.27.12.24.45
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 27 Dec 2024 12:24:46 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/2] hw/intc: Have ARM_GIC select ARM_GICV3 when KVM is not
- available
-Date: Fri, 27 Dec 2024 21:24:35 +0100
-Message-ID: <20241227202435.48055-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241227202435.48055-1-philmd@linaro.org>
-References: <20241227202435.48055-1-philmd@linaro.org>
+ ffacd0b85a97d-38a1c8a8d7esm23003794f8f.101.2024.12.27.12.27.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 27 Dec 2024 12:27:15 -0800 (PST)
+Message-ID: <f2f8a23e-32a8-4a2c-89a6-5f9ad0885dde@linaro.org>
+Date: Fri, 27 Dec 2024 21:27:14 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/6] hw/usb/hcd-xhci-pci: Use modulo to select MSI
+ vector as per spec
+To: Phil Dennis-Jordan <phil@philjordan.eu>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, richard.henderson@linaro.org,
+ thuth@redhat.com, zhao1.liu@intel.com, imammedo@redhat.com,
+ akihiko.odaki@daynix.com, npiggin@gmail.com
+References: <20241227121336.25838-1-phil@philjordan.eu>
+ <20241227121336.25838-2-phil@philjordan.eu>
+ <e332da74-d815-4c46-804f-a850d2ee12dd@linaro.org>
+ <CAAibmn0CtihG5dijOKKQeMpW32vPoZTd_ekW5n_-3wVBVOP+uQ@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAAibmn0CtihG5dijOKKQeMpW32vPoZTd_ekW5n_-3wVBVOP+uQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,30 +103,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the KVM accelerator is selected, the Kconfig ARM_GIC key
-selects the KVM GIC implementation (ARM_GIC_KVM).
-For other accelerators (TCG, HVF, ...), select the generic
-implementation.
+On 27/12/24 20:45, Phil Dennis-Jordan wrote:
+> 
+> 
+> On Fri 27. Dec 2024 at 18:45, Philippe Mathieu-Daudé <philmd@linaro.org 
+> <mailto:philmd@linaro.org>> wrote:
+> 
+>     On 27/12/24 13:13, Phil Dennis-Jordan wrote:
+>      > QEMU would crash with a failed assertion if the XHCI controller
+>      > attempted to raise the interrupt on a higher vector than the
+>      > highest configured for the device by the guest driver.
+>      >
+>      > It turns out the XHCI spec (Implementation Note in section 4.17,
+>      > "Interrupters") requires that the host controller signal the MSI
+>      > vector with the number computed by taking the interrupter number
+>      > modulo the number of enabled MSI vectors.
+>      >
+>      > This change introduces that modulo calculation, fixing the
+>      > failed assertion and making the device work correctly in MSI mode
+>      > with macOS's XHCI driver.
+>      >
+>      > Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu
+>     <mailto:phil@philjordan.eu>>
+>      > ---
+>      >
+>      > v2:
+>      >
+>      >   * Switch to modulo arithmetic for MSI vector number rather than
+>     dropping,
+>      >     as per spec.
+>      >
+>      >   hw/usb/hcd-xhci-pci.c | 1 +
+>      >   1 file changed, 1 insertion(+)
+>      >
+>      > diff --git a/hw/usb/hcd-xhci-pci.c b/hw/usb/hcd-xhci-pci.c
+>      > index e110840c7a..e5e7330387 100644
+>      > --- a/hw/usb/hcd-xhci-pci.c
+>      > +++ b/hw/usb/hcd-xhci-pci.c
+>      > @@ -74,6 +74,7 @@ static bool xhci_pci_intr_raise(XHCIState
+>     *xhci, int n, bool level)
+>      >       }
+>      >
+>      >       if (msi_enabled(pci_dev) && level) {
+>      > +        n %= msi_nr_vectors_allocated(pci_dev);
+>      >           msi_notify(pci_dev, n);
+> 
+>     Should this be done at the MSI layer in the callee?
+>     (I haven't checked the MSI spec).
+> 
+>     (Cc'ing hw/pci/msi.c maintainers)
+> 
+> 
+> MSI-X has specified aliasing behaviour. As far as I can tell, MSI does 
+> not - this does not seem especially ambiguous either. From the PCI base 
+> spec 3.0:
+> 
+> 6.8.3.4. Sending Messages
+> […]
+> “If the Multiple Message Enable field is “000”, the function is not 
+> permitted to modify the message data.”
+> […]
+> “How a function uses multiple vectors (when allocated) is device 
+> dependent. A function must handle being allocated fewer vectors than 
+> requested.”
+> 
+> 
+> I understand that to mean that MSI vector aliasing is entirely device- 
+> specific, and the assertion in msi_notify() is correct. The XHCI 
+> specification statement that the vector should be determined via the 
+> modulus of the interrupter index and the number of allocated MSI vectors 
+> does indeed seem to be XHCI-specific.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/intc/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+OK, thanks for checking! Should we add this new information to the
+patch description?
 
-diff --git a/hw/intc/Kconfig b/hw/intc/Kconfig
-index 7547528f2c2..762139d8df3 100644
---- a/hw/intc/Kconfig
-+++ b/hw/intc/Kconfig
-@@ -23,7 +23,7 @@ config APIC
- 
- config ARM_GIC
-     bool
--    select ARM_GICV3 if TCG
-+    select ARM_GICV3 if !KVM
-     select ARM_GIC_KVM if KVM
-     select MSI_NONBROKEN
- 
--- 
-2.47.1
+Otherwise,
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+> (NB: reading the PCI spec, I’m struck that it seems very vague on HOW 
+> the low bits of the message data should be “modified” to encode the 
+> vector number. But perhaps I’ve just not found that section yet.)
+
+Maybe MST/Marcel know.
 
