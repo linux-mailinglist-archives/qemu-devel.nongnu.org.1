@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5907A9FD420
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Dec 2024 13:15:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 459209FD41D
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Dec 2024 13:15:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tR9Ea-0002zL-De; Fri, 27 Dec 2024 07:14:28 -0500
+	id 1tR9EV-0002xc-Sj; Fri, 27 Dec 2024 07:14:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tR9E9-0002v3-AV
+ id 1tR9E9-0002v5-Ak
  for qemu-devel@nongnu.org; Fri, 27 Dec 2024 07:14:04 -0500
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tR9Dz-0005FS-P2
- for qemu-devel@nongnu.org; Fri, 27 Dec 2024 07:13:55 -0500
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-a9e44654ae3so1163405366b.1
+ id 1tR9Dz-0005FW-P3
+ for qemu-devel@nongnu.org; Fri, 27 Dec 2024 07:13:54 -0500
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-aa689a37dd4so1047792566b.3
  for <qemu-devel@nongnu.org>; Fri, 27 Dec 2024 04:13:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1735301624; x=1735906424;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1735301625; x=1735906425;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=tzaam/nGV/lsyhD2IkbRADjyZNYlfrfs4BxSJyTg/mY=;
- b=fdVoEpyVAIP0MHEzsUJyKDLbAyMqQNghTFIdhV+btJsqlnmhnCSreZJdJ7A2+KIrUI
- U+N567ZQkUjgwnsCGzU5c+w+x5rwoWWl/8k677gyQaiq0ZBCjPpBL7B6tRhVipQ+xC5R
- Jr4duBAvB1FHSJPT4Z7YH0qx9dInjktU5JMd9necxWdp/Yh/IhXz2wOjWuM1Zxi51qbC
- HjeVtwgT3kOP8DdZO0CtBaAiCt60Qu1LO1R0uDcWYNt7SCUpAz982UBNZUd26xfVshmW
- JgKdwg87u8RAPYmcQh8IgQp51I+jQry7L28BTxt75B0HpQ6zezW9cOSP7j3lQ8usouG9
- wHLQ==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2O+DIEBGhBsth5s6qrd3slMPO7yKFnh06DUjpLZtVho=;
+ b=xzgYhYYkD0yWvLS9xiziyheuQ4Wpw3CiZMunGvBNapb0y/zNJxceUGHri2+CVC54dJ
+ ck5ESvna+qK1GjlNB3SvF5gqrWQcPa4uSAtnz06xtySv1oyF7u4uFaP6vSUdVxrw/Ghx
+ ibjpGHah6wPpgtAiSTnZy976Yr68bwVQ1W1zGHrPHrc7DEiA8j/2UwqPYIEkOu9NCjmy
+ 9mM4Pg5aksBPJsyWdQjoLRbNHJLlwjBqmqJd3WgGmlGWqTykCxDofN8VRa+j+3FKjtCb
+ eCg3fDdimZCFpevumHA68AwHIGn675dlXBjDyHeU7AhlsnkVOOuuy1WxpEGqyFB3oDtT
+ iUFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735301624; x=1735906424;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=tzaam/nGV/lsyhD2IkbRADjyZNYlfrfs4BxSJyTg/mY=;
- b=cDsvxSfLPy/3gBqzhgxzDJINhQ+qBTuYCFn7i9lESrYJKK7hYSfJlLytAzvaeKGm/7
- NL6wPhlX187TNZF0jwSXBu2UvBb6rYekJdap2ezHXdwQHt14xAOxd0IMglzYrVsoZuvo
- 0tClf2Dj0yoKSrvPt3yDjGkfIb/lUOsC9Okx9foMa3Gpq8O4XN1kreNBdI2ad0BNgPGL
- x3vRVSeg12Yo4oTHyed91QDkR64FXpb9JmfBFAAYfJeh4qqPCvilF25mqKo5IYhqnwtO
- n7Z2LM+1ZzjbUIoeY4ky0TuY2vRd15gawih235YdVtM3tCwpzYs/2p9FvalwvtFeH7U1
- eF+Q==
-X-Gm-Message-State: AOJu0YycuWE2RlMeQgIdPo/5idoE1G2eHv8Xsbh9bfMafL1DWHGjiFir
- NRLXCKuRr1sHU6xObVP2OTzEc98yJZ446z/apT2RMsFK88piCG6pZRO+5TuzhJw0FnmiuuMiQDA
+ d=1e100.net; s=20230601; t=1735301625; x=1735906425;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=2O+DIEBGhBsth5s6qrd3slMPO7yKFnh06DUjpLZtVho=;
+ b=e0x2OValmwt8YOx3Iik4WtQxQVzad6I0rWq/vF6UZo91nwWudFzz9c1+BFqkPq3Oz8
+ wiRThGfK4It5hRiAiBZ2HnzhCHDfDDLdtSyY4OJaQERoUiFYQdsrW01YMr+ClGSbnrMK
+ DIbKuAMKZdA7SClcuXoGNL6CvVp05+5Ge22N1l7b6FqSwsH0lVIm33wOSX8XhIZmyVcE
+ STBFWOKRKQQRNTGwwCWzoFOebmw5fuRZIlDwADvlazYvXa0N0JsMAR6iABqdMS35AL4C
+ N/bGRoEzecM57rwydafiUUAFjZF2MaQww+3RuVfg1jFwgyv4K3ATFpHChD5B/45sVuMC
+ f3EA==
+X-Gm-Message-State: AOJu0YwDmy7fHxAkuauUVXDZEUkLHn/AXYPHHxVsNrkmFQmPnEoiEW42
+ GilEriUEh0RefuA0n7EChxcPv3hLSh3kDd0CCotOJbkr3Y1eyVZ5fgmz8u6I8gLHRveSKRoxa9Q
  =
-X-Gm-Gg: ASbGncssH8QiihC/FZFyariN+8ILyib/a6RyU6B/gUAyt9JpSHL3hb5oQo3O8AGwYTS
- 6GDhU+0i5T+z/pChkO/IPV1/YpUGkuZWJfoWFY58ayOiMPaNsQR6+0qLGcEPf3lZKa9LKNwn86+
- SWS1AMrnkQ+QiMT2vLEJdj8rsknHzmrkKaVzQyI5r1+OJSV3h58VuS8KjHy57B9RYzhejsyr7OC
- QUiRi61SawhY6eZDYPVMnf9opwCRP2dArtX/JSSMomjlUsidSJvZxhRRM/2UIJURyC5mzWvx43N
- 8HTJpzIFOsgX3AjgGYC/SepZiVFcEkdT
-X-Google-Smtp-Source: AGHT+IF3w2JggRZgD0FbZLPCmGRUT5l4cYHujePTS0TXQQVccL+57i6Mms/qF89RkEgitHZMC/QFpw==
-X-Received: by 2002:a17:907:d09:b0:aab:73c5:837 with SMTP id
- a640c23a62f3a-aac3366a0ccmr2122677666b.52.1735301624178; 
- Fri, 27 Dec 2024 04:13:44 -0800 (PST)
+X-Gm-Gg: ASbGncvhz5ogr752hsZN3sr0lEroP7na4MXB7K3u/3DeS1JdDH4FVlcVmyrvI7mtG/K
+ hDuJb9nyM0/Nre0kohfZtcTabWcb2XV22vIPBKYjDceA+RXwnkPTOrd0jkBjMi9A55jYeId7vJy
+ Jo024fVlTF/YtbD3CkfTa+kV9LQSnaTu7JJ19IreuNWU9mU0RNeM/cZ2pSkE1StJLOo4hsIEVR+
+ F8is61T++on/lQjIpUzDSrlwDqnoBf/ZKSGsU53KUpdQZYyvo9fqogGDZPIu3PMzcmR/aYfmeY5
+ HHcQwLYuLR2taOE2/DaZ7c5foO6XjZCR
+X-Google-Smtp-Source: AGHT+IFhbg2kfNp9SugiGcMQk7FtZYZSin/YtDp1HS7iR9dP5h+WIPD7LKCmOEHFiO1xpZkkX9hjpw==
+X-Received: by 2002:a17:907:86aa:b0:aa6:5eae:7ece with SMTP id
+ a640c23a62f3a-aac33549659mr2712724566b.43.1735301625196; 
+ Fri, 27 Dec 2024 04:13:45 -0800 (PST)
 Received: from localhost.localdomain (h082218084190.host.wavenet.at.
  [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aac0e82ede9sm1098662766b.2.2024.12.27.04.13.42
+ a640c23a62f3a-aac0e82ede9sm1098662766b.2.2024.12.27.04.13.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 27 Dec 2024 04:13:43 -0800 (PST)
+ Fri, 27 Dec 2024 04:13:44 -0800 (PST)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, philmd@linaro.org, thuth@redhat.com,
  zhao1.liu@intel.com, imammedo@redhat.com, akihiko.odaki@daynix.com,
  npiggin@gmail.com, Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PATCH v3 0/6] hw/usb/hcd-xhci: Fixes, improvements,
- and macOS workaround
-Date: Fri, 27 Dec 2024 13:13:30 +0100
-Message-Id: <20241227121336.25838-1-phil@philjordan.eu>
+Subject: [PATCH v3 1/6] hw/usb/hcd-xhci-pci: Use modulo to select MSI vector
+ as per spec
+Date: Fri, 27 Dec 2024 13:13:31 +0100
+Message-Id: <20241227121336.25838-2-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20241227121336.25838-1-phil@philjordan.eu>
+References: <20241227121336.25838-1-phil@philjordan.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::629;
- envelope-from=phil@philjordan.eu; helo=mail-ej1-x629.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::62a;
+ envelope-from=phil@philjordan.eu; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -98,112 +100,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For a while now, I've been chasing the problem of macOS's XHCI guest driver not
-working properly with QEMU's PCI XHCI controller when MSI-X is unavailable.
-I've finally figured out the cause, and I think an acceptable solution. I've
-explained the problem and quoted the relevant sections of the XHCI spec in more
-detail in the linked GitLab issue:
+QEMU would crash with a failed assertion if the XHCI controller
+attempted to raise the interrupt on a higher vector than the
+highest configured for the device by the guest driver.
 
-https://gitlab.com/qemu-project/qemu/-/issues/2705
+It turns out the XHCI spec (Implementation Note in section 4.17,
+"Interrupters") requires that the host controller signal the MSI
+vector with the number computed by taking the interrupter number
+modulo the number of enabled MSI vectors.
 
-Essentially, the macOS driver attempts to use XHCI event rings 1 and 2 even
-when there is only a single pin-based interrupt available. The interrupts for
-rings 1 and 2 are dropped, and so events are only handled after a timeout.
-The driver appears to expect the device to act as if interrupter mapping was
-not supported - the spec only mentions that interrupter mapping should be
-disabled if only one **interrupter** is enabled, not one **interrupt**,
-although there is some ambiguity in the spec's wording around enabling and
-disabling interrupters.
+This change introduces that modulo calculation, fixing the
+failed assertion and making the device work correctly in MSI mode
+with macOS's XHCI driver.
 
-After feedback to my initial RFC submission and discovering some more unhandled
-edge cases, I've now split this up into 6 different patches.
+Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
+---
 
-Ultimately, for macOS to be able to drive the XHCI controller with MSI(-X)
-disabled, we need to disable interrupter mapping (in the sense of XHCI spec
-section 4.17.1) when using a pin-based interrupt.
+v2:
 
- 1. Fixes an assertion failure crash when XHCI attempts to raise an interrupt
-    on a MSI vector higher than the maximum allocated. It turns out the
-    spec says the MSI vector needs to be computed from the interrupter
-    number by modulo arithmetic, so this patch implements that behaviour.
- 2. Moves the msi/msix toggles from the NEC XHCI controller to the generic
-    hci-xhci-pci superclass for consistency. This makes testing with MSI-X
-    and/or MSI disabled easier when using the qemu-xhci device variant.
- 3. Implements interrupter mapping disabling as per XHCI spec, when numintrs==1.
- 4. Switches from tracing to LOG_UNIMP and LOG_GUEST_ERROR for certain
-    cases of unhandled MMIO. (This is not comprehensive, but came up in
-    review of one of Nicholas Piggin's XHCI patch sets.)
- 5. Add a new boolean property to hcd-xhci-pci, "conditional-intr-mapping",
-    which defaults to false, retaining existing behaviour. When set to true,
-    additional constraints for enabling interrupter mapping are enabled,
-    so it is disabled in pin-based mode. This works around the macOS guest
-    driver quirks.
- 6. Enables the "conditional-intr-mapping" property in the VMApple machine
-    type, which does not support MSI-X or MSI and has previously suffered
-    from the macOS guest driver quirk.
+ * Switch to modulo arithmetic for MSI vector number rather than dropping,
+   as per spec.
 
-Of course, patch 6 can only be applied once the VMApple patch set is also
-applied: https://patchew.org/QEMU/20241223221645.29911-1-phil@philjordan.eu/
+ hw/usb/hcd-xhci-pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Patches 2 and 4 are optional for the purposes of fixing the issue I
-set out to fix, but seem sensible enough to include in this series.
-
-You can reproduce the problems being fixed as follows:
-
- * Assertion failure crash fixed in patch 1: Use a x86-64 VM with macOS guest
-   and machine type Q35. For USB, use: -device nec-usb-xhci,msix=off
-   QEMU will crash with a failed assertion, "vector < nr_vectors" on guest boot.
- * macOS guest not driving the XHCI controller correctly with pin-based
-   interrupts: Either as above but with -device nec-usb-xhci,msix=off,msi=off
-   or by following the instructions to boot aarch64 macOS 12 on the VMApple
-   machine type.
-
-History:
-
-RFC -> v1:
-
- * Gated conditional interrupter mapping support behind a property, enabled
-   that property in the VMApple machine type.
- * Added patch to fix the MSI vector assertion failure.
- * Moved msi and msix properties from NEC XHCI controller to generic xhci-pci
-   superclass as that also seems useful.
- * Broke the workaround up into 2 patches, one for mapping disabling required
-   by the standard, and one for the conditional disabling workaround.
-
-v1 -> v2:
-
- * 1/6: Switch to modulo arithmetic for MSI vector number, as per spec.
- * 6/6: Set the "conditional-intr-mapping" property via compat_props.
- * Commit message tweaks
-
-v2 -> v3:
-
- * 2/6: In line with recent upstream changes, the property table is now
-   const and no longer carries an end-of-list marker.
- * The indentation fix (previously 5/6) has already been merged, so is no
-   longer included.
- * Added patch fixing up logging of certain unhandled MMIO cases. (4/6)
- * 6/6: Moved the compat global property table into vmapple patch set -v16;
-   we now just add the conditional-intr-mapping property to it in this
-   patch. We also set the property on any device implementing the abstract
-   TYPE_XHCI_PCI rather than only the TYPE_QEMU_XHCI device specifically.
-
-Phil Dennis-Jordan (6):
-  hw/usb/hcd-xhci-pci: Use modulo to select MSI vector as per spec
-  hw/usb/hcd-xhci-pci: Move msi/msix properties from NEC to superclass
-  hw/usb/hcd-xhci-pci: Use event ring 0 if mapping unsupported
-  hw/usb/hcd-xhci: Unimplemented/guest error logging for port MMIO
-  hw/usb/hcd-xhci-pci: Adds property for disabling mapping in IRQ mode
-  hw/vmapple: XHCI controller's interrupt mapping workaround for macOS
-
- hw/usb/hcd-xhci-nec.c |  2 --
- hw/usb/hcd-xhci-pci.c | 31 +++++++++++++++++++++++++++++++
- hw/usb/hcd-xhci-pci.h |  1 +
- hw/usb/hcd-xhci.c     | 30 +++++++++++++++++++++++++++---
- hw/usb/hcd-xhci.h     |  5 +++++
- hw/vmapple/vmapple.c  |  8 +++++++-
- 6 files changed, 71 insertions(+), 6 deletions(-)
-
+diff --git a/hw/usb/hcd-xhci-pci.c b/hw/usb/hcd-xhci-pci.c
+index e110840c7a..e5e7330387 100644
+--- a/hw/usb/hcd-xhci-pci.c
++++ b/hw/usb/hcd-xhci-pci.c
+@@ -74,6 +74,7 @@ static bool xhci_pci_intr_raise(XHCIState *xhci, int n, bool level)
+     }
+ 
+     if (msi_enabled(pci_dev) && level) {
++        n %= msi_nr_vectors_allocated(pci_dev);
+         msi_notify(pci_dev, n);
+         return true;
+     }
 -- 
 2.39.5 (Apple Git-154)
 
