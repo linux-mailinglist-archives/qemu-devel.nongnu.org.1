@@ -2,33 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE1029FDA51
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Dec 2024 12:56:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04CDA9FDA60
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Dec 2024 13:12:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tRVPV-0006A3-Qe; Sat, 28 Dec 2024 06:55:13 -0500
+	id 1tRVeq-0007WX-HY; Sat, 28 Dec 2024 07:11:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tRVPP-00065B-N4; Sat, 28 Dec 2024 06:55:07 -0500
+ id 1tRVeN-0007UF-E2; Sat, 28 Dec 2024 07:10:36 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tRVPN-0005xf-RG; Sat, 28 Dec 2024 06:55:07 -0500
+ id 1tRVeG-0001ow-JN; Sat, 28 Dec 2024 07:10:33 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id 7B0B0CC824;
- Sat, 28 Dec 2024 14:54:06 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id F162ECC850;
+ Sat, 28 Dec 2024 15:09:39 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 56AB04616E; Sat, 28 Dec 2024 14:54:46 +0300 (MSK)
+ id 593F146175; Sat, 28 Dec 2024 14:54:46 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- qemu-trivial@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+Cc: ckf104 <1900011634@pku.edu.cn>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 09/11] hw/riscv/riscv-iommu-sys.c: fix duplicated 'table_size'
-Date: Sat, 28 Dec 2024 14:54:44 +0300
-Message-Id: <20241228115446.2478706-10-mjt@tls.msk.ru>
+Subject: [PULL 10/11] contrib/plugins/bbv.c: Start bb index from 1
+Date: Sat, 28 Dec 2024 14:54:45 +0300
+Message-Id: <20241228115446.2478706-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241228115446.2478706-1-mjt@tls.msk.ru>
 References: <20241228115446.2478706-1-mjt@tls.msk.ru>
@@ -57,38 +56,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: ckf104 <1900011634@pku.edu.cn>
 
-Trivial fix for the following ticket:
+Standard simpoint tool reqeusts that index of basic block index starts from 1.
 
-CID 1568580:  Incorrect expression  (EVALUATION_ORDER)
-In "table_size = table_size = n_vectors * 16U",
-    "table_size" is written twice with the same value.
-
-Cc: qemu-trivial@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Resolves: Coverity CID 1568580
-Fixes: 01c1caa9d1 ("hw/riscv/virt.c, riscv-iommu-sys.c: add MSIx support")
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Signed-off-by: ckf104 <1900011634@pku.edu.cn>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/riscv/riscv-iommu-sys.c | 2 +-
+ contrib/plugins/bbv.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/riscv/riscv-iommu-sys.c b/hw/riscv/riscv-iommu-sys.c
-index 28153f38da..65b24fb07d 100644
---- a/hw/riscv/riscv-iommu-sys.c
-+++ b/hw/riscv/riscv-iommu-sys.c
-@@ -121,7 +121,7 @@ static void riscv_iommu_sysdev_init_msi(RISCVIOMMUStateSys *s,
-                                         uint32_t n_vectors)
- {
-     RISCVIOMMUState *iommu = &s->iommu;
--    uint32_t table_size = table_size = n_vectors * PCI_MSIX_ENTRY_SIZE;
-+    uint32_t table_size = n_vectors * PCI_MSIX_ENTRY_SIZE;
-     uint32_t table_offset = RISCV_IOMMU_REG_MSI_CONFIG;
-     uint32_t pba_size = QEMU_ALIGN_UP(n_vectors, 64) / 8;
-     uint32_t pba_offset = RISCV_IOMMU_REG_MSI_CONFIG + 256;
+diff --git a/contrib/plugins/bbv.c b/contrib/plugins/bbv.c
+index a5256517dd..b9da6f815e 100644
+--- a/contrib/plugins/bbv.c
++++ b/contrib/plugins/bbv.c
+@@ -109,7 +109,7 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+         bb = g_new(Bb, 1);
+         bb->vaddr = vaddr;
+         bb->count = qemu_plugin_scoreboard_new(sizeof(uint64_t));
+-        bb->index = g_hash_table_size(bbs);
++        bb->index = g_hash_table_size(bbs) + 1;
+         g_hash_table_replace(bbs, &bb->vaddr, bb);
+     }
+     g_rw_lock_writer_unlock(&bbs_lock);
 -- 
 2.39.5
 
