@@ -2,32 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3972F9FDA5F
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Dec 2024 13:12:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE1029FDA51
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Dec 2024 12:56:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tRVen-0007UP-BH; Sat, 28 Dec 2024 07:11:02 -0500
+	id 1tRVPV-0006A3-Qe; Sat, 28 Dec 2024 06:55:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tRVeE-0007TN-6w; Sat, 28 Dec 2024 07:10:30 -0500
+ id 1tRVPP-00065B-N4; Sat, 28 Dec 2024 06:55:07 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tRVeC-0001oF-Ib; Sat, 28 Dec 2024 07:10:25 -0500
+ id 1tRVPN-0005xf-RG; Sat, 28 Dec 2024 06:55:07 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id EE458CC84F;
- Sat, 28 Dec 2024 15:09:39 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 7B0B0CC824;
+ Sat, 28 Dec 2024 14:54:06 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 544DF4616C; Sat, 28 Dec 2024 14:54:46 +0300 (MSK)
+ id 56AB04616E; Sat, 28 Dec 2024 14:54:46 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Han Han <hhan@redhat.com>, qemu-trivial@nongnu.org,
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ qemu-trivial@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 08/11] target/i386/cpu: Fix notes for CPU models
-Date: Sat, 28 Dec 2024 14:54:43 +0300
-Message-Id: <20241228115446.2478706-9-mjt@tls.msk.ru>
+Subject: [PULL 09/11] hw/riscv/riscv-iommu-sys.c: fix duplicated 'table_size'
+Date: Sat, 28 Dec 2024 14:54:44 +0300
+Message-Id: <20241228115446.2478706-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241228115446.2478706-1-mjt@tls.msk.ru>
 References: <20241228115446.2478706-1-mjt@tls.msk.ru>
@@ -56,38 +57,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Han Han <hhan@redhat.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Fixes: 644e3c5d812 ("missing vmx features for Skylake-Server and Cascadelake-Server")
-Signed-off-by: Han Han <hhan@redhat.com>
-Reviewed-by: Chenyi Qiang <chenyi.qiang@intel.com>
+Trivial fix for the following ticket:
+
+CID 1568580:  Incorrect expression  (EVALUATION_ORDER)
+In "table_size = table_size = n_vectors * 16U",
+    "table_size" is written twice with the same value.
+
+Cc: qemu-trivial@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Resolves: Coverity CID 1568580
+Fixes: 01c1caa9d1 ("hw/riscv/virt.c, riscv-iommu-sys.c: add MSIx support")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- target/i386/cpu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/riscv/riscv-iommu-sys.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 660ddafc28..0b639848cd 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -3692,6 +3692,7 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-             },
-             {
-                 .version = 4,
-+                .note = "IBRS, EPT switching, no TSX",
-                 .props = (PropValue[]) {
-                     { "vmx-eptp-switching", "on" },
-                     { /* end of list */ }
-@@ -3826,7 +3827,7 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-               },
-             },
-             { .version = 4,
--              .note = "ARCH_CAPABILITIES, no TSX",
-+              .note = "ARCH_CAPABILITIES, EPT switching, no TSX",
-               .props = (PropValue[]) {
-                   { "vmx-eptp-switching", "on" },
-                   { /* end of list */ }
+diff --git a/hw/riscv/riscv-iommu-sys.c b/hw/riscv/riscv-iommu-sys.c
+index 28153f38da..65b24fb07d 100644
+--- a/hw/riscv/riscv-iommu-sys.c
++++ b/hw/riscv/riscv-iommu-sys.c
+@@ -121,7 +121,7 @@ static void riscv_iommu_sysdev_init_msi(RISCVIOMMUStateSys *s,
+                                         uint32_t n_vectors)
+ {
+     RISCVIOMMUState *iommu = &s->iommu;
+-    uint32_t table_size = table_size = n_vectors * PCI_MSIX_ENTRY_SIZE;
++    uint32_t table_size = n_vectors * PCI_MSIX_ENTRY_SIZE;
+     uint32_t table_offset = RISCV_IOMMU_REG_MSI_CONFIG;
+     uint32_t pba_size = QEMU_ALIGN_UP(n_vectors, 64) / 8;
+     uint32_t pba_offset = RISCV_IOMMU_REG_MSI_CONFIG + 256;
 -- 
 2.39.5
 
