@@ -2,32 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CDA9FDA60
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Dec 2024 13:12:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2232E9FDA4F
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Dec 2024 12:56:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tRVeq-0007WX-HY; Sat, 28 Dec 2024 07:11:04 -0500
+	id 1tRVPX-0006Be-Ae; Sat, 28 Dec 2024 06:55:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tRVeN-0007UF-E2; Sat, 28 Dec 2024 07:10:36 -0500
+ id 1tRVPS-00067E-I0; Sat, 28 Dec 2024 06:55:10 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tRVeG-0001ow-JN; Sat, 28 Dec 2024 07:10:33 -0500
+ id 1tRVPR-0005yS-4I; Sat, 28 Dec 2024 06:55:10 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id F162ECC850;
- Sat, 28 Dec 2024 15:09:39 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 82BEACC826;
+ Sat, 28 Dec 2024 14:54:06 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 593F146175; Sat, 28 Dec 2024 14:54:46 +0300 (MSK)
+ id 5BC6746177; Sat, 28 Dec 2024 14:54:46 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: ckf104 <1900011634@pku.edu.cn>, qemu-trivial@nongnu.org,
+Cc: Laurent Vivier <lvivier@redhat.com>, qemu-trivial@nongnu.org,
+ jonah.palmer@oracle.com, aesteve@redhat.com, hreitz@redhat.com,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 10/11] contrib/plugins/bbv.c: Start bb index from 1
-Date: Sat, 28 Dec 2024 14:54:45 +0300
-Message-Id: <20241228115446.2478706-11-mjt@tls.msk.ru>
+Subject: [PULL 11/11] qmp: update vhost-user protocol feature maps
+Date: Sat, 28 Dec 2024 14:54:46 +0300
+Message-Id: <20241228115446.2478706-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241228115446.2478706-1-mjt@tls.msk.ru>
 References: <20241228115446.2478706-1-mjt@tls.msk.ru>
@@ -56,31 +57,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: ckf104 <1900011634@pku.edu.cn>
+From: Laurent Vivier <lvivier@redhat.com>
 
-Standard simpoint tool reqeusts that index of basic block index starts from 1.
+Add VHOST_USER_PROTOCOL_F_SHARED_OBJECT and
+VHOST_USER_PROTOCOL_F_DEVICE_STATE protocol feature maps to
+the virtio introspection.
 
-Signed-off-by: ckf104 <1900011634@pku.edu.cn>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Cc: jonah.palmer@oracle.com
+Fixes: 160947666276 ("vhost-user: add shared_object msg")
+Cc: aesteve@redhat.com
+Fixes: cda83adc62b6 ("vhost-user: Interface for migration state transfer")
+Cc: hreitz@redhat.com
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- contrib/plugins/bbv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/virtio/virtio-qmp.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/contrib/plugins/bbv.c b/contrib/plugins/bbv.c
-index a5256517dd..b9da6f815e 100644
---- a/contrib/plugins/bbv.c
-+++ b/contrib/plugins/bbv.c
-@@ -109,7 +109,7 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-         bb = g_new(Bb, 1);
-         bb->vaddr = vaddr;
-         bb->count = qemu_plugin_scoreboard_new(sizeof(uint64_t));
--        bb->index = g_hash_table_size(bbs);
-+        bb->index = g_hash_table_size(bbs) + 1;
-         g_hash_table_replace(bbs, &bb->vaddr, bb);
-     }
-     g_rw_lock_writer_unlock(&bbs_lock);
+diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
+index cccc6fe761..8a32a3b105 100644
+--- a/hw/virtio/virtio-qmp.c
++++ b/hw/virtio/virtio-qmp.c
+@@ -121,6 +121,12 @@ static const qmp_virtio_feature_map_t vhost_user_protocol_map[] = {
+     FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_STATUS, \
+             "VHOST_USER_PROTOCOL_F_STATUS: Querying and notifying back-end "
+             "device status supported"),
++    FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_SHARED_OBJECT, \
++            "VHOST_USER_PROTOCOL_F_SHARED_OBJECT: Backend shared object "
++            "supported"),
++    FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_DEVICE_STATE, \
++            "VHOST_USER_PROTOCOL_F_DEVICE_STATE: Backend device state transfer "
++            "supported"),
+     { -1, "" }
+ };
+ 
 -- 
 2.39.5
 
