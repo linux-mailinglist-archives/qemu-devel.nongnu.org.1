@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 270C29FDDBD
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Dec 2024 08:28:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D829FDDB7
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Dec 2024 08:27:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tRnhF-0006V6-Hj; Sun, 29 Dec 2024 02:26:45 -0500
+	id 1tRnhB-0006Tr-R1; Sun, 29 Dec 2024 02:26:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnh2-0006T3-EB
- for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:26:34 -0500
-Received: from mail-ej1-f46.google.com ([209.85.218.46])
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnh4-0006TJ-L2
+ for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:26:35 -0500
+Received: from mail-ej1-f54.google.com ([209.85.218.54])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnh1-000270-0Z
- for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:26:32 -0500
-Received: by mail-ej1-f46.google.com with SMTP id
- a640c23a62f3a-aa6a618981eso1397254266b.3
- for <qemu-devel@nongnu.org>; Sat, 28 Dec 2024 23:26:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnh3-00027K-31
+ for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:26:34 -0500
+Received: by mail-ej1-f54.google.com with SMTP id
+ a640c23a62f3a-aaee0b309adso766589566b.3
+ for <qemu-devel@nongnu.org>; Sat, 28 Dec 2024 23:26:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735457189; x=1736061989;
+ d=1e100.net; s=20230601; t=1735457191; x=1736061991;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kPB4XNLstlc0AegxJ7G/7FURT7P2TWUfnqz8PPlgcsA=;
- b=YCN+NZKbC6O1x6tQNfVcZXjw3lGz4sNZa1oIyVvEHB3Y6GStRFf1wsqaiV+0ERu5tN
- ojWyIau1/I/NwloEylbHjwEmVuW4lC5DvX1ZuH1faR+4R6L4aAucpkSI0rcbbgCIzcmd
- sMdXH/YCZoeWuWsbrLHTMofPUo2UVqC1XC9JqWMMxprqaXUAcKYGBzX4HYzRlANZkyzP
- rJSNogZBiryDO2/B6COaYyhuFei8SeThqYyfA0BN2YqrCGloFibkjoRwyfUVxTJbmAdH
- i+KXS1G+TdH3FMCXY9cn5mPVByErhy43cRCOvRhTZ4LdpqbjypqWCiiI6Bghm6DmTSni
- vWLA==
+ bh=dogHZq8IreSzSR1AAe+dCE7TE8hDuQ0Bzq/9Cj2rhi4=;
+ b=pN4ilznvhlxdVzrMXgefzM7FtQDxqj7XnN+5/hfV6IF4T0zhh+SjwWxyHk2hL0w8kJ
+ odU2Y8/Sn1HDnUv8IA90Kc5OuJY5wBhLd7y3xqWprd6qr1yh2raibkabhDRWfKDdYbcA
+ Lkp7ItuRSGjGhVozEFISaBhFKZ0ZD4dYLCfLOdOT2iMZAjwwznDavzA8PorN8Ns8bqNW
+ ekWWC3U5LRLHR+2059TrYFbRfk1Q2CmQOZ9E0Px4ItloCN++HvF4e33q09MuS0sV7Ah1
+ yXnm1Lg5cxMLySZl/iQOO8ebMsjwQcPNMVHpZT8UICg21HzRPN99P5X9JydkfSROfqfc
+ Bcxw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVu4CWAQp+VPLXQsE89ZNJyCt3SAtQq+GyIfsfmxb3Lfq086a9CHDeiAsz45hEchDbg21OBa2/KtjCp@nongnu.org
-X-Gm-Message-State: AOJu0YzYO987byMqSGBobUI95/T+ZDeHZIozbR1W8p8XqyE68CnZmI5l
- JFl11jiBoc6t4w5b6eABeJjT2yCDgkHNlHdCY07pkqyQFKwk4wfEx0f9VQ==
-X-Gm-Gg: ASbGnculaIfuhGRtBp3UEguf9JUCjCZ4+psLyxLgmB1c4BcOtO6+nubWTuW71JgzFVg
- of8z+KsmNVAu4y8AOscw0hrfMZm8B5m31MtuCnY7FmSh0nGYfUqj7kle8/2ByersxnhJfZHt6OA
- alFR6lzD8J3f543RK5TakAEdtJeQH/qAi8eA/LZLON1aP0SG13IEVyAsTAJyELmoYeXZH9Z5MQk
- /elcIkrClusbfbh48Syob1/Z/tLOdaGQRCrekhiUXnyjOUgYO+Kt3cTxTxZcqbd9m4Eusv3XoN4
- 7dU=
-X-Google-Smtp-Source: AGHT+IHR62IazP+nCv4oXviE1FM/RuaTGZMYXnrLfj9foh+YjVn9q84bHyoYMbj/6NLuxqRewktS5Q==
-X-Received: by 2002:a17:907:2d1e:b0:aa6:aedb:6030 with SMTP id
- a640c23a62f3a-aac33666079mr2549158866b.52.1735457188769; 
- Sat, 28 Dec 2024 23:26:28 -0800 (PST)
+ AJvYcCXqnkDpJlEnF/JersZ+DqyUo3puYPNpYbi99fp2CaZ187EJRm/FRf6a+Oca/5sibwnM8KCD6GZRMTkU@nongnu.org
+X-Gm-Message-State: AOJu0YyOhx4vbxDhSD5h3zTRf8wY+T7DQrQUNoxvHbY1WAXZ2u5Q5LE5
+ AH/aSjamUaBq332eNNg+Vy0HSwZ/AT05IuMPxkoY3y79lX2IuYez
+X-Gm-Gg: ASbGncv9ZMO7hKAZdG5EdIGKFIkWOaiUWu0c16J/5k+osw8ahg//1aNOVMhAZfsSaov
+ nLmdx/fvq/MzskNTxpzmV0bnyZelkW8Z5thqmbiPKFzJGKR5YGUivV8qsmKHvFKntIcuWFspazU
+ f5PMEjmW03udniJwaykN+3sGbaHPouqCSOIZGPsvcLcWdY7KdWMrHN8OQ9rGSOPtf8tdcPedpmv
+ P2FEYuIIa36fiFDX4qRjqdt2IuyL0oBusrO/Ztw9RYJdPHjcRLXuK4q4Wx88F//t3wF2oBA/+D2
+ f6s=
+X-Google-Smtp-Source: AGHT+IF0oznSzs0JoCCY2EXckf3PWwVJwHtwqUr7Ow2dvDrKC5sleI8MC43yfcQTvFgjbCHQcvUkDA==
+X-Received: by 2002:a17:907:2d27:b0:aa6:7470:8efe with SMTP id
+ a640c23a62f3a-aac2ad94a1amr2846525666b.13.1735457191346; 
+ Sat, 28 Dec 2024 23:26:31 -0800 (PST)
 Received: from tpx1.. (ip-109-42-49-90.web.vodafone.de. [109.42.49.90])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aac0e895194sm1329218666b.70.2024.12.28.23.26.26
+ a640c23a62f3a-aac0e895194sm1329218666b.70.2024.12.28.23.26.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Dec 2024 23:26:27 -0800 (PST)
+ Sat, 28 Dec 2024 23:26:30 -0800 (PST)
 From: Thomas Huth <huth@tuxfamily.org>
 To: Stefan Hajnoczi <stefanha@redhat.com>,
 	qemu-devel@nongnu.org
-Subject: [PULL 02/35] hw/m68k/next-cube: Disable the default CD-ROM drive
-Date: Sun, 29 Dec 2024 08:24:53 +0100
-Message-ID: <20241229072526.166555-3-huth@tuxfamily.org>
+Subject: [PULL 03/35] next-cube: remove 0x14020 dummy value from
+ next_mmio_read()
+Date: Sun, 29 Dec 2024 08:24:54 +0100
+Message-ID: <20241229072526.166555-4-huth@tuxfamily.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241229072526.166555-1-huth@tuxfamily.org>
 References: <20241229072526.166555-1-huth@tuxfamily.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.218.46; envelope-from=th.huth@gmail.com;
- helo=mail-ej1-f46.google.com
+Received-SPF: pass client-ip=209.85.218.54; envelope-from=th.huth@gmail.com;
+ helo=mail-ej1-f54.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
 X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
  FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.156, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ HEADER_FROM_DIFFERENT_DOMAINS=0.156, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,30 +87,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The NeXT-Cube does not have a CD-ROM drive by default, and the
-kernel does not seem to deal with the empty drive very well, so
-let's disable the CD-ROM drive for this machine.
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Message-ID: <20241214091720.49779-1-huth@tuxfamily.org>
+This is a dummy value for the SCSI CSR which appears to have no effect when
+removed. Eventually the reads/writes to this register will be directed
+towards the WIP implementations in next_scr_readfn() and next_scr_writefn().
+
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
+Message-ID: <20241222130012.1013374-2-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Thomas Huth <huth@tuxfamily.org>
 ---
- hw/m68k/next-cube.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/m68k/next-cube.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index 0ecdcea823..94d56b4654 100644
+index 94d56b4654..243d9e7e66 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -1067,6 +1067,7 @@ static void next_machine_class_init(ObjectClass *oc, void *data)
-     mc->default_ram_size = RAM_SIZE;
-     mc->default_ram_id = "next.ram";
-     mc->default_cpu_type = M68K_CPU_TYPE_NAME("m68040");
-+    mc->no_cdrom = true;
- }
+@@ -286,10 +286,6 @@ static uint64_t next_mmio_read(void *opaque, hwaddr addr, unsigned size)
+                         size << 3);
+         break;
  
- static const TypeInfo next_typeinfo = {
+-    case 0x14020:
+-        val = 0x7f;
+-        break;
+-
+     default:
+         val = 0;
+         DPRINTF("MMIO Read @ 0x%"HWADDR_PRIx" size %d\n", addr, size);
 -- 
 2.47.1
 
