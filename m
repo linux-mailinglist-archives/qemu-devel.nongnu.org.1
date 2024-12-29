@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A3B39FDDC4
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Dec 2024 08:29:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94F509FDDC9
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Dec 2024 08:30:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tRnin-0001CS-Bo; Sun, 29 Dec 2024 02:28:21 -0500
+	id 1tRnic-0000WW-W4; Sun, 29 Dec 2024 02:28:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRniG-0007cB-AS
- for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:48 -0500
-Received: from mail-ej1-f48.google.com ([209.85.218.48])
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRniJ-0007nX-La
+ for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:53 -0500
+Received: from mail-ed1-f42.google.com ([209.85.208.42])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRniE-0002Wi-Sn
- for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:48 -0500
-Received: by mail-ej1-f48.google.com with SMTP id
- a640c23a62f3a-aaf57c2e0beso23398366b.3
- for <qemu-devel@nongnu.org>; Sat, 28 Dec 2024 23:27:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRniH-0002ZU-Ei
+ for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:50 -0500
+Received: by mail-ed1-f42.google.com with SMTP id
+ 4fb4d7f45d1cf-5d4e2aa7ea9so14963527a12.2
+ for <qemu-devel@nongnu.org>; Sat, 28 Dec 2024 23:27:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735457265; x=1736062065;
+ d=1e100.net; s=20230601; t=1735457268; x=1736062068;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6c+6XcbVtB2vqqzGJAKMAXsg3ZBXmuneXOWCq5giJbQ=;
- b=iuiybkpVPPCpXJpm1/7Vhru90Y3qknS62mjLauJjQv30imVSUF4R6ONItgrDwiF8gN
- BLD3t+27lpE26xyVUg46tBEUoaUt6DbX6FN4gjYsF7CxS0UfNHLAKeM2zn6fGG29l0/w
- 9RFDJjL1ckEoqNuWwzrdZ33hkmhz398ZSDva0SYRc0VTDrKIohFwhOzYOkN+0okpvpEx
- Tj7mLSE8p/V4srlcLjbS4S56/OjtwCKxJqLRrEnfRMKBPD0txQvVsYqVGZKuMxiInsTa
- j7RNxkpIRvdu26oZt8HCSfWt5rIuzP4ClXRhoNu6u+Wo5LloPR2zjI+/vzQqLU7QcAka
- MuOg==
+ bh=N2x1C1KETruZ4XgMCe5FOJyXuqUjk3r6Kg+gcBPkahg=;
+ b=O3rpMtHuikT+VN4xJNoQw1YdRcwPs7/jzsechfr2Kz5nzu1hPmMnUM2UxkXSpspmMe
+ 78fUfwye8LVxFHj5Uewgw5f27MMgo+MmvwngBW3+v79qh2rR1EWUtO5hyKjvNTYtdvSE
+ YhktJCt5F77+e6TZctKIujkuz/Q1GqNhe5rQKjeiywBKeh2OrYe5W/fe20WThteilrOC
+ 3hfe4GRuTrslQ4Ef+z7UfM63mjgUMh3jDisyDJH6kjrzg/xu0Jp0FuEmEHrX3kiQHJlx
+ 9D4n37z/MK8hW/VoEtmQqYwKW8S3dTaUOs9BLll0F7WbkjpUzUHd5KbhPWDuSdQ27uUw
+ MLnw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWf9i7+P6rv58hngO1H8ne5nRPqxht5Li38IB4kctGhish4nK2AzaMv9LjnZ9jeVH/iyCOAxgsvwsri@nongnu.org
-X-Gm-Message-State: AOJu0Yy0N6PYSwcFs6SC8q9cM5W6JOizsaftMBPF5bJd1z/zndNGkUMq
- 9qaJ52st4+RVfv5tv7GmWchaMs7dj+r16UqL2ikpx28eyxazh9je
-X-Gm-Gg: ASbGncsAg1USwV38D7BaTr2cfQkAS0cf9mdSnNK/NkosZRMAkoTdXUau9VbCRS9a8ah
- +mL2LJI58vKj6IkGq4vfnwr3G47HpNcukJtZ68E+t1e5Ac1cdB9A/Lk4BaKt5C6hzxuic6troOH
- aW2M7GymOe9FwV/N/eyOqgaZaU1w0/fx3GAQP0MiOTSgid/P1QxHPu+9uRuio44XqGOxxB9RzFs
- kHE602eLm9mlk88o/0MhRZrowY5sSoUK1XHIS+QeeCfuRNZykTRBIJrFRexRt30iy8Np8bcthn2
- uLI=
-X-Google-Smtp-Source: AGHT+IGJr0AUtJYDjZBp60jy2IDosGHIXjqTvumQEGwH1FwCtEVHYd56CHQRtEuPa62Fxx2th1ai4Q==
-X-Received: by 2002:a17:906:4795:b0:aa6:ab70:4a78 with SMTP id
- a640c23a62f3a-aac3355ea10mr2438685666b.37.1735457265398; 
- Sat, 28 Dec 2024 23:27:45 -0800 (PST)
+ AJvYcCVTT52io1/2QtMAUPo91d+kqs57UXtj9hqnJD3rTLPQaBvL2BBahLYghMnZNUw6LU2G9nq9pkRHqweR@nongnu.org
+X-Gm-Message-State: AOJu0YxwEo0dZS3UFYyfDHlV4lrQN8c45jUQ63j9YoAnrsqNRVHBPcRe
+ jb6OMhiGMm/48JuuVzgMoVD2YlIkGFXftcMD3GzFCz83n6bs+DKejRKxlw==
+X-Gm-Gg: ASbGncs1sF03z5sbL97s0sRVe3hfbG5QbE4p3fAXLMW8qEK1JgmZO0DnDOMVDaDcctx
+ tNjWefyAs+4uF5QQeax1i0YhdMBDD8ac6I9I7s7eqXxoZQ4wYBwLB3K52qBznZgOti2fQbnCf0X
+ xVL6HaidqzXp5yAM2vnaez/lwz8w3v2lv8msX/tA8CZFySlShc47iS+JLcVuEJBwBoAYB5x2lGs
+ B1f5DOErsRrAIj/V9UXXlK9ldqh9gR3o7aSBSQU0/dziV9juBSmZvJIkv+lX17EdzlnnS5J/fAb
+ 3gg=
+X-Google-Smtp-Source: AGHT+IGEhPwSp0E2XfirKl/mp8H32vP7eG4+K67DBezTYR/T094GQMQKYFTBEuUk89bY20xLvN4cUw==
+X-Received: by 2002:a05:6402:370f:b0:5d4:3761:d196 with SMTP id
+ 4fb4d7f45d1cf-5d81dda7b47mr27160689a12.10.1735457267878; 
+ Sat, 28 Dec 2024 23:27:47 -0800 (PST)
 Received: from tpx1.. (ip-109-42-49-90.web.vodafone.de. [109.42.49.90])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aac0e895194sm1329218666b.70.2024.12.28.23.27.43
+ a640c23a62f3a-aac0e895194sm1329218666b.70.2024.12.28.23.27.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Dec 2024 23:27:44 -0800 (PST)
+ Sat, 28 Dec 2024 23:27:46 -0800 (PST)
 From: Thomas Huth <huth@tuxfamily.org>
 To: Stefan Hajnoczi <stefanha@redhat.com>,
 	qemu-devel@nongnu.org
-Subject: [PULL 34/35] next-cube: rename old_scr2 and scr2_2 in
- next_scr2_rtc_update()
-Date: Sun, 29 Dec 2024 08:25:25 +0100
-Message-ID: <20241229072526.166555-35-huth@tuxfamily.org>
+Subject: [PULL 35/35] next-cube: add my copyright to the top of the file
+Date: Sun, 29 Dec 2024 08:25:26 +0100
+Message-ID: <20241229072526.166555-36-huth@tuxfamily.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241229072526.166555-1-huth@tuxfamily.org>
 References: <20241229072526.166555-1-huth@tuxfamily.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.218.48; envelope-from=th.huth@gmail.com;
- helo=mail-ej1-f48.google.com
+Received-SPF: pass client-ip=209.85.208.42; envelope-from=th.huth@gmail.com;
+ helo=mail-ed1-f42.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -89,46 +89,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-Rename them to old_scr2_rtc and scr2_rtc to reflect that they contain the previous
-and current values of the SCR2 RTC bits.
+This series has involved rewriting and/or updating a considerable part of the
+next-cube emulation so update the copyright in next-cube.c to reflect this.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Thomas Huth <huth@tuxfamily.org>
-Message-ID: <20241222130012.1013374-33-mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20241222130012.1013374-34-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Thomas Huth <huth@tuxfamily.org>
 ---
- hw/m68k/next-cube.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ hw/m68k/next-cube.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index 360a46c32e..513ce5844b 100644
+index 513ce5844b..0570e4a76f 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -177,17 +177,17 @@ static void next_scr2_led_update(NeXTPC *s)
- 
- static void next_scr2_rtc_update(NeXTPC *s)
- {
--    uint8_t old_scr2, scr2_2;
-+    uint8_t old_scr2_rtc, scr2_rtc;
- 
--    old_scr2 = extract32(s->old_scr2, 8, 8);
--    scr2_2 = extract32(s->scr2, 8, 8);
-+    old_scr2_rtc = extract32(s->old_scr2, 8, 8);
-+    scr2_rtc = extract32(s->scr2, 8, 8);
- 
--    if (scr2_2 & 0x1) {
-+    if (scr2_rtc & 0x1) {
-         /* DPRINTF("RTC %x phase %i\n", scr2_2, rtc->phase); */
-         /* If we are in going down clock... do something */
--        if (((old_scr2 & SCR2_RTCLK) != (scr2_2 & SCR2_RTCLK)) &&
--                ((scr2_2 & SCR2_RTCLK) == 0)) {
--            if (scr2_2 & SCR2_RTDATA) {
-+        if (((old_scr2_rtc & SCR2_RTCLK) != (scr2_rtc & SCR2_RTCLK)) &&
-+                ((scr2_rtc & SCR2_RTCLK) == 0)) {
-+            if (scr2_rtc & SCR2_RTDATA) {
-                 qemu_irq_raise(s->rtc_data_irq);
-             } else {
-                 qemu_irq_lower(s->rtc_data_irq);
+@@ -2,6 +2,7 @@
+  * NeXT Cube System Driver
+  *
+  * Copyright (c) 2011 Bryce Lanham
++ * Copyright (c) 2024 Mark Cave-Ayland
+  *
+  * This code is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published
 -- 
 2.47.1
 
