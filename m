@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA369FDDBF
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Dec 2024 08:28:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E39029FDDBB
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Dec 2024 08:28:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tRniJ-0007X9-2X; Sun, 29 Dec 2024 02:27:52 -0500
+	id 1tRniF-0007I2-3r; Sun, 29 Dec 2024 02:27:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnhn-0006jM-4N
- for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:22 -0500
-Received: from mail-ej1-f47.google.com ([209.85.218.47])
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnhp-0006jV-0Z
+ for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:26 -0500
+Received: from mail-ed1-f53.google.com ([209.85.208.53])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnhj-0002Bu-4v
- for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:17 -0500
-Received: by mail-ej1-f47.google.com with SMTP id
- a640c23a62f3a-aa6a92f863cso1340222966b.1
- for <qemu-devel@nongnu.org>; Sat, 28 Dec 2024 23:27:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnhm-0002C5-U1
+ for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:20 -0500
+Received: by mail-ed1-f53.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3ecae02beso10066151a12.0
+ for <qemu-devel@nongnu.org>; Sat, 28 Dec 2024 23:27:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735457233; x=1736062033;
+ d=1e100.net; s=20230601; t=1735457236; x=1736062036;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+X3ya5rXN39/mO09hGL80z1v7BeQ/OkCOt3Wnid8T5s=;
- b=HtTZeDSyThy2r9LE3CObeXTxb/ECNrRWURMhdoRTA6jJs8lM1KyLBh8K1fzxccSc9N
- loojxxOU/ipVRjhx8x5f9Vy3C1ckB5ftqUt/rDdlaJA96Vy12/QwuocAL1fr5cDsdyQf
- kADpHVdxFEUTbQmYjnWCzTHQcr0lEaf0TaM2TeR2SfUUi40HSaBmN1r/VJ07tGnvdQnP
- ACPTk1itwyrgXv64Q44nk9iNSIwUHowcis9mTT/zPBCmuxibRZSj0/+TtWk7m1ra9E30
- TqCyIoyLiIr7V4jllgBNSKVrqbnZQbfcU7vyIVfjFwrecsSAnQR/ZqPiTbMUQXMDX2u6
- iL8w==
+ bh=LIkWul9PfyaP4XPHUd7oxej4ykz8QWuqnHdgbRarPHo=;
+ b=DVfF3DENlGr9n8Y0rGThYsgJyKhZn5IX5DRuI0UyuMJUODuQfssxHfzU4fO3qj2IY4
+ oKDHYrrD5y3Qjigr1M4cCh6TuNUwkke0GyRdu11hXN5yWhtT49Q6tin2EMewW2z0msQj
+ F2FZqirZkwsHvntIXB/iETlkWug7Q9WG2YgY7OtJ4Z5MOoakfgS0eRrSVplal5zMPqNJ
+ jstAwbtZdqYdGhXVDgSqTWllNHi/39rCYbPGFp476Cwk2Cjc8Wam/gNRBtfbtWSzfwFm
+ k8a1RRa/cZpuGDuAfFjHoItExjmUDQvpDdMfh3KILoiSaUiG2v+B1Cg/h0OwD60OW+KD
+ Jirg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWzKGsYIHtf6Z7L1ulCbKRf1yMb7hUdbqUTxjd4Cs0fk2KfHnodvwJZSSVeaLxEIM8kSDZZKB+gfzDb@nongnu.org
-X-Gm-Message-State: AOJu0Yx8tp9ZwRgbHZqoj1txqF1LoGz89iJgghrGFlhKW0yZOPfFSUYa
- aigy72Vp5HF2+2z8AYW5D/1F13cMG0iF/PePwsPtVxlqoP0A82MiNTCSQg==
-X-Gm-Gg: ASbGncuQo1tM0b/o1r9od9lGmXkvN+1jKi66V+pPB4q22uMN1pm+OX0HInnwEBaXtTL
- Xqg0dPeiSK53XJIk69CnlxL1hDXedYvqtmriSs3jP8KC29mH/RNYWhVg6LkE/FclCwH+OE/MfZ0
- KQ7peomuJMsb8LcL3smph4Sc7MObAdjH4d9TqqrqM1ubXbeUrn86xo5s2Solgp/PGxHt0PTKxs+
- 6qXM/SwnQFSxkr0y2ki1KB+svkHFY1cb0IAD9ZVbOUShIBpJNMdiXBNaU8R/dDGIl6LXyBf5Pg6
- JDs=
-X-Google-Smtp-Source: AGHT+IEf3RvAXH84sVIcbuXTAyGkk3DbkuGZNU3gylLckm2xgb204IqdYv7VUd8ZBny1s5bedv2qug==
-X-Received: by 2002:a17:907:728c:b0:aa6:6c08:dc79 with SMTP id
- a640c23a62f3a-aac2cf50e65mr2583230766b.35.1735457233314; 
- Sat, 28 Dec 2024 23:27:13 -0800 (PST)
+ AJvYcCWH4VaGmy9fnZz1m+l9clMNU2yFxJ7WfUqzfsGqv9JufJg+ujcLj/bbrtb4e3vLoQRqHvySroIbzITL@nongnu.org
+X-Gm-Message-State: AOJu0YxQlsjRgPP32n2ViOxG+FYdFfGU+VNPO0/nt35i1623zekrQuJN
+ Qef8vU6BFsv+S3Mg+K92VC2M/DCuGiHiZgM+AgGUu1WamdavScS/
+X-Gm-Gg: ASbGncsk4zI9VJecIMoVIf0O+7Rcm5Fe6MF8NZNmNVA8ZoX7wCL4WJOtRcBFVzTRQR3
+ A1Z81ZnxARwiz2RJrgBIi6ICpQa0w8pSTrHV1hT2A38vregm4PCotvYdhhA1JKyHVlPp+vnaTJk
+ Ez7h1AlcBC0jwl6o95NS8ftmvGkdlKuOzmz+ofFFs/GLO0qKNOh6hIycQdA+LkQcpvF6M+Yv5C5
+ 44mwatRl8l+gP2N5BUpm2KP5lI56CU/tnTQBaStl0TMpqBDxVs/kux3jyka9f41pT6eTtuYrAAC
+ dX0=
+X-Google-Smtp-Source: AGHT+IEs+LhNzEyWbFqwFEOlA9BBoc30YAbFirkdvlCgPr6hp+kqoYxoZFJfKngSUiQQO5TaeKHh6w==
+X-Received: by 2002:a17:906:c14b:b0:aa6:6c6b:15fd with SMTP id
+ a640c23a62f3a-aac2ad9ae60mr2807969766b.20.1735457235946; 
+ Sat, 28 Dec 2024 23:27:15 -0800 (PST)
 Received: from tpx1.. (ip-109-42-49-90.web.vodafone.de. [109.42.49.90])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aac0e895194sm1329218666b.70.2024.12.28.23.27.11
+ a640c23a62f3a-aac0e895194sm1329218666b.70.2024.12.28.23.27.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Dec 2024 23:27:12 -0800 (PST)
+ Sat, 28 Dec 2024 23:27:14 -0800 (PST)
 From: Thomas Huth <huth@tuxfamily.org>
 To: Stefan Hajnoczi <stefanha@redhat.com>,
 	qemu-devel@nongnu.org
-Subject: [PULL 20/35] next-cube: rename typedef struct NextRtc to NeXTRTC
-Date: Sun, 29 Dec 2024 08:25:11 +0100
-Message-ID: <20241229072526.166555-21-huth@tuxfamily.org>
+Subject: [PULL 21/35] next-cube: use qemu_irq to drive int_status in
+ next_scr2_rtc_update()
+Date: Sun, 29 Dec 2024 08:25:12 +0100
+Message-ID: <20241229072526.166555-22-huth@tuxfamily.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241229072526.166555-1-huth@tuxfamily.org>
 References: <20241229072526.166555-1-huth@tuxfamily.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.218.47; envelope-from=th.huth@gmail.com;
- helo=mail-ej1-f47.google.com
+Received-SPF: pass client-ip=209.85.208.53; envelope-from=th.huth@gmail.com;
+ helo=mail-ed1-f53.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -88,86 +89,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-This brings the capitalisation in line with the other NeXTCube definitions.
+Rather than directly clear bit 3 in int_status in next_scr2_rtc_update(), use
+a qemu_irq to drive the equivalent NEXT_PWR_I signal.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Thomas Huth <huth@tuxfamily.org>
-Message-ID: <20241222130012.1013374-19-mark.cave-ayland@ilande.co.uk>
+Message-ID: <20241222130012.1013374-20-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Thomas Huth <huth@tuxfamily.org>
 ---
- hw/m68k/next-cube.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ hw/m68k/next-cube.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index 091e05465e..19b9100094 100644
+index 19b9100094..12f8ecd2d4 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -42,7 +42,7 @@
- #define RAM_SIZE    0x4000000
- #define ROM_FILE    "Rev_2.5_v66.bin"
- 
--typedef struct NextRtc {
-+typedef struct NeXTRTC {
-     int8_t phase;
-     uint8_t ram[32];
-     uint8_t command;
-@@ -50,7 +50,7 @@ typedef struct NextRtc {
-     uint8_t status;
-     uint8_t control;
-     uint8_t retval;
--} NextRtc;
-+} NeXTRTC;
- 
- #define TYPE_NEXT_SCSI "next-scsi"
- OBJECT_DECLARE_SIMPLE_TYPE(NeXTSCSI, NEXT_SCSI)
-@@ -97,7 +97,7 @@ struct NeXTPC {
- 
+@@ -98,6 +98,7 @@ struct NeXTPC {
      ESCCState escc;
  
--    NextRtc rtc;
-+    NeXTRTC rtc;
+     NeXTRTC rtc;
++    qemu_irq rtc_power_irq;
  };
  
  typedef struct next_dma {
-@@ -167,7 +167,7 @@ static void next_scr2_led_update(NeXTPC *s)
- static void next_scr2_rtc_update(NeXTPC *s)
- {
-     uint8_t old_scr2, scr2_2;
--    NextRtc *rtc = &s->rtc;
-+    NeXTRTC *rtc = &s->rtc;
+@@ -267,7 +268,7 @@ static void next_scr2_rtc_update(NeXTPC *s)
+                     /* clear FTU */
+                     if (rtc->value & 0x04) {
+                         rtc->status = rtc->status & (~0x18);
+-                        s->int_status = s->int_status & (~0x04);
++                        qemu_irq_lower(s->rtc_power_irq);
+                     }
+                 }
+             }
+@@ -1093,6 +1094,8 @@ static void next_pc_init(Object *obj)
+     memory_region_init_io(&s->timer_mem, OBJECT(s), &next_timer_ops, s,
+                           "next.timer", 4);
+     sysbus_init_mmio(sbd, &s->timer_mem);
++
++    s->rtc_power_irq = qdev_get_gpio_in(DEVICE(obj), NEXT_PWR_I);
+ }
  
-     old_scr2 = extract32(s->old_scr2, 8, 8);
-     scr2_2 = extract32(s->scr2, 8, 8);
-@@ -1110,13 +1110,13 @@ static const VMStateDescription next_rtc_vmstate = {
-     .version_id = 2,
-     .minimum_version_id = 2,
-     .fields = (const VMStateField[]) {
--        VMSTATE_INT8(phase, NextRtc),
--        VMSTATE_UINT8_ARRAY(ram, NextRtc, 32),
--        VMSTATE_UINT8(command, NextRtc),
--        VMSTATE_UINT8(value, NextRtc),
--        VMSTATE_UINT8(status, NextRtc),
--        VMSTATE_UINT8(control, NextRtc),
--        VMSTATE_UINT8(retval, NextRtc),
-+        VMSTATE_INT8(phase, NeXTRTC),
-+        VMSTATE_UINT8_ARRAY(ram, NeXTRTC, 32),
-+        VMSTATE_UINT8(command, NeXTRTC),
-+        VMSTATE_UINT8(value, NeXTRTC),
-+        VMSTATE_UINT8(status, NeXTRTC),
-+        VMSTATE_UINT8(control, NeXTRTC),
-+        VMSTATE_UINT8(retval, NeXTRTC),
-         VMSTATE_END_OF_LIST()
-     },
- };
-@@ -1132,7 +1132,7 @@ static const VMStateDescription next_pc_vmstate = {
-         VMSTATE_UINT32(int_mask, NeXTPC),
-         VMSTATE_UINT32(int_status, NeXTPC),
-         VMSTATE_UINT32(led, NeXTPC),
--        VMSTATE_STRUCT(rtc, NeXTPC, 0, next_rtc_vmstate, NextRtc),
-+        VMSTATE_STRUCT(rtc, NeXTPC, 0, next_rtc_vmstate, NeXTRTC),
-         VMSTATE_END_OF_LIST()
-     },
- };
+ /*
 -- 
 2.47.1
 
