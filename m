@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC5E89FDDD6
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Dec 2024 08:35:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5B4B9FDDD5
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Dec 2024 08:35:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tRniO-0007rg-91; Sun, 29 Dec 2024 02:27:56 -0500
+	id 1tRniI-0007VD-8w; Sun, 29 Dec 2024 02:27:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnhx-0006nH-S1
- for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:34 -0500
-Received: from mail-ed1-f48.google.com ([209.85.208.48])
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnhz-0006nR-Me
+ for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:35 -0500
+Received: from mail-ed1-f41.google.com ([209.85.208.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnhs-0002Cg-Bs
- for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:25 -0500
-Received: by mail-ed1-f48.google.com with SMTP id
- 4fb4d7f45d1cf-5d7e527becaso13380571a12.3
- for <qemu-devel@nongnu.org>; Sat, 28 Dec 2024 23:27:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnhv-0002D5-SI
+ for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:30 -0500
+Received: by mail-ed1-f41.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3d479b1e6so11449794a12.2
+ for <qemu-devel@nongnu.org>; Sat, 28 Dec 2024 23:27:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735457243; x=1736062043;
+ d=1e100.net; s=20230601; t=1735457245; x=1736062045;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uANl3b4vNRW+zDDFjIkJDoWOvGKMQzBH26IA3gV2sTw=;
- b=R4vSBH9IaTJgS6QFwxDgm/88kpGSRG16Omj7EIeK1oKN8EPOIrrXVTX6mYXRDUBcrH
- grU/5W5n92jKBTbMnhSvYyRtYy4TXDHZN6gcXCH47AMSD9hIa6PcdpUmfqUb7Oe4YOa7
- NfECbrQuupeV6CKEiQghSQi5NDAn8ZTCI4+7S3EiqfR19nn1yiULU9WkxIFHwkKcl5gM
- BrMW2LM+JKXruurGq8iOZeCKd/aW/jmzexnPJ5+KiJ4/Su54A5qwaZ7K3kpvdRGQ+WPd
- QG16D8rv62LilVYWAX1RESjmqyj0KgrVCa+LmqjytF32HoeFcsfFtaNgd20zCLSnai96
- 5eEw==
+ bh=+3vAzuYZc9RRRWT5kph1vz0cBKumYJzBkalZjnIrAFY=;
+ b=DYaZBiVa9Yc9N1rXTypxt8TlPCo7W5SOpt8NIB/1d7F30UCOufP140/Xv6Lo6SqOs7
+ JM2ZPabx1qDcVkYBgKEIg0q83P/28hnS6J45Qff58+fj3hX62RiIg9s4RRig3FPDvTgA
+ hgo923XqVL9uaHWC6bWFIjA3c9TNFKxe8ozW5m2rMWasL1ufQnSfon1Tr1zvGiosR9nW
+ 4KvRyntyHdID9Ha33+q6hK2abfHWGTE692r2vBAyirg4tmnETRkjTt7eWUZm56iTaOl7
+ CmiJxNPh8nMnTh0OHz9oXKaGl6mAkv1zQ55ZAGt39m9A9KlMPMCv7NljHE5Hq0oX2IXM
+ nEFQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW/UfdOkJ1PgFWGd1hJ/Wb9IVG3d+7vN5x3ji73+7WKcTelNBehylYHs43OeJMUPpfcqAF+JnJ/q9pq@nongnu.org
-X-Gm-Message-State: AOJu0YwIWBik1oQ10w/4WO1yPH1H67Vziy6hIFDw+npime/q7WHceVmR
- SBkIXudkOm8qD7bPpDM+dcTfuQD7pWgGM2RQZ8XTZHDHCLDUgXYb
-X-Gm-Gg: ASbGncvmcoLAELyTB6rKVVqpWOmxW+eCZu5yUkf598AQ9oyLdxfuMBjfpD3vxPLElrQ
- ZlnI73u5vDmBkFO74ZQhfWQYbdbC3I6pAHaQciel/8sGviXMxCzwlSPgSatMtgCcU1AQt00bRuU
- E2jPqhIz5WHtpaJW3jtpSeHWWcj3J5GtZvvQgFVI/pBOuRi0w2trdGvkG0EQr712OkrHXZnm0P5
- hWby4jzebwRH8kOjP+HyF8D7gnb5gb7FT6U0OUM6BZSw+3OKEnVtrNIvClRRUvv7MrcWv33685S
- Cqs=
-X-Google-Smtp-Source: AGHT+IGtGGdK0WUC2QLWuqlRm0vebD+hSNcMGx8zOkBZbmeqlUKbY6PeX/uPlyHku+1x3R6LhymRyw==
-X-Received: by 2002:a05:6402:270d:b0:5d0:fb56:3f with SMTP id
- 4fb4d7f45d1cf-5d81dd9cdf0mr70073860a12.12.1735457242541; 
- Sat, 28 Dec 2024 23:27:22 -0800 (PST)
+ AJvYcCXJ7+rNrH7Ipgwo45pjCuxAO63Cf2Yxam8sjculdK7XOFK1Qr3Z6/lkROvKB12bjxmPxHUU9+IZrpLc@nongnu.org
+X-Gm-Message-State: AOJu0YwF4PkiiRMQOcOqxe1ZcPfDdG/9Q4FQZLDMFHEozjabLvtPYyHD
+ 99E6JQhGjQtHVySYmMWp/RWvtsqVQMquGuC2TaKgJ+yeCkSvyLDR
+X-Gm-Gg: ASbGncsQStc2HoKVvpOJRQaZtyVIc6307UuJNgoqI2Op8YTel5L0x6Gx8SijiaMKhxP
+ LrYD2bRqOc04Os7BIvF1KrIdW5mamKXOax1X/qjGSOdpK9//FCItIUTqQXxExCdjp3r8ix6pNLk
+ 1FhlWUWZUGjobCjCLLW9KR4MviA8P9R1/YAT1IqFv1w6lvPz2BX0eE/9tHrgMdQOT6VwAVf0xF2
+ 3KnTQjuD52Vk23soGSNFjQ/8puoHtnafER7hXmJaB18mnSGbl6RxJfiWBV6f/7d+EWGrto7mOiz
+ 2Ds=
+X-Google-Smtp-Source: AGHT+IGzCg9KE49W/YIFU2JD7XUWItdi+KaHwdNlrFvkADcze917cwPKihlzAQCQYKBLQZ2vdUOkMg==
+X-Received: by 2002:a50:cc48:0:b0:5d3:cf89:bd3e with SMTP id
+ 4fb4d7f45d1cf-5d81de1c92cmr60092193a12.30.1735457244875; 
+ Sat, 28 Dec 2024 23:27:24 -0800 (PST)
 Received: from tpx1.. (ip-109-42-49-90.web.vodafone.de. [109.42.49.90])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aac0e895194sm1329218666b.70.2024.12.28.23.27.20
+ a640c23a62f3a-aac0e895194sm1329218666b.70.2024.12.28.23.27.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Dec 2024 23:27:21 -0800 (PST)
+ Sat, 28 Dec 2024 23:27:23 -0800 (PST)
 From: Thomas Huth <huth@tuxfamily.org>
 To: Stefan Hajnoczi <stefanha@redhat.com>,
 	qemu-devel@nongnu.org
-Subject: [PULL 24/35] next-cube: use named gpio to set RTC data bit in scr2
-Date: Sun, 29 Dec 2024 08:25:15 +0100
-Message-ID: <20241229072526.166555-25-huth@tuxfamily.org>
+Subject: [PULL 25/35] next-cube: use named gpio to read RTC data bit in scr2
+Date: Sun, 29 Dec 2024 08:25:16 +0100
+Message-ID: <20241229072526.166555-26-huth@tuxfamily.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241229072526.166555-1-huth@tuxfamily.org>
 References: <20241229072526.166555-1-huth@tuxfamily.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.208.48; envelope-from=th.huth@gmail.com;
- helo=mail-ed1-f48.google.com
+Received-SPF: pass client-ip=209.85.208.41; envelope-from=th.huth@gmail.com;
+ helo=mail-ed1-f41.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -92,68 +92,204 @@ This is in preparation for moving NeXTRTC to its own separate device.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Thomas Huth <huth@tuxfamily.org>
-Message-ID: <20241222130012.1013374-23-mark.cave-ayland@ilande.co.uk>
+Message-ID: <20241222130012.1013374-24-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Thomas Huth <huth@tuxfamily.org>
 ---
- hw/m68k/next-cube.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ hw/m68k/next-cube.c | 169 ++++++++++++++++++++++++--------------------
+ 1 file changed, 92 insertions(+), 77 deletions(-)
 
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index a39117144c..1e9e662b40 100644
+index 1e9e662b40..0f24905525 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -240,10 +240,13 @@ static void next_scr2_rtc_update(NeXTPC *s)
-                                  ((scr2_2 & SCR2_RTDATA) ? 1 : 0);
-                 } else {
-                     /* Shift out value to read */
-+                    qemu_irq rtc_data_in_irq = qdev_get_gpio_in_named(
-+                        DEVICE(s), "pc-rtc-data-in", 0);
-+
-                     if (rtc->retval & (0x80 >> (rtc->phase - 8))) {
--                        scr2_2 |= SCR2_RTDATA;
-+                        qemu_irq_raise(rtc_data_in_irq);
-                     } else {
--                        scr2_2 &= ~SCR2_RTDATA;
-+                        qemu_irq_lower(rtc_data_in_irq);
-                     }
-                 }
-             }
-@@ -270,8 +273,6 @@ static void next_scr2_rtc_update(NeXTPC *s)
-         rtc->command = 0;
-         rtc->value = 0;
-     }
--
--    s->scr2 = deposit32(s->scr2, 8, 8, scr2_2);
+@@ -171,6 +171,90 @@ static bool next_rtc_cmd_is_write(uint8_t cmd)
+            (cmd == 0xb1);
  }
  
- static uint64_t next_mmio_read(void *opaque, hwaddr addr, unsigned size)
-@@ -1001,6 +1002,20 @@ static const MemoryRegionOps next_dummy_en_ops = {
-     .endianness = DEVICE_BIG_ENDIAN,
- };
- 
-+static void next_pc_rtc_data_in_irq(void *opaque, int n, int level)
++static void next_rtc_data_in_irq(void *opaque, int n, int level)
 +{
 +    NeXTPC *s = NEXT_PC(opaque);
-+    uint8_t scr2_2 = extract32(s->scr2, 8, 8);
++    NeXTRTC *rtc = &s->rtc;
 +
-+    if (level) {
-+        scr2_2 |= SCR2_RTDATA;
-+    } else {
-+        scr2_2 &= ~SCR2_RTDATA;
++    if (rtc->phase < 8) {
++        rtc->command = (rtc->command << 1) | level;
++
++        if (rtc->phase == 7 && !next_rtc_cmd_is_write(rtc->command)) {
++            if (rtc->command <= 0x1f) {
++                /* RAM registers */
++                rtc->retval = rtc->ram[rtc->command];
++            }
++            if ((rtc->command >= 0x20) && (rtc->command <= 0x2f)) {
++                /* RTC */
++                time_t time_h = time(NULL);
++                struct tm *info = localtime(&time_h);
++                rtc->retval = 0;
++
++                switch (rtc->command) {
++                case 0x20:
++                    rtc->retval = SCR2_TOBCD(info->tm_sec);
++                    break;
++                case 0x21:
++                    rtc->retval = SCR2_TOBCD(info->tm_min);
++                    break;
++                case 0x22:
++                    rtc->retval = SCR2_TOBCD(info->tm_hour);
++                    break;
++                case 0x24:
++                    rtc->retval = SCR2_TOBCD(info->tm_mday);
++                    break;
++                case 0x25:
++                    rtc->retval = SCR2_TOBCD((info->tm_mon + 1));
++                    break;
++                case 0x26:
++                    rtc->retval = SCR2_TOBCD((info->tm_year - 100));
++                    break;
++                }
++            }
++            if (rtc->command == 0x30) {
++                /* read the status 0x30 */
++                rtc->retval = rtc->status;
++            }
++            if (rtc->command == 0x31) {
++                /* read the control 0x31 */
++                rtc->retval = rtc->control;
++            }
++        }
++    }
++    if (rtc->phase >= 8 && rtc->phase < 16) {
++        if (next_rtc_cmd_is_write(rtc->command)) {
++            /* Shift in value to write */
++            rtc->value = (rtc->value << 1) | level;
++        } else {
++            /* Shift out value to read */
++            qemu_irq rtc_data_in_irq = qdev_get_gpio_in_named(
++                DEVICE(s), "pc-rtc-data-in", 0);
++
++            if (rtc->retval & (0x80 >> (rtc->phase - 8))) {
++                qemu_irq_raise(rtc_data_in_irq);
++            } else {
++                qemu_irq_lower(rtc_data_in_irq);
++            }
++        }
 +    }
 +
-+    s->scr2 = deposit32(s->scr2, 8, 8, scr2_2);
++    rtc->phase++;
++    if (rtc->phase == 16 && next_rtc_cmd_is_write(rtc->command)) {
++        if (rtc->command >= 0x80 && rtc->command <= 0x9f) {
++            /* RAM registers */
++            rtc->ram[rtc->command - 0x80] = rtc->value;
++        }
++        if (rtc->command == 0xb1) {
++            /* write to 0x30 register */
++            if (rtc->value & 0x04) {
++                /* clear FTU */
++                rtc->status = rtc->status & (~0x18);
++                qemu_irq_lower(s->rtc_power_irq);
++            }
++        }
++    }
 +}
 +
- static void next_pc_reset_hold(Object *obj, ResetType type)
+ static void next_scr2_rtc_update(NeXTPC *s)
  {
-     NeXTPC *s = NEXT_PC(obj);
-@@ -1087,6 +1102,8 @@ static void next_pc_init(Object *obj)
-     sysbus_init_mmio(sbd, &s->timer_mem);
+     uint8_t old_scr2, scr2_2;
+@@ -187,84 +271,13 @@ static void next_scr2_rtc_update(NeXTPC *s)
+         /* If we are in going down clock... do something */
+         if (((old_scr2 & SCR2_RTCLK) != (scr2_2 & SCR2_RTCLK)) &&
+                 ((scr2_2 & SCR2_RTCLK) == 0)) {
+-            if (rtc->phase < 8) {
+-                rtc->command = (rtc->command << 1) |
+-                               ((scr2_2 & SCR2_RTDATA) ? 1 : 0);
+-
+-                if (rtc->phase == 7 && !next_rtc_cmd_is_write(rtc->command)) {
+-                    if (rtc->command <= 0x1f) {
+-                        /* RAM registers */
+-                        rtc->retval = rtc->ram[rtc->command];
+-                    }
+-                    if ((rtc->command >= 0x20) && (rtc->command <= 0x2F)) {
+-                        /* RTC */
+-                        time_t time_h = time(NULL);
+-                        struct tm *info = localtime(&time_h);
+-                        rtc->retval = 0;
+-
+-                        switch (rtc->command) {
+-                        case 0x20:
+-                            rtc->retval = SCR2_TOBCD(info->tm_sec);
+-                            break;
+-                        case 0x21:
+-                            rtc->retval = SCR2_TOBCD(info->tm_min);
+-                            break;
+-                        case 0x22:
+-                            rtc->retval = SCR2_TOBCD(info->tm_hour);
+-                            break;
+-                        case 0x24:
+-                            rtc->retval = SCR2_TOBCD(info->tm_mday);
+-                            break;
+-                        case 0x25:
+-                            rtc->retval = SCR2_TOBCD((info->tm_mon + 1));
+-                            break;
+-                        case 0x26:
+-                            rtc->retval = SCR2_TOBCD((info->tm_year - 100));
+-                            break;
+-                        }
+-                    }
+-                    if (rtc->command == 0x30) {
+-                        /* read the status 0x30 */
+-                        rtc->retval = rtc->status;
+-                    }
+-                    if (rtc->command == 0x31) {
+-                        /* read the control 0x31 */
+-                        rtc->retval = rtc->control;
+-                    }
+-                }
+-            }
+-            if (rtc->phase >= 8 && rtc->phase < 16) {
+-                if (next_rtc_cmd_is_write(rtc->command)) {
+-                    /* Shift in value to write */
+-                    rtc->value = (rtc->value << 1) |
+-                                 ((scr2_2 & SCR2_RTDATA) ? 1 : 0);
+-                } else {
+-                    /* Shift out value to read */
+-                    qemu_irq rtc_data_in_irq = qdev_get_gpio_in_named(
+-                        DEVICE(s), "pc-rtc-data-in", 0);
+-
+-                    if (rtc->retval & (0x80 >> (rtc->phase - 8))) {
+-                        qemu_irq_raise(rtc_data_in_irq);
+-                    } else {
+-                        qemu_irq_lower(rtc_data_in_irq);
+-                    }
+-                }
+-            }
++            qemu_irq rtc_data_in_irq = qdev_get_gpio_in_named(
++                DEVICE(s), "rtc-data-in", 0);
  
+-            rtc->phase++;
+-            if (rtc->phase == 16 && next_rtc_cmd_is_write(rtc->command)) {
+-                if (rtc->command >= 0x80 && rtc->command <= 0x9f) {
+-                    /* RAM registers */
+-                    rtc->ram[rtc->command - 0x80] = rtc->value;
+-                }
+-                if (rtc->command == 0xb1) {
+-                    /* write to 0x30 register */
+-                    if (rtc->value & 0x04) {
+-                        /* clear FTU */
+-                        rtc->status = rtc->status & (~0x18);
+-                        qemu_irq_lower(s->rtc_power_irq);
+-                    }
+-                }
++            if (scr2_2 & SCR2_RTDATA) {
++                qemu_irq_raise(rtc_data_in_irq);
++            } else {
++                qemu_irq_lower(rtc_data_in_irq);
+             }
+         }
+     } else {
+@@ -1104,6 +1117,8 @@ static void next_pc_init(Object *obj)
      s->rtc_power_irq = qdev_get_gpio_in(DEVICE(obj), NEXT_PWR_I);
-+    qdev_init_gpio_in_named(DEVICE(obj), next_pc_rtc_data_in_irq,
-+                            "pc-rtc-data-in", 1);
+     qdev_init_gpio_in_named(DEVICE(obj), next_pc_rtc_data_in_irq,
+                             "pc-rtc-data-in", 1);
++    qdev_init_gpio_in_named(DEVICE(obj), next_rtc_data_in_irq,
++                            "rtc-data-in", 1);
  }
  
  /*
