@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 273BE9FDDD1
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Dec 2024 08:34:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F8819FDDD9
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Dec 2024 08:36:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tRnhV-0006ZD-Hf; Sun, 29 Dec 2024 02:27:01 -0500
+	id 1tRnhZ-0006Zz-33; Sun, 29 Dec 2024 02:27:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnhU-0006Z2-17
- for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:00 -0500
-Received: from mail-ed1-f47.google.com ([209.85.208.47])
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnhW-0006ZV-SP
+ for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:02 -0500
+Received: from mail-ed1-f53.google.com ([209.85.208.53])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnhS-0002A7-IU
- for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:26:59 -0500
-Received: by mail-ed1-f47.google.com with SMTP id
- 4fb4d7f45d1cf-5d0d32cd31aso11793368a12.0
- for <qemu-devel@nongnu.org>; Sat, 28 Dec 2024 23:26:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnhV-0002AN-Ak
+ for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:02 -0500
+Received: by mail-ed1-f53.google.com with SMTP id
+ 4fb4d7f45d1cf-5d4e2aa7ea9so14962948a12.2
+ for <qemu-devel@nongnu.org>; Sat, 28 Dec 2024 23:27:00 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735457217; x=1736062017;
+ d=1e100.net; s=20230601; t=1735457220; x=1736062020;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wTxvGFISXS09RDJWJfWcPbX5LopumkcLdvr0lAAgjX4=;
- b=lNGvG5NA/MZaDCugYUOIHTBUK1ih4PPMrXH2A/Y6gLCa0wLAt0o0Zq+lYIx+tQKn7B
- fUkhgiw/NjZoqU93u7mIPPArPkwL9FdmsGfvIFFpL7d4OFSlmwUq37lpMSzP1wqKjPgM
- nfbqyE/ypff6gPc+mNAruQTv8Q/gw47/P7rmbYCOkbQfVztApznDIfO5DZwI8fHt8YGB
- 30ZZMUm6Ujk4Xb8oUISrXuMR4WNu4YQuleaLlzhX2aNelwK9AWmWEoHW6i0yujIIyOIn
- 0Hdj2S5xuJMryrWpfsplPduS+WaswptC7TrWhKBeOXEoiIpGVb1GFfNzxrRgH2p9aZuQ
- i52A==
+ bh=ugCxO5yyfagZMYJJ0uCQVVshXi6/5tCw+NNyfH9jYgU=;
+ b=Tie90xGxCM2P1xRO3U+uTJ7KwFLM9/87bWQbd/OXjP1dTmDzYNG/sCpSa1qlef/5W0
+ JjvHg0hm5G9gW2yLz9PKrlodeQT1GOiqdQHiOUs6T1RlV/oSrX6ngrEoXuUjIDCMM2gK
+ XeCWr0kfJszzO26rtuvXA/r6nVG7h7QOagyND3oj5vNqyGU48GPSzEHlwXRdjKEychfh
+ IVLLZLTfB9c2+s8c6I+QGmWID300Kh9jzIsvoXHzKZE3LfvLw/DCWnShpCy/Xr5o0qrq
+ dlKqLl2fVMQs5Y7tvouKneuc94N9cS0VbhKwTYF+hH+WdM+u7osUfCmL7XtG+Du6eAcw
+ ogLg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVEM1fBzDUCsCsihwxYSmWi7XEjJVfacgNknr4+F9WzzbU/3Pg+JhylDX3E6qUmwSybhVQ0pFkqDL/W@nongnu.org
-X-Gm-Message-State: AOJu0YzV3g1lkoX36pF+YUzG4kX3rTTurn8UNhUdwvj6oFeGzrm4EwWG
- KX5BS2aMR7k9Zd3nK91aWArb06EXxn7zKWXqXFXONd10uh/GfR8H
-X-Gm-Gg: ASbGncuS4TKlJZU0Ubvw3TSfiHVNFuNwtakTXfGKjwpLhCzIy+Qvr/jEzxzdo0AqEIi
- 3CFI74ywB+A1VzXj/C+6mVELwxeHS1soDcEGFQMDOOdwSS8sMvpO++InnJ5JpL8ztjmpSNXMQ2l
- uF38KCynUsYTUaa1DZA2sNq0Nc3OSZEICi/JscOzIlXGsgBLJQOELCR3IDKqxQw1Ll6QGxlGUar
- cct0w8HM6/WIug3DNIYVOt/LxfTgYuEQQnSRazFEQd/dpJs3T9rw16l5/qhRFHN9r+IN+3uFbs8
- ZbA=
-X-Google-Smtp-Source: AGHT+IFBNkft+S8TNz4Ra+uiSaz1qkNULRSlTIHRYGTktHozzSGBW89rABiQ9Q2gGHcCEu9TrbsZ9Q==
-X-Received: by 2002:a05:6402:348d:b0:5d4:55e:f99e with SMTP id
- 4fb4d7f45d1cf-5d81ddc09abmr74171444a12.18.1735457216965; 
- Sat, 28 Dec 2024 23:26:56 -0800 (PST)
+ AJvYcCU5hXIzlLLfEy8JJE8slbtA9d8p5Lulmt3nvp8ADH9qYOEaW7tfTflVEV7vl8hNWZr41ZsVHgUkPEzR@nongnu.org
+X-Gm-Message-State: AOJu0YxLxG5nIBDj/xOkvx4kL4SRQRx9sjtqArbMDsSOtKdEG3Qm1cAh
+ EDNoM6dYYtwz48n9vKLtDWwYAmDHGCrJgxvPgpOgbeLjGOu896Vu
+X-Gm-Gg: ASbGnct6/WB1ldV2edAA2b3i0vZTKAiA8FDepY0AZDujt7NiQQrasnLDb86teL8xNYt
+ vOzfFS6kUqMXb2FM2GIWQLkhSoaKbYyRj3UMTWzYye4Yq+ePD7HLtf2TdTzi/PNxUnVzuy/anVY
+ HHtZMUaGxwi6kRTWerXS4OVg40Z+n6gnQa6a6P/37sP8vPMXmSIZqlQzWnngUW91B5oRWhUCkcd
+ 3pI/6QtG5W/ETM/OebKUzWyj86JsaTAUtPAi3P15N44M2zHQAUmoHwgLcQpeSfkVH4UnWHTCr2R
+ CvM=
+X-Google-Smtp-Source: AGHT+IHTlG2ku5V9n8ZwEEieZpP4YxaEaTl9G3h/EkOCzB2Crmqi8XkXCn7RpBVj90ubZg0r1kCtxQ==
+X-Received: by 2002:a17:907:c1d:b0:aae:ccbe:993d with SMTP id
+ a640c23a62f3a-aaeccbe9ac9mr2240794266b.35.1735457219550; 
+ Sat, 28 Dec 2024 23:26:59 -0800 (PST)
 Received: from tpx1.. (ip-109-42-49-90.web.vodafone.de. [109.42.49.90])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aac0e895194sm1329218666b.70.2024.12.28.23.26.54
+ a640c23a62f3a-aac0e895194sm1329218666b.70.2024.12.28.23.26.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Dec 2024 23:26:56 -0800 (PST)
+ Sat, 28 Dec 2024 23:26:58 -0800 (PST)
 From: Thomas Huth <huth@tuxfamily.org>
 To: Stefan Hajnoczi <stefanha@redhat.com>,
 	qemu-devel@nongnu.org
-Subject: [PULL 13/35] next-cube: move ESCC to be QOM child of next-pc device
-Date: Sun, 29 Dec 2024 08:25:04 +0100
-Message-ID: <20241229072526.166555-14-huth@tuxfamily.org>
+Subject: [PULL 14/35] next-cube: move timer MMIO to separate memory region on
+ next-pc device
+Date: Sun, 29 Dec 2024 08:25:05 +0100
+Message-ID: <20241229072526.166555-15-huth@tuxfamily.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241229072526.166555-1-huth@tuxfamily.org>
 References: <20241229072526.166555-1-huth@tuxfamily.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.208.47; envelope-from=th.huth@gmail.com;
- helo=mail-ed1-f47.google.com
+Received-SPF: pass client-ip=209.85.208.53; envelope-from=th.huth@gmail.com;
+ helo=mail-ed1-f53.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -89,111 +90,127 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-Since the ESCC is part of the next-pc device, move the ESCC to be a QOM child
-of the next-pc device.
+Move the timer MMIO accesses to a separate memory region on the next-pc device
+instead of being part of the next.scr MMIO memory region.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241222130012.1013374-12-mark.cave-ayland@ilande.co.uk>
+Message-ID: <20241222130012.1013374-13-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Thomas Huth <huth@tuxfamily.org>
 ---
- hw/m68k/next-cube.c | 54 ++++++++++++++++++++++-----------------------
- 1 file changed, 26 insertions(+), 28 deletions(-)
+ hw/m68k/next-cube.c | 63 +++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 50 insertions(+), 13 deletions(-)
 
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index 6ddd9ad0ec..9f49c33bdd 100644
+index 9f49c33bdd..ba468ce922 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -124,6 +124,8 @@ struct NeXTPC {
-     qemu_irq scsi_reset;
-     qemu_irq scsi_dma;
+@@ -109,6 +109,7 @@ struct NeXTPC {
+     M68kCPU *cpu;
  
-+    ESCCState escc;
-+
-     NextRtc rtc;
- };
+     MemoryRegion floppy_mem;
++    MemoryRegion timer_mem;
+     MemoryRegion mmiomem;
+     MemoryRegion scrmem;
  
-@@ -978,31 +980,6 @@ static const MemoryRegionOps next_floppy_ops = {
+@@ -371,17 +372,6 @@ static uint64_t next_scr_readfn(void *opaque, hwaddr addr, unsigned size)
+     uint64_t val;
+ 
+     switch (addr) {
+-    /*
+-     * These 4 registers are the hardware timer, not sure which register
+-     * is the latch instead of data, but no problems so far.
+-     *
+-     * Hack: We need to have the LSB change consistently to make it work
+-     */
+-    case 0x1a000 ... 0x1a003:
+-        val = extract32(clock(), (4 - (addr - 0x1a000) - size) << 3,
+-                        size << 3);
+-        break;
+-
+     /* For now return dummy byte to allow the Ethernet test to timeout */
+     case 0x6000:
+         val = 0xff;
+@@ -400,8 +390,6 @@ static void next_scr_writefn(void *opaque, hwaddr addr, uint64_t val,
+                              unsigned size)
+ {
+     switch (addr) {
+-    /* Hardware timer latch - not implemented yet */
+-    case 0x1a000:
+     default:
+         DPRINTF("BMAP Write @ 0x%x with 0x%"PRIx64 " size %u\n",
+                 (unsigned int)addr, val, size);
+@@ -980,6 +968,50 @@ static const MemoryRegionOps next_floppy_ops = {
      .endianness = DEVICE_BIG_ENDIAN,
  };
  
--static void next_escc_init(DeviceState *pcdev)
--{
--    NeXTPC *next_pc = NEXT_PC(pcdev);
--    DeviceState *dev;
--    SysBusDevice *s;
--
--    dev = qdev_new(TYPE_ESCC);
--    qdev_prop_set_uint32(dev, "disabled", 0);
--    qdev_prop_set_uint32(dev, "frequency", 9600 * 384);
--    qdev_prop_set_uint32(dev, "it_shift", 0);
--    qdev_prop_set_bit(dev, "bit_swap", true);
--    qdev_prop_set_chr(dev, "chrB", serial_hd(1));
--    qdev_prop_set_chr(dev, "chrA", serial_hd(0));
--    qdev_prop_set_uint32(dev, "chnBtype", escc_serial);
--    qdev_prop_set_uint32(dev, "chnAtype", escc_serial);
--
--    s = SYS_BUS_DEVICE(dev);
--    sysbus_realize_and_unref(s, &error_fatal);
--    sysbus_connect_irq(s, 0, qdev_get_gpio_in(pcdev, NEXT_SCC_I));
--    sysbus_connect_irq(s, 1, qdev_get_gpio_in(pcdev, NEXT_SCC_DMA_I));
--
--    memory_region_add_subregion(&next_pc->scrmem, 0x18000,
--                                sysbus_mmio_get_region(s, 0));
--}
--
++static void next_timer_write(void *opaque, hwaddr addr, uint64_t val,
++                              unsigned size)
++{
++    switch (addr) {
++    case 0 ... 3:
++        /* Hardware timer latch - not implemented yet */
++        break;
++
++    default:
++        g_assert_not_reached();
++    }
++}
++
++static uint64_t next_timer_read(void *opaque, hwaddr addr, unsigned size)
++{
++    uint64_t val;
++
++    switch (addr) {
++    case 0 ... 3:
++        /*
++         * These 4 registers are the hardware timer, not sure which register
++         * is the latch instead of data, but no problems so far.
++         *
++         * Hack: We need to have the LSB change consistently to make it work
++         */
++        val = extract32(clock(), (4 - addr - size) << 3,
++                        size << 3);
++        break;
++
++    default:
++        g_assert_not_reached();
++    }
++
++    return val;
++}
++
++static const MemoryRegionOps next_timer_ops = {
++    .read = next_timer_read,
++    .write = next_timer_write,
++    .valid.min_access_size = 1,
++    .valid.max_access_size = 4,
++    .endianness = DEVICE_BIG_ENDIAN,
++};
++
  static void next_pc_reset(DeviceState *dev)
  {
      NeXTPC *s = NEXT_PC(dev);
-@@ -1043,6 +1020,28 @@ static void next_pc_realize(DeviceState *dev, Error **errp)
-     /* Floppy */
-     memory_region_add_subregion(&s->scrmem, 0x14108,
-                                 &s->floppy_mem);
-+
-+    /* ESCC */
-+    d = DEVICE(&s->escc);
-+    qdev_prop_set_uint32(d, "disabled", 0);
-+    qdev_prop_set_uint32(d, "frequency", 9600 * 384);
-+    qdev_prop_set_uint32(d, "it_shift", 0);
-+    qdev_prop_set_bit(d, "bit_swap", true);
-+    qdev_prop_set_chr(d, "chrB", serial_hd(1));
-+    qdev_prop_set_chr(d, "chrA", serial_hd(0));
-+    qdev_prop_set_uint32(d, "chnBtype", escc_serial);
-+    qdev_prop_set_uint32(d, "chnAtype", escc_serial);
-+
-+    sbd = SYS_BUS_DEVICE(d);
-+    if (!sysbus_realize(sbd, errp)) {
-+        return;
-+    }
-+    sysbus_connect_irq(sbd, 0, qdev_get_gpio_in(dev, NEXT_SCC_I));
-+    sysbus_connect_irq(sbd, 1, qdev_get_gpio_in(dev, NEXT_SCC_DMA_I));
-+
-+    memory_region_add_subregion(&s->scrmem, 0x18000,
-+                                sysbus_mmio_get_region(sbd, 0));
-+
+@@ -1042,6 +1074,8 @@ static void next_pc_realize(DeviceState *dev, Error **errp)
+     memory_region_add_subregion(&s->scrmem, 0x18000,
+                                 sysbus_mmio_get_region(sbd, 0));
+ 
++    /* Timer */
++    memory_region_add_subregion(&s->scrmem, 0x1a000, &s->timer_mem);
  }
  
  static void next_pc_init(Object *obj)
-@@ -1064,6 +1063,8 @@ static void next_pc_init(Object *obj)
- 
-     memory_region_init_io(&s->floppy_mem, OBJECT(s), &next_floppy_ops, s,
+@@ -1065,6 +1099,9 @@ static void next_pc_init(Object *obj)
                            "next.floppy", 4);
+ 
+     object_initialize_child(obj, "escc", &s->escc, TYPE_ESCC);
 +
-+    object_initialize_child(obj, "escc", &s->escc, TYPE_ESCC);
++    memory_region_init_io(&s->timer_mem, OBJECT(s), &next_timer_ops, s,
++                          "next.timer", 4);
  }
  
  /*
-@@ -1200,9 +1201,6 @@ static void next_cube_init(MachineState *machine)
-         }
-     }
- 
--    /* Serial */
--    next_escc_init(pcdev);
--
-     /* TODO: */
-     /* Network */
- 
 -- 
 2.47.1
 
