@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0887D9FDDD8
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Dec 2024 08:35:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D42BC9FDDC7
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Dec 2024 08:29:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tRnhZ-0006a9-W4; Sun, 29 Dec 2024 02:27:06 -0500
+	id 1tRnhe-0006ak-JR; Sun, 29 Dec 2024 02:27:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnhY-0006Zj-9z
- for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:04 -0500
-Received: from mail-ej1-f47.google.com ([209.85.218.47])
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnha-0006aQ-Rn
+ for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:06 -0500
+Received: from mail-ed1-f45.google.com ([209.85.208.45])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnhW-0002AT-Pu
- for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:04 -0500
-Received: by mail-ej1-f47.google.com with SMTP id
- a640c23a62f3a-aaec61d0f65so1187748466b.1
- for <qemu-devel@nongnu.org>; Sat, 28 Dec 2024 23:27:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1tRnhZ-0002Al-EE
+ for qemu-devel@nongnu.org; Sun, 29 Dec 2024 02:27:06 -0500
+Received: by mail-ed1-f45.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3d479b1e6so11449643a12.2
+ for <qemu-devel@nongnu.org>; Sat, 28 Dec 2024 23:27:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735457221; x=1736062021;
+ d=1e100.net; s=20230601; t=1735457224; x=1736062024;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GCDyP0HU91an/SgNVURIRYR9ahqGS4imiUg5gQkD/5Q=;
- b=dx39hVDsKi/5qkhT+B7P1UDdVUU/msb+y3X2rM5ayIbHXfD+cb5uYr/gQJVSlwPYsC
- 5uW3o/YXYdNvtaHGES029OQSevasdKoUTXmv7/jNLz5Uz3+XRYrhnL/J6aHrTeYheYYc
- A0VOUawcAFZg4OPlFAiyhaFMuCsOE4lEAIORM6xOIEe4asB0AlCowtZwYMDm+mnnIeEj
- MYjlh+PBlSEtna0UmkdMcZnBnFmePB+Qr8n5CHTEzAoswWeMUkqJB68alvhl/DR8ddIU
- kPe5poQNYE1lFzSm1Zz/5UfdRAGBaFaXRGzsOWziMtyPTCaaVxMmQmAOosw5AKPyBHmG
- rfMg==
+ bh=jN7K7JNEyg0RRrGevmD5fTXXIIKMk8NZp3aW6mH533I=;
+ b=eMKIFkDApHOahmF3lRBnDY3Ex1vkS2wnebfRGiFRioh888+NEB0yzfEVQkb+NT7sJK
+ u+ZuLb0OjfdhZGMiUS6cogv6i5j0y/9f1vIlhOwXoL0C7L8OgjvBfHl0KBwKdXFiOfAo
+ HB/I05MrOLbMiJpbGO5ml27h8hq1/mEV2FrdFWuiPPVujuWft4oV7OtIcl/zp5Qv7EsT
+ R1bhCJlYr2vs7D+jlGXLQgyvOaFimD6uhtGqzan+9ufQLwh4w44ISX7g3pacgI3sspak
+ Xi/BaUjoyxVa34hj2MBkIvbGZpPEFdEbrVavkkCHJLgP/D2SrSL4fLXE6gsdccfx0OHd
+ BLYg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXjOHGprI1MWy2WxHoeu6+1WJjyGTxO1ddayyL0iVpA6hZpfRsI3q6fv4Pjd23ISsinb559nbCI1hMr@nongnu.org
-X-Gm-Message-State: AOJu0YxrUonqEQtJ3EKBVGcJk7zgRJTuaksH2EBPyfWA5z+Q21wfJh/Z
- WcGVL5Tn1hoIjPo71KMw3y9poMIRqDXzpbDxgCcfXL3y68TO8DPfDOHTfg==
-X-Gm-Gg: ASbGncsuelZi7PY6DjbEjTPWpF9jgO0nuavu/xuOexI1L/A1D+F17ggFN2ySTmZVVkT
- GKuGgnw7+a1utvWow6gf7Oj+Fqs2OiX0Yr7rntz78RENXBVWBaHhLqPzepE5eTVUEaxnXPir+mc
- KEB7lYtUSiMva/JamGCpDmRuzDiuBtlGffb6xJyn/mTf8rtALJIoaZA0B6peoPQh3zLQyku+cBN
- sF1D5RSRtcrSG9jz5D0XLLjqC1DO7EanSjYz9DvO+xE8ZLMVt/9QvZKfiRtRMXNSZBgO43L7Bxl
- Fmw=
-X-Google-Smtp-Source: AGHT+IFYeGWG/ZAMES4LwkvoOFO8eWlzW+G2WkuBc11XqDj5bj8NWcbfZLzxMX6GstxmDbWxSdREBw==
-X-Received: by 2002:a17:907:96a0:b0:aa6:7feb:193f with SMTP id
- a640c23a62f3a-aac2ad81a25mr3086979766b.20.1735457221313; 
- Sat, 28 Dec 2024 23:27:01 -0800 (PST)
+ AJvYcCWUcXX0xmTdE1R2R4qVZ+MEaisYiFI3lOfsnjS2ajusozmG0gCaA4h7o7R5p8fExytehB6voMv/9lhP@nongnu.org
+X-Gm-Message-State: AOJu0YyyCfP34b5sJoTpfY2DZJppfRJyBPiW9I7ULaksNIe1LNOVSsIP
+ kwu2y1pt2meKru821xx2X35n5kR5pWh1Hms8KU59XRzsGfI/TC4AyPMTKA==
+X-Gm-Gg: ASbGncuvlKUoGlGbn6q/x3sKzwmOUo0Wx56a+oMnkHWdDXltx8ON1A1n3hSIijpBrsv
+ e2DRL1ohl0KOv1o2qnZEc+OM7JWv2OhMbvlsmNhqRq9yTaHBgc3JvODAr52Hkp+et7Bj9unhGMB
+ kPuRQGqd2SKiJIgBGjkGrgnd1dOV6X06csQubPv0qUrahnj2ntGxipbRV2SATx/ASE/jN1xfk8K
+ 6HaVg3soEF9VHFLQtn3FVYVPNGcir2riso8ZvG9GtKgrSqcGdwvWdVkwEnkjRxeEPaGKSKk/tJV
+ kwc=
+X-Google-Smtp-Source: AGHT+IEgVZFU+wJ5r1umzxmfRlBXncVdS2bZXXLTlAS0nls6KVQ45ikJzGj+0NkQUWTu9+YGIw+VSA==
+X-Received: by 2002:a05:6402:540b:b0:5d6:48ef:c19f with SMTP id
+ 4fb4d7f45d1cf-5d81de1c28fmr75252062a12.29.1735457223852; 
+ Sat, 28 Dec 2024 23:27:03 -0800 (PST)
 Received: from tpx1.. (ip-109-42-49-90.web.vodafone.de. [109.42.49.90])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aac0e895194sm1329218666b.70.2024.12.28.23.26.59
+ a640c23a62f3a-aac0e895194sm1329218666b.70.2024.12.28.23.27.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Dec 2024 23:27:00 -0800 (PST)
+ Sat, 28 Dec 2024 23:27:02 -0800 (PST)
 From: Thomas Huth <huth@tuxfamily.org>
 To: Stefan Hajnoczi <stefanha@redhat.com>,
 	qemu-devel@nongnu.org
-Subject: [PULL 15/35] next-cube: move en ethernet MMIO to separate memory
- region on next-pc device
-Date: Sun, 29 Dec 2024 08:25:06 +0100
-Message-ID: <20241229072526.166555-16-huth@tuxfamily.org>
+Subject: [PULL 16/35] next-cube: add empty slots for unknown accesses to
+ next.scr memory region
+Date: Sun, 29 Dec 2024 08:25:07 +0100
+Message-ID: <20241229072526.166555-17-huth@tuxfamily.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241229072526.166555-1-huth@tuxfamily.org>
 References: <20241229072526.166555-1-huth@tuxfamily.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.218.47; envelope-from=th.huth@gmail.com;
- helo=mail-ej1-f47.google.com
+Received-SPF: pass client-ip=209.85.208.45; envelope-from=th.huth@gmail.com;
+ helo=mail-ed1-f45.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -89,111 +89,57 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-Move the en ethernet MMIO accesses to a separate memory region on the next-pc
-device instead of being part of the next.scr MMIO memory region.
+The next.scr memory is now effectively unused, however there are 3 separate region
+accesses still logged that occur when booting a NeXTStep disk image. Use the
+empty_slot device to capture and ignore memory accesses to these 3 memory regions.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Thomas Huth <huth@tuxfamily.org>
-Message-ID: <20241222130012.1013374-14-mark.cave-ayland@ilande.co.uk>
+Message-ID: <20241222130012.1013374-15-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Thomas Huth <huth@tuxfamily.org>
 ---
- hw/m68k/next-cube.c | 48 +++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 40 insertions(+), 8 deletions(-)
+ hw/m68k/Kconfig     | 1 +
+ hw/m68k/next-cube.c | 8 ++++++++
+ 2 files changed, 9 insertions(+)
 
+diff --git a/hw/m68k/Kconfig b/hw/m68k/Kconfig
+index 0092cda4e9..aff769b30f 100644
+--- a/hw/m68k/Kconfig
++++ b/hw/m68k/Kconfig
+@@ -18,6 +18,7 @@ config NEXTCUBE
+     depends on M68K
+     select FRAMEBUFFER
+     select ESCC
++    select EMPTY_SLOT
+ 
+ config Q800
+     bool
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index ba468ce922..97a6f6c472 100644
+index 97a6f6c472..6ca9170108 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -110,6 +110,7 @@ struct NeXTPC {
+@@ -22,6 +22,7 @@
+ #include "qom/object.h"
+ #include "hw/char/escc.h" /* ZILOG 8530 Serial Emulation */
+ #include "hw/block/fdc.h"
++#include "hw/misc/empty_slot.h"
+ #include "hw/qdev-properties.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+@@ -1238,6 +1239,13 @@ static void next_cube_init(MachineState *machine)
+     /* BMAP IO - acts as a catch-all for now */
+     sysbus_mmio_map(SYS_BUS_DEVICE(pcdev), 1, 0x02100000);
  
-     MemoryRegion floppy_mem;
-     MemoryRegion timer_mem;
-+    MemoryRegion dummyen_mem;
-     MemoryRegion mmiomem;
-     MemoryRegion scrmem;
- 
-@@ -372,11 +373,6 @@ static uint64_t next_scr_readfn(void *opaque, hwaddr addr, unsigned size)
-     uint64_t val;
- 
-     switch (addr) {
--    /* For now return dummy byte to allow the Ethernet test to timeout */
--    case 0x6000:
--        val = 0xff;
--        break;
--
-     default:
-         DPRINTF("BMAP Read @ 0x%x size %u\n", (unsigned int)addr, size);
-         val = 0;
-@@ -1012,6 +1008,38 @@ static const MemoryRegionOps next_timer_ops = {
-     .endianness = DEVICE_BIG_ENDIAN,
- };
- 
-+static void next_dummy_en_write(void *opaque, hwaddr addr, uint64_t val,
-+                                unsigned size)
-+{
-+    /* Do nothing */
-+    return;
-+}
++    /* unknown: Brightness control register? */
++    empty_slot_init("next.unknown.0", 0x02110000, 0x10);
++    /* unknown: Magneto-Optical drive controller? */
++    empty_slot_init("next.unknown.1", 0x02112000, 0x10);
++    /* unknown: Serial clock configuration register? */
++    empty_slot_init("next.unknown.2", 0x02118004, 0x10);
 +
-+static uint64_t next_dummy_en_read(void *opaque, hwaddr addr, unsigned size)
-+{
-+    uint64_t val;
-+
-+    switch (addr) {
-+    case 0:
-+        /* For now return dummy byte to allow the Ethernet test to timeout */
-+        val = 0xff;
-+        break;
-+
-+    default:
-+        val = 0;
-+    }
-+
-+    return val;
-+}
-+
-+static const MemoryRegionOps next_dummy_en_ops = {
-+    .read = next_dummy_en_read,
-+    .write = next_dummy_en_write,
-+    .valid.min_access_size = 1,
-+    .valid.max_access_size = 4,
-+    .endianness = DEVICE_BIG_ENDIAN,
-+};
-+
- static void next_pc_reset(DeviceState *dev)
- {
-     NeXTPC *s = NEXT_PC(dev);
-@@ -1034,6 +1062,10 @@ static void next_pc_realize(DeviceState *dev, Error **errp)
-     SysBusDevice *sbd;
-     DeviceState *d;
- 
-+    /* en network (dummy) */
-+    memory_region_add_subregion(&s->scrmem, 0x6000,
-+                                &s->dummyen_mem);
-+
-     /* SCSI */
-     sbd = SYS_BUS_DEVICE(&s->next_scsi);
-     if (!sysbus_realize(sbd, errp)) {
-@@ -1093,6 +1125,9 @@ static void next_pc_init(Object *obj)
-     sysbus_init_mmio(sbd, &s->mmiomem);
-     sysbus_init_mmio(sbd, &s->scrmem);
- 
-+    memory_region_init_io(&s->dummyen_mem, OBJECT(s), &next_dummy_en_ops, s,
-+                          "next.en", 0x20);
-+
-     object_initialize_child(obj, "next-scsi", &s->next_scsi, TYPE_NEXT_SCSI);
- 
-     memory_region_init_io(&s->floppy_mem, OBJECT(s), &next_floppy_ops, s,
-@@ -1238,9 +1273,6 @@ static void next_cube_init(MachineState *machine)
-         }
-     }
- 
--    /* TODO: */
--    /* Network */
--
-     /* DMA */
-     memory_region_init_io(&m->dmamem, NULL, &next_dma_ops, machine,
-                           "next.dma", 0x5000);
+     /* BMAP memory */
+     memory_region_init_ram_flags_nomigrate(&m->bmapm1, NULL, "next.bmapmem",
+                                            64, RAM_SHARED, &error_fatal);
 -- 
 2.47.1
 
