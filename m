@@ -2,57 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B6F9FE0E6
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Dec 2024 00:43:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2F99FE113
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Dec 2024 01:09:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tS2vL-0003sQ-43; Sun, 29 Dec 2024 18:42:20 -0500
+	id 1tS3Jm-00007v-R6; Sun, 29 Dec 2024 19:07:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tS2vC-0003rn-CU
- for qemu-devel@nongnu.org; Sun, 29 Dec 2024 18:42:13 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tS2vA-0001fR-O0
- for qemu-devel@nongnu.org; Sun, 29 Dec 2024 18:42:10 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 43A845C110C;
- Sun, 29 Dec 2024 23:41:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766C8C4CED7;
- Sun, 29 Dec 2024 23:41:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1735515720;
- bh=ZFuZeCs3Orq8OXoUrzXYPv+DEcb9GFUxfEBGQdRF4wg=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=vLBm77XAN+fsXPEAFbF2pI/KdwzxOkt8QhDCIyVUfuSlcROQu9BAr4kK2abKbkG7a
- guAO/FbKx+F2nZ2i98Qpwzg1sa8QO8SPdR2jeVfHay2aKUIQIlSBIEd96xwTEYfGux
- He0KJjdHcd4Q7H8lnMWaL8+Z6tbKFBFs407PLxKkTS+FOut+wO224JEZHSKmZhcDta
- 820UEzSVYHzM+/qsbXvs6xRP16SMFes/wrJBWCLakvFBlSXvxAoVpCRwZZRwV4rKkC
- F2yg5Xonkh8mb+EW/YHtwHcj/1IKDXvpoO7p5dNR9JTVyza7V9yKqxKvvZri9taU6M
- tSrBlGkdzYEXw==
-From: deller@kernel.org
-To: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
-Cc: Helge Deller <deller@gmx.de>
-Subject: [PATCH 2/2] target/hppa: Speed up hppa_is_pa20()
-Date: Mon, 30 Dec 2024 00:41:54 +0100
-Message-ID: <20241229234154.32250-3-deller@kernel.org>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241229234154.32250-1-deller@kernel.org>
-References: <20241229234154.32250-1-deller@kernel.org>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tS3Jj-00007e-2u
+ for qemu-devel@nongnu.org; Sun, 29 Dec 2024 19:07:31 -0500
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tS3Jh-00049x-GO
+ for qemu-devel@nongnu.org; Sun, 29 Dec 2024 19:07:30 -0500
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-2ee397a82f6so11713797a91.2
+ for <qemu-devel@nongnu.org>; Sun, 29 Dec 2024 16:07:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1735517247; x=1736122047; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=H0TbGEQT/jNkPqJpSu03WbZR6sUxicW+w6nZ3Cqj8K0=;
+ b=hM9a6uMDbTD8kq/wjXCtwhVwYqg8yZFpziv1FvlWE4hTduyIv6AYf+w3B27K0/ZDrl
+ I7B4U31zR06Zp22AzycPYIYNJOEcnxCflGxB1flcSRvDr/4Fvbtm8hlQL6tHkD3gGL2F
+ +YYnktm/etH2FpYhLmqGX+Xg+DJeyvIaRPoz4c2i/OE3cIE3gvrsrbjqErJO8BUn+JVU
+ B4MgQK6G6bV7yHP7UpHyxEj6GO0djhBOUHH30SNMRHJdt6/oMqUx1OK5ndoycoNRx7M4
+ W908bn3HHni3hN0wllWtLV6T09MUDtTLdrmJrELdQKc9jzHg4LTC1ljUPXdA0nFsEmEh
+ MCLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1735517247; x=1736122047;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=H0TbGEQT/jNkPqJpSu03WbZR6sUxicW+w6nZ3Cqj8K0=;
+ b=SonaWGSw5olH+TV6PM1S/A1otRYqnQy8SPAoub3mRoOAnuCnRtQlqD3ticFSxBMcHj
+ AGlkZa+riTJ6xEsNx9bd9fy6t5PQQcCQGzEogGPbX3BKtl3gmF2zHnEgUCspfy5A6Wnq
+ 1EztL0Nj1k2aYr3lqKbOpUKY7qKVmkQ9LXIEUPaJckKH0UjGKB6jKs8+kpSFNyOxEp0A
+ ySq3gATC/XhsEcB8Gkbzn2lMYc3vlCXfcek3VBtSChPeGwMKeHtzFWV/iXzCbH2PwG/U
+ zLCL/sn01xqZ/rpLz8HrSIOKEeDcsKPovKLiMQL1ZcGJYGklATKlAxLhw923gbQiPNyf
+ glpQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWFmkca/Kum8M4SC8l3qEyX1z2VTdAXVOXsWCnAJg5U5amLIYsJkmNmcw7lBqeXH1D2YOR67cXz+GXH@nongnu.org
+X-Gm-Message-State: AOJu0Ywq9Dj2yoh68yiQrVQZDglVJSXOVEXOWxtkWb2cyw6VywXJlkja
+ 6uVofoK+tpkaTxUkh0Ito//TmuWnDWHeW/r7OcNEnk/q37We3f9Hv0kiXM8429A=
+X-Gm-Gg: ASbGncvZXZWy5zm+grI/AH3cWANHsC35DbjnBTCMz/wp2QhhePDpVY1c7v/N//qszDQ
+ Eh42+i3ZJXbTXBSyCN67p5wu2jZWCCbx0ElNTMYfFADenpp27ksQSpgvZfQNxUvUqNJKraCKcYg
+ +Y9LktYimWZv4Kj1BQRxQFs9cUf+0T7P5oKWI8Ku6A0d5o07HukuNS2piDj59Q+m78MVXooMGRg
+ si6JzEYuJ4NwZcwVORVgFrdp3MBLzdw4QkrDJY1QhqvajuT1sEIGUxLGVBpkQ9uUUUUAXc9WGhF
+ j1Bg067Y1QTTeVvqYpxswWEIvVgsknyfK4Veqp8=
+X-Google-Smtp-Source: AGHT+IEDRVMg0cZzdQJkO8HU/srubvPTrvZdWXqcQ1n3QiL7bJawzJEJzvIV9vDUP6T0vWR9rjnGCA==
+X-Received: by 2002:a17:90b:6cb:b0:2f2:f6e0:3f6a with SMTP id
+ 98e67ed59e1d1-2f452e1ea53mr48756279a91.14.1735517247048; 
+ Sun, 29 Dec 2024 16:07:27 -0800 (PST)
+Received: from [192.168.132.227] (syn-156-019-246-023.biz.spectrum.com.
+ [156.19.246.23]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2f2ee06dd77sm23710373a91.33.2024.12.29.16.07.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 29 Dec 2024 16:07:26 -0800 (PST)
+Message-ID: <870c5a36-8ac3-4d6b-ae11-568101bdc9dd@linaro.org>
+Date: Sun, 29 Dec 2024 16:07:24 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -92
-X-Spam_score: -9.3
-X-Spam_bar: ---------
-X-Spam_report: (-9.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.187,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] target/hppa: Add CPU reset method
+To: deller@kernel.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, qemu-devel@nongnu.org
+Cc: Helge Deller <deller@gmx.de>
+References: <20241229234154.32250-1-deller@kernel.org>
+ <20241229234154.32250-2-deller@kernel.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20241229234154.32250-2-deller@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -69,65 +102,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+On 12/29/24 15:41, deller@kernel.org wrote:
+> From: Helge Deller<deller@gmx.de>
+> 
+> Add the CPU reset method, which resets all CPU registers and the TLB to
+> zero. Then the CPU will switch to 32-bit mode (PSW_W bit is not set) and
+> start execution at address 0xf0000004.
+> Although we currently want to zero out all values in the CPUHPPAState
+> struct, add the end_reset_fields marker in case the state structs gets
+> extended with other variables later on which should not be reset.
+> 
+> Signed-off-by: Helge Deller<deller@gmx.de>
+> Reviewed-by: Richard Henderson<richard.henderson@linaro.org>
+> 
+> V4:
+> - Drop initialization of exception_index in hppa_cpu_initfn()
+> 
+> V3:
+> - Call reset function from hppa_machine_reset() instead
+> 
+> V2:
+> - Add end_reset_fields marker
+> - call reset function in hppa_cpu_initfn()
+> ---
+>   hw/hppa/machine.c |  6 +++---
+>   target/hppa/cpu.c | 26 ++++++++++++++++++++++++--
+>   target/hppa/cpu.h |  5 +++++
+>   3 files changed, 32 insertions(+), 5 deletions(-)
 
-Although the hppa_is_pa20() helper is costly due to string comparisons
-in object_dynamic_cast(), it is called quite often during memory lookups
-and at each start of a block of instruction translations.
-Speed hppa_is_pa20() up by calling object_dynamic_cast() only once at
-CPU creation and store the result in the is_pa20 of struct CPUArchState.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-v3:
-- use !!object_dynamic_cast()
-- typo fix in commit message
-  (feedback by Philippe Mathieu-Daudé)
-
-v2:
-- moved init to hppa_cpu_initfn() and is_pa20 to end of CPUArchState struct
-  (feedback by Richard Henderson)
----
- target/hppa/cpu.c | 1 +
- target/hppa/cpu.h | 4 +++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index cb1b5191a4..64a762b410 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -197,6 +197,7 @@ static void hppa_cpu_initfn(Object *obj)
-     HPPACPU *cpu = HPPA_CPU(obj);
-     CPUHPPAState *env = &cpu->env;
- 
-+    env->is_pa20 = !!object_dynamic_cast(obj, TYPE_HPPA64_CPU);
-     cpu_hppa_loaded_fr0(env);
-     cpu_hppa_put_psw(env, PSW_W);
- }
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 32a674a8b8..288ce6d98a 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -266,6 +266,8 @@ typedef struct CPUArchState {
- 
-     /* Fields up to this point are cleared by a CPU reset */
-     struct {} end_reset_fields;
-+
-+    bool is_pa20;
- } CPUHPPAState;
- 
- /**
-@@ -299,7 +301,7 @@ struct HPPACPUClass {
- 
- static inline bool hppa_is_pa20(CPUHPPAState *env)
- {
--    return object_dynamic_cast(OBJECT(env_cpu(env)), TYPE_HPPA64_CPU) != NULL;
-+    return env->is_pa20;
- }
- 
- static inline int HPPA_BTLB_ENTRIES(CPUHPPAState *env)
--- 
-2.47.0
-
+r~
 
