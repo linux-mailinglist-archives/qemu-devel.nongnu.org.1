@@ -2,93 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D5A9FE7B9
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Dec 2024 16:40:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A2599FE874
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Dec 2024 16:54:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tSHs1-0000pT-3U; Mon, 30 Dec 2024 10:39:53 -0500
+	id 1tSI5L-0006Wn-Ry; Mon, 30 Dec 2024 10:53:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSHry-0000oy-I2
- for qemu-devel@nongnu.org; Mon, 30 Dec 2024 10:39:50 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSHrw-000325-2q
- for qemu-devel@nongnu.org; Mon, 30 Dec 2024 10:39:50 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-385e3621518so4392044f8f.1
- for <qemu-devel@nongnu.org>; Mon, 30 Dec 2024 07:39:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735573186; x=1736177986; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=V4fyXlhxQAEqDO8KjATP3LRp5cmZQUPuZTn5SNaOG44=;
- b=ZwzI7iR5zB8P47g/xtTUd7DBIGObZ6c7CrIbmIZfNBVSYnAbB5o/rjiprDMZsn5tIZ
- uuRkcGySs5FbLIuElL6Y+AZqJKET8D0YAKXjcu20UBkp8Ti+oksBycKnHTmOk5keVEb1
- e9NfU1cvb3/AJ4LVZTn9X7AJiR+hj2u1ngD+NioxS3CXr67fuFW0y18uM1xD+SZ9BHq/
- piZGRyr3l31hfWdMhCzBuyj4u3dP8peQP34F2QPAwrietP/9FK7aUufCiAXiHdJUQ4BV
- qyBPq4j1JaTgIU1rxrdNbKHV7tj/5NBp86ygtQ+cVRj+qzd9nx8crELBRKNVyTgxqGrl
- znsg==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1tSI5K-0006Wd-7r
+ for qemu-devel@nongnu.org; Mon, 30 Dec 2024 10:53:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1tSI5G-0004Ek-AY
+ for qemu-devel@nongnu.org; Mon, 30 Dec 2024 10:53:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1735574012;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=AS5Bh5sX85melR8fTJiUPd5+KNHEvPSpjEH/jnrfhBY=;
+ b=U2zMEfKaXmAyWgue2MsGDF9huUJSl3b+OLiw5wgH4D2tusEmP0wMMFtUMLnrWtgY58p1mS
+ lW3d4FaHR0UcKzncITPiSAhJH0STgYBJsdPPwUfePmjZz3PygcKp4fS87EzO7cJWkOI124
+ wS9FY9rFbHtxbHQ5g/ZXLy+no3Pf5/I=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-84-q3hC-OwjMiiBqICml1qlOg-1; Mon, 30 Dec 2024 10:53:30 -0500
+X-MC-Unique: q3hC-OwjMiiBqICml1qlOg-1
+X-Mimecast-MFC-AGG-ID: q3hC-OwjMiiBqICml1qlOg
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-436248d1240so46546885e9.0
+ for <qemu-devel@nongnu.org>; Mon, 30 Dec 2024 07:53:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735573186; x=1736177986;
+ d=1e100.net; s=20230601; t=1735574009; x=1736178809;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=V4fyXlhxQAEqDO8KjATP3LRp5cmZQUPuZTn5SNaOG44=;
- b=dnt+eQtoQTdvw+SgPRxgoQkn6neQtlv7PjRa0JdCCWitSYMcsMy0dacIj4RLe5bUPj
- MUZcx/7gUWDICIjCLXVgeTB+EFw/LzKV0C4tNQnA8g/9mluNAzyVmWl7D1Zbl+rQ/bwV
- D8ZvW2dzyBozjniPkKOcEapRsP5d5yKABlTlJyFb3606wMIOo1oYlooeuZ9vjaUsLVHF
- FiPcS79Vbw7ORU+HY9yd1cV5t3tRWHseSNcR3htBrBxnKThdqFY1g+aECcxuuTPahn9c
- H3IZtC8kCSV5zvbKdUfz+w/esas85ZKlVcVZt1jEUCzPqNFcs7So+fndGSHabsvRyreT
- RQLw==
-X-Gm-Message-State: AOJu0YzL5yjyaP9BzNQLCVT0ck1G9U0uTkF7ICFzBSDiZGHuelngFZLK
- qzK0+Qbr53hJrJjH3qTR2O4ivhpT1PgWwx4jtLx6kI8J8khdf4PXyw+dxw10KY30sJfHdUgh47e
- +
-X-Gm-Gg: ASbGncvMhkP0rJVjpQ53gVSGcQN8Jw2cLfBIMm8Q3Ja0X0nfkOJ2/7WBE/N7FfemkRS
- LngG10FYAfLgZyqZjEd5LFu1FaAyqDuy5zSJ7r1cyqYHyK70NKNsxiCBgfpkjUFPIkUSG4IDjlL
- pzGGGqxjZPnQaQH+1Yx8EHKBkwyNMtBA6fkbkKmgAQvInkmVAXtiRHx/dkRLnMtgfxaTg+fBFdc
- NhRIZLz2hpDuCPIBbuT3yZcO4FGTYvQYd+uzwyYvZsoryCpO7NxfTbSHcFqVQu8RmS3Wv57Cabb
- FjopcUXa1p9N7sC9Am43zNYjn1VJO7U=
-X-Google-Smtp-Source: AGHT+IFdVrExOtPviKBtzmUgWj/2NvtoQOnLUa5BI2B1gGmpJYSyAAb0yEKJF6NFTfhIJV2Ec5rsuQ==
-X-Received: by 2002:a05:6000:480a:b0:386:1cd3:89fa with SMTP id
- ffacd0b85a97d-38a221fa8c6mr35175811f8f.33.1735573186365; 
- Mon, 30 Dec 2024 07:39:46 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4366127c4bbsm357117475e9.32.2024.12.30.07.39.45
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 30 Dec 2024 07:39:45 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Stafford Horne <shorne@gmail.com>, Zhao Liu <zhao1.liu@intel.com>,
- qemu-ppc@nongnu.org, Yanan Wang <wangyanan55@huawei.com>,
- Eduardo Habkost <eduardo@habkost.net>, Song Gao <gaosong@loongson.cn>,
- Bernhard Beschow <shentey@gmail.com>, qemu-arm@nongnu.org,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 3/3] target/cpus: Remove pointless re-assignment of
- CPUState::halted
-Date: Mon, 30 Dec 2024 16:39:29 +0100
-Message-ID: <20241230153929.87137-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230153929.87137-1-philmd@linaro.org>
-References: <20241230153929.87137-1-philmd@linaro.org>
+ bh=AS5Bh5sX85melR8fTJiUPd5+KNHEvPSpjEH/jnrfhBY=;
+ b=NCMj7kLsZJ5xGavI1o5WGJLMqMDaOk3e/Y3zVhfXJ8IBAfY7913bwSNQ6sttLlQqoY
+ HVffu2m1lLe1DrINtoN/SYFW5FGpe+SDNoZ+Y+PBiJRxX07BLi9TEvSQ6ODg3VKt8a6D
+ DXN+rN2yuuJhEc7ZX+2JI3THcs0t74C8ez4Hubo5wexHBw9N0294/7daUOKonQMLnQRL
+ t4v/bKSLWnmt5/xB1KJcERujjsDdqtQ4PwBhn5eVqhginRnWLErOyfsfo5oZ04g8p3ju
+ TiuSqCk5rba5cOHB5jR57q4K5wmXcpw5w1N5LDIAd6Nrnt7H/p1qB9UD2ueuZQpmWVtf
+ BdtA==
+X-Gm-Message-State: AOJu0YxlRYoSxEF0pKvnqwK5PkurliEvben4zocORgMhfdrFxI9KzLds
+ EzhhVMhyiDU6Ijzo8zA3pHpHdB0Umye8SSBnxyqXi8WtjxK3KhSmK+Pb2BjqO217PGjVui/nW4+
+ N4Vc3lD3VbtwGpIs9BnCQQqvpSac/AG/w3xsH6Ff/LL7Yl238gCsvkdwn366i5vKUt0RsebWtaU
+ 3yMwBUjtdYV7SjeONJTk1zHSWG3z+M62J2LStX
+X-Gm-Gg: ASbGncvb4wJtW/U9hmnGEvZdg7eDYMtAIo/IrDcGd61fZe5RaumcxBE6fqoLsZtG8FW
+ 4scqb+/rhnBnDfuEXBTDlmLZv0fwOJuitqw1dMGLTFIw4CA8s60Mgr8o8Bv0p3hPE2AIZXNlAtM
+ YYm96TvUiTKXcFVF2tUtgVk0iWv8aHANYuBUFHUP+sF18GjZskXM7PTTPvvr4/JQp44T1x88gq5
+ cO8Y+4ugF/9tstkBWQII8OPx9Lj1XwRaUttbAa2jmoRlC97QjzY9JvZrFLV9DPZxJ9fP/eiSMEz
+ XRmXFWYEPU0g7C9rAo3P6rS1Gdo4
+X-Received: by 2002:a05:600c:350b:b0:434:f131:1e6d with SMTP id
+ 5b1f17b1804b1-43668643203mr377939305e9.10.1735574008739; 
+ Mon, 30 Dec 2024 07:53:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGaLSDwSFWA9e5Gg49W03l5xxUdL3582hGwN6ZSNr4s6CLVLqWqJI0VaZuEAfxfToTNoU6owg==
+X-Received: by 2002:a05:600c:350b:b0:434:f131:1e6d with SMTP id
+ 5b1f17b1804b1-43668643203mr377938965e9.10.1735574008300; 
+ Mon, 30 Dec 2024 07:53:28 -0800 (PST)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38a1c89e357sm31208837f8f.72.2024.12.30.07.53.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 30 Dec 2024 07:53:27 -0800 (PST)
+Date: Mon, 30 Dec 2024 16:53:27 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
+Cc: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+ "kraxel@redhat.com" <kraxel@redhat.com>, "philmd@linaro.org"
+ <philmd@linaro.org>, "Wangzhou (B)" <wangzhou1@hisilicon.com>, Linuxarm
+ <linuxarm@huawei.com>, mst@redhat.com
+Subject: Re: [PATCH v3] fw_cfg: Don't set callback_opaque NULL in
+ fw_cfg_modify_bytes_read()
+Message-ID: <20241230165327.4cedbd1e@imammedo.users.ipa.redhat.com>
+In-Reply-To: <d7800cd30fbe4d23ab019f4d35792469@huawei.com>
+References: <20241203131806.37548-1-shameerali.kolothum.thodi@huawei.com>
+ <d7800cd30fbe4d23ab019f4d35792469@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.187,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,75 +112,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The CPUState::halted field is always re-initialized in
-cpu_common_reset_hold(), itself called by cpu_reset().
-No need to have targets manually initializing it.
+On Wed, 11 Dec 2024 09:15:53 +0000
+Shameerali Kolothum Thodi via <qemu-devel@nongnu.org> wrote:
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/misc/mips_cpc.c        | 1 -
- hw/ppc/e500.c             | 1 -
- target/arm/arm-powerctl.c | 2 --
- target/hppa/cpu.c         | 1 -
- 4 files changed, 5 deletions(-)
+> Hi,
+>=20
+> A gentle ping on this.
+>=20
+> Hope the fix here is still valid and can be picked up.=20
+> Not sure by whom this will get picked up though.
 
-diff --git a/hw/misc/mips_cpc.c b/hw/misc/mips_cpc.c
-index 772b8c0017d..4ec8226c416 100644
---- a/hw/misc/mips_cpc.c
-+++ b/hw/misc/mips_cpc.c
-@@ -38,7 +38,6 @@ static void mips_cpu_reset_async_work(CPUState *cs, run_on_cpu_data data)
-     MIPSCPCState *cpc = (MIPSCPCState *) data.host_ptr;
- 
-     cpu_reset(cs);
--    cs->halted = 0;
-     cpc->vp_running |= 1ULL << cs->cpu_index;
- }
- 
-diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index 4551157c011..8b90b5b2448 100644
---- a/hw/ppc/e500.c
-+++ b/hw/ppc/e500.c
-@@ -785,7 +785,6 @@ static void ppce500_cpu_reset(void *opaque)
-     cpu_reset(cs);
- 
-     /* Set initial guest state. */
--    cs->halted = 0;
-     env->gpr[1] = (16 * MiB) - 8;
-     env->gpr[3] = bi->dt_base;
-     env->gpr[4] = 0;
-diff --git a/target/arm/arm-powerctl.c b/target/arm/arm-powerctl.c
-index 20c70c7d6bb..8e948171c7c 100644
---- a/target/arm/arm-powerctl.c
-+++ b/target/arm/arm-powerctl.c
-@@ -67,7 +67,6 @@ static void arm_set_cpu_on_async_work(CPUState *target_cpu_state,
-     /* Initialize the cpu we are turning on */
-     cpu_reset(target_cpu_state);
-     arm_emulate_firmware_reset(target_cpu_state, info->target_el);
--    target_cpu_state->halted = 0;
- 
-     /* We check if the started CPU is now at the correct level */
-     assert(info->target_el == arm_current_el(&target_cpu->env));
-@@ -194,7 +193,6 @@ static void arm_set_cpu_on_and_reset_async_work(CPUState *target_cpu_state,
- 
-     /* Initialize the cpu we are turning on */
-     cpu_reset(target_cpu_state);
--    target_cpu_state->halted = 0;
- 
-     /* Finally set the power status */
-     assert(bql_locked());
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 9b355bfe902..b4092037888 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -203,7 +203,6 @@ static void hppa_cpu_reset_hold(Object *obj, ResetType type)
-     if (scc->parent_phases.hold) {
-         scc->parent_phases.hold(obj, type);
-     }
--    cs->halted = 0;
-     cpu_set_pc(cs, 0xf0000004);
- 
-     memset(env, 0, offsetof(CPUHPPAState, end_reset_fields));
--- 
-2.47.1
+Perhaps Michael an pik it up, CCed.
+
+>=20
+> @Gerd?
+>=20
+> Thanks,
+> Shameer
+>=20
+> > -----Original Message-----
+> > From: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+> > Sent: Tuesday, December 3, 2024 1:18 PM
+> > To: qemu-devel@nongnu.org
+> > Cc: philmd@linaro.org; kraxel@redhat.com; imammedo@redhat.com;
+> > wangzhou1@hisilicon.com; linuxarm@huawei.com
+> > Subject: [PATCH v3] fw_cfg: Don't set callback_opaque NULL in
+> > fw_cfg_modify_bytes_read()
+> >=20
+> > On arm/virt platform, Chen Xiang reported a Guest crash while
+> > attempting the below steps,
+> >=20
+> > 1. Launch the Guest with nvdimm=3Don
+> > 2. Hot-add a NVDIMM dev
+> > 3. Reboot
+> > 4. Guest boots fine.
+> > 5. Reboot again.
+> > 6. Guest boot fails.
+> >=20
+> > QEMU_EFI reports the below error:
+> > ProcessCmdAddPointer: invalid pointer value in "etc/acpi/tables"
+> > OnRootBridgesConnected: InstallAcpiTables: Protocol Error
+> >=20
+> > Debugging shows that on first reboot(after hot adding NVDIMM),
+> > Qemu updates the etc/table-loader len,
+> >=20
+> > qemu_ram_resize()
+> > =C2=A0 fw_cfg_modify_file()
+> > =C2=A0 =C2=A0 =C2=A0fw_cfg_modify_bytes_read()
+> >=20
+> > And in fw_cfg_modify_bytes_read() we set the "callback_opaque" for
+> > the key entry to NULL. Because=C2=A0of this, on the second reboot,
+> > virt_acpi_build_update() is called with a NULL "build_state" and
+> > returns without updating the ACPI tables. This seems to be
+> > upsetting the firmware.
+> >=20
+> > To fix this, don't change the callback_opaque in
+> > fw_cfg_modify_bytes_read().
+> >=20
+> > Fixes: bdbb5b1706d165 ("fw_cfg: add fw_cfg_machine_reset function")
+> > Reported-by: chenxiang <chenxiang66@hisilicon.com>
+> > Acked-by: Igor Mammedov <imammedo@redhat.com>
+> > Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+> > Signed-off-by: Shameer Kolothum
+> > <shameerali.kolothum.thodi@huawei.com>
+> > ---
+> > Hi,
+> >=20
+> > I forgot to follow-up on the v2 and it never got picked up.
+> > Thanks to Wangzhou who recently re-run the tests and found that
+> > the problem mentioned above still exists. Hence resending the v2.
+> >=20
+> > v2-->v3:
+> >  -Just rebase.
+> >=20
+> > v2: https://lore.kernel.org/qemu-devel/20220908160354.2023-1-
+> > shameerali.kolothum.thodi@huawei.com/
+> > v1: https://lore.kernel.org/all/20220825161842.841-1-
+> > shameerali.kolothum.thodi@huawei.com/
+> >=20
+> > Thanks,
+> > Shameer
+> > ---
+> >  hw/nvram/fw_cfg.c | 1 -
+> >  1 file changed, 1 deletion(-)
+> >=20
+> > diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
+> > index b644577734..74edb1e4cf 100644
+> > --- a/hw/nvram/fw_cfg.c
+> > +++ b/hw/nvram/fw_cfg.c
+> > @@ -730,7 +730,6 @@ static void *fw_cfg_modify_bytes_read(FWCfgState
+> > *s, uint16_t key,
+> >      ptr =3D s->entries[arch][key].data;
+> >      s->entries[arch][key].data =3D data;
+> >      s->entries[arch][key].len =3D len;
+> > -    s->entries[arch][key].callback_opaque =3D NULL;
+> >      s->entries[arch][key].allow_write =3D false;
+> >=20
+> >      return ptr;
+> > --
+> > 2.34.1 =20
+>=20
 
 
