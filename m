@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6259FE78A
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Dec 2024 16:25:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2BD9FE78F
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Dec 2024 16:27:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tSHeE-0002bM-3P; Mon, 30 Dec 2024 10:25:38 -0500
+	id 1tSHeL-0002fM-Fu; Mon, 30 Dec 2024 10:25:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSHeA-0002aY-G2
- for qemu-devel@nongnu.org; Mon, 30 Dec 2024 10:25:34 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSHeH-0002en-Fg
+ for qemu-devel@nongnu.org; Mon, 30 Dec 2024 10:25:41 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSHe8-0001l5-Tl
- for qemu-devel@nongnu.org; Mon, 30 Dec 2024 10:25:34 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43621d27adeso64197915e9.2
- for <qemu-devel@nongnu.org>; Mon, 30 Dec 2024 07:25:32 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSHeE-0001lm-UH
+ for qemu-devel@nongnu.org; Mon, 30 Dec 2024 10:25:40 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-385eed29d17so4490673f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 30 Dec 2024 07:25:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735572331; x=1736177131; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735572337; x=1736177137; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GAtXelESZqP9EpLglyIc26IsQk/mXnYos/ye7zC5LFE=;
- b=fKbED+iHAeCBO/RUzSyNB0HTk8icBtqHxh3t6pSXjPAAsSSBy/abGFMiLtPDzG934I
- mSXoP2+UExDm1LYWhv8c6rt1ia0YgrOtaAOLfH5tI9hmu/aEu+BSPOhKg0KocMB0KKP9
- oi4D2Z8DSdHT/ZB0U6K6PIn07wsEZ5lA9oY9Iv2WHRxvE0+li5bsSHz0AR0D3anbNK1l
- PSCRd/7qzlGTKa4OySd6yWHHdTX3RmUSQoj4c1sIIZ/uk+xVZRrgkpu5Ws8D/bgLhsOe
- nfzwynCqgD9JpcUH9wBW+2ZWfEjQVzJGQRkr3l8GzSYun+axVOtTc+c538fI8dWl0ZxH
- IiBA==
+ bh=oAHxB+c8xZt/u0R303DHDB7l0FIhppIYTKedrojbFg8=;
+ b=Hn24EyGoVCSmBoYGk2S4QC+7zg/xRe6MogW2eYTIrKKF4uK0LsZwWvWDpbHAQYTKfT
+ eigF3i9imNtlPSqrIgSrEPWlHhbLj/Zb16s9rhFkcgPIqCf6Naxj+qfSP/2uVPj/qUQU
+ JVa7v1mL9OU5xvJBB0PIJMi10nWtFmbf+O6Q7l+KZCLXfFtP2f2ld1n5bMzQd5cEXjYW
+ D3Y1MVuQTJE7OpQPpSRMKPQmH1oofwNXpghKejGRiYkJsOBCCrERKKmlvU6JxAo7vamR
+ mw/C/Mqxymr/4O5b2Awt5ajiIrVT8umxejoCJk4XwlR3cNGwXEI3KyrOUgrov4dEfXl4
+ uuqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735572331; x=1736177131;
+ d=1e100.net; s=20230601; t=1735572337; x=1736177137;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GAtXelESZqP9EpLglyIc26IsQk/mXnYos/ye7zC5LFE=;
- b=rka5uGqUBxEh3FbhT9gs13u7AsOulq7Uge6dlQ5y1EkAsX4O9Rr//sR+2FXz0Mhd5z
- PUA+IKBw+CjcL2PdROGxXAGadtCKIcU46p8zxQndeFbQvj02aL6DtrpIhvXv204ZRBZw
- 8Aw/0608EcgCCS43KO5eeOPCCuSoPpGxXIyQbzQ+4rMp0MjKjYHZCUpjhlEK2WbK+IH9
- I4k6LGwtOeo9Wt/jBVScmELOvhEkXrV6B3Pd5uX8O5r6lR1xKg4zb9tlXF74sPu44Gzh
- m6Op1SQ2ob0RzbCOdPX5fLdufCbi5H0N7xuIjsQfjbElcd4lmKjguq6AifxoLYSYaTYk
- qBmA==
-X-Gm-Message-State: AOJu0YyEvvc/rt6YHoKq/XmFgBdhihTs8WNNfJFDK49BR1ztW6VFJPVd
- TOqD1Uqu8x15SLKZ5MUiYKyyZnOFs/O2LiFNu9uhEV8h58FiD/24uQArEIBttAX+JQPCPERcZQU
- p
-X-Gm-Gg: ASbGncuA4BOHkGSUqJwiDVesulH8wBXpndVQEIYoOrKtM4C695TXCNJWvuOjTtgY/BB
- 4RAexCgbLIWTDvlJlE4hcuuro9/PSXulyAi84FjpabA3p8ahbq3fdVXO8UWsdX4qrmCEq2Wy+bn
- UPkLzTJadWsad3jtCK8OQ072HH2IgomPxE+KLH8ywQF23NR5nzwYY/17nwinB7JLzUEIvUHghBb
- 1xIE5E7BKQ/66MKshdIwpbZ7O0GfE7Er0KRRZUHdVpTJTKTV8wI0morpp5yHT+FLS4HG7sSEf1D
- KW7eZXBxmAqDWGLDSphtgi8ZmxOETuQ=
-X-Google-Smtp-Source: AGHT+IHI9+2p8U6mmafyYGc9fI3EOpQrSvGCHTuMoo9xsrWiQwSS/ftftGsY3ybfGjpNM7DC8mBdrg==
-X-Received: by 2002:a05:600c:1c91:b0:434:f219:6b28 with SMTP id
- 5b1f17b1804b1-43668b499f6mr272074075e9.24.1735572331112; 
- Mon, 30 Dec 2024 07:25:31 -0800 (PST)
+ bh=oAHxB+c8xZt/u0R303DHDB7l0FIhppIYTKedrojbFg8=;
+ b=auTsln8trpDCLWVFdK2VuSjlJzLyFrayuJkg1vrYFV8ZfBjTThp34URTvJlYN1CuF6
+ D1movhvfA0T5qjYN6Z0NgP6YVXsTNRlqInRK1FYSkLZfe/4cjCS07QBPqifkzfABXjtk
+ MV8oiJplQXEV1oE5mFVe96tnRjDbbnzscklzu/rMMlnWWY7YzUHZZpkfoDzyZBtbDSAy
+ rvQ6LvNxdqLu8/QKv6pyWxv/8OehmO9byJOjHCc9bw9XUdZaOrl40y3RBrzHvIch3/u8
+ Lpn86uY4+tZ6rLPrCrGxXrQCx+GQjGsfDjZA9ZmQ6SLm30dEusDhafLQbTQZEp6JLoWv
+ Zy2A==
+X-Gm-Message-State: AOJu0YwJNvUMMictyRfeCuAPj5QghwiOYEYDNW5qXnWCDFz/sMGADlQQ
+ k9LT23gP4UNQE/DRrbSMv+zpeXhBmOKdC+rWB/TgdIuvs6P6Qv70qdsVe4wCYV14nzwtwjmhgRO
+ y
+X-Gm-Gg: ASbGncsjqNrZQJlhcw5ECxoc2+W9HoFQUOlu5E9iT9n/SOWKUfz4b8wb0MAKKBx+8xj
+ uQMHGOGoOix3IAjT4VLH4mPrI/92954PQZymUxBftAbzxGeko4teUwhg/d88f6ShY4AubffKUKL
+ F6gNyQia+TzN/jkKo0BnyxQmv6BxYe0r51xmJhuDRMNmSTBAKrIm+d02nWSnajZMPx67u90C4ji
+ VHXxHxYWkaIhDJ2RLMhNSU+hX/tElOQ6+AjcqRTbFXIbH2XKJwoEgJzoWybob5q7jIsG5noeFyV
+ k5HIlcVGWf1z/FPgLBbTRSB/fsi2j0I=
+X-Google-Smtp-Source: AGHT+IFyVOPQuzvesGaSgepM8ATCxdSI/4AjAf36iwpayHRhTusBblFaMWAOGm674t2nnkQV/xTApw==
+X-Received: by 2002:a5d:47c8:0:b0:385:f677:859b with SMTP id
+ ffacd0b85a97d-38a221e2fb4mr33139769f8f.10.1735572335645; 
+ Mon, 30 Dec 2024 07:25:35 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c84840asm30283337f8f.61.2024.12.30.07.25.30
+ ffacd0b85a97d-38a1c833149sm30022287f8f.39.2024.12.30.07.25.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 30 Dec 2024 07:25:30 -0800 (PST)
+ Mon, 30 Dec 2024 07:25:35 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Helge Deller <deller@gmx.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 2/5] hw/hppa: Reset vCPUs calling resettable_reset()
-Date: Mon, 30 Dec 2024 16:25:16 +0100
-Message-ID: <20241230152519.86291-3-philmd@linaro.org>
+Subject: [PATCH v3 3/5] target/hppa: Only set PSW 'M' bit on reset
+Date: Mon, 30 Dec 2024 16:25:17 +0100
+Message-ID: <20241230152519.86291-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241230152519.86291-1-philmd@linaro.org>
 References: <20241230152519.86291-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,52 +98,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+On reset:
 
-Rather than manually (and incompletely) resetting vCPUs,
-call resettable_reset() which will fully reset the vCPUs.
-Remove redundant assignations.
+  "All PSW bits except the M bit is reset. The M bit is set."
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Co-developed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Commit 1a19da0da44 ("target/hppa: Fill in hppa_cpu_do_interrupt /
+hppa_cpu_exec_interrupt") inadvertently set the W bit at RESET,
+remove it and set the M bit.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/hppa/machine.c | 6 +++---
- target/hppa/cpu.c | 1 +
- 2 files changed, 4 insertions(+), 3 deletions(-)
+Only tested using QEMU mainstream test suite, IOW not much.
+---
+ target/hppa/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index 65259308e2e..8230f43e41c 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -655,12 +655,12 @@ static void hppa_machine_reset(MachineState *ms, ResetType type)
-     for (i = 0; i < smp_cpus; i++) {
-         CPUState *cs = CPU(cpu[i]);
- 
-+        /* reset CPU */
-+        resettable_reset(OBJECT(cs), RESET_TYPE_COLD);
-+
-         cpu_set_pc(cs, firmware_entry);
-         cpu[i]->env.psw = PSW_Q;
-         cpu[i]->env.gr[5] = CPU_HPA + i * 0x1000;
--
--        cs->exception_index = -1;
--        cs->halted = 0;
-     }
- 
-     /* already initialized by machine_hppa_init()? */
 diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index d784bcdd602..41538d39d62 100644
+index 41538d39d62..dbd46842841 100644
 --- a/target/hppa/cpu.c
 +++ b/target/hppa/cpu.c
-@@ -204,6 +204,7 @@ static void hppa_cpu_reset_hold(Object *obj, ResetType type)
-         scc->parent_phases.hold(obj, type);
-     }
-     cs->exception_index = -1;
-+    cs->halted = 0;
- 
+@@ -209,7 +209,7 @@ static void hppa_cpu_reset_hold(Object *obj, ResetType type)
      memset(env, 0, offsetof(CPUHPPAState, end_reset_fields));
  
+     cpu_hppa_loaded_fr0(env);
+-    cpu_hppa_put_psw(env, PSW_W);
++    cpu_hppa_put_psw(env, PSW_M);
+ }
+ 
+ static ObjectClass *hppa_cpu_class_by_name(const char *cpu_model)
 -- 
 2.47.1
 
