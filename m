@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4D99FE161
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Dec 2024 01:24:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 437909FE163
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Dec 2024 01:24:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tS3Yr-0003Bv-3Q; Sun, 29 Dec 2024 19:23:09 -0500
+	id 1tS3Yq-0003BA-5L; Sun, 29 Dec 2024 19:23:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tS3Yl-0003Ae-1S
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tS3Yl-0003Af-1S
  for qemu-devel@nongnu.org; Sun, 29 Dec 2024 19:23:03 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217])
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tS3Yg-0005SJ-CG
- for qemu-devel@nongnu.org; Sun, 29 Dec 2024 19:23:00 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tS3Yg-0005SU-PQ
+ for qemu-devel@nongnu.org; Sun, 29 Dec 2024 19:23:01 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id B24E35C5652;
- Mon, 30 Dec 2024 00:22:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B022BC4CED1;
- Mon, 30 Dec 2024 00:22:52 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTP id 668ED5C5638;
+ Mon, 30 Dec 2024 00:22:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66976C4CED1;
+ Mon, 30 Dec 2024 00:22:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1735518174;
- bh=uDIlYjJhwnX4b0v8WFbzQiIC8hlcjIddiPonlxciGAE=;
+ s=k20201202; t=1735518175;
+ bh=R2yQXlh1UCaLJkyp+GiSBXcF5ehVZTziwZq11fc/xfQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Hqi+fbEhMp9BNNZf6NUrnNbC0tC+pTfwmWvZiF6DdNBmNLeAKrZDawNCqQy0AIhat
- GSgs+yX6Zknn9w4VC5Sx5oEK9sm8WvPiD9u3oa/+zF5Afer3xVGvVh09pZBR3CoCw+
- BF4Gnb6EZHMQzrGOkQFoJJlb40k09Q0EJsdWCGvBZFSMQ5oHKz/IOOFuw6nd+9heyO
- DGnIpGgny2pJ1921Amked3O4D9xhAr08fwn3kPBsaXe2H2CZO7328H2KWuUqdpVTnm
- x/+FJN/WyrkPIstGhv2fGO6POj2K9P4HiUb6Ih+9fMkWWYdbxioBZl7sMe1MPRiQA5
- Z5p7KzqyY5ghQ==
+ b=jyCTsTNdsfjp93v7YguvHyeajHm3guIz/llIaH6EwidNHe5NRr2vTTMTrACVTiPx6
+ 41AqVpV+YuV7X3QTID/n9t93+coOGIN7WA2ccPBMsjtRxdly0Jl8bDiJf7UNSNRRLM
+ YqZsnR+yW1uJAc4c0Zec8zYYYc3wljm2U2AMBoIhruzwxbCEYdauXJ5X9Uh9BdZdTn
+ 3NE4PTXJTv2KjK9QhFIDOPT31uE41R81vEeffRL2drCbzpiJQPdX44kfGbdMG3Oxw8
+ 76HjOsjGwq8I0+6qJ5jsl2UTFBYf2IQ3+zCtwxXCeSlIQVYdGPbeO5teLT17s6t7jF
+ RFz5z1xtZeItg==
 From: deller@kernel.org
 To: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
 Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL 1/2] target/hppa: Add CPU reset method
-Date: Mon, 30 Dec 2024 01:22:47 +0100
-Message-ID: <20241230002248.33648-2-deller@kernel.org>
+Subject: [PULL 2/2] target/hppa: Speed up hppa_is_pa20()
+Date: Mon, 30 Dec 2024 01:22:48 +0100
+Message-ID: <20241230002248.33648-3-deller@kernel.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241230002248.33648-1-deller@kernel.org>
 References: <20241230002248.33648-1-deller@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -92
-X-Spam_score: -9.3
-X-Spam_bar: ---------
-X-Spam_report: (-9.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.187,
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=deller@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -65
+X-Spam_score: -6.6
+X-Spam_bar: ------
+X-Spam_report: (-6.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.187,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -71,127 +71,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Add the CPU reset method, which resets all CPU registers and the TLB to
-zero. Then the CPU will switch to 32-bit mode (PSW_W bit is not set) and
-start execution at address 0xf0000004.
-Although we currently want to zero out all values in the CPUHPPAState
-struct, add the end_reset_fields marker in case the state structs gets
-extended with other variables later on which should not be reset.
+Although the hppa_is_pa20() helper is costly due to string comparisons
+in object_dynamic_cast(), it is called quite often during memory lookups
+and at each start of a block of instruction translations.
+Speed hppa_is_pa20() up by calling object_dynamic_cast() only once at
+CPU creation and store the result in the is_pa20 of struct CPUArchState.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/hppa/machine.c |  6 +++---
- target/hppa/cpu.c | 26 ++++++++++++++++++++++++--
- target/hppa/cpu.h |  5 +++++
- 3 files changed, 32 insertions(+), 5 deletions(-)
+ target/hppa/cpu.c | 1 +
+ target/hppa/cpu.h | 4 +++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index a31dc32a9f..05fd43ce9c 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -655,12 +655,12 @@ static void hppa_machine_reset(MachineState *ms, ResetType type)
-     for (i = 0; i < smp_cpus; i++) {
-         CPUState *cs = CPU(cpu[i]);
- 
-+        /* reset CPU */
-+        resettable_reset(OBJECT(cs), RESET_TYPE_COLD);
-+
-         cpu_set_pc(cs, firmware_entry);
-         cpu[i]->env.psw = PSW_Q;
-         cpu[i]->env.gr[5] = CPU_HPA + i * 0x1000;
--
--        cs->exception_index = -1;
--        cs->halted = 0;
-     }
- 
-     /* already initialized by machine_hppa_init()? */
 diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index c38439c180..cb1b5191a4 100644
+index cb1b5191a4..64a762b410 100644
 --- a/target/hppa/cpu.c
 +++ b/target/hppa/cpu.c
-@@ -194,11 +194,9 @@ static void hppa_cpu_realizefn(DeviceState *dev, Error **errp)
- 
- static void hppa_cpu_initfn(Object *obj)
- {
--    CPUState *cs = CPU(obj);
+@@ -197,6 +197,7 @@ static void hppa_cpu_initfn(Object *obj)
      HPPACPU *cpu = HPPA_CPU(obj);
      CPUHPPAState *env = &cpu->env;
  
--    cs->exception_index = -1;
++    env->is_pa20 = !!object_dynamic_cast(obj, TYPE_HPPA64_CPU);
      cpu_hppa_loaded_fr0(env);
      cpu_hppa_put_psw(env, PSW_W);
  }
-@@ -235,15 +233,39 @@ static const TCGCPUOps hppa_tcg_ops = {
- #endif /* !CONFIG_USER_ONLY */
- };
- 
-+static void hppa_cpu_reset_hold(Object *obj, ResetType type)
-+{
-+    HPPACPU *cpu = HPPA_CPU(obj);
-+    HPPACPUClass *scc = HPPA_CPU_GET_CLASS(cpu);
-+    CPUHPPAState *env = &cpu->env;
-+    CPUState *cs = CPU(cpu);
-+
-+    if (scc->parent_phases.hold) {
-+        scc->parent_phases.hold(obj, type);
-+    }
-+
-+    memset(env, 0, offsetof(CPUHPPAState, end_reset_fields));
-+    cpu_set_pc(cs, 0xf0000004);
-+    cpu_hppa_put_psw(env, hppa_is_pa20(env) ? PSW_W : 0);
-+    cpu_hppa_loaded_fr0(env);
-+
-+    cs->exception_index = -1;
-+    cs->halted = 0;
-+}
-+
- static void hppa_cpu_class_init(ObjectClass *oc, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(oc);
-     CPUClass *cc = CPU_CLASS(oc);
-     HPPACPUClass *acc = HPPA_CPU_CLASS(oc);
-+    ResettableClass *rc = RESETTABLE_CLASS(oc);
- 
-     device_class_set_parent_realize(dc, hppa_cpu_realizefn,
-                                     &acc->parent_realize);
- 
-+    resettable_class_set_parent_phases(rc, NULL, hppa_cpu_reset_hold, NULL,
-+                                       &acc->parent_phases);
-+
-     cc->class_by_name = hppa_cpu_class_by_name;
-     cc->has_work = hppa_cpu_has_work;
-     cc->mmu_index = hppa_cpu_mmu_index;
 diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index e45ba50a59..32a674a8b8 100644
+index 32a674a8b8..288ce6d98a 100644
 --- a/target/hppa/cpu.h
 +++ b/target/hppa/cpu.h
-@@ -263,6 +263,9 @@ typedef struct CPUArchState {
-     IntervalTreeRoot tlb_root;
+@@ -266,6 +266,8 @@ typedef struct CPUArchState {
  
-     HPPATLBEntry tlb[HPPA_TLB_ENTRIES];
+     /* Fields up to this point are cleared by a CPU reset */
+     struct {} end_reset_fields;
 +
-+    /* Fields up to this point are cleared by a CPU reset */
-+    struct {} end_reset_fields;
++    bool is_pa20;
  } CPUHPPAState;
  
  /**
-@@ -281,6 +284,7 @@ struct ArchCPU {
- /**
-  * HPPACPUClass:
-  * @parent_realize: The parent class' realize handler.
-+ * @parent_phases: The parent class' reset phase handlers.
-  *
-  * An HPPA CPU model.
-  */
-@@ -288,6 +292,7 @@ struct HPPACPUClass {
-     CPUClass parent_class;
+@@ -299,7 +301,7 @@ struct HPPACPUClass {
  
-     DeviceRealize parent_realize;
-+    ResettablePhases parent_phases;
- };
+ static inline bool hppa_is_pa20(CPUHPPAState *env)
+ {
+-    return object_dynamic_cast(OBJECT(env_cpu(env)), TYPE_HPPA64_CPU) != NULL;
++    return env->is_pa20;
+ }
  
- #include "exec/cpu-all.h"
+ static inline int HPPA_BTLB_ENTRIES(CPUHPPAState *env)
 -- 
 2.47.0
 
