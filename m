@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77D4C9FEF58
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 13:40:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B489FF028
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 16:21:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tSbX3-0004Q3-2n; Tue, 31 Dec 2024 07:39:33 -0500
+	id 1tSe2Q-0001Sh-31; Tue, 31 Dec 2024 10:20:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1tSbX0-0004Pr-WC
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 07:39:31 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
+ id 1tSe2N-0001Qf-Vv
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 10:20:04 -0500
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1tSbWz-00017l-HK
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 07:39:30 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5cecbddb574so17075498a12.1
- for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 04:39:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
+ id 1tSe2M-0004DH-FR
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 10:20:03 -0500
+Received: by mail-pl1-x642.google.com with SMTP id
+ d9443c01a7336-21683192bf9so134355845ad.3
+ for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 07:20:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1735648767; x=1736253567; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=LPBTgfWc2yc0ucwaqWLSGBkE2a8LAPEaYR/wMovz65A=;
- b=OIxAf8KVcYHnxcK9u/uoPfJXZbqwMHb8doE37K5FD1EpOW6qCrFvSY3Yc3K6sTnZaP
- L9vbxC/r+niR8AyB9gmR8Icwps3YzoETbcQHYqpTdHGKfTKsH3pRprWisjSwOAuzyel7
- W1+VOTpEafCtFn3zRHbr6lEVql5nyOlYg2RHACa0dozLvadPykgj41Np6neoYRGSsAiM
- gsnsYIeHIh/SpN0BMVmialEzwTB9AnZS4dw8cOgK+GJa98vrjzx6khI87IHl6zs0Fwy+
- exiz+jO8YHEwQCi9ySDa5iDPDGMc8wEChZNng4ViAuSg+XURGQAL4vJzq828TEKHLRw2
- TSsQ==
+ d=gmail.com; s=20230601; t=1735658400; x=1736263200; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=X9ZTWPdO1LHH7H0GwUXb6JYPpF+TRTjlK2VG/HTPgDA=;
+ b=lGkcTzNURGriiFhkL6l45HM7BwgAv6TBo/2dMcd2MxUc+n/vNsMA2oik2Ao2QlK820
+ FYybqGAJcz9YrSVHagBGEcK1iWtao38Ccalbe9Fnpyk1kIcZ1SQexyj4pAXREaBbZS8F
+ b+2HCYKDWP24oX7clp7z6cIFmr1RITCZ3XNmFGsYkfNj0xeCwsHaN3Dcvy8Y5GQjHt4f
+ hdLYfIocsJkTdPdzFOudCoXOO8neIUk0eWek6uhPqUEOOnCoku4qVbnaRZUigaf3bqSu
+ Dq4ggBOhNU1Y3hnsFbX9ZIq0Itl6sUxilLPTcO29f+p2zfXC0wxDMWWupdctJCD38XGI
+ B/rA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735648767; x=1736253567;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1735658400; x=1736263200;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=LPBTgfWc2yc0ucwaqWLSGBkE2a8LAPEaYR/wMovz65A=;
- b=WYDTXgHw2xn+If7NObqxJS+zQWXpFYO2VhbdfHqDvnz33911mCgNYoWwu3jC1m+CSh
- XkTEGih5QPPwCIsDSuKJst5Th5STomiULWU95Bp9n9le5iZXyr2VOOrogRVMeJPesPzu
- UfbPZN4yhpMwsWsSjIl6l73jDxl4y0C87mCWFV9UtITsQ7+esQ0NAhKvLPSnUB+6k2ub
- MUmLWlI7Fuu1aPPs7sUOFdMEw6AV+Gc3n0HktNG+QDImOQfex1nkXNk8ty9gE1eTQ7iL
- BKfHOzI85Andx322DJY0deLS2iPELJ2D33BDeWvCVKGd7fV8G2K1+NFQHOX9ZQepL8dR
- ydaQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW1rWROSe4JwUSZr6JWrLNAjPM6ZzxDsv9CZvf8c0Ajrqj/iQSWh9xP6OgYsrcAs2CcY7RBe275hOol@nongnu.org
-X-Gm-Message-State: AOJu0YwAji4UGNC12w6GoWwIA5S4nhslD8zeR7EphBr2zs3XWs1zc/gx
- WhmGEmm1EsPAIcj3vKf3KLoMFfQk6dkR8rdZKZ3ABBHKGaIDLOP5DFC+aZRXPD+KBteX/1J1IJs
- OA04R/Oaicc3+aQ0R5uCVQFdX0uE=
-X-Gm-Gg: ASbGnctpcqBPEx42CqUBIlb3WmXgYgvyDSZPzwGeAtyDHyVx8h0GzjUnaG76zjefGx6
- GAjQ1I0KHhUmWXjZx1Q5y9ggQNQHZLuVpuVWD
-X-Google-Smtp-Source: AGHT+IHclVvIpoCxnaRXwa4Yg+oQZOAZLD4lB5I51HH0LrC7cbIvwlZhChqMh2UmyXsGJFhorrUM9q8x0mF0dz2xuZQ=
-X-Received: by 2002:a05:6402:348c:b0:5d2:7270:611f with SMTP id
- 4fb4d7f45d1cf-5d81de48bc6mr33219783a12.22.1735648766437; Tue, 31 Dec 2024
- 04:39:26 -0800 (PST)
+ bh=X9ZTWPdO1LHH7H0GwUXb6JYPpF+TRTjlK2VG/HTPgDA=;
+ b=Xd6FB0w1+ch2FaDo4x7eN2rcXPnN/bQDIIhK/3aJf++NKWRCiGIz3lXg6TdylP0U+N
+ XuO7guvMNzQdalPQEw3JewUSJlVelE6Y878PcsU/0s9dmTBrHyR5tZ7pOy8mQC0xTvcl
+ brFM46/tP/8Qx6PLPC81Ecs8kw3rvQkefv8jNq0Sq2B86jDCvy5ywkNL8I+7lAMTzJwo
+ 0pm+bqG8L7wKd7CyICMD+elLdO6awfEe/496W5HgoYqAtRdY2t/hnZHvPJJiMcA1WOw5
+ bhE2nfIb88/9RDjdmBTJ1tDz0ZmMON4iAp7yv1z5eukFUSSyKESLsYfXIPpcTvdZr4rf
+ Bgtw==
+X-Gm-Message-State: AOJu0Yztlr7wMGld6msDiPIS44pdSPWyuV+l8dLylqCpFg03nWNJsuKn
+ QQObaoU/8Ow4t5F4wU81QpBak6cH/esja6ZzwLgDCwAwJWmNslw=
+X-Gm-Gg: ASbGncvusoPy3LouECLTJ74RXpKjDZBz1idNypEChD37e4RYuUB61tJAUDI2r7Q+O1n
+ LbvEij/fShksnyruD9EBZee39fWQm5RWXIpOEWiEq8Xp0QDdeTvFVHVYJFolrgP5Lzlr+3xp2HD
+ xdTPdwt2SDEyaoOts+T28Qw8VzTI28OhoJbZfB2GHlCqc17oYnFCnvs+a+97DyJHoDX6eXXqkVv
+ +MwdVC7GQG6YAh5nQsGt/4quw9iv96KH3wUNo4Bv10Kl9P8+ke+0kLVWgMSH4GlpbOFjQ==
+X-Google-Smtp-Source: AGHT+IHMsQqTeMXDNTazCyeQJtuQEMlmRcMf1UT5jGQIJvwn8ucfQIsgu8fNObcLnLSDJow4OPw99g==
+X-Received: by 2002:a05:6a21:999e:b0:1e0:ce71:48e0 with SMTP id
+ adf61e73a8af0-1e5e081d7f5mr63026092637.39.1735658400511; 
+ Tue, 31 Dec 2024 07:20:00 -0800 (PST)
+Received: from localhost.localdomain ([58.38.120.107])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-72aad8309e8sm20933481b3a.43.2024.12.31.07.19.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 31 Dec 2024 07:20:00 -0800 (PST)
+From: Tomita Moeko <tomitamoeko@gmail.com>
+To: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Cc: qemu-devel@nongnu.org,
+	Tomita Moeko <tomitamoeko@gmail.com>
+Subject: [PATCH 0/3] vfio/igd: VFIOConfigMirrorQuirk for igd mirrored registers
+Date: Tue, 31 Dec 2024 23:19:50 +0800
+Message-ID: <20241231151953.59992-1-tomitamoeko@gmail.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-References: <20241218195247.5459-1-deller@kernel.org>
- <20241219200138.GA722208@fedora>
- <299f897a-e5a7-4055-86f6-2106a0aaec0d@gmx.de>
-In-Reply-To: <299f897a-e5a7-4055-86f6-2106a0aaec0d@gmx.de>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 31 Dec 2024 07:39:14 -0500
-Message-ID: <CAJSP0QWo5aNYxz3-aEGgCfJSsHhnt0h9Yh_friTicjmZ1FFoGA@mail.gmail.com>
-Subject: Re: [PULL 0/6] Linux user fix gupnp patches
-To: Laurent Vivier <laurent@vivier.eu>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, deller@kernel.org, 
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>, Helge Deller <deller@gmx.de>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x52f.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::642;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x642.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,32 +94,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 19 Dec 2024 at 16:48, Helge Deller <deller@gmx.de> wrote:
->
-> Hi Stefan,
->
-> On 12/19/24 21:01, Stefan Hajnoczi wrote:
-> > Will this go through Laurent or did you send a pull request to have it
-> > merged into qemu.git/master directly?
->
-> Actually, I'm fine with either one.
-> I do understand that reviewing this patchset is somewhat
-> challenging as this area is quite complex and rarely touched.
-> That's probably why it didn't received much review yet, so
-> I decided to send the direct pull request to not bother others too much :-)
->
-> But if Laurent want to take it through his tree I'm fine with it,
-> same if someone merges it directly into git head.
+In commit 1a2623b5c9e7 ("vfio/igd: add macro for declaring mirrored
+registers"), I introduced a macro to handle mirrored registers in igd
+bar0. However, using the existing VFIOConfigMirrorQuirk should be a
+better approach I think after going through the vfio code.
 
-Hi Laurent,
-Please reply with Acked-by if you want me to merge this directly.
+This patch set introduces a new header file, pci-quirks.h, to hold
+generic quirk declarations, and extends VFIOConfigMirrorQuirk to
+support offsets in PCI config space. This eliminates the need for
+the previously introduced macro.
 
-Otherwise I will wait for you to take this through your tree.
+Happy new year :)
 
-Stefan
+Tomita Moeko (3):
+  vfio/pci: declare generic quirks in a new header file
+  vfio/pci: introduce config_offset field in VFIOConfigMirrorQuirk
+  vfio/igd: use VFIOConfigMirrorQuirk for mirrored registers
 
->
-> Thanks!
-> Helge
->
+ hw/vfio/igd.c        | 128 ++++++++++++-------------------------------
+ hw/vfio/pci-quirks.c |  64 ++++------------------
+ hw/vfio/pci-quirks.h |  72 ++++++++++++++++++++++++
+ 3 files changed, 119 insertions(+), 145 deletions(-)
+ create mode 100644 hw/vfio/pci-quirks.h
+
+-- 
+2.45.2
+
 
