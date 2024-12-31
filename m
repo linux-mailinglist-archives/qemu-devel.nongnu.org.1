@@ -2,33 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E799FF02B
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 16:24:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59DFB9FF02E
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 16:24:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tSe5w-0004Sj-8Z; Tue, 31 Dec 2024 10:23:44 -0500
+	id 1tSe5t-0004Rw-8R; Tue, 31 Dec 2024 10:23:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tSe5r-0004Ra-B5; Tue, 31 Dec 2024 10:23:39 -0500
+ id 1tSe5p-0004RM-Ov; Tue, 31 Dec 2024 10:23:37 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tSe5o-0004b6-EN; Tue, 31 Dec 2024 10:23:38 -0500
+ id 1tSe5o-0004bI-6M; Tue, 31 Dec 2024 10:23:37 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id 1BF91CE0CB;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1AC8ACE0CA;
  Tue, 31 Dec 2024 18:22:40 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id A8E0E4640B; Tue, 31 Dec 2024 18:23:24 +0300 (MSK)
+ id AA67C4640C; Tue, 31 Dec 2024 18:23:24 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>,
-	qemu-trivial@nongnu.org
-Subject: [PULL 0/1] Trivial patches for 2024-12-31
-Date: Tue, 31 Dec 2024 18:23:23 +0300
-Message-Id: <20241231152324.3307386-1-mjt@tls.msk.ru>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>
+Subject: [PULL 1/1] Revert "vvfat: fix ubsan issue in create_long_filename"
+Date: Tue, 31 Dec 2024 18:23:24 +0300
+Message-Id: <20241231152324.3307386-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241231152324.3307386-1-mjt@tls.msk.ru>
+References: <20241231152324.3307386-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -55,29 +58,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 7c89e226f878539b633dde3fd9c9f061c34094e3:
+This reverts commit 0cb3ff7c22671aa1e1e227318799ccf6762c3bea.
 
-  Merge tag 'pull-request-2024-12-29' of https://gitlab.com/huth/qemu into staging (2024-12-29 03:25:41 -0500)
+The original code was right in that long name in LFN directory
+entry uses other parts of the entry for the name too, not just
+the original "name" field.  So it is wrong to limit the offset
+to be within the name field.  Some other mechanism is needed
+to fix the ubsan report and whole messy usage of bytes past the
+given field.
 
-are available in the Git repository at:
-
-  https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
-
-for you to fetch changes up to d8d17d2bf6181cdc9b8ef3db862006ddb6af12d4:
-
-  Revert "vvfat: fix ubsan issue in create_long_filename" (2024-12-31 18:20:41 +0300)
-
-----------------------------------------------------------------
-This is just a revert of a previous commit which were pulled
-through trivial-patches before but which is obviously wrong.
-It is a bugfix to restore the broken vvfat functionality.
-Fixing of the ubsan test should be done differently.
-
-I'm sorry for this mishap.
-----------------------------------------------------------------
-Michael Tokarev (1):
-      Revert "vvfat: fix ubsan issue in create_long_filename"
-
+Reported-by: Volker Rümelin <vr_qemu@t-online.de>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
  block/vvfat.c | 4 ----
  1 file changed, 4 deletions(-)
+
+diff --git a/block/vvfat.c b/block/vvfat.c
+index f2eafaa923..8ffe8b3b9b 100644
+--- a/block/vvfat.c
++++ b/block/vvfat.c
+@@ -426,10 +426,6 @@ static direntry_t *create_long_filename(BDRVVVFATState *s, const char *filename)
+         else if(offset<22) offset=14+offset-10;
+         else offset=28+offset-22;
+         entry=array_get(&(s->directory),s->directory.next-1-(i/26));
+-        /* ensure we don't write anything past entry->name */
+-        if (offset >= sizeof(entry->name)) {
+-            continue;
+-        }
+         if (i >= 2 * length + 2) {
+             entry->name[offset] = 0xff;
+         } else if (i % 2 == 0) {
+-- 
+2.39.5
+
 
