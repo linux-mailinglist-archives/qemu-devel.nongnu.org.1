@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7230D9FF1CD
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:26:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 818659FF1D5
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:26:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tSino-0001mX-Ej; Tue, 31 Dec 2024 15:25:22 -0500
+	id 1tSinx-00026J-GN; Tue, 31 Dec 2024 15:25:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSinK-0001Bw-L2
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:50 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSinO-0001jP-Qw
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:55 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSinG-00011k-1f
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:49 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-43618283d48so75091835e9.1
- for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:24:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSinL-00012U-Oc
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:54 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4361f796586so106901725e9.3
+ for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:24:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735676683; x=1736281483; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735676688; x=1736281488; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kYhhix/9PVscVBbQFIH04IFrmOJJ4Qi4bOjmujehVDo=;
- b=jnLNRf42L517PD/EkOg2vVWwQgeUoUnXveTfBP9eLcpraDScT3Jtd7tV3Mdrwq1ffr
- 5xX5h0P6xpcwCTl9nRYWuYvpIFqMuhi+aJ8CpXr6q2FTtpmwg9wbwdyl8NUVp0iRxFUG
- wtQEzIxv+5ndPW5wk7zyGA/x4jHBaXH98K+HykvWp3eCT6WCTPzMsbzsaDliCItGanc7
- AIKHD79zB7rPbH1EUK48iGMtE9OroNaFD9rXqtTMhGTi77kRUMXzoXMEph7Y9fubMxb2
- o/wgmHlp0/1ckY1o6nMcOz7mVL8epcrZBFLUbSx8QexsV7BM2JD3F2PYQN9v59UK3NOU
- PO3g==
+ bh=AloPmLUtJIdEn3N27rO6zDqGnD5UcjWX7RRR5V1X2ow=;
+ b=snu2RYw09AfV61WBEZGxUx/cihUsE4gekL+Zmxfic+lEOcMxuwKRJbrUuXQNVYRang
+ vXfDRIOUUiR3gN2gmDLEjEm+rL/cPfxSVZOr0mKwsdUYS+Qs2rEy6wTmAzmyVF8oZkZm
+ GOsTZklIktlU2ATK2blJeyobb/yc2IvOzhY3u0i55cyNv19ym0qyadrduRviIGgQL17d
+ bj4FQwD8X8kUKvhkV4t9lXPG6fIGE5hHckCUkw9cQ69oenY6s6bgjB9cDqvMJdP8vivS
+ uBJlGHTrPaz7cL9VfwgKJgyADqTQo8KSfa8Zr+Y6lTI4KZXQ4R8JFNeC/LFgC8LCqsBb
+ qYcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735676683; x=1736281483;
+ d=1e100.net; s=20230601; t=1735676688; x=1736281488;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kYhhix/9PVscVBbQFIH04IFrmOJJ4Qi4bOjmujehVDo=;
- b=oMFFzzHZl+LzprGuSvMdY0Lugf2rQI+s1pLRzCl2ctc3rVHJi06qCNSVMBrLObiD4M
- 7fbpGbpdeuXQiL4SvGQDb/FXDJRUvUVHmjZcvfgmmdzp3u0TDDLv/rDzNSOPmSolR77t
- iagAlO9x/+ehOozWMbzj2iD4yTNIt8Bar+6FLcmJa5bPNCqobKA/yYfLOtGuoB6VrX8T
- b4uPhKAlphEfGon7OYUnn6LnM1UhDUQugEe6qqeogh3cpymGGdWGkH2hsAeI5BPxry+1
- uSQpi8bkC2ffSRNoTamOcOR3fhQ+yXV/QHwquIoOlGWhnPBznT+cjsP9BquUuYK8ksJv
- 5meg==
-X-Gm-Message-State: AOJu0Yydt0JyvwiXJ9KDbdhGiraunRsOqDdK1iiDZFQXpFz8EYjrHljM
- phL3drL5XDoa7zjK0S9AYnkZcQhI8L5n/JnNMsMQEh0Fl/g89BdqlElPxXBcbf6IM/zFG4ZaZR6
- ywVQ=
-X-Gm-Gg: ASbGnctn4Qfp9facwDUXbyq+P13z5EOdYVrGGlDVBPE4h6FwmYu471eDo0HO48BvVqf
- 8tzpRv1zu61jmbaYB9RRRjW6LkidB7gz8NYHZkPzgGZyeJrkZlF9Ibogoia1c6SNpOB08OB/xo+
- 6aIUJfBBqybMuMxS2jw/zlczqPR9b5YZi+EiIZUPSuuVOQz04QqKfsPf/RI8sRSwT0T/16BOsmH
- RBHItawFUp/pkeScYtxw4oa6kCXu9n8r10kKvHeSc0spVkcX79AYQmGa1vcmNMKSJ3v7+DRDtcz
- ny3CmLmfglrMdKTWp7Ik8W33kuVnwBE=
-X-Google-Smtp-Source: AGHT+IFKw7tzJFLtNW8lvUXDhFv1n5Mf/kbuYAXj/2t1cf0hWJcwQfRmrkhOwveb8xQcpoXH7cQX8w==
-X-Received: by 2002:a05:600c:3b23:b0:434:9499:9e87 with SMTP id
- 5b1f17b1804b1-43668b5e194mr296086495e9.25.1735676683417; 
- Tue, 31 Dec 2024 12:24:43 -0800 (PST)
+ bh=AloPmLUtJIdEn3N27rO6zDqGnD5UcjWX7RRR5V1X2ow=;
+ b=hOlw3MK1mRs9mYKMzVJQgOWs+qxSes6dhqtOZLASCVdKiDxqwEHiTzugu7ffEWfTGk
+ tgZ7s64f8IiwY4w/wWbKbjn6b6tuVz12nlleyiEx53XLu/5cDsNqNUvKAEbsDDbbvhky
+ Rt1v6t5GFHxOWOqNWt9JX9O6z2KIYvT7L6FbSZ/SGPCRIueaSDDjxP6QlKnc4LvsPM38
+ phmlU9Dc5tGwDIs0WMAkyHcSMnVGWF06Hwe9VWx4TNwnSjQ1c789KLypLWvDmAd+c3CT
+ 9Sro9vscQVU77L+jjX665JyrYSKF35tbN6F7V5r9PoAJFCpi+YiR7oOPM/cLXV2vDxd3
+ XB3g==
+X-Gm-Message-State: AOJu0Yyx0tP2deqyk+bD+BxbEIyQw750KLFHD3IutUFfsfHwDDWfpF/g
+ +NuYmfDFVLrw4OclPQIpQBqDpaMIVkGxaOcOgFGR0aZ5e34ZZmfCZR9ATG3xJ7X5dbdw9mtGDa9
+ A3U8=
+X-Gm-Gg: ASbGncvxjdxmru6Qo67coUU/kA/3cvtlHwRApe9h6UygiyEnKOO8WWN8AwnejOr1H+k
+ Sq6g/mopeQtUjhU2BRDH1TTHyiQFA24IV9zvYJLRsV88bLJVduaURJqSYlqlDTXABNSI+xlBrXK
+ IeFFAqocLQlRYc21/AA5b2QAuapCJEICIw4agySzBDjUEMUGqwH9CAmZteD8dcWaVGFeDbtCZ8H
+ 6UvseRePlfYWSttD2k970KkDvDjICwM0HTHjG4sDBg1Jd3Ya4l/HaNw2KHlvIQfXyzP7h64twFs
+ u6dzGGaSJmKdbjaSDDc6UJiBAlqXi1I=
+X-Google-Smtp-Source: AGHT+IGVOsMXejfyighUGwAQuClVJ+TINyjHYZxVMAgIAi0hhbPSJkUAZO1xSYO58AI947OKNg9OJA==
+X-Received: by 2002:a05:600c:4f95:b0:428:d31:ef25 with SMTP id
+ 5b1f17b1804b1-4366854c111mr370799555e9.12.1735676687957; 
+ Tue, 31 Dec 2024 12:24:47 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436611ea3d5sm402023665e9.5.2024.12.31.12.24.42
+ 5b1f17b1804b1-43656b119ccsm431476045e9.24.2024.12.31.12.24.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 31 Dec 2024 12:24:43 -0800 (PST)
+ Tue, 31 Dec 2024 12:24:47 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Phil Dennis-Jordan <phil@philjordan.eu>,
- Roman Bolshakov <rbolshakov@ddn.com>,
+Cc: William Hooper <wsh@wshooper.org>, Phil Dennis-Jordan <phil@philjordan.eu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 27/29] MAINTAINERS: Add myself as maintainer for apple-gfx,
- reviewer for HVF
-Date: Tue, 31 Dec 2024 21:22:26 +0100
-Message-ID: <20241231202228.28819-28-philmd@linaro.org>
+Subject: [PULL 28/29] net/vmnet: Pad short Ethernet frames
+Date: Tue, 31 Dec 2024 21:22:27 +0100
+Message-ID: <20241231202228.28819-29-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241231202228.28819-1-philmd@linaro.org>
 References: <20241231202228.28819-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,54 +97,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Phil Dennis-Jordan <phil@philjordan.eu>
+From: William Hooper <wsh@wshooper.org>
 
-I'm happy to take responsibility for the macOS PV graphics code. As
-HVF patches don't seem to get much attention at the moment, I'm also
-adding myself as designated reviewer for HVF and x86 HVF to try and
-improve that.
+At least on macOS 12.7.2, vmnet doesn't pad Ethernet frames, such as the
+host's ARP replies, to the minimum size (60 bytes before the frame check
+sequence) defined in IEEE Std 802.3-2022, so guests' Ethernet device
+drivers may drop them with "frame too short" errors.
 
-Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
-Reviewed-by: Roman Bolshakov <rbolshakov@ddn.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241223221645.29911-6-phil@philjordan.eu>
+This patch calls eth_pad_short_frame() to add padding, as in net/tap.c
+and net/slirp.c. Thanks to Bin Meng, Philippe Mathieu-Daudé, and Phil
+Dennis-Jordan for reviewing earlier versions.
+
+Signed-off-by: William Hooper <wsh@wshooper.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2058
+Reviewed-by: Phil Dennis-Jordan <phil@philjordan.eu>
+Message-ID: <20241102205653.30476-1-wsh@wshooper.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/vmnet-common.m | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 38a290e9c2c..2101b512175 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -509,6 +509,7 @@ F: target/arm/hvf/
- X86 HVF CPUs
- M: Cameron Esfahani <dirty@apple.com>
- M: Roman Bolshakov <rbolshakov@ddn.com>
-+R: Phil Dennis-Jordan <phil@philjordan.eu>
- W: https://wiki.qemu.org/Features/HVF
- S: Maintained
- F: target/i386/hvf/
-@@ -516,6 +517,7 @@ F: target/i386/hvf/
- HVF
- M: Cameron Esfahani <dirty@apple.com>
- M: Roman Bolshakov <rbolshakov@ddn.com>
-+R: Phil Dennis-Jordan <phil@philjordan.eu>
- W: https://wiki.qemu.org/Features/HVF
- S: Maintained
- F: accel/hvf/
-@@ -2631,6 +2633,11 @@ F: hw/display/edid*
- F: include/hw/display/edid.h
- F: qemu-edid.c
+diff --git a/net/vmnet-common.m b/net/vmnet-common.m
+index dba5b5bab13..54d900ba679 100644
+--- a/net/vmnet-common.m
++++ b/net/vmnet-common.m
+@@ -18,6 +18,7 @@
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
+ #include "system/runstate.h"
++#include "net/eth.h"
  
-+macOS PV Graphics (apple-gfx)
-+M: Phil Dennis-Jordan <phil@philjordan.eu>
-+S: Maintained
-+F: hw/display/apple-gfx*
+ #include <vmnet/vmnet.h>
+ #include <dispatch/dispatch.h>
+@@ -147,10 +148,26 @@ static int vmnet_read_packets(VmnetState *s)
+  */
+ static void vmnet_write_packets_to_qemu(VmnetState *s)
+ {
++    uint8_t *pkt;
++    size_t pktsz;
++    uint8_t min_pkt[ETH_ZLEN];
++    size_t min_pktsz;
++    ssize_t size;
 +
- PIIX4 South Bridge (i82371AB)
- M: Hervé Poussineau <hpoussin@reactos.org>
- M: Philippe Mathieu-Daudé <philmd@linaro.org>
+     while (s->packets_send_current_pos < s->packets_send_end_pos) {
+-        ssize_t size = qemu_send_packet_async(&s->nc,
+-                                      s->iov_buf[s->packets_send_current_pos].iov_base,
+-                                      s->packets_buf[s->packets_send_current_pos].vm_pkt_size,
++        pkt = s->iov_buf[s->packets_send_current_pos].iov_base;
++        pktsz = s->packets_buf[s->packets_send_current_pos].vm_pkt_size;
++
++        if (net_peer_needs_padding(&s->nc)) {
++            min_pktsz = sizeof(min_pkt);
++
++            if (eth_pad_short_frame(min_pkt, &min_pktsz, pkt, pktsz)) {
++                pkt = min_pkt;
++                pktsz = min_pktsz;
++            }
++        }
++
++        size = qemu_send_packet_async(&s->nc, pkt, pktsz,
+                                       vmnet_send_completed);
+ 
+         if (size == 0) {
 -- 
 2.47.1
 
