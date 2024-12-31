@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 350199FEC50
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 03:07:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71DD79FEC51
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 03:07:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tSRe2-0006TH-Le; Mon, 30 Dec 2024 21:06:06 -0500
+	id 1tSRdz-0006SH-Kw; Mon, 30 Dec 2024 21:06:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fuqiang.wng@gmail.com>)
- id 1tSRUs-0004ou-Ce
- for qemu-devel@nongnu.org; Mon, 30 Dec 2024 20:56:38 -0500
-Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ id 1tSRUw-0004pI-Ml
+ for qemu-devel@nongnu.org; Mon, 30 Dec 2024 20:56:42 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <fuqiang.wng@gmail.com>)
- id 1tSRUp-0003sQ-J8
- for qemu-devel@nongnu.org; Mon, 30 Dec 2024 20:56:37 -0500
-Received: by mail-pj1-x102c.google.com with SMTP id
- 98e67ed59e1d1-2ee9a780de4so9485600a91.3
- for <qemu-devel@nongnu.org>; Mon, 30 Dec 2024 17:56:35 -0800 (PST)
+ id 1tSRUu-0003sv-VY
+ for qemu-devel@nongnu.org; Mon, 30 Dec 2024 20:56:42 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-2167141dfa1so124364765ad.1
+ for <qemu-devel@nongnu.org>; Mon, 30 Dec 2024 17:56:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1735610193; x=1736214993; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1735610197; x=1736214997; darn=nongnu.org;
  h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
  :cc:subject:date:message-id:reply-to;
- bh=5bo9JB7Q6KwtbLxQUitkC9AEkI0Sqdz6MLreyLm6lHw=;
- b=ROZErrVhbKlwwr2mWUiINAyjOtVaMkpICJEHrmnuC3RltafZsJsx4J+LD4xLpPQM4q
- IznTlz9JXUEq2JgmBZ0ZncV0+3tJVaHkL/SyefGkQrwEB5j+UsRyq8BsoB80OiZCMUQZ
- IfWDeZJkFwetcoVNz/izUWgvlw+L7hjac2QZmGkxPf8iXfNsAuy6sXLudhn2ZdKLk53B
- 7trYsjCo+a3BgYRBB3gwWMOMeYMxKJ85v+Cd3OXyFwlSnuBiTqwmxPMINFFtRQ5IlSl6
- apFMwcsldovShCbiXu5dv7DNNmRe9cSuLiAXjK91LfhgQzOgcqkf57JGGztLI94Vr9k2
- sA+Q==
+ bh=zvuT9FKOXYyWdztPcn6rB7JN9T8nOggUTHlm7D0ifFY=;
+ b=mMDw9awqdLNX4JAVvlQP9c52APX7dU4FWdFPdrjBSiFCg8BTp1hnSs+XmeEqCeIzd9
+ Ak4MEIl/vfvXYNet9P8Kpy3UnQIVXPum2Ih82JiugME/VAGa6EI1gg82+NoGLh+XUwdM
+ PlciBtWpwJ72GFz/f/SuMifQovxk2wIE40sFQGcx6f8Z0dBcIwzCSj5T4MN2L5R9+LC8
+ IgwUo7Of9P3a/HAyjrMhaf/xx2crIRVn1cBSdrzm2qgaaebn1Q9c2T+uBMkqog2htLqY
+ 5QSBG+iEDcyO4qfa6aCH1VehqO4phhjRgPLPCtW1S7u0hPrEGOf87Ve2XLDgYJ7HJqtZ
+ a/tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735610193; x=1736214993;
+ d=1e100.net; s=20230601; t=1735610197; x=1736214997;
  h=references:in-reply-to:message-id:date:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5bo9JB7Q6KwtbLxQUitkC9AEkI0Sqdz6MLreyLm6lHw=;
- b=wyv9+wJKyCY+soAvgKLIp4RUz0eAb4udxSBfRN8hSC7I5fcPFnECg71+Y9XAevgMR4
- D1k5p1wfEs8USzFVLQRfgIQ8+kLhfOKhUHPxY4c+v7EA/i2EjNOsUcXpfkst65bH9Ajk
- KlV7UMO9exhkcthh+ViAgXAnvrlD1kIbIT5VajugY44b5gdYqtkpKqaJwjuxKK731FIa
- rQYbzD+KGExaIq/79rTOPv05nYehxTnNqjdjI1zLutMdyiP3r8ZV/BKbjBaaVzwb3aj2
- 6+B8dz3P2y3/I9OgzZcN0WAdHOqIxS9LaKcIiIJYopaRU0tV4Wq62x4shkQfDYM+BT3W
- L+eg==
-X-Gm-Message-State: AOJu0YztbTGBr4P0JVxmB4hOVxzt1FCij9M2UCu02nUREd0MIWyXsmpb
- Vo0/pMV5Mh0ptidaupJzSBXwbNE6i3QaHWR3hhFwvBS+DVyeRlXmA5rVu01BRZM=
-X-Gm-Gg: ASbGncvFNbIfTjnoko8UFeGXoyeSd2VLssXMrLbaOMmtn1nyxew9tv9jWNvs89eEFxi
- BqAP/kT4HG0wWTiXc9tXDMkfLcDKWUIrLB8hGA//aytgsQXMpRsWXv4nysuya3qw/ohHwGLfYLm
- DG5EUMhbjV/vCs22+wiyacY1tblFLYrUmlYK0GnndyVRHrm4kxkN1G6D7m1U9NGszG9g92CRqJS
- z9G463kI3eZZOCqMfCOt4es6/DqJVGlU3fZ+scix6QjgjtJCTbpTbG/tQhZhkPGgcKBOcib+Vr6
- Yw==
-X-Google-Smtp-Source: AGHT+IHrqha+5kQpb6K8gvb7xWnPe/lRVvMjU0ino+CdOiO/vCGpnIcrP2OhoYcSlEmJ9rWR+GX0RQ==
-X-Received: by 2002:a17:90b:2c84:b0:2ee:bbe0:98c6 with SMTP id
- 98e67ed59e1d1-2f452dfcb28mr61985399a91.8.1735610193679; 
- Mon, 30 Dec 2024 17:56:33 -0800 (PST)
+ bh=zvuT9FKOXYyWdztPcn6rB7JN9T8nOggUTHlm7D0ifFY=;
+ b=hWywVz/TuhA12XTK9UGx4c9zBR/V5ElPpoUmQoTY4Scr0D09RHsvr8Nkbb5cTUTVDD
+ 22mb8fQR4vJ4eXWVIThKI18BLw/4zRqR8+lro5/zRhcfomQJiesVP2gSla9eO0jnAVA5
+ 4kcsy9e7GQJt6ilaWLGQ/zwHjVGzV86r776+yMOXqYkHM4YKpzK/92GdPfmygjDQV6iu
+ wf83a9oas4KM1vCvuzFGemSDnGKsYhLGPmHOEf28Sfzx2binjq+k32hwy4DVVPkyv0be
+ TdXm/mEYmwRs1BPWoFvZ2LnXL1BtjQ6l5aUJwJ52rVzz3rJ1Z/ZZmsafML6JpQTR3T0i
+ Ku5A==
+X-Gm-Message-State: AOJu0YytkI7pG1+YijSh2baD8QUsD0m9G4iC4/brotK8/8w0zYW55bld
+ k4Vp6W3CEWkAH/i6vNdaiM5aSHcIGrHk6KqvYzreW6cegOD4Pgslb8ZVDYLlvHg=
+X-Gm-Gg: ASbGnctc0C+NhmQAsVhVkCwjhMjaIXL4JkaSb+tAL/KRWyx5qsufdjETx6Qs4X+izev
+ UWwZrDmT/jz28SiQbO2uKJ44z/niK0eiKHys626N17IO9E1bi8oOiCcAIpbpYuv6kq/CFgxaNBN
+ uq7WK/NU8V+9we4c7SVBl6xQqnCYTQMGNWQKjqeOv91XdxxLSZ61aoWa4b0/mguN1cxFf3KW7n3
+ EBLI1QYSmDm0et6Wh5wwNqYCaHaFGzmXoWUYYc3abK1Hm8eO2UmMfdtDDsz/Wnsqa6gt2LyyLh+
+ Mg==
+X-Google-Smtp-Source: AGHT+IFlmt/RbcGWF7ld7++qPRx2yTOMi8WB7gsMLM7Dp2tHM36reqNLdOBz0fdw9+V8osQfihDz6A==
+X-Received: by 2002:a17:903:2ac3:b0:215:9eac:1857 with SMTP id
+ d9443c01a7336-219da5b9caemr557937605ad.5.1735610197259; 
+ Mon, 30 Dec 2024 17:56:37 -0800 (PST)
 Received: from wangfuqiang49-vm.localdomain ([114.67.220.238])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f2ed52dfffsm23445223a91.5.2024.12.30.17.56.31
+ 98e67ed59e1d1-2f2ed52dfffsm23445223a91.5.2024.12.30.17.56.34
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 30 Dec 2024 17:56:33 -0800 (PST)
+ Mon, 30 Dec 2024 17:56:36 -0800 (PST)
 From: fuqiang wang <fuqiang.wng@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Hyman Huang <yong.huang@smartx.com>, huaminxu1@jd.com,
  fuqiang wang <fuqiang.wng@gmail.com>, wangfuqiang49 <wangfuqiang49@jd.com>
-Subject: [PATCH 1/2] optimize the dirtylimit_throttle_pct trace event
-Date: Tue, 31 Dec 2024 09:56:13 +0800
-Message-Id: <1735610174-37467-2-git-send-email-fuqiang.wng@gmail.com>
+Subject: [PATCH 2/2] improve precision of throttle_pct
+Date: Tue, 31 Dec 2024 09:56:14 +0800
+Message-Id: <1735610174-37467-3-git-send-email-fuqiang.wng@gmail.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1735610174-37467-1-git-send-email-fuqiang.wng@gmail.com>
 References: <1735610174-37467-1-git-send-email-fuqiang.wng@gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
- envelope-from=fuqiang.wng@gmail.com; helo=mail-pj1-x102c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=fuqiang.wng@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,108 +94,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current dirtylimit_throttle_pct trace event is triggered when the
-throttle time is adjusted linearly. Modify the trace event so that it
-can record non-linear adjustments. Additionally, since the throttle time
-might be adjusted again at the end of the dirtylimit_set_throttle
-function, move the trace event to after this process and calculate the
-final adjustment time and sleep percent.
+Using the current algorithm, there are issues with precision not being
+handled correctly during division operations. (Even though double type
+casting is used in the function, it does not seem to have any effect.)
+Refer to the results of the test program from [1]. When there is a large
+discrepancy between current and quota, there is a noticeable error.
 
-This patch can fix the following issue:
+The main derivation of the new algorithm is(For current > quota):
+                   ring_full_time_us * current
+    quota       = --------------------------------
+                   ring_full_time_us + throttle_us
 
-1. The current dirty rate at 1000MB/s and the dirty limit value at
-   10000MB/s, before merge this patch, this trace event will print:
+                   current - quota
+    throttle_us = ----------------- * ring_full_time_us
+                        quota
 
-     CPU[2] throttle percent: 98, throttle adjust time 191590 us
-     CPU[2] throttle percent: 98, throttle adjust time 191002 us
-     CPU[2] throttle percent: 98, throttle adjust time 191002 us
+In the actual code, first calculate the value of
+{(current-quota})\quota} and store the intermediate result as a double.
+Then, multiply it by ring_full_time_us.
 
-   After merge this patch, there will be no print.
+Test scenario:
+- generate dirty pages program: tests/migration/stress, dirtyrate is
+  about 1500MB/s with WP enable.
+- dirtyring size : 65536
+- dirtylimit: 333
 
-2. The current dirty rate is 1000MB/s and the dirty limit rate value is
-   333MB/s, before merge this patch, this trace event will print:
+To facilitate testing, merge both the new and old algorithms into the
+same code, calculate the difference in throttle_us between them, and
+track the value of the next non-linear adjustment after a linear
+adjustment.
 
-     CPU[3] throttle percent: 98, throttle adjust time 32666634 us
+The test results are as follows:
 
-   It will only print linear adjustment, and the adjust time
-   will be larger and only have positive values.
+- throttle_us difference:
+  [19003, 24755, 25231, 14630, 25705]
 
-   After merge this patch, print as following:
-     CPU[2] throttle percent: 97, throttle adjust time 128766 us
-     CPU[2] throttle percent: 94, throttle adjust time -61131 us
-     CPU[2] throttle percent: 92, throttle adjust time -16634 us
-     ...
-     CPU[2] throttle percent: 74, throttle adjust time -390 us
-     CPU[2] throttle percent: 73, throttle adjust time -390 us
+  average: 21864
+
+- next non-linear adjustment":
+  [16764, 16368, 16357, 16591, 16347]
+
+  average: 16485
+
+Based on the test results, after merging this patch, the linear
+adjustment value will increase, allowing the quota to be reached one
+loop earlier.
+
+[1]: https://github.com/cai-fuqiang/kernel_test/tree/master/dirty_throttle_pct_test
 
 Signed-off-by: wangfuqiang49 <wangfuqiang49@jd.com>
 ---
- system/dirtylimit.c | 28 ++++++++++++++++++++--------
- 1 file changed, 20 insertions(+), 8 deletions(-)
+ system/dirtylimit.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/system/dirtylimit.c b/system/dirtylimit.c
-index 7c071248bb..c7f663e5b9 100644
+index c7f663e5b9..25439e8e99 100644
 --- a/system/dirtylimit.c
 +++ b/system/dirtylimit.c
-@@ -281,31 +281,30 @@ static void dirtylimit_set_throttle(CPUState *cpu,
+@@ -281,7 +281,7 @@ static void dirtylimit_set_throttle(CPUState *cpu,
  {
      int64_t ring_full_time_us = 0;
      uint64_t sleep_pct = 0;
-+    uint64_t throttle_pct = 0;
+-    uint64_t throttle_pct = 0;
++    double throttle_pct = 0;
      uint64_t throttle_us = 0;
-+    int64_t throtlle_us_old = cpu->throttle_us_per_full;
+     int64_t throtlle_us_old = cpu->throttle_us_per_full;
  
-     if (current == 0) {
-         cpu->throttle_us_per_full = 0;
--        return;
-+        goto end;
-     }
- 
-     ring_full_time_us = dirtylimit_dirty_ring_full_time(current);
+@@ -294,14 +294,14 @@ static void dirtylimit_set_throttle(CPUState *cpu,
  
      if (dirtylimit_need_linear_adjustment(quota, current)) {
          if (quota < current) {
--            sleep_pct = (current - quota) * 100 / current;
-+            throttle_pct  = (current - quota) * 100 / current;
+-            throttle_pct  = (current - quota) * 100 / current;
++            throttle_pct  = (current - quota) / (double)quota;
              throttle_us =
--                ring_full_time_us * sleep_pct / (double)(100 - sleep_pct);
-+                ring_full_time_us * throttle_pct / (double)(100 - throttle_pct);
+-                ring_full_time_us * throttle_pct / (double)(100 - throttle_pct);
++                ring_full_time_us * throttle_pct;
              cpu->throttle_us_per_full += throttle_us;
          } else {
--            sleep_pct = (quota - current) * 100 / quota;
-+            throttle_pct = (quota - current) * 100 / quota;
+-            throttle_pct = (quota - current) * 100 / quota;
++            throttle_pct = (quota - current) / (double)current;
              throttle_us =
--                ring_full_time_us * sleep_pct / (double)(100 - sleep_pct);
-+                ring_full_time_us * throttle_pct / (double)(100 - throttle_pct);
+-                ring_full_time_us * throttle_pct / (double)(100 - throttle_pct);
++                ring_full_time_us * throttle_pct;
              cpu->throttle_us_per_full -= throttle_us;
          }
  
--        trace_dirtylimit_throttle_pct(cpu->cpu_index,
--                                      sleep_pct,
--                                      throttle_us);
-     } else {
-         if (quota < current) {
-             cpu->throttle_us_per_full += ring_full_time_us / 10;
-@@ -323,6 +322,19 @@ static void dirtylimit_set_throttle(CPUState *cpu,
-         ring_full_time_us * DIRTYLIMIT_THROTTLE_PCT_MAX);
- 
-     cpu->throttle_us_per_full = MAX(cpu->throttle_us_per_full, 0);
-+
-+end:
-+    if (cpu->throttle_us_per_full - throtlle_us_old) {
-+        if (current) {
-+            sleep_pct = ring_full_time_us * 100 / (ring_full_time_us +
-+                    cpu->throttle_us_per_full);
-+        } else {
-+            sleep_pct = 0;
-+        }
-+        trace_dirtylimit_throttle_pct(cpu->cpu_index,
-+                                      sleep_pct,
-+                                      cpu->throttle_us_per_full -
-+                                      throtlle_us_old); }
- }
- 
- static void dirtylimit_adjust_throttle(CPUState *cpu)
 -- 
 2.47.0
 
