@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB809FF1BC
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:23:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F13149FF1C4
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:24:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tSili-0002MN-JP; Tue, 31 Dec 2024 15:23:10 -0500
+	id 1tSiln-0002Rm-60; Tue, 31 Dec 2024 15:23:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSilg-0002M8-8k
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:23:08 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSill-0002Mp-5S
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:23:13 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSile-0000qY-LB
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:23:08 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4361f796586so106895275e9.3
- for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:23:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSilj-0000r3-Jz
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:23:12 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-43618283dedso102591515e9.3
+ for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:23:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735676584; x=1736281384; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735676590; x=1736281390; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GTH2NS4uBQl2BnMaC5NUzMTAA4jFlWhBioB2cxgitBU=;
- b=K1KX2neA/ULhbEPrDQau4crtUIeLDFnDBBx9s7RaM/D0hHo37fPROQwk+CUAYK1mMS
- lFmGMcHWuzVCqvZVrH4sHogchJwXufs6mRQ0Uz8wuN3g2pt/0BPuzCaZbdtYKsBlq3aj
- I6TTsTxjK8a7yvkU4CWcZY4SlKLcpHk9ySLNRphUVXLh10RCnY62lDvijAnMS2uOqUBu
- 3nlliTO/nJDp3dsfX0/WTRkkCUpedeRHJebaZFSu3rdlax2LGwmah4UbFqbOk0BF7APv
- XW++vC5XSykILT7aAN39iArtp8DIQqdFI7ysyit1FFQ8UKWrtliXP+sgjj6V823Gznbf
- XjPg==
+ bh=dGNPsqtn6WrBcmWHUQltDVOOi9FS/uGzmcny5x2XTrE=;
+ b=nvHoZ4uSutqa9yDJfSBV0lFIacSJoQz5NKtDFt5Sgt1f8VBYBz0EeiiMKcarN3orwd
+ Hnl63TTZ2wM0jZAvQpC0gD9VeOK1SeHzK3ElLafqMNx+oJN2ae5IoaHKqX6TsRH6kbEk
+ lQD0rg2+kfZkonbihJR0tWVZcz+tXICnV86IMcA125hmcJmtDg0gzIHywqX232ePoeCh
+ e2wo3wsiW3f19YQin/Be6hex3+fVUIcTGHuv9oMBV9vxAzY0e9ExddPuBJDfdOQNDFpM
+ iafPc682QYTbtaaIfnSoCRyliXJwe9yhCIVpWviO8gjpcZlcRRFdIRXPlj308kGzDRKB
+ zacQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735676584; x=1736281384;
+ d=1e100.net; s=20230601; t=1735676590; x=1736281390;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GTH2NS4uBQl2BnMaC5NUzMTAA4jFlWhBioB2cxgitBU=;
- b=McBpFYzrMNHpIMJRBRaxu/9fT+C0pv/+JOj07w1qbGngHsWckVzQnUB1QKZ8cqP9zl
- FXYu17PyquhVKhHn5xnBLAmEF7v74hTittBEcLOsavz+W7CzP3PYX8ch02hmCERH3BFb
- p/K6ouqe3fTxS9Xdc8P7MmkP8RD99++Ax8w64H+vZUYOyxzak/mbqxb8q4WROhAydQMP
- cdzX/SBIGvXdGz9kHmh2/qclMGTczZ1FRxdbkaY9F9r/Qi0c3Q2zGjaS6xvBt5yaD36q
- jFyU/IoyGgwWzOsPOFSrBPhHIMDv6h8Yc57eOLPdR1Vo0Sn8/I54xfpOIbSbCmQ3s5XY
- u9FQ==
-X-Gm-Message-State: AOJu0YxmbB7c/ia9wsjxnW5J9lV4HeBkClpOD/E742d6QjCUCV6gRI1H
- oT1fS+39UR0o4utI2yZpQJ3AYf64mpQkRC3xDRNG3MOpK2mL9YnNqnzC7VkEdNZYvZir8x9OjRM
- C6AY=
-X-Gm-Gg: ASbGncvxCDFhXs04qWv8bvq7ZQLRLK1tRG9RDp6iULbEsjeKOAc9D61554YCsejjBW4
- MD5zHlnEzPyGRhN9voMxNsCfFNe6lufeg6SoHzMnX2c818JJBI2S3BjJY1ep7w2fgtP8kaHAa0C
- TPW+tOqyKrievu+1OFsQQ6Y5hKK/3tjdOlqX/IRSuAh+OaNTmNNgA3jUDxOcqfZj/YnVgGE391n
- 5BLCiDKuSa7n2nwyTzeufKVun+EO1jv2xKhN/iGaOh3jEQqw9QjKj34w/oZd7sTg778RonUkSvC
- itf7Tc6/iVfsv7/Kq7DmTOSP44IL8o4=
-X-Google-Smtp-Source: AGHT+IEwcfIODGsf6fHeLL6ojpLHonOjR56fo6RGVOY0Z+T+onxQTzRXOP/xwMCtAdIXihuAM7hA7A==
-X-Received: by 2002:a05:600c:1383:b0:434:fddf:5c0c with SMTP id
- 5b1f17b1804b1-4366835c41emr342504985e9.4.1735676584615; 
- Tue, 31 Dec 2024 12:23:04 -0800 (PST)
+ bh=dGNPsqtn6WrBcmWHUQltDVOOi9FS/uGzmcny5x2XTrE=;
+ b=SmZs0rWKv640fZCNfYOr3MOPnZS3XM6Hh6z6HCYFuNzA69FGOH/213mT+Tr11okb+c
+ fQ0b0K4kek12kl3JP43E6P4O5z6PGsqSXBAcrq8BXRE5xodBCeqzXJZ6RpOFhIeAF1H/
+ YTcumEPsl7ApX93K1b0ibF+qictAUPDqui2miMN29ljiH1CVRibpaHALtraDXWhuihc/
+ k3VUyWe8MhC2nG2um2uqbD6g0KrQvRtLewgs+UyZhYHlhUse/zPZQSRpnJaSFzMpp9FY
+ QWDzBIhEMhO0iK0z5wIL+lCfN8+XxlO1dDSmvd7Mdr7LYzFlxWONmtRg6wXmuB1uj8B+
+ TzFA==
+X-Gm-Message-State: AOJu0YyVetL3R6lgp4ScgH+XOc6KgUSZrFV9GvNYE15WtD2HEZVpueRU
+ VVhPWvLABKouHSDATxe3M8r/k4sgv3N+6ho8T+xvMu7e/huAtaA5CKx6wdPum5zhnNL8DhHrZl0
+ 1vc8=
+X-Gm-Gg: ASbGncsC2VRmQyJHbwwTukQoOBZ9vF1os3AKIBbHUqGxGIvLhKPh/HWKT6y73fluUj+
+ SwQ04hy5NwBoZMfQz1w7JoLH0Rn8KQkQvwCQ4H1sn/2lIzQ97rtz/NdPszMtC3vyjNEUQGVpATR
+ /OWbxr30m3BKCcfDwkhfi/FYePY8YsyhY6D/ahHs/2kYXSeKIcKOlqnfcBkS6Uzx+F6hU/Limm0
+ 1h9IhtuFAK1F12n807RZ1eFmHgXl0k8tumlOy/qY0wPvQQDlLqhJLYcaOdSRBRJ5TX/xNd4aWgG
+ rbHDvqMLPt6Y+OS2imo8y4NEWkqGjbw=
+X-Google-Smtp-Source: AGHT+IGEJ/cuOD4fYvLba4TV4gcoL4CYUHt2CM4M1Ro32+wkEZxv8+j9fE0vsv90XamhyleknVNehQ==
+X-Received: by 2002:a05:600c:45cf:b0:434:a781:f5e2 with SMTP id
+ 5b1f17b1804b1-43668642289mr322212115e9.8.1735676589468; 
+ Tue, 31 Dec 2024 12:23:09 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656b4471bsm431993565e9.44.2024.12.31.12.23.03
+ ffacd0b85a97d-38a1c8a636asm34466725f8f.88.2024.12.31.12.23.08
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 31 Dec 2024 12:23:04 -0800 (PST)
+ Tue, 31 Dec 2024 12:23:09 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <huth@tuxfamily.org>
-Subject: [PULL 07/29] hw/i386: Mark devices as little-endian
-Date: Tue, 31 Dec 2024 21:22:06 +0100
-Message-ID: <20241231202228.28819-8-philmd@linaro.org>
+Subject: [PULL 08/29] hw/tricore: Mark devices as little-endian
+Date: Tue, 31 Dec 2024 21:22:07 +0100
+Message-ID: <20241231202228.28819-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241231202228.28819-1-philmd@linaro.org>
 References: <20241231202228.28819-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,8 +98,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These devices are only used by the X86 targets, which are only
-built as little-endian. Therefore the DEVICE_NATIVE_ENDIAN
+These devices are only used by the TriCore target, which is
+only built as little-endian. Therefore the DEVICE_NATIVE_ENDIAN
 definition expand to DEVICE_LITTLE_ENDIAN (besides, the
 DEVICE_BIG_ENDIAN case isn't tested). Simplify directly using
 DEVICE_LITTLE_ENDIAN.
@@ -107,89 +107,24 @@ DEVICE_LITTLE_ENDIAN.
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Thomas Huth <huth@tuxfamily.org>
-Message-Id: <20241106184612.71897-2-philmd@linaro.org>
+Message-Id: <20241106184612.71897-3-philmd@linaro.org>
 ---
- hw/i386/kvm/apic.c         | 2 +-
- hw/i386/pc.c               | 4 ++--
- hw/i386/vapic.c            | 2 +-
- hw/i386/xen/xen_apic.c     | 2 +-
- hw/i386/xen/xen_platform.c | 2 +-
- 5 files changed, 6 insertions(+), 6 deletions(-)
+ hw/tricore/tricore_testdevice.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/i386/kvm/apic.c b/hw/i386/kvm/apic.c
-index 602c7696565..75751060009 100644
---- a/hw/i386/kvm/apic.c
-+++ b/hw/i386/kvm/apic.c
-@@ -214,7 +214,7 @@ static void kvm_apic_mem_write(void *opaque, hwaddr addr,
- static const MemoryRegionOps kvm_apic_io_ops = {
-     .read = kvm_apic_mem_read,
-     .write = kvm_apic_mem_write,
+diff --git a/hw/tricore/tricore_testdevice.c b/hw/tricore/tricore_testdevice.c
+index e60866d76fa..d2da74e3846 100644
+--- a/hw/tricore/tricore_testdevice.c
++++ b/hw/tricore/tricore_testdevice.c
+@@ -47,7 +47,7 @@ static const MemoryRegionOps tricore_testdevice_ops = {
+         .min_access_size = 4,
+         .max_access_size = 4,
+     },
 -    .endianness = DEVICE_NATIVE_ENDIAN,
 +    .endianness = DEVICE_LITTLE_ENDIAN,
  };
  
- static void kvm_apic_reset(APICCommonState *s)
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 53a2f226d03..71118765884 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1068,7 +1068,7 @@ DeviceState *pc_vga_init(ISABus *isa_bus, PCIBus *pci_bus)
- static const MemoryRegionOps ioport80_io_ops = {
-     .write = ioport80_write,
-     .read = ioport80_read,
--    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-     .impl = {
-         .min_access_size = 1,
-         .max_access_size = 1,
-@@ -1078,7 +1078,7 @@ static const MemoryRegionOps ioport80_io_ops = {
- static const MemoryRegionOps ioportF0_io_ops = {
-     .write = ioportF0_write,
-     .read = ioportF0_read,
--    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-     .impl = {
-         .min_access_size = 1,
-         .max_access_size = 1,
-diff --git a/hw/i386/vapic.c b/hw/i386/vapic.c
-index 0e6d058d063..14de9b7a820 100644
---- a/hw/i386/vapic.c
-+++ b/hw/i386/vapic.c
-@@ -718,7 +718,7 @@ static uint64_t vapic_read(void *opaque, hwaddr addr, unsigned size)
- static const MemoryRegionOps vapic_ops = {
-     .write = vapic_write,
-     .read = vapic_read,
--    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
- };
- 
- static void vapic_realize(DeviceState *dev, Error **errp)
-diff --git a/hw/i386/xen/xen_apic.c b/hw/i386/xen/xen_apic.c
-index 101e16a7662..a94e9005cbe 100644
---- a/hw/i386/xen/xen_apic.c
-+++ b/hw/i386/xen/xen_apic.c
-@@ -36,7 +36,7 @@ static void xen_apic_mem_write(void *opaque, hwaddr addr,
- static const MemoryRegionOps xen_apic_io_ops = {
-     .read = xen_apic_mem_read,
-     .write = xen_apic_mem_write,
--    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
- };
- 
- static void xen_apic_realize(DeviceState *dev, Error **errp)
-diff --git a/hw/i386/xen/xen_platform.c b/hw/i386/xen/xen_platform.c
-index 0f68c3fe7b3..dd648a2ee94 100644
---- a/hw/i386/xen/xen_platform.c
-+++ b/hw/i386/xen/xen_platform.c
-@@ -514,7 +514,7 @@ static void platform_mmio_write(void *opaque, hwaddr addr,
- static const MemoryRegionOps platform_mmio_handler = {
-     .read = &platform_mmio_read,
-     .write = &platform_mmio_write,
--    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
- };
- 
- static void platform_mmio_setup(PCIXenPlatformState *d)
+ static void tricore_testdevice_init(Object *obj)
 -- 
 2.47.1
 
