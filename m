@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 109809FF1CF
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:26:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AAE49FF1C0
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:24:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tSima-0005Oc-Lc; Tue, 31 Dec 2024 15:24:04 -0500
+	id 1tSimh-0006Fw-Fs; Tue, 31 Dec 2024 15:24:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSimX-0005Av-9v
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:01 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSimd-0005zG-DS
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:07 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSimV-0000vv-K5
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:00 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-38a25d4b9d4so3523092f8f.0
- for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:23:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSimb-0000we-8Z
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:06 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4361f796586so106898765e9.3
+ for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:24:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735676637; x=1736281437; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735676643; x=1736281443; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qFV9r81Ea/Fg1ZQ98Ka7pViQ6qvJe57bkPT4B6LFdHo=;
- b=rRJQ3mOvb9k+6p+Joh5Xec44VhFiRyuTPV3v+PFy7eW0Sk8WNHVrlBQ6eLiRSFrXzi
- u2lcCjCDaimXi44vlFWUXwvo8DX9ay9Vb6Vmx2e6kApStbQSJ8jJb3FMpJniZhZzyYSG
- tTA4M6NU6eIvfwAfHM2No+O/VyfM57TaZVg6a8kD3Lxx5HqUvfcToKlIjAfNvhNASEuW
- jkbahCHs5r3dZElmdxTj+r3JfNlycsCEzvYUerN7YIKSWla33ta1BcpcOWdbKSj6Tqjg
- e4q7OO8qrcD8zOVZUyw5Sh5VR7yBfyHk/9wLIn+hxmohK3CJnYu/XE11WUfqLg0QkfN0
- P8Xg==
+ bh=4eBUfaZOV4VpWuEPg0imAAbPSgeX3YWDxsrL3NZUv+w=;
+ b=Z3eYRnO16r6Vi72Y64DmN6UPldK4TDxt4NbFYqN4Re2kzULpKYV3ePmmdpaBx8qC+r
+ 8U1530m5ZhHq7thiFFaKZjcfjzZBd0bnhZXJy5T0NADbQlFR++8kNQc70g+8mDypVEvK
+ p+sEJGZQS4qZ2Vd7bZlb3IAKT5UJYW4APTCt2MlfxQomWrs2tnjXkgB6Rpcvweyz6zfT
+ shxABJ8D7YCT65w0XSpQA0muxg/kC0GBESTSjoKhwvohJSqq8Ypgm4t+w6J69vDovwKE
+ keHwviMRfuguvSIQ0YfRU6gAnvmhkyAsv2qUFZ1swbrkDBGd0LBl92QQlraSIHophVuq
+ hYrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735676637; x=1736281437;
+ d=1e100.net; s=20230601; t=1735676643; x=1736281443;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qFV9r81Ea/Fg1ZQ98Ka7pViQ6qvJe57bkPT4B6LFdHo=;
- b=mkz75J4o+w/qqnVuAchEZRtbAFI8+ZWgbuBgRvCx2JEsvCYLdiN44ftdYsQV5pK5t3
- xzE75n2OAW8TunTTWnQ6W4pF7HWbSVnBybq84CkdXVvtj4p7PaxdB4Z52FCe1lLuLPVj
- CEX8xUfGRmL7brHq/HpCV9OesRKMSZPbHERCRJh3meKLE7E0DdMCwtAyc7nLbZdLOWV3
- OLubkJpiAYB0XHjIIJrIkAwXwYCawBjTLIT9EU5UP9KqWUEOFpiilwAvwM9tn4WGXyAb
- 1LTGkOyoZeQ6tRjvFILSrHMfX/Gox+WlV9RYHKLMS/wzikndSbWuT0y2ie7jMDLP3HKz
- xFkw==
-X-Gm-Message-State: AOJu0YwIEkuMAr76WKlsQF3eszjj+pSsRpHBQGZEZoZbT/5DfAIFuUnj
- 82c609So+DnbNmPgAwvH3kVQiUG37j1czgXhMs5gXg9XaNh/Ff5ve1L9xuFMZr+4ZN/DretaHlf
- 7Qkw=
-X-Gm-Gg: ASbGncuVsyI2k5vM2BJWfRiKeyWce951nrx/9p04HAp/rOpuCKyYgYgWq6dcXoiZypp
- sQwZlQxrC63+HknrrUj9lXh8tHWTwaOUoiOag/ZM+IDTtxAjqtEfess6OaczKkTyYbEt49pv6ix
- CLqC+pEpwe5RxyJLxK7ZbY7abq7nK83+5FN2IDbTBR66aWVtZFhxr4uP733unjnXUS9UBV+5ze6
- Tr2DtbujMwdA8mTz7mOB6mkJZtYbGbYCIzpOfD8LeWEMaY1Lxh4ykhP1KjTnUwyHQHUuR5nrnBM
- IYucsMRu8AKjDWx+wtJ2+CM5uw1OcFM=
-X-Google-Smtp-Source: AGHT+IE6nGFZAJB2yLWv8kRcsjmAiFoXT8+Z8mzInlKQ6WRrErTvLDT7MF6BjhD+vIje1dkeNlLZ1A==
-X-Received: by 2002:a5d:6da1:0:b0:386:4a0c:fe17 with SMTP id
- ffacd0b85a97d-38a2220039fmr33339788f8f.27.1735676637556; 
- Tue, 31 Dec 2024 12:23:57 -0800 (PST)
+ bh=4eBUfaZOV4VpWuEPg0imAAbPSgeX3YWDxsrL3NZUv+w=;
+ b=JsLnq3cYIYwHN/UElCTjidtmiLDzWjk4vQfdEiIrqjUn+T+yU1bGVF5GG2nEokTPUn
+ w8LhF9umtINsZxzzUcOQorTJOpE26jZ4Z8fKgYRhOSOqdHHvrjiWe5Uun62d9alAbLM3
+ gFF+GY5Ubl2Yv7SeU7k0/1RQ1jKFgNwop/Tx2be67IONOfy0kPYY+ZL3GxpV6XO/baO1
+ WiFXBYrB91O6pkV4DE5aJYTZQRmAgwNuy7hUSeEwggyQDF8/gjCCGbAZ3MYRnYyR83KC
+ 9ABCJP46QMcrxy1mLPVkEXobE8hmjNfX2fO9rrIcWFRU4eqTXwtG7uUlN8Naq5ecfwe2
+ zRWg==
+X-Gm-Message-State: AOJu0YzeCvbL4EGAynjRLJB8l32qtVS/wfMYu+Et02rZZ28p0+R0MiIr
+ GfMkV7tfheYhpH2JAdMMKY15doe2JTcGjSfPlxspS8krPmVRZ1KqC/hBwmaa4w7xfgdng/aMSWS
+ 1HoE=
+X-Gm-Gg: ASbGncs5swjNXiKTJlignfsK9VVbLM+6uNlXs2gZxhiu7bABlYoHr/LkW728RRr+P9D
+ sljexUGNjYOseZ0bOR3x+W9zJGj1yTYNVm648QutQbDQ2NFwHUyM2j6erBPSULODk2uKiVfoJaN
+ BNxDqUEW6Plnh+nmBKoWE4eyHhM/P3OkOx5Qt7moPLEMyVFuHsHaUYizNvvdLTnrLfXI35OdvnE
+ 6xf18BPHGdHgEv529XWZVa65oJ5R88Nf5fxJaEi0roD7v8A9N4MK/skD2tsiA/FBP9d9PZSVEOd
+ RyBigqJNJ5cpRV8/W2phQuUEmHok1Qs=
+X-Google-Smtp-Source: AGHT+IEpyx91W6J9ctlJNmrL70Ly6CMvYQzDhnhsC0VD/GEUKNvmPTDkQuOP4vzfEGxTaxw5kbEySw==
+X-Received: by 2002:a05:6000:713:b0:386:3903:86eb with SMTP id
+ ffacd0b85a97d-38a221f1fd1mr32023610f8f.23.1735676643483; 
+ Tue, 31 Dec 2024 12:24:03 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c8a6ca5sm34389184f8f.86.2024.12.31.12.23.56
+ ffacd0b85a97d-38a1c89e150sm33553091f8f.66.2024.12.31.12.24.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 31 Dec 2024 12:23:56 -0800 (PST)
+ Tue, 31 Dec 2024 12:24:02 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 18/29] hw/misc/vmcoreinfo: Rename opaque pointer as 'opaque'
-Date: Tue, 31 Dec 2024 21:22:17 +0100
-Message-ID: <20241231202228.28819-19-philmd@linaro.org>
+ Vasant Hegde <vasant.hegde@amd.com>
+Subject: [PULL 19/29] hw/i386/amd_iommu: Simplify non-KVM checks on XTSup
+ feature
+Date: Tue, 31 Dec 2024 21:22:18 +0100
+Message-ID: <20241231202228.28819-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241231202228.28819-1-philmd@linaro.org>
 References: <20241231202228.28819-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,51 +98,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both QEMUResetHandler and FWCfgWriteCallback take an opaque
-pointer argument, no need to cast.
+Generic code wanting to access KVM specific methods should
+do so being protected by the 'kvm_enabled()' helper.
+
+Doing so avoid link failures when optimization is disabled
+(using --enable-debug), see for example commits c04cfb4596a
+("hw/i386: fix short-circuit logic with non-optimizing builds")
+and 0266aef8cd6 ("amd_iommu: Fix kvm_enable_x2apic link error
+with clang in non-KVM builds").
+
+XTSup feature depends on KVM, so protect the whole block
+checking the XTSup feature with a check on whether KVM is
+enabled.
+
+Since x86_cpus_init() already checks APIC ID > 255 imply
+kernel support for irqchip and X2APIC, remove the confuse
+and unlikely reachable "AMD IOMMU xtsup=on requires support
+on the KVM side" message.
+
+Fix a type in "configuration" in error message.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20241219153857.57450-3-philmd@linaro.org>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Message-Id: <20241129155802.35534-1-philmd@linaro.org>
 ---
- hw/misc/vmcoreinfo.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ hw/i386/amd_iommu.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/hw/misc/vmcoreinfo.c b/hw/misc/vmcoreinfo.c
-index 31073c8de2a..b1fcc22e92b 100644
---- a/hw/misc/vmcoreinfo.c
-+++ b/hw/misc/vmcoreinfo.c
-@@ -18,17 +18,17 @@
- #include "migration/vmstate.h"
- #include "hw/misc/vmcoreinfo.h"
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index be522b5d7dc..6b13ce894b1 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -1652,17 +1652,10 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+     memory_region_add_subregion_overlap(&s->mr_sys, AMDVI_INT_ADDR_FIRST,
+                                         &s->mr_ir, 1);
  
--static void fw_cfg_vmci_write(void *dev, off_t offset, size_t len)
-+static void fw_cfg_vmci_write(void *opaque, off_t offset, size_t len)
- {
--    VMCoreInfoState *s = VMCOREINFO(dev);
-+    VMCoreInfoState *s = opaque;
+-    /* AMD IOMMU with x2APIC mode requires xtsup=on */
+-    if (x86ms->apic_id_limit > 255 && !s->xtsup) {
+-        error_report("AMD IOMMU with x2APIC confguration requires xtsup=on");
++    if (kvm_enabled() && x86ms->apic_id_limit > 255 && !s->xtsup) {
++        error_report("AMD IOMMU with x2APIC configuration requires xtsup=on");
+         exit(EXIT_FAILURE);
+     }
+-    if (s->xtsup) {
+-        if (kvm_irqchip_is_split() && !kvm_enable_x2apic()) {
+-            error_report("AMD IOMMU xtsup=on requires support on the KVM side");
+-            exit(EXIT_FAILURE);
+-        }
+-    }
  
-     s->has_vmcoreinfo = offset == 0 && len == sizeof(s->vmcoreinfo)
-         && s->vmcoreinfo.guest_format != FW_CFG_VMCOREINFO_FORMAT_NONE;
- }
- 
--static void vmcoreinfo_reset(void *dev)
-+static void vmcoreinfo_reset(void *opaque)
- {
--    VMCoreInfoState *s = VMCOREINFO(dev);
-+    VMCoreInfoState *s = opaque;
- 
-     s->has_vmcoreinfo = false;
-     memset(&s->vmcoreinfo, 0, sizeof(s->vmcoreinfo));
-@@ -65,7 +65,7 @@ static void vmcoreinfo_realize(DeviceState *dev, Error **errp)
-      * This device requires to register a global reset because it is
-      * not plugged to a bus (which, as its QOM parent, would reset it).
-      */
--    qemu_register_reset(vmcoreinfo_reset, dev);
-+    qemu_register_reset(vmcoreinfo_reset, s);
-     vmcoreinfo_state = s;
- }
- 
+     pci_setup_iommu(bus, &amdvi_iommu_ops, s);
+     amdvi_init(s);
 -- 
 2.47.1
 
