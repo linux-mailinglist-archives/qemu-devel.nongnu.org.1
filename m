@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB7D49FF1BE
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:23:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB809FF1BC
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:23:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tSild-0002M3-DW; Tue, 31 Dec 2024 15:23:05 -0500
+	id 1tSili-0002MN-JP; Tue, 31 Dec 2024 15:23:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSilb-0002La-FN
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:23:03 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSilg-0002M8-8k
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:23:08 -0500
 Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSilZ-0000qF-PI
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:23:03 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSile-0000qY-LB
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:23:08 -0500
 Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-436202dd730so74017235e9.2
- for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:23:00 -0800 (PST)
+ 5b1f17b1804b1-4361f796586so106895275e9.3
+ for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:23:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735676579; x=1736281379; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735676584; x=1736281384; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9UzpwHwbOoYdzO4Z1to6i1SI44M6INou8CYiONK44XQ=;
- b=W+hNRuPUlDM1UKHUN/m3lWuKpEgcRgzZWFZ30DcU6NtSIOUpuMEQSRs1DwG152X74U
- 7FRaQ9Ptcx2jKW8/emrU63Jn74TocIIWtvicRtsxXzEreTYweYlXyhjq09KWNSjLWnuj
- m9Xhgjj3uNvsNwFwbmL4xLGEojTsVHz3s52sVgJjOjQoKPD3Lpy5yNWdaJwE5r9Jnxnt
- +pouPKzaFcHTOP1c983aojZ0pkLpXMIwMNNEVOnZn0FasDtAu30R+n/5NYkmBsaeyIi1
- MzU5/Ntw4qjS4UICvUNeKOiA030itOX0h65K4sGDZTWVRNo0YTa6+gc00eNbC4fFcPNT
- TFzg==
+ bh=GTH2NS4uBQl2BnMaC5NUzMTAA4jFlWhBioB2cxgitBU=;
+ b=K1KX2neA/ULhbEPrDQau4crtUIeLDFnDBBx9s7RaM/D0hHo37fPROQwk+CUAYK1mMS
+ lFmGMcHWuzVCqvZVrH4sHogchJwXufs6mRQ0Uz8wuN3g2pt/0BPuzCaZbdtYKsBlq3aj
+ I6TTsTxjK8a7yvkU4CWcZY4SlKLcpHk9ySLNRphUVXLh10RCnY62lDvijAnMS2uOqUBu
+ 3nlliTO/nJDp3dsfX0/WTRkkCUpedeRHJebaZFSu3rdlax2LGwmah4UbFqbOk0BF7APv
+ XW++vC5XSykILT7aAN39iArtp8DIQqdFI7ysyit1FFQ8UKWrtliXP+sgjj6V823Gznbf
+ XjPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735676579; x=1736281379;
+ d=1e100.net; s=20230601; t=1735676584; x=1736281384;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9UzpwHwbOoYdzO4Z1to6i1SI44M6INou8CYiONK44XQ=;
- b=fWbuKh512ICV315Ey3RI+EiDhKfP5LNE1hzLUhhz4hhUTzL+9ueJh3PC8rJlboxEFQ
- 3eLCR+dj1zqsRXvcu8X8XT/HHQgnIJfQdkzJnJQcAsWkooHzfv9XQoPD16PKMm4+VZaO
- QRq2JZauTnNXETvYP26WJ8Ws1IPZmPmNv1OnG7HzbDMZIEuLJvb0PSQtcZe1vex0rFoM
- XQwxiXW0Lk8BzPvGjAkrEGiBBalqd+P//mlTpRGhSJ7Ut984h9xy7KkgNT5wnvysBFlP
- gGyDhSt08/2nIIydRIltCjokeEmg+YYlSmT6m20YpX2392+bW5XruQ7KUTs/CEOT+WRI
- 0q4A==
-X-Gm-Message-State: AOJu0YwvAtYF+auebCNVWjdn4FjRSuCq1QfgDVJB0BPJ921AMabiYqiV
- g798YJnUap1F7KeD74HHUVUPA9d3L5o9xZDlN6vnC9NMYbb6I7mpcDMNL1dHrxpUqZfrBXjgGdT
- k+r4=
-X-Gm-Gg: ASbGncvhlpDuVsI28g38M00I/Wur5g8cE2GW2d2b15pozxScVBM2cwNadsrSuYcvqiv
- Od+XKDWXxdq0qq8D+9FKr0Pku4EewZqg38SSQkvTQetgwIvUPUxq9eaMGUzUF5SelJVgNV7Ic/C
- OFv4bDf0eK0v/xq6HoEFkambbJLno3JId5dBC01TwIZFxtz7se4sAvXZD9fuxOvo8R9LU7AFRAJ
- i2SMHUtyaNkIx/4AsFR50zwVVmcImS/cCyktTdIJtp4rnTOcroGTvVSbFEK7tODDSGDcv2F5qL8
- xzFfm+ljcMsSuWU1tOW1ic7opYIgBjU=
-X-Google-Smtp-Source: AGHT+IFtc5W+JCsrfrx9mEW9pZOILkYINaVqJdPcOSVO0u2AJPb8gXAh+0hqx7Wy07DrQj6fcgaFHQ==
-X-Received: by 2002:a5d:6da3:0:b0:385:fb59:8358 with SMTP id
- ffacd0b85a97d-38a223fd8c8mr30036251f8f.53.1735676579330; 
- Tue, 31 Dec 2024 12:22:59 -0800 (PST)
+ bh=GTH2NS4uBQl2BnMaC5NUzMTAA4jFlWhBioB2cxgitBU=;
+ b=McBpFYzrMNHpIMJRBRaxu/9fT+C0pv/+JOj07w1qbGngHsWckVzQnUB1QKZ8cqP9zl
+ FXYu17PyquhVKhHn5xnBLAmEF7v74hTittBEcLOsavz+W7CzP3PYX8ch02hmCERH3BFb
+ p/K6ouqe3fTxS9Xdc8P7MmkP8RD99++Ax8w64H+vZUYOyxzak/mbqxb8q4WROhAydQMP
+ cdzX/SBIGvXdGz9kHmh2/qclMGTczZ1FRxdbkaY9F9r/Qi0c3Q2zGjaS6xvBt5yaD36q
+ jFyU/IoyGgwWzOsPOFSrBPhHIMDv6h8Yc57eOLPdR1Vo0Sn8/I54xfpOIbSbCmQ3s5XY
+ u9FQ==
+X-Gm-Message-State: AOJu0YxmbB7c/ia9wsjxnW5J9lV4HeBkClpOD/E742d6QjCUCV6gRI1H
+ oT1fS+39UR0o4utI2yZpQJ3AYf64mpQkRC3xDRNG3MOpK2mL9YnNqnzC7VkEdNZYvZir8x9OjRM
+ C6AY=
+X-Gm-Gg: ASbGncvxCDFhXs04qWv8bvq7ZQLRLK1tRG9RDp6iULbEsjeKOAc9D61554YCsejjBW4
+ MD5zHlnEzPyGRhN9voMxNsCfFNe6lufeg6SoHzMnX2c818JJBI2S3BjJY1ep7w2fgtP8kaHAa0C
+ TPW+tOqyKrievu+1OFsQQ6Y5hKK/3tjdOlqX/IRSuAh+OaNTmNNgA3jUDxOcqfZj/YnVgGE391n
+ 5BLCiDKuSa7n2nwyTzeufKVun+EO1jv2xKhN/iGaOh3jEQqw9QjKj34w/oZd7sTg778RonUkSvC
+ itf7Tc6/iVfsv7/Kq7DmTOSP44IL8o4=
+X-Google-Smtp-Source: AGHT+IEwcfIODGsf6fHeLL6ojpLHonOjR56fo6RGVOY0Z+T+onxQTzRXOP/xwMCtAdIXihuAM7hA7A==
+X-Received: by 2002:a05:600c:1383:b0:434:fddf:5c0c with SMTP id
+ 5b1f17b1804b1-4366835c41emr342504985e9.4.1735676584615; 
+ Tue, 31 Dec 2024 12:23:04 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c89e150sm33551345f8f.66.2024.12.31.12.22.58
+ 5b1f17b1804b1-43656b4471bsm431993565e9.44.2024.12.31.12.23.03
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 31 Dec 2024 12:22:58 -0800 (PST)
+ Tue, 31 Dec 2024 12:23:04 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Anton Johansson <anjo@rev.ng>, Alistair Francis <alistair.francis@wdc.com>,
- "Edgar E. Iglesias" <edgar.iglesias@amd.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 06/29] hw/microblaze: Propagate CPU endianness to
- microblaze_load_kernel()
-Date: Tue, 31 Dec 2024 21:22:05 +0100
-Message-ID: <20241231202228.28819-7-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <huth@tuxfamily.org>
+Subject: [PULL 07/29] hw/i386: Mark devices as little-endian
+Date: Tue, 31 Dec 2024 21:22:06 +0100
+Message-ID: <20241231202228.28819-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241231202228.28819-1-philmd@linaro.org>
 References: <20241231202228.28819-1-philmd@linaro.org>
@@ -100,109 +98,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pass vCPU endianness as argument so we can load kernels
-with different endianness (different from the qemu-system-binary
-builtin one).
+These devices are only used by the X86 targets, which are only
+built as little-endian. Therefore the DEVICE_NATIVE_ENDIAN
+definition expand to DEVICE_LITTLE_ENDIAN (besides, the
+DEVICE_BIG_ENDIAN case isn't tested). Simplify directly using
+DEVICE_LITTLE_ENDIAN.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Anton Johansson <anjo@rev.ng>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241107012223.94337-3-philmd@linaro.org>
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
+Message-Id: <20241106184612.71897-2-philmd@linaro.org>
 ---
- hw/microblaze/boot.h                     | 4 ++--
- hw/microblaze/boot.c                     | 8 ++++----
- hw/microblaze/petalogix_ml605_mmu.c      | 2 +-
- hw/microblaze/petalogix_s3adsp1800_mmu.c | 2 +-
- hw/microblaze/xlnx-zynqmp-pmu.c          | 2 +-
- 5 files changed, 9 insertions(+), 9 deletions(-)
+ hw/i386/kvm/apic.c         | 2 +-
+ hw/i386/pc.c               | 4 ++--
+ hw/i386/vapic.c            | 2 +-
+ hw/i386/xen/xen_apic.c     | 2 +-
+ hw/i386/xen/xen_platform.c | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/hw/microblaze/boot.h b/hw/microblaze/boot.h
-index 5a8c2f79750..d179a551a69 100644
---- a/hw/microblaze/boot.h
-+++ b/hw/microblaze/boot.h
-@@ -2,8 +2,8 @@
- #define MICROBLAZE_BOOT_H
+diff --git a/hw/i386/kvm/apic.c b/hw/i386/kvm/apic.c
+index 602c7696565..75751060009 100644
+--- a/hw/i386/kvm/apic.c
++++ b/hw/i386/kvm/apic.c
+@@ -214,7 +214,7 @@ static void kvm_apic_mem_write(void *opaque, hwaddr addr,
+ static const MemoryRegionOps kvm_apic_io_ops = {
+     .read = kvm_apic_mem_read,
+     .write = kvm_apic_mem_write,
+-    .endianness = DEVICE_NATIVE_ENDIAN,
++    .endianness = DEVICE_LITTLE_ENDIAN,
+ };
  
+ static void kvm_apic_reset(APICCommonState *s)
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 53a2f226d03..71118765884 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1068,7 +1068,7 @@ DeviceState *pc_vga_init(ISABus *isa_bus, PCIBus *pci_bus)
+ static const MemoryRegionOps ioport80_io_ops = {
+     .write = ioport80_write,
+     .read = ioport80_read,
+-    .endianness = DEVICE_NATIVE_ENDIAN,
++    .endianness = DEVICE_LITTLE_ENDIAN,
+     .impl = {
+         .min_access_size = 1,
+         .max_access_size = 1,
+@@ -1078,7 +1078,7 @@ static const MemoryRegionOps ioport80_io_ops = {
+ static const MemoryRegionOps ioportF0_io_ops = {
+     .write = ioportF0_write,
+     .read = ioportF0_read,
+-    .endianness = DEVICE_NATIVE_ENDIAN,
++    .endianness = DEVICE_LITTLE_ENDIAN,
+     .impl = {
+         .min_access_size = 1,
+         .max_access_size = 1,
+diff --git a/hw/i386/vapic.c b/hw/i386/vapic.c
+index 0e6d058d063..14de9b7a820 100644
+--- a/hw/i386/vapic.c
++++ b/hw/i386/vapic.c
+@@ -718,7 +718,7 @@ static uint64_t vapic_read(void *opaque, hwaddr addr, unsigned size)
+ static const MemoryRegionOps vapic_ops = {
+     .write = vapic_write,
+     .read = vapic_read,
+-    .endianness = DEVICE_NATIVE_ENDIAN,
++    .endianness = DEVICE_LITTLE_ENDIAN,
+ };
  
--void microblaze_load_kernel(MicroBlazeCPU *cpu, hwaddr ddr_base,
--                            uint32_t ramsize,
-+void microblaze_load_kernel(MicroBlazeCPU *cpu, bool is_little_endian,
-+                            hwaddr ddr_base, uint32_t ramsize,
-                             const char *initrd_filename,
-                             const char *dtb_filename,
-                             void (*machine_cpu_reset)(MicroBlazeCPU *));
-diff --git a/hw/microblaze/boot.c b/hw/microblaze/boot.c
-index 966fb2cb2a3..3854bc2291b 100644
---- a/hw/microblaze/boot.c
-+++ b/hw/microblaze/boot.c
-@@ -114,8 +114,8 @@ static uint64_t translate_kernel_address(void *opaque, uint64_t addr)
-     return addr - 0x30000000LL;
- }
+ static void vapic_realize(DeviceState *dev, Error **errp)
+diff --git a/hw/i386/xen/xen_apic.c b/hw/i386/xen/xen_apic.c
+index 101e16a7662..a94e9005cbe 100644
+--- a/hw/i386/xen/xen_apic.c
++++ b/hw/i386/xen/xen_apic.c
+@@ -36,7 +36,7 @@ static void xen_apic_mem_write(void *opaque, hwaddr addr,
+ static const MemoryRegionOps xen_apic_io_ops = {
+     .read = xen_apic_mem_read,
+     .write = xen_apic_mem_write,
+-    .endianness = DEVICE_NATIVE_ENDIAN,
++    .endianness = DEVICE_LITTLE_ENDIAN,
+ };
  
--void microblaze_load_kernel(MicroBlazeCPU *cpu, hwaddr ddr_base,
--                            uint32_t ramsize,
-+void microblaze_load_kernel(MicroBlazeCPU *cpu, bool is_little_endian,
-+                            hwaddr ddr_base, uint32_t ramsize,
-                             const char *initrd_filename,
-                             const char *dtb_filename,
-                             void (*machine_cpu_reset)(MicroBlazeCPU *))
-@@ -144,13 +144,13 @@ void microblaze_load_kernel(MicroBlazeCPU *cpu, hwaddr ddr_base,
-         /* Boots a kernel elf binary.  */
-         kernel_size = load_elf(kernel_filename, NULL, NULL, NULL,
-                                &entry, NULL, &high, NULL,
--                               TARGET_BIG_ENDIAN, EM_MICROBLAZE, 0, 0);
-+                               !is_little_endian, EM_MICROBLAZE, 0, 0);
-         base32 = entry;
-         if (base32 == 0xc0000000) {
-             kernel_size = load_elf(kernel_filename, NULL,
-                                    translate_kernel_address, NULL,
-                                    &entry, NULL, NULL, NULL,
--                                   TARGET_BIG_ENDIAN, EM_MICROBLAZE, 0, 0);
-+                                   !is_little_endian, EM_MICROBLAZE, 0, 0);
-         }
-         /* Always boot into physical ram.  */
-         boot_info.bootstrap_pc = (uint32_t)entry;
-diff --git a/hw/microblaze/petalogix_ml605_mmu.c b/hw/microblaze/petalogix_ml605_mmu.c
-index deab275495d..8b44be75a22 100644
---- a/hw/microblaze/petalogix_ml605_mmu.c
-+++ b/hw/microblaze/petalogix_ml605_mmu.c
-@@ -204,7 +204,7 @@ petalogix_ml605_init(MachineState *machine)
-     cpu->cfg.pvr_regs[5] = 0xc56be000;
-     cpu->cfg.pvr_regs[10] = 0x0e000000; /* virtex 6 */
+ static void xen_apic_realize(DeviceState *dev, Error **errp)
+diff --git a/hw/i386/xen/xen_platform.c b/hw/i386/xen/xen_platform.c
+index 0f68c3fe7b3..dd648a2ee94 100644
+--- a/hw/i386/xen/xen_platform.c
++++ b/hw/i386/xen/xen_platform.c
+@@ -514,7 +514,7 @@ static void platform_mmio_write(void *opaque, hwaddr addr,
+ static const MemoryRegionOps platform_mmio_handler = {
+     .read = &platform_mmio_read,
+     .write = &platform_mmio_write,
+-    .endianness = DEVICE_NATIVE_ENDIAN,
++    .endianness = DEVICE_LITTLE_ENDIAN,
+ };
  
--    microblaze_load_kernel(cpu, MEMORY_BASEADDR, ram_size,
-+    microblaze_load_kernel(cpu, true, MEMORY_BASEADDR, ram_size,
-                            machine->initrd_filename,
-                            BINARY_DEVICE_TREE_FILE,
-                            NULL);
-diff --git a/hw/microblaze/petalogix_s3adsp1800_mmu.c b/hw/microblaze/petalogix_s3adsp1800_mmu.c
-index 4a969af1a01..2c0d8c34cd2 100644
---- a/hw/microblaze/petalogix_s3adsp1800_mmu.c
-+++ b/hw/microblaze/petalogix_s3adsp1800_mmu.c
-@@ -129,7 +129,7 @@ petalogix_s3adsp1800_init(MachineState *machine)
- 
-     create_unimplemented_device("xps_gpio", GPIO_BASEADDR, 0x10000);
- 
--    microblaze_load_kernel(cpu, ddr_base, ram_size,
-+    microblaze_load_kernel(cpu, !TARGET_BIG_ENDIAN, ddr_base, ram_size,
-                            machine->initrd_filename,
-                            BINARY_DEVICE_TREE_FILE,
-                            NULL);
-diff --git a/hw/microblaze/xlnx-zynqmp-pmu.c b/hw/microblaze/xlnx-zynqmp-pmu.c
-index 567aad47bfc..bdbf7328bf4 100644
---- a/hw/microblaze/xlnx-zynqmp-pmu.c
-+++ b/hw/microblaze/xlnx-zynqmp-pmu.c
-@@ -172,7 +172,7 @@ static void xlnx_zynqmp_pmu_init(MachineState *machine)
-     qdev_realize(DEVICE(pmu), NULL, &error_fatal);
- 
-     /* Load the kernel */
--    microblaze_load_kernel(&pmu->cpu, XLNX_ZYNQMP_PMU_RAM_ADDR,
-+    microblaze_load_kernel(&pmu->cpu, true, XLNX_ZYNQMP_PMU_RAM_ADDR,
-                            machine->ram_size,
-                            machine->initrd_filename,
-                            machine->dtb,
+ static void platform_mmio_setup(PCIXenPlatformState *d)
 -- 
 2.47.1
 
