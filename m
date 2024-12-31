@@ -2,96 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA66D9FEBD1
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 01:25:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C55629FEBD6
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 01:25:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tSQ3M-0003Tv-2Z; Mon, 30 Dec 2024 19:24:08 -0500
+	id 1tSQ3O-0003V0-7B; Mon, 30 Dec 2024 19:24:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tSQ3I-0003SZ-UL
- for qemu-devel@nongnu.org; Mon, 30 Dec 2024 19:24:04 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1tSQ3L-0003Tz-Fb
+ for qemu-devel@nongnu.org; Mon, 30 Dec 2024 19:24:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tSQ3H-00020J-AL
- for qemu-devel@nongnu.org; Mon, 30 Dec 2024 19:24:04 -0500
+ id 1tSQ3J-00020o-I6
+ for qemu-devel@nongnu.org; Mon, 30 Dec 2024 19:24:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1735604642;
+ s=mimecast20190719; t=1735604644;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gYsX+8dH7ajdw7h4Gl+C0v6pO/Y+Rzud1yNiyL/9IMY=;
- b=MJt0TOVfl0ua4IesjZ7n8DiWYhxARzYEg07lrQcv+5TgJDDctwz5mOoE3uWTva5SCvXXwh
- aIo+OcgGBMyiANdg+2X776OBcZsgw5F1TK7xnSuSRnzXwVYSb9TrLJGHwJsUMRKM3f+xmv
- GLYQwVod7qdR9+yg4GqHaH02bs3JAp0=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=w5/JvoYepda1ESoi0KW/7MoIKytb2HMTXeN82nQCUKA=;
+ b=Ww+mVeOc7nJKzwgdaq7laaMJaPMr5PvSdKfgazmsFG9FnvWInP6zSDeIUvmzASNdZpBlPY
+ 3WhrfYbAVSLnE8zqMDKrdLE60QzbRjW2p8NtEpYE1KymZyGwKZjfJWkjCQQSsAnfR7WHgI
+ VQ2ctQ188jx8IDTBQd8MGhJeRPHamok=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-460-0RM7fkT7NgGNstrNmS5kQw-1; Mon, 30 Dec 2024 19:24:01 -0500
-X-MC-Unique: 0RM7fkT7NgGNstrNmS5kQw-1
-X-Mimecast-MFC-AGG-ID: 0RM7fkT7NgGNstrNmS5kQw
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4359206e1e4so75214355e9.2
- for <qemu-devel@nongnu.org>; Mon, 30 Dec 2024 16:24:01 -0800 (PST)
+ us-mta-9-su8ucyPaN76hwCKHQi67jA-1; Mon, 30 Dec 2024 19:24:03 -0500
+X-MC-Unique: su8ucyPaN76hwCKHQi67jA-1
+X-Mimecast-MFC-AGG-ID: su8ucyPaN76hwCKHQi67jA
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-385e49efd59so775546f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 30 Dec 2024 16:24:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735604639; x=1736209439;
+ d=1e100.net; s=20230601; t=1735604642; x=1736209442;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gYsX+8dH7ajdw7h4Gl+C0v6pO/Y+Rzud1yNiyL/9IMY=;
- b=jEOSmZzBuco8/eoISqephBzAY8bj+DoZ13Ad4vdM4NMGJEFIQxig84eON7+sF3qRsh
- 1S/+UAPsldEBLkKiOPzs5f37DY1zXw+sLhbx503BIlsEJZoS2uP12U4VNh6ZXqHtfeQY
- JPGZnBITO7AitBMiJV3gqbKsPG/1OS/bH9BUNL/cgVJPwfpVH7RlD4XOPee7M+UZLZhq
- qo3t/7w15RvTAGee4Ojw4SfTHD4n/WLtZO1pSNkR+WEo7jCFhoT/3p+QbX4f18aNsavr
- ngjQRKDdKjohbN+fJn81Wb7js4RTpaqoR/Visb46sVbgff23FLjpKhuqR4kMFnl9MSU8
- 8ezQ==
-X-Gm-Message-State: AOJu0YwWCeFH5Km2SXsopgeg2D2ow2sbfLziPpp1wwM47M9mXHd6EIfC
- uXGQWQgGtTw6M92AsNnxCENT9hbgqypQc0NTNQPKiuHm1eyA4lHqFh6lzlayExI+MAXcBG1xXFf
- IlQ7ZwY+IoHfGTs7NOGx6LsR10o3DdZa0vW21fqr74kH0/nSnxplpFjMZHVVl68mFT5fTXdYqjf
- DASDvb8la/oQEy6R1h5lr9MbTfByEY8QF2JMczh78=
-X-Gm-Gg: ASbGncvD9DJDcyjLhWdsBOSnRC8A8oZ96yfYFLLg8iyYoiXnSaCSnhoJmPrP+cQbSgy
- BrKCUj9irpynok0s2kwTlDrspBNwvEefbnA0Yb9cJx3RCh0XN8SwsMfbfV021JKPK91DIq6EqPa
- JMFxVxivCJitIc2TPuMVkkm49uzZCwPhgBWyXxSuX0uAAsAi00XYxkijb1gGGmnNnoUBg798PMN
- Fw5UZ2jZTCjJGhZS6hyKS6aceJzyjktb/7TlaZ1t8lhfmNwXj87ChJXvbs=
-X-Received: by 2002:a05:600c:1c25:b0:434:f4fa:83c4 with SMTP id
- 5b1f17b1804b1-43668b5f691mr304872365e9.29.1735604639568; 
- Mon, 30 Dec 2024 16:23:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGxDzgunRjQHOEt3yXGNGZrj8KS6374Y+Ckge8ZDZ8iuINYuYauFPTqu7gP3FeSa0KAhsjRLA==
-X-Received: by 2002:a05:600c:1c25:b0:434:f4fa:83c4 with SMTP id
- 5b1f17b1804b1-43668b5f691mr304872215e9.29.1735604639086; 
- Mon, 30 Dec 2024 16:23:59 -0800 (PST)
+ bh=w5/JvoYepda1ESoi0KW/7MoIKytb2HMTXeN82nQCUKA=;
+ b=gxm4IBZTYE6oBte8p0MULtbpfIq6I/KJ6Ai36wBZcu+sHSQDJt+jAi/cb99k14ROVb
+ thtIe9XbG1rkI4jSsJD9BYtvUQsucHyPjl7li3TEkux8n4fDHBWlSDXPRraWPMxKj9fV
+ /vpL8bDhANF8CvQ9j1SQGJ0TFY0g4ZJIxdzG740VsoUQbhU33/pPqvEUA2WHfUrxGoji
+ khD2jjyZE0xPUPj303PwROlY8z42NexN+ujJUG+Mz5c3SB9e+TrYQPLLB+3QOV8bm8+K
+ jefF784a+sDGyJHgAU3qZ/e5nl+SMe2dCeC18L1YxBmePIB8tyspCE680L41hYeHxVv9
+ jmYA==
+X-Gm-Message-State: AOJu0Yx0mSr1jt5uY9T25rW611LcyKwkvitmE+1fbI+uOT7BD4okD91n
+ i826Xun3XmG2cwP9mWxhDGzLZ8lqjc6G0xYi/OkydFMAvsMxk7kd/zckC7m1xraVNhwmJ/ljcRi
+ 9TO2/5PcKpT5Jo1dulZMZMls7Lw8sbfgfWIyro69RxJSfUV3jhPyes5VA2iQxxIxX/azy5p2Esp
+ UopfSp+h7iGSThbsjLXuNfKwWosZLAKloTJPKpkSQ=
+X-Gm-Gg: ASbGncvPUz9YtAtDj4lmNt3GYCTsjeWEVnqRvmsEJkR5JQwKsfrbFpzY3DD0l/Xv8g+
+ vXSBK52Nv/KEwj8ja2b7WG4PxKSu/TWiaULOfn6dCWmGanOaynyEB8gvKF8MgyTrnZ+/1GPHu5K
+ DThbRfVtliiDyDG+6yXdgc5qffJ+CyKYFwnMEff9EXX6HipAMKV6uxw+pGVb/tgFR0cI1+rDfSd
+ lqv9foh+xLI5u1SeHsKiVM5z53TkhS88JuWEmTDhYjJoPHFale4gxEkF+w=
+X-Received: by 2002:a5d:64e2:0:b0:388:cacf:24b5 with SMTP id
+ ffacd0b85a97d-38a22408dc3mr33393960f8f.54.1735604641619; 
+ Mon, 30 Dec 2024 16:24:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFup0I6+pZg/42dLfgAiUktVSsyxEMWs7Zz2wyj1Qj2PvNaK6+LQvNa7+rjUuP13uyfl8QEPQ==
+X-Received: by 2002:a5d:64e2:0:b0:388:cacf:24b5 with SMTP id
+ ffacd0b85a97d-38a22408dc3mr33393946f8f.54.1735604641239; 
+ Mon, 30 Dec 2024 16:24:01 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.105.73])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656b3b271sm402833415e9.34.2024.12.30.16.23.57
+ 5b1f17b1804b1-43656b015absm404439075e9.13.2024.12.30.16.23.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 30 Dec 2024 16:23:57 -0800 (PST)
+ Mon, 30 Dec 2024 16:24:00 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org,
 	zhao1.liu@intel.com,
 	junjie.mao@hotmail.com
-Subject: [RFC PATCH 8/9] rust: pl011: switch vmstate to new-style macros
-Date: Tue, 31 Dec 2024 01:23:35 +0100
-Message-ID: <20241231002336.25931-9-pbonzini@redhat.com>
+Subject: [RFC PATCH 9/9] rust: vmstate: remove translation of C vmstate macros
+Date: Tue, 31 Dec 2024 01:23:36 +0100
+Message-ID: <20241231002336.25931-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241231002336.25931-1-pbonzini@redhat.com>
 References: <20241231002336.25931-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
 X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.187,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,142 +107,324 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Keep vmstate_clock!; because it uses a field of type VMStateDescription,
+it cannot be converted to the VMState trait without access to the
+const_refs_static feature.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs       |  3 ++-
- rust/hw/char/pl011/src/device_class.rs | 36 +++++++++++++-------------
- rust/hw/char/pl011/src/lib.rs          |  6 +++++
- 3 files changed, 26 insertions(+), 19 deletions(-)
+ rust/qemu-api/src/vmstate.rs | 274 +++--------------------------------
+ 1 file changed, 23 insertions(+), 251 deletions(-)
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 994c2fc0593..11a87664c7a 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -10,7 +10,7 @@
+diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
+index e45c93587b2..68246fce043 100644
+--- a/rust/qemu-api/src/vmstate.rs
++++ b/rust/qemu-api/src/vmstate.rs
+@@ -21,8 +21,8 @@
+ //!   [`vmstate_fields`](crate::vmstate_fields).
+ //!
+ //! * direct equivalents to the C macros declared in
+-//!   `include/migration/vmstate.h`. These are not type-safe and should not be
+-//!   used if the equivalent functionality is available with `vmstate_of!`.
++//!   `include/migration/vmstate.h`. These are not type-safe and only provide
++//!   functionality that is missing from `vmstate_of!`.
  
- use qemu_api::{
-     bindings::{self, *},
--    c_str,
-+    c_str, impl_vmstate_forward,
-     irq::InterruptSource,
-     prelude::*,
-     qdev::DeviceImpl,
-@@ -54,6 +54,7 @@ impl DeviceId {
- #[repr(transparent)]
- #[derive(Debug, Default)]
- pub struct Fifo([registers::Data; PL011_FIFO_DEPTH as usize]);
-+impl_vmstate_forward!(Fifo);
+ use core::{marker::PhantomData, mem, ptr::NonNull};
  
- impl Fifo {
-     const fn len(&self) -> u32 {
-diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
-index 7f3ca895071..e0d3532e956 100644
---- a/rust/hw/char/pl011/src/device_class.rs
-+++ b/rust/hw/char/pl011/src/device_class.rs
-@@ -6,11 +6,11 @@
- use std::os::raw::{c_int, c_void};
+@@ -389,223 +389,16 @@ unsafe impl<$base> VMState for $type where $base: VMState $($where)* {
+     const BASE: VMStateField = <T as VMState>::BASE.with_array_flag(N);
+ }
  
- use qemu_api::{
--    bindings::*, c_str, vmstate_clock, vmstate_fields, vmstate_subsections, vmstate_uint32,
--    vmstate_uint32_array, vmstate_unused, zeroable::Zeroable,
-+    bindings::*, c_str, vmstate_clock, vmstate_fields, vmstate_of, vmstate_subsections,
-+    vmstate_unused, zeroable::Zeroable,
- };
+-#[doc(alias = "VMSTATE_UNUSED_BUFFER")]
+-#[macro_export]
+-macro_rules! vmstate_unused_buffer {
+-    ($field_exists_fn:expr, $version_id:expr, $size:expr) => {{
+-        $crate::bindings::VMStateField {
+-            name: c_str!("unused").as_ptr(),
+-            err_hint: ::core::ptr::null(),
+-            offset: 0,
+-            size: $size,
+-            start: 0,
+-            num: 0,
+-            num_offset: 0,
+-            size_offset: 0,
+-            info: unsafe { ::core::ptr::addr_of!($crate::bindings::vmstate_info_unused_buffer) },
+-            flags: VMStateFlags::VMS_BUFFER,
+-            vmsd: ::core::ptr::null(),
+-            version_id: $version_id,
+-            struct_version_id: 0,
+-            field_exists: $field_exists_fn,
+-        }
+-    }};
+-}
+-
+-#[doc(alias = "VMSTATE_UNUSED_V")]
+-#[macro_export]
+-macro_rules! vmstate_unused_v {
+-    ($version_id:expr, $size:expr) => {{
+-        $crate::vmstate_unused_buffer!(None, $version_id, $size)
+-    }};
+-}
+-
+ #[doc(alias = "VMSTATE_UNUSED")]
+ #[macro_export]
+ macro_rules! vmstate_unused {
+     ($size:expr) => {{
+-        $crate::vmstate_unused_v!(0, $size)
+-    }};
+-}
+-
+-#[doc(alias = "VMSTATE_SINGLE_TEST")]
+-#[macro_export]
+-macro_rules! vmstate_single_test {
+-    ($field_name:ident, $struct_name:ty, $field_exists_fn:expr, $version_id:expr, $info:expr, $size:expr) => {{
+         $crate::bindings::VMStateField {
+-            name: ::core::concat!(::core::stringify!($field_name), 0)
+-                .as_bytes()
+-                .as_ptr() as *const ::std::os::raw::c_char,
+-            err_hint: ::core::ptr::null(),
+-            offset: $crate::offset_of!($struct_name, $field_name),
++            name: $crate::c_str!("unused").as_ptr(),
+             size: $size,
+-            start: 0,
+-            num: 0,
+-            num_offset: 0,
+-            size_offset: 0,
+-            info: unsafe { $info },
+-            flags: VMStateFlags::VMS_SINGLE,
+-            vmsd: ::core::ptr::null(),
+-            version_id: $version_id,
+-            struct_version_id: 0,
+-            field_exists: $field_exists_fn,
+-        }
+-    }};
+-}
+-
+-#[doc(alias = "VMSTATE_SINGLE")]
+-#[macro_export]
+-macro_rules! vmstate_single {
+-    ($field_name:ident, $struct_name:ty, $version_id:expr, $info:expr, $size:expr) => {{
+-        $crate::vmstate_single_test!($field_name, $struct_name, None, $version_id, $info, $size)
+-    }};
+-}
+-
+-#[doc(alias = "VMSTATE_UINT32_V")]
+-#[macro_export]
+-macro_rules! vmstate_uint32_v {
+-    ($field_name:ident, $struct_name:ty, $version_id:expr) => {{
+-        $crate::vmstate_single!(
+-            $field_name,
+-            $struct_name,
+-            $version_id,
+-            ::core::ptr::addr_of!($crate::bindings::vmstate_info_uint32),
+-            ::core::mem::size_of::<u32>()
+-        )
+-    }};
+-}
+-
+-#[doc(alias = "VMSTATE_UINT32")]
+-#[macro_export]
+-macro_rules! vmstate_uint32 {
+-    ($field_name:ident, $struct_name:ty) => {{
+-        $crate::vmstate_uint32_v!($field_name, $struct_name, 0)
+-    }};
+-}
+-
+-#[doc(alias = "VMSTATE_ARRAY")]
+-#[macro_export]
+-macro_rules! vmstate_array {
+-    ($field_name:ident, $struct_name:ty, $length:expr, $version_id:expr, $info:expr, $size:expr) => {{
+-        $crate::bindings::VMStateField {
+-            name: ::core::concat!(::core::stringify!($field_name), 0)
+-                .as_bytes()
+-                .as_ptr() as *const ::std::os::raw::c_char,
+-            err_hint: ::core::ptr::null(),
+-            offset: $crate::offset_of!($struct_name, $field_name),
+-            size: $size,
+-            start: 0,
+-            num: $length as _,
+-            num_offset: 0,
+-            size_offset: 0,
+-            info: unsafe { $info },
+-            flags: VMStateFlags::VMS_ARRAY,
+-            vmsd: ::core::ptr::null(),
+-            version_id: $version_id,
+-            struct_version_id: 0,
+-            field_exists: None,
+-        }
+-    }};
+-}
+-
+-#[doc(alias = "VMSTATE_UINT32_ARRAY_V")]
+-#[macro_export]
+-macro_rules! vmstate_uint32_array_v {
+-    ($field_name:ident, $struct_name:ty, $length:expr, $version_id:expr) => {{
+-        $crate::vmstate_array!(
+-            $field_name,
+-            $struct_name,
+-            $length,
+-            $version_id,
+-            ::core::ptr::addr_of!($crate::bindings::vmstate_info_uint32),
+-            ::core::mem::size_of::<u32>()
+-        )
+-    }};
+-}
+-
+-#[doc(alias = "VMSTATE_UINT32_ARRAY")]
+-#[macro_export]
+-macro_rules! vmstate_uint32_array {
+-    ($field_name:ident, $struct_name:ty, $length:expr) => {{
+-        $crate::vmstate_uint32_array_v!($field_name, $struct_name, $length, 0)
+-    }};
+-}
+-
+-#[doc(alias = "VMSTATE_STRUCT_POINTER_V")]
+-#[macro_export]
+-macro_rules! vmstate_struct_pointer_v {
+-    ($field_name:ident, $struct_name:ty, $version_id:expr, $vmsd:expr, $type:ty) => {{
+-        $crate::bindings::VMStateField {
+-            name: ::core::concat!(::core::stringify!($field_name), 0)
+-                .as_bytes()
+-                .as_ptr() as *const ::std::os::raw::c_char,
+-            err_hint: ::core::ptr::null(),
+-            offset: $crate::offset_of!($struct_name, $field_name),
+-            size: ::core::mem::size_of::<*const $type>(),
+-            start: 0,
+-            num: 0,
+-            num_offset: 0,
+-            size_offset: 0,
+-            info: ::core::ptr::null(),
+-            flags: VMStateFlags(VMStateFlags::VMS_STRUCT.0 | VMStateFlags::VMS_POINTER.0),
+-            vmsd: unsafe { $vmsd },
+-            version_id: $version_id,
+-            struct_version_id: 0,
+-            field_exists: None,
+-        }
+-    }};
+-}
+-
+-#[doc(alias = "VMSTATE_ARRAY_OF_POINTER")]
+-#[macro_export]
+-macro_rules! vmstate_array_of_pointer {
+-    ($field_name:ident, $struct_name:ty, $num:expr, $version_id:expr, $info:expr, $type:ty) => {{
+-        $crate::bindings::VMStateField {
+-            name: ::core::concat!(::core::stringify!($field_name), 0)
+-                .as_bytes()
+-                .as_ptr() as *const ::std::os::raw::c_char,
+-            version_id: $version_id,
+-            num: $num as _,
+-            info: unsafe { $info },
+-            size: ::core::mem::size_of::<*const $type>(),
+-            flags: VMStateFlags(VMStateFlags::VMS_ARRAY.0 | VMStateFlags::VMS_ARRAY_OF_POINTER.0),
+-            offset: $crate::offset_of!($struct_name, $field_name),
+-            err_hint: ::core::ptr::null(),
+-            start: 0,
+-            num_offset: 0,
+-            size_offset: 0,
+-            vmsd: ::core::ptr::null(),
+-            struct_version_id: 0,
+-            field_exists: None,
+-        }
+-    }};
+-}
+-
+-#[doc(alias = "VMSTATE_ARRAY_OF_POINTER_TO_STRUCT")]
+-#[macro_export]
+-macro_rules! vmstate_array_of_pointer_to_struct {
+-    ($field_name:ident, $struct_name:ty, $num:expr, $version_id:expr, $vmsd:expr, $type:ty) => {{
+-        $crate::bindings::VMStateField {
+-            name: ::core::concat!(::core::stringify!($field_name), 0)
+-                .as_bytes()
+-                .as_ptr() as *const ::std::os::raw::c_char,
+-            version_id: $version_id,
+-            num: $num as _,
+-            vmsd: unsafe { $vmsd },
+-            size: ::core::mem::size_of::<*const $type>(),
+-            flags: VMStateFlags(
+-                VMStateFlags::VMS_ARRAY.0
+-                    | VMStateFlags::VMS_STRUCT.0
+-                    | VMStateFlags::VMS_ARRAY_OF_POINTER.0,
+-            ),
+-            offset: $crate::offset_of!($struct_name, $field_name),
+-            err_hint: ::core::ptr::null(),
+-            start: 0,
+-            num_offset: 0,
+-            size_offset: 0,
+-            vmsd: ::core::ptr::null(),
+-            struct_version_id: 0,
+-            field_exists: None,
++            info: unsafe { ::core::ptr::addr_of!($crate::bindings::vmstate_info_unused_buffer) },
++            flags: $crate::bindings::VMStateFlags::VMS_BUFFER,
++            ..$crate::zeroable::Zeroable::ZERO
+         }
+     }};
+ }
+@@ -644,48 +437,27 @@ macro_rules! vmstate_cell {
+     };
+ }
  
--use crate::device::{PL011State, PL011_FIFO_DEPTH};
-+use crate::device::PL011State;
+-#[doc(alias = "VMSTATE_CLOCK_V")]
+-#[macro_export]
+-macro_rules! vmstate_clock_v {
+-    ($field_name:ident, $struct_name:ty, $version_id:expr) => {{
+-        $crate::vmstate_struct_pointer_v!(
+-            $field_name,
+-            $struct_name,
+-            $version_id,
+-            ::core::ptr::addr_of!($crate::bindings::vmstate_clock),
+-            $crate::bindings::Clock
+-        )
+-    }};
+-}
+-
+ #[doc(alias = "VMSTATE_CLOCK")]
+ #[macro_export]
+ macro_rules! vmstate_clock {
+     ($field_name:ident, $struct_name:ty) => {{
+-        $crate::vmstate_clock_v!($field_name, $struct_name, 0)
+-    }};
+-}
+-
+-#[doc(alias = "VMSTATE_ARRAY_CLOCK_V")]
+-#[macro_export]
+-macro_rules! vmstate_array_clock_v {
+-    ($field_name:ident, $struct_name:ty, $num:expr, $version_id:expr) => {{
+-        $crate::vmstate_array_of_pointer_to_struct!(
+-            $field_name,
+-            $struct_name,
+-            $num,
+-            $version_id,
+-            ::core::ptr::addr_of!($crate::bindings::vmstate_clock),
+-            $crate::bindings::Clock
+-        )
+-    }};
+-}
+-
+-#[doc(alias = "VMSTATE_ARRAY_CLOCK")]
+-#[macro_export]
+-macro_rules! vmstate_array_clock {
+-    ($field_name:ident, $struct_name:ty, $num:expr) => {{
+-        $crate::vmstate_array_clock_v!($field_name, $struct_name, $name, 0)
++        $crate::bindings::VMStateField {
++            name: ::core::concat!(::core::stringify!($field_name), "\0")
++                .as_bytes()
++                .as_ptr() as *const ::std::os::raw::c_char,
++            offset: {
++                $crate::assert_field_type!(
++                    $struct_name,
++                    $field_name,
++                    core::ptr::NonNull<$crate::bindings::Clock>
++                );
++                $crate::offset_of!($struct_name, $field_name)
++            },
++            size: ::core::mem::size_of::<*const $crate::bindings::Clock>(),
++            flags: VMStateFlags(VMStateFlags::VMS_STRUCT.0 | VMStateFlags::VMS_POINTER.0),
++            vmsd: unsafe { ::core::ptr::addr_of!($crate::bindings::vmstate_clock) },
++            ..$crate::zeroable::Zeroable::ZERO
++        }
+     }};
+ }
  
- extern "C" fn pl011_clock_needed(opaque: *mut c_void) -> bool {
-     unsafe {
-@@ -52,21 +52,21 @@ extern "C" fn pl011_post_load(opaque: *mut c_void, version_id: c_int) -> c_int {
-     post_load: Some(pl011_post_load),
-     fields: vmstate_fields! {
-         vmstate_unused!(core::mem::size_of::<u32>()),
--        vmstate_uint32!(flags, PL011State),
--        vmstate_uint32!(line_control, PL011State),
--        vmstate_uint32!(receive_status_error_clear, PL011State),
--        vmstate_uint32!(control, PL011State),
--        vmstate_uint32!(dmacr, PL011State),
--        vmstate_uint32!(int_enabled, PL011State),
--        vmstate_uint32!(int_level, PL011State),
--        vmstate_uint32_array!(read_fifo, PL011State, PL011_FIFO_DEPTH),
--        vmstate_uint32!(ilpr, PL011State),
--        vmstate_uint32!(ibrd, PL011State),
--        vmstate_uint32!(fbrd, PL011State),
--        vmstate_uint32!(ifl, PL011State),
--        vmstate_uint32!(read_pos, PL011State),
--        vmstate_uint32!(read_count, PL011State),
--        vmstate_uint32!(read_trigger, PL011State),
-+        vmstate_of!(PL011State, flags),
-+        vmstate_of!(PL011State, line_control),
-+        vmstate_of!(PL011State, receive_status_error_clear),
-+        vmstate_of!(PL011State, control),
-+        vmstate_of!(PL011State, dmacr),
-+        vmstate_of!(PL011State, int_enabled),
-+        vmstate_of!(PL011State, int_level),
-+        vmstate_of!(PL011State, read_fifo),
-+        vmstate_of!(PL011State, ilpr),
-+        vmstate_of!(PL011State, ibrd),
-+        vmstate_of!(PL011State, fbrd),
-+        vmstate_of!(PL011State, ifl),
-+        vmstate_of!(PL011State, read_pos),
-+        vmstate_of!(PL011State, read_count),
-+        vmstate_of!(PL011State, read_trigger),
-     },
-     subsections: vmstate_subsections! {
-         VMSTATE_PL011_CLOCK
-diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
-index 0a89d393e0f..f30f9850ad4 100644
---- a/rust/hw/char/pl011/src/lib.rs
-+++ b/rust/hw/char/pl011/src/lib.rs
-@@ -106,6 +106,7 @@ pub mod registers {
-     //! Device registers exposed as typed structs which are backed by arbitrary
-     //! integer bitmaps. [`Data`], [`Control`], [`LineControl`], etc.
-     use bilge::prelude::*;
-+    use qemu_api::impl_vmstate_bitsized;
- 
-     /// Receive Status Register / Data Register common error bits
-     ///
-@@ -172,6 +173,7 @@ pub struct Data {
-         pub errors: Errors,
-         _reserved: u16,
-     }
-+    impl_vmstate_bitsized!(Data);
- 
-     impl Data {
-         // bilge is not very const-friendly, unfortunately
-@@ -208,6 +210,7 @@ pub struct ReceiveStatusErrorClear {
-         pub errors: Errors,
-         _reserved_unpredictable: u24,
-     }
-+    impl_vmstate_bitsized!(ReceiveStatusErrorClear);
- 
-     impl ReceiveStatusErrorClear {
-         pub fn set_from_data(&mut self, data: Data) {
-@@ -280,6 +283,7 @@ pub struct Flags {
-         pub ring_indicator: bool,
-         _reserved_zero_no_modify: u23,
-     }
-+    impl_vmstate_bitsized!(Flags);
- 
-     impl Flags {
-         pub fn reset(&mut self) {
-@@ -354,6 +358,7 @@ pub struct LineControl {
-         /// 31:8 - Reserved, do not modify, read as zero.
-         _reserved_zero_no_modify: u24,
-     }
-+    impl_vmstate_bitsized!(LineControl);
- 
-     impl LineControl {
-         pub fn reset(&mut self) {
-@@ -498,6 +503,7 @@ pub struct Control {
-         /// 31:16 - Reserved, do not modify, read as zero.
-         _reserved_zero_no_modify2: u16,
-     }
-+    impl_vmstate_bitsized!(Control);
- 
-     impl Control {
-         pub fn reset(&mut self) {
 -- 
 2.47.1
 
