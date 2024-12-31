@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AAE49FF1C0
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:24:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A691A9FF1CE
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:26:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tSimh-0006Fw-Fs; Tue, 31 Dec 2024 15:24:11 -0500
+	id 1tSin2-0006px-Tn; Tue, 31 Dec 2024 15:24:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSimd-0005zG-DS
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:07 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSimj-0006Zx-BU
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:13 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSimb-0000we-8Z
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:06 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4361f796586so106898765e9.3
- for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:24:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSimg-0000ww-0h
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:13 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4363dc916ceso66468765e9.0
+ for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:24:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735676643; x=1736281443; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735676648; x=1736281448; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4eBUfaZOV4VpWuEPg0imAAbPSgeX3YWDxsrL3NZUv+w=;
- b=Z3eYRnO16r6Vi72Y64DmN6UPldK4TDxt4NbFYqN4Re2kzULpKYV3ePmmdpaBx8qC+r
- 8U1530m5ZhHq7thiFFaKZjcfjzZBd0bnhZXJy5T0NADbQlFR++8kNQc70g+8mDypVEvK
- p+sEJGZQS4qZ2Vd7bZlb3IAKT5UJYW4APTCt2MlfxQomWrs2tnjXkgB6Rpcvweyz6zfT
- shxABJ8D7YCT65w0XSpQA0muxg/kC0GBESTSjoKhwvohJSqq8Ypgm4t+w6J69vDovwKE
- keHwviMRfuguvSIQ0YfRU6gAnvmhkyAsv2qUFZ1swbrkDBGd0LBl92QQlraSIHophVuq
- hYrA==
+ bh=yVuDlgyVY1jvmkQEUInHR9nAZd4EhLEP8pFEQwDV8v4=;
+ b=Q45qF+VQmDXRnVLVfeIY/tv+dgeYWuHK20J4XcaCvCJVbhRLMtjPXHB29aqA/ULY8M
+ +X3mq2LkxkrAFzsG7rml4DXFxP3Pg+8r/k5tR2mw62YohJ9gUaAW4qa5m7MKaYbp5mSn
+ 81hxERT8u7HaL471F2kY/z2/VExQc2+wJkUN04qF5aMKlpRDCr7uhLSzvbGi9Mb5cC0N
+ peunCl1QMheLKArliuylcKPzBpNz86ghQYknQRYIWGsWMTkUMNz4Bh5D3xZjM9u0h+oj
+ r01ReQgb498QOgwVYAJaiTS4cLDB+WHNSy6KrVQD5mT5CIrF1pYmEexaNc/16gU0tCC3
+ 4IAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735676643; x=1736281443;
+ d=1e100.net; s=20230601; t=1735676648; x=1736281448;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4eBUfaZOV4VpWuEPg0imAAbPSgeX3YWDxsrL3NZUv+w=;
- b=JsLnq3cYIYwHN/UElCTjidtmiLDzWjk4vQfdEiIrqjUn+T+yU1bGVF5GG2nEokTPUn
- w8LhF9umtINsZxzzUcOQorTJOpE26jZ4Z8fKgYRhOSOqdHHvrjiWe5Uun62d9alAbLM3
- gFF+GY5Ubl2Yv7SeU7k0/1RQ1jKFgNwop/Tx2be67IONOfy0kPYY+ZL3GxpV6XO/baO1
- WiFXBYrB91O6pkV4DE5aJYTZQRmAgwNuy7hUSeEwggyQDF8/gjCCGbAZ3MYRnYyR83KC
- 9ABCJP46QMcrxy1mLPVkEXobE8hmjNfX2fO9rrIcWFRU4eqTXwtG7uUlN8Naq5ecfwe2
- zRWg==
-X-Gm-Message-State: AOJu0YzeCvbL4EGAynjRLJB8l32qtVS/wfMYu+Et02rZZ28p0+R0MiIr
- GfMkV7tfheYhpH2JAdMMKY15doe2JTcGjSfPlxspS8krPmVRZ1KqC/hBwmaa4w7xfgdng/aMSWS
- 1HoE=
-X-Gm-Gg: ASbGncs5swjNXiKTJlignfsK9VVbLM+6uNlXs2gZxhiu7bABlYoHr/LkW728RRr+P9D
- sljexUGNjYOseZ0bOR3x+W9zJGj1yTYNVm648QutQbDQ2NFwHUyM2j6erBPSULODk2uKiVfoJaN
- BNxDqUEW6Plnh+nmBKoWE4eyHhM/P3OkOx5Qt7moPLEMyVFuHsHaUYizNvvdLTnrLfXI35OdvnE
- 6xf18BPHGdHgEv529XWZVa65oJ5R88Nf5fxJaEi0roD7v8A9N4MK/skD2tsiA/FBP9d9PZSVEOd
- RyBigqJNJ5cpRV8/W2phQuUEmHok1Qs=
-X-Google-Smtp-Source: AGHT+IEpyx91W6J9ctlJNmrL70Ly6CMvYQzDhnhsC0VD/GEUKNvmPTDkQuOP4vzfEGxTaxw5kbEySw==
-X-Received: by 2002:a05:6000:713:b0:386:3903:86eb with SMTP id
- ffacd0b85a97d-38a221f1fd1mr32023610f8f.23.1735676643483; 
- Tue, 31 Dec 2024 12:24:03 -0800 (PST)
+ bh=yVuDlgyVY1jvmkQEUInHR9nAZd4EhLEP8pFEQwDV8v4=;
+ b=oTvaxEAYb3ZsZXOo9j6Ze9jjway4VoenNg+xFBuGNh0xo+6O2tQXnzF/YSmR/0L44i
+ 1VXSYED2h562B6fYMJEFDCP99/wyZN1eHZwOAEZMk8ENakpPsjwZJBgwZgHGJxDM5Pjg
+ ha1uz0wshh6N8msVEDC6jLmQs5tli42x+ID8YpSsdtsG7Y84lA+88cJdozk+aSzMJVJj
+ LMR74j6Sr/e/40qL4onI6xT+fS5Xg4uxxy56uBbrbZtuxraiCoEVdLkXSw5+lRBY7bsl
+ MXZsbkpdghC7TV4xH0kr6dbYjBv0Yn+3JQ3rOQqbi+JMMUO1z1g5Y94c9WFngsB4zC/v
+ /iFQ==
+X-Gm-Message-State: AOJu0Yzv41Y3jQ9XVFQ4qnvnScnUa7LL/OjJwRreiaTMO4ltQWJ0NbKc
+ /Sb2W/Xas/k5PSmTeHnpdNY95aH35k4igw+11Cabp95Xd5+s2JcFBBc2I7no4+1TLwNBp2s7XtA
+ Bncc=
+X-Gm-Gg: ASbGncuy0UxNBi/A2Aq1K/Pv76/M/kbjtT7+5z4kL6H6RV2yrVsUcXjyjjgO+OpcMZ7
+ DwTgoFVEcym53dshKmTZskM+rqY1tekaD4KAosVt6IVlDlSuc1AVGesMQ1NJBFIvyo8eK4sVfJ8
+ uYfNd++7WHElHjwA18HenuD3jdLr5JrlmAX3AtRJRBkQQp4F46x/fE1EjpSwLTWcxgwhcxPrsar
+ y6txepTE/bfIzSeSyC9QgOJnbPhNlpuwi8yOFGs76EMxzies5oUUgKKv45OBt3SEiNCnwYsWteF
+ c1OTj/yZZnIzSwrv6oLGM8DFtyM9iHU=
+X-Google-Smtp-Source: AGHT+IEyzIDA450c9W3sigYuelNxh2tJhsL/D7jZoa5lSByZxKuwbyz6l81dfDzxx4FaGTW+jqBpnQ==
+X-Received: by 2002:adf:a392:0:b0:385:fc35:1f75 with SMTP id
+ ffacd0b85a97d-38a22a11b62mr28089066f8f.12.1735676647994; 
+ Tue, 31 Dec 2024 12:24:07 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c89e150sm33553091f8f.66.2024.12.31.12.24.01
+ ffacd0b85a97d-38a1c6ad3e3sm34816944f8f.0.2024.12.31.12.24.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 31 Dec 2024 12:24:02 -0800 (PST)
+ Tue, 31 Dec 2024 12:24:07 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Vasant Hegde <vasant.hegde@amd.com>
-Subject: [PULL 19/29] hw/i386/amd_iommu: Simplify non-KVM checks on XTSup
- feature
-Date: Tue, 31 Dec 2024 21:22:18 +0100
-Message-ID: <20241231202228.28819-20-philmd@linaro.org>
+Cc: Phil Dennis-Jordan <phil@philjordan.eu>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 20/29] hw/block/virtio-blk: Replaces request free function with
+ g_free
+Date: Tue, 31 Dec 2024 21:22:19 +0100
+Message-ID: <20241231202228.28819-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241231202228.28819-1-philmd@linaro.org>
 References: <20241231202228.28819-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,57 +99,207 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Generic code wanting to access KVM specific methods should
-do so being protected by the 'kvm_enabled()' helper.
+From: Phil Dennis-Jordan <phil@philjordan.eu>
 
-Doing so avoid link failures when optimization is disabled
-(using --enable-debug), see for example commits c04cfb4596a
-("hw/i386: fix short-circuit logic with non-optimizing builds")
-and 0266aef8cd6 ("amd_iommu: Fix kvm_enable_x2apic link error
-with clang in non-KVM builds").
+The virtio_blk_free_request() function has been a 1-liner forwarding
+to g_free() for a while now. We may as well call g_free on the request
+pointer directly.
 
-XTSup feature depends on KVM, so protect the whole block
-checking the XTSup feature with a check on whether KVM is
-enabled.
-
-Since x86_cpus_init() already checks APIC ID > 255 imply
-kernel support for irqchip and X2APIC, remove the confuse
-and unlikely reachable "AMD IOMMU xtsup=on requires support
-on the KVM side" message.
-
-Fix a type in "configuration" in error message.
-
+Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Tested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-ID: <20241223221645.29911-14-phil@philjordan.eu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Message-Id: <20241129155802.35534-1-philmd@linaro.org>
 ---
- hw/i386/amd_iommu.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ hw/block/virtio-blk.c | 43 +++++++++++++++++++------------------------
+ 1 file changed, 19 insertions(+), 24 deletions(-)
 
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index be522b5d7dc..6b13ce894b1 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -1652,17 +1652,10 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion_overlap(&s->mr_sys, AMDVI_INT_ADDR_FIRST,
-                                         &s->mr_ir, 1);
+diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
+index 8806c03f7c6..e0acce89e1e 100644
+--- a/hw/block/virtio-blk.c
++++ b/hw/block/virtio-blk.c
+@@ -50,11 +50,6 @@ static void virtio_blk_init_request(VirtIOBlock *s, VirtQueue *vq,
+     req->mr_next = NULL;
+ }
  
--    /* AMD IOMMU with x2APIC mode requires xtsup=on */
--    if (x86ms->apic_id_limit > 255 && !s->xtsup) {
--        error_report("AMD IOMMU with x2APIC confguration requires xtsup=on");
-+    if (kvm_enabled() && x86ms->apic_id_limit > 255 && !s->xtsup) {
-+        error_report("AMD IOMMU with x2APIC configuration requires xtsup=on");
-         exit(EXIT_FAILURE);
+-static void virtio_blk_free_request(VirtIOBlockReq *req)
+-{
+-    g_free(req);
+-}
+-
+ static void virtio_blk_req_complete(VirtIOBlockReq *req, unsigned char status)
+ {
+     VirtIOBlock *s = req->dev;
+@@ -93,7 +88,7 @@ static int virtio_blk_handle_rw_error(VirtIOBlockReq *req, int error,
+         if (acct_failed) {
+             block_acct_failed(blk_get_stats(s->blk), &req->acct);
+         }
+-        virtio_blk_free_request(req);
++        g_free(req);
      }
--    if (s->xtsup) {
--        if (kvm_irqchip_is_split() && !kvm_enable_x2apic()) {
--            error_report("AMD IOMMU xtsup=on requires support on the KVM side");
--            exit(EXIT_FAILURE);
--        }
--    }
  
-     pci_setup_iommu(bus, &amdvi_iommu_ops, s);
-     amdvi_init(s);
+     blk_error_action(s->blk, action, is_read, error);
+@@ -136,7 +131,7 @@ static void virtio_blk_rw_complete(void *opaque, int ret)
+ 
+         virtio_blk_req_complete(req, VIRTIO_BLK_S_OK);
+         block_acct_done(blk_get_stats(s->blk), &req->acct);
+-        virtio_blk_free_request(req);
++        g_free(req);
+     }
+ }
+ 
+@@ -151,7 +146,7 @@ static void virtio_blk_flush_complete(void *opaque, int ret)
+ 
+     virtio_blk_req_complete(req, VIRTIO_BLK_S_OK);
+     block_acct_done(blk_get_stats(s->blk), &req->acct);
+-    virtio_blk_free_request(req);
++    g_free(req);
+ }
+ 
+ static void virtio_blk_discard_write_zeroes_complete(void *opaque, int ret)
+@@ -169,7 +164,7 @@ static void virtio_blk_discard_write_zeroes_complete(void *opaque, int ret)
+     if (is_write_zeroes) {
+         block_acct_done(blk_get_stats(s->blk), &req->acct);
+     }
+-    virtio_blk_free_request(req);
++    g_free(req);
+ }
+ 
+ static VirtIOBlockReq *virtio_blk_get_request(VirtIOBlock *s, VirtQueue *vq)
+@@ -214,7 +209,7 @@ static void virtio_blk_handle_scsi(VirtIOBlockReq *req)
+ 
+ fail:
+     virtio_blk_req_complete(req, status);
+-    virtio_blk_free_request(req);
++    g_free(req);
+ }
+ 
+ static inline void submit_requests(VirtIOBlock *s, MultiReqBuffer *mrb,
+@@ -612,7 +607,7 @@ static void virtio_blk_zone_report_complete(void *opaque, int ret)
+ 
+ out:
+     virtio_blk_req_complete(req, err_status);
+-    virtio_blk_free_request(req);
++    g_free(req);
+     g_free(data->zone_report_data.zones);
+     g_free(data);
+ }
+@@ -661,7 +656,7 @@ static void virtio_blk_handle_zone_report(VirtIOBlockReq *req,
+     return;
+ out:
+     virtio_blk_req_complete(req, err_status);
+-    virtio_blk_free_request(req);
++    g_free(req);
+ }
+ 
+ static void virtio_blk_zone_mgmt_complete(void *opaque, int ret)
+@@ -677,7 +672,7 @@ static void virtio_blk_zone_mgmt_complete(void *opaque, int ret)
+     }
+ 
+     virtio_blk_req_complete(req, err_status);
+-    virtio_blk_free_request(req);
++    g_free(req);
+ }
+ 
+ static int virtio_blk_handle_zone_mgmt(VirtIOBlockReq *req, BlockZoneOp op)
+@@ -719,7 +714,7 @@ static int virtio_blk_handle_zone_mgmt(VirtIOBlockReq *req, BlockZoneOp op)
+     return 0;
+ out:
+     virtio_blk_req_complete(req, err_status);
+-    virtio_blk_free_request(req);
++    g_free(req);
+     return err_status;
+ }
+ 
+@@ -750,7 +745,7 @@ static void virtio_blk_zone_append_complete(void *opaque, int ret)
+ 
+ out:
+     virtio_blk_req_complete(req, err_status);
+-    virtio_blk_free_request(req);
++    g_free(req);
+     g_free(data);
+ }
+ 
+@@ -788,7 +783,7 @@ static int virtio_blk_handle_zone_append(VirtIOBlockReq *req,
+ 
+ out:
+     virtio_blk_req_complete(req, err_status);
+-    virtio_blk_free_request(req);
++    g_free(req);
+     return err_status;
+ }
+ 
+@@ -855,7 +850,7 @@ static int virtio_blk_handle_request(VirtIOBlockReq *req, MultiReqBuffer *mrb)
+             virtio_blk_req_complete(req, VIRTIO_BLK_S_IOERR);
+             block_acct_invalid(blk_get_stats(s->blk),
+                                is_write ? BLOCK_ACCT_WRITE : BLOCK_ACCT_READ);
+-            virtio_blk_free_request(req);
++            g_free(req);
+             return 0;
+         }
+ 
+@@ -911,7 +906,7 @@ static int virtio_blk_handle_request(VirtIOBlockReq *req, MultiReqBuffer *mrb)
+                               VIRTIO_BLK_ID_BYTES));
+         iov_from_buf(in_iov, in_num, 0, serial, size);
+         virtio_blk_req_complete(req, VIRTIO_BLK_S_OK);
+-        virtio_blk_free_request(req);
++        g_free(req);
+         break;
+     }
+     case VIRTIO_BLK_T_ZONE_APPEND & ~VIRTIO_BLK_T_OUT:
+@@ -943,7 +938,7 @@ static int virtio_blk_handle_request(VirtIOBlockReq *req, MultiReqBuffer *mrb)
+         if (unlikely(!(type & VIRTIO_BLK_T_OUT) ||
+                      out_len > sizeof(dwz_hdr))) {
+             virtio_blk_req_complete(req, VIRTIO_BLK_S_UNSUPP);
+-            virtio_blk_free_request(req);
++            g_free(req);
+             return 0;
+         }
+ 
+@@ -960,14 +955,14 @@ static int virtio_blk_handle_request(VirtIOBlockReq *req, MultiReqBuffer *mrb)
+                                                             is_write_zeroes);
+         if (err_status != VIRTIO_BLK_S_OK) {
+             virtio_blk_req_complete(req, err_status);
+-            virtio_blk_free_request(req);
++            g_free(req);
+         }
+ 
+         break;
+     }
+     default:
+         virtio_blk_req_complete(req, VIRTIO_BLK_S_UNSUPP);
+-        virtio_blk_free_request(req);
++        g_free(req);
+     }
+     return 0;
+ }
+@@ -988,7 +983,7 @@ void virtio_blk_handle_vq(VirtIOBlock *s, VirtQueue *vq)
+         while ((req = virtio_blk_get_request(s, vq))) {
+             if (virtio_blk_handle_request(req, &mrb)) {
+                 virtqueue_detach_element(req->vq, &req->elem, 0);
+-                virtio_blk_free_request(req);
++                g_free(req);
+                 break;
+             }
+         }
+@@ -1038,7 +1033,7 @@ static void virtio_blk_dma_restart_bh(void *opaque)
+             while (req) {
+                 next = req->next;
+                 virtqueue_detach_element(req->vq, &req->elem, 0);
+-                virtio_blk_free_request(req);
++                g_free(req);
+                 req = next;
+             }
+             break;
+@@ -1121,7 +1116,7 @@ static void virtio_blk_reset(VirtIODevice *vdev)
+             /* No other threads can access req->vq here */
+             virtqueue_detach_element(req->vq, &req->elem, 0);
+ 
+-            virtio_blk_free_request(req);
++            g_free(req);
+         }
+     }
+ 
 -- 
 2.47.1
 
