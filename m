@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A691A9FF1CE
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 517559FF1D2
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:26:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tSin2-0006px-Tn; Tue, 31 Dec 2024 15:24:32 -0500
+	id 1tSin4-0007I3-Ul; Tue, 31 Dec 2024 15:24:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSimj-0006Zx-BU
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:13 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSimn-0006l5-HS
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:19 -0500
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSimg-0000ww-0h
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:13 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4363dc916ceso66468765e9.0
- for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:24:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSiml-0000xb-Dq
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:16 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3862ca8e0bbso7979993f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:24:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735676648; x=1736281448; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735676652; x=1736281452; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yVuDlgyVY1jvmkQEUInHR9nAZd4EhLEP8pFEQwDV8v4=;
- b=Q45qF+VQmDXRnVLVfeIY/tv+dgeYWuHK20J4XcaCvCJVbhRLMtjPXHB29aqA/ULY8M
- +X3mq2LkxkrAFzsG7rml4DXFxP3Pg+8r/k5tR2mw62YohJ9gUaAW4qa5m7MKaYbp5mSn
- 81hxERT8u7HaL471F2kY/z2/VExQc2+wJkUN04qF5aMKlpRDCr7uhLSzvbGi9Mb5cC0N
- peunCl1QMheLKArliuylcKPzBpNz86ghQYknQRYIWGsWMTkUMNz4Bh5D3xZjM9u0h+oj
- r01ReQgb498QOgwVYAJaiTS4cLDB+WHNSy6KrVQD5mT5CIrF1pYmEexaNc/16gU0tCC3
- 4IAA==
+ bh=Vts4Pv6wqeOpsJqeP0LsusmybTITtJOTCbWV0U0dSWI=;
+ b=pW/fiKM8L3ePnn7/lZNCBK57FslT/G/auwNlTEZaUrSh5OdH67zP70S3Ts1b0MsR9s
+ bc+tW/OBvxCbo17K1cRi/jJrDTB6WxRG+Rva5T9Ltp0L1/FQnaUft0RVYG82iUbctK8b
+ epDarUCdML0x31tAAP+wWz0hkRrdG7lesO2avy3psq0DMskVTzCGDB7DX7+v9VcOF1J1
+ 8MSzMkRpqU3rj+a2gKCKg9lsbcrcPbdjFU7xe64ElEfLssCML4Rwzm52WdZvIMmdux6Q
+ GL+BsTGKD2WH5Xctkdvqny2iNF2EGS9i5Z3CP0Q6sdA1ESON2ChbS5o5tFNIjvGYSqvG
+ dviA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735676648; x=1736281448;
+ d=1e100.net; s=20230601; t=1735676652; x=1736281452;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yVuDlgyVY1jvmkQEUInHR9nAZd4EhLEP8pFEQwDV8v4=;
- b=oTvaxEAYb3ZsZXOo9j6Ze9jjway4VoenNg+xFBuGNh0xo+6O2tQXnzF/YSmR/0L44i
- 1VXSYED2h562B6fYMJEFDCP99/wyZN1eHZwOAEZMk8ENakpPsjwZJBgwZgHGJxDM5Pjg
- ha1uz0wshh6N8msVEDC6jLmQs5tli42x+ID8YpSsdtsG7Y84lA+88cJdozk+aSzMJVJj
- LMR74j6Sr/e/40qL4onI6xT+fS5Xg4uxxy56uBbrbZtuxraiCoEVdLkXSw5+lRBY7bsl
- MXZsbkpdghC7TV4xH0kr6dbYjBv0Yn+3JQ3rOQqbi+JMMUO1z1g5Y94c9WFngsB4zC/v
- /iFQ==
-X-Gm-Message-State: AOJu0Yzv41Y3jQ9XVFQ4qnvnScnUa7LL/OjJwRreiaTMO4ltQWJ0NbKc
- /Sb2W/Xas/k5PSmTeHnpdNY95aH35k4igw+11Cabp95Xd5+s2JcFBBc2I7no4+1TLwNBp2s7XtA
- Bncc=
-X-Gm-Gg: ASbGncuy0UxNBi/A2Aq1K/Pv76/M/kbjtT7+5z4kL6H6RV2yrVsUcXjyjjgO+OpcMZ7
- DwTgoFVEcym53dshKmTZskM+rqY1tekaD4KAosVt6IVlDlSuc1AVGesMQ1NJBFIvyo8eK4sVfJ8
- uYfNd++7WHElHjwA18HenuD3jdLr5JrlmAX3AtRJRBkQQp4F46x/fE1EjpSwLTWcxgwhcxPrsar
- y6txepTE/bfIzSeSyC9QgOJnbPhNlpuwi8yOFGs76EMxzies5oUUgKKv45OBt3SEiNCnwYsWteF
- c1OTj/yZZnIzSwrv6oLGM8DFtyM9iHU=
-X-Google-Smtp-Source: AGHT+IEyzIDA450c9W3sigYuelNxh2tJhsL/D7jZoa5lSByZxKuwbyz6l81dfDzxx4FaGTW+jqBpnQ==
-X-Received: by 2002:adf:a392:0:b0:385:fc35:1f75 with SMTP id
- ffacd0b85a97d-38a22a11b62mr28089066f8f.12.1735676647994; 
- Tue, 31 Dec 2024 12:24:07 -0800 (PST)
+ bh=Vts4Pv6wqeOpsJqeP0LsusmybTITtJOTCbWV0U0dSWI=;
+ b=fPb8CUNH0LvmJ1PPCQ67/4GlR7n+Fp9X5kLHoWrV0h49MCqg9nELDYqGp85iqBoB6q
+ 0JQFkxN+NXmx9K1XiV+I2GQp7jGGGZJm8ZKYpiF17n7UagV+4V1wU+pf+genuxhHqV6B
+ byDYTzJ9P9xgbgF5Vaej3+F/iOsJ5UKtQHQ282bOFk4hlDme3MQ8uhdrbFQT1fOPeK+E
+ asroLicQEJ3pEh1qaQTNgQD03EKtn+G5b45b9ArsoNEM7i0wNWKIMpJjI2UBxjlJTURY
+ Y79CEQ6Qz09ulNNCKZaCVgPgmEYRgGyaGGYI23BOodNudrk/gbLLkwBb5z6LLfyN4Ayr
+ PCrQ==
+X-Gm-Message-State: AOJu0YwgNHSvfFGV8SmVfJ7YwVBxOXlAYpgMhMg14kNzCOwZBb7Yi3Rv
+ GfQZFcIKrx4jclB9Xe5VTKx0G/Rfi8QilAvQD3wBr/rqncJVT4R/nC1bbz6h0SPoLy6MUIZ79Hv
+ 6yec=
+X-Gm-Gg: ASbGncsRTGpqUGQhUs+7s1ajldTHWM8JxRuy21dZx+VbdTVeF0dw1N7eEfsE7zgrFJv
+ Rjsa4obgL5MPgosGb7hJJVmfzn65vPVL4WWuEveMcVxjiCaSbzDZR3QT6YeLiWcVw6PCLarm0wC
+ PZLzI5xQtSeIF0cHNaXa+kNCqNpxM3uIGB1Lve9OcI31a2+/wvX1GNo0fYRHE2SxPBx0ZKvk2Ac
+ bGQ+8bmO7yPv6CnY3VDVG3tG3jzRhdyQsxjZan6eOrGpA2ABMbHaGKuRtfOLFvfgEFafh3Qo4VW
+ dyPIrHKKuDRVTjejld89+Dc/zZQ9PMw=
+X-Google-Smtp-Source: AGHT+IH+GKp4yWCkYousfJTPduSOs2vIz3aRXqxWprhQSQIkp5HkeGXSox6y+YwNd04J2XWRtKVi1g==
+X-Received: by 2002:a5d:5e09:0:b0:385:e4a7:df09 with SMTP id
+ ffacd0b85a97d-38a223f75fbmr44072192f8f.44.1735676652519; 
+ Tue, 31 Dec 2024 12:24:12 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c6ad3e3sm34816944f8f.0.2024.12.31.12.24.07
+ ffacd0b85a97d-38a1c8a636asm34468588f8f.88.2024.12.31.12.24.11
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 31 Dec 2024 12:24:07 -0800 (PST)
+ Tue, 31 Dec 2024 12:24:12 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Phil Dennis-Jordan <phil@philjordan.eu>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 20/29] hw/block/virtio-blk: Replaces request free function with
- g_free
-Date: Tue, 31 Dec 2024 21:22:19 +0100
-Message-ID: <20241231202228.28819-21-philmd@linaro.org>
+Subject: [PULL 21/29] hw/usb/hcd-xhci-pci: Move msi/msix properties from NEC
+ to superclass
+Date: Tue, 31 Dec 2024 21:22:20 +0100
+Message-ID: <20241231202228.28819-22-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241231202228.28819-1-philmd@linaro.org>
 References: <20241231202228.28819-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,205 +100,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 
-The virtio_blk_free_request() function has been a 1-liner forwarding
-to g_free() for a while now. We may as well call g_free on the request
-pointer directly.
+The NEC XHCI controller exposes the underlying PCI device's msi and
+msix properties, but the superclass and thus the qemu-xhci device do
+not. There does not seem to be any obvious reason for this limitation.
+This change moves these properties to the superclass so they are
+exposed by both PCI XHCI device variants.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Tested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-ID: <20241223221645.29911-14-phil@philjordan.eu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20241227121336.25838-3-phil@philjordan.eu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/block/virtio-blk.c | 43 +++++++++++++++++++------------------------
- 1 file changed, 19 insertions(+), 24 deletions(-)
+ hw/usb/hcd-xhci-nec.c | 2 --
+ hw/usb/hcd-xhci-pci.c | 6 ++++++
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-index 8806c03f7c6..e0acce89e1e 100644
---- a/hw/block/virtio-blk.c
-+++ b/hw/block/virtio-blk.c
-@@ -50,11 +50,6 @@ static void virtio_blk_init_request(VirtIOBlock *s, VirtQueue *vq,
-     req->mr_next = NULL;
+diff --git a/hw/usb/hcd-xhci-nec.c b/hw/usb/hcd-xhci-nec.c
+index b1df95b52a5..1df518baf59 100644
+--- a/hw/usb/hcd-xhci-nec.c
++++ b/hw/usb/hcd-xhci-nec.c
+@@ -37,8 +37,6 @@ struct XHCINecState {
+ };
+ 
+ static const Property nec_xhci_properties[] = {
+-    DEFINE_PROP_ON_OFF_AUTO("msi", XHCIPciState, msi, ON_OFF_AUTO_AUTO),
+-    DEFINE_PROP_ON_OFF_AUTO("msix", XHCIPciState, msix, ON_OFF_AUTO_AUTO),
+     DEFINE_PROP_UINT32("intrs", XHCINecState, intrs, XHCI_MAXINTRS),
+     DEFINE_PROP_UINT32("slots", XHCINecState, slots, XHCI_MAXSLOTS),
+ };
+diff --git a/hw/usb/hcd-xhci-pci.c b/hw/usb/hcd-xhci-pci.c
+index e110840c7a0..a069b423388 100644
+--- a/hw/usb/hcd-xhci-pci.c
++++ b/hw/usb/hcd-xhci-pci.c
+@@ -197,6 +197,11 @@ static void xhci_instance_init(Object *obj)
+     qdev_alias_all_properties(DEVICE(&s->xhci), obj);
  }
  
--static void virtio_blk_free_request(VirtIOBlockReq *req)
--{
--    g_free(req);
--}
--
- static void virtio_blk_req_complete(VirtIOBlockReq *req, unsigned char status)
++static const Property xhci_pci_properties[] = {
++    DEFINE_PROP_ON_OFF_AUTO("msi", XHCIPciState, msi, ON_OFF_AUTO_AUTO),
++    DEFINE_PROP_ON_OFF_AUTO("msix", XHCIPciState, msix, ON_OFF_AUTO_AUTO),
++};
++
+ static void xhci_class_init(ObjectClass *klass, void *data)
  {
-     VirtIOBlock *s = req->dev;
-@@ -93,7 +88,7 @@ static int virtio_blk_handle_rw_error(VirtIOBlockReq *req, int error,
-         if (acct_failed) {
-             block_acct_failed(blk_get_stats(s->blk), &req->acct);
-         }
--        virtio_blk_free_request(req);
-+        g_free(req);
-     }
- 
-     blk_error_action(s->blk, action, is_read, error);
-@@ -136,7 +131,7 @@ static void virtio_blk_rw_complete(void *opaque, int ret)
- 
-         virtio_blk_req_complete(req, VIRTIO_BLK_S_OK);
-         block_acct_done(blk_get_stats(s->blk), &req->acct);
--        virtio_blk_free_request(req);
-+        g_free(req);
-     }
+     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
+@@ -208,6 +213,7 @@ static void xhci_class_init(ObjectClass *klass, void *data)
+     k->realize      = usb_xhci_pci_realize;
+     k->exit         = usb_xhci_pci_exit;
+     k->class_id     = PCI_CLASS_SERIAL_USB;
++    device_class_set_props(dc, xhci_pci_properties);
  }
  
-@@ -151,7 +146,7 @@ static void virtio_blk_flush_complete(void *opaque, int ret)
- 
-     virtio_blk_req_complete(req, VIRTIO_BLK_S_OK);
-     block_acct_done(blk_get_stats(s->blk), &req->acct);
--    virtio_blk_free_request(req);
-+    g_free(req);
- }
- 
- static void virtio_blk_discard_write_zeroes_complete(void *opaque, int ret)
-@@ -169,7 +164,7 @@ static void virtio_blk_discard_write_zeroes_complete(void *opaque, int ret)
-     if (is_write_zeroes) {
-         block_acct_done(blk_get_stats(s->blk), &req->acct);
-     }
--    virtio_blk_free_request(req);
-+    g_free(req);
- }
- 
- static VirtIOBlockReq *virtio_blk_get_request(VirtIOBlock *s, VirtQueue *vq)
-@@ -214,7 +209,7 @@ static void virtio_blk_handle_scsi(VirtIOBlockReq *req)
- 
- fail:
-     virtio_blk_req_complete(req, status);
--    virtio_blk_free_request(req);
-+    g_free(req);
- }
- 
- static inline void submit_requests(VirtIOBlock *s, MultiReqBuffer *mrb,
-@@ -612,7 +607,7 @@ static void virtio_blk_zone_report_complete(void *opaque, int ret)
- 
- out:
-     virtio_blk_req_complete(req, err_status);
--    virtio_blk_free_request(req);
-+    g_free(req);
-     g_free(data->zone_report_data.zones);
-     g_free(data);
- }
-@@ -661,7 +656,7 @@ static void virtio_blk_handle_zone_report(VirtIOBlockReq *req,
-     return;
- out:
-     virtio_blk_req_complete(req, err_status);
--    virtio_blk_free_request(req);
-+    g_free(req);
- }
- 
- static void virtio_blk_zone_mgmt_complete(void *opaque, int ret)
-@@ -677,7 +672,7 @@ static void virtio_blk_zone_mgmt_complete(void *opaque, int ret)
-     }
- 
-     virtio_blk_req_complete(req, err_status);
--    virtio_blk_free_request(req);
-+    g_free(req);
- }
- 
- static int virtio_blk_handle_zone_mgmt(VirtIOBlockReq *req, BlockZoneOp op)
-@@ -719,7 +714,7 @@ static int virtio_blk_handle_zone_mgmt(VirtIOBlockReq *req, BlockZoneOp op)
-     return 0;
- out:
-     virtio_blk_req_complete(req, err_status);
--    virtio_blk_free_request(req);
-+    g_free(req);
-     return err_status;
- }
- 
-@@ -750,7 +745,7 @@ static void virtio_blk_zone_append_complete(void *opaque, int ret)
- 
- out:
-     virtio_blk_req_complete(req, err_status);
--    virtio_blk_free_request(req);
-+    g_free(req);
-     g_free(data);
- }
- 
-@@ -788,7 +783,7 @@ static int virtio_blk_handle_zone_append(VirtIOBlockReq *req,
- 
- out:
-     virtio_blk_req_complete(req, err_status);
--    virtio_blk_free_request(req);
-+    g_free(req);
-     return err_status;
- }
- 
-@@ -855,7 +850,7 @@ static int virtio_blk_handle_request(VirtIOBlockReq *req, MultiReqBuffer *mrb)
-             virtio_blk_req_complete(req, VIRTIO_BLK_S_IOERR);
-             block_acct_invalid(blk_get_stats(s->blk),
-                                is_write ? BLOCK_ACCT_WRITE : BLOCK_ACCT_READ);
--            virtio_blk_free_request(req);
-+            g_free(req);
-             return 0;
-         }
- 
-@@ -911,7 +906,7 @@ static int virtio_blk_handle_request(VirtIOBlockReq *req, MultiReqBuffer *mrb)
-                               VIRTIO_BLK_ID_BYTES));
-         iov_from_buf(in_iov, in_num, 0, serial, size);
-         virtio_blk_req_complete(req, VIRTIO_BLK_S_OK);
--        virtio_blk_free_request(req);
-+        g_free(req);
-         break;
-     }
-     case VIRTIO_BLK_T_ZONE_APPEND & ~VIRTIO_BLK_T_OUT:
-@@ -943,7 +938,7 @@ static int virtio_blk_handle_request(VirtIOBlockReq *req, MultiReqBuffer *mrb)
-         if (unlikely(!(type & VIRTIO_BLK_T_OUT) ||
-                      out_len > sizeof(dwz_hdr))) {
-             virtio_blk_req_complete(req, VIRTIO_BLK_S_UNSUPP);
--            virtio_blk_free_request(req);
-+            g_free(req);
-             return 0;
-         }
- 
-@@ -960,14 +955,14 @@ static int virtio_blk_handle_request(VirtIOBlockReq *req, MultiReqBuffer *mrb)
-                                                             is_write_zeroes);
-         if (err_status != VIRTIO_BLK_S_OK) {
-             virtio_blk_req_complete(req, err_status);
--            virtio_blk_free_request(req);
-+            g_free(req);
-         }
- 
-         break;
-     }
-     default:
-         virtio_blk_req_complete(req, VIRTIO_BLK_S_UNSUPP);
--        virtio_blk_free_request(req);
-+        g_free(req);
-     }
-     return 0;
- }
-@@ -988,7 +983,7 @@ void virtio_blk_handle_vq(VirtIOBlock *s, VirtQueue *vq)
-         while ((req = virtio_blk_get_request(s, vq))) {
-             if (virtio_blk_handle_request(req, &mrb)) {
-                 virtqueue_detach_element(req->vq, &req->elem, 0);
--                virtio_blk_free_request(req);
-+                g_free(req);
-                 break;
-             }
-         }
-@@ -1038,7 +1033,7 @@ static void virtio_blk_dma_restart_bh(void *opaque)
-             while (req) {
-                 next = req->next;
-                 virtqueue_detach_element(req->vq, &req->elem, 0);
--                virtio_blk_free_request(req);
-+                g_free(req);
-                 req = next;
-             }
-             break;
-@@ -1121,7 +1116,7 @@ static void virtio_blk_reset(VirtIODevice *vdev)
-             /* No other threads can access req->vq here */
-             virtqueue_detach_element(req->vq, &req->elem, 0);
- 
--            virtio_blk_free_request(req);
-+            g_free(req);
-         }
-     }
- 
+ static const TypeInfo xhci_pci_info = {
 -- 
 2.47.1
 
