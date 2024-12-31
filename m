@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB7059FF1BF
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:24:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D291B9FF1B8
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:23:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tSilr-0002h5-78; Tue, 31 Dec 2024 15:23:19 -0500
+	id 1tSilz-00034K-3V; Tue, 31 Dec 2024 15:23:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSilp-0002dZ-F2
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:23:17 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSilv-0002yJ-46
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:23:23 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSiln-0000rG-Vz
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:23:17 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-43626213fffso66375075e9.1
- for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:23:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSilt-0000rV-7q
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:23:22 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-436ae3e14b4so11279855e9.1
+ for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:23:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735676594; x=1736281394; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735676599; x=1736281399; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=x7T+GlWRYF0Ex9ElHkkhY2T3uL+OJyFZhB0eOR+pvv0=;
- b=kvBkjxFPAymMmQI0UqRCBCZ+rF/O4AWH1THWFE6q4ufDnDWR+K9WRV9NpIP+iv4kiM
- 7TU3DjaGL7ZSsj2DBIDtuKFedeCkA5JkpiBDx8HDuVIg2ezp+1wK4TAOrc1M6UC8LbwO
- SiMlfs7Vun7adxdVAiRdxLmwhQV618VxQHQ3dCMfTcgs9pRI3+e4TkuhJxpcsdG/5K+1
- P0RX5deySXrTJj4Qs+SsH8fp7TAZl2T3YWvKzvYiAcH5bMinPZ8kppoSeDmxSCkJCxpx
- tIcrpgW9/k+m5c7nL5dOsGyQ9dsm3sQ9Wq0XJ6ZOLWyHqTpi+V9F/Dmcm4+i/Dua1WTw
- HfOA==
+ bh=YOJaY0d1Ex8WD3TOwLpxywEdEMi/4x2kRkhM5+bgzLY=;
+ b=HOMwW6T7+m/tJ/D/J6OCe/kFymO1rYbQOIuZDaBWw7VNcUeWK6+lcq/bbwdjgMKz6R
+ AyXxGx16yIDL44J/kqNTDdfSzBqiRtNgCVTxyxgcPBsT8wExRdbHPWyNSmNeVv0UZRhB
+ TAyNgaZdGVX0a/1MlZ2lEVvzkMPS45n9U/Dkj/cRyMZZcv19+bXQPBPMAetjMurPRMEV
+ L6PiKksQz8jk/dRYsN6MV9/wiQHP3K9qVcaz5rXYHYhLkWiO9ogeL8umgyKEDWX/dpRm
+ fXle0SEBjwkxZldwF6bxsP/4cMLnZSJavDDpfNF+/mi0h7z41N/9/boiQwLaFOd++3Lv
+ ZhjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735676594; x=1736281394;
+ d=1e100.net; s=20230601; t=1735676599; x=1736281399;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=x7T+GlWRYF0Ex9ElHkkhY2T3uL+OJyFZhB0eOR+pvv0=;
- b=HfC4xBcUWa4b9z+tiaxy6lv4tt4nnPSbovBGuNsH4P4oPuOilwFYaf6CyRVUnRkYmX
- 0puxlrWMC4fNP4pP3taWN77K7GopCimzDO/fuUvcmzFLfpYOg8geOES+0k/KlGqvIrHg
- bNykmUehpKaRwqHXGEGugOH+oqd9gn2cmdujM4/JtUFc1oPnzWeaXqNpRDE94XtK7rnh
- X/9npCwZ+iDvhAVeAB61cZEEBwyQf0NQC2i2rRWMqW87bpTfGf0L7nGEu02ClTvEGm7Y
- 3QV46sY65SYr8KvEaVQ+rhsqvs033ocz/blW1uFFp3MllNKJVaSmVd2yRUywBlhsA6wd
- EiJg==
-X-Gm-Message-State: AOJu0Yyji9Qc873B2qRQsuhVkq2EfyimI/lpbDDQ6I8jCZhXyHTjleqp
- aKhkC9xuc0VdFmCMYL8H3pnTZuctoe4qq0ZY+CR29QRceGOcqRQpojKgNMfD1XnIJ6X0jQ0NHar
- XF2o=
-X-Gm-Gg: ASbGnctuz6zI8mdYW3LD7/2Izf63+IxdBYHQLbsdWAwikrKboJYCZvDBnUpPI0gkKBp
- Ujbtch2ihUSfpDQXRCAZNkMIU1t6XMiHZSuV9EIILjX1/uQHi1/5DIUuzbYmK+5eJNLiFTmOE8c
- 9Xo01+S2SQTAa2OdN5yF8B2KMtnmtrGz04YqxDW6ZK319SyhUo/43fzAypUxAIGYcCxLSxNy6TZ
- Z6wp1bn3sMJrUoDvzXwwO9L90XV5uQU2fyT4En0Zz0vC1TyCfKwEvj99ZCdraVTc0gjfw9dPadA
- jdm79PPKr/o4zjWe4W+XmcaVsnKq0oU=
-X-Google-Smtp-Source: AGHT+IHL114FAhfFUNkRuOEuvK9TTQ8k13DyHJtBlturwxFsOtJZVF/va0SlGN0Cz1yU19XxGfIWXA==
-X-Received: by 2002:a05:600c:1c20:b0:436:76bf:51cc with SMTP id
- 5b1f17b1804b1-43676bf5382mr290252255e9.12.1735676593933; 
- Tue, 31 Dec 2024 12:23:13 -0800 (PST)
+ bh=YOJaY0d1Ex8WD3TOwLpxywEdEMi/4x2kRkhM5+bgzLY=;
+ b=fzh7CcQTWVqz0gSpG+aOAfdFUqH07hNqTsFDcYR3v0NuC1SDFZpgXIKTVpl1bLwlAC
+ WjjsMu/oMYpBObBsko6HDNLCl3q9KwPrXsa2db7nJatDyhc1naMPI6xYch/CPmS35MtL
+ TCXQnG4sSIDeiYOcqfXG5ZLJ2c8htcLy9/xh4t+tJz1p3kfwCN1o3RkNEzagI/fDYUt1
+ r+TwO1TDKTzGIBVP+ElRnAP/Egbtmb2uEIiY2XphrXpIt6mO1vb3pAJQSnx8GsVg5Ojm
+ 3waLEe6EsweWd7gYVAQSGs4ZWSFoBhGwaO+ocZkyt6nvf+FQ/NpG1Xpeiy76U2c6lyul
+ 3TTQ==
+X-Gm-Message-State: AOJu0YxSGmq5HlI3N8D2sJ81H4I8NMIuZV6PhVYzMpPjKf8VT9R0mDBe
+ V0zG7aL4XtD/hTpl/PGFX7KtTgMm240bC5n310J3KX9l4MKL621lKsZnOIRAvYECsCTkrizWXk7
+ x/yk=
+X-Gm-Gg: ASbGncti8bMRHNEmFc1ysEzH4xFfTnEGHX4OsJ1bhePOtybrUsWASMUm7FUJ+I+vvp5
+ /SDKOUSzIK1JUol3EE/n1RRRj4xQpDCz4hF84Dj6P9Kn7+RNJYR5N5XJ1B4E6o6b/PdY2NucaNp
+ Ww0o70mouc/xZV06fLOeyhDYtuSv8kdm20WyU51MuUcz4h4dMO4HIsusmLVetxK8b9yBQr+bsi8
+ vFj3KwwlMdYCuLZ4HvTaPcLtrme5fQpK47Jfn+s8sQtWAegqX4wNVSiNjfPLIYGY3TKZjUWRcK0
+ ae4aPIqn4uEjYyAW4zoDQl41cjPgON8=
+X-Google-Smtp-Source: AGHT+IGwfggwqt5lOH83QJoVJVqqLzRxclJtizeH4a1fXWudLbx92Fhfr0NqhZnAVZ/4CfBnkNwi0A==
+X-Received: by 2002:a05:6000:1867:b0:385:df73:2f24 with SMTP id
+ ffacd0b85a97d-38a223f5cd1mr36018908f8f.39.1735676599318; 
+ Tue, 31 Dec 2024 12:23:19 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43661219a7csm396013175e9.24.2024.12.31.12.23.13
+ 5b1f17b1804b1-43656b42757sm437392675e9.39.2024.12.31.12.23.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 31 Dec 2024 12:23:13 -0800 (PST)
+ Tue, 31 Dec 2024 12:23:18 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <huth@tuxfamily.org>
-Subject: [PULL 09/29] hw/openrisc: Mark devices as big-endian
-Date: Tue, 31 Dec 2024 21:22:08 +0100
-Message-ID: <20241231202228.28819-10-philmd@linaro.org>
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 10/29] hw/sparc: Mark devices as big-endian
+Date: Tue, 31 Dec 2024 21:22:09 +0100
+Message-ID: <20241231202228.28819-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241231202228.28819-1-philmd@linaro.org>
 References: <20241231202228.28819-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,50 +98,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The openrisc little-endian control is in a control register:
-SR[LEE] (which we do not implement at present).
-
-These devices are only used by the OpenRISC target, which is
+These devices are only used by the SPARC targets, which are
 only built as big-endian. Therefore the DEVICE_NATIVE_ENDIAN
 definition expand to DEVICE_BIG_ENDIAN (besides, the
 DEVICE_LITTLE_ENDIAN case isn't tested). Simplify directly
 using DEVICE_BIG_ENDIAN.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Thomas Huth <huth@tuxfamily.org>
-Message-Id: <20241106184612.71897-5-philmd@linaro.org>
+Message-Id: <20241106184612.71897-6-philmd@linaro.org>
 ---
- hw/openrisc/openrisc_sim.c | 2 +-
- hw/openrisc/virt.c         | 2 +-
+ hw/sparc/sun4m_iommu.c | 2 +-
+ hw/sparc64/sun4u.c     | 2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/openrisc/openrisc_sim.c b/hw/openrisc/openrisc_sim.c
-index 87f9cbc3001..e0da4067ba3 100644
---- a/hw/openrisc/openrisc_sim.c
-+++ b/hw/openrisc/openrisc_sim.c
-@@ -266,7 +266,7 @@ static void openrisc_sim_serial_init(Or1ksimState *state, hwaddr base,
-     }
-     serial_mm_init(get_system_memory(), base, 0, serial_irq, 115200,
-                    serial_hd(uart_idx),
--                   DEVICE_NATIVE_ENDIAN);
-+                   DEVICE_BIG_ENDIAN);
- 
-     /* Add device tree node for serial. */
-     nodename = g_strdup_printf("/serial@%" HWADDR_PRIx, base);
-diff --git a/hw/openrisc/virt.c b/hw/openrisc/virt.c
-index 22ae057992e..7b60bf85094 100644
---- a/hw/openrisc/virt.c
-+++ b/hw/openrisc/virt.c
-@@ -236,7 +236,7 @@ static void openrisc_virt_serial_init(OR1KVirtState *state, hwaddr base,
-     qemu_irq serial_irq = get_per_cpu_irq(cpus, num_cpus, irq_pin);
- 
-     serial_mm_init(get_system_memory(), base, 0, serial_irq, 115200,
--                   serial_hd(0), DEVICE_NATIVE_ENDIAN);
-+                   serial_hd(0), DEVICE_BIG_ENDIAN);
- 
-     /* Add device tree node for serial. */
-     nodename = g_strdup_printf("/serial@%" HWADDR_PRIx, base);
+diff --git a/hw/sparc/sun4m_iommu.c b/hw/sparc/sun4m_iommu.c
+index 8c1fc82534f..5a4c1f5e3bd 100644
+--- a/hw/sparc/sun4m_iommu.c
++++ b/hw/sparc/sun4m_iommu.c
+@@ -238,7 +238,7 @@ static void iommu_mem_write(void *opaque, hwaddr addr,
+ static const MemoryRegionOps iommu_mem_ops = {
+     .read = iommu_mem_read,
+     .write = iommu_mem_write,
+-    .endianness = DEVICE_NATIVE_ENDIAN,
++    .endianness = DEVICE_BIG_ENDIAN,
+     .valid = {
+         .min_access_size = 4,
+         .max_access_size = 4,
+diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
+index 5778709b412..0980b446593 100644
+--- a/hw/sparc64/sun4u.c
++++ b/hw/sparc64/sun4u.c
+@@ -254,7 +254,7 @@ static void power_mem_write(void *opaque, hwaddr addr,
+ static const MemoryRegionOps power_mem_ops = {
+     .read = power_mem_read,
+     .write = power_mem_write,
+-    .endianness = DEVICE_NATIVE_ENDIAN,
++    .endianness = DEVICE_BIG_ENDIAN,
+     .valid = {
+         .min_access_size = 4,
+         .max_access_size = 4,
 -- 
 2.47.1
 
