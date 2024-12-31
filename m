@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A515F9FF170
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C11C9FF16F
 	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 20:07:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tShZe-0004I6-J9; Tue, 31 Dec 2024 14:06:38 -0500
+	id 1tShZi-0004Ia-ED; Tue, 31 Dec 2024 14:06:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tShZc-0004Hy-51
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 14:06:36 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tShZg-0004IS-TZ
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 14:06:41 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tShZa-00083S-Li
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 14:06:35 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3862d16b4f5so6410090f8f.0
- for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 11:06:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tShZf-00083w-7k
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 14:06:40 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3862b364538so5871979f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 11:06:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735671992; x=1736276792; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735671997; x=1736276797; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OPnjzUL72sgItT6b5Sz5QnXH2c6Pz/4KB/mKuiBnROI=;
- b=vCTk8W1mwrNuq3Mfj67N/sMSrfmhOwHT8y2qJ+Yb71mIsLcB0kt81UMRyMg0IbXmP7
- OAXNpMGMWRzN8dN4ndOZk367RMdcnhaJFQmI9fHwEy50K5VtdXIgTLBZjZ8UNasAuSbc
- SpzvFrFdCdPs90ddqJYiQPSSuR0stzfVUSyr1k0oBay4zZAjNnahLESO917lPm6zH51a
- xStqCG+29x6Vh+Y5DrjzU1VEu4P8WlgOrgitS0blgOVB/d/MKEy6ZGNF/6lgYz1mJcnp
- Vsyz4ZPrgvGJZhlTtUV8hkSui2XlIGfSt2RdHcfdNKpnA5kdsFUAXJ3YAslmHcdKIRBO
- VnHQ==
+ bh=GAtXelESZqP9EpLglyIc26IsQk/mXnYos/ye7zC5LFE=;
+ b=e6C6G1RHQbsEgdiL9YKcK/ySQ43gJVVIVQFWBksWtvnhMLyrnabzqmot7lEIs6G6cD
+ EGoPrXGgk//+VZ5TdMyeBWiwd126OFJLM9tHKJEoRbPfdIrGCrZeL7PQxYAbsLeAMf6N
+ 7QabdYKENT4ur49dnwR4HzcqfTxw1ofdc5ZFEXuZEhdAv27WlHaYOz6warWnIbiTRHdA
+ cJAY0TeWvHMkpQg1ZGg9GzVvnbbF+JASoAYuyhsS7mLAzQyKLgDQ5krnMrIZUhrvCEBV
+ xOtt52g9MCXf7JlTvisxwZQPJGhcVrv59KLkJgG0QTAlU9wtaZOdVU3Wo55gaFsA4oHU
+ vLBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735671992; x=1736276792;
+ d=1e100.net; s=20230601; t=1735671997; x=1736276797;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OPnjzUL72sgItT6b5Sz5QnXH2c6Pz/4KB/mKuiBnROI=;
- b=oLWo+gjPBVXXx+a/AuTbc24Eg9dZK3KtH+muRxprg5DB/N1hQQQfges8NJKALeFjMq
- 8yccUgxoGyJjYSw0PVOF29/W/8NnadqUEb6IVSdjklPsnMGpZ9Wyzcz8QFT/GFZQJoW0
- zy1LWRCb3tU4fVdfYiOR8maZjrG8/6u3n7u7dmVxcjU6UZNVCVvLvGSmHzx84In/xwZq
- W196U4pt5uC/3HLQPIkArGqiDUA7PO3UG54TobOVz14ACuR8sVVdc2DDEElDo4MKL3lQ
- zoKNolL+T6lvPQlKVJwrWJL4OdWW1875XdeUtHdWZpqWVSquhOd9NYDiYHDwhqSYoc3z
- +hDw==
-X-Gm-Message-State: AOJu0YwVuu8TWjnaTfyLC9Sub7Kndhrgig7CJKv4k4BJxquUrPBKeEVw
- Uf8mnDXll/yVCpwpXhJBudUaIZOK9lvxOM8fgXhf2VpFoNAalZQkJxIBoJYJ1BkTROTqo2gI1LY
- ziZQ=
-X-Gm-Gg: ASbGncupTvC3Yw3n37Wo9D09W1TPnLEsXJC321jOxpK00TeNlO2OplQofKxo85uHgvZ
- DwAz8q8dkCmqVtR49XA7quchESgto4JtTXRI5U5SpyDJJzbt81NDsaRvK+9l6NFl36BkxPdXTt5
- Bvt2YMfyya6Q9PXi/KQyDFFgs5oSLRQ0JmMyuvzaco62IfwCmOMccbdv4dvwwhkshGRbF4jIIzx
- q8pYMsQ0FRgUNwpNVYOUSUbj6PtpuJQbGx5Rsv5gw1w/hbGak7tmDYBZTu+5uqn6UQ+nUV7V0jf
- mzHlLj9A4qQvCtP+IowgFtAL6qY62dY=
-X-Google-Smtp-Source: AGHT+IGwC6Y4XguVKkslsd1B5A1dSsN166LHpmC76L+VqO3R2P2NCmUZqlRGThOA0bOfFuVJKkB5Yg==
-X-Received: by 2002:a5d:59ae:0:b0:385:f64e:f177 with SMTP id
- ffacd0b85a97d-38a22a11925mr32527923f8f.11.1735671992627; 
- Tue, 31 Dec 2024 11:06:32 -0800 (PST)
+ bh=GAtXelESZqP9EpLglyIc26IsQk/mXnYos/ye7zC5LFE=;
+ b=r+YVXTBHrXpkJVVKUy++BPWonOm1YVPj3EqZBrcGsv6JoMqw2Hts57XcRXv1OWw6b/
+ cM/kyTjhKPXIJyBovvNh2F21YwVq/vBGO/UqvhsPg6W4GwYkD1AzcdUkd41Dg5KnxoUS
+ /AOyhIpGEzwwu4wLdmr51xFesFLDRzAbPDOuvZaK9kpkfViUA/uUW4JBCpbC/Fmo5VWD
+ gs8NF81d9GUepuFFvn/gJfpAn35vCeNr8yreU+hxJV+ap7/Dof44kKxJhb0Wrlln+ooc
+ lB/l6orMBTW7NWfq6sD739m1gKxp6K0R1RvZtc+gY/Efvnkii1hKskJYf3WCDmeLVmah
+ Vwrw==
+X-Gm-Message-State: AOJu0YwyqyuvUSqeJlDw5e363+UfYCDVbDEvfFIg5xlg2fTYORSRJTA1
+ ULmAw4x9lfE4Al7yszBT+mxwV+HlKQy0ltA7DSYDaGoh7E2Ha2WS2Zv6pWWwwZfgKyeqR3Z5ZZZ
+ PKc8=
+X-Gm-Gg: ASbGncsVrVo9UUk82+dlkzJEOBolo7fwMXSprYc6mcuNCYEvHJWz357bkj3n3zrSJPM
+ Juv8mdwspVc/BRVhSMS9Zn92W2ltfih1V98c3m1G/9yA+IIwKwpw34HfNoGHhFw/Yw0G8LlV3G8
+ HXPv3ru3pPrm1wALK/OeLB5o5yNypc5kgOZoU12UTAtAo2DVDOkzJAscfpTlHKToyDZekoKOU5y
+ 2WiM3SPgR8jkVv1F33oAt++r3fmZmpgxsaEQ4nks+I3luikBKY5/BgRdeEvEIqIbTos68QTyisA
+ LXFetvewZ0GbV1V+saEMd6Vw797sqZg=
+X-Google-Smtp-Source: AGHT+IE3DIwtSg6CuX/wOrQmnkzUlQSocrZdkDNX4ilZX/fsmrntgn8kvwzSHjirCR2MmMUVFWXdDw==
+X-Received: by 2002:a05:6000:1862:b0:386:4244:15c7 with SMTP id
+ ffacd0b85a97d-38a1a27499amr40080334f8f.25.1735671997224; 
+ Tue, 31 Dec 2024 11:06:37 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c848a47sm33074712f8f.62.2024.12.31.11.06.31
+ 5b1f17b1804b1-4366127c488sm395913725e9.27.2024.12.31.11.06.36
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 31 Dec 2024 11:06:32 -0800 (PST)
+ Tue, 31 Dec 2024 11:06:36 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Helge Deller <deller@gmx.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v4 2/6] target/hppa: Convert hppa_cpu_init() to ResetHold
- handler
-Date: Tue, 31 Dec 2024 20:06:16 +0100
-Message-ID: <20241231190620.24442-3-philmd@linaro.org>
+Subject: [PATCH v4 3/6] hw/hppa: Reset vCPUs calling resettable_reset()
+Date: Tue, 31 Dec 2024 20:06:17 +0100
+Message-ID: <20241231190620.24442-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241231190620.24442-1-philmd@linaro.org>
 References: <20241231190620.24442-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,103 +100,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-hppa_cpu_initfn() is called once when a HPPA CPU instance is
-initialized, but it sets fields which should be set each time
-a CPU resets. Rename it as a reset handler, having it matching
-the ResettablePhases::hold() signature, and register it as
-ResettableClass handler.
-
-Since on reset the CPU registers and TLB entries are expected
-to be zero, add a memset() call clearing CPUHPPAState up to
-the &end_reset_fields marker.
+Rather than manually (and incompletely) resetting vCPUs,
+call resettable_reset() which will fully reset the vCPUs.
+Remove redundant assignations.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 Co-developed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/hppa/cpu.h |  5 +++++
- target/hppa/cpu.c | 14 ++++++++++++--
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ hw/hppa/machine.c | 6 +++---
+ target/hppa/cpu.c | 1 +
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 22a6510e087..c1d69c1a835 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -263,6 +263,9 @@ typedef struct CPUArchState {
-     IntervalTreeRoot tlb_root;
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index 65259308e2e..8230f43e41c 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -655,12 +655,12 @@ static void hppa_machine_reset(MachineState *ms, ResetType type)
+     for (i = 0; i < smp_cpus; i++) {
+         CPUState *cs = CPU(cpu[i]);
  
-     HPPATLBEntry tlb[HPPA_TLB_ENTRIES];
++        /* reset CPU */
++        resettable_reset(OBJECT(cs), RESET_TYPE_COLD);
 +
-+    /* Fields up to this point are cleared by a CPU reset */
-+    struct {} end_reset_fields;
- } CPUHPPAState;
+         cpu_set_pc(cs, firmware_entry);
+         cpu[i]->env.psw = PSW_Q;
+         cpu[i]->env.gr[5] = CPU_HPA + i * 0x1000;
+-
+-        cs->exception_index = -1;
+-        cs->halted = 0;
+     }
  
- /**
-@@ -281,6 +284,7 @@ struct ArchCPU {
- /**
-  * HPPACPUClass:
-  * @parent_realize: The parent class' realize handler.
-+ * @parent_phases: The parent class' reset phase handlers.
-  *
-  * An HPPA CPU model.
-  */
-@@ -288,6 +292,7 @@ struct HPPACPUClass {
-     CPUClass parent_class;
- 
-     DeviceRealize parent_realize;
-+    ResettablePhases parent_phases;
- };
- 
- #include "exec/cpu-all.h"
+     /* already initialized by machine_hppa_init()? */
 diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 47d01609557..d784bcdd602 100644
+index d784bcdd602..41538d39d62 100644
 --- a/target/hppa/cpu.c
 +++ b/target/hppa/cpu.c
-@@ -193,13 +193,20 @@ static void hppa_cpu_realizefn(DeviceState *dev, Error **errp)
-     tcg_cflags_set(cs, CF_PCREL);
- }
- 
--static void hppa_cpu_initfn(Object *obj)
-+static void hppa_cpu_reset_hold(Object *obj, ResetType type)
- {
-+    HPPACPUClass *scc = HPPA_CPU_GET_CLASS(obj);
-     CPUState *cs = CPU(obj);
-     HPPACPU *cpu = HPPA_CPU(obj);
-     CPUHPPAState *env = &cpu->env;
- 
-+    if (scc->parent_phases.hold) {
-+        scc->parent_phases.hold(obj, type);
-+    }
+@@ -204,6 +204,7 @@ static void hppa_cpu_reset_hold(Object *obj, ResetType type)
+         scc->parent_phases.hold(obj, type);
+     }
      cs->exception_index = -1;
-+
-+    memset(env, 0, offsetof(CPUHPPAState, end_reset_fields));
-+
-     cpu_hppa_loaded_fr0(env);
-     cpu_hppa_put_psw(env, PSW_W);
- }
-@@ -242,10 +249,14 @@ static void hppa_cpu_class_init(ObjectClass *oc, void *data)
-     DeviceClass *dc = DEVICE_CLASS(oc);
-     CPUClass *cc = CPU_CLASS(oc);
-     HPPACPUClass *acc = HPPA_CPU_CLASS(oc);
-+    ResettableClass *rc = RESETTABLE_CLASS(oc);
++    cs->halted = 0;
  
-     device_class_set_parent_realize(dc, hppa_cpu_realizefn,
-                                     &acc->parent_realize);
+     memset(env, 0, offsetof(CPUHPPAState, end_reset_fields));
  
-+    resettable_class_set_parent_phases(rc, NULL, hppa_cpu_reset_hold, NULL,
-+                                       &acc->parent_phases);
-+
-     cc->class_by_name = hppa_cpu_class_by_name;
-     cc->has_work = hppa_cpu_has_work;
-     cc->mmu_index = hppa_cpu_mmu_index;
-@@ -269,7 +280,6 @@ static const TypeInfo hppa_cpu_type_infos[] = {
-         .parent = TYPE_CPU,
-         .instance_size = sizeof(HPPACPU),
-         .instance_align = __alignof(HPPACPU),
--        .instance_init = hppa_cpu_initfn,
-         .abstract = false,
-         .class_size = sizeof(HPPACPUClass),
-         .class_init = hppa_cpu_class_init,
 -- 
 2.47.1
 
