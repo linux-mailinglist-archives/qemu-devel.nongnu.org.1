@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D291B9FF1B8
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:23:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 441F19FF1C6
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:25:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tSilz-00034K-3V; Tue, 31 Dec 2024 15:23:27 -0500
+	id 1tSim4-0003Dm-Gn; Tue, 31 Dec 2024 15:23:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSilv-0002yJ-46
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:23:23 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSilz-00038R-AF
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:23:27 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSilt-0000rV-7q
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:23:22 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-436ae3e14b4so11279855e9.1
- for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:23:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSilx-0000s1-OB
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:23:27 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4361f65ca01so102676625e9.1
+ for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:23:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735676599; x=1736281399; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735676604; x=1736281404; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YOJaY0d1Ex8WD3TOwLpxywEdEMi/4x2kRkhM5+bgzLY=;
- b=HOMwW6T7+m/tJ/D/J6OCe/kFymO1rYbQOIuZDaBWw7VNcUeWK6+lcq/bbwdjgMKz6R
- AyXxGx16yIDL44J/kqNTDdfSzBqiRtNgCVTxyxgcPBsT8wExRdbHPWyNSmNeVv0UZRhB
- TAyNgaZdGVX0a/1MlZ2lEVvzkMPS45n9U/Dkj/cRyMZZcv19+bXQPBPMAetjMurPRMEV
- L6PiKksQz8jk/dRYsN6MV9/wiQHP3K9qVcaz5rXYHYhLkWiO9ogeL8umgyKEDWX/dpRm
- fXle0SEBjwkxZldwF6bxsP/4cMLnZSJavDDpfNF+/mi0h7z41N/9/boiQwLaFOd++3Lv
- ZhjQ==
+ bh=zAtQI+p6Q7jzylh2/ogAG38eWfi5o3sJewecVz2TXgE=;
+ b=lksDLVO8MMT2zdTou2LfD8DJx//bj3uL0V/ljn3CPhGdNd9ZEYsY7blc9bMKehGHoQ
+ s1K/9KWiRmX2QWvT0kF8AZqTCLZ09JJzfrPz28FwrLDX0/wDyasfUjd2pMEuROKW0Uli
+ MS87MDAaBF32jVdo2FZ/8LH0YMcShfzboPhV+hKFPQZ4Y6A1387F4DAmxktp0dMgdBt/
+ FZeVi3V93rJiNY7h0js7rkuI9G35pXcN3oOxOQYAlkl/EApXiNi03aAVAt9XADX2UMZf
+ 2nY4Ds0S+kYlL11Xo17hJf2Gdv957u6T8legACLjtANcQMrcNf+kN0i1zI5/TzWVum4u
+ y9YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735676599; x=1736281399;
+ d=1e100.net; s=20230601; t=1735676604; x=1736281404;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YOJaY0d1Ex8WD3TOwLpxywEdEMi/4x2kRkhM5+bgzLY=;
- b=fzh7CcQTWVqz0gSpG+aOAfdFUqH07hNqTsFDcYR3v0NuC1SDFZpgXIKTVpl1bLwlAC
- WjjsMu/oMYpBObBsko6HDNLCl3q9KwPrXsa2db7nJatDyhc1naMPI6xYch/CPmS35MtL
- TCXQnG4sSIDeiYOcqfXG5ZLJ2c8htcLy9/xh4t+tJz1p3kfwCN1o3RkNEzagI/fDYUt1
- r+TwO1TDKTzGIBVP+ElRnAP/Egbtmb2uEIiY2XphrXpIt6mO1vb3pAJQSnx8GsVg5Ojm
- 3waLEe6EsweWd7gYVAQSGs4ZWSFoBhGwaO+ocZkyt6nvf+FQ/NpG1Xpeiy76U2c6lyul
- 3TTQ==
-X-Gm-Message-State: AOJu0YxSGmq5HlI3N8D2sJ81H4I8NMIuZV6PhVYzMpPjKf8VT9R0mDBe
- V0zG7aL4XtD/hTpl/PGFX7KtTgMm240bC5n310J3KX9l4MKL621lKsZnOIRAvYECsCTkrizWXk7
- x/yk=
-X-Gm-Gg: ASbGncti8bMRHNEmFc1ysEzH4xFfTnEGHX4OsJ1bhePOtybrUsWASMUm7FUJ+I+vvp5
- /SDKOUSzIK1JUol3EE/n1RRRj4xQpDCz4hF84Dj6P9Kn7+RNJYR5N5XJ1B4E6o6b/PdY2NucaNp
- Ww0o70mouc/xZV06fLOeyhDYtuSv8kdm20WyU51MuUcz4h4dMO4HIsusmLVetxK8b9yBQr+bsi8
- vFj3KwwlMdYCuLZ4HvTaPcLtrme5fQpK47Jfn+s8sQtWAegqX4wNVSiNjfPLIYGY3TKZjUWRcK0
- ae4aPIqn4uEjYyAW4zoDQl41cjPgON8=
-X-Google-Smtp-Source: AGHT+IGwfggwqt5lOH83QJoVJVqqLzRxclJtizeH4a1fXWudLbx92Fhfr0NqhZnAVZ/4CfBnkNwi0A==
-X-Received: by 2002:a05:6000:1867:b0:385:df73:2f24 with SMTP id
- ffacd0b85a97d-38a223f5cd1mr36018908f8f.39.1735676599318; 
- Tue, 31 Dec 2024 12:23:19 -0800 (PST)
+ bh=zAtQI+p6Q7jzylh2/ogAG38eWfi5o3sJewecVz2TXgE=;
+ b=O5lQKUeRITCIA95g2nAWv/HT7wFr9S9WX9ArrR0fm01Cq0i/4hKAsbZXIF/mHeNcOL
+ ciV8lzXSy94TDcRkd3dlbA1UPNLm2lUeDfqUzqWMHr83F27RubzbRzfkxCoFlWNSAvg8
+ Dc2NNbNeRcxhMG57gDeamhbjnoifw8vUcOilgLxJ+/CzY3oKdxAqxSso96S3/vyVX87K
+ sfHwfjKd5wR6X3NfE53xEO9iyiAiAyGZ/RSBHKyoosu/EUgXgqBhRXj5E6C1k+Hpxak9
+ bbauPantMvx3fmZ5lAJp5truAtm+PjiDIdXovk7Ob57QRm51yWiBxAufQCu/3L8bZ4Ov
+ pLFw==
+X-Gm-Message-State: AOJu0YyObfitvyTnvza/gN+rLK1HO/i/iTwCAb5ICyx75qPNQyk5TeHE
+ i4vI6jpq1a4pHPxfukqIWBQpqWTlZGQQkFr1F/Us4+N1BQb2t1mtesjd/8XO19fiGFst8lxmTiC
+ 1UnA=
+X-Gm-Gg: ASbGnctF6uio+mf4lwE42TJ4Y0qY2xsuPdjMJ6DDFSIRRqYDwqT7cvmUGhLsbInaG+L
+ A5fQsWZc7N+eUsWQD3KjqC5L3y434qsmf33g5rRu3yybwqxEJ4ZI4iWHcLFmsX2xTim1RQlI/ZI
+ wEIhomt81GMb5JRqs1yAlkaDWnVOsWwtLe2E8Je3EKOjKySJIR6ZEK9HQlJkVgRL4Qas1lIDbNN
+ DVD8pOIi0rM1FTpglw/+Tu+1CxlmQYGLwUJAk+WH3wZ8nh0xOr4dm6BJ6ufYn2Yb1fF2WRVuSu+
+ QK4NPcFuBgRQBfCtzHhK1WbATHbtS64=
+X-Google-Smtp-Source: AGHT+IHWYRCxnw356VQ3cewjcT6+40YKbDQhbGP6HSUzP+qoMGmjlM1DU2CQL7oq0jBj05INisx44g==
+X-Received: by 2002:a05:600c:4fd3:b0:436:5165:f1ec with SMTP id
+ 5b1f17b1804b1-43668b769f8mr360121505e9.30.1735676603868; 
+ Tue, 31 Dec 2024 12:23:23 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656b42757sm437392675e9.39.2024.12.31.12.23.17
+ 5b1f17b1804b1-43656a0b361sm431655555e9.0.2024.12.31.12.23.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 31 Dec 2024 12:23:18 -0800 (PST)
+ Tue, 31 Dec 2024 12:23:23 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 10/29] hw/sparc: Mark devices as big-endian
-Date: Tue, 31 Dec 2024 21:22:09 +0100
-Message-ID: <20241231202228.28819-11-philmd@linaro.org>
+ "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+Subject: [PULL 11/29] hw/net/xilinx_ethlite: Convert some debug logs to trace
+ events
+Date: Tue, 31 Dec 2024 21:22:10 +0100
+Message-ID: <20241231202228.28819-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241231202228.28819-1-philmd@linaro.org>
 References: <20241231202228.28819-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,47 +98,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These devices are only used by the SPARC targets, which are
-only built as big-endian. Therefore the DEVICE_NATIVE_ENDIAN
-definition expand to DEVICE_BIG_ENDIAN (besides, the
-DEVICE_LITTLE_ENDIAN case isn't tested). Simplify directly
-using DEVICE_BIG_ENDIAN.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241106184612.71897-6-philmd@linaro.org>
+Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+Message-Id: <20241112181044.92193-3-philmd@linaro.org>
 ---
- hw/sparc/sun4m_iommu.c | 2 +-
- hw/sparc64/sun4u.c     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/net/xilinx_ethlite.c | 5 +++--
+ hw/net/trace-events     | 4 ++++
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/hw/sparc/sun4m_iommu.c b/hw/sparc/sun4m_iommu.c
-index 8c1fc82534f..5a4c1f5e3bd 100644
---- a/hw/sparc/sun4m_iommu.c
-+++ b/hw/sparc/sun4m_iommu.c
-@@ -238,7 +238,7 @@ static void iommu_mem_write(void *opaque, hwaddr addr,
- static const MemoryRegionOps iommu_mem_ops = {
-     .read = iommu_mem_read,
-     .write = iommu_mem_write,
--    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .endianness = DEVICE_BIG_ENDIAN,
-     .valid = {
-         .min_access_size = 4,
-         .max_access_size = 4,
-diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
-index 5778709b412..0980b446593 100644
---- a/hw/sparc64/sun4u.c
-+++ b/hw/sparc64/sun4u.c
-@@ -254,7 +254,7 @@ static void power_mem_write(void *opaque, hwaddr addr,
- static const MemoryRegionOps power_mem_ops = {
-     .read = power_mem_read,
-     .write = power_mem_write,
--    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .endianness = DEVICE_BIG_ENDIAN,
-     .valid = {
-         .min_access_size = 4,
-         .max_access_size = 4,
+diff --git a/hw/net/xilinx_ethlite.c b/hw/net/xilinx_ethlite.c
+index f3eb2af1934..c38a71c71be 100644
+--- a/hw/net/xilinx_ethlite.c
++++ b/hw/net/xilinx_ethlite.c
+@@ -30,6 +30,7 @@
+ #include "hw/irq.h"
+ #include "hw/qdev-properties.h"
+ #include "net/net.h"
++#include "trace.h"
+ 
+ #define D(x)
+ #define R_TX_BUF0     0
+@@ -194,13 +195,13 @@ static ssize_t eth_rx(NetClientState *nc, const uint8_t *buf, size_t size)
+         return size;
+ 
+     if (s->regs[rxbase + R_RX_CTRL0] & CTRL_S) {
+-        D(qemu_log("ethlite lost packet %x\n", s->regs[R_RX_CTRL0]));
++        trace_ethlite_pkt_lost(s->regs[R_RX_CTRL0]);
+         return -1;
+     }
+ 
+     D(qemu_log("%s %zd rxbase=%x\n", __func__, size, rxbase));
+     if (size > (R_MAX - R_RX_BUF0 - rxbase) * 4) {
+-        D(qemu_log("ethlite packet is too big, size=%x\n", size));
++        trace_ethlite_pkt_size_too_big(size);
+         return -1;
+     }
+     memcpy(&s->regs[rxbase + R_RX_BUF0], buf, size);
+diff --git a/hw/net/trace-events b/hw/net/trace-events
+index 6100ec324a7..c35bfb2eb8d 100644
+--- a/hw/net/trace-events
++++ b/hw/net/trace-events
+@@ -513,3 +513,7 @@ xen_netdev_connect(int dev, unsigned int tx, unsigned int rx, int port) "vif%u t
+ xen_netdev_frontend_changed(const char *dev, int state) "vif%s state %d"
+ xen_netdev_tx(int dev, int ref, int off, int len, unsigned int flags, const char *c, const char *d, const char *m, const char *e) "vif%u ref %u off %u len %u flags 0x%x%s%s%s%s"
+ xen_netdev_rx(int dev, int idx, int status, int flags) "vif%u idx %d status %d flags 0x%x"
++
++# xilinx_ethlite.c
++ethlite_pkt_lost(uint32_t rx_ctrl) "rx_ctrl:0x%" PRIx32
++ethlite_pkt_size_too_big(uint64_t size) "size:0x%" PRIx64
 -- 
 2.47.1
 
