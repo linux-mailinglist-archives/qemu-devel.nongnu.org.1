@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C65649FF1B7
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:23:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A9E9FF1BB
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:23:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tSilF-0002It-6I; Tue, 31 Dec 2024 15:22:41 -0500
+	id 1tSilK-0002JR-A8; Tue, 31 Dec 2024 15:22:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSilD-0002Ik-6G
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:22:39 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSilI-0002JG-Eq
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:22:44 -0500
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSilA-0000o8-UP
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:22:38 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4363dc916ceso66465595e9.0
- for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:22:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSilF-0000oT-If
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:22:44 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3862ca8e0bbso7979441f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:22:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735676555; x=1736281355; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735676560; x=1736281360; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nBzM81uP30tLCurlqk6Z1egorAnZptANh2R3BtB1/rs=;
- b=dQmwFEOCny7cV4YjRZ8AziOeKEznkxBAlpTISNVSXdzTcekpmHefqvz3kNOtuMzNaa
- TEjFdwUZAG9LmVtelv/IrULzE7TgqwXKsw6Rzm+kOy2N+IEf1fjpim68zGumMiRLn2f9
- 63J+NrUrUE3NgzIuR9gSJww2Dy8qE5295UlPIngy6YV9Qe7msSZHO1a/EwhaY8hSjbkz
- eZEHRj2Jr1G0jxUtNbhjN0hng2SDdXe90YFTK1dS6YZRmElVP1sfDG9bZGF5NUP2H7Wc
- xYEkQIVB8OZ283BfBE8wC+mQp7ocYW721sf3bJUYNfaR6ZiWeLIfw9ohBNdeCxnUwoNz
- B02w==
+ bh=dCP5hjm/gpYZgw/PjfuM8otM9YlBBnNaOYeUM4uWhjA=;
+ b=h+tfZmL0SGhndZFHaz1alFJxXZawhe8xFa6xcD7TtM2iAO+I8mUGum4Wtd000hdC0O
+ PWf/Y5jQGFrk5S5CAOf4s1GFhNg2kptpn4xjh3a/PuMfLl/N8aFLmqIhbg4p8q/Y18sv
+ kZWwGYnjb5DFtURd5Un39nSj7qZ6T19D68fx/CkI44AHyGaKM9+Z4YhLb34uiBFMaDCo
+ 5w0M1B+MdULjaM7AJbxIxIIQ/pIzPRXdQtB6X4a9wIw3xKXI+npp6DK7ogQr688YH6lV
+ GdqEJ7NlDVjhCL2z0OmlwM7RalsmWjlbXJWkx7qHC0HVXlVj0zClHmhHVOR5Rm5uj90t
+ ubpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735676555; x=1736281355;
+ d=1e100.net; s=20230601; t=1735676560; x=1736281360;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nBzM81uP30tLCurlqk6Z1egorAnZptANh2R3BtB1/rs=;
- b=OtXEufTN+o3RcdPiotbly3CONVRqfC9e1W4ILjarjdpLZ+2CXY/+Db4F05t1C7+QJl
- o+2zhv7lJBoZoRXsy8jfKXI22sUd79L45cpuNdGaQjwQqoNpX26cGCfcsSqq+IaqYliH
- x5Z2nX6qnQadagBH3T8z8EeDGyRXLhaxDn6fMMDA4fOsw3CmYeAdIrC/FASlg+doSiqY
- gXVQh0VK1pwdq7D+EFFAaZyQvbKXlXUJ4+K4cqrdoX1GR7iNNr812RHU9hq212PMrcem
- h3NK6LVCrqRYc3gGTAaljkG0v8vmLkow0a5nCZOIs+PNJT8+0V1ZYXc1gk9CeGUkFpyY
- RNoQ==
-X-Gm-Message-State: AOJu0YxiBieV6KfnZUETijslrHrVbEi/DUCf5pePSTjhKXq+yjpo1AbQ
- TqpZogseXPE/QexFzXyeADeS/ZgK7Vdou1zDI4ihZRD7zXQx01yi2Wbgg+mNMRIYANVA3Xcj3OM
- yR9o=
-X-Gm-Gg: ASbGnctKXlHKCKy1jFrK/fijtSI2B9YSOHMRODO4iaXwkTabwKs3pYLlxudXn/YWCwn
- zTunAFjy1xvnLcJb+kfbt3GkaKGLUNy8aaZ7IZwEZ8bQs4C2rCcPL8LnJcn2PXfbtShr4pJYqvl
- UpZXsp/PM9bIsRf89Xq6N2gShrhHI5Sktv+cb3HNMyq86C42g1Q9yHNx6irRIvoE4OBrKfL6jcp
- k3qomRrRwCG0oHgquj7cDKxkPDyAG+AH2BTNAyEFPajO53FC55JW6Xyh1PxZ3wChPLl7SWko5kB
- 5cCpY0WqPnaM0XGgr8VEdqZAPl9rNsM=
-X-Google-Smtp-Source: AGHT+IG0KzIWCbuFZwD0Q0vFGXKodkp4ikSHpqZhnZa/FJTgHwCi0aRHKvKt8iDJz90Qu3njg0nWCQ==
-X-Received: by 2002:a05:600c:450f:b0:434:9f90:2583 with SMTP id
- 5b1f17b1804b1-4365c79294amr370722205e9.11.1735676554995; 
- Tue, 31 Dec 2024 12:22:34 -0800 (PST)
+ bh=dCP5hjm/gpYZgw/PjfuM8otM9YlBBnNaOYeUM4uWhjA=;
+ b=WCdQbqdia+g5MgiW7RkBuGlTJideWVi565cEmz6hTmScYaOthYI4RUB4r9O99/Vsix
+ O63HN7OOGgFLnutABOmys5faSWrsyjJFYY7aw7t28/jBoWwjdAq+oo+HAX0VZsygQGzR
+ Rvi7ktISVsEIlTdxDp4MV1cBYvDfb4pgGUbdC59FjOeyepasA8mKpMznZ8KFy56uSxFf
+ EBuYxu4VT7I5DdpyRkv2z4qaSJUeK0dRhZuFN0P1/xhCSrueQmPmaga7Z0VlTHMGMqH9
+ E+4efJnfGdviSSarmiQMoIaCoKFWTEnkvQHlqln/SryoheB0v1oFgusowXA3FcDorej7
+ X6WQ==
+X-Gm-Message-State: AOJu0YxprJSgSXKPGtTy5nzuXmFpPVFCiA09kA5XB5hNaaHDrijSqG0W
+ vhNBaiB2LbSzuc6OkK/64SoR+ndnX2C38WKwTFR07UY41eVZI8O5i4e/GpTrktLig3zZShggg/M
+ 3zT4=
+X-Gm-Gg: ASbGncv/p5io3/Cy0HERSKaUhM/VMe6rdwwb6J7JB+R0RRPeOysNPeW8DoBv2zRR91s
+ //wcdic5KCCqFLK6iikL4OvW5KAavqJHIgQBRJ/a/r4sC0z/ODODqqhErRabTYBMM8ofRgMlO1r
+ Av4SxHGNMvY7InGCpHMFSBT3+XSDmNBmc1v376mGWGtZ4yONBJFSavCW4GXV5pO1c0W9+YotgV0
+ 79s61z1ltepadF9pEut1lXQw7XHNzIzu0H/LDvQIlk9wWs8k2yg2/3SxDilUdRkTtSYlW/xgfTG
+ mQokEtuExUbij0O6A3ytmS8IVAwsMHo=
+X-Google-Smtp-Source: AGHT+IHMvA3/avBlwbOO0f4UjQlGJsqXeo1oSyf805NFW/z5TvoXOnXmi2N3AUqlPWFDj0K0nmldPA==
+X-Received: by 2002:a5d:47ab:0:b0:386:1ab5:f0e1 with SMTP id
+ ffacd0b85a97d-38a221ea67fmr38764148f8f.14.1735676559634; 
+ Tue, 31 Dec 2024 12:22:39 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4366128a62asm394652375e9.44.2024.12.31.12.22.34
+ ffacd0b85a97d-38a1c8acabbsm33342667f8f.93.2024.12.31.12.22.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 31 Dec 2024 12:22:34 -0800 (PST)
+ Tue, 31 Dec 2024 12:22:39 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Alexander Graf <graf@amazon.com>, Phil Dennis-Jordan <phil@philjordan.eu>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
+Cc: Gustavo Romero <gustavo.romero@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/29] hw/pci-host/gpex: Allow more than 4 legacy IRQs
-Date: Tue, 31 Dec 2024 21:22:00 +0100
-Message-ID: <20241231202228.28819-2-philmd@linaro.org>
+Subject: [PULL 02/29] hw/misc/ivshmem-flat: Add ivshmem-flat device
+Date: Tue, 31 Dec 2024 21:22:01 +0100
+Message-ID: <20241231202228.28819-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241231202228.28819-1-philmd@linaro.org>
 References: <20241231202228.28819-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,405 +97,701 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alexander Graf <graf@amazon.com>
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Some boards such as vmapple don't do real legacy PCI IRQ swizzling.
-Instead, they just keep allocating more board IRQ lines for each new
-legacy IRQ. Let's support that mode by giving instantiators a new
-"nr_irqs" property they can use to support more than 4 legacy IRQ lines.
-In this mode, GPEX will export more IRQ lines, one for each device.
+Add a new device, ivshmem-flat, which is similar to the ivshmem PCI but
+does not require a PCI bus. It's meant to be used on machines like those
+with Cortex-M MCUs, which usually lack a PCI/PCIe bus, e.g. lm3s6965evb
+and mps2-an385.
 
-Signed-off-by: Alexander Graf <graf@amazon.com>
-Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Tested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241223221645.29911-9-phil@philjordan.eu>
+The device currently only supports the sysbus bus.
+
+The new device, just like the ivshmem PCI device, supports both peer
+notification via hardware interrupts and shared memory.
+
+The device shared memory size can be set using the 'shmem-size' option
+and it defaults to 4 MiB, which is the default size of shmem allocated
+by the ivshmem server.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1134
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+[PMD: Rebased updating Property and using DEFINE_TYPES macro]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20241216141818.111255-2-gustavo.romero@linaro.org>
 ---
- include/hw/pci-host/gpex.h |  7 +++----
- hw/arm/sbsa-ref.c          |  2 +-
- hw/arm/virt.c              |  2 +-
- hw/i386/microvm.c          |  2 +-
- hw/loongarch/virt.c        | 12 +++++------
- hw/mips/loongson3_virt.c   |  2 +-
- hw/openrisc/virt.c         | 12 +++++------
- hw/pci-host/gpex.c         | 43 ++++++++++++++++++++++++++++++--------
- hw/riscv/virt.c            | 12 +++++------
- hw/xen/xen-pvh-common.c    |  2 +-
- hw/xtensa/virt.c           |  2 +-
- 11 files changed, 61 insertions(+), 37 deletions(-)
+ docs/system/device-emulation.rst     |   1 +
+ docs/system/devices/ivshmem-flat.rst |  33 ++
+ include/hw/misc/ivshmem-flat.h       |  85 +++++
+ hw/misc/ivshmem-flat.c               | 459 +++++++++++++++++++++++++++
+ hw/misc/Kconfig                      |   5 +
+ hw/misc/meson.build                  |   2 +
+ hw/misc/trace-events                 |  16 +
+ 7 files changed, 601 insertions(+)
+ create mode 100644 docs/system/devices/ivshmem-flat.rst
+ create mode 100644 include/hw/misc/ivshmem-flat.h
+ create mode 100644 hw/misc/ivshmem-flat.c
 
-diff --git a/include/hw/pci-host/gpex.h b/include/hw/pci-host/gpex.h
-index dce883573ba..84471533af0 100644
---- a/include/hw/pci-host/gpex.h
-+++ b/include/hw/pci-host/gpex.h
-@@ -32,8 +32,6 @@ OBJECT_DECLARE_SIMPLE_TYPE(GPEXHost, GPEX_HOST)
- #define TYPE_GPEX_ROOT_DEVICE "gpex-root"
- OBJECT_DECLARE_SIMPLE_TYPE(GPEXRootState, GPEX_ROOT_DEVICE)
- 
--#define GPEX_NUM_IRQS 4
--
- struct GPEXRootState {
-     /*< private >*/
-     PCIDevice parent_obj;
-@@ -49,6 +47,7 @@ struct GPEXConfig {
-     PCIBus      *bus;
- };
- 
-+typedef struct GPEXIrq GPEXIrq;
- struct GPEXHost {
-     /*< private >*/
-     PCIExpressHost parent_obj;
-@@ -60,8 +59,8 @@ struct GPEXHost {
-     MemoryRegion io_mmio;
-     MemoryRegion io_ioport_window;
-     MemoryRegion io_mmio_window;
--    qemu_irq irq[GPEX_NUM_IRQS];
--    int irq_num[GPEX_NUM_IRQS];
-+    GPEXIrq *irq;
-+    uint8_t num_irqs;
- 
-     bool allow_unmapped_accesses;
- 
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index 581655d7716..6183111f2de 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -673,7 +673,7 @@ static void create_pcie(SBSAMachineState *sms)
-     /* Map IO port space */
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 2, base_pio);
- 
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-         sysbus_connect_irq(SYS_BUS_DEVICE(dev), i,
-                            qdev_get_gpio_in(sms->gic, irq + i));
-         gpex_set_irq_num(GPEX_HOST(dev), i, irq + i);
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index f9b33808157..99e0a68b6c5 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -1547,7 +1547,7 @@ static void create_pcie(VirtMachineState *vms)
-     /* Map IO port space */
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 2, base_pio);
- 
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-         sysbus_connect_irq(SYS_BUS_DEVICE(dev), i,
-                            qdev_get_gpio_in(vms->gic, irq + i));
-         gpex_set_irq_num(GPEX_HOST(dev), i, irq + i);
-diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
-index c3d7fe3c428..a8d354aabe5 100644
---- a/hw/i386/microvm.c
-+++ b/hw/i386/microvm.c
-@@ -139,7 +139,7 @@ static void create_gpex(MicrovmMachineState *mms)
-                                     mms->gpex.mmio64.base, mmio64_alias);
-     }
- 
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-         sysbus_connect_irq(SYS_BUS_DEVICE(dev), i,
-                            x86ms->gsi[mms->gpex.irq + i]);
-     }
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 99594a13a0c..60bd4dc9d35 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -452,7 +452,7 @@ static void fdt_add_pcie_irq_map_node(const LoongArchVirtMachineState *lvms,
- {
-     int pin, dev;
-     uint32_t irq_map_stride = 0;
--    uint32_t full_irq_map[GPEX_NUM_IRQS *GPEX_NUM_IRQS * 10] = {};
-+    uint32_t full_irq_map[PCI_NUM_PINS * PCI_NUM_PINS * 10] = {};
-     uint32_t *irq_map = full_irq_map;
-     const MachineState *ms = MACHINE(lvms);
- 
-@@ -465,11 +465,11 @@ static void fdt_add_pcie_irq_map_node(const LoongArchVirtMachineState *lvms,
-      * to wrap to any number of devices.
-      */
- 
--    for (dev = 0; dev < GPEX_NUM_IRQS; dev++) {
-+    for (dev = 0; dev < PCI_NUM_PINS; dev++) {
-         int devfn = dev * 0x8;
- 
--        for (pin = 0; pin  < GPEX_NUM_IRQS; pin++) {
--            int irq_nr = 16 + ((pin + PCI_SLOT(devfn)) % GPEX_NUM_IRQS);
-+        for (pin = 0; pin < PCI_NUM_PINS; pin++) {
-+            int irq_nr = 16 + ((pin + PCI_SLOT(devfn)) % PCI_NUM_PINS);
-             int i = 0;
- 
-             /* Fill PCI address cells */
-@@ -493,7 +493,7 @@ static void fdt_add_pcie_irq_map_node(const LoongArchVirtMachineState *lvms,
- 
- 
-     qemu_fdt_setprop(ms->fdt, nodename, "interrupt-map", full_irq_map,
--                     GPEX_NUM_IRQS * GPEX_NUM_IRQS *
-+                     PCI_NUM_PINS * PCI_NUM_PINS *
-                      irq_map_stride * sizeof(uint32_t));
-     qemu_fdt_setprop_cells(ms->fdt, nodename, "interrupt-map-mask",
-                      0x1800, 0, 0, 0x7);
-@@ -805,7 +805,7 @@ static void virt_devices_init(DeviceState *pch_pic,
-     memory_region_add_subregion(get_system_memory(), VIRT_PCI_IO_BASE,
-                                 pio_alias);
- 
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-         sysbus_connect_irq(d, i,
-                            qdev_get_gpio_in(pch_pic, 16 + i));
-         gpex_set_irq_num(GPEX_HOST(gpex_dev), i, 16 + i);
-diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index f12f8c3d3cc..f3cc7a8376f 100644
---- a/hw/mips/loongson3_virt.c
-+++ b/hw/mips/loongson3_virt.c
-@@ -458,7 +458,7 @@ static inline void loongson3_virt_devices_init(MachineState *machine,
-                                 virt_memmap[VIRT_PCIE_PIO].base, s->pio_alias);
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 2, virt_memmap[VIRT_PCIE_PIO].base);
- 
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-         irq = qdev_get_gpio_in(pic, PCIE_IRQ_BASE + i);
-         sysbus_connect_irq(SYS_BUS_DEVICE(dev), i, irq);
-         gpex_set_irq_num(GPEX_HOST(dev), i, PCIE_IRQ_BASE + i);
-diff --git a/hw/openrisc/virt.c b/hw/openrisc/virt.c
-index 0d83e33f9ea..22ae057992e 100644
---- a/hw/openrisc/virt.c
-+++ b/hw/openrisc/virt.c
-@@ -318,7 +318,7 @@ static void create_pcie_irq_map(void *fdt, char *nodename, int irq_base,
- {
-     int pin, dev;
-     uint32_t irq_map_stride = 0;
--    uint32_t full_irq_map[GPEX_NUM_IRQS * GPEX_NUM_IRQS * 6] = {};
-+    uint32_t full_irq_map[PCI_NUM_PINS * PCI_NUM_PINS * 6] = {};
-     uint32_t *irq_map = full_irq_map;
- 
-     /*
-@@ -330,11 +330,11 @@ static void create_pcie_irq_map(void *fdt, char *nodename, int irq_base,
-      * possible slot) seeing the interrupt-map-mask will allow the table
-      * to wrap to any number of devices.
-      */
--    for (dev = 0; dev < GPEX_NUM_IRQS; dev++) {
-+    for (dev = 0; dev < PCI_NUM_PINS; dev++) {
-         int devfn = dev << 3;
- 
--        for (pin = 0; pin < GPEX_NUM_IRQS; pin++) {
--            int irq_nr = irq_base + ((pin + PCI_SLOT(devfn)) % GPEX_NUM_IRQS);
-+        for (pin = 0; pin < PCI_NUM_PINS; pin++) {
-+            int irq_nr = irq_base + ((pin + PCI_SLOT(devfn)) % PCI_NUM_PINS);
-             int i = 0;
- 
-             /* Fill PCI address cells */
-@@ -357,7 +357,7 @@ static void create_pcie_irq_map(void *fdt, char *nodename, int irq_base,
-     }
- 
-     qemu_fdt_setprop(fdt, nodename, "interrupt-map", full_irq_map,
--                     GPEX_NUM_IRQS * GPEX_NUM_IRQS *
-+                     PCI_NUM_PINS * PCI_NUM_PINS *
-                      irq_map_stride * sizeof(uint32_t));
- 
-     qemu_fdt_setprop_cells(fdt, nodename, "interrupt-map-mask",
-@@ -409,7 +409,7 @@ static void openrisc_virt_pcie_init(OR1KVirtState *state,
-     memory_region_add_subregion(get_system_memory(), pio_base, alias);
- 
-     /* Connect IRQ lines. */
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-         pcie_irq = get_per_cpu_irq(cpus, num_cpus, irq_base + i);
- 
-         sysbus_connect_irq(SYS_BUS_DEVICE(dev), i, pcie_irq);
-diff --git a/hw/pci-host/gpex.c b/hw/pci-host/gpex.c
-index c6aa8e87a22..9fcedd7fc58 100644
---- a/hw/pci-host/gpex.c
-+++ b/hw/pci-host/gpex.c
-@@ -32,6 +32,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "hw/irq.h"
-+#include "hw/pci/pci_bus.h"
- #include "hw/pci-host/gpex.h"
- #include "hw/qdev-properties.h"
- #include "migration/vmstate.h"
-@@ -41,20 +42,25 @@
-  * GPEX host
-  */
- 
-+struct GPEXIrq {
-+    qemu_irq irq;
-+    int irq_num;
+diff --git a/docs/system/device-emulation.rst b/docs/system/device-emulation.rst
+index f19777411cd..a1b0d7997e0 100644
+--- a/docs/system/device-emulation.rst
++++ b/docs/system/device-emulation.rst
+@@ -86,6 +86,7 @@ Emulated Devices
+    devices/ccid.rst
+    devices/cxl.rst
+    devices/ivshmem.rst
++   devices/ivshmem-flat.rst
+    devices/keyboard.rst
+    devices/net.rst
+    devices/nvme.rst
+diff --git a/docs/system/devices/ivshmem-flat.rst b/docs/system/devices/ivshmem-flat.rst
+new file mode 100644
+index 00000000000..1f97052804a
+--- /dev/null
++++ b/docs/system/devices/ivshmem-flat.rst
+@@ -0,0 +1,33 @@
++Inter-VM Shared Memory Flat Device
++----------------------------------
++
++The ivshmem-flat device is meant to be used on machines that lack a PCI bus,
++making them unsuitable for the use of the traditional ivshmem device modeled as
++a PCI device. Machines like those with a Cortex-M MCU are good candidates to use
++the ivshmem-flat device. Also, since the flat version maps the control and
++status registers directly to the memory, it requires a quite tiny "device
++driver" to interact with other VMs, which is useful in some RTOSes, like
++Zephyr, which usually run on constrained resource targets.
++
++Similar to the ivshmem device, the ivshmem-flat device supports both peer
++notification via HW interrupts and Inter-VM shared memory. This allows the
++device to be used together with the traditional ivshmem, enabling communication
++between, for instance, an aarch64 VM  (using the traditional ivshmem device and
++running Linux), and an arm VM (using the ivshmem-flat device and running Zephyr
++instead).
++
++The ivshmem-flat device does not support the use of a ``memdev`` option (see
++ivshmem.rst for more details). It relies on the ivshmem server to create and
++distribute the proper shared memory file descriptor and the eventfd(s) to notify
++(interrupt) the peers. Therefore, to use this device, it is always necessary to
++have an ivshmem server up and running for proper device creation.
++
++Although the ivshmem-flat supports both peer notification (interrupts) and
++shared memory, the interrupt mechanism is optional. If no input IRQ is
++specified for the device it is disabled, preventing the VM from notifying or
++being notified by other VMs (a warning will be displayed to the user to inform
++the IRQ mechanism is disabled). The shared memory region is always present.
++
++The MMRs (INTRMASK, INTRSTATUS, IVPOSITION, and DOORBELL registers) offsets at
++the MMR region, and their functions, follow the ivshmem spec, so they work
++exactly as in the ivshmem PCI device (see ./specs/ivshmem-spec.txt).
+diff --git a/include/hw/misc/ivshmem-flat.h b/include/hw/misc/ivshmem-flat.h
+new file mode 100644
+index 00000000000..97ca0ddce61
+--- /dev/null
++++ b/include/hw/misc/ivshmem-flat.h
+@@ -0,0 +1,85 @@
++/*
++ * Inter-VM Shared Memory Flat Device
++ *
++ * SPDX-FileCopyrightText: 2023 Linaro Ltd.
++ * SPDX-FileContributor: Gustavo Romero <gustavo.romero@linaro.org>
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ */
++
++#ifndef IVSHMEM_FLAT_H
++#define IVSHMEM_FLAT_H
++
++#include "qemu/queue.h"
++#include "qemu/event_notifier.h"
++#include "chardev/char-fe.h"
++#include "exec/memory.h"
++#include "qom/object.h"
++#include "hw/sysbus.h"
++
++#define IVSHMEM_MAX_VECTOR_NUM 64
++
++/*
++ * QEMU interface:
++ *  + QOM property "chardev" is the character device id of the ivshmem server
++ *    socket
++ *  + QOM property "shmem-size" sets the size of the RAM region shared between
++ *    the device and the ivshmem server
++ *  + sysbus MMIO region 0: device I/O mapped registers
++ *  + sysbus MMIO region 1: shared memory with ivshmem server
++ *  + sysbus IRQ 0: single output interrupt
++ */
++
++#define TYPE_IVSHMEM_FLAT "ivshmem-flat"
++typedef struct IvshmemFTState IvshmemFTState;
++
++DECLARE_INSTANCE_CHECKER(IvshmemFTState, IVSHMEM_FLAT, TYPE_IVSHMEM_FLAT)
++
++/* Ivshmem registers. See ./docs/specs/ivshmem-spec.txt for details. */
++enum ivshmem_registers {
++    INTMASK = 0,
++    INTSTATUS = 4,
++    IVPOSITION = 8,
++    DOORBELL = 12,
 +};
 +
- static void gpex_set_irq(void *opaque, int irq_num, int level)
- {
-     GPEXHost *s = opaque;
- 
--    qemu_set_irq(s->irq[irq_num], level);
-+    qemu_set_irq(s->irq[irq_num].irq, level);
- }
- 
- int gpex_set_irq_num(GPEXHost *s, int index, int gsi)
- {
--    if (index >= GPEX_NUM_IRQS) {
-+    if (index >= s->num_irqs) {
-         return -EINVAL;
-     }
- 
--    s->irq_num[index] = gsi;
-+    s->irq[index].irq_num = gsi;
-     return 0;
- }
- 
-@@ -62,7 +68,7 @@ static PCIINTxRoute gpex_route_intx_pin_to_irq(void *opaque, int pin)
- {
-     PCIINTxRoute route;
-     GPEXHost *s = opaque;
--    int gsi = s->irq_num[pin];
-+    int gsi = s->irq[pin].irq_num;
- 
-     route.irq = gsi;
-     if (gsi < 0) {
-@@ -74,6 +80,13 @@ static PCIINTxRoute gpex_route_intx_pin_to_irq(void *opaque, int pin)
-     return route;
- }
- 
-+static int gpex_swizzle_map_irq_fn(PCIDevice *pci_dev, int pin)
-+{
-+    PCIBus *bus = pci_device_root_bus(pci_dev);
++typedef struct VectorInfo {
++    EventNotifier event_notifier;
++    uint16_t id;
++} VectorInfo;
 +
-+    return (PCI_SLOT(pci_dev->devfn) + pin) % bus->nirq;
++typedef struct IvshmemPeer {
++    QTAILQ_ENTRY(IvshmemPeer) next;
++    VectorInfo vector[IVSHMEM_MAX_VECTOR_NUM];
++    int vector_counter;
++    uint16_t id;
++} IvshmemPeer;
++
++struct IvshmemFTState {
++    SysBusDevice parent_obj;
++
++    uint64_t msg_buf;
++    int msg_buffered_bytes;
++
++    QTAILQ_HEAD(, IvshmemPeer) peer;
++    IvshmemPeer own;
++
++    CharBackend server_chr;
++
++    /* IRQ */
++    qemu_irq irq;
++
++    /* I/O registers */
++    MemoryRegion iomem;
++    uint32_t intmask;
++    uint32_t intstatus;
++    uint32_t ivposition;
++    uint32_t doorbell;
++
++    /* Shared memory */
++    MemoryRegion shmem;
++    int shmem_fd;
++    uint32_t shmem_size;
++};
++
++#endif /* IVSHMEM_FLAT_H */
+diff --git a/hw/misc/ivshmem-flat.c b/hw/misc/ivshmem-flat.c
+new file mode 100644
+index 00000000000..33fc9425d20
+--- /dev/null
++++ b/hw/misc/ivshmem-flat.c
+@@ -0,0 +1,459 @@
++/*
++ * Inter-VM Shared Memory Flat Device
++ *
++ * SPDX-FileCopyrightText: 2023 Linaro Ltd.
++ * SPDX-FileContributor: Gustavo Romero <gustavo.romero@linaro.org>
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/units.h"
++#include "qemu/error-report.h"
++#include "qemu/module.h"
++#include "qapi/error.h"
++#include "hw/irq.h"
++#include "hw/qdev-properties-system.h"
++#include "hw/sysbus.h"
++#include "chardev/char-fe.h"
++#include "exec/address-spaces.h"
++#include "trace.h"
++
++#include "hw/misc/ivshmem-flat.h"
++
++static int64_t ivshmem_flat_recv_msg(IvshmemFTState *s, int *pfd)
++{
++    int64_t msg;
++    int n, ret;
++
++    n = 0;
++    do {
++        ret = qemu_chr_fe_read_all(&s->server_chr, (uint8_t *)&msg + n,
++                                   sizeof(msg) - n);
++        if (ret < 0) {
++            if (ret == -EINTR) {
++                continue;
++            }
++            exit(1);
++        }
++        n += ret;
++    } while (n < sizeof(msg));
++
++    if (pfd) {
++        *pfd = qemu_chr_fe_get_msgfd(&s->server_chr);
++    }
++    return le64_to_cpu(msg);
 +}
 +
- static void gpex_host_realize(DeviceState *dev, Error **errp)
- {
-     PCIHostState *pci = PCI_HOST_BRIDGE(dev);
-@@ -82,6 +95,8 @@ static void gpex_host_realize(DeviceState *dev, Error **errp)
-     PCIExpressHost *pex = PCIE_HOST_BRIDGE(dev);
-     int i;
- 
-+    s->irq = g_malloc0_n(s->num_irqs, sizeof(*s->irq));
-+
-     pcie_host_mmcfg_init(pex, PCIE_MMCFG_SIZE_MAX);
-     sysbus_init_mmio(sbd, &pex->mmio);
- 
-@@ -128,19 +143,27 @@ static void gpex_host_realize(DeviceState *dev, Error **errp)
-         sysbus_init_mmio(sbd, &s->io_ioport);
-     }
- 
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
--        sysbus_init_irq(sbd, &s->irq[i]);
--        s->irq_num[i] = -1;
-+    for (i = 0; i < s->num_irqs; i++) {
-+        sysbus_init_irq(sbd, &s->irq[i].irq);
-+        s->irq[i].irq_num = -1;
-     }
- 
-     pci->bus = pci_register_root_bus(dev, "pcie.0", gpex_set_irq,
--                                     pci_swizzle_map_irq_fn, s, &s->io_mmio,
--                                     &s->io_ioport, 0, 4, TYPE_PCIE_BUS);
-+                                     gpex_swizzle_map_irq_fn,
-+                                     s, &s->io_mmio, &s->io_ioport, 0,
-+                                     s->num_irqs, TYPE_PCIE_BUS);
- 
-     pci_bus_set_route_irq_fn(pci->bus, gpex_route_intx_pin_to_irq);
-     qdev_realize(DEVICE(&s->gpex_root), BUS(pci->bus), &error_fatal);
- }
- 
-+static void gpex_host_unrealize(DeviceState *dev)
++static void ivshmem_flat_irq_handler(void *opaque)
 +{
-+    GPEXHost *s = GPEX_HOST(dev);
++    VectorInfo *vi = opaque;
++    EventNotifier *e = &vi->event_notifier;
++    uint16_t vector_id;
++    const VectorInfo (*v)[64];
 +
-+    g_free(s->irq);
++    assert(e->initialized);
++
++    vector_id = vi->id;
++
++    /*
++     * The vector info struct is passed to the handler via the 'opaque' pointer.
++     * This struct pointer allows the retrieval of the vector ID and its
++     * associated event notifier. However, for triggering an interrupt using
++     * qemu_set_irq, it's necessary to also have a pointer to the device state,
++     * i.e., a pointer to the IvshmemFTState struct. Since the vector info
++     * struct is contained within the IvshmemFTState struct, its pointer can be
++     * used to obtain the pointer to IvshmemFTState through simple pointer math.
++     */
++    v = (void *)(vi - vector_id); /* v =  &IvshmemPeer->vector[0] */
++    IvshmemPeer *own_peer = container_of(v, IvshmemPeer, vector);
++    IvshmemFTState *s = container_of(own_peer, IvshmemFTState, own);
++
++    /* Clear event  */
++    if (!event_notifier_test_and_clear(e)) {
++        return;
++    }
++
++    trace_ivshmem_flat_irq_handler(vector_id);
++
++    /*
++     * Toggle device's output line, which is connected to interrupt controller,
++     * generating an interrupt request to the CPU.
++     */
++    qemu_irq_pulse(s->irq);
 +}
 +
- static const char *gpex_host_root_bus_path(PCIHostState *host_bridge,
-                                           PCIBus *rootbus)
- {
-@@ -166,6 +189,7 @@ static const Property gpex_host_properties[] = {
-                        gpex_cfg.mmio64.base, 0),
-     DEFINE_PROP_SIZE(PCI_HOST_ABOVE_4G_MMIO_SIZE, GPEXHost,
-                      gpex_cfg.mmio64.size, 0),
-+    DEFINE_PROP_UINT8("num-irqs", GPEXHost, num_irqs, PCI_NUM_PINS),
- };
++static IvshmemPeer *ivshmem_flat_find_peer(IvshmemFTState *s, uint16_t peer_id)
++{
++    IvshmemPeer *peer;
++
++    /* Own ID */
++    if (s->own.id == peer_id) {
++        return &s->own;
++    }
++
++    /* Peer ID */
++    QTAILQ_FOREACH(peer, &s->peer, next) {
++        if (peer->id == peer_id) {
++            return peer;
++        }
++    }
++
++    return NULL;
++}
++
++static IvshmemPeer *ivshmem_flat_add_peer(IvshmemFTState *s, uint16_t peer_id)
++{
++    IvshmemPeer *new_peer;
++
++    new_peer = g_malloc0(sizeof(*new_peer));
++    new_peer->id = peer_id;
++    new_peer->vector_counter = 0;
++
++    QTAILQ_INSERT_TAIL(&s->peer, new_peer, next);
++
++    trace_ivshmem_flat_new_peer(peer_id);
++
++    return new_peer;
++}
++
++static void ivshmem_flat_remove_peer(IvshmemFTState *s, uint16_t peer_id)
++{
++    IvshmemPeer *peer;
++
++    peer = ivshmem_flat_find_peer(s, peer_id);
++    assert(peer);
++
++    QTAILQ_REMOVE(&s->peer, peer, next);
++    for (int n = 0; n < peer->vector_counter; n++) {
++        int efd;
++        efd = event_notifier_get_fd(&(peer->vector[n].event_notifier));
++        close(efd);
++    }
++
++    g_free(peer);
++}
++
++static void ivshmem_flat_add_vector(IvshmemFTState *s, IvshmemPeer *peer,
++                                    int vector_fd)
++{
++    if (peer->vector_counter >= IVSHMEM_MAX_VECTOR_NUM) {
++        trace_ivshmem_flat_add_vector_failure(peer->vector_counter,
++                                              vector_fd, peer->id);
++        close(vector_fd);
++
++        return;
++    }
++
++    trace_ivshmem_flat_add_vector_success(peer->vector_counter,
++                                          vector_fd, peer->id);
++
++    /*
++     * Set vector ID and its associated eventfd notifier and add them to the
++     * peer.
++     */
++    peer->vector[peer->vector_counter].id = peer->vector_counter;
++    g_unix_set_fd_nonblocking(vector_fd, true, NULL);
++    event_notifier_init_fd(&peer->vector[peer->vector_counter].event_notifier,
++                           vector_fd);
++
++    /*
++     * If it's the device's own ID, register also the handler for the eventfd
++     * so the device can be notified by the other peers.
++     */
++    if (peer == &s->own) {
++        qemu_set_fd_handler(vector_fd, ivshmem_flat_irq_handler, NULL,
++                            &peer->vector);
++    }
++
++    peer->vector_counter++;
++}
++
++static void ivshmem_flat_process_msg(IvshmemFTState *s, uint64_t msg, int fd)
++{
++    uint16_t peer_id;
++    IvshmemPeer *peer;
++
++    peer_id = msg & 0xFFFF;
++    peer = ivshmem_flat_find_peer(s, peer_id);
++
++    if (!peer) {
++        peer = ivshmem_flat_add_peer(s, peer_id);
++    }
++
++    if (fd >= 0) {
++        ivshmem_flat_add_vector(s, peer, fd);
++    } else { /* fd == -1, which is received when peers disconnect. */
++        ivshmem_flat_remove_peer(s, peer_id);
++    }
++}
++
++static int ivshmem_flat_can_receive_data(void *opaque)
++{
++    IvshmemFTState *s = opaque;
++
++    assert(s->msg_buffered_bytes < sizeof(s->msg_buf));
++    return sizeof(s->msg_buf) - s->msg_buffered_bytes;
++}
++
++static void ivshmem_flat_read_msg(void *opaque, const uint8_t *buf, int size)
++{
++    IvshmemFTState *s = opaque;
++    int fd;
++    int64_t msg;
++
++    assert(size >= 0 && s->msg_buffered_bytes + size <= sizeof(s->msg_buf));
++    memcpy((unsigned char *)&s->msg_buf + s->msg_buffered_bytes, buf, size);
++    s->msg_buffered_bytes += size;
++    if (s->msg_buffered_bytes < sizeof(s->msg_buf)) {
++        return;
++    }
++    msg = le64_to_cpu(s->msg_buf);
++    s->msg_buffered_bytes = 0;
++
++    fd = qemu_chr_fe_get_msgfd(&s->server_chr);
++
++    ivshmem_flat_process_msg(s, msg, fd);
++}
++
++static uint64_t ivshmem_flat_iomem_read(void *opaque,
++                                        hwaddr offset, unsigned size)
++{
++    IvshmemFTState *s = opaque;
++    uint32_t ret;
++
++    trace_ivshmem_flat_read_mmr(offset);
++
++    switch (offset) {
++    case INTMASK:
++        ret = 0; /* Ignore read since all bits are reserved in rev 1. */
++        break;
++    case INTSTATUS:
++        ret = 0; /* Ignore read since all bits are reserved in rev 1. */
++        break;
++    case IVPOSITION:
++        ret = s->own.id;
++        break;
++    case DOORBELL:
++        trace_ivshmem_flat_read_mmr_doorbell(); /* DOORBELL is write-only */
++        ret = 0;
++        break;
++    default:
++        /* Should never reach out here due to iomem map range being exact */
++        trace_ivshmem_flat_read_write_mmr_invalid(offset);
++        ret = 0;
++    }
++
++    return ret;
++}
++
++static int ivshmem_flat_interrupt_peer(IvshmemFTState *s,
++                                       uint16_t peer_id, uint16_t vector_id)
++{
++    IvshmemPeer *peer;
++
++    peer = ivshmem_flat_find_peer(s, peer_id);
++    if (!peer) {
++        trace_ivshmem_flat_interrupt_invalid_peer(peer_id);
++        return 1;
++    }
++
++    event_notifier_set(&(peer->vector[vector_id].event_notifier));
++
++    return 0;
++}
++
++static void ivshmem_flat_iomem_write(void *opaque, hwaddr offset,
++                                     uint64_t value, unsigned size)
++{
++    IvshmemFTState *s = opaque;
++    uint16_t peer_id = (value >> 16) & 0xFFFF;
++    uint16_t vector_id = value & 0xFFFF;
++
++    trace_ivshmem_flat_write_mmr(offset);
++
++    switch (offset) {
++    case INTMASK:
++        break;
++    case INTSTATUS:
++        break;
++    case IVPOSITION:
++        break;
++    case DOORBELL:
++        trace_ivshmem_flat_interrupt_peer(peer_id, vector_id);
++        ivshmem_flat_interrupt_peer(s, peer_id, vector_id);
++        break;
++    default:
++        /* Should never reach out here due to iomem map range being exact. */
++        trace_ivshmem_flat_read_write_mmr_invalid(offset);
++        break;
++    }
++
++    return;
++}
++
++static const MemoryRegionOps ivshmem_flat_ops = {
++    .read = ivshmem_flat_iomem_read,
++    .write = ivshmem_flat_iomem_write,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++    .impl = { /* Read/write aligned at 32 bits. */
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
++};
++
++static void ivshmem_flat_instance_init(Object *obj)
++{
++    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
++    IvshmemFTState *s = IVSHMEM_FLAT(obj);
++
++    /*
++     * Init mem region for 4 MMRs (ivshmem_registers),
++     * 32 bits each => 16 bytes (0x10).
++     */
++    memory_region_init_io(&s->iomem, obj, &ivshmem_flat_ops, s,
++                          "ivshmem-mmio", 0x10);
++    sysbus_init_mmio(sbd, &s->iomem);
++
++    /*
++     * Create one output IRQ that will be connect to the
++     * machine's interrupt controller.
++     */
++    sysbus_init_irq(sbd, &s->irq);
++
++    QTAILQ_INIT(&s->peer);
++}
++
++static bool ivshmem_flat_connect_server(DeviceState *dev, Error **errp)
++{
++    IvshmemFTState *s = IVSHMEM_FLAT(dev);
++    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
++    int64_t protocol_version, msg;
++    int shmem_fd;
++    uint16_t peer_id;
++    struct stat fdstat;
++
++    /* Check ivshmem server connection. */
++    if (!qemu_chr_fe_backend_connected(&s->server_chr)) {
++        error_setg(errp, "ivshmem server socket not specified or incorret."
++                         " Can't create device.");
++        return false;
++    }
++
++    /*
++     * Message sequence from server on new connection:
++     *  _____________________________________
++     * |STEP| uint64_t msg  | int fd         |
++     *  -------------------------------------
++     *
++     *  0    PROTOCOL        -1              \
++     *  1    OWN PEER ID     -1               |-- Header/Greeting
++     *  2    -1              shmem fd        /
++     *
++     *  3    PEER IDx        Other peer's Vector 0 eventfd
++     *  4    PEER IDx        Other peer's Vector 1 eventfd
++     *  .                    .
++     *  .                    .
++     *  .                    .
++     *  N    PEER IDy        Other peer's Vector 0 eventfd
++     *  N+1  PEER IDy        Other peer's Vector 1 eventfd
++     *  .                    .
++     *  .                    .
++     *  .                    .
++     *
++     *  ivshmem_flat_recv_msg() calls return 'msg' and 'fd'.
++     *
++     *  See ./docs/specs/ivshmem-spec.txt for details on the protocol.
++     */
++
++    /* Step 0 */
++    protocol_version = ivshmem_flat_recv_msg(s, NULL);
++
++    /* Step 1 */
++    msg = ivshmem_flat_recv_msg(s, NULL);
++    peer_id = 0xFFFF & msg;
++    s->own.id = peer_id;
++    s->own.vector_counter = 0;
++
++    trace_ivshmem_flat_proto_ver_own_id(protocol_version, s->own.id);
++
++    /* Step 2 */
++    msg = ivshmem_flat_recv_msg(s, &shmem_fd);
++    /* Map shmem fd and MMRs into memory regions. */
++    if (msg != -1 || shmem_fd < 0) {
++        error_setg(errp, "Could not receive valid shmem fd."
++                         " Can't create device!");
++        return false;
++    }
++
++    if (fstat(shmem_fd, &fdstat) != 0) {
++        error_setg(errp, "Could not determine shmem fd size."
++                         " Can't create device!");
++        return false;
++    }
++    trace_ivshmem_flat_shmem_size(shmem_fd, fdstat.st_size);
++
++    /*
++     * Shmem size provided by the ivshmem server must be equal to
++     * device's shmem size.
++     */
++    if (fdstat.st_size != s->shmem_size) {
++        error_setg(errp, "Can't map shmem fd: shmem size different"
++                         " from device size!");
++        return false;
++    }
++
++    /*
++     * Beyond step 2 ivshmem_process_msg, called by ivshmem_flat_read_msg
++     * handler -- when data is available on the server socket -- will handle
++     * the additional messages that will be generated by the server as peers
++     * connect or disconnect.
++     */
++    qemu_chr_fe_set_handlers(&s->server_chr, ivshmem_flat_can_receive_data,
++                             ivshmem_flat_read_msg, NULL, NULL, s, NULL, true);
++
++    memory_region_init_ram_from_fd(&s->shmem, OBJECT(s),
++                                   "ivshmem-shmem", s->shmem_size,
++                                   RAM_SHARED, shmem_fd, 0, NULL);
++    sysbus_init_mmio(sbd, &s->shmem);
++
++    return true;
++}
++
++static void ivshmem_flat_realize(DeviceState *dev, Error **errp)
++{
++    if (!ivshmem_flat_connect_server(dev, errp)) {
++        return;
++    }
++}
++
++static const Property ivshmem_flat_props[] = {
++    DEFINE_PROP_CHR("chardev", IvshmemFTState, server_chr),
++    DEFINE_PROP_UINT32("shmem-size", IvshmemFTState, shmem_size, 4 * MiB),
++};
++
++static void ivshmem_flat_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++
++    dc->hotpluggable = true;
++    dc->realize = ivshmem_flat_realize;
++
++    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
++    device_class_set_props(dc, ivshmem_flat_props);
++
++    /* Reason: Must be wired up in code (sysbus MRs and IRQ) */
++    dc->user_creatable = false;
++}
++
++static const TypeInfo ivshmem_flat_types[] = {
++    {
++        .name           = TYPE_IVSHMEM_FLAT,
++        .parent         = TYPE_SYS_BUS_DEVICE,
++        .instance_size  = sizeof(IvshmemFTState),
++        .instance_init  = ivshmem_flat_instance_init,
++        .class_init     = ivshmem_flat_class_init,
++    },
++};
++
++DEFINE_TYPES(ivshmem_flat_types)
+diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
+index 1f1baa5dde9..8f9ce2f68c3 100644
+--- a/hw/misc/Kconfig
++++ b/hw/misc/Kconfig
+@@ -72,6 +72,11 @@ config IVSHMEM_DEVICE
+     default y if PCI_DEVICES
+     depends on PCI && LINUX && IVSHMEM && MSI_NONBROKEN
  
- static void gpex_host_class_init(ObjectClass *klass, void *data)
-@@ -175,6 +199,7 @@ static void gpex_host_class_init(ObjectClass *klass, void *data)
++config IVSHMEM_FLAT_DEVICE
++    bool
++    default y
++    depends on LINUX && IVSHMEM
++
+ config ECCMEMCTL
+     bool
  
-     hc->root_bus_path = gpex_host_root_bus_path;
-     dc->realize = gpex_host_realize;
-+    dc->unrealize = gpex_host_unrealize;
-     set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
-     dc->fw_name = "pci";
-     device_class_set_props(dc, gpex_host_properties);
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index c792ab9c359..2bc5a9dd981 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -179,7 +179,7 @@ static void create_pcie_irq_map(RISCVVirtState *s, void *fdt, char *nodename,
- {
-     int pin, dev;
-     uint32_t irq_map_stride = 0;
--    uint32_t full_irq_map[GPEX_NUM_IRQS * GPEX_NUM_IRQS *
-+    uint32_t full_irq_map[PCI_NUM_PINS * PCI_NUM_PINS *
-                           FDT_MAX_INT_MAP_WIDTH] = {};
-     uint32_t *irq_map = full_irq_map;
+diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+index d02d96e403b..7a16ddb1dcc 100644
+--- a/hw/misc/meson.build
++++ b/hw/misc/meson.build
+@@ -37,7 +37,9 @@ system_ss.add(when: 'CONFIG_SIFIVE_U_PRCI', if_true: files('sifive_u_prci.c'))
  
-@@ -191,11 +191,11 @@ static void create_pcie_irq_map(RISCVVirtState *s, void *fdt, char *nodename,
-      * possible slot) seeing the interrupt-map-mask will allow the table
-      * to wrap to any number of devices.
-      */
--    for (dev = 0; dev < GPEX_NUM_IRQS; dev++) {
-+    for (dev = 0; dev < PCI_NUM_PINS; dev++) {
-         int devfn = dev * 0x8;
+ subdir('macio')
  
--        for (pin = 0; pin < GPEX_NUM_IRQS; pin++) {
--            int irq_nr = PCIE_IRQ + ((pin + PCI_SLOT(devfn)) % GPEX_NUM_IRQS);
-+        for (pin = 0; pin < PCI_NUM_PINS; pin++) {
-+            int irq_nr = PCIE_IRQ + ((pin + PCI_SLOT(devfn)) % PCI_NUM_PINS);
-             int i = 0;
++# ivshmem devices
+ system_ss.add(when: 'CONFIG_IVSHMEM_DEVICE', if_true: files('ivshmem.c'))
++system_ss.add(when: 'CONFIG_IVSHMEM_FLAT_DEVICE', if_true: files('ivshmem-flat.c'))
  
-             /* Fill PCI address cells */
-@@ -221,7 +221,7 @@ static void create_pcie_irq_map(RISCVVirtState *s, void *fdt, char *nodename,
-     }
+ system_ss.add(when: 'CONFIG_ALLWINNER_SRAMC', if_true: files('allwinner-sramc.c'))
+ system_ss.add(when: 'CONFIG_ALLWINNER_A10_CCM', if_true: files('allwinner-a10-ccm.c'))
+diff --git a/hw/misc/trace-events b/hw/misc/trace-events
+index b9fbcb09249..0f5d2b56660 100644
+--- a/hw/misc/trace-events
++++ b/hw/misc/trace-events
+@@ -368,3 +368,19 @@ aspeed_sli_read(uint64_t offset, unsigned int size, uint32_t data) "To 0x%" PRIx
+ aspeed_sliio_write(uint64_t offset, unsigned int size, uint32_t data) "To 0x%" PRIx64 " of size %u: 0x%" PRIx32
+ aspeed_sliio_read(uint64_t offset, unsigned int size, uint32_t data) "To 0x%" PRIx64 " of size %u: 0x%" PRIx32
  
-     qemu_fdt_setprop(fdt, nodename, "interrupt-map", full_irq_map,
--                     GPEX_NUM_IRQS * GPEX_NUM_IRQS *
-+                     PCI_NUM_PINS * PCI_NUM_PINS *
-                      irq_map_stride * sizeof(uint32_t));
- 
-     qemu_fdt_setprop_cells(fdt, nodename, "interrupt-map-mask",
-@@ -1246,7 +1246,7 @@ static inline DeviceState *gpex_pcie_init(MemoryRegion *sys_mem,
- 
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 2, pio_base);
- 
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-         irq = qdev_get_gpio_in(irqchip, PCIE_IRQ + i);
- 
-         sysbus_connect_irq(SYS_BUS_DEVICE(dev), i, irq);
-diff --git a/hw/xen/xen-pvh-common.c b/hw/xen/xen-pvh-common.c
-index a10c44cc758..9c21fa858d3 100644
---- a/hw/xen/xen-pvh-common.c
-+++ b/hw/xen/xen-pvh-common.c
-@@ -169,7 +169,7 @@ static inline void xenpvh_gpex_init(XenPVHMachineState *s,
-      */
-     assert(xpc->set_pci_intx_irq);
- 
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-         qemu_irq irq = qemu_allocate_irq(xpc->set_pci_intx_irq, s, i);
- 
-         sysbus_connect_irq(SYS_BUS_DEVICE(dev), i, irq);
-diff --git a/hw/xtensa/virt.c b/hw/xtensa/virt.c
-index 98622ae86dc..b08404fc17c 100644
---- a/hw/xtensa/virt.c
-+++ b/hw/xtensa/virt.c
-@@ -93,7 +93,7 @@ static void create_pcie(MachineState *ms, CPUXtensaState *env, int irq_base,
-     /* Connect IRQ lines. */
-     extints = xtensa_get_extints(env);
- 
--    for (i = 0; i < GPEX_NUM_IRQS; i++) {
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-         void *q = extints[irq_base + i];
- 
-         sysbus_connect_irq(SYS_BUS_DEVICE(dev), i, q);
++# ivshmem-flat.c
++ivshmem_flat_irq_handler(uint16_t vector_id) "Caught interrupt request: vector %d"
++ivshmem_flat_new_peer(uint16_t peer_id) "New peer ID: %d"
++ivshmem_flat_add_vector_failure(uint16_t vector_id, uint32_t vector_fd, uint16_t peer_id) "Failed to add vector %u (fd = %u) to peer ID %u, maximum number of vectors reached"
++ivshmem_flat_add_vector_success(uint16_t vector_id, uint32_t vector_fd, uint16_t peer_id) "Successful addition of vector %u (fd = %u) to peer ID %u"
++ivshmem_flat_irq_resolved(const char *irq_qompath) "IRQ QOM path '%s' correctly resolved"
++ivshmem_flat_proto_ver_own_id(uint64_t proto_ver, uint16_t peer_id) "Protocol Version = 0x%"PRIx64", Own Peer ID = %u"
++ivshmem_flat_shmem_size(int fd, uint64_t size) "Shmem fd (%d) total size is %"PRIu64" byte(s)"
++ivshmem_flat_shmem_map(uint64_t addr) "Mapping shmem @ 0x%"PRIx64
++ivshmem_flat_mmio_map(uint64_t addr) "Mapping MMRs @ 0x%"PRIx64
++ivshmem_flat_read_mmr(uint64_t addr_offset) "Read access at offset %"PRIu64
++ivshmem_flat_read_mmr_doorbell(void) "DOORBELL register is write-only!"
++ivshmem_flat_read_write_mmr_invalid(uint64_t addr_offset) "No ivshmem register mapped at offset %"PRIu64
++ivshmem_flat_interrupt_invalid_peer(uint16_t peer_id) "Can't interrupt non-existing peer %u"
++ivshmem_flat_write_mmr(uint64_t addr_offset) "Write access at offset %"PRIu64
++ivshmem_flat_interrupt_peer(uint16_t peer_id, uint16_t vector_id) "Interrupting peer ID %u, vector %u..."
 -- 
 2.47.1
 
