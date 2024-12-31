@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 517559FF1D2
-	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:26:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CDFC9FF1CC
+	for <lists+qemu-devel@lfdr.de>; Tue, 31 Dec 2024 21:26:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tSin4-0007I3-Ul; Tue, 31 Dec 2024 15:24:35 -0500
+	id 1tSin3-000726-Lb; Tue, 31 Dec 2024 15:24:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSimn-0006l5-HS
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:19 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSimr-0006ne-A6
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:22 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSiml-0000xb-Dq
- for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:16 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3862ca8e0bbso7979993f8f.0
- for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:24:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tSimp-0000yM-83
+ for qemu-devel@nongnu.org; Tue, 31 Dec 2024 15:24:20 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-436326dcb1cso67675895e9.0
+ for <qemu-devel@nongnu.org>; Tue, 31 Dec 2024 12:24:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735676652; x=1736281452; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735676657; x=1736281457; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Vts4Pv6wqeOpsJqeP0LsusmybTITtJOTCbWV0U0dSWI=;
- b=pW/fiKM8L3ePnn7/lZNCBK57FslT/G/auwNlTEZaUrSh5OdH67zP70S3Ts1b0MsR9s
- bc+tW/OBvxCbo17K1cRi/jJrDTB6WxRG+Rva5T9Ltp0L1/FQnaUft0RVYG82iUbctK8b
- epDarUCdML0x31tAAP+wWz0hkRrdG7lesO2avy3psq0DMskVTzCGDB7DX7+v9VcOF1J1
- 8MSzMkRpqU3rj+a2gKCKg9lsbcrcPbdjFU7xe64ElEfLssCML4Rwzm52WdZvIMmdux6Q
- GL+BsTGKD2WH5Xctkdvqny2iNF2EGS9i5Z3CP0Q6sdA1ESON2ChbS5o5tFNIjvGYSqvG
- dviA==
+ bh=1OsyYuL+27oK54ZGKawyCinUOguZIMyJUg2PlLlormY=;
+ b=RGH+ILdZAKGJBYa2U4p4PmIkbx64MJPwmIHr1sWm5qCUjgFv9Ek+ZrSbvgVxbmZr11
+ nqsg8zbUrCbvnUzqAneapNyIt+TpjwqCb5aZW42U6J4+ayNCAr4xxed0oHC355txLQf3
+ BLAv+s2rRnBD+RlVeYVDHdfPpnjDCR574iDcHDWxPF8HSZln31bMSxG0VJM4leEimriS
+ wiRy9ubRFeYV28b0P52GS7Ee20Vw7xTD8hYMXWgtwrovs+h7LtcNYBB9oeq+FLHCoXK7
+ IjdF/EIFkRLMlIufVKsgUBllu4nPXArgZkd8SjZjN9x8Rd6ZOoK0a+ZgPBdeH+BG7ZHC
+ psfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735676652; x=1736281452;
+ d=1e100.net; s=20230601; t=1735676657; x=1736281457;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Vts4Pv6wqeOpsJqeP0LsusmybTITtJOTCbWV0U0dSWI=;
- b=fPb8CUNH0LvmJ1PPCQ67/4GlR7n+Fp9X5kLHoWrV0h49MCqg9nELDYqGp85iqBoB6q
- 0JQFkxN+NXmx9K1XiV+I2GQp7jGGGZJm8ZKYpiF17n7UagV+4V1wU+pf+genuxhHqV6B
- byDYTzJ9P9xgbgF5Vaej3+F/iOsJ5UKtQHQ282bOFk4hlDme3MQ8uhdrbFQT1fOPeK+E
- asroLicQEJ3pEh1qaQTNgQD03EKtn+G5b45b9ArsoNEM7i0wNWKIMpJjI2UBxjlJTURY
- Y79CEQ6Qz09ulNNCKZaCVgPgmEYRgGyaGGYI23BOodNudrk/gbLLkwBb5z6LLfyN4Ayr
- PCrQ==
-X-Gm-Message-State: AOJu0YwgNHSvfFGV8SmVfJ7YwVBxOXlAYpgMhMg14kNzCOwZBb7Yi3Rv
- GfQZFcIKrx4jclB9Xe5VTKx0G/Rfi8QilAvQD3wBr/rqncJVT4R/nC1bbz6h0SPoLy6MUIZ79Hv
- 6yec=
-X-Gm-Gg: ASbGncsRTGpqUGQhUs+7s1ajldTHWM8JxRuy21dZx+VbdTVeF0dw1N7eEfsE7zgrFJv
- Rjsa4obgL5MPgosGb7hJJVmfzn65vPVL4WWuEveMcVxjiCaSbzDZR3QT6YeLiWcVw6PCLarm0wC
- PZLzI5xQtSeIF0cHNaXa+kNCqNpxM3uIGB1Lve9OcI31a2+/wvX1GNo0fYRHE2SxPBx0ZKvk2Ac
- bGQ+8bmO7yPv6CnY3VDVG3tG3jzRhdyQsxjZan6eOrGpA2ABMbHaGKuRtfOLFvfgEFafh3Qo4VW
- dyPIrHKKuDRVTjejld89+Dc/zZQ9PMw=
-X-Google-Smtp-Source: AGHT+IH+GKp4yWCkYousfJTPduSOs2vIz3aRXqxWprhQSQIkp5HkeGXSox6y+YwNd04J2XWRtKVi1g==
-X-Received: by 2002:a5d:5e09:0:b0:385:e4a7:df09 with SMTP id
- ffacd0b85a97d-38a223f75fbmr44072192f8f.44.1735676652519; 
- Tue, 31 Dec 2024 12:24:12 -0800 (PST)
+ bh=1OsyYuL+27oK54ZGKawyCinUOguZIMyJUg2PlLlormY=;
+ b=i3XuDN1NbP5ap+ZV5WCiztn/QnoBAvIBHHpk1dyDZfzjUc9yFj0k20hLznBY85JTlI
+ /0zz1tNEodH69mn9RVdeCmreik0CpZvHsVweXS3XUCqXz1S1fSoJSUM6J6a5gd7+S671
+ 9EwtDLDpEC28VKVRsxY2cXXbfoyUF0jHrNh1I9w57oix05/Eo50LWi2glfbo6chcA4lf
+ SPPZvgaUU4O9IcUxVTuZrEWfh4QAkCeM4BJuksvBPsSd+6m7FzNFLbCet8NgQCTlva3A
+ BJK90GaJnKBitDOqBqLWmpWHc2ro+HgGXmEq75ZMsAmV4ws16/6Kol/+gg8YY9fRCrZl
+ M4cw==
+X-Gm-Message-State: AOJu0Yw1EkJnJw9jPkj1lNmAoLBNzVdLJX202fEhJOYZd2NT58AcK1N4
+ uude0pAsZHs1GydmtEj/W3UWx3boQN336giQblqF0oQ7j+QAvzMvjqBxYMi6CntZaBxuC0Dmxr3
+ DdqI=
+X-Gm-Gg: ASbGncsd9wb6Lvw9ypVd4RX9mHfxVqta4Qq2IyxsZVA/Lmvrir4a75UBYptnYTVIzGG
+ RyNQxBnBclkg7/bIdnBvNllzCiliGdAR0ZB8f9xGYe3EpL56dputuEPdgpKAjtJZ8nAXybynINz
+ sT0Gt4B9xN5PjW5x78dGKCE6BqFBzgKb1r7TM0MpaD1uKRqOhTdkaHWEDjg11sFBWS9TvQyVLQZ
+ o6kjjl8CJwaHH9wu1Uxa5fh3//jmYhqdvDllPJP6tEDyDrgVlCfqshw0TryT1feaQwawrbRZ8tu
+ hER9jjevk8TwClg68qo1MfNwplGCOyY=
+X-Google-Smtp-Source: AGHT+IE6r4lvWNGyGxrLvUk7/e5JsFXd4B/ZfL3UgH9EBA5Y6jTZnz6Ar4qNRTfJGugThTleDbdoEw==
+X-Received: by 2002:a05:6000:2c3:b0:385:df73:2f3a with SMTP id
+ ffacd0b85a97d-38a221fa8eemr31826814f8f.14.1735676657207; 
+ Tue, 31 Dec 2024 12:24:17 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c8a636asm34468588f8f.88.2024.12.31.12.24.11
+ ffacd0b85a97d-38a1c828a8dsm33868515f8f.2.2024.12.31.12.24.16
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 31 Dec 2024 12:24:12 -0800 (PST)
+ Tue, 31 Dec 2024 12:24:16 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Phil Dennis-Jordan <phil@philjordan.eu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 21/29] hw/usb/hcd-xhci-pci: Move msi/msix properties from NEC
- to superclass
-Date: Tue, 31 Dec 2024 21:22:20 +0100
-Message-ID: <20241231202228.28819-22-philmd@linaro.org>
+Subject: [PULL 22/29] hw/usb/hcd-xhci: Unimplemented/guest error logging for
+ port MMIO
+Date: Tue, 31 Dec 2024 21:22:21 +0100
+Message-ID: <20241231202228.28819-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241231202228.28819-1-philmd@linaro.org>
 References: <20241231202228.28819-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,58 +100,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 
-The NEC XHCI controller exposes the underlying PCI device's msi and
-msix properties, but the superclass and thus the qemu-xhci device do
-not. There does not seem to be any obvious reason for this limitation.
-This change moves these properties to the superclass so they are
-exposed by both PCI XHCI device variants.
+The XHCI device code uses tracing rather than logging on various code
+paths that are so far unimplemented. In some cases, these code paths
+actually indicate faulty guest software. This patch switches instances
+in the read and write handlers for the port MMIO region to use
+qemu_log_mask() with LOG_UNIMP or LOG_GUEST_ERROR, as appropriate in
+each case.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241227121336.25838-3-phil@philjordan.eu>
+Message-ID: <20241227121336.25838-5-phil@philjordan.eu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/usb/hcd-xhci-nec.c | 2 --
- hw/usb/hcd-xhci-pci.c | 6 ++++++
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ hw/usb/hcd-xhci.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/hw/usb/hcd-xhci-nec.c b/hw/usb/hcd-xhci-nec.c
-index b1df95b52a5..1df518baf59 100644
---- a/hw/usb/hcd-xhci-nec.c
-+++ b/hw/usb/hcd-xhci-nec.c
-@@ -37,8 +37,6 @@ struct XHCINecState {
- };
+diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
+index 3719c0f190d..7dc0994c89c 100644
+--- a/hw/usb/hcd-xhci.c
++++ b/hw/usb/hcd-xhci.c
+@@ -2810,9 +2810,15 @@ static uint64_t xhci_port_read(void *ptr, hwaddr reg, unsigned size)
+     case 0x08: /* PORTLI */
+         ret = 0;
+         break;
+-    case 0x0c: /* reserved */
++    case 0x0c: /* PORTHLPMC */
++        ret = 0;
++        qemu_log_mask(LOG_UNIMP, "%s: read from port register PORTHLPMC",
++                      __func__);
++        break;
+     default:
+-        trace_usb_xhci_unimplemented("port read", reg);
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: read from port offset 0x%" HWADDR_PRIx,
++                      __func__, reg);
+         ret = 0;
+     }
  
- static const Property nec_xhci_properties[] = {
--    DEFINE_PROP_ON_OFF_AUTO("msi", XHCIPciState, msi, ON_OFF_AUTO_AUTO),
--    DEFINE_PROP_ON_OFF_AUTO("msix", XHCIPciState, msix, ON_OFF_AUTO_AUTO),
-     DEFINE_PROP_UINT32("intrs", XHCINecState, intrs, XHCI_MAXINTRS),
-     DEFINE_PROP_UINT32("slots", XHCINecState, slots, XHCI_MAXSLOTS),
- };
-diff --git a/hw/usb/hcd-xhci-pci.c b/hw/usb/hcd-xhci-pci.c
-index e110840c7a0..a069b423388 100644
---- a/hw/usb/hcd-xhci-pci.c
-+++ b/hw/usb/hcd-xhci-pci.c
-@@ -197,6 +197,11 @@ static void xhci_instance_init(Object *obj)
-     qdev_alias_all_properties(DEVICE(&s->xhci), obj);
+@@ -2881,9 +2887,22 @@ static void xhci_port_write(void *ptr, hwaddr reg,
+         }
+         break;
+     case 0x04: /* PORTPMSC */
++    case 0x0c: /* PORTHLPMC */
++        qemu_log_mask(LOG_UNIMP,
++                      "%s: write 0x%" PRIx64
++                      " (%u bytes) to port register at offset 0x%" HWADDR_PRIx,
++                      __func__, val, size, reg);
++        break;
+     case 0x08: /* PORTLI */
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Write to read-only PORTLI register",
++                      __func__);
++        break;
+     default:
+-        trace_usb_xhci_unimplemented("port write", reg);
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: write 0x%" PRIx64 " (%u bytes) to unknown port "
++                      "register at offset 0x%" HWADDR_PRIx,
++                      __func__, val, size, reg);
++        break;
+     }
  }
  
-+static const Property xhci_pci_properties[] = {
-+    DEFINE_PROP_ON_OFF_AUTO("msi", XHCIPciState, msi, ON_OFF_AUTO_AUTO),
-+    DEFINE_PROP_ON_OFF_AUTO("msix", XHCIPciState, msix, ON_OFF_AUTO_AUTO),
-+};
-+
- static void xhci_class_init(ObjectClass *klass, void *data)
- {
-     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
-@@ -208,6 +213,7 @@ static void xhci_class_init(ObjectClass *klass, void *data)
-     k->realize      = usb_xhci_pci_realize;
-     k->exit         = usb_xhci_pci_exit;
-     k->class_id     = PCI_CLASS_SERIAL_USB;
-+    device_class_set_props(dc, xhci_pci_properties);
- }
- 
- static const TypeInfo xhci_pci_info = {
 -- 
 2.47.1
 
