@@ -2,117 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC3ADA00105
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 23:07:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 437AAA00155
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 23:48:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTTLD-0004Q2-5R; Thu, 02 Jan 2025 17:06:55 -0500
+	id 1tTTyi-0007ZO-Ql; Thu, 02 Jan 2025 17:47:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1tTTL6-0004EV-Ez; Thu, 02 Jan 2025 17:06:48 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1tTTL4-0007A0-WE; Thu, 02 Jan 2025 17:06:48 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 5ED9D1F76E;
- Thu,  2 Jan 2025 22:06:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1735855605; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BQ9qjoRM4jkG5sve6+kc7w1GTquDUDYCKplBq7BGOgo=;
- b=Yebi2VUqFYv1YzHzPTp5oAJsXesmDE9N4vBuwPblAhZSughaNFzDr+WYmjqZNgscYfvE1Z
- VPxCBQUh7sdQHrFkSbFmki2i8oxOGXiNG8taFHv6CGAsZWU8vPRDlg5bcYcwxFs/xRlf0t
- bUyiZ+Goxi8g6ZJTy2SOc3rOlm1QQ1E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1735855605;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BQ9qjoRM4jkG5sve6+kc7w1GTquDUDYCKplBq7BGOgo=;
- b=BnG7al+Aoz0Z6we670NUxQXCC/OZ3T+KXaN5ljEIEKYB5aOA8dx9qQmBesSiTuld9kigzt
- u4W7dBPmmPWQLgBw==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Yebi2VUq;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=BnG7al+A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1735855605; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BQ9qjoRM4jkG5sve6+kc7w1GTquDUDYCKplBq7BGOgo=;
- b=Yebi2VUqFYv1YzHzPTp5oAJsXesmDE9N4vBuwPblAhZSughaNFzDr+WYmjqZNgscYfvE1Z
- VPxCBQUh7sdQHrFkSbFmki2i8oxOGXiNG8taFHv6CGAsZWU8vPRDlg5bcYcwxFs/xRlf0t
- bUyiZ+Goxi8g6ZJTy2SOc3rOlm1QQ1E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1735855605;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BQ9qjoRM4jkG5sve6+kc7w1GTquDUDYCKplBq7BGOgo=;
- b=BnG7al+Aoz0Z6we670NUxQXCC/OZ3T+KXaN5ljEIEKYB5aOA8dx9qQmBesSiTuld9kigzt
- u4W7dBPmmPWQLgBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E26D8132EA;
- Thu,  2 Jan 2025 22:06:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id yEkVKfMNd2emeQAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 02 Jan 2025 22:06:43 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: Ani Sinha <anisinha@redhat.com>, qemu-trivial@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 8/8] qtest/fw-cfg: remove compiled out code
-Date: Thu,  2 Jan 2025 19:06:29 -0300
-Message-Id: <20250102220629.11351-9-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20250102220629.11351-1-farosas@suse.de>
-References: <20250102220629.11351-1-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1tTTyY-0007OH-9J; Thu, 02 Jan 2025 17:47:38 -0500
+Received: from fout-a1-smtp.messagingengine.com ([103.168.172.144])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1tTTyW-00048d-4S; Thu, 02 Jan 2025 17:47:33 -0500
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal
+ [10.202.2.45])
+ by mailfout.phl.internal (Postfix) with ESMTP id 12502138021C;
+ Thu,  2 Jan 2025 17:47:29 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+ by phl-compute-05.internal (MEProxy); Thu, 02 Jan 2025 17:47:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+ cc:cc:content-transfer-encoding:content-type:content-type:date
+ :date:from:from:in-reply-to:message-id:mime-version:reply-to
+ :subject:subject:to:to; s=fm3; t=1735858049; x=1735944449; bh=aO
+ Y9g5jXdu9zzShoF+aNqJo7EJnPSCrSF3E04R/CtUA=; b=VO323dKrSdAoiLph0y
+ mrjAI/plr/FUNS5hBB63iFzpPJXO2W+PuHzPGItEW8TNpmkNEujHIYR0kCHe5Fsy
+ jxNHyyJLa/qVoqruHfevA15WTDVVNPxELr8E7XxDctwbyI3A/UB6FV8xRcfCJQPu
+ PUB50KtoS1ypV1xAZ8HMbC2bC/tJ8ZEaqBFuB3jaIP6Aylov94zoR4JbybSsMoaQ
+ CCkYTBViVaMvN/v3Z2xHRlATjTwOkLZm0Uiyh+q1LZ2RHfJwjyv5GFJVxHWFz/3i
+ adP5JgdM0urKGEFgm2xLpm6ffpxbe+5oFyloNRoTJSJg12TtBEO9SPkJf/RZo+ht
+ Wikg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+ fm2; t=1735858049; x=1735944449; bh=aOY9g5jXdu9zzShoF+aNqJo7EJnP
+ SCrSF3E04R/CtUA=; b=St1LqHmfgWk/ADDSgSyQu7LwZA2cpfHRqBdS9+9wtR51
+ 0BZzuTaicrPNbqu+qo4OD48j0R0zK1S50RUcB3QxEGo+wPnMPpNDbSX44Rds1syF
+ utlQ99vBI1sK3GZ8eFS+e9FiA0ICwfQ/uJuWxNOUT7DTO0NrdrrK4sosJa+DJ2gQ
+ 4AgfLNJFpT9MajWTHwSP0ng+yUypee40sgEvcADHqSrvPlsaKicAemSUJwpXOPpr
+ +DAkGZhl2cyrceg4x5ZXfvlSfliDYkTsVJ06mkO/VXWHjHfHIqL0ocnpGrH38TY4
+ tArHIetZD5hu8waF6olFmSfq1jBDswsXwtvPw/1/cg==
+X-ME-Sender: <xms:gBd3Z11rBqG5SX4jt_Id1NaW2pzU_6HJgP4X5Q9SpQ-4kIeyG6lkGw>
+ <xme:gBd3Z8Fg4ztoOd0omB0dteryDShAfYvqDZRFw46-nIbGmNWa9jwS5nNIwUo4zJBgJ
+ 3r6qkUrnefnltSgaz4>
+X-ME-Received: <xmr:gBd3Z17wCVDXMTEZ9hvORobGCMuWbhJsVAtIJ67tPo4xs3pesZqyUikK>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudeffedgtdefucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+ rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+ htshculddquddttddmnecujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecu
+ hfhrohhmpeflihgrgihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgoh
+ grthdrtghomheqnecuggftrfgrthhtvghrnhepgfevffejteegjeeflefgkeetleekhfeu
+ gfegvdeuueejkeejteekkedvfffffedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrgh
+ enucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgr
+ gihunhdrhigrnhhgsehflhihghhorghtrdgtohhmpdhnsggprhgtphhtthhopeejpdhmoh
+ guvgepshhmthhpohhuthdprhgtphhtthhopehrihgthhgrrhgurdhhvghnuggvrhhsohhn
+ sehlihhnrghrohdrohhrghdprhgtphhtthhopehgrghoshhonhhgsehlohhonhhgshhonh
+ drtghnpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprhgt
+ phhtthhopehpvghtvghrrdhmrgihuggvlhhlsehlihhnrghrohdrohhrghdprhgtphhtth
+ hopehmrghosghisghosehlohhonhhgshhonhdrtghnpdhrtghpthhtohepjhhirgiguhhn
+ rdihrghnghesfhhlhihgohgrthdrtghomhdprhgtphhtthhopehqvghmuhdqrghrmhesnh
+ honhhgnhhurdhorhhg
+X-ME-Proxy: <xmx:gBd3Zy04u2EyywOlQAW1Gk-KUQcHuX-j35GUahxvq4HbsoBhHG6PEQ>
+ <xmx:gBd3Z4Ed79zrGLy5pyWqOueSejRYTdiNUPu4ekmTSD1b2cxuTKPZOA>
+ <xmx:gBd3Zz8SJHhRoRUDtEFkC5_tzJy1goUrb-zSu8E0CaVGC3pwIDi9pA>
+ <xmx:gBd3Z1nwcXbbg5X9IdsjIZsQLe8aRAYELf1ksbgU7PzwSJ_Szx71Wg>
+ <xmx:gRd3Zz2dWiXlsiJmgEVypOz9wa4Vr8HLxjeNA5bs9JvgAOULM9ncUZVF>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 2 Jan 2025 17:47:27 -0500 (EST)
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH v3 0/2] hw/loongarch/boot: Support Linux raw boot image
+Date: Thu, 02 Jan 2025 22:47:20 +0000
+Message-Id: <20250102-la-direct-kernel-boot-v3-0-40dbc45d633a@flygoat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5ED9D1F76E
-X-Spam-Score: -3.50
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.50 / 50.00]; BAYES_HAM(-2.99)[99.95%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
- ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHgXd2cC/3XNywqDMBCF4VeRrDvF3Lx01fcoXcQ4aqg1JQmhI
+ r57o1BoFy7/A/PNQjw6g55csoU4jMYbO6Xgp4zoQU09gmlTE5YzQRljMCpojUMd4IFuwhEaawN
+ oWVesECXNsSTp9uWwM+/dvd1TD8YH6+b9TaTb+hX5gRgpUFBlXdeyrRoq8dqNc29VOGv7JJsZ2
+ a8jjhyWHI4V54WWQhf5v7Ou6wdc+4/NBAEAAA==
+X-Change-ID: 20241222-la-direct-kernel-boot-c598264710e7
+To: qemu-devel@nongnu.org
+Cc: Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=973;
+ i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
+ bh=CMfSb3UmwYSdpeH/UrrBYQfSLrMR6+LctM7LDapLWpo=;
+ b=owGbwMvMwCXmXMhTe71c8zDjabUkhvRy8fq5bVrvrJ42L79qGf2epS19xuLOKbXT39x6WLBoW
+ qan5KyIjlIWBjEuBlkxRZYQAaW+DY0XF1x/kPUHZg4rE8gQBi5OAZjI3M+MDPsE7BaZFCZVdBrF
+ hZ9d9nFXnu65bpc815Jvlg/v/tvxm4Hhv9OeFc9tExq6w38+eDx53Rrf9et+7Pq9l1k5ZNJ8y4C
+ 0r2wA
+X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
+ fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
+Received-SPF: pass client-ip=103.168.172.144;
+ envelope-from=jiaxun.yang@flygoat.com; helo=fout-a1-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -129,37 +125,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ani Sinha <anisinha@redhat.com>
-
-Remove code that is already compiled out. This prevents confusion.
-
-CC: qemu-trivial@nongnu.org
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20250101081555.1050736-1-anisinha@redhat.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- tests/qtest/fw_cfg-test.c | 6 ------
- 1 file changed, 6 deletions(-)
+Changes in v3:
+- Added PATCH 1 (Richard)
+- Link to v2: https://lore.kernel.org/r/20241224-la-direct-kernel-boot-v2-1-3e8336c54c60@flygoat.com
 
-diff --git a/tests/qtest/fw_cfg-test.c b/tests/qtest/fw_cfg-test.c
-index 5dc807ba23..e48b34afa5 100644
---- a/tests/qtest/fw_cfg-test.c
-+++ b/tests/qtest/fw_cfg-test.c
-@@ -243,12 +243,6 @@ int main(int argc, char **argv)
-     qtest_add_func("fw_cfg/ram_size", test_fw_cfg_ram_size);
-     qtest_add_func("fw_cfg/nographic", test_fw_cfg_nographic);
-     qtest_add_func("fw_cfg/nb_cpus", test_fw_cfg_nb_cpus);
--#if 0
--    qtest_add_func("fw_cfg/machine_id", test_fw_cfg_machine_id);
--    qtest_add_func("fw_cfg/kernel", test_fw_cfg_kernel);
--    qtest_add_func("fw_cfg/initrd", test_fw_cfg_initrd);
--    qtest_add_func("fw_cfg/boot_device", test_fw_cfg_boot_device);
--#endif
-     qtest_add_func("fw_cfg/max_cpus", test_fw_cfg_max_cpus);
-     qtest_add_func("fw_cfg/numa", test_fw_cfg_numa);
-     qtest_add_func("fw_cfg/boot_menu", test_fw_cfg_boot_menu);
+Changes in v2:
+- Use extract API for getting bit fields (philmd)
+- Mimic arm's load_aarch64_image to handle vmlinuz.efi
+- Link to v1: https://lore.kernel.org/r/20241223-la-direct-kernel-boot-v1-1-a79995d8b15e@flygoat.com
+
+---
+Jiaxun Yang (2):
+      hw/core/loader: Use ssize_t for efi zboot unpacker
+      hw/loongarch/boot: Support Linux raw boot image
+
+ hw/arm/boot.c       |  2 +-
+ hw/core/loader.c    |  4 ++--
+ hw/loongarch/boot.c | 69 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/hw/loader.h |  2 +-
+ 4 files changed, 73 insertions(+), 4 deletions(-)
+---
+base-commit: c69612063e1844b76ac01e3a781b979548c3585c
+change-id: 20241222-la-direct-kernel-boot-c598264710e7
+
+Best regards,
 -- 
-2.35.3
+Jiaxun Yang <jiaxun.yang@flygoat.com>
 
 
