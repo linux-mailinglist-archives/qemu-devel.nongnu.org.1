@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237239FFE14
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 19:26:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7FAE9FFDBD
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 19:17:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTPkA-0008Fr-Mx; Thu, 02 Jan 2025 13:16:27 -0500
+	id 1tTPk8-0007qX-E7; Thu, 02 Jan 2025 13:16:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tTPjs-0007Ib-Gr
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 13:16:11 -0500
-Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
+ id 1tTPjs-0007IX-Fy
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 13:16:10 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tTPjp-0006sP-4Z
+ id 1tTPjq-0006sX-6F
  for qemu-devel@nongnu.org; Thu, 02 Jan 2025 13:16:08 -0500
-Received: by mail-pj1-x102b.google.com with SMTP id
- 98e67ed59e1d1-2ee397a82f6so16353744a91.2
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-216728b1836so140805465ad.0
  for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 10:16:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735841763; x=1736446563; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=6n3Ey0BMa2IfatRxBC8ClCoxhKKjolug6BuhijhMrb4=;
- b=kNOTls45dz83dNll+S0rs90Ty2j4JjYNEoQhlcqZlVtFOe8PwTIgKhZA0GkECd1smB
- j0f7YLU1/inpx2ttdGRPlCo7l4R5myK3WLM5pfltIJUDMvaZeJTaV3+bN9LcylTP/5tH
- o1db6S6iO3C/WBcDNjDq0oNOT+Ujm12JsU9THva8ZYyiAakBEjmF19BD/Lt9v3Djh0gd
- 54OuZ6HbqW1uE1TWDIr3V3aHuZBiQaqtnWpqcoUIo2S/RQzztelqnMh/Kp25RGXyalEB
- Mnt219lklnM1oaFwodciJLY/SvDAvLkG10lCigfOicuBoeDhlJ0C/GsUYrfhuNiSwFmg
- p2JQ==
+ d=linaro.org; s=google; t=1735841764; x=1736446564; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=d8h/Admcq7JHr895Vta0jYiW589ICp9iFjYzF/Y3DHs=;
+ b=zW9QM1Wf948cZJh/HCxUyUr2/afaIdWbr3rBYIxI3hw5QPgNsKRvDR/nsLJ/cDejuu
+ v18QIvDQBgQ4h1kDgUJGvkTFZelUx/oiuTy5wZGtlBpp/2mTTMeYjx0RIOICY9FK8pRl
+ Oi1zLN4HkZT+kmGGBuzsMtrMWtLjzAqX9Kvh6Z4AkyALc0Rq8bciEk5sbPC087yf58vM
+ ZA4lxvVrBhgbJGVJLd+bSlACTg2X25uTmK9T8ckDSzjSX4zo7C1gK9GIb08X7/shMWmy
+ 1PnB7/Y8a/alp8R5NQO5DZVGjfpDU+JGwlZHdPV40yc7IK/01B1TyGavtZSMqbj/NKWw
+ txXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735841763; x=1736446563;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=6n3Ey0BMa2IfatRxBC8ClCoxhKKjolug6BuhijhMrb4=;
- b=leR4vd80BXJa2zQBsk2FMbzLzyR7gS98df3iQkjOUtSkC0BTkaANTZiBk6EySOBiUl
- AOb8lytwdZvxTRunC1bH6NIJokqSp9PknrEOuZhLboTDEp566w/ajdJ4YMecooy2/BDW
- sBMLjhBCdiyOMvyOFck8lskUmhmXzPPb4gYG5XZu6M0brU4SKwkPX9gFiLHNgW4L/GMW
- NUoz5WpvYzis9xXuDiarwe0ILq+SIzYEJRLnFoWnoSC5AaUWbstNF3ipEJF4bNWNN2CL
- UanEYSg0D4lEKRjK1TBYrJPWwkbwxzYiAwXYzr6Mg44eKPyQGetI52caUma/v5dCgAge
- 2v5w==
-X-Gm-Message-State: AOJu0Yy73uxrti2knrZeZb0HTuxe5vUD6kSUKlhtlHtIgA6JsRDimeoC
- 6zmvGv9jNJXH/6f+7C0SFBKP/ir2wXS9kJ7Ylz64QeuTMeVyZcC12qTWTG13H6GUkLF38xSaohh
- 2
-X-Gm-Gg: ASbGncsA7O9E5Zop01/uNOXr7bs7a/Ah4rN39mpdXp3Hy7zauFwHQ4GYsOUbttYomHi
- O23fMob94M3qTL5BItB1a40jihQ2EeoLMUAEt/wehTZVNMnambiYlSrt6Jiyf4+zquf2foqVCSC
- 6ziAbYR3acFls781u0jZ21n2XxFJRmDp/+MbdNkf8X88u8hw4yjPQftdnFKeZ/fH0bDOZxHH6yI
- 1plGSt7nl7553BH8AMleOqunoJ25R9M2QOVFfST2qyRUS8PXrMRYq+Q431AYw==
-X-Google-Smtp-Source: AGHT+IEbv6jRzoHjZUHIoSd5rezU6F6dIGTr1rLMUc0BitnFiESjNOmtuyfKKG76NnFWq2ORgcgq2w==
-X-Received: by 2002:a17:90b:2e4a:b0:2ea:b564:4b31 with SMTP id
- 98e67ed59e1d1-2f452e3db0bmr68138350a91.19.1735841762961; 
- Thu, 02 Jan 2025 10:16:02 -0800 (PST)
+ d=1e100.net; s=20230601; t=1735841764; x=1736446564;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=d8h/Admcq7JHr895Vta0jYiW589ICp9iFjYzF/Y3DHs=;
+ b=SEVE55y/o4iI1YZhanb9Xz1aFyqTa3NidVjn10ZAiSdkseVKN2ubuauBM6bnJa5fL+
+ H/37gsDs5ovahhHhAQkq9FVPLzkVfDWNvRwxBsXGJVIngWkWFlrv8YDdKDV9+Wm02scq
+ FkmybIc83BGyhsTkH/7YPldoBE8CbtdCr9ektAlERhu6QXtFLydfDDcdEARlkjdJIGL3
+ TEjqQr0sXFse9jad0873mfY1sgUgUg6855GVN0gynQkwwJvUPn6s3ylwzgwBKvUFEtEE
+ c7KgrpfXq81lY0OriFqJMIjtNJ0mCQBzbJHPF0BzI9F0wu/Pza+t0KxhmAcwN9nAk88u
+ wnbA==
+X-Gm-Message-State: AOJu0YyKq28Jj7vHyw//0RmQuGSwUr67iHL1ILTWJZbrJI7En1wEROzh
+ 1sWibdEuXft8heEz76yz3tn+aQiRq3J7FKfOCXAtvUS3QIRaCd4X+mUtLwfenSsjOArZC51gBqh
+ Z
+X-Gm-Gg: ASbGnct8sWS5ZyWYxbeyygaSje32bAycjPf25UzfQKnHvlRpynxz0KEiYgZzOBxtNCl
+ fnmdPe2Ze/cKPmU2csx7JNVA3T8zWVx6UAfNbdUjikpUaRix+kjx1lU5wQnYqRjDLnEiJiu7xWL
+ ZmTPak0+L23F2utytu+kmKWOp1zQzs4TlKbUXpvijvs84oj+jdrGzPPl5HbRK3NZZ++RXlYJ2EG
+ H7spVKvNmH262oo7g3oT3aEt6KayD+8MvWOhBTxt221PG+RPn3xfph2WAp8dQ==
+X-Google-Smtp-Source: AGHT+IFy4YL3h+4Ey3wfbIq6HK6LyH761h1mioVqaE3lFvrtVGwWpWp/rYRquZiGHhMmY2aaLQ9u3A==
+X-Received: by 2002:a17:902:d481:b0:215:6fcd:6cd1 with SMTP id
+ d9443c01a7336-219e6e8c508mr527072735ad.7.1735841763688; 
+ Thu, 02 Jan 2025 10:16:03 -0800 (PST)
 Received: from stoup.. ([63.239.63.212]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-219dc9f68e4sm230148315ad.211.2025.01.02.10.16.02
+ d9443c01a7336-219dc9f68e4sm230148315ad.211.2025.01.02.10.16.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Jan 2025 10:16:02 -0800 (PST)
+ Thu, 02 Jan 2025 10:16:03 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org,
 	palmer@dabbelt.com,
 	Alistair.Francis@wdc.com
-Subject: [PATCH 0/2] tcg/riscv: Use BEXTI for single-bit extractions
-Date: Thu,  2 Jan 2025 10:15:59 -0800
-Message-ID: <20250102181601.1421059-1-richard.henderson@linaro.org>
+Subject: [PATCH 1/2] util/cpuinfo-riscv: Detect Zbs
+Date: Thu,  2 Jan 2025 10:16:00 -0800
+Message-ID: <20250102181601.1421059-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250102181601.1421059-1-richard.henderson@linaro.org>
+References: <20250102181601.1421059-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,28 +97,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based-on: 20250102180654.1420056-1-richard.henderson@linaro.org
-("[PATCH 00/73] tcg: Merge *_i32 and *_i64 opcodes")
-
-While riscv does not yet have a completely general extract,
-the Zbs extension added a single-bit extract.
-
-Tested on cfarm95, a Banana Pi BPI-F3.
-
-
-r~
-
-
-Richard Henderson (2):
-  util/cpuinfo-riscv: Detect Zbs
-  tcg/riscv: Use BEXTI for single-bit extractions
-
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
  host/include/riscv/host/cpuinfo.h |  5 +++--
- tcg/riscv/tcg-target-has.h        |  8 +++++++-
  util/cpuinfo-riscv.c              | 18 ++++++++++++++++--
- tcg/riscv/tcg-target.c.inc        | 13 +++++++++++--
- 4 files changed, 37 insertions(+), 7 deletions(-)
+ 2 files changed, 19 insertions(+), 4 deletions(-)
 
+diff --git a/host/include/riscv/host/cpuinfo.h b/host/include/riscv/host/cpuinfo.h
+index cdc784e7b6..b2b53dbf62 100644
+--- a/host/include/riscv/host/cpuinfo.h
++++ b/host/include/riscv/host/cpuinfo.h
+@@ -9,8 +9,9 @@
+ #define CPUINFO_ALWAYS          (1u << 0)  /* so cpuinfo is nonzero */
+ #define CPUINFO_ZBA             (1u << 1)
+ #define CPUINFO_ZBB             (1u << 2)
+-#define CPUINFO_ZICOND          (1u << 3)
+-#define CPUINFO_ZVE64X          (1u << 4)
++#define CPUINFO_ZBS             (1u << 3)
++#define CPUINFO_ZICOND          (1u << 4)
++#define CPUINFO_ZVE64X          (1u << 5)
+ 
+ /* Initialized with a constructor. */
+ extern unsigned cpuinfo;
+diff --git a/util/cpuinfo-riscv.c b/util/cpuinfo-riscv.c
+index 971c924012..0291b7218a 100644
+--- a/util/cpuinfo-riscv.c
++++ b/util/cpuinfo-riscv.c
+@@ -36,7 +36,8 @@ static void sigill_handler(int signo, siginfo_t *si, void *data)
+ /* Called both as constructor and (possibly) via other constructors. */
+ unsigned __attribute__((constructor)) cpuinfo_init(void)
+ {
+-    unsigned left = CPUINFO_ZBA | CPUINFO_ZBB | CPUINFO_ZICOND | CPUINFO_ZVE64X;
++    unsigned left = CPUINFO_ZBA | CPUINFO_ZBB | CPUINFO_ZBS
++                  | CPUINFO_ZICOND | CPUINFO_ZVE64X;
+     unsigned info = cpuinfo;
+ 
+     if (info) {
+@@ -50,6 +51,9 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+ #if defined(__riscv_arch_test) && defined(__riscv_zbb)
+     info |= CPUINFO_ZBB;
+ #endif
++#if defined(__riscv_arch_test) && defined(__riscv_zbs)
++    info |= CPUINFO_ZBS;
++#endif
+ #if defined(__riscv_arch_test) && defined(__riscv_zicond)
+     info |= CPUINFO_ZICOND;
+ #endif
+@@ -71,7 +75,8 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+             && pair.key >= 0) {
+             info |= pair.value & RISCV_HWPROBE_EXT_ZBA ? CPUINFO_ZBA : 0;
+             info |= pair.value & RISCV_HWPROBE_EXT_ZBB ? CPUINFO_ZBB : 0;
+-            left &= ~(CPUINFO_ZBA | CPUINFO_ZBB);
++            info |= pair.value & RISCV_HWPROBE_EXT_ZBS ? CPUINFO_ZBS : 0;
++            left &= ~(CPUINFO_ZBA | CPUINFO_ZBB | CPUINFO_ZBS);
+ #ifdef RISCV_HWPROBE_EXT_ZICOND
+             info |= pair.value & RISCV_HWPROBE_EXT_ZICOND ? CPUINFO_ZICOND : 0;
+             left &= ~CPUINFO_ZICOND;
+@@ -117,6 +122,15 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+             left &= ~CPUINFO_ZBB;
+         }
+ 
++        if (left & CPUINFO_ZBS) {
++            /* Probe for Zbs: bext zero,zero,zero. */
++            got_sigill = 0;
++            asm volatile(".insn r 0x33, 5, 0x24, zero, zero, zero"
++                         : : : "memory");
++            info |= got_sigill ? 0 : CPUINFO_ZBS;
++            left &= ~CPUINFO_ZBS;
++        }
++
+         if (left & CPUINFO_ZICOND) {
+             /* Probe for Zicond: czero.eqz zero,zero,zero. */
+             got_sigill = 0;
 -- 
 2.43.0
 
