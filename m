@@ -2,90 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28683A0007D
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 22:19:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35CA9A00082
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 22:20:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTSag-0004Nn-Bm; Thu, 02 Jan 2025 16:18:50 -0500
+	id 1tTSbD-00058A-5i; Thu, 02 Jan 2025 16:19:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTSae-0004Js-Im
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 16:18:48 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTSbB-00057O-Dv
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 16:19:21 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTSad-0001R6-3E
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 16:18:48 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-38a34e8410bso3695298f8f.2
- for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 13:18:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTSb9-0001SJ-HH
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 16:19:21 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-435f8f29f8aso85274775e9.2
+ for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 13:19:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735852725; x=1736457525; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=kDI3lCD1sPhDvWQCISzoMNySRhiCGgE2MRu1ybe3Kgc=;
- b=yA6ZT4lsDGCgd3t/lXcg8mo6FbFDr3qXU3I39hihpc/gLHEzqKljFIzvqsa76o5ivi
- Uvv/dlTq8IQS7QJ22nCLbCi/8PMHASEtol0mVwRujiQ4a8jAqO/S8A93+cyohegMaFLE
- lqDjcQGhMsMDYTcF6XpgcSyq1/vlwELPbcdq5lf9+jM6m0dz4mRlyL5CnGgtmTeEv6Ao
- 0fGHTFsP1vIP3bWsVCDOOU0pLN4qIqqttS2wuIqzaN4pvkudhiBYmlry1BnKMLcnIRHW
- aCy5XKv3LrEyeIzv82dY4e+flpv11djTH2Qf5KMl0kupy+IQ3R4vLcw1YJpz/NuPgVyt
- fAdA==
+ d=linaro.org; s=google; t=1735852758; x=1736457558; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=i1ZcgPnc2DbftHTzEgtZO7UVTGqA9C9MsQudp7PLdI8=;
+ b=TuEWCv3y56qW9uhV5PreJEgZmLYN4jJ9SUXYvMDNCNfC84KQyJ6LzA0i7VxYeKuWyr
+ yuvbjzgMHmK/60EBdmuYkLI5yZysGSBPjVf55Afgdyn63rho1D7Poeg7NAQqkNJi+BCN
+ yONsS9u859VgzSBLpIkGAd6PFDFcx8yFWe7WIy01+kOYftRMC1D8O2k1Hn20ORMzaP9e
+ DkrDsQPpS04QStveGK9ywq/1wLNFCNLE1EF4OdTw2C6NjUB7b85JhW6GudjyzVrMLMPS
+ NjrfalY76DL58QJoBLlUlo2UMBjoQIJ62FU5W+d5TFXH59FxJx1pKVL8f9Iv1KO5o0JI
+ KsmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735852725; x=1736457525;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=kDI3lCD1sPhDvWQCISzoMNySRhiCGgE2MRu1ybe3Kgc=;
- b=w7EEcZCOrkZl/cMGURCm3k1hL7NsDx3C0L9bKUUC/hVb4OcIWhivM1Hu7xhPwPOIks
- 0+Pk56jTTmvn8gEjoWzZetxuCr1nV7rBM54Z4RsTPJJqcOHX4cOv+QP3b1G5StAaY61F
- LdqdPJNppGZ9Dn8V4XlBe1RQD+KVdfysjgltKRMiGwk08aZEsMpUCh+hCJUAD3nP3gYT
- PjztqXJGc7Zzzm+DarZUcM8bCCDVxnAVxBCWZJmZjnDLsb+GnyNykxhMLmXFpIwBpKjW
- sgZLNbQPhNGtMojwOwvQrTR9be6EiJn4qTwxaPayC2YkO7oHnaHeFOiF3CohHZseyg46
- vQBQ==
-X-Gm-Message-State: AOJu0YxcgQXXtp89zk0oPpSVQvXWPSEsyaB98/JuenF26Gpp+vSIx8By
- XvthR6FmLAqSHDUGOoVD1zwuPGv8KFJxiuIwh5CM4SknQNUk80StlBlzRsxF7hvzQXS4rEtn7SU
- D5AS0Qw==
-X-Gm-Gg: ASbGncvPIfPreaUEhGBhL/zl2lu3NzNpYTIH/5u1pG0S5XQkOhjkCNDgGhORBS10bZy
- Nh/VS5XPqlYWbLaAZgHXD+Hh9x2hC8d9MSQ8I3RUbp0MMqz/V9FwnEguaBSijy2SOMiDdbamEO0
- ZDBvW7AFrOWbxQow9WrsHwr5fHd+4JNvxl07NA2zmTCZZ/x7e5WVUQZI+31Mbvq4Dvd+6CRkcWk
- 7hSwGKmFZTxv5Hu0q56RcTdLm2NOyFa+tWA4GcGbp/JW6P0NjHEdpHuXAFyC4e0sRxH0XSxTQMR
- uI2ZILoSdClrQ8ak/OL1/0G9uWQfUQo=
-X-Google-Smtp-Source: AGHT+IGVqfWMXOa8PWWxT7VDpGVEh5nDlTlhMEJ4cZk/eo5r036XGZvq+eeNOm7o+8KIKJx/sDlFzQ==
-X-Received: by 2002:a05:6000:3cd:b0:386:1cd3:8a03 with SMTP id
- ffacd0b85a97d-38a222009camr33679904f8f.32.1735852725465; 
- Thu, 02 Jan 2025 13:18:45 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1735852758; x=1736457558;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=i1ZcgPnc2DbftHTzEgtZO7UVTGqA9C9MsQudp7PLdI8=;
+ b=X7dkbw8L04v94bLROhMkeKF5o3Ugr/iQPE613VNvGh6P5MqI4PknYy8t5hVBBkCPWr
+ aC26R58akzSdHt2zpG2EFCO1PssF5ku7KEJOgbqEaQfS6CAwtTLEnR96Ssi9JiOvLK30
+ rkQHVfH/3ELHyAlJRFjyd1oLMmPSeAAf5nOCZlRTtCl0rjJ18G8bb+V+gCLNg9dmcPpo
+ BphfQ4DyBmrIK9tvh/kcgUw2UUvYiVM99ZwyPZxmMsScRETKsCyL5Mq8GQ8m7mQ8gebd
+ Inc+PD8A337llrMzoZDwzq4HivblsH0NmexQU63MRTsuWhkSvB+6O+nw0hcY786B+ChS
+ 4HOw==
+X-Gm-Message-State: AOJu0Yxne8Klo4EIm7i8K8d/14c1mzoWgS5Fqq6C6QBb7HUflAU/6MjL
+ c+/6ROn35areU84deoVYqLufrhEz9sVlFJHYf9lgwJ0XBPIWMDRdi8LVFp4nG2M=
+X-Gm-Gg: ASbGncvMuSPZowTkdLyetRhNboTdCQV5G1nZnzG1gLoMwhXu2a6wIZ1NWmZB4D9E1d6
+ zVYi9f93GX/xLNOJs8wIWhzaHD93QfTXjcUOOcO0siaWqEqZONWj93Pv+0GwfQEt4z6hVXgVpzb
+ zg+JJ+Dnyr84+ZX6/CPb8HUE/c9pWvM0Um4MkK/MXgJg7KsPR9uuR6ylfcWvA7cPrDQHdbY4Z6/
+ dp+SxePPquiAnpiua1qt5mztMt889w/Lu7ROmXx7glxV9Eant93UYIInCX2fXAJz4fRWq7QCbCZ
+ Nn5IbXZvDVqHL80ylu3NfWon
+X-Google-Smtp-Source: AGHT+IEZ3+i6JbwCFZItJtgvGo+xwad4DZQMFlGg2JpYjGMylJbdplD/8wvlJGUXgGVRGQOQupm0DA==
+X-Received: by 2002:a05:6000:144f:b0:385:f271:a22c with SMTP id
+ ffacd0b85a97d-38a2240e20bmr42894032f8f.59.1735852758161; 
+ Thu, 02 Jan 2025 13:19:18 -0800 (PST)
+Received: from [192.168.69.132] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c89e140sm39906532f8f.79.2025.01.02.13.18.44
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 02 Jan 2025 13:18:45 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Zhenwei Pi <pizhenwei@bytedance.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Fam Zheng <fam@euphon.net>, Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v4 8/8] system: Inline machine_containers[] in
- qemu_create_machine_containers()
-Date: Thu,  2 Jan 2025 22:18:00 +0100
-Message-ID: <20250102211800.79235-9-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250102211800.79235-1-philmd@linaro.org>
-References: <20250102211800.79235-1-philmd@linaro.org>
+ ffacd0b85a97d-38a1c846ca4sm39720331f8f.43.2025.01.02.13.19.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 02 Jan 2025 13:19:17 -0800 (PST)
+Message-ID: <eadd6b9b-3832-434a-a0c5-1b42e1ab6d08@linaro.org>
+Date: Thu, 2 Jan 2025 22:19:17 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 02/29] hw/misc/ivshmem-flat: Add ivshmem-flat device
+To: Gustavo Romero <gustavo.romero@linaro.org>
+Cc: qemu-devel@nongnu.org
+References: <20241231202228.28819-1-philmd@linaro.org>
+ <20241231202228.28819-3-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241231202228.28819-3-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,47 +97,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Only qemu_create_machine_containers() uses the
-machine_containers[] array, restrict the scope
-to this single user.
+Hi Gustavo,
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Peter Xu <peterx@redhat.com>
----
- system/vl.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+On 31/12/24 21:22, Philippe Mathieu-Daudé wrote:
+> From: Gustavo Romero <gustavo.romero@linaro.org>
+> 
+> Add a new device, ivshmem-flat, which is similar to the ivshmem PCI but
+> does not require a PCI bus. It's meant to be used on machines like those
+> with Cortex-M MCUs, which usually lack a PCI/PCIe bus, e.g. lm3s6965evb
+> and mps2-an385.
+> 
+> The device currently only supports the sysbus bus.
+> 
+> The new device, just like the ivshmem PCI device, supports both peer
+> notification via hardware interrupts and shared memory.
+> 
+> The device shared memory size can be set using the 'shmem-size' option
+> and it defaults to 4 MiB, which is the default size of shmem allocated
+> by the ivshmem server.
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1134
+> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+> [PMD: Rebased updating Property and using DEFINE_TYPES macro]
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Message-ID: <20241216141818.111255-2-gustavo.romero@linaro.org>
+> ---
+>   docs/system/device-emulation.rst     |   1 +
+>   docs/system/devices/ivshmem-flat.rst |  33 ++
+>   include/hw/misc/ivshmem-flat.h       |  85 +++++
+>   hw/misc/ivshmem-flat.c               | 459 +++++++++++++++++++++++++++
+>   hw/misc/Kconfig                      |   5 +
+>   hw/misc/meson.build                  |   2 +
+>   hw/misc/trace-events                 |  16 +
+>   7 files changed, 601 insertions(+)
+>   create mode 100644 docs/system/devices/ivshmem-flat.rst
+>   create mode 100644 include/hw/misc/ivshmem-flat.h
+>   create mode 100644 hw/misc/ivshmem-flat.c
 
-diff --git a/system/vl.c b/system/vl.c
-index 20e0eaf95ac..0768f93f9f1 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2113,18 +2113,16 @@ static void parse_memory_options(void)
-     loc_pop(&loc);
- }
- 
--static const char *const machine_containers[] = {
--    "unattached",
--    "peripheral",
--    "peripheral-anon"
--};
--
- static void qemu_create_machine_containers(Object *machine)
- {
--    int i;
-+    static const char *const containers[] = {
-+        "unattached",
-+        "peripheral",
-+        "peripheral-anon",
-+    };
- 
--    for (i = 0; i < ARRAY_SIZE(machine_containers); i++) {
--        object_property_add_new_container(machine, machine_containers[i]);
-+    for (unsigned i = 0; i < ARRAY_SIZE(containers); i++) {
-+        object_property_add_new_container(machine, containers[i]);
-     }
- }
- 
--- 
-2.47.1
 
+> diff --git a/hw/misc/ivshmem-flat.c b/hw/misc/ivshmem-flat.c
+> new file mode 100644
+> index 00000000000..33fc9425d20
+> --- /dev/null
+> +++ b/hw/misc/ivshmem-flat.c
+> @@ -0,0 +1,459 @@
+> +/*
+> + * Inter-VM Shared Memory Flat Device
+> + *
+> + * SPDX-FileCopyrightText: 2023 Linaro Ltd.
+> + * SPDX-FileContributor: Gustavo Romero <gustavo.romero@linaro.org>
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + *
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qemu/units.h"
+> +#include "qemu/error-report.h"
+> +#include "qemu/module.h"
+> +#include "qapi/error.h"
+> +#include "hw/irq.h"
+> +#include "hw/qdev-properties-system.h"
+> +#include "hw/sysbus.h"
+> +#include "chardev/char-fe.h"
+> +#include "exec/address-spaces.h"
+> +#include "trace.h"
+> +
+> +#include "hw/misc/ivshmem-flat.h"
+> +
+> +static int64_t ivshmem_flat_recv_msg(IvshmemFTState *s, int *pfd)
+> +{
+> +    int64_t msg;
+> +    int n, ret;
+> +
+> +    n = 0;
+> +    do {
+> +        ret = qemu_chr_fe_read_all(&s->server_chr, (uint8_t *)&msg + n,
+> +                                   sizeof(msg) - n);
+
+Coverity reported:
+
+ >>>     CID 1586089:  Insecure data handling  (INTEGER_OVERFLOW)
+ >>>     "8UL - n", which might have underflowed, is passed to 
+"qemu_chr_fe_read_all(&s->server_chr, (uint8_t *)&msg + n, 8UL - n)".
+
+Could you have a look?
+
+> +        if (ret < 0) {
+> +            if (ret == -EINTR) {
+> +                continue;
+
+Also as a future cleanup consider using the RETRY_ON_EINTR macro.
+
+> +            }
+> +            exit(1);
+> +        }
+> +        n += ret;
+> +    } while (n < sizeof(msg));
+> +
+> +    if (pfd) {
+> +        *pfd = qemu_chr_fe_get_msgfd(&s->server_chr);
+> +    }
+> +    return le64_to_cpu(msg);
+> +}
+
+Thanks!
+
+Phil.
 
