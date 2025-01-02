@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCC3C9FFAD2
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 16:14:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19DB49FFAD5
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 16:14:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTMsu-0007U9-Cy; Thu, 02 Jan 2025 10:13:16 -0500
+	id 1tTMt0-0007YE-G3; Thu, 02 Jan 2025 10:13:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTMsY-0007Tl-VN
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 10:12:55 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTMsk-0007Us-6n
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 10:13:08 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTMsX-0006UV-Dt
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 10:12:54 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-385df53e559so8988499f8f.3
- for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 07:12:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTMsc-0006VG-0o
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 10:13:01 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4361fe642ddso121002215e9.2
+ for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 07:12:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735830771; x=1736435571; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735830776; x=1736435576; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jzeo4aQg6DouqNm9ntCEUK8qegBuD5L5E5v2+2/k5ko=;
- b=Xq9KCM/lMMO8ea9iHnb35tjtVrBWw9SQeoSY45N/eb/Mu6cpeXb3bxIuIE6a4a72Qd
- pVwP+nrq3lYro0zeowBAX8SdJKaaVwE7nPOCBhYoFX92wr3+NJnk+8DZZvDmpmD6aAxP
- Wid9XX63cftl0Dy+dA4B4dqZbtBR1R5jQejwDxV00en0H5rjSUbe4yEQ1rt8OPiNaS1Z
- iS+uL3nEiysZ6QGi+z4pCvtZtGWAXILFOpkqOlGXiiwABj473LTZjbGyQkPQ+9Sk4UY2
- 6ziQ3uzEOeJbhEE8hIGPznvht3OazG+Rjrcp8VxsUWUtOHXL4Kg4F7jhRScNZY5083Bb
- 2yZA==
+ bh=SedjiUgYQYU6AzbLGFtcjZEu6+G941iL/2CKfBNylU4=;
+ b=QYuWcKjUgvQsnL9CYxPmVP4sBXfViWf56rCj/EdVf1xtxV6eCW9AN1mcK8MCJQ+gAR
+ 0xrIpvy74gJC6AdwVEO4ghxHXaHPU4UQgI2K1HItDx7YrWbGlJnFYAAC6pOvGfkav9qh
+ Cl2fdeX8E3dpY39OXtYEtI39fm0yN3OUdkeTPaYoQxd9fT+niL97METHZHbBQFvrqpJs
+ ShQTe9CCmOmMvIHJx1IJcHobYRBPcyVR5FarOO5v9R+8QwTTjFCh/LYRuCJPs+f8zMFA
+ kQc7Sdv5zi9IilqIUn7d2o5EA2TTBdBpa2duM3c8rpicTVg64fyA5XhLDVZyOoY6HAKy
+ rjjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735830771; x=1736435571;
+ d=1e100.net; s=20230601; t=1735830776; x=1736435576;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jzeo4aQg6DouqNm9ntCEUK8qegBuD5L5E5v2+2/k5ko=;
- b=iAZWoZFL7PloeXJjmQhzn57mNWIaCAyYV7plxDh6EOxtDPhZre3vLtJn+cE0DRbiA1
- r8nKgmagICup8k1vMIGKs/oTYBv6QmDXoXut3tEv52KF7dxv+AfDQoTjrK6Oy0C5xU6A
- A9b8+ZirYAF2APstP24Q4uQ9Wx4wrOQom3d+HM3AcB9aupgA0v17V7ou7o6cbtKbefx4
- bijgRVB2H/8smqxaXcg3Eko8RRJ39/63NDOIpcV/GxZqCHzkACmJ1l1WPHe7t50zW7rx
- 6Te+1YrACmvD1wWfB1BPtff0Zh63Zja2qVy0Z8oEXbVUOQ8vOFbAhes1PncSE7/s4Ro5
- rSUQ==
-X-Gm-Message-State: AOJu0YyQ4bkW56ci5vYNSmdK1ehHqOgYwYGKz8IhgPlu7GJeGIH/Jt/6
- rdc6k8UNHcduqbHoQtORweILrSgESIdYTEUW3YGW8+BQqGZRIl19aXb91486WTbYSbJH5RgoTBl
- iwTOpZw==
-X-Gm-Gg: ASbGncvClFgX/wlmF7C6b9C5lOsvPUqlxxgLVvjAPiFnqRvgdy5Kc4vb/mYm2JKu1vs
- TjqbEmdy5IL7sk0uDuzUgBylV9zx27pQrxSaye9Y8sRQRTi/Gg0d7a2hWB0H3tKPF3tWqnE4iie
- 4Ghdo/gEvFQdGAY073sxAhle/2hPOpBnPE1HT1HsRM/HKomMTNRDg1/S6QrXwnIvSW6QAnSBTb5
- 0osi/cJK7ck4VZRLpDg4css678cBEz/XRkRjtUwJVzV50kY8KT+4n4bkkqvcKghCif5ltpTTKUe
- 3T21ImyzPe/dcQtgkSKOCEXTyunaZeQ=
-X-Google-Smtp-Source: AGHT+IE5KTt66gfZnmcmbIim6wK/o8LuuBjGW/26f7912+Ig6GDOP9dnvLZl2opUkB1bgMP9d+h6mg==
-X-Received: by 2002:a5d:5e09:0:b0:385:ddd2:6ab7 with SMTP id
- ffacd0b85a97d-38a2240874bmr42102687f8f.52.1735830771342; 
- Thu, 02 Jan 2025 07:12:51 -0800 (PST)
+ bh=SedjiUgYQYU6AzbLGFtcjZEu6+G941iL/2CKfBNylU4=;
+ b=bxk5eOvPsbD1+FKaF3gtlJoJpMUOG1PFXJBbBkq8sNsqYPRdDbEZ+JXikhmW4LU0E6
+ 91iViuHRIatonDpeeGaR3JoyjX8r3Z/pEiUCmzVNcT4mEQopTAbuqSXG6dZPZc8o+hOW
+ Mrmk2iTpph4Gx6Dy+71DTE8g5xNNugKucaShSDvCrhNpkfdFM/H0zjY1RkVHe1j8yAPW
+ JFbwkM9tH4784o7/IZ0V70mSJmYidJbSkQo34zLiKTxin/HNReDfsNa7kItffEfRqn6E
+ O9wMVc/rntTeL6CUTEYsiKaf6j3Ug7B/cobclp9a179rKAG8kKKXA5b1QEuMWAm0NOt6
+ OeOQ==
+X-Gm-Message-State: AOJu0Yzl79cLWXRFeTSQSq/rhXgVqJnsM+6mQanzyDKGC1VnhwUTlVOs
+ V+X6OdH60rdMulE4UyqCcfmG/egBUozThRP2fLSB9fEuuyAvxQFtKg+5f9I984WBopzokGoZsoT
+ bSDg7ig==
+X-Gm-Gg: ASbGncurs+0rKslHeOiHCTo1r/79neJzqINxSOaXLwR9EvdY0MkC2f1piwHr2kZ03qm
+ rPMfi98nHhNBdCoefegWOhcADlHE/gXOUQuu6iZ6QwTgRhvmJq5oLsZvdmOAsYSEDChcKKShu8K
+ 3MpdIZIesRJ/6isvnYgCJWz+H9xlGog8DJGPFALMwbrUQoHx9rTKTPpQdaivXuEvyJhyZCC3H0R
+ +P98DMLX8bjQ77FnZgHfvTQKavk4S7lF3WesScjkWIOeb39fAk+aP3TsSlMm4lnh9RqpEcWfBN2
+ hJB25Nfq21ROL25y9+w+Nu+BBTGC0QE=
+X-Google-Smtp-Source: AGHT+IGMtiY6Ms2cFmI5jQBbQ24EHWqBvymRMusjx9mCgcSOw9SBgpMh69aXrZfp4SUjc9wYuc14GQ==
+X-Received: by 2002:a05:600c:4748:b0:434:f804:a9b0 with SMTP id
+ 5b1f17b1804b1-43668b78818mr372590985e9.29.1735830776258; 
+ Thu, 02 Jan 2025 07:12:56 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c8acafesm38227583f8f.98.2025.01.02.07.12.50
+ 5b1f17b1804b1-4366127c4d7sm454232475e9.34.2025.01.02.07.12.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 02 Jan 2025 07:12:50 -0800 (PST)
+ Thu, 02 Jan 2025 07:12:55 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
@@ -74,17 +74,18 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  Paolo Bonzini <pbonzini@redhat.com>,
  "Gonglei (Arei)" <arei.gonglei@huawei.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 01/10] qdev: Expose qemu_create_machine()
-Date: Thu,  2 Jan 2025 16:12:35 +0100
-Message-ID: <20250102151244.59357-2-philmd@linaro.org>
+Subject: [PATCH v3 02/10] qdev: Implement qemu_create_machine() for user
+ emulation
+Date: Thu,  2 Jan 2025 16:12:36 +0100
+Message-ID: <20250102151244.59357-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250102151244.59357-1-philmd@linaro.org>
 References: <20250102151244.59357-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,51 +108,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We need to create a 'fake' machine container for the
-QOM API. We already have the system implementation
-for qemu_create_machine(). Expose its prototype to
-be able to add the user implementation.
+To satisfy QOM containers design, implement qemu_create_machine()
+for user emulation, creating a 'fake' machine.
 
+Suggested-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/qdev-core.h | 2 ++
- system/vl.c            | 3 ++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ hw/core/qdev-user-stubs.c | 11 +++++++++++
+ hw/core/meson.build       |  1 +
+ 2 files changed, 12 insertions(+)
+ create mode 100644 hw/core/qdev-user-stubs.c
 
-diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index e6ef80b7fd0..bf8a0ee6486 100644
---- a/include/hw/qdev-core.h
-+++ b/include/hw/qdev-core.h
-@@ -1106,6 +1106,8 @@ void device_listener_unregister(DeviceListener *listener);
-  */
- bool qdev_should_hide_device(const QDict *opts, bool from_json, Error **errp);
- 
-+void qemu_create_machine(QDict *qdict);
-+
- typedef enum MachineInitPhase {
-     /* current_machine is NULL.  */
-     PHASE_NO_MACHINE,
-diff --git a/system/vl.c b/system/vl.c
-index 0843b7ab49b..33fbb9f32f3 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -28,6 +28,7 @@
- #include "qemu/units.h"
- #include "exec/cpu-common.h"
- #include "exec/page-vary.h"
+diff --git a/hw/core/qdev-user-stubs.c b/hw/core/qdev-user-stubs.c
+new file mode 100644
+index 00000000000..9d481a61dbf
+--- /dev/null
++++ b/hw/core/qdev-user-stubs.c
+@@ -0,0 +1,11 @@
++#include "qemu/osdep.h"
 +#include "hw/qdev-core.h"
- #include "hw/qdev-properties.h"
- #include "qapi/compat-policy.h"
- #include "qapi/error.h"
-@@ -2128,7 +2129,7 @@ static void qemu_create_machine_containers(Object *machine)
-     }
- }
- 
--static void qemu_create_machine(QDict *qdict)
++
 +void qemu_create_machine(QDict *qdict)
- {
-     MachineClass *machine_class = select_machine(qdict, &error_fatal);
-     object_set_machine_compat_props(machine_class->compat_props);
++{
++    Object *fake_machine_obj;
++
++    fake_machine_obj = object_property_add_new_container(object_get_root(),
++                                                         "machine");
++    object_property_add_new_container(fake_machine_obj, "unattached");
++}
+diff --git a/hw/core/meson.build b/hw/core/meson.build
+index ce9dfa3f4bf..0f020fed1df 100644
+--- a/hw/core/meson.build
++++ b/hw/core/meson.build
+@@ -46,3 +46,4 @@ system_ss.add(files(
+   'vm-change-state-handler.c',
+   'clock-vmstate.c',
+ ))
++user_ss.add(files('qdev-user-stubs.c'))
 -- 
 2.47.1
 
