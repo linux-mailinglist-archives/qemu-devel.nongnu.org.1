@@ -2,91 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13FCA9FF880
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 11:59:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D95729FF951
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 13:22:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTIum-0005IK-FS; Thu, 02 Jan 2025 05:58:56 -0500
+	id 1tTKCI-0001vp-Ij; Thu, 02 Jan 2025 07:21:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTIuj-0005Hr-Do
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 05:58:53 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTKCG-0001uu-PZ
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 07:21:04 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTIuh-0000OT-Bs
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 05:58:53 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-436341f575fso116668555e9.1
- for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 02:58:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTKCE-0003wJ-Qg
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 07:21:04 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-43635796b48so68533145e9.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 04:21:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735815529; x=1736420329; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7PDwfX0ojLlp4yH1fFPzelM0oZpBBYGTWR3yxzH4/fc=;
- b=RM2BuZEoGRibG/9TFcb3DSHG7q7sc/u+t377pe4esW7K386QPHE079wNBLt8hg2UGr
- 6N0W6WSXpkJ382atEVuusIE1XU3fGSp9A8HKj3M2KnHIiV5TyKz9gkvIceJZcJ+pghUv
- +XsXc7ayX03PZKuUmjal+xajhlyygcn+P1eJMFi/07GStc/TadnQoU0j8/cMKuhL178u
- kmZduQJZQimwKh6Yex962nMSPqCou9aa+R+ZU5d3YgQoh2RZBe8VZEX2pp6DqfV2z6YZ
- i4e5oaCoN8ep+D+MLO2Rb8kZrXMqyu3l+TS+P+FzMXwD4kxkhiF3RuRj7h2L8sEk8ieL
- Ve1g==
+ d=linaro.org; s=google; t=1735820461; x=1736425261; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=79rPrhcFENBsKK1V6FHTi1G9zXNhcMy+fdCeU+citzw=;
+ b=oVgYjTgABl9bx/Di0m5w3Y0PwKjgn7W71OIEMVmbK8us0QjZR/7TxlH3S/a4XZpZRp
+ yt0S/yWHm0uhn/jXLhHrTJGjJ2zgEu4ldrV12NR5eOgiX1eP9dWTMFXy5RgPm/UF6NHY
+ m4CEFc3qD9UBvoqRZEUL/UnOp145LFDTDs7APFcWbcQT7N7AK1dPz3pfPDPmuKTZj7i+
+ rR5UT7yAL3zZ6zlldf7q16+U/evQoprACxSgmjMaPWpZUtp2tOD6OCLiRJezlFqenl/X
+ mVpXbJeT5Wo1rBIHqru0GZQV1HkS2yMkw7AHRTHKj8qOlb3duJ7u9kf1thYNMTYgKEts
+ yPdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735815529; x=1736420329;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7PDwfX0ojLlp4yH1fFPzelM0oZpBBYGTWR3yxzH4/fc=;
- b=E4IKb7bRmIwfzKWEtijmk3TRhR+hz9DpEHLVPRVeQE9jj9C9Y/VglnDwn7ZVpYRzJO
- iiOHtK6xsKLYWTKxUjAp5kbTQ0p8GxsCGRbFvaUZWFDf0si4j9ushsyel2Ga6zWNouWK
- QBljQyovpkBmuEaj6+9x7Ml5npZYyht6O0DvAc8dNwSMVsEFEWm+ex5Ck7+vRpLczflf
- nDa2ghueyB4ubFcI20Vs2nrwLzZLFhyCQ+BIkU2z8wot7XLFmOB2kqDCnvEZnjbsMeqJ
- SRvm0cnlxNfpX/WGA5bv1pFQLjzTQ2X2IkynZwzE65yhj4/kj+NrAn/q50qb6HgGOOTy
- uMlA==
-X-Gm-Message-State: AOJu0YzJYclZC/9dmXbe8O5TWjWe//3QdQt19uGuRFCiJpLKEilS99ha
- 59Vxn2ZEcRT3JlBxGysbitEHxh2EBVQ3qvsJ7zWT0UvYr24rfa8zA3ScIIXhrRfjn1AUnBXY7LD
- flJFBlA==
-X-Gm-Gg: ASbGncukgyf/O7fy5wCeoJ9+gHmDBTXu7DEGNFl3xdGWGXgZJ/DozPFAlbkgerUHvzK
- huIVQpTH+cMK3Y7Fn5RSmsscL4EI2npu0vQRBjD9rYHR9ry1fin5YG7CEjGvNggggruPZLp/b3I
- O5hz7hI66w6HXOAG29+szZyOBVln7paqvocr61f5mRkLyODvWzQsxo4dpuasVe51YwOH7WdHGVQ
- dIYMHcrNB56A2kaXurxYVlMHw8+HhCtc426ktpJE3oy2zRg30KptS+nfyI7G0VWSMxn+l1HU4+7
- 4M/rZWQIpgyUlxLS54B9oQDa4H/U4wcVnRzypQ/FIWkWOA==
-X-Google-Smtp-Source: AGHT+IG+ddtTuGOMtP+yqqCrOaIUyc4c7Ql9T9XdMaXeFXzvhJwWKQTp3nUD4PkVOab5MxntrEXXCw==
-X-Received: by 2002:a05:600c:1550:b0:431:4f29:9539 with SMTP id
- 5b1f17b1804b1-43668b5f892mr336416215e9.32.1735815529296; 
- Thu, 02 Jan 2025 02:58:49 -0800 (PST)
-Received: from localhost.localdomain
- (161.red-88-29-191.dynamicip.rima-tde.net. [88.29.191.161])
+ d=1e100.net; s=20230601; t=1735820461; x=1736425261;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=79rPrhcFENBsKK1V6FHTi1G9zXNhcMy+fdCeU+citzw=;
+ b=ZSv31BCRaUGl9xHmuyWeC6DXRJOVGnRdtQbJlwMt14WtANQPGi7k0KK2g25YdtrfwC
+ 2bYp7FODREI17Aa25fNMLEbfRs7/+QiR3mxmnePg80NFDxAisiWft7hZF6rfNmR2koDe
+ E+3AQWBSJXGv60LzlS2/+15ZV1WN9eZLHrgwIh6/aqQP2gjSaXJkReFswj0z7ieomDxE
+ KVbq/rMYRAG7+dZ1GZwHoGCPJ1IbQehGjfzF5VxLfNSKki+QCsV2h5qMjxQCTJzmxGM8
+ iHKNhz7cryVM9yrbAnMWOvXkOM7AbImmBol7YDImx5PfBHlBdjsCufJc3YoiwODSdO6l
+ kmqg==
+X-Gm-Message-State: AOJu0YySsGvFVG5I+KzugbeNTpI7C3nq2qmUvGaMr7BP0hXPfIHha/f8
+ Y1sJrPDjM7e8Konl9hsXOyFITF23m61LYWpxdnlItQGtNnCIa250ZMbD9UobVVhHSe1AbQWV0yv
+ MtmCVAQ==
+X-Gm-Gg: ASbGncv12VpzUNIg2QuvHEeqAfXyv89+Mlnmqjt8JRzwfOo0zQznFCUzj7kECs4zfbS
+ abQGg9fOnjCvQhNCvCoUajIYJ6XhiVD0k8SXZIRBY5l+QocdmVrjmI/baWL573EbbCJ+s5Ia252
+ SynpbDTBvNHk0+mMBHRItiKuS0yI8sanWZrobCAMkUgsA1rEnVdwsswC2pEVBO8/0/pOq3JC9qj
+ E6yKW73e5vY+YWa2RtyaxFN5Hds1U7+vVeP7hWbw+1VgPaTMh7xuVUHtWBuUB5kgxXghK1dsmqI
+ lxiPFbUSapIGXq4eyg==
+X-Google-Smtp-Source: AGHT+IE+fSn28sWBFIPOWFOUWeNSfA0e3PzA03LDCBqZYvMwT0wUTSh3viJU+6E/yeAUsAHyxla6FQ==
+X-Received: by 2002:a05:600c:198a:b0:434:fe3c:c662 with SMTP id
+ 5b1f17b1804b1-43669a22e68mr382123295e9.12.1735820460425; 
+ Thu, 02 Jan 2025 04:21:00 -0800 (PST)
+Received: from [10.85.240.213] (187.171.88.92.rev.sfr.net. [92.88.171.187])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c89e1a1sm37393738f8f.69.2025.01.02.02.58.47
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 02 Jan 2025 02:58:48 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v6 4/4] tests/qtest/boot-serial-test: Initialize PL011 Control
- register
-Date: Thu,  2 Jan 2025 11:58:22 +0100
-Message-ID: <20250102105822.43532-5-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250102105822.43532-1-philmd@linaro.org>
-References: <20250102105822.43532-1-philmd@linaro.org>
+ 5b1f17b1804b1-43661219578sm455641215e9.20.2025.01.02.04.20.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 02 Jan 2025 04:20:59 -0800 (PST)
+Message-ID: <7b06d49b-33f1-42f1-8572-7c300e4ef3d9@linaro.org>
+Date: Thu, 2 Jan 2025 13:20:57 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/19] hw/microblaze: Restrict MemoryRegionOps are
+ implemented as 32-bit
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org, Anton Johansson <anjo@rev.ng>
+Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alistair Francis <alistair@alistair23.me>, Thomas Huth <thuth@redhat.com>,
+ qemu-arm@nongnu.org, devel@lists.libvirt.org,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20241105130431.22564-1-philmd@linaro.org>
+ <20241105130431.22564-8-philmd@linaro.org>
+ <21b166ef-258c-4497-abf2-135022eb4f0e@linaro.org>
+ <b15d094f-8d69-4d2f-a79d-11502e8baebf@linaro.org>
+Content-Language: en-US
+In-Reply-To: <b15d094f-8d69-4d2f-a79d-11502e8baebf@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,57 +107,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The tests using the PL011 UART of the virt and raspi machines
-weren't properly enabling the UART and its transmitter previous
-to sending characters. Follow the PL011 manual initialization
-recommendation by setting the proper bits of the control register.
+On 5/11/24 23:27, Philippe Mathieu-Daudé wrote:
+> On 5/11/24 23:24, Philippe Mathieu-Daudé wrote:
+>> On 5/11/24 14:04, Philippe Mathieu-Daudé wrote:
+>>> All these MemoryRegionOps read() and write() handlers are
+>>> implemented expecting 32-bit accesses. Clarify that setting
+>>> .impl.min/max_access_size fields.
+>>>
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> ---
+>>>   hw/char/xilinx_uartlite.c | 4 ++++
+>>>   hw/intc/xilinx_intc.c     | 4 ++++
+>>>   hw/net/xilinx_ethlite.c   | 4 ++++
+>>>   hw/timer/xilinx_timer.c   | 4 ++++
+>>>   4 files changed, 16 insertions(+)
+>>>
+>>> diff --git a/hw/char/xilinx_uartlite.c b/hw/char/xilinx_uartlite.c
+>>> index a69ad769cc4..892efe81fee 100644
+>>> --- a/hw/char/xilinx_uartlite.c
+>>> +++ b/hw/char/xilinx_uartlite.c
+>>> @@ -170,6 +170,10 @@ static const MemoryRegionOps uart_ops = {
+>>>       .read = uart_read,
+>>>       .write = uart_write,
+>>>       .endianness = DEVICE_NATIVE_ENDIAN,
+>>> +    .impl = {
+>>> +        .min_access_size = 4,
+> 
+> Odd. The change makes the qtests pass, but here I'm modifying .impl,
+> not .valid... Since .valid.min_access_size = 1, SBI is a valid
+> opcode, no need to use SWI.
 
-Update the ASM code prefixing:
+Which proves this device is only mapped in little-endian.
 
-  *UART_CTRL = UART_ENABLE | TX_ENABLE;
-
-to:
-
-  while (true) {
-      *UART_DATA = 'T';
-  }
-
-Note, since commit 51b61dd4d56 ("hw/char/pl011: Warn when using
-disabled transmitter") incomplete PL011 initialization can be
-logged using the '-d guest_errors' command line option.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- tests/qtest/boot-serial-test.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/tests/qtest/boot-serial-test.c b/tests/qtest/boot-serial-test.c
-index bcfa504826c..6ea7e62e076 100644
---- a/tests/qtest/boot-serial-test.c
-+++ b/tests/qtest/boot-serial-test.c
-@@ -70,15 +70,20 @@ static const uint8_t kernel_plml605[] = {
- };
- 
- static const uint8_t bios_raspi2[] = {
--    0x08, 0x30, 0x9f, 0xe5,                 /*        ldr     r3, [pc, #8]   Get &UART0 */
-+    0x10, 0x30, 0x9f, 0xe5,                 /*        ldr     r3, [pc, #8]   Get &UART0 */
-+    0x10, 0x20, 0x9f, 0xe5,                 /*        ldr     r2, [pc, #8]   Get &CR */
-+    0xb0, 0x23, 0xc3, 0xe1,                 /*        strh    r2, [r3, #48]  Set CR */
-     0x54, 0x20, 0xa0, 0xe3,                 /*        mov     r2, #'T' */
-     0x00, 0x20, 0xc3, 0xe5,                 /* loop:  strb    r2, [r3]       *TXDAT = 'T' */
-     0xff, 0xff, 0xff, 0xea,                 /*        b       -4             (loop) */
-     0x00, 0x10, 0x20, 0x3f,                 /* UART0: 0x3f201000 */
-+    0x01, 0x01, 0x00, 0x00,                 /* CR:    0x101 = UARTEN|TXE */
- };
- 
- static const uint8_t kernel_aarch64[] = {
-     0x02, 0x20, 0xa1, 0xd2,                 /*        mov    x2, #0x9000000  Load UART0 */
-+    0x21, 0x20, 0x80, 0x52,                 /*        mov    w1, 0x101       CR = UARTEN|TXE */
-+    0x41, 0x60, 0x00, 0x79,                 /*        strh   w1, [x2, #48]   Set CR */
-     0x81, 0x0a, 0x80, 0x52,                 /*        mov    w1, #'T' */
-     0x41, 0x00, 0x00, 0x39,                 /* loop:  strb   w1, [x2]        *TXDAT = 'T' */
-     0xff, 0xff, 0xff, 0x17,                 /*        b      -4              (loop) */
--- 
-2.47.1
+> 
+>>> +        .max_access_size = 4,
+>>> +    },
+>>>       .valid = {
+>>>           .min_access_size = 1,
+>>>           .max_access_size = 4,
+>>
+>> To have qtests working I need to squash:
+>>
+>> -- >8 --
+>> diff --git a/tests/qtest/boot-serial-test.c b/tests/qtest/boot-serial- 
+>> test.c
+>> index 3b92fa5d506..6d9291c8ae2 100644
+>> --- a/tests/qtest/boot-serial-test.c
+>> +++ b/tests/qtest/boot-serial-test.c
+>> @@ -57,7 +57,7 @@ static const uint8_t kernel_pls3adsp1800[] = {
+>>       0xb0, 0x00, 0x84, 0x00,                 /* imm   0x8400 */
+>>       0x30, 0x60, 0x00, 0x04,                 /* addik r3,r0,4 */
+>>       0x30, 0x80, 0x00, 0x54,                 /* addik r4,r0,'T' */
+>> -    0xf0, 0x83, 0x00, 0x00,                 /* sbi   r4,r3,0 */
+>> +    0xf8, 0x83, 0x00, 0x00,                 /* swi   r4,r3,0 */
+>>       0xb8, 0x00, 0xff, 0xfc                  /* bri   -4  loop */
+>>   };
+>>
+>> @@ -65,7 +65,7 @@ static const uint8_t kernel_plml605[] = {
+>>       0xe0, 0x83, 0x00, 0xb0,                 /* imm   0x83e0 */
+>>       0x00, 0x10, 0x60, 0x30,                 /* addik r3,r0,0x1000 */
+>>       0x54, 0x00, 0x80, 0x30,                 /* addik r4,r0,'T' */
+>> -    0x00, 0x00, 0x83, 0xf0,                 /* sbi   r4,r3,0 */
+>> +    0x00, 0x00, 0x83, 0xf8,                 /* swi   r4,r3,0 */
+>>       0xfc, 0xff, 0x00, 0xb8                  /* bri   -4  loop */
+>>   };
+>> ---
+>>
+>> to access the uart by 32-bit instead of 8-bit.
 
 
