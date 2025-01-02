@@ -2,94 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF463A00072
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 22:16:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF7C8A0007B
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 22:19:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTSX8-00022p-Bp; Thu, 02 Jan 2025 16:15:10 -0500
+	id 1tTSaG-00041T-Lx; Thu, 02 Jan 2025 16:18:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tTSX5-00020t-5x
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 16:15:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tTSX3-00017X-Nb
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 16:15:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1735852503;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=pxp/KcVjywRK6foMv460VmY4UcoWqBCpYwKLnVoWAX0=;
- b=G4hGzkuo4+sY6Nr7Ju/r0AGEnxYJIbd2MMf6/s1PXlw3FohF8QzAhbKMxVeYTNXjmph5f0
- D6yX3rJSOOhvL7eISDC8OJbCKzBzzbMAtIsPsts83hrE5u6R5Mpe8pDu2t6WVX50TDrAJk
- I64l27IA4yr8YtYU0jMKEo3NJzg5wz0=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-280-oF69Hh8oPPG3-aoa6TI3Gg-1; Thu, 02 Jan 2025 16:15:01 -0500
-X-MC-Unique: oF69Hh8oPPG3-aoa6TI3Gg-1
-X-Mimecast-MFC-AGG-ID: oF69Hh8oPPG3-aoa6TI3Gg
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-4675c482d6cso204247201cf.2
- for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 13:15:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTSZy-000407-G5
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 16:18:07 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTSZw-0001L6-Li
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 16:18:05 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3862ca8e0bbso9067926f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 13:18:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1735852682; x=1736457482; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=wMAJRJAkKvu+7ixiGIgm9NO78i/9tU4KbqtSnkAIp08=;
+ b=Cmcu7FGX9gBY8suvU5aA5Oehzaz6TUKdBq66CcozNVUnlg4Qqcoz1GJpfPmnkVgEIm
+ RMvrbNNwkOvxz1azsXKmYCBsQzEKH4v53r8J2dCnCttdQFM3zhsVZ0Fq6HlUeG5A3F/I
+ CbCz6+CfEuWlkjQdBgtg0aKSZpd/uKebnVF8VIMUDIVI/Ke7F1r7EPujn2luOOdBpFy9
+ 4/H9EDBB0geJkW7vEqW6N+1r5EeOiNM5tcaGJtf6JB72G8XTGzA2hRLy1fm8Yb47UMBn
+ soaSCnyZQ772S5FsqtOR81TvVDKgntsz9BDlInvFZMq3QzAbHUynO04DkX9dJKgFq9hf
+ kAYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735852501; x=1736457301;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pxp/KcVjywRK6foMv460VmY4UcoWqBCpYwKLnVoWAX0=;
- b=C0z15co89W5ZONTxdYhXM9MaPMhQid7OHoStlmSpmMgDg6xRp1vYpIZpCqPqZDJmzP
- WxNiIWo8E4PMhPsXb8lNoEdj6u4HaS1XjPpG38P/YcUBj8SR5b6F/2gnsbaq7b7pbTfP
- lCzC047Uxyxj4YbLtdnu8RW+qnoWD1ZnhQFzIqYB6dhg5f+C9Nd9dFYEqLbZTGnlINNA
- WjF8P2xvTFozcCk1wNIKN5ojgbR3x/QwMuL4DqPAjclNCGGEUmbFjaqwY++s9fRs3f3i
- 4gBzof2vL7qENKBmvjr5Mx3v07pAOU4jqVNS+F+iVK/zMoQz1La53KKAebqX8hqpq7p4
- HyzA==
-X-Gm-Message-State: AOJu0YxwJKsIv0M8XDzLftI4iv8JIBJILFjFUY4VnO1Sbfw9u1h/M7tf
- WEB7roQSLnA6C7+zNnTUaiQEf2d4aOUtz/rf0Ug2djrivBxG9nlnDQvU9rvLTy69i4Z9niuzBN4
- p/bEggN0Ospbmn3JZC9JjKjpKoGACPqTT+Io2NeqCUSLrUqCOh/bv
-X-Gm-Gg: ASbGncuTgeKKYSCdKKuKH0PDympo7z3/nSl6Vg4quUcxQPni1tHIHg+IBTn35ej3vkH
- wBKM2LruLiIoXaNFyMagqaM+W8mJrz4nluyD6bFZTHYONff/7nk/ombEyz1ygqJiBP3+qQC4zsd
- JlbGtSw1OlAR3svMyWiSELQK1bwMzgVkW/Wacsnh3UD3MSNN9TDJMt7RJ1eRjsUn3KwANtx3F3P
- kYTFzLi+owXxQEvqdYY53gYCiC98LG1kyUQ4HJhFU5sCM7XdlRIroZtlKD9O5unq/7omRjSuSgD
- Lk2u/Q5KL7uewtVkjw==
-X-Received: by 2002:ac8:574b:0:b0:467:94ca:541 with SMTP id
- d75a77b69052e-46a4a9bebd3mr916693771cf.55.1735852501334; 
- Thu, 02 Jan 2025 13:15:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFUAsvLMErocy42MER6TW3+kXD4VpkduDuWh2wKEobEghpY7mEKtYYQgojlwCvJFsXLvBdLrw==
-X-Received: by 2002:ac8:574b:0:b0:467:94ca:541 with SMTP id
- d75a77b69052e-46a4a9bebd3mr916693461cf.55.1735852501065; 
- Thu, 02 Jan 2025 13:15:01 -0800 (PST)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-46a3eb30b97sm139008231cf.86.2025.01.02.13.14.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Jan 2025 13:14:59 -0800 (PST)
-Date: Thu, 2 Jan 2025 16:14:57 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org,
- David Hildenbrand <david@redhat.com>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH] physmem: fix qemu_ram_alloc_from_fd size calculation
-Message-ID: <Z3cB0TehNey27uNZ@x1n>
-References: <1735850090-329906-1-git-send-email-steven.sistare@oracle.com>
+ d=1e100.net; s=20230601; t=1735852682; x=1736457482;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wMAJRJAkKvu+7ixiGIgm9NO78i/9tU4KbqtSnkAIp08=;
+ b=n+I0pCLoD/5/9HHAic8BncYVxJXiZe2WfNxBcyIMu10oJjBzl/idZzj0arJ3WFlo0H
+ OjZdrtPGwd2kBtC80tjUb+cnbTx61nHRq0y7rJttAIgOdq+mnNvAM7HuVjrosxuPaMVC
+ nTmLfDH/QbPm8kS/1yHVX4asf88ttaIh3GuWFGLpI1zCjor4sy18/nLOd82LCe16CyCz
+ 6gI/QQ6MEimMfzxWBBsfJNIUWh12XLgUAKFi4jtWBkmdPWydVmqF5RFOUVOD/Ay//5l/
+ SNkrMTOJ6dr+IjrJa9OKmbmc5aibnJ1Kk3ip5OObQtO1PlmVFOW8vsKTbIKWZD8wJr97
+ njPQ==
+X-Gm-Message-State: AOJu0YzKLWPOv7wKkMW8GDIOQPPWDzpBwJHsFPLGA9GEdjLl9PqmSq31
+ SKt9Ihav8xhZSAqNALs3muVMCjQ4dYWCp+FtLKfNKClrGpMdI+U8B7/PmdjvcxrQK52DtqNz+Tw
+ yyyBXLw==
+X-Gm-Gg: ASbGnctjt0bLU1wWe94nhlUbB8BziS1RGG73tov4LBOUE0lVxENJAkJTBkI9yyvpAa1
+ PfB0Xl+2ObGLg1MWB26Pv8kfZpTTCtbEJBXX6jaWawcPfdP8gCQo24wWg7jIUZNU6E1h5rNz4uW
+ sWEslemM6K09C2g7ouaDqMk5J3r/68p2Cj2eEyO86bjO+3f+Jlzn7nTSGIhN5+Sl8h/NmNAJFlQ
+ IPWx+jkzBXLMXlhGlDwHAUDaqSXPisanXbsA2SHMUjJWc5Kq8RjoFsdiDJESimpwjYUoUVPlvwx
+ scpitm5OHw9B5hBQUVvkeWHMSxp89e0=
+X-Google-Smtp-Source: AGHT+IFuW3tyNIYDS+29N8PpC8hwZkQCJi3VhvNvAO/VoeqXFTrOF41nHQMn7j5MRlfqp01c7bRzdg==
+X-Received: by 2002:a5d:648d:0:b0:382:4b9a:f51f with SMTP id
+ ffacd0b85a97d-38a223f82afmr41619242f8f.47.1735852682268; 
+ Thu, 02 Jan 2025 13:18:02 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38a1c8b874asm38986775f8f.109.2025.01.02.13.18.00
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 02 Jan 2025 13:18:01 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Zhenwei Pi <pizhenwei@bytedance.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH v4 0/8] QOM: container_get() removal
+Date: Thu,  2 Jan 2025 22:17:52 +0100
+Message-ID: <20250102211800.79235-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1735850090-329906-1-git-send-email-steven.sistare@oracle.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.185,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,44 +104,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jan 02, 2025 at 12:34:50PM -0800, Steve Sistare wrote:
-> qemu_ram_alloc_from_fd allocates space if file_size == 0.  If non-zero,
-> it uses the existing space and verifies it is large enough, but the
-> verification was broken when the offset parameter was introduced.  As
-> a result, a file smaller than offset passes the verification and causes
-> errors later.  Fix that, and update the error message to include offset.
-> 
-> Peter provides this concise reproducer:
-> 
->   $ touch ramfile
->   $ truncate -s 64M ramfile
->   $ ./qemu-system-x86_64 -object memory-backend-file,mem-path=./ramfile,offset=128M,size=128M,id=mem1,prealloc=on
->   qemu-system-x86_64: qemu_prealloc_mem: preallocating memory failed: Bad address
-> 
-> With the fix, the error message is:
->   qemu-system-x86_64: mem1 backing store size 0x4000000 is too small for 'size' option 0x8000000 plus 'offset' option 0x8000000
-> 
+Respin of Peter's v2:
+https://lore.kernel.org/qemu-devel/20241121192202.4155849-1-peterx@redhat.com/
 
-Can have the cc tag here too to be super clear:
+'The series is about container_get() and its removal.'
+(See v2's cover).
 
-Cc: qemu-stable@nongnu.org
+Since v3:
+- Implement qdev_create_fake_machine() in single patch (peterx)
 
-> Fixes: 4b870dc4d0c0 ("hostmem-file: add offset option")
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Since v2:
+- Create fake machine container for user emulation to avoid:
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+  $ ./qemu-x86_64 /bin/echo foo
+  qemu-x86_64: ../../hw/core/qdev.c:825: qdev_get_machine: Assertion `dev' failed.
+  Aborted (core dumped)
 
-Please also feel free to attach this patch as the 1st patch when repost
-cpr-transfer, it could make dependency easier no matter how this would
-land.
+Peter Xu (6):
+  qdev: Make qdev_get_machine() not use container_get()
+  qdev: Add machine_get_container()
+  qdev: Use machine_get_container()
+  qom: Add object_get_container()
+  qom: Use object_get_container()
+  qom: Remove container_get()
 
-Maybe it'll be still easier to go via a migration pull that collects cpr
-transfer as a whole. May depend on whether there'll be a memory API pull
-before that..
+Philippe Mathieu-Daudé (2):
+  qdev: Implement qdev_create_fake_machine() for user emulation
+  system: Inline machine_containers[] in
+    qemu_create_machine_containers()
 
-Thanks,
+ include/hw/qdev-core.h | 20 ++++++++++++++++++++
+ include/qom/object.h   | 21 ++++++++++-----------
+ accel/tcg/tcg-all.c    |  8 +++++++-
+ backends/cryptodev.c   |  4 ++--
+ chardev/char.c         |  2 +-
+ hw/core/gpio.c         |  3 +--
+ hw/core/qdev-user.c    | 21 +++++++++++++++++++++
+ hw/core/qdev.c         | 21 ++++++++++++++++++---
+ hw/core/sysbus.c       |  4 ++--
+ hw/i386/pc.c           |  4 ++--
+ qom/container.c        | 23 -----------------------
+ qom/object.c           | 12 +++++++++++-
+ scsi/pr-manager.c      |  4 ++--
+ system/ioport.c        |  2 +-
+ system/memory.c        |  2 +-
+ system/qdev-monitor.c  |  6 +++---
+ system/vl.c            | 19 ++++++++-----------
+ ui/console.c           |  2 +-
+ ui/dbus-chardev.c      |  2 +-
+ hw/core/meson.build    |  1 +
+ 20 files changed, 113 insertions(+), 68 deletions(-)
+ create mode 100644 hw/core/qdev-user.c
 
 -- 
-Peter Xu
+2.47.1
 
 
