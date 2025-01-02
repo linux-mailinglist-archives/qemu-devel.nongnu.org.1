@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF7C8A0007B
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 22:19:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 893D5A00078
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 22:19:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTSaG-00041T-Lx; Thu, 02 Jan 2025 16:18:24 -0500
+	id 1tTSaH-00043c-8R; Thu, 02 Jan 2025 16:18:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTSZy-000407-G5
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 16:18:07 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTSa4-00040f-Sw
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 16:18:17 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTSZw-0001L6-Li
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 16:18:05 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3862ca8e0bbso9067926f8f.0
- for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 13:18:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTSa1-0001Lb-0o
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 16:18:10 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-436326dcb1cso77460205e9.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 13:18:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735852682; x=1736457482; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=wMAJRJAkKvu+7ixiGIgm9NO78i/9tU4KbqtSnkAIp08=;
- b=Cmcu7FGX9gBY8suvU5aA5Oehzaz6TUKdBq66CcozNVUnlg4Qqcoz1GJpfPmnkVgEIm
- RMvrbNNwkOvxz1azsXKmYCBsQzEKH4v53r8J2dCnCttdQFM3zhsVZ0Fq6HlUeG5A3F/I
- CbCz6+CfEuWlkjQdBgtg0aKSZpd/uKebnVF8VIMUDIVI/Ke7F1r7EPujn2luOOdBpFy9
- 4/H9EDBB0geJkW7vEqW6N+1r5EeOiNM5tcaGJtf6JB72G8XTGzA2hRLy1fm8Yb47UMBn
- soaSCnyZQ772S5FsqtOR81TvVDKgntsz9BDlInvFZMq3QzAbHUynO04DkX9dJKgFq9hf
- kAYA==
+ d=linaro.org; s=google; t=1735852687; x=1736457487; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=XroMYY0R/MiabM3vxlKI8plZjULUSdM7o1GYxaZu1lI=;
+ b=yQQSuWpc9y/Cr2HdsP4qqCH2wd8qRMVC0Wle2L2kZL3rJoo+x9zzUhmDRcUCtW1s96
+ kZM70kKZ4cqbHAaR+qGxkmwXMcKGHeBGAs3NSh3vHk4UEER9N77hg0BHqYyRumI5Enb9
+ Dgq4igHsh/QJEok9mJNXyCQ6A2g/duEJkhxEvRn8gshuSgz3XL6Pfoi5Nu/q4KrqJJct
+ uNw7dBQqY6NuqBbwmTmfasklfCGrjgKnHLF74tatLeCFfM9/Etg1IMiwc4m3RKYO2Sdb
+ bpIrfCR8OypB5i35Z1YugiIKjyG6+qEESoaAQYD9MIMp4Tnlxe2DbDS0qVL3d1QW31fh
+ CeDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735852682; x=1736457482;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=wMAJRJAkKvu+7ixiGIgm9NO78i/9tU4KbqtSnkAIp08=;
- b=n+I0pCLoD/5/9HHAic8BncYVxJXiZe2WfNxBcyIMu10oJjBzl/idZzj0arJ3WFlo0H
- OjZdrtPGwd2kBtC80tjUb+cnbTx61nHRq0y7rJttAIgOdq+mnNvAM7HuVjrosxuPaMVC
- nTmLfDH/QbPm8kS/1yHVX4asf88ttaIh3GuWFGLpI1zCjor4sy18/nLOd82LCe16CyCz
- 6gI/QQ6MEimMfzxWBBsfJNIUWh12XLgUAKFi4jtWBkmdPWydVmqF5RFOUVOD/Ay//5l/
- SNkrMTOJ6dr+IjrJa9OKmbmc5aibnJ1Kk3ip5OObQtO1PlmVFOW8vsKTbIKWZD8wJr97
- njPQ==
-X-Gm-Message-State: AOJu0YzKLWPOv7wKkMW8GDIOQPPWDzpBwJHsFPLGA9GEdjLl9PqmSq31
- SKt9Ihav8xhZSAqNALs3muVMCjQ4dYWCp+FtLKfNKClrGpMdI+U8B7/PmdjvcxrQK52DtqNz+Tw
- yyyBXLw==
-X-Gm-Gg: ASbGnctjt0bLU1wWe94nhlUbB8BziS1RGG73tov4LBOUE0lVxENJAkJTBkI9yyvpAa1
- PfB0Xl+2ObGLg1MWB26Pv8kfZpTTCtbEJBXX6jaWawcPfdP8gCQo24wWg7jIUZNU6E1h5rNz4uW
- sWEslemM6K09C2g7ouaDqMk5J3r/68p2Cj2eEyO86bjO+3f+Jlzn7nTSGIhN5+Sl8h/NmNAJFlQ
- IPWx+jkzBXLMXlhGlDwHAUDaqSXPisanXbsA2SHMUjJWc5Kq8RjoFsdiDJESimpwjYUoUVPlvwx
- scpitm5OHw9B5hBQUVvkeWHMSxp89e0=
-X-Google-Smtp-Source: AGHT+IFuW3tyNIYDS+29N8PpC8hwZkQCJi3VhvNvAO/VoeqXFTrOF41nHQMn7j5MRlfqp01c7bRzdg==
-X-Received: by 2002:a5d:648d:0:b0:382:4b9a:f51f with SMTP id
- ffacd0b85a97d-38a223f82afmr41619242f8f.47.1735852682268; 
- Thu, 02 Jan 2025 13:18:02 -0800 (PST)
+ d=1e100.net; s=20230601; t=1735852687; x=1736457487;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=XroMYY0R/MiabM3vxlKI8plZjULUSdM7o1GYxaZu1lI=;
+ b=xOCWU4eKai/j3bEfL4JIymGf1cBWcMZizNHqpdHxWDSKKR9OdvERBVKSlrooigFkKM
+ HnIbyP041Lx+dxZHNsIyqArDmxWfqr7U+5BbfRDcrZ7TanU5jzmuHkUChflHvTHwh8Rr
+ ZdTc3ancaK7/7do7H5Ohfv+ffv4ARs23Gv9PSPcHJ7bLzORkZcZzUrgMZkXi/jy1/r9d
+ WPdWEBDU2wuiFME29vk0UuQcmOLkxVyROZ0Wg/HBEpzZpYvVJJeIfb0ctbyeDKsbIdNy
+ 0HyWo5jsnzSI3KYMqehcBE9HUk4PzPYTRjFTovviTYQgY+bbyCZ03FPUD0/4h1Uy9FDP
+ mEgg==
+X-Gm-Message-State: AOJu0YwQ+a9PWIrfhzoiDgF5Q3uPpylPlxW0fPkt4NXS4W1k7GRuqXrm
+ GCXRTZROObSWDPXet53Gsajzi3+w0PypIVYaSGj41N12e0mYLQrqJx26Qk2WqW85oNc1tRSDaEu
+ 2hPOQkw==
+X-Gm-Gg: ASbGncuEfALacavKzxE6d62mNeJ4INNUsyJcQ+o0qfnN/3RAr1Qsx175erucvhWlYpN
+ SW3VYQEGUdYO1+vDOugSbDOLXKq7GAw2DMuQQSiLZSYOeOe2P959W7Y/wgowVy4AGppiHdSeoWE
+ vnpAkJ9C2+bc4+B6R8JI+CNMwFG9g1cYMjY5DctLkHPyZZVM4zkDKXkhIWwjbc29LSfvqF7x0qa
+ B1Lru2+vLmdp36I+yDJhxYY7mCiHVR/iRUoZEuGIKYFqBVSsrBbYagEeXKPXqHgSmP6XVmgz0h1
+ IOihg3D4RbFItyRSuz5hJjC8B9V6x5o=
+X-Google-Smtp-Source: AGHT+IGifLsGTL7JCw1PUDyVQv1IqEOxdteLjKkX3xXmP8MqBs4a82XvG4UnVb/ArsvfHA1W6tKtJQ==
+X-Received: by 2002:a05:6000:471a:b0:38a:69a9:afb1 with SMTP id
+ ffacd0b85a97d-38a69a9b17amr136101f8f.0.1735852687121; 
+ Thu, 02 Jan 2025 13:18:07 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c8b874asm38986775f8f.109.2025.01.02.13.18.00
+ ffacd0b85a97d-38a1c8acabbsm38724383f8f.93.2025.01.02.13.18.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 02 Jan 2025 13:18:01 -0800 (PST)
+ Thu, 02 Jan 2025 13:18:06 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org,
@@ -73,15 +74,18 @@ Cc: qemu-block@nongnu.org,
  Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Fam Zheng <fam@euphon.net>, Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v4 0/8] QOM: container_get() removal
-Date: Thu,  2 Jan 2025 22:17:52 +0100
-Message-ID: <20250102211800.79235-1-philmd@linaro.org>
+Subject: [PATCH v4 1/8] qdev: Implement qdev_create_fake_machine() for user
+ emulation
+Date: Thu,  2 Jan 2025 22:17:53 +0100
+Message-ID: <20250102211800.79235-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250102211800.79235-1-philmd@linaro.org>
+References: <20250102211800.79235-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,58 +108,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Respin of Peter's v2:
-https://lore.kernel.org/qemu-devel/20241121192202.4155849-1-peterx@redhat.com/
+When a QDev instance is realized, qdev_get_machine() ends up called.
+In the next commit, qdev_get_machine() will require a "machine"
+container to be always present. To satisfy this QOM containers design,
+Implement qdev_create_fake_machine() which creates a fake "machine"
+container for user emulation.
 
-'The series is about container_get() and its removal.'
-(See v2's cover).
+On system emulation, qemu_create_machine() is called from qemu_init().
+For user emulation, since the TCG accelerator always calls
+tcg_init_machine(), we use it to hook our fake machine creation.
 
-Since v3:
-- Implement qdev_create_fake_machine() in single patch (peterx)
-
-Since v2:
-- Create fake machine container for user emulation to avoid:
-
-  $ ./qemu-x86_64 /bin/echo foo
-  qemu-x86_64: ../../hw/core/qdev.c:825: qdev_get_machine: Assertion `dev' failed.
-  Aborted (core dumped)
-
-Peter Xu (6):
-  qdev: Make qdev_get_machine() not use container_get()
-  qdev: Add machine_get_container()
-  qdev: Use machine_get_container()
-  qom: Add object_get_container()
-  qom: Use object_get_container()
-  qom: Remove container_get()
-
-Philippe Mathieu-Daudé (2):
-  qdev: Implement qdev_create_fake_machine() for user emulation
-  system: Inline machine_containers[] in
-    qemu_create_machine_containers()
-
- include/hw/qdev-core.h | 20 ++++++++++++++++++++
- include/qom/object.h   | 21 ++++++++++-----------
+Suggested-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/hw/qdev-core.h | 10 ++++++++++
  accel/tcg/tcg-all.c    |  8 +++++++-
- backends/cryptodev.c   |  4 ++--
- chardev/char.c         |  2 +-
- hw/core/gpio.c         |  3 +--
  hw/core/qdev-user.c    | 21 +++++++++++++++++++++
- hw/core/qdev.c         | 21 ++++++++++++++++++---
- hw/core/sysbus.c       |  4 ++--
- hw/i386/pc.c           |  4 ++--
- qom/container.c        | 23 -----------------------
- qom/object.c           | 12 +++++++++++-
- scsi/pr-manager.c      |  4 ++--
- system/ioport.c        |  2 +-
- system/memory.c        |  2 +-
- system/qdev-monitor.c  |  6 +++---
- system/vl.c            | 19 ++++++++-----------
- ui/console.c           |  2 +-
- ui/dbus-chardev.c      |  2 +-
  hw/core/meson.build    |  1 +
- 20 files changed, 113 insertions(+), 68 deletions(-)
+ 4 files changed, 39 insertions(+), 1 deletion(-)
  create mode 100644 hw/core/qdev-user.c
 
+diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+index e6ef80b7fd0..b83b1439968 100644
+--- a/include/hw/qdev-core.h
++++ b/include/hw/qdev-core.h
+@@ -1027,6 +1027,16 @@ const char *qdev_fw_name(DeviceState *dev);
+ void qdev_assert_realized_properly(void);
+ Object *qdev_get_machine(void);
+ 
++/**
++ * qdev_create_fake_machine(): Create a fake machine container.
++ *
++ * .. note::
++ *    This function is a kludge for user emulation (USER_ONLY)
++ *    because when thread (TYPE_CPU) are realized, qdev_realize()
++ *    access a machine container.
++ */
++Object *qdev_create_fake_machine(void);
++
+ /**
+  * qdev_get_human_name() - Return a human-readable name for a device
+  * @dev: The device. Must be a valid and non-NULL pointer.
+diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
+index c2565758876..95adaacee82 100644
+--- a/accel/tcg/tcg-all.c
++++ b/accel/tcg/tcg-all.c
+@@ -35,7 +35,9 @@
+ #include "qemu/atomic.h"
+ #include "qapi/qapi-builtin-visit.h"
+ #include "qemu/units.h"
+-#if !defined(CONFIG_USER_ONLY)
++#if defined(CONFIG_USER_ONLY)
++#include "hw/qdev-core.h"
++#else
+ #include "hw/boards.h"
+ #endif
+ #include "internal-common.h"
+@@ -124,6 +126,10 @@ static int tcg_init_machine(MachineState *ms)
+     tcg_prologue_init();
+ #endif
+ 
++#ifdef CONFIG_USER_ONLY
++    qdev_create_fake_machine();
++#endif
++
+     return 0;
+ }
+ 
+diff --git a/hw/core/qdev-user.c b/hw/core/qdev-user.c
+new file mode 100644
+index 00000000000..f816340db5a
+--- /dev/null
++++ b/hw/core/qdev-user.c
+@@ -0,0 +1,21 @@
++/*
++ * QDev helpers specific to user emulation.
++ *
++ * Copyright 2025 Linaro, Ltd.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include "qemu/osdep.h"
++#include "qom/object.h"
++#include "hw/qdev-core.h"
++
++Object *qdev_create_fake_machine(void)
++{
++    Object *fake_machine_obj;
++
++    fake_machine_obj = object_property_add_new_container(object_get_root(),
++                                                         "machine");
++    object_property_add_new_container(fake_machine_obj, "unattached");
++
++    return fake_machine_obj;
++}
+diff --git a/hw/core/meson.build b/hw/core/meson.build
+index ce9dfa3f4bf..65a1698ed1f 100644
+--- a/hw/core/meson.build
++++ b/hw/core/meson.build
+@@ -46,3 +46,4 @@ system_ss.add(files(
+   'vm-change-state-handler.c',
+   'clock-vmstate.c',
+ ))
++user_ss.add(files('qdev-user.c'))
 -- 
 2.47.1
 
