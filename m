@@ -2,111 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86255A00153
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 23:48:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BF12A00156
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 23:49:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTTyh-0007WL-AH; Thu, 02 Jan 2025 17:47:43 -0500
+	id 1tTTzd-0000It-1n; Thu, 02 Jan 2025 17:48:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tTTyZ-0007Pg-Kd; Thu, 02 Jan 2025 17:47:38 -0500
-Received: from fout-a1-smtp.messagingengine.com ([103.168.172.144])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1tTTyX-0004Ba-P2; Thu, 02 Jan 2025 17:47:35 -0500
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal
- [10.202.2.44])
- by mailfout.phl.internal (Postfix) with ESMTP id 13E641380213;
- Thu,  2 Jan 2025 17:47:32 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-04.internal (MEProxy); Thu, 02 Jan 2025 17:47:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
- cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm3; t=1735858052;
- x=1735944452; bh=TUTgiDO5F3IrwBDulY3H6uAg/dv2N57ssbEq1q6uYkw=; b=
- t7eHMHQ1ihcpzUa/XnVgBjyTY0hGeq6ybOtPmOKOaFwWDLiHCFh0PraYTTxzPsmE
- nvsI+uGd5TZXd1QuMut9J+MTCYio9nin823eGJILlYoCeoZP7tLDjZxWbzFD74u5
- HDSRdbWtManoKUvWi/roDow3ZlPnKZcunp2lV4gyjYDl1byA0Nkz/c6iy5z7eRSf
- Cy8kNnP766aN4ta60466SAAaLao6zD6vUC1EbldN87GlXGmJKRza+belozuXp8pY
- frboy1iFe5hwY5wORZH0zvIlp9aWYHK8UFlnjNvgGv2HdObLBb/HDhADmjnNlZyp
- 6HsvbPeqbpgkIaSJ+lIIkA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1735858052; x=
- 1735944452; bh=TUTgiDO5F3IrwBDulY3H6uAg/dv2N57ssbEq1q6uYkw=; b=F
- Cg0GF9fwURnIBLfF9OBcWN9cLcGzOi6CiW+cGDTgDSJbklOJhWUHsVQWRkstjoOB
- Bhnoc3kDRGYs+7ZLZZG2Xnjz1+TS9mdI3d1L3JI+I5FQjvKLxibfgkqcGaep5BL+
- Jmg3fxT69aNmTmMXZ8z6C+reZO6XL24DVZjVwvl8UXTLxsyACbJilJgP2u9Kyx93
- eZyjXCbWCVduJXQamfn2Pt6nT7VWl3daa4aoAsAjgSm/tNpiBt/KpuMzskCA+YcO
- fNMQQrcHRkI4Th/jIpG8T+ynC1ykbq/5K1mLMOCKZ9KALknQd/kJqVjicqItrUSm
- A4QGZN5xLmbUfLNarkdqg==
-X-ME-Sender: <xms:gxd3Z9gaY-Jzi44wU_VSMqi2eSTGrialF_AlAqDrMXLtuQ_xjiGfGw>
- <xme:gxd3ZyCaZsUfmXtLXEUHOvZGLOptaIvdbHVgyP4Q1y6QwICPSE-S9boOgV3t6Tz2I
- sb4hEvcJOjrzg4Wta4>
-X-ME-Received: <xmr:gxd3Z9G3CAg_AtdyjXAkDeN2Yi2K6gAuIUQtgWUvT7ru4p5AV9Tt6B2K>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudeffedgtdefucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
- rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
- htshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdej
- necuhfhrohhmpeflihgrgihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhi
- hgohgrthdrtghomheqnecuggftrfgrthhtvghrnhepvedujefhfffhveekhfffkeetvefg
- teejkeeutdduieehieegfeejtdelveejtedunecuffhomhgrihhnpehkvghrnhgvlhdroh
- hrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehj
- ihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmpdhnsggprhgtphhtthhopeejpd
- hmohguvgepshhmthhpohhuthdprhgtphhtthhopehrihgthhgrrhgurdhhvghnuggvrhhs
- ohhnsehlihhnrghrohdrohhrghdprhgtphhtthhopehgrghoshhonhhgsehlohhonhhgsh
- honhdrtghnpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdp
- rhgtphhtthhopehpvghtvghrrdhmrgihuggvlhhlsehlihhnrghrohdrohhrghdprhgtph
- htthhopehmrghosghisghosehlohhonhhgshhonhdrtghnpdhrtghpthhtohepjhhirgig
- uhhnrdihrghnghesfhhlhihgohgrthdrtghomhdprhgtphhtthhopehqvghmuhdqrghrmh
- esnhhonhhgnhhurdhorhhg
-X-ME-Proxy: <xmx:gxd3ZyR2azi6xOy5F4DOjvcNRcW1zXr4JV4bLEP8EhXzkvp_0izYXw>
- <xmx:gxd3Z6xpWe9qV-qhKpTda6nt2PPagH1FYkKbnv0rjptmQUvj4ZDqUQ>
- <xmx:gxd3Z44ieVE24MGoWR5Ufw3bJjveuBGas2Sc8SyZZqQO8kQ5DivS1Q>
- <xmx:gxd3Z_zbJPd_eYZfYOkkXW_sIBGYy3nRaMdY88vv0ZRs0hQGGz4KXA>
- <xmx:hBd3Z1zsKrV1alMylUwoxmetdnMy7I0aN4IJAG12MCTExfN_Eg0qb2dH>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 2 Jan 2025 17:47:30 -0500 (EST)
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Thu, 02 Jan 2025 22:47:22 +0000
-Subject: [PATCH v3 2/2] hw/loongarch/boot: Support Linux raw boot image
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tTTzX-0008Vo-3X
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 17:48:35 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tTTzU-0004g7-4g
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 17:48:34 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 586501F794;
+ Thu,  2 Jan 2025 22:48:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1735858110; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=CAXAhHI4fUwdMhvQ+lDXaNjMK76VrQyDt+p0AH/xYpI=;
+ b=MQUFsfWQkL0q5OkK6ExRfHThieIsSAb+bDWU4BwXWnqNnfsqaui040lC+eh6ZzIzmM1eAv
+ 7U7C/CEBtb/tjT5LAUipnow+5DQY00z8CBAwA7sWaDtW53uAoM2pmE4PZ2fUxr6FdblzSH
+ VE30FP01ZMGh4/SvgdhKuqUmF1k8uuM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1735858110;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=CAXAhHI4fUwdMhvQ+lDXaNjMK76VrQyDt+p0AH/xYpI=;
+ b=DOen1EyJsF3d1U7Hp5bwSOe8wnid0tBdtkNn3fJJjP+shjcIlpu7mgnpWbIjbsq1OG/PJp
+ pifIgS6hm0lQTHCg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1735858110; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=CAXAhHI4fUwdMhvQ+lDXaNjMK76VrQyDt+p0AH/xYpI=;
+ b=MQUFsfWQkL0q5OkK6ExRfHThieIsSAb+bDWU4BwXWnqNnfsqaui040lC+eh6ZzIzmM1eAv
+ 7U7C/CEBtb/tjT5LAUipnow+5DQY00z8CBAwA7sWaDtW53uAoM2pmE4PZ2fUxr6FdblzSH
+ VE30FP01ZMGh4/SvgdhKuqUmF1k8uuM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1735858110;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=CAXAhHI4fUwdMhvQ+lDXaNjMK76VrQyDt+p0AH/xYpI=;
+ b=DOen1EyJsF3d1U7Hp5bwSOe8wnid0tBdtkNn3fJJjP+shjcIlpu7mgnpWbIjbsq1OG/PJp
+ pifIgS6hm0lQTHCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C518B13418;
+ Thu,  2 Jan 2025 22:48:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id zUgQIr0Xd2eQAwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 02 Jan 2025 22:48:29 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH] migration: Add more error handling to analyze-migration.py
+In-Reply-To: <Z3cNJZ0inEMRSitV@x1n>
+References: <20250102185831.4324-1-farosas@suse.de> <Z3cNJZ0inEMRSitV@x1n>
+Date: Thu, 02 Jan 2025 19:48:27 -0300
+Message-ID: <87pll496is.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250102-la-direct-kernel-boot-v3-2-40dbc45d633a@flygoat.com>
-References: <20250102-la-direct-kernel-boot-v3-0-40dbc45d633a@flygoat.com>
-In-Reply-To: <20250102-la-direct-kernel-boot-v3-0-40dbc45d633a@flygoat.com>
-To: qemu-devel@nongnu.org
-Cc: Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3593;
- i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=wYocujj8x+KlkkZalToDfgfPzdw4XBgk+g4HI9CRNB4=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhvRy8XrOvpQTV4zn3DI46FKXPbVEycmgarNVXW3F4bJG/
- 1U8Hzd2lLIwiHExyIopsoQIKPVtaLy44PqDrD8wc1iZQIYwcHEKwEQ2yTEyPI5L43ffeuddX8IW
- hbSY5Q1l7ervpCsW9Vgt0T/03M/ejuF/5n3zqxPXbm/tVj1vFH0t2lI8zjaL6ZL8k5vv1y3zYWL
- lAwA=
-X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
- fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
-Received-SPF: pass client-ip=103.168.172.144;
- envelope-from=jiaxun.yang@flygoat.com; helo=fout-a1-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_TLS_ALL(0.00)[]; ARC_NA(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ RCPT_COUNT_THREE(0.00)[3]; FROM_HAS_DN(0.00)[];
+ MISSING_XM_UA(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ TO_DN_SOME(0.00)[]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -123,115 +112,238 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Support booting such image by parsing header as per Linux's
-specification [1].
+Peter Xu <peterx@redhat.com> writes:
 
-This enabled booting vmlinux.efi/vmlinuz.efi shipped by
-distros without supplying BIOS.
+> On Thu, Jan 02, 2025 at 03:58:31PM -0300, Fabiano Rosas wrote:
+>> The analyze-migration script was seen failing in s390x in misterious
+>> ways. It seems we're reaching the subsection constructor without any
+>
+> It might be a good idea to add some debug lines indeed. Though are you sure
+> it's from parsing a subsection?
 
-[1]: https://docs.kernel.org/arch/loongarch/booting.html
+Ah, indeed it's not always a subsection. So I need to go back to the
+code and do more auditing, we might have a wrong struct macro somewhere.
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
----
- hw/loongarch/boot.c | 69 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
+>
+> https://lore.kernel.org/all/20241219123213.GA692742@fedora/
+>
+> ====8<====
+> stderr:
+> Traceback (most recent call last):
+>   File "/home/gitlab-runner/builds/4S3awx_3/0/qemu-project/qemu/build/scripts/analyze-migration.py", line 688, in <module>
+>     dump.read(dump_memory = args.memory)
+>   File "/home/gitlab-runner/builds/4S3awx_3/0/qemu-project/qemu/build/scripts/analyze-migration.py", line 625, in read
+>     section.read()
+>   File "/home/gitlab-runner/builds/4S3awx_3/0/qemu-project/qemu/build/scripts/analyze-migration.py", line 461, in read
+>     field['data'] = reader(field, self.file)
+>   File "/home/gitlab-runner/builds/4S3awx_3/0/qemu-project/qemu/build/scripts/analyze-migration.py", line 434, in __init__
+>     for field in self.desc['struct']['fields']:
+> KeyError: 'fields'
+> ====8<====
+>
+> It reads to me that it's not in "if 'subsections' in self.desc['struct']"
+> loop yet, instead it looks like a real STRUCT field in one of the device
+> sections?  If that's true, then...
+>
+>> fields, which would indicate an empty .subsection entry in the vmstate
+>> definition. We don't have any of those, at least not without the
+>> unmigratable flag set, so this should never happen.
+>> 
+>> Add some debug statements so that we can see what's going on the next
+>> time the issue happens.
+>> 
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> ---
+>>  scripts/analyze-migration.py | 33 +++++++++++++++++++++++++++------
+>>  1 file changed, 27 insertions(+), 6 deletions(-)
+>> 
+>> diff --git a/scripts/analyze-migration.py b/scripts/analyze-migration.py
+>> index 8a254a5b6a..1dd98f1d5a 100755
+>> --- a/scripts/analyze-migration.py
+>> +++ b/scripts/analyze-migration.py
+>> @@ -429,6 +429,10 @@ def __init__(self, desc, file):
+>>          super(VMSDFieldStruct, self).__init__(desc, file)
+>>          self.data = collections.OrderedDict()
+>>  
+>> +        if 'fields' not in self.desc['struct']:
+>> +            raise Exception("No fields in subsection key=%s name=%s" %
+>> +                            (self.section_key, self.vmsd_name))
+>
+> ... this self.section_key / self.vmsd_name may not exist..
 
-diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
-index 93847b0eaf8e50ce1a990b91267780e6785e1c2f..38c19bffa3475d61ffab27a26af9c4c821769dca 100644
---- a/hw/loongarch/boot.c
-+++ b/hw/loongarch/boot.c
-@@ -16,6 +16,26 @@
- #include "sysemu/reset.h"
- #include "sysemu/qtest.h"
- 
-+/*
-+ * Linux Image Format
-+ * https://docs.kernel.org/arch/loongarch/booting.html
-+ */
-+#define LINUX_PE_MAGIC  0x818223cd
-+#define MZ_MAGIC        0x5a4d /* "MZ" */
-+
-+struct loongarch_linux_hdr {
-+    uint32_t mz_magic;
-+    uint32_t res0;
-+    uint64_t kernel_entry;
-+    uint64_t kernel_size;
-+    uint64_t load_offset;
-+    uint64_t res1;
-+    uint64_t res2;
-+    uint64_t res3;
-+    uint32_t linux_pe_magic;
-+    uint32_t pe_header_offset;
-+} QEMU_PACKED;
-+
- struct memmap_entry *memmap_table;
- unsigned memmap_entries;
- 
-@@ -260,6 +280,50 @@ static uint64_t cpu_loongarch_virt_to_phys(void *opaque, uint64_t addr)
-     return addr & MAKE_64BIT_MASK(0, TARGET_PHYS_ADDR_SPACE_BITS);
- }
- 
-+static int64_t load_loongarch_linux_image(const char *filename,
-+                                          uint64_t *kernel_entry,
-+                                          uint64_t *kernel_low,
-+                                          uint64_t *kernel_high)
-+{
-+    gsize len;
-+    ssize_t size;
-+    uint8_t *buffer;
-+    struct loongarch_linux_hdr *hdr;
-+
-+    /* Load as raw file otherwise */
-+    if (!g_file_get_contents(filename, (char **)&buffer, &len, NULL)) {
-+        return -1;
-+    }
-+    size = len;
-+
-+    /* Unpack the image if it is a EFI zboot image */
-+    if (unpack_efi_zboot_image(&buffer, &size) < 0) {
-+        g_free(buffer);
-+        return -1;
-+    }
-+
-+    hdr = (struct loongarch_linux_hdr *)buffer;
-+
-+    if (extract32(le32_to_cpu(hdr->mz_magic), 0, 16) != MZ_MAGIC ||
-+        le32_to_cpu(hdr->linux_pe_magic) != LINUX_PE_MAGIC) {
-+        g_free(buffer);
-+        return -1;
-+    }
-+
-+    /* Early kernel versions may have those fields in virtual address */
-+    *kernel_entry = extract64(le64_to_cpu(hdr->kernel_entry),
-+                              0, TARGET_PHYS_ADDR_SPACE_BITS);
-+    *kernel_low = extract64(le64_to_cpu(hdr->load_offset),
-+                            0, TARGET_PHYS_ADDR_SPACE_BITS);
-+    *kernel_high = *kernel_low + size;
-+
-+    rom_add_blob_fixed(filename, buffer, size, *kernel_low);
-+
-+    g_free(buffer);
-+
-+    return size;
-+}
-+
- static int64_t load_kernel_info(struct loongarch_boot_info *info)
- {
-     uint64_t kernel_entry, kernel_low, kernel_high;
-@@ -270,6 +334,11 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
-                            &kernel_entry, &kernel_low,
-                            &kernel_high, NULL, 0,
-                            EM_LOONGARCH, 1, 0);
-+    if (kernel_size < 0) {
-+        kernel_size = load_loongarch_linux_image(info->kernel_filename,
-+                                                 &kernel_entry, &kernel_low,
-+                                                 &kernel_high);
-+    }
- 
-     if (kernel_size < 0) {
-         error_report("could not load kernel '%s': %s",
+Right, so there's no information we can get at this point I think. But
+raising will still trigger the dump later on.
 
--- 
-2.43.0
+>
+> In all cases, IMHO this would be better the debug lines work with both pure
+> structs and sections.
 
+Yeah, I need to change that to something generic.
+
+>
+>> +
+>>          # When we see compressed array elements, unfold them here
+>>          new_fields = []
+>>          for field in self.desc['struct']['fields']:
+>> @@ -477,6 +481,11 @@ def read(self):
+>>                      raise Exception("Subsection %s not found at offset %x" % ( subsection['vmsd_name'], self.file.tell()))
+>>                  name = self.file.readstr()
+>>                  version_id = self.file.read32()
+>> +
+>> +                if not subsection:
+>> +                    raise Exception("Empty description for subsection %s" %
+>> +                                    name)
+>
+> This is checking subsection==None??  I doubt whether this will hit..
+
+Well, there could be a None in the list of subsections somehow, no?
+
+>
+>> +
+>>                  self.data[name] = VMSDSection(self.file, version_id, subsection, (name, 0))
+>>                  self.data[name].read()
+>>  
+>> @@ -575,9 +584,8 @@ def __init__(self, filename):
+>>          self.filename = filename
+>>          self.vmsd_desc = None
+>>  
+>> -    def read(self, desc_only = False, dump_memory = False, write_memory = False):
+>> -        # Read in the whole file
+>> -        file = MigrationFile(self.filename)
+>> +    def _read(self, file, vmsd_json, desc_only = False, dump_memory = False,
+>> +              write_memory = False):
+>>  
+>>          # File magic
+>>          data = file.read32()
+>> @@ -589,7 +597,7 @@ def read(self, desc_only = False, dump_memory = False, write_memory = False):
+>>          if data != self.QEMU_VM_FILE_VERSION:
+>>              raise Exception("Invalid version number %d" % data)
+>>  
+>> -        self.load_vmsd_json(file)
+>> +        self.load_vmsd_json(file, vmsd_json)
+>>  
+>>          # Read sections
+>>          self.sections = collections.OrderedDict()
+>> @@ -632,12 +640,25 @@ def read(self, desc_only = False, dump_memory = False, write_memory = False):
+>>                      raise Exception("Mismatched section footer: %x vs %x" % (read_section_id, section_id))
+>>              else:
+>>                  raise Exception("Unknown section type: %d" % section_type)
+>> -        file.close()
+>>  
+>> -    def load_vmsd_json(self, file):
+>> +    def read(self, desc_only = False, dump_memory = False,
+>> +             write_memory = False):
+>> +        file = MigrationFile(self.filename)
+>>          vmsd_json = file.read_migration_debug_json()
+>> +
+>> +        try:
+>> +            self._read(file, vmsd_json, desc_only, dump_memory, write_memory)
+>> +        except:
+>> +            raise Exception("Full JSON dump:\n%s", vmsd_json)
+>
+> Better dump the Exception line itself too? IIUC that needs things like:
+>
+>   except Exception as e:
+>       raise Exception(XXX, e, vmsd_json)
+
+It already shows both exceptions in the form:
+
+Traceback (most recent call last):
+  <backtrace>
+Exception: <msg>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  <backtrace>
+Exception: ('Full JSON dump:\n%s', '{"configuration": {"vmsd_name" ...
+
+>
+> More below..
+>
+>> +        finally:
+>> +            file.close()
+>> +
+>> +    def load_vmsd_json(self, file, vmsd_json):
+>>          self.vmsd_desc = json.loads(vmsd_json, object_pairs_hook=collections.OrderedDict)
+>>          for device in self.vmsd_desc['devices']:
+>> +            if 'fields' not in device:
+>> +                raise Exception("vmstate for device %s has no fields" %
+>> +                                device['name'])
+>
+> This looks a valid check, though I still doubt whether this would hit at
+> all for this specific error (which looks like a top level STRUCT of a
+> section, that is missing "fields").
+
+Ok, but it's a (VMSDSection, device) tuple below. That "device" might
+end up in the constructor of the FieldStruct:
+
+MigrationDump.load_vmsd_json:
+  ...
+  value = ( VMSDSection, device )
+  self.section_classes[key] = value
+  ...
+
+MigrationDump.read:
+  ...
+  classdesc = self.section_classes[section_key]
+  section = classdesc[0](file, version_id, classdesc[1], section_key)
+
+
+class VMSDSection(VMSDFieldStruct):
+    def __init__(self, file, version_id, device, section_key):
+        ...
+        # A section really is nothing but a FieldStruct :)
+        super(VMSDSection, self).__init__({ 'struct' : desc }, file)
+
+>>              key = (device['name'], device['instance_id'])
+>>              value = ( VMSDSection, device )
+>>              self.section_classes[key] = value
+>> -- 
+>> 2.35.3
+>> 
+>
+> For the capture part, would it be easier if we trap at the very top level
+> once and for all, then try to dump the vmsd_desc as long as existed?  Like
+> this:
+>
+> ====8<====
+> @@ -685,9 +686,15 @@ def default(self, o):
+>      f.close()
+>  elif args.dump == "state":
+>      dump = MigrationDump(args.file)
+> -    dump.read(dump_memory = args.memory)
+> -    dict = dump.getDict()
+> -    print(jsonenc.encode(dict))
+> +    try:
+> +        dump.read(dump_memory = args.memory)
+
+This is not the only dump.read() call in the file. Ideally we'd wrap
+them all. But then there's a slight clash with the parameter validation
+part (args.dump == ...) because it raises if no valid option is used.
+
+I'll try to improve this a bit. I was just trying to get this thing to
+spit something useful so we can unblock the migration PR.
+
+> +        dict = dump.getDict()
+> +        print(jsonenc.encode(dict))
+> +    except Exception as e:
+> +        # If loading vmstate stream failed, try the best to dump vmsd desc
+> +        raise Exception(
+> +            f"Caught exception when reading dump: {e}\n"
+> +            f"Trying to dump vmsd_desc: {jsonenc.encode(dump.vmsd_desc)}")
+
+I wanted to avoid doing any processing after the error because there's
+the chance there's Python issue during decoding. But I can maybe store
+the string instead at load_vmsd_json.
+
+>  elif args.dump == "desc":
+>      dump = MigrationDump(args.file)
+>      dump.read(desc_only = True)
+> ====8<====
+>
+> So no matter what caused error, fallback to try dump vmsd_desc as long as
+> available.
+>
+> Thanks,
 
