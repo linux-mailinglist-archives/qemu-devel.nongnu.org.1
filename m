@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DB49FFAD5
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 16:14:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9B749FFAD4
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 16:14:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTMt0-0007YE-G3; Thu, 02 Jan 2025 10:13:24 -0500
+	id 1tTMsz-0007YG-1M; Thu, 02 Jan 2025 10:13:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTMsk-0007Us-6n
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 10:13:08 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTMsn-0007Vc-0c
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 10:13:11 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTMsc-0006VG-0o
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 10:13:01 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-4361fe642ddso121002215e9.2
- for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 07:12:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTMsj-0006Vo-0y
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 10:13:07 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43635796b48so69502665e9.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 07:13:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735830776; x=1736435576; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735830781; x=1736435581; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SedjiUgYQYU6AzbLGFtcjZEu6+G941iL/2CKfBNylU4=;
- b=QYuWcKjUgvQsnL9CYxPmVP4sBXfViWf56rCj/EdVf1xtxV6eCW9AN1mcK8MCJQ+gAR
- 0xrIpvy74gJC6AdwVEO4ghxHXaHPU4UQgI2K1HItDx7YrWbGlJnFYAAC6pOvGfkav9qh
- Cl2fdeX8E3dpY39OXtYEtI39fm0yN3OUdkeTPaYoQxd9fT+niL97METHZHbBQFvrqpJs
- ShQTe9CCmOmMvIHJx1IJcHobYRBPcyVR5FarOO5v9R+8QwTTjFCh/LYRuCJPs+f8zMFA
- kQc7Sdv5zi9IilqIUn7d2o5EA2TTBdBpa2duM3c8rpicTVg64fyA5XhLDVZyOoY6HAKy
- rjjA==
+ bh=WJKhnsw6sz3wiF8lOKV7uw4NqCWo3JxX8CcFZUizL7g=;
+ b=NbYniyuBq9FrWTpjvs576Yj9/lC+HRCsUB1V2Xzd1H3PPFLz091CUAfC4ryXNz4ItN
+ ulOoh8QhBEmXXCXa949PWktdiXyGBX5d/0JssP3xB/cByLRbHvgshSorkKCzxtkflOCN
+ nYgPztLe9cGBouP19BwX+pUrkJKJCWKBdW7/Z8UEN/iSS4K9PYeffiX0ytnDMCFcCPyx
+ RgzdtTZvO5DAea+MwhHVIW8JfIuW/nM83dU3vxnfsn5M8i4pVpwzyImU3kBq8koOqak2
+ PklxtWjQYLD+qxkZz0UpPlOwBUILilD63gCqBWJsEHoAZPABsWDVvtOnrS4xvUQFPpMw
+ npSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735830776; x=1736435576;
+ d=1e100.net; s=20230601; t=1735830781; x=1736435581;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SedjiUgYQYU6AzbLGFtcjZEu6+G941iL/2CKfBNylU4=;
- b=bxk5eOvPsbD1+FKaF3gtlJoJpMUOG1PFXJBbBkq8sNsqYPRdDbEZ+JXikhmW4LU0E6
- 91iViuHRIatonDpeeGaR3JoyjX8r3Z/pEiUCmzVNcT4mEQopTAbuqSXG6dZPZc8o+hOW
- Mrmk2iTpph4Gx6Dy+71DTE8g5xNNugKucaShSDvCrhNpkfdFM/H0zjY1RkVHe1j8yAPW
- JFbwkM9tH4784o7/IZ0V70mSJmYidJbSkQo34zLiKTxin/HNReDfsNa7kItffEfRqn6E
- O9wMVc/rntTeL6CUTEYsiKaf6j3Ug7B/cobclp9a179rKAG8kKKXA5b1QEuMWAm0NOt6
- OeOQ==
-X-Gm-Message-State: AOJu0Yzl79cLWXRFeTSQSq/rhXgVqJnsM+6mQanzyDKGC1VnhwUTlVOs
- V+X6OdH60rdMulE4UyqCcfmG/egBUozThRP2fLSB9fEuuyAvxQFtKg+5f9I984WBopzokGoZsoT
- bSDg7ig==
-X-Gm-Gg: ASbGncurs+0rKslHeOiHCTo1r/79neJzqINxSOaXLwR9EvdY0MkC2f1piwHr2kZ03qm
- rPMfi98nHhNBdCoefegWOhcADlHE/gXOUQuu6iZ6QwTgRhvmJq5oLsZvdmOAsYSEDChcKKShu8K
- 3MpdIZIesRJ/6isvnYgCJWz+H9xlGog8DJGPFALMwbrUQoHx9rTKTPpQdaivXuEvyJhyZCC3H0R
- +P98DMLX8bjQ77FnZgHfvTQKavk4S7lF3WesScjkWIOeb39fAk+aP3TsSlMm4lnh9RqpEcWfBN2
- hJB25Nfq21ROL25y9+w+Nu+BBTGC0QE=
-X-Google-Smtp-Source: AGHT+IGMtiY6Ms2cFmI5jQBbQ24EHWqBvymRMusjx9mCgcSOw9SBgpMh69aXrZfp4SUjc9wYuc14GQ==
-X-Received: by 2002:a05:600c:4748:b0:434:f804:a9b0 with SMTP id
- 5b1f17b1804b1-43668b78818mr372590985e9.29.1735830776258; 
- Thu, 02 Jan 2025 07:12:56 -0800 (PST)
+ bh=WJKhnsw6sz3wiF8lOKV7uw4NqCWo3JxX8CcFZUizL7g=;
+ b=O5mnZHOIs4A2+AbTB9ZeOGwRIvZb5yJGtrnCEfomX/RWxaAyW9J0+nNdkb+/1shWCC
+ QDU0gJd6QaEV60OqodSzmiIxiOmx4AyAnT8QwbzHIkQB2qSnsWs4Zoj3krPnynGgB9vM
+ NAMP6rhDkpU2+SFMaeK0EMiWPpkvNI5fW7LCThMXKmZ0Wu2+HfMozE8enxW+olYdxYzV
+ hmJyGs6LV/mN/5/2dKtVUJuqHlfDuNO+07H91gdoZ24UBDVvQR2z0ZBGTS9AAZb+pIEE
+ 3bf/ADIswIcwMtcVbFbYKvFw621o+HeUawiy1Jm6rMBUfydjlfF26COzhmunw4ZmJrqY
+ jFWQ==
+X-Gm-Message-State: AOJu0Yy+rUPY3aK6fY1gDFmCnRtRRyAhfPPt+6vHtszQAkG1OdnKin1l
+ Oa+ryr9Jsyyo61v5Nmh01v6h7YvMwYIw9hhKWlXQrxgvUFwvuPqeyuIXLYhRJCPJWEQ06Oy3iLI
+ XlgaG3g==
+X-Gm-Gg: ASbGncttO37CMF2sagIULDDuXmQbsyBDsy+HCBPQfhFsXnI5MEsrFsQhJeT7yFPnCCU
+ KFDs0BBYxUFY6JGJ0WymEGHqwNy95fAj2FwYQnKx8ic92/Ljc03z+PgkG9J0DO0jcG9j9pBQ7iL
+ UnwajyiYqIAjHkOFL61UlUOYoJy74hbJkeP43USPe+pzDdM1VgUurgdoL3eyIkuNK3t4R6VrKOU
+ P7RigwKLgkOUzqHeNh2JaDWyENQRiy0ldHj1VNUJ6myBT8hJEModCw7KBjRKZV0ZluRwx+6p11X
+ 6dW53Z2iJFOkQ6iK/BF0l0LqgB1Xs7Y=
+X-Google-Smtp-Source: AGHT+IE4JPVuNOMW4gJ/XfyPVyPWvdFnceGsMphKbjXGcE/1kT9xlfZMS9MJwHYvGmXYStd0ueS/FA==
+X-Received: by 2002:a05:600c:1c20:b0:436:76bf:51cc with SMTP id
+ 5b1f17b1804b1-43676bf5382mr337631465e9.12.1735830781091; 
+ Thu, 02 Jan 2025 07:13:01 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4366127c4d7sm454232475e9.34.2025.01.02.07.12.55
+ 5b1f17b1804b1-4364a376846sm459330385e9.0.2025.01.02.07.13.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 02 Jan 2025 07:12:55 -0800 (PST)
+ Thu, 02 Jan 2025 07:13:00 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
@@ -74,18 +74,17 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  Paolo Bonzini <pbonzini@redhat.com>,
  "Gonglei (Arei)" <arei.gonglei@huawei.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 02/10] qdev: Implement qemu_create_machine() for user
- emulation
-Date: Thu,  2 Jan 2025 16:12:36 +0100
-Message-ID: <20250102151244.59357-3-philmd@linaro.org>
+Subject: [PATCH v3 03/10] qdev: Call qemu_create_machine() on user emulation
+Date: Thu,  2 Jan 2025 16:12:37 +0100
+Message-ID: <20250102151244.59357-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250102151244.59357-1-philmd@linaro.org>
 References: <20250102151244.59357-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,43 +107,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To satisfy QOM containers design, implement qemu_create_machine()
-for user emulation, creating a 'fake' machine.
+For system emulation, qemu_create_machine() is
+called from qemu_init().
+TCG accelerator always calls tcg_init_machine().
+Use it to call qemu_create_machine() on user
+emulation.
 
-Suggested-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/core/qdev-user-stubs.c | 11 +++++++++++
- hw/core/meson.build       |  1 +
- 2 files changed, 12 insertions(+)
- create mode 100644 hw/core/qdev-user-stubs.c
+ accel/tcg/tcg-all.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/hw/core/qdev-user-stubs.c b/hw/core/qdev-user-stubs.c
-new file mode 100644
-index 00000000000..9d481a61dbf
---- /dev/null
-+++ b/hw/core/qdev-user-stubs.c
-@@ -0,0 +1,11 @@
-+#include "qemu/osdep.h"
+diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
+index c2565758876..e18b0c03f71 100644
+--- a/accel/tcg/tcg-all.c
++++ b/accel/tcg/tcg-all.c
+@@ -35,7 +35,9 @@
+ #include "qemu/atomic.h"
+ #include "qapi/qapi-builtin-visit.h"
+ #include "qemu/units.h"
+-#if !defined(CONFIG_USER_ONLY)
++#if defined(CONFIG_USER_ONLY)
 +#include "hw/qdev-core.h"
++#else
+ #include "hw/boards.h"
+ #endif
+ #include "internal-common.h"
+@@ -124,6 +126,10 @@ static int tcg_init_machine(MachineState *ms)
+     tcg_prologue_init();
+ #endif
+ 
++#ifdef CONFIG_USER_ONLY
++    qemu_create_machine(NULL);
++#endif
 +
-+void qemu_create_machine(QDict *qdict)
-+{
-+    Object *fake_machine_obj;
-+
-+    fake_machine_obj = object_property_add_new_container(object_get_root(),
-+                                                         "machine");
-+    object_property_add_new_container(fake_machine_obj, "unattached");
-+}
-diff --git a/hw/core/meson.build b/hw/core/meson.build
-index ce9dfa3f4bf..0f020fed1df 100644
---- a/hw/core/meson.build
-+++ b/hw/core/meson.build
-@@ -46,3 +46,4 @@ system_ss.add(files(
-   'vm-change-state-handler.c',
-   'clock-vmstate.c',
- ))
-+user_ss.add(files('qdev-user-stubs.c'))
+     return 0;
+ }
+ 
 -- 
 2.47.1
 
