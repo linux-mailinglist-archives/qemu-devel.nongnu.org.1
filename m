@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00429FFD61
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 19:08:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAC449FFD85
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 19:11:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTPbi-0007A1-PX; Thu, 02 Jan 2025 13:07:42 -0500
+	id 1tTPbp-0007UJ-HZ; Thu, 02 Jan 2025 13:07:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tTPbD-0006xw-T2
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 13:07:12 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1tTPbE-0006yD-Uo
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 13:07:19 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tTPb7-00057n-Q0
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 13:07:09 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-21661be2c2dso144676155ad.1
- for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 10:07:03 -0800 (PST)
+ id 1tTPb8-000581-WC
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 13:07:10 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-21670dce0a7so76204735ad.1
+ for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 10:07:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735841223; x=1736446023; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735841224; x=1736446024; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=hrD0/5NzV+BvoUzp4RbMZrucNLSTx7Ozt+v7L0p+ucA=;
- b=JUQu4WwJzEv+x/ttNMRA6LI55UuY2AKlRtzjBDLV/CO1OFiAovuZzeiMIonnLdmL5A
- +mZnngOvr3gIEsgPyxf3Qov0PUFikW72WjNGyuQ2seg1XhoZdnluSfepHPV+9nd7qa7H
- y8ppNlM0vhGtWrLNvAr9h3iPOSpOd9fX+Re601YajF7CkRjQdfs6uzhbxi0IQ8MmVzuq
- CrClk9r699XFvZV82gdWPbHRM1HbDw+4mPTcoXjqOZDYMEO+PQZ/DzCDc7ttbj9wF0SC
- grO3OZRthI1izI9wb9a0EDoofLx2ve58EK37y+0DwkHwT2s1EocRWKBkxQu5ZeWfACtX
- A8pg==
+ :reply-to; bh=GJ4xuN0abiG39iI8sM5F7gym2I2X5iLUcBaPTLDfKac=;
+ b=PDtVGQBObJ/zMcEsR3aRFKcZNvF+NsZqrLy0J335pn8dtgQN0XuVeinmM3khW4zCzF
+ sL5R8RG+iJqkhACCDqWvyUtrGBeGvUAc5GBrXp8gP4Xe0lzaJrmUke65MGoLXs5R3g0H
+ 29uuSbCusysxabn5qjAvsn48FzUq3i8gQgnVx9LZdtKcplE5hT0DYRQ7iQfR1e3I/t1h
+ Kd7JzS1MLhNEDX8Lm5i98ByApMYTPQexdssrjyUajRrHUfRQ+FtnPWtj9JXwyOUc9Ltd
+ TrMDi0UwlNXUWnuEri/C48T7xNQIoUZ7myWMVFdaVPf27ckuL8ZTFBI+yoJa5Nzy/aXl
+ clIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735841223; x=1736446023;
+ d=1e100.net; s=20230601; t=1735841224; x=1736446024;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hrD0/5NzV+BvoUzp4RbMZrucNLSTx7Ozt+v7L0p+ucA=;
- b=BEnzQJGKaSXB8K96Da6JS/t3+30ldBV4hiBubvTn/0a2RZFTCfSSVuUoqaLSlYS4BR
- 02jiFGhDLwyXKbjoURFxhqbkRUjIb/Pg/45XBDRtPQ34gVKSXwso+lgxB8OzMKavhlTY
- 3YA3Gcp3NjOPxiZ/ecrJESeUCL7BX07WShKpnmrIACSQ1Gls2sTeGhYGXobvhe1GcRXa
- xkhsB0lomVa0Hab32wrwvK7ZKBM9GCVV92I6Na6VBEaanTvAcUT2F1XwJehSzcuyi50s
- AYkSX1Gk4YGGd+BIjKNmSGtuIHtTIrjhOH8y/HTiNXpMzEdP3ABqxLzCZyeLJkr/sak1
- S54A==
-X-Gm-Message-State: AOJu0YxqUvCoBbqwsX7hZhmYbAsco7z/oLXqgnq+X27DQIwchd6/88MA
- pLO+XILoCzkpjCUo4uDi9HSK2QI1x0oqSUH6+KbwxSWwfLKA23Jthf8zM6bi9/8nsUqucxzDCzo
- I
-X-Gm-Gg: ASbGnctOy2EYjfPKvwUHWAI1J/5A9nImO9xwUmyiPxCD3icRs07Re/dY/4sgZ9OGXnn
- BiiTvffMa624urWt4PHn9wKlZwgWSXspa2LALW1SgT5GLZzYHYeNNn5x+eX1PStFXjVb4YEX17r
- u3qudZ8jzN7AWbzYHyjd/PTie86JDYuoygzOofrnEDLFeJpgoU1ri+cjQ+w2mSDDaLkKbTbL/WO
- uziu24MXldSNwGKAq78emvqz2yVkHF1nEc3nIYL4h5HBuP8VfnB14cEoqakeQ==
-X-Google-Smtp-Source: AGHT+IGSHdvAxeIMFG5sK2U5Emkhj1k0Yl4uHA530DYrAmyj4W1+x+5YtvpyNhjwBiobi1wBCYa1qQ==
-X-Received: by 2002:a05:6a20:9c9a:b0:1e1:b062:f403 with SMTP id
- adf61e73a8af0-1e5e07ffc53mr73826562637.34.1735841222879; 
- Thu, 02 Jan 2025 10:07:02 -0800 (PST)
+ bh=GJ4xuN0abiG39iI8sM5F7gym2I2X5iLUcBaPTLDfKac=;
+ b=V4LQiT8XJfC1pl9tg7/0OZLweaF8yo+0IaYTelou1H8QUW2pc7Rrl4Y9c29OgIuIyc
+ YgGQDZhmn/FOI3hZ3EWNyaKczlgIYtuBPcJELnX+NEDU97P7WAMUCRPekcLfz1s8PjsX
+ N+DdBihZhlB/2Nmy/hmSQHVJgcuUO8eNpBxVuWw5enba2TDBKc/D9Kb6j3PSwBkQqIMs
+ bIpSmp/lHyJWGMkCNVXQ2BdTvJegLyidDfuMr0rCRAZFriKcPqHDDZTPhXllgCJWBd3c
+ D4ofRTHDmxA4bUsC45rE2YBhRuWXMC9Kq7tUW6kf1HUJEkzEZcq4nEuV6AIFv2PUjlbE
+ Hghg==
+X-Gm-Message-State: AOJu0Yz78YTmPbnPB+4MsnAR3syo4L1pD57r0o4V5QJ8qGr6IY/APS7G
+ C4Gl2vB8U3bH71mpviJjPdcAl6orFTAJGXIAV5gRAcK1RhvWV2SsKTZTr//4vi0IbR9ccSKAX+s
+ +
+X-Gm-Gg: ASbGncsgwRZBbQLrCdqFDJ52f4HVWCRxqrrP7ehpVXJfmdIArcufhOvCezjGLfRSdw3
+ 1u7x0Pzr3zCpwzck7coNZv87edlcubYRPW3ry+riLYvrWqfr8IT4UT+bnrKt3InNKQ3a6koDJ0p
+ JNDbHMuDANHii1xrBcMdvt3H6rNwNGS8Zq1qFW4cjXaPAT6ZTlaA/0KShK/DpUGTPFCGPQQGBJ7
+ P9JCFXTpQSTzQaD+kLdoUweBCaAolaavPLcSfSj96DLTnqucIlA0kgdXukyYQ==
+X-Google-Smtp-Source: AGHT+IHAau0xcWbkgVStyzuWDGRkzfcEeqaRR9Rn94nRnsty07FgZoeQkpid9yRlvhgLE1ycBtYcZg==
+X-Received: by 2002:a05:6a21:9103:b0:1e0:de01:4407 with SMTP id
+ adf61e73a8af0-1e5e08431a6mr73496843637.37.1735841223739; 
+ Thu, 02 Jan 2025 10:07:03 -0800 (PST)
 Received: from stoup.. ([63.239.63.212]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72ad3393d5fsm20604456b3a.154.2025.01.02.10.07.02
+ d2e1a72fcca58-72ad3393d5fsm20604456b3a.154.2025.01.02.10.07.03
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Jan 2025 10:07:02 -0800 (PST)
+ Thu, 02 Jan 2025 10:07:03 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 09/73] target/arm: Use tcg_op_supported
-Date: Thu,  2 Jan 2025 10:05:49 -0800
-Message-ID: <20250102180654.1420056-10-richard.henderson@linaro.org>
+Subject: [PATCH 10/73] target/tricore: Use tcg_op_supported
+Date: Thu,  2 Jan 2025 10:05:50 -0800
+Message-ID: <20250102180654.1420056-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250102180654.1420056-1-richard.henderson@linaro.org>
 References: <20250102180654.1420056-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,88 +98,31 @@ Do not reference TCG_TARGET_HAS_* directly.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 10 ++++++----
- target/arm/tcg/translate-sve.c |  2 +-
- target/arm/tcg/translate.c     |  2 +-
- 3 files changed, 8 insertions(+), 6 deletions(-)
+ target/tricore/translate.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 7c65fc3a3b..86da0c702f 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -8219,6 +8219,7 @@ static bool trans_CCMP(DisasContext *s, arg_CCMP *a)
-     TCGv_i64 tcg_rn, tcg_y;
-     DisasCompare c;
-     unsigned nzcv;
-+    bool has_andc;
- 
-     /* Set T0 = !COND.  */
-     arm_test_cc(&c, a->cond);
-@@ -8249,17 +8250,18 @@ static bool trans_CCMP(DisasContext *s, arg_CCMP *a)
-     tcg_gen_subi_i32(tcg_t2, tcg_t0, 1);
- 
-     nzcv = a->nzcv;
-+    has_andc = tcg_op_supported(INDEX_op_andc_i32, TCG_TYPE_I32);
-     if (nzcv & 8) { /* N */
-         tcg_gen_or_i32(cpu_NF, cpu_NF, tcg_t1);
-     } else {
+diff --git a/target/tricore/translate.c b/target/tricore/translate.c
+index 0ef3743f3e..6e6edeadfa 100644
+--- a/target/tricore/translate.c
++++ b/target/tricore/translate.c
+@@ -3980,7 +3980,7 @@ static void decode_bit_andacc(DisasContext *ctx)
+                     pos1, pos2, &tcg_gen_andc_tl, &tcg_gen_and_tl);
+         break;
+     case OPC2_32_BIT_AND_NOR_T:
 -        if (TCG_TARGET_HAS_andc_i32) {
-+        if (has_andc) {
-             tcg_gen_andc_i32(cpu_NF, cpu_NF, tcg_t1);
++        if (tcg_op_supported(INDEX_op_andc_i32, TCG_TYPE_I32)) {
+             gen_bit_2op(cpu_gpr_d[r3], cpu_gpr_d[r1], cpu_gpr_d[r2],
+                         pos1, pos2, &tcg_gen_or_tl, &tcg_gen_andc_tl);
          } else {
-             tcg_gen_and_i32(cpu_NF, cpu_NF, tcg_t2);
-         }
-     }
-     if (nzcv & 4) { /* Z */
--        if (TCG_TARGET_HAS_andc_i32) {
-+        if (has_andc) {
-             tcg_gen_andc_i32(cpu_ZF, cpu_ZF, tcg_t1);
+@@ -4113,7 +4113,7 @@ static void decode_bit_orand(DisasContext *ctx)
+                     pos1, pos2, &tcg_gen_andc_tl, &tcg_gen_or_tl);
+         break;
+     case OPC2_32_BIT_OR_NOR_T:
+-        if (TCG_TARGET_HAS_orc_i32) {
++        if (tcg_op_supported(INDEX_op_orc_i32, TCG_TYPE_I32)) {
+             gen_bit_2op(cpu_gpr_d[r3], cpu_gpr_d[r1], cpu_gpr_d[r2],
+                         pos1, pos2, &tcg_gen_or_tl, &tcg_gen_orc_tl);
          } else {
-             tcg_gen_and_i32(cpu_ZF, cpu_ZF, tcg_t2);
-@@ -8270,7 +8272,7 @@ static bool trans_CCMP(DisasContext *s, arg_CCMP *a)
-     if (nzcv & 2) { /* C */
-         tcg_gen_or_i32(cpu_CF, cpu_CF, tcg_t0);
-     } else {
--        if (TCG_TARGET_HAS_andc_i32) {
-+        if (has_andc) {
-             tcg_gen_andc_i32(cpu_CF, cpu_CF, tcg_t1);
-         } else {
-             tcg_gen_and_i32(cpu_CF, cpu_CF, tcg_t2);
-@@ -8279,7 +8281,7 @@ static bool trans_CCMP(DisasContext *s, arg_CCMP *a)
-     if (nzcv & 1) { /* V */
-         tcg_gen_or_i32(cpu_VF, cpu_VF, tcg_t1);
-     } else {
--        if (TCG_TARGET_HAS_andc_i32) {
-+        if (has_andc) {
-             tcg_gen_andc_i32(cpu_VF, cpu_VF, tcg_t1);
-         } else {
-             tcg_gen_and_i32(cpu_VF, cpu_VF, tcg_t2);
-diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index 732453db6f..1a28d04f17 100644
---- a/target/arm/tcg/translate-sve.c
-+++ b/target/arm/tcg/translate-sve.c
-@@ -622,7 +622,7 @@ static void gen_bsl2n_i64(TCGv_i64 d, TCGv_i64 n, TCGv_i64 m, TCGv_i64 k)
-      *       =         | ~(m | k)
-      */
-     tcg_gen_and_i64(n, n, k);
--    if (TCG_TARGET_HAS_orc_i64) {
-+    if (tcg_op_supported(INDEX_op_orc_i64, TCG_TYPE_I64)) {
-         tcg_gen_or_i64(m, m, k);
-         tcg_gen_orc_i64(d, n, m);
-     } else {
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index c16b59ab88..1b5bddcad1 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -493,7 +493,7 @@ static void gen_add_CC(TCGv_i32 dest, TCGv_i32 t0, TCGv_i32 t1)
- static void gen_adc_CC(TCGv_i32 dest, TCGv_i32 t0, TCGv_i32 t1)
- {
-     TCGv_i32 tmp = tcg_temp_new_i32();
--    if (TCG_TARGET_HAS_add2_i32) {
-+    if (tcg_op_supported(INDEX_op_add2_i32, TCG_TYPE_I32)) {
-         tcg_gen_movi_i32(tmp, 0);
-         tcg_gen_add2_i32(cpu_NF, cpu_CF, t0, tmp, cpu_CF, tmp);
-         tcg_gen_add2_i32(cpu_NF, cpu_CF, cpu_NF, cpu_CF, t1, tmp);
 -- 
 2.43.0
 
