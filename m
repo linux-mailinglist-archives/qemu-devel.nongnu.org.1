@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 608459FFD6C
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 19:08:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 246C19FFDA1
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 19:16:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTPbn-0007Py-2t; Thu, 02 Jan 2025 13:07:47 -0500
+	id 1tTPbm-0007OP-Sx; Thu, 02 Jan 2025 13:07:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tTPbT-00072m-NS
+ id 1tTPbT-00072n-R0
  for qemu-devel@nongnu.org; Thu, 02 Jan 2025 13:07:29 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tTPbR-0005Cc-7F
+ id 1tTPbS-0005Co-07
  for qemu-devel@nongnu.org; Thu, 02 Jan 2025 13:07:27 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-215770613dbso117115835ad.2
- for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 10:07:24 -0800 (PST)
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-2161eb95317so163044535ad.1
+ for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 10:07:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735841244; x=1736446044; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735841245; x=1736446045; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=yTp4xXbVrPMCOjkMCkleN5D7ZHLekGUxbwpbvZU9AAQ=;
- b=Th0Y1p4XarCFQrq2bO19md2B85TBBMM608DmwmtJcYEvpNfc13Q9DCPkYrkZqSYWZx
- rdNCLT/6D5+RyDTX3UOHLp6JnvrFgaTuYbv/4tG+pEw/9fEdYnmbmtpGGE21mkAUbh/L
- zNWAUynM7lY8XvN5RvQYkOpsh4FuMouVw0lb0AYosYlnT/y6QLc2H+b+W8hWQh0IfrWr
- e0bWXWZZicvnUaodJd0UXpcyeGFpFQmxjSF9jim1/zCoLOF9ptuxxKtw2/Mb90SnpTFZ
- kd5Yji5mr9QUhuJc4dPgNDRIjCt3f4pXlkBcp2LZWZeALz4UHsUgHlue8OMOjrqXctr9
- 020Q==
+ :reply-to; bh=BCPUOA5Uk9H2cDEALtbrXdMj2dY8iECCbyoIuKpCyr0=;
+ b=PT9lyAPXuiwh8q4Z+EsyaI7EyuiIwRgQAc4HcJ/aNB+7qai47g0TU8cpmVpX43HvDz
+ ID1dj8vViFW1/nHYrCoU2TwMXg6QFEL04H4kdg101ew0Qyv1tefreHfvYNQ5Zjnm8Ria
+ 52VAoXxeoDv0Fze3vMlMT3iTk/Zj9i0pzZtoYGhus9YKkQMhQdLsVMfJKClhqatejO0B
+ JD8QE0KFxvz4/BleG2ODyO4mfr+0uk1z1sPMYRzWQgUH0pisvFZxvw8fE6p3usTg2R53
+ WIgHdHxRfH935BIKKUVrhMlJsDB5j0a9J2hb8HVTq0lp2i4uCGseq64U2NZhKDw0qhnL
+ VeiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735841244; x=1736446044;
+ d=1e100.net; s=20230601; t=1735841245; x=1736446045;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yTp4xXbVrPMCOjkMCkleN5D7ZHLekGUxbwpbvZU9AAQ=;
- b=iu8VfNa/1/kSLqcZOiNEFi0EyK7GStPqjp/3Lv2PsPmN26GntXehrHMRmoEPX+cXR4
- 6tbPZXwtY1bdKE8yBHPrc1GuaRCnaFVuC2fwOaL0ykZGMWMrKogipUio6/OU/w+SfJ2B
- GYvMIgqP+24+OItUx3lv0r9oFYmfQRIPrSn3vUscHP0HgBdduwuvb6vpu8Nb/wmYDIzN
- II3wRgWwvhdisnKVc+pOrhCyTmw/YJAuJVjSvIRvtqvW1G3/bRphPYGV0XpJ7mcCNI7g
- FnkukjAoZZepBNyw2+1ImXlDRYAFKN6T0zt1Rvt8zUtk33Mnwh/6RL0IFUH+9k8QuTzO
- KhRA==
-X-Gm-Message-State: AOJu0Ywwu7cOFEh5oFjB4tpiY7CbcwqTolZoyuTLGr/exZ7EQbJbFG84
- SpxJdn1AjbNfI4s1LHJKSSntMG3zaCFJJassacHGMAItkzR2UQ1JmG9kVOn3i099ufGuYVBpOWx
- 9
-X-Gm-Gg: ASbGnct4tZTMJ24q+oztTJifzayCrty8UYrDe+3zi860cDV1/Ka5U6T2z01d491tsJD
- yf1rzDvcIZqlJuaw/qxaMpoIAuC2GxEnBTmBdEOheExZKIg9EPDKHfcjtSSiukSkckaZS5OLI7S
- BJKALJXpPIZ+hLwQ3zZbBWV5uQPTILtL0HmU4d+SuyaWxmAzTKXgxwRtS4LUP9XVniucyMa1w+0
- Pbo5KRrVLMQeuv42jHsX8eaOiTl2737YGR9qH+g37hZafJvqTGBmQ6Gapg+HA==
-X-Google-Smtp-Source: AGHT+IH2gfattPxM/GU0kuZ152rKmDVTjihXxd2+R+8UAafkLVCnPnsgyuOplhqV2E06xls4SXGgBg==
-X-Received: by 2002:a05:6a20:8412:b0:1e1:b727:1801 with SMTP id
- adf61e73a8af0-1e5e07a55e8mr70058167637.27.1735841243952; 
- Thu, 02 Jan 2025 10:07:23 -0800 (PST)
+ bh=BCPUOA5Uk9H2cDEALtbrXdMj2dY8iECCbyoIuKpCyr0=;
+ b=TjlCNNTTRUIJHTnHf/w0OZzcOAiZQcDMNufjENvCDl9pZanXXnwsRJ1PBV4Tcus1FM
+ EiFy27srfP7D5mVv4taJa0ZYWWyqYqqVezcdmWmcHhjAIZFX4u41dG7IBmBYEfJmWnc8
+ qdyBHnVefPkK4EFkbAPet6Zo6vnf8MJb4S+BaN6RuLLidRIqCYcIukVk/2gZJ/35NpRf
+ nt7rm16Od4bZmobmf9kaFHIf8Go+x3hpfcUDKHTE7sq56YKz+m+2n9RjUX7GeO28g1Df
+ wN6mXe8+xeVfH+r829khzeO+aaDIiNlGg9lJvmsGjCYFrPhNiWXvcvnfvLcHyeK0pEs9
+ 2aig==
+X-Gm-Message-State: AOJu0YyXTU2cycYysNkjeriBgpa1FLYuwMPMyenRHfdiJQhNvdLJBn6W
+ 38Aq7nHLZaQoe+GSwJ4BGpsv253KsnJcVt+YihX/2S3q6euLhUMs7+jeX4ymUt6yGHAYWAU6szL
+ x
+X-Gm-Gg: ASbGnctQXxAI/iYPLLxPa9VljbjsgsmmDNsx8efKX4c7bB+9PSKxkb5kVmNd7+ZTMA/
+ V24VVufsI0Va0MRIEZwJMjrP9SfTHhelXsefbdHNGA4U95b65q8BlXn3Xf7WfF9/AYNXZojC7p5
+ pDDMK0xEqg3+5XQs2gEd2HMOEPbaK6TlXVo3aShk2TpvtOxzualPGVg1veWd/NhYX4diUchnOu9
+ roSmE9By2kLyrqoPTbxwxv6N/+Pec4aq4KIk669OzAHbiehJnHg2HCfgLzw7g==
+X-Google-Smtp-Source: AGHT+IHAW3yFQNJMmryqFdrCVhLDlGTZEWJ/es/oHTXypSVspcDKWv7uiP2q40dSR8SOqpFXm2sZVA==
+X-Received: by 2002:a05:6a20:1589:b0:1db:e509:c0a8 with SMTP id
+ adf61e73a8af0-1e5e0497ca3mr69069087637.21.1735841244677; 
+ Thu, 02 Jan 2025 10:07:24 -0800 (PST)
 Received: from stoup.. ([63.239.63.212]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72ad3393d5fsm20604456b3a.154.2025.01.02.10.07.23
+ d2e1a72fcca58-72ad3393d5fsm20604456b3a.154.2025.01.02.10.07.24
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Jan 2025 10:07:23 -0800 (PST)
+ Thu, 02 Jan 2025 10:07:24 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 37/73] tcg/ppc: Fold the ext{8, 16,
+Subject: [PATCH 38/73] tcg/riscv64: Fold the ext{8, 16,
  32}[us] cases into {s}extract
-Date: Thu,  2 Jan 2025 10:06:17 -0800
-Message-ID: <20250102180654.1420056-38-richard.henderson@linaro.org>
+Date: Thu,  2 Jan 2025 10:06:18 -0800
+Message-ID: <20250102180654.1420056-39-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250102180654.1420056-1-richard.henderson@linaro.org>
 References: <20250102180654.1420056-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,111 +100,124 @@ This is preparatory to removing the specialized extracts.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/ppc/tcg-target-has.h | 16 ++++++++++++++--
- tcg/ppc/tcg-target.c.inc | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 44 insertions(+), 2 deletions(-)
+ tcg/riscv/tcg-target-has.h | 39 ++++++++++++++++++++++++++++++++++----
+ tcg/riscv/tcg-target.c.inc | 34 +++++++++++++++++++++++++++++++++
+ 2 files changed, 69 insertions(+), 4 deletions(-)
 
-diff --git a/tcg/ppc/tcg-target-has.h b/tcg/ppc/tcg-target-has.h
-index fba392613b..b3a9526ee3 100644
---- a/tcg/ppc/tcg-target-has.h
-+++ b/tcg/ppc/tcg-target-has.h
-@@ -48,7 +48,7 @@
- #define TCG_TARGET_HAS_ext16s_i32       1
- #define TCG_TARGET_HAS_deposit_i32      1
- #define TCG_TARGET_HAS_extract_i32      1
+diff --git a/tcg/riscv/tcg-target-has.h b/tcg/riscv/tcg-target-has.h
+index 08096d0625..efebc46109 100644
+--- a/tcg/riscv/tcg-target-has.h
++++ b/tcg/riscv/tcg-target-has.h
+@@ -34,8 +34,8 @@
+ #define TCG_TARGET_HAS_orc(T)           (T <= TCG_TYPE_REG && (cpuinfo & CPUINFO_ZBB))
+ 
+ #define TCG_TARGET_HAS_deposit_i32      0
+-#define TCG_TARGET_HAS_extract_i32      0
 -#define TCG_TARGET_HAS_sextract_i32     0
++#define TCG_TARGET_HAS_extract_i32      1
 +#define TCG_TARGET_HAS_sextract_i32     1
  #define TCG_TARGET_HAS_extract2_i32     0
+ #define TCG_TARGET_HAS_ext8s_i32        1
+ #define TCG_TARGET_HAS_ext16s_i32       1
+@@ -46,8 +46,8 @@
  #define TCG_TARGET_HAS_qemu_st8_i32     0
  
-@@ -62,7 +62,7 @@
- #define TCG_TARGET_HAS_ext32u_i64       0
- #define TCG_TARGET_HAS_deposit_i64      1
- #define TCG_TARGET_HAS_extract_i64      1
+ #define TCG_TARGET_HAS_deposit_i64      0
+-#define TCG_TARGET_HAS_extract_i64      0
 -#define TCG_TARGET_HAS_sextract_i64     0
++#define TCG_TARGET_HAS_extract_i64      1
 +#define TCG_TARGET_HAS_sextract_i64     1
  #define TCG_TARGET_HAS_extract2_i64     0
- #endif
+ #define TCG_TARGET_HAS_extr_i64_i32     1
+ #define TCG_TARGET_HAS_ext8s_i64        1
+@@ -81,4 +81,35 @@
  
-@@ -95,4 +95,16 @@
- #define TCG_TARGET_HAS_cmpsel_vec       1
  #define TCG_TARGET_HAS_tst_vec          0
  
-+#define TCG_TARGET_extract_valid(type, ofs, len)   1
++static inline bool
++tcg_target_extract_valid(TCGType type, unsigned ofs, unsigned len)
++{
++    if (ofs == 0) {
++        switch (len) {
++        case 16:
++            return cpuinfo & CPUINFO_ZBB;
++        case 32:
++            return (cpuinfo & CPUINFO_ZBA) && type == TCG_TYPE_I64;
++        }
++    }
++    return false;
++}
++#define TCG_TARGET_extract_valid  tcg_target_extract_valid
 +
 +static inline bool
 +tcg_target_sextract_valid(TCGType type, unsigned ofs, unsigned len)
 +{
-+    if (type == TCG_TYPE_I64 && ofs + len == 32) {
-+        return true;
++    if (ofs == 0) {
++        switch (len) {
++        case 8:
++        case 16:
++            return cpuinfo & CPUINFO_ZBB;
++        case 32:
++            return type == TCG_TYPE_I64;
++        }
 +    }
-+    return ofs == 0 && (len == 8 || len == 16);
++    return false;
 +}
 +#define TCG_TARGET_sextract_valid  tcg_target_sextract_valid
 +
  #endif
-diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-index 94997b126f..69de135ee7 100644
---- a/tcg/ppc/tcg-target.c.inc
-+++ b/tcg/ppc/tcg-target.c.inc
-@@ -3430,13 +3430,41 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
+index 7d1bba100a..8122187665 100644
+--- a/tcg/riscv/tcg-target.c.inc
++++ b/tcg/riscv/tcg-target.c.inc
+@@ -2343,6 +2343,36 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+         tcg_out_mb(s, a0);
          break;
  
-     case INDEX_op_extract_i32:
-+        if (args[2] == 0 && args[3] <= 16) {
-+            tcg_out32(s, ANDI | SAI(args[1], args[0], (1 << args[3]) - 1));
-+            break;
-+        }
-         tcg_out_rlw(s, RLWINM, args[0], args[1],
-                     32 - args[2], 32 - args[3], 31);
-         break;
-     case INDEX_op_extract_i64:
-+        if (args[2] == 0 && args[3] <= 16) {
-+            tcg_out32(s, ANDI | SAI(args[1], args[0], (1 << args[3]) - 1));
-+            break;
-+        }
-         tcg_out_rld(s, RLDICL, args[0], args[1], 64 - args[2], 64 - args[3]);
-         break;
- 
-+    case INDEX_op_sextract_i64:
-+        if (args[2] + args[3] == 32) {
-+            if (args[2] == 0) {
-+                tcg_out_ext32s(s, args[0], args[1]);
-+            } else {
-+                tcg_out_sari32(s, args[0], args[1], args[2]);
-+            }
++    case INDEX_op_extract_i64:
++        if (a2 == 0 && args[3] == 32) {
++            tcg_out_ext32u(s, a0, a1);
 +            break;
 +        }
 +        /* FALLTHRU */
-+    case INDEX_op_sextract_i32:
-+        if (args[2] == 0 && args[3] == 8) {
-+            tcg_out_ext8s(s, TCG_TYPE_I32, args[0], args[1]);
-+        } else if (args[2] == 0 && args[3] == 16) {
-+            tcg_out_ext16s(s, TCG_TYPE_I32, args[0], args[1]);
++    case INDEX_op_extract_i32:
++        if (a2 == 0 && args[3] == 16) {
++            tcg_out_ext16u(s, a0, a1);
 +        } else {
 +            g_assert_not_reached();
 +        }
 +        break;
 +
-     case INDEX_op_movcond_i32:
-         tcg_out_movcond(s, TCG_TYPE_I32, args[5], args[0], args[1], args[2],
-                         args[3], args[4], const_args[2]);
-@@ -4159,6 +4187,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
++    case INDEX_op_sextract_i64:
++        if (a2 == 0 && args[3] == 32) {
++            tcg_out_ext32s(s, a0, a1);
++            break;
++        }
++        /* FALLTHRU */
++    case INDEX_op_sextract_i32:
++        if (a2 == 0 && args[3] == 8) {
++            tcg_out_ext8s(s, TCG_TYPE_REG, a0, a1);
++        } else if (a2 == 0 && args[3] == 16) {
++            tcg_out_ext16s(s, TCG_TYPE_REG, a0, a1);
++        } else {
++            g_assert_not_reached();
++        }
++        break;
++
+     case INDEX_op_mov_i32:  /* Always emitted via tcg_out_mov.  */
+     case INDEX_op_mov_i64:
+     case INDEX_op_call:     /* Always emitted via tcg_out_call.  */
+@@ -2619,6 +2649,10 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_extrl_i64_i32:
+     case INDEX_op_extrh_i64_i32:
+     case INDEX_op_ext_i32_i64:
++    case INDEX_op_extract_i32:
++    case INDEX_op_extract_i64:
++    case INDEX_op_sextract_i32:
++    case INDEX_op_sextract_i64:
      case INDEX_op_bswap16_i32:
      case INDEX_op_bswap32_i32:
-     case INDEX_op_extract_i32:
-+    case INDEX_op_sextract_i32:
-     case INDEX_op_ld8u_i64:
-     case INDEX_op_ld8s_i64:
-     case INDEX_op_ld16u_i64:
-@@ -4178,6 +4207,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-     case INDEX_op_bswap32_i64:
-     case INDEX_op_bswap64_i64:
-     case INDEX_op_extract_i64:
-+    case INDEX_op_sextract_i64:
-         return C_O1_I1(r, r);
- 
-     case INDEX_op_st8_i32:
+     case INDEX_op_bswap16_i64:
 -- 
 2.43.0
 
