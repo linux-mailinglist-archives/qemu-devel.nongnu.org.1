@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40F889FFD5F
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 19:08:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C019FFD7C
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 19:11:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTPb9-0006wL-AX; Thu, 02 Jan 2025 13:07:07 -0500
+	id 1tTPbD-0006x9-Fq; Thu, 02 Jan 2025 13:07:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tTPb2-0006vj-7H
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 13:07:00 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1tTPb2-0006vl-SO
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 13:07:01 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tTPaz-00056t-GF
+ id 1tTPaz-00056w-TE
  for qemu-devel@nongnu.org; Thu, 02 Jan 2025 13:06:59 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-21631789fcdso118432865ad.1
- for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 10:06:56 -0800 (PST)
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-21634338cfdso227776615ad.2
+ for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 10:06:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1735841216; x=1736446016; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=272K03IG9fFwpfNqUsDhlxebfJi0GyPACpBEPh/+9UU=;
- b=Sam0QAzeYGyRnOu6yrCLp4FnlCQHHSNgak3OT3ECDe5AbqlmqziVm/eNnzURomX2hj
- H5kx+vz0QD7Pp8wMv9Ow7ManyhlJYOYhm83HKuUgu5lw16lHXs00GrGE4/96Tigakaen
- vv18+2ykJxm9nsq+fgI6WjpQCURL1BtvKc+99P+SarjvaSmzjNnc/hcXT/q+u8tk28at
- lD5V4W5E9jNT8RbeCdtBoERZxC3QSrERO5Pae49a5L6qCB2SRg3Lkjhr4FOMDk/hHIKu
- mqQSf/YruIlW6jlI++P3GfUJoiySaX5YuwVxjXDQc24BfoqIyo4uPCY7gvc/ti8auzfN
- LotQ==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=jqJGVcj4WVAzQUDTHqtmH5ZpB1qepIgknwutcY6cZjw=;
+ b=i3er0YOhcUueO+M1IdXZ9Qn4G87T8JVP32cNrL+cgbAN3Evf6HbFehWwrYWiv4ZIey
+ Xn7FvN/oEe40om7nwVEWsKC0DHC8FJNi+6RpVCGtO/kg8Vnvs9MDqCQq31qiS1zcRv/6
+ Yc+6C6oHa2RLuNlAiBKP5214A2BQQ9+brONQYYt/lmTSYCkTXUToB+Q2JS43+J4+1+w6
+ OLn4mXvcXAVY4sCGI8cGbV5YaJou69+uNutUgsq5d7FHKm85es3yqriVB76xT7EtRR0n
+ 6cNTv4d0Y0DdsYXxuDnRX7NS5fOFQA3yffve+OO0hi9nXcBDUf4wYlHBn8kYLBM9fs6A
+ o9nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1735841216; x=1736446016;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=272K03IG9fFwpfNqUsDhlxebfJi0GyPACpBEPh/+9UU=;
- b=MSgYD2vlm6LQaRNB7ct0+aWmfopGsPohoNDpRl5C9CeGwXwtX1etuCrz0O9v9YllrY
- saNMbQbUSPOvTLGGU5yqxIFQc2zyFdSEESDW83t9tc5nmOqokkmcn+df9h7spKhUftua
- 5+9Hw6dtXvXIbP34C5plBNyL8YpvvPYBSvTrJRM8gcSA8lM/kyPZ0SQPljHqIcsIS8sh
- 12pS3uC2L+sdBEF759NE+4cul1uY4thZtPrm9cYkrmjfMFU8P+xsLtWZoTu9q5rCqSLd
- 70qC4GUa+HxoUMIZz6liW2ArkJ/muDTV9melKwjp77WcLQxWfSiwHyY73a6cS2zGyjRz
- swzg==
-X-Gm-Message-State: AOJu0YwZJrqoN1F++zULmL47OOXoZbGvZfxlwiPFCxhjBz53+pG8NLAv
- Bkz/itnuSAuocTG/5tcAyBKS4yPveU5xQjgA2g63QO9ghvEaHQ1KtaA+94fRAh8bnFg88N52zui
- K
-X-Gm-Gg: ASbGncs6m/Yk+47UguCedCK+P89vlkh7BArMnEM2NCyH96x5Ynr06BS1HYZN6B/njth
- GzHennwLkPNI/jnmVy7a+aS0EzwgC1nc09HNjx/ljEqxg39Bs8YLU03RLPUm9Fbzl5FEBerlN/p
- 7oHPy26QNHbOLvwa7ycTFZu0cJ0Dzt3nu2kRu++KKZCet5Kbk1LOE32U4D4Jr5F+BQ618vMD/bH
- pk6gyBWByKw5obT8my2RQ72GsE9eZVyRsh3G5DTpKfYBsvdz2VPwOxwnUn/+w==
-X-Google-Smtp-Source: AGHT+IEi0MsigXC2EQx8CdUVsU9bAa6dK2BbJFcOjzYhmcmzQ4kfQIzn4I5fxS+KHq35zd6yz3VTtw==
-X-Received: by 2002:a05:6a20:6a0d:b0:1e1:a920:225d with SMTP id
- adf61e73a8af0-1e5e1fa207dmr72040084637.19.1735841215642; 
- Thu, 02 Jan 2025 10:06:55 -0800 (PST)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jqJGVcj4WVAzQUDTHqtmH5ZpB1qepIgknwutcY6cZjw=;
+ b=YrgRzTn4bKAfyl8CTSwbTLukBKr81I8oVpO9BwgsLyKd4ewQFNdAFQ4FqoQHh8BUDJ
+ 0aYwFlcvChXyESK4RQ+UqgM3hP3b3S7GrWh/bN8Xj+p9cfvtcd/j9xU1sgo4uSfZC+3Y
+ xS863UhzUWY4jajNU1yCileqlzvlK9OvJhBIZSmqbYhlgKcMIlTpXK0LUE5c7CxArndH
+ yk+M0ekRMm/itisi/G605WKVV7rawfiJGYHhbW+sfEn13bz5d531qwqSIFseS/iI0djk
+ OL4rzjLCBT9LX25/Peoi5+4zazMvJQsRP/lS++8/U4sd7Qorf1515l64AgmAWA8GFOT+
+ ix8w==
+X-Gm-Message-State: AOJu0YznPOM6mCCDJjSnZG27RKcW6H7lvj9+YRerOmd3qXoPMzSlF0W5
+ /3a7mTINfyd2YMJ7526WcRP0q4mcUOi3RNijzNG5SXxJH9AShwfIkTJJ7hknIxRhtS0YFVXOrkr
+ O
+X-Gm-Gg: ASbGncu/26HW0BifnAaYInPnvZbSfZh2z8Sq8Elvpy1zUukpDL7bqe76lhg9Oop5msK
+ MRb8CagZ0uPiBl1y7CDyP64+49z8Ty4htUJlcEaSzULmrn5FV6NwYhQOZP2FX7NfKpwouy8oEdd
+ kZyfHDZUt+BUThYR7DXQUEEvOQ2Qsql9u8sgv0r9qLVxuwYMdVyzLDbbE+51/i9w3uG8WPMtFs6
+ niwNdP5G7Xaq0TeDoE0WgVn3t2Myh7+4yCIKEAihx7wtARZ2VGNBAsNII9Kfw==
+X-Google-Smtp-Source: AGHT+IHdcWN2KZw0xTv9QMok/gOYjRP3XySRhD12NmtAtJipo/wj/dEzvq+3b5zkkq3fD9mIx1KA3Q==
+X-Received: by 2002:a05:6a00:3c84:b0:725:4615:a778 with SMTP id
+ d2e1a72fcca58-72abdd7a148mr52824931b3a.7.1735841216489; 
+ Thu, 02 Jan 2025 10:06:56 -0800 (PST)
 Received: from stoup.. ([63.239.63.212]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72ad3393d5fsm20604456b3a.154.2025.01.02.10.06.55
+ d2e1a72fcca58-72ad3393d5fsm20604456b3a.154.2025.01.02.10.06.56
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Jan 2025 10:06:55 -0800 (PST)
+ Thu, 02 Jan 2025 10:06:56 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 00/73] tcg: Merge *_i32 and *_i64 opcodes
-Date: Thu,  2 Jan 2025 10:05:40 -0800
-Message-ID: <20250102180654.1420056-1-richard.henderson@linaro.org>
+Subject: [PATCH 01/73] tcg: Add TCGOp.type
+Date: Thu,  2 Jan 2025 10:05:41 -0800
+Message-ID: <20250102180654.1420056-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250102180654.1420056-1-richard.henderson@linaro.org>
+References: <20250102180654.1420056-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,212 +94,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we have individual opcodes for each integer type.
-This makes things difficult in tcg/optimize.c when we want
-to transform the opcode stream.
+Steal 3 bits from nargs to add type without expanding
+the size of the structure.  Move the build-time asserts
+to the top of tcg.c, so that MAX_CALL_IARGS is in scope
+without exporting that detail in the main tcg.h header.
 
-Add a TCGType field to TCGOp and use that instead.  Merge all of
-the opcodes that are common to both TCG_TYPE_I32 and TCG_TYPE_I64.
-We could eventually merge some of the vector opcodes too, but since
-those have an additional element size operand, that is a larger job.
+So far, the type field is unused and memset initialized to 0.
 
-This also moves quite a lot of the tcg backend implementation out
-of the publicly exposed headers.  After this patchset is complete,
-we will not rebuild target translators for most changes to the tcg
-backend.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ include/tcg/tcg.h | 6 ++----
+ tcg/tcg.c         | 9 +++++++++
+ 2 files changed, 11 insertions(+), 4 deletions(-)
 
-
-r~
-
-
-Richard Henderson (73):
-  tcg: Add TCGOp.type
-  tcg: Add TCGHelperInfo.out_type
-  tcg: Add TCGType argument to tcg_emit_op, tcg_op_insert_*
-  tcg: Add TCGType argument to tcg_gen_op*
-  tcg: Remove TCGOP_VECL
-  tcg: Move call abi parameters from tcg-target.h to tcg-target.c.inc
-  tcg: Add TCGType argument to tcg_op_supported
-  target/arm: Do not test TCG_TARGET_HAS_bitsel_vec
-  target/arm: Use tcg_op_supported
-  target/tricore: Use tcg_op_supported
-  tcg: Add tcg_op_deposit_valid
-  target/i386: Remove TCG_TARGET_extract_tl_valid
-  target/i386: Use tcg_op_deposit_valid
-  target/i386: Use tcg_op_supported
-  tcg: Remove TCG_TARGET_NEED_LDST_LABELS and
-    TCG_TARGET_NEED_POOL_LABELS
-  tcg: Rename tcg-target.opc.h to tcg-target-opc.h.inc
-  tcg/tci: Move TCI specific opcodes to tcg-target-opc.h.inc
-  tcg: Move fallback tcg_can_emit_vec_op out of line
-  tcg: Split out tcg-target-has.h and tcg-has.h
-  tcg: Split out tcg-target-mo.h
-  tcg: Merge TCG_TARGET_HAS_{div,rem,div2}
-  tcg: Merge TCG_TARGET_HAS_{andc,orc,nand,nor,eqv,not}
-  tcg/mips: Expand bswap unconditionally
-  tcg: Merge TCG_TARGET_HAS_bswap*
-  tcg: Merge TCG_TARGET_HAS_rot_{i32,i64}
-  tcg: Merge TCG_TARGET_HAS_{clz,ctz,ctpop}
-  tcg: Merge TCG_TARGET_HAS_{muls2,mulu2,mulsh,muluh}
-  tcg: Merge TCG_TARGET_HAS_{add2,sub2}
-  tcg: Merge TCG_TARGET_HAS_negsetcond_{i32,i64}
-  tcg/i386: Handle all 8-bit extensions for i686
-  tcg/i386: Fold the ext{8,16,32}[us] cases into {s}extract
-  tcg/aarch64: Provide TCG_TARGET_{s}extract_valid
-  tcg/aarch64: Expand extract with offset 0 with andi
-  tcg/arm: Add full [US]XT[BH] into {s}extract
-  tcg/loongarch64: Fold the ext{8,16,32}[us] cases into {s}extract
-  tcg/mips: Fold the ext{8,16,32}[us] cases into {s}extract
-  tcg/ppc: Fold the ext{8,16,32}[us] cases into {s}extract
-  tcg/riscv64: Fold the ext{8,16,32}[us] cases into {s}extract
-  tcg/riscv: Use SRAIW, SRLIW for {s}extract_i64
-  tcg/s390x: Fold the ext{8,16,32}[us] cases into {s}extract
-  tcg/sparc64: Use SRA, SRL for {s}extract_i64
-  tcg/tci: Provide TCG_TARGET_{s}extract_valid
-  tcg/tci: Remove assertions for deposit and extract
-  tcg: Remove TCG_TARGET_HAS_{s}extract_{i32,i64}
-  tcg: Remove TCG_TARGET_HAS_deposit_{i32,i64}
-  tcg: Merge TCG_TARGET_HAS_extract2_{i32,i64}
-  tcg: Make INDEX_op_extrh_i64_i32 mandatory
-  tcg: Remove INDEX_op_ext{8,16,32}{us}
-  tcg: Reorg process_op_defs
-  tcg: Remove args_ct from TCGOpDef
-  tcg: Constify tcg_op_defs
-  tcg: Use tcg_op_supported in process_op_defs
-  tcg: Use C_NotImplemented in tcg_target_op_def
-  tcg: Pass TCGOp to tcg_target_op_def
-  tcg: Merge INDEX_op_{ld,st}*_{i32_i64}
-  tcg: Remove INDEX_op_qemu_st8_*_i32
-  tcg: Add TCGType argument to tcg_out_op
-  tcg/optimize: Remove OptContext.type
-  tcg: Remove TCG_OPF_64BIT
-  tcg: Change have_vec to has_type in tcg_op_supported
-  tcg: Merge INDEX_op_mov_{i32,i64}
-  tcg: Merge integer logical operations
-  tcg: Merge integer add, sub, neg operations
-  tcg: Merge integer add2, sub2 operations
-  tcg: Merge integer mul, div operations
-  tcg: Merge brcond, setcond, negsetcond, movcond operations
-  tcg: Merge extract, sextract operations
-  tcg: Merge integer shift operations
-  tcg: Merge deposit operations
-  tcg: Merge extract2 operations
-  tcg: Merge host integer load/store operations
-  tcg: Merge bswap operations
-  tcg: Merge clz, ctz, ctpop operations
-
- accel/tcg/internal-target.h                   |    1 +
- include/tcg/helper-info.h                     |    3 +-
- include/tcg/tcg-op.h                          |    8 +-
- include/tcg/tcg-opc.h                         |  334 ++---
- include/tcg/tcg.h                             |  144 +-
- tcg/aarch64/tcg-target-has.h                  |   76 +
- tcg/aarch64/tcg-target-mo.h                   |   12 +
- tcg/aarch64/tcg-target.h                      |  126 --
- tcg/arm/tcg-target-has.h                      |   91 ++
- tcg/arm/tcg-target-mo.h                       |   13 +
- tcg/arm/tcg-target.h                          |   86 --
- tcg/i386/tcg-target-con-str.h                 |    2 +-
- tcg/i386/tcg-target-has.h                     |  124 ++
- tcg/i386/tcg-target-mo.h                      |   19 +
- tcg/i386/tcg-target.h                         |  162 --
- tcg/loongarch64/tcg-target-has.h              |   72 +
- tcg/loongarch64/tcg-target-mo.h               |   12 +
- tcg/loongarch64/tcg-target.h                  |  115 --
- tcg/mips/tcg-target-has.h                     |   88 ++
- tcg/mips/tcg-target-mo.h                      |   13 +
- tcg/mips/tcg-target.h                         |  130 --
- tcg/ppc/tcg-target-has.h                      |   86 ++
- tcg/ppc/tcg-target-mo.h                       |   12 +
- tcg/ppc/tcg-target.h                          |  126 --
- tcg/riscv/tcg-target-con-set.h                |    2 +-
- tcg/riscv/tcg-target-con-str.h                |    1 -
- tcg/riscv/tcg-target-has.h                    |   83 ++
- tcg/riscv/tcg-target-mo.h                     |   12 +
- tcg/riscv/tcg-target.h                        |  116 --
- tcg/s390x/tcg-target-has.h                    |   96 ++
- tcg/s390x/tcg-target-mo.h                     |   12 +
- tcg/s390x/tcg-target.h                        |  126 --
- tcg/sparc64/tcg-target-has.h                  |   51 +
- tcg/sparc64/tcg-target-mo.h                   |   12 +
- tcg/sparc64/tcg-target.h                      |   91 --
- tcg/tcg-has.h                                 |   51 +
- tcg/tcg-internal.h                            |   13 +-
- tcg/tci/tcg-target-has.h                      |   42 +
- tcg/tci/tcg-target-mo.h                       |   17 +
- tcg/tci/tcg-target.h                          |   94 --
- target/arm/tcg/translate-a64.c                |   10 +-
- target/arm/tcg/translate-sve.c                |   22 +-
- target/arm/tcg/translate.c                    |    2 +-
- target/sh4/translate.c                        |   26 +-
- target/tricore/translate.c                    |    4 +-
- tcg/optimize.c                                |  813 ++++------
- tcg/tcg-common.c                              |    4 +-
- tcg/tcg-op-gvec.c                             |    1 +
- tcg/tcg-op-ldst.c                             |   43 +-
- tcg/tcg-op-vec.c                              |   49 +-
- tcg/tcg-op.c                                  | 1310 +++++++----------
- tcg/tcg.c                                     | 1099 +++++++-------
- tcg/tci.c                                     |  551 +++----
- docs/devel/tcg-ops.rst                        |   28 +-
- target/i386/tcg/emit.c.inc                    |   20 +-
- ...{tcg-target.opc.h => tcg-target-opc.h.inc} |    4 +-
- tcg/aarch64/tcg-target.c.inc                  |  436 ++----
- ...{tcg-target.opc.h => tcg-target-opc.h.inc} |    6 +-
- tcg/arm/tcg-target.c.inc                      |  278 ++--
- ...{tcg-target.opc.h => tcg-target-opc.h.inc} |   22 +-
- tcg/i386/tcg-target.c.inc                     |  502 +++----
- ...{tcg-target.opc.h => tcg-target-opc.h.inc} |    0
- tcg/loongarch64/tcg-target.c.inc              |  601 ++++----
- tcg/mips/tcg-target-opc.h.inc                 |    1 +
- tcg/mips/tcg-target.c.inc                     |  641 ++++----
- ...{tcg-target.opc.h => tcg-target-opc.h.inc} |   12 +-
- tcg/ppc/tcg-target.c.inc                      |  699 ++++-----
- ...{tcg-target.opc.h => tcg-target-opc.h.inc} |    0
- tcg/riscv/tcg-target.c.inc                    |  624 ++++----
- ...{tcg-target.opc.h => tcg-target-opc.h.inc} |    6 +-
- tcg/s390x/tcg-target.c.inc                    | 1044 ++++++-------
- tcg/sparc64/tcg-target-opc.h.inc              |    1 +
- tcg/sparc64/tcg-target.c.inc                  |  422 +++---
- tcg/tcg-ldst.c.inc                            |   65 -
- tcg/tcg-pool.c.inc                            |  162 --
- tcg/tci/tcg-target-opc.h.inc                  |   15 +
- tcg/tci/tcg-target.c.inc                      |  511 +++----
- 77 files changed, 5541 insertions(+), 7167 deletions(-)
- create mode 100644 tcg/aarch64/tcg-target-has.h
- create mode 100644 tcg/aarch64/tcg-target-mo.h
- create mode 100644 tcg/arm/tcg-target-has.h
- create mode 100644 tcg/arm/tcg-target-mo.h
- create mode 100644 tcg/i386/tcg-target-has.h
- create mode 100644 tcg/i386/tcg-target-mo.h
- create mode 100644 tcg/loongarch64/tcg-target-has.h
- create mode 100644 tcg/loongarch64/tcg-target-mo.h
- create mode 100644 tcg/mips/tcg-target-has.h
- create mode 100644 tcg/mips/tcg-target-mo.h
- create mode 100644 tcg/ppc/tcg-target-has.h
- create mode 100644 tcg/ppc/tcg-target-mo.h
- create mode 100644 tcg/riscv/tcg-target-has.h
- create mode 100644 tcg/riscv/tcg-target-mo.h
- create mode 100644 tcg/s390x/tcg-target-has.h
- create mode 100644 tcg/s390x/tcg-target-mo.h
- create mode 100644 tcg/sparc64/tcg-target-has.h
- create mode 100644 tcg/sparc64/tcg-target-mo.h
- create mode 100644 tcg/tcg-has.h
- create mode 100644 tcg/tci/tcg-target-has.h
- create mode 100644 tcg/tci/tcg-target-mo.h
- rename tcg/aarch64/{tcg-target.opc.h => tcg-target-opc.h.inc} (82%)
- rename tcg/arm/{tcg-target.opc.h => tcg-target-opc.h.inc} (75%)
- rename tcg/i386/{tcg-target.opc.h => tcg-target-opc.h.inc} (72%)
- rename tcg/loongarch64/{tcg-target.opc.h => tcg-target-opc.h.inc} (100%)
- create mode 100644 tcg/mips/tcg-target-opc.h.inc
- rename tcg/ppc/{tcg-target.opc.h => tcg-target-opc.h.inc} (83%)
- rename tcg/riscv/{tcg-target.opc.h => tcg-target-opc.h.inc} (100%)
- rename tcg/s390x/{tcg-target.opc.h => tcg-target-opc.h.inc} (75%)
- create mode 100644 tcg/sparc64/tcg-target-opc.h.inc
- delete mode 100644 tcg/tcg-ldst.c.inc
- delete mode 100644 tcg/tcg-pool.c.inc
- create mode 100644 tcg/tci/tcg-target-opc.h.inc
-
+diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+index a77ed12b9d..f2ffb69c0c 100644
+--- a/include/tcg/tcg.h
++++ b/include/tcg/tcg.h
+@@ -417,7 +417,8 @@ typedef uint32_t TCGLifeData;
+ 
+ struct TCGOp {
+     TCGOpcode opc   : 8;
+-    unsigned nargs  : 8;
++    TCGType type    : 3;
++    unsigned nargs  : 5;
+ 
+     /* Parameters for this opcode.  See below.  */
+     unsigned param1 : 8;
+@@ -442,9 +443,6 @@ struct TCGOp {
+ #define TCGOP_VECL(X)     (X)->param1
+ #define TCGOP_VECE(X)     (X)->param2
+ 
+-/* Make sure operands fit in the bitfields above.  */
+-QEMU_BUILD_BUG_ON(NB_OPS > (1 << 8));
+-
+ static inline TCGRegSet output_pref(const TCGOp *op, unsigned i)
+ {
+     return i < ARRAY_SIZE(op->output_pref) ? op->output_pref[i] : 0;
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index 4578b185be..f8c4394e1d 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -60,6 +60,15 @@
+ #include "user/guest-base.h"
+ #endif
+ 
++/*
++ * Make sure operands fit in the TCGOp bitfields.
++ * For TCGOp.nargs, maximum physical arguments are constrained by
++ * MAX_CALL_IARGS * TCG_TYPE_I128 on 32-bit hosts, so 128 / 32.
++ */
++QEMU_BUILD_BUG_ON(NB_OPS > (1 << 8));
++QEMU_BUILD_BUG_ON(TCG_TYPE_COUNT > (1 << 3));
++QEMU_BUILD_BUG_ON(MAX_CALL_IARGS * (128 / 32) > (1 << 5));
++
+ /* Forward declarations for functions declared in tcg-target.c.inc and
+    used here. */
+ static void tcg_target_init(TCGContext *s);
 -- 
 2.43.0
 
