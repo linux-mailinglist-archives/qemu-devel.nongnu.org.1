@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A1EB9FF820
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 11:33:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 927AB9FF822
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 11:33:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTIUg-0003rQ-Nb; Thu, 02 Jan 2025 05:31:58 -0500
+	id 1tTIUj-0003sK-L2; Thu, 02 Jan 2025 05:32:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tTIUf-0003r9-EJ
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 05:31:57 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tTIUh-0003rx-TJ
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 05:31:59 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tTIUd-0005qF-VB
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 05:31:57 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tTIUg-0005qh-I0
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 05:31:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1735813915;
+ s=mimecast20190719; t=1735813917;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gP3n+xmGEu7VSzd7bF6ZEXq02fd+LK2FuyJYFdeOJd0=;
- b=cg9KcpjNzMgtI9flqxU1L2HGUWHbhl88cDzUFmMwu1Hx1BbnMZ4S9EELzLvUld0sJH47hp
- 0aToYvnrxQYYrC6yhPdIzFlt680ex4D5h+jX86lmzvCSl9YorTBjbdjFYvsVNr05fkxuX6
- CsGVN4QW4QljwlMKzNUQHDiJxLEtlKw=
+ bh=FG8z3uAkvjcDc1Etm1L/rQEGwaQzrKgc/SEFFM2hTsM=;
+ b=H7B8sCClsGl51mImpQSWQyya+vUBYwUreThVpU3jeyVhQUGXe4RZ7TDJ99ktPDnj1Tt7RP
+ 0zJHgLxXw3NUnC/Y/LV7CLLp+Xe8L4J4STqY4XIQqruWRV+BZGWD0UvP88LQpjh77ALKNq
+ 1q6400J4SzN8kOr2BKvSs1a019RIaRI=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-107-CgwbuEo3PUuwnOgGEWkJcw-1; Thu,
- 02 Jan 2025 05:31:52 -0500
-X-MC-Unique: CgwbuEo3PUuwnOgGEWkJcw-1
-X-Mimecast-MFC-AGG-ID: CgwbuEo3PUuwnOgGEWkJcw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-81-jRsnUBvUPjyJm99eMsnRwA-1; Thu,
+ 02 Jan 2025 05:31:56 -0500
+X-MC-Unique: jRsnUBvUPjyJm99eMsnRwA-1
+X-Mimecast-MFC-AGG-ID: jRsnUBvUPjyJm99eMsnRwA
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0B32E19560BA
- for <qemu-devel@nongnu.org>; Thu,  2 Jan 2025 10:31:52 +0000 (UTC)
+ id 9CD4A19560AA
+ for <qemu-devel@nongnu.org>; Thu,  2 Jan 2025 10:31:55 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.39])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D1DD81956052; Thu,  2 Jan 2025 10:31:50 +0000 (UTC)
+ id C17111956052; Thu,  2 Jan 2025 10:31:52 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 03/10] tests/functional/test_vnc: Do not use a hard-coded VNC
- port
-Date: Thu,  2 Jan 2025 11:31:31 +0100
-Message-ID: <20250102103138.354618-4-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 04/10] tests/functional/test_vnc: Remove the test_no_vnc test
+Date: Thu,  2 Jan 2025 11:31:32 +0100
+Message-ID: <20250102103138.354618-5-thuth@redhat.com>
 In-Reply-To: <20250102103138.354618-1-thuth@redhat.com>
 References: <20250102103138.354618-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -81,40 +82,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Two tests here are using the hard-coded VNC port :0 ... if there
-is already a QEMU or other program running that is using this
-port, the tests will be failing. Fortunately, QEMU can also
-auto-detect a free port with the "to=..." parameter, so let's
-use that for the tests to avoid the problem.
+This test matches exactly the first three lines of the following
+test_no_vnc_change_password test, so there is exactly zero additional
+test coverage in here.
 
-Message-ID: <20241218131439.255841-4-thuth@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-ID: <20241218131439.255841-3-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/test_vnc.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/functional/test_vnc.py | 5 -----
+ 1 file changed, 5 deletions(-)
 
 diff --git a/tests/functional/test_vnc.py b/tests/functional/test_vnc.py
-index b769d3b268..e6328567c7 100755
+index e6328567c7..e600d75234 100755
 --- a/tests/functional/test_vnc.py
 +++ b/tests/functional/test_vnc.py
-@@ -72,7 +72,7 @@ def test_no_vnc_change_password(self):
-                          'Could not set password')
+@@ -54,11 +54,6 @@ def find_free_ports(count: int) -> List[int]:
  
-     def test_change_password_requires_a_password(self):
--        self.vm.add_args('-nodefaults', '-S', '-vnc', ':0')
-+        self.vm.add_args('-nodefaults', '-S', '-vnc', ':1,to=999')
-         self.vm.launch()
-         self.assertTrue(self.vm.qmp('query-vnc')['return']['enabled'])
-         set_password_response = self.vm.qmp('change-vnc-password',
-@@ -84,7 +84,7 @@ def test_change_password_requires_a_password(self):
-                          'Could not set password')
+ class Vnc(QemuSystemTest):
  
-     def test_change_password(self):
--        self.vm.add_args('-nodefaults', '-S', '-vnc', ':0,password=on')
-+        self.vm.add_args('-nodefaults', '-S', '-vnc', ':1,to=999,password=on')
+-    def test_no_vnc(self):
+-        self.vm.add_args('-nodefaults', '-S')
+-        self.vm.launch()
+-        self.assertFalse(self.vm.qmp('query-vnc')['return']['enabled'])
+-
+     def test_no_vnc_change_password(self):
+         self.vm.add_args('-nodefaults', '-S')
          self.vm.launch()
-         self.assertTrue(self.vm.qmp('query-vnc')['return']['enabled'])
-         self.vm.cmd('change-vnc-password',
 -- 
 2.47.1
 
