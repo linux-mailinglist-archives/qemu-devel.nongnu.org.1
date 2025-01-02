@@ -2,83 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11A079FF7BC
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 11:00:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEAD39FF7C1
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 11:04:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTHyl-0000bx-MH; Thu, 02 Jan 2025 04:58:59 -0500
+	id 1tTI3Q-0002ZL-JJ; Thu, 02 Jan 2025 05:03:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTHyj-0000bl-J8
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 04:58:57 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTI3O-0002ZC-Sv
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 05:03:46 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTHyh-0005qc-TZ
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 04:58:57 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-385df53e559so8784557f8f.3
- for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 01:58:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTI3N-0006h1-A8
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 05:03:46 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-4364a37a1d7so118221485e9.3
+ for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 02:03:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735811934; x=1736416734; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=VHrfBH43E1WAA0UOyqnVwGTMiZL45kAH74MnXrB7Fpg=;
- b=AOnWWYdnyCcwFqwHmbHJ44G4w7Ya8WklwAPe8b85WmT7a4J8HrT80CUbjWRaCzVh96
- CYdJ72yduly0/Id6gRwhdko/xaXAxNi4DuM85QFPMWwWcLxlU3syq5S/hJafAtT8K8Nz
- 8mD354Yg/RcE6wcSXlBe3dcRRD+iRBI9Ahf1Nw30MOkQdz/0Ets4uVRCqHqK/D/Md9nl
- TS11EbeznAzLsDbI7n2kQojZ2elO2s/egnI84rNUSoa8LS4xTfdkd4/9qhqy/1NofPwu
- sTQeOP0nxRnoFlWfkI3moujJhsdFm2b6Ipefia4lXK0Dd2nxodgPjq4cmOq7EipbVLi/
- O/1w==
+ d=linaro.org; s=google; t=1735812223; x=1736417023; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=lsXapPA3Gk5QAziX+SdQxSVqm8p+NaxnEOOojCh6YBA=;
+ b=b4wMUukq4yWlFNdGid5ojblWOBY/rim6tF4C+ioYi8TyYUmF9tlU9Yc3aUbDBeRMw0
+ XP6S9mUZ87Zm6/Cx905ocBSlcGhboXdfC4FYskdrk2do8UtPAlaWeIfBrxQEstpoqvhe
+ Mhzx+OIU5402uZVcpJWDAdANJ1ILgawKKgsbGMxGZenMW6/X5zoY8n0Rh9nx2SJjVkX3
+ g89RxRIqNX1oJgES8yXtppSy7HNvtwP+KQOzKXRX605hQNLH2mc1l6ZShTWKlpLp/Rra
+ twQCW9D+DE/Gi68IQCwuR9yB3tVgCSw2XCx8y3m0hxvnkswo3dm9Yd/cG/TuQeMOjX+u
+ QhaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735811934; x=1736416734;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VHrfBH43E1WAA0UOyqnVwGTMiZL45kAH74MnXrB7Fpg=;
- b=l8InWx/t7fSQOgfRCgFHqsQKj2U+OIqHXfaynLd7rVqYbL/zuEd+swUqzfZFAGrnlM
- rHW8z9z2DzOrLYvE2eztNy+1Lxr1QTamKPrECnNxnpvanLMl18U3V7vx+mzn3RfP/m5/
- KxVXcRTDQRXwx98QPwwDjJLs0KtTgjqsbzac2BGIFTMD0M7nC8pWC5zvR6v6KN5AGHy7
- eAtHxR/RCPZH294lNnmQoMYJAUeslBnZpSyr1wwOLajj6SgjUNtlbB3VQ8sVPiLJD2Bt
- ZiQ9eRYRodaueOSaXjaypESYXCj1SshRor3iCBOKXKt8Zejqcj8/Jkwaiv3bekse0/Hh
- kapQ==
+ d=1e100.net; s=20230601; t=1735812223; x=1736417023;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=lsXapPA3Gk5QAziX+SdQxSVqm8p+NaxnEOOojCh6YBA=;
+ b=LQiBAdckcgfV9EAqsOdJIe0w96tQQMas3o7OU1KdulP/7X91tcBVeoGjzOfiEdh0mS
+ 5Xdkv4MBqVxL3l9jqNtgzD4ZUbKYgNmlvt4V7zEloRiRCIifwr7P5FZcYBQ7CjwWLMDg
+ CDI83pJjNOMCCDK1zHC7c3aNU8NFDqw5d4jHEQOG05C6/IwjpbuUVr/PXvPBEpTklgDF
+ +Fq8IuSXP0+gOefpJ0jgZtxw7fE2QUEYPgw/OgPzmDIGt9zvvUFCUS09ebiyYAablAPe
+ vagTU9bDGqjs3xt3MVy1132opy47/lNMG2BvQGioJ8YWj6TPd4m5ijiL2WpwV1veLH6k
+ ibOQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXQjxg2VJPvambHqpD9NWjSx8wQRw3cHzf8tIBu2mQEwPNYsTIJDSPUooG604R44mjjDqWb4t5sPxqi@nongnu.org
-X-Gm-Message-State: AOJu0Yw7Ci2Hq08KrbJL7Ei9hT3Q2TrAyGNUrSaTYAIlqgMr8cBgYxUP
- MOYVZjZ0BZnRPV4BtnlF3BYxd69FB4FZPdn/RKHLc2ecA0AFB4nPxtfQmyOCCls=
-X-Gm-Gg: ASbGncu1VuVCb7IwoLIX4xrei62mDDGKwLo+By1CjClnuOYrjt+FKkWccy2nR7UzNHM
- 1yoDNa3J2u7+SICYqbPtKqr75T2vUzCQaZ2MwvAXUqL1JQhttGuftB4NEOkwMwVhwClE/lq53cO
- zx2tMfp0CSOLP+Rnwq9eNin5jct9dGr85DfHoYWc+7b/55jMHfQrzrtPESo5ADzyQOvhgfNMbIa
- tNqwfvG19Jh9Tq/fE4cQlKgfXnp5ecpKCBXrl9aUZDpKGDs7Pghx56knrIYuj/eREwf6IimAcUk
- 8h7fT125wYIBGI+nYW8LLFih
-X-Google-Smtp-Source: AGHT+IHtF8lrbExV85Gs0jH+JU/fMga1lL6WFfbtaDh7JEWktdUHZ8JHbv/9gwxpkNJFza7Ws2IANw==
-X-Received: by 2002:a05:6000:70a:b0:37d:4647:154e with SMTP id
- ffacd0b85a97d-38a221eca99mr38440814f8f.9.1735811933578; 
- Thu, 02 Jan 2025 01:58:53 -0800 (PST)
-Received: from [192.168.69.132] (88-187-86-199.subs.proxad.net.
+ AJvYcCUrYKdEWIooeyP1AYjDurlXJKYzwFUkra55IPZDKBCqURIHRqZ9L63pt4NA0dSCcqYKll7eIRSEXsxM@nongnu.org
+X-Gm-Message-State: AOJu0YzRDlMWQuOH7rpcsFLrSvdnPVZaXsEfwOotdEKBjOYoGEyycIOr
+ ZcB0JjfqcXp2L6heSZb+a4n1FXXdDJrWrvy5/+kawwSXsFxviULjsh8b63kwAYg=
+X-Gm-Gg: ASbGnctF1V6RPb02j3jHzahZtmXU2YDVq44AOHVnP83niB57WP2RclBFRRY2kc3DaMG
+ CzZts3A7skklvHpFIo6n946Fo+AKqjNkrdnCsisMVtOrb2Ewq8oRFQs7Y5QjGQVimq0Xs4C55KR
+ 4gIikgqaCdHvJShkjuu7kSwmdKW6SBFywRoi6MkPfiAaSHlm3YoDK12OsTyIho4QWbdeXDKB0NM
+ 2bGLO3xR4m+JKi2ZBDhbZUSJVCrKq4Fu0lJdHK/zocTjLK/AqdYLEhY8W+J0AhgP0RgJJ2PWFMv
+ rvwt/lHuL6UP5BYQaTAOdif62TdSyfs=
+X-Google-Smtp-Source: AGHT+IFnAu3bSJIyVcz3SUPdKYWFL3KamviLLHCHGquio2ndxHNnOyNekRgflwS1MZpKv2uZOozMrA==
+X-Received: by 2002:a05:6000:4021:b0:385:e1f5:476f with SMTP id
+ ffacd0b85a97d-38a223f7583mr44466168f8f.39.1735812221938; 
+ Thu, 02 Jan 2025 02:03:41 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c89e2d2sm38306814f8f.71.2025.01.02.01.58.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 02 Jan 2025 01:58:53 -0800 (PST)
-Message-ID: <bcf71e10-1fa2-4926-9f02-fb1387d5a619@linaro.org>
-Date: Thu, 2 Jan 2025 10:58:52 +0100
+ 5b1f17b1804b1-436611ea3e0sm452428225e9.7.2025.01.02.02.03.41
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 02 Jan 2025 02:03:41 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: Thomas Huth <thuth@redhat.com>,
+	qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>, Helge Deller <deller@gmx.de>,
+ Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v6 0/2] tests: Add functional tests for HPPA machines
+Date: Thu,  2 Jan 2025 11:03:38 +0100
+Message-ID: <20250102100340.43014-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] tests: Add functional tests for HPPA machines
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>, Paolo Bonzini <pbonzini@redhat.com>
-References: <20250102092301.42122-1-philmd@linaro.org>
- <00ad22b7-4885-4142-b675-4f4143fc668d@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <00ad22b7-4885-4142-b675-4f4143fc668d@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,26 +98,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/1/25 10:45, Thomas Huth wrote:
-> On 02/01/2025 10.23, Philippe Mathieu-Daudé wrote:
->> Add quick firmware boot tests (less than 1sec) for the
->> B160L (32-bit) and C3700 (64-bit) HPPA machines:
->>
->>    $ make check-functional-hppa
->>    ...
->>    4/4 qemu:func-quick+func-hppa / func-hppa-hppa_seabios    OK 0.22s 
->> 2 subtests passed
->>
->> Remove the duplicated B160L test in qtest/boot-serial-test.c.
-> 
-> Thanks, this only tried to test the "hppa" machine which got renamed, so 
-> the qtest was only skipping for the hppa target.
+Since v5:
+- Correct boot-serial-test machine name for stable (th_huth)
 
-Ah, that is reassuring, that explains why qtests were still passing
-on my broken hppa series.
+Philippe Mathieu-Daudé (2):
+  tests/qtest/boot-serial-test: Correct HPPA machine name
+  tests: Add functional tests for HPPA machines
 
-> 
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> 
+ MAINTAINERS                           |  1 +
+ tests/qtest/boot-serial-test.c        |  2 --
+ tests/functional/meson.build          |  4 +++
+ tests/functional/test_hppa_seabios.py | 35 +++++++++++++++++++++++++++
+ tests/qtest/meson.build               |  2 +-
+ 5 files changed, 41 insertions(+), 3 deletions(-)
+ create mode 100755 tests/functional/test_hppa_seabios.py
+
+-- 
+2.47.1
 
 
