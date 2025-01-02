@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE69D9FFE17
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 19:27:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BBEE9FFD7B
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 Jan 2025 19:11:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTPbq-0007YO-6z; Thu, 02 Jan 2025 13:07:50 -0500
+	id 1tTPbg-00079e-R9; Thu, 02 Jan 2025 13:07:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tTPbJ-0006yj-Nj
+ id 1tTPbL-00070J-OH
  for qemu-devel@nongnu.org; Thu, 02 Jan 2025 13:07:19 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tTPbE-00059I-NT
- for qemu-devel@nongnu.org; Thu, 02 Jan 2025 13:07:16 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-2162c0f6a39so166193685ad.0
- for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 10:07:12 -0800 (PST)
+ id 1tTPbH-00059W-0B
+ for qemu-devel@nongnu.org; Thu, 02 Jan 2025 13:07:18 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-2163dc5155fso155961435ad.0
+ for <qemu-devel@nongnu.org>; Thu, 02 Jan 2025 10:07:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735841231; x=1736446031; darn=nongnu.org;
+ d=linaro.org; s=google; t=1735841232; x=1736446032; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=5fgY/wpf89uxcs3c2w7+nA29sSBt8VZYq6xlodEGkMM=;
- b=RilWJ5NAoeZffCzcNM2g8S8TDWOAwY33ypKj8NwF2USu2Zv3b6Rv7n9C70tnh3Zzzv
- Tfi551cfbgkQ/9tC6+hgk6QPiXjTgBGS46LU7hV29bf7tDb7sOQqrdWmSF3xu6GpZ7Bj
- mx4Oa7Gtu96RgSwJPdSlV/R/x2NCIgDTqPUQDEg9iGQ0+d7qvQAmzHZ8fsi65hy4BLLV
- ojG9bAvSsEauk7CgZxI0z48yHQYba2dybTs7LhsBKNtFGJatNtlPm7Mns7ChkJ/V8Fg7
- yPh9q5gzC6sPnlC+dQhxRK57mCK9LRnE8u+VsKS2MzOWZZ5gxCgy0APIJb/ldNRjGKgo
- q2wg==
+ :reply-to; bh=/5rxQ1giXHNMosbVBEUF3r89OsXO2G8VmGp554uBDRA=;
+ b=F360BQe7493AN5CP4zOc9L2qRdNaftv+BjeZhBNhH7EUdtqW1GO0leXQxNtknQ9auF
+ LzTyS4qprxXu6/qV0TCqqdHHwecXNRAnly/D5wZO1g3YxDFb+gm4k1uW3eUH3byX/2Kl
+ rm+7LzCp383lUCqy5tMFheHNt1BGUqVFzU0kYHqivp6IcbMC8JtOBPLW60gpQe4J/Wss
+ y2wR8Zs8G+zv6EAqE+3YN1b41qEJSyADVQYSs2NJeEPB9+OSqrvCraedyWM+VXzPaLYy
+ SX9b5CRQIQFi1Tnf2PJWwfzZkb6YsKMXNUNSe69xzgIpuTbXO34h2IxyRJix12hnJPmF
+ aWOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735841231; x=1736446031;
+ d=1e100.net; s=20230601; t=1735841232; x=1736446032;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5fgY/wpf89uxcs3c2w7+nA29sSBt8VZYq6xlodEGkMM=;
- b=wwClWIaHgOyW7is5eg223iz+9/nhx4iesD6XGsxRSqDzc8skK2W0KxAWe76QIB99MK
- NCZT2VRttv2WH0j0eUK84O+/MEp1KXnoV1SPfeCtwj7Fgk6EemuJmuDIklKwSUVYuCAK
- 8DH9qhiOcpY+L2sNkcfM1CNEh8RuwoC4zPj7uehvT7YZlNuvXh0CDypNyyxUdg626fL5
- CNHG/93t/C0Z2rwU0GxJ3V0TPkEV/AHYNqYmqvIB3xDhh0f+Fn/c2L/hUe6lZ6xphUav
- DYiVJLk6w/AkJ7tO/nft0Xp6F8etM7mE6GcpYPQgqVqb2R/uuhBx3M0sHSaowAmOVXL6
- r/GA==
-X-Gm-Message-State: AOJu0Yy/JjrWx6XbgETh9rnIGU5b/rLJVP3IWLlWqihc3+av8tQOC+Ke
- 6o9TjmudEnHMTR++Qv+k5KcEY7nEewIKv4a0Olak5zCzYPo9wud6uG/uox3TowHIlu5XE83uAHL
- x
-X-Gm-Gg: ASbGncv+wXHz5+fJkkabDewAO0Llpj5o5Q1tjHxhwfrIL6Ovhu7vWlj16h32rnprJAM
- 9bpfFivXJXZlNAdC9USVWFqOkQMAJzvmx/46BgZbOH0Rub2oZG1RdxO+BczP+3Rr8+idxM711G2
- 0iOE83UGZdV/S2jAAYKnKSTE0LY7VKoX17psJSNwiFVEzUHlvz3hUSIiw+vClZSkj5586KuYhEN
- AjCVfx8jEGcWjPCF/Y5hkh5wVt6yFv8WBfu/ro1BvnPlMQwxY11ho6ymwfLfw==
-X-Google-Smtp-Source: AGHT+IGin3D67myQ6xnT6zLzMJPz2bdPuQvtYlDe900/7WCI+G2HlA+6hLsSMKJsbbw1KGOXzLkZfA==
-X-Received: by 2002:a05:6a20:3d89:b0:1e1:ad7:3282 with SMTP id
- adf61e73a8af0-1e5e1e26e2emr69198389637.7.1735841231250; 
+ bh=/5rxQ1giXHNMosbVBEUF3r89OsXO2G8VmGp554uBDRA=;
+ b=sJYTQ6JiodYBGwk0UwCuHOAO5SD3P5kW8nI5ET0hnGQjofyj2fPEHab94+JstAGtA+
+ 8lA7McX5n1WBC7ISsgFSbsW8Q7l1y/qhOX3wZ36IuziQK8zdaVkgEMXnz4fxpGCNos+z
+ WYYl8V/39UoeHoQeUKoE+owF0DyFdFtupUgWm+C9mcXPREMqcRqGvMx77X4UVXrqVFjs
+ WJzh2jCYDtnCxDsMIDsVCGRKw0n859iwUzX6aWfjfM72Sxs8lAiMVdkzB+hAQW5MFdgi
+ B9A/4iY5ZcKrR6ZZAuWABnDAj3VlBWRpS9t2ExBxSSpV0Vibg/Ua22yvzpD6NRNBlwey
+ 7iJg==
+X-Gm-Message-State: AOJu0YxwaIgQ7QQ4VwogR/9GLDRkJ9A+C8IY5WXcg++QrjO5lZ1yn7PD
+ wWX40zXvGpzgs+L4IhQuHhN7hX9BVwvqjOm/DCUaHM5DMxZpZb7Bhhq55PkOIykbn2aPncSIvFG
+ 2
+X-Gm-Gg: ASbGnctgIwiIPBlafiv1/lx8tSS4GrZF69zAncdSllZfUlg/9ce8qL37S84nDU4GBhd
+ tP5nJP0pb71fJnztomACsxTj9Dh4/xz/8YZbgg1riEWoFa5MUSLAfwE2YtR7HRexYyt1W0ewLE2
+ BU/YTr9fuAUVqALIdqG+8C1KIISeGjrP450ATpb+og5QQYPS7erWaxUV/lZmkWcupNn95tACwZr
+ CQmztIlu4n2JZDg8nuV8GH/X4J/F+LOhQbHeiIeM0YA4I/1SXs3q9HrY6fn0w==
+X-Google-Smtp-Source: AGHT+IERaJH8DkfvAmM4op3vdOe+zPFfVpa2/GuHC8n4Xh5WofvWbPJBasV5Stn70b82pR3pb7qZuA==
+X-Received: by 2002:a05:6a21:7187:b0:1e5:f930:c6e8 with SMTP id
+ adf61e73a8af0-1e5f930c7efmr52550025637.4.1735841231931; 
  Thu, 02 Jan 2025 10:07:11 -0800 (PST)
 Received: from stoup.. ([63.239.63.212]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72ad3393d5fsm20604456b3a.154.2025.01.02.10.07.10
+ d2e1a72fcca58-72ad3393d5fsm20604456b3a.154.2025.01.02.10.07.11
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Jan 2025 10:07:10 -0800 (PST)
+ Thu, 02 Jan 2025 10:07:11 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 20/73] tcg: Split out tcg-target-mo.h
-Date: Thu,  2 Jan 2025 10:06:00 -0800
-Message-ID: <20250102180654.1420056-21-richard.henderson@linaro.org>
+Subject: [PATCH 21/73] tcg: Merge TCG_TARGET_HAS_{div,rem,div2}
+Date: Thu,  2 Jan 2025 10:06:01 -0800
+Message-ID: <20250102180654.1420056-22-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250102180654.1420056-1-richard.henderson@linaro.org>
 References: <20250102180654.1420056-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,382 +94,622 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Pass a type parameter to the macros; this is unused with these opcodes,
+but will be used with others, so keep it for uniformity.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/internal-target.h     |  1 +
- tcg/aarch64/tcg-target-mo.h     | 12 ++++++++++++
- tcg/aarch64/tcg-target.h        |  2 --
- tcg/arm/tcg-target-mo.h         | 13 +++++++++++++
- tcg/arm/tcg-target.h            |  2 --
- tcg/i386/tcg-target-mo.h        | 19 +++++++++++++++++++
- tcg/i386/tcg-target.h           | 11 -----------
- tcg/loongarch64/tcg-target-mo.h | 12 ++++++++++++
- tcg/loongarch64/tcg-target.h    |  2 --
- tcg/mips/tcg-target-mo.h        | 13 +++++++++++++
- tcg/mips/tcg-target.h           |  2 --
- tcg/ppc/tcg-target-mo.h         | 12 ++++++++++++
- tcg/ppc/tcg-target.h            |  2 --
- tcg/riscv/tcg-target-mo.h       | 12 ++++++++++++
- tcg/riscv/tcg-target.h          |  2 --
- tcg/s390x/tcg-target-mo.h       | 12 ++++++++++++
- tcg/s390x/tcg-target.h          |  2 --
- tcg/sparc64/tcg-target-mo.h     | 12 ++++++++++++
- tcg/sparc64/tcg-target.h        |  2 --
- tcg/tci/tcg-target-mo.h         | 17 +++++++++++++++++
- tcg/tci/tcg-target.h            |  5 -----
- tcg/tcg-op-ldst.c               |  1 +
- 22 files changed, 136 insertions(+), 32 deletions(-)
- create mode 100644 tcg/aarch64/tcg-target-mo.h
- create mode 100644 tcg/arm/tcg-target-mo.h
- create mode 100644 tcg/i386/tcg-target-mo.h
- create mode 100644 tcg/loongarch64/tcg-target-mo.h
- create mode 100644 tcg/mips/tcg-target-mo.h
- create mode 100644 tcg/ppc/tcg-target-mo.h
- create mode 100644 tcg/riscv/tcg-target-mo.h
- create mode 100644 tcg/s390x/tcg-target-mo.h
- create mode 100644 tcg/sparc64/tcg-target-mo.h
- create mode 100644 tcg/tci/tcg-target-mo.h
+ include/tcg/tcg-opc.h            |  24 +++---
+ tcg/aarch64/tcg-target-has.h     |   9 +-
+ tcg/arm/tcg-target-has.h         |   7 +-
+ tcg/i386/tcg-target-has.h        |   6 +-
+ tcg/loongarch64/tcg-target-has.h |  11 +--
+ tcg/mips/tcg-target-has.h        |   9 +-
+ tcg/ppc/tcg-target-has.h         |   9 +-
+ tcg/riscv/tcg-target-has.h       |  11 +--
+ tcg/s390x/tcg-target-has.h       |   6 +-
+ tcg/sparc64/tcg-target-has.h     |   9 +-
+ tcg/tcg-has.h                    |  19 ++---
+ tcg/tci/tcg-target-has.h         |   8 +-
+ tcg/tcg-op.c                     | 136 ++++++++++++++++++-------------
+ tcg/tcg.c                        |  12 +--
+ 14 files changed, 139 insertions(+), 137 deletions(-)
 
-diff --git a/accel/tcg/internal-target.h b/accel/tcg/internal-target.h
-index a664be02cc..2cdf11c905 100644
---- a/accel/tcg/internal-target.h
-+++ b/accel/tcg/internal-target.h
-@@ -12,6 +12,7 @@
- #include "exec/exec-all.h"
- #include "exec/translation-block.h"
- #include "tb-internal.h"
-+#include "tcg-target-mo.h"
+diff --git a/include/tcg/tcg-opc.h b/include/tcg/tcg-opc.h
+index 14aff6e7f9..ac110efb74 100644
+--- a/include/tcg/tcg-opc.h
++++ b/include/tcg/tcg-opc.h
+@@ -61,12 +61,12 @@ DEF(st_i32, 0, 2, 1, 0)
+ DEF(add_i32, 1, 2, 0, 0)
+ DEF(sub_i32, 1, 2, 0, 0)
+ DEF(mul_i32, 1, 2, 0, 0)
+-DEF(div_i32, 1, 2, 0, IMPL(TCG_TARGET_HAS_div_i32))
+-DEF(divu_i32, 1, 2, 0, IMPL(TCG_TARGET_HAS_div_i32))
+-DEF(rem_i32, 1, 2, 0, IMPL(TCG_TARGET_HAS_rem_i32))
+-DEF(remu_i32, 1, 2, 0, IMPL(TCG_TARGET_HAS_rem_i32))
+-DEF(div2_i32, 2, 3, 0, IMPL(TCG_TARGET_HAS_div2_i32))
+-DEF(divu2_i32, 2, 3, 0, IMPL(TCG_TARGET_HAS_div2_i32))
++DEF(div_i32, 1, 2, 0, IMPL(TCG_TARGET_HAS_div(TCG_TYPE_I32)))
++DEF(divu_i32, 1, 2, 0, IMPL(TCG_TARGET_HAS_div(TCG_TYPE_I32)))
++DEF(rem_i32, 1, 2, 0, IMPL(TCG_TARGET_HAS_rem(TCG_TYPE_I32)))
++DEF(remu_i32, 1, 2, 0, IMPL(TCG_TARGET_HAS_rem(TCG_TYPE_I32)))
++DEF(div2_i32, 2, 3, 0, IMPL(TCG_TARGET_HAS_div2(TCG_TYPE_I32)))
++DEF(divu2_i32, 2, 3, 0, IMPL(TCG_TARGET_HAS_div2(TCG_TYPE_I32)))
+ DEF(and_i32, 1, 2, 0, 0)
+ DEF(or_i32, 1, 2, 0, 0)
+ DEF(xor_i32, 1, 2, 0, 0)
+@@ -130,12 +130,12 @@ DEF(st_i64, 0, 2, 1, IMPL64)
+ DEF(add_i64, 1, 2, 0, IMPL64)
+ DEF(sub_i64, 1, 2, 0, IMPL64)
+ DEF(mul_i64, 1, 2, 0, IMPL64)
+-DEF(div_i64, 1, 2, 0, IMPL64 | IMPL(TCG_TARGET_HAS_div_i64))
+-DEF(divu_i64, 1, 2, 0, IMPL64 | IMPL(TCG_TARGET_HAS_div_i64))
+-DEF(rem_i64, 1, 2, 0, IMPL64 | IMPL(TCG_TARGET_HAS_rem_i64))
+-DEF(remu_i64, 1, 2, 0, IMPL64 | IMPL(TCG_TARGET_HAS_rem_i64))
+-DEF(div2_i64, 2, 3, 0, IMPL64 | IMPL(TCG_TARGET_HAS_div2_i64))
+-DEF(divu2_i64, 2, 3, 0, IMPL64 | IMPL(TCG_TARGET_HAS_div2_i64))
++DEF(div_i64, 1, 2, 0, IMPL64 | IMPL(TCG_TARGET_HAS_div(TCG_TYPE_I64)))
++DEF(divu_i64, 1, 2, 0, IMPL64 | IMPL(TCG_TARGET_HAS_div(TCG_TYPE_I64)))
++DEF(rem_i64, 1, 2, 0, IMPL64 | IMPL(TCG_TARGET_HAS_rem(TCG_TYPE_I64)))
++DEF(remu_i64, 1, 2, 0, IMPL64 | IMPL(TCG_TARGET_HAS_rem(TCG_TYPE_I64)))
++DEF(div2_i64, 2, 3, 0, IMPL64 | IMPL(TCG_TARGET_HAS_div2(TCG_TYPE_I64)))
++DEF(divu2_i64, 2, 3, 0, IMPL64 | IMPL(TCG_TARGET_HAS_div2(TCG_TYPE_I64)))
+ DEF(and_i64, 1, 2, 0, IMPL64)
+ DEF(or_i64, 1, 2, 0, IMPL64)
+ DEF(xor_i64, 1, 2, 0, IMPL64)
+diff --git a/tcg/aarch64/tcg-target-has.h b/tcg/aarch64/tcg-target-has.h
+index 0e79e01266..856cb4020b 100644
+--- a/tcg/aarch64/tcg-target-has.h
++++ b/tcg/aarch64/tcg-target-has.h
+@@ -12,9 +12,10 @@
+ #define have_lse    (cpuinfo & CPUINFO_LSE)
+ #define have_lse2   (cpuinfo & CPUINFO_LSE2)
  
- /*
-  * Access to the various translations structures need to be serialised
-diff --git a/tcg/aarch64/tcg-target-mo.h b/tcg/aarch64/tcg-target-mo.h
-new file mode 100644
-index 0000000000..e8e8923014
---- /dev/null
-+++ b/tcg/aarch64/tcg-target-mo.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Define target-specific memory model
-+ * Copyright (c) 2013 Huawei Technologies Duesseldorf GmbH
-+ */
+-/* optional instructions */
+-#define TCG_TARGET_HAS_div_i32          1
+-#define TCG_TARGET_HAS_rem_i32          1
++/* optional integer instructions */
++#define TCG_TARGET_HAS_div(T)           1
++#define TCG_TARGET_HAS_rem(T)           1
 +
-+#ifndef TCG_TARGET_MO_H
-+#define TCG_TARGET_MO_H
-+
-+#define TCG_TARGET_DEFAULT_MO  0
-+
-+#endif
-diff --git a/tcg/aarch64/tcg-target.h b/tcg/aarch64/tcg-target.h
-index 1ef8b2e300..0dd6e1f069 100644
---- a/tcg/aarch64/tcg-target.h
-+++ b/tcg/aarch64/tcg-target.h
-@@ -47,6 +47,4 @@ typedef enum {
+ #define TCG_TARGET_HAS_ext8s_i32        1
+ #define TCG_TARGET_HAS_ext16s_i32       1
+ #define TCG_TARGET_HAS_ext8u_i32        1
+@@ -45,8 +46,6 @@
+ #define TCG_TARGET_HAS_extr_i64_i32     0
+ #define TCG_TARGET_HAS_qemu_st8_i32     0
  
- #define TCG_TARGET_NB_REGS 64
- 
--#define TCG_TARGET_DEFAULT_MO (0)
--
- #endif /* AARCH64_TCG_TARGET_H */
-diff --git a/tcg/arm/tcg-target-mo.h b/tcg/arm/tcg-target-mo.h
-new file mode 100644
-index 0000000000..12542dfd1c
---- /dev/null
-+++ b/tcg/arm/tcg-target-mo.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Define target-specific memory model
-+ * Copyright (c) 2008 Fabrice Bellard
-+ * Copyright (c) 2008 Andrzej Zaborowski
-+ */
-+
-+#ifndef TCG_TARGET_MO_H
-+#define TCG_TARGET_MO_H
-+
-+#define TCG_TARGET_DEFAULT_MO  0
-+
-+#endif
-diff --git a/tcg/arm/tcg-target.h b/tcg/arm/tcg-target.h
-index 21563e00f9..4f9f877121 100644
---- a/tcg/arm/tcg-target.h
-+++ b/tcg/arm/tcg-target.h
-@@ -70,6 +70,4 @@ typedef enum {
- 
- #define TCG_TARGET_NB_REGS 32
- 
--#define TCG_TARGET_DEFAULT_MO (0)
--
+-#define TCG_TARGET_HAS_div_i64          1
+-#define TCG_TARGET_HAS_rem_i64          1
+ #define TCG_TARGET_HAS_ext8s_i64        1
+ #define TCG_TARGET_HAS_ext16s_i64       1
+ #define TCG_TARGET_HAS_ext32s_i64       1
+diff --git a/tcg/arm/tcg-target-has.h b/tcg/arm/tcg-target-has.h
+index 316185500d..392fc6d704 100644
+--- a/tcg/arm/tcg-target-has.h
++++ b/tcg/arm/tcg-target-has.h
+@@ -23,7 +23,10 @@ extern bool use_idiv_instructions;
+ extern bool use_neon_instructions;
  #endif
-diff --git a/tcg/i386/tcg-target-mo.h b/tcg/i386/tcg-target-mo.h
-new file mode 100644
-index 0000000000..7567dc7248
---- /dev/null
-+++ b/tcg/i386/tcg-target-mo.h
-@@ -0,0 +1,19 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Define target-specific memory model
-+ * Copyright (c) 2008 Fabrice Bellard
-+ */
-+
-+#ifndef TCG_TARGET_MO_H
-+#define TCG_TARGET_MO_H
-+
-+/*
-+ * This defines the natural memory order supported by this architecture
-+ * before guarantees made by various barrier instructions.
-+ *
-+ * The x86 has a pretty strong memory ordering which only really
-+ * allows for some stores to be re-ordered after loads.
-+ */
-+#define TCG_TARGET_DEFAULT_MO (TCG_MO_ALL & ~TCG_MO_ST_LD)
-+
-+#endif
-diff --git a/tcg/i386/tcg-target.h b/tcg/i386/tcg-target.h
-index e6d7fd526e..3cbdfbca52 100644
---- a/tcg/i386/tcg-target.h
-+++ b/tcg/i386/tcg-target.h
-@@ -88,15 +88,4 @@ typedef enum {
-     TCG_REG_CALL_STACK = TCG_REG_ESP
- } TCGReg;
  
--/* This defines the natural memory order supported by this
-- * architecture before guarantees made by various barrier
-- * instructions.
-- *
-- * The x86 has a pretty strong memory ordering which only really
-- * allows for some stores to be re-ordered after loads.
-- */
--#include "tcg/tcg-mo.h"
--
--#define TCG_TARGET_DEFAULT_MO (TCG_MO_ALL & ~TCG_MO_ST_LD)
--
+-/* optional instructions */
++/* optional integer instructions */
++#define TCG_TARGET_HAS_div(T)           use_idiv_instructions
++#define TCG_TARGET_HAS_rem(T)           0
++
+ #define TCG_TARGET_HAS_ext8s_i32        1
+ #define TCG_TARGET_HAS_ext16s_i32       1
+ #define TCG_TARGET_HAS_ext8u_i32        0 /* and r0, r1, #0xff */
+@@ -49,8 +52,6 @@ extern bool use_neon_instructions;
+ #define TCG_TARGET_HAS_muls2_i32        1
+ #define TCG_TARGET_HAS_muluh_i32        0
+ #define TCG_TARGET_HAS_mulsh_i32        0
+-#define TCG_TARGET_HAS_div_i32          use_idiv_instructions
+-#define TCG_TARGET_HAS_rem_i32          0
+ #define TCG_TARGET_HAS_qemu_st8_i32     0
+ 
+ #define TCG_TARGET_HAS_qemu_ldst_i128   0
+diff --git a/tcg/i386/tcg-target-has.h b/tcg/i386/tcg-target-has.h
+index 3ea2eab807..f60ffbe984 100644
+--- a/tcg/i386/tcg-target-has.h
++++ b/tcg/i386/tcg-target-has.h
+@@ -25,8 +25,9 @@
+ #define have_avx512dq     ((cpuinfo & CPUINFO_AVX512DQ) && have_avx512vl)
+ #define have_avx512vbmi2  ((cpuinfo & CPUINFO_AVX512VBMI2) && have_avx512vl)
+ 
+-/* optional instructions */
+-#define TCG_TARGET_HAS_div2_i32         1
++/* optional integer instructions */
++#define TCG_TARGET_HAS_div2(T)          1
++
+ #define TCG_TARGET_HAS_rot_i32          1
+ #define TCG_TARGET_HAS_ext8s_i32        1
+ #define TCG_TARGET_HAS_ext16s_i32       1
+@@ -58,7 +59,6 @@
+ #if TCG_TARGET_REG_BITS == 64
+ /* Keep 32-bit values zero-extended in a register.  */
+ #define TCG_TARGET_HAS_extr_i64_i32     1
+-#define TCG_TARGET_HAS_div2_i64         1
+ #define TCG_TARGET_HAS_rot_i64          1
+ #define TCG_TARGET_HAS_ext8s_i64        1
+ #define TCG_TARGET_HAS_ext16s_i64       1
+diff --git a/tcg/loongarch64/tcg-target-has.h b/tcg/loongarch64/tcg-target-has.h
+index e4333c36c6..5eedfc1926 100644
+--- a/tcg/loongarch64/tcg-target-has.h
++++ b/tcg/loongarch64/tcg-target-has.h
+@@ -9,11 +9,11 @@
+ 
+ #include "host/cpuinfo.h"
+ 
+-/* optional instructions */
++/* optional integer instructions */
++#define TCG_TARGET_HAS_div(T)           1
++#define TCG_TARGET_HAS_rem(T)           1
++
+ #define TCG_TARGET_HAS_negsetcond_i32   0
+-#define TCG_TARGET_HAS_div_i32          1
+-#define TCG_TARGET_HAS_rem_i32          1
+-#define TCG_TARGET_HAS_div2_i32         0
+ #define TCG_TARGET_HAS_rot_i32          1
+ #define TCG_TARGET_HAS_deposit_i32      1
+ #define TCG_TARGET_HAS_extract_i32      1
+@@ -46,9 +46,6 @@
+ 
+ /* 64-bit operations */
+ #define TCG_TARGET_HAS_negsetcond_i64   0
+-#define TCG_TARGET_HAS_div_i64          1
+-#define TCG_TARGET_HAS_rem_i64          1
+-#define TCG_TARGET_HAS_div2_i64         0
+ #define TCG_TARGET_HAS_rot_i64          1
+ #define TCG_TARGET_HAS_deposit_i64      1
+ #define TCG_TARGET_HAS_extract_i64      1
+diff --git a/tcg/mips/tcg-target-has.h b/tcg/mips/tcg-target-has.h
+index 5dbc63cef6..37a68dace8 100644
+--- a/tcg/mips/tcg-target-has.h
++++ b/tcg/mips/tcg-target-has.h
+@@ -38,9 +38,10 @@ extern bool use_mips32r2_instructions;
+ #define use_mips32r6_instructions  0
  #endif
-diff --git a/tcg/loongarch64/tcg-target-mo.h b/tcg/loongarch64/tcg-target-mo.h
-new file mode 100644
-index 0000000000..d35506957f
---- /dev/null
-+++ b/tcg/loongarch64/tcg-target-mo.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Define target-specific memory model
-+ * Copyright (c) 2021 WANG Xuerui <git@xen0n.name>
-+ */
-+
-+#ifndef TCG_TARGET_MO_H
-+#define TCG_TARGET_MO_H
-+
-+#define TCG_TARGET_DEFAULT_MO  0
-+
-+#endif
-diff --git a/tcg/loongarch64/tcg-target.h b/tcg/loongarch64/tcg-target.h
-index 0432a4ebbd..8533284631 100644
---- a/tcg/loongarch64/tcg-target.h
-+++ b/tcg/loongarch64/tcg-target.h
-@@ -85,6 +85,4 @@ typedef enum {
-     TCG_VEC_TMP0 = TCG_REG_V23,
- } TCGReg;
  
--#define TCG_TARGET_DEFAULT_MO (0)
--
- #endif /* LOONGARCH_TCG_TARGET_H */
-diff --git a/tcg/mips/tcg-target-mo.h b/tcg/mips/tcg-target-mo.h
-new file mode 100644
-index 0000000000..50cefc222d
---- /dev/null
-+++ b/tcg/mips/tcg-target-mo.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Define target-specific memory model
-+ * Copyright (c) 2008-2009 Arnaud Patard <arnaud.patard@rtp-net.org>
-+ * Copyright (c) 2009 Aurelien Jarno <aurelien@aurel32.net>
-+ */
+-/* optional instructions */
+-#define TCG_TARGET_HAS_div_i32          1
+-#define TCG_TARGET_HAS_rem_i32          1
++/* optional integer instructions */
++#define TCG_TARGET_HAS_div(T)           1
++#define TCG_TARGET_HAS_rem(T)           1
 +
-+#ifndef TCG_TARGET_MO_H
-+#define TCG_TARGET_MO_H
-+
-+#define TCG_TARGET_DEFAULT_MO  0
-+
-+#endif
-diff --git a/tcg/mips/tcg-target.h b/tcg/mips/tcg-target.h
-index 210044ca12..3090acc4f5 100644
---- a/tcg/mips/tcg-target.h
-+++ b/tcg/mips/tcg-target.h
-@@ -70,6 +70,4 @@ typedef enum {
-     TCG_AREG0 = TCG_REG_S8,
- } TCGReg;
+ #define TCG_TARGET_HAS_not_i32          1
+ #define TCG_TARGET_HAS_nor_i32          1
+ #define TCG_TARGET_HAS_andc_i32         0
+@@ -58,8 +59,6 @@ extern bool use_mips32r2_instructions;
+ #define TCG_TARGET_HAS_add2_i32         0
+ #define TCG_TARGET_HAS_sub2_i32         0
+ #define TCG_TARGET_HAS_extr_i64_i32     1
+-#define TCG_TARGET_HAS_div_i64          1
+-#define TCG_TARGET_HAS_rem_i64          1
+ #define TCG_TARGET_HAS_not_i64          1
+ #define TCG_TARGET_HAS_nor_i64          1
+ #define TCG_TARGET_HAS_andc_i64         0
+diff --git a/tcg/ppc/tcg-target-has.h b/tcg/ppc/tcg-target-has.h
+index a6c7cdba5d..6734fd63e7 100644
+--- a/tcg/ppc/tcg-target-has.h
++++ b/tcg/ppc/tcg-target-has.h
+@@ -16,13 +16,14 @@
+ #define have_altivec   (cpuinfo & CPUINFO_ALTIVEC)
+ #define have_vsx       (cpuinfo & CPUINFO_VSX)
  
--#define TCG_TARGET_DEFAULT_MO           0
--
++/* optional integer instructions */
++#define TCG_TARGET_HAS_div(T)           1
++#define TCG_TARGET_HAS_rem(T)           1
++
+ /* optional instructions automatically implemented */
+ #define TCG_TARGET_HAS_ext8u_i32        0 /* andi */
+ #define TCG_TARGET_HAS_ext16u_i32       0
+ 
+-/* optional instructions */
+-#define TCG_TARGET_HAS_div_i32          1
+-#define TCG_TARGET_HAS_rem_i32          have_isa_3_00
+ #define TCG_TARGET_HAS_rot_i32          1
+ #define TCG_TARGET_HAS_ext8s_i32        1
+ #define TCG_TARGET_HAS_ext16s_i32       1
+@@ -52,8 +53,6 @@
+ #define TCG_TARGET_HAS_add2_i32         0
+ #define TCG_TARGET_HAS_sub2_i32         0
+ #define TCG_TARGET_HAS_extr_i64_i32     0
+-#define TCG_TARGET_HAS_div_i64          1
+-#define TCG_TARGET_HAS_rem_i64          have_isa_3_00
+ #define TCG_TARGET_HAS_rot_i64          1
+ #define TCG_TARGET_HAS_ext8s_i64        1
+ #define TCG_TARGET_HAS_ext16s_i64       1
+diff --git a/tcg/riscv/tcg-target-has.h b/tcg/riscv/tcg-target-has.h
+index ddc759a533..309673d74a 100644
+--- a/tcg/riscv/tcg-target-has.h
++++ b/tcg/riscv/tcg-target-has.h
+@@ -9,11 +9,11 @@
+ 
+ #include "host/cpuinfo.h"
+ 
+-/* optional instructions */
++/* optional integer instructions */
++#define TCG_TARGET_HAS_div(T)           1
++#define TCG_TARGET_HAS_rem(T)           1
++
+ #define TCG_TARGET_HAS_negsetcond_i32   1
+-#define TCG_TARGET_HAS_div_i32          1
+-#define TCG_TARGET_HAS_rem_i32          1
+-#define TCG_TARGET_HAS_div2_i32         0
+ #define TCG_TARGET_HAS_rot_i32          (cpuinfo & CPUINFO_ZBB)
+ #define TCG_TARGET_HAS_deposit_i32      0
+ #define TCG_TARGET_HAS_extract_i32      0
+@@ -45,9 +45,6 @@
+ #define TCG_TARGET_HAS_qemu_st8_i32     0
+ 
+ #define TCG_TARGET_HAS_negsetcond_i64   1
+-#define TCG_TARGET_HAS_div_i64          1
+-#define TCG_TARGET_HAS_rem_i64          1
+-#define TCG_TARGET_HAS_div2_i64         0
+ #define TCG_TARGET_HAS_rot_i64          (cpuinfo & CPUINFO_ZBB)
+ #define TCG_TARGET_HAS_deposit_i64      0
+ #define TCG_TARGET_HAS_extract_i64      0
+diff --git a/tcg/s390x/tcg-target-has.h b/tcg/s390x/tcg-target-has.h
+index 4992d74f12..3473b39991 100644
+--- a/tcg/s390x/tcg-target-has.h
++++ b/tcg/s390x/tcg-target-has.h
+@@ -28,8 +28,9 @@ extern uint64_t s390_facilities[3];
+ #define HAVE_FACILITY(X) \
+     ((s390_facilities[FACILITY_##X / 64] >> (63 - FACILITY_##X % 64)) & 1)
+ 
+-/* optional instructions */
+-#define TCG_TARGET_HAS_div2_i32       1
++/* optional integer instructions */
++#define TCG_TARGET_HAS_div2(T)        1
++
+ #define TCG_TARGET_HAS_rot_i32        1
+ #define TCG_TARGET_HAS_ext8s_i32      1
+ #define TCG_TARGET_HAS_ext16s_i32     1
+@@ -60,7 +61,6 @@ extern uint64_t s390_facilities[3];
+ #define TCG_TARGET_HAS_extr_i64_i32   0
+ #define TCG_TARGET_HAS_qemu_st8_i32   0
+ 
+-#define TCG_TARGET_HAS_div2_i64       1
+ #define TCG_TARGET_HAS_rot_i64        1
+ #define TCG_TARGET_HAS_ext8s_i64      1
+ #define TCG_TARGET_HAS_ext16s_i64     1
+diff --git a/tcg/sparc64/tcg-target-has.h b/tcg/sparc64/tcg-target-has.h
+index d9ca14cc3d..17db925241 100644
+--- a/tcg/sparc64/tcg-target-has.h
++++ b/tcg/sparc64/tcg-target-has.h
+@@ -13,9 +13,10 @@
+ extern bool use_vis3_instructions;
  #endif
-diff --git a/tcg/ppc/tcg-target-mo.h b/tcg/ppc/tcg-target-mo.h
-new file mode 100644
-index 0000000000..98bfe03b7a
---- /dev/null
-+++ b/tcg/ppc/tcg-target-mo.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Define target-specific memory model
-+ * Copyright (c) 2008 Fabrice Bellard
-+ */
-+
-+#ifndef TCG_TARGET_MO_H
-+#define TCG_TARGET_MO_H
-+
-+#define TCG_TARGET_DEFAULT_MO  0
-+
-+#endif
-diff --git a/tcg/ppc/tcg-target.h b/tcg/ppc/tcg-target.h
-index 0bc13d7363..5607634e99 100644
---- a/tcg/ppc/tcg-target.h
-+++ b/tcg/ppc/tcg-target.h
-@@ -53,6 +53,4 @@ typedef enum {
-     TCG_AREG0 = TCG_REG_R27
- } TCGReg;
  
--#define TCG_TARGET_DEFAULT_MO (0)
--
+-/* optional instructions */
+-#define TCG_TARGET_HAS_div_i32		1
+-#define TCG_TARGET_HAS_rem_i32		0
++/* optional integer instructions */
++#define TCG_TARGET_HAS_div(T)           1
++#define TCG_TARGET_HAS_rem(T)           0
++
+ #define TCG_TARGET_HAS_rot_i32          0
+ #define TCG_TARGET_HAS_ext8s_i32        0
+ #define TCG_TARGET_HAS_ext16s_i32       0
+@@ -46,8 +47,6 @@ extern bool use_vis3_instructions;
+ #define TCG_TARGET_HAS_qemu_st8_i32     0
+ 
+ #define TCG_TARGET_HAS_extr_i64_i32     0
+-#define TCG_TARGET_HAS_div_i64          1
+-#define TCG_TARGET_HAS_rem_i64          0
+ #define TCG_TARGET_HAS_rot_i64          0
+ #define TCG_TARGET_HAS_ext8s_i64        0
+ #define TCG_TARGET_HAS_ext16s_i64       0
+diff --git a/tcg/tcg-has.h b/tcg/tcg-has.h
+index 65b6a0b0cf..649168b001 100644
+--- a/tcg/tcg-has.h
++++ b/tcg/tcg-has.h
+@@ -12,9 +12,6 @@
+ #if TCG_TARGET_REG_BITS == 32
+ /* Turn some undef macros into false macros.  */
+ #define TCG_TARGET_HAS_extr_i64_i32     0
+-#define TCG_TARGET_HAS_div_i64          0
+-#define TCG_TARGET_HAS_rem_i64          0
+-#define TCG_TARGET_HAS_div2_i64         0
+ #define TCG_TARGET_HAS_rot_i64          0
+ #define TCG_TARGET_HAS_ext8s_i64        0
+ #define TCG_TARGET_HAS_ext16s_i64       0
+@@ -64,17 +61,11 @@
  #endif
-diff --git a/tcg/riscv/tcg-target-mo.h b/tcg/riscv/tcg-target-mo.h
-new file mode 100644
-index 0000000000..691b5d0da8
---- /dev/null
-+++ b/tcg/riscv/tcg-target-mo.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Define target-specific memory model
-+ * Copyright (c) 2018 SiFive, Inc
-+ */
-+
-+#ifndef TCG_TARGET_MO_H
-+#define TCG_TARGET_MO_H
-+
-+#define TCG_TARGET_DEFAULT_MO  0
-+
-+#endif
-diff --git a/tcg/riscv/tcg-target.h b/tcg/riscv/tcg-target.h
-index 4c40662402..db5f3d8b72 100644
---- a/tcg/riscv/tcg-target.h
-+++ b/tcg/riscv/tcg-target.h
-@@ -57,6 +57,4 @@ typedef enum {
-     TCG_REG_TMP2       = TCG_REG_T4,
- } TCGReg;
  
--#define TCG_TARGET_DEFAULT_MO (0)
--
+ /* Only one of DIV or DIV2 should be defined.  */
+-#if defined(TCG_TARGET_HAS_div_i32)
+-#define TCG_TARGET_HAS_div2_i32         0
+-#elif defined(TCG_TARGET_HAS_div2_i32)
+-#define TCG_TARGET_HAS_div_i32          0
+-#define TCG_TARGET_HAS_rem_i32          0
+-#endif
+-#if defined(TCG_TARGET_HAS_div_i64)
+-#define TCG_TARGET_HAS_div2_i64         0
+-#elif defined(TCG_TARGET_HAS_div2_i64)
+-#define TCG_TARGET_HAS_div_i64          0
+-#define TCG_TARGET_HAS_rem_i64          0
++#if defined(TCG_TARGET_HAS_div)
++#define TCG_TARGET_HAS_div2(T)          0
++#elif defined(TCG_TARGET_HAS_div2)
++#define TCG_TARGET_HAS_div(T)           0
++#define TCG_TARGET_HAS_rem(T)           0
  #endif
-diff --git a/tcg/s390x/tcg-target-mo.h b/tcg/s390x/tcg-target-mo.h
-new file mode 100644
-index 0000000000..962295ed51
---- /dev/null
-+++ b/tcg/s390x/tcg-target-mo.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Define target-specific memory model
-+ * Copyright (c) 2009 Ulrich Hecht <uli@suse.de>
-+ */
-+
-+#ifndef TCG_TARGET_MO_H
-+#define TCG_TARGET_MO_H
-+
-+#define TCG_TARGET_DEFAULT_MO (TCG_MO_ALL & ~TCG_MO_ST_LD)
-+
-+#endif
-diff --git a/tcg/s390x/tcg-target.h b/tcg/s390x/tcg-target.h
-index f790b77075..0ef5a6d3dd 100644
---- a/tcg/s390x/tcg-target.h
-+++ b/tcg/s390x/tcg-target.h
-@@ -51,6 +51,4 @@ typedef enum TCGReg {
  
- #define TCG_TARGET_NB_REGS 64
+ #if !defined(TCG_TARGET_HAS_v64) \
+diff --git a/tcg/tci/tcg-target-has.h b/tcg/tci/tcg-target-has.h
+index 3397403910..89f8288e4e 100644
+--- a/tcg/tci/tcg-target-has.h
++++ b/tcg/tci/tcg-target-has.h
+@@ -7,10 +7,12 @@
+ #ifndef TCG_TARGET_HAS_H
+ #define TCG_TARGET_HAS_H
  
--#define TCG_TARGET_DEFAULT_MO (TCG_MO_ALL & ~TCG_MO_ST_LD)
--
- #endif
-diff --git a/tcg/sparc64/tcg-target-mo.h b/tcg/sparc64/tcg-target-mo.h
-new file mode 100644
-index 0000000000..98bfe03b7a
---- /dev/null
-+++ b/tcg/sparc64/tcg-target-mo.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Define target-specific memory model
-+ * Copyright (c) 2008 Fabrice Bellard
-+ */
++/* optional integer instructions */
++#define TCG_TARGET_HAS_div(T)           1
++#define TCG_TARGET_HAS_rem(T)           1
 +
-+#ifndef TCG_TARGET_MO_H
-+#define TCG_TARGET_MO_H
-+
-+#define TCG_TARGET_DEFAULT_MO  0
-+
-+#endif
-diff --git a/tcg/sparc64/tcg-target.h b/tcg/sparc64/tcg-target.h
-index 5ecca5586b..f7d75d5806 100644
---- a/tcg/sparc64/tcg-target.h
-+++ b/tcg/sparc64/tcg-target.h
-@@ -66,6 +66,4 @@ typedef enum {
+ #define TCG_TARGET_HAS_bswap16_i32      1
+ #define TCG_TARGET_HAS_bswap32_i32      1
+-#define TCG_TARGET_HAS_div_i32          1
+-#define TCG_TARGET_HAS_rem_i32          1
+ #define TCG_TARGET_HAS_ext8s_i32        1
+ #define TCG_TARGET_HAS_ext16s_i32       1
+ #define TCG_TARGET_HAS_ext8u_i32        1
+@@ -44,8 +46,6 @@
+ #define TCG_TARGET_HAS_extract_i64      1
+ #define TCG_TARGET_HAS_sextract_i64     1
+ #define TCG_TARGET_HAS_extract2_i64     0
+-#define TCG_TARGET_HAS_div_i64          1
+-#define TCG_TARGET_HAS_rem_i64          1
+ #define TCG_TARGET_HAS_ext8s_i64        1
+ #define TCG_TARGET_HAS_ext16s_i64       1
+ #define TCG_TARGET_HAS_ext32s_i64       1
+diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
+index c2d0558f60..a919682679 100644
+--- a/tcg/tcg-op.c
++++ b/tcg/tcg-op.c
+@@ -592,9 +592,9 @@ void tcg_gen_muli_i32(TCGv_i32 ret, TCGv_i32 arg1, int32_t arg2)
  
- #define TCG_AREG0 TCG_REG_I0
- 
--#define TCG_TARGET_DEFAULT_MO (0)
--
- #endif
-diff --git a/tcg/tci/tcg-target-mo.h b/tcg/tci/tcg-target-mo.h
-new file mode 100644
-index 0000000000..779872e39a
---- /dev/null
-+++ b/tcg/tci/tcg-target-mo.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Define target-specific memory model
-+ * Copyright (c) 2009, 2011 Stefan Weil
-+ */
-+
-+#ifndef TCG_TARGET_MO_H
-+#define TCG_TARGET_MO_H
-+
-+/*
-+ * We could notice __i386__ or __s390x__ and reduce the barriers depending
-+ * on the host.  But if you want performance, you use the normal backend.
-+ * We prefer consistency across hosts on this.
-+ */
-+#define TCG_TARGET_DEFAULT_MO  0
-+
-+#endif
-diff --git a/tcg/tci/tcg-target.h b/tcg/tci/tcg-target.h
-index fea92f7848..a9ca493d20 100644
---- a/tcg/tci/tcg-target.h
-+++ b/tcg/tci/tcg-target.h
-@@ -74,9 +74,4 @@ typedef enum {
- #define HAVE_TCG_QEMU_TB_EXEC
- #define TCG_TARGET_NEED_POOL_LABELS
- 
--/* We could notice __i386__ or __s390x__ and reduce the barriers depending
--   on the host.  But if you want performance, you use the normal backend.
--   We prefer consistency across hosts on this.  */
--#define TCG_TARGET_DEFAULT_MO  (0)
--
- #endif /* TCG_TARGET_H */
-diff --git a/tcg/tcg-op-ldst.c b/tcg/tcg-op-ldst.c
-index ec3ef4dcb4..77271e0193 100644
---- a/tcg/tcg-op-ldst.c
-+++ b/tcg/tcg-op-ldst.c
-@@ -31,6 +31,7 @@
- #include "exec/plugin-gen.h"
- #include "tcg-internal.h"
- #include "tcg-has.h"
-+#include "tcg-target-mo.h"
- 
- static void check_max_alignment(unsigned a_bits)
+ void tcg_gen_div_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2)
  {
+-    if (TCG_TARGET_HAS_div_i32) {
++    if (TCG_TARGET_HAS_div(TCG_TYPE_I32)) {
+         tcg_gen_op3_i32(INDEX_op_div_i32, ret, arg1, arg2);
+-    } else if (TCG_TARGET_HAS_div2_i32) {
++    } else if (TCG_TARGET_HAS_div2(TCG_TYPE_I32)) {
+         TCGv_i32 t0 = tcg_temp_ebb_new_i32();
+         tcg_gen_sari_i32(t0, arg1, 31);
+         tcg_gen_op5_i32(INDEX_op_div2_i32, ret, t0, arg1, t0, arg2);
+@@ -606,15 +606,15 @@ void tcg_gen_div_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2)
+ 
+ void tcg_gen_rem_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2)
+ {
+-    if (TCG_TARGET_HAS_rem_i32) {
++    if (TCG_TARGET_HAS_rem(TCG_TYPE_I32)) {
+         tcg_gen_op3_i32(INDEX_op_rem_i32, ret, arg1, arg2);
+-    } else if (TCG_TARGET_HAS_div_i32) {
++    } else if (TCG_TARGET_HAS_div(TCG_TYPE_I32)) {
+         TCGv_i32 t0 = tcg_temp_ebb_new_i32();
+         tcg_gen_op3_i32(INDEX_op_div_i32, t0, arg1, arg2);
+         tcg_gen_mul_i32(t0, t0, arg2);
+         tcg_gen_sub_i32(ret, arg1, t0);
+         tcg_temp_free_i32(t0);
+-    } else if (TCG_TARGET_HAS_div2_i32) {
++    } else if (TCG_TARGET_HAS_div2(TCG_TYPE_I32)) {
+         TCGv_i32 t0 = tcg_temp_ebb_new_i32();
+         tcg_gen_sari_i32(t0, arg1, 31);
+         tcg_gen_op5_i32(INDEX_op_div2_i32, t0, ret, arg1, t0, arg2);
+@@ -626,9 +626,9 @@ void tcg_gen_rem_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2)
+ 
+ void tcg_gen_divu_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2)
+ {
+-    if (TCG_TARGET_HAS_div_i32) {
++    if (TCG_TARGET_HAS_div(TCG_TYPE_I32)) {
+         tcg_gen_op3_i32(INDEX_op_divu_i32, ret, arg1, arg2);
+-    } else if (TCG_TARGET_HAS_div2_i32) {
++    } else if (TCG_TARGET_HAS_div2(TCG_TYPE_I32)) {
+         TCGv_i32 t0 = tcg_temp_ebb_new_i32();
+         TCGv_i32 zero = tcg_constant_i32(0);
+         tcg_gen_op5_i32(INDEX_op_divu2_i32, ret, t0, arg1, zero, arg2);
+@@ -640,15 +640,15 @@ void tcg_gen_divu_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2)
+ 
+ void tcg_gen_remu_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2)
+ {
+-    if (TCG_TARGET_HAS_rem_i32) {
++    if (TCG_TARGET_HAS_rem(TCG_TYPE_I32)) {
+         tcg_gen_op3_i32(INDEX_op_remu_i32, ret, arg1, arg2);
+-    } else if (TCG_TARGET_HAS_div_i32) {
++    } else if (TCG_TARGET_HAS_div(TCG_TYPE_I32)) {
+         TCGv_i32 t0 = tcg_temp_ebb_new_i32();
+         tcg_gen_op3_i32(INDEX_op_divu_i32, t0, arg1, arg2);
+         tcg_gen_mul_i32(t0, t0, arg2);
+         tcg_gen_sub_i32(ret, arg1, t0);
+         tcg_temp_free_i32(t0);
+-    } else if (TCG_TARGET_HAS_div2_i32) {
++    } else if (TCG_TARGET_HAS_div2(TCG_TYPE_I32)) {
+         TCGv_i32 t0 = tcg_temp_ebb_new_i32();
+         TCGv_i32 zero = tcg_constant_i32(0);
+         tcg_gen_op5_i32(INDEX_op_divu2_i32, t0, ret, arg1, zero, arg2);
+@@ -2047,70 +2047,90 @@ void tcg_gen_muli_i64(TCGv_i64 ret, TCGv_i64 arg1, int64_t arg2)
+ 
+ void tcg_gen_div_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2)
+ {
+-    if (TCG_TARGET_HAS_div_i64) {
+-        tcg_gen_op3_i64(INDEX_op_div_i64, ret, arg1, arg2);
+-    } else if (TCG_TARGET_HAS_div2_i64) {
+-        TCGv_i64 t0 = tcg_temp_ebb_new_i64();
+-        tcg_gen_sari_i64(t0, arg1, 63);
+-        tcg_gen_op5_i64(INDEX_op_div2_i64, ret, t0, arg1, t0, arg2);
+-        tcg_temp_free_i64(t0);
+-    } else {
+-        gen_helper_div_i64(ret, arg1, arg2);
++    if (TCG_TARGET_REG_BITS == 64) {
++        if (TCG_TARGET_HAS_div(TCG_TYPE_I64)) {
++            tcg_gen_op3_i64(INDEX_op_div_i64, ret, arg1, arg2);
++            return;
++        }
++        if (TCG_TARGET_HAS_div2(TCG_TYPE_I64)) {
++            TCGv_i64 t0 = tcg_temp_ebb_new_i64();
++            tcg_gen_sari_i64(t0, arg1, 63);
++            tcg_gen_op5_i64(INDEX_op_div2_i64, ret, t0, arg1, t0, arg2);
++            tcg_temp_free_i64(t0);
++            return;
++        }
+     }
++    gen_helper_div_i64(ret, arg1, arg2);
+ }
+ 
+ void tcg_gen_rem_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2)
+ {
+-    if (TCG_TARGET_HAS_rem_i64) {
+-        tcg_gen_op3_i64(INDEX_op_rem_i64, ret, arg1, arg2);
+-    } else if (TCG_TARGET_HAS_div_i64) {
+-        TCGv_i64 t0 = tcg_temp_ebb_new_i64();
+-        tcg_gen_op3_i64(INDEX_op_div_i64, t0, arg1, arg2);
+-        tcg_gen_mul_i64(t0, t0, arg2);
+-        tcg_gen_sub_i64(ret, arg1, t0);
+-        tcg_temp_free_i64(t0);
+-    } else if (TCG_TARGET_HAS_div2_i64) {
+-        TCGv_i64 t0 = tcg_temp_ebb_new_i64();
+-        tcg_gen_sari_i64(t0, arg1, 63);
+-        tcg_gen_op5_i64(INDEX_op_div2_i64, t0, ret, arg1, t0, arg2);
+-        tcg_temp_free_i64(t0);
+-    } else {
+-        gen_helper_rem_i64(ret, arg1, arg2);
++    if (TCG_TARGET_REG_BITS == 64) {
++        if (TCG_TARGET_HAS_rem(TCG_TYPE_I64)) {
++            tcg_gen_op3_i64(INDEX_op_rem_i64, ret, arg1, arg2);
++            return;
++        }
++        if (TCG_TARGET_HAS_div(TCG_TYPE_I64)) {
++            TCGv_i64 t0 = tcg_temp_ebb_new_i64();
++            tcg_gen_op3_i64(INDEX_op_div_i64, t0, arg1, arg2);
++            tcg_gen_mul_i64(t0, t0, arg2);
++            tcg_gen_sub_i64(ret, arg1, t0);
++            tcg_temp_free_i64(t0);
++            return;
++        }
++        if (TCG_TARGET_HAS_div2(TCG_TYPE_I64)) {
++            TCGv_i64 t0 = tcg_temp_ebb_new_i64();
++            tcg_gen_sari_i64(t0, arg1, 63);
++            tcg_gen_op5_i64(INDEX_op_div2_i64, t0, ret, arg1, t0, arg2);
++            tcg_temp_free_i64(t0);
++            return;
++        }
+     }
++    gen_helper_rem_i64(ret, arg1, arg2);
+ }
+ 
+ void tcg_gen_divu_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2)
+ {
+-    if (TCG_TARGET_HAS_div_i64) {
+-        tcg_gen_op3_i64(INDEX_op_divu_i64, ret, arg1, arg2);
+-    } else if (TCG_TARGET_HAS_div2_i64) {
+-        TCGv_i64 t0 = tcg_temp_ebb_new_i64();
+-        TCGv_i64 zero = tcg_constant_i64(0);
+-        tcg_gen_op5_i64(INDEX_op_divu2_i64, ret, t0, arg1, zero, arg2);
+-        tcg_temp_free_i64(t0);
+-    } else {
+-        gen_helper_divu_i64(ret, arg1, arg2);
++    if (TCG_TARGET_REG_BITS == 64) {
++        if (TCG_TARGET_HAS_div(TCG_TYPE_I64)) {
++            tcg_gen_op3_i64(INDEX_op_divu_i64, ret, arg1, arg2);
++            return;
++        }
++        if (TCG_TARGET_HAS_div2(TCG_TYPE_I64)) {
++            TCGv_i64 t0 = tcg_temp_ebb_new_i64();
++            TCGv_i64 zero = tcg_constant_i64(0);
++            tcg_gen_op5_i64(INDEX_op_divu2_i64, ret, t0, arg1, zero, arg2);
++            tcg_temp_free_i64(t0);
++            return;
++        }
+     }
++    gen_helper_divu_i64(ret, arg1, arg2);
+ }
+ 
+ void tcg_gen_remu_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2)
+ {
+-    if (TCG_TARGET_HAS_rem_i64) {
+-        tcg_gen_op3_i64(INDEX_op_remu_i64, ret, arg1, arg2);
+-    } else if (TCG_TARGET_HAS_div_i64) {
+-        TCGv_i64 t0 = tcg_temp_ebb_new_i64();
+-        tcg_gen_op3_i64(INDEX_op_divu_i64, t0, arg1, arg2);
+-        tcg_gen_mul_i64(t0, t0, arg2);
+-        tcg_gen_sub_i64(ret, arg1, t0);
+-        tcg_temp_free_i64(t0);
+-    } else if (TCG_TARGET_HAS_div2_i64) {
+-        TCGv_i64 t0 = tcg_temp_ebb_new_i64();
+-        TCGv_i64 zero = tcg_constant_i64(0);
+-        tcg_gen_op5_i64(INDEX_op_divu2_i64, t0, ret, arg1, zero, arg2);
+-        tcg_temp_free_i64(t0);
+-    } else {
+-        gen_helper_remu_i64(ret, arg1, arg2);
++    if (TCG_TARGET_REG_BITS == 64) {
++        if (TCG_TARGET_HAS_rem(TCG_TYPE_I64)) {
++            tcg_gen_op3_i64(INDEX_op_remu_i64, ret, arg1, arg2);
++            return;
++        }
++        if (TCG_TARGET_HAS_div(TCG_TYPE_I64)) {
++            TCGv_i64 t0 = tcg_temp_ebb_new_i64();
++            tcg_gen_op3_i64(INDEX_op_divu_i64, t0, arg1, arg2);
++            tcg_gen_mul_i64(t0, t0, arg2);
++            tcg_gen_sub_i64(ret, arg1, t0);
++            tcg_temp_free_i64(t0);
++            return;
++        }
++        if (TCG_TARGET_HAS_div2(TCG_TYPE_I64)) {
++            TCGv_i64 t0 = tcg_temp_ebb_new_i64();
++            TCGv_i64 zero = tcg_constant_i64(0);
++            tcg_gen_op5_i64(INDEX_op_divu2_i64, t0, ret, arg1, zero, arg2);
++            tcg_temp_free_i64(t0);
++            return;
++        }
+     }
++    gen_helper_remu_i64(ret, arg1, arg2);
+ }
+ 
+ void tcg_gen_ext8s_i64(TCGv_i64 ret, TCGv_i64 arg)
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index bd6922a141..e98920d377 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -2212,13 +2212,13 @@ bool tcg_op_supported(TCGOpcode op, TCGType type)
+         return TCG_TARGET_HAS_negsetcond_i32;
+     case INDEX_op_div_i32:
+     case INDEX_op_divu_i32:
+-        return TCG_TARGET_HAS_div_i32;
++        return TCG_TARGET_HAS_div(TCG_TYPE_I32);
+     case INDEX_op_rem_i32:
+     case INDEX_op_remu_i32:
+-        return TCG_TARGET_HAS_rem_i32;
++        return TCG_TARGET_HAS_rem(TCG_TYPE_I32);
+     case INDEX_op_div2_i32:
+     case INDEX_op_divu2_i32:
+-        return TCG_TARGET_HAS_div2_i32;
++        return TCG_TARGET_HAS_div2(TCG_TYPE_I32);
+     case INDEX_op_rotl_i32:
+     case INDEX_op_rotr_i32:
+         return TCG_TARGET_HAS_rot_i32;
+@@ -2310,13 +2310,13 @@ bool tcg_op_supported(TCGOpcode op, TCGType type)
+         return TCG_TARGET_HAS_negsetcond_i64;
+     case INDEX_op_div_i64:
+     case INDEX_op_divu_i64:
+-        return TCG_TARGET_HAS_div_i64;
++        return TCG_TARGET_REG_BITS == 64 && TCG_TARGET_HAS_div(TCG_TYPE_I64);
+     case INDEX_op_rem_i64:
+     case INDEX_op_remu_i64:
+-        return TCG_TARGET_HAS_rem_i64;
++        return TCG_TARGET_REG_BITS == 64 && TCG_TARGET_HAS_rem(TCG_TYPE_I64);
+     case INDEX_op_div2_i64:
+     case INDEX_op_divu2_i64:
+-        return TCG_TARGET_HAS_div2_i64;
++        return TCG_TARGET_REG_BITS == 64 && TCG_TARGET_HAS_div2(TCG_TYPE_I64);
+     case INDEX_op_rotl_i64:
+     case INDEX_op_rotr_i64:
+         return TCG_TARGET_HAS_rot_i64;
 -- 
 2.43.0
 
