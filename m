@@ -2,89 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC014A00643
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 09:50:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E94B4A00648
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 09:53:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTdMa-0002c8-DM; Fri, 03 Jan 2025 03:49:00 -0500
+	id 1tTdQL-0005xe-UF; Fri, 03 Jan 2025 03:52:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTdMM-0002a6-GM
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 03:48:55 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTdQJ-0005xJ-8P
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 03:52:51 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTdMJ-0007eT-7N
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 03:48:44 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-385e2880606so8854256f8f.3
- for <qemu-devel@nongnu.org>; Fri, 03 Jan 2025 00:48:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTdQH-0001ty-In
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 03:52:51 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-38634c35129so9162923f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 03 Jan 2025 00:52:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735894121; x=1736498921; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=dnw69YT7DoNzg822LR/pg2ScQe8hvsPH8QgQBHxooSk=;
- b=jf4QqyfWXHP+ZmDKhKXHXPcw6r9zCIs5C8uIo7BYZXyhR+m6oh8VqTMi+Dh4ABWzg5
- tYvmTmP0jVdwwOk9WkNkqhowMJmzLZMUafynyG/lshdIySvP7+k+nwYvVf18TkoADYxt
- m8h166k1rUHSHqluVNIzyKtZ1hW1EJDydffhvrbXlbXxnB4X+3r11rYSfGORXf/5bgZL
- RJ/SJm6giqqorUZrTpJrKwwdDBhGf331VTg7oYGrAWSkXKikkQ2Col0mhGh7zJlkKTC9
- 8Fm8AGCs7F/8mQFsqmMJlDe0sJ9VazaGHl86+GmltvxA0kZ+eH115PWoJVmECnP88Fu7
- fL7g==
+ d=linaro.org; s=google; t=1735894367; x=1736499167; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=1489eH6ZtTDrohEG27SfKw7XbNOyzr5CphOqfqf5hQQ=;
+ b=zDzWKEynJQPxkNWRITsxPfNDfrcjiIk/UMrn0O0kfLPtJ3Ou1+IPrwEqfYj1lNy9EG
+ rRGlJGM/jw/PiKeM35q00mpVi/vLONRQts9eU2eHnLM7KYResMLBx75ySOBayady2SMV
+ ssYIvYUWgwmhQ0Dvk8nBUSaj5QrB6UfhMC/hlWt13EdVgrmryjW0AivT5OcaVA09NHsd
+ Y8PFCmvqJaHsMFhyop0/EjAB7kV4KaAtN9ZjkRKgSomnx83dfb5I9O5cblNrn6+ImRlA
+ 5pzeiPQivK0rt9uzDTyZ5L/bWjwhBY7+okwNK/cbucC3uLj3hgAk1ug1kGDeNxjFJdsx
+ NNlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735894121; x=1736498921;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1735894367; x=1736499167;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dnw69YT7DoNzg822LR/pg2ScQe8hvsPH8QgQBHxooSk=;
- b=FgpvAZ21lQm9yBAhsotljIGK4hE9f728lU4HMba/v0rhfKLmDsoEb00+BIgXGMbdnc
- HaGgSknWUYpQWeqZRBVXVcB+wj0Gv2ocWeQ8BwZkmV6xoZ/q2+fZ1UMpBn8DImUJqz6e
- olcx0g1MXucToxWGpjCH8NPnrhkUN9l2pCs5o78KuIq1IDmLIQh4f2VLAjXIDgyCDUJz
- YZ0tBlImfW79l8KlUrBnpjIZzP6XVYNmltr3wb/8RfOsjU4IdhxU7aWwyDeZjoMSphpS
- f6weTvTGeqiI+0wV6n41R63AJy39KbfnUQvPZUNXOiwWsdZyeJzSyPTtWLXUToe7Rfr0
- mZ9Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW8P7g/RKaC8N6XSQmOuYF8NPwGlu6YNc56dX2WjN9NecBOAgLQLad4+pY8/Xwq2IhS3YDqNVcc7fSg@nongnu.org
-X-Gm-Message-State: AOJu0YxrfH6vsxSEXnOTRNbctF4d4vicZR0ZaIaCASk0VXRR0csJ1krr
- rISeYBEnLhCH4bJMXb0Pu+hE6gwzTIXmqdENWTLabu3QDKSo76EWOMiK7Kt7TE8=
-X-Gm-Gg: ASbGnctEZzyJaZuukt5Z4WgTy8qZuqos7dmGa4J1HcnrYRd7XEi/IRWGmuAdT646qG9
- Bna92v3ii6rZP29uTzOmWreoM56veqGVCsVSzlm0EiNEjO+NGJwrqv3V9UXsJ8AbFrn2ZmhB12z
- XhL0LO6IbqxbpcJqq7LdVBupfMQ2txhttTc94jHbHuuLsAZ0Ba/EM+9tUga/ZX2qG2WddqZi/0D
- 18XyaxIYDiN3Mfo0ywOwMJm/FxnT0Xg6lyyJhNEPLnwJhfKT1iMZGFZe2vGp3D5QNd/KhjfQblF
- 5RA8W5Sdibg1WN8zzZ6VE4Ga
-X-Google-Smtp-Source: AGHT+IHSOFKbnJb/LVYLzoY4lVG/m8tkY+b/NDORf7yD1TmFLlbGVMjXwAf/tsu6dMDY8tMtPw+NHA==
-X-Received: by 2002:a05:6000:1887:b0:388:c61d:43e4 with SMTP id
- ffacd0b85a97d-38a223f8368mr38837491f8f.45.1735894120881; 
- Fri, 03 Jan 2025 00:48:40 -0800 (PST)
+ bh=1489eH6ZtTDrohEG27SfKw7XbNOyzr5CphOqfqf5hQQ=;
+ b=JgIvZja9NElac/KDR8qAFbvNOiplKuyf87SD9fC/V45kgQYsg5ViXmDUvvk2PXfhsU
+ dsKrwwp/QbcACtaGsoZSGAbo9y6XuIvWYScKd3Q2/ZEiFq0LScHHkXjKblZAz6JVPU9j
+ AgMTuVWu1shsgRRi7kaw2w4Z5ynSH94/lV7S0xNW9euTTJG3kB0SMqzHp29VCwMUwGd6
+ gEpaoxzIv/GDn+qZWs/0H9YJPqBf4AUcWmhvyY5MGs4uhDwEeuOwHy80eFUcmIpUFanV
+ ada4va0IQ76tJvfLLzIJODig3yVZCv2SbSV6qW/ugIHNZ04D2YBdmohHxUFfe20lotQg
+ BllA==
+X-Gm-Message-State: AOJu0YwjOBDAPMhAbedpK9f4Jf4Ac15L/i+Cbx0KuzmU4aAFZ/FjnJOj
+ R8H3PqqIlnRzwpns2u2kwkXJKJXsU6cYrKLPYSxMOyZrZskuxGLS+cYtld7DsTKttjn6nnu85np
+ N+T1dlA==
+X-Gm-Gg: ASbGncsRjY5qWhN7COBe3C8tEQP+FfWnBx8FVmGV9atb9Dh5RtLwsd/yf9R1e6pYJK+
+ QZqRXjU4WTcMXJ7BT4+4Lym9rG3BumEPErqykMBaYG2iPvghxjUhToKVrfFndEEVP/XGcMSfNWI
+ cP0rhpZTNqPNqxllem7GJTnDEjoqKt4BFvvtppVIkCdwdpTdPPxrNIjnmSt8cKkg7cud3BBuagO
+ oQBqO3DUR8feExQh22Oj0UWxJnTZBR4cStDwMw4t6Lk/oE0o4lONiGN+4pewPxwVSq/Rw+nPrGo
+ J7+z7GqyIZhf5DSKyC64SfPW
+X-Google-Smtp-Source: AGHT+IGdkuA40Gjfpe1FZ10aSEXZmIaDUJkrIQOUD+WH26Ke8f9Uwbhgfeyr6uCoL7VfC/Yg0Ppa7w==
+X-Received: by 2002:a05:6000:470a:b0:385:f092:df2 with SMTP id
+ ffacd0b85a97d-38a221faae4mr35580980f8f.34.1735894366824; 
+ Fri, 03 Jan 2025 00:52:46 -0800 (PST)
 Received: from [192.168.69.132] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656b11aecsm509026925e9.23.2025.01.03.00.48.39
+ ffacd0b85a97d-38a1c832e74sm39637018f8f.30.2025.01.03.00.52.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 03 Jan 2025 00:48:39 -0800 (PST)
-Message-ID: <50cc7499-d162-465e-b3a6-25636dfda2db@linaro.org>
-Date: Fri, 3 Jan 2025 09:48:38 +0100
+ Fri, 03 Jan 2025 00:52:46 -0800 (PST)
+Message-ID: <902568a2-8160-4265-9e2c-c4465eaa62d4@linaro.org>
+Date: Fri, 3 Jan 2025 09:52:44 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 25/41] rust: qom: put class_init together from multiple
- ClassInitImpl<>
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- qemu-rust@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-References: <20241219083228.363430-1-pbonzini@redhat.com>
- <20241219083228.363430-26-pbonzini@redhat.com>
- <daea6757-a67b-45d5-bf2a-807fd9569a70@linaro.org>
- <Z3enuYCHnKuiANmv@intel.com>
-Content-Language: en-US
+Subject: Re: [PATCH v2 01/10] i386/cpu: Extract a common fucntion to setup
+ value of MSR_CORE_THREAD_COUNT
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <Z3enuYCHnKuiANmv@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: qemu-devel@nongnu.org, Yanan Wang <wangyanan55@huawei.com>,
+ Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+References: <20241219110125.1266461-1-xiaoyao.li@intel.com>
+ <20241219110125.1266461-2-xiaoyao.li@intel.com>
+ <018cfbde-96be-4d95-bb29-95cdf708187e@linaro.org>
+Content-Language: en-US
+In-Reply-To: <018cfbde-96be-4d95-bb29-95cdf708187e@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,79 +104,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-+Markus, Daniel & Peter
+On 28/12/24 18:37, Philippe Mathieu-Daudé wrote:
+> On 19/12/24 12:01, Xiaoyao Li wrote:
+>> There are duplicated code to setup the value of MSR_CORE_THREAD_COUNT.
+>> Extract a common function for it.
+>>
+>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>> ---
+>> Changes in v2:
+>> - move the implementation of cpu_x86_get_msr_core_thread_count() to
+>>    target/i386/cpu-sysemu.c;
+>> ---
+>>   target/i386/cpu-sysemu.c             | 11 +++++++++++
+>>   target/i386/cpu.h                    |  2 ++
+>>   target/i386/hvf/x86_emu.c            |  3 +--
+>>   target/i386/kvm/kvm.c                |  5 +----
+>>   target/i386/tcg/sysemu/misc_helper.c |  3 +--
+>>   5 files changed, 16 insertions(+), 8 deletions(-)
+> 
+> 
+>> +uint64_t cpu_x86_get_msr_core_thread_count(X86CPU *cpu)
+>> +{
+>> +    CPUState *cs = CPU(cpu);
+>> +    uint64_t val;
+>> +
+>> +    val = cs->nr_threads * cs->nr_cores;  /* thread count, bits 15..0 */
+>> +    val |= ((uint32_t)cs->nr_cores << 16); /* core count, bits 31..16 */
+>> +
+>> +    return val;
+> 
+> Alternatively:
+> 
+>         return deposit64(cs->nr_threads * cs->nr_cores, 16, 16,
+>                          cs->nr_cores);
+> 
+>> +}
+> 
 
-On 3/1/25 10:02, Zhao Liu wrote:
->>> -/// # Safety
->>> -///
->>> -/// We expect the FFI user of this function to pass a valid pointer that
->>> -/// can be downcasted to type `DeviceClass`, because `T` implements
->>> -/// `DeviceImpl`.
->>> -pub unsafe extern "C" fn rust_device_class_init<T: DeviceImpl>(
->>> -    klass: *mut ObjectClass,
->>> -    _: *mut c_void,
->>> -) {
->>> -    let mut dc = ::core::ptr::NonNull::new(klass.cast::<DeviceClass>()).unwrap();
->>> -    unsafe {
->>> -        let dc = dc.as_mut();
->>> +impl<T> ClassInitImpl<DeviceClass> for T
->>> +where
->>> +    T: DeviceImpl,
->>> +{
->>> +    fn class_init(dc: &mut DeviceClass) {
->>>            if <T as DeviceImpl>::REALIZE.is_some() {
->>>                dc.realize = Some(rust_realize_fn::<T>);
->>>            }
->>>            if <T as DeviceImpl>::RESET.is_some() {
->>> -            bindings::device_class_set_legacy_reset(dc, Some(rust_reset_fn::<T>));
->>> +            unsafe {
->>> +                bindings::device_class_set_legacy_reset(dc, Some(rust_reset_fn::<T>));
->>
->> Pre-existing, but since it appears on this patch, Rust device models
->> should not implement this legacy interface.
-> 
-> Rust pl011 is just faithful to the C functionality, and it's really time
-> to make the rust version drop the previous technical debt too!
-> 
-> But I think this patch is OK for now since using legacy interface is the
-> most simplified approach, and next step we can consider how to convert
-> it to the modern interface with proper rust binding (my initial thought
-> tells me that there is at least some effort needed here to explore
-> whether a simple resettable trait would be enough...).
-> 
->> If a non-Rust parent
->> implements it, I think we should convert the non-Rust parent before
->> adding a Rust child. No clue how to check a parent don't implement
->> this interface in Rust.
-> 
-> For C side, I also didn't find some case to check parent's
-> legacy_reset before device_class_set_legacy_reset().
-> 
-> Maybe we should add `assert(!dc->legacy_reset)` in
-> device_class_set_legacy_reset()?
-> 
-> Similarly, device_class_set_parent_[realize|unrealize] are worth
-> adding assert().
-> 
-> If you agree, I'd be happy to add assert() to these three functions as
-> well. :-)
-> 
->> Generally, we shouldn't access legacy API from Rust IMHO.
->>
->>> +            }
->>>            }
->>>            if let Some(vmsd) = <T as DeviceImpl>::vmsd() {
->>>                dc.vmsd = vmsd;
->>>            }
->>>            let prop = <T as DeviceImpl>::properties();
->>>            if !prop.is_empty() {
->>> -            bindings::device_class_set_props_n(dc, prop.as_ptr(), prop.len());
->>> +            unsafe {
->>> +                bindings::device_class_set_props_n(dc, prop.as_ptr(), prop.len());
->>> +            }
->>>            }
->>>        }
->>>    }
->>
-
+Typo "function" in patch subject.
 
