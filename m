@@ -2,93 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7185A00CB8
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 18:24:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3809A00CE0
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 18:38:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTlP7-0006if-SE; Fri, 03 Jan 2025 12:24:11 -0500
+	id 1tTlb3-0002iQ-2P; Fri, 03 Jan 2025 12:36:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTlOh-0006hd-4X
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 12:23:43 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTlOc-0001UG-Ve
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 12:23:42 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-43618283dedso123824395e9.3
- for <qemu-devel@nongnu.org>; Fri, 03 Jan 2025 09:23:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735925015; x=1736529815; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=k3jWifUuqeP1feEf9SFINLpqfhPOd4o6l2XX2flqvIk=;
- b=nudlXNCBeVK/4Rpf89YJnX9vjVsWb8XwHQwd1CqYVYxXN4OX+qyTrf941bB4IonqYx
- CsDzV+d1Poh2OtASuWjplC5P8kahAgG5e+IrlXiYWGg3fUgLD6lgocDjo4H9seOQObYB
- OAuQDDD2+KzdAWJPnUQVF58xMc0NrGth6oQ3ZhzSzM65odzRxDh4Ut8z/6m3Pivtkwud
- +zrr5Fys2ygoIbxXyAhxBK1VakhtaFCPZ0TbSfjt8PUSvynJ1zrqKadNtqCQQBWuZHGh
- KQaem0rqyLP6MfzATyVIAOeagBwRYBuQTLkDu6POswMD6Rs6Pt4qD2T7g2Pjq30KxZ7i
- 7qgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735925015; x=1736529815;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=k3jWifUuqeP1feEf9SFINLpqfhPOd4o6l2XX2flqvIk=;
- b=s9G+zgedGA03mJum6cRt3fuS6bS5noQ/kRnQC7gq+frUtn48mYwQvL8c5e8ofgyXPh
- llDLLlh4tnXPWVd+h8HEhnRpuDKjse6KoBQhvr6HWsMHkjKOZzV1aWz5g0oW6venH+bn
- XWI2MGMz+98H4Vo4IHb1jCwQoC7AurlCuhlbpA7AqFCdYDW794PgyMPjzNZhbFZkfQko
- 4E5H4Co5LTQZv97ifPeOllAhb2l/s7rKhZU+J6qZ4G8eyOMQGljJT3oQQ76f8eGSBEVs
- vlQUJCoOYOYEAkQ6iojd1DdTJS1gejdHCSVGwhxjNFWXRWw7TOvFyFKzH8ZNiebVQrjz
- mahg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXLOjMDbr4r/HCdEoqCqdC2BCBSFm0ufLcXrAujdfHFRI9g9jmNhGlZNAs6vAYZQfFGWKREbMiM8x9V@nongnu.org
-X-Gm-Message-State: AOJu0Yw8Crk4/TQWg0aKXMJcL+raXCEgorGVLcCYUKefGBX/2S2lT1/d
- WYCxwZ77zeFRT8C70NZCKZ7F7GjLX58uBSUnf5G8X6qWDl2IHbyEA4KoyFGBYjA=
-X-Gm-Gg: ASbGncvvTH5ZVxgyvuaUVMcbYjdr1A8v9QECxQkFMoiCNaneymW8TJTrHdmlfZiqIMb
- S0qRUO2V6M+UVS79Y8bsEiHX5QAmFl8gOEyOu0tbB0deGPwlsL12kVsj+M0lhGCzHEELxz5Y80j
- e3tcQ1xe6ldYIErqmWk7N7KwzdXDfprL1niEiJCXloQlsPE9/cXxi7pGq6+X2QoIzwkaahCTXI/
- j+9QtK+aSJH7V6fW83A3wZdc+Pc5KZrrS4RYUeFk4U1T01ZRMgcCI9pIb/LREtWCdf1XxDr+/Bt
- aphIRPNQDzuyTiCVdJAvByK1
-X-Google-Smtp-Source: AGHT+IGJvVt7VDI7jaemSYiP89o3oIeiiuI6FLH5oN8k1VVONF02cTBT6FXXfBsRyt8VdJLeXFl23A==
-X-Received: by 2002:a05:6000:460b:b0:386:4a24:1916 with SMTP id
- ffacd0b85a97d-38a22408c69mr44788837f8f.55.1735925015522; 
- Fri, 03 Jan 2025 09:23:35 -0800 (PST)
-Received: from [192.168.69.132] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c89e1c0sm41838441f8f.77.2025.01.03.09.23.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 03 Jan 2025 09:23:35 -0800 (PST)
-Message-ID: <c9b250a1-64dc-4735-a503-b965d9011958@linaro.org>
-Date: Fri, 3 Jan 2025 18:23:33 +0100
+ (Exim 4.90_1) (envelope-from <SRS0=ZvCr=T3=kaod.org=clg@ozlabs.org>)
+ id 1tTlb0-0002hX-2e; Fri, 03 Jan 2025 12:36:26 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=ZvCr=T3=kaod.org=clg@ozlabs.org>)
+ id 1tTlax-0005AJ-5y; Fri, 03 Jan 2025 12:36:25 -0500
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4YPrMv36yhz4xfV;
+ Sat,  4 Jan 2025 04:36:11 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4YPrMq6WCwz4wcl;
+ Sat,  4 Jan 2025 04:36:04 +1100 (AEDT)
+Message-ID: <82f7f669-f04f-4230-adaf-a9920a30dbed@kaod.org>
+Date: Fri, 3 Jan 2025 18:36:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] hw/s390x: Declare loadparm as char[LOADPARM_LEN]
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, David Hildenbrand <david@redhat.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, Jared Rossi <jrossi@linux.ibm.com>
-References: <20241120085300.49866-1-philmd@linaro.org>
- <20241120085300.49866-2-philmd@linaro.org>
- <d005f227-cf46-4a62-a152-668030ad7e49@linaro.org>
- <d4d352bf-35f9-413b-a495-8eb8db7da3f2@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <d4d352bf-35f9-413b-a495-8eb8db7da3f2@redhat.com>
+Subject: Re: [PATCH 2/5] aspeed: ast27x0: Map unimplemented devices in SoC
+ memory
+To: Steven Lee <steven_lee@aspeedtech.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Troy Lee <leetroy@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+Cc: Troy Lee <troy_lee@aspeedtech.com>,
+ Yunlin Tang <yunlin.tang@aspeedtech.com>
+References: <20241225020311.3718080-1-steven_lee@aspeedtech.com>
+ <20241225020311.3718080-3-steven_lee@aspeedtech.com>
+ <94c71f3b-4c3a-4989-af08-2cf07c8aca2c@kaod.org>
+ <KL1PR0601MB418046C74568BBE39A6ECB1B85152@KL1PR0601MB4180.apcprd06.prod.outlook.com>
+ <09cccc1d-e678-4f79-af5d-673d5f9c5588@kaod.org>
+ <KL1PR0601MB4180BBD75C70B77F1476759385152@KL1PR0601MB4180.apcprd06.prod.outlook.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <KL1PR0601MB4180BBD75C70B77F1476759385152@KL1PR0601MB4180.apcprd06.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=ZvCr=T3=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.204, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,52 +116,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/1/25 18:17, Thomas Huth wrote:
-> On 30/12/2024 18.02, Philippe Mathieu-Daudé wrote:
->> ping for this single cleanup patch?
->>
->> On 20/11/24 09:52, Philippe Mathieu-Daudé wrote:
->>> "hw/s390x/ipl/qipl.h" defines loadparm[] length as LOADPARM_LEN,
->>> use that instead of the magic '8' value. Use a char type for
->>> char buffer.
->>>
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>>   hw/s390x/ccw-device.h               | 5 +++--
->>>   hw/s390x/ipl.h                      | 2 +-
->>>   include/hw/qdev-properties-system.h | 2 +-
->>>   include/hw/s390x/s390-virtio-ccw.h  | 3 ++-
->>>   hw/core/qdev-properties-system.c    | 8 +++++---
->>>   hw/s390x/ipl.c                      | 6 +++---
->>>   hw/scsi/scsi-disk.c                 | 2 +-
->>>   7 files changed, 16 insertions(+), 12 deletions(-)
->>>
->>> diff --git a/hw/s390x/ccw-device.h b/hw/s390x/ccw-device.h
->>> index 4439feb140..94a9b35714 100644
->>> --- a/hw/s390x/ccw-device.h
->>> +++ b/hw/s390x/ccw-device.h
->>> @@ -15,6 +15,7 @@
->>>   #include "hw/qdev-core.h"
->>>   #include "hw/s390x/css.h"
->>>   #include "hw/s390x/css-bridge.h"
->>> +#include "hw/s390x/ipl/qipl.h"
->>>   struct CcwDevice {
->>>       DeviceState parent_obj;
->>> @@ -27,7 +28,7 @@ struct CcwDevice {
->>>       /* The actual busid of the virtual subchannel. */
->>>       CssDevId subch_id;
->>>       /* If set, use this loadparm value when device is boot target */
->>> -    uint8_t loadparm[8];
->>> +    char loadparm[LOADPARM_LEN];
+On 1/3/25 10:57, Steven Lee wrote:
+> Hi Cédric,
 > 
-> I'm not sure whether changing the type is such a good idea ... some 
-> spots that handle loadparm include EBCDIC encoding, and the unsigned 
-> type might have been used here for a reason? I'd better keep uint8_t 
-> unless you've double-checked all combinations...
+>> -----Original Message-----
+>> From: Cédric Le Goater <clg@kaod.org>
+>> Sent: Friday, January 3, 2025 5:44 PM
+>> To: Steven Lee <steven_lee@aspeedtech.com>; Peter Maydell
+>> <peter.maydell@linaro.org>; Troy Lee <leetroy@gmail.com>; Jamin Lin
+>> <jamin_lin@aspeedtech.com>; Andrew Jeffery
+>> <andrew@codeconstruct.com.au>; Joel Stanley <joel@jms.id.au>; open
+>> list:ASPEED BMCs <qemu-arm@nongnu.org>; open list:All patches CC here
+>> <qemu-devel@nongnu.org>
+>> Cc: Troy Lee <troy_lee@aspeedtech.com>; Yunlin Tang
+>> <yunlin.tang@aspeedtech.com>
+>> Subject: Re: [PATCH 2/5] aspeed: ast27x0: Map unimplemented devices in SoC
+>> memory
+>>
+>> On 1/3/25 09:14, Steven Lee wrote:
+>>> Hi Cédric,
+>>>
+>>>> -----Original Message-----
+>>>> From: Cédric Le Goater <clg@kaod.org>
+>>>> Sent: Friday, December 27, 2024 5:53 PM
+>>>> To: Steven Lee <steven_lee@aspeedtech.com>; Peter Maydell
+>>>> <peter.maydell@linaro.org>; Troy Lee <leetroy@gmail.com>; Jamin Lin
+>>>> <jamin_lin@aspeedtech.com>; Andrew Jeffery
+>>>> <andrew@codeconstruct.com.au>; Joel Stanley <joel@jms.id.au>; open
+>>>> list:ASPEED BMCs <qemu-arm@nongnu.org>; open list:All patches CC here
+>>>> <qemu-devel@nongnu.org>
+>>>> Cc: Troy Lee <troy_lee@aspeedtech.com>; Yunlin Tang
+>>>> <yunlin.tang@aspeedtech.com>
+>>>> Subject: Re: [PATCH 2/5] aspeed: ast27x0: Map unimplemented devices
+>>>> in SoC memory
+>>>>
+>>>> Hello,
+>>>>
+>>>> On 12/25/24 03:03, Steven Lee wrote:
+>>>>> Maps following unimplemented devices in SoC memory
+>>>>> - dpmcu
+>>>>> - iomem0
+>>>>> - iomem1
+>>>>> - ltpi
+>>>>> - io
+>>>>
+>>>> Could you please add a sentence about what these devices are ?
+>>>>
+>>>> Thanks,
+>>>>
+>>>> C.
+>>>>
+>>>
+>>> DPMCU stands for Display Port MCU controller.
+>>> Regarding LTPI, when the AST1700 is connected to the AST2700, AST1070
+>> LTPI controller's registers are mapped to 0x30000000.
+>>
+>> Is the LTPI IP a device for communication between SoCs ?
+> 
+> Yes, it can be used to connect to AST1700. AST1700 is an I/O expander that supports the DC-SCM 2.1 LTPI protocol.
+> It provides AST2700 with additional GPIO, UART, I3C, and other interfaces.
 
-OK, no problem, thanks for checking!
+This is the kind of information which would be useful to add
+to the description of the SoC/machine and in the commit log.
 
-Regards,
 
-Phil.
+Thanks,
+
+C.
+
+
+> 
+> Thanks,
+> Steven
+> 
+>>
+>>> Io, Iomem0 and Iomem1 include unimplemented controllers in the memory
+>> ranges 0x120000000 - 0x121000000 and 0x14000000 - 0x141000000.
+>>> For instance:
+>>> - USB hub at 0x12010000
+>>> - eSPI at 0x14C5000
+>>> - PWM at 0x140C0000
+>>>
+>>> I will include the description in the commit message.
+>>
+>> yes please.
+>>
+>> Thanks,
+>>
+>> C.
+>>
+>>
+> 
+
 
