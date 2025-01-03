@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D9FA00C8F
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 18:11:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03639A00C9F
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 18:18:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTlCc-0000Th-28; Fri, 03 Jan 2025 12:11:14 -0500
+	id 1tTlIA-0004IC-Ft; Fri, 03 Jan 2025 12:16:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTlCW-0000T9-QX
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 12:11:09 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTlI3-0004Hq-Rt
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 12:16:52 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTlCV-0006oP-9P
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 12:11:08 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-385df53e559so9799460f8f.3
- for <qemu-devel@nongnu.org>; Fri, 03 Jan 2025 09:11:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTlHx-0007l5-NG
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 12:16:51 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-436637e8c8dso126769945e9.1
+ for <qemu-devel@nongnu.org>; Fri, 03 Jan 2025 09:16:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735924265; x=1736529065; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Q/CzbbG3jOxGhXorzYheCWoGqel4SlzmIyrU6suQqBM=;
- b=kyUL5HaUsDQe9YDQZb6Ki7ZTbvghAYHCf9IpLCsxUmPpN9OqGE/Akc6aFFRFTE3fi0
- Nj56nzaUAahlISX3hvvIk2jJZlxVrfd8dqZcSec4GA8BJtUmVQdlz5oBeNhKDTnn0GNK
- CqE+PDVKefkUjjuztn0ifAm9d6skVxw2fRqeRtUgA+5seEwi+gL7bmSwknTZ18VC/UMD
- baNqZbgAX8NJEZtQ756u5itvFgeKqz22blEc8ZN8oQsvGZJ+5z2KHzglOIq5/kYwZ0/C
- 9jiB8ikFqqmsSfIQITBgplcfjKgOh67K8TeE82qx1hkLVNOKmiA9lnxf+zmJvdRoaFzv
- UVdQ==
+ d=linaro.org; s=google; t=1735924600; x=1736529400; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=hr+aVtCaKzlkXbNEKmFT9c/S1qhdem6wwl/faHDIfS8=;
+ b=fPeAzrVyzOTebR++5pfaWEjoe5vXVH0EJn+o7eSwseSiqedWoCrUwvf7OxCzFGPLW3
+ YcrO6u9wXSMhdv8uP+n4FUlDw2xj2OXfxwuh/r5S0U7eg0WfcGDyYg1Fz75Qts/OO4s1
+ rZxI4Qiq31jCsOrxBMAGQRq1n7VpGzQ3G8Yf0jezxBq9eWTHuFQb8uh0TmgAsDTR04eD
+ L6l/8Yy85sCBGODpch9+xzPxzARieJw0FZ6/dghWkjcQTuEBgsfB8pbyXs2l0OVrYR2A
+ C282aAZecd2V79ZGALR2tQktzqOrF/y26fcrY2NtaKPT0GtUfNNaRo7OwSs+KT5XM0fF
+ RDJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735924265; x=1736529065;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Q/CzbbG3jOxGhXorzYheCWoGqel4SlzmIyrU6suQqBM=;
- b=oero3itUF3BKSkUj6+XlKLhhqANKstWkdKyXyajwCWb9c66Wvyt8CE+Ax67MCCBpMi
- IxO3bYZ+4ZbgOYDd/fyuF+HHYCw/6A6koV33L4vlnOrlY5jou7OV7pGdTkOg9rmEvcPu
- TMhKRZ49/BO33oDErl5x+JYBSFFqhV3hnRhc+kb5bsIEJJtDDVPWny5XX/zsyjfuxsgP
- 5gWL/f9n4nMD47uPSFXXgHbN4tF8W3cn+g/HwBc+2rxHh4sX93Jj8tiXpF/daTOczSkm
- L24Oa+cgdt6Pn0WPE0vuABxwRRfSnnJIJBPdrHVFSOpg+7ltjdAPGOsim52DirBZRTS1
- W6tg==
-X-Gm-Message-State: AOJu0YzdNqEzQ5wjjRb9kHSNPDmGi0ku4p1lfmYpxhXZwG5icac/Kbtx
- ZXoEiINpCabtiCjZJrWQwm+/Qfi+T9Lhwi+nS9IHbNbjmDSuIMav2e0qqfieXz3OJJj+GCdRu7I
- wBDE=
-X-Gm-Gg: ASbGncsrCGr2aWNxazci7J/Z5PzEstou30q+r7MuOt1wOtCU/L+QElKGCzqmMCmKmo+
- W4nXnvv+WXv2hATyVo11lSTONbwPRCXGV10KyZ/Vlo4uHZO2JGtCn5AER75fO1hVQ+5JfykezCJ
- GMcQAo/MxtC7tGH51WsdtSHsFYs8R5VzrZ12dDe3/lhXMQ+qyer2H+IQKAfuYLtBzQCmcd7GQkJ
- ILxwCSrtZM3YWb8LHjNHPyENKf3qflSdM3OGIt57HpLGULzsV3BtWJGhAd99m68snDsHvUAXe+P
- uiR0ZbBzukVA4H9GQbfKkYtcfLkpk64=
-X-Google-Smtp-Source: AGHT+IGchJbT6bpnXWoxhQ17XnigkqxhTNr+aNxhYgiEpo4fdURQlkPCucKa22rfOo74+Qm9odwasw==
-X-Received: by 2002:a05:6000:154f:b0:385:eeb9:a5bb with SMTP id
- ffacd0b85a97d-38a221f698amr40605261f8f.17.1735924264910; 
- Fri, 03 Jan 2025 09:11:04 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1735924600; x=1736529400;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hr+aVtCaKzlkXbNEKmFT9c/S1qhdem6wwl/faHDIfS8=;
+ b=IVEibVGyRwd8hq1E0EnlCiKZcwiF6GBvAbey+I9gnMEZ2UrpUk5k/y3P4FqbieI8fK
+ RIGTLfYTFlehJLBShF6VnMqxmIjTgxPjPiJBvtR8+XCY66jZuq8xWDDc44RyzQCn875l
+ BXEUQCZFk7kX6Ud56JyVwb82qKnXzauqfjjqkAiAWyuqM2KAujYzQCc1JD/fx2JFvKTS
+ HGzkxsevYssovzbEFidK6DBit/6RfYFZZ80a2iHyHJ0XbOBwSttfKPacUJ/QGYTzJYon
+ 48M0YNTQwlYaDxcfyoezzVKqNZRo3G7mXcrXL09z0FjiHejN4fQcUCKfLVNk7ahEcp7k
+ 1ZVw==
+X-Gm-Message-State: AOJu0YyqRQjVjGsdXZSAw9hmgLJ3qzJCI7E/4tZRYz+5fz8ZhBvPsSDv
+ 4ATvVUVfgVg9lM84v6FA/WI7VCOCKd4gm9ya/PBuUML78v2TjdzjZ2QnXuR9bUM=
+X-Gm-Gg: ASbGncuAGGq3VbKAtkDK2NXi2I4CjsNEOkbnjL8KvptCmwhDj/9+o6w5qPRMZxMrKLm
+ 3lw9k9gsAz7OrKr5qnU2zu+ir5ke3/puV8uDWvQOP7WQhI6R73ct2+RPmxoi39w9DuFAtUx3GBz
+ aie4kxcorCq4+JR5i8MHuTQqjo4urB+6vdIexKi+74tRxiRiVeTkz0Ap7Coo7wZC8NTM54eaWrP
+ EY0myLB4fPrQlHiMpK04R0zYeK9Zddb9mZEXEa2s8OHC6XSU34G2d19OdCTON1wQeRrLW3As1Np
+ iuJkV4aJCBaT169S6gwyvJzg
+X-Google-Smtp-Source: AGHT+IEND1AWliTYEzh2ULD8BKlTdDwUDUV848cCWoNzawOiJSbEU1SqPuCyzuDlQL9Fbbk+K0og+w==
+X-Received: by 2002:a05:600c:444b:b0:434:a1d3:a306 with SMTP id
+ 5b1f17b1804b1-436685489aamr421596515e9.5.1735924599967; 
+ Fri, 03 Jan 2025 09:16:39 -0800 (PST)
+Received: from [192.168.69.132] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656b119b6sm526575015e9.22.2025.01.03.09.11.03
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 03 Jan 2025 09:11:04 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>,
- Kito Cheng <kito.cheng@sifive.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Keith Packard <keithp@keithp.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 5/5] semihosting/meson: Build config.o and console.o once
-Date: Fri,  3 Jan 2025 18:10:37 +0100
-Message-ID: <20250103171037.11265-6-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250103171037.11265-1-philmd@linaro.org>
-References: <20250103171037.11265-1-philmd@linaro.org>
+ 5b1f17b1804b1-4364a379d69sm473685555e9.0.2025.01.03.09.16.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 03 Jan 2025 09:16:39 -0800 (PST)
+Message-ID: <d06dd874-c6a5-49ba-89c1-60668ad639d4@linaro.org>
+Date: Fri, 3 Jan 2025 18:16:38 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] system: Try hardware accelerators (KVM, HVF) before
+ software one (TCG)
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Peter Xu <peterx@redhat.com>
+References: <20250103150558.1473-1-philmd@linaro.org>
+ <Z3f--qO8x45MpiXQ@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <Z3f--qO8x45MpiXQ@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,42 +102,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-config.c and console.c don't use any target specific
-headers anymore, move them from specific_ss[] to
-system_ss[] so they are built once, but will also be
-linked once, removing global symbol clash in a single
-QEMU binary.
+On 3/1/25 16:15, Daniel P. Berrangé wrote:
+> On Fri, Jan 03, 2025 at 04:05:58PM +0100, Philippe Mathieu-Daudé wrote:
+>> As Daniel suggested [*]:
+>>
+>>> We should consider to rank HVF above TCG, on the basis
+>>> that HW acceleration is faster and should provide a
+>>> host<->guest security boundary that we don't claim for TCG
+>>
+>> [*] https://lore.kernel.org/qemu-devel/Z07YASl2Pd3CPtjE@redhat.com/
+> 
+> Note, my statement above was on the basis that HVF passes all our
+> functional tests, thus indicating a decent level of confidence
+> in the correctness of the HVF impl.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- semihosting/meson.build | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+Indeed, I forgot about that, and only tested in my 'HVF-only'
+directory before posting, but ...
 
-diff --git a/semihosting/meson.build b/semihosting/meson.build
-index 34933e5a195..86f5004bed7 100644
---- a/semihosting/meson.build
-+++ b/semihosting/meson.build
-@@ -4,13 +4,16 @@ specific_ss.add(when: 'CONFIG_SEMIHOSTING', if_true: files(
- ))
- 
- specific_ss.add(when: ['CONFIG_SEMIHOSTING', 'CONFIG_SYSTEM_ONLY'], if_true: files(
--  'config.c',
--  'console.c',
-   'uaccess.c',
- ))
- 
- common_ss.add(when: ['CONFIG_SEMIHOSTING', 'CONFIG_SYSTEM_ONLY'], if_false: files('stubs-all.c'))
--system_ss.add(when: ['CONFIG_SEMIHOSTING'], if_false: files('stubs-system.c'))
-+system_ss.add(when: ['CONFIG_SEMIHOSTING'], if_true: files(
-+  'config.c',
-+  'console.c',
-+), if_false: files(
-+  'stubs-system.c',
-+))
- 
- specific_ss.add(when: ['CONFIG_ARM_COMPATIBLE_SEMIHOSTING'],
- 		if_true: files('arm-compat-semi.c'))
--- 
-2.47.1
+> If anyone knows any show stopper problems with HVF that would
+> justify blocking its promotion ahead of TCG.... say now.
+
+... here we go:
+
+  3/15 qemu:qtest+qtest-aarch64 / qtest-aarch64/migration-test 
+       ERROR            0.88s   killed by signal 11 SIGSEGV
+
+>> Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   system/vl.c | 5 ++---
+>>   1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> 
+> 
+> With regards,
+> Daniel
 
 
