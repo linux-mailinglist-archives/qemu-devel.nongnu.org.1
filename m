@@ -2,50 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A0FA008B6
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 12:33:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCCBAA008EE
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 12:53:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTfuT-00016r-Ea; Fri, 03 Jan 2025 06:32:09 -0500
+	id 1tTgDd-0006dN-KX; Fri, 03 Jan 2025 06:51:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1tTfuQ-00016E-Dk
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 06:32:06 -0500
+ (Exim 4.90_1)
+ (envelope-from <099c212c4147041d495dee76102fb82f9a66eda7@kylie.crudebyte.com>)
+ id 1tTgDX-0006YZ-Cu
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 06:51:52 -0500
 Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1tTfuO-0004KP-Hz
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 06:32:06 -0500
+ (Exim 4.90_1)
+ (envelope-from <099c212c4147041d495dee76102fb82f9a66eda7@kylie.crudebyte.com>)
+ id 1tTgDV-0001ho-CE
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 06:51:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
- Content-ID:Content-Description;
- bh=FgygfjpFVrtLCX3r+bHF7l8KIJq0zui++aq0cRv0YnY=; b=TM0iAu/kwI7g5W+TKmkL+9STMz
- WMnp1jyk3SzkaP0V9wNVhLSOkHnM01j0uN2EpmDKpXZIcqi+hYKYH+cOaVj0l5UoAPDIoUbgQsxAE
- 2A0ndSikIVGcURatAgee+2Gvfdh4duSM3lyrdfp4d3/HyjS/+AFh45PnQGNd7ve8feCfPF7eufOI9
- JsLxAt+jp52n+syeEheaeCc2Zgc9Lgx7OCEjjHu4t9z0KzuoNi6CDaxoTK8zzqTSsFOzl8EbIKLwf
- cIQb3YdOpGEcpTeHrFuQkdVU+lbqnFJITqCGyiG392em2ADcIXDcj1CoUjcpOUL8LsnRuuwODUDW2
- NxDOzrLTxxgllITdjCeAaKsFlGMvJdJHm7dU+DP0G1bz/yD9THYGc4i15qhSNR+ls5393QQKYzUO8
- TraUvDx/0fEhgb5x+6QIy1NXR1jWK/h9VSpleJxjE2PBp2BL5w83qZdei6iR/Cn+u2jxgI7ulMZ9Q
- uo1Bu/p3+Q/f9KasaXKJprm4rwlTYDfXbnpHl9fNZVmw7swJpK88CZRCT/KG3QWmzi8wXtOhMVRQZ
- 58dmbslNveAzbj5FpfxufHU+61w9gmtF9KV3zk91aL6JsApYmnGZXJmXZN30nr1Jhrb25k9sV9O/H
- ++6m8svFmZ60/4UxpNwK04pPUVyOFf/YyqkwJswE8=;
+ d=crudebyte.com; s=kylie; h=Message-Id:Cc:To:Subject:Date:From:Content-Type:
+ Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Content-ID:
+ Content-Description; bh=wbmhKrfZxhpiLEydKfFWXlDUnBmJkdmdA8mZUvjg2KY=; b=i/Irg
+ DleqhXglNu1FffvzdKi3KiTN2ceUsm/GzKjTRn+HQf2j90TyQWbee/VYFleZogs8W8yo/eKcZ99Lb
+ 66gR7uPiOsK6jgOsadfianH0DeYnVtIJ/I7/mXdNbU/6JKtGq0efxytv3va56aIMgECTCltSEBMaW
+ EnhCu51UIDg5bhUvfn5ZsJLGT+z01oSaH3jHckRCKIaLppXRlLU5Cl7zrxuTwJK/jFAZtWxoOSIf5
+ cnqm4vN71niN2dpSdbe/D1rOYXgKOsLx9SCzgjmUeo55uwp9bCBc7V3dHnWBUCvPOsM69k89LvbyM
+ J5QcWWaIUYge6/bY/N63GhAcgyXGa3V/E9JtpwkJSdq2bMh0KmVh2/Ulfn0amFTeON5EkhpL3rYwA
+ ogFxbPBKUDkOQaU2RfWgAQiGSO9+b3SbIFJPMaL6lks5r0NwcKSl2ZJ5hx/vpf6Xp9sU7TRZNMVsW
+ cVJ65L5lrOS+W2j7p2pXMx35+erlcUj6Kpk4X1P/xoq3Nhob56wxYqs7YpmMhVGVwofJWcurEqQZ5
+ BOeUmDSuAcDuLEPux+mz7itp8qCqdfUK35+KUBh3Q+prJQe4Yp2DXUNSpgi7tqHkEZQEyLPAjPe7z
+ tLziDyRn+y098vvFaMozmNAFBgXC96bBnrtSmeLSuET72isPCUzaXRT7RKMp8I=;
 From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Date: Fri, 3 Jan 2025 12:33:40 +0100
+Subject: [PATCH v2] 9pfs: improve v9fs_open() tracing
 To: qemu-devel@nongnu.org
 Cc: Greg Kurz <groug@kaod.org>
-Subject: Re: [PATCH] 9pfs: improve v9fs_open() tracing
-Date: Fri, 03 Jan 2025 12:31:59 +0100
-Message-ID: <14000677.NzGkIOIz7l@silver>
-In-Reply-To: <45674069.kNWJ3c3XjC@silver>
-References: <E1tN8RJ-008jNq-5L@kylie.crudebyte.com>
- <45674069.kNWJ3c3XjC@silver>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Message-Id: <E1tTgDR-000oRr-9g@kylie.crudebyte.com>
 Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
+ envelope-from=099c212c4147041d495dee76102fb82f9a66eda7@kylie.crudebyte.com;
+ helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -68,90 +64,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Monday, December 30, 2024 10:50:59 AM CET Christian Schoenebeck wrote:
-> On Monday, December 16, 2024 11:30:09 AM CET Christian Schoenebeck wrote:
-> > Improve tracing of 9p 'Topen' request type by showing open() flags as
-> > human-readable text.
-> > 
-> > E.g. trace output:
-> > 
-> >   v9fs_open tag 0 id 12 fid 2 mode 100352
-> > 
-> > would become:
-> > 
-> >   v9fs_open tag=0 id=12 fid=2 mode=100352(RDONLY|NONBLOCK|DIRECTORY|
-> >   TMPFILE|NDELAY)
-> > 
-> > Therefor add a new utility function qemu_open_flags_tostr() that converts
-> > numeric open() flags from host's native O_* flag constants to a string
-> > presentation.
-> > 
-> > 9p2000.L and 9p2000.u protocol variants use different numeric 'mode'
-> > constants for 'Topen' requests. Instead of writing string conversion code
-> > for both protocol variants, use the already existing conversion functions
-> > that convert the mode flags from respective protocol constants to host's
-> > native open() numeric flag constants and pass that result to the new
-> > string conversion function qemu_open_flags_tostr().
-> > 
-> > Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-> > ---
-> >  hw/9pfs/9p-util-generic.c | 44 +++++++++++++++++++++++++++++++++++++++
-> >  hw/9pfs/9p-util.h         |  6 ++++++
-> >  hw/9pfs/9p.c              |  9 +++++++-
-> >  hw/9pfs/meson.build       |  1 +
-> >  hw/9pfs/trace-events      |  2 +-
-> >  5 files changed, 60 insertions(+), 2 deletions(-)
-> >  create mode 100644 hw/9pfs/9p-util-generic.c
-> 
-> Queued on 9p.next:
-> https://github.com/cschoenebeck/qemu/commits/9p.next
-> 
-> Thanks!
-> 
-> /Christian
+Improve tracing of 9p 'Topen' request type by showing open() flags as
+human-readable text.
 
-I just realized that evaluation of O_SYNC and O_TMPFILE was wrong, as they
-might contain several bits.
+E.g. trace output:
 
-And O_NDELAY should be filtered if it is exactly the same as O_NONBLOCK.
+  v9fs_open tag 0 id 12 fid 2 mode 100352
 
-This should fix these issues:
+would become:
+
+  v9fs_open tag=0 id=12 fid=2 mode=100352(RDONLY|NONBLOCK|DIRECTORY|
+  TMPFILE|NDELAY)
+
+Therefor add a new utility function qemu_open_flags_tostr() that converts
+numeric open() flags from host's native O_* flag constants to a string
+presentation.
+
+9p2000.L and 9p2000.u protocol variants use different numeric 'mode'
+constants for 'Topen' requests. Instead of writing string conversion code
+for both protocol variants, use the already existing conversion functions
+that convert the mode flags from respective protocol constants to host's
+native open() numeric flag constants and pass that result to the new
+string conversion function qemu_open_flags_tostr().
+
+Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+---
+ V2:
+ - Fix evaluation of O_SYNC and O_TMPFILE which may contain several bits.
+ - Filter out O_NDELAY if it is exactly the same as O_NONBLOCK.
+
+ hw/9pfs/9p-util-generic.c | 50 +++++++++++++++++++++++++++++++++++++++
+ hw/9pfs/9p-util.h         |  6 +++++
+ hw/9pfs/9p.c              |  9 ++++++-
+ hw/9pfs/meson.build       |  1 +
+ hw/9pfs/trace-events      |  2 +-
+ 5 files changed, 66 insertions(+), 2 deletions(-)
+ create mode 100644 hw/9pfs/9p-util-generic.c
 
 diff --git a/hw/9pfs/9p-util-generic.c b/hw/9pfs/9p-util-generic.c
-index dff9a42d97..4c1e9c887d 100644
---- a/hw/9pfs/9p-util-generic.c
+new file mode 100644
+index 0000000000..4c1e9c887d
+--- /dev/null
 +++ b/hw/9pfs/9p-util-generic.c
-@@ -28,15 +28,21 @@ char *qemu_open_flags_tostr(int flags)
-         #ifdef O_CLOEXEC
-         (flags & O_CLOEXEC) ? "|CLOEXEC" : "",
-         #endif
--        (flags & O_SYNC) ? "|SYNC" : "",
+@@ -0,0 +1,50 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "9p-util.h"
++#include <glib/gstrfuncs.h>
++
++char *qemu_open_flags_tostr(int flags)
++{
++    int acc = flags & O_ACCMODE;
++    return g_strconcat(
++        (acc == O_WRONLY) ? "WRONLY" : (acc == O_RDONLY) ? "RDONLY" : "RDWR",
++        (flags & O_CREAT) ? "|CREAT" : "",
++        (flags & O_EXCL) ? "|EXCL" : "",
++        (flags & O_NOCTTY) ? "|NOCTTY" : "",
++        (flags & O_TRUNC) ? "|TRUNC" : "",
++        (flags & O_APPEND) ? "|APPEND" : "",
++        (flags & O_NONBLOCK) ? "|NONBLOCK" : "",
++        (flags & O_DSYNC) ? "|DSYNC" : "",
++        #ifdef O_DIRECT
++        (flags & O_DIRECT) ? "|DIRECT" : "",
++        #endif
++        (flags & O_LARGEFILE) ? "|LARGEFILE" : "",
++        (flags & O_DIRECTORY) ? "|DIRECTORY" : "",
++        (flags & O_NOFOLLOW) ? "|NOFOLLOW" : "",
++        #ifdef O_NOATIME
++        (flags & O_NOATIME) ? "|NOATIME" : "",
++        #endif
++        #ifdef O_CLOEXEC
++        (flags & O_CLOEXEC) ? "|CLOEXEC" : "",
++        #endif
 +        #ifdef __O_SYNC
 +        (flags & __O_SYNC) ? "|SYNC" : "",
 +        #else
 +        ((flags & O_SYNC) == O_SYNC) ? "|SYNC" : "",
 +        #endif
-         #ifdef O_PATH
-         (flags & O_PATH) ? "|PATH" : "",
-         #endif
--        #ifdef O_TMPFILE
--        (flags & O_TMPFILE) ? "|TMPFILE" : "",
++        #ifdef O_PATH
++        (flags & O_PATH) ? "|PATH" : "",
++        #endif
 +        #ifdef __O_TMPFILE
 +        (flags & __O_TMPFILE) ? "|TMPFILE" : "",
 +        #elif defined(O_TMPFILE)
 +        ((flags & O_TMPFILE) == O_TMPFILE) ? "|TMPFILE" : "",
-         #endif
-         /* O_NDELAY is usually just an alias of O_NONBLOCK */
--        #ifdef O_NDELAY
++        #endif
++        /* O_NDELAY is usually just an alias of O_NONBLOCK */
 +        #if defined(O_NDELAY) && O_NDELAY != O_NONBLOCK
-         (flags & O_NDELAY) ? "|NDELAY" : "",
-         #endif
-         NULL /* always last (required NULL termination) */
-
-I post a V2 of this patch now.
-
-Best regards,
-Christian Schoenebeck
-
++        (flags & O_NDELAY) ? "|NDELAY" : "",
++        #endif
++        NULL /* always last (required NULL termination) */
++    );
++}
+diff --git a/hw/9pfs/9p-util.h b/hw/9pfs/9p-util.h
+index 51c94b0116..a24d572407 100644
+--- a/hw/9pfs/9p-util.h
++++ b/hw/9pfs/9p-util.h
+@@ -260,4 +260,10 @@ int pthread_fchdir_np(int fd) __attribute__((weak_import));
+ #endif
+ int qemu_mknodat(int dirfd, const char *filename, mode_t mode, dev_t dev);
+ 
++/*
++ * Returns a newly allocated string presentation of open() flags, intended
++ * for debugging (tracing) purposes only.
++ */
++char *qemu_open_flags_tostr(int flags);
++
+ #endif
+diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
+index 6f24c1abb3..7cad2bce62 100644
+--- a/hw/9pfs/9p.c
++++ b/hw/9pfs/9p.c
+@@ -2008,6 +2008,7 @@ static void coroutine_fn v9fs_open(void *opaque)
+     V9fsFidState *fidp;
+     V9fsPDU *pdu = opaque;
+     V9fsState *s = pdu->s;
++    g_autofree char *trace_oflags = NULL;
+ 
+     if (s->proto_version == V9FS_PROTO_2000L) {
+         err = pdu_unmarshal(pdu, offset, "dd", &fid, &mode);
+@@ -2019,7 +2020,13 @@ static void coroutine_fn v9fs_open(void *opaque)
+     if (err < 0) {
+         goto out_nofid;
+     }
+-    trace_v9fs_open(pdu->tag, pdu->id, fid, mode);
++    if (trace_event_get_state_backends(TRACE_V9FS_OPEN)) {
++        trace_oflags = qemu_open_flags_tostr(
++            (s->proto_version == V9FS_PROTO_2000L) ?
++                dotl_to_open_flags(mode) : omode_to_uflags(mode)
++        );
++        trace_v9fs_open(pdu->tag, pdu->id, fid, mode, trace_oflags);
++    }
+ 
+     fidp = get_fid(pdu, fid);
+     if (fidp == NULL) {
+diff --git a/hw/9pfs/meson.build b/hw/9pfs/meson.build
+index eceffdb81e..d35d4f44ff 100644
+--- a/hw/9pfs/meson.build
++++ b/hw/9pfs/meson.build
+@@ -3,6 +3,7 @@ fs_ss.add(files(
+   '9p-local.c',
+   '9p-posix-acl.c',
+   '9p-synth.c',
++  '9p-util-generic.c',
+   '9p-xattr-user.c',
+   '9p-xattr.c',
+   '9p.c',
+diff --git a/hw/9pfs/trace-events b/hw/9pfs/trace-events
+index ed9f4e7209..0e0fc37261 100644
+--- a/hw/9pfs/trace-events
++++ b/hw/9pfs/trace-events
+@@ -13,7 +13,7 @@ v9fs_getattr(uint16_t tag, uint8_t id, int32_t fid, uint64_t request_mask) "tag
+ v9fs_getattr_return(uint16_t tag, uint8_t id, uint64_t result_mask, uint32_t mode, uint32_t uid, uint32_t gid) "tag %d id %d getattr={result_mask %"PRId64" mode %u uid %u gid %u}"
+ v9fs_walk(uint16_t tag, uint8_t id, int32_t fid, int32_t newfid, uint16_t nwnames, const char* wnames) "tag=%d id=%d fid=%d newfid=%d nwnames=%d wnames={%s}"
+ v9fs_walk_return(uint16_t tag, uint8_t id, uint16_t nwnames, void* qids) "tag %d id %d nwnames %d qids %p"
+-v9fs_open(uint16_t tag, uint8_t id, int32_t fid, int32_t mode) "tag %d id %d fid %d mode %d"
++v9fs_open(uint16_t tag, uint8_t id, int32_t fid, int32_t mode, const char* oflags) "tag=%d id=%d fid=%d mode=%d(%s)"
+ v9fs_open_return(uint16_t tag, uint8_t id, uint8_t type, uint32_t version, uint64_t path, int iounit) "tag %u id %u qid={type %u version %u path %"PRIu64"} iounit %d"
+ v9fs_lcreate(uint16_t tag, uint8_t id, int32_t dfid, int32_t flags, int32_t mode, uint32_t gid) "tag %d id %d dfid %d flags %d mode %d gid %u"
+ v9fs_lcreate_return(uint16_t tag, uint8_t id, uint8_t type, uint32_t version, uint64_t path, int32_t iounit) "tag %u id %u qid={type %u version %u path %"PRIu64"} iounit %d"
+-- 
+2.39.5
 
 
