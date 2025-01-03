@@ -2,94 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 944CBA00E9C
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 20:47:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 702EFA00ED0
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 21:24:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTncl-0000ZF-8J; Fri, 03 Jan 2025 14:46:23 -0500
+	id 1tToCA-0007ph-Qc; Fri, 03 Jan 2025 15:22:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wainersm@redhat.com>)
- id 1tTnci-0000Z2-HK
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 14:46:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1tToC9-0007pH-4i
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 15:22:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wainersm@redhat.com>)
- id 1tTncg-0001Go-OJ
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 14:46:20 -0500
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1tToC6-0006mZ-UD
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 15:22:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1735933575;
+ s=mimecast20190719; t=1735935773;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=p83MjaGlcXEDyx+Ni16wYf30AG959q/0HJeOs16rl44=;
- b=NhwF9AoZtHuH/cWumlB1O8inL9LXfh5ace+2ssG+oSTatSPvMMxwXNHCDutaMogB6YCnqD
- 5q1Q0YFnrMfIkUpSJUR0RVVvFK8ZNqs2DBbgjNG7mEeWlKB4mNwIBWGWZzVxGH+Am/bmQK
- e6Ln9aNbAK12n88MF9ko3t2665vb134=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=BndSMCn6ywMaUythDoaJmMsbmuf7sn8y4fBk5UNVXZo=;
+ b=P2iMgBhJqsjtojm5di00xg3LYqRqRbRsi8I3KyLDex4lrtPe4ovvBabKJRlK8J4BoueqU7
+ l2lPR6Pm/5nKE+tRjQOa/geKOa4VlhxxMAQAiGlp5kA31sX7e+vtHBtOM6EuLa5wfmPOrd
+ kWfmv+6G5pQQiZ6noFDuTz00zt3hW5w=
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
+ [209.85.166.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-618-xv9pFCK9Mz-bauUf6Q2eMg-1; Fri, 03 Jan 2025 14:45:01 -0500
-X-MC-Unique: xv9pFCK9Mz-bauUf6Q2eMg-1
-X-Mimecast-MFC-AGG-ID: xv9pFCK9Mz-bauUf6Q2eMg
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-2efa0eb9cfeso16796565a91.0
- for <qemu-devel@nongnu.org>; Fri, 03 Jan 2025 11:45:01 -0800 (PST)
+ us-mta-494-SbDJFRJdMp6vt5VWFIIkpw-1; Fri, 03 Jan 2025 15:22:50 -0500
+X-MC-Unique: SbDJFRJdMp6vt5VWFIIkpw-1
+X-Mimecast-MFC-AGG-ID: SbDJFRJdMp6vt5VWFIIkpw
+Received: by mail-io1-f72.google.com with SMTP id
+ ca18e2360f4ac-844e20873f6so22414739f.2
+ for <qemu-devel@nongnu.org>; Fri, 03 Jan 2025 12:22:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735933500; x=1736538300;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=p83MjaGlcXEDyx+Ni16wYf30AG959q/0HJeOs16rl44=;
- b=EuZUQ4X4FF576iFHL5laA25z5ej1FCWDKUuOo+5CEV/0W7eB5sCErjPo4+lsgOzVqQ
- AFbr/cH4LVeFXMQ8JRTVG8it56G4WZ6yU/hteGaSJrRc4drVHlqPLB/uQJby4/+UptKH
- RJQNQ8FwZ93B1amwkGmvc1KmZzCXxk9C1u4zd6/IbpwaHsnWpagjqIiUBP6CcGLqVTKQ
- 5Wz3c4nwLq8luvOtLbaU3/shUzov8zIC1mTPxxNSFmtV1u/FG3k//oJAnGv29yMCcTVt
- alqbOqwpgt2OP/2EY+5nA5qUtT2NsWKW35X5RAt+lhP9S0+jyXMc1Ay2G7Enp3mPjQxv
- 68EA==
-X-Gm-Message-State: AOJu0Yz227ofHkYzCknhfWxq/igozW+T7XRy7MG/pBgvcvlglqWmr3QY
- PNhaup9JBaS1RMGpntd5ZA4kfAtEw4/KKe1SJD7DDETOJmCgXj2+yUrPwlI9t39+HShP40b8GKW
- 7FxD28fqrh1rJJ25189JazNonQgx6RSX2+DnbgbBLNCCsDGZDFlLz
-X-Gm-Gg: ASbGnctNCj3YiMrvIp3cn4Orodf+6nd8YfF48kVAMUSZz9t1JUDei/zezZafZ2wV+ZL
- arZ1k3cdidv6qrUWjDukgJ0hTO9gC/H0BxaKp1vZvm6MKzEXRYlpE3o11Ab4X8nBq4FP2ZDBYr8
- YjW72/5dWtvVu76w6I2ZM+b1eeXuzh4K1fFxTh9jnvpbX415zV9AT3wAm38m7ABCKUEgpxQ7Q3r
- 6KPw41+fw9WK6lLvxosF9WXrhsZ85pLvpIQH3umhqfjJRbwR6EVWETwM1sZA0N4Oc6XXhkNLlhk
- +z8S3Ub16n4=
-X-Received: by 2002:a17:90b:5208:b0:2ee:7e53:bfae with SMTP id
- 98e67ed59e1d1-2f4536531cfmr69319029a91.10.1735933500191; 
- Fri, 03 Jan 2025 11:45:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE+dFAajW+wzr7nnqNMvDeOYxGwnG5PzWvvXBqXmu9j4cFUR0VywUdZ3qgJI2G2DjBtps+1kA==
-X-Received: by 2002:a17:90b:5208:b0:2ee:7e53:bfae with SMTP id
- 98e67ed59e1d1-2f4536531cfmr69319009a91.10.1735933499870; 
- Fri, 03 Jan 2025 11:44:59 -0800 (PST)
-Received: from wmoschet-thinkpadp16vgen1.rmtbr.csb ([187.23.176.81])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-219dca0282fsm248261695ad.259.2025.01.03.11.44.53
+ d=1e100.net; s=20230601; t=1735935769; x=1736540569;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=BndSMCn6ywMaUythDoaJmMsbmuf7sn8y4fBk5UNVXZo=;
+ b=Sk2GIwymrvaIKUfTSb/VvPJYqcQzRPxqKDJxjFVlIwmRzIGElnDiqr/ibFURsX3ptZ
+ xgixqBk3YNJclhOVdMUMN45hSBhyQrwbR4Y8cfd/Pj1n4HXnw/UPl+bXZF5kLv/9vZqY
+ MCZlW+zhSBToV+LFOpkv4cx5/EI6OvZtGCGOthbuiJZW7QeBVNjeOfVpsJ9fQBQxKemq
+ Y5iRcg6L1cdjpiEJadDltdxak43HeS+OxmRn+pEJGhJkArB3B1UgPaRSZNaSIiBTtQXJ
+ CYPXcISmKEHRIVD2IqCvHkqZl4sGGqX1kGJpBjGtMAJD2omA37rXkuBPz/I1niekkGbB
+ VEXA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVu9bIsyw6Cr/47K6aFouDTtQo4Uamy5P/IKucv14N5eZ1Z4dBMPqROAR1g+RhcefrCtdTihMLabqi9@nongnu.org
+X-Gm-Message-State: AOJu0Yx8kqBhWw+4tHvUB3ZPbAPbRY3phDtf2lJyKxTl1+COcappn3yo
+ OYGXWvggJvDiBMApqplA0lKn2/WhQcMU7PjOPltrPOM8ytFMw3W6e+1HEcjCqeUoBmYQc7kJdDQ
+ +5GXKaPjtzCfTnzgfUINCBVJeMj/8y0sQ+4L5yFbA7Vn8x2/xBkBu
+X-Gm-Gg: ASbGnctQPwac+p9RCfcZdXnEgMxecjO4f4ndB1RH7UQf1Oz1upYHMu9xgzOAI0AvaHA
+ +7mKkDzkU46D7YhlGtQhvX4cA4LTqTtkInPqWqA1MLg53UASdQmhxZEeVwLVp60MSQSU+DvrWFx
+ AcxLB29/7qN3GCMLkc9t+GI5M6OtF05Wox8RfXKL2CP2gv/sNESs6Y4zosqhSON899jq5uns3wH
+ roATzxs/Lbj7vTztOxHvKjxzicZjojC+gqxm0pLa0h6nDb3qDStDvWCJMgL
+X-Received: by 2002:a05:6e02:20e9:b0:3a7:bc95:bae6 with SMTP id
+ e9e14a558f8ab-3c2d4b89d00mr125146885ab.3.1735935769692; 
+ Fri, 03 Jan 2025 12:22:49 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHT36V1Pxsx6SUPkQsCBeNJI2y2hXaWXRYGGpgQuHMsDZLeLydR4aPJ/T40ow0pnskHsigs9w==
+X-Received: by 2002:a05:6e02:20e9:b0:3a7:bc95:bae6 with SMTP id
+ e9e14a558f8ab-3c2d4b89d00mr125146835ab.3.1735935769355; 
+ Fri, 03 Jan 2025 12:22:49 -0800 (PST)
+Received: from redhat.com ([38.15.36.11]) by smtp.gmail.com with ESMTPSA id
+ e9e14a558f8ab-3c0dfb32043sm83102775ab.40.2025.01.03.12.22.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Jan 2025 11:44:56 -0800 (PST)
-From: wainersm@redhat.com
-To: philmd@linaro.org,
-	thuth@redhat.com,
-	peter.maydell@linaro.org
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH] MAINTAINERS: Remove myself from reviewers
-Date: Fri,  3 Jan 2025 16:44:49 -0300
-Message-ID: <20250103194450.360789-1-wainersm@redhat.com>
-X-Mailer: git-send-email 2.47.1
+ Fri, 03 Jan 2025 12:22:48 -0800 (PST)
+Date: Fri, 3 Jan 2025 13:22:47 -0700
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Tomita Moeko <tomitamoeko@gmail.com>
+Cc: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 2/3] vfio/pci: introduce config_offset field in
+ VFIOConfigMirrorQuirk
+Message-ID: <20250103132247.2719e3c8.alex.williamson@redhat.com>
+In-Reply-To: <20241231151953.59992-3-tomitamoeko@gmail.com>
+References: <20241231151953.59992-1-tomitamoeko@gmail.com>
+ <20241231151953.59992-3-tomitamoeko@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=wainersm@redhat.com;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=alex.williamson@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
 X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.186,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,39 +109,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Wainer dos Santos Moschetta <wainersm@redhat.com>
+On Tue, 31 Dec 2024 23:19:52 +0800
+Tomita Moeko <tomitamoeko@gmail.com> wrote:
 
-The time I spent contributing to QEMU was great, but I've not been active
-for a long time now. So removing myself from the reviewers list of
-"Integration Testing with the Avocado framework" and
-"Build and test automation" subsystems.
+> Device may only expose a specific portion of PCI config space through a
+> region in a BAR, such behavior is seen in igd GGC and BDSM mirrors in
+> BAR0. To handle these, config_offset is introduced to allow mirroring
+> arbitrary region in PCI config space.
+> 
+> Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+> ---
+>  hw/vfio/pci-quirks.c | 5 +++++
+>  hw/vfio/pci-quirks.h | 3 ++-
+>  2 files changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
+> index bb2ce1d904..5a0b25a544 100644
+> --- a/hw/vfio/pci-quirks.c
+> +++ b/hw/vfio/pci-quirks.c
+> @@ -162,6 +162,7 @@ static uint64_t vfio_generic_quirk_mirror_read(void *opaque,
+>      (void)vfio_region_read(&vdev->bars[mirror->bar].region,
+>                             addr + mirror->offset, size);
+>  
+> +    addr += mirror->config_offset;
+>      data = vfio_pci_read_config(&vdev->pdev, addr, size);
+>      trace_vfio_quirk_generic_mirror_read(vdev->vbasedev.name,
+>                                           memory_region_name(mirror->mem),
+> @@ -175,6 +176,7 @@ static void vfio_generic_quirk_mirror_write(void *opaque, hwaddr addr,
+>      VFIOConfigMirrorQuirk *mirror = opaque;
+>      VFIOPCIDevice *vdev = mirror->vdev;
+>  
+> +    addr += mirror->config_offset;
+>      vfio_pci_write_config(&vdev->pdev, addr, data, size);
+>      trace_vfio_quirk_generic_mirror_write(vdev->vbasedev.name,
+>                                            memory_region_name(mirror->mem),
+> @@ -456,6 +458,7 @@ static void vfio_probe_ati_bar2_quirk(VFIOPCIDevice *vdev, int nr)
+>      mirror->mem = quirk->mem;
+>      mirror->vdev = vdev;
+>      mirror->offset = 0x4000;
+> +    mirror->config_offset = 0;
 
-Signed-off-by: Wainer dos Santos Moschetta <wainersm@redhat.com>
----
- MAINTAINERS | 2 --
- 1 file changed, 2 deletions(-)
+These are all allocated with g_malloc0(), we don't need to explicitly
+initialize this field in any of these existing uses.  Thanks,
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2101b51217..b25070a31f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4151,7 +4151,6 @@ M: Alex Bennée <alex.bennee@linaro.org>
- T: git https://gitlab.com/stsquad/qemu testing/next
- M: Philippe Mathieu-Daudé <philmd@linaro.org>
- M: Thomas Huth <thuth@redhat.com>
--R: Wainer dos Santos Moschetta <wainersm@redhat.com>
- S: Maintained
- F: .github/workflows/lockdown.yml
- F: .gitlab-ci.yml
-@@ -4197,7 +4196,6 @@ Integration Testing with the Avocado framework
- W: https://trello.com/b/6Qi1pxVn/avocado-qemu
- R: Cleber Rosa <crosa@redhat.com>
- R: Philippe Mathieu-Daudé <philmd@linaro.org>
--R: Wainer dos Santos Moschetta <wainersm@redhat.com>
- S: Odd Fixes
- F: tests/avocado/
- 
--- 
-2.47.0
+Alex
+
+>      mirror->bar = nr;
+>  
+>      memory_region_init_io(mirror->mem, OBJECT(vdev),
+> @@ -908,6 +911,7 @@ static void vfio_probe_nvidia_bar0_quirk(VFIOPCIDevice *vdev, int nr)
+>      mirror->mem = quirk->mem;
+>      mirror->vdev = vdev;
+>      mirror->offset = 0x88000;
+> +    mirror->config_offset = 0;
+>      mirror->bar = nr;
+>      last = (LastDataSet *)&mirror->data;
+>      last->quirk = quirk;
+> @@ -929,6 +933,7 @@ static void vfio_probe_nvidia_bar0_quirk(VFIOPCIDevice *vdev, int nr)
+>          mirror->mem = quirk->mem;
+>          mirror->vdev = vdev;
+>          mirror->offset = 0x1800;
+> +        mirror->config_offset = 0;
+>          mirror->bar = nr;
+>          last = (LastDataSet *)&mirror->data;
+>          last->quirk = quirk;
+> diff --git a/hw/vfio/pci-quirks.h b/hw/vfio/pci-quirks.h
+> index c0e96a01cc..d1532e379b 100644
+> --- a/hw/vfio/pci-quirks.h
+> +++ b/hw/vfio/pci-quirks.h
+> @@ -60,7 +60,8 @@ extern const MemoryRegionOps vfio_generic_window_data_quirk;
+>   */
+>  typedef struct VFIOConfigMirrorQuirk {
+>      struct VFIOPCIDevice *vdev;
+> -    uint32_t offset;
+> +    uint32_t offset; /* Offset in BAR */
+> +    uint32_t config_offset; /* Offset in PCI config space */
+>      uint8_t bar;
+>      MemoryRegion *mem;
+>      uint8_t data[];
 
 
