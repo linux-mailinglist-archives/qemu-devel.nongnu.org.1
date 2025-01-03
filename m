@@ -2,84 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4249A00B7F
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 16:32:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7031FA00BB7
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 16:55:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTje7-0006S6-B9; Fri, 03 Jan 2025 10:31:35 -0500
+	id 1tTk0O-0001f0-Tt; Fri, 03 Jan 2025 10:54:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tTjdz-0006RZ-Hj
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 10:31:23 -0500
-Received: from mgamail.intel.com ([198.175.65.15])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tTk0H-0001eT-Q4
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 10:54:25 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tTjdw-0003Pb-BR
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 10:31:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1735918281; x=1767454281;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=UxzyePBqFZ2gnpbI9K6VX5Sh4Z2rlQhso6W0tOBdMno=;
- b=ZmfIPtph16enWLBQMBLRbPWwRg8thFo1q35V4nlMWf4WqWtovjTvLoI5
- 9Ahe6ZEynoYzMzgMkxwV7H4kEc7Bdad6DMLrR1oV5JQDDcwlpPKqBUwX3
- QwgW/UD7e62dwLLtqN0W5s3N+/S8kFLt+uQ3LwVP4kilnEFIJmHp5Hunv
- 31OMt7cnO2tgu9hD/AV6QBr/uuymTBqfS0xUmcqL7/4zrj4FkPqlqOr98
- +zcU1kOTj8KJaF/Sgu3ss/TzRvLXubwTOTd3bFvSczDyToIP2y64F1U6z
- YcGDdhkTCGs9w9C/nVK6mDeByjFKsH9gHau3R7ohSBcrYSc2k/5eGUBEt g==;
-X-CSE-ConnectionGUID: mmbOQcxOTv6HUdlsnhsnMw==
-X-CSE-MsgGUID: bxiyqF5zRZW7mGSUnukcVA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11304"; a="39847831"
-X-IronPort-AV: E=Sophos;i="6.12,286,1728975600"; d="scan'208";a="39847831"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jan 2025 07:31:17 -0800
-X-CSE-ConnectionGUID: duyNQYX0Sv6TDimdUERQGA==
-X-CSE-MsgGUID: JRXouV0sStKa4cn3i3YZDQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,286,1728975600"; d="scan'208";a="132668761"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa002.jf.intel.com with ESMTP; 03 Jan 2025 07:31:13 -0800
-Date: Fri, 3 Jan 2025 23:50:00 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Alireza Sanaee <alireza.sanaee@huawei.com>
-Cc: Rob Herring <robh@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P . Berrang" <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe Mathieu-Daud <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org
-Subject: Re: [PATCH v6 0/4] i386: Support SMP Cache Topology
-Message-ID: <Z3gHKEalN6sLv8Mf@intel.com>
-References: <20241219083237.265419-1-zhao1.liu@intel.com>
- <44212226-3692-488b-8694-935bd5c3a333@redhat.com>
- <Z2t2DuMBYb2mioB0@intel.com> <20250102145708.0000354f@huawei.com>
- <CAL_JsqKeA4dSwO40VgARVAiVM=w1PU8Go8GJYv4v8Wri64UFbw@mail.gmail.com>
- <20250102180141.00000647@huawei.com> <Z3efFsigJ6SxhqMf@intel.com>
- <20250103140457.00004c4b@huawei.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tTk0F-0002Ob-U1
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 10:54:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1735919662;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=8MK3UcVLcOkZD/EmeCE8e77wopXF8zXhW3+DVQ2Dxmk=;
+ b=Jh28nOv/Cdpjty0WeULnw4zt3nA1IFy8VtbEz+zVzbN+HlW9f2FjJAkawFYExIBbvWscYA
+ Zu1g6/a3tp4ADIbAVZ6sNCrz6PRYg/EttLALfjwOlYDg93fyDJmWg4WtM0oeQJO+7J8kof
+ sAauLTZsBKhHGWTRvtNYYVBBTIIwDu8=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-130-D0cptFSUNbWyxj0r9RrKpw-1; Fri,
+ 03 Jan 2025 10:54:18 -0500
+X-MC-Unique: D0cptFSUNbWyxj0r9RrKpw-1
+X-Mimecast-MFC-AGG-ID: D0cptFSUNbWyxj0r9RrKpw
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id ECFA619560B4; Fri,  3 Jan 2025 15:54:16 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.148])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id C0A9319560AA; Fri,  3 Jan 2025 15:54:13 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org
+Subject: [PATCH] Remove the deprecated "-runas" command line option
+Date: Fri,  3 Jan 2025 16:54:11 +0100
+Message-ID: <20250103155411.721759-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250103140457.00004c4b@huawei.com>
-Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -65
-X-Spam_score: -6.6
-X-Spam_bar: ------
-X-Spam_report: (-6.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.186,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.186,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,33 +78,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > > > You asked me for the opposite though, and I described how you can
-> > > > share the cache. If you want a cache per thread, then you probably
-> > > > want a node per thread.
-> > > > 
-> > > > Rob
-> > > >   
-> > > 
-> > > Hi Rob,
-> > > 
-> > > That's right, I made the mistake in my prior message, and you
-> > > recalled correctly. I wanted shared caches between two threads,
-> > > though I have missed your answer before, just found it.
-> > >   
-> > 
-> > Thank you all!
-> > 
-> > Alireza, do you know how to configure arm node through QEMU options?
-> 
-> Hi Zhao, do you mean the -smp param?
->
+It has been marked as deprecated two releases ago, so it should
+be fine now to remove this command line option.
 
-I mean do you know how to configure something like "a node per thread"
-by QEMU option? :-) I'm curious about the relationship between "node"
-and the SMP topology on the ARM side in the current QEMU. I'm not sure
-if this "node" refers to the NUMA node.
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ docs/about/deprecated.rst       |  6 ------
+ docs/about/removed-features.rst |  6 ++++++
+ system/vl.c                     |  9 ---------
+ qemu-options.hx                 | 15 +--------------
+ 4 files changed, 7 insertions(+), 29 deletions(-)
 
-Thanks,
-Zhao
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index d6809f94ea..63b46fd520 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -74,12 +74,6 @@ configurations (e.g. -smp drawers=1,books=1,clusters=1 for x86 PC machine) is
+ marked deprecated since 9.0, users have to ensure that all the topology members
+ described with -smp are supported by the target machine.
+ 
+-``-runas`` (since 9.1)
+-''''''''''''''''''''''
+-
+-Use ``-run-with user=..`` instead.
+-
+-
+ User-mode emulator command line arguments
+ -----------------------------------------
+ 
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index cb1388049a..c6616ce05e 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -555,6 +555,12 @@ to produce an odd effect (rotating input but not display output). But
+ this was never intended or documented behaviour, so we have dropped
+ the options along with the machine models they were intended for.
+ 
++``-runas`` (removed in 10.0)
++''''''''''''''''''''''''''''
++
++Use ``-run-with user=..`` instead.
++
++
+ User-mode emulator command line arguments
+ -----------------------------------------
+ 
+diff --git a/system/vl.c b/system/vl.c
+index 0843b7ab49..3c5bd36d7d 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -3611,15 +3611,6 @@ void qemu_init(int argc, char **argv)
+                 /* Nothing to be parsed here. Especially, do not error out below. */
+                 break;
+ #if defined(CONFIG_POSIX)
+-            case QEMU_OPTION_runas:
+-                warn_report("-runas is deprecated, use '-run-with user=...' instead");
+-                if (!os_set_runas(optarg)) {
+-                    error_report("User \"%s\" doesn't exist"
+-                                 " (and is not <uid>:<gid>)",
+-                                 optarg);
+-                    exit(1);
+-                }
+-                break;
+             case QEMU_OPTION_daemonize:
+                 os_set_daemonize(true);
+                 break;
+diff --git a/qemu-options.hx b/qemu-options.hx
+index cc694d3b89..7090d59f6f 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -4976,19 +4976,6 @@ SRST
+     ``-nodefaults`` option will disable all those default devices.
+ ERST
+ 
+-#ifndef _WIN32
+-DEF("runas", HAS_ARG, QEMU_OPTION_runas, \
+-    "-runas user     change to user id user just before starting the VM\n" \
+-    "                user can be numeric uid:gid instead\n",
+-    QEMU_ARCH_ALL)
+-#endif
+-SRST
+-``-runas user``
+-    Immediately before starting guest execution, drop root privileges,
+-    switching to the specified user. This option is deprecated, use
+-    ``-run-with user=...`` instead.
+-ERST
+-
+ DEF("prom-env", HAS_ARG, QEMU_OPTION_prom_env,
+     "-prom-env variable=value\n"
+     "                set OpenBIOS nvram variables\n",
+@@ -5176,7 +5163,7 @@ SRST
+ 
+     ``chroot=dir`` can be used for doing a chroot to the specified directory
+     immediately before starting the guest execution. This is especially useful
+-    in combination with -runas.
++    in combination with ``user=...``.
+ 
+     ``user=username`` or ``user=uid:gid`` can be used to drop root privileges
+     before starting guest execution. QEMU will use the ``setuid`` and ``setgid``
+-- 
+2.47.1
 
 
