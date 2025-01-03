@@ -2,125 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C3F8A00A7F
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 15:26:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63624A00A83
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 15:26:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTibu-0002Lx-Gb; Fri, 03 Jan 2025 09:25:10 -0500
+	id 1tTidP-0003ky-Ph; Fri, 03 Jan 2025 09:26:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1tTibk-0002EQ-Is; Fri, 03 Jan 2025 09:25:00 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tTid7-0003hc-A9
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 09:26:26 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1tTibi-0000Id-T0; Fri, 03 Jan 2025 09:25:00 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id CE7FB1F38E;
- Fri,  3 Jan 2025 14:24:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1735914297; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rcMrzQcZ7L6DKtOjgNZCFYnkQYfFI4acBM5KL6MCMiw=;
- b=GF/8SKxaObaMTLXxjBiOczVuh0kGnlfK8Yhw6ciTy2Tol1M7Vv12XoatztL/2JKENv1f+9
- HBjJFjswSBpmmAeKKALl+tEkZBXOXwVGAujwvAzT4E26g/Ws2Mcj7k576vJsb5p3PabqEd
- FZdPXCYVgMjYRRDqhSpA+eIlU2znlss=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1735914297;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rcMrzQcZ7L6DKtOjgNZCFYnkQYfFI4acBM5KL6MCMiw=;
- b=atTJ3y3l4n5lXQOoR8Hy9QOG26s72O/I1u+9cyQX5CUz55BWBx1137rXQaH+q/+5bujYaA
- Juv42iS/eoYimSAg==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ragd99zE;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YVGtLLD4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1735914296; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rcMrzQcZ7L6DKtOjgNZCFYnkQYfFI4acBM5KL6MCMiw=;
- b=ragd99zEKewav2ucvPilWtrGDugzjrCWp/j14RmeCCHdqtQBU0j6j3BjKgBmchTvGe0b9+
- Wacykb1Gl6Evd+wU88hsUO5ZEOa7CG7Ze3cIxIBSrjOYcmHReemUYIDEaqm1E15f1JYbtB
- 13PSXNvtOaeT11YFyMUVIBSO7TXrwok=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1735914296;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rcMrzQcZ7L6DKtOjgNZCFYnkQYfFI4acBM5KL6MCMiw=;
- b=YVGtLLD4zpLVQZBMiXD/ifcEqR7FL4xOj7y/W2FuvgjhKuy9SzTFrVDpuCFRuxpIk3O4bC
- FIip1KiYEouH1JBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 55B4A134E4;
- Fri,  3 Jan 2025 14:24:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 4O4RBzjzd2cnXAAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 03 Jan 2025 14:24:56 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, qemu-arm@nongnu.org, Philippe =?utf-8?Q?Mathi?=
- =?utf-8?Q?eu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v6 3/4] tests/qtest/boot-serial-test: Reorder pair of
- instructions in PL011 test
-In-Reply-To: <20250102105822.43532-4-philmd@linaro.org>
-References: <20250102105822.43532-1-philmd@linaro.org>
- <20250102105822.43532-4-philmd@linaro.org>
-Date: Fri, 03 Jan 2025 11:24:53 -0300
-Message-ID: <87bjwo7z62.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tTid4-0000kz-FS
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 09:26:24 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-216401de828so160841385ad.3
+ for <qemu-devel@nongnu.org>; Fri, 03 Jan 2025 06:26:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1735914381; x=1736519181; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=ykBe4BeZxcH1uoXSoP4aM5wFAFNIbP5016D7mVp3b/M=;
+ b=Rq41Sja/94xRqVoHsgLBXP/TCic/X/xyXwtJOP1GUUU669GB58anWbIa3HGfdwQ6JD
+ MeCWVfEm1P/cbd45S71hPZulslNkm6d+xfpw1uDlI+1S39J8rtQGpZElVQJL5uvAte7o
+ V07jR9RUFmBPSm5Ib1IQCgAcq1m9Y/MIb/vFTz14LVTQcNZMhE12UjVAC60phmWCxoNe
+ txX84QLSzG5OpnR2Oc2FMIKW20H/eR6Kp/AbghSiVtalSkVYkGxM1hzqaTNSElzIK3DE
+ /pj1rsXR2ORgIjl0B567y+XpfHxkvDEGLiQ0usYr6b/dfTmZfP0YLotOz/oTdxp0Rllw
+ S2Aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1735914381; x=1736519181;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ykBe4BeZxcH1uoXSoP4aM5wFAFNIbP5016D7mVp3b/M=;
+ b=JK/70i5bhOa4Ba6kPqQ6AowmfKGMud+wxvWQKl+7Ggj0aUK3uj/Cq8IZlmvpH2y+99
+ 28KE2OyvdbHVo/Y2hsIVeJmgkHphVE7iMayico4qaHy/cgPIp9JCn+Br8313+A9wvIDx
+ L/oO3rG/0884PgLLD8gCcs/Tbl2E5ynG+uoNiigUTUe8Y2qxObWXzWCsQe1CsmkJ8pCN
+ 0A4F3qOBGeDy6T1AkPw9sGlMAyrBu9VgP2adX1H6lMF76QqPc4/hapCAQMfTqaI/Mlkv
+ 3hlZ16On3FlIhQQE1L4TYDBZDBTFtJZEQ+uMuwlLdQhpOsmJKW3fAAY5JXdfUGF/cc5+
+ erDw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUUBHQJRwMjjUFIxiJD3A4nki9ArNu0JRXugeS2+H/v5NE7cH81DovMx6027ScI5L6SgumReWBvB6qN@nongnu.org
+X-Gm-Message-State: AOJu0YxYBFr0rUaupgj1nMo+txYr15hSOw7Wkimu2XnLpXSNlIK/0gy9
+ c3Nlr+QSTeY0XuGwOPtICpVdhAFuvHk/DevU3cHNESj3VwqGnUUE6We2PFDCCWaSuj+buHpDBre
+ N
+X-Gm-Gg: ASbGncv7hMKjKwXAHLYicNrA+MQHxunKesAiDc7EXFMjaumzUog5lq/dPU+tgy0kFU4
+ CoBNUPn7co4OLobKcbyDG5hG61vfohHWrsYowdQIAoX3gAO43I1V4FvPJ7DW/xWuJYFARL5PKQ5
+ QzRdYHXoUyS7vwndzGgWT/g5THHenoFOM1IQUHsO8qdQHf71ewto6faSr5ssAWklD7lDA0qVMyv
+ z4i9RTKCKmREoTmlO56LulXQVnTAyM7fuPgwOdh2Q3AWxkj97fie/9CoB0Wtaza24Ou988=
+X-Google-Smtp-Source: AGHT+IH0p+LQgPIhrmE11X2f1T3l0ulGwtBbXm4pfD4jyX34iIyRgYvKEO40h8KlPPjTh1qaqVwf1A==
+X-Received: by 2002:a05:6a20:430a:b0:1e1:a9dd:5a68 with SMTP id
+ adf61e73a8af0-1e5e044bd9bmr76952362637.1.1735914380920; 
+ Fri, 03 Jan 2025 06:26:20 -0800 (PST)
+Received: from [172.21.1.122] ([63.239.63.212])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-842b9fb38basm24091638a12.49.2025.01.03.06.26.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 03 Jan 2025 06:26:20 -0800 (PST)
+Message-ID: <2d9611e7-2d61-4bf3-bf75-4934ba76b7f6@linaro.org>
+Date: Fri, 3 Jan 2025 06:26:18 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: CE7FB1F38E
-X-Spam-Score: -4.46
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.46 / 50.00]; BAYES_HAM(-2.95)[99.80%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- ARC_NA(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+]; FROM_HAS_DN(0.00)[];
- DKIM_TRACE(0.00)[suse.de:+];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- MID_RHS_MATCH_FROM(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- FROM_EQ_ENVFROM(0.00)[]; RCVD_TLS_ALL(0.00)[];
- RCPT_COUNT_SEVEN(0.00)[8]; RCVD_VIA_SMTP_AUTH(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- MISSING_XM_UA(0.00)[];
- ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,
- imap1.dmz-prg2.suse.org:helo, suse.de:dkim, suse.de:mid, suse.de:email]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/8] qdev: Make qdev_get_machine() not use
+ container_get()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20250102211800.79235-1-philmd@linaro.org>
+ <20250102211800.79235-3-philmd@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250102211800.79235-3-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -137,14 +102,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+On 1/2/25 13:17, Philippe Mathieu-Daudé wrote:
+> From: Peter Xu <peterx@redhat.com>
+> 
+> Currently, qdev_get_machine() has a slight misuse on container_get(), as
+> the helper says "get a container" but in reality the goal is to get the
+> machine object.  It is still a "container" but not strictly.
+> 
+> Note that it _may_ get a container (at "/machine") in our current unit test
+> of test-qdev-global-props.c before all these changes, but it's probably
+> unexpected and worked by accident.
+> 
+> Switch to an explicit object_resolve_path_component(), with a side benefit
+> that qdev_get_machine() can happen a lot, and we don't need to split the
+> string ("/machine") every time.  This also paves way for making the helper
+> container_get() never try to return a non-container at all.
+> 
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Message-ID: <20241121192202.4155849-9-peterx@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/core/qdev.c | 7 ++++++-
+>   1 file changed, 6 insertions(+), 1 deletion(-)
 
-> In the next commit we are going to use a different value
-> for the $w1 register, maintaining the same $x2 value. In
-> order to keep the next commit trivial to review, set $x2
-> before $w1.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+r~
 
