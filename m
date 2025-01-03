@@ -2,85 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AE10A010E2
-	for <lists+qemu-devel@lfdr.de>; Sat,  4 Jan 2025 00:19:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3C0AA01109
+	for <lists+qemu-devel@lfdr.de>; Sat,  4 Jan 2025 00:32:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTqvy-0007jL-L1; Fri, 03 Jan 2025 18:18:27 -0500
+	id 1tTr7k-0004BC-G8; Fri, 03 Jan 2025 18:30:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTqvv-0007iz-EK
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 18:18:23 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTr7i-0004B3-BU
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 18:30:34 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTqvs-0004Kl-Sk
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 18:18:22 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-385df53e559so9964141f8f.3
- for <qemu-devel@nongnu.org>; Fri, 03 Jan 2025 15:18:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTr7g-00039F-DO
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 18:30:33 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-43623f0c574so86914105e9.2
+ for <qemu-devel@nongnu.org>; Fri, 03 Jan 2025 15:30:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735946299; x=1736551099; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NFgkKamr5QeIwstbRr7Q/p762wUgXwLu6RDwYB0Omtc=;
- b=wXmEtYwpUMEXiLKSfOddrl9CtuYv1JGRQNJdlMuIaFnn3t/dbsd/YMXZka0bixAGxX
- YJg29PVXP+n8S5JWwHUx6SLYXeUTTFxZdKt0FtFCIlvKly4Ui9X+FqzvoZSp1zn8KrZ2
- 9H5v0lFMSSgBWmTbOSGpnAaWIAAUTOaHKlGsKzk0qlcAGZdl+Zd9wQIAxrz6Z/c+dQ2h
- jJz/+69kznjx8tJpvl3eT27EKvX9QMazZmVL8fSs2LOlEETus/JLSM0UwLZo0XqjDaUb
- O5vUphD24q6ZQmGzfRYqGRWx763EtXIezJY+VN/dWCaQbWZEzIf8dcFJgEOFncS3uVvw
- /0Iw==
+ d=linaro.org; s=google; t=1735947030; x=1736551830; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=5ZCn/ZiYxtAoYd8N7LalY96ql0AfzSwZqtrc5aLA6eg=;
+ b=CTfLfIRbEupNi0wofVvqXRrA/kuG6z5CRVpWktL4lQsqMISDj1cO3d0nx7nvj2djEY
+ BYefJbztZPRJ5jpOB4EsDlDcM8nHoJGmJoyeac9EnRItpSk/ZmckGFPQ71KI9DuLJisp
+ cAHuMI5Ptf+fMKeD0TqupaoiluTD1dLBHuKNaDqlmuayUhemcPeM2CfHJIk4P58lkqeF
+ BTG5L0rkaLQSvkCcfT0ixOKPzSIlVxEZxW7GvHwumeHM7aT6+Y1MQYko4as/CqUe1gdE
+ mDCNxyRY/ukitCwsmaGrKzvP4hNIDYGQRvqKBBCvhZfJk7f8wwLWUx+PTBLCUXuu6yGP
+ xXVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735946299; x=1736551099;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NFgkKamr5QeIwstbRr7Q/p762wUgXwLu6RDwYB0Omtc=;
- b=t2n7aLFY7iv2W2hBWq5Jzc2+sKJJ+sQfq5RObdTP1yyZVaxqeYq/ZJJ+mo8FhhLhSg
- k7B1/coBx3VhrRHG3nM31nsNr3PM+epUM+sjuCXuPhfOSKYLNYDiH8uCqjseKoZrD8k6
- cqx2vzELo6ya1GgdAGFbFgq+dBxaZQzv96yHjLkkD1BLBTm6jXuac0cqf1Z4Hx8QGzVZ
- lQjn5gakdzre2nUvOCh008Kss72YApoJBhaGHGPPnn7fBFwu4C2AC4iugP0Qy0ZrzljY
- QUlmLDF9B1tJddjfQcrSDzDJUArob020F+hUktiWDQ3SSekoWogFUnwACBkok7L9fP//
- wmiQ==
-X-Gm-Message-State: AOJu0Yy/Ldu1LG6jQjoIpLuwXi9VF8IcSxtkkWYGmv1Zk2a1QdF8WV1L
- l/j1lPd6FsyA5rdUfsdMrUkflTLi8ni0KCu2ud5IhQh94ojJqtn3IZepk8Y7oDZOaVniMG0XpnD
- QDfU=
-X-Gm-Gg: ASbGncshij/ql4RqlGGUw+F598Sps47yfbsAcr+YIOI1qACNqlfIf/lGe3Na+QgI6HM
- fYvZUViokp9bdWJSjq5BPJI7qjatGcEcUt65nJiUQpdnmXiesFRRdRIFqVdEN8yG3TstFwn64N3
- YplAs8I+mWw62OZ1fmE7NMxd8szAFW383/v5bdg3W+XslNH2WKWYSowvxv1GZij7vGHUOIcw0px
- I/EcBNe2TpgpFrsqkkeRwIeZrJ8nuMO4LioZxWOp8hGE+GCln83BsYPqCJObs31nKpbitLxPH7T
- q5NSIVrtRbwI/QvWA3gC1C1G547+zMQ=
-X-Google-Smtp-Source: AGHT+IEELyeRPCxWvjPw55To1sVaG4rmYhgqPjLZbhNjea9LVY8pUjkiArH7cSW7A3cNDMnoXhekuw==
-X-Received: by 2002:a5d:64a3:0:b0:385:f527:be6d with SMTP id
- ffacd0b85a97d-38a2240074fmr41498707f8f.36.1735946298953; 
- Fri, 03 Jan 2025 15:18:18 -0800 (PST)
+ d=1e100.net; s=20230601; t=1735947030; x=1736551830;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5ZCn/ZiYxtAoYd8N7LalY96ql0AfzSwZqtrc5aLA6eg=;
+ b=XdrIZBssWG+fww+IaYYGDPpYSbuH8HBNRru0SoKis7ItSvYZHaH0j75xXWz39z9DiG
+ 7/hkaBU9CrrPCuwti3bGUpadYAt/Y1dNoQ7ZN1jVdEE+jXUUSqM9pCt01a5ZmjFfGGWH
+ bM579arhNp82jvcqwD4amW7HofedcpUlobVpuP3T9hLVdpA/NFXmGaZ4Fn56AP7LFUkN
+ L6Jduw5R4kKSKJDuT018SCZ4NMZqVFWmUicj55J6DTrWpmm7ncffyIOPkoDvJ5W+9DVD
+ rVAdYkI+3dgjB4oFzuvadUpB7ntWsw2N25cltq71vfSsE15LIjg23Fx+l57t6c0NNfUl
+ 8tdA==
+X-Gm-Message-State: AOJu0YyAdKMUatSuE8dDTCGDxQscIcvsbPHBHQQ30Kd3dFCK2VV31M81
+ eJEGEz2b27MCrbD3na8KqxuYI8jtE1YuXTHRGoUZrk3V86QQ54hEIK4DBTSl4vclfUgdiXxQfjx
+ /Lcc=
+X-Gm-Gg: ASbGncsW8vEsDKnH0YqnOXg160HTAVVGOmnFN/oASeP0GKmpOo0NqXByIAwvUZhxlpD
+ Kib0rXFKjVUihWu7zo7/PAxlF0zFbfciITdFOh9uPekZV8BGfcruGrcALuVvW0jWJNKnUXXHzCH
+ 239J8/oMm7ml46aSZMOFwPJNiQQBs3nrh2Sy4X/K5+uiU78fQV7FvHPpxMG2pdpxf7oLSvTSaS1
+ BRXR89tv4IXcXuskdnH2audtdVvAN/k+4Z5w7WGUu/Y3Rjkl6VECt43Rc32xRbtdC2YKU9UPpGy
+ XzO4QqAcj7JSW+YTmtiUGHeOcJmqNmw=
+X-Google-Smtp-Source: AGHT+IGTImDKuKCBq2C0Ilm/ThoBhg/IaKJxEhd46PX7uLjbdebYymnDbQsgeToiwsLfqU7j1qsmQg==
+X-Received: by 2002:a05:600c:1f85:b0:434:9936:c823 with SMTP id
+ 5b1f17b1804b1-43668646741mr471410825e9.18.1735947030196; 
+ Fri, 03 Jan 2025 15:30:30 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a2e25edbbsm34109746f8f.110.2025.01.03.15.18.17
+ 5b1f17b1804b1-436611ea42esm504285145e9.9.2025.01.03.15.30.27
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 03 Jan 2025 15:18:18 -0800 (PST)
+ Fri, 03 Jan 2025 15:30:28 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Brian Cain <brian.cain@oss.qualcomm.com>, Anton Johansson <anjo@rev.ng>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
+Cc: Cleber Rosa <crosa@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 6/6] disas: Select capstone targets by default
-Date: Sat,  4 Jan 2025 00:17:38 +0100
-Message-ID: <20250103231738.65413-7-philmd@linaro.org>
+Subject: [PATCH] MAINTAINERS: Remove myself as Avocado Framework reviewer
+Date: Sat,  4 Jan 2025 00:30:26 +0100
+Message-ID: <20250103233026.65717-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250103231738.65413-1-philmd@linaro.org>
-References: <20250103231738.65413-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,50 +96,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When capstone is available, we get ARM/X86/PPC/S390X
-disassemblers in common_ss[] for free.
+While I was very enthusiast when Avocado was presented to
+the QEMU community and pushed forward to have it integrated,
+time passed and I lost interest. Be honest, remove my R: tag
+to not give fake expectation I'd review patches related to
+Avocado anymore.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- disas/Kconfig | 4 ++++
- 1 file changed, 4 insertions(+)
+ MAINTAINERS | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/disas/Kconfig b/disas/Kconfig
-index 1d2c397c953..8af8ecd5c81 100644
---- a/disas/Kconfig
-+++ b/disas/Kconfig
-@@ -3,6 +3,7 @@ config ALPHA_DIS
- 
- config ARM_DIS
-     bool
-+    default y if CAPSTONE
- 
- config AVR_DIS
-     bool
-@@ -15,6 +16,7 @@ config HPPA_DIS
- 
- config I386_DIS
-     bool
-+    default y if CAPSTONE
- 
- config LOONGARCH_DIS
-     bool
-@@ -33,6 +35,7 @@ config OPENRISC_DIS
- 
- config PPC_DIS
-     bool
-+    default y if CAPSTONE
- 
- config RISCV_DIS
-     bool
-@@ -42,6 +45,7 @@ config RX_DIS
- 
- config S390_DIS
-     bool
-+    default y if CAPSTONE
- 
- config SH4_DIS
-     bool
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2101b512175..8d7044e91fa 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4196,7 +4196,6 @@ F: tests/tcg/Makefile.target
+ Integration Testing with the Avocado framework
+ W: https://trello.com/b/6Qi1pxVn/avocado-qemu
+ R: Cleber Rosa <crosa@redhat.com>
+-R: Philippe Mathieu-Daudé <philmd@linaro.org>
+ R: Wainer dos Santos Moschetta <wainersm@redhat.com>
+ S: Odd Fixes
+ F: tests/avocado/
 -- 
 2.47.1
 
