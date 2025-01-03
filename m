@@ -2,86 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D39A008D8
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 12:46:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 919C4A00938
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 13:28:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTg7Q-0004uE-FF; Fri, 03 Jan 2025 06:45:32 -0500
+	id 1tTgli-0004I9-0r; Fri, 03 Jan 2025 07:27:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tTg7O-0004tO-AO
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 06:45:30 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tTg7M-0000ZW-Ps
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 06:45:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1735904727;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tTgld-0004HZ-OI
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 07:27:05 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tTglb-0004fY-PA
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 07:27:05 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id D20D2210F2;
+ Fri,  3 Jan 2025 12:26:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1735907219; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ue5XJJPzf0nRIyVmCQHUZuZzob9nJp3q9bDncAv13X0=;
- b=hdL4Hpszcmvlfb1e0BaT43vukEuSZfHPsEvwIhK56UT5S4Bd6F+mq9s/hpsItbmjTwSL+J
- AZzcQIaS4wBHf7F8cy4fJpLOMpSym9c4isoxU+7iVtaWF6AU8s7g/dE8bRS3HMMZH6H5Z2
- OS3sOKkgVko50ZTP0Km/tySPFt0zjSY=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-628-Lob3W6M8OHGRGOpSBrn4sg-1; Fri,
- 03 Jan 2025 06:45:20 -0500
-X-MC-Unique: Lob3W6M8OHGRGOpSBrn4sg-1
-X-Mimecast-MFC-AGG-ID: Lob3W6M8OHGRGOpSBrn4sg
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ bh=d62PHd6LID9QUK+aHLv9Eiy9S69A2pYsS1JMhsU5/uE=;
+ b=HNnYHgy1ZC/M667YxoI4eSeQOqX6J2AnLsiUQvgQyxlKtARYdsg2HsoheOrJlR2axg7qXv
+ 2OBjtE0QXa6qpq1PoeC3YU8cKL/wE1zcwol2SVSK29kz4+llcAEdQSGbGHIQc9B/lSTM99
+ dPuMP/3ymz5P5f9NDMWBT+ouTo0gDeQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1735907219;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=d62PHd6LID9QUK+aHLv9Eiy9S69A2pYsS1JMhsU5/uE=;
+ b=kNF1BFxs22Uyqp/R2yIhaJXkcVaYnE09csvwq+326/hBFp8q0xdGWhTYJZFYwn0FbKtDgy
+ NZagQ8uE3az+B8DQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1735907219; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=d62PHd6LID9QUK+aHLv9Eiy9S69A2pYsS1JMhsU5/uE=;
+ b=HNnYHgy1ZC/M667YxoI4eSeQOqX6J2AnLsiUQvgQyxlKtARYdsg2HsoheOrJlR2axg7qXv
+ 2OBjtE0QXa6qpq1PoeC3YU8cKL/wE1zcwol2SVSK29kz4+llcAEdQSGbGHIQc9B/lSTM99
+ dPuMP/3ymz5P5f9NDMWBT+ouTo0gDeQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1735907219;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=d62PHd6LID9QUK+aHLv9Eiy9S69A2pYsS1JMhsU5/uE=;
+ b=kNF1BFxs22Uyqp/R2yIhaJXkcVaYnE09csvwq+326/hBFp8q0xdGWhTYJZFYwn0FbKtDgy
+ NZagQ8uE3az+B8DQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7044F195608B; Fri,  3 Jan 2025 11:45:16 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.141])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E9D4B195608A; Fri,  3 Jan 2025 11:45:09 +0000 (UTC)
-Date: Fri, 3 Jan 2025 11:45:06 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Radoslaw Biernacki <rad@semihalf.com>,
- Laurent Vivier <laurent@vivier.eu>, Cleber Rosa <crosa@redhat.com>,
- Fabiano Rosas <farosas@suse.de>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, mzamazal@redhat.com,
- Aurelien Jarno <aurelien@aurel32.net>, Paolo Bonzini <pbonzini@redhat.com>,
- Aleksandar Rikalo <arikalo@gmail.com>,
- Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
- John Snow <jsnow@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- qemu-arm@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH] licenses: Remove SPDX tags not being license identifier
- for Linaro
-Message-ID: <Z3fNwkTOdgBM81zb@redhat.com>
-References: <20250102160510.61894-1-philmd@linaro.org>
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 589B5134E4;
+ Fri,  3 Jan 2025 12:26:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 2Nq+B5PXd2e3PAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 03 Jan 2025 12:26:59 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Bandan Das <bsd@redhat.com>, Alexander Bulekov <alxndr@bu.edu>, Paolo
+ Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2 0/2] qtest: Remove uses of 'first_cpu'
+In-Reply-To: <5d2a536d-9b68-4b31-8d92-6cc42ed72e5c@linaro.org>
+References: <20241211233727.98923-1-philmd@linaro.org>
+ <5d2a536d-9b68-4b31-8d92-6cc42ed72e5c@linaro.org>
+Date: Fri, 03 Jan 2025 09:26:56 -0300
+Message-ID: <87msg884mn.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250102160510.61894-1-philmd@linaro.org>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; TO_DN_SOME(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ MISSING_XM_UA(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ RCPT_COUNT_FIVE(0.00)[5]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.185,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,45 +118,54 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jan 02, 2025 at 05:05:10PM +0100, Philippe Mathieu-Daudé wrote:
-> Per [*]:
-> 
->   "we're only interested in adopting SPDX for recording the
->   licensing info, [not] any other SPDX metadata."
-> 
-> Replace the 'SPDX-FileCopyrightText' and 'SPDX-FileContributor'
-> tags added by Linaro by 'Copyright (c)' and 'Authors' words
-> respectively.
-> 
-> [*] https://lore.kernel.org/qemu-devel/20241007154548.1144961-4-berrange@redhat.com/
-> 
-> Inspired-by: Daniel P. Berrangé <berrange@redhat.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->  accel/tcg/vcpu-state.h                           | 9 +++++++--
->  include/hw/misc/ivshmem-flat.h                   | 5 +++--
->  hw/misc/ivshmem-flat.c                           | 5 +++--
->  target/m68k/semihosting-stub.c                   | 7 +++++--
->  target/mips/tcg/system/semihosting-stub.c        | 5 +++--
->  tests/qtest/libqos/virtio-scmi.c                 | 2 +-
->  scripts/qom-cast-macro-clean-cocci-gen.py        | 7 +++++--
->  tests/functional/test_aarch64_sbsaref.py         | 8 +++++---
->  tests/functional/test_aarch64_sbsaref_alpine.py  | 8 +++++---
->  tests/functional/test_aarch64_sbsaref_freebsd.py | 8 +++++---
->  10 files changed, 42 insertions(+), 22 deletions(-)
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> Hi Fabiano,
+>
+> On 12/12/24 00:37, Philippe Mathieu-Daud=C3=A9 wrote:
+>> Replace first_cpu->as by address_space_memory.
+>>=20
+>> Philippe Mathieu-Daud=C3=A9 (2):
+>>    system/qtest: Remove uses of 'first_cpu'
+>>    qtest/fuzz: Remove uses of 'first_cpu'
+>>=20
+>>   system/qtest.c                    | 53 ++++++++++++++++---------------
+>>   tests/qtest/fuzz/generic_fuzz.c   |  3 +-
+>>   tests/qtest/fuzz/qtest_wrappers.c | 53 ++++++++++++++++---------------
+>>   3 files changed, 56 insertions(+), 53 deletions(-)
+>
+> Ping :)
+
+Hi!
+
+Good that you pinged, I thought you were looking into the test failures
+from v1. I copied you in this other thread that mentioned them as well:
+
+https://lore.kernel.org/r/87y10jctbd.fsf@suse.de
+
+Applying this series on top of master just now:
+
+Summary of Failures:
+
+ 10/519 qemu:qtest+qtest-arm / qtest-arm/stm32l4x5_usart-test              =
+ ERROR            1.40s   exit status 1
+165/519 qemu:qtest+qtest-arm / qtest-arm/sse-timer-test                    =
+ ERROR            0.40s   killed by signal 6 SIGABRT
+185/519 qemu:qtest+qtest-arm / qtest-arm/stm32l4x5_exti-test               =
+ ERROR            0.19s   exit status 1
+187/519 qemu:qtest+qtest-arm / qtest-arm/stm32l4x5_rcc-test                =
+ ERROR            0.19s   exit status 1
+515/519 qemu:qtest+qtest-arm / qtest-arm/microbit-test                     =
+ TIMEOUT         60.01s   killed by signal 15 SIGTERM
 
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+>
+> Tell me if you prefer I merge these patch myself.
+>
+> Regards,
+>
+> Phil.
 
