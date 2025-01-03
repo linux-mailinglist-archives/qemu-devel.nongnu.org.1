@@ -2,44 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60BD6A00640
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 09:49:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2726EA00644
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 09:50:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTdMa-0002cP-Vj; Fri, 03 Jan 2025 03:49:00 -0500
+	id 1tTdMa-0002bn-30; Fri, 03 Jan 2025 03:49:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xin@zytor.com>) id 1tTdMM-0002a9-KU
+ (Exim 4.90_1) (envelope-from <xin@zytor.com>) id 1tTdMO-0002aJ-D0
  for qemu-devel@nongnu.org; Fri, 03 Jan 2025 03:48:55 -0500
 Received: from torg.zytor.com ([2607:7c80:54:3::138] helo=mail.zytor.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xin@zytor.com>) id 1tTdMK-0007dx-3M
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 03:48:46 -0500
+ (Exim 4.90_1) (envelope-from <xin@zytor.com>) id 1tTdMK-0007e0-3R
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 03:48:48 -0500
 Received: from terminus.zytor.com (terminus.zytor.com
  [IPv6:2607:7c80:54:3:0:0:0:136]) (authenticated bits=0)
- by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5038mSAe1820053
+ by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5038mSAf1820053
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
- Fri, 3 Jan 2025 00:48:32 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5038mSAe1820053
+ Fri, 3 Jan 2025 00:48:33 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5038mSAf1820053
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
- s=2024121701; t=1735894112;
- bh=v9t1vPUsMjv2QDMvofWwMGRgvrdfi8yOuOAIZ7ajsoo=;
- h=From:To:Cc:Subject:Date:From;
- b=kK9K1f7nu8ykl1MG3bxgCMB+kxXN6Cnj3/GYg9QTYw9wg098c9OVtGuLvmuiE3kJX
- NMIk1aF9xRuuceVlbaAifCnDEkOjDTFmY/HlJz0RQ6Awy59JGB3XHUdFxqGTQ8RPdZ
- 0Cge0QPQfRcsuu0boN96iWVqDs2UxL4fcKANx7akkn9WssYwG7dqujM19U7IvnqVnP
- OO5/o6i/cvfVTNvCVHrQ08INOKAzfDo5iwHbZDvjVU5NHsJqQgbjmMSFMh4G6qZOQn
- GImmD8gfZX4ODbbsS7ZjFS9k8L/f68xrVXv8Ogbl4wsGUbHvVSJ472rT8DAKKZeCI0
- xra3ulp/nrZ7w==
+ s=2024121701; t=1735894113;
+ bh=XQowdhXm1E4FQmtEO4NlPQK/0brMo0zEM6tx6xcgiKM=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=KgrXaPMVBd+cAeSloisV54S6Zxns19bNybPoPqhDQpSVYogVjj5sxl/v/21oq12vw
+ kEUIqRCJpbzWxn7CPbS9hD6g4s5iRoZ606GmTOFbL41h36DJWVY3OzFSLdVmPh171Q
+ iMCc35pcNP1UD0uH6Dvv5UkjrKNXeRw40RoOuC+dlrez1vsqQMLHRjtuXyf3uwRzBq
+ t7aT9sBqXSaQYGkCjTCWAFaVdmwW2eun8i+bMn8MT6KSQMOkG2jQK3O7SZAFhy5qr2
+ C5QN8fawR3NcTqtniiGdWmhv5lN0q+7vs/C93+DcIMZRPpMy2yvV0ws6ZBd4zo3Wa5
+ 4Yl6/+c4XA7YQ==
 From: "Xin Li (Intel)" <xin@zytor.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, mtosatti@redhat.com, xin3.li@intel.com
-Subject: [PATCH v1 0/3] target/i386: Add the immediate form MSR access
- instruction support
-Date: Fri,  3 Jan 2025 00:48:24 -0800
-Message-ID: <20250103084827.1820007-1-xin@zytor.com>
+Subject: [PATCH v1 1/3] target/i386: Remove FRED dependency on WRMSRNS
+Date: Fri,  3 Jan 2025 00:48:25 -0800
+Message-ID: <20250103084827.1820007-2-xin@zytor.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250103084827.1820007-1-xin@zytor.com>
+References: <20250103084827.1820007-1-xin@zytor.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:7c80:54:3::138; envelope-from=xin@zytor.com;
@@ -65,29 +66,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The immediate form of MSR access instructions are primarily motivated by
-performance, not code size: by having the MSR number in an immediate, it
-is available *much* earlier in the pipeline, which allows the hardware
-much more leeway about how a particular MSR is handled.
+WRMSRNS doesn't become a required feature for FERD, and Linux has
+removed the dependency, as such remove it from Qemu.
 
-This new CPU feature is advertised through bit 5 of CPUID.7.1.ECX, which
-needs to be added as a new CPU feature word.
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+---
+ target/i386/cpu.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-WRMSRNS doesn't become a required feature for FERD, and Linux has removed
-the dependency, as such remove the dependency from Qemu.
-
-
-Xin Li (Intel) (3):
-  target/i386: Remove FRED dependency on WRMSRNS
-  target/i386: Add a new CPU feature word for CPUID.7.1.ECX
-  target/i386: Add the immediate form MSR access instruction support
-
- target/i386/cpu.c | 27 ++++++++++++++++++++++-----
- target/i386/cpu.h |  4 ++++
- 2 files changed, 26 insertions(+), 5 deletions(-)
-
-
-base-commit: 1ada452efc7d8f8bf42cd5e8a2af1b4ac9167a1f
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 0b639848cd..8a1223acb3 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1771,10 +1771,6 @@ static FeatureDep feature_dependencies[] = {
+         .from = { FEAT_7_1_EAX,             CPUID_7_1_EAX_LKGS },
+         .to = { FEAT_7_1_EAX,               CPUID_7_1_EAX_FRED },
+     },
+-    {
+-        .from = { FEAT_7_1_EAX,             CPUID_7_1_EAX_WRMSRNS },
+-        .to = { FEAT_7_1_EAX,               CPUID_7_1_EAX_FRED },
+-    },
+     {
+         .from = { FEAT_7_0_EBX,             CPUID_7_0_EBX_SGX },
+         .to = { FEAT_7_0_ECX,               CPUID_7_0_ECX_SGX_LC },
 -- 
 2.47.1
 
