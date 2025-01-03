@@ -2,87 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62B80A0064C
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 09:54:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73CBDA00630
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 09:45:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTdRr-0006bJ-39; Fri, 03 Jan 2025 03:54:27 -0500
+	id 1tTdIF-0000Of-GD; Fri, 03 Jan 2025 03:44:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTdRn-0006b3-5J
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 03:54:23 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTdRl-0001zJ-Hj
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 03:54:22 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-436202dd730so86312845e9.2
- for <qemu-devel@nongnu.org>; Fri, 03 Jan 2025 00:54:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1735894459; x=1736499259; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=M/vrVnKGguT2zwDY9nmJV61avrsULPSZMb7t0qIDlAg=;
- b=coLzCP8gnJHbqrsHHf/NsIDXwS5WqjsDEsqixRSOrFFjC9wQU8Xrx5J+Zc7o5uvxsV
- wrOJLoxwf2z6sWd621dlyAomwiatwd8snSZ+l1fqs2lji4hyoOruzIAZEGTJLEW+2s3t
- kH2qs+gWx6TxXwaYj6D23+pi6vJ6vpKe16Kk6BFQLFhz9tMLVy42coP1VRBb6lo/rZ7r
- Y5Xx7dzP+e81IPf79T5ELI6v0iUZ5buzLUHuwDQq9joX4DufUkSePOq3wvwGToeAd0vD
- eDgEUWS7n+l7l06cieyxbOEMAa9BUMBXPZqGU2Cv/ddLfBUuBcBjiIIjfUQXayYQmIrO
- xwZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735894459; x=1736499259;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=M/vrVnKGguT2zwDY9nmJV61avrsULPSZMb7t0qIDlAg=;
- b=TjLJYXzRUbMO+364xd1NVl5eLHTehpM1BY0/5njLB1ZO3kcLmnKoBRAizjFpVWompv
- aMaZ7E8u9sdBK9QHMZaXAU8OktZCYcL+Ld2yt4ZBBxAmdthCpUVXm15WVVGXCCTC68PM
- qhVLjdeibDk0jxSsj/a6hTIZ6XfxGRRRu7YaP06Ctjqb59iRpdeGTsVn73UD3xg4BRYc
- cCN2l6nO0NLOIrlFuEQSNMFD/YWlJGrgWu1QZJhOlQtZuPW69lU53LZbjdU1Og25sjMZ
- +KFHJ+qrGhxqshPi3aGiHlzU/htlnU0Lkcahb8tiDvnQ3gUBTuQk58Vd5p16JSqRdWfd
- Wwmg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUlXFpOzxoHtUirOLTSIuXk75dGp7gU6QqSv80c3Mc4lNhceRlQNT18fBRwe+z9SCTD05IrZC8kWqwN@nongnu.org
-X-Gm-Message-State: AOJu0YwT5PfoxkGGO+kEXUEBUKWMPuhvvVEZo1n0d0VbbhnK/Dkjx36H
- Ushgox04FcSdGZCZFzEp5ziJ9CmS1uijA2YMb28bOfPnTsc5M4JxSmvEJezHSJlP1KiU1BBJpmP
- 6UseJZg==
-X-Gm-Gg: ASbGncvoMf4PrP39jYzZS4gVQhMrqRPV0AsmybEiAy+LUA+1GD8itQ0p/zkS1Oitp3X
- T6blMuRjqAX7E12Wh03dH1nQZKRYSqOjk5+4/omllyois7SWaidtsSrR7AAtHQwfuNdXx/aFC7V
- CMJVXFdnArzlqXmSmMqLoHUHNslExEykzfpW3USuL4MXXYzaHZxnw41w2USZPcPa33uNw3Zd9qF
- K3LeKOScSwXQabzaRSPrH5XYr4IR+mfCdwVc1yJRrQOEoFXAeu9L7t3s6iEzjAW7FtlqBc14eJO
- 6dWMkw4BZDqoJ+9tkNoFrUk3
-X-Google-Smtp-Source: AGHT+IG8sC9gfoFFkBWQE3brg6lwf+bFdm2My1oVRF4SXX+/TSbv7mlvawXSBdBqIPedHAbmS32DPQ==
-X-Received: by 2002:a7b:cd98:0:b0:42c:de2f:da27 with SMTP id
- 5b1f17b1804b1-4366b2f9323mr368269195e9.2.1735894459496; 
- Fri, 03 Jan 2025 00:54:19 -0800 (PST)
-Received: from [192.168.69.132] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4364b1516bbsm374783215e9.1.2025.01.03.00.54.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 03 Jan 2025 00:54:19 -0800 (PST)
-Message-ID: <38dd5f72-ce63-4bca-9d90-8a481ab096b2@linaro.org>
-Date: Fri, 3 Jan 2025 09:54:17 +0100
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tTdI3-0000OE-9r; Fri, 03 Jan 2025 03:44:20 -0500
+Received: from mgamail.intel.com ([192.198.163.9])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tTdHt-0005P3-19; Fri, 03 Jan 2025 03:44:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1735893849; x=1767429849;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=IP0N4rA9fC6fq0fvtdX//sG5i+5U7I47ylSvHqDyEoU=;
+ b=RSKZfpnsReYQwb/D8eVXmRLImaGjdkFdEmlWYdSgAz7NvYXwGkBZ+adi
+ D0br4kuv3+lqPECSlovCwxWpnZJrGQGuEF4snnNKww7aDP0AaYSzSZQu7
+ 0b8YMFWUZAg5s0Z94C+ilXdLbBzeEcz8scaD36+tG52ZhoNKppA6bMl7v
+ mundTvLOTxpFZparN8XPAQhhEawj9/Dz9Biy1Ff7ACNk3idV9FXWYg1p8
+ ZF3FEfIMxVZhzJmqMDUVuOvaF/MtBLBGgA5mj6Xa0qDOlF6c7cbEsNQPK
+ /UkYUPIOPWiKLMGyEB0Z7c63i+UTYHrz3Uyip4/H+Zvkt9OB892RzqYgy Q==;
+X-CSE-ConnectionGUID: VltXQhtaRjeA+c5A+Symqg==
+X-CSE-MsgGUID: s52yw8YJRhGDrZ6PMysHkw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11303"; a="46814176"
+X-IronPort-AV: E=Sophos;i="6.12,286,1728975600"; d="scan'208";a="46814176"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jan 2025 00:44:05 -0800
+X-CSE-ConnectionGUID: i6Wf5Xj3SuyyazIYJ0vb1A==
+X-CSE-MsgGUID: /ynekpAHQRWecY6s/LSe8A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,286,1728975600"; d="scan'208";a="101577813"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa009.jf.intel.com with ESMTP; 03 Jan 2025 00:44:03 -0800
+Date: Fri, 3 Jan 2025 17:02:49 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ qemu-rust@nongnu.org,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>
+Subject: Re: [PULL 25/41] rust: qom: put class_init together from multiple
+ ClassInitImpl<>
+Message-ID: <Z3enuYCHnKuiANmv@intel.com>
+References: <20241219083228.363430-1-pbonzini@redhat.com>
+ <20241219083228.363430-26-pbonzini@redhat.com>
+ <daea6757-a67b-45d5-bf2a-807fd9569a70@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/loongarch/virt: Checkpatch cleanup
-To: Bibo Mao <maobibo@loongson.cn>, Song Gao <gaosong@loongson.cn>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
-References: <20250103064514.2660438-1-maobibo@loongson.cn>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250103064514.2660438-1-maobibo@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <daea6757-a67b-45d5-bf2a-807fd9569a70@linaro.org>
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -65
+X-Spam_score: -6.6
+X-Spam_bar: ------
+X-Spam_report: (-6.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.185,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,18 +84,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/1/25 07:45, Bibo Mao wrote:
-> Code cleanup with directory hw/loongarch/, removing errors from
-> command "scripts/checkpatch.pl hw/loongarch/*"
+> > -/// # Safety
+> > -///
+> > -/// We expect the FFI user of this function to pass a valid pointer that
+> > -/// can be downcasted to type `DeviceClass`, because `T` implements
+> > -/// `DeviceImpl`.
+> > -pub unsafe extern "C" fn rust_device_class_init<T: DeviceImpl>(
+> > -    klass: *mut ObjectClass,
+> > -    _: *mut c_void,
+> > -) {
+> > -    let mut dc = ::core::ptr::NonNull::new(klass.cast::<DeviceClass>()).unwrap();
+> > -    unsafe {
+> > -        let dc = dc.as_mut();
+> > +impl<T> ClassInitImpl<DeviceClass> for T
+> > +where
+> > +    T: DeviceImpl,
+> > +{
+> > +    fn class_init(dc: &mut DeviceClass) {
+> >           if <T as DeviceImpl>::REALIZE.is_some() {
+> >               dc.realize = Some(rust_realize_fn::<T>);
+> >           }
+> >           if <T as DeviceImpl>::RESET.is_some() {
+> > -            bindings::device_class_set_legacy_reset(dc, Some(rust_reset_fn::<T>));
+> > +            unsafe {
+> > +                bindings::device_class_set_legacy_reset(dc, Some(rust_reset_fn::<T>));
 > 
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->   hw/loongarch/acpi-build.c |  3 ++-
->   hw/loongarch/boot.c       |  4 ++--
->   hw/loongarch/virt.c       | 10 ++++++----
->   3 files changed, 10 insertions(+), 7 deletions(-)
+> Pre-existing, but since it appears on this patch, Rust device models
+> should not implement this legacy interface. 
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Rust pl011 is just faithful to the C functionality, and it's really time
+to make the rust version drop the previous technical debt too! 
 
-(and queued via hw-misc)
+But I think this patch is OK for now since using legacy interface is the
+most simplified approach, and next step we can consider how to convert
+it to the modern interface with proper rust binding (my initial thought
+tells me that there is at least some effort needed here to explore
+whether a simple resettable trait would be enough...).
+
+> If a non-Rust parent
+> implements it, I think we should convert the non-Rust parent before
+> adding a Rust child. No clue how to check a parent don't implement
+> this interface in Rust.
+
+For C side, I also didn't find some case to check parent's
+legacy_reset before device_class_set_legacy_reset().
+
+Maybe we should add `assert(!dc->legacy_reset)` in 
+device_class_set_legacy_reset()?
+
+Similarly, device_class_set_parent_[realize|unrealize] are worth
+adding assert().
+
+If you agree, I'd be happy to add assert() to these three functions as
+well. :-)
+
+> Generally, we shouldn't access legacy API from Rust IMHO.
+> 
+> > +            }
+> >           }
+> >           if let Some(vmsd) = <T as DeviceImpl>::vmsd() {
+> >               dc.vmsd = vmsd;
+> >           }
+> >           let prop = <T as DeviceImpl>::properties();
+> >           if !prop.is_empty() {
+> > -            bindings::device_class_set_props_n(dc, prop.as_ptr(), prop.len());
+> > +            unsafe {
+> > +                bindings::device_class_set_props_n(dc, prop.as_ptr(), prop.len());
+> > +            }
+> >           }
+> >       }
+> >   }
+> 
 
