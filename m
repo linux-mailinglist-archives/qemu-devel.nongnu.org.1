@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E097A00586
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 09:08:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B62F7A00631
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 09:45:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTciL-0001MF-9K; Fri, 03 Jan 2025 03:07:25 -0500
+	id 1tTdIg-0000S3-LM; Fri, 03 Jan 2025 03:44:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tTciI-0001Lm-O3
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 03:07:23 -0500
-Received: from mgamail.intel.com ([198.175.65.13])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tTciG-0004X5-H7
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 03:07:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1735891640; x=1767427640;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=V9eWh/15VXEA7gCguj+BFRdYMLZ5oi0QEKqx0Wixdm0=;
- b=QVFRuxP/ojcKybDCTiEWBrF5422wHJjndmAgUAYwumcFVGQGbIgyisje
- /KM3mJbjDPtcfroVlHfgRSzVwaaayz4AxPncS9wW6AvGFuApPLSjoE2CS
- rpeyxAkjxEPTgJq5mnEeMrOdGd015qw4SAQcbKNATbI/htjRxHvDzvMcW
- zR3pfqWcix30zcfNkHp/gkcK0EjSTFkSnWWSCLm62sLMhh0+J6b29Zpt+
- XjiGY/pdwrreiMQwDR+p1c/P/gjcYmG2CkTQEn+oY074QnTYKliz80KHq
- VPoiRDYR8TAiljey4tEEsiUiQImoSCTNA/NQMxYTof5V4AI0J60oGa2qU g==;
-X-CSE-ConnectionGUID: V5fLzTBCQ/mO6KlfdxoFlA==
-X-CSE-MsgGUID: 4P36/32hTB2sg27dhqZAhg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11303"; a="47127275"
-X-IronPort-AV: E=Sophos;i="6.12,286,1728975600"; d="scan'208";a="47127275"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jan 2025 00:07:16 -0800
-X-CSE-ConnectionGUID: GVxnOHgASdqfBFLYpSpnkQ==
-X-CSE-MsgGUID: IoJpPDfHRa+7zTghEf19Nw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,286,1728975600"; d="scan'208";a="106708690"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa004.jf.intel.com with ESMTP; 03 Jan 2025 00:07:13 -0800
-Date: Fri, 3 Jan 2025 16:25:58 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Alireza Sanaee <alireza.sanaee@huawei.com>
-Cc: Rob Herring <robh@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org
-Subject: Re: [PATCH v6 0/4] i386: Support SMP Cache Topology
-Message-ID: <Z3efFsigJ6SxhqMf@intel.com>
-References: <20241219083237.265419-1-zhao1.liu@intel.com>
- <44212226-3692-488b-8694-935bd5c3a333@redhat.com>
- <Z2t2DuMBYb2mioB0@intel.com> <20250102145708.0000354f@huawei.com>
- <CAL_JsqKeA4dSwO40VgARVAiVM=w1PU8Go8GJYv4v8Wri64UFbw@mail.gmail.com>
- <20250102180141.00000647@huawei.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTdIe-0000RY-6l
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 03:44:56 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tTdIc-0006uf-OF
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 03:44:55 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-436326dcb1cso79390355e9.0
+ for <qemu-devel@nongnu.org>; Fri, 03 Jan 2025 00:44:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1735893892; x=1736498692; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=iI5lyeQHnmhMvIXJza8ZDiOiz/tvGmc6CQsZplQtXjM=;
+ b=ORomXZYkocW8XsuV3vX2VTq4EkzwKJvtvcmQRxHcgzqt6irdPZ7rzIT4EOstyxGihL
+ 00TL28U8AQ86mGDRPG17dFLgrASrXMj4vrTNS1V/UxKgwPaDiSPUSxWn4m31XQeRi4gj
+ 8DZ2o/ky/6f1OB472U/fjlno1lxQHCR11KFk0J8xymcnwNSjn3qSVa7aL7KDycm/xTV6
+ ECiDzHmyeVV/Rd92nQ20pGBFnQHb3R3JwdGaStaDAcvm6tUc8wSbqxBhb1ry+rRL3EWt
+ TsB2AnOs0i8BFh4qT92QyqEJA/U57yrDoAdjIpiKbU/nPnRGs3Sl83dK5y9ml77+Cw4V
+ 4SsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1735893892; x=1736498692;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=iI5lyeQHnmhMvIXJza8ZDiOiz/tvGmc6CQsZplQtXjM=;
+ b=CdibC1BuFlrUmj+8MSt3/kcfgfz8DCCHTEy1b4AuSINvz9w9i3KX7BCuOPy3wTLxbo
+ luqbWtgzwSXh/0b1Mgvsv3JSSnKpr9BBM7RgOk7auGIIIBfA3GIpBzopHJ41rS/UTuQw
+ WPrF7ETnIC96h8V9879Cc8fWN3n30BMsfUmV8vuNyi1v8EeWYo+gW0WKKuB9+MykavIA
+ S7RDFijasSB7eVcm+9mutLXWB72feQKaAevB1wM2coDhlQHU75ysisjFLQfyCDHZ6trk
+ qthFpCEoDmuBGmhNKL++My1CtDv0gXOm7YEIj0HYz27/voQgBhYJv5Ldh8oIRuhzRjZr
+ xo6A==
+X-Gm-Message-State: AOJu0YxggOK6LT2outD9oi4ZMQqo6zD06TBxsGPRZZm3TvyhfvB4WB53
+ JFEJbzv6usrbhuUUxzTXYsx6tAFhfTurgs15+lm/HXQPYfKNjBp6wZPZnudjqop//toNlCratRL
+ ZAZeniw==
+X-Gm-Gg: ASbGncvcQpiq/PlO/tQaMkOqmCH8Gb5IYwfOG+CKvlFsku07LXbmzDOO1PzECo10Nyf
+ CDAEK8WzEaYE1ewql0fJaf/QYN+2hBSxsPPvRXnsueXD8doA+gbT8spRc8DYhOzrFUDV/qEL7s3
+ 6Tgsi1Np3rgn9c57pKIEvrKyf3eI8GE8eUtej5Tw+kQ95rGXUGfIVgbN0/ayHSdbQKnWg9qDthW
+ Enjf8F6M/Leb4LitmwhSh/IjjII7IExEQ+mSYTnbkHiNutO7zI7NnXqvbnI9Y5zpp7KHu6UR2Qh
+ avaEC/NiKAUM21ZwW9gHGTgK
+X-Google-Smtp-Source: AGHT+IGdJiePKpO47xV78O7mUPiKOzLdglLt7nk1xErUEuUp4QKgXbABi9SKNArZ4haLE1TbDeDVNQ==
+X-Received: by 2002:a05:6000:1f88:b0:386:4034:f9a0 with SMTP id
+ ffacd0b85a97d-38a22408cbemr37514863f8f.52.1735893891604; 
+ Fri, 03 Jan 2025 00:44:51 -0800 (PST)
+Received: from [192.168.69.132] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4366121955fsm483801365e9.21.2025.01.03.00.44.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 03 Jan 2025 00:44:51 -0800 (PST)
+Message-ID: <5d2a536d-9b68-4b31-8d92-6cc42ed72e5c@linaro.org>
+Date: Fri, 3 Jan 2025 09:44:49 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] qtest: Remove uses of 'first_cpu'
+To: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>
+Cc: Bandan Das <bsd@redhat.com>, Alexander Bulekov <alxndr@bu.edu>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20241211233727.98923-1-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241211233727.98923-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250102180141.00000647@huawei.com>
-Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -65
-X-Spam_score: -6.6
-X-Spam_bar: ------
-X-Spam_report: (-6.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.185,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,92 +98,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jan 02, 2025 at 06:01:41PM +0000, Alireza Sanaee wrote:
-> Date: Thu, 2 Jan 2025 18:01:41 +0000
-> From: Alireza Sanaee <alireza.sanaee@huawei.com>
-> Subject: Re: [PATCH v6 0/4] i386: Support SMP Cache Topology
-> X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+Hi Fabiano,
+
+On 12/12/24 00:37, Philippe Mathieu-Daudé wrote:
+> Replace first_cpu->as by address_space_memory.
 > 
-> On Thu, 2 Jan 2025 11:09:51 -0600
-> Rob Herring <robh@kernel.org> wrote:
+> Philippe Mathieu-Daudé (2):
+>    system/qtest: Remove uses of 'first_cpu'
+>    qtest/fuzz: Remove uses of 'first_cpu'
 > 
-> > On Thu, Jan 2, 2025 at 8:57 AM Alireza Sanaee
-> > <alireza.sanaee@huawei.com> wrote:
-> > >
-> > > On Wed, 25 Dec 2024 11:03:42 +0800
-> > > Zhao Liu <zhao1.liu@intel.com> wrote:
-> > >  
-> > > > > > About smp-cache
-> > > > > > ===============
-> > > > > >
-> > > > > > The API design has been discussed heavily in [3].
-> > > > > >
-> > > > > > Now, smp-cache is implemented as a array integrated in
-> > > > > > -machine. Though -machine currently can't support JSON
-> > > > > > format, this is the one of the directions of future.
-> > > > > >
-> > > > > > An example is as follows:
-> > > > > >
-> > > > > > smp_cache=smp-cache.0.cache=l1i,smp-cache.0.topology=core,smp-cache.1.cache=l1d,smp-cache.1.topology=core,smp-cache.2.cache=l2,smp-cache.2.topology=module,smp-cache.3.cache=l3,smp-cache.3.topology=die
-> > > > > >
-> > > > > > "cache" specifies the cache that the properties will be
-> > > > > > applied on. This field is the combination of cache level and
-> > > > > > cache type. Now it supports "l1d" (L1 data cache), "l1i" (L1
-> > > > > > instruction cache), "l2" (L2 unified cache) and "l3" (L3
-> > > > > > unified cache).
-> > > > > >
-> > > > > > "topology" field accepts CPU topology levels including
-> > > > > > "thread", "core", "module", "cluster", "die", "socket",
-> > > > > > "book", "drawer" and a special value "default".  
-> > > > >
-> > > > > Looks good; just one thing, does "thread" make sense?  I think
-> > > > > that it's almost by definition that threads within a core share
-> > > > > all caches, but maybe I'm missing some hardware configurations.
-> > > > >  
-> > > >
-> > > > Hi Paolo, merry Christmas. Yes, AFAIK, there's no hardware has
-> > > > thread level cache.  
-> > >
-> > > Hi Zhao and Paolo,
-> > >
-> > > While the example looks OK to me, and makes sense. But would be
-> > > curious to know more scenarios where I can legitimately see benefit
-> > > there.
-> > >
-> > > I am wrestling with this point on ARM too. If I were to
-> > > have device trees describing caches in a way that threads get their
-> > > own private caches then this would not be possible to be
-> > > described via device tree due to spec limitations (+CCed Rob) if I
-> > > understood correctly.  
-> > 
-> > You asked me for the opposite though, and I described how you can
-> > share the cache. If you want a cache per thread, then you probably
-> > want a node per thread.
-> > 
-> > Rob
-> > 
-> 
-> Hi Rob,
-> 
-> That's right, I made the mistake in my prior message, and you recalled
-> correctly. I wanted shared caches between two threads, though I have
-> missed your answer before, just found it.
-> 
+>   system/qtest.c                    | 53 ++++++++++++++++---------------
+>   tests/qtest/fuzz/generic_fuzz.c   |  3 +-
+>   tests/qtest/fuzz/qtest_wrappers.c | 53 ++++++++++++++++---------------
+>   3 files changed, 56 insertions(+), 53 deletions(-)
 
-Thank you all!
+Ping :)
 
-Alireza, do you know how to configure arm node through QEMU options?
+Tell me if you prefer I merge these patch myself.
 
-However, IIUC, arm needs more effort to configure cache per thread (by
-configuring node topology)...In that case, since no one has explicitly
-requested the need for cache per thread, I can disable cache per thread
-for now. I can return an error for this scenario during the general
-smp-cache option parsing (in the future, if there is a real need, it can
-be easily re-enabled).
+Regards,
 
-Will drop cache per thread in the next version.
-
-Thanks,
-Zhao
-
+Phil.
 
