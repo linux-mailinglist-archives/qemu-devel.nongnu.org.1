@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E2C0A00AC6
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 15:44:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CE4AA00ABF
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 15:44:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTit3-0002MK-JR; Fri, 03 Jan 2025 09:42:53 -0500
+	id 1tTit5-0002OW-1d; Fri, 03 Jan 2025 09:42:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tTisy-0002Lh-0m
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 09:42:48 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tTit1-0002Me-0w
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 09:42:51 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tTisv-0007CI-1u
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 09:42:46 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tTisz-0007DF-KQ
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 09:42:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1735915362;
+ s=mimecast20190719; t=1735915368;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=w8LoI9OpDsxgB5tZy2fIMS4VsPy9QVHUsmhu4T8JJX0=;
- b=UaeyXBX3wxbVtMyB2Maop/05xvJaQreqdjjrZvAFoaYRmmYbQwfo/w3qHi8dUxbpBd9n3A
- QcrzvKj1T+k6AkUSRF2Cv1eY0eoOktUy2xXdfX4aSzWRhWPiKs27aicvPA/u1/U6gOLNiU
- ie1S+frhuQM6V7+0+hfrS0StArCUxUo=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=qUYyvmMhX77DReE7yttHE9hfMzTP5rWDbdLNFCoQqpg=;
+ b=T9V5o2C0uZjhZ+AHIV6FscK/tmgksV94pwyw2inY9hv17wyZUdms/yDn+vpsVnVT1Jp96b
+ bY9p/aLqRJbgGsSBLB3Mc6VNY1zkEXyl/KUvFGzQz6h3tT+m6oPeS4FBQeNhrMw4VonpSz
+ gmNk6nxoeSIRX/D8ggh3kQVJjJXowD0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-50-ZQRriByNPlOFd_bYyUKeag-1; Fri,
- 03 Jan 2025 09:42:41 -0500
-X-MC-Unique: ZQRriByNPlOFd_bYyUKeag-1
-X-Mimecast-MFC-AGG-ID: ZQRriByNPlOFd_bYyUKeag
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-218-q8ghZKKVNAaHfWT1De4QNw-1; Fri,
+ 03 Jan 2025 09:42:44 -0500
+X-MC-Unique: q8ghZKKVNAaHfWT1De4QNw-1
+X-Mimecast-MFC-AGG-ID: q8ghZKKVNAaHfWT1De4QNw
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E02F9195608E; Fri,  3 Jan 2025 14:42:39 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 01F4919560B3; Fri,  3 Jan 2025 14:42:43 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.148])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D67663000197; Fri,  3 Jan 2025 14:42:36 +0000 (UTC)
+ id 644083000197; Fri,  3 Jan 2025 14:42:40 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
  David Hildenbrand <david@redhat.com>
 Cc: qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>,
  Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>
-Subject: [PATCH 01/10] hw/s390x/s390-virtio-ccw: Remove the deprecated 2.4 and
- 2.5 machine types
-Date: Fri,  3 Jan 2025 15:42:23 +0100
-Message-ID: <20250103144232.520383-2-thuth@redhat.com>
+Subject: [PATCH 02/10] hw/s390x/s390-skeys: Remove the "migration-enabled"
+ property
+Date: Fri,  3 Jan 2025 15:42:24 +0100
+Message-ID: <20250103144232.520383-3-thuth@redhat.com>
 In-Reply-To: <20250103144232.520383-1-thuth@redhat.com>
 References: <20250103144232.520383-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -66,7 +66,7 @@ X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.186,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,69 +82,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-They are older than 6 years, so according to our machine support
-policy, they can be removed now.
-
-This removes the requirements for the storage keys "migration-enabled"
-property which will be removed in the next patch. It also removes
-the code that sets "max_revision" to 0 for some CCW devices, but
-the relating code in virtio-ccw.c indicates that 0 could have also
-been in use for other machines types < 5.1, so further clean-up for
-code related to "max_revision" won't be done yet.
+This property was only set to "off" by the old s390-ccw-virtio-2.4
+machine type which has now been removed. So we can now remove the
+property and the related code, too.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/s390x/s390-virtio-ccw.c | 37 -------------------------------------
- 1 file changed, 37 deletions(-)
+ include/hw/s390x/storage-keys.h |  2 --
+ hw/s390x/s390-skeys.c           | 10 +---------
+ 2 files changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 2be8da2913..bca61488cc 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -1325,43 +1325,6 @@ static void ccw_machine_2_6_class_options(MachineClass *mc)
+diff --git a/include/hw/s390x/storage-keys.h b/include/hw/s390x/storage-keys.h
+index 976ffb2039..408d2815d4 100644
+--- a/include/hw/s390x/storage-keys.h
++++ b/include/hw/s390x/storage-keys.h
+@@ -21,8 +21,6 @@ OBJECT_DECLARE_TYPE(S390SKeysState, S390SKeysClass, S390_SKEYS)
+ 
+ struct S390SKeysState {
+     DeviceState parent_obj;
+-    bool migration_enabled;
+-
+ };
+ 
+ 
+diff --git a/hw/s390x/s390-skeys.c b/hw/s390x/s390-skeys.c
+index dda96ea32a..995817f4a3 100644
+--- a/hw/s390x/s390-skeys.c
++++ b/hw/s390x/s390-skeys.c
+@@ -469,23 +469,15 @@ static void s390_skeys_realize(DeviceState *dev, Error **errp)
+ {
+     S390SKeysState *ss = S390_SKEYS(dev);
+ 
+-    if (ss->migration_enabled) {
+-        register_savevm_live(TYPE_S390_SKEYS, 0, 1,
+-                             &savevm_s390_storage_keys, ss);
+-    }
++    register_savevm_live(TYPE_S390_SKEYS, 0, 1, &savevm_s390_storage_keys, ss);
  }
- DEFINE_CCW_MACHINE(2, 6);
  
--static void ccw_machine_2_5_instance_options(MachineState *machine)
--{
--    ccw_machine_2_6_instance_options(machine);
--}
+-static const Property s390_skeys_props[] = {
+-    DEFINE_PROP_BOOL("migration-enabled", S390SKeysState, migration_enabled, true),
+-};
 -
--static void ccw_machine_2_5_class_options(MachineClass *mc)
--{
--    ccw_machine_2_6_class_options(mc);
--    compat_props_add(mc->compat_props, hw_compat_2_5, hw_compat_2_5_len);
--}
--DEFINE_CCW_MACHINE(2, 5);
--
--static void ccw_machine_2_4_instance_options(MachineState *machine)
--{
--    ccw_machine_2_5_instance_options(machine);
--}
--
--static void ccw_machine_2_4_class_options(MachineClass *mc)
--{
--    static GlobalProperty compat[] = {
--        { TYPE_S390_SKEYS, "migration-enabled", "off", },
--        { "virtio-blk-ccw", "max_revision", "0", },
--        { "virtio-balloon-ccw", "max_revision", "0", },
--        { "virtio-serial-ccw", "max_revision", "0", },
--        { "virtio-9p-ccw", "max_revision", "0", },
--        { "virtio-rng-ccw", "max_revision", "0", },
--        { "virtio-net-ccw", "max_revision", "0", },
--        { "virtio-scsi-ccw", "max_revision", "0", },
--        { "vhost-scsi-ccw", "max_revision", "0", },
--    };
--
--    ccw_machine_2_5_class_options(mc);
--    compat_props_add(mc->compat_props, hw_compat_2_4, hw_compat_2_4_len);
--    compat_props_add(mc->compat_props, compat, G_N_ELEMENTS(compat));
--}
--DEFINE_CCW_MACHINE(2, 4);
--
- #endif
+ static void s390_skeys_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
  
- static void ccw_machine_register_types(void)
+     dc->hotpluggable = false;
+     dc->realize = s390_skeys_realize;
+-    device_class_set_props(dc, s390_skeys_props);
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+ }
+ 
 -- 
 2.47.1
 
