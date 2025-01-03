@@ -2,53 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCCBAA008EE
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 12:53:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE099A008D7
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 Jan 2025 12:44:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTgDd-0006dN-KX; Fri, 03 Jan 2025 06:51:57 -0500
+	id 1tTg5H-0003wh-GJ; Fri, 03 Jan 2025 06:43:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <099c212c4147041d495dee76102fb82f9a66eda7@kylie.crudebyte.com>)
- id 1tTgDX-0006YZ-Cu
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 06:51:52 -0500
-Received: from kylie.crudebyte.com ([5.189.157.229])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tTg5E-0003vW-R9
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 06:43:16 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <099c212c4147041d495dee76102fb82f9a66eda7@kylie.crudebyte.com>)
- id 1tTgDV-0001ho-CE
- for qemu-devel@nongnu.org; Fri, 03 Jan 2025 06:51:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Message-Id:Cc:To:Subject:Date:From:Content-Type:
- Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Content-ID:
- Content-Description; bh=wbmhKrfZxhpiLEydKfFWXlDUnBmJkdmdA8mZUvjg2KY=; b=i/Irg
- DleqhXglNu1FffvzdKi3KiTN2ceUsm/GzKjTRn+HQf2j90TyQWbee/VYFleZogs8W8yo/eKcZ99Lb
- 66gR7uPiOsK6jgOsadfianH0DeYnVtIJ/I7/mXdNbU/6JKtGq0efxytv3va56aIMgECTCltSEBMaW
- EnhCu51UIDg5bhUvfn5ZsJLGT+z01oSaH3jHckRCKIaLppXRlLU5Cl7zrxuTwJK/jFAZtWxoOSIf5
- cnqm4vN71niN2dpSdbe/D1rOYXgKOsLx9SCzgjmUeo55uwp9bCBc7V3dHnWBUCvPOsM69k89LvbyM
- J5QcWWaIUYge6/bY/N63GhAcgyXGa3V/E9JtpwkJSdq2bMh0KmVh2/Ulfn0amFTeON5EkhpL3rYwA
- ogFxbPBKUDkOQaU2RfWgAQiGSO9+b3SbIFJPMaL6lks5r0NwcKSl2ZJ5hx/vpf6Xp9sU7TRZNMVsW
- cVJ65L5lrOS+W2j7p2pXMx35+erlcUj6Kpk4X1P/xoq3Nhob56wxYqs7YpmMhVGVwofJWcurEqQZ5
- BOeUmDSuAcDuLEPux+mz7itp8qCqdfUK35+KUBh3Q+prJQe4Yp2DXUNSpgi7tqHkEZQEyLPAjPe7z
- tLziDyRn+y098vvFaMozmNAFBgXC96bBnrtSmeLSuET72isPCUzaXRT7RKMp8I=;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Date: Fri, 3 Jan 2025 12:33:40 +0100
-Subject: [PATCH v2] 9pfs: improve v9fs_open() tracing
-To: qemu-devel@nongnu.org
-Cc: Greg Kurz <groug@kaod.org>
-Message-Id: <E1tTgDR-000oRr-9g@kylie.crudebyte.com>
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=099c212c4147041d495dee76102fb82f9a66eda7@kylie.crudebyte.com;
- helo=kylie.crudebyte.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tTg5D-0000Dq-AE
+ for qemu-devel@nongnu.org; Fri, 03 Jan 2025 06:43:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1735904591;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=GbbnoXYi8vumOwR9t+gdddIUMaxEXsmhheh1fffy3G8=;
+ b=CmevW31sYhYg2I0GiMMthK+y10q268Us5bxI+Tm3taasGw1+GmzcMr9XQ21qjDOMV2zRej
+ FAe7ts1aTBwaw9ITvFKgk5XaU/3wS/ELbWO3NVTyGWtT82TfrKbhYgUhbUuFacVT0YOcW+
+ RGdzPn20TVCQQN6JtWxTvFJaDdegibI=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-678-2tAAdk7lMcC8o4Ri3gdsTQ-1; Fri,
+ 03 Jan 2025 06:43:07 -0500
+X-MC-Unique: 2tAAdk7lMcC8o4Ri3gdsTQ-1
+X-Mimecast-MFC-AGG-ID: 2tAAdk7lMcC8o4Ri3gdsTQ
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 63CBC195604F; Fri,  3 Jan 2025 11:43:06 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.141])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AF0C21956056; Fri,  3 Jan 2025 11:43:03 +0000 (UTC)
+Date: Fri, 3 Jan 2025 11:43:00 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-trivial@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] docs: update copyright date to the year 2025
+Message-ID: <Z3fNRM0SSmYGB_y9@redhat.com>
+References: <20250101080116.1050336-1-anisinha@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250101080116.1050336-1-anisinha@redhat.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.185,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,170 +80,63 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Improve tracing of 9p 'Topen' request type by showing open() flags as
-human-readable text.
+On Wed, Jan 01, 2025 at 01:31:16PM +0530, Ani Sinha wrote:
+> We are already in January 2025! Update copyright notices.
+> 
+> Cc: peter.maydell@linaro.org
+> Cc: qemu-trivial@nongnu.org
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> ---
+>  docs/conf.py              | 2 +-
+>  include/qemu/help-texts.h | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/docs/conf.py b/docs/conf.py
+> index 164a8ee8b2..31bb9a3789 100644
+> --- a/docs/conf.py
+> +++ b/docs/conf.py
+> @@ -87,7 +87,7 @@
+>  
+>  # General information about the project.
+>  project = u'QEMU'
+> -copyright = u'2024, The QEMU Project Developers'
+> +copyright = u'2025, The QEMU Project Developers'
+>  author = u'The QEMU Project Developers'
 
-E.g. trace output:
+How about we make this consistent with the help-texts.h  file
+by making it cover the range of dates, as stuff that was authored
+in 2024 and before , doesn't magically change its copyright date
+to 2025, only new contribs get that.
 
-  v9fs_open tag 0 id 12 fid 2 mode 100352
+>  
+>  # The version info for the project you're documenting, acts as replacement for
+> diff --git a/include/qemu/help-texts.h b/include/qemu/help-texts.h
+> index 353ab2ad8b..bc8fab9169 100644
+> --- a/include/qemu/help-texts.h
+> +++ b/include/qemu/help-texts.h
+> @@ -2,7 +2,7 @@
+>  #define QEMU_HELP_TEXTS_H
+>  
+>  /* Copyright string for -version arguments, About dialogs, etc */
+> -#define QEMU_COPYRIGHT "Copyright (c) 2003-2024 " \
+> +#define QEMU_COPYRIGHT "Copyright (c) 2003-2025 " \
+>      "Fabrice Bellard and the QEMU Project developers"
+>  
+>  /* Bug reporting information for --help arguments, About dialogs, etc */
+> -- 
+> 2.45.2
+> 
+> 
 
-would become:
-
-  v9fs_open tag=0 id=12 fid=2 mode=100352(RDONLY|NONBLOCK|DIRECTORY|
-  TMPFILE|NDELAY)
-
-Therefor add a new utility function qemu_open_flags_tostr() that converts
-numeric open() flags from host's native O_* flag constants to a string
-presentation.
-
-9p2000.L and 9p2000.u protocol variants use different numeric 'mode'
-constants for 'Topen' requests. Instead of writing string conversion code
-for both protocol variants, use the already existing conversion functions
-that convert the mode flags from respective protocol constants to host's
-native open() numeric flag constants and pass that result to the new
-string conversion function qemu_open_flags_tostr().
-
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
----
- V2:
- - Fix evaluation of O_SYNC and O_TMPFILE which may contain several bits.
- - Filter out O_NDELAY if it is exactly the same as O_NONBLOCK.
-
- hw/9pfs/9p-util-generic.c | 50 +++++++++++++++++++++++++++++++++++++++
- hw/9pfs/9p-util.h         |  6 +++++
- hw/9pfs/9p.c              |  9 ++++++-
- hw/9pfs/meson.build       |  1 +
- hw/9pfs/trace-events      |  2 +-
- 5 files changed, 66 insertions(+), 2 deletions(-)
- create mode 100644 hw/9pfs/9p-util-generic.c
-
-diff --git a/hw/9pfs/9p-util-generic.c b/hw/9pfs/9p-util-generic.c
-new file mode 100644
-index 0000000000..4c1e9c887d
---- /dev/null
-+++ b/hw/9pfs/9p-util-generic.c
-@@ -0,0 +1,50 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#include "qemu/osdep.h"
-+#include "9p-util.h"
-+#include <glib/gstrfuncs.h>
-+
-+char *qemu_open_flags_tostr(int flags)
-+{
-+    int acc = flags & O_ACCMODE;
-+    return g_strconcat(
-+        (acc == O_WRONLY) ? "WRONLY" : (acc == O_RDONLY) ? "RDONLY" : "RDWR",
-+        (flags & O_CREAT) ? "|CREAT" : "",
-+        (flags & O_EXCL) ? "|EXCL" : "",
-+        (flags & O_NOCTTY) ? "|NOCTTY" : "",
-+        (flags & O_TRUNC) ? "|TRUNC" : "",
-+        (flags & O_APPEND) ? "|APPEND" : "",
-+        (flags & O_NONBLOCK) ? "|NONBLOCK" : "",
-+        (flags & O_DSYNC) ? "|DSYNC" : "",
-+        #ifdef O_DIRECT
-+        (flags & O_DIRECT) ? "|DIRECT" : "",
-+        #endif
-+        (flags & O_LARGEFILE) ? "|LARGEFILE" : "",
-+        (flags & O_DIRECTORY) ? "|DIRECTORY" : "",
-+        (flags & O_NOFOLLOW) ? "|NOFOLLOW" : "",
-+        #ifdef O_NOATIME
-+        (flags & O_NOATIME) ? "|NOATIME" : "",
-+        #endif
-+        #ifdef O_CLOEXEC
-+        (flags & O_CLOEXEC) ? "|CLOEXEC" : "",
-+        #endif
-+        #ifdef __O_SYNC
-+        (flags & __O_SYNC) ? "|SYNC" : "",
-+        #else
-+        ((flags & O_SYNC) == O_SYNC) ? "|SYNC" : "",
-+        #endif
-+        #ifdef O_PATH
-+        (flags & O_PATH) ? "|PATH" : "",
-+        #endif
-+        #ifdef __O_TMPFILE
-+        (flags & __O_TMPFILE) ? "|TMPFILE" : "",
-+        #elif defined(O_TMPFILE)
-+        ((flags & O_TMPFILE) == O_TMPFILE) ? "|TMPFILE" : "",
-+        #endif
-+        /* O_NDELAY is usually just an alias of O_NONBLOCK */
-+        #if defined(O_NDELAY) && O_NDELAY != O_NONBLOCK
-+        (flags & O_NDELAY) ? "|NDELAY" : "",
-+        #endif
-+        NULL /* always last (required NULL termination) */
-+    );
-+}
-diff --git a/hw/9pfs/9p-util.h b/hw/9pfs/9p-util.h
-index 51c94b0116..a24d572407 100644
---- a/hw/9pfs/9p-util.h
-+++ b/hw/9pfs/9p-util.h
-@@ -260,4 +260,10 @@ int pthread_fchdir_np(int fd) __attribute__((weak_import));
- #endif
- int qemu_mknodat(int dirfd, const char *filename, mode_t mode, dev_t dev);
- 
-+/*
-+ * Returns a newly allocated string presentation of open() flags, intended
-+ * for debugging (tracing) purposes only.
-+ */
-+char *qemu_open_flags_tostr(int flags);
-+
- #endif
-diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-index 6f24c1abb3..7cad2bce62 100644
---- a/hw/9pfs/9p.c
-+++ b/hw/9pfs/9p.c
-@@ -2008,6 +2008,7 @@ static void coroutine_fn v9fs_open(void *opaque)
-     V9fsFidState *fidp;
-     V9fsPDU *pdu = opaque;
-     V9fsState *s = pdu->s;
-+    g_autofree char *trace_oflags = NULL;
- 
-     if (s->proto_version == V9FS_PROTO_2000L) {
-         err = pdu_unmarshal(pdu, offset, "dd", &fid, &mode);
-@@ -2019,7 +2020,13 @@ static void coroutine_fn v9fs_open(void *opaque)
-     if (err < 0) {
-         goto out_nofid;
-     }
--    trace_v9fs_open(pdu->tag, pdu->id, fid, mode);
-+    if (trace_event_get_state_backends(TRACE_V9FS_OPEN)) {
-+        trace_oflags = qemu_open_flags_tostr(
-+            (s->proto_version == V9FS_PROTO_2000L) ?
-+                dotl_to_open_flags(mode) : omode_to_uflags(mode)
-+        );
-+        trace_v9fs_open(pdu->tag, pdu->id, fid, mode, trace_oflags);
-+    }
- 
-     fidp = get_fid(pdu, fid);
-     if (fidp == NULL) {
-diff --git a/hw/9pfs/meson.build b/hw/9pfs/meson.build
-index eceffdb81e..d35d4f44ff 100644
---- a/hw/9pfs/meson.build
-+++ b/hw/9pfs/meson.build
-@@ -3,6 +3,7 @@ fs_ss.add(files(
-   '9p-local.c',
-   '9p-posix-acl.c',
-   '9p-synth.c',
-+  '9p-util-generic.c',
-   '9p-xattr-user.c',
-   '9p-xattr.c',
-   '9p.c',
-diff --git a/hw/9pfs/trace-events b/hw/9pfs/trace-events
-index ed9f4e7209..0e0fc37261 100644
---- a/hw/9pfs/trace-events
-+++ b/hw/9pfs/trace-events
-@@ -13,7 +13,7 @@ v9fs_getattr(uint16_t tag, uint8_t id, int32_t fid, uint64_t request_mask) "tag
- v9fs_getattr_return(uint16_t tag, uint8_t id, uint64_t result_mask, uint32_t mode, uint32_t uid, uint32_t gid) "tag %d id %d getattr={result_mask %"PRId64" mode %u uid %u gid %u}"
- v9fs_walk(uint16_t tag, uint8_t id, int32_t fid, int32_t newfid, uint16_t nwnames, const char* wnames) "tag=%d id=%d fid=%d newfid=%d nwnames=%d wnames={%s}"
- v9fs_walk_return(uint16_t tag, uint8_t id, uint16_t nwnames, void* qids) "tag %d id %d nwnames %d qids %p"
--v9fs_open(uint16_t tag, uint8_t id, int32_t fid, int32_t mode) "tag %d id %d fid %d mode %d"
-+v9fs_open(uint16_t tag, uint8_t id, int32_t fid, int32_t mode, const char* oflags) "tag=%d id=%d fid=%d mode=%d(%s)"
- v9fs_open_return(uint16_t tag, uint8_t id, uint8_t type, uint32_t version, uint64_t path, int iounit) "tag %u id %u qid={type %u version %u path %"PRIu64"} iounit %d"
- v9fs_lcreate(uint16_t tag, uint8_t id, int32_t dfid, int32_t flags, int32_t mode, uint32_t gid) "tag %d id %d dfid %d flags %d mode %d gid %u"
- v9fs_lcreate_return(uint16_t tag, uint8_t id, uint8_t type, uint32_t version, uint64_t path, int32_t iounit) "tag %u id %u qid={type %u version %u path %"PRIu64"} iounit %d"
+With regards,
+Daniel
 -- 
-2.39.5
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
