@@ -2,87 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACBA9A01598
-	for <lists+qemu-devel@lfdr.de>; Sat,  4 Jan 2025 16:43:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D010A016CF
+	for <lists+qemu-devel@lfdr.de>; Sat,  4 Jan 2025 21:53:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tU6Ia-00035G-Fr; Sat, 04 Jan 2025 10:42:48 -0500
+	id 1tUB81-0007VJ-Up; Sat, 04 Jan 2025 15:52:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tU6IR-00033d-FD
- for qemu-devel@nongnu.org; Sat, 04 Jan 2025 10:42:41 -0500
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1tUB7s-0007UQ-Em
+ for qemu-devel@nongnu.org; Sat, 04 Jan 2025 15:52:04 -0500
+Received: from mail-vk1-xa2c.google.com ([2607:f8b0:4864:20::a2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tU6IO-0000se-IC
- for qemu-devel@nongnu.org; Sat, 04 Jan 2025 10:42:38 -0500
-Received: by mail-pl1-x641.google.com with SMTP id
- d9443c01a7336-2164b662090so162170115ad.1
- for <qemu-devel@nongnu.org>; Sat, 04 Jan 2025 07:42:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1tUB7q-00024z-6p
+ for qemu-devel@nongnu.org; Sat, 04 Jan 2025 15:52:04 -0500
+Received: by mail-vk1-xa2c.google.com with SMTP id
+ 71dfb90a1353d-51623968932so7147164e0c.1
+ for <qemu-devel@nongnu.org>; Sat, 04 Jan 2025 12:52:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1736005354; x=1736610154; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DJfWWZqSXpOdGQmS7KBN222EjjfAcfYazkf7PC9ywok=;
- b=NPv8WNqvnvQqpAioGbpPBApO10Z+KmVe9hKLPMvTY1dGWJAiSNaMmi+iR5wOXJm6Vo
- JdfDYJtE5LBrsR3QQkBLRLHQYs1pV04Lrgu/TmwbzJnwji+W6jVnopYLNY/IjcM0govt
- rplE8vqhPQOvYTrIk+jDB1jZ0DvTHtE71N0Ff6fIXRdaogZZyM/WK3DQxoxdsHy2hS/S
- DWnvCaxR09lZugMJd5a+P7SjZ0ACqsv602ffRCaNsEl/+iu2tXz5ORQzgFFunGGQIgAh
- 7WaOWRC9LTZo0h6oio96ZUk+2js7XAuCx1FIlL3e5P8h18V5FmTNdU+PtaUYLP1dLbbY
- rq4A==
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1736023919; x=1736628719;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=kFDlTfpF8i6VCYfxZ4G9kev/+B3xmqJOSlU0tdmmlLQ=;
+ b=DxKOLTbz20mHN5Dot0sGFhKVHlzd+hvruQ9XR2ymrCa2DgujcoaStfrWGlIDUnslbp
+ ODK5qawzF+rR2bVKBIgdLGjSQEhdJuBzTrwV7ExhGG5rUUJssnzxHr3bJgq4IesKumne
+ 65EftJ2iHdPqzxRmvOxbSu3vEoAoi2y2jT/JACJXRcg4BvuUQvZ0G4gHlVmariSjNNhN
+ y1bOBdPrVfISjk3oItNigQ+3bIdivqyaJ86f9QSRAAfvMPuxTVzUG5e6ZqNo0MmFs5+V
+ WoGSkGgyelyoF1ATms2aZI4PfmX54CEPpooMxxRnkE5YvX75/CQ4jpHeE3AZQL66rODk
+ gFww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736005354; x=1736610154;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DJfWWZqSXpOdGQmS7KBN222EjjfAcfYazkf7PC9ywok=;
- b=oJIH6bf83umKFnMFVqKTqYpar1v759VpSYmoYvos3vl7PE5MpaEdXuZsOtSdNlNKt5
- ys5HUb2f4bMWOEK4knXRDUz/DpO4JpLnHkKQjxWRrbP5kds7/SFfwDJ9JkrMwI+MV0gl
- rs0sF8DYO9UN80Y6+rtQrjR+OmeOYScxiUPsJmKvSMEo148fNiAZIOmBxrgsesFy6mt1
- Ccnr4ybXYCJ9yiXm3j7f8BddHb9sWdEAB7UWwfL5NiGlccJYQSm/oGg/VdNbelk7KuYf
- OOCJrDsLj1G9/Sm+v8cDjks8kSqxqlTgI7jvyUo68t6DIpPi+ifphM/ZaRCtq7qGdpBa
- WzbA==
-X-Gm-Message-State: AOJu0YyU7RhZRNvoxwjkoCq0JZHo5EKSX6uhmhIuwiYqB62o2p0wmwbN
- bTxgUYaIwE1IJczseaNqN7r683UsbDJEpZJXHKjaR5DnYv3pHaY=
-X-Gm-Gg: ASbGncvjuS4S2hQTiMlD6YW5Ezq/Tx5dIDSrk1LQIs1owkOZuCz31Xy4pYWmat74GC/
- TzCioxQKaFZ2QYeLnkUbchzWquBxnqa8kXU5I6NVXM3zg4AnYl+dToBUiUe+2e3I93hdoQr39WO
- nca7k5nLUoGhR6Qjft/44zKmrlvlQE/hAh0mUfll3BE3Wqg+Zmb2vPSg9Oqq+B49dy90+vohJ80
- RSfsP72GvqriGAdzF7GLHnKAPxIqC8WwOoIW/DbNxg3hrlwd85RYI69GxNO1LdX1almpA==
-X-Google-Smtp-Source: AGHT+IG0l+iGZerOA5g3zmMw14L0XwjLiaum9ie8Si2KeUyAcbislEK9rfWwYUbZ99mMFteaYSci5g==
-X-Received: by 2002:a05:6a00:4485:b0:725:c8ea:b320 with SMTP id
- d2e1a72fcca58-72abde0f951mr72748123b3a.14.1736005353950; 
- Sat, 04 Jan 2025 07:42:33 -0800 (PST)
-Received: from localhost.localdomain ([58.38.120.107])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad8162d0sm28113388b3a.12.2025.01.04.07.42.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 04 Jan 2025 07:42:33 -0800 (PST)
-From: Tomita Moeko <tomitamoeko@gmail.com>
-To: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Cc: qemu-devel@nongnu.org,
-	Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH v2 3/3] vfio/igd: use VFIOConfigMirrorQuirk for mirrored
- registers
-Date: Sat,  4 Jan 2025 23:42:18 +0800
-Message-ID: <20250104154219.7209-4-tomitamoeko@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250104154219.7209-1-tomitamoeko@gmail.com>
-References: <20250104154219.7209-1-tomitamoeko@gmail.com>
+ d=1e100.net; s=20230601; t=1736023919; x=1736628719;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kFDlTfpF8i6VCYfxZ4G9kev/+B3xmqJOSlU0tdmmlLQ=;
+ b=Ni9JyE4rqG96aoFwpqOWF+O8f8BcaQHxJsN0qOLpOg6dG9p/8bKh7Gs2s0knACymMD
+ Y/Hq0etJSKh3OHkLGb9jU14cbJF04FmX//zZerglz2lqR2MHFxrXzfOtiim2msnF/NXR
+ gYIpXrSSzFHOt03SNTUPDUHOIQbt5Zw4ZsYG6/s0GgIbQ1tqCWKBN3DMUXEklP5TYJUA
+ Gzre9Yv1EYT1SZnsKNM2HRC2x70JG8hL6TbvvDlmY67cq8rlBDBlDcSikaVE+KMuCIx0
+ Eu6iMu4th759e1FbS9R/hFF3su6WGUk5xkdYN8uaKrL1bRjEe7rT5rA83n/8y9qKObht
+ OQNw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUcw62vyBjBmyAUCb5sfAmZB3CvX4ISLwSz+mwtNKuLQmo5e3UHUpzLtx9nvStPiGzwu6ODyL7kPDXk@nongnu.org
+X-Gm-Message-State: AOJu0Yz27bh00ngLKp5+fDKAze8VDz4u4lzwonLfVkStuaq7Kiq+O4dm
+ 8eWwvOoxl2fO7o1AU8uhFKOqq5EYPa0Oxyk49ybT84uBzZq9zCtjsgeOyTQsxIQU4COwYYz7xwr
+ hDZ1tbs+Yq9TZfW+7Ghg867BscXH4RZ5RVCFO
+X-Gm-Gg: ASbGnctyjT1VdYP+cRyu6uXgXALGutS8Ksk0IfvNM6My0CYHTlnVvi2Zrs7KzPJnMIM
+ gpsSdU9S6B8acORo54nhnJ+HZ82TS3rNsBeytUw==
+X-Google-Smtp-Source: AGHT+IGhmVzrrJmOp84f9q27xWcUB6R6Eowc7bZs0e1N02qQ64TWVh4urAng7asPzEQ5UltXLqdGYm74hmrb3HbFYFI=
+X-Received: by 2002:a05:6122:2519:b0:516:1106:4c1a with SMTP id
+ 71dfb90a1353d-51b75d6b15emr32965434e0c.12.1736023919465; Sat, 04 Jan 2025
+ 12:51:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::641;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x641.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20241223221645.29911-1-phil@philjordan.eu>
+ <20241223221645.29911-15-phil@philjordan.eu>
+ <2ceda358-adce-42bd-9f29-9a2e441361f0@linaro.org>
+ <34ddf42c-8bb1-4155-90cf-69e1032b0437@daynix.com>
+In-Reply-To: <34ddf42c-8bb1-4155-90cf-69e1032b0437@daynix.com>
+From: Phil Dennis-Jordan <phil@philjordan.eu>
+Date: Sat, 4 Jan 2025 21:51:48 +0100
+Message-ID: <CAAibmn1RCQ4ae2LLDmOUhTCdbUzymyeusx_g+6AmJ1zD+szhDA@mail.gmail.com>
+Subject: Re: [PATCH v16 14/14] hw/vmapple/vmapple: Add vmapple machine type
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, agraf@csgraf.de, peter.maydell@linaro.org, 
+ pbonzini@redhat.com, rad@semihalf.com, quic_llindhol@quicinc.com, 
+ stefanha@redhat.com, mst@redhat.com, slp@redhat.com, 
+ richard.henderson@linaro.org, eduardo@habkost.net, marcel.apfelbaum@gmail.com, 
+ gaosong@loongson.cn, jiaxun.yang@flygoat.com, chenhuacai@kernel.org, 
+ kwolf@redhat.com, hreitz@redhat.com, shorne@gmail.com, palmer@dabbelt.com, 
+ alistair.francis@wdc.com, bmeng.cn@gmail.com, liwei1518@gmail.com, 
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, jcmvbkbc@gmail.com, 
+ marcandre.lureau@redhat.com, berrange@redhat.com, qemu-arm@nongnu.org, 
+ qemu-block@nongnu.org, qemu-riscv@nongnu.org, balaton@eik.bme.hu, 
+ Alexander Graf <graf@amazon.com>
+Content-Type: multipart/alternative; boundary="0000000000000ab449062ae7911a"
+Received-SPF: neutral client-ip=2607:f8b0:4864:20::a2c;
+ envelope-from=phil@philjordan.eu; helo=mail-vk1-xa2c.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,177 +103,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With the introduction of config_offset field, VFIOConfigMirrorQuirk can
-now be used for those mirrored register in igd bar0. This eliminates
-the need for the macro intoduced in 1a2623b5c9e7 ("vfio/igd: add macro
-for declaring mirrored registers").
+--0000000000000ab449062ae7911a
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
----
- hw/vfio/igd.c | 125 +++++++++++++-------------------------------------
- 1 file changed, 31 insertions(+), 94 deletions(-)
+On Sat, 4 Jan 2025 at 16:15, Akihiko Odaki <akihiko.odaki@daynix.com> wrote=
+:
 
-diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index f5414b0f8d..703e795715 100644
---- a/hw/vfio/igd.c
-+++ b/hw/vfio/igd.c
-@@ -18,6 +18,7 @@
- #include "hw/hw.h"
- #include "hw/nvram/fw_cfg.h"
- #include "pci.h"
-+#include "pci-quirks.h"
- #include "trace.h"
- 
- /*
-@@ -422,83 +423,13 @@ static const MemoryRegionOps vfio_igd_index_quirk = {
-     .endianness = DEVICE_LITTLE_ENDIAN,
- };
- 
--static uint64_t vfio_igd_pci_config_read(VFIOPCIDevice *vdev, uint64_t offset,
--                                         unsigned size)
--{
--    switch (size) {
--    case 1:
--        return pci_get_byte(vdev->pdev.config + offset);
--    case 2:
--        return pci_get_word(vdev->pdev.config + offset);
--    case 4:
--        return pci_get_long(vdev->pdev.config + offset);
--    case 8:
--        return pci_get_quad(vdev->pdev.config + offset);
--    default:
--        hw_error("igd: unsupported pci config read at %"PRIx64", size %u",
--                 offset, size);
--        break;
--    }
--
--    return 0;
--}
--
--static void vfio_igd_pci_config_write(VFIOPCIDevice *vdev, uint64_t offset,
--                                      uint64_t data, unsigned size)
--{
--    switch (size) {
--    case 1:
--        pci_set_byte(vdev->pdev.config + offset, data);
--        break;
--    case 2:
--        pci_set_word(vdev->pdev.config + offset, data);
--        break;
--    case 4:
--        pci_set_long(vdev->pdev.config + offset, data);
--        break;
--    case 8:
--        pci_set_quad(vdev->pdev.config + offset, data);
--        break;
--    default:
--        hw_error("igd: unsupported pci config write at %"PRIx64", size %u",
--                 offset, size);
--        break;
--    }
--}
--
--#define VFIO_IGD_QUIRK_MIRROR_REG(reg, name)                            \
--static uint64_t vfio_igd_quirk_read_##name(void *opaque,                \
--                                           hwaddr addr, unsigned size)  \
--{                                                                       \
--    VFIOPCIDevice *vdev = opaque;                                       \
--                                                                        \
--    return vfio_igd_pci_config_read(vdev, reg + addr, size);            \
--}                                                                       \
--                                                                        \
--static void vfio_igd_quirk_write_##name(void *opaque, hwaddr addr,      \
--                                        uint64_t data, unsigned size)   \
--{                                                                       \
--    VFIOPCIDevice *vdev = opaque;                                       \
--                                                                        \
--    vfio_igd_pci_config_write(vdev, reg + addr, data, size);            \
--}                                                                       \
--                                                                        \
--static const MemoryRegionOps vfio_igd_quirk_mirror_##name = {           \
--    .read = vfio_igd_quirk_read_##name,                                 \
--    .write = vfio_igd_quirk_write_##name,                               \
--    .endianness = DEVICE_LITTLE_ENDIAN,                                 \
--};
--
--VFIO_IGD_QUIRK_MIRROR_REG(IGD_GMCH, ggc)
--VFIO_IGD_QUIRK_MIRROR_REG(IGD_BDSM, bdsm)
--VFIO_IGD_QUIRK_MIRROR_REG(IGD_BDSM_GEN11, bdsm64)
--
- #define IGD_GGC_MMIO_OFFSET     0x108040
- #define IGD_BDSM_MMIO_OFFSET    0x1080C0
- 
- void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
- {
--    VFIOQuirk *quirk;
-+    VFIOQuirk *ggc_quirk, *bdsm_quirk;
-+    VFIOConfigMirrorQuirk *ggc_mirror, *bdsm_mirror;
-     int gen;
- 
-     /*
-@@ -522,33 +453,39 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
-         return;
-     }
- 
--    quirk = vfio_quirk_alloc(2);
--    quirk->data = vdev;
-+    ggc_quirk = vfio_quirk_alloc(1);
-+    ggc_mirror = ggc_quirk->data = g_malloc0(sizeof(*ggc_mirror));
-+    ggc_mirror->mem = ggc_quirk->mem;
-+    ggc_mirror->vdev = vdev;
-+    ggc_mirror->bar = nr;
-+    ggc_mirror->offset = IGD_GGC_MMIO_OFFSET;
-+    ggc_mirror->config_offset = IGD_GMCH;
- 
--    memory_region_init_io(&quirk->mem[0], OBJECT(vdev),
--                          &vfio_igd_quirk_mirror_ggc, vdev,
-+    memory_region_init_io(ggc_mirror->mem, OBJECT(vdev),
-+                          &vfio_generic_mirror_quirk, ggc_mirror,
-                           "vfio-igd-ggc-quirk", 2);
--    memory_region_add_subregion_overlap(vdev->bars[0].region.mem,
--                                        IGD_GGC_MMIO_OFFSET, &quirk->mem[0],
-+    memory_region_add_subregion_overlap(vdev->bars[nr].region.mem,
-+                                        ggc_mirror->offset, ggc_mirror->mem,
-                                         1);
- 
--    if (gen < 11) {
--        memory_region_init_io(&quirk->mem[1], OBJECT(vdev),
--                              &vfio_igd_quirk_mirror_bdsm, vdev,
--                              "vfio-igd-bdsm-quirk", 4);
--        memory_region_add_subregion_overlap(vdev->bars[0].region.mem,
--                                            IGD_BDSM_MMIO_OFFSET,
--                                            &quirk->mem[1], 1);
--    } else {
--        memory_region_init_io(&quirk->mem[1], OBJECT(vdev),
--                              &vfio_igd_quirk_mirror_bdsm64, vdev,
--                              "vfio-igd-bdsm-quirk", 8);
--        memory_region_add_subregion_overlap(vdev->bars[0].region.mem,
--                                            IGD_BDSM_MMIO_OFFSET,
--                                            &quirk->mem[1], 1);
--    }
-+    QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, ggc_quirk, next);
- 
--    QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, quirk, next);
-+    bdsm_quirk = vfio_quirk_alloc(1);
-+    bdsm_mirror = bdsm_quirk->data = g_malloc0(sizeof(*bdsm_mirror));
-+    bdsm_mirror->mem = bdsm_quirk->mem;
-+    bdsm_mirror->vdev = vdev;
-+    bdsm_mirror->bar = nr;
-+    bdsm_mirror->offset = IGD_BDSM_MMIO_OFFSET;
-+    bdsm_mirror->config_offset = (gen < 11) ? IGD_BDSM : IGD_BDSM_GEN11;
-+
-+    memory_region_init_io(bdsm_mirror->mem, OBJECT(vdev),
-+                          &vfio_generic_mirror_quirk, bdsm_mirror,
-+                          "vfio-igd-bdsm-quirk", (gen < 11) ? 4 : 8);
-+    memory_region_add_subregion_overlap(vdev->bars[nr].region.mem,
-+                                        bdsm_mirror->offset, bdsm_mirror->mem,
-+                                        1);
-+
-+    QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, bdsm_quirk, next);
- }
- 
- void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
--- 
-2.45.2
+> On 2024/12/28 5:36, Philippe Mathieu-Daud=C3=A9 wrote:
+> > On 23/12/24 23:16, Phil Dennis-Jordan wrote:
+> >
+> >> Known issues:
+> >>   - Keyboard and mouse/tablet input is laggy. The reason for this is
+> >>     that macOS's XHCI driver seems to expect interrupter mapping to
+> >>     be disabled when MSI/MSI-X is unavailable. I have found a
+> >>     workaround but discovered a bunch of other XHCI spec non-complianc=
+e
+> >>     in the process, so I'm fixing all of those in a separate patch
+> >>     set.
+> >
+> > Should we wait for your XHCI fixes series to get reviewed first
+> > so I can base this series on top (removing this comment) when merging?
+>
+> This series no longer cleanly applies due to patches merged early so
+> please rebase it.
+>
 
+I've already done this locally, but I need to incorporate some of Phil
+M-D's feedback, I don't think there's much point posting a v17 to the list
+before those points are resolved.
+
+In particular, I'm unsure about part of the proposed fix for the emulated
+GIC dependency.
+https://patchew.org/QEMU/20241227202435.48055-1-philmd@linaro.org/202412272=
+02435.48055-3-philmd@linaro.org/
+
+I need to set up an aarch64 Linux host to test the build with --enable-kvm
+--enable-tcg to disprove or confirm my worry that
+select ARM_GICV3 if !KVM
+would deselect ARM_GICV3 even though it's needed for the TCG accelerator.
+And if that suspicion turns out to be correct, I'll need to find a good
+alternative.
+select ARM_GICV3 if TCG || HVF || NVMM || WHPX || XEN_EMU || XEN
+seems=E2=80=A6 awkward.
+
+It will be nice if you also:
+> 1. rebase this vmapple series onto the xHC series and
+> 2. move "[PATCH v3 6/6] hw/vmapple: XHCI controller's interrupt mapping
+> workaround for macOS" into this vmapple series
+>
+> xHC changes that are not specific to vmapple may be merged early in this
+> way. I will be also able to test all vmapple code at once.
+>
+
+I'm going to combine the two series and put the generic (standards
+compliant) XHCI  patches first. The final XHCI patch has been squashed into
+the final vmapple patch.
+
+The work-in-progress branch is at
+https://github.com/pmj/qemu/tree/xhci%2Bvmapple-v17 if you or anyone else
+wants to test/review. It's currently just a rebase/reorder/squash with
+conflicts fixed, no functional changes since v16.
+
+
+> Please use Based-on: tag when you post a series that based on another.
+> It will create a Git tree that I can use for testing at:
+> https://patchew.org/QEMU/
+> docs/devel/submitting-a-patch.rst describes the details.
+>
+
+Thanks!
+
+
+> Regards,
+> Akihiko Odaki
+>
+
+--0000000000000ab449062ae7911a
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote gmail_quote_container"><=
+div dir=3D"ltr" class=3D"gmail_attr">On Sat, 4 Jan 2025 at 16:15, Akihiko O=
+daki &lt;<a href=3D"mailto:akihiko.odaki@daynix.com">akihiko.odaki@daynix.c=
+om</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margi=
+n:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex=
+">On 2024/12/28 5:36, Philippe Mathieu-Daud=C3=A9 wrote:<br>
+&gt; On 23/12/24 23:16, Phil Dennis-Jordan wrote:<br>
+&gt; <br>
+&gt;&gt; Known issues:<br>
+&gt;&gt; =C2=A0 - Keyboard and mouse/tablet input is laggy. The reason for =
+this is<br>
+&gt;&gt; =C2=A0=C2=A0=C2=A0 that macOS&#39;s XHCI driver seems to expect in=
+terrupter mapping to<br>
+&gt;&gt; =C2=A0=C2=A0=C2=A0 be disabled when MSI/MSI-X is unavailable. I ha=
+ve found a<br>
+&gt;&gt; =C2=A0=C2=A0=C2=A0 workaround but discovered a bunch of other XHCI=
+ spec non-compliance<br>
+&gt;&gt; =C2=A0=C2=A0=C2=A0 in the process, so I&#39;m fixing all of those =
+in a separate patch<br>
+&gt;&gt; =C2=A0=C2=A0=C2=A0 set.<br>
+&gt; <br>
+&gt; Should we wait for your XHCI fixes series to get reviewed first<br>
+&gt; so I can base this series on top (removing this comment) when merging?=
+<br>
+<br>
+This series no longer cleanly applies due to patches merged early so <br>
+please rebase it.<br></blockquote><div><br></div><div>I&#39;ve already done=
+ this locally,  but I need to incorporate some of Phil M-D&#39;s feedback, =
+I don&#39;t think there&#39;s much point posting a v17 to the list before t=
+hose points are resolved.</div><div><br></div><div>In particular, I&#39;m u=
+nsure about part of the proposed fix for the emulated GIC dependency. <a hr=
+ef=3D"https://patchew.org/QEMU/20241227202435.48055-1-philmd@linaro.org/202=
+41227202435.48055-3-philmd@linaro.org/">https://patchew.org/QEMU/2024122720=
+2435.48055-1-philmd@linaro.org/20241227202435.48055-3-philmd@linaro.org/</a=
+></div><div><br></div><div>I need to set up an aarch64 Linux host to test t=
+he build with --enable-kvm --enable-tcg to disprove or confirm my worry tha=
+t=C2=A0</div><div>select ARM_GICV3 if !KVM<br></div><div>would deselect ARM=
+_GICV3 even though it&#39;s needed for the TCG accelerator. And if that sus=
+picion turns out to be correct, I&#39;ll need to find a good alternative.</=
+div><div>select ARM_GICV3 if TCG || HVF || NVMM || WHPX || XEN_EMU ||=C2=A0=
+XEN</div><div>seems=E2=80=A6 awkward.<br></div><div><br></div><blockquote c=
+lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
+d rgb(204,204,204);padding-left:1ex">
+It will be nice if you also:<br>
+1. rebase this vmapple series onto the xHC series and<br>
+2. move &quot;[PATCH v3 6/6] hw/vmapple: XHCI controller&#39;s interrupt ma=
+pping <br>
+workaround for macOS&quot; into this vmapple series<br>
+<br>
+xHC changes that are not specific to vmapple may be merged early in this <b=
+r>
+way. I will be also able to test all vmapple code at once.<br></blockquote>=
+<div><br></div><div>I&#39;m going to combine the two series and put the gen=
+eric (standards compliant) XHCI=C2=A0 patches first. The final XHCI patch h=
+as been squashed into the final vmapple patch.<br></div><div><br></div><div=
+>The work-in-progress branch is at <a href=3D"https://github.com/pmj/qemu/t=
+ree/xhci%2Bvmapple-v17">https://github.com/pmj/qemu/tree/xhci%2Bvmapple-v17=
+</a> if you or anyone else wants to test/review. It&#39;s currently just a =
+rebase/reorder/squash with conflicts fixed, no functional changes since v16=
+.<br></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"marg=
+in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
+x">
+Please use Based-on: tag when you post a series that based on another. <br>
+It will create a Git tree that I can use for testing at: <br>
+<a href=3D"https://patchew.org/QEMU/" rel=3D"noreferrer" target=3D"_blank">=
+https://patchew.org/QEMU/</a><br>
+docs/devel/submitting-a-patch.rst describes the details.<br></blockquote><d=
+iv><br></div><div>Thanks!<br></div><div>=C2=A0</div><blockquote class=3D"gm=
+ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
+204,204);padding-left:1ex">
+Regards,<br>
+Akihiko Odaki<br>
+</blockquote></div></div>
+
+--0000000000000ab449062ae7911a--
 
