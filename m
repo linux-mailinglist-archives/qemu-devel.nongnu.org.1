@@ -2,86 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B55A012E0
-	for <lists+qemu-devel@lfdr.de>; Sat,  4 Jan 2025 08:12:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4167AA012EC
+	for <lists+qemu-devel@lfdr.de>; Sat,  4 Jan 2025 08:35:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTyJE-0003Cj-MW; Sat, 04 Jan 2025 02:10:56 -0500
+	id 1tTyfO-0000hj-MS; Sat, 04 Jan 2025 02:33:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tTyJC-0003CK-3D
- for qemu-devel@nongnu.org; Sat, 04 Jan 2025 02:10:54 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1tTyfK-0000hJ-LG
+ for qemu-devel@nongnu.org; Sat, 04 Jan 2025 02:33:46 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tTyJA-0002sd-0A
- for qemu-devel@nongnu.org; Sat, 04 Jan 2025 02:10:53 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-21661be2c2dso164952695ad.1
- for <qemu-devel@nongnu.org>; Fri, 03 Jan 2025 23:10:51 -0800 (PST)
+ id 1tTyfI-0004WZ-Fh
+ for qemu-devel@nongnu.org; Sat, 04 Jan 2025 02:33:46 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-21654fdd5daso169384265ad.1
+ for <qemu-devel@nongnu.org>; Fri, 03 Jan 2025 23:33:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1735974650; x=1736579450;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1735976023; x=1736580823;
  darn=nongnu.org; 
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ABNYI9qAA9SBf9uo6S4BLgQmvQh4QX0lH8r8/G8LADw=;
- b=1VGCkcSKarQ7jXNSJ13tnIm7hXNnavRU+SVzy34C7kXIRGsS4ZfZW4RKwvoxFiufpw
- KAksJqyzxF+NmC9sHrxlyBkKYwrgQT4ys9f8rtquKdvmEz95xs9JTAkjzVjgOfllfPig
- 8e+iGwbDt4RYlkFqLeqBsJUzuzWlP+hlo/ZXVgiFbLuXFDqnFtxf0d2d06qFmqjbjhJE
- to3SFKy1TBfqpqnpft68Aw6sSE45bYuWCgAxAwW/chPFPanoWGV3hpkrnyPE2BKl/cNK
- G/OlgNvlIzUR7frZoubgBoL/OBBs9KA+MZBvZeRD82DvodSRcF5k45ygZ6xxlpYg6uqA
- 1UGw==
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=lgRja/DVzyOVnndmZz+Ok0yizuVeDqwwy5vnVItCxQk=;
+ b=az7WmJDbsYtTc2UFhlE0TizbyLZWIK3HnbQo8kvmx7tNcapAemLnGCSwBNAdli+Hql
+ Ib1T+A99T0kYeR/xCm356+Xm52BI0UTIxXFV5jYO82otrkfGS/xamyLnuLyir73B7KBW
+ E5mL7uu6uWlAoAPDpuRlAILbg1UBCChHg9DESSXaIIvMR3a4RokLgiKMRXICp5fgiMeV
+ K1BWSlZ9z9CAegjDc7oTnRH35XGpQ/hdIAMPLSDELVMTlAF9INA+g61pg4pNGBQ6sZsA
+ Ia+4WFnWMpHPQ0mjdDpwSajOt0yF/Ej+xeMRm+hfZkKTxuKwH2MAuLHIk3w36m3A37TN
+ 3HEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735974650; x=1736579450;
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1735976023; x=1736580823;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=ABNYI9qAA9SBf9uo6S4BLgQmvQh4QX0lH8r8/G8LADw=;
- b=XWY7uwbiV/D1eXqRTXJityMJ866va2NMeURCHCOe4VYJ4f2xhsiDVcoDaba0CoUyqA
- 49hMZm/UU/qYLuQUo7vSfzGprXy9ZfS+nEtXBUBxp7CiapwkzJ9B26RugQgcgeV7YcPB
- yQAIuhkM2fdWND7VIcFh202KY8JSv5S1Kady2c8aOwlfp30jAob6egEYZ/3eGDXkmJzO
- N1lNQvgYRjzDmvDV855FkxooGnbBNTasRxiZ9eLuSZfjBVROPdqLmcKsWNOCP3JRCA2f
- 3gVRHz/t6XhQl35oIrMbzQK2S6ThGLxdArvK3tyYOW8vIjrCWdaq12sgWA50xSkUvFTU
- ULfg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXd/gwX3H5FbsZE3UUsrKclcVsNNtMkKH450uRVvHUojAmme7JGVXs6/7F9uxOXfgWvQbr1pLHuU9Va@nongnu.org
-X-Gm-Message-State: AOJu0YyzRwGd0eFz6O3ACeOj2nf3C/6aAAzBsckkPJheoFzQyFT3HXDw
- Y815sj3/1TleXJoDJEMm25c0dpTpBlRe+zyXEAQgBVuraFsJtrXXbnBTJH58Od8xcULlFyX1azG
- 3nso=
-X-Gm-Gg: ASbGnctQwpcgfs29E4lbbipTq4/ldfpCRk8oTId5EtLRiMsNYgthC3BL0feOHmWNrzC
- mDfvUJFW6mn221+wX4re8jWuy2yt9ppKehXYoke7OUYbicuTKGOtvYAX5shzm/cf4a14ETRXehs
- x62d8EWhKCR+5TEquhYXsmNpXtKtV1TpqVCP8hTd8XhsOxVzMtTDLaTYORFitzE5Dl1+KyIFSlm
- 7PVeOJ/6zSHVIJBtMYnJy8LsYWkkYox155yllimAeQMQCP9LUZwzQcnyiHx
-X-Google-Smtp-Source: AGHT+IH9cIovBdI7apBi49hnHAx268iqJjPX7q/SQxTwSH78rcby56/Ns0yD/ValOQ1tHuWl1FxSLA==
-X-Received: by 2002:a17:902:cf12:b0:215:a2e2:53ff with SMTP id
- d9443c01a7336-219e6e85cc3mr769414135ad.11.1735974650031; 
- Fri, 03 Jan 2025 23:10:50 -0800 (PST)
+ bh=lgRja/DVzyOVnndmZz+Ok0yizuVeDqwwy5vnVItCxQk=;
+ b=jLWPOUtJJ+fCEVa1lZcY9o6ecPw9MDTvwZSWjwPlV9dc259qPudc2elw/pMRCTvVwc
+ kd6PCrQD/PKDol+6WfnHLKZj36coBcYMzfLhbOzEYZ41A6wSm2qyxNc+JD92FAC0dtxI
+ Y+jd9ffNUbMB/Wq8aV2t2gxVIRbhlyguhStN4TEtG5NBxWvyBb8HH4UaLZBlKHAHpoHi
+ f25C9hS7OKDUG/Bvd9U5BlexSkhJOAdgfdZoR0sS9uihXC8POvrPHURiLtaZgfAFn/Id
+ ziis4+YaRjMlA+sAPQFaRE3Gz070hYYIGQMvw377Ozi5naXww9+pbVewbyAN5R7KrVIL
+ NkVg==
+X-Gm-Message-State: AOJu0YzomvGNxKTHM+pSfJbJLhosufPOUn7L3kmEOUDxd2zVqOL26oe3
+ 2ZS7CByk65WsA6DN0WV2vrWZfpIMtWQ8MJ2CziZqCvLTyKbsigvDM5bS2GE1aa8=
+X-Gm-Gg: ASbGncslikbmD9HipLgetXcJ4Y+PfZlxv9Yx2n2wb71n8ynYnAcGvgppZkKjeL+NG9j
+ 9+5iK1l0Kcj5JGBtNxsJWqqBIAvo8UfpiZO5F1JyN3iPV/zyoVko4uW5KmSTO6Q8zZuqcpWE9FL
+ F6oU/IST6V5pHQuGRM6jffqxAhDoMfQ0bpfF6bVCBK7a6YTAbwp09IJUNZjBN6zSjfyP/WPWkLx
+ 9xDf/Ckyo5mKCIYRlBo1T31UyI60z+6JLO8M/RYh7Z1zD970BLLO4pJnAsp
+X-Google-Smtp-Source: AGHT+IFlGMVaXNDcB2jokx+XOkwZw5soEmpVJVYK8lVRQYcHWsg0HxS1YbJpxK8v0jUOS6nO5cPunA==
+X-Received: by 2002:a17:90b:3d47:b0:2ee:ad18:b30d with SMTP id
+ 98e67ed59e1d1-2f452deb500mr71341065a91.6.1735976022842; 
+ Fri, 03 Jan 2025 23:33:42 -0800 (PST)
 Received: from localhost ([157.82.207.107])
  by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-219dc962933sm256517005ad.56.2025.01.03.23.10.47
+ 98e67ed59e1d1-2f447797bb8sm32931291a91.7.2025.01.03.23.33.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 03 Jan 2025 23:10:49 -0800 (PST)
+ Fri, 03 Jan 2025 23:33:42 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 04 Jan 2025 16:10:42 +0900
-Subject: [PATCH v5] target/arm: Always add pmu property for Armv7-A/R+
+Subject: [PATCH v5 0/2] Fix check-qtest-ppc64 sanitizer errors
+Date: Sat, 04 Jan 2025 16:33:34 +0900
+Message-Id: <20250104-san-v5-0-8b430457b09d@daynix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250104-pmu-v5-1-be9c8777c786@daynix.com>
-X-B4-Tracking: v=1; b=H4sIAPHeeGcC/23MyQ6CMBSF4VchXVvT3o668j2Mi9JBumAIKIEQ3
- t0CCyW4PDf3+yfU+Tb6Dl2zCbW+j12sqzTEKUO2MNXT4+jSRkCAEwkX3JRvbJwIUnmwwhGUPpv
- Whzislfsj7SJ2r7od12hPl+ve9xQTrEBeKLBca8NvzoxVHM62LtES6OGLFJUbgoQC88zzHBxz4
- oDYH8QS0lZZqoU2AOqA+A8CsiGeEBjIQQeZEx12aJ7nDyAZT6I2AQAA
-To: Peter Maydell <peter.maydell@linaro.org>, 
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAE7keGcC/2XMQW7DIBCF4atErEs1DGOws+o9oixggIRF7chUV
+ qLIdy+xVbmRl2803/8UJY45FnE8PMUYp1zy0NfRfBwEX11/iTKHugUCEhhsZHG9hM665BIlxSj
+ q522MKd+Xyulc9zWXn2F8LNFJva5/3ix+UhJk0syEGlC13Vdwjz7fP3n4Fq/AhP+RXRFWZBvwH
+ joywYcd0huy0K5IV+RBJ2MVE7DZIdpQi3pFVJFDYhOSI47+Dc3z/AvNINCeNgEAAA==
+To: Eduardo Habkost <eduardo@habkost.net>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>, 
+ BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ David Gibson <david@gibson.dropbear.id.au>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+ Alexey Kardashevskiy <aik@ozlabs.ru>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
+ Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>, 
  Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Cornelia Huck <cohuck@redhat.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kvm@vger.kernel.org, 
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
  devel@daynix.com, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -103,80 +112,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-kvm-steal-time and sve properties are added for KVM even if the
-corresponding features are not available. Always add pmu property for
-Armv7+. Note that the property is added only for Armv7-A/R+ as QEMU
-currently emulates PMU only for such versions, and a different
-version may have a different definition of PMU or may not have one at
-all.
+I saw various sanitizer errors when running check-qtest-ppc64. While
+I could just turn off sanitizers, I decided to tackle them this time.
+
+Unfortunately, GLib versions older than 2.81.0 do not free test data in
+some cases so some sanitizer errors remain. All sanitizer errors will be
+gone with this patch series combined with the following change for GLib:
+https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4120
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-The "pmu" property is added only when the PMU is available. This makes
-tests/qtest/arm-cpu-features.c fail as it reads the property to check
-the availability. Always add the property when the architecture defines
-the PMU even if it's not available to fix this.
----
 Changes in v5:
 - Rebased.
-- Link to v4: https://lore.kernel.org/r/20240720-pmu-v4-0-2a2b28f6b08f@daynix.com
+- Merged four patches to update inline documentation into one
+- Link to v4: https://lore.kernel.org/r/20240823-san-v4-0-a24c6dfa4ceb@daynix.com
 
 Changes in v4:
-- Split patch "target/arm/kvm: Fix PMU feature bit early" into
-  "target/arm/kvm: Set PMU for host only when available" and
-  "target/arm/kvm: Do not silently remove PMU".
-- Changed to define PMU also for Armv7.
-- Changed not to define PMU for M.
-- Extracted patch "hvf: arm: Raise an exception for sysreg by default"
-  from "hvf: arm: Properly disable PMU".
+- Changed to create a reference to the subregion instead of its owner
+  when its owner equals to the container's owner.
+- Dropped R-b from patch "memory: Do not create circular reference with
+  subregion".
 - Rebased.
-- Link to v3: https://lore.kernel.org/r/20240716-pmu-v3-0-8c7c1858a227@daynix.com
+- Link to v3: https://lore.kernel.org/r/20240708-san-v3-0-b03f671c40c6@daynix.com
 
 Changes in v3:
-- Dropped patch "target/arm: Do not allow setting 'pmu' for hvf".
-- Dropped patch "target/arm: Allow setting 'pmu' only for host and max".
-- Dropped patch "target/arm/kvm: Report PMU unavailability".
-- Added patch "target/arm/kvm: Fix PMU feature bit early".
-- Added patch "hvf: arm: Do not advance PC when raising an exception".
-- Added patch "hvf: arm: Properly disable PMU".
-- Changed to check for Armv8 before adding PMU property.
-- Link to v2: https://lore.kernel.org/r/20240716-pmu-v2-0-f3e3e4b2d3d5@daynix.com
+- Added patch "memory: Clarify that we use owner's reference count".
+- Added patch "memory: Refer to docs/devel/memory.rst for 'owner'".
+- Fixed the message of patch
+  "memory: Do not create circular reference with subregion".
+- Dropped patch "cpu: Free cpu_ases" in favor of:
+  https://lore.kernel.org/r/20240607115649.214622-7-salil.mehta@huawei.com/
+  ("[PATCH V13 6/8] physmem: Add helper function to destroy CPU
+  AddressSpace")
+- Dropped patches "hw/ide: Convert macio ide_irq into GPIO line" and
+  "hw/ide: Remove internal DMA qemu_irq" in favor of commit efb359346c7a
+  ("hw/ide/macio: switch from using qemu_allocate_irq() to qdev input
+  GPIOs")
+- Dropped patch "hw/isa/vt82c686: Define a GPIO line between vt82c686
+  and i8259" in favor of:
+  https://patchew.org/QEMU/20240704205854.18537-1-shentey@gmail.com/
+  ("[PATCH 0/3] Resolve vt82c686 and piix4 qemu_irq memory leaks")
+- Dropped pulled patches.
+- Link to v2: https://lore.kernel.org/r/20240627-san-v2-0-750bb0946dbd@daynix.com
 
 Changes in v2:
-- Restricted writes to 'pmu' to host and max.
-- Prohibited writes to 'pmu' for hvf.
-- Link to v1: https://lore.kernel.org/r/20240629-pmu-v1-0-7269123b88a4@daynix.com
+- Rebased to "[PATCH] cpu: fix memleak of 'halt_cond' and 'thread'".
+  (Philippe Mathieu-Daudé)
+- Converted IRQs into GPIO lines and removed one qemu_irq usage.
+  (Peter Maydell)
+- s/suppresses/fixes/ (Michael S. Tsirkin)
+- Corrected title of patch "hw/virtio: Free vqs after vhost_dev_cleanup()"
+  (was "hw/virtio: Free vqs before vhost_dev_cleanup()")
+- Link to v1: https://lore.kernel.org/r/20240626-san-v1-0-f3cc42302189@daynix.com
+
 ---
- target/arm/cpu.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Akihiko Odaki (2):
+      memory: Update inline documentation
+      memory: Do not create circular reference with subregion
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index dcedadc89eaf..e76d42398eb2 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1761,6 +1761,10 @@ void arm_cpu_post_init(Object *obj)
- 
-     if (!arm_feature(&cpu->env, ARM_FEATURE_M)) {
-         qdev_property_add_static(DEVICE(obj), &arm_cpu_reset_hivecs_property);
-+
-+        if (arm_feature(&cpu->env, ARM_FEATURE_V7)) {
-+            object_property_add_bool(obj, "pmu", arm_get_pmu, arm_set_pmu);
-+        }
-     }
- 
-     if (arm_feature(&cpu->env, ARM_FEATURE_V8)) {
-@@ -1790,7 +1794,6 @@ void arm_cpu_post_init(Object *obj)
- 
-     if (arm_feature(&cpu->env, ARM_FEATURE_PMU)) {
-         cpu->has_pmu = true;
--        object_property_add_bool(obj, "pmu", arm_get_pmu, arm_set_pmu);
-     }
- 
-     /*
-
+ include/exec/memory.h | 22 +++++++---------------
+ system/memory.c       |  8 ++++++--
+ 2 files changed, 13 insertions(+), 17 deletions(-)
 ---
 base-commit: 38d0939b86e2eef6f6a622c6f1f7befda0146595
-change-id: 20240629-pmu-ad5f67e2c5d0
+change-id: 20240625-san-097afaf4f1c2
 
 Best regards,
 -- 
