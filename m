@@ -2,89 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D5FA01328
-	for <lists+qemu-devel@lfdr.de>; Sat,  4 Jan 2025 09:02:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C01DA01331
+	for <lists+qemu-devel@lfdr.de>; Sat,  4 Jan 2025 09:04:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTz7J-00049T-0F; Sat, 04 Jan 2025 03:02:41 -0500
+	id 1tTz9G-0001Xo-Ba; Sat, 04 Jan 2025 03:04:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tTz6m-0003s4-4Q
- for qemu-devel@nongnu.org; Sat, 04 Jan 2025 03:02:10 -0500
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1tTz92-00017y-Lm
+ for qemu-devel@nongnu.org; Sat, 04 Jan 2025 03:04:29 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tTz6j-0006kO-Oc
- for qemu-devel@nongnu.org; Sat, 04 Jan 2025 03:02:07 -0500
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2ef714374c0so15571200a91.0
- for <qemu-devel@nongnu.org>; Sat, 04 Jan 2025 00:02:05 -0800 (PST)
+ id 1tTz8p-0000Ii-Oh
+ for qemu-devel@nongnu.org; Sat, 04 Jan 2025 03:04:27 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-21675fd60feso239089765ad.2
+ for <qemu-devel@nongnu.org>; Sat, 04 Jan 2025 00:04:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1735977724; x=1736582524;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1735977854; x=1736582654;
  darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ysOqYR5lQLZYXNjeXy0RSiaXesPdODAKqoYiZJpO200=;
- b=0RQq/heAPXtGxnNiltWQFoZXtkXfkFBWu7kkt4mkMsc70+CsE62hZaBUtHrkM2dJ+N
- dmJLKGgIZnOdm0vigbwjrEvKsu/pR3KPtFDjItnXr6fLtoENTQTsW5rvZQlU5/Cjj3lS
- frhc49jdIpktBb0i0UrJRcoBXoPLdPvJCVOwDGnC2kC+cyTts6eZWP4xZXYPw0gk2wzn
- ch18X2yIW/LHSAHfkRd/IVrpiM7AEJJAAwTgKF9IuYlGl2QKkMU80y4F3p9yR0xRmduV
- wFlGceVRal57sF2F4SyUvwbxVSfKzKAQrX+kTl7oW9nG24DIyFhLp2cD0EtSoYVH4KRA
- NCtQ==
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=gKyALILGIA57coCwNkPBcKsLKOvRR+KB/LHDEoGgyvA=;
+ b=WdpW/M81Lib9fmi8HLMes5VUYr4+ESQthJpzQrgk19hEaRnsmryfLbm10pwASQzsHF
+ sGL6RaPVA0dXOP7KAhijwxUcpe0A+r+s+2y1jlaQcLti0xl6JHJyw3ZP63FyU4EcCRSY
+ O2PG1KzHlof3pqZflRASIWCuDWCyUKt/i9c+uRQrgjRy+VWB5I9/HyH03FiS8C/Bf0qz
+ /prXwoGcKRtSgFBcK1maHMKG2mYqFQOswi9V9c9cJ0hlq3hEJ4udYwkLyN8SsL9MmXmV
+ qoV+QIlg4HqPJiE+8SqJOyVJXfVMwl5J+FUWrRx8SecaVIU39OLKv9nd7zIwePjh3Ck5
+ KROg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735977724; x=1736582524;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ysOqYR5lQLZYXNjeXy0RSiaXesPdODAKqoYiZJpO200=;
- b=Ow9Sorjcwo5kb10QS6PD+vHVBHBFWdSHduX84QgohUQQ/RfL6cDSzS5CiEast8teyA
- fbfdYnFrHcAk3qWpo/SEmyYh1M1/BdCRAWqPjlmzFvK52hzjbBvhurNmNBe8hMixuNb7
- Dk+CLV7UbmPCtJlebwDNIgJcpmPVD3uNrBiolkX5d+pRjcQmysyPCgM1eoo4V2T3IKT6
- znx/BHtvirO8tGavFTWnNO6HFRATQ89uDCl91Dzafq/cu82R6SC0fLQ7W44Tzc3E5plu
- ykblGh0uyY2istCGRBUGZU7NaHhHpxehjK2597C/WU/+xAGo6XfUzlghn5Sjnv2ZWPGC
- Hbow==
-X-Gm-Message-State: AOJu0YxL0NOK73SwCNwe1CutgPZcATtBd5ob/9BGmGeBAUMlpxefnEQv
- DcApEqcYH/B1LhELKGBB7CiXqiCVbgBrKX4sCAX837/ZVx28D5QN0NR9OH/p7M0=
-X-Gm-Gg: ASbGncuXjUVLBd9jPqrg8+zUBz2JBttVK3f3nwkTTDPmkXVWD1oX703emkuPTUXlZyl
- HaJt7OWH5mUf7+p54WMZf17bRChETOeQVIw5jR7Twsqrr6BEedhrDGW6P4cpJEBcLHZejwELzb3
- oOerTOPdjJ4XjeuZ9L3MhciVjF5UjUd1gXQ0XZ+YRKsuAioHHR9/NfPKJWnuKEauE15YyI4ev5e
- MESuAXzaqrcYHzd55bu0Wthqd7P+0z3YJZ/UB1nzwIxHp2ADnkGTDIkTDQp
-X-Google-Smtp-Source: AGHT+IF129YrYoArS1xJ3aeUSbjZ57zkZJGR7G5Y9unzaUQaIUsizP2Qt6vV1oDp7Y6cLUvOqoAXtw==
-X-Received: by 2002:a17:90b:5150:b0:2f2:a974:fc11 with SMTP id
- 98e67ed59e1d1-2f4438e4576mr81496209a91.17.1735977724333; 
- Sat, 04 Jan 2025 00:02:04 -0800 (PST)
+ d=1e100.net; s=20230601; t=1735977854; x=1736582654;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=gKyALILGIA57coCwNkPBcKsLKOvRR+KB/LHDEoGgyvA=;
+ b=oBKB5rh0nKHVANYkqnUxHgRruiAf1dtrsjOnN+5xGGRnOr9BOOT7HV2AGqJoioj3Ij
+ QchORbCa9TjhoKyRMOdvNCV8xbmK2Nkex3zUdoQ9P+ulCiQJrRI2XQkSB21I6kd4W+jO
+ x6SbXtU/S+PklYMh1HBbw3RGQ7EQLMgjmLZDcPIR4YGmA6kY8P8v//Xn5L4nT9FncH2P
+ jcSGSHD7zVk9BG5q4HXeWNG5C3MM3KVTIR0QhDgDOy5VRkbHYenG92siW6wL2H5OJJIP
+ QhPslygjfuFtnDdq5biAMZKhdW9w4Xib3nfRQaSyRtrhEf/DpQOLJKzm0wfmq0DggR9i
+ QZgg==
+X-Gm-Message-State: AOJu0Yx0RFWwCmXXhD1DdYE8Rh18cJuxBvUBrpXhBUkI2hkmFUu2dzm4
+ sQzxtUah4mlL+LjCuWqpXlL+9yKGKIJaZaVzjDkLP8ezj6Avsn7gA/om2fKG3R8=
+X-Gm-Gg: ASbGnctIMR1E8SrTz5Np3FUqURR6UlA2Arxme2P5vi7MUnVjeihv2Zhm58WIs+X2DHo
+ Q9FXXK3o+anXppNpS7Mj/go+TAx9OhlyL4hdzwfigkB1KaXN6YNlbfqMAcX5abBQiyAr1YAnDET
+ tklFiM+X1HhxHeELLKgPHYelHTR9kOiY1MaNWBCj7/3cUFGNnjXxU8gRlba+0/wJXyiZA3KhY0q
+ l4l4M5pSuC7brLuBV2OG0axeMR9YO6KdUsyM5QmgR3RCC7cOkM00JrXYwVl
+X-Google-Smtp-Source: AGHT+IHP2meEMEx6gX4xZfuFWzpqkHEd2BsYOg21CrbSQ3H8okXTZKt7lpfw8bA7whr2L/4hW54HTA==
+X-Received: by 2002:a05:6a00:114b:b0:729:49a:2da6 with SMTP id
+ d2e1a72fcca58-72abdd3c2a4mr79007481b3a.3.1735977854066; 
+ Sat, 04 Jan 2025 00:04:14 -0800 (PST)
 Received: from localhost ([157.82.207.107])
  by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-219dc972251sm257158295ad.96.2025.01.04.00.02.01
+ d2e1a72fcca58-72aad8fd2bfsm28372519b3a.148.2025.01.04.00.04.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 04 Jan 2025 00:02:04 -0800 (PST)
+ Sat, 04 Jan 2025 00:04:13 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 04 Jan 2025 17:01:02 +0900
-Subject: [PATCH v8 9/9] pcie_sriov: Make a PCI device with user-created VF
- ARI-capable
+Subject: [PATCH v2 0/2] tap: Use g_spawn_sync() and g_spawn_check_wait_status()
+Date: Sat, 04 Jan 2025 17:04:06 +0900
+Message-Id: <20250104-glib-v2-0-12013f3e5782@daynix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250104-sriov-v8-9-56144cfdc7d9@daynix.com>
-References: <20250104-sriov-v8-0-56144cfdc7d9@daynix.com>
-In-Reply-To: <20250104-sriov-v8-0-56144cfdc7d9@daynix.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Alex Williamson <alex.williamson@redhat.com>, 
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Jason Wang <jasowang@redhat.com>, 
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
- Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, devel@daynix.com, 
- Yui Washizu <yui.washidu@gmail.com>, 
+X-B4-Tracking: v=1; b=H4sIAHbreGcC/13MQQ7CIBCF4as0sxYzA2haV97DdAEF20mUNmBIm
+ 4a7i126/F9evh2Sj+wT3Jodos+ceA415KmBYTJh9IJdbZAoFUnqxPhiK1Bpo7S1eHEt1OsS/ZP
+ Xg3n0tSdOnzluh5rpt/4BmQQKsqjRyfZqO7o7swVez8P8hr6U8gWNdnBzmQAAAA==
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, devel@daynix.com, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -106,112 +97,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+g_spawn_sync() gives an informative message if it fails to execute
+the script instead of reporting exiting status 1.
+
+g_spawn_check_wait_status() also gives an message easier to understand
+than the raw value returned by waitpid().
+
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- docs/system/sriov.rst       |  3 ++-
- include/hw/pci/pcie_sriov.h |  7 +++++--
- hw/pci/pcie_sriov.c         |  8 +++++++-
- hw/virtio/virtio-pci.c      | 16 ++++++++++------
- 4 files changed, 24 insertions(+), 10 deletions(-)
+Changes in v2:
+- EDITME: describe what is new in this series revision.
+- EDITME: use bulletpoints and terse descriptions.
+- Link to v1: https://lore.kernel.org/r/20231219-glib-v1-0-1b040d286b91@daynix.com
 
-diff --git a/docs/system/sriov.rst b/docs/system/sriov.rst
-index a851a66a4b8b..d12178f3c319 100644
---- a/docs/system/sriov.rst
-+++ b/docs/system/sriov.rst
-@@ -28,7 +28,8 @@ virtio-net-pci functions to a bus. Below is a command line example:
- The VFs specify the paired PF with ``sriov-pf`` property. The PF must be
- added after all VFs. It is the user's responsibility to ensure that VFs have
- function numbers larger than one of the PF, and that the function numbers
--have a consistent stride.
-+have a consistent stride. Both the PF and VFs are ARI-capable so you can have
-+255 VFs at maximum.
- 
- You may also need to perform additional steps to activate the SR-IOV feature on
- your guest. For Linux, refer to [1]_.
-diff --git a/include/hw/pci/pcie_sriov.h b/include/hw/pci/pcie_sriov.h
-index f75b8f22ee92..aeaa38cf3456 100644
---- a/include/hw/pci/pcie_sriov.h
-+++ b/include/hw/pci/pcie_sriov.h
-@@ -43,12 +43,15 @@ void pcie_sriov_vf_register_bar(PCIDevice *dev, int region_num,
- 
- /**
-  * pcie_sriov_pf_init_from_user_created_vfs() - Initialize PF with user-created
-- *                                              VFs.
-+ *                                              VFs, adding ARI to PF
-  * @dev: A PCIe device being realized.
-  * @offset: The offset of the SR-IOV capability.
-  * @errp: pointer to Error*, to store an error if it happens.
-  *
-- * Return: The size of added capability. 0 if the user did not create VFs.
-+ * Initializes a PF with user-created VFs, adding the ARI extended capability to
-+ * the PF. The VFs should call pcie_ari_init() to form an ARI device.
-+ *
-+ * Return: The size of added capabilities. 0 if the user did not create VFs.
-  *         -1 if failed.
-  */
- int16_t pcie_sriov_pf_init_from_user_created_vfs(PCIDevice *dev,
-diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-index 08f707e847fd..3ad18744f4a8 100644
---- a/hw/pci/pcie_sriov.c
-+++ b/hw/pci/pcie_sriov.c
-@@ -245,6 +245,7 @@ int16_t pcie_sriov_pf_init_from_user_created_vfs(PCIDevice *dev,
-     PCIDevice **vfs;
-     BusState *bus = qdev_get_parent_bus(DEVICE(dev));
-     uint16_t ven_id = pci_get_word(dev->config + PCI_VENDOR_ID);
-+    uint16_t size = PCI_EXT_CAP_SRIOV_SIZEOF;
-     uint16_t vf_dev_id;
-     uint16_t vf_offset;
-     uint16_t vf_stride;
-@@ -311,6 +312,11 @@ int16_t pcie_sriov_pf_init_from_user_created_vfs(PCIDevice *dev,
-         return -1;
-     }
- 
-+    if (!pcie_find_capability(dev, PCI_EXT_CAP_ID_ARI)) {
-+        pcie_ari_init(dev, offset + size);
-+        size += PCI_ARI_SIZEOF;
-+    }
-+
-     for (i = 0; i < pf->len; i++) {
-         vfs[i]->exp.sriov_vf.pf = dev;
-         vfs[i]->exp.sriov_vf.vf_number = i;
-@@ -331,7 +337,7 @@ int16_t pcie_sriov_pf_init_from_user_created_vfs(PCIDevice *dev,
-         }
-     }
- 
--    return PCI_EXT_CAP_SRIOV_SIZEOF;
-+    return size;
- }
- 
- bool pcie_sriov_register_device(PCIDevice *dev, Error **errp)
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index 5ea8e7f6d0a8..e3ac5543195a 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -2111,12 +2111,16 @@ static void virtio_pci_device_plugged(DeviceState *d, Error **errp)
-                          PCI_BASE_ADDRESS_SPACE_IO, &proxy->bar);
-     }
- 
--    res = pcie_sriov_pf_init_from_user_created_vfs(&proxy->pci_dev,
--                                                   proxy->last_pcie_cap_offset,
--                                                   errp);
--    if (res > 0) {
--        proxy->last_pcie_cap_offset += res;
--        virtio_add_feature(&vdev->host_features, VIRTIO_F_SR_IOV);
-+    if (pci_is_vf(&proxy->pci_dev)) {
-+        pcie_ari_init(&proxy->pci_dev, proxy->last_pcie_cap_offset);
-+        proxy->last_pcie_cap_offset += PCI_ARI_SIZEOF;
-+    } else {
-+        res = pcie_sriov_pf_init_from_user_created_vfs(
-+            &proxy->pci_dev, proxy->last_pcie_cap_offset, errp);
-+        if (res > 0) {
-+            proxy->last_pcie_cap_offset += res;
-+            virtio_add_feature(&vdev->host_features, VIRTIO_F_SR_IOV);
-+        }
-     }
- }
- 
+---
+Akihiko Odaki (2):
+      glib-compat: Define g_spawn_check_wait_status()
+      tap: Use g_spawn_sync() and g_spawn_check_wait_status()
 
+ include/glib-compat.h |   2 +
+ net/tap.c             | 169 ++++++++++++++++++++------------------------------
+ 2 files changed, 68 insertions(+), 103 deletions(-)
+---
+base-commit: 38d0939b86e2eef6f6a622c6f1f7befda0146595
+change-id: 20231219-glib-034a34bb05d8
+
+Best regards,
 -- 
-2.47.1
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
