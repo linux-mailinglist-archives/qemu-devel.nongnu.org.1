@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE0EA0132D
-	for <lists+qemu-devel@lfdr.de>; Sat,  4 Jan 2025 09:03:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A9EA01327
+	for <lists+qemu-devel@lfdr.de>; Sat,  4 Jan 2025 09:02:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTz6A-0003YN-79; Sat, 04 Jan 2025 03:01:30 -0500
+	id 1tTz6H-0003am-J4; Sat, 04 Jan 2025 03:01:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tTz65-0003Wl-DZ
- for qemu-devel@nongnu.org; Sat, 04 Jan 2025 03:01:25 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1tTz6F-0003aE-JA
+ for qemu-devel@nongnu.org; Sat, 04 Jan 2025 03:01:35 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tTz64-0006eU-1Q
- for qemu-devel@nongnu.org; Sat, 04 Jan 2025 03:01:25 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-219f8263ae0so136955335ad.0
- for <qemu-devel@nongnu.org>; Sat, 04 Jan 2025 00:01:23 -0800 (PST)
+ id 1tTz69-0006eq-JD
+ for qemu-devel@nongnu.org; Sat, 04 Jan 2025 03:01:35 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-21628b3fe7dso176418715ad.3
+ for <qemu-devel@nongnu.org>; Sat, 04 Jan 2025 00:01:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1735977683; x=1736582483;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1735977688; x=1736582488;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=pf5SZ6e3cD61gqtSQU/hVD3w+JbOpHtrUnhXJppalog=;
- b=PdlIknEujYSbYgGRr9gpokQ5w2eGwqMlXGau7fXI2x8W15GjelWWzpTHHVmUB4hVfh
- 7YW3irRpc7a2xrNjXzCBFS+iPSFH17xlzGjr7JcuVK9DhTJZUA0XJ+HnZbqw0Eq+Tg20
- n2m6jbIp5P4zFOi5rHWU8BW7TkN1Fd7sKqQcyf8ZmIRrNhDhSLERO/2vS9ggHUeVmXGR
- qb4USu3fIpjWNM5B6oxL2IL+Q8Xv0eJ3/VDvppucfwpmsuSNo8TGUxqf8ukFHFMzJ+6k
- dzwTDVDV0YqFqdcEncRpAa6BjQYWUXKfAEdW6NGNP9ZPYyr/5kuDL+o4V1BmbAO0J8nq
- DWkA==
+ :reply-to; bh=yuQhf5BHhf8srsz41f2lJ2BM75ujVVRrcc9sOO738qc=;
+ b=YokNk015F4degeUc0zm9lx4y9g1lZbKXb7DmknR6QnOrKKpg7nUTKOuy0sZ3nLwxgb
+ NmtRrGpQzg5npt5LcD/rMgQzu0O1diyDKnsVZm9YeSSVX8f9lfGFdjkkn07PYhZNb6NM
+ rTYYGbI8MokuZ99rjjN4fIbQDfJ9lnTPDeGsYBaruP9zY6g4x+Gq0oqQHEau0GZQtW7C
+ 7mlUCw3emBHuAxou7CU3B3ARX/dk92di9SHK09pljTX4ILUgEWWoP+4a94j+D8ffqSSl
+ s/bSRTYQ6mwknx8JAFJ7RMNJVcnhsnVDJ3odvIJuYmL9O+dqclb5WONnQxA6lXPzqZpW
+ XzHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735977683; x=1736582483;
+ d=1e100.net; s=20230601; t=1735977688; x=1736582488;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pf5SZ6e3cD61gqtSQU/hVD3w+JbOpHtrUnhXJppalog=;
- b=wKndTP3tjVhB/1b/hwDazvxIAL+9drVqo2s8jIndbBkUeJ88EMd5QhSJW6iEYY9Omd
- jF7Vjow7akEEd4h1nUbZrUhVRQ28GM/jcdRAyPTDWiQAVunbZvWwEW7GNy8/B9WRq49M
- 1QXY44PntCmE0yojuSo1EcebnaWcjXie4Y1DdYtTqss6J2exXkcFZraDczMN2byd7c7g
- vnF53lDWohf32fNCGEPd/Ysx3jvavawW+XmeSw2IDHFQqgDP7ZdEYSjOW3i/u4/I/+hp
- HdOsGpHts2A8nu9rR8HrPj/xf2jgKuPdOMFlluEUs2KckArp6rb5IvOVOzz8CMLUKP89
- 2nwg==
-X-Gm-Message-State: AOJu0YzsjrNQigPHu97PyTCthuNyl7uGz7oTzwPC+Px5z7WIWMQxNPPq
- 8vgeFeoMoDQ9zjeyvRmDi0d4YZQoaDb2kFXnR53oj09Hl19gRKVY7qKpkdqQcoU=
-X-Gm-Gg: ASbGncu7TjrQ7bO6L627YqSV/LQgb47eeCmGy/2DABCxszHHt/mQmweJcBFprJ6rQNb
- 0CSuLuus6Hw4Xid1SqOliTKaZEwwT0U/N8joAbvOz7weuxEISjjo4Mo+9XroiDb7k0S4dvAHPDj
- RnBBebbi+7BpCidll2oYWiCvPp7XELHAdxCQHUGfKKj3NEMsap84CXlQkDavY65OR2tCIukEVFs
- 3Fdpxs5Kvr2Kh9718URxICRHmVp31f9qUJPCY3/0NOS48elEcGvAsePIwmN
-X-Google-Smtp-Source: AGHT+IGsAWzPzd75/veVnKmlNmphUQNMqY6BodbR1KsWAbqUjje6GVNQxcv/Tq4d/BpEujrc0H6VtQ==
-X-Received: by 2002:a17:902:c40b:b0:206:9a3f:15e5 with SMTP id
- d9443c01a7336-219e6ebb6e2mr710534215ad.32.1735977682796; 
- Sat, 04 Jan 2025 00:01:22 -0800 (PST)
+ bh=yuQhf5BHhf8srsz41f2lJ2BM75ujVVRrcc9sOO738qc=;
+ b=f4bWPHhWxDw96sIsCZfCnBOxurQTvfZt1IAYLUfufeiMPq/hb+O6INSoos9OH58D7X
+ KkoPoq8HZ1yP5aMb37Z8s7LBmeVUPjEcWiO9vVBme83I+YdIj8tvNaFBO0NfbO1beui/
+ kY8yng/c6eNXCpz68rvMixLnW2fQ4/NhlS01Ghvbgiw2IZkWxTuwnUl0MWu/xlUkousg
+ b6GS7jSO6Hxv3xLz0ccd/RhZTIZSk0RejQmXzsZMNPeXkWwvA0kYmvUxjRFcu1coNYh2
+ EdPeNxF9VknTf8Lo6pJkSfb1PF1RzRCdz/sFqa4wTqdpUjOqt4jhuAwwA+MsYEXJ9bfS
+ U0pA==
+X-Gm-Message-State: AOJu0Yym3Wifqc/f97BOyyfQ0VBV9o0GK0Hp+27q4RiXPYpuu4HdjIDy
+ +CffMs64yZBQVci776JwakEluSAZfuDDy7tBw/2ED/mBFrJkx9YIfGnIIPs3qjA=
+X-Gm-Gg: ASbGncsVPA5P1q6yb0GT0Dw+oYNmpvjCNJS8iXgDu59kxNoioDFsM+a48catSh1GUF3
+ s5QtrY5PoNHPg8dx3G5tfj+M27htNFSSCiGPZUBilJlB/198Mx8u9G+w036tuxd5hR+61OUSPsx
+ D/4Kxmd3CsyWS4MkpCOeUn9W7m+KgeKLbNWPlGp82scUgXYo7M+a5Kh8gSX7bRztdL1Ks4p+26m
+ laphUVjH3holW2rdqq5RsgqMcSCzV0nZEzkwCR4XxShFOWvYS93015FfIii
+X-Google-Smtp-Source: AGHT+IFNQh9GAy/axAg5p8Rn/JzAAhQKp7IWKta0a52Lq6QMfYGSpm+9dCZctLjTCC8Szz3UUoxRXQ==
+X-Received: by 2002:a17:902:c951:b0:216:5e6e:68b4 with SMTP id
+ d9443c01a7336-219e6f10987mr764309565ad.46.1735977688151; 
+ Sat, 04 Jan 2025 00:01:28 -0800 (PST)
 Received: from localhost ([157.82.207.107])
  by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-219dc9f5211sm255346465ad.188.2025.01.04.00.01.19
+ 41be03b00d2f7-842b31ef0c0sm21460545a12.28.2025.01.04.00.01.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 04 Jan 2025 00:01:22 -0800 (PST)
+ Sat, 04 Jan 2025 00:01:27 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 04 Jan 2025 17:00:54 +0900
-Subject: [PATCH v8 1/9] hw/pci: Do not add ROM BAR for SR-IOV VF
+Date: Sat, 04 Jan 2025 17:00:55 +0900
+Subject: [PATCH v8 2/9] hw/pci: Fix SR-IOV VF number calculation
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250104-sriov-v8-1-56144cfdc7d9@daynix.com>
+Message-Id: <20250104-sriov-v8-2-56144cfdc7d9@daynix.com>
 References: <20250104-sriov-v8-0-56144cfdc7d9@daynix.com>
 In-Reply-To: <20250104-sriov-v8-0-56144cfdc7d9@daynix.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
@@ -82,14 +82,14 @@ Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, devel@daynix.com,
  Yui Washizu <yui.washidu@gmail.com>, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,33 +105,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A SR-IOV VF cannot have a ROM BAR.
+pci_config_get_bar_addr() had a division by vf_stride. vf_stride needs
+to be non-zero when there are multiple VFs, but the specification does
+not prohibit to make it zero when there is only one VF.
 
-Co-developed-by: Yui Washizu <yui.washidu@gmail.com>
+Do not perform the division for the first VF to avoid division by zero.
+
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/pci/pci.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ hw/pci/pci.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 8f160c0c0d8a..c4fa32dc987a 100644
+index c4fa32dc987a..ba53302ecc5f 100644
 --- a/hw/pci/pci.c
 +++ b/hw/pci/pci.c
-@@ -2432,6 +2432,14 @@ static void pci_add_option_rom(PCIDevice *pdev, bool is_default_rom,
-         return;
-     }
- 
-+    if (pci_is_vf(pdev)) {
-+        if (pdev->rom_bar > 0) {
-+            error_setg(errp, "ROM BAR cannot be enabled for SR-IOV VF");
+@@ -1510,7 +1510,11 @@ static pcibus_t pci_config_get_bar_addr(PCIDevice *d, int reg,
+             pci_get_word(pf->config + sriov_cap + PCI_SRIOV_VF_OFFSET);
+         uint16_t vf_stride =
+             pci_get_word(pf->config + sriov_cap + PCI_SRIOV_VF_STRIDE);
+-        uint32_t vf_num = (d->devfn - (pf->devfn + vf_offset)) / vf_stride;
++        uint32_t vf_num = d->devfn - (pf->devfn + vf_offset);
++
++        if (vf_num) {
++            vf_num /= vf_stride;
 +        }
-+
-+        return;
-+    }
-+
-     if (load_file || pdev->romsize == UINT32_MAX) {
-         path = qemu_find_file(QEMU_FILE_TYPE_BIOS, pdev->romfile);
-         if (path == NULL) {
+ 
+         if (type & PCI_BASE_ADDRESS_MEM_TYPE_64) {
+             new_addr = pci_get_quad(pf->config + bar);
 
 -- 
 2.47.1
