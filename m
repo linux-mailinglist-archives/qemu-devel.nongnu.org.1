@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF2BDA0131F
-	for <lists+qemu-devel@lfdr.de>; Sat,  4 Jan 2025 08:54:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C585CA01318
+	for <lists+qemu-devel@lfdr.de>; Sat,  4 Jan 2025 08:54:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTyyo-0002ie-H7; Sat, 04 Jan 2025 02:53:54 -0500
+	id 1tTyzB-000368-HZ; Sat, 04 Jan 2025 02:54:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tTyyj-0002LQ-U2
- for qemu-devel@nongnu.org; Sat, 04 Jan 2025 02:53:49 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1tTyym-0002f5-6d
+ for qemu-devel@nongnu.org; Sat, 04 Jan 2025 02:53:52 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tTyyh-00039d-UM
- for qemu-devel@nongnu.org; Sat, 04 Jan 2025 02:53:49 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-2161eb95317so186651205ad.1
- for <qemu-devel@nongnu.org>; Fri, 03 Jan 2025 23:53:44 -0800 (PST)
+ id 1tTyyk-0003AF-Hs
+ for qemu-devel@nongnu.org; Sat, 04 Jan 2025 02:53:51 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-21628b3fe7dso176373105ad.3
+ for <qemu-devel@nongnu.org>; Fri, 03 Jan 2025 23:53:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1735977223; x=1736582023;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1735977229; x=1736582029;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=vBTA/eSFpNVagoYgK/YYl9vBkpIAy0UvZyUMa/rjIxs=;
- b=yuqvUwlT2RR/sPIWnbNjWpw4ayo89Q/VjY8q0tl+wRuFxP4FHUFSHz7vinZSMU10f9
- jjv6GozIUEsbNVpJ6ikV76qW0yGAQnlR0VJ/CZwmOEAxmw0frUs8AG7lDOiWOwpTUIGp
- wfm4G0nWN+JroIrMNXSHDWhjQkdeWAt3gHY1N43LQgcv7vLnd79Acg9owTdyU64ORZvg
- jrp4voDNZrVVeu+3w7VxU8EzgwWgU4bIFFGzCjzv+pmTcxWJ5ab1fG1Mj4k6imLr2yVH
- GL6YjznyNLqKdScCC3yeu67DmQm/WOBhe40RLbtxP2LYr1gQGij8G8c/nZIwmV56Op0Z
- 09PA==
+ :reply-to; bh=Nq5kA+rAx2s39hfKGaHhph3umAuBYnelbLPjqvJGEKM=;
+ b=AaPG9Ly90LO2wr8OeF904FAJvUeJD+CrSq+lNJAIhSxa+ucNRY8FT81VuqJ9OMNevM
+ 5qwf8u+0wUQEWOrgWuW7M+GKwWP/8MR322u0x69SUIJGB2xuok8mixcbptWnjmeZWXYu
+ cYl04Dq7/lB78hhMU6/TRv1Xt8I/fOvizW29Nis+OiTozoc9cttsDFi7kgALPgzws5a4
+ iZ+XU3ETg7eg0OrBozkNH3AkSvk6EZJFjdKEHx9P93wtN321R6kj4B6SY0xq0v0T35uG
+ zaW22WemfWzLwgY8CCh8kzP7RTuRhlPMIqc2K7YcFF7LrgBr6ntuvmttCEb+qZ25kWmi
+ pKvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735977223; x=1736582023;
+ d=1e100.net; s=20230601; t=1735977229; x=1736582029;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vBTA/eSFpNVagoYgK/YYl9vBkpIAy0UvZyUMa/rjIxs=;
- b=piW5yectmakHxSVFt+K0UIxowWQxK73qrNmPmYUkicYS6cmSRQhK+kkX5WlH+2INrb
- HxZo0rOA8Z4TVlWvZ0NcPsGIWFfrqMxqJB7Wuni/9qoR19rQDS73Lz1Q9MweBswhn/2w
- ESnzNlWh09C92KGXExSV+099wbwUHgIyfz+zPf2DGHc/W2wysol2snzWErVNmPYD+Q8o
- GbFkajESxPkJRky5YjIoYuFsHBHfMZUyo40cqn9Yvw5qYPu9AHL45YLCUl42NDLVxF2a
- hJWwY7+6fRXz8mBhhpLB7AyHvYBD1/umVX0inDJ/X7Dd+MRk2lDQjFGuKHEUKbh0vNMu
- m07Q==
-X-Gm-Message-State: AOJu0Yznjrs0xcywe1G87W3AxS+up88zSjeU7BZn+HCzRUqLMX9ILR0R
- ozfy+TRpqlGYpTF5jEiZuLUN8e6zNGmTGpja8DtOWfO+GP61uHLZ9XRUT8KFnJY=
-X-Gm-Gg: ASbGncs5IlF/tymD6p/DMjKVWwE6FPy+y8pySAAu6Et/CHlR1lKkvMQcYuaiwibknfV
- 3xL2W/TsHOxw99ekFToUu8o6JBJsG8FAd9vMVcjAftUNeey+cphIe0w4RYW0VYSidg+owSR12bs
- TvVBfcu1iYPdh0c3YiTDYceZcWqyN8IqdBuYg811k6T7zc8hLE6Ej0dQGNp6IYNc5yYuT8fww1y
- yEphsBhNVCegev9+Ff7IZT2o1yne2zngdGUeTWqpSKwPOyec3g9LCj04W88
-X-Google-Smtp-Source: AGHT+IFpNOixQtoeyLgFhdqJpsGqXvcJfy/spJhHRUxHqdjmb5pWG0ItnpSdBCMOG0e5ZNtw4jaRKQ==
-X-Received: by 2002:a05:6a20:12c5:b0:1e0:c3bf:7909 with SMTP id
- adf61e73a8af0-1e5e081c9damr85227358637.41.1735977223163; 
- Fri, 03 Jan 2025 23:53:43 -0800 (PST)
+ bh=Nq5kA+rAx2s39hfKGaHhph3umAuBYnelbLPjqvJGEKM=;
+ b=iikJNvwaqRiWZf9aCMd4Ny7lOUp8jbMjfrjpTrnEAw7pTWHD2Gh2iIRUOSMhcAEHBK
+ EO0k9gTj9fOzkuHakSE2XsDXB4tQQzLJtFfFXqjGUV2NKXuGShlbZtMARo4rAI0h6eYk
+ l56tPjrWSLVr7N+tsk4wao5b21GW70PhIK7icovfqp2ysUxU3UZE+6n+M4RbPDpkrdtL
+ R+8I4w6PnR29GLToH7A1NEshZa4TlhkSD4o9k6kVu9AZkcJmTcbKnqGvQm+vlQ7p9wKl
+ wykDR82cNaadcjEVUPcaUcBSWGvc25p6ceF1RP1tUm5mbF7MG7J/3IEScp0IDSzPh9tZ
+ hEIQ==
+X-Gm-Message-State: AOJu0YzAKMyK6uCYMFaEOmwnzth268BriwJEveRWq7vTkaSCdS4NCzYc
+ fbd1b/p1Mip5o98YKG7P4SIAOl4XzJ3GoJWtUmz/Ytnjc7G6Uc7FoTQBSkgVJ5o=
+X-Gm-Gg: ASbGnctiI/lNnhhDaRyS6kONYZgNhwRFmhjyNknus6pnE5bZJeCzq0Vl+WKvhvnqCRG
+ N6IFts7AQK5nwV3sTy569qXwEZjWbfuAgEy0uM/xl40b0WVZiSCDBmDY75ZPTxHj404kRRE1nWq
+ wI3T0tTCAHo7lEck4VYVe4e1aiV58CrNj/RgBvOplpfI/2JGc0OEttDiU11OwdmjXt0Qz53mscJ
+ J38YA3J7O4in1vYKWPaWzY3sC1c+D8uSKKbosogYPFjdtrMWFJ+39dHxl+x
+X-Google-Smtp-Source: AGHT+IFSA0Cm91Hfo2b9s3W0fbZslWaAHdr0O3a3oYlX+TrKRpvIcZwgspbGH3vxth818ttd96wsDA==
+X-Received: by 2002:a17:902:fc44:b0:218:a5a8:431a with SMTP id
+ d9443c01a7336-219e6f26013mr809481215ad.49.1735977229290; 
+ Fri, 03 Jan 2025 23:53:49 -0800 (PST)
 Received: from localhost ([157.82.207.107])
  by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-72aad8370d5sm27448859b3a.71.2025.01.03.23.53.39
+ 41be03b00d2f7-8427ab7830asm25218874a12.0.2025.01.03.23.53.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 03 Jan 2025 23:53:42 -0800 (PST)
+ Fri, 03 Jan 2025 23:53:49 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 04 Jan 2025 16:52:31 +0900
-Subject: [PATCH v18 11/14] pcie_sriov: Remove num_vfs from PCIESriovPF
+Date: Sat, 04 Jan 2025 16:52:32 +0900
+Subject: [PATCH v18 12/14] pcie_sriov: Register VFs after migration
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250104-reuse-v18-11-c349eafd8673@daynix.com>
+Message-Id: <20250104-reuse-v18-12-c349eafd8673@daynix.com>
 References: <20250104-reuse-v18-0-c349eafd8673@daynix.com>
 In-Reply-To: <20250104-reuse-v18-0-c349eafd8673@daynix.com>
 To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
@@ -86,8 +86,8 @@ To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, devel@daynix.com, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -109,138 +109,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-num_vfs is not migrated so use PCI_SRIOV_CTRL_VFE and PCI_SRIOV_NUM_VF
-instead.
+pcie_sriov doesn't have code to restore its state after migration, but
+igb, which uses pcie_sriov, naively claimed its migration capability.
 
+Add code to register VFs after migration and fix igb migration.
+
+Fixes: 3a977deebe6b ("Intrdocue igb device emulation")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- include/hw/pci/pcie_sriov.h |  1 -
- hw/pci/pcie_sriov.c         | 38 +++++++++++++++++++++++++++-----------
- hw/pci/trace-events         |  2 +-
- 3 files changed, 28 insertions(+), 13 deletions(-)
+ include/hw/pci/pcie_sriov.h | 2 ++
+ hw/pci/pci.c                | 7 +++++++
+ hw/pci/pcie_sriov.c         | 7 +++++++
+ 3 files changed, 16 insertions(+)
 
 diff --git a/include/hw/pci/pcie_sriov.h b/include/hw/pci/pcie_sriov.h
-index 70649236c18a..5148c5b77dd1 100644
+index 5148c5b77dd1..c5d2d318d330 100644
 --- a/include/hw/pci/pcie_sriov.h
 +++ b/include/hw/pci/pcie_sriov.h
-@@ -16,7 +16,6 @@
- #include "hw/pci/pci.h"
+@@ -57,6 +57,8 @@ void pcie_sriov_pf_add_sup_pgsize(PCIDevice *dev, uint16_t opt_sup_pgsize);
+ void pcie_sriov_config_write(PCIDevice *dev, uint32_t address,
+                              uint32_t val, int len);
  
- typedef struct PCIESriovPF {
--    uint16_t num_vfs;   /* Number of virtual functions created */
-     uint8_t vf_bar_type[PCI_NUM_REGIONS];   /* Store type for each VF bar */
-     PCIDevice **vf;     /* Pointer to an array of num_vfs VF devices */
- } PCIESriovPF;
++void pcie_sriov_pf_post_load(PCIDevice *dev);
++
+ /* Reset SR/IOV */
+ void pcie_sriov_pf_reset(PCIDevice *dev);
+ 
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index d769952e89ba..2724297ea43c 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -803,10 +803,17 @@ static bool migrate_is_not_pcie(void *opaque, int version_id)
+     return !pci_is_express((PCIDevice *)opaque);
+ }
+ 
++static int pci_post_load(void *opaque, int version_id)
++{
++    pcie_sriov_pf_post_load(opaque);
++    return 0;
++}
++
+ const VMStateDescription vmstate_pci_device = {
+     .name = "PCIDevice",
+     .version_id = 2,
+     .minimum_version_id = 1,
++    .post_load = pci_post_load,
+     .fields = (const VMStateField[]) {
+         VMSTATE_INT32_POSITIVE_LE(version_id, PCIDevice),
+         VMSTATE_BUFFER_UNSAFE_INFO_TEST(config, PCIDevice,
 diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-index db087bb9330c..69609c112e31 100644
+index 69609c112e31..1eb4358256de 100644
 --- a/hw/pci/pcie_sriov.c
 +++ b/hw/pci/pcie_sriov.c
-@@ -51,7 +51,6 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
-     pcie_add_capability(dev, PCI_EXT_CAP_ID_SRIOV, 1,
-                         offset, PCI_EXT_CAP_SRIOV_SIZEOF);
-     dev->exp.sriov_cap = offset;
--    dev->exp.sriov_pf.num_vfs = 0;
-     dev->exp.sriov_pf.vf = NULL;
- 
-     pci_set_word(cfg + PCI_SRIOV_VF_OFFSET, vf_offset);
-@@ -188,29 +187,28 @@ static void register_vfs(PCIDevice *dev)
- 
-     assert(sriov_cap > 0);
-     num_vfs = pci_get_word(dev->config + sriov_cap + PCI_SRIOV_NUM_VF);
--    if (num_vfs > pci_get_word(dev->config + sriov_cap + PCI_SRIOV_TOTAL_VF)) {
--        return;
--    }
- 
-     trace_sriov_register_vfs(dev->name, PCI_SLOT(dev->devfn),
-                              PCI_FUNC(dev->devfn), num_vfs);
-     for (i = 0; i < num_vfs; i++) {
-         pci_set_enabled(dev->exp.sriov_pf.vf[i], true);
-     }
--    dev->exp.sriov_pf.num_vfs = num_vfs;
-+
-+    pci_set_word(dev->wmask + sriov_cap + PCI_SRIOV_NUM_VF, 0);
- }
- 
- static void unregister_vfs(PCIDevice *dev)
- {
--    uint16_t num_vfs = dev->exp.sriov_pf.num_vfs;
-+    uint8_t *cfg = dev->config + dev->exp.sriov_cap;
-     uint16_t i;
- 
-     trace_sriov_unregister_vfs(dev->name, PCI_SLOT(dev->devfn),
--                               PCI_FUNC(dev->devfn), num_vfs);
--    for (i = 0; i < num_vfs; i++) {
-+                               PCI_FUNC(dev->devfn));
-+    for (i = 0; i < pci_get_word(cfg + PCI_SRIOV_TOTAL_VF); i++) {
-         pci_set_enabled(dev->exp.sriov_pf.vf[i], false);
-     }
--    dev->exp.sriov_pf.num_vfs = 0;
-+
-+    pci_set_word(dev->wmask + dev->exp.sriov_cap + PCI_SRIOV_NUM_VF, 0xffff);
- }
- 
- void pcie_sriov_config_write(PCIDevice *dev, uint32_t address,
-@@ -236,6 +234,17 @@ void pcie_sriov_config_write(PCIDevice *dev, uint32_t address,
-         } else {
-             unregister_vfs(dev);
-         }
-+    } else if (range_covers_byte(off, len, PCI_SRIOV_NUM_VF)) {
-+        uint8_t *cfg = dev->config + sriov_cap;
-+        uint8_t *wmask = dev->wmask + sriov_cap;
-+        uint16_t num_vfs = pci_get_word(cfg + PCI_SRIOV_NUM_VF);
-+        uint16_t wmask_val = PCI_SRIOV_CTRL_MSE | PCI_SRIOV_CTRL_ARI;
-+
-+        if (num_vfs <= pci_get_word(cfg + PCI_SRIOV_TOTAL_VF)) {
-+            wmask_val |= PCI_SRIOV_CTRL_VFE;
-+        }
-+
-+        pci_set_word(wmask + PCI_SRIOV_CTRL, wmask_val);
+@@ -248,6 +248,13 @@ void pcie_sriov_config_write(PCIDevice *dev, uint32_t address,
      }
  }
  
-@@ -252,6 +261,8 @@ void pcie_sriov_pf_reset(PCIDevice *dev)
-     unregister_vfs(dev);
- 
-     pci_set_word(dev->config + sriov_cap + PCI_SRIOV_NUM_VF, 0);
-+    pci_set_word(dev->wmask + sriov_cap + PCI_SRIOV_CTRL,
-+                 PCI_SRIOV_CTRL_VFE | PCI_SRIOV_CTRL_MSE | PCI_SRIOV_CTRL_ARI);
- 
-     /*
-      * Default is to use 4K pages, software can modify it
-@@ -298,7 +309,7 @@ PCIDevice *pcie_sriov_get_pf(PCIDevice *dev)
- PCIDevice *pcie_sriov_get_vf_at_index(PCIDevice *dev, int n)
- {
-     assert(!pci_is_vf(dev));
--    if (n < dev->exp.sriov_pf.num_vfs) {
-+    if (n < pcie_sriov_num_vfs(dev)) {
-         return dev->exp.sriov_pf.vf[n];
-     }
-     return NULL;
-@@ -306,5 +317,10 @@ PCIDevice *pcie_sriov_get_vf_at_index(PCIDevice *dev, int n)
- 
- uint16_t pcie_sriov_num_vfs(PCIDevice *dev)
- {
--    return dev->exp.sriov_pf.num_vfs;
-+    uint16_t sriov_cap = dev->exp.sriov_cap;
-+    uint8_t *cfg = dev->config + sriov_cap;
++void pcie_sriov_pf_post_load(PCIDevice *dev)
++{
++    if (dev->exp.sriov_cap) {
++        register_vfs(dev);
++    }
++}
 +
-+    return sriov_cap &&
-+           (pci_get_word(cfg + PCI_SRIOV_CTRL) & PCI_SRIOV_CTRL_VFE) ?
-+           pci_get_word(cfg + PCI_SRIOV_NUM_VF) : 0;
- }
-diff --git a/hw/pci/trace-events b/hw/pci/trace-events
-index 19643aa8c6b0..e98f575a9d19 100644
---- a/hw/pci/trace-events
-+++ b/hw/pci/trace-events
-@@ -14,7 +14,7 @@ msix_write_config(char *name, bool enabled, bool masked) "dev %s enabled %d mask
  
- # hw/pci/pcie_sriov.c
- sriov_register_vfs(const char *name, int slot, int function, int num_vfs) "%s %02x:%x: creating %d vf devs"
--sriov_unregister_vfs(const char *name, int slot, int function, int num_vfs) "%s %02x:%x: Unregistering %d vf devs"
-+sriov_unregister_vfs(const char *name, int slot, int function) "%s %02x:%x: Unregistering vf devs"
- sriov_config_write(const char *name, int slot, int fun, uint32_t offset, uint32_t val, uint32_t len) "%s %02x:%x: sriov offset 0x%x val 0x%x len %d"
- 
- # pcie.c
+ /* Reset SR/IOV */
+ void pcie_sriov_pf_reset(PCIDevice *dev)
 
 -- 
 2.47.1
