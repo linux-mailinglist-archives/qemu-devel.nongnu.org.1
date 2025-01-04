@@ -2,76 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E4FBA012F1
+	by mail.lfdr.de (Postfix) with ESMTPS id D9B76A012F2
 	for <lists+qemu-devel@lfdr.de>; Sat,  4 Jan 2025 08:37:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTyiL-00038Z-7F; Sat, 04 Jan 2025 02:36:54 -0500
+	id 1tTyiQ-00039I-86; Sat, 04 Jan 2025 02:36:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tTyi9-000387-Gx
- for qemu-devel@nongnu.org; Sat, 04 Jan 2025 02:36:41 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1tTyiD-00038X-Fw
+ for qemu-devel@nongnu.org; Sat, 04 Jan 2025 02:36:47 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tTyi7-0004vW-Qq
- for qemu-devel@nongnu.org; Sat, 04 Jan 2025 02:36:41 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-216634dd574so120140095ad.2
- for <qemu-devel@nongnu.org>; Fri, 03 Jan 2025 23:36:38 -0800 (PST)
+ id 1tTyiB-0004w8-Uw
+ for qemu-devel@nongnu.org; Sat, 04 Jan 2025 02:36:45 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-2166022c5caso159765885ad.2
+ for <qemu-devel@nongnu.org>; Fri, 03 Jan 2025 23:36:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1735976198; x=1736580998;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1735976203; x=1736581003;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=1hHRlyLKBmZEY402t1u0c+rlikNZcKkBPd55b5IeoYU=;
- b=p6xEMGN+Pp+daJB3daUku9QHWdVrcLBYsFYhiYUU6rUQdAt7LVJmQ5Dhg1kiBHwHVr
- WMfBOYuz3hEOJdmxdvELMxJGRWr9coIGQW3Sypx5bBner3khIASTMAlvjXBXhwHF+VXY
- 6Yda0I0c4zWvz3+jNKo6U+y+smU7YOoKp1EXMiuYXNmE3fCDVe0VEQtpB2TfVv7mmdpj
- M2j7rcnYBhl79FMWTaUu0ibrOMB5Z/D76UHGi1Mo07YwkSX8A/hlVpFbjIh5z5dzWE5v
- M6B289C+cmPodz1lHzt6ViFxHBiEg/UOc8EerQBxXh6I6FQQet+CQKNKLZz5RPzXSizk
- kSxw==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=nUQUJaOUPrhv5bXHlKSaYOoVtPTOlAhSIbbKfSqWyrU=;
+ b=YPMPl3dJQYDClO+nYZYoO0GKrBu71n23IILz8dd9B2oy8b07+hBesJ0QJJMhM26hmx
+ HnZYis7TCNljbrqZ8V4KsCzoyIpCs260a87fm+XJwrC511f+dSJoXfXE67BlFDfQWBSY
+ ea6EUpb1cF7Lu1yJzw/XXmWqWF4sx5MbK2d0NxTnuLjOn90CAJwUAjfm3v4Y8DywFRIN
+ dCF+it1cEQfdw57Z9ROoGQeNUN/T6/8YxtxOu4bUUE9Pei6oCeq9bwwkJKIeJAZpoSlw
+ Gu99gkvYv+vS6AAJP+3LKRpEmMsRmO4VVoafz8osdzkjW8CyH//mmtJffhTDg+0RqO3v
+ s4Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735976198; x=1736580998;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=1hHRlyLKBmZEY402t1u0c+rlikNZcKkBPd55b5IeoYU=;
- b=Rqz46+LQoz2pfksXUw3pTVoGmJxbY4kI+0ijtCrNwKpSFPbDA75yK3YDYW5oE2JdRk
- 2IeXPGCkqCJk7A+mzUMDZwzjv4Xkhyw1IFhH3I9iYI6methRB72bc2QS1DjiwUAbXinA
- 4D+vUk+NjuUt48vmqiHnHg3o6wig6CPP0mkvrRipM7MqzA4o1hYs1J7k0/hK1HcVNged
- FZM6suku+KZg1dw7iIHjjSvkkT0v6K3+b8IymCKWYdIrAz19bC/TX93gzXG3Fa0TEge0
- 07sfHFoDq5x8J3sP5oIjaigeV2oumoui6sRqMSDVlNbA145Yxj0l+/dv1GK68Fut3wiW
- jOxA==
-X-Gm-Message-State: AOJu0YzC+RV4MkYj13oM/Cd8e0dMRHVGhzRi4BUcdhnYljTaUvxzQ02m
- 0SKc6pkAUVHOeXOvmXwt2eZtbO21A0Xtg1nOFWRzppWQ9ABNojEqetEBfUGrla5uQMHp+V7MSEU
- k0eo=
-X-Gm-Gg: ASbGncvznfuPIqFBgIF0UCwOfMUFytCrfnYhUKM62BQ/VmmRcqhk9vV64pQNcvoFUcC
- 66NFI3GXUIZgmOwxbeP/PLZPEFgRiARBNzMNkSKDR0nAc7E5q+B/803auvxcl40nliwuqHr4tHM
- 3pBJ23jpnC6GSAnLTtuG2r6AUBWS+B9g51RNcxNzC5/wM/Dwowycf7/CT+99yPcbrNcJAiXucgh
- lzLXOBhw8mKRVhxgKG4K6i0gLsp6LSJCS25P91Mz0rn2Cu0SgZ7aqY7AURM
-X-Google-Smtp-Source: AGHT+IH606EoXkeA3wFuGj9AglIa5CMmNdCeXDl4UKQFYkTSJDSQmH8ti1yf2D+6xAY8h8WfvvXO3g==
-X-Received: by 2002:a05:6a20:841e:b0:1e0:d73b:15e4 with SMTP id
- adf61e73a8af0-1e5e07ffc48mr84567190637.29.1735976197746; 
- Fri, 03 Jan 2025 23:36:37 -0800 (PST)
+ d=1e100.net; s=20230601; t=1735976203; x=1736581003;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nUQUJaOUPrhv5bXHlKSaYOoVtPTOlAhSIbbKfSqWyrU=;
+ b=CoLbfMBcHaiBY4kkNbfgJon47lexOaoSD/VAYZbsQvJtyqC849qWKBdThfI9nyX4WE
+ 391hLka12uS8JBdC3TgeQ5mAMCNW6S1uKMptzKZ4vxhK8IhhpqXOlVX+s5K7nbS/K74F
+ QkYo8UXt3doG6yaZTW9xiAv54e9ts8P4zo3hQuAseZGGPUQy7MFygRzSHsEkvgo+1kUj
+ v9mSAU7GrMvuKWuv41mI7mmFfTO0Fn4eA4CXuzlGF0tvlTSENFnRqLHBYmMz7THbalpA
+ KT57IulpDjOaQnXTKrMyc6d7uO3Z9mgZFtWcQa7yWQDLQEaVLMiIcXkF7Hs9RH5HNBYo
+ e6QA==
+X-Gm-Message-State: AOJu0Yxya8/Qcwte9iAqDjSrpbfqp4d4X/WQIcq0/UnWvbyFDXOOVESU
+ TQ7VKzdEU7RCZvdWrQQ4Q+tyR4ulyLZSvABbIquue6CVFAYMyH8dKToeZORHtrc=
+X-Gm-Gg: ASbGncu8RdRsOktUHBR5jNVuLqOXEzIX2tVp5BiGOR8c4DU9U5PBfmGXEDndfoWgE2a
+ bg3FTegPSJlFDoDpQAHUhybo0/7MBM8/l/cKUP8tpU3/6XKkOSjvE9arKuqDai7Vr/PgvLVlU3o
+ p/IAuvQNZD01GrES2p1rTfFMGt56bbKSt+PC98o5vnn+iOwQoWT1NFEw79HmPd1/iIh5MzgJC7b
+ rZ9PpcA2mJA1HTV0gA6bi1jo7DuOCxEOAWxSZ/vDooLD8O+UX8kAzOV/Gd+
+X-Google-Smtp-Source: AGHT+IEWU9/cRizzUkr9glce1nyiXStd+Ml5FG/leQNJ4RKB7dbyiKSUJTstIgVqKz/sfjQHQA99rQ==
+X-Received: by 2002:a05:6a21:6f87:b0:1e1:ab51:f531 with SMTP id
+ adf61e73a8af0-1e5e048adecmr92981783637.22.1735976202703; 
+ Fri, 03 Jan 2025 23:36:42 -0800 (PST)
 Received: from localhost ([157.82.207.107])
  by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-72aad8db637sm27407110b3a.119.2025.01.03.23.36.34
+ 41be03b00d2f7-842e89059b1sm21196482a12.86.2025.01.03.23.36.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 03 Jan 2025 23:36:37 -0800 (PST)
+ Fri, 03 Jan 2025 23:36:42 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v3 0/3] virtio: Convert feature properties to OnOffAuto
-Date: Sat, 04 Jan 2025 16:36:04 +0900
-Message-Id: <20250104-virtio-v3-0-63ef70e9ddf3@daynix.com>
+Date: Sat, 04 Jan 2025 16:36:05 +0900
+Subject: [PATCH v3 1/3] qdev-properties: Accept bool for OnOffAuto
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAOTkeGcC/1WMwQ6CMBAFf4X0bE27LUg9+R/GQ6WL7EFKWtJAC
- P9uIcHocV7ezMIiBsLIrsXCAiaK5PsM6lSwprP9Czm5zAwEaCmk4onCSJ7LSqNVLZiyUSyfh4A
- tTXvo/sjcURx9mPduktt6JPSRSJILjsa59mJrWRt5c3buaTo3/s22RoIfD+DrQfaeoIwGVaEo1
- Z+3rusH1yg729UAAAA=
+Message-Id: <20250104-virtio-v3-1-63ef70e9ddf3@daynix.com>
+References: <20250104-virtio-v3-0-63ef70e9ddf3@daynix.com>
+In-Reply-To: <20250104-virtio-v3-0-63ef70e9ddf3@daynix.com>
 To: Jason Wang <jasowang@redhat.com>, 
  Dmitry Fleytman <dmitry.fleytman@gmail.com>, 
  Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
@@ -85,8 +82,8 @@ To: Jason Wang <jasowang@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -108,51 +105,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series was spun off from:
-"[PATCH 0/3] virtio-net: Convert feature properties to OnOffAuto"
-(https://patchew.org/QEMU/20240714-auto-v3-0-e27401aabab3@daynix.com/)
-
-Some features are not always available with vhost. Legacy features are
-not available with vp_vdpa in particular. virtio devices used to disable
-them when not available even if the corresponding properties were
-explicitly set to "on".
-
-QEMU already has OnOffAuto type, which includes the "auto" value to let
-it automatically decide the effective value. Convert feature properties
-to OnOffAuto and set them "auto" by default to utilize it. This allows
-QEMU to report an error if they are set "on" and the corresponding
-features are not available.
+Accept bool literals for OnOffAuto properties for consistency with bool
+properties. This enables users to set the "on" or "off" value in a
+uniform syntax without knowing whether the "auto" value is accepted.
+This behavior is especially useful when converting an existing bool
+property to OnOffAuto or vice versa.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-Changes in v3:
-- Rebased.
-- Link to v2: https://lore.kernel.org/r/20241022-virtio-v2-0-b2394236e053@daynix.com
+ hw/core/qdev-properties.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-Changes in v2:
-- Expanded the message of patch "qdev-properties: Accept bool for
-  OnOffAuto".
-- Link to v1: https://lore.kernel.org/r/20241014-virtio-v1-0-e9ddf7a81891@daynix.com
+diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+index 434a76f5036e..0081d79f9b7b 100644
+--- a/hw/core/qdev-properties.c
++++ b/hw/core/qdev-properties.c
+@@ -491,6 +491,21 @@ const PropertyInfo qdev_prop_string = {
+     .set   = set_string,
+ };
+ 
++static void set_on_off_auto(Object *obj, Visitor *v, const char *name,
++                            void *opaque, Error **errp)
++{
++    Property *prop = opaque;
++    int *ptr = object_field_prop_ptr(obj, prop);
++    bool value;
++
++    if (visit_type_bool(v, name, &value, NULL)) {
++        *ptr = value ? ON_OFF_AUTO_ON : ON_OFF_AUTO_OFF;
++        return;
++    }
++
++    qdev_propinfo_set_enum(obj, v, name, opaque, errp);
++}
++
+ /* --- on/off/auto --- */
+ 
+ const PropertyInfo qdev_prop_on_off_auto = {
+@@ -498,7 +513,7 @@ const PropertyInfo qdev_prop_on_off_auto = {
+     .description = "on/off/auto",
+     .enum_table = &OnOffAuto_lookup,
+     .get = qdev_propinfo_get_enum,
+-    .set = qdev_propinfo_set_enum,
++    .set = set_on_off_auto,
+     .set_default_value = qdev_propinfo_set_default_value_enum,
+ };
+ 
 
----
-Akihiko Odaki (3):
-      qdev-properties: Accept bool for OnOffAuto
-      qdev-properties: Add DEFINE_PROP_ON_OFF_AUTO_BIT64()
-      virtio: Convert feature properties to OnOffAuto
-
- include/hw/qdev-properties.h | 18 ++++++++++
- include/hw/virtio/virtio.h   | 38 +++++++++++---------
- hw/core/machine.c            |  4 ++-
- hw/core/qdev-properties.c    | 83 ++++++++++++++++++++++++++++++++++++++++++--
- hw/virtio/virtio-bus.c       | 14 ++++++--
- hw/virtio/virtio.c           |  4 ++-
- 6 files changed, 138 insertions(+), 23 deletions(-)
----
-base-commit: 38d0939b86e2eef6f6a622c6f1f7befda0146595
-change-id: 20241013-virtio-164ea3f295c3
-
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.47.1
 
 
