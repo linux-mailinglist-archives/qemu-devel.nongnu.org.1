@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4234BA01330
-	for <lists+qemu-devel@lfdr.de>; Sat,  4 Jan 2025 09:04:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F78A0141D
+	for <lists+qemu-devel@lfdr.de>; Sat,  4 Jan 2025 12:30:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tTz9D-0001Ks-Nv; Sat, 04 Jan 2025 03:04:40 -0500
+	id 1tU2KY-0007BR-DD; Sat, 04 Jan 2025 06:28:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tTz93-00018F-PZ
- for qemu-devel@nongnu.org; Sat, 04 Jan 2025 03:04:30 -0500
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ (Exim 4.90_1) (envelope-from <lists@philjordan.eu>)
+ id 1tU2KV-0007B4-9M
+ for qemu-devel@nongnu.org; Sat, 04 Jan 2025 06:28:31 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tTz90-0000bt-Iw
- for qemu-devel@nongnu.org; Sat, 04 Jan 2025 03:04:28 -0500
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-2eed82ca5b4so18122229a91.2
- for <qemu-devel@nongnu.org>; Sat, 04 Jan 2025 00:04:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <lists@philjordan.eu>)
+ id 1tU2KS-0007cg-72
+ for qemu-devel@nongnu.org; Sat, 04 Jan 2025 06:28:31 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-21675fd60feso240894585ad.2
+ for <qemu-devel@nongnu.org>; Sat, 04 Jan 2025 03:28:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1735977861; x=1736582661;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1735990105; x=1736594905;
  darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=j7PSWmeKm2BCZzuGe7wJN0+C8nC2dfAB8Z84i9cyTNU=;
- b=oW1Ldw2SiquzxkErrKT+z+HUrPwsNUkTye3zczsy+enTin0sodLcT1trGGL5gZziZT
- 88xAuCHEYhL7uyxBnMPnpOSgqknIZrMWtB+TssLlh8Y2ZBvEulZFX/HKbcl3pTu3u+FX
- zNv9psm29/d0hrwqaPMVcTK2BoJFGalweeqwnPox/yKlpcdzDnYx0w6ymD8fkxVmZJ5J
- /D2QJOuSHS9DgGd4BwjLvqGPSAq1JGDJo2MCR1O32RdD6H9uLCtvjmRI7xjnzz9wHv1f
- ur7uTpRVCjdEbRjk4nOR7u0Mz6BYWHvBvvxvtkbG8Yc01qLh1+Lm+8mBU6VbfheB42VV
- 32sg==
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=kPdAOm0ZmThBPJ2LaHVrje4bu2CEF6SRz25ziHv5/pE=;
+ b=fxil4jEm/TM/Nx5WbmnmStSAzseNFbg7bZJvbY5Jasw7rX3BxQ4mmlzJldS97yw54q
+ OoTe6WZF/BhMZ1OY9ng6QHuEkEZfhGQ1jqB2TsPkNNCBD5fbYZlPlCYdEOF7H/mWX8cN
+ DxGOKDenFG7eeonpEGHu6hZWcHlnN4Xgla4R+9cJQcO3eYWQVW2gS/fznvoFELkW4xk0
+ jYyQzXRfbk4PYAgm0aCfPReINazR0wn+KiChEbdoVJqdAZKmFDxWtjlUx/5A3mvcFn6f
+ /pKwA+u2SkjWRfCRjsRbn43jz1GnbSQqfyKOkix691hf9sBIfUOOBS4U5G9IMoF9W2p0
+ Qvxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1735977861; x=1736582661;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=j7PSWmeKm2BCZzuGe7wJN0+C8nC2dfAB8Z84i9cyTNU=;
- b=qPZSPn/h6qO+1BqKn+grp7kKVZ46B0r1xVI0qZCR7shH1f6++1zDE1xr07CZu5gWDt
- BCydgrF8y21GJ3wNX5BUv9S0FUYvy2UAnq3dKCfB3HYb4sRLcA0ell9dBID149LALbJc
- MWTrAY13YOltb3VFnunOjx/bS832Y65eBgXFpi1OKhnapzsNhbH1igQRgxgkTsA3J1aL
- IGCga19ZFWG8IhC28nNE2/fuHfYmG7k2w7DdrQ/E4ATLGNFDA/TolYKEpsIoUCUI/b7t
- bd5IjErTvszrAUKQoOtT/4h7eV/iaLWeIzxw2OU3eq6x5bnbhpOCBG0mDxhQZmQoWCRf
- l7KA==
-X-Gm-Message-State: AOJu0Ywuds1CRutSsPorisiKxSxIOywzWPlFlfCs3FhrdVgQeJJwat2N
- wxNORG5w2F/pJQVeQOLFGXgQFX9XEg12z7Zm8820XXA3ubB1PubsySSxPlAgewEldaJ/KRnXQiF
- yLmY=
-X-Gm-Gg: ASbGncsfabrGQnvHF/dsrLMXUuEsxYcDjvCy/2NFrrnVR81c8Wv8E/20HUXsOli58SQ
- +hdI7Ql368UApM5OUwfy6MeSYrufblbg4NdBGHCcCUlg91kvXqDKf688mQofMaBrqt63Ri9BGHA
- 1xX6QYFgnhrD/9zzwJlNRQxuv0JYMBE/DF3ZzDK+qfZ3P1FZKHr7L95tMuxzNLn3MEUR3LSl6Qu
- o7ffjACHQaYSpTZ0v2SdaUC1cBhA0Y141rjhnPOzQEHCpUE+V/yT80eL9FT
-X-Google-Smtp-Source: AGHT+IEo0cpdZ7IVab42kbpN91u60YM+kISR0y2YO/7w4TVuOuPVRBBh0NKzdJgevkfZPvVKb4D84A==
-X-Received: by 2002:a17:90b:534b:b0:2ee:c91a:acf7 with SMTP id
- 98e67ed59e1d1-2f452dfccdcmr76276094a91.4.1735977860695; 
- Sat, 04 Jan 2025 00:04:20 -0800 (PST)
-Received: from localhost ([157.82.207.107])
- by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-2f4478a9108sm32880827a91.43.2025.01.04.00.04.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 04 Jan 2025 00:04:20 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 04 Jan 2025 17:04:08 +0900
-Subject: [PATCH v2 2/2] tap: Use g_spawn_sync() and g_spawn_check_wait_status()
+ d=1e100.net; s=20230601; t=1735990105; x=1736594905;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kPdAOm0ZmThBPJ2LaHVrje4bu2CEF6SRz25ziHv5/pE=;
+ b=T/Cnr7sPhPnUzBItGkTlypqGRvbMfsnbpohJFUvm68ZDpgfwiv77RruB1I5mz8C040
+ JU73DARJmU7eu02Wj9Vo/TEgDbZxDfiIxtk8U6VhEdDx/Z6wmZl0nCMCzLRf3qUSJLC7
+ V1andXJ2HQcb85NgZdKZV2+w6b14Sj5jQ0Mat9frT1dnw6YPus65vgY9zOud6qhSTjKH
+ pKPuJRv5FGiLJtYsFsi86gIaEbIM2ATTAT9ltUlflMD8mI7ZhgdJVDpCIsYUaMxKmZjC
+ /3Eso+NO3TCv18BzzIBpT8SUfCCQ99eawYdQ2pBBB/dRNr+lmTWxES3rcBsKo51/Nn7P
+ Saig==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUxknCPGzYYwJnlLiV7syiB2B4vpnkMd4YaZQCtzlKn1d+95//rnY6yiDLFnurE+jts5fA1F7JjBZSz@nongnu.org
+X-Gm-Message-State: AOJu0Yxgb+qxFrrMKlk5bVR4PhNioG81OUmWqWT5RMEdBouO9EwjzO7q
+ ggBHDb72SC0uLnUPjx/B7xSRW+INJvJTPu1VhWx3RePqyB4y8ilY1hZYvxiyggXQFi9FN3+q2Hw
+ sB4qhN2JX4U9w2uwoDJKTr6wPiApwlQvS89Ai
+X-Gm-Gg: ASbGncsiCEY3gsADCzBFMMMjNchZvZp51C4dGuSsTBZ7mv1x2gzXLE1QRlGk496RrnD
+ GFB0RLn3icuA+p1N6A62ND6yTJtNWbrZjsuEMSw==
+X-Google-Smtp-Source: AGHT+IGwLCvAxanjPFHdv2qEZJzu8nU/WjVDFWNqRbQGkJ1dBQHsIa7tCDOagQVAOxLFoVNEvevYcj5vuqSYpkly9f4=
+X-Received: by 2002:a05:6a00:1311:b0:728:e81c:2bf4 with SMTP id
+ d2e1a72fcca58-72abddb1958mr68201774b3a.11.1735990105056; Sat, 04 Jan 2025
+ 03:28:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250104-glib-v2-2-12013f3e5782@daynix.com>
-References: <20250104-glib-v2-0-12013f3e5782@daynix.com>
-In-Reply-To: <20250104-glib-v2-0-12013f3e5782@daynix.com>
-To: Jason Wang <jasowang@redhat.com>
-Cc: qemu-devel@nongnu.org, devel@daynix.com, 
- Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1034.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+References: <20250103150558.1473-1-philmd@linaro.org>
+ <Z3f--qO8x45MpiXQ@redhat.com>
+In-Reply-To: <Z3f--qO8x45MpiXQ@redhat.com>
+From: Phil Dennis-Jordan <lists@philjordan.eu>
+Date: Sat, 4 Jan 2025 12:28:14 +0100
+Message-ID: <CAGCz3vtSUD-8pG7GVUAjx0ydOKAh-YxvWDUpcECef7ch7dbeGg@mail.gmail.com>
+Subject: Re: [PATCH] system: Try hardware accelerators (KVM, HVF) before
+ software one (TCG)
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: multipart/alternative; boundary="0000000000008bc20a062adfb1d5"
+Received-SPF: neutral client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=lists@philjordan.eu; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,236 +95,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-g_spawn_sync() gives an informative message if it fails to execute
-the script instead of reporting exiting status 1.
+--0000000000008bc20a062adfb1d5
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-g_spawn_check_wait_status() also gives an message easier to understand
-than the raw value returned by waitpid().
+On Fri, 3 Jan 2025 at 16:16, Daniel P. Berrang=C3=A9 <berrange@redhat.com> =
+wrote:
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- net/tap.c | 169 ++++++++++++++++++++++++--------------------------------------
- 1 file changed, 66 insertions(+), 103 deletions(-)
+> On Fri, Jan 03, 2025 at 04:05:58PM +0100, Philippe Mathieu-Daud=C3=A9 wro=
+te:
+> > As Daniel suggested [*]:
+> >
+> > > We should consider to rank HVF above TCG, on the basis
+> > > that HW acceleration is faster and should provide a
+> > > host<->guest security boundary that we don't claim for TCG
+> >
+> > [*] https://lore.kernel.org/qemu-devel/Z07YASl2Pd3CPtjE@redhat.com/
+>
+> Note, my statement above was on the basis that HVF passes all our
+> functional tests, thus indicating a decent level of confidence
+> in the correctness of the HVF impl.
+>
+> If anyone knows any show stopper problems with HVF that would
+> justify blocking its promotion ahead of TCG.... say now.
+>
 
-diff --git a/net/tap.c b/net/tap.c
-index ae1c7e398321..392a024f8ed9 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -385,56 +385,30 @@ static TAPState *net_tap_fd_init(NetClientState *peer,
-     return s;
- }
- 
--static void close_all_fds_after_fork(int excluded_fd)
-+static void unset_cloexec(gpointer data)
- {
--    const int skip_fd[] = {STDIN_FILENO, STDOUT_FILENO, STDERR_FILENO,
--                           excluded_fd};
--    unsigned int nskip = ARRAY_SIZE(skip_fd);
--
--    /*
--     * skip_fd must be an ordered array of distinct fds, exclude
--     * excluded_fd if already included in the [STDIN_FILENO - STDERR_FILENO]
--     * range
--     */
--    if (excluded_fd <= STDERR_FILENO) {
--        nskip--;
--    }
--
--    qemu_close_all_open_fd(skip_fd, nskip);
-+    g_assert(!fcntl(GPOINTER_TO_INT(data), F_SETFD, 0));
- }
- 
- static void launch_script(const char *setup_script, const char *ifname,
-                           int fd, Error **errp)
- {
--    int pid, status;
--    char *args[3];
--    char **parg;
-+    gint status;
-+    gchar *argv[] = { (gchar *)setup_script, (gchar *)ifname, NULL };
-+    g_autoptr(GError) error = NULL;
- 
-     /* try to launch network script */
--    pid = fork();
--    if (pid < 0) {
--        error_setg_errno(errp, errno, "could not launch network script %s",
--                         setup_script);
-+    if (!g_spawn_sync(NULL, argv, NULL, G_SPAWN_CHILD_INHERITS_STDIN,
-+                      unset_cloexec, GINT_TO_POINTER(fd),
-+                      NULL, NULL, &status, &error)) {
-+        error_setg(errp, "could not launch network script %s: %s",
-+                   setup_script, error->message);
-         return;
-     }
--    if (pid == 0) {
--        close_all_fds_after_fork(fd);
--        parg = args;
--        *parg++ = (char *)setup_script;
--        *parg++ = (char *)ifname;
--        *parg = NULL;
--        execv(setup_script, args);
--        _exit(1);
--    } else {
--        while (waitpid(pid, &status, 0) != pid) {
--            /* loop */
--        }
- 
--        if (WIFEXITED(status) && WEXITSTATUS(status) == 0) {
--            return;
--        }
--        error_setg(errp, "network script %s failed with status %d",
--                   setup_script, status);
-+    if (!g_spawn_check_wait_status(status, &error)) {
-+        error_setg(errp, "network script %s failed: %s",
-+                   setup_script, error->message);
-     }
- }
- 
-@@ -477,6 +451,12 @@ static int net_bridge_run_helper(const char *helper, const char *bridge,
- {
-     sigset_t oldmask, mask;
-     g_autofree char *default_helper = NULL;
-+    g_autofree char *fd_buf = NULL;
-+    g_autofree char *br_buf = NULL;
-+    g_autofree char *helper_cmd = NULL;
-+    g_autoptr(GError) error = NULL;
-+    int fd;
-+    int saved_errno;
-     int pid, status;
-     char *args[5];
-     char **parg;
-@@ -495,82 +475,65 @@ static int net_bridge_run_helper(const char *helper, const char *bridge,
-         return -1;
-     }
- 
--    /* try to launch bridge helper */
--    pid = fork();
--    if (pid < 0) {
--        error_setg_errno(errp, errno, "Can't fork bridge helper");
--        return -1;
--    }
--    if (pid == 0) {
--        char *fd_buf = NULL;
--        char *br_buf = NULL;
--        char *helper_cmd = NULL;
--
--        close_all_fds_after_fork(sv[1]);
--        fd_buf = g_strdup_printf("%s%d", "--fd=", sv[1]);
-+    fd_buf = g_strdup_printf("%s%d", "--fd=", sv[1]);
- 
--        if (strrchr(helper, ' ') || strrchr(helper, '\t')) {
--            /* assume helper is a command */
-+    if (strrchr(helper, ' ') || strrchr(helper, '\t')) {
-+        /* assume helper is a command */
- 
--            if (strstr(helper, "--br=") == NULL) {
--                br_buf = g_strdup_printf("%s%s", "--br=", bridge);
--            }
--
--            helper_cmd = g_strdup_printf("%s %s %s %s", helper,
--                            "--use-vnet", fd_buf, br_buf ? br_buf : "");
--
--            parg = args;
--            *parg++ = (char *)"sh";
--            *parg++ = (char *)"-c";
--            *parg++ = helper_cmd;
--            *parg++ = NULL;
-+        if (strstr(helper, "--br=") == NULL) {
-+            br_buf = g_strdup_printf("%s%s", "--br=", bridge);
-+        }
- 
--            execv("/bin/sh", args);
--            g_free(helper_cmd);
--        } else {
--            /* assume helper is just the executable path name */
-+        helper_cmd = g_strdup_printf("%s %s %s %s", helper,
-+                        "--use-vnet", fd_buf, br_buf ? br_buf : "");
- 
--            br_buf = g_strdup_printf("%s%s", "--br=", bridge);
-+        parg = args;
-+        *parg++ = (char *)"sh";
-+        *parg++ = (char *)"-c";
-+        *parg++ = helper_cmd;
-+        *parg++ = NULL;
-+    } else {
-+        /* assume helper is just the executable path name */
- 
--            parg = args;
--            *parg++ = (char *)helper;
--            *parg++ = (char *)"--use-vnet";
--            *parg++ = fd_buf;
--            *parg++ = br_buf;
--            *parg++ = NULL;
-+        br_buf = g_strdup_printf("%s%s", "--br=", bridge);
- 
--            execv(helper, args);
--        }
--        g_free(fd_buf);
--        g_free(br_buf);
--        _exit(1);
-+        parg = args;
-+        *parg++ = (char *)helper;
-+        *parg++ = (char *)"--use-vnet";
-+        *parg++ = fd_buf;
-+        *parg++ = br_buf;
-+        *parg++ = NULL;
-+    }
- 
--    } else {
--        int fd;
--        int saved_errno;
-+    /* try to launch bridge helper */
-+    if (!g_spawn_async(NULL, args, NULL,
-+                       G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_CHILD_INHERITS_STDIN,
-+                       unset_cloexec, GINT_TO_POINTER(sv[1]), &pid, &error)) {
-+        error_setg(errp, "could not launch bridge helper: %s", error->message);
-+        return -1;
-+    }
- 
--        close(sv[1]);
-+    close(sv[1]);
- 
--        fd = RETRY_ON_EINTR(recv_fd(sv[0]));
--        saved_errno = errno;
-+    fd = RETRY_ON_EINTR(recv_fd(sv[0]));
-+    saved_errno = errno;
- 
--        close(sv[0]);
-+    close(sv[0]);
- 
--        while (waitpid(pid, &status, 0) != pid) {
--            /* loop */
--        }
--        sigprocmask(SIG_SETMASK, &oldmask, NULL);
--        if (fd < 0) {
--            error_setg_errno(errp, saved_errno,
--                             "failed to recv file descriptor");
--            return -1;
--        }
--        if (!WIFEXITED(status) || WEXITSTATUS(status) != 0) {
--            error_setg(errp, "bridge helper failed");
--            return -1;
--        }
--        return fd;
-+    while (waitpid(pid, &status, 0) != pid) {
-+        /* loop */
-     }
-+    sigprocmask(SIG_SETMASK, &oldmask, NULL);
-+    if (fd < 0) {
-+        error_setg_errno(errp, saved_errno,
-+                            "failed to recv file descriptor");
-+        return -1;
-+    }
-+    if (!g_spawn_check_wait_status(status, &error)) {
-+        error_setg(errp, "bridge helper failed: %s", error->message);
-+        return -1;
-+    }
-+    return fd;
- }
- 
- int net_init_bridge(const Netdev *netdev, const char *name,
+I don't know about showstoppers, but:
 
--- 
-2.47.1
+1. As far as I'm aware there are/were problems with the virtual IOMMU
+devices in HVF. It's been a while (~half a year?) since I tried them, but I
+had problems getting guests booted with intel_iommu etc.
 
+2. I think there might also be a few remaining edge cases where the x86
+instruction emulation on fault/trap is incomplete. Most notably, MMIO using
+SSE/AVX/etc. instructions will, I think, fail. In practice this is a fairly
+obscure use case - I'm not aware of any guest OS that actually performs
+MMIO using these instructions. I have a patch kicking around that adds
+support for missing 64-bit variants of common scalar arithmetic
+instructions with memory operands. I can dig that up and post it - do we
+have a good way of adding tests for this kind of thing?
+
+3. As far as I'm aware, there's no CI happening on HVF? Or has that
+changed? macOS is notoriously a pain in the rear in terms of CI thanks to
+its licensing, and the big cloud CI platforms tend to run it in a VM which
+in turn typically doesn't support nested HVF. I've been working on an
+on-prem solution to provisioning bare-metal Macs to run clean-slate OS
+images for CI. This has been a side project though and I haven't had the
+resources to focus on that project to see it through. It might be possible
+to do this in the cloud on Amazon's EC2 Mac Minis as well, but those aren't
+exactly cheap.
+
+
+
+> > Suggested-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> > ---
+> >  system/vl.c | 5 ++---
+> >  1 file changed, 2 insertions(+), 3 deletions(-)
+>
+> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>
+>
+> With regards,
+> Daniel
+> --
+> |: https://berrange.com      -o-
+> https://www.flickr.com/photos/dberrange :|
+> |: https://libvirt.org         -o-
+> https://fstop138.berrange.com :|
+> |: https://entangle-photo.org    -o-
+> https://www.instagram.com/dberrange :|
+>
+>
+>
+
+--0000000000008bc20a062adfb1d5
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
+mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, 3 Jan 2=
+025 at 16:16, Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redhat=
+.com">berrange@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmai=
+l_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,20=
+4,204);padding-left:1ex">On Fri, Jan 03, 2025 at 04:05:58PM +0100, Philippe=
+ Mathieu-Daud=C3=A9 wrote:<br>
+&gt; As Daniel suggested [*]:<br>
+&gt; <br>
+&gt; &gt; We should consider to rank HVF above TCG, on the basis<br>
+&gt; &gt; that HW acceleration is faster and should provide a<br>
+&gt; &gt; host&lt;-&gt;guest security boundary that we don&#39;t claim for =
+TCG<br>
+&gt; <br>
+&gt; [*] <a href=3D"https://lore.kernel.org/qemu-devel/Z07YASl2Pd3CPtjE@red=
+hat.com/" rel=3D"noreferrer" target=3D"_blank">https://lore.kernel.org/qemu=
+-devel/Z07YASl2Pd3CPtjE@redhat.com/</a><br>
+<br>
+Note, my statement above was on the basis that HVF passes all our<br>
+functional tests, thus indicating a decent level of confidence<br>
+in the correctness of the HVF impl.<br>
+<br>
+If anyone knows any show stopper problems with HVF that would<br>
+justify blocking its promotion ahead of TCG.... say now.<br></blockquote><d=
+iv><br></div><div>I don&#39;t know about showstoppers, but:</div><div><br><=
+/div><div>1. As far as I&#39;m aware there are/were problems with the virtu=
+al IOMMU devices in HVF. It&#39;s been a while (~half a year?) since I trie=
+d them, but I had problems getting guests booted with intel_iommu etc.<br><=
+/div><div><br></div><div>2. I think there might also be a few remaining edg=
+e cases where the x86 instruction emulation on fault/trap is incomplete. Mo=
+st notably, MMIO using SSE/AVX/etc. instructions will, I think, fail. In pr=
+actice this is a fairly obscure use case - I&#39;m not aware of any guest O=
+S that actually performs MMIO using these instructions. I have a patch kick=
+ing around that adds support for  missing 64-bit variants of common scalar =
+arithmetic instructions with memory operands. I can dig that up and post it=
+ - do we have a good way of adding tests for this kind of thing?</div><div>=
+<br></div><div>3. As far as I&#39;m aware, there&#39;s no CI happening on H=
+VF? Or has that changed? macOS is notoriously a pain in the rear in terms o=
+f CI thanks to its licensing, and the big cloud CI platforms tend to run it=
+ in a VM which in turn typically doesn&#39;t support nested HVF. I&#39;ve b=
+een working on an on-prem solution to provisioning bare-metal Macs to run c=
+lean-slate OS images for CI. This has been a side project though and I have=
+n&#39;t had the resources to focus on that project to see it through. It mi=
+ght be possible to do this in the cloud on Amazon&#39;s EC2 Mac Minis as we=
+ll, but those aren&#39;t exactly cheap.<br></div><div><br></div><div>=C2=A0=
+</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;b=
+order-left:1px solid rgb(204,204,204);padding-left:1ex">
+&gt; Suggested-by: Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@r=
+edhat.com" target=3D"_blank">berrange@redhat.com</a>&gt;<br>
+&gt; Signed-off-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philm=
+d@linaro.org" target=3D"_blank">philmd@linaro.org</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 system/vl.c | 5 ++---<br>
+&gt;=C2=A0 1 file changed, 2 insertions(+), 3 deletions(-)<br>
+<br>
+Reviewed-by: Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redhat.=
+com" target=3D"_blank">berrange@redhat.com</a>&gt;<br>
+<br>
+<br>
+With regards,<br>
+Daniel<br>
+-- <br>
+|: <a href=3D"https://berrange.com" rel=3D"noreferrer" target=3D"_blank">ht=
+tps://berrange.com</a>=C2=A0 =C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a href=3D"http=
+s://www.flickr.com/photos/dberrange" rel=3D"noreferrer" target=3D"_blank">h=
+ttps://www.flickr.com/photos/dberrange</a> :|<br>
+|: <a href=3D"https://libvirt.org" rel=3D"noreferrer" target=3D"_blank">htt=
+ps://libvirt.org</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0-o-=C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 <a href=3D"https://fstop138.berrange.com" rel=3D"n=
+oreferrer" target=3D"_blank">https://fstop138.berrange.com</a> :|<br>
+|: <a href=3D"https://entangle-photo.org" rel=3D"noreferrer" target=3D"_bla=
+nk">https://entangle-photo.org</a>=C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a href=3D=
+"https://www.instagram.com/dberrange" rel=3D"noreferrer" target=3D"_blank">=
+https://www.instagram.com/dberrange</a> :|<br>
+<br>
+<br>
+</blockquote></div></div>
+
+--0000000000008bc20a062adfb1d5--
 
