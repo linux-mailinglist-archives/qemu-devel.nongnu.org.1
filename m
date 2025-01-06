@@ -2,89 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F9B3A02CDC
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Jan 2025 16:58:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B41ECA02D06
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Jan 2025 17:00:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tUpUK-0001Pw-Fi; Mon, 06 Jan 2025 10:57:56 -0500
+	id 1tUpWI-0003IG-Vf; Mon, 06 Jan 2025 10:59:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1tUpUD-0001Oc-MZ; Mon, 06 Jan 2025 10:57:49 -0500
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from
+ <BATV+fbe2d98d58a1bf71468b+7806+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1tUpWD-0003Aw-Rj
+ for qemu-devel@nongnu.org; Mon, 06 Jan 2025 10:59:53 -0500
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1tUpUB-0000ys-VO; Mon, 06 Jan 2025 10:57:49 -0500
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 506EtnCh021905;
- Mon, 6 Jan 2025 15:57:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- corp-2023-11-20; bh=+l3BegQC2et9jox+ySKJLE3pOigeHiqg5BztLGOc8Dc=; b=
- ilWwDKhihdH/RLbidiX+N3DNtOZlk1V1BVl8yqAljAQokfgFakXXHIg1E05/mvNz
- JsfdMi0HFA1ef+7zljcmNCrt8S/NivKi+9KaI38jnGfEnoslDlLh/d+CLDL7pj8R
- fNUxM4rdEJ9LRPx20rA3xqPoh8KVIh+cGg7LVnhL09MtSP1/oONPjrne9zT1A/Ll
- zMrbqOHGr2jPPvlIAs9DUOWBnsXZe+RTqKm+kly3uLpYmI77UhXyzi6QC/nV+a5Q
- CnKxiOo5EBD9xM0yLyYQUc9+a3L8bKimccmmNmVGy9LbGd+uGDc3gXNfy1badKHT
- zVCCGvZ2MEcwJXVkNUpxLw==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43xwhsjjqh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 06 Jan 2025 15:57:45 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 506F5hw2027471; Mon, 6 Jan 2025 15:57:45 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 43xue7nw50-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 06 Jan 2025 15:57:45 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 506FvegH016161;
- Mon, 6 Jan 2025 15:57:44 GMT
-Received: from jonah-ol8.us.oracle.com (dhcp-10-65-185-77.vpn.oracle.com
- [10.65.185.77])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 43xue7nw2a-3; Mon, 06 Jan 2025 15:57:44 +0000
-From: Jonah Palmer <jonah.palmer@oracle.com>
-To: eperezma@redhat.com, jasowang@redhat.com, qemu-devel@nongnu.org
-Cc: dtatulea@nvidia.com, mcoqueli@redhat.com, mst@redhat.com,
- si-wei.liu@oracle.com, qemu-stable@nongnu.org, leiyang@redhat.com,
- anisinha@redhat.com
-Subject: [PATCH v3 2/2] net: move backend cleanup to NIC cleanup
-Date: Mon,  6 Jan 2025 10:57:35 -0500
-Message-ID: <20250106155737.976977-3-jonah.palmer@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250106155737.976977-1-jonah.palmer@oracle.com>
-References: <20250106155737.976977-1-jonah.palmer@oracle.com>
+ (Exim 4.90_1) (envelope-from
+ <BATV+fbe2d98d58a1bf71468b+7806+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1tUpWB-00015d-H0
+ for qemu-devel@nongnu.org; Mon, 06 Jan 2025 10:59:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=QdYWazl+uYWiK6jC3auxGpr3NIaDcSqZhruGJNGtWwQ=; b=V8sd77uddWa2fcI+dUQuOh7k1y
+ 0GhwX8aH1a2QcoFNuClqdWDIdyIjalG8tMsyRvvxELQfsohV4pfoDXNHobekXJq28fecG7r1uokXM
+ D+YGfZiN6O/TZRhrRGm1wG6f3gaJnrlivztXggcP0asy3FLvr6FhecSKjWio5GuJwyE+zLzH7JLxu
+ wLqyE7sBTlaSGiSVnDtczdioaAX7NEwDI7k4pcCXsG0g5utE1qPq5bMcRgro3fXgUl6YedwuMurWc
+ 5cILplH1FvxGhNwywQugqQDOmwhk2mX9+NIfwkQ+O5QtqnjBsz2Dhi2MSJh2g0uTVxZC8fflXseQB
+ +bZBCq8A==;
+Received: from [54.240.197.239] (helo=u09cd745991455d.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+ id 1tUpW5-0000000FSpG-0Ll8; Mon, 06 Jan 2025 15:59:45 +0000
+Message-ID: <0fcb0e650a015c4e3d901d72f1807ab9b83ef5e6.camel@infradead.org>
+Subject: Re: [PATCH v5] hw/acpi: Add vmclock device
+From: David Woodhouse <dwmw2@infradead.org>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov
+ <imammedo@redhat.com>,  Ani Sinha <anisinha@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,  Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Peter Hilber <peter.hilber@opensynergy.com>,
+ "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>, paul <paul@xen.org>
+Date: Mon, 06 Jan 2025 15:59:44 +0000
+In-Reply-To: <0ea91db1223b5853054e02da5abf84dd063d0ef7.camel@infradead.org>
+References: <7bdd6feab5bb6c32c9c83ef3d184882c2499baa6.camel@infradead.org>
+ <0ea91db1223b5853054e02da5abf84dd063d0ef7.camel@infradead.org>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-iU10rqSx76llA6HCCFQe"
+User-Agent: Evolution 3.52.3-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-02_03,2025-01-06_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- spamscore=0 adultscore=0
- malwarescore=0 phishscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
- definitions=main-2501060140
-X-Proofpoint-GUID: XUwaSb-o1KIcZgjDR6IFPf63BhcTOhzH
-X-Proofpoint-ORIG-GUID: XUwaSb-o1KIcZgjDR6IFPf63BhcTOhzH
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.369,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+fbe2d98d58a1bf71468b+7806+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,130 +79,168 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eugenio Pérez <eperezma@redhat.com>
 
-Commit a0d7215e33 ("vhost-vdpa: do not cleanup the vdpa/vhost-net
-structures if peer nic is present") effectively delayed the backend
-cleanup, allowing the frontend or the guest to access it resources as
-long as the frontend is still visible to the guest.
+--=-iU10rqSx76llA6HCCFQe
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-However it does not clean up the resources until the qemu process is
-over.  This causes an effective leak if the device is deleted with
-device_del, as there is no way to close the vdpa device.  This makes
-impossible to re-add that device to this or other QEMU instances until
-the first instance of QEMU is finished.
+On Thu, 2024-12-19 at 18:24 +0100, David Woodhouse wrote:
+> On Tue, 2024-12-03 at 17:33 +0000, David Woodhouse wrote:
+> > From: David Woodhouse <dwmw@amazon.co.uk>
+> >=20
+> > The vmclock device addresses the problem of live migration with
+> > precision clocks. The tolerances of a hardware counter (e.g. TSC) are
+> > typically around =C2=B150PPM. A guest will use NTP/PTP/PPS to disciplin=
+e that
+> > counter against an external source of 'real' time, and track the precis=
+e
+> > frequency of the counter as it changes with environmental conditions.
+> >=20
+> > When a guest is live migrated, anything it knows about the frequency of
+> > the underlying counter becomes invalid. It may move from a host where
+> > the counter running at -50PPM of its nominal frequency, to a host where
+> > it runs at +50PPM. There will also be a step change in the value of the
+> > counter, as the correctness of its absolute value at migration is
+> > limited by the accuracy of the source and destination host's time
+> > synchronization.
+> >=20
+> > The device exposes a shared memory region to guests, which can be mappe=
+d
+> > all the way to userspace. In the first phase, this merely advertises a
+> > 'disruption_marker', which indicates that the guest should throw away a=
+ny
+> > NTP synchronization it thinks it has, and start again.
+> >=20
+> > Because the region can be exposed all the way to userspace, application=
+s
+> > can still use time from a fast vDSO 'system call', and check the
+> > disruption marker to be sure that their timestamp is indeed truthful.
+> >=20
+> > The structure also allows for the precise time, as known by the host, t=
+o
+> > be exposed directly to guests so that they don't have to wait for NTP t=
+o
+> > resync from scratch.
+> >=20
+> > The values and fields are based on the nascent virtio-rtc specification=
+,
+> > and the intent is that a version (hopefully precisely this version) of
+> > this structure will be included as an optional part of that spec. In th=
+e
+> > meantime, a simple ACPI device along the lines of VMGENID is perfectly
+> > sufficient and is compatible with what's being shipped in certain
+> > commercial hypervisors.
+> >=20
+> > Linux guest support was merged into the 6.13-rc1 kernel:
+> > https://git.kernel.org/torvalds/c/205032724226
+> >=20
+> > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> > ---
+> > This is basically unchanged since the last time the structure was
+> > changed in July, apart from fairly trivial cosmetic changes and now
+> > importing the header file from Linux.
+>=20
+>=20
+> Ping?
 
-Move the cleanup from qemu_cleanup to the NIC deletion and to
-net_cleanup.
+Post-holiday-season ping... ?
 
-Fixes: a0d7215e33 ("vhost-vdpa: do not cleanup the vdpa/vhost-net structures if peer nic is present")
-Reported-by: Lei Yang <leiyang@redhat.com>
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
-Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
----
- net/net.c        | 33 +++++++++++++++++++++++++++------
- net/vhost-vdpa.c |  8 --------
- 2 files changed, 27 insertions(+), 14 deletions(-)
 
-diff --git a/net/net.c b/net/net.c
-index 07d760569b..8ffaaa4a13 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -428,7 +428,13 @@ void qemu_del_net_client(NetClientState *nc)
-         object_unparent(OBJECT(nf));
-     }
- 
--    /* If there is a peer NIC, delete and cleanup client, but do not free. */
-+    /*
-+     * If there is a peer NIC, transfer ownership to it.  Delete the client
-+     * from net_client list but do not cleanup nor free.  This way NIC can
-+     * still access to members of the backend.
-+     *
-+     * The cleanup and free will be done when the NIC is free.
-+     */
-     if (nc->peer && nc->peer->info->type == NET_CLIENT_DRIVER_NIC) {
-         NICState *nic = qemu_get_nic(nc->peer);
-         if (nic->peer_deleted) {
-@@ -438,16 +444,13 @@ void qemu_del_net_client(NetClientState *nc)
- 
-         for (i = 0; i < queues; i++) {
-             ncs[i]->peer->link_down = true;
-+            QTAILQ_REMOVE(&net_clients, ncs[i], next);
-         }
- 
-         if (nc->peer->info->link_status_changed) {
-             nc->peer->info->link_status_changed(nc->peer);
-         }
- 
--        for (i = 0; i < queues; i++) {
--            qemu_cleanup_net_client(ncs[i], true);
--        }
--
-         return;
-     }
- 
-@@ -465,8 +468,12 @@ void qemu_del_nic(NICState *nic)
- 
-     for (i = 0; i < queues; i++) {
-         NetClientState *nc = qemu_get_subqueue(nic, i);
--        /* If this is a peer NIC and peer has already been deleted, free it now. */
-+        /*
-+         * If this is a peer NIC and peer has already been deleted, clean it up
-+         * and free it now.
-+         */
-         if (nic->peer_deleted) {
-+            qemu_cleanup_net_client(nc->peer, false);
-             qemu_free_net_client(nc->peer);
-         } else if (nc->peer) {
-             /* if there are RX packets pending, complete them */
-@@ -1680,6 +1687,9 @@ void net_cleanup(void)
-      * of the latest NET_CLIENT_DRIVER_NIC, and operate on *p as we walk
-      * the list.
-      *
-+     * However, the NIC may have peers that trust to be clean beyond this
-+     * point.  For example, if they have been removed with device_del.
-+     *
-      * The 'nc' variable isn't part of the list traversal; it's purely
-      * for convenience as too much '(*p)->' has a tendency to make the
-      * readers' eyes bleed.
-@@ -1687,6 +1697,17 @@ void net_cleanup(void)
-     while (*p) {
-         nc = *p;
-         if (nc->info->type == NET_CLIENT_DRIVER_NIC) {
-+            NICState *nic = qemu_get_nic(nc);
-+
-+            if (nic->peer_deleted) {
-+                int queues = MAX(nic->conf->peers.queues, 1);
-+
-+                for (int i = 0; i < queues; i++) {
-+                    nc = qemu_get_subqueue(nic, i);
-+                    qemu_cleanup_net_client(nc->peer, false);
-+                }
-+            }
-+
-             /* Skip NET_CLIENT_DRIVER_NIC entries */
-             p = &QTAILQ_NEXT(nc, next);
-         } else {
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 231b45246c..7195d340a0 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -224,14 +224,6 @@ static void vhost_vdpa_cleanup(NetClientState *nc)
- {
-     VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
- 
--    /*
--     * If a peer NIC is attached, do not cleanup anything.
--     * Cleanup will happen as a part of qemu_cleanup() -> net_cleanup()
--     * when the guest is shutting down.
--     */
--    if (nc->peer && nc->peer->info->type == NET_CLIENT_DRIVER_NIC) {
--        return;
--    }
-     munmap(s->cvq_cmd_out_buffer, vhost_vdpa_net_cvq_cmd_page_len());
-     munmap(s->status, vhost_vdpa_net_cvq_cmd_page_len());
-     if (s->vhost_net) {
--- 
-2.43.5
+--=-iU10rqSx76llA6HCCFQe
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDEwNjE1NTk0
+NFowLwYJKoZIhvcNAQkEMSIEIMA0DIj79z6QweucOHziKgjOrIGHbreqi0LWlK3Egrm4MGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAt7ZIAObSJIW4
+XNAKF2gFGY7wRNflM14XmBf7uvGtBn+Rpbw8qyb4nwrWuFdPjPDr91VN+qJBfjBvRFpyTNT1tbWS
+DuM+Rqd4YHBlTJibvQ/7fGIZpVCuZoJVI+jeuW16Z2Of+2d5awK8yDFOAWCylhzcoHvWcSy41pb7
+C0PQqmtsqtUn6OkgDSP6pnhkvSoLeu3fZSN6Sa2s3pT01Sw6P6Zwx5RbbjLKuphlVULVymBGXdl1
+70bSDANxtRUfRZxCWV/Jdg7yxxIXWsi/2bEx2zfQyG8ZE70+k2hSt73FgPZtA9wency8vzhMftSQ
+znxtGfGpXT7EwAJiQ9dEOzY2CbC+sLz7P+niYBr2XMNo3oF829lIgoeDZDhzi5/qKI2WoxtOHmsb
+Nyt4XOLVTfeucpw/6mJz0bp8S9uZctGjE+yNvw/EY6M7mgbR31rB0Er8Hr9n/107toJx6qgVFpH3
+nXeZPKY94dlxE6VVHieU7+eAanCsMZajqUloX7lwVwb58R16+Oq3/YImewpwWvfVNcalJgwnynqn
+nHwZGD3C9V92W9r3RDXwc76lzXj+KpghhWSyg/dhm3+jehNwIuqRufXx+yWQAkg2ojNiDCf1dq7a
+baBCHdWD3GWe4wp6pOO4853QLityofmilyKe+Zwwqmxi4Zwb98Rcy/oRT+lr3uIAAAAAAAA=
+
+
+--=-iU10rqSx76llA6HCCFQe--
 
