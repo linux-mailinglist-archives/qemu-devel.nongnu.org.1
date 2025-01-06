@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A31A03113
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Jan 2025 21:04:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3E91A03117
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Jan 2025 21:04:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tUtJk-0002Yk-HZ; Mon, 06 Jan 2025 15:03:16 -0500
+	id 1tUtJr-0002aJ-PL; Mon, 06 Jan 2025 15:03:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tUtJh-0002Xb-8L
- for qemu-devel@nongnu.org; Mon, 06 Jan 2025 15:03:13 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tUtJo-0002ZZ-72
+ for qemu-devel@nongnu.org; Mon, 06 Jan 2025 15:03:21 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tUtJf-00039t-1g
- for qemu-devel@nongnu.org; Mon, 06 Jan 2025 15:03:13 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3862d16b4f5so9136537f8f.0
- for <qemu-devel@nongnu.org>; Mon, 06 Jan 2025 12:03:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tUtJl-0003Al-Gw
+ for qemu-devel@nongnu.org; Mon, 06 Jan 2025 15:03:19 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4361b6f9faeso89226975e9.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Jan 2025 12:03:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736193789; x=1736798589; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736193795; x=1736798595; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Gw/8miEe/PnaBFePSWTnOg3qI2ZvVUjrjdrVrAxgzBI=;
- b=px94p8GTMutot+SHUgInntlxuc3KrdY9cMjay+uyCuTvj7o0bEtZhFjtiEDyvrVejT
- MuDVODS4PYfHutEAn/g+Tg7RCF/BlMk2gNSX6Dw9tEfIfqsnHHwydriIbv028d07/waj
- 2iHCsMYBEEjJtjntVB6ihxFgIWyBG6OWhLCh23LW0EbfWluU4mgYdljo2dlyHguMx1dM
- BdGi65sVqkXTN8zl8UfKa/VKjcLv4EnprtSeja7pEGiCU2AD4R/Wx7mqlQdEKAt2aOtH
- ZAY5P5YPaPVQQTxgKgzvTiyPecLOgblrNqOf25TjTyLH4YDiKU0dFnKBGPeaWqKjawX7
- e1aA==
+ bh=xubr80DdDK1TQnuEw657hT2ILmCSL1Bi/K/I0ME5hpI=;
+ b=xF7qbtvWNIykbu1ysX4Uc7/rJdNjL2LLtaLRDO1qre/XI6xhi3MWttFHLtMzJDMzD+
+ NYCAlgS0wsZGGObsIXojRlTCWC1q494MK5OfpdG82RsHbPVwI6WyjaX/xFmrEfLbudmY
+ IQDWee9q07bb3mSb7Hsg3vZ+M5HvDKfWay9TM3MZWqMP26PgjD/eMdWwUdpGER2JUkJL
+ uq1bGtLr9DnLPMlDHhdvD55YkceSUFaetnc6WBVK3J4F4lzqDvoUaJGuGLvYa4OYKey5
+ cgFQwSGzbehZvaJQ8kz0eJ57cEjBaiWJXX3k55ZefN1xBQznK6u6FytEhoS4Rqf4aphS
+ 0yAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736193789; x=1736798589;
+ d=1e100.net; s=20230601; t=1736193795; x=1736798595;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Gw/8miEe/PnaBFePSWTnOg3qI2ZvVUjrjdrVrAxgzBI=;
- b=M0/fjsOT5s0v2Q12qwWaNylqTYC9LajlCKtQbB0PGcUOdfJT7+XKr6upPc7an0Fr57
- V8r/JFlfNFR+LXhA+KlYzbfsItW02AESdWxcNUEdp0XaosNya7At05FywQqeWe3YDDLt
- yiPuuPD0RZDDgVK60qdNIznx4Au/pxQRwJHutZ2mnfgU2X5zVqhCWwf/MHnMObETf/zW
- 8K4dHOrhDcXWYSMLMTUecaYz/FPWcskbbhd5+tkczpCUy1uQrIgZ2M4og3lcFioE273/
- ibgFSZU35HjKC8/AtyNu67JRx2rh4AcJnOrkBofK3bhZAtO+bVqO716s7cx2QyphWKTw
- qfCQ==
-X-Gm-Message-State: AOJu0Yx7TcgKQEojuSgafS4BDAaT7IrqryJy+buxrQzuUvA963Obc88Y
- k6raust9lMqOboajg9aEvkxyH81MxBsqQhJEcYtata+NCYc0e3rMO7FeKBxidRHi2UaACPB1FgQ
- 7RaI=
-X-Gm-Gg: ASbGncslsmmZPznTJbYNdsZ9ess3g1a6HtpPuHdrNh/OrocZK9s3lgRGe1hXBn0gbO7
- p+q9qOfWlvJPtWLrZaV1SXA9JdZUULshrTjxViGrMTawO4RsOhdibQq9IN+6ddDfAeN1HJVw2v4
- OVWcP1PyBxIyXBt8DeD9EvNm6OrS/PiDvYNxcKLyWDCSWOwJvFtUlFJtOjXNlfbGEubehwAv02Q
- 17AJeZOUJVfz209xp1gvWc6fSVPs4nz/iQnmHgGhRwUgFr4JEn/ijyDQRzG7ZQYb2YbTh4AQqeC
- RA5A4fgG+/IA+VDGnRkGWTAI+kc/TQw=
-X-Google-Smtp-Source: AGHT+IE81N1RplBD8FCsdoj95sqyVSqitqWpe38bLlQuumoNL1lLDdZMOpwBwgd43Npz//MFxfo/tw==
-X-Received: by 2002:a5d:64ac:0:b0:38a:4df5:a08 with SMTP id
- ffacd0b85a97d-38a7923b959mr440924f8f.22.1736193788891; 
- Mon, 06 Jan 2025 12:03:08 -0800 (PST)
+ bh=xubr80DdDK1TQnuEw657hT2ILmCSL1Bi/K/I0ME5hpI=;
+ b=sqEeviWFk+xNbGOYUa3DPyMVxVGyDbuWORjNEHqe2vxMk92QPJEHBNwar1omFBptEn
+ 4zNZwIMFM737xjdOkGi0ognvC7LFeDkyUjKOKW5+N17dSRiiSDG8zoUqGfQ+1/Wj1AFY
+ 6Wiepo+p5SU7/2TWgCRhBEtn7yfTlSLlj5PIDHadR0c7qfnCl5VyjdXHsj3IrL0ma32r
+ qmOsfBLTjg2WHc0Y7d7Farf3D58u8q4rPU5a0G1LThEJferlq306AhMJ9UzZoXSM+QHC
+ pLAf5QMydEuIxya4zZIX8a1WNzcFjan4rOR00PGxi7/C1ecTRzHbzH6NDS+BgmY8VEYH
+ HMzA==
+X-Gm-Message-State: AOJu0YzLlMrTKUltUITW+z6AMIrWqA9Uko55h6QgeJh11gAwc7EKwxFI
+ f2Rsmvb0DY92qsBlmu6wF2haSUw7rV9/PEQ9AMwuW/3V5ejM2lBfrLDUdU7jP1ibIvqANjXACR/
+ iRZg=
+X-Gm-Gg: ASbGnct3rEzuPrWWBistgJs4Z12tCy7fs8soiVckhVINGHJ4IstWX5NAx2Gm+uiuFcm
+ Uojj3q2ifIXy3lstBOLTfqUsM36yWp0BO33/aqOj8PQWjwA0VpFITO8p4sqnZJakYQMK5639yJ5
+ A1qQO7/TdhXywxDW1gXb2tSHkUtplc+LXgsUVQQwOXb/rLLvfUlNrlcYbF0dDcD07B6BLmosWxG
+ RyQsPjzI0y0Td09jJ908NFopPzlmHYyQQ/160/Uor5ikawM2ruwrkHmxkvWkmGIZWRBl1ldlCuF
+ pyO9peimPgYN9DaFBYZzoVqdRd47BIw=
+X-Google-Smtp-Source: AGHT+IG6hn6gQ1rEDpo0RUo5rK6HsOddWfOpcS85mXtVNMxlfkCCUdnnKaA6rQB2Q6OTZ5JLDkEevw==
+X-Received: by 2002:a05:600c:1d12:b0:436:1b86:f05 with SMTP id
+ 5b1f17b1804b1-436dc20b0c1mr4405765e9.11.1736193795597; 
+ Mon, 06 Jan 2025 12:03:15 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43665cd9c29sm559552815e9.14.2025.01.06.12.03.07
+ 5b1f17b1804b1-4366128a353sm577748615e9.42.2025.01.06.12.03.12
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 06 Jan 2025 12:03:08 -0800 (PST)
+ Mon, 06 Jan 2025 12:03:15 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
@@ -92,17 +92,17 @@ Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Anton Johansson <anjo@rev.ng>
-Subject: [RFC PATCH 1/7] cpus: Restrict CPU_FOREACH_SAFE() to user emulation
-Date: Mon,  6 Jan 2025 21:02:52 +0100
-Message-ID: <20250106200258.37008-2-philmd@linaro.org>
+Subject: [RFC PATCH 2/7] cpus: Introduce AccelOpsClass::get_cpus_queue()
+Date: Mon,  6 Jan 2025 21:02:53 +0100
+Message-ID: <20250106200258.37008-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250106200258.37008-1-philmd@linaro.org>
 References: <20250106200258.37008-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,27 +125,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+We want the ability to iterate over vCPUs of a specific
+accelerator.  Introduce cpus_get_accel_cpus_queue() to
+be used by accelerator common code, and expose the
+get_cpus_queue() in AccelOpsClass, so each accelerator
+can register its own queue of vCPUs.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/core/cpu.h | 3 +++
- 1 file changed, 3 insertions(+)
+ include/hw/core/cpu.h      |  8 ++++++++
+ include/system/accel-ops.h |  6 ++++++
+ accel/tcg/user-exec-stub.c |  5 +++++
+ cpu-common.c               | 10 ++++++++++
+ system/cpus.c              |  5 +++++
+ 5 files changed, 34 insertions(+)
 
 diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index c3ca0babcb3..48d90f50a71 100644
+index 48d90f50a71..5ae9bb64d6e 100644
 --- a/include/hw/core/cpu.h
 +++ b/include/hw/core/cpu.h
-@@ -594,8 +594,11 @@ extern CPUTailQ cpus_queue;
+@@ -591,6 +591,14 @@ static inline CPUArchState *cpu_env(CPUState *cpu)
+ typedef QTAILQ_HEAD(CPUTailQ, CPUState) CPUTailQ;
+ extern CPUTailQ cpus_queue;
+ 
++/**
++ * cpus_get_accel_cpus_queue:
++ * @cpu: The vCPU to get the accelerator #CPUTailQ.
++ *
++ * Returns the #CPUTailQ associated with the accelerator of the vCPU.
++ */
++CPUTailQ *cpus_get_accel_cpus_queue(CPUState *cpu);
++
  #define first_cpu        QTAILQ_FIRST_RCU(&cpus_queue)
  #define CPU_NEXT(cpu)    QTAILQ_NEXT_RCU(cpu, node)
  #define CPU_FOREACH(cpu) QTAILQ_FOREACH_RCU(cpu, &cpus_queue, node)
+diff --git a/include/system/accel-ops.h b/include/system/accel-ops.h
+index 137fb96d444..fe59f728bfc 100644
+--- a/include/system/accel-ops.h
++++ b/include/system/accel-ops.h
+@@ -12,6 +12,7 @@
+ 
+ #include "exec/vaddr.h"
+ #include "qom/object.h"
++#include "hw/core/cpu.h"
+ 
+ #define ACCEL_OPS_SUFFIX "-ops"
+ #define TYPE_ACCEL_OPS "accel" ACCEL_OPS_SUFFIX
+@@ -37,6 +38,11 @@ struct AccelOpsClass {
+     bool (*cpus_are_resettable)(void);
+     void (*cpu_reset_hold)(CPUState *cpu);
+ 
++    /**
++     * get_cpus_queue:
++     * Returns the #CPUTailQ maintained by this accelerator.
++     */
++    CPUTailQ *(*get_cpus_queue)(void);
+     void (*create_vcpu_thread)(CPUState *cpu); /* MANDATORY NON-NULL */
+     void (*kick_vcpu_thread)(CPUState *cpu);
+     bool (*cpu_thread_is_idle)(CPUState *cpu);
+diff --git a/accel/tcg/user-exec-stub.c b/accel/tcg/user-exec-stub.c
+index 4fbe2dbdc88..cb76cec76be 100644
+--- a/accel/tcg/user-exec-stub.c
++++ b/accel/tcg/user-exec-stub.c
+@@ -18,6 +18,11 @@ void cpu_exec_reset_hold(CPUState *cpu)
+ {
+ }
+ 
++CPUTailQ *cpus_get_accel_cpus_queue(CPUState *cpu)
++{
++    return NULL;
++}
 +
-+#if defined(CONFIG_USER_ONLY)
- #define CPU_FOREACH_SAFE(cpu, next_cpu) \
-     QTAILQ_FOREACH_SAFE_RCU(cpu, &cpus_queue, node, next_cpu)
-+#endif
+ /* User mode emulation does not support record/replay yet.  */
  
- extern __thread CPUState *current_cpu;
+ bool replay_exception(void)
+diff --git a/cpu-common.c b/cpu-common.c
+index 4248b2d727e..ff8db9c7f9d 100644
+--- a/cpu-common.c
++++ b/cpu-common.c
+@@ -82,6 +82,7 @@ unsigned int cpu_list_generation_id_get(void)
+ void cpu_list_add(CPUState *cpu)
+ {
+     static bool cpu_index_auto_assigned;
++    CPUTailQ *accel_cpus_queue = cpus_get_accel_cpus_queue(cpu);
  
+     QEMU_LOCK_GUARD(&qemu_cpu_list_lock);
+     if (cpu->cpu_index == UNASSIGNED_CPU_INDEX) {
+@@ -92,17 +93,26 @@ void cpu_list_add(CPUState *cpu)
+         assert(!cpu_index_auto_assigned);
+     }
+     QTAILQ_INSERT_TAIL_RCU(&cpus_queue, cpu, node);
++    if (accel_cpus_queue) {
++        QTAILQ_INSERT_TAIL_RCU(accel_cpus_queue, cpu, node);
++    }
++
+     cpu_list_generation_id++;
+ }
+ 
+ void cpu_list_remove(CPUState *cpu)
+ {
++    CPUTailQ *accel_cpus_queue = cpus_get_accel_cpus_queue(cpu);
++
+     QEMU_LOCK_GUARD(&qemu_cpu_list_lock);
+     if (!QTAILQ_IN_USE(cpu, node)) {
+         /* there is nothing to undo since cpu_exec_init() hasn't been called */
+         return;
+     }
+ 
++    if (accel_cpus_queue) {
++        QTAILQ_REMOVE_RCU(accel_cpus_queue, cpu, node);
++    }
+     QTAILQ_REMOVE_RCU(&cpus_queue, cpu, node);
+     cpu->cpu_index = UNASSIGNED_CPU_INDEX;
+     cpu_list_generation_id++;
+diff --git a/system/cpus.c b/system/cpus.c
+index 99f83806c16..972df6ab061 100644
+--- a/system/cpus.c
++++ b/system/cpus.c
+@@ -209,6 +209,11 @@ void cpu_exec_reset_hold(CPUState *cpu)
+     }
+ }
+ 
++CPUTailQ *cpus_get_accel_cpus_queue(CPUState *cpu)
++{
++    return cpus_accel ? cpus_accel->get_cpus_queue() : NULL;
++}
++
+ int64_t cpus_get_virtual_clock(void)
+ {
+     /*
 -- 
 2.47.1
 
