@@ -2,63 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C43A02CDD
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D9D8A02CDE
 	for <lists+qemu-devel@lfdr.de>; Mon,  6 Jan 2025 16:58:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tUpUF-0001Oe-1A; Mon, 06 Jan 2025 10:57:51 -0500
+	id 1tUpUF-0001Ov-1k; Mon, 06 Jan 2025 10:57:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1tUpUC-0001No-3B; Mon, 06 Jan 2025 10:57:48 -0500
+ id 1tUpUC-0001Nv-CP; Mon, 06 Jan 2025 10:57:48 -0500
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1tUpU9-0000yd-P5; Mon, 06 Jan 2025 10:57:47 -0500
+ id 1tUpUA-0000yh-Iq; Mon, 06 Jan 2025 10:57:48 -0500
 Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 506Etp0G020441;
- Mon, 6 Jan 2025 15:57:42 GMT
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 506Etp0I020441;
+ Mon, 6 Jan 2025 15:57:44 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:content-type:date:from:message-id
- :mime-version:subject:to; s=corp-2023-11-20; bh=0jBNISGXcuA8EeHP
- AmXmbcIb+ZRHr731HPiFbHIlMdY=; b=mYDu/tDQOhf/BKtrA3bYzCOU5iEfeknx
- klWSOPg8jER6gad1rp8QNHPPlIGh3fKph0Mh8vYEVHWD8FMYuoSdnzRsvtyws1zn
- TOKJLR/cvlcW0LJRQYbNrwuCJVBFYCq6y36YtXYgWIz05MMbroT92J5J+3sgH/yt
- ujTpnP6phCCHNzcn0PBwzYF4bf46GgF/m5JWNkr9cooO6fW93r5GA6VwjB/9CUAt
- wea2Toch+65nh0hVO7vKNF9AfylxC9iG2F4zEbi775i6xSjh9kiV4kFZJsJ7ZXAx
- 3vGUalICSXC8zVHxfSUMYhP/tdot/UUwsHSe5nYqnhu39juiv1fhrA==
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2023-11-20; bh=5HT+phJyguizsiaNFE8sTlVSLQ37uzFOeEaUPb5dAso=; b=
+ kooWO4nPYDexLQ3D0CmCtYJj2XDVQRLOr/TBAFA/3NEN9RLAbFiKMF8qhow0Ry4y
+ 4CCtTozO7kY+ldTjYuNDjH2SIuxlrCYzOcqGVA7XOHl82zvBCn+tpNpXYuGV0Nqi
+ U7a0ZsOIEQeityGgZ73exARAgH2yr9Tjb/Gzw+h0TmAP5b7E7FOWE1phu+z69Eoz
+ TVHVpsl6x26CDcE3Q5/5bY1Pmp40U4ohDL1OrnY38iu3cKyjDU5S5uAmThQR1+iV
+ SDC/657cDuN3u/tTDFXrCsui8OsXKmDipy/vmlsA9r/WKAL5xsvrJqn0UNBqLnSN
+ TGQJtJcV4Wf3ZKIpLz28Ow==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43xuk033fb-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43xuk033fe-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 06 Jan 2025 15:57:42 +0000 (GMT)
+ Mon, 06 Jan 2025 15:57:43 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 506FQTWp027555; Mon, 6 Jan 2025 15:57:41 GMT
+ with ESMTP id 506E7T9Y026551; Mon, 6 Jan 2025 15:57:43 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 43xue7nw3e-1
+ 43xue7nw3v-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 06 Jan 2025 15:57:41 +0000
+ Mon, 06 Jan 2025 15:57:43 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 506FvegD016161;
- Mon, 6 Jan 2025 15:57:40 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 506FvegF016161;
+ Mon, 6 Jan 2025 15:57:42 GMT
 Received: from jonah-ol8.us.oracle.com (dhcp-10-65-185-77.vpn.oracle.com
  [10.65.185.77])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 43xue7nw2a-1; Mon, 06 Jan 2025 15:57:40 +0000
+ 43xue7nw2a-2; Mon, 06 Jan 2025 15:57:42 +0000
 From: Jonah Palmer <jonah.palmer@oracle.com>
 To: eperezma@redhat.com, jasowang@redhat.com, qemu-devel@nongnu.org
 Cc: dtatulea@nvidia.com, mcoqueli@redhat.com, mst@redhat.com,
  si-wei.liu@oracle.com, qemu-stable@nongnu.org, leiyang@redhat.com,
  anisinha@redhat.com
-Subject: [PATCH v3 0/2] Move net backend cleanup to NIC cleanup
-Date: Mon,  6 Jan 2025 10:57:33 -0500
-Message-ID: <20250106155737.976977-1-jonah.palmer@oracle.com>
+Subject: [PATCH v3 1/2] net: parameterize the removing client from nc list
+Date: Mon,  6 Jan 2025 10:57:34 -0500
+Message-ID: <20250106155737.976977-2-jonah.palmer@oracle.com>
 X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20250106155737.976977-1-jonah.palmer@oracle.com>
+References: <20250106155737.976977-1-jonah.palmer@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -70,8 +73,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
  malwarescore=0 phishscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
  definitions=main-2501060140
-X-Proofpoint-ORIG-GUID: 1uJTZ1QsFTlS_Li3Kva5wPlAr8D9KfyW
-X-Proofpoint-GUID: 1uJTZ1QsFTlS_Li3Kva5wPlAr8D9KfyW
+X-Proofpoint-ORIG-GUID: on-PBDRQVR8gIWmmuXT8oKK7oTSvfiOg
+X-Proofpoint-GUID: on-PBDRQVR8gIWmmuXT8oKK7oTSvfiOg
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -31
@@ -97,37 +100,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit a0d7215e33 ("vhost-vdpa: do not cleanup the vdpa/vhost-net
-structures if peer nic is present") effectively delayed the backend
-cleanup, allowing the frontend or the guest to access it resources as
-long as the frontend NIC is still visible to the guest.
+From: Eugenio Pérez <eperezma@redhat.com>
 
-However it does not clean up the resources until the qemu process is
-over.  This causes an effective leak if the device is deleted with
-device_del, as there is no way to close the vdpa device.  This makes
-impossible to re-add that device to this or other QEMU instances until
-the first instance of QEMU is finished.
+This change is used in later commits so we can avoid the removal of the
+netclient if it is delayed.
 
-Move the cleanup from qemu_cleanup to the NIC deletion.
+No functional change intended.
 
-v3:
-Remove shadowed declaration of NetClientState nc variable in 2/2.
+Reviewed-by: Si-Wei Liu <si-wei.liu@oracle.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
+---
+ net/net.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-v2:
-Remove NIC peer also at net_cleanup. vhost-user trust all the
-backends are clean before qemu removes char devices.
-
-This is not a requisite introduced by this commit as
-system/runstate.c:qemu_cleanup shows.
-
-Eugenio Pérez (2):
-  net: parameterize the removing client from nc list
-  net: move backend cleanup to NIC cleanup
-
- net/net.c        | 44 ++++++++++++++++++++++++++++++++++----------
- net/vhost-vdpa.c |  8 --------
- 2 files changed, 34 insertions(+), 18 deletions(-)
-
+diff --git a/net/net.c b/net/net.c
+index c1bb19a523..07d760569b 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -381,9 +381,12 @@ NetClientState *qemu_get_peer(NetClientState *nc, int queue_index)
+     return ncs->peer;
+ }
+ 
+-static void qemu_cleanup_net_client(NetClientState *nc)
++static void qemu_cleanup_net_client(NetClientState *nc,
++                                    bool remove_from_net_clients)
+ {
+-    QTAILQ_REMOVE(&net_clients, nc, next);
++    if (remove_from_net_clients) {
++        QTAILQ_REMOVE(&net_clients, nc, next);
++    }
+ 
+     if (nc->info->cleanup) {
+         nc->info->cleanup(nc);
+@@ -442,14 +445,14 @@ void qemu_del_net_client(NetClientState *nc)
+         }
+ 
+         for (i = 0; i < queues; i++) {
+-            qemu_cleanup_net_client(ncs[i]);
++            qemu_cleanup_net_client(ncs[i], true);
+         }
+ 
+         return;
+     }
+ 
+     for (i = 0; i < queues; i++) {
+-        qemu_cleanup_net_client(ncs[i]);
++        qemu_cleanup_net_client(ncs[i], true);
+         qemu_free_net_client(ncs[i]);
+     }
+ }
+@@ -474,7 +477,7 @@ void qemu_del_nic(NICState *nic)
+     for (i = queues - 1; i >= 0; i--) {
+         NetClientState *nc = qemu_get_subqueue(nic, i);
+ 
+-        qemu_cleanup_net_client(nc);
++        qemu_cleanup_net_client(nc, true);
+         qemu_free_net_client(nc);
+     }
+ 
 -- 
 2.43.5
 
