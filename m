@@ -2,83 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE45A01EFB
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Jan 2025 06:45:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B88BA01F02
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Jan 2025 06:50:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tUfvl-0005UL-6Y; Mon, 06 Jan 2025 00:45:37 -0500
+	id 1tUfzz-0001ea-Ad; Mon, 06 Jan 2025 00:49:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
- id 1tUfvU-000592-7O
- for qemu-devel@nongnu.org; Mon, 06 Jan 2025 00:45:25 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tUfzx-0001e7-It
+ for qemu-devel@nongnu.org; Mon, 06 Jan 2025 00:49:57 -0500
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
- id 1tUfvQ-0004al-Uo
- for qemu-devel@nongnu.org; Mon, 06 Jan 2025 00:45:19 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-5d3e9f60bf4so25205410a12.3
- for <qemu-devel@nongnu.org>; Sun, 05 Jan 2025 21:45:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tUfzv-0004py-RB
+ for qemu-devel@nongnu.org; Mon, 06 Jan 2025 00:49:57 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3863703258fso8728166f8f.1
+ for <qemu-devel@nongnu.org>; Sun, 05 Jan 2025 21:49:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1736142315; x=1736747115; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=O682btEOM1Rl7PEyZuuGOXhFL3ZlxKOw32XVYH9sxZE=;
- b=bn3GqKXJ28nBJNreXePWIfkUXI33cJAqj22YdmcXdSMzbR5Mp5xfLi0P27VcnP6kj6
- cDCWtzjRauSOtYyXW7zgpxQrWzCCh8sF5MtTU5wfu8GQk7+wpvKWiO39msgaa3TdeIr7
- vNT2O/HiN1MIiTvTAG/NiMEGaqvss7io6C75WFItHpBAO9YSd/X4NjBl5X5zIFwQcriI
- CQDo3jLfOz1nTDTnOF+Lm3gjVKSXs8uHZ6Az2g298OT85pvQtkcyTiJgy6eQ02bcJ8ny
- BjXoZEnit1jdMlHWRc0lqkqXCTuQu3mcOOxUN9xyeeTdbSVCULfyK6voHhG9zQ1jmNYP
- maQA==
+ d=linaro.org; s=google; t=1736142593; x=1736747393; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=VCmLGmzD2F6J2QbfSwUjmhgNI3SOO1JNMjze/6Q3R3A=;
+ b=RO4lkRPTQzZdT+dm4hcJ9yAPz0+ZK9mn3mTz9YulaIN34a4wSOakKuagWGl0+drsu8
+ Qro8/3+pAy7Id+g6jV84s5F/a7vCjWlfz7n740FXSzqiveHmHlSt95AfMWjwg8e89/9Z
+ Vexqvw4wT2G1eOG0GxS2qt6FdeSUGdRZBW6x3ROtu7N+jl0cIAiGkdKcru19AHVoVvGR
+ INDcpPrnRhS2WxZr2vUQPUI2aoMbXirc8i1XpU/JEqezkIhjqVsuos1/MXnsWvhgUL0x
+ qgVU0QAoLE9ZWgtFdeCY5xHmaDak2eEEUBp+emdSe2jDN8wjn4Qafn8JFqEB7wYMpV1i
+ BXBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736142315; x=1736747115;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=O682btEOM1Rl7PEyZuuGOXhFL3ZlxKOw32XVYH9sxZE=;
- b=LWF22iDPIUsoh5426r6PNOuvFJ/s0M5rDkR9e0Dtt44uBeGPd5Mq1FmvK3XGTdW5d5
- X61hc0nWdRBJpowIBR1RFILdZEEfS0QpnRgNdob/l2WSOtcZT1o1yqVA9HgH8zHV/eJR
- Va561urL3OLR9g3G1bj9oXb+k5NVH7qllzh3foS05eBxjINDQ5k/hRBpcPNrhpy6Z8Ba
- NUgW29qY7fZm+foVGpnoX+ooM3KSAYRrTHKBaEZgn2gVt4RmN9AXS1+jyQC63v3aHETQ
- H4p9KG+uRlYb6vqHfXLa2e2twHhIXf4a6u88wthyEnR6UurvjBy+sQb4EbyfYVpRzGSu
- CANQ==
-X-Gm-Message-State: AOJu0Yx/NmfFzS/jWHO/qFENAeCAmrt3q2+3HbuguJSIz5tfCjEPbF7J
- MSUHpiuKv6L/AwUseHI++ALYAizhayxc4ap5CDypiHocJA+A5yXbCXM16B2PhSO1KQPgOu/+KZS
- k4U2DXmYwZJ9o3fG4YKj0j0ouSmHlSurz3QNQsQ==
-X-Gm-Gg: ASbGncu28iNp0+SL4qdOK+4ajkjHehtzVQ2zJmBIkyTbi81THcjWXuJysmroXQFZkgX
- Mrnfp3dVTGl+9WVpKwax/qQAF83i5UvtqmcYb0U0=
-X-Google-Smtp-Source: AGHT+IHIbY5Wve+otfojHub9qczoC3Ifhr3iWOyapmhH9kXjZZbrsC5IAdv4XfldFINQhh8gqDJYhnsk/iMRjMAE6/4=
-X-Received: by 2002:a05:6402:11c7:b0:5d0:b51c:8489 with SMTP id
- 4fb4d7f45d1cf-5d81ddc01abmr43546356a12.12.1736142315182; Sun, 05 Jan 2025
- 21:45:15 -0800 (PST)
+ d=1e100.net; s=20230601; t=1736142593; x=1736747393;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VCmLGmzD2F6J2QbfSwUjmhgNI3SOO1JNMjze/6Q3R3A=;
+ b=IOHLJmXyqzxpSAsGZWnv8Lgpf9xwq0EyKxpLWBmISzFOHU5bHknp5IsalcabgtFekN
+ LjySJom3u9XYDMZpf8fmSeRBxNlzG8xPhkXHccTQhHG5EQuWhMTHr8f0tTiWegrGwQJC
+ tupwocEBfUrHWy0FXn0xftcBT9GMSZmyiXB44Mz6kb4HGpnnvcE/LRnBt1qaIWaWEh3C
+ 0JqtprWUP/CHVOORDeFeskdHAaWeiuZb3D8qqugmo3W291CqUBs2/sMFTb0oEEOD+4DK
+ MmIKLobYAFqbJ/UvkFyfAhZ4vFrbAffGbMiKb7P4hWJxPrJYcsV//3E6oGhzE3f8t9cu
+ TVFg==
+X-Gm-Message-State: AOJu0YxPv4whB69VCucmmdQr8TbZEK5FXdzgENfFbAvpbimhGMB1+wzu
+ U1/CSskZISobwGvjKFYPkNrj5zBZLjqZExEd5agYnV5gtqzdMojYsDnSf9zEGTU=
+X-Gm-Gg: ASbGncuDipRvUyriiT6pJYC4RxMcLzTaDgbeaoyMc2pp5Y9RAlvFiOtI+aCkSe/d4xc
+ WpCZA89myD5WCwqRpzK2Pz92yIKMwEP+06jgsXvIcYSJUpSTgsOPL7z+3N9oMkCAd43p4BBTcyA
+ KKe3MNYyilnUwI1PIcajVidl/6ziapGKBD6xggXM0/bsQGXpCYdLNcT80K7N2ATPWjmIDc/oxy0
+ Jm0Hj3VcZce1aKxevBcfsjTv7BCV5+vGZ4CZ+joO66YtGthK+2hcsoZ4gocmxS3sn4YkyGqoCrn
+ uiVM6lxl7MN3L36AMHfrQjch
+X-Google-Smtp-Source: AGHT+IESIA9XGQTtrDXjhln51iA0e4e4qu49QebmEKhykFDAO28yJvW2s8/PBH3HXeCzyR9FDQIMSQ==
+X-Received: by 2002:a5d:6da2:0:b0:385:f07a:f4cb with SMTP id
+ ffacd0b85a97d-38a22a11748mr37802830f8f.8.1736142592962; 
+ Sun, 05 Jan 2025 21:49:52 -0800 (PST)
+Received: from [192.168.69.132] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38a1c89e219sm47624284f8f.84.2025.01.05.21.49.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 05 Jan 2025 21:49:51 -0800 (PST)
+Message-ID: <52a4751c-b27c-4670-a941-58d8653992bd@linaro.org>
+Date: Mon, 6 Jan 2025 06:49:50 +0100
 MIME-Version: 1.0
-References: <20241231032654.133039-1-frank.chang@sifive.com>
- <20241231032654.133039-6-frank.chang@sifive.com>
- <CAKmqyKOUnh-iDiN7_H1rtRq_dmXT2b=5qN9iVDf-JeD7X7OGOw@mail.gmail.com>
-In-Reply-To: <CAKmqyKOUnh-iDiN7_H1rtRq_dmXT2b=5qN9iVDf-JeD7X7OGOw@mail.gmail.com>
-From: Frank Chang <frank.chang@sifive.com>
-Date: Mon, 6 Jan 2025 13:45:04 +0800
-Message-ID: <CAE_xrPgpWVvMEM_6MEAAGmxD-6C4W+8T-NkrGmzKLJYZisBPQg@mail.gmail.com>
-Subject: Re: [PATCH v11 5/6] target/riscv: Add Smrnmi cpu extension
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Tommy Wu <tommy.wu@sifive.com>
-Content-Type: multipart/alternative; boundary="000000000000f9f901062b03212b"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=frank.chang@sifive.com; helo=mail-ed1-x536.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: Remove myself as Avocado Framework reviewer
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, Cleber Rosa <crosa@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
+References: <20250103233026.65717-1-philmd@linaro.org>
+ <c15e8494-0171-4f30-5bad-e2ff370d5569@eik.bme.hu>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <c15e8494-0171-4f30-5bad-e2ff370d5569@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,202 +99,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000f9f901062b03212b
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 4/1/25 01:12, BALATON Zoltan wrote:
+> On Sat, 4 Jan 2025, Philippe Mathieu-Daudé wrote:
+>> While I was very enthusiast when Avocado was presented to
+> 
+> I think 'enthusiastic' would be correct here.
 
-On Mon, Jan 6, 2025 at 12:15=E2=80=AFPM Alistair Francis <alistair23@gmail.=
-com>
-wrote:
+Oh OK, thanks.
 
-> On Tue, Dec 31, 2024 at 1:28=E2=80=AFPM <frank.chang@sifive.com> wrote:
-> >
-> > From: Tommy Wu <tommy.wu@sifive.com>
-> >
-> > This adds the properties for ISA extension Smrnmi.
-> >
-> > Also, when Smrnmi is present, the firmware (e.g., OpenSBI) must set
-> > mnstatus.NMIE to 1 before enabling any interrupts. Otherwise, all
-> > interrupts will be disabled. Since our current OpenSBI does not
-> > support Smrnmi yet, let's disable Smrnmi for the 'max' type CPU for
-> > now. We can re-enable it once OpenSBI includes proper support for it.
-> >
-> > Signed-off-by: Frank Chang <frank.chang@sifive.com>
-> > Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
-> > Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> > Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> > ---
-> >  target/riscv/cpu.c         | 2 ++
-> >  target/riscv/tcg/tcg-cpu.c | 6 ++++++
-> >  2 files changed, 8 insertions(+)
-> >
-> > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> > index 6c46a2f076..b0d9e93170 100644
-> > --- a/target/riscv/cpu.c
-> > +++ b/target/riscv/cpu.c
-> > @@ -186,6 +186,7 @@ const RISCVIsaExtData isa_edata_arr[] =3D {
-> >      ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
-> >      ISA_EXT_DATA_ENTRY(smcntrpmf, PRIV_VERSION_1_12_0, ext_smcntrpmf),
-> >      ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
-> > +    ISA_EXT_DATA_ENTRY(smrnmi, PRIV_VERSION_1_12_0, ext_smrnmi),
-> >      ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
-> >      ISA_EXT_DATA_ENTRY(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
-> >      ISA_EXT_DATA_ENTRY(ssccptr, PRIV_VERSION_1_11_0, has_priv_1_11),
-> > @@ -1614,6 +1615,7 @@ const RISCVCPUMultiExtConfig
-> riscv_cpu_extensions[] =3D {
-> >
-> >      MULTI_EXT_CFG_BOOL("smaia", ext_smaia, false),
-> >      MULTI_EXT_CFG_BOOL("smepmp", ext_smepmp, false),
-> > +    MULTI_EXT_CFG_BOOL("smrnmi", ext_smrnmi, false),
-> >      MULTI_EXT_CFG_BOOL("smstateen", ext_smstateen, false),
-> >      MULTI_EXT_CFG_BOOL("ssaia", ext_ssaia, false),
-> >      MULTI_EXT_CFG_BOOL("svade", ext_svade, false),
-> > diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> > index cbf2cf1963..c4070c948e 100644
-> > --- a/target/riscv/tcg/tcg-cpu.c
-> > +++ b/target/riscv/tcg/tcg-cpu.c
-> > @@ -1421,6 +1421,12 @@ static void riscv_init_max_cpu_extensions(Object
-> *obj)
-> >      if (env->misa_mxl !=3D MXL_RV32) {
-> >          isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zcf), false);
-> >      }
-> > +
-> > +    /*
-> > +     * ext_smrnmi requires OpenSBI changes that our current
-> > +     * image does not have. Disable it for now.
-> > +     */
-> > +    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_smrnmi), false);
->
-> Should we log this to users so they know?
->
-> Alistair
->
+> 
+> Regards,
+> BALATON Zoltan
+> 
+>> the QEMU community and pushed forward to have it integrated,
+>> time passed and I lost interest. Be honest, remove my R: tag
+>> to not give fake expectation I'd review patches related to
+>> Avocado anymore.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>> MAINTAINERS | 1 -
+>> 1 file changed, 1 deletion(-)
 
-Sure, I've added it in the v12 patchset.
-
-Regards,
-Frank Chang
-
-
->
-> >  }
-> >
-> >  static bool riscv_cpu_has_max_extensions(Object *cpu_obj)
-> > --
-> > 2.34.1
-> >
-> >
->
-
---000000000000f9f901062b03212b
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr">On Mon, Jan 6, 2025 at 12:15=E2=80=AFPM A=
-listair Francis &lt;<a href=3D"mailto:alistair23@gmail.com">alistair23@gmai=
-l.com</a>&gt; wrote:</div><div class=3D"gmail_quote gmail_quote_container">=
-<blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-=
-left:1px solid rgb(204,204,204);padding-left:1ex">On Tue, Dec 31, 2024 at 1=
-:28=E2=80=AFPM &lt;<a href=3D"mailto:frank.chang@sifive.com" target=3D"_bla=
-nk">frank.chang@sifive.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; From: Tommy Wu &lt;<a href=3D"mailto:tommy.wu@sifive.com" target=3D"_b=
-lank">tommy.wu@sifive.com</a>&gt;<br>
-&gt;<br>
-&gt; This adds the properties for ISA extension Smrnmi.<br>
-&gt;<br>
-&gt; Also, when Smrnmi is present, the firmware (e.g., OpenSBI) must set<br=
->
-&gt; mnstatus.NMIE to 1 before enabling any interrupts. Otherwise, all<br>
-&gt; interrupts will be disabled. Since our current OpenSBI does not<br>
-&gt; support Smrnmi yet, let&#39;s disable Smrnmi for the &#39;max&#39; typ=
-e CPU for<br>
-&gt; now. We can re-enable it once OpenSBI includes proper support for it.<=
-br>
-&gt;<br>
-&gt; Signed-off-by: Frank Chang &lt;<a href=3D"mailto:frank.chang@sifive.co=
-m" target=3D"_blank">frank.chang@sifive.com</a>&gt;<br>
-&gt; Signed-off-by: Tommy Wu &lt;<a href=3D"mailto:tommy.wu@sifive.com" tar=
-get=3D"_blank">tommy.wu@sifive.com</a>&gt;<br>
-&gt; Signed-off-by: Daniel Henrique Barboza &lt;<a href=3D"mailto:dbarboza@=
-ventanamicro.com" target=3D"_blank">dbarboza@ventanamicro.com</a>&gt;<br>
-&gt; Reviewed-by: Daniel Henrique Barboza &lt;<a href=3D"mailto:dbarboza@ve=
-ntanamicro.com" target=3D"_blank">dbarboza@ventanamicro.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 target/riscv/cpu.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 2 ++<br>
-&gt;=C2=A0 target/riscv/tcg/tcg-cpu.c | 6 ++++++<br>
-&gt;=C2=A0 2 files changed, 8 insertions(+)<br>
-&gt;<br>
-&gt; diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c<br>
-&gt; index 6c46a2f076..b0d9e93170 100644<br>
-&gt; --- a/target/riscv/cpu.c<br>
-&gt; +++ b/target/riscv/cpu.c<br>
-&gt; @@ -186,6 +186,7 @@ const RISCVIsaExtData isa_edata_arr[] =3D {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext=
-_smaia),<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 ISA_EXT_DATA_ENTRY(smcntrpmf, PRIV_VERSION_1_12_0,=
- ext_smcntrpmf),<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ex=
-t_smepmp),<br>
-&gt; +=C2=A0 =C2=A0 ISA_EXT_DATA_ENTRY(smrnmi, PRIV_VERSION_1_12_0, ext_smr=
-nmi),<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0,=
- ext_smstateen),<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 ISA_EXT_DATA_ENTRY(ssaia, PRIV_VERSION_1_12_0, ext=
-_ssaia),<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 ISA_EXT_DATA_ENTRY(ssccptr, PRIV_VERSION_1_11_0, h=
-as_priv_1_11),<br>
-&gt; @@ -1614,6 +1615,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extension=
-s[] =3D {<br>
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 MULTI_EXT_CFG_BOOL(&quot;smaia&quot;, ext_smaia, f=
-alse),<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 MULTI_EXT_CFG_BOOL(&quot;smepmp&quot;, ext_smepmp,=
- false),<br>
-&gt; +=C2=A0 =C2=A0 MULTI_EXT_CFG_BOOL(&quot;smrnmi&quot;, ext_smrnmi, fals=
-e),<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 MULTI_EXT_CFG_BOOL(&quot;smstateen&quot;, ext_smst=
-ateen, false),<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 MULTI_EXT_CFG_BOOL(&quot;ssaia&quot;, ext_ssaia, f=
-alse),<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 MULTI_EXT_CFG_BOOL(&quot;svade&quot;, ext_svade, f=
-alse),<br>
-&gt; diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c<b=
-r>
-&gt; index cbf2cf1963..c4070c948e 100644<br>
-&gt; --- a/target/riscv/tcg/tcg-cpu.c<br>
-&gt; +++ b/target/riscv/tcg/tcg-cpu.c<br>
-&gt; @@ -1421,6 +1421,12 @@ static void riscv_init_max_cpu_extensions(Objec=
-t *obj)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 if (env-&gt;misa_mxl !=3D MXL_RV32) {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 isa_ext_update_enabled(cpu, CPU_CFG_=
-OFFSET(ext_zcf), false);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
-&gt; +<br>
-&gt; +=C2=A0 =C2=A0 /*<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0* ext_smrnmi requires OpenSBI changes that our cu=
-rrent<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0* image does not have. Disable it for now.<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0*/<br>
-&gt; +=C2=A0 =C2=A0 isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_smrnmi),=
- false);<br>
-<br>
-Should we log this to users so they know?<br>
-<br>
-Alistair<br></blockquote><div><br></div><div><div>Sure, I&#39;ve added it i=
-n the v12 patchset.</div><div><br></div><div>Regards,</div><div>Frank Chang=
-</div></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"mar=
-gin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1=
-ex">
-<br>
-&gt;=C2=A0 }<br>
-&gt;<br>
-&gt;=C2=A0 static bool riscv_cpu_has_max_extensions(Object *cpu_obj)<br>
-&gt; --<br>
-&gt; 2.34.1<br>
-&gt;<br>
-&gt;<br>
-</blockquote></div></div>
-
---000000000000f9f901062b03212b--
 
