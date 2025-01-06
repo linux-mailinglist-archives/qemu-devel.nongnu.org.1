@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3E91A03117
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Jan 2025 21:04:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E61AA03115
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Jan 2025 21:04:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tUtJr-0002aJ-PL; Mon, 06 Jan 2025 15:03:23 -0500
+	id 1tUtJx-0002ci-V9; Mon, 06 Jan 2025 15:03:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tUtJo-0002ZZ-72
- for qemu-devel@nongnu.org; Mon, 06 Jan 2025 15:03:21 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tUtJv-0002bY-60
+ for qemu-devel@nongnu.org; Mon, 06 Jan 2025 15:03:27 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tUtJl-0003Al-Gw
- for qemu-devel@nongnu.org; Mon, 06 Jan 2025 15:03:19 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4361b6f9faeso89226975e9.1
- for <qemu-devel@nongnu.org>; Mon, 06 Jan 2025 12:03:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tUtJs-0003Bi-Hj
+ for qemu-devel@nongnu.org; Mon, 06 Jan 2025 15:03:26 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-4362bae4d7dso106049105e9.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Jan 2025 12:03:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736193795; x=1736798595; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736193803; x=1736798603; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xubr80DdDK1TQnuEw657hT2ILmCSL1Bi/K/I0ME5hpI=;
- b=xF7qbtvWNIykbu1ysX4Uc7/rJdNjL2LLtaLRDO1qre/XI6xhi3MWttFHLtMzJDMzD+
- NYCAlgS0wsZGGObsIXojRlTCWC1q494MK5OfpdG82RsHbPVwI6WyjaX/xFmrEfLbudmY
- IQDWee9q07bb3mSb7Hsg3vZ+M5HvDKfWay9TM3MZWqMP26PgjD/eMdWwUdpGER2JUkJL
- uq1bGtLr9DnLPMlDHhdvD55YkceSUFaetnc6WBVK3J4F4lzqDvoUaJGuGLvYa4OYKey5
- cgFQwSGzbehZvaJQ8kz0eJ57cEjBaiWJXX3k55ZefN1xBQznK6u6FytEhoS4Rqf4aphS
- 0yAA==
+ bh=FEstRp4e2Qb00qEl2/J4TP29Zm1C+ONgiSLe4ofc5Fw=;
+ b=hzfaOnrnEYyw/2oiK8Y6o3uzZVjK/UGRAGLtu//IDwuBZ2YPrF8wqZGZPnQg0Xqrc7
+ 1mSLEVB1FUHymds5xfAVeZdw5RaRTXJJYFdBcKGXAaNo1sjJ+KGYNe76hLTVUmIuZ3Gx
+ F5FV42/SOoKhJ2mH0qDNfwvb609WL9u9CU9/tNCVW+5rW8TL68BzrL1WB0V0Rf3qZ32t
+ G3VtjpVnepmHoNB6Tf7+iI6Yk4/r8553/nZ0H9P/Ijp+wv1Fm2EnbPq+/e6m5DvNKgWq
+ Nhy90QfE0GPsUhtCjliXIkYbFC9/GBHuY4tiyvxxX974SPDj/8jOzISxnRjv2Np0hwn1
+ rF0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736193795; x=1736798595;
+ d=1e100.net; s=20230601; t=1736193803; x=1736798603;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xubr80DdDK1TQnuEw657hT2ILmCSL1Bi/K/I0ME5hpI=;
- b=sqEeviWFk+xNbGOYUa3DPyMVxVGyDbuWORjNEHqe2vxMk92QPJEHBNwar1omFBptEn
- 4zNZwIMFM737xjdOkGi0ognvC7LFeDkyUjKOKW5+N17dSRiiSDG8zoUqGfQ+1/Wj1AFY
- 6Wiepo+p5SU7/2TWgCRhBEtn7yfTlSLlj5PIDHadR0c7qfnCl5VyjdXHsj3IrL0ma32r
- qmOsfBLTjg2WHc0Y7d7Farf3D58u8q4rPU5a0G1LThEJferlq306AhMJ9UzZoXSM+QHC
- pLAf5QMydEuIxya4zZIX8a1WNzcFjan4rOR00PGxi7/C1ecTRzHbzH6NDS+BgmY8VEYH
- HMzA==
-X-Gm-Message-State: AOJu0YzLlMrTKUltUITW+z6AMIrWqA9Uko55h6QgeJh11gAwc7EKwxFI
- f2Rsmvb0DY92qsBlmu6wF2haSUw7rV9/PEQ9AMwuW/3V5ejM2lBfrLDUdU7jP1ibIvqANjXACR/
- iRZg=
-X-Gm-Gg: ASbGnct3rEzuPrWWBistgJs4Z12tCy7fs8soiVckhVINGHJ4IstWX5NAx2Gm+uiuFcm
- Uojj3q2ifIXy3lstBOLTfqUsM36yWp0BO33/aqOj8PQWjwA0VpFITO8p4sqnZJakYQMK5639yJ5
- A1qQO7/TdhXywxDW1gXb2tSHkUtplc+LXgsUVQQwOXb/rLLvfUlNrlcYbF0dDcD07B6BLmosWxG
- RyQsPjzI0y0Td09jJ908NFopPzlmHYyQQ/160/Uor5ikawM2ruwrkHmxkvWkmGIZWRBl1ldlCuF
- pyO9peimPgYN9DaFBYZzoVqdRd47BIw=
-X-Google-Smtp-Source: AGHT+IG6hn6gQ1rEDpo0RUo5rK6HsOddWfOpcS85mXtVNMxlfkCCUdnnKaA6rQB2Q6OTZ5JLDkEevw==
-X-Received: by 2002:a05:600c:1d12:b0:436:1b86:f05 with SMTP id
- 5b1f17b1804b1-436dc20b0c1mr4405765e9.11.1736193795597; 
- Mon, 06 Jan 2025 12:03:15 -0800 (PST)
+ bh=FEstRp4e2Qb00qEl2/J4TP29Zm1C+ONgiSLe4ofc5Fw=;
+ b=Y/hsfW0M8+7BtbqHcjdCQyXtJYKlwDvJr66pyI4QTVZfVnKtjfTp2KDy0UNEWahNiN
+ jyeU2icSSWoMdEEqnrs6i6H7bOKLupGv9SZxYZJPvzKaaL2J7swL+z3luaD3J8bejpms
+ hymbmbEM9Lfb19bKEQ+ARLpE0jyyb7+JRn50RT7eHDPJYpGjjJ3ZQ5Fp7W0vRJR+GJUB
+ 8ZpF3S6ogbtxPCG4qYBbDMWDDgKurfiLIx5wh/4kRLriKmrHmdZdF0SFGxUCXytON3PA
+ 3hq56nrrIznEJ34PWPUmZ/OnwwXGplyNQGoFhVBBtIViAHKbkXbDY8Ul1Hk1V8BfXvsm
+ CLjg==
+X-Gm-Message-State: AOJu0YySV2ILOOiZ8WbZ/rvrtGHPQOFk+bKvC2Tu6z884gtJWMz5Cjug
+ mOFw5pGSdVExnSsot8+x5QzGZpD1orqRpJvPXQEqONvUAnlFZFizLlI/fALk8nG0eIfW6XeWOTx
+ BEQ8=
+X-Gm-Gg: ASbGncuxq/yvsu46jpIA5UevwBY4SA9kd7Jk4xbTCl7ckD9tzYWL5G30T1g/iP+ZLYj
+ 3uvE1noGI4Cv6Aqc836kzruGDUlHAQ7KV1BiSEk9R1mTnqp7NONLtI4yJEoLOvbUZZ2MJQAwWU2
+ IJVJtLCk855CCJpuI9ySvQwzTCaLjs9fE6Jt7qrn7FNmdkGWR6d9qnUi4j7vZBXqJGsGrB1XQfG
+ mEuJ+sXfcRIibijKyFl3IHKrqoYPryAdMVH9ZTwwMs4w805LmOke1pQ2fbqYsL8asdXjoLecYmM
+ m9cEOsrLZj0+1sF98ZKvZbDk9JQWHTg=
+X-Google-Smtp-Source: AGHT+IHMet/slV/sVRHbkbSGWWghuJnC++0pCmETj2WxsmX+/fk8W7s4g7KNnMtjYH7DDkOzwohlVQ==
+X-Received: by 2002:a05:600c:4f84:b0:434:fec5:4ef5 with SMTP id
+ 5b1f17b1804b1-43668643743mr497181795e9.14.1736193801273; 
+ Mon, 06 Jan 2025 12:03:21 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4366128a353sm577748615e9.42.2025.01.06.12.03.12
+ 5b1f17b1804b1-4365c08afcbsm586765365e9.21.2025.01.06.12.03.19
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 06 Jan 2025 12:03:15 -0800 (PST)
+ Mon, 06 Jan 2025 12:03:20 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
@@ -92,17 +92,17 @@ Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Anton Johansson <anjo@rev.ng>
-Subject: [RFC PATCH 2/7] cpus: Introduce AccelOpsClass::get_cpus_queue()
-Date: Mon,  6 Jan 2025 21:02:53 +0100
-Message-ID: <20250106200258.37008-3-philmd@linaro.org>
+Subject: [RFC PATCH 3/7] accel/tcg: Implement tcg_get_cpus_queue()
+Date: Mon,  6 Jan 2025 21:02:54 +0100
+Message-ID: <20250106200258.37008-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250106200258.37008-1-philmd@linaro.org>
 References: <20250106200258.37008-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,135 +125,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We want the ability to iterate over vCPUs of a specific
-accelerator.  Introduce cpus_get_accel_cpus_queue() to
-be used by accelerator common code, and expose the
-get_cpus_queue() in AccelOpsClass, so each accelerator
-can register its own queue of vCPUs.
+Use a specific vCPUs queue for our unique software accelerator.
+Register the AccelOpsClass::get_cpus_queue() handler.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/core/cpu.h      |  8 ++++++++
- include/system/accel-ops.h |  6 ++++++
- accel/tcg/user-exec-stub.c |  5 +++++
- cpu-common.c               | 10 ++++++++++
- system/cpus.c              |  5 +++++
- 5 files changed, 34 insertions(+)
+ accel/tcg/tcg-accel-ops.h | 10 ++++++++++
+ accel/tcg/tcg-accel-ops.c |  8 ++++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 48d90f50a71..5ae9bb64d6e 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -591,6 +591,14 @@ static inline CPUArchState *cpu_env(CPUState *cpu)
- typedef QTAILQ_HEAD(CPUTailQ, CPUState) CPUTailQ;
- extern CPUTailQ cpus_queue;
+diff --git a/accel/tcg/tcg-accel-ops.h b/accel/tcg/tcg-accel-ops.h
+index 6feeb3f3e9b..7b1d6288742 100644
+--- a/accel/tcg/tcg-accel-ops.h
++++ b/accel/tcg/tcg-accel-ops.h
+@@ -13,10 +13,20 @@
+ #define TCG_ACCEL_OPS_H
  
-+/**
-+ * cpus_get_accel_cpus_queue:
-+ * @cpu: The vCPU to get the accelerator #CPUTailQ.
-+ *
-+ * Returns the #CPUTailQ associated with the accelerator of the vCPU.
-+ */
-+CPUTailQ *cpus_get_accel_cpus_queue(CPUState *cpu);
-+
- #define first_cpu        QTAILQ_FIRST_RCU(&cpus_queue)
- #define CPU_NEXT(cpu)    QTAILQ_NEXT_RCU(cpu, node)
- #define CPU_FOREACH(cpu) QTAILQ_FOREACH_RCU(cpu, &cpus_queue, node)
-diff --git a/include/system/accel-ops.h b/include/system/accel-ops.h
-index 137fb96d444..fe59f728bfc 100644
---- a/include/system/accel-ops.h
-+++ b/include/system/accel-ops.h
-@@ -12,6 +12,7 @@
- 
- #include "exec/vaddr.h"
- #include "qom/object.h"
+ #include "system/cpus.h"
 +#include "hw/core/cpu.h"
  
- #define ACCEL_OPS_SUFFIX "-ops"
- #define TYPE_ACCEL_OPS "accel" ACCEL_OPS_SUFFIX
-@@ -37,6 +38,11 @@ struct AccelOpsClass {
-     bool (*cpus_are_resettable)(void);
-     void (*cpu_reset_hold)(CPUState *cpu);
+ void tcg_cpu_destroy(CPUState *cpu);
+ int tcg_cpu_exec(CPUState *cpu);
+ void tcg_handle_interrupt(CPUState *cpu, int mask);
+ void tcg_cpu_init_cflags(CPUState *cpu, bool parallel);
  
-+    /**
-+     * get_cpus_queue:
-+     * Returns the #CPUTailQ maintained by this accelerator.
-+     */
-+    CPUTailQ *(*get_cpus_queue)(void);
-     void (*create_vcpu_thread)(CPUState *cpu); /* MANDATORY NON-NULL */
-     void (*kick_vcpu_thread)(CPUState *cpu);
-     bool (*cpu_thread_is_idle)(CPUState *cpu);
-diff --git a/accel/tcg/user-exec-stub.c b/accel/tcg/user-exec-stub.c
-index 4fbe2dbdc88..cb76cec76be 100644
---- a/accel/tcg/user-exec-stub.c
-+++ b/accel/tcg/user-exec-stub.c
-@@ -18,6 +18,11 @@ void cpu_exec_reset_hold(CPUState *cpu)
- {
- }
++#ifdef CONFIG_USER_ONLY
++#define tcg_cpus_queue cpus_queue
++#else
++/* Guard with qemu_cpu_list_lock */
++extern CPUTailQ tcg_cpus_queue;
++#endif
++
++#define CPU_FOREACH_TCG(cpu) QTAILQ_FOREACH_RCU(cpu, &tcg_cpus_queue, node)
++
+ #endif /* TCG_ACCEL_OPS_H */
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index 6e3f1fa92b2..1fb077f7b38 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -47,6 +47,13 @@
  
-+CPUTailQ *cpus_get_accel_cpus_queue(CPUState *cpu)
+ /* common functionality among all TCG variants */
+ 
++CPUTailQ tcg_cpus_queue = QTAILQ_HEAD_INITIALIZER(tcg_cpus_queue);
++
++static CPUTailQ *tcg_get_cpus_queue(void)
 +{
-+    return NULL;
++    return &tcg_cpus_queue;
 +}
 +
- /* User mode emulation does not support record/replay yet.  */
- 
- bool replay_exception(void)
-diff --git a/cpu-common.c b/cpu-common.c
-index 4248b2d727e..ff8db9c7f9d 100644
---- a/cpu-common.c
-+++ b/cpu-common.c
-@@ -82,6 +82,7 @@ unsigned int cpu_list_generation_id_get(void)
- void cpu_list_add(CPUState *cpu)
+ void tcg_cpu_init_cflags(CPUState *cpu, bool parallel)
  {
-     static bool cpu_index_auto_assigned;
-+    CPUTailQ *accel_cpus_queue = cpus_get_accel_cpus_queue(cpu);
+     uint32_t cflags;
+@@ -199,6 +206,7 @@ static inline void tcg_remove_all_breakpoints(CPUState *cpu)
  
-     QEMU_LOCK_GUARD(&qemu_cpu_list_lock);
-     if (cpu->cpu_index == UNASSIGNED_CPU_INDEX) {
-@@ -92,17 +93,26 @@ void cpu_list_add(CPUState *cpu)
-         assert(!cpu_index_auto_assigned);
-     }
-     QTAILQ_INSERT_TAIL_RCU(&cpus_queue, cpu, node);
-+    if (accel_cpus_queue) {
-+        QTAILQ_INSERT_TAIL_RCU(accel_cpus_queue, cpu, node);
-+    }
-+
-     cpu_list_generation_id++;
- }
- 
- void cpu_list_remove(CPUState *cpu)
+ static void tcg_accel_ops_init(AccelOpsClass *ops)
  {
-+    CPUTailQ *accel_cpus_queue = cpus_get_accel_cpus_queue(cpu);
-+
-     QEMU_LOCK_GUARD(&qemu_cpu_list_lock);
-     if (!QTAILQ_IN_USE(cpu, node)) {
-         /* there is nothing to undo since cpu_exec_init() hasn't been called */
-         return;
-     }
- 
-+    if (accel_cpus_queue) {
-+        QTAILQ_REMOVE_RCU(accel_cpus_queue, cpu, node);
-+    }
-     QTAILQ_REMOVE_RCU(&cpus_queue, cpu, node);
-     cpu->cpu_index = UNASSIGNED_CPU_INDEX;
-     cpu_list_generation_id++;
-diff --git a/system/cpus.c b/system/cpus.c
-index 99f83806c16..972df6ab061 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -209,6 +209,11 @@ void cpu_exec_reset_hold(CPUState *cpu)
-     }
- }
- 
-+CPUTailQ *cpus_get_accel_cpus_queue(CPUState *cpu)
-+{
-+    return cpus_accel ? cpus_accel->get_cpus_queue() : NULL;
-+}
-+
- int64_t cpus_get_virtual_clock(void)
- {
-     /*
++    ops->get_cpus_queue = tcg_get_cpus_queue;
+     if (qemu_tcg_mttcg_enabled()) {
+         ops->create_vcpu_thread = mttcg_start_vcpu_thread;
+         ops->kick_vcpu_thread = mttcg_kick_vcpu_thread;
 -- 
 2.47.1
 
