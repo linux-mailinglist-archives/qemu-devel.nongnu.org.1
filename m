@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FCB0A03112
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A31A03113
 	for <lists+qemu-devel@lfdr.de>; Mon,  6 Jan 2025 21:04:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tUtJd-0002W6-Qy; Mon, 06 Jan 2025 15:03:09 -0500
+	id 1tUtJk-0002Yk-HZ; Mon, 06 Jan 2025 15:03:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tUtJb-0002Va-Bf
- for qemu-devel@nongnu.org; Mon, 06 Jan 2025 15:03:07 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tUtJh-0002Xb-8L
+ for qemu-devel@nongnu.org; Mon, 06 Jan 2025 15:03:13 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tUtJZ-000395-FC
- for qemu-devel@nongnu.org; Mon, 06 Jan 2025 15:03:06 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4362bae4d7dso106046805e9.1
- for <qemu-devel@nongnu.org>; Mon, 06 Jan 2025 12:03:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tUtJf-00039t-1g
+ for qemu-devel@nongnu.org; Mon, 06 Jan 2025 15:03:13 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3862d16b4f5so9136537f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Jan 2025 12:03:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736193783; x=1736798583; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=IVQDyU0aZGqnbGo58WYklNw0MeL8aFrKkG5Vri/XHzI=;
- b=kUQtZ8mmiPkdHTlMB9xdpp65ITppnr/j+WZjxIM5eLAr0oncSaXmdo7H30QnAtUOzx
- gG//LNx4FJRJ2X2uEYupahCpsyBxYVArR4GG6WMPmup6JnyxgiCd795I4AKMqOq1Tl2r
- iSUeJNzRLhot8RuggB37lPQBdBW9oIJkCZauQTSg8h+vwddIdlR/VBbLQ7POM7qb9H2G
- c+70FtlruxCFmA3UOh+yaugrBrm5oKGBHalcZt1DeYn8qKX1u2Gh1B3KCSmnA84MTaPh
- 5bLHcCYp6zvcAo9MwLtXgKMdhSj+ZaaNmXJHxHQLC0xA/OHUsvzM5m4pB0S6jaXk8XA1
- aOMQ==
+ d=linaro.org; s=google; t=1736193789; x=1736798589; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Gw/8miEe/PnaBFePSWTnOg3qI2ZvVUjrjdrVrAxgzBI=;
+ b=px94p8GTMutot+SHUgInntlxuc3KrdY9cMjay+uyCuTvj7o0bEtZhFjtiEDyvrVejT
+ MuDVODS4PYfHutEAn/g+Tg7RCF/BlMk2gNSX6Dw9tEfIfqsnHHwydriIbv028d07/waj
+ 2iHCsMYBEEjJtjntVB6ihxFgIWyBG6OWhLCh23LW0EbfWluU4mgYdljo2dlyHguMx1dM
+ BdGi65sVqkXTN8zl8UfKa/VKjcLv4EnprtSeja7pEGiCU2AD4R/Wx7mqlQdEKAt2aOtH
+ ZAY5P5YPaPVQQTxgKgzvTiyPecLOgblrNqOf25TjTyLH4YDiKU0dFnKBGPeaWqKjawX7
+ e1aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736193783; x=1736798583;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=IVQDyU0aZGqnbGo58WYklNw0MeL8aFrKkG5Vri/XHzI=;
- b=s3HFWStX/WdlVW4wucaSAVhtC29EczENzma80PqrYRgzuWucWJGUy8YkO5DDoptG58
- dDabavnZh/1ofO8LcCZjFm97a7xobz7BigT9wCUqo3d838xNzc4vidyYJcyO9gpTyJDO
- WXUMXSBIbFszt5msom4uqeWad87rtj/ouWNDS4CbKLrTlBDNKRK8vzn14Mi8DiX4ec1K
- HKo9deDe8Ym3bttkNoHeGIIkXg1F97yVdzUK/EDC6UXCLTAQ5x6e8KoGbtpp6KJg7ipR
- 5nX7X1B22KwTC/xViBTvEZFVPDSPTd2CIZqSK6bFXCBz2PEqjt8RVCGX6pembKnSTVP+
- jKSA==
-X-Gm-Message-State: AOJu0YwnjQZcOL0i7fQVcbZnRQT62lYjSndcJQP/qNtsos+wmqr+JpdK
- MuyOP09HteaIbCx+IdMJECIYt+tryIndyR4eqKux3fD91boB1O+FToTm1aPe5TkaGc0Q46FBZd0
- 8zZM=
-X-Gm-Gg: ASbGnct5nkTaiiPpChdbWDYBDTGgYLxSx9IB+O1Ar9BfJorZH+ewpPN9qHip5FF4ov/
- x3vsg7EKGGlQALMHskaeeNjfuhu3+3qbgWruRc4V4Eb6q0eVIb1etj8fz8i1fyhwDkhECGLhcr6
- hCcw5bg/6dUUIi+ufAH7QdpJQwkAUjd41H2QXcWtLgukTNuNhyBKCg0RnhgogUplqifPvPthqqs
- KF/bdGctpMwJ4o/KaTYMWaX1ORhF/wLN6uXECMiBTNXt9SqedZnAuVhJyfM7uC+G6uJGpAAgKSY
- edFHepgQb1GzFU7Cu/pwF1SqrqjAkAg=
-X-Google-Smtp-Source: AGHT+IEvY1dOIYQWFga9MrJsSFG0JoKzIh1x57mMzgTfD/hBdAZ0c+WqLtNl81G5solsww92cOjYAA==
-X-Received: by 2002:a05:600c:450f:b0:434:fb65:ebbb with SMTP id
- 5b1f17b1804b1-436686461cbmr539399575e9.17.1736193783280; 
- Mon, 06 Jan 2025 12:03:03 -0800 (PST)
+ d=1e100.net; s=20230601; t=1736193789; x=1736798589;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Gw/8miEe/PnaBFePSWTnOg3qI2ZvVUjrjdrVrAxgzBI=;
+ b=M0/fjsOT5s0v2Q12qwWaNylqTYC9LajlCKtQbB0PGcUOdfJT7+XKr6upPc7an0Fr57
+ V8r/JFlfNFR+LXhA+KlYzbfsItW02AESdWxcNUEdp0XaosNya7At05FywQqeWe3YDDLt
+ yiPuuPD0RZDDgVK60qdNIznx4Au/pxQRwJHutZ2mnfgU2X5zVqhCWwf/MHnMObETf/zW
+ 8K4dHOrhDcXWYSMLMTUecaYz/FPWcskbbhd5+tkczpCUy1uQrIgZ2M4og3lcFioE273/
+ ibgFSZU35HjKC8/AtyNu67JRx2rh4AcJnOrkBofK3bhZAtO+bVqO716s7cx2QyphWKTw
+ qfCQ==
+X-Gm-Message-State: AOJu0Yx7TcgKQEojuSgafS4BDAaT7IrqryJy+buxrQzuUvA963Obc88Y
+ k6raust9lMqOboajg9aEvkxyH81MxBsqQhJEcYtata+NCYc0e3rMO7FeKBxidRHi2UaACPB1FgQ
+ 7RaI=
+X-Gm-Gg: ASbGncslsmmZPznTJbYNdsZ9ess3g1a6HtpPuHdrNh/OrocZK9s3lgRGe1hXBn0gbO7
+ p+q9qOfWlvJPtWLrZaV1SXA9JdZUULshrTjxViGrMTawO4RsOhdibQq9IN+6ddDfAeN1HJVw2v4
+ OVWcP1PyBxIyXBt8DeD9EvNm6OrS/PiDvYNxcKLyWDCSWOwJvFtUlFJtOjXNlfbGEubehwAv02Q
+ 17AJeZOUJVfz209xp1gvWc6fSVPs4nz/iQnmHgGhRwUgFr4JEn/ijyDQRzG7ZQYb2YbTh4AQqeC
+ RA5A4fgG+/IA+VDGnRkGWTAI+kc/TQw=
+X-Google-Smtp-Source: AGHT+IE81N1RplBD8FCsdoj95sqyVSqitqWpe38bLlQuumoNL1lLDdZMOpwBwgd43Npz//MFxfo/tw==
+X-Received: by 2002:a5d:64ac:0:b0:38a:4df5:a08 with SMTP id
+ ffacd0b85a97d-38a7923b959mr440924f8f.22.1736193788891; 
+ Mon, 06 Jan 2025 12:03:08 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656b3b2a4sm611962245e9.27.2025.01.06.12.02.59
+ 5b1f17b1804b1-43665cd9c29sm559552815e9.14.2025.01.06.12.03.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 06 Jan 2025 12:03:01 -0800 (PST)
+ Mon, 06 Jan 2025 12:03:08 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
@@ -91,22 +92,24 @@ Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Anton Johansson <anjo@rev.ng>
-Subject: [RFC PATCH 0/7] accel: Add per-accelerator vCPUs queue
-Date: Mon,  6 Jan 2025 21:02:51 +0100
-Message-ID: <20250106200258.37008-1-philmd@linaro.org>
+Subject: [RFC PATCH 1/7] cpus: Restrict CPU_FOREACH_SAFE() to user emulation
+Date: Mon,  6 Jan 2025 21:02:52 +0100
+Message-ID: <20250106200258.37008-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250106200258.37008-1-philmd@linaro.org>
+References: <20250106200258.37008-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,68 +125,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/hw/core/cpu.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Currently we register all vCPUs to the global 'cpus_queue' queue,
-however we can not discriminate per accelerator or per target
-architecture (which might happen in a soon future).
-
-This series tries to add an accelerator discriminator, so
-accelerator specific code can iterate on its own vCPUs. This
-is required to run a pair of HW + SW accelerators like the
-(HVF, TCG) or (KVM, TCG) combinations. Otherwise, i.e. the
-HVF core code could iterate on TCG vCPUs...
-To keep it simple and not refactor heavily the code base,
-we introduce the CPU_FOREACH_TCG/HVF/KVM() macros, only
-defined for each accelerator.
-
-This is just a RFC to get some thoughts whether this is
-heading in the correct direction or not ;)
-
-Regards,
-
-Phil.
-
-Philippe Mathieu-Daudé (7):
-  cpus: Restrict CPU_FOREACH_SAFE() to user emulation
-  cpus: Introduce AccelOpsClass::get_cpus_queue()
-  accel/tcg: Implement tcg_get_cpus_queue()
-  accel/tcg: Use CPU_FOREACH_TCG()
-  accel/hw: Implement hw_accel_get_cpus_queue()
-  accel/hvf: Use CPU_FOREACH_HVF()
-  accel/kvm: Use CPU_FOREACH_KVM()
-
- accel/tcg/tcg-accel-ops.h         | 10 ++++++++++
- include/hw/core/cpu.h             | 11 +++++++++++
- include/system/accel-ops.h        |  6 ++++++
- include/system/hvf_int.h          |  4 ++++
- include/system/hw_accel.h         |  9 +++++++++
- include/system/kvm_int.h          |  3 +++
- accel/accel-system.c              |  8 ++++++++
- accel/hvf/hvf-accel-ops.c         |  9 +++++----
- accel/kvm/kvm-accel-ops.c         |  1 +
- accel/kvm/kvm-all.c               | 14 +++++++-------
- accel/tcg/cputlb.c                |  7 ++++---
- accel/tcg/monitor.c               |  3 ++-
- accel/tcg/tb-maint.c              |  7 ++++---
- accel/tcg/tcg-accel-ops-rr.c      | 10 +++++-----
- accel/tcg/tcg-accel-ops.c         | 16 ++++++++++++----
- accel/tcg/user-exec-stub.c        |  5 +++++
- accel/xen/xen-all.c               |  1 +
- cpu-common.c                      | 10 ++++++++++
- hw/i386/kvm/clock.c               |  3 ++-
- hw/intc/spapr_xive_kvm.c          |  5 +++--
- hw/intc/xics_kvm.c                |  5 +++--
- system/cpus.c                     |  5 +++++
- target/arm/hvf/hvf.c              |  4 ++--
- target/i386/kvm/kvm.c             |  4 ++--
- target/i386/kvm/xen-emu.c         |  2 +-
- target/i386/nvmm/nvmm-accel-ops.c |  1 +
- target/i386/whpx/whpx-accel-ops.c |  1 +
- target/s390x/kvm/kvm.c            |  2 +-
- target/s390x/kvm/stsi-topology.c  |  3 ++-
- 29 files changed, 130 insertions(+), 39 deletions(-)
-
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index c3ca0babcb3..48d90f50a71 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -594,8 +594,11 @@ extern CPUTailQ cpus_queue;
+ #define first_cpu        QTAILQ_FIRST_RCU(&cpus_queue)
+ #define CPU_NEXT(cpu)    QTAILQ_NEXT_RCU(cpu, node)
+ #define CPU_FOREACH(cpu) QTAILQ_FOREACH_RCU(cpu, &cpus_queue, node)
++
++#if defined(CONFIG_USER_ONLY)
+ #define CPU_FOREACH_SAFE(cpu, next_cpu) \
+     QTAILQ_FOREACH_SAFE_RCU(cpu, &cpus_queue, node, next_cpu)
++#endif
+ 
+ extern __thread CPUState *current_cpu;
+ 
 -- 
 2.47.1
 
