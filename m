@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66578A03114
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Jan 2025 21:04:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35CABA03118
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Jan 2025 21:04:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tUtK9-0002ld-EM; Mon, 06 Jan 2025 15:03:41 -0500
+	id 1tUtKD-0002o1-1j; Mon, 06 Jan 2025 15:03:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tUtK7-0002ja-2f
- for qemu-devel@nongnu.org; Mon, 06 Jan 2025 15:03:39 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tUtKB-0002n3-5y
+ for qemu-devel@nongnu.org; Mon, 06 Jan 2025 15:03:43 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tUtK3-0003FX-6M
- for qemu-devel@nongnu.org; Mon, 06 Jan 2025 15:03:38 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-385dece873cso5490594f8f.0
- for <qemu-devel@nongnu.org>; Mon, 06 Jan 2025 12:03:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tUtK8-0003OO-QG
+ for qemu-devel@nongnu.org; Mon, 06 Jan 2025 15:03:42 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-436202dd730so106003925e9.2
+ for <qemu-devel@nongnu.org>; Mon, 06 Jan 2025 12:03:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736193813; x=1736798613; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736193819; x=1736798619; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zxJ3+xb03FIgQb6HyhO+0vTNSYN1GRLEa0EnbI36swA=;
- b=fi+mmOV6FpCWixDy/UGX6sSvUe51RRCle/PhRukH6wdUPnDYzo5O6GqGbFqrXsUgT4
- ErIw1js0sFnfGpRJeY3CrpxElC0EG2i5NJPPN7Bw0KRTspIh8jQlk1cuzP+up25QF/Ou
- gpLWTpU/zTqDWmRnZSms5h+/81azirWJOt0sbfUUK1hjqxhsqrIPCY+XrvBXUltN3wWd
- mrwwOG2bk4GvHz9MOAbkAz8plix/jy7x6u67/96EtALeJeOEj0HYP5E2M5+6CcUa87a7
- wCTRK/k4Zd6N2zA751tGOAq6WelbDkzSkmZE7Hlv1suwR9gEJbS+vKfQQ0P0IYPPHCkA
- tS6w==
+ bh=sQToL39oc1IIGRZ4x4DJpAbte9qYHUOsWxQUB+w3STI=;
+ b=uOPJMAGRbEpVSEyPu+TgDMLOkZY6dP6K1EnZzyLTxMGgOQ57hyv9G3iIA0bMeFd+NW
+ CO+Q4u4wgsWXovHffVu6upFJz68LJYjY0lub39tNj/R1NPPbIqS5VRk0yFbQXI6scy25
+ zax/C/KQ1w6FMT3yzeiK7BgL7EBePqwne9LaSM71/RdDjHajJN5zrrwE1cnvToIK/1a0
+ vctAOwotlyM3Yn0XKYN6wZ/xtOJf2mqcOWaPsltsykpRXtpemsver4mrsH/MoW5ob3Sd
+ 7cGebdQ8C+dbQCIN9LS2zz82/EXaTP3I27Is7WWEdukKskb8dvlpqpaa0hh40NCKYjQB
+ /oAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736193813; x=1736798613;
+ d=1e100.net; s=20230601; t=1736193819; x=1736798619;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zxJ3+xb03FIgQb6HyhO+0vTNSYN1GRLEa0EnbI36swA=;
- b=gHICRBblk2pnF6BL6l/qw8tzAmkloZLZWQgM6YkwuQ1i7qqhS9H99r7YffVezh6T8M
- gOEZAb6uOGAU0dkVyqzxTLOlUgQvkkFnRgQSnWLel2fwRpqdIYg0xkbjqIxbUFhbA+sX
- dAz1ruEmrgzKTkYWWRg4KUllGqwv1Aw/F2c1l5a+JMY1eBPsttvgv9IPggVeR9p7A9x5
- jVrd1WHy7epMjialxyGJkXk0FJ3m+zATzeud+HGIMcU1oBJLZAY1uqz02JjR5o0uwl/M
- vpMZm7ygR9G14h8/in6udMWuS4yS0TTnGloobQ5QQgFlgEnDAzp/iUpgaNZE+DBIS3pu
- 5OqA==
-X-Gm-Message-State: AOJu0YzpWaayFW2nSnbUiuO44gMYHU5+6gTWoK5+e1UvLa+qrxUBCGfe
- gYa59Ya09HNtJQySxHA0Zi7fpo9j+uTTs+NvVlLq8wCECw4ZCf4sfPNbGgXvTmkQnYRMDPzYF80
- wpaM=
-X-Gm-Gg: ASbGncsx5R5jKP8laHfykcMZrLfVnGJfy/NhAea1DWa15jXNFdBrCzEcJyWXWjJ9ymb
- aj+pBxsCo6TI8xHZeYD7Rm4Cv+tP4n3Jco1LMzDbymYk6w57dJFcZHD5om8cKvg6rSKoKEV40nj
- 9G5WBAPTQxnErkt119tAH0OREu6xgBa795oUdxzmGqM9bQWgfSYtv7QuWUMYdFyS7iTlTLiEp9I
- qOiPvVzyixh8aPzHKJsalX1RHHx8hYXDmzLNXk5W5mQbq+y+7pm2Mm5SSXmHjOYHaDNRdg3e3W6
- nqTDo6wIaOAQEjSfhstyIY61gEOgplw=
-X-Google-Smtp-Source: AGHT+IGoS13s7EdoAdq3NUY+QaACk4mt67qvYvBPAyuPr3+V1znGvuXeRZNJwXBUnZIrDNw4J4+93w==
-X-Received: by 2002:adf:a3d9:0:b0:38a:39ad:3e31 with SMTP id
- ffacd0b85a97d-38a39ad4128mr24752061f8f.57.1736193813254; 
- Mon, 06 Jan 2025 12:03:33 -0800 (PST)
+ bh=sQToL39oc1IIGRZ4x4DJpAbte9qYHUOsWxQUB+w3STI=;
+ b=JR+NDKlVjf7pYEtF7sgkdoDed2+8XU3ke8PetwsEEf/Zi08ni6nBxlKNNG9srqOTy+
+ rAcSU091dxpUc3FbcBjkxF818IgiQjDh5jIwrPTClJeYzcBom6fcwdfD6aODS8heVhLU
+ a8OpEtYKeAfGbm6HG2TBm7SSyGs8z5tlsHAXDy8PhyiStu9cEuLzGo5Dul2wP7L/WFgw
+ LpaGWxnL4NzyF/vLciUODoUes51ZcMRO80NUXBva6br8LTwumYXyFMABd7pl4x+eYGf+
+ FiWo1BCyTK3TAIEGoczyHiw7XJ54XVT8MbhXIoonZlzeiIF3ntdwmtodJ9AgEWq5qc7V
+ kK3w==
+X-Gm-Message-State: AOJu0Ywsy+gsWfL2Wf+lWCMe/5M/+qqi/RT6URnHejS5qBiUFAhZEEiJ
+ TdAGO5MJgR4uVL97gAJF+ly6kEaRIDMIKKFCQwfbG4ImDdDgaFcY/CWK4Pd5DQtOKWhdjtO6jNc
+ wCXQ=
+X-Gm-Gg: ASbGncuvDVwayRfsONpyS/fR0r7ELQlZDgtXFO1CVQ3nYC+pYCW3snEJVMp/e25IBMA
+ XfwyE2regSX46AnU5/3ORWtqi8zFjKiYoeIeHLpChLCANV0e2guOAA3dKfh2tcWHQqf0TJZu92h
+ qZxwJHn4ax2XZxAqoYiyMPlMgM8zvN0Nr4cK4w7Q20Zr+WsPGE/nZW37oYC4+qd5fJPp7QYDyRh
+ M7Crrq/KWX1p9xQls8sRpKbXqOpgMPuyDqmihSMNcbV8sh1N5ywK1KoQGGAUG32QDm+zGcoshDM
+ hUJJmaWhZ/kHVJDaMNItk9arCJJmGmw=
+X-Google-Smtp-Source: AGHT+IFXiDdVgmnTH4sfktC8/xKNinP6K1bHXh0LE5bFlepNSrMiJFLvtHvHs4neclwfX3Zl5Vm/Iw==
+X-Received: by 2002:a05:600c:5112:b0:434:faa9:5266 with SMTP id
+ 5b1f17b1804b1-436c2b5b491mr121041605e9.13.1736193818909; 
+ Mon, 06 Jan 2025 12:03:38 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656af6d02sm618987535e9.1.2025.01.06.12.03.31
+ 5b1f17b1804b1-4367086e40esm543882975e9.30.2025.01.06.12.03.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 06 Jan 2025 12:03:32 -0800 (PST)
+ Mon, 06 Jan 2025 12:03:38 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
@@ -92,17 +92,17 @@ Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Anton Johansson <anjo@rev.ng>
-Subject: [RFC PATCH 5/7] accel/hw: Implement hw_accel_get_cpus_queue()
-Date: Mon,  6 Jan 2025 21:02:56 +0100
-Message-ID: <20250106200258.37008-6-philmd@linaro.org>
+Subject: [RFC PATCH 6/7] accel/hvf: Use CPU_FOREACH_HVF()
+Date: Mon,  6 Jan 2025 21:02:57 +0100
+Message-ID: <20250106200258.37008-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250106200258.37008-1-philmd@linaro.org>
 References: <20250106200258.37008-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,120 +125,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can only run a single hardware accelerator at a time,
-so add a generic hw_accel_get_cpus_queue() helper in
-accel-system.c, a file common to all HW accelerators.
-
-Register AccelOpsClass::get_cpus_queue() for each HW
-accelerator. Add a generic CPU_FOREACH_HWACCEL() macro.
+Only iterate over HVF vCPUs when running HVF specific code.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/system/hw_accel.h         | 9 +++++++++
- accel/accel-system.c              | 8 ++++++++
- accel/kvm/kvm-accel-ops.c         | 1 +
- accel/xen/xen-all.c               | 1 +
- target/i386/nvmm/nvmm-accel-ops.c | 1 +
- target/i386/whpx/whpx-accel-ops.c | 1 +
- 6 files changed, 21 insertions(+)
+ include/system/hvf_int.h  | 4 ++++
+ accel/hvf/hvf-accel-ops.c | 9 +++++----
+ target/arm/hvf/hvf.c      | 4 ++--
+ 3 files changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/include/system/hw_accel.h b/include/system/hw_accel.h
-index 380e9e640b6..12664cac6f9 100644
---- a/include/system/hw_accel.h
-+++ b/include/system/hw_accel.h
-@@ -2,6 +2,7 @@
-  * QEMU Hardware accelerators support
-  *
-  * Copyright 2016 Google, Inc.
-+ * Copyright 2025 Linaro Ltd.
-  *
-  * This work is licensed under the terms of the GNU GPL, version 2 or later.
-  * See the COPYING file in the top-level directory.
-@@ -17,6 +18,14 @@
- #include "system/whpx.h"
- #include "system/nvmm.h"
+diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
+index 42ae18433f0..3cf64faabd1 100644
+--- a/include/system/hvf_int.h
++++ b/include/system/hvf_int.h
+@@ -11,6 +11,8 @@
+ #ifndef HVF_INT_H
+ #define HVF_INT_H
  
-+/* Guard with qemu_cpu_list_lock */
-+extern CPUTailQ hw_accel_cpus_queue;
-+
-+#define CPU_FOREACH_HWACCEL(cpu) \
-+            QTAILQ_FOREACH_RCU(cpu, &hw_accel_cpus_queue, node)
-+
-+CPUTailQ *hw_accel_get_cpus_queue(void);
-+
- void cpu_synchronize_state(CPUState *cpu);
- void cpu_synchronize_post_reset(CPUState *cpu);
- void cpu_synchronize_post_init(CPUState *cpu);
-diff --git a/accel/accel-system.c b/accel/accel-system.c
-index a7596aef59d..60877ea7a28 100644
---- a/accel/accel-system.c
-+++ b/accel/accel-system.c
-@@ -27,9 +27,17 @@
- #include "qemu/accel.h"
- #include "hw/boards.h"
- #include "system/cpus.h"
 +#include "system/hw_accel.h"
- #include "qemu/error-report.h"
- #include "accel-system.h"
- 
-+CPUTailQ hw_accel_cpus_queue = QTAILQ_HEAD_INITIALIZER(hw_accel_cpus_queue);
 +
-+CPUTailQ *hw_accel_get_cpus_queue(void)
-+{
-+    return &hw_accel_cpus_queue;
-+}
+ #ifdef __aarch64__
+ #include <Hypervisor/Hypervisor.h>
+ typedef hv_vcpu_t hvf_vcpuid;
+@@ -74,4 +76,6 @@ int hvf_put_registers(CPUState *);
+ int hvf_get_registers(CPUState *);
+ void hvf_kick_vcpu_thread(CPUState *cpu);
+ 
++#define CPU_FOREACH_HVF(cpu) CPU_FOREACH_HWACCEL(cpu)
 +
- int accel_init_machine(AccelState *accel, MachineState *ms)
- {
-     AccelClass *acc = ACCEL_GET_CLASS(accel);
-diff --git a/accel/kvm/kvm-accel-ops.c b/accel/kvm/kvm-accel-ops.c
-index a81e8f3b03b..5f4001860d5 100644
---- a/accel/kvm/kvm-accel-ops.c
-+++ b/accel/kvm/kvm-accel-ops.c
-@@ -93,6 +93,7 @@ static void kvm_accel_ops_class_init(ObjectClass *oc, void *data)
- {
-     AccelOpsClass *ops = ACCEL_OPS_CLASS(oc);
+ #endif
+diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
+index 945ba720513..bbbe2f8d45b 100644
+--- a/accel/hvf/hvf-accel-ops.c
++++ b/accel/hvf/hvf-accel-ops.c
+@@ -504,7 +504,7 @@ static int hvf_insert_breakpoint(CPUState *cpu, int type, vaddr addr, vaddr len)
+         }
+     }
  
-+    ops->get_cpus_queue = hw_accel_get_cpus_queue;
-     ops->create_vcpu_thread = kvm_start_vcpu_thread;
-     ops->cpu_thread_is_idle = kvm_vcpu_thread_is_idle;
-     ops->cpus_are_resettable = kvm_cpus_are_resettable;
-diff --git a/accel/xen/xen-all.c b/accel/xen/xen-all.c
-index 852e9fbe5fe..ac5ed2dfb80 100644
---- a/accel/xen/xen-all.c
-+++ b/accel/xen/xen-all.c
-@@ -150,6 +150,7 @@ static void xen_accel_ops_class_init(ObjectClass *oc, void *data)
- {
-     AccelOpsClass *ops = ACCEL_OPS_CLASS(oc);
+-    CPU_FOREACH(cpu) {
++    CPU_FOREACH_HVF(cpu) {
+         err = hvf_update_guest_debug(cpu);
+         if (err) {
+             return err;
+@@ -543,7 +543,7 @@ static int hvf_remove_breakpoint(CPUState *cpu, int type, vaddr addr, vaddr len)
+         }
+     }
  
-+    ops->get_cpus_queue = hw_accel_get_cpus_queue;
-     ops->create_vcpu_thread = dummy_start_vcpu_thread;
+-    CPU_FOREACH(cpu) {
++    CPU_FOREACH_HVF(cpu) {
+         err = hvf_update_guest_debug(cpu);
+         if (err) {
+             return err;
+@@ -560,7 +560,7 @@ static void hvf_remove_all_breakpoints(CPUState *cpu)
+     QTAILQ_FOREACH_SAFE(bp, &hvf_state->hvf_sw_breakpoints, entry, next) {
+         if (hvf_arch_remove_sw_breakpoint(cpu, bp) != 0) {
+             /* Try harder to find a CPU that currently sees the breakpoint. */
+-            CPU_FOREACH(tmpcpu)
++            CPU_FOREACH_HVF(tmpcpu)
+             {
+                 if (hvf_arch_remove_sw_breakpoint(tmpcpu, bp) == 0) {
+                     break;
+@@ -572,7 +572,7 @@ static void hvf_remove_all_breakpoints(CPUState *cpu)
+     }
+     hvf_arch_remove_all_hw_breakpoints();
+ 
+-    CPU_FOREACH(cpu) {
++    CPU_FOREACH_HVF(cpu) {
+         hvf_update_guest_debug(cpu);
+     }
  }
- 
-diff --git a/target/i386/nvmm/nvmm-accel-ops.c b/target/i386/nvmm/nvmm-accel-ops.c
-index e7b56662fee..bb407c68e14 100644
---- a/target/i386/nvmm/nvmm-accel-ops.c
-+++ b/target/i386/nvmm/nvmm-accel-ops.c
-@@ -84,6 +84,7 @@ static void nvmm_accel_ops_class_init(ObjectClass *oc, void *data)
+@@ -581,6 +581,7 @@ static void hvf_accel_ops_class_init(ObjectClass *oc, void *data)
  {
      AccelOpsClass *ops = ACCEL_OPS_CLASS(oc);
  
 +    ops->get_cpus_queue = hw_accel_get_cpus_queue;
-     ops->create_vcpu_thread = nvmm_start_vcpu_thread;
-     ops->kick_vcpu_thread = nvmm_kick_vcpu_thread;
+     ops->create_vcpu_thread = hvf_start_vcpu_thread;
+     ops->kick_vcpu_thread = hvf_kick_vcpu_thread;
  
-diff --git a/target/i386/whpx/whpx-accel-ops.c b/target/i386/whpx/whpx-accel-ops.c
-index ab2e014c9ea..191214ca81d 100644
---- a/target/i386/whpx/whpx-accel-ops.c
-+++ b/target/i386/whpx/whpx-accel-ops.c
-@@ -86,6 +86,7 @@ static void whpx_accel_ops_class_init(ObjectClass *oc, void *data)
- {
-     AccelOpsClass *ops = ACCEL_OPS_CLASS(oc);
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 0afd96018e0..13400ff0d5f 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -2269,10 +2269,10 @@ static void hvf_arch_set_traps(void)
  
-+    ops->get_cpus_queue = hw_accel_get_cpus_queue;
-     ops->create_vcpu_thread = whpx_start_vcpu_thread;
-     ops->kick_vcpu_thread = whpx_kick_vcpu_thread;
-     ops->cpu_thread_is_idle = whpx_vcpu_thread_is_idle;
+     /* Check whether guest debugging is enabled for at least one vCPU; if it
+      * is, enable exiting the guest on all vCPUs */
+-    CPU_FOREACH(cpu) {
++    CPU_FOREACH_HVF(cpu) {
+         should_enable_traps |= cpu->accel->guest_debug_enabled;
+     }
+-    CPU_FOREACH(cpu) {
++    CPU_FOREACH_HVF(cpu) {
+         /* Set whether debug exceptions exit the guest */
+         r = hv_vcpu_set_trap_debug_exceptions(cpu->accel->fd,
+                                               should_enable_traps);
 -- 
 2.47.1
 
