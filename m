@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E313A01EF9
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Jan 2025 06:45:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6830AA01EFA
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Jan 2025 06:45:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tUfu1-0003hg-Je; Mon, 06 Jan 2025 00:43:49 -0500
+	id 1tUfuC-0003kC-D6; Mon, 06 Jan 2025 00:44:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
- id 1tUfu0-0003hR-Ai
- for qemu-devel@nongnu.org; Mon, 06 Jan 2025 00:43:48 -0500
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ id 1tUfu8-0003j5-3A
+ for qemu-devel@nongnu.org; Mon, 06 Jan 2025 00:43:56 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
- id 1tUfty-0004Hm-UE
- for qemu-devel@nongnu.org; Mon, 06 Jan 2025 00:43:48 -0500
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-2f43d17b0e3so20477573a91.0
- for <qemu-devel@nongnu.org>; Sun, 05 Jan 2025 21:43:46 -0800 (PST)
+ id 1tUfu1-0004IF-DK
+ for qemu-devel@nongnu.org; Mon, 06 Jan 2025 00:43:55 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-21644aca3a0so14655225ad.3
+ for <qemu-devel@nongnu.org>; Sun, 05 Jan 2025 21:43:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1736142225; x=1736747025; darn=nongnu.org;
+ d=sifive.com; s=google; t=1736142227; x=1736747027; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=H/EMwbW9ao32OaXwASoWqvLNsXxITTvHnX2/S/pK7bk=;
- b=DD7VN7iZXDPBixbxaoPfg1GvzXm8toK/m3NQHNHhjYFt2wBIMM+faRM3kHlOOAiKPL
- mXbFAXf4jingnrG5wBPcsfAjDkAVLI1vv7OTxEe3Z5yWKOheow/KlwcSsRia3r4zUG50
- 4xzYbDGdKd/sHyl6r/KTun6gAQtuRFnbv1V7GpsDni9p0+AYswwDSwgeqnCiLoE63b3W
- VS8fJuqoMl+YWHLiA+8m2rl5Tt1OfA9U2TjBdBuIAQYdRcnq+R7NB8x/JyhNE0nXp6tg
- 1KDkpt+LUii+S4ziCf5VY3Ax17lD/VD/FI1Y0HHOEi/oHaotCL26gheJBuK0LqwsC8UG
- FVhA==
+ bh=Z8LsyuACSdwiN3QycgR2G1Ajx+zirWJN8wOULR7lYME=;
+ b=Q8jT2oMkP7Z5H1DuwWKorjw+8D2G//gYtox6lEetLCsHElImbtso/fX8En5oThShX4
+ MiO+dvxzVohyABnFLGd5BgctZUIX//DLL+g1fVE7bmLnKaaGypv814TlAifr1ao2TB1B
+ nuFQ1Bp2quX0MmPwYyxAZfOKflhRkHpfRHfEJW9pwS0QdwP4mES8cjR7FWaKQ8QB+/TY
+ +oyaZWZHGIs7+SwnKbIsBWe27czdour6Cw/aRbSIIbA3I1vS0hKWVX948HVOqhqy2mxk
+ gswZOd17Zt3xQ99GOUBPQfi5YOmZzUQZaksBNKATjCzHMstVFZFdrEXZRI63o4a60zDX
+ ElcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736142225; x=1736747025;
+ d=1e100.net; s=20230601; t=1736142227; x=1736747027;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=H/EMwbW9ao32OaXwASoWqvLNsXxITTvHnX2/S/pK7bk=;
- b=pBatcOodFNv3eaYAMX4pjpvyB+cpUWIBe1+q0lf8NiridQOWCFAueei3E+4U9JJEmj
- I2CWR2Lb6LoYGbrAYEXaUSFQDUjWE+ZhtItwKtWzVPYJikb+J22fDfr1PmkgoicNf1MA
- T1UqsvK4EjThBExi2+gTbU/mv1B1a4C1RsVqVjrxbnOpttVmOxhXvRCndvPR6OSrBZvX
- wFEkjfTlzW0AUkq4ENrrVOij2AIgEQ7sWyGWEELg8jAzHIsZ7GzP84SIBlL20b/1fYIE
- b/sDaK4OsB00oTCJnDkGTOcaxZS6RP27jDkRtUbAAURYMtlooDVpX6ibBWpZy8WI+CqP
- auPQ==
-X-Gm-Message-State: AOJu0YylZP1z1jBuQtzTWgsz9i6v3pxhFJWUQM4dH6/kJsRnUldqnXqH
- hW+1CuWNku83K1O75pgIvfa+NRhH5VSp2Wk6PdE4AUGkWkW9EDcY0hW08rFAwGg/ZSfN5FUi9+9
- T9Npe/n27Hj7ALd8/ZQCjHmVhoP4UVaxrdIXBcdjsDgdjqhBQGb1AIIwzP7PCiYDOAEUJz26/sn
- Lf0eWBTXDVcu11yfhoBieWkYB85SgpKeVc/RpfQ6UUPg==
-X-Gm-Gg: ASbGncsawkuymdJiwiilVwM8od3/FPj/LTXOfH5tBQ5vVKzN9wPfmit5luSTGSDD+dW
- vZcAGp6i0rlDFYz5Mqnv0uK0n+qarWXJsXeEq23qvndTZESlTp7RsYiJezrNiR4L8Xjc6zYEWz/
- iagcu+5g26d+e9xDUYCjtzM35WFuDAiOM2g3rZJwtghSZvAeuPeufEBkgTUW+++aZ7UxIHD+DNO
- gk5QbFC2jnDFhGlz+csRCm+N2aQ4NTSBAkig0n6ItM8Jlw3+6cYubk8wF9c+DxN51iAMLwzXN3D
- Dnt1Dq7RynA=
-X-Google-Smtp-Source: AGHT+IEtvkda5k/jHKPGaQepjhqIYd2Hl+ttgBCcPenIceaQwpNr3fumalfhX7c3zDEYdmYSaNHjRA==
-X-Received: by 2002:a17:90b:1f92:b0:2f5:63a:44f9 with SMTP id
- 98e67ed59e1d1-2f5063a47b8mr17635688a91.23.1736142224491; 
- Sun, 05 Jan 2025 21:43:44 -0800 (PST)
+ bh=Z8LsyuACSdwiN3QycgR2G1Ajx+zirWJN8wOULR7lYME=;
+ b=mTo5eXVBdl0H31Z6WS96nekXGz4mDrYRWcOPtoB+5J9EFCcWdJSNGNjN9DYyVzvb/I
+ RvCJvTom2mb3hpiw1Q7NhWcrG1s3wObFRLcRsNbGdeOXkyl66iUsCRcuiH4Wzf48Iokn
+ wbyfRdK6JabzDKmvxa4x58TDxfN+4fG1ao+Mp8kg+b9nAjcepQLLZbOtMbZwW/fElyN4
+ 81vEWCW2mC+3Giyj3bTnAOHeiYa4NmRZ7qGe2FpPnWyx8a/9on7ppZgpvCjUmxSkcgMZ
+ c80ejNa6x/OiHQbFJmpjPTekM1dst5gQb/CgR1kIoQnMDbVu5d4hY3NeKKpFGb6jt5kJ
+ S42Q==
+X-Gm-Message-State: AOJu0YyTY0Tyq81YpaYAp1D4CG+5yYcHgeO5sK9/SWsi8QTzkl/JnR5n
+ MKwk7ET6AkiJT+hCjVtd0+S3ul3DzXvOt/4BnClfdC0mcPmlpiZZ3AoXcbOUzkgfAOFFfdvbDbn
+ HVtpFA9zAjS/QZhhd+pUQkpHCqLYdkxcvasGTnGweY7kNEr6r0BAuDrLoN3K0BAqXDj1N2LacF1
+ +FUWkd9VvFsv/d5aTvY5A6zqS4/9rv1Ocp4F0EFil8WA==
+X-Gm-Gg: ASbGncvyZSxQFSVOrg+S/V6AEFF06wp3OXEs6Ui/MgOrD2fFmv7fUFmsRze5LSU4Lqn
+ ueDE1hewTt9XmG+vQ6YZ1FpYDhtzb4+TuBBZ/fpTjnhk4+EZWxa6d2DDIfwxBl/wN+lzSQYEpfB
+ 1x1I7aVIRbv8VUQtCsEv98l4wixoykj3D3g/MHnBYC+TprhMHae/4didNfosf1NMyl8iu48+5Br
+ kk/I+VyzG15CIgKUd5Y84N53sbsjCEbZxYyIg8jtUta1N/1a2qQtk/amIfEhdmRXLW+2QSoi9rw
+ blBnAocNVEs=
+X-Google-Smtp-Source: AGHT+IGpkfpqcJ422VPzvGxmOocPMDyJbrbt60c37ldrNFkHp8G9QGvYmih9ucBZLDSfXITxtgcNug==
+X-Received: by 2002:a17:903:22c3:b0:216:6769:9eea with SMTP id
+ d9443c01a7336-219e6f133ccmr839763165ad.37.1736142227270; 
+ Sun, 05 Jan 2025 21:43:47 -0800 (PST)
 Received: from fchang-1826.internal.sifive.com ([210.176.154.33])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-219dc96eac6sm285722215ad.80.2025.01.05.21.43.42
+ d9443c01a7336-219dc96eac6sm285722215ad.80.2025.01.05.21.43.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Jan 2025 21:43:44 -0800 (PST)
+ Sun, 05 Jan 2025 21:43:46 -0800 (PST)
 From: frank.chang@sifive.com
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -72,16 +72,16 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Tommy Wu <tommy.wu@sifive.com>,
  Frank Chang <frank.chang@sifive.com>
-Subject: [PATCH v12 1/6] target/riscv: Add 'ext_smrnmi' in the RISCVCPUConfig
-Date: Mon,  6 Jan 2025 13:43:31 +0800
-Message-Id: <20250106054336.1878291-2-frank.chang@sifive.com>
+Subject: [PATCH v12 2/6] target/riscv: Add Smrnmi CSRs
+Date: Mon,  6 Jan 2025 13:43:32 +0800
+Message-Id: <20250106054336.1878291-3-frank.chang@sifive.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250106054336.1878291-1-frank.chang@sifive.com>
 References: <20250106054336.1878291-1-frank.chang@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=frank.chang@sifive.com; helo=mail-pj1-x1035.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=frank.chang@sifive.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,28 +106,189 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Tommy Wu <tommy.wu@sifive.com>
 
-The boolean variable 'ext_smrnmi' is used to determine whether the
-Smrnmi extension exists.
+The Smrnmi extension adds the 'mnscratch', 'mnepc', 'mncause',
+'mnstatus' CSRs.
 
 Signed-off-by: Frank Chang <frank.chang@sifive.com>
 Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_cfg.h | 1 +
- 1 file changed, 1 insertion(+)
+ target/riscv/cpu.c      |  5 +++
+ target/riscv/cpu.h      |  7 ++++
+ target/riscv/cpu_bits.h | 11 ++++++
+ target/riscv/csr.c      | 82 +++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 105 insertions(+)
 
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index fe0c4173d2..28b43932db 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -129,6 +129,7 @@ struct RISCVCPUConfig {
-     bool ext_ssaia;
-     bool ext_sscofpmf;
-     bool ext_smepmp;
-+    bool ext_smrnmi;
-     bool rvv_ta_all_1s;
-     bool rvv_ma_all_1s;
-     bool rvv_vl_half_avl;
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 954425081d..2ae9a8a895 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1134,6 +1134,11 @@ static void riscv_cpu_reset_hold(Object *obj, ResetType type)
+         riscv_trigger_reset_hold(env);
+     }
+ 
++    if (cpu->cfg.ext_smrnmi) {
++        env->rnmip = 0;
++        env->mnstatus = set_field(env->mnstatus, MNSTATUS_NMIE, false);
++    }
++
+     if (kvm_enabled()) {
+         kvm_riscv_reset_vcpu(cpu);
+     }
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 252fdb8672..0079c640f7 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -486,6 +486,13 @@ struct CPUArchState {
+     uint64_t kvm_timer_state;
+     uint64_t kvm_timer_frequency;
+ #endif /* CONFIG_KVM */
++
++    /* RNMI */
++    target_ulong mnscratch;
++    target_ulong mnepc;
++    target_ulong mncause; /* mncause without bit XLEN-1 set to 1 */
++    target_ulong mnstatus;
++    target_ulong rnmip;
+ };
+ 
+ /*
+diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+index fe4e34c64a..9e9637263d 100644
+--- a/target/riscv/cpu_bits.h
++++ b/target/riscv/cpu_bits.h
+@@ -353,6 +353,12 @@
+ #define CSR_PMPADDR14       0x3be
+ #define CSR_PMPADDR15       0x3bf
+ 
++/* RNMI */
++#define CSR_MNSCRATCH       0x740
++#define CSR_MNEPC           0x741
++#define CSR_MNCAUSE         0x742
++#define CSR_MNSTATUS        0x744
++
+ /* Debug/Trace Registers (shared with Debug Mode) */
+ #define CSR_TSELECT         0x7a0
+ #define CSR_TDATA1          0x7a1
+@@ -634,6 +640,11 @@ typedef enum {
+ #define SATP64_ASID         0x0FFFF00000000000ULL
+ #define SATP64_PPN          0x00000FFFFFFFFFFFULL
+ 
++/* RNMI mnstatus CSR mask */
++#define MNSTATUS_NMIE       0x00000008
++#define MNSTATUS_MNPV       0x00000080
++#define MNSTATUS_MNPP       0x00001800
++
+ /* VM modes (satp.mode) privileged ISA 1.10 */
+ #define VM_1_10_MBARE       0
+ #define VM_1_10_SV32        1
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 381cda81f8..f35b8f4c21 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -597,6 +597,17 @@ static RISCVException debug(CPURISCVState *env, int csrno)
+ 
+     return RISCV_EXCP_ILLEGAL_INST;
+ }
++
++static RISCVException rnmi(CPURISCVState *env, int csrno)
++{
++    RISCVCPU *cpu = env_archcpu(env);
++
++    if (cpu->cfg.ext_smrnmi) {
++        return RISCV_EXCP_NONE;
++    }
++
++    return RISCV_EXCP_ILLEGAL_INST;
++}
+ #endif
+ 
+ static RISCVException seed(CPURISCVState *env, int csrno)
+@@ -4654,6 +4665,67 @@ static RISCVException write_upmbase(CPURISCVState *env, int csrno,
+     return RISCV_EXCP_NONE;
+ }
+ 
++static RISCVException read_mnscratch(CPURISCVState *env, int csrno,
++                                     target_ulong *val)
++{
++    *val = env->mnscratch;
++    return RISCV_EXCP_NONE;
++}
++
++static int write_mnscratch(CPURISCVState *env, int csrno, target_ulong val)
++{
++    env->mnscratch = val;
++    return RISCV_EXCP_NONE;
++}
++
++static int read_mnepc(CPURISCVState *env, int csrno, target_ulong *val)
++{
++    *val = env->mnepc;
++    return RISCV_EXCP_NONE;
++}
++
++static int write_mnepc(CPURISCVState *env, int csrno, target_ulong val)
++{
++    env->mnepc = val;
++    return RISCV_EXCP_NONE;
++}
++
++static int read_mncause(CPURISCVState *env, int csrno, target_ulong *val)
++{
++    *val = env->mncause;
++    return RISCV_EXCP_NONE;
++}
++
++static int write_mncause(CPURISCVState *env, int csrno, target_ulong val)
++{
++    env->mncause = val;
++    return RISCV_EXCP_NONE;
++}
++
++static int read_mnstatus(CPURISCVState *env, int csrno, target_ulong *val)
++{
++    *val = env->mnstatus;
++    return RISCV_EXCP_NONE;
++}
++
++static int write_mnstatus(CPURISCVState *env, int csrno, target_ulong val)
++{
++    target_ulong mask = (MNSTATUS_NMIE | MNSTATUS_MNPP);
++
++    if (riscv_has_ext(env, RVH)) {
++        /* Flush tlb on mnstatus fields that affect VM. */
++        if ((val ^ env->mnstatus) & MNSTATUS_MNPV) {
++            tlb_flush(env_cpu(env));
++        }
++
++        mask |= MNSTATUS_MNPV;
++    }
++
++    /* mnstatus.mnie can only be cleared by hardware. */
++    env->mnstatus = (env->mnstatus & MNSTATUS_NMIE) | (val & mask);
++    return RISCV_EXCP_NONE;
++}
++
+ #endif
+ 
+ /* Crypto Extension */
+@@ -5161,6 +5233,16 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
+                         write_sstateen_1_3,
+                         .min_priv_ver = PRIV_VERSION_1_12_0 },
+ 
++    /* RNMI */
++    [CSR_MNSCRATCH] = { "mnscratch", rnmi, read_mnscratch, write_mnscratch,
++                        .min_priv_ver = PRIV_VERSION_1_12_0               },
++    [CSR_MNEPC]     = { "mnepc",     rnmi, read_mnepc,     write_mnepc,
++                        .min_priv_ver = PRIV_VERSION_1_12_0               },
++    [CSR_MNCAUSE]   = { "mncause",   rnmi, read_mncause,   write_mncause,
++                        .min_priv_ver = PRIV_VERSION_1_12_0               },
++    [CSR_MNSTATUS]  = { "mnstatus",  rnmi, read_mnstatus,  write_mnstatus,
++                        .min_priv_ver = PRIV_VERSION_1_12_0               },
++
+     /* Supervisor Trap Setup */
+     [CSR_SSTATUS]    = { "sstatus",    smode, read_sstatus,    write_sstatus,
+                          NULL,                read_sstatus_i128              },
 -- 
 2.34.1
 
