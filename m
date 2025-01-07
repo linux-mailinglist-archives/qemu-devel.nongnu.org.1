@@ -2,77 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 159B2A044CC
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 16:37:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E664A04566
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 17:04:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVBdr-0003Ak-5s; Tue, 07 Jan 2025 10:37:15 -0500
+	id 1tVC3X-0000YY-LQ; Tue, 07 Jan 2025 11:03:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tVBdn-0002y4-Os; Tue, 07 Jan 2025 10:37:11 -0500
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tVC3V-0000Y1-1I
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 11:03:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tVBdl-0005YM-M8; Tue, 07 Jan 2025 10:37:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736264229; x=1767800229;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=XCZzl+buYDclRmkgsVH4Yt09a40/e44VZXfhyc5VbpQ=;
- b=Yhz3Bd0e0q5Ai0Uz14ixFK6eriVIsULXq0oMCQAtOxV17zqLlKO69Mw6
- 9d8okJBeycCvgr/zB8MewUmq5FJhkQNOgimLihzIUL8HO+HLUJVo8jFsf
- YqM/MS9lbeUu4cQNfigwYUOLym/gnoOtFA0t+ES55zewKugcI4fSyVaVU
- qQP2MxOsqynfehnIRYlU63TvHpsBEs+MWnyy2UJnglM/ghfdHhJcmk0Ab
- xvcPY1uwgayJknpfxeMSLDp57AGbz29A7FtBDletMUWyp1JcaC68HyNjm
- gTF8rP8TCLenMA/Vb+SAov9QreR6yKxcGRs1PKOUOtK1kVWabAsoNJEVD Q==;
-X-CSE-ConnectionGUID: VmHZWESXRDuXcBQ07bAMnA==
-X-CSE-MsgGUID: R2/oXIxkRBuS0ypDYVtsKw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="58918289"
-X-IronPort-AV: E=Sophos;i="6.12,295,1728975600"; d="scan'208";a="58918289"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jan 2025 07:37:06 -0800
-X-CSE-ConnectionGUID: cAaLE8/KTEantrsyvHyn2w==
-X-CSE-MsgGUID: qL2+2CzjQHazhhTdck2m1w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="126095713"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa002.fm.intel.com with ESMTP; 07 Jan 2025 07:37:04 -0800
-Date: Tue, 7 Jan 2025 23:55:52 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel <qemu-devel@nongnu.org>, qemu-rust@nongnu.org,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PULL 25/41] rust: qom: put class_init together from multiple
- ClassInitImpl<>
-Message-ID: <Z31OiMcYT/66AGDt@intel.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tVC3T-00008U-Ol
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 11:03:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736265821;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=asW1LTV43nxvAamuwi2vYstVviQNdc5YaTrUV6wVhDQ=;
+ b=NxFDMMRsSON9uZHRjy0Z9maiobkpW6f13pVncx+AceC+jd+0JAkorMDRo/gFbZiBILjv8q
+ RV+gnreVUfhfcTo+V4xAEvsrQNJYlCzuD1TXAGqrnTDtmwl3d6qcn1brwWGyowvNU7/hlu
+ k0qpnEJV79hhOKZaJgx9iAkF8NadQM8=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-464-7mn3nPvsPwSdCep_CIeZuw-1; Tue, 07 Jan 2025 11:03:40 -0500
+X-MC-Unique: 7mn3nPvsPwSdCep_CIeZuw-1
+X-Mimecast-MFC-AGG-ID: 7mn3nPvsPwSdCep_CIeZuw
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-38634103b0dso9295817f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 08:03:39 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736265819; x=1736870619;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=asW1LTV43nxvAamuwi2vYstVviQNdc5YaTrUV6wVhDQ=;
+ b=LukoVCv1AbGy1AZ3lxJ9gvpFgKjAQVaFyTMcv/7qpdvVAI8Cxq7xwJSOhuZwXBEvxp
+ hc60oNmR42GrT1BzYPmuZFSCz1AUQAmGnDhbt9ZgAQ9F2/XQ0nQYdu8MuQVhnbRMyc/k
+ SBZOOTFqlb0YJsvW7HJOl4XrKdN3QeyngXFaDb+dtQ+FtrcQ1Mejs3C0eQGlcfQ9ptoc
+ mFlHfeolfCMoftSWj4Y0qoR223rgHp3f13NbtozC5I2RiI0zdM1D/n7XL1UEsxvaFNzm
+ HRr8+UUIg9fkwqUZy9MayQlYx2DB5Oy+HtTJqXpVjSFytG9PrzUnvPzC+HwvVLuwTFIz
+ eovw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWFEmDIfrskBisEJFJktmNLPSFTf7wAFbT44OmDXLrpKcjlCvLSDG65sVP35Lj9gjmIIrSZveNgAIHh@nongnu.org
+X-Gm-Message-State: AOJu0Yxru9PeQEl3bMQEZSHXuQizQd7ktasoZS/Wcbfkt1E97aiP1K+u
+ BfP7edRRZi2Vy2wYkTkCkc2tsga6ik3O73jIQC/++klM7H0q1s5KEomqFSc5rg7hgSL0hJ0q7Z5
+ yOzZGOPZAMh07XcLF84J7bz4ekH2LvS1JXuHPumEWbKE+vn0usTT2q0orxA3ZzLEfm5HoSxjQAs
+ 3lP8W9OGUKcLRhVS1KypLOdc8oRDQ=
+X-Gm-Gg: ASbGncstllbGPwUTJiOel5cXjhl6l/zShqDNe5qv1E0P5Y7DF1/egxY/IeqWsJTYzUz
+ JWfvxCqwSN2n/775po61IOCZeEqjbyETqgogNTw==
+X-Received: by 2002:adf:b30c:0:b0:38a:4b8b:1ba with SMTP id
+ ffacd0b85a97d-38a4b8b01d1mr25459361f8f.14.1736265817311; 
+ Tue, 07 Jan 2025 08:03:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IERxQ6/ABSZdv5kOPinZ4nwpr4aJEp4gA0zNHvsvnSnq9SagQx0J4C6bnOL1FH5emPGLbpudobaqz19rhs/JhM=
+X-Received: by 2002:adf:b30c:0:b0:38a:4b8b:1ba with SMTP id
+ ffacd0b85a97d-38a4b8b01d1mr25459315f8f.14.1736265816855; Tue, 07 Jan 2025
+ 08:03:36 -0800 (PST)
+MIME-Version: 1.0
 References: <20241219083228.363430-1-pbonzini@redhat.com>
  <20241219083228.363430-26-pbonzini@redhat.com>
  <daea6757-a67b-45d5-bf2a-807fd9569a70@linaro.org>
  <CABgObfYMP5-9uN9cLofPT6DzBS_o1CVfbHbY8pwn9xjdOXOqgw@mail.gmail.com>
  <CAFEAcA-PE1paXOJNUo-cihu__htZQUYogZphVhRAjFNFzgi7JA@mail.gmail.com>
  <CABgObfZ7FFW5yhA2u6Rt5=MndrLsF=BnNhgE73LAyUWUGF=yXQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABgObfZ7FFW5yhA2u6Rt5=MndrLsF=BnNhgE73LAyUWUGF=yXQ@mail.gmail.com>
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.437,
+ <Z31OiMcYT/66AGDt@intel.com>
+In-Reply-To: <Z31OiMcYT/66AGDt@intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 7 Jan 2025 17:03:23 +0100
+Message-ID: <CABgObfZETbD03-H6=qOt6V8GY4ex3WP82i5axzdf_U0GCwsMbw@mail.gmail.com>
+Subject: Re: [PULL 25/41] rust: qom: put class_init together from multiple
+ ClassInitImpl<>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel <qemu-devel@nongnu.org>, qemu-rust@nongnu.org, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.437,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,32 +111,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 06, 2025 at 04:21:16PM +0100, Paolo Bonzini wrote:
-> Date: Mon, 6 Jan 2025 16:21:16 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: Re: [PULL 25/41] rust: qom: put class_init together from multiple
->  ClassInitImpl<>
-> 
-> Il lun 6 gen 2025, 14:32 Peter Maydell <peter.maydell@linaro.org> ha
-> scritto:
-> 
-> > I think here I agree with Philippe that we might as well
-> > provide only the new API to Rust devices.
-> >
-> 
-> Ok, I wasn't thinking of doing that because there isn't right now an easy
-> way to add interfaces to Rust-defined classes. However, all devices are
-> Resettable and Device isn't defined in Rust, so it's not hard to add a
-> ResettableImpl trait in rust/qemu-api/srv/qdev.rs, and initialize it for
-> all devices.
-> 
-> If anybody wants to do it as an exercise, I am happy to help, otherwise I
-> can prepare a patch too.
+On Tue, Jan 7, 2025 at 4:37=E2=80=AFPM Zhao Liu <zhao1.liu@intel.com> wrote=
+:
+> > If anybody wants to do it as an exercise, I am happy to help, otherwise=
+ I
+> > can prepare a patch too.
 >
+> If possible and if no one else wants to practice, I would also like to
+> give it a try (I'll add it to my list).
 
-If possible and if no one else wants to practice, I would also like to
-give it a try (I'll add it to my list).
+Hmm, thinking more about it, it does require a bit that is slightly
+more complicated than I anticipated, which is a binding to
+object_class_dynamic_cast(). I placed something completely untested
+(except it compiles...) in rust-next. It uses a new trait
+InterfaceType that can be used as
 
-Zhao
+    ResettableClass::interface_init::<T, DeviceState>(dc);
+
+but I don't really like the two parameters and also I don't like that
+class_init is called differently for classes and interfaces. It's
+probably possible to design a better API, but I didn't spend too much
+time on it because it may require rethinking how classes are declared
+(not a huge deal, as we have only four of them).
+
+Feel free to give it a try, but it seems like a relatively low
+priority item compared to upstreaming timers (i.e. HPET) and
+MemoryRegionOps; or figuring out logging.
+
+Paolo
 
 
