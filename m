@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67755A0392D
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 09:02:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B77ECA0398A
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 09:16:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tV4Wq-0000CQ-At; Tue, 07 Jan 2025 03:01:33 -0500
+	id 1tV4Ws-0000Cg-63; Tue, 07 Jan 2025 03:01:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tV4We-0000Bb-Gk
+ id 1tV4We-0000Bc-HN
  for qemu-devel@nongnu.org; Tue, 07 Jan 2025 03:01:20 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tV4Wb-0002sY-W3
+ id 1tV4Wb-0002sZ-Rl
  for qemu-devel@nongnu.org; Tue, 07 Jan 2025 03:01:20 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-216395e151bso161390315ad.0
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-216395e151bso161390375ad.0
  for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 00:01:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736236875; x=1736841675; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Wuo+RJED4gKortGRfj6WXDphAJOqG3auHfUnvOZE2lM=;
- b=qGzRgDFCURgmArVLq1ShFamnpC9ZvUU615H9Cd8H0pctcImSVIdh5L6xK0jx2vSlUk
- qB/CNL5Y0fpAAWL2Dr4CWprlTEAgjquP9TzaLHcN5ziUS9oEGTANbeTHBbKBoA7/Tmxd
- OmPIUxj5y/vHLRPjBJriGBargJRZs9ThhyEfQTFZcNGf22RGI2MkHycfAKWICERwzRdp
- HcGWSnWYgZtTbXAPH6Rn5PEdejzhDJFFJwKNGhuayisqu/Yno7OfPLIzA0UHsKUF+d6a
- /9OTAa+/07c6rnF3jYEE5DcNFCovWacxU//8M/sUBQkp3YbfF/rRIy4cXL8IemHeHXyh
- GtVQ==
+ d=linaro.org; s=google; t=1736236876; x=1736841676; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3GPj/dHv/OtqEUrzEcxJI0azKZQpu1Wxa2/jDsuCpfY=;
+ b=jtdxCGQ4+2t68X56iP/heq5kXl7wadFe0j3ipNLUxsjuGjRKXUsJ3h5Mq7kEN2h6GC
+ 73kjehktl/8WW8h4FUMPIDaEOi0l1gfnD9kzcP6u1pPvpP6d+WaHts/Ec35cPIf5iLwG
+ qOKpd+xAH1h/fd1Px8Txe6WuV8aKrDOQWJiXZKKyVh2m1p0uIQSOQPniL4sf6pqTHR4o
+ ntnEL8k5X21Pn6ykDl6LNB2AcZ/xov4Q69zGdPTUb/wEoWio4JNPdIExLnRIJsoBWANR
+ ARNa6EXPIsI2W8KUQX8mvaGlwDHzc8jBTf6XGiWSDOL9q3PySWSol4FN8ybJFcSvoBxo
+ uTdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736236875; x=1736841675;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Wuo+RJED4gKortGRfj6WXDphAJOqG3auHfUnvOZE2lM=;
- b=edYq0AJORm7Wo3HSv9RkauI9W6SDbA7oo41khS7tbhyimfD4grBbA2ymKO4yHiWIVW
- oNwbOUW+LRiyEUHQC7JfBXJk6XnrIlq5NOcAepCcZhC74opUs9+84rr48gObkR9yn7fM
- e+FG1mDttH6R+qzWNlIqwz9mMzVXU3FgzBd/GuvA+97zDru4qEivERjp24yvQOw1bJab
- s56uphZJVNQDVFs9DAITJQOqKvLqWlQKtjMjrcaUe5MpfI+rtb2WsD9N4G3q7pS03gj1
- 3vx5yruUxrzLleWlRm12tIAdZMh0yeNSVD88J1KHrqAvYj1hy1ee2Fi/fwPS8pAx8hkq
- +Bxg==
-X-Gm-Message-State: AOJu0Yze/muYJQC68aHv8Ik0nFjZ1oIzf9cay9HiDtdxQZvNkbuJew79
- mi8YAZF6BtlJgvRSBcqwoOcNsolIS+Vk1B0FIqMFm59xygzi+tip9mD/6vSlpOdq6Mo9w5No5+I
- x
-X-Gm-Gg: ASbGnctsyoxjvzfbfHosgA2Bak9ATi5yGiFq7tAgaK/ksr15es4ufIRDuck0U4TyT5w
- zpmO4VQ1B0VnhfHO6z6ZaYEcH6LOeRjOUdD5vAshO8eFv+n+N4eO8DaDMy7QGQh0KfnMrRs0Gv6
- EHHAT7GUJnANO9WsZhBdzPbD6kVXWXpF6/maB3JifgfRh3CZFJV3UpLm8EEc/bvhy1XmNAfecco
- NJaStbxlLMLiOmgs9MBUP4nLykQwG3nbFbE5xsiFdFmYCSzQMfpTBeIj1oApf+7zmVFoTMlSGhS
- ExlzMnM5JG9hZIm0fQ==
-X-Google-Smtp-Source: AGHT+IEMKArpfDNuXcDdWPCczZ1O4+Xk9IPEhNh8EWGbNBaAiGjO0Zt9OXOIVt9mj738fgusUOAE1w==
-X-Received: by 2002:a17:902:d481:b0:215:58be:334e with SMTP id
- d9443c01a7336-21a7a225796mr29455265ad.10.1736236874387; 
- Tue, 07 Jan 2025 00:01:14 -0800 (PST)
+ d=1e100.net; s=20230601; t=1736236876; x=1736841676;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=3GPj/dHv/OtqEUrzEcxJI0azKZQpu1Wxa2/jDsuCpfY=;
+ b=OoYiiRkGEY8EmjgM4/k/+v2T62dF6Qa9MoUvcEVNoxwX6wjt2ce4j6Yj/T3fZbXt55
+ 3YfOiVLFNugfqsfi57/Kstj9n1bq55hEYGu+XyBkGbrvoi+y+42w+zT/Jp+S0Q0Rw6lN
+ KM519YS2L+qudobJeqWHCFi2Or5AmnhXF8E8tWsMGsDUZHJa5oEmKvfLaSX5N6dPcQoy
+ ZZYav48x76nRqYKpk8TXQZEYofOcrIw6dx6hG9IfvGkWIzxqPo3k9wwoEtZ0cep/zfHc
+ xhQwivtHJ0EegrULo1Q4aSt+QNmJa8eRkbtPBNZSV6p0s7na3/ffvkQqiY7YksHy+IMa
+ EoRA==
+X-Gm-Message-State: AOJu0YyJ8uWO3SqEoSEPtvy07mwrjxlFQ7NoOqp0gAObhwrEzxt2saHJ
+ CUjlWLsFYeEtQboJkMm99xGqX+krIb/Rzt557cEvC7dbUa0BsPG+Z+GSf0qqQiEMMJO9A2n08Nr
+ 4
+X-Gm-Gg: ASbGncvqQJAT3qiyB2AcUmd8YUGahrTkpNMmxyQacGky2Sn+1iKJAXIlOda9/qrmbGO
+ i6y+zQYTnw41sbpFf22sUTkwJJ8GM7iSrbT52Zrnww5zYivj+iYbA+s7uAoLaCDcHBmnxrbJACl
+ WmtCrI87I0YkFP1sz81jhVZlDsY7sehVROQEUjIkVRFVsBkxtY4lVxcqok+aYhQKMd6nZTUstUw
+ BYhSKh2SprKaAR30MQqxk4UiI+0L51oEsh8rBuXs0V4WLDgth2z4iq+Vx66MMW1juLJ4Qyx1ekb
+ f936Qh9NvBPKM2SA3w==
+X-Google-Smtp-Source: AGHT+IEUMxoPwYZVOeq+d01QR0oE69KyKRCbpqwpwT5F+7gC75kbOLrFd3YCFac+V8nJm9baVkEUxg==
+X-Received: by 2002:a17:902:ea04:b0:215:98e7:9b1 with SMTP id
+ d9443c01a7336-21a7a1feb3emr30309615ad.5.1736236875553; 
+ Tue, 07 Jan 2025 00:01:15 -0800 (PST)
 Received: from stoup.. (76-14-228-138.or.wavecable.com. [76.14.228.138])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-219dc96eb12sm306765995ad.87.2025.01.07.00.01.13
+ d9443c01a7336-219dc96eb12sm306765995ad.87.2025.01.07.00.01.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Jan 2025 00:01:13 -0800 (PST)
+ Tue, 07 Jan 2025 00:01:15 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	pierrick.bouvier@linaro.org
-Subject: [RFC PATCH v2 00/81] tcg: Merge *_i32 and *_i64 opcodes
-Date: Mon,  6 Jan 2025 23:59:51 -0800
-Message-ID: <20250107080112.1175095-1-richard.henderson@linaro.org>
+Subject: [PATCH v2 01/81] tcg: Move call abi parameters from tcg-target.h to
+ tcg-target.c.inc
+Date: Mon,  6 Jan 2025 23:59:52 -0800
+Message-ID: <20250107080112.1175095-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250107080112.1175095-1-richard.henderson@linaro.org>
+References: <20250107080112.1175095-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,240 +100,442 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we have individual opcodes for each integer type.
-This makes things difficult in tcg/optimize.c when we want
-to transform the opcode stream.
+These defines are not required outside of tcg/tcg.c,
+which includes tcg-target.c.inc before use.
+Reduces the exported symbol set of tcg-target.h.
 
-Add TCGOP_TYPE() and use that instead.  Merge the opcodes that are
-common to both TCG_TYPE_I32 and TCG_TYPE_I64.  We could eventually
-merge some of the vector opcodes too, but that is a larger job.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tcg/aarch64/tcg-target.h         | 13 -------------
+ tcg/arm/tcg-target.h             |  8 --------
+ tcg/i386/tcg-target.h            | 20 --------------------
+ tcg/loongarch64/tcg-target.h     |  9 ---------
+ tcg/mips/tcg-target.h            | 14 --------------
+ tcg/riscv/tcg-target.h           |  9 ---------
+ tcg/s390x/tcg-target.h           |  8 --------
+ tcg/sparc64/tcg-target.h         | 11 -----------
+ tcg/tci/tcg-target.h             | 14 --------------
+ tcg/aarch64/tcg-target.c.inc     | 13 +++++++++++++
+ tcg/arm/tcg-target.c.inc         |  8 ++++++++
+ tcg/i386/tcg-target.c.inc        | 20 ++++++++++++++++++++
+ tcg/loongarch64/tcg-target.c.inc |  9 +++++++++
+ tcg/mips/tcg-target.c.inc        | 14 ++++++++++++++
+ tcg/riscv/tcg-target.c.inc       |  9 +++++++++
+ tcg/s390x/tcg-target.c.inc       |  8 ++++++++
+ tcg/sparc64/tcg-target.c.inc     | 10 ++++++++++
+ tcg/tci/tcg-target.c.inc         | 14 ++++++++++++++
+ 18 files changed, 105 insertions(+), 106 deletions(-)
 
-This also moves quite a lot of the tcg backend implementation out
-of the publicly exposed headers.  After this patchset is complete,
-we will not rebuild target translators for most changes to the tcg
-backend.
-
-Changes for v2:
-  - Begin reorganizing the tcg backends.  Create structures that
-    encapsulate availability, constraints, and output routines.
-    The intent is to keep everything related to an opcode together,
-    so that code for a specific opcode is not scattered around
-    multiple functions and multiple files.
-
-    This conversion is incomplete.  I've completed the basic
-    arithmetic opcodes.
-
-    This is the place where I'd like feedback on readability.
-
-  - Replace TCGOp.type with TCGOP_TYPE.
-  - Add TCGOP_FLAGS, not used so far in v2, but intended to
-    be used with especially load/store opcodes.
-
-
-r~
-
-
-Richard Henderson (81):
-  tcg: Move call abi parameters from tcg-target.h to tcg-target.c.inc
-  tcg: Replace TCGOP_VECL with TCGOP_TYPE
-  tcg: Move tcg_op_insert_{after,before} decls to tcg-internal.h
-  tcg: Copy TCGOP_TYPE in tcg_op_insert_{after,before}
-  tcg: Add TCGOP_FLAGS
-  tcg: Add type and flags arguments to tcg_op_supported
-  target/arm: Do not test TCG_TARGET_HAS_bitsel_vec
-  target/arm: Use tcg_op_supported
-  target/tricore: Use tcg_op_supported
-  tcg: Add tcg_op_deposit_valid
-  target/i386: Remove TCG_TARGET_extract_tl_valid
-  target/i386: Use tcg_op_deposit_valid
-  target/i386: Use tcg_op_supported
-  tcg: Remove TCG_TARGET_NEED_LDST_LABELS and
-    TCG_TARGET_NEED_POOL_LABELS
-  tcg: Rename tcg-target.opc.h to tcg-target-opc.h.inc
-  tcg/tci: Move TCI specific opcodes to tcg-target-opc.h.inc
-  tcg: Move fallback tcg_can_emit_vec_op out of line
-  tcg: Split out tcg-target-has.h and tcg-has.h
-  tcg: Split out tcg-target-mo.h
-  tcg: Use C_NotImplemented in tcg_target_op_def
-  tcg: Change have_vec to has_type in tcg_op_supported
-  tcg: Reorg process_op_defs
-  tcg: Remove args_ct from TCGOpDef
-  tcg: Constify tcg_op_defs
-  tcg: Validate op supported in opcode_args_ct
-  tcg: Add TCG_OPF_NOT_PRESENT to opcodes without inputs or outputs
-  tcg: Pass type and flags to tcg_target_op_def
-  tcg: Add TCGType argument to tcg_out_op
-  tcg: Remove TCG_OPF_64BIT
-  tcg: Drop implementation checks from tcg-opc.h
-  tcg: Replace IMPLVEC with TCG_OPF_VECTOR
-  tcg/mips: Expand bswap unconditionally
-  tcg/i386: Handle all 8-bit extensions for i686
-  tcg/i386: Fold the ext{8,16,32}[us] cases into {s}extract
-  tcg/aarch64: Provide TCG_TARGET_{s}extract_valid
-  tcg/aarch64: Expand extract with offset 0 with andi
-  tcg/arm: Add full [US]XT[BH] into {s}extract
-  tcg/loongarch64: Fold the ext{8,16,32}[us] cases into {s}extract
-  tcg/mips: Fold the ext{8,16,32}[us] cases into {s}extract
-  tcg/ppc: Fold the ext{8,16,32}[us] cases into {s}extract
-  tcg/riscv64: Fold the ext{8,16,32}[us] cases into {s}extract
-  tcg/riscv: Use SRAIW, SRLIW for {s}extract_i64
-  tcg/s390x: Fold the ext{8,16,32}[us] cases into {s}extract
-  tcg/sparc64: Use SRA, SRL for {s}extract_i64
-  tcg/tci: Provide TCG_TARGET_{s}extract_valid
-  tcg/tci: Remove assertions for deposit and extract
-  tcg: Remove TCG_TARGET_HAS_{s}extract_{i32,i64}
-  tcg: Remove TCG_TARGET_HAS_deposit_{i32,i64}
-  tcg: Remove INDEX_op_ext{8,16,32}*
-  tcg: Add all_outop[]
-  tcg: Merge INDEX_op_mov_{i32,i64}
-  tcg: Convert add to TCGOutOpBinary
-  tcg: Merge INDEX_op_add_{i32,i64}
-  tcg: Convert and to TCGOutOpBinary
-  tcg: Merge INDEX_op_and_{i32,i64}
-  tcg/optimize: Fold andc with immediate to and
-  tcg/optimize: Emit add r,r,-1 in fold_setcond_tst_pow2
-  tcg: Convert andc to TCGOutOpBinary
-  tcg: Merge INDEX_op_andc_{i32,i64}
-  tcg: Convert or to TCGOutOpBinary
-  tcg: Merge INDEX_op_or_{i32,i64}
-  tcg/optimize: Fold orc with immediate to or
-  tcg: Convert orc to TCGOutOpBinary
-  tcg: Merge INDEX_op_orc_{i32,i64}
-  tcg: Convert xor to TCGOutOpBinary
-  tcg: Merge INDEX_op_xor_{i32,i64}
-  tcg/optimize: Fold eqv with immediate to xor
-  tcg: Convert eqv to TCGOutOpBinary
-  tcg: Merge INDEX_op_eqv_{i32,i64}
-  tcg: Convert nand to TCGOutOpBinary
-  tcg: Merge INDEX_op_nand_{i32,i64}
-  tcg/loongarch64: Do not accept constant argument to nor
-  tcg: Convert nor to TCGOutOpBinary
-  tcg: Merge INDEX_op_nor_{i32,i64}
-  tcg/arm: Fix constraints for sub
-  tcg: Convert sub to TCGOutOpSubtract
-  tcg: Merge INDEX_op_sub_{i32,i64}
-  tcg: Convert neg to TCGOutOpUnary
-  tcg: Merge INDEX_op_neg_{i32,i64}
-  tcg: Convert not to TCGOutOpUnary
-  tcg: Merge INDEX_op_not_{i32,i64}
-
- accel/tcg/internal-target.h                   |   1 +
- include/tcg/tcg-opc.h                         | 346 +++----
- include/tcg/tcg.h                             | 148 +--
- tcg/aarch64/tcg-target-has.h                  |  95 ++
- tcg/aarch64/tcg-target-mo.h                   |  12 +
- tcg/aarch64/tcg-target.h                      | 126 ---
- tcg/arm/tcg-target-con-set.h                  |   1 +
- tcg/arm/tcg-target-has.h                      |  90 ++
- tcg/arm/tcg-target-mo.h                       |  13 +
- tcg/arm/tcg-target.h                          |  86 --
- tcg/i386/tcg-target-con-set.h                 |   2 +-
- tcg/i386/tcg-target-has.h                     | 147 +++
- tcg/i386/tcg-target-mo.h                      |  19 +
- tcg/i386/tcg-target.h                         | 162 ----
- tcg/loongarch64/tcg-target-con-set.h          |   1 -
- tcg/loongarch64/tcg-target-con-str.h          |   1 -
- tcg/loongarch64/tcg-target-has.h              |  97 ++
- tcg/loongarch64/tcg-target-mo.h               |  12 +
- tcg/loongarch64/tcg-target.h                  | 115 ---
- tcg/mips/tcg-target-con-set.h                 |   1 -
- tcg/mips/tcg-target-has.h                     | 110 +++
- tcg/mips/tcg-target-mo.h                      |  13 +
- tcg/mips/tcg-target.h                         | 130 ---
- tcg/ppc/tcg-target-con-set.h                  |   3 +-
- tcg/ppc/tcg-target-has.h                      | 107 +++
- tcg/ppc/tcg-target-mo.h                       |  12 +
- tcg/ppc/tcg-target.h                          | 126 ---
- tcg/riscv/tcg-target-con-set.h                |   3 +-
- tcg/riscv/tcg-target-con-str.h                |   2 -
- tcg/riscv/tcg-target-has.h                    | 107 +++
- tcg/riscv/tcg-target-mo.h                     |  12 +
- tcg/riscv/tcg-target.h                        | 116 ---
- tcg/s390x/tcg-target-con-set.h                |   2 -
- tcg/s390x/tcg-target-has.h                    | 115 +++
- tcg/s390x/tcg-target-mo.h                     |  12 +
- tcg/s390x/tcg-target.h                        | 126 ---
- tcg/sparc64/tcg-target-con-set.h              |   1 +
- tcg/sparc64/tcg-target-has.h                  |  65 ++
- tcg/sparc64/tcg-target-mo.h                   |  12 +
- tcg/sparc64/tcg-target.h                      |  91 --
- tcg/tcg-has.h                                 |  89 ++
- tcg/tcg-internal.h                            |  18 +-
- tcg/tci/tcg-target-has.h                      |  59 ++
- tcg/tci/tcg-target-mo.h                       |  17 +
- tcg/tci/tcg-target.h                          |  94 --
- target/arm/tcg/translate-a64.c                |  10 +-
- target/arm/tcg/translate-sve.c                |  22 +-
- target/arm/tcg/translate.c                    |   2 +-
- target/sh4/translate.c                        |  20 +-
- target/tricore/translate.c                    |   4 +-
- tcg/optimize.c                                | 316 +++---
- tcg/tcg-common.c                              |   5 +-
- tcg/tcg-op-gvec.c                             |   1 +
- tcg/tcg-op-ldst.c                             |  29 +-
- tcg/tcg-op-vec.c                              |   9 +-
- tcg/tcg-op.c                                  | 665 +++++--------
- tcg/tcg.c                                     | 904 ++++++++++++------
- tcg/tci.c                                     | 138 +--
- docs/devel/tcg-ops.rst                        |  29 +-
- target/i386/tcg/emit.c.inc                    |  14 +-
- ...{tcg-target.opc.h => tcg-target-opc.h.inc} |   4 +-
- tcg/aarch64/tcg-target.c.inc                  | 340 +++----
- ...{tcg-target.opc.h => tcg-target-opc.h.inc} |   6 +-
- tcg/arm/tcg-target.c.inc                      | 305 ++++--
- ...{tcg-target.opc.h => tcg-target-opc.h.inc} |  22 +-
- tcg/i386/tcg-target.c.inc                     | 384 +++++---
- ...{tcg-target.opc.h => tcg-target-opc.h.inc} |   0
- tcg/loongarch64/tcg-target.c.inc              | 370 +++----
- tcg/mips/tcg-target-opc.h.inc                 |   1 +
- tcg/mips/tcg-target.c.inc                     | 318 +++---
- ...{tcg-target.opc.h => tcg-target-opc.h.inc} |  12 +-
- tcg/ppc/tcg-target.c.inc                      | 394 ++++----
- ...{tcg-target.opc.h => tcg-target-opc.h.inc} |   0
- tcg/riscv/tcg-target.c.inc                    | 380 ++++----
- ...{tcg-target.opc.h => tcg-target-opc.h.inc} |   6 +-
- tcg/s390x/tcg-target.c.inc                    | 589 ++++++------
- tcg/sparc64/tcg-target-opc.h.inc              |   1 +
- tcg/sparc64/tcg-target.c.inc                  | 234 +++--
- tcg/tcg-ldst.c.inc                            |  65 --
- tcg/tcg-pool.c.inc                            | 162 ----
- tcg/tci/tcg-target-opc.h.inc                  |   4 +
- tcg/tci/tcg-target.c.inc                      | 341 ++++---
- 82 files changed, 4631 insertions(+), 4392 deletions(-)
- create mode 100644 tcg/aarch64/tcg-target-has.h
- create mode 100644 tcg/aarch64/tcg-target-mo.h
- create mode 100644 tcg/arm/tcg-target-has.h
- create mode 100644 tcg/arm/tcg-target-mo.h
- create mode 100644 tcg/i386/tcg-target-has.h
- create mode 100644 tcg/i386/tcg-target-mo.h
- create mode 100644 tcg/loongarch64/tcg-target-has.h
- create mode 100644 tcg/loongarch64/tcg-target-mo.h
- create mode 100644 tcg/mips/tcg-target-has.h
- create mode 100644 tcg/mips/tcg-target-mo.h
- create mode 100644 tcg/ppc/tcg-target-has.h
- create mode 100644 tcg/ppc/tcg-target-mo.h
- create mode 100644 tcg/riscv/tcg-target-has.h
- create mode 100644 tcg/riscv/tcg-target-mo.h
- create mode 100644 tcg/s390x/tcg-target-has.h
- create mode 100644 tcg/s390x/tcg-target-mo.h
- create mode 100644 tcg/sparc64/tcg-target-has.h
- create mode 100644 tcg/sparc64/tcg-target-mo.h
- create mode 100644 tcg/tcg-has.h
- create mode 100644 tcg/tci/tcg-target-has.h
- create mode 100644 tcg/tci/tcg-target-mo.h
- rename tcg/aarch64/{tcg-target.opc.h => tcg-target-opc.h.inc} (82%)
- rename tcg/arm/{tcg-target.opc.h => tcg-target-opc.h.inc} (75%)
- rename tcg/i386/{tcg-target.opc.h => tcg-target-opc.h.inc} (72%)
- rename tcg/loongarch64/{tcg-target.opc.h => tcg-target-opc.h.inc} (100%)
- create mode 100644 tcg/mips/tcg-target-opc.h.inc
- rename tcg/ppc/{tcg-target.opc.h => tcg-target-opc.h.inc} (83%)
- rename tcg/riscv/{tcg-target.opc.h => tcg-target-opc.h.inc} (100%)
- rename tcg/s390x/{tcg-target.opc.h => tcg-target-opc.h.inc} (75%)
- create mode 100644 tcg/sparc64/tcg-target-opc.h.inc
- delete mode 100644 tcg/tcg-ldst.c.inc
- delete mode 100644 tcg/tcg-pool.c.inc
- create mode 100644 tcg/tci/tcg-target-opc.h.inc
-
+diff --git a/tcg/aarch64/tcg-target.h b/tcg/aarch64/tcg-target.h
+index 8bd9e6a5eb..cb24c0d276 100644
+--- a/tcg/aarch64/tcg-target.h
++++ b/tcg/aarch64/tcg-target.h
+@@ -49,19 +49,6 @@ typedef enum {
+ 
+ #define TCG_TARGET_NB_REGS 64
+ 
+-/* used for function call generation */
+-#define TCG_REG_CALL_STACK              TCG_REG_SP
+-#define TCG_TARGET_STACK_ALIGN          16
+-#define TCG_TARGET_CALL_STACK_OFFSET    0
+-#define TCG_TARGET_CALL_ARG_I32         TCG_CALL_ARG_NORMAL
+-#define TCG_TARGET_CALL_ARG_I64         TCG_CALL_ARG_NORMAL
+-#ifdef CONFIG_DARWIN
+-# define TCG_TARGET_CALL_ARG_I128       TCG_CALL_ARG_NORMAL
+-#else
+-# define TCG_TARGET_CALL_ARG_I128       TCG_CALL_ARG_EVEN
+-#endif
+-#define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_NORMAL
+-
+ #define have_lse    (cpuinfo & CPUINFO_LSE)
+ #define have_lse2   (cpuinfo & CPUINFO_LSE2)
+ 
+diff --git a/tcg/arm/tcg-target.h b/tcg/arm/tcg-target.h
+index fb7261499b..8abf15aef4 100644
+--- a/tcg/arm/tcg-target.h
++++ b/tcg/arm/tcg-target.h
+@@ -85,14 +85,6 @@ extern bool use_idiv_instructions;
+ extern bool use_neon_instructions;
+ #endif
+ 
+-/* used for function call generation */
+-#define TCG_TARGET_STACK_ALIGN		8
+-#define TCG_TARGET_CALL_STACK_OFFSET	0
+-#define TCG_TARGET_CALL_ARG_I32         TCG_CALL_ARG_NORMAL
+-#define TCG_TARGET_CALL_ARG_I64         TCG_CALL_ARG_EVEN
+-#define TCG_TARGET_CALL_ARG_I128        TCG_CALL_ARG_EVEN
+-#define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_BY_REF
+-
+ /* optional instructions */
+ #define TCG_TARGET_HAS_ext8s_i32        1
+ #define TCG_TARGET_HAS_ext16s_i32       1
+diff --git a/tcg/i386/tcg-target.h b/tcg/i386/tcg-target.h
+index c68ac023d8..c81d509f1c 100644
+--- a/tcg/i386/tcg-target.h
++++ b/tcg/i386/tcg-target.h
+@@ -90,26 +90,6 @@ typedef enum {
+     TCG_REG_CALL_STACK = TCG_REG_ESP
+ } TCGReg;
+ 
+-/* used for function call generation */
+-#define TCG_TARGET_STACK_ALIGN 16
+-#if defined(_WIN64)
+-#define TCG_TARGET_CALL_STACK_OFFSET 32
+-#else
+-#define TCG_TARGET_CALL_STACK_OFFSET 0
+-#endif
+-#define TCG_TARGET_CALL_ARG_I32      TCG_CALL_ARG_NORMAL
+-#define TCG_TARGET_CALL_ARG_I64      TCG_CALL_ARG_NORMAL
+-#if defined(_WIN64)
+-# define TCG_TARGET_CALL_ARG_I128    TCG_CALL_ARG_BY_REF
+-# define TCG_TARGET_CALL_RET_I128    TCG_CALL_RET_BY_VEC
+-#elif TCG_TARGET_REG_BITS == 64
+-# define TCG_TARGET_CALL_ARG_I128    TCG_CALL_ARG_NORMAL
+-# define TCG_TARGET_CALL_RET_I128    TCG_CALL_RET_NORMAL
+-#else
+-# define TCG_TARGET_CALL_ARG_I128    TCG_CALL_ARG_NORMAL
+-# define TCG_TARGET_CALL_RET_I128    TCG_CALL_RET_BY_REF
+-#endif
+-
+ #define have_bmi1         (cpuinfo & CPUINFO_BMI1)
+ #define have_popcnt       (cpuinfo & CPUINFO_POPCNT)
+ #define have_avx1         (cpuinfo & CPUINFO_AVX1)
+diff --git a/tcg/loongarch64/tcg-target.h b/tcg/loongarch64/tcg-target.h
+index 58bd7d258e..7811530c8a 100644
+--- a/tcg/loongarch64/tcg-target.h
++++ b/tcg/loongarch64/tcg-target.h
+@@ -87,15 +87,6 @@ typedef enum {
+     TCG_VEC_TMP0 = TCG_REG_V23,
+ } TCGReg;
+ 
+-/* used for function call generation */
+-#define TCG_REG_CALL_STACK              TCG_REG_SP
+-#define TCG_TARGET_STACK_ALIGN          16
+-#define TCG_TARGET_CALL_STACK_OFFSET    0
+-#define TCG_TARGET_CALL_ARG_I32         TCG_CALL_ARG_NORMAL
+-#define TCG_TARGET_CALL_ARG_I64         TCG_CALL_ARG_NORMAL
+-#define TCG_TARGET_CALL_ARG_I128        TCG_CALL_ARG_NORMAL
+-#define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_NORMAL
+-
+ /* optional instructions */
+ #define TCG_TARGET_HAS_negsetcond_i32   0
+ #define TCG_TARGET_HAS_div_i32          1
+diff --git a/tcg/mips/tcg-target.h b/tcg/mips/tcg-target.h
+index a996aa171d..d9b9f6a965 100644
+--- a/tcg/mips/tcg-target.h
++++ b/tcg/mips/tcg-target.h
+@@ -70,20 +70,6 @@ typedef enum {
+     TCG_AREG0 = TCG_REG_S8,
+ } TCGReg;
+ 
+-/* used for function call generation */
+-#define TCG_TARGET_STACK_ALIGN        16
+-#if _MIPS_SIM == _ABIO32
+-# define TCG_TARGET_CALL_STACK_OFFSET 16
+-# define TCG_TARGET_CALL_ARG_I64      TCG_CALL_ARG_EVEN
+-# define TCG_TARGET_CALL_RET_I128     TCG_CALL_RET_BY_REF
+-#else
+-# define TCG_TARGET_CALL_STACK_OFFSET 0
+-# define TCG_TARGET_CALL_ARG_I64      TCG_CALL_ARG_NORMAL
+-# define TCG_TARGET_CALL_RET_I128     TCG_CALL_RET_NORMAL
+-#endif
+-#define TCG_TARGET_CALL_ARG_I32       TCG_CALL_ARG_NORMAL
+-#define TCG_TARGET_CALL_ARG_I128      TCG_CALL_ARG_EVEN
+-
+ /* MOVN/MOVZ instructions detection */
+ #if (defined(__mips_isa_rev) && (__mips_isa_rev >= 1)) || \
+     defined(_MIPS_ARCH_LOONGSON2E) || defined(_MIPS_ARCH_LOONGSON2F) || \
+diff --git a/tcg/riscv/tcg-target.h b/tcg/riscv/tcg-target.h
+index 334c37cbe6..d23306738a 100644
+--- a/tcg/riscv/tcg-target.h
++++ b/tcg/riscv/tcg-target.h
+@@ -59,15 +59,6 @@ typedef enum {
+     TCG_REG_TMP2       = TCG_REG_T4,
+ } TCGReg;
+ 
+-/* used for function call generation */
+-#define TCG_REG_CALL_STACK              TCG_REG_SP
+-#define TCG_TARGET_STACK_ALIGN          16
+-#define TCG_TARGET_CALL_STACK_OFFSET    0
+-#define TCG_TARGET_CALL_ARG_I32         TCG_CALL_ARG_NORMAL
+-#define TCG_TARGET_CALL_ARG_I64         TCG_CALL_ARG_NORMAL
+-#define TCG_TARGET_CALL_ARG_I128        TCG_CALL_ARG_NORMAL
+-#define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_NORMAL
+-
+ /* optional instructions */
+ #define TCG_TARGET_HAS_negsetcond_i32   1
+ #define TCG_TARGET_HAS_div_i32          1
+diff --git a/tcg/s390x/tcg-target.h b/tcg/s390x/tcg-target.h
+index 86aeca166f..7e0bf687b9 100644
+--- a/tcg/s390x/tcg-target.h
++++ b/tcg/s390x/tcg-target.h
+@@ -165,14 +165,6 @@ extern uint64_t s390_facilities[3];
+ #define TCG_TARGET_HAS_cmpsel_vec     1
+ #define TCG_TARGET_HAS_tst_vec        0
+ 
+-/* used for function call generation */
+-#define TCG_TARGET_STACK_ALIGN		8
+-#define TCG_TARGET_CALL_STACK_OFFSET	160
+-#define TCG_TARGET_CALL_ARG_I32         TCG_CALL_ARG_EXTEND
+-#define TCG_TARGET_CALL_ARG_I64         TCG_CALL_ARG_NORMAL
+-#define TCG_TARGET_CALL_ARG_I128        TCG_CALL_ARG_BY_REF
+-#define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_BY_REF
+-
+ #define TCG_TARGET_DEFAULT_MO (TCG_MO_ALL & ~TCG_MO_ST_LD)
+ #define TCG_TARGET_NEED_LDST_LABELS
+ #define TCG_TARGET_NEED_POOL_LABELS
+diff --git a/tcg/sparc64/tcg-target.h b/tcg/sparc64/tcg-target.h
+index a18906a14e..0705308951 100644
+--- a/tcg/sparc64/tcg-target.h
++++ b/tcg/sparc64/tcg-target.h
+@@ -64,17 +64,6 @@ typedef enum {
+     TCG_REG_I7,
+ } TCGReg;
+ 
+-/* used for function call generation */
+-#define TCG_REG_CALL_STACK TCG_REG_O6
+-
+-#define TCG_TARGET_STACK_BIAS           2047
+-#define TCG_TARGET_STACK_ALIGN          16
+-#define TCG_TARGET_CALL_STACK_OFFSET    (128 + 6*8 + TCG_TARGET_STACK_BIAS)
+-#define TCG_TARGET_CALL_ARG_I32         TCG_CALL_ARG_EXTEND
+-#define TCG_TARGET_CALL_ARG_I64         TCG_CALL_ARG_NORMAL
+-#define TCG_TARGET_CALL_ARG_I128        TCG_CALL_ARG_NORMAL
+-#define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_NORMAL
+-
+ #if defined(__VIS__) && __VIS__ >= 0x300
+ #define use_vis3_instructions  1
+ #else
+diff --git a/tcg/tci/tcg-target.h b/tcg/tci/tcg-target.h
+index a076f401d2..d7650343a3 100644
+--- a/tcg/tci/tcg-target.h
++++ b/tcg/tci/tcg-target.h
+@@ -146,20 +146,6 @@ typedef enum {
+     TCG_REG_CALL_STACK = TCG_REG_R15,
+ } TCGReg;
+ 
+-/* Used for function call generation. */
+-#define TCG_TARGET_CALL_STACK_OFFSET    0
+-#define TCG_TARGET_STACK_ALIGN          8
+-#if TCG_TARGET_REG_BITS == 32
+-# define TCG_TARGET_CALL_ARG_I32        TCG_CALL_ARG_EVEN
+-# define TCG_TARGET_CALL_ARG_I64        TCG_CALL_ARG_EVEN
+-# define TCG_TARGET_CALL_ARG_I128       TCG_CALL_ARG_EVEN
+-#else
+-# define TCG_TARGET_CALL_ARG_I32        TCG_CALL_ARG_NORMAL
+-# define TCG_TARGET_CALL_ARG_I64        TCG_CALL_ARG_NORMAL
+-# define TCG_TARGET_CALL_ARG_I128       TCG_CALL_ARG_NORMAL
+-#endif
+-#define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_NORMAL
+-
+ #define HAVE_TCG_QEMU_TB_EXEC
+ #define TCG_TARGET_NEED_POOL_LABELS
+ 
+diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
+index ffa8a3e519..0b018d3247 100644
+--- a/tcg/aarch64/tcg-target.c.inc
++++ b/tcg/aarch64/tcg-target.c.inc
+@@ -14,6 +14,19 @@
+ #include "../tcg-pool.c.inc"
+ #include "qemu/bitops.h"
+ 
++/* Used for function call generation. */
++#define TCG_REG_CALL_STACK              TCG_REG_SP
++#define TCG_TARGET_STACK_ALIGN          16
++#define TCG_TARGET_CALL_STACK_OFFSET    0
++#define TCG_TARGET_CALL_ARG_I32         TCG_CALL_ARG_NORMAL
++#define TCG_TARGET_CALL_ARG_I64         TCG_CALL_ARG_NORMAL
++#ifdef CONFIG_DARWIN
++# define TCG_TARGET_CALL_ARG_I128       TCG_CALL_ARG_NORMAL
++#else
++# define TCG_TARGET_CALL_ARG_I128       TCG_CALL_ARG_EVEN
++#endif
++#define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_NORMAL
++
+ /* We're going to re-use TCGType in setting of the SF bit, which controls
+    the size of the operation performed.  If we know the values match, it
+    makes things much cleaner.  */
+diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
+index 56072d89a2..f0674f23a5 100644
+--- a/tcg/arm/tcg-target.c.inc
++++ b/tcg/arm/tcg-target.c.inc
+@@ -35,6 +35,14 @@ bool use_idiv_instructions;
+ bool use_neon_instructions;
+ #endif
+ 
++/* Used for function call generation. */
++#define TCG_TARGET_STACK_ALIGN          8
++#define TCG_TARGET_CALL_STACK_OFFSET    0
++#define TCG_TARGET_CALL_ARG_I32         TCG_CALL_ARG_NORMAL
++#define TCG_TARGET_CALL_ARG_I64         TCG_CALL_ARG_EVEN
++#define TCG_TARGET_CALL_ARG_I128        TCG_CALL_ARG_EVEN
++#define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_BY_REF
++
+ #ifdef CONFIG_DEBUG_TCG
+ static const char * const tcg_target_reg_names[TCG_TARGET_NB_REGS] = {
+     "%r0",  "%r1",  "%r2",  "%r3",  "%r4",  "%r5",  "%r6",  "%r7",
+diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+index 1bf50f1f62..aaf6107284 100644
+--- a/tcg/i386/tcg-target.c.inc
++++ b/tcg/i386/tcg-target.c.inc
+@@ -25,6 +25,26 @@
+ #include "../tcg-ldst.c.inc"
+ #include "../tcg-pool.c.inc"
+ 
++/* Used for function call generation. */
++#define TCG_TARGET_STACK_ALIGN 16
++#if defined(_WIN64)
++#define TCG_TARGET_CALL_STACK_OFFSET 32
++#else
++#define TCG_TARGET_CALL_STACK_OFFSET 0
++#endif
++#define TCG_TARGET_CALL_ARG_I32      TCG_CALL_ARG_NORMAL
++#define TCG_TARGET_CALL_ARG_I64      TCG_CALL_ARG_NORMAL
++#if defined(_WIN64)
++# define TCG_TARGET_CALL_ARG_I128    TCG_CALL_ARG_BY_REF
++# define TCG_TARGET_CALL_RET_I128    TCG_CALL_RET_BY_VEC
++#elif TCG_TARGET_REG_BITS == 64
++# define TCG_TARGET_CALL_ARG_I128    TCG_CALL_ARG_NORMAL
++# define TCG_TARGET_CALL_RET_I128    TCG_CALL_RET_NORMAL
++#else
++# define TCG_TARGET_CALL_ARG_I128    TCG_CALL_ARG_NORMAL
++# define TCG_TARGET_CALL_RET_I128    TCG_CALL_RET_BY_REF
++#endif
++
+ #ifdef CONFIG_DEBUG_TCG
+ static const char * const tcg_target_reg_names[TCG_TARGET_NB_REGS] = {
+ #if TCG_TARGET_REG_BITS == 64
+diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
+index 973601aec3..8ae561bfc0 100644
+--- a/tcg/loongarch64/tcg-target.c.inc
++++ b/tcg/loongarch64/tcg-target.c.inc
+@@ -32,6 +32,15 @@
+ #include "../tcg-ldst.c.inc"
+ #include <asm/hwcap.h>
+ 
++/* used for function call generation */
++#define TCG_REG_CALL_STACK              TCG_REG_SP
++#define TCG_TARGET_STACK_ALIGN          16
++#define TCG_TARGET_CALL_STACK_OFFSET    0
++#define TCG_TARGET_CALL_ARG_I32         TCG_CALL_ARG_NORMAL
++#define TCG_TARGET_CALL_ARG_I64         TCG_CALL_ARG_NORMAL
++#define TCG_TARGET_CALL_ARG_I128        TCG_CALL_ARG_NORMAL
++#define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_NORMAL
++
+ #ifdef CONFIG_DEBUG_TCG
+ static const char * const tcg_target_reg_names[TCG_TARGET_NB_REGS] = {
+     "zero",
+diff --git a/tcg/mips/tcg-target.c.inc b/tcg/mips/tcg-target.c.inc
+index 3b5b5c6d5b..ed41cd7f1b 100644
+--- a/tcg/mips/tcg-target.c.inc
++++ b/tcg/mips/tcg-target.c.inc
+@@ -27,6 +27,20 @@
+ #include "../tcg-ldst.c.inc"
+ #include "../tcg-pool.c.inc"
+ 
++/* used for function call generation */
++#define TCG_TARGET_STACK_ALIGN        16
++#if _MIPS_SIM == _ABIO32
++# define TCG_TARGET_CALL_STACK_OFFSET 16
++# define TCG_TARGET_CALL_ARG_I64      TCG_CALL_ARG_EVEN
++# define TCG_TARGET_CALL_RET_I128     TCG_CALL_RET_BY_REF
++#else
++# define TCG_TARGET_CALL_STACK_OFFSET 0
++# define TCG_TARGET_CALL_ARG_I64      TCG_CALL_ARG_NORMAL
++# define TCG_TARGET_CALL_RET_I128     TCG_CALL_RET_NORMAL
++#endif
++#define TCG_TARGET_CALL_ARG_I32       TCG_CALL_ARG_NORMAL
++#define TCG_TARGET_CALL_ARG_I128      TCG_CALL_ARG_EVEN
++
+ #if TCG_TARGET_REG_BITS == 32
+ # define LO_OFF  (HOST_BIG_ENDIAN * 4)
+ # define HI_OFF  (4 - LO_OFF)
+diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
+index 96f9a7e348..34402fee2a 100644
+--- a/tcg/riscv/tcg-target.c.inc
++++ b/tcg/riscv/tcg-target.c.inc
+@@ -30,6 +30,15 @@
+ #include "../tcg-ldst.c.inc"
+ #include "../tcg-pool.c.inc"
+ 
++/* Used for function call generation. */
++#define TCG_REG_CALL_STACK              TCG_REG_SP
++#define TCG_TARGET_STACK_ALIGN          16
++#define TCG_TARGET_CALL_STACK_OFFSET    0
++#define TCG_TARGET_CALL_ARG_I32         TCG_CALL_ARG_NORMAL
++#define TCG_TARGET_CALL_ARG_I64         TCG_CALL_ARG_NORMAL
++#define TCG_TARGET_CALL_ARG_I128        TCG_CALL_ARG_NORMAL
++#define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_NORMAL
++
+ #ifdef CONFIG_DEBUG_TCG
+ static const char * const tcg_target_reg_names[TCG_TARGET_NB_REGS] = {
+     "zero", "ra",  "sp",  "gp",  "tp",  "t0",  "t1",  "t2",
+diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
+index 27bccc14e5..b1188525b2 100644
+--- a/tcg/s390x/tcg-target.c.inc
++++ b/tcg/s390x/tcg-target.c.inc
+@@ -28,6 +28,14 @@
+ #include "../tcg-pool.c.inc"
+ #include "elf.h"
+ 
++/* Used for function call generation. */
++#define TCG_TARGET_STACK_ALIGN          8
++#define TCG_TARGET_CALL_STACK_OFFSET    160
++#define TCG_TARGET_CALL_ARG_I32         TCG_CALL_ARG_EXTEND
++#define TCG_TARGET_CALL_ARG_I64         TCG_CALL_ARG_NORMAL
++#define TCG_TARGET_CALL_ARG_I128        TCG_CALL_ARG_BY_REF
++#define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_BY_REF
++
+ #define TCG_CT_CONST_S16        (1 << 8)
+ #define TCG_CT_CONST_S32        (1 << 9)
+ #define TCG_CT_CONST_U32        (1 << 10)
+diff --git a/tcg/sparc64/tcg-target.c.inc b/tcg/sparc64/tcg-target.c.inc
+index 32f9ec24b5..c9d105c35a 100644
+--- a/tcg/sparc64/tcg-target.c.inc
++++ b/tcg/sparc64/tcg-target.c.inc
+@@ -30,6 +30,16 @@
+ #include "../tcg-ldst.c.inc"
+ #include "../tcg-pool.c.inc"
+ 
++/* Used for function call generation. */
++#define TCG_REG_CALL_STACK              TCG_REG_O6
++#define TCG_TARGET_STACK_BIAS           2047
++#define TCG_TARGET_STACK_ALIGN          16
++#define TCG_TARGET_CALL_STACK_OFFSET    (128 + 6 * 8 + TCG_TARGET_STACK_BIAS)
++#define TCG_TARGET_CALL_ARG_I32         TCG_CALL_ARG_EXTEND
++#define TCG_TARGET_CALL_ARG_I64         TCG_CALL_ARG_NORMAL
++#define TCG_TARGET_CALL_ARG_I128        TCG_CALL_ARG_NORMAL
++#define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_NORMAL
++
+ #ifdef CONFIG_DEBUG_TCG
+ static const char * const tcg_target_reg_names[TCG_TARGET_NB_REGS] = {
+     "%g0",
+diff --git a/tcg/tci/tcg-target.c.inc b/tcg/tci/tcg-target.c.inc
+index c740864b96..e6c97e8153 100644
+--- a/tcg/tci/tcg-target.c.inc
++++ b/tcg/tci/tcg-target.c.inc
+@@ -24,6 +24,20 @@
+ 
+ #include "../tcg-pool.c.inc"
+ 
++/* Used for function call generation. */
++#define TCG_TARGET_CALL_STACK_OFFSET    0
++#define TCG_TARGET_STACK_ALIGN          8
++#if TCG_TARGET_REG_BITS == 32
++# define TCG_TARGET_CALL_ARG_I32        TCG_CALL_ARG_EVEN
++# define TCG_TARGET_CALL_ARG_I64        TCG_CALL_ARG_EVEN
++# define TCG_TARGET_CALL_ARG_I128       TCG_CALL_ARG_EVEN
++#else
++# define TCG_TARGET_CALL_ARG_I32        TCG_CALL_ARG_NORMAL
++# define TCG_TARGET_CALL_ARG_I64        TCG_CALL_ARG_NORMAL
++# define TCG_TARGET_CALL_ARG_I128       TCG_CALL_ARG_NORMAL
++#endif
++#define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_NORMAL
++
+ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+ {
+     switch (op) {
 -- 
 2.43.0
 
