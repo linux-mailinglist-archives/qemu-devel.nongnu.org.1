@@ -2,87 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78C08A039A4
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 09:19:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AED40A03A04
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 09:45:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tV4oC-0007QW-7C; Tue, 07 Jan 2025 03:19:28 -0500
+	id 1tV5CG-0003jk-W6; Tue, 07 Jan 2025 03:44:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1tV4o8-0007Pv-Fj
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 03:19:24 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1tV4o6-0005nW-Th
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 03:19:24 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-21a7ed0155cso1816995ad.3
- for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 00:19:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1736237961; x=1736842761; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=bsVaQSU+SKN6xlpHRBfPGuVJQwveGYniAv/EHWcQWGc=;
- b=Bh/4pxUosaVUY2u7fzOGQsobAgifOc0agtgeLn9M0drLKaRFIZu9VZo5phhMBlz5N3
- uHvTp7AO4YSUtr0qB+4JTI5AtFgbBWpptEmJwZz4SOuDAh6O+5nCTt+WG7ef/CvzWC6B
- cWnzvs6wg87k/6sAnIp81YfG6As5dkqY/atk7SMW+aB8HySJ0i79+0jfciKeqkszVVh0
- nTua7+wr5efa2VXP6bqpdnNphXau1w5n4RFvijYO30SfAWk/J2+iANHaetY4jkhsMe1i
- 8KvcpuFVHW5t7TDkbhVNoTYKkew5aItGWaNcgi3ToJXiB+t9wqrJ4EXMsLlbUI7UhE/k
- jh4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736237961; x=1736842761;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bsVaQSU+SKN6xlpHRBfPGuVJQwveGYniAv/EHWcQWGc=;
- b=Bn3gvm+iJnGjkw4b/wM9HesklZrX0s2WwEM1gjnUCkimaumXYbIdSpDMEVDOwTNbdm
- 4A9o0kX0sl97GojVDCW09Sak2nNGoWijnsagVdRO38GBwKr/D9dtSaO+yfGuz74cxUCa
- yG8E1JbcvSK2KZbJC3fvdhONZgtfXjeZRzUtAXYXmlnts3zac5N/i973UiLNcQNaPyBq
- ZNBsiJWhyUEZ4Pvf1wGerTGdWF2Q9v5DI/FREMDHOKxwJOhPs5y69FJaqcasYnpyq1ja
- 9VTNy2OxtCOkkC+DmZvd9D8Otz7KrRDmOcnuzJWtbDxO0cxkflb7YnVGOXM9cG11tI4H
- r5Nw==
-X-Gm-Message-State: AOJu0Yz76gqaV/anphtrsEv7sGQpo8Oems0b9XJcL2vG8JgXySJicFHH
- M0sO+hkMUUzuxo8FynoCZF/kbWfLWt/TD1YSxDNFBz9l/DlkYbERfTIWwCRF
-X-Gm-Gg: ASbGncuqgUGfeglVxCEP6dRP5VdHVroeftUYeZh6ZecnaI7TEihqfEI2ObulqceG4Kw
- lmEvFoOli96AgGO68o7CBgH7mBraE21AEK3x0uNc32IHNIG1wFMoO7uGXGlpuTLA1AixIRIB2Nn
- OGT5KgOEU6pLbuMjHGMXt6nqrQKBlt09h6JVhr9KXKP2Rd2qxHcPf4w1IZOs+zbOO5C44CG4esx
- 8qgrbUZFSwZQq3jpJpHaNVDjzRIRf2sblTQjEaTYH1yGX7xQQKYG0xLfe+bqWOSrfWW6RE=
-X-Google-Smtp-Source: AGHT+IHyz/2bLq6xxdE3XEgpT1xuHtGq4u/ofH3hBrvXj5GJmgwjxIxXhC5nJl6p/REawySu+DZjkg==
-X-Received: by 2002:a05:6a00:3cc1:b0:725:df1a:288 with SMTP id
- d2e1a72fcca58-72abe18acb0mr84193154b3a.24.1736237960946; 
- Tue, 07 Jan 2025 00:19:20 -0800 (PST)
-Received: from [192.168.0.22] ([175.119.5.143])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad8fd610sm32669322b3a.136.2025.01.07.00.19.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Jan 2025 00:19:20 -0800 (PST)
-Message-ID: <97d74ec1-4a13-4726-9584-09dada83c1dc@gmail.com>
-Date: Tue, 7 Jan 2025 17:19:51 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/ufs: Adjust value to match CPU's endian format
-To: keosung.park@samsung.com, Jeuk Kim <jeuk20.kim@samsung.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-References: <CGME20250107070209epcms2p8b39b26cf5a32a7b66246f2d122005f29@epcms2p8>
- <20250107070209epcms2p8b39b26cf5a32a7b66246f2d122005f29@epcms2p8>
-Content-Language: ko
-From: Jeuk Kim <jeuk20.kim@gmail.com>
-In-Reply-To: <20250107070209epcms2p8b39b26cf5a32a7b66246f2d122005f29@epcms2p8>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=jeuk20.kim@gmail.com; helo=mail-pl1-x632.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <keosung.park@samsung.com>)
+ id 1tV5CE-0003jP-NS
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 03:44:19 -0500
+Received: from mailout1.samsung.com ([203.254.224.24])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <keosung.park@samsung.com>)
+ id 1tV5C6-0008VZ-7y
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 03:44:18 -0500
+Received: from epcas2p4.samsung.com (unknown [182.195.41.56])
+ by mailout1.samsung.com (KnoxPortal) with ESMTP id
+ 20250107084357epoutp01c1e91fd854fdfd6159a96bada791fa34~YXJHMCndD2624526245epoutp01k
+ for <qemu-devel@nongnu.org>; Tue,  7 Jan 2025 08:43:57 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com
+ 20250107084357epoutp01c1e91fd854fdfd6159a96bada791fa34~YXJHMCndD2624526245epoutp01k
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1736239437;
+ bh=qMVTTSrMbBxUY+BObY6KkjD7t/14XIBA7i8I9M0jDso=;
+ h=Subject:Reply-To:From:To:CC:Date:References:From;
+ b=UJU7d0kTj8L1VYzqUCV5YSm01O4f2ElCRTIlqCtuSkacvEzwpFxTNizyc967V8mKT
+ Nwwnac3yx8EE16/9uExVWGV60dBjY2mtJRLmIfPw1Wa6j4K4Y9/r7X0AtcRRUUVvyT
+ SZOiqmafyA+X/Oz0w7rYKsPP6aW5o+wrgM3e/PTk=
+Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
+ epcas2p4.samsung.com (KnoxPortal) with ESMTP id
+ 20250107084357epcas2p490bd9a8aa015af73bb28e7acab61acce~YXJG7FdYJ2756227562epcas2p44;
+ Tue,  7 Jan 2025 08:43:57 +0000 (GMT)
+Received: from epsmges2p3.samsung.com (unknown [182.195.36.69]) by
+ epsnrtp1.localdomain (Postfix) with ESMTP id 4YS4Mw3ZpVz4x9Pr; Tue,  7 Jan
+ 2025 08:43:56 +0000 (GMT)
+X-AuditID: b6c32a47-fd1c970000005659-12-677ce94ce160
+Received: from epcas2p4.samsung.com ( [182.195.41.56]) by
+ epsmges2p3.samsung.com (Symantec Messaging Gateway) with SMTP id
+ CD.97.22105.C49EC776; Tue,  7 Jan 2025 17:43:56 +0900 (KST)
+Mime-Version: 1.0
+Subject: [PATCH v2] hw/ufs: Adjust value to match CPU's endian format
+From: Keoseong Park <keosung.park@samsung.com>
+To: Jeuk Kim <jeuk20.kim@samsung.com>, "philmd@linaro.org"
+ <philmd@linaro.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "farosas@suse.de" <farosas@suse.de>, "lvivier@redhat.com"
+ <lvivier@redhat.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>
+X-Priority: 3
+X-Content-Kind-Code: NORMAL
+X-CPGS-Detection: blocking_info_exchange
+X-Drm-Type: N,general
+X-Msg-Generator: Mail
+X-Msg-Type: PERSONAL
+X-Reply-Demand: N
+Message-ID: <20250107084356epcms2p2af4d86432174d76ea57336933e46b4c3@epcms2p2>
+Date: Tue, 07 Jan 2025 17:43:56 +0900
+X-CMS-MailID: 20250107084356epcms2p2af4d86432174d76ea57336933e46b4c3
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: AUTO_CONFIDENTIAL
+CMS-TYPE: 102P
+X-CPGSPASS: Y
+X-CPGSPASS: Y
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmphk+LIzCtJLcpLzFFi42LZdljTQtfnZU26wb3lEhYvD2lavH6xnNni
+ /tZrjBafGqQs9m/7x2qxZoWwxfHeHSwO7B53ru1h83hybTOTx/t9V9k8+rasYvTYfLo6gDUq
+ 2yYjNTEltUghNS85PyUzL91WyTs43jne1MzAUNfQ0sJcSSEvMTfVVsnFJ0DXLTMH6AYlhbLE
+ nFKgUEBicbGSvp1NUX5pSapCRn5xia1SakFKToF5gV5xYm5xaV66Xl5qiZWhgYGRKVBhQnZG
+ /7xtzAW3hCqets5lbWB8JdjFyMkhIWAisbTrLVsXIxeHkMAORom7L28DORwcvAKCEn93CIPU
+ CAu4Siz/vo0JxBYSUJLoWriVGSJuILFu+h4wm01AT2LK7zuMIHNEBBoZJbb13WAFcZhBnIsr
+ PrNCbOOVmNH+lAXClpbYvnwrI4StIfFjWS8zhC0qcXP1W3YY+/2x+VA1IhKt985C1QhKPPi5
+ mxHkUAkBSYmpPyQgwvUSre9PsYPslRCYwCjReOwP1Bx9iWsdG8H28gr4SvTf3Ak2h0VAVWLG
+ gqNMEDUuEnd6esFsZgFtiWULXzODzGcW0JRYv0sfYpWyxJFbLBAVfBIdh/+yw3zVsPE3VvaO
+ eU+gpqtJPFqwBRoKMhIX55xjnsCoNAsR0rOQ7J2FsHcBI/MqRrHUguLc9NRiowJjeOQm5+du
+ YgQnRy33HYwz3n7QO8TIxMF4iFGCg1lJhDdLozJdiDclsbIqtSg/vqg0J7X4EKMp0McTmaVE
+ k/OB6TmvJN7QxNLAxMzM0NzI1MBcSZz3XuvcFCGB9MSS1OzU1ILUIpg+Jg5OqQYm7YMhum/f
+ tB2WdbXaxCDX9+fN9M6rfRZ/mqbZKVm88dDdLz7X7NlLX4Po07PXei9XVmg8IaD4rujZhm6u
+ jBCZRpEPLw9P5ZAL69lQtk/zjKVds3JL7Ymd1YI704Q3L5lyx+pAwenpD18ZvrpY0bH/9ZZj
+ 180KPwh8es/LZFwho2npz2mmEqYx4cnD8rfW++zP7zJSSEhbyXSuNT7XhOPlx/uza1VTOT4F
+ PpTZ9+st60wuZ3OjOZ+OXehYwuec1ih8qcpu6aTQXD4lg6u9ZhXP2YTv/tj4UPrnKbedLR82
+ 6eTP1tuS7WvQ/2tebmHhloSUfyl+qqy6Zux9PvZHP71zc1R7+zeO9eAMHt+KxRZKLMUZiYZa
+ zEXFiQDw5Ck6FwQAAA==
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250107084356epcms2p2af4d86432174d76ea57336933e46b4c3
+References: <CGME20250107084356epcms2p2af4d86432174d76ea57336933e46b4c3@epcms2p2>
+Received-SPF: pass client-ip=203.254.224.24;
+ envelope-from=keosung.park@samsung.com; helo=mailout1.samsung.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,56 +109,41 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: keosung.park@samsung.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+In ufs_write_attr_value(), the value parameter is handled in the CPU's
+endian format but provided in big-endian format by the caller. Thus, it
+is converted to the CPU's endian format. The related test code is also
+fixed to reflect this change.
 
-On 1/7/2025 4:02 PM, Keoseong Park wrote:
-> In ufs_write_attr_value(), the value parameter is handled in the CPU's
-> endian format but provided in big-endian format by the caller. Thus, it
-> is converted accordingly.
->
-> Signed-off-by: Keoseong Park <keosung.park@samsung.com>
-> ---
->   hw/ufs/ufs.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
-> index 8d26d13791..428fe927ad 100644
-> --- a/hw/ufs/ufs.c
-> +++ b/hw/ufs/ufs.c
-> @@ -1164,7 +1164,7 @@ static QueryRespCode ufs_exec_query_attr(UfsRequest *req, int op)
->           value = ufs_read_attr_value(u, idn);
->           ret = UFS_QUERY_RESULT_SUCCESS;
->       } else {
-> -        value = req->req_upiu.qr.value;
-> +        value = be32_to_cpu(req->req_upiu.qr.value);
->           ret = ufs_write_attr_value(u, idn, value);
->       }
->       req->rsp_upiu.qr.value = cpu_to_be32(value);
-
-
-Thank you for fixing this bug!
-I reviewed the changes and noticed that some changes to |ufs-test| are 
-also needed to fully fix the problem.
-
-Could you please include the following changes and send a v2 patch? 
-Thank you.
-
-
-diff --git a/tests/qtest/ufs-test.c b/tests/qtest/ufs-test.c
-index 60199abbee..1f860b41c0 100644
---- a/tests/qtest/ufs-test.c
-+++ b/tests/qtest/ufs-test.c
-@@ -145,7 +145,7 @@ static void ufs_send_query(QUfs *ufs, uint8_t slot, 
-uint8_t query_function,
-      req_upiu.qr.idn = idn;
-      req_upiu.qr.index = index;
-      req_upiu.qr.selector = selector;
--    req_upiu.qr.value = attr_value;
-+    req_upiu.qr.value = cpu_to_be32(attr_value);
-      req_upiu.qr.length = UFS_QUERY_DESC_MAX_SIZE;
-      qtest_memwrite(ufs->dev.bus->qts, req_upiu_addr, &req_upiu,
-                     sizeof(req_upiu));
-
+Fixes: 7c85332a2b3e (=22hw/ufs: minor bug fixes related to ufs-test=22)
+Reviewed-by: Philippe Mathieu-Daud=C3=A9=20<philmd=40linaro.org>=0D=0ASigne=
+d-off-by:=20Keoseong=20Park=20<keosung.park=40samsung.com>=0D=0A---=0D=0A=
+=20hw/ufs/ufs.c=20=20=20=20=20=20=20=20=20=20=20=7C=202=20+-=0D=0A=20tests/=
+qtest/ufs-test.c=20=7C=202=20+-=0D=0A=202=20files=20changed,=202=20insertio=
+ns(+),=202=20deletions(-)=0D=0A=0D=0Adiff=20--git=20a/hw/ufs/ufs.c=20b/hw/u=
+fs/ufs.c=0D=0Aindex=208d26d13791..428fe927ad=20100644=0D=0A---=20a/hw/ufs/u=
+fs.c=0D=0A+++=20b/hw/ufs/ufs.c=0D=0A=40=40=20-1164,7=20+1164,7=20=40=40=20s=
+tatic=20QueryRespCode=20ufs_exec_query_attr(UfsRequest=20*req,=20int=20op)=
+=0D=0A=20=20=20=20=20=20=20=20=20value=20=3D=20ufs_read_attr_value(u,=20idn=
+);=0D=0A=20=20=20=20=20=20=20=20=20ret=20=3D=20UFS_QUERY_RESULT_SUCCESS;=0D=
+=0A=20=20=20=20=20=7D=20else=20=7B=0D=0A-=20=20=20=20=20=20=20=20value=20=
+=3D=20req->req_upiu.qr.value;=0D=0A+=20=20=20=20=20=20=20=20value=20=3D=20b=
+e32_to_cpu(req->req_upiu.qr.value);=0D=0A=20=20=20=20=20=20=20=20=20ret=20=
+=3D=20ufs_write_attr_value(u,=20idn,=20value);=0D=0A=20=20=20=20=20=7D=0D=
+=0A=20=20=20=20=20req->rsp_upiu.qr.value=20=3D=20cpu_to_be32(value);=0D=0Ad=
+iff=20--git=20a/tests/qtest/ufs-test.c=20b/tests/qtest/ufs-test.c=0D=0Ainde=
+x=2060199abbee..1f860b41c0=20100644=0D=0A---=20a/tests/qtest/ufs-test.c=0D=
+=0A+++=20b/tests/qtest/ufs-test.c=0D=0A=40=40=20-145,7=20+145,7=20=40=40=20=
+static=20void=20ufs_send_query(QUfs=20*ufs,=20uint8_t=20slot,=20uint8_t=20q=
+uery_function,=0D=0A=20=20=20=20=20req_upiu.qr.idn=20=3D=20idn;=0D=0A=20=20=
+=20=20=20req_upiu.qr.index=20=3D=20index;=0D=0A=20=20=20=20=20req_upiu.qr.s=
+elector=20=3D=20selector;=0D=0A-=20=20=20=20req_upiu.qr.value=20=3D=20attr_=
+value;=0D=0A+=20=20=20=20req_upiu.qr.value=20=3D=20cpu_to_be32(attr_value);=
+=0D=0A=20=20=20=20=20req_upiu.qr.length=20=3D=20UFS_QUERY_DESC_MAX_SIZE;=0D=
+=0A=20=20=20=20=20qtest_memwrite(ufs->dev.bus->qts,=20req_upiu_addr,=20&req=
+_upiu,=0D=0A=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20siz=
+eof(req_upiu));=0D=0A--=20=0D=0A2.25.1=0D=0A=0D=0A
 
