@@ -2,41 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 111F1A035B3
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 04:09:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52668A035B5
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 04:09:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tUzxI-00057a-AE; Mon, 06 Jan 2025 22:08:32 -0500
+	id 1tUzxJ-00058h-LR; Mon, 06 Jan 2025 22:08:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1tUzxG-00056n-FB
- for qemu-devel@nongnu.org; Mon, 06 Jan 2025 22:08:30 -0500
+ id 1tUzxH-00057e-N8
+ for qemu-devel@nongnu.org; Mon, 06 Jan 2025 22:08:31 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1tUzxD-0004c5-5r
- for qemu-devel@nongnu.org; Mon, 06 Jan 2025 22:08:30 -0500
+ (envelope-from <maobibo@loongson.cn>) id 1tUzxF-0004cl-F2
+ for qemu-devel@nongnu.org; Mon, 06 Jan 2025 22:08:31 -0500
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8Bx366kmnxnTvheAA--.15919S3;
- Tue, 07 Jan 2025 11:08:20 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8CxCeGlmnxnU_heAA--.55603S3;
+ Tue, 07 Jan 2025 11:08:21 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMDxfcejmnxnn2gXAA--.35275S3;
+ by front1 (Coremail) with SMTP id qMiowMDxfcejmnxnn2gXAA--.35275S4;
  Tue, 07 Jan 2025 11:08:20 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>,
 	Huacai Chen <chenhuacai@kernel.org>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH v3 1/7] hw/intc/loongarch_ipi: Implement realize interface
-Date: Tue,  7 Jan 2025 11:08:13 +0800
-Message-Id: <20250107030819.90442-2-maobibo@loongson.cn>
+Subject: [PATCH v3 2/7] hw/intc/loongson_ipi: Remove num_cpu from
+ loongson_ipi_common
+Date: Tue,  7 Jan 2025 11:08:14 +0800
+Message-Id: <20250107030819.90442-3-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20250107030819.90442-1-maobibo@loongson.cn>
 References: <20250107030819.90442-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMDxfcejmnxnn2gXAA--.35275S3
+X-CM-TRANSID: qMiowMDxfcejmnxnn2gXAA--.35275S4
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,74 +65,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add realize interface for loongar ipi device.
+With mips64 loongson ipi, num_cpu property is used, with loongarch
+ipi, num_cpu can be acquired from possible_cpu_arch_ids.
+
+Here remove num_cpu setting from loongson_ipi_common, and this piece
+of code is put into loongson ipi and loongarch ipi.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- hw/intc/loongarch_ipi.c         | 19 +++++++++++++++++++
- include/hw/intc/loongarch_ipi.h |  1 +
- 2 files changed, 20 insertions(+)
+ hw/intc/loongarch_ipi.c       | 13 +++++++++++++
+ hw/intc/loongson_ipi.c        | 14 +++++++++++++-
+ hw/intc/loongson_ipi_common.c | 14 --------------
+ 3 files changed, 26 insertions(+), 15 deletions(-)
 
 diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
-index 2ae1a42c46..4e2f9acddf 100644
+index 4e2f9acddf..e6126e4fbc 100644
 --- a/hw/intc/loongarch_ipi.c
 +++ b/hw/intc/loongarch_ipi.c
-@@ -7,6 +7,7 @@
+@@ -52,14 +52,27 @@ static CPUState *loongarch_cpu_by_arch_id(int64_t arch_id)
  
- #include "qemu/osdep.h"
- #include "hw/boards.h"
-+#include "qapi/error.h"
- #include "hw/intc/loongarch_ipi.h"
- #include "target/loongarch/cpu.h"
+ static void loongarch_ipi_realize(DeviceState *dev, Error **errp)
+ {
++    LoongsonIPICommonState *lics = LOONGSON_IPI_COMMON(dev);
+     LoongarchIPIClass *lic = LOONGARCH_IPI_GET_CLASS(dev);
+     Error *local_err = NULL;
++    int i;
  
-@@ -49,10 +50,26 @@ static CPUState *loongarch_cpu_by_arch_id(int64_t arch_id)
-     return NULL;
- }
- 
-+static void loongarch_ipi_realize(DeviceState *dev, Error **errp)
-+{
-+    LoongarchIPIClass *lic = LOONGARCH_IPI_GET_CLASS(dev);
-+    Error *local_err = NULL;
+     lic->parent_realize(dev, &local_err);
+     if (local_err) {
+         error_propagate(errp, local_err);
+         return;
+     }
 +
-+    lic->parent_realize(dev, &local_err);
-+    if (local_err) {
-+        error_propagate(errp, local_err);
++    if (lics->num_cpu == 0) {
++        error_setg(errp, "num-cpu must be at least 1");
 +        return;
 +    }
-+}
 +
- static void loongarch_ipi_class_init(ObjectClass *klass, void *data)
- {
-     LoongsonIPICommonClass *licc = LOONGSON_IPI_COMMON_CLASS(klass);
-+    LoongarchIPIClass *lic = LOONGARCH_IPI_CLASS(klass);
-+    DeviceClass *dc = DEVICE_CLASS(klass);
- 
-+    device_class_set_parent_realize(dc, loongarch_ipi_realize,
-+                                    &lic->parent_realize);
-     licc->get_iocsr_as = get_iocsr_as;
-     licc->cpu_by_arch_id = loongarch_cpu_by_arch_id;
++    lics->cpu = g_new0(IPICore, lics->num_cpu);
++    for (i = 0; i < lics->num_cpu; i++) {
++        lics->cpu[i].ipi = lics;
++        qdev_init_gpio_out(dev, &lics->cpu[i].irq, 1);
++    }
  }
-@@ -61,6 +78,8 @@ static const TypeInfo loongarch_ipi_types[] = {
-     {
-         .name               = TYPE_LOONGARCH_IPI,
-         .parent             = TYPE_LOONGSON_IPI_COMMON,
-+        .instance_size      = sizeof(LoongarchIPIState),
-+        .class_size         = sizeof(LoongarchIPIClass),
-         .class_init         = loongarch_ipi_class_init,
+ 
+ static void loongarch_ipi_class_init(ObjectClass *klass, void *data)
+diff --git a/hw/intc/loongson_ipi.c b/hw/intc/loongson_ipi.c
+index 4e08f03510..1ed39b90ea 100644
+--- a/hw/intc/loongson_ipi.c
++++ b/hw/intc/loongson_ipi.c
+@@ -36,6 +36,7 @@ static void loongson_ipi_realize(DeviceState *dev, Error **errp)
+     LoongsonIPIClass *lic = LOONGSON_IPI_GET_CLASS(dev);
+     SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
+     Error *local_err = NULL;
++    int i;
+ 
+     lic->parent_realize(dev, &local_err);
+     if (local_err) {
+@@ -43,8 +44,19 @@ static void loongson_ipi_realize(DeviceState *dev, Error **errp)
+         return;
      }
- };
-diff --git a/include/hw/intc/loongarch_ipi.h b/include/hw/intc/loongarch_ipi.h
-index 276b3040a3..923bf21ecb 100644
---- a/include/hw/intc/loongarch_ipi.h
-+++ b/include/hw/intc/loongarch_ipi.h
-@@ -20,6 +20,7 @@ struct LoongarchIPIState {
  
- struct LoongarchIPIClass {
-     LoongsonIPICommonClass parent_class;
-+    DeviceRealize parent_realize;
- };
++    if (sc->num_cpu == 0) {
++        error_setg(errp, "num-cpu must be at least 1");
++        return;
++    }
++
++    sc->cpu = g_new0(IPICore, sc->num_cpu);
++    for (i = 0; i < sc->num_cpu; i++) {
++        sc->cpu[i].ipi = sc;
++        qdev_init_gpio_out(dev, &sc->cpu[i].irq, 1);
++    }
++
+     s->ipi_mmio_mem = g_new0(MemoryRegion, sc->num_cpu);
+-    for (unsigned i = 0; i < sc->num_cpu; i++) {
++    for (i = 0; i < sc->num_cpu; i++) {
+         g_autofree char *name = g_strdup_printf("loongson_ipi_cpu%d_mmio", i);
  
- #endif
+         memory_region_init_io(&s->ipi_mmio_mem[i], OBJECT(dev),
+diff --git a/hw/intc/loongson_ipi_common.c b/hw/intc/loongson_ipi_common.c
+index 9a081565f5..5d46679ea1 100644
+--- a/hw/intc/loongson_ipi_common.c
++++ b/hw/intc/loongson_ipi_common.c
+@@ -10,7 +10,6 @@
+ #include "hw/intc/loongson_ipi_common.h"
+ #include "hw/irq.h"
+ #include "hw/qdev-properties.h"
+-#include "qapi/error.h"
+ #include "qemu/log.h"
+ #include "migration/vmstate.h"
+ #include "trace.h"
+@@ -253,12 +252,6 @@ static void loongson_ipi_common_realize(DeviceState *dev, Error **errp)
+ {
+     LoongsonIPICommonState *s = LOONGSON_IPI_COMMON(dev);
+     SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
+-    int i;
+-
+-    if (s->num_cpu == 0) {
+-        error_setg(errp, "num-cpu must be at least 1");
+-        return;
+-    }
+ 
+     memory_region_init_io(&s->ipi_iocsr_mem, OBJECT(dev),
+                           &loongson_ipi_iocsr_ops,
+@@ -273,13 +266,6 @@ static void loongson_ipi_common_realize(DeviceState *dev, Error **errp)
+                           &loongson_ipi64_ops,
+                           s, "loongson_ipi64_iocsr", 0x118);
+     sysbus_init_mmio(sbd, &s->ipi64_iocsr_mem);
+-
+-    s->cpu = g_new0(IPICore, s->num_cpu);
+-    for (i = 0; i < s->num_cpu; i++) {
+-        s->cpu[i].ipi = s;
+-
+-        qdev_init_gpio_out(dev, &s->cpu[i].irq, 1);
+-    }
+ }
+ 
+ static void loongson_ipi_common_unrealize(DeviceState *dev)
 -- 
 2.39.3
 
