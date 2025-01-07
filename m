@@ -2,89 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A37A1A03898
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 08:11:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D590A038A0
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 08:12:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tV3jY-0001YV-Fl; Tue, 07 Jan 2025 02:10:36 -0500
+	id 1tV3lY-0002wn-A3; Tue, 07 Jan 2025 02:12:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tV3jV-0001YB-41
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 02:10:33 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tV3jS-0006FY-EZ
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 02:10:32 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-436202dd7f6so172127035e9.0
- for <qemu-devel@nongnu.org>; Mon, 06 Jan 2025 23:10:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736233828; x=1736838628; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=mVI3dYzHBeT8VZtZhmpxbHrEVgI9gtq2gj1l/2EtTRQ=;
- b=qaa4nEj6BhP4DDW7TzvD8A5Ho90S/MU7fyXMkoTH3BXYnnSI4cVOOKnYH8zTL1qbfz
- kXQGSpI9+QLdtZJsrlyjkbBBVwC2nx2/tGl+k5XiIavIT+JadUCYrL4q9s5s2DRitN71
- DIK6XGzbIJ5BX6nq9nsSibfH3oIKCOEJ9Bs6wlJCsCHs8MoXdI4Q3DvIIsBMm4orzRTo
- +gaNPJuLWjgsVGWc/EDc7p8IFsYNnsCZJ23lyNfr41mpBaaE+QrGi17C/rXdxc4NRTBY
- 09m3JCDqVAPHk4/Ompi6BgklUl4yCg6DeoG3Ch3d9VVo86EMPe00MuysY/duHlRkxUwM
- ASmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736233828; x=1736838628;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mVI3dYzHBeT8VZtZhmpxbHrEVgI9gtq2gj1l/2EtTRQ=;
- b=DgVy+hPDWJqtL8Ib+nZ6xdGkltJ0Cgc51BpKNn/MyjkqpRNccKCNqchvxIiPiFXJTn
- jZYLF2Ox+Jrr98B3YDKnAFpj/1WvmFog/M6I+8IjmZWbxxU0SxhukhCFhjKUy6ifEVdi
- w3F9UTQxw0RYaz+lffArS1EAPXtXwXLUX4q2oSEf5M+HNQzqgWxdvUC+xCmVk0z/q2b7
- d78dqJXXezNK+0cfHxu2FhqE2HfWi8WA2iUjZuwKiSo18L2FIvqRNbUQcHTZrFlm3zUX
- /+MgRHRtna53C7iZOCbxW4FnC3mIjW1GjcjnJaOx9NO2nLxsEjqbhM6GletGt+3ctBzu
- bp5A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVuypdrwJNkWk8Xtg73wYsjIeOKx+uh5OQGKKtUZFMStLxkId68MX+DAC0ZpTr1WQ7nf80pWODf9rL3@nongnu.org
-X-Gm-Message-State: AOJu0YzF3ykCL7klm/aVNK8csronfHR8Vwo1clEm2PMzNSkfPwTFQ7MZ
- Tffe8g5ryOc386Z5tSbv0RcCELw4AZ1DVFepuMJ4B4eih90JYrjrCC5HKeDpFHskl1J57aB+0pD
- tW+U=
-X-Gm-Gg: ASbGnctmDlmtbmSITijacrajrlF0eN/aBN2VUmex4rCFVpI5VLBttzADDOd+5xvClME
- 7RCywq3IzrY9BE7cPufTNjJNaqcJ26jqlP8JxMSCVNuY1VhKhqRg0FCfOdoONk9Gi0Dsc327JVJ
- 8TAa/UIbwM0HnVeSdaEoX09w9FP6p24rjHZyiB7EngUhtZx9MHKDvghNs7lXcyAM/wC37vwx/xl
- 04/LUzAKSX6/mw/Ttr/qZuFX6+iKdvMwy1B6gO021ptmUTLlWxQgIChhu76JZ674mDfIN+6MGIY
- DzPU8FjepZsS3NsMEfyiUhTm
-X-Google-Smtp-Source: AGHT+IF5DMhmB/AF+MvNaMfprANjCJ7SRn0/iQOW6Z8zqi0lpr+4HByB/0nMfv2+Cyv33W5rw/8taw==
-X-Received: by 2002:a05:6000:18a3:b0:385:f60b:f5c4 with SMTP id
- ffacd0b85a97d-38a221f9f90mr49525840f8f.29.1736233828440; 
- Mon, 06 Jan 2025 23:10:28 -0800 (PST)
-Received: from [192.168.69.132] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c89e140sm50743145f8f.79.2025.01.06.23.10.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 Jan 2025 23:10:27 -0800 (PST)
-Message-ID: <c63f0db5-b53c-4380-8b58-6c4e1327218d@linaro.org>
-Date: Tue, 7 Jan 2025 08:10:27 +0100
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1tV3lO-0002tf-UU
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 02:12:31 -0500
+Received: from mgamail.intel.com ([192.198.163.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1tV3lI-0006Rm-O8
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 02:12:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1736233944; x=1767769944;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=/ck5PjpSuPEiIJZgIZRQfk6ou0VR5i78Pp/rPHABhKA=;
+ b=cYEmjwA3EqM2iAzv3ZMb02CEaM1MJxbPkWCQksNJadyvK1Oc31LyOsjN
+ 4aiI+ZtFWZagY78S8JKFNNiUBGlA/nPHrX+Z1Q42x08hNmfbzHaj30JqG
+ pT5lnl7kr53XDDg0FUS2BK8n1XHD4ZeRBC+SsIBJO3qEUXqGmCNRccjsQ
+ K+nXXh9eqZULzBoqwlhZI0ma5bHDR1ya+lAHEXw+LJ0ysBqJNi/u/T189
+ L9AMWHKMxco5g8aqIxEIr3jgvabRbzej8cxJOq0P9TvQdNy9Kl2GDMgq5
+ lcyFLsyCLERu5gl3pyfX0lA5u0RiXndD1TSvknSDJ+4fREvwpUzImv2W4 Q==;
+X-CSE-ConnectionGUID: yyW7+7IVQgyRHH7Zunt1Dw==
+X-CSE-MsgGUID: vnhF6DLvTISp7X8rdhILRA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11307"; a="46982002"
+X-IronPort-AV: E=Sophos;i="6.12,294,1728975600"; d="scan'208";a="46982002"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jan 2025 23:12:21 -0800
+X-CSE-ConnectionGUID: WHZRm96zQpivs03NZqVMzQ==
+X-CSE-MsgGUID: QzQ5rnvVRlyGELc/hFBpcA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="107735702"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
+ ([10.124.247.1])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jan 2025 23:12:19 -0800
+Message-ID: <49b6cf3f-21a2-4e2b-b2cf-a57e76c9b89e@intel.com>
+Date: Tue, 7 Jan 2025 15:12:14 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/73] tcg: Add TCGType argument to tcg_emit_op,
- tcg_op_insert_*
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20250102180654.1420056-1-richard.henderson@linaro.org>
- <20250102180654.1420056-4-richard.henderson@linaro.org>
+Subject: Re: [PATCH v2 05/10] i386/topology: Introduce helpers for various
+ topology info of different level
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
+References: <20241219110125.1266461-1-xiaoyao.li@intel.com>
+ <20241219110125.1266461-6-xiaoyao.li@intel.com> <Z25cmxkmzQ9cXash@intel.com>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250102180654.1420056-4-richard.henderson@linaro.org>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <Z25cmxkmzQ9cXash@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,20 +89,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/1/25 19:05, Richard Henderson wrote:
-> In some places we have a ready type to give.
-> In others, like tcg-op.c, simply pass 0 for now.
+On 12/27/2024 3:51 PM, Zhao Liu wrote:
+>> +static inline unsigned x86_module_per_pkg(X86CPUTopoInfo *topo_info)
+>> +{
+>> +    return topo_info->modules_per_die * topo_info->dies_per_pkg;
+>> +}
+>> +
+>> +static inline unsigned x86_cores_per_pkg(X86CPUTopoInfo *topo_info)
+>> +{
+>> +    return topo_info->cores_per_module * x86_module_per_pkg(topo_info);
+>> +}
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   include/tcg/tcg-op.h |  8 +++++---
->   include/tcg/tcg.h    |  6 +++---
->   tcg/optimize.c       | 20 +++++++++++---------
->   tcg/tcg-op-vec.c     |  8 ++++----
->   tcg/tcg-op.c         | 12 ++++++------
->   tcg/tcg.c            | 28 ++++++++++++++++------------
->   6 files changed, 45 insertions(+), 37 deletions(-)
+> The above helpers can be ignored this time until someone wants them...
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+x86_cores_per_pkg() will be used in next patch (06).
+
+So the only one without a real user is x86_module_per_pkg(). We can drop 
+it, and implement x86_cores_per_pkg() as
+
+	return  topo_info->cores_per_module * topo_info->modules_per_die
+		* topo_info->dies_per_pkg;
+
+However, I don't see no real user as a big concern and I think current 
+implementation looks more consistent and complete.
+
+>> +static inline unsigned x86_threads_per_pkg(X86CPUTopoInfo *topo_info)
+>> +{
+>> +    return topo_info->threads_per_core * x86_cores_per_pkg(topo_info);
+>> +}
+> 
+> ...then this can be x86_threads_per_die(topo_info) * topo_info->dies_per_package
+> 
+>> +static inline unsigned x86_threads_per_module(X86CPUTopoInfo *topo_info)
+>> +{
+>> +    return topo_info->threads_per_core * topo_info->cores_per_module;
+>> +}
+>> +
+>> +static inline unsigned x86_threads_per_die(X86CPUTopoInfo *topo_info)
+>> +{
+>> +    return x86_threads_per_module(topo_info) * topo_info->modules_per_die;
+>> +}
+>> +
+>>
 
 
