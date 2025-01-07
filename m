@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9B1BA0398B
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 09:16:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D27BA0392B
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 09:02:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tV4XV-0000Wa-8e; Tue, 07 Jan 2025 03:02:13 -0500
+	id 1tV4Xk-0001GI-1m; Tue, 07 Jan 2025 03:02:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tV4X3-0000JP-A7
+ id 1tV4X3-0000JS-M9
  for qemu-devel@nongnu.org; Tue, 07 Jan 2025 03:01:46 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tV4X0-0002xy-Qq
+ id 1tV4X0-0002y4-R0
  for qemu-devel@nongnu.org; Tue, 07 Jan 2025 03:01:45 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-21670dce0a7so43339345ad.1
- for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 00:01:41 -0800 (PST)
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-2166360285dso224235715ad.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 00:01:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736236900; x=1736841700; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736236901; x=1736841701; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+iotMcZN6ga2pspsEdiSkbfFRa51DDrjDS+qAe0YcYk=;
- b=BLdu6r0M5syehJT427J3ULmIDZsrU24isHqnxrCn0o7m46ZccbLD1MAnYYUrfryFeU
- qInwJVPaDZEFGiRqCzuaUT0aYtJuQQ9+XdwjwBIry6uv3V7EeDm/jBGmbDyOXlvgFMcx
- FMKI9SLnAY0pgJHITv/0iSeIgvSjE09E4P9tGXqpskHpnisrH6F1X1kt+C3JHNcB0XqW
- k8UO33VQzClKKBHYnnWlOc4ByPVt0uHmcjYIxYPdSiqD8ezSn78W7wcRIGLEeDpdPvO0
- O08kMQBNM4XsM3Q4in5M8hR2uHr7vI5tS+SeCfS3wPU69DqLDo3GnugPQ+fm8dxaSybs
- uAHg==
+ bh=2hXNhITSRxm0szT46Zs5pcTERA4MwJjF3kXEJOZEuyw=;
+ b=TSXzIHJrUxqFaGz0k5dBhYqRBAabPFQcPbDjEx4CM+Ot4Ad9WCyE5nVyB7vs04tj1L
+ 3to6WayTNZ0fq/hehwFr6Iav3xwVKDTBPe1DeMF76VjCa81HLMEyI/DnTJVZFUa0Rg7o
+ E6ZUMVVyso9FEappH5IVUQL33iJ+1KGpZyK71hYjqi6qnzgnmMxm0RUWLkPuaX4/m/Pq
+ lNXLuFDoYO+wDoyPJH6EeWF9bvp5yCLl9PP9uWMO226totUwvCA7I/p0sS6uukxCdEC2
+ JBv7xSm7olrS197cEIe6dfm9j7jdBCcdWiE/NCwyGLkZTWy4QNVoBkC4GQLTWAOdr6KE
+ BlbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736236900; x=1736841700;
+ d=1e100.net; s=20230601; t=1736236901; x=1736841701;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+iotMcZN6ga2pspsEdiSkbfFRa51DDrjDS+qAe0YcYk=;
- b=ZuCMyFEIKhY+HmPm11SIPno08LXcrpzrMEOMqQHjn/zVRx9QIcejXQE61fqiDhuKiy
- P0kKcoOKHYsLivc2znbVHK96g81rVz9sWurjJb6ps6Ok14EJL9h/Xw0FUYaMg4LnbJBt
- Gr56Ih7ROR/ANDULYpJfx+C7UZXQ+rriYBHeMK6aGE/PQiEjhrzqYxQDdsbnN8VGA+Ks
- SmvngsN+fgieWpBbs+MYtfZ1pDLIj0b1Y9SpFjcTWaVPJfC/LjGo5Q8qPb8GMfXaM/qL
- MBjgM+YiotqBRhQbyrTbtVFUUM0g7Wc/tCU2Mz4SSqFrj580xur5E8BaiqPrf2OnDS2n
- 6MuQ==
-X-Gm-Message-State: AOJu0Yw+w1LbqAXa05/Vf2jQpfiw91cJqBA8Tau4GCmg7/6V76n++BDO
- ESjvkkbu9LBfofpDmQOyxGhbW1PuaAxsm4p+ukksBgAHLhkQJgOaM4wLTU5OVLGYwa4qfeNKQcw
- s
-X-Gm-Gg: ASbGncskbXlfLB6Py/q7445aY+sb8GFDthBHVn5N4yNhtDq8RqaQpU45v9hxNQv/aGl
- 7hUc5Tmj6YKyGFlupGsWoqHleeRvXockizgEr8Dc+UO9J9XhuhnBytSd3LCdOXiqN6E+3Xb0m65
- C7ixlWwcFiQ1JlecHxiVpBqYxJUSE6jlss3a0CL9R2rA9P0ZQYDyzJLvvPTjvt5wiQAA97oMXgV
- 5MZBFGj3YKSTSkZ6N5VuI4z41BcTzgcnXc70pGWlsNzaH1y+graD2dPOGHOg6EPe0pPLScqsXN0
- +Wfhk696hxEtdzKmPw==
-X-Google-Smtp-Source: AGHT+IGaJTz5+ULkmK5KBTQ/VO5vW7uvluAMf5MsFCcDJ1GU1ZPaufmKs+17iEUeZVk9a3S8SYwceA==
-X-Received: by 2002:a17:903:944:b0:215:6e01:ad19 with SMTP id
- d9443c01a7336-219e6ebc9f5mr980389605ad.29.1736236900498; 
- Tue, 07 Jan 2025 00:01:40 -0800 (PST)
+ bh=2hXNhITSRxm0szT46Zs5pcTERA4MwJjF3kXEJOZEuyw=;
+ b=B/FjRisDzBJfH/Do9A75H71XgdQ9xxEIVN42WKopp5A4Adp2aLG2CY6vZyyV9QxcxW
+ B/sT1aXZbk6sIXeqZ/9LyP+7aUcEvJ85rBl4aD+4hEO0w/Vo55qskKVzutEGY6a0sWE0
+ neUzAbXE1lOMQKD6VzMted7QhG0ibNfIU8hRuSWLXN9McbCCL3K2wMxa8gtLRkBz4Mm2
+ QOf8zQJEQn31i8D1MyXq+iwdwm0Y1G3G9Sj1BnMFmkp4ncfQ/tQGMNfNhgX92xOq7DZk
+ HUzUKDUmu8EYXoNoQWDJmqCW7VpcLGXv1h3mayVi/oK1+vH4cKl68pUqDg6D8xGSV8a+
+ m+yw==
+X-Gm-Message-State: AOJu0Yz5OtK6lWlmMbjzNxVAAhVN1kCwUOtM14nQkhGVn9ocj+u1KRG8
+ VaOz65Cah0f+nSTYY6k4Rckj2cFksV+27YwhUBzm+B7m+dKsVGwwBNBxeZaZe0/GNCZO7b+dSys
+ R
+X-Gm-Gg: ASbGncsLOiGOatchySs4BhvBM1/2yrYcUHxmoVj9oanDZXh542BceaAUf2HcVeI9GLA
+ GASkO7DeEpt54+tG+wNnc+wQHJIUKBnNIo86jL82XGkcaH5Z+YiEgg1ABlcVo9xX8FHCgvZUDJh
+ FQdjzyOpUMZBWnWzh3x+fq8Ab9DzymOOEJ4uO5ByPJe2ERqrtVxyvtkwzkdMGe1hHwrvS6Mj060
+ S7IwF2hJOkoZCfpjZr3PuYCQBPZBbG9pMcEHxV4GHzbEJXHLrEMWI2dTp/uzhji4Rx0kEieMzsH
+ wuLIxK8371dVn+iOgQ==
+X-Google-Smtp-Source: AGHT+IFnY5xBMPI4NT+gqEqHJV2PkPwJD8XtM470BfFT7KBpmrTIiN4A3pOW941IJfHaIWq1ZyxLwQ==
+X-Received: by 2002:a17:903:2345:b0:215:9a73:6c45 with SMTP id
+ d9443c01a7336-219e6e9dee3mr920455165ad.22.1736236901556; 
+ Tue, 07 Jan 2025 00:01:41 -0800 (PST)
 Received: from stoup.. (76-14-228-138.or.wavecable.com. [76.14.228.138])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-219dc96eb12sm306765995ad.87.2025.01.07.00.01.39
+ d9443c01a7336-219dc96eb12sm306765995ad.87.2025.01.07.00.01.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Jan 2025 00:01:40 -0800 (PST)
+ Tue, 07 Jan 2025 00:01:41 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	pierrick.bouvier@linaro.org
-Subject: [PATCH v2 25/81] tcg: Validate op supported in opcode_args_ct
-Date: Tue,  7 Jan 2025 00:00:16 -0800
-Message-ID: <20250107080112.1175095-26-richard.henderson@linaro.org>
+Subject: [PATCH v2 26/81] tcg: Add TCG_OPF_NOT_PRESENT to opcodes without
+ inputs or outputs
+Date: Tue,  7 Jan 2025 00:00:17 -0800
+Message-ID: <20250107080112.1175095-27-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250107080112.1175095-1-richard.henderson@linaro.org>
 References: <20250107080112.1175095-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,29 +99,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We should have checked that the op is supported before
-emitting it.  The backend cannot be expected to have a
-constraint set for unsupported ops.
+The br, mb, goto_tb and exit_tb opcodes do not have
+register operands, only constants, flags, or labels.
+Remove the special case in opcode_args_ct by including
+TCG_OPF_NOT_PRESENT in the flags for these opcodes.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/tcg.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/tcg/tcg-opc.h | 8 ++++----
+ tcg/tcg.c             | 3 ---
+ 2 files changed, 4 insertions(+), 7 deletions(-)
 
+diff --git a/include/tcg/tcg-opc.h b/include/tcg/tcg-opc.h
+index 14aff6e7f9..724e7a9de8 100644
+--- a/include/tcg/tcg-opc.h
++++ b/include/tcg/tcg-opc.h
+@@ -33,7 +33,7 @@ DEF(set_label, 0, 0, 1, TCG_OPF_BB_END | TCG_OPF_NOT_PRESENT)
+ /* variable number of parameters */
+ DEF(call, 0, 0, 3, TCG_OPF_CALL_CLOBBER | TCG_OPF_NOT_PRESENT)
+ 
+-DEF(br, 0, 0, 1, TCG_OPF_BB_END)
++DEF(br, 0, 0, 1, TCG_OPF_BB_END | TCG_OPF_NOT_PRESENT)
+ 
+ #define IMPL(X) (__builtin_constant_p(X) && (X) <= 0 ? TCG_OPF_NOT_PRESENT : 0)
+ #if TCG_TARGET_REG_BITS == 32
+@@ -42,7 +42,7 @@ DEF(br, 0, 0, 1, TCG_OPF_BB_END)
+ # define IMPL64  TCG_OPF_64BIT
+ #endif
+ 
+-DEF(mb, 0, 0, 1, 0)
++DEF(mb, 0, 0, 1, TCG_OPF_NOT_PRESENT)
+ 
+ DEF(mov_i32, 1, 1, 0, TCG_OPF_NOT_PRESENT)
+ DEF(setcond_i32, 1, 2, 1, 0)
+@@ -193,8 +193,8 @@ DEF(mulsh_i64, 1, 2, 0, IMPL64 | IMPL(TCG_TARGET_HAS_mulsh_i64))
+ /* There are tcg_ctx->insn_start_words here, not just one. */
+ DEF(insn_start, 0, 0, DATA64_ARGS, TCG_OPF_NOT_PRESENT)
+ 
+-DEF(exit_tb, 0, 0, 1, TCG_OPF_BB_EXIT | TCG_OPF_BB_END)
+-DEF(goto_tb, 0, 0, 1, TCG_OPF_BB_EXIT | TCG_OPF_BB_END)
++DEF(exit_tb, 0, 0, 1, TCG_OPF_BB_EXIT | TCG_OPF_BB_END | TCG_OPF_NOT_PRESENT)
++DEF(goto_tb, 0, 0, 1, TCG_OPF_BB_EXIT | TCG_OPF_BB_END | TCG_OPF_NOT_PRESENT)
+ DEF(goto_ptr, 0, 1, 0, TCG_OPF_BB_EXIT | TCG_OPF_BB_END)
+ 
+ DEF(plugin_cb, 0, 0, 1, TCG_OPF_NOT_PRESENT)
 diff --git a/tcg/tcg.c b/tcg/tcg.c
-index f72a8e5a47..80744b86bb 100644
+index 80744b86bb..cf6d881945 100644
 --- a/tcg/tcg.c
 +++ b/tcg/tcg.c
-@@ -3367,6 +3367,10 @@ static const TCGArgConstraint *opcode_args_ct(const TCGOp *op)
-     const TCGOpDef *def = &tcg_op_defs[op->opc];
-     TCGConstraintSetIndex con_set;
+@@ -3371,9 +3371,6 @@ static const TCGArgConstraint *opcode_args_ct(const TCGOp *op)
+     assert(tcg_op_supported(op->opc, TCGOP_TYPE(op), TCGOP_FLAGS(op)));
+ #endif
  
-+#ifdef CONFIG_DEBUG_TCG
-+    assert(tcg_op_supported(op->opc, TCGOP_TYPE(op), TCGOP_FLAGS(op)));
-+#endif
-+
-     if (def->nb_iargs + def->nb_oargs == 0) {
-         return NULL;
+-    if (def->nb_iargs + def->nb_oargs == 0) {
+-        return NULL;
+-    }
+     if (def->flags & TCG_OPF_NOT_PRESENT) {
+         return empty_cts;
      }
 -- 
 2.43.0
