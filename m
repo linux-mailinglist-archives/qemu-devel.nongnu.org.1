@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75612A03955
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 09:08:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A79A0397E
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 09:13:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tV4bg-00058F-Lx; Tue, 07 Jan 2025 03:06:32 -0500
+	id 1tV4bX-00046i-OF; Tue, 07 Jan 2025 03:06:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tV4aj-0000kv-MM
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 03:05:36 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1tV4al-0000rR-DD
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 03:05:37 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tV4ab-0003c0-Cr
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 03:05:33 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-21631789fcdso162843435ad.1
- for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 00:05:24 -0800 (PST)
+ id 1tV4ac-0003c5-66
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 03:05:35 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-2164b662090so194920505ad.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 00:05:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1736237124; x=1736841924; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=w6aOh1Z1nmOJUKiYfQL4t8LhyVkzhmmYsSMjX54U464=;
- b=q0g1ZIeFcAOy0CqR8ga1pd8HNXWNUho7AAwzVCZHFXbH33j86/PbFgaJgDTBhak2oS
- wxzr4k1zPDdXV4UEHvVa9obtOE940r98dsBT9LUI4X6Th3FlvX62dNjh8Z5VPz+hHEc4
- objSaFNh0ckyrdZPC+Sqvg9XCxGpb3xJcXolli8xANorKufaGMhv8siJt7T+WPsXvwff
- qOpnLDSNHRET1EV0yMM0UudhfMq+Ta2nj5GvAmO0P6zYhEeU+Z+0BZQ/sVajRZgA3tBi
- +y3rTpWsV/fUZ3d8xI08leWpqebJKrkEXV0Cgbgdt+VIVUuYQ/uLVPCzUsw5lb36zUhV
- 7L4w==
+ bh=RJA4ke5IKXvzmrgDCk+/I87rcp4R9Hb1bj5ELArWRvs=;
+ b=sTEk/O7mfTZUpee9dgbhzKUcw7XKQEIemKcFZ//cvsoy5gISNSFYcQ7Sc/cDSs3V1Z
+ oHeSeTk0WXfYa5MBYcZ6ZrfX+1wvBcMTfbxqgjNF/DQ0cs2l2hyJiw/3udQMfo67xBhN
+ pR16KhNRJqyOjTYwbySw5ZjxMhKhSKELW74bvbHuHu5FKJrW5Vj/IvFU0O1fm8Hhxiao
+ Mn6kzVwiWScrVi5JkXYYJ6IRGhHcPhvPruD9z02IErK05jxl4wLdD/WQk92b6GLABPC7
+ FiVUHcWoK/CeHkKQii8lPqAILLoWOfY6iqliFxbpscYD6tWHL7V/VA0LFQpekEmtHmmx
+ +1ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736237124; x=1736841924;
+ d=1e100.net; s=20230601; t=1736237125; x=1736841925;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=w6aOh1Z1nmOJUKiYfQL4t8LhyVkzhmmYsSMjX54U464=;
- b=iBfImcCK9JQSPsK6gzYTyMjx79p4r7FUYpaLhz4tgLmtokYwmMpsKlmUxMpsYSlUZ7
- +EqF5ILyyCyr4yaAdh6oNqvYFUhwAXvUbeTwW0j/xqXFtzCBC/LWLbGcclXTo1X5WSxg
- Yfh+iNuoLiXFD23KKqnGEVlDC3hcrz9LnuITrA3AbSgDr5UoGz2EriPrWFJ7ESnjwNJz
- JyR2zXooUFQBjzvqUJ/bGTETU23RykJPjvnTJVFjRZk5siqMsen4ssZwrKmaTxg47fdv
- 85Af9MKnhVcL1lbi7pk2J7LUoHHLE6BowOQBqK+dn7o5L+/4WeYIMMCxZTTmIkxI8R21
- 7AUA==
-X-Gm-Message-State: AOJu0YznmhFNpI+5b7Lmj8Re4wXHu/p7MbvpwRpA7qrH7O9gP2n5KeSP
- rEr6X3g8aSKeBc1JoovPxWg18OlEE3lcPAfZgBmPUdNYvfrHOhfXGBUALle9/celWRIFM2boCyq
- 2
-X-Gm-Gg: ASbGnctuFELFXXe2ByZet/RnUFSWRQg1b9pdsE6JQSRXwZvjdvXUKRs8Tk4hiMKiZ5L
- 8TmWMNisLTo4qXY6N48tDO1EsEd5tWusoxbjm0vtlY9bpeipkukMWY5qeTO2IRKUs30gPAhZnKS
- 8DhPVuFt4WNyIxkT4Qe874QC5imtpSnHrc2+OXhUo12ObGLlATgWsm3QJhaQqnqF0zzYTToAHam
- WDczCIx641zIGW9UM0alVuEvBlalkmsMlHK9Vj42MvNdpyOxPxNt1kaDdKIgWM0JJRY6szTXahk
- 453SnIf3nVKHFOaUwA==
-X-Google-Smtp-Source: AGHT+IEbp7AvikveavJNosNfjXpxrfmGr8OBFBzmGSW9cjzW0djC9RYOAHiGCIvsCEAKVuDg94NM4A==
-X-Received: by 2002:aa7:8205:0:b0:72a:78a3:7f57 with SMTP id
- d2e1a72fcca58-72d103c9c66mr2584300b3a.9.1736237123721; 
- Tue, 07 Jan 2025 00:05:23 -0800 (PST)
+ bh=RJA4ke5IKXvzmrgDCk+/I87rcp4R9Hb1bj5ELArWRvs=;
+ b=JhFbx9rbfXp+nBfrRgqiOpuNTHdRHjKFhTOLPYRo6uI8ocs9ylHzMbpkGgosaevrI4
+ dQ0gwSSrMJcPfBNR4cDuzkRdXXUf7T3hdXPa3d+MMxb/QmWjK19+MN26ToelLQEKTqMB
+ P2gj/63nH97ULmWv9bBeT9vb8n1bThphxFSyN47CfM32XkUqgEdj6Ka4LOrsv3f1bNPc
+ tWqbgcjEO3BkH5dAQehxW9S214zPtmFs3FqnK9fuiqUOB3+vYvuCJCDkGe5W3GhwyvSL
+ yuhisimQlwisShJQTfWWl13giXFXg9XUiauj1jw5DfL5zCWmVXtlUkaPWFHKg8k2/c+d
+ 1M5g==
+X-Gm-Message-State: AOJu0YwIx9smL6kIiQM+r6YSjKZmA0DMKi3tjemwJcAwoqBm67o8yogy
+ jQDn86/ZW+ckjAGbMRi9om3aL5GMHGn190XLDoL4xSPQkmk+/yrh0mZQiXynYFla5A6WnjKQbfu
+ 0
+X-Gm-Gg: ASbGncsfJQaR7MzHpdxCUOHKGj+PXKFUjp5Gjkr36qvFe0Q+JeABMlSfIgN4LDUq4uk
+ k7BxcvUaVkCQLWAYuARHlZcihMnRPzKAgJFdXxDiiS+Fr6OUdTqYuGI90/L57kYoJKCNV3OqgYm
+ y/jtODaagJ/8WG52aMWlSsEde4F8MbbFJVVhhb7TiQb/1ybTzcY5gN4GdOQ2eNVD0aAnmfp8HwI
+ PqIsVBTq65gU8bpDoay3Ft2KvaYR+SJ3dTrw+t5W3Ed+NQSnajUsqkZkRM3TKzHoP9VyU54rx5P
+ HYcAILaJol/7WHVwDQ==
+X-Google-Smtp-Source: AGHT+IEs+hbPa/3p+M2Zz4QGsL/Lg0qKojTLoCx/1JGx1jHZ/nLM/3cuu7XULt/U9fzB8wHEzDOV0g==
+X-Received: by 2002:a05:6a00:21c2:b0:725:e4b9:a600 with SMTP id
+ d2e1a72fcca58-72abdeaae11mr88798128b3a.16.1736237124605; 
+ Tue, 07 Jan 2025 00:05:24 -0800 (PST)
 Received: from stoup.. (76-14-228-138.or.wavecable.com. [76.14.228.138])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72aad84eb5dsm32577852b3a.86.2025.01.07.00.05.22
+ d2e1a72fcca58-72aad84eb5dsm32577852b3a.86.2025.01.07.00.05.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Jan 2025 00:05:23 -0800 (PST)
+ Tue, 07 Jan 2025 00:05:24 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	pierrick.bouvier@linaro.org
-Subject: [PATCH v2 65/81] tcg: Convert xor to TCGOutOpBinary
-Date: Tue,  7 Jan 2025 00:00:56 -0800
-Message-ID: <20250107080112.1175095-66-richard.henderson@linaro.org>
+Subject: [PATCH v2 66/81] tcg: Merge INDEX_op_xor_{i32,i64}
+Date: Tue,  7 Jan 2025 00:00:57 -0800
+Message-ID: <20250107080112.1175095-67-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250107080112.1175095-1-richard.henderson@linaro.org>
 References: <20250107080112.1175095-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,592 +100,272 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/tcg.c                        |  4 +++
- tcg/aarch64/tcg-target.c.inc     | 31 +++++++++++---------
- tcg/arm/tcg-target.c.inc         | 25 +++++++++++-----
- tcg/i386/tcg-target.c.inc        | 27 ++++++++++++-----
- tcg/loongarch64/tcg-target.c.inc | 29 +++++++++++-------
- tcg/mips/tcg-target.c.inc        | 28 +++++++++++-------
- tcg/ppc/tcg-target.c.inc         | 30 +++++++++++--------
- tcg/riscv/tcg-target.c.inc       | 29 +++++++++++-------
- tcg/s390x/tcg-target.c.inc       | 50 ++++++++++++++++----------------
- tcg/sparc64/tcg-target.c.inc     | 23 +++++++++++----
- tcg/tci/tcg-target.c.inc         | 14 +++++++--
- 11 files changed, 186 insertions(+), 104 deletions(-)
+ include/tcg/tcg-opc.h    |  3 +--
+ target/sh4/translate.c   |  6 +++---
+ tcg/optimize.c           | 18 ++++++++----------
+ tcg/tcg-op.c             |  4 ++--
+ tcg/tcg.c                |  9 +++------
+ tcg/tci.c                |  5 ++---
+ tcg/tci/tcg-target.c.inc |  2 +-
+ 7 files changed, 20 insertions(+), 27 deletions(-)
 
+diff --git a/include/tcg/tcg-opc.h b/include/tcg/tcg-opc.h
+index bd9fa7a35e..4db374e03a 100644
+--- a/include/tcg/tcg-opc.h
++++ b/include/tcg/tcg-opc.h
+@@ -44,6 +44,7 @@ DEF(and, 1, 2, 0, TCG_OPF_INT)
+ DEF(andc, 1, 2, 0, TCG_OPF_INT)
+ DEF(or, 1, 2, 0, TCG_OPF_INT)
+ DEF(orc, 1, 2, 0, TCG_OPF_INT)
++DEF(xor, 1, 2, 0, TCG_OPF_INT)
+ 
+ DEF(setcond_i32, 1, 2, 1, 0)
+ DEF(negsetcond_i32, 1, 2, 1, 0)
+@@ -66,7 +67,6 @@ DEF(rem_i32, 1, 2, 0, 0)
+ DEF(remu_i32, 1, 2, 0, 0)
+ DEF(div2_i32, 2, 3, 0, 0)
+ DEF(divu2_i32, 2, 3, 0, 0)
+-DEF(xor_i32, 1, 2, 0, 0)
+ /* shifts/rotates */
+ DEF(shl_i32, 1, 2, 0, 0)
+ DEF(shr_i32, 1, 2, 0, 0)
+@@ -124,7 +124,6 @@ DEF(rem_i64, 1, 2, 0, 0)
+ DEF(remu_i64, 1, 2, 0, 0)
+ DEF(div2_i64, 2, 3, 0, 0)
+ DEF(divu2_i64, 2, 3, 0, 0)
+-DEF(xor_i64, 1, 2, 0, 0)
+ /* shifts/rotates */
+ DEF(shl_i64, 1, 2, 0, 0)
+ DEF(shr_i64, 1, 2, 0, 0)
+diff --git a/target/sh4/translate.c b/target/sh4/translate.c
+index 17e09f3d2a..5cb9ba9434 100644
+--- a/target/sh4/translate.c
++++ b/target/sh4/translate.c
+@@ -1946,7 +1946,7 @@ static void decode_gusa(DisasContext *ctx, CPUSH4State *env)
+         op_opc = INDEX_op_and;
+         goto do_reg_op;
+     case 0x200a: /* xor Rm,Rn */
+-        op_opc = INDEX_op_xor_i32;
++        op_opc = INDEX_op_xor;
+         goto do_reg_op;
+     case 0x200b: /* or Rm,Rn */
+         op_opc = INDEX_op_or;
+@@ -1976,7 +1976,7 @@ static void decode_gusa(DisasContext *ctx, CPUSH4State *env)
+             goto fail;
+         }
+         op_dst = B11_8;
+-        op_opc = INDEX_op_xor_i32;
++        op_opc = INDEX_op_xor;
+         op_arg = tcg_constant_i32(-1);
+         break;
+ 
+@@ -2133,7 +2133,7 @@ static void decode_gusa(DisasContext *ctx, CPUSH4State *env)
+         }
+         break;
+ 
+-    case INDEX_op_xor_i32:
++    case INDEX_op_xor:
+         if (op_dst != st_src) {
+             goto fail;
+         }
+diff --git a/tcg/optimize.c b/tcg/optimize.c
+index 39b72e8738..583c4363da 100644
+--- a/tcg/optimize.c
++++ b/tcg/optimize.c
+@@ -429,7 +429,8 @@ static uint64_t do_constant_folding_2(TCGOpcode op, uint64_t x, uint64_t y)
+     case INDEX_op_or_vec:
+         return x | y;
+ 
+-    CASE_OP_32_64_VEC(xor):
++    case INDEX_op_xor:
++    case INDEX_op_xor_vec:
+         return x ^ y;
+ 
+     case INDEX_op_shl_i32:
+@@ -2274,7 +2275,7 @@ static int fold_setcond_zmask(OptContext *ctx, TCGOp *op, bool neg)
+             break;
+         }
+         if (convert) {
+-            TCGOpcode xor_opc, neg_opc;
++            TCGOpcode neg_opc;
+ 
+             if (!inv && !neg) {
+                 return tcg_opt_gen_mov(ctx, op, op->args[0], op->args[1]);
+@@ -2283,11 +2284,9 @@ static int fold_setcond_zmask(OptContext *ctx, TCGOp *op, bool neg)
+             switch (ctx->type) {
+             case TCG_TYPE_I32:
+                 neg_opc = INDEX_op_neg_i32;
+-                xor_opc = INDEX_op_xor_i32;
+                 break;
+             case TCG_TYPE_I64:
+                 neg_opc = INDEX_op_neg_i64;
+-                xor_opc = INDEX_op_xor_i64;
+                 break;
+             default:
+                 g_assert_not_reached();
+@@ -2299,7 +2298,7 @@ static int fold_setcond_zmask(OptContext *ctx, TCGOp *op, bool neg)
+                 op->opc = INDEX_op_add;
+                 op->args[2] = arg_new_constant(ctx, -1);
+             } else {
+-                op->opc = xor_opc;
++                op->opc = INDEX_op_xor;
+                 op->args[2] = arg_new_constant(ctx, 1);
+             }
+             return -1;
+@@ -2310,7 +2309,7 @@ static int fold_setcond_zmask(OptContext *ctx, TCGOp *op, bool neg)
+ 
+ static void fold_setcond_tst_pow2(OptContext *ctx, TCGOp *op, bool neg)
+ {
+-    TCGOpcode xor_opc, neg_opc, shr_opc;
++    TCGOpcode neg_opc, shr_opc;
+     TCGOpcode uext_opc = 0, sext_opc = 0;
+     TCGCond cond = op->args[3];
+     TCGArg ret, src1, src2;
+@@ -2332,7 +2331,6 @@ static void fold_setcond_tst_pow2(OptContext *ctx, TCGOp *op, bool neg)
+ 
+     switch (ctx->type) {
+     case TCG_TYPE_I32:
+-        xor_opc = INDEX_op_xor_i32;
+         shr_opc = INDEX_op_shr_i32;
+         neg_opc = INDEX_op_neg_i32;
+         if (TCG_TARGET_extract_valid(TCG_TYPE_I32, sh, 1)) {
+@@ -2343,7 +2341,6 @@ static void fold_setcond_tst_pow2(OptContext *ctx, TCGOp *op, bool neg)
+         }
+         break;
+     case TCG_TYPE_I64:
+-        xor_opc = INDEX_op_xor_i64;
+         shr_opc = INDEX_op_shr_i64;
+         neg_opc = INDEX_op_neg_i64;
+         if (TCG_TARGET_extract_valid(TCG_TYPE_I64, sh, 1)) {
+@@ -2391,7 +2388,7 @@ static void fold_setcond_tst_pow2(OptContext *ctx, TCGOp *op, bool neg)
+         op2->args[1] = ret;
+         op2->args[2] = arg_new_constant(ctx, -1);
+     } else if (inv) {
+-        op2 = tcg_op_insert_after(ctx->tcg, op, xor_opc, 3);
++        op2 = tcg_op_insert_after(ctx->tcg, op, INDEX_op_xor, 3);
+         op2->args[0] = ret;
+         op2->args[1] = ret;
+         op2->args[2] = arg_new_constant(ctx, 1);
+@@ -3043,7 +3040,8 @@ void tcg_optimize(TCGContext *s)
+         CASE_OP_32_64(sub2):
+             done = fold_sub2(&ctx, op);
+             break;
+-        CASE_OP_32_64_VEC(xor):
++        case INDEX_op_xor:
++        case INDEX_op_xor_vec:
+             done = fold_xor(&ctx, op);
+             break;
+         case INDEX_op_set_label:
+diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
+index bf481060fa..b10f61435c 100644
+--- a/tcg/tcg-op.c
++++ b/tcg/tcg-op.c
+@@ -453,7 +453,7 @@ void tcg_gen_ori_i32(TCGv_i32 ret, TCGv_i32 arg1, int32_t arg2)
+ 
+ void tcg_gen_xor_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2)
+ {
+-    tcg_gen_op3_i32(INDEX_op_xor_i32, ret, arg1, arg2);
++    tcg_gen_op3_i32(INDEX_op_xor, ret, arg1, arg2);
+ }
+ 
+ void tcg_gen_xori_i32(TCGv_i32 ret, TCGv_i32 arg1, int32_t arg2)
+@@ -1595,7 +1595,7 @@ void tcg_gen_or_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2)
+ void tcg_gen_xor_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2)
+ {
+     if (TCG_TARGET_REG_BITS == 64) {
+-        tcg_gen_op3_i64(INDEX_op_xor_i64, ret, arg1, arg2);
++        tcg_gen_op3_i64(INDEX_op_xor, ret, arg1, arg2);
+     } else {
+         tcg_gen_xor_i32(TCGV_LOW(ret), TCGV_LOW(arg1), TCGV_LOW(arg2));
+         tcg_gen_xor_i32(TCGV_HIGH(ret), TCGV_HIGH(arg1), TCGV_HIGH(arg2));
 diff --git a/tcg/tcg.c b/tcg/tcg.c
-index 1d043254dd..2e068299ff 100644
+index 2e068299ff..b93e68fb12 100644
 --- a/tcg/tcg.c
 +++ b/tcg/tcg.c
-@@ -996,6 +996,8 @@ static const TCGOutOp * const all_outop[NB_OPS] = {
+@@ -996,8 +996,7 @@ static const TCGOutOp * const all_outop[NB_OPS] = {
      OUTOP(INDEX_op_andc, TCGOutOpBinary, outop_andc),
      OUTOP(INDEX_op_or, TCGOutOpBinary, outop_or),
      OUTOP(INDEX_op_orc, TCGOutOpBinary, outop_orc),
-+    OUTOP(INDEX_op_xor_i32, TCGOutOpBinary, outop_xor),
-+    OUTOP(INDEX_op_xor_i64, TCGOutOpBinary, outop_xor),
+-    OUTOP(INDEX_op_xor_i32, TCGOutOpBinary, outop_xor),
+-    OUTOP(INDEX_op_xor_i64, TCGOutOpBinary, outop_xor),
++    OUTOP(INDEX_op_xor, TCGOutOpBinary, outop_xor),
  };
  
  #undef OUTOP
-@@ -5425,6 +5427,8 @@ static void tcg_reg_alloc_op(TCGContext *s, const TCGOp *op)
-     case INDEX_op_andc:
+@@ -2215,6 +2214,7 @@ bool tcg_op_supported(TCGOpcode op, TCGType type, unsigned flags)
+     case INDEX_op_and:
+     case INDEX_op_mov:
      case INDEX_op_or:
-     case INDEX_op_orc:
-+    case INDEX_op_xor_i32:
-+    case INDEX_op_xor_i64:
-         {
-             const TCGOutOpBinary *out =
-                 container_of(all_outop[op->opc], TCGOutOpBinary, base);
-diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
-index e6960366bc..52aba83936 100644
---- a/tcg/aarch64/tcg-target.c.inc
-+++ b/tcg/aarch64/tcg-target.c.inc
-@@ -2186,6 +2186,24 @@ static const TCGOutOpBinary outop_orc = {
-     .out_rrr = tgen_orc,
- };
++    case INDEX_op_xor:
+         return has_type;
  
-+static void tgen_xor(TCGContext *s, TCGType type,
-+                     TCGReg a0, TCGReg a1, TCGReg a2)
-+{
-+    tcg_out_insn(s, 3510, EOR, type, a0, a1, a2);
-+}
-+
-+static void tgen_xori(TCGContext *s, TCGType type,
-+                      TCGReg a0, TCGReg a1, tcg_target_long a2)
-+{
-+    tcg_out_logicali(s, I3404_EORI, type, a0, a1, a2);
-+}
-+
-+static const TCGOutOpBinary outop_xor = {
-+    .base.static_constraint = C_O1_I2(r, r, rL),
-+    .out_rrr = tgen_xor,
-+    .out_rri = tgen_xori,
-+};
-+
- 
- static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType ext,
-                        const TCGArg args[TCG_MAX_OP_ARGS],
-@@ -2271,17 +2289,6 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType ext,
-         tcg_out_insn(s, 3502, SUB, ext, a0, TCG_REG_XZR, a1);
-         break;
- 
+     case INDEX_op_setcond_i32:
+@@ -2231,7 +2231,6 @@ bool tcg_op_supported(TCGOpcode op, TCGType type, unsigned flags)
+     case INDEX_op_sub_i32:
+     case INDEX_op_neg_i32:
+     case INDEX_op_mul_i32:
 -    case INDEX_op_xor_i32:
--        a2 = (int32_t)a2;
--        /* FALLTHRU */
--    case INDEX_op_xor_i64:
--        if (c2) {
--            tcg_out_logicali(s, I3404_EORI, ext, a0, a1, a2);
--        } else {
--            tcg_out_insn(s, 3510, EOR, ext, a0, a1, a2);
--        }
--        break;
--
-     case INDEX_op_eqv_i32:
-         a2 = (int32_t)a2;
-         /* FALLTHRU */
-@@ -3035,8 +3042,6 @@ tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
-     case INDEX_op_mulsh_i64:
-         return C_O1_I2(r, r, r);
- 
--    case INDEX_op_xor_i32:
--    case INDEX_op_xor_i64:
-     case INDEX_op_eqv_i32:
-     case INDEX_op_eqv_i64:
-         return C_O1_I2(r, r, rL);
-diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
-index 9e66a3be92..b7deca60f1 100644
---- a/tcg/arm/tcg-target.c.inc
-+++ b/tcg/arm/tcg-target.c.inc
-@@ -1929,6 +1929,24 @@ static const TCGOutOpBinary outop_orc = {
-     .base.static_constraint = C_NotImplemented,
- };
- 
-+static void tgen_xor(TCGContext *s, TCGType type,
-+                     TCGReg a0, TCGReg a1, TCGReg a2)
-+{
-+    tcg_out_dat_reg(s, COND_AL, ARITH_EOR, a0, a1, a2, SHIFT_IMM_LSL(0));
-+}
-+
-+static void tgen_xori(TCGContext *s, TCGType type,
-+                      TCGReg a0, TCGReg a1, tcg_target_long a2)
-+{
-+    tcg_out_dat_imm(s, COND_AL, ARITH_EOR, a0, a1, encode_imm_nofail(a2));
-+}
-+
-+static const TCGOutOpBinary outop_xor = {
-+    .base.static_constraint = C_O1_I2(r, r, rI),
-+    .out_rrr = tgen_xor,
-+    .out_rri = tgen_xori,
-+};
-+
- 
- static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
-                        const TCGArg args[TCG_MAX_OP_ARGS],
-@@ -1991,10 +2009,6 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
-                             args[0], args[1], args[2], const_args[2]);
-         }
-         break;
--    case INDEX_op_xor_i32:
--        c = ARITH_EOR;
--        tcg_out_dat_rI(s, COND_AL, c, args[0], args[1], args[2], const_args[2]);
--        break;
-     case INDEX_op_add2_i32:
-         a0 = args[0], a1 = args[1], a2 = args[2];
-         a3 = args[3], a4 = args[4], a5 = args[5];
-@@ -2270,9 +2284,6 @@ tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
-     case INDEX_op_muls2_i32:
-         return C_O2_I2(r, r, r, r);
- 
--    case INDEX_op_xor_i32:
--        return C_O1_I2(r, r, rI);
--
      case INDEX_op_shl_i32:
      case INDEX_op_shr_i32:
      case INDEX_op_sar_i32:
-diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-index c312950477..20bf02fb3c 100644
---- a/tcg/i386/tcg-target.c.inc
-+++ b/tcg/i386/tcg-target.c.inc
-@@ -2722,6 +2722,26 @@ static const TCGOutOpBinary outop_orc = {
-     .base.static_constraint = C_NotImplemented,
- };
- 
-+static void tgen_xor(TCGContext *s, TCGType type,
-+                     TCGReg a0, TCGReg a1, TCGReg a2)
-+{
-+    int rexw = type == TCG_TYPE_I32 ? 0 : P_REXW;
-+    tgen_arithr(s, ARITH_XOR + rexw, a0, a2);
-+}
-+
-+static void tgen_xori(TCGContext *s, TCGType type,
-+                      TCGReg a0, TCGReg a1, tcg_target_long a2)
-+{
-+    int rexw = type == TCG_TYPE_I32 ? 0 : P_REXW;
-+    tgen_arithi(s, ARITH_XOR + rexw, a0, a2, 0);
-+}
-+
-+static const TCGOutOpBinary outop_xor = {
-+    .base.static_constraint = C_O1_I2(r, 0, re),
-+    .out_rrr = tgen_xor,
-+    .out_rri = tgen_xori,
-+};
-+
- 
- static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
-                        const TCGArg args[TCG_MAX_OP_ARGS],
-@@ -2806,11 +2826,6 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
- 
-     OP_32_64(sub):
-         c = ARITH_SUB;
--        goto gen_arith;
--    OP_32_64(xor):
--        c = ARITH_XOR;
--        goto gen_arith;
--    gen_arith:
-         if (const_a2) {
-             tgen_arithi(s, c + rexw, a0, a2, 0);
-         } else {
-@@ -3761,8 +3776,6 @@ tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
+@@ -2308,7 +2307,6 @@ bool tcg_op_supported(TCGOpcode op, TCGType type, unsigned flags)
+     case INDEX_op_sub_i64:
+     case INDEX_op_neg_i64:
+     case INDEX_op_mul_i64:
+-    case INDEX_op_xor_i64:
+     case INDEX_op_shl_i64:
+     case INDEX_op_shr_i64:
+     case INDEX_op_sar_i64:
+@@ -5427,8 +5425,7 @@ static void tcg_reg_alloc_op(TCGContext *s, const TCGOp *op)
+     case INDEX_op_andc:
+     case INDEX_op_or:
+     case INDEX_op_orc:
+-    case INDEX_op_xor_i32:
+-    case INDEX_op_xor_i64:
++    case INDEX_op_xor:
+         {
+             const TCGOutOpBinary *out =
+                 container_of(all_outop[op->opc], TCGOutOpBinary, base);
+diff --git a/tcg/tci.c b/tcg/tci.c
+index 97d86c8348..2a1ae3ec42 100644
+--- a/tcg/tci.c
++++ b/tcg/tci.c
+@@ -553,7 +553,7 @@ uintptr_t QEMU_DISABLE_CFI tcg_qemu_tb_exec(CPUArchState *env,
+             tci_args_rrr(insn, &r0, &r1, &r2);
+             regs[r0] = regs[r1] | regs[r2];
+             break;
+-        CASE_32_64(xor)
++        case INDEX_op_xor:
+             tci_args_rrr(insn, &r0, &r1, &r2);
+             regs[r0] = regs[r1] ^ regs[r2];
+             break;
+@@ -1139,12 +1139,11 @@ int print_insn_tci(bfd_vma addr, disassemble_info *info)
+     case INDEX_op_andc:
+     case INDEX_op_or:
+     case INDEX_op_orc:
++    case INDEX_op_xor:
+     case INDEX_op_sub_i32:
      case INDEX_op_sub_i64:
      case INDEX_op_mul_i32:
      case INDEX_op_mul_i64:
 -    case INDEX_op_xor_i32:
 -    case INDEX_op_xor_i64:
-         return C_O1_I2(r, 0, re);
- 
-     case INDEX_op_shl_i32:
-diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index 0b91380e52..5afc825396 100644
---- a/tcg/loongarch64/tcg-target.c.inc
-+++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -1352,6 +1352,24 @@ static const TCGOutOpBinary outop_orc = {
-     .out_rrr = tgen_orc,
- };
- 
-+static void tgen_xor(TCGContext *s, TCGType type,
-+                     TCGReg a0, TCGReg a1, TCGReg a2)
-+{
-+    tcg_out_opc_xor(s, a0, a1, a2);
-+}
-+
-+static void tgen_xori(TCGContext *s, TCGType type,
-+                      TCGReg rd, TCGReg rs, tcg_target_long imm)
-+{
-+    tcg_out_opc_xori(s, a0, a1, a2);
-+}
-+
-+static const TCGOutOpBinary outop_xor = {
-+    .base.static_constraint = C_O1_I2(r, r, rU),
-+    .out_rrr = tgen_xor,
-+    .out_rri = tgen_xori,
-+};
-+
- 
- static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
-                        const TCGArg args[TCG_MAX_OP_ARGS],
-@@ -1402,15 +1420,6 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
-         }
-         break;
- 
--    case INDEX_op_xor_i32:
--    case INDEX_op_xor_i64:
--        if (c2) {
--            tcg_out_opc_xori(s, a0, a1, a2);
--        } else {
--            tcg_out_opc_xor(s, a0, a1, a2);
--        }
--        break;
--
-     case INDEX_op_extract_i32:
-         if (a2 == 0 && args[3] <= 12) {
-             tcg_out_opc_andi(s, a0, a1, (1 << args[3]) - 1);
-@@ -2310,8 +2319,6 @@ tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
- 
-     case INDEX_op_nor_i32:
-     case INDEX_op_nor_i64:
--    case INDEX_op_xor_i32:
--    case INDEX_op_xor_i64:
-         /* LoongArch reg-imm bitops have their imms ZERO-extended */
-         return C_O1_I2(r, r, rU);
- 
-diff --git a/tcg/mips/tcg-target.c.inc b/tcg/mips/tcg-target.c.inc
-index 6ace0c501d..2a5546d710 100644
---- a/tcg/mips/tcg-target.c.inc
-+++ b/tcg/mips/tcg-target.c.inc
-@@ -1757,6 +1757,24 @@ static const TCGOutOpBinary outop_orc = {
-     .base.static_constraint = C_NotImplemented,
- };
- 
-+static void tgen_xor(TCGContext *s, TCGType type,
-+                     TCGReg a0, TCGReg a1, TCGReg a2)
-+{
-+    tcg_out_opc_reg(s, OPC_XOR, a0, a1, a2);
-+}
-+
-+static void tgen_xori(TCGContext *s, TCGType type,
-+                      TCGReg a0, TCGReg a1, tcg_target_long a2)
-+{
-+    tcg_out_opc_imm(s, OPC_XORI, a0, a1, a2);
-+}
-+
-+static const TCGOutOpBinary outop_xor = {
-+    .base.static_constraint = C_O1_I2(r, r, rI),
-+    .out_rrr = tgen_xor,
-+    .out_rri = tgen_xori,
-+};
-+
- 
- static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
-                        const TCGArg args[TCG_MAX_OP_ARGS],
-@@ -1835,13 +1853,6 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
-         tcg_out_ldst(s, i1, a0, a1, a2);
-         break;
- 
--    case INDEX_op_xor_i32:
--    case INDEX_op_xor_i64:
--        i1 = OPC_XOR, i2 = OPC_XORI;
--        if (c2) {
--            tcg_out_opc_imm(s, i2, a0, a1, a2);
--            break;
--        }
-     do_binaryv:
-         tcg_out_opc_reg(s, i1, a0, a1, a2);
-         break;
-@@ -2289,9 +2300,6 @@ tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
-     case INDEX_op_muls2_i64:
-     case INDEX_op_mulu2_i64:
-         return C_O2_I2(r, r, r, r);
--    case INDEX_op_xor_i32:
--    case INDEX_op_xor_i64:
--        return C_O1_I2(r, r, rI);
-     case INDEX_op_shl_i32:
-     case INDEX_op_shr_i32:
-     case INDEX_op_sar_i32:
-diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-index b8e80ca8a9..044f41748f 100644
---- a/tcg/ppc/tcg-target.c.inc
-+++ b/tcg/ppc/tcg-target.c.inc
-@@ -3021,6 +3021,24 @@ static const TCGOutOpBinary outop_orc = {
-     .out_rrr = tgen_orc,
- };
- 
-+static void tgen_xor(TCGContext *s, TCGType type,
-+                     TCGReg a0, TCGReg a1, TCGReg a2)
-+{
-+    tcg_out32(s, XOR | SAB(a1, a0, a2));
-+}
-+
-+static void tgen_xori(TCGContext *s, TCGType type,
-+                      TCGReg a0, TCGReg a1, tcg_target_long a2)
-+{
-+    tcg_out_xori32(s, a0, a1, a2);
-+}
-+
-+static const TCGOutOpBinary outop_xor = {
-+    .base.static_constraint = C_O1_I2(r, r, rU),
-+    .out_rrr = tgen_xor,
-+    .out_rri = tgen_xori,
-+};
-+
- 
- static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
-                        const TCGArg args[TCG_MAX_OP_ARGS],
-@@ -3106,15 +3124,6 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
-         }
-         break;
- 
--    case INDEX_op_xor_i64:
--    case INDEX_op_xor_i32:
--        a0 = args[0], a1 = args[1], a2 = args[2];
--        if (const_args[2]) {
--            tcg_out_xori32(s, a0, a1, a2);
--        } else {
--            tcg_out32(s, XOR | SAB(a1, a0, a2));
--        }
--        break;
-     case INDEX_op_eqv_i32:
-         if (const_args[2]) {
-             tcg_out_xori32(s, args[0], args[1], ~args[2]);
-@@ -4215,7 +4224,6 @@ tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
-     case INDEX_op_st_i64:
-         return C_O0_I2(r, r);
- 
--    case INDEX_op_xor_i32:
-     case INDEX_op_eqv_i32:
-     case INDEX_op_shl_i32:
-     case INDEX_op_shr_i32:
-@@ -4254,8 +4262,6 @@ tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
- 
-     case INDEX_op_sub_i32:
-         return C_O1_I2(r, rI, ri);
--    case INDEX_op_xor_i64:
--        return C_O1_I2(r, r, rU);
-     case INDEX_op_sub_i64:
-         return C_O1_I2(r, rI, rT);
-     case INDEX_op_clz_i32:
-diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
-index 0712a24d1c..4d034712f7 100644
---- a/tcg/riscv/tcg-target.c.inc
-+++ b/tcg/riscv/tcg-target.c.inc
-@@ -2046,6 +2046,24 @@ static const TCGOutOpBinary outop_orc = {
-     .out_rrr = tgen_orc,
- };
- 
-+static void tgen_xor(TCGContext *s, TCGType type,
-+                     TCGReg a0, TCGReg a1, TCGReg a2)
-+{
-+    tcg_out_opc_reg(s, OPC_XOR, a0, a1, a2);
-+}
-+
-+static void tgen_xori(TCGContext *s, TCGType type,
-+                      TCGReg a0, TCGReg a1, tcg_target_long a2)
-+{
-+    tcg_out_opc_imm(s, OPC_XORI, a0, a1, a2);
-+}
-+
-+static const TCGOutOpBinary outop_xor = {
-+    .base.static_constraint = C_O1_I2(r, r, rI),
-+    .out_rrr = tgen_xor,
-+    .out_rri = tgen_xori,
-+};
-+
- 
- static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
-                        const TCGArg args[TCG_MAX_OP_ARGS],
-@@ -2124,15 +2142,6 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
-         }
-         break;
- 
--    case INDEX_op_xor_i32:
--    case INDEX_op_xor_i64:
--        if (c2) {
--            tcg_out_opc_imm(s, OPC_XORI, a0, a1, a2);
--        } else {
--            tcg_out_opc_reg(s, OPC_XOR, a0, a1, a2);
--        }
--        break;
--
      case INDEX_op_eqv_i32:
      case INDEX_op_eqv_i64:
-         if (c2) {
-@@ -2696,8 +2705,6 @@ tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
-     case INDEX_op_st_i64:
-         return C_O0_I2(rZ, r);
- 
--    case INDEX_op_xor_i32:
--    case INDEX_op_xor_i64:
-     case INDEX_op_setcond_i32:
-     case INDEX_op_setcond_i64:
-     case INDEX_op_negsetcond_i32:
-diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
-index 159fe925b6..585d0a73f8 100644
---- a/tcg/s390x/tcg-target.c.inc
-+++ b/tcg/s390x/tcg-target.c.inc
-@@ -2283,6 +2283,31 @@ static const TCGOutOpBinary outop_orc = {
-     .out_rrr = tgen_orc,
- };
- 
-+static void tgen_xor(TCGContext *s, TCGType type,
-+                     TCGReg a0, TCGReg a1, TCGReg a2)
-+{
-+    if (type != TCG_TYPE_I32) {
-+        tcg_out_insn(s, RRFa, XGRK, a0, a1, a2);
-+    } else if (a0 == a1) {
-+        tcg_out_insn(s, RR, XR, a0, a2);
-+    } else {
-+        tcg_out_insn(s, RRFa, XRK, a0, a1, a2);
-+    }
-+}
-+
-+static void tgen_xori_3(TCGContext *s, TCGType type,
-+                        TCGReg a0, TCGReg a1, tcg_target_long a2)
-+{
-+    tcg_out_mov(s, type, a0, a1);
-+    tgen_xori(s, a0, type == TCG_TYPE_I32 ? (uint32_t)a2 : a2);
-+}
-+
-+static const TCGOutOpBinary outop_xor = {
-+    .base.static_constraint = C_O1_I2(r, r, rK),
-+    .out_rrr = tgen_xor,
-+    .out_rri = tgen_xori_3,
-+};
-+
- 
- # define OP_32_64(x) \
-         case glue(glue(INDEX_op_,x),_i32): \
-@@ -2351,18 +2376,6 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
-         }
-         break;
- 
--    case INDEX_op_xor_i32:
--        a0 = args[0], a1 = args[1], a2 = (uint32_t)args[2];
--        if (const_args[2]) {
--            tcg_out_mov(s, TCG_TYPE_I32, a0, a1);
--            tcg_out_insn(s, RIL, XILF, a0, a2);
--        } else if (a0 == a1) {
--            tcg_out_insn(s, RR, XR, args[0], args[2]);
--        } else {
--            tcg_out_insn(s, RRFa, XRK, a0, a1, a2);
--        }
--        break;
--
-     case INDEX_op_eqv_i32:
-         a0 = args[0], a1 = args[1], a2 = (uint32_t)args[2];
-         if (const_args[2]) {
-@@ -2588,16 +2601,6 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
-         }
-         break;
- 
--    case INDEX_op_xor_i64:
--        a0 = args[0], a1 = args[1], a2 = args[2];
--        if (const_args[2]) {
--            tcg_out_mov(s, TCG_TYPE_I64, a0, a1);
--            tgen_xori(s, a0, a2);
--        } else {
--            tcg_out_insn(s, RRFa, XGRK, a0, a1, a2);
--        }
--        break;
--
-     case INDEX_op_eqv_i64:
-         a0 = args[0], a1 = args[1], a2 = args[2];
-         if (const_args[2]) {
-@@ -3291,10 +3294,7 @@ tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
- 
-     case INDEX_op_sub_i32:
-     case INDEX_op_sub_i64:
--    case INDEX_op_xor_i32:
-         return C_O1_I2(r, r, ri);
--    case INDEX_op_xor_i64:
--        return C_O1_I2(r, r, rK);
- 
-     case INDEX_op_eqv_i32:
-         return C_O1_I2(r, r, ri);
-diff --git a/tcg/sparc64/tcg-target.c.inc b/tcg/sparc64/tcg-target.c.inc
-index 343faf099f..28150cd5b0 100644
---- a/tcg/sparc64/tcg-target.c.inc
-+++ b/tcg/sparc64/tcg-target.c.inc
-@@ -1365,6 +1365,24 @@ static const TCGOutOpBinary outop_orc = {
-     .out_rrr = tgen_orc,
- };
- 
-+static void tgen_xor(TCGContext *s, TCGType type,
-+                     TCGReg a0, TCGReg a1, TCGReg a2)
-+{
-+    tcg_out_arith(s, a0, a1, a2, ARITH_XOR);
-+}
-+
-+static void tgen_xori(TCGContext *s, TCGType type,
-+                      TCGReg a0, TCGReg a1, tcg_target_long a2)
-+{
-+    tcg_out_arithi(s, a0, a1, a2, ARITH_XOR);
-+}
-+
-+static const TCGOutOpBinary outop_xor = {
-+    .base.static_constraint = C_O1_I2(r, r, rJ),
-+    .out_rrr = tgen_xor,
-+    .out_rri = tgen_xori,
-+};
-+
- 
- static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
-                        const TCGArg args[TCG_MAX_OP_ARGS],
-@@ -1422,9 +1440,6 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
-     OP_32_64(sub):
-         c = ARITH_SUB;
-         goto gen_arith;
--    OP_32_64(xor):
--        c = ARITH_XOR;
--        goto gen_arith;
-     case INDEX_op_shl_i32:
-         c = SHIFT_SLL;
-     do_shift32:
-@@ -1646,8 +1661,6 @@ tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
-     case INDEX_op_divu_i64:
-     case INDEX_op_sub_i32:
-     case INDEX_op_sub_i64:
--    case INDEX_op_xor_i32:
--    case INDEX_op_xor_i64:
-     case INDEX_op_shl_i32:
-     case INDEX_op_shl_i64:
-     case INDEX_op_shr_i32:
+     case INDEX_op_nand_i32:
 diff --git a/tcg/tci/tcg-target.c.inc b/tcg/tci/tcg-target.c.inc
-index c1d975cb0b..ba93a56409 100644
+index ba93a56409..628db04e0c 100644
 --- a/tcg/tci/tcg-target.c.inc
 +++ b/tcg/tci/tcg-target.c.inc
-@@ -101,8 +101,6 @@ tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
-     case INDEX_op_nand_i64:
-     case INDEX_op_nor_i32:
-     case INDEX_op_nor_i64:
--    case INDEX_op_xor_i32:
--    case INDEX_op_xor_i64:
-     case INDEX_op_shl_i32:
-     case INDEX_op_shl_i64:
-     case INDEX_op_shr_i32:
-@@ -708,6 +706,17 @@ static const TCGOutOpBinary outop_orc = {
-     .out_rrr = tgen_orc,
- };
+@@ -709,7 +709,7 @@ static const TCGOutOpBinary outop_orc = {
+ static void tgen_xor(TCGContext *s, TCGType type,
+                      TCGReg a0, TCGReg a1, TCGReg a2)
+ {
+-    tcg_out_op_rrr(s, glue(INDEX_op_xor_i,TCG_TARGET_REG_BITS), a0, a1, a2);
++    tcg_out_op_rrr(s, INDEX_op_xor, a0, a1, a2);
+ }
  
-+static void tgen_xor(TCGContext *s, TCGType type,
-+                     TCGReg a0, TCGReg a1, TCGReg a2)
-+{
-+    tcg_out_op_rrr(s, glue(INDEX_op_xor_i,TCG_TARGET_REG_BITS), a0, a1, a2);
-+}
-+
-+static const TCGOutOpBinary outop_xor = {
-+    .base.static_constraint = C_O1_I2(r, r, r),
-+    .out_rrr = tgen_xor,
-+};
-+
- 
- static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
-                        const TCGArg args[TCG_MAX_OP_ARGS],
-@@ -752,7 +761,6 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
- 
-     CASE_32_64(sub)
-     CASE_32_64(mul)
--    CASE_32_64(xor)
-     CASE_32_64(eqv)      /* Optional (TCG_TARGET_HAS_eqv_*). */
-     CASE_32_64(nand)     /* Optional (TCG_TARGET_HAS_nand_*). */
-     CASE_32_64(nor)      /* Optional (TCG_TARGET_HAS_nor_*). */
+ static const TCGOutOpBinary outop_xor = {
 -- 
 2.43.0
 
