@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F97A0405A
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 14:08:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A8BFA04063
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 14:10:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tV9JP-0000nI-8x; Tue, 07 Jan 2025 08:07:59 -0500
+	id 1tV9LB-0001Uh-Hz; Tue, 07 Jan 2025 08:09:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1tV9JL-0000mf-6G
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 08:07:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1tV9Ku-0001Ss-N3
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 08:09:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1tV9JJ-0007dr-NZ
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 08:07:54 -0500
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1tV9Kt-0007pX-A3
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 08:09:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736255272;
+ s=mimecast20190719; t=1736255370;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=uJscP3Ukcfk47ttIl1n7NpFrNntoCeNtFf6voJkQuqU=;
- b=IDJ4grvZSwOzgMZiipk9k43ZIBtJQuQxNnpra4kU4wvBQSUYxldCE2qk4tn+ByR9BetpDR
- kO4GdWOS+nVUHBXKKXz8Effx4oo6QfgB9uDWU+5+TpTzEPiw868mAUPpeVWM96OtqV1rqk
- CokMzfGczvZlIKT7hZ2iEM88/HCp1bk=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=RtAvSdZEWtAMfYRo+cfYSqBgNvDWYXsJvwRz7gBlrLM=;
+ b=R7QaGdjL69REShkBBdm3hA0RHfHYq0cdzn36/rCWMZh4BNnBuf4A3aOkaXbUS1qYKrLidC
+ nyWiAs5QrAbU6xyTk3cT5XV5NRgveXa5itY3G/IAw1hTKhsXWDyha6Nd7+r3aNGJZcKiB9
+ AVHvd9BCdRZ0+CNOynHcZRqbrVO5mWQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-653-oaa_I5wWN6-TS6Ytjy-VDg-1; Tue,
- 07 Jan 2025 08:07:49 -0500
-X-MC-Unique: oaa_I5wWN6-TS6Ytjy-VDg-1
-X-Mimecast-MFC-AGG-ID: oaa_I5wWN6-TS6Ytjy-VDg
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-136-701zok1COK2kLZ94vzYv5Q-1; Tue,
+ 07 Jan 2025 08:09:27 -0500
+X-MC-Unique: 701zok1COK2kLZ94vzYv5Q-1
+X-Mimecast-MFC-AGG-ID: 701zok1COK2kLZ94vzYv5Q
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 64CE01956050; Tue,  7 Jan 2025 13:07:48 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7A797195604F; Tue,  7 Jan 2025 13:09:26 +0000 (UTC)
 Received: from localhost (dhcp-192-244.str.redhat.com [10.33.192.244])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 56935195605F; Tue,  7 Jan 2025 13:07:46 +0000 (UTC)
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9E3AD1956088; Tue,  7 Jan 2025 13:09:25 +0000 (UTC)
 From: Cornelia Huck <cohuck@redhat.com>
 To: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org, Christian
  Borntraeger <borntraeger@linux.ibm.com>, David Hildenbrand
  <david@redhat.com>
 Cc: qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>, Halil Pasic
  <pasic@linux.ibm.com>
-Subject: Re: [PATCH 07/10] hw/s390x/s390-virtio-ccw: Remove the deprecated
- 2.7 machine type
-In-Reply-To: <20250103144232.520383-8-thuth@redhat.com>
+Subject: Re: [PATCH 08/10] hw/s390x: Remove the cpu_model_allowed flag and
+ related code
+In-Reply-To: <20250103144232.520383-9-thuth@redhat.com>
 Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
  Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
  153243,
  =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
  Michael O'Neill, Amy Ross"
 References: <20250103144232.520383-1-thuth@redhat.com>
- <20250103144232.520383-8-thuth@redhat.com>
+ <20250103144232.520383-9-thuth@redhat.com>
 User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
-Date: Tue, 07 Jan 2025 14:07:43 +0100
-Message-ID: <87msg2ai1s.fsf@redhat.com>
+Date: Tue, 07 Jan 2025 14:09:23 +0100
+Message-ID: <87jzb6ahz0.fsf@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=cohuck@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.437,
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.437,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ TVD_SUBJ_WIPE_DEBT=1.004 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,13 +92,16 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Fri, Jan 03 2025, Thomas Huth <thuth@redhat.com> wrote:
 
-> The s390-ccw-virtio-2.7 machine is older than 6 years, so according to
-> our machine support policy, it can be removed now.
+> Now that the last machine type that disabled cpu_model_allowed has
+> been removed, we can also remove the cpu_model_allowed flag itself
+> and all the related conditional code.
 >
 > Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->  hw/s390x/s390-virtio-ccw.c | 15 ---------------
->  1 file changed, 15 deletions(-)
+>  include/hw/s390x/s390-virtio-ccw.h |  3 ---
+>  hw/s390x/s390-virtio-ccw.c         |  9 +--------
+>  target/s390x/kvm/kvm.c             | 10 ++--------
+>  3 files changed, 3 insertions(+), 19 deletions(-)
 
 Reviewed-by: Cornelia Huck <cohuck@redhat.com>
 
