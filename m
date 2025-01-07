@@ -2,70 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BAFBA0410D
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 14:44:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6717A041E2
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 15:13:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tV9r8-0003rv-GF; Tue, 07 Jan 2025 08:42:50 -0500
+	id 1tVAJt-0004jK-PT; Tue, 07 Jan 2025 09:12:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tV9qz-0003rH-LE; Tue, 07 Jan 2025 08:42:42 -0500
-Received: from mgamail.intel.com ([192.198.163.19])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tVAJr-0004j9-Qo
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 09:12:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tV9qv-00055n-UQ; Tue, 07 Jan 2025 08:42:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736257358; x=1767793358;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=yNliXUkL8tj6/zZ3Icw4QFTzFBtbTX7zCyWe9j1llBk=;
- b=ZVGxOum3FoPHTFaL4eI4xi2ugXtF8Fok6OXSfnGBNw5jx53PQxjKMLTg
- cqqf8Z+MWKM8UCr4L63Yw7FRYV+djy/xVGV4YV/BYvIeRIBRZDAvdax1F
- NEa9bNOG42AEJtbsJMcvUiBrN1Qu3hPQlCAx6T8r8E7TWlwfhR1k/XmET
- kKw55ui1blJz8vgMCXK2eKcZaDLy5BwgaIOIXYwpmsnPP4a8xy2GPEt8j
- LR0JSHd9kyakfu34Scpqsb7zw1Xv5oGEd9brDXFaodymt1+yuiM18ZmiF
- AYHuPqD9OIRCn5YRudBgz7cDcOlSmvNHn8KICII5hN3x8peUvaQ6wvFaj g==;
-X-CSE-ConnectionGUID: sAO0pu1cRqqL0BtyVUIVVg==
-X-CSE-MsgGUID: r023MZ0cQLmVsXyEFhizTg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="35672092"
-X-IronPort-AV: E=Sophos;i="6.12,295,1728975600"; d="scan'208";a="35672092"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jan 2025 05:42:33 -0800
-X-CSE-ConnectionGUID: kSfna26QR7muYxrDCs74VQ==
-X-CSE-MsgGUID: gWD9EhGnQ8a/bZyZwRBt6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="107820698"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa003.jf.intel.com with ESMTP; 07 Jan 2025 05:42:31 -0800
-Date: Tue, 7 Jan 2025 22:01:19 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, junjie.mao@hotmail.com
-Subject: Re: [RFC PATCH 1/9] rust: vmstate: add new type safe implementation
-Message-ID: <Z30zr4Se4lhlHcyo@intel.com>
-References: <20241231002336.25931-1-pbonzini@redhat.com>
- <20241231002336.25931-2-pbonzini@redhat.com>
- <Z3zstgKXAgeRrIU2@intel.com>
- <CABgObfbdFo9B1nedC+Bu2QQfjTL1TOpmSQt0p0a0d0iWev6UKg@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tVAJq-0001uk-55
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 09:12:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736259147;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=YT6oXZ7QyPsHVz8vhsMDbMijQzr8eCs6M8NB/JB/gP8=;
+ b=AJR6/3LWyo8BvXRrJDPwsjr5X45P4b3gbzqb3UcYM+l4/FiKfWDayhyop/qbl6xOWV3ktR
+ Rygxv0RtQUwJyvqC8Xg7in7Q54M/FTGhaTf1AwwDO89pX9O8FO9ve4nAafNcTm5vlBxwGd
+ jkY0kROP87EWIoJNeqAA8O0CjTHd0tM=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-394-KjCCjSvJN4mhB9P_nSsAXw-1; Tue,
+ 07 Jan 2025 09:12:24 -0500
+X-MC-Unique: KjCCjSvJN4mhB9P_nSsAXw-1
+X-Mimecast-MFC-AGG-ID: KjCCjSvJN4mhB9P_nSsAXw
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9F01719776A2; Tue,  7 Jan 2025 14:12:12 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.194.101])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4363A3000706; Tue,  7 Jan 2025 14:12:12 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id EA25321E6924; Tue, 07 Jan 2025 15:12:09 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: qemu-devel@nongnu.org,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>, Stefan Berger <stefanb@linux.ibm.com>
+Subject: Re: [PATCH v11 1/2] tpm: convert tpmdev options processing to new
+ visitor format
+In-Reply-To: <20241212170528.30364-2-James.Bottomley@HansenPartnership.com>
+ (James Bottomley's message of "Thu, 12 Dec 2024 12:05:27 -0500")
+References: <20241212170528.30364-1-James.Bottomley@HansenPartnership.com>
+ <20241212170528.30364-2-James.Bottomley@HansenPartnership.com>
+Date: Tue, 07 Jan 2025 15:12:09 +0100
+Message-ID: <87y0zm90hy.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABgObfbdFo9B1nedC+Bu2QQfjTL1TOpmSQt0p0a0d0iWev6UKg@mail.gmail.com>
-Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.437,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.437,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,38 +85,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > Very flexible and powerful. (I even think this code could be released as
-> > a new public crate.)
-> 
-> It's probably not _that_ useful in general, unless you're implementing
-> this kind of reflection... otherwise I would have found an existing
-> solution. :) But yes, it's very powerful.
+James Bottomley <James.Bottomley@HansenPartnership.com> writes:
 
-Personally, I feel that projects that glue C and Rust together require
-similar tricks more, making them more challenging.
+> Instead of processing the tpmdev options using the old qemu options,
+> convert to the new visitor format which also allows the passing of
+> json on the command line.
+>
+> Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+> Tested-by: Stefan Berger <stefanb@linux.ibm.com>
+> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 
-> Out of curiosity, I asked claude.ai to explain it and it said "This is
-> a rather advanced use of Rust's type system and macro capabilities to
-> do compile-time reflection - basically inspecting the types of struct
-> fields without runtime overhead. While creative, this pattern isn't
-> commonly needed in everyday Rust code."
-> 
-> When fed the initial comment from the Rust forum it said "your comment
-> about wanting to access <T as SomeTrait>::SOMETHING for a field's type
-> is a classic serialization pattern - often used to get things like
-> type IDs, serialization formats, or field metadata at compile time".
-> That's actually pretty impressive; the LLM was also impressed and it
-> started asking me more about it ("Are you building a custom
-> serialization framework from scratch, or extending an existing one?").
+[...]
 
-Incredible, commercial LLMs are so proficient in Rust and provide such
-professional comments (even a bit off-topic, it feels like LLMs could
-even review patches).
+> diff --git a/qapi/tpm.json b/qapi/tpm.json
+> index a16a72edb9..e6345d424b 100644
+> --- a/qapi/tpm.json
+> +++ b/qapi/tpm.json
 
-Thank you for providing this interesting example. LLMs are indeed the
-good tool to help get started with and practice Rust.
+Looks like you missed my review of v10.  I'll copy it below for your
+convenience.
 
-Thanks,
-Zhao
+> @@ -142,6 +142,27 @@
+>              'emulator': 'TPMEmulatorOptionsWrapper' },
+>    'if': 'CONFIG_TPM' }
+>  
+> +##
+> +# @TpmCreateOptions:
+> +#
+> +# A union referencing different TPM backend types' configuration options
+> +#   without the wrapper to be usable by visitors.
+
+reST trap: this is a definition list.  Delete the second line's
+indentation to make it a paragraph:
+
+   # A union referencing different TPM backend types' configuration
+   # options without the wrapper to be usable by visitors.
+
+
+> +#
+> +# @type: - 'passthrough' The configuration options for the TPM passthrough type
+> +#        - 'emulator' The configuration options for TPM emulator backend type
+
+docs/devel/qapi-code-gen.rst:
+
+    Descriptions start with '\@name:'.  The description text must be
+    indented like this::
+
+     # @name: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+     #     do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+You indent more to make the '-' line up.  Hmm.
+
+Let's indent this like @TpmTypeOptions right above, namely
+
+    # @type:
+    #     - 'passthrough' The configuration options for the TPM
+    #       passthrough type
+    #     - 'emulator' The configuration options for TPM emulator backend
+    #       type
+
+> +#
+> +# @id: The Id of the TPM
+
+What kind of Id is this?
+
+> +#
+> +# Since: 9.0
+
+10.0
+
+> +##
+> +{ 'union': 'TpmCreateOptions',
+> +  'base': { 'type': 'TpmType',
+> +            'id' : 'str' },
+> +  'discriminator': 'type',
+> +  'data': { 'passthrough' : 'TPMPassthroughOptions',
+> +            'emulator': 'TPMEmulatorOptions' },
+> +  'if': 'CONFIG_TPM' }
+
+This is a flattened version of TpmTypeOptions with additional member
+@id.
+
+Flattened: the union branches use Foo instead of FooWrapper.
+
+@id: I guess query-tpm has it one level up, in TPMInfo.
+
+Okay.
+
+> +
+>  ##
+>  # @TPMInfo:
+>  #
+
+[...]
 
 
