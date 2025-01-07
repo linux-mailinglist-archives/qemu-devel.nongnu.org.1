@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA664A044C4
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 16:37:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABD4BA044E8
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 16:40:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVBbG-0003Rk-Le; Tue, 07 Jan 2025 10:34:34 -0500
+	id 1tVBgQ-0001fM-BF; Tue, 07 Jan 2025 10:39:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tVBbC-0003Iw-BE
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 10:34:30 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tVBg8-0001bH-H4
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 10:39:39 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tVBbA-00059f-NV
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 10:34:30 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tVBg6-0005lN-Fr
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 10:39:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736264068;
+ s=mimecast20190719; t=1736264371;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FGnGsQOQFsBzSvR/lTFsCrb437Mz82OmNftfJSgXau0=;
- b=PIPvLTGjeJQaGDEK0bka8FJurEWnIRqyCPiBnWnuQ9/9A5liQwyCDKEfG1oDD7X8IhC/yZ
- iOxuZIiWWYppXfnGeX259iq6Lux81dbrcjveKOgmftV83z/vxuP6HFkEZqrQm8d+ZC1/nD
- 9j9a6+URWdVGWKrKjdZQJiif+vAoYLE=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Oms5RWxiSjkIU9AQhaOd854sk01PnwCnlIaXt2N+Kh0=;
+ b=NcB8pvhXUtlqHRTUrgEqYwiY51HbW4QVj1xx2/JrypwZMnx9VpJ6hdmgwjxByHG5CQoK5o
+ FZ4fT/t2oGhT/Mii36h852t/zebs8Uz2SpPpAGQ30UYKaD0bnxnThe9cnCwythwIM0rFve
+ UnIbIEepmje/uUDheN+yBwwODAWAB8c=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-27-BvgPxBInMhS-9gfSsLiTfQ-1; Tue,
- 07 Jan 2025 10:34:25 -0500
-X-MC-Unique: BvgPxBInMhS-9gfSsLiTfQ-1
-X-Mimecast-MFC-AGG-ID: BvgPxBInMhS-9gfSsLiTfQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-359-5k7VL-GXMnemsZ6KCOKRCw-1; Tue,
+ 07 Jan 2025 10:39:28 -0500
+X-MC-Unique: 5k7VL-GXMnemsZ6KCOKRCw-1
+X-Mimecast-MFC-AGG-ID: 5k7VL-GXMnemsZ6KCOKRCw
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2BB7C1979072; Tue,  7 Jan 2025 15:34:23 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B82181954B24; Tue,  7 Jan 2025 15:39:27 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.39.192.66])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 746F71956053; Tue,  7 Jan 2025 15:34:22 +0000 (UTC)
+ id 728DA1956053; Tue,  7 Jan 2025 15:39:27 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id AE7C51800604; Tue, 07 Jan 2025 16:33:54 +0100 (CET)
+ id BFD741800605; Tue, 07 Jan 2025 16:33:54 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, graf@amazon.com,
@@ -55,9 +55,10 @@ Cc: Gerd Hoffmann <kraxel@redhat.com>, graf@amazon.com,
  Eric Blake <eblake@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v2 18/21] hw/uefi: add uefi-vars-isa device
-Date: Tue,  7 Jan 2025 16:33:45 +0100
-Message-ID: <20250107153353.1144978-19-kraxel@redhat.com>
+Subject: [PATCH v2 19/21] hw/arm: add uefi variable support to virt machine
+ type
+Date: Tue,  7 Jan 2025 16:33:46 +0100
+Message-ID: <20250107153353.1144978-20-kraxel@redhat.com>
 In-Reply-To: <20250107153353.1144978-1-kraxel@redhat.com>
 References: <20250107153353.1144978-1-kraxel@redhat.com>
 MIME-Version: 1.0
@@ -88,145 +89,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds isa bindings for the variable service.
+Add -machine virt,x-uefi-vars={on,off} property.  Default is off.
+When enabled wire up the uefi-vars-sysbus device.
 
-Usage: qemu-system-x86_64 -device uefi-vars-isa,jsonfile=/path/to/uefivars.json
+TODO: wire up jsonfile property.
 
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- hw/uefi/var-service-isa.c | 91 +++++++++++++++++++++++++++++++++++++++
- hw/uefi/Kconfig           |  6 +++
- hw/uefi/meson.build       |  5 +++
- 3 files changed, 102 insertions(+)
- create mode 100644 hw/uefi/var-service-isa.c
+ include/hw/arm/virt.h |  2 ++
+ hw/arm/virt.c         | 41 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 43 insertions(+)
 
-diff --git a/hw/uefi/var-service-isa.c b/hw/uefi/var-service-isa.c
-new file mode 100644
-index 000000000000..5d74395fe5f0
---- /dev/null
-+++ b/hw/uefi/var-service-isa.c
-@@ -0,0 +1,91 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * uefi vars device - ISA variant for x64.
-+ */
-+#include "qemu/osdep.h"
-+#include "migration/vmstate.h"
-+
-+#include "hw/isa/isa.h"
-+#include "hw/qdev-properties.h"
-+
-+#include "hw/uefi/var-service.h"
-+#include "hw/uefi/var-service-api.h"
-+
-+#define TYPE_UEFI_VARS_ISA "uefi-vars-isa"
-+OBJECT_DECLARE_SIMPLE_TYPE(uefi_vars_isa_state, UEFI_VARS_ISA)
-+
-+struct uefi_vars_isa_state {
-+    ISADevice parent_obj;
-+    struct uefi_vars_state state;
-+};
-+
-+static const VMStateDescription vmstate_uefi_vars_isa = {
-+    .name = "uefi-vars-isa",
-+    .fields = (VMStateField[]) {
-+        VMSTATE_STRUCT(state, uefi_vars_isa_state, 0,
-+                       vmstate_uefi_vars, uefi_vars_state),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+static const Property uefi_vars_isa_properties[] = {
-+    DEFINE_PROP_SIZE("size", uefi_vars_isa_state, state.max_storage,
-+                     256 * 1024),
-+    DEFINE_PROP_STRING("jsonfile", uefi_vars_isa_state, state.jsonfile),
-+    DEFINE_PROP_BOOL("force-secure-boot", uefi_vars_isa_state,
-+                     state.force_secure_boot, false),
-+    DEFINE_PROP_BOOL("disable-custom-mode", uefi_vars_isa_state,
-+                     state.disable_custom_mode, false),
-+};
-+
-+static void uefi_vars_isa_init(Object *obj)
-+{
-+    uefi_vars_isa_state *uv = UEFI_VARS_ISA(obj);
-+
-+    uefi_vars_init(obj, &uv->state);
-+}
-+
-+static void uefi_vars_isa_reset(DeviceState *dev)
-+{
-+    uefi_vars_isa_state *uv = UEFI_VARS_ISA(dev);
-+
-+    uefi_vars_hard_reset(&uv->state);
-+}
-+
-+static void uefi_vars_isa_realize(DeviceState *dev, Error **errp)
-+{
-+    uefi_vars_isa_state *uv = UEFI_VARS_ISA(dev);
-+    ISADevice *isa = ISA_DEVICE(dev);
-+
-+    isa_register_ioport(isa, &uv->state.mr, UEFI_VARS_IO_BASE);
-+    uefi_vars_realize(&uv->state, errp);
-+}
-+
-+static void uefi_vars_isa_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    dc->realize = uefi_vars_isa_realize;
-+    dc->vmsd = &vmstate_uefi_vars_isa;
-+    device_class_set_legacy_reset(dc, uefi_vars_isa_reset);
-+    device_class_set_props(dc, uefi_vars_isa_properties);
-+    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-+}
-+
-+static const TypeInfo uefi_vars_isa_info = {
-+    .name          = TYPE_UEFI_VARS_ISA,
-+    .parent        = TYPE_ISA_DEVICE,
-+    .instance_size = sizeof(uefi_vars_isa_state),
-+    .instance_init = uefi_vars_isa_init,
-+    .class_init    = uefi_vars_isa_class_init,
-+};
-+module_obj(TYPE_UEFI_VARS_ISA);
-+module_dep("hw-uefi-vars");
-+
-+static void uefi_vars_isa_register_types(void)
-+{
-+    type_register_static(&uefi_vars_isa_info);
-+}
-+
-+type_init(uefi_vars_isa_register_types)
-diff --git a/hw/uefi/Kconfig b/hw/uefi/Kconfig
-index ca6c2bc46a96..feb9f6de5e30 100644
---- a/hw/uefi/Kconfig
-+++ b/hw/uefi/Kconfig
-@@ -1,3 +1,9 @@
- config UEFI_VARS
- 	bool
-         default y if X86_64 || AARCH64
-+
-+config UEFI_VARS_ISA
-+	bool
-+        default y
-+        depends on UEFI_VARS
-+        depends on ISA_BUS
-diff --git a/hw/uefi/meson.build b/hw/uefi/meson.build
-index cf2d26e9bf9a..0f191c436bcf 100644
---- a/hw/uefi/meson.build
-+++ b/hw/uefi/meson.build
-@@ -14,6 +14,11 @@ if (config_all_devices.has_key('CONFIG_UEFI_VARS'))
-   uefi_vars_ss.add(files('var-service-siglist.c'))
- endif
+diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+index c8e94e6aedc9..393ea2cbec78 100644
+--- a/include/hw/arm/virt.h
++++ b/include/hw/arm/virt.h
+@@ -79,6 +79,7 @@ enum {
+     VIRT_ACPI_GED,
+     VIRT_NVDIMM_ACPI,
+     VIRT_PVTIME,
++    VIRT_UEFI_VARS,
+     VIRT_LOWMEMMAP_LAST,
+ };
  
-+uefi_vars_isa_ss = ss.source_set()
-+uefi_vars_isa_ss.add(when: 'CONFIG_UEFI_VARS_ISA',
-+                     if_true: files('var-service-isa.c'))
+@@ -156,6 +157,7 @@ struct VirtMachineState {
+     bool mte;
+     bool dtb_randomness;
+     bool second_ns_uart_present;
++    bool uefi_vars;
+     OnOffAuto acpi;
+     VirtGICType gic_version;
+     VirtIOMMUType iommu;
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 99e0a68b6c55..6856ecb4dcf2 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -65,6 +65,7 @@
+ #include "hw/intc/arm_gicv3_common.h"
+ #include "hw/intc/arm_gicv3_its_common.h"
+ #include "hw/irq.h"
++#include "hw/uefi/var-service-api.h"
+ #include "kvm_arm.h"
+ #include "hvf_arm.h"
+ #include "hw/firmware/smbios.h"
+@@ -181,6 +182,7 @@ static const MemMapEntry base_memmap[] = {
+     [VIRT_NVDIMM_ACPI] =        { 0x09090000, NVDIMM_ACPI_IO_LEN},
+     [VIRT_PVTIME] =             { 0x090a0000, 0x00010000 },
+     [VIRT_SECURE_GPIO] =        { 0x090b0000, 0x00001000 },
++    [VIRT_UEFI_VARS] =          { 0x090c0000, 0x00000010 },
+     [VIRT_MMIO] =               { 0x0a000000, 0x00000200 },
+     /* ...repeating for a total of NUM_VIRTIO_TRANSPORTS, each of that size */
+     [VIRT_PLATFORM_BUS] =       { 0x0c000000, 0x02000000 },
+@@ -1369,6 +1371,24 @@ static FWCfgState *create_fw_cfg(const VirtMachineState *vms, AddressSpace *as)
+     return fw_cfg;
+ }
+ 
++static void create_uefi_vars(const VirtMachineState *vms)
++{
++    hwaddr base = vms->memmap[VIRT_UEFI_VARS].base;
++    hwaddr size = vms->memmap[VIRT_UEFI_VARS].size;
++    MachineState *ms = MACHINE(vms);
++    char *nodename;
 +
- modules += { 'hw-uefi' : {
-     'vars'     : uefi_vars_ss,
-+    'vars-isa' : uefi_vars_isa_ss,
- }}
++    sysbus_create_simple("uefi-vars-sysbus", base, NULL);
++
++    nodename = g_strdup_printf("/%s@%" PRIx64, UEFI_VARS_FDT_NODE, base);
++    qemu_fdt_add_subnode(ms->fdt, nodename);
++    qemu_fdt_setprop_string(ms->fdt, nodename,
++                            "compatible", UEFI_VARS_FDT_COMPAT);
++    qemu_fdt_setprop_sized_cells(ms->fdt, nodename, "reg",
++                                 2, base, 2, size);
++    g_free(nodename);
++}
++
+ static void create_pcie_irq_map(const MachineState *ms,
+                                 uint32_t gic_phandle,
+                                 int first_irq, const char *nodename)
+@@ -2425,6 +2445,10 @@ static void machvirt_init(MachineState *machine)
+     vms->fw_cfg = create_fw_cfg(vms, &address_space_memory);
+     rom_set_fw(vms->fw_cfg);
+ 
++    if (vms->uefi_vars) {
++        create_uefi_vars(vms);
++    }
++
+     create_platform_bus(vms);
+ 
+     if (machine->nvdimms_state->is_enabled) {
+@@ -2621,6 +2645,20 @@ static void virt_set_oem_table_id(Object *obj, const char *value,
+     strncpy(vms->oem_table_id, value, 8);
+ }
+ 
++static bool virt_get_uefi_vars(Object *obj, Error **errp)
++{
++    VirtMachineState *vms = VIRT_MACHINE(obj);
++
++    return vms->uefi_vars;
++}
++
++static void virt_set_uefi_vars(Object *obj, bool value, Error **errp)
++{
++    VirtMachineState *vms = VIRT_MACHINE(obj);
++
++    vms->uefi_vars = value;
++}
++
+ 
+ bool virt_is_acpi_enabled(VirtMachineState *vms)
+ {
+@@ -3273,6 +3311,9 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
+                                           "in ACPI table header."
+                                           "The string may be up to 8 bytes in size");
+ 
++    object_class_property_add_bool(oc, "x-uefi-vars",
++                                   virt_get_uefi_vars,
++                                   virt_set_uefi_vars);
+ }
+ 
+ static void virt_instance_init(Object *obj)
 -- 
 2.47.1
 
