@@ -2,90 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92942A04712
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 17:49:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAE75A04733
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 17:54:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVCld-00039K-AC; Tue, 07 Jan 2025 11:49:21 -0500
+	id 1tVCoc-00043m-KV; Tue, 07 Jan 2025 11:52:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tVClb-00038j-29
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 11:49:19 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tVClZ-0005OP-Bl
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 11:49:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736268556;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=V8/csrjcE/UEWRc5Rp4XCkWcnSQqKk4EReSRr1S8hSc=;
- b=FfV09AoID7JNMt4X/zuCliICOViLqcQ0BCg52bTrGgqAZpiDgdoP5wAXKUrMotoP89KgcN
- 1PuZHDccCscE0pS+fqYz+CI96N72skbRC5ycW5EqVnxC7XqqMaJsVat9O6+glcnCL6VZsn
- Kb9vVLXILVW9BWOlkRGv23X/bdE7MgU=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-uj-EWAZFOo6r9j0b28gbBA-1; Tue, 07 Jan 2025 11:49:15 -0500
-X-MC-Unique: uj-EWAZFOo6r9j0b28gbBA-1
-X-Mimecast-MFC-AGG-ID: uj-EWAZFOo6r9j0b28gbBA
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-385e1339790so9511260f8f.2
- for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 08:49:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tVCoa-00042M-Eu
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 11:52:24 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tVCoO-0005p0-6y
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 11:52:24 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-38789e5b6a7so7639696f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 08:52:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1736268731; x=1736873531; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0ETVcdYawHw9PabUk74gz9REVsCEoFRnRmtR83wHydA=;
+ b=G5LShjcnI+JX+ExDTVg5Mvsk4Vo4hFqKP4NJ1zktuzAziJcRPeXIWV92AtwmP8wbkL
+ fx3mlyD4RrkPAsN+2P9Uve99/dKSe4D/6rzpTuBAIynqypDYfM2xMky3Ze1ZN3RvK4hm
+ qJ0j07O9E63EdZXCi7754FQCAcup19eGcGsIyK63OqM55Ef5/mghej4VhIXReR+qjmLw
+ s7uhZEBpQJGI75jtdSi2nR7deQVZdyM4lH9MfIjDWHtpClroXvXUiZiFhvILYem8z8Iz
+ e22qC+TNH9ETlxaaKqjpb7fBkE34q8QBOoQAZTr0YSe384Y9u/DB/epq8iNmU5O/cyns
+ BAsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736268554; x=1736873354;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=V8/csrjcE/UEWRc5Rp4XCkWcnSQqKk4EReSRr1S8hSc=;
- b=iT6hafnjx98efLp+lRcluWwS6xvyK6I6/PIG1o+CFNpTSkKkMf6+WQ+t71QSBBBRhu
- G8Z7VWS+7ABrBV8NPp0myeTatpZt12UGz5OueUWPxXBeUwOGgz1q9DLtDyHCKmfMHzjd
- C5kF6YqqpAhdELSjGlbWdiLhYz213DZ9P7uIOHDrwN8tEp3c3/ST69MDp8DGK/gEVmIl
- GDlUJYCmJzwiqkb1s37pMqlaA8Q+S2kTz0LAsXkdZ5NF4clhECmXaZhSsa3nr+c49x7Y
- 9PLu6zfoO0zNsJLuLSFZkufd/kgwxwnrMDlFzYEvfPRGOeLhXO0Urm/UuU8AZGzxo3lX
- 0Izg==
-X-Gm-Message-State: AOJu0Yzkoub78DvVecoUXcG+bma6gaI+XdRimmApxVzgtKw2tlROHBMc
- NFzpQhEeGTLO9FYN6qiPImdTsWBFXG+2PIfqvDVy2xEJ7j7Y5Y4wz1j354+8khbsC2m1h7oGA0t
- FYs2N0Mty1DACa9Ww+424fRPSYD1TM76KVXiZVIQtuG+vIY+U/rL0mxHNMPolyiEpicdCxnSBNj
- iash2j8CRsJkFq50wrDVHSgJ7U2Eqg6ZhSQJVIFQ==
-X-Gm-Gg: ASbGncvOdTsD5/1btQMDZlRgBHIHS0IuNZa9jMyZlxpythu+FeRbzUXgtsZxxLsc60m
- H2Wxz1ChtUulUk+dOImX2SuvItiIDSt784c7HRQ==
-X-Received: by 2002:a05:6000:1568:b0:385:dc45:ea22 with SMTP id
- ffacd0b85a97d-38a223f835dmr50147124f8f.39.1736268553779; 
- Tue, 07 Jan 2025 08:49:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFImnDvUOrUVwow5VNhJ2KAH86i0UbSybuVTtT7Q/VaDc8JYj9vubn5LDPd6lPYid5C6qR4R9KT5hb3cfY+8Gc=
-X-Received: by 2002:a05:6000:1568:b0:385:dc45:ea22 with SMTP id
- ffacd0b85a97d-38a223f835dmr50147101f8f.39.1736268553356; Tue, 07 Jan 2025
- 08:49:13 -0800 (PST)
-MIME-Version: 1.0
-References: <20241231002336.25931-1-pbonzini@redhat.com>
- <20241231002336.25931-8-pbonzini@redhat.com>
-In-Reply-To: <20241231002336.25931-8-pbonzini@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 7 Jan 2025 17:49:01 +0100
-X-Gm-Features: AbW1kva1osy-KoUHQiF0jDUJx4pR-YIHhy6wptvPoHcpcL5tMNaP6cj6Di9jDmw
-Message-ID: <CABgObfZ0O3r02v26+KiqAMNk2CSsYp8q2siN_f1xwUDXvT=VDg@mail.gmail.com>
-Subject: Re: [RFC PATCH 7/9] rust: qemu_api: add vmstate_struct and
- vmstate_cell
+ d=1e100.net; s=20230601; t=1736268731; x=1736873531;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0ETVcdYawHw9PabUk74gz9REVsCEoFRnRmtR83wHydA=;
+ b=xAv5aFJ6Aw+7uX1WP2QPm1dH3AyE9zyL6jsuedn/nkhGBsyoeIy85MuyoR3CnUvJZY
+ xfZ/+vbpvr+OatW0FBG7gvWV+D36DazAtx8UZbJhJjtdGqx5EN48ayaGpKq8k/mu10R8
+ MXLy3Sq9cVKgv7roCIb1WgWdli5mQ8VJPiYMBNhCj5XkRSXrNzSOZ9DSXteHlkHvbxmv
+ 208ljyqxhKzqiWjTjiYCUVqm1IBGuaQuigFm5ArzMGa++xJb4HV00sY7z9/QI/bQjW55
+ np8MYl/PIV9GMcoFOyA01Gsfx/VUk711Mrd9aZiKJQpJyrgCnZjdc775qlDoRdiE3+7Z
+ BEFA==
+X-Gm-Message-State: AOJu0YwjQ03s0wxzYG1RvgzPTqVbYVw4GhWcooWgrWBXpWd0cYB926YG
+ CTRoQQ6w795XWABbwUg+mJ7oFWwPkaADm5I/tuQfKnZ0vw14uFch2fkLipbNM28=
+X-Gm-Gg: ASbGncuINjmQlRwCpxuqiIwAJvunAYiyFdK1m2zV4bSqtERVZK0OjJB0dUHo4WSjjvB
+ SDB7QeffZsblQf5WHWMMfOn+UCAaG1eGcQML9JeY0PlPgQQgrRD5SkZcP32pKQeZaD/n7L6SulJ
+ yRHckFSHWuBxdUO3tcTa055Q82UnK4f7CmB9kuuAobWYHDX0iiyz7n3UqFQumr9fBBKCkq8oBF/
+ 7DSik8JNk+7zocve7EI6SBSNIzxJlkT2rjF3gZIfEO1e+gPiKOilyc=
+X-Google-Smtp-Source: AGHT+IEDG7sBg6cqebfLyz7AssCga1HxLeHwZxJaky860FZzgxZKiSJmGrkz2cNTCglBV4tey/bTnw==
+X-Received: by 2002:a05:6000:154f:b0:385:ef2f:92ad with SMTP id
+ ffacd0b85a97d-38a221e181cmr60459122f8f.10.1736268730689; 
+ Tue, 07 Jan 2025 08:52:10 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38a1c828ba0sm50011358f8f.14.2025.01.07.08.52.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 07 Jan 2025 08:52:08 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 0F5C75F869;
+ Tue,  7 Jan 2025 16:52:08 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org, zhao1.liu@intel.com, junjie.mao@hotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Beraldo Leal <bleal@redhat.com>, Ed Maste <emaste@freebsd.org>,
+ Halil Pasic <pasic@linux.ibm.com>, qemu-ppc@nongnu.org,
+ John Snow <jsnow@redhat.com>, Radoslaw Biernacki <rad@semihalf.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-riscv@nongnu.org,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-s390x@nongnu.org,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Fabiano Rosas <farosas@suse.de>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-arm@nongnu.org,
+ Li-Wen Hsu <lwhsu@freebsd.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Cleber Rosa <crosa@redhat.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ Eric Farman <farman@linux.ibm.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <laurent@vivier.eu>, Joel Stanley <joel@jms.id.au>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Bernhard Beschow <shentey@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH v3 00/29] testing/next: functional tests, qtest clocks,
+ vm and keymaps (pre-PR)
+Date: Tue,  7 Jan 2025 16:51:38 +0000
+Message-Id: <20250107165208.743958-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.5
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.437,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,73 +126,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 31, 2024 at 1:23=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com>=
- wrote:
->
-> These are not type safe, but they're the best that can be done without
-> const_refs_static.
->
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+There are number of parts to this series.
 
-FWIW, I'll change these patch to support varrays in v2.
+The first is the updated images for all the guests that didn't make it
+into 9.2. There are also some new functional tests for virtio-gpu
+along with some other clean-ups.
 
-Paolo
+The qtest patches focus on ensuring things calling clock_step and
+clock_set actually pay attention to return values. The virtio tests
+needed a little little re-jigging as they don't need timeout
+loops at all (v2).
 
-> ---
->  rust/qemu-api/src/vmstate.rs | 34 ++++++++++++++++++++++++++++++++++
->  1 file changed, 34 insertions(+)
->
-> diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-> index b59a4b66339..e45c93587b2 100644
-> --- a/rust/qemu-api/src/vmstate.rs
-> +++ b/rust/qemu-api/src/vmstate.rs
-> @@ -610,6 +610,40 @@ macro_rules! vmstate_array_of_pointer_to_struct {
->      }};
->  }
->
-> +// FIXME: including the `vmsd` field in a `const` is not possible withou=
-t
-> +// the const_refs_static feature (stabilized in Rust 1.83.0).  Without i=
-t,
-> +// it is not possible to use VMS_STRUCT in a transparent manner using
-> +// `vmstate_of!`.  While VMSTATE_CLOCK can at least try to be type-safe,
-> +// VMSTATE_STRUCT includes $type only for documentation purposes; it
-> +// is checked against $field_name and $struct_name, but not against $vms=
-d
-> +// which is what really would matter.
-> +#[doc(alias =3D "VMSTATE_STRUCT")]
-> +#[macro_export]
-> +macro_rules! vmstate_struct {
-> +    ($field_name:ident, $struct_name:ty, $vmsd:expr, $type:ty) =3D> {{
-> +        $crate::bindings::VMStateField {
-> +            name: ::core::concat!(::core::stringify!($field_name), "\0")
-> +                .as_bytes()
-> +                .as_ptr() as *const ::std::os::raw::c_char,
-> +            offset: {
-> +                $crate::assert_field_type!($struct_name, $field_name, $t=
-ype);
-> +                $crate::offset_of!($struct_name, $field_name)
-> +            }
-> +            size: ::core::mem::size_of::<$type>(),
-> +            flags: $crate::bindings::VMStateFlags::VMS_STRUCT,
-> +            vmsd: unsafe { $vmsd },
-> +            ..$crate::zeroable::Zeroable::ZERO
-> +        }
-> +    }};
-> +}
-> +
-> +#[macro_export]
-> +macro_rules! vmstate_cell {
-> +    ($field_name:ident, $struct_name:ty, $vmsd:expr, $type:ty) =3D> {
-> +        $crate::vmstate_struct!($field_name, $struct_name, $vmsd, $type)
-> +    };
-> +}
-> +
->  #[doc(alias =3D "VMSTATE_CLOCK_V")]
->  #[macro_export]
->  macro_rules! vmstate_clock_v {
-> --
-> 2.47.1
->
+We bump libvirt-ci so we can move the riscv64 cross container to
+testing/trixie which will hopefully make the image less prone to sid
+breakages.
+
+Finally we make a few tweaks to tests/vm which were helpful when
+chasing the keymap issue. I still think there is a race condition in
+there somewhere as I can't reliably build the FreeBSD VMs from
+scratch.
+
+The pc-bios dependency fixup I think addresses the failure but I'm a
+little unsure about the meason stuff.
+
+I'll send a PR for everything that is reviewed later this week.
+
+For v2
+  - add test/vm and lcitool updates
+  - don't move clock_step, remove them for virtio tests
+
+For v3
+  - review comments and checkpatch fixes
+  - MAINTAINERS updates
+  - add zstd uncompress function and use it
+
+The following still need review:
+
+  pc-bios: ensure keymaps dependencies set vnc tests
+  tests/vm: allow interactive login as root
+  tests/vm: partially un-tabify help output
+  tests/docker: move riscv64 cross container from sid to trixie
+  tests/functional: extend test_aarch64_virt with vulkan test
+  tests/functional: add zstd support to uncompress utility
+  tests/qtest: remove clock_steps from virtio tests
+
+Alex.
+
+Alex Bennée (25):
+  tests/functional: update the arm tuxrun tests
+  tests/functional: update the i386 tuxrun tests
+  tests/functional: add a m68k tuxrun tests
+  tests/functional: update the mips32 tuxrun tests
+  tests/functional: update the mips32el tuxrun tests
+  tests/functional: update the mips64 tuxrun tests
+  tests/functional: update the mips64el tuxrun tests
+  tests/functional: update the ppc32 tuxrun tests
+  tests/functional: update the ppc64 tuxrun tests
+  tests/functional: update the riscv32 tuxrun tests
+  tests/functional: update the riscv64 tuxrun tests
+  tests/functional: update the s390x tuxrun tests
+  tests/functional: update the sparc64 tuxrun tests
+  tests/functional: update the x86_64 tuxrun tests
+  tests/qtest: remove clock_steps from virtio tests
+  system/qtest: properly feedback results of clock_[step|set]
+  tests/functional: remove hacky sleep from the tests
+  tests/functional: add zstd support to uncompress utility
+  tests/functional: extend test_aarch64_virt with vulkan test
+  tests/lcitool: bump to latest version of libvirt-ci
+  tests/docker: move riscv64 cross container from sid to trixie
+  tests/vm: fix build_path based path
+  tests/vm: partially un-tabify help output
+  tests/vm: allow interactive login as root
+  pc-bios: ensure keymaps dependencies set vnc tests
+
+Daniel P. Berrangé (1):
+  tests/lcitool: remove temp workaround for debian mips64el
+
+Philippe Mathieu-Daudé (1):
+  dockerfiles: Remove 'MAINTAINER' entry in debian-tricore-cross.docker
+
+Pierrick Bouvier (1):
+  tests/functional/aarch64: add tests for FEAT_RME
+
+Wainer dos Santos Moschetta (1):
+  MAINTAINERS: Remove myself from reviewers
+
+ MAINTAINERS                                   |   3 +-
+ system/qtest.c                                |  23 ++--
+ tests/qtest/libqos/virtio.c                   |   4 -
+ .gitlab-ci.d/cirrus/freebsd-14.vars           |   2 +-
+ pc-bios/keymaps/meson.build                   |  17 ++-
+ .../dockerfiles/debian-mips64el-cross.docker  |   9 ++
+ .../dockerfiles/debian-riscv64-cross.docker   |   4 +-
+ .../dockerfiles/debian-tricore-cross.docker   |   2 -
+ tests/functional/meson.build                  |   5 +
+ tests/functional/qemu_test/uncompress.py      |  17 +++
+ tests/functional/test_aarch64_rme_sbsaref.py  |  69 +++++++++++
+ tests/functional/test_aarch64_rme_virt.py     |  98 +++++++++++++++
+ tests/functional/test_aarch64_virt.py         | 114 +++++++++++++++---
+ tests/functional/test_arm_tuxrun.py           |  28 ++---
+ tests/functional/test_i386_tuxrun.py          |   8 +-
+ tests/functional/test_m68k_tuxrun.py          |  34 ++++++
+ tests/functional/test_mips64_tuxrun.py        |   8 +-
+ tests/functional/test_mips64el_tuxrun.py      |   8 +-
+ tests/functional/test_mips_tuxrun.py          |   8 +-
+ tests/functional/test_mipsel_tuxrun.py        |   8 +-
+ tests/functional/test_ppc64_tuxrun.py         |  16 +--
+ tests/functional/test_ppc_tuxrun.py           |   8 +-
+ tests/functional/test_riscv32_tuxrun.py       |   8 +-
+ tests/functional/test_riscv64_tuxrun.py       |  16 +--
+ tests/functional/test_s390x_tuxrun.py         |   8 +-
+ tests/functional/test_sparc64_tuxrun.py       |   8 +-
+ tests/functional/test_x86_64_tuxrun.py        |   8 +-
+ tests/lcitool/libvirt-ci                      |   2 +-
+ tests/lcitool/mappings.yml                    |  29 -----
+ tests/lcitool/refresh                         |   4 +-
+ tests/qtest/meson.build                       |   2 +-
+ tests/vm/Makefile.include                     |  29 ++---
+ tests/vm/basevm.py                            |  12 +-
+ tests/vm/generated/freebsd.json               |   2 +-
+ 34 files changed, 453 insertions(+), 168 deletions(-)
+ create mode 100755 tests/functional/test_aarch64_rme_sbsaref.py
+ create mode 100755 tests/functional/test_aarch64_rme_virt.py
+ create mode 100644 tests/functional/test_m68k_tuxrun.py
+
+-- 
+2.39.5
 
 
