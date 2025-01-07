@@ -2,99 +2,133 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48350A04A86
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 20:52:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE420A04AC7
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 21:16:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVFbO-0003At-WE; Tue, 07 Jan 2025 14:50:59 -0500
+	id 1tVFyf-0002Dn-H3; Tue, 07 Jan 2025 15:15:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1tVFbA-00038x-JL; Tue, 07 Jan 2025 14:50:46 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ id 1tVFyd-0002Cs-FW; Tue, 07 Jan 2025 15:14:59 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1tVFb8-0002Fe-Vz; Tue, 07 Jan 2025 14:50:44 -0500
+ id 1tVFyb-0005U0-VI; Tue, 07 Jan 2025 15:14:59 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 6D7A81F451;
- Tue,  7 Jan 2025 19:50:41 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id C235521157;
+ Tue,  7 Jan 2025 20:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736279441; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ t=1736280894; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GJUYCHg1tAerMxKnUkMRw26VZaD9t94AlwOX97jr+CU=;
- b=mT4CWYgKZ/khN+aMQO/FnXL3aZNbAXhFzvzbKewzKozUeG4Ck75Z3HrTR/8qko9pT87nyg
- +f4ZT5M6f03Y7Xv7R5PzubDrTxqt9Ne3EpQCac0IWLl++5JFAxcu1obb9EHpM35H2IyJwO
- FMw8qmJlgMjoZ+8uNEvVcqgQrY+qLtA=
+ bh=Bv7BPME/5/gl0L616sWa6w6nSBNzlk/FFrlu2lR6zGY=;
+ b=rYI382XVe7ReJN1APaN0T4dFLDdV6If4aiaGLge9fKruGr5uYwWCmNYq662wwVbQyZLgkm
+ BwgRhEDQ95kNdHBPJn3ZfanKa19z0Rcqk8Vd3X3mv2DBLns6FxZEl1nSn1/PIyHhOmW+F+
+ 045HSyCZmwBrgq1L0ivlZ2BQHTbFHZA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736279441;
+ s=susede2_ed25519; t=1736280894;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GJUYCHg1tAerMxKnUkMRw26VZaD9t94AlwOX97jr+CU=;
- b=X1eh4sBr3OKF0VVSufm7IhVzW130BWk3PDEqusOVESfseYQgoSlw+fg8HinVloGiRkknlw
- /8gjQE5TBrtlNNAg==
-Authentication-Results: smtp-out2.suse.de;
+ bh=Bv7BPME/5/gl0L616sWa6w6nSBNzlk/FFrlu2lR6zGY=;
+ b=BsZKxuszPjwlMId2+uEG6c8osMaW9LK9axOsdW/SkRNMU4yJGZLi4JRpdYp27uRXkKfVtl
+ lb2HRNNvs/cXDJAA==
+Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736279441; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ t=1736280893; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GJUYCHg1tAerMxKnUkMRw26VZaD9t94AlwOX97jr+CU=;
- b=mT4CWYgKZ/khN+aMQO/FnXL3aZNbAXhFzvzbKewzKozUeG4Ck75Z3HrTR/8qko9pT87nyg
- +f4ZT5M6f03Y7Xv7R5PzubDrTxqt9Ne3EpQCac0IWLl++5JFAxcu1obb9EHpM35H2IyJwO
- FMw8qmJlgMjoZ+8uNEvVcqgQrY+qLtA=
+ bh=Bv7BPME/5/gl0L616sWa6w6nSBNzlk/FFrlu2lR6zGY=;
+ b=o1HXIoStLCLW+E+epHgPpfY1ejPc/MuqCJ96Fvr3TYWK34EZgccwHlHwASpVD5oJ5Q7mRL
+ PA1Mlq+SmC/dPG/8V0dIXs7qdN8XC5dME2IjaJkuPOQtK8d/16yUs8cyu5Vl6VhuedS7GQ
+ JEVyJAOQpk7QAJdhyhRHLMszUgDEPQw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736279441;
+ s=susede2_ed25519; t=1736280893;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GJUYCHg1tAerMxKnUkMRw26VZaD9t94AlwOX97jr+CU=;
- b=X1eh4sBr3OKF0VVSufm7IhVzW130BWk3PDEqusOVESfseYQgoSlw+fg8HinVloGiRkknlw
- /8gjQE5TBrtlNNAg==
+ bh=Bv7BPME/5/gl0L616sWa6w6nSBNzlk/FFrlu2lR6zGY=;
+ b=XpMoZNKcxPKut/RlWUBM2xL8/dMfc7lTkFoNWKTF4Ud1rKtPIAPKaY5RVxxQQlB8YvbaYM
+ AOas6kXaE76agmBg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BD83913A6A;
- Tue,  7 Jan 2025 19:50:39 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0BBDD13A6A;
+ Tue,  7 Jan 2025 20:14:53 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id yJmRII+FfWeCGAAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 07 Jan 2025 19:50:39 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id kCyNAj2LfWceHwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 07 Jan 2025 20:14:53 +0000
 From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-stable@nongnu.org
-Subject: [PATCH 7/7] s390x: Fix CSS migration
-Date: Tue,  7 Jan 2025 16:50:25 -0300
-Message-Id: <20250107195025.9951-8-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20250107195025.9951-1-farosas@suse.de>
-References: <20250107195025.9951-1-farosas@suse.de>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, Beraldo Leal
+ <bleal@redhat.com>, Ed Maste <emaste@freebsd.org>, Halil Pasic
+ <pasic@linux.ibm.com>, qemu-ppc@nongnu.org, John Snow <jsnow@redhat.com>,
+ Radoslaw Biernacki <rad@semihalf.com>, Nicholas Piggin
+ <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>, Leif Lindholm
+ <quic_llindhol@quicinc.com>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Bin Meng <bmeng.cn@gmail.com>, Daniel
+ Henrique Barboza <dbarboza@ventanamicro.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, qemu-riscv@nongnu.org, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Wainer dos Santos Moschetta
+ <wainersm@redhat.com>, qemu-s390x@nongnu.org, Alistair Francis
+ <alistair.francis@wdc.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Weiwei Li <liwei1518@gmail.com>, Harsh Prateek Bora
+ <harshpb@linux.ibm.com>, qemu-arm@nongnu.org, Li-Wen Hsu
+ <lwhsu@freebsd.org>, Palmer Dabbelt <palmer@dabbelt.com>, Daniel Henrique
+ Barboza <danielhb413@gmail.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Cleber Rosa <crosa@redhat.com>, Marcin
+ Juszkiewicz <marcin.juszkiewicz@linaro.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Laurent Vivier <lvivier@redhat.com>, Aurelien
+ Jarno <aurelien@aurel32.net>, Eric Farman <farman@linux.ibm.com>, Pavel
+ Dovgalyuk <pavel.dovgaluk@ispras.ru>, Jiaxun Yang
+ <jiaxun.yang@flygoat.com>, Thomas Huth <thuth@redhat.com>, Laurent Vivier
+ <laurent@vivier.eu>, Joel Stanley <joel@jms.id.au>, =?utf-8?Q?Daniel_P=2E?=
+ =?utf-8?Q?_Berrang=C3=A9?=
+ <berrange@redhat.com>, Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Bernhard
+ Beschow <shentey@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH v3 16/29] tests/qtest: remove clock_steps from virtio tests
+In-Reply-To: <20250107165208.743958-17-alex.bennee@linaro.org>
+References: <20250107165208.743958-1-alex.bennee@linaro.org>
+ <20250107165208.743958-17-alex.bennee@linaro.org>
+Date: Tue, 07 Jan 2025 17:12:31 -0300
+Message-ID: <87ikqq4c40.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
- TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Score: -2.79
+X-Spamd-Result: default: False [-2.79 / 50.00]; BAYES_HAM(-2.99)[99.95%];
+ SUSPICIOUS_RECIPS(1.50)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ MISSING_XM_UA(0.00)[]; FREEMAIL_ENVRCPT(0.00)[gmail.com];
+ RCPT_COUNT_TWELVE(0.00)[46]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[]; TAGGED_RCPT(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[];
+ R_RATELIMIT(0.00)[to_ip_from(RL99m1pto7gi4rdu4g5kom7ddi)];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ FREEMAIL_CC(0.00)[ilande.co.uk,redhat.com,freebsd.org,linux.ibm.com,nongnu.org,semihalf.com,gmail.com,quicinc.com,linaro.org,ventanamicro.com,wdc.com,linux.alibaba.com,dabbelt.com,aurel32.net,ispras.ru,flygoat.com,vivier.eu,jms.id.au];
+ RCVD_TLS_ALL(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
- RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid, suse.de:email,
+ imap1.dmz-prg2.suse.org:helo]
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -118,42 +152,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit a55ae46683 ("s390: move css_migration_enabled from machine to
-css.c") disabled CSS migration globally instead of doing it
-per-instance.
+Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
 
-CC: Paolo Bonzini <pbonzini@redhat.com>
-CC: qemu-stable@nongnu.org #9.1
-Fixes: a55ae46683 ("s390: move css_migration_enabled from machine to css.c")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2704
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Message-Id: <20241213160120.23880-3-farosas@suse.de>
----
- hw/s390x/s390-virtio-ccw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> In the qtest environment time will not step forward if the system is
+> paused (timers disabled) or we have no timer events to fire. As a
+> result VirtIO events are responded to directly and we don't need to
+> step time forward.
+>
+> We still do timeout processing to handle the fact the target QEMU may
+> not be ready to respond right away. This will usually be due to a slow
+> CI system or if QEMU is running under something like rr.
+>
+> Future qtest patches will assert that time actually changes when a
+> step is requested.
+>
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 2be8da2913..7bbf412620 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -1257,6 +1257,7 @@ static void ccw_machine_2_9_instance_options(MachineState *machine)
-     s390_cpudef_featoff_greater(12, 1, S390_FEAT_ZPCI);
-     s390_cpudef_featoff_greater(12, 1, S390_FEAT_ADAPTER_INT_SUPPRESSION);
-     s390_cpudef_featoff_greater(12, 1, S390_FEAT_ADAPTER_EVENT_NOTIFICATION);
-+    css_migration_enabled = false;
- }
- 
- static void ccw_machine_2_9_class_options(MachineClass *mc)
-@@ -1269,7 +1270,6 @@ static void ccw_machine_2_9_class_options(MachineClass *mc)
-     ccw_machine_2_10_class_options(mc);
-     compat_props_add(mc->compat_props, hw_compat_2_9, hw_compat_2_9_len);
-     compat_props_add(mc->compat_props, compat, G_N_ELEMENTS(compat));
--    css_migration_enabled = false;
- }
- DEFINE_CCW_MACHINE(2, 9);
- 
--- 
-2.35.3
-
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
