@@ -2,82 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A447A04064
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 14:10:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD3FBA04071
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 14:10:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tV9LF-0001W7-Sb; Tue, 07 Jan 2025 08:09:54 -0500
+	id 1tV9LF-0001WI-UR; Tue, 07 Jan 2025 08:09:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tV9L3-0001Tr-GQ; Tue, 07 Jan 2025 08:09:43 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
+ id 1tV9LA-0001Uw-03
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 08:09:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tV9L1-0007q0-Hq; Tue, 07 Jan 2025 08:09:41 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 5741C4E6000;
- Tue, 07 Jan 2025 14:09:32 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id U0rxOlpL8Io9; Tue,  7 Jan 2025 14:09:30 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 62FA44E6010; Tue, 07 Jan 2025 14:09:30 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 60242746F60;
- Tue, 07 Jan 2025 14:09:30 +0100 (CET)
-Date: Tue, 7 Jan 2025 14:09:30 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org,
- =?ISO-8859-15?Q?Fr=E9d=E9ric_Barrat?= <fbarrat@linux.ibm.com>, 
- Stefano Stabellini <sstabellini@kernel.org>, 
- Ilya Leoshkevich <iii@linux.ibm.com>, Cameron Esfahani <dirty@apple.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
- Alexander Graf <agraf@csgraf.de>, Paul Durrant <paul@xen.org>, 
- David Hildenbrand <david@redhat.com>, Halil Pasic <pasic@linux.ibm.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- xen-devel@lists.xenproject.org, qemu-arm@nongnu.org, 
- =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@redhat.com>, 
- Yanan Wang <wangyanan55@huawei.com>, Reinoud Zandijk <reinoud@netbsd.org>, 
- Peter Maydell <peter.maydell@linaro.org>, qemu-s390x@nongnu.org, 
- Riku Voipio <riku.voipio@iki.fi>, Anthony PERARD <anthony@xenproject.org>, 
- Alistair Francis <alistair.francis@wdc.com>, 
- Sunil Muthuswamy <sunilmut@microsoft.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Marcelo Tosatti <mtosatti@redhat.com>, Thomas Huth <thuth@redhat.com>, 
- Roman Bolshakov <rbolshakov@ddn.com>, 
- "Edgar E . Iglesias" <edgar.iglesias@amd.com>, 
- Zhao Liu <zhao1.liu@intel.com>, Phil Dennis-Jordan <phil@philjordan.eu>, 
- David Woodhouse <dwmw2@infradead.org>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- Nina Schoetterl-Glausch <nsg@linux.ibm.com>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
- Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Anton Johansson <anjo@rev.ng>
-Subject: Re: [RFC PATCH 6/7] accel/hvf: Use CPU_FOREACH_HVF()
-In-Reply-To: <6df59c2c-e29d-4b86-8908-4cb9093bad13@linaro.org>
-Message-ID: <4abe9825-ff86-5e7d-1170-3677d5494879@eik.bme.hu>
-References: <20250106200258.37008-1-philmd@linaro.org>
- <20250106200258.37008-7-philmd@linaro.org>
- <bd8168fe-c774-4f75-8a94-1a67ec31e38d@ventanamicro.com>
- <6df59c2c-e29d-4b86-8908-4cb9093bad13@linaro.org>
+ (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
+ id 1tV9L8-0007rR-JQ
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 08:09:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736255382;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=z8SneHPZ/4nHM9ZaX6sBF34bISNBdtryM7dYGYHywh4=;
+ b=V/NONbBx7EB7Zg6UCyrVaT+Ps4Ps4D3ksopu7ow/DLfEAYIgSrw1Q1yvC51sBLBIZuppny
+ bZYDUjG/o9ZlczGi2iHzyhbVgije34lbSIAkSHitkwelWE1roiY2H2HFQ+aRvKS1BiNzdX
+ Kf7ma8Dusw6BYomwkBJ/SATjjd7qDXk=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-651-6AnHrDddPkiMRitk7crwvg-1; Tue, 07 Jan 2025 08:09:40 -0500
+X-MC-Unique: 6AnHrDddPkiMRitk7crwvg-1
+X-Mimecast-MFC-AGG-ID: 6AnHrDddPkiMRitk7crwvg
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4359eb032c9so122310095e9.2
+ for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 05:09:40 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736255379; x=1736860179;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=z8SneHPZ/4nHM9ZaX6sBF34bISNBdtryM7dYGYHywh4=;
+ b=d+fmtIgfyhKfxMpTr5PAYpkKSOYF0QTcYGwmHaBIgi0JT9MOCI6A/QZabeoLr1Typl
+ j+B/Fyw7hWCLdsTtUYhfOHCFupzEWAUBtobFHj6Ny9DVfM9TWV3r70GO7DyA2qi0C97C
+ rnVIHkvE0IzPjYK0D2zIMWfqD93F26yq5Sne5aD6r5EZg79LpzHiwAImc5zd47015E6m
+ TXzRs/0XvNGcE4CFhX1SafJi0BcP5alDJmDVY7wDCQsl9/VOnUhHwYdAgZ77PIhG+Wrx
+ XlQjuzfVRgLIKerAhzZjx5abSMozjcJG3QpFBYmTe2IDwzuqsWJ+4Wnvp73PZevgpgJI
+ IVOg==
+X-Gm-Message-State: AOJu0Yy3CHzRrxW+2sv9uG88MwLc7KSjUd6lc/KJW3bKbw4hLKuMijHu
+ zIPSYCAmowtrs6wObN4xnPdufzZe5PhuGjb15o21OxC18T6QqOKg/YeK9bOzpE0Ygsf9KLkAN54
+ uBns9+ps5NxM8YdcBIR6E5siy6sWOHZcWcN0t/mlEntn2djnlkZ/b
+X-Gm-Gg: ASbGncsNOgllU7ecsFaB57zW2CHNslKiGLuZCa8hKR8wd7q2DTICfGSpPYe6NHx6jcK
+ v++26kQd1KOa+nv1eUfT3tshmeknPOoM2Q+btELfLvptQoiGvvg/yy2AjFRpwj83b8oYk8XD6qk
+ arxQUZ5pfFPDdK0mDCAxDuLU9ILcmUzEDNvGb/AggvTnbINEMGwbeLxGhxZgIh8WIlDBp0wF0sv
+ thcXVvp5EKVKG1oCK6zQ9AZRaZxQh6sfkyBCEogfTEPiSokMMzywl8Xlm/rRGm/B8U5JHoMDLY+
+ IMduXno=
+X-Received: by 2002:a05:600c:4f09:b0:431:12a8:7f1a with SMTP id
+ 5b1f17b1804b1-43668645d57mr547972915e9.16.1736255379577; 
+ Tue, 07 Jan 2025 05:09:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHhcA+WlPqoUl38UGeEmWIPlI66PSxJ0Rfsc4UYZdAE5OaQC92/hHXEpr5BEYqrnqqTlF4Bkg==
+X-Received: by 2002:a05:600c:4f09:b0:431:12a8:7f1a with SMTP id
+ 5b1f17b1804b1-43668645d57mr547972625e9.16.1736255379210; 
+ Tue, 07 Jan 2025 05:09:39 -0800 (PST)
+Received: from [10.43.3.236] (nat-pool-brq-t.redhat.com. [213.175.37.10])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-436dd11ddfdsm12348165e9.1.2025.01.07.05.09.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 07 Jan 2025 05:09:38 -0800 (PST)
+Message-ID: <794d89b6-45db-4d10-8a10-ed646859c044@redhat.com>
+Date: Tue, 7 Jan 2025 14:09:38 +0100
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1325344726-1736255370=:80373"
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] qga: Make run_agent() and run_agent_once() return
+ no value
+To: Konstantin Kostiuk <kkostiuk@redhat.com>
+Cc: qemu-devel@nongnu.org, michael.roth@amd.com, jtomko@redhat.com
+References: <cover.1733414906.git.mprivozn@redhat.com>
+ <8f4469febaaf5c48afdf13a6c88e959956c0f204.1733414906.git.mprivozn@redhat.com>
+ <CAPMcbCrLq5Q=1uVwhRDO8MgUekzcUXzbOvcg-CuibGNYyjceHw@mail.gmail.com>
+ <CAPMcbCoibsbysQLj_LRmuJUZ=ZM2ATP03dbo5zWzPxyyFfycMA@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?B?TWljaGFsIFByw612b3puw61r?= <mprivozn@redhat.com>
+In-Reply-To: <CAPMcbCoibsbysQLj_LRmuJUZ=ZM2ATP03dbo5zWzPxyyFfycMA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mprivozn@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.437,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,69 +111,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On 12/23/24 13:39, Konstantin Kostiuk wrote:
+> Hi Michal,
+> 
+> Do you plan to fix this patch series?
 
---3866299591-1325344726-1736255370=:80373
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Yes, but I got sidetracked just before leaving for Christmas. I'll post
+another version soon.
 
-On Mon, 6 Jan 2025, Philippe Mathieu-Daudé wrote:
-> On 6/1/25 21:33, Daniel Henrique Barboza wrote:
->> 
->> 
->> On 1/6/25 5:02 PM, Philippe Mathieu-Daudé wrote:
->>> Only iterate over HVF vCPUs when running HVF specific code.
->>> 
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>>   include/system/hvf_int.h  | 4 ++++
->>>   accel/hvf/hvf-accel-ops.c | 9 +++++----
->>>   target/arm/hvf/hvf.c      | 4 ++--
->>>   3 files changed, 11 insertions(+), 6 deletions(-)
->>> 
->>> diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
->>> index 42ae18433f0..3cf64faabd1 100644
->>> --- a/include/system/hvf_int.h
->>> +++ b/include/system/hvf_int.h
->>> @@ -11,6 +11,8 @@
->>>   #ifndef HVF_INT_H
->>>   #define HVF_INT_H
->>> +#include "system/hw_accel.h"
->>> +
->>>   #ifdef __aarch64__
->>>   #include <Hypervisor/Hypervisor.h>
->>>   typedef hv_vcpu_t hvf_vcpuid;
->>> @@ -74,4 +76,6 @@ int hvf_put_registers(CPUState *);
->>>   int hvf_get_registers(CPUState *);
->>>   void hvf_kick_vcpu_thread(CPUState *cpu);
->>> +#define CPU_FOREACH_HVF(cpu) CPU_FOREACH_HWACCEL(cpu)
->> 
->> 
->> Cosmetic comment: given that this is HVF specific code and we only support 
->> one hw
->> accelerator at a time, I'd skip this alias and use CPU_FOREACH_HWACCEL(cpu) 
->> directly.
->> It would make it easier when grepping to see where and how the macro is 
->> being used.
->
-> I find it more useful to grep for a particular accelerator, or for
-> all of them:
->
-> $ git grep CPU_FOREACH_
-> accel/hvf/hvf-accel-ops.c:507:    CPU_FOREACH_HVF(cpu) {
-> accel/hvf/hvf-accel-ops.c:546:    CPU_FOREACH_HVF(cpu) {
-> accel/kvm/kvm-all.c:875:        CPU_FOREACH_KVM(cpu) {
-> accel/kvm/kvm-all.c:938:    CPU_FOREACH_KVM(cpu) {
-> accel/tcg/cputlb.c:372:    CPU_FOREACH_TCG(cpu) {
-> accel/tcg/cputlb.c:650:        CPU_FOREACH_TCG(dst_cpu) {
+Michal
 
-But then you need to define a new macro for every new accelerator. Maybe 
-it's simpler to have CPU_FOREACH take the queue as a parameter so no 
-separate macro is needed for each accel (and they cannot get inconsistent 
-by changing only one of them in the future).
-
-Regards,
-BALATON Zoltan
---3866299591-1325344726-1736255370=:80373--
 
