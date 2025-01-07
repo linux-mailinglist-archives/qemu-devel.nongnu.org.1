@@ -2,93 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85EBAA049C1
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 19:58:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F8B9A04B4E
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 22:01:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVElP-00075a-4R; Tue, 07 Jan 2025 13:57:15 -0500
+	id 1tVGgK-0008RU-EW; Tue, 07 Jan 2025 16:00:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tVElJ-000753-31
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 13:57:09 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tVElH-0004Gx-FT
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 13:57:08 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4361dc6322fso106436705e9.3
- for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 10:57:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736276225; x=1736881025; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
- :subject:date:message-id:reply-to;
- bh=c3darVpZrv40gfMs7JtLycBDIF+yCQhL7QwhFFYlrrw=;
- b=ca7e4KqArN/mM57FeGIq3v2BXbAdMRQcrZ51YJ0waaDTr2cixTgebCYcHcUUfPLwQi
- PO7/nFSi3Z45x0iQcpTpjkkrieaoxjGcMmKdjdJqtZ0P65W9X86+zbleJqGZn6ElSnyN
- eaWsR7Bwt9Vqa59dfBVlehCAkdfQeqZ4GTyelo0pQvLZh/LR/EtrRLi96TXIsJVF/F33
- uuc6dnMzaqQocJea6bWOhNmKEvpOUvflvlIlWZWocfMsUJyjpPfZwSGzXrD2696fBoQS
- Ooxa27u1U6KMLzUI0kDA0vge3QzB8WR+az5eCOofr9CvwJaxnV/31+avY609UuO74nK3
- D7jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736276225; x=1736881025;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=c3darVpZrv40gfMs7JtLycBDIF+yCQhL7QwhFFYlrrw=;
- b=o/7UeF13bHnqHt0UDVQ582d80El2ZYBCaQVbxrQw19/EKbgmPdgkwiSfVCPEj4YaM+
- sE4um201Z0koc6q11+t8ZjYP6uVJ+t2bgIl0nKwcInEmw1gBVPSm0ScG30WdLNoqO6+O
- DrONCH9xK9T39JK+EdzwqrTnlFPH3WnEvf1Kwov9nUQTswQWpluLch8ESTSyv8WDUDsQ
- yOz7tI9X93uTvVPWekXjd0slZpA5989ecnMUEWsa+vT/1kVkdZ5N6jvZrPJ6dD2erp2P
- FHKLTjDFWzz7m7haFCLM7GPrU6UNkKfS/vytUOc7DnCRQLc813oQP/pdkPxvfUI/qvg9
- n/bg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWbqsl2W32ctv5we3b3hmo9DFJzkLxYRshJF8zDpjTYqYYHDm2R/Al2QpbjchSpv4/qSchbissTqGgY@nongnu.org
-X-Gm-Message-State: AOJu0Yxpt8VKkMJ2T5kTlE4FpsRrAAvjM9xuTHYAH2+LAie6wPEua1/f
- X1kuIxdkN9CjCknUsj1/ut9HCJfI6/f3Co+M/l9ZprCSzT2g4kIRgasYHbzzHIE=
-X-Gm-Gg: ASbGncuOh469dkX4bi+adgrN5iAInds2MgziFhbo7uiCb8/WbZaROj0IZjtAlW3Z2NP
- qWdspS35jo5Saxy6Gi9Vn0K1VcB2n1mvyqPJ1S68ejwpoXcHe8EWsq66hv4X62ZFq2FShOj+SiU
- G7+5o+NlCNg/Uc/egtTThmWcDrty4XBYWaJdb6rGtHpqq7ZaL63cvD38W5BSAxmTJQm9HOgTOvz
- M+puzgemoj32YTH8u10EwD0Vv6YhN/fFccEsHM0TEOFrnKGsjaj8N1iXA1u4Du7zHvB9+hKDRTu
- xsvs+tCP8RCyOnbjJj8pSuz9
-X-Google-Smtp-Source: AGHT+IE+xFX0awFyDNf7ue4odLMiLyG5RNcDktK8Off4n0U35vuGUlXBUMwfnrUkHSUOGt/fSr0dWg==
-X-Received: by 2002:a05:600c:3b24:b0:436:2923:d23a with SMTP id
- 5b1f17b1804b1-43668b7a683mr430353145e9.33.1736276225648; 
- Tue, 07 Jan 2025 10:57:05 -0800 (PST)
-Received: from [192.168.69.132] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43661219a71sm602097695e9.26.2025.01.07.10.57.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Jan 2025 10:57:05 -0800 (PST)
-Message-ID: <d1674d1e-e6ac-441f-acbd-ad3a2dcd15aa@linaro.org>
-Date: Tue, 7 Jan 2025 19:57:04 +0100
+ (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
+ id 1tVEYh-0004Un-NS; Tue, 07 Jan 2025 13:44:07 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
+ id 1tVEYe-0002u6-8H; Tue, 07 Jan 2025 13:44:07 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 507I4BBr012018;
+ Tue, 7 Jan 2025 18:43:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=o0SvNewd65nIG4kEVE1az9PSPP5S0ooYLfuYy0oqk
+ 1I=; b=G4wS7F+Ty1dB2ubOO8gYhCM39xRVJgF5qCtKLGIEyD+TJMtvXXwpSFSd8
+ /UY/Mpru+fS0ZQavseNv+QnHgE7PQoDO9+lWilv+OAd1GdPIuPyJU0xuONviHBWa
+ NIclv7z6RhHEF3NDaDeLgrD0PFGjSJZ0RBnwQvZF4EkDP75COPxGvfpXdCdL2jXD
+ X0DB6DT23xc+hpawxMI6/YaRIPMZ1cRnoaHZs8LgbkJyj8/ClhRzs59MsewcGnf/
+ Dl14YMBh0LFRj1BB3UJLA5r/HJHELaz1aVHBS6VXmTWr/vpk1kObB+YuduDRHMzN
+ wDzCMaGT3kjXMyTr2r728t/yGyQUg==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 440vrcbydv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Jan 2025 18:43:58 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 507G0thA008851;
+ Tue, 7 Jan 2025 18:43:57 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43yfpyv2hj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Jan 2025 18:43:57 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 507Ihtsq21430906
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 7 Jan 2025 18:43:56 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A37ED5805D;
+ Tue,  7 Jan 2025 18:43:55 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0F60658058;
+ Tue,  7 Jan 2025 18:43:55 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.12.78.174])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  7 Jan 2025 18:43:54 +0000 (GMT)
+From: Rorie Reyes <rreyes@linux.ibm.com>
+To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
+Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
+ jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
+ alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com,
+ akrowiak@linux.ibm.com
+Subject: [PATCH v1 0/5] Report vfio-ap configuration changes
+Date: Tue,  7 Jan 2025 13:43:49 -0500
+Message-Id: <20250107184354.91079-1-rreyes@linux.ibm.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 6/7] tests/qtest: Add API functions to capture IRQ
- toggling
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, alex.bennee@linaro.org, thuth@redhat.com,
- armbru@redhat.com, Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-References: <20241216141818.111255-1-gustavo.romero@linaro.org>
- <20241216141818.111255-7-gustavo.romero@linaro.org>
- <77ee967d-00e6-45fa-a8b1-42192e61b553@linaro.org>
-Content-Language: en-US
-In-Reply-To: <77ee967d-00e6-45fa-a8b1-42192e61b553@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: pI2llqLiUs-n9Vt9kgcglez-T1O2mbbX
+X-Proofpoint-ORIG-GUID: pI2llqLiUs-n9Vt9kgcglez-T1O2mbbX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=853 spamscore=0
+ impostorscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0 bulkscore=0
+ clxscore=1011 mlxscore=0 priorityscore=1501 suspectscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501070153
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=rreyes@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 07 Jan 2025 16:00:06 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,63 +105,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/1/25 19:35, Philippe Mathieu-Daudé wrote:
-> Cc'ing maintainers:
-> 
-> $ ./scripts/get_maintainer.pl -f tests/qtest/libqtest.c
-> Fabiano Rosas <farosas@suse.de> (maintainer:qtest)
-> Laurent Vivier <lvivier@redhat.com> (maintainer:qtest)
-> Paolo Bonzini <pbonzini@redhat.com> (reviewer:qtest)
-> 
-> On 16/12/24 15:18, Gustavo Romero wrote:
->> Currently, the QTest API does not provide a function to capture when an
->> IRQ line is raised or lowered, although the QTest Protocol already
->> reports such IRQ transitions. As a consequence, it is also not possible
->> to capture when an IRQ line is toggled. Functions like qtest_get_irq()
->> only read the current state of the intercepted IRQ lines, which is
->> already high (or low) when the function is called if the IRQ line is
->> toggled. Therefore, these functions miss the IRQ line state transitions.
->>
->> This commit introduces two new API functions:
->> qtest_get_irq_raised_counter() and qtest_get_irq_lowered_counter().
->> These functions allow capturing the number of times an observed IRQ line
->> transitioned from low to high state or from high to low state,
->> respectively.
->>
->> When used together, these new API functions then allow checking if one
->> or more pulses were generated (indicating if the IRQ line was toggled).
->>
->> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Acked-by: Thomas Huth <thuth@redhat.com>
->> ---
->>   tests/qtest/libqtest.c | 24 ++++++++++++++++++++++++
->>   tests/qtest/libqtest.h | 28 ++++++++++++++++++++++++++++
->>   2 files changed, 52 insertions(+)
+This patch series creates and registers a handler that is called when
+userspace is notified by the kernel that a guest's AP configuration has
+changed. The handler in turn notifies the guest that its AP configuration
+has changed. This allows the guest to immediately respond to AP
+configuration changes rather than relying on polling or some other
+inefficient mechanism for detecting config changes.
 
+Rorie Reyes (5):
+  linux-headers: NOTFORMERGE - placeholder uapi updates for AP config
+    change
+  hw/vfio/ap: notification handler for AP config changed event
+  hw/vfio/ap: store object indicating AP config changed in a queue
+  hw/vfio/ap: Storing event information for an AP configuration change
+    event
+  s390: implementing CHSC SEI for AP config change
 
->> +uint64_t qtest_get_irq_raised_counter(QTestState *s, int num)
->> +{
->> +    /* dummy operation in order to make sure irq is up to date */
->> +    qtest_inb(s, 0);
-> 
-> Isn't it better to simply call:
-> 
->         qtest_rsp(s);
-> 
-> ?
+ hw/vfio/ap.c                 | 74 ++++++++++++++++++++++++++++++++++++
+ include/hw/s390x/ap-bridge.h | 17 +++++++++
+ linux-headers/linux/vfio.h   |  1 +
+ target/s390x/ioinst.c        | 11 +++++-
+ 4 files changed, 101 insertions(+), 2 deletions(-)
 
-Sorry I misunderstood. You want to flush the qtest socket, right?
-Could this be sufficient?
-
-           s->ops.send(s, "\n");
-
-Otherwise I'd rather add a "nop" command. Seeing "inb" in traces
-is very confusing.
-
-> 
->> +
->> +    return s->irq_raised_counter[num];
->> +}
+-- 
+2.39.5 (Apple Git-154)
 
 
