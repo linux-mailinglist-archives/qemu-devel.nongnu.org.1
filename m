@@ -2,90 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C2DAA03D3E
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 12:06:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E5E6A03D46
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 12:07:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tV7Pe-0006nf-55; Tue, 07 Jan 2025 06:06:18 -0500
+	id 1tV7QU-0007QZ-Mc; Tue, 07 Jan 2025 06:07:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tV7Pc-0006n5-0l
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 06:06:16 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tV7Pa-0008IN-Eh
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 06:06:15 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4361815b96cso102466555e9.1
- for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 03:06:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736247973; x=1736852773; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=UEYemaaBKryt1ztq9F9+c3TQl2Hj6Atc3fbTmLfWMJY=;
- b=kjzlR2Q2NYbHsyAYfkWvEboF2jksYkLKzrtb35/bND+EIAPxSGL/9ZD+YpdbPuOwuc
- EFPUHJz02WTsZPav6PEowZBjjX7Q+cG0XLfYoGsPK7IL7LKS6K2R8Mg+MTt6KN95SL9W
- uqDtLdYUID8+YNYjMKOltfmFS7a7VSdBbauPUv1+OqWTwPe1T1XQkL6mLiJvYWn52Xkp
- itKlV3dyn8wfswgz4wOCEctkW0KieKDm6BOUfMShai4FczmKSRHgtLiCWa5C7Q6qGKs5
- MSYslZDRTTaCwF9jkKcJmwQkcKDNr53CiR3dvOnfpdtsVxpF+y6RiopVg8h4znp/AKkS
- +qeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736247973; x=1736852773;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UEYemaaBKryt1ztq9F9+c3TQl2Hj6Atc3fbTmLfWMJY=;
- b=jt1w8YhrX6PUTe2mnZyOJFrDQd8Wiccp09ybp6sjNsDtACNVDfQl6Hg4azybeG7MT0
- +Y5CXJr59G0olpoM+H28UF6WGg8OpituXJgqMxHaTRyY+RQhr7j0MKLCW0Yu8T/CrBDO
- IZsAHPaZ2Ls18ywK3Ctt+BdP/NllCFg6hJrpT9XTFkhJZOEXv4dkWEYPuxly8sk6aGR3
- le1T4HfCaQwnGSyROVqkLVPyNf2HMmEOFoIXc9nIsCIRDfF0mm3+5plk3HYpdpPeTPVJ
- KiP/9vNYynqGEaMr/u6jSu6u2Q/bSse3T1lPbmLPkWPkguH+zgi3CVRCr965xTfQeQqd
- BKEA==
-X-Gm-Message-State: AOJu0YyI4n3WSeeQyavI9jInLwYVMuQh/f8mi31X/GkmA+XobbfFHxJ+
- F6qP2lvyhzpyIWzjNSQD3mYOQ/35tt5sB1EmULCvTdPiB1Ub91D1kBje2nVbpyYGdYCRc/rOqFp
- ECiM=
-X-Gm-Gg: ASbGncujp1umu8g25Sf5ijDrCSoR4HwpJaycx3RcZHr5reyy2fP7DDZkuKFHt741Fky
- XNkXTErSis4Vj29S4EcFkRet2varUAB561AWC4q3kpxkvGjJ3CvlgVuKyvA1LZjSvIqMiIru1kQ
- 6s8naIfxKaXk0l08WauxcoJSnKw6p/JIXrNYSpzjWzYd/ReBj8ACz6qoc61Iy5uCBOEuSg1cZ5V
- gySE0XhSPybGIe7KxyIFQYnR8QbIEB58aQTcugwUiitZp52g2EESegBHMupbuYkFA9oY6zPHJTQ
- rnRHxgdVkHpAH2U6aXmGcUYk
-X-Google-Smtp-Source: AGHT+IFiwgdSH3+htR6Xuj6jgX725ZydMrTVsOeWsNK9QtvtlEGrihhVhYQMe9yO0X1snlMS7/Ha6Q==
-X-Received: by 2002:a05:600c:46c7:b0:434:a1d3:a331 with SMTP id
- 5b1f17b1804b1-43668b5f36amr498158915e9.22.1736247972881; 
- Tue, 07 Jan 2025 03:06:12 -0800 (PST)
-Received: from [192.168.69.132] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43661200abesm591890615e9.18.2025.01.07.03.06.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Jan 2025 03:06:12 -0800 (PST)
-Message-ID: <93dfbe7d-77b6-4abf-a364-f48fb7b2da6f@linaro.org>
-Date: Tue, 7 Jan 2025 12:06:11 +0100
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tV7QR-0007Pf-FF
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 06:07:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tV7QN-0008Uk-Sw
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 06:07:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736248022;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=k7TY6FOA/5GVfR6ug7DM96NEwsyvBbxsgWbqcSbHB+8=;
+ b=fehyXgXzbJZouqi62BW1E/uMWgdZA481wXVdabmzxFsunNTCmu76WpOO+OJYdX8tipbRcf
+ gJNr8vvhTgx+3XumsJZfuLNYhzKROqXYXM01U6BpqJsXef0uC2SVCp8kBvCqteqzjMuxXp
+ JQdwse9LGiAja9XkCKihZqo5vP4Qpuk=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-389-Yq9rhTYDN2KN32XGMpNE5Q-1; Tue,
+ 07 Jan 2025 06:06:57 -0500
+X-MC-Unique: Yq9rhTYDN2KN32XGMpNE5Q-1
+X-Mimecast-MFC-AGG-ID: Yq9rhTYDN2KN32XGMpNE5Q
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DCC4419560A3; Tue,  7 Jan 2025 11:06:55 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.194.101])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D33061956088; Tue,  7 Jan 2025 11:06:54 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 8315321E6924; Tue, 07 Jan 2025 12:06:52 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: qemu-devel@nongnu.org,  Song Gao <gaosong@loongson.cn>,  Bibo Mao
+ <maobibo@loongson.cn>,  Eric Blake <eblake@redhat.com>,  Eduardo Habkost
+ <eduardo@habkost.net>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Yanan Wang
+ <wangyanan55@huawei.com>,  Zhao Liu <zhao1.liu@intel.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>
+Subject: Re: [PATCH v2 21/23] qapi/machine: Replace TARGET_LOONGARCH64 with
+ TARGET_LOONGARCH
+In-Reply-To: <20241226-la32-fixes1-v2-21-0414594f8cb5@flygoat.com> (Jiaxun
+ Yang's message of "Thu, 26 Dec 2024 21:19:52 +0000")
+References: <20241226-la32-fixes1-v2-0-0414594f8cb5@flygoat.com>
+ <20241226-la32-fixes1-v2-21-0414594f8cb5@flygoat.com>
+Date: Tue, 07 Jan 2025 12:06:52 +0100
+Message-ID: <87wmf6ann7.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/10] hw/s390x: Remove the "adapter_routes_max_batch"
- property from the flic
-To: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>
-Cc: qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>,
- Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>
-References: <20250103144232.520383-1-thuth@redhat.com>
- <20250103144232.520383-11-thuth@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250103144232.520383-11-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,18 +89,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/1/25 15:42, Thomas Huth wrote:
-> Now that the s390-ccw-virtio-2.8 machine has been removed, we don't
-> need the "adapter_routes_max_batch" property anymore and can remove it.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   include/hw/s390x/s390_flic.h | 2 --
->   hw/intc/s390_flic.c          | 9 ---------
->   hw/s390x/virtio-ccw.c        | 5 ++---
->   3 files changed, 2 insertions(+), 14 deletions(-)
+Jiaxun Yang <jiaxun.yang@flygoat.com> writes:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> All TARGET_LOONGARCH64 qapis are also available for LoongArch32 as we
+> are reusing the same CPU backend implemenation.
+
+As far as I can tell this makes query-cpu-model-expansion and
+query-cpu-definitions in the LoongArch32 build, too.
+
+> Use TARGET_LOONGARCH to identify LoongArch.
+
+Suggest to be more explicit. e.g. like this:
+
+  The QAPI commands specific to target loongarch64 are wanted for
+  loongarch32, too.  These are query-cpu-model-expansion and
+  query-cpu-definitions.  They just work, since the two use the same CPU
+  implementation.
+
+  Replace TARGET_LOONGARCH64 by TARGET_LOONGARCH.
+
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+
+Preferably with an improved commit message
+Acked-by: Markus Armbruster <armbru@redhat.com>
 
 
