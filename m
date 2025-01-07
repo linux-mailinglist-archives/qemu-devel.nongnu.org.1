@@ -2,80 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 178E0A04A2D
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 20:28:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C97BA04A3F
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 20:30:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVFE1-0003L7-MI; Tue, 07 Jan 2025 14:26:49 -0500
+	id 1tVFGB-0004bw-Qr; Tue, 07 Jan 2025 14:29:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tVFDv-0003KV-C3
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 14:26:45 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tVFG8-0004az-Oa
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 14:29:01 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tVFDt-0007oJ-2c
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 14:26:42 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3863494591bso8201776f8f.1
- for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 11:26:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tVFG7-00083U-9b
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 14:29:00 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-385eed29d17so7607027f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 11:28:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736277999; x=1736882799; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=jQpe/t9gE90x9xB1kiTd2LC7ZhqmJPaLIwleQhgmA4g=;
- b=tACTlSaNNumfLn9lWEpyPUQBk/pKlWa9eUdntVXhDsbruvxK1ZQVfD7Lunbt9jviee
- nmtapRiXQgcIaFpQjrwlOLh3Yl+l2PGbRSDb1YjhPgUAwSYMS319X2YvO0UmL+IdHlAt
- dtT9etAsnZHaap0pzRme08mU6UTIUQVkI3lhwk6f4SVgsrOvgGzXRFMyFb0hntBQNL8W
- k/lQvCpU3Jy4ar89DL9BRXZn092EPUuyvvWIajjWAj/yC7ldh2ktXyf02BDSKPpsy7QB
- KmEDonzPZx9WwwKtABsQ7PcVb5l+wYnBoZ2IwsE5m6aQs2hPLUKGsvVz1dVndvtKh/+L
- he4A==
+ d=linaro.org; s=google; t=1736278138; x=1736882938; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=0JTBG8DEE9pSJJctN6IsBh2WG7ETth1gvgAg+/wJPaw=;
+ b=Qs+51WzIkcaUArs/pqCG+ycVtNuNTk2J3tuLpgdKN/fre7XcsauYN67gD0QHYdxyC5
+ vweoQ90YSSZne/IWpGVhV5Y+hFRM63WhzgAlizpGmbMAvR8KMcEOZI8A5cnsWuK1MVbe
+ NoLyCmK/S5TGD1FKC9DUyGMYaW3HLc5A9qUFTYopxgI2H/G635F1WC4zrEjePdKSOXsx
+ kwM5O3/NW+imKZJUzrhtL0gglmsebUgfdBRFQ1S2Uwvrt0H3UuqBQQc6LIINkgv0n70G
+ F7VJwUdWYqC07oE7tF0COwpFdaVaO6uO4L75MzKDZ6vCCU/EVz3J+9LHiRev3ULccyRI
+ H/Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736277999; x=1736882799;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=jQpe/t9gE90x9xB1kiTd2LC7ZhqmJPaLIwleQhgmA4g=;
- b=puIjJHNcMiiQ8OaW9CO3v9kmg30cXIEss6PWsWjx02Q+F3yoVhRUZQ/FLClKEmUGa6
- iYgPF+JrWDGXMKz9Lrq5G+zhes7Nj7UntISLmrHlGnz5iqo03uCoN062KCG9qitgnhST
- 4WBcHHqYbJ+dP63C/38Ik00UlV387aU39esh9c3JRqvYIJTXD19TyaLefP/f18pRFl13
- 03lfbV+4361ZR8KI5PuuoWP3FCjP6MMcXQZycadauTNVUhLc2chX2BwqcyiRJNfpIEcD
- GDslUXnf6MfYtyTDIXRz9FU23f6To/QD3WiPKpCTAX/qFEPbnliA/dzrO8XFL1IAedOy
- LmCQ==
-X-Gm-Message-State: AOJu0Yy7pj//ExQYJuKprNQ+o3kHT8fBbfrc+wxpxF+GIkX2Gd6rpt5V
- kIQvh9zlG7c9w12VzgOWBpLlKGKgY4pWiIV+LRB/D10Zcd/lMYqxOK+yrG8A7h2xfkR8TDcfc8p
- rdoY=
-X-Gm-Gg: ASbGncvwYHYx4oRRtm/4F8fptwExzNHinEcmHUKDwVKtmxDhfbCpGctXLYsXmpT8eEj
- hOBvFdSx2yCk5ul/dS9PTB2eIc6aCTvH7kTSP4iDbiPcbQSCTexHdjIGfSoYhoBRUG3v7PUBxxL
- J+4TmDJA3IC31qNnJcuk3zZP1WE0tJ47amDJkmbfrGpIDdAAx60BuotegIvnpj/9B9+CIegNL79
- O7ky2HM3kMDHRt31nou8Zu1Zt+/VvjxOYa9HZhPzICMoX1RSpj9xTfUKnt25lEdq5PqmclZ4au7
- cBWeQaYod5ZRrgIeuXyJ1FNo8mADAXo=
-X-Google-Smtp-Source: AGHT+IHLTbv1Vkh/klZ/gKZbygji4sVpVuH+nf3/hXfJlGgADfO39TPn1BJuftl1wlMw79bhQYgFww==
-X-Received: by 2002:a05:6000:2c5:b0:385:f195:27f with SMTP id
- ffacd0b85a97d-38a221f339emr57011373f8f.5.1736277999177; 
- Tue, 07 Jan 2025 11:26:39 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1736278138; x=1736882938;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=0JTBG8DEE9pSJJctN6IsBh2WG7ETth1gvgAg+/wJPaw=;
+ b=uxV4+1CpmOYoDlMgmlKf72gCyDOnpYxFzwcW7LbNdOA0F02Id8dYwSezvneG63kP2v
+ 8HV4sEOAzEATfGvOSw03/2Jiw8VrSZh2F2Qdbq6iTS8eTWTq7AW0NV4RDQt0he1Q9a9J
+ DHgrXlQrF3O9WsDGeyR8aBLXHbFriG+npNWJdpDgsAbhshOMVkOizmS5SsqxoCaS+WiY
+ 1jOuFOPTcK7nZ+UwNoat5LBXjNYCCuF+3mNlaHASPT45lwOdAKTO/NvrGeJArJocYIdH
+ L4/yaZKkPu/Y2KctM/UeiWQs7f8STU4lGoFTnmVKXY6DPxhPx+Ma0hKoJ6mVIV8Hywqv
+ o9DQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUNSSdByxVLqhm7YgdUaWVGEWMCpCki/ymNNosc641MnEfsFfT599YlWRtrwpkP8hdMTqCdZwNbFweu@nongnu.org
+X-Gm-Message-State: AOJu0YzrEN4AMngAQJRLLVwOJI+1uR9TOyNWG0j7f6pG8pXE36AYv518
+ JKdtO/JjeEgBXagAPeLFvWWDRDjTwwxapE96C9FF4A26+lCcX/uDkytzZ+G40ms=
+X-Gm-Gg: ASbGnctk7YVPwDUs8T/cPjRttyObOumQTdHP9YT7jS/OuQkF/BCAD14jJLQcgR2kxSK
+ HuEYdKlk0KXJ5DRuwR2+8Jc+XPA68gaRyOsi5WsykYplf+5JWdEr2dDg3OtffDQ7XMaY57Kf0L2
+ /F/dHadEKm0TJ55fBqI3JLLWH58/Z4Y6oMRDyvsTY36NT2DQCC9LbNxt1Vjqzz6EcIE7q/U53U9
+ OMcRmHePWn751/jeO4Gn1B8DvQT0tJw1QBwyrztA+cDN68brcS/56mMHxfQ2CtvhqWuPyPyEUKh
+ 34Efhn8BPUHXWU+eOvn+pfEy
+X-Google-Smtp-Source: AGHT+IEs/hNR9cBW4mX15SjVSS+wlMZPtjZUD17GBmZVUzu4zBQNO2PGwx+5a3hsCWFxxEdYH39f4w==
+X-Received: by 2002:a5d:598f:0:b0:386:424e:32d5 with SMTP id
+ ffacd0b85a97d-38a221ea939mr54805325f8f.14.1736278136393; 
+ Tue, 07 Jan 2025 11:28:56 -0800 (PST)
+Received: from [192.168.69.132] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c828e7asm50601297f8f.21.2025.01.07.11.26.38
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 07 Jan 2025 11:26:38 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Samuel Tardieu <sam@rfc1149.net>, qemu-arm@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH] tests/qtest/stm32l4x5_usart: Avoid accessing NVIC via MMIO
-Date: Tue,  7 Jan 2025 20:26:37 +0100
-Message-ID: <20250107192637.67683-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
+ ffacd0b85a97d-38a1c8acadcsm50576763f8f.105.2025.01.07.11.28.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 07 Jan 2025 11:28:55 -0800 (PST)
+Message-ID: <52b6eb4d-b863-4938-ad27-03f6978c84b9@linaro.org>
+Date: Tue, 7 Jan 2025 20:28:54 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] hw/sd/sdhci: Fix coding style
+To: Jamin Lin <jamin_lin@aspeedtech.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ Bin Meng <bmeng.cn@gmail.com>, "open list:ASPEED BMCs"
+ <qemu-arm@nongnu.org>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>, "open list:SD (Secure Card)" <qemu-block@nongnu.org>
+Cc: troy_lee@aspeedtech.com, yunlin.tang@aspeedtech.com,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+References: <20241114094839.4128404-1-jamin_lin@aspeedtech.com>
+ <20241114094839.4128404-2-jamin_lin@aspeedtech.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241114094839.4128404-2-jamin_lin@aspeedtech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,127 +106,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The STM32L4x5 SoC family use a ARM Cortex-M core. Such
-core is architecturally tied with a NVIC (interrupt controller),
-having the NVIC MMIO mapped in the core address space.
+On 14/11/24 10:48, Jamin Lin wrote:
+> Fix coding style issues from checkpatch.pl
+> 
+> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+> Reviewed-by: Cédric Le Goater <clg@redhat.com>
+> ---
+>   hw/sd/sdhci.c | 64 +++++++++++++++++++++++++++++++++------------------
+>   1 file changed, 42 insertions(+), 22 deletions(-)
 
-When using the QTest accelerator, we don't emulate vCPU, only
-a dummy is created. For now, QTest is only supposed to access
-MMIO devices mapped on the main 'SysBus'. Thus it shouldn't
-be able to access a NVIC MMIO region, because such region is
-specific to a vCPU address space, which isn't available under
-QTest.
-
-In order to avoid NVIC MMIO accesses, rather than checking
-UART IRQs on the NVIC, intercept the UART IRQ and check for
-raised/lowered events.
-
-The sysbus USART1 IRQ output is wired to EXTI #26 input.
-Use qtest_irq_intercept_out_named() to intercept it, count
-the events with qtest_get_irq_lowered_counter() and
-qtest_get_irq_raised_counter().
-
-Remove the then unused check/clear_nvic_pending() methods.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
-Based-on: <20241216141818.111255-7-gustavo.romero@linaro.org>
-"tests/qtest: Add API functions to capture IRQ toggling"
-
-This patch is to fix the problem reported by Fabiano when
-removing the &first_cpu global in qtest, see analysis in:
-https://lore.kernel.org/qemu-devel/05820c9b-a683-4eb4-a836-e97aa708d5e5@linaro.org/
-
-Note, while writing that patch I noticed a problem with the
-b-l475e-iot01a machine. In bl475e_init() somes output GPIOs
-are wired twice. The EXTI outputs are passed to the SoC with
-qdev_pass_gpios(), and few are re-wired to the various output
-IRQ splitters. I'll open a GitLab issue so it can be cleared
-later.
----
- tests/qtest/stm32l4x5_usart-test.c | 33 +++++++-----------------------
- 1 file changed, 7 insertions(+), 26 deletions(-)
-
-diff --git a/tests/qtest/stm32l4x5_usart-test.c b/tests/qtest/stm32l4x5_usart-test.c
-index 927bab63614..35622e9434d 100644
---- a/tests/qtest/stm32l4x5_usart-test.c
-+++ b/tests/qtest/stm32l4x5_usart-test.c
-@@ -46,26 +46,7 @@ REG32(ICR, 0x20)
- REG32(RDR, 0x24)
- REG32(TDR, 0x28)
- 
--#define NVIC_ISPR1 0XE000E204
--#define NVIC_ICPR1 0xE000E284
--#define USART1_IRQ 37
--
--static bool check_nvic_pending(QTestState *qts, unsigned int n)
--{
--    /* No USART interrupts are less than 32 */
--    assert(n > 32);
--    n -= 32;
--    return qtest_readl(qts, NVIC_ISPR1) & (1 << n);
--}
--
--static bool clear_nvic_pending(QTestState *qts, unsigned int n)
--{
--    /* No USART interrupts are less than 32 */
--    assert(n > 32);
--    n -= 32;
--    qtest_writel(qts, NVIC_ICPR1, (1 << n));
--    return true;
--}
-+#define USART1_EXTI_IRQ 26
- 
- /*
-  * Wait indefinitely for the flag to be updated.
-@@ -195,6 +176,8 @@ static void init_uart(QTestState *qts)
-     /* Enable the transmitter, the receiver and the USART. */
-     qtest_writel(qts, (USART1_BASE_ADDR + A_CR1),
-         cr1 | R_CR1_UE_MASK | R_CR1_RE_MASK | R_CR1_TE_MASK);
-+
-+    qtest_irq_intercept_out_named(qts, "machine/soc/exti", "sysbus-irq");
- }
- 
- static void test_write_read(void)
-@@ -221,7 +204,7 @@ static void test_receive_char(void)
-     g_assert_true(send(sock_fd, "a", 1, 0) == 1);
-     usart_wait_for_flag(qts, USART1_BASE_ADDR + A_ISR, R_ISR_RXNE_MASK);
-     g_assert_cmphex(qtest_readl(qts, USART1_BASE_ADDR + A_RDR), ==, 'a');
--    g_assert_false(check_nvic_pending(qts, USART1_IRQ));
-+    g_assert_cmpuint(qtest_get_irq_lowered_counter(qts, USART1_EXTI_IRQ), ==, 0);
- 
-     /* Now with the IRQ */
-     cr1 = qtest_readl(qts, (USART1_BASE_ADDR + A_CR1));
-@@ -230,8 +213,7 @@ static void test_receive_char(void)
-     g_assert_true(send(sock_fd, "b", 1, 0) == 1);
-     usart_wait_for_flag(qts, USART1_BASE_ADDR + A_ISR, R_ISR_RXNE_MASK);
-     g_assert_cmphex(qtest_readl(qts, USART1_BASE_ADDR + A_RDR), ==, 'b');
--    g_assert_true(check_nvic_pending(qts, USART1_IRQ));
--    clear_nvic_pending(qts, USART1_IRQ);
-+    g_assert_cmpuint(qtest_get_irq_lowered_counter(qts, USART1_EXTI_IRQ), >, 0);
- 
-     close(sock_fd);
- 
-@@ -251,7 +233,7 @@ static void test_send_char(void)
-     qtest_writel(qts, USART1_BASE_ADDR + A_TDR, 'c');
-     g_assert_true(recv(sock_fd, s, 1, 0) == 1);
-     g_assert_cmphex(s[0], ==, 'c');
--    g_assert_false(check_nvic_pending(qts, USART1_IRQ));
-+    g_assert_cmpuint(qtest_get_irq_lowered_counter(qts, USART1_EXTI_IRQ), ==, 0);
- 
-     /* Now with the IRQ */
-     cr1 = qtest_readl(qts, (USART1_BASE_ADDR + A_CR1));
-@@ -260,8 +242,7 @@ static void test_send_char(void)
-     qtest_writel(qts, USART1_BASE_ADDR + A_TDR, 'd');
-     g_assert_true(recv(sock_fd, s, 1, 0) == 1);
-     g_assert_cmphex(s[0], ==, 'd');
--    g_assert_true(check_nvic_pending(qts, USART1_IRQ));
--    clear_nvic_pending(qts, USART1_IRQ);
-+    g_assert_cmpuint(qtest_get_irq_raised_counter(qts, USART1_EXTI_IRQ), >, 0);
- 
-     close(sock_fd);
- 
--- 
-2.47.1
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
