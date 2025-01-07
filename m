@@ -2,66 +2,138 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62BCA039EC
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 09:41:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03877A03A82
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 10:02:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tV580-0002Rt-5G; Tue, 07 Jan 2025 03:39:57 -0500
+	id 1tV5Sv-0008K3-G5; Tue, 07 Jan 2025 04:01:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tV57w-0002RB-4d; Tue, 07 Jan 2025 03:39:52 -0500
-Received: from mgamail.intel.com ([198.175.65.17])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tV5Sl-0008JS-PI
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 04:01:25 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tV57q-00082w-Sa; Tue, 07 Jan 2025 03:39:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736239187; x=1767775187;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=wy4C1JLqouyAQa7rS1oC3i8VxtHk8A6mXEyq4Eb/X3s=;
- b=PGKanqSQjl5NnSjE7DOQRBsL0rUM8IGD9RWHxPFbz+KnHdkaiwqhDBIc
- vpwA3WRPo9C1+o65rxKIElLql7oJ9kG7qTdq27pMseFAJEMQU79/yvz6q
- 7VrGP+xv60hICgz+Cf9VU5uadCjrNcSkDd20VyIupJjfMP0XwUiix9VDd
- KywK9sZ7VngiBDHRRk0jKaLr13p0Tgtu0fOYW6Cj7Wk39xbORB24TcHrV
- H2jwCfmb6cAdQIhdZckNIEG4ghQrN7HeRyPNNZ2Pg54YHYJhTnJ+gIZGB
- XCs6jYSJys4JBu15wAGzvmI4A9nOTLO8rDZwpyJhAD/1VjplLyusu2QUU w==;
-X-CSE-ConnectionGUID: ztIfaf4UQXunlIWrezJGPg==
-X-CSE-MsgGUID: PaSqxhltS6m+5B00BIGv8g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11307"; a="36426856"
-X-IronPort-AV: E=Sophos;i="6.12,295,1728975600"; d="scan'208";a="36426856"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jan 2025 00:39:44 -0800
-X-CSE-ConnectionGUID: FaL/xuO0TY6w99zRF3rQGA==
-X-CSE-MsgGUID: HM74yDQpRVizIFmUN1SksQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,295,1728975600"; d="scan'208";a="102598663"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa007.fm.intel.com with ESMTP; 07 Jan 2025 00:39:42 -0800
-Date: Tue, 7 Jan 2025 16:58:30 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, junjie.mao@hotmail.com
-Subject: Re: [RFC PATCH 1/9] rust: vmstate: add new type safe implementation
-Message-ID: <Z3zstgKXAgeRrIU2@intel.com>
-References: <20241231002336.25931-1-pbonzini@redhat.com>
- <20241231002336.25931-2-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tV5Sj-0002Dk-Lq
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 04:01:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736240480;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=TjNEJ8u8sJjr7qqTrGTkbbbZTbBXhYVu3/0aQw6MMkk=;
+ b=ZCWji+zj8zQ6Xcy36UWY1NhllTFVxxrM+tKUbYT2q3n6KG5aL3JO/kOh43Nfr/Q1R21ZCA
+ sVdBv6IuioMa9/64mnV5J9QUzoYMVYFzs3hwzkRvprty0yUcNUJQaZ1rXYBR0d6rLyFG4W
+ GkuaBT1WnJzpWTwdQv49DhRNrNGY8FI=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-643-jm2TBXKbPGmYK5mIV3eExw-1; Tue, 07 Jan 2025 04:01:18 -0500
+X-MC-Unique: jm2TBXKbPGmYK5mIV3eExw-1
+X-Mimecast-MFC-AGG-ID: jm2TBXKbPGmYK5mIV3eExw
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6d92efa9ff4so248082336d6.2
+ for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 01:01:18 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736240478; x=1736845278;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TjNEJ8u8sJjr7qqTrGTkbbbZTbBXhYVu3/0aQw6MMkk=;
+ b=kEEyCxAlaHX7kO2it/Mr0x6+HsgPnT0EOCl5IlszT3kF468bKjPocSiKhHEnUGouBZ
+ L+wiU7GI+N/j5puOC+MpPg5de5HxbUhDhhE0mIp69uBoM3jz7akOwHAJCzStRE8rkp3O
+ 4tqqLTX7u30bwnYijXJLBLiEAavKBDHjMGW1f9M6XaCIVdUBZmEMuniIQiK3mCjAKMLW
+ ighoAcB3ITjBrFrtxvK7KIrvXUdEnBi2a24l4iD8VHQV20YmsQpuRbCh13fGJ2+asUzj
+ zBUtCzd99DFjQqwo1ellkuCNa5cwviMgBvjP+nPOLhVq27Lixks5biPDE16WLyP673H5
+ CuTw==
+X-Gm-Message-State: AOJu0YzZn79QcSAOYWbB38mknJ/fWcSL4ShsX2plroBpidNynLe3uEX3
+ 7+N0Il1jGkhpslOVjbqgJQ7qJLtn59E8Jwt+6cDe99giE0nzzoKSGMQszlwL3Ny9Rh5/FJ7yWcS
+ eVy8rpcqYw+op3dmQmMz12iD3sXCvBFza5omDZ67mfsCy0SpIwIIi
+X-Gm-Gg: ASbGncsRhzt/vlA3Bn2IF8Zjp+OjmWR/2F8e71olObmBhHqCFN24maR7v1R2NdjcEaq
+ AFmElY3FZihzU4Q2YotiGJArN7r0sWOJAbF2FwFsdWkPCVTuM5nNj4pPIX/YbuDbK3qgzwrku69
+ Pa1OoB6XfPNPFsLJQfjD32CeVjvUFnlH0CRxTXPnjk4/JfFyGg1wdRinM7RYLkHUr/k8spCsCln
+ U5UZW7PCvUJWiB/4OeMgMjjNY4I0xseAHgTKZGugK3i/RpYaLUIPhnn6jfIVrpkenWNvkdUCaaU
+ Kn0NQAB2W3kx
+X-Received: by 2002:a05:6214:449f:b0:6d8:a127:e744 with SMTP id
+ 6a1803df08f44-6dd23355f97mr1061607036d6.20.1736240478139; 
+ Tue, 07 Jan 2025 01:01:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEzSF4bKxbD6oQJTFsPPOBo73wDQfre7o7XPY0Bvp47t2x4BSuaODUXIRyYOZG1uPfuQTfE5w==
+X-Received: by 2002:a05:6214:449f:b0:6d8:a127:e744 with SMTP id
+ 6a1803df08f44-6dd23355f97mr1061606716d6.20.1736240477810; 
+ Tue, 07 Jan 2025 01:01:17 -0800 (PST)
+Received: from [192.168.0.7] (ip-109-42-49-182.web.vodafone.de.
+ [109.42.49.182]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6dd18e3c3ffsm178844956d6.13.2025.01.07.01.01.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 07 Jan 2025 01:01:16 -0800 (PST)
+Message-ID: <cb5f1730-9a5a-496b-acb0-24fdb6b502d9@redhat.com>
+Date: Tue, 7 Jan 2025 10:01:13 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241231002336.25931-2-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
+User-Agent: Mozilla Thunderbird
+Subject: Re: test_x86_64_hotplug_cpu.py times out frequently in CI
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ "Daniel P. Berrange" <berrange@redhat.com>
+References: <CAJSP0QW02Mf5Vtp9UbvAUc+UXKV0Exw_ggFCMAgVQ0+dH7Jf0w@mail.gmail.com>
+ <CAFEAcA8C916fiLab_86JhXMe5sjVQBjFZQVCP6YP+715pn9qLQ@mail.gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
+ yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
+ 4CflIyFqjCpfDM4MuTmzTjXq4Uov1giGE9X6viNo1pxyEpd7PanlKNnf4PqEQp06X4IgUacW
+ tSGj6Gcns1bCuHV8OPWLkf4hkRnu8hdL6i60Yxz4E6TqlrpxsfYwLXgEeswPHOA6Mn4Cso9O
+ 0lewVYfFfsmokfAVMKWzOl1Sr0KGI5T9CpmRfAiSHpthhHWnECcJFwl72NTi6kUcUzG4se81
+ O6n9d/kTj7pzTmBdfwuOZ0YUSqcqs0W+l1NcASSYZQaDoD3/SLk+nqVeCBB4OnYOGhgmIHNW
+ 0CwMRO/GK+20alxzk//V9GmIM2ACElbfF8+Uug3pqiHkVnKqM7W9/S1NH2qmxB6zMiJUHlTH
+ gnVeZX0dgH27mzstcF786uPcdEqS0KJuxh2kk5IvUSL3Qn3ZgmgdxBMyCPciD/1cb7/Ahazr
+ 3ThHQXSHXkH/aDXdfLsKVuwDzHLVSkdSnZdt5HHh75/NFHxwaTlydgfHmFFwodK8y/TjyiGZ
+ zg2Kje38xnz8zKn9iesFBCcONXS7txENTzX0z80WKBhK+XSFJwARAQABzR5UaG9tYXMgSHV0
+ aCA8dGh1dGhAcmVkaGF0LmNvbT7CwXgEEwECACIFAlVgX6oCGwMGCwkIBwMCBhUIAgkKCwQW
+ AgMBAh4BAheAAAoJEC7Z13T+cC21EbIP/ii9cvT2HHGbFRl8HqGT6+7Wkb+XLMqJBMAIGiQK
+ QIP3xk1HPTsLfVG0ao4hy/oYkGNOP8+ubLnZen6Yq3zAFiMhQ44lvgigDYJo3Ve59gfe99KX
+ EbtB+X95ODARkq0McR6OAsPNJ7gpEUzfkQUUJTXRDQXfG/FX303Gvk+YU0spm2tsIKPl6AmV
+ 1CegDljzjycyfJbk418MQmMu2T82kjrkEofUO2a24ed3VGC0/Uz//XCR2ZTo+vBoBUQl41BD
+ eFFtoCSrzo3yPFS+w5fkH9NT8ChdpSlbNS32NhYQhJtr9zjWyFRf0Zk+T/1P7ECn6gTEkp5k
+ ofFIA4MFBc/fXbaDRtBmPB0N9pqTFApIUI4vuFPPO0JDrII9dLwZ6lO9EKiwuVlvr1wwzsgq
+ zJTPBU3qHaUO4d/8G+gD7AL/6T4zi8Jo/GmjBsnYaTzbm94lf0CjXjsOX3seMhaE6WAZOQQG
+ tZHAO1kAPWpaxne+wtgMKthyPLNwelLf+xzGvrIKvLX6QuLoWMnWldu22z2ICVnLQChlR9d6
+ WW8QFEpo/FK7omuS8KvvopFcOOdlbFMM8Y/8vBgVMSsK6fsYUhruny/PahprPbYGiNIhKqz7
+ UvgyZVl4pBFjTaz/SbimTk210vIlkDyy1WuS8Zsn0htv4+jQPgo9rqFE4mipJjy/iboDzsFN
+ BFH7eUwBEAC2nzfUeeI8dv0C4qrfCPze6NkryUflEut9WwHhfXCLjtvCjnoGqFelH/PE9NF4
+ 4VPSCdvD1SSmFVzu6T9qWdcwMSaC+e7G/z0/AhBfqTeosAF5XvKQlAb9ZPkdDr7YN0a1XDfa
+ +NgA+JZB4ROyBZFFAwNHT+HCnyzy0v9Sh3BgJJwfpXHH2l3LfncvV8rgFv0bvdr70U+On2XH
+ 5bApOyW1WpIG5KPJlDdzcQTyptOJ1dnEHfwnABEfzI3dNf63rlxsGouX/NFRRRNqkdClQR3K
+ gCwciaXfZ7ir7fF0u1N2UuLsWA8Ei1JrNypk+MRxhbvdQC4tyZCZ8mVDk+QOK6pyK2f4rMf/
+ WmqxNTtAVmNuZIwnJdjRMMSs4W4w6N/bRvpqtykSqx7VXcgqtv6eqoDZrNuhGbekQA0sAnCJ
+ VPArerAZGArm63o39me/bRUQeQVSxEBmg66yshF9HkcUPGVeC4B0TPwz+HFcVhheo6hoJjLq
+ knFOPLRj+0h+ZL+D0GenyqD3CyuyeTT5dGcNU9qT74bdSr20k/CklvI7S9yoQje8BeQAHtdV
+ cvO8XCLrpGuw9SgOS7OP5oI26a0548M4KldAY+kqX6XVphEw3/6U1KTf7WxW5zYLTtadjISB
+ X9xsRWSU+Yqs3C7oN5TIPSoj9tXMoxZkCIHWvnqGwZ7JhwARAQABwsFfBBgBAgAJBQJR+3lM
+ AhsMAAoJEC7Z13T+cC21hPAQAIsBL9MdGpdEpvXs9CYrBkd6tS9mbaSWj6XBDfA1AEdQkBOn
+ ZH1Qt7HJesk+qNSnLv6+jP4VwqK5AFMrKJ6IjE7jqgzGxtcZnvSjeDGPF1h2CKZQPpTw890k
+ fy18AvgFHkVk2Oylyexw3aOBsXg6ukN44vIFqPoc+YSU0+0QIdYJp/XFsgWxnFIMYwDpxSHS
+ 5fdDxUjsk3UBHZx+IhFjs2siVZi5wnHIqM7eK9abr2cK2weInTBwXwqVWjsXZ4tq5+jQrwDK
+ cvxIcwXdUTLGxc4/Z/VRH1PZSvfQxdxMGmNTGaXVNfdFZjm4fz0mz+OUi6AHC4CZpwnsliGV
+ ODqwX8Y1zic9viSTbKS01ZNp175POyWViUk9qisPZB7ypfSIVSEULrL347qY/hm9ahhqmn17
+ Ng255syASv3ehvX7iwWDfzXbA0/TVaqwa1YIkec+/8miicV0zMP9siRcYQkyTqSzaTFBBmqD
+ oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
+ IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
+ yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
+In-Reply-To: <CAFEAcA8C916fiLab_86JhXMe5sjVQBjFZQVCP6YP+715pn9qLQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -79,194 +151,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 31, 2024 at 01:23:28AM +0100, Paolo Bonzini wrote:
-> Date: Tue, 31 Dec 2024 01:23:28 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [RFC PATCH 1/9] rust: vmstate: add new type safe implementation
-> X-Mailer: git-send-email 2.47.1
+On 06/01/2025 17.49, Peter Maydell wrote:
+> On Mon, 6 Jan 2025 at 16:45, Stefan Hajnoczi <stefanha@gmail.com> wrote:
+>>
+>> Hi Thomas,
+>> test_x86_64_hotplug_cpu.py times out frequently in CI runs. Here is an example:
+>> https://gitlab.com/qemu-project/qemu/-/jobs/8777540230#L1151
+>>
+>> The detailed test logs are here:
+>> https://gitlab.com/qemu-project/qemu/-/jobs/8777540230/artifacts/browse/build/tests/functional/x86_64/test_x86_64_hotplug_cpu.HotPlugCPU.test_hotplug/
+>>
+>> I looked at this failure with Dan and Peter on IRC. It was pointed out
+>> that the final command assumes that device_del takes effect
+>> immediately. The console log shows that the CPU was still visible to
+>> the guest when the final command executed.
+>>
+>> Could be a bug in QEMU, the test, or both?
+>>
+>> 2025-01-06 15:45:29,308: :/#
+>> 2025-01-06 15:45:29,313: cd /sys/devices/system/cpu/cpu0
+>> 2025-01-06 15:45:29,315: :/sys/devices/system/cpu/cpu0#
+>> 2025-01-06 15:45:29,320: cd /sys/devices/system/cpu/cpu1
+>> 2025-01-06 15:45:29,322: sh: cd: /sys/devices/system/cpu/cpu1: No such
+>> file or directory
+>> 2025-01-06 15:45:29,325:
+>> 2025-01-06 15:45:29,330: :/sys/devices/system/cpu/cpu0# [    7.337146]
+>> CPU1 has been hot-added
+>> 2025-01-06 15:45:29,330:
+>> 2025-01-06 15:45:29,335: cd /sys/devices/system/cpu/cpu1
+>> 2025-01-06 15:45:29,337: :/sys/devices/system/cpu/cpu1#
+>> 2025-01-06 15:45:29,342: cd /sys/devices/system/cpu/cpu1
 > 
-> The existing translation of the C macros for vmstate does not make
-> any attempt to type-check vmstate declarations against the struct, so
-> introduce a new system that computes VMStateField based on the actual
-> struct declaration.
-> 
-> Macros do not have full access to the type system, therefore a full
-> implementation of this scheme requires a helper trait to analyze the
-> type and produce a VMStateField from it; a macro "vmstate_of!" accepts
-> arguments similar to "offset_of!" and tricks the compiler into looking
-> up the trait for the right type.
-> 
-> The patch introduces not just vmstate_of!, but also the slightly too
-> clever enabling macro call_func_with_field!.  The particular trick used
-> here was proposed on the users.rust-lang.org forum, so I take no merit
-> and all the blame.
+> Though the fact that there is no final shell prompt after
+> the last 'cd' command is perhaps evidence against this being
+> a simple race where the guest execution of the "cd" command
+> beat the guest handling of the hot-unplug event.
 
-This is very good work! I am curious about how QEMU plays with Rust
-forum:
+Yes, sounds like a race ... I'll try to come up with a patch to fix it.
 
-Rust forum's disscussion is under MIT and Apache 2.0 licenses [1], and
-since vmstate.rs is under the GPLv2 license, do we need to specify that
-certain code retains the MIT license?
-
-[1]: https://users.rust-lang.org/t/tos-updated-to-match-rfcs-and-rust-repository/45650
-
-> Introduce the trait and some functions to access it; the actual
-> implementation comes later.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/qemu-api/src/prelude.rs |   2 +
->  rust/qemu-api/src/vmstate.rs | 110 +++++++++++++++++++++++++++++++++--
->  2 files changed, 106 insertions(+), 6 deletions(-)
-> 
-> diff --git a/rust/qemu-api/src/prelude.rs b/rust/qemu-api/src/prelude.rs
-> index 4ea70b9c823..2dc86e19b29 100644
-> --- a/rust/qemu-api/src/prelude.rs
-> +++ b/rust/qemu-api/src/prelude.rs
-> @@ -18,3 +18,5 @@
->  pub use crate::qom_isa;
->  
->  pub use crate::sysbus::SysBusDeviceMethods;
-> +
-> +pub use crate::vmstate::VMState;
-> diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-> index 63c897abcdf..bfcf06e8f1d 100644
-> --- a/rust/qemu-api/src/vmstate.rs
-> +++ b/rust/qemu-api/src/vmstate.rs
-> @@ -4,13 +4,111 @@
->  
->  //! Helper macros to declare migration state for device models.
->  //!
-> -//! Some macros are direct equivalents to the C macros declared in
-> -//! `include/migration/vmstate.h` while
-> -//! [`vmstate_subsections`](crate::vmstate_subsections) and
-> -//! [`vmstate_fields`](crate::vmstate_fields) are meant to be used when
-> -//! declaring a device model state struct.
-> +//! This module includes three families of macros:
-> +//!
-> +//! * [`vmstate_unused!`](crate::vmstate_unused) and
-> +//!   [`vmstate_of!`](crate::vmstate_of), which are used to express the
-> +//!   migration format for a struct.  This is based on the [`VMState`] trait,
-> +//!   which is defined by all migrateable types.
-> +//!
-> +//! * helper macros to declare a device model state struct, in particular
-> +//!   [`vmstate_subsections`](crate::vmstate_subsections) and
-> +//!   [`vmstate_fields`](crate::vmstate_fields).
-> +//!
-> +//! * direct equivalents to the C macros declared in
-> +//!   `include/migration/vmstate.h`. These are not type-safe and should not be
-> +//!   used if the equivalent functionality is available with `vmstate_of!`.
->  
-> -pub use crate::bindings::VMStateDescription;
-> +use core::marker::PhantomData;
-> +
-> +pub use crate::bindings::{VMStateDescription, VMStateField};
-> +
-> +/// This macro is used to call a function with a generic argument bound
-> +/// to the type of a field.  The function must take a
-> +/// [`PhantomData`]`<T>` argument; `T` is the type of
-> +/// field `$field` in the `$typ` type.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// # use qemu_api::call_func_with_field;
-> +/// # use core::marker::PhantomData;
-> +/// const fn size_of_field<T>(_: PhantomData<T>) -> usize {
-> +///     std::mem::size_of::<T>()
-> +/// }
-> +///
-> +/// struct Foo {
-> +///     x: u16,
-> +/// };
-> +/// // calls size_of_field::<u16>()
-> +/// assert_eq!(call_func_with_field!(size_of_field, Foo, x), 2);
-> +/// ```
-> +#[macro_export]
-> +macro_rules! call_func_with_field {
-> +    ($func:expr, $typ:ty, $($field:tt).+) => {
-> +        $func(loop {
-> +            #![allow(unreachable_code)]
-> +            const fn phantom__<T>(_: &T) -> ::core::marker::PhantomData<T> { ::core::marker::PhantomData }
-> +            // Unreachable code is exempt from checks on uninitialized values.
-> +            // Use that trick to infer the type of this PhantomData.
-> +            break ::core::marker::PhantomData;
-> +            break phantom__(&{ let value__: $typ; value__.$($field).+ });
-> +        })
-> +    };
-> +}
-
-Very flexible and powerful. (I even think this code could be released as
-a new public crate.)
-
-> +/// A trait for types that can be included in a device's migration stream.  It
-> +/// provides the base contents of a `VMStateField` (minus the name and offset).
-> +///
-> +/// # Safety
-> +///
-> +/// The contents of this trait go straight into structs that are parsed by C
-> +/// code and used to introspect into other structs.  Be careful.
-> +pub unsafe trait VMState {
-> +    /// The base contents of a `VMStateField` (minus the name and offset) for
-> +    /// the type that is implementing the trait.
-> +    const BASE: VMStateField;
-> +}
-> +
-> +/// Internal utility function to retrieve a type's `VMStateField`;
-> +/// used by [`vmstate_of!`](crate::vmstate_of).
-> +pub const fn vmstate_base<T: VMState>(_: PhantomData<T>) -> VMStateField {
-> +    T::BASE
-> +}
-> +
-> +/// Return the `VMStateField` for a field of a struct.  The field must be
-> +/// visible in the current scope.
-> +///
-> +/// In order to support other types, the trait `VMState` must be implemented
-> +/// for them.
-> +#[macro_export]
-> +macro_rules! vmstate_of {
-> +    ($struct_name:ty, $field_name:ident $(,)?) => {
-
-why allow a comma at the end? It seems other patches don't use that
-style.
-
-> +        $crate::bindings::VMStateField {
-> +            name: ::core::concat!(::core::stringify!($field_name), "\0")
-> +                .as_bytes()
-> +                .as_ptr() as *const ::std::os::raw::c_char,
-> +            offset: $crate::offset_of!($struct_name, $field_name),
-> +            // Compute most of the VMStateField from the type of the field.
-> +            ..$crate::call_func_with_field!(
-> +                $crate::vmstate::vmstate_base,
-> +                $struct_name,
-> +                $field_name
-> +            )
-> +        }
-> +    };
-> +}
-> +
-> +// Add a couple builder-style methods to VMStateField, allowing
-> +// easy derivation of VMStateField constants from other types.
-> +impl VMStateField {
-> +    #[must_use]
-> +    pub const fn with_version_id(mut self, version_id: i32) -> Self {
-
-Why not use u32 (and omit an assert)?
-
-> +        assert!(version_id >= 0);
-> +        self.version_id = version_id;
-> +        self
-> +    }
-> +}
->  
->  #[doc(alias = "VMSTATE_UNUSED_BUFFER")]
->  #[macro_export]
-> -- 
-> 2.47.1
-
-Good design! Look good to me.
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+  Thomas
 
 
