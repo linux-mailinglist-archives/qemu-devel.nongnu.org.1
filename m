@@ -2,77 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BD2FA0397D
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 09:13:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78C08A039A4
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 09:19:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tV4gf-00063H-Od; Tue, 07 Jan 2025 03:11:41 -0500
+	id 1tV4oC-0007QW-7C; Tue, 07 Jan 2025 03:19:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tV4gT-0005nz-E4
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 03:11:32 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tV4gR-0004xH-BU
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 03:11:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736237486;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=gKjZj8wgvdvJUl535Hq8Ejv09YTkfjgI19B10LJ+thk=;
- b=JzSagXqjX3q9if+PEMzLl/HG4TS5QGw4vwCFugqY6EQw0LLP6bqrHthoLDRpfy2p//ryup
- ncUIfwIxmaXpJH7IlahQPj/hwUmhwoVRTpxo18OT4wWgjjgcTEJdnfGxRkgEAYNHfLirO9
- q7r3XbLXhi3zHxC7ZiRjaHBl+zbSid8=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-497-8L7MKuzqOLm3hAcznl55IQ-1; Tue,
- 07 Jan 2025 03:11:22 -0500
-X-MC-Unique: 8L7MKuzqOLm3hAcznl55IQ-1
-X-Mimecast-MFC-AGG-ID: 8L7MKuzqOLm3hAcznl55IQ
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 50E3619560BA; Tue,  7 Jan 2025 08:11:21 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.64])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8C27F195605F; Tue,  7 Jan 2025 08:11:14 +0000 (UTC)
-Date: Tue, 7 Jan 2025 08:11:11 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v11 2/2] tpm: add backend for mssim
-Message-ID: <Z3zhkEZ0NSM7Rlvp@redhat.com>
-References: <20241212170528.30364-1-James.Bottomley@HansenPartnership.com>
- <20241212170528.30364-3-James.Bottomley@HansenPartnership.com>
- <Z2RaYsLkazgciofM@redhat.com>
- <f83258defb96927b2656c2834108f9603bdd0e9a.camel@HansenPartnership.com>
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1tV4o8-0007Pv-Fj
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 03:19:24 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1tV4o6-0005nW-Th
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 03:19:24 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-21a7ed0155cso1816995ad.3
+ for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 00:19:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1736237961; x=1736842761; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=bsVaQSU+SKN6xlpHRBfPGuVJQwveGYniAv/EHWcQWGc=;
+ b=Bh/4pxUosaVUY2u7fzOGQsobAgifOc0agtgeLn9M0drLKaRFIZu9VZo5phhMBlz5N3
+ uHvTp7AO4YSUtr0qB+4JTI5AtFgbBWpptEmJwZz4SOuDAh6O+5nCTt+WG7ef/CvzWC6B
+ cWnzvs6wg87k/6sAnIp81YfG6As5dkqY/atk7SMW+aB8HySJ0i79+0jfciKeqkszVVh0
+ nTua7+wr5efa2VXP6bqpdnNphXau1w5n4RFvijYO30SfAWk/J2+iANHaetY4jkhsMe1i
+ 8KvcpuFVHW5t7TDkbhVNoTYKkew5aItGWaNcgi3ToJXiB+t9wqrJ4EXMsLlbUI7UhE/k
+ jh4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736237961; x=1736842761;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bsVaQSU+SKN6xlpHRBfPGuVJQwveGYniAv/EHWcQWGc=;
+ b=Bn3gvm+iJnGjkw4b/wM9HesklZrX0s2WwEM1gjnUCkimaumXYbIdSpDMEVDOwTNbdm
+ 4A9o0kX0sl97GojVDCW09Sak2nNGoWijnsagVdRO38GBwKr/D9dtSaO+yfGuz74cxUCa
+ yG8E1JbcvSK2KZbJC3fvdhONZgtfXjeZRzUtAXYXmlnts3zac5N/i973UiLNcQNaPyBq
+ ZNBsiJWhyUEZ4Pvf1wGerTGdWF2Q9v5DI/FREMDHOKxwJOhPs5y69FJaqcasYnpyq1ja
+ 9VTNy2OxtCOkkC+DmZvd9D8Otz7KrRDmOcnuzJWtbDxO0cxkflb7YnVGOXM9cG11tI4H
+ r5Nw==
+X-Gm-Message-State: AOJu0Yz76gqaV/anphtrsEv7sGQpo8Oems0b9XJcL2vG8JgXySJicFHH
+ M0sO+hkMUUzuxo8FynoCZF/kbWfLWt/TD1YSxDNFBz9l/DlkYbERfTIWwCRF
+X-Gm-Gg: ASbGncuqgUGfeglVxCEP6dRP5VdHVroeftUYeZh6ZecnaI7TEihqfEI2ObulqceG4Kw
+ lmEvFoOli96AgGO68o7CBgH7mBraE21AEK3x0uNc32IHNIG1wFMoO7uGXGlpuTLA1AixIRIB2Nn
+ OGT5KgOEU6pLbuMjHGMXt6nqrQKBlt09h6JVhr9KXKP2Rd2qxHcPf4w1IZOs+zbOO5C44CG4esx
+ 8qgrbUZFSwZQq3jpJpHaNVDjzRIRf2sblTQjEaTYH1yGX7xQQKYG0xLfe+bqWOSrfWW6RE=
+X-Google-Smtp-Source: AGHT+IHyz/2bLq6xxdE3XEgpT1xuHtGq4u/ofH3hBrvXj5GJmgwjxIxXhC5nJl6p/REawySu+DZjkg==
+X-Received: by 2002:a05:6a00:3cc1:b0:725:df1a:288 with SMTP id
+ d2e1a72fcca58-72abe18acb0mr84193154b3a.24.1736237960946; 
+ Tue, 07 Jan 2025 00:19:20 -0800 (PST)
+Received: from [192.168.0.22] ([175.119.5.143])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-72aad8fd610sm32669322b3a.136.2025.01.07.00.19.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 07 Jan 2025 00:19:20 -0800 (PST)
+Message-ID: <97d74ec1-4a13-4726-9584-09dada83c1dc@gmail.com>
+Date: Tue, 7 Jan 2025 17:19:51 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/ufs: Adjust value to match CPU's endian format
+To: keosung.park@samsung.com, Jeuk Kim <jeuk20.kim@samsung.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+References: <CGME20250107070209epcms2p8b39b26cf5a32a7b66246f2d122005f29@epcms2p8>
+ <20250107070209epcms2p8b39b26cf5a32a7b66246f2d122005f29@epcms2p8>
+Content-Language: ko
+From: Jeuk Kim <jeuk20.kim@gmail.com>
+In-Reply-To: <20250107070209epcms2p8b39b26cf5a32a7b66246f2d122005f29@epcms2p8>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <f83258defb96927b2656c2834108f9603bdd0e9a.camel@HansenPartnership.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=jeuk20.kim@gmail.com; helo=mail-pl1-x632.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.446,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,146 +95,56 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 06, 2025 at 06:11:09PM -0800, James Bottomley wrote:
-> On Thu, 2024-12-19 at 17:39 +0000, Daniel P. Berrangé wrote:
-> > On Thu, Dec 12, 2024 at 12:05:28PM -0500, James Bottomley wrote:
-> > > The Microsoft Simulator (mssim) is the reference emulation platform
-> > > for the TCG TPM 2.0 specification.
-> > > 
-> > > https://github.com/Microsoft/ms-tpm-20-ref.git
-> > > 
-> > > It exports a fairly simple network socket based protocol on two
-> > > sockets, one for command (default 2321) and one for control
-> > > (default
-> > > 2322).  This patch adds a simple backend that can speak the mssim
-> > > protocol over the network.  It also allows the two sockets to be
-> > > specified on the command line.  The benefits are twofold: firstly
-> > > it
-> > > gives us a backend that actually speaks a standard TPM emulation
-> > > protocol instead of the linux specific TPM driver format of the
-> > > current emulated TPM backend and secondly, using the microsoft
-> > > protocol, the end point of the emulator can be anywhere on the
-> > > network, facilitating the cloud use case where a central TPM
-> > > service
-> > > can be used over a control network.
-> > > 
-> > > The implementation does basic control commands like power off/on,
-> > > but
-> > > doesn't implement cancellation or startup.  The former because
-> > > cancellation is pretty much useless on a fast operating TPM
-> > > emulator
-> > > and the latter because this emulator is designed to be used with
-> > > OVMF
-> > > which itself does TPM startup and I wanted to validate that.
-> > > 
-> > > To run this, simply download an emulator based on the MS
-> > > specification
-> > > (package ibmswtpm2 on openSUSE) and run it, then add these two
-> > > lines
-> > > to the qemu command and it will use the emulator.
-> > > 
-> > >     -tpmdev mssim,id=tpm0 \
-> > >     -device tpm-crb,tpmdev=tpm0 \
-> > > 
-> > > to use a remote emulator replace the first line with
-> > > 
-> > >     -tpmdev
-> > > "{'type':'mssim','id':'tpm0','command':{'type':inet,'host':'remote'
-> > > ,'port':'2321'}}"
-> > > 
-> > > tpm-tis also works as the backend.
-> > > 
-> > > Signed-off-by: James Bottomley
-> > > <James.Bottomley@HansenPartnership.com>
-> > > Acked-by: Markus Armbruster <armbru@redhat.com>
-> > > 
-> > > ---
-> > > 
-> > > v2: convert to SocketAddr json and use
-> > > qio_channel_socket_connect_sync()
-> > > v3: gate control power off by migration state keep control socket
-> > > disconnected
-> > >     to test outside influence and add docs.
-> > > v7: TPMmssim -> TPMMssim; doc and json fixes
-> > >     Make command socket open each time (makes OS debugging easier)
-> > > v11: add startup method to make sure TPM is reset on reboot
-> > > ---
-> > >  MAINTAINERS              |   6 +
-> > >  backends/tpm/Kconfig     |   5 +
-> > >  backends/tpm/meson.build |   1 +
-> > >  backends/tpm/tpm_mssim.c | 335
-> > > +++++++++++++++++++++++++++++++++++++++
-> > >  backends/tpm/tpm_mssim.h |  44 +++++
-> > >  docs/specs/tpm.rst       |  39 +++++
-> > >  qapi/tpm.json            |  31 +++-
-> > >  system/tpm-hmp-cmds.c    |   9 ++
-> > >  8 files changed, 466 insertions(+), 4 deletions(-)
-> > >  create mode 100644 backends/tpm/tpm_mssim.c
-> > >  create mode 100644 backends/tpm/tpm_mssim.h
-> > > 
-> > 
-> > 
-> > > diff --git a/backends/tpm/tpm_mssim.c b/backends/tpm/tpm_mssim.c
-> > > new file mode 100644
-> > > index 0000000000..8f105fc924
-> > > --- /dev/null
-> > > +++ b/backends/tpm/tpm_mssim.c
-> > > @@ -0,0 +1,335 @@
-> > > +/*
-> > > + * Emulator TPM driver which connects over the mssim protocol
-> > > + * SPDX-License-Identifier: GPL-2.0-or-later
-> > > + *
-> > > + * Copyright (c) 2022
-> > 
-> > Copyright by whom ? I presume yourself, but I wouldn't normally
-> > assume the 'Author' line applies to the Copyright line.
-> 
-> I'll fix up this one (and all the others below) but:
-> 
-> [...]
-> > > diff --git a/backends/tpm/tpm_mssim.h b/backends/tpm/tpm_mssim.h
-> > > new file mode 100644
-> > > index 0000000000..397474e4f6
-> > > --- /dev/null
-> > > +++ b/backends/tpm/tpm_mssim.h
-> > > @@ -0,0 +1,44 @@
-> > > +/*
-> > > + * SPDX-License-Identifier: BSD-2-Clause
-> > > + *
-> > > + * The code below is copied from the Microsoft/TCG Reference
-> > > implementation
-> > > + *
-> > > + *  https://github.com/Microsoft/ms-tpm-20-ref.git
-> > > + *
-> > > + * In file TPMCmd/Simulator/include/TpmTcpProtocol.h
-> > > + */
-> > 
-> > That file has a volumous copyright header that I would expect to be
-> > preserved here.
-> 
-> Actually, the file itself has no copyright header at all (seems to be
-> standard practice for all header files in the repository). Did you want
-> me to paste the copyright lines from the LICENSE file; i.e.
 
-Oh, my local checkout was out of date. A commit in Oct last year purged
-all the copyright headers that the files previously had:
+On 1/7/2025 4:02 PM, Keoseong Park wrote:
+> In ufs_write_attr_value(), the value parameter is handled in the CPU's
+> endian format but provided in big-endian format by the caller. Thus, it
+> is converted accordingly.
+>
+> Signed-off-by: Keoseong Park <keosung.park@samsung.com>
+> ---
+>   hw/ufs/ufs.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
+> index 8d26d13791..428fe927ad 100644
+> --- a/hw/ufs/ufs.c
+> +++ b/hw/ufs/ufs.c
+> @@ -1164,7 +1164,7 @@ static QueryRespCode ufs_exec_query_attr(UfsRequest *req, int op)
+>           value = ufs_read_attr_value(u, idn);
+>           ret = UFS_QUERY_RESULT_SUCCESS;
+>       } else {
+> -        value = req->req_upiu.qr.value;
+> +        value = be32_to_cpu(req->req_upiu.qr.value);
+>           ret = ufs_write_attr_value(u, idn, value);
+>       }
+>       req->rsp_upiu.qr.value = cpu_to_be32(value);
 
-  https://github.com/microsoft/ms-tpm-20-ref/blob/482aaafc0523bb94de203c4975f72f0230becec4/TPMCmd/Simulator/include/TpmTcpProtocol.h
 
-> Copyright 2010-2022 Microsoft Corporation
-> Copyright 2022-2024 Trusted Computing Group and its contributors
+Thank you for fixing this bug!
+I reviewed the changes and noticed that some changes to |ufs-test| are 
+also needed to fully fix the problem.
 
-Yes, I think adding those, would be sufficient.
+Could you please include the following changes and send a v2 patch? 
+Thank you.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
+diff --git a/tests/qtest/ufs-test.c b/tests/qtest/ufs-test.c
+index 60199abbee..1f860b41c0 100644
+--- a/tests/qtest/ufs-test.c
++++ b/tests/qtest/ufs-test.c
+@@ -145,7 +145,7 @@ static void ufs_send_query(QUfs *ufs, uint8_t slot, 
+uint8_t query_function,
+      req_upiu.qr.idn = idn;
+      req_upiu.qr.index = index;
+      req_upiu.qr.selector = selector;
+-    req_upiu.qr.value = attr_value;
++    req_upiu.qr.value = cpu_to_be32(attr_value);
+      req_upiu.qr.length = UFS_QUERY_DESC_MAX_SIZE;
+      qtest_memwrite(ufs->dev.bus->qts, req_upiu_addr, &req_upiu,
+                     sizeof(req_upiu));
 
 
