@@ -2,64 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C35A0435D
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 15:53:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7E7DA04380
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 15:58:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVAwa-0003Hd-6d; Tue, 07 Jan 2025 09:52:32 -0500
+	id 1tVB1u-000657-JR; Tue, 07 Jan 2025 09:58:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
- id 1tVAwU-0003FZ-68
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 09:52:27 -0500
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1tVB1s-00064Z-Q9
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 09:58:00 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
- id 1tVAwQ-0007k0-Ok
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 09:52:25 -0500
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1tVB1r-0008Ry-7J
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 09:58:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736261541;
+ s=mimecast20190719; t=1736261876;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ykVXfQSv6QdQnvZoPkKQ+tHuBLJ6v9t5jGthxZwquzY=;
- b=fm5Yk34Tj00LkSXy05+sXvYa0qbkcOonhv2bypuIgoUUp/g/EhhQrvdmO/jCIvj7GeUd6k
- wObJr11KAbRMUn/8PE0PfGOevIrs45r1pV4j+n494zcrJZrcpWrLSh9ZQvO50rYVXtj9Wh
- ugoPmKkvJ2NNkanSvmxndDmoEp1gfFc=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-691-YcogWWYFPzGUsxVqSKB9OQ-1; Tue,
- 07 Jan 2025 09:52:19 -0500
-X-MC-Unique: YcogWWYFPzGUsxVqSKB9OQ-1
-X-Mimecast-MFC-AGG-ID: YcogWWYFPzGUsxVqSKB9OQ
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 007A8195609E; Tue,  7 Jan 2025 14:52:19 +0000 (UTC)
-Received: from moe.brq.redhat.com (unknown [10.43.3.236])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7C1C33000197; Tue,  7 Jan 2025 14:52:17 +0000 (UTC)
-From: Michal Privoznik <mprivozn@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: kkostiuk@redhat.com,
-	michael.roth@amd.com,
-	jtomko@redhat.com
-Subject: [PATCH v3 2/2] qga: Don't daemonize before channel is initialized
-Date: Tue,  7 Jan 2025 15:52:07 +0100
-Message-ID: <7a42b0cbda5c7e01cf76bc1b29a1210cd018fa78.1736261360.git.mprivozn@redhat.com>
-In-Reply-To: <cover.1736261360.git.mprivozn@redhat.com>
-References: <cover.1736261360.git.mprivozn@redhat.com>
+ bh=1xiQhvhjrQBNA/E0QEuolqzecvTJnukAQDxbHcUUrLs=;
+ b=gujNES/EhN3Ipj2Gqmo35m/Z07EnykIm4UfOhuOM5KLhyqfLuzeLd1tHF3FdAzKdXMOlVk
+ GkOEejcYZnqU0F/2ovTxtZXHPPCldTRzyAMBrAwvxb0LT+y9BTZjK1mMKzdbE3CAiEsPLR
+ m0RXKJuY5ayrzoNBKi+EKUP9UJAtCQ8=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-629-DP1MZvWbObKkZtBUzYfEHA-1; Tue, 07 Jan 2025 09:57:55 -0500
+X-MC-Unique: DP1MZvWbObKkZtBUzYfEHA-1
+X-Mimecast-MFC-AGG-ID: DP1MZvWbObKkZtBUzYfEHA
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-4679becb47eso99087241cf.3
+ for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 06:57:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736261875; x=1736866675;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=1xiQhvhjrQBNA/E0QEuolqzecvTJnukAQDxbHcUUrLs=;
+ b=oK+9RPyMGj+6ZkRQJX6M+KWyjFMkrJm6fOqx5fOADZE/XtaJxFSC1CQPppUzoEWUkB
+ gdMnzSo3jgPCv6nOFPtVmobr3za5wZP9BDUoFwngcCzZiI9nQrZpbAi4w+5qDmi4B2uG
+ cKw8O/sk+7JpX0GoRHw0FiTVzySVM1Kil6VMvCIPbkXwdlCqS43bXzvoPlVDb0GbVq03
+ BEQSBG6uV08bVb9ILVCEFFiLEpG+DtfmZQ1TjRFOpWKtThezNv5FkSVV1zmYOPyi/9ie
+ TYqrJIKSS9igzc7T5G0q0KDPbWlkbvurVr9pxJRUIbgKfPMl3dyhQBpWpbh6jaGgEO2Q
+ H4zA==
+X-Gm-Message-State: AOJu0Yzom+KtxfA6iHi0yhF1vndQk/MvbokjPsOovmNvqEmeOchssg5C
+ WICeAQZACqdLzXpes46e1Ll+cYl/mlt9639Iz4lL19xl0SV//scDM5MzL34aXQsydj4g7RmutLB
+ Adx4eUuXe2IIitFfD2xEnIx3WFnIDkzg7Mq9b8t89M1enHE2sESjEHZx/64IHIbIHf4XDHjPO/9
+ bUpbPq59dSwwSGoTzexnGcH+7j5UI=
+X-Gm-Gg: ASbGncv1SLxIbehx5ujqFu4DdXpxVWwCdknDPnKsUbfp/Mvd+3E4TfCmqNjj7cpyjwQ
+ kXbyKN968V1xUbFCQUG5hMAS+6DPrE3fm1jNi
+X-Received: by 2002:a05:622a:1a8d:b0:466:a032:dbbb with SMTP id
+ d75a77b69052e-46a4a8b5da7mr1050274691cf.1.1736261874571; 
+ Tue, 07 Jan 2025 06:57:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHqSoLM2L9UvxZ4JyCx/DDMdT4KsC9w6Xrg5OwW9tEZpAh9eDGArZ8IttimxCSEh2y41GD/dSUxrhEerZuRG1M=
+X-Received: by 2002:a05:622a:1a8d:b0:466:a032:dbbb with SMTP id
+ d75a77b69052e-46a4a8b5da7mr1050274451cf.1.1736261874282; Tue, 07 Jan 2025
+ 06:57:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mprivozn@redhat.com;
+References: <20241223132355.1417356-1-r.peniaev@gmail.com>
+ <20241223132355.1417356-7-r.peniaev@gmail.com>
+ <CAMxuvaxFGXDYpwPfqTUZuBVY4iF_BCm6jwOM=quUBn98hYPt=g@mail.gmail.com>
+ <CACZ9PQVe1Axq6Lp_acaQuXpih2hwAU_7jz-NywyYBQ88hxt1og@mail.gmail.com>
+In-Reply-To: <CACZ9PQVe1Axq6Lp_acaQuXpih2hwAU_7jz-NywyYBQ88hxt1og@mail.gmail.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Tue, 7 Jan 2025 18:57:43 +0400
+Message-ID: <CAMxuvaxzd41bRxa4=zNMdpe420W-w_GAmOjYJsYTMs1+jqdMdw@mail.gmail.com>
+Subject: Re: [PATCH v6 6/8] chardev/char-mux: implement backend chardev
+ multiplexing
+To: Roman Penyaev <r.peniaev@gmail.com>
+Cc: qemu-devel@nongnu.org, "Bonzini, Paolo" <pbonzini@redhat.com>, 
+ "P. Berrange, Daniel" <berrange@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -84,96 +103,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If the agent is set to daemonize but for whatever reason fails to
-init the channel, the error message is lost. Worse, the agent
-daemonizes needlessly and returns success. For instance:
+Hi
 
-  # qemu-ga -m virtio-serial \
-            -p /dev/nonexistent_device \
-            -f /run/qemu-ga.pid \
-            -t /run \
-            -d
-  # echo $?
-  0
+On Thu, Jan 2, 2025 at 2:22=E2=80=AFPM Roman Penyaev <r.peniaev@gmail.com> =
+wrote:
+>
+> Hi,
+>
+> First of all Happy New Year :)
+>
+> On Mon, Dec 30, 2024 at 12:41=E2=80=AFPM Marc-Andr=C3=A9 Lureau
+> <marcandre.lureau@redhat.com> wrote:
+>
+> [cut]
+>
+> > > +
+> > > +    for (i =3D 0; i < d->be_cnt; i++) {
+> > > +        written =3D d->be_written[i] - d->be_min_written;
+> > > +        if (written) {
+> > > +            /* Written in the previous call so take into account */
+> > > +            ret =3D MIN(written, ret);
+> > > +            continue;
+> > > +        }
+> > > +        r =3D qemu_chr_fe_write(&d->backends[i], buf, len);
+> > > +        if (r < 0 && errno =3D=3D EAGAIN) {
+> > > +            /*
+> > > +             * Fail immediately if write would block. Expect to be c=
+alled
+> > > +             * soon on watch wake up.
+> > > +             */
+> > > +            d->be_eagain_ind =3D i;
+> > > +            return r;
+> >
+> > But next attempt to write will loop over the same backend again, which
+> > will see the "same" write multiple times.
+>
+> This case is handled by checking the difference between counters
+> `d->be_written[i]` and `d->be_min_written`. The idea is that device, whic=
+h
+> already "swallowed" some portion of data, will be skipped from writing to=
+ it,
+> until it catches up with the stream.
 
-This makes it needlessly hard for init scripts to detect a
-failure in qemu-ga startup. Though, they shouldn't pass '-d' in
-the first place.
+ok, I see. This looks fragile though, I/one will need to do a more
+thorough review.
 
-Let's open the channel first and only after that become a daemon.
+>
+> Please take a look into the `char_mux_be_test()` test case, where the
+> EAGAIN scenario is tested. The line test-char.c:716 explicitly shows the
+> repeat of the write procedure after EAGAIN was received.
+>
+> >
+> > > +        } else if (r < 0) {
+> > > +            /*
+> > > +             * Ignore all other errors and pretend the entire buffer=
+ is
+> > > +             * written to avoid this chardev being watched. This dev=
+ice
+> > > +             * becomes disabled until the following write succeeds, =
+but
+> > > +             * writing continues to others.
+> > > +             */
+> > > +            r =3D len;
+> > > +        }
+> > > +        d->be_written[i] +=3D r;
+> > > +        ret =3D MIN(r, ret);
+> > > +    }
+> > > +    d->be_min_written +=3D ret;
+> > > +
+> > > +    return ret;
+> > > +}
+> >
+> > I am not sure what is the correct way to handle write here. This
+> > mux-be behaviour is different from mux-fe, since it handles all
+> > backend I/Os, and does not select one... it's more of a "mixer",
+> > right, Is this wanted?
+>
+> Right. The intention is to have both consoles simultaneously
+> working, for example having char-based tio (over a socket chardev)
+> and image-based vnc (over a vc chardev):
+>
+>     -chardev socket,path=3D/tmp/sock,server=3Don,wait=3Doff,id=3Dsock0 \
+>     -chardev vc,id=3Dvc0 \
+>
+> and both are connected to the same frontend device.
+>
+> I agree with you on the "mixer" naming concern, this did not come to
+> my mind. As far as I understand the logic of `mux-fe`, it just doesn't se=
+em
+> possible to have both frontends running at the same time, because they
+> will both generate output, at least that's the case for virtual consoles:
+> imagine you have two virtual console frontends working at the same time
+> and one backend. Any command you enter from a backend causes the two
+> separate frontends to output completely different data.
+>
+> On the other hand, several backend devices can easily be simultaneously
+> attached to one frontend, the analogy is simple: several monitors, severa=
+l
+> keyboards, etc work perfectly fine with a single PC. At least this is how
+> I see this, please correct me if I'm wrong.
 
-Related bug: https://bugs.gentoo.org/810628
+Whether we talk about multiplexing front-end or back-end, the issues
+are similar. In general, mixing input will create issues. Teeing
+output is less problematic, except to handle the buffering...
 
-Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
-Reviewed-by: Ján Tomko <jtomko@redhat.com>
----
- qga/main.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+>
+> Do you think we need to artificially introduce multiplexing logic to be f=
+ully
+> compliant with multiplexer naming? It's not hard to do, repeating
+> `mux_proc_byte()` from `mux-fe`. In my use-case, I'll still need to disab=
+le
+> multiplexing in favor of 'mixing', for example with the 'mixer=3Don' opti=
+on,
+> i.e. '-chardev mux-be,mixer=3Don,...`. Or do you think it should be some
+> completely different beast, something like mixer chardev?
 
-diff --git a/qga/main.c b/qga/main.c
-index 68ea7f275a..35f061b5ea 100644
---- a/qga/main.c
-+++ b/qga/main.c
-@@ -1430,7 +1430,6 @@ static GAState *initialize_agent(GAConfig *config, int socket_activation)
-         if (config->daemonize) {
-             /* delay opening/locking of pidfile till filesystems are unfrozen */
-             s->deferred_options.pid_filepath = config->pid_filepath;
--            become_daemon(NULL);
-         }
-         if (config->log_filepath) {
-             /* delay opening the log file till filesystems are unfrozen */
-@@ -1438,9 +1437,6 @@ static GAState *initialize_agent(GAConfig *config, int socket_activation)
-         }
-         ga_disable_logging(s);
-     } else {
--        if (config->daemonize) {
--            become_daemon(config->pid_filepath);
--        }
-         if (config->log_filepath) {
-             FILE *log_file = ga_open_logfile(config->log_filepath);
-             if (!log_file) {
-@@ -1487,6 +1483,20 @@ static GAState *initialize_agent(GAConfig *config, int socket_activation)
- 
-     ga_apply_command_filters(s);
- 
-+    if (!channel_init(s, s->config->method, s->config->channel_path,
-+                      s->socket_activation ? FIRST_SOCKET_ACTIVATION_FD : -1)) {
-+        g_critical("failed to initialize guest agent channel");
-+        return NULL;
-+    }
-+
-+    if (config->daemonize) {
-+        if (ga_is_frozen(s)) {
-+            become_daemon(NULL);
-+        } else {
-+            become_daemon(config->pid_filepath);
-+        }
-+    }
-+
-     ga_state = s;
-     return s;
- }
-@@ -1513,8 +1523,9 @@ static void cleanup_agent(GAState *s)
- 
- static int run_agent_once(GAState *s)
- {
--    if (!channel_init(s, s->config->method, s->config->channel_path,
--                      s->socket_activation ? FIRST_SOCKET_ACTIVATION_FD : -1)) {
-+    if (!s->channel &&
-+        channel_init(s, s->config->method, s->config->channel_path,
-+                     s->socket_activation ? FIRST_SOCKET_ACTIVATION_FD : -1)) {
-         g_critical("failed to initialize guest agent channel");
-         return EXIT_FAILURE;
-     }
-@@ -1523,6 +1534,7 @@ static int run_agent_once(GAState *s)
- 
-     if (s->channel) {
-         ga_channel_free(s->channel);
-+        s->channel = NULL;
-     }
- 
-     return EXIT_SUCCESS;
--- 
-2.45.2
+I think it would be saner to have the muxer be selectors: only work
+with one selected be or fe. Otherwise, we can run into various issues.
+
+I hope some qemu maintainers can comment too.
 
 
