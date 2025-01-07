@@ -2,97 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEF12A04B50
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 22:01:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03455A049E8
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Jan 2025 20:09:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVGgM-0008UJ-Aw; Tue, 07 Jan 2025 16:00:10 -0500
+	id 1tVEvv-0000Mp-Ki; Tue, 07 Jan 2025 14:08:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1tVEYh-0004Uq-NU; Tue, 07 Jan 2025 13:44:07 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1tVEvs-0000MZ-Ih
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 14:08:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1tVEYe-0002ua-7v; Tue, 07 Jan 2025 13:44:07 -0500
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 507I4BBs012018;
- Tue, 7 Jan 2025 18:44:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=bDtmD3uahoU0Rlnbm
- 02OUIfLNADVPIOIcSjT34aX7BM=; b=M/a7FO9iO7+yxKPPSlrwfamuSWvNDkvgP
- mDxktlNae5jUVF0P/dIq/Ha2A7XQvGBeqylWcQD/lOlMehmMUJO9KLIjiVxu1hwY
- 6kQF58y5fKr0c+3evqGjERpvz4Q18cdTwKgi4N9+osGX/lHyRToPPrPd2aPGt9Du
- fpvhmfFFdDpSBXZKfqgF6NZN2cXDfoJaakFzgFvODYbWyfbJwRSjTW6w4V/POt04
- ABVJ3MOvvfHYvj26sLO4jsdjpI1l8qaXSXhNMyggisRRMFo1wGbcuRPuubywRh7G
- uLICd55NlqpcndMExdyI1V0OFrcP5t3cy+LYhabCYQbSMmlnOK32w==
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 440vrcbyeb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Jan 2025 18:44:01 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 507G0thB008851;
- Tue, 7 Jan 2025 18:44:00 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43yfpyv2hr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Jan 2025 18:44:00 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 507Ihx0V23200296
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 7 Jan 2025 18:43:59 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 36A575805D;
- Tue,  7 Jan 2025 18:43:59 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8196858058;
- Tue,  7 Jan 2025 18:43:58 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.12.78.174])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  7 Jan 2025 18:43:58 +0000 (GMT)
-From: Rorie Reyes <rreyes@linux.ibm.com>
-To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
- jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
- alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com,
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1tVEvr-0005wQ-03
+ for qemu-devel@nongnu.org; Tue, 07 Jan 2025 14:08:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736276882;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=e6N+MDNfhqEWSldmyBSY1nNns1pi99KQqXGHwXf1lOY=;
+ b=Kv3XQn3lPDX+GS+XWmKwpdfOhFWda/xjTu4uNuf1JKxBkRzj/NscJT2N+WJ3a2LIYrp2Ax
+ PJhJBNEtt0SXnTAPHcwGUoAF3CS2+0U+8mk/Ox6UiCjX2jMOB3eBLbC4AeOmIQXJ3ETWPc
+ fF/Ny3aJHsF02VuhP/dUAKsA8nxXyjM=
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
+ [209.85.166.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-213-helW-Y2SMJOThyFM4b1efg-1; Tue, 07 Jan 2025 14:06:42 -0500
+X-MC-Unique: helW-Y2SMJOThyFM4b1efg-1
+X-Mimecast-MFC-AGG-ID: helW-Y2SMJOThyFM4b1efg
+Received: by mail-io1-f70.google.com with SMTP id
+ ca18e2360f4ac-844df5d5edfso114841439f.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 11:06:42 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736276802; x=1736881602;
+ h=content-transfer-encoding:mime-version:organization:references
+ :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=e6N+MDNfhqEWSldmyBSY1nNns1pi99KQqXGHwXf1lOY=;
+ b=KI+gwCh105nSrbd+eGodXk9qHJHXSgXv6sUZRB7e5rspv5yQdfGiLrJSE/OcDey12j
+ TmaODDWXALVq8Fl10hNb3EnaUxqBY8gRAGyO6fEHVjJL4s3G5OT2gsCBDa9NAB6Frvk/
+ e95U9yE4W+IwcEsvje3byZ9bAm0sNMhtExrint6ZG9vAKwu40QLCP7cUb7Sdrl9QDewL
+ lAYCp4mCWKPtqJnPvsx7Gd2zT2Nux5dS0RLg2QrsaYZEteW40Afi/U6CXEeF/Nml01CU
+ fAT3JYamc6FQ8tz37/YCslQeqqf24l6YRV3urK/yIWRXbPlRCQCrhrtDETl5atuIriHk
+ dTsg==
+X-Gm-Message-State: AOJu0YwRjaZkeisHQaY78KS986kLG4CJOhj+zST2LJ7o+JCaBA3xne6n
+ cO1iRMCbTJDLCLywyjfzOoRp0mGO4orVjQBL4VTwd8WaF9s1IbUhVez0YZnOrRNWn+sVcc6vaHU
+ 07eZfzzGONIYSWKzkzli5ocdQdwUVUpKwNmVnZ1RF2XaYvh4d9TT/
+X-Gm-Gg: ASbGncue4a8SLIckgcUNdJJQVgbcTltSwbSu+Z2vlqZTiqx0px3fBk+jO9wb5N7VFYx
+ NIX2+dTQ2pYVtbf4LrYA3pM+FWG3lFuIBYP5syHlUE6PM33P3/X9S8zK17/OdIF0ZhO+1RJgrcP
+ 5thIZg9toGTY1uvi/zaf986d9ZwcosKfTXk7K4S2wqKMXPbzomYAL4gVoqQuRNQXopffiQVcH7B
+ wnQNM57dF7zLw/UUikybR+/az4ULKfrzsrmo0YjxVgMWsxqwmK/LBxIZ0z6
+X-Received: by 2002:a05:6e02:1f05:b0:3a7:e7bd:9f30 with SMTP id
+ e9e14a558f8ab-3ce3a86aaadmr949465ab.2.1736276801516; 
+ Tue, 07 Jan 2025 11:06:41 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFFurqoZehh6ETJcqNQf2m661gzblrt8qa1LeuOAB0NVJKyEs82GAel/K/ZDiyH+6PD5qR3ng==
+X-Received: by 2002:a05:6e02:1f05:b0:3a7:e7bd:9f30 with SMTP id
+ e9e14a558f8ab-3ce3a86aaadmr949365ab.2.1736276801232; 
+ Tue, 07 Jan 2025 11:06:41 -0800 (PST)
+Received: from redhat.com ([38.15.36.11]) by smtp.gmail.com with ESMTPSA id
+ e9e14a558f8ab-3c0de053105sm101468715ab.15.2025.01.07.11.06.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 07 Jan 2025 11:06:40 -0800 (PST)
+Date: Tue, 7 Jan 2025 14:06:34 -0500
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Rorie Reyes <rreyes@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, pbonzini@redhat.com,
+ cohuck@redhat.com, pasic@linux.ibm.com, jjherne@linux.ibm.com,
+ borntraeger@linux.ibm.com, clg@redhat.com, thuth@redhat.com,
  akrowiak@linux.ibm.com
-Subject: [PATCH v1 5/5] s390: implementing CHSC SEI for AP config change
-Date: Tue,  7 Jan 2025 13:43:54 -0500
-Message-Id: <20250107184354.91079-6-rreyes@linux.ibm.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+Subject: Re: [PATCH v1 0/5] Report vfio-ap configuration changes
+Message-ID: <20250107140634.35cb33ba.alex.williamson@redhat.com>
 In-Reply-To: <20250107184354.91079-1-rreyes@linux.ibm.com>
 References: <20250107184354.91079-1-rreyes@linux.ibm.com>
+Organization: Red Hat
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: FnjuEUhhMz1D6WwZcQYXv203-TUKo2Et
-X-Proofpoint-ORIG-GUID: FnjuEUhhMz1D6WwZcQYXv203-TUKo2Et
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 spamscore=0
- impostorscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0 bulkscore=0
- clxscore=1015 mlxscore=0 priorityscore=1501 suspectscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501070153
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=rreyes@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=alex.williamson@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.437,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 07 Jan 2025 16:00:05 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,51 +108,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Handle interception of the CHSC SEI instruction for requests
-indicating the guest's AP configuration has changed.
+On Tue,  7 Jan 2025 13:43:49 -0500
+Rorie Reyes <rreyes@linux.ibm.com> wrote:
 
-Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
-Reviewed-by: Anthony Krowiak <akrowiak@linux.ibm.com>
-Tested-by: Anthony Krowiak <akrowiak@linux.ibm.com>
----
- target/s390x/ioinst.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+> This patch series creates and registers a handler that is called when
+> userspace is notified by the kernel that a guest's AP configuration has
+> changed. The handler in turn notifies the guest that its AP configuration
+> has changed. This allows the guest to immediately respond to AP
+> configuration changes rather than relying on polling or some other
+> inefficient mechanism for detecting config changes.
 
-diff --git a/target/s390x/ioinst.c b/target/s390x/ioinst.c
-index a944f16c25..f061c6db14 100644
---- a/target/s390x/ioinst.c
-+++ b/target/s390x/ioinst.c
-@@ -17,6 +17,7 @@
- #include "trace.h"
- #include "hw/s390x/s390-pci-bus.h"
- #include "target/s390x/kvm/pv.h"
-+#include "hw/s390x/ap-bridge.h"
- 
- /* All I/O instructions but chsc use the s format */
- static uint64_t get_address_from_regs(CPUS390XState *env, uint32_t ipb,
-@@ -573,13 +574,19 @@ out:
- 
- static int chsc_sei_nt0_get_event(void *res)
- {
--    /* no events yet */
-+    if (s390_has_feat(S390_FEAT_AP)) {
-+        return ap_chsc_sei_nt0_get_event(res);
-+    }
-+
-     return 1;
- }
- 
- static int chsc_sei_nt0_have_event(void)
- {
--    /* no events yet */
-+    if (s390_has_feat(S390_FEAT_AP)) {
-+        return ap_chsc_sei_nt0_have_event();
-+    }
-+
-     return 0;
- }
- 
--- 
-2.39.5 (Apple Git-154)
+Why are configuration changes to the device allowed while the device is
+in use?
+
+Would a uevent be considered an inefficient mechanism?  Why?
+
+Thanks,
+Alex
 
 
