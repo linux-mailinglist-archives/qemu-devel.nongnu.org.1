@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4CDA0679A
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 22:53:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74618A067A8
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 22:59:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVdzc-0005rr-Se; Wed, 08 Jan 2025 16:53:36 -0500
+	id 1tVe4J-00029e-5G; Wed, 08 Jan 2025 16:58:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tVdzZ-0005fM-D1
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 16:53:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tVe4B-00028s-G8
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 16:58:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tVdzX-0004Ba-Pn
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 16:53:33 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tVe47-0004qw-PM
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 16:58:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736373210;
+ s=mimecast20190719; t=1736373493;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=vHvlQp1aQA5l/um+YechYvvftWyn9AOMcuaRx3SfcL8=;
- b=NfT8pOYttTSwyjDfSi9VAIr6rgLgLVWHFM+k3rkM9QntMnv6ZddVenPpTV5JHh5zSY0SFJ
- +tu8hV3n3+prV6o3TplUFdEehffC1TEDfs9wOEaYNL24t24gcqblLvgSyM1B7Fq451FKoP
- bJ8Tt/Dvv1iAzcznasSqooEvJCuTbog=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=VZT12k8zyiJJctayBGmmsPk5QVebozGKzATCMYJ680I=;
+ b=iD1iz8+weGRlk80BOQ5bSF+4j0aYh6eEYskQvGC6tAtcb9hTitR7O95tc8U5i1eRW313Ub
+ zDZtO49jkw+GdshIqoVhAq42nvG84AKtz5Gqv+u7T334aNKMkTVIUeR5RsujLohvMeFy0i
+ MXHyDGkSNivApDov5AixVgMIK9Ohr7Q=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-447-yQIO5py2PjKqU-mVwVFWXg-1; Wed, 08 Jan 2025 16:53:27 -0500
-X-MC-Unique: yQIO5py2PjKqU-mVwVFWXg-1
-X-Mimecast-MFC-AGG-ID: yQIO5py2PjKqU-mVwVFWXg
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4362f893bfaso1385955e9.1
- for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 13:53:27 -0800 (PST)
+ us-mta-448-ZdFZtE9mNbalkvvfdI72OA-1; Wed, 08 Jan 2025 16:58:11 -0500
+X-MC-Unique: ZdFZtE9mNbalkvvfdI72OA-1
+X-Mimecast-MFC-AGG-ID: ZdFZtE9mNbalkvvfdI72OA
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-385e03f54d0so84148f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 13:58:11 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736373206; x=1736978006;
+ d=1e100.net; s=20230601; t=1736373490; x=1736978290;
  h=content-transfer-encoding:in-reply-to:organization:autocrypt
  :content-language:from:references:cc:to:subject:user-agent
  :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
  :date:message-id:reply-to;
- bh=vHvlQp1aQA5l/um+YechYvvftWyn9AOMcuaRx3SfcL8=;
- b=RoDBIfgsmMAupbU3MSJE+9LK+arnvmKc4A6DJJdKlMhoMsh0dp6zJAiLJ4uzx7ckKQ
- BtLqpLljV4nOVJ7TgczY1Ydd9MacUvU6/P7JFfdVnYWANsVB71ye53g71IRWCu125Kpk
- YofDnuQ1DfJcvF2MM4dqWFrCcEQHiEZipjzcluNS5nr0p6N5tM8W5BGuXoNPb5wQ/jDg
- 6Z4PlGRC/XkS/3KxJ5d0P9PtbOhKJSlUMhwTzpKzC/GtNVidFn9Kq2o65aEvBjjSobdG
- ZfsPDdq7ctrK+R/GzYPDI3+YaLqO7k7RYcD5s4MAw4umKWInISB+1IAX6OoUlj9kkco7
- gW3g==
+ bh=VZT12k8zyiJJctayBGmmsPk5QVebozGKzATCMYJ680I=;
+ b=ExkLG3q7WwKYLkW+A6Mo8TGjqmqu9hivh7SnMSXH55Aq5QNtb6xIXgVnUozyyxWcaw
+ v6Afjs7iYdNrI5J72GMsi0JFzCe1krJFQ9Pprq1ZwjLAb5mspIvDdQOwBrNn/8z2448a
+ 3/upijgi3MSpdEJ7ca+7u1dBuDy/x44k/Vo0wTC/kCK/EFNiqKrq6oKqxTRnhRZaA7Wn
+ 0clr1fbSPcH3AqZ2+iHerPmfIvGrYbMCo/lmT8NqHTmfr3bFD3OtGSs64PLallhoOQFi
+ sOj8tZtC/t6jo+8Hg9wH/ByNMKg8fs1t9ifPLBSxGjUZR6+nBLmVdcedwnYUlQc/d1A3
+ 7skA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVsI+sZ4Ws7Lv2p7j6zVByeeFLBR/DfFGpIQCCqXj8gQa8qxOOX9R4ScV1Hk+hZkjQi0m26ttC8lAee@nongnu.org
-X-Gm-Message-State: AOJu0YxGe9DTnp1IwFqZWKmfj0Wvb8wI+IDRC8zIOIR88SXd5QlJ7YTY
- aS3Z+xqqaePphYiDsk6cKE/2L8SAXHkWhxoWCWeUEhAktC7EIw2bKOg4gJdZpKWXVxv9tmek4iT
- Ji/0AOehLJbFWN610JZVilyuTWgwjfG3ST+T4Rlu9ZfWJ+hXJE0Pi
-X-Gm-Gg: ASbGnctVKCg4AVJyLVIpBlQVUKBFLcLVuN600aM4w3DdzcZGDPBmq5zTqXkMUOj961Z
- T99Lx5Blpa0vC1aTbMhRAB08r1dV0sryWpC2o1kfYfv3y9D4k9OKRJnleGq/bI7QSSzmNYVNQNg
- u2VBmchSlrl3f55VDB4vAKI/SVA343uVHu4BBUyyArP9YlYz9IYA/yPgyd8GIP7cxphvnQ0RWNd
- oyGBtcEUmQy9ebx+46e2Tz5LcdewGSDn4yZyjHlT+CF7sgyySqpRKh9I5ZiL8TUHJ83bdK7Q+tG
- +HrV3+B7Z+6WjEmGzyfEOC0sAR2INXNkoxQdnqFk2oOdPaJqbni9RxN2652gJNgbQOLsdkiJHUC
- OZpZgqw==
-X-Received: by 2002:a05:600c:1386:b0:434:f8e5:1bb with SMTP id
- 5b1f17b1804b1-436e26aeb43mr40080745e9.12.1736373206332; 
- Wed, 08 Jan 2025 13:53:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE3rDS1hnE25fBfA1d5/lNO0uT9AX7FuBxSWBmfEMxNTmreerhi9TLvtnMmXsUDtITkyp8U6Q==
-X-Received: by 2002:a05:600c:1386:b0:434:f8e5:1bb with SMTP id
- 5b1f17b1804b1-436e26aeb43mr40080505e9.12.1736373205924; 
- Wed, 08 Jan 2025 13:53:25 -0800 (PST)
+ AJvYcCU3ZpJ/xjnxAyQbhyrw2E6eEa2YjoyV2xNq93MTVQ0CQ7A+idsVP7ffE+JsJeRR8QFyW7XLky2mPKQS@nongnu.org
+X-Gm-Message-State: AOJu0YzN+h/jB2TuIrvyEYxZAirtc9+/AiWhe8+azBYFgnps+XzMvlBY
+ FES3OUvbFmj/2WvmcuZVgEIY7xwStqYRg/WosR5c9sosW3hpA8cKpKYM8n7Z5kCBDRu9jf1MeT7
+ NvMzl98EFcT2dyYyamFDXFGL+EsG7k8i1Mr/dExA2ce9RVeTcN9bd
+X-Gm-Gg: ASbGncsOLMzrC6BC/KWb+AGewNlRQIB1sGg1/a2oqnbUSjDEAF3PYUksryjvf3+NzGA
+ TLNmvVq+slFYn41X66X2KgbSptF00Eyn9L95RsDmesJAX2z+0DMjlQ3SJccsrBiYSzME1ds3HgQ
+ nJNJDeilTffExUAgauCPlfLwe3F03C7qT1HnQZFBMGxYqW8rhyN2SGRdmZz2PMUPQ3C0jRwPNqV
+ sdGX/aEVDOs4z2xwk9Mh99OJdSTRkboebthasutJ1aA9GhG7wBTF54hU/65BHzc5ypFG25i0bkB
+ QcEdhl4p1McHPddy1wxhlPJDsWDMwHAkHalweWlACSlrJu7sSHq/UuXDkfT9q9oC0lHpoZ7Zvu8
+ m5VUM5Q==
+X-Received: by 2002:a05:6000:4022:b0:386:459e:655d with SMTP id
+ ffacd0b85a97d-38a87306d7bmr3618369f8f.20.1736373490405; 
+ Wed, 08 Jan 2025 13:58:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IED5L3QNm0ccYZa2iABw/WSGCd6JNXqhK/014y/yN+xNteWP/agfFRhwV9pFvl4fnOZ7FGBhQ==
+X-Received: by 2002:a05:6000:4022:b0:386:459e:655d with SMTP id
+ ffacd0b85a97d-38a87306d7bmr3618347f8f.20.1736373490093; 
+ Wed, 08 Jan 2025 13:58:10 -0800 (PST)
 Received: from ?IPV6:2003:cb:c70d:3a00:d73c:6a8:ca9f:1df7?
  (p200300cbc70d3a00d73c06a8ca9f1df7.dip0.t-ipconnect.de.
  [2003:cb:c70d:3a00:d73c:6a8:ca9f:1df7])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e2e94ed7sm33441315e9.42.2025.01.08.13.53.24
+ 5b1f17b1804b1-436e9a51bbbsm729705e9.39.2025.01.08.13.58.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Jan 2025 13:53:24 -0800 (PST)
-Message-ID: <e13ddad7-77cf-489b-9e32-d336edb01c85@redhat.com>
-Date: Wed, 8 Jan 2025 22:53:23 +0100
+ Wed, 08 Jan 2025 13:58:09 -0800 (PST)
+Message-ID: <5e2a7936-498a-4f65-923c-353f7ca1ab17@redhat.com>
+Date: Wed, 8 Jan 2025 22:58:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 7/7] system/physmem: Memory settings applied on remap
- notification
+Subject: Re: [PATCH v4 5/7] hostmem: Factor out applying settings
 To: =?UTF-8?Q?=E2=80=9CWilliam_Roche?= <william.roche@oracle.com>,
  kvm@vger.kernel.org, qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Cc: peterx@redhat.com, pbonzini@redhat.com, richard.henderson@linaro.org,
@@ -87,7 +86,7 @@ Cc: peterx@redhat.com, pbonzini@redhat.com, richard.henderson@linaro.org,
  wangyanan55@huawei.com, zhao1.liu@intel.com, joao.m.martins@oracle.com
 References: <cf587c8b-3894-4589-bfea-be5db70e81f3@redhat.com>
  <20241214134555.440097-1-william.roche@oracle.com>
- <20241214134555.440097-8-william.roche@oracle.com>
+ <20241214134555.440097-6-william.roche@oracle.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -135,19 +134,19 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20241214134555.440097-8-william.roche@oracle.com>
+In-Reply-To: <20241214134555.440097-6-william.roche@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.432,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -164,31 +163,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 14.12.24 14:45, “William Roche wrote:
-> From: William Roche <william.roche@oracle.com>
+> From: David Hildenbrand <david@redhat.com>
 > 
-> Merging and dump settings are handled by the remap notification
-> in addition to memory policy and preallocation.
+> We want to reuse the functionality when remapping or resizing RAM.
+
+We should drop the "or resizing of RAM." part, as that does no longer apply.
+
 > 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 > Signed-off-by: William Roche <william.roche@oracle.com>
 > ---
->   system/physmem.c | 2 --
->   1 file changed, 2 deletions(-)
-> 
-> diff --git a/system/physmem.c b/system/physmem.c
-> index 9fc74a5699..c0bfa20efc 100644
-> --- a/system/physmem.c
-> +++ b/system/physmem.c
-> @@ -2242,8 +2242,6 @@ void qemu_ram_remap(ram_addr_t addr)
->                       }
->                       qemu_ram_remap_mmap(block, vaddr, page_size, offset);
->                   }
-> -                memory_try_enable_merging(vaddr, page_size);
-> -                qemu_ram_setup_dump(vaddr, page_size);
->                   ram_block_notify_remap(block->host, offset, page_size);
->               }
->   
-
-Ah yes, indeed.
 
 -- 
 Cheers,
