@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7409A067C5
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 23:05:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD315A067C6
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 23:05:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVeAF-0004CU-9x; Wed, 08 Jan 2025 17:04:35 -0500
+	id 1tVeAG-0004Cz-Qt; Wed, 08 Jan 2025 17:04:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tVeAE-0004Bk-2U
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 17:04:34 -0500
-Received: from nyc.source.kernel.org ([147.75.193.91])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tVeAF-0004Cc-BT
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 17:04:35 -0500
+Received: from nyc.source.kernel.org ([2604:1380:45d1:ec00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tVeAC-0006Of-Ew
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 17:04:33 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tVeAD-0006PI-W4
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 17:04:35 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id E6A7FA41C6E;
- Wed,  8 Jan 2025 22:02:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6556C4CED3;
- Wed,  8 Jan 2025 22:04:29 +0000 (UTC)
+ by nyc.source.kernel.org (Postfix) with ESMTP id B240DA41C22;
+ Wed,  8 Jan 2025 22:02:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A285FC4CEDF;
+ Wed,  8 Jan 2025 22:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1736373871;
- bh=Z3ILH7yeOybgi1/CJ1rwkFp19U43yvxFnde7k2lHHz8=;
+ s=k20201202; t=1736373873;
+ bh=7sDAkRnZ08OkWc2JgsOLVf4mCXc++peN2aQFHOAIuw4=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ZKWM+MLuEU/a8oEkOER/TYfv9+Tqd3J3XKY+jk/L5+Yc4WmybjVtTE1nhkn57XOOW
- VqXMlyf6pInC9rUU2BOXKSX3kCa74YcgVs07V5rFeslLf0t0PQX9yxDDfYAzvOj999
- Pzuyb6DESRnqs90A2YWsS8Q6UI/wnZxqOHq3PaC53VVlLfJahUjZhKZj1g2YiynzSF
- Ejc1D367RowHpw4Aavo1BUJfR8ccoGevYd8FoqABLDu+lIR0NhcTXd/4o0U10BovCH
- EnMJL4zAyKd8i2FT7ub8pkyph+Mh4nGNgfP1lpSdPNaM260R99igbwMJSXtZp7g79n
- M2mNsS9aH08jA==
+ b=HqczRGbLXIaTr9rTWeYPuKzI3drQreAfJKSGrl5rTmcSHnOBDcSCTdIGCaghyhMKR
+ IkT6y+Zdj4yj5Uc2BaP5Eicoy4o2V49taGzPzBrD8/jOg6MhBFR9eSG0aV/53LpDaX
+ U1us910LyVlhm4oAVGcn3JmCTiMWP+7QMEk3MQjZJiMkqmSOV6rirOBGlPwRDE3G+j
+ /UNxnMTxeaTZinGJLSQADKPHdzraSmlSoeaFlYJoqLCgAYBu9wmo/4zGVqhN9f0ARw
+ Cu5m40pHxaTB1SFY8otZ7Vv+MBiRy0sWDnxtVpinysaxfVae1cxS/5QcWQ0oFokZTT
+ oOAZEhLsZ5BdQ==
 From: deller@kernel.org
 To: Stefan Hajnoczi <stefanha@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -38,23 +38,22 @@ To: Stefan Hajnoczi <stefanha@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PULL v2 3/6] linux-user: netlink: Add IP_PKTINFO cmsg parsing
-Date: Wed,  8 Jan 2025 23:04:19 +0100
-Message-ID: <20250108220422.169967-4-deller@kernel.org>
+Subject: [PULL v2 4/6] linux-user: netlink: Add emulation of IP_MULTICAST_IF
+Date: Wed,  8 Jan 2025 23:04:20 +0100
+Message-ID: <20250108220422.169967-5-deller@kernel.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250108220422.169967-1-deller@kernel.org>
 References: <20250108220422.169967-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=147.75.193.91; envelope-from=deller@kernel.org;
- helo=nyc.source.kernel.org
+Received-SPF: pass client-ip=2604:1380:45d1:ec00::3;
+ envelope-from=deller@kernel.org; helo=nyc.source.kernel.org
 X-Spam_score_int: -47
 X-Spam_score: -4.8
 X-Spam_bar: ----
 X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.432,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,37 +72,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Fixes those warnings:
- Unsupported host ancillary data: 0/8
+Share code with IP_ADD_MEMBERSHIP/IP_DROP_MEMBERSHIP.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- linux-user/syscall.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ linux-user/syscall.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 494323efba..bbe2560927 100644
+index bbe2560927..4360543e20 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -1996,6 +1996,18 @@ static inline abi_long host_to_target_cmsg(struct target_msghdr *target_msgh,
-                     (void *) &errh->offender, sizeof(errh->offender));
-                 break;
+@@ -2130,16 +2130,23 @@ static abi_long do_setsockopt(int sockfd, int level, int optname,
              }
-+            case IP_PKTINFO:
-+            {
-+                struct in_pktinfo *pkti = data;
-+                struct in_pktinfo *target_pkti = target_data;
-+
-+                __put_user(pkti->ipi_ifindex, &target_pkti->ipi_ifindex);
-+                host_to_target_sockaddr((unsigned long) &target_pkti->ipi_spec_dst,
-+                    (void *) &pkti->ipi_spec_dst, sizeof(pkti->ipi_spec_dst));
-+                host_to_target_sockaddr((unsigned long) &target_pkti->ipi_addr,
-+                    (void *) &pkti->ipi_addr, sizeof(pkti->ipi_addr));
-+                break;
+             ret = get_errno(setsockopt(sockfd, level, optname, &val, sizeof(val)));
+             break;
++        case IP_MULTICAST_IF:
+         case IP_ADD_MEMBERSHIP:
+         case IP_DROP_MEMBERSHIP:
+         {
+             struct ip_mreqn ip_mreq;
+             struct target_ip_mreqn *target_smreqn;
++            int min_size;
+ 
+             QEMU_BUILD_BUG_ON(sizeof(struct ip_mreq) !=
+                               sizeof(struct target_ip_mreq));
+ 
+-            if (optlen < sizeof (struct target_ip_mreq) ||
++            if (optname == IP_MULTICAST_IF) {
++                min_size = sizeof(struct in_addr);
++            } else {
++                min_size = sizeof(struct target_ip_mreq);
 +            }
-             default:
-                 goto unimplemented;
++            if (optlen < min_size ||
+                 optlen > sizeof (struct target_ip_mreqn)) {
+                 return -TARGET_EINVAL;
              }
+@@ -2149,7 +2156,9 @@ static abi_long do_setsockopt(int sockfd, int level, int optname,
+                 return -TARGET_EFAULT;
+             }
+             ip_mreq.imr_multiaddr.s_addr = target_smreqn->imr_multiaddr.s_addr;
+-            ip_mreq.imr_address.s_addr = target_smreqn->imr_address.s_addr;
++            if (optlen >= sizeof(struct target_ip_mreq)) {
++                ip_mreq.imr_address.s_addr = target_smreqn->imr_address.s_addr;
++            }
+             if (optlen == sizeof(struct target_ip_mreqn)) {
+                 ip_mreq.imr_ifindex = tswapal(target_smreqn->imr_ifindex);
+                 optlen = sizeof(struct ip_mreqn);
 -- 
 2.47.0
 
