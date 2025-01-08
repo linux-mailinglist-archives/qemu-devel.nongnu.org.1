@@ -2,87 +2,151 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63ECDA0679B
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 22:53:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4CDA0679A
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 22:53:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVdzE-0003BA-4A; Wed, 08 Jan 2025 16:53:12 -0500
+	id 1tVdzc-0005rr-Se; Wed, 08 Jan 2025 16:53:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tVdz9-0002tx-UF
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 16:53:08 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tVdz8-00048U-66
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 16:53:07 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4361b0ec57aso3253955e9.0
- for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 13:53:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736373184; x=1736977984; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=I14qnECo8+uzGdRsFMt/ZzhPLYXzTCANqtsyIeVHtfw=;
- b=ABvtw/P1nInhsWYbtdRi3dP6WLqS80T+u6y5+tqMYZUZZQj6DJeJm8ZR69ksuoivK/
- zm+QfslDsIx/BAqJy7gBiu9t0nNxlsC3+6h9PBuYtd/b+enNY+dVcbedaq7XB9kOYIBz
- 8bDxZ7SAo8Ujzz5TGnExIjjJ8u2PpJlFPuGXwZ1Red8evIN+HkRFR4rkVhD96t7XhFYX
- EjLb0fTOM3O6ivAwQ7oLPwFyJDG4uxnBLDcVODNMitwZB4kMVQVmTgq8SMRLdhzGScgu
- S7/uLxjuBofqfFCs/gijo0XDgbWgpodbhuTSBn9ZhWVyEcc76dh30jj42gXq9pa+lTNo
- 8D1A==
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tVdzZ-0005fM-D1
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 16:53:33 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tVdzX-0004Ba-Pn
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 16:53:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736373210;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=vHvlQp1aQA5l/um+YechYvvftWyn9AOMcuaRx3SfcL8=;
+ b=NfT8pOYttTSwyjDfSi9VAIr6rgLgLVWHFM+k3rkM9QntMnv6ZddVenPpTV5JHh5zSY0SFJ
+ +tu8hV3n3+prV6o3TplUFdEehffC1TEDfs9wOEaYNL24t24gcqblLvgSyM1B7Fq451FKoP
+ bJ8Tt/Dvv1iAzcznasSqooEvJCuTbog=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-447-yQIO5py2PjKqU-mVwVFWXg-1; Wed, 08 Jan 2025 16:53:27 -0500
+X-MC-Unique: yQIO5py2PjKqU-mVwVFWXg-1
+X-Mimecast-MFC-AGG-ID: yQIO5py2PjKqU-mVwVFWXg
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4362f893bfaso1385955e9.1
+ for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 13:53:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736373184; x=1736977984;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=I14qnECo8+uzGdRsFMt/ZzhPLYXzTCANqtsyIeVHtfw=;
- b=RvaxjGN/2E1T9sMF9aWPG5kiaWayCypEe2gEu0wURG6FsZL3acxOkgkGVZirX6hbgT
- YIPg5x2fFi8aa7X+me8jmxU8qtmmnCpx3DSxOFcBF9HiXQNvl/YHY1pe/nUvb7NKVFOg
- hZRsn5fY/w3YN9cjNz9DFzCtZxkYRAsH9YtoDEaF1sllRPhzGmvoo635Eg5IEQxtU+P3
- k9XMPdLSCgTq10fNiOOpDLr4YvPe5YJxBQNEtQ/pm8+/sj5yoJJp2pCqFP/69eB29AHT
- RpW6LnaTEw2XpEyq/l2s3KH/jINzJo3hPXRR/e0G/wlVCabJKeiweCjYmsGG3R6sm2v8
- mj6A==
-X-Gm-Message-State: AOJu0YxhcpAnrlU3QdtFfQGkz/7HgIWmoMOuEQpBPGfe9JbF5XS8T//D
- Pq9GCB6o0/IZbItDp746pU4LpCPEML23Lq9zFz5IweOabLnWwUzbbQ0aSaAzz3SjoH//JoYWSnr
- St3U=
-X-Gm-Gg: ASbGncuxWLP3LOZ93aWXN9fxBO+nhlU0CC3aUCL70sitd7vsRpeTmTE04pj9DOqjXTf
- zYwasLyy07Xz0m/EmRRquSiK/bzmDrDWZgO+VPRugpJ4zR3rbNhk9cJACWKsv8uEdEecI6h/8WO
- pw94WO1qloWKL8LFybdGU6k3+GbfqIri1JO5igYH6ncQklXYR6A2oaYlg6SslTY3X98VMBDAjTM
- 15WVHDfaJnYdLSkUUYYN581tZlU5XoDQWEl2awrSUa6Wr//BGONQ1AWoEVeDlNavnlY8qSUwC6S
- nv/y6TyThKqS1iqxZ7ERPfULRUKybwo=
-X-Google-Smtp-Source: AGHT+IEoBup3//IwsRx97KA2WhWp0yLt7cW22+Ww/8gYUR1ULZuZhqdA/v4V3DfcV2O/CNgTCJVX/w==
-X-Received: by 2002:a05:6000:1f81:b0:385:fb56:5596 with SMTP id
- ffacd0b85a97d-38a872de1e4mr3468651f8f.19.1736373184314; 
- Wed, 08 Jan 2025 13:53:04 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e320329sm32127f8f.0.2025.01.08.13.53.03
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 08 Jan 2025 13:53:03 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: pierrick.bouvier@linaro.org,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 14/14] tcg: Only include 'tcg-has.h' when necessary
-Date: Wed,  8 Jan 2025 22:51:55 +0100
-Message-ID: <20250108215156.8731-15-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250108215156.8731-1-philmd@linaro.org>
-References: <20250107080112.1175095-19-richard.henderson@linaro.org>
- <20250108215156.8731-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1736373206; x=1736978006;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt
+ :content-language:from:references:cc:to:subject:user-agent
+ :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=vHvlQp1aQA5l/um+YechYvvftWyn9AOMcuaRx3SfcL8=;
+ b=RoDBIfgsmMAupbU3MSJE+9LK+arnvmKc4A6DJJdKlMhoMsh0dp6zJAiLJ4uzx7ckKQ
+ BtLqpLljV4nOVJ7TgczY1Ydd9MacUvU6/P7JFfdVnYWANsVB71ye53g71IRWCu125Kpk
+ YofDnuQ1DfJcvF2MM4dqWFrCcEQHiEZipjzcluNS5nr0p6N5tM8W5BGuXoNPb5wQ/jDg
+ 6Z4PlGRC/XkS/3KxJ5d0P9PtbOhKJSlUMhwTzpKzC/GtNVidFn9Kq2o65aEvBjjSobdG
+ ZfsPDdq7ctrK+R/GzYPDI3+YaLqO7k7RYcD5s4MAw4umKWInISB+1IAX6OoUlj9kkco7
+ gW3g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVsI+sZ4Ws7Lv2p7j6zVByeeFLBR/DfFGpIQCCqXj8gQa8qxOOX9R4ScV1Hk+hZkjQi0m26ttC8lAee@nongnu.org
+X-Gm-Message-State: AOJu0YxGe9DTnp1IwFqZWKmfj0Wvb8wI+IDRC8zIOIR88SXd5QlJ7YTY
+ aS3Z+xqqaePphYiDsk6cKE/2L8SAXHkWhxoWCWeUEhAktC7EIw2bKOg4gJdZpKWXVxv9tmek4iT
+ Ji/0AOehLJbFWN610JZVilyuTWgwjfG3ST+T4Rlu9ZfWJ+hXJE0Pi
+X-Gm-Gg: ASbGnctVKCg4AVJyLVIpBlQVUKBFLcLVuN600aM4w3DdzcZGDPBmq5zTqXkMUOj961Z
+ T99Lx5Blpa0vC1aTbMhRAB08r1dV0sryWpC2o1kfYfv3y9D4k9OKRJnleGq/bI7QSSzmNYVNQNg
+ u2VBmchSlrl3f55VDB4vAKI/SVA343uVHu4BBUyyArP9YlYz9IYA/yPgyd8GIP7cxphvnQ0RWNd
+ oyGBtcEUmQy9ebx+46e2Tz5LcdewGSDn4yZyjHlT+CF7sgyySqpRKh9I5ZiL8TUHJ83bdK7Q+tG
+ +HrV3+B7Z+6WjEmGzyfEOC0sAR2INXNkoxQdnqFk2oOdPaJqbni9RxN2652gJNgbQOLsdkiJHUC
+ OZpZgqw==
+X-Received: by 2002:a05:600c:1386:b0:434:f8e5:1bb with SMTP id
+ 5b1f17b1804b1-436e26aeb43mr40080745e9.12.1736373206332; 
+ Wed, 08 Jan 2025 13:53:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE3rDS1hnE25fBfA1d5/lNO0uT9AX7FuBxSWBmfEMxNTmreerhi9TLvtnMmXsUDtITkyp8U6Q==
+X-Received: by 2002:a05:600c:1386:b0:434:f8e5:1bb with SMTP id
+ 5b1f17b1804b1-436e26aeb43mr40080505e9.12.1736373205924; 
+ Wed, 08 Jan 2025 13:53:25 -0800 (PST)
+Received: from ?IPV6:2003:cb:c70d:3a00:d73c:6a8:ca9f:1df7?
+ (p200300cbc70d3a00d73c06a8ca9f1df7.dip0.t-ipconnect.de.
+ [2003:cb:c70d:3a00:d73c:6a8:ca9f:1df7])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-436e2e94ed7sm33441315e9.42.2025.01.08.13.53.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 08 Jan 2025 13:53:24 -0800 (PST)
+Message-ID: <e13ddad7-77cf-489b-9e32-d336edb01c85@redhat.com>
+Date: Wed, 8 Jan 2025 22:53:23 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 7/7] system/physmem: Memory settings applied on remap
+ notification
+To: =?UTF-8?Q?=E2=80=9CWilliam_Roche?= <william.roche@oracle.com>,
+ kvm@vger.kernel.org, qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Cc: peterx@redhat.com, pbonzini@redhat.com, richard.henderson@linaro.org,
+ philmd@linaro.org, peter.maydell@linaro.org, mtosatti@redhat.com,
+ imammedo@redhat.com, eduardo@habkost.net, marcel.apfelbaum@gmail.com,
+ wangyanan55@huawei.com, zhao1.liu@intel.com, joao.m.martins@oracle.com
+References: <cf587c8b-3894-4589-bfea-be5db70e81f3@redhat.com>
+ <20241214134555.440097-1-william.roche@oracle.com>
+ <20241214134555.440097-8-william.roche@oracle.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20241214134555.440097-8-william.roche@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.432,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,136 +163,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+On 14.12.24 14:45, “William Roche wrote:
+> From: William Roche <william.roche@oracle.com>
+> 
+> Merging and dump settings are handled by the remap notification
+> in addition to memory policy and preallocation.
+> 
+> Signed-off-by: William Roche <william.roche@oracle.com>
+> ---
+>   system/physmem.c | 2 --
+>   1 file changed, 2 deletions(-)
+> 
+> diff --git a/system/physmem.c b/system/physmem.c
+> index 9fc74a5699..c0bfa20efc 100644
+> --- a/system/physmem.c
+> +++ b/system/physmem.c
+> @@ -2242,8 +2242,6 @@ void qemu_ram_remap(ram_addr_t addr)
+>                       }
+>                       qemu_ram_remap_mmap(block, vaddr, page_size, offset);
+>                   }
+> -                memory_try_enable_merging(vaddr, page_size);
+> -                qemu_ram_setup_dump(vaddr, page_size);
+>                   ram_block_notify_remap(block->host, offset, page_size);
+>               }
+>   
 
-TCG_TARGET_HAS_* definitions don't need to be exposed
-by "tcg/tcg.h". Only include 'tcg-has.h' when necessary.
+Ah yes, indeed.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/tcg/tcg.h | 2 --
- tcg/optimize.c    | 1 +
- tcg/tcg-common.c  | 1 +
- tcg/tcg-op-gvec.c | 1 +
- tcg/tcg-op-ldst.c | 2 +-
- tcg/tcg-op-vec.c  | 1 +
- tcg/tcg-op.c      | 2 +-
- tcg/tcg.c         | 1 +
- tcg/tci.c         | 1 +
- 9 files changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index 3897c2d6b28..4406fc6be01 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -64,8 +64,6 @@ typedef uint64_t TCGRegSet;
- #error unsupported
- #endif
- 
--#include "tcg/tcg-has.h"
--
- typedef enum TCGOpcode {
- #define DEF(name, oargs, iargs, cargs, flags) INDEX_op_ ## name,
- #include "tcg/tcg-opc.h"
-diff --git a/tcg/optimize.c b/tcg/optimize.c
-index 6823569ee2b..c363c5c04be 100644
---- a/tcg/optimize.c
-+++ b/tcg/optimize.c
-@@ -28,6 +28,7 @@
- #include "qemu/interval-tree.h"
- #include "tcg/tcg-op-common.h"
- #include "tcg-internal.h"
-+#include "tcg-has.h"
- 
- #define CASE_OP_32_64(x)                        \
-         glue(glue(case INDEX_op_, x), _i32):    \
-diff --git a/tcg/tcg-common.c b/tcg/tcg-common.c
-index 35e7616ae95..fadc33c3d1b 100644
---- a/tcg/tcg-common.c
-+++ b/tcg/tcg-common.c
-@@ -24,6 +24,7 @@
- 
- #include "qemu/osdep.h"
- #include "tcg/tcg.h"
-+#include "tcg-has.h"
- 
- TCGOpDef tcg_op_defs[] = {
- #define DEF(s, oargs, iargs, cargs, flags) \
-diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
-index 97e4df221a4..d32a4f146dc 100644
---- a/tcg/tcg-op-gvec.c
-+++ b/tcg/tcg-op-gvec.c
-@@ -23,6 +23,7 @@
- #include "tcg/tcg-op-common.h"
- #include "tcg/tcg-op-gvec-common.h"
- #include "tcg/tcg-gvec-desc.h"
-+#include "tcg-has.h"
- 
- #define MAX_UNROLL  4
- 
-diff --git a/tcg/tcg-op-ldst.c b/tcg/tcg-op-ldst.c
-index 0d8fe3b4f5d..ec3ef4dcb4d 100644
---- a/tcg/tcg-op-ldst.c
-+++ b/tcg/tcg-op-ldst.c
-@@ -30,7 +30,7 @@
- #include "exec/translation-block.h"
- #include "exec/plugin-gen.h"
- #include "tcg-internal.h"
--
-+#include "tcg-has.h"
- 
- static void check_max_alignment(unsigned a_bits)
- {
-diff --git a/tcg/tcg-op-vec.c b/tcg/tcg-op-vec.c
-index 364cd089df3..893d68e7d80 100644
---- a/tcg/tcg-op-vec.c
-+++ b/tcg/tcg-op-vec.c
-@@ -23,6 +23,7 @@
- #include "tcg/tcg-op-common.h"
- #include "tcg/tcg-mo.h"
- #include "tcg-internal.h"
-+#include "tcg-has.h"
- 
- /*
-  * Vector optional opcode tracking.
-diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
-index 872fb22ef8d..ab5ccd8dcb6 100644
---- a/tcg/tcg-op.c
-+++ b/tcg/tcg-op.c
-@@ -29,7 +29,7 @@
- #include "exec/translation-block.h"
- #include "exec/plugin-gen.h"
- #include "tcg-internal.h"
--
-+#include "tcg-has.h"
- 
- /*
-  * Encourage the compiler to tail-call to a function, rather than inlining.
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index 505e43c1289..3576299a1c7 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -56,6 +56,7 @@
- #include "tcg/tcg-temp-internal.h"
- #include "tcg-internal.h"
- #include "tcg/perf.h"
-+#include "tcg-has.h"
- #ifdef CONFIG_USER_ONLY
- #include "user/guest-base.h"
- #endif
-diff --git a/tcg/tci.c b/tcg/tci.c
-index 3eb95e20b65..39a68db287f 100644
---- a/tcg/tci.c
-+++ b/tcg/tci.c
-@@ -22,6 +22,7 @@
- #include "tcg/helper-info.h"
- #include "tcg/tcg-ldst.h"
- #include "disas/dis-asm.h"
-+#include "tcg-has.h"
- #include <ffi.h>
- 
- 
 -- 
-2.47.1
+Cheers,
+
+David / dhildenb
 
 
