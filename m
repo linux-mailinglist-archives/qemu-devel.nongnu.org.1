@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39C1CA0552F
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 09:22:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB9C3A055BA
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 09:48:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVRJh-0002B6-SB; Wed, 08 Jan 2025 03:21:29 -0500
+	id 1tVRgq-0005zz-LP; Wed, 08 Jan 2025 03:45:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tVRJf-0002As-9i; Wed, 08 Jan 2025 03:21:28 -0500
-Received: from mgamail.intel.com ([198.175.65.13])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tVRgo-0005zo-GI
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 03:45:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tVRJd-00034T-7J; Wed, 08 Jan 2025 03:21:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736324485; x=1767860485;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=xQOv0/zapW7BXXy8+/VXKSl+ldZ/8GvMp6GJ/kSGU78=;
- b=XHEBcbyb23EB3Hc4vXmJFi2m3PV3ynDOFP2K1h6rWIHWpG1WHKLePOkS
- cW5qk0tlBj25DcVg07r6urIZayZ/1e/5aZTe6Z/xBUZwReapFXMny8rzo
- WVTkrVp+2iAu5/iwhZvfHrymeovJHmMeRWvQzUfW00IBebx6vXYhhGoN4
- fYYrQN7zFZVuybTPRANSMCspTKtFl3mUrGB+6cdHBADDEpWI8M5FOqzpx
- pRqI/Odin05vJ8MqMecEopycvl9yfzZFkCsoTXVVUURoc/WK4pRDbkSwG
- 8+73iqNrOSzkBlyDkGBQqDmatMsOIEwH+cFd0tfHx9L/bv0edCIgDQMUz g==;
-X-CSE-ConnectionGUID: pDQALm7AQP+7PEbdwgcleQ==
-X-CSE-MsgGUID: GredvXoyQCicc/lqjciu1Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="47529530"
-X-IronPort-AV: E=Sophos;i="6.12,297,1728975600"; d="scan'208";a="47529530"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jan 2025 00:21:21 -0800
-X-CSE-ConnectionGUID: QRTp7K0NTSSICHJ4KHpcdA==
-X-CSE-MsgGUID: 30fppuZCQU2D4bUMkxwxQA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,297,1728975600"; d="scan'208";a="102835371"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa006.fm.intel.com with ESMTP; 08 Jan 2025 00:21:19 -0800
-Date: Wed, 8 Jan 2025 16:40:07 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, junjie.mao@hotmail.com
-Subject: Re: [RFC PATCH 9/9] rust: vmstate: remove translation of C vmstate
- macros
-Message-ID: <Z3455wmD0tXodiSL@intel.com>
-References: <20241231002336.25931-1-pbonzini@redhat.com>
- <20241231002336.25931-10-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tVRgm-0001jo-Mm
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 03:45:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736325918;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=EvOBu5G6a1/HLBB+urgeWLcac3tXhJWb794dLI8+9GU=;
+ b=EERnA23KcdhxtR6AMOQ9bowM8B2D3IlFt7RAu++wPsrSMEaWeMsV35v2ukflnj0GRYQMqN
+ 9ri7493+FFM6+mQSQdUfRjIUo++gajtINOI5LMm2JdeaNczEgvfJfFv4idAF8WKCfCOdKy
+ 9P9LsH8pT3tBJQtQZ2QowrIK3Utl9mY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-149-Bb1g1Rp5NEeOfpbgUwwNxQ-1; Wed,
+ 08 Jan 2025 03:45:16 -0500
+X-MC-Unique: Bb1g1Rp5NEeOfpbgUwwNxQ-1
+X-Mimecast-MFC-AGG-ID: Bb1g1Rp5NEeOfpbgUwwNxQ
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D3A8F19560B2
+ for <qemu-devel@nongnu.org>; Wed,  8 Jan 2025 08:45:15 +0000 (UTC)
+Received: from thuth-p1g4.str.redhat.com (dhcp-192-228.str.redhat.com
+ [10.33.192.228])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 56A4919560AB; Wed,  8 Jan 2025 08:45:13 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 00/14] Fixes for tests and removal of deprecated features
+Date: Wed,  8 Jan 2025 09:44:57 +0100
+Message-ID: <20250108084511.238458-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241231002336.25931-10-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.437,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.437,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,23 +79,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 31, 2024 at 01:23:36AM +0100, Paolo Bonzini wrote:
-> Date: Tue, 31 Dec 2024 01:23:36 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [RFC PATCH 9/9] rust: vmstate: remove translation of C vmstate
->  macros
-> X-Mailer: git-send-email 2.47.1
-> 
-> Keep vmstate_clock!; because it uses a field of type VMStateDescription,
-> it cannot be converted to the VMState trait without access to the
-> const_refs_static feature.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/qemu-api/src/vmstate.rs | 274 +++--------------------------------
->  1 file changed, 23 insertions(+), 251 deletions(-)
-> 
+The following changes since commit 6528013b5f5ba6bb3934b7f5fe57a3110680530f:
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+  Merge tag 'qga-pull-2025-01-06' of https://github.com/kostyanf14/qemu into staging (2025-01-06 09:39:02 -0500)
+
+are available in the Git repository at:
+
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2025-01-08
+
+for you to fetch changes up to f69705f300f487936919359354925395105ec018:
+
+  tests/functional/test_x86_64_hotplug_cpu: Fix race condition during unplug (2025-01-07 15:02:46 +0100)
+
+----------------------------------------------------------------
+* Fix compilation problem in s390x tcg tests
+* Remove obsolete versioned s390x machine types 2.4 up to 2.8
+* Remove deprecated -runas command line option
+* Fix the x86_64_hotplug_cpu functional test
+
+----------------------------------------------------------------
+Ilya Leoshkevich (1):
+      tests/tcg/s390x: Use the SLOF libc headers for the multiarch tests
+
+Thomas Huth (13):
+      hw/s390x/s390-virtio-ccw: Remove the deprecated 2.4 and 2.5 machine types
+      hw/s390x/s390-skeys: Remove the "migration-enabled" property
+      hw/s390x/s390-virtio-ccw: Remove the deprecated 2.6 machine type
+      hw/s390x: Remove the "ri_allowed" switch
+      hw/s390x/ipl: Remove the "iplbext_migration" property
+      hw/s390x/css-bridge: Remove the "css_dev_path" property
+      hw/s390x/s390-virtio-ccw: Remove the deprecated 2.7 machine type
+      hw/s390x: Remove the cpu_model_allowed flag and related code
+      hw/s390x/s390-virtio-ccw: Remove the deprecated 2.8 machine type
+      hw/s390x: Remove the "adapter_routes_max_batch" property from the flic
+      Remove the deprecated "-runas" command line option
+      docs/about/deprecated: Remove paragraph about initial deprecation in 2.10
+      tests/functional/test_x86_64_hotplug_cpu: Fix race condition during unplug
+
+ docs/about/deprecated.rst                   |  12 ----
+ docs/about/removed-features.rst             |   6 ++
+ hw/s390x/ipl.h                              |   1 -
+ include/hw/s390x/css-bridge.h               |   1 -
+ include/hw/s390x/s390-virtio-ccw.h          |   6 --
+ include/hw/s390x/s390_flic.h                |   2 -
+ include/hw/s390x/storage-keys.h             |   2 -
+ hw/intc/s390_flic.c                         |   9 ---
+ hw/s390x/css-bridge.c                       |  16 +----
+ hw/s390x/ipl.c                              |  10 ---
+ hw/s390x/s390-skeys.c                       |  10 +--
+ hw/s390x/s390-virtio-ccw.c                  | 108 +---------------------------
+ hw/s390x/virtio-ccw.c                       |   5 +-
+ system/vl.c                                 |   9 ---
+ target/s390x/kvm/kvm.c                      |  16 ++---
+ qemu-options.hx                             |  15 +---
+ tests/functional/test_x86_64_hotplug_cpu.py |   6 +-
+ tests/tcg/s390x/Makefile.softmmu-target     |   3 +-
+ 18 files changed, 24 insertions(+), 213 deletions(-)
 
 
