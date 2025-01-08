@@ -2,89 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B5BA056E0
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 10:29:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB170A058B6
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 11:52:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVSLg-00052c-Jd; Wed, 08 Jan 2025 04:27:37 -0500
+	id 1tVTfK-0002Kp-I5; Wed, 08 Jan 2025 05:51:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tVSKL-0003yB-DN; Wed, 08 Jan 2025 04:26:14 -0500
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1tVTfE-0002Kg-IL
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 05:51:54 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tVSKJ-0004qK-SV; Wed, 08 Jan 2025 04:26:13 -0500
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-aaeec07b705so1943716866b.2; 
- Wed, 08 Jan 2025 01:26:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1tVTfC-0007Bf-6s
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 05:51:51 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-38633b5dbcfso15911260f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 02:51:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1736328369; x=1736933169; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1736333507; x=1736938307; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BWONvS3zrMT7DHIR9fjnPk/2xHHvbX1PNKzkC10sjG4=;
- b=hAC2A1WWz1ZgGcldU8hLDqxqrxRF+AO/J08ZoDFleHhGpcotFqqyMiLGu8Y5dSqPsv
- boEkBIXz0f0mWYS8A3tk7iLMF+cyuzkSVqv9jwXixEEZ6BkUcaY19IvW30SkIQlLSXqk
- sDRX6aSo1cAm6rBF5Ywdgjjm+6dW+dRGTAbGQKwhKyY5bCfN59XZXXeM25BFIOB9+pVz
- tTkNfZ2UgUpTMJs0Zs/9k8QJ4hJSR0ZF/NFgHDhqLqQI+x2zdEbKu5N2jr1E1hSq16an
- LiIeDis4YVrGNplNbliWVgQH3JaFzzcajq20t8lXEL19BWsNud/EFjztoGEY7S5UVPJD
- DJIw==
+ bh=P4iCOjuZ/xAqj/+8jAiztsVvLpoUdK7ynsRVlAarbkA=;
+ b=YwBlR5vDY+AYohLjdDqN2m5vGLqB66loeKkAwzwsYw8rH8kN3f6ge7h9wmq9w+FRTO
+ qWGNOFbfFGKvFcj4BFbZf/femx0wS27S4YNXMTGbuvKmGZxPH+AbI5VeCi1FS8HYtfh7
+ SoRAQfcNsPvw9fXwr0aIr5oThG1QKpadmYWFYdmvaHkgLs3kkNpWYcUCbKpVELi82a+B
+ ZDDBqem0vXoTXNa4/7eGpFctztj3SUOE2RycMMZVK/ro3GVGyn//6yptyGCFso2TAIMD
+ O3eRSgiPtMqrFcgIMWyYmrq8aG2IB/pFPhJfif+tYJhbndPEyI2hAESJupDSUAEmzm3W
+ be5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736328369; x=1736933169;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1736333507; x=1736938307;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BWONvS3zrMT7DHIR9fjnPk/2xHHvbX1PNKzkC10sjG4=;
- b=SAg21YSZAG8PIxTPqyPsBZREM7z5/Jq9Cda3EuFbIKcxv93TNfxz8vW6fZ6cvqyynX
- 3J2ParraRr5BH1XZoW+CNAvNQ90Dwj79JFeXbqKmpvvWCEUXvLwtuCNNPHZiENwyLMUg
- mXfF3rmLUouHxliaJacsQEZxUUVVa4/oYM6comjMI8py7wUYweF4NGcrvAArYOHCz6mI
- oabb/+8q9qTUjHuMYr3dSiXEq34AxVSQzAwn7pMr27GmXhCJPDrPOu15SZyPYId99arO
- M6CI/6IAoyS7lAzT59uRa24GfyKvPAYPm+xGbQ2EenCSkSZhl4qjHeESUvy3EeCaJIpV
- 6aZA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWkoCHWoA/ehS+TStLU8ksdlwKG8JsRV7RY3qPLX/2csGFcJfnODtWyzJ5H44lKvN7V109D5bSc7d3ZFQ==@nongnu.org,
- AJvYcCXunRkFzMnEfLUzvBau0ggULpAVecLNLbYDLT9EVf9GQ6dGcT/reOUIDZl1tEGNIBg+S+ntCNGmmQ==@nongnu.org
-X-Gm-Message-State: AOJu0YwRcI9Pax5PrkcbMUUm5ALUNjQArCue7TZVBxUTuoXTinXOj2B3
- WP4vKLLD3m6eqEHFzaiG29D5ytAeoikTb/S2rEKmC4+Ju+dE26BQyizbQ+vt
-X-Gm-Gg: ASbGncubilwiabOiEpiygyQhMLmBl0BpS2O1Czn3gXcbf3z9y8qqsEzjPrIc+pFwaQ8
- BNsB8ru9JVhndE9doneTjXC01rDm4ANIBN2yvjhHUmLfo5QA60nSsEHFrqeYebsfJAxdtkpzrqG
- cSSS6qf309fGzT4UJotARLCp6Sh/5vXbwCdKyxhPNtOw9UEfBDhpCaeoYrUezp+r1zrRIFb6E6+
- egd887kZ+kSXSKzO7e3U2660Cj5i3LKnisQ0aFCF/e9ZD1wBuhOQQ7X0ryWOFm5smjxAbb5lCIW
- AbTmn6FFkQJWX8guMBwisIE41SNk6lyDydD/IgERv8z1hQc=
-X-Google-Smtp-Source: AGHT+IH9lqeLlDGFhP94E+1BYC9pSCPPb/pa+WFbrAoa0miigwPvyDPcSV/Ws4jJJwZsOeJojbu8dA==
-X-Received: by 2002:a17:907:3e9f:b0:aae:bd4c:22c0 with SMTP id
- a640c23a62f3a-ab2ab70aeccmr157228366b.19.1736328369051; 
- Wed, 08 Jan 2025 01:26:09 -0800 (PST)
-Received: from Provence.localdomain
- (dynamic-077-188-106-228.77.188.pool.telefonica.de. [77.188.106.228])
- by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d806feddfasm26116096a12.58.2025.01.08.01.26.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Jan 2025 01:26:08 -0800 (PST)
+ bh=P4iCOjuZ/xAqj/+8jAiztsVvLpoUdK7ynsRVlAarbkA=;
+ b=eiCmc7HHUgbvUUrYMdQ1MIpzMZO2XdxIEke/4Bl6QbOeo+KAZ+rF1WKzhjw6pPAjkB
+ 0mO8yaqyIn1bpJxLSwsX/gO8yHwgVvRedgryeluyuwxp/cflPpt9cIANCYix8JKXIIGt
+ MS5aSxE1F6k3vINTkmRSqu9o+9dJDENr6ouWyjUUlWsYe6kUFW3+HiI+viw5jh8gOTXz
+ ukgS9iJ4QH5yqJdNCd/7m12kg2vnvddE95/fLmKS7C9Y4Rn5Mi3TlKWN4b3UUE100uL3
+ lwLyJfpHQVdSwA612zgwf8YWzHs7AKeZWYNFmwpvP06loovukGRVZHmGN8Yem8KlTZ6Y
+ lNHg==
+X-Gm-Message-State: AOJu0Yy9kLyDhAVJBZRAfx3iUjfeZ7SxmjtWjUXY0Ov9XLGbtt/0ULHR
+ 8lA7/mQ4XMR+OAy1Ca7c9oXRg+o2dhPI7FpDcVUesRuznMHiqZBBy6nQmQ==
+X-Gm-Gg: ASbGnctOmJeRKgioesg46mzO/L32C6VrPCXr2R3plXvlQzVCCORZlF4V4jxZ3XNWhGP
+ 2Fl1tvmOnkpj1BK/IMbhCCjps1s3BN+Xh5WlrT4WK9nPmGnYkOgzSBEypihs4TIZc3QJSN2H1qg
+ eD6dOBg+ERCaHc255mMMOxjDz49SqrqHpjDNaiZ0LyKAPC+tfno1/uffHVMvlIDCZsiGwNDPSAS
+ YAJSNEVFmBSKilkTbCaIobIzAe04raen9ZmQS9gL5uJbOKAwLbw
+X-Google-Smtp-Source: AGHT+IGqIaT+5M6eC6yS9qvb4iMsCuARl6VL60xRz6RyrP+G7RI+BXnESAj30GlnVwk2/mfARZp9ag==
+X-Received: by 2002:adf:a3d2:0:b0:38a:88f8:aac6 with SMTP id
+ ffacd0b85a97d-38a88f8ac78mr931149f8f.41.1736333507056; 
+ Wed, 08 Jan 2025 02:51:47 -0800 (PST)
+Received: from [127.0.0.1] ([90.187.110.129]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-aaf5d1b602bsm1138530266b.178.2025.01.08.02.51.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 08 Jan 2025 02:51:46 -0800 (PST)
+Date: Wed, 08 Jan 2025 09:45:43 +0000
 From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Bin Meng <bmeng.cn@gmail.com>, Fabiano Rosas <farosas@suse.de>,
- Guenter Roeck <linux@roeck-us.net>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
- Laurent Vivier <lvivier@redhat.com>, qemu-arm@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+To: qemu-devel@nongnu.org, David Woodhouse <dwmw2@infradead.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+CC: Thomas Huth <thuth@redhat.com>, Paul Durrant <paul@xen.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 14/14] hw/gpio/imx_gpio: Turn DPRINTF() into trace events
-Date: Wed,  8 Jan 2025 10:25:38 +0100
-Message-ID: <20250108092538.11474-15-shentey@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250108092538.11474-1-shentey@gmail.com>
-References: <20250108092538.11474-1-shentey@gmail.com>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_hw/i386/pc=3A_Fix_level_inte?=
+ =?US-ASCII?Q?rrupt_sharing_for_Xen_event_channel_GSI?=
+In-Reply-To: <8b2690f2c9532468fd5029d319737904b58acec2.camel@infradead.org>
+References: <e592f9127f2d9919e6ccb76a0afb38c5d725d8ec.camel@infradead.org>
+ <20250107110718-mutt-send-email-mst@kernel.org>
+ <8b2690f2c9532468fd5029d319737904b58acec2.camel@infradead.org>
+Message-ID: <E60B2E8D-23B5-43E2-8DC5-FDBA30EB40EF@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x629.google.com
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=shentey@gmail.com; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,85 +101,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While at it add a trace event for input GPIO events.
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
----
- hw/gpio/imx_gpio.c   | 16 +++++-----------
- hw/gpio/trace-events |  5 +++++
- 2 files changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/hw/gpio/imx_gpio.c b/hw/gpio/imx_gpio.c
-index 67c47a7280..f77132fe04 100644
---- a/hw/gpio/imx_gpio.c
-+++ b/hw/gpio/imx_gpio.c
-@@ -24,6 +24,7 @@
- #include "migration/vmstate.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
-+#include "trace.h"
- 
- #ifndef DEBUG_IMX_GPIO
- #define DEBUG_IMX_GPIO 0
-@@ -34,14 +35,6 @@ typedef enum IMXGPIOLevel {
-     IMX_GPIO_LEVEL_HIGH = 1,
- } IMXGPIOLevel;
- 
--#define DPRINTF(fmt, args...) \
--    do { \
--        if (DEBUG_IMX_GPIO) { \
--            fprintf(stderr, "[%s]%s: " fmt , TYPE_IMX_GPIO, \
--                                             __func__, ##args); \
--        } \
--    } while (0)
--
- static const char *imx_gpio_reg_name(uint32_t reg)
- {
-     switch (reg) {
-@@ -111,6 +104,8 @@ static void imx_gpio_set(void *opaque, int line, int level)
-     IMXGPIOState *s = IMX_GPIO(opaque);
-     IMXGPIOLevel imx_level = level ? IMX_GPIO_LEVEL_HIGH : IMX_GPIO_LEVEL_LOW;
- 
-+    trace_imx_gpio_set(s->iomem.addr, line, imx_level);
-+
-     imx_gpio_set_int_line(s, line, imx_level);
- 
-     /* this is an input signal, so set PSR */
-@@ -200,7 +195,7 @@ static uint64_t imx_gpio_read(void *opaque, hwaddr offset, unsigned size)
-         break;
-     }
- 
--    DPRINTF("(%s) = 0x%" PRIx32 "\n", imx_gpio_reg_name(offset), reg_value);
-+    trace_imx_gpio_read(s->iomem.addr, imx_gpio_reg_name(offset), reg_value);
- 
-     return reg_value;
- }
-@@ -210,8 +205,7 @@ static void imx_gpio_write(void *opaque, hwaddr offset, uint64_t value,
- {
-     IMXGPIOState *s = IMX_GPIO(opaque);
- 
--    DPRINTF("(%s, value = 0x%" PRIx32 ")\n", imx_gpio_reg_name(offset),
--            (uint32_t)value);
-+    trace_imx_gpio_write(s->iomem.addr, imx_gpio_reg_name(offset), value);
- 
-     switch (offset) {
-     case DR_ADDR:
-diff --git a/hw/gpio/trace-events b/hw/gpio/trace-events
-index b91cc7e9a4..9ddacc12e3 100644
---- a/hw/gpio/trace-events
-+++ b/hw/gpio/trace-events
-@@ -1,5 +1,10 @@
- # See docs/devel/tracing.rst for syntax documentation.
- 
-+# imx_gpio.c
-+imx_gpio_read(uint64_t base, const char *reg, uint32_t value) "0x%" PRIx64 ":[%s] -> 0x%" PRIx32
-+imx_gpio_write(uint64_t base, const char *reg, uint32_t value) "0x%" PRIx64 ":[%s] <- 0x%" PRIx32
-+imx_gpio_set(uint64_t base, int line, int level) "0x%" PRIx64 ":[%d] <- %d"
-+
- # npcm7xx_gpio.c
- npcm7xx_gpio_read(const char *id, uint64_t offset, uint64_t value) " %s offset: 0x%04" PRIx64 " value 0x%08" PRIx64
- npcm7xx_gpio_write(const char *id, uint64_t offset, uint64_t value) "%s offset: 0x%04" PRIx64 " value 0x%08" PRIx64
--- 
-2.47.1
+Am 7=2E Januar 2025 16:20:28 UTC schrieb David Woodhouse <dwmw2@infradead=
+=2Eorg>:
+>On Tue, 2025-01-07 at 11:07 -0500, Michael S=2E Tsirkin wrote:
+>> On Thu, Dec 19, 2024 at 05:24:11PM +0100, David Woodhouse wrote:
+>> > From: David Woodhouse <dwmw@amazon=2Eco=2Euk>
+>> >=20
+>> > The system GSIs are not designed for sharing=2E One device might asse=
+rt a
+>> > shared interrupt with qemu_set_irq() and another might deassert it, a=
+nd
+>> > the level from the first device is lost=2E
+>> >=20
+>> > This could be solved by using a multiplexer which functions as an OR
+>> > gate, much like the PCI code already implements for pci_set_irq() for
+>> > muxing the INTx lines=2E
 
+Just curious: Why not use that aporoach? Could <https://lore=2Ekernel=2Eor=
+g/qemu-devel/20250108092538=2E11474-5-shentey@gmail=2Ecom/> help?
+
+Best regards,
+Bernhard
+
+>> >=20
+>> > Alternatively, it could be solved by having a 'resample' callback whi=
+ch
+>> > is invoked when the interrupt is acked at the interrupt controller, a=
+nd
+>> > causes the devices to re-trigger the interrupt if it should still be
+>> > pending=2E This is the model that VFIO in Linux uses, with a 'resampl=
+er'
+>> > eventfd that actually unmasks the interrupt on the hardware device an=
+d
+>> > thus triggers a new interrupt from it if needed=2E QEMU currently doe=
+sn't
+>> > use that VFIO interface correctly, and just bashes on the resampler f=
+or
+>> > every MMIO access to the device "just in case"=2E
+>> >=20
+>> > This does neither of those=2E The Xen event channel GSI support *alre=
+ady*
+>> > has hooks into the PC gsi_handler() code, for routing GSIs to PIRQs=
+=2E So
+>> > we can implement the logical OR of the external input (from PCI INTx,
+>> > serial etc=2E) with the Xen event channel GSI by allowing that existi=
+ng
+>> > hook to modify the 'level' being asserted=2E
+>> >=20
+>> > Closes: https://gitlab=2Ecom/qemu-project/qemu/-/issues/2731
+>> > Reported-by: Thomas Huth <thuth@redhat=2Ecom>
+>> > Signed-off-by: David Woodhouse <dwmw@amazon=2Eco=2Euk>
+>>=20
+>> Xen things so feel free to merge=2E
+>>=20
+>> Acked-by: Michael S=2E Tsirkin <mst@redhat=2Ecom>
+>
+>Thanks=2E
+>
+>Further testing shows I need one minor fix=2E=2E=2E
+>
+>> > @@ -1596,7 +1607,7 @@ static int allocate_pirq(XenEvtchnState *s, int=
+ type, int gsi)
+>> > =C2=A0=C2=A0=C2=A0=C2=A0 return pirq;
+>> > =C2=A0}
+>> > =C2=A0
+>> > -bool xen_evtchn_set_gsi(int gsi, int level)
+>> > +bool xen_evtchn_set_gsi(int gsi, int *level)
+>> > =C2=A0{
+>> > =C2=A0=C2=A0=C2=A0=C2=A0 XenEvtchnState *s =3D xen_evtchn_singleton;
+>> > =C2=A0=C2=A0=C2=A0=C2=A0 int pirq;
+>
+>=2E=2E=2E
+>
+>@@ -1628,7 +1656,7 @@ bool xen_evtchn_set_gsi(int gsi, int level)
+>         return false;
+>     }
+>=20
+>-    if (level) {
+>+    if (*level) {
+>         int port =3D s->pirq[pirq]=2Eport;
+>=20
+>         s->pirq_gsi_set |=3D (1U << gsi);
+>
+>
+>
 
