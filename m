@@ -2,103 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CAFA05ED5
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 15:37:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C472A05F5C
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 15:53:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVXBU-0008P4-CI; Wed, 08 Jan 2025 09:37:24 -0500
+	id 1tVXPr-0006zL-47; Wed, 08 Jan 2025 09:52:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tVXBS-0008Ou-IY
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:37:22 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <adam@rttst.com>) id 1tVXPh-0006z6-37
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:52:06 -0500
+Received: from mta-231a.oxsus-vadesecure.net ([15.204.3.4]
+ helo=nmtao201.oxsus-vadesecure.net)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tVXBQ-0006o3-Q2
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:37:22 -0500
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 07F3F1F391;
- Wed,  8 Jan 2025 14:37:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736347039; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=z7i3NKvk82GbsaGFcG1uQDrT56Uv6oGYQo0k/886ZWA=;
- b=XKB9cUnJpkmkGMcPq2f0jrSE0u78sGa78EDEhH/7ZxtB/Vx6mU81PyCEEnZV+BOPebYwo7
- BVg0bG0WUONc6bWkOmUGYOl2f93JkSxI2gLldHDkDZlDMZ5BnvES8KkEQVOk+L4F5Ho+O8
- d6hpuylTHbc04tcgFX0kW1EHiJyEi8M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736347039;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=z7i3NKvk82GbsaGFcG1uQDrT56Uv6oGYQo0k/886ZWA=;
- b=rT/S7S5cj4Mjx4ZtJUUAMUljoZGyrQyAXp7GT1w15xuu/mdDRPiC8HDB37WKtcLi4Lpk69
- IBt5ni16y4sr0gCQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736347039; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=z7i3NKvk82GbsaGFcG1uQDrT56Uv6oGYQo0k/886ZWA=;
- b=XKB9cUnJpkmkGMcPq2f0jrSE0u78sGa78EDEhH/7ZxtB/Vx6mU81PyCEEnZV+BOPebYwo7
- BVg0bG0WUONc6bWkOmUGYOl2f93JkSxI2gLldHDkDZlDMZ5BnvES8KkEQVOk+L4F5Ho+O8
- d6hpuylTHbc04tcgFX0kW1EHiJyEi8M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736347039;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=z7i3NKvk82GbsaGFcG1uQDrT56Uv6oGYQo0k/886ZWA=;
- b=rT/S7S5cj4Mjx4ZtJUUAMUljoZGyrQyAXp7GT1w15xuu/mdDRPiC8HDB37WKtcLi4Lpk69
- IBt5ni16y4sr0gCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 829601351A;
- Wed,  8 Jan 2025 14:37:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id LicrEp6NfmdLTQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 08 Jan 2025 14:37:18 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 3/7] migration: Document the effect of vmstate_info_nullptr
-In-Reply-To: <Z36CQojucUnvonfD@x1n>
-References: <20250107195025.9951-1-farosas@suse.de>
- <20250107195025.9951-4-farosas@suse.de> <Z32bkFa4snLklsbj@x1n>
- <87frlt4eli.fsf@suse.de> <Z36CQojucUnvonfD@x1n>
-Date: Wed, 08 Jan 2025 11:37:15 -0300
-Message-ID: <87a5c14bj8.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <adam@rttst.com>) id 1tVXPa-0003ZS-LH
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:52:01 -0500
+Authentication-Results: oxsus-vadesecure.net;
+ auth=pass smtp.auth=3@204339 smtp.mailfrom=adam@rttst.com;
+ARC-Seal: i=1; a=rsa-sha256; d=oxsus-vadesecure.net; s=arc-202309-rsa2048;
+ t=1736347915; cv=none;
+ b=abkAD25K611s883WXJkDA1h/1SEcDatpBqM8cvFceBu2XrS2+3mU0Gwk1ctClOfjXrjHQCHpDh+mEIka2RJ6tiFp+EOcPvSpiFFDpqduf7T1lWxRbYoKUMOhcgKV1H4yu28U1XfpIHi6DUHLQxD/SQT5o1eaf5SmbfzFpdfOCOrGcy3bsATimZb5x6IhwFU1FW9/zE6vgxoq96D8tqSv+xbmmIs9tOL84YW7nWCd0VCcSzyqvpOpxK9KtFsvRhvhH1IVdOq3/WbFGtC52ngt9nNCU1j7yJ0pGMqNaK1+srwWkPk+3l9Cl4uDgS47PspqMP1nKlAS37wPVJisBQMzFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=oxsus-vadesecure.net;
+ s=arc-202309-rsa2048; t=1736347915; c=relaxed/relaxed;
+ h=from:reply-to:subject:date:to:cc:resent-date:resent-from:resent-to:resent-cc:in-reply-to:references:list-id:list-help:list-unsubscribe:list-unsubscribe-post:list-subscribe:list-post:list-owner:list-archive;
+ bh=+K3Drh4nQ4T68jZoiYlJL2Unji4JeZHpX09bvQKFSvc=;
+ b=Vze+7ZPqcpDXVks9eOuPxE4RwweoBZKY3t0vJIfhTNzM1CkhK3J7Y5BdNeOByoo8sFS84f9rWnCMjjJJfS+ziI0nJFTVEh4S68Zj5DSYFKLUH2ijNPLQXkpfeTRkE+xcs0mQhUG280J/u/qbDAO/kg31El7d/VFI6ilTGIORwRWKEU7BW+02XVdDzp+eSHOyxDWsJlRZ2VKXb6o8RK1Is82x2OV4KyQ5GlMyCheqL+CgJDGJry/pk/U9z2eCOEUsVq7Z8Rgk42GSG6ZtbBFqdmxRtsuiFOW1UJ5jetb1RKemPCrYxR1dt+FceilkirXIIn8988C/kBrhbVUk9poJ4g==
+ARC-Authentication-Results: i=1;
+DKIM-Signature: v=1; a=rsa-sha256; bh=+K3Drh4nQ4T68jZoiYlJL2Unji4JeZHpX09bvQ
+ KFSvc=; c=relaxed/relaxed; d=oxsus-vadesecure.net; h=from:reply-to:
+ subject:date:to:cc:resent-date:resent-from:resent-to:resent-cc:
+ in-reply-to:references:list-id:list-help:list-unsubscribe:
+ list-unsubscribe-post:list-subscribe:list-post:list-owner:list-archive;
+ q=dns/txt; s=dkim-202410-rsa2048; t=1736347915; x=1736952715; b=GwcOJ6U
+ bG2yaIXFNHEzTHgdMJivGDeOg2/Y3gt883HSfBLTR8+xJQwb7T0p7UfhJ+NQXH390LRUxyY
+ bKUnBTfeFfhVHAmWVQCFa6VBbr+NGoCPh1HsRiJrazpPlQ31vRcdzTPXsE+LG1t+Y465E+r
+ /XBG9FEm8oxSGJJs0Beqg7Ln8fIJwfvj9z69A1SBmxkaqoJ12Q0tZEFx9w6QXrJ5Bd25BmC
+ M63TV2/WdFkVLvAn3kJ5pxqJVJcAdRDcJ6OFlpFqbFCLw1ykyu4+RbTMw3lg/88NUs7axSc
+ sgvn4WJyKk3/s/fTD6znc4gZ5ZQPsTOKXVikWOWV6WdUSMcBljg==
+Received: from proxy-19.proxy.cloudus.ewr.xion.oxcs.net ([107.143.227.186])
+ by oxsus2nmtao01p.internal.vadesecure.com with ngmta
+ id 8b95b1e9-1818bf3a5865ef04; Wed, 08 Jan 2025 14:51:55 +0000
+Message-ID: <3fd90b0c-ff50-4dc7-921d-bdecb82c7777@rttst.com>
+Date: Wed, 8 Jan 2025 08:51:52 -0600
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- FROM_HAS_DN(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- FUZZY_BLOCKED(0.00)[rspamd.com];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[]; RCVD_TLS_ALL(0.00)[];
- RCPT_COUNT_THREE(0.00)[3]; MISSING_XM_UA(0.00)[];
- FROM_EQ_ENVFROM(0.00)[]; TO_DN_SOME(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; RCVD_VIA_SMTP_AUTH(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo, suse.de:mid,
- suse.de:email]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+From: Adam <adam@rttst.com>
+Subject: 86_64 host is not supported by hypervisor - 2024
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=15.204.3.4; envelope-from=adam@rttst.com;
+ helo=nmtao201.oxsus-vadesecure.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -112,98 +74,110 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: adam@rttst.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+TWIMC:
 
-> On Wed, Jan 08, 2025 at 10:31:05AM -0300, Fabiano Rosas wrote:
->> Peter Xu <peterx@redhat.com> writes:
->> 
->> > On Tue, Jan 07, 2025 at 04:50:21PM -0300, Fabiano Rosas wrote:
->> >> The migration stream lacks magic numbers at some key points. It's easy
->> >> to mis-parse data. Unfortunately, the VMS_NULLPTR_MARKER continues
->> >> with the trend. A '0' byte is ambiguous and could be interpreted as a
->> >> valid 0x30.
->> >> 
->> >> It is maybe not worth trying to change this while keeping backward
->> >> compatibility, so add some words of documentation to clarify.
->> >> 
->> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> >> ---
->> >>  migration/vmstate-types.c    | 6 ++++++
->> >>  scripts/analyze-migration.py | 9 +++++++++
->> >>  2 files changed, 15 insertions(+)
->> >> 
->> >> diff --git a/migration/vmstate-types.c b/migration/vmstate-types.c
->> >> index e83bfccb9e..08ed059f87 100644
->> >> --- a/migration/vmstate-types.c
->> >> +++ b/migration/vmstate-types.c
->> >> @@ -339,6 +339,12 @@ static int put_nullptr(QEMUFile *f, void *pv, size_t size,
->> >>  
->> >>  const VMStateInfo vmstate_info_nullptr = {
->> >>      .name = "uint64",
->> >
->> > Ouch.. So I overlooked this line and this explains why it didn't go via
->> > VMSDFieldGeneric already.
->> 
->> Yes, actually I overlooked as well that it should match the size of the
->> data being handled in the get/put functions.
->> 
->> My comment below is about NULL -> 0x30 that I think should instead be
->> NULL -> 0x3030303030303030 so we have any chance of looking at this and
->> identifying it's a NULL pointer. When we write 0x30 it might become
->> confusing for people reading the scripts output that their stream has a
->> bunch of '0' in the place where pointers should be. If the MAGIC number
->> were more identifiable, I could change the script to output (null) or 0x0ULL.
->
-> I suppose we can?  If we want, by renaming this from "uint64" to "nullptr",
-> then add an entry for it in Python's vmsd_field_readers.
+Had an issue with VM networking that turned out to be the host. In the 
+process of troubleshooting, I
 
-That would be a nice alternative because it maps NULL to something, just
-like the actual stream does. NULL -> '0' in the stream, NULL -> nullptr
-in the JSON. I'll give it a try, thanks.
+     sudo apt reinstall libvirt   (and other QEMU/KVM virtualization 
+dependencies)
 
->> 
->> We also don't really have the concept of a pointer, which I suspect
->> might be the real reason behind all this mess. So we'll see:
->> 
->> 0x30
->> 0x30
->> {
->>   .some
->>   .struct
->>   .here
->> }
->> 0x30
->> 
->> So all this patch was trying to do is document this situation somehow.
->
-> Yes, more docs makes sense, though just to mention it's nothing better here
-> to use a full size of pointer: firstly it's not possible I think as 32/64
-> bits have different size of pointers...
->
-> More importantly, we're not sending the pointer but a marker, in this case
-> the size of the real pointer doesn't really matter, IMHO.  A marker would
-> make sense in saving some bytes when / if the array is large and sparse.
+Now I am getting this particular error when trying to use the 
+host-passthrough for the CPU.
 
-Right, it's just that a larger data type allows for a more unique
-marker, which can be detected more reliably by the consumers of the
-stream. The smaller data type is too ambiguous.
+"error: unsupported configuration: CPU mode 'host-passthrough' for 
+x86_64 qemu domain on x86_64 host is not supported by hypervisor"
 
->
-> Said that, let's try above idea, maybe it's optimal as you said the script
-> can show things like "nullptr" (or any better name, I think that's better
-> than "null" at least to show it's not a real pointer, otherwise it's weird
-> to see any pointer in a migration stream..).
+This was working previously.  I found that two other domains are 
+responding the same.
 
-Yes, the script is just presenting the data, we can use what's more
-informative.
+The configuration in xml file is:
 
->
->> 
->> >
->> > Instead of below comment, do we still have chance to change this to
->> > something like "uint8"?  Then I suppose the script will be able to identify
->> > this properly.
+     <metadata>
+     <libosinfo:libosinfo 
+xmlns:libosinfo="http://libosinfo.org/xmlns/libvirt/domain/1.0">
+       <libosinfo:os id="http://libosinfo.org/linux/2022"/>
+     </libosinfo:libosinfo>
+   </metadata>
+   <memory unit='KiB'>4194304</memory>
+   <currentMemory unit='KiB'>4194304</currentMemory>
+   <vcpu placement='static'>2</vcpu>
+   <os>
+     <type arch='x86_64' machine='pc-q35-7.2'>hvm</type>
+     <boot dev='hd'/>
+   </os>
+   <features>
+     <acpi/>
+     <apic/>
+     <vmport state='off'/>
+   </features>
+   <cpu mode='host-passthrough' check='none' migratable='on'/>
+   <clock offset='utc'>
+
+But i now have to use this for it to work but the system is quite slow now.
+
+  <metadata>
+     <libosinfo:libosinfo 
+xmlns:libosinfo="http://libosinfo.org/xmlns/libvirt/domain/1.0">
+       <libosinfo:os id="http://libosinfo.org/linux/2022"/>
+     </libosinfo:libosinfo>
+   </metadata>
+   <memory unit='KiB'>4194304</memory>
+   <currentMemory unit='KiB'>4194304</currentMemory>
+   <vcpu placement='static'>2</vcpu>
+   <os>
+     <type arch='x86_64' machine='pc-q35-5.2'>hvm</type>
+     <boot dev='hd'/>
+   </os>
+   <features>
+     <acpi/>
+     <apic/>
+     <vmport state='off'/>
+   </features>
+   <cpu mode='custom' match='exact' check='none'>
+     <model fallback='forbid'>qemu64</model>
+   </cpu>
+
+
+Any recommendations, given that this used to work.
+
+
+Traceback error details are below this line:
+
+Error starting domain: unsupported configuration: CPU mode 
+'host-passthrough' for x86_64 qemu domain on x86_64 host is not 
+supported by hypervisor
+
+Traceback (most recent call last):
+   File "/usr/share/virt-manager/virtManager/asyncjob.py", line 72, in 
+cb_wrapper
+     callback(asyncjob, *args, **kwargs)
+   File "/usr/share/virt-manager/virtManager/asyncjob.py", line 108, in 
+tmpcb
+     callback(*args, **kwargs)
+   File "/usr/share/virt-manager/virtManager/object/libvirtobject.py", 
+line 57, in newfn
+     ret = fn(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+   File "/usr/share/virt-manager/virtManager/object/domain.py", line 
+1402, in startup
+     self._backend.create()
+   File "/usr/lib/python3/dist-packages/libvirt.py", line 1373, in create
+     raise libvirtError('virDomainCreate() failed')
+libvirt.libvirtError: unsupported configuration: CPU mode 
+'host-passthrough' for x86_64 qemu domain on x86_64 host is not 
+supported by hypervisor
+
+
+Thank you,
+
+A>AM
+
+
+
+
 
