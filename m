@@ -2,89 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB170A058B6
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 11:52:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 617DDA05793
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 11:04:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVTfK-0002Kp-I5; Wed, 08 Jan 2025 05:51:58 -0500
+	id 1tVSu0-0003BI-EN; Wed, 08 Jan 2025 05:03:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1tVTfE-0002Kg-IL
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 05:51:54 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1tVTfC-0007Bf-6s
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 05:51:51 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-38633b5dbcfso15911260f8f.2
- for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 02:51:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1736333507; x=1736938307; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=P4iCOjuZ/xAqj/+8jAiztsVvLpoUdK7ynsRVlAarbkA=;
- b=YwBlR5vDY+AYohLjdDqN2m5vGLqB66loeKkAwzwsYw8rH8kN3f6ge7h9wmq9w+FRTO
- qWGNOFbfFGKvFcj4BFbZf/femx0wS27S4YNXMTGbuvKmGZxPH+AbI5VeCi1FS8HYtfh7
- SoRAQfcNsPvw9fXwr0aIr5oThG1QKpadmYWFYdmvaHkgLs3kkNpWYcUCbKpVELi82a+B
- ZDDBqem0vXoTXNa4/7eGpFctztj3SUOE2RycMMZVK/ro3GVGyn//6yptyGCFso2TAIMD
- O3eRSgiPtMqrFcgIMWyYmrq8aG2IB/pFPhJfif+tYJhbndPEyI2hAESJupDSUAEmzm3W
- be5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736333507; x=1736938307;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=P4iCOjuZ/xAqj/+8jAiztsVvLpoUdK7ynsRVlAarbkA=;
- b=eiCmc7HHUgbvUUrYMdQ1MIpzMZO2XdxIEke/4Bl6QbOeo+KAZ+rF1WKzhjw6pPAjkB
- 0mO8yaqyIn1bpJxLSwsX/gO8yHwgVvRedgryeluyuwxp/cflPpt9cIANCYix8JKXIIGt
- MS5aSxE1F6k3vINTkmRSqu9o+9dJDENr6ouWyjUUlWsYe6kUFW3+HiI+viw5jh8gOTXz
- ukgS9iJ4QH5yqJdNCd/7m12kg2vnvddE95/fLmKS7C9Y4Rn5Mi3TlKWN4b3UUE100uL3
- lwLyJfpHQVdSwA612zgwf8YWzHs7AKeZWYNFmwpvP06loovukGRVZHmGN8Yem8KlTZ6Y
- lNHg==
-X-Gm-Message-State: AOJu0Yy9kLyDhAVJBZRAfx3iUjfeZ7SxmjtWjUXY0Ov9XLGbtt/0ULHR
- 8lA7/mQ4XMR+OAy1Ca7c9oXRg+o2dhPI7FpDcVUesRuznMHiqZBBy6nQmQ==
-X-Gm-Gg: ASbGnctOmJeRKgioesg46mzO/L32C6VrPCXr2R3plXvlQzVCCORZlF4V4jxZ3XNWhGP
- 2Fl1tvmOnkpj1BK/IMbhCCjps1s3BN+Xh5WlrT4WK9nPmGnYkOgzSBEypihs4TIZc3QJSN2H1qg
- eD6dOBg+ERCaHc255mMMOxjDz49SqrqHpjDNaiZ0LyKAPC+tfno1/uffHVMvlIDCZsiGwNDPSAS
- YAJSNEVFmBSKilkTbCaIobIzAe04raen9ZmQS9gL5uJbOKAwLbw
-X-Google-Smtp-Source: AGHT+IGqIaT+5M6eC6yS9qvb4iMsCuARl6VL60xRz6RyrP+G7RI+BXnESAj30GlnVwk2/mfARZp9ag==
-X-Received: by 2002:adf:a3d2:0:b0:38a:88f8:aac6 with SMTP id
- ffacd0b85a97d-38a88f8ac78mr931149f8f.41.1736333507056; 
- Wed, 08 Jan 2025 02:51:47 -0800 (PST)
-Received: from [127.0.0.1] ([90.187.110.129]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aaf5d1b602bsm1138530266b.178.2025.01.08.02.51.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Jan 2025 02:51:46 -0800 (PST)
-Date: Wed, 08 Jan 2025 09:45:43 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, David Woodhouse <dwmw2@infradead.org>,
- "Michael S. Tsirkin" <mst@redhat.com>
-CC: Thomas Huth <thuth@redhat.com>, Paul Durrant <paul@xen.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_hw/i386/pc=3A_Fix_level_inte?=
- =?US-ASCII?Q?rrupt_sharing_for_Xen_event_channel_GSI?=
-In-Reply-To: <8b2690f2c9532468fd5029d319737904b58acec2.camel@infradead.org>
-References: <e592f9127f2d9919e6ccb76a0afb38c5d725d8ec.camel@infradead.org>
- <20250107110718-mutt-send-email-mst@kernel.org>
- <8b2690f2c9532468fd5029d319737904b58acec2.camel@infradead.org>
-Message-ID: <E60B2E8D-23B5-43E2-8DC5-FDBA30EB40EF@gmail.com>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tVStp-0003Ag-IJ
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 05:02:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tVSto-0007bb-1q
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 05:02:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736330569;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=I9NE3z7kNsMBbqhUDW8tihTBQd8HYQLiFaWimPHs12Y=;
+ b=cn7X711nzGQBB1GyaOBEu20BfrKWJ27QbqOFAW3Vxkb9g1mySmHUD3DKSpZen6DrsCOF7q
+ ZJHoF9LHJE8HsQy1DgYNsNy5QwZxmvWIw7+Tv3dt7PHO29WzwHLU+/7KwFOz89Gn8hAOOi
+ eP3OFl4YVIfRIm44zGq/gsUAA3LX33Y=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-449-fnvltWnjNhymUEBAGrJosg-1; Wed,
+ 08 Jan 2025 05:02:48 -0500
+X-MC-Unique: fnvltWnjNhymUEBAGrJosg-1
+X-Mimecast-MFC-AGG-ID: fnvltWnjNhymUEBAGrJosg
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 259B719153C3; Wed,  8 Jan 2025 10:02:46 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.39.192.35])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 5AF4319560AA; Wed,  8 Jan 2025 10:02:42 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Bin Meng <bmeng.cn@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH] hw/sd/sdcard: Remove sd_set_cb()
+Date: Wed,  8 Jan 2025 11:02:40 +0100
+Message-ID: <20250108100240.960593-1-clg@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.437,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,90 +80,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Last user of sd_set_cb() was removed in commit ce5dd27534b0 ("hw/sd:
+Remove omap2_mmc device").
 
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ include/hw/sd/sdcard_legacy.h | 1 -
+ hw/sd/sd.c                    | 8 --------
+ 2 files changed, 9 deletions(-)
 
-Am 7=2E Januar 2025 16:20:28 UTC schrieb David Woodhouse <dwmw2@infradead=
-=2Eorg>:
->On Tue, 2025-01-07 at 11:07 -0500, Michael S=2E Tsirkin wrote:
->> On Thu, Dec 19, 2024 at 05:24:11PM +0100, David Woodhouse wrote:
->> > From: David Woodhouse <dwmw@amazon=2Eco=2Euk>
->> >=20
->> > The system GSIs are not designed for sharing=2E One device might asse=
-rt a
->> > shared interrupt with qemu_set_irq() and another might deassert it, a=
-nd
->> > the level from the first device is lost=2E
->> >=20
->> > This could be solved by using a multiplexer which functions as an OR
->> > gate, much like the PCI code already implements for pci_set_irq() for
->> > muxing the INTx lines=2E
+diff --git a/include/hw/sd/sdcard_legacy.h b/include/hw/sd/sdcard_legacy.h
+index 0dc388955512..a121232560d7 100644
+--- a/include/hw/sd/sdcard_legacy.h
++++ b/include/hw/sd/sdcard_legacy.h
+@@ -36,7 +36,6 @@ SDState *sd_init(BlockBackend *blk, bool is_spi);
+ int sd_do_command(SDState *card, SDRequest *request, uint8_t *response);
+ void sd_write_byte(SDState *card, uint8_t value);
+ uint8_t sd_read_byte(SDState *card);
+-void sd_set_cb(SDState *card, qemu_irq readonly, qemu_irq insert);
+ 
+ /* sd_enable should not be used -- it is only used on the nseries boards,
+  * where it is part of a broken implementation of the MMC card slot switch
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index 3e8fa1e35764..6765f743e118 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -1034,14 +1034,6 @@ SDState *sd_init(BlockBackend *blk, bool is_spi)
+     return sd;
+ }
+ 
+-void sd_set_cb(SDState *sd, qemu_irq readonly, qemu_irq insert)
+-{
+-    sd->readonly_cb = readonly;
+-    sd->inserted_cb = insert;
+-    qemu_set_irq(readonly, sd->blk ? !blk_is_writable(sd->blk) : 0);
+-    qemu_set_irq(insert, sd->blk ? blk_is_inserted(sd->blk) : 0);
+-}
+-
+ static void sd_blk_read(SDState *sd, uint64_t addr, uint32_t len)
+ {
+     trace_sdcard_read_block(addr, len);
+-- 
+2.47.1
 
-Just curious: Why not use that aporoach? Could <https://lore=2Ekernel=2Eor=
-g/qemu-devel/20250108092538=2E11474-5-shentey@gmail=2Ecom/> help?
-
-Best regards,
-Bernhard
-
->> >=20
->> > Alternatively, it could be solved by having a 'resample' callback whi=
-ch
->> > is invoked when the interrupt is acked at the interrupt controller, a=
-nd
->> > causes the devices to re-trigger the interrupt if it should still be
->> > pending=2E This is the model that VFIO in Linux uses, with a 'resampl=
-er'
->> > eventfd that actually unmasks the interrupt on the hardware device an=
-d
->> > thus triggers a new interrupt from it if needed=2E QEMU currently doe=
-sn't
->> > use that VFIO interface correctly, and just bashes on the resampler f=
-or
->> > every MMIO access to the device "just in case"=2E
->> >=20
->> > This does neither of those=2E The Xen event channel GSI support *alre=
-ady*
->> > has hooks into the PC gsi_handler() code, for routing GSIs to PIRQs=
-=2E So
->> > we can implement the logical OR of the external input (from PCI INTx,
->> > serial etc=2E) with the Xen event channel GSI by allowing that existi=
-ng
->> > hook to modify the 'level' being asserted=2E
->> >=20
->> > Closes: https://gitlab=2Ecom/qemu-project/qemu/-/issues/2731
->> > Reported-by: Thomas Huth <thuth@redhat=2Ecom>
->> > Signed-off-by: David Woodhouse <dwmw@amazon=2Eco=2Euk>
->>=20
->> Xen things so feel free to merge=2E
->>=20
->> Acked-by: Michael S=2E Tsirkin <mst@redhat=2Ecom>
->
->Thanks=2E
->
->Further testing shows I need one minor fix=2E=2E=2E
->
->> > @@ -1596,7 +1607,7 @@ static int allocate_pirq(XenEvtchnState *s, int=
- type, int gsi)
->> > =C2=A0=C2=A0=C2=A0=C2=A0 return pirq;
->> > =C2=A0}
->> > =C2=A0
->> > -bool xen_evtchn_set_gsi(int gsi, int level)
->> > +bool xen_evtchn_set_gsi(int gsi, int *level)
->> > =C2=A0{
->> > =C2=A0=C2=A0=C2=A0=C2=A0 XenEvtchnState *s =3D xen_evtchn_singleton;
->> > =C2=A0=C2=A0=C2=A0=C2=A0 int pirq;
->
->=2E=2E=2E
->
->@@ -1628,7 +1656,7 @@ bool xen_evtchn_set_gsi(int gsi, int level)
->         return false;
->     }
->=20
->-    if (level) {
->+    if (*level) {
->         int port =3D s->pirq[pirq]=2Eport;
->=20
->         s->pirq_gsi_set |=3D (1U << gsi);
->
->
->
 
