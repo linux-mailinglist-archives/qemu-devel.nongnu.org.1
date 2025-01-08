@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F5CA056CD
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 10:27:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 358C5A056E5
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 10:29:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVSKg-00044Z-FZ; Wed, 08 Jan 2025 04:26:34 -0500
+	id 1tVSKl-00048v-Bf; Wed, 08 Jan 2025 04:26:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tVSK5-0003ut-6H; Wed, 08 Jan 2025 04:25:58 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ id 1tVSK6-0003v7-MD; Wed, 08 Jan 2025 04:25:59 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tVSK3-0004lu-Mf; Wed, 08 Jan 2025 04:25:56 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5d3d143376dso24189511a12.3; 
- Wed, 08 Jan 2025 01:25:54 -0800 (PST)
+ id 1tVSK4-0004m9-GP; Wed, 08 Jan 2025 04:25:58 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3cf094768so4477484a12.0; 
+ Wed, 08 Jan 2025 01:25:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1736328352; x=1736933152; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1736328354; x=1736933154; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pwXzEhTAhGKIo4AswhlvC0Ew8f+aipAHcykX2e2ZcNs=;
- b=LYNt0DkYgosJXBySE2+TDhbWtejJADoEC12EKQ0tDAocPxhKw0nZVtlFhhlBEe9EmI
- 8KeR3hn7a4wYPZc2Ewm4vQRtvbz2FaoYN81F6NIVZlJI2KMM3wpYO0L/stFpznmNPQbL
- jyvlRTNmboTZDDoTy0Rw+u9WiHNiXlghbp7/Q3ihPUmgv4Qu8X7Sj3lI2RmBVh2N3XLN
- Nj/mUXlAf/i3Ker4Z6XqwnlIiZHgqVMQ5cnYc/mQK1tam8wyj6wtuG9rAE/ctrtjgFu7
- 3A2hygWqaHttI+yDJwqSm5JJ61ukzqvDC3SOvBarz2s2wCdWY0V0aQK1VVsByK3GH1l3
- 67aA==
+ bh=WARyL/sIptXT/6LU6CvnimThOZH1GGz60bhERGh4Qio=;
+ b=Ll+7BDf1I7g5wbiOCuj5bDsiQMrAcGsJx8M+3h7w5V5oflfrVCIj0LAd4GXTOJsyRd
+ C9cl/Mfsmg3AvcfARaBAGnOub32Jg/syNdDpALDYIBN2Ce8r5JzgIWEMlPegNfLpBfTm
+ lT4JzJFfNTP0yIYz21F4WT9PmOgzJ937XMNHwSXxC8dYxDDhRHbl0h9A+3Y7q7VQAZnd
+ w85ugBX/aQEHN9HRGDUJqyejNIM5p4zICYfxmk2FWWAU2OM2fJTF1i5rTENumLpJX1N3
+ NKo/4rrcfuYmVuzq7optpbRxm2sTy4gQgXfVejxxdRlWLMy4pM4nmDAcDvHPnBBOHrWf
+ wUbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736328352; x=1736933152;
+ d=1e100.net; s=20230601; t=1736328354; x=1736933154;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pwXzEhTAhGKIo4AswhlvC0Ew8f+aipAHcykX2e2ZcNs=;
- b=P29GVU+tZxF2XUzHySmJ/jbeZFMpuP3wm/Rtv1bwPux30bFv6e7Mp4ItYNZsen/wnp
- xz4N0YgoepdVRd1r5XqjUM18neVlFRIv/Z+ckvbnNLYOeTnUs9XH2EjBgjX/3Ehe/5+2
- NvFa5fy0vTIjJtSVnGBjpCGfJMTybVZWz0xf+HKG6fFJckaE2ZZOM3yZJBQqWFbeWA0R
- w4pdlXlMdinT7aJ1QeDUz/TNZG2PlnSy5HjlCbIE7Dq8sD4nspOOTOvbE28/BBVeQ7zk
- H/GKcJz+LcbgWOXM7nCOceWpZtO3q7tZngo4ESJZDdxaSLLoGcvByzwP1j6f237Rehtz
- wO3g==
+ bh=WARyL/sIptXT/6LU6CvnimThOZH1GGz60bhERGh4Qio=;
+ b=DmfA4hLKAxgYgid/oxtJw0Pxpk8pACMT0rt1PUFWx8O0eNXXVNqmtYX8L3+H55n+Bk
+ LZrrKqoBIHUcRy5wzHohfq/aRAdRCEyWYQORlN2RpNbbdImHZH9XFlF11XFS77LOe7LL
+ /krSUYLopVsGc+0SouJCbojG07J9kljwbMmsTXKRg4ahwC/wJI+g6RPxYcGhvu5NANwl
+ bt9bIZdyGXsaNBkF/xEJmSTQU6RzRi1ctDSJ7A5qsoCXSY29xmJsNj++hwQzh04OV9/Q
+ IYvDFRtKg47aixzLhkcJ1ouoTXr52OUHVspIZ0/9wea0D0LVKi9hZVNFKu7EAEAxG9HP
+ 1mxA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVjBtYaLD+gvDS6TNBo0ppbDlln9G4I151ULJZrzbxm2tqqAaDKd986tJfpjUWfaJkB+znUVvjOWr8aqA==@nongnu.org,
- AJvYcCWuJlSGLrtkXtPDBSwDI5laGJKwZ7d/PZwxNNO5uDI8V4vpP9cyjQmb7ab/+JydzHXWFiSYT9oaSA==@nongnu.org
-X-Gm-Message-State: AOJu0YzxmeXUb1ClebA1skWlf9GMWOZUBj2RE+RPRbJfQ2cZmMqu9khS
- GHM6I1gVqYgPuoqGQXXKKBAajpnrzdbn0Zvvz1V9fsgFIEYQ191jWeOk+mhZ
-X-Gm-Gg: ASbGncsrGuEcdfPd5ph1ol5oyOSfWDKuM43Rrfs3Dr7IMi61Q4prqPQAlWxGXrMvC2A
- CgimEPGavdXT0+Es1aIYeO9LvJoE/TUCevg/cUruPI6EcyjtZzUv77BbHjzIgwmoCGRbT9iq2WH
- TOdEjFo7Y7V02yO/UTnRAg2sXU5sXakZ0Tlc9sWc2/HjfOFQpezRltZHhkJbTwN0l6pgFuCgtL9
- vQ2uhigNDCVyHouD+PaFyt52lKVAW0RQJ/XVeewkvrssDCamKnc9IN9rsuiQ59c0+dldtmRcv3S
- Es/8hWGsNvZecGyC3HZCaB38PweQMczx5gFAf3h/x+pbTe8=
-X-Google-Smtp-Source: AGHT+IHooUNtU1SHuHJ8W88F7WGBPnxr1ss7L89Q8JzHOKPTP+CE60tv6LlDF9PydNLMb5WFTAcL/A==
-X-Received: by 2002:a05:6402:4403:b0:5d0:e9de:5415 with SMTP id
- 4fb4d7f45d1cf-5d972e08601mr1558175a12.14.1736328352217; 
- Wed, 08 Jan 2025 01:25:52 -0800 (PST)
+ AJvYcCW7ZIdoEaA0Xv/ZzK3fgTm5ISSspF2gmfTW2z1tbBvwnlsLV13BBYFRQPBweq0ayBQhdae1SaRW8U4FcA==@nongnu.org,
+ AJvYcCWYEXTd7XoEWKdUeDZCFSDb7oTBRVnXe8/OrS9rzDrRX7hrNAhKTZ5EdUzJ13UbejQGC4OHObh3gw==@nongnu.org
+X-Gm-Message-State: AOJu0Yyt+Ch9o5G8vl3Q6yJnXK8aW2ip/XJV34QFOE+cPN/RM+JDXraH
+ 9lEgdlNXLSOZtpMbYCh4s/+A3F2LbbIXq5kbmQGEkjke5tYHakKyGJajHnS1
+X-Gm-Gg: ASbGncuAMTxunaEX5lI4TuVbCzeH92Q/qWmKjqQ8aiuSFHxMP2gYTI/c8jxnHY4tSoN
+ iyGKaufjbV+SaeyZDJLtoPVBQDPQaee/ihyEQWHf3Ta3Ip9KAhkmSvRmZSrkIDIro1iETmGhkko
+ xut6YoNHr9r/bud4wnBbbMzu8F1De9WXYTZ8xjeYtZaENS4woIcb02WCUQwFgulSD6XuBKFoOxi
+ eAXN9BqLchCzSalNufBDIxaCX0kDUNU7TBGVSuacLbooc+3ua3mF6tiCy7L1rHPpT3JVNFNpFYl
+ oWajpg1phlW14OOC6CG3TqY7wOZgx+rRlR2iZ2j/xBs3ApY=
+X-Google-Smtp-Source: AGHT+IE1scwrn+1aPYcOQezRhReM9RpnOzi+LYbbriSddKttnoTUo9u5sN338NRmoif0SowZpTHRhA==
+X-Received: by 2002:a05:6402:90e:b0:5d3:ec6e:64bf with SMTP id
+ 4fb4d7f45d1cf-5d972e6f92amr1699829a12.34.1736328353712; 
+ Wed, 08 Jan 2025 01:25:53 -0800 (PST)
 Received: from Provence.localdomain
  (dynamic-077-188-106-228.77.188.pool.telefonica.de. [77.188.106.228])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d806feddfasm26116096a12.58.2025.01.08.01.25.50
+ 4fb4d7f45d1cf-5d806feddfasm26116096a12.58.2025.01.08.01.25.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Jan 2025 01:25:50 -0800 (PST)
+ Wed, 08 Jan 2025 01:25:52 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Bin Meng <bmeng.cn@gmail.com>, Fabiano Rosas <farosas@suse.de>,
@@ -75,16 +75,17 @@ Cc: Bin Meng <bmeng.cn@gmail.com>, Fabiano Rosas <farosas@suse.de>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 02/14] hw/char/imx_serial: Fix reset value of UFCR register
-Date: Wed,  8 Jan 2025 10:25:26 +0100
-Message-ID: <20250108092538.11474-3-shentey@gmail.com>
+Subject: [PATCH 03/14] hw/char/imx_serial: Update all state before restarting
+ ageing timer
+Date: Wed,  8 Jan 2025 10:25:27 +0100
+Message-ID: <20250108092538.11474-4-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250108092538.11474-1-shentey@gmail.com>
 References: <20250108092538.11474-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,50 +108,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The value of the UCFR register is respected when echoing characters to the
-terminal, but its reset value is reserved. Fix the reset value to the one
-documented in the datasheet.
-
-While at it move the related attribute out of the section of unimplemented
-registers since its value is actually respected.
+Fixes characters to be "echoed" after each keystroke rather than after every
+other since imx_serial_rx_fifo_ageing_timer_restart() would see ~UTS1_RXEMPTY
+only after every other keystroke.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- include/hw/char/imx_serial.h | 2 +-
- hw/char/imx_serial.c         | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ hw/char/imx_serial.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/hw/char/imx_serial.h b/include/hw/char/imx_serial.h
-index 65f0e97c76..90ba3ff18c 100644
---- a/include/hw/char/imx_serial.h
-+++ b/include/hw/char/imx_serial.h
-@@ -109,13 +109,13 @@ struct IMXSerialState {
-     uint32_t ucr1;
-     uint32_t ucr2;
-     uint32_t uts1;
-+    uint32_t ufcr;
- 
-     /*
-      * The registers below are implemented just so that the
-      * guest OS sees what it has written
-      */
-     uint32_t onems;
--    uint32_t ufcr;
-     uint32_t ubmr;
-     uint32_t ubrc;
-     uint32_t ucr3;
 diff --git a/hw/char/imx_serial.c b/hw/char/imx_serial.c
-index 12705a1337..f805da23ff 100644
+index f805da23ff..be06f39a4d 100644
 --- a/hw/char/imx_serial.c
 +++ b/hw/char/imx_serial.c
-@@ -159,6 +159,7 @@ static void imx_serial_reset(IMXSerialState *s)
-     s->ucr3 = 0x700;
-     s->ubmr = 0;
-     s->ubrc = 4;
-+    s->ufcr = BIT(11) | BIT(0);
+@@ -381,14 +381,14 @@ static void imx_put_data(void *opaque, uint32_t value)
+     if (fifo32_num_used(&s->rx_fifo) >= rxtl) {
+         s->usr1 |= USR1_RRDY;
+     }
+-
+-    imx_serial_rx_fifo_ageing_timer_restart(s);
+-
+     s->usr2 |= USR2_RDR;
+     s->uts1 &= ~UTS1_RXEMPTY;
+     if (value & URXD_BRK) {
+         s->usr2 |= USR2_BRCD;
+     }
++
++    imx_serial_rx_fifo_ageing_timer_restart(s);
++
+     imx_update(s);
+ }
  
-     fifo32_reset(&s->rx_fifo);
-     timer_del(&s->ageing_timer);
 -- 
 2.47.1
 
