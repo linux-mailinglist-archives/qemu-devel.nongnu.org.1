@@ -2,97 +2,200 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C52BA05319
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 07:19:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94422A05331
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 07:29:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVPP4-0001Ne-Mu; Wed, 08 Jan 2025 01:18:54 -0500
+	id 1tVPYV-00066P-3S; Wed, 08 Jan 2025 01:28:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tVPOn-00014d-Fu
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 01:18:39 -0500
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tVPOl-0000Hz-Gn
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 01:18:37 -0500
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-2eec9b3a1bbso19036675a91.3
- for <qemu-devel@nongnu.org>; Tue, 07 Jan 2025 22:18:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1736317114; x=1736921914;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=2WfOdMFhpM56iLiHN39KodrUfzohEYj4wntvgr2yc0s=;
- b=t1bIMh1HbQAJbHvENp29dHt/V279atF1P9w/6PCXQoKP84ofVsVOjtPuxZA89geiGS
- LASky3P+6VnUFroKZ1MlWzHbn0+NIrtU8QKMFgXSwujwq7za31/V912RGNslLqByv1cs
- OVU2wLHGzblJoMZEFhcVk7HB/KBvwVpXaYoESSL5exYVRfARsCqh3WEQl/XfAqPWJPcV
- YfFASFOV5y1NNCna7fkE1LLPHhle67KynOXa0hkb+DaSqjAU/wXqWSYivd64ZT0bW99X
- j3SX/bUAT9kqXp+Nt6hsdKSJdNnQ3K1SDINghV1u/UlyyimBiWIszeO/VdltXZgjlBPt
- gOzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736317114; x=1736921914;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2WfOdMFhpM56iLiHN39KodrUfzohEYj4wntvgr2yc0s=;
- b=lVryJb5Z0lt47OsQih1DO7hIdTYFJg7mwK1LBrW1URwnTqY3uTd1bDj5Ear25xO8vD
- TxymWAdR5rGMPOxFh01nCU/K2Zqoy5Obw8ybpQWtlyjrwOtH9XHxbF6Qnp0Mzrfjxc9e
- dQn8xHDJoBEIiK/+YDvR5/JfBxlPIUddvy5WdyYb+jhY8vwCW0v7VEPsjpO7wbp7P/oJ
- KquzRf+xaP/T7v/ADzqw6YtXZieGMkufkyJRnu0FQLaxA1wSgGtKpCaA/bNdoGhPQkhv
- NbnQ/adFMEYzOXOtQvlgXNnGU8ew0kIkRJE76xNITdJkK8XJOGdlsyXFeYgoVjHWfPHf
- 3JJQ==
-X-Gm-Message-State: AOJu0YwDPIWFMIZFyV+AZny5oo5RVzR/S5Jflan81n+KRTbpsKaWIqMS
- 4GU9570njWHjvlvp9ikQklRxzrgdrhTu5uMY9zy/LLGBG4RZkYKCDJ5LxEztp4A=
-X-Gm-Gg: ASbGncsqUR+5Aez7Hddpjl5z1ju+aW6nBfUKVV0swpfQFO3ql67oLEV2NgwoXJh9mgh
- uGJCJyvb0vQm6QGlZQnzJAW0UFJBlS/bJKQ2rOVzM/msLKV6x36J8wXYTejySTrF1AXVi7GTmuo
- 5q9/VNmWzfpRhYcQNyaho/0+wBt8e3c/RfH71s37CkPowdYzthLbhLW4eGCdYcb59YiZzPqesfE
- nN7OfLD8TLj0jWpx367e6kVrf67ZtE29pjA2s1UALMlsVUlx8BktlW3fgE=
-X-Google-Smtp-Source: AGHT+IE5Xte10lFwmZivfpV0OamABLydqvhHBdChutv75IqdB1WNBgiyHq9JpUhWtAb99ZRY7xfzKg==
-X-Received: by 2002:a17:90b:534b:b0:2ea:7329:43 with SMTP id
- 98e67ed59e1d1-2f548e9a5c2mr2411296a91.6.1736317113747; 
- Tue, 07 Jan 2025 22:18:33 -0800 (PST)
-Received: from localhost ([157.82.203.37]) by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-2f54a2ad2c5sm602841a91.26.2025.01.07.22.18.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Jan 2025 22:18:33 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 08 Jan 2025 15:17:53 +0900
-Subject: [PATCH v4 4/4] virtio: Convert feature properties to OnOffAuto
+ (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
+ id 1tVPYN-000657-8V
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 01:28:31 -0500
+Received: from mgamail.intel.com ([192.198.163.16])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
+ id 1tVPYK-0003W7-NA
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 01:28:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1736317708; x=1767853708;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=3Ynz8r8Yvq+4AQoIfriC1rgQXKET1YlNv0NbCngcMb8=;
+ b=NEAfc/BfQEqpsujuc+/aNIbXiUzs/jNJ9rQ2HEozcSORwf6ta9zr8+48
+ O0lOlQw6JROtE2DQaY1r4ermL/Hj6uIq6wln8ivFQG3amq/mGjepRFbBV
+ +hrMD30t6mzbWr8hXmgg6ekJmBHzAyaku/Pe1q/+nDDmSFpcXLm7te5q2
+ k9+Z/3iAJyYA4ZMy4cxTvqnV6UVPNYQA+YngNxlrF9CehdLh9XwxHRjul
+ 2nJqKn5G/NsRGHY5XooE9//ZKgbwqPiOx42tagZujzPKnqCGcxY/edc5c
+ wqMfRZ8E2FA6TnPEFN2u3ATvkKko8UCLbFEtrdL/Zjci0iht62eyDCuUR Q==;
+X-CSE-ConnectionGUID: hkLFgpnjRlSPc2Oti2FKRQ==
+X-CSE-MsgGUID: rUVEvzQES7uJUiwgkQ56NA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="24133810"
+X-IronPort-AV: E=Sophos;i="6.12,297,1728975600"; d="scan'208";a="24133810"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jan 2025 22:28:24 -0800
+X-CSE-ConnectionGUID: VcZt3vnKR3Os67Cvuq71rw==
+X-CSE-MsgGUID: JRVPEYBLQYiTSEicF148jw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="126284070"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 07 Jan 2025 22:28:23 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Tue, 7 Jan 2025 22:28:23 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Tue, 7 Jan 2025 22:28:23 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.45) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Tue, 7 Jan 2025 22:28:22 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Fw+fkixLyGU+l50V4WRgAAc0odvCIjryC7x8zHAm/z8Q5mdwkkSxRIhztJkAPVFOK4FvsCvp5Wj9v5mbYPCSRFfC7XIXQu2ZZgpVHky0eUV3UkzNVKlvC4IQj5gcYTlt3fUT1qXEgIzbpzu+73jnJ/WqjnoIlcL/qPuholZR/0X/tAkzvoNP4NuV66xvCzty0pcD091iLRftOIoTfI4LtFlKT3ctR9Mn8AkuoUGgLLOghIcP1oGEoBPPo60A7/psTx3gNC+xQZVpvy1U3Hu96cvl2rmzy1ny4f+JI8zI0tK0FfbCEAg5uq4mp19J0aKzyXMJtJKBzrTpndhkM+t6Sw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mTwHSuBJWAP4CzUZJmd8UtnuLZzFOeG6/VCsTCkN0fE=;
+ b=H+bh8RgkgIuAkcQY0No+I4197UyqM6qV6qIzZ9RKpRJX+taip1NaQx+CyqEAakRT6qeeqekzsNVK5z+aUHokCteijt9LrKtnDVCRuhimbrMthhM1dJ7PWDuykiLTWLn2LOoP4BrAbaJFbGRBGWW61+kIWNSj0nfRDnHWs+6lq9FJmbQlM3st2IX4sRdFqcPJ98ev9UWHdr5URNdG19XvyGWk7exKAz8uW2rv4GflrNv/dUC8/h1AwPIWbP5FovX0ZmASZ5e7lu+IyV/z85ukkGdBCuhRfxwyCUb8bwoZgpwbj1Pl2SNpZe0X6Zv0GUjvN+IF3R5D4oNBoSBD5fo7Dw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM3PR11MB8735.namprd11.prod.outlook.com (2603:10b6:0:4b::20) by
+ PH7PR11MB5914.namprd11.prod.outlook.com (2603:10b6:510:138::7) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8314.17; Wed, 8 Jan 2025 06:28:11 +0000
+Received: from DM3PR11MB8735.namprd11.prod.outlook.com
+ ([fe80::3225:d39b:ca64:ab95]) by DM3PR11MB8735.namprd11.prod.outlook.com
+ ([fe80::3225:d39b:ca64:ab95%5]) with mapi id 15.20.8314.018; Wed, 8 Jan 2025
+ 06:28:11 +0000
+Message-ID: <8457e035-40b0-4268-866e-baa737b6be27@intel.com>
+Date: Wed, 8 Jan 2025 14:28:02 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/7] Enable shared device assignment
+To: Alexey Kardashevskiy <aik@amd.com>, David Hildenbrand <david@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Michael Roth
+ <michael.roth@amd.com>
+CC: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, Williams Dan J
+ <dan.j.williams@intel.com>, Peng Chao P <chao.p.peng@intel.com>, Gao Chao
+ <chao.gao@intel.com>, Xu Yilun <yilun.xu@intel.com>
+References: <20241213070852.106092-1-chenyi.qiang@intel.com>
+ <2737cca7-ef2d-4e73-8b5a-67698c835e77@amd.com>
+From: Chenyi Qiang <chenyi.qiang@intel.com>
+Content-Language: en-US
+In-Reply-To: <2737cca7-ef2d-4e73-8b5a-67698c835e77@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SI2PR02CA0030.apcprd02.prod.outlook.com
+ (2603:1096:4:195::17) To DM3PR11MB8735.namprd11.prod.outlook.com
+ (2603:10b6:0:4b::20)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250108-virtio-v4-4-cbf0aa04c9f9@daynix.com>
-References: <20250108-virtio-v4-0-cbf0aa04c9f9@daynix.com>
-In-Reply-To: <20250108-virtio-v4-0-cbf0aa04c9f9@daynix.com>
-To: Jason Wang <jasowang@redhat.com>, 
- Dmitry Fleytman <dmitry.fleytman@gmail.com>, 
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Luigi Rizzo <rizzo@iet.unipi.it>, 
- Giuseppe Lettieri <g.lettieri@iet.unipi.it>, 
- Vincenzo Maffione <v.maffione@gmail.com>, 
- Andrew Melnychenko <andrew@daynix.com>, 
- Yuri Benditovich <yuri.benditovich@daynix.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, 
- Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>, 
- Lei Yang <leiyang@redhat.com>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1034.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR11MB8735:EE_|PH7PR11MB5914:EE_
+X-MS-Office365-Filtering-Correlation-Id: 60feaef5-a51b-4e97-6603-08dd2fad9f8d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?RlZHckVBZjJhZXliVFNTQnlLNXppS09qeE1kbmVYbjlZNWp2amQ1SHE5R0Ex?=
+ =?utf-8?B?UllraVFNN2JiZUJKbTJyRUJhZVFqVHp4d01aVkxMOElNMUYzc0ZDMkVTY0Jn?=
+ =?utf-8?B?VUlwWmtkN3dWL2NHcCtSMmpUejFxUGU2TjJPVWdXVVRLM3crc3FRdFFhQldo?=
+ =?utf-8?B?YmNGWmZPNktDcmhWa3Bsc1FacWdpc2tFRmUwZUM4QTZsa3dQdXZReVhkZHVJ?=
+ =?utf-8?B?alBDanc1eng2T09pZ1pDOGZQKzhaYTJFblltY2xiNCs3MVIyOS9CdlNxM0lP?=
+ =?utf-8?B?Z1BkRTl5Y3Rwa1VVUyt1Z3pQK2k2bERHRFVXdlh5bnU4cFlndEYwaGhPV255?=
+ =?utf-8?B?ajBJL2Z3UkJ2Zks2cDI3WTNxUFdOZzV1QzlqT2xmcFA0MW1jS3BFNnBCbXVr?=
+ =?utf-8?B?NlNmUitRODJLNjhPLzNPNWtkQTM5b3VabUdWQzlwYmM5Y2M3MzM2YjJyMVl6?=
+ =?utf-8?B?ZjRaM2R6RmpwTGhJWlA0L2xxU3FlVlFieVpoN3Fna2ZodzlUZnVPUnVnTk94?=
+ =?utf-8?B?b2g2QXdPUmZJd3ZVY21WSVhxdENKWjB4TEtaYjFlMnZNWGVTMlZkQW9IMGt4?=
+ =?utf-8?B?UTYxSXR4NVVDUThVZzA2a1pORUxSZ3BjSkpnTjJSUGdrZ1l0RjJUWDZhZThC?=
+ =?utf-8?B?M1BNVktnTkJmMHdVU1IrUXZXY29yNiswOEpsSVZ4bjF3MVVWWGlMTkVMekx2?=
+ =?utf-8?B?UysxZXZBVW9DejM4MXZCajlDNVR1Q2tXcERONDVsZGNIYmU5QlZpWGdIVkpY?=
+ =?utf-8?B?SERwdmY5OHRncEp0M3o3UGJHVWhYZGVBNEdJVXVjeFhCV2NJeWJnN0ZGbWlZ?=
+ =?utf-8?B?R3lvdEl2TGQ5RGtwbHgyZlhBODN6eXNRNFdJT1JBTUN6TlZCU1E2dVdkRU5H?=
+ =?utf-8?B?bXpnaGswVG1PVTV0ZzZKYzZUSDNqNmxvck13Uk9GVVFJY3lhbURrWWF4b0JR?=
+ =?utf-8?B?OFhHSjNtNUxHOHF1Qkh0SnVndk9oRHJrRENHVWcvNlpRM2pmSUQ0NGROVWRn?=
+ =?utf-8?B?bXBRV2trNGhYOW1TQThMa2tHWWFlWUF0S3lNeC9uQkFwNy9DWGhDZjNtZFJa?=
+ =?utf-8?B?eVpZNVdBSk9GbFNqZVpqTEhwejlDaG9Kby9Fd2l0TmVoS2tOVGdsYTM0RWd0?=
+ =?utf-8?B?a2gwa1cyYjR6c1pHVk1wNzNiR21rRW01WXJ2N2VHZ3ZNaklWWjlwdEV0Y2g0?=
+ =?utf-8?B?Z2NNOGJpVnZLTjVwRGJIQXRWd0tIbVJMUG9aTFlST2dzNUJRcS9TQXcrcnhs?=
+ =?utf-8?B?VExxOWluUkV4K1VvVjBRNXpvR1pub1p4ODlZZDZzRlRpTTNqdTBnc3NaMStk?=
+ =?utf-8?B?NDRyeDJPaWtBMEZhdXE1dFJmbkNuQUd2VzNxdVJrZEpxQW5JNHg5OCtLODFh?=
+ =?utf-8?B?L1hCRXZrc244RmhaUGVWS1RML243OEVIWlBEMVZHWGZLZFJXZng1S25XYk5R?=
+ =?utf-8?B?clpGdDFzME8xT0hLMVh1MmhsSFVDNHNwSzJPNHgxd2I5Q2FoQXVtOU1XUmlU?=
+ =?utf-8?B?cWdsT0JsVTF4SG1pdDBrcnRRa0cvMzFLTkh3cndMaDZId2JkVFQ4K2hCbUww?=
+ =?utf-8?B?WU9FdTBsWEhDQlhlcGdaZjNwcnVRZ3FOTVdxQ0J3bmJwSzhJeGI2T0wzb1RD?=
+ =?utf-8?B?OE9CbWVHZmo4TFdVYTJsc0N3L1BTRENGRWV6ZEtkdzFISVR0TG1WZ1hDY29w?=
+ =?utf-8?B?ZWdvL3Nab3k0TU0vcHlUYWtoUDJpRHprTjhHMXA0OU5hc0JEcTY2YU1VN0tO?=
+ =?utf-8?B?ZWZhK1VCU0p5RHN6U3Z6SUw0YkttL0NJbG9sb2k3dEo2aVVoVTlyWStzYWRL?=
+ =?utf-8?B?Z3d1ZDhCT012Y1g5Y2xmdz09?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM3PR11MB8735.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZGVRdEExSVJrc2FVM0RHQ2hKSE1TV0JSTkdVTWhPUHV3MmgxR2pNWGJHWXdT?=
+ =?utf-8?B?UllrbzNoTXZTUXBySHRVczd0ZSs0MFJOeUttWFpXbVg1Q0FKc21jVTV2M1NN?=
+ =?utf-8?B?R240MDFTSWRuZmtPb2dqWDcrQmFPQVpqcVN2Z3RJRjg2clF1bUZVVnIrV01l?=
+ =?utf-8?B?WE5KVXZLd2ViNzBRRDRHVHdrOWkrWHErdWZ1RUcyVVp0YzR2WEVBdXJpRWR5?=
+ =?utf-8?B?bER2NXRSdFpUZUNzM3AzTnNYZlR5TGE3ajFGM2loekp6NEkxRnpVdkxoUmJ4?=
+ =?utf-8?B?L2d0WEw2cFg3RXR6L21CSm5zZm1Ob0xlV0lKOUJZb0Z4TEl0N0ZZUTVnYTNQ?=
+ =?utf-8?B?YmJ2YmRGcWFWMXhzWTl6TGhpZFZucUE0VjhEK3p6d3YwNTN0Vll3S0FMUit6?=
+ =?utf-8?B?TlRpSmp3VGlvKzMrSFIrYVRLUDNrOHRjU3lXcFdEMGNjYlJIcUVscktqQm13?=
+ =?utf-8?B?blNEd0ZPNGxsVFR1cHF5M2c3STNqcWU3ZTZFRFBhVDZ2YWFDMnFMUTE5c3FO?=
+ =?utf-8?B?T0FGSmlvTUovd2NNOS9UbEhVaEppbTdaSGhqdVg5YjZrdk1VbGFuN1Q5c1R1?=
+ =?utf-8?B?MTEzMytSVUxDK0lOMlNINFBVeE1WYTVaaDhSb01jWkdFUmRJZ3NEdlZHWkp5?=
+ =?utf-8?B?UW80VjBGc0ZJMUkwRHB5RkxkbXpGem9JdVh0MmhoUlRWa0o4TEtFWXdLV2tz?=
+ =?utf-8?B?WHUvOW0wY0kydzk3Z3Jud3RINE1lc2ZRMStZenNKdjF4VnhEcDF5bHlyWFNZ?=
+ =?utf-8?B?SDBTSGRnTVllSjVBY3RpZzhKekVodWVwcmYwSm55NXNsUVR3ZVFJSHEwTFBp?=
+ =?utf-8?B?OThGcFBmQjVXcnJ3L2ptYzF2anlYVFh3c2JWYkhadWVQVHRDSW5lN2FmTVhh?=
+ =?utf-8?B?QTdJM3NZRzVpSEhlTGdnS3ZLQzgwVEVhRTIra2N5aFphNUpHL2tpTjR6Nkw5?=
+ =?utf-8?B?ZHZiVWQ4eDJrQjgybXJlVU5nTStRbUY2am15bUVBeVBEa3lrZHRaS2x5YWpU?=
+ =?utf-8?B?Slh2bnh2emNDaEhPaSsvRFRWbDlmWkJDaVRtbWZZdlJGSTlTVEQxZnkvSm5o?=
+ =?utf-8?B?anhPZEhxcm84YXhsaVRqNjdaVVpqWm1HTGFIWjNSbVd6cVRMVEhDM09DT3Mz?=
+ =?utf-8?B?b3FIVTFMTTJrakRVYm9XS1dkWXBKOFhNdlAyNllPeWt2d01GQ2dQYmRSeXFB?=
+ =?utf-8?B?emcrZ1hxZWhPOXVCaGNXZ213dW1kTk9zdVcrNGJmWUlDWUkySmlLV2dXeml6?=
+ =?utf-8?B?QVY2VjEyUjFoV1JDUU9peEhsSjhQa1RNOEdoNDdMM2JPVHppZnRncEhGV2pT?=
+ =?utf-8?B?MU8yQkVKTWw5UEV4d3k0SU1xSGY1NFhtMmtzUllzR2tkaHpzdk5RVkxzVy9L?=
+ =?utf-8?B?Z3BiRS9ENnJvUHJJclhyZFI4Rm5XdFRDQzFQQk9SOHJpK1FySmI1VlMxZlV4?=
+ =?utf-8?B?YkwxQk1qdmFBY1Y3RXJoVzZ3U2J4THRoeFBuOFZBOGZHTnd3R2JMeUNsck56?=
+ =?utf-8?B?SDF4Ync5Y2VGaXZmSE5ETUExMzNsQjZqWjA2c3lQZVdPb3dyOGtNOFo1SUFr?=
+ =?utf-8?B?YzhMWnk1QVJsWEF2akhTZWlnUDd6MEY4Q1d3WnR4bjVtNTFJQjdLWjJWTnB0?=
+ =?utf-8?B?SWgvdWdiMHdmQ2dpbG11K3lieFFNYUJSVkwrWGMxV1dSUWcwM1o1N01QRXFh?=
+ =?utf-8?B?TFBMb2NmMFdXL1lnZUhFUEtrZk5UYWRHQWFzMjZZZHpjeGxmRGJybjdQVi83?=
+ =?utf-8?B?cGFtQi95UU1LbTdGQWc3VUIrdWhKdkxjWS9tL1o4Z2lnb0Job0IyNFJKOUhF?=
+ =?utf-8?B?eXhHdWM3U3VzUStLc3RkZkhVOUdVcnREankvWGZ4YTQ2QWI3aTZPeXo3ZVNy?=
+ =?utf-8?B?QXhQZDdwMkhERUNrbUJPRnRLYXRsZGZJM2xCZ203ZmtGbEJqNGd3dkF2clha?=
+ =?utf-8?B?T1ZaajBvcy83ZldyVXN4MG8rVUxEYmcraFBuN3c3Q3pjL0lGTE9rZ281SXpw?=
+ =?utf-8?B?TzA1MGJMbVlzVzVlQVJuTmhzKzVsckNUTDM3UWFRdnR6bTgwRzlzZjdNTncr?=
+ =?utf-8?B?Rjdxa2ZDeXQ1T1czUWhGS2Y4dExxdFpzTWNHbm1FaVNjZGdNalpOalNzNVRm?=
+ =?utf-8?B?TlVRQ2t4VVJ0dDI1VmExOVh4WE9OeTVRVzJ1NEYyVWNMQkZKeXpQYW9VRk5h?=
+ =?utf-8?B?QUE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 60feaef5-a51b-4e97-6603-08dd2fad9f8d
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR11MB8735.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2025 06:28:11.2289 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: S1W1g3J/mtc6l2EFfmP2YkB7gT+ZZqD+n3S06a/Zk8uCEgH5dwy30N/B44cKIcIU9LIy+qJ08+bziN7x3wuWow==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5914
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.198.163.16;
+ envelope-from=chenyi.qiang@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.437,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,168 +212,171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some features are not always available with vhost. Legacy features are
-not available with vp_vdpa in particular. virtio devices used to disable
-them when not available even if the corresponding properties were
-explicitly set to "on".
+Thanks Alexey for your review!
 
-QEMU already has OnOffAuto type, which includes the "auto" value to let
-it automatically decide the effective value. Convert feature properties
-to OnOffAuto and set them "auto" by default to utilize it. This allows
-QEMU to report an error if they are set "on" and the corresponding
-features are not available.
+On 1/8/2025 12:47 PM, Alexey Kardashevskiy wrote:
+> On 13/12/24 18:08, Chenyi Qiang wrote:
+>> Commit 852f0048f3 ("RAMBlock: make guest_memfd require uncoordinated
+>> discard") effectively disables device assignment when using guest_memfd.
+>> This poses a significant challenge as guest_memfd is essential for
+>> confidential guests, thereby blocking device assignment to these VMs.
+>> The initial rationale for disabling device assignment was due to stale
+>> IOMMU mappings (see Problem section) and the assumption that TEE I/O
+>> (SEV-TIO, TDX Connect, COVE-IO, etc.) would solve the device-assignment
+>> problem for confidential guests [1]. However, this assumption has proven
+>> to be incorrect. TEE I/O relies on the ability to operate devices against
+>> "shared" or untrusted memory, which is crucial for device initialization
+>> and error recovery scenarios. As a result, the current implementation
+>> does
+>> not adequately support device assignment for confidential guests,
+>> necessitating
+>> a reevaluation of the approach to ensure compatibility and functionality.
+>>
+>> This series enables shared device assignment by notifying VFIO of page
+>> conversions using an existing framework named RamDiscardListener.
+>> Additionally, there is an ongoing patch set [2] that aims to add 1G page
+>> support for guest_memfd. This patch set introduces in-place page
+>> conversion,
+>> where private and shared memory share the same physical pages as the
+>> backend.
+>> This development may impact our solution.
+>>
+>> We presented our solution in the guest_memfd meeting to discuss its
+>> compatibility with the new changes and potential future directions
+>> (see [3]
+>> for more details). The conclusion was that, although our solution may
+>> not be
+>> the most elegant (see the Limitation section), it is sufficient for
+>> now and
+>> can be easily adapted to future changes.
+>>
+>> We are re-posting the patch series with some cleanup and have removed
+>> the RFC
+>> label for the main enabling patches (1-6). The newly-added patch 7 is
+>> still
+>> marked as RFC as it tries to resolve some extension concerns related to
+>> RamDiscardManager for future usage.
+>>
+>> The overview of the patches:
+>> - Patch 1: Export a helper to get intersection of a MemoryRegionSection
+>>    with a given range.
+>> - Patch 2-6: Introduce a new object to manage the guest-memfd with
+>>    RamDiscardManager, and notify the shared/private state change during
+>>    conversion.
+>> - Patch 7: Try to resolve a semantics concern related to
+>> RamDiscardManager
+>>    i.e. RamDiscardManager is used to manage memory plug/unplug state
+>>    instead of shared/private state. It would affect future users of
+>>    RamDiscardManger in confidential VMs. Attach it behind as a RFC
+>> patch[4].
+>>
+>> Changes since last version:
+>> - Add a patch to export some generic helper functions from virtio-mem
+>> code.
+>> - Change the bitmap in guest_memfd_manager from default shared to default
+>>    private. This keeps alignment with virtio-mem that 1-setting in bitmap
+>>    represents the populated state and may help to export more generic
+>> code
+>>    if necessary.
+>> - Add the helpers to initialize/uninitialize the guest_memfd_manager
+>> instance
+>>    to make it more clear.
+>> - Add a patch to distinguish between the shared/private state change and
+>>    the memory plug/unplug state change in RamDiscardManager.
+>> - RFC: https://lore.kernel.org/qemu-devel/20240725072118.358923-1-
+>> chenyi.qiang@intel.com/
+>>
+>> ---
+>>
+>> Background
+>> ==========
+>> Confidential VMs have two classes of memory: shared and private memory.
+>> Shared memory is accessible from the host/VMM while private memory is
+>> not. Confidential VMs can decide which memory is shared/private and
+>> convert memory between shared/private at runtime.
+>>
+>> "guest_memfd" is a new kind of fd whose primary goal is to serve guest
+>> private memory. The key differences between guest_memfd and normal memfd
+>> are that guest_memfd is spawned by a KVM ioctl, bound to its owner VM and
+>> cannot be mapped, read or written by userspace.
+> 
+> The "cannot be mapped" seems to be not true soon anymore (if not already).
+> 
+> https://lore.kernel.org/all/20240801090117.3841080-1-tabba@google.com/T/
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- include/hw/virtio/virtio.h | 38 +++++++++++++++++++++-----------------
- hw/core/machine.c          |  4 +++-
- hw/virtio/virtio-bus.c     | 14 ++++++++++++--
- hw/virtio/virtio.c         |  4 +++-
- 4 files changed, 39 insertions(+), 21 deletions(-)
+Exactly, allowing guest_memfd to do mmap is the direction. I mentioned
+it below with in-place page conversion. Maybe I would move it here to
+make it more clear.
 
-diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index 638691028050..b854c2cb1d04 100644
---- a/include/hw/virtio/virtio.h
-+++ b/include/hw/virtio/virtio.h
-@@ -113,7 +113,8 @@ struct VirtIODevice
-     uint16_t queue_sel;
-     /**
-      * These fields represent a set of VirtIO features at various
--     * levels of the stack. @host_features indicates the complete
-+     * levels of the stack. @requested_features indicates the feature
-+     * set the user requested. @host_features indicates the complete
-      * feature set the VirtIO device can offer to the driver.
-      * @guest_features indicates which features the VirtIO driver has
-      * selected by writing to the feature register. Finally
-@@ -121,6 +122,7 @@ struct VirtIODevice
-      * backend (e.g. vhost) and could potentially be a subset of the
-      * total feature set offered by QEMU.
-      */
-+    OnOffAutoBit64 requested_features;
-     uint64_t host_features;
-     uint64_t guest_features;
-     uint64_t backend_features;
-@@ -149,6 +151,7 @@ struct VirtIODevice
-     bool started;
-     bool start_on_kick; /* when virtio 1.0 feature has not been negotiated */
-     bool disable_legacy_check;
-+    bool force_features_auto;
-     bool vhost_started;
-     VMChangeStateEntry *vmstate;
-     char *bus_name;
-@@ -376,22 +379,23 @@ typedef struct VirtIOSCSIConf VirtIOSCSIConf;
- typedef struct VirtIORNGConf VirtIORNGConf;
- 
- #define DEFINE_VIRTIO_COMMON_FEATURES(_state, _field) \
--    DEFINE_PROP_BIT64("indirect_desc", _state, _field,    \
--                      VIRTIO_RING_F_INDIRECT_DESC, true), \
--    DEFINE_PROP_BIT64("event_idx", _state, _field,        \
--                      VIRTIO_RING_F_EVENT_IDX, true),     \
--    DEFINE_PROP_BIT64("notify_on_empty", _state, _field,  \
--                      VIRTIO_F_NOTIFY_ON_EMPTY, true), \
--    DEFINE_PROP_BIT64("any_layout", _state, _field, \
--                      VIRTIO_F_ANY_LAYOUT, true), \
--    DEFINE_PROP_BIT64("iommu_platform", _state, _field, \
--                      VIRTIO_F_IOMMU_PLATFORM, false), \
--    DEFINE_PROP_BIT64("packed", _state, _field, \
--                      VIRTIO_F_RING_PACKED, false), \
--    DEFINE_PROP_BIT64("queue_reset", _state, _field, \
--                      VIRTIO_F_RING_RESET, true), \
--    DEFINE_PROP_BIT64("in_order", _state, _field, \
--                      VIRTIO_F_IN_ORDER, false)
-+    DEFINE_PROP_ON_OFF_AUTO_BIT64("indirect_desc", _state, _field, \
-+                                  VIRTIO_RING_F_INDIRECT_DESC, \
-+                                  ON_OFF_AUTO_AUTO), \
-+    DEFINE_PROP_ON_OFF_AUTO_BIT64("event_idx", _state, _field, \
-+                                  VIRTIO_RING_F_EVENT_IDX, ON_OFF_AUTO_AUTO), \
-+    DEFINE_PROP_ON_OFF_AUTO_BIT64("notify_on_empty", _state, _field, \
-+                                  VIRTIO_F_NOTIFY_ON_EMPTY, ON_OFF_AUTO_AUTO), \
-+    DEFINE_PROP_ON_OFF_AUTO_BIT64("any_layout", _state, _field, \
-+                                  VIRTIO_F_ANY_LAYOUT, ON_OFF_AUTO_AUTO), \
-+    DEFINE_PROP_ON_OFF_AUTO_BIT64("iommu_platform", _state, _field, \
-+                                  VIRTIO_F_IOMMU_PLATFORM, ON_OFF_AUTO_OFF), \
-+    DEFINE_PROP_ON_OFF_AUTO_BIT64("packed", _state, _field, \
-+                                  VIRTIO_F_RING_PACKED, ON_OFF_AUTO_OFF), \
-+    DEFINE_PROP_ON_OFF_AUTO_BIT64("queue_reset", _state, _field, \
-+                                  VIRTIO_F_RING_RESET, ON_OFF_AUTO_AUTO), \
-+    DEFINE_PROP_ON_OFF_AUTO_BIT64("in_order", _state, _field, \
-+                                  VIRTIO_F_IN_ORDER, ON_OFF_AUTO_OFF)
- 
- hwaddr virtio_queue_get_desc_addr(VirtIODevice *vdev, int n);
- bool virtio_queue_enabled_legacy(VirtIODevice *vdev, int n);
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index c949af97668d..bff26b95dd74 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -36,7 +36,9 @@
- #include "hw/virtio/virtio-iommu.h"
- #include "audio/audio.h"
- 
--GlobalProperty hw_compat_9_2[] = {};
-+GlobalProperty hw_compat_9_2[] = {
-+    { TYPE_VIRTIO_DEVICE, "x-force-features-auto", "on" },
-+};
- const size_t hw_compat_9_2_len = G_N_ELEMENTS(hw_compat_9_2);
- 
- GlobalProperty hw_compat_9_1[] = {
-diff --git a/hw/virtio/virtio-bus.c b/hw/virtio/virtio-bus.c
-index 896feb37a1ca..75d433b252d5 100644
---- a/hw/virtio/virtio-bus.c
-+++ b/hw/virtio/virtio-bus.c
-@@ -50,6 +50,7 @@ void virtio_bus_device_plugged(VirtIODevice *vdev, Error **errp)
-     bool has_iommu = virtio_host_has_feature(vdev, VIRTIO_F_IOMMU_PLATFORM);
-     bool vdev_has_iommu;
-     Error *local_err = NULL;
-+    uint64_t features;
- 
-     DPRINTF("%s: plug device.\n", qbus->name);
- 
-@@ -63,13 +64,22 @@ void virtio_bus_device_plugged(VirtIODevice *vdev, Error **errp)
- 
-     /* Get the features of the plugged device. */
-     assert(vdc->get_features != NULL);
--    vdev->host_features = vdc->get_features(vdev, vdev->host_features,
--                                            &local_err);
-+    features = vdev->host_features | vdev->requested_features.auto_bits |
-+               vdev->requested_features.on_bits;
-+    features = vdc->get_features(vdev, features, &local_err);
-     if (local_err) {
-         error_propagate(errp, local_err);
-         return;
-     }
- 
-+    if (!vdev->force_features_auto &&
-+        (features & vdev->requested_features.on_bits) != vdev->requested_features.on_bits) {
-+        error_setg(errp, "A requested feature is not supported by the device");
-+        return;
-+    }
-+
-+    vdev->host_features = features;
-+
-     if (klass->device_plugged != NULL) {
-         klass->device_plugged(qbus->parent, &local_err);
-     }
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 85110bce3744..83f803fc703d 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -4013,11 +4013,13 @@ static void virtio_device_instance_finalize(Object *obj)
- }
- 
- static const Property virtio_properties[] = {
--    DEFINE_VIRTIO_COMMON_FEATURES(VirtIODevice, host_features),
-+    DEFINE_VIRTIO_COMMON_FEATURES(VirtIODevice, requested_features),
-     DEFINE_PROP_BOOL("use-started", VirtIODevice, use_started, true),
-     DEFINE_PROP_BOOL("use-disabled-flag", VirtIODevice, use_disabled_flag, true),
-     DEFINE_PROP_BOOL("x-disable-legacy-check", VirtIODevice,
-                      disable_legacy_check, false),
-+    DEFINE_PROP_BOOL("x-force-features-auto", VirtIODevice,
-+                     force_features_auto, false),
- };
- 
- static int virtio_device_start_ioeventfd_impl(VirtIODevice *vdev)
+> 
+> 
+>>
+>> In QEMU's implementation, shared memory is allocated with normal methods
+>> (e.g. mmap or fallocate) while private memory is allocated from
+>> guest_memfd. When a VM performs memory conversions, QEMU frees pages via
+>> madvise() or via PUNCH_HOLE on memfd or guest_memfd from one side and
+>> allocates new pages from the other side.
+>>
 
--- 
-2.47.1
+[...]
+
+>>
+>> One limitation (also discussed in the guest_memfd meeting) is that VFIO
+>> expects the DMA mapping for a specific IOVA to be mapped and unmapped
+>> with
+>> the same granularity. The guest may perform partial conversions, such as
+>> converting a small region within a larger region. To prevent such invalid
+>> cases, all operations are performed with 4K granularity. The possible
+>> solutions we can think of are either to enable VFIO to support partial
+>> unmap
+>> or to implement an enlightened guest to avoid partial conversion. The
+>> former
+>> requires complex changes in VFIO, while the latter requires the page
+>> conversion to be a guest-enlightened behavior. It is still uncertain
+>> which
+>> option is a preferred one.
+> 
+> in-place memory conversion is :)
+> 
+>>
+>> Testing
+>> =======
+>> This patch series is tested with the KVM/QEMU branch:
+>> KVM: https://github.com/intel/tdx/tree/tdx_kvm_dev-2024-11-20
+>> QEMU: https://github.com/intel-staging/qemu-tdx/tree/tdx-upstream-
+>> snapshot-2024-12-13
+> 
+> 
+> The branch is gone now? tdx-upstream-snapshot-2024-12-18 seems to have
+> these though. Thanks,
+
+Thanks for pointing it out. You're right,
+tdx-upstream-snapshot-2024-12-18 is the latest branch. I added the fixup
+for patch 1 and forgot to update the change here.
+
+> 
+>>
+>> To facilitate shared device assignment with the NIC, employ the legacy
+>> type1 VFIO with the QEMU command:
+>>
+>> qemu-system-x86_64 [...]
+>>      -device vfio-pci,host=XX:XX.X
+>>
+>> The parameter of dma_entry_limit needs to be adjusted. For example, a
+>> 16GB guest needs to adjust the parameter like
+>> vfio_iommu_type1.dma_entry_limit=4194304.
+>>
+>> If use the iommufd-backed VFIO with the qemu command:
+>>
+>> qemu-system-x86_64 [...]
+>>      -object iommufd,id=iommufd0 \
+>>      -device vfio-pci,host=XX:XX.X,iommufd=iommufd0
+>>
+>> No additional adjustment required.
+>>
+>> Following the bootup of the TD guest, the guest's IP address becomes
+>> visible, and iperf is able to successfully send and receive data.
+
+> 
 
 
