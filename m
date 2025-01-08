@@ -2,96 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98532A05ED2
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 15:37:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99CAFA05ED5
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 15:37:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVXA4-0006xr-Dl; Wed, 08 Jan 2025 09:35:56 -0500
+	id 1tVXBU-0008P4-CI; Wed, 08 Jan 2025 09:37:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <craig.blackmore@embecosm.com>)
- id 1tVXA0-0006ws-00
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:35:52 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tVXBS-0008Ou-IY
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:37:22 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <craig.blackmore@embecosm.com>)
- id 1tVX9w-0006bY-RZ
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:35:51 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-4368a293339so137402755e9.3
- for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 06:35:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=embecosm.com; s=google; t=1736346947; x=1736951747; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0iGYqWP4PTuAkDwFXJhbVYiarmXqHTjD9rai41KZ6hc=;
- b=NxKqoP3+g5/2K9ppV8ac6UGTPENkXrZ+tjZGWwqsRTErpShH7krIkPFy8uxhI49ZRt
- 2jcsiRVOn2D6S4HOIeff+MRnmOOqHI0yvmTn+2ge0ZkEpYotDaieo9jzgrLl6LswmE/n
- xUJKJnxzIx8Mo/XD0T146l3j1NoT0kpu5zkRL84aStp/2lVEH1GH5Tz6nhk4eNQ+IJC9
- AXkbyr2fVBNlevNurlWVrp4DPc6mM1Z2qyJmFuKyOyG1KyTqPUPFS1+lrGbkgH9qmeLI
- rDWfOK4MTHSpOldJM5lfaSKYzSvVibir1Dpo/Nldn8YdWJ6XVpolxpRy032rUhqqwxYz
- kQtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736346947; x=1736951747;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0iGYqWP4PTuAkDwFXJhbVYiarmXqHTjD9rai41KZ6hc=;
- b=kXUkSS4isEYJWX8H/O2mCVMqrHFreSNnZf7lqAUj3MUdyg3ddZE2u9BxiNK4E50i2Y
- h0f2WcAxyryv5NlVecKnkCxxzkDRJykrBQ6dY1oPhMe2nuF/3ZNNWqFXlpRttkzF9f7p
- 93ZaqWZFz/1HYV3GCnngkgwzlisZT9nuc5FJTXJimfvsnUIcKvzIesSCIJop6jpY1lMt
- PzpORy6fkrvHevjOaw6pFwJAh5yX6Z+ghS4GiJaj+Ba2CDMLZGvUeMPmNYDwF+lrhYHC
- 5w4w/miqnlhPUQwQVmHKa1W0MoWYh2KADI4KH+cUwCUbkGaci+NAN2+NtFyMNtExG22Q
- 6YeQ==
-X-Gm-Message-State: AOJu0YxqQ17q/6/Rs/uqzUHfT9wHWo8z2JJwn2F7yXZR3BoNM9KX9UYh
- 3Nv9RIhoDY4pj8T6gYVa+IWmwuddS8/XFLfrhoJe6obe5C5MHr6ZhxBYzJmbk8bC9us6guxF5rS
- fIHM=
-X-Gm-Gg: ASbGncujCo4OsGbkDfstiLAGwnSU1rP1QQ4QH5vam5uMhN2QxQO0iQ5MlJ+Zs6dg5kW
- IaMy0JMZbtnV9VuFF/9tIjkNITHvtfWytTT1O9SqtfceLq2/gdnQ8w2rxIKBL05dz8L56zfxN69
- LjbvhoMW+c4tGg4vzdN6BDSvEA8RNx4277dCL2EsNVyCsJk0HpJ0lm0oxoE2yi0QDDoeIENu5qQ
- GFtclKl5FJfsl0teiVvX2dAKQdXRp9p70yoX22UVqLk0ZTyZTqDPl03pMqFObowJnpbT4p5PmKs
- 8VTu5puejfQMqubUaIYFEpdxOnP8JsOQD8gHk2jkof6bRvMq
-X-Google-Smtp-Source: AGHT+IGDOmM17MJxokkC3gYZDwQHtjdaq7/FLE+3tzvnsVbRRpvPXHEM7W/oISw5UL/aHhZlu8EVQQ==
-X-Received: by 2002:a05:6000:1a89:b0:385:fc8c:24b6 with SMTP id
- ffacd0b85a97d-38a8730b2femr2595175f8f.27.1736346946672; 
- Wed, 08 Jan 2025 06:35:46 -0800 (PST)
-Received: from dorian..
- (sals-04-b2-v4wan-167965-cust660.vm36.cable.virginm.net. [80.3.10.149])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c8330d4sm52450316f8f.29.2025.01.08.06.35.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Jan 2025 06:35:46 -0800 (PST)
-From: Craig Blackmore <craig.blackmore@embecosm.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Craig Blackmore <craig.blackmore@embecosm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Helene Chelin <helene.chelin@embecosm.com>, Nathan Egge <negge@google.com>,
- Max Chou <max.chou@sifive.com>, Paolo Savini <paolo.savini@embecosm.com>
-Subject: [PATCH v8 1/1] target/riscv: rvv: Use wider accesses for unit stride
- load/store
-Date: Wed,  8 Jan 2025 14:35:23 +0000
-Message-ID: <20250108143523.153010-2-craig.blackmore@embecosm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250108143523.153010-1-craig.blackmore@embecosm.com>
-References: <20250108143523.153010-1-craig.blackmore@embecosm.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tVXBQ-0006o3-Q2
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:37:22 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 07F3F1F391;
+ Wed,  8 Jan 2025 14:37:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1736347039; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=z7i3NKvk82GbsaGFcG1uQDrT56Uv6oGYQo0k/886ZWA=;
+ b=XKB9cUnJpkmkGMcPq2f0jrSE0u78sGa78EDEhH/7ZxtB/Vx6mU81PyCEEnZV+BOPebYwo7
+ BVg0bG0WUONc6bWkOmUGYOl2f93JkSxI2gLldHDkDZlDMZ5BnvES8KkEQVOk+L4F5Ho+O8
+ d6hpuylTHbc04tcgFX0kW1EHiJyEi8M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1736347039;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=z7i3NKvk82GbsaGFcG1uQDrT56Uv6oGYQo0k/886ZWA=;
+ b=rT/S7S5cj4Mjx4ZtJUUAMUljoZGyrQyAXp7GT1w15xuu/mdDRPiC8HDB37WKtcLi4Lpk69
+ IBt5ni16y4sr0gCQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1736347039; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=z7i3NKvk82GbsaGFcG1uQDrT56Uv6oGYQo0k/886ZWA=;
+ b=XKB9cUnJpkmkGMcPq2f0jrSE0u78sGa78EDEhH/7ZxtB/Vx6mU81PyCEEnZV+BOPebYwo7
+ BVg0bG0WUONc6bWkOmUGYOl2f93JkSxI2gLldHDkDZlDMZ5BnvES8KkEQVOk+L4F5Ho+O8
+ d6hpuylTHbc04tcgFX0kW1EHiJyEi8M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1736347039;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=z7i3NKvk82GbsaGFcG1uQDrT56Uv6oGYQo0k/886ZWA=;
+ b=rT/S7S5cj4Mjx4ZtJUUAMUljoZGyrQyAXp7GT1w15xuu/mdDRPiC8HDB37WKtcLi4Lpk69
+ IBt5ni16y4sr0gCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 829601351A;
+ Wed,  8 Jan 2025 14:37:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id LicrEp6NfmdLTQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 08 Jan 2025 14:37:18 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH 3/7] migration: Document the effect of vmstate_info_nullptr
+In-Reply-To: <Z36CQojucUnvonfD@x1n>
+References: <20250107195025.9951-1-farosas@suse.de>
+ <20250107195025.9951-4-farosas@suse.de> <Z32bkFa4snLklsbj@x1n>
+ <87frlt4eli.fsf@suse.de> <Z36CQojucUnvonfD@x1n>
+Date: Wed, 08 Jan 2025 11:37:15 -0300
+Message-ID: <87a5c14bj8.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=craig.blackmore@embecosm.com; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ FROM_HAS_DN(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ RCPT_COUNT_THREE(0.00)[3]; MISSING_XM_UA(0.00)[];
+ FROM_EQ_ENVFROM(0.00)[]; TO_DN_SOME(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo, suse.de:mid,
+ suse.de:email]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,142 +115,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use atomic load/store functions to access multiple elements from host.
+Peter Xu <peterx@redhat.com> writes:
 
-Co-authored-by: Paolo Savini <paolo.savini@embecosm.com>
+> On Wed, Jan 08, 2025 at 10:31:05AM -0300, Fabiano Rosas wrote:
+>> Peter Xu <peterx@redhat.com> writes:
+>> 
+>> > On Tue, Jan 07, 2025 at 04:50:21PM -0300, Fabiano Rosas wrote:
+>> >> The migration stream lacks magic numbers at some key points. It's easy
+>> >> to mis-parse data. Unfortunately, the VMS_NULLPTR_MARKER continues
+>> >> with the trend. A '0' byte is ambiguous and could be interpreted as a
+>> >> valid 0x30.
+>> >> 
+>> >> It is maybe not worth trying to change this while keeping backward
+>> >> compatibility, so add some words of documentation to clarify.
+>> >> 
+>> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> >> ---
+>> >>  migration/vmstate-types.c    | 6 ++++++
+>> >>  scripts/analyze-migration.py | 9 +++++++++
+>> >>  2 files changed, 15 insertions(+)
+>> >> 
+>> >> diff --git a/migration/vmstate-types.c b/migration/vmstate-types.c
+>> >> index e83bfccb9e..08ed059f87 100644
+>> >> --- a/migration/vmstate-types.c
+>> >> +++ b/migration/vmstate-types.c
+>> >> @@ -339,6 +339,12 @@ static int put_nullptr(QEMUFile *f, void *pv, size_t size,
+>> >>  
+>> >>  const VMStateInfo vmstate_info_nullptr = {
+>> >>      .name = "uint64",
+>> >
+>> > Ouch.. So I overlooked this line and this explains why it didn't go via
+>> > VMSDFieldGeneric already.
+>> 
+>> Yes, actually I overlooked as well that it should match the size of the
+>> data being handled in the get/put functions.
+>> 
+>> My comment below is about NULL -> 0x30 that I think should instead be
+>> NULL -> 0x3030303030303030 so we have any chance of looking at this and
+>> identifying it's a NULL pointer. When we write 0x30 it might become
+>> confusing for people reading the scripts output that their stream has a
+>> bunch of '0' in the place where pointers should be. If the MAGIC number
+>> were more identifiable, I could change the script to output (null) or 0x0ULL.
+>
+> I suppose we can?  If we want, by renaming this from "uint64" to "nullptr",
+> then add an entry for it in Python's vmsd_field_readers.
 
-Signed-off-by: Paolo Savini <paolo.savini@embecosm.com>
-Signed-off-by: Craig Blackmore <craig.blackmore@embecosm.com>
----
- target/riscv/vector_helper.c | 90 ++++++++++++++++++++++++++++++++----
- 1 file changed, 82 insertions(+), 8 deletions(-)
+That would be a nice alternative because it maps NULL to something, just
+like the actual stream does. NULL -> '0' in the stream, NULL -> nullptr
+in the JSON. I'll give it a try, thanks.
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index a85dd1d200..c0cb5c0ee1 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -206,30 +206,104 @@ vext_continus_ldst_tlb(CPURISCVState *env, vext_ldst_elem_fn_tlb *ldst_tlb,
-     }
- }
- 
-+#if !HOST_BIG_ENDIAN
-+/* Atomic operations for load/store */
-+
-+#define GEN_VEXT_LDST_ATOMIC_HOST(SIZE, TYPE)                             \
-+static inline QEMU_ALWAYS_INLINE void                                     \
-+vext_ldst_atom_##SIZE##_host(void *vd, uint32_t byte_offset, TYPE *host,  \
-+                             bool is_load)                                \
-+{                                                                         \
-+    TYPE *vd_ptr = (TYPE *) (vd + byte_offset);                           \
-+    if (is_load) {                                                        \
-+        *vd_ptr = qatomic_read__nocheck(host);                            \
-+    } else {                                                              \
-+        qatomic_set__nocheck(host, *vd_ptr);                              \
-+    }                                                                     \
-+}                                                                         \
-+
-+GEN_VEXT_LDST_ATOMIC_HOST(2, uint16_t)
-+GEN_VEXT_LDST_ATOMIC_HOST(4, uint32_t)
-+#ifdef CONFIG_ATOMIC64
-+GEN_VEXT_LDST_ATOMIC_HOST(8, uint64_t)
-+#endif
-+
-+static inline QEMU_ALWAYS_INLINE void
-+vext_ldst_atom_16_host(void *vd, uint32_t byte_offset, Int128 *host,
-+                       bool is_load)
-+{
-+    Int128 *vd_ptr = (Int128 *) (vd + byte_offset);
-+    if (is_load) {
-+        *vd_ptr = atomic16_read_ro(host);
-+    } else {
-+        atomic16_set(host, *vd_ptr);
-+    }
-+}
-+#endif
-+
- static inline QEMU_ALWAYS_INLINE void
- vext_continus_ldst_host(CPURISCVState *env, vext_ldst_elem_fn_host *ldst_host,
-                         void *vd, uint32_t evl, uint32_t reg_start, void *host,
--                        uint32_t esz, bool is_load)
-+                        uint32_t esz, bool is_load, uint32_t log2_esz)
- {
- #if HOST_BIG_ENDIAN
-     for (; reg_start < evl; reg_start++, host += esz) {
-         ldst_host(vd, reg_start, host);
-     }
- #else
--    if (esz == 1) {
--        uint32_t byte_offset = reg_start * esz;
--        uint32_t size = (evl - reg_start) * esz;
-+    uint32_t size = (evl - reg_start) * esz;
-+    uint32_t test = (uintptr_t) host;
- 
-+    /* Misaligned load/stores do not require any atomicity */
-+    if (esz == 1 || unlikely(test % esz != 0)) {
-+        uint32_t byte_offset = reg_start * esz;
-         if (is_load) {
-             memcpy(vd + byte_offset, host, size);
-         } else {
-             memcpy(host, vd + byte_offset, size);
-         }
--    } else {
--        for (; reg_start < evl; reg_start++, host += esz) {
--            ldst_host(vd, reg_start, host);
-+        return;
-+    }
-+
-+    /*
-+     * At this point esz > 1 and host is aligned to at least esz, so the ldst
-+     * can be completed in atomic chunks of at least esz.
-+     */
-+
-+    /* Test that both alignment and size are multiples of the atomic width. */
-+    test |= size;
-+
-+    /*
-+     * If !HAVE_ATOMIC128_RO, then atomic16_set may be implemented with a
-+     * 16-byte compare and store loop, which is expensive, so prefer two 8-byte
-+     * stores in this case.
-+     */
-+    if (HAVE_ATOMIC128_RO && (is_load || HAVE_ATOMIC128_RW)
-+        && (test % 16 == 0)) {
-+        for (; reg_start < evl; reg_start += 16 >> log2_esz, host += 16) {
-+            vext_ldst_atom_16_host(vd, reg_start * esz, host, is_load);
-+        }
-+        return;
-+    }
-+    if (test % 8 == 0) {
-+        for (; reg_start < evl; reg_start += 8 >> log2_esz, host += 8) {
-+            vext_ldst_atom_8_host(vd, reg_start * esz, host, is_load);
-+        }
-+        return;
-+    }
-+    if (test % 4 == 0) {
-+        for (; reg_start < evl; reg_start += 4 >> log2_esz, host += 4) {
-+            vext_ldst_atom_4_host(vd, reg_start * esz, host, is_load);
-         }
-+        return;
-+    }
-+    if (test % 2 == 0) {
-+        for (; reg_start < evl; reg_start += 2 >> log2_esz, host += 2) {
-+            vext_ldst_atom_2_host(vd, reg_start * esz, host, is_load);
-+        }
-+        return;
-     }
-+    g_assert_not_reached();
- #endif
- }
- 
-@@ -343,7 +417,7 @@ vext_page_ldst_us(CPURISCVState *env, void *vd, target_ulong addr,
-     if (flags == 0) {
-         if (nf == 1) {
-             vext_continus_ldst_host(env, ldst_host, vd, evl, env->vstart, host,
--                                    esz, is_load);
-+                                    esz, is_load, log2_esz);
-         } else {
-             for (i = env->vstart; i < evl; ++i) {
-                 k = 0;
--- 
-2.43.0
+>> 
+>> We also don't really have the concept of a pointer, which I suspect
+>> might be the real reason behind all this mess. So we'll see:
+>> 
+>> 0x30
+>> 0x30
+>> {
+>>   .some
+>>   .struct
+>>   .here
+>> }
+>> 0x30
+>> 
+>> So all this patch was trying to do is document this situation somehow.
+>
+> Yes, more docs makes sense, though just to mention it's nothing better here
+> to use a full size of pointer: firstly it's not possible I think as 32/64
+> bits have different size of pointers...
+>
+> More importantly, we're not sending the pointer but a marker, in this case
+> the size of the real pointer doesn't really matter, IMHO.  A marker would
+> make sense in saving some bytes when / if the array is large and sparse.
 
+Right, it's just that a larger data type allows for a more unique
+marker, which can be detected more reliably by the consumers of the
+stream. The smaller data type is too ambiguous.
+
+>
+> Said that, let's try above idea, maybe it's optimal as you said the script
+> can show things like "nullptr" (or any better name, I think that's better
+> than "null" at least to show it's not a real pointer, otherwise it's weird
+> to see any pointer in a migration stream..).
+
+Yes, the script is just presenting the data, we can use what's more
+informative.
+
+>
+>> 
+>> >
+>> > Instead of below comment, do we still have chance to change this to
+>> > something like "uint8"?  Then I suppose the script will be able to identify
+>> > this properly.
 
