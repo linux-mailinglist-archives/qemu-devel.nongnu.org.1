@@ -2,58 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CDC9A055BD
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 09:49:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66BFCA055C0
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 09:49:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVRhQ-00068d-R3; Wed, 08 Jan 2025 03:46:00 -0500
+	id 1tVRhO-00067Z-G6; Wed, 08 Jan 2025 03:45:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tVRhC-00065U-ML
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tVRhB-00065K-9f
  for qemu-devel@nongnu.org; Wed, 08 Jan 2025 03:45:46 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tVRhA-0001nc-Rf
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 03:45:46 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tVRh9-0001nY-Nn
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 03:45:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736325944;
+ s=mimecast20190719; t=1736325943;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kYHlcJbTr0/V2iNPBkpTr9ob79LPTB305bDHNna+5oE=;
- b=dJ/Jy1QMFfInDbU26uSuu3WrNv77nauJUfTSxb1RDTxZqkCgKWp5+g+BjANJl/GIMexTWa
- GduaG4gUcSpm76+o10OjJDZwZaalyMn5V94ZGdABOZV5yYZ8cISPcYo1fDMMMAQGc8GBC5
- FMW2gGeMixh1jPcimhHNCG/H2t2cG9A=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=ORmcYUSZHv6WC8sqPgghnuiw/n/Tu7NusrvK1+gAJD0=;
+ b=XsXvSzXtk3wPLrkb4RU0GFOkU7eQAaitWri4nNvpgZfLkhjKNbMqP4/8Fe4oCxI04FPAWK
+ LcLe9IMK1ut4kUuDuMhrtSMCvIIoFDaBtjh5Mamjvd4D3QTlAS7fnRkNnjQIGVZO85vZX4
+ 5SySwcaoU4cjLIakSMY3fBktMCSq350=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-296-BK1FVxAMOkGlMlYt7rBdTg-1; Wed,
- 08 Jan 2025 03:45:40 -0500
-X-MC-Unique: BK1FVxAMOkGlMlYt7rBdTg-1
-X-Mimecast-MFC-AGG-ID: BK1FVxAMOkGlMlYt7rBdTg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-178-1y-cfJFQPe-RUdoDjGGAVw-1; Wed,
+ 08 Jan 2025 03:45:41 -0500
+X-MC-Unique: 1y-cfJFQPe-RUdoDjGGAVw-1
+X-Mimecast-MFC-AGG-ID: 1y-cfJFQPe-RUdoDjGGAVw
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 740DB19153C3; Wed,  8 Jan 2025 08:45:39 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0461819560B0
+ for <qemu-devel@nongnu.org>; Wed,  8 Jan 2025 08:45:41 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-228.str.redhat.com
  [10.33.192.228])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DC90419560AA; Wed,  8 Jan 2025 08:45:37 +0000 (UTC)
+ id DAC9F19560AA; Wed,  8 Jan 2025 08:45:39 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cornelia Huck <cohuck@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>
-Subject: [PULL 11/14] hw/s390x: Remove the "adapter_routes_max_batch" property
- from the flic
-Date: Wed,  8 Jan 2025 09:45:08 +0100
-Message-ID: <20250108084511.238458-12-thuth@redhat.com>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 12/14] Remove the deprecated "-runas" command line option
+Date: Wed,  8 Jan 2025 09:45:09 +0100
+Message-ID: <20250108084511.238458-13-thuth@redhat.com>
 In-Reply-To: <20250108084511.238458-1-thuth@redhat.com>
 References: <20250108084511.238458-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -85,86 +83,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that the s390-ccw-virtio-2.8 machine has been removed, we don't
-need the "adapter_routes_max_batch" property anymore and can remove it.
+It has been marked as deprecated two releases ago, so it should
+be fine now to remove this command line option.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Cornelia Huck <cohuck@redhat.com>
-Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Message-ID: <20250103144232.520383-11-thuth@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-ID: <20250103155411.721759-1-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- include/hw/s390x/s390_flic.h | 2 --
- hw/intc/s390_flic.c          | 9 ---------
- hw/s390x/virtio-ccw.c        | 5 ++---
- 3 files changed, 2 insertions(+), 14 deletions(-)
+ docs/about/deprecated.rst       |  6 ------
+ docs/about/removed-features.rst |  6 ++++++
+ system/vl.c                     |  9 ---------
+ qemu-options.hx                 | 15 +--------------
+ 4 files changed, 7 insertions(+), 29 deletions(-)
 
-diff --git a/include/hw/s390x/s390_flic.h b/include/hw/s390x/s390_flic.h
-index 4d66c5e42e..85016d5ccc 100644
---- a/include/hw/s390x/s390_flic.h
-+++ b/include/hw/s390x/s390_flic.h
-@@ -41,8 +41,6 @@ OBJECT_DECLARE_TYPE(S390FLICState, S390FLICStateClass,
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index d6809f94ea..63b46fd520 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -74,12 +74,6 @@ configurations (e.g. -smp drawers=1,books=1,clusters=1 for x86 PC machine) is
+ marked deprecated since 9.0, users have to ensure that all the topology members
+ described with -smp are supported by the target machine.
  
- struct S390FLICState {
-     SysBusDevice parent_obj;
--    /* to limit AdapterRoutes.num_routes for compat */
--    uint32_t adapter_routes_max_batch;
-     bool ais_supported;
-     bool migration_enabled;
- };
-diff --git a/hw/intc/s390_flic.c b/hw/intc/s390_flic.c
-index 3f3fa939d3..c20f4c1075 100644
---- a/hw/intc/s390_flic.c
-+++ b/hw/intc/s390_flic.c
-@@ -471,8 +471,6 @@ static void qemu_s390_flic_class_init(ObjectClass *oc, void *data)
- }
- 
- static const Property s390_flic_common_properties[] = {
--    DEFINE_PROP_UINT32("adapter_routes_max_batch", S390FLICState,
--                       adapter_routes_max_batch, ADAPTER_ROUTES_MAX_GSI),
-     DEFINE_PROP_BOOL("migration-enabled", S390FLICState,
-                      migration_enabled, true),
- };
-@@ -480,13 +478,6 @@ static const Property s390_flic_common_properties[] = {
- static void s390_flic_common_realize(DeviceState *dev, Error **errp)
- {
-     S390FLICState *fs = S390_FLIC_COMMON(dev);
--    uint32_t max_batch = fs->adapter_routes_max_batch;
+-``-runas`` (since 9.1)
+-''''''''''''''''''''''
 -
--    if (max_batch > ADAPTER_ROUTES_MAX_GSI) {
--        error_setg(errp, "flic property adapter_routes_max_batch too big"
--                   " (%d > %d)", max_batch, ADAPTER_ROUTES_MAX_GSI);
--        return;
--    }
+-Use ``-run-with user=..`` instead.
+-
+-
+ User-mode emulator command line arguments
+ -----------------------------------------
  
-     fs->ais_supported = s390_has_feat(S390_FEAT_ADAPTER_INT_SUPPRESSION);
- }
-diff --git a/hw/s390x/virtio-ccw.c b/hw/s390x/virtio-ccw.c
-index 7cbce4766a..43f3b162c8 100644
---- a/hw/s390x/virtio-ccw.c
-+++ b/hw/s390x/virtio-ccw.c
-@@ -1157,7 +1157,6 @@ static void virtio_ccw_device_plugged(DeviceState *d, Error **errp)
-     CcwDevice *ccw_dev = CCW_DEVICE(d);
-     SubchDev *sch = ccw_dev->sch;
-     int n = virtio_get_num_queues(vdev);
--    S390FLICState *flic = s390_get_flic();
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index cb1388049a..c6616ce05e 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -555,6 +555,12 @@ to produce an odd effect (rotating input but not display output). But
+ this was never intended or documented behaviour, so we have dropped
+ the options along with the machine models they were intended for.
  
-     if (!virtio_has_feature(vdev->host_features, VIRTIO_F_VERSION_1)) {
-         dev->max_rev = 0;
-@@ -1184,10 +1183,10 @@ static void virtio_ccw_device_plugged(DeviceState *d, Error **errp)
-                    VIRTIO_QUEUE_MAX);
-         return;
-     }
--    if (virtio_get_num_queues(vdev) > flic->adapter_routes_max_batch) {
-+    if (virtio_get_num_queues(vdev) > ADAPTER_ROUTES_MAX_GSI) {
-         error_setg(errp, "The number of virtqueues %d "
-                    "exceeds flic adapter route limit %d", n,
--                   flic->adapter_routes_max_batch);
-+                   ADAPTER_ROUTES_MAX_GSI);
-         return;
-     }
++``-runas`` (removed in 10.0)
++''''''''''''''''''''''''''''
++
++Use ``-run-with user=..`` instead.
++
++
+ User-mode emulator command line arguments
+ -----------------------------------------
  
+diff --git a/system/vl.c b/system/vl.c
+index 0843b7ab49..3c5bd36d7d 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -3611,15 +3611,6 @@ void qemu_init(int argc, char **argv)
+                 /* Nothing to be parsed here. Especially, do not error out below. */
+                 break;
+ #if defined(CONFIG_POSIX)
+-            case QEMU_OPTION_runas:
+-                warn_report("-runas is deprecated, use '-run-with user=...' instead");
+-                if (!os_set_runas(optarg)) {
+-                    error_report("User \"%s\" doesn't exist"
+-                                 " (and is not <uid>:<gid>)",
+-                                 optarg);
+-                    exit(1);
+-                }
+-                break;
+             case QEMU_OPTION_daemonize:
+                 os_set_daemonize(true);
+                 break;
+diff --git a/qemu-options.hx b/qemu-options.hx
+index cc694d3b89..7090d59f6f 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -4976,19 +4976,6 @@ SRST
+     ``-nodefaults`` option will disable all those default devices.
+ ERST
+ 
+-#ifndef _WIN32
+-DEF("runas", HAS_ARG, QEMU_OPTION_runas, \
+-    "-runas user     change to user id user just before starting the VM\n" \
+-    "                user can be numeric uid:gid instead\n",
+-    QEMU_ARCH_ALL)
+-#endif
+-SRST
+-``-runas user``
+-    Immediately before starting guest execution, drop root privileges,
+-    switching to the specified user. This option is deprecated, use
+-    ``-run-with user=...`` instead.
+-ERST
+-
+ DEF("prom-env", HAS_ARG, QEMU_OPTION_prom_env,
+     "-prom-env variable=value\n"
+     "                set OpenBIOS nvram variables\n",
+@@ -5176,7 +5163,7 @@ SRST
+ 
+     ``chroot=dir`` can be used for doing a chroot to the specified directory
+     immediately before starting the guest execution. This is especially useful
+-    in combination with -runas.
++    in combination with ``user=...``.
+ 
+     ``user=username`` or ``user=uid:gid`` can be used to drop root privileges
+     before starting guest execution. QEMU will use the ``setuid`` and ``setgid``
 -- 
 2.47.1
 
