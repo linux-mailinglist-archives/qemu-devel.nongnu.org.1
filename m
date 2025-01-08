@@ -2,170 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F689A05257
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 05:49:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E99BA05316
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 07:19:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVNzY-00077F-5U; Tue, 07 Jan 2025 23:48:28 -0500
+	id 1tVPNh-0000bS-SE; Wed, 08 Jan 2025 01:17:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Alexey.Kardashevskiy@amd.com>)
- id 1tVNzV-00076k-9p
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 23:48:25 -0500
-Received: from mail-dm6nam11on2060d.outbound.protection.outlook.com
- ([2a01:111:f403:2415::60d]
- helo=NAM11-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1tVPNe-0000aj-Tu; Wed, 08 Jan 2025 01:17:26 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Alexey.Kardashevskiy@amd.com>)
- id 1tVNzT-0001Xr-1p
- for qemu-devel@nongnu.org; Tue, 07 Jan 2025 23:48:25 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sqvaTD2VcBSvr9JJwzsUB1/qmhPvbkI1uYpayyYKRoohLDPMaPzO7mNHKJZj0gthr8UlRX0CIuuikBStQCCyNW5uIDRyhIV0hnymRfMkMwz/rRn/KJ+CBYFEOzRgr7yO0gzH3d+iZcBfDOFlLybjdKPhfENunONDl7eEDdH4wUhO9nqibmmnPoIxgkIWwod/LOCln9JHughLhEHRjA5n46IAQPldPNQ0vH60BSNgfska4dvaBdLQthUGDYYLq8mj3DlE102KJDU4mXkZSQcvDaJxR/Lx+Ld35nLnVOJVNGbmLjLBEoRak+Zlg5jCYGqV8BbGU0f8wbDHa9RUFnTKdA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8imcE66aYJgNdjOxoo0JgTmHtb+rKbWgh94m+ih1W4I=;
- b=DxzA4AfntrnSMcFqfebd0STxrJV1kT8F/1MVoZGxR+pzZk0sBEGHqWt9MA1sbVYgCrkdiDIQPbK/yQPhoEJ4bUbrEKCih9mI6njT+Dj/gnV4TekC1rqx75BQT37mpoGxJI2uOeP6e7CwIIqAKtekFNbWS3yR7tcl35gGYZ7Nxih/7MRcg38KGKWUtdChyAdzkui2aKbPsiPOKxtbpxthAhh4ah5Kut0T+AmJ/eEFJEkzKklXpj+hQnJEZzywZdbJUYt4yZkEOaimWumI5XT46xg2LP1P30FC2XwzhFcpSjWwX2eq0F+YYQ75YqYvFv90QGQajrtFrG17xl2Lt3yXvw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8imcE66aYJgNdjOxoo0JgTmHtb+rKbWgh94m+ih1W4I=;
- b=N/xMMpIb7x88WpZ9GeEtheBL/SSjtBET37HKHvjg7BSBocnvQjn2oP80ecGrQHqKVpQrx/fVkzb837yk0uOiXFnv40Q7relM2zTLi/kafdzKLjFS2bKgMlfj6Z0QpzibFouUdfyx7bZERFc9IR2ccZmS+rW9alRwChqsbzK9Fr0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by SA1PR12MB9247.namprd12.prod.outlook.com (2603:10b6:806:3af::18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.16; Wed, 8 Jan
- 2025 04:48:08 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.8314.015; Wed, 8 Jan 2025
- 04:48:08 +0000
-Message-ID: <d0b30448-5061-4e35-97ba-2d360d77f150@amd.com>
-Date: Wed, 8 Jan 2025 15:48:04 +1100
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 2/7] guest_memfd: Introduce an object to manage the
- guest-memfd with RamDiscardManager
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1tVPNd-0000Cp-1Z; Wed, 08 Jan 2025 01:17:26 -0500
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5080012L026708;
+ Wed, 8 Jan 2025 06:17:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=J/kS/R
+ Gj8pW/TMeyjkgB7rGOhnwrxfJM0pZzwSnzhWk=; b=FXd8/rX5IaVp5YwsKImT3N
+ QA83wBXPJ6EmRcCwWiEFzzmeOkitmP82/VD+mwC40ie0QXVCZDYQOrRl2hbmCroH
+ xpApl2GsS5gU9et60Ac2me6siZJRHAG64aPw0+5DvjI+e0RhWDmRXTpiJJAU3IKx
+ e4iTZjpz8mCBTyQkB8MOJsh3mLq5XR4sBJE++jw6zgY6eF9GLqEyL95c6C6TDmJM
+ Z0Gha8muIGo/Mw48C8tl55Euqudwz6qM06MMT31XHKjB9x2TkkJDE1SwK36OKKmH
+ TsxQJXBf8z2htByIATUU75Us/wE1rpbIU3b/2mW48G7n7DGxsQiPGIO9dXrzwjbA
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 441edj17v5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 08 Jan 2025 06:17:21 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5086EF9a016817;
+ Wed, 8 Jan 2025 06:17:20 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 441edj17v3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 08 Jan 2025 06:17:20 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50821UHM027963;
+ Wed, 8 Jan 2025 06:17:19 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 43yhhk64ak-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 08 Jan 2025 06:17:19 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
+ [10.241.53.104])
+ by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5086HJtF29098646
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 8 Jan 2025 06:17:19 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1579D58056;
+ Wed,  8 Jan 2025 06:17:19 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7CE3F58052;
+ Wed,  8 Jan 2025 06:17:16 +0000 (GMT)
+Received: from [9.124.223.97] (unknown [9.124.223.97])
+ by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Wed,  8 Jan 2025 06:17:16 +0000 (GMT)
+Message-ID: <09859162-6319-48a7-8564-ba6023b38dd9@linux.ibm.com>
+Date: Wed, 8 Jan 2025 11:47:14 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/2] Add new PowerPC Special Purpose Registers
+To: dan tan <dantan@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
+ "sbhat@linux.ibm.com" <sbhat@linux.ibm.com>
+Cc: qemu-ppc@nongnu.org, npiggin@gmail.com, danielhb413@gmail.com,
+ dantan@linux.ibm.com
+References: <20250107205102.20242-1-dantan@linux.vnet.ibm.com>
 Content-Language: en-US
-To: Chenyi Qiang <chenyi.qiang@intel.com>,
- David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Michael Roth <michael.roth@amd.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Williams Dan J <dan.j.williams@intel.com>,
- Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
- Xu Yilun <yilun.xu@intel.com>
-References: <20241213070852.106092-1-chenyi.qiang@intel.com>
- <20241213070852.106092-3-chenyi.qiang@intel.com>
-From: Alexey Kardashevskiy <aik@amd.com>
-In-Reply-To: <20241213070852.106092-3-chenyi.qiang@intel.com>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20250107205102.20242-1-dantan@linux.vnet.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MEWPR01CA0009.ausprd01.prod.outlook.com
- (2603:10c6:220:1e3::13) To CH3PR12MB9194.namprd12.prod.outlook.com
- (2603:10b6:610:19f::7)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|SA1PR12MB9247:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1dfbd89a-1f8a-4078-bbfe-08dd2f9fa593
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?UWhHUDIzZWY3UHFVUVdzbkZsYlBqeDRiOGtROEJLdXFwMTYzN3pQWHFtNkZj?=
- =?utf-8?B?dndCUkxWc2FtMEowdHJ5Wng4dkFqTk9ZOXB5aXhPS2p0VmlMUjYxSThZVTBB?=
- =?utf-8?B?QWVTUFFVbWZXZHNubFp1VFpKRU9kcFJpMU5IM280WFdaZTVORzNkWlRaVDJY?=
- =?utf-8?B?V1pYbGVuQTFseng5c3E4V3hDR2Zlb1BMMDBzNnBobmtKUXU0NHF6TEJkS2pL?=
- =?utf-8?B?YWg1VnBMQWlFVVY2ek9GcVIzdlE4aDNlRnJXb2VueWxYSWVDd0MvWUh3TTYz?=
- =?utf-8?B?K0hQbHJ4UVBhdDRIUDQzZzdxODRSRHQxSWt1WTArc1ZOY01jQmdaUFE2T2J2?=
- =?utf-8?B?Um95U0FzcTJDUFFpRFZEdG1CMGlkQUU3OWZnRjR1ZzJNSzFRemtUZTRKaXlo?=
- =?utf-8?B?SU9TSlFvMVVzTWdaSlZaYU1tRU9xN1hXbXNMamJZUE9aeHN6ZlBwQjgxcDd5?=
- =?utf-8?B?VEt4RE5NREExa0g5bEJCNFR2eENZOVRReUdxL004YW1oZG1kNEphLzFqa0NC?=
- =?utf-8?B?ODE1d3liL0tyOTA2dStlUXQvekF0OUJ5Sm05aEJVVXI4VW52Z2RqTm5pR2Nh?=
- =?utf-8?B?alJmeXVXSks1amlMYXBzOVhLY1dQbklDQVBPRThnM3hpdTlvbXpSdHk4Qlg3?=
- =?utf-8?B?TzROSzA2RzVsTGE3SEFyRnBDVHBjSFBKT01xeklGM0JycTVMZUVoUFV2Tnpz?=
- =?utf-8?B?bHFHV3pqVnVqUEYzQ2swSVpqTTJoOXVUNW5KWWtoTXBHVU9nbEJTakh4ZFNC?=
- =?utf-8?B?L1JPU1NlSkZRU1EyMC9aaU1YMzhqTTAxSXVMTmpLelhtRlhqQzN3NTdaRFVs?=
- =?utf-8?B?YjR6Q0p1VXgvRnd0OUwyVlN3T3Zwclh0QlVvd2RxM05iVUkrR3Zyd3QrWTVN?=
- =?utf-8?B?SkpXNC9ZLzBzdHBYSGczNVA0elFERC9Kd3hLaEZnMkhwYm81YnI2ejZDdmJD?=
- =?utf-8?B?Nlk2YmphT1RMTlBpWHJiWGV3cStyN3hyWjdQUFpncW10TlVQcG9FUHlyaEx0?=
- =?utf-8?B?RUFuQVRDcUZtTnhmVCtMeDFRbzN1ejgwUmt3MnJTK0VreURmM0NUTVhhQWI4?=
- =?utf-8?B?WTdBOEZKci9oazBjYTNyVFdERVFxRmJoOWkxaVZ3N3pxR1E3TUk4MlB2RC81?=
- =?utf-8?B?Q2pMTGNRcnd1S0ZOdzFlK2JtcWtldzRSM3J5Yjl4LzVhd3p3VU53UjE0dlpZ?=
- =?utf-8?B?YitqdTNTQlF5YUYwSzJmUkI0QlRaMHZVRHZ5b1ozNFRVb29VZm00SGNMOUo5?=
- =?utf-8?B?R3VmNzNWbUVmdmI4T28zenJna1JuNGpYQlZZa2diWEh6S3FZb3dlTmtJVjJQ?=
- =?utf-8?B?SGM0Z245TjFmd3FyN3dGanBCRUJ5L0ZTdlFCL20xWkwvaDBsZEVxY01tMmNT?=
- =?utf-8?B?MDlJTzBSMFI0TzZlMVVVODBOZXd4TVZXMDkyc01sY1RxdzZqbHVyODVTUTk5?=
- =?utf-8?B?U0UwZkQ0QUpEc0FKd283ZTFpNGZXdHJVeG9HT21KWUxmU1Z0bVM5WFFIMmph?=
- =?utf-8?B?MUp2eDBaS3dic1ZrblFwQnFyN04rL1dibWkyRXlXWFJmWnJGd25qdWUxdHRT?=
- =?utf-8?B?Y3JCVjZlWmdzZFZScTNuSG9BMVdnSEZRaFFpMTM5cGRXM2p5am9TYUNsQ0Yv?=
- =?utf-8?B?N0ppNXIxUkxDTG5vWmY1bjBQRnBRRTQyVmtZNDlYWUxQdHlmOTJFbzVucXo5?=
- =?utf-8?B?VEdKMlgrSzZSQmJDWHhEalhlT0hCWVpEVnFFR0RpUGFZejFjMWlxWi9mTmMw?=
- =?utf-8?B?R3Q5dnIxRUI5N0o2aXhYNnZPWFpHZUJRZUF3SUpoNnc2NGQ4V2hodFJOV1dT?=
- =?utf-8?B?QjFnMGRwT0k0SjVrZWhtOHJJOFl0Tm4rWGl5MzR2YWFwSWRMbUVtN3I0VklL?=
- =?utf-8?Q?JCIS/NRjSlfLT?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH3PR12MB9194.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(7416014)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VEwxdGNhcVlGWGZxRkxVYUZzd3F1cnk2bTBtTitjcEJ5VlpWTjNibEo5bDVl?=
- =?utf-8?B?cVpoRDJOM3VlVndzaG5JVHJoYkZVcTZ6YmNWdUYySjZVU09tcGdYNHRDWXpz?=
- =?utf-8?B?alUrWGNjQVR3Y2R6OGFVQXpjWGZ3dVM1M0V0MnV5UThoS2lZSmFUYUwzS2Zz?=
- =?utf-8?B?ZjVJbWdtV2l2aHJYM2NmeHZUVk5OdllkWE44WTJxdDNreFIrMzN5d1ZybWV3?=
- =?utf-8?B?TDAxTjM1bC9YUTVqcEpod2hVQ1l5UWgvWXZUQ3dZZWxXZFM5WDcrNnpWU0Vm?=
- =?utf-8?B?Q1FyRzZVS2VrbEE0YnF4WElqNnFXV3dGdlVhelEzc29aOXhoQ1RaakFuVTNY?=
- =?utf-8?B?SEFuWjBQVmFFSUljWGNNWVBsL21TK3ZxOG9GdklhMjZybEh1Nlo5OVhxdzRY?=
- =?utf-8?B?N1NEL2xBRU1US2dPTkM2QWNYRTFUdzBUb3BmQjQzQ0N6QlowTkJKNGQ0eiti?=
- =?utf-8?B?b1dWazBtNm81K2djMmhVQnlWT1pIYkE4NnNSQUZZTmlHbEFpcXVXb21oNnBt?=
- =?utf-8?B?Qkkrd1IxYnV3VVBXNmQvaDY2aFd0TlFFOVpiLzhIb2oyNWFCZjk2Snl4TUN0?=
- =?utf-8?B?c0ZMTEtnZks5UUdzNEIxaFdvVlRtb3IxeGgyWEZlNUdXb2tLSDROSWVDaVZ5?=
- =?utf-8?B?OXdKL2ZFdGd0cm9ycGhKcFI1VFFMTHVoOXpaQnR2SEoyQmdaajlTQXpDS2ht?=
- =?utf-8?B?VC9qZm0yb3c0SzE2N21lTVlURXllUzVkNFk4Q3RsM3QwaUxDNlNKRE5wUURU?=
- =?utf-8?B?R0d0anBSMEVSV09SRy8rVVp1MkdHN2Q3bE9nOGF3cWRDNnB0LzlIWFpVeEVU?=
- =?utf-8?B?WWhQNkpZdVhGNEtCUE9lWkc3dmZmRStnS3p5MXFjS25oako1cml1MzBZWk1J?=
- =?utf-8?B?TXBMWlF4RTZhYkhmUnF1dGxCVGRSUWxleFFSK3hhak91Y1N3cDBvSUxBLzFF?=
- =?utf-8?B?OEpOZ0U0bXNnQ2daMmhkSFdoOW5nY2Z4YVdsMnlINnJjcndmMTBIeGZFUTRv?=
- =?utf-8?B?U3NrZ043VUlvSEFWM1BaazRrQzdOMjdqY2hXYWJzZWZLYm1CTDlyS1V1RkJF?=
- =?utf-8?B?bStJUVI3bllIWC9rOEFYOWt2UUFRZGk5NStoRSt3Z3FVM2J4aXRWMmtkV2xa?=
- =?utf-8?B?bmhZREZUMURjMEpNWk1iN3I1aFNJTkQ2elpSQ216akpkRUpoZC96NnVhU1Zq?=
- =?utf-8?B?elZkWXFxK0dDMW5OTjZTYWVzZDhXaUlZQ29vejJQSDUybkZ6MXJmUzNuT2dB?=
- =?utf-8?B?TFQ5UlIraHFmZHg3bkRlemU5VkRFNlgrczhUWHMxb240UlBkYldFazN6VlpM?=
- =?utf-8?B?NElXcnFhdFQvVll3NkdWanpMMFlRdGZwSVAzaFJvNGc5QTFudEdsYmkwbEVC?=
- =?utf-8?B?bmJCTlR5R0ZCQXFNc3k3YUNMbVQ3T3pybVJuMVBqNnQ5cGxPVzc2TEw3cTZx?=
- =?utf-8?B?YllnYzdFZjFjSmFOSE1SMDRxWkN3bXVZR2ZXV08rUlVROUNEZGM2UXBjN3VJ?=
- =?utf-8?B?RzNCc0VzMEgxNTRnbEduRHhEWEZSdnRmUElBZXo0V2JmalFzNnFHU2hTcE5E?=
- =?utf-8?B?UVZmNXlwWmRPMkN0VStZK0pKY0hqZEZ3dkFtS0twTnFVSVlBRlU5cUZOZVlZ?=
- =?utf-8?B?bTNUMzdLZE9rMmZTcVNTa253cXEvelFZV2xSSkdmR1lvZFJOWEJjblExNHNH?=
- =?utf-8?B?UDV6SHFFL0tZcTE0RzJFSzg5VTRnOG4yN3A1RmVhb3VvLzRzRWJXTzNiMGdu?=
- =?utf-8?B?UG5vZ2V1NW82VjJZTlpJQ1l5TUxNRGFnTzlxaDVFQ1Z1bnYyaEljQVVnbC8x?=
- =?utf-8?B?dm42ekhIdEdiL1NZb0NKN0M0OHVsNytEazRGSk1zMlc5V1FUL3Q3TkZpQmRv?=
- =?utf-8?B?RmpyS1cwc2lxZXViMjQvVERHenlUZnRuN2VUdzJwVi96dkRnR00xN3NJRW1F?=
- =?utf-8?B?TU13cm5MbXljRXF3NU1mUGhFMFdCYUc1TiszWDFvOFNIeVkzSTZ1TnRNZUFK?=
- =?utf-8?B?dTJIekJ4elhQaUExNHcrNmJESDkwL2VseEo0T3VnR0Y5cjJxbGYrTVQyVXBE?=
- =?utf-8?B?a2w1QmJYMkg0OW44VzJHdDYwK09TaW9ZZDF3UHVmMUxUMTRsSy90aDRsU3h1?=
- =?utf-8?Q?5iY/QksjV733aburw+xcHT14m?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1dfbd89a-1f8a-4078-bbfe-08dd2f9fa593
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2025 04:48:08.3808 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jDZcJGJH/YGR5drnR3R6gAQEBLT/EOzJ8eQP105oJHZZL/A+/4/0AIB6KUuD+Tvs+pYgjjTxqre/T9uOCxGElg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9247
-Received-SPF: permerror client-ip=2a01:111:f403:2415::60d;
- envelope-from=Alexey.Kardashevskiy@amd.com;
- helo=NAM11-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 6S1DH1q_zVWeZuL8Tqpz6BOZy4HoSRWR
+X-Proofpoint-ORIG-GUID: sMwxyTY1cubc3M1hOXPvODYU1BQ1c9NJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 mlxscore=0
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=852 phishscore=0 malwarescore=0
+ impostorscore=0 priorityscore=1501 clxscore=1015 adultscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501080046
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.437,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -181,433 +115,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/12/24 18:08, Chenyi Qiang wrote:
-> As the commit 852f0048f3 ("RAMBlock: make guest_memfd require
-> uncoordinated discard") highlighted, some subsystems like VFIO might
-> disable ram block discard. However, guest_memfd relies on the discard
-> operation to perform page conversion between private and shared memory.
-> This can lead to stale IOMMU mapping issue when assigning a hardware
-> device to a confidential VM via shared memory (unprotected memory
-> pages). Blocking shared page discard can solve this problem, but it
-> could cause guests to consume twice the memory with VFIO, which is not
-> acceptable in some cases. An alternative solution is to convey other
-> systems like VFIO to refresh its outdated IOMMU mappings.
++ Shivaprasad (had posted patches for DAWR1/DAWRX1 earlier)
+
+https://lore.kernel.org/qemu-devel/170679876639.188422.11634974895844092362.stgit@ltc-boston1.aus.stglabs.ibm.com/
+
+On 1/8/25 02:21, dan tan wrote:
+> From: dan tan <dantan@linux.ibm.com>
 > 
-> RamDiscardManager is an existing concept (used by virtio-mem) to adjust
-> VFIO mappings in relation to VM page assignment. Effectively page
-> conversion is similar to hot-removing a page in one mode and adding it
-> back in the other, so the similar work that needs to happen in response
-> to virtio-mem changes needs to happen for page conversion events.
-> Introduce the RamDiscardManager to guest_memfd to achieve it.
+> *** BLURB HERE ***
+> Version 3 summary:
+>      RWMR (Region Weighted Mode Register) -
+>          - change the register to generic read/write from nop/write
 > 
-> However, guest_memfd is not an object so it cannot directly implement
-> the RamDiscardManager interface.
+> Version 2 summary:
+>      (DAWR1,DAWRX1):
+>          - spec reference: https://files.openpower.foundation/s/EgCy7C43p2NSRfR
+>          - corrected commit message format
+>          - combine DAWR(0/1) handling into a single function
+>          - add DAWR1 & DAWRX1 to init_proc_POWER10() only.
 > 
-> One solution is to implement the interface in HostMemoryBackend. Any
-
-This sounds about right.
-
-> guest_memfd-backed host memory backend can register itself in the target
-> MemoryRegion. However, this solution doesn't cover the scenario where a
-> guest_memfd MemoryRegion doesn't belong to the HostMemoryBackend, e.g.
-> the virtual BIOS MemoryRegion.
-
-What is this virtual BIOS MemoryRegion exactly? What does it look like 
-in "info mtree -f"? Do we really want this memory to be DMAable?
-
-
-> Thus, choose the second option, i.e. define an object type named
-> guest_memfd_manager with RamDiscardManager interface. Upon creation of
-> guest_memfd, a new guest_memfd_manager object can be instantiated and
-> registered to the managed guest_memfd MemoryRegion to handle the page
-> conversion events.
+>      RWMR (Region Weighted Mode Register) -
+>          - corrected the previous definition as ITV1
+>          - spec reference:
+>              https://ibm.ent.box.com/s/tmklq90ze7aj8f4n32er1mu3sy9u8k3k (Power9)
+>          - it appears that part of the previous upstream request SPRs
+>            (SPR_POWER_MMCR3, SPR_POWER_SIER2, SPR_POWER_SIER3) are
+>            already in the current master. Therefore, removed those
+>            from this request.
 > 
-> In the context of guest_memfd, the discarded state signifies that the
-> page is private, while the populated state indicated that the page is
-> shared. The state of the memory is tracked at the granularity of the
-> host page size (i.e. block_size), as the minimum conversion size can be
-> one page per request.
+> dan tan (2):
+>    ppc/pnv: Add new PowerPC Special Purpose Registers (DAWR1,DAWRX1)
+>    ppc/pnv: Add new PowerPC Special Purpose Registers (RWMR)
 > 
-> In addition, VFIO expects the DMA mapping for a specific iova to be
-> mapped and unmapped with the same granularity. However, the confidential
-> VMs may do partial conversion, e.g. conversion happens on a small region
-> within a large region. To prevent such invalid cases and before any
-> potential optimization comes out, all operations are performed with 4K
-> granularity.
+>   include/hw/ppc/spapr.h   |  2 +-
+>   target/ppc/cpu.h         |  8 +++--
+>   target/ppc/helper.h      |  4 +--
+>   target/ppc/spr_common.h  |  2 ++
+>   hw/ppc/spapr_hcall.c     | 24 ++++++++------
+>   target/ppc/cpu.c         | 69 ++++++++++++++++++++++++++--------------
+>   target/ppc/cpu_init.c    | 20 ++++++++++++
+>   target/ppc/excp_helper.c | 11 ++++++-
+>   target/ppc/machine.c     |  5 ++-
+>   target/ppc/misc_helper.c |  8 ++---
+>   target/ppc/translate.c   | 21 ++++++++++--
+>   11 files changed, 127 insertions(+), 47 deletions(-)
 > 
-> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
-> ---
->   include/sysemu/guest-memfd-manager.h |  46 +++++
->   system/guest-memfd-manager.c         | 250 +++++++++++++++++++++++++++
->   system/meson.build                   |   1 +
->   3 files changed, 297 insertions(+)
->   create mode 100644 include/sysemu/guest-memfd-manager.h
->   create mode 100644 system/guest-memfd-manager.c
-> 
-> diff --git a/include/sysemu/guest-memfd-manager.h b/include/sysemu/guest-memfd-manager.h
-> new file mode 100644
-> index 0000000000..ba4a99b614
-> --- /dev/null
-> +++ b/include/sysemu/guest-memfd-manager.h
-> @@ -0,0 +1,46 @@
-> +/*
-> + * QEMU guest memfd manager
-> + *
-> + * Copyright Intel
-> + *
-> + * Author:
-> + *      Chenyi Qiang <chenyi.qiang@intel.com>
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> + * See the COPYING file in the top-level directory
-> + *
-> + */
-> +
-> +#ifndef SYSEMU_GUEST_MEMFD_MANAGER_H
-> +#define SYSEMU_GUEST_MEMFD_MANAGER_H
-> +
-> +#include "sysemu/hostmem.h"
-> +
-> +#define TYPE_GUEST_MEMFD_MANAGER "guest-memfd-manager"
-> +
-> +OBJECT_DECLARE_TYPE(GuestMemfdManager, GuestMemfdManagerClass, GUEST_MEMFD_MANAGER)
-> +
-> +struct GuestMemfdManager {
-> +    Object parent;
-> +
-> +    /* Managed memory region. */
-
-Do not need this comment. And the period.
-
-> +    MemoryRegion *mr;
-> +
-> +    /*
-> +     * 1-setting of the bit represents the memory is populated (shared).
-> +     */
-
-Could be 1 line comment.
-
-> +    int32_t bitmap_size;
-
-int or unsigned
-
-> +    unsigned long *bitmap;
-> +
-> +    /* block size and alignment */
-> +    uint64_t block_size;
-
-unsigned?
-
-(u)int(32|64)_t make sense for migrations which is not the case (yet?). 
-Thanks,
-
-> +
-> +    /* listeners to notify on populate/discard activity. */
-
-Do not really need this comment either imho.
-
-> +    QLIST_HEAD(, RamDiscardListener) rdl_list;
-> +};
-> +
-> +struct GuestMemfdManagerClass {
-> +    ObjectClass parent_class;
-> +};
-> +
-> +#endif
-> diff --git a/system/guest-memfd-manager.c b/system/guest-memfd-manager.c
-> new file mode 100644
-> index 0000000000..d7e105fead
-> --- /dev/null
-> +++ b/system/guest-memfd-manager.c
-> @@ -0,0 +1,250 @@
-> +/*
-> + * QEMU guest memfd manager
-> + *
-> + * Copyright Intel
-> + *
-> + * Author:
-> + *      Chenyi Qiang <chenyi.qiang@intel.com>
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> + * See the COPYING file in the top-level directory
-> + *
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qemu/error-report.h"
-> +#include "sysemu/guest-memfd-manager.h"
-> +
-> +OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(GuestMemfdManager,
-> +                                          guest_memfd_manager,
-> +                                          GUEST_MEMFD_MANAGER,
-> +                                          OBJECT,
-> +                                          { TYPE_RAM_DISCARD_MANAGER },
-> +                                          { })
-> +
-> +static bool guest_memfd_rdm_is_populated(const RamDiscardManager *rdm,
-> +                                         const MemoryRegionSection *section)
-> +{
-> +    const GuestMemfdManager *gmm = GUEST_MEMFD_MANAGER(rdm);
-> +    uint64_t first_bit = section->offset_within_region / gmm->block_size;
-> +    uint64_t last_bit = first_bit + int128_get64(section->size) / gmm->block_size - 1;
-> +    unsigned long first_discard_bit;
-> +
-> +    first_discard_bit = find_next_zero_bit(gmm->bitmap, last_bit + 1, first_bit);
-> +    return first_discard_bit > last_bit;
-> +}
-> +
-> +typedef int (*guest_memfd_section_cb)(MemoryRegionSection *s, void *arg);
-> +
-> +static int guest_memfd_notify_populate_cb(MemoryRegionSection *section, void *arg)
-> +{
-> +    RamDiscardListener *rdl = arg;
-> +
-> +    return rdl->notify_populate(rdl, section);
-> +}
-> +
-> +static int guest_memfd_notify_discard_cb(MemoryRegionSection *section, void *arg)
-> +{
-> +    RamDiscardListener *rdl = arg;
-> +
-> +    rdl->notify_discard(rdl, section);
-> +
-> +    return 0;
-> +}
-> +
-> +static int guest_memfd_for_each_populated_section(const GuestMemfdManager *gmm,
-> +                                                  MemoryRegionSection *section,
-> +                                                  void *arg,
-> +                                                  guest_memfd_section_cb cb)
-> +{
-> +    unsigned long first_one_bit, last_one_bit;
-> +    uint64_t offset, size;
-> +    int ret = 0;
-> +
-> +    first_one_bit = section->offset_within_region / gmm->block_size;
-> +    first_one_bit = find_next_bit(gmm->bitmap, gmm->bitmap_size, first_one_bit);
-> +
-> +    while (first_one_bit < gmm->bitmap_size) {
-> +        MemoryRegionSection tmp = *section;
-> +
-> +        offset = first_one_bit * gmm->block_size;
-> +        last_one_bit = find_next_zero_bit(gmm->bitmap, gmm->bitmap_size,
-> +                                          first_one_bit + 1) - 1;
-> +        size = (last_one_bit - first_one_bit + 1) * gmm->block_size;
-
-This tries calling cb() on bigger chunks even though we say from the 
-beginning that only page size is supported?
-
-May be simplify this for now and extend if/when VFIO learns to split 
-mappings,  or  just drop it when we get in-place page state convertion 
-(which will make this all irrelevant)?
-
-
-> +
-> +        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
-> +            break;
-> +        }
-> +
-> +        ret = cb(&tmp, arg);
-> +        if (ret) {
-> +            break;
-> +        }
-> +
-> +        first_one_bit = find_next_bit(gmm->bitmap, gmm->bitmap_size,
-> +                                      last_one_bit + 2);
-> +    }
-> +
-> +    return ret;
-> +}
-> +
-> +static int guest_memfd_for_each_discarded_section(const GuestMemfdManager *gmm,
-> +                                                  MemoryRegionSection *section,
-> +                                                  void *arg,
-> +                                                  guest_memfd_section_cb cb)
-> +{
-> +    unsigned long first_zero_bit, last_zero_bit;
-> +    uint64_t offset, size;
-> +    int ret = 0;
-> +
-> +    first_zero_bit = section->offset_within_region / gmm->block_size;
-> +    first_zero_bit = find_next_zero_bit(gmm->bitmap, gmm->bitmap_size,
-> +                                        first_zero_bit);
-> +
-> +    while (first_zero_bit < gmm->bitmap_size) {
-> +        MemoryRegionSection tmp = *section;
-> +
-> +        offset = first_zero_bit * gmm->block_size;
-> +        last_zero_bit = find_next_bit(gmm->bitmap, gmm->bitmap_size,
-> +                                      first_zero_bit + 1) - 1;
-> +        size = (last_zero_bit - first_zero_bit + 1) * gmm->block_size;
-> +
-> +        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
-> +            break;
-> +        }
-> +
-> +        ret = cb(&tmp, arg);
-> +        if (ret) {
-> +            break;
-> +        }
-> +
-> +        first_zero_bit = find_next_zero_bit(gmm->bitmap, gmm->bitmap_size,
-> +                                            last_zero_bit + 2);
-> +    }
-> +
-> +    return ret;
-> +}
-> +
-> +static uint64_t guest_memfd_rdm_get_min_granularity(const RamDiscardManager *rdm,
-> +                                                    const MemoryRegion *mr)
-> +{
-> +    GuestMemfdManager *gmm = GUEST_MEMFD_MANAGER(rdm);
-> +
-> +    g_assert(mr == gmm->mr);
-> +    return gmm->block_size;
-> +}
-> +
-> +static void guest_memfd_rdm_register_listener(RamDiscardManager *rdm,
-> +                                              RamDiscardListener *rdl,
-> +                                              MemoryRegionSection *section)
-> +{
-> +    GuestMemfdManager *gmm = GUEST_MEMFD_MANAGER(rdm);
-> +    int ret;
-> +
-> +    g_assert(section->mr == gmm->mr);
-> +    rdl->section = memory_region_section_new_copy(section);
-> +
-> +    QLIST_INSERT_HEAD(&gmm->rdl_list, rdl, next);
-> +
-> +    ret = guest_memfd_for_each_populated_section(gmm, section, rdl,
-> +                                                 guest_memfd_notify_populate_cb);
-> +    if (ret) {
-> +        error_report("%s: Failed to register RAM discard listener: %s", __func__,
-> +                     strerror(-ret));
-> +    }
-> +}
-> +
-> +static void guest_memfd_rdm_unregister_listener(RamDiscardManager *rdm,
-> +                                                RamDiscardListener *rdl)
-> +{
-> +    GuestMemfdManager *gmm = GUEST_MEMFD_MANAGER(rdm);
-> +    int ret;
-> +
-> +    g_assert(rdl->section);
-> +    g_assert(rdl->section->mr == gmm->mr);
-> +
-> +    ret = guest_memfd_for_each_populated_section(gmm, rdl->section, rdl,
-> +                                                 guest_memfd_notify_discard_cb);
-> +    if (ret) {
-> +        error_report("%s: Failed to unregister RAM discard listener: %s", __func__,
-> +                     strerror(-ret));
-> +    }
-> +
-> +    memory_region_section_free_copy(rdl->section);
-> +    rdl->section = NULL;
-> +    QLIST_REMOVE(rdl, next);
-> +
-> +}
-> +
-> +typedef struct GuestMemfdReplayData {
-> +    void *fn;
-
-s/void */ReplayRamPopulate/
-
-> +    void *opaque;
-> +} GuestMemfdReplayData;
-> +
-> +static int guest_memfd_rdm_replay_populated_cb(MemoryRegionSection *section, void *arg)
-> +{
-> +    struct GuestMemfdReplayData *data = arg;
-
-Drop "struct" here and below.
-
-> +    ReplayRamPopulate replay_fn = data->fn;
-> +
-> +    return replay_fn(section, data->opaque);
-> +}
-> +
-> +static int guest_memfd_rdm_replay_populated(const RamDiscardManager *rdm,
-> +                                            MemoryRegionSection *section,
-> +                                            ReplayRamPopulate replay_fn,
-> +                                            void *opaque)
-> +{
-> +    GuestMemfdManager *gmm = GUEST_MEMFD_MANAGER(rdm);
-> +    struct GuestMemfdReplayData data = { .fn = replay_fn, .opaque = opaque };
-> +
-> +    g_assert(section->mr == gmm->mr);
-> +    return guest_memfd_for_each_populated_section(gmm, section, &data,
-> +                                                  guest_memfd_rdm_replay_populated_cb);
-> +}
-> +
-> +static int guest_memfd_rdm_replay_discarded_cb(MemoryRegionSection *section, void *arg)
-> +{
-> +    struct GuestMemfdReplayData *data = arg;
-> +    ReplayRamDiscard replay_fn = data->fn;
-> +
-> +    replay_fn(section, data->opaque);
-
-
-guest_memfd_rdm_replay_populated_cb() checks for errors though.
-
-> +
-> +    return 0;
-> +}
-> +
-> +static void guest_memfd_rdm_replay_discarded(const RamDiscardManager *rdm,
-> +                                             MemoryRegionSection *section,
-> +                                             ReplayRamDiscard replay_fn,
-> +                                             void *opaque)
-> +{
-> +    GuestMemfdManager *gmm = GUEST_MEMFD_MANAGER(rdm);
-> +    struct GuestMemfdReplayData data = { .fn = replay_fn, .opaque = opaque };
-> +
-> +    g_assert(section->mr == gmm->mr);
-> +    guest_memfd_for_each_discarded_section(gmm, section, &data,
-> +                                           guest_memfd_rdm_replay_discarded_cb);
-> +}
-> +
-> +static void guest_memfd_manager_init(Object *obj)
-> +{
-> +    GuestMemfdManager *gmm = GUEST_MEMFD_MANAGER(obj);
-> +
-> +    QLIST_INIT(&gmm->rdl_list);
-> +}
-> +
-> +static void guest_memfd_manager_finalize(Object *obj)
-> +{
-> +    g_free(GUEST_MEMFD_MANAGER(obj)->bitmap);
-
-
-bitmap is not allocated though. And 5/7 removes this anyway. Thanks,
-
-
-> +}
-> +
-> +static void guest_memfd_manager_class_init(ObjectClass *oc, void *data)
-> +{
-> +    RamDiscardManagerClass *rdmc = RAM_DISCARD_MANAGER_CLASS(oc);
-> +
-> +    rdmc->get_min_granularity = guest_memfd_rdm_get_min_granularity;
-> +    rdmc->register_listener = guest_memfd_rdm_register_listener;
-> +    rdmc->unregister_listener = guest_memfd_rdm_unregister_listener;
-> +    rdmc->is_populated = guest_memfd_rdm_is_populated;
-> +    rdmc->replay_populated = guest_memfd_rdm_replay_populated;
-> +    rdmc->replay_discarded = guest_memfd_rdm_replay_discarded;
-> +}
-> diff --git a/system/meson.build b/system/meson.build
-> index 4952f4b2c7..ed4e1137bd 100644
-> --- a/system/meson.build
-> +++ b/system/meson.build
-> @@ -15,6 +15,7 @@ system_ss.add(files(
->     'dirtylimit.c',
->     'dma-helpers.c',
->     'globals.c',
-> +  'guest-memfd-manager.c',
->     'memory_mapping.c',
->     'qdev-monitor.c',
->     'qtest.c',
-
--- 
-Alexey
-
 
