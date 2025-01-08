@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E74FA05B65
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 13:22:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D86FDA05B42
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 13:17:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVV4k-0006ON-In; Wed, 08 Jan 2025 07:22:18 -0500
+	id 1tVUz2-0005lf-HB; Wed, 08 Jan 2025 07:16:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tVUuz-00019X-Rw
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 07:12:16 -0500
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ id 1tVUuK-0000hf-1k
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 07:11:38 -0500
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tVUuV-0007M9-Ax
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 07:12:06 -0500
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-5d3f57582a2so1523961a12.1
- for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 04:11:13 -0800 (PST)
+ id 1tVUuD-0007LM-Ty
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 07:11:29 -0500
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-aae81f4fdc4so2878810966b.0
+ for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 04:11:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736338272; x=1736943072; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736338271; x=1736943071; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PdsXyF3OC+6k01wdvpRGDBTvPRZa71R2EiA5i0mTRfY=;
- b=NcMq+tVoCiDiBx8FLt2ANk/82TR6zKzu87h6qss89EpOWwk0p8HDHWbcYnopXTQcgd
- po3sPOJv5yTm4E5trvAe52697jjNIlPHyQzriwyWjuJlpkOI/7MVV1t3jVEgBzcHVCYB
- AhgPkjBA29bhhjg4QRZ7ekzS73R6p9rMjXmawe3+d+86V+vISLS1i23QdheUukyAdZ9T
- +nI0XkHmFF0Zh2e3Jf12f4U9zYL0wrpQNzf+DlNsapwF7JMMzNhhJRah+BuCEwWXNqWf
- Bn5FQ+Vpj2P3vCV9TWPhy+87W4wh+ULi1pkLVbtfX7/1BtigMq51Ra8KFy/elwyS1KXt
- i4AQ==
+ bh=pp9Cb+nLjYnJ8bOQQMApTzM9CoLq9IVOBk3wtPI/KWI=;
+ b=TJ6aJ9Qy+fi5sUtHk+bN1MswKt727yIT8DNrl5mwylU0hqHANXkTzGL8k+fgQrKzjq
+ MfyIJjuPXsev/jyx1qARIHhG9NfuPUhhqWXpE3SYU8DoEJZAnugdokBKSTAAurVljFld
+ JXRDZRmcCczeF+rizfP2F4MZvdml2n9uWh4uqsus4GbYGNpHmtbOlZGCKSsV0rEuyfXh
+ IF0BznKoj6NmPji1V3G/KcM/PWp5wbghKKqLD8tpRkLtv2UsMiush9ukklbNI4Xk7F6N
+ vGI9AzF0yOl3ZAJYnRd7nahOE7KmjQPsCleMchRCvNhgUHl9/pjnQQMMoA3rxmaO/Yrh
+ ijew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736338272; x=1736943072;
+ d=1e100.net; s=20230601; t=1736338271; x=1736943071;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PdsXyF3OC+6k01wdvpRGDBTvPRZa71R2EiA5i0mTRfY=;
- b=sL1Jg0/D4vopjgJ+Lqccu543GPYNqChg6eyd8KIWZyFDedEIoUtxdyRiBO8hpCdi0Q
- dsLC4FziTkgaNUluRX536M9iYgGS0VHGQiuwJo9l2hZFXJx/fWkSJPSGD+lO7HXPrBnU
- Npqv3O08Xr+/Fiqvd7HQvO2jg6VXDbDluw/Do2iQy4e6vVc5htRzCVcG6IoN4mjCb6qC
- zR15ad+JModJl1qj59QCK12yUHZ3HrlOPWs4ltFs3Bb/QGyXaik8mkJSYhkqfnGj9+hw
- 68GT0RmGAYC9jSOcDZLMDnL9O4EC0ypyXZt9+B0VmiO0w+f8e8sKmiFHP26Vzhv7cc4x
- Tm3w==
-X-Gm-Message-State: AOJu0YxSpG75mTV79vTMMeclKwdxU6W66nHZbRr0T/DoOz+d+o6DglUd
- r3hbsBZW0SPmkbWu4taDTSWzkmSxP11GFKrLkU/auM8GnrCk7RtVahZtP11EaTs=
-X-Gm-Gg: ASbGncsQT96qEXdDxt4tzczCjNBgqHAEKCVuDfw/I7Nz5/oQuYi+35tbnhYunWpbWNp
- 4m0Rsg3aosOYK++uA+gVMRBx0ogw5h2eWa4zX2zt1mYOadXnGdII6rbk8a4O0aPE9syoSRedY4X
- Qu5ubuFuJWpTS+i0hstmLOi4IwbRt29G0jY5GqwqQGFuPtmvSxtsyPsqde09alyQ1NoPu8Kt44Y
- M0jLKPQKkvVtgaR1xVg1pcuEMcKyC2c3x+vlsLJkZGr4uKEEQlik5U=
-X-Google-Smtp-Source: AGHT+IFyqyGoZ/xuk8ngbKshNkEnRC1VEfUnAYZBz2eWBtCTj5Qh5iWyg+7ZSyAdkuLb5nSAyJ1wQw==
-X-Received: by 2002:a05:6402:3593:b0:5d3:eb50:4e33 with SMTP id
- 4fb4d7f45d1cf-5d95e8ced09mr5874086a12.5.1736338272274; 
- Wed, 08 Jan 2025 04:11:12 -0800 (PST)
+ bh=pp9Cb+nLjYnJ8bOQQMApTzM9CoLq9IVOBk3wtPI/KWI=;
+ b=C9FfnGd16V+bDGqQwJgQabx+g/FtHQDh9UyNmmH0BanEYIHIHTmiOcP9g47bd5TE8j
+ t5uxjmIOftkzKlhHq4h0+VBMwaMtNt8Mw2F+4EN9Soj0UaxCptsmaE1mB99xJy4N2Kav
+ 211XqxFTu2Gk0mihazSJQAeaGiIAXhy8T97ZfXEc7oOv+d/ogppSV3n53CHxtdJ1ehIN
+ vuvuA3ZI9H8B2AKQcmmMQnlf/G1kPuyW4ivunnJ6QPcfvRNEUNDSwa64yVvizHUiRIDF
+ fcFN0XSce7TJx1+ASmCx4qMbeS3e0W6h65KIkCGpgtlZjGZMP7kCmZiRn4N+H3gE2uR9
+ pzFA==
+X-Gm-Message-State: AOJu0YzsoamW2HkhIrEPPARBKMW1b+jvPJjbmGEMEtb2WfNWwgPagHBp
+ rnkYnK+DiKwf3ITHcxVL9VrxY4kH4xnubsnv2HxIRrb/QsJe+Wtx1aUvi7w0x7ygrt5NslvZPN7
+ qQPI=
+X-Gm-Gg: ASbGncvP7pR79/Pn1TbJWxXBj4zqJapOvWu4A24uCsPMjubR1OuE0YSCNc1uxQpkMxi
+ yJVXZBcHndnDi97gvq7iADB3x3u7GTeHta0kEP6HSc4swmoo/SOQhwpFZTK9HRTszFS+K48Cm9Q
+ IQN7bJ2N89svqhGleQCiGVllpwtbRHGFaLH55+SFLPLhZ/nm2hoBGwtNY3bfDATRJl6Z3Eylt91
+ md8C+KJyVPef6e5qY2ENKtY/SMtZw9dA2NM6CAIouosJU8CM2RkUu0=
+X-Google-Smtp-Source: AGHT+IHg8YLSJJb8PfrRMVV1vxhiVHtnSOdTK8U63MIV2n3IOAMmv7R48KG+Qzj8jmtLMEzIN3mQvg==
+X-Received: by 2002:a17:907:96a7:b0:aa6:2c18:aaa2 with SMTP id
+ a640c23a62f3a-ab2ab73e7dbmr203253166b.27.1736338271008; 
+ Wed, 08 Jan 2025 04:11:11 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d80678c5a4sm25056881a12.38.2025.01.08.04.11.05
+ a640c23a62f3a-aac0e82f31bsm2470929566b.1.2025.01.08.04.11.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 08 Jan 2025 04:11:08 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 86EC960132;
+ by draig.lan (Postfix) with ESMTP id 9E5DF6017C;
  Wed,  8 Jan 2025 12:10:57 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -95,25 +96,27 @@ Cc: Halil Pasic <pasic@linux.ibm.com>, Aurelien Jarno <aurelien@aurel32.net>,
  Markus Armbruster <armbru@redhat.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Palmer Dabbelt <palmer@dabbelt.com>,
- Peter Maydell <peter.maydell@linaro.org>, Li-Wen Hsu <lwhsu@freebsd.org>
-Subject: [PATCH v4 30/32] pc-bios: ensure keymaps dependencies set vnc tests
-Date: Wed,  8 Jan 2025 12:10:52 +0000
-Message-Id: <20250108121054.1126164-31-alex.bennee@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>, Li-Wen Hsu <lwhsu@freebsd.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>
+Subject: [PATCH v4 31/32] dockerfiles: Remove 'MAINTAINER' entry in
+ debian-tricore-cross.docker
+Date: Wed,  8 Jan 2025 12:10:53 +0000
+Message-Id: <20250108121054.1126164-32-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250108121054.1126164-1-alex.bennee@linaro.org>
 References: <20250108121054.1126164-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x636.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ URIBL_SBL_A=0.1 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,72 +132,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I was seeing failures on vnc-display-test on FreeBSD:
+From: Philippe Mathieu-Daudé <f4bug@amsat.org>
 
-  make vm-build-freebsd V=1 TARGET_LIST=aarch64-softmmu BUILD_TARGET=check-qtest QEMU_LOCAL=1 DEBUG=1
+AMSAT closed its email service [*] so my personal email
+address is now defunct. Remove it to avoid bouncing emails.
 
-Leads to:
+[*] https://web.archive.org/web/20240617194936/https://forum.amsat-dl.org/index.php?thread/4581-amsat-mail-alias-service-to-end-august-1-2024/
 
-  qemu-system-aarch64: -vnc none: could not read keymap file: 'en-us'
-  Broken pipe
-  ../src/tests/qtest/libqtest.c:196: kill_qemu() tried to terminate QEMU process but encountered exit status 1 (expected 0)
-
-which was as far as I could tell because we don't populate the
-$BLD/pc-bios/keymaps (although something attempts to symlink
-qemu-bundle/usr/local/share/qemu/keymaps/ to that dir).
-
+Signed-off-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20250102152513.61065-1-philmd@linaro.org>
+[AJB: update URL to web.archive.org]
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
 ---
- pc-bios/keymaps/meson.build | 17 ++++++++---------
- tests/qtest/meson.build     |  2 +-
- 2 files changed, 9 insertions(+), 10 deletions(-)
+ tests/docker/dockerfiles/debian-tricore-cross.docker | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/pc-bios/keymaps/meson.build b/pc-bios/keymaps/meson.build
-index 0bd8ce0077..a79a09b276 100644
---- a/pc-bios/keymaps/meson.build
-+++ b/pc-bios/keymaps/meson.build
-@@ -39,19 +39,18 @@ else
-   native_qemu_keymap = qemu_keymap
- endif
+diff --git a/tests/docker/dockerfiles/debian-tricore-cross.docker b/tests/docker/dockerfiles/debian-tricore-cross.docker
+index 479b4d6eba..7e00e870ce 100644
+--- a/tests/docker/dockerfiles/debian-tricore-cross.docker
++++ b/tests/docker/dockerfiles/debian-tricore-cross.docker
+@@ -11,8 +11,6 @@
+ #
+ FROM docker.io/library/debian:11-slim
  
-+keymap_targets = []
- if native_qemu_keymap.found()
--  t = []
-   foreach km, args: keymaps
-     # generate with qemu-kvm
--    t += custom_target(km,
--                       build_by_default: true,
--                       output: km,
--                       command: [native_qemu_keymap, '-f', '@OUTPUT@', args.split()],
--                       install: have_system,
--                       install_dir: qemu_datadir / 'keymaps')
-+    keymap_targets += custom_target(km,
-+                                    build_by_default: true,
-+                                    output: km,
-+                                    command: [native_qemu_keymap, '-f', '@OUTPUT@', args.split()],
-+                                    install: have_system,
-+                                    install_dir: qemu_datadir / 'keymaps')
-   endforeach
+-MAINTAINER Philippe Mathieu-Daudé <f4bug@amsat.org>
 -
--  alias_target('update-keymaps', t)
-+  alias_target('update-keymaps', keymap_targets)
- else
-   install_data(keymaps.keys(), install_dir: qemu_datadir / 'keymaps')
- endif
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index c5a70021c5..f75c1057a4 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -383,7 +383,7 @@ qtests = {
- if vnc.found()
-   gvnc = dependency('gvnc-1.0', method: 'pkg-config', required: false)
-   if gvnc.found()
--    qtests += {'vnc-display-test': [gvnc]}
-+    qtests += {'vnc-display-test': [gvnc, keymap_targets]}
-     qtests_generic += [ 'vnc-display-test' ]
-   endif
- endif
+ RUN apt update && \
+     DEBIAN_FRONTEND=noninteractive apt install -yy eatmydata && \
+     DEBIAN_FRONTEND=noninteractive eatmydata apt install -yy \
 -- 
 2.39.5
 
