@@ -2,61 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22535A055B5
+	by mail.lfdr.de (Postfix) with ESMTPS id 03613A055B4
 	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 09:47:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVRhS-00068r-IC; Wed, 08 Jan 2025 03:46:02 -0500
+	id 1tVRhP-00068K-4Q; Wed, 08 Jan 2025 03:45:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tVRhD-00065r-Vo
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tVRhE-00065u-In
  for qemu-devel@nongnu.org; Wed, 08 Jan 2025 03:45:52 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tVRhC-0001no-Hj
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 03:45:47 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tVRhD-0001nw-4l
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 03:45:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736325945;
+ s=mimecast20190719; t=1736325946;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tW/wPuJVrr8OL/8q9TH0GvpC38OJs+qigH7g3x85HTo=;
- b=hsFoiep/Na5orWIgvlQaFMR+5gxqf7JssnGYW6XIcE7tQSJ9CdZ3yaMD6fjfjzhPctFWQj
- ApepfPreyviTGgxVucXb3vYR/8GNE7Zoivpsyx+sDhKkNKFGxGNcQ3JCNkR0yNh2xQBgmT
- PJ5HC+Xh35s9xJF2lLoMaOY5TFYNAiM=
+ bh=Z/gZ7r+bKf/0wluMqP3o0zZbo3EYAyCdRG9VumB6Zb8=;
+ b=KI+5uJ+pgyfTNRfnI2F6LuNNa4yxcLqeOquLamie32i3zgxSndat2Nq+OU2ZhDngtxRAJb
+ QviyEb7tpHXe05R0s8HWel5aT36KEnLnRK3aqE8xLwXfnA1e3BU2UFypHNphUhjpRxSrDv
+ Bu+GeJvw63gBsf37Q8OeWPgUZnmI0ng=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-teCmVej8MrG0fYERuIpxVQ-1; Wed,
- 08 Jan 2025 03:45:43 -0500
-X-MC-Unique: teCmVej8MrG0fYERuIpxVQ-1
-X-Mimecast-MFC-AGG-ID: teCmVej8MrG0fYERuIpxVQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-491-V1VpwcilOWqxUxACLJ6w_Q-1; Wed,
+ 08 Jan 2025 03:45:45 -0500
+X-MC-Unique: V1VpwcilOWqxUxACLJ6w_Q-1
+X-Mimecast-MFC-AGG-ID: V1VpwcilOWqxUxACLJ6w_Q
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A2D491955DC0
- for <qemu-devel@nongnu.org>; Wed,  8 Jan 2025 08:45:42 +0000 (UTC)
+ id 352A41956083; Wed,  8 Jan 2025 08:45:44 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-228.str.redhat.com
  [10.33.192.228])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6E4F019560AA; Wed,  8 Jan 2025 08:45:41 +0000 (UTC)
+ id 14C9F19560AA; Wed,  8 Jan 2025 08:45:42 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 13/14] docs/about/deprecated: Remove paragraph about initial
- deprecation in 2.10
-Date: Wed,  8 Jan 2025 09:45:10 +0100
-Message-ID: <20250108084511.238458-14-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Stefan Hajnoczi <stefanha@gmail.com>
+Subject: [PULL 14/14] tests/functional/test_x86_64_hotplug_cpu: Fix race
+ condition during unplug
+Date: Wed,  8 Jan 2025 09:45:11 +0100
+Message-ID: <20250108084511.238458-15-thuth@redhat.com>
 In-Reply-To: <20250108084511.238458-1-thuth@redhat.com>
 References: <20250108084511.238458-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -84,35 +81,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we introduced the deprecation rule of keeping deprecated features
-for two more releases, we had to state that we would not remove features
-by surprise that had already been marked as deprecated before. Nowadays,
-this paragraph is not needed anymore, so we can remove it now.
+When unplugging the CPU, the test tries to check for a successful
+unplug by changing to the /sys/devices/system/cpu/cpu1 directory
+to see whether that fails. However, the "cd" could be faster than
+the unplug operation in the kernel, so there is a race condition
+and the test sometimes fails here.
+Fix it by trying to change the directory in a loop until the the
+CPU has really been unplugged.
+While we're at it, also add a "cd .." before unplugging to make
+the console output a little bit less confusing (since the path
+is echoed in the shell prompt).
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20250103145702.597139-1-thuth@redhat.com>
+Reported-by: Stefan Hajnoczi <stefanha@gmail.com>
+Message-ID: <20250107115245.52755-1-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- docs/about/deprecated.rst | 6 ------
- 1 file changed, 6 deletions(-)
+ tests/functional/test_x86_64_hotplug_cpu.py | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 63b46fd520..4a3c302962 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -24,12 +24,6 @@ should exclusively use a non-deprecated machine type, with use of the most
- recent version highly recommended. Non-versioned machine types follow the
- general feature deprecation policy.
+diff --git a/tests/functional/test_x86_64_hotplug_cpu.py b/tests/functional/test_x86_64_hotplug_cpu.py
+index b1d5156c72..7b9200ac2e 100755
+--- a/tests/functional/test_x86_64_hotplug_cpu.py
++++ b/tests/functional/test_x86_64_hotplug_cpu.py
+@@ -59,11 +59,13 @@ def test_hotplug(self):
+                                           'cd /sys/devices/system/cpu/cpu1',
+                                           'cpu1#')
  
--Prior to the 2.10.0 release there was no official policy on how
--long features would be deprecated prior to their removal, nor
--any documented list of which features were deprecated. Thus
--any features deprecated prior to 2.10.0 will be treated as if
--they were first deprecated in the 2.10.0 release.
--
- What follows is a list of all features currently marked as
- deprecated.
++        exec_command_and_wait_for_pattern(self, 'cd ..', prompt)
+         self.vm.cmd('device_del', id='c1')
  
+         exec_command_and_wait_for_pattern(self,
+-                                          'cd /sys/devices/system/cpu/cpu1',
+-                                          'No such file or directory')
++                                    'while cd /sys/devices/system/cpu/cpu1 ;'
++                                    ' do sleep 0.2 ; done',
++                                    'No such file or directory')
+ 
+ if __name__ == '__main__':
+     LinuxKernelTest.main()
 -- 
 2.47.1
 
