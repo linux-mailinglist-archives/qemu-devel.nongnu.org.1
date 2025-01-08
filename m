@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B249A056DC
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 10:29:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68326A056DD
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 10:29:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVSLh-000535-G8; Wed, 08 Jan 2025 04:27:38 -0500
+	id 1tVSKu-0004G6-Tz; Wed, 08 Jan 2025 04:26:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tVSKG-0003xn-2I; Wed, 08 Jan 2025 04:26:14 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ id 1tVSKH-0003xy-3N; Wed, 08 Jan 2025 04:26:14 -0500
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tVSKE-0004p0-Eu; Wed, 08 Jan 2025 04:26:07 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5d3f65844deso28025980a12.0; 
- Wed, 08 Jan 2025 01:26:05 -0800 (PST)
+ id 1tVSKF-0004pJ-GZ; Wed, 08 Jan 2025 04:26:08 -0500
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-5d7e3f1fdafso34640631a12.0; 
+ Wed, 08 Jan 2025 01:26:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1736328363; x=1736933163; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1736328365; x=1736933165; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fs6DjGCcdE+uixmXV2Su2ClqzCx3jJdPOZ1E1qUMw70=;
- b=HzpZ8LHpCXR62ipeE/AxTEjvjifSOzQHr+wePIAioKKProLTMjpmrgb1rR1ZWCTdZL
- E9Eaw/Sy76LYf4PZuLy4+hiuDbg9kDr1gWXz4CCGytMUcUWfufM6IZpmDrcctEPdz+ko
- zQ6mnsLH97ohxE4CkRyW4exjgYcTsU9RIpf24DsUZuKMSF0pH+pE4Ez3x23oRoWyZq/o
- HoCDkn5xtifVJxV/kMT9XpmDnby+g0Jk2aCUttrPitth3zOWQxSdJjs0IFP1V5vx8Twi
- V1fmOKx3Z5V54e+xCg2W+gkNNHUjASRBztMwMG+UiPAPWcyutxM325xv+bbA0ULwGpAj
- iWMQ==
+ bh=qbHAwk39a0EI/mfJEXYlFT6Wq50d666L3aYBs+8Wil0=;
+ b=O3kQTyyvy9f32SQTLnuUfCI0K5LE9l5SW9WjfkF7h8QAf57NKnNOVhuN2rbD4BMZOZ
+ OwsUGE13yvS66AnvIb87Pa34/o8I7s83eWokn0m5dlmjt97P35BMOAf4LKJJTMiqIY0j
+ G0m6g2DTcFXGY8Az5P1LUvhQiVDV7BihnXtMzybIDID4AkvyjgAE816ngS891EW+aPHg
+ WkZQffqChRSBL9Pq28IPYWj/13VcZy6PAkxabEPnWdZgJ7nKIRzKa1L1DO8rKHfhU9zr
+ 70nzYQtjw7UuhzgcsWzX8gDIwzU+G/Pap0rrk6afoc53YrHM4FNObQsVuFiFknqHdLuG
+ nEDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736328363; x=1736933163;
+ d=1e100.net; s=20230601; t=1736328365; x=1736933165;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fs6DjGCcdE+uixmXV2Su2ClqzCx3jJdPOZ1E1qUMw70=;
- b=pP238RTg/seakgGYu+rk4s/VPt6tw/HrkD9krh2quFQJv0rSKcb3v4MunNHnCAr07w
- 9HaMY+KaoYfOUNkxDjGc0Eh30yLJfY8AMINhg3iACPpj9xVEaXTXaNUXva2rN0K0F6uQ
- +RccgS9sRJgdrjRs89MMApvHkmrzo7VNP+XvFyO211cXGQfWbVD691VoMrtSHM2ZNua9
- e7+hGHyVvYaxNKNCoBkkSws4dBQ16F51uL4x/gR0a/DqKdNw5RGfHc6z6EY+RWCMhq48
- UEZNDambhse0P0EacH0LfB8kAmm1mmnLZiYTNxGNrCdLCgn3hHWGb7nFSs+bWT4nNnkW
- rDKg==
+ bh=qbHAwk39a0EI/mfJEXYlFT6Wq50d666L3aYBs+8Wil0=;
+ b=dZDZlIlv2mxvNk2P+E+FFY9j1N1tmVSvEnw44Tc1IBKa/ScIoeQl9tX9O0IjGpD+tP
+ TxvH5cnufvdHYzPYLhZXPmuluKTTcDmwN/u+94US3gXVV8kXPWC0u7+dJnH0ZrpUfkfM
+ lS8cfWMwlj7LQNPA21On7s7+ooMx+8+3ZOMXJ+SaN9VPyMtUu8YVsQFLv6DOG0c0x6pj
+ XNdBWBni52zFFh74AEVfHA0Syhr1S/golv3VyTg/v8dmn7OaUs6oR3DSeAFB+MlRRFWD
+ 0TiWB5FLtqk9Fv0/xquf1UFstd+OXNMlV/WCa2TYlH1vkVLcJCXZmiHOoWZhJAd7CwNz
+ c/vg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUY2M7WVzFAhyCgQdCak6HKEUy+b4GXJzCNyIq6M588h1FDBueyEnz6NHQoLZGY1EEdvuMhi1q3XQ==@nongnu.org,
- AJvYcCWBGJFy05IXmH8z/ezGJbljd9AJTNmEWdvoZnsie821Ut2XIMNsj/5Km3NLatgqiBNAbGUtWVP+HSGUDw==@nongnu.org
-X-Gm-Message-State: AOJu0YwCs6N/SXGiGkSpuOUsqc8/jt+tmBE7LFNdTcGP+GjUDYTmn+mB
- KLGnfSo/eW0X8rpRTS2GS4XuA4JrG0e64WbzxzInfz/LnfrSRFAeApx2nYEs
-X-Gm-Gg: ASbGnct+TVlSEPPnSh6NDdPxI+ydfNiv/+KFg8ZWQHkSlTS4vjCHmzPYU+OVnHdKW7V
- WR9b6dozu7stnH70Cq84wiU2fKvX8parzyIirOzLUWzGdYwqTzsZeaxdhvDJ/q7hRnLxsGss95s
- iZ2rGD0ymyv4Neqxo9cRl92hinFxXfIZIVP+NRItKwLtUYmeXrkbSreofLnIDDDzgvUwCNqOZxZ
- Y9yYcLul8P9OFxwF3aD5GuoPrN9cuEQoS3+MDFb2nBfjj1x7dHJFsgbKd6YCTLnRIuGrvVov+/g
- hTqHxSGEdx2/Q6HWRS68Sse4EQvCSpFl+nedavbp3wbgFzc=
-X-Google-Smtp-Source: AGHT+IGHNLsXgqgzzRHrOSFFAiuB5D72sJFKZmgk3zOb/nTianpJix3O2TyoK6rTfZXEBrHE3/fPBg==
-X-Received: by 2002:a05:6402:268c:b0:5d2:d72a:77e4 with SMTP id
- 4fb4d7f45d1cf-5d972e6c9b0mr1687005a12.28.1736328363114; 
- Wed, 08 Jan 2025 01:26:03 -0800 (PST)
+ AJvYcCUDCv6WP5IfXJDiWXQVN28lx+AwskstaF/1Mq4q8EMUbctVYNQ0DJOtJV65PZW6Bkm6Fdvf/yUvaw==@nongnu.org,
+ AJvYcCW00OfVpW22CrWG9jEvbW36eR7Jah9o5sZoTzKEZqoLSTucav/IXZjcN1LpZh9viwuamkiRcbEJ+dPRjg==@nongnu.org
+X-Gm-Message-State: AOJu0Ywm6I7Fs7q+eeePq7GOGiSwLbRGZ3cWvoodwcU5rd+GM97dTlsj
+ PPMkc787/nDft28J7hvrQO2JhqzOLBRs/uhUAlnbbGnZP7zOMUcXda0A4+Wi
+X-Gm-Gg: ASbGncvJ6IQ1Sx94pr/A6BKD5PzpeHa7m92tszSRMPWSh46u4Ol2LWDWpy+RSMj4V9h
+ To7Dz3tBII8MNkZi+zPh6gPuRR8Hq4qnUUUNkOmK5g6vFWwSzDLEilhzExvLiPszKWbKMPgt7KQ
+ 7lrq9m8qvujndilyMEKM3UoesWHT22w0BoDcVOJRRYZCJpxQA8+xxFQ/rFnkE9QGWs5yAPcwowg
+ qFjzk5JDfZLSdPMiqeLEGVfjM+Gps6QIr5jbNo5bN9SlU45Xza//cFeWmar2CFtEpNXiw3hgveQ
+ /jXxYXT8IWqt2Dx2ICr769jpElCbPR/X4zJ/zmJaaXU2AWM=
+X-Google-Smtp-Source: AGHT+IE340ZO7/O4tWuw3vvS7/AUxeFEvFt5RUzTOe8GQ+NPh/kb66lntRwqwh+XS39R3YcbD8t8pg==
+X-Received: by 2002:a05:6402:2686:b0:5d9:a55:810c with SMTP id
+ 4fb4d7f45d1cf-5d972df64c2mr1509804a12.5.1736328364806; 
+ Wed, 08 Jan 2025 01:26:04 -0800 (PST)
 Received: from Provence.localdomain
  (dynamic-077-188-106-228.77.188.pool.telefonica.de. [77.188.106.228])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d806feddfasm26116096a12.58.2025.01.08.01.26.01
+ 4fb4d7f45d1cf-5d806feddfasm26116096a12.58.2025.01.08.01.26.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Jan 2025 01:26:02 -0800 (PST)
+ Wed, 08 Jan 2025 01:26:03 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Bin Meng <bmeng.cn@gmail.com>, Fabiano Rosas <farosas@suse.de>,
@@ -75,16 +75,16 @@ Cc: Bin Meng <bmeng.cn@gmail.com>, Fabiano Rosas <farosas@suse.de>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 10/14] hw/timer/imx_gpt: Remove unused define
-Date: Wed,  8 Jan 2025 10:25:34 +0100
-Message-ID: <20250108092538.11474-11-shentey@gmail.com>
+Subject: [PATCH 11/14] tests/qtest/libqos: Reuse TYPE_IMX_I2C define
+Date: Wed,  8 Jan 2025 10:25:35 +0100
+Message-ID: <20250108092538.11474-12-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250108092538.11474-1-shentey@gmail.com>
 References: <20250108092538.11474-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,24 +109,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/timer/imx_gpt.c | 4 ----
- 1 file changed, 4 deletions(-)
+ tests/qtest/libqos/arm-imx25-pdk-machine.c | 5 +++--
+ tests/qtest/libqos/i2c-imx.c               | 4 ++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/hw/timer/imx_gpt.c b/hw/timer/imx_gpt.c
-index 2663a9d9ef..11eca9fa4d 100644
---- a/hw/timer/imx_gpt.c
-+++ b/hw/timer/imx_gpt.c
-@@ -20,10 +20,6 @@
- #include "qemu/log.h"
- #include "trace.h"
+diff --git a/tests/qtest/libqos/arm-imx25-pdk-machine.c b/tests/qtest/libqos/arm-imx25-pdk-machine.c
+index 8fe128fae8..2d8b754343 100644
+--- a/tests/qtest/libqos/arm-imx25-pdk-machine.c
++++ b/tests/qtest/libqos/arm-imx25-pdk-machine.c
+@@ -23,6 +23,7 @@
+ #include "libqos-malloc.h"
+ #include "qgraph.h"
+ #include "i2c.h"
++#include "hw/i2c/imx_i2c.h"
  
--#ifndef DEBUG_IMX_GPT
--#define DEBUG_IMX_GPT 0
--#endif
--
- static const char *imx_gpt_reg_name(uint32_t reg)
+ #define ARM_PAGE_SIZE            4096
+ #define IMX25_PDK_RAM_START      0x80000000
+@@ -50,7 +51,7 @@ static void *imx25_pdk_get_driver(void *object, const char *interface)
+ static QOSGraphObject *imx25_pdk_get_device(void *obj, const char *device)
  {
-     switch (reg) {
+     QIMX25PDKMachine *machine = obj;
+-    if (!g_strcmp0(device, "imx.i2c")) {
++    if (!g_strcmp0(device, TYPE_IMX_I2C)) {
+         return &machine->i2c_1.obj;
+     }
+ 
+@@ -86,7 +87,7 @@ static void imx25_pdk_register_nodes(void)
+         .extra_device_opts = "bus=i2c-bus.0"
+     };
+     qos_node_create_machine("arm/imx25-pdk", qos_create_machine_arm_imx25_pdk);
+-    qos_node_contains("arm/imx25-pdk", "imx.i2c", &edge, NULL);
++    qos_node_contains("arm/imx25-pdk", TYPE_IMX_I2C, &edge, NULL);
+ }
+ 
+ libqos_init(imx25_pdk_register_nodes);
+diff --git a/tests/qtest/libqos/i2c-imx.c b/tests/qtest/libqos/i2c-imx.c
+index 710cb926d6..6d868e4cc4 100644
+--- a/tests/qtest/libqos/i2c-imx.c
++++ b/tests/qtest/libqos/i2c-imx.c
+@@ -209,8 +209,8 @@ void imx_i2c_init(IMXI2C *s, QTestState *qts, uint64_t addr)
+ 
+ static void imx_i2c_register_nodes(void)
+ {
+-    qos_node_create_driver("imx.i2c", NULL);
+-    qos_node_produces("imx.i2c", "i2c-bus");
++    qos_node_create_driver(TYPE_IMX_I2C, NULL);
++    qos_node_produces(TYPE_IMX_I2C, "i2c-bus");
+ }
+ 
+ libqos_init(imx_i2c_register_nodes);
 -- 
 2.47.1
 
