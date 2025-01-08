@@ -2,170 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D4DA05E89
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 15:26:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DF39A05ED1
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 15:37:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVX0Q-0004DN-9j; Wed, 08 Jan 2025 09:25:58 -0500
+	id 1tVXA0-0006vi-5N; Wed, 08 Jan 2025 09:35:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tVX0H-0004B9-AM
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:25:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tVX0E-00029M-KD
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:25:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736346345;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=AXEibKuSVZlpViRtb1cZIFRQexR3IJ/dHIKw/SCt2RM=;
- b=A/C8QenmMRG+bAHLTaPMIIwrk/GScS9zvwn9ivIc8ya2d5cgmkRcF3ALMHCPb3zpr6WQO8
- B12YQwgYDFrI/Vi1VjdSGrUS8/dzm2/ZAXhu/6Kvg1NnP6IN7K6Wjc1aJqcQQVvs/plQlc
- XbTWEzqLSNHdGXO0gI84VWIuaszJGI4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-481-SU32wcreNf6zjRXXyGii_w-1; Wed, 08 Jan 2025 09:25:44 -0500
-X-MC-Unique: SU32wcreNf6zjRXXyGii_w-1
-X-Mimecast-MFC-AGG-ID: SU32wcreNf6zjRXXyGii_w
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4361fc2b2d6so54226325e9.3
- for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 06:25:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <craig.blackmore@embecosm.com>)
+ id 1tVX9t-0006ue-S6
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:35:45 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <craig.blackmore@embecosm.com>)
+ id 1tVX9q-0006aR-64
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:35:45 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-385e0e224cbso8441907f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 06:35:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=embecosm.com; s=google; t=1736346939; x=1736951739; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Z5PRSpyfcytXmuKAF8Pm3qLq6TiyleYEmr3I0311nig=;
+ b=KCspFpUCf6CTjhocKmT5IEcnto5LfFCVubH19HRZ+JHtUYFrWLXC59bpp+y3W9MzTY
+ Pb4/Vhknep8ej7+nvs9R7nkTsj0/OMf2K2KUos+ioucJC0of735bn14d/fwDuvWKQb3c
+ AOlizZRXTef1Zi7WcKWMFUMnw7JM+SARYWLvp+3V/goS/V/E/0SWkrDKF3OPpvNLxG9s
+ 5Yv0S8jtmTmzzXvym8uFq7goW3CINvvdSOfNwH4uydHJnL8zReq45GKivf/mcXQvZwDa
+ 7E/rsj5VU+cp9FlEN5dFBdgUNNPma8p5A/jRvVYmYu1qT6iGWyKtEqKLClDuEnXNMM8q
+ aJ3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736346343; x=1736951143;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1736346939; x=1736951739;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=AXEibKuSVZlpViRtb1cZIFRQexR3IJ/dHIKw/SCt2RM=;
- b=H+KiyUA1eD87GUa2V2yCHj1nty7+zn+LW/svVyjczpWIbQ9gFlu85W29jglaHzZojL
- upLTK1Ph+BdCQxeCeoze6NRbps4Bo5PE7gPEjWwiRJ1FZStEYOzHFOlOBbWiOx7JjGhl
- 74LeoD6vvLGMgR8AZxlgG9QNaVwWJj3wW4qSKEU3UAFA0tuSgFawByU7P00AJ51ES0Kz
- 9dNljWizqxZ/GU3ZhFAE23WjSzLQG0ElBdUhVn8/j1/l40oboi51epZdnvc2VvCVb6Gw
- qz3uLQMTouLGIUlBR+akSruAnVee5dmsZ4YZnV2nHPmJzVXooUB0qBPaO8Go3ZGps55k
- 20rg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUoNdt8LkzE0XEbDwz1izSSrQrHWykk7e0UK/SDYjG/VXJxqOmOnoHUMoYoh0v9qRAFpcrkWBEk2phK@nongnu.org
-X-Gm-Message-State: AOJu0YyCCcgLY8m+rcWl97lMILake/84e8Bkg/opFpxWG3XWpKksaDLc
- ZWe81PSMuHHpWN4YSr0BQJifOM42kPqVcRt1+FR+Mj8cRovaG5ykG+VlTB2baZ+An4SKwZQ9B9q
- G1m75WVPODQX0+FUMFpRhy2ft9GcCLFvnDC4feZTqqZwK7uzxFj55
-X-Gm-Gg: ASbGnctP+hkkb3LXnQ9CvwumUlZ4lWShQSwSLM67AwCkOf+PMERuu5UE68xWS5kAtdR
- K1h3ACExbKUk4LrZU/66Jl/zSmjfveHNhVnLdj/icappbxF84de5ru+y8vVzKYzwRFJMeH+J80q
- 2rKuZ4vwT5FSj0ifpBhx87sm9OFIDxtXkfzQBxNyKgCSZFOKs5onkf5SRxiVQN6lb8sphqdXUKs
- AIT9o752zm/hj7RlPrOzfqnWsP/e/uKwE0HSW63CX83BiSk/m2mSOTcLm7lS7z9QZ+fxAKsMr70
- hHko4w==
-X-Received: by 2002:a05:600c:3c97:b0:436:840b:261c with SMTP id
- 5b1f17b1804b1-436e26ab54fmr24511435e9.19.1736346343414; 
- Wed, 08 Jan 2025 06:25:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEW/VZmQGCFHL26iHoltEGoa1/hXsmymAFeZ9FozAthutIar/25REbOi0GZdgiL53jYuYNmYA==
-X-Received: by 2002:a05:600c:3c97:b0:436:840b:261c with SMTP id
- 5b1f17b1804b1-436e26ab54fmr24510775e9.19.1736346342911; 
- Wed, 08 Jan 2025 06:25:42 -0800 (PST)
-Received: from [10.33.192.228] (nat-pool-str-t.redhat.com. [149.14.88.106])
+ bh=Z5PRSpyfcytXmuKAF8Pm3qLq6TiyleYEmr3I0311nig=;
+ b=ma4KBx+O3PcbHmB/ooQzeXMxx4GYwa/0IKj4/8aRTaJS0XRacCBqD0X30oBJYcqf/U
+ UamTehDIAXmCzK6L7Hvb3a/ws6rpYNr194ZPG8h+EncgsPHeB0Itxc8netM6lud9NfMj
+ aymO6MUVcG0ub5WntUDsX2zgall3fs9oxwlozNn7ZaB1DUbSoru8iQNWex870yf+mnVE
+ fcH4MuKKTe0I+zv8NpIobUH1sVe2YFWzjd7A5EU7x3pmYVU/CIipiQ+vi4sFAvfdyal0
+ UBW9uVW0Kr7MsCMEnfL9PrdJltpn6rz+XSbEun5JSbxO7Jpt4kcqftlhc3zTKOAYq2He
+ CISg==
+X-Gm-Message-State: AOJu0YwblKR/OJwx/62HmPF5iH8e9rLLQfPOr0S14nnWD1wngeqwMLhY
+ 1uyuqJ8yWmhB0wvhB4zDmIGwnuTxdxBC4xnQiRxZjoF1nmqKCQwoRgVw/OvS/C5Ijo6cLCd+sxO
+ 3vK4=
+X-Gm-Gg: ASbGncueYUkH//4/g0TzVBkER4CCRLrv1UtSPMScQB19cpS2NLqSrbJ9xnZCG0L1yKf
+ 4XyiMy3uBtGc1Eim5oPLiQzPERZ4M2g1fa8At9+vUaLqj+RAthBTx6e+2xnl80RuSP6siDAsNoj
+ 0i/SEf7n2oHSoh/lf8X4R3vBzeRVc+b/7pArTNBaE6T0nQugbeZI9cpiW2Kss58WxZ9IGNawuqK
+ VQEGBUqIzPuDxWbQxqxGyAJvH9rRVBnwDnGlX45x014ydso8Hb67rhD7bNnW2FC5fZvPKwfk47I
+ N9eZiDyRJP86p/9qRzFGCehhQrk8YllyWMZG2OoIUOkG4CW3
+X-Google-Smtp-Source: AGHT+IFQWpT0XywmqaiF6ig/2dNiaE8DZis8EL+9CFjK/aDmYcq/qWK6fSzDkAg4B4ASbUIGuYJsnQ==
+X-Received: by 2002:a5d:59ab:0:b0:386:39fd:5ec with SMTP id
+ ffacd0b85a97d-38a8731869dmr2606469f8f.57.1736346939588; 
+ Wed, 08 Jan 2025 06:35:39 -0800 (PST)
+Received: from dorian..
+ (sals-04-b2-v4wan-167965-cust660.vm36.cable.virginm.net. [80.3.10.149])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e2da74dasm22530075e9.2.2025.01.08.06.25.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Jan 2025 06:25:42 -0800 (PST)
-Message-ID: <d1dfef85-c830-416e-9ff6-a69c124aa32e@redhat.com>
-Date: Wed, 8 Jan 2025 15:25:41 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 29/32] tests/vm: allow interactive login as root
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Halil Pasic <pasic@linux.ibm.com>, Aurelien Jarno <aurelien@aurel32.net>, 
- qemu-riscv@nongnu.org, Radoslaw Biernacki <rad@semihalf.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ ffacd0b85a97d-38a1c8330d4sm52450316f8f.29.2025.01.08.06.35.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 08 Jan 2025 06:35:39 -0800 (PST)
+From: Craig Blackmore <craig.blackmore@embecosm.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Craig Blackmore <craig.blackmore@embecosm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Beraldo Leal <bleal@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Laurent Vivier <lvivier@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Ed Maste <emaste@freebsd.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Bernhard Beschow <shentey@gmail.com>, Bin Meng <bmeng.cn@gmail.com>,
- qemu-ppc@nongnu.org, qemu-arm@nongnu.org, Laurent Vivier
- <laurent@vivier.eu>, Joel Stanley <joel@jms.id.au>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Alistair Francis <alistair.francis@wdc.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>, Cleber Rosa <crosa@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-s390x@nongnu.org,
- Eric Farman <farman@linux.ibm.com>, Weiwei Li <liwei1518@gmail.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Peter Maydell
- <peter.maydell@linaro.org>, Li-Wen Hsu <lwhsu@freebsd.org>
-References: <20250108121054.1126164-1-alex.bennee@linaro.org>
- <20250108121054.1126164-30-alex.bennee@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250108121054.1126164-30-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Helene Chelin <helene.chelin@embecosm.com>, Nathan Egge <negge@google.com>,
+ Max Chou <max.chou@sifive.com>
+Subject: [PATCH v8 0/1] target/riscv: rvv: Use wider accesses for unit stride
+ load/store
+Date: Wed,  8 Jan 2025 14:35:22 +0000
+Message-ID: <20250108143523.153010-1-craig.blackmore@embecosm.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=craig.blackmore@embecosm.com; helo=mail-wr1-x432.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.432,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -181,16 +105,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 08/01/2025 13.10, Alex Bennée wrote:
-> This is useful when debugging and you want to add packages to an
-> image.
-> 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   tests/vm/Makefile.include | 3 ++-
->   tests/vm/basevm.py        | 9 +++++++--
->   2 files changed, 9 insertions(+), 3 deletions(-)
+Thanks Richard for the review on v7. I have updated the patch based on your suggestions.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Changes since v7:
+- Remove CONFIG_INT128_TYPE guards.
+- Strengthen condition for using atomic128.
+- Use memcpy for misaligned accesses.
+- Hoist atomic operation selection higher up the call stack.
+
+Previous versions:
+- v1: https://lore.kernel.org/all/20240717153040.11073-1-paolo.savini@embecosm.com/
+- v2: https://lore.kernel.org/all/20241002135708.99146-1-paolo.savini@embecosm.com/
+- v3: https://lore.kernel.org/all/20241014220153.196183-1-paolo.savini@embecosm.com/
+- v4: https://lore.kernel.org/all/20241029194348.59574-1-paolo.savini@embecosm.com/
+- v5: https://lore.kernel.org/all/20241211143118.661268-1-craig.blackmore@embecosm.com/
+- v6: https://lore.kernel.org/all/20241218142937.1028602-1-craig.blackmore@embecosm.com/
+- v7: https://lore.kernel.org/all/20241220122109.2083215-1-craig.blackmore@embecosm.com/
+
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alistair Francis <alistair.francis@wdc.com>
+Cc: Bin Meng <bmeng.cn@gmail.com>
+Cc: Weiwei Li <liwei1518@gmail.com>
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: Helene Chelin <helene.chelin@embecosm.com>
+Cc: Nathan Egge <negge@google.com>
+Cc: Max Chou <max.chou@sifive.com>
+
+Craig Blackmore (1):
+  target/riscv: rvv: Use wider accesses for unit stride load/store
+
+ target/riscv/vector_helper.c | 90 ++++++++++++++++++++++++++++++++----
+ 1 file changed, 82 insertions(+), 8 deletions(-)
+
+-- 
+2.43.0
 
 
