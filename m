@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7819A05F2F
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 15:44:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB24A05F2A
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 15:44:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVXHH-0001Km-Sm; Wed, 08 Jan 2025 09:43:23 -0500
+	id 1tVXHJ-0001LF-Cm; Wed, 08 Jan 2025 09:43:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tVXHF-0001K7-9e
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:43:21 -0500
+ id 1tVXHH-0001L1-H3
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:43:23 -0500
 Received: from mgamail.intel.com ([198.175.65.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tVXHD-0008MI-EM
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:43:21 -0500
+ id 1tVXHF-0008Le-LB
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:43:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736347400; x=1767883400;
+ t=1736347402; x=1767883402;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=roMx6NLgvG1w2UZlck/tSjXRrw4hdWLyk6vWSzvqPQI=;
- b=F07taqnZcrR7tksO7D06M/OKwoU3csEiYj8EfaB4kbmiyJJi/dBz9Ul5
- rKQmGYOFY49zoM7g1G3Ti5bpW1SuTAEvC2MrNN4iJir2HwZQAsRoOAU1x
- fTTZCpYHYvURTfkMvrTvS6Exnxu5j4SpGt2LYUBwEFJgPA+2fxLNcuZ3t
- lk292MwpkSATekCKTA3dr5S6KxWTljTsspv47JeBFL03Syks9oUw+EZzS
- 6kieNPfa2yleNN6NZ49jjLrRA/3bxJ+CIgljOCIro+XhBrDp8wotKs7Eo
- 1wkuB9B0aLoimYvD2dB5S/EKH/VTQHSSgA7+8SL023m0+Yrqz6fXG3e3D w==;
-X-CSE-ConnectionGUID: AO9UCz9hSdO1Lf3fGSdcUg==
-X-CSE-MsgGUID: +wDxJLB3QA+El95FvktfLg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="36737350"
-X-IronPort-AV: E=Sophos;i="6.12,298,1728975600"; d="scan'208";a="36737350"
+ bh=shkMAuvJ+JiK4YmkroyLIrAGyT0tA05DVR9Yl2i03nc=;
+ b=SUuyhElpLoiwEopj+ln4bXCqk99HTi8abgK56PDZxZ8FU3/w0KorHfrF
+ rzpPiMIM8FHJX0MAs6IyllMeXx9Iu7c5yJnRcbFPz77fwEKQ0efGZoDwJ
+ oaOcHN4WEhYSFl8wFGT0/eDCOv7oOCrRtG4eQcSct3EwL7ZBkQpmZ2zMv
+ KniCVrNgoxqrRZEZ73IAtmmZLtFqXBZN7qZWovJFDKW09/lnzVLn27Vmn
+ jfB+0ApdWc4mSxKLd+jF07kGn1KDEV20wscfRK1ZyqWi96VlVdRABu2/W
+ LPzCSRkTLDS35UiXZMB+fRuyrgNIhBH/eqkRL8BDfdl5JtWCMfozcmr02 A==;
+X-CSE-ConnectionGUID: WqLK06NDRoOCy1+EJCcOHg==
+X-CSE-MsgGUID: 6hmc0F+5S2mqod1FdV16Ew==
+X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="36737359"
+X-IronPort-AV: E=Sophos;i="6.12,298,1728975600"; d="scan'208";a="36737359"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jan 2025 06:43:17 -0800
-X-CSE-ConnectionGUID: 2i5G/sg9RIKwJW2uz0Nc0A==
-X-CSE-MsgGUID: 59Xo8U8iTim5ohGRbQs+ow==
+ 08 Jan 2025 06:43:21 -0800
+X-CSE-ConnectionGUID: IK+/jtcHRViL2nJ9I7BNRA==
+X-CSE-MsgGUID: QRk5frgmTCG2FQ9lUtPUQQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="103969389"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="103969393"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa008.jf.intel.com with ESMTP; 08 Jan 2025 06:43:13 -0800
+ by orviesa008.jf.intel.com with ESMTP; 08 Jan 2025 06:43:17 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -56,10 +56,11 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Alireza Sanaee <alireza.sanaee@huawei.com>,
  Sia Jee Heng <jeeheng.sia@starfivetech.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v7 1/5] hw/core/machine: Reject thread level cache
-Date: Wed,  8 Jan 2025 23:01:46 +0800
-Message-Id: <20250108150150.1258529-2-zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>,
+ Yongwei Ma <yongwei.ma@intel.com>
+Subject: [PATCH v7 2/5] i386/cpu: Support module level cache topology
+Date: Wed,  8 Jan 2025 23:01:47 +0800
+Message-Id: <20250108150150.1258529-3-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250108150150.1258529-1-zhao1.liu@intel.com>
 References: <20250108150150.1258529-1-zhao1.liu@intel.com>
@@ -90,51 +91,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, neither i386 nor ARM have real hardware support for per-
-thread cache, and there is no clear demand for this specific cache
-topology.
-
-Additionally, since supporting this special cache topology on ARM
-requires extra effort [1], it is unnecessary to support it at this
-moment, even though per-thread cache might have potential scheduling
-benefits for VMs without CPU affinity.
-
-Therefore, disable thread-level cache topology in the general machine
-part. At present, i386 has not enabled SMP cache, so disabling the
-thread parameter does not pose compatibility issues.
-
-In the future, if there is a clear demand for this feature, the correct
-approach would be to add a new control field in MachineClass.smp_props
-and enable it only for the machines that require it.
-
-[1]: https://lore.kernel.org/qemu-devel/Z3efFsigJ6SxhqMf@intel.com/#t
+Allow cache to be defined at the module level. This increases
+flexibility for x86 users to customize their cache topology.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
 Changes since Patch v6:
- * New commit to reject "thread" parameter when parse smp-cache.
+ * Dropped "thread" level cache topology support.
 ---
- hw/core/machine-smp.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ target/i386/cpu.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
-index b954eb849027..4e020c358b66 100644
---- a/hw/core/machine-smp.c
-+++ b/hw/core/machine-smp.c
-@@ -321,6 +321,13 @@ bool machine_parse_smp_cache(MachineState *ms,
-             return false;
-         }
- 
-+        if (props->topology == CPU_TOPOLOGY_LEVEL_THREAD) {
-+            error_setg(errp,
-+                       "%s level cache not supported by this machine",
-+                       CpuTopologyLevel_str(props->topology));
-+            return false;
-+        }
-+
-         if (!machine_check_topo_support(ms, props->topology, errp)) {
-             return false;
-         }
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 660ddafc28b5..4728373fdf03 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -247,6 +247,9 @@ static uint32_t max_thread_ids_for_cache(X86CPUTopoInfo *topo_info,
+     case CPU_TOPOLOGY_LEVEL_CORE:
+         num_ids = 1 << apicid_core_offset(topo_info);
+         break;
++    case CPU_TOPOLOGY_LEVEL_MODULE:
++        num_ids = 1 << apicid_module_offset(topo_info);
++        break;
+     case CPU_TOPOLOGY_LEVEL_DIE:
+         num_ids = 1 << apicid_die_offset(topo_info);
+         break;
+@@ -255,7 +258,7 @@ static uint32_t max_thread_ids_for_cache(X86CPUTopoInfo *topo_info,
+         break;
+     default:
+         /*
+-         * Currently there is no use case for THREAD and MODULE, so use
++         * Currently there is no use case for THREAD, so use
+          * assert directly to facilitate debugging.
+          */
+         g_assert_not_reached();
 -- 
 2.34.1
 
