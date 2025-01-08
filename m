@@ -2,94 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC55AA05AA7
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 12:56:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37143A05BAC
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 13:30:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVUdK-0006QI-Rd; Wed, 08 Jan 2025 06:53:58 -0500
+	id 1tVV1N-00028j-H8; Wed, 08 Jan 2025 07:18:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1tVUd4-0006P5-3x
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 06:53:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1tVUcz-0002Co-9T
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 06:53:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736337215;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=F+bRpI0Nnd7m9f+43X09eoGNgD74tibaLdM9mSkRRow=;
- b=iKJStP5BSwRlPMOaf6Ey0xnMhOAdZyWxW9xR5i+DuwtOu/iWT/hfXpUmF8/pi6LmQDxKiw
- 5juUlGBkmQNONlC2tkcvT1JqdUp6aIwIE+PYiD4qS84eebbc814w6G0Zp1nGPzEgjN5b7m
- z6OR/uL1C3+9FVk5NGbn3v/NaN/59Wc=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-336-IJ8gKq08OVSSJbQ9e_ADtQ-1; Wed, 08 Jan 2025 06:53:33 -0500
-X-MC-Unique: IJ8gKq08OVSSJbQ9e_ADtQ-1
-X-Mimecast-MFC-AGG-ID: IJ8gKq08OVSSJbQ9e_ADtQ
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6d88c987fc7so280082486d6.3
- for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 03:53:33 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tVUue-0000uq-VI
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 07:12:06 -0500
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tVUuR-0007Dg-Lh
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 07:11:50 -0500
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3bbb0f09dso29183942a12.2
+ for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 04:10:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1736338257; x=1736943057; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=K2jiKN5CA7YCpU+KncJDh5WlAvz/7Rx7DwMB2koErBk=;
+ b=YTZKxzqEVzqPQPkU0ApZob/DKhaqWaqGyTbk+rMA2zsf/pual5P19NMU6TLW20KZb0
+ WNstk8xs547vrttqdyEyoAD9RYbu1FlHAd+Ml8a0Sw0LqTIOWZBLn5wNudEtjD1cyRYg
+ MZllN/Gdg10AEG6FwCFEZmYiJTpSFkRfTKko8rusRulDQIJAI/QbQeFrulfoC+FUctCE
+ zO6DpGO9onSvPMAvmsXQbkFSgeqsh+V2yfjD+KaMtrLXzGIShnoWH/vpXhc4AxqKOGx1
+ nbHToti0S/i0B0TGsyystJ+KRVIe+XSJReor1XFBSBTQ6+S7MtlohNAmVvh4IvTVbKWm
+ 4iHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736337213; x=1736942013;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=F+bRpI0Nnd7m9f+43X09eoGNgD74tibaLdM9mSkRRow=;
- b=reQkk9EmMpUhbMADED+Etso6D9cmp5dT8yc+RAvT9jWNQHPqGhHIcqvyAg8B22f2za
- J0g4IzUccouolE6X0/20D7URGpRAVuQgOvevtq+EwadTOIDyD0ex2NQ7O0BWMwS84yHF
- TutgVU8b6SWCWe44EuJB4S2mflMhZmYJKXtl1IBQ63OujvQEKowOlqkJuSSEIGz5md/C
- O9yhCsU7Dix2MWKczOclcFwykHgh1lIi3tYyAoX+vwXEN2wf/aH9Je1auviMb6hTJfBq
- LUkFAe1e/rkZ3RI3zrtCnErhfF18LuPaTMiwT5zTLEYkbuSHe5nFIsn015lRcbr3VrE1
- GBGQ==
-X-Gm-Message-State: AOJu0YwdOcML0zGF3pK9cAy/6l9cbIlF2Rcq2Coj9Js5NY87eQweUmIH
- RF07MruLRaskd/PLh2CiFqxQO+YQfCiMMlXY3STiaVIOOGG1NOF/yifi2V1yBoA3Bp0nX1TH/cR
- CsPvPIbr+Bt+QDoLWu2CR6jTRbIGQDIZAP7wxO8wSrOp9TEZ/7MnmUijsdorsd1IwEiWbYxx1vz
- yUcLY1uzpqkC2fv+JzQ+d/KjU+vF4=
-X-Gm-Gg: ASbGncvzzj/hJdnndudc4o2GkRHsHeX+LJC/zlBzVeVqPvb09DFFrSg66hPXeihSKKZ
- C4XqclEpWpFOEk0uP4+akfZG6gMux0FYQgsYe
-X-Received: by 2002:a05:6214:4303:b0:6d8:88cf:e690 with SMTP id
- 6a1803df08f44-6df9b1b4ea6mr41342146d6.3.1736337213253; 
- Wed, 08 Jan 2025 03:53:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGANfu7AaG9GNtlwOsDjtfzyxKcVi1tRNYxiEOMTzn9vGRaOElyBR9m/8WfrlP6bz/bObeZSSnW/GSi4Gw7SL0=
-X-Received: by 2002:a05:6214:4303:b0:6d8:88cf:e690 with SMTP id
- 6a1803df08f44-6df9b1b4ea6mr41341946d6.3.1736337212947; Wed, 08 Jan 2025
- 03:53:32 -0800 (PST)
+ d=1e100.net; s=20230601; t=1736338257; x=1736943057;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=K2jiKN5CA7YCpU+KncJDh5WlAvz/7Rx7DwMB2koErBk=;
+ b=kG/+N2ZTZiglMvkpGPZdJiHmJW7PWgj1E0WHKttD8ACJcsV94aWYYwusYs1H+Oc9/C
+ zg07lnSMAr5Hldn7aAHQ8nPBduEP22N31w2SkHeChYDDg03/VE3Qj9enVrYiS9ROCM2X
+ JgMD0UPc39+rsT31njMjdT+kIfZJzGAa/yP22ywCNq9KfcacIuoEVDaBYUBEH9bJAubx
+ K+FTAbb0+EgeZX6rl2S7sPjOHE1rWWc/9qWmclzHxSI/zG731+8LDF8s8ULGMm7eESkY
+ PkJicw3i6g7Ru3cG109xcT/4pkJQnV71XnQF5sAnn7BDcCzJzjRkPv5928Xpm4XFg2cX
+ 9CLg==
+X-Gm-Message-State: AOJu0Yy1c1RF/QdYi0jJCOKJRjdgW0gfBHff0/OuqCa7XQmEFusIS0Dh
+ i5soc3MDgQ7NIoyGs7VFlrn2i90znEgIQA88NN9RuU5hx4FGnXRmLDqVJRWJMr0=
+X-Gm-Gg: ASbGncv1h92iykJEeubNCfhP+rurb7dl3qqkwAQxIsXHQNzHYM2SCa57BDeInvZGx58
+ RYVWr+Xq1J/3lzRH2edC8fV2DLpMHLVbfMzZxIn/c8sG3W2+7X7OHRZS17FVLFat4Hk/hjVPBWS
+ +HkuP4UsC1NcAb53xpifjiVP+4Ox6yjOtiakBdNKz+YONxL3LKRqU5epNcoJk3Dv6zWytMHSkkV
+ sTX/lxqurKbLHCLe5D9qTQG5/R3D7QdtMwwwSkMF1+SWE1IzzEW2o0=
+X-Google-Smtp-Source: AGHT+IHsezNh1Nc23qfNVZmSxUQbUmyKZSy/psSdPiu20/TqBJdgeH6j0kvCqRqEoKora9/4U8T0UQ==
+X-Received: by 2002:a05:6402:2355:b0:5d9:a55:4307 with SMTP id
+ 4fb4d7f45d1cf-5d972e4eeabmr2194247a12.22.1736338256654; 
+ Wed, 08 Jan 2025 04:10:56 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5d80679eeb1sm25318198a12.48.2025.01.08.04.10.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 08 Jan 2025 04:10:55 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 8A25F5F8AC;
+ Wed,  8 Jan 2025 12:10:54 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Halil Pasic <pasic@linux.ibm.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ qemu-riscv@nongnu.org, Radoslaw Biernacki <rad@semihalf.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Beraldo Leal <bleal@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Laurent Vivier <lvivier@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Ed Maste <emaste@freebsd.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Bernhard Beschow <shentey@gmail.com>, Bin Meng <bmeng.cn@gmail.com>,
+ qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
+ Laurent Vivier <laurent@vivier.eu>, Joel Stanley <joel@jms.id.au>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ John Snow <jsnow@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Leif Lindholm <quic_llindhol@quicinc.com>, Cleber Rosa <crosa@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-s390x@nongnu.org, Eric Farman <farman@linux.ibm.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Li-Wen Hsu <lwhsu@freebsd.org>
+Subject: [PATCH v4 00/32] testing/next: functional tests, qtest clocks,
+ vm and keymaps (pre-PR-FINAL)
+Date: Wed,  8 Jan 2025 12:10:22 +0000
+Message-Id: <20250108121054.1126164-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-References: <20250107153353.1144978-1-kraxel@redhat.com>
-In-Reply-To: <20250107153353.1144978-1-kraxel@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Wed, 8 Jan 2025 15:53:21 +0400
-X-Gm-Features: AbW1kva58vlI7scgAdLr0660Co8G94i65sjLhDKV0nllJ1pqeH1_4cvGORHyH8c
-Message-ID: <CAMxuvazrd+3v2qqO-5o3qpky-ULRTwvU48jkwdxMPZG5c1RA1A@mail.gmail.com>
-Subject: Re: [PATCH v2 00/21] hw/uefi: add uefi variable service
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: qemu-devel@nongnu.org, graf@amazon.com, 
- Paolo Bonzini <pbonzini@redhat.com>, Michael Roth <michael.roth@amd.com>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
- Eric Blake <eblake@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>, Markus Armbruster <armbru@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.432,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,140 +127,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+There are number of parts to this series.
 
-On Tue, Jan 7, 2025 at 7:34=E2=80=AFPM Gerd Hoffmann <kraxel@redhat.com> wr=
-ote:
->
-> This patch adds a virtual device to qemu which the uefi firmware can use
-> to store variables.  This moves the UEFI variable management from
-> privileged guest code (managing vars in pflash) to the host.  Main
-> advantage is that the need to have privilege separation in the guest
-> goes away.
->
-> On x86 privileged guest code runs in SMM.  It's supported by kvm, but
-> not liked much by various stakeholders in cloud space due to the
-> complexity SMM emulation brings.
->
-> On arm privileged guest code runs in el3 (aka secure world).  This is
-> not supported by kvm, which is unlikely to change anytime soon given
-> that even el2 support (nested virt) is being worked on for years and is
-> not yet in mainline.
->
-> The design idea is to reuse the request serialization protocol edk2 uses
+The first is the updated images for all the guests that didn't make it
+into 9.2. There are also some new functional tests for virtio-gpu
+along with some other clean-ups.
 
-I suppose this is a stable protocol. (some parts are set by the UEFI
-spec probably)
+The qtest patches focus on ensuring things calling clock_step and
+clock_set actually pay attention to return values. The virtio tests
+needed a little little re-jigging as they don't need timeout
+loops at all (v2).
 
-There doesn't seem to be a defined way to query either side version or
-capability, I suppose this could be added later assuming an initial
-behaviour/magic etc.
+We bump libvirt-ci so we can move the riscv64 cross container to
+testing/trixie which will hopefully make the image less prone to sid
+breakages.
 
-> for communication between SMM and non-SMM code, so large chunks of the
-> edk2 variable driver stack can be used unmodified.  Only the driver
-> which traps into SMM mode must be replaced by a driver which talks to
-> qemu instead.
->
-> A edk2 test branch can be found here (build with "-D QEMU_VARS=3DTRUE").
-> https://github.com/kraxel/edk2/commits/devel/secure-boot-external-vars
->
+Finally we make a few tweaks to tests/vm which were helpful when
+chasing the keymap issue. I still think there is a race condition in
+there somewhere as I can't reliably build the FreeBSD VMs from
+scratch.
 
-ok, perhaps it would be nice to have some basic unit tests in qemu
-too. Almost none of this new code is exercised by the qemu tests yet.
+The pc-bios dependency fixup I think addresses the failure but I'm a
+little unsure about the meason stuff.
 
-> The uefi-vars device re-implements the privileged edk2 protocols
-> (i.e. the code running in SMM mode).
+I did a v4 re-spin because I split apart some unrelated changes. I
+still plan to send the PR at the end of the week.
 
-Typically the kind of new code that I wish would be in Rust. But I
-suppose it is too early yet, and you came to the same conclusion.
-Probably a good candidate for rewrite though!
+For v2
+  - add test/vm and lcitool updates
+  - don't move clock_step, remove them for virtio tests
+For v3
+  - review comments and checkpatch fixes
+  - MAINTAINERS updates
+  - add zstd uncompress function and use it
+For v4
+  - split unrelated changes from vulkan tests
+  - use utility functions for tuxruntest
 
->
-> v2 changes:
->  - fully implement authenticated variables.
->  - various cleanups and fixes.
->
-> enjoy & take care,
->   Gerd
->
-> Gerd Hoffmann (21):
->   hw/uefi: add include/hw/uefi/var-service-api.h
->   hw/uefi: add include/hw/uefi/var-service-edk2.h
->   hw/uefi: add include/hw/uefi/var-service.h
->   hw/uefi: add var-service-guid.c
->   hw/uefi: add var-service-utils.c
->   hw/uefi: add var-service-vars.c
->   hw/uefi: add var-service-auth.c
->   hw/uefi: add var-service-policy.c
->   hw/uefi: add var-service-core.c
->   hw/uefi: add var-service-pkcs7.c
->   hw/uefi: add var-service-pkcs7-stub.c
->   hw/uefi: add var-service-siglist.c
->   hw/uefi: add var-service-json.c + qapi for NV vars.
->   hw/uefi: add trace-events
->   hw/uefi: add UEFI_VARS to Kconfig
->   hw/uefi: add to meson
->   hw/uefi: add uefi-vars-sysbus device
->   hw/uefi: add uefi-vars-isa device
->   hw/arm: add uefi variable support to virt machine type
->   docs: add uefi variable service documentation
->   hw/uefi: add MAINTAINERS entry
->
->  include/hw/arm/virt.h              |   2 +
->  include/hw/uefi/var-service-api.h  |  40 ++
->  include/hw/uefi/var-service-edk2.h | 227 +++++++++
->  include/hw/uefi/var-service.h      | 186 ++++++++
->  hw/arm/virt.c                      |  41 ++
->  hw/uefi/var-service-auth.c         | 361 ++++++++++++++
->  hw/uefi/var-service-core.c         | 237 ++++++++++
->  hw/uefi/var-service-guid.c         |  99 ++++
->  hw/uefi/var-service-isa.c          |  91 ++++
->  hw/uefi/var-service-json.c         | 242 ++++++++++
->  hw/uefi/var-service-pkcs7-stub.c   |  16 +
->  hw/uefi/var-service-pkcs7.c        | 436 +++++++++++++++++
->  hw/uefi/var-service-policy.c       | 370 +++++++++++++++
->  hw/uefi/var-service-siglist.c      | 212 +++++++++
->  hw/uefi/var-service-sysbus.c       |  90 ++++
->  hw/uefi/var-service-utils.c        | 241 ++++++++++
->  hw/uefi/var-service-vars.c         | 725 +++++++++++++++++++++++++++++
->  MAINTAINERS                        |   6 +
->  docs/devel/index-internals.rst     |   1 +
->  docs/devel/uefi-vars.rst           |  66 +++
->  hw/Kconfig                         |   1 +
->  hw/meson.build                     |   1 +
->  hw/uefi/Kconfig                    |   9 +
->  hw/uefi/LIMITATIONS.md             |   7 +
->  hw/uefi/meson.build                |  24 +
->  hw/uefi/trace-events               |  17 +
->  meson.build                        |   1 +
->  qapi/meson.build                   |   1 +
->  qapi/qapi-schema.json              |   1 +
->  qapi/uefi.json                     |  45 ++
->  30 files changed, 3796 insertions(+)
->  create mode 100644 include/hw/uefi/var-service-api.h
->  create mode 100644 include/hw/uefi/var-service-edk2.h
->  create mode 100644 include/hw/uefi/var-service.h
->  create mode 100644 hw/uefi/var-service-auth.c
->  create mode 100644 hw/uefi/var-service-core.c
->  create mode 100644 hw/uefi/var-service-guid.c
->  create mode 100644 hw/uefi/var-service-isa.c
->  create mode 100644 hw/uefi/var-service-json.c
->  create mode 100644 hw/uefi/var-service-pkcs7-stub.c
->  create mode 100644 hw/uefi/var-service-pkcs7.c
->  create mode 100644 hw/uefi/var-service-policy.c
->  create mode 100644 hw/uefi/var-service-siglist.c
->  create mode 100644 hw/uefi/var-service-sysbus.c
->  create mode 100644 hw/uefi/var-service-utils.c
->  create mode 100644 hw/uefi/var-service-vars.c
->  create mode 100644 docs/devel/uefi-vars.rst
->  create mode 100644 hw/uefi/Kconfig
->  create mode 100644 hw/uefi/LIMITATIONS.md
->  create mode 100644 hw/uefi/meson.build
->  create mode 100644 hw/uefi/trace-events
->  create mode 100644 qapi/uefi.json
->
-> --
-> 2.47.1
->
+The following still need review:
+
+  tests/functional: update tuxruntest to use uncompress utility
+  pc-bios: ensure keymaps dependencies set vnc tests
+  tests/vm: allow interactive login as root
+  tests/vm: partially un-tabify help output
+  tests/docker: move riscv64 cross container from sid to trixie
+  tests/functional: extend test_aarch64_virt with vulkan test
+  tests/functional: bail aarch64_virt tests early if missing TCG
+  tests/functional: remove unused kernel_command_line
+  tests/functional: add zstd support to uncompress utility
+
+Alex.
+
+Alex Bennée (28):
+  tests/functional: update the arm tuxrun tests
+  tests/functional: update the i386 tuxrun tests
+  tests/functional: add a m68k tuxrun tests
+  tests/functional: update the mips32 tuxrun tests
+  tests/functional: update the mips32el tuxrun tests
+  tests/functional: update the mips64 tuxrun tests
+  tests/functional: update the mips64el tuxrun tests
+  tests/functional: update the ppc32 tuxrun tests
+  tests/functional: update the ppc64 tuxrun tests
+  tests/functional: update the riscv32 tuxrun tests
+  tests/functional: update the riscv64 tuxrun tests
+  tests/functional: update the s390x tuxrun tests
+  tests/functional: update the sparc64 tuxrun tests
+  tests/functional: update the x86_64 tuxrun tests
+  tests/qtest: remove clock_steps from virtio tests
+  system/qtest: properly feedback results of clock_[step|set]
+  tests/functional: remove hacky sleep from the tests
+  tests/functional: add zstd support to uncompress utility
+  tests/functional: update tuxruntest to use uncompress utility
+  tests/functional: remove unused kernel_command_line
+  tests/functional: bail aarch64_virt tests early if missing TCG
+  tests/functional: extend test_aarch64_virt with vulkan test
+  tests/lcitool: bump to latest version of libvirt-ci
+  tests/docker: move riscv64 cross container from sid to trixie
+  tests/vm: fix build_path based path
+  tests/vm: partially un-tabify help output
+  tests/vm: allow interactive login as root
+  pc-bios: ensure keymaps dependencies set vnc tests
+
+Daniel P. Berrangé (1):
+  tests/lcitool: remove temp workaround for debian mips64el
+
+Philippe Mathieu-Daudé (1):
+  dockerfiles: Remove 'MAINTAINER' entry in debian-tricore-cross.docker
+
+Pierrick Bouvier (1):
+  tests/functional/aarch64: add tests for FEAT_RME
+
+Wainer dos Santos Moschetta (1):
+  MAINTAINERS: Remove myself from reviewers
+
+ MAINTAINERS                                   |   3 +-
+ system/qtest.c                                |  23 ++--
+ tests/qtest/libqos/virtio.c                   |   4 -
+ .gitlab-ci.d/cirrus/freebsd-14.vars           |   2 +-
+ pc-bios/keymaps/meson.build                   |  17 ++-
+ .../dockerfiles/debian-mips64el-cross.docker  |   9 ++
+ .../dockerfiles/debian-riscv64-cross.docker   |   4 +-
+ .../dockerfiles/debian-tricore-cross.docker   |   2 -
+ tests/functional/meson.build                  |   5 +
+ tests/functional/qemu_test/tuxruntest.py      |  12 +-
+ tests/functional/qemu_test/uncompress.py      |  26 ++++
+ tests/functional/test_aarch64_rme_sbsaref.py  |  69 +++++++++++
+ tests/functional/test_aarch64_rme_virt.py     |  98 +++++++++++++++
+ tests/functional/test_aarch64_virt.py         | 117 ++++++++++++++----
+ tests/functional/test_arm_tuxrun.py           |  28 ++---
+ tests/functional/test_i386_tuxrun.py          |   8 +-
+ tests/functional/test_m68k_tuxrun.py          |  34 +++++
+ tests/functional/test_mips64_tuxrun.py        |   8 +-
+ tests/functional/test_mips64el_tuxrun.py      |   8 +-
+ tests/functional/test_mips_tuxrun.py          |   8 +-
+ tests/functional/test_mipsel_tuxrun.py        |   8 +-
+ tests/functional/test_ppc64_tuxrun.py         |  16 +--
+ tests/functional/test_ppc_tuxrun.py           |   8 +-
+ tests/functional/test_riscv32_tuxrun.py       |   8 +-
+ tests/functional/test_riscv64_tuxrun.py       |  16 +--
+ tests/functional/test_s390x_tuxrun.py         |   8 +-
+ tests/functional/test_sparc64_tuxrun.py       |   8 +-
+ tests/functional/test_x86_64_tuxrun.py        |   8 +-
+ tests/lcitool/libvirt-ci                      |   2 +-
+ tests/lcitool/mappings.yml                    |  29 -----
+ tests/lcitool/refresh                         |   4 +-
+ tests/qtest/meson.build                       |   2 +-
+ tests/vm/Makefile.include                     |  29 ++---
+ tests/vm/basevm.py                            |  12 +-
+ tests/vm/generated/freebsd.json               |   2 +-
+ 35 files changed, 463 insertions(+), 182 deletions(-)
+ create mode 100755 tests/functional/test_aarch64_rme_sbsaref.py
+ create mode 100755 tests/functional/test_aarch64_rme_virt.py
+ create mode 100644 tests/functional/test_m68k_tuxrun.py
+
+-- 
+2.39.5
 
 
