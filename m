@@ -2,67 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090D4A05F86
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 16:01:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A5EEA05FF4
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 16:23:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVXYk-0001KF-A8; Wed, 08 Jan 2025 10:01:26 -0500
+	id 1tVXtp-0001wU-9T; Wed, 08 Jan 2025 10:23:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tVXYh-0001Je-Bf
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 10:01:23 -0500
-Received: from mgamail.intel.com ([198.175.65.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tVXYe-0005Ma-GM
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 10:01:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736348481; x=1767884481;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=tMIGREXOYzwCwmhYCovbFSTzpG/ESCAbGuGEI0gzqOI=;
- b=IhQ4ZP7Vce6TO102x2jjF2cJbyGhejAb2RsdXy42TKXpegM0TVtqcnAt
- TqSx23P57HvOes1BtnKEcdPmB9EuFqv8CICJZSqSsciUv0YZSURtwhDNB
- bi0wy+S7JtQCH3bVDGfXKg1FKTLJR/JBZnZnfbATi+K4q/duQ1ykRwt3i
- vxDR9o4rqvGjl2K4U9gRF1iV5C1olz9jh8dYINVPoeE268XgE9evJFqoK
- uYcx0wWf3tYNrUEyOOpAnJ1Ckqb2JSSUrQmaQI4EMeapjAkqN3ntbCzR4
- o4KJaxGoi7nBmmkS9H/K5jR3ybi/+1nOtLpOA3fvQjicKsSzusi/VCGNS A==;
-X-CSE-ConnectionGUID: 0lt+IREYTIKMJ/insbZ6Tw==
-X-CSE-MsgGUID: lXUhYKHxR2S54sNV390wZw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="53992536"
-X-IronPort-AV: E=Sophos;i="6.12,298,1728975600"; d="scan'208";a="53992536"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jan 2025 07:01:09 -0800
-X-CSE-ConnectionGUID: mc90ZV2YTB6xaITJKL26Rg==
-X-CSE-MsgGUID: /Vh06HKBR6GMy8torOHoZw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,298,1728975600"; d="scan'208";a="102921009"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa006.fm.intel.com with ESMTP; 08 Jan 2025 07:01:07 -0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Zide Chen <zide.chen@intel.com>
-Subject: [PATCH] target/i386/kvm: Replace KVM_MSR_FILTER_MAX_RANGES with
- ARRAY_SIZE(msr_handlers)
-Date: Wed,  8 Jan 2025 23:19:46 +0800
-Message-Id: <20250108151946.1379591-1-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1tVXtZ-0001tm-Hd
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 10:22:57 -0500
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1tVXtW-0005EW-0i
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 10:22:56 -0500
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-aaecf50578eso760857866b.2
+ for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 07:22:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1736349765; x=1736954565; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MJmR62pnrdLuNnhPrdsP22t6rwya1eZq5Y0KF8WPy34=;
+ b=RMqcd1y3sbFasRI954HCC9fuUooI6/cylKK/i+ol5E7+uAtqhxgr7b64SejJx2SNjg
+ zeCcJyLxmf4KXNKldTzZ6BBpYd0NttG/djLET/Ua2REisoatAUmyeKuJJsqv0KExFBBm
+ 6sw44VR46/SDK6JpsmpbvImuEiPQf/BkkUON9k8LtrJMSZNlu9yoM7DVBuwIpxk6rXyp
+ RfTF7h3kOI/iRx6Pt0TfXpFCSFm31qOySzI7JuefWAKNdKQ1Mk5r46oacvu8pDiSSXgM
+ olw65ZVsPI6cvdH99wQUgBMTvQLgANdz6jv91lmwqEvkhSxoyXVBrdbD5rJn21xz1cZ7
+ x/Ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736349765; x=1736954565;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=MJmR62pnrdLuNnhPrdsP22t6rwya1eZq5Y0KF8WPy34=;
+ b=CP7Si/EatR5lTN3NUZrprCGyNM+AI5s9zovgM+F23OEOCEffdhHz1Ikv8M9mtclQ3r
+ bgGtW9JAGHbOhWjwr7y6847fS/7Aa0IKF8H9HzaztgkCMZ1/vgb0LLpdQWfKTkF5xvIR
+ xKPsJtyCRPexnFEwePVyldD7+R2rpFHZbeygLRmPhYt86EG85IMOj7GeudcSYjF1AcaA
+ J+auOsFRaFzQdXEbC8vRtLqTAi1WSfSy9IOGlzEQ3cKVPLiXLbF1ok6tH9w/Pdup45pL
+ unZlQM7KLSLObu/BaxeXkpi/2R8zKjcZ9PZyK0OGyYTD7AEdCMBriyY4dnUUTOY9r22c
+ fJXw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWHDTf4bbiMY1TsQGerd1o9GvF2tfIBhSznvr6BFca4y0TDCw7rYSx2ArXwchFR92fVcny2z9/Rse6N@nongnu.org
+X-Gm-Message-State: AOJu0YwLUqgkS3S3Ig3XGojIk5rSm2UnXHTRwOFmnJLL3VWwvn3tSy90
+ w/fsdjt4kykRG57YLon0ONb08rwm/2dkUKnlp1a7wUqSH+Fa9kmW
+X-Gm-Gg: ASbGncuocCJvkSUZ0NWYkKjBX4/U2CSaoSMLXaVMQRRnDGd45F/dRPdXmJesV/oEgSN
+ JrgOvfWhhp7wSOaqVrzkiucOw8H6PzOnPNwztBVdl5O7zLPvPgw230cHvNuCPH4r9jeIRKrnaz8
+ YX4dUVeywW9O6P1+LM75bttx5LnaaMRHZVpLzrIwPm6bNLeqwsjRPU4nqQXeXLvqZTl604Bl1WS
+ Q4DRIiNPJm2A1DWMr8biFRl4TUOvPm7a1415VJVhYGqNmiY0id1DRHr+CI7FAqns08r8SViWCd1
+ OXKOGBvdd94Lx2zybcF4u7NCC/M=
+X-Google-Smtp-Source: AGHT+IGxnz0ggv12CJVSXb4mZXihATLTBqRi9YZEA4tyjY+iAJhP74blbpMO7fTiv/XdSv2ITjrPOg==
+X-Received: by 2002:a17:907:6d23:b0:aae:a087:f972 with SMTP id
+ a640c23a62f3a-ab2ab16b1d6mr231978966b.11.1736349765311; 
+ Wed, 08 Jan 2025 07:22:45 -0800 (PST)
+Received: from [127.0.0.1] (business-90-187-110-129.pool2.vodafone-ip.de.
+ [90.187.110.129]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-aac0f014572sm2487281366b.151.2025.01.08.07.22.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 08 Jan 2025 07:22:44 -0800 (PST)
+Date: Wed, 08 Jan 2025 14:23:43 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>
+CC: Thomas Huth <thuth@redhat.com>, Paul Durrant <paul@xen.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_hw/i386/pc=3A_Fix_level_inte?=
+ =?US-ASCII?Q?rrupt_sharing_for_Xen_event_channel_GSI?=
+In-Reply-To: <a7484289fdffd85431bc6b255a59b894bc3e2d6a.camel@infradead.org>
+References: <e592f9127f2d9919e6ccb76a0afb38c5d725d8ec.camel@infradead.org>
+ <20250107110718-mutt-send-email-mst@kernel.org>
+ <8b2690f2c9532468fd5029d319737904b58acec2.camel@infradead.org>
+ <E60B2E8D-23B5-43E2-8DC5-FDBA30EB40EF@gmail.com>
+ <a7484289fdffd85431bc6b255a59b894bc3e2d6a.camel@infradead.org>
+Message-ID: <3BC1A243-5481-4902-81B6-80135577847D@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.432,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,42 +107,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-kvm_install_msr_filters() uses KVM_MSR_FILTER_MAX_RANGES as the bound
-when traversing msr_handlers[], while other places compute the size by
-ARRAY_SIZE(msr_handlers).
 
-In fact, msr_handlers[] is an array with the fixed size
-KVM_MSR_FILTER_MAX_RANGES, so there is no difference between the two
-ways.
 
-For the code consistency, use ARRAY_SIZE(msr_handlers) uniformly instead
-of KVM_MSR_FILTER_MAX_RANGES.
+Am 8=2E Januar 2025 11:26:57 UTC schrieb David Woodhouse <dwmw2@infradead=
+=2Eorg>:
+>On Wed, 2025-01-08 at 09:45 +0000, Bernhard Beschow wrote:
+>>=20
+>>=20
+>> Am 7=2E Januar 2025 16:20:28 UTC schrieb David Woodhouse
+>> <dwmw2@infradead=2Eorg>:
+>> > On Tue, 2025-01-07 at 11:07 -0500, Michael S=2E Tsirkin wrote:
+>> > > On Thu, Dec 19, 2024 at 05:24:11PM +0100, David Woodhouse wrote:
+>> > > > From: David Woodhouse <dwmw@amazon=2Eco=2Euk>
+>> > > >=20
+>> > > > The system GSIs are not designed for sharing=2E One device might
+>> > > > assert a
+>> > > > shared interrupt with qemu_set_irq() and another might deassert
+>> > > > it, and
+>> > > > the level from the first device is lost=2E
+>> > > >=20
+>> > > > This could be solved by using a multiplexer which functions as
+>> > > > an OR
+>> > > > gate, much like the PCI code already implements for
+>> > > > pci_set_irq() for
+>> > > > muxing the INTx lines=2E
+>>=20
+>> Just curious: Why not use that aporoach? Could
+>> <https://lore=2Ekernel=2Eorg/qemu-devel/20250108092538=2E11474-5-shente=
+y@gm
+>> ail=2Ecom/>
+>>  help?
+>
+>That looks very similar to hw/core/or-irq=2Ec which rth pointed out to
+>me=2E Is there a reason for both of them existing?
 
-Suggested-by: Zide Chen <zide.chen@intel.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
-Changelog:
- * Addressed Paolo's comment [1] to choose ARRAY_SIZE(msr_handlers).
+Thanks for pointing out its existence! I totally expected it to exist unde=
+r hw/core/, next to split-irq=2E But it resides under hw/, next to irq=2Ec=
+=2E=2E=2E
 
- [1]: https://lore.kernel.org/qemu-devel/5463356b-827f-4c9f-a76e-02cd580fe885@redhat.com/
----
- target/i386/kvm/kvm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>It would be theoretically possible to rework the x86 GSI handling to
+>use such a thing, yes=2E
+>
+>It would be a large yak-shaving task which exceeds the time I currently
+>have available for a bug fix, but I don't *always* let that stop me=2E
+>
+>More to the point though, I *still* wouldn't like the outcome=2E I still
+>want us to have a 'resample' callback when the interrupt is
+>acknowledged in the interrupt controller, to see if any of the inputs
+>still want the line to be asserted=2E
+>
+>That's the only way to handle it efficiently for VFIO INTx and for the
+>Xen GSI callback anyway=2E
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 2f66e63b880a..7424a3f5cf48 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -5851,7 +5851,7 @@ static bool kvm_install_msr_filters(KVMState *s)
-     };
-     int r, i, j = 0;
- 
--    for (i = 0; i < KVM_MSR_FILTER_MAX_RANGES; i++) {
-+    for (i = 0; i < ARRAY_SIZE(msr_handlers); i++) {
-         KVMMSRHandlers *handler = &msr_handlers[i];
-         if (handler->msr) {
-             struct kvm_msr_filter_range *range = &filter.ranges[j++];
--- 
-2.34.1
+Good to know=2E Thanks!
 
+Best regards,
+Bernhard
 
