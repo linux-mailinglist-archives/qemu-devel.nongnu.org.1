@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82150A056DB
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 10:29:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CBBEA056D3
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 10:28:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVSKj-00045m-G1; Wed, 08 Jan 2025 04:26:37 -0500
+	id 1tVSKn-0004Cg-7a; Wed, 08 Jan 2025 04:26:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tVSKE-0003xY-1F; Wed, 08 Jan 2025 04:26:07 -0500
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ id 1tVSKF-0003xl-Du; Wed, 08 Jan 2025 04:26:10 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tVSKB-0004nq-57; Wed, 08 Jan 2025 04:26:04 -0500
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-aa679ad4265so124492766b.0; 
- Wed, 08 Jan 2025 01:26:02 -0800 (PST)
+ id 1tVSKC-0004oH-7g; Wed, 08 Jan 2025 04:26:07 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3e8f64d5dso29736822a12.3; 
+ Wed, 08 Jan 2025 01:26:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1736328360; x=1736933160; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1736328362; x=1736933162; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jwa3/hEOW5oIO38CwUoCPmmJJzY27pAglGUrj1yGlSY=;
- b=DXTG3TmSEXzfjrsop/HHcOoMgxMls6jXmjnf/y0hHA/PmQZQa3wXHplZUdf0f4COsH
- FO9LLpxPfmdcNaYhaT68JN5UyXNXb23OmXl0a3o1yHZsBTRi/3KiBUQHyZAmw8iiyS2J
- ALySGEZMGILXr5czYpEVkaBw4D3ZxaeAMQMH1wn6thPa5CzMXAz+fTMZYJQPvdB1V0Ry
- mnjyzHPGVnvDfgrMDDXGqJu/7x81IPCv5eOSYkTMigWS/5JcW5uU5d2Rg817Wq0oP3VF
- X284d8n2tqAf1UlkNb3iIvYm0vh6OeNYAvWWhrCVMjPVmGBiBPCC5j5kJM8rX9sAKFJs
- v4qg==
+ bh=vMIpdFO0N7wGBeNJgw4ik62IVdc9YLqNPL4DIkZzaYo=;
+ b=EctkDglTzH6uvHBNnQrqNyVp7zLyVigORgTAxDiOtHfuinY4vSECv3mTMwFjxEpCYh
+ y0CqjrYNtJYFSNd2eF67sBx6TjJpX+oMRxCsgjgZBrtC+V7JN/shdsf46TLIfrI5VDCC
+ SFtILgKtGqVFkYIjtcS7xr51YLV5jZQ3HCN9VV3tkXBNO61/vP6yCjNomYalu0q32Fvo
+ iAZqe8Mzn9E6Bw598nLk/0V9ErMARsbC9kGzZrZrDcJWiiYeZbNEgcIA75LkKRgA931L
+ qihXUc6Y4+qpynq+9dJjZD9v1o2e7PHa3QXG64CgXHNVMGtLreapgdMskFP/CqRw0HIP
+ Kaeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736328360; x=1736933160;
+ d=1e100.net; s=20230601; t=1736328362; x=1736933162;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jwa3/hEOW5oIO38CwUoCPmmJJzY27pAglGUrj1yGlSY=;
- b=ISj+TzkrEWYv6x4eI6o684jwzCHuOD9Yv4JcwstQnxvj66gM7xsD3Zqbczw5YWaVoA
- zCeBon3wccOD5aWdYl8TnxG4dw1Lp0tNpWD8ctCDQh/PTlRuH8c+KWoYWgSo+NyHeXiY
- Lm1mNkJAjwBgQie2mTXd8ugqK3EJkMA0bNbsRH6HMGpyaPkJR0eFlM7ZU8higkzqIXS1
- v97TGe+K/lR594epxz9g6bPNu0EtSunpLwHRHl511q/FoJ65XyQ2TVDgRLuWsjyi2YUA
- 1EBbPf7eRhuR9wIhMu4RIYJ13KDTvax10KaY54OyobcBu9NRsMj4/tRsEh98gq2nTPHX
- 3gJw==
+ bh=vMIpdFO0N7wGBeNJgw4ik62IVdc9YLqNPL4DIkZzaYo=;
+ b=hoYjcuM0vLcWq9tRWdvYsS4WBxdQs39UCrSOPMpaB1ito4bQ0tNToP3OJvbFQgDaBq
+ 6wNmNZNMN6LMlib9Y12x+eDhR6Lf4tTrd9QmYjG+9oRHV6Cn/DdYOjkzkkInsupyXKC/
+ PPIvKMPZbVVz1YRbQ1ahHSP3HnkM6rsE4dQWDtchKhx/TPf6TL0R1vfJyB0GAy8uPvbt
+ E3TZHxi4Ohug+4bl/W37JyOZjXuC2P35Vav9HHv6Eh+TzKiePk+UNPR7qMEx0tBD9tBz
+ 8ajknWe6CvhWHEFd2515ZWNR5HFg5WmPcrTbeqEne8IovyCPPRo1FjPRIu+A7zru0eDo
+ mGDw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVHhMvy10MrsdyzLbwR69kskGqTGpXmmsEnXInCL4q+MzfNCQKRaPcLGgLwuTM+Bts2gtqp3F1p9e2nxg==@nongnu.org,
- AJvYcCWgLniRdroZUOVMlr4wHNbhYGHTZN/tPo3H/vuL/iJ5uAzTAZIiPQG24Rhcwm3eQuObfQz/1uZ9Yw==@nongnu.org
-X-Gm-Message-State: AOJu0YxWwD7GQbnKC5VHMY1R+SG884dtr/DYDSvmSjYoua/7ItP/inbt
- RXlm9DpYnx3eQBvASoajr/WVsj+k3spSrwUEagTSWW1I+BwBgNeKfkDq8dj+
-X-Gm-Gg: ASbGncsrXlKy5E9lM9QaSmhZx1nVUEaGSM4u+6dtf2Mb8i0JYd7WXxP44XciE73NXF4
- UN/HxZL/QKZqE1unLDvjkz+VPbbpBEeXOqngIeGmIWayjFKguiJ+njSCMqDRNBp+S/EJg5sm023
- QcUjFwG7eeyAAnvuEuXOU+6vCbigRVt3dtcDZa42ve1p6wmd8Zk9DudhFGB0uAPVnzf37XS0vVT
- nKSUy4G8a02v5nZfpW5tT7lcDJ6jiy9w3NxAp/3UC3QQpI+fY1u2U/PMhuAVcD1eD+2XXrX0ZKX
- Fpg7WLoZTZQ7thPh6Ksm3rd3b7Ug/RcCZDUM/wctKTWjiy4=
-X-Google-Smtp-Source: AGHT+IE3MJUTGN02RSGBm+gICUokg6NzVTfHjBa/mSO5LLmYq6IvfY5dI8cRFwC2wRaYvczKkJZoog==
-X-Received: by 2002:a17:907:7f16:b0:aa6:7ff9:d248 with SMTP id
- a640c23a62f3a-ab290501c47mr481318866b.8.1736328360298; 
- Wed, 08 Jan 2025 01:26:00 -0800 (PST)
+ AJvYcCVuq4kfmpeu0Ef9MkLnm8SJrCnA9os+nvUEh4fraOl2oNCwx5jxHquXsGDoDrZkWK2xzjmLLTqBcudfNg==@nongnu.org,
+ AJvYcCX3LchvoIeHxRR7+sNLJ1EJ3+DAw2xKeEJQVVu1xfcxMUsvWEqxgG9MDxmYt1GRYtdNBaA8OQ0gCQ==@nongnu.org
+X-Gm-Message-State: AOJu0YyJDUm/K5OfoABZsWxk5wXGNXSWieEh4CSA4WWhO7MutQvgVEcX
+ ffOzWsxfiA6vGEaoVIy31MFunO49OOPLm5j3hwKiFwFPsEOi3ZB8NtRs36uK
+X-Gm-Gg: ASbGncvOGq5Vzo0RP+RRecuZY0Zrv7ii0Ko2oXBnPAenVKeVhGdwW3Nn+QzKI7lTIaY
+ 5YTZxou/2wKM/QOTt2LVmetC7u0Y1jelprALLvd6fsDodn7euLPWP+B/rWzf2K6h/xMOgJLh/ct
+ 0+3/9tUjAXVuz+esTATeEnU2M7g8XvV8vYhVSCXohMSTfWVFnB8o9d2fqFlSPkBYjCdX4UPw6B1
+ 6L8iq1DgEgsEwfyES7+/kkh78LfKzuAGFGGn05VE0pWJLhirNemK1WAIeQnWWWz3qvSYk/+N0/X
+ cyS2HAc9YiCaF0DfQ7yEU1kqSrQGX1lBtEcLJLuOnVqsbek=
+X-Google-Smtp-Source: AGHT+IHFQrFh6c57c1Coios4cW/pdrw9Wvf4lb/JVTP2PZXx04NVCsBCCfngWDORLJUGAI+7FR3yzw==
+X-Received: by 2002:a05:6402:5288:b0:5d0:b7c5:c409 with SMTP id
+ 4fb4d7f45d1cf-5d972e0abe4mr1669542a12.14.1736328361615; 
+ Wed, 08 Jan 2025 01:26:01 -0800 (PST)
 Received: from Provence.localdomain
  (dynamic-077-188-106-228.77.188.pool.telefonica.de. [77.188.106.228])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d806feddfasm26116096a12.58.2025.01.08.01.25.59
+ 4fb4d7f45d1cf-5d806feddfasm26116096a12.58.2025.01.08.01.26.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Jan 2025 01:25:59 -0800 (PST)
+ Wed, 08 Jan 2025 01:26:00 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Bin Meng <bmeng.cn@gmail.com>, Fabiano Rosas <farosas@suse.de>,
@@ -75,17 +75,17 @@ Cc: Bin Meng <bmeng.cn@gmail.com>, Fabiano Rosas <farosas@suse.de>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 08/14] hw/sd/sd: Allow for inverting polarities of presence
- and write-protect GPIOs
-Date: Wed,  8 Jan 2025 10:25:32 +0100
-Message-ID: <20250108092538.11474-9-shentey@gmail.com>
+Subject: [PATCH 09/14] hw/char/imx_serial: Turn some DPRINTF() statements into
+ trace events
+Date: Wed,  8 Jan 2025 10:25:33 +0100
+Message-ID: <20250108092538.11474-10-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250108092538.11474-1-shentey@gmail.com>
 References: <20250108092538.11474-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,54 +110,156 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/sd/sd.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ hw/char/imx_serial.c | 58 +++++++++++++++++++++++++++++---------------
+ hw/char/trace-events |  5 ++++
+ 2 files changed, 44 insertions(+), 19 deletions(-)
 
-diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index aa8d86e1af..a50e5c20c8 100644
---- a/hw/sd/sd.c
-+++ b/hw/sd/sd.c
-@@ -181,6 +181,8 @@ struct SDState {
-     qemu_irq inserted_cb;
-     QEMUTimer *ocr_power_timer;
-     bool enable;
-+    bool readonly_active_low;
-+    bool inserted_active_low;
-     uint8_t dat_lines;
-     bool cmd_line;
- };
-@@ -876,8 +878,8 @@ static void sd_reset(DeviceState *dev)
-     sd->cmd_line = true;
-     sd->multi_blk_cnt = 0;
+diff --git a/hw/char/imx_serial.c b/hw/char/imx_serial.c
+index be06f39a4d..38b4865157 100644
+--- a/hw/char/imx_serial.c
++++ b/hw/char/imx_serial.c
+@@ -27,6 +27,7 @@
+ #include "qemu/log.h"
+ #include "qemu/module.h"
+ #include "qemu/fifo32.h"
++#include "trace.h"
  
--    qemu_set_irq(sd->readonly_cb, sd_get_readonly(sd));
--    qemu_set_irq(sd->inserted_cb, sd_get_inserted(sd));
-+    qemu_set_irq(sd->readonly_cb, sd_get_readonly(sd) ^ sd->readonly_active_low);
-+    qemu_set_irq(sd->inserted_cb, sd_get_inserted(sd) ^ sd->inserted_active_low);
+ #ifndef DEBUG_IMX_UART
+ #define DEBUG_IMX_UART 0
+@@ -185,10 +186,10 @@ static uint64_t imx_serial_read(void *opaque, hwaddr offset,
+                                 unsigned size)
+ {
+     IMXSerialState *s = (IMXSerialState *)opaque;
++    Chardev *chr = qemu_chr_fe_get_driver(&s->chr);
+     uint32_t c, rx_used;
+     uint8_t rxtl = s->ufcr & TL_MASK;
+-
+-    DPRINTF("read(offset=0x%" HWADDR_PRIx ")\n", offset);
++    uint64_t value;
+ 
+     switch (offset >> 2) {
+     case 0x0: /* URXD */
+@@ -209,49 +210,67 @@ static uint64_t imx_serial_read(void *opaque, hwaddr offset,
+             imx_serial_rx_fifo_ageing_timer_restart(s);
+             qemu_chr_fe_accept_input(&s->chr);
+         }
+-        return c;
++        value = c;
++        break;
+ 
+     case 0x20: /* UCR1 */
+-        return s->ucr1;
++        value = s->ucr1;
++        break;
+ 
+     case 0x21: /* UCR2 */
+-        return s->ucr2;
++        value = s->ucr2;
++        break;
+ 
+     case 0x25: /* USR1 */
+-        return s->usr1;
++        value = s->usr1;
++        break;
+ 
+     case 0x26: /* USR2 */
+-        return s->usr2;
++        value = s->usr2;
++        break;
+ 
+     case 0x2A: /* BRM Modulator */
+-        return s->ubmr;
++        value = s->ubmr;
++        break;
+ 
+     case 0x2B: /* Baud Rate Count */
+-        return s->ubrc;
++        value = s->ubrc;
++        break;
+ 
+     case 0x2d: /* Test register */
+-        return s->uts1;
++        value = s->uts1;
++        break;
+ 
+     case 0x24: /* UFCR */
+-        return s->ufcr;
++        value = s->ufcr;
++        break;
+ 
+     case 0x2c:
+-        return s->onems;
++        value = s->onems;
++        break;
+ 
+     case 0x22: /* UCR3 */
+-        return s->ucr3;
++        value = s->ucr3;
++        break;
+ 
+     case 0x23: /* UCR4 */
+-        return s->ucr4;
++        value = s->ucr4;
++        break;
+ 
+     case 0x29: /* BRM Incremental */
+-        return 0x0; /* TODO */
++        value = 0x0; /* TODO */
++        break;
+ 
+     default:
+         qemu_log_mask(LOG_GUEST_ERROR, "[%s]%s: Bad register at offset 0x%"
+                       HWADDR_PRIx "\n", TYPE_IMX_SERIAL, __func__, offset);
+-        return 0;
++        value = 0;
++        break;
+     }
++
++    trace_imx_serial_read(chr ? chr->label : "NODEV", offset, value);
++
++    return value;
  }
  
- static void sd_cardchange(void *opaque, bool load, Error **errp)
-@@ -896,9 +898,9 @@ static void sd_cardchange(void *opaque, bool load, Error **errp)
-     }
+ static void imx_serial_write(void *opaque, hwaddr offset,
+@@ -261,8 +280,7 @@ static void imx_serial_write(void *opaque, hwaddr offset,
+     Chardev *chr = qemu_chr_fe_get_driver(&s->chr);
+     unsigned char ch;
  
-     if (sd->me_no_qdev_me_kill_mammoth_with_rocks) {
--        qemu_set_irq(sd->inserted_cb, inserted);
-+        qemu_set_irq(sd->inserted_cb, inserted ^ sd->inserted_active_low);
-         if (inserted) {
--            qemu_set_irq(sd->readonly_cb, readonly);
-+            qemu_set_irq(sd->readonly_cb, readonly ^ sd->readonly_active_low);
-         }
-     } else {
-         sdbus = SD_BUS(qdev_get_parent_bus(dev));
-@@ -2797,6 +2799,8 @@ static void emmc_realize(DeviceState *dev, Error **errp)
+-    DPRINTF("write(offset=0x%" HWADDR_PRIx ", value = 0x%x) to %s\n",
+-            offset, (unsigned int)value, chr ? chr->label : "NODEV");
++    trace_imx_serial_write(chr ? chr->label : "NODEV", offset, value);
  
- static const Property sdmmc_common_properties[] = {
-     DEFINE_PROP_DRIVE("drive", SDState, blk),
-+    DEFINE_PROP_BOOL("cd-active-low", SDState, inserted_active_low, false),
-+    DEFINE_PROP_BOOL("wp-active-low", SDState, readonly_active_low, false),
- };
+     switch (offset >> 2) {
+     case 0x10: /* UTXD */
+@@ -374,9 +392,11 @@ static int imx_can_receive(void *opaque)
+ static void imx_put_data(void *opaque, uint32_t value)
+ {
+     IMXSerialState *s = (IMXSerialState *)opaque;
++    Chardev *chr = qemu_chr_fe_get_driver(&s->chr);
+     uint8_t rxtl = s->ufcr & TL_MASK;
  
- static const Property sd_properties[] = {
+-    DPRINTF("received char\n");
++    trace_imx_serial_put_data(chr ? chr->label : "NODEV", value);
++
+     imx_serial_rx_fifo_push(s, value);
+     if (fifo32_num_used(&s->rx_fifo) >= rxtl) {
+         s->usr1 |= USR1_RRDY;
+diff --git a/hw/char/trace-events b/hw/char/trace-events
+index 59e1f734a7..4c6d401b4b 100644
+--- a/hw/char/trace-events
++++ b/hw/char/trace-events
+@@ -52,6 +52,11 @@ escc_sunkbd_event_out(int ch) "Translated keycode 0x%2.2x"
+ escc_kbd_command(int val) "Command %d"
+ escc_sunmouse_event(int dx, int dy, int buttons_state) "dx=%d dy=%d buttons=0x%01x"
+ 
++# imx_serial.c
++imx_serial_read(const char *chrname, uint64_t addr, uint64_t value) "%s:[0x%03" PRIu64 "] -> 0x%08" PRIu64
++imx_serial_write(const char *chrname, uint64_t addr, uint64_t value) "%s:[0x%03" PRIu64 "] <- 0x%08" PRIu64
++imx_serial_put_data(const char *chrname, uint32_t value) "%s: 0x%" PRIu32
++
+ # pl011.c
+ pl011_irq_state(int level) "irq state %d"
+ pl011_read(uint32_t addr, uint32_t value, const char *regname) "addr 0x%03x value 0x%08x reg %s"
 -- 
 2.47.1
 
