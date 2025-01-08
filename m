@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37143A05BAC
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 13:30:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CCBAA05B6B
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 13:22:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVV1N-00028j-H8; Wed, 08 Jan 2025 07:18:49 -0500
+	id 1tVV1Z-0002zf-F0; Wed, 08 Jan 2025 07:19:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tVUue-0000uq-VI
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 07:12:06 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1tVUuZ-0000ro-DP
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 07:11:49 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tVUuR-0007Dg-Lh
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 07:11:50 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5d3bbb0f09dso29183942a12.2
+ id 1tVUuQ-0007DC-VK
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 07:11:46 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3cf094768so4755324a12.0
  for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 04:10:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736338257; x=1736943057; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=K2jiKN5CA7YCpU+KncJDh5WlAvz/7Rx7DwMB2koErBk=;
- b=YTZKxzqEVzqPQPkU0ApZob/DKhaqWaqGyTbk+rMA2zsf/pual5P19NMU6TLW20KZb0
- WNstk8xs547vrttqdyEyoAD9RYbu1FlHAd+Ml8a0Sw0LqTIOWZBLn5wNudEtjD1cyRYg
- MZllN/Gdg10AEG6FwCFEZmYiJTpSFkRfTKko8rusRulDQIJAI/QbQeFrulfoC+FUctCE
- zO6DpGO9onSvPMAvmsXQbkFSgeqsh+V2yfjD+KaMtrLXzGIShnoWH/vpXhc4AxqKOGx1
- nbHToti0S/i0B0TGsyystJ+KRVIe+XSJReor1XFBSBTQ6+S7MtlohNAmVvh4IvTVbKWm
- 4iHg==
+ d=linaro.org; s=google; t=1736338256; x=1736943056; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=o0JqfhsmeygXn7vgTHEJChr0z2trV4kJFC93MfdFa5w=;
+ b=KM0/b5SEWMPE2Q189TaFz0UD6bp3VtPOaFqqy8uW376MCaPBUIuP0Ou4UjGAwaVUGJ
+ fTJlE4O1awIbtjhzJK07xPtVSh1Fsddts46cyUQPSNLrO8ODkRfT+moxjGWD0Ozt5GL/
+ mquhxjN67BQcZIesdkFgwHEOyRNutL0J/REz+L+SSOCQSEP1oDEpAhrpzM9DZmv7ne0i
+ iPPZzcIWdHhh+7XW2D1nTehau54N8JWwNsKWZZCDIwW9PgBQlA4toFthyWDEuMPAey3p
+ Izh70O/QWK3Wd8WwdP4Vzju3vP67VT4Bz9ectIg0CpGwbEVV47dkzK8LFC6Hod9n2PVS
+ EvKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736338257; x=1736943057;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=K2jiKN5CA7YCpU+KncJDh5WlAvz/7Rx7DwMB2koErBk=;
- b=kG/+N2ZTZiglMvkpGPZdJiHmJW7PWgj1E0WHKttD8ACJcsV94aWYYwusYs1H+Oc9/C
- zg07lnSMAr5Hldn7aAHQ8nPBduEP22N31w2SkHeChYDDg03/VE3Qj9enVrYiS9ROCM2X
- JgMD0UPc39+rsT31njMjdT+kIfZJzGAa/yP22ywCNq9KfcacIuoEVDaBYUBEH9bJAubx
- K+FTAbb0+EgeZX6rl2S7sPjOHE1rWWc/9qWmclzHxSI/zG731+8LDF8s8ULGMm7eESkY
- PkJicw3i6g7Ru3cG109xcT/4pkJQnV71XnQF5sAnn7BDcCzJzjRkPv5928Xpm4XFg2cX
- 9CLg==
-X-Gm-Message-State: AOJu0Yy1c1RF/QdYi0jJCOKJRjdgW0gfBHff0/OuqCa7XQmEFusIS0Dh
- i5soc3MDgQ7NIoyGs7VFlrn2i90znEgIQA88NN9RuU5hx4FGnXRmLDqVJRWJMr0=
-X-Gm-Gg: ASbGncv1h92iykJEeubNCfhP+rurb7dl3qqkwAQxIsXHQNzHYM2SCa57BDeInvZGx58
- RYVWr+Xq1J/3lzRH2edC8fV2DLpMHLVbfMzZxIn/c8sG3W2+7X7OHRZS17FVLFat4Hk/hjVPBWS
- +HkuP4UsC1NcAb53xpifjiVP+4Ox6yjOtiakBdNKz+YONxL3LKRqU5epNcoJk3Dv6zWytMHSkkV
- sTX/lxqurKbLHCLe5D9qTQG5/R3D7QdtMwwwSkMF1+SWE1IzzEW2o0=
-X-Google-Smtp-Source: AGHT+IHsezNh1Nc23qfNVZmSxUQbUmyKZSy/psSdPiu20/TqBJdgeH6j0kvCqRqEoKora9/4U8T0UQ==
-X-Received: by 2002:a05:6402:2355:b0:5d9:a55:4307 with SMTP id
- 4fb4d7f45d1cf-5d972e4eeabmr2194247a12.22.1736338256654; 
- Wed, 08 Jan 2025 04:10:56 -0800 (PST)
+ d=1e100.net; s=20230601; t=1736338256; x=1736943056;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=o0JqfhsmeygXn7vgTHEJChr0z2trV4kJFC93MfdFa5w=;
+ b=M2EIPMRwkZLuSoCnsEZMFJjxei6YWLzHJmgKA1XvklH/MncQ+dqM3/HN+9WQN2ZgNr
+ PJk5OMf/8spHSclX85kQRMN4PH0kG+qB8kPx9OHPtx0BKOJvvGPUGd+qS+e+pgETGZbE
+ M3DwJpbfigKvsH7EWvdoOkSzzr1/zaxoMCqkjV1Vet1wUrT36KTEOPniC42ljeBb0Isf
+ WtAtOJLpF1gZk/8rJzf179u+yfbH9icqMOOM2wpGOlzA/bB5r1vhnHAHjIkNPmNlrJw1
+ CBt8HCVjAI0JPttAvFK/BsoeUWIG7pXnNL0Be5zTT6oAA9xsEbWZ+Ex4e7h0Fj8P8ZS4
+ F3SQ==
+X-Gm-Message-State: AOJu0Yw2rledLl8A+BeEdVdrxZwyyCPFnEch9HWragvBAJR6uDSBFKp1
+ 0QdEPzI+M14OCewXKaR6cxG0Gy8yaibQbpXTOQNr1dCGEAalH2GyDdy76eSMhbA=
+X-Gm-Gg: ASbGncujlUQDXX8jPRUY8LC1pBtwOdvwwNgmffjC6wF81l497QkJo2/MMiHjqT7g1td
+ /YYT/WwHSXl9iLtKLQM2xA2h7+BDeorNaP1i9DEC5G8sxq39iH8PWXX08ZQCOQKDSXwzJrNNH7O
+ gjffZqPsUyGRpcf3T6hvdEjxFXfmNxI1omegpYO0CRYMjI2TDIrxg0B240/+SOjq3bBCUpFZCWn
+ NprYxcgV8/FEAC57y390VAML/cCRfbjoGMrV3DOcUp6T5AWIrU6XdE=
+X-Google-Smtp-Source: AGHT+IGCQhRcfIbzO3OFGIKCseV/Bx3HVkprTu9D6Bg0vS5JDB4SufnE+bOb/SuU/xzxztO8okHdNg==
+X-Received: by 2002:a05:6402:358a:b0:5d3:f6cb:73e7 with SMTP id
+ 4fb4d7f45d1cf-5d972e0805amr2230196a12.13.1736338255912; 
+ Wed, 08 Jan 2025 04:10:55 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d80679eeb1sm25318198a12.48.2025.01.08.04.10.55
+ 4fb4d7f45d1cf-5d80701c94csm25144240a12.85.2025.01.08.04.10.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 08 Jan 2025 04:10:55 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 8A25F5F8AC;
+ by draig.lan (Postfix) with ESMTP id A5CCB5F8FD;
  Wed,  8 Jan 2025 12:10:54 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -94,17 +95,19 @@ Cc: Halil Pasic <pasic@linux.ibm.com>, Aurelien Jarno <aurelien@aurel32.net>,
  Markus Armbruster <armbru@redhat.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Palmer Dabbelt <palmer@dabbelt.com>,
- Peter Maydell <peter.maydell@linaro.org>, Li-Wen Hsu <lwhsu@freebsd.org>
-Subject: [PATCH v4 00/32] testing/next: functional tests, qtest clocks,
- vm and keymaps (pre-PR-FINAL)
-Date: Wed,  8 Jan 2025 12:10:22 +0000
-Message-Id: <20250108121054.1126164-1-alex.bennee@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>, Li-Wen Hsu <lwhsu@freebsd.org>,
+ Anders Roxell <anders.roxell@linaro.org>
+Subject: [PATCH v4 01/32] tests/functional: update the arm tuxrun tests
+Date: Wed,  8 Jan 2025 12:10:23 +0000
+Message-Id: <20250108121054.1126164-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250108121054.1126164-1-alex.bennee@linaro.org>
+References: <20250108121054.1126164-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -127,139 +130,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are number of parts to this series.
+Now there are new up to date images available we should update to them.
 
-The first is the updated images for all the guests that didn't make it
-into 9.2. There are also some new functional tests for virtio-gpu
-along with some other clean-ups.
+Cc: Anders Roxell <anders.roxell@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20241121165806.476008-21-alex.bennee@linaro.org>
+---
+ tests/functional/test_arm_tuxrun.py | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-The qtest patches focus on ensuring things calling clock_step and
-clock_set actually pay attention to return values. The virtio tests
-needed a little little re-jigging as they don't need timeout
-loops at all (v2).
-
-We bump libvirt-ci so we can move the riscv64 cross container to
-testing/trixie which will hopefully make the image less prone to sid
-breakages.
-
-Finally we make a few tweaks to tests/vm which were helpful when
-chasing the keymap issue. I still think there is a race condition in
-there somewhere as I can't reliably build the FreeBSD VMs from
-scratch.
-
-The pc-bios dependency fixup I think addresses the failure but I'm a
-little unsure about the meason stuff.
-
-I did a v4 re-spin because I split apart some unrelated changes. I
-still plan to send the PR at the end of the week.
-
-For v2
-  - add test/vm and lcitool updates
-  - don't move clock_step, remove them for virtio tests
-For v3
-  - review comments and checkpatch fixes
-  - MAINTAINERS updates
-  - add zstd uncompress function and use it
-For v4
-  - split unrelated changes from vulkan tests
-  - use utility functions for tuxruntest
-
-The following still need review:
-
-  tests/functional: update tuxruntest to use uncompress utility
-  pc-bios: ensure keymaps dependencies set vnc tests
-  tests/vm: allow interactive login as root
-  tests/vm: partially un-tabify help output
-  tests/docker: move riscv64 cross container from sid to trixie
-  tests/functional: extend test_aarch64_virt with vulkan test
-  tests/functional: bail aarch64_virt tests early if missing TCG
-  tests/functional: remove unused kernel_command_line
-  tests/functional: add zstd support to uncompress utility
-
-Alex.
-
-Alex Bennée (28):
-  tests/functional: update the arm tuxrun tests
-  tests/functional: update the i386 tuxrun tests
-  tests/functional: add a m68k tuxrun tests
-  tests/functional: update the mips32 tuxrun tests
-  tests/functional: update the mips32el tuxrun tests
-  tests/functional: update the mips64 tuxrun tests
-  tests/functional: update the mips64el tuxrun tests
-  tests/functional: update the ppc32 tuxrun tests
-  tests/functional: update the ppc64 tuxrun tests
-  tests/functional: update the riscv32 tuxrun tests
-  tests/functional: update the riscv64 tuxrun tests
-  tests/functional: update the s390x tuxrun tests
-  tests/functional: update the sparc64 tuxrun tests
-  tests/functional: update the x86_64 tuxrun tests
-  tests/qtest: remove clock_steps from virtio tests
-  system/qtest: properly feedback results of clock_[step|set]
-  tests/functional: remove hacky sleep from the tests
-  tests/functional: add zstd support to uncompress utility
-  tests/functional: update tuxruntest to use uncompress utility
-  tests/functional: remove unused kernel_command_line
-  tests/functional: bail aarch64_virt tests early if missing TCG
-  tests/functional: extend test_aarch64_virt with vulkan test
-  tests/lcitool: bump to latest version of libvirt-ci
-  tests/docker: move riscv64 cross container from sid to trixie
-  tests/vm: fix build_path based path
-  tests/vm: partially un-tabify help output
-  tests/vm: allow interactive login as root
-  pc-bios: ensure keymaps dependencies set vnc tests
-
-Daniel P. Berrangé (1):
-  tests/lcitool: remove temp workaround for debian mips64el
-
-Philippe Mathieu-Daudé (1):
-  dockerfiles: Remove 'MAINTAINER' entry in debian-tricore-cross.docker
-
-Pierrick Bouvier (1):
-  tests/functional/aarch64: add tests for FEAT_RME
-
-Wainer dos Santos Moschetta (1):
-  MAINTAINERS: Remove myself from reviewers
-
- MAINTAINERS                                   |   3 +-
- system/qtest.c                                |  23 ++--
- tests/qtest/libqos/virtio.c                   |   4 -
- .gitlab-ci.d/cirrus/freebsd-14.vars           |   2 +-
- pc-bios/keymaps/meson.build                   |  17 ++-
- .../dockerfiles/debian-mips64el-cross.docker  |   9 ++
- .../dockerfiles/debian-riscv64-cross.docker   |   4 +-
- .../dockerfiles/debian-tricore-cross.docker   |   2 -
- tests/functional/meson.build                  |   5 +
- tests/functional/qemu_test/tuxruntest.py      |  12 +-
- tests/functional/qemu_test/uncompress.py      |  26 ++++
- tests/functional/test_aarch64_rme_sbsaref.py  |  69 +++++++++++
- tests/functional/test_aarch64_rme_virt.py     |  98 +++++++++++++++
- tests/functional/test_aarch64_virt.py         | 117 ++++++++++++++----
- tests/functional/test_arm_tuxrun.py           |  28 ++---
- tests/functional/test_i386_tuxrun.py          |   8 +-
- tests/functional/test_m68k_tuxrun.py          |  34 +++++
- tests/functional/test_mips64_tuxrun.py        |   8 +-
- tests/functional/test_mips64el_tuxrun.py      |   8 +-
- tests/functional/test_mips_tuxrun.py          |   8 +-
- tests/functional/test_mipsel_tuxrun.py        |   8 +-
- tests/functional/test_ppc64_tuxrun.py         |  16 +--
- tests/functional/test_ppc_tuxrun.py           |   8 +-
- tests/functional/test_riscv32_tuxrun.py       |   8 +-
- tests/functional/test_riscv64_tuxrun.py       |  16 +--
- tests/functional/test_s390x_tuxrun.py         |   8 +-
- tests/functional/test_sparc64_tuxrun.py       |   8 +-
- tests/functional/test_x86_64_tuxrun.py        |   8 +-
- tests/lcitool/libvirt-ci                      |   2 +-
- tests/lcitool/mappings.yml                    |  29 -----
- tests/lcitool/refresh                         |   4 +-
- tests/qtest/meson.build                       |   2 +-
- tests/vm/Makefile.include                     |  29 ++---
- tests/vm/basevm.py                            |  12 +-
- tests/vm/generated/freebsd.json               |   2 +-
- 35 files changed, 463 insertions(+), 182 deletions(-)
- create mode 100755 tests/functional/test_aarch64_rme_sbsaref.py
- create mode 100755 tests/functional/test_aarch64_rme_virt.py
- create mode 100644 tests/functional/test_m68k_tuxrun.py
-
+diff --git a/tests/functional/test_arm_tuxrun.py b/tests/functional/test_arm_tuxrun.py
+index 944f0756e1..4ac85f48ac 100755
+--- a/tests/functional/test_arm_tuxrun.py
++++ b/tests/functional/test_arm_tuxrun.py
+@@ -17,14 +17,14 @@
+ class TuxRunArmTest(TuxRunBaselineTest):
+ 
+     ASSET_ARMV5_KERNEL = Asset(
+-        'https://storage.tuxboot.com/20230331/armv5/zImage',
+-        'c95af2f27647c12265d75e9df44c22ff5228c59855f54aaa70f41ec2842e3a4d')
++        'https://storage.tuxboot.com/buildroot/20241119/armv5/zImage',
++        '3931a3908dbcf0ec0fe292d035ffc4dfed95f797dedd4a59ccfcf7a46e6f92d4')
+     ASSET_ARMV5_ROOTFS = Asset(
+-        'https://storage.tuxboot.com/20230331/armv5/rootfs.ext4.zst',
+-        '17177afa74e7294da0642861f08c88ca3c836764299a54bf6d1ce276cb9712a5')
++        'https://storage.tuxboot.com/buildroot/20241119/armv5/rootfs.ext4.zst',
++        '60ff78b68c7021df378e4fc2d66d3b016484d1acc7e07fb8920c1d8e30f4571f')
+     ASSET_ARMV5_DTB = Asset(
+-        'https://storage.tuxboot.com/20230331/armv5/versatile-pb.dtb',
+-        '0bc0c0b0858cefd3c32b385c0d66d97142ded29472a496f4f490e42fc7615b25')
++        'https://storage.tuxboot.com/buildroot/20241119/armv5/versatile-pb.dtb',
++        '50988e69ef3f3b08bfb9146e8fe414129990029e8dfbed444953b7e14809530a')
+ 
+     def test_armv5(self):
+         self.set_machine('versatilepb')
+@@ -37,11 +37,11 @@ def test_armv5(self):
+                            drive="virtio-blk-pci")
+ 
+     ASSET_ARMV7_KERNEL = Asset(
+-        'https://storage.tuxboot.com/20230331/armv7/zImage',
+-        '4c7a22e9f15875bec06bd2a29d822496571eb297d4f22694099ffcdb19077572')
++        'https://storage.tuxboot.com/buildroot/20241119/armv7/zImage',
++        '1377bc3d90de5ce57ab17cd67429fe8b15c2e9964248c775c682b67e6299b991')
+     ASSET_ARMV7_ROOTFS = Asset(
+-        'https://storage.tuxboot.com/20230331/armv7/rootfs.ext4.zst',
+-        'ab1fbbeaddda1ffdd45c9405a28cd5370c20f23a7cbc809cc90dc9f243a8eb5a')
++        'https://storage.tuxboot.com/buildroot/20241119/armv7/rootfs.ext4.zst',
++        'ed2cbc69bd6b3fbd5cafb5ee961393c7cfbe726446f14301c67d6b1f28bfdb51')
+ 
+     def test_armv7(self):
+         self.set_machine('virt')
+@@ -52,11 +52,11 @@ def test_armv7(self):
+                            rootfs_asset=self.ASSET_ARMV7_ROOTFS)
+ 
+     ASSET_ARMV7BE_KERNEL = Asset(
+-        'https://storage.tuxboot.com/20230331/armv7be/zImage',
+-        '7facc62082b57af12015b08f7fdbaf2f123ba07a478367853ae12b219afc9f2f')
++        'https://storage.tuxboot.com/buildroot/20241119/armv7be/zImage',
++        'a244e6da99f1bbd254827ec7681bd4aac9eb1aa05aaebc6b15e5d289ebb683f3')
+     ASSET_ARMV7BE_ROOTFS = Asset(
+-        'https://storage.tuxboot.com/20230331/armv7be/rootfs.ext4.zst',
+-        '42ed46dd2d59986206c5b1f6cf35eab58fe3fd20c96b41aaa16b32f3f90a9835')
++        'https://storage.tuxboot.com/buildroot/20241119/armv7be/rootfs.ext4.zst',
++        'd4f9c57860a512163f30ecc69b2174d1a1bdeb853a43dc49a09cfcfe84e428ea')
+ 
+     def test_armv7be(self):
+         self.set_machine('virt')
 -- 
 2.39.5
 
