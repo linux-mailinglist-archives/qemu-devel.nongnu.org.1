@@ -2,162 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12A7DA05E13
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 15:10:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EDACA05E61
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 15:16:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVWkp-0003ew-Kw; Wed, 08 Jan 2025 09:09:51 -0500
+	id 1tVWps-0005uW-0l; Wed, 08 Jan 2025 09:15:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tVWkm-0003Ux-Em
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:09:48 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tVWpa-0005tc-BL
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:14:47 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tVWkk-0003tY-48
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:09:48 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tVWpW-0004jl-9L
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:14:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736345385;
+ s=mimecast20190719; t=1736345680;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=MrFJNaOUOPaaan1zaHG7MPWllkYWyC8JnO9yPqggt/g=;
- b=ZS3J/efbfN1UXg5kgFT89gd7Pf3W3TI6JszJ62NFNh9/1OmOeJdGB7LRZgYgt0GSaC4bUJ
- Xr9XuPnpVN47Lren/6iTfO/bPeuEf5F8M6fFTbhXzeBA8LM9im6rpuUsKdhwRwUQIOg25v
- fdMlRYd9U2NsIXBQfFojCd5GdHLeNt8=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=yNcVBbhGtCzb9GuZyfZlONnG3UaP4zdH2tNBP9ClSbY=;
+ b=FTy+L3+bvkocVhSP7hiGO7ekP4BW225bL5XfHJqZpFa8EaRfm0oIRmWQjlVFbdRAjiY5Ek
+ xFoy5TVkyBHnUS6faSmHxKuUIpI8+I0ZxUJZC3L0S1jfZOXsclqMkPYsmndbtAoVZwq74z
+ YfqYI1EGLtMsd4xspvQQsTqSL0pTMAM=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-499-mygBKtOXNwOXs8N7zLRURg-1; Wed, 08 Jan 2025 09:09:44 -0500
-X-MC-Unique: mygBKtOXNwOXs8N7zLRURg-1
-X-Mimecast-MFC-AGG-ID: mygBKtOXNwOXs8N7zLRURg
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4361b090d23so49792135e9.0
- for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 06:09:43 -0800 (PST)
+ us-mta-141-pNX84ABPO0W2uvJOYleRnw-1; Wed, 08 Jan 2025 09:14:38 -0500
+X-MC-Unique: pNX84ABPO0W2uvJOYleRnw-1
+X-Mimecast-MFC-AGG-ID: pNX84ABPO0W2uvJOYleRnw
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-5d821f9730aso896960a12.1
+ for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 06:14:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736345383; x=1736950183;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=MrFJNaOUOPaaan1zaHG7MPWllkYWyC8JnO9yPqggt/g=;
- b=wlk2lexZbR5RWHlGgSL7ZygtiDndjP1Mv+zS08HCdbzhL5OMiAEtgxZE5LCM6zdX9r
- qRKiIXKRQBlQ5sYNZFYNv2Mva7R/DqBvQy6m2v7YURjvhhWGVucNVTITw9JQ0cfdf0pK
- HZF+dh+VbC1PGG2RwAqaZehRBt0UCcDHC2s2+r10kfAX/k71gDinesRRirIiscCNMiF4
- gy0paHAHxTX8of//naF1kA263KAZQ4YUlAEySw6DOAcW1DfcxwPx9EM0aNdfG+HshSc6
- wNr8zXmdsPoXdKmSpTswWL7hRZ+exsj1h/IabXL7zNcTOkzObrqS+lJHUBMKTTo5+7MJ
- 2xfw==
+ d=1e100.net; s=20230601; t=1736345677; x=1736950477;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yNcVBbhGtCzb9GuZyfZlONnG3UaP4zdH2tNBP9ClSbY=;
+ b=Ow7yWuu3xZwJYeQTe5Ls5VZjhlOEIUyIl7rVQeKwjo4WG83mVJf5Jdt0hv9+9hK0le
+ 38AbSEOudqKofL77sSq/nCFvZSWCf2A2oRbiFF10qM1DAzIGHpjhjMEV5/EOGRUczRmP
+ UaqUrx27DUo+Hjnp4n9QDTPCJS9OzBNcU1ZjNbsvncrOI8kszDcS6A3/jxf0lJJvgn3p
+ hZzkeGiDOD0cxzVuCd4R2dKXrXkwk2moHns4POOokMzrduRiIcsrnm2Iy4Kgt2n4ycAZ
+ 2dQ+OtqJC6Mrtsr58zGBWb5YIJvlfv30A1UifrSIPNinbaEgQKDR4LSXkc84HaZOfrji
+ w+fQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWoepprQaVXQqJrbkIQhCNA427HQzyX20jqUmzXiSjqQ9298jUWZ1V281a4W6P7CqMPbmjKG+natK2p@nongnu.org
-X-Gm-Message-State: AOJu0YyHvoh8FroDcqpMroX3so90ft7OeWNGTKt8oGCOXiz5qBOEs1L3
- bmT5lgmLusZakalpaLclLatCH6Ln68N3a6MoxoR5nkJjkG6idhtSnv7RkM3MwuD/UU3f2jTXGMY
- cwhJeEfZP94loDjbU5eLOq3facMgcImSY5pOU449e6fsi4lK3OOw0
-X-Gm-Gg: ASbGncsUYJZINbvBJeuWAgieok7b4G7xDLtuWgBsa0Gi4jjLknaWvCwcrinNhAc2dC/
- zQtPJ0+00bjbbJTmqltt9evhYHbPh1zGzl9XoQtAYWeIq7DxdTKfP8ktDwhdyDxSdACt79na3SW
- aavXpAHREPafDf2DKmI740XaZARYTQQihG3F6R1U1FBtwppcygjs/nXQAQdQ0KI8GK42rd2kmQW
- 9+tkMeexaWbvLZmK5c6QPNqJ2T9hS1/wSafXvaQ8DMl/mCKzU1GKnjtZIDeTKguCrBaxZrbspZL
- cbr/RQ==
-X-Received: by 2002:a05:6000:1ace:b0:385:f00a:a45c with SMTP id
- ffacd0b85a97d-38a87320a44mr2485814f8f.57.1736345382752; 
- Wed, 08 Jan 2025 06:09:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG3TrZBYZo8h2cLFx2pHq+hCQozJ42kZ1Svg4FcDTjvdMcaE+iYi/m96mVHinKA+aJZXxgmyw==
-X-Received: by 2002:a05:6000:1ace:b0:385:f00a:a45c with SMTP id
- ffacd0b85a97d-38a87320a44mr2485760f8f.57.1736345382342; 
- Wed, 08 Jan 2025 06:09:42 -0800 (PST)
-Received: from [10.33.192.228] (nat-pool-str-t.redhat.com. [149.14.88.106])
+ AJvYcCUe0PSO1L3Y5za1Dum2sYxt1kodJianPU/1MpXcsQu14Bx4MzQhtVGBoEMRhHLHHJZR7NtwPu3tjzIE@nongnu.org
+X-Gm-Message-State: AOJu0YwgHxLre5So696XBY5JJOvdJ4O/3wEUUPNJ0N5reacw5lVKeWNs
+ fXEOJKL0C/KCI2GC+jYQB3M5RdYKFOqomxCYhNTxKqDkmsDoplMXRVL5XcrhScLNLaGHAuI9RQK
+ xCMtvydhA61b9IHjzJAqJsBZK24mNTIac8xoZckZeK39NlJFNaDXu
+X-Gm-Gg: ASbGnculvq9TJjrytEsS2kMrcLoifEuAIK2Dv5VoN0T0SJbAjwAV3FS+XK0dfFQDX34
+ TZ938yErduSQg7gFUf6dAkZRhJDPpfRTWQUmFRzfx2zQ1s0sQl5QTsD7y+awjRcUv9WeCVElxiJ
+ 7lqWZQzU0+TqvkrLiioiRsEP/pdyVBVqcy9kt9WXS9ZaKLWY4/weHyxdfc8r/RhN4r2A9ylDU7y
+ d4Bds/nGWJ4ObEfQIJJ2yNmqnyztHsFVIyYzkVSyCK3gju8QD0=
+X-Received: by 2002:a05:6402:26cd:b0:5d0:d845:2882 with SMTP id
+ 4fb4d7f45d1cf-5d971ba439cmr2707860a12.13.1736345677197; 
+ Wed, 08 Jan 2025 06:14:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFKtk9x9QKCmWxztdABmLZGo0gNmHg9Dd/RFbOSpC8jj0cQZPb5Vvzgn8YqKiPuocWpS+tLNQ==
+X-Received: by 2002:a05:6402:26cd:b0:5d0:d845:2882 with SMTP id
+ 4fb4d7f45d1cf-5d971ba439cmr2707819a12.13.1736345676708; 
+ Wed, 08 Jan 2025 06:14:36 -0800 (PST)
+Received: from redhat.com ([2a02:14f:175:d62d:93ef:d7e2:e7da:ed72])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c89e1cesm52212856f8f.64.2025.01.08.06.09.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Jan 2025 06:09:41 -0800 (PST)
-Message-ID: <15fbe517-a646-4a21-ba02-a4a00ece641b@redhat.com>
-Date: Wed, 8 Jan 2025 15:09:40 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 20/32] tests/functional: update tuxruntest to use
- uncompress utility
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Halil Pasic <pasic@linux.ibm.com>, Aurelien Jarno <aurelien@aurel32.net>, 
- qemu-riscv@nongnu.org, Radoslaw Biernacki <rad@semihalf.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
+ 4fb4d7f45d1cf-5d80701ca31sm25153860a12.88.2025.01.08.06.14.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 08 Jan 2025 06:14:35 -0800 (PST)
+Date: Wed, 8 Jan 2025 09:14:29 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Julia Zhang <julia.zhang@amd.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Beraldo Leal <bleal@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Laurent Vivier <lvivier@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Ed Maste <emaste@freebsd.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Bernhard Beschow <shentey@gmail.com>, Bin Meng <bmeng.cn@gmail.com>,
- qemu-ppc@nongnu.org, qemu-arm@nongnu.org, Laurent Vivier
- <laurent@vivier.eu>, Joel Stanley <joel@jms.id.au>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Alistair Francis <alistair.francis@wdc.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>, Cleber Rosa <crosa@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-s390x@nongnu.org,
- Eric Farman <farman@linux.ibm.com>, Weiwei Li <liwei1518@gmail.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Peter Maydell
- <peter.maydell@linaro.org>, Li-Wen Hsu <lwhsu@freebsd.org>
-References: <20250108121054.1126164-1-alex.bennee@linaro.org>
- <20250108121054.1126164-21-alex.bennee@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250108121054.1126164-21-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ xen-devel@lists.xenproject.org, Alex Deucher <alexander.deucher@amd.com>,
+ Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+ Xenia Ragiadakou <burzalodowa@gmail.com>,
+ Chen Jiqian <Jiqian.Chen@amd.com>, Huang Rui <ray.huang@amd.com>,
+ Penny Zheng <penny.zheng@amd.com>, Zhu Lingshan <Lingshan.Zhu@amd.com>,
+ Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
+ Jan Beulich <jbeulich@suse.com>, Juergen Gross <jgross@suse.com>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 3/3] virtio-gpu: add a new command to get p2pdma_distance
+Message-ID: <20250108091357-mutt-send-email-mst@kernel.org>
+References: <20241207105537.542441-1-julia.zhang@amd.com>
+ <20241207105537.542441-4-julia.zhang@amd.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241207105537.542441-4-julia.zhang@amd.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -182,14 +115,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 08/01/2025 13.10, Alex Bennée wrote:
-> Use the utility functions to reduce code duplication.
-> 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   tests/functional/qemu_test/tuxruntest.py | 12 +-----------
->   1 file changed, 1 insertion(+), 11 deletions(-)
+On Sat, Dec 07, 2024 at 06:55:40PM +0800, Julia Zhang wrote:
+> diff --git a/include/standard-headers/linux/virtio_gpu.h b/include/standard-headers/linux/virtio_gpu.h
+> index 6459fdb9fb..2e55dcc2fe 100644
+> --- a/include/standard-headers/linux/virtio_gpu.h
+> +++ b/include/standard-headers/linux/virtio_gpu.h
+> @@ -95,6 +95,7 @@ enum virtio_gpu_ctrl_type {
+>  	VIRTIO_GPU_CMD_SUBMIT_3D,
+>  	VIRTIO_GPU_CMD_RESOURCE_MAP_BLOB,
+>  	VIRTIO_GPU_CMD_RESOURCE_UNMAP_BLOB,
+> +	VIRTIO_GPU_CMD_P2PDMA_DISTANCE,
+>  
+>  	/* cursor commands */
+>  	VIRTIO_GPU_CMD_UPDATE_CURSOR = 0x0300,
+> @@ -108,6 +109,7 @@ enum virtio_gpu_ctrl_type {
+>  	VIRTIO_GPU_RESP_OK_EDID,
+>  	VIRTIO_GPU_RESP_OK_RESOURCE_UUID,
+>  	VIRTIO_GPU_RESP_OK_MAP_INFO,
+> +	VIRTIO_GPU_RESP_OK_P2PDMA_DISTANCE,
+>  
+>  	/* error responses */
+>  	VIRTIO_GPU_RESP_ERR_UNSPEC = 0x1200,
+> @@ -429,6 +431,23 @@ struct virtio_gpu_set_scanout_blob {
+>  	uint32_t offsets[4];
+>  };
+>  
+> +/* VIRTIO_GPU_CMD_P2PDMA_DISTANCE */
+> +struct virtio_gpu_device_p2pdma_distance {
+> +	struct virtio_gpu_ctrl_hdr hdr;
+> +	__le32 provider_bus;
+> +	__le32 provider_slot;
+> +	__le32 provider_func;
+> +	__le32 client_bus;
+> +	__le32 client_slot;
+> +	__le32 client_func;
+> +};
+> +
+> +/* VIRTIO_GPU_RESP_DISTANCE */
+> +struct virtio_gpu_resp_distance {
+> +	struct virtio_gpu_ctrl_hdr hdr;
+> +	__le32 distance;
+> +};
+> +
+>  /* VIRTIO_GPU_CMD_RESOURCE_MAP_BLOB */
+>  struct virtio_gpu_resource_map_blob {
+>  	struct virtio_gpu_ctrl_hdr hdr;
+> -- 
+> 2.34.1
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+This is not how we change this header.
+you need a spec patch, an UAPI change to be accepted into linux.
+
+-- 
+MST
 
 
