@@ -2,104 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B457AA05F7A
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 16:00:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EFC0A05F2C
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 15:44:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVXWe-0008O9-S0; Wed, 08 Jan 2025 09:59:16 -0500
+	id 1tVXHF-0001K6-Su; Wed, 08 Jan 2025 09:43:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tVXWd-0008Nr-I1
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:59:15 -0500
-Received: from mail-ej1-x641.google.com ([2a00:1450:4864:20::641])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tVXWY-00051w-S9
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:59:13 -0500
-Received: by mail-ej1-x641.google.com with SMTP id
- a640c23a62f3a-aab6fa3e20eso2808651066b.2
- for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 06:59:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736348349; x=1736953149; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=o4yl5M7j04HVGwyU3KVHNQ62ypgg9hQ+++6O70p3+fs=;
- b=NjhO3JXJZUclew7wHn7SqHsIm2WNRhIC0fsW4XXVLIf9D6Hrv8fbYBWx3uF4NYXhGD
- Mpbmf/r4Fx25vwZUu5h8UkOBtOzJ1NQlMMoFDVDYb3293Q6+xqrtzTzYVNjszzNWzN63
- it84uoJk/VDNycf42N5YYboHye1YuJGdxyJktonGJqHH3Yu1kaOm7KpI03QxvBDeNuwu
- dlVSRvHb73j6bYp957bsv2vtkpDULdN7GJ6eTO2yt81XHASNSqRFLOuA62eFVmBXS/Ju
- 7tAi6id76nFA9dJMwRqiMIYz2kFVklYDXjr5MmkRRsULUJBDf8SG9I14lpqgUNCbIyHb
- oACA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736348349; x=1736953149;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=o4yl5M7j04HVGwyU3KVHNQ62ypgg9hQ+++6O70p3+fs=;
- b=KPeMhbLpKA+8mv2Zdwq6FWAyVYjt0q5uUw/F44x2pGam2zw55tOFruGwJ3I4IEvzD7
- LItzrxtRKYZ1edoRWdr66oycEL62A1yhROZfBLa8s4QpgWF4BFT3wJDwyx9hkvvNZYgS
- ZLc4VlTnznlw20HlgywqRtKswrQgmCGYS/Pce8t15O3ng2LCj2JZWzNS/pEdXbrjE1vn
- ZJ8jYiYCOEFfvsazeG4FDqGwpWg8GSxR75rckNL1VgkQjOjqw/BLGUisdmlgj+JWcMQk
- J2lr8O+//+QU/aoicjOSi+3qC4SeAbcHs9S9u+u6SZNfZqcRraOF5goFMFt7CMZO1YWT
- G3Ow==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWPkDc2M1LhJH6wFGXCXTPR+wMPb9t7paw0ekRI/ZbAxZxt2P5EVAcCNJYXUIIkBPkARUmO8mJIZcKA@nongnu.org
-X-Gm-Message-State: AOJu0YzVo/0yOrTfLi0YRiZHJHnIFUQbg7T2qeUHOXb5dkenKO6t+UEP
- 5+eP6nQrO9dJVzqprM9e9QKJR+atchaQ9i3Cz+SfbyVXyFaptmkHaeGBAGaS6RM=
-X-Gm-Gg: ASbGncuOrY3zoT4KTCflWmCP+wsp5n01kTUwwggb6LIPvm9tcMhjIU3OVtw8mnAOsZc
- m7SNbjlFPmzl0el2F+iscGsdxcGGVD8HgwQ2a5vE4sIowWKDFDzADLzcitQ7j5VIuIBtDj5HQfQ
- YQqxW0ti3qgNmXmWAnmkCCW+eEmv9/29OM/eo+OYsu56gOPPhvKpl1YadeQQCgnF4ql6G6cJbQJ
- 1TC39OSYGCinJCR51Rq82NLzEX/BiI8pcUvAo0jGJSqOc2pOjaErik=
-X-Google-Smtp-Source: AGHT+IHMX80FhNjkGXpVv7j7y3oqFGJIvGQDPL4Q9BMCi3FKYlAIX4AIY6K85lPBkXJKZNNByPmyig==
-X-Received: by 2002:a17:907:9690:b0:aa6:738c:2ddc with SMTP id
- a640c23a62f3a-ab2ab67714amr229325066b.4.1736348348745; 
- Wed, 08 Jan 2025 06:59:08 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aac0efe467esm2513775966b.104.2025.01.08.06.59.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Jan 2025 06:59:08 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 585645F8AC;
- Wed,  8 Jan 2025 14:59:07 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Rob Landley <rob@landley.net>
-Cc: Stafford Horne <shorne@gmail.com>,  Peter Maydell
- <peter.maydell@linaro.org>,  "Jason A. Donenfeld" <Jason@zx2c4.com>,  QEMU
- Developers <qemu-devel@nongnu.org>,  Linux OpenRISC
- <linux-openrisc@vger.kernel.org>
-Subject: Re: or1k -M virt -hda and net.
-In-Reply-To: <e2f1c14c-f5d2-48f3-bb6e-d1db0ce6d1fa@landley.net> (Rob Landley's
- message of "Tue, 7 Jan 2025 17:20:56 -0600")
-References: <9b2761aa-8ee0-4399-b237-31e70e3ed165@landley.net>
- <Z0Cyx3i3z7Zl7XPm@antec>
- <31fa6255-8e0c-4d05-bad9-dd843c676244@landley.net>
- <Z0GSETLeT5w8B2DX@antec>
- <87a6b910-5af6-47ad-ad8d-b79f11a7cbf2@landley.net>
- <Z0LMqEqcdjkAxnN-@antec>
- <57c5207c-3aca-47cd-bfd3-3d7eb7be3c0f@landley.net>
- <Z2lgL31ZeSkO59MZ@antec>
- <8807078a-0673-4b27-8d58-4a2a3ce4987d@landley.net>
- <39511711-b86a-4ac6-8bd6-8dab824b693e@landley.net>
- <Z31k3zNN3pOdGWWK@antec> <87y0zmbita.fsf@draig.linaro.org>
- <e2f1c14c-f5d2-48f3-bb6e-d1db0ce6d1fa@landley.net>
-User-Agent: mu4e 1.12.8; emacs 29.4
-Date: Wed, 08 Jan 2025 14:59:07 +0000
-Message-ID: <87msg1bbd0.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tVXHD-0001Jx-VE
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:43:19 -0500
+Received: from mgamail.intel.com ([198.175.65.16])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tVXHA-0008Le-VR
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 09:43:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1736347397; x=1767883397;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=8HbL3R0maWyTV35bsO/QEjd/9N1bmV+pEYCDDGAK5iA=;
+ b=YtQ7Spj07UmbxhYQYaBvwCiFgD/gm/uKdEf/gewfGkuMbVv0Dng881+O
+ HG4dV0J0rZMb9eLUyZMG3I5H1zP8SdUooVDZ0r97N8bE8XI/FSwsl+1Hr
+ +EBm3gLlgYwvTBuxewRLQK5nVJspZXNvUSc1xmt9SRbcMEJOxl2sTnU3l
+ MYqsUQ/3BbIlx/ZzRQeI0E4RElUsT54TByA4/2+A9DdFC9uxnMhA63XRR
+ WpXvL67YLAdP8l0W8bjOBx0fBbPMhlGZW7qolQq+oJOcWWfnfrP5JCaBq
+ oGq/0we0O6amxamW1Lm82lXwWRm0r7HKwDAwYyiYTqBPH/TpVKJsyg1c+ Q==;
+X-CSE-ConnectionGUID: Df+zQ4S5SLKeBEI8X1MrnQ==
+X-CSE-MsgGUID: 9VMhOgCIQriDwNjY1R4Mcg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="36737334"
+X-IronPort-AV: E=Sophos;i="6.12,298,1728975600"; d="scan'208";a="36737334"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jan 2025 06:43:13 -0800
+X-CSE-ConnectionGUID: gEa0wccwQR23jwx9YNum2Q==
+X-CSE-MsgGUID: QmPF3t3GQnSNNwgQ+iEEkA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="103969384"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by orviesa008.jf.intel.com with ESMTP; 08 Jan 2025 06:43:09 -0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Alireza Sanaee <alireza.sanaee@huawei.com>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v7 0/5] i386: Support SMP Cache Topology
+Date: Wed,  8 Jan 2025 23:01:45 +0800
+Message-Id: <20250108150150.1258529-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::641;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x641.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- URIBL_SBL_A=0.1 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.432,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,180 +88,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rob Landley <rob@landley.net> writes:
+Hi folks,
 
-> On 1/7/25 12:05, Alex Benn=C3=A9e wrote:
->> Stafford Horne <shorne@gmail.com> writes:
->>> I have not used -hda before, do you have it working with other targets?
->>>
->>> According to the qemu docs in qemu-options.hx. I see:
->>>
->>>      Use file as hard disk 0, 1, 2 or 3 image on the default bus of the
->>>      emulated machine (this is for example the IDE bus on most x86 mach=
-ines,
->>>      but it can also be SCSI, virtio or something else on other target
->>>      architectures). See also the :ref:`disk images` chapter in the Sys=
-tem
->>>      Emulation Users Guide.
->>>
->>> I think, since we don't have a "default" bus in openrisc this doesn't w=
-ork so we
->>> need to specify the -drive explictly.
+This is my v7.
 
-Well if you want a simple drive command you need something. For example
-on -M virt for aarch64:
+Compared with v6 [1], v7 dropped the "thread" level cache topology
+(cache per thread):
 
-  -drive  driver=3Draw,file.driver=3Dhost_device,file.filename=3D/dev/zen-s=
-sd2/trixie-arm64,discard=3Dunmap
+ - Patch 1 is the new patch to reject "thread" parameter for smp-cache.
+ - Ptach 2 dropped cache per thread support.
+ (Others remain unchanged.)
 
-only really contains backend options. By default this will attach the
-block device to the virtio-pci bus, see virt.c:
+There're several reasons:
 
-  mc->block_default_type =3D IF_VIRTIO;
+ * Currently, neither i386 nor ARM have real hardware support for per-
+   thread cache.
+ * Supporting this special cache topology on ARM requires extra effort
+   [2].
 
-The backend options might look a bit much, a simpler case with qcow2
-would be:
+So it is unnecessary to support it at this moment, even though per-
+thread cache might have potential scheduling benefits for VMs without
+CPU affinity.
 
-  -drive driver=3Dqcow2,file=3Dtrixie-x86_64.qcow2=20
+In the future, if there is a clear demand for this feature, the correct
+approach would be to add a new control field in MachineClass.smp_props
+and enable it only for the machines that require it.
 
-However if you don't have any default bus for your block devices you
-must use -device/-blockdev pairs. It doesn't add much:
 
- -device virtio-scsi-pci \
- -device scsi-hd,drive=3Dhd \
- -blockdev driver=3Draw,node-name=3Dhd,file.driver=3Dhost_device,file.filen=
-ame=3D/dev/zen-ssd2/trixie-arm64,discard=3Dunmap \
+This series is based on the master branch at commit aa3a285b5bc5 ("Merge
+tag 'mem-2024-12-21' of https://github.com/davidhildenbrand/qemu into
+staging").
 
-So all I've added is the bus, a device and then linked them with the
-drive/node-name ids.
+Smp-cache support of ARM side can be found at [3].
 
->>>
->>> I checked the x86 machine code and confirm it seems to work like this. =
- There is
->>> code in the system setup to look for hd* drives and wire them into IDE.=
-  There
->>> is no such code in openrisc.
->> Yeah don't use -hdX as they are legacy options with a lot of default
->> assumptions. As the docs say: https://qemu.readthedocs.io/en/master/syst=
-em/invocation.html#hxtool-1
->>    The QEMU block device handling options have a long history and
->> have
->>    gone through several iterations as the feature set and complexity of
->>    the block layer have grown. Many online guides to QEMU often reference
->>    older and deprecated options, which can lead to confusion.
->
-> I want "a block device from this file" in a generic way that works the
-> same across multiple architectures regardless of the board being
-> emulated, where I only have to specify the file not explicitly
-> micromanage bus plumbing details, and which is easy for a human to
-> type from when explained over a voice call.
 
-You shouldn't need to micro manage bus details, you just need to link
-the device to the backend via an id.
+Background
+==========
 
-> What's the alternative to -hda you suggest for that?
->
-> Can I do "./run-qemu.sh -drive file=3Dblah.img" without the rest?
-> Perhaps specify all the details in the script and then optionally add
-> an extra argument at the end? I couldn't get that to work:
->
-> $ root/or1k/run-qemu.sh -netdev user,id=3Dnet0 -device
-> virtio-net-device,netdev=3Dnet0 -drive format=3Draw,id=3Dhd0 -device
-> virtio-blk-device,drive=3Dhd0 -drive file=3DREADME
-> qemu-system-or1k: -drive format=3Draw,id=3Dhd0: A block device must be
-> specified for "file"
->
-> Also, if you say -device and -drive but do NOT specify a file, qemu
-> refuses to start. So I can't set the defaults but only optionally use
-> them, the way -hda has defaults built into the image that don't cause
-> a problem if I DON'T add a -hda argument to the command line.
+The x86 and ARM (RISCV) need to allow user to configure cache properties
+(current only topology):
+ * For x86, the default cache topology model (of max/host CPU) does not
+   always match the Host's real physical cache topology. Performance can
+   increase when the configured virtual topology is closer to the
+   physical topology than a default topology would be.
+ * For ARM, QEMU can't get the cache topology information from the CPU
+   registers, then user configuration is necessary. Additionally, the
+   cache information is also needed for MPAM emulation (for TCG) to
+   build the right PPTT. (Originally from Jonathan)
 
-device and blockdev pairs are required. -drive attempts to do both in
-one command line option.
 
->>    Older options like -hda are essentially macros which expand into -dri=
-ve
->>    options for various drive interfaces.
->
-> Where the knowledge of "what this board needs in order to do that" is
-> built into qemu rather than provided by the caller, yes.
->
->> The original forms bake in a lot
->>    of assumptions from the days when QEMU was emulating a legacy PC, they
->>    are not recommended for modern configurations.
->
-> I'm building a kernel. It finds /dev/?da so I can mount it. That is my
-> desired outcome.
->
-> I am attempting to get generic behavior out of multiple architectures,
-> among other reasons so I can cross-test and package up "it fails on X,
-> here's a build and test" to point package maintainers at.
+About smp-cache
+===============
 
-We support a wide variety of boards some with fixed block device buses
-and some with the ability to add stuff dynamically. While we certainly
-could do better documenting the edge cases (patches welcome ;-) I'm not
-sure its possible to come up with a generic command line that works
-across all boards. That said any of the VirtIO enabled platforms (often
-called virt) will have fairly similar command lines for adding devices
-(modulo PCI/MMIO support).
+The API design has been discussed heavily in [4].
 
-> "It natively builds under the emulator" is the easiest way to make
-> that work, which is why https://landley.net/bin/toolchains/latest/ has
-> a native.sqf for each cross.tar.xz.
->
-> wget system-image-arch.txz
-> wget toolchain.sqf
-> wget test.img
->
-> ./run-emulator.sh -hda test.img -hdb toolchain.sqf
->
-> If I have to explain "-drive virtio-potato-walrus,inkpot=3Dstriated
-> -device collect=3Dstriated,burbank-potato,ireland" at somebody whose
-> domain expertise is xfce or something, the barrier to getting them to
-> reproduce the issue I'm seeing is noticeably higher. If I have to MAKE
-> a bespoke wrapper shell script for them with every bug report, the
-> likelihood that it works differently for them than when I tried it is
-> noticeably nonzero, and the likelihood of the issue going on my todo
-> heap and never getting pursued upstream is also noticeably higher.
-> Which is why I try to make generic tools...
+Now, smp-cache is implemented as a array integrated in -machine. Though
+-machine currently can't support JSON format, this is the one of the
+directions of future.
 
-Just put it in a script then.=20
+An example is as follows:
 
-> (Making a _test_ script to demonstrate the issue is normal. If it's
-> their project, usually they can tell if I typoed it and fix it up
-> themselves because they know what I MEANT. But if I typo the setup for
-> the virtual environment, or are missing a prerequisite package
-> install, or they hit qemu version skew, or I said /bin/sh and theirs
-> points to dash... Brick wall. It either works or it doesn't.)
->
-> (And when I have to set up the long version for a nightly cron job,
-> and then when the test fails 6 months later and I look at it and go
-> "huh? salad?" that's a bad 3am digression as well. And which is more
-> likely to break from version skew during qemu version upgrades: two
-> lines of micromanaging --longopts or -hda that gets adjusted by the
-> maintainers?)
+smp_cache=smp-cache.0.cache=l1i,smp-cache.0.topology=core,smp-cache.1.cache=l1d,smp-cache.1.topology=core,smp-cache.2.cache=l2,smp-cache.2.topology=module,smp-cache.3.cache=l3,smp-cache.3.topology=die
 
-QEMU's command line reputation is not undeserved but it is at least
-consistent with the modern composable options. If we can improve the
-documentation then let us know:
+"cache" specifies the cache that the properties will be applied on. This
+field is the combination of cache level and cache type. Now it supports
+"l1d" (L1 data cache), "l1i" (L1 instruction cache), "l2" (L2 unified
+cache) and "l3" (L3 unified cache).
 
-  https://qemu.readthedocs.io/en/master/system/device-emulation.html
+"topology" field accepts CPU topology levels including "core", "module",
+"cluster", "die", "socket", "book", "drawer" and a special value
+"default". (Note, now, in v7, smp-cache doesn't support "thread".)
 
-But expanding the use of automagical options is not really a long term
-solution.
+The "default" is introduced to make it easier for libvirt to set a
+default parameter value without having to care about the specific
+machine (because currently there is no proper way for machine to
+expose supported topology levels and caches).
 
-> Rob
->
-> P.S. For some reason -hda grew an "I'm going to make the first block
-> read-only just like loopback devices do because you can't be trusted"
-> nag a few years back, but it's mostly yet more boot spam. I can tell
-> the kernel to be quiet during boot, but never figured out the
-> equivalent for qemu-system...
+If "default" is set, then the cache topology will follow the
+architecture's default cache topology model. If other CPU topology level
+is set, the cache will be shared at corresponding CPU topology level.
 
--append passes options to the kernel command line if you are doing a
-direct kernel boot or your firmware supports direct kernel booting.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+[1]: Patch v6: https://lore.kernel.org/qemu-devel/20241219083237.265419-1-zhao1.liu@intel.com/
+[2]: Gap of cache per thread for ARM: https://lore.kernel.org/qemu-devel/Z3efFsigJ6SxhqMf@intel.com/#t
+[3]: ARM smp-cache: https://lore.kernel.org/qemu-devel/20250102152012.1049-1-alireza.sanaee@huawei.com/
+[4]: API disscussion: https://lore.kernel.org/qemu-devel/8734ndj33j.fsf@pond.sub.org/
+
+Thanks and Best Regards,
+Zhao
+---
+Alireza Sanaee (1):
+  i386/cpu: add has_caches flag to check smp_cache configuration
+
+Zhao Liu (4):
+  hw/core/machine: Reject thread level cache
+  i386/cpu: Support module level cache topology
+  i386/cpu: Update cache topology with machine's configuration
+  i386/pc: Support cache topology in -machine for PC machine
+
+ hw/core/machine-smp.c |  9 ++++++
+ hw/i386/pc.c          |  4 +++
+ include/hw/boards.h   |  3 ++
+ qemu-options.hx       | 30 +++++++++++++++++-
+ target/i386/cpu.c     | 71 ++++++++++++++++++++++++++++++++++++++++++-
+ 5 files changed, 115 insertions(+), 2 deletions(-)
+
+-- 
+2.34.1
+
 
