@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D95DA067C2
+	by mail.lfdr.de (Postfix) with ESMTPS id E7409A067C5
 	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 23:05:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVeAE-0004Bi-8a; Wed, 08 Jan 2025 17:04:34 -0500
+	id 1tVeAF-0004CU-9x; Wed, 08 Jan 2025 17:04:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tVeAC-0004BS-Qc
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 17:04:32 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tVeAE-0004Bk-2U
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 17:04:34 -0500
 Received: from nyc.source.kernel.org ([147.75.193.91])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tVeAB-0006OG-4x
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 17:04:32 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tVeAC-0006Of-Ew
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 17:04:33 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 25871A404A4;
- Wed,  8 Jan 2025 22:02:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E6CC4CEDF;
- Wed,  8 Jan 2025 22:04:27 +0000 (UTC)
+ by nyc.source.kernel.org (Postfix) with ESMTP id E6A7FA41C6E;
+ Wed,  8 Jan 2025 22:02:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6556C4CED3;
+ Wed,  8 Jan 2025 22:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1736373869;
- bh=++yLiwF1vMXtmMJcl0mx0RivzvJ7PQ5W2ExsxlhLhr4=;
+ s=k20201202; t=1736373871;
+ bh=Z3ILH7yeOybgi1/CJ1rwkFp19U43yvxFnde7k2lHHz8=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=QwoSwxVWakADNVUNt8nDBizbxRA01B8Q4PZ7bcFVgfc6hGAkT+nTvmOdRmDFppOd2
- lcmCFw1eYmbz62mQHBSkF3WyATU8yTvQB+CVuZZb8JLT3dj5+UPBkIZVKJ23IeQARZ
- TpilkFHGqEKQlJgH6I6a7GmQmmVpQbaQPI7iNM9WmgsL0+7aO8Wd5gu5fUrbCA9ejC
- fVSbmNAcwVgmrc9Az5WuEfQeeUC+A03RS6q5qkfGmigxW3i+9A18rqMuvglPKp9Mhs
- gRcCn1kpfq+MKTP2mZKnKwKyNTPm0mSHOmjPV42Mp8XWQ8kBBKpUKqSWnnW/Q18Y6z
- TRqgT4omXwhhQ==
+ b=ZKWM+MLuEU/a8oEkOER/TYfv9+Tqd3J3XKY+jk/L5+Yc4WmybjVtTE1nhkn57XOOW
+ VqXMlyf6pInC9rUU2BOXKSX3kCa74YcgVs07V5rFeslLf0t0PQX9yxDDfYAzvOj999
+ Pzuyb6DESRnqs90A2YWsS8Q6UI/wnZxqOHq3PaC53VVlLfJahUjZhKZj1g2YiynzSF
+ Ejc1D367RowHpw4Aavo1BUJfR8ccoGevYd8FoqABLDu+lIR0NhcTXd/4o0U10BovCH
+ EnMJL4zAyKd8i2FT7ub8pkyph+Mh4nGNgfP1lpSdPNaM260R99igbwMJSXtZp7g79n
+ M2mNsS9aH08jA==
 From: deller@kernel.org
 To: Stefan Hajnoczi <stefanha@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -38,14 +38,13 @@ To: Stefan Hajnoczi <stefanha@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PULL v2 2/6] linux-user: Use unique error messages for cmsg parsing
-Date: Wed,  8 Jan 2025 23:04:18 +0100
-Message-ID: <20250108220422.169967-3-deller@kernel.org>
+Subject: [PULL v2 3/6] linux-user: netlink: Add IP_PKTINFO cmsg parsing
+Date: Wed,  8 Jan 2025 23:04:19 +0100
+Message-ID: <20250108220422.169967-4-deller@kernel.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250108220422.169967-1-deller@kernel.org>
 References: <20250108220422.169967-1-deller@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=147.75.193.91; envelope-from=deller@kernel.org;
  helo=nyc.source.kernel.org
@@ -74,38 +73,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Avoid using the same error message for two different code paths
-as it complicates determining the one which actually triggered.
+Fixes those warnings:
+ Unsupported host ancillary data: 0/8
 
 Signed-off-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 ---
- linux-user/syscall.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ linux-user/syscall.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 1ce4c79784..494323efba 100644
+index 494323efba..bbe2560927 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -1825,7 +1825,7 @@ static inline abi_long target_to_host_cmsg(struct msghdr *msgh,
-                 *dst = tswap32(*dst);
+@@ -1996,6 +1996,18 @@ static inline abi_long host_to_target_cmsg(struct target_msghdr *target_msgh,
+                     (void *) &errh->offender, sizeof(errh->offender));
+                 break;
              }
-         } else {
--            qemu_log_mask(LOG_UNIMP, "Unsupported ancillary data: %d/%d\n",
-+            qemu_log_mask(LOG_UNIMP, "Unsupported target ancillary data: %d/%d\n",
-                           cmsg->cmsg_level, cmsg->cmsg_type);
-             memcpy(data, target_data, len);
-         }
-@@ -2047,7 +2047,7 @@ static inline abi_long host_to_target_cmsg(struct target_msghdr *target_msgh,
- 
-         default:
-         unimplemented:
--            qemu_log_mask(LOG_UNIMP, "Unsupported ancillary data: %d/%d\n",
-+            qemu_log_mask(LOG_UNIMP, "Unsupported host ancillary data: %d/%d\n",
-                           cmsg->cmsg_level, cmsg->cmsg_type);
-             memcpy(target_data, data, MIN(len, tgt_len));
-             if (tgt_len > len) {
++            case IP_PKTINFO:
++            {
++                struct in_pktinfo *pkti = data;
++                struct in_pktinfo *target_pkti = target_data;
++
++                __put_user(pkti->ipi_ifindex, &target_pkti->ipi_ifindex);
++                host_to_target_sockaddr((unsigned long) &target_pkti->ipi_spec_dst,
++                    (void *) &pkti->ipi_spec_dst, sizeof(pkti->ipi_spec_dst));
++                host_to_target_sockaddr((unsigned long) &target_pkti->ipi_addr,
++                    (void *) &pkti->ipi_addr, sizeof(pkti->ipi_addr));
++                break;
++            }
+             default:
+                 goto unimplemented;
+             }
 -- 
 2.47.0
 
