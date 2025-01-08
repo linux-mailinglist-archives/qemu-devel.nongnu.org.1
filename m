@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D66AA06610
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 21:27:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0050FA0660E
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 21:27:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVcdo-0007Gz-Dj; Wed, 08 Jan 2025 15:27:00 -0500
+	id 1tVcdq-0007Hs-7I; Wed, 08 Jan 2025 15:27:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tVcdb-0007Dv-MQ
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 15:26:49 -0500
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tVcdc-0007E3-ME
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 15:26:50 -0500
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tVcdZ-0006s4-RO
- for qemu-devel@nongnu.org; Wed, 08 Jan 2025 15:26:47 -0500
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 508Ehs19016007;
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tVcda-0006sA-BY
+ for qemu-devel@nongnu.org; Wed, 08 Jan 2025 15:26:48 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 508Ew0eI008979;
  Wed, 8 Jan 2025 20:26:37 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=LKeLb0
- K6yzjo1BqPmQKktPLgWotiXJx2uOaOMenZGNo=; b=ahqUaDE+8+s7wylwrVgKz9
- 0s+/h/dd0mXSVky4PjTlXYncG4dfYJClzzJJ3PU/R7Opuxh7YlMYjHW8pRfMsQ+P
- MdQclz5Tlc1GV3hLOA1i8LpTbjxQ73j5WdzimRpC60CNZhudrBSQGHGDW2uNVv06
- a3+cuKJtreGDo5u9jqaX81VQcb1T+MiUIoDnrFVULl1SqXi/9FszxmcHgvVh46Tl
- zgV9MdI/bWq55prkX1LO2ySvpsgk98TPVA4H4DuET12Q0+3ZgLEVBnDb+eIFGJuJ
- GLJo0MZvS6++zsdNHJqqK0wZQHrlpKOV90HSRDmfl6VsRIzeEbeg7F7wxh7yEIIw
+ :message-id:mime-version:references:subject:to; s=pp1; bh=tsiq3P
+ pA+x6eAbd49Fo7iQWURP0I24ow4GmDFFNiP4k=; b=GqpNFmRSQvUbikXHfCsU41
+ T56GaCOGOtSLNnWFclvQluJoN3BN2LrNt5GGz2dMSxEAdqGRY3YX5IP0BFHTosgR
+ cNG3Xh//rr/B150JjsJTGl2p20F2IlivOQXFpLPxeLuAebv/fP+170+wDyngmH81
+ 74rdD7e2AmWnxIljwfLp4BYFwr88eFAvvoRmqOegBokbAkv8uoLLVMJyR623PV/C
+ fLM/oKB30QuHwlsYw7pY1CSr+oStxYaProGCiznZHvqPNgTDWvAHfhWa/W65F9YM
+ lEOWDiW0UZARwXBkanHoeq1Z89gwpeaWm1jKqbQHIpTvpaonWJOflyvmiMCaxfkg
  ==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 441huc4ck1-1
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 441hupvcp8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 08 Jan 2025 20:26:36 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 508KD5mD013645;
- Wed, 8 Jan 2025 20:26:35 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43ygap1jr3-1
+ Wed, 08 Jan 2025 20:26:37 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 508K0BwJ008970;
+ Wed, 8 Jan 2025 20:26:36 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43yfq01rgw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 08 Jan 2025 20:26:35 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
  [10.20.54.101])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 508KQXpb50463002
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 508KQYlH22544672
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 8 Jan 2025 20:26:33 GMT
+ Wed, 8 Jan 2025 20:26:34 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4B52720043;
+ by IMSVA (Postfix) with ESMTP id 04FBD2004B;
+ Wed,  8 Jan 2025 20:26:34 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 62D7220040;
  Wed,  8 Jan 2025 20:26:33 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AB30920040;
- Wed,  8 Jan 2025 20:26:32 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.179.24.127])
  by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed,  8 Jan 2025 20:26:32 +0000 (GMT)
+ Wed,  8 Jan 2025 20:26:33 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Warner Losh <imp@bsdimp.com>, Riku Voipio <riku.voipio@iki.fi>,
  Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -64,10 +64,9 @@ To: Warner Losh <imp@bsdimp.com>, Riku Voipio <riku.voipio@iki.fi>,
 Cc: Kyle Evans <kevans@freebsd.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v4 8/9] docs/user: Document the %d placeholder and suspend=n
- QEMU_GDB features
-Date: Wed,  8 Jan 2025 21:05:03 +0100
-Message-ID: <20250108202625.149869-9-iii@linux.ibm.com>
+Subject: [PATCH v4 9/9] tests/tcg: Add late gdbstub attach test
+Date: Wed,  8 Jan 2025 21:05:04 +0100
+Message-ID: <20250108202625.149869-10-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250108202625.149869-1-iii@linux.ibm.com>
 References: <20250108202625.149869-1-iii@linux.ibm.com>
@@ -75,17 +74,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: rnSDenZrkfayUOG0bhhEhn5eoHqTYY6I
-X-Proofpoint-GUID: rnSDenZrkfayUOG0bhhEhn5eoHqTYY6I
+X-Proofpoint-ORIG-GUID: ffGYwe8pSKCi63P3MmJGyq12k5FTPA5C
+X-Proofpoint-GUID: ffGYwe8pSKCi63P3MmJGyq12k5FTPA5C
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0
- spamscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0 mlxlogscore=999
- bulkscore=0 mlxscore=0 malwarescore=0 adultscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501080163
+ suspectscore=0 adultscore=0
+ clxscore=1015 mlxscore=0 malwarescore=0 priorityscore=1501
+ lowpriorityscore=0 spamscore=0 bulkscore=0 impostorscore=0 mlxlogscore=999
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501080163
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -111,46 +110,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Add a small test to prevent regressions.
+Make sure that host_interrupt_signal is not visible to the guest.
+
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- docs/user/main.rst | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ tests/guest-debug/run-test.py              | 15 ++++++--
+ tests/tcg/multiarch/Makefile.target        |  9 ++++-
+ tests/tcg/multiarch/gdbstub/late-attach.py | 28 +++++++++++++++
+ tests/tcg/multiarch/late-attach.c          | 41 ++++++++++++++++++++++
+ 4 files changed, 90 insertions(+), 3 deletions(-)
+ create mode 100644 tests/tcg/multiarch/gdbstub/late-attach.py
+ create mode 100644 tests/tcg/multiarch/late-attach.c
 
-diff --git a/docs/user/main.rst b/docs/user/main.rst
-index 7a126ee8093..8dcb1d90a8b 100644
---- a/docs/user/main.rst
-+++ b/docs/user/main.rst
-@@ -50,7 +50,7 @@ Command line options
+diff --git a/tests/guest-debug/run-test.py b/tests/guest-debug/run-test.py
+index 5a091db8be9..75e9c92e036 100755
+--- a/tests/guest-debug/run-test.py
++++ b/tests/guest-debug/run-test.py
+@@ -36,6 +36,8 @@ def get_args():
+     parser.add_argument("--gdb-args", help="Additional gdb arguments")
+     parser.add_argument("--output", help="A file to redirect output to")
+     parser.add_argument("--stderr", help="A file to redirect stderr to")
++    parser.add_argument("--no-suspend", action="store_true",
++                        help="Ask the binary to not wait for GDB connection")
  
- ::
+     return parser.parse_args()
  
--   qemu-i386 [-h] [-d] [-L path] [-s size] [-cpu model] [-g port] [-B offset] [-R size] program [arguments...]
-+   qemu-i386 [-h] [-d] [-L path] [-s size] [-cpu model] [-g endpoint] [-B offset] [-R size] program [arguments...]
+@@ -73,10 +75,19 @@ def log(output, msg):
  
- ``-h``
-    Print the help
-@@ -87,8 +87,18 @@ Debug options:
-    Activate logging of the specified items (use '-d help' for a list of
-    log items)
+     # Launch QEMU with binary
+     if "system" in args.qemu:
++        if args.no_suspend:
++            suspend = ''
++        else:
++            suspend = ' -S'
+         cmd = f'{args.qemu} {args.qargs} {args.binary}' \
+-            f' -S -gdb unix:path={socket_name},server=on'
++            f'{suspend} -gdb unix:path={socket_name},server=on'
+     else:
+-        cmd = f'{args.qemu} {args.qargs} -g {socket_name} {args.binary}'
++        if args.no_suspend:
++            suspend = ',suspend=n'
++        else:
++            suspend = ''
++        cmd = f'{args.qemu} {args.qargs} -g {socket_name}{suspend}' \
++            f' {args.binary}'
  
--``-g port``
--   Wait gdb connection to port
-+``-g endpoint``
-+   Wait gdb connection to a port (e.g., ``1234``) or a unix socket (e.g.,
-+   ``/tmp/qemu.sock``).
+     log(output, "QEMU CMD: %s" % (cmd))
+     inferior = subprocess.Popen(shlex.split(cmd))
+diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
+index 18d3cf4ae00..688a6be203c 100644
+--- a/tests/tcg/multiarch/Makefile.target
++++ b/tests/tcg/multiarch/Makefile.target
+@@ -130,6 +130,13 @@ run-gdbstub-follow-fork-mode-parent: follow-fork-mode
+ 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/follow-fork-mode-parent.py, \
+ 	following parents on fork)
+ 
++run-gdbstub-late-attach: late-attach
++	$(call run-test, $@, env LATE_ATTACH_PY=1 $(GDB_SCRIPT) \
++		--gdb $(GDB) \
++		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" --no-suspend \
++		--bin $< --test $(MULTIARCH_SRC)/gdbstub/late-attach.py, \
++	attaching to a running process)
 +
-+   If a unix socket path contains single ``%d`` placeholder (e.g.,
-+   ``/tmp/qemu-%d.sock``), it is replaced by the emulator PID, which is useful
-+   when passing this option via the ``QEMU_GDB`` environment variable to a
-+   multi-process application.
-+
-+   If the endpoint address is followed by ``,suspend=n`` (e.g.,
-+   ``1234,suspend=n``), then the emulated program starts without waiting for a
-+   connection, which can be established at any later point in time.
+ else
+ run-gdbstub-%:
+ 	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst -%,,$(TARGET_NAME)) support")
+@@ -139,7 +146,7 @@ EXTRA_RUNS += run-gdbstub-sha1 run-gdbstub-qxfer-auxv-read \
+ 	      run-gdbstub-registers run-gdbstub-prot-none \
+ 	      run-gdbstub-catch-syscalls run-gdbstub-follow-fork-mode-child \
+ 	      run-gdbstub-follow-fork-mode-parent \
+-	      run-gdbstub-qxfer-siginfo-read
++	      run-gdbstub-qxfer-siginfo-read run-gdbstub-late-attach
  
- ``-one-insn-per-tb``
-    Run the emulation with one guest instruction per translation block.
+ # ARM Compatible Semi Hosting Tests
+ #
+diff --git a/tests/tcg/multiarch/gdbstub/late-attach.py b/tests/tcg/multiarch/gdbstub/late-attach.py
+new file mode 100644
+index 00000000000..1d40efb5ec8
+--- /dev/null
++++ b/tests/tcg/multiarch/gdbstub/late-attach.py
+@@ -0,0 +1,28 @@
++"""Test attaching GDB to a running process.
++
++SPDX-License-Identifier: GPL-2.0-or-later
++"""
++from test_gdbstub import main, report
++
++
++def run_test():
++    """Run through the tests one by one"""
++    try:
++        phase = gdb.parse_and_eval("phase").string()
++    except gdb.error:
++        # Assume the guest did not reach main().
++        phase = "start"
++
++    if phase == "start":
++        gdb.execute("break sigwait")
++        gdb.execute("continue")
++        phase = gdb.parse_and_eval("phase").string()
++    report(phase == "sigwait", "{} == \"sigwait\"".format(phase))
++
++    gdb.execute("signal SIGUSR1")
++
++    exitcode = int(gdb.parse_and_eval("$_exitcode"))
++    report(exitcode == 0, "{} == 0".format(exitcode))
++
++
++main(run_test)
+diff --git a/tests/tcg/multiarch/late-attach.c b/tests/tcg/multiarch/late-attach.c
+new file mode 100644
+index 00000000000..20a364034b5
+--- /dev/null
++++ b/tests/tcg/multiarch/late-attach.c
+@@ -0,0 +1,41 @@
++/*
++ * Test attaching GDB to a running process.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include <assert.h>
++#include <signal.h>
++#include <stdio.h>
++#include <stdlib.h>
++
++static const char *phase = "start";
++
++int main(void)
++{
++    sigset_t set;
++    int sig;
++
++    assert(sigfillset(&set) == 0);
++    assert(sigprocmask(SIG_BLOCK, &set, NULL) == 0);
++
++    /* Let GDB know it can send SIGUSR1. */
++    phase = "sigwait";
++    if (getenv("LATE_ATTACH_PY")) {
++        assert(sigwait(&set, &sig) == 0);
++        if (sig != SIGUSR1) {
++            fprintf(stderr, "Unexpected signal %d\n", sig);
++            return EXIT_FAILURE;
++        }
++    }
++
++    /* Check that the guest does not see host_interrupt_signal. */
++    assert(sigpending(&set) == 0);
++    for (sig = 1; sig < NSIG; sig++) {
++        if (sigismember(&set, sig)) {
++            fprintf(stderr, "Unexpected signal %d\n", sig);
++            return EXIT_FAILURE;
++        }
++    }
++
++    return EXIT_SUCCESS;
++}
 -- 
 2.47.1
 
