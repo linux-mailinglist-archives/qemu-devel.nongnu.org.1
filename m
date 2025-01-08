@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73672A056DF
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 10:29:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9F5CA056CD
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Jan 2025 10:27:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVSKZ-0003y4-0l; Wed, 08 Jan 2025 04:26:28 -0500
+	id 1tVSKg-00044Z-FZ; Wed, 08 Jan 2025 04:26:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tVSK3-0003uV-9D; Wed, 08 Jan 2025 04:25:56 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ id 1tVSK5-0003ut-6H; Wed, 08 Jan 2025 04:25:58 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tVSK1-0004lj-P6; Wed, 08 Jan 2025 04:25:55 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5d90a5581fcso327131a12.1; 
- Wed, 08 Jan 2025 01:25:52 -0800 (PST)
+ id 1tVSK3-0004lu-Mf; Wed, 08 Jan 2025 04:25:56 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3d143376dso24189511a12.3; 
+ Wed, 08 Jan 2025 01:25:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1736328351; x=1736933151; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1736328352; x=1736933152; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jXu/deQBUSnnpDSne97TzvwNxObiNI5E/wDmJP67j7k=;
- b=bSLMuEeTMsmKBN5B7XrmrNkmcwyBsCbLhbI5hPIuxmC4WWIJdhVF1E7I98wKjq/Ke2
- 3FBv2sx8EBpWhq0ZD2a0k95Bj4e+xEWwxVLI9AhdDrjBb/C/qqO77Y6HS/O3leQsMUrA
- eoJcBamaRjjE4+y3jhMJkNcCRCyd0+Oag+pGOHL0WXKXrq/a5Ao/Pd+C80PBWhaZzdYc
- NqOaOyLk10ZDxtUEC2ftW4k7JY3YLUsqzg3q5IvEPaS/kplqAFqlMbmK9x5nrHsU4sKP
- Txs60waZPKl5qIMZUCzO77yIhw3cpLFFJlMG2yJW4lV/PiO2Crg2iow2ZooKo49zzbcY
- zP9w==
+ bh=pwXzEhTAhGKIo4AswhlvC0Ew8f+aipAHcykX2e2ZcNs=;
+ b=LYNt0DkYgosJXBySE2+TDhbWtejJADoEC12EKQ0tDAocPxhKw0nZVtlFhhlBEe9EmI
+ 8KeR3hn7a4wYPZc2Ewm4vQRtvbz2FaoYN81F6NIVZlJI2KMM3wpYO0L/stFpznmNPQbL
+ jyvlRTNmboTZDDoTy0Rw+u9WiHNiXlghbp7/Q3ihPUmgv4Qu8X7Sj3lI2RmBVh2N3XLN
+ Nj/mUXlAf/i3Ker4Z6XqwnlIiZHgqVMQ5cnYc/mQK1tam8wyj6wtuG9rAE/ctrtjgFu7
+ 3A2hygWqaHttI+yDJwqSm5JJ61ukzqvDC3SOvBarz2s2wCdWY0V0aQK1VVsByK3GH1l3
+ 67aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736328351; x=1736933151;
+ d=1e100.net; s=20230601; t=1736328352; x=1736933152;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jXu/deQBUSnnpDSne97TzvwNxObiNI5E/wDmJP67j7k=;
- b=SxixJltMuBmIrsBR6eBlnvIKJ/PSJrrwhNtf0TI/YnfjPguhH2GLBB9M7tYM4DEAfW
- MTZbiH584CK6NwPdlVdNgNACMuTnd5K7zZJ7Y1ilX8/ZWzBA1PBmVJ4wfZUelg87J56O
- GH7F/4Y9wuXEZbEzFwqSH0NUflAIW/AeF/zaLnTuaX4T1n2cqb1m7eeuE+Mjt5Ace7LC
- t6Vt4iXxHwnk1E2lvdBFKiVcV8rgf71kYTKWGsnJH1OdW0kn/n/YhaxBNtfO0b5pgM2f
- Dm+4jy0hUHtIaoZhweVqv0QCw9iOE0c9gK/moW+V5OdNNDPcvlhD1yQsAl1zJGNcyiVf
- bKsQ==
+ bh=pwXzEhTAhGKIo4AswhlvC0Ew8f+aipAHcykX2e2ZcNs=;
+ b=P29GVU+tZxF2XUzHySmJ/jbeZFMpuP3wm/Rtv1bwPux30bFv6e7Mp4ItYNZsen/wnp
+ xz4N0YgoepdVRd1r5XqjUM18neVlFRIv/Z+ckvbnNLYOeTnUs9XH2EjBgjX/3Ehe/5+2
+ NvFa5fy0vTIjJtSVnGBjpCGfJMTybVZWz0xf+HKG6fFJckaE2ZZOM3yZJBQqWFbeWA0R
+ w4pdlXlMdinT7aJ1QeDUz/TNZG2PlnSy5HjlCbIE7Dq8sD4nspOOTOvbE28/BBVeQ7zk
+ H/GKcJz+LcbgWOXM7nCOceWpZtO3q7tZngo4ESJZDdxaSLLoGcvByzwP1j6f237Rehtz
+ wO3g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVZVmYhkmp7isB7a+GR1edgmcPqXH63e5yz5Bf630pbtm0d0SomnnNAgfLS0XpBDXDBNWeBpSxd8w==@nongnu.org,
- AJvYcCX7ESo2vflDvZN0igpz3Tu/b//1RTHSiNK5gqVHMpnUBqcoEQXgtf58/vvJ2ogWI9EPiVUv+xWvMzmyBw==@nongnu.org
-X-Gm-Message-State: AOJu0YxJrFQHHxfkgwha4dOoYehNHSlI03ygkhu06tvWeykg6qnqeN8e
- 5PTmj8sF0yOar3kpqMah/Gfb0XI423gWpczmt2pyqT5gPY63l0LtG2oDNXCj
-X-Gm-Gg: ASbGncu1KWvQSKLG0K7j/iC2vCqPhLslc4bSHvkKa6LqAmoekSuZtFaxbyi0LSXer01
- JJBbSA7+U6siCn8WNZ0ZEqaD0JOfBttunb+X1FnwaVMY+cQQDhnFQSTx8vq33zyN+J3bEGCmrv/
- MuhvzVO8zlB8jZrqebsxowOSdNhx3hWRlN0cHc1gxTX2n5/XdCCx9ArXE/oewenPwavQ476DHto
- S12kW2iJSPbT8cKoco0d8V3EX0EP+CYY1ewQp8MiYGlMcfDzk/oq9KYNK5DkUDXNseZDDzQhwHu
- aGOR5PybJKr5fqTYRZ6wuZg9bVNW0D8gz5FTvaW1HFaQqz0=
-X-Google-Smtp-Source: AGHT+IEdl0jXAisf4h7trCYbLzurFWxs9kxVpMSvY31SMbqVsugTdi+MxWUuUUa4zrb0mvLwGSE+Jg==
-X-Received: by 2002:a05:6402:2347:b0:5d2:729f:995f with SMTP id
- 4fb4d7f45d1cf-5d972e6f957mr1368915a12.29.1736328350418; 
- Wed, 08 Jan 2025 01:25:50 -0800 (PST)
+ AJvYcCVjBtYaLD+gvDS6TNBo0ppbDlln9G4I151ULJZrzbxm2tqqAaDKd986tJfpjUWfaJkB+znUVvjOWr8aqA==@nongnu.org,
+ AJvYcCWuJlSGLrtkXtPDBSwDI5laGJKwZ7d/PZwxNNO5uDI8V4vpP9cyjQmb7ab/+JydzHXWFiSYT9oaSA==@nongnu.org
+X-Gm-Message-State: AOJu0YzxmeXUb1ClebA1skWlf9GMWOZUBj2RE+RPRbJfQ2cZmMqu9khS
+ GHM6I1gVqYgPuoqGQXXKKBAajpnrzdbn0Zvvz1V9fsgFIEYQ191jWeOk+mhZ
+X-Gm-Gg: ASbGncsrGuEcdfPd5ph1ol5oyOSfWDKuM43Rrfs3Dr7IMi61Q4prqPQAlWxGXrMvC2A
+ CgimEPGavdXT0+Es1aIYeO9LvJoE/TUCevg/cUruPI6EcyjtZzUv77BbHjzIgwmoCGRbT9iq2WH
+ TOdEjFo7Y7V02yO/UTnRAg2sXU5sXakZ0Tlc9sWc2/HjfOFQpezRltZHhkJbTwN0l6pgFuCgtL9
+ vQ2uhigNDCVyHouD+PaFyt52lKVAW0RQJ/XVeewkvrssDCamKnc9IN9rsuiQ59c0+dldtmRcv3S
+ Es/8hWGsNvZecGyC3HZCaB38PweQMczx5gFAf3h/x+pbTe8=
+X-Google-Smtp-Source: AGHT+IHooUNtU1SHuHJ8W88F7WGBPnxr1ss7L89Q8JzHOKPTP+CE60tv6LlDF9PydNLMb5WFTAcL/A==
+X-Received: by 2002:a05:6402:4403:b0:5d0:e9de:5415 with SMTP id
+ 4fb4d7f45d1cf-5d972e08601mr1558175a12.14.1736328352217; 
+ Wed, 08 Jan 2025 01:25:52 -0800 (PST)
 Received: from Provence.localdomain
  (dynamic-077-188-106-228.77.188.pool.telefonica.de. [77.188.106.228])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d806feddfasm26116096a12.58.2025.01.08.01.25.49
+ 4fb4d7f45d1cf-5d806feddfasm26116096a12.58.2025.01.08.01.25.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 08 Jan 2025 01:25:50 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
@@ -75,16 +75,16 @@ Cc: Bin Meng <bmeng.cn@gmail.com>, Fabiano Rosas <farosas@suse.de>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 01/14] hw/sd/sdhci: Set SDHC_NIS_DMA bit when appropriate
-Date: Wed,  8 Jan 2025 10:25:25 +0100
-Message-ID: <20250108092538.11474-2-shentey@gmail.com>
+Subject: [PATCH 02/14] hw/char/imx_serial: Fix reset value of UFCR register
+Date: Wed,  8 Jan 2025 10:25:26 +0100
+Message-ID: <20250108092538.11474-3-shentey@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250108092538.11474-1-shentey@gmail.com>
 References: <20250108092538.11474-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,48 +107,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In U-Boot, the fsl_esdhc[_imx] driver waits for both "transmit completed" and
-"DMA" bits in esdhc_send_cmd_common() by means of DATA_COMPLETE constant. QEMU
-currently misses to set the DMA bit which causes the driver to loop forever. Fix
-that by setting the DMA bit if enabled when doing DMA block transfers.
+The value of the UCFR register is respected when echoing characters to the
+terminal, but its reset value is reserved. Fix the reset value to the one
+documented in the datasheet.
+
+While at it move the related attribute out of the section of unimplemented
+registers since its value is actually respected.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/sd/sdhci.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ include/hw/char/imx_serial.h | 2 +-
+ hw/char/imx_serial.c         | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index 299cd4bc1b..a958c11497 100644
---- a/hw/sd/sdhci.c
-+++ b/hw/sd/sdhci.c
-@@ -665,12 +665,13 @@ static void sdhci_sdma_transfer_multi_blocks(SDHCIState *s)
-         }
-     }
+diff --git a/include/hw/char/imx_serial.h b/include/hw/char/imx_serial.h
+index 65f0e97c76..90ba3ff18c 100644
+--- a/include/hw/char/imx_serial.h
++++ b/include/hw/char/imx_serial.h
+@@ -109,13 +109,13 @@ struct IMXSerialState {
+     uint32_t ucr1;
+     uint32_t ucr2;
+     uint32_t uts1;
++    uint32_t ufcr;
  
-+    if (s->norintstsen & SDHC_NISEN_DMA) {
-+        s->norintsts |= SDHC_NIS_DMA;
-+    }
-+
-     if (s->blkcnt == 0) {
-         sdhci_end_transfer(s);
-     } else {
--        if (s->norintstsen & SDHC_NISEN_DMA) {
--            s->norintsts |= SDHC_NIS_DMA;
--        }
-         sdhci_update_irq(s);
-     }
- }
-@@ -691,6 +692,10 @@ static void sdhci_sdma_transfer_single_block(SDHCIState *s)
-     }
-     s->blkcnt--;
+     /*
+      * The registers below are implemented just so that the
+      * guest OS sees what it has written
+      */
+     uint32_t onems;
+-    uint32_t ufcr;
+     uint32_t ubmr;
+     uint32_t ubrc;
+     uint32_t ucr3;
+diff --git a/hw/char/imx_serial.c b/hw/char/imx_serial.c
+index 12705a1337..f805da23ff 100644
+--- a/hw/char/imx_serial.c
++++ b/hw/char/imx_serial.c
+@@ -159,6 +159,7 @@ static void imx_serial_reset(IMXSerialState *s)
+     s->ucr3 = 0x700;
+     s->ubmr = 0;
+     s->ubrc = 4;
++    s->ufcr = BIT(11) | BIT(0);
  
-+    if (s->norintstsen & SDHC_NISEN_DMA) {
-+        s->norintsts |= SDHC_NIS_DMA;
-+    }
-+
-     sdhci_end_transfer(s);
- }
- 
+     fifo32_reset(&s->rx_fifo);
+     timer_del(&s->ageing_timer);
 -- 
 2.47.1
 
