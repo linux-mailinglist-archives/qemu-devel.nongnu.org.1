@@ -2,92 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB94A07886
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 15:05:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39ADAA078D4
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 15:13:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVt9h-0004G2-TW; Thu, 09 Jan 2025 09:05:01 -0500
+	id 1tVtGq-0005dB-L9; Thu, 09 Jan 2025 09:12:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tVt9f-0004Fq-QH
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 09:04:59 -0500
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tVtGf-0005c6-7m
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 09:12:13 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tVt9e-0007WF-46
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 09:04:59 -0500
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-aa689a37dd4so182918766b.3
- for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 06:04:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736431496; x=1737036296; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VvamQ8txAZIhmP2RZ/9rAZHqDsGdYsGNSUqRlON/wVY=;
- b=b1cMiUzLj3rTkNY+lrhAPtmPsmHnu5ICP4Hc5UT/cZG7SzehNrVjZ+7BfbUQgsEfSu
- uHpaFvhN6106pdUZnVzS75QVGkd+Zpl18g2LdY6WEHP0IhIzxF976qnUpV8hfglMPUwh
- 0UjV+JVaAz6tOSwU1SdYMdQRhzGveL+HH4FWgNp6MLPghRuz7qOLR4+il2FSg9OHUSK1
- Z/b81l0hOcdX/csqjeu6ZutHLjxfneDAveKQTF604TJ+rdYHJA8T9M/+PmIfMqIL4UMM
- sf/yPaE2TOnq8VEwu9EzDmkGPCQOL46GoqU+wpZDG8UZe8oGsRQB1MoRFfVpDPB3Atpf
- caOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736431496; x=1737036296;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=VvamQ8txAZIhmP2RZ/9rAZHqDsGdYsGNSUqRlON/wVY=;
- b=NiSAn8GADW50TZIKwnFtayNruxf/x9aXSn/fUyOaaYIwNKnwl1wsrIktvg6catgSbM
- VByaUlGoM1yvYISOeGNH2vIytakjot8OlKH8M7PxDeP/UaBHy8Ped0xLZ8rQLhOAVtSn
- nahtNUwlPnH/h/AOSNwnznLeoLDxEjidpvgcV7v2oBNtaS3p5+PiXD5xVs7Hyca80PyX
- PYoJ72Lc8QWeAZ+Vy0/G5iibHr3MJObeo6NiM8EuwVPOvereSbyA7rVchS6atC1B5NqX
- GxJT2jeiaDLohHR85zmIXfIP+8fGzzOWeb8Oyx8GTrlfRjKFRQms3iSaa/boqYVfX6g7
- /H7g==
-X-Gm-Message-State: AOJu0YxYWLFFyRWrE3ktyQHi2+7aHVNviq1CjyJdpmUB/5Fzv5Wjayk4
- PlsHkeSpLsYFQgYOwWzpZArCVtagGTJ9VS5yqnGtwb+qDyl0K8K2MMhV5v+qaFg=
-X-Gm-Gg: ASbGnctlIsey3OszFbUlJzMUY36nKaKQ9O+8Pc1ovFFixCw28JpS58Ea7OpqBcYyKkn
- cHscxX6V4+I4vOQ9s2Ce3YGUZ06wZSQaWZasjmr6oTPXOAs0g02FLTS35qUl+zWbPBrTigb9D2m
- Zy3UWRAVeXO2obTHBxf0NmrDtrH8dOa7AddPUrdRYli2AlreD67/l9axC5f5yB4G3XbftckDQqR
- K1Ll1DAr6bK475JEctuWidvVgGZfUH1FTPLaUzeQ9x0Gn34DcHB06I=
-X-Google-Smtp-Source: AGHT+IGFOyWbdvC8d6uidbDTvj2Arm9pMZN6JtXdo5FqXmBpJ9oe2xDNzlLHReN0ntXSXZFHmH5qHA==
-X-Received: by 2002:a17:907:809:b0:aaf:117c:e929 with SMTP id
- a640c23a62f3a-ab2abcb1440mr612464066b.57.1736431495948; 
- Thu, 09 Jan 2025 06:04:55 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c90d9ae0sm76579566b.68.2025.01.09.06.04.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 Jan 2025 06:04:53 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 71ACD5F75D;
- Thu,  9 Jan 2025 14:04:49 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Julian Ganz <neither@nut.email>
-Cc: qemu-devel@nongnu.org,  Alexandre Iooss <erdnaxe@crans.org>,  Mahmoud
- Mandour <ma.mandourr@gmail.com>,  Pierrick Bouvier
- <pierrick.bouvier@linaro.org>
-Subject: Re: [RFC PATCH v3 04/11] contrib/plugins: add plugin showcasing new
- dicontinuity related API
-In-Reply-To: <fa02142d349ceb6c95e80301a7f5c57ae5df6329.1733063076.git.neither@nut.email>
- (Julian Ganz's message of "Mon, 2 Dec 2024 20:26:45 +0100")
-References: <cover.1733063076.git.neither@nut.email>
- <fa02142d349ceb6c95e80301a7f5c57ae5df6329.1733063076.git.neither@nut.email>
-User-Agent: mu4e 1.12.8; emacs 29.4
-Date: Thu, 09 Jan 2025 14:04:49 +0000
-Message-ID: <87frls6q2m.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tVtGc-0000Ur-5z
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 09:12:12 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id A065C2116D;
+ Thu,  9 Jan 2025 14:12:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1736431928; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=8IGjtnnXGvE+nZIcqQL445TPVshW+M1g0wDcJCATfHc=;
+ b=tKj18m5JvXnnQV69P2UHHaZdL/hWjnyef2QjebHBSc/kwjaOQjScNQP4DoblwYcvnKJutS
+ Jzra9xs7jr7xueOfMzGS+WXO5o7nyCYQavPbDskRdOM61KWoy8KjTC/KtnIaItiIPXj7vW
+ FrHjYf3041JC6jKxhwSuTRBov8qDkeg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1736431928;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=8IGjtnnXGvE+nZIcqQL445TPVshW+M1g0wDcJCATfHc=;
+ b=tCgIafniDGZXyju9YQ+riCprt1B9SWZ7Nax36aViegwo1UoxofuvVhAyneHDavLtqZDVoy
+ OyrvzEqNB0UxUiCw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1736431927; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=8IGjtnnXGvE+nZIcqQL445TPVshW+M1g0wDcJCATfHc=;
+ b=RSe8E/r+yCWxlqwrpnzs0OBpgsPfqrdK8rXa6+S/6u2C7aRhE+0YpsON5sUaFfEi0vlk4O
+ ISBDLHTXOlODBqPsbOR5Nkz5NOHPmxbYMSMV43p/wkc6Dpf0vC4cXD8BbC1GFS+VqoVfgg
+ u6b+ud4o0+FVzQU4Q/T2L+MhrTcZ9SU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1736431927;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=8IGjtnnXGvE+nZIcqQL445TPVshW+M1g0wDcJCATfHc=;
+ b=+ynX/4QMT0vBwtd611iPohW3Qpp6ofma+hWhGlO6VbDBviYx4h4KoZlszMscr7k3ZwIff6
+ kmCBJBdG/0n07jBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6CEBA13876;
+ Thu,  9 Jan 2025 14:12:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id hxyFDDbZf2fOWgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 09 Jan 2025 14:12:06 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>,
+	Thomas Huth <thuth@redhat.com>
+Subject: [PATCH v2 0/7] migration: Fix s390 regressions + migration script
+Date: Thu,  9 Jan 2025 11:09:52 -0300
+Message-Id: <20250109140959.19464-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62e.google.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NEW_PRODUCTS=1.249,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.999];
+ MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,gitlab.com:url];
+ RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,73 +106,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Julian Ganz <neither@nut.email> writes:
+changes from v1:
 
-> We recently introduced new plugin API for registration of discontinuity
-> related callbacks. This change introduces a minimal plugin showcasing
-> the new API. It simply counts the occurances of interrupts, exceptions
-> and host calls per CPU and reports the counts when exitting.
-> ---
->  contrib/plugins/meson.build |  3 +-
->  contrib/plugins/traps.c     | 96 +++++++++++++++++++++++++++++++++++++
->  2 files changed, 98 insertions(+), 1 deletion(-)
->  create mode 100644 contrib/plugins/traps.c
->
-> diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
-> index 63a32c2b4f..9a3015e1c1 100644
-> --- a/contrib/plugins/meson.build
-> +++ b/contrib/plugins/meson.build
-> @@ -1,5 +1,6 @@
->  contrib_plugins =3D ['bbv', 'cache', 'cflow', 'drcov', 'execlog', 'hotbl=
-ocks',
-> -                   'hotpages', 'howvec', 'hwprofile', 'ips', 'stoptrigge=
-r']
-> +                   'hotpages', 'howvec', 'hwprofile', 'ips', 'stoptrigge=
-r',
-> +                   'traps']
+- dropped comments patch
+- new patch 4: rename the field to nullptr
+- patch 6: add a sample JSON, fix the appending code
 
-I wonder if this is better in tests/tcg/plugins? We need to do something
-to ensure it gets covered by CI although we might want to be smarter
-about running it together with a test binary that will actually pick up
-something.
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1616920974
 
->  if host_os !=3D 'windows'
->    # lockstep uses socket.h
->    contrib_plugins +=3D 'lockstep'
-<snip>
-> +QEMU_PLUGIN_EXPORT
-> +int qemu_plugin_install(qemu_plugin_id_t id, const qemu_info_t *info,
-> +                        int argc, char **argv)
-> +{
-> +    if (!info->system_emulation) {
-> +        fputs("trap plugin can only be used in system emulation mode.\n",
-> +              stderr);
-> +        return -1;
-> +    }
-> +
-> +    max_vcpus =3D info->system.max_vcpus;
-> +    traps =3D qemu_plugin_scoreboard_new(sizeof(TrapCounters));
-> +    qemu_plugin_register_vcpu_init_cb(id, vcpu_init);
-> +    qemu_plugin_vcpu_for_each(id, vcpu_init);
+v1:
+https://lore.kernel.org/r/20250107195025.9951-1-farosas@suse.de
 
-Hmm at first glances this seems redundant - however I guess this is
-covering the use case you load the plugin after the system is up and
-running.
+Hi,
 
-I wonder if you have unearthed a foot-gun in the API that is easy to
-fall into? Maybe we should expand qemu_plugin_register_vcpu_init_cb to
-call the call back immediately for existing vcpus?
+The situation that broke the last migration PR was:
 
-> +
-> +    qemu_plugin_register_vcpu_discon_cb(id, QEMU_PLUGIN_DISCON_TRAPS,
-> +                                        vcpu_discon);
-> +
-> +    qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
-> +
-> +    return 0;
-> +}
+1) emitting of JSON data by QEMU for
+   VMSTATE_ARRAY_OF_POINTER_TO_STRUCT when NULL pointers are present
+   has been broken for a while;
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+2) parsing of s390x migration stream by analyze-script.py has been
+   broken for a while;
+
+   (there's indications that it worked on s390x hosts, I'm assuming due
+   to byte order coincidences)
+
+3) s390x CSS migration has been broken for a while;
+
+The s390x CSS migration uses VMSTATE_ARRAY_OF_POINTER_TO_STRUCT with
+NULL pointers, triggering #1, but hidden due to #2 on TCG hosts and
+due to #3 overall.
+
+- patches 1: just to make rebase easier
+- patches 2-3: cleanups
+- patch 4: fixes #2
+- patches 5-6: fix #1
+- patch 7: fixes #3
+
+Fabiano Rosas (6):
+  migration: Add more error handling to analyze-migration.py
+  migration: Remove unused argument in vmsd_desc_field_end
+  migration: Fix parsing of s390 stream
+  migration: Rename vmstate_info_nullptr
+  migration: Fix arrays of pointers in JSON writer
+  s390x: Fix CSS migration
+
+Peter Xu (1):
+  migration: Dump correct JSON format for nullptr replacement
+
+ hw/s390x/s390-virtio-ccw.c   |   2 +-
+ migration/vmstate-types.c    |   2 +-
+ migration/vmstate.c          | 151 ++++++++++++++++++++++++++++-------
+ scripts/analyze-migration.py | 144 ++++++++++++++++++++++++---------
+ 4 files changed, 230 insertions(+), 69 deletions(-)
+
+-- 
+2.35.3
+
 
