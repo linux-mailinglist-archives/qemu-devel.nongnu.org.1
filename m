@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D0D2A07E54
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 18:08:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4321A07E5C
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 18:08:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVvzT-0004hV-8S; Thu, 09 Jan 2025 12:06:41 -0500
+	id 1tVvzc-0004iX-7G; Thu, 09 Jan 2025 12:06:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tVvzG-0004gn-Ef
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:06:27 -0500
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ id 1tVvzP-0004hS-96
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:06:36 -0500
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tVvzE-0006y0-Q4
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:06:26 -0500
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-ab2c9b8aecaso130628166b.0
- for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 09:06:24 -0800 (PST)
+ id 1tVvzN-0006yu-KJ
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:06:35 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-aab6fa3e20eso222872966b.2
+ for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 09:06:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736442383; x=1737047183; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736442390; x=1737047190; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5mmFjWAfoOONUODYkZWtQO2ol/JE4H/G6qm2dOWJg5o=;
- b=AAlp7CF2ogawLXaWhHYZoAiD4ioyZPQdtodMo/Fm6tbRPEoWWuewV4PNBCLNBmo07g
- 2p+AJFjCi+UCyNo9K7Ivsu34HgkvjBWmi8XXmKBTCblS9G1NxD75fbHIhMqRxFzO3PGU
- fWLuCftslFyhq8S90olI6rtWY0iZxSx2rKRBa9B+WQMZBFlbu9O5JhwpzRZnXS3ammb8
- Gz4FHy4SOjMqZD2Uj1kxnPPvJXEdizmYBuqz71dsR8/8bOhPViOeU16wk+KJzPBsB/Qr
- eYs52OG70XZWiExBsH2nWcO0WOeUcWmx0eIBnnbbmT6N7PK6LFMXB9vTOsPQc8ulULow
- IhAA==
+ bh=DjEsdOpQ49q8jWvklUeiIlGfQQiMPZKhuPb/zwxQMo4=;
+ b=ICWHP5oaVPqalbCZQ9bur6mGgSI/Zle7dN21vSJlV0teh9xNkcqypoTDryt26kP0XA
+ j2JievHuD3+PaUZwTeA7eq9qsegwwfBFevay0T0xkYZn0ksTo3hBcAJrdEE3d4t/X1Le
+ YVILv7MZzh8dWISjBHJ93Gzx9n45rRV/uW3XN3cMDFMjLYubu6ctOuYT+HZay4YYBRh1
+ A0YwZBu7CDx6d2h+QNYvUCtl1RQjQHnsqcCg1g66GHG0WUDYcYnTWqv7dxvqECbXd1KX
+ AF5BAGBww01tj6eV1N7jd/b+9Q0COWqyruoX/VOHlWEUcaZn1XFXqTCy5hs5nFQTjG15
+ huUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736442383; x=1737047183;
+ d=1e100.net; s=20230601; t=1736442390; x=1737047190;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5mmFjWAfoOONUODYkZWtQO2ol/JE4H/G6qm2dOWJg5o=;
- b=rCo7GNBHFuicngK+il2i0krEqt1dru7JjP1It/e3RcwwdNrzO4AIhGF88Bh3Q8myDV
- rOXU20hhumoSYUgS+XYqCA748N/jdW2b9WHIwE08uWHqiNu1WsXvdtA1DGn3BV9TVg8N
- +Esp72s4nQexwMWJeI50vyKSLFSLYdqGN74t420cVtUXInKmLaAzISC6L9IoGGfThtJ9
- q2Hv/5oJuJrDd8mzXSHK5GsLhgHWuUVtNaIMwQWo+RFyzlheFtHFFJ/K0chMUeOsf7bQ
- xQsmeDIybmpXn9+0S9dtT+wwKXzuYzWvpRz+ngdqWJ3A8MeA55bl15k5J9Ta5lnMSyKQ
- ujXg==
-X-Gm-Message-State: AOJu0YzvfxqAZQyy4HUEPIlvOhezFbBPKHkwXMFh4yDAjz/8kAjEGaKW
- G4fzFTB+RkAfDbK9QfZg9SHFDS1TY4LWztoam2woZxHmSquVs4lTC3geaUOkscg=
-X-Gm-Gg: ASbGncvgOjhxhF0jf6u0k7fY8sWIM4LTQijb32dbRTYsIhBenx7E3Ijx4iq+URX5rE7
- e1LDJBPtClz+RbVofS6FlSfs8tGtTCcHKf5P7HwNlxWtedBJd52KC/LYozxeW6a6nshkt7dzQPq
- I5iaeWw8YwT2vcCs8Xl3xY4D1ZVAD8ySpvEs2jglb50jyZ9qgReb3goyU6Mv0/ZNcngRpkn3o0x
- 8EYcfrw+5yyYPws1Hg3CsrJtbXWhcI5QDgdBJ4SfO6ikONmfMNFjUw=
-X-Google-Smtp-Source: AGHT+IFnxxwGdhSiCfykDiwQ/xPJerBBFa+eQBnG1/lsBZ0tFuWXbUGy9Q0eMxay7ZetWPzQjbe8Dw==
-X-Received: by 2002:a17:907:7286:b0:aac:61b:a079 with SMTP id
- a640c23a62f3a-ab2ab6bede4mr623988866b.40.1736442383261; 
- Thu, 09 Jan 2025 09:06:23 -0800 (PST)
+ bh=DjEsdOpQ49q8jWvklUeiIlGfQQiMPZKhuPb/zwxQMo4=;
+ b=ohw9SusHBta8Wg9bo9mjC1wIQHPAEgWxEWRw5TXZZ5oo0X43t/Wdy/GVUREONt7l5T
+ J9HO6kKy5BN9UORWJBakue7IA8BFRzpxttZwbri4awHEWxo35QmbOOi6BFrAzZFMt3am
+ Ju0NkELjDugWDdWOwB+VGyJ4DsF3UrTr20G+dhdeG0ljvEguZ32yDcAQfVqQF7HDsPQ1
+ llGCE9E0FEL8P+h4kICX3hcmwwjxAUeZ9hGDC3VLIQNH7W4H0bETDdNeGnOYb3DS9IXM
+ bYxGv4SDBuw86bXSaKHOsAoA+GfuZ27EUvPz8Aq71fNzz3gV5R0TryPxCaroPfYuY9LQ
+ l6jg==
+X-Gm-Message-State: AOJu0YzhMkAtIJLdtG+ErbnOQK3z1jINqIxQ0iRGbLRBceFDATABKvgq
+ 6KqoY4rhjFDaLuGGgsczD/jq0A1P3g6RbEt8tu4mCjKftU8CrMbUrd6izFMYvrk=
+X-Gm-Gg: ASbGncsFrgdmBizJhjxA7QNZUgqbK1mdME2PtN0tE5qZlTwPcfVh2Q4XXgDMWl49yWf
+ +BGg6ivvQmd8VHIzLew/cxjNL9DoMQugAIuNlvzqx8NFXniePbosvd9dTMdWYr5NJNUvttIaPb0
+ wb8eFbKi1o8LaZs/VsNSCk+O2FstHPrsS1RYiLG0rKEzujIRLcERQRoJS5gwITTIZexfjdml07x
+ iBC5FnmnaBkQx0gYA1CrBMJWeYC7F64u28vYPlu94dL7IH316bPdZ4=
+X-Google-Smtp-Source: AGHT+IG4opGGhG1rDrCnze0YWcLspvZpuLl5akvU6vE11V5mE8vPm4tWROYbBoleWG+AAPFn6FLB9Q==
+X-Received: by 2002:a17:906:fe0c:b0:aab:75f1:e51a with SMTP id
+ a640c23a62f3a-ab2abc78dc8mr688853766b.38.1736442388881; 
+ Thu, 09 Jan 2025 09:06:28 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c90dcbe2sm88985166b.78.2025.01.09.09.06.20
+ a640c23a62f3a-ab2c905cd8asm89286566b.7.2025.01.09.09.06.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 09 Jan 2025 09:06:21 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E0BBD5F915;
- Thu,  9 Jan 2025 17:06:19 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 043965F95A;
+ Thu,  9 Jan 2025 17:06:20 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
@@ -72,17 +72,17 @@ Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 01/22] semihosting: add guest_error logging for failed opens
-Date: Thu,  9 Jan 2025 17:05:58 +0000
-Message-Id: <20250109170619.2271193-2-alex.bennee@linaro.org>
+Subject: [PATCH 02/22] semihosting/uaccess: Briefly document returned values
+Date: Thu,  9 Jan 2025 17:05:59 +0000
+Message-Id: <20250109170619.2271193-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250109170619.2271193-1-alex.bennee@linaro.org>
 References: <20250109170619.2271193-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,34 +105,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This usually indicates the semihosting call was expecting to find
-something but didn't.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+Since it is not obvious the get/put_user*() methods
+can return an error, add brief docstrings about it.
+Also remind to use *unlock_user() when appropriate.
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20241212115413.42109-1-philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- semihosting/syscalls.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/semihosting/uaccess.h | 55 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
-diff --git a/semihosting/syscalls.c b/semihosting/syscalls.c
-index c40348f996..f6451d9bb0 100644
---- a/semihosting/syscalls.c
-+++ b/semihosting/syscalls.c
-@@ -7,6 +7,7 @@
-  */
+diff --git a/include/semihosting/uaccess.h b/include/semihosting/uaccess.h
+index c2fa5a655d..6bc90b12d6 100644
+--- a/include/semihosting/uaccess.h
++++ b/include/semihosting/uaccess.h
+@@ -19,41 +19,96 @@
+ #include "exec/tswap.h"
+ #include "exec/page-protection.h"
  
- #include "qemu/osdep.h"
-+#include "qemu/log.h"
- #include "cpu.h"
- #include "gdbstub/syscalls.h"
- #include "semihosting/guestfd.h"
-@@ -287,6 +288,7 @@ static void host_open(CPUState *cs, gdb_syscall_complete_cb complete,
++/**
++ * get_user_u64:
++ *
++ * Returns: 0 on success, -1 on error.
++ */
+ #define get_user_u64(val, addr)                                         \
+     ({ uint64_t val_ = 0;                                               \
+        int ret_ = cpu_memory_rw_debug(env_cpu(env), (addr),             \
+                                       &val_, sizeof(val_), 0);          \
+        (val) = tswap64(val_); ret_; })
  
-     ret = open(p, host_flags, mode);
-     if (ret < 0) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: failed to open %s\n", __func__, p);
-         complete(cs, -1, errno);
-     } else {
-         int guestfd = alloc_guestfd();
++/**
++ * get_user_u32:
++ *
++ * Returns: 0 on success, -1 on error.
++ */
+ #define get_user_u32(val, addr)                                         \
+     ({ uint32_t val_ = 0;                                               \
+        int ret_ = cpu_memory_rw_debug(env_cpu(env), (addr),             \
+                                       &val_, sizeof(val_), 0);          \
+        (val) = tswap32(val_); ret_; })
+ 
++/**
++ * get_user_u8:
++ *
++ * Returns: 0 on success, -1 on error.
++ */
+ #define get_user_u8(val, addr)                                          \
+     ({ uint8_t val_ = 0;                                                \
+        int ret_ = cpu_memory_rw_debug(env_cpu(env), (addr),             \
+                                       &val_, sizeof(val_), 0);          \
+        (val) = val_; ret_; })
+ 
++/**
++ * get_user_ual:
++ *
++ * Returns: 0 on success, -1 on error.
++ */
+ #define get_user_ual(arg, p) get_user_u32(arg, p)
+ 
++/**
++ * put_user_u64:
++ *
++ * Returns: 0 on success, -1 on error.
++ */
+ #define put_user_u64(val, addr)                                         \
+     ({ uint64_t val_ = tswap64(val);                                    \
+        cpu_memory_rw_debug(env_cpu(env), (addr), &val_, sizeof(val_), 1); })
+ 
++/**
++ * put_user_u32:
++ *
++ * Returns: 0 on success, -1 on error.
++ */
+ #define put_user_u32(val, addr)                                         \
+     ({ uint32_t val_ = tswap32(val);                                    \
+        cpu_memory_rw_debug(env_cpu(env), (addr), &val_, sizeof(val_), 1); })
+ 
++/**
++ * put_user_ual:
++ *
++ * Returns: 0 on success, -1 on error.
++ */
+ #define put_user_ual(arg, p) put_user_u32(arg, p)
+ 
++/**
++ * uaccess_lock_user:
++ *
++ * The returned pointer should be freed using uaccess_unlock_user().
++ */
+ void *uaccess_lock_user(CPUArchState *env, target_ulong addr,
+                         target_ulong len, bool copy);
++/**
++ * lock_user:
++ *
++ * The returned pointer should be freed using unlock_user().
++ */
+ #define lock_user(type, p, len, copy) uaccess_lock_user(env, p, len, copy)
+ 
++/**
++ * uaccess_lock_user_string:
++ *
++ * The returned string should be freed using uaccess_unlock_user().
++ */
+ char *uaccess_lock_user_string(CPUArchState *env, target_ulong addr);
++/**
++ * uaccess_lock_user_string:
++ *
++ * The returned string should be freed using unlock_user().
++ */
+ #define lock_user_string(p) uaccess_lock_user_string(env, p)
+ 
+ void uaccess_unlock_user(CPUArchState *env, void *p,
 -- 
 2.39.5
 
