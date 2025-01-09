@@ -2,95 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3754CA0802B
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 19:50:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C7DA08037
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 19:53:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVxbY-0000q7-Qw; Thu, 09 Jan 2025 13:50:04 -0500
+	id 1tVxeT-0002H9-6F; Thu, 09 Jan 2025 13:53:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tVxbU-0000ph-QC
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 13:50:00 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tVxeM-0002Gz-6G
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 13:52:58 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tVxbT-0005M5-2F
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 13:50:00 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-21619108a6bso20862365ad.3
- for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 10:49:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736448597; x=1737053397; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tysOloC1GiDq0Ki1ArIwVbUgf3JCtAzTwhZzTnebE0s=;
- b=kyxg4PRMn9yyqzuR84a2dNfyF/GX3+Uwv1tJ1h8H04e/VcCMvpnXZBePq7SHqiw9L6
- 3sv9Bk+6lQhrjqHUw9SrH2JhKSgJp9TXfkAP0DXDrmtD8VjYwrKELtZUjBgMGsvaRFV/
- O08HwatxU0/zm+mPY3nDRTl3fgQJuv03cWS5vscTXpzYZHQg00ZgN3EzyBQR+dATzyis
- p3fVH39GCN5frE/ufnt0fGQkKQPTWVOm3dMXCSl/R+AgJjre5aEe25x9KBzoIlC6g5sE
- nJeH+wJyf2wZPjNzRGZJSghmZxT+p+hoIllZhP6od9UMxpCFrU7c3fkcqGTdnvIfMtf1
- WOhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736448597; x=1737053397;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tysOloC1GiDq0Ki1ArIwVbUgf3JCtAzTwhZzTnebE0s=;
- b=hWjcAnHP0YZCejK5/zEA9FouCEw3qRhbg4CNMxYIbbWkol9C0uqdTFrFkWN0zlIff0
- I5/eVcyNTJxrVL23C/Ewd07srIq/9HkX7tTMII1YNrCzuUVoh/QgTq4yC3h2/5eueSc2
- u1UzamPlZwPF+s4zbve4/wrOXHCBfFwcPx8nwc149OwkNBNa2p1LJ/VMa3vpyA8cs7Rh
- +w4UsvvNxV8CUii6/6hUv62c+Wl/gptVm35X/sAOcBvZptT01jnMe3lcJNqxocimNiTE
- P23JMzupqpiQy2ewd0ITaDARsllPy0S9pg+wJe41LVWORNg8JhQDlsnNFtwWbG1N6naO
- 99/Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX5pH8bUmv/WOHl3yicPDZ9jdNY24PU0Yq6YVem7xZZOGQKjkihlAKMFLpE7y1VZTCTXGXH7evQwybP@nongnu.org
-X-Gm-Message-State: AOJu0Yyow2UrB93434AHh++XDF0hpCWp+Z/zs6V5kyCCFm6/V/0/SQeM
- qOPBd4v/AYLXRINIO0wBsqd+mam1/W9H8aa+hLJywBbHN59W6epAre7mvol87sk=
-X-Gm-Gg: ASbGncvSlS7MrUPylBcE4jHX1U+fChxWYjdgr2gnysErqkf7UjPbwBQVNpOQCoXMSVW
- qhWYL5Db2fKrJUhUlVMvmLY8U+65Vnkrnw29Zvp5HzBMcyJkT88aRpY0/hL9fXUQJDsDSUNEMMn
- XJcsxKZh8+32v5mKhzKMY/OugWXaUG4w+FhFi/Ng3NPH1YbzvIyaGVryenlwSNUp09EgikYxcej
- ZHHJr/Fv032UJWd+pQymeF8vwoXyYvDSIc2IYkMgsMfzkxVJKeKYLU4lKGvrtQvhKuV1Q==
-X-Google-Smtp-Source: AGHT+IF6i49gKsCnEI6eg5nRrQU61NgtXDbZuiu85F3tXxDCu8a9pU0FomFHWYZj7GyxPsoe0mOcvg==
-X-Received: by 2002:a05:6a00:4486:b0:729:597:4faa with SMTP id
- d2e1a72fcca58-72d21fb1d72mr10868195b3a.16.1736448597464; 
- Thu, 09 Jan 2025 10:49:57 -0800 (PST)
-Received: from [192.168.1.67] ([38.39.164.180])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72d40658d2bsm117032b3a.107.2025.01.09.10.49.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 09 Jan 2025 10:49:57 -0800 (PST)
-Message-ID: <11261469-ddcf-4aa0-9343-fb01e85d0e2c@linaro.org>
-Date: Thu, 9 Jan 2025 10:49:56 -0800
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tVxeK-0005sf-0t
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 13:52:57 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id E87A71F453;
+ Thu,  9 Jan 2025 18:52:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1736448774; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=ncnRO7hf9YdrXHDls95006Jhn7UmsrycizjIOesTI34=;
+ b=ZW/xhdhUOBtLrUG3qn0WU2kCV/E0RsOj8ywxJfjgWhDNmVHorKzb1KCLziiBZ1kOBah/Zp
+ zjbSRHSLXRcleYloAlO0eigzuZ10TQP7VUwiGOhKToaYS9WbVhWRVTJzNMKGcYjLRXqq1/
+ Kx1kaRkVE0laoJzYrnvcLyztzJmjKd4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1736448774;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=ncnRO7hf9YdrXHDls95006Jhn7UmsrycizjIOesTI34=;
+ b=Kul+J5oOI6w/xwFqJXrEgCJeLqTxawM6Likg+mX+ifW3Rr3HVo/+QB4rMhnLXEL7gw3WE/
+ rvxX7w8ATWu6iRCA==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b="X/mQSRx4";
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Drxmtjpb
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1736448773; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=ncnRO7hf9YdrXHDls95006Jhn7UmsrycizjIOesTI34=;
+ b=X/mQSRx4To6tlnCtZ4PQFPen2sh9VF45Q912vPEqFb9YHD31MB+MpYW7SZA/OR9hMcwM21
+ bUpynLdCYzW4+1TQnx5UL+hwar0QQWDrFgldA2BMqdmnf/3hlz1EMxow60maM2gNvJ5lpP
+ i5LGIvAeCDgu5EJF8ISk0XXviv1Qngg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1736448773;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=ncnRO7hf9YdrXHDls95006Jhn7UmsrycizjIOesTI34=;
+ b=DrxmtjpbFV5QZxXydBQljqZiay6xR9kKz1CAEzHrq95Tj2ELZ9hlYD8DKtYd4LOhMKOZZ+
+ KpHWZ3o6SxSJWGCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B6F16139AB;
+ Thu,  9 Jan 2025 18:52:52 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 346CHgQbgGdcMAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 09 Jan 2025 18:52:52 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>,
+	Thomas Huth <thuth@redhat.com>
+Subject: [PATCH v3 0/7] migration: Fix s390 regressions + migration script
+Date: Thu,  9 Jan 2025 15:52:42 -0300
+Message-Id: <20250109185249.23952-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/22] system/vl: more error exit into config enumeration
- code
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>
-References: <20250109170619.2271193-1-alex.bennee@linaro.org>
- <20250109170619.2271193-9-alex.bennee@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250109170619.2271193-9-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E87A71F453
+X-Spam-Score: -3.01
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim];
+ ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ RCVD_TLS_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ FROM_EQ_ENVFROM(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ RCPT_COUNT_THREE(0.00)[3]; DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,68 +116,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-T24gMS85LzI1IDA5OjA2LCBBbGV4IEJlbm7DqWUgd3JvdGU6DQo+IEFsbCBvZiB0aGUgZmFp
-bHVyZXMgdG8gY29uZmlndXJlIGRldmljZXMgd2lsbCByZXN1bHQgaW4gUUVNVSBleGl0aW5n
-DQo+IHdpdGggYW4gZXJyb3IgY29kZS4gSW4gcHJlcGFyYXRpb24gZm9yIHBhc3NpbmcgRXJy
-b3IgKiBkb3duIHRoZSBjaGFpbg0KPiByZS1uYW1lIHRoZSBpdGVyYXRvciB0byBmb3JlYWNo
-X2RldmljZV9jb25maWdfb3JfZXhpdCBhbmQgZXhpdCB1c2luZw0KPiAmZXJyb3JfZmF0YWwg
-aW5zdGVhZCBvZiByZXR1cm5pbmcgYSBmYWlsdXJlIGluZGljYXRpb24uDQo+IA0KPiBTaWdu
-ZWQtb2ZmLWJ5OiBBbGV4IEJlbm7DqWUgPGFsZXguYmVubmVlQGxpbmFyby5vcmc+DQo+IC0t
-LQ0KPiAgIHN5c3RlbS92bC5jIHwgMzEgKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0t
-LQ0KPiAgIDEgZmlsZSBjaGFuZ2VkLCAxNiBpbnNlcnRpb25zKCspLCAxNSBkZWxldGlvbnMo
-LSkNCj4gDQo+IGRpZmYgLS1naXQgYS9zeXN0ZW0vdmwuYyBiL3N5c3RlbS92bC5jDQo+IGlu
-ZGV4IDA4NDNiN2FiNDkuLjI1ZDk5NjhjY2MgMTAwNjQ0DQo+IC0tLSBhL3N5c3RlbS92bC5j
-DQo+ICsrKyBiL3N5c3RlbS92bC5jDQo+IEBAIC0xMzA3LDcgKzEzMDcsMTQgQEAgc3RhdGlj
-IHZvaWQgYWRkX2RldmljZV9jb25maWcoaW50IHR5cGUsIGNvbnN0IGNoYXIgKmNtZGxpbmUp
-DQo+ICAgICAgIFFUQUlMUV9JTlNFUlRfVEFJTCgmZGV2aWNlX2NvbmZpZ3MsIGNvbmYsIG5l
-eHQpOw0KPiAgIH0NCj4gICANCj4gLXN0YXRpYyBpbnQgZm9yZWFjaF9kZXZpY2VfY29uZmln
-KGludCB0eXBlLCBpbnQgKCpmdW5jKShjb25zdCBjaGFyICpjbWRsaW5lKSkNCj4gKy8qKg0K
-PiArICogZm9yZWFjaF9kZXZpY2VfY29uZmlnX29yX2V4aXQoKTogcHJvY2VzcyBwZXItZGV2
-aWNlIGNvbmZpZ3MNCj4gKyAqIEB0eXBlOiBkZXZpY2VfY29uZmlnIHR5cGUNCj4gKyAqIEBm
-dW5jOiBkZXZpY2Ugc3BlY2lmaWMgY29uZmlnIGZ1bmN0aW9uLCByZXR1cm5pbmcgcGFzcy9m
-YWlsDQo+ICsgKg0KPiArICogQW55IGZhaWx1cmUgaXMgZmF0YWwgYW5kIHdlIGV4aXQgd2l0
-aCBhbiBlcnJvciBtZXNzYWdlLg0KPiArICovDQo+ICtzdGF0aWMgdm9pZCBmb3JlYWNoX2Rl
-dmljZV9jb25maWdfb3JfZXhpdChpbnQgdHlwZSwgaW50ICgqZnVuYykoY29uc3QgY2hhciAq
-Y21kbGluZSkpDQo+ICAgew0KPiAgICAgICBzdHJ1Y3QgZGV2aWNlX2NvbmZpZyAqY29uZjsN
-Cj4gICAgICAgaW50IHJjOw0KPiBAQCAtMTMxOSwxMCArMTMyNiwxMCBAQCBzdGF0aWMgaW50
-IGZvcmVhY2hfZGV2aWNlX2NvbmZpZyhpbnQgdHlwZSwgaW50ICgqZnVuYykoY29uc3QgY2hh
-ciAqY21kbGluZSkpDQo+ICAgICAgICAgICByYyA9IGZ1bmMoY29uZi0+Y21kbGluZSk7DQo+
-ICAgICAgICAgICBsb2NfcG9wKCZjb25mLT5sb2MpOw0KPiAgICAgICAgICAgaWYgKHJjKSB7
-DQo+IC0gICAgICAgICAgICByZXR1cm4gcmM7DQo+ICsgICAgICAgICAgICBlcnJvcl9zZXRn
-KCZlcnJvcl9mYXRhbCwgImZhaWxlZCB0byBjb25maWd1cmU6ICVzIiwgY29uZi0+Y21kbGlu
-ZSk7DQo+ICsgICAgICAgICAgICBleGl0KDEpOw0KPiAgICAgICAgICAgfQ0KPiAgICAgICB9
-DQo+IC0gICAgcmV0dXJuIDA7DQo+ICAgfQ0KPiAgIA0KPiAgIHN0YXRpYyB2b2lkIHFlbXVf
-ZGlzYWJsZV9kZWZhdWx0X2RldmljZXModm9pZCkNCj4gQEAgLTIwNDQsMTIgKzIwNTEsOSBA
-QCBzdGF0aWMgdm9pZCBxZW11X2NyZWF0ZV9sYXRlX2JhY2tlbmRzKHZvaWQpDQo+ICAgICAg
-IHFlbXVfb3B0c19mb3JlYWNoKHFlbXVfZmluZF9vcHRzKCJtb24iKSwNCj4gICAgICAgICAg
-ICAgICAgICAgICAgICAgbW9uX2luaXRfZnVuYywgTlVMTCwgJmVycm9yX2ZhdGFsKTsNCj4g
-ICANCj4gLSAgICBpZiAoZm9yZWFjaF9kZXZpY2VfY29uZmlnKERFVl9TRVJJQUwsIHNlcmlh
-bF9wYXJzZSkgPCAwKQ0KPiAtICAgICAgICBleGl0KDEpOw0KPiAtICAgIGlmIChmb3JlYWNo
-X2RldmljZV9jb25maWcoREVWX1BBUkFMTEVMLCBwYXJhbGxlbF9wYXJzZSkgPCAwKQ0KPiAt
-ICAgICAgICBleGl0KDEpOw0KPiAtICAgIGlmIChmb3JlYWNoX2RldmljZV9jb25maWcoREVW
-X0RFQlVHQ09OLCBkZWJ1Z2Nvbl9wYXJzZSkgPCAwKQ0KPiAtICAgICAgICBleGl0KDEpOw0K
-PiArICAgIGZvcmVhY2hfZGV2aWNlX2NvbmZpZ19vcl9leGl0KERFVl9TRVJJQUwsIHNlcmlh
-bF9wYXJzZSk7DQo+ICsgICAgZm9yZWFjaF9kZXZpY2VfY29uZmlnX29yX2V4aXQoREVWX1BB
-UkFMTEVMLCBwYXJhbGxlbF9wYXJzZSk7DQo+ICsgICAgZm9yZWFjaF9kZXZpY2VfY29uZmln
-X29yX2V4aXQoREVWX0RFQlVHQ09OLCBkZWJ1Z2Nvbl9wYXJzZSk7DQo+ICAgDQo+ICAgICAg
-IC8qIG5vdyBjaGFyZGV2cyBoYXZlIGJlZW4gY3JlYXRlZCB3ZSBtYXkgaGF2ZSBzZW1paG9z
-dGluZyB0byBjb25uZWN0ICovDQo+ICAgICAgIHFlbXVfc2VtaWhvc3RpbmdfY2hhcmRldl9p
-bml0KCk7DQo+IEBAIC0yNjcwLDggKzI2NzQsNyBAQCBzdGF0aWMgdm9pZCBxZW11X2NyZWF0
-ZV9jbGlfZGV2aWNlcyh2b2lkKQ0KPiAgIA0KPiAgICAgICAvKiBpbml0IFVTQiBkZXZpY2Vz
-ICovDQo+ICAgICAgIGlmIChtYWNoaW5lX3VzYihjdXJyZW50X21hY2hpbmUpKSB7DQo+IC0g
-ICAgICAgIGlmIChmb3JlYWNoX2RldmljZV9jb25maWcoREVWX1VTQiwgdXNiX3BhcnNlKSA8
-IDApDQo+IC0gICAgICAgICAgICBleGl0KDEpOw0KPiArICAgICAgICBmb3JlYWNoX2Rldmlj
-ZV9jb25maWdfb3JfZXhpdChERVZfVVNCLCB1c2JfcGFyc2UpOw0KPiAgICAgICB9DQo+ICAg
-DQo+ICAgICAgIC8qIGluaXQgZ2VuZXJpYyBkZXZpY2VzICovDQo+IEBAIC0yNzE4LDEwICsy
-NzIxLDggQEAgc3RhdGljIGJvb2wgcWVtdV9tYWNoaW5lX2NyZWF0aW9uX2RvbmUoRXJyb3Ig
-KiplcnJwKQ0KPiAgICAgICAgICAgZXhpdCgxKTsNCj4gICAgICAgfQ0KPiAgIA0KPiAtICAg
-IGlmIChmb3JlYWNoX2RldmljZV9jb25maWcoREVWX0dEQiwgZ2Ric2VydmVyX3N0YXJ0KSA8
-IDApIHsNCj4gLSAgICAgICAgZXJyb3Jfc2V0ZyhlcnJwLCAiY291bGQgbm90IHN0YXJ0IGdk
-YnNlcnZlciIpOw0KPiAtICAgICAgICByZXR1cm4gZmFsc2U7DQo+IC0gICAgfQ0KPiArICAg
-IGZvcmVhY2hfZGV2aWNlX2NvbmZpZ19vcl9leGl0KERFVl9HREIsIGdkYnNlcnZlcl9zdGFy
-dCk7DQo+ICsNCj4gICAgICAgaWYgKCF2Z2FfaW50ZXJmYWNlX2NyZWF0ZWQgJiYgIWRlZmF1
-bHRfdmdhICYmDQo+ICAgICAgICAgICB2Z2FfaW50ZXJmYWNlX3R5cGUgIT0gVkdBX05PTkUp
-IHsNCj4gICAgICAgICAgIHdhcm5fcmVwb3J0KCJBIC12Z2Egb3B0aW9uIHdhcyBwYXNzZWQg
-YnV0IHRoaXMgbWFjaGluZSAiDQoNClJldmlld2VkLWJ5OiBQaWVycmljayBCb3V2aWVyIDxw
-aWVycmljay5ib3V2aWVyQGxpbmFyby5vcmc+DQoNCg==
+changes:
+
+- fixed appending again
+- changed the VMSDFieldNull class to inherit from VMSDFieldGeneric
+
+v2:
+https://lore.kernel.org/r/20250109140959.19464-1-farosas@suse.de
+
+- dropped comments patch
+- new patch 4: rename the field to nullptr
+- patch 6: add a sample JSON, fix the appending code
+
+v1:
+https://lore.kernel.org/r/20250107195025.9951-1-farosas@suse.de
+
+Hi,
+
+The situation that broke the last migration PR was:
+
+1) emitting of JSON data by QEMU for
+   VMSTATE_ARRAY_OF_POINTER_TO_STRUCT when NULL pointers are present
+   has been broken for a while;
+
+2) parsing of s390x migration stream by analyze-script.py has been
+   broken for a while;
+
+   (there's indications that it worked on s390x hosts, I'm assuming due
+   to byte order coincidences)
+
+3) s390x CSS migration has been broken for a while;
+
+The s390x CSS migration uses VMSTATE_ARRAY_OF_POINTER_TO_STRUCT with
+NULL pointers, triggering #1, but hidden due to #2 on TCG hosts and
+due to #3 overall.
+
+- patches 1: just to make rebase easier
+- patches 2-3: cleanups
+- patch 4: fixes #2
+- patches 5-6: fix #1
+- patch 7: fixes #3
+
+Fabiano Rosas (6):
+  migration: Add more error handling to analyze-migration.py
+  migration: Remove unused argument in vmsd_desc_field_end
+  migration: Fix parsing of s390 stream
+  migration: Rename vmstate_info_nullptr
+  migration: Fix arrays of pointers in JSON writer
+  s390x: Fix CSS migration
+
+Peter Xu (1):
+  migration: Dump correct JSON format for nullptr replacement
+
+ hw/s390x/s390-virtio-ccw.c   |   2 +-
+ migration/vmstate-types.c    |   2 +-
+ migration/vmstate.c          | 151 ++++++++++++++++++++++++++++-------
+ scripts/analyze-migration.py | 142 +++++++++++++++++++++++---------
+ 4 files changed, 228 insertions(+), 69 deletions(-)
+
+-- 
+2.35.3
+
 
