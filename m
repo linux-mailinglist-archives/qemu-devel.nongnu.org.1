@@ -2,196 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24CF7A06E0D
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 07:11:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 769E9A06E43
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 07:31:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVlkN-0006Hs-GP; Thu, 09 Jan 2025 01:10:23 -0500
+	id 1tVm3i-0000qO-Mf; Thu, 09 Jan 2025 01:30:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
- id 1tVlkK-0006HK-JC
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 01:10:20 -0500
-Received: from smarthost4.eviden.com ([80.78.11.85])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
- id 1tVlkH-0007FH-OM
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 01:10:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=eviden.com; i=@eviden.com; q=dns/txt; s=mail;
- t=1736403017; x=1767939017;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-id:content-transfer-encoding: mime-version;
- bh=Hcr9Of4wJpVEfu6ci4YAMQyic2zQ9wykJ8et3qOfdko=;
- b=Z/Tg+pcqsQc2aeOmFeh1KNtkMooMRS8Rs/S6sFdTOUk/ge62e0MXFaqD
- CpZh97KRUlFOrGEOdIi/cYIu/Xaxy57bYezeJWH+mb6Vkof6WnZjSIyBK
- 9MMfwDPXMvZcZQG6KXWUasJjnvXr4D5XoDYIFlcClS5a56Lfk13L7DwL6
- fEgSFzXL7zlrVP2NuIUxr9gbff+baIu/1nZSiVjgyn33v0gME1vFngyJq
- jD73VwCVGddq4rdSUdg32uhTk2xz26q7dcJA1o0TLrG2txt/itKa8udK3
- TRx/7gy5gG7NXgQxnTzgjpu3LX9seU0ScZ0h4RDrHa/qTSDDpysPP/UeW Q==;
-X-IronPort-AV: E=Sophos;i="6.12,300,1728943200"; d="scan'208";a="29383831"
-X-MGA-submission: =?us-ascii?q?MDECuwsQ6zRGy6DgQ8vBzNGuQFoYD7/thcfEuR?=
- =?us-ascii?q?Tgral3/kjq+x3FlzMt7SGAaO+AtWUiYJ4sNdfyNLwCeiO9+taFrFUYHX?=
- =?us-ascii?q?cYf626H9ew5qeUIcCsKN5t4fW84qr+QQvEcuIWsWUaYAAZPlh9b/SH/3?=
- =?us-ascii?q?zkQbshKyfTGBk0vGRM/10OpQ=3D=3D?=
-Received: from mail-db5eur02lp2108.outbound.protection.outlook.com (HELO
- EUR02-DB5-obe.outbound.protection.outlook.com) ([104.47.11.108])
- by smarthost4.eviden.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jan 2025 07:10:07 +0100
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nTD4s56lkMozx1RWeS2wEUkMvmfZKaTK1xGGJIKRGl99fkWI/SytIywYR/D1qjKRWEuzeaQeiBGu/RcjVLgLucYtjZPeyC3CPbDps0V/gQ8A9t7DPX2x+p9tU2BelGTxN5Wr805Pw0Ivlj9feRduTm9xRQFTLqHj84ss+r3uJbri6vdz2ZZ3BGhiVtKMwdxiDRv3c8iMybslr4UaAtqw+hQCnONiQxsoCe514LVvh3PbBFWRkK/NtWGzRfO8qw2EwifiQ8kNGMWPJgysgRgbew5mAqMmSsU2f82aT7W4UwVexOsLAsQdIiLdCant3OdmLSUbRPVdpnKS5/LIsUZOjg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Hcr9Of4wJpVEfu6ci4YAMQyic2zQ9wykJ8et3qOfdko=;
- b=d4ByZiBAugp4tIbA/D4P7sRireE87V/9bWGZ391ReEae6zLJdiI6xqxnynF5txLwgDdW3IMqNWdxGgmMwLqdEoe7jascxT6Xmj3zI0yuWNRNGiStmxwNIg3uqKxTD8rCJ7qfi28PDScgOY9fsXHrZhYjpePBtkvzI+lWZbZ1/skbWj1yWqqhL6zXSLNXyYn3BIHoVjQfvBqPFGoWAC8IWGbt29lE3r3Z0we/88HlgeMejBJfLpagm4miMo6a7lcSxsj+Le/KqtAb5TYdF0ZU6D4PUnQOqzH/sCJGKvj3gnL4H79AazKJwJQYxqfy/4t8SCH+cUdP4Uovca3R82K2/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=eviden.com; dmarc=pass action=none header.from=eviden.com;
- dkim=pass header.d=eviden.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Eviden.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Hcr9Of4wJpVEfu6ci4YAMQyic2zQ9wykJ8et3qOfdko=;
- b=bF7Drn7xZf8wBwlSQQZ1fij88T6luOOH/6+GIbZeIYkO2qO8MRNs4RAfGppJFaVUhX+HHrvZjg/dce1tzjFm2kzzekDj6h6iKZvLBk3wuVbgZG7+NDg9qY7O+djxqdi0k3B6x175J5roovjrPKutrb0MClUPpd0VsihpQraEYyetFfuNOqsm+DCqRUXKWjOh6fbHpp/gfClTgbChkEQWQUL5IhPX38HZGlUnFxgE5X7qP2WgOudFpmUEVR/kvJ2bXzgpBk9KT6zLlelLKC2m4e9Q21Ym72KhyrMrhCO7+yZDkEzS5Miqwl16PMra1FovHlaicjTHZv4lpEi8Zb0Hzg==
-Received: from AM8PR07MB7602.eurprd07.prod.outlook.com (2603:10a6:20b:24b::7)
- by DBAPR07MB6502.eurprd07.prod.outlook.com (2603:10a6:10:188::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.11; Thu, 9 Jan
- 2025 06:10:04 +0000
-Received: from AM8PR07MB7602.eurprd07.prod.outlook.com
- ([fe80::fbd7:ca71:b636:6f9d]) by AM8PR07MB7602.eurprd07.prod.outlook.com
- ([fe80::fbd7:ca71:b636:6f9d%5]) with mapi id 15.20.8335.011; Thu, 9 Jan 2025
- 06:10:04 +0000
-From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "jasowang@redhat.com"
- <jasowang@redhat.com>, "zhenzhong.duan@intel.com" <zhenzhong.duan@intel.com>, 
- "kevin.tian@intel.com" <kevin.tian@intel.com>, "yi.l.liu@intel.com"
- <yi.l.liu@intel.com>, "joao.m.martins@oracle.com"
- <joao.m.martins@oracle.com>, "peterx@redhat.com" <peterx@redhat.com>,
- "tjeznach@rivosinc.com" <tjeznach@rivosinc.com>, "minwoo.im@samsung.com"
- <minwoo.im@samsung.com>
-Subject: Re: [PATCH v1 15/19] memory: Add an API for ATS support
-Thread-Topic: [PATCH v1 15/19] memory: Add an API for ATS support
-Thread-Index: AQHbQjJ0k0DlGQgy0Eihqb6cUgrbz7MNbO+AgADI2gA=
-Date: Thu, 9 Jan 2025 06:10:04 +0000
-Message-ID: <e6e2951c-884d-4b89-9e70-7e7802d196ce@eviden.com>
-References: <20241129074332.87535-1-clement.mathieu--drif@eviden.com>
- <20241129074332.87535-16-clement.mathieu--drif@eviden.com>
- <20250108131034-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20250108131034-mutt-send-email-mst@kernel.org>
-Accept-Language: en-GB, fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=eviden.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM8PR07MB7602:EE_|DBAPR07MB6502:EE_
-x-ms-office365-filtering-correlation-id: a5ba72c3-c556-4178-8ccc-08dd30744282
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|1800799024|7416014|376014|366016|38070700018; 
-x-microsoft-antispam-message-info: =?utf-8?B?Tkl6aXBncGNFMHU4bXJ6Q3hxWHVBQkVDYit3OE9mWWlNMks5S0RVRllsRGJk?=
- =?utf-8?B?a0ZidENyci9PNTNUSmhYbkFWWUZra3hYZHZseTJVQW5YdzhVR1Bzd2t1Sktx?=
- =?utf-8?B?V3lIS29TTCtQV1FUQ0FUNVJldnJ4ZWh4eDZjSkw2M3Q3WHZhVkNsUE9TSDhI?=
- =?utf-8?B?djlLMVhmT2x6dkNaWWRBenNaRkV6SW4zcHNHRkZBanpjckV3NGM5d0gveElI?=
- =?utf-8?B?Q1BtMGZtc3dYSFJuRUw1dlF3RVhxZElrZm9XbXZCKzljNGxCOTB1MWthSXo2?=
- =?utf-8?B?Zk1VbUVQVE85b3NUNlRSWHcwa210OVd4OHpNeG5hODNHV3J0WDlNSUdKeGZG?=
- =?utf-8?B?UVhHQnc3ZnBGSUlySnpUSkhzYzBVQjZLc3JTMWN5UWNjM1Aya0hSdGZOeDJK?=
- =?utf-8?B?UDVZNzF1dVhpZXRSM1Z4bWxScDB3amlRcGZ3NGxLemZlb2xHRWN0ck1RK1lD?=
- =?utf-8?B?RW1xdFJFRXJrM09NSjVKZWZacXFHQkg3N1k0aFB3ZHJaOFY1RDhhRG93NE1V?=
- =?utf-8?B?WEJ4NmpNbDg4OG5lY3dLOE4xN2pPdmlYOERIcHdlN21HYk96RStIK3VNRUJs?=
- =?utf-8?B?VUlXM1dIRmZaTklSejgvck5LTXkyZGhHVHFtSDJtZ1QxcmV1cTNTZW9zWmth?=
- =?utf-8?B?Zm94ZUJzZzNqOWVuSHZyL0c5N29TN0JhRUc4bGswZ2VQSHdHdmtaTldub1hX?=
- =?utf-8?B?Y0c3N2lSUWM5UURZMFdrMTdDd2xYeCtmSWZ5VGRWRUFLQVNOd0lkVkxTNjFj?=
- =?utf-8?B?QUtyYUh3TEtDcGtxSFltM1c1U0JsUDBDSkQ4U1dSY29pTGVzSm1YeXIvVWVU?=
- =?utf-8?B?VHNHVVMwUTZVaDRBcGpTd2JWeFoyTXdURUhsMVNOZk1YcHZQWVhzaDM2WmNr?=
- =?utf-8?B?cDVIWlp5T0ZSMUVaMG9qYzVoOEdYZWxLWXFnSUk0SDd3N0paNUtpWUM4NFJR?=
- =?utf-8?B?Y2NTSm5OZmFQY0F5WGYvb2h6NldJOEFrSVdOYWlxN1dwOFBUeWVLNVlGRnVj?=
- =?utf-8?B?NURzcmRnRlRVcnFPQVU5bzlLQUtINnNZTlpPc1JMV3ZZK3hTVHFYQzVKd2hk?=
- =?utf-8?B?SlBxckVXSXZRTERWZVkrRkhzVmprc255cGtBdjVvdWlyMXo2K0tMSVdPOHlL?=
- =?utf-8?B?am5uQTJHYWhWdEY2S2ZEOFUwQVhCREFGQlp6ZjNLVU1PWlFIelBYdHdTb25Q?=
- =?utf-8?B?RmVaN2xHVWZ4VHFrck9XWmloeVBGQlBJalBqY0FVTjI4RFJJMWNKQ243M0g2?=
- =?utf-8?B?c1Fmb2U4OUNSRC9uN0xnaVdXZEpKckRsSzJrd2wxY1JFdmRlNlBXZmRlUW5R?=
- =?utf-8?B?WDhyM0tYTjNmeU5KRHN5dEZLdi92dWwxTTduSW5TRXBLRGI5UkxMcGFSMXhS?=
- =?utf-8?B?di9WL0JEQnRrNk1qbFo3ZHhnaWc1bUJ3bURyZFBSK1FRYWlaeW9weWJUWXEx?=
- =?utf-8?B?YnZENjczUmdsa1Y5N3RjOTFxQW5BWEo5RmQ4aWtQZE1rWm9MNW9hbWhza2tB?=
- =?utf-8?B?TzFyMVFsOEp0MUVWeGlsRzZPN214Z25vWEFubG5IWGRxbTNuZGlzM3BPY3VK?=
- =?utf-8?B?Q2lXaDdhRnJxbUFlL2YvWm9BbFozTlMzMmFsMU5YYVFBeWxJRWtlRHhHOU1p?=
- =?utf-8?B?SkxvUElSVG1rN2pVbkpUdS9rOXhWeGFLeWtVQnBZaG5HenU1MnB2TkJMckxH?=
- =?utf-8?B?RTlEYThJelpGSVlsSzNmQ1RDeTJnaGV5b2NPSm9jWGtZQzVUMi9sbnBFaFNw?=
- =?utf-8?B?L0hVam5PYllZZkJqUWh3Qi8xTGRmek1sZ3g3RUM4STFhMFJHUFd6NzFnWFBL?=
- =?utf-8?B?M0Vuc2tiSG5LYi9QZHRGRVFNQ3JjZ2gzbjllRUJNY0VoYXIvYk9EMnZnWlFX?=
- =?utf-8?B?Smo2alJQWkZzdXVKYnZLOG1xeWZTQ3dzTXE4alV5c1hPQnZqWm0vZDBHUTAr?=
- =?utf-8?Q?KDFn5QwmVkVzURB6ICiXRmhwKFK/SRyh?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AM8PR07MB7602.eurprd07.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(7416014)(376014)(366016)(38070700018); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?L3R0aURDU3Fzb3d3L1R1WllhRktRNE5rdmtGaWM0ZGVMMXJnZEhqL2hCRlJs?=
- =?utf-8?B?UGNTdU9tSUNvcjZ5NFcvUnp0M2FtNE1QYU5selFJWHZ3TFd2UkhTSTl1ZWZJ?=
- =?utf-8?B?UklqajQrMFVCZ1VxdnZMTnE5NXRuUE5wcVpSR2JiUEYzSWw2MWJYa0pRV1Vx?=
- =?utf-8?B?aE5hUU0vS3RKWFV1TjhJaFR6ay9VUk9CT1VoNE9WVmg3OTMwS2xya2FmY1V5?=
- =?utf-8?B?UlpYQlpCbUtwWEhTRGNvaUNZVG5qbTlNSktaU05Gc0ZRbFNaWkpSQ2ZMcG12?=
- =?utf-8?B?NUhibUNIM2NvU0tQOW00K2FvWUp5bkYvK1dYTVdZbGd3RjlJS1EwUmRqbnVU?=
- =?utf-8?B?dGQrekczblozYjBsM3AyVWJNdXJpZG8xLzVJNEFsOXprcEo3MWhPRkNlWER1?=
- =?utf-8?B?b1Q4VUtIakswTVovWVZKdEh5QjJHWEIweEtoNEgvR28zaFJMS0QzSTJ2Q0Rm?=
- =?utf-8?B?RmM1ZHppWnJTa0prdHFacDRSZE1MNEpIT0hGL0VXMURuaGJwVndJUG9qbHlR?=
- =?utf-8?B?eTM1d0xrN2h4dm5WTE5hQnNzbU81aHBRcExLT3h2Zzc3ZzV3V1hHSWpJanFx?=
- =?utf-8?B?NjF3cHRvL0MzOVVtMlJ0UUo4eXY5ZU5vaUJEWU0zb2tOYlN0WjZlOFBKei9t?=
- =?utf-8?B?OTQwbFNFWWZtcnZIZks3aDVEYjRFQUVoOUZjTVJUUmNORUl3YzR0ajhESGlE?=
- =?utf-8?B?TmZOWDB3bWVMSXNIbnNOZlRkajhkOXBsTk81MUFPVUlYM0xqdGRQcXF3d2Fr?=
- =?utf-8?B?MUlxbjdXTWZ4UXhQNnZscWJQUytwckVvSDdMUStpNTUwR3BmSGVVSnJ6ZHhP?=
- =?utf-8?B?UG5sOWFYMEdUcUlScWg5S0cwQytTU2RzOERicE4rdmN3b1RlUktxOFJlWnFu?=
- =?utf-8?B?ajNtN1Bwck13aGFETVpud0VYOVIzb0R2R1ZYSzdXejR0K0tldW4yY0lKdmQx?=
- =?utf-8?B?a2NWSk1oMTM5ZEI3Q3BTbURuT3JpdWduejBoR1VDTkljTFgxL1krM0RTQmw1?=
- =?utf-8?B?eFZubXd0eHdRZ050SlJZRHFpem8wVHkvREppOEZBcU0yUkZheDg4czhqMU1S?=
- =?utf-8?B?VFlKUTVUNSttYTg3SHdyQ3VqdnpuZEdFaEczdnlGMFFqbnZrRmZrM3I4R1dS?=
- =?utf-8?B?MFdHQ0xqV0VucXNTQ0tkK1FOeTAwUndxUDUvbENpVDl5QkdyU01tWGZSV1JV?=
- =?utf-8?B?UEg3dU9yOG1UNms1a1F3ODFJN0dVb0xtOFR1VlRrWFZsU01mYkQ1Q0ZnRENk?=
- =?utf-8?B?K2xzSzVjcEVTV3dRTWFxVnpmSEM2cDlTamdYRkRtYnNiSGpOYWc4TWQzclJO?=
- =?utf-8?B?MEtnTVdId1FuWFJObk9tbzB6Zm41WGFwMUZ3MlE4NEVsV21UZUcveWsrb3pn?=
- =?utf-8?B?MXliUERCdFJkTS9idWRvNGx2b09ETm9uNzFMWnQ1M1UzSjF2aE84MTcxMkxN?=
- =?utf-8?B?dmVaQWE2YUhsUkRMZlZvK0NlVGtvampJM0JOSjR0ZWZGNEEra0FvZEtxSTd0?=
- =?utf-8?B?RmNSM1JsVURvaSt4alpGWGZCeXNsSktwYjJxK0luemhBSXpUUFBDaDdSbUJK?=
- =?utf-8?B?OEM4QllMMVBkYnhPRE5XOTlCSG9IaTZDdGg3aVFmSE92SmlxMlFieitIcHBM?=
- =?utf-8?B?Ukk0QllSZEcxOU5pSWdBSHBCcFdEem9YT3VVaXQvVDE5V3AxczlWblJxZFNo?=
- =?utf-8?B?UlBKT0ovYlhLT09PdytIZ05GKzlxSWRFMzNpV1Boc3V6a254TlN6bWtFR1F0?=
- =?utf-8?B?U3NUQkFlY0VzckVwL3J1KzB2c1R5UlNJaGtXV1pDdEJvQ3lmdWhWQjdlaGJI?=
- =?utf-8?B?VGRwclBPNWxySWFOekpXcjN6NkY5TnJ0RWwweUpFNWkyRmlJRHFZR3AzZFRL?=
- =?utf-8?B?OGM4cEl2ejBSTHozMjJoN0FKd0l3N2E2eHRKWUNTd2FGWVB5UVJEUHZyZEFE?=
- =?utf-8?B?OWJ6c0F5Z243UmJUOUJ6VnhUVVh1UlNVM0tvdy9JZ0ZJWXNiZEl1QmtNUVlr?=
- =?utf-8?B?RGdjZmsyV2xpRjZmTXczd0tQWWRSZE1NN1pIYjB6dm5QcU1ueXIrZ282Umxa?=
- =?utf-8?B?MG1mN0FQV1VJVkFUc0xFL0RrOURmclJUdVkyd3Nmc2hQOFhNUzdUZ2t2djA4?=
- =?utf-8?B?VnBSQjZzT0xvbVAybWZkT0Y0cFlGc2g2Y0RHTFErQjVYenFpZ1ExTmc1VjR4?=
- =?utf-8?Q?/GOrxYgZfKvYZv4xd6OK0K4=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <3ADD51C6CF21A24E9BBC729A1038E6F4@eurprd07.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1tVm3Z-0000ps-D0
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 01:30:14 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1tVm3V-0003dW-QZ
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 01:30:13 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-2156e078563so6920905ad.2
+ for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 22:30:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1736404208; x=1737009008;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=pgvEn3lO2PpOG8nW5ZGwdRr18e80HQKzFGn6ts2Ixn8=;
+ b=h6S5ith2EhttVA2qnUy8iyi+kfcAiW+ghjqNteLd2J5CS03BuobClhmikwiRuZv4vd
+ 1poEpNLGsyYDyFIcrmHRwQC25VnLxWFoJH11adiphpMonawqzXdatfm1CJD2lIHs+XmX
+ k3cqTy+0DM8Vn1RqDsLbVDyMXOj0nPxMLF2c4mZ/0lHUT5yr6wE8Zzrx2Pq4UPHB7UuN
+ huEVJ4EFWfsjfTjgSQZvBxfG/zRdJ0biqL8Q+TivT4PECuAslA6vUYUCf/vXz9sDzEeU
+ pU3Gbo7O2T/6AsOyKZ25wAFoUlb5cOaUE1G/Hgu3+wk9qmpdp8FYTLACIn5Jot+kUUQS
+ iVNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736404208; x=1737009008;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=pgvEn3lO2PpOG8nW5ZGwdRr18e80HQKzFGn6ts2Ixn8=;
+ b=VXsONEPBwYr8F2U64NtvAheqnAINja6QOdDB0ItoDqLAadKZhNt2jf6iy3X4+nop6B
+ t10UJlbhcN9Ral0C/L6uus0vWyorFVwCWTVq9Vu3aw5uL9oBn3x4sq7kQ4vxgp8KLxiG
+ ol9p3MXHHUHyqexp9XmCtroVMJGTlEce5Ju5oE9tyq+OZb/qGP6dKLTxp3AKSN4PIbrg
+ U4tUG6HFTYWldGe+bZz0ylNknL1qiqmp4R3fi/6q9tJzt+vrmA5iExCafR3dvq4uRADJ
+ FLmoC16xTd38OCKdRdBcBs3xMKgXZHYO3+LOn/2CNKBZNLrLXczujBf9QlIuGyYgpGtO
+ FJpw==
+X-Gm-Message-State: AOJu0Yxsi6EoaCUffUkWx1WylRhDBLiNn54SK2zpFeHmrmLHU1w45t11
+ t2cZ4+3+p+scoodOzpRjQcDlRy/ImE9tDFDppmTmSx37CStH2pJC7vmwBGcFZfw=
+X-Gm-Gg: ASbGncs0gD/I+NxCNg0W+2E0PWBMm+2bP9ZsAAAtFgNHATl6Nf2I2x6A7fGqS74F656
+ y4ann/p8ZIjlTLmHD9rhb/GW6sZMBMXQ/PQUTXvOPzhUfsqM+82cPLyjS78JGn+LlHvnyW/yBbc
+ kU9+i4PPbYGCorjgrfOuuOBhZI/Eqc/he2gPTXLsXw1HSj9YZBz0yE67W8sqCTcExoKNxfHa/7r
+ Sv5ZWgrKMJ/ZQ/wrcjqgW0x7gIyhzXu06yofiZZ4KQ+tPlJHDvwubZMBOQ=
+X-Google-Smtp-Source: AGHT+IFUoLo81iQCGVkbKck8rv1OJ+BZ8Ya9xZa45EDu+OcU+Z3XU6iKWMno/35aN3i0GEwAvE9xOg==
+X-Received: by 2002:a05:6a20:a107:b0:1e0:d766:8da1 with SMTP id
+ adf61e73a8af0-1e88d2fc6bemr9379663637.39.1736404207985; 
+ Wed, 08 Jan 2025 22:30:07 -0800 (PST)
+Received: from localhost ([157.82.203.37]) by smtp.gmail.com with UTF8SMTPSA id
+ d2e1a72fcca58-72aad8361b7sm36248711b3a.74.2025.01.08.22.30.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 08 Jan 2025 22:30:07 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v19 00/14] hw/pci: SR-IOV related fixes and improvements
+Date: Thu, 09 Jan 2025 15:29:45 +0900
+Message-Id: <20250109-reuse-v19-0-f541e82ca5f7@daynix.com>
 MIME-Version: 1.0
-X-OriginatorOrg: eviden.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR07MB7602.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a5ba72c3-c556-4178-8ccc-08dd30744282
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jan 2025 06:10:04.6376 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7d1c7785-2d8a-437d-b842-1ed5d8fbe00a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: bmlKGSDILbmHx5nL6d7tUmyyS0uwNs9wzhOpMu5Irt0Mws87mOXZEjoV4qQQ/bgkbhSliFC6tRm2Hj1wT431iZwjBno48fYxtY1DXzddinJcT77MRIGohnhgYSvqsdYk
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR07MB6502
-Received-SPF: pass client-ip=80.78.11.85;
- envelope-from=clement.mathieu--drif@eviden.com; helo=smarthost4.eviden.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIANlsf2cC/23SzW7UMBDA8VepciZoZvzNifdAHDz2mObAbpXAq
+ lW17469kMTIPcbKbxLb//dpk3WRbfry9D6tclu25XqpDxg+PU3pOV5+yLzkujARkAakMK/ye5O
+ 5xChEjBiUnuq7L6uU5fUx6Nv3+vy8bL+u69tj7g3b6t8JBOrfhBvOMBsWn0wSq5T/muPbZXn9n
+ K4/pzbiRh1D2BlVRpojRQNkAw1M9Yx2pirzgI6tD0lcGZjumd6ZbizEDEFFcEUPzPTM78xUJro
+ kTBjYxDAw2zE69mbb3kRTJM+Qyrg317PjJ11jIaHmxMGQDMz37PhJ35gna4E8ioWBhZMpNDsLl
+ VkXow2x6GzUwBBOZ8kd9w0VuhSBvWSVw3gF2IXi4bg6bKUU9orZ1/MsPELq4XEu2FrJKihIGhF
+ 5PE9UPTy2iK2WWniMOrtc8gewy8Xj2XTrRSc0nKwIiB1hF4ynEz6KybleoAUhPxaDXTKh+2JrJ
+ gNa1qyLxQ++eEaD9foP2Krh7BIqRcrJmDYe2RjA7lRbN0npILFkb93/Adzv9z+jJqAgVQQAAA=
+ =
+To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Alex Williamson <alex.williamson@redhat.com>, 
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>, 
+ Klaus Jensen <its@irrelevant.dk>, Markus Armbruster <armbru@redhat.com>, 
+ Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+ Shivaprasad G Bhat <sbhat@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, devel@daynix.com, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.14-dev-fd6e3
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -207,99 +115,180 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCg0KT24gMDgvMDEvMjAyNSAxOToxMCwgTWljaGFlbCBTLiBUc2lya2luIHdyb3RlOg0KPiBD
-YXV0aW9uOiBFeHRlcm5hbCBlbWFpbC4gRG8gbm90IG9wZW4gYXR0YWNobWVudHMgb3IgY2xpY2sg
-bGlua3MsIHVubGVzcyB0aGlzIGVtYWlsIGNvbWVzIGZyb20gYSBrbm93biBzZW5kZXIgYW5kIHlv
-dSBrbm93IHRoZSBjb250ZW50IGlzIHNhZmUuDQo+DQo+DQo+IE9uIEZyaSwgTm92IDI5LCAyMDI0
-IGF0IDA3OjQ0OjAwQU0gKzAwMDAsIENMRU1FTlQgTUFUSElFVS0tRFJJRiB3cm90ZToNCj4+IEZy
-b206IENsw6ltZW50IE1hdGhpZXUtLURyaWYgPGNsZW1lbnQubWF0aGlldS0tZHJpZkBldmlkZW4u
-Y29tPg0KPj4NCj4+IElPTU1VIGhhdmUgdG8gaW1wbGVtZW50IGlvbW11X2F0c19yZXF1ZXN0X3Ry
-YW5zbGF0aW9uIHRvIHN1cHBvcnQgQVRTLg0KPj4NCj4+IERldmljZXMgY2FuIHVzZSBJT01NVV9U
-TEJfRU5UUllfVFJBTlNMQVRJT05fRVJST1IgdG8gY2hlY2sgdGhlIHRsYg0KPj4gZW50cmllcyBy
-ZXR1cm5lZCBieSBhIHRyYW5zbGF0aW9uIHJlcXVlc3QuDQo+Pg0KPj4gV2UgZGVjaWRlZCBub3Qg
-dG8gdXNlIHRoZSBleGlzdGluZyB0cmFuc2xhdGlvbiBvcGVyYXRpb24gZm9yIDIgcmVhc29ucy4N
-Cj4+IEZpcnN0LCBBVFMgaXMgZGVzaWduZWQgdG8gdHJhbnNsYXRlIHJhbmdlcyBhbmQgbm90IGlz
-b2xhdGVkIGFkZHJlc3Nlcy4NCj4+IFNlY29uZCwgd2UgbmVlZCBBVFMtc3BlY2lmaWMgcGFyYW1l
-dGVycy4NCj4+DQo+PiBTaWduZWQtb2ZmLWJ5OiBDbMOpbWVudCBNYXRoaWV1LS1EcmlmIDxjbGVt
-ZW50Lm1hdGhpZXUtLWRyaWZAZXZpZGVuLmNvbT4NCj4+IC0tLQ0KPj4gICBpbmNsdWRlL2V4ZWMv
-bWVtb3J5LmggfCAyNiArKysrKysrKysrKysrKysrKysrKysrKysrKw0KPj4gICBzeXN0ZW0vbWVt
-b3J5LmMgICAgICAgfCAyMCArKysrKysrKysrKysrKysrKysrKw0KPj4gICAyIGZpbGVzIGNoYW5n
-ZWQsIDQ2IGluc2VydGlvbnMoKykNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9leGVjL21l
-bW9yeS5oIGIvaW5jbHVkZS9leGVjL21lbW9yeS5oDQo+PiBpbmRleCBjMGQwNjRkYmQ4Li4xNDE2
-NmUyODc0IDEwMDY0NA0KPj4gLS0tIGEvaW5jbHVkZS9leGVjL21lbW9yeS5oDQo+PiArKysgYi9p
-bmNsdWRlL2V4ZWMvbWVtb3J5LmgNCj4+IEBAIC0xNDgsNiArMTQ4LDEwIEBAIHN0cnVjdCBJT01N
-VVRMQkVudHJ5IHsNCj4+ICAgICAgIHVpbnQzMl90ICAgICAgICAgcGFzaWQ7DQo+PiAgIH07DQo+
-Pg0KPj4gKy8qIENoZWNrIGlmIGFuIElPTU1VIFRMQiBlbnRyeSBpbmRpY2F0ZXMgYSB0cmFuc2xh
-dGlvbiBlcnJvciAqLw0KPj4gKyNkZWZpbmUgSU9NTVVfVExCX0VOVFJZX1RSQU5TTEFUSU9OX0VS
-Uk9SKGVudHJ5KSAoKCgoZW50cnkpLT5wZXJtKSAmIElPTU1VX1JXKSBcDQo+PiArICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgID09IElPTU1VX05PTkUp
-DQo+PiArDQo+PiAgIC8qDQo+PiAgICAqIEJpdG1hcCBmb3IgZGlmZmVyZW50IElPTU1VTm90aWZp
-ZXIgY2FwYWJpbGl0aWVzLiBFYWNoIG5vdGlmaWVyIGNhbg0KPj4gICAgKiByZWdpc3RlciB3aXRo
-IG9uZSBvciBtdWx0aXBsZSBJT01NVSBOb3RpZmllciBjYXBhYmlsaXR5IGJpdChzKS4NCj4+IEBA
-IC01MjUsNiArNTI5LDIwIEBAIHN0cnVjdCBJT01NVU1lbW9yeVJlZ2lvbkNsYXNzIHsNCj4+ICAg
-ICAgICAqIEBpb21tdTogdGhlIElPTU1VTWVtb3J5UmVnaW9uDQo+PiAgICAgICAgKi8NCj4+ICAg
-ICAgIGludCAoKm51bV9pbmRleGVzKShJT01NVU1lbW9yeVJlZ2lvbiAqaW9tbXUpOw0KPj4gKw0K
-Pj4gKyAgICAvKioNCj4+ICsgICAgICogQGlvbW11X2F0c19yZXF1ZXN0X3RyYW5zbGF0aW9uOg0K
-Pj4gKyAgICAgKiBUaGlzIG1ldGhvZCBtdXN0IGJlIGltcGxlbWVudGVkIGlmIHRoZSBJT01NVSBo
-YXMgQVRTIGVuYWJsZWQNCj4+ICsgICAgICoNCj4+ICsgICAgICogQHNlZSBwY2lfYXRzX3JlcXVl
-c3RfdHJhbnNsYXRpb25fcGFzaWQNCj4+ICsgICAgICovDQo+PiArICAgIHNzaXplX3QgKCppb21t
-dV9hdHNfcmVxdWVzdF90cmFuc2xhdGlvbikoSU9NTVVNZW1vcnlSZWdpb24gKmlvbW11LA0KPj4g
-KyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJvb2wgcHJpdl9y
-ZXEsIGJvb2wgZXhlY19yZXEsDQo+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgaHdhZGRyIGFkZHIsIHNpemVfdCBsZW5ndGgsDQo+PiArICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYm9vbCBub193cml0ZSwNCj4+ICsgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBJT01NVVRMQkVudHJ5ICpy
-ZXN1bHQsDQo+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-c2l6ZV90IHJlc3VsdF9sZW5ndGgsDQo+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgdWludDMyX3QgKmVycl9jb3VudCk7DQo+PiAgIH07DQo+Pg0KPj4gICB0
-eXBlZGVmIHN0cnVjdCBSYW1EaXNjYXJkTGlzdGVuZXIgUmFtRGlzY2FyZExpc3RlbmVyOw0KPj4g
-QEAgLTE4ODMsNiArMTkwMSwxNCBAQCB2b2lkIG1lbW9yeV9yZWdpb25faW9tbXVfcmVwbGF5KElP
-TU1VTWVtb3J5UmVnaW9uICppb21tdV9tciwgSU9NTVVOb3RpZmllciAqbik7DQo+PiAgIHZvaWQg
-bWVtb3J5X3JlZ2lvbl91bnJlZ2lzdGVyX2lvbW11X25vdGlmaWVyKE1lbW9yeVJlZ2lvbiAqbXIs
-DQo+PiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIElPTU1V
-Tm90aWZpZXIgKm4pOw0KPj4NCj4+ICtzc2l6ZV90IG1lbW9yeV9yZWdpb25faW9tbXVfYXRzX3Jl
-cXVlc3RfdHJhbnNsYXRpb24oSU9NTVVNZW1vcnlSZWdpb24gKmlvbW11X21yLA0KPj4gKyAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJvb2wgcHJpdl9yZXEs
-IGJvb2wgZXhlY19yZXEsDQo+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgaHdhZGRyIGFkZHIsIHNpemVfdCBsZW5ndGgsDQo+PiArICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYm9vbCBub193cml0ZSwNCj4+ICsg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBJT01NVVRMQkVu
-dHJ5ICpyZXN1bHQsDQo+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgc2l6ZV90IHJlc3VsdF9sZW5ndGgsDQo+PiArICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgdWludDMyX3QgKmVycl9jb3VudCk7DQo+PiArDQo+
-PiAgIC8qKg0KPj4gICAgKiBtZW1vcnlfcmVnaW9uX2lvbW11X2dldF9hdHRyOiByZXR1cm4gYW4g
-SU9NTVUgYXR0ciBpZiBnZXRfYXR0cigpIGlzDQo+PiAgICAqIGRlZmluZWQgb24gdGhlIElPTU1V
-Lg0KPj4gZGlmZiAtLWdpdCBhL3N5c3RlbS9tZW1vcnkuYyBiL3N5c3RlbS9tZW1vcnkuYw0KPj4g
-aW5kZXggODVmNjgzNGNiMy4uN2Y2ZjM3OThlNiAxMDA2NDQNCj4+IC0tLSBhL3N5c3RlbS9tZW1v
-cnkuYw0KPj4gKysrIGIvc3lzdGVtL21lbW9yeS5jDQo+PiBAQCAtMjAxMSw2ICsyMDExLDI2IEBA
-IHZvaWQgbWVtb3J5X3JlZ2lvbl91bnJlZ2lzdGVyX2lvbW11X25vdGlmaWVyKE1lbW9yeVJlZ2lv
-biAqbXIsDQo+PiAgICAgICBtZW1vcnlfcmVnaW9uX3VwZGF0ZV9pb21tdV9ub3RpZnlfZmxhZ3Mo
-aW9tbXVfbXIsIE5VTEwpOw0KPj4gICB9DQo+Pg0KPj4gK3NzaXplX3QgbWVtb3J5X3JlZ2lvbl9p
-b21tdV9hdHNfcmVxdWVzdF90cmFuc2xhdGlvbihJT01NVU1lbW9yeVJlZ2lvbiAqaW9tbXVfbXIs
-DQo+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IGJvb2wgcHJpdl9yZXEsDQo+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIGJvb2wgZXhlY19yZXEsDQo+PiArICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGh3YWRkciBhZGRyLCBzaXplX3QgbGVuZ3Ro
-LA0KPj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICBib29sIG5vX3dyaXRlLA0KPj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICBJT01NVVRMQkVudHJ5ICpyZXN1bHQsDQo+PiArICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpemVfdCByZXN1bHRfbGVu
-Z3RoLA0KPj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICB1aW50MzJfdCAqZXJyX2NvdW50KQ0KPj4gK3sNCj4+ICsgICAgSU9NTVVNZW1vcnlSZWdp
-b25DbGFzcyAqaW1yYyA9IG1lbW9yeV9yZWdpb25fZ2V0X2lvbW11X2NsYXNzX25vY2hlY2soaW9t
-bXVfbXIpOw0KPj4gKw0KPg0KPiBsaW5lIHRvbyBsb25nIC0ganVzdCBjYWxsIHRoZSB2YXJpYWJs
-ZSBtci4NCg0KSXQncyBzdGlsbCB0b28gbG9uZyB3aXRoIG1yLCB3aWxsIGRvIHRoaXMgaW5zdGVh
-ZDoNCg0KSU9NTVVNZW1vcnlSZWdpb25DbGFzcyAqaW1yYyA9DQogwqDCoMKgIG1lbW9yeV9yZWdp
-b25fZ2V0X2lvbW11X2NsYXNzX25vY2hlY2soaW9tbXVfbXIpOw0KDQpCeSB0aGUgd2F5LCBJIHRo
-aW5rIEkgZmlndXJlZCBvdXQgd2h5IHBhdGNoIGVuY29kaW5nIGlzIG5vdCBjb3JyZWN0Lg0KV2ls
-bCBmaXggdGhpcyBpbiB0aGUgbmV4dCBzcGluLg0KDQo+DQo+PiArICAgIGlmICghaW1yYy0+aW9t
-bXVfYXRzX3JlcXVlc3RfdHJhbnNsYXRpb24pIHsNCj4+ICsgICAgICAgIHJldHVybiAtRU5PREVW
-Ow0KPj4gKyAgICB9DQo+PiArDQo+PiArICAgIHJldHVybiBpbXJjLT5pb21tdV9hdHNfcmVxdWVz
-dF90cmFuc2xhdGlvbihpb21tdV9tciwgcHJpdl9yZXEsIGV4ZWNfcmVxLA0KPj4gKyAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYWRkciwgbGVuZ3RoLCBub193
-cml0ZSwgcmVzdWx0LA0KPj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgcmVzdWx0X2xlbmd0aCwgZXJyX2NvdW50KTsNCj4+ICt9DQo+PiArDQo+PiAgIHZv
-aWQgbWVtb3J5X3JlZ2lvbl9ub3RpZnlfaW9tbXVfb25lKElPTU1VTm90aWZpZXIgKm5vdGlmaWVy
-LA0KPj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb25zdCBJT01NVVRM
-QkV2ZW50ICpldmVudCkNCj4+ICAgew0KPj4gLS0NCj4+IDIuNDcuMA0K
+Supersedes: <20240714-rombar-v2-0-af1504ef55de@daynix.com>
+("[PATCH v2 0/4] hw/pci: Convert rom_bar into OnOffAuto")
+
+I submitted a RFC series[1] to add support for SR-IOV emulation to
+virtio-net-pci. During the development of the series, I fixed some
+trivial bugs and made improvements that I think are independently
+useful. This series extracts those fixes and improvements from the RFC
+series.
+
+[1]: https://patchew.org/QEMU/20231210-sriov-v2-0-b959e8a6dfaf@daynix.com/
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Changes in v19:
+- Avoided inling pci_set_power().
+- Link to v18: https://lore.kernel.org/r/20250104-reuse-v18-0-c349eafd8673@daynix.com
+
+Changes in v18:
+- Rebased.
+- Link to v17: https://lore.kernel.org/r/20241022-reuse-v17-0-bd7c133237e4@daynix.com
+
+Changes in v17:
+- Added patch "pcie_sriov: Ensure VF addr does not overflow".
+- Changed not to link VF with sPAPR DRC.
+- Asserted pci_is_vf() when zpci is not found. (Cédric Le Goater)
+- Link to v16: https://lore.kernel.org/r/20240913-reuse-v16-0-d016b4b4f616@daynix.com
+
+Changes in v16:
+- Added patch "s390x/pci: Avoid creating zpci for VFs".
+- Added patch "s390x/pci: Allow plugging SR-IOV devices".
+- Link to v15: https://lore.kernel.org/r/20240823-reuse-v15-0-eddcb960e289@daynix.com
+
+Changes in v15:
+- Fixed variable shadowing in patch
+  "pcie_sriov: Remove num_vfs from PCIESriovPF"
+- Link to v14: https://lore.kernel.org/r/20240813-reuse-v14-0-4c15bc6ee0e6@daynix.com
+
+Changes in v14:
+- Dropped patch "pcie_sriov: Ensure VF function number does not
+  overflow" as I found the restriction it imposes is unnecessary.
+- Link to v13: https://lore.kernel.org/r/20240805-reuse-v13-0-aaeaa4d7dfd2@daynix.com
+
+Changes in v13:
+- Added patch "s390x/pci: Check for multifunction after device
+  realization". I found SR-IOV devices, which are multifunction devices,
+  are not supposed to work at all with s390x on QEMU.
+- Link to v12: https://lore.kernel.org/r/20240804-reuse-v12-0-d3930c4111b2@daynix.com
+
+Changes in v12:
+- Changed to ignore invalid PCI_SRIOV_NUM_VF writes as done for
+  PCI_SRIOV_CTRL_VFE.
+- Updated the message for patch "hw/pci: Use -1 as the default value for
+  rombar". (Markus Armbruster)
+- Link to v11: https://lore.kernel.org/r/20240802-reuse-v11-0-fb83bb8c19fb@daynix.com
+
+Changes in v11:
+- Rebased.
+- Dropped patch "hw/pci: Convert rom_bar into OnOffAuto".
+- Added patch "hw/pci: Use -1 as the default value for rombar".
+- Added for-9.2 to give a testing period for possible breakage with
+  libvirt/s390x.
+- Link to v10: https://lore.kernel.org/r/20240627-reuse-v10-0-7ca0b8ed3d9f@daynix.com
+
+Changes in v10:
+- Added patch "hw/ppc/spapr_pci: Do not reject VFs created after a PF".
+- Added patch "hw/ppc/spapr_pci: Do not create DT for disabled PCI device".
+- Added patch "hw/pci: Convert rom_bar into OnOffAuto".
+- Dropped patch "hw/pci: Determine if rombar is explicitly enabled".
+- Dropped patch "hw/qdev: Remove opts member".
+- Link to v9: https://lore.kernel.org/r/20240315-reuse-v9-0-67aa69af4d53@daynix.com
+
+Changes in v9:
+- Rebased.
+- Restored '#include "qapi/error.h"' (Michael S. Tsirkin)
+- Added patch "pcie_sriov: Ensure VF function number does not overflow"
+  to fix abortion with wrong PF addr.
+- Link to v8: https://lore.kernel.org/r/20240228-reuse-v8-0-282660281e60@daynix.com
+
+Changes in v8:
+- Clarified that "hw/pci: Replace -1 with UINT32_MAX for romsize" is
+  not a bug fix. (Markus Armbruster)
+- Squashed patch "vfio: Avoid inspecting option QDict for rombar" into
+  "hw/pci: Determine if rombar is explicitly enabled".
+  (Markus Armbruster)
+- Noted the minor semantics change for patch "hw/pci: Determine if
+  rombar is explicitly enabled". (Markus Armbruster)
+- Link to v7: https://lore.kernel.org/r/20240224-reuse-v7-0-29c14bcb952e@daynix.com
+
+Changes in v7:
+- Replaced -1 with UINT32_MAX when expressing uint32_t.
+  (Markus Armbruster)
+- Added patch "hw/pci: Replace -1 with UINT32_MAX for romsize".
+- Link to v6: https://lore.kernel.org/r/20240220-reuse-v6-0-2e42a28b0cf2@daynix.com
+
+Changes in v6:
+- Fixed migration.
+- Added patch "pcie_sriov: Do not manually unrealize".
+- Restored patch "pcie_sriov: Release VFs failed to realize" that was
+  missed in v5.
+- Link to v5: https://lore.kernel.org/r/20240218-reuse-v5-0-e4fc1c19b5a9@daynix.com
+
+Changes in v5:
+- Added patch "hw/pci: Always call pcie_sriov_pf_reset()".
+- Added patch "pcie_sriov: Reset SR-IOV extended capability".
+- Removed a reference to PCI_SRIOV_CTRL_VFE in hw/nvme.
+  (Michael S. Tsirkin)
+- Noted the impact on the guest of patch "pcie_sriov: Do not reset
+  NumVFs after unregistering VFs". (Michael S. Tsirkin)
+- Changed to use pcie_sriov_num_vfs().
+- Restored pci_set_power() and changed it to call pci_set_enabled() only
+  for PFs with an expalanation. (Michael S. Tsirkin)
+- Reordered patches.
+- Link to v4: https://lore.kernel.org/r/20240214-reuse-v4-0-89ad093a07f4@daynix.com
+
+Changes in v4:
+- Reverted the change to pci_rom_bar_explicitly_enabled().
+  (Michael S. Tsirkin)
+- Added patch "pcie_sriov: Do not reset NumVFs after unregistering VFs".
+- Added patch "hw/nvme: Refer to dev->exp.sriov_pf.num_vfs".
+- Link to v3: https://lore.kernel.org/r/20240212-reuse-v3-0-8017b689ce7f@daynix.com
+
+Changes in v3:
+- Extracted patch "hw/pci: Use -1 as a default value for rombar" from
+  patch "hw/pci: Determine if rombar is explicitly enabled"
+  (Philippe Mathieu-Daudé)
+- Added an audit result of PCIDevice::rom_bar to the message of patch
+  "hw/pci: Use -1 as a default value for rombar"
+  (Philippe Mathieu-Daudé)
+- Link to v2: https://lore.kernel.org/r/20240210-reuse-v2-0-24ba2a502692@daynix.com
+
+Changes in v2:
+- Reset after enabling a function so that NVMe VF state gets updated.
+- Link to v1: https://lore.kernel.org/r/20240203-reuse-v1-0-5be8c5ce6338@daynix.com
+
+---
+Akihiko Odaki (14):
+      hw/pci: Rename has_power to enabled
+      hw/ppc/spapr_pci: Do not create DT for disabled PCI device
+      hw/ppc/spapr_pci: Do not reject VFs created after a PF
+      s390x/pci: Avoid creating zpci for VFs
+      s390x/pci: Allow plugging SR-IOV devices
+      s390x/pci: Check for multifunction after device realization
+      pcie_sriov: Do not manually unrealize
+      pcie_sriov: Ensure VF addr does not overflow
+      pcie_sriov: Reuse SR-IOV VF device instances
+      pcie_sriov: Release VFs failed to realize
+      pcie_sriov: Remove num_vfs from PCIESriovPF
+      pcie_sriov: Register VFs after migration
+      hw/pci: Use -1 as the default value for rombar
+      hw/qdev: Remove opts member
+
+ docs/pcie_sriov.txt         |   8 ++-
+ include/hw/pci/pci.h        |   1 +
+ include/hw/pci/pci_device.h |   4 +-
+ include/hw/pci/pcie_sriov.h |   9 +--
+ include/hw/qdev-core.h      |   4 --
+ hw/core/qdev.c              |   1 -
+ hw/net/igb.c                |  10 ++-
+ hw/nvme/ctrl.c              |  22 +++---
+ hw/pci/pci.c                |  36 ++++++++--
+ hw/pci/pci_host.c           |   4 +-
+ hw/pci/pcie_sriov.c         | 159 ++++++++++++++++++++++++--------------------
+ hw/ppc/spapr_pci.c          |  20 +++++-
+ hw/s390x/s390-pci-bus.c     |  42 +++++++++---
+ hw/vfio/pci.c               |   5 +-
+ system/qdev-monitor.c       |  12 ++--
+ hw/pci/trace-events         |   2 +-
+ 16 files changed, 211 insertions(+), 128 deletions(-)
+---
+base-commit: 38d0939b86e2eef6f6a622c6f1f7befda0146595
+change-id: 20240129-reuse-faae22b11934
+
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
+
 
