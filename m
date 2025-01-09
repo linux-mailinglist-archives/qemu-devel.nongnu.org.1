@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C398BA07E72
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 18:14:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34293A07E5F
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 18:08:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVw61-0007Od-AN; Thu, 09 Jan 2025 12:13:25 -0500
+	id 1tVvzj-0004no-Fb; Thu, 09 Jan 2025 12:06:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tVw5x-0007Nf-Ob
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:13:21 -0500
+ id 1tVvzd-0004kk-MR
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:06:50 -0500
 Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tVw5w-0007uc-4G
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:13:21 -0500
+ id 1tVvzc-00071s-3W
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:06:49 -0500
 Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-5d0ac27b412so1359212a12.1
- for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 09:13:19 -0800 (PST)
+ 4fb4d7f45d1cf-5d122cf8dd1so1733411a12.2
+ for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 09:06:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736442798; x=1737047598; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736442407; x=1737047207; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dqmHD2ejeCU6vyBEybsqYUS9Cxg0cRrbaI6dvUsODH8=;
- b=CrujFPDnEWkNJpTTSV4jemIJhKKXB6wfNHSk9nqnBEWoJQUhdTLJVBgS2BuxqdF/Vq
- /4oHa1SyRfWSpvSnXOaIg/KbQ2gTH3EzdG64p5Od+Tm46mMQ5sje/XFIDZUO9cNN/GTq
- aGfeRLKPkVuQlyFtkTac6m2TytmQDvyMhSs6UK62xX5D/frPiLAR3cZKZ6uYX3MUgEPp
- LGtf74IB92sVxofvo+guDz4nVYG1s8AVHkrvhGcmkddomLcasP5FhS0uts2GMnJ0qEz7
- SS8r2Hlwlqit4UhFNlw+lcOiUjNuqK54FnJ1G3p6H6IBLWey2ZS1juuOYhdU75YvKciC
- Fm0w==
+ bh=jXTY3v0Mhju7JfKzKJdD6zSDlC5CNwIYMzPHdmiHijQ=;
+ b=YIZlH3JkcQBP1MHBIF0VovJFD6kmK2LSJ9wHwh3HoNyKYdQwVKUZA9+cWlsvS/PTOK
+ lZ+IixtcvwNj4umhOsWM38Vsb5MkklTFkqGCy4uzfBgQYPNMJfKIyMdN5CGg7/qfhBg5
+ zpQCspUGUIaej6uhO/Oi3JBonpqblV8PVZFjZnpCJ1eCYPmyvfWLm7JgpW2CBc7ckKgq
+ zF7tAjgE/bjritQfMHP7vuw1zrocB4Wy6M4Ekf+nc9bjQ4zlp5AkYCDMJ7O+qUUnuCL7
+ sN0DfwlAlvgWHXHR6bJBCssDtciSruXrQQNjdPMT3LEWvAaIhSkjPowD+g21WZ94WE/7
+ Z3hA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736442798; x=1737047598;
+ d=1e100.net; s=20230601; t=1736442407; x=1737047207;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dqmHD2ejeCU6vyBEybsqYUS9Cxg0cRrbaI6dvUsODH8=;
- b=Q5yLIE0TkrQj38oLXW6uTnlSE3u6Otj/fWmaO871ac9fPYnSshahKvGZvEPGxriv75
- Kgb3P1xHDNlqg+UAIU/Odc3sXAkwrW2sugm9oEc1rxIWwKrTjHwADGz2M4NvJEGkZoo2
- szr72vI+h24R5cyKa0ckSNFfuRaKah6OtwJ1ZyIYoWXvqaACJtjDF8IW0jJ98WYzxExI
- NfmpRDr5SjlTx3BHX/P6vceVirLoaM9tY+6I9CwvFZNXBjkWEzLq9X/8JTEGd1EmhPdI
- yRUQXN660gesQpS/yQ7z7F8CwrXU2u8FjGSID/yaC1WkbHIOT5oLrWFLdwGz2rUohM0f
- ZKGQ==
-X-Gm-Message-State: AOJu0YxOBvJJhGl8shTZiXIzYX5cmRihYELIcasiTd+6uzUxyaul5a2X
- 6/EcZp8BzEU0I1uu8GP3Y37VO2qVDVQwBZf+t2e3kFbFo7KEfi21Uk9bFO8ZJUo=
-X-Gm-Gg: ASbGncsL0K+gxCsjMFF1rsX9tZvjbwfJI+Hk68Y8MYPhuD1UoUyLCpoCjpNwhHf3hD8
- eS8+/rT/hBEBGFDJtDpynVEHRMo1o/Nn9jR4P7FwgCzDhBxP4LUiscnry9+ZmQyP1xBLTmGCFyG
- 2/i9/REteECAPCPwPylcNYjV3EKtudF3H87mhY1Xm+2RUsQBPHz/u+pLMemwBdqPtoeoj8+ibxJ
- 3M3ZcPxsia8U67CPjlnoKPEYrOSdvsyoj6pK/uexIZb1Ne7ZR3Ndvk=
-X-Google-Smtp-Source: AGHT+IHpbiY0r3nkQ+skfaqAM5wW7/4WC5RAwxA+7WzJonWKOIuFIF414Vc1GA0Z7tT24kq89mEFRg==
-X-Received: by 2002:a17:906:f5a8:b0:aa6:8676:3b3b with SMTP id
- a640c23a62f3a-ab2ab749f32mr612531066b.30.1736442798363; 
- Thu, 09 Jan 2025 09:13:18 -0800 (PST)
+ bh=jXTY3v0Mhju7JfKzKJdD6zSDlC5CNwIYMzPHdmiHijQ=;
+ b=Uo1Ju3dAX5aaLYqg9Uy0G/69KKY93y6LjhA338xQfvZSEb4RGjWi+/OZ5lWvePdhBV
+ GO5hQvC/TEdGjso6ticrIr5jwsxf3jtfyz3kmnRSwyfLeaNbcoep+ujD1Eh7OpQ+fNXn
+ Klv2plsn0yO4i162lGqzVR41xyX1fMpL4t2KLABXqp3UkzEyo6ooIMitOB4/pFNujJ//
+ f7BatzTmaKHnwQaGWgH6IJt26QxXvLPV/MRu0xujsW8Cky/P3fOGbQPJgGKTfRCqL5oH
+ hoTLgEW7rw6tfJJ3SoFy4JL01aIio/s17euPfVm/B2lPPkYD++QE5/0Cs46K6kO+bBn8
+ 9R+g==
+X-Gm-Message-State: AOJu0YwgXZ8a+iclfBO9RQwOTvKIPzF6Hi4eM/7sGFIPqHBQpj6LABhh
+ rEUzYiLwdMIlDxJT771fTWx+8neZwla25sW/TILaGnkPrjdM2hQVfuxZDuIKcBI=
+X-Gm-Gg: ASbGncse2QaTLafFsDokLHriVnXKyU5BKHfDch28edgyfSW7yl+boXvaJ3fsYLhjh/D
+ xsLbZLBVpmPvZqlElnBP7rBis4m6w67Q1FohPzuZsMHqINON2lEc4FKAr2BFkqy92wyklBgwdPo
+ APtpDc15P8bXH5BWNgJzqTO4f6RMC2/9RdqrUdqFxTkNWqq8NJxp1VFFG5kqy6CfuSXAcI2NSh9
+ Utdf3s8ztYj1Xz6TyXzDTXLwyf4d08zZIJzrnrcMXvJj8DatuPMWvc=
+X-Google-Smtp-Source: AGHT+IFcyDhMCLcyPKRjNRSyiaTcuwr6cg5FOsTleZ2NI+uvaWzPzzAdWjw9hBaqlXfubgXpha7ydw==
+X-Received: by 2002:a05:6402:270d:b0:5d2:728f:d5f8 with SMTP id
+ 4fb4d7f45d1cf-5d972e4dcddmr6326742a12.27.1736442406671; 
+ Thu, 09 Jan 2025 09:06:46 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c90dacd7sm89705266b.70.2025.01.09.09.13.16
+ 4fb4d7f45d1cf-5d99046a17fsm782811a12.62.2025.01.09.09.06.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 Jan 2025 09:13:17 -0800 (PST)
+ Thu, 09 Jan 2025 09:06:40 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C318A6144E;
+ by draig.lan (Postfix) with ESMTP id D898C61546;
  Thu,  9 Jan 2025 17:06:21 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -71,10 +71,12 @@ Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 21/22] configure: reenable plugins by default for 32-bit hosts
-Date: Thu,  9 Jan 2025 17:06:18 +0000
-Message-Id: <20250109170619.2271193-22-alex.bennee@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Julian Ganz <neither@nut.email>
+Subject: [PATCH 22/22] accel/tcg: also suppress asynchronous IRQs for
+ cpu_io_recompile
+Date: Thu,  9 Jan 2025 17:06:19 +0000
+Message-Id: <20250109170619.2271193-23-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250109170619.2271193-1-alex.bennee@linaro.org>
 References: <20250109170619.2271193-1-alex.bennee@linaro.org>
@@ -105,55 +107,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+While it would be technically correct to allow an IRQ to happen (as
+the offending instruction never really completed) it messes up
+instrumentation. We already take care to only use memory
+instrumentation on the block, we should also suppress IRQs.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20241217224306.2900490-12-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Julian Ganz <neither@nut.email>
 ---
- configure | 21 +--------------------
- 1 file changed, 1 insertion(+), 20 deletions(-)
+ accel/tcg/translate-all.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/configure b/configure
-index 18336376bf..02f1dd2311 100755
---- a/configure
-+++ b/configure
-@@ -528,25 +528,6 @@ case "$cpu" in
-     ;;
- esac
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index 453eb20ec9..d56ca13cdd 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -633,9 +633,10 @@ void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr)
+      * Exit the loop and potentially generate a new TB executing the
+      * just the I/O insns. We also limit instrumentation to memory
+      * operations only (which execute after completion) so we don't
+-     * double instrument the instruction.
++     * double instrument the instruction. Also don't let an IRQ sneak
++     * in before we execute it.
+      */
+-    cpu->cflags_next_tb = curr_cflags(cpu) | CF_MEMI_ONLY | n;
++    cpu->cflags_next_tb = curr_cflags(cpu) | CF_MEMI_ONLY | CF_NOIRQ | n;
  
--# Now we have our CPU_CFLAGS we can check if we are targeting a 32 or
--# 64 bit host.
--
--check_64bit_host() {
--cat > $TMPC <<EOF
--#if __SIZEOF_POINTER__ != 8
--#error not 64 bit system
--#endif
--int main(void) { return 0; }
--EOF
--  compile_object "$1"
--}
--
--if check_64bit_host "$CPU_CFLAGS"; then
--    host_bits=64
--else
--    host_bits=32
--fi
--
- if test -n "$host_arch" && {
-     ! test -d "$source_path/linux-user/include/host/$host_arch" ||
-     ! test -d "$source_path/common-user/host/$host_arch"; }; then
-@@ -1072,7 +1053,7 @@ if test "$static" = "yes" ; then
-   fi
-   plugins="no"
- fi
--if test "$plugins" != "no" && test $host_bits -eq 64; then
-+if test "$plugins" != "no"; then
-     if has_meson_option "-Dtcg_interpreter=true"; then
-         plugins="no"
-     else
+     if (qemu_loglevel_mask(CPU_LOG_EXEC)) {
+         vaddr pc = cpu->cc->get_pc(cpu);
 -- 
 2.39.5
 
