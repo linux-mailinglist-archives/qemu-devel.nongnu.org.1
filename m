@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155B6A07E5E
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 18:08:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D0D2A07E54
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 18:08:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVvzc-0004iU-7c; Thu, 09 Jan 2025 12:06:48 -0500
+	id 1tVvzT-0004hV-8S; Thu, 09 Jan 2025 12:06:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tVvzG-0004go-HU
+ id 1tVvzG-0004gn-Ef
  for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:06:27 -0500
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tVvzE-0006xv-Pw
+ id 1tVvzE-0006y0-Q4
  for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:06:26 -0500
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-aaf8f0ea963so235339566b.3
- for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 09:06:23 -0800 (PST)
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-ab2c9b8aecaso130628166b.0
+ for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 09:06:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736442382; x=1737047182; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Xev3MylNica8tJvKDRxAEt4qG+psA/6bp/Uvkw9USTg=;
- b=Fc0GDnwe1mGDi8RPIsBYJqciuPFW5XrFEUGJiLf7xK3Rtr21WxRy89VxV4ypBpuq8N
- UmY6j30W3FU7IlaF+VluTP+VrPYKwdJHUgPVanyuL1c6NsSWWvo0sUMkoYyOf3Lz1SIi
- d2v/Y7a5c6QYcyQ/TPqKnLKiPEuwYyFjb20uGy28kqaN//1ZZvSLDPU9RbWXI3tekSuv
- 05c4TG7WlKZi+j98VkXNhEC3aEsN48MP5j2Fsum1sT/b7k0/XQ9TyBWQDeb8uLLb5Zqt
- zZwQiT3YfPBV1HtVcGMElb5clQoaK34qCgy4tosdjQUR6oBivnQ98UM0Oi+Li91jZokT
- KFfA==
+ d=linaro.org; s=google; t=1736442383; x=1737047183; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5mmFjWAfoOONUODYkZWtQO2ol/JE4H/G6qm2dOWJg5o=;
+ b=AAlp7CF2ogawLXaWhHYZoAiD4ioyZPQdtodMo/Fm6tbRPEoWWuewV4PNBCLNBmo07g
+ 2p+AJFjCi+UCyNo9K7Ivsu34HgkvjBWmi8XXmKBTCblS9G1NxD75fbHIhMqRxFzO3PGU
+ fWLuCftslFyhq8S90olI6rtWY0iZxSx2rKRBa9B+WQMZBFlbu9O5JhwpzRZnXS3ammb8
+ Gz4FHy4SOjMqZD2Uj1kxnPPvJXEdizmYBuqz71dsR8/8bOhPViOeU16wk+KJzPBsB/Qr
+ eYs52OG70XZWiExBsH2nWcO0WOeUcWmx0eIBnnbbmT6N7PK6LFMXB9vTOsPQc8ulULow
+ IhAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736442382; x=1737047182;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Xev3MylNica8tJvKDRxAEt4qG+psA/6bp/Uvkw9USTg=;
- b=FIUsB0TPejBSueNBaaw0R8us65A+5wqRNcZUuaKi3fKBz68L0cUw2Wq8TPsoP3lhIm
- UOCOHRwsLUTrcONM91Sc3ajwAlB7Zj5WEw6HGxO7Zm7ZZIYbyLILbaQ03aRy9VVvs49W
- Rx0w/YM+qj099n7Sn1nt+SkNqMJ/TsqLDs76h3X2KZ8EU51rw/5FEfIyOrjhhHEKilFt
- svxk8jpOBhSjltdhDBGc4gTsFeZGFeCir9XfTttNtNQ4xN86pfIGpDquIT3xkqL5rJJC
- oQ3Eu0n2NQiH06XXDg8G5aEpTL/+YHeUiMsnBhd8oVg/mSFo1nu85lr3WNXob+yLCo8f
- qvOw==
-X-Gm-Message-State: AOJu0YwgzMUY9t7VCQF2LqXQSxcwDG2h/M0AHUAM8w3eTkYkDvtrq82s
- ZNmOqrsh+qzLy3IciT649bHI2gQpZ02hfY2JK4yYV9IQDu4oJ2m6Fs0QWdAeXco=
-X-Gm-Gg: ASbGnctQjmkn4t4K5g+H0X5NrLnK2+m6BiDeMbApsCteS0vWwxakZ6e6Y7vS9JjRxXT
- vYYiXbJg9lSpVzviuQ7czY9Mf/U3InqqKjHlTYa4ugOfa2npwEqQ26scm2PRGvczwwD+2NBT655
- nev9bPdifhOvO6+jRNC3L6P75ymcV6SazZpcaoRCZJStqaExXD8TvP/B9ne/1Prn8x5I5h3L01P
- 5de8o7pZx2PMb3xU9AQXM1R80XgBv+UMw6SgEwiB7YlMhoWn/UgZu0=
-X-Google-Smtp-Source: AGHT+IHla8n15db7gTAgCexyIBdayUFuYT1+cTj3mhUm1d7JbJgTCzsxtGvGDI4jVa6NKS+fHKCuRw==
-X-Received: by 2002:a17:907:1a4e:b0:aaf:f32:cce8 with SMTP id
- a640c23a62f3a-ab2ab6f3481mr478807366b.30.1736442382426; 
- Thu, 09 Jan 2025 09:06:22 -0800 (PST)
+ d=1e100.net; s=20230601; t=1736442383; x=1737047183;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5mmFjWAfoOONUODYkZWtQO2ol/JE4H/G6qm2dOWJg5o=;
+ b=rCo7GNBHFuicngK+il2i0krEqt1dru7JjP1It/e3RcwwdNrzO4AIhGF88Bh3Q8myDV
+ rOXU20hhumoSYUgS+XYqCA748N/jdW2b9WHIwE08uWHqiNu1WsXvdtA1DGn3BV9TVg8N
+ +Esp72s4nQexwMWJeI50vyKSLFSLYdqGN74t420cVtUXInKmLaAzISC6L9IoGGfThtJ9
+ q2Hv/5oJuJrDd8mzXSHK5GsLhgHWuUVtNaIMwQWo+RFyzlheFtHFFJ/K0chMUeOsf7bQ
+ xQsmeDIybmpXn9+0S9dtT+wwKXzuYzWvpRz+ngdqWJ3A8MeA55bl15k5J9Ta5lnMSyKQ
+ ujXg==
+X-Gm-Message-State: AOJu0YzvfxqAZQyy4HUEPIlvOhezFbBPKHkwXMFh4yDAjz/8kAjEGaKW
+ G4fzFTB+RkAfDbK9QfZg9SHFDS1TY4LWztoam2woZxHmSquVs4lTC3geaUOkscg=
+X-Gm-Gg: ASbGncvgOjhxhF0jf6u0k7fY8sWIM4LTQijb32dbRTYsIhBenx7E3Ijx4iq+URX5rE7
+ e1LDJBPtClz+RbVofS6FlSfs8tGtTCcHKf5P7HwNlxWtedBJd52KC/LYozxeW6a6nshkt7dzQPq
+ I5iaeWw8YwT2vcCs8Xl3xY4D1ZVAD8ySpvEs2jglb50jyZ9qgReb3goyU6Mv0/ZNcngRpkn3o0x
+ 8EYcfrw+5yyYPws1Hg3CsrJtbXWhcI5QDgdBJ4SfO6ikONmfMNFjUw=
+X-Google-Smtp-Source: AGHT+IFnxxwGdhSiCfykDiwQ/xPJerBBFa+eQBnG1/lsBZ0tFuWXbUGy9Q0eMxay7ZetWPzQjbe8Dw==
+X-Received: by 2002:a17:907:7286:b0:aac:61b:a079 with SMTP id
+ a640c23a62f3a-ab2ab6bede4mr623988866b.40.1736442383261; 
+ Thu, 09 Jan 2025 09:06:23 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c9646be5sm89611666b.174.2025.01.09.09.06.20
+ a640c23a62f3a-ab2c90dcbe2sm88985166b.78.2025.01.09.09.06.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 09 Jan 2025 09:06:21 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C9BC25F75D;
+ by draig.lan (Postfix) with ESMTP id E0BBD5F915;
  Thu,  9 Jan 2025 17:06:19 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -71,16 +72,17 @@ Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 00/22] maintainer updates for jan '25 (semihosting, gdb,
- plugins)
-Date: Thu,  9 Jan 2025 17:05:57 +0000
-Message-Id: <20250109170619.2271193-1-alex.bennee@linaro.org>
+Subject: [PATCH 01/22] semihosting: add guest_error logging for failed opens
+Date: Thu,  9 Jan 2025 17:05:58 +0000
+Message-Id: <20250109170619.2271193-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250109170619.2271193-1-alex.bennee@linaro.org>
+References: <20250109170619.2271193-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,100 +105,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This covers my remaining trees outside of testing/next and is mostly a
-consolidation of patches I've pulled from other people.
+This usually indicates the semihosting call was expecting to find
+something but didn't.
 
-For semihosting:
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ semihosting/syscalls.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-  - a bunch of cleanups from Philippe to aide single binary builds
-
-For gdbstub (touches system/vl.c as well):
-
-  - propagate *Error to setup functions
-
-Ilya, I know about [PATCH v4 0/9] gdbstub: Allow late attachment and
-will look at that later. I didn't want to delay the rest of my reviews
-fighting with a messy re-base. If you are up for it you can post a
-branch on the thread and I can potentially merge from that. Apologies
-for the rug-pull between v3 and v4.
-
-For plugins
-
-  - mostly fixes from Pierrick
-  - a speculative fix for cpu_io_recompile() case exposed by Julian's
-    discontinuity patches.
-
-Most are already reviewed, the following remain:
-
-  accel/tcg: also suppress asynchronous IRQs for cpu_io_recompile
-  system: propagate Error to gdbserver_start (and other device setups) (1 acks, 1 sobs, 0 tbs)
-  system: squash usb_parse into a single function
-  system/vl: more error exit into config enumeration code
-  semihosting: add guest_error logging for failed opens
-
-There will likely be a v2 anyway once I've got testing/next merged and
-Ilya's gdbstub patches. I don't think I have anything else pending but
-do shout if there is.
-
-Alex.
-
-Alex Bennée (5):
-  semihosting: add guest_error logging for failed opens
-  system/vl: more error exit into config enumeration code
-  system: squash usb_parse into a single function
-  system: propagate Error to gdbserver_start (and other device setups)
-  accel/tcg: also suppress asynchronous IRQs for cpu_io_recompile
-
-Philippe Mathieu-Daudé (6):
-  semihosting/uaccess: Briefly document returned values
-  semihosting/syscalls: Include missing 'exec/cpu-defs.h' header
-  semihosting/uaccess: Include missing 'exec/cpu-all.h' header
-  semihosting/arm-compat: Include missing 'cpu.h' header
-  semihosting/console: Avoid including 'cpu.h'
-  semihosting/meson: Build config.o and console.o once
-
-Pierrick Bouvier (11):
-  tests/tcg/plugins/insn: remove unused callback parameter
-  contrib/plugins/howvec: ensure we don't regress if this plugin is
-    extended
-  tests/tcg/plugins/syscall: fix 32-bit build
-  tests/tcg/plugins/mem: fix 32-bit build
-  contrib/plugins/stoptrigger: fix 32-bit build
-  contrib/plugins/cache: fix 32-bit build
-  contrib/plugins/hotblocks: fix 32-bit build
-  contrib/plugins/cflow: fix 32-bit build
-  contrib/plugins/hwprofile: fix 32-bit build
-  contrib/plugins/hotpages: fix 32-bit build
-  configure: reenable plugins by default for 32-bit hosts
-
- configure                      | 21 +-------
- include/exec/gdbstub.h         |  8 ++-
- include/semihosting/console.h  |  2 -
- include/semihosting/syscalls.h |  1 +
- include/semihosting/uaccess.h  | 55 +++++++++++++++++++
- accel/tcg/translate-all.c      |  5 +-
- contrib/plugins/cache.c        | 18 +++----
- contrib/plugins/cflow.c        | 17 +++---
- contrib/plugins/hotblocks.c    | 29 ++++++++--
- contrib/plugins/hotpages.c     |  6 +--
- contrib/plugins/howvec.c       |  7 +--
- contrib/plugins/hwprofile.c    | 27 ++++++----
- contrib/plugins/stoptrigger.c  | 48 +++++++++--------
- gdbstub/system.c               | 22 ++++----
- gdbstub/user.c                 | 20 +++----
- linux-user/main.c              |  6 +--
- monitor/hmp-cmds.c             |  2 +-
- semihosting/arm-compat-semi.c  |  1 +
- semihosting/console.c          |  3 +-
- semihosting/syscalls.c         |  2 +
- semihosting/uaccess.c          |  1 +
- system/vl.c                    | 99 ++++++++++++++--------------------
- tests/tcg/plugins/insn.c       |  4 +-
- tests/tcg/plugins/mem.c        |  6 +--
- tests/tcg/plugins/syscall.c    |  6 +--
- semihosting/meson.build        |  9 ++--
- 26 files changed, 243 insertions(+), 182 deletions(-)
-
+diff --git a/semihosting/syscalls.c b/semihosting/syscalls.c
+index c40348f996..f6451d9bb0 100644
+--- a/semihosting/syscalls.c
++++ b/semihosting/syscalls.c
+@@ -7,6 +7,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/log.h"
+ #include "cpu.h"
+ #include "gdbstub/syscalls.h"
+ #include "semihosting/guestfd.h"
+@@ -287,6 +288,7 @@ static void host_open(CPUState *cs, gdb_syscall_complete_cb complete,
+ 
+     ret = open(p, host_flags, mode);
+     if (ret < 0) {
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: failed to open %s\n", __func__, p);
+         complete(cs, -1, errno);
+     } else {
+         int guestfd = alloc_guestfd();
 -- 
 2.39.5
 
