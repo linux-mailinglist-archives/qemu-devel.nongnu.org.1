@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F7D8A07E62
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 18:09:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF69A07E69
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 18:10:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVvzg-0004lZ-OP; Thu, 09 Jan 2025 12:06:52 -0500
+	id 1tVvzg-0004lD-4Y; Thu, 09 Jan 2025 12:06:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tVvzY-0004jG-UL
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:06:46 -0500
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ id 1tVvzc-0004kN-60
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:06:48 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tVvzW-00070V-SE
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:06:44 -0500
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-ab2b29dfc65so189233966b.1
- for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 09:06:41 -0800 (PST)
+ id 1tVvza-00071d-Ji
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:06:47 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5d982de9547so2088757a12.2
+ for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 09:06:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736442400; x=1737047200; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736442405; x=1737047205; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YoVYHxIQ6FzVx9Ejwb1qRhaSC8vYXzudlK+d3/Xo6Gs=;
- b=LS5sJYGxgl0bHdUEUNXEUY1wdMJjAHXIHyfLpsI3LRpL35z10ap8+KUOGxqxvl/Dtx
- C+GlJPjFTcpZaUHMGBcLyRr3s2e010cab8R0iQ/MmdTyPQKCS0R/0kaexXG70p7DXucf
- 4B+tvWTXsCtRKyiFU6M1C3XWhpokqj6rsV/zfZbJHDDgUMwK8EZFKsgUa7xnNqaBXesi
- qvNLevkthpIH8vItIRjGxEOKUbj7dgAPRZ5XfMtRgjYyq9pKXSxxG1Q6psG6BL4+LN14
- /Hp++BmmnMoZV7VMmHP4b6HPTbieD0vZw44rjmkhqcHBzFikkKeJob39oGSE2J85qAst
- ao9w==
+ bh=4WxsgJL7chOGbG+/17n3vpjWqUAThC5sUhtSd92NFE0=;
+ b=vvYBbl19KP5MVN838skQ62mP6o9yCISQmJlcMNkBQKUcDU2oIvnOAXC+UNccEQqLhf
+ aj3muIL04sgnp6swsixCxArVBc47x7kl7OJ9RInQQM+e/8J2j0IEs6D7s3slBytBG4u0
+ UjeYuUhaAnNGgfJo0mnJ20R9M30eiX78Nh68Odu/W+pv/+5s6AMiCgb33EOiTpB3v6xw
+ h+5eapFeuNLcy6dVfg54uzaMM7GGr48nzzBhrGXM4jWn4spKycECA545U2EdAghV3MHG
+ Y1X4nPczhIx+1MogoJB767t1WA23wHED9Css9aVDlBTgJsbz4rSmKnkxqMokzSH3wp8Y
+ 2RdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736442400; x=1737047200;
+ d=1e100.net; s=20230601; t=1736442405; x=1737047205;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YoVYHxIQ6FzVx9Ejwb1qRhaSC8vYXzudlK+d3/Xo6Gs=;
- b=rakxKqftRXd69JEzkHFlQRAsAtZkn5j17ywhXzz50sXv2g6dYtvxXgvFIHNfoBdlvw
- OZEQCyPFjsksAXu/1VEmhENwf5cV/jJ/fqrz754uepmPiBoHKash3AjJL3DG4o9ZAuaF
- jSJUpWySVjg8wia6/cW/VRWFhHbfPYiNIsZt1duoJIn6uHwsNGxFp5GDgWfk26jvYGkb
- /NMbw8vkKhSb0K7CSjcbEXQU5F6ZWdmwdsKMFEQykkZZ4tFo4NYkIRs9hOcyj2Uy1C0+
- EEASDh2DpiYfegEL8D79TxSlzqFmO7+9XiHHUUVI+M6CkyjEQL4f4aXlBEQiCvSGBmLa
- Dr9A==
-X-Gm-Message-State: AOJu0YycAd+WH0mVU3pcKO0ViauneXWCaXlXlhfmD98W+ZByq649I0WX
- xfybk1hpAzMiOhAgOjQhgpwmzz2INgh2c962O3M61IpbNmdJAgsVCFsxEoTNvw3azTyYpYeILKp
- TGrQ=
-X-Gm-Gg: ASbGncvOrrMrNmuVDj4lzwxWSSdavcCUIA0JhHstpqPCXFY6qbh3XqmIr9Eix1QtyXu
- yzHZKvEyeecFHiql+aYp6EOEoAhxipQE/ecJRgAjzha1pWh4HJt789PBDtyMduav5WODeDYkHYl
- gZEj66LuQDO06gAWuLgcFJO+Wox/zhGg/FydZKOUO0vZ7JFsl/3By1v/Oc6oBV8aVHhWyIY6b48
- PPS3jLv36WkjeGS0bFkZvcMTXn/Lr6IumTrMgFsSSYDdfm9eDWGr8A=
-X-Google-Smtp-Source: AGHT+IEQL8mWewsJ6Yk5T/+hGPd0lLKOT6JRgNzRdID0uqMKqUrF/Xsq9EQRyKbEb6Ql4AOj4uqFWQ==
-X-Received: by 2002:a17:907:72cb:b0:aab:daf0:3198 with SMTP id
- a640c23a62f3a-ab2abca7800mr620002166b.40.1736442400418; 
- Thu, 09 Jan 2025 09:06:40 -0800 (PST)
+ bh=4WxsgJL7chOGbG+/17n3vpjWqUAThC5sUhtSd92NFE0=;
+ b=to9HsttrdUN4YnBtfyK5eRAalgoYxl/QLvbgz6xQr43h9mMOyU72F0UHMuxbliloGP
+ v5glvv3ib+d7MkcAIupU+NMuaBfh4vSUrv8rZ8HXqrxVGZSuz7aHuT42bHIZs7FOmiFW
+ WHop7a+WzvWYwE5Fyi2LAcbBcI8vebJajib3FuIjpo8zIP6oG/gVNNS7tiK3l9M254uf
+ T3F84mIkB4OFQtpQ5ZVdkQ35Cy5X5Xa9aUwa3kRTXG6sCW1LjimgCkduKw58h989RZsN
+ PLaFubBolWHuqwvQvFwV4ypbdtbuYiAVcGgr8+4YJyP0P+vdeKHYboOrvJi0vhv6LhUI
+ OWWw==
+X-Gm-Message-State: AOJu0YxoIW32tpR5dKQaOmFxcuEYJGIppM3fbjxy17AhYYzbIaq1sZXF
+ skSPMkLwk/SRTVlCZtZrIUOg9qq8KM53ciZ7czoVlO5Vz2q6z05WEe7sWAige+E=
+X-Gm-Gg: ASbGnctEvqTuoQUo0X1LHS24NyNQQDIhDlraGtaiG7VCDCiuoxIjDf+ZIWEtb3diGVK
+ ie+/rjddrJOJ4/hxbZ+jwmhhkJvRfc6cwevHzOXLVOTuhnwo5ECjtnQUxYTyV6HSTN8of+TgtUy
+ xOwANk4z8O2ldKKJlUNmjSv27OOvZ02WNNxGYoZjzNkrJyZ29s+rA4CKfoNMYxtFidR2HFrzYT1
+ tb6D9i8pP6fz+ThOQmtRzuEJyE5mJGiNLF+Z599w9GAuvY17a1R4y0=
+X-Google-Smtp-Source: AGHT+IFdJT8QZSt3ckJzPVfU/vpWIxhv53dQGCArdAhe2i/p/O+HRGOMjeyTPi7bS0L/GEKNmgXc5A==
+X-Received: by 2002:a05:6402:26c4:b0:5d0:cca6:233a with SMTP id
+ 4fb4d7f45d1cf-5d972e04ba8mr7336880a12.10.1736442404696; 
+ Thu, 09 Jan 2025 09:06:44 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c9060f9asm88891966b.1.2025.01.09.09.06.31
+ 4fb4d7f45d1cf-5d9900c4b2fsm759923a12.29.2025.01.09.09.06.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 09 Jan 2025 09:06:38 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D57BB5FC85;
+ by draig.lan (Postfix) with ESMTP id E8B215FEF9;
  Thu,  9 Jan 2025 17:06:20 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -73,17 +72,18 @@ Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 11/22] tests/tcg/plugins/insn: remove unused callback parameter
-Date: Thu,  9 Jan 2025 17:06:08 +0000
-Message-Id: <20250109170619.2271193-12-alex.bennee@linaro.org>
+Subject: [PATCH 12/22] contrib/plugins/howvec: ensure we don't regress if this
+ plugin is extended
+Date: Thu,  9 Jan 2025 17:06:09 +0000
+Message-Id: <20250109170619.2271193-13-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250109170619.2271193-1-alex.bennee@linaro.org>
 References: <20250109170619.2271193-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,31 +108,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20241217224306.2900490-2-pierrick.bouvier@linaro.org>
+Message-Id: <20241217224306.2900490-3-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/tcg/plugins/insn.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ contrib/plugins/howvec.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tests/tcg/plugins/insn.c b/tests/tcg/plugins/insn.c
-index baf2d07205..0c723cb9ed 100644
---- a/tests/tcg/plugins/insn.c
-+++ b/tests/tcg/plugins/insn.c
-@@ -150,10 +150,8 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-             qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
-                 insn, QEMU_PLUGIN_INLINE_ADD_U64, insn_count, 1);
-         } else {
--            uint64_t vaddr = qemu_plugin_insn_vaddr(insn);
-             qemu_plugin_register_vcpu_insn_exec_cb(
--                insn, vcpu_insn_exec_before, QEMU_PLUGIN_CB_NO_REGS,
--                GUINT_TO_POINTER(vaddr));
-+                insn, vcpu_insn_exec_before, QEMU_PLUGIN_CB_NO_REGS, NULL);
-         }
+diff --git a/contrib/plugins/howvec.c b/contrib/plugins/howvec.c
+index 9be67f7453..2aa9029c3f 100644
+--- a/contrib/plugins/howvec.c
++++ b/contrib/plugins/howvec.c
+@@ -253,6 +253,8 @@ static struct qemu_plugin_scoreboard *find_counter(
+     int i;
+     uint64_t *cnt = NULL;
+     uint32_t opcode = 0;
++    /* if opcode is greater than 32 bits, we should refactor insn hash table. */
++    G_STATIC_ASSERT(sizeof(opcode) == sizeof(uint32_t));
+     InsnClassExecCount *class = NULL;
  
-         if (do_size) {
+     /*
+@@ -284,7 +286,7 @@ static struct qemu_plugin_scoreboard *find_counter(
+ 
+         g_mutex_lock(&lock);
+         icount = (InsnExecCount *) g_hash_table_lookup(insns,
+-                                                       GUINT_TO_POINTER(opcode));
++                                                       (gpointer)(intptr_t) opcode);
+ 
+         if (!icount) {
+             icount = g_new0(InsnExecCount, 1);
+@@ -295,8 +297,7 @@ static struct qemu_plugin_scoreboard *find_counter(
+                 qemu_plugin_scoreboard_new(sizeof(uint64_t));
+             icount->count = qemu_plugin_scoreboard_u64(score);
+ 
+-            g_hash_table_insert(insns, GUINT_TO_POINTER(opcode),
+-                                (gpointer) icount);
++            g_hash_table_insert(insns, (gpointer)(intptr_t) opcode, icount);
+         }
+         g_mutex_unlock(&lock);
+ 
 -- 
 2.39.5
 
