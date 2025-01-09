@@ -2,106 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49B06A0803B
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 19:53:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B87FA08043
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 19:55:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVxev-0002cd-VB; Thu, 09 Jan 2025 13:53:34 -0500
+	id 1tVxgx-0006D0-CB; Thu, 09 Jan 2025 13:55:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1tVxeX-0002JK-75; Thu, 09 Jan 2025 13:53:09 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tVxgf-000652-OL
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 13:55:25 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1tVxeV-0005v7-JH; Thu, 09 Jan 2025 13:53:08 -0500
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 08E421F394;
- Thu,  9 Jan 2025 18:53:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736448786; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=inlf+DDUkomGXDdJ4jWiM8MBtP6QTo97CnGyU1acw8c=;
- b=2T51++j8fqbsBfZFgOqBv0oiMpiZDckxBV/3riRtUNszDoFmPdm9J0F+UjW6MHeIjXOZyI
- h75gLcEjwk46HvPY2U4HVSSKg3knVR32bfycn8o7dvtEwAT2BqQxjU/x7j38QG529Aj7aU
- QLmZxazm8uTb8Q3ewYuinsMu+ovHDxU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736448786;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=inlf+DDUkomGXDdJ4jWiM8MBtP6QTo97CnGyU1acw8c=;
- b=Rs8O9nFX/nrWOuYvvDtIMGkjicLigoIWTHKUUE9rdR353LdKTa7Wn3ti5Dfrz8WZalWyah
- Jcx0Vwk4LXIJz6Ag==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736448786; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=inlf+DDUkomGXDdJ4jWiM8MBtP6QTo97CnGyU1acw8c=;
- b=2T51++j8fqbsBfZFgOqBv0oiMpiZDckxBV/3riRtUNszDoFmPdm9J0F+UjW6MHeIjXOZyI
- h75gLcEjwk46HvPY2U4HVSSKg3knVR32bfycn8o7dvtEwAT2BqQxjU/x7j38QG529Aj7aU
- QLmZxazm8uTb8Q3ewYuinsMu+ovHDxU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736448786;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=inlf+DDUkomGXDdJ4jWiM8MBtP6QTo97CnGyU1acw8c=;
- b=Rs8O9nFX/nrWOuYvvDtIMGkjicLigoIWTHKUUE9rdR353LdKTa7Wn3ti5Dfrz8WZalWyah
- Jcx0Vwk4LXIJz6Ag==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 57A68139AB;
- Thu,  9 Jan 2025 18:53:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id OJFcBxAbgGdcMAAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 09 Jan 2025 18:53:04 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-stable@nongnu.org
-Subject: [PATCH v3 7/7] s390x: Fix CSS migration
-Date: Thu,  9 Jan 2025 15:52:49 -0300
-Message-Id: <20250109185249.23952-8-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20250109185249.23952-1-farosas@suse.de>
-References: <20250109185249.23952-1-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tVxgd-0006L1-V4
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 13:55:21 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-21669fd5c7cso20397935ad.3
+ for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 10:55:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1736448918; x=1737053718; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NgJhSKvv4Fl1r5bGyBeNP2FbkM//DKOYtOmfW4bl+2I=;
+ b=qg0lLpJFb9dm/joB4BQDb7SGcHAWMhCPAz0h9aLZqorVq211VWEOm48zQg+hwt9u+k
+ DF91PawfjKbk1B2f8fUEY3tjjZlAqeUeWFRAMaAr9ouFdVuYiXYDmIqHsB3MFOHu3TQe
+ 4cVjvdLRh/0UshWGbzhz0V1hDseHRhWZuahHzPSIOZVafJgFCPqaAzRG6erqNJNEmQDS
+ YzCFhjoNzbKxvjz6re3EfReMFi3LlhS1KsQxi8NV+INDTKSlL0Agis73NNptfEcVc0z4
+ A+mvN916uqQDTf+A7EeAFR8wVf1qOmBVUms4gckLqFpxgyBhvoGrtqoUGtaQewjLwkJH
+ VLVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736448918; x=1737053718;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NgJhSKvv4Fl1r5bGyBeNP2FbkM//DKOYtOmfW4bl+2I=;
+ b=XoEcQATK14cr9mPTOna0mFkDbAmfcu9UW1DLluRBQJJHRT0nGNIfVjlEgQj1rZh9wP
+ T0i78QUsDKJYluy5mTXnkCWLbefLp3I8jEjNwvBqEHYa8/0aiuTtEInpZmNJ2iFW84yA
+ UXPZxdoXeNkqvSxM07bEI0WXZw7mb0yBq+7uv2o6lk63aCh4Vblgm00ZVXdpj3jVi/BC
+ pk0WtN+ima/HFG6s5cpiKtdlW2EHV3PKrmIBfP5wWZG4K5NsQhuUpbLmn8xd/K0WuWbw
+ knC9mCwIa3OoM2C6cfAluhqABY0/hFCYhLRPjdpXKgOdq8vmT92tARQir/cIb6IGol2v
+ 9zjA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWyeVz9EVxupOqqkY8M6Cv06EDFyL0CpsRaJEaedN4Lntv31vRPD6zDc7wNpKfJzlQucr9d6GGsP8vM@nongnu.org
+X-Gm-Message-State: AOJu0YxOonGJizaN4hf2RXDKItZcSQ/2gcIBb3O+KXH+1ojYy3ti7Slf
+ xzhFz7VSosXsn+QEdbF3IGMpraLkJbVjO/QtY6BHt9ftXLM8bkVrpDbCRSBessk=
+X-Gm-Gg: ASbGnctoonoC/CiPMzq68zP30IbcTKnoZGPtkfEXJFpT6XO0ZjnycHt9CJvme8qQPsf
+ UlsZoPDg+ceZzxlt+GWY7CQcihvs0CEF6WS91B8gITPJP32E3oQ9xpxFH1XBXKw5WvX1J+wb17n
+ 12QG0B+n6Qi5QewZDbc4PR0SYbF8LObN5ADxAki5LtMxZuvDHsKrfNyyuHOQ1pSZBukoeM76Z9a
+ Gbr3la2lj/pOr7l2Z0CxeXduz7O4N5b3IHUYXRlFi57XSWrrp/B+1cllXtoqOg00VMiWg==
+X-Google-Smtp-Source: AGHT+IHpBrT0MeOjEt70PWgZ0v2a/DCdqWS0lbOFDwqFr7GZya9UUTbV+rTpDbOZ7egtohKhDhOxPA==
+X-Received: by 2002:aa7:8887:0:b0:72a:bb83:7804 with SMTP id
+ d2e1a72fcca58-72d21fd2e16mr11347518b3a.17.1736448918462; 
+ Thu, 09 Jan 2025 10:55:18 -0800 (PST)
+Received: from [192.168.1.67] ([38.39.164.180])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-72d4067e61asm115821b3a.128.2025.01.09.10.55.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 09 Jan 2025 10:55:18 -0800 (PST)
+Message-ID: <da769717-0823-45b4-8b1c-9fd2611d0092@linaro.org>
+Date: Thu, 9 Jan 2025 10:55:17 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.995];
- MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
- TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid];
- RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.80
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/22] system: propagate Error to gdbserver_start (and
+ other device setups)
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+References: <20250109170619.2271193-1-alex.bennee@linaro.org>
+ <20250109170619.2271193-11-alex.bennee@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250109170619.2271193-11-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,42 +108,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit a55ae46683 ("s390: move css_migration_enabled from machine to
-css.c") disabled CSS migration globally instead of doing it
-per-instance.
-
-CC: Paolo Bonzini <pbonzini@redhat.com>
-CC: qemu-stable@nongnu.org #9.1
-Fixes: a55ae46683 ("s390: move css_migration_enabled from machine to css.c")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2704
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Message-Id: <20241213160120.23880-3-farosas@suse.de>
----
- hw/s390x/s390-virtio-ccw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 8a242cc1ec..38aeba14ee 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -1244,6 +1244,7 @@ static void ccw_machine_2_9_instance_options(MachineState *machine)
-     s390_cpudef_featoff_greater(12, 1, S390_FEAT_ZPCI);
-     s390_cpudef_featoff_greater(12, 1, S390_FEAT_ADAPTER_INT_SUPPRESSION);
-     s390_cpudef_featoff_greater(12, 1, S390_FEAT_ADAPTER_EVENT_NOTIFICATION);
-+    css_migration_enabled = false;
- }
- 
- static void ccw_machine_2_9_class_options(MachineClass *mc)
-@@ -1256,7 +1257,6 @@ static void ccw_machine_2_9_class_options(MachineClass *mc)
-     ccw_machine_2_10_class_options(mc);
-     compat_props_add(mc->compat_props, hw_compat_2_9, hw_compat_2_9_len);
-     compat_props_add(mc->compat_props, compat, G_N_ELEMENTS(compat));
--    css_migration_enabled = false;
- }
- DEFINE_CCW_MACHINE(2, 9);
- 
--- 
-2.35.3
-
+T24gMS85LzI1IDA5OjA2LCBBbGV4IEJlbm7DqWUgd3JvdGU6DQo+IFRoaXMgc3RhcnRlZCBh
+cyBhIGNsZWFuLXVwIHRvIHByb3Blcmx5IHBhc3MgYSBFcnJvciBoYW5kbGVyIHRvIHRoZQ0K
+PiBnZGJzZXJ2ZXJfc3RhcnQgc28gd2UgY291bGQgZG8gdGhlIHJpZ2h0IHRoaW5nIGZvciBj
+b21tYW5kIGxpbmUgYW5kDQo+IEhNUCBpbnZvY2F0aW9ucy4NCj4gDQo+IE5vdyB0aGF0IHdl
+IGhhdmUgY2xlYW5lZCB1cCBmb3JlYWNoX2RldmljZV9jb25maWdfb3JfZXhpdCgpIGluIGVh
+cmxpZXINCj4gcGF0Y2hlcyB3ZSBjYW4gZnVydGhlciBzaW1wbGlmeSBieSBpdCBieSBwYXNz
+aW5nICZlcnJvcl9mYXRhbCBpbnN0ZWFkDQo+IG9mIGNoZWNraW5nIHRoZSByZXR1cm4gdmFs
+dWUuIEhhdmluZyBhIHJldHVybiB2YWx1ZSBpcyBzdGlsbCB1c2VmdWwNCj4gZm9yIEhNUCB0
+aG91Z2ggc28gdHdlYWsgdGhlIHJldHVybiB0byB1c2UgYSBzaW1wbGUgYm9vbCBpbnN0ZWFk
+Lg0KPiANCj4gU2lnbmVkLW9mZi1ieTogQWxleCBCZW5uw6llIDxhbGV4LmJlbm5lZUBsaW5h
+cm8ub3JnPg0KPiBBY2tlZC1ieTogSWx5YSBMZW9zaGtldmljaCA8aWlpQGxpbnV4LmlibS5j
+b20+DQo+IA0KDQo8c25pcD4NCg0KPiAtc3RhdGljIGludCBnZGJzZXJ2ZXJfb3Blbl9wb3J0
+KGludCBwb3J0KQ0KPiArc3RhdGljIGludCBnZGJzZXJ2ZXJfb3Blbl9wb3J0KGludCBwb3J0
+LCBFcnJvciAqKmVycnApDQoNCkRpZCB5b3UgbWVhbjoNCnN0YXRpYyBib29sIGdkYnNlcnZl
+cl9vcGVuX3BvcnQuLi4/DQoNCldpdGggdGhhdCwNClJldmlld2VkLWJ5OiBQaWVycmljayBC
+b3V2aWVyIDxwaWVycmljay5ib3V2aWVyQGxpbmFyby5vcmc+DQoNCg==
 
