@@ -2,92 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A45A08897
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 07:54:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A3CA08AD9
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 10:02:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tW8tc-0005B2-2W; Fri, 10 Jan 2025 01:53:28 -0500
+	id 1tWAte-0000EI-DL; Fri, 10 Jan 2025 04:01:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tW8tZ-0005AK-VF
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 01:53:25 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tW8tY-0004MJ-G8
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 01:53:25 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4361f796586so18051955e9.3
- for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 22:53:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736492002; x=1737096802; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=NysGpnhz+JRhaaLwqNVketbtskncAzhW/+7oJdgz4r4=;
- b=aB+bZH3AYFv5u/2XMSSRnv5Sx766xfgz2m1CNU92SI+FE7YSN5fbyehN3aFPaUzd8T
- XXRuMIVw6DcVHWQHVXaQpoLv7fxrrAo3vsRHk3ePcMG1p5Rl7V0/O8MVMAWtRKtWcSwe
- /197DiN/MKW7JQz3Tgz2u53LhN+QWKuaIRHzef8XPAmC51XDuLtxDPz8UCm7Y48vdyNa
- TNZgcUcmU4S9UcDNrRWbpbGu4WTZVocsKVXhXZE9P2Ds+WJVwSvxI6blC5eFRVRAwTN6
- otV6DpPdGVHQgaNa3ssQhEWwvEFQYf6tS7MQ/8IZYtiShBe5yXJ6EMfFFO23l4iRtHnh
- uIjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736492002; x=1737096802;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NysGpnhz+JRhaaLwqNVketbtskncAzhW/+7oJdgz4r4=;
- b=H5sgnbTQ+tC6fuYLt3+1k3xVSISV37b6cjXwttR2HWEr4yWufeHnbnyr8Dx3Qp+2Q6
- E1NZEItKaMAnI414gTFOXlMMsjwNbYzDX26M1o8TnvXV3m/l+nxGd/UwphxzzUX23zP3
- 4su3RDgmYOjE6mdwzsReszNXF705Bt9Nbxr+zAV6q3vFDajQ50mAT483nFD1uIjWs7Vs
- pAWA9vLGyMGC+1IbDSdTnGH1mSM0+FJMDUXZCkGt55ACVXytwoetSM1cEv4qka+Z4IcG
- 1CnocJEnMlOnUT4gEC/6/qDsPFYAOPrAkamlajdn/JBIgYViLpOFzk+KCjo0xIC2fydu
- yDhw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVp9LhZSN21tDvqsA0RVCZXUrGJ8mtJbi6KGjluyXczNl5XjmOefzt93FRFetJZQRxhFHgalosVcPGz@nongnu.org
-X-Gm-Message-State: AOJu0YwxxfJ6IzuJiEBonhHvodPyOGGG6fQ7pKUL4JlWsoEVLmrAK5/S
- 3Xx/rVbx+r8Mbx7hZbkVX95aMMdYRY3kSLqFmP7dJpxO2VR6Fw3FATXl/SWxeE0=
-X-Gm-Gg: ASbGnctJp4U7rBKho/NXgl38UBwnJ3kbuJ4eZeDyuzlGtne9ggZZf0sNKM1dPCt5+Hp
- 9g+vJ91W8/0itI2n+R/4vdAy9UQaW7+iX/AM7EMwTinM/qhJ4P2AY0d3jMxyFT6zwylOdgq0nas
- DhJ223WdyKLJbc/Yl6ka0zrcR/b2zAYAPBq1OWWCl5o3DZdqBzSK0fWq6zr6Cg0OrtCunx+2XSp
- UIBExp7Tf4QIfVgpfKvSfJ80WZAC7smbhckqzooJXzeQ8+tjwayKwo/DSVpTBSVIESKs+NOhTeO
- xL4xrrbvbpH+3gXJTf5DLk4zGaM=
-X-Google-Smtp-Source: AGHT+IFjkW/LHk5V3Ii4A5kY2kxRjWTF5f6MfDNWIRjZLL1uP8uQRGhhqKrl2W9Bzj3Cm/HzBIfHUw==
-X-Received: by 2002:a05:600c:46c3:b0:434:fbe2:4f with SMTP id
- 5b1f17b1804b1-436e26e1d21mr27193915e9.23.1736492002171; 
- Thu, 09 Jan 2025 22:53:22 -0800 (PST)
-Received: from [192.168.1.74] (88-187-86-199.subs.proxad.net. [88.187.86.199])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e37e36asm3631044f8f.5.2025.01.09.22.53.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 09 Jan 2025 22:53:21 -0800 (PST)
-Message-ID: <debbd5de-718f-4940-b428-91ce6f0d5ee5@linaro.org>
-Date: Fri, 10 Jan 2025 07:53:20 +0100
+ (Exim 4.90_1) (envelope-from <yilun.xu@linux.intel.com>)
+ id 1tWAta-0000Dk-D8
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 04:01:34 -0500
+Received: from mgamail.intel.com ([192.198.163.19])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <yilun.xu@linux.intel.com>)
+ id 1tWAtY-00058r-G1
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 04:01:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1736499692; x=1768035692;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=1us4fXVzOkfuT8fX3fvia/Fj4+R3C6A1nDoeCiptz7k=;
+ b=TtuAbYpVu9UbLk7+WJJagvgsymi0DRPS2T+sDUGDuHzeGUaBMWz+imnt
+ blc46e3m7PqQp6upSxPSk0vDoS28JvLzzoNNAbC/7tt9dsJ00piNb/Rep
+ RlZ7IR24NHGCU8s9KVB86mO7vVpVk7GN3LNxUqf6haiZUUxsm2fXvR/+S
+ OouRkVRgvHYd5XC2EnSBd0JE3LV1nG6Y2o5k0Z2LZlpH9f+af1T1zDEEw
+ OENH3yKZHanvGkefpjFXsUI11XCjZuEYyzFbYiFSOERYSnAyCb3z8Eejp
+ K8f1CIzO8dltApYVSLYpEJw9/9D5gBeKmslihzgYsHV8gZxhCVzFTrmaN A==;
+X-CSE-ConnectionGUID: DDwdnJYqT6azOJF+QJpseA==
+X-CSE-MsgGUID: teGEh1pUQdylb8iv5Z6ruw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11310"; a="36003712"
+X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; d="scan'208";a="36003712"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jan 2025 01:01:28 -0800
+X-CSE-ConnectionGUID: 2pjZm/zQT9ypQ4cjDZMQJg==
+X-CSE-MsgGUID: ob4Ci4fNReCrV/2Uae5ZFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; d="scan'208";a="134514576"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost)
+ ([10.239.159.165])
+ by orviesa002.jf.intel.com with ESMTP; 10 Jan 2025 01:01:26 -0800
+Date: Fri, 10 Jan 2025 05:00:22 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Chenyi Qiang <chenyi.qiang@intel.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>, David Hildenbrand <david@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
+ Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
+ Xu Yilun <yilun.xu@intel.com>
+Subject: Re: [PATCH 2/7] guest_memfd: Introduce an object to manage the
+ guest-memfd with RamDiscardManager
+Message-ID: <Z4A45glfrJtq2zS2@yilunxu-OptiPlex-7050>
+References: <20241213070852.106092-1-chenyi.qiang@intel.com>
+ <20241213070852.106092-3-chenyi.qiang@intel.com>
+ <d0b30448-5061-4e35-97ba-2d360d77f150@amd.com>
+ <80ac1338-a116-48f5-9874-72d42b5b65b4@intel.com>
+ <219a4a7a-7c96-4746-9aba-ed06a1a00f3e@amd.com>
+ <58b96b74-bf9c-45d3-8c2e-459ec2206fc8@intel.com>
+ <8c8e024d-03dc-4201-8038-9e9e60467fad@amd.com>
+ <ca9bc239-d59b-4c53-9f14-aa212d543db9@intel.com>
+ <4d22d3ce-a5a1-49f2-a578-8e0fe7d26893@amd.com>
+ <2b799426-deaa-4644-aa17-6ef31899113b@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] qmp: update vhost-user protocol feature maps
-To: Jonah Palmer <jonah.palmer@oracle.com>, Michael Tokarev <mjt@tls.msk.ru>, 
- Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, qemu-trivial@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>, aesteve@redhat.com, hreitz@redhat.com
-References: <20241216170914.1346403-1-lvivier@redhat.com>
- <c9341f03-ecc2-4a62-860a-35ff2b660651@oracle.com>
- <6f1dcbe9-3a7e-475b-92ef-14f1d04ffc2e@tls.msk.ru>
- <511cf8f8-03ea-4375-abe0-317ac3131b1d@oracle.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <511cf8f8-03ea-4375-abe0-317ac3131b1d@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2b799426-deaa-4644-aa17-6ef31899113b@intel.com>
+Received-SPF: none client-ip=192.198.163.19;
+ envelope-from=yilun.xu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -36
+X-Spam_score: -3.7
+X-Spam_bar: ---
+X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
+ DKIMWL_WL_HIGH=-0.436, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,23 +96,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/1/25 14:25, Jonah Palmer wrote:
+> > 
+> > https://github.com/aik/qemu/commit/3663f889883d4aebbeb0e4422f7be5e357e2ee46
+> > 
+> > but I am not sure if this ever saw the light of the day, did not it?
+> > (ironically I am using it as a base for encrypted DMA :) )
 > 
+> Yeah, we are doing the same work. I saw a solution from Michael long
+> time ago (when there was still
+> a dedicated hostmem-memfd-private backend for restrictedmem/gmem)
+> (https://github.com/AMDESE/qemu/commit/3bf5255fc48d648724d66410485081ace41d8ee6)
 > 
-> On 12/22/24 4:13 AM, Michael Tokarev wrote:
->> 16.12.2024 20:30, Jonah Palmer wrote:
->> ...
->>
->>> Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
->> Should this be a Reviewed-by instead?
->>
->> Thanks,
->>
->> /mjt
+> For your patch, it only implement the interface for
+> HostMemoryBackendMemfd. Maybe it is more appropriate to implement it for
+> the parent object HostMemoryBackend, because besides the
+> MEMORY_BACKEND_MEMFD, other backend types like MEMORY_BACKEND_RAM and
+> MEMORY_BACKEND_FILE can also be guest_memfd-backed.
 > 
-> Oof, yes, it should've been. My apologies, I was on vacation and only 
-> saw this just now.
+> Think more about where to implement this interface. It is still
+> uncertain to me. As I mentioned in another mail, maybe ram device memory
+> region would be backed by guest_memfd if we support TEE IO iommufd MMIO
 
-Already merged as commit 1e3d4d9a1a32ac6835f0d295a5117851c421fb5d.
+It is unlikely an assigned MMIO region would be backed by guest_memfd or be
+implemented as part of HostMemoryBackend. Nowadays assigned MMIO resource is
+owned by VFIO types, and I assume it is still true for private MMIO.
 
+But I think with TIO, MMIO regions also need conversion. So I support an
+object, but maybe not guest_memfd_manager.
+
+Thanks,
+Yilun
+
+> in future. Then a specific object is more appropriate. What's your opinion?
+> 
 
