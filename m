@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5C9A07EA4
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 18:20:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7A6EA07EA8
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 18:21:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVwCf-0002Oo-Lo; Thu, 09 Jan 2025 12:20:17 -0500
+	id 1tVwCk-0002Qa-H9; Thu, 09 Jan 2025 12:20:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tVwCd-0002Mh-SR
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:20:16 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tVwCi-0002QB-0Z
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:20:20 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tVwCb-0000ef-Mo
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:20:15 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4361b0ec57aso12581535e9.0
- for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 09:20:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tVwCg-0000f9-BI
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:20:19 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43635796b48so8101515e9.0
+ for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 09:20:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736443211; x=1737048011; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736443216; x=1737048016; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qz3bj6rw803M1uR6VsFauScvvIZVsKyPf1NJH8U1zkU=;
- b=sXVDktixxqNr4foVZKXSnJCiBqZ4xHs81ZNJvYCqr3QcWEJG/BZwHJxT48h/yDUaF1
- 5gAtyy7PYx0xw2GnjG4S4QEOInAJxAuB+lUEcG8Xi2hpqHu0+i2fqh6wUqsN8qEzlRoR
- 3WdLnA8mXYP1H6F65OiwTT6PvtUOQIgwFzNWS7vjmJ0Kk3aakH6i2ijvJFeK+GyNI3vg
- SkFJteVbQ3HFM6oiUmrhGfHH2KqY/1gGYdPz8UuJCDoJZc6WRmrhDXy4Mq+dj3ugikgd
- kI2/Ddq9R+BDy+WmNTCbu/ibqNIoHIs5RdwsVcwM/oqMlTdKmwUNXLA6qYf4v0pAl5CG
- qm1A==
+ bh=UYVoLWc90TjSnXBWQnMWyZY22lK6Lc4zmHvaduQQgBs=;
+ b=mWME27ASY++JmgXplutd9EMHhCPY/i/hwiqP6shlsbl8LbMCS1QrkBn4m7cHbXNszn
+ s5x0rTv/ucoHlZqFEcO0bhPdToPcAm2YgcqzhbiFPRIbg3UHqxr+WGmgB1raAQcO9j83
+ QNP7zNa2O6ozVtSLpRlUMg2/GaKW6mkaJEnuMzAGP15qaRrq76qYh3tdGPf3MYqhV0HO
+ SDH1senFfCPRzL1kZ3SS+J3QLEEv7FihTO58S54/l97R/AQDLzRInaY+1DGhKmV0rVyA
+ n09QPe44nu6MM9xzII++DwujwNqZ6SH/AhdDp6IxlgrIbf59I++bJa7+kP5x8jnTs/bT
+ P2oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736443211; x=1737048011;
+ d=1e100.net; s=20230601; t=1736443216; x=1737048016;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qz3bj6rw803M1uR6VsFauScvvIZVsKyPf1NJH8U1zkU=;
- b=ON/3qop5xPEuytB4UOsYLiApTL9e+CtvDxamokYbnqvM7bDMaFhXfC0PPnqSyIOLFw
- OQS1mnbmFLuwtja7s6dL0Nf7sEZFS5VjfIV5m1u5vptaa9ahWC9WtBCnp7rQyGU8Qu0y
- 3HqQf77HBKAeMen2TlRng3iX5IxodQU0CzrZzdffr/zAnpizSypibBpYLBtRPDhnTg/G
- v/w0nkkjWRf0lQ0K1MJu1ZdQPkIKB3Xfh6rhulKkicsnUgxKS+1Rveym17Lby+FPMIz8
- ZeWUBPj17SdsprYUf4nAD64pdK5EqmRQR4bIkiJUc4OJjHPlddKHAQWpM2n/Rsnh1R5J
- TxYw==
-X-Gm-Message-State: AOJu0Yw9EWE+yPPgz6Mfcvlo1ZE8gMBMJCza68aKNSKTGPOgiB7nhIF/
- h7qYgixnyiykrmCYZawHGiyWAS4edq3lpooBAjCoRzFEjY/Julu9HimER9v0WA6VHv38zvWCwGA
- RHAA=
-X-Gm-Gg: ASbGnctjHQfVNnnOu5KyqAWbwsBOCXLJJmjBSLbI4BwG2TXbk0s7pD+uLmFvXjHNePU
- KLo7TGFuvTe07g+cUldMFQr8jJjYaRXqrGMJ4vPnxW1+TyEmjM18EtyYlZwLdKNVd1PQKL14B9I
- bxplmpdc0J3YGLLtD6+bnrb0na8dP9oyEvT+qJMdxIErHQGojlFiaZqYOZJd14AGqqOgZmY8LfS
- j9qXyIAWKDCemiRPzNY/KdzeFSKagGkzRgvoCSkAxNhrioauaB/a2dR0u6P+Gbt/rMpdRsnCUGk
- A8ddS7Z57+t0w2ZeBr/FMiUiMtZny8daRAQI
-X-Google-Smtp-Source: AGHT+IEXJMYOV1taRVFlCVKzS97GhTEvb0dXWNf7+KUvG8AX4EJQtCcmLDtCNJ1S0re1fipnieSg9w==
-X-Received: by 2002:a05:600c:3b02:b0:435:1a2:2633 with SMTP id
- 5b1f17b1804b1-436e26cf8a5mr32814435e9.15.1736443210960; 
- Thu, 09 Jan 2025 09:20:10 -0800 (PST)
+ bh=UYVoLWc90TjSnXBWQnMWyZY22lK6Lc4zmHvaduQQgBs=;
+ b=TqMWwrNA+tgmEX9VBVWho6ljZUu78zdlXGchU4T0EEad3VyTc2h9bwdJ9ZJ+fjm5Sd
+ lj1hSh5FLvznJ4cyjbVwxP3vBsfhyDYsnC736jIVEQqsVI9GW8iuE3pSrwuYUgoGEn3s
+ x/fGXAp8qCQ8mjSsy8NtW/PU6SGMfcr+WYqZKgPoFMZRFnwT+W4VKW+6TnMcaqh8lTKR
+ mWcmFbhTfLE0lrq7RZLtXfIQ9avpYy4aBGdssZo/jwflKpbfby9xOJm3RWpSDS+BGNlL
+ 8hb+dQhUacSZp+W+RUrnO79z6fIizhw11qEPNLtM90LcCmf4ulNL2la+ZpSqxjvpxbx7
+ ZtqQ==
+X-Gm-Message-State: AOJu0YzQe2Q3mTiwem5jVpgPZ+8RxKgdjp4R7HPuIYdxGal+HYwOJ4zm
+ AVTll7B5kPmZQa1OuA1yeNG1uveUTYmaW/AkJPzIxm8E4VQRB5QDvzuv8Fj7NQnhU50AZ1LJBSl
+ 4ueI=
+X-Gm-Gg: ASbGncseAMh4Kps/IIZYScI5da5krQC4SGf7byxRjCKu0fMVFacfoSoKhgxUDzgSkni
+ MVAlkLjT1badd4NGCGJSkbNk82rAwaXI4yfFvueXVAtDCEt70SeW5QUvrAIHx557/8AGY2kT7jp
+ p+JEVgLr4iicbPZcHThNKTaV0qd/OamwTP8Vkrru9NZxL70Cxo/ij0h4yJ715Aa3iOtpkvUdSC4
+ g1bALC/Uy95OTCRtTlb+e/S3fT832V7z7CMER04S/W3ZBew8rnF+eTUwPmCLTLFerfPt3cEiHwK
+ m7pDL00Cx1OmrkrBE/BQmQWvir5kDFQh1bnr
+X-Google-Smtp-Source: AGHT+IGdgqoXPnGF2lcK+LAQfU3ZdfrA1Ka0Kkrj/L+eQjTDCQPl9L/bg5MPbz0F0/mQyfX9hEaJxA==
+X-Received: by 2002:a05:600c:1c9b:b0:434:ffb2:f9cf with SMTP id
+ 5b1f17b1804b1-436e9d80fc4mr29197855e9.14.1736443215826; 
+ Thu, 09 Jan 2025 09:20:15 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e37e375sm2295146f8f.22.2025.01.09.09.20.09
+ 5b1f17b1804b1-436e2e89fc3sm62157365e9.30.2025.01.09.09.20.14
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 09 Jan 2025 09:20:09 -0800 (PST)
+ Thu, 09 Jan 2025 09:20:14 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 04/11] qdev: Make qdev_get_machine() not use container_get()
-Date: Thu,  9 Jan 2025 18:19:41 +0100
-Message-ID: <20250109171948.31092-5-philmd@linaro.org>
+Subject: [PULL 05/11] qdev: Add machine_get_container()
+Date: Thu,  9 Jan 2025 18:19:42 +0100
+Message-ID: <20250109171948.31092-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250109171948.31092-1-philmd@linaro.org>
 References: <20250109171948.31092-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,46 +100,61 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-Currently, qdev_get_machine() has a slight misuse on container_get(), as
-the helper says "get a container" but in reality the goal is to get the
-machine object.  It is still a "container" but not strictly.
+Add a helper to fetch machine containers.  Add some sanity check around.
 
-Note that it _may_ get a container (at "/machine") in our current unit test
-of test-qdev-global-props.c before all these changes, but it's probably
-unexpected and worked by accident.
-
-Switch to an explicit object_resolve_path_component(), with a side benefit
-that qdev_get_machine() can happen a lot, and we don't need to split the
-string ("/machine") every time.  This also paves way for making the helper
-container_get() never try to return a non-container at all.
-
-Signed-off-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241121192202.4155849-9-peterx@redhat.com>
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Message-ID: <20241121192202.4155849-10-peterx@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/core/qdev.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/hw/qdev-core.h | 10 ++++++++++
+ hw/core/qdev.c         | 11 +++++++++++
+ 2 files changed, 21 insertions(+)
 
+diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+index 50cbbf81211..89575e74e27 100644
+--- a/include/hw/qdev-core.h
++++ b/include/hw/qdev-core.h
+@@ -1033,6 +1033,16 @@ Object *qdev_get_machine(void);
+  */
+ void qdev_create_fake_machine(void);
+ 
++/**
++ * machine_get_container:
++ * @name: The name of container to lookup
++ *
++ * Get a container of the machine (QOM path "/machine/NAME").
++ *
++ * Returns: the machine container object.
++ */
++Object *machine_get_container(const char *name);
++
+ /**
+  * qdev_get_human_name() - Return a human-readable name for a device
+  * @dev: The device. Must be a valid and non-NULL pointer.
 diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index 09c4489e3c4..48bc9a7b9c7 100644
+index 48bc9a7b9c7..9abc4e8322f 100644
 --- a/hw/core/qdev.c
 +++ b/hw/core/qdev.c
-@@ -817,7 +817,12 @@ Object *qdev_get_machine(void)
-     static Object *dev;
- 
-     if (dev == NULL) {
--        dev = container_get(object_get_root(), "/machine");
-+        dev = object_resolve_path_component(object_get_root(), "machine");
-+        /*
-+         * Any call to this function before machine is created is treated
-+         * as a programming error as of now.
-+         */
-+        assert(dev);
-     }
- 
+@@ -828,6 +828,17 @@ Object *qdev_get_machine(void)
      return dev;
+ }
+ 
++Object *machine_get_container(const char *name)
++{
++    Object *container, *machine;
++
++    machine = qdev_get_machine();
++    container = object_resolve_path_component(machine, name);
++    assert(object_dynamic_cast(container, TYPE_CONTAINER));
++
++    return container;
++}
++
+ char *qdev_get_human_name(DeviceState *dev)
+ {
+     g_assert(dev != NULL);
 -- 
 2.47.1
 
