@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5818EA076E3
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 14:14:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DB03A076EB
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 14:15:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVsMF-00015H-09; Thu, 09 Jan 2025 08:13:55 -0500
+	id 1tVsMK-00016N-22; Thu, 09 Jan 2025 08:14:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <0a9b3419356731e34b1be4a8577d6b416379d085@kylie.crudebyte.com>)
- id 1tVsMD-000155-92
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 08:13:53 -0500
+ (envelope-from <f1b91e3a33a6502be816d88dfb6b719101b69d41@kylie.crudebyte.com>)
+ id 1tVsMI-000166-5M
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 08:13:58 -0500
 Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <0a9b3419356731e34b1be4a8577d6b416379d085@kylie.crudebyte.com>)
- id 1tVsMB-0004mH-SH
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 08:13:53 -0500
+ (envelope-from <f1b91e3a33a6502be816d88dfb6b719101b69d41@kylie.crudebyte.com>)
+ id 1tVsMG-0004nD-Jt
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 08:13:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:References:In-Reply-To:
  Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
- Content-Description; bh=CSE3QpnL+Lma8YC7Q2CBe4d23S5BwtPq87XjWPALmdU=; b=mArOK
- 2F2oDQLvj+wD6kSuxR/wLL9pWM2z7+Vd/09rATj9d+7tF0jcrfLuptOxvIWKMlb+qlPOJkHHxHQFK
- H04e2Lt74PHo16p1PhulcK23Tm8321zs/59ikkrVpvHkOcIZ/vLbv1gmeKMZIzxLW8Drf3l/g6iHG
- mNtun99P7+qcIKxRkEV73zaQmVzlH7Mk1fI96XV1AA2xyXEYWU6bKs2IKWx9m/30C+GhAnrsP6hYc
- V1bMYTrYZ9HYnABJ6q/0bJjcYKnat5fVkT4GfirQHfEY2xZpSmXBTQpBgZMmG3tqjlN/BfOsKkCQ3
- 9pI/w+zRowkw0qhTYGS91erbeQ2Z72Sm9K1VK/tU47ZD2jqPbHP/GP464L2hEWtBehKxnmnLRnFW4
- /Wf5PKlY9cXwhsn5zLid5y+WLHG+ve2zYRcm5SMYu2xeMewtJm645uAkUmmfvCcbjPLW5p0h0uJR4
- WQ3aAOYWsNDicE3y+Km7U3JscHQWqxcu7Avqi1imbGRcf9G/3APs7rBeyTz5g+pfKx4GzKGqfJke2
- MAcP3MM+prwqwBVCTUADmPeEEJZqwi3XwABVLQDp5lmYTRov4ZL/yQ1zeKlH7NwqvVoeqm6P6SZ+O
- M6wuIYokikHLKB61x8cRSbvpQyGJ82mJ3mO6QqJhL/9ukiqYX1aBtk0kPV0N6A=;
-Message-Id: <0a9b3419356731e34b1be4a8577d6b416379d085.1736427878.git.qemu_oss@crudebyte.com>
+ Content-Description; bh=QISezSY7oBObokWL0tL8UTCzKj4XmSnRBn+ToQwCAuE=; b=MA9hC
+ lx3MpzGwiswsJAezSK/9Kwo2Xf47BtJtD2StHrmqs4YHUAzdFF6gEVWR8pbtWRFe7PdVFmLMSZtQ7
+ cpoFWemYc75HaTjC1JRkxTh5M2K7fAIAevnfmMFW1TtZhppt+p6WCnGhtTfM0hMecds0o8QY37No9
+ 7459aaZ0od4pZWpobAfiL0d3tbd50sRSwV8f8CE9MWNGq5xIty9RwKa2zNHlm6AJBTUmHuhq+E1oQ
+ AwehHVOkO6FEWShdaPhnZ6KbMv6/bO5VNihKPeWY5ICj+Jni9vVXg5nND5Dw6Q/sUbWOHebw5roK7
+ T72zQTHc1tcFk4CuE/UJYi6fAwkfuYOVkC+Eryjm8YugLrKVPqF0sAhUIXQZq8ktuVLbmNxsEIMau
+ w1juEAAGz6ZJH/81MMY7I0YCnZ/Q/iha/y2/j2tdP6YPpYlPQMuMRTXLLiBXjf/cky16TSHnJGXOG
+ LsoLhzdM/ABU3aQVBA2keH+BnD1YAYpOOacM4ELRdqLnKfoGKbWIjikca1Dw3g3t3Y73wuzHQI+ZA
+ 5YSb8KtHhPtyWyf1aqk62L4C60xPwePAFMcWECV/70wQ8AYUvza2WZDiNZf5fn37TmwXka9Wd8pAc
+ YS+2LTe1LqYCT3yXd+WlQ//7x06aFnmK7ULcHl0pRrr1gl1DxXNU7Z/EHvjvsM=;
+Message-Id: <f1b91e3a33a6502be816d88dfb6b719101b69d41.1736427878.git.qemu_oss@crudebyte.com>
 In-Reply-To: <cover.1736427878.git.qemu_oss@crudebyte.com>
 References: <cover.1736427878.git.qemu_oss@crudebyte.com>
 From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Date: Thu, 9 Jan 2025 13:59:52 +0100
-Subject: [PATCH 2/3] tests/9p: add use_dir_after_unlink test
+Date: Thu, 9 Jan 2025 13:59:56 +0100
+Subject: [PATCH 3/3] tests/9p: extend use_dir_after_unlink test with Treaddir
 To: qemu-devel@nongnu.org
 Cc: Greg Kurz <groug@kaod.org>
 Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=0a9b3419356731e34b1be4a8577d6b416379d085@kylie.crudebyte.com;
+ envelope-from=f1b91e3a33a6502be816d88dfb6b719101b69d41@kylie.crudebyte.com;
  helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -66,75 +66,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-After removing a directory from the filesystem, it should still be
-possible to operate on the directory if the directory has been opened
-before.
-
-As a first step this new test will verify whether Tgetattr request
-works on the unlinked directory.
+Sending a Treaddir request on an unlinked directory should also succeed
+if the directory was alread opened before unlink. We just check that no
+error occurs and that we get some kind of Treaddir result, but completely
+ignore the actual Treaddir result content. In fact, there should be no
+system as of to date that would allow a removed directory to have any
+content (files, links, devices, subdirectories) and POSIX specifies that
+a directory must be empty when trying to remove it from the file system.
 
 Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 ---
- tests/qtest/virtio-9p-test.c | 39 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ tests/qtest/virtio-9p-test.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/tests/qtest/virtio-9p-test.c b/tests/qtest/virtio-9p-test.c
-index 07459c5289..35c42cd0d7 100644
+index 35c42cd0d7..10243247ab 100644
 --- a/tests/qtest/virtio-9p-test.c
 +++ b/tests/qtest/virtio-9p-test.c
-@@ -737,6 +737,43 @@ static void fs_use_file_after_unlink(void *obj, void *data,
-     g_assert_cmpint(count, ==, write_count);
- }
- 
-+static void fs_use_dir_after_unlink(void *obj, void *data,
-+                                    QGuestAllocator *t_alloc)
-+{
-+    QVirtio9P *v9p = obj;
-+    v9fs_set_allocator(t_alloc);
-+    g_autofree char *real_dir = virtio_9p_test_path("10/doa_dir");
-+    struct stat st_dir;
-+    struct v9fs_attr attr;
-+    uint32_t fid_dir;
-+
-+    tattach({ .client = v9p });
-+
-+    /* create a dir "10/doa_dir" and make sure it exists */
-+    tmkdir({ .client = v9p, .atPath = "/", .name = "10" });
-+    tmkdir({ .client = v9p, .atPath = "10", .name = "doa_dir" });
-+    g_assert(stat(real_dir, &st_dir) == 0);
-+    g_assert((st_dir.st_mode & S_IFMT) == S_IFDIR);
-+
-+    /* request a FID for that directory that we can work with next */
-+    fid_dir = twalk({
-+        .client = v9p, .fid = 0, .path = "10/doa_dir"
-+    }).newfid;
-+    g_assert(fid_dir != 0);
-+
-+    /* now first open the dir before ... */
-+    tlopen({ .client = v9p, .fid = fid_dir, .flags = O_RDONLY });
-+    /* ... removing the dir from file system */
-+    tunlinkat({ .client = v9p, .atPath = "10", .name = "doa_dir",
-+                .flags = AT_REMOVEDIR });
-+
-+    /* dir is removed, but we still have it open, so this should succeed */
-+    tgetattr({
-+        .client = v9p, .fid = fid_dir, .request_mask = P9_GETATTR_BASIC,
-+        .rgetattr.attr = &attr
+@@ -772,6 +772,9 @@ static void fs_use_dir_after_unlink(void *obj, void *data,
+         .client = v9p, .fid = fid_dir, .request_mask = P9_GETATTR_BASIC,
+         .rgetattr.attr = &attr
+     });
++    treaddir({
++        .client = v9p, .fid = fid_dir, .offset = 0, .count = P9_MAX_SIZE - 11
 +    });
-+}
-+
- static void cleanup_9p_local_driver(void *data)
- {
-     /* remove previously created test dir when test is completed */
-@@ -804,6 +841,8 @@ static void register_virtio_9p_test(void)
-                  &opts);
-     qos_add_test("local/use_file_after_unlink", "virtio-9p",
-                  fs_use_file_after_unlink, &opts);
-+    qos_add_test("local/use_dir_after_unlink", "virtio-9p",
-+                 fs_use_dir_after_unlink, &opts);
  }
  
- libqos_init(register_virtio_9p_test);
+ static void cleanup_9p_local_driver(void *data)
 -- 
 2.39.5
 
