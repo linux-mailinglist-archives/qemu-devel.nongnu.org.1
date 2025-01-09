@@ -2,103 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD89A07C98
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 16:54:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70EF7A07C9D
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 16:56:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVuqZ-0006Jr-E7; Thu, 09 Jan 2025 10:53:23 -0500
+	id 1tVutJ-00082R-Nm; Thu, 09 Jan 2025 10:56:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tVuqX-0006JK-7Z
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 10:53:21 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tVuqV-0002Tw-Ew
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 10:53:20 -0500
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id B35471F394;
- Thu,  9 Jan 2025 15:53:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736437997; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tVutF-00081E-7Y
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 10:56:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tVutD-0002uY-QX
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 10:56:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736438167;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=HUn/DCYjWtFdE+jJ9ja0rNr2cOTx5GnTpw/bq6XgCcY=;
- b=ZUte4Yk2LHlCPz3BvfoZwjPWyEfAgn9v4oJpNQz513gPCaN7oxPByRty0hmblIRdvPe05p
- fAL6Tjq+yA0VE+kV0eeSGScTlAziIRf/XBL50S1iQK8xec6wvr2XpJ+5MtKoeV4xSWjiYI
- MjmihvHGxGjj7cN1GGJhbYEDCyCIJ0Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736437997;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=HUn/DCYjWtFdE+jJ9ja0rNr2cOTx5GnTpw/bq6XgCcY=;
- b=+M9v7JoSsQkCmSVX62LuSa4HnaolhTAmDETF5OlBbPHWbKLxSZB9mj7eocs/FqWnEVSeHK
- cMqj/x9KYmB2PdBw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736437997; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=HUn/DCYjWtFdE+jJ9ja0rNr2cOTx5GnTpw/bq6XgCcY=;
- b=ZUte4Yk2LHlCPz3BvfoZwjPWyEfAgn9v4oJpNQz513gPCaN7oxPByRty0hmblIRdvPe05p
- fAL6Tjq+yA0VE+kV0eeSGScTlAziIRf/XBL50S1iQK8xec6wvr2XpJ+5MtKoeV4xSWjiYI
- MjmihvHGxGjj7cN1GGJhbYEDCyCIJ0Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736437997;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=HUn/DCYjWtFdE+jJ9ja0rNr2cOTx5GnTpw/bq6XgCcY=;
- b=+M9v7JoSsQkCmSVX62LuSa4HnaolhTAmDETF5OlBbPHWbKLxSZB9mj7eocs/FqWnEVSeHK
- cMqj/x9KYmB2PdBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 35EC413876;
- Thu,  9 Jan 2025 15:53:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 2isaO+zwf2cfewAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 09 Jan 2025 15:53:16 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v2 4/7] migration: Rename vmstate_info_nullptr
-In-Reply-To: <Z3_br0JVQ0F_Zas6@x1n>
-References: <20250109140959.19464-1-farosas@suse.de>
- <20250109140959.19464-5-farosas@suse.de> <Z3_br0JVQ0F_Zas6@x1n>
-Date: Thu, 09 Jan 2025 12:53:14 -0300
-Message-ID: <87tta82dcl.fsf@suse.de>
+ bh=Xb1DWJQJIpAVhNoiJGrVPbdSMrw7C3HTWgrmbNuX+mE=;
+ b=e67/kdoZhIzYYgFdWwrNiOYlx7lTmS74wOAw3nDhc57XSYgBEjAebSkgD/Yqurk5tuaARM
+ 4nYzA4MKavyMvKAF+BOrfgiX2OJ0PhvHOqq99fWxz5+JqWsPNp7LL8MYjfRZ8lC2yp9rxm
+ 1tHYIdqc81aitxmNQQAdxpGjLvAOm5E=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-444-BdZJGIHQNl6YMAUdT4RR2A-1; Thu, 09 Jan 2025 10:56:03 -0500
+X-MC-Unique: BdZJGIHQNl6YMAUdT4RR2A-1
+X-Mimecast-MFC-AGG-ID: BdZJGIHQNl6YMAUdT4RR2A
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7b6f943f59dso185122585a.2
+ for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 07:56:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736438163; x=1737042963;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Xb1DWJQJIpAVhNoiJGrVPbdSMrw7C3HTWgrmbNuX+mE=;
+ b=sLEJbzg7YDOpHnYBvnSBNFcV4mpKkYFA5CEQOBL1aNJ3cAY0zJ6f7Rk5Kx61QTEK+F
+ i0nwMbzlGCVd+GLJ/laRx68bd563A2vADU+i93eWdzCs4BIEuku93wujiKO7CNov1owi
+ 7F1RppMMCVfK/J5Jbv07K5DjSbM2HPh3tPPt2aSsBAMF9wPgpL1GFNd0fpYwSckOCkHa
+ 6sGBnRGI5qCtfeaII7RlgFrMCDi62mqP9jgVyCLrWvCg4bN+EhWbG6h/p0GsY72ghjXP
+ B+YU3ajwX0OvBFjDh0aJNXG8Vg3Pogn+ClvMITfCGCK+zLy3oq6h9KxhbiZzu9AfW+l2
+ YdMQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV62c3DHdVxW1YFnXvVG2t59ZROFOcfX9rFg1OW15fbo9AV/c54az9ACILyx70DwuZ6A3qMf6VLSWhm@nongnu.org
+X-Gm-Message-State: AOJu0YyjXFhAdlISjAMmco9rtRETK3tyWmVv+vQTk6g1oVXKiHtVOVSy
+ Z802kE3iKMhSy44UaqOR2SkjIQFf+cRcDw8zJ9j3GVrbvUS5utWlKnFNM51VvR/+0reLi9U5knl
+ 9QmyV+7tkbwciQuo2Jfx0d3A7vD0vE4AvGrNAFv4QUbt1cvitOuv+
+X-Gm-Gg: ASbGncvo01tOoOPiebXWoFjmd3WlTo1Cs6W+Z/d5go+yOPNQzeqaYp0V7JopbHWbLZS
+ BhlPhgM9Xx8B4M59j8n3RKir4Y/VZ8Hlov2FReV9XQZoVD89Ya9vQtWgbjRtuF0jhMkeGC5Zy3t
+ 6oAuQxd9ijF4n6uCdaKsrEJH/6PPN3MW4ZR5BoqsNU2sNj6G8kctYJF9F3jvSvt2y41FVShlXIM
+ ycdSugWj6NqXCeAmnzKzz37rjl5EHqFC+VKYJjJyzxTU5W4jn6hD7+Rx2gU+EvdPUXAX+Vl4Pn6
+ 3XTZe6KSOjEoSr5f3Q==
+X-Received: by 2002:a05:620a:46a7:b0:7b6:d237:abf4 with SMTP id
+ af79cd13be357-7bcd97a4eb7mr809852285a.39.1736438162992; 
+ Thu, 09 Jan 2025 07:56:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHaHBxA3K2p0wvmUSCuS2tGfbbpbDCQ5HELsxMLbzCzBbrTkB6zNOyODV55tZga6co/qSEOdw==
+X-Received: by 2002:a05:620a:46a7:b0:7b6:d237:abf4 with SMTP id
+ af79cd13be357-7bcd97a4eb7mr809849285a.39.1736438162585; 
+ Thu, 09 Jan 2025 07:56:02 -0800 (PST)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7bce3237fa6sm79615585a.14.2025.01.09.07.56.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 09 Jan 2025 07:56:01 -0800 (PST)
+Date: Thu, 9 Jan 2025 10:55:58 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org, qemu-ppc@nongnu.org, devel@daynix.com
+Subject: Re: [PATCH v7 2/2] memory: Do not create circular reference with
+ subregion
+Message-ID: <Z3_xjlqNyIJAQTYq@x1n>
+References: <20250109-san-v7-0-93c432a73024@daynix.com>
+ <20250109-san-v7-2-93c432a73024@daynix.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
- TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_THREE(0.00)[3]; RCVD_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email, suse.de:mid,
- imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -4.30
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250109-san-v7-2-93c432a73024@daynix.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.436,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,101 +122,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On Thu, Jan 09, 2025 at 02:50:21PM +0900, Akihiko Odaki wrote:
+> memory_region_update_container_subregions() used to call
+> memory_region_ref(), which creates a reference to the owner of the
+> subregion, on behalf of the owner of the container. This results in a
+> circular reference if the subregion and container have the same owner.
+> 
+> memory_region_ref() creates a reference to the owner instead of the
+> memory region to match the lifetime of the owner and memory region. We
+> do not need such a hack if the subregion and container have the same
+> owner because the owner will be alive as long as the container is.
+> Therefore, create a reference to the subregion itself instead ot its
+> owner in such a case; the reference to the subregion is still necessary
+> to ensure that the subregion gets finalized after the container.
+> 
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-> On Thu, Jan 09, 2025 at 11:09:56AM -0300, Fabiano Rosas wrote:
->> Rename vmstate_info_nullptr from "uint64_t" to "nullptr". This vmstate
->> actually reads and writes just a byte, so the proper name would be
->> uint8. However, since this is a marker for a NULL pointer, it's
->> convenient to have a more explicit name that can be identified by the
->> consumers of the JSON part of the stream.
->> 
->> Change the name to "nullptr" and add support for it in the
->> analyze-migration.py script. Arbitrarily use the name of the type as
->> the value of the field to avoid the script showing 0x30 or '0', which
->> could be confusing for readers.
->> 
->> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> ---
->>  migration/vmstate-types.c    |  2 +-
->>  scripts/analyze-migration.py | 22 ++++++++++++++++++++++
->>  2 files changed, 23 insertions(+), 1 deletion(-)
->> 
->> diff --git a/migration/vmstate-types.c b/migration/vmstate-types.c
->> index e83bfccb9e..d70d573dbd 100644
->> --- a/migration/vmstate-types.c
->> +++ b/migration/vmstate-types.c
->> @@ -338,7 +338,7 @@ static int put_nullptr(QEMUFile *f, void *pv, size_t size,
->>  }
->>  
->>  const VMStateInfo vmstate_info_nullptr = {
->> -    .name = "uint64",
->> +    .name = "nullptr",
->>      .get  = get_nullptr,
->>      .put  = put_nullptr,
->>  };
->> diff --git a/scripts/analyze-migration.py b/scripts/analyze-migration.py
->> index fcda11f31d..134c25f20a 100755
->> --- a/scripts/analyze-migration.py
->> +++ b/scripts/analyze-migration.py
->> @@ -377,6 +377,8 @@ def read(self):
->>  
->>  
->>  class VMSDFieldInt(VMSDFieldGeneric):
->> +    NULL_PTR_MARKER = 0x30
->> +
->>      def __init__(self, desc, file):
->>          super(VMSDFieldInt, self).__init__(desc, file)
->>          self.size = int(desc['size'])
->> @@ -385,6 +387,16 @@ def __init__(self, desc, file):
->>          self.udtype = '>u%d' % self.size
->>  
->>      def __repr__(self):
->> +
->> +        # A NULL pointer is encoded in the stream as a '0' to
->> +        # disambiguate from a mere 0x0 value and avoid consumers
->> +        # trying to follow the NULL pointer. Displaying '0', 0x30 or
->> +        # 0x0 when analyzing the JSON debug stream could become
->> +        # confusing, so use an explicit term instead. The actual value
->> +        # in the stream was already validated by VMSDFieldNull.
->> +        if self.data == self.NULL_PTR_MARKER:
->> +            return "nullptr"
->
-> What happens if a real int field has value 0x30 which is not a marker?
-> Would it be wrongly represented as "nullptr"?
->
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-Yes, better to not inherit from VMSDFieldInt then.
+-- 
+Peter Xu
 
->> +
->>          if self.data < 0:
->>              return ('%s (%d)' % ((self.format % self.udata), self.data))
->>          else:
->> @@ -417,6 +429,15 @@ def __init__(self, desc, file):
->>          super(VMSDFieldIntLE, self).__init__(desc, file)
->>          self.dtype = '<i%d' % self.size
->>  
->> +class VMSDFieldNull(VMSDFieldUInt):
->> +    def __init__(self, desc, file):
->> +        super(VMSDFieldUInt, self).__init__(desc, file)
->> +
->> +    def read(self):
->> +        super(VMSDFieldUInt, self).read()
->> +        assert(self.data == self.NULL_PTR_MARKER)
->> +        return self.data
->> +
->>  class VMSDFieldBool(VMSDFieldGeneric):
->>      def __init__(self, desc, file):
->>          super(VMSDFieldBool, self).__init__(desc, file)
->> @@ -558,6 +579,7 @@ def getDict(self):
->>      "bitmap" : VMSDFieldGeneric,
->>      "struct" : VMSDFieldStruct,
->>      "capability": VMSDFieldCap,
->> +    "nullptr": VMSDFieldNull,
->>      "unknown" : VMSDFieldGeneric,
->>  }
->>  
->> -- 
->> 2.35.3
->> 
 
