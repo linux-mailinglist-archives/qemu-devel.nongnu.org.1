@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA616A07EA6
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 18:20:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57DDBA07EAD
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 18:22:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVwDE-0004Ml-T2; Thu, 09 Jan 2025 12:20:52 -0500
+	id 1tVwDL-0004w6-BP; Thu, 09 Jan 2025 12:20:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tVwDB-0004CU-L1
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:20:49 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tVwDI-0004ja-D8
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:20:56 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tVwD9-0000vY-PP
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:20:49 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-436326dcb1cso9434545e9.0
- for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 09:20:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tVwDG-0000xI-Tf
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:20:56 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-385e3621518so683872f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 09:20:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736443244; x=1737048044; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736443252; x=1737048052; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bEpqXVU8Ur/P9HPMuqzJk8wNNbtEkgm3VtINnkR/R0k=;
- b=SGgYfRvcDJz5NA85QIeegH2NGC9g0gQCpWSHQIOOc9HxyH+lLAB5QUtt6+NlvY0N41
- NSn2hvB8mHUcguDoOTBv1KJE09C5s6YM9xIOQZLYH51brxcheWf1HBsKUUisZnbkQP8q
- 7p2LWn5PNaI1ORzeZkDyXSbOOFAiyDK5Pmzo0+Nk6esaP0vc5FX4JPT0EGosLkxnOMQa
- TjghTekRYGr8paMLMC10yao6rND12vzdvmacexHNeO26OIDBF6twapZFyv7VZXA3s7MH
- cr1ERlW4WZzX1aCpxhtOB8AD/lMtmaWVWFMKTgcLe1hf7xRT2p/OXwX1OHTabw+LybNJ
- QaXQ==
+ bh=zevfD/0XJNMcMENJjO9t+oO6TupDgy91bB9ym/P30U4=;
+ b=ZTf98iy477k8jzEFvBXLN3MV+UnBq2QenqI/CCgHgjB9oet/iT9Y0kh84dGSg7ttK6
+ KNVh+JOm/D1SH2dETglvET+JNWwKIqj0Rh8G+zMSfTF5FqF+oO1aQoon2p99tuJtM8rj
+ bSlcA5ixU4/LkYehxQdS7HVxJ1XfBpw+QraQHKtWV2FCQiAB04GGPmNLqjb7kWDDhEyY
+ Cj4okrCBuWNLq9ycNPJKW2ZeOKnAT0NsQWwF2TKC6EEz5xnZpyZSozjMy+2IyH+MM5zg
+ Bj5HV/qfUrz4M/Woav/UE/npGUd4FeQEGmbzzjkF8YAX5ZxV9RrWhKMdp4B7Y1zfblY9
+ iTlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736443244; x=1737048044;
+ d=1e100.net; s=20230601; t=1736443252; x=1737048052;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bEpqXVU8Ur/P9HPMuqzJk8wNNbtEkgm3VtINnkR/R0k=;
- b=a0/qfn+jOW4lakdpEqJw2YAhhCFmQvSL8XWW2iARbjzq2cTgcAS1tYtDf2bVyMZmsP
- hDfyYTs/1bTeF7h9FdmLXczLTpR7x3+FFrpiSVuYz/hBdaHypq8M2V4WUho7azio7jmK
- iU8YWEMJZUchBYvcCtw85FYv1mGF4BQQynjJnCFpRfo7fDgRudUGZncIRc2OD+a9tgnp
- 9bos3vjybMdPQwst6oLBTvquCzz3QlD39DvVD2zUiCs68tPZ3YOjugPzcpp+Moz+owS2
- ZGLC3TkKswprYqvLoBBg0JPtL63LKzkiD9vKw3rrbO+2kfP1qmZGQcUINRCr7IKD/U6x
- 3m9Q==
-X-Gm-Message-State: AOJu0Yyv9Xq7Y4Me2Km/1c94mugL+VHQ2ZwPhkZk+TCbVYLNqnlMJBDc
- iH6fxsYk9r9t95imQw1u+333w7XEU+z2MH73mRqK0t2tdoFAG81PVJi/TWOv/BHworL9PxYKLoq
- XOpI=
-X-Gm-Gg: ASbGncuBXP5DOHUihpsSac6Nq9Ih/2GxPqpv/Oi/M1NIXFftw7XJrpkhgxGvaJUJ64w
- OL7jGgcbIz7OaPe+TvjXFp/d87NJQxVgUb4A3R0hlnd7HC/p80fbSIjRUcVf2qxlaqkEcOIRiNo
- bLyvcjZrdJXIvbrgU8nSQ0Gs/ANzvXxmLzn0aP93xh4dUqG35LPlj4ngSAu4Qcqki5Qu+5Chd7s
- j7qFedp1HCyFS6Eyyj63fcZbwprKO1EfzwHspuO1W/ADPSnmjmDVZq7P8vfxxmzUgrCpp0ExHqh
- aHsMCBTsyxGSYgwGkgvtZliVticzb97d/C7D
-X-Google-Smtp-Source: AGHT+IHmmF2A+MA1ZCXsxdRGrsjDmUIhOzjDNv1N4dKcFmAOW946Kdq0v7C/tRY3Q6IHyRgJ95tm3g==
-X-Received: by 2002:a05:600c:310c:b0:434:f8a0:9dc5 with SMTP id
- 5b1f17b1804b1-436e26a8c21mr73170825e9.13.1736443244508; 
- Thu, 09 Jan 2025 09:20:44 -0800 (PST)
+ bh=zevfD/0XJNMcMENJjO9t+oO6TupDgy91bB9ym/P30U4=;
+ b=VviUvd3cAb19KIohllYPw6w+e8LboCuXxe7Ur4Zw5QKiJSwa0Yl9XefIQn1c6cGVB/
+ JvPrzKPxQcK7nt2/jWvsvX8FNPj3/6JbINY2BYF856NCmyUdzpcaPG+36lvZ8wzgjC6/
+ Xpki23B4nkXbZz0AM0Dcq9AYvG87THwwmEKpDf8/nXvQ1iXTNAFCSMh9HvmLmEZPDXeE
+ 5ETbKpGwhn0R+bO7aaz7IADvMBiN6LLPpuvjdk5KODdSmoxO/X362p3y48CJ38y0D7P0
+ Ti6vRhFwaUlUhs3zyvIhZ++SG4NJIdnUYZhWzO7XvClLuaQsFW0dImd+NGypkFB087xJ
+ eqDg==
+X-Gm-Message-State: AOJu0Yxd9RwgMX5GFVfMyhP91pQWIaRpUUeCX4c2NjDlH6nXchns0Sms
+ 3l9Cmo9tYddB8c8CTZARlJtTUDLLS3H64P5X621FKEWCqjkY2OT8tF4QFZbtmZsSqLs719fEwiu
+ I83E=
+X-Gm-Gg: ASbGncs5c/1VzULRXC2PlR+Y820FihuYDR8uVKvSDvHGD3uXf/hKz83p+m+8Ng8Bsa0
+ B1wx5lSmvfvEIpUaBssgHjilYuGA+PZ95VAVqvVCLAeIdrGKLggLyGOJcPlGFNuofSH8Q7C8BVa
+ 9zBknwQBW2D2SVj0ii0ovo4tl3Qg0a0JHA11vuF1Bzz4J2TnW/E/qLH40VmsW4M4ijH51PVB0tz
+ H8NUTC9iTyWvotvuOHzEI4twqCcArSEjfPhB4pYSHK+ViYIx3Jp+v0apd77/HE5ypryUqYOjWGq
+ AprjPav0Fzq6A4oK7qzU65DuRVy44TuF1l5M
+X-Google-Smtp-Source: AGHT+IGOwgjY57/fBV6z4udumMChiJWSjeOvUVwTxZtl6edZ9ywQ1NPOzWvNDxvzb9O0XOV1ag4eNg==
+X-Received: by 2002:adf:a2c4:0:b0:385:faec:d94d with SMTP id
+ ffacd0b85a97d-38a87355754mr6052475f8f.51.1736443252512; 
+ Thu, 09 Jan 2025 09:20:52 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e9d8fb99sm27331315e9.3.2025.01.09.09.20.43
+ ffacd0b85a97d-38a8e4c1ce5sm2357948f8f.94.2025.01.09.09.20.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 09 Jan 2025 09:20:43 -0800 (PST)
+ Thu, 09 Jan 2025 09:20:48 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 10/11] qom: remove unused InterfaceInfo::concrete_class field
-Date: Thu,  9 Jan 2025 18:19:47 +0100
-Message-ID: <20250109171948.31092-11-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 11/11] system: Inline machine_containers[] in
+ qemu_create_machine_containers()
+Date: Thu,  9 Jan 2025 18:19:48 +0100
+Message-ID: <20250109171948.31092-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250109171948.31092-1-philmd@linaro.org>
 References: <20250109171948.31092-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,53 +99,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+Only qemu_create_machine_containers() uses the
+machine_containers[] array, restrict the scope
+to this single user.
 
-The "concrete_class" field of InterfaceClass is only ever written, and as far
-as I can tell is not particularly useful when debugging either; remove it.
-
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-ID: <20250107111308.21886-1-pbonzini@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20250102211800.79235-9-philmd@linaro.org>
 ---
- include/qom/object.h | 5 ++++-
- qom/object.c         | 1 -
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ system/vl.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/include/qom/object.h b/include/qom/object.h
-index 77935572894..9192265db76 100644
---- a/include/qom/object.h
-+++ b/include/qom/object.h
-@@ -573,12 +573,15 @@ struct InterfaceInfo {
-  *
-  * The class for all interfaces.  Subclasses of this class should only add
-  * virtual methods.
-+ *
-+ * Note that most of the fields of ObjectClass are unused (all except
-+ * "type", in fact).  They are only present in InterfaceClass to allow
-+ * @object_class_dynamic_cast to work with both regular classes and interfaces.
-  */
- struct InterfaceClass
+diff --git a/system/vl.c b/system/vl.c
+index ed1623b26b9..be029c52ef8 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -2113,18 +2113,16 @@ static void parse_memory_options(void)
+     loc_pop(&loc);
+ }
+ 
+-static const char *const machine_containers[] = {
+-    "unattached",
+-    "peripheral",
+-    "peripheral-anon"
+-};
+-
+ static void qemu_create_machine_containers(Object *machine)
  {
-     ObjectClass parent_class;
-     /* private: */
--    ObjectClass *concrete_class;
-     Type interface_type;
- };
+-    int i;
++    static const char *const containers[] = {
++        "unattached",
++        "peripheral",
++        "peripheral-anon",
++    };
  
-diff --git a/qom/object.c b/qom/object.c
-index 58897a79a76..ec447f14a78 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -314,7 +314,6 @@ static void type_initialize_interface(TypeImpl *ti, TypeImpl *interface_type,
-     g_free((char *)info.name);
+-    for (i = 0; i < ARRAY_SIZE(machine_containers); i++) {
+-        object_property_add_new_container(machine, machine_containers[i]);
++    for (unsigned i = 0; i < ARRAY_SIZE(containers); i++) {
++        object_property_add_new_container(machine, containers[i]);
+     }
+ }
  
-     new_iface = (InterfaceClass *)iface_impl->class;
--    new_iface->concrete_class = ti->class;
-     new_iface->interface_type = interface_type;
- 
-     ti->class->interfaces = g_slist_append(ti->class->interfaces, new_iface);
 -- 
 2.47.1
 
