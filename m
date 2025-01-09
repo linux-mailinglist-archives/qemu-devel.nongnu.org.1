@@ -2,105 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6B8A078DE
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 15:14:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D10A078DA
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 15:14:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVtH2-0005gc-Lq; Thu, 09 Jan 2025 09:12:36 -0500
+	id 1tVtH3-0005hI-7q; Thu, 09 Jan 2025 09:12:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tVtGy-0005fO-8o
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 09:12:32 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1tVtH1-0005gj-R2; Thu, 09 Jan 2025 09:12:36 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tVtGl-0000Y4-2I
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 09:12:20 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1tVtGr-0000Yt-PM; Thu, 09 Jan 2025 09:12:35 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id EFF6B1F456;
- Thu,  9 Jan 2025 14:12:17 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 19E7B21176;
+ Thu,  9 Jan 2025 14:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736431938; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1736431940; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3erWeuh+rYsh1mrAYu34l7atDaNcjclCzXTMlmloLdQ=;
- b=Ur6VrKejF3cNmDvfydYOXgv+avGU8Cp4aKM0k4hMdEI3qvdobkgUPawadJAOUQERkiZrpE
- A/rXV/oHKuIN6dSCsO8VAXHZhuYZ+Wp2juz6JZxh0dRwST8MaZGnU2gjflH/4dBh2JpGyw
- NVcS1VXLaSjoVIwdo85JNfgzGrCgz2I=
+ bh=inlf+DDUkomGXDdJ4jWiM8MBtP6QTo97CnGyU1acw8c=;
+ b=GFgyCdIRAyWxy6373KTjm0dLTourQTE/RbcL11j0OmJNbjZs422HRyE1oWhdTa6gxHxMkt
+ JSd/glaq79IgkZKpLyuNu2D442bmACkO5ZWnNHv/lmjDjdTz4yf3GZ+D0ssPgnpkOoDgHD
+ f/Ww6insLVZwjaLpQUqSqrddM8/vI6M=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736431938;
+ s=susede2_ed25519; t=1736431940;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3erWeuh+rYsh1mrAYu34l7atDaNcjclCzXTMlmloLdQ=;
- b=1MJQ4URn7uCG8PNPYljy9OTXc4U/uWDh5oDJ2o+goenpnKhY+b8Wd7h9QUkFkK/2tKlhIV
- RRB7UGv8ifbxlDAA==
-Authentication-Results: smtp-out2.suse.de;
+ bh=inlf+DDUkomGXDdJ4jWiM8MBtP6QTo97CnGyU1acw8c=;
+ b=eVSKyBN8/SUD5i3mwTh1gwA5/gepluziZRsvIMKcj5E8eTx8jvvBDeMdvg1huwI1FeVsfj
+ kjYQE2J8vtxM7KDg==
+Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736431937; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1736431940; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3erWeuh+rYsh1mrAYu34l7atDaNcjclCzXTMlmloLdQ=;
- b=MJrw0acUc0+WR/K4KBR47jmLAW7/u3UthNYqdmtGY87LBlbUbsOk9GhyQM7hMP4KwkmzHU
- vwUGtLTnaFJYItA5UWKct3EPlTjT/Cs1LuVyMqZG4qE89eF0cEexDqKy1UdgacxMBWowjG
- tmSNCv3PVh4y7Qe3PI/5Ray2MpsYoSU=
+ bh=inlf+DDUkomGXDdJ4jWiM8MBtP6QTo97CnGyU1acw8c=;
+ b=GFgyCdIRAyWxy6373KTjm0dLTourQTE/RbcL11j0OmJNbjZs422HRyE1oWhdTa6gxHxMkt
+ JSd/glaq79IgkZKpLyuNu2D442bmACkO5ZWnNHv/lmjDjdTz4yf3GZ+D0ssPgnpkOoDgHD
+ f/Ww6insLVZwjaLpQUqSqrddM8/vI6M=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736431937;
+ s=susede2_ed25519; t=1736431940;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3erWeuh+rYsh1mrAYu34l7atDaNcjclCzXTMlmloLdQ=;
- b=Nhi3qiUb5VcOVUxZ7E2MBZFVNvWlAyQwDEoqvsy6nJ77/sTDiHuObX1YtFff+KqQAGKRfu
- K63OtTp0aNbNFvAw==
+ bh=inlf+DDUkomGXDdJ4jWiM8MBtP6QTo97CnGyU1acw8c=;
+ b=eVSKyBN8/SUD5i3mwTh1gwA5/gepluziZRsvIMKcj5E8eTx8jvvBDeMdvg1huwI1FeVsfj
+ kjYQE2J8vtxM7KDg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BFEE313876;
- Thu,  9 Jan 2025 14:12:16 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6A18D13876;
+ Thu,  9 Jan 2025 14:12:18 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 6OnkIEDZf2fOWgAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 09 Jan 2025 14:12:16 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id UIFADELZf2fOWgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 09 Jan 2025 14:12:18 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>,
-	Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v2 6/7] migration: Fix arrays of pointers in JSON writer
-Date: Thu,  9 Jan 2025 11:09:58 -0300
-Message-Id: <20250109140959.19464-7-farosas@suse.de>
+Cc: Peter Xu <peterx@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-stable@nongnu.org
+Subject: [PATCH v2 7/7] s390x: Fix CSS migration
+Date: Thu,  9 Jan 2025 11:09:59 -0300
+Message-Id: <20250109140959.19464-8-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250109140959.19464-1-farosas@suse.de>
 References: <20250109140959.19464-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
  MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
  TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
  RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo,gitlab.com:url,nongnu.org:email];
  RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -117,188 +116,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, if an array of pointers contains a NULL pointer, that
-pointer will be encoded as '0' in the stream. Since the JSON writer
-doesn't define a "pointer" type, that '0' will now be an uint8, which
-is different from the original type being pointed to, e.g. struct.
+Commit a55ae46683 ("s390: move css_migration_enabled from machine to
+css.c") disabled CSS migration globally instead of doing it
+per-instance.
 
-(we're further calling uint8 "nullptr", but that's irrelevant to the
-issue)
-
-That mixed-type array shouldn't be compressed, otherwise data is lost
-as the code currently makes the whole array have the type of the first
-element:
-
-css = {NULL, NULL, ..., 0x5555568a7940, NULL};
-
-{"name": "s390_css", "instance_id": 0, "vmsd_name": "s390_css",
- "version": 1, "fields": [
-    ...,
-    {"name": "css", "array_len": 256, "type": "nullptr", "size": 1},
-    ...,
-]}
-
-In the above, the valid pointer at position 254 got lost among the
-compressed array of nullptr.
-
-While we could disable the array compression when a NULL pointer is
-found, the JSON part of the stream still makes part of downtime, so we
-should avoid writing unecessary bytes to it.
-
-Keep the array compression in place, but if NULL and non-NULL pointers
-are mixed break the array into several type-contiguous pieces :
-
-css = {NULL, NULL, ..., 0x5555568a7940, NULL};
-
-{"name": "s390_css", "instance_id": 0, "vmsd_name": "s390_css",
- "version": 1, "fields": [
-     ...,
-     {"name": "css", "array_len": 254, "type": "nullptr", "size": 1},
-     {"name": "css", "type": "struct", "struct": {"vmsd_name": "s390_css_img", ... }, "size": 768},
-     {"name": "css", "type": "nullptr", "size": 1},
-     ...,
-]}
-
-Now each type-discontiguous region will become a new JSON entry. The
-reader should interpret this as a concatenation of values, all part of
-the same field.
-
-Parsing the JSON with analyze-script.py now shows the proper data
-being pointed to at the places where the pointer is valid and
-"nullptr" where there's NULL:
-
-"s390_css (14)": {
-    ...
-    "css": [
-        "nullptr",
-        "nullptr",
-        ...
-        "nullptr",
-        {
-            "chpids": [
-            {
-                "in_use": "0x00",
-                "type": "0x00",
-                "is_virtual": "0x00"
-            },
-            ...
-            ]
-        },
-        "nullptr",
-    }
-
+CC: Paolo Bonzini <pbonzini@redhat.com>
+CC: qemu-stable@nongnu.org #9.1
+Fixes: a55ae46683 ("s390: move css_migration_enabled from machine to css.c")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2704
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Message-Id: <20241213160120.23880-3-farosas@suse.de>
 ---
- migration/vmstate.c          | 33 ++++++++++++++++++++++++++++++++-
- scripts/analyze-migration.py | 29 +++++++++++++++++++++--------
- 2 files changed, 53 insertions(+), 9 deletions(-)
+ hw/s390x/s390-virtio-ccw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/migration/vmstate.c b/migration/vmstate.c
-index 52704c822c..a79ccf3875 100644
---- a/migration/vmstate.c
-+++ b/migration/vmstate.c
-@@ -425,15 +425,19 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-             int size = vmstate_size(opaque, field);
-             uint64_t old_offset, written_bytes;
-             JSONWriter *vmdesc_loop = vmdesc;
-+            bool is_prev_null = false;
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index 8a242cc1ec..38aeba14ee 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -1244,6 +1244,7 @@ static void ccw_machine_2_9_instance_options(MachineState *machine)
+     s390_cpudef_featoff_greater(12, 1, S390_FEAT_ZPCI);
+     s390_cpudef_featoff_greater(12, 1, S390_FEAT_ADAPTER_INT_SUPPRESSION);
+     s390_cpudef_featoff_greater(12, 1, S390_FEAT_ADAPTER_EVENT_NOTIFICATION);
++    css_migration_enabled = false;
+ }
  
-             trace_vmstate_save_state_loop(vmsd->name, field->name, n_elems);
-             if (field->flags & VMS_POINTER) {
-                 first_elem = *(void **)first_elem;
-                 assert(first_elem || !n_elems || !size);
-             }
-+
-             for (i = 0; i < n_elems; i++) {
-                 void *curr_elem = first_elem + size * i;
-                 const VMStateField *inner_field;
-+                bool is_null;
-+                int max_elems = n_elems - i;
+ static void ccw_machine_2_9_class_options(MachineClass *mc)
+@@ -1256,7 +1257,6 @@ static void ccw_machine_2_9_class_options(MachineClass *mc)
+     ccw_machine_2_10_class_options(mc);
+     compat_props_add(mc->compat_props, hw_compat_2_9, hw_compat_2_9_len);
+     compat_props_add(mc->compat_props, compat, G_N_ELEMENTS(compat));
+-    css_migration_enabled = false;
+ }
+ DEFINE_CCW_MACHINE(2, 9);
  
-                 old_offset = qemu_file_transferred(f);
-                 if (field->flags & VMS_ARRAY_OF_POINTER) {
-@@ -448,12 +452,39 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-                      * not follow.
-                      */
-                     inner_field = vmsd_create_fake_nullptr_field(field);
-+                    is_null = true;
-                 } else {
-                     inner_field = field;
-+                    is_null = false;
-+                }
-+
-+                /*
-+                 * Due to the fake nullptr handling above, if there's mixed
-+                 * null/non-null data, it doesn't make sense to emit a
-+                 * compressed array representation spanning the entire array
-+                 * because the field types will be different (e.g. struct
-+                 * vs. uint64_t). Search ahead for the next null/non-null
-+                 * element and start a new compressed array if found.
-+                 */
-+                if (field->flags & VMS_ARRAY_OF_POINTER &&
-+                    is_null != is_prev_null) {
-+
-+                    is_prev_null = is_null;
-+                    vmdesc_loop = vmdesc;
-+
-+                    for (int j = i + 1; j < n_elems; j++) {
-+                        void *elem = *(void **)(first_elem + size * j);
-+                        bool elem_is_null = !elem && size;
-+
-+                        if (is_null != elem_is_null) {
-+                            max_elems = j - i;
-+                            break;
-+                        }
-+                    }
-                 }
- 
-                 vmsd_desc_field_start(vmsd, vmdesc_loop, inner_field,
--                                      i, n_elems);
-+                                      i, max_elems);
- 
-                 if (inner_field->flags & VMS_STRUCT) {
-                     ret = vmstate_save_state(f, inner_field->vmsd,
-diff --git a/scripts/analyze-migration.py b/scripts/analyze-migration.py
-index 134c25f20a..7f0797308d 100755
---- a/scripts/analyze-migration.py
-+++ b/scripts/analyze-migration.py
-@@ -501,15 +501,28 @@ def read(self):
-             field['data'] = reader(field, self.file)
-             field['data'].read()
- 
--            if 'index' in field:
--                if field['name'] not in self.data:
--                    self.data[field['name']] = []
--                a = self.data[field['name']]
--                if len(a) != int(field['index']):
--                    raise Exception("internal index of data field unmatched (%d/%d)" % (len(a), int(field['index'])))
--                a.append(field['data'])
-+            fname = field['name']
-+            fdata = field['data']
-+
-+            # The field could be:
-+            # i) a single data entry, e.g. uint64
-+            # ii) an array, indicated by it containing the 'index' key
-+            #
-+            # However, the overall data after parsing the whole
-+            # stream, could be a mix of arrays and single data fields,
-+            # all sharing the same field name due to how QEMU breaks
-+            # up arrays with NULL pointers into multiple compressed
-+            # array segments.
-+            if fname not in self.data:
-+                if 'index' in field:
-+                    self.data[fname] = []
-+                else:
-+                    self.data[fname] = fdata
-+            elif type(self.data[fname]) == list:
-+                self.data[fname].append(fdata)
-             else:
--                self.data[field['name']] = field['data']
-+                tmp = self.data[fname]
-+                self.data[fname] = [tmp, fdata]
- 
-         if 'subsections' in self.desc['struct']:
-             for subsection in self.desc['struct']['subsections']:
 -- 
 2.35.3
 
