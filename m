@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 256AAA07E57
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 18:08:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C8FA07E6A
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 18:10:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVvzd-0004j6-7d; Thu, 09 Jan 2025 12:06:50 -0500
+	id 1tVvzg-0004lC-0K; Thu, 09 Jan 2025 12:06:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tVvzQ-0004hW-QP
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:06:37 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ id 1tVvzU-0004iF-FZ
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:06:41 -0500
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tVvzP-0006zH-65
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:06:36 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-ab2aea81cd8so164078466b.2
- for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 09:06:34 -0800 (PST)
+ id 1tVvzR-0006zn-Sp
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 12:06:40 -0500
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-5401e6efffcso1221374e87.3
+ for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 09:06:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736442393; x=1737047193; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736442396; x=1737047196; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=m4HscSGSbgGDvVgJtmItkpjxqeI2JXO5tblvojQlyxc=;
- b=HeUPOBUYQQFyA25g4kvtKrB1ujRne8ADc2aJYvjaYbm0G3JmH0XW6LSBueQew/++gU
- RPlktqkiNFTcCsIPTQCUHcXxmuDTGkBAtH7bVk5i20nX3wcNEuBKQOI4zF3En983vWsw
- Snbzu8Z07VLPlecPuwAqEU+YRFV7gn0DgVAA3rvxw8N0o1maUg9X19jWW3Hhj6/08cuK
- NznReSjWdPOmP2FcOQq+3EXgJiDuJBTBYePJ4k9NyoGv0ifpWDqZ5Pu0RBIx4iZqVOrv
- /0Lz6rld7LVGZY5hEkeR3RVWb5u3Vpp5F4jAEF978inreU3RoP4X+yr3ZuX9aUQh/o16
- DNCw==
+ bh=25f+kPpL70YFXNAUtEYMY9S3pngwqu7v/kUd281l17o=;
+ b=AaDDNfhq2GJblNOZTwu9syDqYPi6m+rbbpfp+M+VJ5x7XBh15wf7KUJCTUHtTGlW9Y
+ hMeZjc+WfBauVfoxc1PQPJYTMiLfdJE0JMIPe6zcpPzJYw6gf63NE0cj8sC0PRLCrpVE
+ vn0XeMx9BruVbMUaFltvZi332vNUw01JZkwdnJnIlxco4MrmAbOAUIhBJYXraTcTvHWN
+ bQZR0jzbyYvuqSAtvpmGTH9fm9KcRiE4xlPyKD8h1/xUapGQ4dwq8V1wxu9/cn5GccmZ
+ hscAgjvndGy+eMFbzZgMpm+aUw8aHVXE2VCaUya910gGDeIFaJSaJXBaH4YCtrdPISNq
+ pCZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736442393; x=1737047193;
+ d=1e100.net; s=20230601; t=1736442396; x=1737047196;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=m4HscSGSbgGDvVgJtmItkpjxqeI2JXO5tblvojQlyxc=;
- b=CM555AMAjX9bPkK8d554e4fdcY+aRz8jL+E21xCMNWwzBmRRZ3yiJdst6oY/Ux3jRh
- rpZUuT7r0CncUTrdqdbf1/27WZeDHj1fOAFdiRhFofHTIk7CFK8YeY3sytX+rWv3e0wz
- Q0XSDDSD111A4MyAlZSxjs/pZ4Clf3YEZTmFSqhg6apkUkGWyM4EzZsl8XO3Y7QoJL9T
- MFRIrZhMB7YZv8eBFk3ladb/pxpR+vBQIR6ZOXh1qM/ZlGylBVF4SbCjOKwNzOdtADOX
- LKqs8iXg4JSZNg7xMQ5P9iXsFjhocxTV/w2WzROgUx5e1sEqcJMINhEcFyRt9PCg08O8
- Fp+g==
-X-Gm-Message-State: AOJu0YzEZE+DhbXffMK0ikeASCyLPPA/9qX+kfeYBf3difQ9nHnsQtIq
- hSSw5lztc51C8FiBjg8u3tPE2Hlj2y5/UHnmvihxbVKFxIMHKzTo+ZGxmaqtyDg=
-X-Gm-Gg: ASbGncuzESmsoE1Qgy2rwj2qy9teQFU9OCfu5KI1ejVeFUn+ktdG59GiiCTakhZH5jP
- zZiYWcmlqih1mA/mUPMaE7fINeudVk0/FKVA+y4NzwUmfGoYrGJEkWfHZm739sJn4aHKrXVcIVC
- vzcQeQqYvMH0PhZ3MYS9W6HaSyDD3U5cjLyZ3ZZoUcrGixkPmgoZpi/x6S0E52dxV5SFlBI+/Yo
- P0tM/nox1KwPzsj+w4jS2ztR2hCdiGQZBtXcKJ/zQ4SMqh9DSYgyko=
-X-Google-Smtp-Source: AGHT+IEdMW6yQgxXeq+98WR2f9UfOi5G/YrL93qHuoHlySuxq5eNwVouXjvQcF37CnK0NArneIrf9A==
-X-Received: by 2002:a17:907:7e86:b0:aa6:92de:ddae with SMTP id
- a640c23a62f3a-ab2ab6a3fbemr654526166b.16.1736442393404; 
- Thu, 09 Jan 2025 09:06:33 -0800 (PST)
+ bh=25f+kPpL70YFXNAUtEYMY9S3pngwqu7v/kUd281l17o=;
+ b=RClLXqoZ/TCFQhdDOP56yX91B0DFXCGzF5w4zNP9SeswvBSihGu6XdLT7kxRbdefrT
+ QbPo9yi/2rBgYzKvvnVOPEZW6wVcmFXEj7PAVeLkbNQj6W+MKy5h1//2oWSiQpVy53Cs
+ QdiTLZehLONrxFYwZcFiubyyseH0v85lH7CwNdUW5qaIPPcr97Xa6ExtHktCsAZsDSyO
+ 6OTxMbH8TkAtPzGIMyOAQ5GHrPfY9APHXl++6npwDAEGbaIdMtqpUuX57jhB0cNYMm/t
+ w8UiR4yKVabyp+XnOf+3v3WdpnL9JL9arHxWf2nAxnr0+eRvguuGehXtwwr8nWHvKWS7
+ +HNg==
+X-Gm-Message-State: AOJu0Yz+DL4hVrbp1IE7wYRcXC64uR872SqcjRO/guGHvb6iB9dI4zlX
+ i2+c/Vz/Ab2FEI4lGaYLlNhiKSSvmrLqz1J6CYPvq1mqTIJpi6QzEqqsyXv1ML0=
+X-Gm-Gg: ASbGncsk22KqZly6YeC1XMkHlEz72sB+YlTOuAwskYoyBRTua2kz5j5fg+f8wfly7Yx
+ ScwSihBqzMIxxcbf/YUwfXRwVx1vTrKa94eaZXQpuLwP0zy9kaC6C9yRerDeiygkiLqLvjSrNEL
+ ZLR1KdF3YsqnYRtTVimvti2SN3fUjYNrlqgUGQWclA4dlZPKt9pBjpVI94ItnuzcWMOECc37vxi
+ yTNfgYeFe2GXAT8Oa3ZH2yo8Mb9bPZCm8UtM+Ty5i0VzFU/fTfM2B4=
+X-Google-Smtp-Source: AGHT+IF/FcZ+Peani/3QhONnGIVKvQw1wp5QBArGrfTBYjQ+54dkneHTmzNTuNdVwey5+3IjaN5MIw==
+X-Received: by 2002:a05:6512:2399:b0:540:1ea7:44db with SMTP id
+ 2adb3069b0e04-542845b1aedmr2713250e87.4.1736442395726; 
+ Thu, 09 Jan 2025 09:06:35 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c9060a4fsm90134366b.15.2025.01.09.09.06.23
+ a640c23a62f3a-ab2c9562583sm87989566b.110.2025.01.09.09.06.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 09 Jan 2025 09:06:31 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 89A8C5FAA7;
+ by draig.lan (Postfix) with ESMTP id A06125FB65;
  Thu,  9 Jan 2025 17:06:20 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,17 +72,17 @@ Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 08/22] system/vl: more error exit into config enumeration code
-Date: Thu,  9 Jan 2025 17:06:05 +0000
-Message-Id: <20250109170619.2271193-9-alex.bennee@linaro.org>
+Subject: [PATCH 09/22] system: squash usb_parse into a single function
+Date: Thu,  9 Jan 2025 17:06:06 +0000
+Message-Id: <20250109170619.2271193-10-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250109170619.2271193-1-alex.bennee@linaro.org>
 References: <20250109170619.2271193-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,88 +105,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All of the failures to configure devices will result in QEMU exiting
-with an error code. In preparation for passing Error * down the chain
-re-name the iterator to foreach_device_config_or_exit and exit using
-&error_fatal instead of returning a failure indication.
+We don't need to wrap usb_device_add as usb_parse is already gated
+with an if (machine_usb(current_machine)) check. Instead just assert
+and directly fail if usbdevice_create returns NULL.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- system/vl.c | 31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ system/vl.c | 22 ++++------------------
+ 1 file changed, 4 insertions(+), 18 deletions(-)
 
 diff --git a/system/vl.c b/system/vl.c
-index 0843b7ab49..25d9968ccc 100644
+index 25d9968ccc..df59cff865 100644
 --- a/system/vl.c
 +++ b/system/vl.c
-@@ -1307,7 +1307,14 @@ static void add_device_config(int type, const char *cmdline)
-     QTAILQ_INSERT_TAIL(&device_configs, conf, next);
- }
+@@ -811,31 +811,17 @@ static void configure_msg(QemuOpts *opts)
+ /***********************************************************/
+ /* USB devices */
  
--static int foreach_device_config(int type, int (*func)(const char *cmdline))
-+/**
-+ * foreach_device_config_or_exit(): process per-device configs
-+ * @type: device_config type
-+ * @func: device specific config function, returning pass/fail
-+ *
-+ * Any failure is fatal and we exit with an error message.
-+ */
-+static void foreach_device_config_or_exit(int type, int (*func)(const char *cmdline))
+-static int usb_device_add(const char *devname)
++static int usb_parse(const char *cmdline)
  {
-     struct device_config *conf;
-     int rc;
-@@ -1319,10 +1326,10 @@ static int foreach_device_config(int type, int (*func)(const char *cmdline))
-         rc = func(conf->cmdline);
-         loc_pop(&conf->loc);
-         if (rc) {
--            return rc;
-+            error_setg(&error_fatal, "failed to configure: %s", conf->cmdline);
-+            exit(1);
-         }
+-    USBDevice *dev = NULL;
++    g_assert(machine_usb(current_machine));
+ 
+-    if (!machine_usb(current_machine)) {
++    if (!usbdevice_create(cmdline)) {
++        error_report("could not add USB device '%s'", cmdline);
+         return -1;
      }
--    return 0;
+-
+-    dev = usbdevice_create(devname);
+-    if (!dev)
+-        return -1;
+-
+     return 0;
  }
  
- static void qemu_disable_default_devices(void)
-@@ -2044,12 +2051,9 @@ static void qemu_create_late_backends(void)
-     qemu_opts_foreach(qemu_find_opts("mon"),
-                       mon_init_func, NULL, &error_fatal);
- 
--    if (foreach_device_config(DEV_SERIAL, serial_parse) < 0)
--        exit(1);
--    if (foreach_device_config(DEV_PARALLEL, parallel_parse) < 0)
--        exit(1);
--    if (foreach_device_config(DEV_DEBUGCON, debugcon_parse) < 0)
--        exit(1);
-+    foreach_device_config_or_exit(DEV_SERIAL, serial_parse);
-+    foreach_device_config_or_exit(DEV_PARALLEL, parallel_parse);
-+    foreach_device_config_or_exit(DEV_DEBUGCON, debugcon_parse);
- 
-     /* now chardevs have been created we may have semihosting to connect */
-     qemu_semihosting_chardev_init();
-@@ -2670,8 +2674,7 @@ static void qemu_create_cli_devices(void)
- 
-     /* init USB devices */
-     if (machine_usb(current_machine)) {
--        if (foreach_device_config(DEV_USB, usb_parse) < 0)
--            exit(1);
-+        foreach_device_config_or_exit(DEV_USB, usb_parse);
-     }
- 
-     /* init generic devices */
-@@ -2718,10 +2721,8 @@ static bool qemu_machine_creation_done(Error **errp)
-         exit(1);
-     }
- 
--    if (foreach_device_config(DEV_GDB, gdbserver_start) < 0) {
--        error_setg(errp, "could not start gdbserver");
--        return false;
+-static int usb_parse(const char *cmdline)
+-{
+-    int r;
+-    r = usb_device_add(cmdline);
+-    if (r < 0) {
+-        error_report("could not add USB device '%s'", cmdline);
 -    }
-+    foreach_device_config_or_exit(DEV_GDB, gdbserver_start);
-+
-     if (!vga_interface_created && !default_vga &&
-         vga_interface_type != VGA_NONE) {
-         warn_report("A -vga option was passed but this machine "
+-    return r;
+-}
+-
+ /***********************************************************/
+ /* machine registration */
+ 
 -- 
 2.39.5
 
