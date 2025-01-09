@@ -2,77 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93CC7A073F2
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 11:58:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79AAAA07401
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 11:59:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVqEH-0000ue-K8; Thu, 09 Jan 2025 05:57:33 -0500
+	id 1tVqFv-00027d-PW; Thu, 09 Jan 2025 05:59:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tVqEF-0000sV-34
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 05:57:31 -0500
-Received: from mail-yb1-xb35.google.com ([2607:f8b0:4864:20::b35])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tVqFt-00027R-N1
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 05:59:13 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tVqED-0000AV-JI
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 05:57:30 -0500
-Received: by mail-yb1-xb35.google.com with SMTP id
- 3f1490d57ef6-e3a26de697fso1069152276.3
- for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 02:57:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tVqFs-0000Rv-19
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 05:59:13 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4361f796586so8234725e9.3
+ for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 02:59:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736420248; x=1737025048; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bHj4hLuF3y3ULgR5Uc6vUTiyHT/K9Q//sI3ccL3JdeE=;
- b=gmCcciUwp34MFFBIdEdjMH9dzRDdI+lf0NzolQLuYhVu2pkANsy+W+SwSDmlEPxvCs
- ZOoqx4r7UY+Y4b+ctttOWEOAXmvOzRjTHyoYMA21ZwhQXPRttTM4ehenrtGh3X/wRVP7
- RE+DB7sgwqyKZCukefRGrMobYAUr+ANKtsfUXDwAJLFonj5408EKZF/+VS1P7kPNXcW7
- cI3MIiNXJoXKK6lVvuSb7xGsu28v7OOmcC3s5aB9XsnYG2URXln9PXxSt3MTJd3QzfT2
- i3Ty6+XryMk+EL/e7cFUF607xYXJRrHlj/7aHuHk67JB1CjsQh3PU2ECt6SkCf5TkXYA
- yPCw==
+ d=linaro.org; s=google; t=1736420348; x=1737025148; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EtxRF3y05zfQTKnBAw9/bJz/KlcfWNgncPZ8Zc2e3/E=;
+ b=dkut1EnCt1avtKtBNOLhU6NTPJaZkexz6ZJauZ1VPo+E+LlrOM5E9JogghlO4Yccmj
+ QT23iwn0aN384u+wkR5PIqj9k0IqDs67WlkQ/R7lO7Gqtq10fW+ID9OkFbUyeOrlYMZN
+ 1H0QVv6IS+NvpQZccuGekz9TSnWySiIViSCTUfvKqVAOkA1T3e4gr+PgGGD6rVS0T+RV
+ ZW6CuFDuwJM9owq6g0AnaaONR00OvDfJobEQSQwkXbU4m/TAktlMFkSDQteHKJC5O3Tx
+ 30YlH4fcgCqjiOzf2V67MuynJF+2/hMfxzZuA1cecvdeoRB/d0f3enozaVQzd7BNkZXc
+ le0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736420248; x=1737025048;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bHj4hLuF3y3ULgR5Uc6vUTiyHT/K9Q//sI3ccL3JdeE=;
- b=F1m+ZeJ5KyiFNzTmNcC9NySsXagnuoXDq/cxVON9zPPgwkFRDz9CnD33f3wRMBx5KY
- u7V7++vZ2n4JwTVKT7dkrJcCMNo9fknAwSnw8Wd94gFp7mDqJj7z57sJV5ZkHiYaeMCv
- 4qpxgrozS4VBt1W0H02lR1J/yoMlB4S89ZFnwPCoVIshjWxvukdjml0yZJ+MK6k2aLRf
- rVH/RlrYRQo/G6CmfofK6TYEF2tAtk8DaT1yGxoXFjcHhYXULy2DFHl5Xz2YeFZAJbd7
- yn/lvyPyQlF7L+BeWjIjO0r6SjhEIT8eeVsbA0feZrSe2R2iZa7sYeevWdnfkbV8Y9+r
- BhaA==
-X-Gm-Message-State: AOJu0YxK95yLWZI6exvCmQguV6z28mlVmr9WRe0iFE3FCTbtm9SPKhqp
- EuXrIjvijesAIFQ4+BAHFxemjG7gP2q7TqWEctipAL1f1beOFOlQ6s1TZxeTD4kldVV4Fo9/WkW
- byStWfwvtTLS2AGr0afxy5ZXPXO4tTXDPSF03AA==
-X-Gm-Gg: ASbGncswuFX3paqaHTJhnlZ8IhGmhxAYfQrhJENb6rN2+Y/K4SrfE2537a37Zspd+4x
- xcRvIPwKSBe4pUes1//jsQR/hCduSQkghvF3mBGs=
-X-Google-Smtp-Source: AGHT+IFPDhsY1f5fYN8UTs1c6wySCRGX4h+rdsaCJLX3s7uMJT2wIbKkXedhQ2FAR8WEJ62xLjU3jTbKXuo26oQqt6c=
-X-Received: by 2002:a25:6a8a:0:b0:e4d:d319:b9d with SMTP id
- 3f1490d57ef6-e54edf3a172mr3349097276.16.1736420248135; Thu, 09 Jan 2025
- 02:57:28 -0800 (PST)
+ d=1e100.net; s=20230601; t=1736420348; x=1737025148;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EtxRF3y05zfQTKnBAw9/bJz/KlcfWNgncPZ8Zc2e3/E=;
+ b=wil+B0AViEfAZtVdxB38Z7RGS6SgtIE7guNtFwovd/+q/nsJA07yllb88WZsvzMqwE
+ pxb1K98vqrUHv36LKO7uMYHaPQ9VcKzbKHXBJIuxkFCwJjOTkRKC/N64OjWeuuGL9L7b
+ 3oqRmCQAQeHRKq7/wT0Wxm9z552aQaMPTbiaYiuw50G7mjNH3B6n1ELuMOF8doj+v4Dg
+ j149BChQYxudyIs6v/fkVIfi3N+LszdpkinAx3Kw9tSxxS1vDn4WZSwIvnSpKc5iEaZ5
+ rXmBLgzof/LU2iXbyJQGesTVnVBtU5V8dRmz1pryKbZNE6iKg8H+KLd/xUufioCspkDd
+ tUJw==
+X-Gm-Message-State: AOJu0Yza8D/uqe7VDd+Pqq5aMPVTiSd8BOZQn9OzBpWfAu/dhQ8QtbZH
+ fB8T9rAOlzcP2oIHk19l01a0JaYjBiQ1BMwLF/exxpvWJj5NkuR07C2O1iQLhpzy+RNYKSX7+C4
+ OVHI=
+X-Gm-Gg: ASbGncuv04j8ZckbqyEBG2YP0cVcGoCsLuGe1wWEB19AYaxfBaS5PQ1JhYj9p21MJ2u
+ rcnWttSfcXtvZ2JQLCRyZxdmopVleClovVDeJ7DcPJEiRsI4nOMDKVgqwL2VEdvaAkw33XeFnTz
+ BUorJ5sn3izyXj8NdRKi9bFZ+853T1WeBIAT0nvcekIH8BqZdQ+vKOLREU1HP9vdoBycfwOPjN/
+ WoOzfIRIoy/j5PrnPJtG4OttcmVJrfF/8iWaWPZq8SIepG6whR6u69FN9PhPp+1EW3v9BYWSeIR
+ FtJvQJOT6/o2JE2psKyvyzYU
+X-Google-Smtp-Source: AGHT+IEVKTrAaNOiibkH5j+EH+uFkJ9kd2O5eHEOxIow6PM8620Gvdsj+N7/jRyF11GiVggiPKmhXw==
+X-Received: by 2002:a05:6000:470d:b0:382:4ab4:b3e5 with SMTP id
+ ffacd0b85a97d-38a87087028mr6327643f8f.0.1736420348454; 
+ Thu, 09 Jan 2025 02:59:08 -0800 (PST)
+Received: from [192.168.69.102] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38a8e38332asm1475124f8f.23.2025.01.09.02.59.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 09 Jan 2025 02:59:07 -0800 (PST)
+Message-ID: <0006c412-11a6-41c4-ab80-5ef18350797c@linaro.org>
+Date: Thu, 9 Jan 2025 11:59:06 +0100
 MIME-Version: 1.0
-References: <20241218181511.3575613-1-alex.bennee@linaro.org>
- <87cygw9snv.fsf@draig.linaro.org>
-In-Reply-To: <87cygw9snv.fsf@draig.linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 9 Jan 2025 10:57:16 +0000
-X-Gm-Features: AbW1kvYdNmoc7BrTcSE-FT9fq4BSthFnB_OvF-FCo6I2GPMrDZF1h9va4GhLofA
-Message-ID: <CAFEAcA9PBaHz1=Rix7nXZzHce6Ftb38bgS2H1rD2+mHnNvW-nA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] target/arm: implement SEL2 physical and virtual
- timers
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>, 
- Leif Lindholm <leif.lindholm@oss.qualcomm.com>, 
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b35;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb35.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] linux-user: Call tcg_flush_jmp_cache() before
+ re-using threads
+To: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Riku Voipio <riku.voipio@iki.fi>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>
+References: <20250102182521.65428-1-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250102182521.65428-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,37 +103,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 9 Jan 2025 at 10:40, Alex Benn=C3=A9e <alex.bennee@linaro.org> wrot=
-e:
->
-> Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
->
-> > Follow Peter's review I've split this into a several patches as there
-> > are some other fixes that should be made to other EL2 times that
-> > shouldn't be rolled together.
-> >
-> > v2
-> >   - split machine enabling into patches
-> >   - rename IRQ
-> >   - use CP_ACCESS_TRAP_UNCATEGORIZED for UNDEF cases
-> >
-> > v1
-> >   - improve GTIMER docs
-> >   - fix gt_recalc bug
-> >   - address review comments for the main patch
-> >   - cc qemu-stable (no rush for 9.2.0)
-> >
-> > The following still need review:
-> >
-> >   hw/arm: enable secure EL2 timers for sbsa machine
-> >   hw/arm: enable secure EL2 timers for virt machine
-> >   target/arm: implement SEL2 physical and virtual timers
-> >   target/arm: ensure cntvoff_el2 also used for EL2 virt timer
->
-> Gentle ping - I think everything is ready for merging.
+Hi Ilya,
 
-It's on my queue to test and review, but I'm likely to be lagging
-behind on code review til the end of the month :-)
+ping? :)
 
--- PMM
+On 2/1/25 19:25, Philippe Mathieu-Daudé wrote:
+> Fix a bug reported by Ilya in:
+> https://lore.kernel.org/qemu-devel/uuuk6a2vo24yrrqrchjxaeko3utqshrdu6txcnqziokpg7dkom@4l4kd3dqh6jc/
+> 
+> Commit bb6cf6f0168 ("accel/tcg: Factor tcg_cpu_reset_hold()
+> out") wanted to restrict tlb_flush() to system emulation,
+> but inadvertently also restricted tcg_flush_jmp_cache(),
+> which was before called on user emulation via:
+> 
+>    Realize -> Reset -> cpu_common_reset_hold()
+> 
+> Since threads (vCPUs) use a common CPUJumpCache, when many
+> threads are created / joined, they eventually end re-using
+> a CPUJumpCache entry, which was cleared when the first vCPU
+> was allocated (via Realize) but then stayed dirty.
+> 
+> Have cpu_exec_reset_hold() call the common tcg_exec_reset()
+> helper on user emulation, eventually calling tcg_flush_jmp_cache().
+> 
+> Philippe Mathieu-Daudé (3):
+>    linux-user: Only include 'exec/tb-flush.h' header when necessary
+>    accel/tcg: Factor out common tcg_exec_reset() helper
+>    accel/tcg: Implement cpu_exec_reset_hold() on user emulation
+> 
+>   accel/tcg/internal-common.h | 1 +
+>   linux-user/user-internals.h | 1 -
+>   accel/tcg/cpu-exec-common.c | 6 ++++++
+>   accel/tcg/tcg-accel-ops.c   | 4 ++--
+>   accel/tcg/user-exec-stub.c  | 4 ----
+>   accel/tcg/user-exec.c       | 5 +++++
+>   linux-user/mmap.c           | 1 +
+>   linux-user/syscall.c        | 1 +
+>   8 files changed, 16 insertions(+), 7 deletions(-)
+> 
+
 
