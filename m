@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 573E0A06E50
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 07:32:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C8F2A06E45
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Jan 2025 07:31:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tVm46-00011C-4c; Thu, 09 Jan 2025 01:30:46 -0500
+	id 1tVm4A-000134-Mu; Thu, 09 Jan 2025 01:30:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tVm3z-0000xz-Iv
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 01:30:40 -0500
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ id 1tVm48-00012M-AT
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 01:30:48 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tVm3y-0003iS-10
- for qemu-devel@nongnu.org; Thu, 09 Jan 2025 01:30:39 -0500
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-2ee67e9287fso987344a91.0
- for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 22:30:37 -0800 (PST)
+ id 1tVm46-0003l2-OG
+ for qemu-devel@nongnu.org; Thu, 09 Jan 2025 01:30:48 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-219f8263ae0so8259275ad.0
+ for <qemu-devel@nongnu.org>; Wed, 08 Jan 2025 22:30:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1736404237; x=1737009037;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1736404245; x=1737009045;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=DRA5SFwLixA5p1Smgb33TcMmhiFuTV2U9nSiZzVSvuY=;
- b=lPyBmI/BkRcGJjlvSPBsoQm9SuYD4YQqcwGAlcpFkVQD4zyni9lARP1kwdgwzumHcz
- aZT2VoGAxoPCzr//T1lJiJ6t+63wOLtalY7FagsiQXPxehye/6CzK0k9DGEaJglbsgIs
- t6jTcPscIZ2xaFaaCBebZQ/+HUAFE3tigeAhCFUMzmCPOiOcJFKtKXlQpH/+fFPU3Dvq
- BTlUpZgO6abyK526qwd8E7SEjmvMH2Wc66zPteieeRW7qHwC+xA0U5ya5WQuIIl5J5Sa
- Hg4r971qzJnLoHqKyNF66OrN3vVKQvt5BsIvYsbCcawcDRa7Um/D2IBH/GmtgFeUDdxK
- zYAw==
+ :reply-to; bh=rZyt3Sr/avzGsaWt9TByxGl0TLamcvGp/VBc11cYqaw=;
+ b=Ye2lh/Su0gnG8T57w70s0pNW00VEVWTO/0cc6uasUM8riryfFF5KObiCG5ycMEE3+m
+ 8UCuCD4u2fxDgzMe/QIt/IN5Neo9dUepsJgCV7Yv+ZgunYSv9TXPdY+2jcit9dt6vgkI
+ pAaCYC7p/KF6/bW6xKeaBA7pVEMSo6XT/1ffuqU/W7B+UOCgJGfhGZExdNMURS7R5u4R
+ 5n0SP3p/EB7fGinr6EEhOeBxATZvExHdD8TZKWtbFKlUoqzNwNgcWsH9jX7sh8unyEy8
+ gLdMSZ6voyySN5nl2pJtYdAGP+s1c2kFHMTeraw2LV0rql9OEO8SdLD9vh9hZriePW2i
+ NT8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736404237; x=1737009037;
+ d=1e100.net; s=20230601; t=1736404245; x=1737009045;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DRA5SFwLixA5p1Smgb33TcMmhiFuTV2U9nSiZzVSvuY=;
- b=D624EDHsXU3wnpKBTJXd9EXhZpdsMIaTuEO3xIL56RoN9n3ZgwwNRTZqn2nxOWq8G9
- pLVdQCrCXBbNIgJPaVZeR3/Hr+FS6tbHIC+mS3ey3uTrFNGAglfNBENX2QcJovFE+uv5
- LRcyC6vwpV6jQncywgG4glSZ5DiSieiEUuxq/9h4B6A0cgS6EsBcVpSZqsYHqG//Phr+
- 09pgl1Y0lPR2OewUBvCtWGwNkO0Fl3M176BQN77oxq2U1WOJUQSJmABBwj5Tpym5U/Fu
- FAlQzjsTmNH92RpEN0ciiZwXteOor8Zi5fUke60DyWF04r0Fg/fwpHYGtsx+UUhfH6sg
- 0HDw==
-X-Gm-Message-State: AOJu0Yz5NlKI0vce11fnt4ZTYE0YztbZ9uELz3aER29F08tB9tFApOLK
- CRFlBb0Z/LdKzXAE3oIUeOQdFQfrqfpQoMLfyWXdFltPcCdrqx8pZhpWepoam5o=
-X-Gm-Gg: ASbGncu/HxXO6voWV6nioXhlOmqVbtG7ZdYfwj3U/gVkArAk47pr3pTwdLL0dHg6FSL
- Kh4lJh9rsZOSFfYwRKHNsCktXw7g78jJRzsVyexjsP3a22FFZODQkvX/EZm+dI3j09Tuv10iZ4l
- BzhjPuTzMY67A198ZLPhXpw7vX/9WiQSRw6hWgu3qvYSqBKdKPmtA/T8wvOVf/CVuLHxKx8vHer
- t38ns7rOTMyN9XOjYP4UDTsY3wWyAvZhAQEgUH5uEoeikaOFg/Us7RCfWA=
-X-Google-Smtp-Source: AGHT+IGJ1b31ammQd8jufl11w6CQ/Pv4K0pc8vItIOKueEFTB34McA38BzCkpJLJeDzBbM6Anl8kvQ==
-X-Received: by 2002:a17:90b:2b8e:b0:2ee:d433:7c54 with SMTP id
- 98e67ed59e1d1-2f548eceae7mr7950115a91.19.1736404236661; 
- Wed, 08 Jan 2025 22:30:36 -0800 (PST)
+ bh=rZyt3Sr/avzGsaWt9TByxGl0TLamcvGp/VBc11cYqaw=;
+ b=XMFQ+WDeMSV+wLQ4cMO7R6i04Z0Y75GGO+Zs4JtkvR+XhtvXN6HONuJhQIuOvtVkEy
+ iUZNsinQAwerl2S3jNyNNUqKlgr3t7N3NWShbZWuES8FVH7EGQBtOPPXLWALuGxcnSbV
+ U35SmJ7BdueTmRhm7K978hIBSLO6ygLu0efmMrA3442Rf2vr9Y3/5tNlWmKziuRzC4NA
+ 10Jpa1U0ONruGtFMgrS0+KJARZtISC+XZDfwwMuJkLpDf4LISZiFp3FH6C/4SKoYhic+
+ caGLf25zQJwIOTcQnhuiRlAFb5/eHC2c1EjcEK6Dk9x4kU9YNqCIKl9iKqp4gi8FamG4
+ Sjog==
+X-Gm-Message-State: AOJu0YwlvGatKoDeDw5mvTYuJq+3ArCugKTRfY4cHnHUV2q2EYFFYY0/
+ +NP2Eyv3HqtJ9TvtWeL7L+x2589hYijHvwSm81roPK1agvsEp1copacqcMgDtVg=
+X-Gm-Gg: ASbGncshpqBKHsg7FvTJynr7q/aYE7/WJDMIkox7AvMddOJfi0hwicqK6fR4jBfxcnO
+ DKx+raGM2/Q+myxuEyyEtlSOX1cT7z8Db9MAgXq5FtVY6KTqvAOOK7iRWWEsZogDf4sWPFCGTYh
+ 5oQUgLCcx6Xglx6lvYgDieVkg72p6NfsOIFEwvSrlAD+NhOCRASpfWn+BuQ3wOfvgsYZXZxzL/+
+ kIIwzQjEL9/Cd8WS1d5wmle3gnHSdXFtZZBZXehTV/Oqfb+gpImqpM7pq0=
+X-Google-Smtp-Source: AGHT+IGxPL0hUzYPM/0rcU9Ja+Zse57wyucE6ZBjZDNfb4w3VDy40L3YGpikBdZ+CEkeQ2aMehsIGw==
+X-Received: by 2002:a17:902:d50d:b0:215:7421:27c with SMTP id
+ d9443c01a7336-21a83f696a9mr83154865ad.29.1736404245255; 
+ Wed, 08 Jan 2025 22:30:45 -0800 (PST)
 Received: from localhost ([157.82.203.37]) by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-2f54a34e44bsm2774676a91.36.2025.01.08.22.30.31
+ 41be03b00d2f7-a31ddb9e409sm516155a12.74.2025.01.08.22.30.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Jan 2025 22:30:36 -0800 (PST)
+ Wed, 08 Jan 2025 22:30:44 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 09 Jan 2025 15:29:49 +0900
-Subject: [PATCH v19 04/14] s390x/pci: Avoid creating zpci for VFs
+Date: Thu, 09 Jan 2025 15:29:50 +0900
+Subject: [PATCH v19 05/14] s390x/pci: Allow plugging SR-IOV devices
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250109-reuse-v19-4-f541e82ca5f7@daynix.com>
+Message-Id: <20250109-reuse-v19-5-f541e82ca5f7@daynix.com>
 References: <20250109-reuse-v19-0-f541e82ca5f7@daynix.com>
 In-Reply-To: <20250109-reuse-v19-0-f541e82ca5f7@daynix.com>
 To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
@@ -85,14 +85,14 @@ To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, devel@daynix.com, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,61 +108,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VFs are automatically created by PF, and creating zpci for them will
-result in unexpected usage of fids. Currently QEMU does not support
-multifunction for s390x so we don't need zpci for VFs anyway.
+The guest cannot use VFs due to the lack of multifunction support but
+can use PFs.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/s390x/s390-pci-bus.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ hw/s390x/s390-pci-bus.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
-index eead269cc285..8c5eb69f7d76 100644
+index 8c5eb69f7d76..c396d55c7240 100644
 --- a/hw/s390x/s390-pci-bus.c
 +++ b/hw/s390x/s390-pci-bus.c
-@@ -1080,6 +1080,16 @@ static void s390_pcihost_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+@@ -974,7 +974,14 @@ static void s390_pcihost_pre_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+     if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
+         PCIDevice *pdev = PCI_DEVICE(dev);
  
-         pbdev = s390_pci_find_dev_by_target(s, dev->id);
-         if (!pbdev) {
-+            /*
-+             * VFs are automatically created by PF, and creating zpci for them
-+             * will result in unexpected usage of fids. Currently QEMU does not
-+             * support multifunction for s390x so we don't need zpci for VFs
-+             * anyway.
-+             */
-+            if (pci_is_vf(pdev)) {
-+                return;
-+            }
-+
-             pbdev = s390_pci_device_new(s, dev->id, errp);
-             if (!pbdev) {
-                 return;
-@@ -1167,7 +1177,10 @@ static void s390_pcihost_unplug(HotplugHandler *hotplug_dev, DeviceState *dev,
-         int32_t devfn;
- 
-         pbdev = s390_pci_find_dev_by_pci(s, PCI_DEVICE(dev));
--        g_assert(pbdev);
-+        if (!pbdev) {
-+            g_assert(pci_is_vf(pci_dev));
-+            return;
-+        }
- 
-         s390_pci_generate_plug_event(HP_EVENT_STANDBY_TO_RESERVED,
-                                      pbdev->fh, pbdev->fid);
-@@ -1206,7 +1219,11 @@ static void s390_pcihost_unplug_request(HotplugHandler *hotplug_dev,
-          * we've checked the PCI device already (to prevent endless recursion).
-          */
-         pbdev = s390_pci_find_dev_by_pci(s, PCI_DEVICE(dev));
--        g_assert(pbdev);
-+        if (!pbdev) {
-+            g_assert(pci_is_vf(PCI_DEVICE(dev)));
-+            return;
-+        }
-+
-         pbdev->pci_unplug_request_processed = true;
-         qdev_unplug(DEVICE(pbdev), errp);
-     } else if (object_dynamic_cast(OBJECT(dev), TYPE_S390_PCI_DEVICE)) {
+-        if (pdev->cap_present & QEMU_PCI_CAP_MULTIFUNCTION) {
++        /*
++         * Multifunction is not supported due to the lack of CLP. However,
++         * do not check for multifunction capability for SR-IOV devices because
++         * SR-IOV devices automatically add the multifunction capability whether
++         * the user intends to use the functions other than the PF.
++         */
++        if (pdev->cap_present & QEMU_PCI_CAP_MULTIFUNCTION &&
++            !pdev->exp.sriov_cap) {
+             error_setg(errp, "multifunction not supported in s390");
+             return;
+         }
 
 -- 
 2.47.1
