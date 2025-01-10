@@ -2,94 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880D4A09136
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 13:57:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB9AA0913C
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 13:58:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWEYK-00052z-H5; Fri, 10 Jan 2025 07:55:52 -0500
+	id 1tWEa8-0002xH-WF; Fri, 10 Jan 2025 07:57:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1tWEXa-0004G7-Qo
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 07:55:07 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tWEa4-0002oi-EL
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 07:57:40 -0500
+Received: from mail-yb1-xb35.google.com ([2607:f8b0:4864:20::b35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1tWEXY-00010p-MP
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 07:55:06 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4361fe642ddso21736905e9.2
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 04:55:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tWEa2-0001Sc-8O
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 07:57:40 -0500
+Received: by mail-yb1-xb35.google.com with SMTP id
+ 3f1490d57ef6-e3fd6cd9ef7so5280236276.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 04:57:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1736513702; x=1737118502;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1736513857; x=1737118657; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dM7VO3EPBoxLDcTRKpkxLG7YDBXqyjRr+7+nUF8FOJ8=;
- b=t8L2Ckg+WuItCYrM/a3eqmMXmlAE9wINuth+bldxxc2JBXW/bvuV0BrJmlitZG05Iq
- ac2vjU7GbJwv3VpuWdLyKKPkfEOCapE/Q+ReB55Y7dlvoPmmMVijaz3Am85tp9v6reY9
- NiTBQ5C/mRrPuY+9qWCBA/j/3t9qgcbsWYWvW/HR2I6mfDApDsaRcMaBycE3nXEWTN6Z
- w6VjeTxmaDdnEpq3FodAyOuOqNvJeSULR/zo0l6rVJBYVlOkoejhpHWLforZu87bi/J+
- vbFKZAX5OEQT+LSiESzHO+m0L9g/PYy3FYquXxwZ2jz1NTdvTsd2SRezz9Y2D7n2LWey
- +csw==
+ bh=kWpgClhMu8y0WMFqZn0FgquieZBpCTzT/UOP0udnz8w=;
+ b=mpBr56o6jVf3IEjY1fMsJAr+cxojhBrxVNMPheF/eVSRsVoKgEncOVTj6HencdiBzI
+ rEkbCyASutr3h/fvbgOBRraUOsBTeEVEdB2FpXB2KbjhBRFXg93vsV/6joXZqLn27aL0
+ JLHSGEoUimarfrL3nt+vP+A8DPWHpPdsllyW5VCijVZc17IPFksVIjP7PmjcDQdjqaF8
+ 9llagCKDJib/FPkCeTJVHoL53sf2lB+c+LCbuJxUDgPod+smKUmHBiZifA1PnmxT7nln
+ OtftZ50+8tfA+DBDll8tORNXdeVrB0e0/Pvettfp6EdETGCpnimvXFGCIUkwhiEf6E6D
+ zXcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736513702; x=1737118502;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1736513857; x=1737118657;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dM7VO3EPBoxLDcTRKpkxLG7YDBXqyjRr+7+nUF8FOJ8=;
- b=ITFBVfGhgo0OIuzxo7rq9dB8WiJjbhn716IS8wLkNf/4iQHWdJf8JgOHt4z9z6om04
- SelO0vmSpFzBcCJqWhJbKwKud90VybJcmfsh1LL+8Yo+a64bnmVVXO8LTEqsVqkgismY
- JjrIa1LJhiCtytMZGqdwbFaG0eup0k/7kugGCGsCxNj/hsbEEejqNHLsC7h9AsaRdm2b
- VPi56NJDFC8q5PFV1B6gq90AQMzNxgu77BNNotxpmiLkxVZ/Oo/sK2HOW2uI4Kk2rLMt
- oRC4ZiuebA2mrpQcdJ0lqNkGvy23TQ1/h2VoWlrnk/ii8RJ0UDdRjM3sFSxaKo8Rpq0s
- LvzA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXctqB41P63GHpZFIjgxmaGi2RQJKJfDkM+HzoXpLI64QdnJese5E++KP1SY27fHig5SAUTrpmXTvyO@nongnu.org
-X-Gm-Message-State: AOJu0YzsJevb6gh+jLQyBOFq/HELhBFdZnU3IBIyszxEhhyBgSujxMtW
- mU6U5i59nCVYojXXGg5sZ52cuh8keRF93TPSPAZfhUTczsLax670QGGUdTlQXtI=
-X-Gm-Gg: ASbGncsLhygNdQM2HcegMGN5eog7Hn7Ceig/k3eBYfsGm9H9apri6+V7acGcz/NiR+I
- Or0IbGkDBZ0IoZVfjud+S7pc4IkZm3eJ7X9QYYjWpiMSuP3LtGmM7hRfpsjJ+5xDoKuIlvQYSW9
- vBNRc6F98hjStRohFTGsQ8V7wu5lHyzpG5FyetE6/YfNMo2Q2B1r2H8FCmEdy39JaNbkbqJDRIO
- B46lJ/dM74augzFwTzES7a4y+fL0asI9qMcISxXXjwUBgTTeNzCuoxLxQ==
-X-Google-Smtp-Source: AGHT+IHTEDXaaJ+iQ7n0PjVXn8kuqmxtqK9XlwOXKBXjLgmAKm0we4SJdmR/opMC6e3Mjx4GQ16PSw==
-X-Received: by 2002:a05:600c:1c84:b0:434:e9ee:c2d with SMTP id
- 5b1f17b1804b1-436e26e2725mr87304965e9.26.1736513701855; 
- Fri, 10 Jan 2025 04:55:01 -0800 (PST)
-Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e4c1c01sm4548921f8f.97.2025.01.10.04.55.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 04:55:01 -0800 (PST)
-From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
-To: qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>
-Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Ved Shanbhogue <ved@rivosinc.com>, Atish Patra <atishp@rivosinc.com>,
- qemu-devel@nongnu.org, Frank Chang <frank.chang@sifive.com>
-Subject: [PATCH v8 9/9] target/riscv: Add Smdbltrp ISA extension enable switch
-Date: Fri, 10 Jan 2025 13:54:40 +0100
-Message-ID: <20250110125441.3208676-10-cleger@rivosinc.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250110125441.3208676-1-cleger@rivosinc.com>
-References: <20250110125441.3208676-1-cleger@rivosinc.com>
+ bh=kWpgClhMu8y0WMFqZn0FgquieZBpCTzT/UOP0udnz8w=;
+ b=UNs0eMDHCJOiLgrdolvEfbhpva5gawt/yWF1X6PeupmGlUko1/JVEHBL3YbuvmGA3E
+ ndGlVxEk6tR46PePW7msQUNE5Y+D1qoDHDPKRFnbbyP4JHDrV6MNLk43n88RJZOME6mD
+ ZEfdIDuWBHdF7hs16vsGdcYQ06/AunIZ4tLZnfp/HzpZlkYc5AodLkUIdcw2TMbRnjZI
+ c8HFRFe7Ke47SMx3HANJOaAVRxibxUMtV/ZIwXxuZ/WtlBMKXCxcPXeLsrzfNyFkcl4a
+ FQdVoorEA9R3Ag6UvdcHxJTe6q2NHcPdBZfFa4HBwIrtTlYpy6UqmXXdMXDOwdH7UCEj
+ me5Q==
+X-Gm-Message-State: AOJu0Yzn7CZ9XUNRZZ/iPge10TzUuMl7yvb8Li4Bsvgp05UUUYVVykjk
+ VvC+pVgl3OIiuyxqPi+VChOdAGbJmKgOCtF+CI4XbCTSvRFAnkqBG+sBTE3B7aVz3752C/ufyLQ
+ EHaiVZt2whfrr12Jnrx81/cCBXVoY8IQ0RP0C9Q==
+X-Gm-Gg: ASbGncuDtJoaylAPbgwEA5G+h0cqItEGnqCelGZiZ/cjHQyyhyVeNinXcFmCaLm1IZ+
+ oSEeB87SmtsM8QOrStIXIOi19HVPkxIn383lRllU=
+X-Google-Smtp-Source: AGHT+IHcE065TBe/uA2Y7mFRis8OKe5LTm7adGkxAIeoPcxcnaO3bt70DOFe+BMWMUwwXeuuVg1gBKW7H85VXBKRdiw=
+X-Received: by 2002:a05:690c:4a0e:b0:6f0:5fc:7d with SMTP id
+ 00721157ae682-6f543e9b1e6mr51579967b3.11.1736513856798; Fri, 10 Jan 2025
+ 04:57:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=cleger@rivosinc.com; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20241218181511.3575613-1-alex.bennee@linaro.org>
+ <20241218181511.3575613-4-alex.bennee@linaro.org>
+In-Reply-To: <20241218181511.3575613-4-alex.bennee@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 10 Jan 2025 12:57:25 +0000
+X-Gm-Features: AbW1kvaOOj0yN8OXi4jL1b-c8NvPOfIJXFRhrNoYialIjYiHtbpwXnh9vGjlY1M
+Message-ID: <CAFEAcA8r9OS9SO_26GmagYD1E-0e1OSmU8GiGXtogpOJ5c7vYQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] target/arm: implement SEL2 physical and virtual
+ timers
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>, 
+ Leif Lindholm <leif.lindholm@oss.qualcomm.com>, 
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org, 
+ qemu-stable@nongnu.org, Andrei Homescu <ahomescu@google.com>, 
+ =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@google.com>, 
+ =?UTF-8?Q?R=C3=A9mi_Denis=2DCourmont?= <remi.denis.courmont@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b35;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb35.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,35 +98,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the switch to enable the Smdbltrp ISA extension.
+On Wed, 18 Dec 2024 at 18:15, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
+>
+> When FEAT_SEL2 was implemented the SEL2 timers where missed. This
+> shows up when building the latest Hafnium with SPMC_AT_EL=3D2. The
+> actual implementation utilises the same logic as the rest of the
+> timers so all we need to do is:
+>
+>   - define the timers and their access functions
+>   - conditionally add the correct system registers
+>   - create a new accessfn as the rules are subtly different to the
+>     existing secure timer
+>
+> Fixes: e9152ee91c (target/arm: add ARMv8.4-SEL2 system registers)
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> Cc: qemu-stable@nongnu.org
+> Cc: Andrei Homescu <ahomescu@google.com>
+> Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@google.com>
+> Cc: R=C3=A9mi Denis-Courmont <remi.denis.courmont@huawei.com>
+>
+> ---
+> v1
+>   - add better comments to GTIMER descriptions
+>   - also define new timers for sbsa-ref
+>   - don't conditionally gate qemu_timer creation on the feature
+>   - take cntvoff_el2 int account for SEC_VEL2 in gt_recalc/g_tval_[read|w=
+rite]
+> v2
+>   - rename IRQ to ARCH_TIMER_S_EL2_VIRT_IRQ
+>   - split machine enablement into separate patches
+>   - return CP_ACCESS_TRAP_UNCATEGORIZED for UNDEF cases
+> ---
 
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
----
- target/riscv/cpu.c | 2 ++
- 1 file changed, 2 insertions(+)
+> +static CPAccessResult gt_sel2timer_access(CPUARMState *env,
+> +                                          const ARMCPRegInfo *ri,
+> +                                          bool isread)
+> +{
+> +    /*
+> +     * The AArch64 register view of the secure EL2 timers are mostly
+> +     * accessible from EL3 and EL2 although can also be trapped to EL2
+> +     * from EL1 depending on nested virt config.
+> +     */
+> +    switch (arm_current_el(env)) {
+> +    case 0:
+> +        return CP_ACCESS_TRAP;
+> +    case 1:
+> +        if (!arm_is_secure(env)) {
+> +            return CP_ACCESS_TRAP_UNCATEGORIZED;
+> +        } else if (arm_hcr_el2_eff(env) & HCR_NV) {
+> +            return CP_ACCESS_TRAP_EL2;
+> +        }
+> +        return CP_ACCESS_TRAP;
+> +    case 2:
+> +        if (!arm_is_secure(env)) {
+> +            return CP_ACCESS_TRAP_UNCATEGORIZED;
+> +        }
+> +        return CP_ACCESS_OK;
+> +    case 3:
+> +        if (env->cp15.scr_el3 & SCR_EEL2) {
+> +            return CP_ACCESS_OK;
+> +        } else {
+> +            return CP_ACCESS_TRAP_UNCATEGORIZED;
+> +        }
+> +    default:
+> +        g_assert_not_reached();
+> +    }
+> +}
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index e3ed11b0fd..bddf1ba75e 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -194,6 +194,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(smcdeleg, PRIV_VERSION_1_13_0, ext_smcdeleg),
-     ISA_EXT_DATA_ENTRY(smcntrpmf, PRIV_VERSION_1_12_0, ext_smcntrpmf),
-     ISA_EXT_DATA_ENTRY(smcsrind, PRIV_VERSION_1_13_0, ext_smcsrind),
-+    ISA_EXT_DATA_ENTRY(smdbltrp, PRIV_VERSION_1_13_0, ext_smdbltrp),
-     ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
-     ISA_EXT_DATA_ENTRY(smrnmi, PRIV_VERSION_1_12_0, ext_smrnmi),
-     ISA_EXT_DATA_ENTRY(smmpm, PRIV_VERSION_1_13_0, ext_smmpm),
-@@ -1626,6 +1627,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     MULTI_EXT_CFG_BOOL("ssnpm", ext_ssnpm, false),
- 
-     MULTI_EXT_CFG_BOOL("smaia", ext_smaia, false),
-+    MULTI_EXT_CFG_BOOL("smdbltrp", ext_smdbltrp, false),
-     MULTI_EXT_CFG_BOOL("smepmp", ext_smepmp, false),
-     MULTI_EXT_CFG_BOOL("smrnmi", ext_smrnmi, false),
-     MULTI_EXT_CFG_BOOL("smmpm", ext_smmpm, false),
--- 
-2.47.1
+This code is still using CP_ACCESS_TRAP in some codepaths, which
+isn't correct. Either:
+ * you want an UNDEF: that's CP_ACCESS_TRAP_UNCATEGORIZED
+ * you want to trap to some specific EL: that's CP_ACCESS_TRAP_EL2
+   or CP_ACCESS_TRAP_EL3 depending on where you need to trap to.
 
+thanks
+-- PMM
 
