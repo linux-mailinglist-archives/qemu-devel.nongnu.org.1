@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9617A091DB
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 14:25:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC8EBA091B4
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 14:20:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWEzX-0000HK-6g; Fri, 10 Jan 2025 08:23:59 -0500
+	id 1tWEuH-0004uD-IF; Fri, 10 Jan 2025 08:18:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tWEz6-0008MY-8H
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:23:32 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1tWEtt-0004gY-M0
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:18:09 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tWEz4-0005dc-7g
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:23:31 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3862ca8e0bbso1619798f8f.0
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 05:23:29 -0800 (PST)
+ id 1tWEtr-0004kj-Cu
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:18:08 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3862a921123so1337316f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 05:18:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736515408; x=1737120208; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736515086; x=1737119886; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yv0P0wrEbC6sAp6kQa5O/Cjc+4V7VV+VslM7BVlUX/0=;
- b=IV1Zd7prAiSYr5SbyHpfkUkUFyU/2g2bKmpNXUZthhKikZKP2BXUiKcIHZ2lxT9tFY
- 7STn7HLu2nGO6dnWqWtlaejscBb4iq5GfyLx7Bzt7swj3Ga+IwLU+xuoExKiSq9l+/C2
- UnKR8edeqKlownKCNEwRvkwWqD4Mo6MhFcKDRf2D9pkb9Rdw+gfonI+brCsrif4gX45p
- naO6gMfzdvV8jd7Q/9s+eA6DtJg5hlqRIkxOqZTAgG2fY73BcPqCBM07OHRk1nuoioSV
- Z3U9cW4yxRpZxjWiBT1vLLbna5l7Z+Hv+7ft4IjgFavFiXpgk+F/5QOGlgd9CktMPUOu
- I3Uw==
+ bh=k/3Hjxcplq4p9qNo4qN9TNveaAV9bGLco5miclcArLM=;
+ b=NAqX9mC74ISFdcsR1+ycmOE765zG9GIxJ2f+22TMlWLkRywzZmg054OqWOcFogAsT6
+ IXy6DPPxvxr7CW6lPIMT25/y5iU1mvs/Y01WImkiOUpuJsMl82JdALh7rj8vxEGeumF7
+ EY2ljmJU4+y+BkE2DSGvpMwp0DaBAdaJLDhhWa0JrTKy0io+htOhOMKomGI8NE8HPYad
+ 3gKnHKx+demGFgbNEKUusVWDb/1N8BKZraTHf2GpipUOApnneBbTPY0ttzD0sVSVDSDM
+ 8wEhWtVAfg48+fp+KN1Mok+fmKYrKPk9U0oWaoRr1CUOKwbYzakD9w+P9Gh4KQIGlVIv
+ geRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736515408; x=1737120208;
+ d=1e100.net; s=20230601; t=1736515086; x=1737119886;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yv0P0wrEbC6sAp6kQa5O/Cjc+4V7VV+VslM7BVlUX/0=;
- b=Suijrl+zw3ZQmoyGny0AepxEClp9SD/WTI3nbmhRArFY1KDP+vBuV57gZIdYOSI2dq
- twFkJn7zIZXodDJe7uIJqnlnEv3Sjiwxx26THsA49jkwqUfj45IxG9e5/BKT8/pkdzc4
- zhJlJyWALQlowrHr+EFfHeHCwrqadB4aNebGi+2d+JqsaSiHe8p7V0udTdhlWXhcfvPw
- dEH8mYZXU0Ud/PoWn0G5yknp47QqlOl+Y+Bnl4V+AAOlhod4+yt8EAmYBldTpgq9UfuL
- u87OGiGvtimc3vN83C7yjBRTQ+y6EsdSxMHqof+2W7OH6y8YIYQ57EfAFpO1NASr18bQ
- YiVg==
-X-Gm-Message-State: AOJu0Yydy3Z1WQ0k9LT/lVUVRmAlYOWkFxc5pZAPV1r12v0oqBUZxGF2
- t2ifAjD5cciROERuPLgxNqzUvB4sA4ZbUcgYflOt32hHyyd7r71yYlbJw4EUPyQ=
-X-Gm-Gg: ASbGncvuokjIKzhbCxqGzCt6nhGGX6NvO+Twb9dSAaku85TefKgqZGpQko6AFgxXnjw
- pJFFC8f4ZQbRbUnHIybXiby7eW7UYxaUNirNIyxeSIoxjDZNS1tCxGmKYchM2oqSwnQhiDv50HW
- 3DEqOo9cEBLfm0MY9NF4j07D5FY2QBUIE3bAPij3iZYiK6wj1mNi1huwYDzP5cajfiRox9INmDv
- fb7QuxlHRWQHSGiglPZh9h3uu2O9gziE7GHr26XQjBSJI2w5cDTIY8=
-X-Google-Smtp-Source: AGHT+IFgmhBwDCwhP3HZMzOkqHqee7c/TL6XRKJs4/C+isMEPox2p/jMlRL5aS4OPqu/1jfnY0UIlg==
-X-Received: by 2002:a05:6000:4618:b0:385:f560:7916 with SMTP id
- ffacd0b85a97d-38a8732aeefmr11025274f8f.35.1736515408424; 
- Fri, 10 Jan 2025 05:23:28 -0800 (PST)
+ bh=k/3Hjxcplq4p9qNo4qN9TNveaAV9bGLco5miclcArLM=;
+ b=fIJoLJlzKR62SP1RoO0BWFmttLbQPRpUNzkezEzJrZ3f/4irbcOfs41uqm/tnOZwBD
+ tNl9Yf4R+6tsJS4Yo2ytyBtP81HRgeBhDGH+3QKGlOXtLMni0nKLx37dbWXqSJ6zp1eV
+ WwoCtzPLomvzgcWKPKpyzZPrjasZIzsnGd45eZ1z52hvDGxfJLfE9LTjEJeut62TRTL2
+ CNT+l5O6iOZXI1JRoxFgKeQxA4z91NUm1AhCIkpS9nqzy9442YeD3B8vGl926oOMkmM6
+ F14VoAl7Wky+PDJuAmGTGgDFPQJ6cGODc3wL9/Cd/qGgA0wngBlKfUHRHe15p4KKZBEH
+ d90w==
+X-Gm-Message-State: AOJu0Yxak2icBEnlitMTIofzlkK0Wfd8MqJIqmaypv/tlzcwgn/XIrFz
+ fqI0BkSah1hHrNHcRwzHONgsr0JL0g7GpclcW4uqvHOFJ+6loWz1BhQ+pZoWaicBYsO78LlanOi
+ F1KA=
+X-Gm-Gg: ASbGncsW92yKWCI8vv8nf/YcLuotW/LfK4HLXPOvaakzdR11C7RXstUmsKD80IHi9u6
+ g2fdJeth5BSwB26HAfGaetAtjZeGAmQWR7xHse23nk/gqBytaLNiMasA/gtKyQ9AxA/rscuw3UL
+ FZitFkUKiuq1tui0S57b9s1bARW6vd8BMeJOgj3IAce7C2ezwkCSXla081mhUQVMgX28uXc0n8n
+ lAy7uRQrlYQJvigb/h/HIQeHoknLUjkT99v6IxmvE3kZ+a8RfoEsGk=
+X-Google-Smtp-Source: AGHT+IEBnj/yaRI8MaJFN0mano8sclac7W8V9mlYJ6qUK1L4aXvgneNbVpU+TOS7CDBsKNTLKVw1Rw==
+X-Received: by 2002:a5d:5886:0:b0:386:4312:53ec with SMTP id
+ ffacd0b85a97d-38a873049c2mr9684888f8f.17.1736515085582; 
+ Fri, 10 Jan 2025 05:18:05 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c912f165sm165890666b.83.2025.01.10.05.23.23
+ ffacd0b85a97d-38a8e37d2dfsm4468203f8f.7.2025.01.10.05.18.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 05:23:26 -0800 (PST)
+ Fri, 10 Jan 2025 05:18:02 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 6C07B617A2;
+ by draig.lan (Postfix) with ESMTP id 8186D61834;
  Fri, 10 Jan 2025 13:17:56 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 26/32] tests/lcitool: remove temp workaround for debian mips64el
-Date: Fri, 10 Jan 2025 13:17:48 +0000
-Message-Id: <20250110131754.2769814-27-alex.bennee@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PULL 27/32] tests/vm: fix build_path based path
+Date: Fri, 10 Jan 2025 13:17:49 +0000
+Message-Id: <20250110131754.2769814-28-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250110131754.2769814-1-alex.bennee@linaro.org>
 References: <20250110131754.2769814-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,112 +101,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+We no longer need to go into the per-arch build directories to find
+the build directories binary. Lets call it directly.
 
-The workaround applied in
-
-  commit c60473d29254b79d9437eface8b342e84663ba66
-  Author: Alex Bennée <alex.bennee@linaro.org>
-  Date:   Wed Oct 2 10:03:33 2024 +0200
-
-    testing: bump mips64el cross to bookworm and fix package list
-
-Is no longer required since the affected builds are now fixed.
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20241217133525.3836570-1-berrange@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250108121054.1126164-27-alex.bennee@linaro.org>
+Message-Id: <20250108121054.1126164-28-alex.bennee@linaro.org>
 
-diff --git a/tests/docker/dockerfiles/debian-mips64el-cross.docker b/tests/docker/dockerfiles/debian-mips64el-cross.docker
-index c09a8da890..9f6c4763c5 100644
---- a/tests/docker/dockerfiles/debian-mips64el-cross.docker
-+++ b/tests/docker/dockerfiles/debian-mips64el-cross.docker
-@@ -93,13 +93,18 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libcmocka-dev:mips64el \
-                       libcurl4-gnutls-dev:mips64el \
-                       libdaxctl-dev:mips64el \
-+                      libdrm-dev:mips64el \
-+                      libepoxy-dev:mips64el \
-                       libfdt-dev:mips64el \
-                       libffi-dev:mips64el \
-                       libfuse3-dev:mips64el \
-+                      libgbm-dev:mips64el \
-                       libgcrypt20-dev:mips64el \
-                       libglib2.0-dev:mips64el \
-                       libglusterfs-dev:mips64el \
-                       libgnutls28-dev:mips64el \
-+                      libgtk-3-dev:mips64el \
-+                      libgtk-vnc-2.0-dev:mips64el \
-                       libibverbs-dev:mips64el \
-                       libiscsi-dev:mips64el \
-                       libjemalloc-dev:mips64el \
-@@ -119,6 +124,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       librbd-dev:mips64el \
-                       librdmacm-dev:mips64el \
-                       libsasl2-dev:mips64el \
-+                      libsdl2-dev:mips64el \
-+                      libsdl2-image-dev:mips64el \
-                       libseccomp-dev:mips64el \
-                       libselinux1-dev:mips64el \
-                       libslirp-dev:mips64el \
-@@ -134,6 +141,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libusb-1.0-0-dev:mips64el \
-                       libusbredirhost-dev:mips64el \
-                       libvdeplug-dev:mips64el \
-+                      libvirglrenderer-dev:mips64el \
-+                      libvte-2.91-dev:mips64el \
-                       libxdp-dev:mips64el \
-                       libzstd-dev:mips64el \
-                       nettle-dev:mips64el \
-diff --git a/tests/lcitool/mappings.yml b/tests/lcitool/mappings.yml
-index f8186b0e69..74eb13d62b 100644
---- a/tests/lcitool/mappings.yml
-+++ b/tests/lcitool/mappings.yml
-@@ -6,23 +6,6 @@ mappings:
-   flake8:
-     OpenSUSELeap15:
- 
--  # Due to https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1081535 we
--  # have to disable all packages that depend on libgl1-mesa-dri:mips64el
--  gtk3:
--    mips64el-deb:
--
--  libdrm:
--    mips64el-deb:
--
--  libepoxy:
--    mips64el-deb:
--
--  gtk-vnc:
--    mips64el-deb:
--
--  mesa-libgbm:
--    mips64el-deb:
--
-   meson:
-     OpenSUSELeap15:
- 
-@@ -81,18 +64,6 @@ mappings:
-   python3-wheel:
-     OpenSUSELeap15: python311-pip
- 
--  sdl2:
--    mips64el-deb:
--
--  sdl2-image:
--    mips64el-deb:
--
--  virglrenderer:
--    mips64el-deb:
--
--  vte:
--    mips64el-deb:
--
- pypi_mappings:
-   # Request more recent version
-   meson:
+diff --git a/tests/vm/basevm.py b/tests/vm/basevm.py
+index 4a1af04b9a..6f3f2e76df 100644
+--- a/tests/vm/basevm.py
++++ b/tests/vm/basevm.py
+@@ -520,8 +520,7 @@ def get_qemu_path(arch, build_path=None):
+     if "QEMU" in os.environ:
+         qemu_path = os.environ["QEMU"]
+     elif build_path:
+-        qemu_path = os.path.join(build_path, arch + "-softmmu")
+-        qemu_path = os.path.join(qemu_path, "qemu-system-" + arch)
++        qemu_path = os.path.join(build_path, "qemu-system-" + arch)
+     else:
+         # Default is to use system path for qemu.
+         qemu_path = "qemu-system-" + arch
 -- 
 2.39.5
 
