@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A40E5A09A9D
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:54:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7547AA09ACA
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:55:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWK4M-0003ZN-9Q; Fri, 10 Jan 2025 13:49:18 -0500
+	id 1tWK4r-000626-A8; Fri, 10 Jan 2025 13:49:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK32-0001SI-69
+ id 1tWK32-0001SY-7T
  for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:56 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK2w-0001Ee-VN
+ id 1tWK2z-0001Ez-Ni
  for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736534870;
+ s=mimecast20190719; t=1736534873;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3I28akyrgNRO85WGd2WX/Mawn2r7ecEtUfOeL4OylPc=;
- b=f+No8aihFMkcYOSMJllTWxu3BKYb50nw8j502ZPFp+vh/+J9XAMfEWAUiIYUKEKlBABNtv
- WQzojIfBUdQnVaGOtAwE7pPUz4o8dA6dz05c1OsVQuJ24WXpy496bFfmUveruYoq/mQlAs
- Gy44K8Bol7LFjBKoqiy5Ea25JoRnpDM=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DTFKgODEFPxb1Rk0GJF65qhyFgCjbUlVyAYk2qcRkJ8=;
+ b=HijdWrKS8o/VmQYHyFYcPcjS5v0DJbks91+1/Pb39VE8VwBW+v4YZ82ckGeD6bS+ndFFgN
+ HM5ekbTacBpc96WPk0X+F1Z/Hkvbhr/B8424Cc94EF1fKQftmO+SQ9uky8Ap2cbzxZ9D8v
+ Gto7VD9JTGhtw5srsQK5ml9QcW3cA6w=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-365-Hfvfhgx-Pp-TynRSo7alvQ-1; Fri, 10 Jan 2025 13:47:49 -0500
-X-MC-Unique: Hfvfhgx-Pp-TynRSo7alvQ-1
-X-Mimecast-MFC-AGG-ID: Hfvfhgx-Pp-TynRSo7alvQ
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5d3ff30b566so2427016a12.1
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:47:48 -0800 (PST)
+ us-mta-133-bxlRSeUDPJKGInhb95j1KQ-1; Fri, 10 Jan 2025 13:47:51 -0500
+X-MC-Unique: bxlRSeUDPJKGInhb95j1KQ-1
+X-Mimecast-MFC-AGG-ID: bxlRSeUDPJKGInhb95j1KQ
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-aa6a87f324cso211710966b.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:47:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736534867; x=1737139667;
+ d=1e100.net; s=20230601; t=1736534870; x=1737139670;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3I28akyrgNRO85WGd2WX/Mawn2r7ecEtUfOeL4OylPc=;
- b=HPEaToPxuJSdbEgvJQtr1n0WJrv6WMB7LjSKVGhnpZEvZ237otkILYiUCVh41TN9qh
- 7qrkbRSnC28pwfLdULSbYjttb/0cHywJSH0sEShjctW2DX5/KvUZpk+sVSkVK9Jqptx1
- MzwJgrjCRmgUGnH6F4+e92d510Q9PPNseDCpsMzJeEtON1o3Pvr2SrtXwOYLdNnwYOY7
- F9k4YcDXFQ5f1i1ow8KAKx/Qn8O0ePoTOebK/wJIaY6BxlYfAnJJY5gSYpheTzKE0O0D
- yLW2XePdAa8xynaz1CmgFuuuZUH1A3jVSX6rrpjfkDDwsjqbFZFRlgzHdIaZM4gyuj6U
- 4rJg==
-X-Gm-Message-State: AOJu0Yw0zkFDsUIYkK+IwsBF0HRLh+Qk14J4eY34zohYX0DY633NuAC4
- U2e9ykRjcw8SIt9MAwBb8O5EXAszSrec0plgs5PhrkO3R466ypMcE9bmAyNsYmS1ndH5Xjdg/BO
- 7z3K+Y9tqxfcztH3mYvLg2Qal4FtGxJ5JWBtuit/R/5rm8nwASnycO7UvuYiA5MWaqNHkHn51S0
- bDosuMoQ3eHO/sYdbY15HPgrwLRewsoTcpO0KsT/c=
-X-Gm-Gg: ASbGncuic1Y4PwsI14DBl/ljb/NiyS5IqwVEcOiP2OjqjB2QlwKjpDKoOPyNGiU20Mg
- y/7FIsogyVbWtxQivSeE5eIGpsBGCWSFnoNnn4VyaUKfI2hHPYtn0mfUrF7BUlmFzZTCB9KA3KQ
- IYJFcXD4j2i2GTVHC+4mZK82mv6B/X5a+igFXfwMeOHWkfwmfFolffyDqFcUF+pKGRItQllMbtZ
- +3mS69613Cf4njT80WKY4geSavkkDlyTeVSOpr7J0gcMh/zQvkOwNTC8FI=
-X-Received: by 2002:a05:6402:354b:b0:5d0:bf4a:3dfe with SMTP id
- 4fb4d7f45d1cf-5d972e4e7b6mr10309143a12.23.1736534866761; 
- Fri, 10 Jan 2025 10:47:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFbby1OGsGkfTIQcEh7LJZw3q8Z7dQXwnh9y7cbY3Pf2UcNEBE0eA9lINn9sofDdRtCyXbkRQ==
-X-Received: by 2002:a05:6402:354b:b0:5d0:bf4a:3dfe with SMTP id
- 4fb4d7f45d1cf-5d972e4e7b6mr10309124a12.23.1736534866306; 
- Fri, 10 Jan 2025 10:47:46 -0800 (PST)
+ bh=DTFKgODEFPxb1Rk0GJF65qhyFgCjbUlVyAYk2qcRkJ8=;
+ b=aXmTty6bgCoNMxiR6wYd57xHVhoNIvjKC1UcdNh48MHx6xTPJAem6fTFyDgueVH3c0
+ Y7AdBTxUCAoMgJ6fZnV+h1SSGasNzZ5q+GdQfh651v+elGP1b8hy8I0tCkMetTGt8sMz
+ ZmkySrxAl31kcn2OIBkFVwF8U2iPyDCCq2UpqOFMWOoqZzDZ/ail9aNCnm9/2Mqhyww/
+ tqykx2ae9jz8wGeXHwAxW0XsMFN5pAdTSb8L4WHtVsu9h0YhqicsmEadvonxtH+RpSHM
+ VxZiRoPiMDRiCD02P8Rl35orjuzaKLW08qumvzQQ4hFkOg/l93tFaBH6FciZHeRy1eXU
+ Otcg==
+X-Gm-Message-State: AOJu0YxpNyN3pEEWiOyoEB/D1BkvCuGC1J9tljmr1WGFccg+RDy4NKFl
+ yC65Yqo+4GM23xe9dME8JeelQQO78dUHBfwMk+BxiYo2ThyZsNBbTyWA76xJ+9zyBfKSn1eOxWJ
+ nU32CCXH47NKQYOUSiAv3RlP6kFAkHfKOIJWRxgAC2wJSFsQErkx9cUMTvwZKxRaIOKrDS2Jku9
+ lXvHU03rjtL1X0VDuKicY5btra9UOtWUHqv/UIcxY=
+X-Gm-Gg: ASbGncur6JuhH4h3nNOEAUlvergIrGJoh8iD5yaE22oHFYU9B7ZJTKljv9cf8MiQLkF
+ QL0xLiZRpwfHSkLxlYmKaXWTFIsmDAUjoI4Tlh5pl/Rl9Zg014E96LHzjIt87tq6MRgznAC9OS6
+ mKJfiXmxAtG8e3PyQqdnq9DBJF4VuFWOAlfnR1juTJ2cMpT60PATVlt3pbWtO2x3cqfeYwJEdWH
+ 9wF/1rYDj2FRSy2Hh9UmJEZOC4WtYEwKXHmiMSeayduNPnCzpdOttPAjh0=
+X-Received: by 2002:a17:907:a0cf:b0:ab2:b77e:f421 with SMTP id
+ a640c23a62f3a-ab2b77ef683mr944977166b.23.1736534869653; 
+ Fri, 10 Jan 2025 10:47:49 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEbWzlDo6ABCULYQ3HbbqUBaIWyRM+E2vNUe/ywyNxFncIrLZi8ztJhNHx1J4l8pon4+aTp+Q==
+X-Received: by 2002:a17:907:a0cf:b0:ab2:b77e:f421 with SMTP id
+ a640c23a62f3a-ab2b77ef683mr944974866b.23.1736534869138; 
+ Fri, 10 Jan 2025 10:47:49 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.105.73])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d9903c3333sm1980993a12.47.2025.01.10.10.47.44
+ a640c23a62f3a-ab2c90d81c4sm194760666b.64.2025.01.10.10.47.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 10:47:45 -0800 (PST)
+ Fri, 10 Jan 2025 10:47:47 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 35/38] i386/cpu: Hoist check of CPUID_EXT3_TOPOEXT against
- threads_per_core
-Date: Fri, 10 Jan 2025 19:46:16 +0100
-Message-ID: <20250110184620.408302-36-pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 36/38] cpu: Remove nr_cores from struct CPUState
+Date: Fri, 10 Jan 2025 19:46:17 +0100
+Message-ID: <20250110184620.408302-37-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250110184620.408302-1-pbonzini@redhat.com>
 References: <20250110184620.408302-1-pbonzini@redhat.com>
@@ -108,65 +108,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Now it changes to use env->topo_info.threads_per_core and doesn't depend
-on qemu_init_vcpu() anymore.  Put it together with other feature checks
-before qemu_init_vcpu()
+There is no user of it now, remove it.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20241219110125.1266461-8-xiaoyao.li@intel.com
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Link: https://lore.kernel.org/r/20241219110125.1266461-9-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ include/hw/core/cpu.h | 2 --
+ hw/core/cpu-common.c  | 1 -
+ system/cpus.c         | 1 -
+ 3 files changed, 4 deletions(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 1797bd8c071..3f9475b4856 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7883,6 +7883,21 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-      */
-     cpu->mwait.ecx |= CPUID_MWAIT_EMX | CPUID_MWAIT_IBE;
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index c3ca0babcb3..fb397cdfc53 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -407,7 +407,6 @@ struct qemu_work_item;
+  *   Under TCG this value is propagated to @tcg_cflags.
+  *   See TranslationBlock::TCG CF_CLUSTER_MASK.
+  * @tcg_cflags: Pre-computed cflags for this cpu.
+- * @nr_cores: Number of cores within this CPU package.
+  * @nr_threads: Number of threads within this CPU core.
+  * @thread: Host thread details, only live once @created is #true
+  * @sem: WIN32 only semaphore used only for qtest
+@@ -466,7 +465,6 @@ struct CPUState {
+     CPUClass *cc;
+     /*< public >*/
  
-+    /*
-+     * Most Intel and certain AMD CPUs support hyperthreading. Even though QEMU
-+     * fixes this issue by adjusting CPUID_0000_0001_EBX and CPUID_8000_0008_ECX
-+     * based on inputs (sockets,cores,threads), it is still better to give
-+     * users a warning.
-+     */
-+    if (IS_AMD_CPU(env) &&
-+        !(env->features[FEAT_8000_0001_ECX] & CPUID_EXT3_TOPOEXT) &&
-+        env->topo_info.threads_per_core > 1) {
-+            warn_report_once("This family of AMD CPU doesn't support "
-+                             "hyperthreading(%d). Please configure -smp "
-+                             "options properly or try enabling topoext "
-+                             "feature.", env->topo_info.threads_per_core);
-+    }
-+
-     /* For 64bit systems think about the number of physical bits to present.
-      * ideally this should be the same as the host; anything other than matching
-      * the host can cause incorrect guest behaviour.
-@@ -7987,21 +8002,6 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-     x86_cpu_gdb_init(cs);
-     qemu_init_vcpu(cs);
+-    int nr_cores;
+     int nr_threads;
  
--    /*
--     * Most Intel and certain AMD CPUs support hyperthreading. Even though QEMU
--     * fixes this issue by adjusting CPUID_0000_0001_EBX and CPUID_8000_0008_ECX
--     * based on inputs (sockets,cores,threads), it is still better to give
--     * users a warning.
--     */
--    if (IS_AMD_CPU(env) &&
--        !(env->features[FEAT_8000_0001_ECX] & CPUID_EXT3_TOPOEXT) &&
--        env->topo_info.threads_per_core > 1) {
--            warn_report_once("This family of AMD CPU doesn't support "
--                             "hyperthreading(%d). Please configure -smp "
--                             "options properly or try enabling topoext "
--                             "feature.", env->topo_info.threads_per_core);
--    }
--
- #ifndef CONFIG_USER_ONLY
-     x86_cpu_apic_realize(cpu, &local_err);
-     if (local_err != NULL) {
+     struct QemuThread *thread;
+diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+index 1edc16f65c8..cb79566cc51 100644
+--- a/hw/core/cpu-common.c
++++ b/hw/core/cpu-common.c
+@@ -243,7 +243,6 @@ static void cpu_common_initfn(Object *obj)
+     cpu->cluster_index = UNASSIGNED_CLUSTER_INDEX;
+     /* user-mode doesn't have configurable SMP topology */
+     /* the default value is changed by qemu_init_vcpu() for system-mode */
+-    cpu->nr_cores = 1;
+     cpu->nr_threads = 1;
+     cpu->cflags_next_tb = -1;
+ 
+diff --git a/system/cpus.c b/system/cpus.c
+index 99f83806c16..37e5892c240 100644
+--- a/system/cpus.c
++++ b/system/cpus.c
+@@ -687,7 +687,6 @@ void qemu_init_vcpu(CPUState *cpu)
+ {
+     MachineState *ms = MACHINE(qdev_get_machine());
+ 
+-    cpu->nr_cores = machine_topo_get_cores_per_socket(ms);
+     cpu->nr_threads =  ms->smp.threads;
+     cpu->stopped = true;
+     cpu->random_seed = qemu_guest_random_seed_thread_part1();
 -- 
 2.47.1
 
