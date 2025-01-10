@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F77A09C7B
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 21:35:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D0A6A09C7E
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 21:35:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWLi0-0000WC-2t; Fri, 10 Jan 2025 15:34:20 -0500
+	id 1tWLi0-0000WE-Da; Fri, 10 Jan 2025 15:34:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tWLhx-0000VR-96
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 15:34:17 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1tWLhw-0000VK-Tv
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 15:34:16 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tWLht-0005ex-TI
+ id 1tWLhv-0005f2-4Z
  for qemu-devel@nongnu.org; Fri, 10 Jan 2025 15:34:16 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-2166022c5caso39480935ad.2
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 12:34:13 -0800 (PST)
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-2165cb60719so44203015ad.0
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 12:34:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736541252; x=1737146052; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736541253; x=1737146053; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CZZWVjzYh3oSJqK7qwXbLdnBf+l62UVrcXWqFU7n58A=;
- b=ZtJLJF/sdiQduEcA3HnIbwqcStbqBStAfAbynBpqHwLBOh0a5jNHW/KMqiWiuJBQNS
- gdanlAie4zClc0O1n1hIrIFLUkJ8EnIhpnEAchHpCfjY2kS1jxQD3COemD6S7baaQPj4
- ucNsGG3LdJ8lfe7JDYIB2XKc9U/b9sIwrpGn7ogW5yovlYr7qI8u/EXWrreHbHu11H38
- KOZclF9BIaljV72XDI+ku3/GKrten1M4Fv2bXip5PVzFJjKZnW7m0ytkbWmtyqHpe200
- i795TVYhNlt6PvqV5+1rJDv2Wk6ARv09me25ZAJTbgOspphyxp6fWRC4zUn/NVZWjCEU
- LLFA==
+ bh=g9R9dQpF5UbzJZ6Kb11hyvYzYtKnLXxRBjcuMGn4NXM=;
+ b=VtIpE3p59kQ0rOFVvsvhaAI+1nZgwi+N18g5A94+9znPjDvH9aWuheNf3HW896hPFJ
+ FjAOibPt0pYM3F8aTPp/NJqg/oShxQs+kUeSFStQS/CYtCEAgZBSWKCICA/HtTURvaCR
+ 6GGR3bKZp46zX/60Mw0GYsbTg+RJYfG6/C9S7XjcpHzOdZguJzKVCNV0KG3Lji5oL0+Z
+ G9qNQIJ8iu/9n7NOVZGs864I2EbQHx07utJydSJvORos2dtnFz3odLzbcovAEV5lOZcg
+ ZBiEtROVJwIX1LOFy4QDzeSAmNQSc0kWuGEHMu052IaGa2/Z0zzdYDamVwVW8VFqumcs
+ ipiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736541252; x=1737146052;
+ d=1e100.net; s=20230601; t=1736541253; x=1737146053;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CZZWVjzYh3oSJqK7qwXbLdnBf+l62UVrcXWqFU7n58A=;
- b=RUzN57NGOw7s1Pqqhjjs51que/8wXIGX7IpnM4nF3dDk1R+Y476gvPVGAfGkSVuUJ8
- SqgQvDVEGKy4Uu7IjT+3rEbGb2BFnKAnNi1Y7RJ4KcuggAKRNY9Ukau9AYcfrfCMVlvm
- KWhUUMghuOUo+Zk60t9iqOw+ANg6wyJnzk4ZVjDgLGRTpMoapPC+2jBdxOLsvRnXvajd
- XPsvxYDrPVRStQybgtQEOFjl3Q7N+S3D32pLKWFMQ2M68bf3XONXDw3g/bONx6+wowlG
- 2M+VYaOzRgsyBq8zHqhbPZTs71AowanDPHHZ2cYvdBIiJ+0T83hXvqSbhRKnP+idywMa
- gTJQ==
-X-Gm-Message-State: AOJu0YwvuNrXi+JFLEHTrQJ031XIs5ANqPJl+WY1twuOTWq0ufooMwS9
- XrrMTV478+dR03mIR1O89C4GL4Cdl6YSlfVTN4w8tfOGw0C1Zlk5J6NFCI73omllkTCgGDJ/fSl
- wOvbNxg==
-X-Gm-Gg: ASbGncsTFtp5ACAQIE/gXbMtYvYudnSo87V2hd3UkAiK8vm5a6xoppo90SLl1A3487l
- NRVgTqPDxg+3pFd/MTk9WiaEDyU22Z1D9tdraBY/tfv/RKU6DlKuNLDj7VNS4x4enwAB/zUVhN3
- yVBl8otxmP2A+9GTPDh/y4MqFIS7bJ66pv4eeTmbpF4zqaNbbLZMM3eip5MBoZ2brtZFQGZJXD+
- OaUQzTghGGR+VpwIFSBFPV76JNPMIVsoGWUpTUjCd8nuFlCuLJ8BpHl
-X-Google-Smtp-Source: AGHT+IHE946Nv1pp1lwHv92vIOQaiNJtrdMdf0zUsxrksZ9cVqb4CSI8INoI+7LH3Ltp055zDaNMLw==
-X-Received: by 2002:a17:902:ec83:b0:215:7ce4:57bc with SMTP id
- d9443c01a7336-21a83f54a5cmr175214205ad.16.1736541252281; 
- Fri, 10 Jan 2025 12:34:12 -0800 (PST)
+ bh=g9R9dQpF5UbzJZ6Kb11hyvYzYtKnLXxRBjcuMGn4NXM=;
+ b=X20JFfmV5aWRlwpLwHZAbhEf15tpts1uWQACgjnv9D90H4M4bzaDeuB4TZpWloWDHA
+ 6tO1EyxNmLVC+ud0KXPIoOQ2rTRe5ixMUH/vckyFTqsb5BCTDTI9OMIrXAR1AMTiBjJK
+ 7ROFQ7N5deTFEbbjE9Hvd/hiDLxWMh/MmsISdyVfUwO69XV8Cba39LJHghrOQvTmUxxK
+ pjepPhkhG7a/QDx1FQIwhaCi2fdWDH+jHXn5G3ptgyWl0ermTyVCbkETIf/nTGGCUsCf
+ jj5k0sLOnAfwoFWfHSnkgKN1irFuyBvzunpywAkc3rt9EZYLJYDfCBGXw7lilBfWXgX+
+ FgMA==
+X-Gm-Message-State: AOJu0Yw/1OzLZw1ks9rFCmMUdbQmUgaf0n9xCsiMDi169wWC6hVTlklE
+ K1UVlFHORw6gEeRIWVoHhxnTbiC2vjN5IkR7w3NqmkpD1ZP91t2wDvTOjk20K8o4WvkSVhWdyx1
+ ujwVCgA==
+X-Gm-Gg: ASbGncs0q0UM1DisrQSLMpnk6/IYSmS7zyiDsUxl4ecp9TiiIyJZ0JBs+u1K0Cfqr3V
+ jli9Kgl6siQb1w5c8r4ArGFZa6Q6Ec+7dJ44kmhkkO2CVejMhwSoSHil62vFQ7WVQbPZrMaOOH7
+ l6Jtsq6N2g8EXJ9qJeDZhbfRBgHuBWb0tFU1Dx+ItyoOzs/j1Ua3q0SFuM1WYfnz+hTaTikBnhZ
+ mGv/Fo3g4VM92v1hNlwQYfGdtuqLveV6B8Ncl/+YTJss+4qgaD1eWvQ
+X-Google-Smtp-Source: AGHT+IH6wCuxtcT3FFj/3mFPlad27XCOZu4H48N7u/eV/WeqlO2/S9/Amz7cwBFmCK9dVz+afnoNIg==
+X-Received: by 2002:aa7:88cd:0:b0:725:f097:ed21 with SMTP id
+ d2e1a72fcca58-72d21f471d6mr17088257b3a.15.1736541253266; 
+ Fri, 10 Jan 2025 12:34:13 -0800 (PST)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-a318e8ecacfsm3215947a12.38.2025.01.10.12.34.11
+ 41be03b00d2f7-a318e8ecacfsm3215947a12.38.2025.01.10.12.34.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 12:34:11 -0800 (PST)
+ Fri, 10 Jan 2025 12:34:12 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
@@ -74,16 +74,18 @@ Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v4 1/3] win32: remove usage of attribute gcc_struct
-Date: Fri, 10 Jan 2025 12:33:59 -0800
-Message-Id: <20250110203401.178532-2-pierrick.bouvier@linaro.org>
+Subject: [PATCH v4 2/3] docs/devel/style: add a section about bitfield,
+ and disallow them for packed structures
+Date: Fri, 10 Jan 2025 12:34:00 -0800
+Message-Id: <20250110203401.178532-3-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250110203401.178532-1-pierrick.bouvier@linaro.org>
 References: <20250110203401.178532-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,96 +108,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This attribute is not recognized by clang.
-
-An investigation has been performed to ensure this attribute has no
-effect on layout of structures we use in QEMU [1], so it's safe to
-remove now.
-
-In the future, we'll forbid introducing new bitfields in packed struct,
-as they are the one potentially impacted by this change.
-
-[1] https://lore.kernel.org/qemu-devel/66c346de-7e20-4831-b3eb-1cda83240af9@linaro.org/
-
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- meson.build                               | 5 -----
- include/qemu/compiler.h                   | 7 +------
- scripts/cocci-macro-file.h                | 6 +-----
- subprojects/libvhost-user/libvhost-user.h | 6 +-----
- 4 files changed, 3 insertions(+), 21 deletions(-)
+ docs/devel/style.rst | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/meson.build b/meson.build
-index d06f59095c6..da279cc1124 100644
---- a/meson.build
-+++ b/meson.build
-@@ -377,11 +377,6 @@ elif host_os == 'sunos'
-   qemu_common_flags += '-D__EXTENSIONS__'
- elif host_os == 'haiku'
-   qemu_common_flags += ['-DB_USE_POSITIVE_POSIX_ERRORS', '-D_BSD_SOURCE', '-fPIC']
--elif host_os == 'windows'
--  if not compiler.compiles('struct x { int y; } __attribute__((gcc_struct));',
--                           args: '-Werror')
--    error('Your compiler does not support __attribute__((gcc_struct)) - please use GCC instead of Clang')
--  endif
- endif
+diff --git a/docs/devel/style.rst b/docs/devel/style.rst
+index 2f68b500798..d025933808e 100644
+--- a/docs/devel/style.rst
++++ b/docs/devel/style.rst
+@@ -416,6 +416,26 @@ definitions instead of typedefs in headers and function prototypes; this
+ avoids problems with duplicated typedefs and reduces the need to include
+ headers from other headers.
  
- # Choose instruction set (currently x86-only)
-diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
-index c06954ccb41..d904408e5ed 100644
---- a/include/qemu/compiler.h
-+++ b/include/qemu/compiler.h
-@@ -22,12 +22,7 @@
- #define QEMU_EXTERN_C extern
- #endif
++Bitfields
++---------
++
++C bitfields can be a cause of non-portability issues, especially under windows
++where `MSVC has a different way to lay them out than GCC
++<https://gcc.gnu.org/onlinedocs/gcc/x86-Type-Attributes.html>`_, or where
++endianness matters.
++
++For this reason, we disallow usage of bitfields in packed structures and in any
++structures which are supposed to exactly match a specific layout in guest
++memory. Some existing code may use it, and we carefully ensured the layout was
++the one expected.
++
++We also suggest avoiding bitfields even in structures where the exact
++layout does not matter, unless you can show that they provide a significant
++usability benefit.
++
++We encourage the usage of ``include/hw/registerfields.h`` as a safe replacement
++for bitfields.
++
+ Reserved namespaces in C and POSIX
+ ----------------------------------
  
--#if defined(_WIN32) && (defined(__x86_64__) || defined(__i386__))
--# define QEMU_PACKED __attribute__((gcc_struct, packed))
--#else
--# define QEMU_PACKED __attribute__((packed))
--#endif
--
-+#define QEMU_PACKED __attribute__((packed))
- #define QEMU_ALIGNED(X) __attribute__((aligned(X)))
- 
- #ifndef glue
-diff --git a/scripts/cocci-macro-file.h b/scripts/cocci-macro-file.h
-index d247a5086e9..c64831d5408 100644
---- a/scripts/cocci-macro-file.h
-+++ b/scripts/cocci-macro-file.h
-@@ -23,11 +23,7 @@
- #define G_GNUC_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
- #define G_GNUC_NULL_TERMINATED __attribute__((sentinel))
- 
--#if defined(_WIN32) && (defined(__x86_64__) || defined(__i386__))
--# define QEMU_PACKED __attribute__((gcc_struct, packed))
--#else
--# define QEMU_PACKED __attribute__((packed))
--#endif
-+#define QEMU_PACKED __attribute__((packed))
- 
- #define cat(x,y) x ## y
- #define cat2(x,y) cat(x,y)
-diff --git a/subprojects/libvhost-user/libvhost-user.h b/subprojects/libvhost-user/libvhost-user.h
-index deb40e77b3f..2ffc58c11b1 100644
---- a/subprojects/libvhost-user/libvhost-user.h
-+++ b/subprojects/libvhost-user/libvhost-user.h
-@@ -186,11 +186,7 @@ typedef struct VhostUserShared {
-     unsigned char uuid[UUID_LEN];
- } VhostUserShared;
- 
--#if defined(_WIN32) && (defined(__x86_64__) || defined(__i386__))
--# define VU_PACKED __attribute__((gcc_struct, packed))
--#else
--# define VU_PACKED __attribute__((packed))
--#endif
-+#define VU_PACKED __attribute__((packed))
- 
- typedef struct VhostUserMsg {
-     int request;
 -- 
 2.39.5
 
