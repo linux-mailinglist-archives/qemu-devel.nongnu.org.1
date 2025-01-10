@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65F36A091D6
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 14:25:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A719A091DC
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 14:25:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWEzg-0000bO-EW; Fri, 10 Jan 2025 08:24:09 -0500
+	id 1tWF0M-0001O3-BZ; Fri, 10 Jan 2025 08:24:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tWEz7-0008OI-N3
+ id 1tWEz9-0008PA-AQ
  for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:23:36 -0500
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tWEz5-0005e8-Md
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:23:33 -0500
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-aaee2c5ee6eso341970266b.1
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 05:23:31 -0800 (PST)
+ id 1tWEz6-0005eH-OM
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:23:34 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-aaeec07b705so332175166b.2
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 05:23:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736515410; x=1737120210; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736515411; x=1737120211; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tGvy/F1fDgUfBPiL+7E48KKTfhRYEDJs/NtU4xaiBlE=;
- b=lnluB3VBm9toKUmLeoDotqmW9OpAvHj/GyAg8InnvLEKWjERCbw1ZTQxAO3ySYQSLA
- F3RJ3t1sauxl5LHUO6frHYLAFtcHKEujLBi++y8jzn7NON4Qskmr9PUfLwqsE/Sx5YDE
- JXXPiLoh7z3A2QzaAPr9rdF1Mh/8vIT9CTYH9wdviiwmKBdkGaRwKHVpToTHiJC3nVU8
- 1VRTXWX9wR5n+Gz/kenejXbVk5k+ihJgVohNrMUlAS1vjrGKZIIicjH53bHL2/FkVtRo
- SwZu3PjzpQ9vWodIK2gFMM+nl+ihxJF9PUC05t5vaT3eAc02uWDzMEO+bcIKeOXiFs4A
- Tsxg==
+ bh=wDcOQuQ0FeIjJVOE9LpnMnyUJh9d1dAyavbPyRQaK8I=;
+ b=Six56XlApAQwFJFFj/xcmE9tv/CXNyfs3jKJbnpSXJ0AkUsauazoFMFGnycrGnaknN
+ lWQH4Ad6hQaPia7tcCvVDMVMxa7L5l3lg1KYZAa4TnF0cs2MLgiTZ5mjU7yQQMo8VRkt
+ /w8kHWfIK3SqvA1TnDoDuihFQsokhC98OoNu7DrW04hkt2SKNZlIBfM1yQAO4XZj7t76
+ +YVJ/h1quXuJ4+e+KHqJVWjElU+/DN4Dzf6pUy5/NYQb4uLrxmnmRX4A8j2LZEzgFvlv
+ X9Xu7h84Re1OmItAwA0OTXciiLJNoSdk4uvXiWoRCWHU/QtVfES0mhH5FSXqM6zQu9Nk
+ Z8Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736515410; x=1737120210;
+ d=1e100.net; s=20230601; t=1736515411; x=1737120211;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tGvy/F1fDgUfBPiL+7E48KKTfhRYEDJs/NtU4xaiBlE=;
- b=PN07trIMCfKdArqbg1OCXLG6ug3fPSvKQPAfDqNtxgTS7+SJ5VITAp27TvAQh/rcG8
- Bz1Y1OispnwNMcjUll/aY2ud6FjAtFskPhOmlrRD94R/NvxNjhJhK+apJgLJ9TnTgc0z
- Xft6vyU5Y7yvJbYnEh7mTyq6Tc37EYyNhzKKxXYpXSp+7B1/JX4u+ixI5fza8PT1Lg3o
- /jTF8M5VJuZwhW1FIuW9AoUdHKCfBZgVYxeKEcykXud9sIykl7FD3BM/dwdfa8q1/wXn
- d5HEHKGZ62XICZ9mYo5XF3WH0637WCrl6ZEnctgDlAdf03tJQq1oAP1PT3O1lI9+eyLT
- DZrw==
-X-Gm-Message-State: AOJu0Yy/+eC/qMtysal+c+bfg3x2yWyZ1MeWmWWVUqPCDqTp+yTWWoPt
- v8DsKdAZVkHXQthgtQfzkwoUNspy9dggAkMpiOyPdrrfRGMGnLf6wiUrpewwdjU=
-X-Gm-Gg: ASbGncsMYa3q9GpXNSdrvndBh/Fx/dgnwm+cbMv+Zc4nObgvr6oEJpYfWncTXGlG7am
- Wj8BAAGrbA3dOftVjnChnDOVU77OmRyzZu5wGvu0xc7AGMrBIzFQlyggso3ijJd6mXonrA4kmoC
- S2d7KcEcYc3zSzc86aBno/f2uC+uqmJ8mAMaMr663nzaIRKDMtXAs0g+lbJEdF24gQpx9hH3s9F
- 5IbqyyIFuDsIkJi81posSNq2MJPF7PbQwEaJC6NGs+cGlmiquFin2o=
-X-Google-Smtp-Source: AGHT+IGK+OQjIipK8usb50DfwIcKeth8Fp1e/TcG1ftxE7PJOe8V7DxJ7fpnKXaUkcWvhQeWduuGyA==
-X-Received: by 2002:a17:907:3e91:b0:aaf:74b3:80db with SMTP id
- a640c23a62f3a-ab2ab670608mr825065266b.3.1736515410220; 
- Fri, 10 Jan 2025 05:23:30 -0800 (PST)
+ bh=wDcOQuQ0FeIjJVOE9LpnMnyUJh9d1dAyavbPyRQaK8I=;
+ b=ZSySwwJdYUAcYtBPXU3h0jlPvMX8uWYmXRp0c4LNZg2xdqW88GEX1ptmPYk4Kgd3H5
+ kogUssA0HqipoR2/hQvVUOFahEjIRmkaRaKSDRPUBkCwav2cSING8p6C19h+L9A+dswn
+ osMaw6QREnhnvd9UcTRhFGinPlaYMwKNAJdpGm/NRbA4+kp/BoFJf7UsrUORBjyxGjgp
+ QbXuH7TnSk1zQ9/uhxog2/X92ZPbBlSec1kX7jTGCWxNY5n8WMFToEAf3fxpde2CJUrs
+ myqhGxfdLyP876jVfTUiflaQdJWZqd4GCju75jMdT7heNCfgmxCbW4DgVGeTdQ8ghsbS
+ cgxg==
+X-Gm-Message-State: AOJu0YxEkEE97U3TpBSCeJfbVVlZBFU21L0rj/FD6rlStqrD149IqOql
+ 0FRvu+y7UjOg37PMyF4OOo+YQUhljLTmKezu6+zHgnPZy/BJfAQO3hxc9p4QEJg=
+X-Gm-Gg: ASbGncv8nLmlUQvZNqIvcheo5cE4ggKoUO/QPBNH6MNU+y8GJy3RoibFSsHkj34Yt8l
+ 0qB67IXDOWrkEbojQVJsaFrgDTJJTg88F4kYHVLcLPOBJ56KuwXqkjV8fPRvzLuu9sdn87FsaQg
+ 0BKPxjD+eFNwXmmGTszmQx5PZpP6foVAxlbv67aD2cA+K9/mo+3XsxLlnNfXSuTSm5D86NEvmDy
+ oYvYlVLX5J80L2F7Ei1shOoDgWB13QIcqlXPz92uRpyGaQdnjtx4fc=
+X-Google-Smtp-Source: AGHT+IHg0boIKgIc4ipy8AaogBbG9tSMC8dRdiUkcV0SGN076Ontdoo/+xW/bUWSQ+/K1/8Oyd69yg==
+X-Received: by 2002:a17:907:96a0:b0:aa6:87e8:1d08 with SMTP id
+ a640c23a62f3a-ab2ab6bffc3mr773316966b.8.1736515411076; 
+ Fri, 10 Jan 2025 05:23:31 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c95615a6sm168041366b.94.2025.01.10.05.23.24
+ a640c23a62f3a-ab2c90d9a46sm168913666b.54.2025.01.10.05.23.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 10 Jan 2025 05:23:26 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id DB32C5F9CC;
+ by draig.lan (Postfix) with ESMTP id EE1A26144E;
  Fri, 10 Jan 2025 13:17:55 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 20/32] tests/functional: update tuxruntest to use uncompress
- utility
-Date: Fri, 10 Jan 2025 13:17:42 +0000
-Message-Id: <20250110131754.2769814-21-alex.bennee@linaro.org>
+ Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-arm@nongnu.org (open list:Virt)
+Subject: [PULL 21/32] tests/functional: remove unused kernel_command_line
+Date: Fri, 10 Jan 2025 13:17:43 +0000
+Message-Id: <20250110131754.2769814-22-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250110131754.2769814-1-alex.bennee@linaro.org>
 References: <20250110131754.2769814-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,35 +100,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the utility functions to reduce code duplication.
+The Alpine test boots from the CDROM so we don't --append a command
+line. Drop the unused code.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250108121054.1126164-21-alex.bennee@linaro.org>
+Message-Id: <20250108121054.1126164-22-alex.bennee@linaro.org>
 
-diff --git a/tests/functional/qemu_test/tuxruntest.py b/tests/functional/qemu_test/tuxruntest.py
-index 7227a83757..41a4945a14 100644
---- a/tests/functional/qemu_test/tuxruntest.py
-+++ b/tests/functional/qemu_test/tuxruntest.py
-@@ -73,17 +73,7 @@ def fetch_tuxrun_assets(self, kernel_asset, rootfs_asset, dtb_asset=None):
-         Fetch the TuxBoot assets.
-         """
-         kernel_image =  kernel_asset.fetch()
--        disk_image_zst = rootfs_asset.fetch()
--
--        disk_image = self.scratch_file("rootfs.ext4")
--
--        check_call(['zstd', "-f", "-d", disk_image_zst,
--                    "-o", disk_image],
--                   stdout=DEVNULL, stderr=DEVNULL)
--        # zstd copies source archive permissions for the output
--        # file, so must make this writable for QEMU
--        os.chmod(disk_image, stat.S_IRUSR | stat.S_IWUSR)
--
-+        disk_image = self.uncompress(rootfs_asset)
-         dtb = dtb_asset.fetch() if dtb_asset is not None else None
+diff --git a/tests/functional/test_aarch64_virt.py b/tests/functional/test_aarch64_virt.py
+index 2d9995a95d..b3d3b0ee51 100755
+--- a/tests/functional/test_aarch64_virt.py
++++ b/tests/functional/test_aarch64_virt.py
+@@ -41,8 +41,6 @@ def test_alpine_virt_tcg_gic_max(self):
  
-         return (kernel_image, disk_image, dtb)
+         self.set_machine('virt')
+         self.vm.set_console()
+-        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+-                               'console=ttyAMA0')
+         self.require_accelerator("tcg")
+ 
+         self.vm.add_args("-accel", "tcg")
 -- 
 2.39.5
 
