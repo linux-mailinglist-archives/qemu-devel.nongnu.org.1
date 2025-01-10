@@ -2,90 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E572A08B56
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 10:20:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 467D7A08B5D
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 10:21:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWBBo-0007PF-C8; Fri, 10 Jan 2025 04:20:26 -0500
+	id 1tWBC4-0007jX-4k; Fri, 10 Jan 2025 04:20:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tWBBA-0007IX-Af
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 04:19:45 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1tWBBT-0007QV-LM
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 04:20:10 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tWBB8-0007Kx-GG
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 04:19:43 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-38a25d4b9d4so941831f8f.0
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 01:19:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1tWBBP-0007LL-BW
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 04:20:02 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-2166f1e589cso36254595ad.3
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 01:19:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736500779; x=1737105579; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Z+/NISODu1GRl/Mp6rLZjlsIN+RHbK+6rE+y/BBm/B8=;
- b=pMYoXnAgB1zOLQUqlHMkoy8iuitStQ1TVuarfw4mnSo6gTr3oGWPhQpuDQ8t2+ZVc0
- O+nJUOAbeaxnNqZ9g3x1KcaUoPmuiulqbt3uAWMOiykM3xLjmeIUx4DAmBPjCFjNdeZ/
- XxrAdCP48TWFzn3s9jFOAlthqZbk4mLIxAIMfJflfDva2x6QOZeB38mUh6eOZlBBvDzu
- sBEY5mMQFRCrrKLIn2UlRJF05+xt8tWkxpwx71J4DvkPePvdLQ8Fa/sfbzGtojvONq1E
- rYWhHe3T0/I/tK3tRHjOagtdIpJ9WSk+O6QC9k4ymCv8KBCRHiXCQCMHpVZNdSoOYy7C
- 5qFA==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1736500789; x=1737105589;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Jk+07lK6VDS/396dsk7WIotgNr7btU0M8GRf8joHSLM=;
+ b=Owyv1QIhLYLMJfOqt+E+XPF6tGlXQ7qdqGefGiRrTe2iskgIiSJ0MN1WejqFbR3hET
+ jpo2Ba62jog32mGVgZRM44jAm2TDM+dj4UA06i1KQy595x7nsY0M0D4CC2RSymmrxLUe
+ EE58JxLKWWb/iJtskhM6TvsKVlHQoKndSNjiOFf+UWSjM8GGGR2dBUXYNAeM4auy6/ub
+ iS8Ji6YdSKsTg/WfFJHo/Q5FD5vGdXtgdEFtiP483Q14ugl31KjLLliLB5tFbHRVCb9N
+ mpFd1+8aLH1RXpWOYIQ832QMdvzowSeUhVryBRxCl/J3JCs8W2711e9mdPy+bjGsHPUs
+ g8BA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736500779; x=1737105579;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Z+/NISODu1GRl/Mp6rLZjlsIN+RHbK+6rE+y/BBm/B8=;
- b=lA2D4UsZzl5JXzZ+UJ4oPoHCTy5qZCZl3LtV7IKDKSamxRT/FW4z6hLva6Wd5eKsBm
- t0QVSrnNrVwy6iAyzIczPCDkemLC8U3zlAbJEKPLWkEqeusGoK9U7siteEjASA8pl1QC
- 7MSbkL26yIcu5mmV2m63z+77CYECxTQZhDeHdBMc1YYlheDhq4TdAIbsoKOS2JHce78A
- XrOJoNOA72AG+qtYbaBowpsDoPtMWQ1H+61l2a6jGY0/uAfFfWdapkintK2ubhGK4LtT
- XgwCJ0IA25zCdHNKkZMP6A73AOuGkjEArj0s9Ox3nMBBtw0zNsiFSWI76/kuYlSMu3Tn
- SREA==
-X-Gm-Message-State: AOJu0Yx+5u9MmpCKCXsz2v+pyV/eg/y8MSIEr6ZKSM2uqM7AXP2oZKrc
- SQD/Ta1N0qF7vIjZB02rQD5NmO+qzyGAbr5Jye+qjtCt9YUUdEDZdUyH+tYzLN77Na0zkHSeEQS
- zMwM=
-X-Gm-Gg: ASbGncsz3DZ92Rf/hlwE6y0XSExvzSuIHHmkjICk4uBj1gOavtB4nHrCSJFQYsiMoSv
- AABbco2xDmHngmqjNIdf0TGo3CcuP8TY0oHwq4daJLm2MM2JlfCFXl1OE8Y9I9q87dcFjUCUmQa
- Lk0n+rafoVO8l1o5L87SlNfyWBo/sjP660N5G03MWEn3UREBd/h8LiLh1KmvzeUF+0QwVzFbyzy
- kpkvE0wPiZQ019LVZjIO2E8ePItntoMgQOEn/Z69QHWLqKSYkzwNMrbnG3P5FKO7ueUAv7zOuyb
- YecRLz/ggEuZ2T+j3EX2ZXgcEnmIrD0K5Qmk
-X-Google-Smtp-Source: AGHT+IEhk1njiWEUYu53V7hbctQxjIH6qmkWa3YYwrG7U1MgycWR/LACsxsYf6GbWgnjhhPRmF/yqA==
-X-Received: by 2002:a05:6000:1acc:b0:385:db39:2cf with SMTP id
- ffacd0b85a97d-38a872c943fmr8316848f8f.12.1736500779275; 
- Fri, 10 Jan 2025 01:19:39 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e9e03f62sm45803685e9.22.2025.01.10.01.19.37
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 10 Jan 2025 01:19:38 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v5 6/6] hw/qdev: Check machine_hotplug_handler in
- hotplug_unplug_allowed_common
-Date: Fri, 10 Jan 2025 10:19:08 +0100
-Message-ID: <20250110091908.64454-7-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250110091908.64454-1-philmd@linaro.org>
-References: <20250110091908.64454-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1736500789; x=1737105589;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Jk+07lK6VDS/396dsk7WIotgNr7btU0M8GRf8joHSLM=;
+ b=FDh5m8ekoIqxlE6tvs3AiL9JAQAijfbNWtqe0NoZLWeekYQcqD+3NymTuD6eTDoaQG
+ KwDKpZPwe2oEkDZxIPWQWyR1NWEwJk4p8WQ4swT/7EqcCVsNgXBhOZpqSKse8bw7Y0kn
+ 973sTRZ1GBO3CMahUWRMcw+E/JWanBKy8Lvc9YN5WwdlhHxx0H5lymyjp+pmf7lJJL1z
+ A5dkpFUjskyCLpRMii/VhDu3VvDhi9P3WKSj5kKqeVDUQaEJgipnk+2VmIqzmeHmdMRe
+ 7H5sJVDKa6WtDUFUAt1VrOVD+AJhEZiUOpYRh2QHeq646ZN1lI1thcAF+8wiiDe7wpGg
+ mMwA==
+X-Gm-Message-State: AOJu0YwDEq/BZYBt78r9ZU6KlEAZ97tQZtyv34zgQkqqF4Xz0LfMfjRj
+ aOYkSvJT0JNqQUahqiryaz9y7/NBIei49N8Ya/xGkXYHIcO5O0dlOKfoxQzO+aw=
+X-Gm-Gg: ASbGnctgurcwuuxpy/hJtehI6V+Ni1F5OXhZY05kkoxPdwhSoaHZteTpl9mDJK/d/VF
+ TQW80V7QiQW1kbT7yJ7vzbniZHlFOpG6TemPHsEr4/305unrb7BAo7RWd6nDtr9U5JSTn65eEcs
+ SxMJ91DKOKQy2byCjDZye20nd8hkdwXJ47boA0Uyl6V2b7f7gseGmoCafr2M9lNP78doRUT7zRc
+ SXKDspMM1JeQIIAm6lamU9EpxKzy6JMFgxqIFV0few0gB0fA8f8NJcoS4g=
+X-Google-Smtp-Source: AGHT+IGaJgpZPJPWEt+tsKs5qOiR85m+0m/bNR9gncVIIpAFKsKZhV6L6D+naawSNulLX5kGJb3/kQ==
+X-Received: by 2002:a05:6a00:3e01:b0:725:e057:c3dd with SMTP id
+ d2e1a72fcca58-72d21ff4b72mr14983503b3a.22.1736500789527; 
+ Fri, 10 Jan 2025 01:19:49 -0800 (PST)
+Received: from localhost ([157.82.203.37]) by smtp.gmail.com with UTF8SMTPSA id
+ d2e1a72fcca58-72d4067e682sm1145831b3a.125.2025.01.10.01.19.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 10 Jan 2025 01:19:49 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v8 0/2] Fix check-qtest-ppc64 sanitizer errors
+Date: Fri, 10 Jan 2025 18:19:33 +0900
+Message-Id: <20250110-san-v8-0-57a5a1be1bcf@daynix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-B4-Tracking: v=1; b=H4sIACXmgGcC/2XQz2rDMAwG8FcpPi9DluV/O+09xg62Y68+LBnJC
+ C0l7z41pjQjx0/o9yF0E3Oeap7F2+kmprzUuY4DB/dyEukchq/c1Z6zQEACg7qbw9CBt6GEQkU
+ mFLz5M+VSL1vLxyfnc51/x+m6lS7yPn14s/lFdtAVlRKhApTOv/fhOtTLaxq/xb1gwT2yDSEjq
+ yFG8GT62B+QeiILriHFKIIqxspEkMwB0RM5VA0Ro4CUTF8CpRwPSD+QBgnUkGbkIikgbfnE43l
+ mj9ojF8NIypKc9tH7aA/I7pFvyDLyKpHCYPl/9A+t6/oHfZ90S9UBAAA=
+To: Eduardo Habkost <eduardo@habkost.net>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>, 
+ BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ David Gibson <david@gibson.dropbear.id.au>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+ Alexey Kardashevskiy <aik@ozlabs.ru>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
+ Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
+ devel@daynix.com, Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.14-dev-fd6e3
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x635.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,80 +112,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+I saw various sanitizer errors when running check-qtest-ppc64. While
+I could just turn off sanitizers, I decided to tackle them this time.
 
-Commit 03fcbd9dc508 ("qdev: Check for the availability of a hotplug
-controller before adding a device") says:
+Unfortunately, GLib versions older than 2.81.0 do not free test data in
+some cases so some sanitizer errors remain. All sanitizer errors will be
+gone with this patch series combined with the following change for GLib:
+https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4120
 
- > The qdev_unplug() function contains a g_assert(hotplug_ctrl)
- > statement, so QEMU crashes when the user tries to device_add +
- > device_del a device that does not have a corresponding hotplug
- > controller.
-
- > The code in qdev_device_add() already checks whether the bus has a
- > proper hotplug controller, but for devices that do not have a
- > corresponding bus, here is no appropriate check available yet. In that
- > case we should check whether the machine itself provides a suitable
- > hotplug controller and refuse to plug the device if none is available.
-
-However, it forgot to add the corresponding check to qdev_unplug().
-
-Check the machine hotplug handler once in the common
-qdev_hotplug_unplug_allowed_common() helper so both hotplug
-and hot-unplug path are covered.
-
-Fixes: 7716b8ca74 ("qdev: HotplugHandler: Add support for unplugging BUS-less devices")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/core/qdev-hotplug.c |  7 +++++++
- system/qdev-monitor.c  | 14 +++-----------
- 2 files changed, 10 insertions(+), 11 deletions(-)
+Changes in v8:
+- Clarified that the memory region should be passed to object_ref()
+  when creating a reference internal to owner.
+- Link to v7: https://lore.kernel.org/r/20250109-san-v7-0-93c432a73024@daynix.com
 
-diff --git a/hw/core/qdev-hotplug.c b/hw/core/qdev-hotplug.c
-index f6422cd0e4e..e11597acd1f 100644
---- a/hw/core/qdev-hotplug.c
-+++ b/hw/core/qdev-hotplug.c
-@@ -48,6 +48,13 @@ static bool qdev_hotplug_unplug_allowed_common(DeviceState *dev, BusState *bus,
-                        bus->name);
-             return false;
-         }
-+    } else {
-+        if (!qdev_get_machine_hotplug_handler(dev)) {
-+            /* No bus, no machine hotplug handler --> device is not hotpluggable */
-+            error_setg(errp, "Device '%s' can not be hotplugged on this machine",
-+                       object_get_typename(OBJECT(dev)));
-+            return false;
-+        }
-     }
- 
-     return true;
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index 99b638c0aca..30f28eb8e4a 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -683,17 +683,9 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
-     dev = qdev_new(driver);
- 
-     /* Check whether the hotplug is allowed by the machine */
--    if (phase_check(PHASE_MACHINE_READY)) {
--        if (!qdev_hotplug_allowed(dev, bus, errp)) {
--            goto err_del_dev;
--        }
--
--        if (!bus && !qdev_get_machine_hotplug_handler(dev)) {
--            /* No bus, no machine hotplug handler --> device is not hotpluggable */
--            error_setg(errp, "Device '%s' can not be hotplugged on this machine",
--                       driver);
--            goto err_del_dev;
--        }
-+    if (phase_check(PHASE_MACHINE_READY) &&
-+        !qdev_hotplug_allowed(dev, bus, errp)) {
-+        goto err_del_dev;
-     }
- 
-     /*
+Changes in v7:
+- Don't open code memory_region_ref(). (Peter Xu)
+- Link to v6: https://lore.kernel.org/r/20250105-san-v6-0-11fc859b99b7@daynix.com
+
+Changes in v6:
+- Avoid referring owner as "the object that tracks the region's
+  reference count".
+- Noted that memroy_region_ref() and memroy_region_unref() do nothing
+  if the owner is not present.
+- Explicitly stated that memory_region_unref() may destroy the owner
+  along with the memory region itself.
+- Link to v5: https://lore.kernel.org/r/20250104-san-v5-0-8b430457b09d@daynix.com
+
+Changes in v5:
+- Rebased.
+- Merged four patches to update inline documentation into one
+- Link to v4: https://lore.kernel.org/r/20240823-san-v4-0-a24c6dfa4ceb@daynix.com
+
+Changes in v4:
+- Changed to create a reference to the subregion instead of its owner
+  when its owner equals to the container's owner.
+- Dropped R-b from patch "memory: Do not create circular reference with
+  subregion".
+- Rebased.
+- Link to v3: https://lore.kernel.org/r/20240708-san-v3-0-b03f671c40c6@daynix.com
+
+Changes in v3:
+- Added patch "memory: Clarify that we use owner's reference count".
+- Added patch "memory: Refer to docs/devel/memory.rst for 'owner'".
+- Fixed the message of patch
+  "memory: Do not create circular reference with subregion".
+- Dropped patch "cpu: Free cpu_ases" in favor of:
+  https://lore.kernel.org/r/20240607115649.214622-7-salil.mehta@huawei.com/
+  ("[PATCH V13 6/8] physmem: Add helper function to destroy CPU
+  AddressSpace")
+- Dropped patches "hw/ide: Convert macio ide_irq into GPIO line" and
+  "hw/ide: Remove internal DMA qemu_irq" in favor of commit efb359346c7a
+  ("hw/ide/macio: switch from using qemu_allocate_irq() to qdev input
+  GPIOs")
+- Dropped patch "hw/isa/vt82c686: Define a GPIO line between vt82c686
+  and i8259" in favor of:
+  https://patchew.org/QEMU/20240704205854.18537-1-shentey@gmail.com/
+  ("[PATCH 0/3] Resolve vt82c686 and piix4 qemu_irq memory leaks")
+- Dropped pulled patches.
+- Link to v2: https://lore.kernel.org/r/20240627-san-v2-0-750bb0946dbd@daynix.com
+
+Changes in v2:
+- Rebased to "[PATCH] cpu: fix memleak of 'halt_cond' and 'thread'".
+  (Philippe Mathieu-Daudé)
+- Converted IRQs into GPIO lines and removed one qemu_irq usage.
+  (Peter Maydell)
+- s/suppresses/fixes/ (Michael S. Tsirkin)
+- Corrected title of patch "hw/virtio: Free vqs after vhost_dev_cleanup()"
+  (was "hw/virtio: Free vqs before vhost_dev_cleanup()")
+- Link to v1: https://lore.kernel.org/r/20240626-san-v1-0-f3cc42302189@daynix.com
+
+---
+Akihiko Odaki (2):
+      memory: Update inline documentation
+      memory: Do not create circular reference with subregion
+
+ include/exec/memory.h | 59 ++++++++++++++++++++++++---------------------------
+ system/memory.c       | 24 +++++++++++++++++++--
+ 2 files changed, 50 insertions(+), 33 deletions(-)
+---
+base-commit: 38d0939b86e2eef6f6a622c6f1f7befda0146595
+change-id: 20240625-san-097afaf4f1c2
+
+Best regards,
 -- 
-2.47.1
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
