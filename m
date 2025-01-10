@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA9BCA08C42
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 10:36:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA75A08D03
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 10:54:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWBQq-0007Lm-Im; Fri, 10 Jan 2025 04:35:56 -0500
+	id 1tWBiE-0005Wr-Vu; Fri, 10 Jan 2025 04:53:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <roger.pau@cloud.com>)
- id 1tWBQo-0007L9-FB
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 04:35:54 -0500
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tWBi4-0005Vz-9f
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 04:53:44 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <roger.pau@cloud.com>)
- id 1tWBQm-00018G-OB
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 04:35:54 -0500
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-5d9882a936eso3308070a12.3
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 01:35:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tWBi2-0002zk-B5
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 04:53:44 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-436a03197b2so13394745e9.2
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 01:53:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=citrix.com; s=google; t=1736501751; x=1737106551; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Fl8lgxmL+/V36LVrcdeJiI3S1Q/yOAFdboy4Zc6RdL0=;
- b=VHdekNdcMd76t64MaVNV4qBk5uOaxoR6EkRJH+F3+DE0ezWKGz0L34ErhgcKT1b0y8
- vzb3exFJ8ud8fA+fvNe0kO5J4SIYVudKmVODKHzzQZHhgz49CxURZq0Iavo6sPgh6AEu
- vZ9A3NWOFoncWC6ggt+O5OcuBcWXCY/WT8oYQ=
+ d=linaro.org; s=google; t=1736502820; x=1737107620; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=GQQi0wfVpsiJ4GzzTEsErqYPY5ioFnOeUn+QDwjt5Uk=;
+ b=raHEYibX7saiXWKRiglhcCR9PQ8r9FK7M/io0zcL0QYA0hCy2I1pSpOJdepIdX7X2/
+ 6pfOlxCcCuBAjqjAAL9hVy9VAgyKY0MGlrmN+jjNiEKozWB9vDuCPU25R+Z5EAiuzLaH
+ aIfBHP1KyE1tnpGBH7f9uibsnaxnzUB6vMEg5o1m49NoTec3R4942cD0CJW1OtEL5Mg7
+ ftraZuSLTJkHNe01IDTYBd2rxxybgHw7TSafcysql3rcMXpryLQIyr7JSe3+vMohZy4r
+ mIIOaFBDzYycuvPBontMTRehRGR0opzD6nCqwWs4miDXgCdly0z0ENEcFK/ibxF9VNgl
+ lJcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736501751; x=1737106551;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Fl8lgxmL+/V36LVrcdeJiI3S1Q/yOAFdboy4Zc6RdL0=;
- b=Rs6KFDX0HMTWcHMMzrv8O0qZE/1xVB6wO20cylNN7/ilXYpVcwpcGkSIgjzwNuSNs4
- InxMizfXuxvg33TwnJkJna0ft2RgIXIt8P6bA8AyofgtB7wrfFMwmBL4Zp3dKlzbpEmP
- hqJ5AbQi8z+fCvIZIMjbbIUbpT9wovgk8e71QvVPcVWSqafdg509gbjDF/FKWqQBK1II
- ceKfmQ/BmgP8yk0QBRb7ix/t1ZyJMNHeXXef0qpQmTq0B4iuvKpFgB+hcviWKquKrCz3
- hxKTD7zZbBhzZWjA2/C9hKrGVRUVRWkC9CC62V6kiR5NNlzuaY6UBmfyBJfismhhgq/t
- wqhQ==
-X-Gm-Message-State: AOJu0Yz9noWGcTcUR2jyeMdUAwyyWb7GoOjlsnLvhxgHqIW9Uvt1XJOE
- 4e8efetqNNO+eVqxJWdmnNZiG147zh/zpu+jYzQM9UN9F87meRHX9a6AMn0IZoK/nPSaNYggVoG
- J
-X-Gm-Gg: ASbGncur/ovG22zpicppiihfeavZWFTDXe/+nXzsT+XUaEVeSCP75lBrfXbdY+F/eY2
- qENBvskA4bMmQt/Z5SwJuG3llLz30UyDY9yAm9Ds2sBWBFimULu+f1MVE2LV1yamBg2o/VmBcT2
- XRkmPDQQHK9bXVJP/dXWKWW53fobWZvRHCVxzTQK4XqEGvviW1DwBDWtNli5gUsYSvNDuymKan7
- 5iqoDlXPIoNOwr/9TszrPlM+3a5P61AZ0yryNVqm2WhEoxUIxX3yUDbsnToQlvgPmk=
-X-Google-Smtp-Source: AGHT+IEo9mpyvl6MxMhMK3vDEIeyTCqPvEtk3ZTUCN5P4v3M5pMXiIevI2rskGgecot8tg5zTq3PXg==
-X-Received: by 2002:a05:6402:50c6:b0:5d3:cfd0:8d3f with SMTP id
- 4fb4d7f45d1cf-5d972e4cc1amr9661346a12.24.1736501750881; 
- Fri, 10 Jan 2025 01:35:50 -0800 (PST)
-Received: from localhost ([84.78.159.3]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d9900c98d6sm1406017a12.35.2025.01.10.01.35.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 01:35:50 -0800 (PST)
-From: Roger Pau Monne <roger.pau@citrix.com>
-To: qemu-devel@nongnu.org
-Cc: Roger Pau Monne <roger.pau@citrix.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, xen-devel@lists.xenproject.org,
- qemu-block@nongnu.org
-Subject: [PATCH v2 2/2] xen: do not use '%ms' scanf specifier
-Date: Fri, 10 Jan 2025 10:35:31 +0100
-Message-ID: <20250110093531.23221-3-roger.pau@citrix.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20250110093531.23221-1-roger.pau@citrix.com>
-References: <20250110093531.23221-1-roger.pau@citrix.com>
+ d=1e100.net; s=20230601; t=1736502820; x=1737107620;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GQQi0wfVpsiJ4GzzTEsErqYPY5ioFnOeUn+QDwjt5Uk=;
+ b=WRenbn2ny33wevefjmgZ59H0JeCMdrEY9l/HSgBFt75LZsdNOM8g7bHQFbQJLWr/I1
+ 3d5K+AH1A5vzpaZy0oas+sbplhUpLdksJggrrFxQWrkHR2tAtyf8nwf7N5EC2bxGem/b
+ dFQMcpKrcJP1nrlKlTSZCu/oKVVmxG9ApRLLLKh3vqchJuFEbzWcokFdbiVFkqQZUHzk
+ senw6HDwgeJtzBYjrdQmFF/OIvXg2DO5SE/bgdJ2IYiIxM3ekOZSb4UkEFbBoLxzLnIs
+ ktYhggDq4OgpoxwYKn8+8kV0ycbXXTjcZW9AzR5g/BxvIdcAI2miDGxPsglFkFjnvNlM
+ eFdQ==
+X-Gm-Message-State: AOJu0Yw8yTgSOM4hcIrRgcrf0npGJ8Qpa6LXb/t8Uw9bhfHXNCPNq5YI
+ CtNupkaKDO43aGNeSDNYKNpfXtXpzX28CRmG0DIs0r0rPdA9rcS0Fg6/2TQZMRY=
+X-Gm-Gg: ASbGncuGCVxr8VoyPfWgokAVnTV3UsVo/1S4gWOajFDm8mt0gqa666iqY9OpJv2ivxD
+ bqS2ycT8V6vRz1hcIJ9JHdhV3n6BYB+y21dqgEYLzuaY7KdHisonQATcFgnfEXmUuKgRnwtTiE0
+ 1w3aYV5TsSY/W1r5ZtLhYlXY0SGtL86IWLDOco5nzIw2fBjKfwJfeOFVyhcwCsZcPJfwIFUunjC
+ tiamLehZf4NN56e62ubuY5bEnMjK0od5gMQMGTvXQl95qgohCbSB6F7so414wJTYAaBE8Gjofa1
+ 7ZMJZdnp0sbn5GL5gmt/nA==
+X-Google-Smtp-Source: AGHT+IFfnegUj5SYwLuqjcG6LnV/Nus0kVaG/bz0z+5xvJenmhmuPdqbAi1F94o2eb96QVNBX190Zw==
+X-Received: by 2002:a05:6000:1a8c:b0:382:450c:2607 with SMTP id
+ ffacd0b85a97d-38a872d2a99mr7299592f8f.4.1736502819930; 
+ Fri, 10 Jan 2025 01:53:39 -0800 (PST)
+Received: from [192.168.1.74] (88-187-86-199.subs.proxad.net. [88.187.86.199])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38a8e37d2dfsm4034029f8f.7.2025.01.10.01.53.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 10 Jan 2025 01:53:39 -0800 (PST)
+Message-ID: <0ced62b7-9219-405f-96e3-ea7c08366f46@linaro.org>
+Date: Fri, 10 Jan 2025 10:53:38 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=roger.pau@cloud.com; helo=mail-ed1-x530.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: Subject: [PATCH] loader: Add register setting support via cli
+To: Sam Price <thesamprice@gmail.com>, Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, alistair@alistair23.me
+References: <CAEekfLYJqvMDf5A_Yj=N6jMGQ4oj3rC+fv3xcCCfSBy8TDaY-Q@mail.gmail.com>
+ <CAKmqyKPo=a=RHUvvgKZLB_DJnEXO=7u25MwNfXu5EDjak=y0vg@mail.gmail.com>
+ <CAEekfLaW=-tpTo73or0Lv6zqOuCa67UoYSt9guyHFsw6yM37mg@mail.gmail.com>
+ <CAKmqyKNeks-12czF7sWP7gr_t=WU9g309_y5Xk58iFBiVcAijg@mail.gmail.com>
+ <CAEekfLYFsdzgRiscqJ4NsvpMsOaLrj_6QbjH-0f42mdggXbyDQ@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAEekfLYFsdzgRiscqJ4NsvpMsOaLrj_6QbjH-0f42mdggXbyDQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.436,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,125 +100,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'm' parameter used to request auto-allocation of the destination variable
-is not supported on FreeBSD, and as such leads to failures to parse.
+Hi Sam,
 
-What's more, the current usage of '%ms' with xs_node_scanf() is pointless, as
-it just leads to a double allocation of the same string.  Instead use
-xs_node_read() to read the whole xenstore node.
+On 8/1/25 03:28, Sam Price wrote:
+> I made the changes, and added documentation.
+> https://gitlab.com/thesamprice/qemu/-/compare/master...loader?from_project_id=11167699
+> 
+> I left it as [PREFIX]<RegNumber>
+> 
+> I can switch this to just RegNumber if desired.
+> 
+> I am still struggling with the email format sorry.
 
-Fixes: a783f8ad4ec9 ('xen: add a mechanism to automatically create XenDevice-s...')
-Fixes: 9b7737469080 ('hw/xen: update Xen console to XenDevice model')
-Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
----
-Changes since v2:
- - New version of xs_node_read().
- - Fix usage of %ms in xen-block.c
+Possibly SourceHut can help you, see:
+https://www.qemu.org/docs/master/devel/submitting-a-patch.html#if-you-cannot-send-patch-emails
 
-Changes since v1:
- - Introduce xs_node_read() helper.
- - Merge with errp fixes.
----
-Cc: Stefano Stabellini <sstabellini@kernel.org>
-Cc: Anthony PERARD <anthony@xenproject.org>
-Cc: Paul Durrant <paul@xen.org>
-Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Cc: Kevin Wolf <kwolf@redhat.com>
-Cc: Hanna Reitz <hreitz@redhat.com>
-Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: xen-devel@lists.xenproject.org
-Cc: qemu-block@nongnu.org
----
- hw/block/xen-block.c     |  3 ++-
- hw/char/xen_console.c    |  6 ++++--
- hw/xen/xen-bus.c         | 14 ++++++++++++--
- include/hw/xen/xen-bus.h |  1 +
- 4 files changed, 19 insertions(+), 5 deletions(-)
-
-diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
-index 306d38927cf4..034a18b70e28 100644
---- a/hw/block/xen-block.c
-+++ b/hw/block/xen-block.c
-@@ -239,7 +239,8 @@ static void xen_block_connect(XenDevice *xendev, Error **errp)
-         return;
-     }
- 
--    if (xen_device_frontend_scanf(xendev, "protocol", "%ms", &str) != 1) {
-+    str = xen_device_frontend_read(xendev, "protocol");
-+    if (!str) {
-         /* x86 defaults to the 32-bit protocol even for 64-bit guests. */
-         if (object_dynamic_cast(OBJECT(qdev_get_machine()), "x86-machine")) {
-             protocol = BLKIF_PROTOCOL_X86_32;
-diff --git a/hw/char/xen_console.c b/hw/char/xen_console.c
-index ef0c2912efa1..989e75fef88f 100644
---- a/hw/char/xen_console.c
-+++ b/hw/char/xen_console.c
-@@ -550,7 +550,8 @@ static void xen_console_device_create(XenBackendInstance *backend,
-         goto fail;
-     }
- 
--    if (xs_node_scanf(xsh, XBT_NULL, fe, "type", errp, "%ms", &type) != 1) {
-+    type = xs_node_read(xsh, XBT_NULL, NULL, errp, "%s/%s", fe, "type");
-+    if (!type) {
-         error_prepend(errp, "failed to read console device type: ");
-         goto fail;
-     }
-@@ -568,7 +569,8 @@ static void xen_console_device_create(XenBackendInstance *backend,
- 
-     snprintf(label, sizeof(label), "xencons%ld", number);
- 
--    if (xs_node_scanf(xsh, XBT_NULL, fe, "output", NULL, "%ms", &output) == 1) {
-+    output = xs_node_read(xsh, XBT_NULL, NULL, errp, "%s/%s", fe, "output");
-+    if (output) {
-         /*
-          * FIXME: sure we want to support implicit
-          * muxed monitors here?
-diff --git a/hw/xen/xen-bus.c b/hw/xen/xen-bus.c
-index adfc4efad035..85b92cded4e2 100644
---- a/hw/xen/xen-bus.c
-+++ b/hw/xen/xen-bus.c
-@@ -156,8 +156,8 @@ again:
-             !strcmp(key[i], "hotplug-status"))
-             continue;
- 
--        if (xs_node_scanf(xenbus->xsh, tid, path, key[i], NULL, "%ms",
--                          &val) == 1) {
-+        val = xs_node_read(xenbus->xsh, tid, NULL, NULL, "%s/%s", path, key[i]);
-+        if (val) {
-             qdict_put_str(opts, key[i], val);
-             free(val);
-         }
-@@ -650,6 +650,16 @@ int xen_device_frontend_scanf(XenDevice *xendev, const char *key,
-     return rc;
- }
- 
-+char *xen_device_frontend_read(XenDevice *xendev, const char *key)
-+{
-+    XenBus *xenbus = XEN_BUS(qdev_get_parent_bus(DEVICE(xendev)));
-+
-+    g_assert(xenbus->xsh);
-+
-+    return xs_node_read(xenbus->xsh, XBT_NULL, NULL, NULL, "%s/%s",
-+                        xendev->frontend_path, key);;
-+}
-+
- static void xen_device_frontend_set_state(XenDevice *xendev,
-                                           enum xenbus_state state,
-                                           bool publish)
-diff --git a/include/hw/xen/xen-bus.h b/include/hw/xen/xen-bus.h
-index 38d40afa3798..2adb2af83919 100644
---- a/include/hw/xen/xen-bus.h
-+++ b/include/hw/xen/xen-bus.h
-@@ -91,6 +91,7 @@ void xen_device_frontend_printf(XenDevice *xendev, const char *key,
- int xen_device_frontend_scanf(XenDevice *xendev, const char *key,
-                               const char *fmt, ...)
-     G_GNUC_SCANF(3, 4);
-+char *xen_device_frontend_read(XenDevice *xendev, const char *key);
- 
- void xen_device_set_max_grant_refs(XenDevice *xendev, unsigned int nr_refs,
-                                    Error **errp);
--- 
-2.46.0
+> ---
+> docs/system/generic-loader.rst | 98 ++++++++++++++++++++++++++++++++
+> hw/core/generic-loader.c | 46 +++++++++++----
+> include/hw/core/generic-loader.h | 7 +++
+> 3 files changed, 139 insertions(+), 12 deletions(-)
 
 
