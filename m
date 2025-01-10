@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563EBA0932A
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 15:15:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E744A09325
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 15:15:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWFlA-0004DE-W8; Fri, 10 Jan 2025 09:13:13 -0500
+	id 1tWFlC-0004Dc-K0; Fri, 10 Jan 2025 09:13:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tWFl6-0004Ax-Jc
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 09:13:08 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tWFl9-0004Bd-2B
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 09:13:11 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tWFl4-0004Ek-QN
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 09:13:08 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50ACHjjR020129;
- Fri, 10 Jan 2025 14:13:01 GMT
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tWFl7-0004FA-8I
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 09:13:10 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50A3rKHP028230;
+ Fri, 10 Jan 2025 14:13:03 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=oBBwNUe0FHAARyM/9
- yvbQbES/7VdqDS8Q9rkdH1xSfE=; b=GjZP5uxis5TgYp5XyqxiXuNndk83+wQ2+
- NF78XXEYkJzo6n8o/gdyqeuCUQbgiZPnjUuVZM7s53iKSE5+akTzuPLNusWBVLSZ
- 15Ewo2ObNB3gWdUoKCwaKAdSu7odpJOQGpj4jldoq1bWMEpZJHXMKJzQY0EN/XJY
- Iyu9H+YP8NdNQokbrMnGCDDuRLkuR8Vh4THWZtEEJrnzfMtwGdHrXWAvwC9LMYOk
- n/EK0nLbOHW5hQBvsYBYdGXq3o7hLImdqiqdSiPykeJUy0MAfof/tgWyZ30qepmk
- +w7b8PvG2RztE7d1K2XYvTWtyJG1O23dp+JBjftYKCJqQshMwM1/g==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 442r9atyye-1
+ :mime-version:references:subject:to; s=pp1; bh=LB53lNjHAZiWLw1xx
+ c6MqJeZMlE8LD1UM0ceFdsZtp8=; b=jBvie0SDV0gINDyrhVY8iyRf5b87p5Emk
+ 5mCXXhJuG49HXJkGM4T6c25n28/AFqowaP/C5RVD5lBuEvIGVHLSVt5b6/ZxO91M
+ ujZrUKjPyZyi+BXQi9fDz7z+VAibuYIYDuLpFxo0Ikdme/DSuzOxTZajgITYlPhk
+ HHRG5JvwxqqKIh8E//HCisKvN+nID6v0JrQSB6oBLkxmcfCS5LmYdrDOy5kv7UKw
+ FNLiBDdgWx9m8uEsrk18f4uHoYhIck5Ifsx0A80obo2Dzyv6JRRUWmy7H+lUJAdw
+ zxzfMpDWs1mb5ngGgfZ7H+sM3pzJ92RQn+c5+uQLbu/kbEPQiGmxg==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 442v1q2bgc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 Jan 2025 14:13:01 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50AAqWNp026183;
- Fri, 10 Jan 2025 14:13:00 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 43yj12j96v-1
+ Fri, 10 Jan 2025 14:13:02 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50ADHH2v016669;
+ Fri, 10 Jan 2025 14:13:01 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43ygtmafyt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 Jan 2025 14:13:00 +0000
+ Fri, 10 Jan 2025 14:13:01 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
  [10.20.54.102])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 50AECwSS54591816
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 50AECxSs8061402
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 10 Jan 2025 14:12:58 GMT
+ Fri, 10 Jan 2025 14:12:59 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 90CF22004F;
+ by IMSVA (Postfix) with ESMTP id 680BE2004B;
+ Fri, 10 Jan 2025 14:12:59 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AB08E20043;
  Fri, 10 Jan 2025 14:12:58 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D252720040;
- Fri, 10 Jan 2025 14:12:57 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.179.24.22])
  by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 10 Jan 2025 14:12:57 +0000 (GMT)
+ Fri, 10 Jan 2025 14:12:58 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Warner Losh <imp@bsdimp.com>, Riku Voipio <riku.voipio@iki.fi>,
  Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -65,28 +65,28 @@ Cc: Kyle Evans <kevans@freebsd.org>,
  qemu-devel@nongnu.org,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v5 2/8] gdbstub: Try unlinking the unix socket before binding
-Date: Fri, 10 Jan 2025 15:09:34 +0100
-Message-ID: <20250110141255.2328-3-iii@linux.ibm.com>
+Subject: [PATCH v5 3/8] user: Introduce user/signal.h
+Date: Fri, 10 Jan 2025 15:09:35 +0100
+Message-ID: <20250110141255.2328-4-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250110141255.2328-1-iii@linux.ibm.com>
 References: <20250110141255.2328-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: UEdwANMgB4UeKCi8bfVeG1vq6R7uTp1Y
-X-Proofpoint-ORIG-GUID: UEdwANMgB4UeKCi8bfVeG1vq6R7uTp1Y
+X-Proofpoint-GUID: YH5Z3QLni1B5ZQsWhEmbok6vmTxMuVYV
+X-Proofpoint-ORIG-GUID: YH5Z3QLni1B5ZQsWhEmbok6vmTxMuVYV
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0
- lowpriorityscore=0 bulkscore=0 malwarescore=0 adultscore=0 suspectscore=0
- mlxlogscore=915 impostorscore=0 priorityscore=1501 mlxscore=0 phishscore=0
+ bulkscore=0 mlxlogscore=967
+ priorityscore=1501 spamscore=0 impostorscore=0 adultscore=0 suspectscore=0
+ lowpriorityscore=0 clxscore=1011 mlxscore=0 phishscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501100106
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ definitions=main-2501100110
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -110,116 +110,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In case an emulated process execve()s another emulated process, bind()
-will fail, because the socket already exists. So try deleting it. Use
-the existing unix_listen() function which does this. Link qemu-user
-with qemu-sockets.c and add the monitor_get_fd() stub.
+gdbstub needs target_to_host_signal(), so move its declaration to a
+public header.
 
-Note that it is not possible to handle this in do_execv(): deleting
-gdbserver_user_state.socket_path before safe_execve() is not correct,
-because the latter may fail, and afterwards we may lose control.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Warner Losh <imp@bsdimp.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- gdbstub/user.c     | 24 +++++-------------------
- stubs/meson.build  |  2 ++
- stubs/monitor-fd.c |  9 +++++++++
- util/meson.build   |  2 ++
- 4 files changed, 18 insertions(+), 19 deletions(-)
- create mode 100644 stubs/monitor-fd.c
+ bsd-user/signal-common.h   |  1 -
+ bsd-user/signal.c          |  1 +
+ include/user/signal.h      | 23 +++++++++++++++++++++++
+ linux-user/signal-common.h |  1 -
+ linux-user/signal.c        |  1 +
+ linux-user/syscall.c       |  1 +
+ 6 files changed, 26 insertions(+), 2 deletions(-)
+ create mode 100644 include/user/signal.h
 
-diff --git a/gdbstub/user.c b/gdbstub/user.c
-index ef52f249ce9..2c500eb1e23 100644
---- a/gdbstub/user.c
-+++ b/gdbstub/user.c
-@@ -10,6 +10,7 @@
-  */
+diff --git a/bsd-user/signal-common.h b/bsd-user/signal-common.h
+index 77d7c7a78b7..4e634e04a30 100644
+--- a/bsd-user/signal-common.h
++++ b/bsd-user/signal-common.h
+@@ -42,7 +42,6 @@ void process_pending_signals(CPUArchState *env);
+ void queue_signal(CPUArchState *env, int sig, int si_type,
+                   target_siginfo_t *info);
+ void signal_init(void);
+-int target_to_host_signal(int sig);
+ void target_to_host_sigset(sigset_t *d, const target_sigset_t *s);
  
- #include "qemu/osdep.h"
-+#include "qapi/error.h"
- #include "qemu/bitops.h"
- #include "qemu/cutils.h"
- #include "qemu/sockets.h"
-@@ -317,9 +318,9 @@ static bool gdb_accept_socket(int gdb_fd)
- static int gdbserver_open_socket(const char *path)
- {
-     g_autoptr(GString) buf = g_string_new("");
--    struct sockaddr_un sockaddr = {};
-     char *pid_placeholder;
--    int fd, ret;
-+    Error *err = NULL;
-+    int fd;
- 
-     pid_placeholder = strstr(path, "%d");
-     if (pid_placeholder != NULL) {
-@@ -329,24 +330,9 @@ static int gdbserver_open_socket(const char *path)
-         path = buf->str;
-     }
- 
--    fd = socket(AF_UNIX, SOCK_STREAM, 0);
-+    fd = unix_listen(path, &err);
-     if (fd < 0) {
--        perror("create socket");
--        return -1;
--    }
--
--    sockaddr.sun_family = AF_UNIX;
--    pstrcpy(sockaddr.sun_path, sizeof(sockaddr.sun_path) - 1, path);
--    ret = bind(fd, (struct sockaddr *)&sockaddr, sizeof(sockaddr));
--    if (ret < 0) {
--        perror("bind socket");
--        close(fd);
--        return -1;
--    }
--    ret = listen(fd, 1);
--    if (ret < 0) {
--        perror("listen socket");
--        close(fd);
-+        warn_report_err(err);
-         return -1;
-     }
- 
-diff --git a/stubs/meson.build b/stubs/meson.build
-index e91614a874d..17168d03eed 100644
---- a/stubs/meson.build
-+++ b/stubs/meson.build
-@@ -61,6 +61,8 @@ if have_user
-   if not (have_system or have_tools)
-     stub_ss.add(files('qdev.c'))
-   endif
-+
-+  stub_ss.add(files('monitor-fd.c'))
- endif
- 
- if have_system
-diff --git a/stubs/monitor-fd.c b/stubs/monitor-fd.c
+ /*
+diff --git a/bsd-user/signal.c b/bsd-user/signal.c
+index b4e1458237a..8c51f6ce653 100644
+--- a/bsd-user/signal.c
++++ b/bsd-user/signal.c
+@@ -24,6 +24,7 @@
+ #include "user/cpu_loop.h"
+ #include "exec/page-protection.h"
+ #include "user/page-protection.h"
++#include "user/signal.h"
+ #include "user/tswap-target.h"
+ #include "gdbstub/user.h"
+ #include "signal-common.h"
+diff --git a/include/user/signal.h b/include/user/signal.h
 new file mode 100644
-index 00000000000..9bb67498850
+index 00000000000..19b6b9e5ddc
 --- /dev/null
-+++ b/stubs/monitor-fd.c
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
++++ b/include/user/signal.h
+@@ -0,0 +1,23 @@
++/*
++ * Signal-related declarations.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#ifndef USER_SIGNAL_H
++#define USER_SIGNAL_H
 +
-+#include "qemu/osdep.h"
-+#include "monitor/monitor.h"
++#ifndef CONFIG_USER_ONLY
++#error Cannot include this header from system emulation
++#endif
 +
-+int monitor_get_fd(Monitor *mon, const char *fdname, Error **errp)
-+{
-+    abort();
-+}
-diff --git a/util/meson.build b/util/meson.build
-index 5d8bef98912..780b5977a89 100644
---- a/util/meson.build
-+++ b/util/meson.build
-@@ -84,6 +84,8 @@ if have_block or have_ga
-   util_ss.add(files('qemu-coroutine.c', 'qemu-coroutine-lock.c', 'qemu-coroutine-io.c'))
-   util_ss.add(files(f'coroutine-@coroutine_backend@.c'))
-   util_ss.add(files('thread-pool.c', 'qemu-timer.c'))
-+endif
-+if have_block or have_ga or have_user
-   util_ss.add(files('qemu-sockets.c'))
- endif
- if have_block
++/**
++ * target_to_host_signal:
++ * @sig: target signal.
++ *
++ * On success, return the host signal between 0 (inclusive) and NSIG
++ * (exclusive) corresponding to the target signal @sig. Return any other value
++ * on failure.
++ */
++int target_to_host_signal(int sig);
++
++#endif
+diff --git a/linux-user/signal-common.h b/linux-user/signal-common.h
+index 8584d9ecc2a..196d2406f86 100644
+--- a/linux-user/signal-common.h
++++ b/linux-user/signal-common.h
+@@ -61,7 +61,6 @@ void queue_signal(CPUArchState *env, int sig, int si_type,
+                   target_siginfo_t *info);
+ void host_to_target_siginfo(target_siginfo_t *tinfo, const siginfo_t *info);
+ void target_to_host_siginfo(siginfo_t *info, const target_siginfo_t *tinfo);
+-int target_to_host_signal(int sig);
+ int host_to_target_signal(int sig);
+ long do_sigreturn(CPUArchState *env);
+ long do_rt_sigreturn(CPUArchState *env);
+diff --git a/linux-user/signal.c b/linux-user/signal.c
+index 087c4d270e4..bffbef235cd 100644
+--- a/linux-user/signal.c
++++ b/linux-user/signal.c
+@@ -36,6 +36,7 @@
+ #include "user/cpu_loop.h"
+ #include "user/page-protection.h"
+ #include "user/safe-syscall.h"
++#include "user/signal.h"
+ #include "tcg/tcg.h"
+ 
+ /* target_siginfo_t must fit in gdbstub's siginfo save area. */
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 78c7c0b34ef..53837113c4a 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -138,6 +138,7 @@
+ #include "user-mmap.h"
+ #include "user/page-protection.h"
+ #include "user/safe-syscall.h"
++#include "user/signal.h"
+ #include "qemu/guest-random.h"
+ #include "qemu/selfmap.h"
+ #include "user/syscall-trace.h"
 -- 
 2.47.1
 
