@@ -2,76 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E06A09395
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 15:34:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED500A09445
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 15:52:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWG4Q-0002DX-6O; Fri, 10 Jan 2025 09:33:06 -0500
+	id 1tWGM9-0001Bn-Qs; Fri, 10 Jan 2025 09:51:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tWG4N-0002CT-Ks
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 09:33:03 -0500
-Received: from mgamail.intel.com ([192.198.163.7])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tWG4K-0006dO-2h
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 09:33:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736519580; x=1768055580;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=wQakl14sIa/TQlT+I/DKr4worOCNT8tEroVig3IR2oY=;
- b=g/0tbY+tP+Y6PSMYhaHEPwQUB/530LpE9nbD1aR5ips6GgaYtDab8nc8
- Wjrbtz928FZM526XnRHKPfhmBbsbrPbEnYGBTLuqdJgrfiCTTNMzCd4VW
- nrWaKfLiVGhDLYacUXGEYStS/uB5cNVGzP+krlKLOegI3zR9z3B8W1m0E
- KdHavJHtWz70ZDpOrN4LFLvTgI0dpAH39/k+g/W71603anBZUvglKeL+b
- 9OVGOP8wn/BC/hfo8OLSmScErAKfyQUWb/SYaXLahU9VB+g/Xp6inyCUK
- StvWu6ZzsfZOVxFFX68HrOR8qnh4D+3nZT1wFnfS6VG+RWaAZHJEdLDOa g==;
-X-CSE-ConnectionGUID: OYOgOFEyQvC2k+VBopUsmA==
-X-CSE-MsgGUID: 8sNoVPSwS66zDw2mEXGiwQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11311"; a="62185484"
-X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; d="scan'208";a="62185484"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jan 2025 06:32:49 -0800
-X-CSE-ConnectionGUID: 1NZVCdmoSluNKfvaeEt6Dg==
-X-CSE-MsgGUID: +ATDI3lWQk+/tDoMUiKj2A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="108790792"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa003.jf.intel.com with ESMTP; 10 Jan 2025 06:32:45 -0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Alireza Sanaee <alireza.sanaee@huawei.com>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v7 RESEND 0/5] i386: Support SMP Cache Topology
-Date: Fri, 10 Jan 2025 22:51:10 +0800
-Message-Id: <20250110145115.1574345-1-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tWGM4-00018I-5h
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 09:51:22 -0500
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tWGM1-0000om-2p
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 09:51:19 -0500
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-2f4448bf96fso2860155a91.0
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 06:51:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1736520673; x=1737125473; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=XjgY0HgB1/m+MlTavdon8zZqE7x250kOtu7Nc4lvl6k=;
+ b=WTFog+U6cCTda9Nwd8cfxgIXHXdGzrnz1RQrcvG/AMMODCLWTi2Mb1QQu4xLPiEZeA
+ BwqzzJckK8fn8wYk5ru09/nkZebK59fnraDA3mKVfFVhGT4aDAzv6rReqBQe1Hq3sl0y
+ 1FT6ibiiCpdmfJFhFFHmq5LXO4tArMG4g22gMbHVEDhlhIegli2faSb4HXKBbfap7+W6
+ 1w11pFjCkhBx+idVaroweSLKWJ6lbcICDNgeB9kQbvXIi+zNHG8VmvPacEDVufzQdkPj
+ jAGYR6snNTvL1rXsYnln7OMsAehVhTVHH56vqcyCsg4FPvDuxEZEjiuyVwhe/YXdLbKh
+ vCpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736520673; x=1737125473;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=XjgY0HgB1/m+MlTavdon8zZqE7x250kOtu7Nc4lvl6k=;
+ b=RyKE7bL/bcKugi2FS/qkN6o63LfnDrtoXQDtHtAVU8ylnJFedcdFWqYKCQZNxLOzl8
+ Ty2sImhZTYXLkpHDVhc83ZjOIQ1AdZLXZZLl024J53LrBSsOPev0FV0c8Y/dcz+JS74f
+ toxtn+Fz/V8rq9dsEJSdXBhV+3hCRHKR4vV25EdlwwHIRpq9ZRHuzNxVP8HBOqeCcnPs
+ dxZYhgv30vkCqtAVMtbEQ+BjOvJHxqkgS6xsTKbSarCke9l46ix7v3d5yTp8chSWSxQ9
+ 4DqVB01AFwQsLErQOiR7NFCaFm2QSYZh1XaNJslQJujZyAyCrrJQqa/JXWXatzsR4ar1
+ CIfg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXYWzNGkWuPBOE3Kjek+wmLwyG95G2FY+hhFA9oWXxuVty2nINxoeV7tyEk4FDBLIPXNpJ1vtBTGfGB@nongnu.org
+X-Gm-Message-State: AOJu0Yx4yhqe6DsUPk3ws+kSrsEcbgEwA3uuczW0XUCZzznVHshEfaLQ
+ peLtU4apRlHcd55R1EwFVV8U2tYjzLbF1ZHHGhIJsUcIqrzGFpe04VbJSNVlwIA=
+X-Gm-Gg: ASbGncsUbSK/j1/ZT2Q/KLuGF+pHKuF8CPNRVnC34tpMacHI7BYmLvBLpFYeNxfJVic
+ xb6CByzRiNEBQTYs247mU95j+IKiq91Q0TnasN+iDtcy/tQ3/Hou0BimJhjrb/VKaY3roviJJoU
+ HHBfuzkU8J3TdMeSS2EISFvYgEf9eDJqQwkY91wMtUkUeQ/Ej1w9oihTdk+AtuQz50IXyoLw+1+
+ fIP/qRj5X6el3788eunhHb0rQqrzHFKvdoP0iicnUtYdxieUDxTmPl0DwEGKGYhe7mjgEmDvi/y
+ Hehopts4XFzmO3qxo56TPuKFcIx+AtQ=
+X-Google-Smtp-Source: AGHT+IGW7lQUnS1tTMu0r/fU4CerrXiXk2gwbWMPgzZLUak0EqnQ3ICZ7Vsw0LePKSxTPkqeV7Ik/w==
+X-Received: by 2002:a17:90a:d003:b0:2ee:7c65:ae8e with SMTP id
+ 98e67ed59e1d1-2f548eae095mr16629055a91.11.1736520673291; 
+ Fri, 10 Jan 2025 06:51:13 -0800 (PST)
+Received: from [192.168.132.227] (76-14-228-138.or.wavecable.com.
+ [76.14.228.138]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2f5593fecc6sm3411667a91.19.2025.01.10.06.51.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 10 Jan 2025 06:51:12 -0800 (PST)
+Message-ID: <2af438ca-644f-4d8f-9a5d-1cedbc698a28@linaro.org>
+Date: Fri, 10 Jan 2025 06:51:10 -0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 50/81] tcg: Add all_outop[]
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: pierrick.bouvier@linaro.org
+References: <20250107080112.1175095-1-richard.henderson@linaro.org>
+ <20250107080112.1175095-51-richard.henderson@linaro.org>
+ <fd696582-0b9f-48b0-8721-2afc0a28c6ea@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <fd696582-0b9f-48b0-8721-2afc0a28c6ea@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.432,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,111 +103,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi folks,
+On 1/9/25 15:21, Philippe Mathieu-Daudé wrote:
+> On 7/1/25 09:00, Richard Henderson wrote:
+>> Add infrastructure for more consolidated output of opcodes.
+>> The base structure allows for constraints to be either static
+>> or dynamic, and for the existence of those constraints to
+>> replace TCG_TARGET_HAS_* and the bulk of tcg_op_supported.
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   tcg/tcg.c | 60 ++++++++++++++++++++++++++++++++++++++++++++++++-------
+>>   1 file changed, 53 insertions(+), 7 deletions(-)
+> 
+> 
+>> +static const TCGOutOp outop_notreached = {
+>> +    .static_constraint = C_NotReached,
+>> +};
+>> +
+>> +static const TCGOutOp * const all_outop[NB_OPS] = {
+>> +    [0 ... NB_OPS - 1] = &outop_notreached,
+>> +};
+> 
+> 
+>> @@ -3331,18 +3370,25 @@ static void process_constraint_sets(TCGContext *s)
+>>   static const TCGArgConstraint *opcode_args_ct(const TCGOp *op)
+>>   {
+>> -    const TCGOpDef *def = &tcg_op_defs[op->opc];
+>> +    TCGOpcode opc = op->opc;
+>> +    TCGType type = TCGOP_TYPE(op);
+>> +    unsigned flags = TCGOP_FLAGS(op);
+>> +    const TCGOpDef *def = &tcg_op_defs[opc];
+>> +    const TCGOutOp *outop = all_outop[opc];
+>>       TCGConstraintSetIndex con_set;
+>> -#ifdef CONFIG_DEBUG_TCG
+>> -    assert(tcg_op_supported(op->opc, TCGOP_TYPE(op), TCGOP_FLAGS(op)));
+>> -#endif
+>> -
+>>       if (def->flags & TCG_OPF_NOT_PRESENT) {
+>>           return empty_cts;
+>>       }
+>> -    con_set = tcg_target_op_def(op->opc, TCGOP_TYPE(op), TCGOP_FLAGS(op));
+>> +    if (outop) {
+> 
+> Always true,
+> 
+>> +        con_set = outop->static_constraint;
+>> +        if (con_set == C_Dynamic) {
+>> +            con_set = outop->dynamic_constraint(type, flags);
+>> +        }
+>> +    } else {
+>> +        con_set = tcg_target_op_def(opc, type, flags);
+> 
+> so unreachable. Gremlins?
+Yes, this was the midnight gremlin of which we spoke.
+The outop_unreached thing has to wait until the end of the conversion.
 
-This is my v7 resend version (updated the commit message of origin
-v7's Patch 1).
 
-Compared with v6 [1], v7 dropped the "thread" level cache topology
-(cache per thread):
-
- - Patch 1 is the new patch to reject "thread" parameter for smp-cache.
- - Ptach 2 dropped cache per thread support.
- (Others remain unchanged.)
-
-There're several reasons:
-
- * Currently, neither i386 nor ARM have real hardware support for per-
-   thread cache.
- * ARM can't support thread level cache in device tree. [2].
-
-So it is unnecessary to support it at this moment, even though per-
-thread cache might have potential scheduling benefits for VMs without
-CPU affinity.
-
-In the future, if there is a clear demand for this feature, the correct
-approach would be to add a new control field in MachineClass.smp_props
-and enable it only for the machines that require it.
-
-
-This series is based on the master branch at commit aa3a285b5bc5 ("Merge
-tag 'mem-2024-12-21' of https://github.com/davidhildenbrand/qemu into
-staging").
-
-Smp-cache support of ARM side can be found at [3].
-
-
-Background
-==========
-
-The x86 and ARM (RISCV) need to allow user to configure cache properties
-(current only topology):
- * For x86, the default cache topology model (of max/host CPU) does not
-   always match the Host's real physical cache topology. Performance can
-   increase when the configured virtual topology is closer to the
-   physical topology than a default topology would be.
- * For ARM, QEMU can't get the cache topology information from the CPU
-   registers, then user configuration is necessary. Additionally, the
-   cache information is also needed for MPAM emulation (for TCG) to
-   build the right PPTT. (Originally from Jonathan)
-
-
-About smp-cache
-===============
-
-The API design has been discussed heavily in [4].
-
-Now, smp-cache is implemented as a array integrated in -machine. Though
--machine currently can't support JSON format, this is the one of the
-directions of future.
-
-An example is as follows:
-
-smp_cache=smp-cache.0.cache=l1i,smp-cache.0.topology=core,smp-cache.1.cache=l1d,smp-cache.1.topology=core,smp-cache.2.cache=l2,smp-cache.2.topology=module,smp-cache.3.cache=l3,smp-cache.3.topology=die
-
-"cache" specifies the cache that the properties will be applied on. This
-field is the combination of cache level and cache type. Now it supports
-"l1d" (L1 data cache), "l1i" (L1 instruction cache), "l2" (L2 unified
-cache) and "l3" (L3 unified cache).
-
-"topology" field accepts CPU topology levels including "core", "module",
-"cluster", "die", "socket", "book", "drawer" and a special value
-"default". (Note, now, in v7, smp-cache doesn't support "thread".)
-
-The "default" is introduced to make it easier for libvirt to set a
-default parameter value without having to care about the specific
-machine (because currently there is no proper way for machine to
-expose supported topology levels and caches).
-
-If "default" is set, then the cache topology will follow the
-architecture's default cache topology model. If other CPU topology level
-is set, the cache will be shared at corresponding CPU topology level.
-
-[1]: Patch v6: https://lore.kernel.org/qemu-devel/20241219083237.265419-1-zhao1.liu@intel.com/
-[2]: Gap of cache per thread for ARM: https://lore.kernel.org/qemu-devel/20250110114100.00002296@huawei.com/T/#m50c37fa5d372feac8e607c279cd446da3e22a12c
-[3]: ARM smp-cache: https://lore.kernel.org/qemu-devel/20250102152012.1049-1-alireza.sanaee@huawei.com/
-[4]: API disscussion: https://lore.kernel.org/qemu-devel/8734ndj33j.fsf@pond.sub.org/
-
-Thanks and Best Regards,
-Zhao
----
-Alireza Sanaee (1):
-  i386/cpu: add has_caches flag to check smp_cache configuration
-
-Zhao Liu (4):
-  hw/core/machine: Reject thread level cache
-  i386/cpu: Support module level cache topology
-  i386/cpu: Update cache topology with machine's configuration
-  i386/pc: Support cache topology in -machine for PC machine
-
- hw/core/machine-smp.c |  9 ++++++
- hw/i386/pc.c          |  4 +++
- include/hw/boards.h   |  3 ++
- qemu-options.hx       | 30 +++++++++++++++++-
- target/i386/cpu.c     | 71 ++++++++++++++++++++++++++++++++++++++++++-
- 5 files changed, 115 insertions(+), 2 deletions(-)
-
--- 
-2.34.1
-
+r~
 
