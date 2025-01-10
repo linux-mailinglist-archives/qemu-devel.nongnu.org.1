@@ -2,90 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9663BA0901C
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 13:19:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BFA1A0900E
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 13:15:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWDua-0001UY-6u; Fri, 10 Jan 2025 07:14:48 -0500
+	id 1tWDuc-0001VG-DZ; Fri, 10 Jan 2025 07:14:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tWDuX-0001U6-Et
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 07:14:45 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tWDuZ-0001Ue-HM
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 07:14:47 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tWDuV-0003MX-SF
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 07:14:45 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tWDuX-0003Mr-MG
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 07:14:47 -0500
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 9C95821177;
- Fri, 10 Jan 2025 12:14:42 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 02E811F396;
+ Fri, 10 Jan 2025 12:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736511282; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1736511284; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6xgxcPNXD8/1JJMtCAc0UgSzFRJ8xnbkzFW1a99qkqQ=;
- b=n3xSvOQciEkSCOEb/jhQ9IxXV+Yq+YWa6lbxYTaAH1uC8LjPw1//3ySuptrROPT93X4nXR
- d5nigZeKMErMIyouDS0VsyHHqqJtWeY3xwwq1B3329/9WVV6QDtFeIEqkIV3RQH6dMA1G/
- lgpNvuZBDe+WftxByZXA1ErXimMVunE=
+ bh=6kIWfLxhsdCf6y04eUa0wP3p8vBAtKGDzSyJUEVYh1E=;
+ b=m/NHww7HLudxrwDYJgE2HljNh5yk+H6QOX35RSvJzelcaXbsCA0DU386A2FQwger0zYve1
+ +UOpBguhxy8pxQ6q/m5U/N+LP3/YdH9EBd6gElwkyZ8JTUduk7VwIXn2o3Zgg5PEjcH8S+
+ 76IFx87DnYjoW0gtadY1brrwaHjWgSI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736511282;
+ s=susede2_ed25519; t=1736511284;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6xgxcPNXD8/1JJMtCAc0UgSzFRJ8xnbkzFW1a99qkqQ=;
- b=NSqOjf77YLkKaO9c9fNYqEttW3CvIAMwhDRW+sjgI/3KhiYNKoU843ZdbMmxZL0kLoBNsK
- EvV9dGf65zDX+eBQ==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=n3xSvOQc;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=NSqOjf77
+ bh=6kIWfLxhsdCf6y04eUa0wP3p8vBAtKGDzSyJUEVYh1E=;
+ b=sMHApRVnAh34nRIu0bcnFajPgK32SD7je7Huz7aAee8jdds0uzpvv/eaHaJAz2QuC81JGt
+ WBoo0rukvbE+U1CQ==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b="m/NHww7H";
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sMHApRVn
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736511282; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1736511284; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6xgxcPNXD8/1JJMtCAc0UgSzFRJ8xnbkzFW1a99qkqQ=;
- b=n3xSvOQciEkSCOEb/jhQ9IxXV+Yq+YWa6lbxYTaAH1uC8LjPw1//3ySuptrROPT93X4nXR
- d5nigZeKMErMIyouDS0VsyHHqqJtWeY3xwwq1B3329/9WVV6QDtFeIEqkIV3RQH6dMA1G/
- lgpNvuZBDe+WftxByZXA1ErXimMVunE=
+ bh=6kIWfLxhsdCf6y04eUa0wP3p8vBAtKGDzSyJUEVYh1E=;
+ b=m/NHww7HLudxrwDYJgE2HljNh5yk+H6QOX35RSvJzelcaXbsCA0DU386A2FQwger0zYve1
+ +UOpBguhxy8pxQ6q/m5U/N+LP3/YdH9EBd6gElwkyZ8JTUduk7VwIXn2o3Zgg5PEjcH8S+
+ 76IFx87DnYjoW0gtadY1brrwaHjWgSI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736511282;
+ s=susede2_ed25519; t=1736511284;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6xgxcPNXD8/1JJMtCAc0UgSzFRJ8xnbkzFW1a99qkqQ=;
- b=NSqOjf77YLkKaO9c9fNYqEttW3CvIAMwhDRW+sjgI/3KhiYNKoU843ZdbMmxZL0kLoBNsK
- EvV9dGf65zDX+eBQ==
+ bh=6kIWfLxhsdCf6y04eUa0wP3p8vBAtKGDzSyJUEVYh1E=;
+ b=sMHApRVnAh34nRIu0bcnFajPgK32SD7je7Huz7aAee8jdds0uzpvv/eaHaJAz2QuC81JGt
+ WBoo0rukvbE+U1CQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9C37513A86;
- Fri, 10 Jan 2025 12:14:41 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0B9ED13A86;
+ Fri, 10 Jan 2025 12:14:42 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id eKMNGDEPgWdURwAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 10 Jan 2025 12:14:41 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id uKR8MDIPgWdURwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 10 Jan 2025 12:14:42 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>
-Subject: [PULL 17/25] migration: Remove unused argument in vmsd_desc_field_end
-Date: Fri, 10 Jan 2025 09:14:05 -0300
-Message-Id: <20250110121413.12336-18-farosas@suse.de>
+Subject: [PULL 18/25] migration: Fix parsing of s390 stream
+Date: Fri, 10 Jan 2025 09:14:06 -0300
+Message-Id: <20250110121413.12336-19-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250110121413.12336-1-farosas@suse.de>
 References: <20250110121413.12336-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9C95821177
+X-Rspamd-Queue-Id: 02E811F396
 X-Spam-Score: -3.01
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  R_MISSING_CHARSET(0.50)[];
  R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
@@ -101,8 +101,8 @@ X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  DKIM_TRACE(0.00)[suse.de:+]
 X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -126,35 +126,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The parsing for the S390StorageAttributes section is currently leaving
+an unconsumed token that is later interpreted by the generic code as
+QEMU_VM_EOF, cutting the parsing short.
+
+The migration will issue a STATTR_FLAG_DONE between iterations, which
+the script consumes correctly, but there's a final STATTR_FLAG_EOS at
+.save_complete that the script is ignoring. Since the EOS flag is a
+u64 0x1ULL and the stream is big endian, on little endian hosts a byte
+read from it will be 0x0, the same as QEMU_VM_EOF.
+
+Fixes: 81c2c9dd5d ("tests/qtest/migration-test: Fix analyze-migration.py for s390x")
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Message-Id: <20250109185249.23952-3-farosas@suse.de>
+Message-Id: <20250109185249.23952-4-farosas@suse.de>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/vmstate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/analyze-migration.py | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/migration/vmstate.c b/migration/vmstate.c
-index fa002b24e8..aa2821dec6 100644
---- a/migration/vmstate.c
-+++ b/migration/vmstate.c
-@@ -311,7 +311,7 @@ static void vmsd_desc_field_start(const VMStateDescription *vmsd,
+diff --git a/scripts/analyze-migration.py b/scripts/analyze-migration.py
+index f2457b1dde..fcda11f31d 100755
+--- a/scripts/analyze-migration.py
++++ b/scripts/analyze-migration.py
+@@ -65,6 +65,9 @@ def readvar(self, size = None):
+     def tell(self):
+         return self.file.tell()
  
- static void vmsd_desc_field_end(const VMStateDescription *vmsd,
-                                 JSONWriter *vmdesc,
--                                const VMStateField *field, size_t size, int i)
-+                                const VMStateField *field, size_t size)
- {
-     if (!vmdesc) {
-         return;
-@@ -420,7 +420,7 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-                 }
++    def seek(self, a, b):
++        return self.file.seek(a, b)
++
+     # The VMSD description is at the end of the file, after EOF. Look for
+     # the last NULL byte, then for the beginning brace of JSON.
+     def read_migration_debug_json(self):
+@@ -272,11 +275,24 @@ def __init__(self, file, version_id, device, section_key):
+         self.section_key = section_key
  
-                 written_bytes = qemu_file_transferred(f) - old_offset;
--                vmsd_desc_field_end(vmsd, vmdesc_loop, field, written_bytes, i);
-+                vmsd_desc_field_end(vmsd, vmdesc_loop, field, written_bytes);
- 
-                 /* Compressed arrays only care about the first element */
-                 if (vmdesc_loop && vmsd_can_compress(field)) {
+     def read(self):
++        pos = 0
+         while True:
+             addr_flags = self.file.read64()
+             flags = addr_flags & 0xfff
+-            if (flags & (self.STATTR_FLAG_DONE | self.STATTR_FLAG_EOS)):
++
++            if flags & self.STATTR_FLAG_DONE:
++                pos = self.file.tell()
++                continue
++            elif flags & self.STATTR_FLAG_EOS:
+                 return
++            else:
++                # No EOS came after DONE, that's OK, but rewind the
++                # stream because this is not our data.
++                if pos:
++                    self.file.seek(pos, os.SEEK_SET)
++                    return
++                raise Exception("Unknown flags %x", flags)
++
+             if (flags & self.STATTR_FLAG_ERROR):
+                 raise Exception("Error in migration stream")
+             count = self.file.read64()
 -- 
 2.35.3
 
