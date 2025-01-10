@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C161A0989A
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 18:34:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA089A098FE
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 18:58:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWIsK-0005XP-Cm; Fri, 10 Jan 2025 12:32:48 -0500
+	id 1tWJG4-00028x-M6; Fri, 10 Jan 2025 12:57:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tWIsC-0005Uh-6I
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 12:32:40 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tWJFw-00028j-U9
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 12:57:12 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tWIs9-00009h-Hc
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 12:32:39 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-386329da1d9so1253880f8f.1
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 09:32:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tWJFv-0003Cn-7F
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 12:57:12 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-385e0e224cbso1307485f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 09:57:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736530349; x=1737135149; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=nNUbs9+iXWkzUulkoWT20NOwr2Ic+DqflysU5aQWhXA=;
- b=tf+HYap5+HB+/KwX4SpcqsiV4RcJuKbfz3pZ6nu0W4GG7VzkwZkRggcUj3l6SOb00x
- KwidAFpXlqITHqK9nZ/MDKfiRIQNoQCREUzfxAECGINdkURAcFIv1cIIw9en+gyprnxL
- kOJkrThWUJLzbTVxvaUaOXp3IfTifnb/EYilRPuOl5C50qfqTZ1plyhU/EIkVTeklNE2
- ivR4beRuLx88AzD1Ni4YMMlmm8QM0mm8H4SqVAOm8O457g2yb5coUYoSgwBUENANbfGO
- oc95WPYKmHS1V7ltolulZzgJRwSaBmwHpRvWRaDkrMgNbWHLobv9n6OcMTGg+x6Nh+jx
- MpUg==
+ d=linaro.org; s=google; t=1736531829; x=1737136629; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=p5ISWojPgo9WK3ygV/aJcl6uT1BqiAXPMA4HtQhz2so=;
+ b=IA8MOQaxLDhqPMtjzY6NbABPvmRVkHI4IG4l7+Dsr8yPy0D0dI3e/GwP2DkAu5kmiB
+ ohrZhCVlMIp+Z8zy3pabhVkL8UkWy9jJgEGcpuvOH9Ybst7sLBsbXhngkHb/vkU7qTKS
+ sOntR8XKvGLGb+EvWwVnHcxWh3B8ikgO/PpgeZr0SxFItsC1R7n9vE+whmYMZvN+2zai
+ BYVvNuOTJpCnwyeKiFJQtl+vKFvvq5ulBkR/MZ6l8G0wXUkQSwQL5r9PqYjBB5h4ZIw6
+ XQQ8pJ9D4mJ8FXbY6sFf8++zkRQ5NlstMqB+pl8zom1tXLol3PpNU6pt0x7JkljB29co
+ T24Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736530349; x=1737135149;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=nNUbs9+iXWkzUulkoWT20NOwr2Ic+DqflysU5aQWhXA=;
- b=kWB2Iq+1BZPdpiu+9kg3XlSDnUFkGijE8KR3Ldmhs9K8cRanzYWTjFaRWjSRb5zXF6
- MwCZKGKMSPNj/hw55yF1shCOak3qoW1++CS8Ov9jY7WilYCHJtWSVRmou3x9ljP5Tvr0
- JahswS6l5TDrcep4HIlaJOlmuougQZp+8VyovR6VZFuZCthj84z2OE7/TPKdVK07GTxQ
- arGv40zxmOnYaLji0GO4b73BFeaXXogO7uurRt4GLmdr6sc3g0pc2eys/7iue77H4xfZ
- Eb7dmTRD3XHv8rtPULbxCSmySFFjD1X53RiCKYG7uXI/JsSuycCbP90jvasYRS2tRNYh
- x8qg==
-X-Gm-Message-State: AOJu0YypKw2ZXE/nvY6HumOg9LwvH74+WOceNXR9MNzT89DrqtHtky1v
- Y3kqVqI0ieV6BNFcCgcleyqeKa5AnfejnYeDqgzWexeYT2oGWNYa+n2IaL4L0kNU3BumB+kP73V
- X6t4=
-X-Gm-Gg: ASbGncsAsHnJ0sEk1M+oJE8l1QS/Wx0ZYtNY4ZVPSjn5wEG+I9Ad8XRs+7hP5j9bKwl
- E0UZHGKn3mXVY2GQExGJB8PU00Fb5iS/szzHWg9V4xuOHpp4V2M02fWM4oMaQRz4YbZQNSrT4tX
- PbYfOAMrqACdf/MKKSHokhqyqAjL7TtIum/HoToQaKOZhlw2oOiugqQvqr3+yP6dBrOVDIbhMDm
- YT4ekAZV1BxgQm2nLfxcKS9i/teHjaLsiCfqsAm66ddG4QRx4XvnShJ9U5O1FPFuhpvDVB3qs0F
- DYvZ+rsGcFwunNCLBiA+rSfX3yszQ1U=
-X-Google-Smtp-Source: AGHT+IFBRXvmojeptjmFxNDaZBsmcfZm9vpZbKLnZyyLe+xdmiUQVmnsCSYyaV7mq2cY3LTGdXyAIA==
-X-Received: by 2002:a5d:6c63:0:b0:385:e22e:288f with SMTP id
- ffacd0b85a97d-38a872ea33fmr11189484f8f.31.1736530348711; 
- Fri, 10 Jan 2025 09:32:28 -0800 (PST)
+ d=1e100.net; s=20230601; t=1736531829; x=1737136629;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=p5ISWojPgo9WK3ygV/aJcl6uT1BqiAXPMA4HtQhz2so=;
+ b=YLIsOM8YUtNFiABvrb9UrG1PdollKgZNmKiZPHs+JdfdM0zIiMM5GuBBdeQ+6l17Ya
+ L9IR8ZO2jaBhD1+S3gNIIfvu98fOkfnGFkiVW6J2+zlT7uHenKSF0sCJ87rEtinHPIsF
+ CjH5uUAMsy9Rl3skyVOASw/SD6PDcITU9DCeJpw7v+jKEBuuobyzZpBO+C7szxbmSNnK
+ ZDw0uyw+2LFF1kBa7+5zUs4OxhBilOb4CSwGjOukDtboKCr1zcg2hxTDV4JX9F5Vhp5B
+ gWJ6UNExt2B7VNvQ9EoDGzDMFG3uFDn8ZsJ7qWh9SnbSW8T/kv+PmY2wtTOwsKSeUHw8
+ LmuQ==
+X-Gm-Message-State: AOJu0YxrMIrgOUCWF/TB2dIb6nhwRbNDBF9cdQO8kN5c0ygXgbYHUDZG
+ y92vAyVru2MDzGJ7fNVPNFW6GYbMX1T8VzDbg2NSoA1PYCmDucwgY/ELkprPQvUPUeQlkwl/y42
+ 6rnQ=
+X-Gm-Gg: ASbGncvy56QgcG49kmkb5V4uYIiZf8m2zEFK+vP9X0NJVXwV2jp9sjZV5LU/sssbnBS
+ DjkJWjkiYhzp7YgHHT+tfdQXl1ge/KMd/chCqqdaf4hPX8ekcXduwZhj9sZ1+NxLTi5RIulAkw3
+ w2+Io2Jc5S6TAu6A1TVlVW42Sac8v5+xO83RJyyUjMqNIu/tsSuqeKW6s+NkbjwGSHnR5GMK8u4
+ T1DtRVpgPWc9Y9NgOGWnXjMVv+62ESCmrk/HEG/l9173Ro5p7IrgsGcWo9fNDRS24uWgB9fbvNV
+ MN0GK5QoEumfp5tJ6L7hiNmeidVIRqE=
+X-Google-Smtp-Source: AGHT+IFpJY+6qi7o5c2lzRbVYen0GHvvgY8tqfvL1LAbH/+wpRX732DXoFyyR+SLcBRaWAy7AkE3uw==
+X-Received: by 2002:a05:6000:712:b0:385:f3fb:46aa with SMTP id
+ ffacd0b85a97d-38a87308c15mr11721227f8f.43.1736531828837; 
+ Fri, 10 Jan 2025 09:57:08 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e383654sm5134100f8f.30.2025.01.10.09.32.27
+ ffacd0b85a97d-38a8e37d111sm5234556f8f.18.2025.01.10.09.57.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 10 Jan 2025 09:32:28 -0800 (PST)
+ Fri, 10 Jan 2025 09:57:08 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
- Gustavo Romero <gustavo.romero@linaro.org>, qemu-ppc@nongnu.org,
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/2] hw/ppc/prep_systemio: Set IOMap IRQ in ResetExit() handler
-Date: Fri, 10 Jan 2025 18:32:17 +0100
-Message-ID: <20250110173217.80942-3-philmd@linaro.org>
+Subject: [PATCH] hw/char/serial: Convert to three-phase reset
+Date: Fri, 10 Jan 2025 18:57:07 +0100
+Message-ID: <20250110175707.82097-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250110173217.80942-1-philmd@linaro.org>
-References: <20250110173217.80942-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,57 +98,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since the IOMap output IRQ is created in prep_systemio_realize(),
-it can not yet be wired before the device is realized, thus
-it is not reset properly. Fix by moving the qemu_set_irq() call
-in the ResetExit handler.
+Convert the TYPE_SERIAL (16550A UART) to three-phase reset.
+
+Local states are reset in the ResetHold handler.
+Move the IRQ lowering to ResetExit, since it an external
+object is accessed.
+Note, this fixes a bug where serial_realize() was calling
+serial_reset() -> qemu_irq_lower() while the IRQ was not
+yet created.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/prep_systemio.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+That said, externally creating IRQ like that is odd, see:
 
-diff --git a/hw/ppc/prep_systemio.c b/hw/ppc/prep_systemio.c
-index 7cbf7e4eecd..87f412891e2 100644
---- a/hw/ppc/prep_systemio.c
-+++ b/hw/ppc/prep_systemio.c
-@@ -260,8 +260,6 @@ static void prep_systemio_realize(DeviceState *dev, Error **errp)
+  serial_pci_realize()
+  {
+    SerialState *s = &pci->state;
+    qdev_realize(DEVICE(s), NULL, ...);
+    s->irq = pci_allocate_irq(&pci->dev);
+
+But too much cleanup for now, one step at a time.
+---
+ hw/char/serial.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
+
+diff --git a/hw/char/serial.c b/hw/char/serial.c
+index 70044e14a0f..0dab5fba176 100644
+--- a/hw/char/serial.c
++++ b/hw/char/serial.c
+@@ -851,9 +851,9 @@ const VMStateDescription vmstate_serial = {
+     }
+ };
  
-     qdev_init_gpio_out(dev, &s->non_contiguous_io_map_irq, 1);
-     s->iomap_type = PORT0850_IOMAP_NONCONTIGUOUS;
--    qemu_set_irq(s->non_contiguous_io_map_irq,
--                 s->iomap_type & PORT0850_IOMAP_NONCONTIGUOUS);
-     s->softreset_irq = qdev_get_gpio_in(DEVICE(s->cpu), PPC6xx_INPUT_HRESET);
+-static void serial_reset(void *opaque)
++static void serial_reset_hold(Object *obj, ResetType type)
+ {
+-    SerialState *s = opaque;
++    SerialState *s = (SerialState *)obj;
  
-     isa_register_portio_list(isa, &s->portio, 0x0, ppc_io800_port_list, s,
-@@ -273,6 +271,14 @@ static void prep_systemio_realize(DeviceState *dev, Error **errp)
-                                 &s->ppc_parity_mem);
+     if (s->watch_tag > 0) {
+         g_source_remove(s->watch_tag);
+@@ -885,12 +885,18 @@ static void serial_reset(void *opaque)
+ 
+     s->thr_ipending = 0;
+     s->last_break_enable = 0;
+-    qemu_irq_lower(s->irq);
+ 
+     serial_update_msl(s);
+     s->msr &= ~UART_MSR_ANY_DELTA;
  }
  
-+static void prep_systemio_reset_exit(Object *obj, ResetType type)
++static void serial_reset_exit(Object *obj, ResetType type)
 +{
-+    PrepSystemIoState *s = PREP_SYSTEMIO(obj);
++    SerialState *s = (SerialState *)obj;
 +
-+    qemu_set_irq(s->non_contiguous_io_map_irq,
-+                 s->iomap_type & PORT0850_IOMAP_NONCONTIGUOUS);
++    qemu_irq_lower(s->irq);
 +}
 +
- static const VMStateDescription vmstate_prep_systemio = {
-     .name = "prep_systemio",
-     .version_id = 1,
-@@ -295,10 +301,12 @@ static const Property prep_systemio_properties[] = {
- static void prep_systemio_class_initfn(ObjectClass *klass, void *data)
+ static int serial_be_change(void *opaque)
+ {
+     SerialState *s = opaque;
+@@ -926,13 +932,11 @@ static void serial_realize(DeviceState *dev, Error **errp)
+     s->modem_status_poll = timer_new_ns(QEMU_CLOCK_VIRTUAL, (QEMUTimerCB *) serial_update_msl, s);
+ 
+     s->fifo_timeout_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, (QEMUTimerCB *) fifo_timeout_int, s);
+-    qemu_register_reset(serial_reset, s);
+ 
+     qemu_chr_fe_set_handlers(&s->chr, serial_can_receive1, serial_receive1,
+                              serial_event, serial_be_change, s, NULL, true);
+     fifo8_create(&s->recv_fifo, UART_FIFO_LENGTH);
+     fifo8_create(&s->xmit_fifo, UART_FIFO_LENGTH);
+-    serial_reset(s);
+ }
+ 
+ static void serial_unrealize(DeviceState *dev)
+@@ -947,8 +951,6 @@ static void serial_unrealize(DeviceState *dev)
+ 
+     fifo8_destroy(&s->recv_fifo);
+     fifo8_destroy(&s->xmit_fifo);
+-
+-    qemu_unregister_reset(serial_reset, s);
+ }
+ 
+ const MemoryRegionOps serial_io_ops = {
+@@ -973,12 +975,15 @@ static const Property serial_properties[] = {
+ static void serial_class_init(ObjectClass *klass, void* data)
  {
      DeviceClass *dc = DEVICE_CLASS(klass);
 +    ResettableClass *rc = RESETTABLE_CLASS(klass);
  
-     dc->realize = prep_systemio_realize;
-     dc->vmsd = &vmstate_prep_systemio;
-     device_class_set_props(dc, prep_systemio_properties);
-+    rc->phases.exit = prep_systemio_reset_exit;
+     /* internal device for serialio/serialmm, not user-creatable */
+     dc->user_creatable = false;
+     dc->realize = serial_realize;
+     dc->unrealize = serial_unrealize;
+     device_class_set_props(dc, serial_properties);
++    rc->phases.hold = serial_reset_hold;
++    rc->phases.exit = serial_reset_exit;
  }
  
- static const TypeInfo prep_systemio800_info = {
+ static const TypeInfo serial_info = {
 -- 
 2.47.1
 
