@@ -2,95 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6E3CA09A79
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:53:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9846BA09A9C
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:54:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWK4H-0003Os-23; Fri, 10 Jan 2025 13:49:13 -0500
+	id 1tWK37-0001n8-RD; Fri, 10 Jan 2025 13:48:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK3C-000278-0n
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:48:06 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1tWK28-0000Fg-VS
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK3A-0001Gj-4J
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:48:05 -0500
+ id 1tWK26-00017V-AW
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736534883;
+ s=mimecast20190719; t=1736534816;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=88Lnido+/J4sUIJeN8buUF3YDTjA0MP2vOjpZog+Shs=;
- b=VwDGUHuYuYMDt+eri9QMuuSpKqjitn4TaTjF4eTM5r40VmgkCaoGbsrmakf/I/MaCsu2z0
- Ux8l/PJWtXLyXUnL7Ph6tSzJ4YLIv9jXJjeubRvsumS3RQtfhj3f/slgeKsLn9qd5SM34B
- havj8RzkLJyiyu5p70mDTE3/7tjWlDg=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=T21y/qv6KGXhkm5awrBknNed29ZtW5ncvJ4QzS+vajE=;
+ b=BYq2cpHY79G++F6IwUc/ZGN8l8zUGT6igoX5X+XQnnOgUHVeE1TBtyq+JoN0ejJDxjnvO7
+ J5baogjkRI+W0tRtq2sQ94Kskt8lBoW6xYomXk1aW3ynlEj7rveTscIFUxBs8tIylVwKX3
+ 3hZIJj/rkEzILCNBkE+DC/Z6TnktoBs=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-103-9dVBjbP1NsucWMs2csdnCw-1; Fri, 10 Jan 2025 13:46:51 -0500
-X-MC-Unique: 9dVBjbP1NsucWMs2csdnCw-1
-X-Mimecast-MFC-AGG-ID: 9dVBjbP1NsucWMs2csdnCw
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5d3d2cccbe4so2692479a12.3
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:46:51 -0800 (PST)
+ us-mta-371-zTxq1llnMIqKZX99AAlpWw-1; Fri, 10 Jan 2025 13:46:54 -0500
+X-MC-Unique: zTxq1llnMIqKZX99AAlpWw-1
+X-Mimecast-MFC-AGG-ID: zTxq1llnMIqKZX99AAlpWw
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-5d124077928so1969239a12.0
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:46:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736534809; x=1737139609;
+ d=1e100.net; s=20230601; t=1736534812; x=1737139612;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=88Lnido+/J4sUIJeN8buUF3YDTjA0MP2vOjpZog+Shs=;
- b=RbswvjpwF/D16yhKi9L1+w5bSSNvOyNgrOZcGS3Z52o152o8Q1nh1cdlH36zRmbbRY
- 7s7AR5FsZ0rg21QGVZtEI0jWzHAxzJHzIoV41rMwYJdNWlIxgdqo6uIW3eqiwqREe2gU
- 5T0xpU1xVipuxPpA2df4UBic3YGcT4CfmXvdlOZdRYYVAjBRCk0N81oQuLZwQi8tcIcE
- DCRq8yoyqJf30i0rCmiVQ2rHmJQTxrU5n2OteVt6Qpt0NeZX1U5Ej8kE2emy8SjEdaR3
- OH7Z/2mDy+rs2Dmi9Q+bRTOq1ygp1++lasSSBaxU28gZ6699obxOin+JWnGfKSW1VRCh
- /6tQ==
-X-Gm-Message-State: AOJu0YxTeUdpqnnzqcm6Lj8MNJ8aulutjRIyU3ZHyx1oOIKO4zQsYsNR
- xBF5g9Klp7lBsiHrs20ZVI5gtzMW/UJIl2ZFOW39Yokbqp2nOVaw1MRHER+Lw5AVTJmMPg/eAN5
- BYM4qDxvI4scIRqseVrcO/PvybLnGx8xn+l9fzyXbzO31uuf6scNFBDpuGvpaOZcE7x348rS9hw
- A+lVcxNyspoOMfjg3jxtDPUMa8icQoeTvkNnC/mdU=
-X-Gm-Gg: ASbGnctE1do1vqMlj1QQc3cHBhD8YhI1+RSuOON6Je/7DLufsvGWr6NI4vyZwDaRC3w
- J158Fz2Vv533dlxMFDMx/gZdpJEi+nragaSInWp8KleqSPD+muOmacaK1Xp9P9MWeNzuTNk8vCW
- +mN6U9Mc0xO4dvD+OtJaGgz94s9yMzejT/9qrRXLJ8DIyxXgztHz8OjUpsGnoWPWr9bLATNaHZd
- othsij4wCbUGSYLqYErjbmQnhU0gUNploDtIiscfUC27qNS9EDEixWiv24=
-X-Received: by 2002:a05:6402:270d:b0:5d3:d4cf:fea0 with SMTP id
- 4fb4d7f45d1cf-5d972e4c62emr9669957a12.21.1736534809379; 
- Fri, 10 Jan 2025 10:46:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGZNtxcF55o60VmqOVUIE+KIBufqGCdUqcSEtMDqK+albPDR+2ofPFhcgVnrPoRnId0rX2fkQ==
-X-Received: by 2002:a05:6402:270d:b0:5d3:d4cf:fea0 with SMTP id
- 4fb4d7f45d1cf-5d972e4c62emr9669946a12.21.1736534808928; 
- Fri, 10 Jan 2025 10:46:48 -0800 (PST)
+ bh=T21y/qv6KGXhkm5awrBknNed29ZtW5ncvJ4QzS+vajE=;
+ b=ZVXYa3zX9UOhqxKF+Rkjfj390xZx3knbp6erDAf2dZjsmhmqDFeQDl0fi+QDlHfL51
+ Tm6kSy2A3opDWLIUcFh2WRikkAiEtgJVkZoZTxCEa7zKxhwyj0ZyncKTUg6gA7H9G/w5
+ 5ftbTQ50saov0w1Rzm+GDxT3aZa+zgUbtBSnZdUi9waqsfZ5lDPo+wziSGQzsbgLfAbW
+ pfgfOetqI1/EI5KL2NwXp5CymEXhTKvEYHL/Uh38t97hvSsLKs09hqAGVQvqo/zFVIj8
+ yAWN9HX0cKqqTPW5FZ5NQey7w9WT6hH/FvYgxnyDmnM8Lh5cQjBLVBiLcmzKTek9ChjW
+ /MiQ==
+X-Gm-Message-State: AOJu0YyexqaRY2RreN7Kpz/SgztNj0JOjBOwbD6oyIIr+hdaUi1ZYuJL
+ 1Y4XktUtMxFBv54Ji2bZuOOMRk3gWedUJJYRouxzNNtisLkJ/jwQ/dIkkyGJkyFxCGMhlzUhzBo
+ o7DDFJfYdoB6xmwnpaSUl9Wq9/VQW6M7d6n5c43+67EJIhLjphpnmAqFoP8VUN8VW/laotK0WX0
+ gXxkzPjShc3y5p00w05sVSyaIedM/BLsGtnM0Uhw4=
+X-Gm-Gg: ASbGncvyb0IbdvruJbL4q/XlgHxpGX+iKrgyJTFmV0cTiYTJ35rkY/2YFYo5Sc1OIf3
+ 1M5A/VlWxebeJug1YIbsfQuZIR/azIeQUjLZmIgR+/g2gz0+hILOwb8fnuoNK+74fPyxmnZL4Km
+ J+JvZIi/P2BBOSIgLKs00qSaAr74vkroJIzpCsF+KvtUu+Zehv92XGcPuTWGPWxa+rQhUnl31nY
+ Wl/4bpQG7/BriTpaqXylpFJ+o440Rc+hBB7scNxtbIc9OUIoAv4Ul3uxF0=
+X-Received: by 2002:a17:907:2cc5:b0:aab:cd45:5d3c with SMTP id
+ a640c23a62f3a-ab2abdbfa0bmr1140054866b.50.1736534812444; 
+ Fri, 10 Jan 2025 10:46:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFulgBXuRMrjbpVT2zuHYlxQVC5eIzqdaSHJsjFaLi/GNflO8mx/XmyaQVqrH6VZQ+Dt0rXEA==
+X-Received: by 2002:a17:907:2cc5:b0:aab:cd45:5d3c with SMTP id
+ a640c23a62f3a-ab2abdbfa0bmr1140052566b.50.1736534811930; 
+ Fri, 10 Jan 2025 10:46:51 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.105.73])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d9904a411csm1906598a12.72.2025.01.10.10.46.47
+ a640c23a62f3a-ab2c906004fsm192989866b.30.2025.01.10.10.46.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 10:46:47 -0800 (PST)
+ Fri, 10 Jan 2025 10:46:50 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 12/38] rust: qemu-api-macros: add automatic TryFrom/TryInto
- derivation
-Date: Fri, 10 Jan 2025 19:45:53 +0100
-Message-ID: <20250110184620.408302-13-pbonzini@redhat.com>
+Subject: [PULL 13/38] rust: qdev: expose inherited methods to subclasses of
+ SysBusDevice
+Date: Fri, 10 Jan 2025 19:45:54 +0100
+Message-ID: <20250110184620.408302-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250110184620.408302-1-pbonzini@redhat.com>
 References: <20250110184620.408302-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.432,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,156 +106,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is going to be fairly common. Using a custom procedural macro
-provides better error messages and automatically finds the right
-type.
-
-Note that this is different from the same-named macro in the
-derive_more crate.  That one provides conversion from e.g. tuples
-to enums with tuple variants, not from integers to enums.
+The ObjectDeref trait now provides all the magic that is required to fake
+inheritance.  Replace the "impl SysBusDevice" block of qemu_api::sysbus
+with a trait, so that sysbus_init_irq() can be invoked as "self.init_irq()"
+without any intermediate upcast.
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/lib.rs   | 28 +------------
- rust/qemu-api-macros/src/lib.rs | 74 ++++++++++++++++++++++++++++++++-
- 2 files changed, 73 insertions(+), 29 deletions(-)
+ rust/hw/char/pl011/src/device.rs |  6 ++----
+ rust/qemu-api/src/irq.rs         |  3 +--
+ rust/qemu-api/src/prelude.rs     |  2 ++
+ rust/qemu-api/src/sysbus.rs      | 17 +++++++++--------
+ 4 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
-index 69064d6929b..0a89d393e0f 100644
---- a/rust/hw/char/pl011/src/lib.rs
-+++ b/rust/hw/char/pl011/src/lib.rs
-@@ -45,7 +45,7 @@
- #[doc(alias = "offset")]
- #[allow(non_camel_case_types)]
- #[repr(u64)]
--#[derive(Debug)]
-+#[derive(Debug, qemu_api_macros::TryInto)]
- pub enum RegisterOffset {
-     /// Data Register
-     ///
-@@ -102,32 +102,6 @@ pub enum RegisterOffset {
-     //Reserved = 0x04C,
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index 6792d13fb77..994c2fc0593 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -207,11 +207,9 @@ unsafe fn init(&mut self) {
+     }
+ 
+     fn post_init(&self) {
+-        let sbd: &SysBusDevice = self.upcast();
+-
+-        sbd.init_mmio(&self.iomem);
++        self.init_mmio(&self.iomem);
+         for irq in self.interrupts.iter() {
+-            sbd.init_irq(irq);
++            self.init_irq(irq);
+         }
+     }
+ 
+diff --git a/rust/qemu-api/src/irq.rs b/rust/qemu-api/src/irq.rs
+index 6258141bdf0..378e5202951 100644
+--- a/rust/qemu-api/src/irq.rs
++++ b/rust/qemu-api/src/irq.rs
+@@ -24,8 +24,7 @@
+ ///
+ /// Interrupts are implemented as a pointer to the interrupt "sink", which has
+ /// type [`IRQState`].  A device exposes its source as a QOM link property using
+-/// a function such as
+-/// [`SysBusDevice::init_irq`](crate::sysbus::SysBusDevice::init_irq), and
++/// a function such as [`SysBusDeviceMethods::init_irq`], and
+ /// initially leaves the pointer to a NULL value, representing an unconnected
+ /// interrupt. To connect it, whoever creates the device fills the pointer with
+ /// the sink's `IRQState *`, for example using `sysbus_connect_irq`.  Because
+diff --git a/rust/qemu-api/src/prelude.rs b/rust/qemu-api/src/prelude.rs
+index 6f32deeb2ed..4ea70b9c823 100644
+--- a/rust/qemu-api/src/prelude.rs
++++ b/rust/qemu-api/src/prelude.rs
+@@ -16,3 +16,5 @@
+ pub use crate::qom::ObjectType;
+ 
+ pub use crate::qom_isa;
++
++pub use crate::sysbus::SysBusDeviceMethods;
+diff --git a/rust/qemu-api/src/sysbus.rs b/rust/qemu-api/src/sysbus.rs
+index b96eaaf25f2..e6762b5c145 100644
+--- a/rust/qemu-api/src/sysbus.rs
++++ b/rust/qemu-api/src/sysbus.rs
+@@ -32,18 +32,17 @@ fn class_init(sdc: &mut SysBusDeviceClass) {
+     }
  }
  
--impl core::convert::TryFrom<u64> for RegisterOffset {
--    type Error = u64;
--
--    fn try_from(value: u64) -> Result<Self, Self::Error> {
--        macro_rules! case {
--            ($($discriminant:ident),*$(,)*) => {
--                /* check that matching on all macro arguments compiles, which means we are not
--                 * missing any enum value; if the type definition ever changes this will stop
--                 * compiling.
--                 */
--                const fn _assert_exhaustive(val: RegisterOffset) {
--                    match val {
--                        $(RegisterOffset::$discriminant => (),)*
--                    }
--                }
--
--                match value {
--                    $(x if x == Self::$discriminant as u64 => Ok(Self::$discriminant),)*
--                     _ => Err(value),
--                }
--            }
--        }
--        case! { DR, RSR, FR, FBRD, ILPR, IBRD, LCR_H, CR, FLS, IMSC, RIS, MIS, ICR, DMACR }
+-impl SysBusDevice {
+-    /// Return `self` cast to a mutable pointer, for use in calls to C code.
+-    const fn as_mut_ptr(&self) -> *mut SysBusDevice {
+-        addr_of!(*self) as *mut _
 -    }
--}
 -
- pub mod registers {
-     //! Device registers exposed as typed structs which are backed by arbitrary
-     //! integer bitmaps. [`Data`], [`Control`], [`LineControl`], etc.
-diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
-index 539c48df298..7ec218202f4 100644
---- a/rust/qemu-api-macros/src/lib.rs
-+++ b/rust/qemu-api-macros/src/lib.rs
-@@ -5,8 +5,8 @@
- use proc_macro::TokenStream;
- use quote::quote;
- use syn::{
--    parse_macro_input, parse_quote, punctuated::Punctuated, token::Comma, Data, DeriveInput, Field,
--    Fields, Ident, Type, Visibility,
-+    parse_macro_input, parse_quote, punctuated::Punctuated, spanned::Spanned, token::Comma, Data,
-+    DeriveInput, Field, Fields, Ident, Meta, Path, Token, Type, Variant, Visibility,
- };
- 
- mod utils;
-@@ -98,3 +98,73 @@ pub fn derive_offsets(input: TokenStream) -> TokenStream {
- 
-     TokenStream::from(expanded)
++/// Trait for methods of [`SysBusDevice`] and its subclasses.
++pub trait SysBusDeviceMethods: ObjectDeref
++where
++    Self::Target: IsA<SysBusDevice>,
++{
+     /// Expose a memory region to the board so that it can give it an address
+     /// in guest memory.  Note that the ordering of calls to `init_mmio` is
+     /// important, since whoever creates the sysbus device will refer to the
+     /// region with a number that corresponds to the order of calls to
+     /// `init_mmio`.
+-    pub fn init_mmio(&self, iomem: &bindings::MemoryRegion) {
++    fn init_mmio(&self, iomem: &bindings::MemoryRegion) {
+         assert!(bql_locked());
+         unsafe {
+             bindings::sysbus_init_mmio(self.as_mut_ptr(), addr_of!(*iomem) as *mut _);
+@@ -54,10 +53,12 @@ pub fn init_mmio(&self, iomem: &bindings::MemoryRegion) {
+     /// Note that the ordering of calls to `init_irq` is important, since
+     /// whoever creates the sysbus device will refer to the interrupts with
+     /// a number that corresponds to the order of calls to `init_irq`.
+-    pub fn init_irq(&self, irq: &InterruptSource) {
++    fn init_irq(&self, irq: &InterruptSource) {
+         assert!(bql_locked());
+         unsafe {
+             bindings::sysbus_init_irq(self.as_mut_ptr(), irq.as_ptr());
+         }
+     }
  }
 +
-+#[allow(non_snake_case)]
-+fn get_repr_uN(input: &DeriveInput, msg: &str) -> Result<Path, MacroError> {
-+    let repr = input.attrs.iter().find(|attr| attr.path().is_ident("repr"));
-+    if let Some(repr) = repr {
-+        let nested = repr.parse_args_with(Punctuated::<Meta, Token![,]>::parse_terminated)?;
-+        for meta in nested {
-+            match meta {
-+                Meta::Path(path) if path.is_ident("u8") => return Ok(path),
-+                Meta::Path(path) if path.is_ident("u16") => return Ok(path),
-+                Meta::Path(path) if path.is_ident("u32") => return Ok(path),
-+                Meta::Path(path) if path.is_ident("u64") => return Ok(path),
-+                _ => {}
-+            }
-+        }
-+    }
-+
-+    Err(MacroError::Message(
-+        format!("#[repr(u8/u16/u32/u64) required for {}", msg),
-+        input.ident.span(),
-+    ))
-+}
-+
-+fn get_variants(input: &DeriveInput) -> Result<&Punctuated<Variant, Comma>, MacroError> {
-+    if let Data::Enum(e) = &input.data {
-+        if let Some(v) = e.variants.iter().find(|v| v.fields != Fields::Unit) {
-+            return Err(MacroError::Message(
-+                "Cannot derive TryInto for enum with non-unit variants.".to_string(),
-+                v.fields.span(),
-+            ));
-+        }
-+        Ok(&e.variants)
-+    } else {
-+        Err(MacroError::Message(
-+            "Cannot derive TryInto for union or struct.".to_string(),
-+            input.ident.span(),
-+        ))
-+    }
-+}
-+
-+#[rustfmt::skip::macros(quote)]
-+fn derive_tryinto_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream, MacroError> {
-+    let repr = get_repr_uN(&input, "#[derive(TryInto)]")?;
-+
-+    let name = &input.ident;
-+    let variants = get_variants(&input)?;
-+    let discriminants: Vec<&Ident> = variants.iter().map(|f| &f.ident).collect();
-+
-+    Ok(quote! {
-+        impl core::convert::TryFrom<#repr> for #name {
-+            type Error = #repr;
-+
-+            fn try_from(value: #repr) -> Result<Self, Self::Error> {
-+                #(const #discriminants: #repr = #name::#discriminants as #repr;)*;
-+                match value {
-+                    #(#discriminants => Ok(Self::#discriminants),)*
-+                    _ => Err(value),
-+                }
-+            }
-+        }
-+    })
-+}
-+
-+#[proc_macro_derive(TryInto)]
-+pub fn derive_tryinto(input: TokenStream) -> TokenStream {
-+    let input = parse_macro_input!(input as DeriveInput);
-+    let expanded = derive_tryinto_or_error(input).unwrap_or_else(Into::into);
-+
-+    TokenStream::from(expanded)
-+}
++impl<R: ObjectDeref> SysBusDeviceMethods for R where R::Target: IsA<SysBusDevice> {}
 -- 
 2.47.1
 
