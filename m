@@ -2,108 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF71A0903B
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 13:23:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6860A09027
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 13:20:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWDur-0001Yn-KZ; Fri, 10 Jan 2025 07:15:06 -0500
+	id 1tWDup-0001YQ-EU; Fri, 10 Jan 2025 07:15:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1tWDuh-0001Wo-Rh; Fri, 10 Jan 2025 07:14:56 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tWDuk-0001XK-Is
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 07:14:58 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1tWDug-0003OQ-BO; Fri, 10 Jan 2025 07:14:55 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tWDui-0003OY-O6
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 07:14:58 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 9F6201F455;
- Fri, 10 Jan 2025 12:14:52 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 7F74921176;
+ Fri, 10 Jan 2025 12:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736511292; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1736511294; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3JCqxr7LLtHidLo+QHJ4UOMIji16tERdv3AG8rduEMc=;
- b=Mo9cgq8CHDWZIex2/VuG8P/KzTW2oqePWTWYbpGHjPxU5fs2+6LuNGlvb5TnWqXvJk79OT
- QOwNhxdcswKGI7VByca9oy+5rB+vqBm+YcqaOingXMgOP354in+uIKD5uDqtdp0h+dB1pI
- aa3GhyD3Br+jfcH/Sd2tuLKApu4Gt4s=
+ bh=BVDI45gdiEGtXAOMc3OL04fOkXME/7ISgZgarb4k/XY=;
+ b=vsbc/vdBlgvJnKrbNiVVuQoniiUC+J/lvBT75nNf1OJo5y0nF/lHaIDImIu48oXwxjH0rQ
+ t9wqG8Ofqf9b5vDgMhPRKpXRRmDx2cq+drclpP4CzgSpxNz1L94qRvuTZhTkaoHfPp4Z09
+ M03WVEUAMjF/EuVCvrx65kCtRBk1l3k=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736511292;
+ s=susede2_ed25519; t=1736511294;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3JCqxr7LLtHidLo+QHJ4UOMIji16tERdv3AG8rduEMc=;
- b=0lgQ0sFnLuaiDpLU6Lv+x8LV0UFrPd90fM5/hzlttaJbD/NHYZf5YofNqg0vnKVq51OmOh
- m9ckTaSFGUXf3BAw==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Mo9cgq8C;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=0lgQ0sFn
+ bh=BVDI45gdiEGtXAOMc3OL04fOkXME/7ISgZgarb4k/XY=;
+ b=on8VgcCvKHqgriekeSkeDAZwxlNAQXOX/jNn9b3hyzBQHxoA6loP+gKRHgbxILMrmqO5j5
+ FQWD4fnLlWYjtaBQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736511292; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1736511294; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3JCqxr7LLtHidLo+QHJ4UOMIji16tERdv3AG8rduEMc=;
- b=Mo9cgq8CHDWZIex2/VuG8P/KzTW2oqePWTWYbpGHjPxU5fs2+6LuNGlvb5TnWqXvJk79OT
- QOwNhxdcswKGI7VByca9oy+5rB+vqBm+YcqaOingXMgOP354in+uIKD5uDqtdp0h+dB1pI
- aa3GhyD3Br+jfcH/Sd2tuLKApu4Gt4s=
+ bh=BVDI45gdiEGtXAOMc3OL04fOkXME/7ISgZgarb4k/XY=;
+ b=vsbc/vdBlgvJnKrbNiVVuQoniiUC+J/lvBT75nNf1OJo5y0nF/lHaIDImIu48oXwxjH0rQ
+ t9wqG8Ofqf9b5vDgMhPRKpXRRmDx2cq+drclpP4CzgSpxNz1L94qRvuTZhTkaoHfPp4Z09
+ M03WVEUAMjF/EuVCvrx65kCtRBk1l3k=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736511292;
+ s=susede2_ed25519; t=1736511294;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3JCqxr7LLtHidLo+QHJ4UOMIji16tERdv3AG8rduEMc=;
- b=0lgQ0sFnLuaiDpLU6Lv+x8LV0UFrPd90fM5/hzlttaJbD/NHYZf5YofNqg0vnKVq51OmOh
- m9ckTaSFGUXf3BAw==
+ bh=BVDI45gdiEGtXAOMc3OL04fOkXME/7ISgZgarb4k/XY=;
+ b=on8VgcCvKHqgriekeSkeDAZwxlNAQXOX/jNn9b3hyzBQHxoA6loP+gKRHgbxILMrmqO5j5
+ FQWD4fnLlWYjtaBQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F052C13A86;
- Fri, 10 Jan 2025 12:14:50 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 184DE13A86;
+ Fri, 10 Jan 2025 12:14:52 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id +ENWLDoPgWdURwAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 10 Jan 2025 12:14:50 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id OIiOMzwPgWdURwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 10 Jan 2025 12:14:52 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Yuan Liu <yuan1.liu@intel.com>,
- qemu-stable@nongnu.org, Jason Zeng <jason.zeng@intel.com>
-Subject: [PULL 23/25] multifd: bugfix for migration using compression methods
-Date: Fri, 10 Jan 2025 09:14:11 -0300
-Message-Id: <20250110121413.12336-24-farosas@suse.de>
+ Jason Zeng <jason.zeng@intel.com>
+Subject: [PULL 24/25] multifd: bugfix for incorrect migration data with QPL
+ compression
+Date: Fri, 10 Jan 2025 09:14:12 -0300
+Message-Id: <20250110121413.12336-25-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250110121413.12336-1-farosas@suse.de>
 References: <20250110121413.12336-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9F6201F455
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.98%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,suse.de:mid,intel.com:email];
- ASN(0.00)[asn:25478, ipnet:::/0, country:RU]; ARC_NA(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- FROM_EQ_ENVFROM(0.00)[];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
- RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.01
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,suse.de:mid,suse.de:email];
+ RCVD_TLS_ALL(0.00)[]
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -129,51 +121,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Yuan Liu <yuan1.liu@intel.com>
 
-When compression is enabled on the migration channel and
-the pages processed are all zero pages, these pages will
-not be sent and updated on the target side, resulting in
-incorrect memory data on the source and target sides.
+When QPL compression is enabled on the migration channel and the same
+dirty page changes from a normal page to a zero page in the iterative
+memory copy, the dirty page will not be updated to a zero page again
+on the target side, resulting in incorrect memory data on the source
+and target sides.
 
-The root cause is that all compression methods call
-multifd_send_prepare_common to determine whether to compress
-dirty pages, but multifd_send_prepare_common does not update
-the IOV of MultiFDPacket_t when all dirty pages are zero pages.
+The root cause is that the target side does not record the normal pages
+to the receivedmap.
 
-The solution is to always update the IOV of MultiFDPacket_t
-regardless of whether the dirty pages are all zero pages.
+The solution is to add ramblock_recv_bitmap_set_offset in target side
+to record the normal pages.
 
-Fixes: 303e6f54f9 ("migration/multifd: Implement zero page transmission on the multifd thread.")
-Cc: qemu-stable@nongnu.org #9.0+
 Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
 Reviewed-by: Jason Zeng <jason.zeng@intel.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Message-Id: <20241218091413.140396-2-yuan1.liu@intel.com>
+Message-Id: <20241218091413.140396-3-yuan1.liu@intel.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/multifd-nocomp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ migration/multifd-qpl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/migration/multifd-nocomp.c b/migration/multifd-nocomp.c
-index c1f686c0ce..1325dba97c 100644
---- a/migration/multifd-nocomp.c
-+++ b/migration/multifd-nocomp.c
-@@ -432,6 +432,7 @@ int multifd_ram_flush_and_sync(QEMUFile *f)
- bool multifd_send_prepare_common(MultiFDSendParams *p)
- {
-     MultiFDPages_t *pages = &p->data->u.ram;
-+    multifd_send_prepare_header(p);
-     multifd_send_zero_page_detect(p);
- 
-     if (!pages->normal_num) {
-@@ -439,8 +440,6 @@ bool multifd_send_prepare_common(MultiFDSendParams *p)
-         return false;
+diff --git a/migration/multifd-qpl.c b/migration/multifd-qpl.c
+index bbe466617f..88e2344af2 100644
+--- a/migration/multifd-qpl.c
++++ b/migration/multifd-qpl.c
+@@ -679,6 +679,7 @@ static int multifd_qpl_recv(MultiFDRecvParams *p, Error **errp)
+         qpl->zlen[i] = be32_to_cpu(qpl->zlen[i]);
+         assert(qpl->zlen[i] <= multifd_ram_page_size());
+         zbuf_len += qpl->zlen[i];
++        ramblock_recv_bitmap_set_offset(p->block, p->normal[i]);
      }
  
--    multifd_send_prepare_header(p);
--
-     return true;
- }
- 
+     /* read compressed pages */
 -- 
 2.35.3
 
