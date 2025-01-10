@@ -2,96 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72577A09A37
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:50:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01812A09A8E
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:53:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWK4K-0003TT-PM; Fri, 10 Jan 2025 13:49:17 -0500
+	id 1tWK4O-0003oQ-Fb; Fri, 10 Jan 2025 13:49:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK2m-0000Vb-JK
+ id 1tWK2p-0000ZD-Aw
  for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK2j-0001DD-Ht
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:40 -0500
+ id 1tWK2n-0001Dd-BJ
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736534856;
+ s=mimecast20190719; t=1736534860;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fJMQwMv56LSiqWYeYKdbo7EuNXacm0XCkWqmd0PHSvI=;
- b=XFTrrVPqvdiwwhjwfpGMJ+4y0gN/V2HAR4LP+5erKYL/XddAI8y/YobCewmNXLMxrYlCRX
- /QJHjXIkQJ0wVlVHt8XUCBGXxXuumsEfnULbiTuPJetPCVi4W8aS0tQ8ZxHq344IcdTunM
- LPLTyPWGNErlCpSgM+cRB9pvPr7pe08=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=aaRigbghLhObFLWkYcE9jy7wD6yeALPcuEP9ikC2TVQ=;
+ b=Ir+C5l9rnfr4f8xTZBsIXjUw/ov5Ab219TMO3cZ0e0dLyB7DIy+S2zb3Mr0xPDn+QVpgnN
+ l1ilS5RLBBdp3We8/5mCV2+Dj4eGBxVEnTbpmmITuIszX5yvbHPpqyW+wAFxiV4kWoxXFf
+ qxCrcTacOF47N9hQvgyFG1FmzRHyW5E=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-647-QTEA5NPfNMWMyyCLvhuScQ-1; Fri, 10 Jan 2025 13:47:35 -0500
-X-MC-Unique: QTEA5NPfNMWMyyCLvhuScQ-1
-X-Mimecast-MFC-AGG-ID: QTEA5NPfNMWMyyCLvhuScQ
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-aaf921b8a85so217744566b.0
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:47:35 -0800 (PST)
+ us-mta-222-0D773l_DPdqI3AexS2IpQQ-1; Fri, 10 Jan 2025 13:47:38 -0500
+X-MC-Unique: 0D773l_DPdqI3AexS2IpQQ-1
+X-Mimecast-MFC-AGG-ID: 0D773l_DPdqI3AexS2IpQQ
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-aa6a7bea04cso162678066b.3
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:47:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736534853; x=1737139653;
+ d=1e100.net; s=20230601; t=1736534856; x=1737139656;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fJMQwMv56LSiqWYeYKdbo7EuNXacm0XCkWqmd0PHSvI=;
- b=prLZ7hj95Ff3o8Wn8rJJon8ncA0GebFwTyIJFYtllD4BRRtelL8Vs9WMg9sVMl8IRg
- 1klYNe7JqHsQSo4gXHtVTVw/WcG+vwWTX0emd95Y56OAXHSUG66hxPUylt1pmBMO36nj
- 38b37f6f4qJpYuXHJf/t8e+aLzd+Vj4QPmE8feiYPs2gIQFpdGpw1ciY9ayExmPUWWvY
- 8JisV7OWn7KT4iCZA8fdx0owbM2lYrNZa+tGbchvlbDca2oNxEN7DIta1xj1Hg/g7p92
- M1puxTQHQ5RKtcUgThpA9qld/jQWPlBBxzfjdy2uE5hCk15q0vVKu4KG/0WKYxq+dVkx
- EmhA==
-X-Gm-Message-State: AOJu0Yytq7EfbNIf/29Ax6F4PL9gmZGQBf6MG7hDY+9H8GxY40V+fjtC
- TL32pEPqDVFJUQFJONlsDgyN/xx6VjmfMR8xA/bDF1kE2xTe7u0qeSe/N+tg0dNR/r4RoFqS1a+
- cgzGMMZ2P56Dl15gmM2vEm5T6nSBp6PMCUXfOtA5mhT/qzjv6GaYynAgWvPqRzoDI/GuQugYMxY
- bcPwyLPUxTkxqUKnFaHF8eYoykqG9NKGcdvFGC+pE=
-X-Gm-Gg: ASbGncv2pBrGjflmJHuUYTbGP6TncbDXOK3O152kbr6yO9brKzP64ouYq/GOnI4gv3w
- oXDDbilBMtoKwzUe0wKaHyblSN2igmlOeETvNOJ8u6USvkC0R+FCGRNz9ft0vW+1kPa0yst7eUz
- //XaUVL4gRTc28hX/3ilmDcOVeAMAiTEf9nBrJf31PCtbtq8hbNzj8F2A/xUNsjUQ2mxlIpvbGz
- 7iSdIu8kT+6BbsXXler/OddS7MKc2YOfNMibSsM0dUJiyWlRzB1XVOnX3o=
-X-Received: by 2002:a17:907:9491:b0:aa6:b5d8:d5c2 with SMTP id
- a640c23a62f3a-ab2abca7737mr1222597066b.41.1736534853482; 
- Fri, 10 Jan 2025 10:47:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGoyJ4mD42/O45kHGvZGOebOQ4srHmzT+UlkzwzYenVGgRxWeCiaXIj2Kpx+yqfBOJ5N3shAA==
-X-Received: by 2002:a17:907:9491:b0:aa6:b5d8:d5c2 with SMTP id
- a640c23a62f3a-ab2abca7737mr1222594866b.41.1736534853110; 
- Fri, 10 Jan 2025 10:47:33 -0800 (PST)
+ bh=aaRigbghLhObFLWkYcE9jy7wD6yeALPcuEP9ikC2TVQ=;
+ b=e3DTyi4dTt3T17st8nlilD5SR3x4+x2960Nz0/KXywDsVhIfdEyIlh8rBsoXEaHmfO
+ BskM/u9CqHi3hvcnSiajtqIJqXmS0t8YoLm4LW0VD++5iQg5lT+VtdTUdB9OduQ6dqWD
+ Hq6Oc3J9fiKn1sloUiWNR8Wv//j1QRAW2okESZjgIsUF1sKTxQV5vopX2A4bMRAbiG8n
+ vQmM4rYb98U1yiomi60RZ46pSuEuHeq49ppL426aKHcJlclUZU64HBNTpQZK23o297Jf
+ ohXWLgj2MIqw6te31Qr4G2rugPSoaUDaKpkuWrrXCcPPznEMBn79XS1d8nIvUKBQMzwQ
+ vcPA==
+X-Gm-Message-State: AOJu0YzjRLkjlKfnibV4DkUL8hy3lEDqWGxWfNH9YeaTVq7wk9Zr0wvd
+ V1ck4x/rLhIvkQuo6HY5PW29IgX4jjiMaaZCokdmr/QNX2Zf/ulZuIi97AJoFDZ+bPxzU/1t6ei
+ vtaEEBiAz7yPnRaUglX9hzpa5FDGGkOA/YqnGT52JE7+mJ1E/HNbcmBUM+Eu01DhBCQr+04ntb4
+ oLlaD9B4SHuzSPaA3fY4Z84PzFsJl3E9LPKfMw+RE=
+X-Gm-Gg: ASbGncunJxBUT+fcgm5J64BedEA5ZsFqG4jLsz27TBw/tvIltvvWxBv1umtINWmzPhK
+ RZAtgovb5+P7F7vXip/I2rwYly/1zNBUyStBtamMwSMQk3Z7ffpfsIUjW5yUoex//pOasuTMqxk
+ noKbGCWN+uTmzXlFduS2x9YQVglTjCwCEUvEQos+4tLGuoKAiv81LnnbZpetoAMwket6m+3X3M/
+ RNld4tXQbmxHTk/V0Aten15ZZD4tbG50h5q9kV3lifMODyiMRJpxHCy2cs=
+X-Received: by 2002:a17:907:787:b0:aa6:af4b:7c87 with SMTP id
+ a640c23a62f3a-ab2ab6c5072mr1015355866b.21.1736534856038; 
+ Fri, 10 Jan 2025 10:47:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEjbRGvz/SJOrjdhXjBii7Z3nMPcidNi5AiVXh3hP/dZ/TSUPmZ7nug7sk3A7pZT5Ay6fZIrw==
+X-Received: by 2002:a17:907:787:b0:aa6:af4b:7c87 with SMTP id
+ a640c23a62f3a-ab2ab6c5072mr1015354166b.21.1736534855515; 
+ Fri, 10 Jan 2025 10:47:35 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.105.73])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d99046dbe0sm1833189a12.64.2025.01.10.10.47.30
+ a640c23a62f3a-ab2c95b1ccasm193366566b.158.2025.01.10.10.47.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 10:47:30 -0800 (PST)
+ Fri, 10 Jan 2025 10:47:34 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 30/38] i386/cpu: Drop the variable smp_cores and smp_threads in
- x86_cpu_pre_plug()
-Date: Fri, 10 Jan 2025 19:46:11 +0100
-Message-ID: <20250110184620.408302-31-pbonzini@redhat.com>
+Subject: [PULL 31/38] i386/cpu: Drop cores_per_pkg in cpu_x86_cpuid()
+Date: Fri, 10 Jan 2025 19:46:12 +0100
+Message-ID: <20250110184620.408302-32-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250110184620.408302-1-pbonzini@redhat.com>
 References: <20250110184620.408302-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.432,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,53 +108,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-No need to define smp_cores and smp_threads, just using ms->smp.cores
-and ms->smp.threads is straightforward. It's also consistent with other
-checks of socket/die/module.
+Local variable cores_per_pkg is only used to calculate threads_per_pkg.
+No need for it. Drop it and open-code it instead.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20241219110125.1266461-3-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20241219110125.1266461-4-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/i386/x86-common.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ target/i386/cpu.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
-index a7d46c31059..5b0629f9ad3 100644
---- a/hw/i386/x86-common.c
-+++ b/hw/i386/x86-common.c
-@@ -248,8 +248,6 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
-     CPUX86State *env = &cpu->env;
-     MachineState *ms = MACHINE(hotplug_dev);
-     X86MachineState *x86ms = X86_MACHINE(hotplug_dev);
--    unsigned int smp_cores = ms->smp.cores;
--    unsigned int smp_threads = ms->smp.threads;
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 579d9bac955..6d9c85576f6 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6499,7 +6499,6 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+     uint32_t limit;
+     uint32_t signature[3];
      X86CPUTopoInfo topo_info;
+-    uint32_t cores_per_pkg;
+     uint32_t threads_per_pkg;
  
-     if (!object_dynamic_cast(OBJECT(cpu), ms->cpu_type)) {
-@@ -329,17 +327,17 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
-         if (cpu->core_id < 0) {
-             error_setg(errp, "CPU core-id is not set");
-             return;
--        } else if (cpu->core_id > (smp_cores - 1)) {
-+        } else if (cpu->core_id > (ms->smp.cores - 1)) {
-             error_setg(errp, "Invalid CPU core-id: %u must be in range 0:%u",
--                       cpu->core_id, smp_cores - 1);
-+                       cpu->core_id, ms->smp.cores - 1);
-             return;
-         }
-         if (cpu->thread_id < 0) {
-             error_setg(errp, "CPU thread-id is not set");
-             return;
--        } else if (cpu->thread_id > (smp_threads - 1)) {
-+        } else if (cpu->thread_id > (ms->smp.threads - 1)) {
-             error_setg(errp, "Invalid CPU thread-id: %u must be in range 0:%u",
--                       cpu->thread_id, smp_threads - 1);
-+                       cpu->thread_id, ms->smp.threads - 1);
-             return;
-         }
+     topo_info.dies_per_pkg = env->nr_dies;
+@@ -6507,9 +6506,8 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+     topo_info.cores_per_module = cs->nr_cores / env->nr_dies / env->nr_modules;
+     topo_info.threads_per_core = cs->nr_threads;
  
+-    cores_per_pkg = topo_info.cores_per_module * topo_info.modules_per_die *
+-                    topo_info.dies_per_pkg;
+-    threads_per_pkg = cores_per_pkg * topo_info.threads_per_core;
++    threads_per_pkg = topo_info.threads_per_core * topo_info.cores_per_module *
++                      topo_info.modules_per_die * topo_info.dies_per_pkg;
+ 
+     /* Calculate & apply limits for different index ranges */
+     if (index >= 0xC0000000) {
 -- 
 2.47.1
 
