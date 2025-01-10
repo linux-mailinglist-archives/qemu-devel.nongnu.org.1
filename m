@@ -2,91 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D193DA091AF
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 14:19:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CC0FA091DD
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 14:26:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWEuH-0004tV-11; Fri, 10 Jan 2025 08:18:33 -0500
+	id 1tWEza-0000Q5-Ra; Fri, 10 Jan 2025 08:24:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tWEtt-0004gb-Nn
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:18:09 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1tWEz4-0008LL-IH
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:23:32 -0500
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tWEtr-0004kp-MZ
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:18:09 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3862d161947so1104127f8f.3
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 05:18:07 -0800 (PST)
+ id 1tWEz2-0005cc-0X
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:23:30 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-aa6b4cc7270so314147666b.0
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 05:23:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736515086; x=1737119886; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736515406; x=1737120206; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3O8tgi1W8PBym6iehaSEHEmNZA7RrFrVsm4HiG82IU4=;
- b=smuVaZGa5ycrEuRo/tQNXYB08MSf5ODBTMJe71E+fhn5N81awbXJ0vc0uzBU44E25w
- momq36VkzRA8WxwyuEMlq6sceCZ+L/l2PHHgX6Cr0H8Y3PqVUHWy36woCml/GOn1taFA
- 5c+U9gnlruE2pClKZ/4JDofuLqjnxQkLv2OVmhDJhIPVaRZbE5LSsnIdD2BzRsJ3Ey7k
- 3xVNg27epoO0yx2Jm3pLnd6JD/nDpQA68LxF/fWeBB58yLn80BGG2TIAxWC6RL+ktw4T
- pwP0zqt9yL60k6te5nM/ryhBtacai0gvvl6LgxapCjPs3O7SlszQ4qOQH2dSqVc85e2/
- Zrew==
+ bh=48g6qRzdUsGJbWFtW2KgF8TjHic1pStKCydxHudcjoc=;
+ b=aLFZrCWyUzeyjJTLMBQm/Hf2x8lv/Upjusr+hbsJktldiucA4dwe4uky4xElIPlj+U
+ hzlTU494JTPirAvags14wo0FZx8Mumy/H/YWSVMhNONCgF5KNNSW4dMNMrewB7622FNU
+ TPJyyCTtkmdHIrmAONN2t+18Ky1Kt/dsKo93t1cgYjqINAUDJeUqLouIn0BecFRs5f8H
+ KE4FkLr29bjtQlYfNt27cph9S1xT9v7lB4JdDjEbpJQzbrfgy7/+To/D+5Vt4hYWbMW/
+ sr5h/M81mLroXUBryvF1LM6KSTDA/oxAR+VROpoB/TLW6CDGoArgMot4+AiKsG67Bj43
+ pAcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736515086; x=1737119886;
+ d=1e100.net; s=20230601; t=1736515406; x=1737120206;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3O8tgi1W8PBym6iehaSEHEmNZA7RrFrVsm4HiG82IU4=;
- b=oX72kxdRZ5GMyBlqLK5r2f1DQbqgJztXWyqklDmDiEmfoZ5caaaZQKIkOUyUzFE3g4
- hms0G1MWHsF9v2axRndFp2U/5Gt8Mfu6y68hcRVhxcNmSt1qKvh3F9mjffypDC3Zn3tH
- jfCN4u9xcOQyyXfQd2yXqgv9vGvtjbIAIZWZ4wL40RbOpaKOeTgZexeBQo0PfDuvXmMf
- OL8jiodg5TVkZ86BLhbxYgMNY1o5LRq0+sVTWjR/wHX/HEqaMP3GU9YxthxYyQbADqMr
- xM3uFEuBMgeH4exfoq2gPT3iU+IYqUX1czNs2aiZnLqyMRhrLLHsv8GzWj7x6Y/PsGQv
- AmTg==
-X-Gm-Message-State: AOJu0YxKd5wc8bYA3eFkY9yC4CHj5oqgfT7fJ1BlvF96/gjJAey07YsF
- Ua/sUDxYOXQF+HsFJXl6PhrHseapDFvH9loayGlGnHuvfL8TR91AWNg/HC9AOsw=
-X-Gm-Gg: ASbGnctap1abK9NcsaM9dTleDO+NU8lDsDH/EkJCokdxVdQrpX5vQI8jpp6vTe/FZOO
- miaFnZPKtBmuA1tLXgVLz91Nr/z50bmzkSRbS5p8CpNd/9/SRMu29Verr89iVXVwa8d2beCfFT/
- 7PeDjfm0ewQmBUyvA9ygR9j2CDSMdBIQXb4xDl1lmZB3KdhhddH6BTg1BoYY49A8ztgslt+B4oT
- Lau1VE4+4mNRWkEfTftIVSkEZm4e22aOfSCCwvi8abyqlpTXjtNdxo=
-X-Google-Smtp-Source: AGHT+IFe0SelStSaN2IM/oeBAi0qXvlpfjdwGX5HTsst0DPX5+5D2UkDdfy42XM3cTKbWR9BJyJDaQ==
-X-Received: by 2002:a05:6000:1a8c:b0:38a:4b8b:c57a with SMTP id
- ffacd0b85a97d-38a87336f7amr10085098f8f.44.1736515085867; 
- Fri, 10 Jan 2025 05:18:05 -0800 (PST)
+ bh=48g6qRzdUsGJbWFtW2KgF8TjHic1pStKCydxHudcjoc=;
+ b=OT3ex9risu49Ig9InkmqcdF59DLV80UXBs7Go3WDwcwTqw+6iyL8HMZy6cSaQ68ZBV
+ GIorIDYJImhyGaUdAJbTZqXuUeqekRu6fFERddlf0EQiLK79/oPNZxDzL7l0nN4WJ6WX
+ DEbZyVH9edZvUwy8iVk7Y79xQTJ3yKEojBVnETImAfED4UPor3idrNLItHmJ959ItreO
+ iUUH66HSub5nbaHF7WYp3QIasYHWxrcYfB/rvV24hWD/nqiv3JuLW3DMPQyQL7eH3Ce+
+ 45sccFbWdSIX+180wg80gNhH42K9v9NAJ35NlNEaas0Pj52jFrZHnviZkTIN1vO403B9
+ T2MQ==
+X-Gm-Message-State: AOJu0YyNmzUjLxQCy82Q/ku4Wznu/tFnfjwK/lirRgQRxYx3Uf3MT8LS
+ P5bMTD4uUXgvkum6zZnyICN+GH1IDyEsrfoDI/dEWzgj77Xz+ZpkUyei/rc0iy8=
+X-Gm-Gg: ASbGncuP8wIftwHy0jKYlttaL63mO6pAhlvkCpiFCllFLdUFepTOXMHdABGT7eUnA+I
+ hMNwR30u8MkPDmILH5M41QrUDF0/WVmuzTPDHm/7xk4cf/+MySyWy9xD9YwljJ2lDjE1WvjESdR
+ XZqtqR4Bo2ZmyZyiTGKANYELrdzA3AjhigDsWLQ35Xk+CiJH+JhZrFPd23TUu8VHfA9c4AX9f1y
+ 2r3KrdcAfQf1MG482ddxSkYkIoTNGGL8IvimLVB+2/0KkTB9MjWRRA=
+X-Google-Smtp-Source: AGHT+IE7YYPbhoTVIt+lMRUOWF2wKnOuo1GzsMi2ta8Cem4H+VwFvFoReemcgrpxXy7OG5ThzsXveg==
+X-Received: by 2002:a05:6402:2548:b0:5d4:2ef7:1c with SMTP id
+ 4fb4d7f45d1cf-5d972e639e4mr23324001a12.24.1736515406264; 
+ Fri, 10 Jan 2025 05:23:26 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e4c1f2esm4540149f8f.98.2025.01.10.05.18.01
+ a640c23a62f3a-ab2c90dace5sm169304366b.60.2025.01.10.05.23.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 05:18:02 -0800 (PST)
+ Fri, 10 Jan 2025 05:23:22 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id DEAC8618B1;
- Fri, 10 Jan 2025 13:17:56 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 0022A618BC;
+ Fri, 10 Jan 2025 13:17:57 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
+Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 31/32] dockerfiles: Remove 'MAINTAINER' entry in
- debian-tricore-cross.docker
-Date: Fri, 10 Jan 2025 13:17:53 +0000
-Message-Id: <20250110131754.2769814-32-alex.bennee@linaro.org>
+Subject: [PULL 32/32] MAINTAINERS: Remove myself from reviewers
+Date: Fri, 10 Jan 2025 13:17:54 +0000
+Message-Id: <20250110131754.2769814-33-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250110131754.2769814-1-alex.bennee@linaro.org>
 References: <20250110131754.2769814-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x433.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x635.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- URIBL_SBL_A=0.1 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,34 +99,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <f4bug@amsat.org>
+From: Wainer dos Santos Moschetta <wainersm@redhat.com>
 
-AMSAT closed its email service [*] so my personal email
-address is now defunct. Remove it to avoid bouncing emails.
+The time I spent contributing to QEMU was great, but I've not been active
+for a long time now. So removing myself from the reviewers list of
+"Integration Testing with the Avocado framework" and
+"Build and test automation" subsystems.
 
-[*] https://web.archive.org/web/20240617194936/https://forum.amsat-dl.org/index.php?thread/4581-amsat-mail-alias-service-to-end-august-1-2024/
-
-Signed-off-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20250102152513.61065-1-philmd@linaro.org>
-[AJB: update URL to web.archive.org]
+Signed-off-by: Wainer dos Santos Moschetta <wainersm@redhat.com>
+Message-Id: <20250103194450.360789-1-wainersm@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250108121054.1126164-32-alex.bennee@linaro.org>
+Message-Id: <20250108121054.1126164-33-alex.bennee@linaro.org>
 
-diff --git a/tests/docker/dockerfiles/debian-tricore-cross.docker b/tests/docker/dockerfiles/debian-tricore-cross.docker
-index 479b4d6eba..7e00e870ce 100644
---- a/tests/docker/dockerfiles/debian-tricore-cross.docker
-+++ b/tests/docker/dockerfiles/debian-tricore-cross.docker
-@@ -11,8 +11,6 @@
- #
- FROM docker.io/library/debian:11-slim
+diff --git a/MAINTAINERS b/MAINTAINERS
+index cab9018d9f..c1d954c9de 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4152,7 +4152,6 @@ M: Alex Bennée <alex.bennee@linaro.org>
+ T: git https://gitlab.com/stsquad/qemu testing/next
+ M: Philippe Mathieu-Daudé <philmd@linaro.org>
+ M: Thomas Huth <thuth@redhat.com>
+-R: Wainer dos Santos Moschetta <wainersm@redhat.com>
+ S: Maintained
+ F: .github/workflows/lockdown.yml
+ F: .gitlab-ci.yml
+@@ -4198,7 +4197,6 @@ Integration Testing with the Avocado framework
+ W: https://trello.com/b/6Qi1pxVn/avocado-qemu
+ R: Cleber Rosa <crosa@redhat.com>
+ R: Philippe Mathieu-Daudé <philmd@linaro.org>
+-R: Wainer dos Santos Moschetta <wainersm@redhat.com>
+ S: Odd Fixes
+ F: tests/avocado/
  
--MAINTAINER Philippe Mathieu-Daudé <f4bug@amsat.org>
--
- RUN apt update && \
-     DEBIAN_FRONTEND=noninteractive apt install -yy eatmydata && \
-     DEBIAN_FRONTEND=noninteractive eatmydata apt install -yy \
 -- 
 2.39.5
 
