@@ -2,91 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E00C4A088E0
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 08:18:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 604DAA088C1
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 08:07:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tW9Gk-0002rJ-Po; Fri, 10 Jan 2025 02:17:22 -0500
+	id 1tW96W-00077K-PL; Fri, 10 Jan 2025 02:06:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1tW9Gh-0002qP-TJ
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 02:17:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tW96S-00076l-G1
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 02:06:44 -0500
+Received: from mgamail.intel.com ([198.175.65.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1tW9Gg-0000QW-CV
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 02:17:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736493436;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=QJ/gQSOBAspcGk6u4zr3HLJbfFZXg0qX00OL4lqsJvw=;
- b=XzQGQV6wBOayscDlXFBUgO6rjTOXOSnVcX0IU19XiIlJGk8GUKokHnGZ4EFWl2wmn6o7UK
- dVkKVwK0Aqo00mJSSBHpof5XOfTGRdTXUOgL8Nz9XTWIT/SRIAfwgI+AHqS6/905Xi0BfR
- wFCjbDvC8XJVeQU77buNegAO4YL2J5I=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-dd56rCHWN8SM-sPvN977hw-1; Fri, 10 Jan 2025 02:17:14 -0500
-X-MC-Unique: dd56rCHWN8SM-sPvN977hw-1
-X-Mimecast-MFC-AGG-ID: dd56rCHWN8SM-sPvN977hw
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-ab2e529dc35so26632466b.3
- for <qemu-devel@nongnu.org>; Thu, 09 Jan 2025 23:17:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736493433; x=1737098233;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QJ/gQSOBAspcGk6u4zr3HLJbfFZXg0qX00OL4lqsJvw=;
- b=otXgMy9qelXOXkrV+NdwokaBor0hYcITY7ozoQGpDjP8lUZiKiTaf2IOtpkWc6TlZC
- eNPExT7EWKDjEuxP3JTly6d6jCLT2t2PBMkkotCIldZXEQ1VaYn3WzzY681r2aPXtes5
- PF7cAAhovcw8kC7ncjeOkCX52g6oVAn8VTuWRaoVygJ3CnhlHmN1263K3ZzYoH8q5kEU
- e+hKf/Jdw7auamVk6Qth5BR+gN32eCkHGPC5Ck66H0upeH/Tcrw0KedP3qwlIn8m8YqF
- cbA0YYdwKqyBXbxjkWJveeJMdZTzcBWvCqVU1FfqHYMEMWTsH9Fbymw0QS4G4HTztJ8l
- xctg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCViy2bnJN7stMEmDW1PZjk/8TOR9eerMLsrFMZbE+Z/uCuEEPvVkvzjE7EVxf6ilu58NugUIgmV+cJC@nongnu.org
-X-Gm-Message-State: AOJu0YweZOtJwDE3IpyaFK2VGyWgE0PAl76I8i6pDwQvZkRnNfYNlb30
- hPHEN8dhwWxpOzmwF9ffDNBcnXLtFZ/3qilWixWI7h0TkvnaOLRpEUznYzpqmsk9wo0tSBW9bCB
- kE9ME/JbPTtr1m3Dblbfa8JJVezKKOQM7QS5JgvhcogIrloZxEGuykf8+dqcRIQu61C4eTcuTt5
- DRnqWbS26NS3E7bHuuD1NY3tEUr2M=
-X-Gm-Gg: ASbGnctRRnq+o8kgAICGUMh3a+SWG6Ur4ypbFUvuv7WE90iqKq3Pg+zJ6oVfEvRRT8w
- U0Z+bsNH4fnyrHv0J4Z+sDd7C2nMoUiLElRFL4bw=
-X-Received: by 2002:a05:6402:13c1:b0:5d1:2631:b88a with SMTP id
- 4fb4d7f45d1cf-5d972e167dcmr9285133a12.17.1736493433377; 
- Thu, 09 Jan 2025 23:17:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGRaZXqY1YevhtZ+paAEz1jIfdSVTZtoRQ/aNK6dnq4a1TAnqcOqbO66h5ildMme1H7bfZFD7SRunvBI0+baVQ=
-X-Received: by 2002:a05:6402:13c1:b0:5d1:2631:b88a with SMTP id
- 4fb4d7f45d1cf-5d972e167dcmr9285121a12.17.1736493433064; Thu, 09 Jan 2025
- 23:17:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tW96P-0007OU-3K
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 02:06:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1736492802; x=1768028802;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Icfp8ADMH22lY9/TECTYujLjL4kAtLZFXlPwp+iKNWM=;
+ b=lGpgihRGJZuh/dZbUhQCw3ebfgibLTlyT1c7pq4TCHikaOgSPaOc8LtW
+ 8o1Z3pOw/5dwTOkjsGzbSNKpwlfZU+fh0BpPIwIsUCGAmw0jjwNrRhrv7
+ jK09E3ti1nGPyHJwltWCUVdWlxuRPImPUymhZNj0BHXx71HlUBM3VFlY4
+ +UkcHQm+Z6EtdpuZFeU6dRdX5GO6yQS4suOtqr08pK+WOjdPSu+TcBG3K
+ IfUhWJ9KwrrBtr7i6Tu7e8g/LWQCfrfCCB9TU66QqkqiSPaXno0MTjnjp
+ 3WxArhQIQZ1gMdhoATjALqwFVowYOKToGajFCTs8GvthvjvwhT1e38zZy Q==;
+X-CSE-ConnectionGUID: gKsq8Q4NQeuzC5NBlQDmrg==
+X-CSE-MsgGUID: q/XJmuiBRFWlc13uFJSNoQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11310"; a="36939434"
+X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; d="scan'208";a="36939434"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jan 2025 23:06:36 -0800
+X-CSE-ConnectionGUID: e+pImn6jSuK83VHtw1pMoA==
+X-CSE-MsgGUID: I+za7lgbSUii4CBnw7HmIw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; d="scan'208";a="104200387"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa009.fm.intel.com with ESMTP; 09 Jan 2025 23:06:33 -0800
+Date: Fri, 10 Jan 2025 15:25:21 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Alireza Sanaee <alireza.sanaee@huawei.com>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org
+Subject: Re: [PATCH v7 1/5] hw/core/machine: Reject thread level cache
+Message-ID: <Z4DLYf6kfWptN5IK@intel.com>
+References: <20250108150150.1258529-1-zhao1.liu@intel.com>
+ <20250108150150.1258529-2-zhao1.liu@intel.com>
 MIME-Version: 1.0
-References: <20250108-buffers-v1-1-a0c85ff31aeb@daynix.com>
-In-Reply-To: <20250108-buffers-v1-1-a0c85ff31aeb@daynix.com>
-From: Lei Yang <leiyang@redhat.com>
-Date: Fri, 10 Jan 2025 15:16:36 +0800
-X-Gm-Features: AbW1kvZCuilgIAkONM9eu9p7ASZtik1M7shoOzCkXoUa1caaw6uDtiPMJneZtos
-Message-ID: <CAPpAL=zW7HtpDkBji26UuU_4nCLj5tgfSFUs=hyHtE8-6OJe6g@mail.gmail.com>
-Subject: Re: [PATCH] virtio-net: Fix num_buffers for version 1
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- qemu-devel@nongnu.org, devel@daynix.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=leiyang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.436,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250108150150.1258529-2-zhao1.liu@intel.com>
+Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.436,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,48 +92,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I tested this patch with virtio-net regression tests and tests
-"mrg_rxbuf" on/off status with netperf tests, everything works fine.
+Hi Jonathon,
 
-Tested-by: Lei Yang <leiyang@redhat.com>
+Thanks for more explaination!
 
-On Wed, Jan 8, 2025 at 8:23=E2=80=AFPM Akihiko Odaki <akihiko.odaki@daynix.=
-com> wrote:
->
-> The specification says the device MUST set num_buffers to 1 if
-> VIRTIO_NET_F_MRG_RXBUF has not been negotiated.
->
-> Fixes: df91055db5c9 ("virtio-net: enable virtio 1.0")
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->  hw/net/virtio-net.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-> index 06f096abf678..b241cd4bb48a 100644
-> --- a/hw/net/virtio-net.c
-> +++ b/hw/net/virtio-net.c
-> @@ -1992,6 +1992,8 @@ static ssize_t virtio_net_receive_rcu(NetClientStat=
-e *nc, const uint8_t *buf,
->                                      offsetof(typeof(hdr),
->                                               virtio_net.hdr.num_buffers)=
-,
->                                      sizeof(hdr.virtio_net.hdr.num_buffer=
-s));
-> +            } else {
-> +                hdr.virtio_net.hdr.num_buffers =3D cpu_to_le16(1);
->              }
->
->              guest_offset =3D n->has_vnet_hdr ?
->
-> ---
-> base-commit: 38d0939b86e2eef6f6a622c6f1f7befda0146595
-> change-id: 20241227-buffers-6bd3493c287e
->
-> Best regards,
-> --
-> Akihiko Odaki <akihiko.odaki@daynix.com>
->
->
+Based on your clarification, I think the commit message for Patch 1
+needs to be updated since I used the same wrods as the cover letter...
+
+What about the following change?
+
+On Wed, Jan 08, 2025 at 11:01:46PM +0800, Zhao Liu wrote:
+> Date: Wed, 8 Jan 2025 23:01:46 +0800
+> From: Zhao Liu <zhao1.liu@intel.com>
+> Subject: [PATCH v7 1/5] hw/core/machine: Reject thread level cache
+> X-Mailer: git-send-email 2.34.1
+> 
+> Currently, neither i386 nor ARM have real hardware support for per-
+> thread cache, and there is no clear demand for this specific cache
+> topology.
+> 
+> Additionally, since supporting this special cache topology on ARM
+> requires extra effort [1], it is unnecessary to support it at this
+> moment, even though per-thread cache might have potential scheduling
+> benefits for VMs without CPU affinity.
+
+Additionally, since ARM even can't support this special cache topology
+in device tree, it is unnecessary to support it at this moment, even
+though per-thread cache might have potential scheduling benefits for
+VMs without CPU affinity.
+
+If it's fine for u, I'll resend this series quickly.
+
+Thanks,
+Zhao
+
+> Therefore, disable thread-level cache topology in the general machine
+> part. At present, i386 has not enabled SMP cache, so disabling the
+> thread parameter does not pose compatibility issues.
+> 
+> In the future, if there is a clear demand for this feature, the correct
+> approach would be to add a new control field in MachineClass.smp_props
+> and enable it only for the machines that require it.
+> 
+> [1]: https://lore.kernel.org/qemu-devel/Z3efFsigJ6SxhqMf@intel.com/#t
+> 
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 
 
