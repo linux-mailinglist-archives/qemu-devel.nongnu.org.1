@@ -2,94 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74DFEA09A09
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:47:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97285A09A1D
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:49:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWK21-0000CO-Vx; Fri, 10 Jan 2025 13:46:54 -0500
+	id 1tWK2d-0000NJ-FR; Fri, 10 Jan 2025 13:47:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK1g-0000Ac-1P
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tWK1l-0000BD-Lo
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK1d-00014e-RZ
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:31 -0500
+ id 1tWK1f-00014l-Nz
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736534787;
+ s=mimecast20190719; t=1736534790;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=B10SRZRYGA29q+/7m3S/Wftl9lQcNQLNubrEXoeQmEM=;
- b=Vw2cJpMN/nR19nfaaa3AAQlm+UIFqd2g6mqUeR7gerwCKoC4ooT9JuAUUjxWYMvrOtI8I2
- UF209CwjGqO/MMlwp3V8vwdcehomSCr8f5Ka87Pnny4hAD1Ij2ooNPoe4YqEwfyba4y84a
- mxnJaVl+Vni3zGTUivG4H/gXbPBvGdI=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Bvl+J5OWotTQVBe9dRZtuqKB1fUaMLXq6FgWP0i2SqQ=;
+ b=AVOwjwfctDqborLU+NQHemSECpbDguGEZ5Jwug8g+4JYVsuL+CzzbkcbTlytcrfELxI/P2
+ vYnv+0BlDbl/LlptF+03N6NQ+nPGmLhL7okJHr5LIXZaubtLM0Mu+Ydwp+pNOWGheoldQW
+ V7LgyXGpx2cqH9YFgeGi2oSAD2ApNxs=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-513-02Fb-KDwNqmPySjxmQgZPA-1; Fri, 10 Jan 2025 13:46:26 -0500
-X-MC-Unique: 02Fb-KDwNqmPySjxmQgZPA-1
-X-Mimecast-MFC-AGG-ID: 02Fb-KDwNqmPySjxmQgZPA
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5d3d6d924c1so2459617a12.2
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:46:25 -0800 (PST)
+ us-mta-6-aJMt2ZhWPM6K5hMeXB7FMQ-1; Fri, 10 Jan 2025 13:46:28 -0500
+X-MC-Unique: aJMt2ZhWPM6K5hMeXB7FMQ-1
+X-Mimecast-MFC-AGG-ID: aJMt2ZhWPM6K5hMeXB7FMQ
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-aaf8f016bb1so201318366b.2
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:46:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736534784; x=1737139584;
+ d=1e100.net; s=20230601; t=1736534787; x=1737139587;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=B10SRZRYGA29q+/7m3S/Wftl9lQcNQLNubrEXoeQmEM=;
- b=FIduveJL9ghVHEp09yiZCg0LmnurUFDMEa24PJrrvdv5uuYDpXbO1ci6KQpuwybOl2
- b6DNcLR9SMje76+ihGA6HktlMpsPbNAYJUmt8oak9zNifzo+ziH6Zoa4AvdUDZRkRlDw
- iSXNqnxgIljjKIYszS8I6L0XyqDrnnwlADr0S5wrMcMd8Tkt/z54r6nxY5XE1gJdUbU8
- 3Av2OoXA6jxnfuf2QKqYUX10u5wecyC4UMBxW6lBMeKCsMpDSon6eDzPsccM0FP3aPai
- uoPwgp0xjslOcEodB6FkUB5eoAVHk0znsqgi+zRrtdPr+go5zlvzDD4pQTsxctq/l5Yc
- xNWQ==
-X-Gm-Message-State: AOJu0YwzHPpkXOg0unJ5GdPFGIME9FC4+I1G9KlPpuePbvDymVdiCkgJ
- /7ErN9Y1yA+5a1nLg3fWEuWo7wmoE37/yBISxj6F2ci2/Zo9Ydx0hVlz57753YZmYQDX22BqT//
- NZ3BHF063H7BVCPVpb1XKXJcpUySW56wocTWbhXrB+TE/iZyez5mrMAa6d4LYstBkBrIBU2/oPi
- jwXVMxOi9++N61FWq8nTLNXNykq71o8MBZ3g03nlI=
-X-Gm-Gg: ASbGncs+xIFLQfXr0q9Oov1ZGNQ9DvfCFHJGHk/RDst3FBltN+8jWYBh7Mz9eBfk05+
- A56lyySDjH26VPoR3HSkvAycLQDKw2z5blNP+GhEf6N6EGXP7Fz7lVf7aqFd+Tf/Oy2ZXPpoAWV
- 4qIUucheYkdV6CQVAJ0HnG9fGFnoCovxl6Z3SVdZIY4rYEgqZG1jaPYaeBdZXM1XJubHvYt3wkW
- Z3TZkkILzrFJkmSsl07J61tmyvNX9dRjpA1PZZEMndPwdb9QcbFiB9WSTg=
-X-Received: by 2002:a05:6402:3550:b0:5d0:fc80:c4d1 with SMTP id
- 4fb4d7f45d1cf-5d972e0eecdmr10426061a12.14.1736534784564; 
- Fri, 10 Jan 2025 10:46:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHEdDNrmT5oZiFA9sw23LLLZ+h7PTot/o+XeArjlRl5ERLCBKatzG0LFomgxPoAx2u68dszUA==
-X-Received: by 2002:a05:6402:3550:b0:5d0:fc80:c4d1 with SMTP id
- 4fb4d7f45d1cf-5d972e0eecdmr10426038a12.14.1736534784132; 
- Fri, 10 Jan 2025 10:46:24 -0800 (PST)
+ bh=Bvl+J5OWotTQVBe9dRZtuqKB1fUaMLXq6FgWP0i2SqQ=;
+ b=bC9VS2r+kzx0A0P5+b/457a1bxXbD/qOiwhKXfbIf61/8yuVqMKoKYcNE175w/z675
+ DCzZ0edMV7hDDvS/igSrBx1Se5Z8YnEeC4x820EKot58I/bh4qK0n/U5cCuM0qwePdyk
+ qdzRGQA5powzHHoa9oiuEkY30pe+AYV0XB7rVnKqvzq1QVDkuo822xAZCV4CorOJoc+k
+ SZv/bESk2YQJ6RCNPw1uf88pXtiUEI4DFu6/ibV4frsr/RxWm335XrYuv3YRvVdQlLS7
+ Wt2K1Tyvj7D9ATUKlqy6JIbbIy5jcevHek6QgWtv7Zv/ArBA5ER/sq8rzZshNdpdJ+ZN
+ ZUwg==
+X-Gm-Message-State: AOJu0YyZuRocyfJotzGsCLGqqS1urpBEPvCdAcwrrM2zHk6O1wZvhdVe
+ c59AO23jWyd36r/xSnxtOVUFJRqrMTKSFMkDxJUM1zFlY/+fdsnKD3da/jsLGQLuXqq1uM528DZ
+ +j/c0/dbbBFlYLcqWmBFz6l3iJ9ZaSvK0hrtXpDWkXFTiGvPtKW4p2AJPslwwnLRsUmq8DgMmZ5
+ 8uI4wLLwFrp/v2jGrkr7VSnU6eQc+GozueOOZjB9A=
+X-Gm-Gg: ASbGnctLpn3nNF+0QV7n0sxknmky9IzhcTDO+5SuLIp00CusedcITeARo1cGH9pILcq
+ jlBxshdx7/vLQcTokVynArqvxx1E+DM9utaBq5wx+KKJMfcLzTotNGaz61Rfb7b0dG0l1vBI0oF
+ TEIoLYwHN92V4pfc+EtRBftUv90EQ8xR1/GgJU2dY2PZ7mANESAgkwVsW5T6U3aG/H4+tqgNvd8
+ tha0kdFswLhBCq9SRGwCqrDxlrj4s9L8xICCgF4a2hKBJTRhGY7JjV2Zk4=
+X-Received: by 2002:a17:907:3f09:b0:aae:fb7c:50df with SMTP id
+ a640c23a62f3a-ab2ab748e82mr991966266b.36.1736534787122; 
+ Fri, 10 Jan 2025 10:46:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IETwfDyaxMZrGSGbeuDJn19ywgfYAs+GwWmw7sKA6LISg7Ak3qlCOW94eLTAfAMu3D8MFiSzg==
+X-Received: by 2002:a17:907:3f09:b0:aae:fb7c:50df with SMTP id
+ a640c23a62f3a-ab2ab748e82mr991964366b.36.1736534786652; 
+ Fri, 10 Jan 2025 10:46:26 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.105.73])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d9903bb465sm1931155a12.36.2025.01.10.10.46.23
+ a640c23a62f3a-ab2c905f04fsm193136266b.27.2025.01.10.10.46.25
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 10:46:23 -0800 (PST)
+ Fri, 10 Jan 2025 10:46:25 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Bernhard Beschow <shentey@gmail.com>
-Subject: [PULL 01/38] rust: fix --enable-debug-mutex
-Date: Fri, 10 Jan 2025 19:45:42 +0100
-Message-ID: <20250110184620.408302-2-pbonzini@redhat.com>
+Subject: [PULL 02/38] rust: add --check-cfg test to rustc arguments
+Date: Fri, 10 Jan 2025 19:45:43 +0100
+Message-ID: <20250110184620.408302-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250110184620.408302-1-pbonzini@redhat.com>
 References: <20250110184620.408302-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.432,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,28 +105,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---feature is an option for cargo but not for rustc.
+rustc will check that every reachable #[cfg] matches a list of
+the expected config names and values.  Recent versions of rustc are
+also complaining about #[cfg(test)], even if it is basically a standard
+part of the language.  So, always allow it.
 
-Reported-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Bernhard Beschow <shentey@gmail.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/rust/rustc_args.py | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-index ccb20f38c1d..9425ba7100c 100644
---- a/rust/qemu-api/meson.build
-+++ b/rust/qemu-api/meson.build
-@@ -7,7 +7,7 @@ if rustc.version().version_compare('>=1.77.0')
-   _qemu_api_cfg += ['--cfg', 'has_offset_of']
- endif
- if get_option('debug_mutex')
--  _qemu_api_cfg += ['--feature', 'debug_cell']
-+  _qemu_api_cfg += ['--cfg', 'feature="debug_cell"']
- endif
+diff --git a/scripts/rust/rustc_args.py b/scripts/rust/rustc_args.py
+index 5525b3886fa..d79dc6d81f1 100644
+--- a/scripts/rust/rustc_args.py
++++ b/scripts/rust/rustc_args.py
+@@ -215,6 +215,8 @@ def main() -> None:
  
- _qemu_api_rs = static_library(
+     if rustc_version >= (1, 80):
+         if args.lints:
++            print("--check-cfg")
++            print("test")
+             for cfg in sorted(cargo_toml.check_cfg):
+                 print("--check-cfg")
+                 print(cfg)
 -- 
 2.47.1
 
