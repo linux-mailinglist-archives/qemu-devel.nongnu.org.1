@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50C05A09A0F
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:48:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A81FFA09AAB
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:54:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWK31-000197-34; Fri, 10 Jan 2025 13:47:55 -0500
+	id 1tWK34-0001Sp-Ht; Fri, 10 Jan 2025 13:47:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK2r-0000ZS-E5
+ id 1tWK2t-0000h7-3y
  for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:47 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK2p-0001Dn-3u
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:44 -0500
+ id 1tWK2r-0001E2-74
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736534862;
+ s=mimecast20190719; t=1736534864;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=InB+d98viNQRxuvtICKG8ck6jnh084gdrT4/wIgZzao=;
- b=XpcsOCQ9r0fUut2TIV7b+HTK4NwtN0fg2Zc1UIpAmRJbX41oTGDskO9jFsxBcHSza+nUh2
- 5AFMzwL/sUk0FPEvuUSQNsTcie8/IxXS07silrnRPqDLOqgJmlF5/OwfxzaeVFRLWM0/cH
- IecYnIwaneCKHo5ToWYJcLedO0OpQ9g=
+ bh=BIu31oS8+7nxNH6NjsiGP5t1yaCBDHTs3K4alVxgO68=;
+ b=Q9B+IIw0q9ugwH1Kl4QmAUmNJF+tNwdN2rAAW5k9J8mbKGpljmrxaK+gANkfO/T7bN/eTC
+ iFsT0+za644vZqKON9QbtWsNAwKM/xZk05RqQQXryrfs+MsWxHke435ie08p5IRwfnVtfl
+ +I+z0orJkEjYZVUtWB1NrTzjLtjpgQ4=
 Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
  [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-685-_XQtdgh1NcG1UI1IpoZB4Q-1; Fri, 10 Jan 2025 13:47:40 -0500
-X-MC-Unique: _XQtdgh1NcG1UI1IpoZB4Q-1
-X-Mimecast-MFC-AGG-ID: _XQtdgh1NcG1UI1IpoZB4Q
+ us-mta-33-JByqUyVmP3mjQZWgOh294A-1; Fri, 10 Jan 2025 13:47:42 -0500
+X-MC-Unique: JByqUyVmP3mjQZWgOh294A-1
+X-Mimecast-MFC-AGG-ID: JByqUyVmP3mjQZWgOh294A
 Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-aabf8e856e2so249462866b.0
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:47:40 -0800 (PST)
+ a640c23a62f3a-aa69e84128aso194055966b.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:47:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736534859; x=1737139659;
+ d=1e100.net; s=20230601; t=1736534861; x=1737139661;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=InB+d98viNQRxuvtICKG8ck6jnh084gdrT4/wIgZzao=;
- b=sAuJWvJ5v3JypNpv0f8LikjzfkcjWk6vHubCJDfqwMa19CM6eHb7k00+WpSyz7qcZw
- hkGQktYcR0Vdm+SzQ0ADy7zk0IcnxDsFasP42RJ+3aB27zCZkcllv4HDLc1mrs7tMwJA
- pHGxNJ9ILtNYk3ltYWHwZB0qVuzt9DNI6xPltxfP9IqQGmV5c8mmh17FYsCtFus8tNdH
- A/H4RgU6NLpBHt99rxCchwVolsf5OGLfcxVd37GeIkMvyY3aUnLFP3XwigGD49feeHZu
- pATcJypseGKJEBF+1dAye1scel+7eWudgHph0Oil6bVOj65X+xBgv1r8ktPEHuS8exRR
- I9nw==
-X-Gm-Message-State: AOJu0Yw8pree1wjvFKkaoJIgEsHE8d+EQVxZpA31/PsqSm5qHmZ5Xan+
- GveoYkq7l/Si/ExmLcas8PvcaVRoaPPvUhXw7s+wCLZNlPqhYEG21SViWhNAdQuj9g45AwtLQIL
- Be4ZNIJ5rgSZWXukb6gPHprEM+HJJGoCtEPSGpExxGLRDW/4bpw5Wjy0nghED9/u0y5aEPWlLIR
- T61VZ2/HbJsy1DQnjOuGCJpq7p9QTI5R9WllWf+z8=
-X-Gm-Gg: ASbGncv5xU0cI3NLVOCOHgUhHSMJwj7/cVmJTlqL+D3tmPtZZEr6vqQVicL2T/9QIwU
- qEMdijCinCPKy/evf8tMJzfvNBnCH0hl/xaDOPXtRf/Qae2W769jxf3FmSYDGoiTt9DaDotbO5Q
- Fqx8nDMu78XD0P2Uki1vTE5FDTNBdEksnNsFhMg+RDlsUJWZv7tfFGUeUsZZY0BaM58avoNNt2c
- vKEswEKdmjeNXnGaXlwj0qoEe1JnZ6RxUMwJ7+vFk+7Uw6VUirclALZRgs=
-X-Received: by 2002:a05:6402:400b:b0:5d0:e63e:21ca with SMTP id
- 4fb4d7f45d1cf-5d972e1c0d3mr11387890a12.19.1736534858884; 
- Fri, 10 Jan 2025 10:47:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG7ym9xWJ3fuQQ9Y7UtIIw9DV1pHPm+O1GGbaXXBAacoVfbsIU03xjaY1IS5zV+X7psX/TmnQ==
-X-Received: by 2002:a05:6402:400b:b0:5d0:e63e:21ca with SMTP id
- 4fb4d7f45d1cf-5d972e1c0d3mr11387876a12.19.1736534858442; 
- Fri, 10 Jan 2025 10:47:38 -0800 (PST)
+ bh=BIu31oS8+7nxNH6NjsiGP5t1yaCBDHTs3K4alVxgO68=;
+ b=hjAcwYt/ePwz5d7EQAoUT7sv+XI/DB5N2WCNfVAHDzgXUXN6tp25G0E6pmog7rz3RN
+ MQ4e+o/tCSvYa9XbXTaXo8OyqT3wX2cnQeOR9Q7Ufrn6OvgpE72LvRfwaB2RqQDI0ofo
+ w8cByjxPE+8AiKB9myvBB7nncBZDpmSIHuLnqsvR47FdAEHEkUMypXCK+IfXnQWveZr0
+ hHZXO7sBW/nikh3iMUCH+uhj1raRMAvoBAfgLKRK1EqhonGlFe4eaR8YQTlGbEwgO4yD
+ uYbifgXGA2ENMss8J7k3GnK2Tz531yI88Voou11g7hlSxMqsVISLNkXwAWW9qxDZ5IBW
+ 1fpA==
+X-Gm-Message-State: AOJu0Yx2kb10DU18oluvEH1DX1Khj7tjXKGngBifxNg9QfjlqsW2gkoX
+ NkZ5j9GXX8PTbwFFdYyJ7kX5L+q9lWbAHNzgs+dxkQ+xU479GmW7xYfRV1wFr4YK391HaI6qPeD
+ uIBzFLbCCgyfEEKbK+9zsFCwNPhIZtrLUq8fbIqs5mzHU/zPo728wc4s0GpRaogsfZ20Dl1tmzz
+ msSGxaIkCfMCPb1mD9czFVm/WWp3xzIF9VehEPJWY=
+X-Gm-Gg: ASbGncsxlXzBV3CHFaFnET7I2/yOBPb3uJ4wkRVGUP7worfdTOmVtB3cgksQE7E4erz
+ +y93t6tWqjr8k0Mw34ruUR4uWHl+0G5Qjo9mdpupD11u7ryIVRdKSBpYZGPYAPtkkmYi5BM0p67
+ CK1l4gYhS/iRsImvfYBVrAL8k9vHoxQ/aFyV/Y6K0zcWz2kE+wMGq2JhBfjGBtAMYlRFgdO2H67
+ oW99dzfq1TvYq076LVXfMqLkmMSb/wDGnwVOeRqG8b1faVrG/KiB5fyqik=
+X-Received: by 2002:a17:907:d87:b0:aa6:80ed:e9a3 with SMTP id
+ a640c23a62f3a-ab2ab70a87amr1250821766b.35.1736534861032; 
+ Fri, 10 Jan 2025 10:47:41 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGxCDexzyCKkD1qSpaJ7j5lqbnxMrj4YGUapHDkO+PUoAWfFzkKpnnQ1JlQK3U/LdJYnhdHyA==
+X-Received: by 2002:a17:907:d87:b0:aa6:80ed:e9a3 with SMTP id
+ a640c23a62f3a-ab2ab70a87amr1250819866b.35.1736534860551; 
+ Fri, 10 Jan 2025 10:47:40 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.105.73])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d99008c366sm1937639a12.17.2025.01.10.10.47.36
+ a640c23a62f3a-ab2c9562ea8sm194331766b.93.2025.01.10.10.47.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 10:47:36 -0800 (PST)
+ Fri, 10 Jan 2025 10:47:39 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 32/38] i386/topology: Update the comment of
- x86_apicid_from_topo_ids()
-Date: Fri, 10 Jan 2025 19:46:13 +0100
-Message-ID: <20250110184620.408302-33-pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: [PULL 33/38] i386/topology: Introduce helpers for various topology
+ info of different level
+Date: Fri, 10 Jan 2025 19:46:14 +0100
+Message-ID: <20250110184620.408302-34-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250110184620.408302-1-pbonzini@redhat.com>
 References: <20250110184620.408302-1-pbonzini@redhat.com>
@@ -109,34 +108,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Update the comment of x86_apicid_from_topo_ids() to match the current
-implementation,
+Introduce various helpers for getting the topology info of different
+semantics. Using the helper is more self-explanatory.
+
+Besides, the semantic of the helper will stay unchanged even when new
+topology is added in the future. At that time, updating the
+implementation of the helper without affecting the callers.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20241219110125.1266461-5-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20241219110125.1266461-6-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/i386/topology.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/hw/i386/topology.h | 25 +++++++++++++++++++++++++
+ target/i386/cpu.c          | 11 ++++-------
+ 2 files changed, 29 insertions(+), 7 deletions(-)
 
 diff --git a/include/hw/i386/topology.h b/include/hw/i386/topology.h
-index b2c8bf2de15..21b65219a5c 100644
+index 21b65219a5c..f6380f1ed75 100644
 --- a/include/hw/i386/topology.h
 +++ b/include/hw/i386/topology.h
-@@ -121,9 +121,10 @@ static inline unsigned apicid_pkg_offset(X86CPUTopoInfo *topo_info)
+@@ -203,4 +203,29 @@ static inline bool x86_has_extended_topo(unsigned long *topo_bitmap)
+            test_bit(CPU_TOPOLOGY_LEVEL_DIE, topo_bitmap);
  }
  
- /*
-- * Make APIC ID for the CPU based on Pkg_ID, Core_ID, SMT_ID
-+ * Make APIC ID for the CPU based on topology and IDs of each topology level.
-  *
-- * The caller must make sure core_id < nr_cores and smt_id < nr_threads.
-+ * The caller must make sure the ID of each level doesn't exceed the width of
-+ * the level.
-  */
- static inline apic_id_t x86_apicid_from_topo_ids(X86CPUTopoInfo *topo_info,
-                                                  const X86CPUTopoIDs *topo_ids)
++static inline unsigned x86_module_per_pkg(X86CPUTopoInfo *topo_info)
++{
++    return topo_info->modules_per_die * topo_info->dies_per_pkg;
++}
++
++static inline unsigned x86_cores_per_pkg(X86CPUTopoInfo *topo_info)
++{
++    return topo_info->cores_per_module * x86_module_per_pkg(topo_info);
++}
++
++static inline unsigned x86_threads_per_pkg(X86CPUTopoInfo *topo_info)
++{
++    return topo_info->threads_per_core * x86_cores_per_pkg(topo_info);
++}
++
++static inline unsigned x86_threads_per_module(X86CPUTopoInfo *topo_info)
++{
++    return topo_info->threads_per_core * topo_info->cores_per_module;
++}
++
++static inline unsigned x86_threads_per_die(X86CPUTopoInfo *topo_info)
++{
++    return x86_threads_per_module(topo_info) * topo_info->modules_per_die;
++}
++
+ #endif /* HW_I386_TOPOLOGY_H */
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 6d9c85576f6..a58c719e90c 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -312,13 +312,11 @@ static uint32_t num_threads_by_topo_level(X86CPUTopoInfo *topo_info,
+     case CPU_TOPOLOGY_LEVEL_CORE:
+         return topo_info->threads_per_core;
+     case CPU_TOPOLOGY_LEVEL_MODULE:
+-        return topo_info->threads_per_core * topo_info->cores_per_module;
++        return x86_threads_per_module(topo_info);
+     case CPU_TOPOLOGY_LEVEL_DIE:
+-        return topo_info->threads_per_core * topo_info->cores_per_module *
+-               topo_info->modules_per_die;
++        return x86_threads_per_die(topo_info);
+     case CPU_TOPOLOGY_LEVEL_SOCKET:
+-        return topo_info->threads_per_core * topo_info->cores_per_module *
+-               topo_info->modules_per_die * topo_info->dies_per_pkg;
++        return x86_threads_per_pkg(topo_info);
+     default:
+         g_assert_not_reached();
+     }
+@@ -6506,8 +6504,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+     topo_info.cores_per_module = cs->nr_cores / env->nr_dies / env->nr_modules;
+     topo_info.threads_per_core = cs->nr_threads;
+ 
+-    threads_per_pkg = topo_info.threads_per_core * topo_info.cores_per_module *
+-                      topo_info.modules_per_die * topo_info.dies_per_pkg;
++    threads_per_pkg = x86_threads_per_pkg(&topo_info);
+ 
+     /* Calculate & apply limits for different index ranges */
+     if (index >= 0xC0000000) {
 -- 
 2.47.1
 
