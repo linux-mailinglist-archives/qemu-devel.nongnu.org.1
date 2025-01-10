@@ -2,105 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0AE8A09035
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 13:22:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 741D0A09012
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 13:15:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWDuM-0001Pp-52; Fri, 10 Jan 2025 07:14:34 -0500
+	id 1tWDuM-0001Pq-5t; Fri, 10 Jan 2025 07:14:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tWDuI-0001Od-KC
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 07:14:30 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tWDuJ-0001PV-Qs
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 07:14:31 -0500
 Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tWDuG-0003KG-T0
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 07:14:30 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tWDuI-0003KQ-8P
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 07:14:31 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id A5C1F1F396;
- Fri, 10 Jan 2025 12:14:27 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 21D581F455;
+ Fri, 10 Jan 2025 12:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736511267; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1736511269; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YILkL8gIZpd2M8zlAaeS2NRxwcKi1GXQ4OHbI20hopE=;
- b=Hko3E7cfT2Upq+WKk7R+Ud+tuhCZyCx3L0j5g80syAkywgImsPTjUZqsCyLUsItcHbmXVC
- dMYtBb6mNzHHladUfTLWGrk5zkjOsaywywYg6/bY5UG8CqXaWpmwG9udjlSjUCq75yFuv+
- lH7n6FA/Mp5hiGhW3ygwVet+GnK+72U=
+ bh=fzxe/xMDN/y6wv++kyYa7dpuPHVGC0cKdT011hdJdO8=;
+ b=LE5/ebdDeMKgWHQ4mlf7K77UATjX8DHXToPpyvZVt7O2x1AWnUoFJLRcGJvCsE1FHBbEo4
+ 86gf2/F5WYQOaRvl62uUPT4ztPVYY6zglnTOfZRBnmOr9fRt7c8YJAyglYMiEE0aaYkvtt
+ +iVnnNcPGABsxT2e9smZoKqLelVZmkU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736511267;
+ s=susede2_ed25519; t=1736511269;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YILkL8gIZpd2M8zlAaeS2NRxwcKi1GXQ4OHbI20hopE=;
- b=nr572TT9nYKU81r2ExXs4BDUnvxrZg0mUajZx1hfeyzjc4r6jvMEN+gDn3Ls8STWdOiO2I
- 1JJJ97+YoDvpqhAg==
+ bh=fzxe/xMDN/y6wv++kyYa7dpuPHVGC0cKdT011hdJdO8=;
+ b=B3L5kuKiankEajhqp5rygY3j5XYs8TvrEQKR/uQHRupbx7s8X2rEemRVqkyMwCY8KBSFwE
+ M3FThZlnQG5NFDBw==
 Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Hko3E7cf;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=nr572TT9
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736511267; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1736511269; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YILkL8gIZpd2M8zlAaeS2NRxwcKi1GXQ4OHbI20hopE=;
- b=Hko3E7cfT2Upq+WKk7R+Ud+tuhCZyCx3L0j5g80syAkywgImsPTjUZqsCyLUsItcHbmXVC
- dMYtBb6mNzHHladUfTLWGrk5zkjOsaywywYg6/bY5UG8CqXaWpmwG9udjlSjUCq75yFuv+
- lH7n6FA/Mp5hiGhW3ygwVet+GnK+72U=
+ bh=fzxe/xMDN/y6wv++kyYa7dpuPHVGC0cKdT011hdJdO8=;
+ b=LE5/ebdDeMKgWHQ4mlf7K77UATjX8DHXToPpyvZVt7O2x1AWnUoFJLRcGJvCsE1FHBbEo4
+ 86gf2/F5WYQOaRvl62uUPT4ztPVYY6zglnTOfZRBnmOr9fRt7c8YJAyglYMiEE0aaYkvtt
+ +iVnnNcPGABsxT2e9smZoKqLelVZmkU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736511267;
+ s=susede2_ed25519; t=1736511269;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YILkL8gIZpd2M8zlAaeS2NRxwcKi1GXQ4OHbI20hopE=;
- b=nr572TT9nYKU81r2ExXs4BDUnvxrZg0mUajZx1hfeyzjc4r6jvMEN+gDn3Ls8STWdOiO2I
- 1JJJ97+YoDvpqhAg==
+ bh=fzxe/xMDN/y6wv++kyYa7dpuPHVGC0cKdT011hdJdO8=;
+ b=B3L5kuKiankEajhqp5rygY3j5XYs8TvrEQKR/uQHRupbx7s8X2rEemRVqkyMwCY8KBSFwE
+ M3FThZlnQG5NFDBw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ADBBD13A86;
- Fri, 10 Jan 2025 12:14:26 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2019613A86;
+ Fri, 10 Jan 2025 12:14:27 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id cDN3HCIPgWdURwAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 10 Jan 2025 12:14:26 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id YPN2NSMPgWdURwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 10 Jan 2025 12:14:27 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>
-Subject: [PULL 07/25] migration/multifd: Cleanup src flushes on condition check
-Date: Fri, 10 Jan 2025 09:13:55 -0300
-Message-Id: <20250110121413.12336-8-farosas@suse.de>
+Subject: [PULL 08/25] migration/multifd: Document the reason to sync for
+ save_setup()
+Date: Fri, 10 Jan 2025 09:13:56 -0300
+Message-Id: <20250110121413.12336-9-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250110121413.12336-1-farosas@suse.de>
 References: <20250110121413.12336-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A5C1F1F396
-X-Spam-Score: -3.01
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
- MIME_TRACE(0.00)[0:+]; RCVD_VIA_SMTP_AUTH(0.00)[];
- FUZZY_BLOCKED(0.00)[rspamd.com]; ARC_NA(0.00)[];
- RCPT_COUNT_TWO(0.00)[2];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_TWO(0.00)[2];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
+ ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; RCVD_TLS_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
  RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid];
+ RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.80
 Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
  envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -43
@@ -127,128 +120,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-The src flush condition check is over complicated, and it's getting more
-out of control if postcopy will be involved.
+It's not straightforward to see why src QEMU needs to sync multifd during
+setup() phase.  After all, there's no page queued at that point.
 
-In general, we have two modes to do the sync: legacy or modern ways.
-Legacy uses per-section flush, modern uses per-round flush.
+For old QEMUs, there's a solid reason: EOS requires it to work.  While it's
+clueless on the new QEMUs which do not take EOS message as sync requests.
 
-Mapped-ram always uses the modern, which is per-round.
+One will figure that out only when this is conditionally removed.  In fact,
+the author did try it out.  Logically we could still avoid doing this on
+new machine types, however that needs a separate compat field and that can
+be an overkill in some trivial overhead in setup() phase.
 
-Introduce two helpers, which can greatly simplify the code, and hopefully
-make it readable again.
+Let's instead document it completely, to avoid someone else tries this
+again and do the debug one more time, or anyone confused on why this ever
+existed.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Message-Id: <20241206224755.1108686-7-peterx@redhat.com>
+Message-Id: <20241206224755.1108686-8-peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/multifd-nocomp.c | 42 ++++++++++++++++++++++++++++++++++++++
- migration/multifd.h        |  2 ++
- migration/ram.c            | 10 +++------
- 3 files changed, 47 insertions(+), 7 deletions(-)
+ migration/ram.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/migration/multifd-nocomp.c b/migration/multifd-nocomp.c
-index 58372db0f4..c1f686c0ce 100644
---- a/migration/multifd-nocomp.c
-+++ b/migration/multifd-nocomp.c
-@@ -344,6 +344,48 @@ retry:
-     return true;
- }
- 
-+/*
-+ * We have two modes for multifd flushes:
-+ *
-+ * - Per-section mode: this is the legacy way to flush, it requires one
-+ *   MULTIFD_FLAG_SYNC message for each RAM_SAVE_FLAG_EOS.
-+ *
-+ * - Per-round mode: this is the modern way to flush, it requires one
-+ *   MULTIFD_FLAG_SYNC message only for each round of RAM scan.  Normally
-+ *   it's paired with a new RAM_SAVE_FLAG_MULTIFD_FLUSH message in network
-+ *   based migrations.
-+ *
-+ * One thing to mention is mapped-ram always use the modern way to sync.
-+ */
-+
-+/* Do we need a per-section multifd flush (legacy way)? */
-+bool multifd_ram_sync_per_section(void)
-+{
-+    if (!migrate_multifd()) {
-+        return false;
-+    }
-+
-+    if (migrate_mapped_ram()) {
-+        return false;
-+    }
-+
-+    return migrate_multifd_flush_after_each_section();
-+}
-+
-+/* Do we need a per-round multifd flush (modern way)? */
-+bool multifd_ram_sync_per_round(void)
-+{
-+    if (!migrate_multifd()) {
-+        return false;
-+    }
-+
-+    if (migrate_mapped_ram()) {
-+        return true;
-+    }
-+
-+    return !migrate_multifd_flush_after_each_section();
-+}
-+
- int multifd_ram_flush_and_sync(QEMUFile *f)
- {
-     MultiFDSyncReq req;
-diff --git a/migration/multifd.h b/migration/multifd.h
-index 0fef431f6b..bd785b9873 100644
---- a/migration/multifd.h
-+++ b/migration/multifd.h
-@@ -355,6 +355,8 @@ static inline uint32_t multifd_ram_page_count(void)
- void multifd_ram_save_setup(void);
- void multifd_ram_save_cleanup(void);
- int multifd_ram_flush_and_sync(QEMUFile *f);
-+bool multifd_ram_sync_per_round(void);
-+bool multifd_ram_sync_per_section(void);
- size_t multifd_ram_payload_size(void);
- void multifd_ram_fill_packet(MultiFDSendParams *p);
- int multifd_ram_unfill_packet(MultiFDRecvParams *p, Error **errp);
 diff --git a/migration/ram.c b/migration/ram.c
-index 9eeb77665b..d9336d8a09 100644
+index d9336d8a09..ce28328141 100644
 --- a/migration/ram.c
 +++ b/migration/ram.c
-@@ -1302,9 +1302,7 @@ static int find_dirty_block(RAMState *rs, PageSearchStatus *pss)
-         pss->page = 0;
-         pss->block = QLIST_NEXT_RCU(pss->block, next);
-         if (!pss->block) {
--            if (migrate_multifd() &&
--                (!migrate_multifd_flush_after_each_section() ||
--                 migrate_mapped_ram())) {
-+            if (multifd_ram_sync_per_round()) {
-                 QEMUFile *f = rs->pss[RAM_CHANNEL_PRECOPY].pss_channel;
-                 int ret = multifd_ram_flush_and_sync(f);
-                 if (ret < 0) {
-@@ -3178,8 +3176,7 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
- 
- out:
-     if (ret >= 0 && migration_is_running()) {
--        if (migrate_multifd() && migrate_multifd_flush_after_each_section() &&
--            !migrate_mapped_ram()) {
-+        if (multifd_ram_sync_per_section()) {
-             ret = multifd_ram_flush_and_sync(f);
-             if (ret < 0) {
-                 return ret;
-@@ -3252,8 +3249,7 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
-         }
+@@ -3036,6 +3036,31 @@ static int ram_save_setup(QEMUFile *f, void *opaque, Error **errp)
+         migration_ops->ram_save_target_page = ram_save_target_page_legacy;
      }
  
--    if (migrate_multifd() &&
--        migrate_multifd_flush_after_each_section()) {
-+    if (multifd_ram_sync_per_section()) {
-         /*
-          * Only the old dest QEMU will need this sync, because each EOS
-          * will require one SYNC message on each channel.
++    /*
++     * This operation is unfortunate..
++     *
++     * For legacy QEMUs using per-section sync
++     * =======================================
++     *
++     * This must exist because the EOS below requires the SYNC messages
++     * per-channel to work.
++     *
++     * For modern QEMUs using per-round sync
++     * =====================================
++     *
++     * Logically such sync is not needed, and recv threads should not run
++     * until setup ready (using things like channels_ready on src).  Then
++     * we should be all fine.
++     *
++     * However even if we add channels_ready to recv side in new QEMUs, old
++     * QEMU won't have them so this sync will still be needed to make sure
++     * multifd recv threads won't start processing guest pages early before
++     * ram_load_setup() is properly done.
++     *
++     * Let's stick with this.  Fortunately the overhead is low to sync
++     * during setup because the VM is running, so at least it's not
++     * accounted as part of downtime.
++     */
+     bql_unlock();
+     ret = multifd_ram_flush_and_sync(f);
+     bql_lock();
 -- 
 2.35.3
 
