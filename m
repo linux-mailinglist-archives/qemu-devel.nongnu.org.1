@@ -2,94 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4086FA09A2B
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:49:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02B64A09A2A
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:49:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWK2j-0000PH-FY; Fri, 10 Jan 2025 13:47:37 -0500
+	id 1tWK2t-0000QT-Hm; Fri, 10 Jan 2025 13:47:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK1p-0000Bf-K8
+ id 1tWK1v-0000C0-K5
  for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK1k-000150-4s
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:39 -0500
+ id 1tWK1o-00015R-V9
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736534793;
+ s=mimecast20190719; t=1736534798;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=K+ve94DKbTOVXrMnq6VI7ki09hbI6XC3Vzt03Al6AE8=;
- b=hKq8ZdEnJHr9FrLZQvwu7/N3RrHBW21LuQAgH0zL3xRCETdYP2qbGDzdePC5YKFGsoJpVV
- hheWC6WtiToCf+gXziIsw/JQAcBeC92oHpTqzL8kkF+1fbyEfASHFiVXb4PB42M6lQo1nv
- UxNTJsxlPFZgBeb8TQ+X6Oy1sC2ZGIE=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+Y7AVIgYdOQkLjAuEs4LCi+iFSpj9VAgo8xznKQsbL4=;
+ b=WdArafX6GiUxBMfsWX2I74c0+uL5qa9Bj21OsQQgiGL0BX6JVjUF0CiRXqPBy+eV424R/f
+ ExIiqyQYG+BQQcmtAMB7bZDtXBHdtTgcBEu5BuE0Vay8aEvlF0cTg5QGlHCwQmORgw/3n/
+ o0EjlKIhH7QjEZFzd/KmSHJvWh8FD5A=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-131-IACNSdQNNLeHXMPpA1e-yQ-1; Fri, 10 Jan 2025 13:46:31 -0500
-X-MC-Unique: IACNSdQNNLeHXMPpA1e-yQ-1
-X-Mimecast-MFC-AGG-ID: IACNSdQNNLeHXMPpA1e-yQ
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-aa66f6ce6bfso197494366b.2
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:46:31 -0800 (PST)
+ us-mta-584-SAEOOldKMU2uJxEkpbutnA-1; Fri, 10 Jan 2025 13:46:34 -0500
+X-MC-Unique: SAEOOldKMU2uJxEkpbutnA-1
+X-Mimecast-MFC-AGG-ID: SAEOOldKMU2uJxEkpbutnA
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-5d40c0c728aso1909503a12.2
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:46:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736534789; x=1737139589;
+ d=1e100.net; s=20230601; t=1736534792; x=1737139592;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=K+ve94DKbTOVXrMnq6VI7ki09hbI6XC3Vzt03Al6AE8=;
- b=kM9tbVw5IVA+o9aVZgO8QaIL81DrpROp8WPSaY1pkIsRfK8SjweT9oau2BNDEdIQ1R
- 9EE9cSbsXY4CkJgqbwsMaDnRX3zk3KivPsWgnomILsOIOl0YWtNL0t49O1Pc6l0WWBhp
- p9LN8e5gGrBzsUOV1CBlYGBbW7v+Ygq8+V6vdkqMjAUB2tk6klgVBmvTvq5kVlNxsTXF
- 8kVmvb5fH4xj0NJiKxd5PUzQZeh5x8/da2GuNUowjIH5iGQeTyRavAfRaXjaJdghohDX
- BFZRa8PalpJ8bL0HHV622qHN7QeprHWJu4lJVu4e4OF8ZEkSow2H/+D4zVk+1vr0u+iq
- R3Kg==
-X-Gm-Message-State: AOJu0Yz0SNyBgjAhuRHw9lmwnLK3P8QqooYTELkg9lsasbKK7iGLIhL5
- FLicp/zYDSqVO5K4SJmd45VDH9T0Re4PA8pDLzaFFUNht9Okqx7qUI6VNSCnXxsL/RjpBArJpj+
- Y0CqJXt9lowXOrSv9qCPzgGnT6lk9cIpKgH+c44nMMoqotBZCeVLLLUq95utAPUp6ugcpiYP7Z1
- 2AcZUW58nYECWaNSbEs29GC+A2dZ5v7s42ElZmXW0=
-X-Gm-Gg: ASbGncsmk/3b/Sw7EGiZh5tbrSmEA1+SDhpq3g/lZOPJuJbV41Srk2scHvUkXCZft6c
- BVhtoeZio1ZEAUrBJ04Gm0TweUNAhHCKzM2fY4ZrGHRnZ2kyDT03kO/5XVtyk1QBZdgpLit5pzI
- gpkjbiumMYw9WesqK8aMJ1v2a3NiPSn2nDfrgkPHhMuiSV9Zu60g1dx2Hl3eLBhZTDOFLzo/KsR
- hJTD2PRHtJz8dNwcKjA+UJIs4OKVqOprMx/Un0MqQVKu8ulMnlLaHpYq9U=
-X-Received: by 2002:a17:907:2d1e:b0:aa6:93c4:c685 with SMTP id
- a640c23a62f3a-ab2ab6bfe87mr1050800766b.23.1736534789193; 
- Fri, 10 Jan 2025 10:46:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHzmdYqPe86rzk8xjbj3VeKJGaUx3BwcVwm5HoG/DGpRmH9YlJxYAPnEMUNvMmodfJCCj4grA==
-X-Received: by 2002:a17:907:2d1e:b0:aa6:93c4:c685 with SMTP id
- a640c23a62f3a-ab2ab6bfe87mr1050798566b.23.1736534788635; 
- Fri, 10 Jan 2025 10:46:28 -0800 (PST)
+ bh=+Y7AVIgYdOQkLjAuEs4LCi+iFSpj9VAgo8xznKQsbL4=;
+ b=RnRp4tNF5v+uVbPLe8CnxdOR4Nia0ib+WPn/5KDfVgMnsp/EIA99ovVMuAVj54nM+p
+ F0FKWfgtTsF1QoilCCabDUmqMZ+hpDcOIgOdxFhsNrDRmjmKZQEDFQ4NWkWFQp2QDWj1
+ ACPTAP2pgoXbdBRqlret2auhrjy/rag9Asjy5IcwoDdN8fCpFd9KYkEQaPOhnLs/HY6C
+ EIYYi0CUl7VBR87W6tCNrKa1YqPoVXyb6vgskf+/ateG69F4+TBMKAtwNDedIfNCLpPh
+ o361AjFbGrz+kAY5T0cFGBOVcmN3RPJxk4m+G+s5e0Gq6oBRp3+ajZ8OrXkJQUNm8B1g
+ XLdw==
+X-Gm-Message-State: AOJu0YxERnytULLOXIUmJvP4lIfVwzE0L/En0zdCm+kZuSAlKGLhU4Zg
+ 8G6z+gQLPrkoNrj8MzB9wfdqy+B9Z09G+4gu8QS/3MZ/FI1J5kXc6ZyPEHhq+0a0itw3SJG4qau
+ ywC0vHq/2bJ/fLuTZfnpKOpDBbzZDV9ErvScS4g8Wj+kQve2/a2Oqvd25O+PLtXvRSlx8tPPd9C
+ belqlniy2kjpkiz9VrFSJw73drNsVMU9lVMAxmxic=
+X-Gm-Gg: ASbGncsRkmbNcoyx/r4T9qwou/WCgT0Bfvp1NNJMBfjOQmPguULeIi0TW1PI9NDu1GX
+ ydGcb4+KG1anYsFlrBTHzs3Th0o8ptKe7AmNO8maa9gZ14lzFBDv+XzI3YYor/VITvD/kjPjaia
+ e50QSDN4NSMb36/ZzcM60g5vJHv8r/P6l+LDHn01P75KO+ha0B2B0g5d1AKDEtdcKohxc1KmQGL
+ 2ApO4f14qayPFRC3kDLPPIrQ2Fpq+5xaFjDkicHuRCA4LjVD41UOahX390=
+X-Received: by 2002:a50:858c:0:b0:5d9:857e:b259 with SMTP id
+ 4fb4d7f45d1cf-5d9857eb31cmr14539987a12.31.1736534792228; 
+ Fri, 10 Jan 2025 10:46:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF8VRoiJfpZr0lg1yBx64xa8aIqBuoVsf5dw2dNq6dFmoBLLLE+69EJNK2jsn3Md+08LeNebA==
+X-Received: by 2002:a50:858c:0:b0:5d9:857e:b259 with SMTP id
+ 4fb4d7f45d1cf-5d9857eb31cmr14539956a12.31.1736534791809; 
+ Fri, 10 Jan 2025 10:46:31 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.105.73])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c90db325sm195677166b.65.2025.01.10.10.46.27
+ a640c23a62f3a-ab2c9565517sm193586366b.130.2025.01.10.10.46.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 10:46:27 -0800 (PST)
+ Fri, 10 Jan 2025 10:46:29 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 03/38] rust: qom: add ParentField
-Date: Fri, 10 Jan 2025 19:45:44 +0100
-Message-ID: <20250110184620.408302-4-pbonzini@redhat.com>
+Subject: [PULL 04/38] rust: add a utility module for compile-time type checks
+Date: Fri, 10 Jan 2025 19:45:45 +0100
+Message-ID: <20250110184620.408302-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250110184620.408302-1-pbonzini@redhat.com>
 References: <20250110184620.408302-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.432,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,206 +105,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a type that, together with the C function object_deinit, ensures the
-correct drop order for QOM objects relative to their superclasses.
-
-Right now it is not possible to implement the Drop trait for QOM classes
-that are defined in Rust, as the drop() function would not be called when
-the object goes away; instead what is called is ObjectImpl::INSTANCE_FINALIZE.
-It would be nice for INSTANCE_FINALIZE to just drop the object, but this has
-a problem: suppose you have
-
-   pub struct MySuperclass {
-       parent: DeviceState,
-       field: Box<MyData>,
-       ...
-   }
-
-   impl Drop for MySuperclass {
-       ...
-   }
-
-   pub struct MySubclass {
-       parent: MySuperclass,
-       ...
-   }
-
-and an instance_finalize implementation that is like
-
-    unsafe extern "C" fn drop_object<T: ObjectImpl>(obj: *mut Object) {
-        unsafe { std::ptr::drop_in_place(obj.cast::<T>()) }
-    }
-
-When instance_finalize is called for MySubclass, it will walk the struct's
-list of fields and call the drop method for MySuperclass.  Then, object_deinit
-recurses to the superclass and calls the same drop method again.  This
-will cause double-freeing of the Box<Data>.
-
-What's happening here is that QOM wants to control the drop order of
-MySuperclass and MySubclass's fields.  To do so, the parent field must
-be marked ManuallyDrop<>, which is quite ugly.  Instead, add a wrapper
-type ParentField<> that is specific to QOM.  This hides the implementation
-detail of *what* is special about the ParentField, and will also be easy
-to check in the #[derive(Object)] macro.
+It is relatively common in the low-level qemu_api code to assert that
+a field of a struct has a specific type; for example, it can be used
+to ensure that the fields match what the qemu_api and C code expects
+for safety.
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs |  6 +--
- rust/qemu-api/src/qom.rs         | 64 +++++++++++++++++++++++++++++---
- rust/qemu-api/tests/tests.rs     |  4 +-
- 3 files changed, 63 insertions(+), 11 deletions(-)
+ rust/qemu-api/meson.build       |  1 +
+ rust/qemu-api/src/assertions.rs | 90 +++++++++++++++++++++++++++++++++
+ rust/qemu-api/src/lib.rs        |  1 +
+ 3 files changed, 92 insertions(+)
+ create mode 100644 rust/qemu-api/src/assertions.rs
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 18cc122951d..689202f4550 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -14,7 +14,7 @@
-     irq::InterruptSource,
-     prelude::*,
-     qdev::DeviceImpl,
--    qom::ObjectImpl,
-+    qom::{ObjectImpl, ParentField},
- };
- 
- use crate::{
-@@ -86,7 +86,7 @@ fn index(&self, idx: u32) -> &Self::Output {
- #[derive(Debug, qemu_api_macros::Object, qemu_api_macros::offsets)]
- /// PL011 Device Model in QEMU
- pub struct PL011State {
--    pub parent_obj: SysBusDevice,
-+    pub parent_obj: ParentField<SysBusDevice>,
-     pub iomem: MemoryRegion,
-     #[doc(alias = "fr")]
-     pub flags: registers::Flags,
-@@ -645,7 +645,7 @@ pub fn post_load(&mut self, _version_id: u32) -> Result<(), ()> {
- #[derive(Debug, qemu_api_macros::Object)]
- /// PL011 Luminary device model.
- pub struct PL011Luminary {
--    parent_obj: PL011State,
-+    parent_obj: ParentField<PL011State>,
- }
- 
- impl PL011Luminary {
-diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
-index 7d5fbef1e17..40d17a92e1f 100644
---- a/rust/qemu-api/src/qom.rs
-+++ b/rust/qemu-api/src/qom.rs
-@@ -55,6 +55,7 @@
- 
- use std::{
-     ffi::CStr,
-+    fmt,
-     ops::{Deref, DerefMut},
-     os::raw::c_void,
- };
-@@ -105,6 +106,52 @@ fn as_ref(&self) -> &$parent {
-     };
- }
- 
-+/// This is the same as [`ManuallyDrop<T>`](std::mem::ManuallyDrop), though
-+/// it hides the standard methods of `ManuallyDrop`.
-+///
-+/// The first field of an `ObjectType` must be of type `ParentField<T>`.
-+/// (Technically, this is only necessary if there is at least one Rust
-+/// superclass in the hierarchy).  This is to ensure that the parent field is
-+/// dropped after the subclass; this drop order is enforced by the C
-+/// `object_deinit` function.
+diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+index 9425ba7100c..60944a657de 100644
+--- a/rust/qemu-api/meson.build
++++ b/rust/qemu-api/meson.build
+@@ -15,6 +15,7 @@ _qemu_api_rs = static_library(
+   structured_sources(
+     [
+       'src/lib.rs',
++      'src/assertions.rs',
+       'src/bindings.rs',
+       'src/bitops.rs',
+       'src/callbacks.rs',
+diff --git a/rust/qemu-api/src/assertions.rs b/rust/qemu-api/src/assertions.rs
+new file mode 100644
+index 00000000000..6e420469806
+--- /dev/null
++++ b/rust/qemu-api/src/assertions.rs
+@@ -0,0 +1,90 @@
++// Copyright 2024, Red Hat Inc.
++// Author(s): Paolo Bonzini <pbonzini@redhat.com>
++// SPDX-License-Identifier: GPL-2.0-or-later
++
++//! This module provides macros to check the equality of types and
++//! the type of `struct` fields.  This can be useful to ensure that
++//! types match the expectations of C code.
++
++// Based on https://stackoverflow.com/questions/64251852/x/70978292#70978292
++// (stackoverflow answers are released under MIT license).
++
++#[doc(hidden)]
++pub trait EqType {
++    type Itself;
++}
++
++impl<T> EqType for T {
++    type Itself = T;
++}
++
++/// Assert that two types are the same.
 +///
 +/// # Examples
 +///
-+/// ```ignore
-+/// #[repr(C)]
-+/// #[derive(qemu_api_macros::Object)]
-+/// pub struct MyDevice {
-+///     parent: ParentField<DeviceState>,
-+///     ...
-+/// }
 +/// ```
-+#[derive(Debug)]
-+#[repr(transparent)]
-+pub struct ParentField<T: ObjectType>(std::mem::ManuallyDrop<T>);
-+
-+impl<T: ObjectType> Deref for ParentField<T> {
-+    type Target = T;
-+
-+    #[inline(always)]
-+    fn deref(&self) -> &Self::Target {
-+        &self.0
-+    }
-+}
-+
-+impl<T: ObjectType> DerefMut for ParentField<T> {
-+    #[inline(always)]
-+    fn deref_mut(&mut self) -> &mut Self::Target {
-+        &mut self.0
-+    }
-+}
-+
-+impl<T: fmt::Display + ObjectType> fmt::Display for ParentField<T> {
-+    #[inline(always)]
-+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
-+        self.0.fmt(f)
-+    }
-+}
-+
- unsafe extern "C" fn rust_instance_init<T: ObjectImpl>(obj: *mut Object) {
-     // SAFETY: obj is an instance of T, since rust_instance_init<T>
-     // is called from QOM core as the instance_init function
-@@ -151,11 +198,16 @@ fn as_ref(&self) -> &$parent {
- ///
- /// - the struct must be `#[repr(C)]`;
- ///
--/// - the first field of the struct must be of the instance struct corresponding
--///   to the superclass, which is `ObjectImpl::ParentType`
-+/// - the first field of the struct must be of type
-+///   [`ParentField<T>`](ParentField), where `T` is the parent type
-+///   [`ObjectImpl::ParentType`]
- ///
--/// - likewise, the first field of the `Class` must be of the class struct
--///   corresponding to the superclass, which is `ObjectImpl::ParentType::Class`.
-+/// - the first field of the `Class` must be of the class struct corresponding
-+///   to the superclass, which is `ObjectImpl::ParentType::Class`. `ParentField`
-+///   is not needed here.
++/// # use qemu_api::assert_same_type;
++/// # use std::ops::Deref;
++/// assert_same_type!(u32, u32);
++/// assert_same_type!(<Box<u32> as Deref>::Target, u32);
++/// ```
 +///
-+/// In both cases, having a separate class type is not necessary if the subclass
-+/// does not add any field.
- pub unsafe trait ObjectType: Sized {
-     /// The QOM class object corresponding to this struct.  This is used
-     /// to automatically generate a `class_init` method.
-@@ -384,8 +436,8 @@ impl<T: ObjectType> ObjectCastMut for &mut T {}
++/// Different types will cause a compile failure
++///
++/// ```compile_fail
++/// # use qemu_api::assert_same_type;
++/// assert_same_type!(&Box<u32>, &u32);
++/// ```
++#[macro_export]
++macro_rules! assert_same_type {
++    ($t1:ty, $t2:ty) => {
++        const _: () = {
++            #[allow(unused)]
++            fn assert_same_type(v: $t1) {
++                fn types_must_be_equal<T, U>(_: T)
++                where
++                    T: $crate::assertions::EqType<Itself = U>,
++                {
++                }
++                types_must_be_equal::<_, $t2>(v);
++            }
++        };
++    };
++}
++
++/// Assert that a field of a struct has the given type.
++///
++/// # Examples
++///
++/// ```
++/// # use qemu_api::assert_field_type;
++/// pub struct A {
++///     field1: u32,
++/// }
++///
++/// assert_field_type!(A, field1, u32);
++/// ```
++///
++/// Different types will cause a compile failure
++///
++/// ```compile_fail
++/// # use qemu_api::assert_field_type;
++/// # pub struct A { field1: u32 }
++/// assert_field_type!(A, field1, i32);
++/// ```
++#[macro_export]
++macro_rules! assert_field_type {
++    ($t:ty, $i:tt, $ti:ty) => {
++        const _: () = {
++            #[allow(unused)]
++            fn assert_field_type(v: $t) {
++                fn types_must_be_equal<T, U>(_: T)
++                where
++                    T: $crate::assertions::EqType<Itself = U>,
++                {
++                }
++                types_must_be_equal::<_, $ti>(v.$i);
++            }
++        };
++    };
++}
+diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
+index 4b43e02c0f9..83c6a987c05 100644
+--- a/rust/qemu-api/src/lib.rs
++++ b/rust/qemu-api/src/lib.rs
+@@ -12,6 +12,7 @@
+ #[rustfmt::skip]
+ pub mod prelude;
  
- /// Trait a type must implement to be registered with QEMU.
- pub trait ObjectImpl: ObjectType + ClassInitImpl<Self::Class> {
--    /// The parent of the type.  This should match the first field of
--    /// the struct that implements `ObjectImpl`:
-+    /// The parent of the type.  This should match the first field of the
-+    /// struct that implements `ObjectImpl`, minus the `ParentField<_>` wrapper.
-     type ParentType: ObjectType;
- 
-     /// Whether the object can be instantiated
-diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
-index 1d2825b0986..526c3f4f8ea 100644
---- a/rust/qemu-api/tests/tests.rs
-+++ b/rust/qemu-api/tests/tests.rs
-@@ -15,7 +15,7 @@
-     declare_properties, define_property,
-     prelude::*,
-     qdev::{DeviceImpl, DeviceState, Property},
--    qom::ObjectImpl,
-+    qom::{ObjectImpl, ParentField},
-     vmstate::VMStateDescription,
-     zeroable::Zeroable,
- };
-@@ -31,7 +31,7 @@
- #[repr(C)]
- #[derive(qemu_api_macros::Object)]
- pub struct DummyState {
--    parent: DeviceState,
-+    parent: ParentField<DeviceState>,
-     migrate_clock: bool,
- }
- 
++pub mod assertions;
+ pub mod bitops;
+ pub mod c_str;
+ pub mod callbacks;
 -- 
 2.47.1
 
