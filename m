@@ -2,89 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05F76A096B3
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 17:05:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21F79A096BB
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 17:07:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWHVP-0002Yu-Kp; Fri, 10 Jan 2025 11:05:03 -0500
+	id 1tWHWK-0005RN-At; Fri, 10 Jan 2025 11:06:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tWHVE-0002TO-Qy
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 11:04:52 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tWHVD-0004bb-Ac
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 11:04:52 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-38632b8ae71so1554939f8f.0
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 08:04:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736525089; x=1737129889; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=IXI/XYLW2H4aB40RcCSFKK3Ej+zc4PI7vc2Qy+wjzYs=;
- b=SvFQjj0cVPnmzp5UKKZKc93IB21912Rnp+FVpBjn/QQMz4WFqhG0GXfVYtOSl5eqrL
- mnSaX5p2VANCoRFwtiico9Y9F6BUMYRoFDGFh9LaDD7rvWNaf4J6IvpxtNlJLZxDhfsi
- ATGD//Y1Ib/dFocuRF6i29K2nF1JgXQGh3tkZyLRK314Upk22mDXml/SFd7CPT638Sn3
- pAPZDmDem4tbno/BHRr+nF8cIlj5I1Qt8zKkIgwbHDioPvtGDtfPbZRkk2w3YVIo1AkJ
- TbqrjFojd6ceDesEZKmTGne/CepD1mOPMN/fMnrK0KhTmrnx+xSZB2VRALicBq/k7zjD
- Ks1Q==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tWHWF-0005A8-7x
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 11:05:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tWHWB-0004uB-3x
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 11:05:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736525149;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=KVxdPxOxfkLSM1NEfjh53dQJeocjyDnEHBh4FTY8LOs=;
+ b=fXrTj7qB2kTA5KdMy0JQKLHYKVgYaT/ImX4xZctrdtswDoVrcMiUIoha45jJO1yDIYuTYr
+ kyzIqFXC17bCngPwfVxCA+OCS6N2BPjbJrIHZKPMYasQOREZlULJtVblvCrzOY2yycR/AI
+ fKW9SuMwImj1ArKIfz5KXAkbH+81m3w=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-689-_SDwU10aO9ivup_RIQzkrQ-1; Fri, 10 Jan 2025 11:05:45 -0500
+X-MC-Unique: _SDwU10aO9ivup_RIQzkrQ-1
+X-Mimecast-MFC-AGG-ID: _SDwU10aO9ivup_RIQzkrQ
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-385e00ebb16so911257f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 08:05:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736525089; x=1737129889;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IXI/XYLW2H4aB40RcCSFKK3Ej+zc4PI7vc2Qy+wjzYs=;
- b=pAfWp+3fEBVF//nfB4dSY7wyyfd23aYJEapmh2JIpHvttUTI+23k3cODy8wtlRX2hN
- H0U4wA9TopYuug3l8kku1tj6IVUbKab7EVlwTwbg4N8jvErwfn71JMIQlRpYJhXchElM
- 4TELnos7Ax4MvBouWsWtZRLt0TAB+RiOk7DCzL79WvpRRT81GF8/aWGbbceNNgCT6RfR
- KbXJTnx/vt6Nf5y0WxpDCg1QcT0atVCwWb80o7eb6+npLztdFoAqeXhluNR2iyS0K/Ut
- Ip1FpZXQC7Wol8lTc6JmHMxxMWU8282fyyOXVxN1sAgVvZxqMKC80f1MdyI2jaFHe1E3
- wexg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX479uob8tw7x6Ms3PMNVbA9ErjQ2o0Eb9y48A5mx1xEfiE41j9VtU439EbJqDCw/gyxG3IJCOfue2W@nongnu.org
-X-Gm-Message-State: AOJu0YwaYLIhh7dpCQMqgzRZeyXeZvB/qtkT/mL4CRIiMfV7Ir2jxO5M
- sRF2L0A8wgCghxwPEnvmbK0oMn4XD01Z9cNhokqlYe03cnwtKLIzlia9bkBynhs=
-X-Gm-Gg: ASbGncvurWMaZDltCJHk9w7cE3aLEf0ABgbo4XdU/YAAEciFvqjiHso37NDRj+DiHHb
- o8W8oFYCh1CrJ5/vgn9WdswAqf1mrkGvv2WT97XKNrlZ6vNKvaGNoJb+F5AQyS0mwYYYPGFiCvS
- AjAXEWKXAn3jZLXKk8V4n2I/taPAFd2zRylbZIPu4m0hw0Q170HfER/LFVWulGzQ5pFo+cyO6vq
- S2qaKA9rDB0gk9mD4JR31O+uKl2Y9Vjy091TU9rWTtnVPB/XDDO4blTBFFJXxdseGDbO5/U8r0X
- Ssyu4MD6DCECdGKqUiYQakQr
-X-Google-Smtp-Source: AGHT+IH8RajXnigs8mjUL6yQuwUxyMbnYsailZ6AqC2EFe6Y5BRN3Q903AbsxGJwDbu6+M5dEuiHOg==
-X-Received: by 2002:a05:6000:1564:b0:38a:8c9f:dd61 with SMTP id
- ffacd0b85a97d-38a8c9fdeeamr7431552f8f.46.1736525089366; 
- Fri, 10 Jan 2025 08:04:49 -0800 (PST)
-Received: from [192.168.69.181] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e3840bfsm4966176f8f.39.2025.01.10.08.04.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 10 Jan 2025 08:04:48 -0800 (PST)
-Message-ID: <3523c701-d234-4f41-834a-ae762ac7cd30@linaro.org>
-Date: Fri, 10 Jan 2025 17:04:48 +0100
+ d=1e100.net; s=20230601; t=1736525144; x=1737129944;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=KVxdPxOxfkLSM1NEfjh53dQJeocjyDnEHBh4FTY8LOs=;
+ b=VIhS9I11SMIkfcAeFhmRcd0kC5HGkEtx2Rz1ZuDedaRJapVe0+Zmahmpoz55rVblUk
+ HAITT9Hqn8J0HfugRRAiSbUUkBwEXQ83jQEDmqdL4PB0pm6vXPGrs2nmCINFWaf1kffE
+ mrQm3QNw0JHfq3UwPemRYn1Qcmveh6Rx3DUgmwjajjppbCo5kz7u4S9v4e1lB/6RV2YC
+ XQAWyTK15AGDY71oD6OXygVO51DHPea0oSf9vbBGTJUXCRzI8CLipG+zDQcX44GvKo5j
+ bSxqWRKRRAcQgpeTzwyx9408vyHjLELMSR08yACmS6AMC+6ZFGbszhilyoH5vsFKBjWB
+ TjlQ==
+X-Gm-Message-State: AOJu0YzXPJTf+JzbXGY7xpVMmnS6QfImIvWSYZZhJhgBba6b61ktp1T0
+ DEYGDPwSAM3Alz6dMchHs7v0ir0Bjt8KEImhQqHzX5ZYVvjGwuGzWy3Mtr2Oe6Qidt6DzHCh1NX
+ i/Q+jlP6TFmyzXKT13r0Ix1SQH3+fCvjzMxL3RRFch725FXSI12/lwQ0MwP4kDBb/T4UnO/6m/z
+ 7WcmcrAzp9OMGxxqwh5QV3bmvu7HE=
+X-Gm-Gg: ASbGncuyMy/FH2Uj143V7SofaxHMszMOgA7zd4XxVNfDYSWrEcnUakKxXOX4okadCl+
+ TtABY62N9FDm25XJnns0MV3kip2F1CYUSfPc6GA==
+X-Received: by 2002:a05:6000:1ac6:b0:386:36e7:f44f with SMTP id
+ ffacd0b85a97d-38a872db271mr9666205f8f.18.1736525144145; 
+ Fri, 10 Jan 2025 08:05:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHOCdjwZUeguT69dslBe+8ZhTSGtPepeU6xH2J3UK0craEGaQIqoKrSabJDPUifhv3yJy4coD2Yp+pgugivxLw=
+X-Received: by 2002:a05:6000:1ac6:b0:386:36e7:f44f with SMTP id
+ ffacd0b85a97d-38a872db271mr9666147f8f.18.1736525143613; Fri, 10 Jan 2025
+ 08:05:43 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/9] ppc/ppc405: Remove tests
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-References: <20250110141800.1587589-1-clg@redhat.com>
- <20250110141800.1587589-2-clg@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250110141800.1587589-2-clg@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20250110094400.512788-1-michael@anarch128.org>
+ <CABgObfY_GOQN5OWBQXYvfrBtNVZGGc75p3gRHrpqQNxUErfB3A@mail.gmail.com>
+ <5244f8e9-b58d-4d37-9fe7-2236a862fd91@anarch128.org>
+In-Reply-To: <5244f8e9-b58d-4d37-9fe7-2236a862fd91@anarch128.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 10 Jan 2025 17:05:31 +0100
+X-Gm-Features: AbW1kvYn1OiJ0HF0a1sv20kBywERZknQrTR2G3UapCL1A7qb0hAbDAgJYSxz-Ls
+Message-ID: <CABgObfYdaBun9pZqTtZS_PzSKvrF=f5DE-Vb5pLMWq1HPcAVAg@mail.gmail.com>
+Subject: Re: [RFC]: port of embedded x86-mini disassembler to QEMU
+To: Michael Clark <michael@anarch128.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>
+Content-Type: multipart/alternative; boundary="00000000000054471a062b5c446b"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.432,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,19 +101,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/1/25 15:17, Cédric Le Goater wrote:
-> Since we are about to remove all support for PPC 405, start by
-> removing the tests referring to the ref405ep machine.
-> 
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
-> ---
->   tests/qtest/m48t59-test.c        |  5 -----
->   tests/functional/meson.build     |  1 -
->   tests/functional/test_ppc_405.py | 37 --------------------------------
->   tests/qtest/meson.build          |  1 -
->   4 files changed, 44 deletions(-)
->   delete mode 100755 tests/functional/test_ppc_405.py
+--00000000000054471a062b5c446b
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Missing removal of MAINTAINERS' entry for the test.
+Il ven 10 gen 2025, 14:03 Michael Clark <michael@anarch128.org> ha scritto:
+
+> On 1/11/25 00:07, Paolo Bonzini wrote:
+> > Il ven 10 gen 2025, 10:52 Michael Clark <michael@anarch128.org> ha
+> scritto:
+> >
+> >> a note to announce a port of the x86-mini disassembler to QEMU.
+> >>
+> >> - https://github.com/michaeljclark/qemu/tree/x86-mini
+> >
+> > I assume the huge .h files are autogenerated? If so, QEMU cannot use th=
+em
+> > without including the human-readable sources in the tree.
+>
+> yes indeed. there is an x86_tablegen.py python script in the other repo
+> but it is not in the current patch. it would be somewhat easy to read
+> the tables from CSV files directly into arrays at the expense of several
+> more milliseconds during startup. the revised operand formats maps
+> relatively strictly to enum definitions with string tables in the source
+> so a reader in C would not be impossible
+
+
+Building the tables at compile time is fine, only leaving out the script is
+not.
+
+> I can see how that might be interesting for x86 virtualization where you
+> > have only one target and therefore you can get rid of the capstone
+> > dependency. At the same time, other virtualization targets like arm64 a=
+nd
+> > RISC-V are going to become more and more important=E2=80=94not less=E2=
+=80=94and not
+> having
+> > to maintain a disassembler ourselves as part of QEMU is also a big
+> plus...
+>
+> yes indeed. but in an ideal world the encoders and decoders are matched
+> pairs. I would like to work on a translator or interpreter that uses the
+> same codec as the disassembler
+
+
+Ok, that makes sense. QEMU already has a decoder that is very table-based
+though the tables are hand written. I am not wed to it though=E2=80=94as lo=
+ng as
+the code generators remain more or less unmodified, I would love to only
+keep "these is how the operands are prepared for use in the IR emitters"
+and make the details of x86 decoding Someone Else's Problem. So if you can
+kill most (certainly not all) of the tables in
+target/i386/tcg/decode-new.c.inc that would be interesting.
+
+(I am sure you'd find some underspecified and/or wrong parts of the x86
+spec, too :) For example many VEX classes are bollocks, plus some more
+examples hinted at at the top of that file).
+
+Paolo
+
+anyway, in fact it is just yet another disassembler at this point, but
+> the codec emitter works. it doesn't yet have an arch-neutral TCG-like
+> API and IR to drive it yet.
+>
+
+--00000000000054471a062b5c446b
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
+ner"><div dir=3D"ltr" class=3D"gmail_attr">Il ven 10 gen 2025, 14:03 Michae=
+l Clark &lt;<a href=3D"mailto:michael@anarch128.org">michael@anarch128.org<=
+/a>&gt; ha scritto:<br></div><blockquote class=3D"gmail_quote" style=3D"mar=
+gin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1=
+ex">On 1/11/25 00:07, Paolo Bonzini wrote:<br>
+&gt; Il ven 10 gen 2025, 10:52 Michael Clark &lt;<a href=3D"mailto:michael@=
+anarch128.org" target=3D"_blank" rel=3D"noreferrer">michael@anarch128.org</=
+a>&gt; ha scritto:<br>
+&gt; <br>
+&gt;&gt; a note to announce a port of the x86-mini disassembler to QEMU.<br=
+>
+&gt;&gt;<br>
+&gt;&gt; - <a href=3D"https://github.com/michaeljclark/qemu/tree/x86-mini" =
+rel=3D"noreferrer noreferrer" target=3D"_blank">https://github.com/michaelj=
+clark/qemu/tree/x86-mini</a><br>
+&gt; <br>
+&gt; I assume the huge .h files are autogenerated? If so, QEMU cannot use t=
+hem<br>
+&gt; without including the human-readable sources in the tree.<br>
+<br>
+yes indeed. there is an x86_tablegen.py python script in the other repo <br=
+>
+but it is not in the current patch. it would be somewhat easy to read <br>
+the tables from CSV files directly into arrays at the expense of several <b=
+r>
+more milliseconds during startup. the revised operand formats maps <br>
+relatively strictly to enum definitions with string tables in the source <b=
+r>
+so a reader in C would not be impossible</blockquote></div></div><div dir=
+=3D"auto"><br></div><div dir=3D"auto">Building the tables at compile time i=
+s fine, only leaving out the script is not.</div><div dir=3D"auto"><br></di=
+v><div dir=3D"auto"><div class=3D"gmail_quote gmail_quote_container"><block=
+quote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1=
+px solid rgb(204,204,204);padding-left:1ex">&gt; I can see how that might b=
+e interesting for x86 virtualization where you<br>
+&gt; have only one target and therefore you can get rid of the capstone<br>
+&gt; dependency. At the same time, other virtualization targets like arm64 =
+and<br>
+&gt; RISC-V are going to become more and more important=E2=80=94not less=E2=
+=80=94and not having<br>
+&gt; to maintain a disassembler ourselves as part of QEMU is also a big plu=
+s...<br>
+<br>
+yes indeed. but in an ideal world the encoders and decoders are matched <br=
+>
+pairs. I would like to work on a translator or interpreter that uses the <b=
+r>
+same codec as the disassembler</blockquote></div></div><div dir=3D"auto"><b=
+r></div><div dir=3D"auto">Ok, that makes sense. QEMU already has a decoder =
+that is very table-based though the tables are hand written. I am not wed t=
+o it though=E2=80=94as long as the code generators remain more or less unmo=
+dified, I would love to only keep &quot;these is how the operands are prepa=
+red for use in the IR emitters&quot; and make the details of x86 decoding S=
+omeone Else&#39;s Problem. So if you can kill most (certainly not all) of t=
+he tables in target/i386/tcg/decode-new.c.inc that would be interesting.</d=
+iv><div dir=3D"auto"><br></div><div dir=3D"auto">(I am sure you&#39;d find =
+some underspecified and/or wrong parts of the x86 spec, too :) For example =
+many VEX classes are bollocks, plus some more examples hinted at at the top=
+ of that file).</div><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</d=
+iv><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote =
+gmail_quote_container"><blockquote class=3D"gmail_quote" style=3D"margin:0p=
+x 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">an=
+yway, in fact it is just yet another disassembler at this point, but <br>
+the codec emitter works. it doesn&#39;t yet have an arch-neutral TCG-like <=
+br>
+API and IR to drive it yet.<br>
+</blockquote></div></div></div>
+
+--00000000000054471a062b5c446b--
 
 
