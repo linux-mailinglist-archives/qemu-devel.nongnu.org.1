@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3EAFA096AE
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 17:04:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 975FCA096B8
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 17:06:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWHTk-0007VS-PN; Fri, 10 Jan 2025 11:03:20 -0500
+	id 1tWHTp-0007gi-3U; Fri, 10 Jan 2025 11:03:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tWHSl-0007EV-Cx
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 11:02:19 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tWHSq-0007GB-3W
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 11:02:26 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tWHSg-0004BC-9C
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 11:02:16 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-436202dd730so16584775e9.2
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 08:02:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tWHSl-0004C9-5L
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 11:02:21 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-436345cc17bso17025165e9.0
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 08:02:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736524931; x=1737129731; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736524935; x=1737129735; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8OLaY6F/9sCWhpY75SuT5qJrpcYslGi6JHoV5OFmEC4=;
- b=T+FAA+nyOKwyshWmmtkrvFF1xwpqpnkjsmAHRpOoq/Aoj5rTl+VhR7dbtBW1nlzejQ
- s8CCyxsYIeVC7dZyr/YQEaVvW5sm5uCDIaRkNcLpzdfXytToRPNj2FVEvxyl8JqGMQ6O
- Pc9E/fMQZtLrtoUpzgxJQk0aSOefNktYJCzmeoEOMzLpFy893NOhTOCJrLfkMRap1VDM
- geRTJyqH822K/H5tkeXr7lbQJ7Lg0lWBiiQs62Cc4jZ55kZIm27YmZ4RqZK5DOfWtf7Z
- hACn6F2L61UvW6eMmG98XpFKxvjPsNDB5/jYNUNSc/4wP2Sbk6Q8r2KbhrxAxJZ49tEB
- H1/w==
+ bh=+1SHV4ouwmWCxa4hls/VEliYDrrRoOnyygtn8mgw1kM=;
+ b=YCW5VyiDAxjhZbB1P6jmdgoxRqXchg1SqeLkZLeiikLr9RIxth2PgjYd3Nqi+6skwn
+ pUS6ZA9WZD06I1Ku3+actb+fwPPZep+b5mBC5QYR9kOmGUGSIvmJF4Dh8fIOt2710Cbd
+ u1Z57J2694spJhLJnXwyvth7Tm0GSSb8QpgFNz63agok4JOqpynyZHLGoMxfEqfWVqYC
+ 5+rLOjNCV9i6h+GqgdKxumRwKHYO5y+Hu2Gi6/JgEkzPAxCPIHkbyRaoIzSmLJLqKwgT
+ bLSGNMPzT/bz4zokIkfYmMOmJwwAhpDlftvdN/sizW3L7KmVPA0yMi/2wPaEBZyLoXdD
+ /4qQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736524931; x=1737129731;
+ d=1e100.net; s=20230601; t=1736524935; x=1737129735;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8OLaY6F/9sCWhpY75SuT5qJrpcYslGi6JHoV5OFmEC4=;
- b=wFh3mEEgVTEy3VO4hBsEV5H0dJQNidEsSHBTCo4/Msu4E7xavUGd1480u7pip0BZfk
- Kon8YAqy+wAFc1v504eXOhjP2CqA0N29CNHM+9MzV/K6pAHiW+ZEuaVgYHpY/j2ycPb3
- N7It5Nruz5PbxP72COGs/aw0NJx0qzjmkABoEEkDpV8vRYpPWkVn8yIAfg0if7QzKEWZ
- u4HP7rSzarB2w+JcLH3TILUO0eWNfX5/FAfIh6JAWRjVF5Zpfm1dx7xkHky7uF8I6aiv
- PbKZo5SY1xDs6547rbg4dDWnMrNjUAJMfa9A0sDzQ63G61AI+uXKerWrdKP0QQU69T0a
- b/rw==
-X-Gm-Message-State: AOJu0YxgbNFaeHjGH+pkXxdd1uo9EiCtcp39j9KmLOOSRGKfA6vN5XB7
- sicJ0Dj79T6JHewwmXhzEejCXX/Ytqu0muEoAukQjsroP2F6DQ9ETnmsrma+fenjiagFH1cr7m+
- uflg=
-X-Gm-Gg: ASbGncvnPI2KpSf2/fh52A1516JUemlMu+yYLwVWqlFG9ET36pGYIknHJATKksab07L
- jVWV4uFYuwtadU71jv+5qWshXyQhgUQj5g7Rrx8yV2/mVzMPc5lI5tsRfkGmd9evAIjNQPo5Vju
- sVNFxQTL8v4Cu+Oy12RfYPZrB5SUV3MvpM0qNGCXPdxzzaCnsoZ0oi8mV/SyblhehLaJQ2GFNiC
- pcescMrWXJp13lZRhXOFcehyKEZ4e44ujUUANW2aQBn/lsY94ABpEXhDLVzbYtV9tDvXSWGz4Wu
- Sj4J+gXhN9h+ML5xepYQ6hlcvpih410=
-X-Google-Smtp-Source: AGHT+IGDQh7sqLDkc2QLaZ0GSwPbM0V08EB2udL67Ehux0mXvEuS6DmOnnY6wm0MAWiBtqfeO1riuA==
-X-Received: by 2002:a05:600c:45c3:b0:436:aaf:7eb9 with SMTP id
- 5b1f17b1804b1-436e26f4ae1mr102177955e9.20.1736524930526; 
- Fri, 10 Jan 2025 08:02:10 -0800 (PST)
+ bh=+1SHV4ouwmWCxa4hls/VEliYDrrRoOnyygtn8mgw1kM=;
+ b=KB8ESEzDYAalAr8B6wwlYOo8eoKOIqOKnTmOeH9Z1hJOnabmpPKhGbZPT3ZxpahgtK
+ iKJYe1iA1/OCRs0M8vnfJOruBNzF/vSG7eS63WAjw1y4HRCSmQKC3nHbELnjyBRpeWYf
+ dd6mEHPtm/JmWfW2CaesKBqE4wCoYJdlR76dzv/AVuYfYG/Qn7sfEMo5oaCOHKDJ0h85
+ V23UQXj3I9AbVo386sJQqaCvNLFTgNPZjH6GE4guSgvOH0LInNqSkzb9SYDM8/7iqxxD
+ zfkMmPBteQv2wuq6KceqMnjALb76BEuZrpXsPmWjcqsJzuiUY6W4ogy+wYJ5K6zbDsjK
+ Dp9A==
+X-Gm-Message-State: AOJu0Yzo32gyASCXJqFPSbl1nRt1tTSWP4UFtW5f054NKsYZF/BMdxQS
+ 4dGjTmwoAXgarsMUn+XMC2QmTk84LkhM4BSHHNTuyfnkBAI7jp+v922O/ccmq64DWjkf/Nga+p+
+ oFCs=
+X-Gm-Gg: ASbGncvhBH9lxRq5QFltYHhe+qyf5Xpw/9k4veWthY5nqAXMrWWsMsy3mmAJIYcxBgx
+ 955133eGKRTzsJ/VUztx76o8SmigBz3/sWqVXIpC/58Q4uqcaql5kpAXWjdywMkMhilCeVhjnkz
+ euI+SFn+2MoaopEd8FXYRWl8TMzv6wVIeNHBaApuBYvjgFEJxsUIHszS4Nc7gIjJysYaQlYrASh
+ cYmwBD7ZY6y17qimwVHRzo02pvG5Qz3B1Fab58LISy7uQht3LwfD3B6KQtTJ6bH4p4Sqazbra08
+ Au/u983c1ZsjaBIUqRxFfBLbkU2KcXM=
+X-Google-Smtp-Source: AGHT+IETBxk9KKLClJ71WnVoUuEQGWiXXoZtd+FAn7yhk7Yw5zxx/Y/+I57SN8/XWwTMBQdcLIPgig==
+X-Received: by 2002:a05:600c:3b0c:b0:434:fbda:1f36 with SMTP id
+ 5b1f17b1804b1-436e26e51a0mr99968965e9.20.1736524935062; 
+ Fri, 10 Jan 2025 08:02:15 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e384054sm4880929f8f.36.2025.01.10.08.02.09
+ 5b1f17b1804b1-436e9e37d69sm55675815e9.30.2025.01.10.08.02.14
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 10 Jan 2025 08:02:10 -0800 (PST)
+ Fri, 10 Jan 2025 08:02:14 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/9] hw/arm/stellaris: Link each board schematic
-Date: Fri, 10 Jan 2025 17:01:56 +0100
-Message-ID: <20250110160204.74997-2-philmd@linaro.org>
+Subject: [PATCH 2/9] hw/arm/stellaris: Constify read-only arrays
+Date: Fri, 10 Jan 2025 17:01:57 +0100
+Message-ID: <20250110160204.74997-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250110160204.74997-1-philmd@linaro.org>
 References: <20250110160204.74997-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,39 +97,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Board schematic is useful to corroborate GPIOs/IRQs wiring.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/stellaris.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ hw/arm/stellaris.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
-index 1bba96df14e..9b414ff9069 100644
+index 9b414ff9069..7c9e7e6c15b 100644
 --- a/hw/arm/stellaris.c
 +++ b/hw/arm/stellaris.c
-@@ -1379,6 +1379,10 @@ static void lm3s6965evb_init(MachineState *machine)
-     stellaris_init(machine, &stellaris_boards[1]);
+@@ -101,7 +101,7 @@ static void ssys_update(ssys_state *s)
+   qemu_set_irq(s->irq, (s->int_status & s->int_mask) != 0);
  }
  
-+/*
-+ * Stellaris LM3S811 Evaluation Board Schematics:
-+ * http://www.ti.com/lit/ug/symlink/spmu030.pdf
-+ */
- static void lm3s811evb_class_init(ObjectClass *oc, void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
-@@ -1395,6 +1399,10 @@ static const TypeInfo lm3s811evb_type = {
-     .class_init = lm3s811evb_class_init,
+-static uint32_t pllcfg_sandstorm[16] = {
++static const uint32_t pllcfg_sandstorm[16] = {
+     0x31c0, /* 1 Mhz */
+     0x1ae0, /* 1.8432 Mhz */
+     0x18c0, /* 2 Mhz */
+@@ -120,7 +120,7 @@ static uint32_t pllcfg_sandstorm[16] = {
+     0x585b /* 8.192 Mhz */
  };
  
-+/*
-+ * Stellaris: LM3S6965 Evaluation Board Schematics:
-+ * http://www.ti.com/lit/ug/symlink/spmu029.pdf
-+ */
- static void lm3s6965evb_class_init(ObjectClass *oc, void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
+-static uint32_t pllcfg_fury[16] = {
++static const uint32_t pllcfg_fury[16] = {
+     0x3200, /* 1 Mhz */
+     0x1b20, /* 1.8432 Mhz */
+     0x1900, /* 2 Mhz */
+@@ -964,7 +964,7 @@ static void stellaris_adc_init(Object *obj)
+ }
+ 
+ /* Board init.  */
+-static stellaris_board_info stellaris_boards[] = {
++static const stellaris_board_info stellaris_boards[] = {
+   { "LM3S811EVB",
+     0,
+     0x0032000e,
 -- 
 2.47.1
 
