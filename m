@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE769A09822
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 18:09:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80F32A09821
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 18:09:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWIVI-0006pm-OH; Fri, 10 Jan 2025 12:09:00 -0500
+	id 1tWIVK-0006qR-DG; Fri, 10 Jan 2025 12:09:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1tWIVE-0006o6-Ro
+ id 1tWIVF-0006o9-N0
  for qemu-devel@nongnu.org; Fri, 10 Jan 2025 12:08:57 -0500
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1tWIVB-000566-2c
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 12:08:56 -0500
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50AENiH2000912;
- Fri, 10 Jan 2025 17:08:52 GMT
+ id 1tWIVD-00056D-3P
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 12:08:57 -0500
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50AENgnq028069;
+ Fri, 10 Jan 2025 17:08:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2023-11-20; bh=u2w0X
- cT7jXVXLvlKloXcLIsEqkMBAS2U6ySLTjIsv9o=; b=HBbNreEOUd8PbabKVTfGp
- 6HOiYFjuDkYMG3eUjVxJXj8Cwbq7yYSt2vE5W/JZXxo4it4jg+fjCeF4m2Iyp7pP
- JJV/WpXctx1zigHzlio5xC3nSJfIyMgEgPJxqbD6+QwG1BC1m61Ued67aLgkt6nm
- gbuvB1RXOoNR/hUNuuX/dNxpghAKSenKvGID2jVXT7ApNMwzlXSCFEtir7MMaCyJ
- fXH9m6EuEgYNbysTmfPrLWiJCipKJbTF+q+F+yVlJVeVOQYjxBEBN+IAUMMJKszQ
- J0782Y+dg7xw4EFK4feixrbhmhAtg5uVhXogoMQwjF00ryGB/ZHdrHTWqbUYLmSR
- A==
+ :mime-version:references:subject:to; s=corp-2023-11-20; bh=Ugiw4
+ DJ9tIezl/pI2MqIQpWuC1K1OT2WOqEn6JhHMxA=; b=hWuYXfjnzDkUGCW40i7BQ
+ I5IKqKPnGi9thkUtkz2AzrTu4yeRolnWkv9pvd5qgn/GQXKI6/VCqASh2o+EJKa1
+ A4o3Ps6aoO/yQU72TBpKSPR9VnwiwfFuvXutruRMfo+k6UV36fFyl76QpZUD2+Bb
+ WxTZIb4vIpRl6pkU/qaZ1PvIRmGXVG6fLUn6qsAl54njs1SyvXUGUbZlg96VHt0f
+ NrxJYE74pVV0Lp1RObccCrKWCay/lmf8C47Rowr//lexFdz+fctpiHUA2lwJuWs1
+ IA5m4DXE+qZPlvL1n99y0nPBW/NM0gG44tgNen4kLmiLqMYmi8GkjGKxBfHZKvUI
+ Q==
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43xw1c3ag4-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43xudcbkuh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 10 Jan 2025 17:08:51 +0000 (GMT)
+ Fri, 10 Jan 2025 17:08:53 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 50AF9sQA004767; Fri, 10 Jan 2025 17:08:50 GMT
+ with ESMTP id 50AFq57E004808; Fri, 10 Jan 2025 17:08:52 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 43xuecp0v8-1
+ 43xuecp0w4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 10 Jan 2025 17:08:50 +0000
+ Fri, 10 Jan 2025 17:08:52 +0000
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 50AH1lkS031831;
- Fri, 10 Jan 2025 17:08:50 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 50AH1lkU031831;
+ Fri, 10 Jan 2025 17:08:51 GMT
 Received: from jonah-ol8.us.oracle.com (dhcp-10-39-193-76.vpn.oracle.com
  [10.39.193.76])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 43xuecp0qc-4; Fri, 10 Jan 2025 17:08:49 +0000
+ 43xuecp0qc-5; Fri, 10 Jan 2025 17:08:51 +0000
 From: Jonah Palmer <jonah.palmer@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: eperezma@redhat.com, mst@redhat.com, leiyang@redhat.com, peterx@redhat.com,
  dtatulea@nvidia.com, jasowang@redhat.com, si-wei.liu@oracle.com,
  boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
-Subject: [RFC v3 3/5] vhost-vdpa: Implement the GPA->IOVA tree
-Date: Fri, 10 Jan 2025 12:08:32 -0500
-Message-ID: <20250110170837.2747532-4-jonah.palmer@oracle.com>
+Subject: [RFC v3 4/5] virtio: add in_xlat_addr & out_xlat_addr
+ VirtQueueElement members
+Date: Fri, 10 Jan 2025 12:08:33 -0500
+Message-ID: <20250110170837.2747532-5-jonah.palmer@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250110170837.2747532-1-jonah.palmer@oracle.com>
 References: <20250110170837.2747532-1-jonah.palmer@oracle.com>
@@ -74,8 +75,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  adultscore=0 mlxlogscore=999 phishscore=0 malwarescore=0 mlxscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
  definitions=main-2501100134
-X-Proofpoint-ORIG-GUID: 4rXeMljEDY-bA6BHBoa4pyQlkt1rKmwm
-X-Proofpoint-GUID: 4rXeMljEDY-bA6BHBoa4pyQlkt1rKmwm
+X-Proofpoint-ORIG-GUID: LDwnHt4a6kyVJzVk0MWj-cot_YeA0x2h
+X-Proofpoint-GUID: LDwnHt4a6kyVJzVk0MWj-cot_YeA0x2h
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -31
@@ -101,294 +102,408 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implements the GPA->IOVA tree for handling mapping and unmapping for
-guest memory. This, alongside the SVQ IOVA->HVA tree & IOVA-only tree
-implemented in the previous patches, allows us to handle guest and
-host-only memory mapping operations separately via their own respective
-trees.
+Adds the in_xlat_addr & out_xlat_addr hwaddr arrays to the
+VirtQueueElement struct and introduces an optional GPA output parameter
+to dma_memory_map().
 
-The next patches will implement a method to determine if an incomming
-address for translation is backed by guest or host-only memory.
+These arrays will store a VirtQueueElement's input/output descriptors'
+GPA of the mapped memory region, if it's backed by guest memory, via
+dma_memory_map().
+
+The GPA will always correspond 1:1 to the iovec entry when translating
+addresses between Qemu VAs and SVQ IOVAs in vhost_svq_translate_addr().
+This helps to avoid extra complicated code in SVQ's
+vhost_svq_vring_write_descs() function (e.g. splitting up iovec into
+multiple buffers, not breaking devices using aliased mapping, etc.).
+
+Since the translation is only done once inside the DMA API alongside
+virtqueue_pop(), the cost should be minimal.
 
 Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
 ---
- hw/virtio/vhost-iova-tree.c | 50 +++++++++++++++++++++++++++++++++++++
- hw/virtio/vhost-iova-tree.h |  4 +++
- hw/virtio/vhost-vdpa.c      | 22 ++++++++++------
- include/qemu/iova-tree.h    | 22 ++++++++++++++++
- util/iova-tree.c            | 46 ++++++++++++++++++++++++++++++++++
- 5 files changed, 136 insertions(+), 8 deletions(-)
+ hw/display/virtio-gpu.c     |  5 ++--
+ hw/hyperv/vmbus.c           |  8 +++---
+ hw/ide/ahci.c               |  7 +++---
+ hw/usb/libhw.c              |  2 +-
+ hw/virtio/virtio.c          | 50 ++++++++++++++++++++++++++-----------
+ include/hw/pci/pci_device.h |  2 +-
+ include/hw/virtio/virtio.h  |  2 ++
+ include/system/dma.h        | 25 ++++++++++++++++++-
+ system/dma-helpers.c        |  2 +-
+ 9 files changed, 77 insertions(+), 26 deletions(-)
 
-diff --git a/hw/virtio/vhost-iova-tree.c b/hw/virtio/vhost-iova-tree.c
-index f6a5694857..540bc35660 100644
---- a/hw/virtio/vhost-iova-tree.c
-+++ b/hw/virtio/vhost-iova-tree.c
-@@ -31,6 +31,9 @@ struct VhostIOVATree {
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index 11a7a85750..afb9a8b69f 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -839,7 +839,7 @@ int virtio_gpu_create_mapping_iov(VirtIOGPU *g,
+             len = l;
+             map = dma_memory_map(VIRTIO_DEVICE(g)->dma_as, a, &len,
+                                  DMA_DIRECTION_TO_DEVICE,
+-                                 MEMTXATTRS_UNSPECIFIED);
++                                 MEMTXATTRS_UNSPECIFIED, NULL);
+             if (!map) {
+                 qemu_log_mask(LOG_GUEST_ERROR, "%s: failed to map MMIO memory for"
+                               " element %d\n", __func__, e);
+@@ -1258,7 +1258,8 @@ static bool virtio_gpu_load_restore_mapping(VirtIOGPU *g,
+         hwaddr len = res->iov[i].iov_len;
+         res->iov[i].iov_base =
+             dma_memory_map(VIRTIO_DEVICE(g)->dma_as, res->addrs[i], &len,
+-                           DMA_DIRECTION_TO_DEVICE, MEMTXATTRS_UNSPECIFIED);
++                           DMA_DIRECTION_TO_DEVICE, MEMTXATTRS_UNSPECIFIED,
++                           NULL);
  
-     /* Allocated IOVA addresses */
-     IOVATree *iova_map;
-+
-+    /* GPA to IOVA address memory maps */
-+    IOVATree *gpa_iova_map;
- };
+         if (!res->iov[i].iov_base || len != res->iov[i].iov_len) {
+             /* Clean up the half-a-mapping we just created... */
+diff --git a/hw/hyperv/vmbus.c b/hw/hyperv/vmbus.c
+index 12a7dc4312..c3308a1bfd 100644
+--- a/hw/hyperv/vmbus.c
++++ b/hw/hyperv/vmbus.c
+@@ -374,7 +374,7 @@ static ssize_t gpadl_iter_io(GpadlIter *iter, void *buf, uint32_t len)
+             maddr = (iter->gpadl->gfns[idx] << TARGET_PAGE_BITS) | off_in_page;
  
- /**
-@@ -48,6 +51,7 @@ VhostIOVATree *vhost_iova_tree_new(hwaddr iova_first, hwaddr iova_last)
+             iter->map = dma_memory_map(iter->as, maddr, &mlen, iter->dir,
+-                                       MEMTXATTRS_UNSPECIFIED);
++                                       MEMTXATTRS_UNSPECIFIED, NULL);
+             if (mlen != pgleft) {
+                 dma_memory_unmap(iter->as, iter->map, mlen, iter->dir, 0);
+                 iter->map = NULL;
+@@ -492,7 +492,8 @@ int vmbus_map_sgl(VMBusChanReq *req, DMADirection dir, struct iovec *iov,
+             }
  
-     tree->iova_taddr_map = iova_tree_new();
-     tree->iova_map = iova_tree_new();
-+    tree->gpa_iova_map = gpa_tree_new();
-     return tree;
+             iov[ret_cnt].iov_base = dma_memory_map(sgl->as, a, &l, dir,
+-                                                   MEMTXATTRS_UNSPECIFIED);
++                                                   MEMTXATTRS_UNSPECIFIED,
++                                                   NULL);
+             if (!l) {
+                 ret = -EFAULT;
+                 goto err;
+@@ -568,7 +569,8 @@ static vmbus_ring_buffer *ringbuf_map_hdr(VMBusRingBufCommon *ringbuf)
+     dma_addr_t mlen = sizeof(*rb);
+ 
+     rb = dma_memory_map(ringbuf->as, ringbuf->rb_addr, &mlen,
+-                        DMA_DIRECTION_FROM_DEVICE, MEMTXATTRS_UNSPECIFIED);
++                        DMA_DIRECTION_FROM_DEVICE, MEMTXATTRS_UNSPECIFIED,
++                        NULL);
+     if (mlen != sizeof(*rb)) {
+         dma_memory_unmap(ringbuf->as, rb, mlen,
+                          DMA_DIRECTION_FROM_DEVICE, 0);
+diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
+index 1303c21cb7..aeea2dc61d 100644
+--- a/hw/ide/ahci.c
++++ b/hw/ide/ahci.c
+@@ -221,7 +221,7 @@ static void map_page(AddressSpace *as, uint8_t **ptr, uint64_t addr,
+     }
+ 
+     *ptr = dma_memory_map(as, addr, &len, DMA_DIRECTION_FROM_DEVICE,
+-                          MEMTXATTRS_UNSPECIFIED);
++                          MEMTXATTRS_UNSPECIFIED, NULL);
+     if (len < wanted && *ptr) {
+         dma_memory_unmap(as, *ptr, len, DMA_DIRECTION_FROM_DEVICE, len);
+         *ptr = NULL;
+@@ -928,7 +928,7 @@ static int ahci_populate_sglist(AHCIDevice *ad, QEMUSGList *sglist,
+     /* map PRDT */
+     if (!(prdt = dma_memory_map(ad->hba->as, prdt_addr, &prdt_len,
+                                 DMA_DIRECTION_TO_DEVICE,
+-                                MEMTXATTRS_UNSPECIFIED))){
++                                MEMTXATTRS_UNSPECIFIED, NULL))) {
+         trace_ahci_populate_sglist_no_map(ad->hba, ad->port_no);
+         return -1;
+     }
+@@ -1338,7 +1338,8 @@ static void handle_cmd(AHCIState *s, int port, uint8_t slot)
+     tbl_addr = le64_to_cpu(cmd->tbl_addr);
+     cmd_len = 0x80;
+     cmd_fis = dma_memory_map(s->as, tbl_addr, &cmd_len,
+-                             DMA_DIRECTION_TO_DEVICE, MEMTXATTRS_UNSPECIFIED);
++                             DMA_DIRECTION_TO_DEVICE, MEMTXATTRS_UNSPECIFIED,
++                             NULL);
+     if (!cmd_fis) {
+         trace_handle_cmd_badfis(s, port);
+         return;
+diff --git a/hw/usb/libhw.c b/hw/usb/libhw.c
+index 4f03ef4ba9..762d70b419 100644
+--- a/hw/usb/libhw.c
++++ b/hw/usb/libhw.c
+@@ -37,7 +37,7 @@ int usb_packet_map(USBPacket *p, QEMUSGList *sgl)
+         while (len) {
+             dma_addr_t xlen = len;
+             mem = dma_memory_map(sgl->as, base, &xlen, dir,
+-                                 MEMTXATTRS_UNSPECIFIED);
++                                 MEMTXATTRS_UNSPECIFIED, NULL);
+             if (!mem) {
+                 goto err;
+             }
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index 85110bce37..be756f3ac8 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -1553,9 +1553,9 @@ int virtqueue_avail_bytes(VirtQueue *vq, unsigned int in_bytes,
  }
  
-@@ -58,6 +62,7 @@ void vhost_iova_tree_delete(VhostIOVATree *iova_tree)
+ static bool virtqueue_map_desc(VirtIODevice *vdev, unsigned int *p_num_sg,
+-                               hwaddr *addr, struct iovec *iov,
+-                               unsigned int max_num_sg, bool is_write,
+-                               hwaddr pa, size_t sz)
++                               hwaddr *addr, hwaddr *xlat_addr,
++                               struct iovec *iov, unsigned int max_num_sg,
++                               bool is_write, hwaddr pa, size_t sz)
  {
-     iova_tree_destroy(iova_tree->iova_taddr_map);
-     iova_tree_destroy(iova_tree->iova_map);
-+    iova_tree_destroy(iova_tree->gpa_iova_map);
-     g_free(iova_tree);
+     bool ok = false;
+     unsigned num_sg = *p_num_sg;
+@@ -1579,7 +1579,8 @@ static bool virtqueue_map_desc(VirtIODevice *vdev, unsigned int *p_num_sg,
+                                               is_write ?
+                                               DMA_DIRECTION_FROM_DEVICE :
+                                               DMA_DIRECTION_TO_DEVICE,
+-                                              MEMTXATTRS_UNSPECIFIED);
++                                              MEMTXATTRS_UNSPECIFIED,
++                                              &xlat_addr[num_sg]);
+         if (!iov[num_sg].iov_base) {
+             virtio_error(vdev, "virtio: bogus descriptor or out of resources");
+             goto out;
+@@ -1618,7 +1619,7 @@ static void virtqueue_undo_map_desc(unsigned int out_num, unsigned int in_num,
+ 
+ static void virtqueue_map_iovec(VirtIODevice *vdev, struct iovec *sg,
+                                 hwaddr *addr, unsigned int num_sg,
+-                                bool is_write)
++                                hwaddr *xlat_addr, bool is_write)
+ {
+     unsigned int i;
+     hwaddr len;
+@@ -1629,7 +1630,8 @@ static void virtqueue_map_iovec(VirtIODevice *vdev, struct iovec *sg,
+                                         addr[i], &len, is_write ?
+                                         DMA_DIRECTION_FROM_DEVICE :
+                                         DMA_DIRECTION_TO_DEVICE,
+-                                        MEMTXATTRS_UNSPECIFIED);
++                                        MEMTXATTRS_UNSPECIFIED,
++                                        &xlat_addr[i]);
+         if (!sg[i].iov_base) {
+             error_report("virtio: error trying to map MMIO memory");
+             exit(1);
+@@ -1643,9 +1645,10 @@ static void virtqueue_map_iovec(VirtIODevice *vdev, struct iovec *sg,
+ 
+ void virtqueue_map(VirtIODevice *vdev, VirtQueueElement *elem)
+ {
+-    virtqueue_map_iovec(vdev, elem->in_sg, elem->in_addr, elem->in_num, true);
++    virtqueue_map_iovec(vdev, elem->in_sg, elem->in_addr, elem->in_num,
++                        elem->in_xlat_addr, true);
+     virtqueue_map_iovec(vdev, elem->out_sg, elem->out_addr, elem->out_num,
+-                                                                        false);
++                        elem->out_xlat_addr, false);
  }
  
-@@ -134,3 +139,48 @@ int vhost_iova_tree_insert(VhostIOVATree *iova_tree, DMAMap *map)
+ static void *virtqueue_alloc_element(size_t sz, unsigned out_num, unsigned in_num)
+@@ -1654,7 +1657,14 @@ static void *virtqueue_alloc_element(size_t sz, unsigned out_num, unsigned in_nu
+     size_t in_addr_ofs = QEMU_ALIGN_UP(sz, __alignof__(elem->in_addr[0]));
+     size_t out_addr_ofs = in_addr_ofs + in_num * sizeof(elem->in_addr[0]);
+     size_t out_addr_end = out_addr_ofs + out_num * sizeof(elem->out_addr[0]);
+-    size_t in_sg_ofs = QEMU_ALIGN_UP(out_addr_end, __alignof__(elem->in_sg[0]));
++    size_t in_xlat_addr_ofs =
++        QEMU_ALIGN_UP(out_addr_end, __alignof__(elem->in_xlat_addr[0]));
++    size_t out_xlat_addr_ofs = in_xlat_addr_ofs + in_num *
++                               sizeof(elem->in_xlat_addr[0]);
++    size_t out_xlat_addr_end = out_xlat_addr_ofs + out_num *
++                               sizeof(elem->out_xlat_addr[0]);
++    size_t in_sg_ofs =
++        QEMU_ALIGN_UP(out_xlat_addr_end, __alignof__(elem->in_sg[0]));
+     size_t out_sg_ofs = in_sg_ofs + in_num * sizeof(elem->in_sg[0]);
+     size_t out_sg_end = out_sg_ofs + out_num * sizeof(elem->out_sg[0]);
  
-     return iova_tree_insert(iova_tree->iova_taddr_map, map);
+@@ -1665,6 +1675,8 @@ static void *virtqueue_alloc_element(size_t sz, unsigned out_num, unsigned in_nu
+     elem->in_num = in_num;
+     elem->in_addr = (void *)elem + in_addr_ofs;
+     elem->out_addr = (void *)elem + out_addr_ofs;
++    elem->in_xlat_addr = (void *)elem + in_xlat_addr_ofs;
++    elem->out_xlat_addr = (void *)elem + out_xlat_addr_ofs;
+     elem->in_sg = (void *)elem + in_sg_ofs;
+     elem->out_sg = (void *)elem + out_sg_ofs;
+     return elem;
+@@ -1681,6 +1693,7 @@ static void *virtqueue_split_pop(VirtQueue *vq, size_t sz)
+     VirtQueueElement *elem = NULL;
+     unsigned out_num, in_num, elem_entries;
+     hwaddr addr[VIRTQUEUE_MAX_SIZE];
++    hwaddr xlat_addr[VIRTQUEUE_MAX_SIZE];
+     struct iovec iov[VIRTQUEUE_MAX_SIZE];
+     VRingDesc desc;
+     int rc;
+@@ -1754,7 +1767,7 @@ static void *virtqueue_split_pop(VirtQueue *vq, size_t sz)
+ 
+         if (desc.flags & VRING_DESC_F_WRITE) {
+             map_ok = virtqueue_map_desc(vdev, &in_num, addr + out_num,
+-                                        iov + out_num,
++                                        xlat_addr + out_num, iov + out_num,
+                                         VIRTQUEUE_MAX_SIZE - out_num, true,
+                                         desc.addr, desc.len);
+         } else {
+@@ -1762,8 +1775,8 @@ static void *virtqueue_split_pop(VirtQueue *vq, size_t sz)
+                 virtio_error(vdev, "Incorrect order for descriptors");
+                 goto err_undo_map;
+             }
+-            map_ok = virtqueue_map_desc(vdev, &out_num, addr, iov,
+-                                        VIRTQUEUE_MAX_SIZE, false,
++            map_ok = virtqueue_map_desc(vdev, &out_num, addr, xlat_addr,
++                                        iov, VIRTQUEUE_MAX_SIZE, false,
+                                         desc.addr, desc.len);
+         }
+         if (!map_ok) {
+@@ -1790,10 +1803,12 @@ static void *virtqueue_split_pop(VirtQueue *vq, size_t sz)
+     for (i = 0; i < out_num; i++) {
+         elem->out_addr[i] = addr[i];
+         elem->out_sg[i] = iov[i];
++        elem->out_xlat_addr[i] = xlat_addr[i];
+     }
+     for (i = 0; i < in_num; i++) {
+         elem->in_addr[i] = addr[out_num + i];
+         elem->in_sg[i] = iov[out_num + i];
++        elem->in_xlat_addr[i] = xlat_addr[out_num + i];
+     }
+ 
+     if (virtio_vdev_has_feature(vdev, VIRTIO_F_IN_ORDER)) {
+@@ -1827,6 +1842,7 @@ static void *virtqueue_packed_pop(VirtQueue *vq, size_t sz)
+     VirtQueueElement *elem = NULL;
+     unsigned out_num, in_num, elem_entries;
+     hwaddr addr[VIRTQUEUE_MAX_SIZE];
++    hwaddr xlat_addr[VIRTQUEUE_MAX_SIZE];
+     struct iovec iov[VIRTQUEUE_MAX_SIZE];
+     VRingPackedDesc desc;
+     uint16_t id;
+@@ -1891,7 +1907,7 @@ static void *virtqueue_packed_pop(VirtQueue *vq, size_t sz)
+ 
+         if (desc.flags & VRING_DESC_F_WRITE) {
+             map_ok = virtqueue_map_desc(vdev, &in_num, addr + out_num,
+-                                        iov + out_num,
++                                        xlat_addr + out_num, iov + out_num,
+                                         VIRTQUEUE_MAX_SIZE - out_num, true,
+                                         desc.addr, desc.len);
+         } else {
+@@ -1899,7 +1915,7 @@ static void *virtqueue_packed_pop(VirtQueue *vq, size_t sz)
+                 virtio_error(vdev, "Incorrect order for descriptors");
+                 goto err_undo_map;
+             }
+-            map_ok = virtqueue_map_desc(vdev, &out_num, addr, iov,
++            map_ok = virtqueue_map_desc(vdev, &out_num, addr, xlat_addr, iov,
+                                         VIRTQUEUE_MAX_SIZE, false,
+                                         desc.addr, desc.len);
+         }
+@@ -1928,10 +1944,12 @@ static void *virtqueue_packed_pop(VirtQueue *vq, size_t sz)
+     for (i = 0; i < out_num; i++) {
+         elem->out_addr[i] = addr[i];
+         elem->out_sg[i] = iov[i];
++        elem->out_xlat_addr[i] = xlat_addr[i];
+     }
+     for (i = 0; i < in_num; i++) {
+         elem->in_addr[i] = addr[out_num + i];
+         elem->in_sg[i] = iov[out_num + i];
++        elem->in_xlat_addr[i] = xlat_addr[out_num + i];
+     }
+ 
+     elem->index = id;
+@@ -2117,10 +2135,14 @@ void *qemu_get_virtqueue_element(VirtIODevice *vdev, QEMUFile *f, size_t sz)
+     elem->index = data.index;
+ 
+     for (i = 0; i < elem->in_num; i++) {
++        /* xlat_addr is overwritten by virtqueue_map */
++        elem->in_xlat_addr[i] = 0;
+         elem->in_addr[i] = data.in_addr[i];
+     }
+ 
+     for (i = 0; i < elem->out_num; i++) {
++        /* xlat_addr is overwritten by virtqueue_map */
++        elem->out_xlat_addr[i] = 0;
+         elem->out_addr[i] = data.out_addr[i];
+     }
+ 
+diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
+index 8eaf0d58bb..e2bb453dcc 100644
+--- a/include/hw/pci/pci_device.h
++++ b/include/hw/pci/pci_device.h
+@@ -328,7 +328,7 @@ static inline void *pci_dma_map(PCIDevice *dev, dma_addr_t addr,
+                                 dma_addr_t *plen, DMADirection dir)
+ {
+     return dma_memory_map(pci_get_address_space(dev), addr, plen, dir,
+-                          MEMTXATTRS_UNSPECIFIED);
++                          MEMTXATTRS_UNSPECIFIED, NULL);
  }
-+
-+/** Insert a new GPA->IOVA mapping to the GPA->IOVA tree
-+ *
-+ * @iova_tree: The VhostIOVATree
-+ * @map: The GPA->IOVA mapping
-+ *
-+ * Returns:
-+ * - IOVA_OK if the map fits in the container
-+ * - IOVA_ERR_INVALID if the map does not make sense (e.g. size overflow)
-+ * - IOVA_ERR_OVERLAP if the GPA range overlaps with an existing range
-+ */
-+int vhost_iova_tree_insert_gpa(VhostIOVATree *iova_tree, DMAMap *map)
-+{
-+    if (map->iova + map->size < map->iova || map->perm == IOMMU_NONE) {
-+        return IOVA_ERR_INVALID;
-+    }
-+
-+    return gpa_tree_insert(iova_tree->gpa_iova_map, map);
-+}
-+
-+/**
-+ * Find the IOVA address stored from a guest memory address (GPA)
-+ *
-+ * @tree: The VhostIOVATree
-+ * @map: The map with the guest memory address
-+ *
-+ * Returns the stored GPA->IOVA mapping, or NULL if not found.
-+ */
-+const DMAMap *vhost_iova_tree_find_gpa(const VhostIOVATree *tree,
-+                                       const DMAMap *map)
-+{
-+    return iova_tree_find_iova(tree->gpa_iova_map, map);
-+}
-+
-+/**
-+ * Remove existing mappings from the GPA->IOVA & IOVA trees
-+ *
-+ * @iova_tree: The VhostIOVATree
-+ * @map: The guest memory address map to remove
-+ */
-+void vhost_iova_tree_remove_gpa(VhostIOVATree *iova_tree, DMAMap map)
-+{
-+    iova_tree_remove(iova_tree->gpa_iova_map, map);
-+    iova_tree_remove(iova_tree->iova_map, map);
-+}
-diff --git a/hw/virtio/vhost-iova-tree.h b/hw/virtio/vhost-iova-tree.h
-index 8bf7b64786..3e3dcd04fe 100644
---- a/hw/virtio/vhost-iova-tree.h
-+++ b/hw/virtio/vhost-iova-tree.h
-@@ -24,5 +24,9 @@ const DMAMap *vhost_iova_tree_find_iova(const VhostIOVATree *iova_tree,
- int vhost_iova_tree_map_alloc(VhostIOVATree *iova_tree, DMAMap *map);
- void vhost_iova_tree_remove(VhostIOVATree *iova_tree, DMAMap map);
- int vhost_iova_tree_insert(VhostIOVATree *iova_tree, DMAMap *map);
-+int vhost_iova_tree_insert_gpa(VhostIOVATree *iova_tree, DMAMap *map);
-+const DMAMap *vhost_iova_tree_find_gpa(const VhostIOVATree *iova_tree,
-+                                       const DMAMap *map);
-+void vhost_iova_tree_remove_gpa(VhostIOVATree *iova_tree, DMAMap map);
  
- #endif
-diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index f5803f35f4..8587f3f6c8 100644
---- a/hw/virtio/vhost-vdpa.c
-+++ b/hw/virtio/vhost-vdpa.c
-@@ -361,10 +361,10 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
-     if (s->shadow_data) {
-         int r;
+ static inline void pci_dma_unmap(PCIDevice *dev, void *buffer, dma_addr_t len,
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index 6386910280..e822aafd91 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -75,6 +75,8 @@ typedef struct VirtQueueElement
+     hwaddr *out_addr;
+     struct iovec *in_sg;
+     struct iovec *out_sg;
++    hwaddr *in_xlat_addr;
++    hwaddr *out_xlat_addr;
+ } VirtQueueElement;
  
--        mem_region.translated_addr = (hwaddr)(uintptr_t)vaddr,
-         mem_region.size = int128_get64(llsize) - 1,
-         mem_region.perm = IOMMU_ACCESS_FLAG(true, section->readonly),
+ #define VIRTIO_QUEUE_MAX 1024
+diff --git a/include/system/dma.h b/include/system/dma.h
+index 5a49a30628..b5d4c07452 100644
+--- a/include/system/dma.h
++++ b/include/system/dma.h
+@@ -12,6 +12,7 @@
  
-+        /* Allocate an IOVA range in the IOVA tree */
-         r = vhost_iova_tree_map_alloc(s->iova_tree, &mem_region);
-         if (unlikely(r != IOVA_OK)) {
-             error_report("Can't allocate a mapping (%d)", r);
-@@ -372,6 +372,14 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
-         }
+ #include "exec/memory.h"
+ #include "exec/address-spaces.h"
++#include "exec/ramblock.h"
+ #include "block/block.h"
+ #include "block/accounting.h"
  
-         iova = mem_region.iova;
-+        mem_region.translated_addr = section->offset_within_address_space;
-+
-+        /* Add GPA->IOVA mapping to the GPA->IOVA tree */
-+        r = vhost_iova_tree_insert_gpa(s->iova_tree, &mem_region);
-+        if (unlikely(r != IOVA_OK)) {
-+            error_report("Can't add listener region mapping (%d)", r);
-+            goto fail_map;
-+        }
-     }
- 
-     vhost_vdpa_iotlb_batch_begin_once(s);
-@@ -386,7 +394,7 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
- 
- fail_map:
-     if (s->shadow_data) {
--        vhost_iova_tree_remove(s->iova_tree, mem_region);
-+        vhost_iova_tree_remove_gpa(s->iova_tree, mem_region);
-     }
- 
- fail:
-@@ -440,21 +448,19 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
- 
-     if (s->shadow_data) {
-         const DMAMap *result;
--        const void *vaddr = memory_region_get_ram_ptr(section->mr) +
--            section->offset_within_region +
--            (iova - section->offset_within_address_space);
-         DMAMap mem_region = {
--            .translated_addr = (hwaddr)(uintptr_t)vaddr,
-+            .translated_addr = section->offset_within_address_space,
-             .size = int128_get64(llsize) - 1,
-         };
- 
--        result = vhost_iova_tree_find_iova(s->iova_tree, &mem_region);
-+        /* Search the GPA->IOVA tree */
-+        result = vhost_iova_tree_find_gpa(s->iova_tree, &mem_region);
-         if (!result) {
-             /* The memory listener map wasn't mapped */
-             return;
-         }
-         iova = result->iova;
--        vhost_iova_tree_remove(s->iova_tree, *result);
-+        vhost_iova_tree_remove_gpa(s->iova_tree, *result);
-     }
-     vhost_vdpa_iotlb_batch_begin_once(s);
-     /*
-diff --git a/include/qemu/iova-tree.h b/include/qemu/iova-tree.h
-index 44a45931d5..8467912a0b 100644
---- a/include/qemu/iova-tree.h
-+++ b/include/qemu/iova-tree.h
-@@ -40,6 +40,15 @@ typedef struct DMAMap {
- } QEMU_PACKED DMAMap;
- typedef gboolean (*iova_tree_iterator)(DMAMap *map);
- 
-+/**
-+ * gpa_tree_new:
-+ *
-+ * Create a new GPA->IOVA tree.
-+ *
-+ * Returns: the tree pointer on success, or NULL otherwise.
-+ */
-+IOVATree *gpa_tree_new(void);
-+
- /**
-  * iova_tree_new:
-  *
-@@ -49,6 +58,19 @@ typedef gboolean (*iova_tree_iterator)(DMAMap *map);
+@@ -201,10 +202,12 @@ MemTxResult dma_memory_set(AddressSpace *as, dma_addr_t addr,
+  * @len: pointer to length of buffer; updated on return
+  * @dir: indicates the transfer direction
+  * @attrs: memory attributes
++ * @guest_addr: optional output for GPA
   */
- IOVATree *iova_tree_new(void);
- 
-+/**
-+ * gpa_tree_insert:
-+ *
-+ * @tree: The GPA->IOVA tree we're inserting the mapping to
-+ * @map: The GPA->IOVA mapping to insert
-+ *
-+ * Inserts a GPA range to the GPA->IOVA tree. If there are overlapped
-+ * ranges, IOVA_ERR_OVERLAP will be returned.
-+ *
-+ * Return: 0 if successful, < 0 otherwise.
-+ */
-+int gpa_tree_insert(IOVATree *tree, const DMAMap *map);
+ static inline void *dma_memory_map(AddressSpace *as,
+                                    dma_addr_t addr, dma_addr_t *len,
+-                                   DMADirection dir, MemTxAttrs attrs)
++                                   DMADirection dir, MemTxAttrs attrs,
++                                   hwaddr *guest_addr)
+ {
+     hwaddr xlen = *len;
+     void *p;
+@@ -212,6 +215,26 @@ static inline void *dma_memory_map(AddressSpace *as,
+     p = address_space_map(as, addr, &xlen, dir == DMA_DIRECTION_FROM_DEVICE,
+                           attrs);
+     *len = xlen;
 +
- /**
-  * iova_tree_insert:
-  *
-diff --git a/util/iova-tree.c b/util/iova-tree.c
-index 06295e2755..f45e63c3de 100644
---- a/util/iova-tree.c
-+++ b/util/iova-tree.c
-@@ -55,6 +55,22 @@ static void iova_tree_alloc_args_iterate(struct IOVATreeAllocArgs *args,
-     args->this = next;
++    /* Attempt to find a backing GPA for this HVA */
++    if (guest_addr) {
++        if (p) {
++            RAMBlock *rb;
++            ram_addr_t offset;
++
++            rb = qemu_ram_block_from_host(p, false, &offset);
++            if (rb) {
++                /* HVA corresponds to guest memory */
++                *guest_addr = rb->offset + offset;
++            } else {
++                /* HVA doesn't correspond to guest memory */
++                *guest_addr = 0;
++            }
++        } else {
++            /* Mapping failed */
++            *guest_addr = 0;
++        }
++    }
+     return p;
  }
  
-+static int gpa_tree_compare(gconstpointer a, gconstpointer b, gpointer data)
-+{
-+    const DMAMap *m1 = a, *m2 = b;
-+
-+    if (m1->translated_addr > m2->translated_addr + m2->size) {
-+        return 1;
-+    }
-+
-+    if (m1->translated_addr + m1->size < m2->translated_addr) {
-+        return -1;
-+    }
-+
-+    /* Overlapped */
-+    return 0;
-+}
-+
- static int iova_tree_compare(gconstpointer a, gconstpointer b, gpointer data)
- {
-     const DMAMap *m1 = a, *m2 = b;
-@@ -71,6 +87,15 @@ static int iova_tree_compare(gconstpointer a, gconstpointer b, gpointer data)
-     return 0;
- }
- 
-+IOVATree *gpa_tree_new(void)
-+{
-+    IOVATree *gpa_tree = g_new0(IOVATree, 1);
-+
-+    gpa_tree->tree = g_tree_new_full(gpa_tree_compare, NULL, g_free, NULL);
-+
-+    return gpa_tree;
-+}
-+
- IOVATree *iova_tree_new(void)
- {
-     IOVATree *iova_tree = g_new0(IOVATree, 1);
-@@ -121,6 +146,27 @@ static inline void iova_tree_insert_internal(GTree *gtree, DMAMap *range)
-     g_tree_insert(gtree, range, range);
- }
- 
-+int gpa_tree_insert(IOVATree *tree, const DMAMap *map)
-+{
-+    DMAMap *new;
-+
-+    if (map->translated_addr + map->size < map->translated_addr ||
-+        map->perm == IOMMU_NONE) {
-+        return IOVA_ERR_INVALID;
-+    }
-+
-+    /* We don't allow inserting ranges that overlap with existing ones */
-+    if (iova_tree_find(tree,map)) {
-+        return IOVA_ERR_OVERLAP;
-+    }
-+
-+    new = g_new0(DMAMap, 1);
-+    memcpy(new, map, sizeof(*new));
-+    iova_tree_insert_internal(tree->tree, new);
-+
-+    return IOVA_OK;
-+}
-+
- int iova_tree_insert(IOVATree *tree, const DMAMap *map)
- {
-     DMAMap *new;
+diff --git a/system/dma-helpers.c b/system/dma-helpers.c
+index f6403242f5..a6d2352c0f 100644
+--- a/system/dma-helpers.c
++++ b/system/dma-helpers.c
+@@ -135,7 +135,7 @@ static void dma_blk_cb(void *opaque, int ret)
+         cur_addr = dbs->sg->sg[dbs->sg_cur_index].base + dbs->sg_cur_byte;
+         cur_len = dbs->sg->sg[dbs->sg_cur_index].len - dbs->sg_cur_byte;
+         mem = dma_memory_map(dbs->sg->as, cur_addr, &cur_len, dbs->dir,
+-                             MEMTXATTRS_UNSPECIFIED);
++                             MEMTXATTRS_UNSPECIFIED, NULL);
+         /*
+          * Make reads deterministic in icount mode. Windows sometimes issues
+          * disk read requests with overlapping SGs. It leads
 -- 
 2.43.5
 
