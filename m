@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15E9FA09A36
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:50:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93A47A09A56
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:52:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWK2u-0000jv-VP; Fri, 10 Jan 2025 13:47:49 -0500
+	id 1tWK32-0001Fy-67; Fri, 10 Jan 2025 13:47:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK1y-0000Dc-Du
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:52 -0500
+ id 1tWK22-0000FE-BR
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:56 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK1v-000168-T3
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:49 -0500
+ id 1tWK1y-00016W-5X
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736534805;
+ s=mimecast20190719; t=1736534808;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aX24Q+tB77pzEZ+uLwRAl7jQIydZqUxNNDKMiOl7mBs=;
- b=U+/7rWXKMesPdOqR4EiUSMHxQXfTinlbXrazhUbOA3+JEECCjF6VcFpBPkbVajiq5wlbzc
- MAXsmPmHMrDhMLOxCIIZpbuv9sui1jAsZ4QwpMlqjlC5cMYiLrWB9zctSIMfdPMGJw3Mca
- +9TSk8XXeD+ts+M/jSnXXgx+WaPmdXM=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=yyNO/JTwvXtw4mxmLChlF/whck0cJNX1PORaIe032Kw=;
+ b=SnD7tT270G72zMcKXjAVvrtvzkP/jp/ryqRzVIt3aq91s8DIrFj65lcnoN4ZbbkDSMnhIH
+ qoaq8PVkPq1KNDS/DtN6il2Kb1s0ci4wa3I6JUrdkKR5MKVTtXBWfzSpczrkIZSennDl04
+ aO+DAR4Fd//dPghsW8V0+ElCs4FihH0=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-374-sR28UJ-6PPqAS5NupQN1mA-1; Fri, 10 Jan 2025 13:46:44 -0500
-X-MC-Unique: sR28UJ-6PPqAS5NupQN1mA-1
-X-Mimecast-MFC-AGG-ID: sR28UJ-6PPqAS5NupQN1mA
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-5d88d37abd0so2352981a12.0
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:46:43 -0800 (PST)
+ us-mta-78-QVZ9-NVoPSeA8xFFXH49jg-1; Fri, 10 Jan 2025 13:46:46 -0500
+X-MC-Unique: QVZ9-NVoPSeA8xFFXH49jg-1
+X-Mimecast-MFC-AGG-ID: QVZ9-NVoPSeA8xFFXH49jg
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-aab954d1116so237129466b.3
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:46:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736534802; x=1737139602;
+ d=1e100.net; s=20230601; t=1736534804; x=1737139604;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aX24Q+tB77pzEZ+uLwRAl7jQIydZqUxNNDKMiOl7mBs=;
- b=hHgYGFCFPxpips8+xMI0kzO0jk6mb6gddV7FoH5MHujdv4TqXwiKd1RfvX/OOwm1jT
- XiV/J6njzyROgR7vl30YMGrbPt4ZwNdUF89eCjbHOOGcdhu2XCl/IpXcZviBRmR2XPki
- 4XJW+N8QBGYA/eYaFMpEoubZU9KXkyFJULQmQLfIe2Jo04Flb3dBtoo+CnLLTN8xX6tK
- iW0dipvobOYPZjiyn61JOU0OoX3BCaAmURYY6pmDlXElt3C2eIcD1HIxzy5E/AhDdRTW
- NLahCyr1owAcBarUWi0ZqjcouaHCbIZJ9/rTyAzJTCTBL5zEGIfxLWGVqjeTzjVfx0nz
- QicA==
-X-Gm-Message-State: AOJu0Yz54Rx6MpzTQ5vOUtXnVLWXORSSaB9FBFDnJJT39gd4fs0Z6gx+
- jmUT66Tm4Kupqv0YmwlvM2SJ8kYhFTpZ9CzL0qX3CKge++YGJfbg44/xzFl8IYXAnAF50I5rnFU
- q+VwKJLLyvG+QGPdDIAaVjdthJvUZLlREN1Pm9rgYGYqPrWWlYLIuSnefimiyMFhhAC+tZZyJdy
- OlE9vclWCmWBa5+wSWQWr3ir5Cq9TTtCKdWidi4yA=
-X-Gm-Gg: ASbGncs9MkGZfvLjI+Pvj8185V38AxB/PO6OIHi/eESYeHweeB/bU8dBWK7eE81J132
- waZqyvq/OQS3LjUxCSkabwij89mxgA2GIddsCsJk0TBBNcwettDHaANRrLSKlFCRflv519cH4BD
- EX20SashnskHU4QjSXiYztjlBtoHnzNxSOgoDnUKrIMmx8ukNd1gf2u3FwvbyLRciIYy8CjhQPY
- m6oVQg9Hl7YKIS5Uy+GIxQ5CspIP2BBjCL/TGkz8BnF6nMdUn2qbf6FkkY=
-X-Received: by 2002:a05:6402:358a:b0:5d9:a62:33e with SMTP id
- 4fb4d7f45d1cf-5d972e162b0mr10754146a12.15.1736534802480; 
- Fri, 10 Jan 2025 10:46:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEyMqyWmrW0lTH/osdKXu5ANogZss5mgSvFJOeeXdy9sX4c4pbArHla0T+meklCekNzPvBYjA==
-X-Received: by 2002:a05:6402:358a:b0:5d9:a62:33e with SMTP id
- 4fb4d7f45d1cf-5d972e162b0mr10754132a12.15.1736534802098; 
- Fri, 10 Jan 2025 10:46:42 -0800 (PST)
+ bh=yyNO/JTwvXtw4mxmLChlF/whck0cJNX1PORaIe032Kw=;
+ b=ho1vyIJf98SfCJIlViK0o1bXiYlgbk4ZxeUvomT1tDv4QFqcde8DjlxA/jauY1JrMe
+ PJVtlUUQ4wAkbkza6OOMZWAiDga+9KHZhQv8TsrXY1xHNjwAyUDn3SumgSuA/rmylhiY
+ CIccWLRM6ujpZAZ3nlryaWWOkULCZ3uL+A9/aCp6IyE+o/FcVkjv6jCve8zrC5+kQxyw
+ HBoRAsTyAUEWdalD4jWFV9S5/cYLvHE9o6mPke5Nmo+QN7rrPuTNc3qOcwO6EwTlZQ6R
+ 1u2l5U9yROHngck0zlYuJs4sfbpzS6p0TJb01LbXBtZo3BAF7UPVZXwxYYaPtAb9rXcH
+ t2iw==
+X-Gm-Message-State: AOJu0Yy5xkpKSrvLfXhlHVZbDVIvTvEz9LlDgVXvA9hEfdQVr5h6QsVx
+ SXGEQBIPoYRHnicLfGtRDHIbZweuyO0XOA0C1LsIOQkboXBSIi6laWvgOqpM6K804wZBfe99sXh
+ wzf9nP1YVXRYCXkZRXCez/zuUvELz2Ku474/9DXUru+k9z0BW1bxYt/m0zXpFHlZqh+pWeI38Su
+ yzf6XSfjy3RpD93IjBWyP/hzfTx5mEi36GY+v0j8w=
+X-Gm-Gg: ASbGncucMVgupFEx/fq5VKhiO6pZCmBlJbyquo/1UVZZ5XUz4vrIfoNIVGbeMjdeY1n
+ DjiOw2aoiP9cT8KgHvmvoXcN7YmXODIU7EiEy0OLcNz4RxzmAQoAMRl7i/Yh2qLpM9MyNAwF74o
+ 5dTd6gtYuZzLMbyB1rl3UlRmCun3CgAH9GNSAKci1ECT390tFyGQQGx0Ed102HWeK3hpo4Lnrwu
+ 5mi2dV3jx90YgYi7xqt8RQGA+wsxNNTfwKlLvRlOv4yePXLv32o8St9fsA=
+X-Received: by 2002:a17:907:3da1:b0:aaf:3f57:9d2e with SMTP id
+ a640c23a62f3a-ab2aaaf6571mr1070985866b.0.1736534804237; 
+ Fri, 10 Jan 2025 10:46:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE+EbD5AWg+0Aviz6NYcbc6h9WY6tyecY758T69z79KF5nM936PvF/63yBLePnhWQC3laN2hA==
+X-Received: by 2002:a17:907:3da1:b0:aaf:3f57:9d2e with SMTP id
+ a640c23a62f3a-ab2aaaf6571mr1070983866b.0.1736534803802; 
+ Fri, 10 Jan 2025 10:46:43 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.105.73])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d99008c39fsm1936978a12.13.2025.01.10.10.46.40
+ a640c23a62f3a-ab2c90dace5sm196437966b.60.2025.01.10.10.46.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 10:46:40 -0800 (PST)
+ Fri, 10 Jan 2025 10:46:43 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 09/38] rust: pl011: only leave embedded object initialization
- in instance_init
-Date: Fri, 10 Jan 2025 19:45:50 +0100
-Message-ID: <20250110184620.408302-10-pbonzini@redhat.com>
+Subject: [PULL 10/38] rust: qom: make INSTANCE_POST_INIT take a shared
+ reference
+Date: Fri, 10 Jan 2025 19:45:51 +0100
+Message-ID: <20250110184620.408302-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250110184620.408302-1-pbonzini@redhat.com>
 References: <20250110184620.408302-1-pbonzini@redhat.com>
@@ -106,86 +106,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Leave IRQ and MMIO initialization to instance_post_init.  In Rust the
-two callbacks are more distinct, because only instance_post_init has a
-fully initialized object available.
-
-While at it, add a wrapper for sysbus_init_mmio so that accesses to
-the SysBusDevice correctly use shared references.
-
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs | 18 ++++++++++--------
- rust/qemu-api/src/sysbus.rs      | 12 ++++++++++++
- 2 files changed, 22 insertions(+), 8 deletions(-)
+ rust/hw/char/pl011/src/device.rs | 4 ++--
+ rust/qemu-api/src/qom.rs         | 8 ++------
+ 2 files changed, 4 insertions(+), 8 deletions(-)
 
 diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 215f94a6e4a..72a4cea042c 100644
+index 72a4cea042c..6792d13fb77 100644
 --- a/rust/hw/char/pl011/src/device.rs
 +++ b/rust/hw/char/pl011/src/device.rs
-@@ -145,6 +145,7 @@ impl ObjectImpl for PL011State {
+@@ -145,7 +145,7 @@ impl ObjectImpl for PL011State {
      type ParentType = SysBusDevice;
  
      const INSTANCE_INIT: Option<unsafe fn(&mut Self)> = Some(Self::init);
-+    const INSTANCE_POST_INIT: Option<fn(&mut Self)> = Some(Self::post_init);
+-    const INSTANCE_POST_INIT: Option<fn(&mut Self)> = Some(Self::post_init);
++    const INSTANCE_POST_INIT: Option<fn(&Self)> = Some(Self::post_init);
  }
  
  impl DeviceImpl for PL011State {
-@@ -183,14 +184,6 @@ unsafe fn init(&mut self) {
-                 Self::TYPE_NAME.as_ptr(),
-                 0x1000,
-             );
--
--            let sbd: &mut SysBusDevice = self.upcast_mut();
--            sysbus_init_mmio(sbd, addr_of_mut!(self.iomem));
--        }
--
--        for irq in self.interrupts.iter() {
--            let sbd: &SysBusDevice = self.upcast();
--            sbd.init_irq(irq);
-         }
- 
-         // SAFETY:
-@@ -213,6 +206,15 @@ unsafe fn init(&mut self) {
+@@ -206,7 +206,7 @@ unsafe fn init(&mut self) {
          }
      }
  
-+    fn post_init(&mut self) {
-+        let sbd: &SysBusDevice = self.upcast();
-+
-+        sbd.init_mmio(&self.iomem);
-+        for irq in self.interrupts.iter() {
-+            sbd.init_irq(irq);
-+        }
-+    }
-+
-     pub fn read(&mut self, offset: hwaddr, _size: c_uint) -> std::ops::ControlFlow<u64, u64> {
-         use RegisterOffset::*;
+-    fn post_init(&mut self) {
++    fn post_init(&self) {
+         let sbd: &SysBusDevice = self.upcast();
  
-diff --git a/rust/qemu-api/src/sysbus.rs b/rust/qemu-api/src/sysbus.rs
-index 8193734bde4..b96eaaf25f2 100644
---- a/rust/qemu-api/src/sysbus.rs
-+++ b/rust/qemu-api/src/sysbus.rs
-@@ -38,6 +38,18 @@ const fn as_mut_ptr(&self) -> *mut SysBusDevice {
-         addr_of!(*self) as *mut _
-     }
+         sbd.init_mmio(&self.iomem);
+diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
+index b0332ba2477..97901fb9084 100644
+--- a/rust/qemu-api/src/qom.rs
++++ b/rust/qemu-api/src/qom.rs
+@@ -163,11 +163,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+     // SAFETY: obj is an instance of T, since rust_instance_post_init<T>
+     // is called from QOM core as the instance_post_init function
+     // for class T
+-    //
+-    // FIXME: it's not really guaranteed that there are no backpointers to
+-    // obj; it's quite possible that they have been created by instance_init().
+-    // The receiver should be &self, not &mut self.
+-    T::INSTANCE_POST_INIT.unwrap()(unsafe { &mut *obj.cast::<T>() })
++    T::INSTANCE_POST_INIT.unwrap()(unsafe { &*obj.cast::<T>() })
+ }
  
-+    /// Expose a memory region to the board so that it can give it an address
-+    /// in guest memory.  Note that the ordering of calls to `init_mmio` is
-+    /// important, since whoever creates the sysbus device will refer to the
-+    /// region with a number that corresponds to the order of calls to
-+    /// `init_mmio`.
-+    pub fn init_mmio(&self, iomem: &bindings::MemoryRegion) {
-+        assert!(bql_locked());
-+        unsafe {
-+            bindings::sysbus_init_mmio(self.as_mut_ptr(), addr_of!(*iomem) as *mut _);
-+        }
-+    }
-+
-     /// Expose an interrupt source outside the device as a qdev GPIO output.
-     /// Note that the ordering of calls to `init_irq` is important, since
-     /// whoever creates the sysbus device will refer to the interrupts with
+ unsafe extern "C" fn rust_class_init<T: ObjectType + ClassInitImpl<T::Class>>(
+@@ -463,7 +459,7 @@ pub trait ObjectImpl: ObjectType + ClassInitImpl<Self::Class> {
+ 
+     /// Function that is called to finish initialization of an object, once
+     /// `INSTANCE_INIT` functions have been called.
+-    const INSTANCE_POST_INIT: Option<fn(&mut Self)> = None;
++    const INSTANCE_POST_INIT: Option<fn(&Self)> = None;
+ 
+     /// Called on descendent classes after all parent class initialization
+     /// has occurred, but before the class itself is initialized.  This
 -- 
 2.47.1
 
