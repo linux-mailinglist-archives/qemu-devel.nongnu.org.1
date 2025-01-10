@@ -2,103 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACC0BA092AE
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 14:56:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0842A09328
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 15:15:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWFUe-0008GR-83; Fri, 10 Jan 2025 08:56:08 -0500
+	id 1tWFlA-0004CH-NM; Fri, 10 Jan 2025 09:13:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tWFUb-0008Fy-GR
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:56:05 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tWFUY-0002H1-Kp
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:56:05 -0500
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 812B821137;
- Fri, 10 Jan 2025 13:55:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736517359; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=P5tjae4azC0OEfpugOz34jaHnShFbO5w7P3Kva90l4U=;
- b=Tk5ghUXqS/N4jLa0PWmXWSSoaj1BLGOIhI9fXH/SysMFJRexIklEHzNhWc5QyBcuBcxNdz
- QQPyS8YpS4y1s70y5H/NnXeOzR7Rde7SJ5H7Pv0gM/NTa/xazWZT8c4PK53XOh4k1dym1k
- pUSw8aQqBrTy0Fv1ltsafnG889PxK8U=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736517359;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=P5tjae4azC0OEfpugOz34jaHnShFbO5w7P3Kva90l4U=;
- b=dlFvjEzdX+kPzRDYckR/GMI0ZnZAm7bS0SokipwVE3+fpPfOiD4bEa/Za8eS161UmRNe3d
- nH1RXMQ1Xjv2GQDA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736517359; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=P5tjae4azC0OEfpugOz34jaHnShFbO5w7P3Kva90l4U=;
- b=Tk5ghUXqS/N4jLa0PWmXWSSoaj1BLGOIhI9fXH/SysMFJRexIklEHzNhWc5QyBcuBcxNdz
- QQPyS8YpS4y1s70y5H/NnXeOzR7Rde7SJ5H7Pv0gM/NTa/xazWZT8c4PK53XOh4k1dym1k
- pUSw8aQqBrTy0Fv1ltsafnG889PxK8U=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736517359;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=P5tjae4azC0OEfpugOz34jaHnShFbO5w7P3Kva90l4U=;
- b=dlFvjEzdX+kPzRDYckR/GMI0ZnZAm7bS0SokipwVE3+fpPfOiD4bEa/Za8eS161UmRNe3d
- nH1RXMQ1Xjv2GQDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0737C13A86;
- Fri, 10 Jan 2025 13:55:58 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id LQNsL+4mgWcOaAAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 10 Jan 2025 13:55:58 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Ani Sinha <anisinha@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Gerd Hoffmann <kraxel@redhat.com>, Laurent Vivier
- <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: armbru@redhat.com, Ani Sinha <anisinha@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v5 1/3] libqos/fw_cfg: refactor file directory iteraton
- to make it more reusable
-In-Reply-To: <20250110104619.267564-2-anisinha@redhat.com>
-References: <20250110104619.267564-1-anisinha@redhat.com>
- <20250110104619.267564-2-anisinha@redhat.com>
-Date: Fri, 10 Jan 2025 10:55:56 -0300
-Message-ID: <87cyguepsj.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tWFl7-0004BF-QF
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 09:13:09 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tWFl5-0004Er-2s
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 09:13:09 -0500
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50AD7xtN001639;
+ Fri, 10 Jan 2025 14:12:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=pp1; bh=nGyCvAY3sdiA0jaPv9viSJKnNp+T
+ oMXvr666R+WDOTg=; b=jujRiqeAYzMy13YfTBK1EGUZJcOZ7pUFn+vrygeGv4pp
+ zZO5JdhBWiISnyHqO5gVONBF7I2Uc+Cdp/tvVY5CNclDlUlmQTpWCaWi7pMgYcQr
+ d2zKcfBUET/WR5SMqJqBoaieYnq3FR2MWGBsGS/5yXQABlD9pLLWvxvqyybFJ51h
+ 280ml3amnSEHt3nyNvuwgY0lfzDfl9ONncGQncp6HZnSXtztoaF4wlkerI+MMQ/Q
+ B3le6OD67OJpEubc2j8D+XsSDURlgRAhj7RrZHGBha5FEuw+0I3oqXmjRx5XYEzP
+ LGVI+Y1Xp1rydkP/DTiirl8wVJ/gpwJFc+wVrAnujQ==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 442rkhu0ff-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 10 Jan 2025 14:12:59 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50AB0eC3026171;
+ Fri, 10 Jan 2025 14:12:58 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 43yj12j96n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 10 Jan 2025 14:12:58 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 50AECuwA64422184
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 10 Jan 2025 14:12:57 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DFF592004F;
+ Fri, 10 Jan 2025 14:12:56 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2CB8420040;
+ Fri, 10 Jan 2025 14:12:56 +0000 (GMT)
+Received: from heavy.ibm.com (unknown [9.179.24.22])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 10 Jan 2025 14:12:56 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Warner Losh <imp@bsdimp.com>, Riku Voipio <riku.voipio@iki.fi>,
+ Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: Kyle Evans <kevans@freebsd.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v5 0/8] gdbstub: Allow late attachment
+Date: Fri, 10 Jan 2025 15:09:32 +0100
+Message-ID: <20250110141255.2328-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+];
- RCPT_COUNT_SEVEN(0.00)[8]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 9WVLEF-RawZypsWCdHutCunwais6ozWp
+X-Proofpoint-GUID: 9WVLEF-RawZypsWCdHutCunwais6ozWp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0
+ mlxscore=0 suspectscore=0 phishscore=0 impostorscore=0 adultscore=0
+ malwarescore=0 priorityscore=1501 mlxlogscore=779 lowpriorityscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501100110
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,15 +109,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ani Sinha <anisinha@redhat.com> writes:
+v4: https://lore.kernel.org/qemu-devel/20250108202625.149869-1-iii@linux.ibm.com/
+v4 -> v5: Fix the qemu-user-only build by adding qemu-sockets.c to it.
+          Drop the qapi_bool_parse() changes (Daniel).
 
-> fw-cfg file directory iteration code can be used by other functions that may
-> want to implement fw-cfg file operations. Refactor it into a smaller helper
-> so that it can be reused.
->
-> No functional change.
->
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+v3: https://lore.kernel.org/qemu-devel/20241216123412.77450-1-iii@linux.ibm.com/
+v3 -> v4: Rebase.
+          Add missing "\n"s to error messages.
+          Use unix_listen() (Alex).
+          Use qapi_bool_parse() and patch it to accept NULL (Alex).
+          Remove a leftover include (Alex).
+          Rename port_or_path to path, set it to NULL after freeing (Alex).
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+v2: https://lore.kernel.org/qemu-devel/20241106223629.2608-1-iii@linux.ibm.com/
+v2 -> v3: Rebase.
+          Patches that need review:
+          - [PATCH 2/8] gdbstub: Try unlinking the unix socket before binding
+          - [PATCH 4/8] user: Introduce host_interrupt_signal  # linux part
+          - [PATCH 6/8] gdbstub: Allow late attachment
+          - [PATCH 7/8] docs/user: Document the %d placeholder and suspend=n QEMU_GDB features
+          - [PATCH 8/8] tests/tcg: Add late gdbstub attach test
+
+v1: https://lore.kernel.org/qemu-devel/20241024200031.80327-1-iii@linux.ibm.com/
+v1 -> v2: Rebase, fix conflicts with the QEMU_RTSIG_MAP patch.
+          Use qemu_get_thread_id() for %d (Helge, Richard, Warner).
+          Add R-bs, except for the Richard's one on 4/8, since
+          conflict resolution caused a noticeable change.
+
+Hi,
+
+This series adds the ability to attach GDB to a running qemu-user
+instance. This is useful for debugging multi-process apps.
+
+Patches 1 and 2 implement a small related feature: the ability to
+create individual UNIX sockets for each child process.
+
+Patches 3-5 add the required infrastructure. In particular, we need
+to reserve a host signal for waking up threads, as discussed in [1].
+By the way, the problem with atomicity of checking for pending signals
+and invoking syscalls that I'm describing in that thread seems to
+have already been solved by the safe_syscall infrastructure, so the
+changes are fairly simple.
+
+If this series is accepted, I will rebase the all-stop series on top
+of it.
+
+Patch 6 is the implementation, patch 7 is a documentation update,
+patch 8 is a test. I tested this series on Linux and only
+compile-tested on the BSDs.
+
+Best regards,
+Ilya
+
+Ilya Leoshkevich (8):
+  gdbstub: Allow the %d placeholder in the socket path
+  gdbstub: Try unlinking the unix socket before binding
+  user: Introduce user/signal.h
+  user: Introduce host_interrupt_signal
+  osdep: Introduce qemu_kill_thread()
+  gdbstub: Allow late attachment
+  docs/user: Document the %d placeholder and suspend=n QEMU_GDB features
+  tests/tcg: Add late gdbstub attach test
+
+ bsd-user/main.c                            |   1 -
+ bsd-user/signal-common.h                   |   1 -
+ bsd-user/signal.c                          |  13 ++
+ docs/user/main.rst                         |  16 ++-
+ gdbstub/user.c                             | 154 +++++++++++++++++----
+ include/qemu/osdep.h                       |   9 ++
+ include/user/signal.h                      |  25 ++++
+ linux-user/main.c                          |   1 -
+ linux-user/signal-common.h                 |   1 -
+ linux-user/signal.c                        |  26 +++-
+ linux-user/syscall.c                       |   1 +
+ stubs/meson.build                          |   2 +
+ stubs/monitor-fd.c                         |   9 ++
+ tests/guest-debug/run-test.py              |  15 +-
+ tests/tcg/multiarch/Makefile.target        |   9 +-
+ tests/tcg/multiarch/gdbstub/late-attach.py |  28 ++++
+ tests/tcg/multiarch/late-attach.c          |  41 ++++++
+ util/meson.build                           |   2 +
+ util/oslib-posix.c                         |  15 ++
+ 19 files changed, 326 insertions(+), 43 deletions(-)
+ create mode 100644 include/user/signal.h
+ create mode 100644 stubs/monitor-fd.c
+ create mode 100644 tests/tcg/multiarch/gdbstub/late-attach.py
+ create mode 100644 tests/tcg/multiarch/late-attach.c
+
+-- 
+2.47.1
+
 
