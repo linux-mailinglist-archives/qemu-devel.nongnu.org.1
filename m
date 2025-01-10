@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A051DA09AC6
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:55:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAFBDA09A8F
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:53:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWK2y-00011Y-9c; Fri, 10 Jan 2025 13:47:52 -0500
+	id 1tWK34-0001PN-0X; Fri, 10 Jan 2025 13:47:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK2G-0000Gd-LO
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:14 -0500
+ id 1tWK2K-0000H6-BE
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:15 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK2D-00018L-12
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:07 -0500
+ id 1tWK2E-000196-VP
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736534824;
+ s=mimecast20190719; t=1736534826;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+9XJTJSHDsdt0DlshXhAnXl9FWfBL5KYyt2ZALl3vTc=;
- b=SZQvfekT+hUVblLrNc9yts7NDWnadGBl4bytMUWbp72FDJ46IzAUQpJvCsQru4HoLTWFTW
- bXDXyQ6sU/bjw8+uEwzZTJxpEd5tnc852EbHC24Z3n9LFgMbEOE7/AIzwVN61nriN3HB+w
- EkVDglweAH1lTwX1dJNR1dFNOiesWB8=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zYLEPuXNZY1l/qQd9EilKn0wQkuhUcyTj4C8X86e2cE=;
+ b=HAqVZyGH47CVIwfZDf2EgAe0wxmw54k6rVGXdlBVkj81bfTqCkb2jH7fs/FjAL2M9YQCBv
+ AZU1prPkwXv85uJfv873MTSXc7wHLrOc4iYPUAPmF7bNmU8Uy+rC032qlQF0FQxR4bwcrm
+ Fz6ARKrz6ccSzBCDAXzA7c2FrZoQ0c4=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-52-Xj2uOyKgMLyftcuwS6HTqw-1; Fri, 10 Jan 2025 13:47:03 -0500
-X-MC-Unique: Xj2uOyKgMLyftcuwS6HTqw-1
-X-Mimecast-MFC-AGG-ID: Xj2uOyKgMLyftcuwS6HTqw
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-5d3cff6aedbso2893518a12.0
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:47:02 -0800 (PST)
+ us-mta-572-meoc3DHmM5Kic8U8sQB2-Q-1; Fri, 10 Jan 2025 13:47:04 -0500
+X-MC-Unique: meoc3DHmM5Kic8U8sQB2-Q-1
+X-Mimecast-MFC-AGG-ID: meoc3DHmM5Kic8U8sQB2-Q
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3f3d6a999so2400783a12.0
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:47:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736534821; x=1737139621;
+ d=1e100.net; s=20230601; t=1736534823; x=1737139623;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+9XJTJSHDsdt0DlshXhAnXl9FWfBL5KYyt2ZALl3vTc=;
- b=rpSZqcBCveZl6YF+ZdxdLlMb4SeZ2rX8W8xC2Ccj2x0cZXnYYZ6j5pI2gOhUVXsKiK
- xD8TJvtFhbjx+eKUadrzppYnqIGgGnvIhfTVl3Uo1+98/dKeP6M829JosTgofTEI0PG9
- w8eGGtSUi5+16WKrD5tWUBQzFXinGOr6sI5eeTNEthOza9wc2t+p1kS4EYKXn2N+w1zj
- igI4gq0a6cZL2tQ+JPUNwch+OcqsLI21e83lVG0QLnIDaBRqh0pZnmGG7E1TgOtMmitD
- UIgjAaJOl6eQKVfPDUfjleFu4kA4/BemmvIpxBtVTCShPffQ2Do1RWzsQPOuv5Glk7mB
- ddbw==
-X-Gm-Message-State: AOJu0YzSyRUSkdhra49Une2lut4Mh1hNsCJfXZiwWVMXJDvMHDZETq/C
- DtGXqj7rGherwpQdsIIx5MTD0WaT8jnghhPbMVGucxTnQ28Yjj8hVEQMAponJ0HktEgySixmreE
- 0R7BPYKoAgqC4sIAd24c0uluO+3NAJadi4K7tHAIDvq6gACoKdkZWcVlA05f3snO+aO+BD7l4i2
- +GEws6NU/0RTazrA1803PLhkS3lLkBkUolhrMLVHs=
-X-Gm-Gg: ASbGncslYPY+mrIoETl/AzgTC5xq/19scx4HCwhwoZgTAyVTVNuWXgSvVFlzIzLNeRr
- MtYJ/UqWqeQHYB1Ovp0Gv6X/tAggpsBA4+tZ1pvn2RG6vZM69jOwJR/dDN/ESbSuR5RQH+/66f0
- Kq7Ec4SoOcw/kTFVQQs5EqNqVquwIWiCHTphzDKHDPKhjrd2BV+YnyGYUQssrWaNcGCTlmVtNdd
- 6G0750F7yN9HB6yY3kNew8YvR6roCvHyWN1Oqs6zUDtSZHy8qUKBSFPYw4=
-X-Received: by 2002:a05:6402:84d:b0:5d3:fcca:cab1 with SMTP id
- 4fb4d7f45d1cf-5d986288138mr6146084a12.15.1736534821534; 
- Fri, 10 Jan 2025 10:47:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEKPOHbDEGpbpAsy3zpmvKziXAAFWoWus6eaNc2RMe8b04O8pFx2/U5PBE0KMxQAZHk7PZgzw==
-X-Received: by 2002:a05:6402:84d:b0:5d3:fcca:cab1 with SMTP id
- 4fb4d7f45d1cf-5d986288138mr6146053a12.15.1736534820974; 
- Fri, 10 Jan 2025 10:47:00 -0800 (PST)
+ bh=zYLEPuXNZY1l/qQd9EilKn0wQkuhUcyTj4C8X86e2cE=;
+ b=h7xJg922dGuT6GWCAmyM4e1MGQJZjeGxAx5vLTjN/Q+brvYjspfA+HFwcJKnxcrqEC
+ 85zl7aNryxnKHkvm+XmEnv/BghE/WVetmFiCpcbpXSUNevAkWJQLcGbbsQOqlSJC1uGa
+ NuFkkmCkJ2Skdm7YJ9M8pkzTinbTI9zfEDmYdSI2srq7Hyjje/Z228XZ7PoRQmi0U6BR
+ Ss9o9UoldGxaD9pjEWvL2fSTQImykSkjSWWhCI6Pk2sqtv8DiCP2D5uHw5onK5mh1Tc2
+ pJKKn0Vgsu3xhaSHYwvfvisfu56gzOrrJzC+S/qfWcSFJURjTK/eZWiURlBouZHhNgim
+ d+hg==
+X-Gm-Message-State: AOJu0YyugtawXOGV6dBAJ3/8JfMctyq8lLkrzlvV/pXrmIjdZxSchw5n
+ yH+yOmBZA9qfpzMJOlqhyBXj7gPPNRsrzvyzLByjYCM5eCSXrg+7SIxD0o0Yfjmm+QoMayvdLKH
+ SDhaGWpVK2oxfQ7olhiP0CVIBrXQtJO13GyVPkdt30nSux4nIF7aa4XyLwcLodJ/mZp2b78thIc
+ WeV7HvYebyhMm9DxT1yOrIagXrb2Al34OGlvOVsEA=
+X-Gm-Gg: ASbGncvj225eZmFqos3W5BFraHvDF7nDub4vSAGBLna1/+Gelm6msOUtl3PTIgZO0+7
+ hGjdKM4nWToXyCsuOrzNL3YUGej4W4MReTPqQ7zejSqtZwpJ9g0ns/4c7JzJFeY/x2kYmR4Es/X
+ nUZ84TTgFmuj7RbJzweh1rGvroKqAD3hp4UgZPYiKNFX90HGAMliGZOVLEq0GmgHOsBATW9992e
+ H8sFWgU0OkuSBjbdvGn2k0Ej7qFkO9x7N+R1IDj5GkjzOBKnvmna+cighk=
+X-Received: by 2002:a50:c88a:0:b0:5d9:856c:9a08 with SMTP id
+ 4fb4d7f45d1cf-5d9856c9cf3mr6506074a12.18.1736534823174; 
+ Fri, 10 Jan 2025 10:47:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGOsqO8JlZaq2DPQWxNrok5ro3KK/a+wrybrkqbAUV+iWCUJOuxOCPgd/bbuqjLNW+r2fLmrw==
+X-Received: by 2002:a50:c88a:0:b0:5d9:856c:9a08 with SMTP id
+ 4fb4d7f45d1cf-5d9856c9cf3mr6506058a12.18.1736534822753; 
+ Fri, 10 Jan 2025 10:47:02 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.105.73])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d9903c32a0sm1975682a12.44.2025.01.10.10.46.58
+ 4fb4d7f45d1cf-5d9903c32absm1971106a12.41.2025.01.10.10.47.01
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 10:46:58 -0800 (PST)
+ Fri, 10 Jan 2025 10:47:02 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 17/38] target/i386: improve code generation for BT
-Date: Fri, 10 Jan 2025 19:45:58 +0100
-Message-ID: <20250110184620.408302-18-pbonzini@redhat.com>
+Subject: [PULL 18/38] target/i386: use shr to load high-byte registers into
+ T0/T1
+Date: Fri, 10 Jan 2025 19:45:59 +0100
+Message-ID: <20250110184620.408302-19-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250110184620.408302-1-pbonzini@redhat.com>
 References: <20250110184620.408302-1-pbonzini@redhat.com>
@@ -105,124 +106,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because BT does not write back to the source operand, it can modify it to
-ensure that one of the operands of TSTNE is a constant (after either gen_BT
-or the optimizer's constant propagation).  This produces better and more
-optimizable TCG ops.  For example, the sequence
-
-  movl $0x60013f, %ebx
-  btl %ecx, %ebx
-
-becomes just
-
-  and_i32 tmp1,ecx,$0x1f                   dead: 1 2  pref=0xffff
-  shr_i32 tmp0,$0x60013f,tmp1              dead: 1 2  pref=0xffff
-  and_i32 tmp16,tmp0,$0x1                  dead: 1  pref=0xbf80
-
-On s390x, it can use four instructions to isolate bit 0 of 0x60013f >> (ecx & 31):
-
-  nilf     %r12, 0x1f
-  lgfi     %r11, 0x60013f
-  srlk     %r12, %r11, 0(%r12)
-  nilf     %r12, 1
-
-Previously, it used five instructions to build 1 << (ecx & 31) and compute
-TSTEQ, and also needed two more to construct the result of setcond:
-
-  nilf     %r12, 0x1f
-  lghi     %r11, 1
-  sllk     %r12, %r11, 0(%r12)
-  lgfi     %r9, 0x60013f
-  nrk      %r0, %r12, %r9
-  lghi     %r12, 0
-  locghilh %r12, 1
+Using a sextract or extract operation is only necessary if a
+sign or zero extended value is needed.  If not, a shift is
+enough.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/emit.c.inc | 36 ++++++++++++++++++++++++++++--------
- 1 file changed, 28 insertions(+), 8 deletions(-)
+ target/i386/tcg/translate.c |  2 +-
+ target/i386/tcg/emit.c.inc  | 23 ++++++++++++-----------
+ 2 files changed, 13 insertions(+), 12 deletions(-)
 
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 834aea1e594..dbc9d637c4b 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -486,7 +486,7 @@ static inline
+ void gen_op_mov_v_reg(DisasContext *s, MemOp ot, TCGv t0, int reg)
+ {
+     if (ot == MO_8 && byte_reg_is_xH(s, reg)) {
+-        tcg_gen_extract_tl(t0, cpu_regs[reg - 4], 8, 8);
++        tcg_gen_shri_tl(t0, cpu_regs[reg - 4], 8);
+     } else {
+         tcg_gen_mov_tl(t0, cpu_regs[reg]);
+     }
 diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 785ff63f2ac..5c115429350 100644
+index 5c115429350..c4cc5f48d83 100644
 --- a/target/i386/tcg/emit.c.inc
 +++ b/target/i386/tcg/emit.c.inc
-@@ -1443,8 +1443,9 @@ static TCGv gen_bt_mask(DisasContext *s, X86DecodedInsn *decode)
-     return mask;
- }
+@@ -286,24 +286,25 @@ static void gen_load(DisasContext *s, X86DecodedInsn *decode, int opn, TCGv v)
+                 gen_op_ld_v(s, op->ot, v, s->A0);
+             }
  
--/* Expects truncated bit index in s->T1, 1 << s->T1 in MASK.  */
--static void gen_bt_flags(DisasContext *s, X86DecodedInsn *decode, TCGv src, TCGv mask)
-+/* Expects truncated bit index in COUNT, 1 << COUNT in MASK.  */
-+static void gen_bt_flags(DisasContext *s, X86DecodedInsn *decode, TCGv src,
-+                         TCGv count, TCGv mask)
- {
-     TCGv cf;
+-        } else if (op->ot == MO_8 && byte_reg_is_xH(s, op->n)) {
+-            if (v == s->T0 && decode->e.special == X86_SPECIAL_SExtT0) {
+-                tcg_gen_sextract_tl(v, cpu_regs[op->n - 4], 8, 8);
+-            } else {
+-                tcg_gen_extract_tl(v, cpu_regs[op->n - 4], 8, 8);
+-            }
+-
+         } else if (op->ot < MO_TL && v == s->T0 &&
+                    (decode->e.special == X86_SPECIAL_SExtT0 ||
+                     decode->e.special == X86_SPECIAL_ZExtT0)) {
+-            if (decode->e.special == X86_SPECIAL_SExtT0) {
+-                tcg_gen_ext_tl(v, cpu_regs[op->n], op->ot | MO_SIGN);
++            if (op->ot == MO_8 && byte_reg_is_xH(s, op->n)) {
++                if (decode->e.special == X86_SPECIAL_SExtT0) {
++                    tcg_gen_sextract_tl(v, cpu_regs[op->n - 4], 8, 8);
++                } else {
++                    tcg_gen_extract_tl(v, cpu_regs[op->n - 4], 8, 8);
++                }
+             } else {
+-                tcg_gen_ext_tl(v, cpu_regs[op->n], op->ot);
++                if (decode->e.special == X86_SPECIAL_SExtT0) {
++                    tcg_gen_ext_tl(v, cpu_regs[op->n], op->ot | MO_SIGN);
++                } else {
++                    tcg_gen_ext_tl(v, cpu_regs[op->n], op->ot);
++                }
+             }
  
-@@ -1467,15 +1468,34 @@ static void gen_bt_flags(DisasContext *s, X86DecodedInsn *decode, TCGv src, TCGv
-         decode->cc_src = tcg_temp_new();
-         decode->cc_dst = cpu_cc_dst;
-         decode->cc_op = CC_OP_SARB + cc_op_size(s->cc_op);
--        tcg_gen_shr_tl(decode->cc_src, src, s->T1);
-+        tcg_gen_shr_tl(decode->cc_src, src, count);
-     }
- }
- 
- static void gen_BT(DisasContext *s, X86DecodedInsn *decode)
- {
--    TCGv mask = gen_bt_mask(s, decode);
-+    TCGv count = s->T1;
-+    TCGv mask;
- 
--    gen_bt_flags(s, decode, s->T0, mask);
-+    /*
-+     * Try to ensure that the rhs of the TSTNE condition is a constant (and a
-+     * power of two), as that is more readily available on most TCG backends.
-+     *
-+     * For immediate bit number gen_bt_mask()'s output is already a constant;
-+     * for register bit number, shift the source right and check bit 0.
-+     */
-+    if (decode->e.op2 == X86_TYPE_I) {
-+        mask = gen_bt_mask(s, decode);
-+    } else {
-+        MemOp ot = decode->op[1].ot;
-+
-+        tcg_gen_andi_tl(s->T1, s->T1, (8 << ot) - 1);
-+        tcg_gen_shr_tl(s->T0, s->T0, s->T1);
-+
-+        count = tcg_constant_tl(0);
-+        mask = tcg_constant_tl(1);
-+    }
-+    gen_bt_flags(s, decode, s->T0, count, mask);
- }
- 
- static void gen_BTC(DisasContext *s, X86DecodedInsn *decode)
-@@ -1491,7 +1511,7 @@ static void gen_BTC(DisasContext *s, X86DecodedInsn *decode)
-         tcg_gen_xor_tl(s->T0, s->T0, mask);
-     }
- 
--    gen_bt_flags(s, decode, old, mask);
-+    gen_bt_flags(s, decode, old, s->T1, mask);
- }
- 
- static void gen_BTR(DisasContext *s, X86DecodedInsn *decode)
-@@ -1509,7 +1529,7 @@ static void gen_BTR(DisasContext *s, X86DecodedInsn *decode)
-         tcg_gen_andc_tl(s->T0, s->T0, mask);
-     }
- 
--    gen_bt_flags(s, decode, old, mask);
-+    gen_bt_flags(s, decode, old, s->T1, mask);
- }
- 
- static void gen_BTS(DisasContext *s, X86DecodedInsn *decode)
-@@ -1525,7 +1545,7 @@ static void gen_BTS(DisasContext *s, X86DecodedInsn *decode)
-         tcg_gen_or_tl(s->T0, s->T0, mask);
-     }
- 
--    gen_bt_flags(s, decode, old, mask);
-+    gen_bt_flags(s, decode, old, s->T1, mask);
- }
- 
- static void gen_BZHI(DisasContext *s, X86DecodedInsn *decode)
+         } else {
+-            tcg_gen_mov_tl(v, cpu_regs[op->n]);
++            gen_op_mov_v_reg(s, op->ot, v, op->n);
+         }
+         break;
+     case X86_OP_IMM:
 -- 
 2.47.1
 
