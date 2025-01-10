@@ -2,93 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2514EA0981A
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 18:07:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 008C3A0981E
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 18:09:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWIT8-0005xF-3R; Fri, 10 Jan 2025 12:06:46 -0500
+	id 1tWIVH-0006ow-1b; Fri, 10 Jan 2025 12:08:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tWISq-0005v2-2V
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 12:06:29 -0500
-Received: from mail-yb1-xb32.google.com ([2607:f8b0:4864:20::b32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tWISo-0004t7-8J
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 12:06:27 -0500
-Received: by mail-yb1-xb32.google.com with SMTP id
- 3f1490d57ef6-e4930eca0d4so3237118276.3
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 09:06:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736528785; x=1737133585; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bBcBGCnCXUPu6lYWQNb1vrMXeob1mbg0t9BDxdJyk5U=;
- b=crsVumOqcflUkbuz22J+CCkJuBFnnN2cdqOV6LqCO3tZDwNGqmSPLne81ebSCbCH76
- TVRw4CRe1bEHsKZgSb6uucbPjreomAr1KdXhWjxpWr7oDja+NnLyniODByhUkTLbm+Mj
- x01GIqKdhkIVla8br0rueMVGDN9/Am6kuEh0wr3lJuf6+DGBhTxqHUH2X32uF1rDGezc
- R1O7h/+fzzbpox5FHac8EMEpmnb4/J1eLHgpfQAIoVC83Gh+aZwFSvdOlYD3il4zQpuC
- nC71neNncq001N84jDJtrX1SE2J/4f/gJ1U0O64dJKOo3p54deAyoJFE/vxghxXwrgn9
- mRZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736528785; x=1737133585;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bBcBGCnCXUPu6lYWQNb1vrMXeob1mbg0t9BDxdJyk5U=;
- b=lSSzsZqg2xxHZIbJbGhNWWuNorXETVrK4slJbZmUwEXo/M5tfZuUhU/ajy+xfuEyta
- n2aFMKVQ2VXUokH1rtz6mQsLrWcc+wgfJKtT0lTq+Dx/Ws+KP64ddrkkQHwtPL8xuaU6
- TiNgqf2EcQCzVDoydQ8cJYTG4ytZpq8Vdr19hy12nS2CUlNQKkgSd7h2VZI3mnPVW3BT
- VJWC2KlzHy90rMphddw7yPZUM8t2ITyZq33R+Wkjcrjoa3TRkcArjqFYwncH18ZcMY4E
- eFU47s0ketu2hwO+c1UtVTVukQ/gBxRBQ5mki4HkInr9txVjNdkok7GBWmG0giS6aaep
- CUVg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW6/TCUGvUEN+sD6ktbWJE+E2K0wO2/t0mABW3tT7bEasCdiw2XAh/b4POjij6qq3NEkvZ7DjL0KkwS@nongnu.org
-X-Gm-Message-State: AOJu0Yz3Zl0LIi/mIfkwPwL1A7LEFnYmSTvy/j0UXF7JPmmxqdx/7mKO
- 3XInJ/uDvzVrJ67GRXLgFlH3rjsC9ckTEMkj+ev8uDJ9VCjz3tTNkIA7mu7HsQklriHWqwSKG+M
- pkg/muoUJlVpdSqKnr1z9mPuUlg1aP/tmND71vA==
-X-Gm-Gg: ASbGnctspfRDZUzZfT2+SH1+T8ohIrYcwkWB4EuaRkhG1Tcg8mZjg3LC6gpEVMSDALn
- 5daOgBXs16rG9ATUG2PHtyHWn8X+5a7fHPXWIHA8=
-X-Google-Smtp-Source: AGHT+IEJzHd20TDqkBnUMCPnzML7yzE0gQNjp33/PYKSNMtqgEUSkhtzh72aUz3G8dUeb1s6Dfxo0LhCObNXniAHANo=
-X-Received: by 2002:a05:690c:d91:b0:6ef:87de:5ddf with SMTP id
- 00721157ae682-6f531246a65mr95684047b3.11.1736528784943; Fri, 10 Jan 2025
- 09:06:24 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1tWIVD-0006nh-6I
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 12:08:55 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1tWIVB-00055T-2c
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 12:08:54 -0500
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50AENYpQ011343;
+ Fri, 10 Jan 2025 17:08:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=corp-2023-11-20; bh=Ka7YvBODsfB9UEeLsAEu22Jq3hkOL
+ qnSmZ9OeYn1+mY=; b=RdPxpE/Cl5H62wYDw3Q1stp0q+bfcvwGhCgO0aoHit3Z6
+ RnWZlxa4mz0xLIIVBWzz71If6QesuIskRSWqnBJ+WZ1SX95MA/rWlmWZvD9P1f+H
+ vQ3e3Kg5IbKOQEMsZOs46RR0QWERNz33D/wRRPP6yT4vdHUKGPE/0diUH+k8DrBa
+ rnlCGgsRfse3cAaL/VBTr5d0vVVzQjWXKaV0pwopKzfuJcEaiydnatG20Op1KA7s
+ PSBTsTYuPzeCHywreKNNivApuhQX8pkQR4e8CyU+cvVEoxl4OBCXIJodLNa77mvf
+ /av8CeL+szIAxkfRDoLXAmtkFRRHbgVi6b9qs6Wow==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 442b8ujw5c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 10 Jan 2025 17:08:46 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 50AFTAH3004801; Fri, 10 Jan 2025 17:08:45 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 43xuecp0t3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 10 Jan 2025 17:08:45 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 50AH1lkM031831;
+ Fri, 10 Jan 2025 17:08:45 GMT
+Received: from jonah-ol8.us.oracle.com (dhcp-10-39-193-76.vpn.oracle.com
+ [10.39.193.76])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
+ 43xuecp0qc-1; Fri, 10 Jan 2025 17:08:44 +0000
+From: Jonah Palmer <jonah.palmer@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: eperezma@redhat.com, mst@redhat.com, leiyang@redhat.com, peterx@redhat.com,
+ dtatulea@nvidia.com, jasowang@redhat.com, si-wei.liu@oracle.com,
+ boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
+Subject: [RFC v3 0/5] Handling aliased guest memory maps in vhost-vDPA SVQs
+Date: Fri, 10 Jan 2025 12:08:29 -0500
+Message-ID: <20250110170837.2747532-1-jonah.palmer@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-References: <20241220195923.314208-1-git@zabka.it>
- <a9313931-a41e-46e1-b8b9-d2cc83cd663c@redhat.com>
- <44f99f89-edb6-4007-a367-f7f3b9e10b7b@zabka.it>
- <b36f85c4-4f1b-4721-bab5-56e89550f421@redhat.com>
- <f1d67bea-7389-40c3-a304-6cec459a2f49@zabka.it>
- <4aa676ea-331f-4c8b-be1d-208804ede674@redhat.com>
- <CAFEAcA_2CEJKFyjvbwmpt=on=GgMVamQ5hiiVt+zUr6AY3X=Xg@mail.gmail.com>
- <871pxa4ni4.fsf@draig.linaro.org>
-In-Reply-To: <871pxa4ni4.fsf@draig.linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 10 Jan 2025 17:06:13 +0000
-X-Gm-Features: AbW1kvboGbQ0bWQn00kLquCjznWUl-iLnkYfnqHUJIj__QMGYI6V86leBhjkug4
-Message-ID: <CAFEAcA_=H7L49PKR7f_WwGhpZK3G9VwWG_fPBh+NUeeZY=tUsw@mail.gmail.com>
-Subject: Re: [PATCH v2] physmem: allow cpu_memory_rw_debug to write to MMIO
- devices
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: David Hildenbrand <david@redhat.com>, Stefan Zabka <git@zabka.it>,
- qemu-devel@nongnu.org, 
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b32;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb32.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-10_07,2025-01-10_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ bulkscore=0 suspectscore=0
+ adultscore=0 mlxlogscore=999 phishscore=0 malwarescore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
+ definitions=main-2501100134
+X-Proofpoint-ORIG-GUID: WAX5sPQ8YL1H4OV1B4YOi2AbMUK1ZBHF
+X-Proofpoint-GUID: WAX5sPQ8YL1H4OV1B4YOi2AbMUK1ZBHF
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.369,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,60 +98,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 10 Jan 2025 at 16:55, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
->
-> Peter Maydell <peter.maydell@linaro.org> writes:
->
-> > On Wed, 8 Jan 2025 at 20:10, David Hildenbrand <david@redhat.com> wrote=
-:
-> >>
-> >> On 08.01.25 19:35, Stefan Zabka wrote:
-> >> > On 21/12/2024 15:55, David Hildenbrand wrote:
-> >> >   > Let's wait for opinions from others first.
-> >> >
-> >> > <https://www.qemu.org/docs/master/devel/submitting-a-patch.html#if-y=
-our-patch-seems-to-have-been-ignored>
-> >> > states that two weeks is a reasonable amount of time for follow-up.
-> >> >
-> >> > Should I also ping the original patch? I thought pinging the thread
-> >> > would be more appropriate, as it contains relevant information.
-> >> >
-> >>
-> >> I just pushed a compiling version of the attrs.debug approach to:
-> >>
-> >>         https://github.com/davidhildenbrand/qemu/tree/debug_access
-> >
-> > I think this approach (having a 'debug' attribute in the MemTxAttrs
-> > seems reasonable. I do note that if we allow this kind of access
-> > to write to MMIO devices then we are also permitting ELF (and other)
-> > image loads to write to MMIO devices where currently we ignore those.
-> > That means there's probably a class of guest images (of dubious
-> > correctness) which will start writing junk (likely zeroes) into
-> > device model registers; we previously would silently ignore any
-> > such bogus ELF sections.
-> >
-> > Q: should we suggest behaviour for device models if they see a
-> > 'debug =3D 1' transaction, e.g. "don't update your internal state
-> > for a debug read if you have clear-on-read or similar kinds of
-> > register fields" ?
->
-> What do we do for device models that want to know which CPU things are
-> coming from, as per:
->
->   https://gitlab.com/qemu-project/qemu/-/issues/124
+An issue arises from aliased memory mappings in the guest, where
+different GPAs map to the same HVA. For example:
 
-I think that's an orthogonal issue. We already have a problem that
-you can see on reads where because we don't encode the CPU ID
-into the txattrs devices have to work around this by using
-the current_cpu global, which isn't set for gdbstub accesses
-(and so if the device doesn't have handling for 'current_cpu =3D=3D NULL'
-then it might crash).
+ - GPA1->HVA1
+ - GPA2->HVA1
 
-But this patch only changes the handling of writes, which puts them
-in the same situation as read accesses. If the write falls over it's
-probably also the case that they were already falling over on reads.
+When these mappings exist in the IOVA->HVA tree, a lookup by an HVA
+backed by guest memory results in ambiguities because the same HVA could
+correspond to multiple GPAs. This duplication causes issues in managing
+IOVA trees for SVQs in vDPA, leading to incorrect behavior.
 
-thanks
--- PMM
+For example, consider these mapped guest memory regions:
+
+              HVA                            GPA                         IOVA
+-------------------------------  --------------------------- ----------------------------
+[0x7f7903e00000, 0x7f7983e00000) [0x0, 0x80000000)           [0x1000, 0x80000000)
+[0x7f7983e00000, 0x7f9903e00000) [0x100000000, 0x2080000000) [0x80001000, 0x2000001000)
+[0x7f7903ea0000, 0x7f7903ec0000) [0xfeda0000, 0xfedc0000)    [0x2000001000, 0x2000021000)
+
+The last HVA range [0x7f7903ea0000, 0x7f7903ec0000) is contained within
+the first HVA range [0x7f7903e00000, 0x7f7983e00000). Despite this, the
+GPA ranges for the first and third mappings do not overlap, so the guest
+sees them as distinct physical memory regions.
+
+Now consider an operation to unmap the mapping associated with HVA
+0x7f7903eb0000. This HVA fits into both the first and third HVA ranges.
+
+When searching the HVA->IOVA tree, the search stops at the first
+matching HVA range [0x7f7903e00000, 0x7f7983e00000) due to the behavior
+of the red-black tree (GTree). However, the correct mapping to remove is
+the third mappings, as the HVA translate to GPA 0xfedb0000, which only
+fits in the third mapping's GPA range.
+
+To address this, we implement a GPA->IOVA tree and use the GPAs of
+descriptors backed by guest memory when translating to IOVA.
+
+When a descriptor's GPA is used for translation, the GPA->IOVA tree
+ensures that each GPA maps to exactly one IOVA, regardless of any
+overlapping HVAs. This guarantees that operations such as unmapping or
+accessing a descriptor correctly targets the intended memory region in
+the guest's address space.
+
+For descriptors not backed by guest memory, the existing IOVA->HVA tree
+is still used. 
+
+GPAs are unique and non-overlapping within the guest's address space. By
+translating GPAs to IOVAs, the ambiguity caused by multiple GPAs mapping
+to the same HVA is avoided.
+
+--------
+This series is a different approach of [1] and is based off of [2],
+where this issue was originally discovered.
+
+RFC v3:
+-------
+ * Decouple the IOVA allocator to support a SVQ IOVA->HVA tree for
+   host-only mappings.
+ * Move range check for IOVA allocator to its own patch.
+ * Implement a GPA->IOVA tree alongside the SVQ IOVA->HVA & IOVA-only
+   trees.
+ * Add in_xlat_addr & out_xlat_addr VirtQueueElement members to hold the
+   GPAs of an element's input/output descriptors (to be used during
+   translation).
+
+RFC v2:
+-------
+ * Don't decouple IOVA allocator.
+ * Build a IOVA->GPA tree (instead of GPA->IOVA tree).
+ * Remove IOVA-only tree and keep the full IOVA->HVA tree.
+ * Only search through RAMBlocks when we know the HVA is backed by
+   guest memory.
+ * Slight rewording of function names.
+
+RFC v1:
+-------
+ * Alternative approach of [1].
+ * First attempt to address this issue found in [2].
+
+[1] https://lore.kernel.org/qemu-devel/20240410100345.389462-1-eperezma@redhat.com
+[2] https://lore.kernel.org/qemu-devel/20240201180924.487579-1-eperezma@redhat.com
+
+Jonah Palmer (5):
+  vhost-vdpa: Decouple the IOVA allocator
+  vhost-iova-tree: Remove range check for IOVA allocator
+  vhost-vdpa: Implement the GPA->IOVA tree
+  virtio: add in_xlat_addr & out_xlat_addr VirtQueueElement members
+  svq: Support translations via GPAs in vhost_svq_translate_addr
+
+ hw/display/virtio-gpu.c            |  5 +-
+ hw/hyperv/vmbus.c                  |  8 ++-
+ hw/ide/ahci.c                      |  7 ++-
+ hw/usb/libhw.c                     |  2 +-
+ hw/virtio/vhost-iova-tree.c        | 88 ++++++++++++++++++++++++++++--
+ hw/virtio/vhost-iova-tree.h        |  5 ++
+ hw/virtio/vhost-shadow-virtqueue.c | 49 +++++++++++++----
+ hw/virtio/vhost-vdpa.c             | 43 ++++++++++-----
+ hw/virtio/virtio.c                 | 50 ++++++++++++-----
+ include/hw/pci/pci_device.h        |  2 +-
+ include/hw/virtio/virtio.h         |  2 +
+ include/qemu/iova-tree.h           | 22 ++++++++
+ include/system/dma.h               | 25 ++++++++-
+ net/vhost-vdpa.c                   | 13 ++++-
+ system/dma-helpers.c               |  2 +-
+ util/iova-tree.c                   | 46 ++++++++++++++++
+ 16 files changed, 310 insertions(+), 59 deletions(-)
+
+-- 
+2.43.5
+
 
