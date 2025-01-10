@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893C8A091DF
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 14:26:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF18A091E3
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 14:27:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWF0M-0001Vi-Mr; Fri, 10 Jan 2025 08:24:52 -0500
+	id 1tWF0Q-0001es-2T; Fri, 10 Jan 2025 08:24:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tWEz4-0008LJ-GQ
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:23:32 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ id 1tWEzB-0008RI-1s
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:23:38 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tWEyz-0005bh-VY
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:23:28 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5d90a5581fcso3307480a12.1
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 05:23:25 -0800 (PST)
+ id 1tWEz9-0005f8-B8
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:23:36 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3f28a4fccso2733735a12.2
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 05:23:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736515404; x=1737120204; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736515414; x=1737120214; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MQMfzeOke49tgnke0WL/59AB7TOR8shSu4i3d9zIcBQ=;
- b=ILQUHo8yBn6k1ct5M6SZ00RWnTyz3GQkL5eJ/1KTIW0DjcvJzc2fyS6+LYbR9PGgze
- KY0NE+ia6kTnrZajMw6t2wu0K9QeWUDoCUjQTWStj2U6W1HUgQx9m7ak6OMhMogxy7vj
- w/XNhJ4gYP6pfsy/hCeH2kqaXBKqSx1gZfjzddNFWAZVoshCzvzi2DgHRrItK1q6B5tX
- 8iNvFZTkIotmpoM8eGduDZzn8BdaAgRt6WlU8yPfbeHx2D4Y3xvy+1gLa0Ot9muPlVVH
- l2BED52onxylwHho4uZUNQzJ0uvlQ+zLFb195Zuy5LJODrYWl7CJtPhIlBVJiB2+LLaz
- l59g==
+ bh=q/Yfg6c1cFjbQko7qYu/Ov/hB4K0kh3ZZP8RgyoDAoc=;
+ b=siMBMLN3B1yKdD/fwvhAgg3nLA+c5SKtfESDoNl4OxsWXrfZfZhlTlj/OtTPwxNPz4
+ /uqsu6g2bnqPvpbtvD0G7MGBl21jqa03abnwBPSZ67lQPrDnG1j1FgAHC3HUl7Ll84HV
+ Zpums+Jb3RRDyQcKt+4pOgTYeP/Dl9o4S4ByUrU40PyyM6KakIS+2IMnWFQ8qsbdeCGJ
+ KZRULq/ZTcpyxJIEOybIkTPATwB+QhiN1vA7SAM6Z2ZEngNXxhgsdM/4vaJk/slvp3fi
+ /Z+V2TXGunfNF9RVuFgfgV7haFmKP7xyBPw5RekK9NguF5YgCu1Z4Stg0EagOSO3mNmB
+ MU8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736515404; x=1737120204;
+ d=1e100.net; s=20230601; t=1736515414; x=1737120214;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MQMfzeOke49tgnke0WL/59AB7TOR8shSu4i3d9zIcBQ=;
- b=fdD7GEYP9mJY8nyDjI0A+S3oDO1rKzjZFVHliTHLk3iULPlwxKbdws9BNBX16XNKA4
- mV4i3SAOxWfnxQkg8a2H/AMTEJmO3vEPXrbPoWqKprT7rce+x3MZTCCWpDnxYjUMgMHJ
- IrqTRXk96C47yk6dAygvg7vcQuroIC7v9EnOtjH54tmKQKiL1iNPAy6Ef7yDXaDI9WxL
- 9YPEw0eaXyeokOTU+PYK/pfKMsORI0QF+r86Ggx3FSN5zPMdNtEKWvnuP+AEUpHBWkmc
- gojHS4Y3ddeEs385EEKjereJ5xtNILSGExDq3UAZ/upXIQJw54KFoBE5WFQJXvjXAD7o
- p9hQ==
-X-Gm-Message-State: AOJu0YyyTQv2s8+mblNJ8f5bJO0dPfZewaHXJvHzjRyad+oYNbafelE9
- pTGOzG+oNiSj8HcyhK60W8GuSgBzdby1VoW1zc6UuV9cAqQZnEWl0PLkXIzRemw=
-X-Gm-Gg: ASbGncvF5hEbJqgyb9hGx6f4zN1cea45FBYrGlwvG2mnmNEHnAZEtgqMIwKjm5pAoYO
- XpbbvkxiNWdWZWbHw5tWGtGg1B6G3DqZVFsQK8RbnnFt+WwG7Ie42W0nu7tXeftAT8UQGR0N85g
- enlchfi6yvkO7vr1y+0Idv1dJ0Uu2UeJrJ8akAc7BdYgWKtmY3ZiO7kxuaiLre92Q7hlLbqmlAJ
- gPAIPfb3XlzX59wwChOMB18LAVe2D0yUtewKDKV3O6hIUmUbsR1uTU=
-X-Google-Smtp-Source: AGHT+IE8oLCJW9UYC5riQZLzzq+k0fL00y0xIVo3iYTK0jeOCXB45UnwapMA7VMwcaK8oEJ5irfF7Q==
-X-Received: by 2002:a17:906:c143:b0:aa6:79fa:b480 with SMTP id
- a640c23a62f3a-ab2ab670756mr985624366b.10.1736515404207; 
- Fri, 10 Jan 2025 05:23:24 -0800 (PST)
+ bh=q/Yfg6c1cFjbQko7qYu/Ov/hB4K0kh3ZZP8RgyoDAoc=;
+ b=I9hRMmjZpQEHTXTD7PdsoTLQbsgSdJ2CB5CrCHUr2fq3YtWWGYQYMKo+fBFif0W5Pp
+ ixIMxfYJWFYmblk6HU3tMFrGeNbyDzuQxXtzrRTjA/XwReQovovv6LxLBPRsqFsK1NiG
+ fOzxNSOrfky2f8kYLK+30lc74bHdFf2AcVdMLN7XI/KE34J+dFRCwFxxiZ8Fk4JK3zSK
+ umi1nWmYj9Nl1m601uj3wbpFKvDhOosqjH4sb6lZSPvl7OeNIahLczApQeitFgIGxXU1
+ jMEELXfCt1PGudZvbecOcmP8890aK5H4Bnh1PctV/Ju2GbJZtdOyV2vY5VkG3mrSw6B5
+ RKYw==
+X-Gm-Message-State: AOJu0YyQZryG2OTFCPY01ASSDiNdowAjfxv3aSBUZSzB5jb5kuSakrCb
+ cOPpG4czVtpw+ttrMe34A2SEja6+Jcml2V49D/NhBl/xI4qqoD+cbB6xcN/l4di1P47VNeHcuPA
+ l8ro=
+X-Gm-Gg: ASbGncvbk8/tlkqnkXXfJ1EsdZydN+zs9R0+6uaqyjE5EF409OPzFkrEkajOBSqf5ga
+ T7/R8Edkun2mttnvvkZOwWI3xSH1I5hLCl/iVwY2Xn2w4qJXoQGpMZnJkujpdDtRLkBN2QhzVwW
+ ooCaEcnOmLgRBPPL9lRABmXRGOrGIgbnYkuvHzlkN5LTQvlSwqMlNgau0iRmBb3mzcxIa9lOjs2
+ kYp8GGpvkTfKQLIWSJ7SBHjzyNCo0aLpBjhhVVIW9XtaTzhNNE3VRU=
+X-Google-Smtp-Source: AGHT+IHUUn6Fn7h8GC6DCitSd77jt09AAQ8QpQOIUtZ0yfBdFA6UjA//BNBv+E7vmU3WEG1gHmhhZA==
+X-Received: by 2002:a05:6402:3483:b0:5d0:bde9:2992 with SMTP id
+ 4fb4d7f45d1cf-5d972e4e6f4mr9809247a12.26.1736515413658; 
+ Fri, 10 Jan 2025 05:23:33 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c9564865sm167763066b.108.2025.01.10.05.23.21
+ 4fb4d7f45d1cf-5d9900c8ca8sm1679381a12.33.2025.01.10.05.23.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 05:23:22 -0800 (PST)
+ Fri, 10 Jan 2025 05:23:31 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 954635F9D7;
+ by draig.lan (Postfix) with ESMTP id AE61E61853;
  Fri, 10 Jan 2025 13:17:56 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 28/32] tests/vm: partially un-tabify help output
-Date: Fri, 10 Jan 2025 13:17:50 +0000
-Message-Id: <20250110131754.2769814-29-alex.bennee@linaro.org>
+Subject: [PULL 29/32] tests/vm: allow interactive login as root
+Date: Fri, 10 Jan 2025 13:17:51 +0000
+Message-Id: <20250110131754.2769814-30-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250110131754.2769814-1-alex.bennee@linaro.org>
 References: <20250110131754.2769814-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,55 +101,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While the make syntax itself uses tabs having a mixture of tabs and
-spaces in the vm-help output make no sense and confuses things lining
-up between terminal and editor. Fix that.
+This is useful when debugging and you want to add packages to an
+image.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250108121054.1126164-29-alex.bennee@linaro.org>
+Message-Id: <20250108121054.1126164-30-alex.bennee@linaro.org>
 
 diff --git a/tests/vm/Makefile.include b/tests/vm/Makefile.include
-index 13ed80f72d..d80ca79a28 100644
+index d80ca79a28..14188bba1c 100644
 --- a/tests/vm/Makefile.include
 +++ b/tests/vm/Makefile.include
-@@ -64,23 +64,23 @@ endif
- 	@echo "  vm-boot-ssh-<guest>             - Boot guest and login via ssh"
- 	@echo
+@@ -66,6 +66,7 @@ endif
  	@echo "Special variables:"
--	@echo "    BUILD_TARGET=foo		 - Override the build target"
--	@echo "    DEBUG=1              	 - Enable verbose output on host and interactive debugging"
--	@echo '    EXTRA_CONFIGURE_OPTS="..."   - Pass to configure step'
--	@echo "    J=[0..9]*            	 - Override the -jN parameter for make commands"
--	@echo "    LOG_CONSOLE=1        	 - Log console to file in: ~/.cache/qemu-vm "
--	@echo "    USE_TCG=1        	         - Use TCG for cross-arch images"
--	@echo "    QEMU=/path/to/qemu		 - Change path to QEMU binary"
-+	@echo "    BUILD_TARGET=foo              - Override the build target"
-+	@echo "    DEBUG=1                       - Enable verbose output on host and interactive debugging"
-+	@echo '    EXTRA_CONFIGURE_OPTS="..."    - Pass to configure step'
-+	@echo "    J=[0..9]*                     - Override the -jN parameter for make commands"
-+	@echo "    LOG_CONSOLE=1                 - Log console to file in: ~/.cache/qemu-vm "
-+	@echo "    USE_TCG=1                     - Use TCG for cross-arch images"
-+	@echo "    QEMU=/path/to/qemu            - Change path to QEMU binary"
- ifeq ($(HAVE_PYTHON_YAML),yes)
--	@echo "    QEMU_CONFIG=/path/conf.yml   - Change path to VM configuration .yml file."
-+	@echo "    QEMU_CONFIG=/path/conf.yml    - Change path to VM configuration .yml file."
- else
- 	@echo "    (install python3-yaml to enable support for yaml file to configure a VM.)"
- endif
--	@echo "                                   See conf_example_*.yml for file format details."
--	@echo "    QEMU_IMG=/path/to/qemu-img	 - Change path to qemu-img tool"
--	@echo "    QEMU_LOCAL=1                 - Use QEMU binary local to this build."
--	@echo "    TARGET_LIST=a,b,c    	 - Override target list in builds"
--	@echo "    V=1				 - Enable verbose output on host and guest commands"
-+	@echo "                                    See conf_example_*.yml for file format details."
-+	@echo "    QEMU_IMG=/path/to/qemu-img    - Change path to qemu-img tool"
-+	@echo "    QEMU_LOCAL=1                  - Use QEMU binary local to this build."
-+	@echo "    TARGET_LIST=a,b,c             - Override target list in builds"
-+	@echo "    V=1                           - Enable verbose output on host and guest commands"
+ 	@echo "    BUILD_TARGET=foo              - Override the build target"
+ 	@echo "    DEBUG=1                       - Enable verbose output on host and interactive debugging"
++	@echo "    ROOT_USER=1                   - Login as root user for interactive shell"
+ 	@echo '    EXTRA_CONFIGURE_OPTS="..."    - Pass to configure step'
+ 	@echo "    J=[0..9]*                     - Override the -jN parameter for make commands"
+ 	@echo "    LOG_CONSOLE=1                 - Log console to file in: ~/.cache/qemu-vm "
+@@ -141,6 +142,6 @@ vm-boot-ssh-%: $(IMAGES_DIR)/%.img $(VM_VENV)
+ 		$(if $(EFI_AARCH64),--efi-aarch64 $(EFI_AARCH64)) \
+ 		$(if $(LOG_CONSOLE),--log-console) \
+ 		--image "$<" \
+-		--interactive \
++		$(if $(ROOT_USER),--interactive-root,-interactive) \
+ 		false, \
+ 		"  VM-BOOT-SSH $*") || true
+diff --git a/tests/vm/basevm.py b/tests/vm/basevm.py
+index 6f3f2e76df..6d41ac7574 100644
+--- a/tests/vm/basevm.py
++++ b/tests/vm/basevm.py
+@@ -612,8 +612,11 @@ def get_default_jobs():
+     parser.add_argument("--source-path", default=None,
+                         help="Path of source directory, "\
+                         "for finding additional files. ")
+-    parser.add_argument("--interactive", "-I", action="store_true",
+-                        help="Interactively run command")
++    int_ops = parser.add_mutually_exclusive_group()
++    int_ops.add_argument("--interactive", "-I", action="store_true",
++                         help="Interactively run command")
++    int_ops.add_argument("--interactive-root", action="store_true",
++                         help="Interactively run command as root")
+     parser.add_argument("--snapshot", "-s", action="store_true",
+                         help="run tests with a snapshot")
+     parser.add_argument("--genisoimage", default="genisoimage",
+@@ -675,6 +678,8 @@ def main(vmcls, config=None):
+         exitcode = 3
+     if args.interactive:
+         vm.ssh()
++    elif args.interactive_root:
++        vm.ssh_root()
  
- vm-build-all: $(addprefix vm-build-, $(IMAGES))
- 
+     if not args.snapshot:
+         vm.graceful_shutdown()
 -- 
 2.39.5
 
