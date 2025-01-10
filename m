@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 224F6A09A54
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:52:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B55A4A09A61
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:52:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWK2u-0000S1-Eq; Fri, 10 Jan 2025 13:47:48 -0500
+	id 1tWK2y-00012u-TZ; Fri, 10 Jan 2025 13:47:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK1t-0000Bt-LL
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:48 -0500
+ id 1tWK1w-0000C3-3w
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:49 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK1m-00015K-82
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:42 -0500
+ id 1tWK1q-00015Z-56
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736534797;
+ s=mimecast20190719; t=1736534799;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XJMegQJf6w9b9nRXNq7/z8d5kYstt5nQEzXDaVstUso=;
- b=XYEXANFEMDp+y9nPloSjZzE/BBgj4JRSBaXJNUnKiqiGjMibQnNe/3xGY3+1T+wjTFJuJq
- JnD0YiLLhzZ0ioZjRN5ZPR/jvXkMeWjkRT2LXoo613hFXld/lbVVcBJljLsM8oluY+PM25
- 6jMsUqcuFPrfQyBdBLDRHh7+BTucJ/Y=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=VgkejbxfBm5Z+fcfrq4PM2AVjZL5LxnPI4rmsBdS2Ng=;
+ b=Gju39WL4RiUyRssQ6YMfbe44ZNK4wpsNIyysq4ErXdD+koVF+tbvuYk+Ecu8i2HtX1pjxr
+ UogesI3XpyIeuhuDeiE6h7iwyvgDQQDsGnYyNklG2phDi7y99Vc4kHp9zaznOhzoDw63V6
+ 9kDbn7v53z6+U9zuk1eNgkU7dbEYaws=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-494-WMeDq7btO0GgeBT4EUoCqQ-1; Fri, 10 Jan 2025 13:46:36 -0500
-X-MC-Unique: WMeDq7btO0GgeBT4EUoCqQ-1
-X-Mimecast-MFC-AGG-ID: WMeDq7btO0GgeBT4EUoCqQ
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-aa68952272bso273191866b.2
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:46:35 -0800 (PST)
+ us-mta-632-wvQozBUSMjWkSxFN08LEcg-1; Fri, 10 Jan 2025 13:46:38 -0500
+X-MC-Unique: wvQozBUSMjWkSxFN08LEcg-1
+X-Mimecast-MFC-AGG-ID: wvQozBUSMjWkSxFN08LEcg
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3fe75a9f0so2264524a12.3
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:46:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736534794; x=1737139594;
+ d=1e100.net; s=20230601; t=1736534796; x=1737139596;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XJMegQJf6w9b9nRXNq7/z8d5kYstt5nQEzXDaVstUso=;
- b=i0UlFLQq9pGjVmIjDG/52GigVQ7MieKdC67Oy/q9mTBqZ9FanX7Q+fvIxwGMV2kGLC
- Z9mSuN3x14maPFDGFPmWrrs/+4W2CgijlGtdXsIvoAmybCd6p1uIZv4BTVYXUbobOVLk
- n/RgQzt3P4KPTgACRK8qZ8hQFuZ7WgpbttfKjTVFjIj1myBiVz+cqe18eDFYEw0Uhc4v
- dhPLle8JNu0yOo5ewXb8IFXBU53pRMvD+EImAxy5WW+q2CeDAv/hj7peol56eJUs184F
- hq4qJU2iK5HWbpBHcwrVVcu0BZ0vZINzkNk4B+zBT0A/WHejliUU1Inq4IeNwXmNLd48
- 3XQw==
-X-Gm-Message-State: AOJu0YwOlTvdRZtUTw16rQ4APhVbt8CGuwySWrVMEeyqY5mFSmkJHCpj
- CK1dUJ6pE9BnL0bBErzGn/5ESomH6Fzub729kZ+BS0Lc8EYelH+WJtEBOsaah2apT9RUY88/Svh
- 2GZ1tjP2qXHD2hJCoKmiw4MlVevyTw5SB6Jq+aH/oWLy2/9cJ5KEe8rsbe0yBjcjNTBNPC2InqC
- UBh7laHNz8Oq0v3Wy77Kg/txDeGcT/q2BKC9PUa3U=
-X-Gm-Gg: ASbGncscic7IcTLo2tjGC8fcPr9j62nbpQAZ1hiotieb8xwLfCTukBPxQTyJQu0J4rF
- OgodRV2bB6QGmTubOKdyDyn15zfjHPsx53FL96y7SZJWg8RfMaWCoH8vWEZEjvmSwG0FtRgUDYR
- s7t5wuFoFFzpcZvdu5EDxvOcB75klhXyoS6WZmTK4tDOCiJR9Qxo6m43DLsXQC1K+wnIq7CGIky
- Dj+SO84X+qqHIjtafUo9OFzdZJRFqYotlzlcoIauspcLQm0IIptyUyA7u0=
-X-Received: by 2002:a17:906:ef0b:b0:aa6:8096:204d with SMTP id
- a640c23a62f3a-ab2ab6a8e78mr1134929866b.3.1736534794403; 
- Fri, 10 Jan 2025 10:46:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFkijy8mmWURrs2JHVq/CKL0tbHIq6BzWi2GGaeqKkL4kLCd1ZN/g4bpGYfQYyYHDHC4LGoIw==
-X-Received: by 2002:a17:906:ef0b:b0:aa6:8096:204d with SMTP id
- a640c23a62f3a-ab2ab6a8e78mr1134927966b.3.1736534793969; 
- Fri, 10 Jan 2025 10:46:33 -0800 (PST)
+ bh=VgkejbxfBm5Z+fcfrq4PM2AVjZL5LxnPI4rmsBdS2Ng=;
+ b=HOoXA2lFwIDPtYoxS+Im3RNy6nu1VCrsJxLsvKdV63Ir6A/XwykTNqg24tmv25cgwd
+ mR967HVOr05TkDNy8vwKgkFBv9r8wQdd9XiHJ1SmaGesKKDylZzZvexeCixebu2jxj+o
+ 3BWN3J908zZguy/RToGA2VUM1WVtCtYz0mgwGzv3kptUI64mU7FBMFtj5fyXCkwNeRWZ
+ jVF3t4JEmzxyOLwK5BzhPaCpBr843bPHIbD/ovJ3acqzowx2ID1M3RFLPQS2tzpe/1V/
+ RgU6mWx61xlrgk+e0cVeeSbBwYGXAQNlJHg49tw8542N9YRq1a7uJ4uJD7PG9cyRd9Qh
+ F7Zw==
+X-Gm-Message-State: AOJu0YxaaRSqTCCLpBqmc5dSXp3lvTlD/pEe3FyW2qoGI3ZYP7pPoW7/
+ /1sKMU3V5w5CI+15RGyishY/tgWywMpwNsVAlW8lVFgHqVDFNDlBrw82sP1eq2BzrBI/tdJgOZA
+ yP4FrofHJO1EHXaPj7UADogMsVTxVNeH1qsRG3uQBtRaweQQDwJ92jX1Wa9XyINZcfOvnQcMT/O
+ Nfy/+lFtbEbM2djosKIP7FoAsEUShqeRi+VqyiEI8=
+X-Gm-Gg: ASbGncuFiNGY08GJm460fJzIC80ZjIE5x/LHADFZ3wSHiDwVRoC4a8rt/zw2EW4d4+9
+ rZFeHLgrbJ5T8kY7MwLKa1xtsk/05gAx88g8A/q7NkZOfMqmXHLyXP9bktVtJmzVuSXi2CrBsle
+ sGOkQzwygURjxo0NlgklLeoiB4I+i3nPygH/8EzCH0QE1He4s2cWhSELxGNYOwRFOwvSQ99B6F7
+ Gvj9sAHxNCsI35m1JjnVal9FOTCtPq9A2PRJvP4lMDgeAnCnzHJggPPBMM=
+X-Received: by 2002:a05:6402:51cf:b0:5d3:bc1d:e56d with SMTP id
+ 4fb4d7f45d1cf-5d972e70310mr10034831a12.31.1736534796159; 
+ Fri, 10 Jan 2025 10:46:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH6TPbCmZKnWbaWfGBaUn0/ENicWa7Esf12w48vFKCAWso9g2vdYvh+njXfN1tUVVQD5xHnAw==
+X-Received: by 2002:a05:6402:51cf:b0:5d3:bc1d:e56d with SMTP id
+ 4fb4d7f45d1cf-5d972e70310mr10034801a12.31.1736534795644; 
+ Fri, 10 Jan 2025 10:46:35 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.105.73])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c90d9a7dsm194409066b.50.2025.01.10.10.46.32
+ 4fb4d7f45d1cf-5d99008c39fsm1936935a12.13.2025.01.10.10.46.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 10:46:32 -0800 (PST)
+ Fri, 10 Jan 2025 10:46:34 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 05/38] rust: macros: check that #[derive(Object)] requires
- #[repr(C)]
-Date: Fri, 10 Jan 2025 19:45:46 +0100
-Message-ID: <20250110184620.408302-6-pbonzini@redhat.com>
+Subject: [PULL 06/38] rust: macros: check that the first field of a
+ #[derive(Object)] struct is a ParentField
+Date: Fri, 10 Jan 2025 19:45:47 +0100
+Message-ID: <20250110184620.408302-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250110184620.408302-1-pbonzini@redhat.com>
 References: <20250110184620.408302-1-pbonzini@redhat.com>
@@ -106,52 +106,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert derive_object to the same pattern of first making a
-Result<proc_macro2::TokenStream, CompileError>, and then doing
-.unwrap_or_else(Into::into) to support checking the validity of
-the input.  Add is_c_repr to check that all QOM structs include
-a #[repr(C)] attribute.
-
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api-macros/src/lib.rs | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ rust/qemu-api-macros/src/lib.rs | 46 +++++++++++++++++++--------------
+ 1 file changed, 27 insertions(+), 19 deletions(-)
 
 diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
-index 74a8bc7503e..160b283d7fd 100644
+index 160b283d7fd..0f04cca3841 100644
 --- a/rust/qemu-api-macros/src/lib.rs
 +++ b/rust/qemu-api-macros/src/lib.rs
-@@ -32,18 +32,23 @@ fn is_c_repr(input: &DeriveInput, msg: &str) -> Result<(), CompileError> {
+@@ -19,6 +19,27 @@ fn from(err: CompileError) -> Self {
      }
  }
  
--#[proc_macro_derive(Object)]
--pub fn derive_object(input: TokenStream) -> TokenStream {
--    let input = parse_macro_input!(input as DeriveInput);
--    let name = input.ident;
-+fn derive_object_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream, CompileError> {
-+    is_c_repr(&input, "#[derive(Object)]")?;
++fn get_fields<'a>(
++    input: &'a DeriveInput,
++    msg: &str,
++) -> Result<&'a Punctuated<Field, Comma>, CompileError> {
++    if let Data::Struct(s) = &input.data {
++        if let Fields::Named(fs) = &s.fields {
++            Ok(&fs.named)
++        } else {
++            Err(CompileError(
++                format!("Named fields required for {}", msg),
++                input.ident.span(),
++            ))
++        }
++    } else {
++        Err(CompileError(
++            format!("Struct required for {}", msg),
++            input.ident.span(),
++        ))
++    }
++}
++
+ fn is_c_repr(input: &DeriveInput, msg: &str) -> Result<(), CompileError> {
+     let expected = parse_quote! { #[repr(C)] };
  
--    let expanded = quote! {
-+    let name = &input.ident;
-+    Ok(quote! {
+@@ -36,7 +57,12 @@ fn derive_object_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream
+     is_c_repr(&input, "#[derive(Object)]")?;
+ 
+     let name = &input.ident;
++    let parent = &get_fields(&input, "#[derive(Object)]")?[0].ident;
++
+     Ok(quote! {
++        ::qemu_api::assert_field_type!(#name, #parent,
++            ::qemu_api::qom::ParentField<<#name as ::qemu_api::qom::ObjectImpl>::ParentType>);
++
          ::qemu_api::module_init! {
              MODULE_INIT_QOM => unsafe {
                  ::qemu_api::bindings::type_register_static(&<#name as ::qemu_api::qom::ObjectImpl>::TYPE_INFO);
-             }
-         }
--    };
-+    })
-+}
-+
-+#[proc_macro_derive(Object)]
-+pub fn derive_object(input: TokenStream) -> TokenStream {
-+    let input = parse_macro_input!(input as DeriveInput);
-+    let expanded = derive_object_or_error(input).unwrap_or_else(Into::into);
- 
+@@ -53,30 +79,12 @@ pub fn derive_object(input: TokenStream) -> TokenStream {
      TokenStream::from(expanded)
  }
+ 
+-fn get_fields(input: &DeriveInput) -> Result<&Punctuated<Field, Comma>, CompileError> {
+-    if let Data::Struct(s) = &input.data {
+-        if let Fields::Named(fs) = &s.fields {
+-            Ok(&fs.named)
+-        } else {
+-            Err(CompileError(
+-                "Cannot generate offsets for unnamed fields.".to_string(),
+-                input.ident.span(),
+-            ))
+-        }
+-    } else {
+-        Err(CompileError(
+-            "Cannot generate offsets for union or enum.".to_string(),
+-            input.ident.span(),
+-        ))
+-    }
+-}
+-
+ #[rustfmt::skip::macros(quote)]
+ fn derive_offsets_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream, CompileError> {
+     is_c_repr(&input, "#[derive(offsets)]")?;
+ 
+     let name = &input.ident;
+-    let fields = get_fields(&input)?;
++    let fields = get_fields(&input, "#[derive(offsets)]")?;
+     let field_names: Vec<&Ident> = fields.iter().map(|f| f.ident.as_ref().unwrap()).collect();
+     let field_types: Vec<&Type> = fields.iter().map(|f| &f.ty).collect();
+     let field_vis: Vec<&Visibility> = fields.iter().map(|f| &f.vis).collect();
 -- 
 2.47.1
 
