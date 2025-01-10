@@ -2,106 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741D0A09012
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 13:15:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E3EEA0902F
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 13:22:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWDuM-0001Pq-5t; Fri, 10 Jan 2025 07:14:34 -0500
+	id 1tWDuO-0001Qu-I9; Fri, 10 Jan 2025 07:14:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tWDuJ-0001PV-Qs
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 07:14:31 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1tWDuM-0001QU-BH; Fri, 10 Jan 2025 07:14:34 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tWDuI-0003KQ-8P
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 07:14:31 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1tWDuK-0003Kc-Hz; Fri, 10 Jan 2025 07:14:34 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 21D581F455;
- Fri, 10 Jan 2025 12:14:29 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id C0C9C1F396;
+ Fri, 10 Jan 2025 12:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736511269; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1736511270; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fzxe/xMDN/y6wv++kyYa7dpuPHVGC0cKdT011hdJdO8=;
- b=LE5/ebdDeMKgWHQ4mlf7K77UATjX8DHXToPpyvZVt7O2x1AWnUoFJLRcGJvCsE1FHBbEo4
- 86gf2/F5WYQOaRvl62uUPT4ztPVYY6zglnTOfZRBnmOr9fRt7c8YJAyglYMiEE0aaYkvtt
- +iVnnNcPGABsxT2e9smZoKqLelVZmkU=
+ bh=IGIX6eUopLSHhRjZ/6kJyKQKELSW97bPyG9/vdYLRjs=;
+ b=VHelm+b3zFchBfe9Xfp75FNBRIfXCAFLfUqM0ZHLX4ySK7cnVSOd1FvsyLMfxeflafxISQ
+ EYnPHpkV6qdI+Oxq1ks2L5/Zebttm8K5Ht/SzMd/kMGmPlBatBI5+rWRGSgppwr1UprQPs
+ m+irrVwDCywU0sDK2B8/AOUH1uZaeGA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736511269;
+ s=susede2_ed25519; t=1736511270;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fzxe/xMDN/y6wv++kyYa7dpuPHVGC0cKdT011hdJdO8=;
- b=B3L5kuKiankEajhqp5rygY3j5XYs8TvrEQKR/uQHRupbx7s8X2rEemRVqkyMwCY8KBSFwE
- M3FThZlnQG5NFDBw==
+ bh=IGIX6eUopLSHhRjZ/6kJyKQKELSW97bPyG9/vdYLRjs=;
+ b=B7Q8usH30kScucf5lyoJbCce8NZBSwC33zTJhfq2koQqYNYzpC2j4pf+9SG3+4ArtvfB3C
+ ARjFQh+MaH3Kv9CQ==
 Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1736511269; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1736511270; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fzxe/xMDN/y6wv++kyYa7dpuPHVGC0cKdT011hdJdO8=;
- b=LE5/ebdDeMKgWHQ4mlf7K77UATjX8DHXToPpyvZVt7O2x1AWnUoFJLRcGJvCsE1FHBbEo4
- 86gf2/F5WYQOaRvl62uUPT4ztPVYY6zglnTOfZRBnmOr9fRt7c8YJAyglYMiEE0aaYkvtt
- +iVnnNcPGABsxT2e9smZoKqLelVZmkU=
+ bh=IGIX6eUopLSHhRjZ/6kJyKQKELSW97bPyG9/vdYLRjs=;
+ b=VHelm+b3zFchBfe9Xfp75FNBRIfXCAFLfUqM0ZHLX4ySK7cnVSOd1FvsyLMfxeflafxISQ
+ EYnPHpkV6qdI+Oxq1ks2L5/Zebttm8K5Ht/SzMd/kMGmPlBatBI5+rWRGSgppwr1UprQPs
+ m+irrVwDCywU0sDK2B8/AOUH1uZaeGA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1736511269;
+ s=susede2_ed25519; t=1736511270;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fzxe/xMDN/y6wv++kyYa7dpuPHVGC0cKdT011hdJdO8=;
- b=B3L5kuKiankEajhqp5rygY3j5XYs8TvrEQKR/uQHRupbx7s8X2rEemRVqkyMwCY8KBSFwE
- M3FThZlnQG5NFDBw==
+ bh=IGIX6eUopLSHhRjZ/6kJyKQKELSW97bPyG9/vdYLRjs=;
+ b=B7Q8usH30kScucf5lyoJbCce8NZBSwC33zTJhfq2koQqYNYzpC2j4pf+9SG3+4ArtvfB3C
+ ARjFQh+MaH3Kv9CQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2019613A86;
- Fri, 10 Jan 2025 12:14:27 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8523C13A86;
+ Fri, 10 Jan 2025 12:14:29 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id YPN2NSMPgWdURwAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 10 Jan 2025 12:14:27 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id cLGeEiUPgWdURwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 10 Jan 2025 12:14:29 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>
-Subject: [PULL 08/25] migration/multifd: Document the reason to sync for
- save_setup()
-Date: Fri, 10 Jan 2025 09:13:56 -0300
-Message-Id: <20250110121413.12336-9-farosas@suse.de>
+Cc: Peter Xu <peterx@redhat.com>,
+	qemu-stable@nongnu.org
+Subject: [PULL 09/25] migration/multifd: Fix compat with QEMU < 9.0
+Date: Fri, 10 Jan 2025 09:13:57 -0300
+Message-Id: <20250110121413.12336-10-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250110121413.12336-1-farosas@suse.de>
 References: <20250110121413.12336-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_TWO(0.00)[2];
- RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
- ARC_NA(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
  RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid];
  RCVD_TLS_ALL(0.00)[]
 X-Spam-Score: -2.80
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,67 +118,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Xu <peterx@redhat.com>
+Commit f5f48a7891 ("migration/multifd: Separate SYNC request with
+normal jobs") changed the multifd source side to stop sending data
+along with the MULTIFD_FLAG_SYNC, effectively introducing the concept
+of a SYNC-only packet. Relying on that, commit d7e58f412c
+("migration/multifd: Don't send ram data during SYNC") later came
+along and skipped reading data from SYNC packets.
 
-It's not straightforward to see why src QEMU needs to sync multifd during
-setup() phase.  After all, there's no page queued at that point.
+In a versions timeline like this:
 
-For old QEMUs, there's a solid reason: EOS requires it to work.  While it's
-clueless on the new QEMUs which do not take EOS message as sync requests.
+  8.2 f5f48a7 9.0 9.1 d7e58f41 9.2
 
-One will figure that out only when this is conditionally removed.  In fact,
-the author did try it out.  Logically we could still avoid doing this on
-new machine types, however that needs a separate compat field and that can
-be an overkill in some trivial overhead in setup() phase.
+The issue arises that QEMUs < 9.0 still send data along with SYNC, but
+QEMUs > 9.1 don't gather that data anymore. This leads to various
+kinds of migration failures due to desync/missing data.
 
-Let's instead document it completely, to avoid someone else tries this
-again and do the debug one more time, or anyone confused on why this ever
-existed.
+Stop checking for a SYNC packet on the destination and unconditionally
+unfill the packet.
 
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Message-Id: <20241206224755.1108686-8-peterx@redhat.com>
+>From now on:
+
+old -> new:
+the source sends data + sync, destination reads normally
+
+new -> new:
+source sends only sync, destination reads zeros
+
+new -> old:
+source sends only sync, destination reads zeros
+
+CC: qemu-stable@nongnu.org
+Fixes: d7e58f412c ("migration/multifd: Don't send ram data during SYNC")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2720
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Message-Id: <20241213160120.23880-2-farosas@suse.de>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/ram.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ migration/multifd.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index d9336d8a09..ce28328141 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -3036,6 +3036,31 @@ static int ram_save_setup(QEMUFile *f, void *opaque, Error **errp)
-         migration_ops->ram_save_target_page = ram_save_target_page_legacy;
-     }
+diff --git a/migration/multifd.c b/migration/multifd.c
+index 64e0ac2488..ab73d6d984 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -252,9 +252,8 @@ static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
+     p->packet_num = be64_to_cpu(packet->packet_num);
+     p->packets_recved++;
  
-+    /*
-+     * This operation is unfortunate..
-+     *
-+     * For legacy QEMUs using per-section sync
-+     * =======================================
-+     *
-+     * This must exist because the EOS below requires the SYNC messages
-+     * per-channel to work.
-+     *
-+     * For modern QEMUs using per-round sync
-+     * =====================================
-+     *
-+     * Logically such sync is not needed, and recv threads should not run
-+     * until setup ready (using things like channels_ready on src).  Then
-+     * we should be all fine.
-+     *
-+     * However even if we add channels_ready to recv side in new QEMUs, old
-+     * QEMU won't have them so this sync will still be needed to make sure
-+     * multifd recv threads won't start processing guest pages early before
-+     * ram_load_setup() is properly done.
-+     *
-+     * Let's stick with this.  Fortunately the overhead is low to sync
-+     * during setup because the VM is running, so at least it's not
-+     * accounted as part of downtime.
-+     */
-     bql_unlock();
-     ret = multifd_ram_flush_and_sync(f);
-     bql_lock();
+-    if (!(p->flags & MULTIFD_FLAG_SYNC)) {
+-        ret = multifd_ram_unfill_packet(p, errp);
+-    }
++    /* Always unfill, old QEMUs (<9.0) send data along with SYNC */
++    ret = multifd_ram_unfill_packet(p, errp);
+ 
+     trace_multifd_recv_unfill(p->id, p->packet_num, p->flags,
+                               p->next_packet_size);
+@@ -1156,9 +1155,13 @@ static void *multifd_recv_thread(void *opaque)
+             flags = p->flags;
+             /* recv methods don't know how to handle the SYNC flag */
+             p->flags &= ~MULTIFD_FLAG_SYNC;
+-            if (!(flags & MULTIFD_FLAG_SYNC)) {
+-                has_data = p->normal_num || p->zero_num;
+-            }
++
++            /*
++             * Even if it's a SYNC packet, this needs to be set
++             * because older QEMUs (<9.0) still send data along with
++             * the SYNC packet.
++             */
++            has_data = p->normal_num || p->zero_num;
+             qemu_mutex_unlock(&p->mutex);
+         } else {
+             /*
 -- 
 2.35.3
 
