@@ -2,185 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B394DA08B60
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 10:21:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE61FA08C09
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 10:31:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWBCl-0001AK-MU; Fri, 10 Jan 2025 04:21:24 -0500
+	id 1tWBKw-0006D6-Px; Fri, 10 Jan 2025 04:29:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1tWBCY-0000oV-Aj
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 04:21:11 -0500
-Received: from esa10.fujitsucc.c3s2.iphmx.com ([68.232.159.247])
+ (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
+ id 1tWBKu-0006Cy-OT
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 04:29:48 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1tWBCS-0007iJ-NY
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 04:21:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj1;
- t=1736500864; x=1768036864;
- h=from:to:subject:date:message-id:references:in-reply-to:
- content-id:content-transfer-encoding:mime-version;
- bh=qdD6Xmpk1a58FG7CIp93LfeAEw4z6ZUt3YXh2AnhGYI=;
- b=gByzOVh9s+C7RNO9fyer9VgJldYazY3QSnIcxin/6gx47Ueuey3gN7KP
- /pHlvWlRbM08kwcIIA6+fhA0qa3Oannbt9Fp7BN16ItXF+ZdujOogPcjb
- 3pRxqNoxT5sBc62av38Ry+f6rFBHRo4jdR5CiNAxwDN9M+ZNoAK6X19gc
- +FDzlpwzcHu4ItwJYcX6UeISbvNq+NsOCu+sCIRdhqD7K3HUlLZbjjC8F
- EZrTvthr5EZOSAHa4+pXggVjQygwYxkvJEeGiwTnshccA+CzArCkzRfZ1
- 8V6GcvCEW4XesqHz/T0r2ja9j7Mwc38gZ7pwH0EVMaEOyUsTf7f40J9t6 A==;
-X-CSE-ConnectionGUID: 9pzfL6lmQWSZIpf1tgl52g==
-X-CSE-MsgGUID: DE2pKxT3SAen5t6+khHIkw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11310"; a="142627745"
-X-IronPort-AV: E=Sophos;i="6.12,303,1728918000"; d="scan'208";a="142627745"
-Received: from mail-japaneastazlp17010001.outbound.protection.outlook.com
- (HELO TY3P286CU002.outbound.protection.outlook.com) ([40.93.73.1])
- by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jan 2025 18:20:58 +0900
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eUR+2Szx7xgKpaTy49P1XZec9GOiWrL+HS7X3KcGbAjRN+cG6SwHywjCVwaHYcwpmDy71zTAWB1b6FnTa/HRGb06fOUa0V7Z7JjclVRBoLsLHIcC4kgfDq4IQzJgbl34XyHhFUhormX9Fg+nGUNz7juwFxPRVQnHWs/CFnPMaS6RxF5fgMIRCPf5r/4im1n+kqBUMgHDNj3nqQAoq671xjwUFgZvirUgp0xRMrhItPjQdyw4kH0n/RsYiU93JIagyLtCkOVat10+ZPusIv/kQiE6POv13Zm8zAee08QG5iGOCap9Hs8R9sq510Vtt/qxiD87zPYgJiHOq52/m/v+kQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qdD6Xmpk1a58FG7CIp93LfeAEw4z6ZUt3YXh2AnhGYI=;
- b=IST2AzttasMmOMMBqYy0wQ7MwSZ/gIU8nsciODndFn6Uuh16sqHvTU4LhQI/kCtJXU1CMYzijGANNNB4Asa8wxyzlmlnOZeEAUIzExc7A7bFO4+zJVdXkFO+Z13jkQCuXQw+9shVtwqP+yWcOj4G2ssFY/wQMibfyEutxyz7lHcg56fVevYu+hIpriXLAuag5L0PG1F5ToOa2rUR+YslUuSm5K5DhWdOAtR2rr1M49cJmNaL3y8vMHeowCzsCLtqqkyvU92oye/f/W8VsVhEkhTdaVpgFn7L54ShZu5L+58wLCO5DBfSJ8NMZCwIUtWalOS93tpK5UkfCNx8AMfARA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
- dkim=pass header.d=fujitsu.com; arc=none
-Received: from TY1PR01MB1562.jpnprd01.prod.outlook.com (2603:1096:403:6::12)
- by TYCPR01MB5695.jpnprd01.prod.outlook.com (2603:1096:400:40::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.13; Fri, 10 Jan
- 2025 09:20:55 +0000
-Received: from TY1PR01MB1562.jpnprd01.prod.outlook.com
- ([fe80::d9ba:425a:7044:6377]) by TY1PR01MB1562.jpnprd01.prod.outlook.com
- ([fe80::d9ba:425a:7044:6377%4]) with mapi id 15.20.8335.011; Fri, 10 Jan 2025
- 09:20:54 +0000
-To: Itaru Kitayama <itaru.kitayama@linux.dev>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-Subject: Re: CXL emulation on aarch64
-Thread-Topic: CXL emulation on aarch64
-Thread-Index: AQHbYyDLXGM/14SDRUiD8/oAQjWNxLMPu6EA
-Date: Fri, 10 Jan 2025 09:20:54 +0000
-Message-ID: <483e8037-3c72-4560-b4b8-2437d37ca8c4@fujitsu.com>
-References: <0C019F50-9020-42ED-B051-998F03BFB709@linux.dev>
-In-Reply-To: <0C019F50-9020-42ED-B051-998F03BFB709@linux.dev>
-Accept-Language: en-US, zh-CN
+ (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
+ id 1tWBKs-0000RC-56
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 04:29:48 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YTx7m0Fb5z6K5VJ;
+ Fri, 10 Jan 2025 17:24:52 +0800 (CST)
+Received: from frapeml500006.china.huawei.com (unknown [7.182.85.219])
+ by mail.maildlp.com (Postfix) with ESMTPS id A9E7B1408F9;
+ Fri, 10 Jan 2025 17:29:32 +0800 (CST)
+Received: from frapeml500003.china.huawei.com (7.182.85.28) by
+ frapeml500006.china.huawei.com (7.182.85.219) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 10 Jan 2025 10:29:32 +0100
+Received: from frapeml500003.china.huawei.com ([7.182.85.28]) by
+ frapeml500003.china.huawei.com ([7.182.85.28]) with mapi id 15.01.2507.039;
+ Fri, 10 Jan 2025 10:29:32 +0100
+To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ =?iso-8859-1?Q?Daniel_P_=2E_Berrang=E9?= <berrange@redhat.com>, "Markus
+ Armbruster" <armbru@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>,
+ "Marcel Apfelbaum" <marcel.apfelbaum@gmail.com>, "wangyanan (Y)"
+ <wangyanan55@huawei.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "Sia Jee Heng" <jeeheng.sia@starfivetech.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "kvm@vger.kernel.org"
+ <kvm@vger.kernel.org>
+Subject: RE: [PATCH v7 0/5] i386: Support SMP Cache Topology
+Thread-Topic: [PATCH v7 0/5] i386: Support SMP Cache Topology
+Thread-Index: AQHbYdutebewzlBbOU2Mh++jRDy+5rMPvXWQ
+Date: Fri, 10 Jan 2025 09:29:32 +0000
+Message-ID: <7ae0450f39d9446f9696531cd076b37e@huawei.com>
+References: <20250108150150.1258529-1-zhao1.liu@intel.com>
+In-Reply-To: <20250108150150.1258529-1-zhao1.liu@intel.com>
+Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-user-agent: Mozilla Thunderbird
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=fujitsu.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TY1PR01MB1562:EE_|TYCPR01MB5695:EE_
-x-ms-office365-filtering-correlation-id: dcafe20e-6f29-46a5-7672-08dd31581559
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|366016|376014|1800799024|38070700018|1580799027; 
-x-microsoft-antispam-message-info: =?utf-8?B?eWlaT29qS1BLYUsrbFczVmQ2cldpYUtubkExTTY5N2lxRDFvSTYxVTIzT2Ns?=
- =?utf-8?B?QXR5eUZqUmFKaWVVdTdXbVJXWitraTErVkJCNWFPWVd1ejR4RjBpbGE0bEdQ?=
- =?utf-8?B?V0JFNWJORk5JZ1RNWWtzVlhpcmt3RVJpcDdXTk1IMGtkbWUwZ0ZTTWkwWVJZ?=
- =?utf-8?B?YzRxenFuZFV2cXZpejV0TUpNOS9xbDJ3R08wQkVQM040UnBHc2QwbXQ3MWJC?=
- =?utf-8?B?NlFDM2laMUgreVN6RzN6TkswSmk5ODZBdFc1YUQvdDFRdS9oSENESmVZTTBl?=
- =?utf-8?B?NFcvM0FHbzR2V2RUaHB0M05tMnpGSHN1d2l5NGwrWEVUcVZEZ3VERnd3akdM?=
- =?utf-8?B?a0RmY0RZNUJ2Z3ZEb01vNDE5eFhSRHBaemQwcHBxbUxOV3VpUzZBcVRJenBw?=
- =?utf-8?B?YU9yYWV6ZjJZaXg5ZUNDZDBOQ3ZSc0xZejRIOTdGWUE4N2RxUmhzSGpXTnVG?=
- =?utf-8?B?dXhwcmwxUzlvcjB2Mm5obzk5SVRUZlp2MFR6R2hEdlh6TG53SkJNaVMybEVN?=
- =?utf-8?B?aTkxOVNkN3V3d3J1ZFZqNVRlUWk0WmVKMjVtb3RNUVNBZExpQk0vWE42WUtX?=
- =?utf-8?B?SFNvQ1VUWEpjNnpRZVNlSk53ZUc2bjlzRW9FY0xzcVY4WlFKbHBwNkN1bkZ6?=
- =?utf-8?B?Qit1YVp1M1cwRWNBY0dTMzZUMi91TStGMUk2RklNdU5UTzEvRDFtSGtYZW9o?=
- =?utf-8?B?UGlwM2V2Z0o1V0FOanpTeTVMRm4xQjd6VzB6eE5mNWdaY0JnYVYybU5xcUhU?=
- =?utf-8?B?ZHhzdWNJZCt6eU41VFJPQzAvMm1yam9Yc2MzTGVKSjlhdmVFN3ZPd3Z5Mllj?=
- =?utf-8?B?aTVFZHdVekFmVXJUQWZVb0VkUlE4L2hpOHNObStTbWs0NnpwU3dvamJsaXBG?=
- =?utf-8?B?Z01YWml1VEVoYk9ZYU1rMW5yZkYzdmlMbzl3azlRK0tQemZDUkV6WGcraGMy?=
- =?utf-8?B?Z29zV0w3aXhPWjlwRUdVLzZONld6VzJlaHFBUE5uL1ZsN1N3Ni9hM3VEUGgy?=
- =?utf-8?B?TlFvQzZhbUlxT2RPbmEwZE9NUmphcVNrcStHUkV6THcyL2NzblMrSFdKZVpP?=
- =?utf-8?B?UTc0RjVjaDBRbTQ1RkdCNlZjNXVnVDcxWVBRbkxXbzRDcm5oU2hIa3ZTOEY5?=
- =?utf-8?B?SmxhaXNaYlJFMDRNcDZYelNyWWhHYTlvV3B4M2pCZ2xXTW5BQlpGUi9sT2hY?=
- =?utf-8?B?MGFvb2hHYUw2WStqblBESkxnb0h0WTRvK1NhbE43ZUQvaXRiTHErREQ1MTQr?=
- =?utf-8?B?eklOWUdaenMvYmV1eU1uV3ZGVE9NZE9hbG10NEFyUk5lcTRaM0o2ZXd3TCs5?=
- =?utf-8?B?RDN5YkVhWGdqVnVDSU84M1ZMSkNpK3R4MWhMcUZ1bUdCUWNwNVlPbVBMazQy?=
- =?utf-8?B?TnJlRzlHaW16V3ZYU080N2pFUVQrbEJhcjkwalplZlgyVlUzc0VSd3V0dDBi?=
- =?utf-8?B?Y2x1MHVMTDRIVEIyU0w4N1ExTkhLNGxnYjVQUTlrL0U4eXR1N1EvbWs1TEcv?=
- =?utf-8?B?MnB2dGQ4ZGRqYXNOVUVJWnVLSDFDbEx0anpTcFlCZU83VlRFdVUvNUtkd1NB?=
- =?utf-8?B?U0JjZXdsZkJkQ2QzSEdsdG5yOU5HbHo4TXRCQ2ZBb1d3cmJROUZ4aGs0cFRl?=
- =?utf-8?B?Z1VZczdMcnNWUjVWTGdIWHRrUlhYVXY5TS8xZC80R1pQUWFDWnpVb2pXYjJY?=
- =?utf-8?B?QWpkVW5TNDBUek9wa2dDeVN0RDlqbnAydGUwV3J3dS9YWVAzSWhheVNneVpF?=
- =?utf-8?B?bnplV1p0Tm9lSGg2UVRVaHU1enQzMUhtYXd2Y1Q4a3dFSFBjTzZPMlppK0RM?=
- =?utf-8?B?R3NaN3ZBQk9ob0JLTXEvZUlwRkw0eVZTOEQvMjZpSFp1S1Evc1VGM2p3Wm1m?=
- =?utf-8?B?MzNJcDVEVXVjejQ2ZmtZaDZqTk5kdU1ZUWpkNG04WDBvOHVzWnhrd3FEQjFE?=
- =?utf-8?Q?hfrL3y8cuZc=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:TY1PR01MB1562.jpnprd01.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(38070700018)(1580799027); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?b0FDdTRpUGoxQXpFNHk4cFl0RzRVRmFod3hiZGlyeHFFOUhhV0xqTzVpa0Zk?=
- =?utf-8?B?Nm5FVTdveC90M09XbzkrS2l5M1pUYUZwdXN4SjlVbS95Q2xrRm1nV1pOTVVr?=
- =?utf-8?B?dEpCUFRINmFxYW00VEQxMVNpK3kyakVoSmdDOXI4NCtRRE5EVEZEVVRvVGNk?=
- =?utf-8?B?N3JHS1JFVmR1SHZ2OWJFTDRDVWJubVVtWk9zbWo2QnRIKzVQMVpzSG03SnRZ?=
- =?utf-8?B?ZEJiUGZPenNHZEJJRi9aNTdMNVJYdHppTi8rWEpWSVZwa3FBVndOMHZ4aGJy?=
- =?utf-8?B?cGpBWHFxekUrTTJLOGZLczFpYStpOHprNW9jOURrb2p6Ni9oNksvZHlaMGE1?=
- =?utf-8?B?bEwvcVc1dUgvTXlHVWJOOXN6d1ZRTG45Y1B4OUxxV2F5S0krQXBTRktmT2dx?=
- =?utf-8?B?MHlhUjlCNEl0bHYzTUxCdExrQWMxdjB4Y1BCVEIvQlpUU0pIeWlUZ0t0dmph?=
- =?utf-8?B?eUlZSXBXa3lWVVIzWk9SOW1ENElaK2QrZG8xS2twUFEvbkhadStsWWVxMlNY?=
- =?utf-8?B?NWZLTTl5VzR1ZWlhRllqSjk2WEt1T1Y3RW42V1g0QmNxYTl2eW9ObUljczdL?=
- =?utf-8?B?TGEyTlVYdGpmUUErSW9pNC9wSFVQZm9QWUFlNzQrVVE0TldkRVBJWGU3WWZu?=
- =?utf-8?B?YnluSExPdDRObnk4b0QzRFFuWGZHVmFod2xwbTFrZlk2SWtWQk9tVnZzWVBm?=
- =?utf-8?B?ZlM5SExkUzJtMG9QY0s3MUR2aWhLSXVWMmdkTFd6SGxRUXZ5ZVYvQXZDZTY5?=
- =?utf-8?B?UFpaeU5ObzVDOWJtWUhtd0hmc2ROMCtOR096TkdDWElMb3h2aUN3NVdCNWph?=
- =?utf-8?B?VWdwMjYrcFhxMkxZWlc4c0FPYXZSdVdReXpTbER2SHFtVngrYWZUSkxXVDRu?=
- =?utf-8?B?dFl1ODNobjU5NndHaHhEanB1eFo5b0V4em1RWHRJRHhMLytUaHRoM3h6SkhZ?=
- =?utf-8?B?RkpHVEZDZ3BjREF2ZVZuejh6cVdSb01XV0xQakZoeXBkUVkvWWVTUURrT0Fn?=
- =?utf-8?B?RUIrU2JJdXRBZnhuMjExTDMyMWwyaHJIckRRWmZQaFczRFhVczdlRzdTa0ov?=
- =?utf-8?B?cGI4QTFkcHE1ZVBHY01yZTAzeEt3V2t2YzJ5U2xSUEZ3bzBhV0prN2xFQzZX?=
- =?utf-8?B?OWgrR3IrZVRPV01DbzlvbFVNU2l1akF5LzRkejUxbXZjaFZybWlyMUxpanAy?=
- =?utf-8?B?c0hLSEFUUGdaeUE2bHJKMUNyQmRFa3lvMXFOeTB5VU5mcTBlby9WSEJ3THUy?=
- =?utf-8?B?eEdza2dibDZ2RTI2RFR6NmxMdDdYTm1heFk0M2dHbGtjbWttL2tzNTlhYlFI?=
- =?utf-8?B?NzlDakhpaDhhU2hCK3ZITm9JRXdXMlhQUDN6cDM3ZWQ4NGhVSU9pZXo3Ym4v?=
- =?utf-8?B?VHUwbk5UeHRoSklZaFdHMmdsQlRBNDlzbzhiN3JsaTNnck90ZVloTzRPdEZ0?=
- =?utf-8?B?MEkzNXk4SDR2THVoVi9zaitGQm4yNEdVY3BaYk4yVlZQNXhyVG5vWEo1eUZW?=
- =?utf-8?B?ZFluRERadjljRXRPZCtqZE1SeC9zY2toL1dnRVJaK3RNOGpSK0FqVTNRVjNp?=
- =?utf-8?B?OGpna3g0dEc0c0Z6RmhMY2dTKzZHeU04ZXhDeWgvNGNrT2N2RzgvUFBCcmdt?=
- =?utf-8?B?UkxrVHp1QUNXT3E4Q2tpUzc1SjEyODhBaENNUmcvQXVLb2VQTUhxeXQ5bkVs?=
- =?utf-8?B?ZHAyUlYzSXIxZWh4cXZkd2F0Vk9kRVR0MDIvb251NWlka1p1VDVJUVZrNnRW?=
- =?utf-8?B?VnlkMkJmK3c0MkpTYjZUcW5wNUkyaEE4RzMyblg0Q21oYkpjYTlUb3BnRUlV?=
- =?utf-8?B?OU9uS0RzR1U1S3JuV29DUXZZVUZxWEpYazIzNFZidXptc3NJR2d0enRubDdQ?=
- =?utf-8?B?ZUFsOWMzZG83ZkQ2NEU1RTgxUU1kRVBUallrMUhCZy95SlJnTWlWamJDUzRC?=
- =?utf-8?B?ZGRaTW11TU5NbTRvL3JFNUZwRFBoMUtrbTRTT045azYyYldSUnN6U2w4MXNK?=
- =?utf-8?B?akM4ZWE3RlZObjN3RlMybUQ2RC9pWXdPVnJhRXJ0cjdjNFFoUlljZWg5RC8v?=
- =?utf-8?B?SkQvWEdpcDR1U0syY2ZHR2M4TDFpVnZ3T0xBOHJ0Z3dQZ1dUUFN1NUQydXc5?=
- =?utf-8?B?dlBzcFpQZEV2MWJXbDAwTUZCZVlMb0dZeUhtSmx0L3FrODAvb1dzTFA4anNy?=
- =?utf-8?B?WHc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C4263A32E97DEF4798DCE96DBC1D031E@jpnprd01.prod.outlook.com>
-Content-Transfer-Encoding: base64
+x-originating-ip: [10.203.177.99]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: TVkf2aZhmxBZZJANQKTPvATZfYbBVP/UDpe1jtS04/dkZs3wIbJid83WkBFoYSBh9b05kQOTGbE/GXgdmwZZCItCDTPtHbuOi/688OXyIV77Tvsd/KzbG9Gn9hyVq4CfCtuYIyMVlfJKZ1XjhlgYBFvejTvuge60X1BOLCs7FbX990BCV1hbbhkYSMrmA93QDDe+rhPjLXz63cqHasf3WFdLljahKCXMivR2nMWlnj/qD6atB5V6xwAR2UdAmYTej3khoba/s36d92rzh69UGwzXk+V85+cPUS5D/lDmGaj9361E3p4li4Ctxq9BFzaRklixOVK+oTyHH/u25//mBz3hSaOem0JNLRsYD2ilsjmq07n20x7WMnnkM9ZB+69Rlens4gsD+KKLH4aAHjo+1MRmYMy+fGfj+YLTt8Q5W87Ib7Ef4t9N0ke+RhG7QcUItIQSowfWv3mafctHCLQvNNubqdrPwVv3l4XWWhtP0+qy+88vUv7HD8ba8KLkTISKyJhiiiHoJGQPa7pDsSuGSQWUBzKO+obbkWv9mKtn6cyVjv7H5B0Zgf+fmardQulu7Xme7cjEsuAL02T1xJpkytt9Rs1sSOo7vVV0/+LpUI5B/tiTlxBETueSp61nv8nz
-X-OriginatorOrg: fujitsu.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TY1PR01MB1562.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dcafe20e-6f29-46a5-7672-08dd31581559
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jan 2025 09:20:54.1413 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AZW4lkf3/CwqPnBfgNPNIOwC54DuLU7FABe0G8XpBx1YFOQJxm96CZPI/HeoLXLnkUfkKeO9xCFEhlDfOcfIXA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB5695
-Received-SPF: pass client-ip=68.232.159.247;
- envelope-from=lizhijian@fujitsu.com; helo=esa10.fujitsucc.c3s2.iphmx.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=alireza.sanaee@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -193,16 +78,149 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
-From:  "Zhijian Li (Fujitsu)" via <qemu-devel@nongnu.org>
+Reply-to:  Alireza Sanaee <alireza.sanaee@huawei.com>
+From:  Alireza Sanaee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCk9uIDEwLzAxLzIwMjUgMTM6MjksIEl0YXJ1IEtpdGF5YW1hIHdyb3RlOg0KPiBIaSwNCj4g
-SXMgYW55Ym9keSB3b3JraW5nIG9uIHRoZSBDWEwgZW11bGF0aW9uIG9uIGFhcmNoNjQ/DQoNCkkn
-bSBub3QgY3VycmVudGx5IHdvcmtpbmcgb24gdGhlIENYTCBlbXVsYXRpb24gb24gYWFyY2g2NC4N
-Cg0KSG93ZXZlciwgSUlSQyB0aGUgQ1hMIG1haW50YWluZXIncyB0cmVlIHNob3VsZCB3b3JrLg0K
-aHR0cHM6Ly9naXRsYWIuY29tL2ppYzIzL3FlbXUvDQoNCg0KVGhhbmtzDQpaaGlqaWFuDQoNCj4g
-SWYgdGhlcmXigJlzIGEgV0lQIGJyYW5jaCwgYSBwb2ludGVyIHdvdWxkIGJlIGFwcHJlY2lhdGVk
-Lg0KPiANCj4gSXRhcnUu
+Hi Zhao,
+
+Thanks for this quick reiteration.=20
+
+I will prepare the ARM one too. I implemented the ACPI PPTT table to suppor=
+t thread but later when I worked on device tree noticed the mismatch. Will =
+remove those PPTT thread support for now.
+
+Alireza
+
+-----Original Message-----
+From: Zhao Liu <zhao1.liu@intel.com>=20
+Sent: Wednesday, January 8, 2025 3:02 PM
+To: Paolo Bonzini <pbonzini@redhat.com>; Philippe Mathieu-Daud=E9 <philmd@l=
+inaro.org>; Daniel P . Berrang=E9 <berrange@redhat.com>; Markus Armbruster =
+<armbru@redhat.com>; Igor Mammedov <imammedo@redhat.com>; Michael S . Tsirk=
+in <mst@redhat.com>; Richard Henderson <richard.henderson@linaro.org>; Edua=
+rdo Habkost <eduardo@habkost.net>; Marcel Apfelbaum <marcel.apfelbaum@gmail=
+.com>; wangyanan (Y) <wangyanan55@huawei.com>; Jonathan Cameron <jonathan.c=
+ameron@huawei.com>; Alireza Sanaee <alireza.sanaee@huawei.com>; Sia Jee Hen=
+g <jeeheng.sia@starfivetech.com>
+Cc: qemu-devel@nongnu.org; kvm@vger.kernel.org; Zhao Liu <zhao1.liu@intel.c=
+om>
+Subject: [PATCH v7 0/5] i386: Support SMP Cache Topology
+
+Hi folks,
+
+This is my v7.
+
+Compared with v6 [1], v7 dropped the "thread" level cache topology (cache p=
+er thread):
+
+ - Patch 1 is the new patch to reject "thread" parameter for smp-cache.
+ - Ptach 2 dropped cache per thread support.
+ (Others remain unchanged.)
+
+There're several reasons:
+
+ * Currently, neither i386 nor ARM have real hardware support for per-
+   thread cache.
+ * Supporting this special cache topology on ARM requires extra effort
+   [2].
+
+So it is unnecessary to support it at this moment, even though per- thread =
+cache might have potential scheduling benefits for VMs without CPU affinity=
+.
+
+In the future, if there is a clear demand for this feature, the correct app=
+roach would be to add a new control field in MachineClass.smp_props and ena=
+ble it only for the machines that require it.
+
+
+This series is based on the master branch at commit aa3a285b5bc5 ("Merge ta=
+g 'mem-2024-12-21' of https://github.com/davidhildenbrand/qemu into staging=
+").
+
+Smp-cache support of ARM side can be found at [3].
+
+
+Background
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+The x86 and ARM (RISCV) need to allow user to configure cache properties (c=
+urrent only topology):
+ * For x86, the default cache topology model (of max/host CPU) does not
+   always match the Host's real physical cache topology. Performance can
+   increase when the configured virtual topology is closer to the
+   physical topology than a default topology would be.
+ * For ARM, QEMU can't get the cache topology information from the CPU
+   registers, then user configuration is necessary. Additionally, the
+   cache information is also needed for MPAM emulation (for TCG) to
+   build the right PPTT. (Originally from Jonathan)
+
+
+About smp-cache
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+The API design has been discussed heavily in [4].
+
+Now, smp-cache is implemented as a array integrated in -machine. Though -ma=
+chine currently can't support JSON format, this is the one of the direction=
+s of future.
+
+An example is as follows:
+
+smp_cache=3Dsmp-cache.0.cache=3Dl1i,smp-cache.0.topology=3Dcore,smp-cache.1=
+.cache=3Dl1d,smp-cache.1.topology=3Dcore,smp-cache.2.cache=3Dl2,smp-cache.2=
+.topology=3Dmodule,smp-cache.3.cache=3Dl3,smp-cache.3.topology=3Ddie
+
+"cache" specifies the cache that the properties will be applied on. This fi=
+eld is the combination of cache level and cache type. Now it supports "l1d"=
+ (L1 data cache), "l1i" (L1 instruction cache), "l2" (L2 unified
+cache) and "l3" (L3 unified cache).
+
+"topology" field accepts CPU topology levels including "core", "module", "c=
+luster", "die", "socket", "book", "drawer" and a special value "default". (=
+Note, now, in v7, smp-cache doesn't support "thread".)
+
+The "default" is introduced to make it easier for libvirt to set a default =
+parameter value without having to care about the specific machine (because =
+currently there is no proper way for machine to expose supported topology l=
+evels and caches).
+
+If "default" is set, then the cache topology will follow the architecture's=
+ default cache topology model. If other CPU topology level is set, the cach=
+e will be shared at corresponding CPU topology level.
+
+
+[1]: Patch v6: https://lore.kernel.org/qemu-devel/20241219083237.265419-1-z=
+hao1.liu@intel.com/
+[2]: Gap of cache per thread for ARM: https://lore.kernel.org/qemu-devel/Z3=
+efFsigJ6SxhqMf@intel.com/#t
+[3]: ARM smp-cache: https://lore.kernel.org/qemu-devel/20250102152012.1049-=
+1-alireza.sanaee@huawei.com/
+[4]: API disscussion: https://lore.kernel.org/qemu-devel/8734ndj33j.fsf@pon=
+d.sub.org/
+
+Thanks and Best Regards,
+Zhao
+---
+Alireza Sanaee (1):
+  i386/cpu: add has_caches flag to check smp_cache configuration
+
+Zhao Liu (4):
+  hw/core/machine: Reject thread level cache
+  i386/cpu: Support module level cache topology
+  i386/cpu: Update cache topology with machine's configuration
+  i386/pc: Support cache topology in -machine for PC machine
+
+ hw/core/machine-smp.c |  9 ++++++
+ hw/i386/pc.c          |  4 +++
+ include/hw/boards.h   |  3 ++
+ qemu-options.hx       | 30 +++++++++++++++++-
+ target/i386/cpu.c     | 71 ++++++++++++++++++++++++++++++++++++++++++-
+ 5 files changed, 115 insertions(+), 2 deletions(-)
+
+--
+2.34.1
+
+
 
