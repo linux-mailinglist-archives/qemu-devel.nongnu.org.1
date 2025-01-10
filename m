@@ -2,96 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFAE3A09A6A
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:52:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E97CDA09A88
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:53:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWK4D-0002rB-U0; Fri, 10 Jan 2025 13:49:10 -0500
+	id 1tWK3H-0002Bi-UO; Fri, 10 Jan 2025 13:48:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK2d-0000PU-2A
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:31 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tWK2h-0000QW-Hu
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK2a-0001CI-L3
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:30 -0500
+ id 1tWK2f-0001Cm-OJ
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736534847;
+ s=mimecast20190719; t=1736534851;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=u/jSh3phCjmXrmFZbNzmUVTDDUThSgA5sAsWR34V2mc=;
- b=fua/zNkyp9iOeYlThrzYkbV2bTGHfQrA3fxVi/WfmBIX3yXmchYpRKyvW0AAlJNqOJZX80
- Mnhu33HSAw9iW6LXbMUzDWL7cDi/2L+pxIkvmW1202vFfpUX5drpcdfE1FrCJMovd4XLCt
- usnNyRd0Ii74hCMkXU9odnA0rVqxomw=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=e/SgEHIcRdBYgVQTtKD0/BCAD1nVvQXOmSgaoZuaiys=;
+ b=AKx8CcEB0N0MbMszofn4Qi0UdspMlhLcklgZCyIz7qL5yokTX0gRwTrZSA6iK1F1DUq4xg
+ HqMaRILnB8eeVzxRnB4SuzaGSs5Bi+qCM2h+SqOOjMookHFmIdyP5ZgGOd22QAlK9RQHm5
+ XFMo42OL8boALXGrhbBH4LgcreKKXR8=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-509-WU6jeKFLPOuGBUeTUMlDLw-1; Fri, 10 Jan 2025 13:47:26 -0500
-X-MC-Unique: WU6jeKFLPOuGBUeTUMlDLw-1
-X-Mimecast-MFC-AGG-ID: WU6jeKFLPOuGBUeTUMlDLw
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-5d3fe991854so2899197a12.0
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:47:26 -0800 (PST)
+ us-mta-84-BaeizroDMzWZMDR9xpe9DQ-1; Fri, 10 Jan 2025 13:47:29 -0500
+X-MC-Unique: BaeizroDMzWZMDR9xpe9DQ-1
+X-Mimecast-MFC-AGG-ID: BaeizroDMzWZMDR9xpe9DQ
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-5d88d37abd0so2353299a12.0
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:47:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736534844; x=1737139644;
+ d=1e100.net; s=20230601; t=1736534848; x=1737139648;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=u/jSh3phCjmXrmFZbNzmUVTDDUThSgA5sAsWR34V2mc=;
- b=hr1bnFONqmYCT7lKrIW9jfupKz7mXKB4T7A3SFDeuiilcmBInccvjepPCeWutTvfTH
- 3m5/siE93qnBd5GM6c/NtD+h3pXLx1dG85jc8OU87aN24hCszdM4vZoCpR25FgXypwFN
- nGwTwgNBfd5lwwVx3HVqGm2+2jaU6I9q30hydLJxNemfdrlGwjDKpMI610yjyHgKDsV/
- 2UGB4h3n1NCfpRKUuumca1PKMSrf3BjLWWiD4UjDvXVNEZcn2V6+MVDwCFey60+KfD7b
- f3bzWO9SUlYRfUjvSjRcHctpRrLVnu2ZpXcB0LRWRmC52fpDkgBSvI+NO5nPVplMZqyi
- GOJQ==
-X-Gm-Message-State: AOJu0YzEaUZCyN/fEl4rsO3mS/Q7pwvbQ+x2/rQKFJVtIw2InwffhQbA
- UqZ9P/RnVn39GrNXkNsL5GhuWRk9ysan3Yf4/kG119ve/8CvYdYxAJGjZg1DkSpsHRUhwRFIi2j
- cAu33Dpc6nT9Hd3hLuUJL4LO9erEQLGyCeYlXGAj8iYqLhyZfDNDgO6gfY+L01v/634J5NAeaGN
- asVzc5eI9liI3N2KC1HUSiY3gx7hn7vcbctcT2u50=
-X-Gm-Gg: ASbGncvajycP4qAz7y4biwaowztwQnuxozobCSF6HVpz6jI88MnLtda9xGGsCWjpFg7
- 7XDsinHkFtIA+dAhoioQrzeLANBN2I+z3R7zlAsK7FGDsMYRPNlDdBQ4PdvxVAnzukZGpPVjf3/
- tujmi//RZsz6clAxPYoSFsPi+JXJOmlQ13wiSQ56avtgcDejzD/TJTq3M/FQMb771gn0T4rzyrE
- Nx3fw0Eco/+Ox2PLa95yD4Bic7EgpnujBUVIviHFAiaY8CcTOGZVO0fDC8=
-X-Received: by 2002:a05:6402:27cd:b0:5d9:a55:8104 with SMTP id
- 4fb4d7f45d1cf-5d972e4cb87mr9775250a12.21.1736534844393; 
- Fri, 10 Jan 2025 10:47:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE5AWBFycH3ZDFwFvcgt0PbW2JGhLn4J43JPcA3/Zjz9FOKUBh+wWU4/ykqP6ahu/b3Ku3UIg==
-X-Received: by 2002:a05:6402:27cd:b0:5d9:a55:8104 with SMTP id
- 4fb4d7f45d1cf-5d972e4cb87mr9775239a12.21.1736534843887; 
- Fri, 10 Jan 2025 10:47:23 -0800 (PST)
+ bh=e/SgEHIcRdBYgVQTtKD0/BCAD1nVvQXOmSgaoZuaiys=;
+ b=hPRRRP0gpRYT2L1JHpOyZ0DEgFinlqQ1cmhP4IgL/z3qxOcVDzpRFgqbtS7f8Z6sS3
+ ZuCRhrrMYRoYS65+ssORk4pnwAeMvXgSwLr3cimg/oKwBpEsdwoCiQkUoZBZcMd+/dxK
+ PsQ0spJCQ8bRIztBd0p5l3XUXtZ0SyVwVivPEb0u2wfWeGU0vsUcefIN1aia+6oIcPXz
+ HkGZyFpx5+J11lfsfNvcJ4ENut0Z08SoVPypNzYikGwIB9PAL1JnTtE2KmrnGIJy1xBO
+ J5N12Vn0FJnBNPkUlcFHetscIKXTAysL6vZv6Z2hRnWRtIAFSJU8RQTp9qrGRo2YCFR7
+ 65KQ==
+X-Gm-Message-State: AOJu0YwMeDDLf8gK+kamCYyN/D0X8soBE7AoKscJONdNxPhGFWhZGOtz
+ JMAh7B9qaMilita/0lXQSI9v1bx16imBATFGg4CMnhP5SsT+9HZ7oMGfxLmYfLFx7gMViL3tWo8
+ qRyHxnSUaEnyL1pyFYHqsvIAtdMDAyexCzESpoad2IIOdoEcOCOKTSwlma13uiZyRtN/AiFma+f
+ GRvXI8m+DmfzPjJTL/g/EpRSdQVybb/7Ky+7BJo9Y=
+X-Gm-Gg: ASbGncs+Jv5jBQb6aGT5HaL9MbbkTuEb51+Y/Nhy4JSsIzeqhQddF0ltTak40Ob2y75
+ J0YvAa/IlQDSTwx6Nuix7fuZZp3YCBQhn1twH4z8RfFe5mhs0R/8LeXBfMf1zx9msIh63QBB2j8
+ y+hbDpAlWgjQASX0P/JSBzuRtwUgEWGac6GM4rNUEtfOlIIZ5GETP1Vjd3CgtV0EW7x95pI1CCh
+ +BTVvAb0Ei/SS9Cw3b9uu8f63zYO9QVCh+OFvF7l8f/ZZHEaYeWkEHLyCo=
+X-Received: by 2002:a05:6402:270d:b0:5d3:d4cf:fea0 with SMTP id
+ 4fb4d7f45d1cf-5d972e4c62emr9671029a12.21.1736534847684; 
+ Fri, 10 Jan 2025 10:47:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHIwj9LGgzLXpOlyrrP/5XeuHgE/B/qaqZwaKSFqT8+BbtGDlrD+yBRMx0lARlI0LjGgsEsWA==
+X-Received: by 2002:a05:6402:270d:b0:5d3:d4cf:fea0 with SMTP id
+ 4fb4d7f45d1cf-5d972e4c62emr9671019a12.21.1736534847210; 
+ Fri, 10 Jan 2025 10:47:27 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.105.73])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d99046a17fsm1919522a12.62.2025.01.10.10.47.22
+ 4fb4d7f45d1cf-5d9904a55f9sm1845875a12.81.2025.01.10.10.47.24
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 10:47:22 -0800 (PST)
+ Fri, 10 Jan 2025 10:47:24 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>,
-	Zide Chen <zide.chen@intel.com>
-Subject: [PULL 27/38] target/i386/kvm: Clean up error handling in
- kvm_arch_init()
-Date: Fri, 10 Jan 2025 19:46:08 +0100
-Message-ID: <20250110184620.408302-28-pbonzini@redhat.com>
+Subject: [PULL 28/38] target/i386/kvm: Replace ARRAY_SIZE(msr_handlers) with
+ KVM_MSR_FILTER_MAX_RANGES
+Date: Fri, 10 Jan 2025 19:46:09 +0100
+Message-ID: <20250110184620.408302-29-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250110184620.408302-1-pbonzini@redhat.com>
 References: <20250110184620.408302-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.432,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,116 +106,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+kvm_install_msr_filters() uses KVM_MSR_FILTER_MAX_RANGES as the bound
+when traversing msr_handlers[], while other places still compute the
+size by ARRAY_SIZE(msr_handlers).
 
-Currently, there're following incorrect error handling cases in
-kvm_arch_init():
-* Missed to handle failure of kvm_get_supported_feature_msrs().
-* Missed to return when kvm_vm_enable_disable_exits() fails.
-* MSR filter related cases called exit() directly instead of returning
-  to kvm_init(). (The caller of kvm_arch_init() - kvm_init() - needs to
-  know if kvm_arch_init() fails in order to perform cleanup).
+In fact, msr_handlers[] is an array with the fixed size
+KVM_MSR_FILTER_MAX_RANGES, and this has to be true because
+kvm_install_msr_filters copies from one array to the other.
+For code consistency, assert that they match and use
+ARRAY_SIZE(msr_handlers) everywehere.
 
-Fix the above cases.
-
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Zide Chen <zide.chen@intel.com>
-Link: https://lore.kernel.org/r/20241106030728.553238-11-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/kvm.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ target/i386/kvm/kvm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 3624abbb397..6f424774b33 100644
+index 6f424774b33..1d7214b6a65 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -3162,7 +3162,7 @@ static int kvm_vm_enable_userspace_msr(KVMState *s)
-     return 0;
- }
+@@ -5854,7 +5854,8 @@ static int kvm_install_msr_filters(KVMState *s)
+     };
+     int i, j = 0;
  
--static void kvm_vm_enable_energy_msrs(KVMState *s)
-+static int kvm_vm_enable_energy_msrs(KVMState *s)
- {
-     int ret;
- 
-@@ -3172,7 +3172,7 @@ static void kvm_vm_enable_energy_msrs(KVMState *s)
-         if (ret < 0) {
-             error_report("Could not install MSR_RAPL_POWER_UNIT handler: %s",
-                          strerror(-ret));
--            exit(1);
-+            return ret;
-         }
- 
-         ret = kvm_filter_msr(s, MSR_PKG_POWER_LIMIT,
-@@ -3180,7 +3180,7 @@ static void kvm_vm_enable_energy_msrs(KVMState *s)
-         if (ret < 0) {
-             error_report("Could not install MSR_PKG_POWER_LIMIT handler: %s",
-                          strerror(-ret));
--            exit(1);
-+            return ret;
-         }
- 
-         ret = kvm_filter_msr(s, MSR_PKG_POWER_INFO,
-@@ -3188,17 +3188,17 @@ static void kvm_vm_enable_energy_msrs(KVMState *s)
-         if (ret < 0) {
-             error_report("Could not install MSR_PKG_POWER_INFO handler: %s",
-                          strerror(-ret));
--            exit(1);
-+            return ret;
-         }
-         ret = kvm_filter_msr(s, MSR_PKG_ENERGY_STATUS,
-                              kvm_rdmsr_pkg_energy_status, NULL);
-         if (ret < 0) {
-             error_report("Could not install MSR_PKG_ENERGY_STATUS handler: %s",
-                          strerror(-ret));
--            exit(1);
-+            return ret;
-         }
-     }
--    return;
-+    return 0;
- }
- 
- int kvm_arch_init(MachineState *ms, KVMState *s)
-@@ -3265,7 +3265,10 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-         return ret;
-     }
- 
--    kvm_get_supported_feature_msrs(s);
-+    ret = kvm_get_supported_feature_msrs(s);
-+    if (ret < 0) {
-+        return ret;
-+    }
- 
-     uname(&utsname);
-     lm_capable_kernel = strcmp(utsname.machine, "x86_64") == 0;
-@@ -3301,6 +3304,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-         if (ret < 0) {
-             error_report("kvm: guest stopping CPU not supported: %s",
-                          strerror(-ret));
-+            return ret;
-         }
-     }
- 
-@@ -3332,12 +3336,15 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-         }
- 
-         if (s->msr_energy.enable == true) {
--            kvm_vm_enable_energy_msrs(s);
-+            ret = kvm_vm_enable_energy_msrs(s);
-+            if (ret < 0) {
-+                return ret;
-+            }
- 
-             ret = kvm_msr_energy_thread_init(s, ms);
-             if (ret < 0) {
-                 error_report("kvm : error RAPL feature requirement not met");
--                exit(1);
-+                return ret;
-             }
-         }
-     }
+-    for (i = 0; i < KVM_MSR_FILTER_MAX_RANGES; i++) {
++    QEMU_BUILD_BUG_ON(ARRAY_SIZE(msr_handlers) != ARRAY_SIZE(filter.ranges));
++    for (i = 0; i < ARRAY_SIZE(msr_handlers); i++) {
+         KVMMSRHandlers *handler = &msr_handlers[i];
+         if (handler->msr) {
+             struct kvm_msr_filter_range *range = &filter.ranges[j++];
 -- 
 2.47.1
 
