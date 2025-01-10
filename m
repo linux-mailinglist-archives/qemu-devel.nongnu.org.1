@@ -2,71 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25A0BA09C30
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 21:11:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B25A09C7D
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 21:35:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWLK3-00042J-I3; Fri, 10 Jan 2025 15:09:35 -0500
+	id 1tWLhy-0000Va-M6; Fri, 10 Jan 2025 15:34:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <michael@anarch128.org>)
- id 1tWLJx-0003zg-2I
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 15:09:29 -0500
-Received: from anarch128.org ([2001:4801:7825:104:be76:4eff:fe10:52ae])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <michael@anarch128.org>)
- id 1tWLJt-00032i-Ho
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 15:09:27 -0500
-Received: from [192.168.1.8] (default-rdns.vocus.co.nz [202.150.110.104] (may
- be forged)) (authenticated bits=0)
- by anarch128.org (8.15.2/8.15.2/Debian-22+deb11u3) with ESMTPSA id
- 50AK9Ed01398678
- (version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
- Fri, 10 Jan 2025 20:09:17 GMT
-Authentication-Results: anarch128.org; auth=pass;
- dkim=pass (2048-bit rsa key sha256) header.d=anarch128.org
- header.i=@anarch128.org header.b=kQaJ+L8k header.a=rsa-sha256 header.s=100003;
- x-return-mx=pass header.domain=anarch128.org policy.is_org=yes (MX Records
- found: mail.anarch128.org); 
- x-return-mx=pass smtp.domain=anarch128.org policy.is_org=yes (MX Records
- found: mail.anarch128.org)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=anarch128.org;
- s=100003; t=1736539759;
- bh=3lXjPdltr6+BbrJ/KAMp6fSKB23d/RFmDGGDHcqsheg=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=kQaJ+L8kRU+ZpGYs9H/bZt4EtBJDN8LhaXOtc6jLCZaez5LcTWTgxq5dxMI96fgoN
- 4/cmAsdHQ3nrm21qqyrwMvsKMVM9dTIzPAhEW/PTXoWxqO8cj/HDmnZbrQlkZSi7+z
- dywCSdjt0JnyYZn5uhsjhhoNqEU5kEW+vGr5gJaVy5N25iXtg+U4H4bZrfWY/CpaKB
- h2CrvVFJwXd8CTp6mdy+ijaF6KiL8DfXjJB/j309WI2w1g/JeSquwFdiXMne4cJ+gY
- hAk0cV0LzIxAoktJmJNETI99qUefZdTJXx9YuKOv+S/QvFTITrsx/aK7eJRWE0s77o
- 19AVIy6ItYx3A==
-Message-ID: <da1c8e7d-4c5a-403f-ab01-d3e30939626f@anarch128.org>
-Date: Sat, 11 Jan 2025 09:09:09 +1300
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tWLhv-0000VA-HN
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 15:34:15 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tWLht-0005eu-JP
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 15:34:15 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-2163dc5155fso45108685ad.0
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 12:34:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1736541251; x=1737146051; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2wVgW4ZcjXo//dfpFkDwXhNPgQ5kohxBC90Lc3HtqlM=;
+ b=WPtdoOJ8vEaKI1gYluPw508TM+vDJf3ZtIMUDDomfjDtKunlS20ApIJhOUySk6vF+Z
+ 4qWOV3+mnPaZVqJy2Ge9ABPH/M36uPoFW5k9bjHyTOlhIGyRGffmXF1D0gUSJxohAJdE
+ C+b3/T2Ojhj0DmlAasCh2NrDNRDKt916qxj227a9RjsyshPp+LRci2cefm7JeAjrQHr5
+ OiddSwqBUKcTIarBTMHaMvL6bBF3fnUumwH9hUNQKCm0e0bE7FvEVk6Aw+WDb+mtj7LV
+ DrNWvfub3Uw/DXqYaB7gvJ7D7Wl7G0bMqW7osoXvM4Xn7uc4cMEJSdQoi5KvRz17IJYe
+ /Ssw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736541251; x=1737146051;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2wVgW4ZcjXo//dfpFkDwXhNPgQ5kohxBC90Lc3HtqlM=;
+ b=lxaye9hy2zrtrmfpmDTZb7eGnKRwYz1/HIdjlyqFFlkiAy+3vEA9ya8U4l60+HIOyy
+ nOq2YPaqQAnxMATxn5VLQrsHJvqHjAkgHfCLROe1vji4z0jG8Xs+ESXDLHDGdcLi6Vps
+ dKv+z7i98a5lklhfZ3F4D6mrHZQU/MJuA+mVen68QsfkNbwn8ylapiDiVRC+D10/xy37
+ bLttum0xXe0Aiy7ZfJrzKnpHLaQj6wwxxcEzDRv+FV1LypkHmc3k82JewQPpDwxUvcsG
+ caWeCNplqeuvhlJciAnsLTxBUuqarN5nwmafms57PZ5AZh/0utHl34L/jE51WZfdns1X
+ Fr9Q==
+X-Gm-Message-State: AOJu0Yzsj7ZnwEK6Rr7ZOyXHUUdbbYjFoO37KA6inyKx/hUZRVoBK7Vi
+ eICs99FkTfPywM9fDMKWi2I/FGVjunaibevMaRJs8+hlIHfOM7KQk5e6hq/AYRNuV/eDsoND16r
+ bZfaGnA==
+X-Gm-Gg: ASbGncvWCRMKir1yiwtgNKc91RcCvsFM4+dTMluaLog1no4ZRyNue/S8cO/3jkbxj4C
+ ZSAQ8EudUH5y4pRzaaUgKhYDj3kb0oJTPi7zeKCQ8xYKOPiydfrwZajxikegEjkXqgHvqRTb4Iv
+ Zvp+v40OAiX3A15TOdEtDOz1bvkUAQ9Ga54KVm7n6pRNiEzU7/5UXXWUWermW08GE5ABf05XbDJ
+ tQnThcXVlXFV4PL16hT/wft77OwxbQtzkO09P80kOXMssa5kjQ8goeF
+X-Google-Smtp-Source: AGHT+IHt/N96ONU+tuD4v1CyV6IsUw5hqBxvISJ9e8V+PruZaazdORiMlqQABvRyR5v1MhWLSBK+5A==
+X-Received: by 2002:a05:6a21:3a87:b0:1e0:c56f:7daf with SMTP id
+ adf61e73a8af0-1e88cf7f7bdmr19435304637.6.1736541251316; 
+ Fri, 10 Jan 2025 12:34:11 -0800 (PST)
+Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-a318e8ecacfsm3215947a12.38.2025.01.10.12.34.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 10 Jan 2025 12:34:10 -0800 (PST)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Alexandre Iooss <erdnaxe@crans.org>
+Subject: [PATCH v4 0/3] Enable clang build on Windows
+Date: Fri, 10 Jan 2025 12:33:58 -0800
+Message-Id: <20250110203401.178532-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC]: port of embedded x86-mini disassembler to QEMU
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>
-References: <20250110094400.512788-1-michael@anarch128.org>
- <CABgObfY_GOQN5OWBQXYvfrBtNVZGGc75p3gRHrpqQNxUErfB3A@mail.gmail.com>
- <5244f8e9-b58d-4d37-9fe7-2236a862fd91@anarch128.org>
- <CABgObfYdaBun9pZqTtZS_PzSKvrF=f5DE-Vb5pLMWq1HPcAVAg@mail.gmail.com>
-Content-Language: en-US
-From: Michael Clark <michael@anarch128.org>
-In-Reply-To: <CABgObfYdaBun9pZqTtZS_PzSKvrF=f5DE-Vb5pLMWq1HPcAVAg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4801:7825:104:be76:4eff:fe10:52ae;
- envelope-from=michael@anarch128.org; helo=anarch128.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,101 +103,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/11/25 05:05, Paolo Bonzini wrote:
-> Il ven 10 gen 2025, 14:03 Michael Clark <michael@anarch128.org> ha scritto:
-> 
->> On 1/11/25 00:07, Paolo Bonzini wrote:
->>> Il ven 10 gen 2025, 10:52 Michael Clark <michael@anarch128.org> ha
->> scritto:
->>>
->>>> a note to announce a port of the x86-mini disassembler to QEMU.
->>>>
->>>> - https://github.com/michaeljclark/qemu/tree/x86-mini
->>>
->>> I assume the huge .h files are autogenerated? If so, QEMU cannot use them
->>> without including the human-readable sources in the tree.
->>
->> yes indeed. there is an x86_tablegen.py python script in the other repo
->> but it is not in the current patch. it would be somewhat easy to read
->> the tables from CSV files directly into arrays at the expense of several
->> more milliseconds during startup. the revised operand formats maps
->> relatively strictly to enum definitions with string tables in the source
->> so a reader in C would not be impossible
-> 
-> 
-> Building the tables at compile time is fine, only leaving out the script is
-> not.
+For now, it was only possible to build plugins using GCC on Windows. However,
+windows-aarch64 only supports Clang.
+This biggest roadblock was to get rid of gcc_struct attribute, which is not
+supported by Clang. After investigation, we proved it was safe to drop it.
 
-fair enough. I wanted to test the disassembler and I figured out how to 
-do that with both QEMU host and target. I haven't learned how to create 
-generative dependencies in meson yet but it can't be as bad as CMake.
+Built and tested on Windows (all msys env)/Linux/MacOS for x86_64 and aarch64
+hosts.
 
-QEMU running openssl is a pretty good torture test. I am going to spend 
-time analyzing the -d in_asm,out_asm logs for openssl. I don't yet have 
-a pseudo alias translation step so NOP still shows as XCHG eax,eax.
+v1 contained warning fixes and various bits that have been upstreamed already.
+The only bits left in this series are the gcc_struct removal, and fixing the
+plugins build with clang.
 
-and fuzzing x86_64 was extremely interesting as it uncovered some 
-hardware bugs that led to historic findings inside the QEMU translator. 
-so I know that the level of accuracy is somewhat good. for example:
+This series is for 10.0, as we decided to not include the gcc_struct removal is
+9.2 release.
 
-   NOP -> XCHG eax,eax
-   REX.B XCHG eax,eax -> XCHG eax,r8d
-   PAUSE -> REP NOP -> REP XCHG eax,eax
-   REX.B PAUSE -> REP REX.B XCHG eax,eax -> REP XCHG eax,r8d
+All patches are now reviewed, so this series can be pulled. I'll report that to
+MSYS2 too, so we can enable clang environments for QEMU.
 
-it seems Intel filters out REX.B for NOP but not REP NOP. and I know 
-what QEMU does. it does what one expects. unused REP is undefined but 
-typically is ignored for non string instructions with the exception of 
-0F, 0F38, 0F3A where REP/F3 is interpreted as part of the opcode. but 
-Intel has made REP XCHG eax,r8d act like REP NOP. I haven't tested this 
-out on AMD hardware but I consider it a silicon bug on Intel. there is a 
-test case on this binutils issue. in any case, this is in QEMU history.
+v1: https://patchew.org/QEMU/20241031040426.772604-1-pierrick.bouvier@linaro.org/
 
-- https://sourceware.org/bugzilla/show_bug.cgi?id=32462
-- 
-https://www.blackhat.com/docs/us-17/thursday/us-17-Domas-Breaking-The-x86-ISA.pdf
+v2:
+- drop attribute gcc_struct instead of using -mno-ms-bitfields option
+- add a section about bitfields in documentation
 
->> I can see how that might be interesting for x86 virtualization where you
->>> have only one target and therefore you can get rid of the capstone
->>> dependency. At the same time, other virtualization targets like arm64 and
->>> RISC-V are going to become more and more important—not less—and not
->> having
->>> to maintain a disassembler ourselves as part of QEMU is also a big
->> plus...
->>
->> yes indeed. but in an ideal world the encoders and decoders are matched
->> pairs. I would like to work on a translator or interpreter that uses the
->> same codec as the disassembler
-> 
-> 
-> Ok, that makes sense. QEMU already has a decoder that is very table-based
-> though the tables are hand written. I am not wed to it though—as long as
-> the code generators remain more or less unmodified, I would love to only
-> keep "these is how the operands are prepared for use in the IR emitters"
-> and make the details of x86 decoding Someone Else's Problem. So if you can
-> kill most (certainly not all) of the tables in
-> target/i386/tcg/decode-new.c.inc that would be interesting.
-> 
-> (I am sure you'd find some underspecified and/or wrong parts of the x86
-> spec, too :) For example many VEX classes are bollocks, plus some more
-> examples hinted at at the top of that file).
+v3:
+- explain why gcc_struct attribute matters in packed structs in commit message
+- reword the bitfields documentation with suggestions given
 
-yes indeed. the metadata in the Intel SDM is littered with mistakes such 
-as field transpositions, typos and missing data. I would hazard a guess 
-that maybe ~71% of the metadata is usable in a machine readable manner. 
-given that LLVM tablegen has its own format, I consider x86-mini the 
-source of truth for metadata derived from the Intel format. although I 
-haven't fuzz tested again NASM yet, but I found a small number of errors 
-in LLVM. albeit mostly in instructions that are not used in anger.
+v4:
+- edit for bitfields doc requested by Philippe
 
-Michael.
+Pierrick Bouvier (3):
+  win32: remove usage of attribute gcc_struct
+  docs/devel/style: add a section about bitfield, and disallow them for
+    packed structures
+  plugins: enable linking with clang/lld
 
-> Paolo
-> 
-> anyway, in fact it is just yet another disassembler at this point, but
->> the codec emitter works. it doesn't yet have an arch-neutral TCG-like
->> API and IR to drive it yet.
->>
-> 
+ docs/devel/style.rst                      | 20 +++++++++++++++++++
+ meson.build                               |  6 +++---
+ include/qemu/compiler.h                   |  7 +------
+ scripts/cocci-macro-file.h                |  6 +-----
+ subprojects/libvhost-user/libvhost-user.h |  6 +-----
+ contrib/plugins/meson.build               |  2 +-
+ plugins/meson.build                       | 24 +++++++++++++++++++----
+ tests/tcg/plugins/meson.build             |  3 +--
+ 8 files changed, 48 insertions(+), 26 deletions(-)
+
+-- 
+2.39.5
 
 
