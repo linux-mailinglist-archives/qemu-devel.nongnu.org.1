@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67092A091D4
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 14:24:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65F36A091D6
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 14:25:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWEzy-0000kr-F7; Fri, 10 Jan 2025 08:24:28 -0500
+	id 1tWEzg-0000bO-EW; Fri, 10 Jan 2025 08:24:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tWEz9-0008P9-AJ
+ id 1tWEz7-0008OI-N3
  for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:23:36 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tWEz7-0005ed-Cr
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:23:34 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-5d122cf8e52so3246945a12.1
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 05:23:32 -0800 (PST)
+ id 1tWEz5-0005e8-Md
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:23:33 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-aaee2c5ee6eso341970266b.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 05:23:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736515412; x=1737120212; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736515410; x=1737120210; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VElp+3f5K/8aS805Hx1mlXPx4V+6pBsG4GTVS+w14T0=;
- b=VmXdpRuhTkQFXEOVE0w3KsTQFsKu1uBf4272OsrY6P/eZgsH93lKQG5Vdy5m503SWc
- ya7ax/Yz8piabZw87clW5c7v95HLRlOlWklZpfDOc2Sn+nB0/f/IDQ3dHD2qyWJ7nGpN
- 4S70zCxesgLutVML6B1Vv+xITtVcXuu4oW+RgXKk8ap/nmV5UXh0z/jutxAzKsgXsG1A
- /dHYl+jNCH2GPCG6WzOaXkwdkaiDesmjbZlWs9X0CJI9mBldx8bc/tgRV+1ZVMjLmSKL
- S0bYvFe3wf5AdScBYesL0+C2zYgAIoNIPjJq/OhQoq3zQUvEDa636ZrCIYfojkzwJlbl
- iQNw==
+ bh=tGvy/F1fDgUfBPiL+7E48KKTfhRYEDJs/NtU4xaiBlE=;
+ b=lnluB3VBm9toKUmLeoDotqmW9OpAvHj/GyAg8InnvLEKWjERCbw1ZTQxAO3ySYQSLA
+ F3RJ3t1sauxl5LHUO6frHYLAFtcHKEujLBi++y8jzn7NON4Qskmr9PUfLwqsE/Sx5YDE
+ JXXPiLoh7z3A2QzaAPr9rdF1Mh/8vIT9CTYH9wdviiwmKBdkGaRwKHVpToTHiJC3nVU8
+ 1VRTXWX9wR5n+Gz/kenejXbVk5k+ihJgVohNrMUlAS1vjrGKZIIicjH53bHL2/FkVtRo
+ SwZu3PjzpQ9vWodIK2gFMM+nl+ihxJF9PUC05t5vaT3eAc02uWDzMEO+bcIKeOXiFs4A
+ Tsxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736515412; x=1737120212;
+ d=1e100.net; s=20230601; t=1736515410; x=1737120210;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VElp+3f5K/8aS805Hx1mlXPx4V+6pBsG4GTVS+w14T0=;
- b=ZUCdF+xWueitY1JdPagF1RlIbxyd6rm19Ya5Pkrja2bi6URa5E4tyJ28PnGL0wmIXn
- Y6x6ytvxfvT1R+KOiGvxjJK4sknjUKOyA3NS73ktJCW2Dm1NfNuNOPA04Hrbi++rihdC
- d28nHBR/TfDVj6UclROVvr7VKR6p46eYk5EbPBChI/uA/Fyi+C6F4TmnJBbQFYjw0e8f
- w7OHIjFMZfyi4bB4W0bH8R6Jyqgrv/nis5uVGdGiaghe9+ZYtpDRzVIrQmoBeNyAKVWx
- 0I+djEI+WEFI8cYUIxa/4QPuVw/qTIG32BAN73YGgxf3JrAYGXVPMTcP+JrLnOJD0zOi
- eDCw==
-X-Gm-Message-State: AOJu0Yz/UDwiSto8T3/8+W8LWBLD5IYqJJPkn+IdIkvrYQI0/RH01vaB
- 41go4//m3RTx8vYuSmk/hQK3e0Fvt4DRzstH4LvtFSAdanIWlWq99jk6Mz5pTrf/57QkqqsTem5
- 0xXI=
-X-Gm-Gg: ASbGnctFZ9q8sqJChk3PD/4WNmPY6C51bGbXjMrAnEs0l5lgRQzx3HAnPkLwiCCmwgx
- YvdjsLk4C2CIeR2RU7/Y6Ii1roeF+s3WocMm8tEYi3FNmrjvz2OCSpPQcoGYtIStm/XD7fLdOpu
- tYqI45UoDzygqMDPH52OwSWp3XEl/DCQ2BjQcuXUZAWuT2onGAQw8SCij5V95X5ny5QNWKP6m4G
- F0JeeWwmOIytj7Cwp+idijNzIrXsyTdH2ln5YQvJ3W696gDaaPQMkQ=
-X-Google-Smtp-Source: AGHT+IE1JKnnC9DbgifFXv5CK0xc+ViGz4Tkj2G2pJwRwV6Vj97O3coXjiMYVv2T5KeyvTrjdUJnNw==
-X-Received: by 2002:a05:6402:4415:b0:5d1:1f1:a283 with SMTP id
- 4fb4d7f45d1cf-5d972df6fecmr9497530a12.4.1736515411881; 
- Fri, 10 Jan 2025 05:23:31 -0800 (PST)
+ bh=tGvy/F1fDgUfBPiL+7E48KKTfhRYEDJs/NtU4xaiBlE=;
+ b=PN07trIMCfKdArqbg1OCXLG6ug3fPSvKQPAfDqNtxgTS7+SJ5VITAp27TvAQh/rcG8
+ Bz1Y1OispnwNMcjUll/aY2ud6FjAtFskPhOmlrRD94R/NvxNjhJhK+apJgLJ9TnTgc0z
+ Xft6vyU5Y7yvJbYnEh7mTyq6Tc37EYyNhzKKxXYpXSp+7B1/JX4u+ixI5fza8PT1Lg3o
+ /jTF8M5VJuZwhW1FIuW9AoUdHKCfBZgVYxeKEcykXud9sIykl7FD3BM/dwdfa8q1/wXn
+ d5HEHKGZ62XICZ9mYo5XF3WH0637WCrl6ZEnctgDlAdf03tJQq1oAP1PT3O1lI9+eyLT
+ DZrw==
+X-Gm-Message-State: AOJu0Yy/+eC/qMtysal+c+bfg3x2yWyZ1MeWmWWVUqPCDqTp+yTWWoPt
+ v8DsKdAZVkHXQthgtQfzkwoUNspy9dggAkMpiOyPdrrfRGMGnLf6wiUrpewwdjU=
+X-Gm-Gg: ASbGncsMYa3q9GpXNSdrvndBh/Fx/dgnwm+cbMv+Zc4nObgvr6oEJpYfWncTXGlG7am
+ Wj8BAAGrbA3dOftVjnChnDOVU77OmRyzZu5wGvu0xc7AGMrBIzFQlyggso3ijJd6mXonrA4kmoC
+ S2d7KcEcYc3zSzc86aBno/f2uC+uqmJ8mAMaMr663nzaIRKDMtXAs0g+lbJEdF24gQpx9hH3s9F
+ 5IbqyyIFuDsIkJi81posSNq2MJPF7PbQwEaJC6NGs+cGlmiquFin2o=
+X-Google-Smtp-Source: AGHT+IGK+OQjIipK8usb50DfwIcKeth8Fp1e/TcG1ftxE7PJOe8V7DxJ7fpnKXaUkcWvhQeWduuGyA==
+X-Received: by 2002:a17:907:3e91:b0:aaf:74b3:80db with SMTP id
+ a640c23a62f3a-ab2ab670608mr825065266b.3.1736515410220; 
+ Fri, 10 Jan 2025 05:23:30 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d9903c3333sm1713852a12.47.2025.01.10.05.23.23
+ a640c23a62f3a-ab2c95615a6sm168041366b.94.2025.01.10.05.23.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 10 Jan 2025 05:23:26 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C693D6142C;
+ by draig.lan (Postfix) with ESMTP id DB32C5F9CC;
  Fri, 10 Jan 2025 13:17:55 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 19/32] tests/functional: add zstd support to uncompress utility
-Date: Fri, 10 Jan 2025 13:17:41 +0000
-Message-Id: <20250110131754.2769814-20-alex.bennee@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 20/32] tests/functional: update tuxruntest to use uncompress
+ utility
+Date: Fri, 10 Jan 2025 13:17:42 +0000
+Message-Id: <20250110131754.2769814-21-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250110131754.2769814-1-alex.bennee@linaro.org>
 References: <20250110131754.2769814-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,74 +102,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rather than using the python library (which has a different API
-anyway) lets just call the binary. zstdtools is already in out
-qemu.yml so all test containers should have it around. Tests should
-still use @skipIfMissingCommands('zstd') to gracefully handle when
-only minimal dependencies have been installed.
+Use the utility functions to reduce code duplication.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250108121054.1126164-20-alex.bennee@linaro.org>
+Message-Id: <20250108121054.1126164-21-alex.bennee@linaro.org>
 
-diff --git a/tests/functional/qemu_test/uncompress.py b/tests/functional/qemu_test/uncompress.py
-index 6d02ded066..76dcf22385 100644
---- a/tests/functional/qemu_test/uncompress.py
-+++ b/tests/functional/qemu_test/uncompress.py
-@@ -10,8 +10,10 @@
- import gzip
- import lzma
- import os
-+import stat
- import shutil
- from urllib.parse import urlparse
-+from subprocess import check_call, CalledProcessError
+diff --git a/tests/functional/qemu_test/tuxruntest.py b/tests/functional/qemu_test/tuxruntest.py
+index 7227a83757..41a4945a14 100644
+--- a/tests/functional/qemu_test/tuxruntest.py
++++ b/tests/functional/qemu_test/tuxruntest.py
+@@ -73,17 +73,7 @@ def fetch_tuxrun_assets(self, kernel_asset, rootfs_asset, dtb_asset=None):
+         Fetch the TuxBoot assets.
+         """
+         kernel_image =  kernel_asset.fetch()
+-        disk_image_zst = rootfs_asset.fetch()
+-
+-        disk_image = self.scratch_file("rootfs.ext4")
+-
+-        check_call(['zstd', "-f", "-d", disk_image_zst,
+-                    "-o", disk_image],
+-                   stdout=DEVNULL, stderr=DEVNULL)
+-        # zstd copies source archive permissions for the output
+-        # file, so must make this writable for QEMU
+-        os.chmod(disk_image, stat.S_IRUSR | stat.S_IWUSR)
+-
++        disk_image = self.uncompress(rootfs_asset)
+         dtb = dtb_asset.fetch() if dtb_asset is not None else None
  
- from .asset import Asset
- 
-@@ -38,6 +40,24 @@ def lzma_uncompress(xz_path, output_path):
-             os.remove(output_path)
-             raise
- 
-+
-+def zstd_uncompress(zstd_path, output_path):
-+    if os.path.exists(output_path):
-+        return
-+
-+    try:
-+        check_call(['zstd', "-f", "-d", zstd_path,
-+                    "-o", output_path])
-+    except CalledProcessError as e:
-+        os.remove(output_path)
-+        raise Exception(
-+            f"Unable to decompress zstd file {zstd_path} with {e}") from e
-+
-+    # zstd copies source archive permissions for the output
-+    # file, so must make this writable for QEMU
-+    os.chmod(output_path, stat.S_IRUSR | stat.S_IWUSR)
-+
-+
- '''
- @params compressed: filename, Asset, or file-like object to uncompress
- @params uncompressed: filename to uncompress into
-@@ -59,6 +79,8 @@ def uncompress(compressed, uncompressed, format=None):
-         lzma_uncompress(str(compressed), uncompressed)
-     elif format == "gz":
-         gzip_uncompress(str(compressed), uncompressed)
-+    elif format == "zstd":
-+        zstd_uncompress(str(compressed), uncompressed)
-     else:
-         raise Exception(f"Unknown compression format {format}")
- 
-@@ -79,5 +101,7 @@ def guess_uncompress_format(compressed):
-         return "xz"
-     elif ext == ".gz":
-         return "gz"
-+    elif ext in [".zstd", ".zst"]:
-+        return 'zstd'
-     else:
-         raise Exception(f"Unknown compression format for {compressed}")
+         return (kernel_image, disk_image, dtb)
 -- 
 2.39.5
 
