@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E97CDA09A88
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:53:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92657A09A2D
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:49:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWK3H-0002Bi-UO; Fri, 10 Jan 2025 13:48:12 -0500
+	id 1tWK4g-0004yV-Cj; Fri, 10 Jan 2025 13:49:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK2h-0000QW-Hu
+ id 1tWK2j-0000RT-G3
  for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK2f-0001Cm-OJ
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:35 -0500
+ id 1tWK2g-0001Cu-AJ
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:47:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736534851;
+ s=mimecast20190719; t=1736534853;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=e/SgEHIcRdBYgVQTtKD0/BCAD1nVvQXOmSgaoZuaiys=;
- b=AKx8CcEB0N0MbMszofn4Qi0UdspMlhLcklgZCyIz7qL5yokTX0gRwTrZSA6iK1F1DUq4xg
- HqMaRILnB8eeVzxRnB4SuzaGSs5Bi+qCM2h+SqOOjMookHFmIdyP5ZgGOd22QAlK9RQHm5
- XFMo42OL8boALXGrhbBH4LgcreKKXR8=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2yAqjTt2W/272b7bDml1UKHxI7+gCBOSOR6mlAaYf50=;
+ b=a4+hJs2TcVMdJiUIr3p1erFyn/MWtVBv8oMjJ8p2FHH9KJCxWsPCL3KoHNlZpf0e21bIaL
+ pkAOsGOa28+vNHhYuVrJVTXhyrQ7MeTSbLt0ksBYduk2RjCk2YcMkgXwed2BU8EPmwJzOS
+ eDM2lDEITFxi1U5GwznaxGmC0O3bOW0=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-84-BaeizroDMzWZMDR9xpe9DQ-1; Fri, 10 Jan 2025 13:47:29 -0500
-X-MC-Unique: BaeizroDMzWZMDR9xpe9DQ-1
-X-Mimecast-MFC-AGG-ID: BaeizroDMzWZMDR9xpe9DQ
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-5d88d37abd0so2353299a12.0
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:47:29 -0800 (PST)
+ us-mta-408-iFtRjx6lNl-iFgIK_48ERQ-1; Fri, 10 Jan 2025 13:47:32 -0500
+X-MC-Unique: iFtRjx6lNl-iFgIK_48ERQ-1
+X-Mimecast-MFC-AGG-ID: iFtRjx6lNl-iFgIK_48ERQ
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-aa691c09772so216185366b.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:47:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736534848; x=1737139648;
+ d=1e100.net; s=20230601; t=1736534850; x=1737139650;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=e/SgEHIcRdBYgVQTtKD0/BCAD1nVvQXOmSgaoZuaiys=;
- b=hPRRRP0gpRYT2L1JHpOyZ0DEgFinlqQ1cmhP4IgL/z3qxOcVDzpRFgqbtS7f8Z6sS3
- ZuCRhrrMYRoYS65+ssORk4pnwAeMvXgSwLr3cimg/oKwBpEsdwoCiQkUoZBZcMd+/dxK
- PsQ0spJCQ8bRIztBd0p5l3XUXtZ0SyVwVivPEb0u2wfWeGU0vsUcefIN1aia+6oIcPXz
- HkGZyFpx5+J11lfsfNvcJ4ENut0Z08SoVPypNzYikGwIB9PAL1JnTtE2KmrnGIJy1xBO
- J5N12Vn0FJnBNPkUlcFHetscIKXTAysL6vZv6Z2hRnWRtIAFSJU8RQTp9qrGRo2YCFR7
- 65KQ==
-X-Gm-Message-State: AOJu0YwMeDDLf8gK+kamCYyN/D0X8soBE7AoKscJONdNxPhGFWhZGOtz
- JMAh7B9qaMilita/0lXQSI9v1bx16imBATFGg4CMnhP5SsT+9HZ7oMGfxLmYfLFx7gMViL3tWo8
- qRyHxnSUaEnyL1pyFYHqsvIAtdMDAyexCzESpoad2IIOdoEcOCOKTSwlma13uiZyRtN/AiFma+f
- GRvXI8m+DmfzPjJTL/g/EpRSdQVybb/7Ky+7BJo9Y=
-X-Gm-Gg: ASbGncs+Jv5jBQb6aGT5HaL9MbbkTuEb51+Y/Nhy4JSsIzeqhQddF0ltTak40Ob2y75
- J0YvAa/IlQDSTwx6Nuix7fuZZp3YCBQhn1twH4z8RfFe5mhs0R/8LeXBfMf1zx9msIh63QBB2j8
- y+hbDpAlWgjQASX0P/JSBzuRtwUgEWGac6GM4rNUEtfOlIIZ5GETP1Vjd3CgtV0EW7x95pI1CCh
- +BTVvAb0Ei/SS9Cw3b9uu8f63zYO9QVCh+OFvF7l8f/ZZHEaYeWkEHLyCo=
-X-Received: by 2002:a05:6402:270d:b0:5d3:d4cf:fea0 with SMTP id
- 4fb4d7f45d1cf-5d972e4c62emr9671029a12.21.1736534847684; 
- Fri, 10 Jan 2025 10:47:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHIwj9LGgzLXpOlyrrP/5XeuHgE/B/qaqZwaKSFqT8+BbtGDlrD+yBRMx0lARlI0LjGgsEsWA==
-X-Received: by 2002:a05:6402:270d:b0:5d3:d4cf:fea0 with SMTP id
- 4fb4d7f45d1cf-5d972e4c62emr9671019a12.21.1736534847210; 
- Fri, 10 Jan 2025 10:47:27 -0800 (PST)
+ bh=2yAqjTt2W/272b7bDml1UKHxI7+gCBOSOR6mlAaYf50=;
+ b=Kzfsk/TInSwtqM12GUPveC6qC8vOfGqH0vJnXuCHst6xDuOvBoqrL29QtWMQDF2heH
+ sKz6oFEvV2CT7MTFgwIaNG44fU2UT7WOD7QIunrcPYevJuo+ekV5z5IdXp6Jvppu95Bo
+ XGn8UwBrZaW37iaL6oRa/w/HpL5s8+7/QWhtWd2LKpkWVO1c+9ngMBMeQ9ZzqCF2VRv7
+ nnY4pg/oXqaZI91xGVBc7DrkLPW6QdzI9YZ5DfvFVc8bn4aaxreTjKT7hb/jt6xlwDPj
+ Ce2/4ZGbpH77fN4Kj4Bi0JqqjlETH4AriF1hxK8G97v1ht0TtZupuXnciAkXJMNvsxGb
+ HJsQ==
+X-Gm-Message-State: AOJu0YyZBOSRmAXO/74PdKuJi77PLaprJAxRpg0+AO+maF88qflZ9eSZ
+ dSg+dxjg1grKjQmOEhSTWQc5JtLdxdERDRUIjrsnENxPOrza9y6lWtIt2gPtDE3TjhruWJdlYTV
+ R0i1KU6GV2nCUkkMYRn09HndYJ6+WaY3zYzq1uet1uBuvLpphGgH5AgKpIywnzAKskxBdmGYMm0
+ vW1F5fMGk2WVV/aUv1RasXcUBw6YtQ2uLYip0fOE8=
+X-Gm-Gg: ASbGncuLFyi8sxhTwbyBglA1lGIht6oWDGxhccfD5ozEhnlWQyFvT5tMeBjCyp6NNg0
+ vjLyUXSdg4b0/uQxPqGZhpru4FAvJrLOadSgrf2Ry56ryjWRVwOcDprdJELk2dMUV9EroqPDKoz
+ EVIZvHqa2nuND2LAbTYb5W5lJ2jN/uah+jS9pUDuRu2dWqVOGmpOOASHJxu0klAe4mEMFFwQvMl
+ +xsevhKRk1bktEvByWCFTVhUNcQxBQ4Vd01NF2MIldFfmgDsGacw2MOLdA=
+X-Received: by 2002:a17:906:c106:b0:aa5:b1b9:5d6a with SMTP id
+ a640c23a62f3a-ab2abc91217mr1012730266b.54.1736534849695; 
+ Fri, 10 Jan 2025 10:47:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE2HeeieMfsxgWtHVTCcYPf4OIH1KPZaVR31h1wJvzTFkdegDKEtvoRei+tPTeEFoeQOBjHgg==
+X-Received: by 2002:a17:906:c106:b0:aa5:b1b9:5d6a with SMTP id
+ a640c23a62f3a-ab2abc91217mr1012728766b.54.1736534849271; 
+ Fri, 10 Jan 2025 10:47:29 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.105.73])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d9904a55f9sm1845875a12.81.2025.01.10.10.47.24
- for <qemu-devel@nongnu.org>
+ a640c23a62f3a-ab2c9060badsm193246066b.29.2025.01.10.10.47.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 10:47:24 -0800 (PST)
+ Fri, 10 Jan 2025 10:47:28 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 28/38] target/i386/kvm: Replace ARRAY_SIZE(msr_handlers) with
- KVM_MSR_FILTER_MAX_RANGES
-Date: Fri, 10 Jan 2025 19:46:09 +0100
-Message-ID: <20250110184620.408302-29-pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 29/38] i386/cpu: Extract a common fucntion to setup value of
+ MSR_CORE_THREAD_COUNT
+Date: Fri, 10 Jan 2025 19:46:10 +0100
+Message-ID: <20250110184620.408302-30-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250110184620.408302-1-pbonzini@redhat.com>
 References: <20250110184620.408302-1-pbonzini@redhat.com>
@@ -106,35 +107,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-kvm_install_msr_filters() uses KVM_MSR_FILTER_MAX_RANGES as the bound
-when traversing msr_handlers[], while other places still compute the
-size by ARRAY_SIZE(msr_handlers).
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-In fact, msr_handlers[] is an array with the fixed size
-KVM_MSR_FILTER_MAX_RANGES, and this has to be true because
-kvm_install_msr_filters copies from one array to the other.
-For code consistency, assert that they match and use
-ARRAY_SIZE(msr_handlers) everywehere.
+There are duplicated code to setup the value of MSR_CORE_THREAD_COUNT.
+Extract a common function for it.
 
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Link: https://lore.kernel.org/r/20241219110125.1266461-2-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/kvm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ target/i386/cpu.h                    |  2 ++
+ target/i386/cpu-system.c             | 11 +++++++++++
+ target/i386/hvf/x86_emu.c            |  3 +--
+ target/i386/kvm/kvm.c                |  5 +----
+ target/i386/tcg/system/misc_helper.c |  3 +--
+ 5 files changed, 16 insertions(+), 8 deletions(-)
 
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index f41462d8c19..e8c46d877e0 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2413,6 +2413,8 @@ static inline void cpu_x86_load_seg_cache_sipi(X86CPU *cpu,
+     cs->halted = 0;
+ }
+ 
++uint64_t cpu_x86_get_msr_core_thread_count(X86CPU *cpu);
++
+ int cpu_x86_get_descr_debug(CPUX86State *env, unsigned int selector,
+                             target_ulong *base, unsigned int *limit,
+                             unsigned int *flags);
+diff --git a/target/i386/cpu-system.c b/target/i386/cpu-system.c
+index 9d007afdab5..eb38cca68ff 100644
+--- a/target/i386/cpu-system.c
++++ b/target/i386/cpu-system.c
+@@ -309,3 +309,14 @@ void x86_cpu_get_crash_info_qom(Object *obj, Visitor *v,
+                                      errp);
+     qapi_free_GuestPanicInformation(panic_info);
+ }
++
++uint64_t cpu_x86_get_msr_core_thread_count(X86CPU *cpu)
++{
++    CPUState *cs = CPU(cpu);
++    uint64_t val;
++
++    val = cs->nr_threads * cs->nr_cores;  /* thread count, bits 15..0 */
++    val |= ((uint32_t)cs->nr_cores << 16); /* core count, bits 31..16 */
++
++    return val;
++}
+diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
+index 015f760acb3..69c61c9c073 100644
+--- a/target/i386/hvf/x86_emu.c
++++ b/target/i386/hvf/x86_emu.c
+@@ -765,8 +765,7 @@ void simulate_rdmsr(CPUX86State *env)
+         val = env->mtrr_deftype;
+         break;
+     case MSR_CORE_THREAD_COUNT:
+-        val = cs->nr_threads * cs->nr_cores;  /* thread count, bits 15..0 */
+-        val |= ((uint32_t)cs->nr_cores << 16); /* core count, bits 31..16 */
++        val = cpu_x86_get_msr_core_thread_count(cpu);
+         break;
+     default:
+         /* fprintf(stderr, "%s: unknown msr 0x%x\n", __func__, msr); */
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 6f424774b33..1d7214b6a65 100644
+index 1d7214b6a65..6c749d4ee81 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -5854,7 +5854,8 @@ static int kvm_install_msr_filters(KVMState *s)
-     };
-     int i, j = 0;
+@@ -2614,10 +2614,7 @@ static bool kvm_rdmsr_core_thread_count(X86CPU *cpu,
+                                         uint32_t msr,
+                                         uint64_t *val)
+ {
+-    CPUState *cs = CPU(cpu);
+-
+-    *val = cs->nr_threads * cs->nr_cores; /* thread count, bits 15..0 */
+-    *val |= ((uint32_t)cs->nr_cores << 16); /* core count, bits 31..16 */
++    *val = cpu_x86_get_msr_core_thread_count(cpu);
  
--    for (i = 0; i < KVM_MSR_FILTER_MAX_RANGES; i++) {
-+    QEMU_BUILD_BUG_ON(ARRAY_SIZE(msr_handlers) != ARRAY_SIZE(filter.ranges));
-+    for (i = 0; i < ARRAY_SIZE(msr_handlers); i++) {
-         KVMMSRHandlers *handler = &msr_handlers[i];
-         if (handler->msr) {
-             struct kvm_msr_filter_range *range = &filter.ranges[j++];
+     return true;
+ }
+diff --git a/target/i386/tcg/system/misc_helper.c b/target/i386/tcg/system/misc_helper.c
+index ffed8a3215e..c9c4d42f844 100644
+--- a/target/i386/tcg/system/misc_helper.c
++++ b/target/i386/tcg/system/misc_helper.c
+@@ -468,8 +468,7 @@ void helper_rdmsr(CPUX86State *env)
+         val = x86_cpu->ucode_rev;
+         break;
+     case MSR_CORE_THREAD_COUNT: {
+-        CPUState *cs = CPU(x86_cpu);
+-        val = (cs->nr_threads * cs->nr_cores) | (cs->nr_cores << 16);
++        val = cpu_x86_get_msr_core_thread_count(x86_cpu);
+         break;
+     }
+     case MSR_APIC_START ... MSR_APIC_END: {
 -- 
 2.47.1
 
