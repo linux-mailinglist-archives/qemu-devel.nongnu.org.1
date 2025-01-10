@@ -2,79 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F6BA09992
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:40:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54545A09A08
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:47:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWJuW-0006iK-4p; Fri, 10 Jan 2025 13:39:08 -0500
+	id 1tWK21-0000B2-BK; Fri, 10 Jan 2025 13:46:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1tWJu2-0006hZ-6o
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:38:40 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1tWJtx-00008z-Ge
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:38:36 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5d982bce8f9so4358197a12.1
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:38:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1736534310; x=1737139110; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LLeGbu+mBbz43ojcHulKk8qk8c0/BJozHyW/7M5x/Ds=;
- b=Jd9SCFaOqt8S8+eQUU27R/XopMLVmmr1HdqvUOVcYxyBBCWI/r4BLvLcBOaLD0bJxJ
- PSqUIUm+IUI9KzBP6B6lr6NYKxmu28h7DiwL018FaHqfswdSazlQtwZr0cP3U4spdEy5
- nC2WHDzrqiFZ1xkZVDBpIlCxIjwJ3XW9CpeJNvy8GXzPDx/PBPLAPuTCqtYyTg9Yi67h
- x3DSQIQIetQ75PFnNhuPJ+XtGWZJa1c6EhvV7ziZramws0pxp9X0FKx0aAkvP+WFMFFH
- In6xP4vFsR9dj2BL5pW4VnbusJ1sg5vnfm+olQM2cp1MLxiofQkSQgo+2kMgQdIdflDe
- FZBA==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tWK1h-0000Aj-Qy
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tWK1d-00014d-RQ
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736534787;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=sflwjc0tL1gMpYOzeVL6EmjxRPlyNgpEPjy2aYlxZVk=;
+ b=eKidW0t9hza4rCW1NBPTsqrYc7Ww0j81kdtiIEiXOCjygzdpezOgrzsooFAUukJQli57fG
+ PN0pZIufYjhc9UAqf2svZQOfo1Pdix0z6ZtH7ZoDTTfTUaEOiUtTISxn578prPqLIe6Eha
+ 0geum9H/46Lb+8+oyQGlCUVdl4ti/NU=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-145-IVSy_A4XN36OeACVQ8rW0w-1; Fri, 10 Jan 2025 13:46:24 -0500
+X-MC-Unique: IVSy_A4XN36OeACVQ8rW0w-1
+X-Mimecast-MFC-AGG-ID: IVSy_A4XN36OeACVQ8rW0w
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-aa691c09772so216107766b.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:46:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736534310; x=1737139110;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LLeGbu+mBbz43ojcHulKk8qk8c0/BJozHyW/7M5x/Ds=;
- b=k4J84ngZ31rpxLOKa5ihINAp5NWlbuf/EK2FQXex8rH2whuAl1lFs9dmgn4oq47HyZ
- NuQWlTUgaTzpO4Yg7oicsi6lGmHxmG6TEyiyfWRz0nl69RCBM5qpiJb5x0ai6ELbSbq2
- uQMigN9GV5LMwCDXJdkQjJVjYrYuC/woc+xTu2gLz6jE6jbB7YtAVYkNZQDEW413vduj
- IvfofPnoYQ+jFHcJfvOtcFquu+sN5Sxsin6jRjMq+9SOiMnH2wYJms2ZDde8OgjE9YqF
- ihcB6BG6z9DcyBlC1FVPc6YbUKhU+5fYyMq9C9N88TL1gvZNRbtirVjZnAVZUfjIOr0X
- 6P2A==
-X-Gm-Message-State: AOJu0Yw/2nhG718HVF2hl3LMHk/auwlnappsmpge9ngroFLfyB7+k/GW
- eSnqZy6xTvRSXUd9+6UOEqqyUDHLhu0Ap/gx19C81nGGg7NSvClgGQfec/fFjA8a27J54y2T/Mx
- SYUVr6reVT3ia8manl6MOxbClMlQ=
-X-Gm-Gg: ASbGnctNarKTiQTST6SsYGDWsmvfBMTUPy+W/Em8MV7FJ/j9p/ngZ4ut7qoiw/DJchc
- zLUYjJq+RlpIv/7haHYvpvx/WTXbVuHFWjlaH
-X-Google-Smtp-Source: AGHT+IH+5FOtboIu67b54NpB94p8wiJ6Xx4uWEj1nmRdCV1CZ6bTT7yHcbUXD6L8vdNv8+ztkrkn3q86jN41HMNUvCk=
-X-Received: by 2002:a05:6402:2548:b0:5d0:8106:aaf4 with SMTP id
- 4fb4d7f45d1cf-5d972e6442fmr9580018a12.21.1736534309436; Fri, 10 Jan 2025
- 10:38:29 -0800 (PST)
+ d=1e100.net; s=20230601; t=1736534783; x=1737139583;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=sflwjc0tL1gMpYOzeVL6EmjxRPlyNgpEPjy2aYlxZVk=;
+ b=uzJ/M1v1mdcYTVj7O5tSwcgkHlXO5IfG0+Vn7bnNI+nZW1Z+50QnPIl25frQdvl4rs
+ wm/5Td/FpKZobBdv8mfY4ZdHtfBi9sfseOjB/vNLSmZrZTuDMV6ZOq1fU1pg3PpjSVt1
+ WhFLQvXkTex50TuJkDKoJZU8Fzus7tPUFqkv1GzDiE+gtZfOryfFJaXq3e9LmYpSC93I
+ 5jlmGPbQ0OhMpCKC8Y81CnqjM4ZV5P/aQ2IsWj3QqwYIOFhlggCe0slbUfz5NqDs6aU6
+ d5ROJULs9LliFdu6V8qaw/6AA6t6woPaT9LHwDr3tLUfIeai6y0UQv1UBdLEp0Cd4mFz
+ L1YA==
+X-Gm-Message-State: AOJu0YwtG+kOWo01aclKSTfHJ+81bAhmwwBj2ltkpX7imD2qP+n7sUUA
+ b/25AVXNEJ1DwUX9YtUDZWWOZvliYLeMSbYdCunwFaoKoHbozVm3yG6slIP3qLdVwPLlP8CoKLI
+ Q6K/1efLJlE14mJx4kNnLqoHGOHLtk+EdKkSbV9Kg/JOatic22XOzzcJS9PKSxv2aO5FoydybbN
+ IhTUmuNcwY6f47IyU64kzfuhzMlet1mgmti8COx5o=
+X-Gm-Gg: ASbGncs2F7F5Kd9Fba/UFem4B1gke6Z1vSEb/lQfLq2jBS02f/YnRnANGHSYp+PrT1k
+ uFGMc0YtiZlN8M8OMu/WFm+xkcVynyUbIOPZT+MriVmaMK/54wOJa919Q71rivs45CxuWSohhLa
+ GXEBM2SejFBir+yyfJYpW65XoQ5r/9MPxQ31ZsO4XIanfwdvPrWNE2Ape2PEdd9KL/ZPSckFt/x
+ IMJ5Wx9CLyoBA5iPVq6Nr6oAvdJtNyfj5z/2hdjLfJFwTs8Xg4ybwfd9O8=
+X-Received: by 2002:a17:907:a784:b0:ab2:c1da:9217 with SMTP id
+ a640c23a62f3a-ab2c1da92e5mr843358566b.1.1736534782646; 
+ Fri, 10 Jan 2025 10:46:22 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEWh/l6iuZTbqBsWo8D9TwCXjazDl4DJuvCNxaP2W33/5918T9gj6HuZ0lrHujIaB55w39FCg==
+X-Received: by 2002:a17:907:a784:b0:ab2:c1da:9217 with SMTP id
+ a640c23a62f3a-ab2c1da92e5mr843356466b.1.1736534782158; 
+ Fri, 10 Jan 2025 10:46:22 -0800 (PST)
+Received: from [192.168.10.3] ([151.62.105.73])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ab2c95b20b1sm191180266b.157.2025.01.10.10.46.21
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 10 Jan 2025 10:46:21 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/38] Rust, i386 patches for 2024-01-10
+Date: Fri, 10 Jan 2025 19:45:41 +0100
+Message-ID: <20250110184620.408302-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-References: <20250110131754.2769814-1-alex.bennee@linaro.org>
-In-Reply-To: <20250110131754.2769814-1-alex.bennee@linaro.org>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Fri, 10 Jan 2025 13:38:17 -0500
-X-Gm-Features: AbW1kvbrLh-RPqX5MMNAJ7-pXMywdfHxsuMnbbTtyW9CtG8u4zYMt1zNxM59y1s
-Message-ID: <CAJSP0QU85dCHKDUwuW7w2QjBNkR+tJYgQS5wE2_n1yNNmc73kw@mail.gmail.com>
-Subject: Re: [PULL 00/32] testing updates for 10.0 (tuxrun, libvirt,
- dockerfiles, misc)
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.432,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,138 +101,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 10 Jan 2025 at 08:22, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
->
-> The following changes since commit bc6afa1c711da5b4f37c9685a812c77b114d84=
-cb:
->
->   Merge tag 'pull-xenfv-20250109-1' of https://gitlab.com/dwmw2/qemu into=
- staging (2025-01-09 08:39:32 -0500)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/stsquad/qemu.git tags/pull-10.0-testing-updates-1001=
-25-1
->
-> for you to fetch changes up to 70b7c929ba39f15a94fbc63d9be88e8da907cc46:
->
->   MAINTAINERS: Remove myself from reviewers (2025-01-10 11:18:38 +0000)
->
-> ----------------------------------------------------------------
-> Testing updates for 10.0
->
->   - update the tuxrun images to the latest baseline
->   - add the m68k tuxrun test
->   - ensure qtest checks the result of clock_step operations
->   - introduce new ztsd helper to functional tests
->   - ensure aarch64_virt test exits early when no TCG
->   - add new test to exercise virtio-vulkan
+The following changes since commit 6528013b5f5ba6bb3934b7f5fe57a3110680530f:
 
-Hi Alex,
-Please take a look at the following CI job failure and send a new
-revision of this pull request if something needs to be fixed:
-https://gitlab.com/qemu-project/qemu/-/jobs/8822037880#L593
+  Merge tag 'qga-pull-2025-01-06' of https://github.com/kostyanf14/qemu into staging (2025-01-06 09:39:02 -0500)
 
-Thanks,
-Stefan
+are available in the Git repository at:
 
->   - bump libvirt-ci to latest version
->   - move riscv64 cross container from sid to trixie
->   - remove workaround from mips containers now upstream updated
->   - fix VM tests to use correct path for local QEMU binary
->   - add ability to get a root debug shell on VM images
->   - add keymap dependency to vnc tests
->   - remove retiring maintainers from avocado and dockerfiles
->
-> ----------------------------------------------------------------
-> Alex Benn=C3=A9e (28):
->       tests/functional: update the arm tuxrun tests
->       tests/functional: update the i386 tuxrun tests
->       tests/functional: add a m68k tuxrun tests
->       tests/functional: update the mips32 tuxrun tests
->       tests/functional: update the mips32el tuxrun tests
->       tests/functional: update the mips64 tuxrun tests
->       tests/functional: update the mips64el tuxrun tests
->       tests/functional: update the ppc32 tuxrun tests
->       tests/functional: update the ppc64 tuxrun tests
->       tests/functional: update the riscv32 tuxrun tests
->       tests/functional: update the riscv64 tuxrun tests
->       tests/functional: update the s390x tuxrun tests
->       tests/functional: update the sparc64 tuxrun tests
->       tests/functional: update the x86_64 tuxrun tests
->       tests/qtest: remove clock_steps from virtio tests
->       system/qtest: properly feedback results of clock_[step|set]
->       tests/functional: remove hacky sleep from the tests
->       tests/functional: add zstd support to uncompress utility
->       tests/functional: update tuxruntest to use uncompress utility
->       tests/functional: remove unused kernel_command_line
->       tests/functional: bail aarch64_virt tests early if missing TCG
->       tests/functional: extend test_aarch64_virt with vulkan test
->       tests/lcitool: bump to latest version of libvirt-ci
->       tests/docker: move riscv64 cross container from sid to trixie
->       tests/vm: fix build_path based path
->       tests/vm: partially un-tabify help output
->       tests/vm: allow interactive login as root
->       pc-bios: ensure keymaps dependencies set vnc tests
->
-> Daniel P. Berrang=C3=A9 (1):
->       tests/lcitool: remove temp workaround for debian mips64el
->
-> Philippe Mathieu-Daud=C3=A9 (1):
->       dockerfiles: Remove 'MAINTAINER' entry in debian-tricore-cross.dock=
-er
->
-> Pierrick Bouvier (1):
->       tests/functional/aarch64: add tests for FEAT_RME
->
-> Wainer dos Santos Moschetta (1):
->       MAINTAINERS: Remove myself from reviewers
->
->  MAINTAINERS                                        |   3 +-
->  system/qtest.c                                     |  23 ++--
->  tests/qtest/libqos/virtio.c                        |   4 -
->  .gitlab-ci.d/cirrus/freebsd-14.vars                |   2 +-
->  pc-bios/keymaps/meson.build                        |  17 ++-
->  .../dockerfiles/debian-mips64el-cross.docker       |   9 ++
->  .../docker/dockerfiles/debian-riscv64-cross.docker |   4 +-
->  .../docker/dockerfiles/debian-tricore-cross.docker |   2 -
->  tests/functional/meson.build                       |   5 +
->  tests/functional/qemu_test/tuxruntest.py           |  12 +--
->  tests/functional/qemu_test/uncompress.py           |  24 +++++
->  tests/functional/test_aarch64_rme_sbsaref.py       |  69 ++++++++++++
->  tests/functional/test_aarch64_rme_virt.py          |  98 +++++++++++++++=
-++
->  tests/functional/test_aarch64_virt.py              | 117 +++++++++++++++=
-++----
->  tests/functional/test_arm_tuxrun.py                |  28 ++---
->  tests/functional/test_i386_tuxrun.py               |   8 +-
->  tests/functional/test_m68k_tuxrun.py               |  34 ++++++
->  tests/functional/test_mips64_tuxrun.py             |   8 +-
->  tests/functional/test_mips64el_tuxrun.py           |   8 +-
->  tests/functional/test_mips_tuxrun.py               |   8 +-
->  tests/functional/test_mipsel_tuxrun.py             |   8 +-
->  tests/functional/test_ppc64_tuxrun.py              |  16 +--
->  tests/functional/test_ppc_tuxrun.py                |   8 +-
->  tests/functional/test_riscv32_tuxrun.py            |   8 +-
->  tests/functional/test_riscv64_tuxrun.py            |  16 +--
->  tests/functional/test_s390x_tuxrun.py              |   8 +-
->  tests/functional/test_sparc64_tuxrun.py            |   8 +-
->  tests/functional/test_x86_64_tuxrun.py             |   8 +-
->  tests/lcitool/libvirt-ci                           |   2 +-
->  tests/lcitool/mappings.yml                         |  29 -----
->  tests/lcitool/refresh                              |   4 +-
->  tests/qtest/meson.build                            |   2 +-
->  tests/vm/Makefile.include                          |  29 ++---
->  tests/vm/basevm.py                                 |  12 ++-
->  tests/vm/generated/freebsd.json                    |   2 +-
->  35 files changed, 461 insertions(+), 182 deletions(-)
->  create mode 100755 tests/functional/test_aarch64_rme_sbsaref.py
->  create mode 100755 tests/functional/test_aarch64_rme_virt.py
->  create mode 100755 tests/functional/test_m68k_tuxrun.py
->
-> --
-> 2.39.5
->
->
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+
+for you to fetch changes up to d56b3fe297c307292e76d25358e2e3e367226c43:
+
+  i386/cpu: Set and track CPUID_EXT3_CMP_LEG in env->features[FEAT_8000_0001_ECX] (2025-01-10 19:44:25 +0100)
+
+----------------------------------------------------------------
+* rust: miscellaneous changes
+* target/i386: small code generation improvements
+* target/i386: various cleanups and fixes
+* cpu: remove env->nr_cores
+
+----------------------------------------------------------------
+Paolo Bonzini (19):
+      rust: fix --enable-debug-mutex
+      rust: add --check-cfg test to rustc arguments
+      rust: qom: add ParentField
+      rust: add a utility module for compile-time type checks
+      rust: macros: check that #[derive(Object)] requires #[repr(C)]
+      rust: macros: check that the first field of a #[derive(Object)] struct is a ParentField
+      rust: qom: automatically use Drop trait to implement instance_finalize
+      rust: qom: move device_id to PL011 class side
+      rust: pl011: only leave embedded object initialization in instance_init
+      rust: qom: make INSTANCE_POST_INIT take a shared reference
+      rust: qemu-api-macros: extend error reporting facility to parse errors
+      rust: qemu-api-macros: add automatic TryFrom/TryInto derivation
+      rust: qdev: expose inherited methods to subclasses of SysBusDevice
+      rust: hide warnings for subprojects
+      qom: remove unused field
+      make-release: only leave tarball of wrap-file subprojects
+      target/i386: improve code generation for BT
+      target/i386: use shr to load high-byte registers into T0/T1
+      target/i386/kvm: Replace ARRAY_SIZE(msr_handlers) with KVM_MSR_FILTER_MAX_RANGES
+
+Xiaoyao Li (10):
+      i386/cpu: Extract a common fucntion to setup value of MSR_CORE_THREAD_COUNT
+      i386/cpu: Drop the variable smp_cores and smp_threads in x86_cpu_pre_plug()
+      i386/cpu: Drop cores_per_pkg in cpu_x86_cpuid()
+      i386/topology: Update the comment of x86_apicid_from_topo_ids()
+      i386/topology: Introduce helpers for various topology info of different level
+      i386/cpu: Track a X86CPUTopoInfo directly in CPUX86State
+      i386/cpu: Hoist check of CPUID_EXT3_TOPOEXT against threads_per_core
+      cpu: Remove nr_cores from struct CPUState
+      i386/cpu: Set up CPUID_HT in x86_cpu_expand_features() instead of cpu_x86_cpuid()
+      i386/cpu: Set and track CPUID_EXT3_CMP_LEG in env->features[FEAT_8000_0001_ECX]
+
+Zhao Liu (9):
+      i386/cpu: Mark avx10_version filtered when prefix is NULL
+      target/i386/kvm: Add feature bit definitions for KVM CPUID
+      target/i386/kvm: Remove local MSR_KVM_WALL_CLOCK and MSR_KVM_SYSTEM_TIME definitions
+      target/i386/kvm: Only save/load kvmclock MSRs when kvmclock enabled
+      target/i386/kvm: Drop workaround for KVM_X86_DISABLE_EXITS_HTL typo
+      target/i386/confidential-guest: Fix comment of x86_confidential_guest_kvm_type()
+      target/i386/kvm: Clean up return values of MSR filter related functions
+      target/i386/kvm: Return -1 when kvm_msr_energy_thread_init() fails
+      target/i386/kvm: Clean up error handling in kvm_arch_init()
+
+ include/hw/core/cpu.h                              |   2 -
+ include/hw/i386/topology.h                         |  30 +++-
+ include/qom/object.h                               |   5 +-
+ target/i386/confidential-guest.h                   |   2 +-
+ target/i386/cpu.h                                  |  31 +++-
+ hw/core/cpu-common.c                               |   1 -
+ hw/i386/kvm/clock.c                                |   5 +-
+ hw/i386/x86-common.c                               |  22 +--
+ qom/object.c                                       |   1 -
+ system/cpus.c                                      |   1 -
+ target/i386/cpu-system.c                           |  11 ++
+ target/i386/cpu.c                                  | 119 ++++++-------
+ target/i386/hvf/x86_emu.c                          |   3 +-
+ target/i386/kvm/kvm.c                              | 197 ++++++++++-----------
+ target/i386/tcg/system/misc_helper.c               |   3 +-
+ target/i386/tcg/translate.c                        |   2 +-
+ target/i386/tcg/emit.c.inc                         |  59 ++++--
+ rust/hw/char/pl011/src/device.rs                   |  79 ++++-----
+ rust/hw/char/pl011/src/lib.rs                      |  28 +--
+ rust/qemu-api-macros/src/lib.rs                    | 150 ++++++++++++----
+ rust/qemu-api-macros/src/utils.rs                  |  26 +++
+ rust/qemu-api/meson.build                          |   3 +-
+ rust/qemu-api/src/assertions.rs                    |  90 ++++++++++
+ rust/qemu-api/src/irq.rs                           |   3 +-
+ rust/qemu-api/src/lib.rs                           |   1 +
+ rust/qemu-api/src/prelude.rs                       |   2 +
+ rust/qemu-api/src/qom.rs                           |  85 +++++++--
+ rust/qemu-api/src/sysbus.rs                        |  23 ++-
+ rust/qemu-api/tests/tests.rs                       |   4 +-
+ scripts/make-release                               |  31 +++-
+ scripts/rust/rustc_args.py                         |   2 +
+ subprojects/arbitrary-int-1-rs.wrap                |   3 +
+ subprojects/bilge-0.2-rs.wrap                      |   3 +
+ subprojects/bilge-impl-0.2-rs.wrap                 |   3 +
+ subprojects/either-1-rs.wrap                       |   3 +
+ subprojects/itertools-0.11-rs.wrap                 |   3 +
+ .../packagefiles/arbitrary-int-1-rs/meson.build    |   1 +
+ subprojects/packagefiles/bilge-0.2-rs/meson.build  |   1 +
+ .../packagefiles/bilge-impl-0.2-rs/meson.build     |   1 +
+ subprojects/packagefiles/either-1-rs/meson.build   |   1 +
+ .../packagefiles/itertools-0.11-rs/meson.build     |   1 +
+ .../packagefiles/proc-macro-error-1-rs/meson.build |   1 +
+ .../proc-macro-error-attr-1-rs/meson.build         |   1 +
+ .../packagefiles/proc-macro2-1-rs/meson.build      |   1 +
+ subprojects/packagefiles/quote-1-rs/meson.build    |   1 +
+ subprojects/packagefiles/syn-2-rs/meson.build      |   1 +
+ .../packagefiles/unicode-ident-1-rs/meson.build    |   1 +
+ subprojects/proc-macro-error-1-rs.wrap             |   3 +
+ subprojects/proc-macro-error-attr-1-rs.wrap        |   3 +
+ subprojects/proc-macro2-1-rs.wrap                  |   3 +
+ subprojects/quote-1-rs.wrap                        |   3 +
+ subprojects/syn-2-rs.wrap                          |   3 +
+ subprojects/unicode-ident-1-rs.wrap                |   3 +
+ subprojects/unicode-ident-1-rs/meson.build         |  20 ---
+ 54 files changed, 716 insertions(+), 369 deletions(-)
+ create mode 100644 rust/qemu-api-macros/src/utils.rs
+ create mode 100644 rust/qemu-api/src/assertions.rs
+ delete mode 100644 subprojects/unicode-ident-1-rs/meson.build
+-- 
+2.47.1
+
 
