@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B55A4A09A61
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:52:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BD67A09A1E
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 19:49:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWK2y-00012u-TZ; Fri, 10 Jan 2025 13:47:53 -0500
+	id 1tWK2W-0000El-Af; Fri, 10 Jan 2025 13:47:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK1w-0000C3-3w
+ id 1tWK1w-0000C4-4d
  for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:49 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tWK1q-00015Z-56
+ id 1tWK1s-00015k-0J
  for qemu-devel@nongnu.org; Fri, 10 Jan 2025 13:46:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736534799;
+ s=mimecast20190719; t=1736534801;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VgkejbxfBm5Z+fcfrq4PM2AVjZL5LxnPI4rmsBdS2Ng=;
- b=Gju39WL4RiUyRssQ6YMfbe44ZNK4wpsNIyysq4ErXdD+koVF+tbvuYk+Ecu8i2HtX1pjxr
- UogesI3XpyIeuhuDeiE6h7iwyvgDQQDsGnYyNklG2phDi7y99Vc4kHp9zaznOhzoDw63V6
- 9kDbn7v53z6+U9zuk1eNgkU7dbEYaws=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=KBR/uFjAg+sgDERa7azkccUfvjafKjeZQfYH4Q0wXiM=;
+ b=UIA4Hbl7Sca1ijj2jTHhBlcDMNquO04Y91AryojHqfiz8luDXtXg/3Hy+hrDINNmt1jTzr
+ +CU2ZKb/Ne5c3+KVmrYq4y5AxhVerQDUYn5VCrPMSD/UpRTE8QrRTKgV5qBjznmQt2iGQr
+ BHS0lFMGXfcghjed3dB2x3AC/VZC+qs=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-632-wvQozBUSMjWkSxFN08LEcg-1; Fri, 10 Jan 2025 13:46:38 -0500
-X-MC-Unique: wvQozBUSMjWkSxFN08LEcg-1
-X-Mimecast-MFC-AGG-ID: wvQozBUSMjWkSxFN08LEcg
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-5d3fe75a9f0so2264524a12.3
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:46:38 -0800 (PST)
+ us-mta-684-RxBQcHLxMMqZJvy3iFAsfQ-1; Fri, 10 Jan 2025 13:46:40 -0500
+X-MC-Unique: RxBQcHLxMMqZJvy3iFAsfQ-1
+X-Mimecast-MFC-AGG-ID: RxBQcHLxMMqZJvy3iFAsfQ
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-aa69c41994dso170101366b.0
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 10:46:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736534796; x=1737139596;
+ d=1e100.net; s=20230601; t=1736534798; x=1737139598;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VgkejbxfBm5Z+fcfrq4PM2AVjZL5LxnPI4rmsBdS2Ng=;
- b=HOoXA2lFwIDPtYoxS+Im3RNy6nu1VCrsJxLsvKdV63Ir6A/XwykTNqg24tmv25cgwd
- mR967HVOr05TkDNy8vwKgkFBv9r8wQdd9XiHJ1SmaGesKKDylZzZvexeCixebu2jxj+o
- 3BWN3J908zZguy/RToGA2VUM1WVtCtYz0mgwGzv3kptUI64mU7FBMFtj5fyXCkwNeRWZ
- jVF3t4JEmzxyOLwK5BzhPaCpBr843bPHIbD/ovJ3acqzowx2ID1M3RFLPQS2tzpe/1V/
- RgU6mWx61xlrgk+e0cVeeSbBwYGXAQNlJHg49tw8542N9YRq1a7uJ4uJD7PG9cyRd9Qh
- F7Zw==
-X-Gm-Message-State: AOJu0YxaaRSqTCCLpBqmc5dSXp3lvTlD/pEe3FyW2qoGI3ZYP7pPoW7/
- /1sKMU3V5w5CI+15RGyishY/tgWywMpwNsVAlW8lVFgHqVDFNDlBrw82sP1eq2BzrBI/tdJgOZA
- yP4FrofHJO1EHXaPj7UADogMsVTxVNeH1qsRG3uQBtRaweQQDwJ92jX1Wa9XyINZcfOvnQcMT/O
- Nfy/+lFtbEbM2djosKIP7FoAsEUShqeRi+VqyiEI8=
-X-Gm-Gg: ASbGncuFiNGY08GJm460fJzIC80ZjIE5x/LHADFZ3wSHiDwVRoC4a8rt/zw2EW4d4+9
- rZFeHLgrbJ5T8kY7MwLKa1xtsk/05gAx88g8A/q7NkZOfMqmXHLyXP9bktVtJmzVuSXi2CrBsle
- sGOkQzwygURjxo0NlgklLeoiB4I+i3nPygH/8EzCH0QE1He4s2cWhSELxGNYOwRFOwvSQ99B6F7
- Gvj9sAHxNCsI35m1JjnVal9FOTCtPq9A2PRJvP4lMDgeAnCnzHJggPPBMM=
-X-Received: by 2002:a05:6402:51cf:b0:5d3:bc1d:e56d with SMTP id
- 4fb4d7f45d1cf-5d972e70310mr10034831a12.31.1736534796159; 
- Fri, 10 Jan 2025 10:46:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH6TPbCmZKnWbaWfGBaUn0/ENicWa7Esf12w48vFKCAWso9g2vdYvh+njXfN1tUVVQD5xHnAw==
-X-Received: by 2002:a05:6402:51cf:b0:5d3:bc1d:e56d with SMTP id
- 4fb4d7f45d1cf-5d972e70310mr10034801a12.31.1736534795644; 
- Fri, 10 Jan 2025 10:46:35 -0800 (PST)
+ bh=KBR/uFjAg+sgDERa7azkccUfvjafKjeZQfYH4Q0wXiM=;
+ b=Q8IYDyDgi8Mgi4+J79VbUx269c4Rr1HcG5J8OAi1ecV4Sr8bKaa5f9MerephvqjoW2
+ w9KcUt0ckZmGy5KtE3r1BRW+yJege3h+Gqxlxbl/KazfcJx1YylaeFe3ivv+6nNuVdbR
+ 4Xz2AvNyToaBqu/ZtpuVJ/CWkTs7w+Vj5ZbLjZeDMlJh2hhjKbdv1dxeRn0Lw7BR5IMY
+ xZz6gzLb2RepV1UEVXB905f4vPhkNMU7EKKVqyGVwuuVwN97gP8l+JBSnvnQ3q+mY868
+ Q5IXhHeX3KwGlJcw3j6RgTg3vcI3UXzFQtPADXHtbsQIehenkRGoPhL3HPXhu9mQuuap
+ /Nbg==
+X-Gm-Message-State: AOJu0YyyMqGQPzwR9iv/7ThmbkhpK0m4YeI94aGkuXchgbRXqaZ8iyuF
+ XRa0zngFVmEaykathysqYzc/i1k9zxBKXgcNxF+1DdIGgaraUMyXHKk83g3RAnZ9OdJydkbsOQ5
+ sY7wtjGzRTGoXCfxrBb3AKFy0hYH0s+CqwlYAG67ixcgthGzy6P50xQ/2V2rhTWCgWzT2JQICNt
+ RKfvGjSXwqMZn0ONR0eb5rprQo5f1WXxSmFaP4Ud4=
+X-Gm-Gg: ASbGncuZZufOTyXC1TJ9r4HvL0/e4N4Ji0Dp8lEc2ORsOAT5MlQE7U4H0e992ZelqTO
+ 63Zj4eofFujQNA0poMaqmm2d/mwZeDaJCUBvpN6pQLCKLq91XnpQDL4mwIOda9krEZ0WlEq81NU
+ SBiPx3A1cIfFx1c4xCQtAcHtYtElr4lLdyISbFPFN9jS5AuacUaaA7hKigqdWiLShVKxE+P8uWg
+ eaJbquUVYqQyUpRvajsGYoluK4afTct/cFvoKV6dLx3hAxf90o/a59GGWI=
+X-Received: by 2002:a05:6402:4310:b0:5d6:48ef:c19f with SMTP id
+ 4fb4d7f45d1cf-5d972e708a1mr26256487a12.29.1736534798464; 
+ Fri, 10 Jan 2025 10:46:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGmJX3Pubw9RmVY5LHah+mvaqqwDsZjHdPSmVQYMun/126OcezaDJLjyocjjwnGRGRCTFgxFQ==
+X-Received: by 2002:a05:6402:4310:b0:5d6:48ef:c19f with SMTP id
+ 4fb4d7f45d1cf-5d972e708a1mr26256439a12.29.1736534798034; 
+ Fri, 10 Jan 2025 10:46:38 -0800 (PST)
 Received: from [192.168.10.3] ([151.62.105.73])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d99008c39fsm1936935a12.13.2025.01.10.10.46.34
+ a640c23a62f3a-ab2c905cd15sm193313866b.5.2025.01.10.10.46.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 10:46:34 -0800 (PST)
+ Fri, 10 Jan 2025 10:46:36 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 06/38] rust: macros: check that the first field of a
- #[derive(Object)] struct is a ParentField
-Date: Fri, 10 Jan 2025 19:45:47 +0100
-Message-ID: <20250110184620.408302-7-pbonzini@redhat.com>
+Subject: [PULL 07/38] rust: qom: automatically use Drop trait to implement
+ instance_finalize
+Date: Fri, 10 Jan 2025 19:45:48 +0100
+Message-ID: <20250110184620.408302-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250110184620.408302-1-pbonzini@redhat.com>
 References: <20250110184620.408302-1-pbonzini@redhat.com>
@@ -106,89 +106,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Replace the customizable INSTANCE_FINALIZE with a generic function
+that drops the Rust object.
+
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api-macros/src/lib.rs | 46 +++++++++++++++++++--------------
- 1 file changed, 27 insertions(+), 19 deletions(-)
+ rust/qemu-api/src/qom.rs | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
-index 160b283d7fd..0f04cca3841 100644
---- a/rust/qemu-api-macros/src/lib.rs
-+++ b/rust/qemu-api-macros/src/lib.rs
-@@ -19,6 +19,27 @@ fn from(err: CompileError) -> Self {
-     }
+diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
+index 40d17a92e1f..b0332ba2477 100644
+--- a/rust/qemu-api/src/qom.rs
++++ b/rust/qemu-api/src/qom.rs
+@@ -180,6 +180,16 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+     T::class_init(unsafe { &mut *klass.cast::<T::Class>() })
  }
  
-+fn get_fields<'a>(
-+    input: &'a DeriveInput,
-+    msg: &str,
-+) -> Result<&'a Punctuated<Field, Comma>, CompileError> {
-+    if let Data::Struct(s) = &input.data {
-+        if let Fields::Named(fs) = &s.fields {
-+            Ok(&fs.named)
-+        } else {
-+            Err(CompileError(
-+                format!("Named fields required for {}", msg),
-+                input.ident.span(),
-+            ))
-+        }
-+    } else {
-+        Err(CompileError(
-+            format!("Struct required for {}", msg),
-+            input.ident.span(),
-+        ))
-+    }
++unsafe extern "C" fn drop_object<T: ObjectImpl>(obj: *mut Object) {
++    // SAFETY: obj is an instance of T, since drop_object<T> is called
++    // from the QOM core function object_deinit() as the instance_finalize
++    // function for class T.  Note that while object_deinit() will drop the
++    // superclass field separately after this function returns, `T` must
++    // implement the unsafe trait ObjectType; the safety rules for the
++    // trait mandate that the parent field is manually dropped.
++    unsafe { std::ptr::drop_in_place(obj.cast::<T>()) }
 +}
 +
- fn is_c_repr(input: &DeriveInput, msg: &str) -> Result<(), CompileError> {
-     let expected = parse_quote! { #[repr(C)] };
+ /// Trait exposed by all structs corresponding to QOM objects.
+ ///
+ /// # Safety
+@@ -442,7 +452,6 @@ pub trait ObjectImpl: ObjectType + ClassInitImpl<Self::Class> {
  
-@@ -36,7 +57,12 @@ fn derive_object_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream
-     is_c_repr(&input, "#[derive(Object)]")?;
+     /// Whether the object can be instantiated
+     const ABSTRACT: bool = false;
+-    const INSTANCE_FINALIZE: Option<unsafe extern "C" fn(obj: *mut Object)> = None;
  
-     let name = &input.ident;
-+    let parent = &get_fields(&input, "#[derive(Object)]")?[0].ident;
-+
-     Ok(quote! {
-+        ::qemu_api::assert_field_type!(#name, #parent,
-+            ::qemu_api::qom::ParentField<<#name as ::qemu_api::qom::ObjectImpl>::ParentType>);
-+
-         ::qemu_api::module_init! {
-             MODULE_INIT_QOM => unsafe {
-                 ::qemu_api::bindings::type_register_static(&<#name as ::qemu_api::qom::ObjectImpl>::TYPE_INFO);
-@@ -53,30 +79,12 @@ pub fn derive_object(input: TokenStream) -> TokenStream {
-     TokenStream::from(expanded)
- }
- 
--fn get_fields(input: &DeriveInput) -> Result<&Punctuated<Field, Comma>, CompileError> {
--    if let Data::Struct(s) = &input.data {
--        if let Fields::Named(fs) = &s.fields {
--            Ok(&fs.named)
--        } else {
--            Err(CompileError(
--                "Cannot generate offsets for unnamed fields.".to_string(),
--                input.ident.span(),
--            ))
--        }
--    } else {
--        Err(CompileError(
--            "Cannot generate offsets for union or enum.".to_string(),
--            input.ident.span(),
--        ))
--    }
--}
--
- #[rustfmt::skip::macros(quote)]
- fn derive_offsets_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream, CompileError> {
-     is_c_repr(&input, "#[derive(offsets)]")?;
- 
-     let name = &input.ident;
--    let fields = get_fields(&input)?;
-+    let fields = get_fields(&input, "#[derive(offsets)]")?;
-     let field_names: Vec<&Ident> = fields.iter().map(|f| f.ident.as_ref().unwrap()).collect();
-     let field_types: Vec<&Type> = fields.iter().map(|f| &f.ty).collect();
-     let field_vis: Vec<&Visibility> = fields.iter().map(|f| &f.vis).collect();
+     /// Function that is called to initialize an object.  The parent class will
+     /// have already been initialized so the type is only responsible for
+@@ -478,7 +487,7 @@ pub trait ObjectImpl: ObjectType + ClassInitImpl<Self::Class> {
+             None => None,
+             Some(_) => Some(rust_instance_post_init::<Self>),
+         },
+-        instance_finalize: Self::INSTANCE_FINALIZE,
++        instance_finalize: Some(drop_object::<Self>),
+         abstract_: Self::ABSTRACT,
+         class_size: core::mem::size_of::<Self::Class>(),
+         class_init: Some(rust_class_init::<Self>),
 -- 
 2.47.1
 
