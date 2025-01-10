@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CC0FA091DD
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 14:26:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31992A091C3
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Jan 2025 14:23:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWEza-0000Q5-Ra; Fri, 10 Jan 2025 08:24:04 -0500
+	id 1tWEu3-0004mv-Pe; Fri, 10 Jan 2025 08:18:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tWEz4-0008LL-IH
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:23:32 -0500
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tWEtx-0004j8-5q
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:18:13 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tWEz2-0005cc-0X
- for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:23:30 -0500
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-aa6b4cc7270so314147666b.0
- for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 05:23:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tWEtv-0004lJ-AK
+ for qemu-devel@nongnu.org; Fri, 10 Jan 2025 08:18:12 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-385e1fcb0e1so1135133f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 10 Jan 2025 05:18:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736515406; x=1737120206; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=48g6qRzdUsGJbWFtW2KgF8TjHic1pStKCydxHudcjoc=;
- b=aLFZrCWyUzeyjJTLMBQm/Hf2x8lv/Upjusr+hbsJktldiucA4dwe4uky4xElIPlj+U
- hzlTU494JTPirAvags14wo0FZx8Mumy/H/YWSVMhNONCgF5KNNSW4dMNMrewB7622FNU
- TPJyyCTtkmdHIrmAONN2t+18Ky1Kt/dsKo93t1cgYjqINAUDJeUqLouIn0BecFRs5f8H
- KE4FkLr29bjtQlYfNt27cph9S1xT9v7lB4JdDjEbpJQzbrfgy7/+To/D+5Vt4hYWbMW/
- sr5h/M81mLroXUBryvF1LM6KSTDA/oxAR+VROpoB/TLW6CDGoArgMot4+AiKsG67Bj43
- pAcQ==
+ d=linaro.org; s=google; t=1736515087; x=1737119887; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=G6m+LB9f0+FAeO/cFtzArunkaJPA+oUICfxUzb3XVSM=;
+ b=e3RXPLsZqMNP9QR65uVV3bbGbe6nIBb6PXzylNMZ07zCg6SRswEvDm9bVIVjYN8c5T
+ Fe7xgv5Q6D3RzgQRoFT6wXg2CD/7gCJzFxuKPRQ4uUIzsmJT2saThKDn0+s4Dc0ZAi54
+ HuMWCHNRbaaerh43tS7Hnz5xnSLyiAmCFMzxP5WZJ2Se4n59CUKxuFQoDKWzdSoLrrjI
+ uPMoLg40eP+9NFjae4+DcKdr6KwBqdgJkxZrWpfFfwH0KxkGWGDdlUr08OvnbFA96yK2
+ rwGSdgh0gIECaJJXaSePmY5o4Ce0V5fHWQmN8yKJtsqCm7xuOnCsEOxnPRWYQofS+WHZ
+ FX+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736515406; x=1737120206;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=48g6qRzdUsGJbWFtW2KgF8TjHic1pStKCydxHudcjoc=;
- b=OT3ex9risu49Ig9InkmqcdF59DLV80UXBs7Go3WDwcwTqw+6iyL8HMZy6cSaQ68ZBV
- GIorIDYJImhyGaUdAJbTZqXuUeqekRu6fFERddlf0EQiLK79/oPNZxDzL7l0nN4WJ6WX
- DEbZyVH9edZvUwy8iVk7Y79xQTJ3yKEojBVnETImAfED4UPor3idrNLItHmJ959ItreO
- iUUH66HSub5nbaHF7WYp3QIasYHWxrcYfB/rvV24hWD/nqiv3JuLW3DMPQyQL7eH3Ce+
- 45sccFbWdSIX+180wg80gNhH42K9v9NAJ35NlNEaas0Pj52jFrZHnviZkTIN1vO403B9
- T2MQ==
-X-Gm-Message-State: AOJu0YyNmzUjLxQCy82Q/ku4Wznu/tFnfjwK/lirRgQRxYx3Uf3MT8LS
- P5bMTD4uUXgvkum6zZnyICN+GH1IDyEsrfoDI/dEWzgj77Xz+ZpkUyei/rc0iy8=
-X-Gm-Gg: ASbGncuP8wIftwHy0jKYlttaL63mO6pAhlvkCpiFCllFLdUFepTOXMHdABGT7eUnA+I
- hMNwR30u8MkPDmILH5M41QrUDF0/WVmuzTPDHm/7xk4cf/+MySyWy9xD9YwljJ2lDjE1WvjESdR
- XZqtqR4Bo2ZmyZyiTGKANYELrdzA3AjhigDsWLQ35Xk+CiJH+JhZrFPd23TUu8VHfA9c4AX9f1y
- 2r3KrdcAfQf1MG482ddxSkYkIoTNGGL8IvimLVB+2/0KkTB9MjWRRA=
-X-Google-Smtp-Source: AGHT+IE7YYPbhoTVIt+lMRUOWF2wKnOuo1GzsMi2ta8Cem4H+VwFvFoReemcgrpxXy7OG5ThzsXveg==
-X-Received: by 2002:a05:6402:2548:b0:5d4:2ef7:1c with SMTP id
- 4fb4d7f45d1cf-5d972e639e4mr23324001a12.24.1736515406264; 
- Fri, 10 Jan 2025 05:23:26 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c90dace5sm169304366b.60.2025.01.10.05.23.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Jan 2025 05:23:22 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0022A618BC;
- Fri, 10 Jan 2025 13:17:57 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 32/32] MAINTAINERS: Remove myself from reviewers
-Date: Fri, 10 Jan 2025 13:17:54 +0000
-Message-Id: <20250110131754.2769814-33-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250110131754.2769814-1-alex.bennee@linaro.org>
-References: <20250110131754.2769814-1-alex.bennee@linaro.org>
+ d=1e100.net; s=20230601; t=1736515087; x=1737119887;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=G6m+LB9f0+FAeO/cFtzArunkaJPA+oUICfxUzb3XVSM=;
+ b=HN90hUPP9OHUR98rvI3NsjAyR15SHVBUHVMlEMHjzC3oeb4fBIcAIQQZMfEBv+duN1
+ +EkAJW2V+MV+PkrEvylIcvFqTRK+iuSr4bz0g3I+vgzQg8s2YTyJmrufrSVKxQ5JF9z1
+ CKBxLO8nFtfe6GwHWZILXbjo7YmotPS4fcviXcZEARwhHw4OvEYd4zhGUnWcG2ydIgfb
+ 7+qe12oT7lz1d6QXc/EbThkhzJMWf48qgCpaVtfGshZklW2yikTCZsnqkIB2bB66HE/n
+ hsW4rih5pI1NWsQwp2kyu6qnlrlkb772QUGFbVFVmqYEGilcEApBIErnowYkCjagml+W
+ HyVA==
+X-Gm-Message-State: AOJu0Yw2ryNTaTFHnr7kL50gqCbWSe68YLTWzbU1WM680bcrBF8seXhT
+ SKRLv1/Y+ZpCzon/ASPJNWnGNU5ouDm8MiHqZGG8E4A5cJZTRF6dvRMpuSySpggezew75nXnC0W
+ si5Y=
+X-Gm-Gg: ASbGncuEyA9RSvRNTwdO4Ztf9uX1W0DsFXwUpmPIeUX6USRIYGgYnGy7Sf+Uw3gqIoe
+ X5EVjtstieWswu6CDNFiTo/Q+Ex02RJp2tBTFkSxcCJup0B8WZbjE14WKejIFoieNwR720aOafs
+ STtL5m2/Mqi4iCGWOzwacjFx+srEAh8LwvKCOi7pyjDxBR7A5oPSzh817ioGKmaARv2fThWcVZW
+ lXFZZDDw4GCs0E22ocAv+a+dw/fjUireh5wFJgFsuBsponVcjPdz/fjKf0KuhPQf2oUmzNuUlWP
+ EPE7YCpWWnHXyznseD3wITciBhY=
+X-Google-Smtp-Source: AGHT+IGbVrk9o4b2kM/ohgmhzb0qZTvg9IPgyiDsfNvU7cWENAY+r9LLkbQ0yYNxyDn9evWXKwTaCA==
+X-Received: by 2002:a05:6000:1a85:b0:385:e0d6:fb48 with SMTP id
+ ffacd0b85a97d-38a872f6f22mr8570700f8f.7.1736515086686; 
+ Fri, 10 Jan 2025 05:18:06 -0800 (PST)
+Received: from [192.168.1.74] (88-187-86-199.subs.proxad.net. [88.187.86.199])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-436dd1682e4sm59714125e9.1.2025.01.10.05.18.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 10 Jan 2025 05:18:06 -0800 (PST)
+Message-ID: <0882cfb2-367f-4a6e-a1ba-784f2b1714e6@linaro.org>
+Date: Fri, 10 Jan 2025 14:18:05 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/6] hw/core: Unify hotplug decision logic
+To: qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20250110091908.64454-1-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250110091908.64454-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,39 +100,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Wainer dos Santos Moschetta <wainersm@redhat.com>
+On 10/1/25 10:19, Philippe Mathieu-Daudé wrote:
+> Akihiko's v4 patch was doing too many things at once to
+> my taste, so I split it to follow dumbly each steps.
+> https://lore.kernel.org/qemu-devel/20250104-bus-v4-1-244cf1c6e2aa@daynix.com/
+> 
+> Akihiko Odaki (6):
+>    hw/qdev: Pass bus argument to qdev_hotplug_allowed()
+>    hw/qdev: Factor qdev_hotunplug_allowed() out
+>    hw/qdev: Introduce qdev_hotplug_unplug_allowed_common()
+>    hw/qdev: Check DevClass::hotpluggable in hotplug_unplug_allowed_common
+>    hw/qdev: Check qbus_is_hotpluggable in hotplug_unplug_allowed_common
+>    hw/qdev: Check machine_hotplug_handler in
+>      hotplug_unplug_allowed_common
 
-The time I spent contributing to QEMU was great, but I've not been active
-for a long time now. So removing myself from the reviewers list of
-"Integration Testing with the Avocado framework" and
-"Build and test automation" subsystems.
-
-Signed-off-by: Wainer dos Santos Moschetta <wainersm@redhat.com>
-Message-Id: <20250103194450.360789-1-wainersm@redhat.com>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250108121054.1126164-33-alex.bennee@linaro.org>
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index cab9018d9f..c1d954c9de 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4152,7 +4152,6 @@ M: Alex Bennée <alex.bennee@linaro.org>
- T: git https://gitlab.com/stsquad/qemu testing/next
- M: Philippe Mathieu-Daudé <philmd@linaro.org>
- M: Thomas Huth <thuth@redhat.com>
--R: Wainer dos Santos Moschetta <wainersm@redhat.com>
- S: Maintained
- F: .github/workflows/lockdown.yml
- F: .gitlab-ci.yml
-@@ -4198,7 +4197,6 @@ Integration Testing with the Avocado framework
- W: https://trello.com/b/6Qi1pxVn/avocado-qemu
- R: Cleber Rosa <crosa@redhat.com>
- R: Philippe Mathieu-Daudé <philmd@linaro.org>
--R: Wainer dos Santos Moschetta <wainersm@redhat.com>
- S: Odd Fixes
- F: tests/avocado/
- 
--- 
-2.39.5
-
+Akihiko, are you OK with this split?
 
