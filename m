@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2131A0A551
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Jan 2025 19:41:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6AE9A0A546
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Jan 2025 19:39:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWgMZ-00077d-Bj; Sat, 11 Jan 2025 13:37:35 -0500
+	id 1tWgMa-00078C-Q1; Sat, 11 Jan 2025 13:37:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tWgMV-00073c-Ns; Sat, 11 Jan 2025 13:37:31 -0500
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ id 1tWgMX-000767-NU; Sat, 11 Jan 2025 13:37:33 -0500
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tWgMU-0003vD-5e; Sat, 11 Jan 2025 13:37:31 -0500
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-aaeecbb7309so568967166b.0; 
- Sat, 11 Jan 2025 10:37:29 -0800 (PST)
+ id 1tWgMW-0003vh-5f; Sat, 11 Jan 2025 13:37:33 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-aab925654d9so589712966b.2; 
+ Sat, 11 Jan 2025 10:37:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1736620648; x=1737225448; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1736620649; x=1737225449; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vwaUYglCz5HiwshtDxMwHXFy/Vt9VTZk7BnhuaVWzvw=;
- b=SuPuejRkb7fDDFdM/moA3irk6BRSLKbjABuONAm/wiAIPh0n5x5a1kSJVVFCHYtGKi
- ML2hk8CT2UCPEj8p6RuTxP/h29ut4u27DF1iBCUuDBlhtD4aHtvNI26Yn4iQlAhyTQuO
- TiYWkPzeE7gqbLpOg6D93MAc4UArH2g/uAXgM90lH7lG2hRIqgxToJjZfgH5YbFPgPUO
- VeyOJxyAPNUrJM8AcQiABQ4O438Mz4TTbpqc208KebXsFxYieiKaGOKPZt/1NFWvXAmC
- t/3ZOi/UIXi/Zz0ClhNuEuLdphdNYTyFWUNfJlVwfuCXUnZme7Yxq7VA10FiXZq0XYeD
- 2WsA==
+ bh=kOFttKKVOfYxpHBSao0DEUzlTB31JRtFpeweJdc48Qg=;
+ b=ZDspemxrqVuq73Gsf8+TrZvMtJc3t788nkMnsYCmUqHPIklsGBytJlm7XkHD26jz7v
+ LZpe1QaLe10gCABKPlk26PnoEcWUEM5L8t3TsBZiKzxW3xTfNDOdLB4FYEvgPgnDMLpJ
+ T4Djr2qe3lmzV8o6YeuJcvALgIneY7QV5/L9ghPyA2oUqDuKz2ipwmpohc3p8yHRrOPl
+ MnjK2OlYAf3Vovw90wjAz/Yjx55L/kMbTG9c8CJgM176GFbI6fYPcyrRRVR1dnS3Z9tG
+ XX0eoZ7t9nfIap50lnwbw+v1VR5kzLGNGNNlF6X/quZRH2gPcO6HFGtrNoFeXFoWcVYg
+ 5xDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736620648; x=1737225448;
+ d=1e100.net; s=20230601; t=1736620649; x=1737225449;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vwaUYglCz5HiwshtDxMwHXFy/Vt9VTZk7BnhuaVWzvw=;
- b=MW3UCqPgmkl2ial6U/M4Yx13FgBNzNgLs6+iX8ZmQuJNN3WU8mM3oywNq+/Wkygb8M
- jUqGygX35nTVMo9Vc2FlNToeZZS+LMAxZWYG+eZyHrAhmsCrGSWHMYTmIi1esjPGZoQV
- 0z9A8MzmN4h6vSXgsdZ5U/zrL2oyq8xvth+TOtZsZZ8t2r3dxLEggYMph/MxP7XsrLJq
- lL6kMdQL40pl0RqTVMBg29VCmR5NNKHjMpFDw+VcFI9hAJLHsZScDDQoijZ34XXZ0Ph5
- BXvD9ZNdX/TpSmQ54dpzsXi3m+l+K1iDNuXd1MWFPjbQtGYzh+lB3tKazReoIdk7xkbI
- z/gA==
+ bh=kOFttKKVOfYxpHBSao0DEUzlTB31JRtFpeweJdc48Qg=;
+ b=pYDquuSAg8hxkIMHXQ21zNGiOjDxN86QHfSGggSPhAUtBRzeRmOnBZWEOxfxq6iomW
+ 8dAonnZa5hSaVRWFBajsgl17kQ+PwSycRqUOn+iinNhesZiXWWuOqnTMKl8YLpDBzTIe
+ rl20RBWRxPCSPs2VnhUk/jdMRbRSI1/4IBeI/+H+uBo9yZtlYPRhk2NpsgK4cGfgpodq
+ JsrKAYbAsxfPbeEtzNZeGhY2a+cGboq4E5UXd23IwOQ7n4zBH7hQfLQqtS43dj/Sk4NQ
+ pZoehT+E9wREt4oeljc8JlMT+nl+TPREcuoFLFFurBMOSfmSNQR8qEAPQbBVs6soQ6BW
+ ml7g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVhSR9zuRDxZigCsKH8rim1UrvKXJTmc3xOy52JgZA6C6IXHEBvK4ruI5uKtsuzARN0hKtc80fS2w==@nongnu.org,
- AJvYcCXvUFjSPNQBxHoKJi76LZEowhFjCEsBN/80QuA894e+jLoOIw/z1XeA3KCvrhczrF+giZCSD4CtDArvqw==@nongnu.org
-X-Gm-Message-State: AOJu0YwTjqc164HoWh0eTHrZJ4q5e0FE48ouo+PH7FmaBKxdvUB7yYr2
- eM9ODGXi754tEdsxLKzbqOpgRBPHF5kTstDXWq9JNea/x3h7Ht27YIFb/Q==
-X-Gm-Gg: ASbGncvrlGvbB+kHO9za4b3PFmpaQ6k2l6yMIzFpxdozA8i+k/iQHZJZ0UYA9g79LWs
- YwvREkHTkbs6jI7P2qlHsXs0irmS6fFEeN1fu8toOYrj5tOEUVM0j3qF6lEx90RBBifn0a6F8tT
- 9bJeakdmihRkxNDYks5s3siNkISxdOvfzLhJI2yxEJ8iZplHADl+H4UyXfKZr1yJQaSTeRWhVS2
- JuSCrcYUk196hNnO/CVO/3SWyyA+DsaaJxQ4VsBwlEIqr1R15pk8G9VlrT9KxnV9WPaHl/hYdqd
- 7WTi9yAnGCzgg2RFRDOms9MsooToKY7ggnzBIEdeluE=
-X-Google-Smtp-Source: AGHT+IGg6A43GqG+fKlJLbkXIsfEFKKzZHDVcgaPh9VZcMTtDZyP5x9WlL/UlqvbyGnHh219Vq4D3w==
-X-Received: by 2002:a17:907:6090:b0:aa6:7354:e926 with SMTP id
- a640c23a62f3a-ab2ab748ed0mr1428185366b.36.1736620647533; 
- Sat, 11 Jan 2025 10:37:27 -0800 (PST)
+ AJvYcCUSMjDtgV1jLM85pQDFFmQIJ+zEmPPNkVW18Q8yb0OJWIx/zRwtsSGtFfgnuYN2JzQ4SZ3xRPMzvl8moQ==@nongnu.org,
+ AJvYcCXVRcJduQCJuhsHpRm5z1pPbjqxSMdboGkQ6AGUme8AT8y+KL0oYrc+wDlHLo9Q7dn6D4jgIEPeXQ==@nongnu.org
+X-Gm-Message-State: AOJu0YyVlJYOAsutezAQYxcRVQMkCP2oAAErcrhuxM2j5vy7FEiaRRnc
+ 9Wz7ScjMZiJq86zFCJ1BCYaMqy9NXkOO4hlf1nqTQhn3L2rULz/lAj19pQ==
+X-Gm-Gg: ASbGncvfIJc84NKfKgeHOhBlSU19/JJG3B7uGvqFFPDrSs1VXWD/bpv5cM5Et3XMuV1
+ uCCJ9wApe6pfz9Gt20fD7rU5vu+uz3YlOibGIBI6zgWAvRe7JYq4xvr3t33q+Dk+VJje1g5eE4z
+ 31nXpHKPTQjzQ4INLW/Z65VOgDImQEP+ctLWL1iU4nSJ78VJuffOAPmMuon6tAiVo2feM95SN2R
+ +DLnsYoHTamKbwMhm0eIvsq26iN/xTjlCWKSnogUOjCJcKmuF1KWRP4GWvmz00aHDbhr5DeNlDG
+ PK8IopOHrogm9b96dgGqK2/UpNsLSsk7UgqVE9n0fMo=
+X-Google-Smtp-Source: AGHT+IHBgmP5SDjLl2s4DtxI4ejxoEB3BFMJxpqCO0UsVaiSJdnWKsIc4QHgB2wcopuTorYp1i1H9A==
+X-Received: by 2002:a17:907:3ea3:b0:aae:8491:bab5 with SMTP id
+ a640c23a62f3a-ab2ab73b234mr1340477766b.26.1736620648696; 
+ Sat, 11 Jan 2025 10:37:28 -0800 (PST)
 Received: from Provence.localdomain
  (dynamic-078-054-101-099.78.54.pool.telefonica.de. [78.54.101.99])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c95af187sm299026666b.142.2025.01.11.10.37.26
+ a640c23a62f3a-ab2c95af187sm299026666b.142.2025.01.11.10.37.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 11 Jan 2025 10:37:27 -0800 (PST)
+ Sat, 11 Jan 2025 10:37:28 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -74,17 +74,17 @@ Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
  Jean-Christophe Dubois <jcd@tribudubois.net>,
  Laurent Vivier <lvivier@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
  qemu-block@nongnu.org, Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v2 06/13] hw/sd/sd: Remove legacy sd_set_cb() in favor of GPIOs
-Date: Sat, 11 Jan 2025 19:37:04 +0100
-Message-ID: <20250111183711.2338-7-shentey@gmail.com>
+Subject: [PATCH v2 07/13] hw/sd/sd: Allow for inverting polarities of presence
+ and write-protect GPIOs
+Date: Sat, 11 Jan 2025 19:37:05 +0100
+Message-ID: <20250111183711.2338-8-shentey@gmail.com>
 X-Mailer: git-send-email 2.48.0
 In-Reply-To: <20250111183711.2338-1-shentey@gmail.com>
 References: <20250111183711.2338-1-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,92 +107,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit ce5dd27534b0 "hw/sd: Remove omap2_mmc device" removed the last user of
-sd_set_cb(). Rework this functionality into GPIOs.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- include/hw/sd/sdcard_legacy.h |  1 -
- hw/sd/sd.c                    | 31 ++++++++++++++-----------------
- 2 files changed, 14 insertions(+), 18 deletions(-)
+ hw/sd/sd.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/include/hw/sd/sdcard_legacy.h b/include/hw/sd/sdcard_legacy.h
-index 0dc3889555..a121232560 100644
---- a/include/hw/sd/sdcard_legacy.h
-+++ b/include/hw/sd/sdcard_legacy.h
-@@ -36,7 +36,6 @@ SDState *sd_init(BlockBackend *blk, bool is_spi);
- int sd_do_command(SDState *card, SDRequest *request, uint8_t *response);
- void sd_write_byte(SDState *card, uint8_t value);
- uint8_t sd_read_byte(SDState *card);
--void sd_set_cb(SDState *card, qemu_irq readonly, qemu_irq insert);
- 
- /* sd_enable should not be used -- it is only used on the nseries boards,
-  * where it is part of a broken implementation of the MMC card slot switch
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 0330d432fd..aa8d86e1af 100644
+index aa8d86e1af..a50e5c20c8 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -820,6 +820,16 @@ static inline uint64_t sd_addr_to_wpnum(uint64_t addr)
-     return addr >> (HWBLOCK_SHIFT + SECTOR_SHIFT + WPGROUP_SHIFT);
- }
- 
-+static bool sd_get_inserted(SDState *sd)
-+{
-+    return sd->blk && blk_is_inserted(sd->blk);
-+}
-+
-+static bool sd_get_readonly(SDState *sd)
-+{
-+    return sd->wp_switch;
-+}
-+
- static void sd_reset(DeviceState *dev)
- {
-     SDState *sd = SDMMC_COMMON(dev);
-@@ -865,16 +875,9 @@ static void sd_reset(DeviceState *dev)
-     sd->dat_lines = 0xf;
+@@ -181,6 +181,8 @@ struct SDState {
+     qemu_irq inserted_cb;
+     QEMUTimer *ocr_power_timer;
+     bool enable;
++    bool readonly_active_low;
++    bool inserted_active_low;
+     uint8_t dat_lines;
+     bool cmd_line;
+ };
+@@ -876,8 +878,8 @@ static void sd_reset(DeviceState *dev)
      sd->cmd_line = true;
      sd->multi_blk_cnt = 0;
--}
  
--static bool sd_get_inserted(SDState *sd)
--{
--    return sd->blk && blk_is_inserted(sd->blk);
--}
--
--static bool sd_get_readonly(SDState *sd)
--{
--    return sd->wp_switch;
-+    qemu_set_irq(sd->readonly_cb, sd_get_readonly(sd));
-+    qemu_set_irq(sd->inserted_cb, sd_get_inserted(sd));
+-    qemu_set_irq(sd->readonly_cb, sd_get_readonly(sd));
+-    qemu_set_irq(sd->inserted_cb, sd_get_inserted(sd));
++    qemu_set_irq(sd->readonly_cb, sd_get_readonly(sd) ^ sd->readonly_active_low);
++    qemu_set_irq(sd->inserted_cb, sd_get_inserted(sd) ^ sd->inserted_active_low);
  }
  
  static void sd_cardchange(void *opaque, bool load, Error **errp)
-@@ -1034,14 +1037,6 @@ SDState *sd_init(BlockBackend *blk, bool is_spi)
-     return sd;
- }
+@@ -896,9 +898,9 @@ static void sd_cardchange(void *opaque, bool load, Error **errp)
+     }
  
--void sd_set_cb(SDState *sd, qemu_irq readonly, qemu_irq insert)
--{
--    sd->readonly_cb = readonly;
--    sd->inserted_cb = insert;
--    qemu_set_irq(readonly, sd->blk ? !blk_is_writable(sd->blk) : 0);
--    qemu_set_irq(insert, sd->blk ? blk_is_inserted(sd->blk) : 0);
--}
--
- static void sd_blk_read(SDState *sd, uint64_t addr, uint32_t len)
- {
-     trace_sdcard_read_block(addr, len);
-@@ -2727,6 +2722,8 @@ static void sd_instance_init(Object *obj)
-     sd->last_cmd_name = "UNSET";
-     sd->enable = true;
-     sd->ocr_power_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, sd_ocr_powerup, sd);
-+    qdev_init_gpio_out_named(DEVICE(sd), &sd->inserted_cb, "cd", 1);
-+    qdev_init_gpio_out_named(DEVICE(sd), &sd->readonly_cb, "wp", 1);
- }
+     if (sd->me_no_qdev_me_kill_mammoth_with_rocks) {
+-        qemu_set_irq(sd->inserted_cb, inserted);
++        qemu_set_irq(sd->inserted_cb, inserted ^ sd->inserted_active_low);
+         if (inserted) {
+-            qemu_set_irq(sd->readonly_cb, readonly);
++            qemu_set_irq(sd->readonly_cb, readonly ^ sd->readonly_active_low);
+         }
+     } else {
+         sdbus = SD_BUS(qdev_get_parent_bus(dev));
+@@ -2797,6 +2799,8 @@ static void emmc_realize(DeviceState *dev, Error **errp)
  
- static void sd_instance_finalize(Object *obj)
+ static const Property sdmmc_common_properties[] = {
+     DEFINE_PROP_DRIVE("drive", SDState, blk),
++    DEFINE_PROP_BOOL("cd-active-low", SDState, inserted_active_low, false),
++    DEFINE_PROP_BOOL("wp-active-low", SDState, readonly_active_low, false),
+ };
+ 
+ static const Property sd_properties[] = {
 -- 
 2.48.0
 
