@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5A4EA0A540
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Jan 2025 19:39:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2131A0A551
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Jan 2025 19:41:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWgMX-00075A-Qd; Sat, 11 Jan 2025 13:37:33 -0500
+	id 1tWgMZ-00077d-Bj; Sat, 11 Jan 2025 13:37:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tWgMV-00073O-0l; Sat, 11 Jan 2025 13:37:31 -0500
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ id 1tWgMV-00073c-Ns; Sat, 11 Jan 2025 13:37:31 -0500
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tWgMT-0003v0-Hy; Sat, 11 Jan 2025 13:37:30 -0500
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-aa6a92f863cso592343566b.1; 
- Sat, 11 Jan 2025 10:37:28 -0800 (PST)
+ id 1tWgMU-0003vD-5e; Sat, 11 Jan 2025 13:37:31 -0500
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-aaeecbb7309so568967166b.0; 
+ Sat, 11 Jan 2025 10:37:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1736620647; x=1737225447; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1736620648; x=1737225448; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FLLW6tmRMTFVZiGC25lz3MV0RvDlnwjBxsbU4akQaSk=;
- b=YR7HI+f3Qyps7fkLsEbBWB/Qv/Di3VmpnMZP+jNZRDRFZASiHyBnDhA5uCRu1oSu9k
- Ao9+rVDy3C9YBjWE5bCc4XjaIEE70WHU3waxil2QHpPQXP1acgIwKLqtK9zpMYnOX91u
- qmyUZdD9m9hMeNCS2rOxJHH5VSIxy/ATi+ZB3f4d4cRjV+jjhUFyGP//0sr5N4FOGeh3
- F9om7mxXbM/qmrq3Y/7Wcas/Mf0G2Jm35W2d0Tq+8OPqBlo38sgYeFV4mIEgWJEWJOky
- FnA9OepOUbZxBM88hbesMNrze3nsvEEeKXpyF/D4FpMEBOf+0dA2FpX7vOS22DC9WVXz
- TD7w==
+ bh=vwaUYglCz5HiwshtDxMwHXFy/Vt9VTZk7BnhuaVWzvw=;
+ b=SuPuejRkb7fDDFdM/moA3irk6BRSLKbjABuONAm/wiAIPh0n5x5a1kSJVVFCHYtGKi
+ ML2hk8CT2UCPEj8p6RuTxP/h29ut4u27DF1iBCUuDBlhtD4aHtvNI26Yn4iQlAhyTQuO
+ TiYWkPzeE7gqbLpOg6D93MAc4UArH2g/uAXgM90lH7lG2hRIqgxToJjZfgH5YbFPgPUO
+ VeyOJxyAPNUrJM8AcQiABQ4O438Mz4TTbpqc208KebXsFxYieiKaGOKPZt/1NFWvXAmC
+ t/3ZOi/UIXi/Zz0ClhNuEuLdphdNYTyFWUNfJlVwfuCXUnZme7Yxq7VA10FiXZq0XYeD
+ 2WsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736620647; x=1737225447;
+ d=1e100.net; s=20230601; t=1736620648; x=1737225448;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FLLW6tmRMTFVZiGC25lz3MV0RvDlnwjBxsbU4akQaSk=;
- b=olZ7/kFKp3fhGN/lg5UmQyJy+IwbbQNgBBQh9gN3gBWjatjCy9Sm0HYlA4FMvYaZQp
- 61MX4PGq7tR+yqOxkm2mQJpZDQD660V4HqgePELPLQar7tbn3sH4J4tkjBhytVGCx/Ar
- 4H+q24O7i0e+g+BKqcy2JEWPOGS2vmH1e06l85iK+WhbiO9ynOvmcPdzT9EVGL8xaUL/
- UBlURLFv5Q0yp3/Knujw9cPV8nVzMX4jcR4iBFYmIWME16+jPCNcQH8yi1bGEY5gphPa
- fF3Mh9OocDrtlROnKpVz7u/HNYLjA8JAh6lgBYzng9F7ZyZs1euyL5KV7BZRxHOUB6se
- a1bg==
+ bh=vwaUYglCz5HiwshtDxMwHXFy/Vt9VTZk7BnhuaVWzvw=;
+ b=MW3UCqPgmkl2ial6U/M4Yx13FgBNzNgLs6+iX8ZmQuJNN3WU8mM3oywNq+/Wkygb8M
+ jUqGygX35nTVMo9Vc2FlNToeZZS+LMAxZWYG+eZyHrAhmsCrGSWHMYTmIi1esjPGZoQV
+ 0z9A8MzmN4h6vSXgsdZ5U/zrL2oyq8xvth+TOtZsZZ8t2r3dxLEggYMph/MxP7XsrLJq
+ lL6kMdQL40pl0RqTVMBg29VCmR5NNKHjMpFDw+VcFI9hAJLHsZScDDQoijZ34XXZ0Ph5
+ BXvD9ZNdX/TpSmQ54dpzsXi3m+l+K1iDNuXd1MWFPjbQtGYzh+lB3tKazReoIdk7xkbI
+ z/gA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUccsYoB4YvZ7D8NrRSPpypbKuUzi94L8M0LeuIcFKoXUaMwQbJyIPUCjzt7yDHEqYOcsBVkLouJw==@nongnu.org,
- AJvYcCVNtFSdz4lee050l88ZTBfl4+sYxBdt9pc9hhA1/4sH93e8YrLcqYIZi6oAwWT2umHKWtPt1oEgmJGyjw==@nongnu.org
-X-Gm-Message-State: AOJu0Yzt8JbAFZTm0nirpN2MCqGdXoBmLhltyVBKLDX0iJJTSlYpf4em
- rTGZ63LaTQ8crQ4FYeogoZzXzgGsS8EDt3XUO2eKPxHDQDXSEBns8XP6QQ==
-X-Gm-Gg: ASbGncvdTO2RRKUqFbzz/+/BjZHFBDL+eZrbNwP4HpX/pU+6fF5/XgiGNFQZtEO5WSi
- cFSaGpcBlw8DtqSHkiUco0Sv7Lm8bkKbllUg6ELwUgB8U8MEvAcHZRsNv0nlgiUglCBOf0y2HQY
- AbvdBcXf0vmEJicMclwmg1M3WgoutcZW5Eo5/jGRR19ZV2JqrExbaVSWowAcw77RAKwhoT9g8pc
- ZD6Mbh3chV9kmMsCtAsrslSF3PETk9eVH5d+s1RmLPA1FfhjBGlDz1zBxuz00Q1TbPgcsNFabHw
- oi2MKDPlisU0pZP3lPhOMAi538U1qVKr1C70TX2FFTQ=
-X-Google-Smtp-Source: AGHT+IFfIeY0kZff+LsVPUs4g7pAiUNt3W/tztr0QvdXqp3P0RseQARjeV0Vx6rTXvE32g33Puv87A==
-X-Received: by 2002:a17:907:948b:b0:aa6:6f92:74b1 with SMTP id
- a640c23a62f3a-ab2ab6fd565mr1258465766b.13.1736620646606; 
- Sat, 11 Jan 2025 10:37:26 -0800 (PST)
+ AJvYcCVhSR9zuRDxZigCsKH8rim1UrvKXJTmc3xOy52JgZA6C6IXHEBvK4ruI5uKtsuzARN0hKtc80fS2w==@nongnu.org,
+ AJvYcCXvUFjSPNQBxHoKJi76LZEowhFjCEsBN/80QuA894e+jLoOIw/z1XeA3KCvrhczrF+giZCSD4CtDArvqw==@nongnu.org
+X-Gm-Message-State: AOJu0YwTjqc164HoWh0eTHrZJ4q5e0FE48ouo+PH7FmaBKxdvUB7yYr2
+ eM9ODGXi754tEdsxLKzbqOpgRBPHF5kTstDXWq9JNea/x3h7Ht27YIFb/Q==
+X-Gm-Gg: ASbGncvrlGvbB+kHO9za4b3PFmpaQ6k2l6yMIzFpxdozA8i+k/iQHZJZ0UYA9g79LWs
+ YwvREkHTkbs6jI7P2qlHsXs0irmS6fFEeN1fu8toOYrj5tOEUVM0j3qF6lEx90RBBifn0a6F8tT
+ 9bJeakdmihRkxNDYks5s3siNkISxdOvfzLhJI2yxEJ8iZplHADl+H4UyXfKZr1yJQaSTeRWhVS2
+ JuSCrcYUk196hNnO/CVO/3SWyyA+DsaaJxQ4VsBwlEIqr1R15pk8G9VlrT9KxnV9WPaHl/hYdqd
+ 7WTi9yAnGCzgg2RFRDOms9MsooToKY7ggnzBIEdeluE=
+X-Google-Smtp-Source: AGHT+IGg6A43GqG+fKlJLbkXIsfEFKKzZHDVcgaPh9VZcMTtDZyP5x9WlL/UlqvbyGnHh219Vq4D3w==
+X-Received: by 2002:a17:907:6090:b0:aa6:7354:e926 with SMTP id
+ a640c23a62f3a-ab2ab748ed0mr1428185366b.36.1736620647533; 
+ Sat, 11 Jan 2025 10:37:27 -0800 (PST)
 Received: from Provence.localdomain
  (dynamic-078-054-101-099.78.54.pool.telefonica.de. [78.54.101.99])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c95af187sm299026666b.142.2025.01.11.10.37.25
+ a640c23a62f3a-ab2c95af187sm299026666b.142.2025.01.11.10.37.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 11 Jan 2025 10:37:25 -0800 (PST)
+ Sat, 11 Jan 2025 10:37:27 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -74,17 +74,17 @@ Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
  Jean-Christophe Dubois <jcd@tribudubois.net>,
  Laurent Vivier <lvivier@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
  qemu-block@nongnu.org, Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v2 05/13] hw/gpio/imx_gpio: Don't clear input GPIO values upon
- reset
-Date: Sat, 11 Jan 2025 19:37:03 +0100
-Message-ID: <20250111183711.2338-6-shentey@gmail.com>
+Subject: [PATCH v2 06/13] hw/sd/sd: Remove legacy sd_set_cb() in favor of GPIOs
+Date: Sat, 11 Jan 2025 19:37:04 +0100
+Message-ID: <20250111183711.2338-7-shentey@gmail.com>
 X-Mailer: git-send-email 2.48.0
 In-Reply-To: <20250111183711.2338-1-shentey@gmail.com>
 References: <20250111183711.2338-1-shentey@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,28 +107,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Input GPIO values such as a present SD card may get notified before the GPIO
-controller itself gets reset. Claring the input values thus loses data. Assuming
-that input GPIO events are only fired when the state changes, the input values
-shouldn't be reset.
+Commit ce5dd27534b0 "hw/sd: Remove omap2_mmc device" removed the last user of
+sd_set_cb(). Rework this functionality into GPIOs.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/gpio/imx_gpio.c | 1 -
- 1 file changed, 1 deletion(-)
+ include/hw/sd/sdcard_legacy.h |  1 -
+ hw/sd/sd.c                    | 31 ++++++++++++++-----------------
+ 2 files changed, 14 insertions(+), 18 deletions(-)
 
-diff --git a/hw/gpio/imx_gpio.c b/hw/gpio/imx_gpio.c
-index 898f80f8c8..67c47a7280 100644
---- a/hw/gpio/imx_gpio.c
-+++ b/hw/gpio/imx_gpio.c
-@@ -302,7 +302,6 @@ static void imx_gpio_reset(DeviceState *dev)
+diff --git a/include/hw/sd/sdcard_legacy.h b/include/hw/sd/sdcard_legacy.h
+index 0dc3889555..a121232560 100644
+--- a/include/hw/sd/sdcard_legacy.h
++++ b/include/hw/sd/sdcard_legacy.h
+@@ -36,7 +36,6 @@ SDState *sd_init(BlockBackend *blk, bool is_spi);
+ int sd_do_command(SDState *card, SDRequest *request, uint8_t *response);
+ void sd_write_byte(SDState *card, uint8_t value);
+ uint8_t sd_read_byte(SDState *card);
+-void sd_set_cb(SDState *card, qemu_irq readonly, qemu_irq insert);
  
-     s->dr       = 0;
-     s->gdir     = 0;
--    s->psr      = 0;
-     s->icr      = 0;
-     s->imr      = 0;
-     s->isr      = 0;
+ /* sd_enable should not be used -- it is only used on the nseries boards,
+  * where it is part of a broken implementation of the MMC card slot switch
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index 0330d432fd..aa8d86e1af 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -820,6 +820,16 @@ static inline uint64_t sd_addr_to_wpnum(uint64_t addr)
+     return addr >> (HWBLOCK_SHIFT + SECTOR_SHIFT + WPGROUP_SHIFT);
+ }
+ 
++static bool sd_get_inserted(SDState *sd)
++{
++    return sd->blk && blk_is_inserted(sd->blk);
++}
++
++static bool sd_get_readonly(SDState *sd)
++{
++    return sd->wp_switch;
++}
++
+ static void sd_reset(DeviceState *dev)
+ {
+     SDState *sd = SDMMC_COMMON(dev);
+@@ -865,16 +875,9 @@ static void sd_reset(DeviceState *dev)
+     sd->dat_lines = 0xf;
+     sd->cmd_line = true;
+     sd->multi_blk_cnt = 0;
+-}
+ 
+-static bool sd_get_inserted(SDState *sd)
+-{
+-    return sd->blk && blk_is_inserted(sd->blk);
+-}
+-
+-static bool sd_get_readonly(SDState *sd)
+-{
+-    return sd->wp_switch;
++    qemu_set_irq(sd->readonly_cb, sd_get_readonly(sd));
++    qemu_set_irq(sd->inserted_cb, sd_get_inserted(sd));
+ }
+ 
+ static void sd_cardchange(void *opaque, bool load, Error **errp)
+@@ -1034,14 +1037,6 @@ SDState *sd_init(BlockBackend *blk, bool is_spi)
+     return sd;
+ }
+ 
+-void sd_set_cb(SDState *sd, qemu_irq readonly, qemu_irq insert)
+-{
+-    sd->readonly_cb = readonly;
+-    sd->inserted_cb = insert;
+-    qemu_set_irq(readonly, sd->blk ? !blk_is_writable(sd->blk) : 0);
+-    qemu_set_irq(insert, sd->blk ? blk_is_inserted(sd->blk) : 0);
+-}
+-
+ static void sd_blk_read(SDState *sd, uint64_t addr, uint32_t len)
+ {
+     trace_sdcard_read_block(addr, len);
+@@ -2727,6 +2722,8 @@ static void sd_instance_init(Object *obj)
+     sd->last_cmd_name = "UNSET";
+     sd->enable = true;
+     sd->ocr_power_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, sd_ocr_powerup, sd);
++    qdev_init_gpio_out_named(DEVICE(sd), &sd->inserted_cb, "cd", 1);
++    qdev_init_gpio_out_named(DEVICE(sd), &sd->readonly_cb, "wp", 1);
+ }
+ 
+ static void sd_instance_finalize(Object *obj)
 -- 
 2.48.0
 
