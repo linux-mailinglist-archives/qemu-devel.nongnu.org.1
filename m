@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19A2A0A550
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Jan 2025 19:40:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAD79A0A547
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Jan 2025 19:39:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWgMd-0007F2-Ri; Sat, 11 Jan 2025 13:37:39 -0500
+	id 1tWgMf-0007Fv-6i; Sat, 11 Jan 2025 13:37:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tWgMb-0007CM-8v; Sat, 11 Jan 2025 13:37:37 -0500
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ id 1tWgMd-0007F1-27; Sat, 11 Jan 2025 13:37:39 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tWgMZ-0003wV-Kv; Sat, 11 Jan 2025 13:37:37 -0500
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-5d90a5581fcso4993211a12.1; 
- Sat, 11 Jan 2025 10:37:34 -0800 (PST)
+ id 1tWgMb-0003ww-F8; Sat, 11 Jan 2025 13:37:38 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3f28881d6so4408456a12.1; 
+ Sat, 11 Jan 2025 10:37:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1736620653; x=1737225453; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1736620654; x=1737225454; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2lbCjO/QI9f/cjy0lFrwXYeFv174HAgj0VKP3Zi5H0A=;
- b=hhRHuW191HwI0vyyhaLixypkXbMGv1qQvJ73Ni3ULBkt/pclxXPgHN2Awrh6Q0BlyE
- zzBbuwhEMxS9S+friUhP0mHvg2zLTscDty+RF+CxrExvr379lSHPC/0IqT7LRIMLar7k
- fTBX8hdJ7ycAy8gLSw6nFllnbIyg5DqkmFImHfoVTwtk7PvRCov4yYiRo0T86zQcmohW
- TDLFbU7RYvwsSHutIY/9WzfkEIqBo0U67ef2fim/48f15vRME4H5MMng2sRDOmA/tn99
- WDeEUU3UzcO2jn0PxYvFfD3PYrA6LkpRleAb7u78dvFyF7ViIvhidogOFEIWNqSkMuDt
- 4KoA==
+ bh=R/tERnEf151hNEi6zGx5nXkVFhrCrMCbXniKbPQ0RRM=;
+ b=caFhd6xhxHxZ5ZgUeJFNiPr6KZFddnMyY+W6zq4hSL5OeAXomGP8SeHl8EV49B9oCF
+ S8uB9nIVpcRCeGkxNd4CEbf1UIJG3thIy/dyzdlAKQrMDjLe7iJ02QrZ8dB3VOZZG04h
+ XrmjZwVi8cUvFDHDM2xGqvCwoTwP81oPlnBnDAPImOGLNcgGhaiw8tEcWXItNa+s8G0t
+ B1mFottdebaPntALGfm65ZIXQp1qdxYJmzj7l2AmhynJZRl0ZPndX2x8fbOoZ6NTQirY
+ AEQ03YzCX/yyUZxxc6SnqN9pNv3u3KhNITaNzPTVtZM12WEZcbvQsawyGhiCepi04DpX
+ D1kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736620653; x=1737225453;
+ d=1e100.net; s=20230601; t=1736620654; x=1737225454;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2lbCjO/QI9f/cjy0lFrwXYeFv174HAgj0VKP3Zi5H0A=;
- b=UoMkwghC2uTYAF2+lZJwhSq0r1GuJBIZxJPL/liP4zCfQAmYWUhdzOaj4SDZQJ50Ke
- 6hZZDc3ZKf2PVMAfyTrnA0V7x2OFkqfE2Du1Ax/XtNXzEsz8tQlGbwNtVvBwfGJc+57A
- vmskIXmodKx5ZevPmZTb8RNyRV8r0cI3opuU9/MIGeT69Ybthlwyq+JpvTkr0NrhppPL
- wZcRGsb/a0YEAFGh4faczJImovx3tQ+pszW2WtY7lGOPUQNTgNQ+ghYwqLvDd7xKJT3L
- Jshxb21TJF90ij1uMfmaGVZAZiHNrQAg6MrPXNdIrLeLK+lo3FKTT6hL1GsZ+jAu2jF6
- TWOA==
+ bh=R/tERnEf151hNEi6zGx5nXkVFhrCrMCbXniKbPQ0RRM=;
+ b=hrQ2xjhY0kZNfNhJkwpmFo4jYjx3s8kRKOE12Cr9/v/RdFlQZRznZLcKYJm+Qj0sYh
+ 0FeljK6h0MjK+YlyQnQeCaTQvdq5DL3xZWKXbmBMA1L49ZmQqt3bNMgzD7f2nYKtgF0t
+ pOoW83d+h9G353V9bmsP8aQQEOTBAnpaDnUmKblo4gRui/oyTetFgHYp+t/cFHv4fLbj
+ sxP2Zl5IMyQfkXGozEohmNM7hhbftJ1am/HhFpszX27Q0gOff+vregxUy5lhVFbdAoZ5
+ a+L86dx4INs79Z5fkFa1gWQzMG5MMt/dwCCCbeBlzlZ4h/I9n1zMHhJSE2JatOcTH1rj
+ IxJQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUVyJcJ2YgvNpEV1uBVcYRRK1jnZIQEHKiR1jbZPda+39bFShQIyMrW++wVjHmUImvuKUNK14oKIQ==@nongnu.org,
- AJvYcCV2/8gUkzaFpXDS8Jm4wip6HyDEFf860eY1DD5LFspn9XpWz3/zCrMQYkGqU+HwT1l3wObne7o+RTGT8g==@nongnu.org
-X-Gm-Message-State: AOJu0YwYumgWhQqtVTqTP2RTJrIDGsDfjmn4LEKeoPIZqUK8V9+bvRnH
- ZP6Mfq0/V0EBL+hSWwfqPrMeA2IqZiYIwH4/SxHiCZrosncmsreCI8ohMw==
-X-Gm-Gg: ASbGncsqdR3EbN8AA4oAyWtPBV1C7Bxe0P3m0XAT4dfNKMSFnl3xCW/KWHT5Tzc+LQq
- hpSXBL5iQyMiy9IRyeyL3niLNNPmJUeB5S2r4XPpmzkgR8uYhTSiWoGplEWZuguoxLTzqocBYLZ
- ru2zHwp+9XcaSwMYOjZaCMezz2mhfvoy3alsLwA/S1ltKON9b4E1vkxoURw2/w3W7efuDDUXXax
- p68aF96MUrqVVkA48LhGW3M/exWIrLhSaLGwjOON/qavvYCgAhIPXFXXBI8CDo/xcdw46HQzBqj
- hioFGKsftNPmxyjrHYRHvzuKDUcLV78XMheBzyl0UkY=
-X-Google-Smtp-Source: AGHT+IHl3H1dYlpJHz/p8urwps7ktue8DJVYOmNRs38ZLXDw6pwPkiLHChBRkcwH67MviCY/5A1IFw==
-X-Received: by 2002:a17:907:7f08:b0:aab:9430:40e9 with SMTP id
- a640c23a62f3a-ab2ab70a84emr1288917866b.32.1736620653018; 
- Sat, 11 Jan 2025 10:37:33 -0800 (PST)
+ AJvYcCVUVP5HAZtxo2qW4oMjMd5QGIuCZBGhpBL0Eu/qMDabMPzUCbKVFIGw1P2XBu05F8U0/a5i/bcNcA==@nongnu.org,
+ AJvYcCXP+igcL7uWYGnCClhWePJZgFF9lqM6Uee0+vdhvrv/cKA+UdEwY12dE8S95yLrcSB3Lg8IGYgnDMd1Cw==@nongnu.org
+X-Gm-Message-State: AOJu0Yx/bvPYcfU2Q9dGpdFLH5xCwW4srE8ZLx/jyCZxBHiES6eMIAYY
+ Y1NGUFGIMbSRS8VU2L6mME9D/bcO3cLTEqj6j4DpykfnHXTeAdBhmmId7g==
+X-Gm-Gg: ASbGncsucr4iTRYc5GqtJtSdLUH/PcLsiZY8+MgcL7jdwav2jOe/pf+A7onKuq+nCpE
+ c3KpwlgyqwQkCdLuqhOwDuX0wBIYNZT85Pf/HZyVxZLfu6LT2g5vHdazf59LxpgkKWigHN5j2ax
+ ZIfoNkKWkDH3ywqQlYeiihhWbh1uKXhBgEj2W7hDxmmHUUiQfxlFprUuE40/WfTuCD7nANBMsMm
+ DbtiE0KO5SVQJn1+Wuuhm0AXvVp0BON6l3UdbHqogkJ/wiXleSNx4o+GovmuEqQtYoCj+FCsSBc
+ jJQVlVc5FZVYHWZqzGgr/yyWbvEW1iFXUW7xg3DXVHI=
+X-Google-Smtp-Source: AGHT+IEFF0K/BfEyWMNEmJvq32hgYqlfKbpy8lQg5wp+/p6dPgI2tgSRir5JEKDKzOfiwKDAJBCxMw==
+X-Received: by 2002:a05:6402:4310:b0:5d6:48ef:c19f with SMTP id
+ 4fb4d7f45d1cf-5d972e708a1mr34427106a12.29.1736620654248; 
+ Sat, 11 Jan 2025 10:37:34 -0800 (PST)
 Received: from Provence.localdomain
  (dynamic-078-054-101-099.78.54.pool.telefonica.de. [78.54.101.99])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c95af187sm299026666b.142.2025.01.11.10.37.32
+ a640c23a62f3a-ab2c95af187sm299026666b.142.2025.01.11.10.37.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 11 Jan 2025 10:37:32 -0800 (PST)
+ Sat, 11 Jan 2025 10:37:33 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -74,17 +74,17 @@ Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
  Jean-Christophe Dubois <jcd@tribudubois.net>,
  Laurent Vivier <lvivier@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
  qemu-block@nongnu.org, Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v2 10/13] tests/qtest/libqos: Reuse TYPE_IMX_I2C define
-Date: Sat, 11 Jan 2025 19:37:08 +0100
-Message-ID: <20250111183711.2338-11-shentey@gmail.com>
+Subject: [PATCH v2 11/13] hw/i2c/imx_i2c: Convert DPRINTF() to trace events
+Date: Sat, 11 Jan 2025 19:37:09 +0100
+Message-ID: <20250111183711.2338-12-shentey@gmail.com>
 X-Mailer: git-send-email 2.48.0
 In-Reply-To: <20250111183711.2338-1-shentey@gmail.com>
 References: <20250111183711.2338-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,60 +107,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Also print the QOM canonical path when tracing which allows for distinguishing
+the many instances a typical i.MX SoC has.
+
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- tests/qtest/libqos/arm-imx25-pdk-machine.c | 5 +++--
- tests/qtest/libqos/i2c-imx.c               | 4 ++--
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ hw/i2c/imx_i2c.c    | 21 +++++----------------
+ hw/i2c/trace-events |  5 +++++
+ 2 files changed, 10 insertions(+), 16 deletions(-)
 
-diff --git a/tests/qtest/libqos/arm-imx25-pdk-machine.c b/tests/qtest/libqos/arm-imx25-pdk-machine.c
-index 8fe128fae8..2d8b754343 100644
---- a/tests/qtest/libqos/arm-imx25-pdk-machine.c
-+++ b/tests/qtest/libqos/arm-imx25-pdk-machine.c
-@@ -23,6 +23,7 @@
- #include "libqos-malloc.h"
- #include "qgraph.h"
- #include "i2c.h"
-+#include "hw/i2c/imx_i2c.h"
+diff --git a/hw/i2c/imx_i2c.c b/hw/i2c/imx_i2c.c
+index c565fd5b8a..d62213b9e0 100644
+--- a/hw/i2c/imx_i2c.c
++++ b/hw/i2c/imx_i2c.c
+@@ -25,18 +25,7 @@
+ #include "hw/i2c/i2c.h"
+ #include "qemu/log.h"
+ #include "qemu/module.h"
+-
+-#ifndef DEBUG_IMX_I2C
+-#define DEBUG_IMX_I2C 0
+-#endif
+-
+-#define DPRINTF(fmt, args...) \
+-    do { \
+-        if (DEBUG_IMX_I2C) { \
+-            fprintf(stderr, "[%s]%s: " fmt , TYPE_IMX_I2C, \
+-                                             __func__, ##args); \
+-        } \
+-    } while (0)
++#include "trace.h"
  
- #define ARM_PAGE_SIZE            4096
- #define IMX25_PDK_RAM_START      0x80000000
-@@ -50,7 +51,7 @@ static void *imx25_pdk_get_driver(void *object, const char *interface)
- static QOSGraphObject *imx25_pdk_get_device(void *obj, const char *device)
+ static const char *imx_i2c_get_regname(unsigned offset)
  {
-     QIMX25PDKMachine *machine = obj;
--    if (!g_strcmp0(device, "imx.i2c")) {
-+    if (!g_strcmp0(device, TYPE_IMX_I2C)) {
-         return &machine->i2c_1.obj;
+@@ -152,8 +141,8 @@ static uint64_t imx_i2c_read(void *opaque, hwaddr offset,
+         break;
      }
  
-@@ -86,7 +87,7 @@ static void imx25_pdk_register_nodes(void)
-         .extra_device_opts = "bus=i2c-bus.0"
-     };
-     qos_node_create_machine("arm/imx25-pdk", qos_create_machine_arm_imx25_pdk);
--    qos_node_contains("arm/imx25-pdk", "imx.i2c", &edge, NULL);
-+    qos_node_contains("arm/imx25-pdk", TYPE_IMX_I2C, &edge, NULL);
+-    DPRINTF("read %s [0x%" HWADDR_PRIx "] -> 0x%02x\n",
+-            imx_i2c_get_regname(offset), offset, value);
++    trace_imx_i2c_read(DEVICE(s)->canonical_path, imx_i2c_get_regname(offset),
++                       offset, value);
+ 
+     return (uint64_t)value;
  }
- 
- libqos_init(imx25_pdk_register_nodes);
-diff --git a/tests/qtest/libqos/i2c-imx.c b/tests/qtest/libqos/i2c-imx.c
-index 710cb926d6..6d868e4cc4 100644
---- a/tests/qtest/libqos/i2c-imx.c
-+++ b/tests/qtest/libqos/i2c-imx.c
-@@ -209,8 +209,8 @@ void imx_i2c_init(IMXI2C *s, QTestState *qts, uint64_t addr)
- 
- static void imx_i2c_register_nodes(void)
+@@ -163,8 +152,8 @@ static void imx_i2c_write(void *opaque, hwaddr offset,
  {
--    qos_node_create_driver("imx.i2c", NULL);
--    qos_node_produces("imx.i2c", "i2c-bus");
-+    qos_node_create_driver(TYPE_IMX_I2C, NULL);
-+    qos_node_produces(TYPE_IMX_I2C, "i2c-bus");
- }
+     IMXI2CState *s = IMX_I2C(opaque);
  
- libqos_init(imx_i2c_register_nodes);
+-    DPRINTF("write %s [0x%" HWADDR_PRIx "] <- 0x%02x\n",
+-            imx_i2c_get_regname(offset), offset, (int)value);
++    trace_imx_i2c_read(DEVICE(s)->canonical_path, imx_i2c_get_regname(offset),
++                       offset, value);
+ 
+     value &= 0xff;
+ 
+diff --git a/hw/i2c/trace-events b/hw/i2c/trace-events
+index f708a7ace1..1ad0e95c0e 100644
+--- a/hw/i2c/trace-events
++++ b/hw/i2c/trace-events
+@@ -56,3 +56,8 @@ npcm7xx_smbus_recv_fifo(const char *id, uint8_t received, uint8_t expected) "%s
+ 
+ pca954x_write_bytes(uint8_t value) "PCA954X write data: 0x%02x"
+ pca954x_read_data(uint8_t value) "PCA954X read data: 0x%02x"
++
++# imx_i2c.c
++
++imx_i2c_read(const char *id, const char *reg, uint64_t ofs, uint64_t value) "%s:[%s (0x%" PRIx64 ")] -> 0x%02" PRIx64
++imx_i2c_write(const char *id, const char *reg, uint64_t ofs, uint64_t value) "%s:[%s (0x%" PRIx64 ")] <- 0x%02" PRIx64
 -- 
 2.48.0
 
