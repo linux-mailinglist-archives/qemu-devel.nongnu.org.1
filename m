@@ -2,94 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBEF5A0A47A
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Jan 2025 16:48:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01900A0A542
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Jan 2025 19:39:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWdiV-00065p-54; Sat, 11 Jan 2025 10:48:03 -0500
+	id 1tWgMS-00070x-Gj; Sat, 11 Jan 2025 13:37:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tWdiT-00065d-5F
- for qemu-devel@nongnu.org; Sat, 11 Jan 2025 10:48:01 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1tWgMP-000709-N2; Sat, 11 Jan 2025 13:37:25 -0500
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tWdiR-0006cY-DR
- for qemu-devel@nongnu.org; Sat, 11 Jan 2025 10:48:00 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43626213fffso25139605e9.1
- for <qemu-devel@nongnu.org>; Sat, 11 Jan 2025 07:47:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1tWgMO-0003tp-41; Sat, 11 Jan 2025 13:37:25 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-aaf3c3c104fso528238566b.1; 
+ Sat, 11 Jan 2025 10:37:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736610478; x=1737215278; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=OXnEMdaJmB3wmmJxgorT/L3VHkT9x6PzpoX3V0r81nU=;
- b=eO5Tj7iatta5fialXiKC/IOnzdpiY1yAUtre/vlqmCL6KHLXDd9geHjma7SXltWZUc
- 4f6A5WTGeoRKplZ6dRRYOrSks7jYQR2qZnaYjt4tcHR0L54UOXPEQE/xJLyig3az9icw
- Nja5NBfrfi/TYFxsCqhcLIsSqdXUycKkVbb2Vqd7dIfZptZ64am719X8y3SmWbdXAZ4D
- EQqst+8VfJhYxSNyF3pFfe2/0zDk1IWFrYX2NRgiDeyGbP5EWccWgFnTf8bQGZS8UXdx
- GPQ6teq6vbrNYj+917RP0Nz29L5H0uOLaOdp2hOqORLztWXOZXThb0rVIqNOHMfMXhFJ
- 9tlQ==
+ d=gmail.com; s=20230601; t=1736620640; x=1737225440; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=RoziYUKRnYnrxagpLXRXx22rtFkGtEbmADAZ6jidbtg=;
+ b=OwvfuzPOdQZHszqMwynIoTfA5qlgqfi18H4oJHmJX/Si2+7/Q5JymMjJX0A9myT8c/
+ hOG47uVlsaV/OC0ffVMs96c8uVBBMS/Dm4hSqAP3+Cvl9MSrH2foKDk4/43mbZeZxNx3
+ hnRfyssQE9vU7FktVu7wMLsrNMSHhGLS1wK3rvDkkC+pyLvNJEB79FU0CAtR3OWfmdHT
+ vQh7XeA8UDWk9PYD9Np+fMbPfmLsSkCMqA0KbZvapZPbm1367dvKEIaD88VjXOtAQkps
+ IJHhnU1wo4hmG9FM7+6ix2OY/FhueDpW/BVLG1LQTCGhTVBX+0XgDtbKqrq81PAqDsG7
+ bU7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736610478; x=1737215278;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OXnEMdaJmB3wmmJxgorT/L3VHkT9x6PzpoX3V0r81nU=;
- b=v6HQLiLZ31iiK0LfSW2u8I5ExMzzJ816Dh4WGsN08iz1Xn/j10/6Zs6bQ0tBoULDOq
- 286XOmxF+FMyvKc+yjT8qQ05B4gWEGYKVQkYT0MtLAatd+T1cLA4Kwc6Fg0XJaCbeeSv
- 6xyu1BiG0RA1y7Uvh7QNkC6kUDMHh0Aqj/M2FWOFz80+aqJYj+VCLLnbpeEyAEv0F+qX
- ZXuvLwceOQMrta1IpU09yka7l+bg5d7tGNv4VuQYlY/eten9vDboIwIdCjb+ficgcPPs
- iD3StCTCrQh32rdf1SutVBf1tBeJpYwG5V2Pb1mDyLQ9awgLcxNRKTk2p7Gfg5gxg4oM
- YOeA==
+ d=1e100.net; s=20230601; t=1736620640; x=1737225440;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=RoziYUKRnYnrxagpLXRXx22rtFkGtEbmADAZ6jidbtg=;
+ b=jaQ06C8grMurkfOMiu3V5K6fq5ZQ29gqsqvIdfwnwimEkSwnpGAGhGa8nw/4CuXFqH
+ o/gdlqE+AtZhNB3bPvpUGUfskzqJ6+qhwl5DTUjLDftzqQH3WTBH2b6yhmGC7AbuhUOZ
+ I11tA52blj9SjZFQkCAELYZroJPyAQsQa+bILDlND3rinufsKdThzTkjgwwFW2vGaxQ8
+ IcZOfaMesUFZDZxgePDbxXnF0geJn1Dsqc84AbLpT2mlXdBOI27d8soAoVUC4D7WhFZi
+ udQlNv0hM/p8lnAESE/8EQlKKuA0mSuY5bw8JpzwvpGBAAIhwVEVQD4XPMcQspd4cmtu
+ tThQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVdoDcS5pFroP7TmWoXV0gy0DgB/44AebD5cIISvnJWZtu587n4kpka4PxbhETNce5JRFLL87dEtKPs@nongnu.org
-X-Gm-Message-State: AOJu0YzuniPhU5yXoGQ2UDukZzWcCqH7ll6Korq3EXHQaoHoh93hz5nM
- PCQbhmr/2m9xrwyhf3h0lruG+Nb5NiZHnyWyPHTWP9oXSGMU0XAMprMXbh6i++A=
-X-Gm-Gg: ASbGncuBZTy7msEsh+BXT4Yl00Mf8lhND1DRzbIyPU6i4FzcTJeTB97snk/Sq5SlEJG
- 1997LpHGOIDZuG6F01xV1n8Z9bzvCr6VQlykkkzmst6tCb0xqpjxaRPorogsQdgxdhLLu4DHlIG
- K9weHY9mivm2vxxuyOE9uQ/kOtA1PP2PkmIBWmvJIWq9LTqyfbL3d+vN2TqeYWQFZ1DrYdbi6wS
- TYWBeMxAfASrhWUV1zVXHn3W1A/opQyP3xdISVGD/BUZy9KovU6kTxpsFFsynssotnA0rPabHxd
- 760krC7kLB9J62QtQw+/lBV0
-X-Google-Smtp-Source: AGHT+IGqG9PjbDiN/sUC8Uoo28b3oa62gRC02x9PEhjrBgt7SGiSrZRyaotEa/wiRLOI08dsrw5Nhg==
-X-Received: by 2002:a5d:6c6c:0:b0:386:4244:15c7 with SMTP id
- ffacd0b85a97d-38a8b0faaadmr10482632f8f.25.1736610477864; 
- Sat, 11 Jan 2025 07:47:57 -0800 (PST)
-Received: from [192.168.69.181] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e2df3610sm119858985e9.20.2025.01.11.07.47.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 11 Jan 2025 07:47:57 -0800 (PST)
-Message-ID: <bc22d713-201e-414c-838e-6c0dc1fb3807@linaro.org>
-Date: Sat, 11 Jan 2025 16:47:56 +0100
+ AJvYcCU1miFvCSJe7XZHiZKO17GH3HtuTXj+fg3re31XwQJ+FKdXp0MqC+5EO3c9P8mwIVi6LL1oUiS6aQZUyw==@nongnu.org,
+ AJvYcCUDjKCN4roJVOpY4LB6vJV9+BsuNPz4ia3dcjyKOKkkmls+KOZdHMv+QhrD8agVRrrISvM+EWFqNg==@nongnu.org
+X-Gm-Message-State: AOJu0Yyp20mbCpS7c1MckK3fOGUCC7/80dXiUp6YyAYwr54WIoNNRx97
+ dHkXD/KH7Rnodd9ripNUG745bclvLFniHRpLElfInwtNc8iDjVMDU9KNIg==
+X-Gm-Gg: ASbGncuTj0A1wxbAgPANhV7XEcQatESzH/SCaEXwABfLcKgJKwI0bG54SNSbW8x3K/I
+ Z+UembypqamE49nGK8DZEjJcOo6Y52Y1uRP+zecUkRb4Mn/KjeSv2OeyPpZkf2yGxhCCY3fCMCX
+ J3fiiWd6qjTWqhj3wYvT0yPfdz1qw8JnDWdd0hJF5IizTSFufJb9L4Pl90LnPpNeT/+7j2mcTl2
+ EgUDIOFuFp/PzTknwPDnQ4rsQAcnJKibcV/8mxfpTtHmscyv6IufGuX40Rfi4btz9fYr6WwpG2M
+ 3Zjx76Qa8ZKCB6UaWChsVJt+yAnv+XEKlsJX8ztC9D8=
+X-Google-Smtp-Source: AGHT+IEo9jM0CqOrvAxD15rCaGEwbz1WfiRt4FyB7MwtqZHr62JhXzdLVkhTU8qGvPTX3xt/mcmZAQ==
+X-Received: by 2002:a17:907:6d23:b0:aae:a087:f972 with SMTP id
+ a640c23a62f3a-ab2ab16b1d6mr1255846866b.11.1736620639504; 
+ Sat, 11 Jan 2025 10:37:19 -0800 (PST)
+Received: from Provence.localdomain
+ (dynamic-078-054-101-099.78.54.pool.telefonica.de. [78.54.101.99])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ab2c95af187sm299026666b.142.2025.01.11.10.37.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 11 Jan 2025 10:37:19 -0800 (PST)
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ Guenter Roeck <linux@roeck-us.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>, qemu-arm@nongnu.org,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Laurent Vivier <lvivier@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
+ qemu-block@nongnu.org, Bernhard Beschow <shentey@gmail.com>
+Subject: [PATCH v2 00/13] i.MX and SDHCI improvements
+Date: Sat, 11 Jan 2025 19:36:58 +0100
+Message-ID: <20250111183711.2338-1-shentey@gmail.com>
+X-Mailer: git-send-email 2.48.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/3] Enable clang build on Windows
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Alexandre Iooss <erdnaxe@crans.org>
-References: <20250110203401.178532-1-pierrick.bouvier@linaro.org>
- <73fd2f38-76a0-4274-875a-6f96faed79f6@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <73fd2f38-76a0-4274-875a-6f96faed79f6@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -107,68 +104,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/1/25 21:37, Pierrick Bouvier wrote:
-> On 1/10/25 12:33, Pierrick Bouvier wrote:
->> For now, it was only possible to build plugins using GCC on Windows. 
->> However,
->> windows-aarch64 only supports Clang.
->> This biggest roadblock was to get rid of gcc_struct attribute, which 
->> is not
->> supported by Clang. After investigation, we proved it was safe to drop 
->> it.
->>
->> Built and tested on Windows (all msys env)/Linux/MacOS for x86_64 and 
->> aarch64
->> hosts.
->>
->> v1 contained warning fixes and various bits that have been upstreamed 
->> already.
->> The only bits left in this series are the gcc_struct removal, and 
->> fixing the
->> plugins build with clang.
->>
->> This series is for 10.0, as we decided to not include the gcc_struct 
->> removal is
->> 9.2 release.
->>
->> All patches are now reviewed, so this series can be pulled. I'll 
->> report that to
->> MSYS2 too, so we can enable clang environments for QEMU.
->>
->> v1: https://patchew.org/QEMU/20241031040426.772604-1- 
->> pierrick.bouvier@linaro.org/
->>
->> v2:
->> - drop attribute gcc_struct instead of using -mno-ms-bitfields option
->> - add a section about bitfields in documentation
->>
->> v3:
->> - explain why gcc_struct attribute matters in packed structs in commit 
->> message
->> - reword the bitfields documentation with suggestions given
->>
->> v4:
->> - edit for bitfields doc requested by Philippe
->>
->> Pierrick Bouvier (3):
->>    win32: remove usage of attribute gcc_struct
->>    docs/devel/style: add a section about bitfield, and disallow them for
->>      packed structures
->>    plugins: enable linking with clang/lld
->>
->>   docs/devel/style.rst                      | 20 +++++++++++++++++++
->>   meson.build                               |  6 +++---
->>   include/qemu/compiler.h                   |  7 +------
->>   scripts/cocci-macro-file.h                |  6 +-----
->>   subprojects/libvhost-user/libvhost-user.h |  6 +-----
->>   contrib/plugins/meson.build               |  2 +-
->>   plugins/meson.build                       | 24 +++++++++++++++++++----
->>   tests/tcg/plugins/meson.build             |  3 +--
->>   8 files changed, 48 insertions(+), 26 deletions(-)
->>
-> 
-> It would be nice if a maintainer could pull this, so we can get this 
-> merged upstream.
-
-That'd be Thomas or Alex I suppose.
+This series fixes some details in i.MX platform devices, improves SDHCI=0D
+compatibility with U-Boot and modernizes some code.=0D
+=0D
+The first 5 patches are bugfixes 1/ resolving infinite loop in U-Boot esdhc=
+=0D
+driver, 2/ fixing a character echoing issue in imx-serial, 3/ fixing IRQ sh=
+aring=0D
+issue in Designware PCIe emulation, and 4/ fixing GPIO level preservation a=
+cross=0D
+resets in imx-gpio.=0D
+=0D
+Patches 6 and 7 modernize SD card emulation by turning presence and=0D
+write-protect GPIOs into qdev GPIOs and then further allowing the GPIOs to =
+be=0D
+inverted, just like device tree allows.=0D
+=0D
+The rest of the series is cosmetics including turning DPRINTF() into trace=
+=0D
+events which eases debugging.=0D
+=0D
+v2:=0D
+* Drop redundant implementation of TYPE_OR_IRQ (David, Zoltan)=0D
+* Use absolute QOM paths when tracing in imx_gpio and imx_i2c (Phil)=0D
+* Trace hexadecimal values in imx_serial (Phil)=0D
+* Do NOT move inversion of presence and write-protect GPIOs since that chan=
+ges=0D
+the internal logic of the device=0D
+=0D
+Bernhard Beschow (13):=0D
+  hw/sd/sdhci: Set SDHC_NIS_DMA bit when appropriate=0D
+  hw/char/imx_serial: Fix reset value of UFCR register=0D
+  hw/char/imx_serial: Update all state before restarting ageing timer=0D
+  hw/pci-host/designware: Expose MSI IRQ=0D
+  hw/gpio/imx_gpio: Don't clear input GPIO values upon reset=0D
+  hw/sd/sd: Remove legacy sd_set_cb() in favor of GPIOs=0D
+  hw/sd/sd: Allow for inverting polarities of presence and write-protect=0D
+    GPIOs=0D
+  hw/char/imx_serial: Turn some DPRINTF() statements into trace events=0D
+  hw/timer/imx_gpt: Remove unused define=0D
+  tests/qtest/libqos: Reuse TYPE_IMX_I2C define=0D
+  hw/i2c/imx_i2c: Convert DPRINTF() to trace events=0D
+  hw/misc/imx6_src: Convert DPRINTF() to trace events=0D
+  hw/gpio/imx_gpio: Turn DPRINTF() into trace events=0D
+=0D
+ include/hw/arm/fsl-imx6.h                  |  4 +-=0D
+ include/hw/arm/fsl-imx7.h                  |  4 +-=0D
+ include/hw/char/imx_serial.h               |  2 +-=0D
+ include/hw/pci-host/designware.h           |  1 +=0D
+ include/hw/sd/sdcard_legacy.h              |  1 -=0D
+ hw/arm/fsl-imx6.c                          | 13 ++++-=0D
+ hw/arm/fsl-imx7.c                          | 13 ++++-=0D
+ hw/char/imx_serial.c                       | 65 ++++++++++++++--------=0D
+ hw/gpio/imx_gpio.c                         | 19 +++----=0D
+ hw/i2c/imx_i2c.c                           | 21 ++-----=0D
+ hw/misc/imx6_src.c                         | 23 ++------=0D
+ hw/pci-host/designware.c                   |  7 +--=0D
+ hw/sd/sd.c                                 | 39 ++++++-------=0D
+ hw/sd/sdhci.c                              | 11 +++-=0D
+ hw/timer/imx_gpt.c                         |  4 --=0D
+ tests/qtest/libqos/arm-imx25-pdk-machine.c |  5 +-=0D
+ tests/qtest/libqos/i2c-imx.c               |  4 +-=0D
+ hw/arm/Kconfig                             |  2 +=0D
+ hw/char/trace-events                       |  5 ++=0D
+ hw/gpio/trace-events                       |  5 ++=0D
+ hw/i2c/trace-events                        |  5 ++=0D
+ hw/misc/trace-events                       |  6 ++=0D
+ 22 files changed, 151 insertions(+), 108 deletions(-)=0D
+=0D
+-- =0D
+2.48.0=0D
+=0D
 
