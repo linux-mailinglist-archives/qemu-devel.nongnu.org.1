@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E999FA0A96C
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 14:08:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ABC3A0A978
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 14:14:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWxhO-0004BC-Kh; Sun, 12 Jan 2025 08:08:14 -0500
+	id 1tWxlz-0005Di-2N; Sun, 12 Jan 2025 08:12:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1tWxhJ-00048j-JV
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 08:08:09 -0500
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1tWxli-00056C-Q6; Sun, 12 Jan 2025 08:12:44 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1tWxhG-0000B0-PY
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 08:08:08 -0500
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a9e44654ae3so539956766b.1
- for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 05:08:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1tWxlf-00016I-4s; Sun, 12 Jan 2025 08:12:40 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3cf094768so6102549a12.0; 
+ Sun, 12 Jan 2025 05:12:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1736687285; x=1737292085; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1736687553; x=1737292353; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fRnabKtxYVVFvyggSZpQh+Xi8gzcnAaC8Tq6sUY1olA=;
- b=VQwbIo/dvitE8nwMxVoj0KSNvvYvjTs88hipVweOuQOPNFL/S2HYW4q9LBYpl1N7zW
- CgVMHUgNi/fqksv5K3fgW+o0pqXxF6GECkH+wbdsP9Nqhtz5BSqfmpP0StRs/2n9c0aw
- yT/Ps7WhpvbJ9y07+eUsZiImty8mNvXxedsfgE2Nca1hm4Ki159V2hHhFYk6WLOdZone
- 8m6FyOobkzZcLBciBr1bRFtHlE9YAZmnmzJZ6oqQBotSFCDEU80ZTtFAxqaQs2DXwQXQ
- bvsnQH44q6Xc1+wj6aXJGPplaOMQmJWhcDWwPg7+qWGwWEOHRg4QzVWK9vYPgrBtbA2/
- E+Mg==
+ bh=H8c/UCICLRBXHpkJfG5pRUpK2IfBWdGLk+BZkMzxMUw=;
+ b=faY+S6oNfu29c62eqd1dS5sKi1BWwLqAvmoaULrmjR+RjF3Q4L3u3MI9dXPs0JhTy8
+ JaMYh/zdlodLlGe3A5fppE/n+p1lNgkQRqxL5fEFEdBvdtlmLAwfBPGkwJbGsrVWK6lB
+ Uwn+UaEYWXkxyk/OgG3uqvb7HAbXNXHbFxxjvzF/TADTxR+T4uQEkHo0kTGMzDuJ1uyB
+ MngEsHqqpokvm1NADDdL4Ox0wVXnqtNFFYi4Wsqr5Kpp4rKFspZV4ADrb5tYPtawoBwF
+ RdkrLxyENYC3hvDehwrYehNLWqwBsVUFKHF2igM0V1Egi2eGFlfH7iDjK/AUSFVAxvR+
+ 9L+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736687285; x=1737292085;
+ d=1e100.net; s=20230601; t=1736687553; x=1737292353;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fRnabKtxYVVFvyggSZpQh+Xi8gzcnAaC8Tq6sUY1olA=;
- b=vL1UTeZSOLgqtZS+JKJEiwu7RUDSM0ckfTz47GywaD8iNZsmPsrjhk6e6rxhc3WXFY
- 7xlnthuJXSgQXOqNEnZ8X3UISYPqGquWvZv0alJzQdCWmD3qylyVqAzVOS/A/cas01Fx
- rTM5tUVnFhCe6DKNQhDkfOQ5gAqh9a0LlMcTAK7nTZ10ZuZVpsGU8qdm79jcmhPg0Fcx
- 7E7iCVGVFVDQwUBGBVFQU/4K5TYT4ab4uiOyPAkwvTU2GHGhwpHMH0PeSI+Qwcnvs1Fg
- mG1hayzwGtlO2PMcMbvUljgUS++LUgn9mCXL9m3D6QRmibCG5J+Qwx43HZttYba/aQxd
- 4qJg==
+ bh=H8c/UCICLRBXHpkJfG5pRUpK2IfBWdGLk+BZkMzxMUw=;
+ b=kWKZqYaRNVt4WlVTA2fTH8hBKvwYU3hjeJPR6DNNXD06XNZfUF8+b68/+ZcRgziqCL
+ UIdX4ALsPr895pWNHmnKTTGRaWQ8XWkXqezPQSUg+T68JpuWf02yvluaDar7iMZdiOOx
+ p/VSGCDAukkMu9vqHa/NHPGGtdvXHIDgjK85TO4lV75hx+JIqgIKLGw9ruEuJqF3W/sb
+ 2B0dLnk63DCRwhnL+u2ETYwbc+ZGut/BYSc831FN7vZqX1CPxX9/LttKfjq8D7N6AkhQ
+ gwus1t/W6qli4Od8hLDpO6nU5on4Bdk1MYEoGIzVPTLFh906yL1U2ByVeyQ+qLSJkljs
+ UCaw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW5M7x+MbhwAIW/13CjsEsY/lHv/fRTDRaQWYHDSBKsphxWnpOPfsT1OZ29jnF7QYUO4yuFX+MclsXN@nongnu.org
-X-Gm-Message-State: AOJu0Yxow0/GqPf47IuqpqhE3/QvPA65z6QJ5bcbdYmux6fw7Lk3fJo7
- Rb6gRIcbWdHd64VDIAbLMEltTAZquTP/mlmE1V6H/3ZvemhbIMjs
-X-Gm-Gg: ASbGnctYExVZzxtFpDod6INJmXgMIMr8dSJjZaeLa7oGQnComDeAFJ+VZQjZZZOQjJz
- bNdqMIlWLvWFMDhXgKb98AKkeaFxQDEqIOmOAVwC6USkqfNVRJ6PSTTsGrGn6y0DGLvoTMl0WMK
- yCnIKh3TK35qDON1pDxzt70BWnN98/v2hbTmm+uD5EOoupr7+7iuHgX/7P454SKRavnNaXJ1BDU
- QKx8X9cn9VoPZGnf7+/vX7B+I8htZuuWOqs+XIPOifHOlDRj/wHSHVq12ttEHLf9rA8OezkzCrA
- YSDAPKYuxphgtBxs+gaNznpxHoSUpSM=
-X-Google-Smtp-Source: AGHT+IEH3UCFZroXycTREBJ1bf8TC6Dwby0FyU0FK1XnVXcc9v/t48HycIkAF83BqOvh3X7uPdvNJQ==
-X-Received: by 2002:a17:907:9997:b0:ab2:c0c8:3841 with SMTP id
- a640c23a62f3a-ab2c0c83ac9mr1417348466b.4.1736687284619; 
- Sun, 12 Jan 2025 05:08:04 -0800 (PST)
+ AJvYcCXRcQLnb10r6rIGBGdHBGrtgxMD8+RgpfoqOCRA/TS5//p737TgfgSsWmyORLFESJyDOuWyG33R30/C@nongnu.org
+X-Gm-Message-State: AOJu0YzvBgIc9oTcp0eOjkxehOmhTdtFvmyc02vI4NB4xlDvMB3iHeso
+ v+qNOBJ9RrttTLVnFHakyAuxrgzl6aBOSsToeFJv3sxMCYZjGTnh
+X-Gm-Gg: ASbGncvtzHryiuFc58uQLNFPi3da/g9IUw4RKnYv3kyGMLfcByk5o59EZUDbVEWjkBv
+ A9XY6z8esoxaUNmYot64rPhB3QB+5nnEgLZfz+JVVDYe2+RFKaiyXNi//3bvtOVofK7cIOxKoTH
+ 1EMvXbKzOxsnUzRSnDxRDb+TxHY8QwxhFspRqio19gqbxkJzJQVd+ygQ0OYr2O3yPEqZnoMsIIn
+ 2ZHnc/16sH8LZGerV73bCOEuTBHfTk6E+opRD0d4h+qVxztTOWeC8Hu7dOVxJorFDPyeqcmrv4k
+ zcGZXxWFwMLvBcAohSezFNtUzGH2C4g=
+X-Google-Smtp-Source: AGHT+IEJilvs6VBJZGyAgvAC/udeESjbHZi+keHunnRaROEes/Jxl6Djs6InJyvf5EA5pyp95BIPQQ==
+X-Received: by 2002:a17:907:3e9b:b0:aae:d199:6eae with SMTP id
+ a640c23a62f3a-ab2ab6a38bbmr1431328766b.14.1736687552305; 
+ Sun, 12 Jan 2025 05:12:32 -0800 (PST)
 Received: from [127.0.0.1] (dynamic-077-013-193-192.77.13.pool.telefonica.de.
  [77.13.193.192]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c91362a2sm368789266b.85.2025.01.12.05.08.03
+ a640c23a62f3a-ab2c905e1fesm373785666b.2.2025.01.12.05.12.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 12 Jan 2025 05:08:03 -0800 (PST)
-Date: Sun, 12 Jan 2025 13:08:03 +0000
+ Sun, 12 Jan 2025 05:12:31 -0800 (PST)
+Date: Sun, 12 Jan 2025 13:12:31 +0000
 From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Volker_R=FCmelin?= <vr_qemu@t-online.de>,
- =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>
-CC: Stefan Weil <sw@weilnetz.de>, Howard Spoelstra <hsp.cat7@gmail.com>,
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3=5D_ui/sdl2=3A_reenable_the?=
- =?US-ASCII?Q?_SDL2_Windows_keyboard_hook_procedure?=
-In-Reply-To: <20241231115950.6732-1-vr_qemu@t-online.de>
-References: <20241231115950.6732-1-vr_qemu@t-online.de>
-Message-ID: <4D63C579-181F-47CE-8D0D-D3F4590BF9DC@gmail.com>
+CC: qemu-block@nongnu.org, Bin Meng <bmeng.cn@gmail.com>
+Subject: Re: [PATCH] hw/sd/sdhci: Factor sdhci_sdma_transfer() out
+In-Reply-To: <20250109122029.22780-1-philmd@linaro.org>
+References: <20250109122029.22780-1-philmd@linaro.org>
+Message-ID: <AA6E1DC2-B956-480C-AA5A-3ABB90526E43@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,139 +100,68 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 31=2E Dezember 2024 11:59:50 UTC schrieb "Volker R=C3=BCmelin" <vr_qemu=
-@t-online=2Ede>:
->Windows only:
+Am 9=2E Januar 2025 12:20:29 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <ph=
+ilmd@linaro=2Eorg>:
+>Factor sdhci_sdma_transfer() out of sdhci_data_transfer()=2E
+>Re-use it in sdhci_write(), so we don't try to run multi
+>block transfer for a single block=2E
 >
->The libSDL2 Windows message loop needs the libSDL2 Windows low
->level keyboard hook procedure to grab the left and right Windows
->keys correctly=2E Reenable the SDL2 Windows keyboard hook procedure=2E
->
->Since SDL2 2=2E30=2E4 the SDL2 keyboard hook procedure also filters
->out the special left Control key event for every Alt Gr key event
->on keyboards with an international layout=2E This means the QEMU low
->level keyboard hook procedure is no longer needed=2E Remove the QEMU
->Windows keyboard hook procedure=2E
->
->Resolves: https://gitlab=2Ecom/qemu-project/qemu/-/issues/2139
->Resolves: https://gitlab=2Ecom/qemu-project/qemu/-/issues/2323
->Signed-off-by: Volker R=C3=BCmelin <vr_qemu@t-online=2Ede>
+>Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
 
-Resolving bugs strictly by removing code=2E Nice!
-
-Issuing Meta+E opens a file manager in a guest running on Win11/msys2 host=
-=2E Thus:
-
-Tested-by: Bernhard Beschow <shentey@gmail=2Ecom>
 Reviewed-by: Bernhard Beschow <shentey@gmail=2Ecom>
 
 >---
+> hw/sd/sdhci=2Ec | 22 +++++++++++-----------
+> 1 file changed, 11 insertions(+), 11 deletions(-)
 >
->v2: Remove the QEMU lowlevel keyboard hook procedure from the
->SDL2 UI backend=2E
->
->v3: Rebase to current master because of a merge conflict=2E
->
-> ui/meson=2Ebuild |  4 ----
-> ui/sdl2=2Ec      | 26 --------------------------
-> 2 files changed, 30 deletions(-)
->
->diff --git a/ui/meson=2Ebuild b/ui/meson=2Ebuild
->index 28c7381dd1=2E=2E35fb04cadf 100644
->--- a/ui/meson=2Ebuild
->+++ b/ui/meson=2Ebuild
->@@ -120,10 +120,6 @@ if gtk=2Efound()
-> endif
->=20
-> if sdl=2Efound()
->-  if host_os =3D=3D 'windows'
->-    system_ss=2Eadd(files('win32-kbd-hook=2Ec'))
->-  endif
->-
->   sdl_ss =3D ss=2Esource_set()
->   sdl_ss=2Eadd(sdl, sdl_image, pixman, glib, files(
->     'sdl2-2d=2Ec',
->diff --git a/ui/sdl2=2Ec b/ui/sdl2=2Ec
->index 1fb72f67a6=2E=2E2cb95a6b7c 100644
->--- a/ui/sdl2=2Ec
->+++ b/ui/sdl2=2Ec
->@@ -32,7 +32,6 @@
-> #include "system/runstate=2Eh"
-> #include "system/runstate-action=2Eh"
-> #include "system/system=2Eh"
->-#include "ui/win32-kbd-hook=2Eh"
-> #include "qemu/log=2Eh"
->=20
-> static int sdl2_num_outputs;
->@@ -262,7 +261,6 @@ static void sdl_grab_start(struct sdl2_console *scon)
->     }
->     SDL_SetWindowGrab(scon->real_window, SDL_TRUE);
->     gui_grab =3D 1;
->-    win32_kbd_set_grab(true);
->     sdl_update_caption(scon);
+>diff --git a/hw/sd/sdhci=2Ec b/hw/sd/sdhci=2Ec
+>index 299cd4bc1b6=2E=2E332ea13fe55 100644
+>--- a/hw/sd/sdhci=2Ec
+>+++ b/hw/sd/sdhci=2Ec
+>@@ -694,6 +694,15 @@ static void sdhci_sdma_transfer_single_block(SDHCISt=
+ate *s)
+>     sdhci_end_transfer(s);
 > }
 >=20
->@@ -270,7 +268,6 @@ static void sdl_grab_end(struct sdl2_console *scon)
-> {
->     SDL_SetWindowGrab(scon->real_window, SDL_FALSE);
->     gui_grab =3D 0;
->-    win32_kbd_set_grab(false);
->     sdl_show_cursor(scon);
->     sdl_update_caption(scon);
-> }
->@@ -371,19 +368,6 @@ static int get_mod_state(void)
->     }
-> }
->=20
->-static void *sdl2_win32_get_hwnd(struct sdl2_console *scon)
->-{
->-#ifdef CONFIG_WIN32
->-    SDL_SysWMinfo info;
+>+static void sdhci_sdma_transfer(SDHCIState *s)
+>+{
+>+    if ((s->blkcnt =3D=3D 1) || !(s->trnmod & SDHC_TRNS_MULTI)) {
+>+        sdhci_sdma_transfer_single_block(s);
+>+    } else {
+>+        sdhci_sdma_transfer_multi_blocks(s);
+>+    }
+>+}
+>+
+> typedef struct ADMADescr {
+>     hwaddr addr;
+>     uint16_t length;
+>@@ -925,12 +934,7 @@ static void sdhci_data_transfer(void *opaque)
+>     if (s->trnmod & SDHC_TRNS_DMA) {
+>         switch (SDHC_DMA_TYPE(s->hostctl1)) {
+>         case SDHC_CTRL_SDMA:
+>-            if ((s->blkcnt =3D=3D 1) || !(s->trnmod & SDHC_TRNS_MULTI)) =
+{
+>-                sdhci_sdma_transfer_single_block(s);
+>-            } else {
+>-                sdhci_sdma_transfer_multi_blocks(s);
+>-            }
 >-
->-    SDL_VERSION(&info=2Eversion);
->-    if (SDL_GetWindowWMInfo(scon->real_window, &info)) {
->-        return info=2Einfo=2Ewin=2Ewindow;
->-    }
->-#endif
->-    return NULL;
->-}
->-
-> static void handle_keydown(SDL_Event *ev)
-> {
->     int win;
->@@ -608,10 +592,6 @@ static void handle_windowevent(SDL_Event *ev)
->         sdl2_redraw(scon);
->         break;
->     case SDL_WINDOWEVENT_FOCUS_GAINED:
->-        win32_kbd_set_grab(gui_grab);
->-        if (qemu_console_is_graphic(scon->dcl=2Econ)) {
->-            win32_kbd_set_window(sdl2_win32_get_hwnd(scon));
->-        }
->         /* fall through */
->     case SDL_WINDOWEVENT_ENTER:
->         if (!gui_grab && (qemu_input_is_absolute(scon->dcl=2Econ) || abs=
-olute_enabled)) {
->@@ -627,9 +607,6 @@ static void handle_windowevent(SDL_Event *ev)
->         scon->ignore_hotkeys =3D get_mod_state();
->         break;
->     case SDL_WINDOWEVENT_FOCUS_LOST:
->-        if (qemu_console_is_graphic(scon->dcl=2Econ)) {
->-            win32_kbd_set_window(NULL);
->-        }
->         if (gui_grab && !gui_fullscreen) {
->             sdl_grab_end(scon);
+>+            sdhci_sdma_transfer(s);
+>             break;
+>         case SDHC_CTRL_ADMA1_32:
+>             if (!(s->capareg & R_SDHC_CAPAB_ADMA1_MASK)) {
+>@@ -1174,11 +1178,7 @@ sdhci_write(void *opaque, hwaddr offset, uint64_t =
+val, unsigned size)
+>             if (!(mask & 0xFF000000) && s->blkcnt &&
+>                 (s->blksize & BLOCK_SIZE_MASK) &&
+>                 SDHC_DMA_TYPE(s->hostctl1) =3D=3D SDHC_CTRL_SDMA) {
+>-                if (s->trnmod & SDHC_TRNS_MULTI) {
+>-                    sdhci_sdma_transfer_multi_blocks(s);
+>-                } else {
+>-                    sdhci_sdma_transfer_single_block(s);
+>-                }
+>+                sdhci_sdma_transfer(s);
+>             }
 >         }
->@@ -869,10 +846,7 @@ static void sdl2_display_init(DisplayState *ds, Disp=
-layOptions *o)
-> #ifdef SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR /* only available sin=
-ce SDL 2=2E0=2E8 */
->     SDL_SetHint(SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR, "0");
-> #endif
->-#ifndef CONFIG_WIN32
->-    /* QEMU uses its own low level keyboard hook procedure on Windows */
->     SDL_SetHint(SDL_HINT_GRAB_KEYBOARD, "1");
->-#endif
-> #ifdef SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED
->     SDL_SetHint(SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED, "0");
-> #endif
+>         break;
 
