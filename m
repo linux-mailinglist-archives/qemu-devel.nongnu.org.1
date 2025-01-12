@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25EB5A0AC3D
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:22:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 653F5A0AC3A
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:22:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tX6K4-00044K-Ag; Sun, 12 Jan 2025 17:20:44 -0500
+	id 1tX6Jt-0003g9-5r; Sun, 12 Jan 2025 17:20:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Jk-0003Bh-HQ
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Jl-0003DI-6S
  for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:20:25 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Je-0006ox-Os
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:20:23 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-435f8f29f8aso26174655e9.2
- for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:20:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Jj-0006pO-AM
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:20:24 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3863c36a731so2642931f8f.1
+ for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:20:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736720417; x=1737325217; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736720421; x=1737325221; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cFQoJdzHdUvE38GYcn/jd9wG7NJypEZhq9jeSgdzCu0=;
- b=RrLyFnd84LMv06DOormNC19mdDnWuiJLeHlPVtxQuluxFvEO15HOjnhfhalOQiRtX4
- O2bQX0OXBbC2UgwFNx4S24EIKC8h/8L21VJ+/r1f8Jns4d2uPnPC24pqgTKKfMDFmc0k
- f/xnwYw+g4OKGGkvQbkYI/CQ0UKGcbQnduLn2hk6PlJDc73NmtPT+Xk4o2hug628rPm+
- tY0zWZ9tmjIn3Ee0mMU2BPBFaT6dzYUxekSIzcttKeetDDgCtsQa4se18V3IIi1shE79
- BTDIq1D5s/UUI261IAu8Km1u0IUHN6BGjP1lgcBhgxxDKV4c6FYmHe5kTh31lyWhOAA/
- q/iA==
+ bh=NrAERIRi/4iWN1y29jrfSTmeSOjPW3PD2Bfh20J+jkc=;
+ b=eDeWCywkFmCcx+e0JWUXJ4h5HYHNsbZNk5gtKor7b9i2I0NKeXpVTUELXGBiMurfZz
+ Dl2OAcf00mRnGUj0iW4xYxwGmGzdwris2aQi/FHFPIdCvsItZm3YBQr9MZzgDOEzNLAx
+ xdadFUlRUTjntkjCpxpHagBf2B41JPwqp676e9Gel6WDcqecpozFFF0sxoFXixz32XAn
+ bP/5wGKz27DnjYpSxsJEiz0qWQ2TQiVa98ZBdsKHQM+yp0rZncI7FMqogHnZekY88m+K
+ e+Qq5y7Q48X0SpLksKYyVWLmPtXKy9N6GUXnX2zyWAkgwQnJIP10iCl3nutZDSeg2Ga+
+ eD9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736720417; x=1737325217;
+ d=1e100.net; s=20230601; t=1736720421; x=1737325221;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cFQoJdzHdUvE38GYcn/jd9wG7NJypEZhq9jeSgdzCu0=;
- b=YhKXsfcmwAdBoRG/gWHxD8SZl1kTXBCZ0OVwD8ew63ISyseQBO1OFscTHXTPTyU9qi
- 83tdDY1nh6pc5xs6p5Ag18eH7d+qsPg7jj3maTTf/RBpMi01c8mqKGkGjG6immRWUbah
- FXycZ5en2oc0Rb7EFKD9hyVo8uMORhCB+I30gpUZhmAZc01xv4t6+7JkJNw4KsX8WO2+
- hL7Or4OA9+aRhXJ2Zt9IV7ix0QZ0f64QwXOGhmy+ixCu8/qqsiutmZQJNzToEr0nNi54
- 08wnFb0/Qhat6n04SVh33SHc4BUO9mAdM30hi08NsoHie2OOoNezQsUqE11arXfXfE8G
- jftA==
-X-Gm-Message-State: AOJu0Yz0iAP+iX9DgmEoHX6ZMAyHfXLsUbVvW/Xxr8jWDhD78zpSGhWQ
- v8UWLoq+IsaA5NHFKV/ICLKIq2om7XXRuYS8lxDHjB1iYq43KBSEOwOQ3EiivT4LTMBMY+W7J13
- dYdU=
-X-Gm-Gg: ASbGnctvVhONyF0u6OoxDpUeLGbARMfjlZXW0/kDfsAr1y2a7ZmkeJopiiN6Ek2QTKZ
- CTzwhRQEp1pnC4SyuQVtClYas+JDlSdXjDyOdBq/NSq9/jBlmjwhJjTsodthGDa/yOD/06P6o6Q
- GxBDvzU+HucjWQ96RPhSGrAdbHG2gkfjrZEC2h8b7N2UFbv1+UteHYDwKZrdx8dqkTTPpysD2xh
- nsQ+GXL4nTqcUIhLj1cPxtKFlOsyPRDrQLzmEXWsl9IBxOrJx8+aMJUVQ1s54Q5GPOClmJQ7Oyz
- aK+esAzL6nYmiJBu7UhQFkVT86L+OPo=
-X-Google-Smtp-Source: AGHT+IGEkaYhb9HY5gJX68JJtGMG8NPAumlyuju04zIZU62SMCdtOU5JHS0MogJwekOSftAXcNOi/g==
-X-Received: by 2002:a05:600c:3143:b0:434:a929:42bb with SMTP id
- 5b1f17b1804b1-436e26b9d45mr181464985e9.18.1736720416869; 
- Sun, 12 Jan 2025 14:20:16 -0800 (PST)
+ bh=NrAERIRi/4iWN1y29jrfSTmeSOjPW3PD2Bfh20J+jkc=;
+ b=ahR1RJ67ayv1QVJjJjJj7tr0UckxOwvm3IcIyhzp05lHqqpwE7ZcDUWAnN25/ypdKP
+ D+OPKlfEBA2JH18q9g0MvohSkzBKhKM5M9s0eVLKzaNA5vAfR//ghbEsTO79jEk3lM9G
+ wUAUAeDdNmV5pjF6HRRSxaShZu+DWrUcQbiw3CpUWYWL98f2XS3uVv9znwymXi0+5+je
+ ZEFlg6m24g0QR2/LVfNjdwHcXZT69fFGTz2pkAbSWujVh+rdBJrGenbcXxnqO0ZXIo1G
+ JwRHmWh40vROy9U6CdnXQmNhV3wcBGBzgicjjiJBXqX4/tdCfQEUQVj0TL7l8UoCZaW9
+ sjnQ==
+X-Gm-Message-State: AOJu0Yy2JRMpD+trj+Y72TEI6HlD3UXXEfwB6dO0yNn8pK5Mkr6/UA1k
+ 5Be9n4g+eoP6fQwLpj++qv5jg8fItOS7gRMV0NSFsVK8DMhkz2uO3X5xbKIoZZ0yRdy3WdoF81C
+ P/50=
+X-Gm-Gg: ASbGncvzhXi05sTKhtN9jCVGHkfTzSsXZG9QJMLFkIULajn5u3WSH2srFF4lxXeSIUP
+ VhghgyrsqbaB0sr9sUqBDt/QMsBUrSvI8AOLWUyA+wvgEQanLRmyt3owGYATONpKkuAsdSKjWX0
+ y86s9NX0GUpp2BC7QdmMmfF9t28ik+XsEwQIZIPOXxieKt+XLNVU8befodERJoNBX9md+qWeycr
+ njdQYJmKwMtET1+IbNnMqJOicYws4ihUXedxyiRydx5wrI6on4hn7x7LgCo1zv4FPM1ep2pEHCY
+ 0Kji8TtWiKwXFZajhXTsjJJw/+tXlJM=
+X-Google-Smtp-Source: AGHT+IEpxrIx7c2tZbI+AfiE619OlGm9RjJHfwNfOXKDxMFROfRwGYqjiIUU8F5gSbkk/v30BHdQYQ==
+X-Received: by 2002:a5d:584f:0:b0:38a:68f4:66a2 with SMTP id
+ ffacd0b85a97d-38a87312bdfmr16851999f8f.31.1736720421419; 
+ Sun, 12 Jan 2025 14:20:21 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e9d8fc81sm124757555e9.5.2025.01.12.14.20.15
+ ffacd0b85a97d-38a8e3838a3sm10658965f8f.33.2025.01.12.14.20.20
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 12 Jan 2025 14:20:15 -0800 (PST)
+ Sun, 12 Jan 2025 14:20:21 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Bernhard Beschow <shentey@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 34/49] hw/gpio/imx_gpio: Turn DPRINTF() into trace events
-Date: Sun, 12 Jan 2025 23:17:10 +0100
-Message-ID: <20250112221726.30206-35-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 35/49] tests/qtest/boot-serial-test: Correct HPPA machine name
+Date: Sun, 12 Jan 2025 23:17:11 +0100
+Message-ID: <20250112221726.30206-36-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250112221726.30206-1-philmd@linaro.org>
 References: <20250112221726.30206-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,92 +98,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+Commit 7df6f751176 ("hw/hppa: Split out machine creation")
+renamed the 'hppa' machine as 'B160L', but forgot to update
+the boot serial test, which ended being skipped.
 
-While at it add a trace event for input GPIO events.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-ID: <20250111183711.2338-14-shentey@gmail.com>
+Cc: qemu-stable@nongnu.org
+Fixes: 7df6f751176 ("hw/hppa: Split out machine creation")
+Reported-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20250102100340.43014-2-philmd@linaro.org>
 ---
- hw/gpio/imx_gpio.c   | 18 +++++++-----------
- hw/gpio/trace-events |  5 +++++
- 2 files changed, 12 insertions(+), 11 deletions(-)
+ tests/qtest/boot-serial-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/gpio/imx_gpio.c b/hw/gpio/imx_gpio.c
-index 898f80f8c83..549a281ed79 100644
---- a/hw/gpio/imx_gpio.c
-+++ b/hw/gpio/imx_gpio.c
-@@ -24,6 +24,7 @@
- #include "migration/vmstate.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
-+#include "trace.h"
- 
- #ifndef DEBUG_IMX_GPIO
- #define DEBUG_IMX_GPIO 0
-@@ -34,14 +35,6 @@ typedef enum IMXGPIOLevel {
-     IMX_GPIO_LEVEL_HIGH = 1,
- } IMXGPIOLevel;
- 
--#define DPRINTF(fmt, args...) \
--    do { \
--        if (DEBUG_IMX_GPIO) { \
--            fprintf(stderr, "[%s]%s: " fmt , TYPE_IMX_GPIO, \
--                                             __func__, ##args); \
--        } \
--    } while (0)
--
- static const char *imx_gpio_reg_name(uint32_t reg)
- {
-     switch (reg) {
-@@ -111,6 +104,8 @@ static void imx_gpio_set(void *opaque, int line, int level)
-     IMXGPIOState *s = IMX_GPIO(opaque);
-     IMXGPIOLevel imx_level = level ? IMX_GPIO_LEVEL_HIGH : IMX_GPIO_LEVEL_LOW;
- 
-+    trace_imx_gpio_set(DEVICE(s)->canonical_path, line, imx_level);
-+
-     imx_gpio_set_int_line(s, line, imx_level);
- 
-     /* this is an input signal, so set PSR */
-@@ -200,7 +195,8 @@ static uint64_t imx_gpio_read(void *opaque, hwaddr offset, unsigned size)
-         break;
-     }
- 
--    DPRINTF("(%s) = 0x%" PRIx32 "\n", imx_gpio_reg_name(offset), reg_value);
-+    trace_imx_gpio_read(DEVICE(s)->canonical_path, imx_gpio_reg_name(offset),
-+                        reg_value);
- 
-     return reg_value;
- }
-@@ -210,8 +206,8 @@ static void imx_gpio_write(void *opaque, hwaddr offset, uint64_t value,
- {
-     IMXGPIOState *s = IMX_GPIO(opaque);
- 
--    DPRINTF("(%s, value = 0x%" PRIx32 ")\n", imx_gpio_reg_name(offset),
--            (uint32_t)value);
-+    trace_imx_gpio_write(DEVICE(s)->canonical_path, imx_gpio_reg_name(offset),
-+                         value);
- 
-     switch (offset) {
-     case DR_ADDR:
-diff --git a/hw/gpio/trace-events b/hw/gpio/trace-events
-index b91cc7e9a45..cea896b28f6 100644
---- a/hw/gpio/trace-events
-+++ b/hw/gpio/trace-events
-@@ -1,5 +1,10 @@
- # See docs/devel/tracing.rst for syntax documentation.
- 
-+# imx_gpio.c
-+imx_gpio_read(const char *id, const char *reg, uint32_t value) "%s:[%s] -> 0x%" PRIx32
-+imx_gpio_write(const char *id, const char *reg, uint32_t value) "%s:[%s] <- 0x%" PRIx32
-+imx_gpio_set(const char *id, int line, int level) "%s:[%d] <- %d"
-+
- # npcm7xx_gpio.c
- npcm7xx_gpio_read(const char *id, uint64_t offset, uint64_t value) " %s offset: 0x%04" PRIx64 " value 0x%08" PRIx64
- npcm7xx_gpio_write(const char *id, uint64_t offset, uint64_t value) "%s offset: 0x%04" PRIx64 " value 0x%08" PRIx64
+diff --git a/tests/qtest/boot-serial-test.c b/tests/qtest/boot-serial-test.c
+index 3b92fa5d506..7759e8c9702 100644
+--- a/tests/qtest/boot-serial-test.c
++++ b/tests/qtest/boot-serial-test.c
+@@ -185,7 +185,7 @@ static const testdef_t tests[] = {
+       sizeof(kernel_plml605), kernel_plml605 },
+     { "arm", "raspi2b", "", "TT", sizeof(bios_raspi2), 0, bios_raspi2 },
+     /* For hppa, force bios to output to serial by disabling graphics. */
+-    { "hppa", "hppa", "-vga none", "SeaBIOS wants SYSTEM HALT" },
++    { "hppa", "B160L", "-vga none", "SeaBIOS wants SYSTEM HALT" },
+     { "aarch64", "virt", "-cpu max", "TT", sizeof(kernel_aarch64),
+       kernel_aarch64 },
+     { "arm", "microbit", "", "T", sizeof(kernel_nrf51), kernel_nrf51 },
 -- 
 2.47.1
 
