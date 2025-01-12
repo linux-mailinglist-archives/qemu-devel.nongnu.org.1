@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A7BA0AC4B
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:24:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 231FBA0AC31
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:21:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tX6K7-0004DH-Pn; Sun, 12 Jan 2025 17:20:48 -0500
+	id 1tX6KB-0004Hs-Kp; Sun, 12 Jan 2025 17:20:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6JH-0002Wt-56
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:56 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6JO-0002hY-3k
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:20:02 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6JF-0006aY-Mn
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:54 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-43634b570c1so26191985e9.0
- for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:19:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6JL-0006ay-MX
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:20:01 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-43635796b48so22731575e9.0
+ for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:19:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736720392; x=1737325192; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736720398; x=1737325198; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6igD5E/nbtwSQ78SmLcXDRAtrSWvkZ+A6IpBZtctTjk=;
- b=IsABqRQEF9txkWLm0Tg8XvN+2m0qLFM+8OyS8GxgH4Lo/AcIHsk6Eb9X5/tCiOo07Y
- PrIvWLZTaDSz2Sw2zmlkNWYoV318DA/BqcbZ/OOv66MEuCAvMrTkHoy9vQ3qdXhE4iUM
- xlJ0gVyRCjX+yaBgvgfClp6+MsG+3J+n8jAmJJu304Mi9Ez5EWDRKJfyNWkZkM7gOFUP
- azhxx+2BkmJlg2u7AsmRvpiATJ09USLqo+V38FxHY2asgeJ8d6RhhYUR9QxP6Yng02dE
- 5RQgpRRku9DTPLQ6N8M6Cs8CsNpzcbtRh6RFrb3uBWzj7NCI61luFncU24RxVQc15uuV
- wpfw==
+ bh=JNNKD3FB/GFpxFtn1SMHag0AGZZmeK3Dg8kU3DWDxRk=;
+ b=FK9JQ7z6Wns1zd641kz5O0qr4jwS6oIPaaHus6oF2NUhUkOFeUfxz77c85orEeuQuT
+ 4/SjvwinyaLwv2S2YDVwN9Wo7Ud/n8Jp2NJ+XIk1vfYQFfsaftsEpUQ+ooRXZOqj1oA7
+ SOVzOyuAqxuovQFD3ZManbCH7VT1lOLVw8Cfz2bYhQjVp1iWXCAeWIhbM3vSaK1RIi/Q
+ /BHLhjdvhZM+H6K0WxxjlTe2MDfRweVx0VtTZzzAgwpuof5E7rxIQWGzhhI4HxsRtBah
+ Zka9fJGou3A6xOuB785FgWO8ZQTwYls+CSfY04ITZpuAjOaUKS+zfDeN+ZmoBqq8EwAs
+ AaCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736720392; x=1737325192;
+ d=1e100.net; s=20230601; t=1736720398; x=1737325198;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6igD5E/nbtwSQ78SmLcXDRAtrSWvkZ+A6IpBZtctTjk=;
- b=NU5DyftATnFATFJOLo3k8d1CyQ7JeMFjaO7c+LUXvSljIhBuean0SdSpfsL0Pxca2y
- 1Oiq2H2bDUhfUhwCfpMLPhPYMK/UmOQzUUnJQVP6jkghWYZU9sAEviAzC+S8tV0YKfI5
- QDPYZ7QsBZ8VXbW4ntVOwyvk6iXaqIqc56HlU+Y84pt+cgRNs4qG18eyoPEB1l2uUf5A
- jzRgdcnvAE79CAmIAK3J+F8r9OiOwCrs8krYv4GlbQP/ZgVY6OC0+nzq9A0RAImDC+Tx
- cwzmDrV7yc/aobUU5XZg0x4r7I0SsFb4oKoCzbo3dbXapPAsidlPlZjeNYdy450Ijg4O
- 6b8w==
-X-Gm-Message-State: AOJu0Yw9mt//hJB09a9qH6+gim3Q85mFhIY+/mfuavbXM65GbMAIudnj
- SQ5V9EysHB1JWMxzZ/o+CKDj9De/4/PzkjaK9iylv40x7mQRZJt6cagGfLp/PYNSLvqswoB1KYH
- 2sBY=
-X-Gm-Gg: ASbGncs0rnUB6DdNheumN1hR3mfGN0XfpxPLhdro65YwOx7XW7DeJ1UloY8WPGfpDH8
- XcqtL+XPP8kHa/ocbWaciZ3c/LnIT3Ga2bqQf/sjrxtWDR4sX1odEU1ZQDNsFE7/Jre8TF79XV1
- stwm1HhLsV6ZKEQwFVPshCAAM5TIm6r9sTkQnn1tnDh7IvSKWjb9g1O9Pvn+uYnSBkxOS+Weowo
- bH2zuU/UHXkGQD3RnAGLCXkSjn+HYVqm2fQZKU2tQ6IA4+66Zn1lyRNBvaAhV31KdVs1Lt7uJmj
- GzK3OcfbxZwKSF4QeJu7JT3pOE9DC+8=
-X-Google-Smtp-Source: AGHT+IG225P8aOr6MKdzG1E4vNkut7SC5zr4OTLDFvMhToLX/q9PYBCa3sVrFd9d0TPAyrrF0H2new==
-X-Received: by 2002:a05:600c:510a:b0:434:faa9:5266 with SMTP id
- 5b1f17b1804b1-436e26adfc9mr164276005e9.13.1736720391870; 
- Sun, 12 Jan 2025 14:19:51 -0800 (PST)
+ bh=JNNKD3FB/GFpxFtn1SMHag0AGZZmeK3Dg8kU3DWDxRk=;
+ b=E/uYaF4QRcLjCMBRuvNTNy4Fhfv2mPKcqn8QWp0SQNuBcWAbd17UUMZ+oZiPdVqWf3
+ sAkHk303zvQW7rxpcBlafOrCHF2GvEErcPOGNDs+RWX0+KiikpvTFy91tFR6P3Yk9vN1
+ qHUf2RZX662YEztnNra8kSbqKf/jCNHoj30SypAp9CdB6L5ATB0CUsGDnrCmzw52psYQ
+ dR6mRUqfuQNDjf77ZQQspLG+R7U5XOnzbmezX0K24cIWpoy1/BrkYG7kRSJiNndUk3o9
+ p3X+zoXBHZVrN8NgtcuvwGzlFFlxVG9bOMMJnFep4UYqcNmv905o5WZJimrurjxAJEpy
+ dVAQ==
+X-Gm-Message-State: AOJu0YwMSilztwMVQEUEiucFBWSJ91iCom6wP2jl42nhdfSuXWf4rvFM
+ HDCH0FMXh2mNbsboJPLqOeKAX6NS0jUi6dj3mOIl0cYkxSNwQwx3550+PhNwvkhrYQ+Q6j0ksOs
+ 6NxM=
+X-Gm-Gg: ASbGncuwZbTtssVK54slvU+lrRleiPI3bQIIv8v/94AYhNK65Y9DbnRH8xvpPNBSdxR
+ rZPgQ9wM3EMkFUvqITMHScazU6zihhU48wc0bdSv+DmVCQD+COdpU7i3HrArMgXNAScNc+Yxq/f
+ /QnjT7zQYS/R48o1EXlj+YjH0MEVZ95B1K5PO/NmGR8W1c2yexegkQHZLunjRcl4U46loufDFz6
+ 9vGmiXBlapiLGqF99eLqLuWpi96udbWNqqY8CCnk1ln8WRxgRO54nfNre/x96aJ3Uw/8sicMssi
+ le2IWMPjZO2HOILTj2R5dOPC1iRx5QY=
+X-Google-Smtp-Source: AGHT+IFJ0M6M//ozghkApe6K0G9hUIFAed52tsDgWZLMjCiFxHGq+4EzJ3f9HsP+Em4Z/cI/hgDwjw==
+X-Received: by 2002:a05:600c:83ca:b0:42c:b8c9:16c8 with SMTP id
+ 5b1f17b1804b1-436e9d7b51bmr119415385e9.10.1736720397797; 
+ Sun, 12 Jan 2025 14:19:57 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e384f2bsm10504560f8f.41.2025.01.12.14.19.49
+ ffacd0b85a97d-38a8e4b7ff0sm10651711f8f.77.2025.01.12.14.19.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 12 Jan 2025 14:19:50 -0800 (PST)
+ Sun, 12 Jan 2025 14:19:56 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Bernhard Beschow <shentey@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 29/49] hw/timer/imx_gpt: Remove unused define
-Date: Sun, 12 Jan 2025 23:17:05 +0100
-Message-ID: <20250112221726.30206-30-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: [PULL 30/49] tests/qtest/libqos: Reuse TYPE_IMX_I2C define
+Date: Sun, 12 Jan 2025 23:17:06 +0100
+Message-ID: <20250112221726.30206-31-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250112221726.30206-1-philmd@linaro.org>
 References: <20250112221726.30206-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,27 +102,60 @@ From: Bernhard Beschow <shentey@gmail.com>
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250108092538.11474-11-shentey@gmail.com>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Message-ID: <20250108092538.11474-12-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/timer/imx_gpt.c | 4 ----
- 1 file changed, 4 deletions(-)
+ tests/qtest/libqos/arm-imx25-pdk-machine.c | 5 +++--
+ tests/qtest/libqos/i2c-imx.c               | 4 ++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/hw/timer/imx_gpt.c b/hw/timer/imx_gpt.c
-index 2663a9d9ef4..11eca9fa4df 100644
---- a/hw/timer/imx_gpt.c
-+++ b/hw/timer/imx_gpt.c
-@@ -20,10 +20,6 @@
- #include "qemu/log.h"
- #include "trace.h"
+diff --git a/tests/qtest/libqos/arm-imx25-pdk-machine.c b/tests/qtest/libqos/arm-imx25-pdk-machine.c
+index 8fe128fae86..2d8b7543439 100644
+--- a/tests/qtest/libqos/arm-imx25-pdk-machine.c
++++ b/tests/qtest/libqos/arm-imx25-pdk-machine.c
+@@ -23,6 +23,7 @@
+ #include "libqos-malloc.h"
+ #include "qgraph.h"
+ #include "i2c.h"
++#include "hw/i2c/imx_i2c.h"
  
--#ifndef DEBUG_IMX_GPT
--#define DEBUG_IMX_GPT 0
--#endif
--
- static const char *imx_gpt_reg_name(uint32_t reg)
+ #define ARM_PAGE_SIZE            4096
+ #define IMX25_PDK_RAM_START      0x80000000
+@@ -50,7 +51,7 @@ static void *imx25_pdk_get_driver(void *object, const char *interface)
+ static QOSGraphObject *imx25_pdk_get_device(void *obj, const char *device)
  {
-     switch (reg) {
+     QIMX25PDKMachine *machine = obj;
+-    if (!g_strcmp0(device, "imx.i2c")) {
++    if (!g_strcmp0(device, TYPE_IMX_I2C)) {
+         return &machine->i2c_1.obj;
+     }
+ 
+@@ -86,7 +87,7 @@ static void imx25_pdk_register_nodes(void)
+         .extra_device_opts = "bus=i2c-bus.0"
+     };
+     qos_node_create_machine("arm/imx25-pdk", qos_create_machine_arm_imx25_pdk);
+-    qos_node_contains("arm/imx25-pdk", "imx.i2c", &edge, NULL);
++    qos_node_contains("arm/imx25-pdk", TYPE_IMX_I2C, &edge, NULL);
+ }
+ 
+ libqos_init(imx25_pdk_register_nodes);
+diff --git a/tests/qtest/libqos/i2c-imx.c b/tests/qtest/libqos/i2c-imx.c
+index 710cb926d62..6d868e4cc4d 100644
+--- a/tests/qtest/libqos/i2c-imx.c
++++ b/tests/qtest/libqos/i2c-imx.c
+@@ -209,8 +209,8 @@ void imx_i2c_init(IMXI2C *s, QTestState *qts, uint64_t addr)
+ 
+ static void imx_i2c_register_nodes(void)
+ {
+-    qos_node_create_driver("imx.i2c", NULL);
+-    qos_node_produces("imx.i2c", "i2c-bus");
++    qos_node_create_driver(TYPE_IMX_I2C, NULL);
++    qos_node_produces(TYPE_IMX_I2C, "i2c-bus");
+ }
+ 
+ libqos_init(imx_i2c_register_nodes);
 -- 
 2.47.1
 
