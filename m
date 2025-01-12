@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11DD2A0AC43
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:23:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD96FA0AC39
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:22:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tX6Kt-0005S5-Fl; Sun, 12 Jan 2025 17:21:35 -0500
+	id 1tX6Kz-000651-5u; Sun, 12 Jan 2025 17:21:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Kn-0005J5-C7
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:21:29 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Kt-0005oS-VV
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:21:36 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Kl-0006v0-Pt
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:21:29 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-385eed29d17so1818706f8f.0
- for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:21:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Kr-0006vU-5p
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:21:34 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-38a25d4b9d4so1885574f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:21:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736720486; x=1737325286; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736720491; x=1737325291; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OZ+oTr2+oExZOJr5kMbRlsZawz728meOH00rrdIgtF8=;
- b=ieTdYGu0GQu+O+cp4g4bGpJLQQjSUOqiPKjgxweyqNRq3oNLC61jCfFY4e9DTxVIOk
- ojInaBdoYJMmoSGQOfb5WGusuAknagx2rwNredsB/XZk1UczOLOSX8MrtMeWUGUUDRL9
- 5ocN5JUYWFd8xo2tFw311InGMs4vU3eDIdlMuSnBf3SvFjC10wp2dkg85XMt7RBZcGdN
- 5VsyTIUKFWApNd/AG3uKpQI561gowglOXRmqNNinUoaFCa5H0154WPtEgDsVpIF4xrCt
- T/3Sz2TAnOrmSTheWqGPMEEBBtd/pNHsopb3XfoxQxYkTC6EsLz2BGVDcD2cS0ADsQ57
- C9aA==
+ bh=VIJbA99zO6H6feDMStmcLuf9WLOoJAXMvP2ITp16sic=;
+ b=ZkPnTU6XdWl/EA5RYiqZWadJTNyEA4qJw/5eD6KRsX2o/o9IS7KtTsh+G7hXo2I02N
+ t1rwfr9hPTJF0oPi9RKsJzGhvnsCOj5PwFBgkoaBtleb9MrAmGDNOyvF/fFvV5Fy1OIc
+ OAhG9kviuGIGhoEOw1Tnd0couaoXS905sPsls5QTFx8tNAHaM5kf20W7/hDe3RfQEId0
+ VjHqPVpMi/40OCxnlt3ay0I2b7HFt+D5DnHfgqCHvVnI0L1qtB684RogC9ZSb8wjd4U0
+ IxdDcnLkNp7XWnjaAvT+T1vkdXNpCXr5BCHF6NqHp4FOuuFtaoaYerxXA44wD+JtHRdG
+ TkwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736720486; x=1737325286;
+ d=1e100.net; s=20230601; t=1736720491; x=1737325291;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OZ+oTr2+oExZOJr5kMbRlsZawz728meOH00rrdIgtF8=;
- b=YEi9zUuWTU4xvez36fCbm3Pb0wFJ5EN3KxTZJ+6G6PZ4nFfu/YLSevE9KqgP5TOCg5
- 6IdIihwUfk6dNmSOTJRb6ytfHADkL8O/fwiiegXmda/saYN/Vuo85Ujp0GOkl4ZZfoXv
- 0ioIHGwwoZytI3deCOdiJcJyXM4WWmCduyU4/OVsoBSn5CcK2T9BthOxuiKu7WqipFEK
- g4s7zuDjbWZ3hAY9Fne3RG42wtLiIiyTsnn1Lj+7mf4dtsEUk1pBzTkdYIopnnsV0L4g
- t6xtrm5WZT+kCMD/bGD5qVOWKECUwA9sKTRIu0o9f9oAjf6+TiaRdxTYCRguTpJ8TPJv
- TsqQ==
-X-Gm-Message-State: AOJu0YzKtJcw1ilrOpHzqvVS7FwQ6O4SKbLnxCsR4CO2nT/3aytpGNXB
- IEwbvVx/quns6t5eeK+GXz2eMggiuZTo7/ueKf+H0fZY45/lGAsrh8vaBC8NVRD8FS+inLFo53R
- wYEM=
-X-Gm-Gg: ASbGncu8l83fYuDPJKq/gM5eqhFsoA7RymYiA3S6E15iZKtWlEGnTfC+UPYcME9VNVq
- hKrY44Cifo6bxXEfl3P6ujUg0/IMq6/2pYynolanUCiG3B1l55l3+nW43NsBL4W1Znk6sUdNG2U
- EUoGiX/DztBU1DTvZUdf5V2OkpqTTzm6Pbk8F2Z9dNjKdapRFc3pCSNHMFFzmrdnOndY+ptyLrS
- sIM5Hbr6Y+PpmTR6WZXIs0jh6d1TlaeYL6092eKwvdI/rhETUvdEy/ccWNscD4N8dD3ihSiukP4
- jpVVjkXOJA7QXhSli3LpgrdTWUwCGJA=
-X-Google-Smtp-Source: AGHT+IEGFkkxTFZF1jf/BHt2EVBZd8Ktnq9fdT/COYSwypXSB9iH4vluW6eYb9TVQrcRiRnkAkH6oA==
-X-Received: by 2002:a05:6000:1569:b0:38a:a117:3da8 with SMTP id
- ffacd0b85a97d-38aa11741d0mr4699287f8f.49.1736720486129; 
- Sun, 12 Jan 2025 14:21:26 -0800 (PST)
+ bh=VIJbA99zO6H6feDMStmcLuf9WLOoJAXMvP2ITp16sic=;
+ b=aZj6sFoKInuIzd8+pV8CqeMMcrFdGEP/srLjAANG3OHo8PKh7U9nbcCQ8I188u/m1E
+ BrX/NOwCng2sZf8UrwW+s60Dqm6hBSPNUpTYP1aY3MDtWx5uZyGScZHOqa2FG9AqwMR1
+ JhvRsoJaz1JZl4F88m8hN10KFgT+8+m/BGMPa56xlBiuPsmwesyU5TDH2aDOoRRby7ps
+ AFp4HznqfqWYIcsYn9siO3Jm8PvXTdIdP1WMysfJgB4+cFygUlWDcKghOXa4y022VSx/
+ 5+hpIyrJI4aHQjtbVxNxGg0mBCTALJNUjb9vkmK6f1rdhblJLokOF7qsN8i7O6idQMxy
+ 9Lgw==
+X-Gm-Message-State: AOJu0YwZUVO69Swsf9Jjudxi2DemSIIuTeoOBClqxsxnbe4S2prF7bTD
+ 6KWVT9X3dtBcvJ6GKMe4OsSlNFzuuI/piZiPo+66i1mt+TEvXTk//Hwa/wWlmFg9frvD2Pd3FTT
+ Z0zM=
+X-Gm-Gg: ASbGncsWFkpF9DnK0VVNhYtEfuTfgfyf2ln+ShTowcU3urMKtUh8sJNiUARKVDoG3mI
+ KdEdzLQPw/Ui7NSKgrev+tpfyY3Wd1KLU0WpDri1Hh7CesTnjYaBOvPwVEXZp/g8R17MiQ9th79
+ 2c6CLB/ffNQFbsU+XMyvCtAZzSv3BxIVeOnZR78MFswElFQjLrzgJnCTqsCBY1ksoM/5NsNdlSh
+ zJw7ajKOCTpzFJwMEzFKPuLgIjHH3iV4cBm1JfOkbPJg0YfLavKdu1yeRy+P1HihfB0CwYGWmQb
+ VLnS7enrYnwCz/Ww4ihwM6JykDId7rI=
+X-Google-Smtp-Source: AGHT+IFC7DtWGUW9zIEP+TfAbMC2zNpNdKQd/4idgtFr0bZkEeM+V+adtokguO9gB9+pQe6lIWYknQ==
+X-Received: by 2002:a05:6000:4612:b0:38a:39ad:3e2f with SMTP id
+ ffacd0b85a97d-38a872cb1e1mr15568909f8f.2.1736720491441; 
+ Sun, 12 Jan 2025 14:21:31 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a9fcb7a11sm5065626f8f.75.2025.01.12.14.21.24
+ ffacd0b85a97d-38a8e38c990sm10655419f8f.56.2025.01.12.14.21.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 12 Jan 2025 14:21:25 -0800 (PST)
+ Sun, 12 Jan 2025 14:21:31 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 48/49] MAINTAINERS: Update path to coreaudio.m
-Date: Sun, 12 Jan 2025 23:17:24 +0100
-Message-ID: <20250112221726.30206-49-philmd@linaro.org>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?UTF-8?q?Signed-off-by=3A=20Philippe=20Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Subject: [PULL 49/49] Add a b4 configuration file
+Date: Sun, 12 Jan 2025 23:17:25 +0100
+Message-ID: <20250112221726.30206-50-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250112221726.30206-1-philmd@linaro.org>
 References: <20250112221726.30206-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,42 +98,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-Commit 8b46d7e2dc8e ("audio: Rename coreaudio extension to use
-Objective-C compiler") renamed coreaudio.c to coreaudio.m.
+b4 [1] is a convenient tool to manage patch series with mailing list
+working flow.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250111-maintainers-v1-1-faebe6ef0fec@daynix.com>
+Add a project default config file to match QEMU's mailing list conventions
+as well as adopting differences on scripting.
+
+Examples of b4:
+
+    ```
+    $ b4 prep --check
+    Checking patches using:
+      scripts/checkpatch.pl -q --terse --no-summary --mailback -
+
+    ---
+    Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+    ---
+    Changes in v2:
+    - Add lore masks (philmd) from:
+      https://lore.kernel.org/qemu-devel/20241224135054.10243-1-philmd@linaro.org/
+    - Link to v1: https://lore.kernel.org/r/20241222-b4-config-v1-1-b3667beb30a4@flygoat.com
+    ---
+    ● cc5a4c890fed: Add a b4 configuration file
+      ● checkpatch.pl: 27: WARNING: added, moved or deleted file(s), does MAINTAINERS need updating?
+    ---
+    Success: 0, Warning: 1, Error: 0
+    ```
+
+    ```
+    $ b4 prep -c
+    Will collect To: addresses using echo
+    Will collect Cc: addresses using get_maintainer.pl
+    Collecting To/Cc addresses
+        + To: qemu-devel@nongnu.org
+    ---
+    You can trim/expand this list with: b4 prep --edit-cover
+    Invoking git-filter-repo to update the cover letter.
+    New history written in 0.02 seconds...
+    Completely finished after 0.06 seconds
+    ```
+
+[1]: https://b4.docs.kernel.org/
+
+Co-developed-by: Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Message-ID: <20250102-b4-config-v2-1-cc7299e399bb@flygoat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ MAINTAINERS |  6 ++++++
+ .b4-config  | 14 ++++++++++++++
+ 2 files changed, 20 insertions(+)
+ create mode 100644 .b4-config
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 0727579cdec..ec898a3cbc6 100644
+index ec898a3cbc6..0c71eb3f925 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -2800,7 +2800,7 @@ M: Marc-André Lureau <marcandre.lureau@redhat.com>
- S: Odd Fixes
- F: audio/
- X: audio/alsaaudio.c
--X: audio/coreaudio.c
-+X: audio/coreaudio.m
- X: audio/dsound*
- X: audio/jackaudio.c
- X: audio/ossaudio.c
-@@ -2822,7 +2822,7 @@ M: Philippe Mathieu-Daudé <philmd@linaro.org>
- R: Christian Schoenebeck <qemu_oss@crudebyte.com>
- R: Akihiko Odaki <akihiko.odaki@daynix.com>
- S: Odd Fixes
--F: audio/coreaudio.c
-+F: audio/coreaudio.m
- 
- DSound Audio backend
- M: Gerd Hoffmann <kraxel@redhat.com>
+@@ -4310,3 +4310,9 @@ Machine development tool
+ M: Maksim Davydov <davydov-max@yandex-team.ru>
+ S: Supported
+ F: scripts/compare-machine-types.py
++
++b4 tool configuration
++M: Jiaxun Yang <jiaxun.yang@flygoat.com>
++M: Philippe Mathieu-Daudé <philmd@linaro.org>
++S: Odd Fixes
++F: .b4-config
+diff --git a/.b4-config b/.b4-config
+new file mode 100644
+index 00000000000..4b9b2fe290f
+--- /dev/null
++++ b/.b4-config
+@@ -0,0 +1,14 @@
++#
++# Common b4 settings that can be used to send patches to QEMU upstream.
++# https://b4.docs.kernel.org/
++#
++
++[b4]
++    send-series-to = qemu-devel@nongnu.org
++    send-auto-to-cmd = echo
++    send-auto-cc-cmd = scripts/get_maintainer.pl --noroles --norolestats --nogit --nogit-fallback
++    am-perpatch-check-cmd = scripts/checkpatch.pl -q --terse --no-summary --mailback -
++    prep-perpatch-check-cmd = scripts/checkpatch.pl -q --terse --no-summary --mailback -
++    searchmask = https://lore.kernel.org/qemu-devel/?x=m&t=1&q=%s
++    linkmask = https://lore.kernel.org/qemu-devel/%s
++    linktrailermask = Message-ID: <%s>
 -- 
 2.47.1
 
