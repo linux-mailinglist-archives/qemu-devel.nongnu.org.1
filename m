@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0BD4A0AC38
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:22:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61A23A0AC46
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:23:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tX6Je-0002ix-LO; Sun, 12 Jan 2025 17:20:20 -0500
+	id 1tX6Jp-0003Ns-LS; Sun, 12 Jan 2025 17:20:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Ix-0001j9-3q
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:37 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6J1-0001sB-Hz
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:40 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Iv-0006Ya-K2
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:34 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-385df53e559so2972793f8f.3
- for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:19:33 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6J0-0006ZL-22
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:39 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-436202dd7f6so42825605e9.0
+ for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:19:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736720372; x=1737325172; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736720376; x=1737325176; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ng7p8uEQsgEiT4/xccHokv2a4110PAynaA5YHFbpMeA=;
- b=rx0She0JgICXStgVSoTNRrbzTbufO57krtHz+ujrKzUlM4ej6fuuV400OuCbgP0Iiw
- 6WqSr3+wsASclAaFcga9Ozl7o8ZtFSo8Ma7PZzgDKwUbjT29r1D5CEWijBW4897G2dXB
- TfgG8c45xXf27vNc7wC8xJrXX3H+r0wH5w/ZprdKbM6MYVfbN4tTr8WfsRbY+/pyHjHB
- hKxMr1qLPQy5LDdRYq8Tyji6bLyiGe/gfJUm1Qld7LB14gaZSp1JUsB/31J0IkHCO0gC
- eR8PGan41Wl/SKZpPGdHr/wWzWBgGYHLyyTuahPrUTPUymjOnpEJfgLACEUPsY0/F2A2
- jVYw==
+ bh=EmxRTGMWROJpEWZSo1u+jDCiV46gwFTHUKYAuplU0Gc=;
+ b=SXh4O31DEXF6kSz35CPArjT7T5ZXu5R8snUd6ZksTHwJxzF9uwukxAvdSwJSw3CLiI
+ +Go90WcgA23g2hDJvJ7/yRwD+hfSaSYeGYAZGrqxrI7FaIG9xDtFh9GEm6vvdrffTary
+ NEImkh5Nw3f8eYyKmqFoG0+SESSgMI/9XVhU7uIvfKzvZ8mtqj3tLGHkZPXf85AZDBni
+ FgFm4KHc4ciSlM0Me/SAY5i9W7QK8I2257FlL0Ad3hTcfQ14TIZGtM5cTbpTZXUpeLVK
+ sOggDhZzduy+Q32fYp/IBePwdShXEVE7/20xaroTAzySEvYy9Yvy3ITfnk0MDIF8KA0M
+ CEUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736720372; x=1737325172;
+ d=1e100.net; s=20230601; t=1736720376; x=1737325176;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ng7p8uEQsgEiT4/xccHokv2a4110PAynaA5YHFbpMeA=;
- b=ENv9R3GSkJcrnVQiTZyv2kxnZtpJun3ooYAwpfmUu4akgeP+vwx6wlLPCo8L65W8Y/
- s0xCsvmV9ekw8Ql8d2LUnqONejGN8fYp5LxPs7l0gBhMhxW5NQAca4e/RxYyfC5pgu5C
- 7glMIJjte822caUHFev9HtL/R/66/Ii0AF1HSmQBYkGXp95ygDEQ5iv7bD/Mn6ea02l4
- eNbqkG7tRRS3btyUL5K0pfih9fRQWgTYUGpJhGnFhwl+3qKSUjp9itbGL8foaSe6c9x+
- Q3y+WvNbpTRsLA6XKcyqfAGcINZ7wTML5C8vz9Soa5djPMCeasr6RrQvDT72rzkGdn37
- +cow==
-X-Gm-Message-State: AOJu0YxfZ5UHU0xwfMnrE4y8Scq5A3xJF8pqlFaqf4hT1lQo/a8wz3lP
- xq4jKgjLoJzKpHKtSQt/gKa3/bhNl9NQm0HBU7qFqXGlsmg8vjZRtZpgwd0zPgZIwWjrit7Djjs
- OwHM=
-X-Gm-Gg: ASbGnctqvUc4cJLMrFqTnFERMWAdtoAFR5dmDfy7TjVrP+s/D5c38loOQx2iV1rF5IE
- Imn9nBT5pWS3lb+XqltNxexsq7b/dRQaaLoEJF5yVhfGK54BI3fudygmqXGVwA0GkYFF4zzBLYS
- IlpnsmAvsc507+84y11SZJLX1pXwqKPwdnsmfzGDVv7uvclUVvQG2mWSUKSUpu+gOmHXh7qVFLE
- XJDUQCOdoA7p25T3m/5YqqUHfQxi0tfI5ch9kxLQKTacB09r2g1joBIduf40GWqV8gKwtVD3JDK
- PD8HzcbJizdweqtAMVUn77JzB3PjCHg=
-X-Google-Smtp-Source: AGHT+IF+BvMQt5kzkhszRcoo53LoAN0gJiciBDsss8wOyeigvqgh3HADhzQ7oycB7MCATWtakE4yZQ==
-X-Received: by 2002:a05:6000:2aa:b0:385:fa26:f0d9 with SMTP id
- ffacd0b85a97d-38a87086c15mr17848108f8f.0.1736720371683; 
- Sun, 12 Jan 2025 14:19:31 -0800 (PST)
+ bh=EmxRTGMWROJpEWZSo1u+jDCiV46gwFTHUKYAuplU0Gc=;
+ b=gVkR6NP5G3RoyXUlCq5QbUnkDdsQfQ3wCdbew/eUH8DMrNM0cmb1yhATjh+WhR2X3i
+ 3lwIVNyQhyfrueCeAqMPnEuzF4Obx8Wc/eIneJEQGtFVBeu6luf35xP8o0XTsmPK23iz
+ /4OBjvKjuXXXYBkeodKOKrbDm6CoZX7PnF7WHq8VbsAS9ruEk72HQux0MkWdEBLWrjbf
+ RrqlgjoPgdpqhIt3Vhm5xMtcD49Vypq2ew1FkCTLff7shFRhxH46ScsEccIi1/zHrijn
+ wXIfrnBJOND0c9fHNRcKta+Bggq8W/0VBXR2nn+FJlCgRRmSz6pBqZS8fGxAUKh4W0Z3
+ Njpg==
+X-Gm-Message-State: AOJu0YxsJhdYPrBDeLYtRXB2ZsTLx44JaBvhElVBTeh3gzNTHdVZMDfL
+ CZEbXRRShV90HpPMWevZKYFvDaaSpYArU6zO/GWhz43ckxBbu7Gkg6T3AB0b9ykALDKUDP/j0VO
+ bKnI=
+X-Gm-Gg: ASbGncs/3IdnfTZlH4Wit7GLOTpwpaNKWc8wTvJif3YbdYIaxq2qoRqmxWlkBOxRQIk
+ F0sT7rNw2Q65wE66Qw+++8j+2SyJTyr5+ucWVpmKwgZQ/iiiWPxFDdGc8ZBgbXah8CdwP5noBSz
+ 4ccZvlMhrKqKw4C8tRM3DltdFT+yKS7j6VijwWEJehcLSA/V+bxC6pEy1V9bJX+1k9kiCBvP+aO
+ isoIpnO/aba+x2C1TMetVzAJ297o90+OMvtiLa3mg5MMNbhGtGVuqOrq/Yy43XFUheqdiKPAJGF
+ 0XDqNosrjbjXDNzTkuvMIltaNlj3128=
+X-Google-Smtp-Source: AGHT+IHqZ6eR+ozvfAZllFw/XbYtMPuVV32e3GLDlYjJpOn5cnMI+Jjl16LTW6PPqx1Z5dmx9ZafJA==
+X-Received: by 2002:a05:600c:4e0b:b0:434:a7e3:db5c with SMTP id
+ 5b1f17b1804b1-436e26aeeeemr183787435e9.11.1736720376145; 
+ Sun, 12 Jan 2025 14:19:36 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e9e6236bsm122243305e9.37.2025.01.12.14.19.30
+ ffacd0b85a97d-38a8e38c697sm10782948f8f.52.2025.01.12.14.19.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 12 Jan 2025 14:19:31 -0800 (PST)
+ Sun, 12 Jan 2025 14:19:35 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Keoseong Park <keosung.park@samsung.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jeuk Kim <jeuk20.kim@samsung.com>
-Subject: [PULL 25/49] hw/ufs: Adjust value to match CPU's endian format
-Date: Sun, 12 Jan 2025 23:17:01 +0100
-Message-ID: <20250112221726.30206-26-philmd@linaro.org>
+Cc: Bernhard Beschow <shentey@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 26/49] hw/sd/sdhci: Set SDHC_NIS_DMA bit when appropriate
+Date: Sun, 12 Jan 2025 23:17:02 +0100
+Message-ID: <20250112221726.30206-27-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250112221726.30206-1-philmd@linaro.org>
 References: <20250112221726.30206-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,50 +97,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Keoseong Park <keosung.park@samsung.com>
+From: Bernhard Beschow <shentey@gmail.com>
 
-In ufs_write_attr_value(), the value parameter is handled in the CPU's
-endian format but provided in big-endian format by the caller. Thus, it
-is converted to the CPU's endian format. The related test code is also
-fixed to reflect this change.
+In U-Boot, the fsl_esdhc[_imx] driver waits for both "transmit completed" and
+"DMA" bits in esdhc_send_cmd_common() by means of DATA_COMPLETE constant. QEMU
+currently misses to set the DMA bit which causes the driver to loop forever. Fix
+that by setting the DMA bit if enabled when doing DMA block transfers.
 
-Fixes: 7c85332a2b3e ("hw/ufs: minor bug fixes related to ufs-test")
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Keoseong Park <keosung.park@samsung.com>
-Reviewed-by: Jeuk Kim <jeuk20.kim@samsung.com>
-Message-ID: <20250107084356epcms2p2af4d86432174d76ea57336933e46b4c3@epcms2p2>
+Message-ID: <20250108092538.11474-2-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ufs/ufs.c           | 2 +-
- tests/qtest/ufs-test.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/sd/sdhci.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
-index 8d26d137918..428fe927ad0 100644
---- a/hw/ufs/ufs.c
-+++ b/hw/ufs/ufs.c
-@@ -1164,7 +1164,7 @@ static QueryRespCode ufs_exec_query_attr(UfsRequest *req, int op)
-         value = ufs_read_attr_value(u, idn);
-         ret = UFS_QUERY_RESULT_SUCCESS;
-     } else {
--        value = req->req_upiu.qr.value;
-+        value = be32_to_cpu(req->req_upiu.qr.value);
-         ret = ufs_write_attr_value(u, idn, value);
+diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+index 299cd4bc1b6..a958c114974 100644
+--- a/hw/sd/sdhci.c
++++ b/hw/sd/sdhci.c
+@@ -665,12 +665,13 @@ static void sdhci_sdma_transfer_multi_blocks(SDHCIState *s)
+         }
      }
-     req->rsp_upiu.qr.value = cpu_to_be32(value);
-diff --git a/tests/qtest/ufs-test.c b/tests/qtest/ufs-test.c
-index 60199abbee7..1f860b41c06 100644
---- a/tests/qtest/ufs-test.c
-+++ b/tests/qtest/ufs-test.c
-@@ -145,7 +145,7 @@ static void ufs_send_query(QUfs *ufs, uint8_t slot, uint8_t query_function,
-     req_upiu.qr.idn = idn;
-     req_upiu.qr.index = index;
-     req_upiu.qr.selector = selector;
--    req_upiu.qr.value = attr_value;
-+    req_upiu.qr.value = cpu_to_be32(attr_value);
-     req_upiu.qr.length = UFS_QUERY_DESC_MAX_SIZE;
-     qtest_memwrite(ufs->dev.bus->qts, req_upiu_addr, &req_upiu,
-                    sizeof(req_upiu));
+ 
++    if (s->norintstsen & SDHC_NISEN_DMA) {
++        s->norintsts |= SDHC_NIS_DMA;
++    }
++
+     if (s->blkcnt == 0) {
+         sdhci_end_transfer(s);
+     } else {
+-        if (s->norintstsen & SDHC_NISEN_DMA) {
+-            s->norintsts |= SDHC_NIS_DMA;
+-        }
+         sdhci_update_irq(s);
+     }
+ }
+@@ -691,6 +692,10 @@ static void sdhci_sdma_transfer_single_block(SDHCIState *s)
+     }
+     s->blkcnt--;
+ 
++    if (s->norintstsen & SDHC_NISEN_DMA) {
++        s->norintsts |= SDHC_NIS_DMA;
++    }
++
+     sdhci_end_transfer(s);
+ }
+ 
 -- 
 2.47.1
 
