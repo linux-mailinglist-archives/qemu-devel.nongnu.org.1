@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70EBCA0AC44
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:23:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF3B1A0AC2B
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:20:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tX6Jb-0002cj-PS; Sun, 12 Jan 2025 17:20:18 -0500
+	id 1tX6Jl-0002tX-Vf; Sun, 12 Jan 2025 17:20:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Ir-0001X6-O1
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:30 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6It-0001a3-5T
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:32 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6In-0006XI-SL
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:29 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4363ae65100so38321715e9.0
- for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:19:24 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Ir-0006Xm-9c
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:30 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3862d161947so1872219f8f.3
+ for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:19:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736720363; x=1737325163; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736720367; x=1737325167; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=p6BLB98QOhYB9SJnN/K59or+VrLw70OVqLIYKmEsPfE=;
- b=owbPDE08GxOZ3tqY3dP+Pb4+H//y8mWP2LNCoxvEznFamSagDvHWAyUXxYD7z/NBgj
- s2nORXU/S/4J/ZyeYYUtTvnl8GlghqA6rGY3KA8rZYjBFpS3DOAraY89+T7sT6EOz0j6
- t6Yo8/yq1y/81U/9AhjALjkBKNB+VlNZ0BwW1c/ABOo16qgu288HWZb+yDdUcommWSoH
- lvDGRvf2EI6wsoq0+G/KN37sp8zlYpgVjHZ9IWt0KMDk53fdc3KxvB2v/IrtqrKc+qd4
- KaVrpKNwLpEaFHawq6pedKTXk1jabT+87qNR+iS4z1W5a7ztaU83M8a9UMwjgWIZkkE0
- kWDw==
+ bh=1OAhYKzZLI8lTOKGbMAAzPTEW29D2+vTIYkkz2t6RXA=;
+ b=N9TWEKQ5OLf4BHLDsx7zWwTtQSGqAMhAGaVDlKJmJh5SVRH5Lfbypn1Fi3mhWK3Bnz
+ 2k7vqFwmAP14gQnNNFeNtxKGLLzSQ5lpabaAdtcH4WtzyJnKq7N83faCuxYWLCgA/dwh
+ M54EHDgmZ2NIWReuqci0Rk4Me9jvrWBAmB5iyX+x89NZB2OLGQ9xqzUooEqA2vFUM6j8
+ jYkGgCGvtCyIjX5MbU7rACZy6r9KxSQQY1o6kiAtCe/DbILQx3+3EtTYM1V2f0Yjaosd
+ FNqtdYEAHhqrTtqCMm4tzUZkfqYdmZpHTG4LTPhwkY6cdeqWlWin8i6BIXEaJ/tAzGq+
+ C0kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736720363; x=1737325163;
+ d=1e100.net; s=20230601; t=1736720367; x=1737325167;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p6BLB98QOhYB9SJnN/K59or+VrLw70OVqLIYKmEsPfE=;
- b=TyF6zDwOgyH9Gn9AS+409h/0vFhkqYNtN5xiHuCuiE8p/jvJg8rApLuPvAfB83NIBC
- qkH7PavTcEuErZr3A+bDlSKa2akqLSJB0soN18XEUkheqt7aRw/Vz4CoPV3vJQNCZFb+
- WG1+51sO8wTh1uLvXmFyBgJPEUkcHJ4rZnTgJSVAlymSlEq9pXBbjmHDjj1zRVhr7RAz
- 1eabTkqUdAkbPAk0w319XflV2GWqw7iCEStZ8yka3+RoEKO73d1yURShW+MH8/o/hZ46
- 37cd29iZaYI/h/gxRM11agt3hB5WTcZ/g/svgeyIGnGPt4Vcm1yWw7G5KbDfY0o4psn4
- oseg==
-X-Gm-Message-State: AOJu0YymsuOwfrjNh6icZYT2OodhUx2tf3Ar78eMJMLlVXvDHvxCgR7M
- ToZLiGeMWpGE1/3uGOG36czMei6JoHWsyutnvOpK3L+oM4WAUfIJAJyr5QM9p3uNuyHC9AFVhvU
- BzYo=
-X-Gm-Gg: ASbGnctQNQHTfIuN5aD8CFZYBt1ss/Q3Qbsww7lsOpBea5Nj12So7jhTvi7osQRlF1N
- y21w7TKuX4O14kbwBXqdX7+QT/9tSDZGvRWJxYrBfFcSi9HIbpy9DIIiWd30ZQg+6Th8E/gNdW3
- fteNA5bfusoVXGFxfWjE5PKwoQ3lmQeZ3qYXfp7WE2dp+5W39prE6Gvix6YXdQGK5glE33O5mY8
- dqiXZasgWu9xR6ANuvhhlIQUggU5joMDb/xREdMUTBlr7H9JotJumfm8KEMwlowyFXI/iNVOJLJ
- ab3TSht9ZCs9ZdnlQRgz3jp8HI74AAg=
-X-Google-Smtp-Source: AGHT+IEBgLJOxMeJC8yw9St/ahnn6IsrC5Dv1YXOHYwmAEnSbHOgxZbAY6J/PLBU+TPWCQW8bGNxUg==
-X-Received: by 2002:a05:600c:198c:b0:430:57e8:3c7e with SMTP id
- 5b1f17b1804b1-436e26f2a30mr139775635e9.28.1736720362777; 
- Sun, 12 Jan 2025 14:19:22 -0800 (PST)
+ bh=1OAhYKzZLI8lTOKGbMAAzPTEW29D2+vTIYkkz2t6RXA=;
+ b=mCFJHcT+UuDbYxK+ITs1XLqdI9HCRM1XX5x99ju45wpDWnqTVwES+Bdk4ezQGHmxJq
+ azgqjXAnFOR9iJUth2xrpqGnwPoIVnX55AIoMIa9AzyVzfS87E/aK7s70qBupfXmswb5
+ FnU7UqfyEHuKkEuaQ+J0AInn0xd4/RQVUY5e69vyo3qceQ7xqZWvnJL5PtTodJZA+o7P
+ sccjEIWUwRc/HoX8HuhsyXuS/XlkO7Lds/8eA2ifqZV7jnwY/bw1/IMj32MkNNAj9mr0
+ EZCVJObKPV+hshXP+vp75W0ScIMf344NyjbVhQbJfSRRhndJ/dJUB+1V+ks6Vk7Zr3OJ
+ AFcw==
+X-Gm-Message-State: AOJu0YwpDAKTrzZIh42RSP6IzUxMBJ/Fs2vmQteo2Nqngh0gMMAiNXGr
+ RZMA7w0i8et6Pvn7AcLmDJ177YoDc5tXN6ZFBq/O6WKflhXsK+fQLf3YgJVCGgebLH462G7h111
+ EocM=
+X-Gm-Gg: ASbGnctBJRgbZs/MPOV0sdpYxJBWKmXX3RMybPYOeoXMUyVTYtB2Q7AZW12cgSGPK07
+ S57ijYVXlLVeIVZo7DymdY11lNi73AWeUbXRBrW+Nv5sD1k1KrIPypHG20Xnmc3eaE9F38Ut1FQ
+ uRCUTt76b7AdC+/U5OfHsGAgh9P2K+rqP6OFori03r5mdu82Gqw5YNQJlPBMpOniPzPwDQ9MGtT
+ M8+9IKY4L0C8Vc/k6wN2+vbPd23LAyupLaDCD/JqS3bVm1mG25ew0YcN10PShJrn0yDuUG+rp2S
+ EXsnibG2B+AfIiH07Cb/x5MibFXRVnA=
+X-Google-Smtp-Source: AGHT+IFZiGBs44f8nLvtKQVET2Rkfu2rxvtSpaiHWs0Z0gNZfRZX7Zk8pW1ec4o8N4HUW9FoZRSbBA==
+X-Received: by 2002:a5d:59ab:0:b0:385:fa26:f0d8 with SMTP id
+ ffacd0b85a97d-38a872f6af0mr15624682f8f.8.1736720367214; 
+ Sun, 12 Jan 2025 14:19:27 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436dcceb374sm151415725e9.0.2025.01.12.14.19.22
+ ffacd0b85a97d-38a8e4c1dc6sm10636757f8f.96.2025.01.12.14.19.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 12 Jan 2025 14:19:22 -0800 (PST)
+ Sun, 12 Jan 2025 14:19:26 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 23/49] hw/misc/vmcoreinfo: Convert to three-phase reset
- interface
-Date: Sun, 12 Jan 2025 23:16:59 +0100
-Message-ID: <20250112221726.30206-24-philmd@linaro.org>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 24/49] hw/pci: Rename has_power to enabled
+Date: Sun, 12 Jan 2025 23:17:00 +0100
+Message-ID: <20250112221726.30206-25-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250112221726.30206-1-philmd@linaro.org>
 References: <20250112221726.30206-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,52 +97,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20241219153857.57450-6-philmd@linaro.org>
----
- hw/misc/vmcoreinfo.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-diff --git a/hw/misc/vmcoreinfo.c b/hw/misc/vmcoreinfo.c
-index 145f13a65cf..b0145fa5044 100644
---- a/hw/misc/vmcoreinfo.c
-+++ b/hw/misc/vmcoreinfo.c
-@@ -26,9 +26,9 @@ static void fw_cfg_vmci_write(void *opaque, off_t offset, size_t len)
-         && s->vmcoreinfo.guest_format != FW_CFG_VMCOREINFO_FORMAT_NONE;
+The renamed state will not only represent powering state of PFs, but
+also represent SR-IOV VF enablement in the future.
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250109-reuse-v19-1-f541e82ca5f7@daynix.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/hw/pci/pci.h        |  1 +
+ include/hw/pci/pci_device.h |  2 +-
+ hw/pci/pci.c                | 17 +++++++++++------
+ hw/pci/pci_host.c           |  4 ++--
+ 4 files changed, 15 insertions(+), 9 deletions(-)
+
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index cefeb388bde..4002bbeebde 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -674,6 +674,7 @@ static inline void pci_irq_deassert(PCIDevice *pci_dev)
  }
  
--static void vmcoreinfo_reset(void *opaque)
-+static void vmcoreinfo_reset_hold(Object *obj, ResetType type)
- {
--    VMCoreInfoState *s = opaque;
-+    VMCoreInfoState *s = VMCOREINFO(obj);
+ MSIMessage pci_get_msi_message(PCIDevice *dev, int vector);
++void pci_set_enabled(PCIDevice *pci_dev, bool state);
+ void pci_set_power(PCIDevice *pci_dev, bool state);
  
-     s->has_vmcoreinfo = false;
-     memset(&s->vmcoreinfo, 0, sizeof(s->vmcoreinfo));
-@@ -65,7 +65,7 @@ static void vmcoreinfo_realize(DeviceState *dev, Error **errp)
-      * This device requires to register a global reset because it is
-      * not plugged to a bus (which, as its QOM parent, would reset it).
+ #endif
+diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
+index 16ea7f4c19b..add208edfab 100644
+--- a/include/hw/pci/pci_device.h
++++ b/include/hw/pci/pci_device.h
+@@ -57,7 +57,7 @@ typedef struct PCIReqIDCache PCIReqIDCache;
+ struct PCIDevice {
+     DeviceState qdev;
+     bool partially_hotplugged;
+-    bool has_power;
++    bool enabled;
+ 
+     /* PCI config space */
+     uint8_t *config;
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 78907527f2e..2afa423925c 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -1598,7 +1598,7 @@ static void pci_update_mappings(PCIDevice *d)
+             continue;
+ 
+         new_addr = pci_bar_address(d, i, r->type, r->size);
+-        if (!d->has_power) {
++        if (!d->enabled) {
+             new_addr = PCI_BAR_UNMAPPED;
+         }
+ 
+@@ -1686,7 +1686,7 @@ void pci_default_write_config(PCIDevice *d, uint32_t addr, uint32_t val_in, int
+         pci_update_irq_disabled(d, was_irq_disabled);
+         memory_region_set_enabled(&d->bus_master_enable_region,
+                                   (pci_get_word(d->config + PCI_COMMAND)
+-                                   & PCI_COMMAND_MASTER) && d->has_power);
++                                   & PCI_COMMAND_MASTER) && d->enabled);
+     }
+ 
+     msi_write_config(d, addr, val_in, l);
+@@ -2963,16 +2963,21 @@ MSIMessage pci_get_msi_message(PCIDevice *dev, int vector)
+ 
+ void pci_set_power(PCIDevice *d, bool state)
+ {
+-    if (d->has_power == state) {
++    pci_set_enabled(d, state);
++}
++
++void pci_set_enabled(PCIDevice *d, bool state)
++{
++    if (d->enabled == state) {
+         return;
+     }
+ 
+-    d->has_power = state;
++    d->enabled = state;
+     pci_update_mappings(d);
+     memory_region_set_enabled(&d->bus_master_enable_region,
+                               (pci_get_word(d->config + PCI_COMMAND)
+-                               & PCI_COMMAND_MASTER) && d->has_power);
+-    if (!d->has_power) {
++                               & PCI_COMMAND_MASTER) && d->enabled);
++    if (!d->enabled) {
+         pci_device_reset(d);
+     }
+ }
+diff --git a/hw/pci/pci_host.c b/hw/pci/pci_host.c
+index 4510890dfc1..80f91f409f9 100644
+--- a/hw/pci/pci_host.c
++++ b/hw/pci/pci_host.c
+@@ -86,7 +86,7 @@ void pci_host_config_write_common(PCIDevice *pci_dev, uint32_t addr,
+      * allowing direct removal of unexposed functions.
       */
--    qemu_register_reset(vmcoreinfo_reset, s);
-+    qemu_register_resettable(OBJECT(s));
-     vmcoreinfo_state = s;
- }
+     if ((pci_dev->qdev.hotplugged && !pci_get_function_0(pci_dev)) ||
+-        !pci_dev->has_power || is_pci_dev_ejected(pci_dev)) {
++        !pci_dev->enabled || is_pci_dev_ejected(pci_dev)) {
+         return;
+     }
  
-@@ -86,11 +86,13 @@ static const VMStateDescription vmstate_vmcoreinfo = {
- static void vmcoreinfo_device_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-+    ResettableClass *rc = RESETTABLE_CLASS(klass);
+@@ -111,7 +111,7 @@ uint32_t pci_host_config_read_common(PCIDevice *pci_dev, uint32_t addr,
+      * allowing direct removal of unexposed functions.
+      */
+     if ((pci_dev->qdev.hotplugged && !pci_get_function_0(pci_dev)) ||
+-        !pci_dev->has_power || is_pci_dev_ejected(pci_dev)) {
++        !pci_dev->enabled || is_pci_dev_ejected(pci_dev)) {
+         return ~0x0;
+     }
  
-     dc->vmsd = &vmstate_vmcoreinfo;
-     dc->realize = vmcoreinfo_realize;
-     dc->hotpluggable = false;
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-+    rc->phases.hold = vmcoreinfo_reset_hold;
- }
- 
- static const TypeInfo vmcoreinfo_types[] = {
 -- 
 2.47.1
 
