@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE7BA0AC28
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:19:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF69A0AC42
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:23:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tX6J1-0001WE-JM; Sun, 12 Jan 2025 17:19:40 -0500
+	id 1tX6JD-0001sP-6z; Sun, 12 Jan 2025 17:19:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Ia-00015V-4J
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:13 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Ie-0001CW-T8
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:17 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6IY-0006W6-Cg
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:11 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-38a25d4b9d4so1885100f8f.0
- for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:19:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Id-0006WX-9e
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:16 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-38789e5b6a7so2017194f8f.1
+ for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:19:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736720348; x=1737325148; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736720353; x=1737325153; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tapoh0/SBib6qRzr75O/lv4A8ahdf/FQ6/7pfjWt9KU=;
- b=vaYNeKuBclEElUtoZsb3ebh/ZGLR5GtZ94g5ocEF1X+BmGuoxGYzXYLW2d3YHVjuVJ
- j4oY0hsBgEtADtcqxc7/gy8hsde5TRHW1voRenxROOc31tQhK3vCwdE4cpaZnKLqxuOW
- pcH/AGMOtlX/0IN0cYZCUk/jniSafmxx4Fjv/6LJUnCBw1mMv+bQxzZzkPzW0YKw6mRO
- 6+le5znRi6rD2vXA0xtAfa849meCXaVplEXfxwi/MZKPRwFG8VZ6I59en4AZohiQwGMg
- 1GIYudEylnAIQJ5uV6swxT09/t3e5eyJjyzFscG0wjdTkB5s2J9Yoc9TDcEjz+ZLbxjA
- sKNQ==
+ bh=axL74DBGZ6nBWb/u1b/AX04nS7YLLg7dL20DomACELE=;
+ b=S7imJtZqEQHPLzqYCg/XFQ7VHfHveCO11DyAlBDPSrhn8P7Z30DKY70vXzQ0t+utfn
+ uiLVendte4X84Am+e6Z7N+ak9S3XKZ31TqWO7e2u3nc2VKDscyqPS79A0d/9EspV3FrH
+ k+gjyG6kIX5h92ppCL7GQ9tc/1lbAdOz+yQ6LR4o4Zm/pfF+jBk2OabzRj4yqJMLdyWb
+ F+JYilcBTthwtyJAFs6s1vTmlpve4aqj1ssjRq4ygu0Or5pTWamv6Jp/N4QTxuUpkF0z
+ YeuI21AKhHlaCeT6zUiYgCwn1yMJZtkw45HnSSwvpDACOoDhlA2YgV+TbRnR1heIU2JA
+ eW6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736720348; x=1737325148;
+ d=1e100.net; s=20230601; t=1736720353; x=1737325153;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tapoh0/SBib6qRzr75O/lv4A8ahdf/FQ6/7pfjWt9KU=;
- b=M/WIeKM6PdZ22aUIp4SPAuavGEgPZ7b1HA7HYzKPQvWcA6XhgbHLkWr1dbDD6ti4ft
- LTkM3MWhzbPdhIwhMEDnoPiGlzPgKqXd8Dhr4tQoRaGEbzH7/qOzK4msIJZBSUj1E7ok
- pgFhM/appAxDzYil1mwnsswQXFQ0dnIWttYvlCdjXyBKcS2HaUHiYMHJZ87sQ36ZT9Pc
- hW66uzJrjjQKb8+619rPCB0ogcyR3Wxom/q2LYtCajV2eKyF8m/5GYbXdLQ/G23i8oJe
- BsyZLtGo9I4nQ43um+N/BviAmwFYgEeHnIOYw/wNXEdBIjGovpl3ojJnBWHuEr4xOTdU
- B8cw==
-X-Gm-Message-State: AOJu0YwC48XmvtTF38MSLKbK3GgJY2bQCb+2dMiM/DKqQRtd2zkb/T4d
- OI8NW15c/D2SRcsRhijrW4b+6jzKEts0uNK9MfecmFyRJngF1hP18t6c2uPmm1vjwRTMPeqw7b1
- bym0=
-X-Gm-Gg: ASbGncubWKqgex/ssPIQnepJl/XYdxG9N4KSQwW5+qglkK08tiJ9yobo617a221ETwY
- lF3oagVV+XoVk+PKTpaNIxGlN9qqGwSUSNX9AOCxvc0rhpJ0G9yk3gY7Ohj2y2TIYaixvr8tBFK
- tjuu3WldwUEoqzxzoxdfp6O53bvjxAtS2LTEC4fzcuZtVaMpaGM4KmdEtfYeYurk1/gP/VchiPA
- tbHOhHNbGcSpiKJu7FAcFpQbF0wp0OOQWdiHUSOmpOxywq8YBT7OnenFI+SvFZhIGBER/OOmCX7
- Kxdl+8W5jBZ7xbyxZ9r2n6qTTMFD33U=
-X-Google-Smtp-Source: AGHT+IEqmlXPfoICnA10Tw/L6zohN7g3/t75UtGhOMpnJsjQ1uqdY0F06FFhLsxTzg/KydLNwZVEAw==
-X-Received: by 2002:a05:6000:1acc:b0:385:db39:2cf with SMTP id
- ffacd0b85a97d-38a872c943fmr14867664f8f.12.1736720348565; 
- Sun, 12 Jan 2025 14:19:08 -0800 (PST)
+ bh=axL74DBGZ6nBWb/u1b/AX04nS7YLLg7dL20DomACELE=;
+ b=juTEMbUSTIqoanbMmN1JGG9yx4DVnqKEdmnX8hFkRFvAZqBQ9RXJSuuhxqNtaPLP7x
+ A7aoTmYG1XFUVTxiGQ5YvPmuHNn5FWqukggCizv0EkyjeaKWbH6pnrs5gP4mb9QpQ7bx
+ 5PA9VDM/ogueeBKToV4sQEFzvZNewNnif8RTc+KMKpqW2mL0GXvGpX62swAExSIol7MS
+ asIAaWUEngq0imBAd6XE38QraMvQARXfdP2awSUQJoWks2LNTkAyFnYDvv23ZD1oAy3v
+ hfewGIdzRS13j770L5VOY/dcVH6sjQQjGRrLKWJR/Jy/IWseizg0EVK4uKQrj+sGGrYn
+ soXg==
+X-Gm-Message-State: AOJu0YyIgXpCiskzCijnqd7uoZiY8DfwKvswWlL5oWuB+esJVMDVrvYG
+ y8X9StgzPcyiimzxN1K5qP8Uzoj8HhG+9ckh5dl7eKU31XySZdoAo4PhZCIT2A8RfuU9mcSgOCA
+ 3bTY=
+X-Gm-Gg: ASbGnctHvJ9EjgfidrxHNyui/A1qE8qfoegJ33wOf9XsEqUlRiuAbrKJtY6o20hQenV
+ eQDEaigOZloDWIpcDNOf7HNgdIEdE5BKEwZknnL/5VslQ0MDDyq+zTg3Dz53rXn1qRM3UtuZEQQ
+ ZZXPHlyWnaDZiPW0xrGeYdstw2ZRo4Rttfx8TkicJ0zow+vvDbRyIkWcYOGqWCCK68BFKPcGDMI
+ 0do3bcKkJ1Az9WR/3B4Ihf7nB+jzbjWTH3G7ehpMherY7dB/o4MZOuOC3yHfyTB5G7UPfpwc1pU
+ GWBBkfG3JTf6n7owYeAjjNZI+mhRZVY=
+X-Google-Smtp-Source: AGHT+IGFnhvxlPcYFIbq2Y7CbtZjDulvb4ZXsK9sSze1m/GYgHNG6bZQRWyuAT5BTrMCk4ZBC8EQAw==
+X-Received: by 2002:a05:6000:402a:b0:385:fa20:658b with SMTP id
+ ffacd0b85a97d-38a8730a17emr14616705f8f.24.1736720353110; 
+ Sun, 12 Jan 2025 14:19:13 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e384f2bsm10503500f8f.41.2025.01.12.14.19.07
+ ffacd0b85a97d-38a8e4c1bebsm10626974f8f.95.2025.01.12.14.19.12
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 12 Jan 2025 14:19:08 -0800 (PST)
+ Sun, 12 Jan 2025 14:19:12 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 20/49] hw/net/xilinx_ethlite: Map RESERVED I/O as unimplemented
-Date: Sun, 12 Jan 2025 23:16:56 +0100
-Message-ID: <20250112221726.30206-21-philmd@linaro.org>
+Cc: Alexander Graf <graf@amazon.com>,
+ Dorjoy Chowdhury <dorjoychy111@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 21/49] docs/nitro-enclave: Clarify Enclave and Firecracker
+ relationship
+Date: Sun, 12 Jan 2025 23:16:57 +0100
+Message-ID: <20250112221726.30206-22-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250112221726.30206-1-philmd@linaro.org>
 References: <20250112221726.30206-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,64 +99,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In order to track access to reserved I/O space, use yet
-another UnimplementedDevice covering the whole device
-memory range. Mapped with lower priority (-1).
+From: Alexander Graf <graf@amazon.com>
 
-The memory flat view becomes:
+The documentation says that Nitro Enclaves are based on Firecracker.
+AWS has never made that statement.
 
-  (qemu) info mtree -f
-  FlatView #0
-   Root memory region: system
-    0000000081000000-00000000810007e3 (prio 0, ram): ethlite.tx[0]buf
-    00000000810007e4-00000000810007f3 (prio 0, i/o): ethlite.mdio
-    00000000810007f4-00000000810007ff (prio 0, i/o): ethlite.tx[0]io
-    0000000081000800-0000000081000fe3 (prio 0, ram): ethlite.tx[1]buf
-    0000000081000fe4-0000000081000ff3 (prio -1, i/o): ethlite.reserved @0000000000000fe4
-    0000000081000ff4-0000000081000fff (prio 0, i/o): ethlite.tx[1]io
-    0000000081001000-00000000810017e3 (prio 0, ram): ethlite.rx[0]buf
-    00000000810017e4-00000000810017fb (prio -1, i/o): ethlite.reserved @00000000000017e4
-    00000000810017fc-00000000810017ff (prio 0, i/o): ethlite.rx[0]io
-    0000000081001800-0000000081001fe3 (prio 0, ram): ethlite.rx[1]buf
-    0000000081001fe4-0000000081001ffb (prio -1, i/o): ethlite.reserved @0000000000001fe4
-    0000000081001ffc-0000000081001fff (prio 0, i/o): ethlite.rx[1]io
+This patch nudges the wording to instead say it "looks like a
+Firecracker microvm".
 
+Signed-off-by: Alexander Graf <graf@amazon.com>
+Reviewed-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Message-ID: <20241211222512.95660-1-graf@amazon.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20241114210010.34502-20-philmd@linaro.org>
 ---
- hw/net/xilinx_ethlite.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ docs/system/i386/nitro-enclave.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/net/xilinx_ethlite.c b/hw/net/xilinx_ethlite.c
-index a7f6d1b368c..14bf2b2e17a 100644
---- a/hw/net/xilinx_ethlite.c
-+++ b/hw/net/xilinx_ethlite.c
-@@ -94,6 +94,7 @@ struct XlnxXpsEthLite
-     uint32_t c_rx_pingpong;
-     unsigned int port_index; /* dual port RAM index */
+diff --git a/docs/system/i386/nitro-enclave.rst b/docs/system/i386/nitro-enclave.rst
+index 48eda5bd9ec..7317f547dce 100644
+--- a/docs/system/i386/nitro-enclave.rst
++++ b/docs/system/i386/nitro-enclave.rst
+@@ -13,7 +13,7 @@ the enclave VM gets a dynamic CID. Enclaves use an EIF (`Enclave Image Format`_)
+ file which contains the necessary kernel, cmdline and ramdisk(s) to boot.
  
-+    UnimplementedDeviceState rsvd;
-     UnimplementedDeviceState mdio;
-     XlnxXpsEthLitePort port[2];
- };
-@@ -303,6 +304,16 @@ static void xilinx_ethlite_realize(DeviceState *dev, Error **errp)
-     memory_region_init(&s->container, OBJECT(dev),
-                        "xlnx.xps-ethernetlite", 0x2000);
- 
-+    object_initialize_child(OBJECT(dev), "ethlite.reserved", &s->rsvd,
-+                            TYPE_UNIMPLEMENTED_DEVICE);
-+    qdev_prop_set_string(DEVICE(&s->rsvd), "name", "ethlite.reserved");
-+    qdev_prop_set_uint64(DEVICE(&s->rsvd), "size",
-+                         memory_region_size(&s->container));
-+    sysbus_realize(SYS_BUS_DEVICE(&s->rsvd), &error_fatal);
-+    memory_region_add_subregion_overlap(&s->container, 0,
-+                           sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->rsvd), 0),
-+                           -1);
-+
-     object_initialize_child(OBJECT(dev), "ethlite.mdio", &s->mdio,
-                             TYPE_UNIMPLEMENTED_DEVICE);
-     qdev_prop_set_string(DEVICE(&s->mdio), "name", "ethlite.mdio");
+ In QEMU, ``nitro-enclave`` is a machine type based on ``microvm`` similar to how
+-AWS nitro enclaves are based on `Firecracker`_ microvm. This is useful for
++AWS nitro enclaves look like a `Firecracker`_ microvm. This is useful for
+ local testing of EIF files using QEMU instead of running real AWS Nitro Enclaves
+ which can be difficult for debugging due to its roots in security. The vsock
+ device emulation is done using vhost-user-vsock which means another process that
 -- 
 2.47.1
 
