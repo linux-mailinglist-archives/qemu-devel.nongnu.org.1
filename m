@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE21A0AC41
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:23:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A7BA0AC4B
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:24:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tX6K4-00044U-Ai; Sun, 12 Jan 2025 17:20:44 -0500
+	id 1tX6K7-0004DH-Pn; Sun, 12 Jan 2025 17:20:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6JB-0002KY-Oe
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:51 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6JH-0002Wt-56
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:56 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6J9-0006aA-Rs
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:49 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3862d16b4f5so2192640f8f.0
- for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:19:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6JF-0006aY-Mn
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:54 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-43634b570c1so26191985e9.0
+ for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:19:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736720386; x=1737325186; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736720392; x=1737325192; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ypXBSvYmGiFDPRAAmIeWBvHigmsiA58P6W0SM1nQp5o=;
- b=rOPnAVPW3T1SQ/j1ySJxovZlf0ilzN3/16aiJeNB/SCgzZNN4yP2+Jxq7nC0dfea1w
- Q17y7SxzATIA4mpRuekgMxtAhTIGLp+vK9jy5nEGk3z9wMxnwoIt1vzQIbSH7mL7Mkgx
- oV+7QkLNCTrOp+fpMW+6Jdj2W5PJIxfaGcR0RVvv2uJFbJlhXdqb38pHnCdCfKFdUH6S
- 5LRyouAzx7ArJsmK/1eXfsdxUMIP58HS1IrfybT0eXMI6Fau0NGQWE4uVpqFh9g+09mN
- RUpKMd1Xxmg4+Mx6fyvOQXnjdOA/bOP1YFb/Gc+xmAGUIrlWVHJig3UCBRFXpBO/fyyV
- eFMw==
+ bh=6igD5E/nbtwSQ78SmLcXDRAtrSWvkZ+A6IpBZtctTjk=;
+ b=IsABqRQEF9txkWLm0Tg8XvN+2m0qLFM+8OyS8GxgH4Lo/AcIHsk6Eb9X5/tCiOo07Y
+ PrIvWLZTaDSz2Sw2zmlkNWYoV318DA/BqcbZ/OOv66MEuCAvMrTkHoy9vQ3qdXhE4iUM
+ xlJ0gVyRCjX+yaBgvgfClp6+MsG+3J+n8jAmJJu304Mi9Ez5EWDRKJfyNWkZkM7gOFUP
+ azhxx+2BkmJlg2u7AsmRvpiATJ09USLqo+V38FxHY2asgeJ8d6RhhYUR9QxP6Yng02dE
+ 5RQgpRRku9DTPLQ6N8M6Cs8CsNpzcbtRh6RFrb3uBWzj7NCI61luFncU24RxVQc15uuV
+ wpfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736720386; x=1737325186;
+ d=1e100.net; s=20230601; t=1736720392; x=1737325192;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ypXBSvYmGiFDPRAAmIeWBvHigmsiA58P6W0SM1nQp5o=;
- b=pNAS9VFy92n4xWeFZfQz5BlCjWnnTKZRZxgy+sDJbqrSQL1Ne5EKo0ermHlrtIzE71
- ISH87SPGzlifmdDH4OvauxCeSd63jNAsQM/DZE1My3kISARydcYjlDq3K/90EN+vMgO3
- Zk8jLVDSSRyTD6vVj8k92jiQtOIKWkObcqmiZHsdpAG7LDco+rumgj1EHVxHy4XQcaNN
- LSGJYy/oMXy7KoTt9ZQ7OdcAU1baDHX26gqvEPPNzfb/I/Zr2h3LrQWA5y0jW5dvNzxo
- 6WDnB7obI4QjqsWONYlJKNPbUgcXG7FilKrmD2zSoFwxnTB0mr3vql3JEEVdoq5fR51a
- MCqg==
-X-Gm-Message-State: AOJu0YxKD2a/Nn23pctKQZaEtrxPb0u/93ncTEeFOYv+hsS05g3ll0O8
- e4GuuapZW3hDSw5lo6Yf9IHdDXrNo0S94msBekgBE/Hz1tWo+t7iFXwYK/Mrfl5HY0ZepOS6WSn
- F3a0=
-X-Gm-Gg: ASbGnct4niknzBqcJyPY3Z1GcfaqfVcDMg/+pFKEz1S40Dd9jP0+4UYe9abqP3++GTl
- EXNiVrgGo4kL4ha7VXgPTP894crqmoXrOxx2HHwug7zKH1mxVzo5nvBmvs1bTSJu/u2hUpoZohG
- n+YCaSiC/Jm8Rp4IvSXvKpsmBQ5h5V7FpVAmSC17FDLX10wwqDsfYmp96GecRCeJ35jPUvakFwG
- xjkzxMFzj02fE5i0WlakKtb8BnnpD/4wWkILQz1YM/tY0O+3NdxjQHLn2du/UPaM/j+7RUYMNcA
- 8IE1yRnNL/Kl1mMhSyTQ90aK7AUOno8=
-X-Google-Smtp-Source: AGHT+IFJNx2Q6MB6KdGYWgWcXq8LGB1PIP8uGQY9XRjM+IxvLdGlB0LwamHGCb/tD9s1X7EvqIgAmA==
-X-Received: by 2002:a05:6000:1aca:b0:386:3bde:9849 with SMTP id
- ffacd0b85a97d-38a8b0caa82mr12288534f8f.12.1736720385950; 
- Sun, 12 Jan 2025 14:19:45 -0800 (PST)
+ bh=6igD5E/nbtwSQ78SmLcXDRAtrSWvkZ+A6IpBZtctTjk=;
+ b=NU5DyftATnFATFJOLo3k8d1CyQ7JeMFjaO7c+LUXvSljIhBuean0SdSpfsL0Pxca2y
+ 1Oiq2H2bDUhfUhwCfpMLPhPYMK/UmOQzUUnJQVP6jkghWYZU9sAEviAzC+S8tV0YKfI5
+ QDPYZ7QsBZ8VXbW4ntVOwyvk6iXaqIqc56HlU+Y84pt+cgRNs4qG18eyoPEB1l2uUf5A
+ jzRgdcnvAE79CAmIAK3J+F8r9OiOwCrs8krYv4GlbQP/ZgVY6OC0+nzq9A0RAImDC+Tx
+ cwzmDrV7yc/aobUU5XZg0x4r7I0SsFb4oKoCzbo3dbXapPAsidlPlZjeNYdy450Ijg4O
+ 6b8w==
+X-Gm-Message-State: AOJu0Yw9mt//hJB09a9qH6+gim3Q85mFhIY+/mfuavbXM65GbMAIudnj
+ SQ5V9EysHB1JWMxzZ/o+CKDj9De/4/PzkjaK9iylv40x7mQRZJt6cagGfLp/PYNSLvqswoB1KYH
+ 2sBY=
+X-Gm-Gg: ASbGncs0rnUB6DdNheumN1hR3mfGN0XfpxPLhdro65YwOx7XW7DeJ1UloY8WPGfpDH8
+ XcqtL+XPP8kHa/ocbWaciZ3c/LnIT3Ga2bqQf/sjrxtWDR4sX1odEU1ZQDNsFE7/Jre8TF79XV1
+ stwm1HhLsV6ZKEQwFVPshCAAM5TIm6r9sTkQnn1tnDh7IvSKWjb9g1O9Pvn+uYnSBkxOS+Weowo
+ bH2zuU/UHXkGQD3RnAGLCXkSjn+HYVqm2fQZKU2tQ6IA4+66Zn1lyRNBvaAhV31KdVs1Lt7uJmj
+ GzK3OcfbxZwKSF4QeJu7JT3pOE9DC+8=
+X-Google-Smtp-Source: AGHT+IG225P8aOr6MKdzG1E4vNkut7SC5zr4OTLDFvMhToLX/q9PYBCa3sVrFd9d0TPAyrrF0H2new==
+X-Received: by 2002:a05:600c:510a:b0:434:faa9:5266 with SMTP id
+ 5b1f17b1804b1-436e26adfc9mr164276005e9.13.1736720391870; 
+ Sun, 12 Jan 2025 14:19:51 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e2df2faesm158881605e9.26.2025.01.12.14.19.44
+ ffacd0b85a97d-38a8e384f2bsm10504560f8f.41.2025.01.12.14.19.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 12 Jan 2025 14:19:45 -0800 (PST)
+ Sun, 12 Jan 2025 14:19:50 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Nikita Shubin <nshubin@yadro.com>, Nikita Shubin <n.shubin@yadro.com>,
- Alistair Francis <alistair.francis@wdc.com>,
+Cc: Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 28/49] hw/char/stm32f2xx_usart: replace print with trace
-Date: Sun, 12 Jan 2025 23:17:04 +0100
-Message-ID: <20250112221726.30206-29-philmd@linaro.org>
+Subject: [PULL 29/49] hw/timer/imx_gpt: Remove unused define
+Date: Sun, 12 Jan 2025 23:17:05 +0100
+Message-ID: <20250112221726.30206-30-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250112221726.30206-1-philmd@linaro.org>
 References: <20250112221726.30206-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,148 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nikita Shubin <nshubin@yadro.com>
+From: Bernhard Beschow <shentey@gmail.com>
 
-Drop debug printing macros and replace them with according trace
-functions.
-
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20241220111756.16511-1-nikita.shubin@maquefel.me>
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250108092538.11474-11-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/char/stm32f2xx_usart.c | 49 ++++++++++++++++++---------------------
- hw/char/trace-events      |  6 +++++
- 2 files changed, 29 insertions(+), 26 deletions(-)
+ hw/timer/imx_gpt.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/hw/char/stm32f2xx_usart.c b/hw/char/stm32f2xx_usart.c
-index ebcc510f4ea..87882daa715 100644
---- a/hw/char/stm32f2xx_usart.c
-+++ b/hw/char/stm32f2xx_usart.c
-@@ -30,17 +30,7 @@
+diff --git a/hw/timer/imx_gpt.c b/hw/timer/imx_gpt.c
+index 2663a9d9ef4..11eca9fa4df 100644
+--- a/hw/timer/imx_gpt.c
++++ b/hw/timer/imx_gpt.c
+@@ -20,10 +20,6 @@
  #include "qemu/log.h"
- #include "qemu/module.h"
+ #include "trace.h"
  
--#ifndef STM_USART_ERR_DEBUG
--#define STM_USART_ERR_DEBUG 0
+-#ifndef DEBUG_IMX_GPT
+-#define DEBUG_IMX_GPT 0
 -#endif
 -
--#define DB_PRINT_L(lvl, fmt, args...) do { \
--    if (STM_USART_ERR_DEBUG >= lvl) { \
--        qemu_log("%s: " fmt, __func__, ## args); \
--    } \
--} while (0)
--
--#define DB_PRINT(fmt, args...) DB_PRINT_L(1, fmt, ## args)
-+#include "trace.h"
- 
- static int stm32f2xx_usart_can_receive(void *opaque)
+ static const char *imx_gpt_reg_name(uint32_t reg)
  {
-@@ -67,10 +57,11 @@ static void stm32f2xx_update_irq(STM32F2XXUsartState *s)
- static void stm32f2xx_usart_receive(void *opaque, const uint8_t *buf, int size)
- {
-     STM32F2XXUsartState *s = opaque;
-+    DeviceState *d = DEVICE(s);
- 
-     if (!(s->usart_cr1 & USART_CR1_UE && s->usart_cr1 & USART_CR1_RE)) {
-         /* USART not enabled - drop the chars */
--        DB_PRINT("Dropping the chars\n");
-+        trace_stm32f2xx_usart_drop(d->id);
-         return;
-     }
- 
-@@ -79,7 +70,7 @@ static void stm32f2xx_usart_receive(void *opaque, const uint8_t *buf, int size)
- 
-     stm32f2xx_update_irq(s);
- 
--    DB_PRINT("Receiving: %c\n", s->usart_dr);
-+    trace_stm32f2xx_usart_receive(d->id, *buf);
- }
- 
- static void stm32f2xx_usart_reset(DeviceState *dev)
-@@ -101,49 +92,55 @@ static uint64_t stm32f2xx_usart_read(void *opaque, hwaddr addr,
-                                        unsigned int size)
- {
-     STM32F2XXUsartState *s = opaque;
--    uint64_t retvalue;
--
--    DB_PRINT("Read 0x%"HWADDR_PRIx"\n", addr);
-+    DeviceState *d = DEVICE(s);
-+    uint64_t retvalue = 0;
- 
-     switch (addr) {
-     case USART_SR:
-         retvalue = s->usart_sr;
-         qemu_chr_fe_accept_input(&s->chr);
--        return retvalue;
-+        break;
-     case USART_DR:
--        DB_PRINT("Value: 0x%" PRIx32 ", %c\n", s->usart_dr, (char) s->usart_dr);
-         retvalue = s->usart_dr & 0x3FF;
-         s->usart_sr &= ~USART_SR_RXNE;
-         qemu_chr_fe_accept_input(&s->chr);
-         stm32f2xx_update_irq(s);
--        return retvalue;
-+        break;
-     case USART_BRR:
--        return s->usart_brr;
-+        retvalue = s->usart_brr;
-+        break;
-     case USART_CR1:
--        return s->usart_cr1;
-+        retvalue = s->usart_cr1;
-+        break;
-     case USART_CR2:
--        return s->usart_cr2;
-+        retvalue = s->usart_cr2;
-+        break;
-     case USART_CR3:
--        return s->usart_cr3;
-+        retvalue = s->usart_cr3;
-+        break;
-     case USART_GTPR:
--        return s->usart_gtpr;
-+        retvalue = s->usart_gtpr;
-+        break;
-     default:
-         qemu_log_mask(LOG_GUEST_ERROR,
-                       "%s: Bad offset 0x%"HWADDR_PRIx"\n", __func__, addr);
-         return 0;
-     }
- 
--    return 0;
-+    trace_stm32f2xx_usart_read(d->id, size, addr, retvalue);
-+
-+    return retvalue;
- }
- 
- static void stm32f2xx_usart_write(void *opaque, hwaddr addr,
-                                   uint64_t val64, unsigned int size)
- {
-     STM32F2XXUsartState *s = opaque;
-+    DeviceState *d = DEVICE(s);
-     uint32_t value = val64;
-     unsigned char ch;
- 
--    DB_PRINT("Write 0x%" PRIx32 ", 0x%"HWADDR_PRIx"\n", value, addr);
-+    trace_stm32f2xx_usart_write(d->id, size, addr, val64);
- 
-     switch (addr) {
-     case USART_SR:
-diff --git a/hw/char/trace-events b/hw/char/trace-events
-index 59e1f734a7d..140b994fd4d 100644
---- a/hw/char/trace-events
-+++ b/hw/char/trace-events
-@@ -125,3 +125,9 @@ xen_console_unrealize(unsigned int idx) "idx %u"
- xen_console_realize(unsigned int idx, const char *chrdev) "idx %u chrdev %s"
- xen_console_device_create(unsigned int idx) "idx %u"
- xen_console_device_destroy(unsigned int idx) "idx %u"
-+
-+# stm32f2xx_usart.c
-+stm32f2xx_usart_read(char *id, unsigned size, uint64_t ofs, uint64_t val) " %s size %d ofs 0x%02" PRIx64 " -> 0x%02" PRIx64
-+stm32f2xx_usart_write(char *id, unsigned size, uint64_t ofs, uint64_t val) "%s size %d ofs 0x%02" PRIx64 " <- 0x%02" PRIx64
-+stm32f2xx_usart_drop(char *id) " %s dropping the chars"
-+stm32f2xx_usart_receive(char *id, uint8_t chr) " %s receiving '%c'"
+     switch (reg) {
 -- 
 2.47.1
 
