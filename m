@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AE8DA0AC2A
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:20:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68CF6A0AC29
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:20:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tX6Hb-0007Wa-Ch; Sun, 12 Jan 2025 17:18:11 -0500
+	id 1tX6Hd-0007XB-Cp; Sun, 12 Jan 2025 17:18:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6HX-0007Ut-BB
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:18:07 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6HZ-0007W3-Ue
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:18:09 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6HU-0006Pp-A9
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:18:06 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4361f65ca01so35916795e9.1
- for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:18:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6HW-0006Q2-QM
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:18:08 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3863494591bso1955405f8f.1
+ for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:18:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736720279; x=1737325079; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736720284; x=1737325084; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mFVPbF7stzQL/SqDLEkr/HWvwoJrRGJFOJxTEnGaiiQ=;
- b=Dw27Pdc1FVbZJcdQb2BULqpE+4etAfeMYvNaUz0dX2mCmYD7/3GGRRhDXHfAEotx4H
- yY59bi5ALHS63H1cPncAPCJ6GORXVSkv1hTj5YsevWVYG0ynXlcSvCdNQ0Gax/OYFnph
- bNHNivPiKaVFDYeFg+FBzO+1Y+H4BlSjeRIyrncPMkTkPiT5N2BLmU+Al0N5LPixaZo8
- 4b7c+Ty3YVo/XMmjc13jC7sP3lBtDXMaFsDiFsIRkXBVZUGVPjguMBDlgyNa1zLAI4aT
- k9fUeULqhl4BmD3e7RSZ7K85SGoJHe9WVClVz7Zfe/pTpusD15yzJJ5C8PKKUzM91NO9
- 1DQw==
+ bh=C/k//ojvQ0ecXxbrd+D/WoEqwCLOQehsHZqlLpHp/lg=;
+ b=Zdz+wGVwxISvBTJQNzEwORjSRl2ftl5rqBmwZq9tbdVaPGeRv5FGyB8Ybhzf4cBtWK
+ CzVXvpuc9EdYt3hR2CDhG7OIacEkilvvyObCR0ujG5jlvFmImqoDV19W44EKtVS0KEyn
+ 1auMB7/xAXjnYlxC7pDm01gNoG49k5GLI//pPGxael6gbemK15Ym/fFz7JIQsOBLuFxj
+ gL4MI27FzVpk+fVK39OIAoEzo7F2+BZrojPyyEFGnKpw0Hnk+uoPm2AlI6l34msbGAb9
+ k59JJEx5orWHfmCYQ/iq3o7W9d8OyU9qRo/D25KJJHY14r/7ssL+q8GGrgQNIDJzDUtd
+ 1FWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736720279; x=1737325079;
+ d=1e100.net; s=20230601; t=1736720284; x=1737325084;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mFVPbF7stzQL/SqDLEkr/HWvwoJrRGJFOJxTEnGaiiQ=;
- b=YVwwW29Lf8FXyR/eJnxsfua+hHXE+1iCGO640nm5YMAr3SOgtPfyzrx2dfrFt4ym07
- TeAiJUCjLSOoPpuAHxykpc1YQXGogtAdZ89xa4WOfkUUOms0G7/kf9IeYU1Ib6EhV7qo
- eKXAqUliIB5KlzzszKHFfmYpjPvKklv6QfUBisR4eoxqMctmKGfWZE8JgpS1KG6qdIzY
- u970P8oz9Ix9FpS/Z14MyHxjoWz+ktikYhFXjZ9uW828r5TKZqKS0ImNF29Rqb84YvSs
- GjR7YY1slFUvUlnh5COrbnuyMoZFebWVy1GKvRw9VKuZ9QW6x3gPaBS4twoaaTEuEIO2
- gx3g==
-X-Gm-Message-State: AOJu0YxKVIytNyqg2MK+N1uPpx+b8Dl0ViBImCMD4A7yIq5Hu9Mx1Owb
- EM8cGVY3ylz6f5Z1ztUleLYJBkiXe09NL8YuEkzKS+NT7k4m9TXfVwhPPZSGT7xujUqBrhGaipr
- 73SI=
-X-Gm-Gg: ASbGncsqF0hriVZAuF+rVsruEfTIpbrM6dbRQVmY9PxU/mdypnka4BrWUN5TLSAyq/W
- 97hdQ2d/9hcsSPo4P+5SyJ/kk1ofHhMZsakSsEMgreUP7jOhWLxnBtCUObUGtagOiK+B017E+Nn
- Bnov8Byakzg0J1F+kb+0Fu0EiXhq1yuqStKcUrN/VtvgirPKTXP9reooL1gQLrETb/uh25aUwl7
- uh2jfCdBKoVqoAINsD9E39gXxaoadmm3JLpouA5OLupg35rzjuuecOSToJS4J5FN5PF4K+o3Pa3
- IyNJonBG4Xv+7Y13ySJ84QEutaPu3ls=
-X-Google-Smtp-Source: AGHT+IH3dDRlA5jJBRXgYGKX+3TNZCeA3/XT1r74msV8PRnAGUjIjNKMNp2B+NtHwwESA3QRhlfVHQ==
-X-Received: by 2002:a05:600c:138d:b0:431:44f6:566f with SMTP id
- 5b1f17b1804b1-436e26c4a1amr161949855e9.13.1736720279176; 
- Sun, 12 Jan 2025 14:17:59 -0800 (PST)
+ bh=C/k//ojvQ0ecXxbrd+D/WoEqwCLOQehsHZqlLpHp/lg=;
+ b=FidFEcTUi+QRPxsJkeGxbLrNdxa0LsZfl4pRzSVKpGvDebQXoicl2cK/3p9rHHVEpw
+ jzhIBOhDYt5OBJQOFruzVBZX6CZ7qYsV9jjPNRo8EdoOtCJRae86ENPjRA8PmbFR4MhH
+ KEfcQ77XDH4ipQmU7m+C4f1oDbgRP02FN064pSaz57uCus5pYWji8KafihtLFelj9ih7
+ dOruweNwAfcYMexyKLZR9VxuzR2qo3JVFdCZnpA6c7+cQwx0G1RGY/oMk7Udj9yJxJ4z
+ 3EaaUBjsHCnA5IEVSA6+bopmqkRpaD7Zyb6LeGj6dPsm+K2yq7BynNZc9+h5SQM52y61
+ ae7w==
+X-Gm-Message-State: AOJu0YwPjxMQCxUiS1ldAYSLD6s7lV3p4VaNbr7nJvgn3Wym165eNTu/
+ UXPCvUq++rOvRF6/ZBr+CMmQfdmXhFs1czHhmsW9ZYEdiJOKMTCD+afnhg/9PiZf/FXHkPOYHfB
+ zJ/4=
+X-Gm-Gg: ASbGncsLXykSBGtuqLUGP6rZYhCvhivvqS1q+ryHq/k/Q3fY4Odafe3FbSZxoNTWw0A
+ NLai8oBphmdYYwkKi3PVgvdGfiu3D6FryKMIFHCihg7kMqpu9DK207XdDD5D/m6+PBHJVYTOZXH
+ gsMDAv35Q+bkXrhyjqfQgwxX4Wh5cw4/ueSj9fEZQXlXhCgguKa8V9oN2kek391QYunLocHXjDC
+ ESozXiQ5cnXLgJ1vpAYVL77i6Z+yVbvtDIPFKjsyi3Nd1+HQaDEGklb5iBGlIc4CSE2Zik/gOov
+ eGTMNOzvRGT4PysSJKjxDRspWev6gN4=
+X-Google-Smtp-Source: AGHT+IHk9WgAti4NvE6crV1sv7LLEZ4vz9tmQPqkjW7q+Du7LdLCO3aBT5EqV9uOUA4XggaHP/ayPg==
+X-Received: by 2002:adf:a411:0:b0:38a:87cc:fbee with SMTP id
+ ffacd0b85a97d-38a87ccfd10mr12095295f8f.14.1736720284392; 
+ Sun, 12 Jan 2025 14:18:04 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e37d154sm10823837f8f.10.2025.01.12.14.17.56
+ ffacd0b85a97d-38a8e4b7f86sm10605149f8f.67.2025.01.12.14.18.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 12 Jan 2025 14:17:58 -0800 (PST)
+ Sun, 12 Jan 2025 14:18:03 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 06/49] hw/usb: Inline usb_new()
-Date: Sun, 12 Jan 2025 23:16:42 +0100
-Message-ID: <20250112221726.30206-7-philmd@linaro.org>
+ Anton Johansson <anjo@rev.ng>
+Subject: [PULL 07/49] hw/microblaze: Restrict MemoryRegionOps are implemented
+ as 32-bit
+Date: Sun, 12 Jan 2025 23:16:43 +0100
+Message-ID: <20250112221726.30206-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250112221726.30206-1-philmd@linaro.org>
 References: <20250112221726.30206-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,69 +98,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Inline the 3 uses of usb_new().
+All these MemoryRegionOps read() and write() handlers are
+implemented expecting 32-bit accesses. Clarify that setting
+.impl.min/max_access_size fields.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240216110313.17039-11-philmd@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
+Message-Id: <20241105130431.22564-8-philmd@linaro.org>
 ---
- include/hw/usb.h    | 7 +------
- hw/usb/bus.c        | 3 ++-
- hw/usb/dev-serial.c | 2 +-
- 3 files changed, 4 insertions(+), 8 deletions(-)
+ hw/intc/xilinx_intc.c   | 4 ++++
+ hw/net/xilinx_ethlite.c | 4 ++++
+ hw/timer/xilinx_timer.c | 4 ++++
+ 3 files changed, 12 insertions(+)
 
-diff --git a/include/hw/usb.h b/include/hw/usb.h
-index bb778cb844b..e410693d0c6 100644
---- a/include/hw/usb.h
-+++ b/include/hw/usb.h
-@@ -579,11 +579,6 @@ void usb_pcap_init(FILE *fp);
- void usb_pcap_ctrl(USBPacket *p, bool setup);
- void usb_pcap_data(USBPacket *p, bool setup);
- 
--static inline USBDevice *usb_new(const char *name)
--{
--    return USB_DEVICE(qdev_new(name));
--}
--
- static inline bool usb_realize_and_unref(USBDevice *dev, USBBus *bus, Error **errp)
- {
-     return qdev_realize_and_unref(&dev->qdev, &bus->qbus, errp);
-@@ -591,7 +586,7 @@ static inline bool usb_realize_and_unref(USBDevice *dev, USBBus *bus, Error **er
- 
- static inline USBDevice *usb_create_simple(USBBus *bus, const char *name)
- {
--    USBDevice *dev = usb_new(name);
-+    USBDevice *dev = USB_DEVICE(qdev_new(name));
- 
-     usb_realize_and_unref(dev, bus, &error_abort);
-     return dev;
-diff --git a/hw/usb/bus.c b/hw/usb/bus.c
-index 7e7deaadcaf..f45b82c776d 100644
---- a/hw/usb/bus.c
-+++ b/hw/usb/bus.c
-@@ -662,7 +662,8 @@ USBDevice *usbdevice_create(const char *driver)
-         return NULL;
-     }
- 
--    dev = f->usbdevice_init ? f->usbdevice_init() : usb_new(f->name);
-+    dev = f->usbdevice_init ? f->usbdevice_init()
-+                            : USB_DEVICE(qdev_new(f->name));
-     if (!dev) {
-         error_report("Failed to create USB device '%s'", f->name);
-         return NULL;
-diff --git a/hw/usb/dev-serial.c b/hw/usb/dev-serial.c
-index a0821db902f..aa50a92e26f 100644
---- a/hw/usb/dev-serial.c
-+++ b/hw/usb/dev-serial.c
-@@ -624,7 +624,7 @@ static USBDevice *usb_braille_init(void)
-         return NULL;
-     }
- 
--    dev = usb_new("usb-braille");
-+    dev = USB_DEVICE(qdev_new("usb-braille"));
-     qdev_prop_set_chr(&dev->qdev, "chardev", cdrv);
-     return dev;
- }
+diff --git a/hw/intc/xilinx_intc.c b/hw/intc/xilinx_intc.c
+index d99cf567aeb..6930f83907a 100644
+--- a/hw/intc/xilinx_intc.c
++++ b/hw/intc/xilinx_intc.c
+@@ -144,6 +144,10 @@ static const MemoryRegionOps pic_ops = {
+     .read = pic_read,
+     .write = pic_write,
+     .endianness = DEVICE_NATIVE_ENDIAN,
++    .impl = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
+     .valid = {
+         .min_access_size = 4,
+         .max_access_size = 4
+diff --git a/hw/net/xilinx_ethlite.c b/hw/net/xilinx_ethlite.c
+index 4c0c7fcae3e..88ab331acce 100644
+--- a/hw/net/xilinx_ethlite.c
++++ b/hw/net/xilinx_ethlite.c
+@@ -166,6 +166,10 @@ static const MemoryRegionOps eth_ops = {
+     .read = eth_read,
+     .write = eth_write,
+     .endianness = DEVICE_NATIVE_ENDIAN,
++    .impl = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
+     .valid = {
+         .min_access_size = 4,
+         .max_access_size = 4
+diff --git a/hw/timer/xilinx_timer.c b/hw/timer/xilinx_timer.c
+index 4955fe1b01b..6595cf5f517 100644
+--- a/hw/timer/xilinx_timer.c
++++ b/hw/timer/xilinx_timer.c
+@@ -193,6 +193,10 @@ static const MemoryRegionOps timer_ops = {
+     .read = timer_read,
+     .write = timer_write,
+     .endianness = DEVICE_NATIVE_ENDIAN,
++    .impl = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
+     .valid = {
+         .min_access_size = 4,
+         .max_access_size = 4
 -- 
 2.47.1
 
