@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0413A0AC35
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:22:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DD25A0AC34
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:22:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tX6Kf-0004x2-UY; Sun, 12 Jan 2025 17:21:22 -0500
+	id 1tX6Kk-000566-73; Sun, 12 Jan 2025 17:21:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6KX-0004tj-D2
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:21:14 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Kf-00052A-Bc
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:21:21 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6KU-0006to-NL
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:21:13 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-435f8f29f8aso26176525e9.2
- for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:21:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Ka-0006uK-JU
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:21:21 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-385e27c75f4so2617724f8f.2
+ for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:21:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736720469; x=1737325269; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736720475; x=1737325275; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xIb8JuttOpsx6n0lGPjJoZH2kDKEyQKUDAozyZfVQNI=;
- b=A66GUq5pwM3+pcjNcxe6chbLk7SSNG43CcbN+wX28YQzwJES5C34IIooADC/LbhK8H
- XBlFXskOU6W0QBFAHZIP6nkzCgYfi7tXzFryJuMO8UrdTVRjl5mlVbGnoVyyMdsr8teA
- t217kHLS6htCoDiPnGTcJmeUxjbOAfjQOLVTjMgbVCsA4ocF47Aph7KNdo9fit128JKm
- 7mt7yL6hoQq+fewvHYZ4zrjS/d4JcdUwwSEUeZ+UrjMYvq3zazDderErWVt6RIxvGnIr
- m6lJEm166uThGi5kdNTLfW/hIOQzvsaM03Mdhq1pHy39PfSKgcZ3Bh3YMZ5rj4Ma782X
- e1sg==
+ bh=jtVBq+1S8gj7ukLJ3NiNvNBhPg5TIcwGGRynG81nGiQ=;
+ b=ST8f3yKrmJx6qiX+G9ZfLhVk0SBloDUqGo2OQRv5KjDQDeauEMdHzSwfAbT/hAfrJN
+ YmUzbvxLG2ETgUzSv89LseTHN6PYCMYphgVI/mHO4TusHUzKEMzqYfyHm5f74DvRPXxE
+ +cdbCE5JhV42qJRFYLW+JnKlTN0J45nCVcAUouCiVpn++DERVc8oxfCmCO4B+3TDcL1Q
+ Ty6KNLjBQLcz+xjD7Cy9Ofz1eLnRukWfxmsxcUSD5D868//OOIXifoavg/OBEFMoypF9
+ VeWTItwgSfXF+8wkARYWI6OfkALVKKWZ12cTj462wFbELm+1yrtGx3T2uUPOLVGinjcc
+ PmoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736720469; x=1737325269;
+ d=1e100.net; s=20230601; t=1736720475; x=1737325275;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xIb8JuttOpsx6n0lGPjJoZH2kDKEyQKUDAozyZfVQNI=;
- b=alerIpDsoo0LnQcx+t2Olr0YxQtjTyn6pBX/a+c/vdYCCGY6+R+sr/713KH2JpBNBm
- EhQuPannPVrux85EKkby9O9sirhXoZZ2o00A7orJHSPKYBb4VO0BQ1ekIx8hW5JBj7ec
- 6mI9shBtSOaUKU566N0fONezHs8KBU29maM6IXc0PLPV6PMUA7E+Rx4Bd/nPDXtzYCBp
- 74RQifSxIEumL2nNT4csub1+woxxKqER4cRBMkPX1vCVTP95w1ytLTfpMIwaWZDDl1i0
- evbOUiK+p38v/ve5mWuox6qlD3QH10pQC/7IZQV8F4RRjCtwoPwQuiJNI1MAE6lfNiNL
- rNbQ==
-X-Gm-Message-State: AOJu0YxVHqnezVzlsniU72s0Bsly4tODm9MAZBUfNmsyg/w0AEG8QeiF
- Q1KNUU+xtbrsSJi9qcdzXLomWLqDheFrJ63ThazRPjMKrrlrljhUYfsHaqD7efzw2snLF2TLwPu
- +BOw=
-X-Gm-Gg: ASbGnctDKBhl1RtPRJzf/Sq7au/+O7blpQK54MBvqdMeXauGfePTR+Z67m+f9w2ttsH
- oZB73Lp6ousI0fB1rQiBV/Lw6PT2tO79kaiIQmYJtlEmUBVEL73v7aGKZgxvxT0xzYpnje8DIKu
- 64OyiBNuoUqoD196Utc2a+s5+njgAFCyVdND55K7sNWwQB1lLtkg7G7vCDmwre8r81wbsQzRlev
- Ni77N4vsQUJ+EeG7uWwAjEiTmwWXi/MpG0nDVRDEdAlR+69004i2JoI+OTur/celxhpHwZaXKBd
- KydHO3RxEnWdHL6F7QdiRhOoWUcriLc=
-X-Google-Smtp-Source: AGHT+IEkBIux/+pbMKGUmXUe3lf6N1usP/74iCueDCTPlbh4zApMxhiCLes+3rAkj2t8ybp7H2kc1w==
-X-Received: by 2002:a5d:59af:0:b0:382:31a1:8dc3 with SMTP id
- ffacd0b85a97d-38a87313151mr17382755f8f.35.1736720469017; 
- Sun, 12 Jan 2025 14:21:09 -0800 (PST)
+ bh=jtVBq+1S8gj7ukLJ3NiNvNBhPg5TIcwGGRynG81nGiQ=;
+ b=gargckGJWv74FV2LVYh4fUSoIW/8vseWp6L3owUhk95TmphjRJ+l5s5lIJtiH2IXYb
+ KterMVlMp9DRxGK+BJjGBcwCy5C8nD/x3R/5o+BdLSHHNAiUYtcks0Kkt9cH4ubq1fwW
+ lUsTr9/Y98wIfRvyZgQxHL5wQrlphKxPI0RNguSiHaNqSYyentjXdDQD1jyEpEMFvhD8
+ mpJkhAw/hVC2Prw3UmzY2BSI/YNpPTsXV/vilAqzLF9etgMn14Htk7teM6s+xI3Z5bJJ
+ YxAwC9E/QrIYFXJ/kU3/hivcyM0G9IvK0G1xdKRsdKPz8zK7WvXiBQ52XsPL1zDvAKzn
+ 5uPg==
+X-Gm-Message-State: AOJu0Yx1zFbR2NBZcYFj2e0MvcH64HW3CZ1MxoiYWtAbXSoxrthXfpYf
+ w9UfPRuoCOcQ6XlGABl+gOnOWmNpI4kftyDQ61iwDGbTXP2lEYORKgaLkmhlRAp952ViIPOgbFG
+ 99+E=
+X-Gm-Gg: ASbGncteGMSQaCk2Nh5F6zE45hFl9uI8G2gBtB9lDfGEQ/YCfOUTZnfQejulJ4PJ8OR
+ RzlY6CkJ/w3M50XFUvbCYnBgv3sHkMGfaEIBOID6B4a02jPPst9uvjkp/E5PyqhMk4ZeCxFG+3F
+ Zu103FjIyxuPwRpdOdy7/dsHwoPubve5S5G6pdBlQzAwHGX+rRzGjWKXg2N1UjKckUcwdDFul4v
+ 6ndgAD+hN/iGlnhnGVVqTvkLzV5aL8lxOQfnw0SriHTHls190oElhlRfqbMenfcwTZLi3oamoyl
+ KVY1ZOXvEL2wdY7/kwdR5L4UEY8Bkes=
+X-Google-Smtp-Source: AGHT+IEXnVubudZ3uKgDJyifmL0f3xkBlCOy9PQJMwMJs/it0oS9ZWXcdYatNuM9gIs9YMqgMuNvbA==
+X-Received: by 2002:a05:6000:4714:b0:385:fc70:7eb with SMTP id
+ ffacd0b85a97d-38a872fc1bfmr13807502f8f.12.1736720474942; 
+ Sun, 12 Jan 2025 14:21:14 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e38c76esm10367540f8f.47.2025.01.12.14.21.08
+ ffacd0b85a97d-38a8e38ef6asm10834186f8f.60.2025.01.12.14.21.12
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 12 Jan 2025 14:21:08 -0800 (PST)
+ Sun, 12 Jan 2025 14:21:13 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Subject: [PULL 45/49] hw/tricore/triboard: Remove unnecessary use of &first_cpu
-Date: Sun, 12 Jan 2025 23:17:21 +0100
-Message-ID: <20250112221726.30206-46-philmd@linaro.org>
+Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Leif Lindholm <leif.lindholm@oss.qualcomm.com>
+Subject: [PULL 46/49] MAINTAINERS: remove myself from sbsa-ref
+Date: Sun, 12 Jan 2025 23:17:22 +0100
+Message-ID: <20250112221726.30206-47-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250112221726.30206-1-philmd@linaro.org>
 References: <20250112221726.30206-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,61 +98,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-triboard_machine_init() has access to the single CPU via:
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-  TriBoardMachineState {
-    TC27XSoCState {
-      TriCoreCPU cpu;
-      ...
-    } tc27x_soc;
-  } ms;
+I am ending my time with Linaro and do not have plans to continue
+working on SBSA Reference Platform anymore.
 
-Pass it as argument to tricore_load_kernel() so we can
-remove the &first_cpu global use.
-
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Leif Lindholm <leif.lindholm@oss.qualcomm.com>
+Message-ID: <20241218123055.11220-1-marcin.juszkiewicz@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Message-Id: <20250110180909.83165-1-philmd@linaro.org>
 ---
- hw/tricore/triboard.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ MAINTAINERS | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/hw/tricore/triboard.c b/hw/tricore/triboard.c
-index 4dba0259cd3..9cc8d282ff2 100644
---- a/hw/tricore/triboard.c
-+++ b/hw/tricore/triboard.c
-@@ -31,11 +31,10 @@
- #include "hw/tricore/triboard.h"
- #include "hw/tricore/tc27x_soc.h"
- 
--static void tricore_load_kernel(const char *kernel_filename)
-+static void tricore_load_kernel(TriCoreCPU *cpu, const char *kernel_filename)
- {
-     uint64_t entry;
-     long kernel_size;
--    TriCoreCPU *cpu;
-     CPUTriCoreState *env;
- 
-     kernel_size = load_elf(kernel_filename, NULL,
-@@ -46,7 +45,6 @@ static void tricore_load_kernel(const char *kernel_filename)
-         error_report("no kernel file '%s'", kernel_filename);
-         exit(1);
-     }
--    cpu = TRICORE_CPU(first_cpu);
-     env = &cpu->env;
-     env->PC = entry;
- }
-@@ -62,7 +60,7 @@ static void triboard_machine_init(MachineState *machine)
-     sysbus_realize(SYS_BUS_DEVICE(&ms->tc27x_soc), &error_fatal);
- 
-     if (machine->kernel_filename) {
--        tricore_load_kernel(machine->kernel_filename);
-+        tricore_load_kernel(&ms->tc27x_soc.cpu, machine->kernel_filename);
-     }
- }
- 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 770bbf9f233..4ca3981dd25 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -923,7 +923,6 @@ SBSA-REF
+ M: Radoslaw Biernacki <rad@semihalf.com>
+ M: Peter Maydell <peter.maydell@linaro.org>
+ R: Leif Lindholm <leif.lindholm@oss.qualcomm.com>
+-R: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+ L: qemu-arm@nongnu.org
+ S: Maintained
+ F: hw/arm/sbsa-ref.c
 -- 
 2.47.1
 
