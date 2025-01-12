@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2389BA0A96A
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 14:06:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30CDCA0A96B
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 14:06:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWxeQ-000224-1e; Sun, 12 Jan 2025 08:05:10 -0500
+	id 1tWxfQ-0002Wk-Pg; Sun, 12 Jan 2025 08:06:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tWxeJ-00020K-3d; Sun, 12 Jan 2025 08:05:03 -0500
+ id 1tWxfK-0002Tc-Vg; Sun, 12 Jan 2025 08:06:07 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tWxeH-0007zg-9I; Sun, 12 Jan 2025 08:05:02 -0500
+ id 1tWxfJ-0008HW-D4; Sun, 12 Jan 2025 08:06:06 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 16237D5FD5;
- Sun, 12 Jan 2025 16:04:44 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 08FF8D5FD8;
+ Sun, 12 Jan 2025 16:06:02 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id C5D0319A125;
- Sun, 12 Jan 2025 16:04:44 +0300 (MSK)
-Message-ID: <0198d019-1d50-4b94-ab15-9d2bdef183db@tls.msk.ru>
-Date: Sun, 12 Jan 2025 16:04:44 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id C71AD19A12D;
+ Sun, 12 Jan 2025 16:06:02 +0300 (MSK)
+Message-ID: <35911935-6f5c-40a3-aa73-3586dfdf3268@tls.msk.ru>
+Date: Sun, 12 Jan 2025 16:06:02 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] migration/multifd: Fix compile error caused by page_size
- usage
-To: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- qemu-devel@nongnu.org, peterx@redhat.com, farosas@suse.de
-Cc: linuxarm@huawei.com, zhangfei.gao@linaro.org,
+Subject: Re: [PATCH v3 3/7] migration: Fix parsing of s390 stream
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Thomas Huth <thuth@redhat.com>,
  qemu-stable <qemu-stable@nongnu.org>
-References: <20241203124943.52572-1-shameerali.kolothum.thodi@huawei.com>
+References: <20250109185249.23952-1-farosas@suse.de>
+ <20250109185249.23952-4-farosas@suse.de>
 Content-Language: en-US, ru-RU
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
@@ -78,7 +77,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
  ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
  3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
-In-Reply-To: <20241203124943.52572-1-shameerali.kolothum.thodi@huawei.com>
+In-Reply-To: <20250109185249.23952-4-farosas@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -104,37 +103,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-03.12.2024 15:49, Shameer Kolothum via wrote:
->  From Commit 90fa121c6c07 ("migration/multifd: Inline page_size and
-> page_count") onwards page_size is not part of MutiFD*Params but uses
-> an inline constant instead.
+09.01.2025 21:52, Fabiano Rosas wrote:
+> The parsing for the S390StorageAttributes section is currently leaving
+> an unconsumed token that is later interpreted by the generic code as
+> QEMU_VM_EOF, cutting the parsing short.
 > 
-> However, it missed updating an old usage, causing a compile error.
+> The migration will issue a STATTR_FLAG_DONE between iterations, which
+> the script consumes correctly, but there's a final STATTR_FLAG_EOS at
+> .save_complete that the script is ignoring. Since the EOS flag is a
+> u64 0x1ULL and the stream is big endian, on little endian hosts a byte
+> read from it will be 0x0, the same as QEMU_VM_EOF.
 > 
-> Fixes: 90fa121c6c07 ("migration/multifd: Inline page_size and page_count")
-> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+> Fixes: 81c2c9dd5d ("tests/qtest/migration-test: Fix analyze-migration.py for s390x")
+> Reviewed-by: Peter Xu <peterx@redhat.com>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-This looks like a qemu-stable material, is it not?
+This looks like a qemu-stable material (if not only for tests), is it not?
 
-I wonder how come thie code hasn't been compiled since 90fa121c6c07.
+Thanks,
 
 /mjt
-
->   migration/multifd-uadk.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/migration/multifd-uadk.c b/migration/multifd-uadk.c
-> index 6e6a290ae9..6895c1f65a 100644
-> --- a/migration/multifd-uadk.c
-> +++ b/migration/multifd-uadk.c
-> @@ -169,7 +169,7 @@ static int multifd_uadk_send_prepare(MultiFDSendParams *p, Error **errp)
->               .src_len = page_size,
->               .dst     = buf,
->               /* Set dst_len to double the src in case compressed out >= page_size */
-> -            .dst_len = p->page_size * 2,
-> +            .dst_len = page_size * 2,
->           };
->   
->           if (uadk_data->handle) {
-
 
