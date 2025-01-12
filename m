@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A23A0AC46
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:23:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34511A0AC3B
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:22:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tX6Jp-0003Ns-LS; Sun, 12 Jan 2025 17:20:29 -0500
+	id 1tX6Jw-0003sW-IG; Sun, 12 Jan 2025 17:20:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6J1-0001sB-Hz
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:40 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6J5-00022d-RA
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:45 -0500
 Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6J0-0006ZL-22
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:39 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6J4-0006Zd-8z
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:19:43 -0500
 Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-436202dd7f6so42825605e9.0
- for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:19:37 -0800 (PST)
+ 5b1f17b1804b1-436ce2ab251so26231395e9.1
+ for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:19:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736720376; x=1737325176; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736720380; x=1737325180; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EmxRTGMWROJpEWZSo1u+jDCiV46gwFTHUKYAuplU0Gc=;
- b=SXh4O31DEXF6kSz35CPArjT7T5ZXu5R8snUd6ZksTHwJxzF9uwukxAvdSwJSw3CLiI
- +Go90WcgA23g2hDJvJ7/yRwD+hfSaSYeGYAZGrqxrI7FaIG9xDtFh9GEm6vvdrffTary
- NEImkh5Nw3f8eYyKmqFoG0+SESSgMI/9XVhU7uIvfKzvZ8mtqj3tLGHkZPXf85AZDBni
- FgFm4KHc4ciSlM0Me/SAY5i9W7QK8I2257FlL0Ad3hTcfQ14TIZGtM5cTbpTZXUpeLVK
- sOggDhZzduy+Q32fYp/IBePwdShXEVE7/20xaroTAzySEvYy9Yvy3ITfnk0MDIF8KA0M
- CEUw==
+ bh=iAeWlekp0I6VowiluDZapbh9k9d5Kq9MZ32VfBn8/0g=;
+ b=qlC36qKjjyf4bFXKd4dnt3lPO/cNxp3CFTs1LqBglnJ20O5n75e69hG3ACuS6uNKtx
+ a3bhlnnU9y8UQLERdt7uV2Kv5beNyoPdFB37yP9PwJLjZi1eCwm8mDcI1NXClaplewEH
+ 5Vv4R+1QI/VqJvV3Ndx9g+Wt+aRuXy1ALXdqBZtH/l0z8wXALBCu5/2zSkKeDcgC5Svo
+ Cj3GgLFRDvWfR0nXpkCIJqgO5cbXgytwhXf2ye5XqidmKmTjd9EOXFo0uRmlpMkv88De
+ 38kYrtHxFnRk/CC53oC7qaql0NGUA+0w0ylUuFXSo0vnt+/DpXW8FAFkswYYRGyLgs4f
+ /PbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736720376; x=1737325176;
+ d=1e100.net; s=20230601; t=1736720380; x=1737325180;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EmxRTGMWROJpEWZSo1u+jDCiV46gwFTHUKYAuplU0Gc=;
- b=gVkR6NP5G3RoyXUlCq5QbUnkDdsQfQ3wCdbew/eUH8DMrNM0cmb1yhATjh+WhR2X3i
- 3lwIVNyQhyfrueCeAqMPnEuzF4Obx8Wc/eIneJEQGtFVBeu6luf35xP8o0XTsmPK23iz
- /4OBjvKjuXXXYBkeodKOKrbDm6CoZX7PnF7WHq8VbsAS9ruEk72HQux0MkWdEBLWrjbf
- RrqlgjoPgdpqhIt3Vhm5xMtcD49Vypq2ew1FkCTLff7shFRhxH46ScsEccIi1/zHrijn
- wXIfrnBJOND0c9fHNRcKta+Bggq8W/0VBXR2nn+FJlCgRRmSz6pBqZS8fGxAUKh4W0Z3
- Njpg==
-X-Gm-Message-State: AOJu0YxsJhdYPrBDeLYtRXB2ZsTLx44JaBvhElVBTeh3gzNTHdVZMDfL
- CZEbXRRShV90HpPMWevZKYFvDaaSpYArU6zO/GWhz43ckxBbu7Gkg6T3AB0b9ykALDKUDP/j0VO
- bKnI=
-X-Gm-Gg: ASbGncs/3IdnfTZlH4Wit7GLOTpwpaNKWc8wTvJif3YbdYIaxq2qoRqmxWlkBOxRQIk
- F0sT7rNw2Q65wE66Qw+++8j+2SyJTyr5+ucWVpmKwgZQ/iiiWPxFDdGc8ZBgbXah8CdwP5noBSz
- 4ccZvlMhrKqKw4C8tRM3DltdFT+yKS7j6VijwWEJehcLSA/V+bxC6pEy1V9bJX+1k9kiCBvP+aO
- isoIpnO/aba+x2C1TMetVzAJ297o90+OMvtiLa3mg5MMNbhGtGVuqOrq/Yy43XFUheqdiKPAJGF
- 0XDqNosrjbjXDNzTkuvMIltaNlj3128=
-X-Google-Smtp-Source: AGHT+IHqZ6eR+ozvfAZllFw/XbYtMPuVV32e3GLDlYjJpOn5cnMI+Jjl16LTW6PPqx1Z5dmx9ZafJA==
-X-Received: by 2002:a05:600c:4e0b:b0:434:a7e3:db5c with SMTP id
- 5b1f17b1804b1-436e26aeeeemr183787435e9.11.1736720376145; 
- Sun, 12 Jan 2025 14:19:36 -0800 (PST)
+ bh=iAeWlekp0I6VowiluDZapbh9k9d5Kq9MZ32VfBn8/0g=;
+ b=PKlvyHy2l5c7PQA90674c01Nz/zyMVaFNv5mOD/K5WadeRjCASjZRFSm9K94FLMwCQ
+ xwPxx40mWfTpieFb66jUZFw7Os/sRcfx8cr1NoOCGx/Nbgc8mW+LtTwaj38LBAfC8eBg
+ PkCSYtsU+xuwDPPdOtd2v1iiYttnKVuVcn4mj4CSX8KRKsaBQ2JIP/WZRO9uGrFPYmYt
+ FYPZtfMwMveiv2QU4tzJ9udg8j6KXQ9mWNq9Z1HMmvmU+WkZj/8nWeGHyoh0LZdCsiXu
+ Xj7NrFAk/u221d9CAGKus2u24jTFDsJldfGkei5P4QjsIlcp7+yA9WGizKtq6xbvgaeY
+ uXdQ==
+X-Gm-Message-State: AOJu0YyS8e5g5nbOHdV3L9C4t53UrWnrWVTkJFu/UMW3strino90gAQD
+ SyktYKD0cHe1YTHEswFwHd2HlK8Iqg47j1OPGPStVJ0NFIbxZRkcqvuWCZhbERW1LoVSlI/eVzS
+ FnEE=
+X-Gm-Gg: ASbGncvyqTjeHi4yPdldKIsSROr7A3XuvYtDP2rznBDMJzjCG7I7fQUUH7cZF5m4Y91
+ mlHwhZqsWdho8oq8s2D24EcNU6CPiQqmqwmTrG8jnrhgqcMcSUNXF4/b34SrhEi2fgZQB2wuAeq
+ X6bnG5yfbbCIzlesdNIhPt21Mqk6oZaoCJiYjd0+ksK6E9cWCen4KeGucW0E9MBTexnC7gu211Q
+ gNizWzsNAaF9HYTVNqMWuIBMxD/NuOVO7GDVesqKjkcEFsnse5Avp3a3wUc4+YxLL9LaXvJczpD
+ Vo13Ti0zzT5xHSDk5uznGbjpqELRYG0=
+X-Google-Smtp-Source: AGHT+IF9cHGgEXMlrA1X7knljM0lI8FZG5FW2DRSqQu8nn6iPVobBJTa95sKFMZvjuHkmfdS3nlEBw==
+X-Received: by 2002:a05:600c:3b8a:b0:434:f270:a4f0 with SMTP id
+ 5b1f17b1804b1-436e26dda80mr139563475e9.21.1736720380606; 
+ Sun, 12 Jan 2025 14:19:40 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e38c697sm10782948f8f.52.2025.01.12.14.19.35
+ 5b1f17b1804b1-436e2dc0babsm157488615e9.14.2025.01.12.14.19.39
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 12 Jan 2025 14:19:35 -0800 (PST)
+ Sun, 12 Jan 2025 14:19:40 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Bernhard Beschow <shentey@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 26/49] hw/sd/sdhci: Set SDHC_NIS_DMA bit when appropriate
-Date: Sun, 12 Jan 2025 23:17:02 +0100
-Message-ID: <20250112221726.30206-27-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Bernhard Beschow <shentey@gmail.com>
+Subject: [PULL 27/49] hw/sd/sdhci: Factor sdhci_sdma_transfer() out
+Date: Sun, 12 Jan 2025 23:17:03 +0100
+Message-ID: <20250112221726.30206-28-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250112221726.30206-1-philmd@linaro.org>
 References: <20250112221726.30206-1-philmd@linaro.org>
@@ -97,53 +97,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+Factor sdhci_sdma_transfer() out of sdhci_data_transfer().
+Re-use it in sdhci_write(), so we don't try to run multi
+block transfer for a single block.
 
-In U-Boot, the fsl_esdhc[_imx] driver waits for both "transmit completed" and
-"DMA" bits in esdhc_send_cmd_common() by means of DATA_COMPLETE constant. QEMU
-currently misses to set the DMA bit which causes the driver to loop forever. Fix
-that by setting the DMA bit if enabled when doing DMA block transfers.
-
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250108092538.11474-2-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Bernhard Beschow <shentey@gmail.com>
+Message-Id: <20250109122029.22780-1-philmd@linaro.org>
 ---
- hw/sd/sdhci.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ hw/sd/sdhci.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index 299cd4bc1b6..a958c114974 100644
+index a958c114974..318587ff57c 100644
 --- a/hw/sd/sdhci.c
 +++ b/hw/sd/sdhci.c
-@@ -665,12 +665,13 @@ static void sdhci_sdma_transfer_multi_blocks(SDHCIState *s)
-         }
-     }
- 
-+    if (s->norintstsen & SDHC_NISEN_DMA) {
-+        s->norintsts |= SDHC_NIS_DMA;
-+    }
-+
-     if (s->blkcnt == 0) {
-         sdhci_end_transfer(s);
-     } else {
--        if (s->norintstsen & SDHC_NISEN_DMA) {
--            s->norintsts |= SDHC_NIS_DMA;
--        }
-         sdhci_update_irq(s);
-     }
- }
-@@ -691,6 +692,10 @@ static void sdhci_sdma_transfer_single_block(SDHCIState *s)
-     }
-     s->blkcnt--;
- 
-+    if (s->norintstsen & SDHC_NISEN_DMA) {
-+        s->norintsts |= SDHC_NIS_DMA;
-+    }
-+
+@@ -699,6 +699,15 @@ static void sdhci_sdma_transfer_single_block(SDHCIState *s)
      sdhci_end_transfer(s);
  }
  
++static void sdhci_sdma_transfer(SDHCIState *s)
++{
++    if ((s->blkcnt == 1) || !(s->trnmod & SDHC_TRNS_MULTI)) {
++        sdhci_sdma_transfer_single_block(s);
++    } else {
++        sdhci_sdma_transfer_multi_blocks(s);
++    }
++}
++
+ typedef struct ADMADescr {
+     hwaddr addr;
+     uint16_t length;
+@@ -930,12 +939,7 @@ static void sdhci_data_transfer(void *opaque)
+     if (s->trnmod & SDHC_TRNS_DMA) {
+         switch (SDHC_DMA_TYPE(s->hostctl1)) {
+         case SDHC_CTRL_SDMA:
+-            if ((s->blkcnt == 1) || !(s->trnmod & SDHC_TRNS_MULTI)) {
+-                sdhci_sdma_transfer_single_block(s);
+-            } else {
+-                sdhci_sdma_transfer_multi_blocks(s);
+-            }
+-
++            sdhci_sdma_transfer(s);
+             break;
+         case SDHC_CTRL_ADMA1_32:
+             if (!(s->capareg & R_SDHC_CAPAB_ADMA1_MASK)) {
+@@ -1179,11 +1183,7 @@ sdhci_write(void *opaque, hwaddr offset, uint64_t val, unsigned size)
+             if (!(mask & 0xFF000000) && s->blkcnt &&
+                 (s->blksize & BLOCK_SIZE_MASK) &&
+                 SDHC_DMA_TYPE(s->hostctl1) == SDHC_CTRL_SDMA) {
+-                if (s->trnmod & SDHC_TRNS_MULTI) {
+-                    sdhci_sdma_transfer_multi_blocks(s);
+-                } else {
+-                    sdhci_sdma_transfer_single_block(s);
+-                }
++                sdhci_sdma_transfer(s);
+             }
+         }
+         break;
 -- 
 2.47.1
 
