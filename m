@@ -2,37 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0101AA0A979
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 14:14:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE66A0AA0B
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 15:31:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWxly-0005B6-Rl; Sun, 12 Jan 2025 08:12:58 -0500
+	id 1tWyye-0001fh-PI; Sun, 12 Jan 2025 09:30:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tWxli-00056B-PS; Sun, 12 Jan 2025 08:12:44 -0500
+ id 1tWyya-0001ej-Am; Sun, 12 Jan 2025 09:30:05 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tWxlf-00017R-OZ; Sun, 12 Jan 2025 08:12:42 -0500
+ id 1tWyyY-0001jB-C9; Sun, 12 Jan 2025 09:30:04 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9D812D5FDE;
- Sun, 12 Jan 2025 16:12:33 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 86A5AD600F;
+ Sun, 12 Jan 2025 17:29:53 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 43B2519A135;
- Sun, 12 Jan 2025 16:12:34 +0300 (MSK)
-Message-ID: <d565340c-8e81-4582-a2dd-1abed5879e95@tls.msk.ru>
-Date: Sun, 12 Jan 2025 16:12:34 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 622B219A17B;
+ Sun, 12 Jan 2025 17:29:54 +0300 (MSK)
+Message-ID: <de853776-69cc-4605-9f9b-e3a60964c3b6@tls.msk.ru>
+Date: Sun, 12 Jan 2025 17:29:54 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] bugfixes for migration using compression methods
-To: Yuan Liu <yuan1.liu@intel.com>, peterx@redhat.com, farosas@suse.de
-Cc: qemu-devel@nongnu.org, jason.zeng@intel.com, yichen.wang@bytedance.com,
- qemu-stable <qemu-stable@nongnu.org>
-References: <20241218091413.140396-1-yuan1.liu@intel.com>
-Content-Language: en-US, ru-RU
+Subject: Re: [PATCH v3 3/7] migration: Fix parsing of s390 stream
 From: Michael Tokarev <mjt@tls.msk.ru>
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-stable <qemu-stable@nongnu.org>
+References: <20250109185249.23952-1-farosas@suse.de>
+ <20250109185249.23952-4-farosas@suse.de>
+ <35911935-6f5c-40a3-aa73-3586dfdf3268@tls.msk.ru>
+Content-Language: en-US, ru-RU
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
  xsFNBGYpLkcBEACsajkUXU2lngbm6RyZuCljo19q/XjZTMikctzMoJnBGVSmFV66kylUghxs
  HDQQF2YZJbnhSVt/mP6+V7gG6MKR5gYXYxLmypgu2lJdqelrtGf1XtMrobG6kuKFiD8OqV6l
@@ -76,7 +78,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
  ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
  3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
-In-Reply-To: <20241218091413.140396-1-yuan1.liu@intel.com>
+In-Reply-To: <35911935-6f5c-40a3-aa73-3586dfdf3268@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -102,38 +104,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-18.12.2024 12:14, Yuan Liu wrote:
-> This set of patches is used to fix the bugs of incorrect migration
-> memory data when compression is enabled.
+12.01.2025 16:06, Michael Tokarev wrote:
+> 09.01.2025 21:52, Fabiano Rosas wrote:
+>> The parsing for the S390StorageAttributes section is currently leaving
+>> an unconsumed token that is later interpreted by the generic code as
+>> QEMU_VM_EOF, cutting the parsing short.
+>>
+>> The migration will issue a STATTR_FLAG_DONE between iterations, which
+>> the script consumes correctly, but there's a final STATTR_FLAG_EOS at
+>> .save_complete that the script is ignoring. Since the EOS flag is a
+>> u64 0x1ULL and the stream is big endian, on little endian hosts a byte
+>> read from it will be 0x0, the same as QEMU_VM_EOF.
+>>
+>> Fixes: 81c2c9dd5d ("tests/qtest/migration-test: Fix analyze-migration.py for s390x")
+>> Reviewed-by: Peter Xu <peterx@redhat.com>
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > 
-> The method to reproduce this bug is as follows
-> 1. Run "stress-ng --class memory --all 1" in the source side, the
-> stress-ng tool comes from https://github.com/ColinIanKing/stress-ng.git
-> 
-> 2. Enable the multifd compression methods and start migration
->     e.g. migrate_set_parameter multifd-compression qpl
-> 
-> 3. The guest kernel will crash automatically or crash at shutdown after
->     the migration is complete
-> 
-> The root cause of the bugs and the solutions are described in detail in
-> the patch.
-> 
-> My verification method as follows
-> 1. Start the VM and run the stess-ng test command on the source side.
-> 2. Start the VM with "-S" parameter on the target side, it is
->     used to pause the vCPUs after migration.
-> 3. After the migration is successful, use the dump-guest-memory command
->     to export the memory data of the source and target VMs respectively.
-> 4. Use "cmp -l source_memory target_memory" to verify memory data.
-> 
-> Yuan Liu (3):
->    multifd: bugfix for migration using compression methods
->    multifd: bugfix for incorrect migration data with QPL compression
->    multifd: bugfix for incorrect migration data with qatzip compression
+> This looks like a qemu-stable material (if not only for tests), is it not?
 
-Should just the first patch be applied to qemu-stable branches, or all 3?
-The first one has been Cc'd qemu-stable, but the other two hasn't?
+This one, when applied to 9.2 together with "s390x: Fix CSS migration",
+causes s390x-migration-test failure.
+
+First, it goes:
+
+# starting QEMU: exec ./qemu-system-s390x -qtest unix:/tmp/qtest-1137270.sock -qtest-log /dev/null -chardev 
+socket,path=/tmp/qtest-1137270.qmp,id=char0 -mon chardev=char0,mode=control -display none -audio none -accel kvm -accel tcg -machine 
+s390-ccw-virtio-9.2, -name target,debug-threads=on -m 128M -serial file:/tmp/migration-test-T987Z2/dest_serial -incoming tcp:127.0.0.1:0 -bios 
+/tmp/migration-test-T987Z2/bootsect     -accel qtest
+Traceback (most recent call last):
+   File "/tmp/q/scripts/analyze-migration.py", line 704, in <module>
+     dump.read(dump_memory = args.memory)
+   File "/tmp/q/scripts/analyze-migration.py", line 641, in read
+     section.read()
+   File "/tmp/q/scripts/analyze-migration.py", line 477, in read
+     field['data'] = reader(field, self.file)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+   File "/tmp/q/scripts/analyze-migration.py", line 450, in __init__
+     for field in self.desc['struct']['fields']:
+                  ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'fields'
+# Failed to analyze the migration stream
+
+and finally
+
+**
+ERROR:../../build/qemu/9.2/tests/qtest/migration-test.c:4039:main: assertion failed (ret == 0): (1 == 0)
+Bail out! ERROR:../../build/qemu/9.2/tests/qtest/migration-test.c:4039:main: assertion failed (ret == 0): (1 == 0)
+
+It doesn't happen when both these patches are applied to 9.1 though -
+there, the test succeeds.
+
+Hmm..
 
 Thanks,
 
