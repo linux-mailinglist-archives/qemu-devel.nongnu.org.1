@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB569A0AC26
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:19:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B03A0AC24
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:19:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tX6HX-0007Ty-Tq; Sun, 12 Jan 2025 17:18:07 -0500
+	id 1tX6Ha-0007WF-GP; Sun, 12 Jan 2025 17:18:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6H8-0007SX-7Q
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:17:42 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6HO-0007Tb-7x
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:18:03 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6H5-0006O5-Pg
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:17:41 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4363dc916ceso28855785e9.0
- for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:17:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6HI-0006Og-Sj
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:17:57 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4363ae65100so38315945e9.0
+ for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:17:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736720257; x=1737325057; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736720262; x=1737325062; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=o/QB0eCOWglzRhv0POd1a0450MrEr7ITHH+s9iR/zMg=;
- b=WzcRFFukQ/Yek1m5hnh0Gzid8WquR2GLR97HU4biR3b934lhc0v74JJYjqeB9LA9Hg
- sKwQRkpbS3+oSPR09KU0nnCS81qGoIZmp1g2/yVJ2JYWLDpd5uZMNQHCzegevIqkglhZ
- KC4WbHIABgKaXWYRHw4GFNQYgjYX5bEyPBxU2GjbMAHYJp4PEm/Rg7qp+Fc09bUAAUzV
- u2yt2qgm+CN0ddUc3pW7CHKcP187ZWo4NpWm3uFSL5+FubbwT7ptkbGCe4cLWPSHtjX0
- G3Q4uj5zKP80S6VaGAOgb7lZD6Z8Sg/u4hHys7diHoADXwj2PyWHEeHhdAFNW4ErynoF
- RBHA==
+ bh=RRilqG0RRzc/tLS+/K4TJ6YsxHq+JDiiCxUzzS2N1LY=;
+ b=EnrmkeWV5hicqQ7cryUySmTtzA3tNMH5s2rA4H0k7O/qtWG8/b6S/zGDQqy5yXr9AX
+ IFFJ5VzV4JceEYbWLVOCMMp1zWhvGj0sLWaPP2bHY9Cdm5y4v4RSNzZg8Gw/kDFERAyM
+ NhinP/QmQp4PMbDyaSUw9jZJ4PUWUFRa+ItWUv9fAw04kqU3OO0v+iTScHrS+Mnxd2gz
+ MwaH0bo07jhBBRswj2LCDcb62S8MIHUPpzFkpxy33rht5Gzb08BnMYul8gK2p47PQ22q
+ 5a4ZH6AFTOxX2fRosxgAmqp3wl4T4cyLxnmxlcnymrVZ+U1OAWhF6qLLbxaBNnGsBxuI
+ 2uRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736720257; x=1737325057;
+ d=1e100.net; s=20230601; t=1736720262; x=1737325062;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=o/QB0eCOWglzRhv0POd1a0450MrEr7ITHH+s9iR/zMg=;
- b=buEZHg+XHbJhmnSIn2eymRZsaiL+ICe7X0ghLx67yxi6kh4T+TpdS44FM1IG7IBzUd
- /Se/Q1dkst8vEqIu7XMbQdIxnVTbApYQf9YQjZNo+DlJND3cdWgQz1K6DPHVcg8hRCgV
- vRvlMhoTKr7FM9SN1gZcHHPJaW/NCV8dleFMdXRvETtkmJCeScc5nZqjmPsp1uVQzcZR
- sqreX/Fo0c99RePnog2a0Cf89MbUWjbTcqCs2zrnFXZo2mX1H5g5EyDVFyUaxCLv+bKg
- +UDFX8P4wajrdToNQevFNcExsyJm0JsdRlu48GyY8o1P/N+fmtti3G9E0rWqpdUERyOT
- QFKw==
-X-Gm-Message-State: AOJu0YwfaaGFnLN3M22NyYUXn2piRrkOSMGdgmN7RagPLbB5zgYWNsqQ
- aKA/auvQbP7k8szZliXW0qWMubCDc2Ix1M3551h+2DeQz1dUzKB36s3WpuxkL1ywCqh6qcD325c
- wHp8=
-X-Gm-Gg: ASbGncv6GawSDM66PYnKZyrV3yrbk6EstN3WRRWENnA/+z6Xtc1i3i2YDPmeHM+DBP4
- yc+vH3ONdAzheuW0lAyqYu6HJ/4a7nRevAh7Ur2vpKM5LjPoncDoHqjg8N9EnzHYCP7+UIzDC07
- tumRaDB2zf7ZN6PMZy87+thGWe0NpEvrPnLZlcv/8NrzcqdfdeUb+yjf+Xj/JS20KtzaSmRhqGY
- 2xXP7XK9LJpEH1Q8t8J4TgcGqtQJNXehqIEg2SWWrEGOb9ee1cM76sNrSnF0rXuxkFTfpfpG94g
- dKQp6WiYyGEjTm7D22VKxbug+q5pGoE=
-X-Google-Smtp-Source: AGHT+IHVpV9jbQcShCU9uTEQ9imEE4oGKokPvRrRxcwuQzR+G2HMzaJMQ++Z2O5gqcO35UftZXx1QA==
-X-Received: by 2002:a05:6000:1f89:b0:38a:9ffb:ff02 with SMTP id
- ffacd0b85a97d-38a9ffc0264mr5293576f8f.12.1736720257354; 
- Sun, 12 Jan 2025 14:17:37 -0800 (PST)
+ bh=RRilqG0RRzc/tLS+/K4TJ6YsxHq+JDiiCxUzzS2N1LY=;
+ b=sW6pP4SUbqAO0v//6UTO3U3jKlysuOueP/QvF8hXG9rb6ZJMuCgPmqRbtRbXJqg1L4
+ AeCU8j79d2zKNwRjr/+sdgVPH0CmHTsB7VpQVVW5cETtk+zFi3vLE47RFGD+5ShuBiC9
+ /XzU7XbEmTatM1GTLAiu0gVGE8BQBtVNg6NxeKYI/UTBoKgFsNTCR8CDJzKadrsOwaoB
+ FYlioYxEoXmV1HffzRjhtgc+wnsTa/QOmP86sqtl/YSPl84doj+5pH0Zr1/nqbRa3YF8
+ hU44aW/dVU5t7Fl45OP/1JR3mQtTTFXtYut53ds20k6emSY4Ane1geXmYuIuMnQeLu2K
+ 4zsQ==
+X-Gm-Message-State: AOJu0YwL8b5JGZVdsfDXvJv1rYpycaykHm2LYCLg4TXBUcINRfjgNAc4
+ Pk4/f5wCJ+iB0uk6CfvieNYnmgFjv08oKBp+eiMV3e4D24isj2qIZ9AfC10DCbkaKrB7iykBOdn
+ MNwc=
+X-Gm-Gg: ASbGncuINjcj7zcuOblwhpUWEykZ3XhVujcgLWjNunTHmnTQ54sL959xmDSgTauX5I7
+ WOYakCzhrXmXJWta6EtjVnXsNza0jDkmYBgXyNMxN31goHVa+SuK2FF9W7IRT7KmdchZ6XkOk5K
+ N89fGf1xf+XHaU0w2C3mP11K/8nrF7pptQLFeUJ7GbKOcFF4Fd41B3jGEjpulTITHiIDhieL7Ph
+ tlhCVbSQlm0bsFKxEP1H9NVHySiVhhVB5t01n3Wn4JW5funDPVp2Lok7JAyc67u70AyP4bEDwyd
+ ey0n8hwBKia6A7YvJCBsq57gmuQUgTY=
+X-Google-Smtp-Source: AGHT+IH9TOWJZadiSEpDlZJ8zL8X2L7kGUhzzDP97Vk2L1eK8rCqJyX/67bM6O9HGa4i0ukOX74e/w==
+X-Received: by 2002:a05:600c:3ca4:b0:434:a26c:8291 with SMTP id
+ 5b1f17b1804b1-436e26e203emr147457395e9.24.1736720262574; 
+ Sun, 12 Jan 2025 14:17:42 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e38c6dbsm10787823f8f.55.2025.01.12.14.17.36
+ 5b1f17b1804b1-436e9dc895esm122279135e9.13.2025.01.12.14.17.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 12 Jan 2025 14:17:36 -0800 (PST)
+ Sun, 12 Jan 2025 14:17:41 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 02/49] target: Replace DEVICE(object_new) -> qdev_new()
-Date: Sun, 12 Jan 2025 23:16:38 +0100
-Message-ID: <20250112221726.30206-3-philmd@linaro.org>
+Subject: [PULL 03/49] hw: Replace DEVICE(object_new) -> qdev_new()
+Date: Sun, 12 Jan 2025 23:16:39 +0100
+Message-ID: <20250112221726.30206-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250112221726.30206-1-philmd@linaro.org>
 References: <20250112221726.30206-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,38 +101,47 @@ Prefer QDev API for QDev objects, avoid the underlying QOM layer.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20240216110313.17039-8-philmd@linaro.org>
+Message-Id: <20240216110313.17039-7-philmd@linaro.org>
 ---
- target/mips/cpu.c   | 2 +-
- target/xtensa/cpu.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/arm/musicpal.c | 2 +-
+ hw/sparc/sun4m.c  | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index e3af02a4e6d..47cd7cfdcef 100644
---- a/target/mips/cpu.c
-+++ b/target/mips/cpu.c
-@@ -644,7 +644,7 @@ MIPSCPU *mips_cpu_create_with_clock(const char *cpu_type, Clock *cpu_refclk,
- {
-     DeviceState *cpu;
+diff --git a/hw/arm/musicpal.c b/hw/arm/musicpal.c
+index a712ff954bd..48a32c24079 100644
+--- a/hw/arm/musicpal.c
++++ b/hw/arm/musicpal.c
+@@ -1238,7 +1238,7 @@ static void musicpal_init(MachineState *machine)
+                           qdev_get_gpio_in(pic, MP_TIMER4_IRQ), NULL);
  
--    cpu = DEVICE(object_new(cpu_type));
-+    cpu = qdev_new(cpu_type);
-     qdev_connect_clock_in(cpu, "clk-in", cpu_refclk);
-     object_property_set_bool(OBJECT(cpu), "big-endian", is_big_endian,
-                              &error_abort);
-diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
-index 0910a3d2904..4eb699d1f45 100644
---- a/target/xtensa/cpu.c
-+++ b/target/xtensa/cpu.c
-@@ -208,7 +208,7 @@ XtensaCPU *xtensa_cpu_create_with_clock(const char *cpu_type, Clock *cpu_refclk)
- {
-     DeviceState *cpu;
+     /* Logically OR both UART IRQs together */
+-    uart_orgate = DEVICE(object_new(TYPE_OR_IRQ));
++    uart_orgate = qdev_new(TYPE_OR_IRQ);
+     object_property_set_int(OBJECT(uart_orgate), "num-lines", 2, &error_fatal);
+     qdev_realize_and_unref(uart_orgate, NULL, &error_fatal);
+     qdev_connect_gpio_out(uart_orgate, 0,
+diff --git a/hw/sparc/sun4m.c b/hw/sparc/sun4m.c
+index 217a69e4d5d..e070360a2c7 100644
+--- a/hw/sparc/sun4m.c
++++ b/hw/sparc/sun4m.c
+@@ -974,7 +974,7 @@ static void sun4m_hw_init(MachineState *machine)
+     sysbus_mmio_map(s, 0, hwdef->ms_kb_base);
  
--    cpu = DEVICE(object_new(cpu_type));
-+    cpu = qdev_new(cpu_type);
-     qdev_connect_clock_in(cpu, "clk-in", cpu_refclk);
-     qdev_realize(cpu, NULL, &error_abort);
+     /* Logically OR both its IRQs together */
+-    ms_kb_orgate = DEVICE(object_new(TYPE_OR_IRQ));
++    ms_kb_orgate = qdev_new(TYPE_OR_IRQ);
+     object_property_set_int(OBJECT(ms_kb_orgate), "num-lines", 2, &error_fatal);
+     qdev_realize_and_unref(ms_kb_orgate, NULL, &error_fatal);
+     sysbus_connect_irq(s, 0, qdev_get_gpio_in(ms_kb_orgate, 0));
+@@ -995,7 +995,7 @@ static void sun4m_hw_init(MachineState *machine)
+     sysbus_mmio_map(s, 0, hwdef->serial_base);
  
+     /* Logically OR both its IRQs together */
+-    serial_orgate = DEVICE(object_new(TYPE_OR_IRQ));
++    serial_orgate = qdev_new(TYPE_OR_IRQ);
+     object_property_set_int(OBJECT(serial_orgate), "num-lines", 2,
+                             &error_fatal);
+     qdev_realize_and_unref(serial_orgate, NULL, &error_fatal);
 -- 
 2.47.1
 
