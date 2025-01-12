@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28AB6A0AC36
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:22:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0413A0AC35
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:22:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tX6KW-0004oN-7K; Sun, 12 Jan 2025 17:21:12 -0500
+	id 1tX6Kf-0004x2-UY; Sun, 12 Jan 2025 17:21:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6KS-0004l0-1u
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:21:08 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6KX-0004tj-D2
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:21:14 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6KQ-0006tB-EK
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:21:07 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-385f06d0c8eso1949396f8f.0
- for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:21:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6KU-0006to-NL
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:21:13 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-435f8f29f8aso26176525e9.2
+ for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:21:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736720464; x=1737325264; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736720469; x=1737325269; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=STm3h0ab+xe29Vo/LMzsJN1pZufVzApUsosxR88Bje0=;
- b=Xb5neO9ZGEJj5ujgvitJk32BDQDKoStpuuKnqyNq1KLKBABAJV1cqh3o+JW0t43Sao
- 6jFDZHxO5Cr0ulCedo2AgD4PQuvYZnPNQSPtm2TSw6Ckyf6exBDjqvxV4LfsmyAb/xFE
- bUYiDSWsr/bKwo/YsncsK0cf/rTdqMudOTBMjbhOOYuZyO32Cr0cCIwZ0XH79K72WDT0
- PX5G4q+IoHYscalu/DgF7utFR2utkNOJrJ7Khsl0SsPQrsVaulHZrFtdkjo0F863UXC3
- p0JIxQFeidVyNDVC2oUUjGUZfL3941KajOT8AR6fwofnT5CaF4Sdiwx34qDDg3tI5+2D
- CIAg==
+ bh=xIb8JuttOpsx6n0lGPjJoZH2kDKEyQKUDAozyZfVQNI=;
+ b=A66GUq5pwM3+pcjNcxe6chbLk7SSNG43CcbN+wX28YQzwJES5C34IIooADC/LbhK8H
+ XBlFXskOU6W0QBFAHZIP6nkzCgYfi7tXzFryJuMO8UrdTVRjl5mlVbGnoVyyMdsr8teA
+ t217kHLS6htCoDiPnGTcJmeUxjbOAfjQOLVTjMgbVCsA4ocF47Aph7KNdo9fit128JKm
+ 7mt7yL6hoQq+fewvHYZ4zrjS/d4JcdUwwSEUeZ+UrjMYvq3zazDderErWVt6RIxvGnIr
+ m6lJEm166uThGi5kdNTLfW/hIOQzvsaM03Mdhq1pHy39PfSKgcZ3Bh3YMZ5rj4Ma782X
+ e1sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736720464; x=1737325264;
+ d=1e100.net; s=20230601; t=1736720469; x=1737325269;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=STm3h0ab+xe29Vo/LMzsJN1pZufVzApUsosxR88Bje0=;
- b=M7DnXwRbHC5DAfo3hhPNFI7KOXRlKpbfpK8ebJLA8aZN/vHCLgev6tP/t9R9RK3lBf
- DjP5HTAIk9F2FX3isQuhvE+FUyOiNHAhOGeYzYI5vR/XibrSFNLZI7UthUU9QwsWFa6T
- CtJhBfiHSkB0DLSxMArMBIvUBl6mPHsF0hwpd3CcHF3wb7vuU4/9CVL4HmP1dbV4rvID
- k1NWEekNEv2HuKCql/0u488o9CSm5v6MwNbCm11qx0RPI9jQdtDLljN8FF6RIlj2zIyY
- paekRY6koWz7vDr0tPUbvaRWBKDyscmlP6Ge3cfm+ctLlEAZSGN77sYsYyGEsLZBu7WI
- ecyg==
-X-Gm-Message-State: AOJu0YyT8IXaKJqcdTd8N7fiWBQMv6E63dAOISVFZXNYwfDAskQ4zVUY
- /m/g+Wjwu/W24crsRyFjHU/k+Z9I9RcOoa6em5sDjrUTKANGCufIKi+++0nYUKTejWb6HH3lcn5
- gw34=
-X-Gm-Gg: ASbGnct9dk99273eUuW2R3oaxbtFCHptO2pb9goYXpg82r06nTwMi/YmbGg/vGHH2zv
- 7WWCkr/zOwUMMLfl6R/mRFHLH4h2UqmQOi1kSjfBDqXswCsN61utuRhSiMQ2xSs2vsFZGx6UUPx
- 9ZRGjtuVfzqRI/iC89ullZVas6A4jAAUhYSZN2A+otWMf/qroRMsFBUCIoGeweVzauQbPVFZlbU
- AwUkvH+SoQWaVl1u1wvXKqyVfwtfMp9OUXQ8oBZnCAe811tZtwNb+RTQ0vRJUeMwX+NACw9xYzY
- X3DeWunZ09zVrNFuAC5h31fBLCp53qk=
-X-Google-Smtp-Source: AGHT+IF8XYM4SzBmCysIH4B2CZW4++Dfknd/+AQVrKLOi15emPsoLuZY/fK8d8yAT6qOn58hOYt+9g==
-X-Received: by 2002:adf:8b5b:0:b0:38a:88bc:aea4 with SMTP id
- ffacd0b85a97d-38a88bcaebfmr10831027f8f.30.1736720464504; 
- Sun, 12 Jan 2025 14:21:04 -0800 (PST)
+ bh=xIb8JuttOpsx6n0lGPjJoZH2kDKEyQKUDAozyZfVQNI=;
+ b=alerIpDsoo0LnQcx+t2Olr0YxQtjTyn6pBX/a+c/vdYCCGY6+R+sr/713KH2JpBNBm
+ EhQuPannPVrux85EKkby9O9sirhXoZZ2o00A7orJHSPKYBb4VO0BQ1ekIx8hW5JBj7ec
+ 6mI9shBtSOaUKU566N0fONezHs8KBU29maM6IXc0PLPV6PMUA7E+Rx4Bd/nPDXtzYCBp
+ 74RQifSxIEumL2nNT4csub1+woxxKqER4cRBMkPX1vCVTP95w1ytLTfpMIwaWZDDl1i0
+ evbOUiK+p38v/ve5mWuox6qlD3QH10pQC/7IZQV8F4RRjCtwoPwQuiJNI1MAE6lfNiNL
+ rNbQ==
+X-Gm-Message-State: AOJu0YxVHqnezVzlsniU72s0Bsly4tODm9MAZBUfNmsyg/w0AEG8QeiF
+ Q1KNUU+xtbrsSJi9qcdzXLomWLqDheFrJ63ThazRPjMKrrlrljhUYfsHaqD7efzw2snLF2TLwPu
+ +BOw=
+X-Gm-Gg: ASbGnctDKBhl1RtPRJzf/Sq7au/+O7blpQK54MBvqdMeXauGfePTR+Z67m+f9w2ttsH
+ oZB73Lp6ousI0fB1rQiBV/Lw6PT2tO79kaiIQmYJtlEmUBVEL73v7aGKZgxvxT0xzYpnje8DIKu
+ 64OyiBNuoUqoD196Utc2a+s5+njgAFCyVdND55K7sNWwQB1lLtkg7G7vCDmwre8r81wbsQzRlev
+ Ni77N4vsQUJ+EeG7uWwAjEiTmwWXi/MpG0nDVRDEdAlR+69004i2JoI+OTur/celxhpHwZaXKBd
+ KydHO3RxEnWdHL6F7QdiRhOoWUcriLc=
+X-Google-Smtp-Source: AGHT+IEkBIux/+pbMKGUmXUe3lf6N1usP/74iCueDCTPlbh4zApMxhiCLes+3rAkj2t8ybp7H2kc1w==
+X-Received: by 2002:a5d:59af:0:b0:382:31a1:8dc3 with SMTP id
+ ffacd0b85a97d-38a87313151mr17382755f8f.35.1736720469017; 
+ Sun, 12 Jan 2025 14:21:09 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e4c1d13sm10686761f8f.91.2025.01.12.14.21.03
+ ffacd0b85a97d-38a8e38c76esm10367540f8f.47.2025.01.12.14.21.08
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 12 Jan 2025 14:21:04 -0800 (PST)
+ Sun, 12 Jan 2025 14:21:08 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Phil Dennis-Jordan <phil@philjordan.eu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 44/49] hw/usb/hcd-xhci-pci: Use event ring 0 if mapping
- unsupported
-Date: Sun, 12 Jan 2025 23:17:20 +0100
-Message-ID: <20250112221726.30206-45-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+Subject: [PULL 45/49] hw/tricore/triboard: Remove unnecessary use of &first_cpu
+Date: Sun, 12 Jan 2025 23:17:21 +0100
+Message-ID: <20250112221726.30206-46-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250112221726.30206-1-philmd@linaro.org>
 References: <20250112221726.30206-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,41 +99,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Phil Dennis-Jordan <phil@philjordan.eu>
+triboard_machine_init() has access to the single CPU via:
 
-The XHCI specification, section 4.17.1 specifies that "If the
-Number of Interrupters (MaxIntrs) field is greater than 1, then
-Interrupter Mapping shall be supported." and "If Interrupter
-Mapping is not supported, the Interrupter Target field shall be
-ignored by the xHC and all Events targeted at Interrupter 0."
+  TriBoardMachineState {
+    TC27XSoCState {
+      TriCoreCPU cpu;
+      ...
+    } tc27x_soc;
+  } ms;
 
-QEMU's XHCI device has so far not specially addressed this case,
-so we add a check to xhci_event() to redirect to event ring and
-interrupt 0 if mapping is disabled.
+Pass it as argument to tricore_load_kernel() so we can
+remove the &first_cpu global use.
 
-Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241227121336.25838-4-phil@philjordan.eu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+Message-Id: <20250110180909.83165-1-philmd@linaro.org>
 ---
- hw/usb/hcd-xhci.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/tricore/triboard.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
-index 7dc0994c89c..00d5bc37792 100644
---- a/hw/usb/hcd-xhci.c
-+++ b/hw/usb/hcd-xhci.c
-@@ -644,6 +644,10 @@ static void xhci_event(XHCIState *xhci, XHCIEvent *event, int v)
-     dma_addr_t erdp;
-     unsigned int dp_idx;
+diff --git a/hw/tricore/triboard.c b/hw/tricore/triboard.c
+index 4dba0259cd3..9cc8d282ff2 100644
+--- a/hw/tricore/triboard.c
++++ b/hw/tricore/triboard.c
+@@ -31,11 +31,10 @@
+ #include "hw/tricore/triboard.h"
+ #include "hw/tricore/tc27x_soc.h"
  
-+    if (xhci->numintrs == 1) {
-+        v = 0;
-+    }
-+
-     if (v >= xhci->numintrs) {
-         DPRINTF("intr nr out of range (%d >= %d)\n", v, xhci->numintrs);
-         return;
+-static void tricore_load_kernel(const char *kernel_filename)
++static void tricore_load_kernel(TriCoreCPU *cpu, const char *kernel_filename)
+ {
+     uint64_t entry;
+     long kernel_size;
+-    TriCoreCPU *cpu;
+     CPUTriCoreState *env;
+ 
+     kernel_size = load_elf(kernel_filename, NULL,
+@@ -46,7 +45,6 @@ static void tricore_load_kernel(const char *kernel_filename)
+         error_report("no kernel file '%s'", kernel_filename);
+         exit(1);
+     }
+-    cpu = TRICORE_CPU(first_cpu);
+     env = &cpu->env;
+     env->PC = entry;
+ }
+@@ -62,7 +60,7 @@ static void triboard_machine_init(MachineState *machine)
+     sysbus_realize(SYS_BUS_DEVICE(&ms->tc27x_soc), &error_fatal);
+ 
+     if (machine->kernel_filename) {
+-        tricore_load_kernel(machine->kernel_filename);
++        tricore_load_kernel(&ms->tc27x_soc.cpu, machine->kernel_filename);
+     }
+ }
+ 
 -- 
 2.47.1
 
