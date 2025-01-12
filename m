@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A42A0ABEE
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 22:03:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83582A0ABEF
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 22:04:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tX55W-0004Tr-38; Sun, 12 Jan 2025 16:01:38 -0500
+	id 1tX55W-0004Tp-1G; Sun, 12 Jan 2025 16:01:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tX55S-0004Rh-Om
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 16:01:34 -0500
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ id 1tX55U-0004Si-0s
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 16:01:36 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tX55N-0006Mt-LJ
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 16:01:34 -0500
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-aab925654d9so708138666b.2
- for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 13:01:29 -0800 (PST)
+ id 1tX55Q-0006N8-6e
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 16:01:35 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3f57582a2so9287836a12.1
+ for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 13:01:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1736715688; x=1737320488;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1736715691; x=1737320491;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+1AEBtla32qHIfczhWdQp7SwWsFBGmYq27EGiFppSeA=;
- b=DuGBLlgcHN1p3tOnz6b2oUICRN1Zk6bH5esgQcmg77Fyn2qhMF5OMIvaGfRzfOUpU9
- dX0ZSg0eYMw4zoYHYi4dbo/g7l78eDeBRm8qgphsNSE1RVhA72kMCriWfFO8SZ47Pcuj
- GluPZBmM1px8kyURViyTtXTz/prjMGIFCGs6Woc3cmvvE1A4bN4PfftSVYpyjjpkg1mj
- MRD1rFexrkDMLAK5xPchuXrSeSAZwVwTX3Hwg7QlXNAgbV/L+xkdPCouyi1aEYHlDNbT
- YdWN3SE00YiWKs3bVMzLkmfVo66B7xMxNodIq2hXwrfFEjQYLmoh/cxTOQFkKJ5AkvqC
- I31w==
+ bh=PED+OkjeNa2COzbeigOKtDA5aSMGopzRCwYcuxwx6AQ=;
+ b=ll9ZzqnxSrcntQUptpkvVO5lyp9kllRUC4t1oGwi5RkoYvxopTWpZVfuHxl/85DiNj
+ 5y9z9WFnOO9q1tZUfpDShTCPS2HkCgmym/eABFYyShY7e9ZVO3dnAMrKCtJWBYKNF8pI
+ tAl9Q0t1jTxnSQFvAp+oGGK/lg6YfGFat5cWCMQqAGaAOYtTEHdd25QixSZyQnAZACW/
+ YDSKOODnsI8Po1DE29+8YO1vqSe96L8s92M3Fctie/dBIzM4zOH25QfoKs5bdqBdKwdA
+ 9f2vVkfpoXU20PfywfzA2jPTVrxaEkHaa+Pa3MvyUbCNii9lsDTtcOj4Jl92S9GVN1rx
+ XSzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736715688; x=1737320488;
+ d=1e100.net; s=20230601; t=1736715691; x=1737320491;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+1AEBtla32qHIfczhWdQp7SwWsFBGmYq27EGiFppSeA=;
- b=Jbyg7tgVFNDiSHJZ8ZsN8JwrON4RYZWdGxes/Z1JEeWgJRzurjI6UlF4PuMfKjMIs0
- R+UrzKWga+81wpVbSNiw2VLpwZx1PMo+HfisO+N4cYYGBqUf4Olcw6KcZH+LuDDVkm+B
- ypyFgk+K6Adzmem6g9SsQhOzYXR93dojeGYOUYhhaDTxxanqo54wQv09KNJyih5n/nan
- BnDCblxtQudV6iqQBqyx3YVTOl4yvufUDAZOUfHFDDoPbzqFqPC4NsTGoG5oAHNFoKxk
- ccIHdL82RBTz5QTV9HKdX1MBAU68gV3JPuFfodyOxW/KjDvOK1ULKWVQsuEtCnq1ZPS5
- l3bQ==
-X-Gm-Message-State: AOJu0Ywl3j7ndBzIbBBrSxl9MGF48SLgnitDy7Egfxp4ZrGOU5uRq+k9
- 2WYV1vOkhUunulUNFgkR/YFyNWtFeyO1Iif3adsleeerYAFKST8DCQHkADddguYqmm9q1mH489V
- /7g==
-X-Gm-Gg: ASbGncvH15LrGZ5dRwcTq0MqJk045hxtYdx5cCDy8OzYO3/P8enwVFXDNd8LXs7S0MX
- YczM52Krat/IuXR5JY8PyMb9/FFNe33Ju5PXBj2c8XcRH00lXvPcNk5j82X/uxwD4Pgp1qySvXS
- 3/yvwopOC0XHn0THtcAWOya0JZaJVh1p0Mkm2XHPq+Dok5TLOTVZ3DmDYkH8btDmb6oy7PXqINm
- /bx7LVhxs8S5aAJo8ZhhmpW2Au1OaZ9qpC0R8s4CZ5s+BPa8DyAtK1Tc+mDcqOscJvdTlCOnxCs
- ij3I1MJtg1n2GnNm4gqFs3evL2DbIn9Z
-X-Google-Smtp-Source: AGHT+IGtOslRPacgqn7vWd6oYJVnyMzESDSzif5I8Dy3Rs7pDdX4gtCSkAH8LHsDC2x0E5HYxkmmZg==
-X-Received: by 2002:a17:907:3e24:b0:aa6:7737:199c with SMTP id
- a640c23a62f3a-ab2ab6fd036mr904373666b.15.1736715688210; 
- Sun, 12 Jan 2025 13:01:28 -0800 (PST)
+ bh=PED+OkjeNa2COzbeigOKtDA5aSMGopzRCwYcuxwx6AQ=;
+ b=ZFmWAvKagJLpthWasb9eeE93M8QsbN9PVW9KZwWiSDEDVzhUzdVq1TrTeYKWFSahhj
+ u/mCKGdmWCnSFvlcV5MCxMhRGI0gmjYJCYYk/xOxXmHoUqUQ7XepH/MpkST247JOyXHa
+ NPgRRlq8Amw0AUyJZ2I9ftMw70+ggm5dV5T0hZ3MNcwAeDI1slyFkq+ZTd3dq4IQWSqV
+ GuCcL2Nyo+rro8BVDAxffFqSSlya/UmtWoMlz1TQkTzglSZNwAFNiHwXVCY2Ubifp++i
+ WUKnRQLVXIrzlhy2W6kLSvpmvqxmiraJHHdGkRBgRLHltITcKPdRjlVVK19u0m8xjKrx
+ 6emg==
+X-Gm-Message-State: AOJu0YxufzbOeOKNTPEWWhd5pHUcdJa54L1M8VN6hV6yjnldnj5PEFWH
+ i4YS/klIfgT8sznZRolNSvW+uKMWCfkBCIBs3ak2pxNJyl1LPHEpbsugTYIUfsTtwe3x0ycwXOB
+ WsA==
+X-Gm-Gg: ASbGncv5KxbmIXmRURG1WmXx025VLbjb2zP/E1b8XxnnlM2kLbTeB22dB1zw7vFkejJ
+ nt+dRX1ONVqzCabRdKFovGRjLlgzqI55kdr9s4m6Ueo0tVZp5Xh6GVlD69YrRzRwZKatxnOu0nv
+ XqrOAi1ZEBFt5W1nU4UCmqFRo4lLmgj+xTM3/14xdhdH8sVwOFUWMtS/tTqYLAu7ksPVnJwpUKN
+ ioZdhEzVYmacx9zgAF2y3NT19M4JIy2I8Qfh7qi3uwRG/Z7XWJq8M4D+fKcUGI61QWKgXcR1hZ7
+ mSCIKdAlMtXXQktVkCHlWXDo1Md51akJ
+X-Google-Smtp-Source: AGHT+IEM+1jEFM8kBX0RaIGRdMlpbkaKWVH8jbeWBf/DzNOrsFkHmFvkwaavdQHaVbPem/VE2M/q8A==
+X-Received: by 2002:a17:907:6d1e:b0:aa5:53d4:8876 with SMTP id
+ a640c23a62f3a-ab2c3d4d2afmr1289102666b.20.1736715690182; 
+ Sun, 12 Jan 2025 13:01:30 -0800 (PST)
 Received: from localhost.localdomain (h082218084190.host.wavenet.at.
  [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c905e283sm418276666b.31.2025.01.12.13.01.27
+ a640c23a62f3a-ab2c905e283sm418276666b.31.2025.01.12.13.01.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 12 Jan 2025 13:01:27 -0800 (PST)
+ Sun, 12 Jan 2025 13:01:29 -0800 (PST)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: agraf@csgraf.de, phil@philjordan.eu, peter.maydell@linaro.org,
@@ -70,19 +70,18 @@ Cc: agraf@csgraf.de, phil@philjordan.eu, peter.maydell@linaro.org,
  hreitz@redhat.com, berrange@redhat.com, eduardo@habkost.net,
  marcel.apfelbaum@gmail.com, marcandre.lureau@redhat.com, philmd@linaro.org,
  eblake@redhat.com, armbru@redhat.com, qemu-block@nongnu.org,
- qemu-arm@nongnu.org
-Subject: [PATCH v17 02/11] hw/usb/hcd-xhci-pci: Use event ring 0 if mapping
- unsupported
-Date: Sun, 12 Jan 2025 22:00:47 +0100
-Message-Id: <20250112210056.16658-3-phil@philjordan.eu>
+ qemu-arm@nongnu.org, Alexander Graf <graf@amazon.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v17 03/11] hw: Add vmapple subdir
+Date: Sun, 12 Jan 2025 22:00:48 +0100
+Message-Id: <20250112210056.16658-4-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20250112210056.16658-1-phil@philjordan.eu>
 References: <20250112210056.16658-1-phil@philjordan.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::62e;
- envelope-from=phil@philjordan.eu; helo=mail-ej1-x62e.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::533;
+ envelope-from=phil@philjordan.eu; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -104,37 +103,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The XHCI specification, section 4.17.1 specifies that "If the
-Number of Interrupters (MaxIntrs) field is greater than 1, then
-Interrupter Mapping shall be supported." and "If Interrupter
-Mapping is not supported, the Interrupter Target field shall be
-ignored by the xHC and all Events targeted at Interrupter 0."
+From: Alexander Graf <graf@amazon.com>
 
-QEMU's XHCI device has so far not specially addressed this case,
-so we add a check to xhci_event() to redirect to event ring and
-interrupt 0 if mapping is disabled.
+We will introduce a number of devices that are specific to the vmapple
+target machine. To keep them all tidily together, let's put them into
+a single target directory.
 
+Signed-off-by: Alexander Graf <graf@amazon.com>
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Tested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/usb/hcd-xhci.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ MAINTAINERS             | 7 +++++++
+ hw/Kconfig              | 1 +
+ hw/meson.build          | 1 +
+ hw/vmapple/Kconfig      | 1 +
+ hw/vmapple/meson.build  | 0
+ hw/vmapple/trace-events | 2 ++
+ hw/vmapple/trace.h      | 1 +
+ meson.build             | 1 +
+ 8 files changed, 14 insertions(+)
+ create mode 100644 hw/vmapple/Kconfig
+ create mode 100644 hw/vmapple/meson.build
+ create mode 100644 hw/vmapple/trace-events
+ create mode 100644 hw/vmapple/trace.h
 
-diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
-index 7dc0994c89..00d5bc3779 100644
---- a/hw/usb/hcd-xhci.c
-+++ b/hw/usb/hcd-xhci.c
-@@ -644,6 +644,10 @@ static void xhci_event(XHCIState *xhci, XHCIEvent *event, int v)
-     dma_addr_t erdp;
-     unsigned int dp_idx;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2101b51217..e220744abf 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2785,6 +2785,13 @@ F: hw/hyperv/hv-balloon*.h
+ F: include/hw/hyperv/dynmem-proto.h
+ F: include/hw/hyperv/hv-balloon.h
  
-+    if (xhci->numintrs == 1) {
-+        v = 0;
-+    }
++VMapple
++M: Alexander Graf <agraf@csgraf.de>
++M: Phil Dennis-Jordan <phil@philjordan.eu>
++S: Maintained
++F: hw/vmapple/*
++F: include/hw/vmapple/*
 +
-     if (v >= xhci->numintrs) {
-         DPRINTF("intr nr out of range (%d >= %d)\n", v, xhci->numintrs);
-         return;
+ Subsystems
+ ----------
+ Overall Audio backends
+diff --git a/hw/Kconfig b/hw/Kconfig
+index 1b4e9bb07f..2871784cfd 100644
+--- a/hw/Kconfig
++++ b/hw/Kconfig
+@@ -41,6 +41,7 @@ source ufs/Kconfig
+ source usb/Kconfig
+ source virtio/Kconfig
+ source vfio/Kconfig
++source vmapple/Kconfig
+ source xen/Kconfig
+ source watchdog/Kconfig
+ 
+diff --git a/hw/meson.build b/hw/meson.build
+index b827c82c5d..9c4f6d0d63 100644
+--- a/hw/meson.build
++++ b/hw/meson.build
+@@ -39,6 +39,7 @@ subdir('ufs')
+ subdir('usb')
+ subdir('vfio')
+ subdir('virtio')
++subdir('vmapple')
+ subdir('watchdog')
+ subdir('xen')
+ subdir('xenpv')
+diff --git a/hw/vmapple/Kconfig b/hw/vmapple/Kconfig
+new file mode 100644
+index 0000000000..8b13789179
+--- /dev/null
++++ b/hw/vmapple/Kconfig
+@@ -0,0 +1 @@
++
+diff --git a/hw/vmapple/meson.build b/hw/vmapple/meson.build
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/hw/vmapple/trace-events b/hw/vmapple/trace-events
+new file mode 100644
+index 0000000000..9ccc579048
+--- /dev/null
++++ b/hw/vmapple/trace-events
+@@ -0,0 +1,2 @@
++# See docs/devel/tracing.rst for syntax documentation.
++
+diff --git a/hw/vmapple/trace.h b/hw/vmapple/trace.h
+new file mode 100644
+index 0000000000..572adbefe0
+--- /dev/null
++++ b/hw/vmapple/trace.h
+@@ -0,0 +1 @@
++#include "trace/trace-hw_vmapple.h"
+diff --git a/meson.build b/meson.build
+index d06f59095c..812ef33550 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3588,6 +3588,7 @@ if have_system
+     'hw/usb',
+     'hw/vfio',
+     'hw/virtio',
++    'hw/vmapple',
+     'hw/watchdog',
+     'hw/xen',
+     'hw/gpio',
 -- 
 2.39.5 (Apple Git-154)
 
