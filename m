@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD25A0AC34
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:22:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93CEAA0AC4F
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 23:25:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tX6Kk-000566-73; Sun, 12 Jan 2025 17:21:26 -0500
+	id 1tX6Kn-0005D2-7J; Sun, 12 Jan 2025 17:21:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Kf-00052A-Bc
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:21:21 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Ki-00056o-Nr
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:21:24 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Ka-0006uK-JU
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:21:21 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-385e27c75f4so2617724f8f.2
- for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:21:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX6Kh-0006ug-52
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 17:21:24 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-43626213fffso28747015e9.1
+ for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 14:21:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736720475; x=1737325275; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736720481; x=1737325281; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jtVBq+1S8gj7ukLJ3NiNvNBhPg5TIcwGGRynG81nGiQ=;
- b=ST8f3yKrmJx6qiX+G9ZfLhVk0SBloDUqGo2OQRv5KjDQDeauEMdHzSwfAbT/hAfrJN
- YmUzbvxLG2ETgUzSv89LseTHN6PYCMYphgVI/mHO4TusHUzKEMzqYfyHm5f74DvRPXxE
- +cdbCE5JhV42qJRFYLW+JnKlTN0J45nCVcAUouCiVpn++DERVc8oxfCmCO4B+3TDcL1Q
- Ty6KNLjBQLcz+xjD7Cy9Ofz1eLnRukWfxmsxcUSD5D868//OOIXifoavg/OBEFMoypF9
- VeWTItwgSfXF+8wkARYWI6OfkALVKKWZ12cTj462wFbELm+1yrtGx3T2uUPOLVGinjcc
- PmoA==
+ bh=jplKRfSDPgYgS9ZhmEN8q4tNBprQ5haG9I8GfDv4PBI=;
+ b=mnBERZIia2KueuTYtHRRsPReAtumPCWCRydYTqSKnJeLaItHg353D3ef2oTcuG+iS3
+ 7akIQQDIn4+FhVbRvu0auQgGvyjfJPDZa2RFfMd9qom9Dt25DOFLM+YM0O65zSMkrY7S
+ PyTOxFdUKasfOKhKTBXqu2UMmFgdQgK5Sh4CrnCtRmVCxDwoNU9dPzZLFTI1PU3Oc6Th
+ LgpLPyrlUB/8Ty6zuMjc13HmX0703QcF03NUH5JIo9wZZV9TPdS7QQWJV6o1EH0HmCP9
+ 5SHx59nUbSbLZJagpHV+fpgHAAITDzpzFuAhVaa0jr8jd4sKvsw1HqE4u2SvIkqWj5wN
+ g2gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736720475; x=1737325275;
+ d=1e100.net; s=20230601; t=1736720481; x=1737325281;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jtVBq+1S8gj7ukLJ3NiNvNBhPg5TIcwGGRynG81nGiQ=;
- b=gargckGJWv74FV2LVYh4fUSoIW/8vseWp6L3owUhk95TmphjRJ+l5s5lIJtiH2IXYb
- KterMVlMp9DRxGK+BJjGBcwCy5C8nD/x3R/5o+BdLSHHNAiUYtcks0Kkt9cH4ubq1fwW
- lUsTr9/Y98wIfRvyZgQxHL5wQrlphKxPI0RNguSiHaNqSYyentjXdDQD1jyEpEMFvhD8
- mpJkhAw/hVC2Prw3UmzY2BSI/YNpPTsXV/vilAqzLF9etgMn14Htk7teM6s+xI3Z5bJJ
- YxAwC9E/QrIYFXJ/kU3/hivcyM0G9IvK0G1xdKRsdKPz8zK7WvXiBQ52XsPL1zDvAKzn
- 5uPg==
-X-Gm-Message-State: AOJu0Yx1zFbR2NBZcYFj2e0MvcH64HW3CZ1MxoiYWtAbXSoxrthXfpYf
- w9UfPRuoCOcQ6XlGABl+gOnOWmNpI4kftyDQ61iwDGbTXP2lEYORKgaLkmhlRAp952ViIPOgbFG
- 99+E=
-X-Gm-Gg: ASbGncteGMSQaCk2Nh5F6zE45hFl9uI8G2gBtB9lDfGEQ/YCfOUTZnfQejulJ4PJ8OR
- RzlY6CkJ/w3M50XFUvbCYnBgv3sHkMGfaEIBOID6B4a02jPPst9uvjkp/E5PyqhMk4ZeCxFG+3F
- Zu103FjIyxuPwRpdOdy7/dsHwoPubve5S5G6pdBlQzAwHGX+rRzGjWKXg2N1UjKckUcwdDFul4v
- 6ndgAD+hN/iGlnhnGVVqTvkLzV5aL8lxOQfnw0SriHTHls190oElhlRfqbMenfcwTZLi3oamoyl
- KVY1ZOXvEL2wdY7/kwdR5L4UEY8Bkes=
-X-Google-Smtp-Source: AGHT+IEXnVubudZ3uKgDJyifmL0f3xkBlCOy9PQJMwMJs/it0oS9ZWXcdYatNuM9gIs9YMqgMuNvbA==
-X-Received: by 2002:a05:6000:4714:b0:385:fc70:7eb with SMTP id
- ffacd0b85a97d-38a872fc1bfmr13807502f8f.12.1736720474942; 
- Sun, 12 Jan 2025 14:21:14 -0800 (PST)
+ bh=jplKRfSDPgYgS9ZhmEN8q4tNBprQ5haG9I8GfDv4PBI=;
+ b=bJFEdZI0dQYnM+K+X75Vxvrc7obrlmNO93GsJeV9Si/gSIklHr5guneXrFmt3dA+bZ
+ dfiM3hN8lOWHwu91xp0/Nh/mjfIMReKAuehXarkIuLu2bp+K/4cOgRzpPriMy7kGqBAI
+ zWpLg46LKceJ+MeTNRAE5U9Gmmd6di85mM6GY3Ik9mQ5n0Ylm7ycuftBvFcvA+oOfrZR
+ 026lVkhh0676T9BIErFU8OOteSKjk6Qh/1XQREOYb9ZNmA+JWVPIxohCp0/0jHKnBtXX
+ KYxCts+UTCspBzlGMLCgv+I/QQRrOJHoHXB50m0CmLe8ekIjMo9ugTV8OWyg7jocDYBt
+ LTuw==
+X-Gm-Message-State: AOJu0Yxgc221PUXzJkqu+DC31K1Qq2URLd5+2B6cAqrPAMycNeqE5oIw
+ 85PT9TuYho4PWbj5uJ9EyiUvj6AI8YI9plT4wTiNRzflm+MK4Rd+W0aV7L3X9e5owjeXS2Rmaka
+ V7Sk=
+X-Gm-Gg: ASbGnctzKQOsf2QVvgbxBY8MwP+I1wz7ogex/gGQwheMyChf0bkIcSLHHQFvSKKreJA
+ m6d8CcHgBEN3NxFd27gOMxIIMhxhMvnvWEugD53Lcy+m0Q3HNSbBEhSUUOeAOKo9WqKCazX9NvN
+ gGRLu/nYuB64PhC6MRfKdILWXHLrgwcP2Br7kt2omOTyl5htFY7WRDXtWflekFbSDOAXMp1qBP7
+ Xj7EU+0pSnKx1lVyy6M6PuvbyMj/Jd/T3zfI9ui+zdgIZZhZnU70N1HNeEeMg6rIxZJ840HxjsO
+ sCZgqLMb6RGCqxll64uk3PGGp7Jayzw=
+X-Google-Smtp-Source: AGHT+IFDY6x2zHEwuTF6+izd0Sy6HNF+LGvaZPh7dKFk00hjtX9gtteXDt7/hdXWa+0LCBhjb5S/qg==
+X-Received: by 2002:a05:600c:1d02:b0:434:e69c:d338 with SMTP id
+ 5b1f17b1804b1-436e9d6ff89mr105295795e9.5.1736720480817; 
+ Sun, 12 Jan 2025 14:21:20 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e38ef6asm10834186f8f.60.2025.01.12.14.21.12
+ ffacd0b85a97d-38a8e38f0eesm10778429f8f.61.2025.01.12.14.21.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 12 Jan 2025 14:21:13 -0800 (PST)
+ Sun, 12 Jan 2025 14:21:19 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Leif Lindholm <leif.lindholm@oss.qualcomm.com>
-Subject: [PULL 46/49] MAINTAINERS: remove myself from sbsa-ref
-Date: Sun, 12 Jan 2025 23:17:22 +0100
-Message-ID: <20250112221726.30206-47-philmd@linaro.org>
+Cc: Gustavo Romero <gustavo.romero@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 47/49] MAINTAINERS: Add me as the maintainer for ivshmem-flat
+Date: Sun, 12 Jan 2025 23:17:23 +0100
+Message-ID: <20250112221726.30206-48-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250112221726.30206-1-philmd@linaro.org>
 References: <20250112221726.30206-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,32 +97,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
-I am ending my time with Linaro and do not have plans to continue
-working on SBSA Reference Platform anymore.
+Add me as the maintainer for the ivshmem-flat device.
 
-Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Leif Lindholm <leif.lindholm@oss.qualcomm.com>
-Message-ID: <20241218123055.11220-1-marcin.juszkiewicz@linaro.org>
+Message-ID: <20250107015639.27648-1-gustavo.romero@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS | 1 -
- 1 file changed, 1 deletion(-)
+ MAINTAINERS | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 770bbf9f233..4ca3981dd25 100644
+index 4ca3981dd25..0727579cdec 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -923,7 +923,6 @@ SBSA-REF
- M: Radoslaw Biernacki <rad@semihalf.com>
- M: Peter Maydell <peter.maydell@linaro.org>
- R: Leif Lindholm <leif.lindholm@oss.qualcomm.com>
--R: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
- L: qemu-arm@nongnu.org
- S: Maintained
- F: hw/arm/sbsa-ref.c
+@@ -2785,6 +2785,13 @@ F: hw/hyperv/hv-balloon*.h
+ F: include/hw/hyperv/dynmem-proto.h
+ F: include/hw/hyperv/hv-balloon.h
+ 
++ivshmem-flat
++M: Gustavo Romero <gustavo.romero@linaro.org>
++S: Maintained
++F: hw/misc/ivshmem-flat.c
++F: include/hw/misc/ivshmem-flat.h
++F: docs/system/devices/ivshmem-flat.rst
++
+ Subsystems
+ ----------
+ Overall Audio backends
 -- 
 2.47.1
 
