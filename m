@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46622A0AA14
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 15:35:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12DE8A0AA15
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Jan 2025 15:35:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tWz2Y-0002gA-Nv; Sun, 12 Jan 2025 09:34:10 -0500
+	id 1tWz37-0002oc-Dm; Sun, 12 Jan 2025 09:34:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tWz2V-0002ff-HP; Sun, 12 Jan 2025 09:34:07 -0500
+ id 1tWz34-0002l4-3u; Sun, 12 Jan 2025 09:34:42 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tWz2U-0002qq-13; Sun, 12 Jan 2025 09:34:07 -0500
+ id 1tWz32-0002t9-J3; Sun, 12 Jan 2025 09:34:41 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 42DCDD6016;
- Sun, 12 Jan 2025 17:34:03 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 1CDC8D6017;
+ Sun, 12 Jan 2025 17:34:38 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 1FE2E19A180;
- Sun, 12 Jan 2025 17:34:04 +0300 (MSK)
-Message-ID: <a23bf1a7-70fc-46d0-b465-6e9851feb669@tls.msk.ru>
-Date: Sun, 12 Jan 2025 17:34:04 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id F1EA619A181;
+ Sun, 12 Jan 2025 17:34:38 +0300 (MSK)
+Message-ID: <ae8e87d9-5727-4a2e-bd6a-f6c1a6a40ddd@tls.msk.ru>
+Date: Sun, 12 Jan 2025 17:34:38 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 7/7] s390x: Fix CSS migration
@@ -110,20 +110,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 > 
 > CC: Paolo Bonzini <pbonzini@redhat.com>
 > CC: qemu-stable@nongnu.org #9.1
-> Fixes: a55ae46683 ("s390: move css_migration_enabled from machine to css.c")
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2704
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> Message-Id: <20241213160120.23880-3-farosas@suse.de>
 
-And this one causes s390x-migration-test failure on 9.2 on s390x.
-While this test succeeds on x86_64.
-
-https://gitlab.com/qemu-project/qemu/-/jobs/8829799108
-
-Help? :)
-
-Thanks,
+Or should it be applied to 9.1 ONLY, but not to 9.2?
 
 /mjt
 
