@@ -2,84 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71CB4A0BEEA
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 18:33:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 116D8A0BEF3
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 18:38:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXOIk-0006vV-BT; Mon, 13 Jan 2025 12:32:38 -0500
+	id 1tXONL-000304-3Y; Mon, 13 Jan 2025 12:37:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXOHr-0006n0-OQ
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 12:31:40 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXOMK-0001yK-Gp
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 12:36:18 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXOHq-0006OS-5Y
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 12:31:39 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-43675b1155bso52620315e9.2
- for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 09:31:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXOMF-0006yD-5K
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 12:36:14 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-43624b2d453so47997165e9.2
+ for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 09:36:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736789496; x=1737394296; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=O0pPAsCWt0YA4J6mEfP48d7QYH1eIPWX4k5hPTqjmeE=;
- b=L96VjnazgUhoytyTHcTfHYeD7P6Etf3ngxaM5U0WLMvFm7C74WQtGu2oUQ9COyKK74
- LMUzZ07lDb1ghVz3YP1NZpjM/E3Zo4lf69zy9slA0wEM4WzCB2S23BUO8qktDipgqbk5
- OivJmBSPp7eHl61LbdjGOgeKzAcstSRKj3AEjB/IhZ8aipwwBD7LwHB7Ktw7URw5ztKO
- rwANZFGuxM1iEIzXb2sieaOHu9NjUhgnOkDljtJOdfLXJ+R5TCSy41f9zne1PruquRKE
- ymPdD162FjqDdgD6GbFnpBydQtyVCzDazEbdqZAb4esZR+UmrJ3wCK8ibWM0bxhGRbOf
- /0eA==
+ d=linaro.org; s=google; t=1736789767; x=1737394567; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Q37GwPcWX8n9vPzb7WiyVYW5/ZJsXkW9Ta5ysxbRvE0=;
+ b=oQDx6a7XbeEsuc2KY4OqEsmTGJ+Q1WDZNDDV4mrG74EZYKv8xdspDHiVZqY5bYfzq5
+ w4m0VCq1aSX0zjGsFW0wjNVyx846/VotjqQUIvW2GN7BhSjU2yHgh2Rof+UUOj1NcuaR
+ 3uUHr274WWfy2a7ySERPNrPnMHkiNNzDadD1Tg6IJzaN3xhemfCiDNZBup+n/wGfom+3
+ cE9fqKnIxs0vp/lkSytj+L6mgptep91A+tDo9BehdY1u/2JNmm9x5xwniyO6hnMRlOVW
+ CVt+q2UwNAiqGyM+P4QdwIFMsffqbv+vYevtu7ilNsFGuL7+JLLi/BfSv/zEe8ivuS6y
+ eduw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736789496; x=1737394296;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=O0pPAsCWt0YA4J6mEfP48d7QYH1eIPWX4k5hPTqjmeE=;
- b=qEcCjV8m9HUOhf0lazJW8GVOpTZ5f4SH4ezw5bss5d1Q8tBdIa9HxgazaHWVDqIDxz
- TzrhA2v7N7e6CebaZgNmis4UGCTxuNqpePTXNaEmZ+C2jm4+/4ad8b7PIIjVsJiLbEai
- GMEc9cv+hdxbHpf/Gs1ZSWyxhOXGM8s5ACfi9n7cWpMVAu953BtQrD+B72IExSw1zocm
- E2mg2ZTPaUZeICLwGMF7B13ecKsnnKknjZUBHllqq+YdEO+HSmw2H4HKwvgZscSShhOf
- KPavUzE8oFrNZeK3jtHj3mCrf3yIEKPvTUxQoezI0J5KRHkJzK5UTzZySbO5gMbHKS5X
- 0Y8w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVG8I1uCP85QH6Sy8Dapix85E0D30XZJ71dCVYEKa62HKJFZ3AyezAlrNGW6wehrL0Lmse2NMzTy29v@nongnu.org
-X-Gm-Message-State: AOJu0Yykf/MRhkf7arawMTJFZMQ7zIfLIQLYfyH5b11rErHWg1G2jnUp
- E/ga1D7XtXh0MC0WcWpFnJadMerOptSFbIcRMV7TU6aref1M/EoQSXAKu7Hmw6w=
-X-Gm-Gg: ASbGnctzA7zFIHbif7qy4DaviLfzbmScIxj1nURMgXg0CiCnEpypq5fIcnaKsrmI4is
- G149oY7g0YBISR34jfVFvz7oKHav1749KrqijPHWa/peqlM3yYMWyTTgYkWR3TXgCwf+/pDbxku
- nZ001oemy9ncCxVNlKSbR/BocDspsL7ugh0Sp/7C/XykTqSdWHhfz0RZOYg6skOg0cB3BjLJdWk
- JG2LCRNe2n0LOPXuCy5Ah3AenIJ8pTImTwActZgbpLZ6nXIYgcW8Mmyt5VVATMpz+ICW94BLlJ0
- 1pRGy7eXjZ4pj5I210ObpKWn
-X-Google-Smtp-Source: AGHT+IFR8w6o6SaSqEuL8SAy2aMnGvqvhUNSl9pTvjcvpcszbMkZh4RlAKKBZU+RBw3lzmuByReiAA==
-X-Received: by 2002:a7b:cc8e:0:b0:436:faeb:2a18 with SMTP id
- 5b1f17b1804b1-436faeb2c2emr42873235e9.6.1736789496405; 
- Mon, 13 Jan 2025 09:31:36 -0800 (PST)
-Received: from [192.168.69.181] (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1736789767; x=1737394567;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Q37GwPcWX8n9vPzb7WiyVYW5/ZJsXkW9Ta5ysxbRvE0=;
+ b=EnOAmHZ+9hrhSLADAD1XZap1sxBYbjxx7teLVRRoC72nJui2hgDTcbqtaqArYixQb0
+ IYWlaZ+dEZx2YF4HsSloO5eEnUQOYL7ubn9ODpBMqOG9T+j4ni1/geOcn4s2c+RDaxWp
+ Y7WsuamE3rmhvffBoX/CxMGE8Gn0hmcy0ckKHJtstoy2aRqpCST4muVxakZC0DBbdB+b
+ 1RYKs+q23I9LeIl28367BJXaqB+Ndt4rCLaucl2mu6wfy0bILbgpyuNSivpmh96ambh8
+ MWUHBGXhkloCpv2kKf0J2AeHqqir3O69pjO0supNq8ku1B/VSoIAHnARW7KVzvap+Qnq
+ Ie3w==
+X-Gm-Message-State: AOJu0YzjiS6pgSprHoehYI7XaNQlaJyQYhpRZjOUT5GgyL23LTW77Ilm
+ AYOzZv9sz23Dm0Z8PBCynIZWun1dRxt79/gsW107U4iJ7IWR1iTKsoH8Mltw5r+7sWpM0NSuaIE
+ fErk=
+X-Gm-Gg: ASbGncsltLYi9cWXWemkt3fdo47aIp9hECC/h4cqKOfPyav/cmyQrkKrVJNQPA1Zs/w
+ tm9/dQgOPnwA0JnwrYXI7cVIrzZ2zG1dxBxyjZQml1+PodTf6s3Gj3fPzaWZdUrMJcVFfgqVAoJ
+ Xr3VH7CILbd2e3G0rv/mAhlitcS6UpArVAtiR7p11qJP6fWsPOlqznKEEbP3R1I0HxvkYOZjn3o
+ HS057sFEWF5WWlkr+NWZ+PONhXFkE2Mb0nOL2LaXuIxlrS/fjGzb/8W0XZF9N3w9QnOX5nGz1IC
+ 1KDkbbRi9E+NWk3xQSyMhxCoU8C0PqA=
+X-Google-Smtp-Source: AGHT+IEl5h3Cct54GzcvMx68ppWf8ZSFgA7NrA9Azbs5nVsUfIpYqd47o+UrJqSxJ6BtMobaMIvQTw==
+X-Received: by 2002:a05:600c:3b25:b0:431:5c3d:1700 with SMTP id
+ 5b1f17b1804b1-436e26e2307mr175171135e9.21.1736789766842; 
+ Mon, 13 Jan 2025 09:36:06 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e4b8116sm12614356f8f.79.2025.01.13.09.31.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Jan 2025 09:31:35 -0800 (PST)
-Message-ID: <428a5e3e-966e-4dd2-9597-4f476e5c16f3@linaro.org>
-Date: Mon, 13 Jan 2025 18:31:34 +0100
+ 5b1f17b1804b1-436e9d8fb99sm151807435e9.3.2025.01.13.09.36.05
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 13 Jan 2025 09:36:06 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL v2 00/55] Misc HW patches for 2025-01-12
+Date: Mon, 13 Jan 2025 18:35:57 +0100
+Message-ID: <20250113173604.46931-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 00/11] New vmapple machine type and xhci fixes
-To: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org
-Cc: agraf@csgraf.de, peter.maydell@linaro.org, pbonzini@redhat.com,
- mst@redhat.com, stefanha@redhat.com, kwolf@redhat.com, hreitz@redhat.com,
- berrange@redhat.com, eduardo@habkost.net, marcel.apfelbaum@gmail.com,
- marcandre.lureau@redhat.com, eblake@redhat.com, armbru@redhat.com,
- qemu-block@nongnu.org, qemu-arm@nongnu.org
-References: <20250112210056.16658-1-phil@philjordan.eu>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250112210056.16658-1-phil@philjordan.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,16 +93,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/1/25 22:00, Phil Dennis-Jordan wrote:
-> This patch set introduces a new ARM and macOS HVF specific machine type
-> called "vmapple". There are also some patches for fixing XHCI spec
-> compliance issues and adding a workaround to a quirk in the macOS guest's
-> XHCI driver.
+The following changes since commit e8aa7fdcddfc8589bdc7c973a052e76e8f999455:
 
+  Merge tag 'pull-target-arm-20250113' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2025-01-13 09:43:48 -0500)
 
-> Phil Dennis-Jordan (3):
->    hw/usb/hcd-xhci-pci: Use modulo to select MSI vector as per spec
->    hw/usb/hcd-xhci-pci: Use event ring 0 if mapping unsupported
+are available in the Git repository at:
 
-Patches 1 & 2 queued.
+  https://github.com/philmd/qemu.git tags/hw-misc-20250113
+
+for you to fetch changes up to 838cf72b5d2cd875897d8bdfea4b23f6d9fdc602:
+
+  Add a b4 configuration file (2025-01-13 17:21:46 +0100)
+
+----------------------------------------------------------------
+Misc HW patches queue
+
+- Silent unuseful DTC warnings (Philippe)
+- Unify QDev hotplug decision logic (Akihiko)
+- Rework XilinX EthLite RAM buffers (Philippe)
+- Convert vmcoreinfo to 3-phase reset (Philippe)
+- Convert HPPA CPUs to 3-phase reset (Helge)
+- Fix UFS endianness issue (Keoseong)
+- Introduce pci_set_enabled (Akihiko)
+- Clarify Enclave and Firecracker relationship (Alexander)
+- Set SDHCI DMA interrupt status bit in correct place (Bernhard)
+- Fix leak in cryptodev-vhost-user backend (Gabriel)
+- Fixes on PCI USB XHCI (Phil)
+- Convert DPRINTF to trace events (Nikita, Bernhard)
+- Remove &first_cpu in TriCore machine (Philippe)
+- Checkpatch style cleanups (Bibo)
+- MAINTAINERS updates (Marcin, Gustavo, Akihiko)
+- Add default configuration for b4 tool (Jiaxun)
+
+----------------------------------------------------------------
+
+Akihiko Odaki (8):
+  hw/qdev: Pass bus argument to qdev_hotplug_allowed()
+  hw/qdev: Factor qdev_hotunplug_allowed() out
+  hw/qdev: Introduce qdev_hotplug_unplug_allowed_common()
+  hw/qdev: Check DevClass::hotpluggable in hotplug_unplug_allowed_common
+  hw/qdev: Check qbus_is_hotpluggable in hotplug_unplug_allowed_common
+  hw/qdev: Check machine_hotplug_handler in
+    hotplug_unplug_allowed_common
+  hw/pci: Rename has_power to enabled
+  MAINTAINERS: Update path to coreaudio.m
+
+Alexander Graf (1):
+  docs/nitro-enclave: Clarify Enclave and Firecracker relationship
+
+Bernhard Beschow (7):
+  hw/sd/sdhci: Set SDHC_NIS_DMA bit when appropriate
+  hw/timer/imx_gpt: Remove unused define
+  tests/qtest/libqos: Reuse TYPE_IMX_I2C define
+  hw/misc/imx6_src: Convert DPRINTF() to trace events
+  hw/char/imx_serial: Turn some DPRINTF() statements into trace events
+  hw/i2c/imx_i2c: Convert DPRINTF() to trace events
+  hw/gpio/imx_gpio: Turn DPRINTF() into trace events
+
+Bibo Mao (1):
+  hw/loongarch/virt: Checkpatch cleanup
+
+Gabriel Barrantes (1):
+  backends/cryptodev-vhost-user: Fix local_error leaks
+
+Gustavo Romero (1):
+  MAINTAINERS: Add me as the maintainer for ivshmem-flat
+
+Helge Deller (4):
+  target/hppa: Convert hppa_cpu_init() to ResetHold handler
+  hw/hppa: Reset vCPUs calling resettable_reset()
+  target/hppa: Set PC on vCPU reset
+  target/hppa: Speed up hppa_is_pa20()
+
+Jiaxun Yang (1):
+  Add a b4 configuration file
+
+Keoseong Park (1):
+  hw/ufs: Adjust value to match CPU's endian format
+
+Marcin Juszkiewicz (1):
+  MAINTAINERS: remove myself from sbsa-ref
+
+Nikita Shubin (1):
+  hw/char/stm32f2xx_usart: replace print with trace
+
+Phil Dennis-Jordan (2):
+  hw/usb/hcd-xhci-pci: Use modulo to select MSI vector as per spec
+  hw/usb/hcd-xhci-pci: Use event ring 0 if mapping unsupported
+
+Philippe Mathieu-Daudé (26):
+  pc-bios/meson.build: Silent unuseful DTC warnings
+  target: Replace DEVICE(object_new) -> qdev_new()
+  hw: Replace DEVICE(object_new) -> qdev_new()
+  hw/usb: Inline usb_try_new()
+  hw/usb: Inline usb_new()
+  hw/microblaze: Restrict MemoryRegionOps are implemented as 32-bit
+  hw/net/xilinx_ethlite: Map MDIO registers (as unimplemented)
+  hw/net/xilinx_ethlite: Introduce txbuf_ptr() helper
+  hw/net/xilinx_ethlite: Introduce rxbuf_ptr() helper
+  hw/net/xilinx_ethlite: Access TX_GIE register for each port
+  hw/net/xilinx_ethlite: Access TX_LEN register for each port
+  hw/net/xilinx_ethlite: Access TX_CTRL register for each port
+  hw/net/xilinx_ethlite: Map RX_CTRL as MMIO
+  hw/net/xilinx_ethlite: Map TX_LEN as MMIO
+  hw/net/xilinx_ethlite: Map TX_GIE as MMIO
+  hw/net/xilinx_ethlite: Map TX_CTRL as MMIO
+  hw/net/xilinx_ethlite: Map the RAM buffer as RAM memory region
+  hw/net/xilinx_ethlite: Rename 'mmio' MR as 'container'
+  hw/net/xilinx_ethlite: Map RESERVED I/O as unimplemented
+  hw/misc/vmcoreinfo: Rename VMCOREINFO_DEVICE -> TYPE_VMCOREINFO
+  hw/misc/vmcoreinfo: Convert to three-phase reset interface
+  hw/sd/sdhci: Factor sdhci_sdma_transfer() out
+  tests/qtest/boot-serial-test: Correct HPPA machine name
+  tests: Add functional tests for HPPA machines
+  target/hppa: Only set PSW 'M' bit on reset
+  hw/tricore/triboard: Remove unnecessary use of &first_cpu
+
+ MAINTAINERS                                |  13 +-
+ docs/system/i386/nitro-enclave.rst         |   2 +-
+ include/hw/misc/vmcoreinfo.h               |   7 +-
+ include/hw/pci/pci.h                       |   1 +
+ include/hw/pci/pci_device.h                |   2 +-
+ include/hw/qdev-core.h                     |   3 +-
+ include/hw/usb.h                           |  12 +-
+ target/hppa/cpu.h                          |  11 +-
+ backends/cryptodev-vhost-user.c            |   3 +-
+ hw/arm/musicpal.c                          |   2 +-
+ hw/char/imx_serial.c                       |  58 ++--
+ hw/char/stm32f2xx_usart.c                  |  49 ++--
+ hw/core/qdev-hotplug.c                     |  45 ++-
+ hw/gpio/imx_gpio.c                         |  18 +-
+ hw/hppa/machine.c                          |   6 +-
+ hw/i2c/imx_i2c.c                           |  21 +-
+ hw/intc/xilinx_intc.c                      |   4 +
+ hw/loongarch/acpi-build.c                  |   3 +-
+ hw/loongarch/boot.c                        |   4 +-
+ hw/loongarch/virt.c                        |   8 +-
+ hw/misc/imx6_src.c                         |  23 +-
+ hw/misc/vmcoreinfo.c                       |  14 +-
+ hw/net/xilinx_ethlite.c                    | 312 ++++++++++++++-------
+ hw/pci/pci.c                               |  17 +-
+ hw/pci/pci_host.c                          |   4 +-
+ hw/sd/sdhci.c                              |  33 ++-
+ hw/sparc/sun4m.c                           |   4 +-
+ hw/timer/imx_gpt.c                         |   4 -
+ hw/timer/xilinx_timer.c                    |   4 +
+ hw/tricore/triboard.c                      |   6 +-
+ hw/ufs/ufs.c                               |   2 +-
+ hw/usb/bus.c                               |   5 +-
+ hw/usb/dev-serial.c                        |   2 +-
+ hw/usb/hcd-xhci-pci.c                      |   1 +
+ hw/usb/hcd-xhci.c                          |   4 +
+ system/qdev-monitor.c                      |  37 +--
+ target/hppa/cpu.c                          |  22 +-
+ target/mips/cpu.c                          |   2 +-
+ target/xtensa/cpu.c                        |   2 +-
+ tests/qtest/boot-serial-test.c             |   2 -
+ tests/qtest/libqos/arm-imx25-pdk-machine.c |   5 +-
+ tests/qtest/libqos/i2c-imx.c               |   4 +-
+ tests/qtest/ufs-test.c                     |   2 +-
+ .b4-config                                 |  14 +
+ hw/char/trace-events                       |  11 +
+ hw/gpio/trace-events                       |   5 +
+ hw/i2c/trace-events                        |   5 +
+ hw/misc/trace-events                       |   6 +
+ pc-bios/meson.build                        |   3 +-
+ tests/functional/meson.build               |   4 +
+ tests/functional/test_hppa_seabios.py      |  35 +++
+ tests/qtest/meson.build                    |   2 +-
+ 52 files changed, 558 insertions(+), 310 deletions(-)
+ create mode 100644 .b4-config
+ create mode 100755 tests/functional/test_hppa_seabios.py
+
+-- 
+2.47.1
+
 
