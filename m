@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 124FFA0ACF6
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 01:53:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE36A0ACF5
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 01:53:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tX8eV-0007o7-KA; Sun, 12 Jan 2025 19:49:59 -0500
+	id 1tX8f6-0008QQ-1D; Sun, 12 Jan 2025 19:50:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX8eP-0007P0-HP
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 19:49:53 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX8eV-00083a-FT
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 19:49:59 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX8eN-00010l-QG
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 19:49:53 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-436281c8a38so26340045e9.3
- for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 16:49:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX8eT-00012p-TD
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 19:49:59 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4361dc6322fso25910615e9.3
+ for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 16:49:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736729390; x=1737334190; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736729396; x=1737334196; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5t7LN/wKZvE1noLloA1ScY9xrm7gHXj/oUl+gXuqqpU=;
- b=sntkCroIm9AADpXZ688KLaNL2EXoOYFJSmGwIl5bYmdWuH0/3PVtcBeWAGTibYh2zc
- fbv+QEElkYNdwqDfLQjSO6ibZrlz6uoVu/GYrMkWZ61PQQ3itQwTnp+Y1RHhuJkVeQ4h
- pDdDjuiphGi1XuFB76NMAjjExJcBVPZZcH1AYUWWcgfdxdyPfEwp1yDZt1IA7C4Z35St
- sXhZGszV2pnAnjnnPo7xDs9MG61ATHw2nkwWs88jxWvgt0rsX5e1o5G3bXvenUaho1TR
- Y9k3+MYhJ/3OU+aj5qOgrp4b6CuMZohnyRZq3sbiAI0Lcg4mzEjiIlKX6qOrKJxbxNzp
- /5nQ==
+ bh=+QUcPQTSLIyjkEu3IRNgiae9ESabUrMs06G5+aRxsH0=;
+ b=lM6VgTrQfYuHCskd5dXXjUTcIm1q2JYDpHdyhcwU9uAAuXWz1bjgN3zUSPCxpkzJeM
+ GSa0Hg7qHfTU9LBHcpCoTPcbKJ9mMUtGX9fzQCwRoRmEv+nD6XC9ldmxfdMLDciUhqEi
+ Irsu0m2bHcDRSXfwoeHMIfpzy2/pWCJBVNudUCEB4ejrAq8zxEeEoiJg3BjsIxOsUlYd
+ LhDSM9/wS/pdu+i77IpapU3yHTI+MuC489AYjJ7eY+zkGnSZZ98hVOkuHakKi2uI8gvz
+ 7md/pXVMRjzQxJBwPpTl+d+J5L/I+a3S/Juq+nmqMkoDYLz5LOxM2iu24BM8vJozyvbr
+ LTxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736729390; x=1737334190;
+ d=1e100.net; s=20230601; t=1736729396; x=1737334196;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5t7LN/wKZvE1noLloA1ScY9xrm7gHXj/oUl+gXuqqpU=;
- b=A0T2j6oa8Y94V2DFV/wPwVaqDJDyoNtTOUoHXd12W/ucj1KT91IPhiaQ8si5AWNwll
- D9BzQEOj/RYVNhyuCThiqttO5tYkzJn7f3zIDT83z2DuNlOXOrgXqcISOmQhKfsj4zqT
- 4a3JCcA3LbK1eBpDxf63lQKXUrk5ksy20VrNL6B22r4i15Asg7AO5YwZKlHO8+LUb33o
- SQshr4Szc6kkTz7W5nyBKzOc91+gtcr7yyCimxckOPR8+3Q1Q6xQXioClc1TJoOfOCTA
- vXw91nj6yg7I3BQJkYKQq+JfZGJKcSGweXv7ztCC0yxBVlcTxOYMjlLfHw/Ex2epDarq
- qrVQ==
-X-Gm-Message-State: AOJu0Yz7aMsgfioXQYdPtxUCZlV+JZuo0bypXx0YHitZReS8vWejc+KK
- MVbgpwXqeQPHY/z/Pq3ITus5gCyq3vc0okg3RoSHtUjDFfdz/zbSXXQ8cQuz/BDIX5Kq3tYwQaQ
- BIgU=
-X-Gm-Gg: ASbGnctSHy5RGoWW8k5NJpxsvMVAdcmnKvByNxl23O2VKlb5eYvySWBdt3Ula79k9Qz
- +BvuE8hRRgsCSwkBZuvLY3A3Ea096wlUlGuhTn9I6EWsHtSEWiRSXS/Xi3Yrwf062uog39mBSPs
- jnG/UyQX+Cz/ouAUmyYU150Lw1UcJqAFTp8M3L4DUirDLCValysgz1XMyAhUlyZqhpEYAeZb75Z
- Z/5WVI+zl5BzY0Sv7cN+0Zp3mfFCXWfWIhTiMr76ryNWFbPoPnFs6xKp6AdReX4OB5YRi/0Q0/e
- U5p4Ygq9fD97JFWgfVRtyFZHM2PlfYk=
-X-Google-Smtp-Source: AGHT+IED2ZrvfsmkVYjiAmblygTMRodVkeQtnqamJdy+IIuJnKC8vCPowlTr3zJBYiQaidlI1m5xiw==
-X-Received: by 2002:a05:600c:4586:b0:434:9e1d:7626 with SMTP id
- 5b1f17b1804b1-436e26f4b91mr149209055e9.25.1736729389903; 
- Sun, 12 Jan 2025 16:49:49 -0800 (PST)
+ bh=+QUcPQTSLIyjkEu3IRNgiae9ESabUrMs06G5+aRxsH0=;
+ b=cyO1e6vgSrbUTYbn6mxNNaro2k5oKFcWSCa1C8y2Ge194yHFnsobjSaDXwqIHgYj3V
+ QojryWOue1IGrypkzvWUW0zYjec+GY2Jw+48ldSplGK19Mnn5PxYvzThfbYF+hEuagjp
+ IGhO/2HHoGCyJxhLJ2bw8SE77ARV6cpzRvk9vK/93qKn2vMlGvMu3C4psYAYv4DWZ/M+
+ 8Z/TFFw3Es1QSr2MlQ91R0UgMnMSWL5obgT7uN9m/8FO4MoQPdpkHdLk63B+P5Svu4R2
+ +6GI1h7yUqAsTwUavfTMTffd6d263VlwYDqRk5AYGhGa2lN4TPBzxbbzLAFZK2g+BTxG
+ LO5w==
+X-Gm-Message-State: AOJu0Yxuf8OCCkyT0lj/gjezQeacACOBsjmQzhW+1x5oqCHX1Oj1vSue
+ p0dAHgKqe4YLjkNSVY8WMsrtYK0prFUJ2hXIc0Pm7Dfc4eOQ9/kpYw0eoU/S+rb1qxyq6d5yuDQ
+ Uve8=
+X-Gm-Gg: ASbGncvkP7MV8Dsvo1DwxIgk20TYXrDMjHcAYDOcdSWLtTxEl+6RwRl5XPk9KbnWEHI
+ 0CA+U9jrQNPkB+F1w5Mr6rFGxTTIxOwUEg4UCI7hIORQgKPGEzIGoVOZYJel950azY4UgfxSxvZ
+ s6lmTMGsZwRChk9i4+J56jQzChU49YBIbS3PiK9YvaNs6w8NdSUf83OQ5mchWNV0OGaPoU1hx/2
+ rUr5KJlkrO2/T4TAKxpK/UarODY3sXXIt2a4rI/8dMQzdt9rf7NduGJKdSppyZjAGky6B0OOqz/
+ ZmTB/87R2LlOEQR2dOXRKPn3OSbPGOk=
+X-Google-Smtp-Source: AGHT+IGmPYK4+yml9nEJ1vg0hf99C1ulpd2K6QbPMkfU7wlTpKi0fvy2lJc+zNbWUPdOnuTUBGFOwg==
+X-Received: by 2002:a05:600c:3554:b0:436:1be4:c9b4 with SMTP id
+ 5b1f17b1804b1-436e26ff1b2mr151791665e9.27.1736729396028; 
+ Sun, 12 Jan 2025 16:49:56 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e9d8fd03sm129722785e9.6.2025.01.12.16.49.49
+ 5b1f17b1804b1-436e9dc895esm125348935e9.13.2025.01.12.16.49.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 12 Jan 2025 16:49:49 -0800 (PST)
+ Sun, 12 Jan 2025 16:49:54 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Aleksandar Rikalo <arikalo@gmail.com>, Huacai Chen <chenhuacai@kernel.org>,
  Paul Burton <paulburton@kernel.org>, Aurelien Jarno <aurelien@aurel32.net>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 21/23] hw/mips/malta: Propagate MaltaState to
- write_bootloader()
-Date: Mon, 13 Jan 2025 01:47:46 +0100
-Message-ID: <20250113004748.41658-22-philmd@linaro.org>
+Subject: [PATCH 22/23] hw/mips/malta: Propagate MaltaState to
+ bl_setup_gt64120_jump_kernel()
+Date: Mon, 13 Jan 2025 01:47:47 +0100
+Message-ID: <20250113004748.41658-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250113004748.41658-1-philmd@linaro.org>
 References: <20250113004748.41658-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,51 +100,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pass MaltaState as argument to write_bootloader() so next
-commit can propagate it to bl_setup_gt64120_jump_kernel().
+Propagate MaltaState to bl_setup_gt64120_jump_kernel() so
+it can access the MaltaState::cpus[] array.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/mips/malta.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ hw/mips/malta.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/hw/mips/malta.c b/hw/mips/malta.c
-index a037ec2cc8d..589e1a07e47 100644
+index 589e1a07e47..61b47b0dcbb 100644
 --- a/hw/mips/malta.c
 +++ b/hw/mips/malta.c
-@@ -692,7 +692,8 @@ static void bl_setup_gt64120_jump_kernel(void **p, uint64_t run_addr,
-                        kernel_entry);
+@@ -620,7 +620,8 @@ static void network_init(PCIBus *pci_bus)
+     pci_init_nic_devices(pci_bus, "pcnet");
  }
  
--static void write_bootloader_nanomips(uint8_t *base, uint64_t run_addr,
-+static void write_bootloader_nanomips(MaltaState *s,
-+                                      uint8_t *base, uint64_t run_addr,
-                                       uint64_t kernel_entry)
+-static void bl_setup_gt64120_jump_kernel(void **p, uint64_t run_addr,
++static void bl_setup_gt64120_jump_kernel(MaltaState *s, void **p,
++                                         uint64_t run_addr,
+                                          uint64_t kernel_entry)
  {
-     uint16_t *p;
-@@ -744,7 +745,8 @@ static void write_bootloader_nanomips(uint8_t *base, uint64_t run_addr,
-  *   a2 - 32-bit address of the environment variables table
-  *   a3 - RAM size in bytes
-  */
--static void write_bootloader(uint8_t *base, uint64_t run_addr,
-+static void write_bootloader(MaltaState *s,
-+                             uint8_t *base, uint64_t run_addr,
-                              uint64_t kernel_entry)
- {
-     uint32_t *p;
-@@ -1172,10 +1174,10 @@ void mips_malta_init(MachineState *machine)
-         kernel_entry = load_kernel();
+     static const char pci_pins_cfg[PCI_NUM_PINS] = {
+@@ -720,7 +721,7 @@ static void write_bootloader_nanomips(MaltaState *s,
  
-         if (!cpu_type_supports_isa(machine->cpu_type, ISA_NANOMIPS32)) {
--            write_bootloader(memory_region_get_ram_ptr(bios),
-+            write_bootloader(s, memory_region_get_ram_ptr(bios),
-                              bootloader_run_addr, kernel_entry);
-         } else {
--            write_bootloader_nanomips(memory_region_get_ram_ptr(bios),
-+            write_bootloader_nanomips(s, memory_region_get_ram_ptr(bios),
-                                       bootloader_run_addr, kernel_entry);
-         }
-     } else {
+     /* to_here: */
+ 
+-    bl_setup_gt64120_jump_kernel((void **)&p, run_addr, kernel_entry);
++    bl_setup_gt64120_jump_kernel(s, (void **)&p, run_addr, kernel_entry);
+ }
+ 
+ /*
+@@ -786,7 +787,7 @@ static void write_bootloader(MaltaState *s,
+      *
+      */
+ 
+-    bl_setup_gt64120_jump_kernel((void **)&p, run_addr, kernel_entry);
++    bl_setup_gt64120_jump_kernel(s, (void **)&p, run_addr, kernel_entry);
+ 
+     /* YAMON subroutines */
+     p = (uint32_t *) (base + 0x800);
 -- 
 2.47.1
 
