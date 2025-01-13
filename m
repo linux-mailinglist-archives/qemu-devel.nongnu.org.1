@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA5E5A0C244
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 20:58:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A52FA0C238
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 20:57:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXQXW-00061h-Qt; Mon, 13 Jan 2025 14:55:58 -0500
+	id 1tXQXW-00060o-GX; Mon, 13 Jan 2025 14:55:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXQXE-0005zP-Uy
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 14:55:41 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXQXK-000603-Lc
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 14:55:46 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXQXD-0007RN-FC
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 14:55:40 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4361815b96cso33338415e9.1
- for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 11:55:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXQXI-0007Rw-RO
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 14:55:46 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-435f8f29f8aso33979495e9.2
+ for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 11:55:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736798138; x=1737402938; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736798143; x=1737402943; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wTM7kJDrHWUpg1IPISR4zuSM03kjMUv0Xm2Dmwxq0M8=;
- b=HhcYBZ+fip5IfMoZUxtCsWmT/X0rsu88e5w5H8JVP/3SEk7r8kvdY4DpcHxbupcgYK
- CUGrxryGCGiFfDpalD3eLCf5v81wsC9/J+flnt5Ec3ZbDcr6jFgyl+yCJSsDErfOBOVO
- lMSF4tTAhiSXe3w9HAuEKW9oZLEA2NUbSIKy2ZQLllcMsttBhmnN/h/gNgcfqBObgG1B
- NBY/wWfXiXYzMYIrQkArQn6BGQVB71TDKF3NVpF537EGclGUJSSaUW71aEcSPxjiueAX
- faAw43rSg4uwr+Xnx7PuVNCZkZLwJI1YKAjbdqYEclNAdKBI0ACEf24tRkvUdeuSC/bY
- qoJQ==
+ bh=4iArtLIkc1Hfsjezw19sEsPpI58c9SSiC6oECSiSyLM=;
+ b=BTAl5rs5dddox8HbzbNsW6dxLsbdyb14nJOsn6pnG4n7TOlxE/H/RHwV+R50IBTSnB
+ aibzlw/01g/i50vpPowT5XC1vvfzDebERyn7OVFcLCtLWHVcqN3I38KdjiMF+11B9+s/
+ l0yQRITGwdp+E/WS6GeNdZnN1SsluWUeEke0Z/SZCLgSmhSQxXhl9Tu/YV4X28n3+9m2
+ a1IXNuvH9d6wrFgQMgizfFHirEPhGUk5IcqLVnJkyCBQhHii2nkdYwVpmcB9wiHxOnp7
+ TpLr2qSXTiHHvDS1Vh+W5TOAPqVFt4OlgxW/hCSqa2CBpXMxsM6OZxrZmg4N42l9RYjF
+ 2QBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736798138; x=1737402938;
+ d=1e100.net; s=20230601; t=1736798143; x=1737402943;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wTM7kJDrHWUpg1IPISR4zuSM03kjMUv0Xm2Dmwxq0M8=;
- b=OyF6fyFgcZf3GX3cprniLC+0f5tSyTGntG/P6VfaVu+goYfKkjDN9TdLmKMpstBuoR
- f0jFJ7+KAwEbhqsGBHPWuG4TWCmr6nBJ22txpcxxUKybuZwLVO1yxCyU/A4aEB4qAotm
- qk9jfaMtaf0IYa4LAAtx4tHcwbXRyv2N9abaGV0sCeb3QAJlbnuXrk8ujxY8KkbTIc3Z
- IZa3q75AeED1V9rs95Aj0OzGD7z4s8NZ+hOoCKDtKNsvnLEuyDOHMgZE4ABDKBMnjI5l
- zFu0Tz720AEbmV7dTuxoxM1fiUi6ecW9ZQDe7qXavs1D4pzEnKMA6BH13Tc0DB9rDka1
- FiOw==
-X-Gm-Message-State: AOJu0YwHZ488PRJXX/E0E0mc1CIZndvLv6rW64BVN15sO4AjtFJ4Q/kd
- e8MRbj8/3IiLu3xMGMoo7PArxPm0EnAJ/rvHYF19pp3vmkAMhhxEl3W5B2DsjhOSxCajkmpd9Lr
- fGhY=
-X-Gm-Gg: ASbGncswC22mm8mBZjZdamj/bsAm6b6p85Esoju+/nk/Jky1OhRS1k8HXQARjg0zbWd
- tWzRcoFys9zIFV90DN2vuCEA++jPKD6JeaqiqGN4ArkB8mTSPCuqTSS8hO7DzNJJ4vO8+1+KacQ
- FYAaF1dc28xPJJt9FgxpEjFsQ5KSzs9BdY05V4E14YAtfpU6QlrJJ3elVWcKF+pkMuB79VCiO3l
- mT/PoIKV93TWFNvBM/2eBA1FnMNSSj8AJOax7sbRA6vx3qPa5/hENlmpB2vj4zeQAnE6FXSQDaQ
- aNdGnCQ61PionoY2KzrlnMek+GjLXxM=
-X-Google-Smtp-Source: AGHT+IHmfpUKzw+43t3kqzIxojFJ6+ldOYJHd/HTs8v8XsCIEs8f6Rkdrv2t/3jymrQ5C6WWFS01hg==
-X-Received: by 2002:a05:600c:468a:b0:434:a968:89a3 with SMTP id
- 5b1f17b1804b1-436e26a78a5mr162452325e9.9.1736798137700; 
- Mon, 13 Jan 2025 11:55:37 -0800 (PST)
+ bh=4iArtLIkc1Hfsjezw19sEsPpI58c9SSiC6oECSiSyLM=;
+ b=TuXBPe8HudzyN7x3Jff1e5pNuKeVtFC2hRg9r32Qy15iAGvBAXT484iM6oaiIuLWU4
+ 5RUss/6LHkXYNxjS/vrnu7YCBGhC1+P28cMR2O3QsYnElyajINMGFM9DHNU2lwXIPhfh
+ cxN+BjnvU35PWOkabFo2wwREnrdZHhmqu12I2yENTcWek9VrYJvPLkT7M9WqAWowjw/x
+ qXtCViRlm3xSbDKWUEcxWbyFaJBH6dkI12/xNafIMK3u6Mi8JHE5IqAkFDFuiMNxDInA
+ 9NFhAFZXiRqoSD/6aS7nL8CefZoNBNUVFE/OImVHoG3Y4zcavuMRoe2+CD/W6/1W8s8v
+ 13oA==
+X-Gm-Message-State: AOJu0YwbawZm3DxpwKWiEOhVbDB6Kw2HG/52w7IQyO70n/Oc8KHF9i29
+ V2tdl79so/MPaqzK2m81TChrvNDUOOV3cdoAeMnWKH9mE8LY1uL9e4qNd7WWw6VetaYxE3CqByQ
+ xVCA=
+X-Gm-Gg: ASbGncs3sLQim1lRhjTj2GGAVUjqyl7CzNttjL3HCbGnKX8styLSDJzbDtJfbxkgzdV
+ vykNN9r6Cx7At0WXjPenZCTPMw9nIQOm0xhK+WvU9fsRtWJvfc+JxU1wQxGx2iMh73ulBDQtifS
+ Es7PXCvzD07hEJVZ0UZnbGEp5MHigAdFOznAA8dDmnzBAAABZ9hv+kRaHhjYWIPyPD6256Rloy/
+ ATuJ5WZlH2/eNqGQ+iJG+n2K+58p8H4Yjmk53bS7Vl1KmOtQ51sEF3SKKgZlSLw4CpS/68CBLBL
+ icXOGhtjPJyJtg7nR5Z0mz/wXWlThjA=
+X-Google-Smtp-Source: AGHT+IHZKJBjb7nOiH6wqiOVE0CezqHNC5ZtM4YGC+kr007UH/Qe691IOb4VmUnrUqMYPa+EKIz4HQ==
+X-Received: by 2002:a05:600c:198c:b0:436:1b08:4c78 with SMTP id
+ 5b1f17b1804b1-436e26f5fddmr206528845e9.31.1736798143022; 
+ Mon, 13 Jan 2025 11:55:43 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e9d8fc67sm154645675e9.8.2025.01.13.11.55.36
+ 5b1f17b1804b1-436e2df3610sm186513515e9.20.2025.01.13.11.55.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 13 Jan 2025 11:55:37 -0800 (PST)
+ Mon, 13 Jan 2025 11:55:41 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paul Burton <paulburton@kernel.org>, Aurelien Jarno <aurelien@aurel32.net>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Aleksandar Rikalo <arikalo@gmail.com>, Huacai Chen <chenhuacai@kernel.org>
-Subject: [PATCH v2 02/19] hw/mips/malta: Check CPU index instead of using
- &first_cpu
-Date: Mon, 13 Jan 2025 20:55:08 +0100
-Message-ID: <20250113195525.57150-3-philmd@linaro.org>
+Subject: [PATCH v2 03/19] hw/mips/malta: Keep reference of vCPUs in MaltaState
+Date: Mon, 13 Jan 2025 20:55:09 +0100
+Message-ID: <20250113195525.57150-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250113195525.57150-1-philmd@linaro.org>
 References: <20250113195525.57150-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,38 +99,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since create_cpu_without_cps() creates the vCPUs iterating
-up to the machine SMP count, it knows the first CPU is
-created upon the first iteration, at index #0 :)
+When a QOM object create children with object_new(),
+it is better to keep reference to them for further
+use. This will be helpful to remove &first_cpu uses
+in few commits.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/mips/malta.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ hw/mips/malta.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/hw/mips/malta.c b/hw/mips/malta.c
-index 4e9cccaa347..37be2330eda 100644
+index 37be2330eda..090c2514354 100644
 --- a/hw/mips/malta.c
 +++ b/hw/mips/malta.c
-@@ -1042,12 +1042,13 @@ static void create_cpu_without_cps(MachineState *ms, MaltaState *s,
-         cpu_mips_irq_init_cpu(cpu);
-         cpu_mips_clock_init(cpu);
-         qemu_register_reset(main_cpu_reset, cpu);
--    }
+@@ -107,6 +107,7 @@ struct MaltaState {
+     SysBusDevice parent_obj;
  
--    cpu = MIPS_CPU(first_cpu);
--    env = &cpu->env;
--    *i8259_irq = env->irq[2];
--    *cbus_irq = env->irq[4];
-+        if (i == 0) {
-+            env = &cpu->env;
-+            *i8259_irq = env->irq[2];
-+            *cbus_irq = env->irq[4];
-+        }
-+    }
+     Clock *cpuclk;
++    MIPSCPU **cpus;
+     MIPSCPSState cps;
+ };
+ 
+@@ -1037,6 +1038,7 @@ static void create_cpu_without_cps(MachineState *ms, MaltaState *s,
+     for (i = 0; i < ms->smp.cpus; i++) {
+         cpu = mips_cpu_create_with_clock(ms->cpu_type, s->cpuclk,
+                                          TARGET_BIG_ENDIAN);
++        s->cpus[i] = cpu;
+ 
+         /* Init internal devices */
+         cpu_mips_irq_init_cpu(cpu);
+@@ -1063,6 +1065,7 @@ static void create_cps(MachineState *ms, MaltaState *s,
+                             &error_fatal);
+     qdev_connect_clock_in(DEVICE(&s->cps), "clk-in", s->cpuclk);
+     sysbus_realize(SYS_BUS_DEVICE(&s->cps), &error_fatal);
++    memcpy(s->cpus, s->cps.cpus, ms->smp.cpus * sizeof(MIPSCPU *));
+ 
+     sysbus_mmio_map_overlap(SYS_BUS_DEVICE(&s->cps), 0, 0, 1);
+ 
+@@ -1070,9 +1073,11 @@ static void create_cps(MachineState *ms, MaltaState *s,
+     *cbus_irq = NULL;
  }
  
- static void create_cps(MachineState *ms, MaltaState *s,
+-static void mips_create_cpu(MachineState *ms, MaltaState *s,
+-                            qemu_irq *cbus_irq, qemu_irq *i8259_irq)
++/* Initialize MaltaState::cpus[] */
++static void mips_create_cpus(MachineState *ms, MaltaState *s,
++                             qemu_irq *cbus_irq, qemu_irq *i8259_irq)
+ {
++    s->cpus = g_new(MIPSCPU *, ms->smp.cpus);
+     if ((ms->smp.cpus > 1) && cpu_type_supports_cps_smp(ms->cpu_type)) {
+         create_cps(ms, s, cbus_irq, i8259_irq);
+     } else {
+@@ -1111,7 +1116,7 @@ void mips_malta_init(MachineState *machine)
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(s), &error_fatal);
+ 
+     /* create CPU */
+-    mips_create_cpu(machine, s, &cbus_irq, &i8259_irq);
++    mips_create_cpus(machine, s, &cbus_irq, &i8259_irq);
+ 
+     /* allocate RAM */
+     if (ram_size > 2 * GiB) {
 -- 
 2.47.1
 
