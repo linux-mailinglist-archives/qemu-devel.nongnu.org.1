@@ -2,75 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 116D8A0BEF3
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 18:38:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7EAA0BEF8
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 18:38:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXONL-000304-3Y; Mon, 13 Jan 2025 12:37:19 -0500
+	id 1tXOND-0002NL-4x; Mon, 13 Jan 2025 12:37:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXOMK-0001yK-Gp
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 12:36:18 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXOMS-00022d-2m
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 12:36:25 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXOMF-0006yD-5K
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 12:36:14 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-43624b2d453so47997165e9.2
- for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 09:36:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXOMK-0006yr-76
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 12:36:19 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4361fe642ddso48330945e9.2
+ for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 09:36:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736789767; x=1737394567; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Q37GwPcWX8n9vPzb7WiyVYW5/ZJsXkW9Ta5ysxbRvE0=;
- b=oQDx6a7XbeEsuc2KY4OqEsmTGJ+Q1WDZNDDV4mrG74EZYKv8xdspDHiVZqY5bYfzq5
- w4m0VCq1aSX0zjGsFW0wjNVyx846/VotjqQUIvW2GN7BhSjU2yHgh2Rof+UUOj1NcuaR
- 3uUHr274WWfy2a7ySERPNrPnMHkiNNzDadD1Tg6IJzaN3xhemfCiDNZBup+n/wGfom+3
- cE9fqKnIxs0vp/lkSytj+L6mgptep91A+tDo9BehdY1u/2JNmm9x5xwniyO6hnMRlOVW
- CVt+q2UwNAiqGyM+P4QdwIFMsffqbv+vYevtu7ilNsFGuL7+JLLi/BfSv/zEe8ivuS6y
- eduw==
+ d=linaro.org; s=google; t=1736789772; x=1737394572; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DzCNbwIo87x4lOEY4ICfv2t12PV5Rydbl8ocZx/cYns=;
+ b=cbgcKYzonekfIJxgcVEhT+CYJ/npyycy0FNGWWRCGn/Z8/luj7vzrUeUt7enX5H1Rz
+ qR1lM3FgvKglYgHhOXi3IgOWdH55FJVjGDDytRJ2/AHPBBbJ3DyZsKJHObJqIzx+jJ48
+ yFhsUuPcvbuUu7CKuZaGUu4WNRmy1pPuTPh+ahlPU5MZfmljludgBjidhOrQkU8cXtRs
+ ab3cbCXAUqPT2q2Cx/fGRnRbynkbfQKnuxce+7dqzrcFaT8/Ws+g/RDJsO/GtElJGt51
+ dAqPVVnOuWHN8sQvFBYvc4FrJ+d3CMFkk1JdMwnJgMFZ9UiN/KBAfpNb0lUusif3hX43
+ nBHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736789767; x=1737394567;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Q37GwPcWX8n9vPzb7WiyVYW5/ZJsXkW9Ta5ysxbRvE0=;
- b=EnOAmHZ+9hrhSLADAD1XZap1sxBYbjxx7teLVRRoC72nJui2hgDTcbqtaqArYixQb0
- IYWlaZ+dEZx2YF4HsSloO5eEnUQOYL7ubn9ODpBMqOG9T+j4ni1/geOcn4s2c+RDaxWp
- Y7WsuamE3rmhvffBoX/CxMGE8Gn0hmcy0ckKHJtstoy2aRqpCST4muVxakZC0DBbdB+b
- 1RYKs+q23I9LeIl28367BJXaqB+Ndt4rCLaucl2mu6wfy0bILbgpyuNSivpmh96ambh8
- MWUHBGXhkloCpv2kKf0J2AeHqqir3O69pjO0supNq8ku1B/VSoIAHnARW7KVzvap+Qnq
- Ie3w==
-X-Gm-Message-State: AOJu0YzjiS6pgSprHoehYI7XaNQlaJyQYhpRZjOUT5GgyL23LTW77Ilm
- AYOzZv9sz23Dm0Z8PBCynIZWun1dRxt79/gsW107U4iJ7IWR1iTKsoH8Mltw5r+7sWpM0NSuaIE
- fErk=
-X-Gm-Gg: ASbGncsltLYi9cWXWemkt3fdo47aIp9hECC/h4cqKOfPyav/cmyQrkKrVJNQPA1Zs/w
- tm9/dQgOPnwA0JnwrYXI7cVIrzZ2zG1dxBxyjZQml1+PodTf6s3Gj3fPzaWZdUrMJcVFfgqVAoJ
- Xr3VH7CILbd2e3G0rv/mAhlitcS6UpArVAtiR7p11qJP6fWsPOlqznKEEbP3R1I0HxvkYOZjn3o
- HS057sFEWF5WWlkr+NWZ+PONhXFkE2Mb0nOL2LaXuIxlrS/fjGzb/8W0XZF9N3w9QnOX5nGz1IC
- 1KDkbbRi9E+NWk3xQSyMhxCoU8C0PqA=
-X-Google-Smtp-Source: AGHT+IEl5h3Cct54GzcvMx68ppWf8ZSFgA7NrA9Azbs5nVsUfIpYqd47o+UrJqSxJ6BtMobaMIvQTw==
-X-Received: by 2002:a05:600c:3b25:b0:431:5c3d:1700 with SMTP id
- 5b1f17b1804b1-436e26e2307mr175171135e9.21.1736789766842; 
- Mon, 13 Jan 2025 09:36:06 -0800 (PST)
+ d=1e100.net; s=20230601; t=1736789772; x=1737394572;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=DzCNbwIo87x4lOEY4ICfv2t12PV5Rydbl8ocZx/cYns=;
+ b=rxYES3OxINPlZTENh1p45qWyjWcRwEQNCvgKYa8Gstz1brEjn8QNEg324eBl9JeXWz
+ yZ3JzAASJLqVDfZP8cTn+0MzgdyMdG0owav1ce0YV0BUAqo2hLsa3TzPDMNIRGqKv3Xm
+ RP8i0suIxLIMbubd1oXJS3LXxjaH26GbcK9X79lox6nrh29FGOno65S9lYo0lzwWkeiu
+ f5pVwUuRRLjXwqFaTVj3KiFhfWnWbilhW3RsIHq94PTFAGNjbWdm4+Ac0Xy5XMxj26sf
+ PwtNvJjJDfsOS7u++g1Fw350XI/gGpl1MQ0edFfvimXcWlylX15/E+ktOIUmlMOTUuND
+ SYhg==
+X-Gm-Message-State: AOJu0Yy0KzdB+izDEpk+yY00S+NkptysY47xg4o/dDs6zyJ7Z0n8C1z2
+ f0U6aPa96fLjobu6skVZjb1RciWcmsHFAOEwd3dZy4C5fsCCickcd18JaE3uh31SfSNPAxdyYI3
+ 03bk=
+X-Gm-Gg: ASbGncso5el0WxMLGQWeR7AfigXU8QVO5IK2z5CPOtEb8KZGm6XuyYLNLdrcq4aHUnW
+ 2SSQqF3zk9+kBfFuuO3gwtDb3gzXmTnhkYltweBNZH7FfL0mPw4DSRhc447tiafAarvtMtO/oSf
+ iER2NjvRV6ZnUy2lhZ52xrfXsZCkUx0q7w2u8vxjf+6aasR+CJ8jdoDQVP+mfJsYV8puXlDahwT
+ Ok6n0+GWL4H0n03P4mdavlqYLPL7B5cfkgN2RpBBleasCxq8O+rul79D4tCI34+qANAbMjoda+6
+ 715UWcljl/r7Zw8HCq9iqvXdkcDMug4=
+X-Google-Smtp-Source: AGHT+IF6uUsTb9bpYcV7vwky7GAhL+niw9ROGKAt4cgqykrFFxW5PMY1Mq1MemJEuns/lzK/3bIkWg==
+X-Received: by 2002:a5d:5848:0:b0:385:df5d:622c with SMTP id
+ ffacd0b85a97d-38a8730dec4mr17115771f8f.30.1736789771685; 
+ Mon, 13 Jan 2025 09:36:11 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e9d8fb99sm151807435e9.3.2025.01.13.09.36.05
+ ffacd0b85a97d-38a8e383654sm12945329f8f.30.2025.01.13.09.36.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 13 Jan 2025 09:36:06 -0800 (PST)
+ Mon, 13 Jan 2025 09:36:11 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 00/55] Misc HW patches for 2025-01-12
-Date: Mon, 13 Jan 2025 18:35:57 +0100
-Message-ID: <20250113173604.46931-1-philmd@linaro.org>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Igor Mammedov <imammedo@redhat.com>
+Subject: [PULL v2 06/55] hw/qdev: Pass bus argument to qdev_hotplug_allowed()
+Date: Mon, 13 Jan 2025 18:35:58 +0100
+Message-ID: <20250113173604.46931-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250113173604.46931-1-philmd@linaro.org>
+References: <20250113173604.46931-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,178 +98,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit e8aa7fdcddfc8589bdc7c973a052e76e8f999455:
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-  Merge tag 'pull-target-arm-20250113' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2025-01-13 09:43:48 -0500)
+In preparation of checking the parent bus is hot(un)pluggable
+in a few commits, pass a 'bus' argument to qdev_hotplug_allowed().
 
-are available in the Git repository at:
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+[PMD: Split from bigger patch, part 1/6]
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Message-Id: <20250110091908.64454-2-philmd@linaro.org>
+---
+ include/hw/qdev-core.h | 2 +-
+ hw/core/qdev-hotplug.c | 2 +-
+ system/qdev-monitor.c  | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-  https://github.com/philmd/qemu.git tags/hw-misc-20250113
-
-for you to fetch changes up to 838cf72b5d2cd875897d8bdfea4b23f6d9fdc602:
-
-  Add a b4 configuration file (2025-01-13 17:21:46 +0100)
-
-----------------------------------------------------------------
-Misc HW patches queue
-
-- Silent unuseful DTC warnings (Philippe)
-- Unify QDev hotplug decision logic (Akihiko)
-- Rework XilinX EthLite RAM buffers (Philippe)
-- Convert vmcoreinfo to 3-phase reset (Philippe)
-- Convert HPPA CPUs to 3-phase reset (Helge)
-- Fix UFS endianness issue (Keoseong)
-- Introduce pci_set_enabled (Akihiko)
-- Clarify Enclave and Firecracker relationship (Alexander)
-- Set SDHCI DMA interrupt status bit in correct place (Bernhard)
-- Fix leak in cryptodev-vhost-user backend (Gabriel)
-- Fixes on PCI USB XHCI (Phil)
-- Convert DPRINTF to trace events (Nikita, Bernhard)
-- Remove &first_cpu in TriCore machine (Philippe)
-- Checkpatch style cleanups (Bibo)
-- MAINTAINERS updates (Marcin, Gustavo, Akihiko)
-- Add default configuration for b4 tool (Jiaxun)
-
-----------------------------------------------------------------
-
-Akihiko Odaki (8):
-  hw/qdev: Pass bus argument to qdev_hotplug_allowed()
-  hw/qdev: Factor qdev_hotunplug_allowed() out
-  hw/qdev: Introduce qdev_hotplug_unplug_allowed_common()
-  hw/qdev: Check DevClass::hotpluggable in hotplug_unplug_allowed_common
-  hw/qdev: Check qbus_is_hotpluggable in hotplug_unplug_allowed_common
-  hw/qdev: Check machine_hotplug_handler in
-    hotplug_unplug_allowed_common
-  hw/pci: Rename has_power to enabled
-  MAINTAINERS: Update path to coreaudio.m
-
-Alexander Graf (1):
-  docs/nitro-enclave: Clarify Enclave and Firecracker relationship
-
-Bernhard Beschow (7):
-  hw/sd/sdhci: Set SDHC_NIS_DMA bit when appropriate
-  hw/timer/imx_gpt: Remove unused define
-  tests/qtest/libqos: Reuse TYPE_IMX_I2C define
-  hw/misc/imx6_src: Convert DPRINTF() to trace events
-  hw/char/imx_serial: Turn some DPRINTF() statements into trace events
-  hw/i2c/imx_i2c: Convert DPRINTF() to trace events
-  hw/gpio/imx_gpio: Turn DPRINTF() into trace events
-
-Bibo Mao (1):
-  hw/loongarch/virt: Checkpatch cleanup
-
-Gabriel Barrantes (1):
-  backends/cryptodev-vhost-user: Fix local_error leaks
-
-Gustavo Romero (1):
-  MAINTAINERS: Add me as the maintainer for ivshmem-flat
-
-Helge Deller (4):
-  target/hppa: Convert hppa_cpu_init() to ResetHold handler
-  hw/hppa: Reset vCPUs calling resettable_reset()
-  target/hppa: Set PC on vCPU reset
-  target/hppa: Speed up hppa_is_pa20()
-
-Jiaxun Yang (1):
-  Add a b4 configuration file
-
-Keoseong Park (1):
-  hw/ufs: Adjust value to match CPU's endian format
-
-Marcin Juszkiewicz (1):
-  MAINTAINERS: remove myself from sbsa-ref
-
-Nikita Shubin (1):
-  hw/char/stm32f2xx_usart: replace print with trace
-
-Phil Dennis-Jordan (2):
-  hw/usb/hcd-xhci-pci: Use modulo to select MSI vector as per spec
-  hw/usb/hcd-xhci-pci: Use event ring 0 if mapping unsupported
-
-Philippe Mathieu-Daudé (26):
-  pc-bios/meson.build: Silent unuseful DTC warnings
-  target: Replace DEVICE(object_new) -> qdev_new()
-  hw: Replace DEVICE(object_new) -> qdev_new()
-  hw/usb: Inline usb_try_new()
-  hw/usb: Inline usb_new()
-  hw/microblaze: Restrict MemoryRegionOps are implemented as 32-bit
-  hw/net/xilinx_ethlite: Map MDIO registers (as unimplemented)
-  hw/net/xilinx_ethlite: Introduce txbuf_ptr() helper
-  hw/net/xilinx_ethlite: Introduce rxbuf_ptr() helper
-  hw/net/xilinx_ethlite: Access TX_GIE register for each port
-  hw/net/xilinx_ethlite: Access TX_LEN register for each port
-  hw/net/xilinx_ethlite: Access TX_CTRL register for each port
-  hw/net/xilinx_ethlite: Map RX_CTRL as MMIO
-  hw/net/xilinx_ethlite: Map TX_LEN as MMIO
-  hw/net/xilinx_ethlite: Map TX_GIE as MMIO
-  hw/net/xilinx_ethlite: Map TX_CTRL as MMIO
-  hw/net/xilinx_ethlite: Map the RAM buffer as RAM memory region
-  hw/net/xilinx_ethlite: Rename 'mmio' MR as 'container'
-  hw/net/xilinx_ethlite: Map RESERVED I/O as unimplemented
-  hw/misc/vmcoreinfo: Rename VMCOREINFO_DEVICE -> TYPE_VMCOREINFO
-  hw/misc/vmcoreinfo: Convert to three-phase reset interface
-  hw/sd/sdhci: Factor sdhci_sdma_transfer() out
-  tests/qtest/boot-serial-test: Correct HPPA machine name
-  tests: Add functional tests for HPPA machines
-  target/hppa: Only set PSW 'M' bit on reset
-  hw/tricore/triboard: Remove unnecessary use of &first_cpu
-
- MAINTAINERS                                |  13 +-
- docs/system/i386/nitro-enclave.rst         |   2 +-
- include/hw/misc/vmcoreinfo.h               |   7 +-
- include/hw/pci/pci.h                       |   1 +
- include/hw/pci/pci_device.h                |   2 +-
- include/hw/qdev-core.h                     |   3 +-
- include/hw/usb.h                           |  12 +-
- target/hppa/cpu.h                          |  11 +-
- backends/cryptodev-vhost-user.c            |   3 +-
- hw/arm/musicpal.c                          |   2 +-
- hw/char/imx_serial.c                       |  58 ++--
- hw/char/stm32f2xx_usart.c                  |  49 ++--
- hw/core/qdev-hotplug.c                     |  45 ++-
- hw/gpio/imx_gpio.c                         |  18 +-
- hw/hppa/machine.c                          |   6 +-
- hw/i2c/imx_i2c.c                           |  21 +-
- hw/intc/xilinx_intc.c                      |   4 +
- hw/loongarch/acpi-build.c                  |   3 +-
- hw/loongarch/boot.c                        |   4 +-
- hw/loongarch/virt.c                        |   8 +-
- hw/misc/imx6_src.c                         |  23 +-
- hw/misc/vmcoreinfo.c                       |  14 +-
- hw/net/xilinx_ethlite.c                    | 312 ++++++++++++++-------
- hw/pci/pci.c                               |  17 +-
- hw/pci/pci_host.c                          |   4 +-
- hw/sd/sdhci.c                              |  33 ++-
- hw/sparc/sun4m.c                           |   4 +-
- hw/timer/imx_gpt.c                         |   4 -
- hw/timer/xilinx_timer.c                    |   4 +
- hw/tricore/triboard.c                      |   6 +-
- hw/ufs/ufs.c                               |   2 +-
- hw/usb/bus.c                               |   5 +-
- hw/usb/dev-serial.c                        |   2 +-
- hw/usb/hcd-xhci-pci.c                      |   1 +
- hw/usb/hcd-xhci.c                          |   4 +
- system/qdev-monitor.c                      |  37 +--
- target/hppa/cpu.c                          |  22 +-
- target/mips/cpu.c                          |   2 +-
- target/xtensa/cpu.c                        |   2 +-
- tests/qtest/boot-serial-test.c             |   2 -
- tests/qtest/libqos/arm-imx25-pdk-machine.c |   5 +-
- tests/qtest/libqos/i2c-imx.c               |   4 +-
- tests/qtest/ufs-test.c                     |   2 +-
- .b4-config                                 |  14 +
- hw/char/trace-events                       |  11 +
- hw/gpio/trace-events                       |   5 +
- hw/i2c/trace-events                        |   5 +
- hw/misc/trace-events                       |   6 +
- pc-bios/meson.build                        |   3 +-
- tests/functional/meson.build               |   4 +
- tests/functional/test_hppa_seabios.py      |  35 +++
- tests/qtest/meson.build                    |   2 +-
- 52 files changed, 558 insertions(+), 310 deletions(-)
- create mode 100644 .b4-config
- create mode 100755 tests/functional/test_hppa_seabios.py
-
+diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+index 89575e74e27..930b00fb09a 100644
+--- a/include/hw/qdev-core.h
++++ b/include/hw/qdev-core.h
+@@ -540,7 +540,7 @@ void qdev_set_legacy_instance_id(DeviceState *dev, int alias_id,
+                                  int required_for_version);
+ HotplugHandler *qdev_get_bus_hotplug_handler(DeviceState *dev);
+ HotplugHandler *qdev_get_machine_hotplug_handler(DeviceState *dev);
+-bool qdev_hotplug_allowed(DeviceState *dev, Error **errp);
++bool qdev_hotplug_allowed(DeviceState *dev, BusState *bus, Error **errp);
+ 
+ /**
+  * qdev_get_hotplug_handler() - Get handler responsible for device wiring
+diff --git a/hw/core/qdev-hotplug.c b/hw/core/qdev-hotplug.c
+index d495d0e9c70..19fbb11a316 100644
+--- a/hw/core/qdev-hotplug.c
++++ b/hw/core/qdev-hotplug.c
+@@ -30,7 +30,7 @@ HotplugHandler *qdev_get_machine_hotplug_handler(DeviceState *dev)
+     return NULL;
+ }
+ 
+-bool qdev_hotplug_allowed(DeviceState *dev, Error **errp)
++bool qdev_hotplug_allowed(DeviceState *dev, BusState *bus, Error **errp)
+ {
+     MachineState *machine;
+     MachineClass *mc;
+diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+index 23043b1e0d5..83388dc0c4a 100644
+--- a/system/qdev-monitor.c
++++ b/system/qdev-monitor.c
+@@ -691,7 +691,7 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
+ 
+     /* Check whether the hotplug is allowed by the machine */
+     if (phase_check(PHASE_MACHINE_READY)) {
+-        if (!qdev_hotplug_allowed(dev, errp)) {
++        if (!qdev_hotplug_allowed(dev, bus, errp)) {
+             goto err_del_dev;
+         }
+ 
 -- 
 2.47.1
 
