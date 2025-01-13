@@ -2,93 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98573A0BD54
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 17:27:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4CA0A0BD8D
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 17:31:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXNGc-0006QP-Ir; Mon, 13 Jan 2025 11:26:18 -0500
+	id 1tXNKB-0007S6-5V; Mon, 13 Jan 2025 11:29:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tXNGX-0006Pt-FB
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 11:26:13 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tXNGS-0003VV-4q
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 11:26:11 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5d9f0a6ad83so648038a12.2
- for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 08:26:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736785566; x=1737390366; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=dLepUCxL+2iBrTVKhtRYOOcQ7Yqi1Ij2tD+XmIEcCXc=;
- b=BDJ3LFgHYI/mv7IGgZX5z6kpzL9u7mA17KNPPnq7oHPt9VOkKIolVJE7tNZHYdGccb
- hO0BVg5fSD28emAiFpRJVXUqJJTLgv98DrNs+c+/8da4wdQOBg4uRqS+fL8CKWGveJh0
- vvaIE7AyXtpPjVU6OEPR11oZzJWWiRZE53oqO6ROfeuS2dAY836nVli5ZfzhebH6xfPH
- uKPfd04/yUMTVNb14yQCNQuEVkUZm5iB0OWoguPEqhaFd5RyhlmG59MXOMX9RdaEVTTB
- 0rLWtusiCp1HigozHElmlQHOnlkWP3zxLiZnFUaH1Ud1xIDNXuTz3tcozFmy2mGQR2O/
- +EuA==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tXNK7-0007L1-6D
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 11:29:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tXNK5-0003nI-KH
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 11:29:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736785791;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=xjlYvkcRZyAlvewrpdlAZ1wrDvLOLiZ07Cp5ONCqP8k=;
+ b=iUenu+AY4MZIcx9ueLPeyTN92VH5yqTr6CgWIHtljkzaDGX3nMqxiIqCaVuD6JuMiWGvxW
+ ONGWSpIy26Bqgbe/Dc6W31fJzTSLgZ+C4cBW7O/lDfAONDWwYHd8c4aB6yKxbDKP13msAu
+ w1WcBgVRJ68ohxI5m0X1+5NfznuZowo=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-590-40EOzY3cMue6Qzuf6vCA3A-1; Mon, 13 Jan 2025 11:29:50 -0500
+X-MC-Unique: 40EOzY3cMue6Qzuf6vCA3A-1
+X-Mimecast-MFC-AGG-ID: 40EOzY3cMue6Qzuf6vCA3A
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-46799aa9755so112970421cf.0
+ for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 08:29:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736785566; x=1737390366;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=dLepUCxL+2iBrTVKhtRYOOcQ7Yqi1Ij2tD+XmIEcCXc=;
- b=SlaUu/p2+btTlPcsFtAxQaFAGldrIbJkF4qKNMM0ZUOrriwOynovnxSwrIDwB6oGTX
- AWDb81vgqS6tsyCljCISLu8y7Pm3zNXFHf66UbpzKwYZ5zIHeakl+qxn2ac3vhNmlLcj
- zH587t4xmVXd3jDVp9CSgjNEW80e3Yi5rSk6Vqzm8YNL3L4h9I3F1pe1V8CEQ1Apa9ZT
- R8abQTki4u03SPi99etPLxouoDhIgLqJBU1U1AS5ecyLEATpdMCKqOxPo+KVuHfw4QFK
- jKeHWiI83efvnNbbjgpQJdRRm8rj0T46QBrQd3aEfSrSWNvjznbChd7c7exC6fXJFde6
- vqiA==
-X-Gm-Message-State: AOJu0Yz/eD7prnnPlYgyN9x8xvHwCJrQMSdhuwjWa8b9FkUL8k4hLLJA
- vuncRoJ96KYcheXblmdGuH79FfhmnEoX4nz9K3f8Vhj5nLsoE4ixJQrec+JI2yoiY9aWzGuru1a
- zdnY=
-X-Gm-Gg: ASbGncu0ME0uITf+78jxVTsSOsnKf6NZ/5jGMXLd39aeaBWHo/BIIt61sE5zYhUUyjI
- /B2KP9T2Vth5c6J/JWNSarser8dbGSm4JJqxe9buSFCC5s5CuGZjwev3MMRNdvY3ldW6WkhwP1M
- bwmgTGy5CPEhBXkm6znqCeipjRptf8OOSFXOArPdBWIaFTuOqIkSeXE/zIhnHxdEuz6WUrSOrnl
- I7UXzjvbY+qprc2v21Gd7zbgkNjBfQyhsn3yfXvXBkueX+fbiIZ7aQ=
-X-Google-Smtp-Source: AGHT+IFacEOQ0n7s/Au3f0MeyVp0jq1QAS2iDiaINU8QRhzUqi57DVRDRs26bdW9UuCSEQj/gSg2nA==
-X-Received: by 2002:a17:906:ef0e:b0:aa6:9e0f:d985 with SMTP id
- a640c23a62f3a-ab2ab748e6fmr2171896366b.35.1736785565839; 
- Mon, 13 Jan 2025 08:26:05 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c9563af3sm525595566b.105.2025.01.13.08.26.04
+ d=1e100.net; s=20230601; t=1736785790; x=1737390590;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=xjlYvkcRZyAlvewrpdlAZ1wrDvLOLiZ07Cp5ONCqP8k=;
+ b=s9/2uEfEgcJ993B9CyO/PFrY2GJvZPRAmLGhHNIh75PsB1W/fTTT+DwuawahRGTja5
+ Z4Q43M0PB4yXVUS0sPAiHh0JETtAEF5UAtTBu6yxUq5OqATW0PRa1SqGoS/hey49LZH5
+ t98LieG00MCOxsmlqCwVE4mQZdTaSiKQabbx7PmqiaOEUzECojw0Vp8nlB5gexQACxks
+ PDaplImLI+Bz70aW5iVUE82cwb/Q3cdkfsvYpMrtOaRTTx2Tkra88bFw4JNoKjzckhtK
+ FDhCeLWm8BoDP7kiH9/wOHl0F6FkGuq5xtpo9YVkBEAYfwG0Ip3K5sFMahw5Q5yriAT/
+ MhiA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV51F5HKlaAuhEerY9RiZuX++ZjClR2HTdMLbMDK75jhKRvJFiRDwwUdCeaar3dhgQz+yGPTRULf3ue@nongnu.org
+X-Gm-Message-State: AOJu0YxBq94SefHBJ90B4Gnngss0wuhRQM7ikN7M2TzNgFdiD3F8/Bfv
+ 23mletuY6B2nWUTR/CanJQ/MRPg0qPjfT6gqHAEo4sg7BsZ52ctfJfrlK/tmkv6XVicDsrOesqn
+ I+fxtH4GM/QXAKrp2pHLBlgeTMQHTUh+lSGqryMWRp8d0uMcJeI0o
+X-Gm-Gg: ASbGncvuJ/DFTFyUSTq7hH8TGRMLKXRIs7J4m28QAMX+iYToEBLWQ/lZo9cjh7IzZB6
+ YqS1vVqGjbro3n/sKQ5UG1uiznI49B/5RnBreAvreXmq9D5/tQ+0G+v1dqW3VF6lO69s8v8Q1bU
+ KTaN9a1TmLKblivIx5+bfZ5DK4uLjjhACa/g5xzTFMnljreYKuh/bBPdegFNu/rIoPswje+b5T5
+ /SWLVrVcmXxYbxy6K+tjkV6o85ICn8s7w9+FEoB50HWH3ykesbub4jCViAa9mQ3PmvrhTLQv7Ih
+ A3T0KkoOuMSzqJvsjA==
+X-Received: by 2002:ac8:574a:0:b0:466:957c:ab22 with SMTP id
+ d75a77b69052e-46c71081973mr375009631cf.43.1736785790072; 
+ Mon, 13 Jan 2025 08:29:50 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHWPavhxYLLacbpC+4VVER5Hv8CwT7VARAtos+QGtGdohgWu2fqBnTGD2nE+frq/GzXo2qSaw==
+X-Received: by 2002:ac8:574a:0:b0:466:957c:ab22 with SMTP id
+ d75a77b69052e-46c71081973mr375009181cf.43.1736785789617; 
+ Mon, 13 Jan 2025 08:29:49 -0800 (PST)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6dfad85f6a7sm43302526d6.23.2025.01.13.08.29.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 Jan 2025 08:26:04 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 4A0975F713;
- Mon, 13 Jan 2025 16:26:03 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org,  qemu-stable <qemu-stable@nongnu.org>, Stefan
- Hajnoczi <stefanha@redhat.com>
-Subject: Re: [PATCH v4 17/32] system/qtest: properly feedback results of
- clock_[step|set]
-In-Reply-To: <15435e6d-a77c-4d3e-ae06-b1cd23fbee61@tls.msk.ru> (Michael
- Tokarev's message of "Mon, 13 Jan 2025 18:22:05 +0300")
-References: <20250108121054.1126164-1-alex.bennee@linaro.org>
- <20250108121054.1126164-18-alex.bennee@linaro.org>
- <15435e6d-a77c-4d3e-ae06-b1cd23fbee61@tls.msk.ru>
-User-Agent: mu4e 1.12.8; emacs 29.4
-Date: Mon, 13 Jan 2025 16:26:03 +0000
-Message-ID: <87frlmllyc.fsf@draig.linaro.org>
+ Mon, 13 Jan 2025 08:29:48 -0800 (PST)
+Date: Mon, 13 Jan 2025 11:29:46 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: Shivam Kumar <shivam.kumar1@nutanix.com>, qemu-devel@nongnu.org
+Subject: Re: [RFC PATCH] Fix race in live migration failure path
+Message-ID: <Z4U_emPVDfTb1VmF@x1n>
+References: <20250110100707.4805-1-shivam.kumar1@nutanix.com>
+ <87frlqerxp.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Disposition: inline
+In-Reply-To: <87frlqerxp.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.019,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.787,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,32 +105,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Michael Tokarev <mjt@tls.msk.ru> writes:
+On Fri, Jan 10, 2025 at 10:09:38AM -0300, Fabiano Rosas wrote:
+> Shivam Kumar <shivam.kumar1@nutanix.com> writes:
+> 
+> > Even if a live migration fails due to some reason, migration status
+> > should not be set to MIGRATION_STATUS_FAILED until migrate fd cleanup
+> > is done, else the client can trigger another instance of migration
+> > before the cleanup is complete (as it would assume no migration is
+> > active) or reset migration capabilities affecting old migration's
+> > cleanup. Hence, set the status to 'failing' when a migration failure
+> > happens and once the cleanup is complete, set the migration status to
+> > MIGRATION_STATUS_FAILED.
+> >
+> > Signed-off-by: Shivam Kumar <shivam.kumar1@nutanix.com>
+> > ---
+> >  migration/migration.c | 49 +++++++++++++++++++++----------------------
+> >  migration/migration.h |  9 ++++++++
+> >  migration/multifd.c   |  6 ++----
+> >  migration/savevm.c    |  7 +++----
+> >  4 files changed, 38 insertions(+), 33 deletions(-)
+> >
+> > diff --git a/migration/migration.c b/migration/migration.c
+> > index df61ca4e93..f084f54f6b 100644
+> > --- a/migration/migration.c
+> > +++ b/migration/migration.c
+> > @@ -1143,8 +1143,9 @@ static bool migration_is_active(void)
+> 
+> migration_is_running() is the one that gates qmp_migrate() and
+> qmp_migrate_set_capabilities().
+> 
+> >  {
+> >      MigrationState *s = current_migration;
+> >  
+> > -    return (s->state == MIGRATION_STATUS_ACTIVE ||
+> > -            s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE);
+> > +    return ((s->state == MIGRATION_STATUS_ACTIVE ||
+> > +            s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE) &&
+> > +            !qatomic_read(&s->failing));
+> >  }
+> >  
+> >  static bool migrate_show_downtime(MigrationState *s)
+> > @@ -1439,6 +1440,11 @@ static void migrate_fd_cleanup(MigrationState *s)
+> >                            MIGRATION_STATUS_CANCELLED);
+> >      }
+> >  
+> > +    if (qatomic_xchg(&s->failing, 0)) {
+> > +        migrate_set_state(&s->state, s->state,
+> > +                          MIGRATION_STATUS_FAILED);
+> > +    }
+> 
+> I hope you've verified that sure every place that used to set FAILED
+> will also reach migrate_fd_cleanup() eventually.
+> 
+> Also, we probably still need the FAILING state. Otherwise, this will
+> trip code that expects a state change on failure. Anything that does:
+> 
+> if (state != MIGRATION_STATUS_FOO) {
+>    ...
+> }
+> 
+> So I think the change overall should be
+> 
+> -migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
+> +migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILING);
+> 
+>  void migrate_set_state(MigrationStatus *state, MigrationStatus old_state,
+>                         MigrationStatus new_state)
+>  {
+>      assert(new_state < MIGRATION_STATUS__MAX);
+>      if (qatomic_cmpxchg(state, old_state, new_state) == old_state) {
+>          trace_migrate_set_state(MigrationStatus_str(new_state));
+> 
+> +        if (new_state == MIGRATION_STATUS_FAILING) {
+> +            qatomic_set(&s->failing, 1);
+> +        }
+>          migrate_generate_event(new_state);
+>      }
+>  }
+> 
+> And we should proably do the same for CANCELLING actually, but there the
+> (preexisting) issue is actual concurrency, while here it's just
+> inconsistency in the state.
 
-> Ghrm. 46 recipients seems to be quite a bit too aggressive..
+Yes something like FAILING sounds reasonable.  Though since we have
+s->error, I wonder whether that's a better place to represent a migration
+as "failing" in one place, because otherwise we need to set two places
+(both FAILING state, and the s->error) - whenever something fails, we'd
+better always update s->error so as to remember what failed, then reported
+via query-migrate.
 
-I think git-publish just accumulates Cc's from each run for a given
-branch. While I can reset the version counter I'm not sure where I can
-reset the Cc list from.
+From that POV, s->failing is probably never gonna be needed (due to
+s->error being present anyway)?  So far, such Error* looks like the best
+single point to say that the migration is failing - it also enforces the
+Error to be provided whoever wants to set it to failing state.
 
-> 08.01.2025 15:10, Alex Benn=C3=A9e wrote:
->> Time will not advance if the system is paused or there are no timer
->> events set for the future. In absence of pending timer events
->> advancing time would make no difference the system state. Attempting
->> to do so would be a bug and the test or device under test would need
->> fixing.
->> Tighten up the result reporting to `FAIL` if time was not advanced.
->
-> Is this qemu-stable material?
+-- 
+Peter Xu
 
-Probably not - I guess that was a Cc from a previous series that stuck?
-
->
-> Thanks,
->
-> /mjt
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
