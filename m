@@ -2,66 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B5BA0B7C5
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 14:10:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B65A0B8A0
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 14:48:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXKC2-0005Ri-7L; Mon, 13 Jan 2025 08:09:22 -0500
+	id 1tXKmq-0000wj-TA; Mon, 13 Jan 2025 08:47:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tXKBw-0005Pf-OV; Mon, 13 Jan 2025 08:09:16 -0500
-Received: from nyc.source.kernel.org ([147.75.193.91])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tXKmo-0000w8-2P
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 08:47:22 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tXKBr-0000fG-0g; Mon, 13 Jan 2025 08:09:15 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id E26D5A40F7B;
- Mon, 13 Jan 2025 13:07:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20C3C4AF09;
- Mon, 13 Jan 2025 13:08:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1736773738;
- bh=BRjriaIt8nkXUiP7jd2LKBVD4nrXXJI/n4Lw6ns9PTM=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Eo0+UWtgrGqXCa/LVSY34fEqGj5MRTm2dd576KpfLWsuAzXhk4iXyzEIRyKWoHD/u
- +ehK+6cHmwQD4Lqk6RxwZb74FjO1kaqUrraemGhS9C3rawMDmoAihHgIA3AZUMgN+N
- GgLIu7SYeJ9x4IJQW+YU4F+rFm2gAuPdCDJjcT9NQT3vbqMyitLCBuoGeh5Oxd12zm
- PahVqp6mxff4l9z9oOSsdKCTV8AqeIfQVOzaIE79x+PZAJLsi9XHB8+klv+KPlPMnc
- Ouu3zXpQlVNpMn13R5YrG+849no6jiJjgu2Di5fckE/IJvGdxMgUYZ+qiF47w8yNnz
- f7MhkO/1/0XbQ==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98)
- (envelope-from <mchehab+huawei@kernel.org>)
- id 1tXKBc-00000003Yn9-3kdL; Mon, 13 Jan 2025 14:08:56 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ani Sinha <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- linux-kernel@vger.kernel.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH v4 5/5] acpi/generic_event_device: add logic to detect if HEST
- addr is available
-Date: Mon, 13 Jan 2025 14:08:51 +0100
-Message-ID: <20250113130854.848688-6-mchehab+huawei@kernel.org>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tXKmm-0006UH-76
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 08:47:21 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50D3qMak031747;
+ Mon, 13 Jan 2025 13:47:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=wS4KwPvheEKl9LmEV+aOQgFYLugmVVsmUrXILyQKy
+ sM=; b=m5QaLai5kwDVqQJalaz4aETbCsKtetFXBZsf1YGgc5A/a6CFYzL7nxISl
+ qTu1EqUE+Yy9ld+TyrEiCZIm2YHrovQ8v9+AAxXDsM4n4sFqVbwQIf5epkynCRm4
+ rD+hZy7Wqpo+mUfU4FdJYymwvRmmfh/qIsdHgnaX5xH8QEZPl3SJCYjHihcdyjLg
+ 43Ew0AosVj0ZD6CMSavwPOjCcziCYjfomu3CoHHOKjOKrNw8tBqC2pt+aMM3e2N1
+ s1vhNLzYzP1yngAlf4j7Ymt/5djATj+3QyZsI6/NbZJ+nDK5llCZfMqORcI+/aHy
+ PLqTzGto9LMxdOnH2tZnCbs+kcU2g==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 444uac275u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 13 Jan 2025 13:47:15 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50D9t3K5000881;
+ Mon, 13 Jan 2025 13:47:15 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44456jp51b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 13 Jan 2025 13:47:14 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 50DDlD1n33882528
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 13 Jan 2025 13:47:13 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5C7CE2004B;
+ Mon, 13 Jan 2025 13:47:13 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F1F7620040;
+ Mon, 13 Jan 2025 13:47:12 +0000 (GMT)
+Received: from heavy.ibm.com (unknown [9.179.24.22])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 13 Jan 2025 13:47:12 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 0/3] gdbstub: Protect gdb_handlesig() with EXCLUSIVE_GUARD()
+Date: Mon, 13 Jan 2025 14:36:26 +0100
+Message-ID: <20250113134658.68376-1-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250113130854.848688-1-mchehab+huawei@kernel.org>
-References: <20250113130854.848688-1-mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=147.75.193.91;
- envelope-from=mchehab+huawei@kernel.org; helo=nyc.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: U-_hp4kMbMIBAMc47BzNB_UkZJSt5e6K
+X-Proofpoint-ORIG-GUID: U-_hp4kMbMIBAMc47BzNB_UkZJSt5e6K
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0
+ clxscore=1015 spamscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
+ mlxscore=0 mlxlogscore=960 priorityscore=1501 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501130114
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.019,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=-1.787, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -79,170 +103,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Create a new property (x-has-hest-addr) and use it to detect if
-the GHES table offsets can be calculated from the HEST address
-(qemu 9.2 and upper) or via the legacy way via an offset obtained
-from the hardware_errors firmware file.
+Hi,
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- hw/acpi/generic_event_device.c |  1 +
- hw/acpi/ghes.c                 | 28 +++++++++++++++++++++-------
- hw/arm/virt-acpi-build.c       | 30 ++++++++++++++++++++++++++----
- hw/core/machine.c              |  5 ++++-
- include/hw/acpi/ghes.h         |  1 +
- 5 files changed, 53 insertions(+), 12 deletions(-)
+I ran into the issue with only one thread being stopped on a
+breakpoint hit [1] again [2]. While a proper solution to this includes
+kicking all threads using a reserved host signal and parking them, and
+is partially in review and partially in the works, this small series
+resolves most of the problems that occur during a typical debugging
+session. Furthermore, it is a subset of the ultimate solution and
+therefore would not have to be reverted.
 
-diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index 5346cae573b7..fe537ed05c66 100644
---- a/hw/acpi/generic_event_device.c
-+++ b/hw/acpi/generic_event_device.c
-@@ -318,6 +318,7 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
- 
- static const Property acpi_ged_properties[] = {
-     DEFINE_PROP_UINT32("ged-event", AcpiGedState, ged_event_bitmap, 0),
-+    DEFINE_PROP_BOOL("x-has-hest-addr", AcpiGedState, ghes_state.hest_lookup, true),
- };
- 
- static const VMStateDescription vmstate_memhp_state = {
-diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index afcdabc76791..3119dcaa84e4 100644
---- a/hw/acpi/ghes.c
-+++ b/hw/acpi/ghes.c
-@@ -359,6 +359,8 @@ void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
- {
-     AcpiTable table = { .sig = "HEST", .rev = 1,
-                         .oem_id = oem_id, .oem_table_id = oem_table_id };
-+    AcpiGedState *acpi_ged_state;
-+    AcpiGhesState *ags = NULL;
-     int i;
- 
-     build_ghes_error_table(hardware_errors, linker, num_sources);
-@@ -379,10 +381,20 @@ void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
-      * tell firmware to write into GPA the address of HEST via fw_cfg,
-      * once initialized.
-      */
--    bios_linker_loader_write_pointer(linker,
--                                     ACPI_HEST_ADDR_FW_CFG_FILE, 0,
--                                     sizeof(uint64_t),
--                                     ACPI_BUILD_TABLE_FILE, hest_offset);
-+
-+    acpi_ged_state = ACPI_GED(object_resolve_path_type("", TYPE_ACPI_GED,
-+                                                       NULL));
-+    if (!acpi_ged_state) {
-+        return;
-+    }
-+
-+    ags = &acpi_ged_state->ghes_state;
-+    if (ags->hest_lookup) {
-+        bios_linker_loader_write_pointer(linker,
-+                                         ACPI_HEST_ADDR_FW_CFG_FILE, 0,
-+                                         sizeof(uint64_t),
-+                                         ACPI_BUILD_TABLE_FILE, hest_offset);
-+    }
- }
- 
- void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
-@@ -396,8 +408,10 @@ void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
-     fw_cfg_add_file_callback(s, ACPI_HW_ERROR_ADDR_FW_CFG_FILE, NULL, NULL,
-         NULL, &(ags->hw_error_le), sizeof(ags->hw_error_le), false);
- 
--    fw_cfg_add_file_callback(s, ACPI_HEST_ADDR_FW_CFG_FILE, NULL, NULL,
--        NULL, &(ags->hest_addr_le), sizeof(ags->hest_addr_le), false);
-+    if (ags && ags->hest_lookup) {
-+        fw_cfg_add_file_callback(s, ACPI_HEST_ADDR_FW_CFG_FILE, NULL, NULL,
-+            NULL, &(ags->hest_addr_le), sizeof(ags->hest_addr_le), false);
-+    }
- 
-     ags->present = true;
- }
-@@ -512,7 +526,7 @@ void ghes_record_cper_errors(const void *cper, size_t len,
-     }
-     ags = &acpi_ged_state->ghes_state;
- 
--    if (!ags->hest_addr_le) {
-+    if (!ags->hest_lookup) {
-         get_hw_error_offsets(le64_to_cpu(ags->hw_error_le),
-                              &cper_addr, &read_ack_register_addr);
-     } else {
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 3d411787fc37..ada5d08cfbe7 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -897,6 +897,10 @@ static const AcpiNotificationSourceId hest_ghes_notify[] = {
-     { ACPI_HEST_SRC_ID_SYNC, ACPI_GHES_NOTIFY_SEA },
- };
- 
-+static const AcpiNotificationSourceId hest_ghes_notify_9_2[] = {
-+    { ACPI_HEST_SRC_ID_SYNC, ACPI_GHES_NOTIFY_SEA },
-+};
-+
- static
- void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
- {
-@@ -950,10 +954,28 @@ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
-     build_dbg2(tables_blob, tables->linker, vms);
- 
-     if (vms->ras) {
--        acpi_add_table(table_offsets, tables_blob);
--        acpi_build_hest(tables_blob, tables->hardware_errors, tables->linker,
--                        hest_ghes_notify, ARRAY_SIZE(hest_ghes_notify),
--                        vms->oem_id, vms->oem_table_id);
-+        AcpiGhesState *ags;
-+        AcpiGedState *acpi_ged_state;
-+
-+        acpi_ged_state = ACPI_GED(object_resolve_path_type("", TYPE_ACPI_GED,
-+                                                       NULL));
-+        if (acpi_ged_state) {
-+            ags = &acpi_ged_state->ghes_state;
-+
-+            acpi_add_table(table_offsets, tables_blob);
-+
-+            if (!ags->hest_lookup) {
-+                acpi_build_hest(tables_blob, tables->hardware_errors,
-+                                tables->linker, hest_ghes_notify_9_2,
-+                                ARRAY_SIZE(hest_ghes_notify_9_2),
-+                                vms->oem_id, vms->oem_table_id);
-+            } else {
-+                acpi_build_hest(tables_blob, tables->hardware_errors,
-+                                tables->linker, hest_ghes_notify,
-+                                ARRAY_SIZE(hest_ghes_notify),
-+                                vms->oem_id, vms->oem_table_id);
-+            }
-+        }
-     }
- 
-     if (ms->numa_state->num_nodes > 0) {
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index c949af97668d..23bbc5ebcc4a 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -34,9 +34,12 @@
- #include "hw/virtio/virtio-pci.h"
- #include "hw/virtio/virtio-net.h"
- #include "hw/virtio/virtio-iommu.h"
-+#include "hw/acpi/generic_event_device.h"
- #include "audio/audio.h"
- 
--GlobalProperty hw_compat_9_2[] = {};
-+GlobalProperty hw_compat_9_2[] = {
-+    { TYPE_ACPI_GED, "x-has-hest-addr", "false" },
-+};
- const size_t hw_compat_9_2_len = G_N_ELEMENTS(hw_compat_9_2);
- 
- GlobalProperty hw_compat_9_1[] = {
-diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
-index 237721fec0a2..164ed8b0f9a3 100644
---- a/include/hw/acpi/ghes.h
-+++ b/include/hw/acpi/ghes.h
-@@ -61,6 +61,7 @@ typedef struct AcpiGhesState {
-     uint64_t hest_addr_le;
-     uint64_t hw_error_le;
-     bool present; /* True if GHES is present at all on this board */
-+    bool hest_lookup; /* True if HEST address is present */
- } AcpiGhesState;
- 
- /*
+Best regards,
+Ilya
+
+[1] https://gitlab.com/qemu-project/qemu/-/issues/2465
+[2] https://lore.kernel.org/qemu-devel/6d1171d8debb462f468bb47ff875e0e9db253b4e.camel@linux.ibm.com/
+
+Ilya Leoshkevich (3):
+  cpu: Set current_cpu early in qemu-user
+  cpu: Introduce EXCLUSIVE_GUARD()
+  gdbstub: Protect gdb_handlesig() with EXCLUSIVE_GUARD()
+
+ bsd-user/main.c       |  2 ++
+ gdbstub/user.c        |  2 ++
+ include/hw/core/cpu.h | 11 +++++++++++
+ linux-user/main.c     |  2 ++
+ linux-user/syscall.c  |  1 +
+ 5 files changed, 18 insertions(+)
+
 -- 
 2.47.1
 
