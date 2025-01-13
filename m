@@ -2,79 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 304BBA0AF81
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 07:54:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B89A0B04A
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 08:51:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXEKo-0005QD-4h; Mon, 13 Jan 2025 01:54:02 -0500
+	id 1tXFDR-0005jp-Ae; Mon, 13 Jan 2025 02:50:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tXEKl-0005PE-G5
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 01:53:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1tXFCu-0005bq-S4
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 02:49:58 -0500
+Received: from mx1.zhaoxin.com ([210.0.225.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tXEKj-0005QJ-Dd
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 01:53:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736751236;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=WxrwpAjjdjreIkyI2bgo1HNnCZ/82qbcJetGPVeamBI=;
- b=V0TRPbVjM/kb/x8RFs7/LZbltDnSDv8pEXF9Yaqkw6SuN/mV6FxQ2m7QwsgXOT4dHxKTVV
- AkZjWl3BZc0n3smzn41O7F+qVJqV9C6tuX38H/TarZXu+08cWeyDcnfyLW2n5XkRomZDV6
- S+WpDaPDYlO3nr5qsb5xp2Elvf6d0xw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-599-b0qPUnj1NaqNMP5iBpzQ4w-1; Mon,
- 13 Jan 2025 01:53:50 -0500
-X-MC-Unique: b0qPUnj1NaqNMP5iBpzQ4w-1
-X-Mimecast-MFC-AGG-ID: b0qPUnj1NaqNMP5iBpzQ4w
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CF80919560B7; Mon, 13 Jan 2025 06:53:48 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.48])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 946CC19560AD; Mon, 13 Jan 2025 06:53:47 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 750BE21E6924; Mon, 13 Jan 2025 07:53:45 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,  qemu-devel@nongnu.org,  Alex
- =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,  Daniel P. =?utf-8?Q?Be?=
- =?utf-8?Q?rrang=C3=A9?=
- <berrange@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Markus Armbruster
- <armbru@redhat.com>
-Subject: Re: [PATCH v2] Add a b4 configuration file
-In-Reply-To: <b7d08568-153c-4a35-9395-214cd8d0a228@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Sun, 12 Jan 2025 19:01:26
- +0100")
-References: <20250102-b4-config-v2-1-cc7299e399bb@flygoat.com>
- <b7d08568-153c-4a35-9395-214cd8d0a228@linaro.org>
-Date: Mon, 13 Jan 2025 07:53:45 +0100
-Message-ID: <87bjwbtdae.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1tXFCr-0003Wq-Ew
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 02:49:56 -0500
+X-ASG-Debug-ID: 1736754577-086e2312d6ae3b0001-jgbH7p
+Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by
+ mx1.zhaoxin.com with ESMTP id izh1ZS6vXZDFl0hh (version=TLSv1.2
+ cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+ Mon, 13 Jan 2025 15:49:37 +0800 (CST)
+X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX3.zhaoxin.com
+ (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 13 Jan
+ 2025 15:49:37 +0800
+Received: from ZXSHMBX1.zhaoxin.com ([fe80::1f6:1739:ec6a:3d64]) by
+ ZXSHMBX1.zhaoxin.com ([fe80::1f6:1739:ec6a:3d64%7]) with mapi id
+ 15.01.2507.039; Mon, 13 Jan 2025 15:49:37 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from ewan-server.zhaoxin.com (10.28.66.62) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 13 Jan
+ 2025 15:44:13 +0800
+From: EwanHai <ewanhai-oc@zhaoxin.com>
+To: <pbonzini@redhat.com>, <zhao1.liu@intel.com>
+CC: <qemu-devel@nongnu.org>, <ewanhai@zhaoxin.com>, <cobechen@zhaoxin.com>,
+ <rockcui@zhaoxin.com>, <louisqi@zhaoxin.com>, <liamni@zhaoxin.com>,
+ <frankzhu@zhaoxin.com>
+Subject: [PATCH v5 0/4] Add support for Zhaoxin YongFeng CPU model and other
+Date: Mon, 13 Jan 2025 02:44:09 -0500
+X-ASG-Orig-Subj: [PATCH v5 0/4] Add support for Zhaoxin YongFeng CPU model and
+ other
+Message-ID: <20250113074413.297793-1-ewanhai-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.025,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Originating-IP: [10.28.66.62]
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Moderation-Data: 1/13/2025 3:49:35 PM
+X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
+X-Barracuda-Start-Time: 1736754577
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 2394
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No,
+ SCORE=-2.02 using global scores of TAG_LEVEL=1000.0
+ QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.135768
+ Rule breakdown below
+ pts rule name              description
+ ---- ---------------------- --------------------------------------------------
+Received-SPF: pass client-ip=210.0.225.12; envelope-from=EwanHai-oc@zhaoxin.com;
+ helo=mx1.zhaoxin.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,96 +94,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+This patch series introduces a new CPU model, Zhaoxin YongFeng, which is
+Zhaoxin's latest server processor. Additionally, it consolidates vendor nam=
+ing
+within QEMU: since both "  Shanghai  " and "Centaurhauls" now belong to
+Zhaoxin, the logic has been updated to treat "Centaurhauls" as part of the
+Zhaoxin vendor framework. Finally, the series addresses a CPUID compatibili=
+ty
+issue, ensuring correct detection of the CMPLegacy feature.
 
-> On 2/1/25 23:53, Jiaxun Yang wrote:
->> b4 [1] is a convenient tool to manage patch series with mailing list
->> working flow.
->> Add a project default config file to match QEMU's mailing list conventio=
-ns
->> as well as adopting differences on scripting.
->> Examples of b4:
->> ```
->> $ b4 prep --check
->> Checking patches using:
->>    scripts/checkpatch.pl -q --terse --no-summary --mailback -
->> ---
->> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
->> ---
->> Changes in v2:
->> - Add lore masks (philmd) from:
->>    https://lore.kernel.org/qemu-devel/20241224135054.10243-1-philmd@lina=
-ro.org/
->> - Link to v1: https://lore.kernel.org/r/20241222-b4-config-v1-1-b3667beb=
-30a4@flygoat.com
->> ---
->> =E2=97=8F cc5a4c890fed: Add a b4 configuration file
->>    =E2=97=8F checkpatch.pl: 27: WARNING: added, moved or deleted file(s)=
-, does MAINTAINERS need updating?
->> ---
->> Success: 0, Warning: 1, Error: 0
->> ```
->> ```
->> $ b4 prep -c
->> Will collect To: addresses using echo
->> Will collect Cc: addresses using get_maintainer.pl
->> Collecting To/Cc addresses
->>      + To: qemu-devel@nongnu.org
->> ---
->> You can trim/expand this list with: b4 prep --edit-cover
->> Invoking git-filter-repo to update the cover letter.
->> New history written in 0.02 seconds...
->> Completely finished after 0.06 seconds
->> ```
->> [1]: https://b4.docs.kernel.org/
->> Co-developed-by: Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@lina=
-ro.org>
->> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
->> ---
->>   .b4-config | 14 ++++++++++++++
->>   1 file changed, 14 insertions(+)
->
-> Squashing in order to avoid checkpatch.pl error:
->
-> -- >8 --
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index ec898a3cbc6..0c71eb3f925 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -4310,3 +4310,9 @@ Machine development tool
->  M: Maksim Davydov <davydov-max@yandex-team.ru>
->  S: Supported
->  F: scripts/compare-machine-types.py
-> +
-> +b4 tool configuration
+### Summary of changes
 
-Start the title with a capital letter, please.
+EwanHai (4):
+  target/i386: Add support for Zhaoxin CPU vendor identification
+  target/i386: Add CPUID leaf 0xC000_0001 EDX definitions
+  target/i386: Introduce Zhaoxin Yongfeng CPU model
+  target/i386: Mask CMPLegacy bit in CPUID[0x80000001].ECX for Zhaoxin
+    CPUs
 
-> +M: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> +M: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> +S: Odd Fixes
-> +F: .b4-config
+ target/i386/cpu.c | 131 ++++++++++++++++++++++++++++++++++++++++++++--
+ target/i386/cpu.h |  41 ++++++++++++++-
+ 2 files changed, 167 insertions(+), 5 deletions(-)
 
-The scope of this entry is less than clear.  What kind of tools?
 
-It's not our own tooling (scripts/...).  Perhaps it's tools used by
-enough developers to warrant committing common configuration to Git.  We
-have such configuration files already, not covered by MAINTAINERS, e.g.:
+### Version History
 
-    .dir-locals.el
-    .editorconfig
-    .exrc
-    .gdbinit
-    .gitpublish
-    .pylintrc
+v5 -> v4:
+Removed the Known Issues section in the cover letter.The discrepancy betwee=
+n
+the Zhaoxin VMX Preemption Timer Rate and the value set by KVM was due to a
+misunderstanding of the nested L2 preemption timer simulation logic on my p=
+art.
+In fact, since the preemption timer in nested L2 is entirely simulated in
+software, the L1 Preemption Timer Rate does not need to match the hardware
+value.
 
-The path of least resistance is to add .b4-config the same way.
+v4 link: https://lore.kernel.org/all/20241122062135.479200-1-ewanhai-
+oc@zhaoxin.com/
 
-If we decide we want a new entry in MAINTAINERS, its scope should be
-reasonably clear, and we should add existing files, if any, to it.
+v4 -> v3:
+1. Added "For the kernel before v6.9 ..." for more accurately describe the
+patch's impact on Linux Guests.
 
-> ---
->
-> and queued, thanks!
+v3 link: https://lore.kernel.org/all/20240809094259.119221-1-ewanhai-
+oc@zhaoxin.com/
+
+v3 -> v2:
+1. Added a more detailed description of the CPUID[0x80000001].ECX.CMPLegacy
+bit masking.
+
+v2 link:
+https://lore.kernel.org/all/20240704112511.184257-1-ewanhai-oc@zhaoxin.com/
+
+
+v2 -> v1:
+1. Removed VIA-related information from the patch description to avoid
+misunderstanding.
+2. Replaced CPUID_VENDOR_VIA with CPUID_VENDOR_ZHAOXIN1 because the
+"Centaurhauls" vendor ID now belongs to Zhaoxin.The previous CPUID_VENDOR_V=
+IA
+macro was only defined but never used in QEMU, making this change
+straightforward.
+
+v1 link:
+https://lore.kernel.org/qemu-devel/20240625091905.1325205-1-ewanhai-
+oc@zhaoxin.com/
+
+Signed-off-by: EwanHai <ewanhai-oc@zhaoxin.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
+--=20
+2.34.1
 
 
