@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 999B1A0C23E
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 20:58:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90900A0C247
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 20:58:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXQYf-0007iO-4B; Mon, 13 Jan 2025 14:57:09 -0500
+	id 1tXQYc-0007Ut-PU; Mon, 13 Jan 2025 14:57:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXQYG-0006Rt-OY
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 14:56:48 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXQYI-0006Tm-GY
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 14:56:51 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXQYC-0007Vd-8m
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 14:56:44 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-385e06af753so2379326f8f.2
- for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 11:56:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXQYG-0007W6-Mp
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 14:56:46 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-43626213fffso35173935e9.1
+ for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 11:56:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736798198; x=1737402998; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736798203; x=1737403003; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8+YIN1f80FVmcBoMH1oRH2tR6JuH5Kh9JlAiouQJECQ=;
- b=bYG0stNoIA+QqJXQum+oTOafFUL/oMZSOvTFO0CINPBSxk2WRBkcMo/jcrlVECbjHn
- RrROtFd5+sOLDBF3o2Y/cjtl7KQxytFGuO6hMPusJZYdApuHtJeVsdQklbt7Totr3OA1
- 431j9/anREwXjrHcSPMfRsEXzWMp5SkYLnDZwVfq+Q9kqWVlHbhSoOFY+t4zm+aJG0QN
- eU4h2j6TDQoHSoPLKvJCzB4uEtXSKtnhxTiURIPz1wtMsCHIy9IReioUprkZFRyKwmas
- W/hYWh8pEIruPJVe81Y/fy3x1RCOnSHmqbQOqtAUMnw5FZInZQuif+Ya0jrWxPMzlHM4
- PxTw==
+ bh=FqRH3YIN+zJIf0SKXmNG5cYuASAzw080yXp4y743Edg=;
+ b=R8vnZS0aw6vVv2XxG4Eprb5LFVA7+KMQSeEWTjpqzgFP8+2RH7U/4Du4OSzH7v5JJw
+ +HXyPsFgKLE2tmsRt1Im46aLhy7fQ9sWAgJl/TaRjU0JBSrI+DQsd8W1C6bBKgDFJh44
+ WtcFjjg8dVIZlMcOvhoFC0q2iwxqJ4XDgWUZi9ZdHcwNS7k/Hz4bninbsHcH0/ZfT6h6
+ hUPPGjCbXkvajfaAwqv2ywVObm0a5ZfVVbqzTBV2MdUIVDTF9qlv14yz4NDRmmJEwpj0
+ XGgUY8oHVo+TUW50NwXmCQMi+/qW1LKogXLtASW4uTs2H3RMsZdxetHvkJv1ISjuD5mP
+ M8NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736798198; x=1737402998;
+ d=1e100.net; s=20230601; t=1736798203; x=1737403003;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8+YIN1f80FVmcBoMH1oRH2tR6JuH5Kh9JlAiouQJECQ=;
- b=HKxZ7iLfKXIsYe/6j9g0V36yN7hHpcThISNvmGMu4NWTnei6suJcRbFgTLwthPC+T5
- fY2YxzntVD4j9Do1MQ4+eUSm/5bOBLU+1LEs+263bqXTjw1A7yQ5LMb1AQTnIvvzNfRD
- aq17mxcwdNYZufzG1GJ5SUgIAMPQogqLMXfmKC2v1Wc5+YB6HJO7PjhkH9qPZgszZJjL
- oJb/jIXzSWWvojRkZvXgiYvzas5iUjGttslOaJ9h7zuF2sr/64Gd6eFNBY/pqcp0dt6L
- 6Q2Q9JFcFsWDp4iL8Jk8bLMHwqiE8lym3hakwuL9sC5AWa0J8IcmE/pH/hmLQq2NgEbm
- AhZQ==
-X-Gm-Message-State: AOJu0YzEKa2zcP2fX8qNFpX3oYgtM0ggMJeSqh1K8yFga4/MNfz8R3UB
- i0UGK97nkDZMp4KHD/4eb4jnf6XquzyE9LRDlIGQCXRllgLXNkx7SAPWlz7+mZ3zuzHhunSEwJ8
- znVo=
-X-Gm-Gg: ASbGncvcLXtfGmcWAi0eSYV9uXuUK8onq8PYsr3xK2+sgrHSMW81sgPyGm41zX0GdDX
- Q3sYQC5///OkNHNJui/5VJVqT+Oj2gdF3SFVFtfApAY8EdzWz4z+VudI6Q1vohfX8EzJCFsOBQg
- PWfiFcm/pGXr5l8zJOS8AeXoIWjw55k5vZ9jE0UmnOUDrgZ+Uls0fOE3msTcOR3FSinrgh8jlyT
- Ndvb1db3wsMMiVdfMcSfVuzuwZ5Hq6N8337eXqR9E+085M4MKFjeW25CT6LGv7JGFSgQt5JOH5Z
- wX/bp44gZ8Qm87KtZkUmWopT0VhKwsg=
-X-Google-Smtp-Source: AGHT+IGGVSho9HN5HdosSioJKzvlvhjx36tctxHK8i65YvOr0uUi5uzGEhG7f6DBEDe1mbyFARYP0g==
-X-Received: by 2002:a05:6000:2a3:b0:386:3684:c97e with SMTP id
- ffacd0b85a97d-38a87309ca0mr21630331f8f.23.1736798198277; 
- Mon, 13 Jan 2025 11:56:38 -0800 (PST)
+ bh=FqRH3YIN+zJIf0SKXmNG5cYuASAzw080yXp4y743Edg=;
+ b=rGhzDeQWaQWmxEkilIvZe+y18qjWgGopNfH6YuAXXpnbFRAu17B/0Vc9INzdFsfecS
+ M9WO5qipqjk2uLn8ZdD9v2s89/dVCuUgFh4KGgfMcJAHnwiHrt1Y/vw+O/O+jSyxeZRw
+ eQASFLecC6RzyTkrqqK3T9T5StuxQb7R/uP857G8O3f5O9ClQbmRVhQh46K26e9E6N71
+ BcS8LMykXb37j29/bVp7tap8u3LoZhAlNLMB3Dl4G3B+Rv/tco3HhzzYS1kYRdHfrNVm
+ wl9tZVdt6LF9l4WgHbwEKeyxqC5DBqwMWr8c98gEhmwFdvIz062GPhbABmCzAW5H48ga
+ 9xCg==
+X-Gm-Message-State: AOJu0Yy9BaeiwdXdQH75c5X5783IWZ+xDPWjq8lDn7eDqfxenuxD9Gvl
+ T66PxnqBvOZQIQp8rQoSOxQN/g651RAQ/I+pxb9OTv152rMwN8jytmpIE8lsU0wg78KEVADX8SM
+ Ea/0=
+X-Gm-Gg: ASbGnctblrYO8Vgrz2oN4V33sNo+2b4HAVJzisfhYvHd1cChFgXsRrkQvdnKwwpAvjl
+ P044ILdLMF4/1n2QP2P+CCTm9IYuefIK7KdjAXhkuXaWQ3VDWBkZNMt0zSaugGilQEPlh+WZSmr
+ Wxkr6Vzi9T5KLMhwaXzR/59rvv143WAOTxmDAL+pPe6uIVbKx6QCPIqaDXJxAWB7rhQuNXscVS0
+ ikk5AJD+QwldskjVW+RvMkLI0I98TH3680Kqxh2pGlCxBW2/Wi3TPDuRLqJkRqNFE1MWHYQsJkU
+ gkKKkL5yGYw5Y8+MF4KaNuo6V8Iq3fE=
+X-Google-Smtp-Source: AGHT+IGM3+c/7mvmX5G8SlMNiKJpdPu7kj2W7wo9TN1QN/Q/+5T5X7qrRIfU5fla9Wy2I/amzTICKQ==
+X-Received: by 2002:a5d:584b:0:b0:385:fa26:f0b5 with SMTP id
+ ffacd0b85a97d-38a8b0f0b40mr13851108f8f.20.1736798203004; 
+ Mon, 13 Jan 2025 11:56:43 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e3840bfsm13212260f8f.39.2025.01.13.11.56.36
+ ffacd0b85a97d-38a8e4b8299sm12997724f8f.74.2025.01.13.11.56.42
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 13 Jan 2025 11:56:37 -0800 (PST)
+ Mon, 13 Jan 2025 11:56:42 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paul Burton <paulburton@kernel.org>, Aurelien Jarno <aurelien@aurel32.net>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Aleksandar Rikalo <arikalo@gmail.com>, Huacai Chen <chenhuacai@kernel.org>
-Subject: [PATCH v2 14/19] hw/mips/bootloader: Propagate CPU env to bl_gen_s[w,
- d]()
-Date: Mon, 13 Jan 2025 20:55:20 +0100
-Message-ID: <20250113195525.57150-15-philmd@linaro.org>
+Subject: [PATCH v2 15/19] hw/mips/bootloader: Propagate CPU env to
+ bl_gen_jalr()
+Date: Mon, 13 Jan 2025 20:55:21 +0100
+Message-ID: <20250113195525.57150-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250113195525.57150-1-philmd@linaro.org>
 References: <20250113195525.57150-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,65 +101,35 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Propagate the target specific CPU env to the locally
-declared bl_gen_sw() and bl_gen_sd() functions.
+declared bl_gen_jalr() function.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/mips/bootloader.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ hw/mips/bootloader.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/hw/mips/bootloader.c b/hw/mips/bootloader.c
-index 464ed5f4f1a..288dccce473 100644
+index 288dccce473..a0fc840e89f 100644
 --- a/hw/mips/bootloader.c
 +++ b/hw/mips/bootloader.c
-@@ -194,7 +194,8 @@ static void bl_gen_sw_nm(void **ptr, bl_reg rt, uint8_t rs, uint16_t ofs12)
-     st_nm32_p(ptr, insn);
+@@ -127,7 +127,7 @@ static void bl_gen_dsll(void **p, bl_reg rd, bl_reg rt, uint8_t sa)
+     }
  }
  
--static void bl_gen_sw(void **p, bl_reg rt, uint8_t base, uint16_t offset)
-+static void bl_gen_sw(const CPUMIPSState *env, void **p,
-+                      bl_reg rt, uint8_t base, uint16_t offset)
+-static void bl_gen_jalr(void **p, bl_reg rs)
++static void bl_gen_jalr(const CPUMIPSState *env, void **p, bl_reg rs)
  {
      if (bootcpu_supports_isa(ISA_NANOMIPS32)) {
-         bl_gen_sw_nm(p, rt, base, offset);
-@@ -203,7 +204,8 @@ static void bl_gen_sw(void **p, bl_reg rt, uint8_t base, uint16_t offset)
-     }
+         uint32_t insn = 0;
+@@ -253,7 +253,7 @@ void bl_gen_jump_to(const MIPSCPU *cpu, void **p, target_ulong jump_addr)
+     const CPUMIPSState *env = &cpu->env;
+ 
+     bl_gen_load_ulong(env, p, BL_REG_T9, jump_addr);
+-    bl_gen_jalr(p, BL_REG_T9);
++    bl_gen_jalr(env, p, BL_REG_T9);
+     bl_gen_nop(p); /* delay slot */
  }
  
--static void bl_gen_sd(void **p, bl_reg rt, uint8_t base, uint16_t offset)
-+static void bl_gen_sd(const CPUMIPSState *env, void **p,
-+                      bl_reg rt, uint8_t base, uint16_t offset)
- {
-     if (bootcpu_supports_isa(ISA_MIPS3)) {
-         bl_gen_i_type(p, 0x3f, base, rt, offset);
-@@ -292,9 +294,9 @@ void bl_gen_write_ulong(const MIPSCPU *cpu, void **p,
-     bl_gen_load_ulong(env, p, BL_REG_K0, val);
-     bl_gen_load_ulong(env, p, BL_REG_K1, addr);
-     if (bootcpu_supports_isa(ISA_MIPS3)) {
--        bl_gen_sd(p, BL_REG_K0, BL_REG_K1, 0x0);
-+        bl_gen_sd(env, p, BL_REG_K0, BL_REG_K1, 0x0);
-     } else {
--        bl_gen_sw(p, BL_REG_K0, BL_REG_K1, 0x0);
-+        bl_gen_sw(env, p, BL_REG_K0, BL_REG_K1, 0x0);
-     }
- }
- 
-@@ -305,7 +307,7 @@ void bl_gen_write_u32(const MIPSCPU *cpu, void **p,
- 
-     bl_gen_li(env, p, BL_REG_K0, val);
-     bl_gen_load_ulong(env, p, BL_REG_K1, addr);
--    bl_gen_sw(p, BL_REG_K0, BL_REG_K1, 0x0);
-+    bl_gen_sw(env, p, BL_REG_K0, BL_REG_K1, 0x0);
- }
- 
- void bl_gen_write_u64(const MIPSCPU *cpu, void **p,
-@@ -315,5 +317,5 @@ void bl_gen_write_u64(const MIPSCPU *cpu, void **p,
- 
-     bl_gen_dli(env, p, BL_REG_K0, val);
-     bl_gen_load_ulong(env, p, BL_REG_K1, addr);
--    bl_gen_sd(p, BL_REG_K0, BL_REG_K1, 0x0);
-+    bl_gen_sd(env, p, BL_REG_K0, BL_REG_K1, 0x0);
- }
 -- 
 2.47.1
 
