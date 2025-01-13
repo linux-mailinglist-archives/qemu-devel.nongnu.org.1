@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E91B9A0ACF1
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 01:50:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B292FA0ACEF
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 01:49:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tX8eN-0006pL-C8; Sun, 12 Jan 2025 19:49:51 -0500
+	id 1tX8eO-0006wx-Ft; Sun, 12 Jan 2025 19:49:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX8eB-0006Vj-Tt
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 19:49:42 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX8eF-0006ZU-Qc
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 19:49:45 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX8e9-0000wZ-PH
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 19:49:39 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-43626213fffso29001235e9.1
- for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 16:49:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX8eD-0000xn-Eg
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 19:49:43 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3862d6d5765so2058933f8f.3
+ for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 16:49:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736729374; x=1737334174; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736729379; x=1737334179; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yiNeuarA8r14N/udmX2Ti0NAodknr96nxpHCBqLhgpc=;
- b=oBB/VBv/cwKnZb977hJWQgeiL46FgCsSfLzM47xNBQFF9pmubUeVhRSyRhTeRCUE6X
- zU0m+v0EadbAK/pCdVdmj4vVU+l/RphoDHkko9coRG0cG+F2Yqz8UGyWfV69kVd8whp1
- ZZiXyc3Z3afDFnbkkDNJ1QJM6CcVEx1jC0+L2J+8My/8l361Vd5j2pjiMZ1l78xRuphr
- YFxFW6U2VEFAz7CxyjSH+bKlZeerkqRsDjLy/0R4/mfpgeqODokrH9GT8xar2+L42ep+
- vFzbRq3TFgtmhHmkxHOi/wmeS8p0/7a8jilQsAGmtw4SuCDKJfdZtBN3q+5qfrq95jNf
- vFCg==
+ bh=OTZEKKLS4PrCy1H2BI5piTVs8fWWFd13d+VvsRM6L5Y=;
+ b=uuPd5TJQmx9W6i+B4ueJV1st9rxu/eKkrvaDThOW+0deqQsU7lZyu0oOyy7DZUUFEp
+ IataLQ2OrA8ZYscBDqznB7HO2fMiTpBjq3f0if3q8Q+w0zVnnUv7McjUoPTDHrCv67Wv
+ mA5NROtRTrfyMyfvn0pYOqvCINCY9Fph9u1Refzfzsfx4FJdkILsLikPeEhqo4QM21Ut
+ Rsx7BMmRZUi1X7sj/SsemI/rE46OWtwLhCEJ1eNCpvjSt+Hv1oud+utfWwYBt/ta8CdB
+ CQLgDiaRkshHOvk0vjGKGDSQxVN5OqqZ/zR8hnOgAf7DMZ8Y9IQx+4ED3z7mU315K0vY
+ 3q+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736729374; x=1737334174;
+ d=1e100.net; s=20230601; t=1736729379; x=1737334179;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yiNeuarA8r14N/udmX2Ti0NAodknr96nxpHCBqLhgpc=;
- b=KI41Rtp9bJ3UnYOtn/vLULkvl1Hs4qXAoEMLwOGVgixBK4471wuMo8dOY9oHJh+OeM
- D//TUg6R9Mj9AYFZq3xJywGlBdUpTwZaexMQ7O7kvUVm+j4GHRtogvGAuFZwU2E+/XT4
- 71fnpvFDZPgUlZ/gZn9z0o3OaGPaHfTlYkSqR7F7L85O4gPD3Ya8LBco/13nDOFr7DMN
- uv+WTXOHXvCzg+m4pJQNOTTKeh9HjgYV1b1IqVLvRpHCK9ouDYwpi/TqNfaIquPD7pYA
- UF6EXP3KCkAIlgM1ggFXdDGW4U191axS/STVybjavKslqEPdDsYeMqxNhW+HZsGcgRaL
- U0Ig==
-X-Gm-Message-State: AOJu0Ywnh4WjEJ05SVMPig0xpAVqzstvkf4889tT2IMF0zQzKDCW92kW
- z2qnFF7eO77fgwhpecBywivhQsZBB8MENkp7iFlgBenl1PQokDZbFQNW8YHgq1v44XwCvx0LOyP
- Z3jo=
-X-Gm-Gg: ASbGnctV06ff8XUXrwUZO1Xo42zYkHkW5QwpxqtykQt0GWxGJuGV+enQX7mVaVU1dqk
- QdmPR19TWdccDGdgnO9ogNy2bAQ4F3sYzCUq311k6hO/94lfqvzPpOCDTPuCCb7/GDO2jrnBEua
- qcd9CO2khArT84mHaJ1OQvq0J8l3BnOPTZ5F60EG211VllDDkAEcD0ZDLcNPIP07Nt/k9P+IoAl
- Hg+m3wzxkhv1VWBjrGP6ER6ENUzAMTYouCRgKDyeuYp6PoZhbrHJjfkX6YNG9bjNNO/j9+uonPU
- Km+wSTwRdGonkByiM/COvhQZoqZeQOQ=
-X-Google-Smtp-Source: AGHT+IHA8IR3LQ1tBqXSVtFx9JkhYUFGnYDYV/gyu/GFpS2rFqxKITNQAviUsUUkeI1VhArzHwQGBw==
-X-Received: by 2002:a05:600c:1c11:b0:436:76bf:51cc with SMTP id
- 5b1f17b1804b1-436e8843d76mr111840665e9.12.1736729373805; 
- Sun, 12 Jan 2025 16:49:33 -0800 (PST)
+ bh=OTZEKKLS4PrCy1H2BI5piTVs8fWWFd13d+VvsRM6L5Y=;
+ b=pvUoRIosGUVLenCjWyjP6X/aAu7UWTu5QGHf2YvF4+ARFiyik4vXyLirpXHvQ8C6/R
+ xm0Ml9fXZIEOujfkEfPb7IYGm+q1dhQxa9jYhUxfdpvyO/Iv/X8WaACNkcnqna8ZBgml
+ TnOpJ47ESx8rhkIROgUETSLXP+wcpFyvd0uNcd2wQVakrpDBypY8QiJ560EP1ATmH3De
+ 3iXMAka5iURuww43k+nOF8KFeoNXzjPtyPRz72MzJqI3gEDXcrfiF0w58qydzGO9XI1Z
+ lH5ZL78l0KKNl2SNX0Lpi+cJxxj5OVmv7c026vHV7FazGfLnFjG0Ka+xaVzJlK1KgrRs
+ /F3A==
+X-Gm-Message-State: AOJu0YzV7iSxCDhhyx+llA5Po3K9RiaRlnoxwen4AT7MRF09VM150OTz
+ Go+yxm+QJmWOb1g0vjTbAHyKjIURUApMd+iS7mST6wSYu6cjQnnC1jt0LnqaijOOc1sNlaVZXJb
+ NFL0=
+X-Gm-Gg: ASbGnct3YxpJKeY8xNNBq2ABFyrni36SbVCho5kK1QkDjfmJqXXWCk9YfdiCh8HbmwX
+ MzXkdqb+SKyOf5itVKjAmXeslxsXiDnqcaxItCiClcN8pCDAsb7F02Ie0LzNGlm5UssesnxgBOB
+ JRPseXahT0ccMPc3YLp5wmrImrINCTiHvJk2wLxSfWJ4w7x6hEY951kg3Or1oC7PQ0wArKUZC6d
+ kCMXjBU6rMiL4L953glV9nMCk2svMyEjmU3VZMuHSYu3NlQq8UVkVZB5luADqPYtXkGFKowRnFM
+ 5/ZsZekHT1alkFNqZsXGRSKmNjVT4Ms=
+X-Google-Smtp-Source: AGHT+IFkWDguG0lB1L45FBqNQKhmga83S/UYq8cfgnHwrvI3DVMWcXE+VLSGgnLLWW3hDTXubSxhzQ==
+X-Received: by 2002:a5d:5f44:0:b0:38a:864e:29b1 with SMTP id
+ ffacd0b85a97d-38a8730ddf8mr17410096f8f.41.1736729379134; 
+ Sun, 12 Jan 2025 16:49:39 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e9dc8802sm125761915e9.10.2025.01.12.16.49.32
+ ffacd0b85a97d-38a8e37d0casm10893890f8f.11.2025.01.12.16.49.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 12 Jan 2025 16:49:32 -0800 (PST)
+ Sun, 12 Jan 2025 16:49:37 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Aleksandar Rikalo <arikalo@gmail.com>, Huacai Chen <chenhuacai@kernel.org>,
  Paul Burton <paulburton@kernel.org>, Aurelien Jarno <aurelien@aurel32.net>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 18/23] hw/mips/boston: Propagate CPU to gen_firmware()
-Date: Mon, 13 Jan 2025 01:47:43 +0100
-Message-ID: <20250113004748.41658-19-philmd@linaro.org>
+Subject: [PATCH 19/23] hw/mips/fuloong: Propagate CPU to write_bootloader()
+Date: Mon, 13 Jan 2025 01:47:44 +0100
+Message-ID: <20250113004748.41658-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250113004748.41658-1-philmd@linaro.org>
 References: <20250113004748.41658-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,70 +99,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In boston_mach_init(), resolves the first CPU from the CPS
-container using the QOM "cpu[0]" path. Propagate it to
-gen_firmware(), removing the &first_cpu use.
+mips_fuloong2e_init() created the vCPU so has its reference,
+propagate it to write_bootloader(), removing the &first_cpu use.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/mips/boston.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ hw/mips/fuloong2e.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/mips/boston.c b/hw/mips/boston.c
-index 09c4dfade12..f2c0e335e73 100644
---- a/hw/mips/boston.c
-+++ b/hw/mips/boston.c
-@@ -323,25 +323,26 @@ static void boston_register_types(void)
+diff --git a/hw/mips/fuloong2e.c b/hw/mips/fuloong2e.c
+index b87622ee6e3..1e55adacdd2 100644
+--- a/hw/mips/fuloong2e.c
++++ b/hw/mips/fuloong2e.c
+@@ -163,7 +163,7 @@ static uint64_t load_kernel(MIPSCPU *cpu)
+     return kernel_entry;
  }
- type_init(boston_register_types)
  
--static void gen_firmware(void *p, hwaddr kernel_entry, hwaddr fdt_addr)
-+static void gen_firmware(const MIPSCPU *cpu, void *p,
-+                         hwaddr kernel_entry, hwaddr fdt_addr)
+-static void write_bootloader(CPUMIPSState *env, uint8_t *base,
++static void write_bootloader(const MIPSCPU *cpu, uint8_t *base,
+                              uint64_t kernel_addr)
  {
-     uint64_t regaddr;
+     uint32_t *p;
+@@ -179,7 +179,7 @@ static void write_bootloader(CPUMIPSState *env, uint8_t *base,
+     /* Second part of the bootloader */
+     p = (uint32_t *)(base + 0x040);
  
-     /* Move CM GCRs */
-     regaddr = cpu_mips_phys_to_kseg1(NULL, GCR_BASE_ADDR + GCR_BASE_OFS),
--    bl_gen_write_u64(MIPS_CPU(first_cpu), &p, regaddr,
-+    bl_gen_write_u64(cpu, &p, regaddr,
-                      boston_memmap[BOSTON_CM].base);
- 
-     /* Move & enable GIC GCRs */
-     regaddr = cpu_mips_phys_to_kseg1(NULL, boston_memmap[BOSTON_CM].base
-                                            + GCR_GIC_BASE_OFS),
--    bl_gen_write_u64(MIPS_CPU(first_cpu), &p, regaddr,
-+    bl_gen_write_u64(cpu, &p, regaddr,
-                      boston_memmap[BOSTON_GIC].base | GCR_GIC_BASE_GICEN_MSK);
- 
-     /* Move & enable CPC GCRs */
-     regaddr = cpu_mips_phys_to_kseg1(NULL, boston_memmap[BOSTON_CM].base
-                                            + GCR_CPC_BASE_OFS),
--    bl_gen_write_u64(MIPS_CPU(first_cpu), &p, regaddr,
-+    bl_gen_write_u64(cpu, &p, regaddr,
-                      boston_memmap[BOSTON_CPC].base | GCR_CPC_BASE_CPCEN_MSK);
- 
-     /*
-@@ -352,7 +353,7 @@ static void gen_firmware(void *p, hwaddr kernel_entry, hwaddr fdt_addr)
-      * a2/$6 = 0
-      * a3/$7 = 0
-      */
--    bl_gen_jump_kernel(MIPS_CPU(first_cpu), &p,
-+    bl_gen_jump_kernel(cpu, &p,
-                        true, 0, true, (int32_t)-2,
-                        true, fdt_addr, true, 0, true, 0,
-                        kernel_entry);
-@@ -825,7 +826,9 @@ static void boston_mach_init(MachineState *machine)
-             }
-         }
- 
--        gen_firmware(memory_region_get_ram_ptr(flash) + 0x7c00000,
-+        gen_firmware(MIPS_CPU(object_resolve_path_component(OBJECT(&s->cps),
-+                                                            "cpu[0]")),
-+                     memory_region_get_ram_ptr(flash) + 0x7c00000,
-                      s->kernel_entry, s->fdt_base);
-     } else if (!qtest_enabled()) {
-         error_report("Please provide either a -kernel or -bios argument");
+-    bl_gen_jump_kernel(MIPS_CPU(first_cpu), (void **)&p,
++    bl_gen_jump_kernel(cpu, (void **)&p,
+                        true, ENVP_VADDR - 64,
+                        true, 2, true, ENVP_VADDR,
+                        true, ENVP_VADDR + 8,
+@@ -258,7 +258,7 @@ static void mips_fuloong2e_init(MachineState *machine)
+         loaderparams.kernel_cmdline = kernel_cmdline;
+         loaderparams.initrd_filename = initrd_filename;
+         kernel_entry = load_kernel(cpu);
+-        write_bootloader(env, memory_region_get_ram_ptr(bios), kernel_entry);
++        write_bootloader(cpu, memory_region_get_ram_ptr(bios), kernel_entry);
+     } else {
+         filename = qemu_find_file(QEMU_FILE_TYPE_BIOS,
+                                   machine->firmware ?: FULOONG_BIOSNAME);
 -- 
 2.47.1
 
