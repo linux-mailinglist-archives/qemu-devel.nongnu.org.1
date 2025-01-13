@@ -2,97 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A6B8A0C281
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 21:17:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C21C8A0C283
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 21:18:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXQqg-00034i-0V; Mon, 13 Jan 2025 15:15:46 -0500
+	id 1tXQsY-0004bq-JY; Mon, 13 Jan 2025 15:17:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tXQqT-00032x-3x
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 15:15:34 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1tXQsO-0004Zv-0V
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 15:17:34 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tXQqQ-0001Xo-0e
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 15:15:32 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-2166f1e589cso98837855ad.3
- for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 12:15:27 -0800 (PST)
+ id 1tXQsM-0001km-0B
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 15:17:31 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-2163dc5155fso86613405ad.0
+ for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 12:17:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736799327; x=1737404127; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=linaro.org; s=google; t=1736799448; x=1737404248; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Jok5TFWkxjvFxrhDzJJepVefflGzTmcAaNlIEo8m5xA=;
- b=u22uEkLxZuer+XMbxkZTyD2jd1mTl6sLgLvZbcL3iMIB8hcy57B8QrUQJUY42tyjn9
- AZrER1hwOJmE3Z+CPx+e+4WlAX3Hxc4EjbC40TdH/phvwmTdHVIV1eySc7jJgVAd/zp5
- MuJpG+3ryWGZK0FqcnIIqgVlm6lbed4TiiXGnzqYSkndYmAYlnkI2VdOv0VSa07WKtuV
- OlCC8kqrdILkr9abG2BoWPzFt80falmlCW51ZzsszevlU598YtFxMPjqgB0eGTBB3C70
- ip978iaj+UWnlkcHxXfIZqeMzghzxIWuspqWal0az/jPH4i9ThDzcFgLRgawkwxyFbQF
- RlBw==
+ bh=JMLQYtwFUFChrj7pruOA6x3nyDx4SBOqxoo8vv1iDa0=;
+ b=M53e52+w6DLdlB/gO3ZoH7h+ySsX3K8O4K2Rcwht4ByPnroFZ9Zfm4BduseyY7xsuB
+ iYmop1AvlHiTwjaNmKIR25M9/FYZIGXCwDMmJMzrxZdDMS0j94pqsSTELS8rDi8lcK/j
+ xvpKcOzvfDF+xldtTQNTGlVEOI0oPewJDPJztMgVi9eJbuYype7dP3QI7bk9apxasVPQ
+ IXg3DmW8z359mHLATfCCpx02ajGmRXRYDwecAd6DW0B9IyIvpeD48fOQW3/oy96uqHFu
+ rEdFI9XB9GlLppCFBES1kIrdk3z9Etl2A+z1u20q8L8c9xKWoS0EAW4uvOA/DQ4QOI3e
+ valA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736799327; x=1737404127;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=1e100.net; s=20230601; t=1736799448; x=1737404248;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Jok5TFWkxjvFxrhDzJJepVefflGzTmcAaNlIEo8m5xA=;
- b=noP6+lzWNkOuL8wlj87Bqiw5HMVZ4rce179o0Ert1oOtVdCKEwqsSggiN+lASl7KfG
- T7K7iPjLLq8hOy/ET32NVOXy+NX2evWDvz26hvGgHAkxB00YxZJyCUNtwN+t825nxCHK
- u7vmSXOtSHBLE6bmULkdEyQMfOSPe7tfWSc6+7Y+xIXfnTQlzIapRhbCCuw2LUTLjdti
- FPA9Dc+3yGfL8R5RmaMhl8MpGyHZ240aX7hWZbCPQp/0GeciE0xEDGx/VJHK11OSs/Ed
- E5jKH7aqAgkFLnSDVOuYzg5QFhdYeM+r61h9D5Zgd4z1nmvdLDDV949ypqNnS/MFnRpe
- GHeQ==
-X-Gm-Message-State: AOJu0Yw4hnbMqKo8Sxfq/H+vjjxzysllq/eDxE5SbxK4lrP3bHlK7VHW
- CAY5wSjVI2OfXRRE5pOzIpsXyjC6Y9WQgfA1uZaAODHYWYszqFcvp8XxRilrActiIzOJ4IJgIkj
- dmy9uFw==
-X-Gm-Gg: ASbGncueB0QWYuWiQnWtN2yOahhlJNiNRfeJjN8FpMOhWHttvPWPCTeTvHsyJTE9JyO
- KOlOS9M2HWv9wz99wuQX16uvxIkD9GxeFehNJpfSxpWDzbZqJmGq1X+HLNmDUZ2YG9RTszaJZYi
- /HCj+53arwwbjJHfUoxZC+Mm5CLioBbzTtgyLEublkMeZn8SIKYCuxY0DtbmHjn48iwiXLQTRsv
- bOh4D7uF64ZbVMWw+LjrSHKijZDqnc1DvydKwop+GATcG3x2hcRQE1/IvgM81dr8EBKAw==
-X-Google-Smtp-Source: AGHT+IEYTN8ffsSwmjrHeZH3LsJjgfWnN96miImNiwji//eL24qr8ccl+q5r/Hs4nifik+zwzXAG3A==
-X-Received: by 2002:a17:90a:da8e:b0:2ee:b0b0:8e02 with SMTP id
- 98e67ed59e1d1-2f5490ac09cmr31280515a91.28.1736799326695; 
- Mon, 13 Jan 2025 12:15:26 -0800 (PST)
+ bh=JMLQYtwFUFChrj7pruOA6x3nyDx4SBOqxoo8vv1iDa0=;
+ b=Kbe5EBiw5RkRmTkMbKO0JjEz3QpmkUWkqskc0HRb1jvcVpuNFtvyJFE95IoUgwNk/r
+ IMUOXdB9dLU5/AHbWCMqC1XxZBleehD9lWCUjUy0pLkbvfK6/HjnT9iZL2j9RoQUrBFG
+ ++f74k7Oi/Hiv+mjaKaHyB4hHGU9ms0H9gwR5prMpuCbzSWYglw4ZQC3PcjN9/RGTP6z
+ 6VR8OyCVwwHJl7bdUBvAjWTzequXxr7cCdikem7H4rjWAQsmW1t+tk1o0HjY9PvyWS4H
+ FTeUs/BQycQ6s7YU38FRW6K4zMS5Ob2RXGQXCl0aGrBtJOOMzULN6m1BFs7fTE4iM0Ea
+ CVJw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVKxezOQspGdz+mBLdP9IJOzUn9BeOk/Rle9hv8v9hsBAMMXO5n2aYxLFaEUTtzfBzbRztF7Irg9g+e@nongnu.org
+X-Gm-Message-State: AOJu0YwFI7/CMCxiMgNiSZgbDvYe8amBf84+BdY29upunvzBVSwNlMHt
+ k7KqWEKerCu7Rgd+H+xmzZx40kJwxQAG2GUPD+MZgSifq+8EQOhxCSEQTw5jK/I=
+X-Gm-Gg: ASbGncs6or8j7uutsmDQdkW574jQiHBMxxica4BWhqNSWHMUED2/FktR8Cq4I+j+jXH
+ Oup9ScJc5h3HCZ6htEHz6oi4W8XwkttnhEkzsv/6k4vndxikii0sGo8LJmuvspI3M72LJOYkuP+
+ 6qbF4MNqU+MBsVNImLW5XDEx/rrKs9xOeVwvBL1P2h7KX3C9uU30t+H2qaIqpONyUYmsfvX4nfu
+ fk8C6lKgu68kq1HuJfqqGmT0sEPaFtE+AHBHn4ZqAOyPSCz0ip5ulzOwumyhXuwBrdUOg==
+X-Google-Smtp-Source: AGHT+IFMCdgvnBVSKxlVPD/TQK7w2IxmAVrJ+Qa+4YOtQNLC1aN0ENbkc3mblEw9IKaWJICfKjH+nw==
+X-Received: by 2002:a05:6a00:3c92:b0:725:aa5d:f217 with SMTP id
+ d2e1a72fcca58-72d21fa5e7cmr30944062b3a.7.1736799448472; 
+ Mon, 13 Jan 2025 12:17:28 -0800 (PST)
 Received: from [192.168.1.67] ([38.39.164.180])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f5593fead5sm8185401a91.11.2025.01.13.12.15.25
+ 41be03b00d2f7-a31844ba45bsm7311949a12.19.2025.01.13.12.17.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Jan 2025 12:15:26 -0800 (PST)
-Message-ID: <a9b0cec7-2d2d-4f3c-8c07-588aed491920@linaro.org>
-Date: Mon, 13 Jan 2025 12:15:25 -0800
+ Mon, 13 Jan 2025 12:17:28 -0800 (PST)
+Message-ID: <6adc2994-e762-4923-9033-54efe165aaea@linaro.org>
+Date: Mon, 13 Jan 2025 12:17:27 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] Change default pointer authentication algorithm on
- aarch64 to impdef
+Subject: Re: [PATCH v4 0/3] Enable clang build on Windows
 Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Stefano Garzarella
+ <sgarzare@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Alexandre Iooss <erdnaxe@crans.org>
+References: <20250110203401.178532-1-pierrick.bouvier@linaro.org>
+ <73fd2f38-76a0-4274-875a-6f96faed79f6@linaro.org>
+ <bc22d713-201e-414c-838e-6c0dc1fb3807@linaro.org>
+ <876fe41d-df26-4a13-a465-feeee0004746@redhat.com>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- Fabiano Rosas <farosas@suse.de>, Yanan Wang <wangyanan55@huawei.com>,
- Zhao Liu <zhao1.liu@intel.com>, qemu-arm@nongnu.org,
- Laurent Vivier <lvivier@redhat.com>, alex.bennee@linaro.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-References: <20241219183211.3493974-1-pierrick.bouvier@linaro.org>
- <CAFEAcA_ChARwKyvRXsEk1U3q1T2528753Eu7LgDSsDbF1s5tNQ@mail.gmail.com>
- <CAFEAcA_SHz2a0ZU=3e9AmZyJ_qn3e7nNhNm-hR9MdiTRjOyqWg@mail.gmail.com>
- <359e6921-fe3d-4f53-8ba9-5cf2b7ab6a6d@linaro.org>
-In-Reply-To: <359e6921-fe3d-4f53-8ba9-5cf2b7ab6a6d@linaro.org>
+In-Reply-To: <876fe41d-df26-4a13-a465-feeee0004746@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x630.google.com
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,88 +110,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/13/25 11:32, Pierrick Bouvier wrote:
-> On 1/13/25 04:34, Peter Maydell wrote:
->> On Fri, 10 Jan 2025 at 16:28, Peter Maydell <peter.maydell@linaro.org> wrote:
->>>
->>> On Thu, 19 Dec 2024 at 18:32, Pierrick Bouvier
->>> <pierrick.bouvier@linaro.org> wrote:
->>>>
->>>> qemu-system-aarch64 default pointer authentication (QARMA5) is expensive, we
->>>> spent up to 50% of the emulation time running it (when using TCG).
->>>>
->>>> Switching to pauth-impdef=on is often given as a solution to speed up execution.
->>>> Thus we talked about making it the new default.
->>>>
->>>> The first patch introduce a new property (pauth-qarma5) to allow to select
->>>> current default algorithm.
->>>> The second one change the default.
->>>> The third one updates documentation.
->>>>
->>>> v2:
->>>> - ensure we don't break migration compatibility, by using a specific backward
->>>>     compatible property.
->>>> - added some documentation about migration for arm virt machine model.
->>>
->>> Other than a minor change to the 3rd docs patch which I'll note there:
->>> applied to target-arm.next, thanks.
->>
->> I just noticed that this series breaks 'make check-tcg', because
->> the pauth-3 test is explicitly checking the output of the
->> pointer-auth operation. I'm going to add in this patch, which
->> goes between patches 1 and 2 of this series:
->>
->> Author: Peter Maydell <peter.maydell@linaro.org>
->> Date:   Mon Jan 13 11:42:57 2025 +0000
->>
->>       tests/tcg/aarch64: force qarma5 for pauth-3 test
->>
->>       The pauth-3 test explicitly tests that a computation of the
->>       pointer-authentication produces the expected result.  This means that
->>       it must be run with the QARMA5 algorithm.
->>
->>       Explicitly set the pauth algorithm when running this test, so that it
->>       doesn't break when we change the default algorithm the 'max' CPU
->>       uses.
->>
->>       Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
->>
->> diff --git a/tests/tcg/aarch64/Makefile.softmmu-target
->> b/tests/tcg/aarch64/Makefile.softmmu-target
->> index d08d9b01ded..9c52475b7ae 100644
->> --- a/tests/tcg/aarch64/Makefile.softmmu-target
->> +++ b/tests/tcg/aarch64/Makefile.softmmu-target
->> @@ -91,6 +91,9 @@ EXTRA_RUNS+=run-memory-replay
->>
->>    ifneq ($(CROSS_CC_HAS_ARMV8_3),)
->>    pauth-3: CFLAGS += $(CROSS_CC_HAS_ARMV8_3)
->> +# This test explicitly checks the output of the pauth operation so we
->> +# must force the use of the QARMA5 algorithm for it.
->> +run-pauth-3: QEMU_BASE_MACHINE=-M virt -cpu max,pauth-qarma5=on -display none
->>    else
->>    pauth-3:
->>           $(call skip-test, "BUILD of $@", "missing compiler support")
->>
->>
->> thanks
->> -- PMM
-> 
-> Thanks Peter.
-> 
-> I'm a bit surprised because I ran all tests , and didn't find any failure.
-> 
-> I use container 'debian-all-test-cross' and ran 'make check-tcg'. Is the
-> container missing something that doesn't trigger this test?
-
-I found that the build step I was using:
-- ./configure $QEMU_CONFIGURE_OPTS
-only builds user targets in this container.
-But failing test is related to a system target.
-
-I updated this on my side, to make sure I won't miss that next time.
-
-Thanks again for the fix.
-
-Regards,
-Pierrick
+T24gMS8xMi8yNSAyMjoyNiwgVGhvbWFzIEh1dGggd3JvdGU6DQo+IE9uIDExLzAxLzIwMjUg
+MTYuNDcsIFBoaWxpcHBlIE1hdGhpZXUtRGF1ZMOpIHdyb3RlOg0KPj4gT24gMTAvMS8yNSAy
+MTozNywgUGllcnJpY2sgQm91dmllciB3cm90ZToNCj4+PiBPbiAxLzEwLzI1IDEyOjMzLCBQ
+aWVycmljayBCb3V2aWVyIHdyb3RlOg0KPj4+PiBGb3Igbm93LCBpdCB3YXMgb25seSBwb3Nz
+aWJsZSB0byBidWlsZCBwbHVnaW5zIHVzaW5nIEdDQyBvbiBXaW5kb3dzLg0KPj4+PiBIb3dl
+dmVyLA0KPj4+PiB3aW5kb3dzLWFhcmNoNjQgb25seSBzdXBwb3J0cyBDbGFuZy4NCj4+Pj4g
+VGhpcyBiaWdnZXN0IHJvYWRibG9jayB3YXMgdG8gZ2V0IHJpZCBvZiBnY2Nfc3RydWN0IGF0
+dHJpYnV0ZSwgd2hpY2ggaXMgbm90DQo+Pj4+IHN1cHBvcnRlZCBieSBDbGFuZy4gQWZ0ZXIg
+aW52ZXN0aWdhdGlvbiwgd2UgcHJvdmVkIGl0IHdhcyBzYWZlIHRvIGRyb3AgaXQuDQo+Pj4+
+DQo+Pj4+IEJ1aWx0IGFuZCB0ZXN0ZWQgb24gV2luZG93cyAoYWxsIG1zeXMgZW52KS9MaW51
+eC9NYWNPUyBmb3IgeDg2XzY0IGFuZA0KPj4+PiBhYXJjaDY0DQo+Pj4+IGhvc3RzLg0KPj4+
+Pg0KPj4+PiB2MSBjb250YWluZWQgd2FybmluZyBmaXhlcyBhbmQgdmFyaW91cyBiaXRzIHRo
+YXQgaGF2ZSBiZWVuIHVwc3RyZWFtZWQNCj4+Pj4gYWxyZWFkeS4NCj4+Pj4gVGhlIG9ubHkg
+Yml0cyBsZWZ0IGluIHRoaXMgc2VyaWVzIGFyZSB0aGUgZ2NjX3N0cnVjdCByZW1vdmFsLCBh
+bmQgZml4aW5nIHRoZQ0KPj4+PiBwbHVnaW5zIGJ1aWxkIHdpdGggY2xhbmcuDQo+Pj4+DQo+
+Pj4+IFRoaXMgc2VyaWVzIGlzIGZvciAxMC4wLCBhcyB3ZSBkZWNpZGVkIHRvIG5vdCBpbmNs
+dWRlIHRoZSBnY2Nfc3RydWN0DQo+Pj4+IHJlbW92YWwgaXMNCj4+Pj4gOS4yIHJlbGVhc2Uu
+DQo+Pj4+DQo+Pj4+IEFsbCBwYXRjaGVzIGFyZSBub3cgcmV2aWV3ZWQsIHNvIHRoaXMgc2Vy
+aWVzIGNhbiBiZSBwdWxsZWQuIEknbGwgcmVwb3J0DQo+Pj4+IHRoYXQgdG8NCj4+Pj4gTVNZ
+UzIgdG9vLCBzbyB3ZSBjYW4gZW5hYmxlIGNsYW5nIGVudmlyb25tZW50cyBmb3IgUUVNVS4N
+Cj4+Pj4NCj4+Pj4gdjE6IGh0dHBzOi8vcGF0Y2hldy5vcmcvUUVNVS8yMDI0MTAzMTA0MDQy
+Ni43NzI2MDQtMS0NCj4+Pj4gcGllcnJpY2suYm91dmllckBsaW5hcm8ub3JnLw0KPj4+Pg0K
+Pj4+PiB2MjoNCj4+Pj4gLSBkcm9wIGF0dHJpYnV0ZSBnY2Nfc3RydWN0IGluc3RlYWQgb2Yg
+dXNpbmcgLW1uby1tcy1iaXRmaWVsZHMgb3B0aW9uDQo+Pj4+IC0gYWRkIGEgc2VjdGlvbiBh
+Ym91dCBiaXRmaWVsZHMgaW4gZG9jdW1lbnRhdGlvbg0KPj4+Pg0KPj4+PiB2MzoNCj4+Pj4g
+LSBleHBsYWluIHdoeSBnY2Nfc3RydWN0IGF0dHJpYnV0ZSBtYXR0ZXJzIGluIHBhY2tlZCBz
+dHJ1Y3RzIGluIGNvbW1pdA0KPj4+PiBtZXNzYWdlDQo+Pj4+IC0gcmV3b3JkIHRoZSBiaXRm
+aWVsZHMgZG9jdW1lbnRhdGlvbiB3aXRoIHN1Z2dlc3Rpb25zIGdpdmVuDQo+Pj4+DQo+Pj4+
+IHY0Og0KPj4+PiAtIGVkaXQgZm9yIGJpdGZpZWxkcyBkb2MgcmVxdWVzdGVkIGJ5IFBoaWxp
+cHBlDQo+Pj4+DQo+Pj4+IFBpZXJyaWNrIEJvdXZpZXIgKDMpOg0KPj4+PiAgwqDCoCB3aW4z
+MjogcmVtb3ZlIHVzYWdlIG9mIGF0dHJpYnV0ZSBnY2Nfc3RydWN0DQo+Pj4+ICDCoMKgIGRv
+Y3MvZGV2ZWwvc3R5bGU6IGFkZCBhIHNlY3Rpb24gYWJvdXQgYml0ZmllbGQsIGFuZCBkaXNh
+bGxvdyB0aGVtIGZvcg0KPj4+PiAgwqDCoMKgwqAgcGFja2VkIHN0cnVjdHVyZXMNCj4+Pj4g
+IMKgwqAgcGx1Z2luczogZW5hYmxlIGxpbmtpbmcgd2l0aCBjbGFuZy9sbGQNCj4+Pj4NCj4+
+Pj4gIMKgIGRvY3MvZGV2ZWwvc3R5bGUucnN0wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgIHwgMjAgKysrKysrKysrKysrKysrKysrKw0KPj4+PiAgwqAgbWVz
+b24uYnVpbGTCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgfMKgIDYgKysrLS0tDQo+Pj4+ICDCoCBpbmNsdWRlL3FlbXUvY29t
+cGlsZXIuaMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgNyArLS0t
+LS0tDQo+Pj4+ICDCoCBzY3JpcHRzL2NvY2NpLW1hY3JvLWZpbGUuaMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoCB8wqAgNiArLS0tLS0NCj4+Pj4gIMKgIHN1YnByb2plY3RzL2xp
+YnZob3N0LXVzZXIvbGlidmhvc3QtdXNlci5oIHzCoCA2ICstLS0tLQ0KPj4+PiAgwqAgY29u
+dHJpYi9wbHVnaW5zL21lc29uLmJ1aWxkwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8
+wqAgMiArLQ0KPj4+PiAgwqAgcGx1Z2lucy9tZXNvbi5idWlsZMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHwgMjQgKysrKysrKysrKysrKysrKysrKy0t
+LS0NCj4+Pj4gIMKgIHRlc3RzL3RjZy9wbHVnaW5zL21lc29uLmJ1aWxkwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIHzCoCAzICstLQ0KPj4+PiAgwqAgOCBmaWxlcyBjaGFuZ2VkLCA0OCBp
+bnNlcnRpb25zKCspLCAyNiBkZWxldGlvbnMoLSkNCj4+Pj4NCj4+Pg0KPj4+IEl0IHdvdWxk
+IGJlIG5pY2UgaWYgYSBtYWludGFpbmVyIGNvdWxkIHB1bGwgdGhpcywgc28gd2UgY2FuIGdl
+dCB0aGlzDQo+Pj4gbWVyZ2VkIHVwc3RyZWFtLg0KPj4NCj4+IFRoYXQnZCBiZSBUaG9tYXMg
+b3IgQWxleCBJIHN1cHBvc2UuDQo+IA0KPiBUaGlzIHRvdWNoZXMgcGx1Z2lucywgc28gSSB0
+aGluayBpdCBzaG91bGQgZ28gdGhyb3VnaCBBbGV4JyB0cmVlPw0KPiANCj4gICAgVGhvbWFz
+DQo+IA0KPiANCg0KSXQncyB0b3VjaGluZyBwbHVnaW5zLCBidXQgaXQgZG9lcyBhIHN5c3Rl
+bSB3aWRlIGNoYW5nZSBhcyB3ZWxsICh3aGljaCANCmlzIHRoZSBtb3N0IGltcG9ydGFudCBw
+YXJ0KS4NCg0KSXQncyBub3QgcmVhbGx5IGltcG9ydGFudCB3aG8gbWVyZ2VzIHRoaXMsIGJ1
+dCBpdCB3b3VsZCBiZSBiZXR0ZXIgaWYgdGhlIA0Kc2VyaWVzIGNvdWxkIGJlIHB1bGxlZCBh
+cyBhIHdob2xlLCBpbnN0ZWFkIG9mIGJyZWFraW5nIGl0IGludG8gbXVsdGlwbGUgDQpzdWJz
+eXN0ZW1zLg0KDQpUaGFua3MsDQpQaWVycmljaw0K
 
