@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EFD4A0ACB9
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 00:47:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B327A0ACC8
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 01:16:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tX7fL-0002qK-4K; Sun, 12 Jan 2025 18:46:47 -0500
+	id 1tX86i-000798-MW; Sun, 12 Jan 2025 19:15:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tX7fJ-0002q8-Fe; Sun, 12 Jan 2025 18:46:45 -0500
-Received: from mail-vs1-xe30.google.com ([2607:f8b0:4864:20::e30])
+ id 1tX86Z-00077g-VU; Sun, 12 Jan 2025 19:14:56 -0500
+Received: from mail-vk1-xa30.google.com ([2607:f8b0:4864:20::a30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tX7fH-0007sT-NL; Sun, 12 Jan 2025 18:46:45 -0500
-Received: by mail-vs1-xe30.google.com with SMTP id
- ada2fe7eead31-4aff1c57377so2118064137.0; 
- Sun, 12 Jan 2025 15:46:43 -0800 (PST)
+ id 1tX86W-0003yg-V5; Sun, 12 Jan 2025 19:14:54 -0500
+Received: by mail-vk1-xa30.google.com with SMTP id
+ 71dfb90a1353d-51bb020339fso1444793e0c.0; 
+ Sun, 12 Jan 2025 16:14:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1736725602; x=1737330402; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1736727291; x=1737332091; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=K9O660XbMNachmX0zw4ZgF49qepPT7E3bYqs5jTTxKw=;
- b=P6YQ57HoQtNKswq1Ix0RSgubJJooIaHukwtNsYnNSRpPRPCp8XjEjXogDNoDga8ih/
- BaqRyY/5qt95ixt7REBzGUOQ1Or8qZbNaJGwRxkexhdCiQb7dGc1IFW38idkuRDGph+o
- ymS1/q1aCXIjCcfTnodUCAQvllfX6dbQO36LEBLqTWcrtBwmK+3IYHKSGIw3OUNeunD+
- JE/UsbY2shpLJ8z2EygrNJrjaIXZhKBIUHAFRV8+i5nP33qSC62CW0rDpoxRVsD6I3lm
- jNXP0Lta2dpj0adj79Ml624XMENSPnWcmbo08EtKO8ooDHO/VhJ9ZKF6kjEnoHR5UOtH
- 5OYw==
+ bh=TD7MU9vPdejNwguB14lxVRUJfEDkji0WNdvY4VPa6mc=;
+ b=GgUJaISq4CyBfbiWnXveNzDMnK42kmiK4srohS8+4BIvb/dWI2HQDkmHhEe/MyDCle
+ Pf8//4ImsWGGtyp+M//H3tmIoswVRWExsE/l21ubtYpOsXWfDr1l6+nkyNhgqHKT79zi
+ UIqqcCrZUDch8OlX36lFx3bM2zmyNo4IowwaxUA4yo+auD1f5V7weaHhag8/DdntTw2h
+ cgayvIbf8bDOLqUTUw/GqOqmyX76eJbNKbVlu+LWixItWL7Dp+AEvFj3hWTcNqPJhcAZ
+ K/B+EUeMij6pzXsMXsz4hndZUB3WJWg4lVDUeMDXRSNCVAhKRc1hDxO+k7YsqzffJror
+ AFCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736725602; x=1737330402;
+ d=1e100.net; s=20230601; t=1736727291; x=1737332091;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=K9O660XbMNachmX0zw4ZgF49qepPT7E3bYqs5jTTxKw=;
- b=WHzpzuTu/lIdJHO6DHz1M58dv267jpGavDeQSL6kvPvdJM/M4x8V9if7VV9TQW833k
- VzcFYhno17zIcd1Zed1UhRK/pEq/g6GUdXuEJDREik1aVEe7nwZqPS/WCAI0nhPw4adv
- Wj5GFWjLAVIpQXU4f4yyONSQcPRbXCs9LmQWXaX2PWS0Fr8XOfGG0YJ+OTcP73IFJsMl
- DoV5ya3ocD/dzV+mDL+1I0w2k1+acHjiaJER7cBAxVWVL1GSgIE0hDsVd32ESzSKqqdz
- ENlDdpT4ScDxrebXTqLtbKROMYr9umGS97nyVHjQOUVc6nDhVu4t95aUpR/q0bYd5EP4
- sYwQ==
+ bh=TD7MU9vPdejNwguB14lxVRUJfEDkji0WNdvY4VPa6mc=;
+ b=ehEKwM7C03bzWFVQNULRCdeDYhgNvp051Lg12KK4mj5tz4Y7xqIR53TPUo/kXn+AkA
+ 55sjj+7MzzWEm34wnO/bIj7xLqPGsc9GpYiOgTMYmiBf1Yp47tyGk4dyDDKAcf59Yg3O
+ QySUgmWHcwcudBkMAOcttznZveBaLpCM5V06L7Ny6fUD88BOiJoH/PXLmd7i/TiZMmZf
+ w1WGBbChKDJHoVKxHp5UbASrXITih8G2wnMQde1aNOHzzfjmoGHhc+o1F5lr6ynu+tsj
+ +kczJeS/++MYY0ijbOwsmrDzY4cma3tPeqf+CqScSXyqwK2ghCg3egNON9hU5JOsaKo9
+ 1ijQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWxhOD5i3UTUvzjXMx8NiyjKrOM5kpPPM0Atbv5H3fvqoWqrJP2paiJJITLMZMWoePBh+ZMYRWmPw==@nongnu.org
-X-Gm-Message-State: AOJu0Yx8zM1IUQX44TQUhzODO9pt4va1C+gEqObYkO/3ea1SjSrbvFSH
- fEmSlz3utlAHLDweYPcQ9f+aZa9hvFhQDxs2R10TaIi+5Dd4a44Ktsgb6mEfHrQnWFjGHLkmExz
- ljmNpbxaRoc1/V1WMP2sCtTuH1V8=
-X-Gm-Gg: ASbGncvuHDO2+vCS3SupSa2ifjqgXYJ+vlQCKxXwV88AlBkuGQ/pepC6VFVnKldhtkO
- tMmueJnrymEcWu9yLuldoYkFtmars66d8ohHSkcX4/qwgohazwlYTrZQSFjNeXQIRMf4=
-X-Google-Smtp-Source: AGHT+IFYzO1ycg8poPCdmKSHxklr1vLbd0JDVB2137Li5i9iguPFObJTLV5Xfz7bP7jok1nOoQCbp5rfCo4bvvbceyI=
-X-Received: by 2002:a05:6102:4a10:b0:4b2:bcae:a721 with SMTP id
- ada2fe7eead31-4b5820cf928mr12894705137.11.1736725602277; Sun, 12 Jan 2025
- 15:46:42 -0800 (PST)
+ AJvYcCWJ1522IwmqGNrMBxt88O0KwgnZ9A8NvXfyAtSdyCmTLAw9eQ+BYW01fjYJ4r5exQTzQ3cjzXuPOKmc@nongnu.org
+X-Gm-Message-State: AOJu0Yyr2kMpXVbolSblrnDNl5V8CSIUMKgLYriq4NUptA0g+Z906S59
+ UR7ErZ5Km6XkTi2pcSXnEXUIh4OxFnxlNTCd5XkAmkLmuvI5bfchhUycVW+/7prhxCizrxTlH5L
+ pOGNTpMlcPK0+lfEX0RxPcmhj6OE=
+X-Gm-Gg: ASbGncvK2pk9L7k+NTfc4jLOkksBW0JAFC3eicuJL1PdA0frcnbBW5khfwfECIMsncK
+ m6oCxQb8GR/BI+lA9azU2Yk4364UOW3eruhUvqKQXBPTKeufxWSu1TkwAlWQyw6l1Fb0=
+X-Google-Smtp-Source: AGHT+IFfSGuBNQiBS4O6D+UTtA10bNFllhl1aqhxsLzi+w4zwPsnS5TDKjHc20OOz03FUhspmA+1trV26+UDAFoOEQM=
+X-Received: by 2002:a05:6122:130b:b0:518:9582:db90 with SMTP id
+ 71dfb90a1353d-51c6c535f0dmr16752521e0c.11.1736727291099; Sun, 12 Jan 2025
+ 16:14:51 -0800 (PST)
 MIME-Version: 1.0
-References: <20250112225614.33723-1-philmd@linaro.org>
- <20250112225614.33723-4-philmd@linaro.org>
-In-Reply-To: <20250112225614.33723-4-philmd@linaro.org>
+References: <20250112231344.34632-1-philmd@linaro.org>
+ <20250112231344.34632-2-philmd@linaro.org>
+In-Reply-To: <20250112231344.34632-2-philmd@linaro.org>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 13 Jan 2025 09:46:16 +1000
-X-Gm-Features: AbW1kvZBt50-96btYV3kgYc92gRZ2BChskYUDhYtjIMZ4hcb5MjmHiWomP6UO1I
-Message-ID: <CAKmqyKM6vjXR32F4yvLc1qsT=WoZSbcZuwnvNX1Bndv3Smx33A@mail.gmail.com>
-Subject: Re: [PATCH 3/3] hw/arm/v7m: Remove use of &first_cpu in machine_init()
+Date: Mon, 13 Jan 2025 10:14:25 +1000
+X-Gm-Features: AbW1kvYMg4I4ISWxrIS52yrofKyvhh5U5kdD1WP5kXYfDPAsm6dLwvkqusJlnSk
+Message-ID: <CAKmqyKOXXj4Zq-yNqSPSRqQWW+x-=G78nRim_Nvc_LfGTyt13g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] target/riscv: Have kvm_riscv_get_timebase_frequency()
+ take RISCVCPU cpu
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Samuel Tardieu <sam@rfc1149.net>,
- qemu-arm@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>, Felipe Balbi <balbi@kernel.org>, 
- Subbaraya Sundeep <sundeep.lkml@gmail.com>,
- Alistair Francis <alistair@alistair23.me>, 
- Joel Stanley <joel@jms.id.au>, Alexandre Iooss <erdnaxe@crans.org>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Bin Meng <bmeng.cn@gmail.com>, 
+ Weiwei Li <liwei1518@gmail.com>, Alistair Francis <alistair.francis@wdc.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e30;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a30;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa30.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -97,13 +97,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 13, 2025 at 8:57=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
+On Mon, Jan 13, 2025 at 9:14=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
 <philmd@linaro.org> wrote:
 >
-> When instanciating the machine model, the machine_init()
-> implementations usually create the CPUs, so have access
-> to its first CPU. Use that rather then the &first_cpu
-> global.
+> Keep kvm_riscv_get_timebase_frequency() prototype aligned with
+> the other ones declared in "kvm_riscv.h", have it take a RISCVCPU
+> cpu as argument. Include "target/riscv/cpu-qom.h" which declares
+> the RISCVCPU typedef.
 >
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
@@ -112,173 +112,65 @@ Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Alistair
 
 > ---
->  hw/arm/b-l475e-iot01a.c    | 2 +-
->  hw/arm/microbit.c          | 2 +-
->  hw/arm/mps2-tz.c           | 2 +-
->  hw/arm/mps2.c              | 2 +-
->  hw/arm/msf2-som.c          | 2 +-
->  hw/arm/musca.c             | 2 +-
->  hw/arm/netduino2.c         | 2 +-
->  hw/arm/netduinoplus2.c     | 2 +-
->  hw/arm/olimex-stm32-h405.c | 2 +-
->  hw/arm/stellaris.c         | 2 +-
->  hw/arm/stm32vldiscovery.c  | 2 +-
->  11 files changed, 11 insertions(+), 11 deletions(-)
+>  target/riscv/kvm/kvm_riscv.h | 4 +++-
+>  hw/riscv/virt.c              | 2 +-
+>  target/riscv/kvm/kvm-cpu.c   | 4 ++--
+>  3 files changed, 6 insertions(+), 4 deletions(-)
 >
-> diff --git a/hw/arm/b-l475e-iot01a.c b/hw/arm/b-l475e-iot01a.c
-> index 5002a40f06d..c9a5209216c 100644
-> --- a/hw/arm/b-l475e-iot01a.c
-> +++ b/hw/arm/b-l475e-iot01a.c
-> @@ -82,7 +82,7 @@ static void bl475e_init(MachineState *machine)
->      sysbus_realize(SYS_BUS_DEVICE(&s->soc), &error_fatal);
+> diff --git a/target/riscv/kvm/kvm_riscv.h b/target/riscv/kvm/kvm_riscv.h
+> index 58518988681..b2bcd1041f6 100644
+> --- a/target/riscv/kvm/kvm_riscv.h
+> +++ b/target/riscv/kvm/kvm_riscv.h
+> @@ -19,6 +19,8 @@
+>  #ifndef QEMU_KVM_RISCV_H
+>  #define QEMU_KVM_RISCV_H
 >
->      sc =3D STM32L4X5_SOC_GET_CLASS(&s->soc);
-> -    armv7m_load_kernel(ARM_CPU(first_cpu), machine->kernel_filename, 0,
-> +    armv7m_load_kernel(s->soc.armv7m.cpu, machine->kernel_filename, 0,
->                         sc->flash_size);
+> +#include "target/riscv/cpu-qom.h"
+> +
+>  void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
+>  void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
+>  void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+> @@ -28,6 +30,6 @@ void kvm_riscv_aia_create(MachineState *machine, uint64=
+_t group_shift,
+>  void riscv_kvm_aplic_request(void *opaque, int irq, int level);
+>  int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
+>  void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp);
+> -uint64_t kvm_riscv_get_timebase_frequency(CPUState *cs);
+> +uint64_t kvm_riscv_get_timebase_frequency(RISCVCPU *cpu);
 >
->      if (object_class_by_name(TYPE_DM163)) {
-> diff --git a/hw/arm/microbit.c b/hw/arm/microbit.c
-> index 374fbcb3618..3f56fb45ce1 100644
-> --- a/hw/arm/microbit.c
-> +++ b/hw/arm/microbit.c
-> @@ -56,7 +56,7 @@ static void microbit_init(MachineState *machine)
->      memory_region_add_subregion_overlap(&s->nrf51.container, NRF51_TWI_B=
-ASE,
->                                          mr, -1);
->
-> -    armv7m_load_kernel(ARM_CPU(first_cpu), machine->kernel_filename,
-> +    armv7m_load_kernel(s->nrf51.armv7m.cpu, machine->kernel_filename,
->                         0, s->nrf51.flash_size);
+>  #endif
+> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+> index 2bc5a9dd981..9e8876be29b 100644
+> --- a/hw/riscv/virt.c
+> +++ b/hw/riscv/virt.c
+> @@ -750,7 +750,7 @@ static void create_fdt_sockets(RISCVVirtState *s, con=
+st MemMapEntry *memmap,
+>      qemu_fdt_add_subnode(ms->fdt, "/cpus");
+>      qemu_fdt_setprop_cell(ms->fdt, "/cpus", "timebase-frequency",
+>                            kvm_enabled() ?
+> -                          kvm_riscv_get_timebase_frequency(first_cpu) :
+> +                          kvm_riscv_get_timebase_frequency(RISCV_CPU(fir=
+st_cpu)) :
+>                            RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ);
+>      qemu_fdt_setprop_cell(ms->fdt, "/cpus", "#size-cells", 0x0);
+>      qemu_fdt_setprop_cell(ms->fdt, "/cpus", "#address-cells", 0x1);
+> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+> index 11278ea778d..23ce7793594 100644
+> --- a/target/riscv/kvm/kvm-cpu.c
+> +++ b/target/riscv/kvm/kvm-cpu.c
+> @@ -758,11 +758,11 @@ static void kvm_riscv_put_regs_timer(CPUState *cs)
+>      env->kvm_timer_dirty =3D false;
 >  }
 >
-> diff --git a/hw/arm/mps2-tz.c b/hw/arm/mps2-tz.c
-> index 0136e419bfd..d3a9f1b03ac 100644
-> --- a/hw/arm/mps2-tz.c
-> +++ b/hw/arm/mps2-tz.c
-> @@ -1211,7 +1211,7 @@ static void mps2tz_common_init(MachineState *machin=
-e)
->                                      mms->remap_irq);
->      }
+> -uint64_t kvm_riscv_get_timebase_frequency(CPUState *cs)
+> +uint64_t kvm_riscv_get_timebase_frequency(RISCVCPU *cpu)
+>  {
+>      uint64_t reg;
 >
-> -    armv7m_load_kernel(ARM_CPU(first_cpu), machine->kernel_filename,
-> +    armv7m_load_kernel(mms->iotkit.armv7m[0].cpu, machine->kernel_filena=
-me,
->                         0, boot_ram_size(mms));
->  }
+> -    KVM_RISCV_GET_TIMER(cs, frequency, reg);
+> +    KVM_RISCV_GET_TIMER(CPU(cpu), frequency, reg);
 >
-> diff --git a/hw/arm/mps2.c b/hw/arm/mps2.c
-> index efb3500742f..56b2af40f1d 100644
-> --- a/hw/arm/mps2.c
-> +++ b/hw/arm/mps2.c
-> @@ -460,7 +460,7 @@ static void mps2_common_init(MachineState *machine)
->                   qdev_get_gpio_in(armv7m,
->                                    mmc->fpga_type =3D=3D FPGA_AN511 ? 47 =
-: 13));
->
-> -    armv7m_load_kernel(ARM_CPU(first_cpu), machine->kernel_filename,
-> +    armv7m_load_kernel(mms->armv7m.cpu, machine->kernel_filename,
->                         0, 0x400000);
->  }
->
-> diff --git a/hw/arm/msf2-som.c b/hw/arm/msf2-som.c
-> index 5c415abe852..9b20f1e2c98 100644
-> --- a/hw/arm/msf2-som.c
-> +++ b/hw/arm/msf2-som.c
-> @@ -92,7 +92,7 @@ static void emcraft_sf2_s2s010_init(MachineState *machi=
-ne)
->      cs_line =3D qdev_get_gpio_in_named(spi_flash, SSI_GPIO_CS, 0);
->      sysbus_connect_irq(SYS_BUS_DEVICE(&soc->spi[0]), 1, cs_line);
->
-> -    armv7m_load_kernel(ARM_CPU(first_cpu), machine->kernel_filename,
-> +    armv7m_load_kernel(soc->armv7m.cpu, machine->kernel_filename,
->                         0, soc->envm_size);
->  }
->
-> diff --git a/hw/arm/musca.c b/hw/arm/musca.c
-> index 3c3b534cb72..e9c092abc3d 100644
-> --- a/hw/arm/musca.c
-> +++ b/hw/arm/musca.c
-> @@ -590,7 +590,7 @@ static void musca_init(MachineState *machine)
->                                                       "cfg_sec_resp", 0))=
-;
->      }
->
-> -    armv7m_load_kernel(ARM_CPU(first_cpu), machine->kernel_filename,
-> +    armv7m_load_kernel(mms->sse.armv7m[0].cpu, machine->kernel_filename,
->                         0, 0x2000000);
->  }
->
-> diff --git a/hw/arm/netduino2.c b/hw/arm/netduino2.c
-> index 8b1a9a24379..df793c77fe1 100644
-> --- a/hw/arm/netduino2.c
-> +++ b/hw/arm/netduino2.c
-> @@ -48,7 +48,7 @@ static void netduino2_init(MachineState *machine)
->      qdev_connect_clock_in(dev, "sysclk", sysclk);
->      sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
->
-> -    armv7m_load_kernel(ARM_CPU(first_cpu), machine->kernel_filename,
-> +    armv7m_load_kernel(STM32F205_SOC(dev)->armv7m.cpu, machine->kernel_f=
-ilename,
->                         0, FLASH_SIZE);
->  }
->
-> diff --git a/hw/arm/netduinoplus2.c b/hw/arm/netduinoplus2.c
-> index bccd1003549..81b6334cf72 100644
-> --- a/hw/arm/netduinoplus2.c
-> +++ b/hw/arm/netduinoplus2.c
-> @@ -48,7 +48,7 @@ static void netduinoplus2_init(MachineState *machine)
->      qdev_connect_clock_in(dev, "sysclk", sysclk);
->      sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
->
-> -    armv7m_load_kernel(ARM_CPU(first_cpu),
-> +    armv7m_load_kernel(STM32F405_SOC(dev)->armv7m.cpu,
->                         machine->kernel_filename,
->                         0, FLASH_SIZE);
->  }
-> diff --git a/hw/arm/olimex-stm32-h405.c b/hw/arm/olimex-stm32-h405.c
-> index 4ad7b043be0..1f15620f9fd 100644
-> --- a/hw/arm/olimex-stm32-h405.c
-> +++ b/hw/arm/olimex-stm32-h405.c
-> @@ -51,7 +51,7 @@ static void olimex_stm32_h405_init(MachineState *machin=
-e)
->      qdev_connect_clock_in(dev, "sysclk", sysclk);
->      sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
->
-> -    armv7m_load_kernel(ARM_CPU(first_cpu),
-> +    armv7m_load_kernel(STM32F405_SOC(dev)->armv7m.cpu,
->                         machine->kernel_filename,
->                         0, FLASH_SIZE);
->  }
-> diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
-> index 7303e096ef7..284980ad4b5 100644
-> --- a/hw/arm/stellaris.c
-> +++ b/hw/arm/stellaris.c
-> @@ -1366,7 +1366,7 @@ static void stellaris_init(MachineState *ms, stella=
-ris_board_info *board)
->      create_unimplemented_device("hibernation", 0x400fc000, 0x1000);
->      create_unimplemented_device("flash-control", 0x400fd000, 0x1000);
->
-> -    armv7m_load_kernel(ARM_CPU(first_cpu), ms->kernel_filename, 0, flash=
-_size);
-> +    armv7m_load_kernel(ARMV7M(armv7m)->cpu, ms->kernel_filename, 0, flas=
-h_size);
->  }
->
->  /* FIXME: Figure out how to generate these from stellaris_boards.  */
-> diff --git a/hw/arm/stm32vldiscovery.c b/hw/arm/stm32vldiscovery.c
-> index cc419351605..e6c1f5b8d7d 100644
-> --- a/hw/arm/stm32vldiscovery.c
-> +++ b/hw/arm/stm32vldiscovery.c
-> @@ -51,7 +51,7 @@ static void stm32vldiscovery_init(MachineState *machine=
-)
->      qdev_connect_clock_in(dev, "sysclk", sysclk);
->      sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
->
-> -    armv7m_load_kernel(ARM_CPU(first_cpu),
-> +    armv7m_load_kernel(STM32F100_SOC(dev)->armv7m.cpu,
->                         machine->kernel_filename,
->                         0, FLASH_SIZE);
+>      return reg;
 >  }
 > --
 > 2.47.1
