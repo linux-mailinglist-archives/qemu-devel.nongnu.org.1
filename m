@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA66EA0B8D4
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 14:55:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CEB2A0B8E4
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 14:57:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXKtr-0005ZA-Ug; Mon, 13 Jan 2025 08:54:41 -0500
+	id 1tXKu3-0005bZ-U0; Mon, 13 Jan 2025 08:54:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tXKtV-0005Xd-AU
+ id 1tXKtV-0005Xm-Qz
  for qemu-devel@nongnu.org; Mon, 13 Jan 2025 08:54:17 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tXKtR-0007eI-T1
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 08:54:15 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4361f796586so44620625e9.3
+ id 1tXKtT-0007eN-4c
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 08:54:17 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43635796b48so26700595e9.0
  for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 05:54:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736776451; x=1737381251; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736776452; x=1737381252; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=6HdlJP/oiGVeqg3ZfL2mL0VTspYLYi3EUJzilx+oDbA=;
- b=H71Rx1zBpsW/rJ4hb9u2EylLBlNZFpglbLTso+jIcI4uh7V9ARrDrbdIehdO/y7CAY
- ahd1jHDNY9kcw5yN7cN044DQvsCCgHnK1Z+OpcljKfA+mRP+kua1EThX5lx+85XG10Ag
- c38bLayAFoopPBSVlqJ0k00J95wHJfAULJjsC/jaesYnfgAz2IwiylV+rNnBSj+T/MSm
- ePCuTlg1AXd3xbHbrhIB0vpnRk9FERvKM2xW3W2tfFn44fToUBWXjUi3ZQF6e0tKCkxC
- +lzuPrsQI5TXdPiPTGrfIsdZaTw77hsGFasBoDQlBsunUwdAllsfWlRlqBO5UVCzpcer
- PQyA==
+ :reply-to; bh=HQO9GVDNQTUiwYqISYlU2glyJAveShyUsrRw4PZ/cEo=;
+ b=ihP0b7lEsjxV3tNCHccIMLVLvv+XSXdEFdOb1R8izqHeRlYcTtzJNzHzAQ6SAVawMU
+ pWFCf8PsL2nCFwonOOovArpA4px2fCbBDnhPyNFmV6nh0GJ5Hi8+YFCFJ8xN5IJMuqVe
+ IqiRJRc6ProPIKpydzEeODeUpTehVMV0mCUqh+VUTPhn4B5E80RE7u3Yhm0iuzS6cMCO
+ ylOMeXZYw1fYSHqnFejsmMUvVIC/5Re3va96fD3ZV/yP8zTsLIAjDVMu2q4a0ShrQdZV
+ 9N8maB/7ToawZQ6GB3gWBQyM/Z/cK2gmF68JChJWW6IWsNr1KbCquQoC2cQudgUUkuIJ
+ JD3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736776451; x=1737381251;
+ d=1e100.net; s=20230601; t=1736776452; x=1737381252;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6HdlJP/oiGVeqg3ZfL2mL0VTspYLYi3EUJzilx+oDbA=;
- b=qyzHn8VbvbD94UWIn58zI3KgZdMEIVD3/KbyNkFmXCHDIGabu9SYtFV0/R7icLPeNE
- zwlqFkGKXdiVEUoLnb/7+gplgSbCnWObktFR6KK6lyYpetCJbsdkNdVKltuzUfs1uJVg
- GIr1+IQ/dydQ+FgfvaODAI7GG7JfvLYcnHbHi8NG+e374dWK5kKR31UndHzKIH6sZtU8
- TLZoD6vOFWTS6FCn8HVzSeaR1qHnCGNP3YDlSFUIVCUrMlNQGIiLe/eFPzdxEualIUOd
- 5QGKqyYmbWKrs0kr4KQJnbpBBKJU9YNPXR6YQDBZAvdn0bBlFl6LgpMmzICcFUjRMGgO
- rUBA==
-X-Gm-Message-State: AOJu0YxDWDd2WzVKjsN02L1JxQ8B2yfoVc/2eJZyy02xAgLxli1G7YYI
- KmVhu/yw+ncSO/xBlo/wwhOsgBzFJrEyjKH6OuAnRP+FxzIpIpcd/LwBULlm7IFbQSsoYRE8msO
- 8
-X-Gm-Gg: ASbGncsyVSDLDGu5xzKNhiH/BZRCdSaw1NgxBTKQlorl28/VOpX1TZmSQl+ZL1qhi3Z
- /Pfw9vIPnAEJt19o2aMnYjBxFWhCSBvUTc29uE1d2yXWfJvsQrZ0rYIDQYU4oIBL1k1cXgRlmI6
- TcJhONOFlpohVtydhSKuBrcs07ny7pkWe0TRSpm1xFm3aB4dl1kVJhGdwWEZUeFXB6OV8C/u3Vy
- qRWco4flYcjI91kruu83r10MqRjuN+UfuDUBai+tmrX0qQFL0E04Ug8bH+TU0k=
-X-Google-Smtp-Source: AGHT+IGuhbVUlWZBxYAJtLvznjW62+2+7wFumPsC7+1usc+fq86BPNJ6u+Lf9/6LRuONyHnimX/iFQ==
-X-Received: by 2002:a05:600c:1987:b0:434:fddf:5c0c with SMTP id
- 5b1f17b1804b1-436e2679e05mr192322235e9.4.1736776451605; 
- Mon, 13 Jan 2025 05:54:11 -0800 (PST)
+ bh=HQO9GVDNQTUiwYqISYlU2glyJAveShyUsrRw4PZ/cEo=;
+ b=BCEszIVWPyhXDkUQFqKb/Um07UvP6/fGed4Zg5Pe1GVpIznbc+Uyd7JNOGPTlq1HZE
+ kzQKRSM0Bai+pfAdb6fTgbMSClgqDEp7Y1hn8My0haA2kJwDG/ZSALMRC3+OvYu8Laxq
+ CXfGXGyTGE1qDmYYy8PKGQXuqBPXWeVQ5EFQw0DXQigs4taRcnC7DnmS7Jl6jo5IbLrW
+ DP3x+Pubf7qDuhbOXnhPDgCu1CPxE3d2LsoaE1tuzZqIshlz4JtGE2z1XJhlKofkodt+
+ /Qx9EMtRZZi3dHxTYwOlO2DGgl+UbqZCMNbdlUonn4avf+teDw8qmePVUv2sDiFyzKMr
+ nbiw==
+X-Gm-Message-State: AOJu0YxssJ/DDJ4tNE3M+n/beF4OpdIXMhc/wDd7tohQlK3FgN32LNfu
+ ZVKPmPoaiwwqXGNjD1TYG3fH22OEX/9OVTZYRZ84PccukrOkVa4cMBe/eem6NtVFMQb2kYyJGJ4
+ 3
+X-Gm-Gg: ASbGnctg6eoAmrmiya52IlerAG2RDs2CXXFKjXe3twbj7kjiFN2Vkr5pvWbgSxsyErF
+ piXRag9RiciPx+TWMbPg2xAO/egBFjdUZRNQYuMdxFd5HJeS4+BqS0wX8KXfKS0jk/e7aREfaXh
+ kyL1i3no1GvNd8fwWwt0iCsHQECAJGjjTO0do1vdCKntSqpGigJGFnNOKbECYAbT27q4a3E/7n6
+ +4XVKcE1rleEp11alkI5TAonm156/3ihumpn1kbuGPzl21YRGv3Yz6oB73xUtE=
+X-Google-Smtp-Source: AGHT+IFRJqVnJfnowLpAqBtpHa7zSVK4XfddycRvaieWkipon7S7KDNK5JI8xXHexCzUpgVd8lycoA==
+X-Received: by 2002:a05:600c:1e1f:b0:436:fdac:26eb with SMTP id
+ 5b1f17b1804b1-436fdac27d7mr20551835e9.7.1736776452409; 
+ Mon, 13 Jan 2025 05:54:12 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e9d8fba4sm145245205e9.4.2025.01.13.05.54.10
+ 5b1f17b1804b1-436e9d8fba4sm145245205e9.4.2025.01.13.05.54.11
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 13 Jan 2025 05:54:11 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/11] hw/arm_sysctl: fix extracting 31th bit of val
-Date: Mon, 13 Jan 2025 13:53:58 +0000
-Message-Id: <20250113135408.3164401-2-peter.maydell@linaro.org>
+Subject: [PULL 02/11] hw/misc: cast rpm to uint64_t
+Date: Mon, 13 Jan 2025 13:53:59 +0000
+Message-Id: <20250113135408.3164401-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250113135408.3164401-1-peter.maydell@linaro.org>
 References: <20250113135408.3164401-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,43 +95,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anastasia Belova <abelova@astralinux.ru>
+From: Tigran Sogomonian <tsogomonian@astralinux.ru>
 
-1 << 31 is casted to uint64_t while bitwise and with val.
-So this value may become 0xffffffff80000000 but only
-31th "start" bit is required.
-
-This is not possible in practice because the MemoryRegionOps
-uses the default max access size of 4 bytes and so none
-of the upper bytes of val will be set, but the bitfield
-extract API is clearer anyway.
-
-Use the bitfield extract() API instead.
+The value of an arithmetic expression
+'rpm * NPCM7XX_MFT_PULSE_PER_REVOLUTION' is a subject
+to overflow because its operands are not cast to
+a larger data type before performing arithmetic. Thus, need
+to cast rpm to uint64_t.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-Message-id: 20241220125429.7552-1-abelova@astralinux.ru
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-[PMM: add clarification to commit message]
+Signed-off-by: Tigran Sogomonian <tsogomonian@astralinux.ru>
+Reviewed-by: Patrick Leis <venture@google.com>
+Reviewed-by: Hao Wu <wuhaotsh@google.com>
+Message-id: 20241226130311.1349-1-tsogomonian@astralinux.ru
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/misc/arm_sysctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/misc/npcm7xx_mft.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/hw/misc/arm_sysctl.c b/hw/misc/arm_sysctl.c
-index 016a302e679..01663407eca 100644
---- a/hw/misc/arm_sysctl.c
-+++ b/hw/misc/arm_sysctl.c
-@@ -520,7 +520,7 @@ static void arm_sysctl_write(void *opaque, hwaddr offset,
-          * as zero.
+diff --git a/hw/misc/npcm7xx_mft.c b/hw/misc/npcm7xx_mft.c
+index 9fcc69fe5c5..e565cac05d8 100644
+--- a/hw/misc/npcm7xx_mft.c
++++ b/hw/misc/npcm7xx_mft.c
+@@ -172,8 +172,9 @@ static NPCM7xxMFTCaptureState npcm7xx_mft_compute_cnt(
+          * RPM = revolution/min. The time for one revlution (in ns) is
+          * MINUTE_TO_NANOSECOND / RPM.
           */
-         s->sys_cfgctrl = val & ~((3 << 18) | (1 << 31));
--        if (val & (1 << 31)) {
-+        if (extract64(val, 31, 1)) {
-             /* Start bit set -- actually do something */
-             unsigned int dcc = extract32(s->sys_cfgctrl, 26, 4);
-             unsigned int function = extract32(s->sys_cfgctrl, 20, 6);
+-        count = clock_ns_to_ticks(clock, (60 * NANOSECONDS_PER_SECOND) /
+-            (rpm * NPCM7XX_MFT_PULSE_PER_REVOLUTION));
++        count = clock_ns_to_ticks(clock,
++            (uint64_t)(60 * NANOSECONDS_PER_SECOND) /
++            ((uint64_t)rpm * NPCM7XX_MFT_PULSE_PER_REVOLUTION));
+     }
+ 
+     if (count > NPCM7XX_MFT_MAX_CNT) {
 -- 
 2.34.1
 
