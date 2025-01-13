@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62B35A0ACE9
+	by mail.lfdr.de (Postfix) with ESMTPS id 40877A0ACE6
 	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 01:49:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tX8ck-0004Jo-Um; Sun, 12 Jan 2025 19:48:12 -0500
+	id 1tX8cp-0004Lr-1L; Sun, 12 Jan 2025 19:48:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX8cW-0004J6-Pc
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 19:47:56 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX8cc-0004KK-GN
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 19:48:03 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX8cU-0000fy-13
- for qemu-devel@nongnu.org; Sun, 12 Jan 2025 19:47:56 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4361b0ec57aso36554435e9.0
- for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 16:47:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tX8cZ-0000hC-P9
+ for qemu-devel@nongnu.org; Sun, 12 Jan 2025 19:48:01 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-436a39e4891so25845445e9.1
+ for <qemu-devel@nongnu.org>; Sun, 12 Jan 2025 16:47:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736729272; x=1737334072; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=mZ7F9oRarx8FS7cL5OgCcFv244CWrusVaSTKfTV+FRU=;
- b=eyMPdn+q7vuQY5jN4hUwslZk7Vb1TUdD9eo6Qv/a+bEGPb4B9PRk6XoJ+U/5mfXvF6
- CjxUsBNn2dQDosreiROYzFJlNuF3DyTT5tregERK9X516iI3y2KOyS04evth0+xgX2b4
- +MZF2vbDInepBlRTe3cIWQmYeA3azLUuXIsr5t0/NlGOBIJSaHHt4CPGikUlgcTK2mFZ
- H00zSWzxUNdLRkUKpzQUh7ZYYIcGDJVWw1qaXn2zg2HRX/bnZ/6zaub5M9cK5KFq1L0C
- IBb0Qc0w6HScjvkxCYLbV86dCZ3T2BIiSa1HE6UeUNyPJ0ZWMgphWUey5y63UgZBSIlT
- yhbw==
+ d=linaro.org; s=google; t=1736729278; x=1737334078; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=e/OQZjDy+9AZ385RtNjGyKnjx3vgcN7yxotXGYLE1Pg=;
+ b=duU8Ei8wr2aulTD8egwK6WzBqiMGohM3lseV/Ox7JDDw/sZ1uLfqQoH4tWEvayTqJq
+ 6pt0NSa6at4Y8H2EQc1uaJ/lhe3U6fKYuocdpqvXcRilg/4en+Ozzaxqw3KpYyylXZ0/
+ 8EIjWOC4nNrdj1zK+/AD5WWxqMGwJx/hWuNJGuz/C5cDLiMdFwJZlmI1wVoVdhwEC2zr
+ Lpz4Q5Rr/sg/+CDRldXwc49OZtMRqSmzuDXIM9llI9mnB4JfQQx8G9p9nGlvsBgrowzU
+ Bel13IFeiYwVQZ9NMu4UW3xXFaLEP1bDjkkBsNuOvTlUzR9TDBh/keL9Kj7ysUNt+gFH
+ N9LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736729272; x=1737334072;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mZ7F9oRarx8FS7cL5OgCcFv244CWrusVaSTKfTV+FRU=;
- b=nGIFdhJ3mE6yhLgosFZ3lac1Qz13o/SLIUpJqPja+oiv38QKCFyxUIOF1zXBx0pFwd
- ijgWoYBCBIOp3D9+Z3QgLi/yTubxpqBQBkVou1TCrirvGYHJJezpuOr0Q5z2EpOYWfhy
- Rr7AwDHTjHkuYpHaVHlxnfcRYxzs073frzG3TYw0k16uhAMjv9p4QYwhZwVmkkMpDd7Y
- GtkDjWayhVfyTvNS+HvM/ZFNpN2BoF9ECxe9ATZeziHFVf5ElrwuDJeWJDnx2mk8AvyN
- Q8ayLpq2MP/3ZViAlNZuuM2p6HW17vU8frslFoprFLu4SI7NZKSTlu5BO9nyeMpcfsNY
- l1KQ==
-X-Gm-Message-State: AOJu0Yw5KOT6Ya04bi2isWcerRcPaD6+Y9VbHkMYm+8l610tpFNLrno7
- 0vADixdpSgtZMJXYFmHlMySrV733dJx8Rtyec9XwVtEAWrsNpIx8a3YUp43kV5Zrcc/IsM45TM0
- wz1A=
-X-Gm-Gg: ASbGncvZoGrnMQc/DDv4aChPRBZ4ls3iN74gakJGtcC1+11TraVOslm5uRUoqnlwDHk
- u8RjGD2+IdZ8KfLw7nqkmuz7cRvqY3UBxV1CSFLBcnsSvPKu/oYtpoGa/80v3UtRq2MGptWD4zB
- q4USKHyguhl+MBaDXB/SvJVkexVR6HyC6oevFbkUnjpvZBsxhxcJvYDqiw82lNg4a9Frgdd9J4N
- NDn4ckDng3M9SIu1Ln3hkfON0GxN8g9ijVrDUoKhXLkMobm4W7m1931HETo1jlhFNBT7zXjrQy8
- NWdhacVkKru63Z5jaQgDa44uE6/Islc=
-X-Google-Smtp-Source: AGHT+IGT59kNEo8T+DCzFGlE06h9zlG9KtWLXIdnLejYtAP8FYmuzCR4mYo/zJMEZI4yyr4azTtMHg==
-X-Received: by 2002:a05:600c:1d9e:b0:436:8a6f:b6db with SMTP id
- 5b1f17b1804b1-436e2707c41mr145481315e9.22.1736729271980; 
- Sun, 12 Jan 2025 16:47:51 -0800 (PST)
+ d=1e100.net; s=20230601; t=1736729278; x=1737334078;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=e/OQZjDy+9AZ385RtNjGyKnjx3vgcN7yxotXGYLE1Pg=;
+ b=uWPIrgy0d6h12b2VQWkONinYRo3RaH4Wafx/NNjTvXYSMqhZRSBAoig6w9NVLUyNCl
+ KaUJ3C6qa5QytqsCXSIRXm2j80Oot8g3JTMe55vgWClRZPwUYQk8Ed+ryUgk8ZdEXjL7
+ NyJs4ivvL46KuwsTyvx7SE/iQ3UKw7ojJfeba8Miu58FduPFgoADUprl42gR/LS+YEjh
+ wVnnYJT3Jq8ViN9QNrylKKO6QChBT3TRN7KrBq9SONVjR8WkTYBaiXZYnasjEk2pwH8H
+ HSYoKaPQM8dk6TsnzCyblHXUit/YowmrmgOFc1vXHt62PizFfUBbMRQjFy+N4RzfYesn
+ zHow==
+X-Gm-Message-State: AOJu0YxqeLVsEqhRBKgAVOo1BAib4PGSfdIrRqrrCzABCfC0gNUYaqf3
+ tQcf/MJaaOJWcwwJ4dsm2vNwqdk5Z2rnaP7D/yZWr17DOorEnAHf88PByTKwOMMEiB6gSGfHjua
+ K5Q0=
+X-Gm-Gg: ASbGncv84SvhuEIGbw94BEto+tfVCHmdmWx+TN1Y1ERMEOmWgmV0ICR7K/BUVCeT2Vr
+ a56gdIGGZyuxcfBy7LNEsvc/ojxTeNQ5fNw1taqQdUAsr1YXwjdUIsJB4ZHTYCxs8ECo6yzEXi8
+ 7VkttzNs18wLgxmagK15HI/9SWvPaiNpHcx/Yw6Pl6BrBPdv1BfgUddZA3C4i6smZS6REomysfG
+ xWjzmKboLTTCayGp9tNeJBaKR7YVM02eIHWPMa2cSJZ3psXyYgMUmfdAOTxITzkuJoecjlxgmFO
+ 4D9ruwBE7fJe6jGzyjg3GqR+R8r4rCo=
+X-Google-Smtp-Source: AGHT+IFmyIk7L9Tk2SPY38KgfSt4E6nYM8ctmJsUIUEGZmu+L8SltrZOXWVvb2mDFIN3G1xiefNAPQ==
+X-Received: by 2002:a05:6000:1f85:b0:386:4a0c:fe17 with SMTP id
+ ffacd0b85a97d-38a872e9105mr16097785f8f.27.1736729278044; 
+ Sun, 12 Jan 2025 16:47:58 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e9dc8802sm125732025e9.10.2025.01.12.16.47.49
+ ffacd0b85a97d-38a8e37d0casm10891447f8f.11.2025.01.12.16.47.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 12 Jan 2025 16:47:50 -0800 (PST)
+ Sun, 12 Jan 2025 16:47:56 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Aleksandar Rikalo <arikalo@gmail.com>, Huacai Chen <chenhuacai@kernel.org>,
  Paul Burton <paulburton@kernel.org>, Aurelien Jarno <aurelien@aurel32.net>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 00/23] hw/mips: Remove all uses of &first_cpu
-Date: Mon, 13 Jan 2025 01:47:25 +0100
-Message-ID: <20250113004748.41658-1-philmd@linaro.org>
+Subject: [PATCH 01/23] hw/mips/cps: Keep reference of vCPUs in MIPSCPSState
+Date: Mon, 13 Jan 2025 01:47:26 +0100
+Message-ID: <20250113004748.41658-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250113004748.41658-1-philmd@linaro.org>
+References: <20250113004748.41658-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,47 +99,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- Keep references to vCPUs in CPS and MaltaState,
-- Refactor the MIPS Bootloader API to take CPU argument
-- Access first CPU propagate from machine_init()
+When a QOM object create children with object_new(),
+it is better to keep reference to them for further
+use. In particular, this allow to remove one global
+&first_cpu use.
 
-Based-on: <20250112215835.29320-1-philmd@linaro.org>
-"hw/mips/loongson3: Remove uses of &first_cpu global"
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/hw/mips/cps.h | 1 +
+ hw/mips/cps.c         | 4 +++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-Philippe Mathieu-Daudé (23):
-  hw/mips/cps: Keep reference of vCPUs in MIPSCPSState
-  hw/mips/malta: Check CPU index instead of using &first_cpu
-  hw/mips/boston: Replace bl_gen_write_ulong() -> bl_gen_write_u64()
-  hw/mips/bootloader: Propagate CPU env to bootcpu_supports_isa()
-  hw/mips/bootloader: Propagate CPU env to bl_gen_nop()
-  hw/mips/bootloader: Propagate CPU env to bl_gen_dsll()
-  hw/mips/bootloader: Propagate CPU env to bl_gen_jalr()
-  hw/mips/bootloader: Propagate CPU env to bl_gen_sw()
-  hw/mips/bootloader: Propagate CPU env to bl_gen_sd()
-  hw/mips/bootloader: Propagate CPU env to bl_gen_li()
-  hw/mips/bootloader: Propagate CPU env to bl_gen_dli()
-  hw/mips/bootloader: Propagate CPU env to bl_gen_load_ulong()
-  hw/mips/bootloader: Propagate CPU to bl_gen_jump_to()
-  hw/mips/bootloader: Propagate CPU to bl_gen_jump_kernel()
-  hw/mips/bootloader: Propagate CPU to bl_gen_write_ulong()
-  hw/mips/bootloader: Propagate CPU to bl_gen_write_u32()
-  hw/mips/bootloader: Propagate CPU to bl_gen_write_u64()
-  hw/mips/boston: Propagate CPU to gen_firmware()
-  hw/mips/fuloong: Propagate CPU to write_bootloader()
-  hw/mips/malta: Keep reference of vCPUs in MaltaState
-  hw/mips/malta: Propagate MaltaState to write_bootloader()
-  hw/mips/malta: Propagate MaltaState to bl_setup_gt64120_jump_kernel()
-  hw/mips/malta: Remove all uses of &first_cpu global
-
- include/hw/mips/bootloader.h |  14 +++--
- include/hw/mips/cps.h        |   1 +
- hw/mips/bootloader.c         | 103 +++++++++++++++++++----------------
- hw/mips/boston.c             |  21 ++++---
- hw/mips/cps.c                |   4 +-
- hw/mips/fuloong2e.c          |   6 +-
- hw/mips/malta.c              |  59 +++++++++++---------
- 7 files changed, 118 insertions(+), 90 deletions(-)
-
+diff --git a/include/hw/mips/cps.h b/include/hw/mips/cps.h
+index 05ef9f76b74..0968b57c5a0 100644
+--- a/include/hw/mips/cps.h
++++ b/include/hw/mips/cps.h
+@@ -40,6 +40,7 @@ struct MIPSCPSState {
+     char *cpu_type;
+     bool cpu_is_bigendian;
+ 
++    MIPSCPU **cpus;
+     MemoryRegion container;
+     MIPSGCRState gcr;
+     MIPSGICState gic;
+diff --git a/hw/mips/cps.c b/hw/mips/cps.c
+index 293b405b965..494213b2ab6 100644
+--- a/hw/mips/cps.c
++++ b/hw/mips/cps.c
+@@ -73,6 +73,7 @@ static void mips_cps_realize(DeviceState *dev, Error **errp)
+         return;
+     }
+ 
++    s->cpus = g_new(MIPSCPU *, s->num_vp);
+     for (int i = 0; i < s->num_vp; i++) {
+         MIPSCPU *cpu = MIPS_CPU(object_new(s->cpu_type));
+         CPUMIPSState *env = &cpu->env;
+@@ -91,6 +92,7 @@ static void mips_cps_realize(DeviceState *dev, Error **errp)
+         if (!qdev_realize_and_unref(DEVICE(cpu), NULL, errp)) {
+             return;
+         }
++        s->cpus[i] = cpu;
+ 
+         /* Init internal devices */
+         cpu_mips_irq_init_cpu(cpu);
+@@ -146,7 +148,7 @@ static void mips_cps_realize(DeviceState *dev, Error **errp)
+                             sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->gic), 0));
+ 
+     /* Global Configuration Registers */
+-    gcr_base = MIPS_CPU(first_cpu)->env.CP0_CMGCRBase << 4;
++    gcr_base = s->cpus[0]->env.CP0_CMGCRBase << 4;
+ 
+     object_initialize_child(OBJECT(dev), "gcr", &s->gcr, TYPE_MIPS_GCR);
+     object_property_set_uint(OBJECT(&s->gcr), "num-vp", s->num_vp,
 -- 
 2.47.1
 
