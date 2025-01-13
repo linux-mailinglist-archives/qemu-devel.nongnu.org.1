@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E37BA0BEF6
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 18:38:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E9FA0BEFF
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 18:38:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXONM-00035Z-On; Mon, 13 Jan 2025 12:37:20 -0500
+	id 1tXONM-00037S-OZ; Mon, 13 Jan 2025 12:37:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXOMg-0002En-Rp
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 12:36:39 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXOMn-0002L2-6j
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 12:36:48 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXOMf-00072D-8L
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 12:36:38 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4361fe642ddso48335545e9.2
- for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 09:36:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXOMl-00072Q-GV
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 12:36:44 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-436a39e4891so32067885e9.1
+ for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 09:36:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736789795; x=1737394595; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736789800; x=1737394600; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=So15p+H+DSsGmUuH6+mgWAC3ycngOqSbmiFDKA1MmyA=;
- b=cHjv8KqM0maYDidtTkfqeZAeZ+mxjvl9vjmigK6M8AXU0qd/b60TJCFx8sDcllCIAI
- 7jPz/zzxOyk6paiuea79Dufrp5ahoOSVo1vtcN6m+3MKZPQy9Bvcife75SXsjIlRxXkS
- 5qgJOvMSJIKSGP+RqotdT1LZVCRym6ilkCk4D+nqxmtyouFOly3js3kw2vbQhXxs9fhJ
- ROKyMA7EXjhFeFM4dOmex2by7YgMOk/ohi6Ui8crj6DlZ8iBWxN3ZnKEXwZjCGbtOGe8
- hoye5egl+R77jp/tbPb3PFOABbW2bIlKC6e60VOP6w31RRamPv+nZNpKPFykxAIHS+PH
- 4dkw==
+ bh=HyhgHy5lutIfTsw5uCOmzhS68O1wU1WLlga8mlFXRVY=;
+ b=PFZHJVVsckWNauKHEOMtPaEGpbye3zVcihsoBDeQhFDswHYftoAGDa2mTh1IVKvwec
+ tkVSCBb/cCMzMNQbefhzSd9CT87Q6468AAw51QmLZ0Y2hqlwTjpf9FoTq+ZwpbrNJ5fh
+ ioBBailgqIRKmXQcDNXC1m43o1ss0m3xcu+0snlO6ymK0/LsYl1tFHLl8eBGH3fgHsF1
+ JkFsaZr/Dw1iZRD0c3z3I+sAUqrcFbdqUAhr/YnbHE1/zyRy7kiTA9i/WkiDFWfRA/lb
+ NjX1TLsgnlIqet413kUD2qJ3ZxIANR+c8jG9fzQhfKYPFNjsja6w8B4qTMU2eHp4e85k
+ yDew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736789795; x=1737394595;
+ d=1e100.net; s=20230601; t=1736789800; x=1737394600;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=So15p+H+DSsGmUuH6+mgWAC3ycngOqSbmiFDKA1MmyA=;
- b=jCSCHdSAKlE/Ot42G+elOHs5pNeiXI1rSac1tzQRBHGuiSkM9TYsAUMTgIfvWS67r0
- ETZN9I99BceyJWoeoe5Defhbnscag1eG25glnSA6d/9y/X/LMuBN0YayrChAdnatYYlx
- lwNIumNjW9rrRH2ZfgT6y3IupLOYAZY9hoObVlUXirlf0Hz+2nRBB1kP8p2821jMbmtK
- dcnRj0Rt4kJqJXc26S5nK0lU+T2SAF2seMf6gNMUxhUnmEVh5dTSk369IUlaBa7gMVZZ
- af1dtPhawqFwBtVFhtE78FaOqM+eryLC8mVX28IHhCmYCeRb7WiiH5KzwN6DjQux6t3n
- C1qg==
-X-Gm-Message-State: AOJu0YxI9LGckoUNRzK+vqTyRcEJ8dfyLPEXYf/zfgSZPfZpw6NkqwuR
- jfRvkE3Nk4Nu7bBcEPC6BMWCGAImCH5TkfhivY+ImIsWHARFhwtumt+UAz4u/FAJsUUeBvrf5Np
- TOEQ=
-X-Gm-Gg: ASbGncv64Mrnn03w8h0fmmVfzBqLH5Cfbgc2p1RbHahco5k39bl77PkmhuTzMgjzgNr
- a/0/S0jf9JOvG9IR1pRYzohFyy1c2UJKNjggCrUxZInmAfjmOxKWjvRBhHXwzqU0LLCDFnKOqWp
- lvuHOhE0HM0W8l9OTVFOYt6H0g9t27TZmuffxztIt9Sd01ZZZmozxDBkQDjln97udIsILUjsS6i
- xcDDv3rd96LVQDFS4StyV31zJKcgTFlbMlcwLydGt50X252lcVClbdmzPauiGjDxmf1OaTHLZN2
- Qw0pxHY6xbMVm8YlX5EEklbXmDwN9Rs=
-X-Google-Smtp-Source: AGHT+IHn9uN347JJfz3ougU5mSXjWhY/2H/e/aVOln9G8gCTQ7BUE2jtGL7aDApRZjl9TmL73PQJXg==
-X-Received: by 2002:a05:600c:4f8e:b0:436:fb02:e90 with SMTP id
- 5b1f17b1804b1-436fb021066mr56367155e9.10.1736789795403; 
- Mon, 13 Jan 2025 09:36:35 -0800 (PST)
+ bh=HyhgHy5lutIfTsw5uCOmzhS68O1wU1WLlga8mlFXRVY=;
+ b=Gm5TmGe9Uy2i+UqnklRBVEcdNE5WzCm3ac5jHhWPUNZGls4MkKOECXO4b39hCZf+qk
+ 73/SKT0THsCjpdPlmGKGp4hQgXo2SXvetL5CifploR7m9bf8Nkwt7l4vdp+kLd9FlKH+
+ Hz4mj6KDrCb5ndCb0iMcqT7RA71jFIlOdjr1QgQgxz9fQZ8EtMSpT/0aNEqeNKrpeCNT
+ OhcfUJlZbvdButPNHalMUo7AYRwVOIAPRvCwbg+zJivBBQUsCJNOQXvvqZuQnPY9CzCx
+ 79nLpSHqp+vbZGDMGgyiX3Z+/HiepBqQNdKt9k7O09PRoZit+mR1TkMcJ3goNdbVol1K
+ 5LYA==
+X-Gm-Message-State: AOJu0YyfE97v3jdnavwsVucSICKTmmFqdCwAkBoqGNPkZPqYaw260du6
+ fmnUX/J3YgPKkWGfkNeBe3qvoxA5ox3yRLneRFKf8zpbtDhw4PsQNcDAqg1WiVAFl2pY23VCQuv
+ ilcg=
+X-Gm-Gg: ASbGncvvmBQ9gj963z2NpkvycwvwlWpzf6VZwyocuej+9mqSMDqJ+fCcNvkw6TWxgpw
+ HLARDyhC49Hlw3oqdrJLbd0LouyNgHVFtILDrjkyAqYw4VENMn6iCbUCsc0irwPNbQv0/biUu8a
+ dzL+oWzrNJaqeyz505Oe6ezFlwZdNEqNG7e6/OjcZo1eKKPE0rIXnP9VcAKLsyN2WWo8jMWyJ9I
+ u/let2MJdI68GMm0XAeHKS8XVznY3dn2kAz9Cl1Y+uztNZ1X+81lx/cPw4turAvVl9J8lHa9cSH
+ gmbGbrvkJsnTzsxeIKWKBnJPnE1sAak=
+X-Google-Smtp-Source: AGHT+IEoY3bsXDrrD3aeN/d6i958cc60AwLxNezTQJHLt7RiCOJL5StT1QpPrYrNd3YuVCkizywDyg==
+X-Received: by 2002:a05:600c:314f:b0:435:9ed3:5688 with SMTP id
+ 5b1f17b1804b1-436e26a1f79mr218206415e9.18.1736789799982; 
+ Mon, 13 Jan 2025 09:36:39 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e9d8fba4sm150936005e9.4.2025.01.13.09.36.34
+ 5b1f17b1804b1-436e2da6336sm185094455e9.8.2025.01.13.09.36.39
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 13 Jan 2025 09:36:34 -0800 (PST)
+ Mon, 13 Jan 2025 09:36:39 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>
-Subject: [PULL v2 11/55] hw/qdev: Check machine_hotplug_handler in
- hotplug_unplug_allowed_common
-Date: Mon, 13 Jan 2025 18:36:03 +0100
-Message-ID: <20250113173604.46931-7-philmd@linaro.org>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?UTF-8?q?Signed-off-by=3A=20Philippe=20Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Subject: [PULL v2 55/55] Add a b4 configuration file
+Date: Mon, 13 Jan 2025 18:36:04 +0100
+Message-ID: <20250113173604.46931-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250113173604.46931-1-philmd@linaro.org>
 References: <20250113173604.46931-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,85 +98,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-Commit 03fcbd9dc508 ("qdev: Check for the availability of a hotplug
-controller before adding a device") says:
+b4 [1] is a convenient tool to manage patch series with mailing list
+working flow.
 
- > The qdev_unplug() function contains a g_assert(hotplug_ctrl)
- > statement, so QEMU crashes when the user tries to device_add +
- > device_del a device that does not have a corresponding hotplug
- > controller.
+Add a project default config file to match QEMU's mailing list conventions
+as well as adopting differences on scripting.
 
- > The code in qdev_device_add() already checks whether the bus has a
- > proper hotplug controller, but for devices that do not have a
- > corresponding bus, here is no appropriate check available yet. In that
- > case we should check whether the machine itself provides a suitable
- > hotplug controller and refuse to plug the device if none is available.
+Examples of b4:
 
-However, it forgot to add the corresponding check to qdev_unplug().
+    ```
+    $ b4 prep --check
+    Checking patches using:
+      scripts/checkpatch.pl -q --terse --no-summary --mailback -
 
-Check the machine hotplug handler once in the common
-qdev_hotplug_unplug_allowed_common() helper so both hotplug
-and hot-unplug path are covered.
+    ---
+    Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+    ---
+    Changes in v2:
+    - Add lore masks (philmd) from:
+      https://lore.kernel.org/qemu-devel/20241224135054.10243-1-philmd@linaro.org/
+    - Link to v1: https://lore.kernel.org/r/20241222-b4-config-v1-1-b3667beb30a4@flygoat.com
+    ---
+    ● cc5a4c890fed: Add a b4 configuration file
+      ● checkpatch.pl: 27: WARNING: added, moved or deleted file(s), does MAINTAINERS need updating?
+    ---
+    Success: 0, Warning: 1, Error: 0
+    ```
 
-Fixes: 7716b8ca74 ("qdev: HotplugHandler: Add support for unplugging BUS-less devices")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-[PMD: Split from bigger patch, part 6/6]
+    ```
+    $ b4 prep -c
+    Will collect To: addresses using echo
+    Will collect Cc: addresses using get_maintainer.pl
+    Collecting To/Cc addresses
+        + To: qemu-devel@nongnu.org
+    ---
+    You can trim/expand this list with: b4 prep --edit-cover
+    Invoking git-filter-repo to update the cover letter.
+    New history written in 0.02 seconds...
+    Completely finished after 0.06 seconds
+    ```
+
+[1]: https://b4.docs.kernel.org/
+
+Co-developed-by: Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Message-ID: <20250102-b4-config-v2-1-cc7299e399bb@flygoat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20250110091908.64454-7-philmd@linaro.org>
 ---
- hw/core/qdev-hotplug.c | 10 ++++++++++
- system/qdev-monitor.c  | 14 +++-----------
- 2 files changed, 13 insertions(+), 11 deletions(-)
+ .b4-config | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+ create mode 100644 .b4-config
 
-diff --git a/hw/core/qdev-hotplug.c b/hw/core/qdev-hotplug.c
-index f6422cd0e4e..ff176dc1bb3 100644
---- a/hw/core/qdev-hotplug.c
-+++ b/hw/core/qdev-hotplug.c
-@@ -48,6 +48,16 @@ static bool qdev_hotplug_unplug_allowed_common(DeviceState *dev, BusState *bus,
-                        bus->name);
-             return false;
-         }
-+    } else {
-+        if (!qdev_get_machine_hotplug_handler(dev)) {
-+            /*
-+             * No bus, no machine hotplug handler --> device is not hotpluggable
-+             */
-+            error_setg(errp,
-+                       "Device '%s' can not be hotplugged on this machine",
-+                       object_get_typename(OBJECT(dev)));
-+            return false;
-+        }
-     }
- 
-     return true;
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index e27d25c5859..861c25c855f 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -684,17 +684,9 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
-     dev = qdev_new(driver);
- 
-     /* Check whether the hotplug is allowed by the machine */
--    if (phase_check(PHASE_MACHINE_READY)) {
--        if (!qdev_hotplug_allowed(dev, bus, errp)) {
--            goto err_del_dev;
--        }
--
--        if (!bus && !qdev_get_machine_hotplug_handler(dev)) {
--            /* No bus, no machine hotplug handler --> device is not hotpluggable */
--            error_setg(errp, "Device '%s' can not be hotplugged on this machine",
--                       driver);
--            goto err_del_dev;
--        }
-+    if (phase_check(PHASE_MACHINE_READY) &&
-+        !qdev_hotplug_allowed(dev, bus, errp)) {
-+        goto err_del_dev;
-     }
- 
-     /*
+diff --git a/.b4-config b/.b4-config
+new file mode 100644
+index 00000000000..4b9b2fe290f
+--- /dev/null
++++ b/.b4-config
+@@ -0,0 +1,14 @@
++#
++# Common b4 settings that can be used to send patches to QEMU upstream.
++# https://b4.docs.kernel.org/
++#
++
++[b4]
++    send-series-to = qemu-devel@nongnu.org
++    send-auto-to-cmd = echo
++    send-auto-cc-cmd = scripts/get_maintainer.pl --noroles --norolestats --nogit --nogit-fallback
++    am-perpatch-check-cmd = scripts/checkpatch.pl -q --terse --no-summary --mailback -
++    prep-perpatch-check-cmd = scripts/checkpatch.pl -q --terse --no-summary --mailback -
++    searchmask = https://lore.kernel.org/qemu-devel/?x=m&t=1&q=%s
++    linkmask = https://lore.kernel.org/qemu-devel/%s
++    linktrailermask = Message-ID: <%s>
 -- 
 2.47.1
 
