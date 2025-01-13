@@ -2,87 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E9FA0BEFF
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 18:38:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D560A0BF57
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 18:54:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXONM-00037S-OZ; Mon, 13 Jan 2025 12:37:20 -0500
+	id 1tXOcM-0006yT-3N; Mon, 13 Jan 2025 12:52:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXOMn-0002L2-6j
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 12:36:48 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXOMl-00072Q-GV
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 12:36:44 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-436a39e4891so32067885e9.1
- for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 09:36:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736789800; x=1737394600; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HyhgHy5lutIfTsw5uCOmzhS68O1wU1WLlga8mlFXRVY=;
- b=PFZHJVVsckWNauKHEOMtPaEGpbye3zVcihsoBDeQhFDswHYftoAGDa2mTh1IVKvwec
- tkVSCBb/cCMzMNQbefhzSd9CT87Q6468AAw51QmLZ0Y2hqlwTjpf9FoTq+ZwpbrNJ5fh
- ioBBailgqIRKmXQcDNXC1m43o1ss0m3xcu+0snlO6ymK0/LsYl1tFHLl8eBGH3fgHsF1
- JkFsaZr/Dw1iZRD0c3z3I+sAUqrcFbdqUAhr/YnbHE1/zyRy7kiTA9i/WkiDFWfRA/lb
- NjX1TLsgnlIqet413kUD2qJ3ZxIANR+c8jG9fzQhfKYPFNjsja6w8B4qTMU2eHp4e85k
- yDew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736789800; x=1737394600;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HyhgHy5lutIfTsw5uCOmzhS68O1wU1WLlga8mlFXRVY=;
- b=Gm5TmGe9Uy2i+UqnklRBVEcdNE5WzCm3ac5jHhWPUNZGls4MkKOECXO4b39hCZf+qk
- 73/SKT0THsCjpdPlmGKGp4hQgXo2SXvetL5CifploR7m9bf8Nkwt7l4vdp+kLd9FlKH+
- Hz4mj6KDrCb5ndCb0iMcqT7RA71jFIlOdjr1QgQgxz9fQZ8EtMSpT/0aNEqeNKrpeCNT
- OhcfUJlZbvdButPNHalMUo7AYRwVOIAPRvCwbg+zJivBBQUsCJNOQXvvqZuQnPY9CzCx
- 79nLpSHqp+vbZGDMGgyiX3Z+/HiepBqQNdKt9k7O09PRoZit+mR1TkMcJ3goNdbVol1K
- 5LYA==
-X-Gm-Message-State: AOJu0YyfE97v3jdnavwsVucSICKTmmFqdCwAkBoqGNPkZPqYaw260du6
- fmnUX/J3YgPKkWGfkNeBe3qvoxA5ox3yRLneRFKf8zpbtDhw4PsQNcDAqg1WiVAFl2pY23VCQuv
- ilcg=
-X-Gm-Gg: ASbGncvvmBQ9gj963z2NpkvycwvwlWpzf6VZwyocuej+9mqSMDqJ+fCcNvkw6TWxgpw
- HLARDyhC49Hlw3oqdrJLbd0LouyNgHVFtILDrjkyAqYw4VENMn6iCbUCsc0irwPNbQv0/biUu8a
- dzL+oWzrNJaqeyz505Oe6ezFlwZdNEqNG7e6/OjcZo1eKKPE0rIXnP9VcAKLsyN2WWo8jMWyJ9I
- u/let2MJdI68GMm0XAeHKS8XVznY3dn2kAz9Cl1Y+uztNZ1X+81lx/cPw4turAvVl9J8lHa9cSH
- gmbGbrvkJsnTzsxeIKWKBnJPnE1sAak=
-X-Google-Smtp-Source: AGHT+IEoY3bsXDrrD3aeN/d6i958cc60AwLxNezTQJHLt7RiCOJL5StT1QpPrYrNd3YuVCkizywDyg==
-X-Received: by 2002:a05:600c:314f:b0:435:9ed3:5688 with SMTP id
- 5b1f17b1804b1-436e26a1f79mr218206415e9.18.1736789799982; 
- Mon, 13 Jan 2025 09:36:39 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e2da6336sm185094455e9.8.2025.01.13.09.36.39
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 13 Jan 2025 09:36:39 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?UTF-8?q?Signed-off-by=3A=20Philippe=20Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Subject: [PULL v2 55/55] Add a b4 configuration file
-Date: Mon, 13 Jan 2025 18:36:04 +0100
-Message-ID: <20250113173604.46931-8-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250113173604.46931-1-philmd@linaro.org>
-References: <20250113173604.46931-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tXOcB-0006xl-Jc; Mon, 13 Jan 2025 12:52:41 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tXOc8-0000xo-TE; Mon, 13 Jan 2025 12:52:38 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 363F8D6DC8;
+ Mon, 13 Jan 2025 20:52:26 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id D955119AC38;
+ Mon, 13 Jan 2025 20:52:28 +0300 (MSK)
+Message-ID: <5e59bece-4475-4401-bcc5-e069cf367030@tls.msk.ru>
+Date: Mon, 13 Jan 2025 20:52:28 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 17/32] system/qtest: properly feedback results of
+ clock_[step|set]
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-stable <qemu-stable@nongnu.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+References: <20250108121054.1126164-1-alex.bennee@linaro.org>
+ <20250108121054.1126164-18-alex.bennee@linaro.org>
+ <15435e6d-a77c-4d3e-ae06-b1cd23fbee61@tls.msk.ru>
+ <87frlmllyc.fsf@draig.linaro.org>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsFNBGYpLkcBEACsajkUXU2lngbm6RyZuCljo19q/XjZTMikctzMoJnBGVSmFV66kylUghxs
+ HDQQF2YZJbnhSVt/mP6+V7gG6MKR5gYXYxLmypgu2lJdqelrtGf1XtMrobG6kuKFiD8OqV6l
+ 2M5iyOZT3ydIFOUX0WB/B9Lz9WcQ6zYO9Ohm92tiWWORCqhAnwZy4ua/nMZW3RgO7bM6GZKt
+ /SFIorK9rVqzv40D6KNnSyeWfqf4WN3EvEOozMfWrXbEqA7kvd6ShjJoe1FzCEQ71Fj9dQHL
+ DZG+44QXvN650DqEtQ4RW9ozFk3Du9u8lbrXC5cqaCIO4dx4E3zxIddqf6xFfu4Oa5cotCM6
+ /4dgxDoF9udvmC36qYta+zuDsnAXrYSrut5RBb0moez/AR8HD/cs/dS360CLMrl67dpmA+XD
+ 7KKF+6g0RH46CD4cbj9c2egfoBOc+N5XYyr+6ejzeZNf40yjMZ9SFLrcWp4yQ7cpLsSz08lk
+ a0RBKTpNWJdblviPQaLW5gair3tyJR+J1ER1UWRmKErm+Uq0VgLDBDQoFd9eqfJjCwuWZECp
+ z2JUO+zBuGoKDzrDIZH2ErdcPx3oSlVC2VYOk6H4cH1CWr9Ri8i91ClivRAyVTbs67ha295B
+ y4XnxIVaZU+jJzNgLvrXrkI1fTg4FJSQfN4W5BLCxT4sq8BDtwARAQABzSBNaWNoYWVsIFRv
+ a2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLBlAQTAQoAPhYhBJ2L4U4/Kp3XkZko8WGtPZjs3yyO
+ BQJmKS5HAhsDBQkSzAMABQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEGGtPZjs3yyOZSAP
+ /ibilK1gbHqEI2zR2J59Dc0tjtbByVmQ8IMh0SYU3j1jeUoku2UCgdnGKpwvLXtwZINgdl6Q
+ cEaDBRX6drHLJFAi/sdgwVgdnDxaWVJO/ZIN/uJI0Tx7+FSAk8CWSa4IWUOzPNmtrDfb4z6v
+ G36rppY8bTNKbX6nWFXuv2LXQr7g6+kKnbwv4QFpD+UFF1CrLm3byMq4ikdBXpZx030qBL61
+ b7PrfXcBLao0357kWGH6C2Zu4wBnDUJwGi68pI5rzSRAFyAQsE89sjLdR1yFoBH8NiFnAQXP
+ LA8Am9FMsC7D/bi/kwKTJdcZvzdGU1HG6tJvXLWC+nqGpJNBzRdDpjqtxNuL76vVd/JbsFMS
+ JchLN+01fNQ5FHglvkd6md7vO+ULq+r9An5hMiDoRbYVUOBN8uiYNk+qKbdgSfbhsgPURqHi
+ 1bXkgMeMasqWbGMe7iBW/YH2ePfZ6HuKLNQDCkiWZYPQZvyXHvQHjuJJ5+US81tkqM+Q6Snq
+ 0L/O/LD0qLlbinHrcx0abg06VXBoYmGICJpf/3hhWQM4f+B/5w4vpl8q0B6Osz01pBUBfYak
+ CiYCNHMWWVZkW9ZnY7FWiiPOu8iE1s5oPYqBljk3FNUk04SDKMF5TxL87I2nMBnVnvp0ZAuY
+ k9ojiLqlhaKnZ1+zwmwmPmXzFSwlyMczPUMSzsFNBGYpLkcBEAC0mxV2j5M1x7GiXqxNVyWy
+ OnlWqJkbkoyMlWFSErf+RUYlC9qVGwUihgsgEhQMg0nJiSISmU3vsNEx5j0T13pTEyWXWBdS
+ XtZpNEW1lZ2DptoGg+6unpvxd2wn+dqzJqlpr4AY3vc95q4Za/NptWtSCsyJebZ7DxCCkzET
+ tzbbnCjW1souCETrMy+G916w1gJkz4V1jLlRMEEoJHLrr1XKDdJRk/34AqXPKOzILlWRFK6s
+ zOWa80/FNQV5cvjc2eN1HsTMFY5hjG3zOZb60WqwTisJwArjQbWKF49NLHp/6MpiSXIxF/FU
+ jcVYrEk9sKHN+pERnLqIjHA8023whDWvJide7f1V9lrVcFt0zRIhZOp0IAE86E3stSJhZRhY
+ xyIAx4dpDrw7EURLOhu+IXLeEJbtW89tp2Ydm7TVAt5iqBubpHpGTWV7hwPRQX2w2MBq1hCn
+ K5Xx79omukJisbLqG5xUCR1RZBUfBlYnArssIZSOpdJ9wWMK+fl5gn54cs+yziUYU3Tgk0fJ
+ t0DzQsgfd2JkxOEzJACjJWti2Gh3szmdgdoPEJH1Og7KeqbOu2mVCJm+2PrNlzCybOZuHOV5
+ +vSarkb69qg9nU+4ZGX1m+EFLDqVUt1g0SjY6QmM5yjGBA46G3dwTEV0/u5Wh7idNT0mRg8R
+ eP/62iTL55AM6QARAQABwsF8BBgBCgAmFiEEnYvhTj8qndeRmSjxYa09mOzfLI4FAmYpLkcC
+ GwwFCRLMAwAACgkQYa09mOzfLI53ag/+ITb3WW9iqvbjDueV1ZHwUXYvebUEyQV7BFofaJbJ
+ Sr7ek46iYdV4Jdosvq1FW+mzuzrhT+QzadEfYmLKrQV4EK7oYTyQ5hcch55eX00o+hyBHqM2
+ RR/B5HGLYsuyQNv7a08dAUmmi9eAktQ29IfJi+2Y+S1okAEkWFxCUs4EE8YinCrVergB/MG5
+ S7lN3XxITIaW00faKbqGtNqij3vNxua7UenN8NHNXTkrCgA+65clqYI3MGwpqkPnXIpTLGl+
+ wBI5S540sIjhgrmWB0trjtUNxe9QcTGHoHtLeGX9QV5KgzNKoUNZsyqh++CPXHyvcN3OFJXm
+ VUNRs/O3/b1capLdrVu+LPd6Zi7KAyWUqByPkK18+kwNUZvGsAt8WuVQF5telJ6TutfO8xqT
+ FUzuTAHE+IaRU8DEnBpqv0LJ4wqqQ2MeEtodT1icXQ/5EDtM7OTH231lJCR5JxXOnWPuG6el
+ YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
+ ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
+ 3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
+In-Reply-To: <87frlmllyc.fsf@draig.linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,80 +106,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+13.01.2025 19:26, Alex Bennée wrote:
+> Michael Tokarev <mjt@tls.msk.ru> writes:
+> 
+>> Ghrm. 46 recipients seems to be quite a bit too aggressive..
+> 
+> I think git-publish just accumulates Cc's from each run for a given
+> branch. While I can reset the version counter I'm not sure where I can
+> reset the Cc list from.
 
-b4 [1] is a convenient tool to manage patch series with mailing list
-working flow.
+I never used git-publish.  It's fun to know which other tools do people
+use :)
 
-Add a project default config file to match QEMU's mailing list conventions
-as well as adopting differences on scripting.
+>> 08.01.2025 15:10, Alex Bennée wrote:
+>>> Time will not advance if the system is paused or there are no timer
+>>> events set for the future. In absence of pending timer events
+>>> advancing time would make no difference the system state. Attempting
+>>> to do so would be a bug and the test or device under test would need
+>>> fixing.
+>>> Tighten up the result reporting to `FAIL` if time was not advanced.
+>>
+>> Is this qemu-stable material?
+> 
+> Probably not - I guess that was a Cc from a previous series that stuck?
 
-Examples of b4:
+No, it's just that it fixes an issue reported on gitlab (!2687),
+which apparently weren't fixed in time for 9.2, - that's why :)
 
-    ```
-    $ b4 prep --check
-    Checking patches using:
-      scripts/checkpatch.pl -q --terse --no-summary --mailback -
+Thanks,
 
-    ---
-    Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-    ---
-    Changes in v2:
-    - Add lore masks (philmd) from:
-      https://lore.kernel.org/qemu-devel/20241224135054.10243-1-philmd@linaro.org/
-    - Link to v1: https://lore.kernel.org/r/20241222-b4-config-v1-1-b3667beb30a4@flygoat.com
-    ---
-    ● cc5a4c890fed: Add a b4 configuration file
-      ● checkpatch.pl: 27: WARNING: added, moved or deleted file(s), does MAINTAINERS need updating?
-    ---
-    Success: 0, Warning: 1, Error: 0
-    ```
-
-    ```
-    $ b4 prep -c
-    Will collect To: addresses using echo
-    Will collect Cc: addresses using get_maintainer.pl
-    Collecting To/Cc addresses
-        + To: qemu-devel@nongnu.org
-    ---
-    You can trim/expand this list with: b4 prep --edit-cover
-    Invoking git-filter-repo to update the cover letter.
-    New history written in 0.02 seconds...
-    Completely finished after 0.06 seconds
-    ```
-
-[1]: https://b4.docs.kernel.org/
-
-Co-developed-by: Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Message-ID: <20250102-b4-config-v2-1-cc7299e399bb@flygoat.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- .b4-config | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
- create mode 100644 .b4-config
-
-diff --git a/.b4-config b/.b4-config
-new file mode 100644
-index 00000000000..4b9b2fe290f
---- /dev/null
-+++ b/.b4-config
-@@ -0,0 +1,14 @@
-+#
-+# Common b4 settings that can be used to send patches to QEMU upstream.
-+# https://b4.docs.kernel.org/
-+#
-+
-+[b4]
-+    send-series-to = qemu-devel@nongnu.org
-+    send-auto-to-cmd = echo
-+    send-auto-cc-cmd = scripts/get_maintainer.pl --noroles --norolestats --nogit --nogit-fallback
-+    am-perpatch-check-cmd = scripts/checkpatch.pl -q --terse --no-summary --mailback -
-+    prep-perpatch-check-cmd = scripts/checkpatch.pl -q --terse --no-summary --mailback -
-+    searchmask = https://lore.kernel.org/qemu-devel/?x=m&t=1&q=%s
-+    linkmask = https://lore.kernel.org/qemu-devel/%s
-+    linktrailermask = Message-ID: <%s>
--- 
-2.47.1
-
+/mjt
 
