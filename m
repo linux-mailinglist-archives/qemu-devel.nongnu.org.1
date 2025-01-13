@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32266A0B8DE
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 14:56:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F4FA0B8E6
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 14:58:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXKuQ-0005p8-H7; Mon, 13 Jan 2025 08:55:14 -0500
+	id 1tXKu3-0005ab-Kc; Mon, 13 Jan 2025 08:54:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tXKte-0005Ya-En
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 08:54:28 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1tXKta-0005YM-J3
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 08:54:26 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tXKtX-0007fj-Ex
+ id 1tXKtY-0007fx-HN
  for qemu-devel@nongnu.org; Mon, 13 Jan 2025 08:54:22 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4361f796586so44622465e9.3
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-385de59c1a0so2073460f8f.2
  for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 05:54:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1736776458; x=1737381258; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=C07GAu6RWSDUye/+eR4LCu02qedXs1CpujcY5K6FNkQ=;
- b=tPs4dsXppESTLiF3mnHgGzwZtYTKs/75iXxCl8tWkmBOk/KdNIp4igrzTSkMe+M6Pv
- ZOTljuarmmZNt5YvGg2XRYE5xunEzOT3mhnTJ/Qk1+PlX0giL0EspqqRqNeG/0b3dqYH
- 05fEy2uNZzB63eOrOft0SDsPLdF4Eae0oSxom0vjbYKGuYq93NjYZ32NQehdDw76/sgA
- 3WXn2bAKVuSIhQ2XC9Czxy2gPps0BwDnNAzXviMNK4aimq5Xy9yzmrwIpNcSpNNomlyS
- YzZSjSlq5miVzZN+oucVL6eruH9yVT03/R6yVVuKoF7AMYjYeVsI1MyLWuJq3qIGP9Mf
- UMBg==
+ :reply-to; bh=yq7FotDJ+pRN0X+7tXxSyjuMyEGMsZuf5fWwzgYAvT8=;
+ b=VX2mVerQ2+huqjn5KseqFljYibDjUMzdKINTlXKLKrvM7sg2C4xHpknt1Sh0YijWO6
+ y6RR+cqvXMy/eZHBOEWV3L3AoBVYu7/zNnQoWkfHfEY1WlKnqxLYlOGGpsFGsF+r50Mc
+ kb34higuA0Ta+bnWFr4oRQEbxtrDmGZVqbxRaayUavur0rg8ncycWaTUabiYkxkgttc2
+ 6GsqsAkxoq39pT0zb3LsWn4Daj5BzBJhJkdjHWMhtnlWlfbJprqPdcg4yLSpJ9pP99MO
+ Mzbc5LldJAXJbHRiV76pjc7teN9KtAFw12Zoa3zNc7bXZU+AhX35gxjki6R6+IuYB9Sx
+ H0Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1736776458; x=1737381258;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=C07GAu6RWSDUye/+eR4LCu02qedXs1CpujcY5K6FNkQ=;
- b=md5AaQkNJj3NQz55Q0Um8taMbMfhXUowz1tDmPo+9x3dJOGnr3EgXFn4dW/85QLdTX
- yTM0zD8XUOtfIC1XD03f4YQ1tsKuuBMha6gjBDMoYBF/WR4jMLfNhhvGy9U5ZNEAn3M1
- sbDfP3tKX/Sxsi54LvEexz0J6YdXhrvanCHAB65J2RPOP4W7yQU1kjAC3Oy6YEjoeBNJ
- kSbrVZK86lWhxdvNmyC1kenEV1f+lyHJ3jiUpRtQ2Js0OE3q/wbHolZxg1l7DoIg3vKG
- gJ5simfjWBBcIwzblSbZqacPa08N/WQwNbAfd5esipFadhSdnds7bTcVCn2e1UxvK73G
- oicg==
-X-Gm-Message-State: AOJu0Yw1RFShOp7+qGaMncx4i4CMF58n+Ecvvj8qu4JaCF0yFKHhhsyZ
- wYNFJm1CQhlW3vDQJLn5qvWMAWLke9ZQAKzlI3uRFBqryFe6r05bbgSbfgDYfnxzpJEBO2nK4iN
- Q
-X-Gm-Gg: ASbGncsYvoMLHlAt4XFTKArquG7PVNiocYPVUxlWvWhh3m6OGtentSVgl6lwddD6zMu
- OPrYOGb7IF0qLch92kC9YV0bUmfQCLjIL60NDzktZZBNBpmuKcJxNIGZqZ7fT2Ao5mPl3iep63X
- HEdnBTXklDyduNRj9kazt/wXNggkT/ApAt0X2TqJcDKFvWYd/0P7TFx3Jxn/NIT3E5zsk0Au02S
- sWVkdOS9D3dBTx2eR/c1snrqZboPywAhUrhbei0VornrgXpKrqI8WT3AHhRAHs=
-X-Google-Smtp-Source: AGHT+IFfXw0PW2vvyP50lDh31Wst0+/RCJIRupvnRlDNaPQBDNvK55O4n3UiVElae5ITue15GhXYOQ==
-X-Received: by 2002:a05:600c:138a:b0:434:f0df:9fd with SMTP id
- 5b1f17b1804b1-436e2679a1cmr77104835e9.2.1736776457464; 
- Mon, 13 Jan 2025 05:54:17 -0800 (PST)
+ bh=yq7FotDJ+pRN0X+7tXxSyjuMyEGMsZuf5fWwzgYAvT8=;
+ b=BYKNd48vTEJ9Oo5BkIHh2W+tZaQwHwIXHSg3Rjyp4AItrT5sT9ii/8ulrKPUAi/jGL
+ aQ6dmGoBr7jMyZQM5EVWW0DSdPDRFh62SSRpVWACcmyGvI9zZTZ1CjPLfzxvZrtmjbxm
+ 8HRD4nb/pYE+HUqt0NIXlkj7OpP/RBRr0GnigyRaevXIltleaBHEUAPea28TKsak6Srf
+ sq4gXnuvXOJC+vqoRaVl/dyGphoUmVniuNANB2dOjjMb0kaUBHyRpQXxq+iuBam9+Z5c
+ gY6TWBwBrj2VwOGGxajEZJKL6AUiSCDVwssD4bxnXxiHebOjdfLXuWdfcwJCwWK9W8D3
+ oIsw==
+X-Gm-Message-State: AOJu0YwgunbGRe7btoO8+fmJ7YPJqPQf+bySm+6e1QYpUQ1ARdHq05if
+ NCaVOitljSpNbJHyUB87cxvyrbvSWfATdFi+chXpkLDjEZ5vFsyMw+AV1Mkzon6a7P543/aNJOz
+ m
+X-Gm-Gg: ASbGncs4yMI8wxNvJZRIqPCDt98a0foutKGTWOu+JnoOtykUKSmI0qd8RH6DQKWE2Fy
+ Wh65edj4hpBzog+Og7H9Fs0+FPJ6pBo2M8IN1R+q/u8UHVRCoyvI+Wc7GYfibnGtILxk+CP5Jkt
+ D36UQ0nDxDv6K7CA+6BMXS7m60a+Twic8NVnXVvFaWmKjALlasQRfR6bEUtMQKo0t8H+FHNSzQB
+ ebIclrhel2s3iuwRLIn2hX2zuOddgm0v2++O5UrfPBwMmnCWBSyd8/i2o7I+7c=
+X-Google-Smtp-Source: AGHT+IF+IL4AF87MrBIz8/7+WTFdr1GOWJ1JivUXn/oyx/WSAa8Gc8E5YUzmD7S82La/wtVJmY3kOQ==
+X-Received: by 2002:a05:6000:1542:b0:38a:a047:6c0b with SMTP id
+ ffacd0b85a97d-38aa0476d5amr8666527f8f.35.1736776458347; 
+ Mon, 13 Jan 2025 05:54:18 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e9d8fba4sm145245205e9.4.2025.01.13.05.54.16
+ 5b1f17b1804b1-436e9d8fba4sm145245205e9.4.2025.01.13.05.54.17
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 Jan 2025 05:54:16 -0800 (PST)
+ Mon, 13 Jan 2025 05:54:17 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/11] target/arm: Move minor arithmetic helpers out of helper.c
-Date: Mon, 13 Jan 2025 13:54:04 +0000
-Message-Id: <20250113135408.3164401-8-peter.maydell@linaro.org>
+Subject: [PULL 08/11] target/arm: add new property to select pauth-qarma5
+Date: Mon, 13 Jan 2025 13:54:05 +0000
+Message-Id: <20250113135408.3164401-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250113135408.3164401-1-peter.maydell@linaro.org>
 References: <20250113135408.3164401-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,657 +95,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-helper.c includes some small TCG helper functions used for mostly
-arithmetic instructions.  These are TCG only and there's no need for
-them to be in the large and unwieldy helper.c.  Move them out to
-their own source file in the tcg/ subdirectory, together with the
-op_addsub.h multiply-included template header that they use.
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Since we are moving op_addsub.h, we take the opportunity to
-give it a name which matches our convention for files which
-are not true header files but which are #included from other
-C files: op_addsub.c.inc.
+Before changing default pauth algorithm, we need to make sure current
+default one (QARMA5) can still be selected.
 
-(Ironically, this means that helper.c no longer contains
-any TCG helper function definitions at all.)
+$ qemu-system-aarch64 -cpu max,pauth-qarma5=on ...
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250110131211.2546314-1-peter.maydell@linaro.org
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-id: 20241219183211.3493974-2-pierrick.bouvier@linaro.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/helper.c                           | 285 -----------------
- target/arm/tcg/arith_helper.c                 | 296 ++++++++++++++++++
- .../arm/{op_addsub.h => tcg/op_addsub.c.inc}  |   0
- target/arm/tcg/meson.build                    |   1 +
- 4 files changed, 297 insertions(+), 285 deletions(-)
- create mode 100644 target/arm/tcg/arith_helper.c
- rename target/arm/{op_addsub.h => tcg/op_addsub.c.inc} (100%)
+ docs/system/arm/cpu-features.rst |  5 ++++-
+ target/arm/cpu.h                 |  1 +
+ target/arm/arm-qmp-cmds.c        |  2 +-
+ target/arm/cpu64.c               | 20 ++++++++++++++------
+ tests/qtest/arm-cpu-features.c   | 15 +++++++++++----
+ 5 files changed, 31 insertions(+), 12 deletions(-)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 5b595f951b4..63997678513 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -17,11 +17,9 @@
- #include "qemu/main-loop.h"
- #include "qemu/timer.h"
- #include "qemu/bitops.h"
--#include "qemu/crc32c.h"
- #include "qemu/qemu-print.h"
- #include "exec/exec-all.h"
- #include "exec/translation-block.h"
--#include <zlib.h> /* for crc32 */
- #include "hw/irq.h"
- #include "system/cpu-timers.h"
- #include "system/kvm.h"
-@@ -10984,289 +10982,6 @@ ARMVAParameters aa64_va_parameters(CPUARMState *env, uint64_t va,
-     };
+diff --git a/docs/system/arm/cpu-features.rst b/docs/system/arm/cpu-features.rst
+index a5fb929243c..d69ebc2b852 100644
+--- a/docs/system/arm/cpu-features.rst
++++ b/docs/system/arm/cpu-features.rst
+@@ -219,7 +219,10 @@ Below is the list of TCG VCPU features and their descriptions.
+ ``pauth-qarma3``
+   When ``pauth`` is enabled, select the architected QARMA3 algorithm.
+ 
+-Without either ``pauth-impdef`` or ``pauth-qarma3`` enabled,
++``pauth-qarma5``
++  When ``pauth`` is enabled, select the architected QARMA5 algorithm.
++
++Without ``pauth-impdef``, ``pauth-qarma3`` or ``pauth-qarma5`` enabled,
+ the architected QARMA5 algorithm is used.  The architected QARMA5
+ and QARMA3 algorithms have good cryptographic properties, but can
+ be quite slow to emulate.  The impdef algorithm used by QEMU is
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 12b84665427..01d9ff1781a 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1062,6 +1062,7 @@ struct ArchCPU {
+     bool prop_pauth;
+     bool prop_pauth_impdef;
+     bool prop_pauth_qarma3;
++    bool prop_pauth_qarma5;
+     bool prop_lpa2;
+ 
+     /* DCZ blocksize, in log_2(words), ie low 4 bits of DCZID_EL0 */
+diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
+index 3cc8cc738bb..33cea080d11 100644
+--- a/target/arm/arm-qmp-cmds.c
++++ b/target/arm/arm-qmp-cmds.c
+@@ -94,7 +94,7 @@ static const char *cpu_model_advertised_features[] = {
+     "sve640", "sve768", "sve896", "sve1024", "sve1152", "sve1280",
+     "sve1408", "sve1536", "sve1664", "sve1792", "sve1920", "sve2048",
+     "kvm-no-adjvtime", "kvm-steal-time",
+-    "pauth", "pauth-impdef", "pauth-qarma3",
++    "pauth", "pauth-impdef", "pauth-qarma3", "pauth-qarma5",
+     NULL
+ };
+ 
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index dca83e45181..6ee0af69121 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -520,9 +520,12 @@ void arm_cpu_pauth_finalize(ARMCPU *cpu, Error **errp)
+         }
+ 
+         if (cpu->prop_pauth) {
+-            if (cpu->prop_pauth_impdef && cpu->prop_pauth_qarma3) {
++            if ((cpu->prop_pauth_impdef && cpu->prop_pauth_qarma3) ||
++                (cpu->prop_pauth_impdef && cpu->prop_pauth_qarma5) ||
++                (cpu->prop_pauth_qarma3 && cpu->prop_pauth_qarma5)) {
+                 error_setg(errp,
+-                           "cannot enable both pauth-impdef and pauth-qarma3");
++                           "cannot enable pauth-impdef, pauth-qarma3 and "
++                           "pauth-qarma5 at the same time");
+                 return;
+             }
+ 
+@@ -532,13 +535,15 @@ void arm_cpu_pauth_finalize(ARMCPU *cpu, Error **errp)
+             } else if (cpu->prop_pauth_qarma3) {
+                 isar2 = FIELD_DP64(isar2, ID_AA64ISAR2, APA3, features);
+                 isar2 = FIELD_DP64(isar2, ID_AA64ISAR2, GPA3, 1);
+-            } else {
++            } else { /* default is pauth-qarma5 */
+                 isar1 = FIELD_DP64(isar1, ID_AA64ISAR1, APA, features);
+                 isar1 = FIELD_DP64(isar1, ID_AA64ISAR1, GPA, 1);
+             }
+-        } else if (cpu->prop_pauth_impdef || cpu->prop_pauth_qarma3) {
+-            error_setg(errp, "cannot enable pauth-impdef or "
+-                       "pauth-qarma3 without pauth");
++        } else if (cpu->prop_pauth_impdef ||
++                   cpu->prop_pauth_qarma3 ||
++                   cpu->prop_pauth_qarma5) {
++            error_setg(errp, "cannot enable pauth-impdef, pauth-qarma3 or "
++                       "pauth-qarma5 without pauth");
+             error_append_hint(errp, "Add pauth=on to the CPU property list.\n");
+         }
+     }
+@@ -553,6 +558,8 @@ static const Property arm_cpu_pauth_impdef_property =
+     DEFINE_PROP_BOOL("pauth-impdef", ARMCPU, prop_pauth_impdef, false);
+ static const Property arm_cpu_pauth_qarma3_property =
+     DEFINE_PROP_BOOL("pauth-qarma3", ARMCPU, prop_pauth_qarma3, false);
++static Property arm_cpu_pauth_qarma5_property =
++    DEFINE_PROP_BOOL("pauth-qarma5", ARMCPU, prop_pauth_qarma5, false);
+ 
+ void aarch64_add_pauth_properties(Object *obj)
+ {
+@@ -573,6 +580,7 @@ void aarch64_add_pauth_properties(Object *obj)
+     } else {
+         qdev_property_add_static(DEVICE(obj), &arm_cpu_pauth_impdef_property);
+         qdev_property_add_static(DEVICE(obj), &arm_cpu_pauth_qarma3_property);
++        qdev_property_add_static(DEVICE(obj), &arm_cpu_pauth_qarma5_property);
+     }
  }
  
--/*
-- * Note that signed overflow is undefined in C.  The following routines are
-- * careful to use unsigned types where modulo arithmetic is required.
-- * Failure to do so _will_ break on newer gcc.
-- */
--
--/* Signed saturating arithmetic.  */
--
--/* Perform 16-bit signed saturating addition.  */
--static inline uint16_t add16_sat(uint16_t a, uint16_t b)
--{
--    uint16_t res;
--
--    res = a + b;
--    if (((res ^ a) & 0x8000) && !((a ^ b) & 0x8000)) {
--        if (a & 0x8000) {
--            res = 0x8000;
--        } else {
--            res = 0x7fff;
--        }
--    }
--    return res;
--}
--
--/* Perform 8-bit signed saturating addition.  */
--static inline uint8_t add8_sat(uint8_t a, uint8_t b)
--{
--    uint8_t res;
--
--    res = a + b;
--    if (((res ^ a) & 0x80) && !((a ^ b) & 0x80)) {
--        if (a & 0x80) {
--            res = 0x80;
--        } else {
--            res = 0x7f;
--        }
--    }
--    return res;
--}
--
--/* Perform 16-bit signed saturating subtraction.  */
--static inline uint16_t sub16_sat(uint16_t a, uint16_t b)
--{
--    uint16_t res;
--
--    res = a - b;
--    if (((res ^ a) & 0x8000) && ((a ^ b) & 0x8000)) {
--        if (a & 0x8000) {
--            res = 0x8000;
--        } else {
--            res = 0x7fff;
--        }
--    }
--    return res;
--}
--
--/* Perform 8-bit signed saturating subtraction.  */
--static inline uint8_t sub8_sat(uint8_t a, uint8_t b)
--{
--    uint8_t res;
--
--    res = a - b;
--    if (((res ^ a) & 0x80) && ((a ^ b) & 0x80)) {
--        if (a & 0x80) {
--            res = 0x80;
--        } else {
--            res = 0x7f;
--        }
--    }
--    return res;
--}
--
--#define ADD16(a, b, n) RESULT(add16_sat(a, b), n, 16);
--#define SUB16(a, b, n) RESULT(sub16_sat(a, b), n, 16);
--#define ADD8(a, b, n)  RESULT(add8_sat(a, b), n, 8);
--#define SUB8(a, b, n)  RESULT(sub8_sat(a, b), n, 8);
--#define PFX q
--
--#include "op_addsub.h"
--
--/* Unsigned saturating arithmetic.  */
--static inline uint16_t add16_usat(uint16_t a, uint16_t b)
--{
--    uint16_t res;
--    res = a + b;
--    if (res < a) {
--        res = 0xffff;
--    }
--    return res;
--}
--
--static inline uint16_t sub16_usat(uint16_t a, uint16_t b)
--{
--    if (a > b) {
--        return a - b;
--    } else {
--        return 0;
--    }
--}
--
--static inline uint8_t add8_usat(uint8_t a, uint8_t b)
--{
--    uint8_t res;
--    res = a + b;
--    if (res < a) {
--        res = 0xff;
--    }
--    return res;
--}
--
--static inline uint8_t sub8_usat(uint8_t a, uint8_t b)
--{
--    if (a > b) {
--        return a - b;
--    } else {
--        return 0;
--    }
--}
--
--#define ADD16(a, b, n) RESULT(add16_usat(a, b), n, 16);
--#define SUB16(a, b, n) RESULT(sub16_usat(a, b), n, 16);
--#define ADD8(a, b, n)  RESULT(add8_usat(a, b), n, 8);
--#define SUB8(a, b, n)  RESULT(sub8_usat(a, b), n, 8);
--#define PFX uq
--
--#include "op_addsub.h"
--
--/* Signed modulo arithmetic.  */
--#define SARITH16(a, b, n, op) do { \
--    int32_t sum; \
--    sum = (int32_t)(int16_t)(a) op (int32_t)(int16_t)(b); \
--    RESULT(sum, n, 16); \
--    if (sum >= 0) \
--        ge |= 3 << (n * 2); \
--    } while (0)
--
--#define SARITH8(a, b, n, op) do { \
--    int32_t sum; \
--    sum = (int32_t)(int8_t)(a) op (int32_t)(int8_t)(b); \
--    RESULT(sum, n, 8); \
--    if (sum >= 0) \
--        ge |= 1 << n; \
--    } while (0)
--
--
--#define ADD16(a, b, n) SARITH16(a, b, n, +)
--#define SUB16(a, b, n) SARITH16(a, b, n, -)
--#define ADD8(a, b, n)  SARITH8(a, b, n, +)
--#define SUB8(a, b, n)  SARITH8(a, b, n, -)
--#define PFX s
--#define ARITH_GE
--
--#include "op_addsub.h"
--
--/* Unsigned modulo arithmetic.  */
--#define ADD16(a, b, n) do { \
--    uint32_t sum; \
--    sum = (uint32_t)(uint16_t)(a) + (uint32_t)(uint16_t)(b); \
--    RESULT(sum, n, 16); \
--    if ((sum >> 16) == 1) \
--        ge |= 3 << (n * 2); \
--    } while (0)
--
--#define ADD8(a, b, n) do { \
--    uint32_t sum; \
--    sum = (uint32_t)(uint8_t)(a) + (uint32_t)(uint8_t)(b); \
--    RESULT(sum, n, 8); \
--    if ((sum >> 8) == 1) \
--        ge |= 1 << n; \
--    } while (0)
--
--#define SUB16(a, b, n) do { \
--    uint32_t sum; \
--    sum = (uint32_t)(uint16_t)(a) - (uint32_t)(uint16_t)(b); \
--    RESULT(sum, n, 16); \
--    if ((sum >> 16) == 0) \
--        ge |= 3 << (n * 2); \
--    } while (0)
--
--#define SUB8(a, b, n) do { \
--    uint32_t sum; \
--    sum = (uint32_t)(uint8_t)(a) - (uint32_t)(uint8_t)(b); \
--    RESULT(sum, n, 8); \
--    if ((sum >> 8) == 0) \
--        ge |= 1 << n; \
--    } while (0)
--
--#define PFX u
--#define ARITH_GE
--
--#include "op_addsub.h"
--
--/* Halved signed arithmetic.  */
--#define ADD16(a, b, n) \
--  RESULT(((int32_t)(int16_t)(a) + (int32_t)(int16_t)(b)) >> 1, n, 16)
--#define SUB16(a, b, n) \
--  RESULT(((int32_t)(int16_t)(a) - (int32_t)(int16_t)(b)) >> 1, n, 16)
--#define ADD8(a, b, n) \
--  RESULT(((int32_t)(int8_t)(a) + (int32_t)(int8_t)(b)) >> 1, n, 8)
--#define SUB8(a, b, n) \
--  RESULT(((int32_t)(int8_t)(a) - (int32_t)(int8_t)(b)) >> 1, n, 8)
--#define PFX sh
--
--#include "op_addsub.h"
--
--/* Halved unsigned arithmetic.  */
--#define ADD16(a, b, n) \
--  RESULT(((uint32_t)(uint16_t)(a) + (uint32_t)(uint16_t)(b)) >> 1, n, 16)
--#define SUB16(a, b, n) \
--  RESULT(((uint32_t)(uint16_t)(a) - (uint32_t)(uint16_t)(b)) >> 1, n, 16)
--#define ADD8(a, b, n) \
--  RESULT(((uint32_t)(uint8_t)(a) + (uint32_t)(uint8_t)(b)) >> 1, n, 8)
--#define SUB8(a, b, n) \
--  RESULT(((uint32_t)(uint8_t)(a) - (uint32_t)(uint8_t)(b)) >> 1, n, 8)
--#define PFX uh
--
--#include "op_addsub.h"
--
--static inline uint8_t do_usad(uint8_t a, uint8_t b)
--{
--    if (a > b) {
--        return a - b;
--    } else {
--        return b - a;
--    }
--}
--
--/* Unsigned sum of absolute byte differences.  */
--uint32_t HELPER(usad8)(uint32_t a, uint32_t b)
--{
--    uint32_t sum;
--    sum = do_usad(a, b);
--    sum += do_usad(a >> 8, b >> 8);
--    sum += do_usad(a >> 16, b >> 16);
--    sum += do_usad(a >> 24, b >> 24);
--    return sum;
--}
--
--/* For ARMv6 SEL instruction.  */
--uint32_t HELPER(sel_flags)(uint32_t flags, uint32_t a, uint32_t b)
--{
--    uint32_t mask;
--
--    mask = 0;
--    if (flags & 1) {
--        mask |= 0xff;
--    }
--    if (flags & 2) {
--        mask |= 0xff00;
--    }
--    if (flags & 4) {
--        mask |= 0xff0000;
--    }
--    if (flags & 8) {
--        mask |= 0xff000000;
--    }
--    return (a & mask) | (b & ~mask);
--}
--
--/*
-- * CRC helpers.
-- * The upper bytes of val (above the number specified by 'bytes') must have
-- * been zeroed out by the caller.
-- */
--uint32_t HELPER(crc32)(uint32_t acc, uint32_t val, uint32_t bytes)
--{
--    uint8_t buf[4];
--
--    stl_le_p(buf, val);
--
--    /* zlib crc32 converts the accumulator and output to one's complement.  */
--    return crc32(acc ^ 0xffffffff, buf, bytes) ^ 0xffffffff;
--}
--
--uint32_t HELPER(crc32c)(uint32_t acc, uint32_t val, uint32_t bytes)
--{
--    uint8_t buf[4];
--
--    stl_le_p(buf, val);
--
--    /* Linux crc32c converts the output to one's complement.  */
--    return crc32c(acc, buf, bytes) ^ 0xffffffff;
--}
+diff --git a/tests/qtest/arm-cpu-features.c b/tests/qtest/arm-cpu-features.c
+index cfd6f773535..98d6c970ea5 100644
+--- a/tests/qtest/arm-cpu-features.c
++++ b/tests/qtest/arm-cpu-features.c
+@@ -419,21 +419,28 @@ static void pauth_tests_default(QTestState *qts, const char *cpu_type)
+     assert_has_feature_enabled(qts, cpu_type, "pauth");
+     assert_has_feature_disabled(qts, cpu_type, "pauth-impdef");
+     assert_has_feature_disabled(qts, cpu_type, "pauth-qarma3");
++    assert_has_feature_disabled(qts, cpu_type, "pauth-qarma5");
+     assert_set_feature(qts, cpu_type, "pauth", false);
+     assert_set_feature(qts, cpu_type, "pauth", true);
+     assert_set_feature(qts, cpu_type, "pauth-impdef", true);
+     assert_set_feature(qts, cpu_type, "pauth-impdef", false);
+     assert_set_feature(qts, cpu_type, "pauth-qarma3", true);
+     assert_set_feature(qts, cpu_type, "pauth-qarma3", false);
++    assert_set_feature(qts, cpu_type, "pauth-qarma5", true);
++    assert_set_feature(qts, cpu_type, "pauth-qarma5", false);
+     assert_error(qts, cpu_type,
+-                 "cannot enable pauth-impdef or pauth-qarma3 without pauth",
++                 "cannot enable pauth-impdef, pauth-qarma3 or pauth-qarma5 without pauth",
+                  "{ 'pauth': false, 'pauth-impdef': true }");
+     assert_error(qts, cpu_type,
+-                 "cannot enable pauth-impdef or pauth-qarma3 without pauth",
++                 "cannot enable pauth-impdef, pauth-qarma3 or pauth-qarma5 without pauth",
+                  "{ 'pauth': false, 'pauth-qarma3': true }");
+     assert_error(qts, cpu_type,
+-                 "cannot enable both pauth-impdef and pauth-qarma3",
+-                 "{ 'pauth': true, 'pauth-impdef': true, 'pauth-qarma3': true }");
++                 "cannot enable pauth-impdef, pauth-qarma3 or pauth-qarma5 without pauth",
++                 "{ 'pauth': false, 'pauth-qarma5': true }");
++    assert_error(qts, cpu_type,
++                 "cannot enable pauth-impdef, pauth-qarma3 and pauth-qarma5 at the same time",
++                 "{ 'pauth': true, 'pauth-impdef': true, 'pauth-qarma3': true,"
++                 "  'pauth-qarma5': true }");
+ }
  
- /*
-  * Return the exception level to which FP-disabled exceptions should
-diff --git a/target/arm/tcg/arith_helper.c b/target/arm/tcg/arith_helper.c
-new file mode 100644
-index 00000000000..9a555c7966c
---- /dev/null
-+++ b/target/arm/tcg/arith_helper.c
-@@ -0,0 +1,296 @@
-+/*
-+ * ARM generic helpers for various arithmetical operations.
-+ *
-+ * This code is licensed under the GNU GPL v2 or later.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include "qemu/osdep.h"
-+#include "cpu.h"
-+#include "exec/helper-proto.h"
-+#include "qemu/crc32c.h"
-+#include <zlib.h> /* for crc32 */
-+
-+/*
-+ * Note that signed overflow is undefined in C.  The following routines are
-+ * careful to use unsigned types where modulo arithmetic is required.
-+ * Failure to do so _will_ break on newer gcc.
-+ */
-+
-+/* Signed saturating arithmetic.  */
-+
-+/* Perform 16-bit signed saturating addition.  */
-+static inline uint16_t add16_sat(uint16_t a, uint16_t b)
-+{
-+    uint16_t res;
-+
-+    res = a + b;
-+    if (((res ^ a) & 0x8000) && !((a ^ b) & 0x8000)) {
-+        if (a & 0x8000) {
-+            res = 0x8000;
-+        } else {
-+            res = 0x7fff;
-+        }
-+    }
-+    return res;
-+}
-+
-+/* Perform 8-bit signed saturating addition.  */
-+static inline uint8_t add8_sat(uint8_t a, uint8_t b)
-+{
-+    uint8_t res;
-+
-+    res = a + b;
-+    if (((res ^ a) & 0x80) && !((a ^ b) & 0x80)) {
-+        if (a & 0x80) {
-+            res = 0x80;
-+        } else {
-+            res = 0x7f;
-+        }
-+    }
-+    return res;
-+}
-+
-+/* Perform 16-bit signed saturating subtraction.  */
-+static inline uint16_t sub16_sat(uint16_t a, uint16_t b)
-+{
-+    uint16_t res;
-+
-+    res = a - b;
-+    if (((res ^ a) & 0x8000) && ((a ^ b) & 0x8000)) {
-+        if (a & 0x8000) {
-+            res = 0x8000;
-+        } else {
-+            res = 0x7fff;
-+        }
-+    }
-+    return res;
-+}
-+
-+/* Perform 8-bit signed saturating subtraction.  */
-+static inline uint8_t sub8_sat(uint8_t a, uint8_t b)
-+{
-+    uint8_t res;
-+
-+    res = a - b;
-+    if (((res ^ a) & 0x80) && ((a ^ b) & 0x80)) {
-+        if (a & 0x80) {
-+            res = 0x80;
-+        } else {
-+            res = 0x7f;
-+        }
-+    }
-+    return res;
-+}
-+
-+#define ADD16(a, b, n) RESULT(add16_sat(a, b), n, 16);
-+#define SUB16(a, b, n) RESULT(sub16_sat(a, b), n, 16);
-+#define ADD8(a, b, n)  RESULT(add8_sat(a, b), n, 8);
-+#define SUB8(a, b, n)  RESULT(sub8_sat(a, b), n, 8);
-+#define PFX q
-+
-+#include "op_addsub.c.inc"
-+
-+/* Unsigned saturating arithmetic.  */
-+static inline uint16_t add16_usat(uint16_t a, uint16_t b)
-+{
-+    uint16_t res;
-+    res = a + b;
-+    if (res < a) {
-+        res = 0xffff;
-+    }
-+    return res;
-+}
-+
-+static inline uint16_t sub16_usat(uint16_t a, uint16_t b)
-+{
-+    if (a > b) {
-+        return a - b;
-+    } else {
-+        return 0;
-+    }
-+}
-+
-+static inline uint8_t add8_usat(uint8_t a, uint8_t b)
-+{
-+    uint8_t res;
-+    res = a + b;
-+    if (res < a) {
-+        res = 0xff;
-+    }
-+    return res;
-+}
-+
-+static inline uint8_t sub8_usat(uint8_t a, uint8_t b)
-+{
-+    if (a > b) {
-+        return a - b;
-+    } else {
-+        return 0;
-+    }
-+}
-+
-+#define ADD16(a, b, n) RESULT(add16_usat(a, b), n, 16);
-+#define SUB16(a, b, n) RESULT(sub16_usat(a, b), n, 16);
-+#define ADD8(a, b, n)  RESULT(add8_usat(a, b), n, 8);
-+#define SUB8(a, b, n)  RESULT(sub8_usat(a, b), n, 8);
-+#define PFX uq
-+
-+#include "op_addsub.c.inc"
-+
-+/* Signed modulo arithmetic.  */
-+#define SARITH16(a, b, n, op) do { \
-+    int32_t sum; \
-+    sum = (int32_t)(int16_t)(a) op (int32_t)(int16_t)(b); \
-+    RESULT(sum, n, 16); \
-+    if (sum >= 0) \
-+        ge |= 3 << (n * 2); \
-+    } while (0)
-+
-+#define SARITH8(a, b, n, op) do { \
-+    int32_t sum; \
-+    sum = (int32_t)(int8_t)(a) op (int32_t)(int8_t)(b); \
-+    RESULT(sum, n, 8); \
-+    if (sum >= 0) \
-+        ge |= 1 << n; \
-+    } while (0)
-+
-+
-+#define ADD16(a, b, n) SARITH16(a, b, n, +)
-+#define SUB16(a, b, n) SARITH16(a, b, n, -)
-+#define ADD8(a, b, n)  SARITH8(a, b, n, +)
-+#define SUB8(a, b, n)  SARITH8(a, b, n, -)
-+#define PFX s
-+#define ARITH_GE
-+
-+#include "op_addsub.c.inc"
-+
-+/* Unsigned modulo arithmetic.  */
-+#define ADD16(a, b, n) do { \
-+    uint32_t sum; \
-+    sum = (uint32_t)(uint16_t)(a) + (uint32_t)(uint16_t)(b); \
-+    RESULT(sum, n, 16); \
-+    if ((sum >> 16) == 1) \
-+        ge |= 3 << (n * 2); \
-+    } while (0)
-+
-+#define ADD8(a, b, n) do { \
-+    uint32_t sum; \
-+    sum = (uint32_t)(uint8_t)(a) + (uint32_t)(uint8_t)(b); \
-+    RESULT(sum, n, 8); \
-+    if ((sum >> 8) == 1) \
-+        ge |= 1 << n; \
-+    } while (0)
-+
-+#define SUB16(a, b, n) do { \
-+    uint32_t sum; \
-+    sum = (uint32_t)(uint16_t)(a) - (uint32_t)(uint16_t)(b); \
-+    RESULT(sum, n, 16); \
-+    if ((sum >> 16) == 0) \
-+        ge |= 3 << (n * 2); \
-+    } while (0)
-+
-+#define SUB8(a, b, n) do { \
-+    uint32_t sum; \
-+    sum = (uint32_t)(uint8_t)(a) - (uint32_t)(uint8_t)(b); \
-+    RESULT(sum, n, 8); \
-+    if ((sum >> 8) == 0) \
-+        ge |= 1 << n; \
-+    } while (0)
-+
-+#define PFX u
-+#define ARITH_GE
-+
-+#include "op_addsub.c.inc"
-+
-+/* Halved signed arithmetic.  */
-+#define ADD16(a, b, n) \
-+  RESULT(((int32_t)(int16_t)(a) + (int32_t)(int16_t)(b)) >> 1, n, 16)
-+#define SUB16(a, b, n) \
-+  RESULT(((int32_t)(int16_t)(a) - (int32_t)(int16_t)(b)) >> 1, n, 16)
-+#define ADD8(a, b, n) \
-+  RESULT(((int32_t)(int8_t)(a) + (int32_t)(int8_t)(b)) >> 1, n, 8)
-+#define SUB8(a, b, n) \
-+  RESULT(((int32_t)(int8_t)(a) - (int32_t)(int8_t)(b)) >> 1, n, 8)
-+#define PFX sh
-+
-+#include "op_addsub.c.inc"
-+
-+/* Halved unsigned arithmetic.  */
-+#define ADD16(a, b, n) \
-+  RESULT(((uint32_t)(uint16_t)(a) + (uint32_t)(uint16_t)(b)) >> 1, n, 16)
-+#define SUB16(a, b, n) \
-+  RESULT(((uint32_t)(uint16_t)(a) - (uint32_t)(uint16_t)(b)) >> 1, n, 16)
-+#define ADD8(a, b, n) \
-+  RESULT(((uint32_t)(uint8_t)(a) + (uint32_t)(uint8_t)(b)) >> 1, n, 8)
-+#define SUB8(a, b, n) \
-+  RESULT(((uint32_t)(uint8_t)(a) - (uint32_t)(uint8_t)(b)) >> 1, n, 8)
-+#define PFX uh
-+
-+#include "op_addsub.c.inc"
-+
-+static inline uint8_t do_usad(uint8_t a, uint8_t b)
-+{
-+    if (a > b) {
-+        return a - b;
-+    } else {
-+        return b - a;
-+    }
-+}
-+
-+/* Unsigned sum of absolute byte differences.  */
-+uint32_t HELPER(usad8)(uint32_t a, uint32_t b)
-+{
-+    uint32_t sum;
-+    sum = do_usad(a, b);
-+    sum += do_usad(a >> 8, b >> 8);
-+    sum += do_usad(a >> 16, b >> 16);
-+    sum += do_usad(a >> 24, b >> 24);
-+    return sum;
-+}
-+
-+/* For ARMv6 SEL instruction.  */
-+uint32_t HELPER(sel_flags)(uint32_t flags, uint32_t a, uint32_t b)
-+{
-+    uint32_t mask;
-+
-+    mask = 0;
-+    if (flags & 1) {
-+        mask |= 0xff;
-+    }
-+    if (flags & 2) {
-+        mask |= 0xff00;
-+    }
-+    if (flags & 4) {
-+        mask |= 0xff0000;
-+    }
-+    if (flags & 8) {
-+        mask |= 0xff000000;
-+    }
-+    return (a & mask) | (b & ~mask);
-+}
-+
-+/*
-+ * CRC helpers.
-+ * The upper bytes of val (above the number specified by 'bytes') must have
-+ * been zeroed out by the caller.
-+ */
-+uint32_t HELPER(crc32)(uint32_t acc, uint32_t val, uint32_t bytes)
-+{
-+    uint8_t buf[4];
-+
-+    stl_le_p(buf, val);
-+
-+    /* zlib crc32 converts the accumulator and output to one's complement.  */
-+    return crc32(acc ^ 0xffffffff, buf, bytes) ^ 0xffffffff;
-+}
-+
-+uint32_t HELPER(crc32c)(uint32_t acc, uint32_t val, uint32_t bytes)
-+{
-+    uint8_t buf[4];
-+
-+    stl_le_p(buf, val);
-+
-+    /* Linux crc32c converts the output to one's complement.  */
-+    return crc32c(acc, buf, bytes) ^ 0xffffffff;
-+}
-diff --git a/target/arm/op_addsub.h b/target/arm/tcg/op_addsub.c.inc
-similarity index 100%
-rename from target/arm/op_addsub.h
-rename to target/arm/tcg/op_addsub.c.inc
-diff --git a/target/arm/tcg/meson.build b/target/arm/tcg/meson.build
-index 09238989c5a..1f9077c372c 100644
---- a/target/arm/tcg/meson.build
-+++ b/target/arm/tcg/meson.build
-@@ -40,6 +40,7 @@ arm_ss.add(files(
-   'tlb_helper.c',
-   'vec_helper.c',
-   'tlb-insns.c',
-+  'arith_helper.c',
- ))
- 
- arm_ss.add(when: 'TARGET_AARCH64', if_true: files(
+ static void test_query_cpu_model_expansion(const void *data)
 -- 
 2.34.1
 
