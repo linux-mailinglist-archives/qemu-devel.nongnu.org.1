@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C03AA0AF73
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 07:46:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2459A0AF71
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 07:46:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXECa-0001y7-RM; Mon, 13 Jan 2025 01:45:32 -0500
+	id 1tXECc-0001zS-8N; Mon, 13 Jan 2025 01:45:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tXECN-0001uh-Qn; Mon, 13 Jan 2025 01:45:22 -0500
+ id 1tXECR-0001v0-Ma; Mon, 13 Jan 2025 01:45:28 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tXECJ-0003zU-Pj; Mon, 13 Jan 2025 01:45:17 -0500
+ id 1tXECQ-0003zU-4l; Mon, 13 Jan 2025 01:45:23 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Mon, 13 Jan
- 2025 14:44:56 +0800
+ 2025 14:44:57 +0800
 Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Mon, 13 Jan 2025 14:44:56 +0800
+ Transport; Mon, 13 Jan 2025 14:44:57 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
@@ -31,9 +31,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?=
  <clg@redhat.com>
-Subject: [PATCH v2 2/3] hw/timer/aspeed: Add AST2700 Support
-Date: Mon, 13 Jan 2025 14:44:54 +0800
-Message-ID: <20250113064455.1660564-3-jamin_lin@aspeedtech.com>
+Subject: [PATCH v2 3/3] aspeed/soc: Support Timer for AST2700
+Date: Mon, 13 Jan 2025 14:44:55 +0800
+Message-ID: <20250113064455.1660564-4-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250113064455.1660564-1-jamin_lin@aspeedtech.com>
 References: <20250113064455.1660564-1-jamin_lin@aspeedtech.com>
@@ -65,17 +65,8 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The timer controller include 8 sets of 32-bit decrement counters, based on
-either PCLK or 1MHZ clock and the design of timer controller between AST2600
-and AST2700 are almost the same.
-
-TIMER0 – TIMER7 has their own individual control and interrupt status register.
-In other words, users are able to set timer control in register TMC10 with
-different TIMER base address and clear timer control and interrupt status in
-register TMC14 with different TIMER base address.
-
-Introduce new "aspeed_2700_timer_read" and "aspeed_2700_timer_write" callback
-functions and a new ast2700 class to support AST2700.
+Add Timer model for AST2700 Timer support. The Timer controller include 8 sets
+of 32-bit decrement counters.
 
 The base address of TIMER0 to TIMER7 as following.
 Base Address of Timer 0 = 0x12C1_0000
@@ -87,273 +78,64 @@ Base Address of Timer 5 = 0x12C1_0140
 Base Address of Timer 6 = 0x12C1_0180
 Base Address of Timer 7 = 0x12C1_01C0
 
-The register address space of each TIMER is "0x40" , and uses the following
-formula to get the index and register of each TIMER.
-
-timer_index = offset >> 6;
-timer_offset = offset & 0x3f;
-
-The TMC010 is a counter control set and interrupt status register. Write "1" to
-TMC10[3:0] will set the specific bits to "1". Introduce a new
-"aspeed_2700_timer_set_ctrl" function to handle this register behavior.
-
-The TMC014 is a counter control clear and interrupt status register, to clear
-the specific bits to "0", it should write "1" to  TMC14[3:0] on the same bit
-position. Introduce a new "aspeed_2700_timer_clear_ctrl" function to handle
-this register behavior. TMC014 does not support read operation.
+The interrupt of TIMER0 to TIMER7 as following.
+GICINT16 = TIMER 0 interrupt
+GICINT17 = TIMER 1 interrupt
+GICINT18 = TIMER 2 interrupt
+GICINT19 = TIMER 3 interrupt
+GICINT20 = TIMER 4 interrupt
+GICINT21 = TIMER 5 interrupt
+GICINT22 = TIMER 6 interrupt
+GICINT23 = TIMER 7 interrupt
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Acked-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/timer/aspeed_timer.c         | 208 ++++++++++++++++++++++++++++++++
- include/hw/timer/aspeed_timer.h |   1 +
- 2 files changed, 209 insertions(+)
+ hw/arm/aspeed_ast27x0.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/hw/timer/aspeed_timer.c b/hw/timer/aspeed_timer.c
-index 24ba40cbe9..ecda49574e 100644
---- a/hw/timer/aspeed_timer.c
-+++ b/hw/timer/aspeed_timer.c
-@@ -618,6 +618,197 @@ static void aspeed_2600_timer_write(AspeedTimerCtrlState *s, hwaddr offset,
-     }
- }
- 
-+static void aspeed_2700_timer_set_ctrl(AspeedTimerCtrlState *s, int index,
-+                                    uint32_t reg)
-+{
-+    const uint8_t overflow_interrupt_mask = BIT(op_overflow_interrupt);
-+    const uint8_t external_clock_mask = BIT(op_external_clock);
-+    const uint8_t pulse_enable_mask = BIT(op_pulse_enable);
-+    const uint8_t enable_mask = BIT(op_enable);
-+    AspeedTimer *t;
-+    uint8_t t_old;
-+    uint8_t t_new;
-+    int shift;
-+
-+    /*
-+     * Only 1 will set the specific bits to 1
-+     * Handle a dependency between the 'enable' and remaining three
-+     * configuration bits - i.e. if more than one bit in the control set has
-+     * set, including the 'enable' bit, perform configuration and then
-+     * enable the timer.
-+     * Interrupt Status bit should not be set.
-+     */
-+
-+     t = &s->timers[index];
-+     shift = index * TIMER_CTRL_BITS;
-+
-+     t_old = (s->ctrl >> shift) & TIMER_CTRL_MASK;
-+     t_new = reg & TIMER_CTRL_MASK;
-+
-+    if (!(t_old & external_clock_mask) &&
-+        (t_new & external_clock_mask)) {
-+        aspeed_timer_ctrl_external_clock(t, true);
-+        s->ctrl = deposit32(s->ctrl, shift + op_external_clock, 1, 1);
-+    }
-+
-+    if (!(t_old & overflow_interrupt_mask) &&
-+        (t_new & overflow_interrupt_mask)) {
-+        aspeed_timer_ctrl_overflow_interrupt(t, true);
-+        s->ctrl = deposit32(s->ctrl, shift + op_overflow_interrupt, 1, 1);
-+    }
-+
-+
-+    if (!(t_old & pulse_enable_mask) &&
-+        (t_new & pulse_enable_mask)) {
-+        aspeed_timer_ctrl_pulse_enable(t, true);
-+        s->ctrl = deposit32(s->ctrl, shift + op_pulse_enable, 1, 1);
-+    }
-+
-+    /* If we are enabling, do so last */
-+    if (!(t_old & enable_mask) &&
-+        (t_new & enable_mask)) {
-+        aspeed_timer_ctrl_enable(t, true);
-+        s->ctrl = deposit32(s->ctrl, shift + op_enable, 1, 1);
-+    }
-+}
-+
-+static void aspeed_2700_timer_clear_ctrl(AspeedTimerCtrlState *s, int index,
-+                                    uint32_t reg)
-+{
-+    const uint8_t overflow_interrupt_mask = BIT(op_overflow_interrupt);
-+    const uint8_t external_clock_mask = BIT(op_external_clock);
-+    const uint8_t pulse_enable_mask = BIT(op_pulse_enable);
-+    const uint8_t enable_mask = BIT(op_enable);
-+    AspeedTimer *t;
-+    uint8_t t_old;
-+    uint8_t t_new;
-+    int shift;
-+
-+    /*
-+     * Only 1 will clear the specific bits to 0
-+     * Handle a dependency between the 'enable' and remaining three
-+     * configuration bits - i.e. if more than one bit in the control set has
-+     * clear, including the 'enable' bit, then disable the timer and perform
-+     * configuration
-+     */
-+
-+     t = &s->timers[index];
-+     shift = index * TIMER_CTRL_BITS;
-+
-+     t_old = (s->ctrl >> shift) & TIMER_CTRL_MASK;
-+     t_new = reg & TIMER_CTRL_MASK;
-+
-+    /* If we are disabling, do so first */
-+    if ((t_old & enable_mask) &&
-+        (t_new & enable_mask)) {
-+        aspeed_timer_ctrl_enable(t, false);
-+        s->ctrl = deposit32(s->ctrl, shift + op_enable, 1, 0);
-+    }
-+
-+    if ((t_old & external_clock_mask) &&
-+        (t_new & external_clock_mask)) {
-+        aspeed_timer_ctrl_external_clock(t, false);
-+        s->ctrl = deposit32(s->ctrl, shift + op_external_clock, 1, 0);
-+    }
-+
-+    if ((t_old & overflow_interrupt_mask) &&
-+        (t_new & overflow_interrupt_mask)) {
-+        aspeed_timer_ctrl_overflow_interrupt(t, false);
-+        s->ctrl = deposit32(s->ctrl, shift + op_overflow_interrupt, 1, 0);
-+    }
-+
-+    if ((t_old & pulse_enable_mask) &&
-+        (t_new & pulse_enable_mask)) {
-+        aspeed_timer_ctrl_pulse_enable(t, false);
-+        s->ctrl = deposit32(s->ctrl, shift + op_pulse_enable, 1, 0);
-+    }
-+
-+    /* Clear interrupt status */
-+    if (reg & 0x10000) {
-+        s->irq_sts = deposit32(s->irq_sts, index, 1, 0);
-+    }
-+}
-+
-+static uint64_t aspeed_2700_timer_read(AspeedTimerCtrlState *s, hwaddr offset)
-+{
-+    uint32_t timer_offset = offset & 0x3f;
-+    int timer_index = offset >> 6;
-+    uint64_t value = 0;
-+
-+    if (timer_index >= ASPEED_TIMER_NR_TIMERS) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: offset 0x%" PRIx64 " out of bounds\n",
-+                      __func__, offset);
-+        return 0;
-+    }
-+
-+    switch (timer_offset) {
-+    /*
-+     * Counter Status
-+     * Counter Reload
-+     * Counter First Matching
-+     * Counter Second Matching
-+     */
-+    case 0x00 ... 0x0C:
-+        value = aspeed_timer_get_value(&s->timers[timer_index],
-+                                       timer_offset >> 2);
-+        break;
-+    /* Counter Control and Interrupt Status */
-+    case 0x10:
-+        value = deposit64(value, 0, 4,
-+                          extract32(s->ctrl, timer_index * 4, 4));
-+        value = deposit64(value, 16, 1,
-+                          extract32(s->irq_sts, timer_index, 1));
-+        break;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: no getter for offset 0x%"
-+                     PRIx64"\n", __func__, offset);
-+        value = 0;
-+        break;
-+    }
-+    trace_aspeed_timer_read(offset, value);
-+    return value;
-+}
-+
-+static void aspeed_2700_timer_write(AspeedTimerCtrlState *s, hwaddr offset,
-+                                    uint64_t value)
-+{
-+    const uint32_t timer_value = (uint32_t)(value & 0xFFFFFFFF);
-+    uint32_t timer_offset = offset & 0x3f;
-+    int timer_index = offset >> 6;
-+
-+    if (timer_index >= ASPEED_TIMER_NR_TIMERS) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: offset 0x%" PRIx64 " out of bounds\n",
-+                      __func__, offset);
-+    }
-+
-+    switch (timer_offset) {
-+    /*
-+     * Counter Status
-+     * Counter Reload
-+     * Counter First Matching
-+     * Counter Second Matching
-+     */
-+    case 0x00 ... 0x0C:
-+        aspeed_timer_set_value(s, timer_index, timer_offset >> 2,
-+                               timer_value);
-+        break;
-+    /* Counter Control Set and Interrupt Status */
-+    case 0x10:
-+        aspeed_2700_timer_set_ctrl(s, timer_index, timer_value);
-+        break;
-+    /* Counter Control Clear and Interrupr Status */
-+    case 0x14:
-+        aspeed_2700_timer_clear_ctrl(s, timer_index, timer_value);
-+        break;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: no setter for offset 0x%"
-+                      PRIx64"\n", __func__, offset);
-+        break;
-+    }
-+}
-+
- static void aspeed_init_one_timer(AspeedTimerCtrlState *s, uint8_t id)
- {
-     AspeedTimer *t = &s->timers[id];
-@@ -788,6 +979,22 @@ static const TypeInfo aspeed_1030_timer_info = {
-     .class_init = aspeed_1030_timer_class_init,
+diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+index fee3755837..4114e15ddd 100644
+--- a/hw/arm/aspeed_ast27x0.c
++++ b/hw/arm/aspeed_ast27x0.c
+@@ -66,6 +66,7 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
+     [ASPEED_DEV_GPIO]      =  0x14C0B000,
+     [ASPEED_DEV_RTC]       =  0x12C0F000,
+     [ASPEED_DEV_SDHCI]     =  0x14080000,
++    [ASPEED_DEV_TIMER1]    =  0x12C10000,
  };
  
-+static void aspeed_2700_timer_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    AspeedTimerClass *awc = ASPEED_TIMER_CLASS(klass);
+ #define AST2700_MAX_IRQ 256
+@@ -397,6 +398,9 @@ static void aspeed_soc_ast2700_init(Object *obj)
+ 
+     object_initialize_child(obj, "emmc-controller.sdhci", &s->emmc.slots[0],
+                             TYPE_SYSBUS_SDHCI);
 +
-+    dc->desc = "ASPEED 2700 Timer";
-+    awc->read = aspeed_2700_timer_read;
-+    awc->write = aspeed_2700_timer_write;
-+}
-+
-+static const TypeInfo aspeed_2700_timer_info = {
-+    .name = TYPE_ASPEED_2700_TIMER,
-+    .parent = TYPE_ASPEED_TIMER,
-+    .class_init = aspeed_2700_timer_class_init,
-+};
-+
- static void aspeed_timer_register_types(void)
- {
-     type_register_static(&aspeed_timer_info);
-@@ -795,6 +1002,7 @@ static void aspeed_timer_register_types(void)
-     type_register_static(&aspeed_2500_timer_info);
-     type_register_static(&aspeed_2600_timer_info);
-     type_register_static(&aspeed_1030_timer_info);
-+    type_register_static(&aspeed_2700_timer_info);
++    snprintf(typename, sizeof(typename), "aspeed.timer-%s", socname);
++    object_initialize_child(obj, "timerctrl", &s->timerctrl, typename);
  }
  
- type_init(aspeed_timer_register_types)
-diff --git a/include/hw/timer/aspeed_timer.h b/include/hw/timer/aspeed_timer.h
-index 07dc6b6f2c..767cae4b05 100644
---- a/include/hw/timer/aspeed_timer.h
-+++ b/include/hw/timer/aspeed_timer.h
-@@ -32,6 +32,7 @@ OBJECT_DECLARE_TYPE(AspeedTimerCtrlState, AspeedTimerClass, ASPEED_TIMER)
- #define TYPE_ASPEED_2500_TIMER TYPE_ASPEED_TIMER "-ast2500"
- #define TYPE_ASPEED_2600_TIMER TYPE_ASPEED_TIMER "-ast2600"
- #define TYPE_ASPEED_1030_TIMER TYPE_ASPEED_TIMER "-ast1030"
-+#define TYPE_ASPEED_2700_TIMER TYPE_ASPEED_TIMER "-ast2700"
+ /*
+@@ -716,6 +720,19 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->emmc), 0,
+                        aspeed_soc_get_irq(s, ASPEED_DEV_EMMC));
  
- #define ASPEED_TIMER_NR_TIMERS 8
- 
++    /* Timer */
++    object_property_set_link(OBJECT(&s->timerctrl), "scu", OBJECT(&s->scu),
++                             &error_abort);
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->timerctrl), errp)) {
++        return;
++    }
++    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->timerctrl), 0,
++                    sc->memmap[ASPEED_DEV_TIMER1]);
++    for (i = 0; i < ASPEED_TIMER_NR_TIMERS; i++) {
++        irq = aspeed_soc_get_irq(s, ASPEED_DEV_TIMER1 + i);
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->timerctrl), i, irq);
++    }
++
+     create_unimplemented_device("ast2700.dpmcu", 0x11000000, 0x40000);
+     create_unimplemented_device("ast2700.iomem0", 0x12000000, 0x01000000);
+     create_unimplemented_device("ast2700.iomem1", 0x14000000, 0x01000000);
 -- 
 2.34.1
 
