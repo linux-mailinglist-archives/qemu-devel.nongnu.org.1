@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A02A0B8E5
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 14:58:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09EDCA0B8E3
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 14:57:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXKu4-0005cX-GB; Mon, 13 Jan 2025 08:54:52 -0500
+	id 1tXKu5-0005ct-ID; Mon, 13 Jan 2025 08:54:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tXKtW-0005YB-Rj
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 08:54:20 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1tXKtX-0005YD-6f
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 08:54:23 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tXKtV-0007ec-0C
+ id 1tXKtV-0007en-KG
  for qemu-devel@nongnu.org; Mon, 13 Jan 2025 08:54:18 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43623f0c574so30837495e9.2
- for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 05:54:15 -0800 (PST)
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43618283dedso41304145e9.3
+ for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 05:54:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736776454; x=1737381254; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736776456; x=1737381256; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=1ldNjIBGlXcB7GHvIaahhXw/jNRalb5uO3ZvAdqQJUU=;
- b=Tv5KBuYTJT8blB+DcdyHvtlbJm5IzdzLQndmrXGU8FHnD3QQZa2i8OzinyEm4tM/gm
- 5UJ18YQyFmILV7RwRRBcEWq3S+B5Rw0HhY6lIcE6O3m7OyrQ8/OYbZYcgcxvREJ65qKA
- mdfDfQHZXZT0tWvw88VmwDnWsZknd0L/4uccVFuZorVMImLN4ssGW8BrI4XqyxYjMBz5
- BWS1PiKe+Toa/pQL/GvkAD1LYow7kfI4S8ju7hY23TVrmXnHhumXYmLAgPmMsPEG9RPb
- EmIAPx+rN6daK+3uuUO/3W2dIzGOHoiRv7F84N4DzWsgwgZcv1bHj3M7xiam2ZR0OzBS
- 9RoQ==
+ :reply-to; bh=GWUNcZKxKH1utC8rl9Z3vhv6hG0D9P5xMDHSC53HwPo=;
+ b=CCthGWrHCb5536siOFOBSaWAxkekt3Q/pn2eAyK0rswUCzqL752uRwSW+bLPPu9eeL
+ OLvpFwBr7EILmi8qn8lytCmv4MXVi9AAOmAX88Ga+0HKqN7eMCAm0hBAaHTavh6veWKI
+ 2hbXLajvM/IgFPsJx4IRQaNbyIt4ANJJ9peRYLUbFKlrHBPoolToQYmQZXPOI+pdh9oT
+ WCPXKdVQUBOk983AEkLg794AEMDxen4e7LKsaHlq+4KJumh1PzsXXE7xQiVZDEvMLZty
+ f0bQMYZzKMnYvCRISaCYcteOJCjjwnvkWk4mbtLaoHQHrpNL1aWrUFx0XttX1eav00WW
+ v+Eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736776454; x=1737381254;
+ d=1e100.net; s=20230601; t=1736776456; x=1737381256;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1ldNjIBGlXcB7GHvIaahhXw/jNRalb5uO3ZvAdqQJUU=;
- b=DFCWMz67uqVotensI4fGRz4zUWrYLQFAeVPbq1zQXlz4Sk17MKGq4NoNeeB7ZgYrYh
- lF7Lg1nHuhSNDI6XD/8vxEGYWAyvHwcF2ViODoVCZHAmVR1aYKw3JY3tDyR57CUzonkG
- qy9cGYyPbJyW87B6MXrkTXwFTJpqnMHkgsjlnQ0LehjOETOdfvv5TdOTxze2CKW+lk+0
- sEQRenesQ9Ps+0p3EXQBePxMn4i04T7hvmzQ3ixTMfzjcBG678TY73FScdl2EgL6TOKh
- m/KnQke9D5vtBxYluxoWkwfCPtqeB91UaakGIGnc47wPBDYLteafLeq4IolmHBML99Rc
- VX9Q==
-X-Gm-Message-State: AOJu0YyAde6hzlUB/Ht3OZ6WUKCNXLN5zwKxkFYVnHDkBPKyWBp3qLFD
- t+yfL1rNd7D2+unCSPyMbuX3qjBQA6/1I/2PdNOktvcuJG+7jeH/cgfWhZmawDHC7oLLydsO8Vb
- t
-X-Gm-Gg: ASbGncuXHMDvBwoe5Dbybl2mFXpBoH+FDehMhwPK7wvV14SGdyvqSmHkTlM+RpVt3F4
- xUFMc7U7dB0uFphc4UG5TYahTm5+fyDSOqgC54mB3YeSsdoXctzD7ETe9Y3LI6//O+XEjwSnwZt
- q4dSs06I339cfpu/BF6bF3fecNunOa7VPClv8PECfFvAQM/BHZPcZGY4aJ2A0AvMMA0wfMEmE1d
- tzSnzLJkwN3QNYbSTlrPoG4NYwX+wzXqaSAYlZkLJOfxbKTflfnoKlD34wPSIA=
-X-Google-Smtp-Source: AGHT+IF3PN/GPN4P1+yGPcqxv69rKI/Md+mMjdjcVyaIsMV5/pd2iNPBBXiupTwldhjzb+ahkTecTg==
-X-Received: by 2002:a05:600c:1e0e:b0:434:fd01:2e5f with SMTP id
- 5b1f17b1804b1-436e26ef441mr187356355e9.29.1736776454199; 
- Mon, 13 Jan 2025 05:54:14 -0800 (PST)
+ bh=GWUNcZKxKH1utC8rl9Z3vhv6hG0D9P5xMDHSC53HwPo=;
+ b=fUS5W+hcQoNJhCagQ0zFthIw2d4DO2f9E+188hOf/3zEBdzuhUTWgK9WmnlYn6E5u6
+ 58hET0KTPpKVAWKiqhNSfq7xlK7pAzwpl7sgNUqHZp1qHjQXU1FFsXtM/8Vs7XWy/rVA
+ 7lYJRE7h8MLAhrthelWp6Uen1InfuNOX7ahyhDdMrlGTVvBJBPPK8qgrVnFFNmBvQktT
+ ReDfBJnVHA7zJFFGu3hyxzuFqdFpQB4njIcPk5NlU/lb3kUyiKY54RR5pb7cpJEYhfrt
+ 1YQUwy6t4UpkBmAxSmMv8aaQ0dAcckfZXAAP1ppRK7PyICpTYLEF68aXojUmL7QrNEY+
+ /x1Q==
+X-Gm-Message-State: AOJu0YzG5FfH497Z9ovDs55jW3tcNnxR6JOJdWZ5u86jHYWe3xI1BoX7
+ EvybWeBhDoNU8ztgD7Q+vA2Du7dX9d01NGC5xH85bcD9yYWMNXEirISpUZLSuK+Jc/p/sskYLEf
+ p
+X-Gm-Gg: ASbGnctgxDdwLZlEJlUp6FeewMkGJ4M1DY1VUFxFr5msEa0V0Wm2Q+GjBxBqK6G0or0
+ PTnXHR3YyoAvvyebEeUvtsRukOmJr4wD+Cpbs3Viba2MN42wQ9GGPKmzTXz4zV06MlAVvgtWGkz
+ O+tVYMWC0CK2Q0mXACN9ohrjtTG2o89bvTL+w/X8DlU3nniitjpgb5ZdY896WS1EcycF6jqJfuc
+ 66783x3wBPnGe1xT0hi8JOUgMKi3esp5UcvbDaVDvRk9I16jBL56LC3A3Q09nU=
+X-Google-Smtp-Source: AGHT+IHBWkdm7pXPIz0orpsnfjlXcUV2vKxU67zv53ZAbfJrMdyoBzREdPdVZ+4/aBcg9lTsln8cww==
+X-Received: by 2002:a05:600c:8711:b0:431:93d8:e1a1 with SMTP id
+ 5b1f17b1804b1-436f475f6a3mr69790895e9.27.1736776455765; 
+ Mon, 13 Jan 2025 05:54:15 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e9d8fba4sm145245205e9.4.2025.01.13.05.54.13
+ 5b1f17b1804b1-436e9d8fba4sm145245205e9.4.2025.01.13.05.54.14
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 Jan 2025 05:54:13 -0800 (PST)
+ Mon, 13 Jan 2025 05:54:14 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 04/11] tests/qtest/boot-serial-test: Reduce for() loop in PL011
- tests
-Date: Mon, 13 Jan 2025 13:54:01 +0000
-Message-Id: <20250113135408.3164401-5-peter.maydell@linaro.org>
+Subject: [PULL 05/11] tests/qtest/boot-serial-test: Reorder pair of
+ instructions in PL011 test
+Date: Mon, 13 Jan 2025 13:54:02 +0000
+Message-Id: <20250113135408.3164401-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250113135408.3164401-1-peter.maydell@linaro.org>
 References: <20250113135408.3164401-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,53 +99,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Since registers are not modified, we don't need
-to refill their values. Directly jump to the previous
-store instruction to keep filling the TXDAT register.
-
-The equivalent C code remains:
-
-  while (true) {
-      *UART_DATA = 'T';
-  }
+In the next commit we are going to use a different value
+for the $w1 register, maintaining the same $x2 value. In
+order to keep the next commit trivial to review, set $x2
+before $w1.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/qtest/boot-serial-test.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tests/qtest/boot-serial-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tests/qtest/boot-serial-test.c b/tests/qtest/boot-serial-test.c
-index a71d2857807..553575ca75c 100644
+index 553575ca75c..bcfa504826c 100644
 --- a/tests/qtest/boot-serial-test.c
 +++ b/tests/qtest/boot-serial-test.c
-@@ -70,18 +70,18 @@ static const uint8_t kernel_plml605[] = {
- };
- 
- static const uint8_t bios_raspi2[] = {
--    0x08, 0x30, 0x9f, 0xe5,                 /* loop:  ldr     r3, [pc, #8]   Get &UART0 */
-+    0x08, 0x30, 0x9f, 0xe5,                 /*        ldr     r3, [pc, #8]   Get &UART0 */
-     0x54, 0x20, 0xa0, 0xe3,                 /*        mov     r2, #'T' */
--    0x00, 0x20, 0xc3, 0xe5,                 /*        strb    r2, [r3]       *TXDAT = 'T' */
--    0xfb, 0xff, 0xff, 0xea,                 /*        b       -12            (loop) */
-+    0x00, 0x20, 0xc3, 0xe5,                 /* loop:  strb    r2, [r3]       *TXDAT = 'T' */
-+    0xff, 0xff, 0xff, 0xea,                 /*        b       -4             (loop) */
-     0x00, 0x10, 0x20, 0x3f,                 /* UART0: 0x3f201000 */
+@@ -78,8 +78,8 @@ static const uint8_t bios_raspi2[] = {
  };
  
  static const uint8_t kernel_aarch64[] = {
--    0x81, 0x0a, 0x80, 0x52,                 /* loop:  mov    w1, #'T' */
-+    0x81, 0x0a, 0x80, 0x52,                 /*        mov    w1, #'T' */
+-    0x81, 0x0a, 0x80, 0x52,                 /*        mov    w1, #'T' */
      0x02, 0x20, 0xa1, 0xd2,                 /*        mov    x2, #0x9000000  Load UART0 */
--    0x41, 0x00, 0x00, 0x39,                 /*        strb   w1, [x2]        *TXDAT = 'T' */
--    0xfd, 0xff, 0xff, 0x17,                 /*        b      -12             (loop) */
-+    0x41, 0x00, 0x00, 0x39,                 /* loop:  strb   w1, [x2]        *TXDAT = 'T' */
-+    0xff, 0xff, 0xff, 0x17,                 /*        b      -4              (loop) */
++    0x81, 0x0a, 0x80, 0x52,                 /*        mov    w1, #'T' */
+     0x41, 0x00, 0x00, 0x39,                 /* loop:  strb   w1, [x2]        *TXDAT = 'T' */
+     0xff, 0xff, 0xff, 0x17,                 /*        b      -4              (loop) */
  };
- 
- static const uint8_t kernel_nrf51[] = {
 -- 
 2.34.1
 
