@@ -2,89 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF4FA0C245
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 20:58:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81203A0C282
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Jan 2025 21:17:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXQYi-00088h-Gw; Mon, 13 Jan 2025 14:57:12 -0500
+	id 1tXQqc-00032s-3F; Mon, 13 Jan 2025 15:15:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXQYd-0007he-4C
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 14:57:07 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tXQYb-0007Xj-IN
- for qemu-devel@nongnu.org; Mon, 13 Jan 2025 14:57:06 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-43622267b2eso50008235e9.0
- for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 11:57:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736798223; x=1737403023; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yhUm8v193I9EdTSFs2V5uFdqWMCeU2Ex/j1HBHwMUik=;
- b=uobbNsxIy1JMT+WHeQEk53rpwxCFw0dvPfdzMj1eVrzt2bHXU8N75+lEAUaGJ3PsYL
- dYK2on7ZFHlwRIXFCTGfWpA5OAaH9JHWBAmkzmi4uBPnXR9xTGGICT9m5+GbnRnfg1qG
- Qxx1Jwohe0sIgs3MJo7fqa5yMCGqrl57b4dsjZeskYip6X98oJx72LZDqg98eEhr5hQP
- 2HsPfxxUTPYmmBH19LxOYOhPt2cNDcwJ46kgvXBvaTV5TYx48ZwdRp/cC5qK5xhSKdIC
- k13BqyHH0dVSyKTHkM0mpVV/cb47Cphh6YrIngsf1NW92zkG/s2pAGOpkTg2FBtC55rn
- ECKA==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tXQqG-00031u-HE
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 15:15:20 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tXQqE-0001Wq-JC
+ for qemu-devel@nongnu.org; Mon, 13 Jan 2025 15:15:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736799314;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=UF9LJ4jFyC9UC7/kDaX2KKGEGLe2P4mcVoujeqOofqs=;
+ b=fxX5Fg3zP9mpZXi8hGtAuKGFJuS765TTt2IuvKCCo2UVlGPqj8MSNEHq65T1sISYLjB9hT
+ YtjHY3NiaTkq6wz+uqc/AZpqK0O7C63i/1aHF8Md9AuVy7HLsH5/6odfOs6VxJV2cIKklY
+ 1rQzYL85W4nMSZF9sL4fs9UIzEqKlFA=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-558-3r8CtjZfPdONWO0M6PWm2w-1; Mon, 13 Jan 2025 15:15:12 -0500
+X-MC-Unique: 3r8CtjZfPdONWO0M6PWm2w-1
+X-Mimecast-MFC-AGG-ID: 3r8CtjZfPdONWO0M6PWm2w
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-2ef9da03117so12256264a91.1
+ for <qemu-devel@nongnu.org>; Mon, 13 Jan 2025 12:15:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736798223; x=1737403023;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yhUm8v193I9EdTSFs2V5uFdqWMCeU2Ex/j1HBHwMUik=;
- b=TrCI/r1D3rROU4ip8+oGn2FoptxC+ng2AbEWEDstWcm489pQ0OjRchKLRhnfeVS8gv
- mocObZuotSPXqj3oTYAYmZAaO971lRGAbBl0y29xkBQ0suJc9yc+50Yj3xYIm+yWsCjH
- C7nqgC9QBdGz5Ktr8LFyCKCcBYzVblk5Pq+AR/9xN4frSsMElL68rmI100uPtR2tA5Ic
- q4XGN/wftx17g70tkI+xtCN4k4yVImAE3gHLJqoIuA6/VNz8s7dBAPGNGPIeFsqz56ZT
- aDaVnh9ksDFJE8y32JYkpdCgkff7T83I/3rP25xWT+jAS9jTL0mFWOgcqZRRmyV0Nepw
- CKEA==
-X-Gm-Message-State: AOJu0YzSocPlo50reW8aEw+wLPpuTYr/fB7szlPGZSVEY8QOsE4vMvxW
- H0O+5fCla+BsdpIY3h0x54AhN8s4S2v0KBFOBqZspXUEQnr7iOLd7w02HEBe8X+k+AUF7evTfW7
- OLNQ=
-X-Gm-Gg: ASbGnctneSNL2+zc+vP5k3BRS12hBxJNFvYJaCt8hn9fRs8nbHT/wBDS6RXZE0A3Qr3
- Sc9S7XS9OPrNCCB8ctHzlkYLrKY4z/j7I9ALGW9COryfyAm/vNDVX6VaU2fHSWMT1UnWyylxwBu
- AJNi1a2x8IO0V8U/9WPE7PbCcFkBNdRb0Tl6JtN5U6SMmDt0kdbwZP7zeniPDVMIqph9SkmFHKM
- hHe4OJxcbL+AVX8qx9nm128AWOJMx96YklJFI2ypdQ/r/AtSTCXn66D3xEjudd7LGclWw1J8tKu
- HXJKfqfzO/pnAGS249diu8CcbDeJ/bU=
-X-Google-Smtp-Source: AGHT+IGrh47OtEmSb0ykifqjEXrQTeVM1v7RtPwYWiK/EGgL/1X0s1JU9yxLm07ALoPePBTO00o9/Q==
-X-Received: by 2002:a7b:c4c9:0:b0:436:f960:3428 with SMTP id
- 5b1f17b1804b1-436f96034b3mr65720775e9.29.1736798223570; 
- Mon, 13 Jan 2025 11:57:03 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e2da66fcsm189336025e9.6.2025.01.13.11.57.01
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 13 Jan 2025 11:57:03 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Paul Burton <paulburton@kernel.org>, Aurelien Jarno <aurelien@aurel32.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <arikalo@gmail.com>, Huacai Chen <chenhuacai@kernel.org>
-Subject: [PATCH v2 19/19] hw/mips/bootloader: Remove use of &first_cpu in
- bootcpu_supports_isa()
-Date: Mon, 13 Jan 2025 20:55:25 +0100
-Message-ID: <20250113195525.57150-20-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250113195525.57150-1-philmd@linaro.org>
-References: <20250113195525.57150-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1736799311; x=1737404111;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=UF9LJ4jFyC9UC7/kDaX2KKGEGLe2P4mcVoujeqOofqs=;
+ b=sQfPXcMyYIvEw/cl9Z6smFFbAGvqU1tqduk2OEi82f4EJ2octaeQ+aeQcDyL8INHgo
+ BH6MpUUAslhgRkcgPPgm+YG/yOqF6bwCzdpzGbAOdkwG3WYOYviUsIOu12fOM3S6Z+qA
+ MUmdazHEj1s5y2HQWqgsIsUzRvF854zzc+p+4JZZXP2eumOd7nRYQZZcV40JCk7UdBzo
+ vIEUU+0s3oFadf0GML6o/9Ebh6+SYhBmBQYNY6G3QJ8FwXMeZePagk6DtPG2xswD8uZ/
+ QqT56l0kigviPswLzy2NR/h27X/8ibJSPQWLksPI0ASfbT4cp8dAuvOHhksu6e2S8pjg
+ M1UQ==
+X-Gm-Message-State: AOJu0Yx6VRdJU9KAvdCL8k9SsN4Y9lpn6asm2zbxVOMNaOayT8F+Zg4y
+ t+n4ArO7dxREnNnGonLdczJuC9oj2pmYhtykjoiOaut/bInEmlBm+tse5YE5no3jZQxXhySRqa+
+ UAom4Exn/Q6vrg6dYXVb+LOt6+74lgeyq/OoDGwZCcksQP6eWekhizfLY8LAMtzOHd+16GSngf5
+ F7ttp81JWRARmdekAdgHAuc5pev4c=
+X-Gm-Gg: ASbGncs/UIQSQFibc2AxmV4HTsN43m3IlCZqoxH/YXAdtRu2jabLzCzbSHW1/2LsoDt
+ PO/E1KDy1fsOSOIBndzmDBzaRP/kBBWQdeVSUPzmbY+b13Ia5BiHkTROLs4EORHAJSr/mLQ==
+X-Received: by 2002:a17:90b:540f:b0:2ee:dcf6:1c8f with SMTP id
+ 98e67ed59e1d1-2f548eb3c95mr35373654a91.16.1736799311452; 
+ Mon, 13 Jan 2025 12:15:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFwvlSOV+PpdbbrettoMYc/h9T4Z1MLL/qi1GMoQXvmXUda2REdhcOwSHpMR9AWcBFUThNoNXbLIJGAO7mdqzE=
+X-Received: by 2002:a17:90b:540f:b0:2ee:dcf6:1c8f with SMTP id
+ 98e67ed59e1d1-2f548eb3c95mr35373614a91.16.1736799311030; Mon, 13 Jan 2025
+ 12:15:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20241213021827.2956769-1-jsnow@redhat.com>
+ <20241213021827.2956769-11-jsnow@redhat.com>
+ <87cyhm4hcc.fsf@pond.sub.org>
+In-Reply-To: <87cyhm4hcc.fsf@pond.sub.org>
+From: John Snow <jsnow@redhat.com>
+Date: Mon, 13 Jan 2025 15:14:59 -0500
+X-Gm-Features: AbW1kvYJb9mK9agbhrrPAxQNrar56zO1gAF6tgobxT7hWf_b829LUxZkZsSIIXg
+Message-ID: <CAFn=p-ZgT51ZCMHSt3Ot=5iOTPX8v8wM+89B-9JCkVDrT-4EDg@mail.gmail.com>
+Subject: Re: [PATCH 10/23] docs/qapidoc: add visit_freeform() method
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, 
+ Michael Roth <michael.roth@amd.com>
+Content-Type: multipart/alternative; boundary="000000000000fb0421062b9c1960"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.019,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.787,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,25 +98,199 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/mips/bootloader.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--000000000000fb0421062b9c1960
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/hw/mips/bootloader.c b/hw/mips/bootloader.c
-index f02e5aabe48..1969610224d 100644
---- a/hw/mips/bootloader.c
-+++ b/hw/mips/bootloader.c
-@@ -51,7 +51,7 @@ typedef enum bl_reg {
- 
- static bool bootcpu_supports_isa(const CPUMIPSState *env, uint64_t isa_mask)
- {
--    return cpu_supports_isa(&MIPS_CPU(first_cpu)->env, isa_mask);
-+    return cpu_supports_isa(env, isa_mask);
- }
- 
- static void st_nm32_p(void **ptr, uint32_t insn)
--- 
-2.47.1
+On Fri, Dec 20, 2024 at 8:25=E2=80=AFAM Markus Armbruster <armbru@redhat.co=
+m> wrote:
+
+> John Snow <jsnow@redhat.com> writes:
+>
+> > Signed-off-by: John Snow <jsnow@redhat.com>
+> > ---
+> >  docs/sphinx/qapidoc.py | 47 ++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 47 insertions(+)
+> >
+> > diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
+> > index 7d2f7bfb415..6f8f69077b1 100644
+> > --- a/docs/sphinx/qapidoc.py
+> > +++ b/docs/sphinx/qapidoc.py
+> > @@ -133,6 +133,53 @@ def visit_module(self, path: str) -> None:
+> >          self.add_line_raw(f".. qapi:module:: {name}", path, 1)
+> >          self.ensure_blank_line()
+> >
+> > +    def visit_freeform(self, doc) -> None:
+> > +        # Once the old qapidoc transformer is deprecated,
+> > +        # freeform sections can be transformed into pure rST.
+> > +        #
+> > +        # For now, translate our micro-format into rST.
+> > +        # Code adapted from Peter Maydell's freeform().
+> > +
+> > +        assert len(doc.all_sections) =3D=3D 1, doc.all_sections
+> > +        body =3D doc.all_sections[0]
+> > +        text =3D body.text
+> > +        info =3D doc.info
+> > +
+> > +        if re.match(r"=3D+ ", text):
+> > +            # Section/subsection heading (if present, will always be t=
+he
+> > +            # first line of the block)
+> > +            (heading, _, text) =3D text.partition("\n")
+> > +            (leader, _, heading) =3D heading.partition(" ")
+> > +            level =3D len(leader) + 1  # Implicit +1 for heading in .r=
+ST
+> stub
+> > +
+> > +            #
+> https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#s=
+ections
+> > +            markers =3D {
+> > +                1: "#",
+> > +                2: "*",
+> > +                3: "=3D",
+> > +                4: "-",
+> > +                5: "^",
+> > +                6: '"',
+> > +            }
+> > +            overline =3D level <=3D 2
+> > +            marker =3D markers[level]
+> > +
+> > +            self.ensure_blank_line()
+> > +            # This credits all 2 or 3 lines to the single source line.
+> > +            if overline:
+> > +                self.add_line(marker * len(heading), info)
+> > +            self.add_line(heading, info)
+> > +            self.add_line(marker * len(heading), info)
+> > +            self.ensure_blank_line()
+> > +
+> > +            # Eat blank line(s) and advance info
+> > +            trimmed =3D text.lstrip("\n")
+> > +            text =3D trimmed
+> > +            info =3D info.next_line(len(text) - len(trimmed) + 1)
+>
+> We could instead eat newlines one at a time, calling .next_line()
+> without an argument for each newline eaten.  Less efficient, but won't
+> matter here.  Possibly easier to understand.
+>
+
+Eh, I'm gonna delete this later anyway. Will send v2 without touching this,
+but I can touch it for next time if it still bothers you.
+
+--js
+
+--000000000000fb0421062b9c1960
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
+mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Dec 20,=
+ 2024 at 8:25=E2=80=AFAM Markus Armbruster &lt;<a href=3D"mailto:armbru@red=
+hat.com">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gma=
+il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
+04,204);padding-left:1ex">John Snow &lt;<a href=3D"mailto:jsnow@redhat.com"=
+ target=3D"_blank">jsnow@redhat.com</a>&gt; writes:<br>
+<br>
+&gt; Signed-off-by: John Snow &lt;<a href=3D"mailto:jsnow@redhat.com" targe=
+t=3D"_blank">jsnow@redhat.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 docs/sphinx/qapidoc.py | 47 ++++++++++++++++++++++++++++++++++++=
+++++++<br>
+&gt;=C2=A0 1 file changed, 47 insertions(+)<br>
+&gt;<br>
+&gt; diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py<br>
+&gt; index 7d2f7bfb415..6f8f69077b1 100644<br>
+&gt; --- a/docs/sphinx/qapidoc.py<br>
+&gt; +++ b/docs/sphinx/qapidoc.py<br>
+&gt; @@ -133,6 +133,53 @@ def visit_module(self, path: str) -&gt; None:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self.add_line_raw(f&quot;.. qapi:mod=
+ule:: {name}&quot;, path, 1)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self.ensure_blank_line()<br>
+&gt;=C2=A0 <br>
+&gt; +=C2=A0 =C2=A0 def visit_freeform(self, doc) -&gt; None:<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 # Once the old qapidoc transformer is dep=
+recated,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 # freeform sections can be transformed in=
+to pure rST.<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 #<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 # For now, translate our micro-format int=
+o rST.<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 # Code adapted from Peter Maydell&#39;s f=
+reeform().<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 assert len(doc.all_sections) =3D=3D 1, do=
+c.all_sections<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 body =3D doc.all_sections[0]<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 text =3D body.text<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 info =3D <a href=3D"http://doc.info" rel=
+=3D"noreferrer" target=3D"_blank">doc.info</a><br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if re.match(r&quot;=3D+ &quot;, text):<br=
+>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 # Section/subsection headin=
+g (if present, will always be the<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 # first line of the block)<=
+br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 (heading, _, text) =3D text=
+.partition(&quot;\n&quot;)<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 (leader, _, heading) =3D he=
+ading.partition(&quot; &quot;)<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 level =3D len(leader) + 1=
+=C2=A0 # Implicit +1 for heading in .rST stub<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 # <a href=3D"https://www.sp=
+hinx-doc.org/en/master/usage/restructuredtext/basics.html#sections" rel=3D"=
+noreferrer" target=3D"_blank">https://www.sphinx-doc.org/en/master/usage/re=
+structuredtext/basics.html#sections</a><br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 markers =3D {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 1: &quot;#&qu=
+ot;,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 2: &quot;*&qu=
+ot;,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 3: &quot;=3D&=
+quot;,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 4: &quot;-&qu=
+ot;,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 5: &quot;^&qu=
+ot;,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 6: &#39;&quot=
+;&#39;,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 overline =3D level &lt;=3D =
+2<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 marker =3D markers[level]<b=
+r>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self.ensure_blank_line()<br=
+>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 # This credits all 2 or 3 l=
+ines to the single source line.<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if overline:<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self.add_line=
+(marker * len(heading), info)<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self.add_line(heading, info=
+)<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self.add_line(marker * len(=
+heading), info)<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self.ensure_blank_line()<br=
+>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 # Eat blank line(s) and adv=
+ance info<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 trimmed =3D text.lstrip(&qu=
+ot;\n&quot;)<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 text =3D trimmed<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 info =3D info.next_line(len=
+(text) - len(trimmed) + 1)<br>
+<br>
+We could instead eat newlines one at a time, calling .next_line()<br>
+without an argument for each newline eaten.=C2=A0 Less efficient, but won&#=
+39;t<br>
+matter here.=C2=A0 Possibly easier to understand.<br></blockquote><div><br>=
+</div><div>Eh, I&#39;m gonna delete this later anyway. Will send v2 without=
+ touching this, but I can touch it for next time if it still bothers you.</=
+div><div><br></div><div>--js<br></div></div></div>
+
+--000000000000fb0421062b9c1960--
 
 
