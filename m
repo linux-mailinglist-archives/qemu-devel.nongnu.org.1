@@ -2,56 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DE00A103FF
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 11:27:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D61EA10402
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 11:27:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXe8J-0003md-Pc; Tue, 14 Jan 2025 05:26:51 -0500
+	id 1tXe95-000456-Oa; Tue, 14 Jan 2025 05:27:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1tXe8D-0003la-Fc
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 05:26:45 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tXe8x-0003tv-Qf
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 05:27:32 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1tXe8B-00038B-25
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 05:26:45 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YXQHN2lcmz6L5K9;
- Tue, 14 Jan 2025 18:25:04 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 027B61402C6;
- Tue, 14 Jan 2025 18:26:31 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 14 Jan
- 2025 11:26:30 +0100
-Date: Tue, 14 Jan 2025 10:26:26 +0000
-To: Itaru Kitayama <itaru.kitayama@linux.dev>
-CC: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>, <qemu-devel@nongnu.org>
-Subject: Re: CXL emulation on aarch64
-Message-ID: <20250114102626.00000c53@huawei.com>
-In-Reply-To: <09D52CDC-44E5-48C4-8D32-E4DD0964F9AF@linux.dev>
-References: <0C019F50-9020-42ED-B051-998F03BFB709@linux.dev>
- <483e8037-3c72-4560-b4b8-2437d37ca8c4@fujitsu.com>
- <20250110123128.00004a5b@huawei.com>
- <09D52CDC-44E5-48C4-8D32-E4DD0964F9AF@linux.dev>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tXe8w-0003Ba-6g
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 05:27:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736850448;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=52hrgni7t4Fn8Trrwho1Ps7RaGxj4Q0ZCrLW1+g7ROg=;
+ b=N0TTqyAKC+BFY+MwunYl65rgcKdTJeI6fpKhGdLY3SXyl9ckGq1rwRPp8P05stH3IShl/2
+ sRSwyIwwpu/joaYmieZ1sUxauuKTH6/HXia6yFr6jqw5Gw2gUn71YqfEAgRtbVKAnTIaoK
+ uV8tv0IDS7mJsMrUwGp8Pima/1piPN4=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-423-MK2O8sWWM9i8qLBJu_qVCA-1; Tue, 14 Jan 2025 05:27:27 -0500
+X-MC-Unique: MK2O8sWWM9i8qLBJu_qVCA-1
+X-Mimecast-MFC-AGG-ID: MK2O8sWWM9i8qLBJu_qVCA
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-385d7611ad3so3020377f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 02:27:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736850446; x=1737455246;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=52hrgni7t4Fn8Trrwho1Ps7RaGxj4Q0ZCrLW1+g7ROg=;
+ b=wuR4YzRAkM41eECN/8dMLdxGfuCVKKwe+f97+B1W+pbhl9Mc8u/fCYdoe1aLR2mA3Y
+ q/lPe4b1WCsO2LKoIcx8DuRnDEcQBtFlLwHtmyQG6KSWVmhn0Je08frRmmDRd44U0I6f
+ qGQfWiPP8w3gwPOewbKqncLNAYO4Q6D3di3WjyVNLsQnALYtDC9BJifJMoF0XGZ1cHkM
+ 093oPwQm1rKV5wQNggufCT0tQ9doPPFfy7ghetUPJH9RiHhN65/wP32ah7PRpep8b4Up
+ jdxl4QPC6Osl2T3Vy3EFja/3+CfYss9OJxq1W068dwHPonPBJn/BDRt3mJYMxF5/f3xS
+ +Uyg==
+X-Gm-Message-State: AOJu0Yy6leP+l5uG9SUZ90tAomey7PHUg0asTRxIZJ1TVyud05pE5rkq
+ /SnkSqgvxW7knWwYQXVsiYZWg4DPIeFyybG79Ql0d1kSOZj4sT37F1+Y2CjY/M3UsKvM2TC9qIs
+ DOCmGm51vN0iYnJk6IQ6xSa5KLEpC86AsXvhLH6dF/df9+SGeZrOeDF/7i2ri
+X-Gm-Gg: ASbGncsvSTbFAJt+0sXuvzcXCpiHvYFqVehW45kM/KsJHRy4660Z1oUBfMVq2V5+Z8E
+ ct8lYCdLiE6b7KnoDW4nSTU1mhg898JseZWuTbs71IGNW4mune05QI340mVKZluQFGbK4EBioFR
+ mVc6RbnNess8YpFDVxlv90XMgMd1h7v6dBnTXymqVcQmV51z8sc9MGdpxpqbaaYZCnSFa6D0opO
+ Ct1fpzSR93yhECuB5apkFB6Pc4Wwu7Azm8BEkEpv/Bsm3KeBw==
+X-Received: by 2002:adf:ab0a:0:b0:38a:88bc:d57d with SMTP id
+ ffacd0b85a97d-38a88bcd5efmr16884135f8f.2.1736850445905; 
+ Tue, 14 Jan 2025 02:27:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEpURLFloLkpfSnNBpli0UyQJx5Q1G61gHQy02odXTKNNwyEmqG+awlPcryGeBx4vqYJnZlLQ==
+X-Received: by 2002:adf:ab0a:0:b0:38a:88bc:d57d with SMTP id
+ ffacd0b85a97d-38a88bcd5efmr16884115f8f.2.1736850445501; 
+ Tue, 14 Jan 2025 02:27:25 -0800 (PST)
+Received: from redhat.com ([2a02:14f:175:f243:3731:6014:d7c:f11f])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38a8e37d472sm14178863f8f.1.2025.01.14.02.27.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 14 Jan 2025 02:27:24 -0800 (PST)
+Date: Tue, 14 Jan 2025 05:27:22 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: qemu-devel@nongnu.org, eric.mackay@oracle.com, anisinha@redhat.com
+Subject: Re: [PATCH 0/3] cpuhp: ensure that cpu hotremove works the 1st time
+Message-ID: <20250114052708-mutt-send-email-mst@kernel.org>
+References: <20241210163945.3422623-1-imammedo@redhat.com>
+ <20250114112054.6dcaa756@imammedo.users.ipa.redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
- frapeml500008.china.huawei.com (7.182.85.71)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -59
-X-Spam_score: -6.0
-X-Spam_bar: ------
-X-Spam_report: (-6.0 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-1.787, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250114112054.6dcaa756@imammedo.users.ipa.redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.019,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -66,105 +99,72 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 14 Jan 2025 12:03:03 +0900
-Itaru Kitayama <itaru.kitayama@linux.dev> wrote:
+On Tue, Jan 14, 2025 at 11:20:54AM +0100, Igor Mammedov wrote:
+> On Tue, 10 Dec 2024 17:39:42 +0100
+> Igor Mammedov <imammedo@redhat.com> wrote:
+> 
+> > CPU hotremove event is not delivered to OSPM if the CPU
+> > has been hotplugged before OS has booted.
+> > For details see [2/3].
+> 
+> Michael,
+> can you pick it up please?
 
-> Hi Jonathan,=20
->=20
-> > On Jan 10, 2025, at 21:31, Jonathan Cameron <Jonathan.Cameron@huawei.co=
-m> wrote:
-> >=20
-> > On Fri, 10 Jan 2025 09:20:54 +0000
-> > "Zhijian Li (Fujitsu)" via <qemu-devel@nongnu.org> wrote:
-> >  =20
-> >> On 10/01/2025 13:29, Itaru Kitayama wrote: =20
-> >>> Hi,
-> >>> Is anybody working on the CXL emulation on aarch64?   =20
-> >>=20
-> >> I'm not currently working on the CXL emulation on aarch64.
-> >>=20
-> >> However, IIRC the CXL maintainer's tree should work.
-> >> https://gitlab.com/jic23/qemu/ =20
-> >=20
-> > Pick up latest branch from there. I'm prepping a rebased version
-> > with some new stuff but might take a few more days. =20
->=20
-> Thanks for sharing your work with us.  Your master and cxl-2024-11-27 bra=
-nches give:
->=20
-> $ qemu-system-aarch64: -accel tcg,cxl=3Don: Property 'tcg-accel.cxl' not =
-found
+yes it's in my tree that I am testing.
 
-cxl is a machine property not a accel one. So needs to be after virt
-There are tests in the tree for bios tables. Copy the command line from tho=
-se.
-
->=20
-> My commands are below:
-> $HOME/projects/qemu/build/qemu-system-aarch64 \
->         -M virt,virtualization=3Don,gic-version=3D3 \
->         -M acpi=3Doff -cpu max,sme=3Doff -m 8G -smp 4 \
->         -accel tcg,cxl=3Don \
->         -nographic \
->         -bios $HOME/cca-v4/out/bin/flash.bin \
->         -kernel Image-cca \
->         -drive format=3Draw,if=3Dnone,file=3D$HOME/cca-v4/out-or/images/r=
-ootfs.ext2,id=3Dhd0 \
->         -device virtio-blk-pci,drive=3Dhd0 \
->         -append root=3D/dev/vda \
->         -nodefaults \
->         --serial tcp:localhost:54320 \
->          -serial tcp:localhost:54321 \
->          -append "root=3D/dev/vda earlycon console=3Dhvc0" \
->          -device virtio-net-pci,netdev=3Dnet0 \
->          -netdev user,id=3Dnet0 \
->          -device virtio-9p-device,fsdev=3Dshr0,mount_tag=3Dshr0 \
->          -fsdev local,security_model=3Dnone,path=3D../../,id=3Dshr0
->=20
-> Yes, I=E2=80=99m using Linaro=E2=80=99s CCA capable OP-TEE builds above.
-
-I'm a little curious why optee is relevant for this but shouldn't matter as=
- long
-as an appropriate EDK2 is loaded.
-
-Jonathan
-
->=20
-> Let me know which branch you were suggesting.
->=20
-> Thanks,
-> Itaru.=20
->=20
-> >=20
-> > Note my main development work is on arm64 so that tends to work
-> > more reliably than x86 which I only lightly test for stuff that
-> > isn't ready for upstream yet.
-> >=20
-> > Give me a shout if you run into any problems.
-> >=20
-> > The main blocker on upstreaming this is resolving the missing device tr=
-ee
-> > support for PCI expander bridges.  I've not made any progress on this s=
-ince
-> > talk at Linaro connect in 2023.
-> >=20
-> > Jonathan
-> >=20
-> >  =20
-> >>=20
-> >>=20
-> >> Thanks
-> >> Zhijian
-> >>  =20
-> >>> If there=E2=80=99s a WIP branch, a pointer would be appreciated.
-> >>>=20
-> >>> Itaru   =20
-> >  =20
->=20
+> > 
+> > Igor Mammedov (3):
+> >   tests: acpi: whitelist expected blobs
+> >   cpuhp: make sure that remove events are handled within the same SCI
+> >   tests: acpi: update expected blobs
+> > 
+> >  hw/acpi/cpu.c                                 |  43 ++++++++++++++----
+> >  tests/data/acpi/x86/pc/DSDT                   | Bin 8526 -> 8593 bytes
+> >  tests/data/acpi/x86/pc/DSDT.acpierst          | Bin 8437 -> 8504 bytes
+> >  tests/data/acpi/x86/pc/DSDT.acpihmat          | Bin 9851 -> 9918 bytes
+> >  tests/data/acpi/x86/pc/DSDT.bridge            | Bin 15397 -> 15464 bytes
+> >  tests/data/acpi/x86/pc/DSDT.cphp              | Bin 8990 -> 9057 bytes
+> >  tests/data/acpi/x86/pc/DSDT.dimmpxm           | Bin 10180 -> 10247 bytes
+> >  tests/data/acpi/x86/pc/DSDT.hpbridge          | Bin 8477 -> 8544 bytes
+> >  tests/data/acpi/x86/pc/DSDT.hpbrroot          | Bin 5033 -> 5100 bytes
+> >  tests/data/acpi/x86/pc/DSDT.ipmikcs           | Bin 8598 -> 8665 bytes
+> >  tests/data/acpi/x86/pc/DSDT.memhp             | Bin 9885 -> 9952 bytes
+> >  tests/data/acpi/x86/pc/DSDT.nohpet            | Bin 8384 -> 8451 bytes
+> >  tests/data/acpi/x86/pc/DSDT.numamem           | Bin 8532 -> 8599 bytes
+> >  tests/data/acpi/x86/pc/DSDT.roothp            | Bin 12319 -> 12386 bytes
+> >  tests/data/acpi/x86/q35/DSDT                  | Bin 8355 -> 8422 bytes
+> >  tests/data/acpi/x86/q35/DSDT.acpierst         | Bin 8372 -> 8439 bytes
+> >  tests/data/acpi/x86/q35/DSDT.acpihmat         | Bin 9680 -> 9747 bytes
+> >  .../data/acpi/x86/q35/DSDT.acpihmat-generic-x | Bin 12565 -> 12632 bytes
+> >  .../acpi/x86/q35/DSDT.acpihmat-noinitiator    | Bin 8634 -> 8701 bytes
+> >  tests/data/acpi/x86/q35/DSDT.applesmc         | Bin 8401 -> 8468 bytes
+> >  tests/data/acpi/x86/q35/DSDT.bridge           | Bin 11968 -> 12035 bytes
+> >  tests/data/acpi/x86/q35/DSDT.core-count       | Bin 12913 -> 12980 bytes
+> >  tests/data/acpi/x86/q35/DSDT.core-count2      | Bin 33770 -> 33837 bytes
+> >  tests/data/acpi/x86/q35/DSDT.cphp             | Bin 8819 -> 8886 bytes
+> >  tests/data/acpi/x86/q35/DSDT.cxl              | Bin 13146 -> 13213 bytes
+> >  tests/data/acpi/x86/q35/DSDT.dimmpxm          | Bin 10009 -> 10076 bytes
+> >  tests/data/acpi/x86/q35/DSDT.ipmibt           | Bin 8430 -> 8497 bytes
+> >  tests/data/acpi/x86/q35/DSDT.ipmismbus        | Bin 8443 -> 8510 bytes
+> >  tests/data/acpi/x86/q35/DSDT.ivrs             | Bin 8372 -> 8439 bytes
+> >  tests/data/acpi/x86/q35/DSDT.memhp            | Bin 9714 -> 9781 bytes
+> >  tests/data/acpi/x86/q35/DSDT.mmio64           | Bin 9485 -> 9552 bytes
+> >  tests/data/acpi/x86/q35/DSDT.multi-bridge     | Bin 13208 -> 13275 bytes
+> >  tests/data/acpi/x86/q35/DSDT.noacpihp         | Bin 8235 -> 8302 bytes
+> >  tests/data/acpi/x86/q35/DSDT.nohpet           | Bin 8213 -> 8280 bytes
+> >  tests/data/acpi/x86/q35/DSDT.numamem          | Bin 8361 -> 8428 bytes
+> >  tests/data/acpi/x86/q35/DSDT.pvpanic-isa      | Bin 8456 -> 8523 bytes
+> >  tests/data/acpi/x86/q35/DSDT.thread-count     | Bin 12913 -> 12980 bytes
+> >  tests/data/acpi/x86/q35/DSDT.thread-count2    | Bin 33770 -> 33837 bytes
+> >  tests/data/acpi/x86/q35/DSDT.tis.tpm12        | Bin 8961 -> 9028 bytes
+> >  tests/data/acpi/x86/q35/DSDT.tis.tpm2         | Bin 8987 -> 9054 bytes
+> >  tests/data/acpi/x86/q35/DSDT.type4-count      | Bin 18589 -> 18656 bytes
+> >  tests/data/acpi/x86/q35/DSDT.viot             | Bin 14612 -> 14679 bytes
+> >  tests/data/acpi/x86/q35/DSDT.xapic            | Bin 35718 -> 35785 bytes
+> >  43 files changed, 34 insertions(+), 9 deletions(-)
+> > 
 
 
