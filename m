@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 351BCA105C5
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 12:43:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68EB7A1067E
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 13:21:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXfIx-0006Ys-HD; Tue, 14 Jan 2025 06:41:55 -0500
+	id 1tXftz-00006M-Bi; Tue, 14 Jan 2025 07:20:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1tXfIn-00066h-O4
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:41:47 -0500
-Received: from mail-qt1-x82e.google.com ([2607:f8b0:4864:20::82e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1tXfIm-000692-0G
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:41:45 -0500
-Received: by mail-qt1-x82e.google.com with SMTP id
- d75a77b69052e-467b955e288so58210681cf.1
- for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 03:41:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1736854902; x=1737459702; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TcWFQyhNc6naKavdeUrSg2t59/lqijn7V6MfrdULN8M=;
- b=Fg6SshBJztq+PPHPdx6IuCgfRDTUWrL0ruTHZy9U+Rk/6fwgUQKGFGNizd+lvOxJTw
- xKTHh56kug9tbAjLzNVZmGmapr3RLJsRiHzQldRFq7beRPk7Y2KC0F91cxQnlBHYaLZi
- Qt8zKusawy8M/kqd0ASKMxOu2KJW6RfE4DH0bBcrM8nazBiVfKIYn3Brzu37trzhkMIa
- kNvp249bX/B4oSuywNUjy2Ycy6o6T8haZVEdwy9aK/Hzmccmk5+v3ZQU2HI5IRf3Sj/V
- uCmNSWb4OxLveLSmpGmp7eUuYK9+z1YCpFFGKOeI91q8zJuxRgkpUsQbbYobbHkJ20oq
- ldGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736854902; x=1737459702;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TcWFQyhNc6naKavdeUrSg2t59/lqijn7V6MfrdULN8M=;
- b=VT/2K9u8qEnIoqBx3u2p3vNRc3IlCtPMv7XOk7eT+ZnMJq5stak+sj+P6wHoel6YCY
- qtbCSbKMjPYGexRmv+hiaBwlkeTz14rm3UdJO0J27CA/0sasB0V2EJqu48/zBBZNn2v9
- 7Ls8CPmANNXhoSVZqoO09Lwbu7dq0bgb+mSuOFHotMyvn25GWJppDbwHHw3huyknrxhT
- jZCEgv3h9UINTFTaAf3U5GquIoEWVPmeogYlEG6L+fg1/zf6u2R/lTgfF1NxjEf+3y1d
- LkwfsaLvvxTrJrSQOS+6ZTUY2totevqB8ztCVZGEIr9UVfxTv8Fd17dhzfWlWOhmE1Sc
- DLUQ==
-X-Gm-Message-State: AOJu0YwwC6q+RIo7hNUjku1PmCmBz9w/YMbe0bY6lkdEQCTb4L/53O8T
- OOg5cL0o2FRxqfsxvk4HLGHsAs4GllJocdk2oWfH1eU7/Xi9zP4wnD2seal3IL1gJYJ6FXhIv4q
- k7cQR0iWwK1uU0WWdZGifqGnHgQZX3ADC
-X-Gm-Gg: ASbGncvxDOeA00/uTuVKgLXj5LLKIK/lY6+rz4iGzY3a8+IBGOLCGeDgEw3UeP+K/ME
- GQqMwh+x116TuAE+Y22nygY50My0JaE1ZnDg9
-X-Google-Smtp-Source: AGHT+IHSYijrmfFi/N48oTc9SsZFL5sK3crICAcDoeIZFa4qme6MxIOXYS5u76CVctBw5pz8WyBLEJAEMIV3C4KzmSo=
-X-Received: by 2002:ac8:594d:0:b0:466:8cc1:6221 with SMTP id
- d75a77b69052e-46c7109ddd9mr394651451cf.50.1736854901961; Tue, 14 Jan 2025
- 03:41:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1tXftu-0008WC-V0
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 07:20:06 -0500
+Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1tXftr-0003AV-LS
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 07:20:05 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1736857189; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=Le5Ek+c1PSO+6fgFz8voVcDq620czvpAwC8arKNBjsNWQFcaS2s9zyBiEHuqrhYmJYEMx/OnsJnh4goChy/wcSRSovKgrqWFtVhK2WiLT2gVIEYmsBMwWzjLCeH2oBSktCLLRi/9iDDmb4p0vrOKYyaFEcTUMfptRa6tRgdMoGg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1736857189;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=WXTxPVGNvNWH0K4Uzn9JKLipktixjN0FppWJRRbeNyg=; 
+ b=f4t8N3t28il/NBKjSnJk3fFPWAMBfugsbKghgjZDdrjqQAAYqQBLnfLDcRWd3KFKIy9+IIP5n7b0ntcSMHtn33hmTyJwnASM2kClMidqfYr/2HrHbpRB+T/7CdBHlDaZ7DRbQQyX2uxjHbpT4Md3bf5f0H85owJqOrsqI6ej24k=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+ dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1736857189; 
+ s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
+ h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=WXTxPVGNvNWH0K4Uzn9JKLipktixjN0FppWJRRbeNyg=;
+ b=WFrLTsl1ATTI6OC6LIe5JAZ3Ts1j/c//KEQ3KwXEMNvsr1yl0pObgqJQIWCP3lY2
+ xJBZ/yirbDQTTnBYVk4Rh4b+8RGnHr0mo1up9tbSprABUqhKjQPLPco7uqjsyWg0sAv
+ nAczYqrKwywvfYp0dq4xdajHCi4SSfrpkev0ZO+w=
+Received: by mx.zohomail.com with SMTPS id 1736857186460848.7059697777773;
+ Tue, 14 Jan 2025 04:19:46 -0800 (PST)
+Message-ID: <9ba719d6-b362-48d2-a875-be4a26a3b709@collabora.com>
+Date: Tue, 14 Jan 2025 15:19:40 +0300
 MIME-Version: 1.0
-References: <20250114104753.2612342-1-marcandre.lureau@redhat.com>
-In-Reply-To: <20250114104753.2612342-1-marcandre.lureau@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 14 Jan 2025 15:41:30 +0400
-X-Gm-Features: AbW1kvaa6A3BabSxoJyF1JOCWlk6pHSw6spRS3Djvg_HLeCQtb6DlVWRR-RBjME
-Message-ID: <CAJ+F1CK+9hcNc_2_ZtPGszOK+3dudkCkOcfxjKk_mDUA67yaag@mail.gmail.com>
-Subject: Re: [PATCH] ui/dbus: on win32, allow ANONYMOUS with p2p
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82e;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/5] virtio-gpu: Support asynchronous fencing
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gert Wollny
+ <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
+ Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
+ =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Stefano Stabellini <stefano.stabellini@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
+ Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
+ Yiwei Zhang <zzyiwei@chromium.org>, Sergio Lopez Pascual <slp@redhat.com>
+References: <20241110221838.2241356-1-dmitry.osipenko@collabora.com>
+ <20241110221838.2241356-5-dmitry.osipenko@collabora.com>
+ <87plkqjrx3.fsf@draig.linaro.org>
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Content-Language: en-US
+In-Reply-To: <87plkqjrx3.fsf@draig.linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
+Received-SPF: pass client-ip=136.143.188.112;
+ envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.794,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,33 +95,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 14, 2025 at 2:50=E2=80=AFPM <marcandre.lureau@redhat.com> wrote=
-:
->
-> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->
-> GLib doesn't implement EXTERNAL on win32 at the moment, and disables
-> ANONYMOUS by default. zbus dropped support for COOKIE_SHA1 in 5.0,
-> making it no longer possible to connect to qemu -display dbus.
->
-> Since p2p connections are gated by existing QMP (or a D-Bus connection),
-> qemu -display dbus p2p can accept authentication with ANONYMOUS.
->
-> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-....
+On 1/14/25 01:00, Alex Bennée wrote:
+...
+> This needs to be gated on support from virglrenderer:
+> 
+>   /display/virtio-gpu-virgl.c
+>   ../../hw/display/virtio-gpu-virgl.c: In function ‘virtio_gpu_virgl_process_cmd’:
+>   ../../hw/display/virtio-gpu-virgl.c:980:15: error: implicit declaration of function ‘virgl_renderer_context_create_fence’; did you mean ‘virgl_renderer_context_create’? [-Werror=implicit-function-declaration]
+>     980 |         ret = virgl_renderer_context_create_fence(cmd->cmd_hdr.ctx_id, flags,
+>         |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>         |               virgl_renderer_context_create
+>   ../../hw/display/virtio-gpu-virgl.c:980:15: error: nested extern declaration of ‘virgl_renderer_context_create_fence’ [-Werror=nested-externs]
+>   ../../hw/display/virtio-gpu-virgl.c: At top level:
+>   ../../hw/display/virtio-gpu-virgl.c:1088:13: error: ‘virgl_write_context_fence’ defined but not used [-Werror=unused-function]
+>    1088 | static void virgl_write_context_fence(void *opaque, uint32_t ctx_id,
+>         |             ^~~~~~~~~~~~~~~~~~~~~~~~~
+>   ../../hw/display/virtio-gpu-virgl.c:1002:13: error: ‘virtio_gpu_virgl_async_fence_bh’ defined but not used [-Werror=unused-function]
+>    1002 | static void virtio_gpu_virgl_async_fence_bh(void *opaque)
+>         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>   cc1: all warnings being treated as errors
 
-> diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
-> index b6a65806bc..9ad3f70bde 160000
-> --- a/tests/lcitool/libvirt-ci
-> +++ b/tests/lcitool/libvirt-ci
-> @@ -1 +1 @@
-> -Subproject commit b6a65806bc9b2b56985f5e97c936b77c7e7a99fc
-> +Subproject commit 9ad3f70bde9865d5ad18f36d256d472e72b5cbf3
-> --
+Good catch, will address in v5. Thanks!
 
-bad submodule update, my bad.
-
-
---=20
-Marc-Andr=C3=A9 Lureau
+-- 
+Best regards,
+Dmitry
 
