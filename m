@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25BBA1109D
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 20:00:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B75A4A1109F
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 20:00:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXm8U-0005ij-Hk; Tue, 14 Jan 2025 13:59:34 -0500
+	id 1tXm8X-0005js-Vx; Tue, 14 Jan 2025 13:59:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tXm7t-0005eV-Bf
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 13:58:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tXm7u-0005f6-B5
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 13:59:01 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tXm7o-0002kt-CC
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 13:58:54 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tXm7s-0002l7-MC
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 13:58:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736881130;
+ s=mimecast20190719; t=1736881135;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=V9Rxj/WNy6u5pAcVBszc9E/LdxdMVNShv4fm7WS/rUk=;
- b=JNREztXLSptvIxDfs8nUTG0G71utcqU8/WsEOKgQ5cXpIf+wXaikPph6SkAbgVMpt40u6m
- SX0m93wzM2FDpfOEEmp7yhS888Xe52t0JmhtESZICi87c5N8BeoxEcPbcjwsF14doKWFzX
- 3SmPuYYhWibhtUvdOEuwB39u226Nqo0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=vv7Wd/zlyBoYsTvEa+zFVj47uVH6QRHlKrjqyx9mRxk=;
+ b=Phnur2tRAKE/+QBZaE326ZmA2diYjcqAL3e0jjQTiE1mzzBqNxsBrV2qTr7uncsD06HEWn
+ vcj8fGlQASAiq5xghFT/jTbA8dcKUOamtu/CwNc4XZvQdnRGDATN4tLroyTAqls7CT1NZY
+ DOqxc6Hi3O5bjbDL+iSDR2kznYkcE08=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-137-uW9FY2BtPBq88g0N0BStuQ-1; Tue,
- 14 Jan 2025 13:58:48 -0500
-X-MC-Unique: uW9FY2BtPBq88g0N0BStuQ-1
-X-Mimecast-MFC-AGG-ID: uW9FY2BtPBq88g0N0BStuQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-158-iG7n9fidPLSOAC6XGkK5cA-1; Tue,
+ 14 Jan 2025 13:58:50 -0500
+X-MC-Unique: iG7n9fidPLSOAC6XGkK5cA-1
+X-Mimecast-MFC-AGG-ID: iG7n9fidPLSOAC6XGkK5cA
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9D13F19560B0; Tue, 14 Jan 2025 18:58:47 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6CB451955DCD; Tue, 14 Jan 2025 18:58:49 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.175])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 83B3919560A3; Tue, 14 Jan 2025 18:58:45 +0000 (UTC)
+ id E24B619560A3; Tue, 14 Jan 2025 18:58:47 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 02/23] qapi/parser: adjust info location for doc body
- section
-Date: Tue, 14 Jan 2025 13:58:19 -0500
-Message-ID: <20250114185840.3058525-3-jsnow@redhat.com>
+Subject: [PATCH v2 03/23] docs/qapidoc: remove example section support
+Date: Tue, 14 Jan 2025 13:58:20 -0500
+Message-ID: <20250114185840.3058525-4-jsnow@redhat.com>
 In-Reply-To: <20250114185840.3058525-1-jsnow@redhat.com>
 References: <20250114185840.3058525-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.794,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,41 +81,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of using the info object for the doc block as a whole (which
-always points to the very first line of the block), update the info
-pointer for each call to ensure_untagged_section when the existing
-section is otherwise empty. This way, Sphinx error information will
-match precisely to where the text actually starts.
-
-For example, this patch will move the info pointer for the "Hello!"
-untagged section ...
-
-> ##       <-- from here ...
-> # Hello! <-- ... to here.
-> ##
+Since commit 3c5f6114 (qapi: remove "Example" doc section), Example
+sections no longer exist, so this support in qapidoc is now dead code.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- scripts/qapi/parser.py | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ docs/sphinx/qapidoc.py | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-index adc85b5b394..36cb64a677a 100644
---- a/scripts/qapi/parser.py
-+++ b/scripts/qapi/parser.py
-@@ -687,7 +687,11 @@ def end(self) -> None:
-     def ensure_untagged_section(self, info: QAPISourceInfo) -> None:
-         if self.all_sections and not self.all_sections[-1].tag:
-             # extend current section
--            self.all_sections[-1].text += '\n'
-+            section = self.all_sections[-1]
-+            if not section.text:
-+                # Section is empty so far; update info to start *here*.
-+                section.info = info
-+            section.text += '\n'
-             return
-         # start new section
-         section = self.Section(info)
+diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
+index 5a4d7388b29..61997fd21af 100644
+--- a/docs/sphinx/qapidoc.py
++++ b/docs/sphinx/qapidoc.py
+@@ -254,10 +254,6 @@ def _nodes_for_features(self, doc):
+         section += dlnode
+         return [section]
+ 
+-    def _nodes_for_example(self, exampletext):
+-        """Return list of doctree nodes for a code example snippet"""
+-        return [nodes.literal_block(exampletext, exampletext)]
+-
+     def _nodes_for_sections(self, doc):
+         """Return list of doctree nodes for additional sections"""
+         nodelist = []
+@@ -275,10 +271,7 @@ def _nodes_for_sections(self, doc):
+                 continue
+ 
+             snode = self._make_section(section.tag)
+-            if section.tag.startswith('Example'):
+-                snode += self._nodes_for_example(dedent(section.text))
+-            else:
+-                self._parse_text_into_node(dedent(section.text), snode)
++            self._parse_text_into_node(dedent(section.text), snode)
+             nodelist.append(snode)
+         return nodelist
+ 
 -- 
 2.47.1
 
