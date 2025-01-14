@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C63C3A110C5
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 20:05:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20492A110A1
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 20:00:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXm8a-0005kl-0t; Tue, 14 Jan 2025 13:59:40 -0500
+	id 1tXm8k-0005o8-UJ; Tue, 14 Jan 2025 13:59:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tXm8A-0005gb-7h
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 13:59:17 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tXm8D-0005h6-3g
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 13:59:19 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tXm85-0002my-Bc
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 13:59:13 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tXm88-0002nI-Nm
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 13:59:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736881148;
+ s=mimecast20190719; t=1736881151;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WtD4gcIvhmErcwjNgZhDIhvoibeeIaG2Gl5BfVo4K+A=;
- b=TsPBan1HDi5FjFUKh57EvOjy5cPcaq/Q0PvxAeOrQODTYYSKFyZzTxoDxmWmHg4N4p7J73
- FjLip2RxzrNm6bXdxvqL04r3ceVNkmnMDSMq2d9z9VveKOmJNXg8BOO1FQjM19TXUeU+Wp
- YDmX+RcXnLnRXRhuN/cUhlzboN6ci9M=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=tTSDAEWruHIuqAkv89ecWvmTHmK0CWoi0kct4UgpfUQ=;
+ b=X0LFhqCBaJErR1sn0kESba7kPJDIYtBgn1J1STSa9dFNjMHcDfmL/mFSYnhRbCpdTn+/RJ
+ zZf6SWwgEHtMqOZJSjWQHyIrV4Yqgx0PoSKo+aA8m7T5yyvpjT033TEYVfKY53LhvfO2FN
+ psYzrXDuvXU1s4+CRBLoAzlRDZ9OhBM=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-287-9f_gTDvVPjGtBIQKWqmEFw-1; Tue,
- 14 Jan 2025 13:59:06 -0500
-X-MC-Unique: 9f_gTDvVPjGtBIQKWqmEFw-1
-X-Mimecast-MFC-AGG-ID: 9f_gTDvVPjGtBIQKWqmEFw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-113-LigwbgKXOnmxJ0oW51B1Mg-1; Tue,
+ 14 Jan 2025 13:59:08 -0500
+X-MC-Unique: LigwbgKXOnmxJ0oW51B1Mg-1
+X-Mimecast-MFC-AGG-ID: LigwbgKXOnmxJ0oW51B1Mg
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D807319560A3; Tue, 14 Jan 2025 18:59:05 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 40C551955DC9; Tue, 14 Jan 2025 18:59:07 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.175])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C4EAE19560A3; Tue, 14 Jan 2025 18:59:04 +0000 (UTC)
+ id 28B9419560AA; Tue, 14 Jan 2025 18:59:06 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 15/23] docs/qapidoc: add add_field() and generate_field()
- helper methods
-Date: Tue, 14 Jan 2025 13:58:32 -0500
-Message-ID: <20250114185840.3058525-16-jsnow@redhat.com>
+Subject: [PATCH v2 16/23] docs/qapidoc: add visit_feature() method
+Date: Tue, 14 Jan 2025 13:58:33 -0500
+Message-ID: <20250114185840.3058525-17-jsnow@redhat.com>
 In-Reply-To: <20250114185840.3058525-1-jsnow@redhat.com>
 References: <20250114185840.3058525-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -82,66 +81,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These are simple rST generation methods that assist in getting the types
-and formatting correct for a field list entry. add_field() is a more
-raw, direct call while generate_field() is intended to be used for
-generating the correct field from a member object.
+This adds a simple ":feat name: lorem ipsum ..." line to the generated
+rST document, so at the moment it's only for "top level" features.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ docs/sphinx/qapidoc.py | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index b1eaac6e215..6c0e7b6004c 100644
+index 6c0e7b6004c..e9af072c5a6 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -44,6 +44,7 @@
-     QAPISchemaEntity,
-     QAPISchemaEnumMember,
-     QAPISchemaFeature,
-+    QAPISchemaMember,
-     QAPISchemaObjectTypeMember,
- )
- from qapi.source import QAPISourceInfo
-@@ -132,6 +133,20 @@ def ensure_blank_line(self) -> None:
-             # +2: correct for zero/one index, then increment by one.
-             self.add_line_raw("", fname, line + 2)
+@@ -187,6 +187,15 @@ def visit_paragraph(self, section: QAPIDoc.Section) -> None:
+         self.add_lines(section.text, section.info)
+         self.ensure_blank_line()
  
-+    def add_field(
-+        self,
-+        kind: str,
-+        name: str,
-+        body: str,
-+        info: QAPISourceInfo,
-+        typ: Optional[str] = None,
-+    ) -> None:
-+        if typ:
-+            text = f":{kind} {typ} {name}: {body}"
-+        else:
-+            text = f":{kind} {name}: {body}"
-+        self.add_lines(text, info)
++    def visit_feature(self, section: QAPIDoc.ArgSection) -> None:
++        # FIXME - ifcond for features is not handled at all yet!
++        # Proposal: decorate the right-hand column with some graphical
++        # element to indicate conditional availability?
++        assert section.text  # Guaranteed by parser.py
++        assert section.member
 +
-     def format_type(self, ent) -> Optional[str]:
-         if isinstance(ent, (QAPISchemaEnumMember, QAPISchemaFeature)):
-             return None
-@@ -151,6 +166,16 @@ def format_type(self, ent) -> Optional[str]:
- 
-         return ret
- 
-+    def generate_field(
-+        self,
-+        kind: str,
-+        member: QAPISchemaMember,
-+        body: str,
-+        info: QAPISourceInfo,
-+    ) -> None:
-+        typ = self.format_type(member)
-+        self.add_field(kind, member.name, body, info, typ)
++        self.generate_field("feat", section.member, section.text, section.info)
 +
-     # Transmogrification helpers
- 
-     def visit_paragraph(self, section: QAPIDoc.Section) -> None:
+     def visit_errors(self, section: QAPIDoc.Section) -> None:
+         # FIXME: the formatting for errors may be inconsistent and may
+         # or may not require different newline placement to ensure
 -- 
 2.47.1
 
