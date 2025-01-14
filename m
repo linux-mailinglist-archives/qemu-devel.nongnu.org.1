@@ -2,65 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 929F1A10816
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 14:46:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82355A10820
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 14:49:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXhET-00026G-11; Tue, 14 Jan 2025 08:45:26 -0500
+	id 1tXhH5-0003Sw-J8; Tue, 14 Jan 2025 08:48:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hsu@peterdavehello.org>)
- id 1tXhEJ-00025p-62
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 08:45:15 -0500
-Received: from mail-4317.proton.ch ([185.70.43.17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hsu@peterdavehello.org>)
- id 1tXhEF-0000Ae-Ov
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 08:45:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peterdavehello.org;
- s=protonmail3; t=1736862307; x=1737121507;
- bh=amc/slHbGDnfzHw/Et20S57RdQEPM7ovgUGPMfFrcj0=;
- h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
- Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
- Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
- b=GjZAUWPISquJHASIsLKBLg2//7CLnI8ahCf7qfVDl9wNoQOnR4ykcorirXmasC3pq
- sd2YrK8F2JNCViWYRtJjnknemHQYWXODiuUINWEwMuA7XIr8uJeSDyqqpFAS/QQX9v
- MWStAiyO3szkDO9xA+QlouUNQ7aU6FHHPMByIrCwSRSThFYt9d+Ay7Y1ZwG855N9Ss
- 1gfu6FJd7sQSloXOG00N1PPEyG4dokYCjWu3oOmKiL/pgwBz+exLwOh/7/BClOuN7n
- WDL9kcN2sTdvOZj9HO8U4oOxnO4Sy2wvFO7xWCs7kSuUhpOr1jaWURbtLmbOm3FZ8Q
- pd3WlCMpjGm1w==
-Date: Tue, 14 Jan 2025 13:45:03 +0000
-To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH] Add zh_TW Traditional Chinese translation
-Message-ID: <w0C7I-STdtazH_QTikLVqdGlKEDYBJd-xCkX1BXBPY-rRhhU6E0ARjv0_t9QiJpptsNzSJeGpotLRYaBMa2VGyucNEE9zOaCQ8YKWhGPlYk=@peterdavehello.org>
-In-Reply-To: <Znmnr3XCiPM89Xag@redhat.com>
-References: <adPv4goMCNmjeDRUK1LGCAHIZdOxvMoFAqlU1bCnvTCPsCTUFRQnOQnThBC3oIzU9IczdS6aw1vKLQ-w7Zk9CRo5FfvINiaInut_U4VwbeI=@peterdavehello.org>
- <CAFEAcA_D1+BUk01mXNwRehxYqyXQU+Zu98sWBujauk5L2tHh3w@mail.gmail.com>
- <Zh6qLCvyiSk6YkVy@intel.com> <Zh6oIH8Ihyn-9RwT@redhat.com>
- <pTgk5-fHZzZe_qQn7RdevQ7Dg9Yz_-I4jWPpYknkgbiStJvLCRlTj9EpfRY_K9GCqdSABB_s_xzuGBCxxRqDfzDIoO6AVcvP-onYk8yRiWI=@peterdavehello.org>
- <ZiCDzzFDRmQGPtDD@intel.com>
- <Fu0jQm-Z4E7D_J11oxIlfRJ9ZYK_QDKMYOs-9NNVX_jH9_aS5_9cyysois3SaVVtuTqR-H77MiwWLaa5RkPTEnCEdy0NvUmOuwqyirCbdhY=@peterdavehello.org>
- <5qJ0Q0ZnUCu-VdtMQOwzj54wLBfeXb9ozncO8PjFiOlXbu4RHQeVCZyn7ZMWq89yqqE7GZX3Bsuk9YqWugHmx-Wu4Oh1GZ5wboTuZ-QUk8k=@peterdavehello.org>
- <CAFEAcA8q5O1i-EDviKf-yN5DAsxsSofA3xa9ChMbn_tC91iNuw@mail.gmail.com>
- <Znmnr3XCiPM89Xag@redhat.com>
-Feedback-ID: 93059541:user:proton
-X-Pm-Message-ID: 9ff2e542aeb214a115b71cfe3ca1479e7a646477
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1tXhGz-0003Rw-Sr
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 08:48:05 -0500
+Received: from mail-ua1-x935.google.com ([2607:f8b0:4864:20::935])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1tXhGv-0000dU-Sw
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 08:48:01 -0500
+Received: by mail-ua1-x935.google.com with SMTP id
+ a1e0cc1a2514c-85c61388e68so1142684241.3
+ for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 05:47:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1736862475; x=1737467275;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=G8vdR4kabr+DNc5tVlsGrY/ePJnH+q9AP9S8HbOzymU=;
+ b=euZ1LukYzxO9QJ+atXN4ji6xxvqbmVdpjiQx8gGAagkF6LPQIHAwKyFVgdQRddceY5
+ 7uNKRIhWcH5rGzVLpCI7ONsT0EJ4TaREM+4IENr3hsmkGi5AdgFfk0Zcn0+Wt9lU433Z
+ JwmSqc6evEdgIrVU9Mz1rpnTbotYBEHOyBcWlGvqSDAZ39mvu9wPpfb/Wq6ebqbBOFj/
+ 5lzEwfsfezqJy/PQC74v7UScuNs+m8iX7SGT/In1Vm2845PndgTIpT0ry866uv2C9mDv
+ B3NXCwyb4we2yD5DkQaTrfIta+F4EnsZ1gVMBezCId70ifm6LgYjsCGHc1rhzlfZPByz
+ zr5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736862475; x=1737467275;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=G8vdR4kabr+DNc5tVlsGrY/ePJnH+q9AP9S8HbOzymU=;
+ b=KZs3t9XQX60J+f364ymCG7tiBWC62DkZ/LRgUELGBgM5WO5z4t9+fDws3TmIx/lX7V
+ bI1V/jUo/GxKV9NJP3q4vDzQGT7qEuGzvmMOqSUoc9NTlt0F73ccnmBlG0q5ZXnYTOxT
+ r3Lh/nfPP2hFVUGkleZXuNwEQOECjhQDmRN6TJXr0r8OC+xIanJU9xRDCIiFSG3DSIml
+ klLUGYG92+YcXHSeyGda/0BjfhYq7f91ZZShLGKVUdZR6LT5sSQP5zlAizB23sAM9SBy
+ PGqN2W/CZ1afoDsauU2HedXNXpsmEugYMwsWDJBraDP/yRSJLzjTaFyG+9aqr54FNR2A
+ bjoQ==
+X-Gm-Message-State: AOJu0YyP99GUReYkU91QZTUBVoZ6cSoDX+Vp1uhuLM4fBYLj7oUzbSrG
+ W6nJiMr0+z+uvH2WkDa1zqKQqOi7Q2UAr4d/Oa4n8qIqs2cbec9NxL1va8pxMG0hEfqGQKcmHWB
+ 41ZBNQpGwYjKL/o6E4XaZZE8hieAUt0k9ecsm
+X-Gm-Gg: ASbGnctJaDxIfnJFtt2TuYLxU88qZ2+nLHH95nmraSsjuvOVThZYVThWquMKiLYUrzB
+ Srhx2ViUHfN0K7ZKTgi1hK0/1ZpkI3Wa8yENwHA==
+X-Google-Smtp-Source: AGHT+IG39ILozvgk/qu29DhvYlqL67LlxPDJloHIAe04fSyria8C/welk3UljznRAUyQamR7xbqjSLgZySkkXOeuF50=
+X-Received: by 2002:a05:6122:50b:b0:518:81aa:899b with SMTP id
+ 71dfb90a1353d-51c6c46b315mr19383897e0c.6.1736862474938; Tue, 14 Jan 2025
+ 05:47:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=185.70.43.17; envelope-from=hsu@peterdavehello.org;
- helo=mail-4317.proton.ch
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250112210056.16658-1-phil@philjordan.eu>
+ <428a5e3e-966e-4dd2-9597-4f476e5c16f3@linaro.org>
+In-Reply-To: <428a5e3e-966e-4dd2-9597-4f476e5c16f3@linaro.org>
+From: Phil Dennis-Jordan <phil@philjordan.eu>
+Date: Tue, 14 Jan 2025 14:47:44 +0100
+X-Gm-Features: AbW1kvbTIUOpCYkMl1dW-iPRqYyBTkB0AdLzj04_87-7bzwS2YBcf9p_7ap1reg
+Message-ID: <CAAibmn3AEBNQfw138TiDX3WTwWTc9FXs4qCFQ9QMy=6LCRN1wQ@mail.gmail.com>
+Subject: Re: [PATCH v17 00/11] New vmapple machine type and xhci fixes
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, agraf@csgraf.de, peter.maydell@linaro.org, 
+ pbonzini@redhat.com, mst@redhat.com, stefanha@redhat.com, kwolf@redhat.com, 
+ hreitz@redhat.com, berrange@redhat.com, eduardo@habkost.net, 
+ marcel.apfelbaum@gmail.com, marcandre.lureau@redhat.com, eblake@redhat.com, 
+ armbru@redhat.com, qemu-block@nongnu.org, qemu-arm@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000d7c22f062baace07"
+Received-SPF: neutral client-ip=2607:f8b0:4864:20::935;
+ envelope-from=phil@philjordan.eu; helo=mail-ua1-x935.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,47 +90,78 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Peter Dave Hello <hsu@peterdavehello.org>
-From:  Peter Dave Hello via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tuesday, June 25th, 2024 at AM 1:06, Daniel P. Berrang=C3=A9 <berrange@r=
-edhat.com> wrote:
-> > We can't give legal advice, but the QEMU project doesn't do
-> > copyright assignment. Copyright remains with the original author
-> > (or with their employer).
->=20
->=20
-> While we can't give legal advice, going back to the original question
-> I have an observation that may resolve this.
->=20
-> IIUC, the orignal question was what to put at the top of the .po file
-> where it has:
->=20
-> # Copyright (C) 2024 THE QEMU'S COPYRIGHT HOLDER
->=20
-> I don't believe the QEMU community has any stated requirement that every
-> file have a "Copyright" line present. Entirely omitting this line is a
-> valid choice from QEMU's POV.
->=20
-> What matters to QEMU primarily is that the file has a declared license
-> statement.
->=20
-> Any Copyright lines present are woefully inaccurate in most places, since
-> they're rarely updated despite 100's of contributors working on a file.
-> The respective contributors still retain copyright over their own work
-> regardless of what a 'copyright' line says or doesn't say.
->=20
-> IOW, the contributor (or their employer) may decide for themselves
-> a policy of whether to include or omit such a "Copyright" line, on
-> contributions submitted.
+--000000000000d7c22f062baace07
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for the solution! So, to confirm, I will send PATCH v2 with the
-other metadata fixes but without the "Copyright" line. Is that correct?
+On Mon, 13 Jan 2025 at 18:31, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g>
+wrote:
 
-Best wishes,
-Peter
+> On 12/1/25 22:00, Phil Dennis-Jordan wrote:
+> > This patch set introduces a new ARM and macOS HVF specific machine type
+> > called "vmapple". There are also some patches for fixing XHCI spec
+> > compliance issues and adding a workaround to a quirk in the macOS guest=
+'s
+> > XHCI driver.
+>
+>
+> > Phil Dennis-Jordan (3):
+> >    hw/usb/hcd-xhci-pci: Use modulo to select MSI vector as per spec
+> >    hw/usb/hcd-xhci-pci: Use event ring 0 if mapping unsupported
+>
+> Patches 1 & 2 queued.
+>
 
 
+Thanks!
+
+It looks like I accidentally dropped Michael's Reviewed-by tag on patch 8:
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+https://patchew.org/QEMU/20241223221645.29911-1-phil@philjordan.eu/#2025010=
+8082246-mutt-send-email-mst@kernel.org
+
+Please add if v17 of the patch gets queued.
+
+Phil
+
+--000000000000d7c22f062baace07
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div class=3D"gmail_quote gmail_quote_container"><div dir=
+=3D"ltr" class=3D"gmail_attr">On Mon, 13 Jan 2025 at 18:31, Philippe Mathie=
+u-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org">philmd@linaro.org</a>=
+&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px =
+0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On 1=
+2/1/25 22:00, Phil Dennis-Jordan wrote:<br>
+&gt; This patch set introduces a new ARM and macOS HVF specific machine typ=
+e<br>
+&gt; called &quot;vmapple&quot;. There are also some patches for fixing XHC=
+I spec<br>
+&gt; compliance issues and adding a workaround to a quirk in the macOS gues=
+t&#39;s<br>
+&gt; XHCI driver.<br>
+<br>
+<br>
+&gt; Phil Dennis-Jordan (3):<br>
+&gt;=C2=A0 =C2=A0 hw/usb/hcd-xhci-pci: Use modulo to select MSI vector as p=
+er spec<br>
+&gt;=C2=A0 =C2=A0 hw/usb/hcd-xhci-pci: Use event ring 0 if mapping unsuppor=
+ted<br>
+<br>
+Patches 1 &amp; 2 queued.<br></blockquote><div><br></div><div><br></div><di=
+v>Thanks!<br><br>It looks like I accidentally dropped Michael&#39;s Reviewe=
+d-by tag on patch 8:<br></div><div>Reviewed-by: Michael S. Tsirkin &lt;<a h=
+ref=3D"mailto:mst@redhat.com">mst@redhat.com</a>&gt;<br></div><div><a href=
+=3D"https://patchew.org/QEMU/20241223221645.29911-1-phil@philjordan.eu/#202=
+50108082246-mutt-send-email-mst@kernel.org">https://patchew.org/QEMU/202412=
+23221645.29911-1-phil@philjordan.eu/#20250108082246-mutt-send-email-mst@ker=
+nel.org</a> <br></div><div><br></div><div>Please add if v17 of the patch ge=
+ts queued.</div><div><br></div><div>Phil<br></div></div></div>
+
+--000000000000d7c22f062baace07--
 
