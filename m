@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16866A1150C
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 00:09:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8575DA11512
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 00:10:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXq12-0001t7-FA; Tue, 14 Jan 2025 18:08:08 -0500
+	id 1tXq16-0001xL-VE; Tue, 14 Jan 2025 18:08:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tXq10-0001rv-7l
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 18:08:06 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tXq13-0001uQ-Vc
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 18:08:09 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tXq0y-00043u-J6
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 18:08:05 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tXq11-00044M-Di
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 18:08:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736896084;
+ s=mimecast20190719; t=1736896086;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZE4uhT0efoyzNOkHySdc0SxAsnss5S/fqug5y/Yd9+M=;
- b=Cc1sWjb/Y32Xo2TB+lbnPQ4lsnacyBUFlRcVLAXm3rVdqsXyjcH/aims3jjAdpyyGuJCHK
- ElR/5uuPjCg0rsBdrVq5k/EctyIdwdMohb53B3c5VOrqOxdc8u34Fb4N2p5UQaOnP0BP8k
- 0+SNtzICeMP4RgReFINgQFfRogfUpts=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=WlVGpZyH3jEvqbeBG9TEbCRFPM+u3fzxUZ2wn3/Cceo=;
+ b=K/QqjsruTe+AvbY1cHvDjyZd1o5sVFhkkj+c96Y7M2f+xIJLwqoaihWs9SRUNh/IekKyTP
+ BYfnT5A9W0je0KuoNvCPSp22mg2ZbNZNFx0dKZ5Sro85OB8tVf6NTGfoJrXgJIeCU8ySC3
+ iLtygO6/85NB4QBVBPozY8fvdkdNqcE=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-259-1hkkFWGcPoyf7kr4d-McAA-1; Tue, 14 Jan 2025 18:08:01 -0500
-X-MC-Unique: 1hkkFWGcPoyf7kr4d-McAA-1
-X-Mimecast-MFC-AGG-ID: 1hkkFWGcPoyf7kr4d-McAA
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6d88d56beb7so58884066d6.3
- for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 15:08:01 -0800 (PST)
+ us-mta-519-lmpIoBDvNxyJWRhB8T2kIQ-1; Tue, 14 Jan 2025 18:08:03 -0500
+X-MC-Unique: lmpIoBDvNxyJWRhB8T2kIQ-1
+X-Mimecast-MFC-AGG-ID: lmpIoBDvNxyJWRhB8T2kIQ
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-46dd301a429so63825991cf.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 15:08:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736896080; x=1737500880;
+ d=1e100.net; s=20230601; t=1736896082; x=1737500882;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZE4uhT0efoyzNOkHySdc0SxAsnss5S/fqug5y/Yd9+M=;
- b=X3+v0YwWirFWjJYYw35KmrFkD5Kfg3Qys39qOKFD69nvnoP6Tzw1IsqW6HuInknuRQ
- OVWqJQM6roL+6paI1AcSKw53/u53lSEDJx1tGWNHQ/wuVOXPpM5AmG6PniIPiJ6Ei9ez
- WGuZwR5jLSSqKVSyZFpdddYFzQj5SNbGSv8Q3vcBAw4wZyomqgakchtKV9shc3mQ1QVq
- 00uIMhHC3yytZExSCxYblUOh6w26RqGx68FrHGfTL6twqeRMohqwEBZVVTl0bpgIRq9k
- qYp292LaPgkFd4gdNpsCbR9KyrwVfqCkfGR4kUhlUaUAKrHVKJE/oJntbjDpiXbm2ZS+
- 9f2g==
-X-Gm-Message-State: AOJu0YwSoiTzgIuUQPDYMN8bKdvZZq3xzTcee8MaKaz4Ssjs/NXgR4dd
- ay9MLxuXfjamK8ecuQeePyqNBbWve5/rmGUrI4qCdTAwRObtA+HCYWUmTW+8T0t+Ig7IBhIWlR0
- NOb8Lckw3rvtiH43KLupM6DyMe3w1p6bJiwXabGMRY5KrJCXKnMVetvBgYa5YUSQ50OzQm+7KZa
- mCobRz/YYQjeJ74WBwFU1zqeVu7p14DgeIdw==
-X-Gm-Gg: ASbGncsSN9GLw9wtwpRIvzUSIlyLUEwtRmkb3P6aV/HF7NcxTTiIUiDuvOQiAhDz8XN
- VOxIg4oyb6q4de+hOhRu8prENDKulMEzL8Zxw0KHPCYpKSoqBM8/OJAxUPmLpPTsTXkDqVq+Z0b
- JbylAZMwWepreAKaElQcIsEFFluUh/hkW5nBOepKoFHCB0pPle7EK+zjnwGlRnmMQC6ylVeXuOm
- ZgFu1IDiBOcfi4gu8lcCgbMXETzId3U5Ai3k5WQtubDeCeetBCIn8vM9ZwC2IhOY9Y01FssrnSN
- wkw6Fp1KrBCj0VPOQF3UX+kBcpxCqlpu
-X-Received: by 2002:ac8:5f95:0:b0:46c:791f:bf56 with SMTP id
- d75a77b69052e-46c791fc14bmr389799471cf.1.1736896080376; 
- Tue, 14 Jan 2025 15:08:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFauVeM+N8uZ0sh3dY0onunMx9Qth92WECogV8bnz00fM6yi4AE6QY1h/UVQiWhIuuraCnIPg==
-X-Received: by 2002:ac8:5f95:0:b0:46c:791f:bf56 with SMTP id
- d75a77b69052e-46c791fc14bmr389798831cf.1.1736896079803; 
- Tue, 14 Jan 2025 15:07:59 -0800 (PST)
+ bh=WlVGpZyH3jEvqbeBG9TEbCRFPM+u3fzxUZ2wn3/Cceo=;
+ b=Av3kDX6WC6azM649bmWk1hBWjpYVNzazxAzWtEnyLZ9wDvYGaW021869PBu566OAk7
+ Kf6Km+h4iAR0SA3LLZ0/wZBTi/hv2h4prJ4RXi0b9/WNmE0nhopraVoMvE12P/oevANN
+ FWyCQr5N9/o+9wZIzyPO4Dt+g4Rw7b+skt/O4z49J1qaElMLl36QgMGL4WOY9s2U94mH
+ c/8LEQAusKptYBRcnetmwE0zw9+FaMdGVgcnzYLQt6EJg+G++rhgnLwAt5Sn1+XNY7OJ
+ ORF+gdiThlHI4HnWsx4lCOsls6cSoJpwc+IuQueLbMNmSQkkkmpdrmz1a9Zez1PtPkKx
+ 17Dw==
+X-Gm-Message-State: AOJu0Yx6vgq3u6xqD8wKecwhDqMm43XNIvm+B9bcryvGRqwnp5S79yNj
+ NwghTaHkg8cGKRVCDkIdFdN8VaGc5NdY2TjoLGskY+86uICR8MniZ56TFnCYBxH/ELKlQ5KvZxg
+ PoVMZox3FJ8V0NfQBwAmrV2qtkJ4MlL1u09OIircAvL9fyfAZJRuhO+AG3ybXUu4KEkgL1TNdzh
+ UfqkTapqmEpJkzT2ppntRzaKqmeWUT5BbC8w==
+X-Gm-Gg: ASbGncuIji5c7npICp3SyMVEUHH524u0y0t9xCneYQuynd/54c/1UsXB+hiqs1vWarR
+ osMWkm5FQu9IYI+pboMsn2jZz6OAH/YEQ9ggi2kVSCzoNJECL06CbipxDHYXwdB62wthhU+BXqp
+ PNT2tRsufKQEqYRj2vbZ43nz5vyJPpJrlzzWpUXnZNdWJaZ4WfE3l5v3gkg9RUp6B+bfMswgeF5
+ K02etLi8N+Pv0zC0yxngw9rbSqO9aMbdOvhAJew0BvmIElk32PCvSuXUDnJt8/0FG4ZmxguSl4g
+ t9Cyfll2C8fVlJkyz6Pe26J2DY4Fd16g
+X-Received: by 2002:a05:622a:4714:b0:46c:7141:9087 with SMTP id
+ d75a77b69052e-46c714190f1mr334145101cf.1.1736896081749; 
+ Tue, 14 Jan 2025 15:08:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGQSrXmhW759nFP04QStqKNu2YGJ23xnFUYrhh9jrYz8SJsxhr88MCIH3tHdFJU6bbnmWFHtg==
+X-Received: by 2002:a05:622a:4714:b0:46c:7141:9087 with SMTP id
+ d75a77b69052e-46c714190f1mr334144861cf.1.1736896081420; 
+ Tue, 14 Jan 2025 15:08:01 -0800 (PST)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-46c873cd1b0sm59268971cf.49.2025.01.14.15.07.58
+ d75a77b69052e-46c873cd1b0sm59268971cf.49.2025.01.14.15.07.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Jan 2025 15:07:59 -0800 (PST)
+ Tue, 14 Jan 2025 15:08:00 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, Juraj Marcin <jmarcin@redhat.com>,
  Julia Suvorova <jusual@redhat.com>, Prasad Pandit <ppandit@redhat.com>,
  Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH 06/16] migration: Synchronize all CPU states only for
- non-iterable dump
-Date: Tue, 14 Jan 2025 18:07:36 -0500
-Message-ID: <20250114230746.3268797-7-peterx@redhat.com>
+Subject: [PATCH 07/16] migration: Adjust postcopy bandwidth during switchover
+Date: Tue, 14 Jan 2025 18:07:37 -0500
+Message-ID: <20250114230746.3268797-8-peterx@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250114230746.3268797-1-peterx@redhat.com>
 References: <20250114230746.3268797-1-peterx@redhat.com>
@@ -107,63 +106,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do one shot cpu sync at qemu_savevm_state_complete_precopy_non_iterable(),
-instead of coding it separately in two places.
+Precopy uses unlimited bandwidth always during switchover, it makes sense
+because this is so critical and no one would like to throttle bandwidth
+during the VM blackout.
 
-Note that in the context of qemu_savevm_state_complete_precopy(), this
-patch is also an optimization for postcopy path, in that we can avoid sync
-cpu twice during switchover: before this patch, postcopy_start() invokes
-twice on qemu_savevm_state_complete_precopy(), each of them will try to
-sync CPU info.  In reality, only one of them would be enough.
+OTOH, postcopy surprisingly didn't do that.  There's one line that in the
+middle of the postcopy switchover it tries to switch to postcopy's
+specified max-postcopy-bandwidth, but even so it's somewhere in the middle
+which is strange.
 
-For background snapshot, there's no intended functional change.
+This patch brings the two modes to always use unlimited bandwidth for
+switchover, meanwhile only apply the postcopy max bandwidth after the
+switchover is completed.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/migration.c | 6 +-----
- migration/savevm.c    | 5 +++--
- 2 files changed, 4 insertions(+), 7 deletions(-)
+ migration/migration.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
 diff --git a/migration/migration.c b/migration/migration.c
-index b33baab950..33c4824b68 100644
+index 33c4824b68..13b7df0d5b 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -3622,11 +3622,7 @@ static void *bg_migration_thread(void *opaque)
-     if (migration_stop_vm(s, RUN_STATE_PAUSED)) {
-         goto fail;
-     }
--    /*
--     * Put vCPUs in sync with shadow context structures, then
--     * save their state to channel-buffer along with devices.
--     */
--    cpu_synchronize_all_states();
-+
-     if (qemu_savevm_state_complete_precopy_non_iterable(fb, false)) {
-         goto fail;
-     }
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 5e56a5d9fc..92e77ca92b 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -1531,6 +1531,9 @@ int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
-     Error *local_err = NULL;
+@@ -2502,7 +2502,6 @@ static int postcopy_start(MigrationState *ms, Error **errp)
      int ret;
+     QIOChannelBuffer *bioc;
+     QEMUFile *fb;
+-    uint64_t bandwidth = migrate_max_postcopy_bandwidth();
+     int cur_state = MIGRATION_STATUS_ACTIVE;
  
-+    /* Making sure cpu states are synchronized before saving non-iterable */
-+    cpu_synchronize_all_states();
+     /*
+@@ -2551,6 +2550,9 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+         goto fail;
+     }
+ 
++    /* Switchover phase, switch to unlimited */
++    migration_rate_set(RATE_LIMIT_DISABLED);
 +
-     QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
-         if (se->vmsd && se->vmsd->early_setup) {
-             /* Already saved during qemu_savevm_state_setup(). */
-@@ -1584,8 +1587,6 @@ int qemu_savevm_state_complete_precopy(QEMUFile *f, bool iterable_only)
+     /*
+      * Cause any non-postcopiable, but iterative devices to
+      * send out their final data.
+@@ -2567,12 +2569,6 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+         ram_postcopy_send_discard_bitmap(ms);
+     }
  
-     trace_savevm_state_complete_precopy();
+-    /*
+-     * send rest of state - note things that are doing postcopy
+-     * will notice we're in POSTCOPY_ACTIVE and not actually
+-     * wrap their state up here
+-     */
+-    migration_rate_set(bandwidth);
+     if (migrate_postcopy_ram()) {
+         /* Ping just for debugging, helps line traces up */
+         qemu_savevm_send_ping(ms->to_dst_file, 2);
+@@ -2656,6 +2652,12 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+     }
+     trace_postcopy_preempt_enabled(migrate_postcopy_preempt());
  
--    cpu_synchronize_all_states();
--
-     if (!in_postcopy || iterable_only) {
-         ret = qemu_savevm_state_complete_precopy_iterable(f, in_postcopy);
-         if (ret) {
++    /*
++     * Now postcopy officially started, switch to postcopy bandwidth that
++     * user specified.
++     */
++    migration_rate_set(migrate_max_postcopy_bandwidth());
++
+     return ret;
+ 
+ fail_closefb:
 -- 
 2.47.0
 
