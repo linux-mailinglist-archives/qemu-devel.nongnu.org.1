@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F1A6A110AF
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 20:03:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B34ACA110AC
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 20:03:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXm8m-0005pE-Og; Tue, 14 Jan 2025 13:59:53 -0500
+	id 1tXm8a-0005kz-76; Tue, 14 Jan 2025 13:59:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tXm84-0005g6-3G
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 13:59:16 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tXm88-0005gX-UM
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 13:59:17 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tXm82-0002md-Ba
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 13:59:07 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tXm84-0002mm-2N
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 13:59:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736881145;
+ s=mimecast20190719; t=1736881147;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l0kMojEG0yoaEPjaGH1kOu0JHuHWYEFHYv9RxiB05CU=;
- b=EwHlh6gmDKAbGhYaj0rxpUJRxUarV7L5wzY+aXiVk/MczyZPgldR9K0aeaE0aXUDUGUkL8
- otbINLVh0oylUfLgJDnwAunG4bzHwXpAp/F981QmDwC0zNBCqU/Am1nF8go/k/LKvlHgif
- GbFpQebKXnXmTP7VB/vw966QXVuB/Gw=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=WDu19JQcBAHpHx0VhpELRq02Rk5uBi403cqm8wWNt4o=;
+ b=L0A7Tlt5eUDpa/yG+NwLqgi7+JNJ7Kx8xAXqRmI9yY8DpX9d9TfPYAoqUWlHZr4l4ZMsuY
+ Lz0HJrHhq/qjGDnkv1ExsEaQqGIntgC+vsskhmeLvybQ/L9fWey7OlOga5goIw8j6UKrLL
+ qLO299TljXu1po5hxIHy8t7c1m4iZpE=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-451-1ywqfuy_PbC3YI0_9nU4IQ-1; Tue,
- 14 Jan 2025 13:59:02 -0500
-X-MC-Unique: 1ywqfuy_PbC3YI0_9nU4IQ-1
-X-Mimecast-MFC-AGG-ID: 1ywqfuy_PbC3YI0_9nU4IQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-333-rdrdZnjrOi-1z_q6iI_0TQ-1; Tue,
+ 14 Jan 2025 13:59:04 -0500
+X-MC-Unique: rdrdZnjrOi-1z_q6iI_0TQ-1
+X-Mimecast-MFC-AGG-ID: rdrdZnjrOi-1z_q6iI_0TQ
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CD19F1954190; Tue, 14 Jan 2025 18:59:01 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2F25A1956087; Tue, 14 Jan 2025 18:59:03 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.175])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B381019560AD; Tue, 14 Jan 2025 18:59:00 +0000 (UTC)
+ id 1929319560A3; Tue, 14 Jan 2025 18:59:01 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 12/23] docs/qapidoc: add visit_paragraph() method
-Date: Tue, 14 Jan 2025 13:58:29 -0500
-Message-ID: <20250114185840.3058525-13-jsnow@redhat.com>
+Subject: [PATCH v2 13/23] docs/qapidoc: add visit_errors() method
+Date: Tue, 14 Jan 2025 13:58:30 -0500
+Message-ID: <20250114185840.3058525-14-jsnow@redhat.com>
 In-Reply-To: <20250114185840.3058525-1-jsnow@redhat.com>
 References: <20250114185840.3058525-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -81,31 +81,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This transforms "formerly known as untagged sections" into our pure
-intermediate rST format. These sections are already pure rST, so this
-method doesn't do a whole lot except ensure appropriate newlines.
+Notably, this method does not currently address the formatting issues
+present with the "errors" section in QAPIDoc and just vomits the text
+verbatim into the rST doc, with somewhat inconsistent results.
+
+To be addressed in a future revision.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ docs/sphinx/qapidoc.py | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index 97868e5c375..4b4cd6359e0 100644
+index 4b4cd6359e0..64d13565c60 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -127,6 +127,15 @@ def ensure_blank_line(self) -> None:
+@@ -136,6 +136,12 @@ def visit_paragraph(self, section: QAPIDoc.Section) -> None:
+         self.add_lines(section.text, section.info)
+         self.ensure_blank_line()
  
-     # Transmogrification helpers
- 
-+    def visit_paragraph(self, section: QAPIDoc.Section) -> None:
-+        # Squelch empty paragraphs.
-+        if not section.text:
-+            return
-+
-+        self.ensure_blank_line()
-+        self.add_lines(section.text, section.info)
-+        self.ensure_blank_line()
++    def visit_errors(self, section: QAPIDoc.Section) -> None:
++        # FIXME: the formatting for errors may be inconsistent and may
++        # or may not require different newline placement to ensure
++        # proper rendering as a nested list.
++        self.add_lines(f":error:\n{section.text}", section.info)
 +
      def preamble(self, ent: QAPISchemaEntity) -> None:
          """
