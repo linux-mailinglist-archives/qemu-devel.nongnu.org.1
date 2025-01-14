@@ -2,90 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D7F8A11374
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 22:53:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 833B4A11500
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 00:09:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXoqH-0001ZY-GK; Tue, 14 Jan 2025 16:52:57 -0500
+	id 1tXq0t-0001pc-PA; Tue, 14 Jan 2025 18:07:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tXoqF-0001ZO-88
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 16:52:55 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tXq0r-0001mA-D1
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 18:07:57 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tXoqC-0003zd-O2
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 16:52:55 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tXq0p-00042m-5i
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 18:07:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736891570;
+ s=mimecast20190719; t=1736896073;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=XEUkriz2fMyqzHItUw2pNS9V6qacperf1Oc3JgwYGz0=;
- b=dUl7aH9XO44W9TYE7EBKa+GwV9BbTfk6n+MCBS07ZHVXcIZIYWfSzObEuAiaAK++oVHdKK
- hwm21etS6z3S/PJcPDV0npyQ08X29UAgwZHRwPjSShvFuU06xm1x5CTLxNBMUdvJI+0/Ot
- aJWYoOxuDNjjW3IGzAbWWCdG0WADMro=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=J1uBAjgWxFI7eYg8ttPiC1zZuel1qeh6OOxS/SCAb6o=;
+ b=MabGa6MXAjNHLL/h6rztex6tyYdiVg8Rot0EpDgFOrdYC1a2d+gWUwjOHPMlEjcYJ0v+Uu
+ C81nyX9EzIC8YhvJaLst+caBig2QjVnYLe16ysoP5POW+HNJySuM8RSkBpJ3aZKjWuJ+QW
+ xxbWnuhGEsBUhiWuxvAdIz0fDF16FsA=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-1TdOU71DPpCT7HUbf5k74w-1; Tue, 14 Jan 2025 16:52:49 -0500
-X-MC-Unique: 1TdOU71DPpCT7HUbf5k74w-1
-X-Mimecast-MFC-AGG-ID: 1TdOU71DPpCT7HUbf5k74w
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6d8f6b89dcdso98581536d6.3
- for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 13:52:49 -0800 (PST)
+ us-mta-594-Ku71zmVMMwa51Wy3SixwZg-1; Tue, 14 Jan 2025 18:07:51 -0500
+X-MC-Unique: Ku71zmVMMwa51Wy3SixwZg-1
+X-Mimecast-MFC-AGG-ID: Ku71zmVMMwa51Wy3SixwZg
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7b6e1b036e9so584079585a.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 15:07:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736891569; x=1737496369;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XEUkriz2fMyqzHItUw2pNS9V6qacperf1Oc3JgwYGz0=;
- b=ZWIYKFLA1ZmqfSJa51DXCMFzCQcMceLEdBE1qlPEwBhCGMDEu15esSjTmHMbJ3Hdlu
- kFksvfnb283IuOPIfdx8cWErm20T+wY2GHoJFrmVvJvMAp2L7B8iCziTx6y2Jhy9qkSP
- qAYpDotzf0FaT+nnD8wcryz5tsu2yylzJQGQ37qE15GmAhV0c7u/8E+LGoXOGT7UjiZd
- EBrrtBmbyggQvU9wPdH6qsTNBiyq0OT0kkR9dNFC4N6NO+g5BtuwSxZ4OibFFqdIaCcB
- jWV96ifvVngZSI3HLsGuCplqL5BlAAmmJ/xrPW5T06vOUhShH5TDJXK43o1DZuy3I8iz
- ucwA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWS6NdSIN1bOp0uP5HdyXoU1FySautLhaw65lzLdxEF6Z6mZBLep+4JPFqSXAEgrIIYd7dWqX1Fle9C@nongnu.org
-X-Gm-Message-State: AOJu0Yx2RilIlQp9qSN8mxlOhwDuVkEq0xjAx66avClJnrjUAbyl6WGh
- vfBU1b4yKv/NlZPQXRiTqKWUy/PP7w6jRdckSO5Yjm8q4z+5gb/jr9I+SjAzpkRhhLUghxL42Vf
- /MTqU6QiqnqqqSqKMxN6bZ0c4uNpSUIqPitFSnOSP6c14sXTtK1Pi
-X-Gm-Gg: ASbGncuGzjL+tvl7Xpzh6d/KujuT6cGvBR7uRUHH4uaeSBvJ+SQJgLY/XPgRGshdjiW
- kIpQK/c0PqOySx285pyos+HBSKTZsrKIGNNxJkSbHQrTlkL+RnZyjjYK50SG/fYwC8cwiJIndVu
- lqD8lJVEZui+ctfI8Zik2hf3iqYQl1fSfut8AdMU9RpmLj0kZPjDX5a5CMFGzjlJA1MQ246TvVc
- jKiJz9X0vdIlWC2rUaZ64kQHkpTDzMEXOtbS3ab/WaY57rrSKE05DSwATqJIoFKlup3KPnda9+i
- pTEu5Rg6i3nAQ4q4+A==
-X-Received: by 2002:a05:6214:2f8e:b0:6df:ba24:2af2 with SMTP id
- 6a1803df08f44-6dfba242b5bmr284594506d6.25.1736891568761; 
- Tue, 14 Jan 2025 13:52:48 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEojH+i/cJ//IYug9ikjHnI4gnURNLtswq0an2hf6OrzO9HvwMPIzG1Ru8cUgpcgZto6XBCuA==
-X-Received: by 2002:a05:6214:2f8e:b0:6df:ba24:2af2 with SMTP id
- 6a1803df08f44-6dfba242b5bmr284594196d6.25.1736891568364; 
- Tue, 14 Jan 2025 13:52:48 -0800 (PST)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ d=1e100.net; s=20230601; t=1736896070; x=1737500870;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=J1uBAjgWxFI7eYg8ttPiC1zZuel1qeh6OOxS/SCAb6o=;
+ b=sjwLo3pd12xv1OKqhQ+UmJl0U2H3K+fiPngwSZWEeK8nTYXmAMTRaeGg0/Vb3BIIb6
+ x61Blb2jCAakKiIfjMnneSTtU2CMsHuRTvJAoeU41V0R5hTKfNdt31cNlNyKty72HN03
+ PIkDWgkaHA292GLRudgrk++RMadzNGsp7YSgdwuYB+7fa6jWynzCIv4mwniCd6AN/duO
+ LaVhH2GhOG4+azGIkQi20WUBHHDAyhsWC6gpodR9Cp8lrzqYrGZLOT3+z5NVMm3HYmx6
+ iPxGkxVNFOwTnBdOPkK9bFm5BS6ar5KffRTEv5/awZSAPjwCZOdzIvIffBf/03GRcybp
+ LO1Q==
+X-Gm-Message-State: AOJu0Yw5fQxlJv02gOwVHUI+xZh8aZSy0BvAWojmIqzNJbOQ9A/TaeKB
+ aNuWyRYvhYgtrG57NL8dU6bbpELyQm339Ji05Ejk2njoDLUPqS6MEg9sPrpNogC9pod8ytf1LQH
+ sHEI+hGLnD0JYxLW5+FhSMNvkkCCKJgkKWtskYA3fo3xHZ5D5nqChFOmfb1Ekxd6Bnnv/fNW5zg
+ b7OGQs6AgqSyjq0yf+Io2lte8sSbhAysTNKw==
+X-Gm-Gg: ASbGnctJp8g+bY3dXsfJ+Rgp/9l/WWnuOtSKdhTO1cddKYFJvXG355vhT0tVGweWtH1
+ JRvBpI3BAWOvZMlo6GLYY4n9f2OkmDjxS/hgx+4Nb+wxGPKIr0SBZ6Dg6aWgR/lLa/+wv+xBWIX
+ 7fGf73CMqJ8nyswSAPHoYU7zjRXTLL3xbAKET43zzbWWfCBffrqc/3M/SV2x609zjPmCH+D9tvH
+ 91THWo36dt/NWMLF929BQpLxSpQsZ39xsTU4lKToHP3G/cuFSdrezLjge2bKITe64/A6PJJCjIM
+ ReO1VHoFdiFq3m1aMF3ed3x2LKOD+JNh
+X-Received: by 2002:a05:622a:4d8b:b0:466:9738:22de with SMTP id
+ d75a77b69052e-46c710e16c2mr442248411cf.41.1736896070093; 
+ Tue, 14 Jan 2025 15:07:50 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHXRwHPYFyGOhmbtn7HR77dcklwG7f7wrE6EzjBupP8N8evcnZiR5Ha+aAJ/6iN1zFN0zLk+g==
+X-Received: by 2002:a05:622a:4d8b:b0:466:9738:22de with SMTP id
+ d75a77b69052e-46c710e16c2mr442247901cf.41.1736896069573; 
+ Tue, 14 Jan 2025 15:07:49 -0800 (PST)
+Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6dfadec2acbsm56952426d6.122.2025.01.14.13.52.47
+ d75a77b69052e-46c873cd1b0sm59268971cf.49.2025.01.14.15.07.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Jan 2025 13:52:47 -0800 (PST)
-Date: Tue, 14 Jan 2025 16:52:45 -0500
+ Tue, 14 Jan 2025 15:07:47 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: [RFC PATCH] tests/qtest/migration: Add cpu hotplug test
-Message-ID: <Z4bcrc2sfCCO8LWR@x1n>
-References: <20250113210833.1712-1-farosas@suse.de>
- <CAJSP0QWe+0_rjchH0hCszU-4r_PF+ZgZgWb+cgg6UZzZiYeTQA@mail.gmail.com>
- <8734hlh471.fsf@suse.de>
- <CAJSP0QUGfq0yPyzyjHy9D0=e2o_AVMvb1SaA69fm3oexYaH60g@mail.gmail.com>
- <Z4bF0FY_v8qKCGlb@x1n>
- <CAJSP0QXC+ZMECR0qkqns=ShWBBzabzf5B6eFUifM51eC9J6q8A@mail.gmail.com>
+To: qemu-devel@nongnu.org
+Cc: peterx@redhat.com, Juraj Marcin <jmarcin@redhat.com>,
+ Julia Suvorova <jusual@redhat.com>, Prasad Pandit <ppandit@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH 00/16] migration: Switchover phase refactoring
+Date: Tue, 14 Jan 2025 18:07:30 -0500
+Message-ID: <20250114230746.3268797-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAJSP0QXC+ZMECR0qkqns=ShWBBzabzf5B6eFUifM51eC9J6q8A@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -39
@@ -111,102 +104,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 14, 2025 at 04:14:44PM -0500, Stefan Hajnoczi wrote:
-> On Tue, 14 Jan 2025 at 15:15, Peter Xu <peterx@redhat.com> wrote:
-> >
-> > On Tue, Jan 14, 2025 at 02:28:46PM -0500, Stefan Hajnoczi wrote:
-> > > On Tue, 14 Jan 2025 at 09:15, Fabiano Rosas <farosas@suse.de> wrote:
-> > > >
-> > > > Stefan Hajnoczi <stefanha@gmail.com> writes:
-> > > >
-> > > > > On Mon, 13 Jan 2025 at 16:09, Fabiano Rosas <farosas@suse.de> wrote:
-> > > > >>
-> > > > >> Bug #2594 is about a failure during migration after a cpu hotplug. Add
-> > > > >> a test that covers that scenario. Start the source with -smp 2 and
-> > > > >> destination with -smp 3, plug one extra cpu to match and migrate.
-> > > > >>
-> > > > >> The issue seems to be a mismatch in the number of virtqueues between
-> > > > >> the source and destination due to the hotplug not changing the
-> > > > >> num_queues:
-> > > > >>
-> > > > >>   get_pci_config_device: Bad config data: i=0x9a read: 4 device: 5
-> > > > >>   cmask: ff wmask: 0 w1cmask:0
-> > > > >>
-> > > > >> Usage:
-> > > > >> $ QTEST_QEMU_IMG=./qemu-img QTEST_QEMU_BINARY=./qemu-system-x86_64 \
-> > > > >>   ./tests/qtest/migration-test -p /x86_64/migration/hotplug/cpu
-> > > > >>
-> > > > >> References: https://gitlab.com/qemu-project/qemu/-/issues/2594
-> > > > >> References: https://issues.redhat.com/browse/RHEL-68302
-> > > > >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> > > > >> ---
-> > > > >> As you can see there's no fix attached to this. I haven't reached that
-> > > > >> part yet, suggestions welcome =). Posting the test case if anyone
-> > > > >> wants to play with this.
-> > > > >>
-> > > > >> (if someone at RH is already working on this, that's fine. I'm just
-> > > > >> trying to get some upstream bugs to move)
-> > > > >
-> > > > > The management tool should set num_queues on the destination to ensure
-> > > > > migration compatibility.
-> > > > >
-> > > >
-> > > > I'm not sure that's feasible. The default num-queues seem like an
-> > > > implementation detail that the management application would not have a
-> > > > way to query. Unless it starts the source with a fixed number that
-> > > > already accounts for all hotplug/unplug operations during the VM
-> > > > lifetime, which would be wasteful in terms of resources allocated
-> > > > upfront.
-> > > >
-> > > > That would also make the destination run with a suboptimal (< #vcpus)
-> > > > number of queues, although that's already the case in the source after
-> > > > the hotplug. Do we have any definition on what should happen durgin
-> > > > hotplug? If one plugs 100 vcpus, should num-queues remain as 2?
-> > >
-> > > QEMU defaults num_queues to the number of present CPUs. A management
-> > > tool that wants to ensure that all hotplugged CPUs will have their own
-> > > virtqueues must set num_queues to max_cpus instead. This wastes
-> > > resources upfront but in theory the guest can operate efficiently. I
-> > > haven't checked the Linux guest drivers to see if they actually handle
-> > > virtqueue allocation after hotplug. The Linux drivers vary in how they
-> > > allocate virtqueue interrupts, so be sure to check several device
-> > > types like virtio-net and virtio-blk as they may behave differently.
-> > >
-> > > Or the management tool can explicitly set num_queues to the number of
-> > > present CPUs and preserve that across live migration and CPU hotplug.
-> > > In that case num_queues can be updated across guest cold boot in order
-> > > to (eventually) achieve the optimal multi-queue configuration.
-> > >
-> > > Other approaches might be possible too. The management tool has a
-> > > choice of how to implement this and QEMU doesn't dictate a specific
-> > > approach.
-> >
-> > Thanks for the answer, Stefan.  I've left a comment in each of the issue
-> > reports so that reporter can verify this works properly.
-> >
-> > This also reminded me we could have specified a very large number of queues
-> > in many cases - I remember it used to be 1024 somehow (perhaps also the max
-> > vcpu number, but I'm not sure), which caused unwanted slowness on migration
-> > loading side (aka, downtime portion) due to MMIO regions of each queue -
-> > each of the queues may need a global address space update on the guest
-> > physical address space.  I didn't verify this issue, but if it can be
-> > reproduced and verified true, I wonder if the MMIO regions (or any relevant
-> > resources that would be enabled with num_queues even though some of them
-> > are not in use) can be plugged lazily, so that we can save quite some time
-> > on loadvm of migration.
-> 
-> Greg Kurz's commit 9cf4fd872d14 ("virtio: Clarify MR transaction
-> optimization") is about the scaling optimization where ioeventfd
-> changes are batched into a single transaction. This made a big
-> difference. Maybe something similar can be done in your case too?
+CI: https://gitlab.com/peterx/qemu/-/pipelines/1625266692
+    (note: warning is present on rust stuff, but shouldn't be relevant)
 
-Yes it could help.  I recall there used to be a more aggresive batching
-proposal for the whole VM loading process that covers all device loads, but
-that had some challenges elsewhere in some post_load()s.  It could indeed
-be a good idea to batch in an intemediate level like per-device if possible.
-I'll give it a shot when I hit that again anywhere.
+This series refactors the migration switchover path quite a bit.  I started
+this work initially to measure the JSON writer overhead, but then I decided
+to cleanup the switchover path in general when I am at it altogether, as I
+wanted to do this for a long time.
+
+A few major things I tried to do:
+
+  - About the JSON writer
+
+    Currently, precopy migration always dumps a chunk of data called VM
+    description (QEMU_VM_VMDESCRIPTION) for debugging purpose.  That is a
+    JSON blob explaining all the vmstates dumped in the migration stream.
+    QEMU has a machine property suppress-vmdesc deciding whether migration
+    will have that JSON chunk included.
+
+    Postcopy does not have such JSON dump because postcopy is live session
+    and it can't normally be debugged from stream level (e.g. as a streamed
+    file).
+
+    A tiny problem is we don't yet have a clue on how much cpu cycles we
+    need to construct and dump these JSONs even if they're only for
+    debugging, and even if suppress-vmdesc=on QEMU will still try to
+    construct these JSONs (e.g. also for postcopy).
+
+    This series has a few patches just to make sure the JSON blob won't be
+    constructed if not needed (either postcopy, or suppress-vmdesc=on).  I
+    tried to measure the downtime diff with/without these changes, the time
+    QEMU takes to construct / dump the JSON blob is still not measurable.
+    So I suppose unconditionally having this is ok.  Said that, let's still
+    have these changes around so we avoid JSON operations if not needed.
+
+  - DEVICE migration state
+
+    QEMU has a very special DEVICE migration state, that only happens with
+    precopy, and only when pause-before-switchover capability is enabled.
+    Due to that specialty we can't merge precopy and postcopy code on
+    switchover starts, because the state machine will be different.
+
+    However after I checked the history and also with libvirt developers,
+    this seems unnecessary.  So I had one patch making DEVICE state to be
+    the "switchover" phase for precopy/postcopy unconditionally.  That will
+    make the state machine much easier for both modes, meanwhile nothing is
+    expected to break with it (but please still shoot if anyone knows /
+    suspect something will, or could, break..).
+
+  - General cleanups and fixes
+
+    Most of the rest changes are random cleanups and fixes in the
+    switchover path.
+
+    E.g., postcopy_start() has some code that isn't easy to read due to
+    some special flags here and there, mostly around the two calls of
+    qemu_savevm_state_complete_precopy().  This series will remove most of
+    those special treatments here and there.
+
+    We could have done something twice in the past in postcopy switchover
+    (e.g. I believe we sync CPU twice.. but only happens with postcopy),
+    now they should all be sorted out.
+
+    And quite some other things hopefully can be separately discussed and
+    justified in each patch.  After these cleanups, we will be able to have
+    an unified entrance for precopy/postcopy on switchover.
+
+Initially I thought this could optimize the downtime slightly, but after
+some tests, it turns out there's no measureable difference, at least in my
+current setup... So let's take this as a cleanup series at least for now,
+and I hope they would still make some sense.  Comments welcomed.
+
+Thanks,
+
+Peter Xu (16):
+  migration: Remove postcopy implications in should_send_vmdesc()
+  migration: Do not construct JSON description if suppressed
+  migration: Optimize postcopy on downtime by avoiding JSON writer
+  migration: Avoid two src-downtime-end tracepoints for postcopy
+  migration: Drop inactivate_disk param in qemu_savevm_state_complete*
+  migration: Synchronize all CPU states only for non-iterable dump
+  migration: Adjust postcopy bandwidth during switchover
+  migration: Adjust locking in migration_maybe_pause()
+  migration: Drop cached migration state in migration_maybe_pause()
+  migration: Take BQL slightly longer in postcopy_start()
+  migration: Notify COMPLETE once for postcopy
+  migration: Unwrap qemu_savevm_state_complete_precopy() in postcopy
+  migration: Cleanup qemu_savevm_state_complete_precopy()
+  migration: Always set DEVICE state
+  migration: Merge precopy/postcopy on switchover start
+  migration: Trivial cleanup on JSON writer of vmstate_save()
+
+ qapi/migration.json         |   7 +-
+ migration/migration.h       |   1 +
+ migration/savevm.h          |   6 +-
+ migration/migration.c       | 209 +++++++++++++++++++++++-------------
+ migration/savevm.c          | 116 ++++++++------------
+ migration/vmstate.c         |   6 +-
+ tests/qtest/libqos/libqos.c |   3 +-
+ migration/trace-events      |   2 +-
+ tests/qemu-iotests/194.out  |   1 +
+ tests/qemu-iotests/203.out  |   1 +
+ tests/qemu-iotests/234.out  |   2 +
+ tests/qemu-iotests/262.out  |   1 +
+ tests/qemu-iotests/280.out  |   1 +
+ 13 files changed, 200 insertions(+), 156 deletions(-)
 
 -- 
-Peter Xu
+2.47.0
 
 
