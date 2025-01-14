@@ -2,90 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C624A10774
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 14:11:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB0FBA107A3
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 14:21:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXghC-0006RC-Ty; Tue, 14 Jan 2025 08:11:02 -0500
+	id 1tXgqR-0008Lr-7Q; Tue, 14 Jan 2025 08:20:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tXgh9-0006Qn-Mi
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 08:10:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tXgh6-0002MA-VB
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 08:10:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736860255;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=CGHHBmOGpsuBsX8OZWLFpO4tzTq+JjwuPT2l6nduU/o=;
- b=DEOk8YwZEV4fCSnMqM25CLdMBJVRORsE6xpnEDArgTwnBsCX6Xbxnn5KmmTbZ054EJRikm
- 6CzEwsRu85FgBkDqL1ysk29spiVVdaEOxAzp/z7xuOFNSwETZ1NrHMA+Or+NbFFlKFMdDL
- eCLO5PkFSeUYLcePnADYyJnv2M1eJAU=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-451-QexzhuxaPIGukuYxY01GhA-1; Tue,
- 14 Jan 2025 08:10:52 -0500
-X-MC-Unique: QexzhuxaPIGukuYxY01GhA-1
-X-Mimecast-MFC-AGG-ID: QexzhuxaPIGukuYxY01GhA
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 674681956053; Tue, 14 Jan 2025 13:10:49 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.173])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5CC8D19560AD; Tue, 14 Jan 2025 13:10:44 +0000 (UTC)
-Date: Tue, 14 Jan 2025 13:10:41 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Ira Weiny <ira.weiny@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Riku Voipio <riku.voipio@iki.fi>,
- Richard Henderson <richard.henderson@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, rick.p.edgecombe@intel.com,
- kvm@vger.kernel.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v6 34/60] i386/tdx: implement tdx_cpu_realizefn()
-Message-ID: <Z4ZiUcMpDpBCHEc6@redhat.com>
-References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
- <20241105062408.3533704-35-xiaoyao.li@intel.com>
- <82b74218-f790-4300-ab3b-9c41de1f96b8@redhat.com>
- <2bedfcda-c2e7-4e5b-87a7-9352dfe28286@intel.com>
- <44627917-a848-4a86-bddb-20151ecfd39a@redhat.com>
- <Z1td_BZPlZ5G9Zaq@iweiny-mobl>
- <8d56ba39-ce9e-4afb-abd1-25cb393214a5@intel.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tXgqI-0008K1-En
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 08:20:26 -0500
+Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tXgqG-0003qt-Nw
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 08:20:26 -0500
+Received: by mail-oi1-x229.google.com with SMTP id
+ 5614622812f47-3eb9bbcc936so3144616b6e.0
+ for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 05:20:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1736860820; x=1737465620; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZoU6QnxQq9cq31fuw1ONPxwM9qu/LCG5eKvjACufAPA=;
+ b=YI7xA9MnEkfiBjRxdViLBJJPYBO2Xnvk0beaFvkLPCrS96vW9GlIeYUZA4SCbWH3eo
+ nOC6cn5SKYdEnzWTGJQB6reNH8Q1ZJStvVZVLHRoLtDoWOhPn277KfET44Uq4uyQJW/q
+ AHahbghM7TG8P0+LdFfvn6MHDI7StMW0lkTz+fPlv9orM80R5tNS/V8XhlNUhUQUnD1o
+ WA5smBuUYS5mqzU+8O0eU8urXzh2/kmABsel+AQg7WFsWW1/Btq0F/cdsba2fafwQj6Q
+ nY1V+EoEHiU2Mnl8nJd+JcdHgQnBvYEIu8SnacQl3t/8myhYuLc4KzejC3mVrm6W//5p
+ x4jA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736860820; x=1737465620;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ZoU6QnxQq9cq31fuw1ONPxwM9qu/LCG5eKvjACufAPA=;
+ b=OjjNlR3MdAW2yFugm2CoB1RQTuszeC9r+86n9rfjEFgjANeSMsz2RVd6tahOiWgQ0b
+ OJ04qNmL2qDiBJNM6kq35D/NUV81QTKJQcgus33Eaj3sOq9FQ1I28oZGS8KNGOVGtAnr
+ pGZeq70jFwPppEYlG+3XiBKQLq0rcr3tkn8xmU1y4NKbtSRkK21wGYbXBfXxK53C4v2F
+ 7D+iWWXz/LMlnzeenRaBdQTK0j8k+HKiYhKjMD4Kgcgh1D5nglEAMUQrUZN9ltT2olIn
+ 6WlPjJzA+zxFJUKkp8mLTVMdtpxLOjhI0s6vUemwSoe4V8QGvu+uiEXKO6MCD3TQe22L
+ sbMQ==
+X-Gm-Message-State: AOJu0YxD5bZpwPaqDqO5Xe3ymDLaMD0FK7FBcnK+s5CPd1xqmqaPaJcQ
+ JZKUg4wIA31TIM/u7tDDzZ3rEiirE1OqFbSEpcnDNY9r4kYLEWDoHLPAfmkWQpm6so+3ej7q+6G
+ vLyg=
+X-Gm-Gg: ASbGnctgLsKHGDIrRqN6yrJIiaXBK9zSzqFLqmKsk/y61zwbkyZfvCNi8cVdVPfrUB7
+ zlFQ2zR6/NziOnO97y05a/t7B8U5QoF0YfChzuh07setV5UOfegvEr8N5MGvnTQqlP2W9M3hokL
+ XAQXXrpPbETECZug0ggSKqCEUqIULASs1EYQgN1wvTRw/T7nvSWTZGj3MZEJ1VTn+rSvq6P57tn
+ frdv17cu7ZPe7YdXCLaK4lVb/ctrR0g+/xeouTDSsZgHejmsVaqhpjvjUT700Uts92brDZuujW+
+ ztC079/ZFw==
+X-Google-Smtp-Source: AGHT+IFbAKrBGIDt6kdiohPP8q/s/CIXA0y61VYwJTmXgTpo2SS3/AK9T0hJWGzqWP1gMlta08px4Q==
+X-Received: by 2002:a05:6870:ff08:b0:29e:5ac8:2c09 with SMTP id
+ 586e51a60fabf-2aa066ed9d7mr12594599fac.13.1736860819967; 
+ Tue, 14 Jan 2025 05:20:19 -0800 (PST)
+Received: from grind.dc1.ventanamicro.com ([189.110.107.205])
+ by smtp.gmail.com with ESMTPSA id
+ 586e51a60fabf-2ad809b10e4sm5052411fac.35.2025.01.14.05.20.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 14 Jan 2025 05:20:18 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH 0/4] target/riscv: RVA23 profile support
+Date: Tue, 14 Jan 2025 10:20:08 -0300
+Message-ID: <20250114132012.1224941-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <8d56ba39-ce9e-4afb-abd1-25cb393214a5@intel.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2607:f8b0:4864:20::229;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x229.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,42 +93,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 14, 2025 at 04:52:07PM +0800, Xiaoyao Li wrote:
-> On 12/13/2024 6:04 AM, Ira Weiny wrote:
-> > On Tue, Nov 05, 2024 at 12:53:25PM +0100, Paolo Bonzini wrote:
-> > > On 11/5/24 12:38, Xiaoyao Li wrote:
-> > > > On 11/5/2024 6:06 PM, Paolo Bonzini wrote:
-> > > > > On 11/5/24 07:23, Xiaoyao Li wrote:
-> > > > > > +static void tdx_cpu_realizefn(X86ConfidentialGuest *cg, CPUState *cs,
-> > > > > > +                              Error **errp)
-> > > > > > +{
-> > > > > > +    X86CPU *cpu = X86_CPU(cs);
-> > > > > > +    uint32_t host_phys_bits = host_cpu_phys_bits();
-> > > > > > +
-> > > > > > +    if (!cpu->phys_bits) {
-> > > > > > +        cpu->phys_bits = host_phys_bits;
-> > > > > > +    } else if (cpu->phys_bits != host_phys_bits) {
-> > > > > > +        error_setg(errp, "TDX only supports host physical bits (%u)",
-> > > > > > +                   host_phys_bits);
+Hi,
 
-If keeping this check in next version of the patches, for improved debugging,
-can you include both values here eg something like
+After adding 'supm' and 'sspm' we're finally ready to add official RVA23
+support after adding a couple of trivial pieces:
 
-error_setg(errp, "TDX requires guest CPU physical bits (%u) "
-                 "to match host CPU physical bits (%u)",
-                 cpu->phys_bits, host_phys_bits);
+- add ssu64xl, another 'named feature' for something that we already
+  implement in TCG;
+- declare RVB in RVA22U64. This is more a cosmetic change to make it
+  straightforward to implement RVA23U64 as a child of RVA22.
 
+Adding RVA23U and RVA23S is done in the same model as we did with RVA22
+profiles, including a CPU for each of them for easier consumption.
 
+Patches based on alistair/riscv-to-apply.next.
 
-With regards,
-Daniel
+Daniel Henrique Barboza (4):
+  target/riscv: add ssu64xl
+  target/riscv: use RVB in RVA22U64
+  target/riscv: add RVA23U64 profile
+  target/riscv: add RVA23S64 profile
+
+ target/riscv/cpu-qom.h            |   2 +
+ target/riscv/cpu.c                |  83 ++++++++++++++++++++++++++++--
+ tests/data/acpi/riscv64/virt/RHCT | Bin 390 -> 400 bytes
+ 3 files changed, 82 insertions(+), 3 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.47.1
 
 
