@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3ABCA105A2
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 12:39:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0458A1059D
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 12:39:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXfFz-0005FY-U7; Tue, 14 Jan 2025 06:38:51 -0500
+	id 1tXfFu-0005Bz-TA; Tue, 14 Jan 2025 06:38:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tXfFm-000586-B8
+ id 1tXfFm-000587-BX
  for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:39 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tXfFk-0005Rw-6G
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:37 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5d3d0205bd5so8202267a12.3
+ id 1tXfFj-0005Ri-T4
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:38 -0500
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-aaf57c2e0beso1100757266b.3
  for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 03:38:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736854715; x=1737459515; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736854714; x=1737459514; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Rem+PqKJwtTryCp5+P2h89dN9I6AHO+TdjB2QsczI6k=;
- b=HCwijRHQX4KtBUQ1rV9vfaEQA0knAV31yJpJI9J9JpCyWV4c6oBsWbXpRpXjrX/03N
- vTWCEttGgS2lt/fDSRqUrXS9dIU95Tufklr84u48zXYLr6xMMVJBiL7txgE/2dYpJs7k
- Zq/8IqsZJMWvy/umXOIKXH7EsLxUv4ho0mW9fR5nZjrmjSwrK+pSuP9dAX7ukZkfGn6g
- /xAjaP6INOlCFrrffg3aNXKmwH6r0MLkdVPlC4erHFzIOmWoot4JERSJEsZZM3+dzANu
- UCiIQ3NgtHRGQg70NO3MU1Ias5orWZqkknjAwk/e4EqctyxUcOAsfde1RB6hEEs2zd/O
- RE3g==
+ bh=+v1cfKfMBYv6DUpTxzbC+rrsyIR6JwY8WQ4dxVeT55E=;
+ b=e4xNvvd6HHVl/A+QyPhQgtpOMf4+LPG7T5G0/DufTHnG3SxzGAi7QNXPpq4FVMMWH1
+ ZyVHRBNc+w+tp6E8y4IMkPL+Kcafh80WI+dFCp0af4DnLOg1npuc1Qa+Zmw4Alg5vFpa
+ 5ikOg8XsCkmBjWzOHkmyPiZ7fHMC+RwABorWii+d692DJhdmGXogMF7qW7R94hBYPpQm
+ A9VfkVGjRMDSmEYoS+Uqu5bSmX0m20BYaDRBI5BUPydWk8VjGQKmZjoU0gIN5Oq8TEjC
+ VRHRsQW9Dk+gfyjuP6HyykxhM5FlMGxQrq+b8C0N+GLKJBkFnemmmQx8O+53wg36MYXg
+ 1oSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736854715; x=1737459515;
+ d=1e100.net; s=20230601; t=1736854714; x=1737459514;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Rem+PqKJwtTryCp5+P2h89dN9I6AHO+TdjB2QsczI6k=;
- b=HKNobZCY9ObC2EkJZX+TlNcM1tuMf2/3oMcBPVCyHkQpJcUgiYvn+b7Wv/wHihZO+L
- XWj0cHUcOwShUcf/gSh8gQ/8VaMbAmOPShfJbixwl7wVyNsz4AtejQVPo2WobFLCLNe/
- dD7iJ/IczPnJvltisI0AKhPIJd8W9BCKWrccC6dhdphFls3UYi0/Ayg0kwUWY5qiPVEE
- cuAbkvvfg5/my14WESqlbdXpyx/Fx3668ypbaeWRjVaMbq5kjCNf0opz8Zn18NT2ii1i
- A5ywV6nlsxh86S+911/GBVYa7bp/Fit0tpF3Zu1wWr2eAx4wssP7h2PM7UdaEmlHen7k
- lMWA==
-X-Gm-Message-State: AOJu0YxYg8qLKX+vjwE/NHXoVvBvkEmnpwBGjBMXCBTqPFRj78vZ32zJ
- rwCykSklBNYetIuJ7xR48vIauSjWVGEGdmdKPHSbhdM0t2NIpnNuJdKrSgq/sCI=
-X-Gm-Gg: ASbGncuXfG/0/57IhxD62CHLEN+Xl4JusCzoXOnx0+DHpDlWQg/GTVdaOjlfdihYcp9
- npPmvgMjkXB85vhByVRwyulHHHdeN00LPPTPXRvWXHD8lwXjqOGOyph0Zd11cVS2/jz4wZrgVXV
- FUa1t7BX97xJumDu9Q2GhAChn0GutwKJGvnKFOzaebILzepDApkm8c7hLA4vX4K0MizLU+LMkL6
- iZLCFYabU9bFU9lLmb1LPxelI5zsr4K+rB30GYDVdL26t8IyPT2v4k=
-X-Google-Smtp-Source: AGHT+IFoaWY4h7fBZuQrDxOq4ZsslzzDssSeH/U6q/T0SB/sDE2XlJwrb9gUK/QOasbvjpSlptNKYg==
-X-Received: by 2002:a17:907:9622:b0:aa6:af66:7c89 with SMTP id
- a640c23a62f3a-ab2ab670587mr2365693266b.5.1736854714725; 
+ bh=+v1cfKfMBYv6DUpTxzbC+rrsyIR6JwY8WQ4dxVeT55E=;
+ b=tPx1EnsaKrIFr6fPoelAGVLrZOxHMSFYs0a8eV3Ne15Hfg52TRrV9ntFqGWmEN/1z2
+ FP7jfbnjYfL4p2M5F9rvw7gZr3ED4EZG7h4IuwiWHqHNXuKGy0vYb9edQGwnWuQWdLgQ
+ 7SGFLg2RzjDNTB3UbmuUrX69ACyw+tZ/Ndv9pPSMjg6TC24srzDOieY7Blq0fu1IeAX3
+ uPBqnIhBhVQRLEhItBFSaSG2OLUlNgiqFjSC0SpywB4EjhWSFgBHYmAuAKYX8kzrSdEU
+ HWm4vWnjy0BOwTsXkIus42x/Cvq98NE/tPdmZlclpfb4gx6ahUYedv3A60ki9pFWrPY9
+ qADw==
+X-Gm-Message-State: AOJu0YwhOWAgKnlk+8SzEO1X1QpCsPc+3OZLuL3uBDrUVUfizeDjcCfC
+ 9GpCSArRq3NfFWjpHkPOfa4EKTsgqa9MpfjFXYwW4EHVRXuWecZSC/Uv7ET9cB4=
+X-Gm-Gg: ASbGnctGgKi0thudB10df5Vbp3igZOPuOmlw7B+zF7aU85upydSqESyve3W/rBXDHPb
+ UE4QjMexQzB/OTcHOMPMmL4sDf6rp93rqwcSC5tpdNvN39dRGvI2cF4F1dOfsCGN8UtJh8Z7wPc
+ lEv73hF8VlxyOPdmVl08l3vGSHgtGDowhE0rvd4nSFrns6LJfcm2pG8Ye/IZib53qVjHOb0qWdD
+ BipEbJUaGMftqa4P5XEJFbeYLW7eivdl+0m7qqquAE4B7TfTs+dlKM=
+X-Google-Smtp-Source: AGHT+IFhyu5aC/CBWM4VQnIFvHJjTVE3RyDOGdlZ/ddzvT4hfmh9AfxUAC7CvIaHkfu8MNsIno4Hgg==
+X-Received: by 2002:a17:907:7ea1:b0:ab2:e76a:a51a with SMTP id
+ a640c23a62f3a-ab2e76aaedbmr1593940766b.31.1736854714219; 
  Tue, 14 Jan 2025 03:38:34 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c90d73a9sm622380666b.58.2025.01.14.03.38.30
+ a640c23a62f3a-ab2c9564848sm612649366b.125.2025.01.14.03.38.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 14 Jan 2025 03:38:33 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E39A65F92B;
- Tue, 14 Jan 2025 11:38:24 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 07A855FCB9;
+ Tue, 14 Jan 2025 11:38:25 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
@@ -69,27 +69,26 @@ Cc: Thomas Huth <thuth@redhat.com>,
  Stefan Weil <sw@weilnetz.de>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v2 33/37] docs/devel: add b4 for patch retrieval
-Date: Tue, 14 Jan 2025 11:38:17 +0000
-Message-Id: <20250114113821.768750-34-alex.bennee@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v2 34/37] docs/devel: add information on how to setup build
+ environments
+Date: Tue, 14 Jan 2025 11:38:18 +0000
+Message-Id: <20250114113821.768750-35-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250114113821.768750-1-alex.bennee@linaro.org>
 References: <20250114113821.768750-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62a.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ URIBL_SBL_A=0.1 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,39 +106,178 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
+MacOS and Linux are straightforward, but Windows needs a bit more
+details.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20241209183104.365796-4-pierrick.bouvier@linaro.org>
+Message-Id: <20241209183104.365796-5-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- docs/devel/submitting-a-patch.rst | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ docs/about/build-platforms.rst   |   4 +-
+ docs/devel/build-environment.rst | 118 +++++++++++++++++++++++++++++++
+ docs/devel/index-build.rst       |   1 +
+ 3 files changed, 122 insertions(+), 1 deletion(-)
+ create mode 100644 docs/devel/build-environment.rst
 
-diff --git a/docs/devel/submitting-a-patch.rst b/docs/devel/submitting-a-patch.rst
-index 69df7682c5..65c64078cb 100644
---- a/docs/devel/submitting-a-patch.rst
-+++ b/docs/devel/submitting-a-patch.rst
-@@ -433,6 +433,20 @@ For more details on how QEMU's stable process works, refer to the
+diff --git a/docs/about/build-platforms.rst b/docs/about/build-platforms.rst
+index d8b0445157..482b09819c 100644
+--- a/docs/about/build-platforms.rst
++++ b/docs/about/build-platforms.rst
+@@ -29,6 +29,9 @@ The `Repology`_ site is a useful resource to identify
+ currently shipped versions of software in various operating systems,
+ though it does not cover all distros listed below.
  
- .. _participating_in_code_review:
- 
-+Retrieve an existing series
-+---------------------------
++You can find how to install build dependencies for different systems on the
++:ref:`setup-build-env` page.
 +
-+If you want to apply an existing series on top of your tree, you can simply use
-+`b4 <https://github.com/mricon/b4>`__.
+ Supported host architectures
+ ----------------------------
+ 
+@@ -130,7 +133,6 @@ Optional build dependencies
+   cross compilation using ``docker`` or ``podman``, or to use pre-built
+   binaries distributed with QEMU.
+ 
+-
+ Windows
+ -------
+ 
+diff --git a/docs/devel/build-environment.rst b/docs/devel/build-environment.rst
+new file mode 100644
+index 0000000000..f133ef2e01
+--- /dev/null
++++ b/docs/devel/build-environment.rst
+@@ -0,0 +1,118 @@
++
++.. _setup-build-env:
++
++Setup build environment
++=======================
++
++QEMU uses a lot of dependencies on the host system. glib2 is used everywhere in
++the code base, and most of the other dependencies are optional.
++
++We present here simple instructions to enable native builds on most popular
++systems.
++
++You can find additional instructions on `QEMU wiki <https://wiki.qemu.org/>`_:
++
++- `Linux <https://wiki.qemu.org/Hosts/Linux>`_
++- `MacOS <https://wiki.qemu.org/Hosts/Mac>`_
++- `Windows <https://wiki.qemu.org/Hosts/W32>`_
++- `BSD <https://wiki.qemu.org/Hosts/BSD>`_
++
++Note: Installing dependencies using your package manager build dependencies may
++miss out on deps that have been newly introduced in qemu.git. In more, it misses
++deps the distribution has decided to exclude.
++
++Linux
++-----
++
++Fedora
++++++++
 +
 +::
 +
-+    b4 shazam $msg-id
++    sudo dnf update && sudo dnf builddep qemu
 +
-+The message id is related to the patch series that has been sent to the mailing
-+list. You need to retrieve the "Message-Id:" header from one of the patches. Any
-+of them can be used and b4 will apply the whole series.
++Debian/Ubuntu
+++++++++++++++
 +
- Participating in Code Review
- ----------------------------
++You first need to enable `Sources List <https://wiki.debian.org/SourcesList>`_.
++Then, use apt to install dependencies:
++
++::
++
++    sudo apt update && sudo apt build-dep qemu
++
++MacOS
++-----
++
++You first need to install `Homebrew <https://brew.sh/>`_. Then, use it to
++install dependencies:
++
++::
++
++    brew update && brew install $(brew deps --include-build qemu)
++
++Windows
++-------
++
++You first need to install `MSYS2 <https://www.msys2.org/>`_.
++MSYS2 offers `different environments <https://www.msys2.org/docs/environments/>`_.
++x86_64 environments are based on GCC, while aarch64 is based on Clang.
++
++We recommend to use MINGW64 for windows-x86_64 and CLANGARM64 for windows-aarch64
++(only available on windows-aarch64 hosts).
++
++Then, you can open a windows shell, and enter msys2 env using:
++
++::
++
++    c:/msys64/msys2_shell.cmd -defterm -here -no-start -mingw64
++    # Replace -ucrt64 by -clangarm64 or -ucrt64 for other environments.
++
++MSYS2 package manager does not offer a built-in way to install build
++dependencies. You can start with this list of packages using pacman:
++
++Note: Dependencies need to be installed again if you use a different MSYS2
++environment.
++
++::
++
++    # update MSYS2 itself, you need to reopen your shell at the end.
++    pacman -Syu
++    pacman -S \
++        base-devel binutils bison diffutils flex git grep make sed \
++        ${MINGW_PACKAGE_PREFIX}-toolchain \
++        ${MINGW_PACKAGE_PREFIX}-glib2 \
++        ${MINGW_PACKAGE_PREFIX}-gtk3 \
++        ${MINGW_PACKAGE_PREFIX}-libnfs \
++        ${MINGW_PACKAGE_PREFIX}-libssh \
++        ${MINGW_PACKAGE_PREFIX}-ninja \
++        ${MINGW_PACKAGE_PREFIX}-pixman \
++        ${MINGW_PACKAGE_PREFIX}-pkgconf \
++        ${MINGW_PACKAGE_PREFIX}-python \
++        ${MINGW_PACKAGE_PREFIX}-SDL2 \
++        ${MINGW_PACKAGE_PREFIX}-zstd
++
++If you want to install all dependencies, it's possible to use recipe used to
++build QEMU in MSYS2 itself.
++
++::
++
++    pacman -S wget
++    wget https://raw.githubusercontent.com/msys2/MINGW-packages/refs/heads/master/mingw-w64-qemu/PKGBUILD
++    # Some packages may be missing for your environment, installation will still
++    # be done though.
++    makepkg -s PKGBUILD || true
++
++Build on windows-aarch64
++++++++++++++++++++++++++
++
++When trying to cross compile meson for x86_64 using UCRT64 or MINGW64 env,
++configure will run into an error because the cpu detected is not correct.
++
++Meson detects x86_64 processes emulated, so you need to manually set the cpu,
++and force a cross compilation (with empty prefix).
++
++::
++
++    ./configure --cpu=x86_64 --cross-prefix=
++
+diff --git a/docs/devel/index-build.rst b/docs/devel/index-build.rst
+index 0023953be3..0745c81a26 100644
+--- a/docs/devel/index-build.rst
++++ b/docs/devel/index-build.rst
+@@ -8,6 +8,7 @@ some of the basics if you are adding new files and targets to the build.
+    :maxdepth: 3
  
+    build-system
++   build-environment
+    kconfig
+    docs
+    qapi-code-gen
 -- 
 2.39.5
 
