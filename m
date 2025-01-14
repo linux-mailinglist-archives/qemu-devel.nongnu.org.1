@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00BD8A10A60
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 16:11:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01CAAA10AAD
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 16:26:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXiYB-0002DR-Mm; Tue, 14 Jan 2025 10:09:51 -0500
+	id 1tXinm-0006gV-Gd; Tue, 14 Jan 2025 10:25:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1tXiY9-0002D4-Pa
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 10:09:49 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1tXinh-0006fd-5b
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 10:25:53 -0500
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1tXiY7-0008Py-6P
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 10:09:49 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-5d41848901bso3395708a12.0
- for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 07:09:46 -0800 (PST)
+ id 1tXinZ-0003GV-Kq
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 10:25:48 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-aafc9d75f8bso1081499066b.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 07:25:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1736867385; x=1737472185; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1736868344; x=1737473144; darn=nongnu.org;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=SHQ2CtbQpkZKtZ4iS2qle4y4vOSZaS8O41b23tw/AAI=;
- b=hVyiS3srahDKOZ9ES61wdzagkNsxdnVV5jzvFHu7MFiAQ7zcrDgVhWZXNqbyyN/JU6
- bRjPDY8Mziwd0Y0d9Kk9I2AMxIoiFCz6bBvOEZ9LlmirWHv+ueqXBSNvIGQDC2A71w9d
- GZj3bIbtIMZgXbcb1QhTRCa25uP0g0FCA9hcaLCIqywnO4iM0y7q7vEogaexKKv1PQjV
- fhfJQ7NscfmlAK7bIfXPVKmagJEkhR87kuq2DD2+FtaVkXUZCO9yOsZ8T3T4CUwf5/dh
- /15AP5BkHv2DqmwmujOxq4xB2VPZvGAzWd8QvGt78+tQoCMaKVY3u0IIuuhiwEboVDpt
- 8GiQ==
+ bh=gPZTiO31Q/Cg5BoGleAQgxej48cR4PkAAPzisfTgqww=;
+ b=nCwlXzGLy5qZxgga4BzPxEw7lqZG/9Gor/rqZcNt6ORvGH8sQ4lHev4p/wc7HG3QNS
+ SuTF3zG4VPu64LILGx6gKEk/0nij+NQOIBcbLb+HaqmLRvto6bkfx5m0gWzzQ4X+if/T
+ dDHz9FQv+zJflPSTd4r5e/QrEgkAhTNaEGyeeIRpsVDm8oAO8Nc+JbAMO/D0XFQ6D+S7
+ xQxaSGSzd9E/7nf9Cb0xPCfD/Vb60ezYtsCVcv3wR+LOpDEy96jSEMyLHwF20PDZsV7T
+ F5t3moREODzD48v5qE5Lw0ae4Unp91l5+aMKlgWIdecuwc/UOjREYBy5Nh7EWuycvf4J
+ qmOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736867385; x=1737472185;
+ d=1e100.net; s=20230601; t=1736868344; x=1737473144;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SHQ2CtbQpkZKtZ4iS2qle4y4vOSZaS8O41b23tw/AAI=;
- b=hH835iDeTZAz7sUilfB/XIIN134BO+hHzOn5bv12ruNn/kTnmtZY6tUiePP5i41FQQ
- 0xf6ZLlQWeqWtOv1bZ1ZTb/QtC9OFb4abElAXwc3jXJNeYXwV0NCoO39BE6nCK6XguSL
- bkFtmSfIDvLF/u41UG1/tlRVXO9kcwTC6wxyzmwZF95nI9lYrdUcc+JskcRnEPhTvien
- dY/oYREwUTY/97pvEGu8oGzIPys1npkWUIyP05WWpJ8rN8vKiePuSfWLc1lIxrXXml1C
- h/VrP3GVfr/zECHF4DEH1pW//ZFb5MBT6kwWb2Ari/7Ke3avtk5O9YX0ELpJ42rUPz/T
- p8zQ==
-X-Gm-Message-State: AOJu0Yzl8+u2x9HZ6zE9BScT37eWjdtKDhu2B7r+zAaPEmH7lrEYXBKJ
- cnF0ckhUupPxt5zrTIr+RtsmtISWk2F/B3cEUW3yzCgULHsZdCTFs1WnaJwrPQhIXL9WX5HHzfV
- 3EZs=
-X-Gm-Gg: ASbGncsrZMJvy8k6pcyeJpkFaA71X24GYELuQ1IjLDH6pOw2QL33NTJ0Vvy/XkaHYp8
- JKRaKHB6qITysj4l8kQGEmkCGz5t9NW/KHKtqhEH9O+5+kyFC8uJAMTumKomedZFS/9G7JI599E
- RWjnfc0627FNa0r7cHYi8NahMIS8kcch6zHB+li4jy/c2n0X9QEZEnvO08cmdIMPiX/tJaiksSs
- /fkIAE6nkdm2ukIcpx6KB0kDrO3jrhAzQK/F7y/ZgcvQx9pt9jpFyW1aV8XgNpnun5eoR+QJH6W
- M6etEPnG3rE5VYb1y6GSfRHLMq+Td8GXcb6NMaojdg==
-X-Google-Smtp-Source: AGHT+IGCIbNLbOWxpSvIeGmV735hTgeKYtOSB1TEv5wx/EF/zzqc6sbw+8UnshByY3mk7zNX98HPRA==
-X-Received: by 2002:a05:6402:50d0:b0:5d0:f6ed:4cd1 with SMTP id
- 4fb4d7f45d1cf-5d98a4bd87bmr19455467a12.10.1736867385485; 
- Tue, 14 Jan 2025 07:09:45 -0800 (PST)
+ bh=gPZTiO31Q/Cg5BoGleAQgxej48cR4PkAAPzisfTgqww=;
+ b=R6vBK8dgc3UxM9Z84e5KKpS+TS+5ys0DPbbjzoQ0mDp/sxj+NNvonILGYGdlO1E7mm
+ ntVLtAT49Xw0k7ZyrYYokkyw6ubdtT32s3on//cKc11wMZwNnTGWVEj9B0jhuW/s7SHL
+ Ha+udPaf4VfjrlqgWhQCUntTSpBTC+u12ZmbuNkJ1W2Fih2lAgN2skJCifIKZdq40jhi
+ trJLg40lMSCqD7x2zT16je3iyMoMrXLpL3bGXjgeMcTDLeFYdGzKIxJHIWEBQQBApzFt
+ /FSClLgYF+9J/eUiIQ2ZTaxdzlYjnso9Sa5m2Jynn4aQdVz4rLG1bV7/P1NfTPVfDOsm
+ 4Qxw==
+X-Gm-Message-State: AOJu0Yz7D1ERYkcrxItLdQTRWuq6V3ume+vvDpiSKJSD7Y23hNaZH6Us
+ stpGhD+ff0NwXfWgE+6tKNrwdNkdM+yC0+V9BvtqKHUH4qt35TaS6v2I2RveCNE=
+X-Gm-Gg: ASbGncvL7IsYkU9de3C40u0kl08UWIGP8oAEbfyBOKJb0I8wmnMEXK8rOgdi3Yz1uGz
+ +NfFqBH2FOhYQTdoa0kL7E+mQc3IaXDbPM/8BOwcllNTJFg3YuB57Yo8qmf+1qlMFNnqDwyyDxD
+ Uetj4bIGHIdxb5Xz3w3HH8u5Bp1Mk7EdH9caHU8QYgHylbNSD+zKiEadLtawmi+YDesOCX2vnKO
+ JxaTDoE9ZYhc4cr3ekaNO30HP8tqQamZOCKhhYJdzw1UKuQwP4Es96RqWcbE0y255HFf/89O2rO
+ Pe9tOJCRnGTDG2gFkk5tbAtjtLKePZuBiHycBmD9XA==
+X-Google-Smtp-Source: AGHT+IF1KmlpeNz5YQQjpgMAiniTbZ5yV4W07g2ana/y1zgR0kJpdeN7NWAvtAqHysiMw8s20vq0zA==
+X-Received: by 2002:a17:907:1c2a:b0:aa6:8e9e:1b5 with SMTP id
+ a640c23a62f3a-ab2ab6a8530mr2073888766b.3.1736868343699; 
+ Tue, 14 Jan 2025 07:25:43 -0800 (PST)
 Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
  [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d9903c4598sm6156659a12.53.2025.01.14.07.09.44
+ a640c23a62f3a-ab2c964dc9dsm649153866b.178.2025.01.14.07.25.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Jan 2025 07:09:45 -0800 (PST)
-Date: Tue, 14 Jan 2025 16:09:44 +0100
+ Tue, 14 Jan 2025 07:25:43 -0800 (PST)
+Date: Tue, 14 Jan 2025 16:25:42 +0100
 From: Andrew Jones <ajones@ventanamicro.com>
 To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
  bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
  palmer@rivosinc.com
 Subject: Re: [PATCH 4/4] target/riscv: add RVA23S64 profile
-Message-ID: <20250114-96a4217891128dc91926b19c@orel>
+Message-ID: <20250114-a6a244e7bfc4b7bd2535750d@orel>
 References: <20250114132012.1224941-1-dbarboza@ventanamicro.com>
  <20250114132012.1224941-5-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20250114132012.1224941-5-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,10 +109,6 @@ On Tue, Jan 14, 2025 at 10:20:12AM -0300, Daniel Henrique Barboza wrote:
 > rv64imafdcbvh_zic64b_zicbom_zicbop_zicboz_ziccamoa_ziccif_zicclsm_
 > ziccrse_zicond_zicntr_zicsr_zihintntl_zihintpause_zihpm_zimop_zmmul_
 > za64rs_zaamo_zalrsc_zawrs_zfa_zfhmin_zca_zcb_zcd_zcmop_zba_zbb_zbs_zkt_
-
-yeah, zba/zbb/zbs are still here as expected. So patch 2's bios table
-change was likely just the 'b', which we see at the start.
-
 > zvbb_zve32f_zve32x_zve64f_zve64d_zve64x_zvfhmin_zvkb_zvkt_shcounterenw_
 > sha_shgatpa_shtvala_shvsatpa_shvstvala_shvstvecd_smnpm_smstateen_ssccptr_
 > sscofpmf_sscounterenw_ssnpm_ssstateen_sstc_sstvala_sstvecd_ssu64xl_
@@ -168,12 +163,6 @@ change was likely just the 'b', which we see at the start.
 > +        /* These were present in RVA22S64 */
 > +        CPU_CFG_OFFSET(ext_svade), CPU_CFG_OFFSET(ext_svpbmt),
 > +        CPU_CFG_OFFSET(ext_svinval),
-
-I guess we can't inherit from both rva23u64 and rva22s64, which is what
-we'd like to do.
-
-What about zifencei?
-
 > +
 > +        /* New in RVA23S64 */
 > +        CPU_CFG_OFFSET(ext_svnapot), CPU_CFG_OFFSET(ext_sstc),
@@ -182,6 +171,13 @@ What about zifencei?
 > +        /* Named features: Sha, ssu64xl, ssnpm */
 > +        CPU_CFG_OFFSET(ext_sha),
 > +        CPU_CFG_OFFSET(ext_ssnpm),
+
+Why are we calling ssnpm a named feature? And same question for supm in
+the last patch.
+
+Thanks,
+drew
+
 > +
 > +        RISCV_PROFILE_EXT_LIST_END
 > +    }
@@ -220,8 +216,5 @@ What about zifencei?
 > -- 
 > 2.47.1
 > 
->
-
-Thanks,
-drew
+> 
 
