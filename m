@@ -2,76 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E056A10AA6
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 16:24:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A823A10B50
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 16:44:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXilK-0005kL-Ed; Tue, 14 Jan 2025 10:23:26 -0500
+	id 1tXj4R-0002DR-Hj; Tue, 14 Jan 2025 10:43:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tXilH-0005jk-LW; Tue, 14 Jan 2025 10:23:23 -0500
-Received: from mgamail.intel.com ([192.198.163.14])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tXilF-0002jT-TB; Tue, 14 Jan 2025 10:23:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1736868201; x=1768404201;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=3yJHop55XQ39mq3ghQytuM6d87sG6SZyRTsPiM1tEas=;
- b=G0pKhi5OpHvs14/l3ptdsnlb4SQszCzZR7pawuxnzNjv6iVlJcp21ooA
- JJ6LG/esZ6CgY++msZTILnw6w1o0zDa2LJuj4xMCwqZDpP9T4AobnEGeu
- wr0N5ipN+NTSRyieZh3rwxGh0VpoXsfjFh+SskxcuslAyAs7brLiheb9W
- CtCEGw83SQWc83WBo+jhZL4CaXY4xmdDPeSdmBBvilXEKVuxaK3eH5aEx
- iXbrL8T5ssz3koH0FNOT+fr7v0u8BM2s3BvMBJHcR5T37572oGE8EDb0g
- uEazrQqJOrqBiLgqyAUF4u8QBoLsrbjbVfT9kRtigmUqKXPHhQOFWcv7O Q==;
-X-CSE-ConnectionGUID: dyqThTONTv2RU6VZOdzPIQ==
-X-CSE-MsgGUID: U6Z1xukdTuioWEBzSRqmDg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="37397992"
-X-IronPort-AV: E=Sophos;i="6.12,314,1728975600"; d="scan'208";a="37397992"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jan 2025 07:23:18 -0800
-X-CSE-ConnectionGUID: PPrXyPwVSaiwJ3acH8b9LA==
-X-CSE-MsgGUID: W7KxnblOS/28YYtpxnnvNA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="128082253"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa002.fm.intel.com with ESMTP; 14 Jan 2025 07:23:16 -0800
-Date: Tue, 14 Jan 2025 23:42:07 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Junjie Mao <junjie.mao@hotmail.com>,
- Alex =?utf-8?B?QmVubu+/vWU=?= <alex.bennee@linaro.org>,
- Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
- qemu-rust@nongnu.org
-Subject: Re: [RFC 07/13] rust: add bindings for timer
-Message-ID: <Z4aFz5uWJt/6woxy@intel.com>
-References: <20241205060714.256270-1-zhao1.liu@intel.com>
- <20241205060714.256270-8-zhao1.liu@intel.com>
- <9cb123e2-5237-46e7-b6fe-ce8f813cc43c@redhat.com>
- <Z4aEkLhcGVbXX82O@intel.com>
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1tXj4O-0002Ci-L2
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 10:43:08 -0500
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1tXj4N-0006K7-7J
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 10:43:08 -0500
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-aa684b6d9c7so986157066b.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 07:43:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1736869385; x=1737474185; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=1M62GXlOOLlhO4bQzjwOx/1sIkLfUwBvTAi4JLglHGk=;
+ b=HCtexWhjDb1fbnSCqrbQO1qSjjE1jz8vjPGs2A99Dez8i0JJ+cNbN6WvMTKmU5Sm2p
+ Kp1cq19sSIknBQCJT0e19qL/M3cq7LoO9wL4wDRN8dZO6zPX7UAIREw15F2KK5Lno4R8
+ heACyxzIC1Bzg7Y6jwCXtr//94719+i5DqBCElFESEePG1VxRPPd7H3hnvpsxJlcnH/L
+ g7WaqdbY+TJJ6P6qxmyLHE8qWyJpd50SxNc1pNhum2BkyM7IE9gibRtsgMOmXvYJdQCU
+ Q0m52i4aXc9sAcbl36d53nJNlzm5pvyFPx0ZQmq/fh1a9NANDvS+YfIRngRmTKIAHEi8
+ Dnfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736869385; x=1737474185;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=1M62GXlOOLlhO4bQzjwOx/1sIkLfUwBvTAi4JLglHGk=;
+ b=HqAC6JdED4qFPgT8HnU80GDwsUW2J7pu/dlz/f9YPxPOMKW7JHgvg6uCZbBHQQIxbh
+ BMMPAXbSC7ZyGRaeLxZXGwp4eiWEfjj1dRcN5p5jqXdnVlnEWmZP7rl5lp9BN27LoGHG
+ Ar+wOVMeCXEO5mcQo4UL77sfrIfpE9SG74Mf/4+Gl9mlj4tg9DJXiKAnQpwHOWmnwbYX
+ dRL1ZedOs+nTbogNxPj4maLZb6k6lmGJDUq3BgcyAgIpYjSOabfyGPOikIXvVL44bsPr
+ CzVQlMqVk4lJDaHSUSpS+DrXh9mGZFoKsGF6atLMRnRKyTfa8+XMD0XXTPFPWXewUnPL
+ G+mA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWwnLNYN0FMETVailUM93Q2ZX54CG1LFMOGlk0bfA8Gx+QsEt78CCGyULnqH2qGZRcYsfFc4VfuOWEF@nongnu.org
+X-Gm-Message-State: AOJu0YwxBv8CUXN4j0g2/3n6immblcHMqZ2Ktf9sCO0sk8DqEEf9kjlr
+ 5n28Op4geEswTTQY7nv7Fx50cs/XKv5epqb1JngJhc4rCrmWyzO2buFjX1if7xQ=
+X-Gm-Gg: ASbGncuZoPgGh1oJPFtqWwN2qEJfOFj46b/EmEWzFkeeL26m6FpYt0Bo3y/MV4fS1Lk
+ mqDccvJodm23omJRPoy2UGbnua5CgavvvOwpGXAvPm/Dd1s1ahjNaDs8RFpn2GE2oVbStn3jLIJ
+ N58+pkfxh155a1ZVTvYfokFxU72yL9pFrsBGM2NyCLSMHpXT2p84s/3KjEQAT2O5USBZ6B7pBi6
+ rqHMPgS/SqdCA/E5mxBuNPzIdY9Y5HOGaHv+GQRsw0Lhh32OeRbOzCoah6b7fXdgrAyPxD2TL0h
+ 2pDO4RzFSDz/q9RzvIzm8YdLlN6Ny2Jor3PPbTqkPw==
+X-Google-Smtp-Source: AGHT+IFalfVlPBeg+lrGkMd4IGImwkNW4HBNLY/qPNCKqOIU6iutnqRrBmTVcd9r+SIb3vjyiqK6MA==
+X-Received: by 2002:a17:907:7d94:b0:aab:8a9d:6d81 with SMTP id
+ a640c23a62f3a-ab2abc6e270mr2086703766b.44.1736869385118; 
+ Tue, 14 Jan 2025 07:43:05 -0800 (PST)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ab2c9564873sm642919766b.111.2025.01.14.07.43.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 14 Jan 2025 07:43:04 -0800 (PST)
+Date: Tue, 14 Jan 2025 16:43:03 +0100
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Huang Borong <huangborong@bosc.ac.cn>
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bmeng.cn@gmail.com, 
+ liwei1518@gmail.com, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, 
+ qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH v1] hw/intc/riscv_aplic: Remove redundant masking of
+ hart_idx in riscv_aplic_msi_send()
+Message-ID: <20250114-7c4508bf00bdc4455c3bcf49@orel>
+References: <20250114025320.52696-1-huangborong@bosc.ac.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z4aEkLhcGVbXX82O@intel.com>
-Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20250114025320.52696-1-huangborong@bosc.ac.cn>
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x630.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,144 +101,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 14, 2025 at 11:36:48PM +0800, Zhao Liu wrote:
-> Date: Tue, 14 Jan 2025 23:36:48 +0800
-> From: Zhao Liu <zhao1.liu@intel.com>
-> Subject: Re: [RFC 07/13] rust: add bindings for timer
-> 
-> Hi Paolo,
-> 
-> Thanks for your FnCall and the guidance below...
-> 
-> > This gets tricky when you have more than one timer per device.  With the right
-> > infrastructure we can make this something like
-> > 
-> >     fn timer_init_full<'a, 'b: 'a, T, F: 'b Fn(&'b T)>(
-> >         &'a mut self,
-> >         timer_list_group: Option<&mut QEMUTimerListGroup>,
-> >         clk_type: QEMUClockType,
-> >         scale: u32,
-> >         attributes: u32,
-> >         f: &F,
-> >         opaque: &'b T) {
-> >         // SAFETY: the opaque outlives the timer
-> >         unsafe {
-> >             timer_init_full(...)
-> >         }
-> >     }
-> 
-> ...
-> 
-> > pub struct Clock {
-> >     id: QEMUClockType
-> > }
-> > 
-> > impl Clock {
-> >     pub fn get_ns() -> u64 {
-> >         // SAFETY: cannot be created outside this module, therefore id
-> >         // is valid
-> >         (unsafe { qemu_clock_get_ns(self.id) }) as u64
-> >     }
-> > }
-> > 
-> > pub static CLOCK_VIRTUAL: Clock = Clock { id: QEMUClockType::QEMU_CLOCK_VIRTUAL };
-> > // etc.
-> > 
-> > and then the user can do timer::CLOCK_VIRTUAL::get_ns().
-> >
-> 
-> ...Now I have a draft for timer binding:
-> 
-> * timer binding:
 
-Missed rust_timer_handler, which follows the good example of FnCall doc:
+Drop "in riscv_aplic_msi_send()" from the patch summary to make it more
+concise.
 
-unsafe extern "C" fn rust_timer_handler<T, F: for<'a> FnCall<(&'a T,)>>(opaque: *mut c_void) {
-    // SAFETY: the opaque was passed as a reference to `T`.
-    F::call((unsafe { &*(opaque.cast::<T>()) },))
-}
+On Tue, Jan 14, 2025 at 10:53:19AM +0800, Huang Borong wrote:
+> The line "hart_idx &= APLIC_xMSICFGADDR_PPN_LHX_MASK(lhxw);" was removed
 
- 
-> impl QEMUTimer {
->     pub fn new() -> Self {
->         Zeroable::ZERO
->     }
+This just states what we can easily read from the patch.
+
+> because the same operation is performed later in the address calculation.
+
+This is useful information that should stay in the commit message.
+
+> This change improves code clarity and avoids unnecessary operations.
+
+You don't need to justify removing redundant lines of code, you just need
+to justify that they're actually redundant.
+
+Daniel's point about the log message is important and should be pointed
+out in the commit message.
+
+Thanks,
+drew
+
 > 
->     pub fn timer_init_full<'a, 'b: 'a, T, F>(
->         &'a mut self,
->         timer_list_group: Option<&mut QEMUTimerListGroup>,
->         clk_type: QEMUClockType,
->         scale: u32,
->         attributes: u32,
->         _f: &F,
->         opaque: &'b T,
->     ) where
->         F: for<'c> FnCall<(&'c T,)> + 'b,
->     {
->         let timer_cb: unsafe extern "C" fn(*mut c_void) = rust_timer_handler::<T, F>;
-> 
->         // SAFETY: the opaque outlives the timer
->         unsafe {
->             timer_init_full(
->                 self,
->                 if let Some(g) = timer_list_group {
->                     g
->                 } else {
->                     ::core::ptr::null_mut()
->                 },
->                 clk_type,
->                 scale as c_int,
->                 attributes as c_int,
->                 Some(timer_cb),
->                 opaque as *const T as *const c_void as *mut c_void,
->             )
->         }
->     }
-> 
->     pub fn timer_mod(&mut self, expire_time: u64) {
->         unsafe { timer_mod(self as *mut QEMUTimer, expire_time as i64) }
->     }
-> }
-> 
-> 
-> * use of timer binding:
-> 
-> fn timer_handler(timer_cell: &BqlRefCell<HPETTimer>) {
->     timer_cell.borrow_mut().callback()
-> }
-> 
-> impl HPETTimer {
->     ...
-> 
->     fn init_timer_with_state(&mut self) {
->         let index = self.index;
->         let cb = |cell: &BqlRefCell<HPETTimer>| {
->             timer_handler(cell);
->         };
-> 
->         self.qemu_timer = Some(Box::new({
->             let mut t = QEMUTimer::new();
->             t.timer_init_full(
->                 None,
->                 CLOCK_VIRTUAL.id,
->                 SCALE_NS,
->                 0,
->                 &cb,
->                 &self.get_state().timer[index],
->             );
->             t
->         }));
->     }
->     ...
-> }
-> 
+> Signed-off-by: Huang Borong <huangborong@bosc.ac.cn>
 > ---
+>  hw/intc/riscv_aplic.c | 1 -
+>  1 file changed, 1 deletion(-)
 > 
-> Is this timer binding as you expected? Hope I am on the right track. :-)
-> 
-> Thanks,
-> Zhao
-> 
+> diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
+> index 4866649115..0974c6a5db 100644
+> --- a/hw/intc/riscv_aplic.c
+> +++ b/hw/intc/riscv_aplic.c
+> @@ -421,7 +421,6 @@ static void riscv_aplic_msi_send(RISCVAPLICState *aplic,
+>              APLIC_xMSICFGADDRH_HHXW_MASK;
+>  
+>      group_idx = hart_idx >> lhxw;
+> -    hart_idx &= APLIC_xMSICFGADDR_PPN_LHX_MASK(lhxw);
+>  
+>      addr = msicfgaddr;
+>      addr |= ((uint64_t)(msicfgaddrH & APLIC_xMSICFGADDRH_BAPPN_MASK)) << 32;
+> -- 
+> 2.34.1
 > 
 > 
 
