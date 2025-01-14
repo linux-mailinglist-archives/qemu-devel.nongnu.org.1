@@ -2,59 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 516BBA10400
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 11:27:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFD57A102E4
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 10:21:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXe8H-0003m3-JO; Tue, 14 Jan 2025 05:26:51 -0500
+	id 1tXd5T-0003np-Fy; Tue, 14 Jan 2025 04:19:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1tXe8D-0003lZ-5W; Tue, 14 Jan 2025 05:26:45 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tXd5Q-0003nb-AV
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 04:19:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1tXe8A-00038C-SQ; Tue, 14 Jan 2025 05:26:44 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YXQHM4jwtz6L5Jy;
- Tue, 14 Jan 2025 18:25:03 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 446931402C6;
- Tue, 14 Jan 2025 18:26:30 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 14 Jan
- 2025 11:26:29 +0100
-Date: Mon, 9 Dec 2024 11:45:34 +0000
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-CC: "Michael S . Tsirkin" <mst@redhat.com>, Shiju Jose
- <shiju.jose@huawei.com>, Ani Sinha <anisinha@redhat.com>, Dongjiu Geng
- <gengdongjiu1@gmail.com>, Igor Mammedov <imammedo@redhat.com>,
- <linux-kernel@vger.kernel.org>, <qemu-arm@nongnu.org>,
- <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v6 09/16] acpi/ghes: make the GHES record generation
- more generic
-Message-ID: <20241209114534.000079a6@huawei.com>
-In-Reply-To: <a35a02028136f9d5445b41760c892de302801500.1733561462.git.mchehab+huawei@kernel.org>
-References: <cover.1733561462.git.mchehab+huawei@kernel.org>
- <a35a02028136f9d5445b41760c892de302801500.1733561462.git.mchehab+huawei@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tXd5L-0001pI-Va
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 04:19:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736846381;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4C3m1ijWWUNfNwvKq7aXOlQrTawV5r/4d0ZgdfwR84A=;
+ b=cC7irVG3F+pZ2uj+4p38lBemVbVjN7A8kA/q5kH45OWxYePyulgbJBfec8ghoEJu9JBBNo
+ +EVRVBp5DfJVseNrF0YbyFwMwwUda74NW1k0oo71YHw8Logl5Rk1GnijyYeFiYu4DoOv7V
+ NSgu6UAowzaKS1/UEnVrWeCGAl7laNU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-381-q1dFA--wMfSMelKXbc0YnQ-1; Tue,
+ 14 Jan 2025 04:19:38 -0500
+X-MC-Unique: q1dFA--wMfSMelKXbc0YnQ-1
+X-Mimecast-MFC-AGG-ID: q1dFA--wMfSMelKXbc0YnQ
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7247F1953955; Tue, 14 Jan 2025 09:19:37 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.48])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4F28C195608A; Tue, 14 Jan 2025 09:19:36 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 28A6B21E6924; Tue, 14 Jan 2025 10:19:34 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,
+ Michael Roth <michael.roth@amd.com>
+Subject: Re: [PATCH 01/23] docs/qapidoc: support header-less freeform sections
+In-Reply-To: <CAFn=p-bYFhOh1iuij_AXAZ3s3k5FY8cVwAMiQ-FNCn8Du-kduA@mail.gmail.com>
+ (John Snow's message of "Mon, 13 Jan 2025 14:12:53 -0500")
+References: <20241213021827.2956769-1-jsnow@redhat.com>
+ <20241213021827.2956769-2-jsnow@redhat.com>
+ <877c7zdb1h.fsf@pond.sub.org>
+ <CAFn=p-bYFhOh1iuij_AXAZ3s3k5FY8cVwAMiQ-FNCn8Du-kduA@mail.gmail.com>
+Date: Tue, 14 Jan 2025 10:19:34 +0100
+Message-ID: <874j21kb15.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
- frapeml500008.china.huawei.com (7.182.85.71)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-1.787,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.019,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,160 +85,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat,  7 Dec 2024 09:54:15 +0100
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+John Snow <jsnow@redhat.com> writes:
 
-> Split the code into separate functions to allow using the
-> common CPER filling code by different error sources.
-> 
-> The generic code was moved to ghes_record_cper_errors(),
-> and ghes_gen_err_data_uncorrectable_recoverable() now contains
-> only a logic to fill the Generic Error Data part of the record,
-> as described at:
-> 
-> 	ACPI 6.2: 18.3.2.7.1 Generic Error Data
-> 
-> The remaining code to generate a memory error now belongs to
-> acpi_ghes_record_errors() function.
-> 
-> A further patch will give it a better name.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> On Mon, Dec 16, 2024 at 8:15=E2=80=AFAM Markus Armbruster <armbru@redhat.=
+com> wrote:
+>
+>> John Snow <jsnow@redhat.com> writes:
+>>
+>> > The code as written can't handle if a header isn't found, because `nod=
+e`
+>> > will be uninitialized.
+>>
+>> Yes, we initialize @node only if we have a heading.
+>>
+>> Made me wonder what happens when we don't.  So I deleted the =3D from the
+>> "# =3D Subsection" line in doc-good.json, and got:
+>>
+>>     Exception occurred:
+>>       File "/work/armbru/qemu/docs/sphinx/qapidoc.py", line 425, in
+>> freeform
+>>         self._parse_text_into_node(text, node)
+>>                                          ^^^^
+>>     UnboundLocalError: cannot access local variable 'node' where it is n=
+ot
+>> associated with a value
+>>
+>> So you're fixing a crash bug, but that's perhaps less than clear from
+>> the commit message.
+>>
+>> >                        If we don't have a section title, create a
+>> > generic block to insert text into instead.
+>> >
+>> > This patch removes a lingering pylint warning in the QAPIDoc implement=
+ation
+>>
+>> Can you show me the warning?  My pylint doesn't...
+>>
+>> > that prevents getting a clean baseline to use for forthcoming
+>> > additions.
+>> >
+>> > I am not attempting to *fully* clean up the existing QAPIDoc
+>> > implementation in pylint because I intend to delete it anyway; this
+>> > patch merely accomplishes a baseline under a specific pylint
+>> > configuration:
+>> >
+>> > PYTHONPATH=3D../../scripts/ pylint --disable=3Dfixme,too-many-lines,\
+>> >     consider-using-f-string,missing-docstring,unused-argument,\
+>> >     too-many-arguments,too-many-positional-arguments,\
+>> >     too-many-public-methods \
+>> >     qapidoc.py
+>>
+>> What version of pylint?  Mine chokes on too-many-positional-arguments.
+>
+> 3.3.1 here; if yours doesn't have that warning, there's no need to disable
+> it. just remove that flag from the CLI.
 
-Igor tagged this in previous posting.  Any reason for dropping?
+I've since upgraded to  3.3.3, which doesn't choke.
 
-> 
-> # Conflicts:
-> #	roms/edk2
-Should clear this out.
+> (I promise I do want to get this rigorously checked and automated, I'm
+> sorry it's taken so long to achieve.)
 
-A few formatting things inline but beyond that looks good to me.
-
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
->  /*
-> @@ -383,15 +356,18 @@ void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
->      ags->present = true;
->  }
->  
-> -int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
-> +void ghes_record_cper_errors(const void *cper, size_t len,
-> +                             uint16_t source_id, Error **errp)
->  {
->      uint64_t error_block_addr, read_ack_register_addr, read_ack_register = 0;
->      uint64_t start_addr;
-> -    bool ret = -1;
->      AcpiGedState *acpi_ged_state;
->      AcpiGhesState *ags;
->  
-> -    assert(source_id < ACPI_GHES_ERROR_SOURCE_COUNT);
-> +    if (len > ACPI_GHES_MAX_RAW_DATA_LENGTH) {
-> +        error_setg(errp, "GHES CPER record is too big: %ld", len);
-> +        return;
-> +    }
->  
->      acpi_ged_state = ACPI_GED(object_resolve_path_type("", TYPE_ACPI_GED,
->                                                         NULL));
-> @@ -406,6 +382,10 @@ int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
->                               sizeof(error_block_addr));
->  
->      error_block_addr = le64_to_cpu(error_block_addr);
-> +    if (!error_block_addr) {
-> +        error_setg(errp, "can not find Generic Error Status Block");
-> +        return;
-> +    }
->  
->      read_ack_register_addr = start_addr +
->                               ACPI_GHES_ERROR_SOURCE_COUNT * sizeof(uint64_t);
-> @@ -415,24 +395,63 @@ int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
->  
->      /* zero means OSPM does not acknowledge the error */
->      if (!read_ack_register) {
-> -        error_report("OSPM does not acknowledge previous error,"
-> -                     " so can not record CPER for current error anymore");
-> -    } else if (error_block_addr) {
-> -        read_ack_register = cpu_to_le64(0);
-> -        /*
-> -         * Clear the Read Ack Register, OSPM will write it to 1 when
-> -         * it acknowledges this error.
-> -         */
-> -        cpu_physical_memory_write(read_ack_register_addr,
-> -                                  &read_ack_register, sizeof(uint64_t));
-> -
-> -        ret = acpi_ghes_record_mem_error(error_block_addr,
-> -                                         physical_address);
-> -    } else {
-> -        error_report("can not find Generic Error Status Block");
-> +        error_setg(errp,
-> +                   "OSPM does not acknowledge previous error,"
-> +                   " so can not record CPER for current error anymore");
-> +        return;
->      }
->  
-> -    return ret;
-> +    read_ack_register = cpu_to_le64(0);
-> +    /*
-> +     * Clear the Read Ack Register, OSPM will write 1 to this register when
-> +     * it acknowledges the error.
-> +     */
-> +    cpu_physical_memory_write(read_ack_register_addr,
-> +        &read_ack_register, sizeof(uint64_t));
-
-Maybe rewrap that line now it's indented less?
-
-> +
-> +    /* Write the generic error data entry into guest memory */
-> +    cpu_physical_memory_write(error_block_addr, cper, len);
-> +
-> +    return;
-> +}
-> +
-> +int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
-> +{
-> +    /* Memory Error Section Type */
-> +    const uint8_t guid[] =
-> +          UUID_LE(0xA5BC1114, 0x6F64, 0x4EDE, 0xB8, 0x63, 0x3E, 0x83, \
-> +                  0xED, 0x7C, 0x83, 0xB1);
-> +    Error *errp = NULL;
-> +    int data_length;
-> +    GArray *block;
-> +
-> +    block = g_array_new(false, true /* clear */, 1);
-> +
-> +    data_length = ACPI_GHES_DATA_LENGTH + ACPI_GHES_MEM_CPER_LENGTH;
-> +    /*
-> +     * It should not run out of the preallocated memory if adding a new generic
-> +     * error data entry
-> +     */
-> +    assert((data_length + ACPI_GHES_GESB_SIZE) <=
-> +            ACPI_GHES_MAX_RAW_DATA_LENGTH);
-> +
-> +    ghes_gen_err_data_uncorrectable_recoverable(block, guid,
-> +                                                data_length);
-
-Trivial: That fits on one line under 80 chars.
-
-> +
-> +    /* Build the memory section CPER for above new generic error data entry */
-> +    acpi_ghes_build_append_mem_cper(block, physical_address);
-> +
-> +    /* Report the error */
-> +    ghes_record_cper_errors(block->data, block->len, source_id, &errp);
-> +
-> +    g_array_free(block, true);
-> +
-> +    if (errp) {
-> +        error_report_err(errp);
-> +        return -1;
-> +    }
-> +
-> +    return 0;
->  }
-
+[...]
 
 
