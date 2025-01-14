@@ -2,81 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0C22A10309
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 10:31:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC3EA10326
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 10:38:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXdFs-0006JQ-4I; Tue, 14 Jan 2025 04:30:36 -0500
+	id 1tXdMa-0000U8-HW; Tue, 14 Jan 2025 04:37:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tXdFp-0006JB-2I
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 04:30:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tXdFm-00048H-Cp
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 04:30:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736847028;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fybRQRYLQ7VSRlo8k67QjTReNzXJscC7ZnEfdCJwCmo=;
- b=Oq9xT3QKqVUvmglO680ui8cDHT7mUcMTVN+VNocq2l6CkPtUjd3au3CAwZ750wpNXIxSsI
- 2B0+B4O607U64laMpNPNPGL8crhVQ/hBgTDYFHaweCuSyvu0ieiuu7xkTRfrGtFkXxcKma
- EjE/RqKg1YS80hOS9MwbiJoPf0vq3JQ=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-604-M2XpTINeNHi3rZz8QrHuqg-1; Tue,
- 14 Jan 2025 04:30:22 -0500
-X-MC-Unique: M2XpTINeNHi3rZz8QrHuqg-1
-X-Mimecast-MFC-AGG-ID: M2XpTINeNHi3rZz8QrHuqg
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2EE8E195605E; Tue, 14 Jan 2025 09:30:21 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.48])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 99BDA195608E; Tue, 14 Jan 2025 09:30:20 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7534C21E6924; Tue, 14 Jan 2025 10:30:18 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>,  Peter Maydell
- <peter.maydell@linaro.org>,  Michael Roth <michael.roth@amd.com>
-Subject: Re: [PATCH 11/23] docs/qapidoc: add preamble() method
-In-Reply-To: <CAFn=p-Z2xsGO6MHzHiVMF9tTPSrtFytwdhbY=ipJpY8VUGYZ0w@mail.gmail.com>
- (John Snow's message of "Mon, 13 Jan 2025 15:53:19 -0500")
-References: <20241213021827.2956769-1-jsnow@redhat.com>
- <20241213021827.2956769-12-jsnow@redhat.com>
- <87h66y30gn.fsf@pond.sub.org>
- <CAFn=p-ZAXSMyO3cWw=CXG1Hbd06ToQeUsgO4FsfNqDEvaZRujg@mail.gmail.com>
- <87sepss2bv.fsf@pond.sub.org>
- <CAFn=p-bum9NvZNEYRKCD6Wh_GucSmT33YT9aEqK80u+2d7cUQQ@mail.gmail.com>
- <87v7um2760.fsf@pond.sub.org>
- <CAFn=p-Z2xsGO6MHzHiVMF9tTPSrtFytwdhbY=ipJpY8VUGYZ0w@mail.gmail.com>
-Date: Tue, 14 Jan 2025 10:30:18 +0100
-Message-ID: <87y0zdivyt.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1tXdMH-0000T7-Gi
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 04:37:13 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1tXdME-000509-HF
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 04:37:13 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-2162c0f6a39so111545715ad.0
+ for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 01:37:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1736847427; x=1737452227; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=w/J421GUH7Mao74hk7jOCSi+yLl4BP1uUp1Mb4ir/rU=;
+ b=Uol8f4mQYZ25V2K4DaE0M9oBhMeRhsffkvy61/KQBLBI44dIAyMHFwHJwGpyj0Cn6/
+ BEh8EUe6HNp8f0p0bjh4rU+fS2WUo00wwEgH0YNGXGUdk2SaLvIzd7eLLUZKmh9Dj+CU
+ WA89DM/YnGZv5MyaDV0whW5R6VwmxQpFas4sV1rlqtURXqxJwgZiQp5W2yxFRa+EMyWe
+ r/TqCwfPooSiRx172fp6q/gL9S+PbQBLdFZU4vbrL5C2zv9aU+oLYeniI+XQx1r2HO9v
+ OaiFmo+PvR3vosxXy1rFZ2eg9ebur6AT2SSUV/tOg6FLrhp8BVfABCtQWXiHWLT0QZJR
+ d/Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736847427; x=1737452227;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=w/J421GUH7Mao74hk7jOCSi+yLl4BP1uUp1Mb4ir/rU=;
+ b=k2zmjVRM4VgJJFIwtamzQi+tbTSlV2Fnw69UOwqfDhK9nrt6i28F+1yycxVOvU3NBa
+ awzV/G8Jhcn+3SvAhmj5g3Y1zw2gNLoktm5s3oNwq/kCbEAl3Hh9IGhrDFWQbITqm5X4
+ HOzROR1mCXMgkenYR5ZoRol60YRtdl72b+7cJHXFGFWCBPlqgVnrR7Aur9d5IN4NwxjW
+ XT8qxnL7SMLLQ7Ej2PWVeXy15gvf9hHitWFevCjS0450KHiB6LN02V57K2Th31Blguvn
+ H88KzzGVEkALBN8Zti/L1qzN7jbvBr7CfAlSCLcuf8nSwz9C7Xv+SwoJhGDHnQBVt536
+ M6EA==
+X-Gm-Message-State: AOJu0YyJB7ALuAvMmJhSrvvUdk9GchIedg2ppo8w7ORPID1G98005Z7Z
+ OWRzxyuVN4zWeg5vvcDshjzwJTU/yOpAXBdyZduQ6qv4ts6yRanrauv/x8VyB50M1UnhDB3z6Ge
+ hjx5EPJu7jmV7wGLgqsl1Vccb0vwrJzOn/ORbfEkP8fOgS2zF5GTZySJZ4NzzqIdK1Th/gv5QZu
+ FafDbMXR4gXGeeusRoTfX26o9jUoyhZTlXkQJhC3w=
+X-Gm-Gg: ASbGncueUmn3nzTDFbPJwWlkpqQcRJwwSSgcE2ch2eaB6HAcuNp7gqppfQfL1TJJxh4
+ gP8oQLdg3cUcF7AKqqYEuGPkPTVyztHvhLTEIn6fxk57uAO9U70rguus/NcWepi+iJlOEZQXxNq
+ 0bGblFFFxhTqYd2s0RKbai46zi6sp3oTi4JQL4qqDkpTvv3Ybxy/GqYGD+URdIX37WZMbDEBYHb
+ tts989Ix/d61MKBvnjCRqfiIaoiIWvajKQzJyJrtBEDw9wqQgSJHzlZRA441Jciu+2mHJE5nMk5
+ 0VPoVG48
+X-Google-Smtp-Source: AGHT+IEfFytGMS3sZIXK8rwGevqErUOvVDSCaSQoav987u4WTQMho52KEY473oivczemVOQpz5iZhw==
+X-Received: by 2002:a05:6a20:c896:b0:1e1:ad7:3282 with SMTP id
+ adf61e73a8af0-1e8b13d1ed6mr27046085637.7.1736847427183; 
+ Tue, 14 Jan 2025 01:37:07 -0800 (PST)
+Received: from hsinchu16.internal.sifive.com ([210.176.154.34])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-72d40658dccsm7300718b3a.92.2025.01.14.01.37.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 14 Jan 2025 01:37:06 -0800 (PST)
+From: Jason Chien <jason.chien@sifive.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Jason Chien <jason.chien@sifive.com>
+Subject: [PATCH 1/2] hw/riscv/riscv-iommu: Remove redundant variables
+Date: Tue, 14 Jan 2025 17:36:45 +0800
+Message-ID: <20250114093647.4952-1-jason.chien@sifive.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.019,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.787,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=jason.chien@sifive.com; helo=mail-pl1-x62a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,172 +101,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+Signed-off-by: Jason Chien <jason.chien@sifive.com>
+---
+ hw/riscv/riscv-iommu.h | 5 -----
+ 1 file changed, 5 deletions(-)
 
-> On Fri, Jan 10, 2025 at 7:19=E2=80=AFAM Markus Armbruster <armbru@redhat.=
-com> wrote:
->
->> John Snow <jsnow@redhat.com> writes:
->>
->> > On Thu, Jan 9, 2025, 5:34=E2=80=AFAM Markus Armbruster <armbru@redhat.=
-com> wrote:
->> >
->> >> John Snow <jsnow@redhat.com> writes:
->> >>
->> >> > On Fri, Dec 20, 2024 at 9:15=E2=80=AFAM Markus Armbruster <armbru@r=
-edhat.com> wrote:
->> >> >
->> >> >> John Snow <jsnow@redhat.com> writes:
->> >> >>
->> >> >> > This method adds the options/preamble to each definition block. =
-Notably,
->> >> >> > :since: and :ifcond: are added, as are any "special features" su=
-ch as
->> >> >> > :deprecated: and :unstable:.
->> >> >> >
->> >> >> > Signed-off-by: John Snow <jsnow@redhat.com>
->> >> >> > ---
->> >> >> >  docs/sphinx/qapidoc.py | 33 ++++++++++++++++++++++++++++++++-
->> >> >> >  1 file changed, 32 insertions(+), 1 deletion(-)
->> >> >> >
->> >> >> > diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
->> >> >> > index 6f8f69077b1..85c7ce94564 100644
->> >> >> > --- a/docs/sphinx/qapidoc.py
->> >> >> > +++ b/docs/sphinx/qapidoc.py
->> >> >> > @@ -38,7 +38,7 @@
->> >> >> >  from qapi.error import QAPIError, QAPISemError
->> >> >> >  from qapi.gen import QAPISchemaVisitor
->> >> >> >  from qapi.parser import QAPIDoc
->> >> >> > -from qapi.schema import QAPISchema
->> >> >> > +from qapi.schema import QAPISchema, QAPISchemaEntity
->> >> >> >  from qapi.source import QAPISourceInfo
->> >> >> >
->> >> >> >  from sphinx import addnodes
->> >> >> > @@ -125,6 +125,37 @@ def ensure_blank_line(self) -> None:
->> >> >> >              # +2: correct for zero/one index, then increment by=
- one.
->> >> >> >              self.add_line_raw("", fname, line + 2)
->> >> >> >
->> >> >> > +    # Transmogrification helpers
->> >> >> > +
->> >> >> > +    def preamble(self, ent: QAPISchemaEntity) -> None:
->> >> >> > +        """
->> >> >> > +        Generate option lines for qapi entity directives.
->> >> >> > +        """
->> >> >> > +        if ent.doc and ent.doc.since:
->> >> >> > +            assert ent.doc.since.tag =3D=3D QAPIDoc.Tag.SINCE
->> >> >> > +            # Generated from the entity's docblock; info locati=
-on is exact.
->> >> >> > +            self.add_line(f":since: {ent.doc.since.text}", ent.=
-doc.since.info)
->> >> >> > +
->> >> >> > +        if ent.ifcond.is_present():
->> >> >> > +            doc =3D ent.ifcond.docgen()
->> >> >> > +            # Generated from entity definition; info location i=
-s approximate.
->> >> >> > +            self.add_line(f":ifcond: {doc}", ent.info)
->> >> >> > +
->> >> >> > +        # Hoist special features such as :deprecated: and :unst=
-able:
->> >> >> > +        # into the options block for the entity. If, in the fut=
-ure, new
->> >> >> > +        # special features are added, qapi-domain will chirp ab=
-out
->> >> >> > +        # unrecognized options and fail.
->> >> >> > +        for feat in ent.features:
->> >> >> > +            if feat.is_special():
->> >> >> > +                # We don't expect special features to have an i=
-fcond property.
->> >> >> > +                # (Hello, intrepid developer in the future who =
-changed that!)
->> >> >> > +                # ((With luck, you are not me.))
->> >> >> > +                assert not feat.ifcond.is_present()
->> >> >>
->> >> >> Nope :)
->> >> >>
->> >> >> The attempt to add a conditional special feature now fails with
->> >> >>
->> >> >>     Sphinx parallel build error:
->> >> >>     AssertionError
->> >> >>
->> >> >> If you want to outlaw conditional special features, reject them cl=
-eanly
->> >> >> in schema.py, document the restriction in docs/devel/qapi-code-gen=
-.rst,
->> >> >> and explain why in the commit message.  Recommend a separate commi=
-t, to
->> >> >> make it stand out in git-log.
->> >> >
->> >> > Do you advocate this? I wasn't sure what it *meant* for a special f=
-eature
->> >> > to be conditional; I couldn't conceive of what it meant to have an =
-ifcond
->> >> > for "deprecated" or "unstable", for instance. It sounds like it isn=
-'t well
->> >> > defined, but we happen to not expressly forbid it.
-
-[...]
-
->> I believe what you need isn't so much an explanation of semantics, it's
->> use cases.  And that's fair!
->>
->> Let me offer two.
->>
->> 1. Imagine we're trying to develop something big & complex enough to
->>    make keeping it out of tree until done impractical.  We feel even an
->>    in-tree branch would be impractical.  Instead, we commit it to
->>    master, default off, configure --enable-complex-thing to get it.  Not
->>    exactly something we do all the time, but not outlandish, either.
->>
->>    Further imagine that the big & complex thing will involve some new
->>    QMP commands replacing existing ones.  As usual, we want to mark the
->>    ones being replaced deprecated, so we can remove them after a grace
->>    period.
->>
->>    But simply deprecating them in the schema would be premature!  The
->>    big & complex thing may fail, and if it does, we rip it out.  If it
->>    succeeds, we enable it unconditionally.
->>
->>    We can express what we're doing by making feature deprecated
->>    conditional on CONFIG_COMPLEX_THING, which is defined by
->>    --enable-complex-thing.
->>
->>    That way, the complex thing doesn't affect the QMP interface unless
->>    we enable it.  Good.  And if we enable it, we do get the deprecation,
->>    and can test management applications cope with it.
->>
->> 2. Imagine we turned allow-preconfig into a special feature.  Further
->>    imagine some whole-stack feature requires a certain command to have
->>    allow-preconfig, and you got tasked with implementing it.  Which you
->>    duly did, to everybody's satisfaction.  It is now days to the
->>    release, rc4 has sailed, and some dude comes out of the woodwork to
->>    report the command crashes in preconfig state.  Weird!  It worked
->>    *fine* in your meticulous testing.  After some back and forth, you
->>    discover that the reporter builds with --enable-exotic-crap, which
->>    you didn't test, because you weren't even aware it exists.  You
->>    enable it, and now the command crashes for you, too.  Fixing this
->>    after rc4 is out of the question, too much churn.  You could,
->>    however, make feature allow-preconfig conditional on not
->>    CONFIG_EXOTIC_CRAP.
->>
->> >> [...]
->>
->>
-> Hm, alright. I think I'll just stub out conditionals with a TODO and circ=
-le
-> back to how I'll handle them; I need to do a pass on ifcond handling in
-> general, so I guess I'll get to it then.
-
-Makes sense (although I'd use FIXME rather than TODO).
-
-If resolving them turns out to be hard, we can talk about adding
-restrictions to help you over the hump.
-
->                                          I still think it's a little weir=
-d,
-> but you don't, and you're the QAPI guy ;)
-
-I admit constructing believable use cases took a bit of thought.
-Calling them a little weird can't offend me :)
+diff --git a/hw/riscv/riscv-iommu.h b/hw/riscv/riscv-iommu.h
+index 9424989df4..fa8a50fa24 100644
+--- a/hw/riscv/riscv-iommu.h
++++ b/hw/riscv/riscv-iommu.h
+@@ -58,11 +58,6 @@ struct RISCVIOMMUState {
+     /* interrupt notifier */
+     void (*notify)(RISCVIOMMUState *iommu, unsigned vector);
+ 
+-    /* IOMMU State Machine */
+-    QemuThread core_proc; /* Background processing thread */
+-    QemuCond core_cond;   /* Background processing wake up signal */
+-    unsigned core_exec;   /* Processing thread execution actions */
+-
+     /* IOMMU target address space */
+     AddressSpace *target_as;
+     MemoryRegion *target_mr;
+-- 
+2.43.2
 
 
