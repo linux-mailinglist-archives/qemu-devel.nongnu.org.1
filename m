@@ -2,100 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9706EA10550
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 12:27:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7482BA105BD
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 12:42:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXf3Z-0002DN-Oe; Tue, 14 Jan 2025 06:26:01 -0500
+	id 1tXfFe-000558-37; Tue, 14 Jan 2025 06:38:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tXf3K-0002AB-Hh
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:25:48 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1tXfFc-00054V-Ag
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:28 -0500
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tXf3H-0003fC-RE
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:25:46 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43621d27adeso36926795e9.2
- for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 03:25:43 -0800 (PST)
+ id 1tXfFZ-0005OY-Al
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:28 -0500
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-aaf57c2e0beso1100725766b.3
+ for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 03:38:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736853942; x=1737458742; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=djprjdiDqspsX8wn/1ny8XGbs6DP6kUUIR1JL9po5/0=;
- b=v9UU0zO0uIYcodJklXclwPHV5Qo0r2e1o+hwX9pj1xi3rluUlZDQBULockUCWRO4YL
- z3Hz991dkAta98kiQsrqSkO4R7JuJHzgFJyrBXBOrXeohHsPPoXxQL6o2Ra4HLRjqy4k
- x+pyFPFpfyLKoCi0mHSd4p4DLGNfeGNd0N+BBLryXC0G39+oP8o8e0H6HgTt65tWAsNm
- Nnw0zqFT9PfnHH3EEbl9PNpPQ3BDb280dfK6PMFCOCLKIcfwhfylNN8TyxIx8zOxCBmy
- M5eEdfUGPH4XVUpvu/rJAu1ui29L5/hhF/vHxsENF97DT3qwmb+N7K3L2TiyCpXlQSMw
- t0/w==
+ d=linaro.org; s=google; t=1736854703; x=1737459503; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ft+gcg+qJTK2Lbg959Sb2wOGiy9ubf9tu+nWPd5aoEA=;
+ b=ZUZr1+6HjTEWNI34jhsNJ/eI8SFTYloRVRdXrADMKf/J4LP/KaaMGfxjqzTuZ3JAGa
+ m3Hqmw+lm/aRKmiLCiLgOZ29s4GAKtUA0q/IrKF9L8o36qSuPq2WITr6ZfKdE3Fbw5tX
+ KDIP7MCoC8ClMeyL4zyAiCRF6eN1c85Qm9HFutDzyxmtAbllBo6BkLuFPOtM7U3Osniv
+ d7pPv6TtzYY6GiDDcHAHxltke7Iu7F+m3ZJbnyuP7DOGllbQqCxvBI6bbJk3SeYss4oV
+ sYI2R7LpMRhT4AbGk16U5HGZ2sorKs/FKoETvWn3zn9ojBA0faicd/kDHP9QIkII1NUH
+ M+kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736853942; x=1737458742;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=djprjdiDqspsX8wn/1ny8XGbs6DP6kUUIR1JL9po5/0=;
- b=qCslIVmwFm1f2wqJtdyIUSghfZPaASnqpXnFlhv/YTGg4pPcDKe3d71Ph81VT5ArOp
- gUWldZk2oPBHJ2QKE+ZyoF0j++HwCBRjwDNxjzucKX2HvCtTKHMCLPkuZupJnlDqyvw3
- HeMbNMDF8Imue9/G1639Mtu8IQehsOIUR1gZYX1EpRcGlVNYnydf8pSQjuOUaI+TojAD
- BFe6naWyCh4CrjL3T5ejbhbpF4Yx8W4HvNGmTbUrBeUjkoc4p0YF91TvjKYExxEzLhWb
- im0AEeosqrytdCBcPTy0y9L7DA2+xrPu3kSvO3sLBrrD7M0rgHlTuzpvHMXsz1aPlfNY
- yoOA==
-X-Gm-Message-State: AOJu0Yyv8M3bmhFZwaUCjmJfUtpgULKFm/awS5GXtXW4NfKmPbTB6qG7
- QV+iMYXrE0+t+ihhG06bKRa3xxHFN6q/3WMVMTZ+TTgMY6f2nSa/AwxHcD8APWc=
-X-Gm-Gg: ASbGncsF/Ve/Uompv+TvyjakkrMczeHpsha+BckLk+R3PbVc0u6fvOxwdGfSYGH7IQE
- QZry5aDXHl5Nof8FeLpOenxN9DcoPVc4r0ec7L+bSL79d9gmlvPYvuNGppEEkvNQC2Mwl1Lzv8v
- y7DpJxD3mZfeVHCqXNOwAnE8pI0Ky/FQvQcrduRjf8+5eufSAfzNqXmceir31jjLfmI66P9KBLy
- zB4CcNbLezaKM2Z9ntflTu5VlD/75HF0A1zIgkVBDctF2MO69jhGuI=
-X-Google-Smtp-Source: AGHT+IFwxCpnCKkVx0D8vHgGEu7IZuMFQqAkf0a/9xkpehDd7ft+m7VnMZWXq/JAHBxU9iv9Vm6TAQ==
-X-Received: by 2002:a05:600c:314b:b0:436:5fc9:30ba with SMTP id
- 5b1f17b1804b1-436e26ebb6fmr109211025e9.29.1736853941795; 
- Tue, 14 Jan 2025 03:25:41 -0800 (PST)
+ d=1e100.net; s=20230601; t=1736854703; x=1737459503;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Ft+gcg+qJTK2Lbg959Sb2wOGiy9ubf9tu+nWPd5aoEA=;
+ b=Q2CzwV0Y1SvLfTNf7+sbYXwHHf9oMGAcvUsVU5lZA9K5VB4HHtVqHgrMUgAmZatLuD
+ +EFKBKhsP8WKKeswqE0Fnmk5eAZ2Zt6J50QMzbtObuumrTKQBXarBUd1BpueIgCwg3Hn
+ 5IMAyJq5BYnoQW0apQ+k3kGzP7asE/S1MdP6VawtAQRVTT8dsn/68qhkDs1v4/yPXgEw
+ W9QmH+DNqw9xEdQDuza2Y7HhqTsI+1smG6KMRKFCbEvzvIxWbT5QI6n5W0w1y3wYLDrL
+ s2NGub30Ryaqz8sJ7PK2jHyYuw/pws52yb6Z1TyhSftHvSp7ByK5ipjSuUF7MejYpDOk
+ WwxQ==
+X-Gm-Message-State: AOJu0Yyd1bsYUq7x4hAiwfQKSkjxA9ZgcdfOEEYFDvT5fgxPYOUyebUN
+ RXy7qHMGBK+SDNaWPaD5SBjwM2i9Vryi+/Vcjr20UmfTwX0oR1Y14ybuLqG6m5A=
+X-Gm-Gg: ASbGnctwBkO0JCP5+24Cmoe9yGqqZb4vjnxR97tbnRkph8y5Wsv7iNFF3lr3Nm0/2d6
+ IVHuvzdiAatYWvHZ389lA0+oHNqp7HNyEiaIeDlUPwDSDr3HDCPF3XeN4wipxX4SJHsfJQydwbx
+ 7h4EL+cg/et9PSyU+1q97lKxX2Veu08xOjCyG5bavYijPoU4vmO0jb5vuEcgh2e1TN3b9wYcn2+
+ B7r//Ymf3Hj4bKMJ21FjPO3VyV4sJN3q9HMcM+EslasYxI2vu3UOY8=
+X-Google-Smtp-Source: AGHT+IENHjS0/+IvY4KCOBilv8+fpPOfhGOTVoRJT1dtSOpuuDrh7Ap8Bph0cwh4TsNpPVO0rZ7OpA==
+X-Received: by 2002:a17:907:96a7:b0:aa6:2c18:aaa2 with SMTP id
+ a640c23a62f3a-ab2ab73e7dbmr2215522966b.27.1736854703207; 
+ Tue, 14 Jan 2025 03:38:23 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e2e8bea5sm205895255e9.31.2025.01.14.03.25.41
+ a640c23a62f3a-ab2c90da2c8sm626466166b.62.2025.01.14.03.38.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Jan 2025 03:25:41 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 580185F89C;
- Tue, 14 Jan 2025 11:25:40 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org,  manos.pitsidianakis@linaro.org,  Andrew
- Melnychenko <andrew@daynix.com>,  Thomas Huth <thuth@redhat.com>,  Michael
- Roth <michael.roth@amd.com>,  qemu-block@nongnu.org,  Jason Wang
- <jasowang@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Yuri
- Benditovich <yuri.benditovich@daynix.com>,  Kevin Wolf <kwolf@redhat.com>,
- Peter Xu <peterx@redhat.com>,  qemu-arm@nongnu.org,  Peter Maydell
- <peter.maydell@linaro.org>,  philmd@linaro.org,  Fabiano Rosas
- <farosas@suse.de>,  Konstantin Kostiuk <kkostiuk@redhat.com>,  Eric Blake
- <eblake@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Vladimir
- Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,  Markus Armbruster
- <armbru@redhat.com>,  gustavo.romero@linaro.org,  Richard Henderson
- <richard.henderson@linaro.org>
-Subject: Re: [PATCH v4 0/6] Enhance documentation for new developers
-In-Reply-To: <20241209183104.365796-1-pierrick.bouvier@linaro.org> (Pierrick
- Bouvier's message of "Mon, 9 Dec 2024 10:30:58 -0800")
-References: <20241209183104.365796-1-pierrick.bouvier@linaro.org>
-User-Agent: mu4e 1.12.8; emacs 29.4
-Date: Tue, 14 Jan 2025 11:25:40 +0000
-Message-ID: <878qrdk56z.fsf@draig.linaro.org>
+ Tue, 14 Jan 2025 03:38:22 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id C29CA5F89C;
+ Tue, 14 Jan 2025 11:38:21 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Stefan Weil <sw@weilnetz.de>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v2 00/37] maintainer updates for jan '25 (semihosting, gdb,
+ plugins, docs) pre-PR
+Date: Tue, 14 Jan 2025 11:37:44 +0000
+Message-Id: <20250114113821.768750-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,28 +100,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
+This covers my remaining trees outside of testing/next and is mostly a
+consolidation of patches I've pulled from other people.
 
-> This series extends our documentation with new pages to help developers
-> onboarding on QEMU. It focuses on providing a big picture of QEMU (to a
-> modest extend).
->
-<snip>
->
-> Pierrick Bouvier (6):
->   docs/devel: remove dead video link for sourcehut submit process
+For semihosting:
 
-This was already merged.
+  - a bunch of cleanups from Philippe to aide single binary builds
 
->   docs/devel: add git-publish for patch submitting
->   docs/devel: add b4 for patch retrieval
->   docs/devel: add information on how to setup build environments
->   docs: add a codebase section
->   docs: add a glossary
+For gdbstub (touches system/vl.c as well):
 
-Queued to maintainer/jan-2025 and docs/next, thanks.
+  - propagate *Error to setup functions
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+For plugins
+
+  - mostly fixes from Pierrick
+  - a speculative fix for cpu_io_recompile() case exposed by Julian's
+    discontinuity patches.
+  - windows clang build fixes
+
+For docs (new for v2)
+
+  - Some old docs/next I found in my tree
+  - A dependency fix to ensure we rebuild if we change the kdoc script
+  - Pierrick's devel updates
+
+Additional (new for v2)
+
+  - optimising the nsis.py script from Stefan
+
+Most are already reviewed, the following remain:
+
+  docs/sphinx: include kernel-doc script as a dependency
+  include/exec: fix some copy and paste errors in kdoc
+  tests/qtest: fix some copy and paste errors in kdoc
+  editorconfig: update for perl scripts
+  plugins: fix kdoc annotation
+
+Now testing/next is merged I'll cut a PR for this on Friday. I suspect
+I'll do another gdbstub/next once this is merged. I don't think I have
+anything else pending but do shout if there is.
+
+Alex.
+
+Alex Bennée (11):
+  semihosting: add guest_error logging for failed opens
+  system/vl: more error exit into config enumeration code
+  system: squash usb_parse into a single function
+  system: propagate Error to gdbserver_start (and other device setups)
+  accel/tcg: also suppress asynchronous IRQs for cpu_io_recompile
+  plugins: fix kdoc annotation
+  editorconfig: update for perl scripts
+  tests/qtest: fix some copy and paste errors in kdoc
+  include/exec: fix some copy and paste errors in kdoc
+  include/exec: remove warning_printed from MemoryRegion
+  docs/sphinx: include kernel-doc script as a dependency
+
+Philippe Mathieu-Daudé (6):
+  semihosting/uaccess: Briefly document returned values
+  semihosting/syscalls: Include missing 'exec/cpu-defs.h' header
+  semihosting/uaccess: Include missing 'exec/cpu-all.h' header
+  semihosting/arm-compat: Include missing 'cpu.h' header
+  semihosting/console: Avoid including 'cpu.h'
+  semihosting/meson: Build config.o and console.o once
+
+Pierrick Bouvier (19):
+  tests/tcg/plugins/insn: remove unused callback parameter
+  contrib/plugins/howvec: ensure we don't regress if this plugin is
+    extended
+  tests/tcg/plugins/syscall: fix 32-bit build
+  tests/tcg/plugins/mem: fix 32-bit build
+  contrib/plugins/stoptrigger: fix 32-bit build
+  contrib/plugins/cache: fix 32-bit build
+  contrib/plugins/hotblocks: fix 32-bit build
+  contrib/plugins/cflow: fix 32-bit build
+  contrib/plugins/hwprofile: fix 32-bit build
+  contrib/plugins/hotpages: fix 32-bit build
+  configure: reenable plugins by default for 32-bit hosts
+  win32: remove usage of attribute gcc_struct
+  docs/devel/style: add a section about bitfield, and disallow them for
+    packed structures
+  plugins: enable linking with clang/lld
+  docs/devel: add git-publish for patch submitting
+  docs/devel: add b4 for patch retrieval
+  docs/devel: add information on how to setup build environments
+  docs: add a codebase section
+  docs: add a glossary
+
+Stefan Weil (1):
+  scripts/nsis.py: Run dependency check for each DLL file only once
+
+ docs/about/build-platforms.rst            |   4 +-
+ docs/about/emulation.rst                  |   2 +
+ docs/devel/build-environment.rst          | 118 +++++++++
+ docs/devel/codebase.rst                   | 220 +++++++++++++++++
+ docs/devel/control-flow-integrity.rst     |   2 +
+ docs/devel/decodetree.rst                 |   2 +
+ docs/devel/ebpf_rss.rst                   |   2 +
+ docs/devel/index-build.rst                |   1 +
+ docs/devel/index-internals.rst            |   2 +
+ docs/devel/index.rst                      |   1 +
+ docs/devel/migration/main.rst             |   2 +
+ docs/devel/multi-thread-tcg.rst           |   2 +
+ docs/devel/qapi-code-gen.rst              |   1 +
+ docs/devel/style.rst                      |  20 ++
+ docs/devel/submitting-a-patch.rst         |  39 +++
+ docs/devel/testing/main.rst               |   9 +-
+ docs/devel/testing/qtest.rst              |   2 +
+ docs/glossary.rst                         | 280 ++++++++++++++++++++++
+ docs/index.rst                            |   3 +
+ docs/interop/qemu-ga.rst                  |   2 +
+ docs/sphinx/depfile.py                    |   3 +
+ docs/system/arm/virt.rst                  |   2 +
+ docs/system/images.rst                    |   2 +
+ docs/system/qemu-block-drivers.rst.inc    |   2 +
+ docs/tools/qemu-nbd.rst                   |   2 +
+ docs/tools/qemu-storage-daemon.rst        |   2 +
+ docs/user/main.rst                        |   6 +
+ configure                                 |  21 +-
+ meson.build                               |   6 +-
+ include/exec/gdbstub.h                    |   8 +-
+ include/exec/memory.h                     |   5 +-
+ include/qemu/compiler.h                   |   7 +-
+ include/qemu/qemu-plugin.h                |   2 +-
+ include/semihosting/console.h             |   2 -
+ include/semihosting/syscalls.h            |   1 +
+ include/semihosting/uaccess.h             |  55 +++++
+ scripts/cocci-macro-file.h                |   6 +-
+ subprojects/libvhost-user/libvhost-user.h |   6 +-
+ tests/qtest/libqos/qgraph.h               |   2 +-
+ tests/qtest/libqtest.h                    |   6 +-
+ accel/tcg/translate-all.c                 |   5 +-
+ contrib/plugins/cache.c                   |  18 +-
+ contrib/plugins/cflow.c                   |  17 +-
+ contrib/plugins/hotblocks.c               |  29 ++-
+ contrib/plugins/hotpages.c                |   6 +-
+ contrib/plugins/howvec.c                  |   7 +-
+ contrib/plugins/hwprofile.c               |  27 ++-
+ contrib/plugins/stoptrigger.c             |  48 ++--
+ gdbstub/system.c                          |  22 +-
+ gdbstub/user.c                            |  20 +-
+ linux-user/main.c                         |   6 +-
+ monitor/hmp-cmds.c                        |   2 +-
+ semihosting/arm-compat-semi.c             |   1 +
+ semihosting/console.c                     |   3 +-
+ semihosting/syscalls.c                    |   2 +
+ semihosting/uaccess.c                     |   1 +
+ system/vl.c                               |  99 ++++----
+ tests/tcg/plugins/insn.c                  |   4 +-
+ tests/tcg/plugins/mem.c                   |   6 +-
+ tests/tcg/plugins/syscall.c               |   6 +-
+ .editorconfig                             |  13 +
+ contrib/plugins/meson.build               |   2 +-
+ plugins/meson.build                       |  24 +-
+ scripts/nsis.py                           |  10 +-
+ semihosting/meson.build                   |   9 +-
+ tests/tcg/plugins/meson.build             |   3 +-
+ 66 files changed, 1027 insertions(+), 223 deletions(-)
+ create mode 100644 docs/devel/build-environment.rst
+ create mode 100644 docs/devel/codebase.rst
+ create mode 100644 docs/glossary.rst
+
+-- 
+2.39.5
+
 
