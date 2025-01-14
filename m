@@ -2,92 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95056A105B8
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 12:41:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 351BCA105C5
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 12:43:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXfG0-0005Fp-Hb; Tue, 14 Jan 2025 06:38:52 -0500
+	id 1tXfIx-0006Ys-HD; Tue, 14 Jan 2025 06:41:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tXfFm-000588-D0
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:39 -0500
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1tXfIn-00066h-O4
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:41:47 -0500
+Received: from mail-qt1-x82e.google.com ([2607:f8b0:4864:20::82e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tXfFk-0005S0-IN
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:37 -0500
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-aaeec07b705so853684266b.2
- for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 03:38:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1tXfIm-000692-0G
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:41:45 -0500
+Received: by mail-qt1-x82e.google.com with SMTP id
+ d75a77b69052e-467b955e288so58210681cf.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 03:41:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736854715; x=1737459515; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1736854902; x=1737459702; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mDXNnBxwJoyhgKzJMRdJdgCJlpb7weenjpk6uMi/xEU=;
- b=vkTjeihMvfC4FGejwkazgVoEKymzwpqpuWa3w07fd0bgaR6WDu+E6to/KEyd9gzEsl
- MABI18ivqvfchtdXMjdnMeGlDLP5YrUS8xOXg5WKHgVedMNHjoULAkGdN8nY1Nja4Kt/
- Obh3L72pJ/KByXixjHMzxY2+iTC9x6DsGuyn+Fg35A3dUD8NDmWEf/sf4milb8gKMPzF
- AQXug/vyhaSJbISRCDKs5Ca9V2lCwmCvNROm8n7HxumuYkYfDRfXomc0lQXshq4aPzHA
- TmGbt+Mo0Ke+9knATJub2MjlMimWr1qjISST/TAM7o+M3RgAuz5IehwwWVDgzuQo7bVA
- 4+WA==
+ bh=TcWFQyhNc6naKavdeUrSg2t59/lqijn7V6MfrdULN8M=;
+ b=Fg6SshBJztq+PPHPdx6IuCgfRDTUWrL0ruTHZy9U+Rk/6fwgUQKGFGNizd+lvOxJTw
+ xKTHh56kug9tbAjLzNVZmGmapr3RLJsRiHzQldRFq7beRPk7Y2KC0F91cxQnlBHYaLZi
+ Qt8zKusawy8M/kqd0ASKMxOu2KJW6RfE4DH0bBcrM8nazBiVfKIYn3Brzu37trzhkMIa
+ kNvp249bX/B4oSuywNUjy2Ycy6o6T8haZVEdwy9aK/Hzmccmk5+v3ZQU2HI5IRf3Sj/V
+ uCmNSWb4OxLveLSmpGmp7eUuYK9+z1YCpFFGKOeI91q8zJuxRgkpUsQbbYobbHkJ20oq
+ ldGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736854715; x=1737459515;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1736854902; x=1737459702;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mDXNnBxwJoyhgKzJMRdJdgCJlpb7weenjpk6uMi/xEU=;
- b=b/cRkFd5ly+l7+XU8L6Ch66EeFQKoOtPK2O81i8ONFggVVSU1OoLgSug+Kwrg51q2Z
- 8YE/GvKIhiJTzcSSheK7vvJ3KraAgF3BWy0LBBt0Rt9ieGEkVJsPZm8gH0QgygHkTvLW
- kbdRTB0YgqXxGEYYYV0wBJoGfQj/JmNchk3fwqc+jixSR7NhKLHrOsIujaVPhHfF19Np
- S7jpbCC6pZx9ArQO0ZuD5ajnHoqEJWCkBtX0p32AArTr6jJubYm9Vy9LRkmi9Iwiz0RP
- HvXkyfgRiBikrm6/f8Bih2oS5DR/DsKQ4YTuFJURIRSMu53oIz/RH0psUvWSfrnVJVvf
- i46Q==
-X-Gm-Message-State: AOJu0YzgvSIa4EmKNFA/06IB4VgcgdS2/Pkned+fCV9xxSDYR2j2N8cU
- adeMKIjqCIy2P4IqRdTMfqolCFn/VESM05kDb4bN4UBdFFwds7g5iD7TvvTDmetTuJE8z1AmHbT
- LcxQ=
-X-Gm-Gg: ASbGncu2EsmvLGiTYHfmVCwOVWHCt/0PYeBBq1RVgijl1KpHSbXka6KI06+iXSbALC7
- gI23yRprVTu0b8Dybl7v4LDwCMNFb6wqx/Bd3GuuqBAjYdoePybJ84d2yBXI1M66Bbt2lVA0HtR
- DR/fhNZ5IQ5d6uctyiWfQ0kYM98dCT2BRI4cnYzfEAf54z8dWDKJY6a/Ezz1csNaEnlbYw2ewu1
- Ol4VpnH1c25/ggIyxlpGFV4rR/8D971IiuEDcEfOUOMwYEcpmJmCss=
-X-Google-Smtp-Source: AGHT+IF6AB4hDlV3ZMwbBiLRdFpJ3HRrXBR/Mqiw9QdIMEd/dgQJvlBSQa1OVcSy6eSzrw6MVORGlQ==
-X-Received: by 2002:a17:907:96a0:b0:aa6:87e8:1d08 with SMTP id
- a640c23a62f3a-ab2ab6bffc3mr1834463066b.8.1736854715006; 
- Tue, 14 Jan 2025 03:38:35 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c9060b9dsm621953966b.4.2025.01.14.03.38.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Jan 2025 03:38:33 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 6397D5F8B5;
- Tue, 14 Jan 2025 11:38:25 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Weil <sw@weilnetz.de>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>
-Subject: [PATCH v2 37/37] scripts/nsis.py: Run dependency check for each DLL
- file only once
-Date: Tue, 14 Jan 2025 11:38:21 +0000
-Message-Id: <20250114113821.768750-38-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250114113821.768750-1-alex.bennee@linaro.org>
-References: <20250114113821.768750-1-alex.bennee@linaro.org>
+ bh=TcWFQyhNc6naKavdeUrSg2t59/lqijn7V6MfrdULN8M=;
+ b=VT/2K9u8qEnIoqBx3u2p3vNRc3IlCtPMv7XOk7eT+ZnMJq5stak+sj+P6wHoel6YCY
+ qtbCSbKMjPYGexRmv+hiaBwlkeTz14rm3UdJO0J27CA/0sasB0V2EJqu48/zBBZNn2v9
+ 7Ls8CPmANNXhoSVZqoO09Lwbu7dq0bgb+mSuOFHotMyvn25GWJppDbwHHw3huyknrxhT
+ jZCEgv3h9UINTFTaAf3U5GquIoEWVPmeogYlEG6L+fg1/zf6u2R/lTgfF1NxjEf+3y1d
+ LkwfsaLvvxTrJrSQOS+6ZTUY2totevqB8ztCVZGEIr9UVfxTv8Fd17dhzfWlWOhmE1Sc
+ DLUQ==
+X-Gm-Message-State: AOJu0YwwC6q+RIo7hNUjku1PmCmBz9w/YMbe0bY6lkdEQCTb4L/53O8T
+ OOg5cL0o2FRxqfsxvk4HLGHsAs4GllJocdk2oWfH1eU7/Xi9zP4wnD2seal3IL1gJYJ6FXhIv4q
+ k7cQR0iWwK1uU0WWdZGifqGnHgQZX3ADC
+X-Gm-Gg: ASbGncvxDOeA00/uTuVKgLXj5LLKIK/lY6+rz4iGzY3a8+IBGOLCGeDgEw3UeP+K/ME
+ GQqMwh+x116TuAE+Y22nygY50My0JaE1ZnDg9
+X-Google-Smtp-Source: AGHT+IHSYijrmfFi/N48oTc9SsZFL5sK3crICAcDoeIZFa4qme6MxIOXYS5u76CVctBw5pz8WyBLEJAEMIV3C4KzmSo=
+X-Received: by 2002:ac8:594d:0:b0:466:8cc1:6221 with SMTP id
+ d75a77b69052e-46c7109ddd9mr394651451cf.50.1736854901961; Tue, 14 Jan 2025
+ 03:41:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x634.google.com
+References: <20250114104753.2612342-1-marcandre.lureau@redhat.com>
+In-Reply-To: <20250114104753.2612342-1-marcandre.lureau@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 14 Jan 2025 15:41:30 +0400
+X-Gm-Features: AbW1kvaa6A3BabSxoJyF1JOCWlk6pHSw6spRS3Djvg_HLeCQtb6DlVWRR-RBjME
+Message-ID: <CAJ+F1CK+9hcNc_2_ZtPGszOK+3dudkCkOcfxjKk_mDUA67yaag@mail.gmail.com>
+Subject: Re: [PATCH] ui/dbus: on win32, allow ANONYMOUS with p2p
+To: qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82e;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,62 +93,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Weil via <qemu-devel@nongnu.org>
+On Tue, Jan 14, 2025 at 2:50=E2=80=AFPM <marcandre.lureau@redhat.com> wrote=
+:
+>
+> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>
+> GLib doesn't implement EXTERNAL on win32 at the moment, and disables
+> ANONYMOUS by default. zbus dropped support for COOKIE_SHA1 in 5.0,
+> making it no longer possible to connect to qemu -display dbus.
+>
+> Since p2p connections are gated by existing QMP (or a D-Bus connection),
+> qemu -display dbus p2p can accept authentication with ANONYMOUS.
+>
+> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+....
 
-Each DLL should only be checked once for dependencies, but
-several hundred (781 in my test) unneeded checks were done.
+> diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
+> index b6a65806bc..9ad3f70bde 160000
+> --- a/tests/lcitool/libvirt-ci
+> +++ b/tests/lcitool/libvirt-ci
+> @@ -1 +1 @@
+> -Subproject commit b6a65806bc9b2b56985f5e97c936b77c7e7a99fc
+> +Subproject commit 9ad3f70bde9865d5ad18f36d256d472e72b5cbf3
+> --
 
-Now the script is significantly faster (16 s in my build).
+bad submodule update, my bad.
 
-Signed-off-by: Stefan Weil <sw@weilnetz.de>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20250111215244.1680931-1-sw@weilnetz.de>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- scripts/nsis.py | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/scripts/nsis.py b/scripts/nsis.py
-index 03ed7608a2..af4e064819 100644
---- a/scripts/nsis.py
-+++ b/scripts/nsis.py
-@@ -37,10 +37,10 @@ def find_deps(exe_or_dll, search_path, analyzed_deps):
- 
-         analyzed_deps.add(dep)
-         # locate the dll dependencies recursively
--        rdeps = find_deps(dll, search_path, analyzed_deps)
-+        analyzed_deps, rdeps = find_deps(dll, search_path, analyzed_deps)
-         deps.extend(rdeps)
- 
--    return deps
-+    return analyzed_deps, deps
- 
- def main():
-     parser = argparse.ArgumentParser(description="QEMU NSIS build helper.")
-@@ -92,18 +92,18 @@ def main():
-         dlldir = os.path.join(destdir + prefix, "dll")
-         os.mkdir(dlldir)
- 
-+        analyzed_deps = set()
-         for exe in glob.glob(os.path.join(destdir + prefix, "*.exe")):
-             signcode(exe)
- 
-             # find all dll dependencies
--            deps = set(find_deps(exe, search_path, set()))
-+            analyzed_deps, deps = find_deps(exe, search_path, analyzed_deps)
-+            deps = set(deps)
-             deps.remove(exe)
- 
-             # copy all dlls to the DLLDIR
-             for dep in deps:
-                 dllfile = os.path.join(dlldir, os.path.basename(dep))
--                if (os.path.exists(dllfile)):
--                    continue
-                 print("Copying '%s' to '%s'" % (dep, dllfile))
-                 shutil.copy(dep, dllfile)
- 
--- 
-2.39.5
-
+--=20
+Marc-Andr=C3=A9 Lureau
 
