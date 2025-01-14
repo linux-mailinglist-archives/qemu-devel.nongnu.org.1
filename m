@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B0C1A10D9B
+	by mail.lfdr.de (Postfix) with ESMTPS id 21669A10D9C
 	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 18:25:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXkeK-0004lm-2B; Tue, 14 Jan 2025 12:24:20 -0500
+	id 1tXkeK-0004m1-Ok; Tue, 14 Jan 2025 12:24:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tXke9-0004k9-Sy
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 12:24:10 -0500
+ id 1tXkeC-0004kb-J0
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 12:24:13 -0500
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tXke8-0004Q8-3f
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 12:24:09 -0500
+ id 1tXke9-0004RI-KT
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 12:24:11 -0500
 Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50EC1Jif021418;
- Tue, 14 Jan 2025 17:24:06 GMT
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50EC1Jig021418;
+ Tue, 14 Jan 2025 17:24:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=Y16K6/eVE5VM03T8KQdxgNL/j9U5bX5Bd/s6nllMzko=; b=
- BFbRktD3UKoQogCrQSV+c4U7OMa4jLdPYEW6mqEqytK2xHDCspNs8BLfwwBkKq87
- oDbYEeBdudyrlfQd2gqJ1uD/nzv6xqzrH/HhUY7/cbp6q636uwSVoqF0/W3Ja2Vj
- htLV1iXi+diXEZuq3y9AwiIWHic+ixbsmsbAqcCK9yqfxP1c4KidHPnnknba0bug
- /+aWqn/gwMtJjtbbs4Ot+XnSRv43frcwc0ccAibMk6ylAJlQ2TuySPiuTr+kOsSM
- Y3cSEsmeaKhPUmiG5c2n0nNSJuDnEqKjLdhzAFLjcOID6+1fWCXxHLp2x37MDR2h
- h8DVXv8tCyO+aXXhGEmb5g==
+ corp-2023-11-20; bh=suvOzlC5rmbwSVpgbiHlcYi9rem2fvXpQ11p7DNzeB0=; b=
+ lXxscgP6ZTOhe2FxziZipIr0Xn5UIvpq+6Tr/VKLCMdS15xO/eFjuMZQEsH5qyo9
+ ELGGaXapdKKw2AjhBEAw1KHONPUigohzGJMAKEc3wVYxOEKb7TcplPXoByJHCvIA
+ AhR/lVUO6rp/0Bj76YBFXfgpjFXuh/YN/yMN25HT4ZweupLVhiNqJN9jcOZQpsak
+ vRnsUclZWE2cAwpUqnFOvyx4jYVsewyQ3VlVA552mpCKw580FC32cMNvA5IKJmAa
+ PP4pR+chprm1iN4/mCka7+M1mSL62Drwhr1vurKbm3yzVZFOZx4BZktKMaZ2kZD8
+ 4Kd6q9vy9zaT+SIh/TM2gg==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 443gpcpc08-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 443gpcpc09-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 14 Jan 2025 17:24:05 +0000 (GMT)
+ Tue, 14 Jan 2025 17:24:07 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 50EG2QTc020265; Tue, 14 Jan 2025 17:24:05 GMT
+ with ESMTP id 50EFjJh7020272; Tue, 14 Jan 2025 17:24:06 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 443f3eq642-1
+ 443f3eq65m-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 14 Jan 2025 17:24:05 +0000
+ Tue, 14 Jan 2025 17:24:06 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 50EHNtXa013352;
- Tue, 14 Jan 2025 17:24:04 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 50EHNtXc013352;
+ Tue, 14 Jan 2025 17:24:05 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 443f3eq5us-4; Tue, 14 Jan 2025 17:24:04 +0000
+ ESMTP id 443f3eq5us-5; Tue, 14 Jan 2025 17:24:05 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,9 +62,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V6 03/24] physmem: qemu_ram_alloc_from_fd extensions
-Date: Tue, 14 Jan 2025 09:23:33 -0800
-Message-Id: <1736875434-106563-4-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V6 04/24] physmem: fd-based shared memory
+Date: Tue, 14 Jan 2025 09:23:34 -0800
+Message-Id: <1736875434-106563-5-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1736875434-106563-1-git-send-email-steven.sistare@oracle.com>
 References: <1736875434-106563-1-git-send-email-steven.sistare@oracle.com>
@@ -76,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
  suspectscore=0 phishscore=0 malwarescore=0 mlxscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
  definitions=main-2501140133
-X-Proofpoint-GUID: pjEL-XeSBbqPSu_4jSZFdRC3vDQwKDWX
-X-Proofpoint-ORIG-GUID: pjEL-XeSBbqPSu_4jSZFdRC3vDQwKDWX
+X-Proofpoint-GUID: d-Jlms5o0UUui1cff1sNOqPibz8PpQVP
+X-Proofpoint-ORIG-GUID: d-Jlms5o0UUui1cff1sNOqPibz8PpQVP
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -103,177 +103,173 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extend qemu_ram_alloc_from_fd to support resizable ram, and define
-qemu_ram_resize_cb to clean up the API.
+Create MAP_SHARED RAMBlocks by mmap'ing a file descriptor rather than using
+MAP_ANON, so the memory can be accessed in another process by passing and
+mmap'ing the fd.  This will allow CPR to support memory-backend-ram and
+memory-backend-shm objects, provided the user creates them with share=on.
 
-Add a grow parameter to extend the file if necessary.  However, if
-grow is false, a zero-sized file is always extended.
+Use memfd_create if available because it has no constraints.  If not, use
+POSIX shm_open.  However, allocation on the opened fd may fail if the shm
+mount size is too small, even if the system has free memory, so for backwards
+compatibility fall back to qemu_anon_ram_alloc/MAP_ANON on failure.
+
+For backwards compatibility on Windows, always use MAP_ANON.  share=on has
+no purpose there, but the syntax is accepted, and must continue to work.
+
+Lastly, quietly fall back to MAP_ANON if the system does not support
+qemu_ram_alloc_from_fd.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- include/exec/ram_addr.h | 13 +++++++++----
- system/memory.c         |  4 ++--
- system/physmem.c        | 35 ++++++++++++++++++++---------------
- 3 files changed, 31 insertions(+), 21 deletions(-)
+ system/physmem.c    | 57 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ system/trace-events |  1 +
+ util/memfd.c        | 16 ++++++++++++---
+ 3 files changed, 70 insertions(+), 4 deletions(-)
 
-diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
-index ff157c1..94bb3cc 100644
---- a/include/exec/ram_addr.h
-+++ b/include/exec/ram_addr.h
-@@ -111,23 +111,30 @@ long qemu_maxrampagesize(void);
-  *
-  * Parameters:
-  *  @size: the size in bytes of the ram block
-+ *  @max_size: the maximum size of the block after resizing
-  *  @mr: the memory region where the ram block is
-+ *  @resized: callback after calls to qemu_ram_resize
-  *  @ram_flags: RamBlock flags. Supported flags: RAM_SHARED, RAM_PMEM,
-  *              RAM_NORESERVE, RAM_PROTECTED, RAM_NAMED_FILE, RAM_READONLY,
-  *              RAM_READONLY_FD, RAM_GUEST_MEMFD
-  *  @mem_path or @fd: specify the backing file or device
-  *  @offset: Offset into target file
-+ *  @grow: extend file if necessary (but an empty file is always extended).
-  *  @errp: pointer to Error*, to store an error if it happens
-  *
-  * Return:
-  *  On success, return a pointer to the ram block.
-  *  On failure, return NULL.
-  */
-+typedef void (*qemu_ram_resize_cb)(const char *, uint64_t length, void *host);
-+
- RAMBlock *qemu_ram_alloc_from_file(ram_addr_t size, MemoryRegion *mr,
-                                    uint32_t ram_flags, const char *mem_path,
-                                    off_t offset, Error **errp);
--RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
-+RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, ram_addr_t max_size,
-+                                 qemu_ram_resize_cb resized, MemoryRegion *mr,
-                                  uint32_t ram_flags, int fd, off_t offset,
-+                                 bool grow,
-                                  Error **errp);
- 
- RAMBlock *qemu_ram_alloc_from_ptr(ram_addr_t size, void *host,
-@@ -135,9 +142,7 @@ RAMBlock *qemu_ram_alloc_from_ptr(ram_addr_t size, void *host,
- RAMBlock *qemu_ram_alloc(ram_addr_t size, uint32_t ram_flags, MemoryRegion *mr,
-                          Error **errp);
- RAMBlock *qemu_ram_alloc_resizeable(ram_addr_t size, ram_addr_t max_size,
--                                    void (*resized)(const char*,
--                                                    uint64_t length,
--                                                    void *host),
-+                                    qemu_ram_resize_cb resized,
-                                     MemoryRegion *mr, Error **errp);
- void qemu_ram_free(RAMBlock *block);
- 
-diff --git a/system/memory.c b/system/memory.c
-index b17b553..4c82979 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -1680,8 +1680,8 @@ bool memory_region_init_ram_from_fd(MemoryRegion *mr,
-     mr->readonly = !!(ram_flags & RAM_READONLY);
-     mr->terminates = true;
-     mr->destructor = memory_region_destructor_ram;
--    mr->ram_block = qemu_ram_alloc_from_fd(size, mr, ram_flags, fd, offset,
--                                           &err);
-+    mr->ram_block = qemu_ram_alloc_from_fd(size, size, NULL, mr, ram_flags, fd,
-+                                           offset, false, &err);
-     if (err) {
-         mr->size = int128_zero();
-         object_unparent(OBJECT(mr));
 diff --git a/system/physmem.c b/system/physmem.c
-index 792844d..4d13761 100644
+index 4d13761..e435564 100644
 --- a/system/physmem.c
 +++ b/system/physmem.c
-@@ -1942,8 +1942,10 @@ out_free:
- }
- 
- #ifdef CONFIG_POSIX
--RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
-+RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, ram_addr_t max_size,
-+                                 qemu_ram_resize_cb resized, MemoryRegion *mr,
-                                  uint32_t ram_flags, int fd, off_t offset,
-+                                 bool grow,
+@@ -48,6 +48,7 @@
+ #include "qemu/qemu-print.h"
+ #include "qemu/log.h"
+ #include "qemu/memalign.h"
++#include "qemu/memfd.h"
+ #include "exec/memory.h"
+ #include "exec/ioport.h"
+ #include "system/dma.h"
+@@ -1948,6 +1949,7 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, ram_addr_t max_size,
+                                  bool grow,
                                   Error **errp)
  {
++    ERRP_GUARD();
      RAMBlock *new_block;
-@@ -1953,7 +1955,9 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
-     /* Just support these ram flags by now. */
-     assert((ram_flags & ~(RAM_SHARED | RAM_PMEM | RAM_NORESERVE |
-                           RAM_PROTECTED | RAM_NAMED_FILE | RAM_READONLY |
--                          RAM_READONLY_FD | RAM_GUEST_MEMFD)) == 0);
-+                          RAM_READONLY_FD | RAM_GUEST_MEMFD |
-+                          RAM_RESIZEABLE)) == 0);
-+    assert(max_size >= size);
+     Error *local_err = NULL;
+     int64_t file_size, file_align;
+@@ -2068,6 +2070,25 @@ RAMBlock *qemu_ram_alloc_from_file(ram_addr_t size, MemoryRegion *mr,
+ }
+ #endif
  
-     if (xen_enabled()) {
-         error_setg(errp, "-mem-path not supported with Xen");
-@@ -1968,13 +1972,15 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
- 
-     size = TARGET_PAGE_ALIGN(size);
-     size = REAL_HOST_PAGE_ALIGN(size);
-+    max_size = TARGET_PAGE_ALIGN(max_size);
-+    max_size = REAL_HOST_PAGE_ALIGN(max_size);
- 
-     file_size = get_file_size(fd);
--    if (file_size && file_size < offset + size) {
-+    if (file_size && file_size < offset + max_size && !grow) {
-         error_setg(errp, "%s backing store size 0x%" PRIx64
-                    " is too small for 'size' option 0x" RAM_ADDR_FMT
-                    " plus 'offset' option 0x%" PRIx64,
--                   memory_region_name(mr), file_size, size,
-+                   memory_region_name(mr), file_size, max_size,
-                    (uint64_t)offset);
-         return NULL;
-     }
-@@ -1990,11 +1996,13 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
-     new_block = g_malloc0(sizeof(*new_block));
-     new_block->mr = mr;
-     new_block->used_length = size;
--    new_block->max_length = size;
-+    new_block->max_length = max_size;
-+    new_block->resized = resized;
-     new_block->flags = ram_flags;
-     new_block->guest_memfd = -1;
--    new_block->host = file_ram_alloc(new_block, size, fd, !file_size, offset,
--                                     errp);
-+    new_block->host = file_ram_alloc(new_block, max_size, fd,
-+                                     file_size < offset + max_size,
-+                                     offset, errp);
-     if (!new_block->host) {
-         g_free(new_block);
-         return NULL;
-@@ -2046,7 +2054,8 @@ RAMBlock *qemu_ram_alloc_from_file(ram_addr_t size, MemoryRegion *mr,
-         return NULL;
-     }
- 
--    block = qemu_ram_alloc_from_fd(size, mr, ram_flags, fd, offset, errp);
-+    block = qemu_ram_alloc_from_fd(size, size, NULL, mr, ram_flags, fd, offset,
-+                                   false, errp);
-     if (!block) {
-         if (created) {
-             unlink(mem_path);
-@@ -2061,9 +2070,7 @@ RAMBlock *qemu_ram_alloc_from_file(ram_addr_t size, MemoryRegion *mr,
- 
++#ifdef CONFIG_POSIX
++/*
++ * Create MAP_SHARED RAMBlocks by mmap'ing a file descriptor, so it can be
++ * shared with another process if CPR is being used.  Use memfd if available
++ * because it has no size limits, else use POSIX shm.
++ */
++static int qemu_ram_get_shared_fd(const char *name, Error **errp)
++{
++    int fd;
++
++    if (qemu_memfd_check(0)) {
++        fd = qemu_memfd_create(name, 0, 0, 0, 0, errp);
++    } else {
++        fd = qemu_shm_alloc(0, errp);
++    }
++    return fd;
++}
++#endif
++
  static
  RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
--                                  void (*resized)(const char*,
--                                                  uint64_t length,
--                                                  void *host),
-+                                  qemu_ram_resize_cb resized,
-                                   void *host, uint32_t ram_flags,
-                                   MemoryRegion *mr, Error **errp)
- {
-@@ -2115,10 +2122,8 @@ RAMBlock *qemu_ram_alloc(ram_addr_t size, uint32_t ram_flags,
- }
+                                   qemu_ram_resize_cb resized,
+@@ -2081,6 +2102,41 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
+     assert((ram_flags & ~(RAM_SHARED | RAM_RESIZEABLE | RAM_PREALLOC |
+                           RAM_NORESERVE | RAM_GUEST_MEMFD)) == 0);
+     assert(!host ^ (ram_flags & RAM_PREALLOC));
++    assert(max_size >= size);
++
++#ifdef CONFIG_POSIX         /* ignore RAM_SHARED for Windows */
++    if (!host) {
++        if (ram_flags & RAM_SHARED) {
++            const char *name = memory_region_name(mr);
++            int fd = qemu_ram_get_shared_fd(name, errp);
++
++            if (fd < 0) {
++                return NULL;
++            }
++
++            /* Use same alignment as qemu_anon_ram_alloc */
++            mr->align = QEMU_VMALLOC_ALIGN;
++
++            /*
++             * This can fail if the shm mount size is too small, or alloc from
++             * fd is not supported, but previous QEMU versions that called
++             * qemu_anon_ram_alloc for anonymous shared memory could have
++             * succeeded.  Quietly fail and fall back.
++             */
++            new_block = qemu_ram_alloc_from_fd(size, max_size, resized, mr,
++                                               ram_flags, fd, 0, false, NULL);
++            if (new_block) {
++                trace_qemu_ram_alloc_shared(name, new_block->used_length,
++                                            new_block->max_length, fd,
++                                            new_block->host);
++                return new_block;
++            }
++
++            close(fd);
++            /* fall back to anon allocation */
++        }
++    }
++#endif
  
- RAMBlock *qemu_ram_alloc_resizeable(ram_addr_t size, ram_addr_t maxsz,
--                                     void (*resized)(const char*,
--                                                     uint64_t length,
--                                                     void *host),
--                                     MemoryRegion *mr, Error **errp)
-+                                    qemu_ram_resize_cb resized,
-+                                    MemoryRegion *mr, Error **errp)
+     align = qemu_real_host_page_size();
+     align = MAX(align, TARGET_PAGE_SIZE);
+@@ -2092,7 +2148,6 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
+     new_block->resized = resized;
+     new_block->used_length = size;
+     new_block->max_length = max_size;
+-    assert(max_size >= size);
+     new_block->fd = -1;
+     new_block->guest_memfd = -1;
+     new_block->page_size = qemu_real_host_page_size();
+diff --git a/system/trace-events b/system/trace-events
+index 5bbc3fb..be12ebf 100644
+--- a/system/trace-events
++++ b/system/trace-events
+@@ -33,6 +33,7 @@ address_space_map(void *as, uint64_t addr, uint64_t len, bool is_write, uint32_t
+ find_ram_offset(uint64_t size, uint64_t offset) "size: 0x%" PRIx64 " @ 0x%" PRIx64
+ find_ram_offset_loop(uint64_t size, uint64_t candidate, uint64_t offset, uint64_t next, uint64_t mingap) "trying size: 0x%" PRIx64 " @ 0x%" PRIx64 ", offset: 0x%" PRIx64" next: 0x%" PRIx64 " mingap: 0x%" PRIx64
+ ram_block_discard_range(const char *rbname, void *hva, size_t length, bool need_madvise, bool need_fallocate, int ret) "%s@%p + 0x%zx: madvise: %d fallocate: %d ret: %d"
++qemu_ram_alloc_shared(const char *name, size_t size, size_t max_size, int fd, void *host) "%s size %zu max_size %zu fd %d host %p"
+ 
+ # cpus.c
+ vm_stop_flush_all(int ret) "ret %d"
+diff --git a/util/memfd.c b/util/memfd.c
+index 8a2e906..07beab1 100644
+--- a/util/memfd.c
++++ b/util/memfd.c
+@@ -194,17 +194,27 @@ bool qemu_memfd_alloc_check(void)
+ /**
+  * qemu_memfd_check():
+  *
+- * Check if host supports memfd.
++ * Check if host supports memfd.  Cache the answer for the common case flags=0.
+  */
+ bool qemu_memfd_check(unsigned int flags)
  {
-     return qemu_ram_alloc_internal(size, maxsz, resized, NULL,
-                                    RAM_RESIZEABLE, mr, errp);
+ #ifdef CONFIG_LINUX
+-    int mfd = memfd_create("test", flags | MFD_CLOEXEC);
++    int mfd;
++    static int memfd_check = MEMFD_TODO;
+ 
++    if (!flags && memfd_check != MEMFD_TODO) {
++        return memfd_check;
++    }
++
++    mfd = memfd_create("test", flags | MFD_CLOEXEC);
+     if (mfd >= 0) {
+         close(mfd);
+-        return true;
+     }
++    if (!flags) {
++        memfd_check = (mfd >= 0) ? MEMFD_OK : MEMFD_KO;
++    }
++    return (mfd >= 0);
++
+ #endif
+ 
+     return false;
 -- 
 1.8.3.1
 
