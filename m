@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B783FA105CF
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 12:47:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3ABCA105A2
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 12:39:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXfOC-0004Ls-Bq; Tue, 14 Jan 2025 06:47:20 -0500
+	id 1tXfFz-0005FY-U7; Tue, 14 Jan 2025 06:38:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tXfNp-0004KY-Cl
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:46:58 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1tXfFm-000586-B8
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:39 -0500
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tXfNn-0006eC-C0
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:46:57 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4361e89b6daso38362725e9.3
- for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 03:46:54 -0800 (PST)
+ id 1tXfFk-0005Rw-6G
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:37 -0500
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3d0205bd5so8202267a12.3
+ for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 03:38:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736855214; x=1737460014; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736854715; x=1737459515; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=E36UvEspsa4mA6pTf+HFiwfFj5ukjbDFpFJX/Z8z6wQ=;
- b=RXyXKs29vn7XmlNwu70R7mfWR/vdkzTiX9zl9PtrF5xBHnkIBFVW5Bh27qFhmZ9Ive
- plnCqQO1nmbtCIDnjqyt0+0tuKhzkdVOz/eSt+yF7kwJMjKDSdcJNUNXD4cATpdP9tjl
- 6vb6BSaUQWiIOE+3SuLyFyCLamKwKsKt/esNHcUQ8EKQQPxbUTLIEyzRBsl33FmHRZUt
- V9BO6LSHddARvRqFPno0FncYhSx2944Wp0nRAS3v1lz07qJ8pvg6G++acP9w1vPAX2zQ
- ODJfo4WzsTRkECYdvDac3jtf2YnDWxPq0OO6IbHqS1vvrqrJ27mur+lRyUZqZJHyJC0/
- ZIKQ==
+ bh=Rem+PqKJwtTryCp5+P2h89dN9I6AHO+TdjB2QsczI6k=;
+ b=HCwijRHQX4KtBUQ1rV9vfaEQA0knAV31yJpJI9J9JpCyWV4c6oBsWbXpRpXjrX/03N
+ vTWCEttGgS2lt/fDSRqUrXS9dIU95Tufklr84u48zXYLr6xMMVJBiL7txgE/2dYpJs7k
+ Zq/8IqsZJMWvy/umXOIKXH7EsLxUv4ho0mW9fR5nZjrmjSwrK+pSuP9dAX7ukZkfGn6g
+ /xAjaP6INOlCFrrffg3aNXKmwH6r0MLkdVPlC4erHFzIOmWoot4JERSJEsZZM3+dzANu
+ UCiIQ3NgtHRGQg70NO3MU1Ias5orWZqkknjAwk/e4EqctyxUcOAsfde1RB6hEEs2zd/O
+ RE3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736855214; x=1737460014;
+ d=1e100.net; s=20230601; t=1736854715; x=1737459515;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=E36UvEspsa4mA6pTf+HFiwfFj5ukjbDFpFJX/Z8z6wQ=;
- b=E2q/pyKcFagFuHo6WEz10e7u9nPaCmYTwjsM5tpSR5YKNxbERvffWPAvs0VgMP7HIV
- EldOIsqdduKaDW4pIUsixG+OoWBpqGD/4O4Ow7B+1mJXglubLy9bpzm8vIR2HRAiurFs
- 7Qpc4Tk8BrmYNwGS8h5UEwjW/UCIBvzeyGd5KpjayliPQVc/Af+mwRjmIEFAS71FKuqL
- CZCIEEIQEipWWie0i4OWrDuBBeVGfFEd1wtibdFFt1ZFaSTK7v+U+qAw5msXaUBIZ7dB
- AU28xxoP96mGmyhOr9HoqkZBTFGtUoRIRIPL+Wo2fo31rkVcUt/SEo/wMZSMB4ia2dvl
- Zxng==
-X-Gm-Message-State: AOJu0YxpvFw4qf20Kt9inV3hFzrEA6eVRFnV4NjOPbQdqkEqH/B/vhZT
- luePDgKFh7QbrbGyTndRC2bNcwZEiVcObfbUXKXXisk9NZChhE5diJ7tH9u/E1c=
-X-Gm-Gg: ASbGncugB6DGHu9hzn9luXs+sr5NwjDTipgLuZiFdMnlCDMznmm5d1H5HkPdWO/UlMV
- R5Df6NNmfjyN9hAopwG0oYOGm+T+mvkZmbejlqJvpN0N4aWtDQqBhap4LLxJW9f31cNi3byry/k
- 6ir7hmRC4GL5DFBt5IsJYiAV3cU9WUG9GjKhA8Xx11z9Jdm53ACfWJocxiIwEuOwC880upG1fmR
- DEUVQOpegsXvHS5IpTwuzFVvyEn23ZbYwY4EAn6cgFGaY2ZDRwi0YM=
-X-Google-Smtp-Source: AGHT+IFr7EzaV4CWWFx0LE0WKXeeliasgiUOgkIt/xIxRudTbwaqQ8bgs5LlaUAWPHV9yBNVOCcqiw==
-X-Received: by 2002:a05:6000:18a8:b0:388:c790:1dff with SMTP id
- ffacd0b85a97d-38a8733fd71mr20588495f8f.47.1736855213952; 
- Tue, 14 Jan 2025 03:46:53 -0800 (PST)
+ bh=Rem+PqKJwtTryCp5+P2h89dN9I6AHO+TdjB2QsczI6k=;
+ b=HKNobZCY9ObC2EkJZX+TlNcM1tuMf2/3oMcBPVCyHkQpJcUgiYvn+b7Wv/wHihZO+L
+ XWj0cHUcOwShUcf/gSh8gQ/8VaMbAmOPShfJbixwl7wVyNsz4AtejQVPo2WobFLCLNe/
+ dD7iJ/IczPnJvltisI0AKhPIJd8W9BCKWrccC6dhdphFls3UYi0/Ayg0kwUWY5qiPVEE
+ cuAbkvvfg5/my14WESqlbdXpyx/Fx3668ypbaeWRjVaMbq5kjCNf0opz8Zn18NT2ii1i
+ A5ywV6nlsxh86S+911/GBVYa7bp/Fit0tpF3Zu1wWr2eAx4wssP7h2PM7UdaEmlHen7k
+ lMWA==
+X-Gm-Message-State: AOJu0YxYg8qLKX+vjwE/NHXoVvBvkEmnpwBGjBMXCBTqPFRj78vZ32zJ
+ rwCykSklBNYetIuJ7xR48vIauSjWVGEGdmdKPHSbhdM0t2NIpnNuJdKrSgq/sCI=
+X-Gm-Gg: ASbGncuXfG/0/57IhxD62CHLEN+Xl4JusCzoXOnx0+DHpDlWQg/GTVdaOjlfdihYcp9
+ npPmvgMjkXB85vhByVRwyulHHHdeN00LPPTPXRvWXHD8lwXjqOGOyph0Zd11cVS2/jz4wZrgVXV
+ FUa1t7BX97xJumDu9Q2GhAChn0GutwKJGvnKFOzaebILzepDApkm8c7hLA4vX4K0MizLU+LMkL6
+ iZLCFYabU9bFU9lLmb1LPxelI5zsr4K+rB30GYDVdL26t8IyPT2v4k=
+X-Google-Smtp-Source: AGHT+IFoaWY4h7fBZuQrDxOq4ZsslzzDssSeH/U6q/T0SB/sDE2XlJwrb9gUK/QOasbvjpSlptNKYg==
+X-Received: by 2002:a17:907:9622:b0:aa6:af66:7c89 with SMTP id
+ a640c23a62f3a-ab2ab670587mr2365693266b.5.1736854714725; 
+ Tue, 14 Jan 2025 03:38:34 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e37e36asm14303670f8f.5.2025.01.14.03.46.51
+ a640c23a62f3a-ab2c90d73a9sm622380666b.58.2025.01.14.03.38.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Jan 2025 03:46:52 -0800 (PST)
+ Tue, 14 Jan 2025 03:38:33 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id CBF985FC92;
+ by draig.lan (Postfix) with ESMTP id E39A65F92B;
  Tue, 14 Jan 2025 11:38:24 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,17 +72,17 @@ Cc: Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v2 32/37] docs/devel: add git-publish for patch submitting
-Date: Tue, 14 Jan 2025 11:38:16 +0000
-Message-Id: <20250114113821.768750-33-alex.bennee@linaro.org>
+Subject: [PATCH v2 33/37] docs/devel: add b4 for patch retrieval
+Date: Tue, 14 Jan 2025 11:38:17 +0000
+Message-Id: <20250114113821.768750-34-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250114113821.768750-1-alex.bennee@linaro.org>
 References: <20250114113821.768750-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,48 +109,37 @@ From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20241209183104.365796-3-pierrick.bouvier@linaro.org>
+Message-Id: <20241209183104.365796-4-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- docs/devel/submitting-a-patch.rst | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ docs/devel/submitting-a-patch.rst | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/docs/devel/submitting-a-patch.rst b/docs/devel/submitting-a-patch.rst
-index 03b2ac298a..69df7682c5 100644
+index 69df7682c5..65c64078cb 100644
 --- a/docs/devel/submitting-a-patch.rst
 +++ b/docs/devel/submitting-a-patch.rst
-@@ -235,6 +235,31 @@ to another list.) ``git send-email`` (`step-by-step setup guide
- works best for delivering the patch without mangling it, but
- attachments can be used as a last resort on a first-time submission.
+@@ -433,6 +433,20 @@ For more details on how QEMU's stable process works, refer to the
  
-+.. _use_git_publish:
+ .. _participating_in_code_review:
+ 
++Retrieve an existing series
++---------------------------
 +
-+Use git-publish
-+~~~~~~~~~~~~~~~
-+
-+If you already configured git send-email, you can simply use `git-publish
-+<https://github.com/stefanha/git-publish>`__ to send series.
++If you want to apply an existing series on top of your tree, you can simply use
++`b4 <https://github.com/mricon/b4>`__.
 +
 +::
 +
-+    $ git checkout master -b my-feature
-+    $ # work on new commits, add your 'Signed-off-by' lines to each
-+    $ git publish
-+    $ ... more work, rebase on master, ...
-+    $ git publish # will send a v2
++    b4 shazam $msg-id
 +
-+Each time you post a series, git-publish will create a local tag with the format
-+``<branchname>-v<version>`` to record the patch series.
++The message id is related to the patch series that has been sent to the mailing
++list. You need to retrieve the "Message-Id:" header from one of the patches. Any
++of them can be used and b4 will apply the whole series.
 +
-+When sending patch emails, 'git publish' will consult the output of
-+'scripts/get_maintainers.pl' and automatically CC anyone listed as maintainers
-+of the affected code. Generally you should accept the suggested CC list, but
-+there may sometimes be scenarios where it is appropriate to cut it down (eg on
-+certain large tree-wide cleanups), or augment it with other interested people.
-+
- .. _if_you_cannot_send_patch_emails:
+ Participating in Code Review
+ ----------------------------
  
- If you cannot send patch emails
 -- 
 2.39.5
 
