@@ -2,96 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B1F3A11504
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 00:09:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16866A1150C
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 00:09:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXq12-0001t4-AI; Tue, 14 Jan 2025 18:08:08 -0500
+	id 1tXq12-0001t7-FA; Tue, 14 Jan 2025 18:08:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tXq0z-0001rd-G7
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 18:08:05 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tXq10-0001rv-7l
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 18:08:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tXq0x-00043a-Gh
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tXq0y-00043u-J6
  for qemu-devel@nongnu.org; Tue, 14 Jan 2025 18:08:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736896080;
+ s=mimecast20190719; t=1736896084;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=puz3fqWAe4p+E3jR68kieXjasW6yV218uFcwIMo6OkE=;
- b=eQ2wJ/9MrQddeV6gxPr+Atlj8ykMEtrawifWrUZE2kwseTh5j1S8Fw99Yo4cSgQ26aMSwa
- s6vPdhHF4JtyANubS3plmM6AHOX3mh6jSaz5LPd6rE6b/SFQwNDLGQ7zAfSArhzf6wTPW1
- ERofEiQa/G3Tj2TsFj2Ve1Oxim39rEw=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ZE4uhT0efoyzNOkHySdc0SxAsnss5S/fqug5y/Yd9+M=;
+ b=Cc1sWjb/Y32Xo2TB+lbnPQ4lsnacyBUFlRcVLAXm3rVdqsXyjcH/aims3jjAdpyyGuJCHK
+ ElR/5uuPjCg0rsBdrVq5k/EctyIdwdMohb53B3c5VOrqOxdc8u34Fb4N2p5UQaOnP0BP8k
+ 0+SNtzICeMP4RgReFINgQFfRogfUpts=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-626-J2m4sK_mM0eqk_Vsx_8sWw-1; Tue, 14 Jan 2025 18:07:59 -0500
-X-MC-Unique: J2m4sK_mM0eqk_Vsx_8sWw-1
-X-Mimecast-MFC-AGG-ID: J2m4sK_mM0eqk_Vsx_8sWw
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-467944446a0so92870271cf.1
- for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 15:07:59 -0800 (PST)
+ us-mta-259-1hkkFWGcPoyf7kr4d-McAA-1; Tue, 14 Jan 2025 18:08:01 -0500
+X-MC-Unique: 1hkkFWGcPoyf7kr4d-McAA-1
+X-Mimecast-MFC-AGG-ID: 1hkkFWGcPoyf7kr4d-McAA
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6d88d56beb7so58884066d6.3
+ for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 15:08:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736896078; x=1737500878;
+ d=1e100.net; s=20230601; t=1736896080; x=1737500880;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=puz3fqWAe4p+E3jR68kieXjasW6yV218uFcwIMo6OkE=;
- b=pLQzxHDmEVGaF6SZVwe4jsnJVmaMZOlE7kUHBQv7uSx76SCwOp85Jl7nqNiafIaTpo
- haUVOMMXAfU1Kn2urwHwqfk40hnWImpYcA7nji1m+9YT2a+SNzip8maWAzexJPaQaq+t
- MiS/dFmgcPJtLxSSQMxHZIfsqniK8bPbnmOGDX46JlrHcXJbLOE/LfOexUE+Muo3UK/c
- uzpkRu3ZVjNiByTgsY/0NcGbOVu/DvP2HwZ/gDhuli67qiKLtT73KgBjpz0zQlMbICFR
- PPea5uObeWDEA1fZKoveuPg2qJl4HuHjs/UchOuvxVoPoEior/xiQSpMCv9HC5sv88df
- U4kQ==
-X-Gm-Message-State: AOJu0YzbFJnYIQelGVHcNcp/ga/nRhCBlZSBxNGl+5wqoS6WJDY2k5cW
- FljsDN/1unMnwjTeB/MvwXx/kceVXpjBiyIeNeUYe6OjoCMyswjhEJCp+F610p5Qebrd3di/Z0O
- qouoYmnZxPm0TEDuBJDiqiVt5y9mazF1wpPEorEiTLsP73iZcsuFd11uKidh+7rL5yEk+IautjD
- HTeFFodzEwnukscGrxUO7ISRz5lPHmAlcOww==
-X-Gm-Gg: ASbGncu8SnEPh2aNgocInFShhSy9RLjGcDKouiDMcTggFu778weqH2J9FEOLfWnMsYn
- yn/VRs8336z6ZAomrK2jKOgTm0IwvRDkqoTYWarWliHM8Xl3I4yaIvGz8of8lxLsrpNxAPgiFT3
- Fcj3T8+4Kz630WF8J3EA/5jfT9p1mIzU3QqWBm2CBTqeg0BB/VoEGhnYPwDJR+GZhFBnJe9HRFN
- itD/IiS0LhQj4v87qWR3xfLwBEizWmpHJTGYEL6V+f7/v/zMwMu2QYUmWl2fS86CXzx68kuEB5N
- Y6+VJSRoQdTnTBOsOxIyJ9Fn/NRcakRp
-X-Received: by 2002:a05:622a:1996:b0:466:a584:69f8 with SMTP id
- d75a77b69052e-46c7107a481mr493237521cf.43.1736896078530; 
- Tue, 14 Jan 2025 15:07:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEOwXKNfSOlRCWj63VkMLObuQvi3Q1tq3vDHbie9CN+gMnTFWWVeEm4PpO6yurFvUKHIX4VKA==
-X-Received: by 2002:a05:622a:1996:b0:466:a584:69f8 with SMTP id
- d75a77b69052e-46c7107a481mr493237081cf.43.1736896078088; 
- Tue, 14 Jan 2025 15:07:58 -0800 (PST)
+ bh=ZE4uhT0efoyzNOkHySdc0SxAsnss5S/fqug5y/Yd9+M=;
+ b=X3+v0YwWirFWjJYYw35KmrFkD5Kfg3Qys39qOKFD69nvnoP6Tzw1IsqW6HuInknuRQ
+ OVWqJQM6roL+6paI1AcSKw53/u53lSEDJx1tGWNHQ/wuVOXPpM5AmG6PniIPiJ6Ei9ez
+ WGuZwR5jLSSqKVSyZFpdddYFzQj5SNbGSv8Q3vcBAw4wZyomqgakchtKV9shc3mQ1QVq
+ 00uIMhHC3yytZExSCxYblUOh6w26RqGx68FrHGfTL6twqeRMohqwEBZVVTl0bpgIRq9k
+ qYp292LaPgkFd4gdNpsCbR9KyrwVfqCkfGR4kUhlUaUAKrHVKJE/oJntbjDpiXbm2ZS+
+ 9f2g==
+X-Gm-Message-State: AOJu0YwSoiTzgIuUQPDYMN8bKdvZZq3xzTcee8MaKaz4Ssjs/NXgR4dd
+ ay9MLxuXfjamK8ecuQeePyqNBbWve5/rmGUrI4qCdTAwRObtA+HCYWUmTW+8T0t+Ig7IBhIWlR0
+ NOb8Lckw3rvtiH43KLupM6DyMe3w1p6bJiwXabGMRY5KrJCXKnMVetvBgYa5YUSQ50OzQm+7KZa
+ mCobRz/YYQjeJ74WBwFU1zqeVu7p14DgeIdw==
+X-Gm-Gg: ASbGncsSN9GLw9wtwpRIvzUSIlyLUEwtRmkb3P6aV/HF7NcxTTiIUiDuvOQiAhDz8XN
+ VOxIg4oyb6q4de+hOhRu8prENDKulMEzL8Zxw0KHPCYpKSoqBM8/OJAxUPmLpPTsTXkDqVq+Z0b
+ JbylAZMwWepreAKaElQcIsEFFluUh/hkW5nBOepKoFHCB0pPle7EK+zjnwGlRnmMQC6ylVeXuOm
+ ZgFu1IDiBOcfi4gu8lcCgbMXETzId3U5Ai3k5WQtubDeCeetBCIn8vM9ZwC2IhOY9Y01FssrnSN
+ wkw6Fp1KrBCj0VPOQF3UX+kBcpxCqlpu
+X-Received: by 2002:ac8:5f95:0:b0:46c:791f:bf56 with SMTP id
+ d75a77b69052e-46c791fc14bmr389799471cf.1.1736896080376; 
+ Tue, 14 Jan 2025 15:08:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFauVeM+N8uZ0sh3dY0onunMx9Qth92WECogV8bnz00fM6yi4AE6QY1h/UVQiWhIuuraCnIPg==
+X-Received: by 2002:ac8:5f95:0:b0:46c:791f:bf56 with SMTP id
+ d75a77b69052e-46c791fc14bmr389798831cf.1.1736896079803; 
+ Tue, 14 Jan 2025 15:07:59 -0800 (PST)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-46c873cd1b0sm59268971cf.49.2025.01.14.15.07.56
+ d75a77b69052e-46c873cd1b0sm59268971cf.49.2025.01.14.15.07.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Jan 2025 15:07:57 -0800 (PST)
+ Tue, 14 Jan 2025 15:07:59 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, Juraj Marcin <jmarcin@redhat.com>,
  Julia Suvorova <jusual@redhat.com>, Prasad Pandit <ppandit@redhat.com>,
  Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH 05/16] migration: Drop inactivate_disk param in
- qemu_savevm_state_complete*
-Date: Tue, 14 Jan 2025 18:07:35 -0500
-Message-ID: <20250114230746.3268797-6-peterx@redhat.com>
+Subject: [PATCH 06/16] migration: Synchronize all CPU states only for
+ non-iterable dump
+Date: Tue, 14 Jan 2025 18:07:36 -0500
+Message-ID: <20250114230746.3268797-7-peterx@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250114230746.3268797-1-peterx@redhat.com>
 References: <20250114230746.3268797-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.794,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,178 +107,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This parameter is only used by one caller, which is the genuine precopy
-complete path (migration_completion_precopy).
+Do one shot cpu sync at qemu_savevm_state_complete_precopy_non_iterable(),
+instead of coding it separately in two places.
 
-The parameter was introduced in a1fbe750fd ("migration: Fix race of image
-locking between src and dst") to make sure the inactivate will happen
-before EOF to make sure dest will always be able to activate the disk
-properly.  However there's no limitation on how early we inactivate the
-disk.  For precopy completion path, we can always do that as long as VM is
-stopped.
+Note that in the context of qemu_savevm_state_complete_precopy(), this
+patch is also an optimization for postcopy path, in that we can avoid sync
+cpu twice during switchover: before this patch, postcopy_start() invokes
+twice on qemu_savevm_state_complete_precopy(), each of them will try to
+sync CPU info.  In reality, only one of them would be enough.
 
-Move the disk inactivate there, then we can remove this inactivate_disk
-parameter in the whole call stack, because all the rest users pass in false
-always.
+For background snapshot, there's no intended functional change.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/savevm.h    |  5 ++---
- migration/migration.c | 22 ++++++++++++++++------
- migration/savevm.c    | 27 +++++----------------------
- 3 files changed, 23 insertions(+), 31 deletions(-)
+ migration/migration.c | 6 +-----
+ migration/savevm.c    | 5 +++--
+ 2 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/migration/savevm.h b/migration/savevm.h
-index 9ec96a995c..c48a53e95e 100644
---- a/migration/savevm.h
-+++ b/migration/savevm.h
-@@ -39,8 +39,7 @@ void qemu_savevm_state_header(QEMUFile *f);
- int qemu_savevm_state_iterate(QEMUFile *f, bool postcopy);
- void qemu_savevm_state_cleanup(void);
- void qemu_savevm_state_complete_postcopy(QEMUFile *f);
--int qemu_savevm_state_complete_precopy(QEMUFile *f, bool iterable_only,
--                                       bool inactivate_disks);
-+int qemu_savevm_state_complete_precopy(QEMUFile *f, bool iterable_only);
- void qemu_savevm_state_pending_exact(uint64_t *must_precopy,
-                                      uint64_t *can_postcopy);
- void qemu_savevm_state_pending_estimate(uint64_t *must_precopy,
-@@ -68,6 +67,6 @@ int qemu_loadvm_state_main(QEMUFile *f, MigrationIncomingState *mis);
- int qemu_load_device_state(QEMUFile *f);
- int qemu_loadvm_approve_switchover(void);
- int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
--        bool in_postcopy, bool inactivate_disks);
-+        bool in_postcopy);
- 
- #endif
 diff --git a/migration/migration.c b/migration/migration.c
-index e1fc1a7fdc..b33baab950 100644
+index b33baab950..33c4824b68 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -2555,7 +2555,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-      * Cause any non-postcopiable, but iterative devices to
-      * send out their final data.
-      */
--    qemu_savevm_state_complete_precopy(ms->to_dst_file, true, false);
-+    qemu_savevm_state_complete_precopy(ms->to_dst_file, true);
- 
-     /*
-      * in Finish migrate and with the io-lock held everything should
-@@ -2600,7 +2600,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-      */
-     qemu_savevm_send_postcopy_listen(fb);
- 
--    qemu_savevm_state_complete_precopy(fb, false, false);
-+    qemu_savevm_state_complete_precopy(fb, false);
-     if (migrate_postcopy_ram()) {
-         qemu_savevm_send_ping(fb, 3);
-     }
-@@ -2732,11 +2732,21 @@ static int migration_completion_precopy(MigrationState *s,
-         goto out_unlock;
-     }
- 
-+    /* Inactivate disks except in COLO */
-+    if (!migrate_colo()) {
-+        /*
-+         * Inactivate before sending QEMU_VM_EOF so that the
-+         * bdrv_activate_all() on the other end won't fail.
-+         */
-+        if (!migration_block_inactivate()) {
-+            ret = -EFAULT;
-+            goto out_unlock;
-+        }
-+    }
-+
-     migration_rate_set(RATE_LIMIT_DISABLED);
- 
--    /* Inactivate disks except in COLO */
--    ret = qemu_savevm_state_complete_precopy(s->to_dst_file, false,
--                                             !migrate_colo());
-+    ret = qemu_savevm_state_complete_precopy(s->to_dst_file, false);
- out_unlock:
-     bql_unlock();
-     return ret;
-@@ -3617,7 +3627,7 @@ static void *bg_migration_thread(void *opaque)
-      * save their state to channel-buffer along with devices.
-      */
-     cpu_synchronize_all_states();
--    if (qemu_savevm_state_complete_precopy_non_iterable(fb, false, false)) {
-+    if (qemu_savevm_state_complete_precopy_non_iterable(fb, false)) {
+@@ -3622,11 +3622,7 @@ static void *bg_migration_thread(void *opaque)
+     if (migration_stop_vm(s, RUN_STATE_PAUSED)) {
          goto fail;
      }
-     /*
+-    /*
+-     * Put vCPUs in sync with shadow context structures, then
+-     * save their state to channel-buffer along with devices.
+-     */
+-    cpu_synchronize_all_states();
++
+     if (qemu_savevm_state_complete_precopy_non_iterable(fb, false)) {
+         goto fail;
+     }
 diff --git a/migration/savevm.c b/migration/savevm.c
-index fa03a0a264..5e56a5d9fc 100644
+index 5e56a5d9fc..92e77ca92b 100644
 --- a/migration/savevm.c
 +++ b/migration/savevm.c
-@@ -1521,8 +1521,7 @@ int qemu_savevm_state_complete_precopy_iterable(QEMUFile *f, bool in_postcopy)
- }
- 
- int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
--                                                    bool in_postcopy,
--                                                    bool inactivate_disks)
-+                                                    bool in_postcopy)
- {
-     MigrationState *ms = migrate_get_current();
-     int64_t start_ts_each, end_ts_each;
-@@ -1553,20 +1552,6 @@ int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
-                                     end_ts_each - start_ts_each);
-     }
- 
--    if (inactivate_disks) {
--        /*
--         * Inactivate before sending QEMU_VM_EOF so that the
--         * bdrv_activate_all() on the other end won't fail.
--         */
--        if (!migration_block_inactivate()) {
--            error_setg(&local_err, "%s: bdrv_inactivate_all() failed",
--                       __func__);
--            migrate_set_error(ms, local_err);
--            error_report_err(local_err);
--            qemu_file_set_error(f, -EFAULT);
--            return ret;
--        }
--    }
-     if (!in_postcopy) {
-         /* Postcopy stream will still be going */
-         qemu_put_byte(f, QEMU_VM_EOF);
-@@ -1587,8 +1572,7 @@ int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
-     return 0;
- }
- 
--int qemu_savevm_state_complete_precopy(QEMUFile *f, bool iterable_only,
--                                       bool inactivate_disks)
-+int qemu_savevm_state_complete_precopy(QEMUFile *f, bool iterable_only)
- {
-     int ret;
+@@ -1531,6 +1531,9 @@ int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
      Error *local_err = NULL;
-@@ -1613,8 +1597,7 @@ int qemu_savevm_state_complete_precopy(QEMUFile *f, bool iterable_only,
-         goto flush;
-     }
+     int ret;
  
--    ret = qemu_savevm_state_complete_precopy_non_iterable(f, in_postcopy,
--                                                          inactivate_disks);
-+    ret = qemu_savevm_state_complete_precopy_non_iterable(f, in_postcopy);
-     if (ret) {
-         return ret;
-     }
-@@ -1717,7 +1700,7 @@ static int qemu_savevm_state(QEMUFile *f, Error **errp)
++    /* Making sure cpu states are synchronized before saving non-iterable */
++    cpu_synchronize_all_states();
++
+     QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
+         if (se->vmsd && se->vmsd->early_setup) {
+             /* Already saved during qemu_savevm_state_setup(). */
+@@ -1584,8 +1587,6 @@ int qemu_savevm_state_complete_precopy(QEMUFile *f, bool iterable_only)
  
-     ret = qemu_file_get_error(f);
-     if (ret == 0) {
--        qemu_savevm_state_complete_precopy(f, false, false);
-+        qemu_savevm_state_complete_precopy(f, false);
-         ret = qemu_file_get_error(f);
-     }
-     if (ret != 0) {
-@@ -1743,7 +1726,7 @@ cleanup:
- void qemu_savevm_live_state(QEMUFile *f)
- {
-     /* save QEMU_VM_SECTION_END section */
--    qemu_savevm_state_complete_precopy(f, true, false);
-+    qemu_savevm_state_complete_precopy(f, true);
-     qemu_put_byte(f, QEMU_VM_EOF);
- }
+     trace_savevm_state_complete_precopy();
  
+-    cpu_synchronize_all_states();
+-
+     if (!in_postcopy || iterable_only) {
+         ret = qemu_savevm_state_complete_precopy_iterable(f, in_postcopy);
+         if (ret) {
 -- 
 2.47.0
 
