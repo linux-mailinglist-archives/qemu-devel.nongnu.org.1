@@ -2,73 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE9E6A104A0
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 11:50:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32A81A104A5
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 11:51:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXeUO-00014i-EX; Tue, 14 Jan 2025 05:49:40 -0500
+	id 1tXeVl-0003hG-V6; Tue, 14 Jan 2025 05:51:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1tXeUJ-00014U-WE
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 05:49:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1tXeUI-0006UM-4X
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 05:49:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736851773;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=i3xKZvbeBuugAIR0VOXU1N9hOgm/rauiIGCC6mkTScU=;
- b=AIurUOETFcvBtdu/IPWUc0fJwI7SQCOVik/ZRoYSj969jHaFQ55okIICGo4ata/86ItL/2
- FQuWJoME3twS0efrcj+xZ4WReeIva3G6umuDFrSVZ7QEab+UbFL9KgsauILEEQh3Yqq8om
- eooOVKrskxTDplbQKZI1oipDnUWluRQ=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-350-Rbq7AJLIMiO_rYOQEjdomA-1; Tue,
- 14 Jan 2025 05:48:26 -0500
-X-MC-Unique: Rbq7AJLIMiO_rYOQEjdomA-1
-X-Mimecast-MFC-AGG-ID: Rbq7AJLIMiO_rYOQEjdomA
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 766F01955F43; Tue, 14 Jan 2025 10:48:25 +0000 (UTC)
-Received: from localhost (unknown [10.39.208.9])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DB5DD195608E; Tue, 14 Jan 2025 10:48:23 +0000 (UTC)
-From: marcandre.lureau@redhat.com
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH] plugins: fix -Werror=maybe-uninitialized false-positive
-Date: Tue, 14 Jan 2025 14:48:20 +0400
-Message-ID: <20250114104820.2613099-1-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tXeVh-0003T7-Qt
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 05:51:01 -0500
+Received: from mail-yb1-xb2e.google.com ([2607:f8b0:4864:20::b2e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tXeVf-0006tz-Vz
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 05:51:01 -0500
+Received: by mail-yb1-xb2e.google.com with SMTP id
+ 3f1490d57ef6-e3983f8ff40so7705205276.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 02:50:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1736851858; x=1737456658; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=itglZr80LmqISpxSz190t/fkOURj1W6fq9VmZoJSMxI=;
+ b=nwXCqhfPaATksN6kHNBBSHW0QVIWw8a93jlupOYhvbUWtihzpfDbRYfmqrLsXeiyt1
+ IvzoHo/+S2z2fMLenvwgrgzIjkKO3AFy3EioZ1BQWvTcYwJvOi5Bgw5XBF87BmeagNJc
+ IWPzg7RnjqnMiQ6MqmdTMHnHjWw6hvYIiyJUeLv9KVCrE+XfDRUrHKCuKBkbSSC1EN+H
+ p6SlYJvDJNoJ8SUuCypP6fbLN+yOrHV4PzroIFK49LW7ejXDpVbmOIUHOE9Pj+lz/45i
+ Yb9MBIr/bJsoOYvpg8nFSAUbCD9CgR5w8/sgJDu9ba0emPTS28LfzOmEDv196FFetQoR
+ ujzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736851858; x=1737456658;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=itglZr80LmqISpxSz190t/fkOURj1W6fq9VmZoJSMxI=;
+ b=GunxjvdIiJhpSF42UoaYvikPZuTh2gMXGpU/HTY5VBpwFB46cTIs+qUe7phgpmuHG3
+ Tq0i1PfyingMhkhpIO3Ck6E+0UduviyqscwZkvO4Vt0WfWjRhju4RUrjpj3DPSAT/2lA
+ m77Ygg7ADMe0znskVU+pb/vC59OAUR1w2J8po+O/gNGegio6zFzaj0OLWqatbJ9TH+8P
+ 99ezY5AJjSoKK9W29WRq27oUUEr74NGEdDqTyciJvMHGWdejCu/BCngLJYIPOOCN/j2o
+ 2APphQ/V5o8CjNaRY8rQTwGgXj/T73czd14I9stuByrB77k+CTFDUnFFiz1eQTosEZ8r
+ nAQw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVxmaAM9nXcArc2VoQhThvSHI26R+T8uooygnloB3rpqhv2i8yBmP0Pjs4SQJNd22BfCpItGywNs4Qm@nongnu.org
+X-Gm-Message-State: AOJu0YyQsf12+u5FkcwuipcWWi4NlC8roJlsgb2PjPggd4M+0u9uhZLk
+ fNGQ1S4G/3Ixdpg9GttwA/e7VryJCGo0qhbNqExrUtiTl/8bgb8+SvyeivMztFFlu2Yw0HIJbCr
+ 2lJlshIK79JHDh0c62CU9wv9QzwTr9GAkkfOqjg==
+X-Gm-Gg: ASbGncvOoqBRua8Ch8REaz/InAhTVWATnoclnM3lUoHLA/28eZz3CdgNhQwy/4vTLLb
+ BUpEkwJSaFeuqQ0MQ7TySW8ryOKERn46nFd0eHeM=
+X-Google-Smtp-Source: AGHT+IG6NpI0ayQ/3BB/pElmhTynHnmy1h/d32gnipm4gRWPmMd/WYj8Ol6hK+pa6/CEYr6GXZg8D0x0NV1a7priPHk=
+X-Received: by 2002:a05:690c:688e:b0:6ef:91a0:dd30 with SMTP id
+ 00721157ae682-6f53123e372mr197569207b3.12.1736851857135; Tue, 14 Jan 2025
+ 02:50:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=marcandre.lureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.019,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.787,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20241106104041.624806-2-frolov@swemel.ru>
+ <CAFEAcA-b+XcYEm1MASzedYchmy0TOpv2djqssJtQdu2CTw_jTw@mail.gmail.com>
+ <7dd7787e-4eb3-47f9-bca6-2bfab69caf4a@swemel.ru>
+ <CAFEAcA9gBph_CXnBBmrf=WfAuiLAhz=JF1ux0SZK2RGJwnK+Ug@mail.gmail.com>
+ <4895cc5c-32cd-4b1c-93d1-1980cece90bb@redhat.com>
+In-Reply-To: <4895cc5c-32cd-4b1c-93d1-1980cece90bb@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 14 Jan 2025 10:50:45 +0000
+X-Gm-Features: AbW1kvY6mewvOAjo8wkUQpoqAaNCay1clNGTOToblG_sSts3SIMio7SIqu2q5ag
+Message-ID: <CAFEAcA953g82_0+7ZejKL0_j-X7ohqc1Wvr01tFt9M+iNNJX-g@mail.gmail.com>
+Subject: Re: [PATCH] hw/timer: fix int underflow
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: =?UTF-8?B?0JTQvNC40YLRgNC40Lkg0KTRgNC+0LvQvtCy?= <frolov@swemel.ru>, 
+ sdl.qemu@linuxtesting.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,34 +95,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+On Tue, 14 Jan 2025 at 10:40, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>
+> On 1/14/25 11:14, Peter Maydell wrote:
+> >> So, to my opinion, explicit cast to "long long" is necessary
+> >> here to get the expected behavior.
+> >
+> > I wasn't saying the existing code was necessarily correct,
+> > or that your proposed change was necessarily wrong.
+> > I was saying your patch didn't come with any analysis of
+> > what the actual hardware behaviour is, which is
+> > how you would determine whether the fix you propose
+> > is the correct one, or if it should be some other
+> > change instead. (Some of my response was trying to
+> > provide some of that analysis.)
+> I would say that the patch is more or less obvious in the sense that the
+> intent of the code is to model a counter (which counts up by 1 and
+> cannot miss a step) with a timer within a process that could be
+> preempted.  You probably will not find an answer in the datasheet, other
+> than by analyzing the signal diagrams, because this scenario simply
+> cannot exist with a hardware counter.
 
-../contrib/plugins/cache.c:638:9: error: ‘l2_cache’ may be used uninitialized [-Werror=maybe-uninitialized]
-  638 |         append_stats_line(rep, l1_dmem_accesses, l1_dmisses,
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Well, for a start, you want to look at the datasheet
+to check that this really is modelling a counter and
+how wide the counter is (32 bits in this case).
 
-Is a false-positive, since cores > 1, so the variable is set in the
-above loop.
-
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
- contrib/plugins/cache.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/contrib/plugins/cache.c b/contrib/plugins/cache.c
-index 512ef6776b..c2c274cfcd 100644
---- a/contrib/plugins/cache.c
-+++ b/contrib/plugins/cache.c
-@@ -609,7 +609,7 @@ static int l2_cmp(gconstpointer a, gconstpointer b)
- static void log_stats(void)
- {
-     int i;
--    Cache *icache, *dcache, *l2_cache;
-+    Cache *icache, *dcache, *l2_cache = NULL;
- 
-     g_autoptr(GString) rep = g_string_new("core #, data accesses, data misses,"
-                                           " dmiss rate, insn accesses,"
--- 
-2.47.0
-
+thanks
+-- PMM
 
