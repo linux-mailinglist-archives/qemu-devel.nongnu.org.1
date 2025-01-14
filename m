@@ -2,64 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7482BA105BD
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 12:42:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E689A1059C
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 12:39:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXfFe-000558-37; Tue, 14 Jan 2025 06:38:30 -0500
+	id 1tXfFf-00056B-Cl; Tue, 14 Jan 2025 06:38:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tXfFc-00054V-Ag
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:28 -0500
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ id 1tXfFd-000556-BH
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:29 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tXfFZ-0005OY-Al
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:28 -0500
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-aaf57c2e0beso1100725766b.3
- for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 03:38:24 -0800 (PST)
+ id 1tXfFb-0005Oy-Jg
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:29 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-5d4e2aa7ea9so10497742a12.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 03:38:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736854703; x=1737459503; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Ft+gcg+qJTK2Lbg959Sb2wOGiy9ubf9tu+nWPd5aoEA=;
- b=ZUZr1+6HjTEWNI34jhsNJ/eI8SFTYloRVRdXrADMKf/J4LP/KaaMGfxjqzTuZ3JAGa
- m3Hqmw+lm/aRKmiLCiLgOZ29s4GAKtUA0q/IrKF9L8o36qSuPq2WITr6ZfKdE3Fbw5tX
- KDIP7MCoC8ClMeyL4zyAiCRF6eN1c85Qm9HFutDzyxmtAbllBo6BkLuFPOtM7U3Osniv
- d7pPv6TtzYY6GiDDcHAHxltke7Iu7F+m3ZJbnyuP7DOGllbQqCxvBI6bbJk3SeYss4oV
- sYI2R7LpMRhT4AbGk16U5HGZ2sorKs/FKoETvWn3zn9ojBA0faicd/kDHP9QIkII1NUH
- M+kw==
+ d=linaro.org; s=google; t=1736854706; x=1737459506; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3DqQTTK9Sh5XJ9myCGTy9pkOibsLIRbJz9Tu9rOcYZ4=;
+ b=A4QB1mBlzVVvNZeOklzQs3EHauah8u/7Ii/Qm4ZQO1HhCa20Pv8aEQLcbSOTMUtAfC
+ x01IzwANF9V55m6fsyXs216UHTessl9IE6XESyRuDSk/G51BPAIXGNPINp6hoQU7ljW6
+ RxghuDEc17RSasRjJLAnRCQyBfXzidwbV4Y34Y0ErL1iX1JQ2KEDVWhETe1RpxbE/qdf
+ gVSud62Z0BELEZ+QOpKaAZ8Y22IzNHPlk0QOPru3EYSVDbT3+S/HBsGNO4QUQ5c8gowi
+ cF7OsIGkimizeCtX7x4NRE3SqqXAw+8QRPb6v6NSgK4fWkL0AZRIfHVV19zYEnSWLtIK
+ o/zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736854703; x=1737459503;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Ft+gcg+qJTK2Lbg959Sb2wOGiy9ubf9tu+nWPd5aoEA=;
- b=Q2CzwV0Y1SvLfTNf7+sbYXwHHf9oMGAcvUsVU5lZA9K5VB4HHtVqHgrMUgAmZatLuD
- +EFKBKhsP8WKKeswqE0Fnmk5eAZ2Zt6J50QMzbtObuumrTKQBXarBUd1BpueIgCwg3Hn
- 5IMAyJq5BYnoQW0apQ+k3kGzP7asE/S1MdP6VawtAQRVTT8dsn/68qhkDs1v4/yPXgEw
- W9QmH+DNqw9xEdQDuza2Y7HhqTsI+1smG6KMRKFCbEvzvIxWbT5QI6n5W0w1y3wYLDrL
- s2NGub30Ryaqz8sJ7PK2jHyYuw/pws52yb6Z1TyhSftHvSp7ByK5ipjSuUF7MejYpDOk
- WwxQ==
-X-Gm-Message-State: AOJu0Yyd1bsYUq7x4hAiwfQKSkjxA9ZgcdfOEEYFDvT5fgxPYOUyebUN
- RXy7qHMGBK+SDNaWPaD5SBjwM2i9Vryi+/Vcjr20UmfTwX0oR1Y14ybuLqG6m5A=
-X-Gm-Gg: ASbGnctwBkO0JCP5+24Cmoe9yGqqZb4vjnxR97tbnRkph8y5Wsv7iNFF3lr3Nm0/2d6
- IVHuvzdiAatYWvHZ389lA0+oHNqp7HNyEiaIeDlUPwDSDr3HDCPF3XeN4wipxX4SJHsfJQydwbx
- 7h4EL+cg/et9PSyU+1q97lKxX2Veu08xOjCyG5bavYijPoU4vmO0jb5vuEcgh2e1TN3b9wYcn2+
- B7r//Ymf3Hj4bKMJ21FjPO3VyV4sJN3q9HMcM+EslasYxI2vu3UOY8=
-X-Google-Smtp-Source: AGHT+IENHjS0/+IvY4KCOBilv8+fpPOfhGOTVoRJT1dtSOpuuDrh7Ap8Bph0cwh4TsNpPVO0rZ7OpA==
-X-Received: by 2002:a17:907:96a7:b0:aa6:2c18:aaa2 with SMTP id
- a640c23a62f3a-ab2ab73e7dbmr2215522966b.27.1736854703207; 
- Tue, 14 Jan 2025 03:38:23 -0800 (PST)
+ d=1e100.net; s=20230601; t=1736854706; x=1737459506;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=3DqQTTK9Sh5XJ9myCGTy9pkOibsLIRbJz9Tu9rOcYZ4=;
+ b=NvOXNH0YJyilQ2Gv+dN+O38oX3+Ov21PsvEv90WiT3KSuI0LvaAlSxO/hXB+ex4a5c
+ 47eKOqqg+yivtYIRT/IgdX8skRh9FY1AdJCo8SK3TcT4AbbTy2FtY2oB5NKllz2rG80V
+ nvV+HPz2XYbiaRfxNPG4No0TdPqvBkDOEV+FR8wxBbMX6EftuK9DXSMZk82I4Db4dONK
+ oGXyQddWUcWdbGebdJvWaQ+4W3xKLZ+7w5dlqfjZNDZ92Wfnfca6JPdgqy3cQEDmXw5o
+ 1O11JQm4NPkr5JFAvRrpQlF8z3sphxdEpPY6nP/Gr6csPXzUy5md28jRuB4lYpSDpnX9
+ kODA==
+X-Gm-Message-State: AOJu0Yw4Yv/NCJytCXDGPCXgsGl8R96BeRR3cVcAEPSMzpTmPTVqAiVV
+ f2Z+o3aq9/XdRFspeci8Ea1bmkEqCCTHa7T57VEAuHlVKQlVglE98jpnmwUKUW9xjp5ukwIzsbf
+ DK7U=
+X-Gm-Gg: ASbGncsMSK26TGrg0e4QkkTUw9kgoQeKEZfZjWjN4Hx3W+IxOLeEKln9hetI4fd4jSN
+ C5a8QjcyynM2A+qNeAGwpAUeOZnyiHuLqrcAJk1VGiPXuFCCBN4zo94T1+teFXnefCxmzx9QblE
+ zDftmeCp53+kbsX7FxlMIsQi6am5oebLSSja1XRdN/FJkoJq3AfM12Z8xkHStXRw/DYDTjgn2n7
+ GvxWmUX8KPlluZ9bTz9uc1BpXnsC9jILWt/mLL3WT+FPZvfH7yQzXI=
+X-Google-Smtp-Source: AGHT+IELSQpyZMkTIrI2S414p872NkGhs2AUUkgFQLRAbZ0dznXkH47Tp2d88oamqAHzZh7fh+JY6A==
+X-Received: by 2002:a05:6402:388a:b0:5d1:2631:b897 with SMTP id
+ 4fb4d7f45d1cf-5d972e08403mr23149494a12.14.1736854705216; 
+ Tue, 14 Jan 2025 03:38:25 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c90da2c8sm626466166b.62.2025.01.14.03.38.22
+ 4fb4d7f45d1cf-5d9900c4b56sm5954625a12.32.2025.01.14.03.38.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Jan 2025 03:38:22 -0800 (PST)
+ Tue, 14 Jan 2025 03:38:24 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C29CA5F89C;
+ by draig.lan (Postfix) with ESMTP id DAA355F8B5;
  Tue, 14 Jan 2025 11:38:21 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -68,16 +70,17 @@ Cc: Thomas Huth <thuth@redhat.com>,
  Stefan Weil <sw@weilnetz.de>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v2 00/37] maintainer updates for jan '25 (semihosting, gdb,
- plugins, docs) pre-PR
-Date: Tue, 14 Jan 2025 11:37:44 +0000
-Message-Id: <20250114113821.768750-1-alex.bennee@linaro.org>
+Subject: [PATCH v2 01/37] semihosting: add guest_error logging for failed opens
+Date: Tue, 14 Jan 2025 11:37:45 +0000
+Message-Id: <20250114113821.768750-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250114113821.768750-1-alex.bennee@linaro.org>
+References: <20250114113821.768750-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,166 +103,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This covers my remaining trees outside of testing/next and is mostly a
-consolidation of patches I've pulled from other people.
+This usually indicates the semihosting call was expecting to find
+something but didn't.
 
-For semihosting:
+Message-Id: <20250109170619.2271193-2-alex.bennee@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ semihosting/syscalls.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-  - a bunch of cleanups from Philippe to aide single binary builds
-
-For gdbstub (touches system/vl.c as well):
-
-  - propagate *Error to setup functions
-
-For plugins
-
-  - mostly fixes from Pierrick
-  - a speculative fix for cpu_io_recompile() case exposed by Julian's
-    discontinuity patches.
-  - windows clang build fixes
-
-For docs (new for v2)
-
-  - Some old docs/next I found in my tree
-  - A dependency fix to ensure we rebuild if we change the kdoc script
-  - Pierrick's devel updates
-
-Additional (new for v2)
-
-  - optimising the nsis.py script from Stefan
-
-Most are already reviewed, the following remain:
-
-  docs/sphinx: include kernel-doc script as a dependency
-  include/exec: fix some copy and paste errors in kdoc
-  tests/qtest: fix some copy and paste errors in kdoc
-  editorconfig: update for perl scripts
-  plugins: fix kdoc annotation
-
-Now testing/next is merged I'll cut a PR for this on Friday. I suspect
-I'll do another gdbstub/next once this is merged. I don't think I have
-anything else pending but do shout if there is.
-
-Alex.
-
-Alex Bennée (11):
-  semihosting: add guest_error logging for failed opens
-  system/vl: more error exit into config enumeration code
-  system: squash usb_parse into a single function
-  system: propagate Error to gdbserver_start (and other device setups)
-  accel/tcg: also suppress asynchronous IRQs for cpu_io_recompile
-  plugins: fix kdoc annotation
-  editorconfig: update for perl scripts
-  tests/qtest: fix some copy and paste errors in kdoc
-  include/exec: fix some copy and paste errors in kdoc
-  include/exec: remove warning_printed from MemoryRegion
-  docs/sphinx: include kernel-doc script as a dependency
-
-Philippe Mathieu-Daudé (6):
-  semihosting/uaccess: Briefly document returned values
-  semihosting/syscalls: Include missing 'exec/cpu-defs.h' header
-  semihosting/uaccess: Include missing 'exec/cpu-all.h' header
-  semihosting/arm-compat: Include missing 'cpu.h' header
-  semihosting/console: Avoid including 'cpu.h'
-  semihosting/meson: Build config.o and console.o once
-
-Pierrick Bouvier (19):
-  tests/tcg/plugins/insn: remove unused callback parameter
-  contrib/plugins/howvec: ensure we don't regress if this plugin is
-    extended
-  tests/tcg/plugins/syscall: fix 32-bit build
-  tests/tcg/plugins/mem: fix 32-bit build
-  contrib/plugins/stoptrigger: fix 32-bit build
-  contrib/plugins/cache: fix 32-bit build
-  contrib/plugins/hotblocks: fix 32-bit build
-  contrib/plugins/cflow: fix 32-bit build
-  contrib/plugins/hwprofile: fix 32-bit build
-  contrib/plugins/hotpages: fix 32-bit build
-  configure: reenable plugins by default for 32-bit hosts
-  win32: remove usage of attribute gcc_struct
-  docs/devel/style: add a section about bitfield, and disallow them for
-    packed structures
-  plugins: enable linking with clang/lld
-  docs/devel: add git-publish for patch submitting
-  docs/devel: add b4 for patch retrieval
-  docs/devel: add information on how to setup build environments
-  docs: add a codebase section
-  docs: add a glossary
-
-Stefan Weil (1):
-  scripts/nsis.py: Run dependency check for each DLL file only once
-
- docs/about/build-platforms.rst            |   4 +-
- docs/about/emulation.rst                  |   2 +
- docs/devel/build-environment.rst          | 118 +++++++++
- docs/devel/codebase.rst                   | 220 +++++++++++++++++
- docs/devel/control-flow-integrity.rst     |   2 +
- docs/devel/decodetree.rst                 |   2 +
- docs/devel/ebpf_rss.rst                   |   2 +
- docs/devel/index-build.rst                |   1 +
- docs/devel/index-internals.rst            |   2 +
- docs/devel/index.rst                      |   1 +
- docs/devel/migration/main.rst             |   2 +
- docs/devel/multi-thread-tcg.rst           |   2 +
- docs/devel/qapi-code-gen.rst              |   1 +
- docs/devel/style.rst                      |  20 ++
- docs/devel/submitting-a-patch.rst         |  39 +++
- docs/devel/testing/main.rst               |   9 +-
- docs/devel/testing/qtest.rst              |   2 +
- docs/glossary.rst                         | 280 ++++++++++++++++++++++
- docs/index.rst                            |   3 +
- docs/interop/qemu-ga.rst                  |   2 +
- docs/sphinx/depfile.py                    |   3 +
- docs/system/arm/virt.rst                  |   2 +
- docs/system/images.rst                    |   2 +
- docs/system/qemu-block-drivers.rst.inc    |   2 +
- docs/tools/qemu-nbd.rst                   |   2 +
- docs/tools/qemu-storage-daemon.rst        |   2 +
- docs/user/main.rst                        |   6 +
- configure                                 |  21 +-
- meson.build                               |   6 +-
- include/exec/gdbstub.h                    |   8 +-
- include/exec/memory.h                     |   5 +-
- include/qemu/compiler.h                   |   7 +-
- include/qemu/qemu-plugin.h                |   2 +-
- include/semihosting/console.h             |   2 -
- include/semihosting/syscalls.h            |   1 +
- include/semihosting/uaccess.h             |  55 +++++
- scripts/cocci-macro-file.h                |   6 +-
- subprojects/libvhost-user/libvhost-user.h |   6 +-
- tests/qtest/libqos/qgraph.h               |   2 +-
- tests/qtest/libqtest.h                    |   6 +-
- accel/tcg/translate-all.c                 |   5 +-
- contrib/plugins/cache.c                   |  18 +-
- contrib/plugins/cflow.c                   |  17 +-
- contrib/plugins/hotblocks.c               |  29 ++-
- contrib/plugins/hotpages.c                |   6 +-
- contrib/plugins/howvec.c                  |   7 +-
- contrib/plugins/hwprofile.c               |  27 ++-
- contrib/plugins/stoptrigger.c             |  48 ++--
- gdbstub/system.c                          |  22 +-
- gdbstub/user.c                            |  20 +-
- linux-user/main.c                         |   6 +-
- monitor/hmp-cmds.c                        |   2 +-
- semihosting/arm-compat-semi.c             |   1 +
- semihosting/console.c                     |   3 +-
- semihosting/syscalls.c                    |   2 +
- semihosting/uaccess.c                     |   1 +
- system/vl.c                               |  99 ++++----
- tests/tcg/plugins/insn.c                  |   4 +-
- tests/tcg/plugins/mem.c                   |   6 +-
- tests/tcg/plugins/syscall.c               |   6 +-
- .editorconfig                             |  13 +
- contrib/plugins/meson.build               |   2 +-
- plugins/meson.build                       |  24 +-
- scripts/nsis.py                           |  10 +-
- semihosting/meson.build                   |   9 +-
- tests/tcg/plugins/meson.build             |   3 +-
- 66 files changed, 1027 insertions(+), 223 deletions(-)
- create mode 100644 docs/devel/build-environment.rst
- create mode 100644 docs/devel/codebase.rst
- create mode 100644 docs/glossary.rst
-
+diff --git a/semihosting/syscalls.c b/semihosting/syscalls.c
+index c40348f996..f6451d9bb0 100644
+--- a/semihosting/syscalls.c
++++ b/semihosting/syscalls.c
+@@ -7,6 +7,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/log.h"
+ #include "cpu.h"
+ #include "gdbstub/syscalls.h"
+ #include "semihosting/guestfd.h"
+@@ -287,6 +288,7 @@ static void host_open(CPUState *cs, gdb_syscall_complete_cb complete,
+ 
+     ret = open(p, host_flags, mode);
+     if (ret < 0) {
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: failed to open %s\n", __func__, p);
+         complete(cs, -1, errno);
+     } else {
+         int guestfd = alloc_guestfd();
 -- 
 2.39.5
 
