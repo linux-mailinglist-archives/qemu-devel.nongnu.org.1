@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE33A105BE
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 12:42:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C356A105A1
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 12:39:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXfFe-00055g-Ki; Tue, 14 Jan 2025 06:38:30 -0500
+	id 1tXfFc-00054i-U7; Tue, 14 Jan 2025 06:38:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tXfFc-00054Q-63
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:28 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ id 1tXfFa-00053s-Rp
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:26 -0500
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tXfFa-0005Oq-BQ
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:27 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5d9f0a6adb4so2510967a12.1
- for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 03:38:25 -0800 (PST)
+ id 1tXfFZ-0005Od-Ay
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:26 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-aaf6b1a5f2bso155134166b.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 03:38:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736854705; x=1737459505; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736854703; x=1737459503; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DjEsdOpQ49q8jWvklUeiIlGfQQiMPZKhuPb/zwxQMo4=;
- b=BPqPKrdh83zFleyreV9o7NUjIxSBZhBPQipuGt3B3CRliJTPYr66/oycp9/vTRHmE5
- 7SKUAjdg3s62dRNWlot7fo1qQyBjmX0WXx5ug8xidSLdGCg4W1qf2zPbCDWdcs2oRBKk
- tLmY+6EvbO7Y9XlRTw6Pg4coEufqViBygiJazyj1QS9hExBiXKdiWig7ytMl5AvJOUSE
- tN0h1WfD5M4595Myjk0YVulXtm4ld7R+DuXKDCCGKFCA+lane8zaqdfws9wS4PQgE4pl
- NQZvMWZAKJpHNdIKV1yU0iivpRhKvN43WjqHQiiIU5RCgvO5zwQBUu40KjQeYZVDkr07
- 6Uig==
+ bh=swWbfqbBQuWTwxy/6Yz7+TAY9SVPbs3mxyJnC781jXo=;
+ b=TNEHmavfEMqqSLUYe6Hr/S1/kFHIHAc1rwruZ9rKrZcgarSkMmoNRzr6NRLsldAw3u
+ hs7aEe/HnBAEoTcAtzmv2ooYZxHZ0Do+/1Lw87ZGB7FWXl5sGhSR2BDM1gpwE933sIb8
+ iKzdVW+gQrIYMLOzFcqYaN0wJHJRCaVdc6JR3G8JliQvYK0TSg9OJdRO1614YQ875yaa
+ +1nW+6IyMbVpZpjj+GWYSskkxzqJFFLJlcY8MRK9bcz5dJmA66Trzbs2vVC9mzjryQ0w
+ ytILp2BQtXC3O9tM1oXnP5nCijywt9GTjdJKqauyS3cawtt/fqSOOKZKER6sM4aeO6cp
+ iU+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736854705; x=1737459505;
+ d=1e100.net; s=20230601; t=1736854703; x=1737459503;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DjEsdOpQ49q8jWvklUeiIlGfQQiMPZKhuPb/zwxQMo4=;
- b=NfA7oEGQSE5a6pBtbsoGNeS/qCLbZG2ekw1U1ZbEMZXLg8OoUI+moLlPWL0mAJOqTx
- V9RVrimPQ2jxliXXCxy65r8POEfUFTu5Ys1GOt3QjXow/Cmp9Eg56i1fTRz9WjDo4Jhb
- smbiY204YE1BcXGsFJRGaGqXGYD+C81Ccey7R2XG1dvpuNtpc1ow70qJxjNSwkhJWoIM
- u3lFUUlQOM7gmiO85vplb/4ByXC9BmuqzNv+D2MjNwY67GgvR9Ma3UJlGbjWxUgwb45l
- 51WksIKWOMxgtcjGue+TgXXCgQmrAejaRuko1rCGB0DH8MGaTwvSseKrF7sw6KX5S6hY
- CKCQ==
-X-Gm-Message-State: AOJu0YzDjFg+ZsLocEN72kjqSlqOC7Du/G52f6POeltn+9WeDZcUVKBR
- xVLxfx2wyafaONACBaCq/lOQJiX+14aWXsCU/mngQNOyOB5dH4Gxr8C+Pycli+8=
-X-Gm-Gg: ASbGncvfiOtb+SZKcftKGPMoDQ44oCu7Av/NNRkOuohWFiNlZTVkSMCMlVJCYBv30Xf
- 7uLqXK4MexG8kmAkjJILF2YDrfXL3m1hN/GO+lRpToHmwUpU9TpTblZgqprMnLvAN6/KoH16U4q
- Rb3ms6eU25tpXxJF9SptInWt3QFLJEOGAYkxLgJr4hqFqX+L1/TyLgAKfxwKza/UH12mXmFJZ+D
- 1odDQFDpHpbfoK51RDrnPFxZn3AuAn7V8xUqsV39eGyXlg6YKQd8gw=
-X-Google-Smtp-Source: AGHT+IGSD9s1d/TdeGuj73QWEAjuBQBDdnXger8Z32G05UFkWFvPAAkrHCypMyEB4mBX5iYNFEf+Mg==
-X-Received: by 2002:a17:907:7f08:b0:aaf:c19b:728b with SMTP id
- a640c23a62f3a-ab2ab708d2cmr2339132566b.51.1736854704775; 
- Tue, 14 Jan 2025 03:38:24 -0800 (PST)
+ bh=swWbfqbBQuWTwxy/6Yz7+TAY9SVPbs3mxyJnC781jXo=;
+ b=gOjPaTlhpkahw/irk9UF+dLw0S3bb1O19hqda8Ys07j34pUiZHGuleYpzJtAaDhWnW
+ 2mJPAVGDebeLdum6QpUn3XSUmy07MPjYO4ZtyLZWeHL0vzovMFjHEt+WTvxrrt2GUVvM
+ 6MofUiNmgRrPoozV5LmMVjZTPxpV9s/agS+VVW/xFLU0wItj0Jn/AULP1nwJjR53/JY4
+ lturSQPopphJzW3qxJ6y+pCyozzU9fNwY5wDlwla/dleCVRRpOQ+pGJyFFxC4ZOI2cDn
+ asRGAkxjunChiTK8f8QhbWVzlsI0GXr6oJmh3Fdqs8H8alHmpZTgcK60FEzUpxLbYKEs
+ S7Kw==
+X-Gm-Message-State: AOJu0Yx68OrdmB952xGdqb77iLXJge+lEhIC9sBQ+EMGybdbE5OIgUtB
+ 9PciQ5xxk6rMHfqm/DyPI5Lk7umtnf/fuGkTVVTJwiGIWbjvj4Y0LyLror9Qy5Q=
+X-Gm-Gg: ASbGncvej+LmF9mbEMCmZE3CNDF6ZI/pxnUcWs9w9A3qxfQ2nA952R4gwpsOzs9MQpy
+ KVaJCWrQaGxCMYaBqnUoY8nFeagy9fCQBh9kcGMOgYTR2wrrvcPm3Lnf5gHOhq84PUltQhS5O34
+ KTMpTwEHwmUWjiVDcLitO4BW51QpQhv8jH0JnpvhUXEDFzt6uwRQTEiu03KvJ9mah1jx4j0vLWR
+ iCwJcOJaOh7baxWLHOE1VbK6NJxgl8CLbtGJujehutKoeO502HUAYs=
+X-Google-Smtp-Source: AGHT+IF654gxsZBx/NjacLL0k1wtqmTyt7g3pPocG6DwycMN/lQ4y6g/2NyaLYU64s2G+0cPocpNig==
+X-Received: by 2002:a17:906:c14f:b0:aaf:1f6:7423 with SMTP id
+ a640c23a62f3a-ab2c3cb6e2dmr1669429266b.18.1736854703475; 
+ Tue, 14 Jan 2025 03:38:23 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab2c95b0ab6sm615513066b.155.2025.01.14.03.38.22
+ a640c23a62f3a-ab2c913605csm615049866b.82.2025.01.14.03.38.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 14 Jan 2025 03:38:22 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id F296F5F92B;
- Tue, 14 Jan 2025 11:38:21 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 122525F932;
+ Tue, 14 Jan 2025 11:38:22 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
@@ -70,17 +70,18 @@ Cc: Thomas Huth <thuth@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v2 02/37] semihosting/uaccess: Briefly document returned values
-Date: Tue, 14 Jan 2025 11:37:46 +0000
-Message-Id: <20250114113821.768750-3-alex.bennee@linaro.org>
+Subject: [PATCH v2 03/37] semihosting/syscalls: Include missing
+ 'exec/cpu-defs.h' header
+Date: Tue, 14 Jan 2025 11:37:47 +0000
+Message-Id: <20250114113821.768750-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250114113821.768750-1-alex.bennee@linaro.org>
 References: <20250114113821.768750-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,119 +106,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Since it is not obvious the get/put_user*() methods
-can return an error, add brief docstrings about it.
-Also remind to use *unlock_user() when appropriate.
+target_ulong is defined in each target "cpu-param.h",
+itself included by "exec/cpu-defs.h".
+Include the latter in order to avoid when refactoring:
+
+  include/semihosting/syscalls.h:26:24: error: unknown type name 'target_ulong'
+     26 |                        target_ulong fname, target_ulong fname_len,
+        |                        ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241212115413.42109-1-philmd@linaro.org>
+Message-Id: <20250103171037.11265-2-philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- include/semihosting/uaccess.h | 55 +++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+ include/semihosting/syscalls.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/semihosting/uaccess.h b/include/semihosting/uaccess.h
-index c2fa5a655d..6bc90b12d6 100644
---- a/include/semihosting/uaccess.h
-+++ b/include/semihosting/uaccess.h
-@@ -19,41 +19,96 @@
- #include "exec/tswap.h"
- #include "exec/page-protection.h"
+diff --git a/include/semihosting/syscalls.h b/include/semihosting/syscalls.h
+index b5937c619a..6627c45fb2 100644
+--- a/include/semihosting/syscalls.h
++++ b/include/semihosting/syscalls.h
+@@ -9,6 +9,7 @@
+ #ifndef SEMIHOSTING_SYSCALLS_H
+ #define SEMIHOSTING_SYSCALLS_H
  
-+/**
-+ * get_user_u64:
-+ *
-+ * Returns: 0 on success, -1 on error.
-+ */
- #define get_user_u64(val, addr)                                         \
-     ({ uint64_t val_ = 0;                                               \
-        int ret_ = cpu_memory_rw_debug(env_cpu(env), (addr),             \
-                                       &val_, sizeof(val_), 0);          \
-        (val) = tswap64(val_); ret_; })
++#include "exec/cpu-defs.h"
+ #include "gdbstub/syscalls.h"
  
-+/**
-+ * get_user_u32:
-+ *
-+ * Returns: 0 on success, -1 on error.
-+ */
- #define get_user_u32(val, addr)                                         \
-     ({ uint32_t val_ = 0;                                               \
-        int ret_ = cpu_memory_rw_debug(env_cpu(env), (addr),             \
-                                       &val_, sizeof(val_), 0);          \
-        (val) = tswap32(val_); ret_; })
- 
-+/**
-+ * get_user_u8:
-+ *
-+ * Returns: 0 on success, -1 on error.
-+ */
- #define get_user_u8(val, addr)                                          \
-     ({ uint8_t val_ = 0;                                                \
-        int ret_ = cpu_memory_rw_debug(env_cpu(env), (addr),             \
-                                       &val_, sizeof(val_), 0);          \
-        (val) = val_; ret_; })
- 
-+/**
-+ * get_user_ual:
-+ *
-+ * Returns: 0 on success, -1 on error.
-+ */
- #define get_user_ual(arg, p) get_user_u32(arg, p)
- 
-+/**
-+ * put_user_u64:
-+ *
-+ * Returns: 0 on success, -1 on error.
-+ */
- #define put_user_u64(val, addr)                                         \
-     ({ uint64_t val_ = tswap64(val);                                    \
-        cpu_memory_rw_debug(env_cpu(env), (addr), &val_, sizeof(val_), 1); })
- 
-+/**
-+ * put_user_u32:
-+ *
-+ * Returns: 0 on success, -1 on error.
-+ */
- #define put_user_u32(val, addr)                                         \
-     ({ uint32_t val_ = tswap32(val);                                    \
-        cpu_memory_rw_debug(env_cpu(env), (addr), &val_, sizeof(val_), 1); })
- 
-+/**
-+ * put_user_ual:
-+ *
-+ * Returns: 0 on success, -1 on error.
-+ */
- #define put_user_ual(arg, p) put_user_u32(arg, p)
- 
-+/**
-+ * uaccess_lock_user:
-+ *
-+ * The returned pointer should be freed using uaccess_unlock_user().
-+ */
- void *uaccess_lock_user(CPUArchState *env, target_ulong addr,
-                         target_ulong len, bool copy);
-+/**
-+ * lock_user:
-+ *
-+ * The returned pointer should be freed using unlock_user().
-+ */
- #define lock_user(type, p, len, copy) uaccess_lock_user(env, p, len, copy)
- 
-+/**
-+ * uaccess_lock_user_string:
-+ *
-+ * The returned string should be freed using uaccess_unlock_user().
-+ */
- char *uaccess_lock_user_string(CPUArchState *env, target_ulong addr);
-+/**
-+ * uaccess_lock_user_string:
-+ *
-+ * The returned string should be freed using unlock_user().
-+ */
- #define lock_user_string(p) uaccess_lock_user_string(env, p)
- 
- void uaccess_unlock_user(CPUArchState *env, void *p,
+ /*
 -- 
 2.39.5
 
