@@ -2,89 +2,117 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64462A110BF
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 20:05:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60163A110F3
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 20:14:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXmA1-0008To-Px; Tue, 14 Jan 2025 14:01:10 -0500
+	id 1tXmLT-0007v4-L5; Tue, 14 Jan 2025 14:12:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tXm9R-0006XZ-PM
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 14:00:35 -0500
-Received: from mail-oo1-xc41.google.com ([2607:f8b0:4864:20::c41])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tXm9O-00037S-RK
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 14:00:32 -0500
-Received: by mail-oo1-xc41.google.com with SMTP id
- 006d021491bc7-5f32f5b0631so3831534eaf.3
- for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 11:00:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1736881229; x=1737486029; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=OKCFz+uu23qiBxrqSpXC9+MkA/Y8BAUjLzzQw3XWciY=;
- b=QTu0sXhcQaCO3xQZ6owVnAtGkSef23+JMtELIUjdcnByFhglbSrA+CD4cx7Yqg43kD
- 2ki3JMy5W9dEnIT3Wi3nAe+SW4SM6BX6VgkKQDRKc3VI46mg0yLdnN4vVY5oToOWYinX
- yf4dMfFlT5bVAMXGlhC6jgrQa8QKEOQx+l9o+GK0I8XW5CFHTexsbBiB0psmlq09nFNn
- 8nDVHYzz0FjyolHHmarUF9+RR1FGyUVqEErRnkgAzgKILDBo0F1SvGpFD7wtoaJ1qI2/
- oI5M3XJ1bdf59BLNvhY51/cNG+srn0Vbf+6qPeKOY+duTJwkiQ9IF7IIWlAwXtju/4x2
- snAA==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tXmLB-0007pS-IM
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 14:12:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tXmL8-0005Db-Aj
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 14:12:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736881955;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=K2xWX/tyRAcCwNi8n0nPnKrPL6tFvuHaCqsagmjOjTo=;
+ b=d+M07aRNWtzN0X6tMND6epzbb871Dt4zBGsTonkorqE5ZZ6WpUQWZR8K0gkQjKMmbkCCPX
+ UHbJN/zzSgsrhGNNqNxkUH35GU/1jwAChqVhYiMyi3WW0PhD5CkTeBOwjH2327utURXQnf
+ TD5ShaVQ8mVDm1iPQJI5xOsBus6l99o=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-50-5bBdFVUaOja8lqCRbuS4Nw-1; Tue, 14 Jan 2025 14:12:32 -0500
+X-MC-Unique: 5bBdFVUaOja8lqCRbuS4Nw-1
+X-Mimecast-MFC-AGG-ID: 5bBdFVUaOja8lqCRbuS4Nw
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6df9ac8dcbeso199577216d6.3
+ for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 11:12:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736881229; x=1737486029;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=OKCFz+uu23qiBxrqSpXC9+MkA/Y8BAUjLzzQw3XWciY=;
- b=GGMhhrdJoDabnmB4t5j5I0i7tOWxWpXfbeGejB7hu72yvCOMI8lLt1TkC5lb0PeHof
- B5y8X+cJIKhxY8zJuLflUJR3RKH6KP7DT+qoUux4BqmXFAqXJk4SOBb1ZKHkhMD1PDPP
- AVS3b1U+bRR3+gqUoqGlqRqvxPioyiN5zr6oXhFaRIrghM8S7UXbbo7J+Awi6UK8OONd
- HN/CITqAVAkszp77B2EXsSKRAITk2BaGfPKDvQab0I7l8kv+/Oh6TynstS6FKD8sHFzi
- u9TkD+qiuf9ZuVVPArSIyVN/RE7tuFWUWC3Qy3SKWBS107BjgJOCkpBeWek5PsjaXV4z
- 6pjg==
-X-Gm-Message-State: AOJu0YxybP9gSuH4Jw0MgLFIc4a1KfjcFMKtbtgXoXPV4LddEnjxlvoh
- Anppib9b3AcwKB0II/83VVXbmiMpDQVpxzyByUzgXHbTRVdhe7fkKuJf5qcasntY8T6gUN09sgf
- AtrWr9A==
-X-Gm-Gg: ASbGncsCNEIm3+0ejQ9vQnlHr9B73C+6uf4hnch7SZxD2fjWXyNZ2vnYQiWPXB0NdK4
- mYNI20plXcT/0NU4qQfrRUZ09V9E6sD9hxl9cEaUs1icimvIbMYj0RxcTFAfYa2x1lTuzD4j6+d
- ZTwXOKy59FLjYvB/62Y4itA+IUkN1EJ/L0YwySHcyM5wHNdT4Bc56M3gs7T5SJ4YjE8S7pi9tz4
- JZqBHjkMK/UKz6hrd/uMXgN8ZYvBQBaljmb8lzMDhtRNKQGFeMMGCKh287zO3VVlwKCGBvgHISM
- 5/VA8b7BnA==
-X-Google-Smtp-Source: AGHT+IG7Am4duzLF6oXhYE2Tn8zsH/ZtR5a5KwTTtDJuF1aC4WTnHtK8KSfglKZE3Eed78rfYu9p5w==
-X-Received: by 2002:a05:6820:c8e:b0:5f6:6547:8a0f with SMTP id
- 006d021491bc7-5f730929358mr19844057eaf.6.1736881227641; 
- Tue, 14 Jan 2025 11:00:27 -0800 (PST)
-Received: from grind.dc1.ventanamicro.com ([189.110.107.205])
- by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-7231855ee1esm4875647a34.32.2025.01.14.11.00.24
+ d=1e100.net; s=20230601; t=1736881951; x=1737486751;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=K2xWX/tyRAcCwNi8n0nPnKrPL6tFvuHaCqsagmjOjTo=;
+ b=UvJQdlGAt18APNQ2LFj97EYSuyvZj7jIynvAPgVRVX3wrJqOGnIjH/pq212YoRwMs1
+ knFDLOMBrHBDdAPIljdyNxqbMF28F7w7AusXq7erWgkccdeNriB87tRT4jm5gzyZwhlO
+ GsevH5tTy4bN/Yn4xsnYGu1EhqYrxRBg+89Nlh2g0OFbIaYBO9fTnVzujq1LepnUDvlc
+ 3t6p1SsKKfxlKn2fTsEnWehUNhOFrSX9VTasc8NCGkF6Wv4XOTKKsVj+sa6BhW11Oot/
+ 2eoolzWQbswiJsqTIBlNSRxiagLFm9P2K5z6OS7hhLBMBSFBJBMcrfR4AC+K2UipubRa
+ qAqw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWqAbdaCuEm9MynRkDoXfsizWwHLJTHR4I8ckG8l68n1H60fYbDoi7jKlEtymfdqjUJuKwjQEfODLs3@nongnu.org
+X-Gm-Message-State: AOJu0Yy0RiMysNZE5hDR7GZfwbHwLVu8RTfJbOMJdM1eTutMWuEoOnMP
+ GHxLmTSg7ylGvvfpaPSYsPnxLolH0M46Tbcqs5sMSvmqnEr8Ya+NwZz3xUCCmrjm31Kb+1YlYQ7
+ eoDZh5TQUzfy9SYFr9uHS0jRv1YsuG0NTuiSlAkfbglx0VrN5eUHA
+X-Gm-Gg: ASbGnctijga31/qb8PVfQbQbLjW0/rKYs4RcumqovyiWLRiCg9BsTi1JXSa/irILIbf
+ PA+nHSsQlAnL7b+Omd/A8U3aveAokRmHRQOq5D/PfOX06C14VpC/k64Q4l4Gf2dk7gPitCGSO3r
+ aYxcnTeezQ2pS5LLqqigFXNm5wEXFi4CjA/3QlGN6geiGHylHPzn+BKsndUvLduf9CyO7pK/lrm
+ OX+UDePUZv8XzuqD10aMIvd5L5TXkBlOlmme4NyxhAHrIbOm0r262qL+1qfcnW7AZOIybQMmdqL
+ 18u7EHYplF+h4vxySA==
+X-Received: by 2002:a05:6214:212b:b0:6d4:1ea3:981d with SMTP id
+ 6a1803df08f44-6df9b2ce4c6mr370486716d6.43.1736881951450; 
+ Tue, 14 Jan 2025 11:12:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEBCDxijBKtyfrC59nanNFb+diIJd92+BSgdXMQdK2j3SfW+gGqQewUCCcuRRoxouWOGHe6bw==
+X-Received: by 2002:a05:6214:212b:b0:6d4:1ea3:981d with SMTP id
+ 6a1803df08f44-6df9b2ce4c6mr370486326d6.43.1736881951084; 
+ Tue, 14 Jan 2025 11:12:31 -0800 (PST)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6dfad9b216csm55823686d6.65.2025.01.14.11.12.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Jan 2025 11:00:27 -0800 (PST)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 4/4] target/riscv: add RVA23S64 profile
-Date: Tue, 14 Jan 2025 16:00:01 -0300
-Message-ID: <20250114190001.1650942-5-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250114190001.1650942-1-dbarboza@ventanamicro.com>
-References: <20250114190001.1650942-1-dbarboza@ventanamicro.com>
+ Tue, 14 Jan 2025 11:12:30 -0800 (PST)
+Date: Tue, 14 Jan 2025 14:12:27 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
+ devel@daynix.com
+Subject: Re: [PATCH v7 1/2] memory: Update inline documentation
+Message-ID: <Z4a3GxEbz1jjCDc5@x1n>
+References: <59e70978-8895-f513-1b5e-1dc599e288ff@eik.bme.hu>
+ <Z4AjkXbZeu3T94Y1@x1n> <Z4AldAcucTyqZ0HJ@x1n>
+ <811633f6-6bf8-4a22-a21a-789e9a4747d7@daynix.com>
+ <Z4E6TnKaUt8FMWIv@x1n>
+ <9bb5f964-f930-4428-b800-8b589920fe1d@daynix.com>
+ <Z4U30j9w1kPnKX9U@x1n>
+ <5dc54c92-0382-4a70-9dad-588572698eed@daynix.com>
+ <Z4aYpo0VEgaQedKp@x1n>
+ <CAFEAcA_mpWZO8V9cE74bKzveEEZDXkqE+XbOFFdhmKUKO3dmSw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c41;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc41.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA_mpWZO8V9cE74bKzveEEZDXkqE+XbOFFdhmKUKO3dmSw@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.794,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,112 +128,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add RVA23S64 as described in [1]. This profile inherits all mandatory
-extensions of RVA23U64, making it a child of the U64 profile.
+On Tue, Jan 14, 2025 at 05:42:57PM +0000, Peter Maydell wrote:
+> On Tue, 14 Jan 2025 at 17:02, Peter Xu <peterx@redhat.com> wrote:
+> >
+> > On Tue, Jan 14, 2025 at 05:43:09PM +0900, Akihiko Odaki wrote:
+> > > memory_region_finalize() is not a function to tell the owner is leaving, but
+> > > the memory region itself is being destroyed.
+> >
+> > It is when the lifecycle of the MR is the same as the owner.  That holds
+> > true I suppose if without this patch, and that's why I don't prefer this
+> > patch because it makes that part more complicated.
+> >
+> > > It should not happen when a container is still referencing it. That is
+> > > also why it has memory_region_ref(subregion) in
+> > > memory_region_update_container_subregions() and assert(!mr->container) in
+> > > memory_region_finalize().
+> >
+> > Again, the line I added was sololy for what you said "automation" elsewhere
+> > and only should work within MR-links within the same owner.  Otherwise
+> > anyone referencing the MR would hold the owner ref then this finalize()
+> > will never happen.
+> >
+> > Now, if I could go back to your original purpose of this work, quotting
+> > from your cover letter:
+> >
+> > > I saw various sanitizer errors when running check-qtest-ppc64. While
+> > > I could just turn off sanitizers, I decided to tackle them this time.
+> > >
+> > > Unfortunately, GLib versions older than 2.81.0 do not free test data in
+> > > some cases so some sanitizer errors remain. All sanitizer errors will be
+> > > gone with this patch series combined with the following change for GLib:
+> > > https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4120
+> >
+> > Is check-qtest-ppc64 the only one that will trigger this issue?  Does it
+> > mean that most of the devices will do proper removal of device-owned
+> > subregions (hence, not prone to circular reference of owner refcount)
+> > except some devices in ppc64?
+> 
+> There's at least one test in the arm qtests that will hit this.
+> I suspect that you'll find that most architectures except x86
+> (where we don't have models of complex SoCs and the few
+> machines we do have tend to be old code that is less QOMified)
+> will hit similar issues. I think there's a general issue here,
+> this isn't just "some particular ppc device is wrongly coded".
 
-A new "rva23s64" profile CPU is also added. This is the generated
-riscv,isa for it (taken via -M dumpdtb):
+I see.  Do you know how many of them would be important memory leaks that
+we should fix immediately?
 
-rv64imafdcbvh_zic64b_zicbom_zicbop_zicboz_ziccamoa_ziccif_zicclsm_
-ziccrse_zicond_zicntr_zicsr_zifencei_zihintntl_zihintpause_zihpm_zimop_
-zmmul_za64rs_zaamo_zalrsc_zawrs_zfa_zfhmin_zca_zcb_zcd_zcmop_zba_zbb_zbs_
-zkt_zvbb_zve32f_zve32x_zve64f_zve64d_zve64x_zvfhmin_zvkb_zvkt_shcounterenw_
-sha_shgatpa_shtvala_shvsatpa_shvstvala_shvstvecd_smnpm_smstateen_ssccptr_
-sscofpmf_sscounterenw_ssnpm_ssstateen_sstc_sstvala_sstvecd_ssu64xl_
-supm_svade_svinval_svnapot_svpbmt
+I mean, we have known memory leaks in QEMU in many places I assume.  I am
+curious how important this problem is, and whether such would justify a
+memory API change that is not reaching a quorum state (and, imho, add
+complexity to memory core and of course that spreads to x86 too even if it
+was not affected) to be merged.  Or perhaps we can fix the important ones
+first from the device model directly instead.
 
-[1] https://github.com/riscv/riscv-profiles/blob/main/src/rva23-profile.adoc
+It's not new to me that QEMU can leave some memory allocated for the whole
+lifecycle of the process.  E.g. I just worked on something for migration
+that we could have UAF on migration object.  I tried to provide a core fix
+via QOM singleton but unfortunately that didn't yet got accepted, so
+migration still face such UAF.  It was not accepted because of some reasons
+and reviewer concerns, so I suppose that's fair that until we reach a
+consensus on an acceptable and clean general solution, we leave that issue
+be there if it's a corner case anyway - in migration that was the case.
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- target/riscv/cpu-qom.h |  1 +
- target/riscv/cpu.c     | 42 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 43 insertions(+)
+For this specific case, my current understanding is the important leaks are
+where it can e.g. get devices frequently plugged and unplugged with can
+cause QEMU to bloat till host OOM.  For those cases I wonder whether (even
+if we want to provide a global sulution... but while before it settles..)
+we could fix them first by correctly detach the subregions just like what
+x86 does.
 
-diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-index 53ead481a9..4cfdb74891 100644
---- a/target/riscv/cpu-qom.h
-+++ b/target/riscv/cpu-qom.h
-@@ -41,6 +41,7 @@
- #define TYPE_RISCV_CPU_RVA22U64         RISCV_CPU_TYPE_NAME("rva22u64")
- #define TYPE_RISCV_CPU_RVA22S64         RISCV_CPU_TYPE_NAME("rva22s64")
- #define TYPE_RISCV_CPU_RVA23U64         RISCV_CPU_TYPE_NAME("rva23u64")
-+#define TYPE_RISCV_CPU_RVA23S64         RISCV_CPU_TYPE_NAME("rva23s64")
- #define TYPE_RISCV_CPU_IBEX             RISCV_CPU_TYPE_NAME("lowrisc-ibex")
- #define TYPE_RISCV_CPU_SHAKTI_C         RISCV_CPU_TYPE_NAME("shakti-c")
- #define TYPE_RISCV_CPU_SIFIVE_E31       RISCV_CPU_TYPE_NAME("sifive-e31")
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 371a7d63fa..9225459bf8 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -2418,10 +2418,44 @@ static RISCVCPUProfile RVA23U64 = {
-     }
- };
- 
-+/*
-+ * As with RVA23U64, RVA23S64 also defines 'named features'.
-+ *
-+ * Cache related features that we consider enabled since we don't
-+ * implement cache: Ssccptr
-+ *
-+ * Other named features that we already implement: Sstvecd, Sstvala,
-+ * Sscounterenw, Ssu64xl
-+ *
-+ * The remaining features/extensions comes from RVA23U64.
-+ */
-+static RISCVCPUProfile RVA23S64 = {
-+    .parent = &RVA23U64,
-+    .name = "rva23s64",
-+    .misa_ext = RVS,
-+    .priv_spec = PRIV_VERSION_1_13_0,
-+    .satp_mode = VM_1_10_SV39,
-+    .ext_offsets = {
-+        /* These were present in RVA22S64 */
-+        CPU_CFG_OFFSET(ext_zifencei), CPU_CFG_OFFSET(ext_svade),
-+        CPU_CFG_OFFSET(ext_svpbmt), CPU_CFG_OFFSET(ext_svinval),
-+
-+        /* New in RVA23S64 */
-+        CPU_CFG_OFFSET(ext_svnapot), CPU_CFG_OFFSET(ext_sstc),
-+        CPU_CFG_OFFSET(ext_sscofpmf), CPU_CFG_OFFSET(ext_ssnpm),
-+
-+        /* Named features: Sha */
-+        CPU_CFG_OFFSET(ext_sha),
-+
-+        RISCV_PROFILE_EXT_LIST_END
-+    }
-+};
-+
- RISCVCPUProfile *riscv_profiles[] = {
-     &RVA22U64,
-     &RVA22S64,
-     &RVA23U64,
-+    &RVA23S64,
-     NULL,
- };
- 
-@@ -2915,6 +2949,13 @@ static void rva23u64_profile_cpu_init(Object *obj)
- 
-     RVA23U64.enabled = true;
- }
-+
-+static void rva23s64_profile_cpu_init(Object *obj)
-+{
-+    rv64i_bare_cpu_init(obj);
-+
-+    RVA23S64.enabled = true;
-+}
- #endif
- 
- static const gchar *riscv_gdb_arch_name(CPUState *cs)
-@@ -3195,6 +3236,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-     DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22U64,  MXL_RV64,  rva22u64_profile_cpu_init),
-     DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22S64,  MXL_RV64,  rva22s64_profile_cpu_init),
-     DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA23U64,  MXL_RV64,  rva23u64_profile_cpu_init),
-+    DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA23S64,  MXL_RV64,  rva23s64_profile_cpu_init),
- #endif /* TARGET_RISCV64 */
- };
- 
+Thanks,
+
 -- 
-2.47.1
+Peter Xu
 
 
