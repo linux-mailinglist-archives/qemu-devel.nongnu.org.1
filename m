@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31DE3A105E0
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 12:48:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B227A105DB
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 12:48:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXfOT-0004Zu-7q; Tue, 14 Jan 2025 06:47:37 -0500
+	id 1tXfOO-0004TH-DA; Tue, 14 Jan 2025 06:47:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tXfNr-0004L1-Vw
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:47:00 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1tXfNp-0004KW-2x
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:46:58 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tXfNp-0006en-Kb
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:46:58 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-436326dcb1cso37872245e9.0
- for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 03:46:57 -0800 (PST)
+ id 1tXfNm-0006e7-LE
+ for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:46:56 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-43622267b2eso56142275e9.0
+ for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 03:46:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736855216; x=1737460016; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736855213; x=1737460013; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AlXy29NBIjMy0Rkry+U475eKhew1JRy9bb9HkntANSQ=;
- b=vcPlaJayrxfpEIR9045x41G47YnosYVkn/th6ipYEfIPReh9r7Z88Z6p9jnPzfyeLK
- 02rrqJnzIylJSxbk+Eh9H13b0b1zuSoTka5vtw/ge7mUCTQGrxOkANWxAUB3sBnmgFoT
- RIaFi0bxY2sbUjZS9m7PWkPRJoZgWtkfB0k1bROymj9RipVvoXh36pu5t+lynUCo8ghx
- pBm7LNPbr9tfixR0AdI/ToacWHaaHZXi596D0a1v943TAevz4NAgNaxT2Zb0P0ReBsHC
- WG9ChpmrCUliRiao8FrEn6VG61lOYlYOsacyWukdfOdVkle6/YKqrUaFEEGrL8Cxdrdt
- MiTg==
+ bh=r3xMvlplv8h0TbuE1B73gGvg3VD8+4dGq7BfJmandFw=;
+ b=A4uu/dfqi8V1ERLh3b1R/rmsSr10AmVYvcVnUOoRdnEh15E1qs6h1s1MqMDErnPUKL
+ VP91DOX2khFJ4jnja+149/85r4TIHXgeKpJ6dani6kvH5chIBUzLFyy81hss16gqqE0h
+ DhXR5qmN2jtgHMGcFXl9tvMLuAMtU46YA56eyA78v6MM2IkZnQA8odZg7y3ylW3pVvHv
+ ru77YmzdxpMzog0vnL7pdSzC4j02mDy4dEAahjS8PblWVBAjU6Tg+0LuV4Oj6v+Jw90O
+ QJVICYk7zVeRj53b4se0WPhj2L6EtDVCgF9kLGVyb9xn3dtOqqzWkM9Iz1yFEwUQsa86
+ utHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736855216; x=1737460016;
+ d=1e100.net; s=20230601; t=1736855213; x=1737460013;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AlXy29NBIjMy0Rkry+U475eKhew1JRy9bb9HkntANSQ=;
- b=gnEQSr/E55Kgtr1eKaox0MJqEyGSDDSJeaF6QZWUCq/z3ifRw7U7yFDvMN8N0s6ulN
- L4hMRWff3BpT7n5Rtljc6Cc9OJPV3gM51xTp9y6IihinGC1ta3dPRJZWSmePPq6ZtFBA
- hfysaLPKE923s5sa3GnxSLEz3vgIQ3BHi9kCT/MsnTiWrat/d6n6tdQnXVEjlv75cBpr
- mV2qEjS5l9iyC9Jraqff0PXwT+kgGrjoKlgaqvHxXIL7wew4ceZS46Ov4YpiyfSII1wc
- oe8WeapKAANxvqPvbz0Y5kHy0FZps6cXDzfOhDfCy69ZRNBcsWOnGSPpbwjKE28hc/2m
- LNiw==
-X-Gm-Message-State: AOJu0YwhkG/5tT2ECvJd9PYo/5GrWXBDGbazdJJraUTb4ScI0UVHVZwR
- TPNMC8/p8Prxdvioh2SBVX36yjznGsvGAF3ZzJJKkZPS71kj9sthGcbVN08BIF0=
-X-Gm-Gg: ASbGnculVy0po9knjC1itRTd4Ds5jkwXi7RfHFnn0fxnqG5YBJdM2IFBIkZJsF+vmqE
- xUVtohecLKHlXRfBM9MB3zJvhC91DpAalizG5cuCkmX2JINbt99dQhENrJTfrhf9SGdKZ47E5Dp
- Vtu/cEJRdaM2iEhzUrHmmCM2ogyTeneHDi0FPe6y2i4sZJff/pLl+qqBc1LCQ8e3//vWNLa7Pp7
- qLR/EiqkFYiEh5xEUjMkLnIb1p/btSkh8PAvHXzvvusiMvVaeDqNoA=
-X-Google-Smtp-Source: AGHT+IHgP+6HBHh6uDwG8QKhTqvCm7FzNbhJggUy3xFbODg6HBJy2dDXCDJ9Cio2bcEfS9RNitwEyQ==
-X-Received: by 2002:a05:600c:4314:b0:434:a802:e9b2 with SMTP id
- 5b1f17b1804b1-436eedef4damr146977385e9.4.1736855216226; 
- Tue, 14 Jan 2025 03:46:56 -0800 (PST)
+ bh=r3xMvlplv8h0TbuE1B73gGvg3VD8+4dGq7BfJmandFw=;
+ b=dmNFNRaGxhtu3dnCAuDfdgWMahd7WjVUPBWKY+ODZjaeBY8n3NI4nhO1DBmvRO0dcq
+ duIeBLieIuEHrfZ6loLTN/HQirFCTi/468QBYNkFpQ4bxK4yku+YOJGIvHgWc0AgL/tA
+ ekFLHlaFM29PXsucR0UnC7U7sRJRkOXU8c0RpYT0HDzleX5J2twjwfX2EvT1XZAfP2Dn
+ 54hCB92opZ1a/95tCqoQQWSwn7IxejrIIOLoykuG+Qg7jo2NYWxLjMn/wirKZMsX61gT
+ YFiJ0rkfF2YK+EVZPLezt5MwD4Wyp7HUXwudIdeQVaMRTSkTFBq5Ycu96n6FN52j5JOK
+ hKWA==
+X-Gm-Message-State: AOJu0Yzeulv+f2ZFsj0p7BPSlkAuuDpVhHWsTnLNverUjI3WYLRO2crb
+ mmknm3v2LWq8+CCfXKn6h+0eORUJ9ePsWMEcGUStUZZUcizpljsguyB7CdgLY1A=
+X-Gm-Gg: ASbGncsGr1vnZUZblEU41JbYbureMfOHqFqYymTdTEkgcTaGF9wIQ6DU9W9PZAVZ9ih
+ hyiCj6db1gYXCQ3JmTrfWADUu+SwSOv4FzSMhSxIBubU9Ja01B607lCwH1qqzOYR/4BT4MrcWra
+ 1ezFfeTflkcc1g93pMiixrruz59BqZKO3BonL9uFYI+Px7TJU6JlxY58k63aedXovLwSmlBku2O
+ pjD5SRd31baLBzRpPdWcDQNu8Ho+VAI92bmBajUyDWXkfXnI00DUWA=
+X-Google-Smtp-Source: AGHT+IFUT3M+mz7Xqr2YlxuoBSz2zgfUGCAKLX9oWysfJ5zEtul0hLok4fZKDOSO4VW+UJH2qvn2TA==
+X-Received: by 2002:a5d:59ab:0:b0:386:37f5:99f6 with SMTP id
+ ffacd0b85a97d-38a8733bf6dmr22328840f8f.53.1736855213325; 
+ Tue, 14 Jan 2025 03:46:53 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436e2e89df1sm205860075e9.27.2025.01.14.03.46.52
+ ffacd0b85a97d-38a8e38c697sm14902010f8f.52.2025.01.14.03.46.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 14 Jan 2025 03:46:52 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A122F5FBC0;
+ by draig.lan (Postfix) with ESMTP id B60AE5FBCE;
  Tue, 14 Jan 2025 11:38:24 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -69,21 +69,19 @@ Cc: Thomas Huth <thuth@redhat.com>,
  Stefan Weil <sw@weilnetz.de>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>
-Subject: [PATCH v2 30/37] include/exec: remove warning_printed from
- MemoryRegion
-Date: Tue, 14 Jan 2025 11:38:14 +0000
-Message-Id: <20250114113821.768750-31-alex.bennee@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v2 31/37] docs/sphinx: include kernel-doc script as a
+ dependency
+Date: Tue, 14 Jan 2025 11:38:15 +0000
+Message-Id: <20250114113821.768750-32-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250114113821.768750-1-alex.bennee@linaro.org>
 References: <20250114113821.768750-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,29 +104,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since d197063fcf9 (memory: move unassigned_mem_ops to memory.c) this
-field is unused.
+When we update the script we should rebuild the docs. Otherwise
+breaking changes made to the kdoc script don't become apparent until
+later.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- include/exec/memory.h | 1 -
- 1 file changed, 1 deletion(-)
+ docs/sphinx/depfile.py | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 605687befa..3ee1901b52 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -784,7 +784,6 @@ struct MemoryRegion {
-     bool terminates;
-     bool ram_device;
-     bool enabled;
--    bool warning_printed; /* For reservations */
-     uint8_t vga_logging_count;
-     MemoryRegion *alias;
-     hwaddr alias_offset;
+diff --git a/docs/sphinx/depfile.py b/docs/sphinx/depfile.py
+index e74be6af98..d3c774d28b 100644
+--- a/docs/sphinx/depfile.py
++++ b/docs/sphinx/depfile.py
+@@ -31,6 +31,9 @@ def get_infiles(env):
+         for path in Path(static_path).rglob('*'):
+             yield str(path)
+ 
++    # also include kdoc script
++    yield str(env.config.kerneldoc_bin[1])
++
+ 
+ def write_depfile(app, exception):
+     if exception:
 -- 
 2.39.5
 
