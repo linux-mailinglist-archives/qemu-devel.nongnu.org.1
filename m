@@ -2,92 +2,121 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74952A118AE
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 06:03:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6058A119FA
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 07:47:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXvXg-0006PO-J9; Wed, 15 Jan 2025 00:02:12 -0500
+	id 1tXxB6-0001dO-KT; Wed, 15 Jan 2025 01:47:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tXvXd-0006PA-VJ
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 00:02:10 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tXvXc-0004C3-Bm
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 00:02:09 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-21636268e43so147844055ad.2
- for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 21:02:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736917324; x=1737522124; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xgQlJB2LXR4zDUHKxyGyp2tq6MiibtBpmsnVV71gEaw=;
- b=Y7+se1mIWamcWcN3lhio9694oRFO9hOD8IHf02EjeOI03p+Nzydh+jIZJHu1I4fwvQ
- XCwqXxe5R/DrXRtizI3B/FjztSLhz6FirGGtTY/xT92JwBiwLXnJu3bfHMipQ58j6qxL
- q8zNj54LMwUU5JfTj0Fqu0zsZGyArT0umJN8rLLzIvLVxHSYNdPJXpucN8AEH8z42B4F
- QAc8pNK9vFB+EvfuDdAmfeleKEG8yY5+ZoXC9TU2xr9O5b+tyGTn5+Ls2PusyzzTzuYe
- /mqYK+/Br4n1h9c5Jfk1MEdiXyEob3/AcW3VLBmeiDTkrbSrWgEjEbOVbrU1mfsEpVZ+
- TEaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736917324; x=1737522124;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xgQlJB2LXR4zDUHKxyGyp2tq6MiibtBpmsnVV71gEaw=;
- b=XQOOVCeWesKv+J37ucvnJhS1BaFzwCvhvMCoChs2Kwn/mdlkFhHxvqh8XuMnqhQXx6
- g5L8WaoAACuDZPfNPoI2lvsfgdhtwKU4LqRP+AXLz2iJQivr9OEz48Jj+oZwZIQAUW8x
- iGvMsgT1uqIZDAeiX+lVY+MW2jiBe7Fh8EwvpwVQA8EbJu7S7Ik5JUNDI11DuffY4dUG
- N6RIou90hTZtgZh75h2WHXI0h6TPTvjA7Dk4MEyh3LEBTcn7aBV6rvevxpYTPhA3HyxF
- 6ROY+xE12POZVWn+1Pqf42NWSxtNEJ00oqWnSeRwtddIpFQ0qZntI8TgQuzM0rq5eej1
- w+sw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXhX4Iq8lnem26rNWzEgvchBFJ+T5pWjPS2kD3YIIDwIvEkGaEbnx2l/7jvaVXyJLplIq9lXBlm7Olb@nongnu.org
-X-Gm-Message-State: AOJu0YwpiyTYEzHVqZZad7iwL3e63HleB491sYESeHxTbFnktvQCoX8s
- 8ai8o0hu7oBZXln2LC6rQMstRH1EBK8a9T9KRbL5uCgfUWzcw23LgVhtdmt06xo=
-X-Gm-Gg: ASbGncvKqEWeSFllRAFRxRCgoua+SWpw8IfQkuMGvnNQ1QdiI81+Bo0nGXLK+waMJM4
- SdLIoFojW9cYv0piB9AhwqLuYEIu9NPiEQgtPHP9tEv1WS7zM9L7HNYFkh4uCyIiVyITZxz+LbG
- 27cZhny143IkUj9S4B2gNXmyigjiMkBD/YHXZ02eXfp4F/iZtWkBYr6O1ReF1qhzeY7pgr4xgVS
- 1+CkLczDaQteE4KKRM2cj6MIANjITdATSsAv6G9X/sVomb09FzfZI9xAEmUWIclRette5NzsKCL
- FrFhym9s1k+clk/bkHE3vf0=
-X-Google-Smtp-Source: AGHT+IEv99T7h/E5juRVQfr3oQY5PqStTwy0VXDTsXnjvrMB0J3aBpG0tXxAx9wwavlBP0w56vwDGQ==
-X-Received: by 2002:a17:902:d511:b0:215:6489:cfbf with SMTP id
- d9443c01a7336-21a83f48cc0mr415759355ad.11.1736917324003; 
- Tue, 14 Jan 2025 21:02:04 -0800 (PST)
-Received: from [192.168.0.4] (174-21-71-127.tukw.qwest.net. [174.21.71.127])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21a9f217d56sm75076935ad.141.2025.01.14.21.02.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Jan 2025 21:02:03 -0800 (PST)
-Message-ID: <1a4e4e5f-9bf0-462c-885e-5cf5fd033b7c@linaro.org>
-Date: Tue, 14 Jan 2025 21:02:01 -0800
+ (Exim 4.90_1) (envelope-from <arun.kka@samsung.com>)
+ id 1tXxB3-0001cy-Ek
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 01:46:57 -0500
+Received: from mailout2.samsung.com ([203.254.224.25])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <arun.kka@samsung.com>)
+ id 1tXxAy-0000lj-5q
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 01:46:56 -0500
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+ by mailout2.samsung.com (KnoxPortal) with ESMTP id
+ 20250115064641epoutp0235376ff3c2f9c2e68294fa617ad17b62~aytAVgRgd2006420064epoutp02K
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 06:46:41 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com
+ 20250115064641epoutp0235376ff3c2f9c2e68294fa617ad17b62~aytAVgRgd2006420064epoutp02K
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1736923601;
+ bh=CxnbocLTmZ95AX1LAnfwVw73na1JRDE7lgMbiY0yk68=;
+ h=From:To:Cc:Subject:Date:References:From;
+ b=VwiHefHgg7d1RgJ7HKVAPK+eQQ4YjlIrYrWFqkh+CiB/ipEk7OEliq82OFBGY0tyW
+ dQa4tSJm2GzjgXMdkWpqe2pW9k8oxUFF0CJFfaZ40Lmh2vpiv4j3RgY9lef+yqkmTK
+ YLc29picQEVdJ8P9EJc5IyR59EyreM5fbT9ekjh4=
+Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
+ epcas5p3.samsung.com (KnoxPortal) with ESMTP id
+ 20250115064640epcas5p36ec07e0e4ae4fedc17fe938f09c6bdc5~ays-So0rX2573125731epcas5p3M;
+ Wed, 15 Jan 2025 06:46:40 +0000 (GMT)
+Received: from epsmges5p2new.samsung.com (unknown [182.195.38.177]) by
+ epsnrtp1.localdomain (Postfix) with ESMTP id 4YXxNs63GMz4x9QH; Wed, 15 Jan
+ 2025 06:46:37 +0000 (GMT)
+Received: from epcas5p1.samsung.com ( [182.195.41.39]) by
+ epsmges5p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 78.93.19933.DC957876; Wed, 15 Jan 2025 15:46:37 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+ epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+ 20250115052058epcas5p24379c769f1f53bc7fec3771fa8122389~axiKg2GZn0846208462epcas5p21;
+ Wed, 15 Jan 2025 05:20:58 +0000 (GMT)
+Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
+ epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+ 20250115052058epsmtrp23cc55b2a5fa4d3ec4733aa7d4b2a29ef~axiKgImhZ1255712557epsmtrp2O;
+ Wed, 15 Jan 2025 05:20:58 +0000 (GMT)
+X-AuditID: b6c32a4a-b87c770000004ddd-93-678759cdd05d
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+ epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
+ A9.40.33707.AB547876; Wed, 15 Jan 2025 14:20:58 +0900 (KST)
+Received: from open-sourcing.samsungds.net (unknown [107.99.41.223]) by
+ epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+ 20250115052057epsmtip1f842cac0bad040e4cd116f58b767d690~axiJr5ETT2486724867epsmtip1j;
+ Wed, 15 Jan 2025 05:20:57 +0000 (GMT)
+From: Arun Kumar <arun.kka@samsung.com>
+To: qemu-devel@nongnu.org
+Cc: kbusch@kernel.org, its@irrelevant.dk, foss@defmacro.it, Arun Kumar
+ <arun.kka@samsung.com>
+Subject: [PATCH] hw/nvme: Format Index Mismatch Protection
+Date: Wed, 15 Jan 2025 05:23:47 +0530
+Message-ID: <20250114235347.38477-1-arun.kka@samsung.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/11] hw/mips/loongson3_virt: Factor generic_cpu_reset()
- out
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>
-References: <20250112215835.29320-1-philmd@linaro.org>
- <20250112215835.29320-2-philmd@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250112215835.29320-2-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrBKsWRmVeSWpSXmKPExsWy7bCmuu7ZyPZ0g64ObYs59y0sTkwJs9h/
+ 8BurxaRD1xgtjvfuYHFg9Zgy7Rq7x7kd59k9Nq3qZPN4cm0zk0ffllWMAaxR2TYZqYkpqUUK
+ qXnJ+SmZeem2St7B8c7xpmYGhrqGlhbmSgp5ibmptkouPgG6bpk5QLuVFMoSc0qBQgGJxcVK
+ +nY2RfmlJakKGfnFJbZKqQUpOQUmBXrFibnFpXnpenmpJVaGBgZGpkCFCdkZv5dtZyw4KFzR
+ f+8yewPjXr4uRk4OCQETif7/u5m6GLk4hAR2M0osOH2DGcL5xChx6uMhNjinp+MTM0zL8Rsf
+ WSESOxklHv+YCtXyk1Hi3tnjTCBVbALqEmtn7gCzRQQkJX53nQbrZhaIl/i2aCkLiC0sYCWx
+ /t13RhCbRUBVovHzFlYQm1fAUuLDmh6obfISi3csZ4aIC0qcnPmEBWKOvETz1tlgiyUEdrFL
+ tB6dyALR4CJxZ/IJJghbWOLV8S3sELaUxOd3e9kg7HqJMzP3QNV0MEo8/Q5VYy9xcc9foDgH
+ 0AJNifW79CHCshJTT61jgtjLJ9H7+wlUK6/EjnkwtpLEva0/ocZISMy5AvGXhICHxNTZuxlB
+ RgoJxErMPCsxgVF+FpJvZiH5ZhbC4gWMzKsYJVMLinPTU4tNC4zyUsvhEZucn7uJEZwEtbx2
+ MD588EHvECMTB+MhRgkOZiUR3iVsrelCvCmJlVWpRfnxRaU5qcWHGE2BQTyRWUo0OR+YhvNK
+ 4g1NLA1MzMzMTCyNzQyVxHmbd7akCwmkJ5akZqemFqQWwfQxcXBKNTDt/Vt2xzbm4S7JKbry
+ bQXfV3488acjQy3mBmtVmPLUku6LXHXXWtj1hUzf++zf+8Tsedra7aGfjvUy1THZPm05s+H4
+ 8wiN/JlGLJ/lpt6ZMHdz3lkRO9OdJl0GReq7Xz/4ddRR5Y9+vErfstWHFaamrrhwvNFMpmBr
+ yHzN7bMcztd9Nd0e33xIpzn0Cc8SyTSNiR8ifCVXSDH2HVQunBGVc2ZvFMPJxKp7XgdYk2fN
+ 0UmYVrB15RvhZw8EN9k6hJYEnbNOa2XN2PgsdenUL0KHbJxe6r81WciQ4u47ibFNo8Lhq0vc
+ 9ld2zLkvf2X8yN9jH5RrHvP31dXrCS0lC5fO60tz+hrH1/5ExvMuj7ESS3FGoqEWc1FxIgDV
+ tf4RCwQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprPLMWRmVeSWpSXmKPExsWy7bCSnO4u1/Z0g7Wf+C3m3LewODElzGL/
+ wW+sFpMOXWO0ON67g8WB1WPKtGvsHud2nGf32LSqk83jybXNTB59W1YxBrBGcdmkpOZklqUW
+ 6dslcGX8XradseCgcEX/vcvsDYx7+boYOTkkBEwkjt/4yNrFyMUhJLCdUeLT9oOMEAkJiR9f
+ vkHZwhIr/z1nhyj6ziix8sB8dpAEm4C6xNqZO5hAbBEBSYnfXaeZuxg5OJgFkiVe//AFCQsL
+ WEmsf/cdbA6LgKpE4+ctrCA2r4ClxIc1PcwQ8+UlFu9YzgwRF5Q4OfMJC4jNDBRv3jqbeQIj
+ 3ywkqVlIUgsYmVYxiqYWFOem5yYXGOoVJ+YWl+al6yXn525iBIehVtAOxmXr/+odYmTiYDzE
+ KMHBrCTCu4StNV2INyWxsiq1KD++qDQntfgQozQHi5I4r3JOZ4qQQHpiSWp2ampBahFMlomD
+ U6qBafuLVUZB13lfsX0WiFrrE1tddaFnY0zQpsAJNjmXv8TuKsySfLHE0vOBD/PekF9vfgcl
+ S+/M0GyocgjxFIrb8/pVZdf9PB/xzcoSk3TPGtlll13rnsDTMUPqzZfnNudl531Q57MUnLd/
+ wp2vPjcfGFxuijk4Y8q/2L0Tb1QbPGq0tbubfpTxO8c0Cc8qaY4+fdOHtm+ecH/TMdycPNOL
+ 17Ci7LHaSl5H9keeJ0xmHSpacHN/odYRV/8txTNcHdxb2xvfJ/ddkL+vXaZfrcg4Yxq/9WMH
+ /pCcZwmKM5/3z9nTemRX5naja6z6CbardpWsD+Fdn6Cam7DIecPNz6x5fBH2ltnr0vZN0po/
+ 4cs3JZbijERDLeai4kQAkMW/E7ICAAA=
+X-CMS-MailID: 20250115052058epcas5p24379c769f1f53bc7fec3771fa8122389
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250115052058epcas5p24379c769f1f53bc7fec3771fa8122389
+References: <CGME20250115052058epcas5p24379c769f1f53bc7fec3771fa8122389@epcas5p2.samsung.com>
+Received-SPF: pass client-ip=203.254.224.25; envelope-from=arun.kka@samsung.com;
+ helo=mailout2.samsung.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
+ DKIMWL_WL_HIGH=-0.063, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,19 +132,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/12/25 13:58, Philippe Mathieu-Daudé wrote:
-> main_cpu_reset() is misleadingly named "main": it resets
-> all vCPUs, with a special case for the first vCPU.
-> 
-> Factor generic_cpu_reset() out of main_cpu_reset(),
-> allowing to remove one &first_cpu use.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   hw/mips/loongson3_virt.c | 26 +++++++++++++++++---------
->   1 file changed, 17 insertions(+), 9 deletions(-)
+implement TP4140-(Format Index Mismatch Protection)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Arun Kumar <arun.kka@samsung.com>
+---
+ hw/nvme/ctrl.c | 35 ++++++++++++++++++++++++++++++-----
+ 1 file changed, 30 insertions(+), 5 deletions(-)
 
-r~
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index 127c3d2383..46bf522754 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -4452,6 +4452,16 @@ static uint16_t nvme_io_cmd(NvmeCtrl *n, NvmeRequest *req)
+         return NVME_INVALID_FIELD;
+     }
+ 
++    if (!n->features.hbs.lbafee) {
++        if ((NVME_ID_NS_NVM_ELBAF_PIF(ns->id_ns_nvm.elbaf[
++             NVME_ID_NS_FLBAS_INDEX(ns->id_ns.flbas)]) != 0)) {
++            return NVME_INVALID_FORMAT | NVME_DNR;
++        }
++        if (NVME_ID_NS_FLBAS_INDEX(ns->id_ns.flbas) > ns->id_ns.nlbaf) {
++            return NVME_INVALID_FORMAT | NVME_DNR;
++        }
++    }
++
+     req->ns = ns;
+ 
+     switch (req->cmd.opcode) {
+@@ -6537,8 +6547,26 @@ done:
+     nvme_do_format(iocb);
+ }
+ 
+-static uint16_t nvme_format_check(NvmeNamespace *ns, uint8_t lbaf, uint8_t pi)
++static uint16_t nvme_format_check(NvmeFormatAIOCB *iocb)
+ {
++    NvmeNamespace *ns = iocb->ns;
++    NvmeRequest *req = iocb->req;
++    NvmeCtrl *n = nvme_ctrl(req);
++    uint8_t lbaf = iocb->lbaf;
++    uint32_t dw10 = le32_to_cpu(req->cmd.cdw10);
++    uint8_t pi = (dw10 >> 5) & 0x7;
++
++    if (!n->features.hbs.lbafee) {
++        if ((NVME_ID_NS_NVM_ELBAF_PIF(ns->id_ns_nvm.elbaf[lbaf]) != 0) ||
++            (NVME_ID_NS_NVM_ELBAF_PIF(ns->id_ns_nvm.elbaf[
++             NVME_ID_NS_FLBAS_INDEX(ns->id_ns.flbas)]) != 0)) {
++            return NVME_INVALID_FORMAT | NVME_DNR;
++        }
++        if (NVME_ID_NS_FLBAS_INDEX(ns->id_ns.flbas) > ns->id_ns.nlbaf) {
++            return NVME_INVALID_FORMAT | NVME_DNR;
++        }
++    }
++
+     if (ns->params.zoned) {
+         return NVME_INVALID_FORMAT | NVME_DNR;
+     }
+@@ -6562,9 +6590,6 @@ static void nvme_do_format(NvmeFormatAIOCB *iocb)
+ {
+     NvmeRequest *req = iocb->req;
+     NvmeCtrl *n = nvme_ctrl(req);
+-    uint32_t dw10 = le32_to_cpu(req->cmd.cdw10);
+-    uint8_t lbaf = dw10 & 0xf;
+-    uint8_t pi = (dw10 >> 5) & 0x7;
+     uint16_t status;
+     int i;
+ 
+@@ -6586,7 +6611,7 @@ static void nvme_do_format(NvmeFormatAIOCB *iocb)
+         goto done;
+     }
+ 
+-    status = nvme_format_check(iocb->ns, lbaf, pi);
++    status = nvme_format_check(iocb);
+     if (status) {
+         req->status = status;
+         goto done;
+-- 
+2.43.0
+
 
