@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F51BA105B5
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 12:41:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A43D1A105B9
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 12:41:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXfFs-0005By-Rf; Tue, 14 Jan 2025 06:38:44 -0500
+	id 1tXfFe-000566-Sc; Tue, 14 Jan 2025 06:38:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tXfFd-00055I-J9
+ id 1tXfFd-00055A-FQ
  for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:29 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tXfFb-0005P0-Ta
+ id 1tXfFb-0005Ox-RS
  for qemu-devel@nongnu.org; Tue, 14 Jan 2025 06:38:29 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5d3dce16a3dso2950287a12.1
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5d7e527becaso8967483a12.3
  for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 03:38:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1736854706; x=1737459506; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=q0SipZjZSJ8RGOzW6wWIIrmkUJqEseFLNGa6w4kFsPM=;
- b=j1MvElZeUnY5BwersMfw3EM9OI+PtBEKPOBcPyfP947evhGxFILu2qmugHfBZr2BOS
- NO+8HzM18D2CU5oUyJitYc2cwSnbWLGwj18Iytg5mic18CPC3rlsWCcMU+kXgfUS6FC/
- B2CjdVIT1OzU2DJM7TzN4MExdPGL5VuaAXAdjY7hwVzqBbpg2/ucKXq8osmu3ERtkZTS
- HQ8DDGmK3I8xxPBQEMslOPHrHepK6JyumqNX1voIYHxaETeS8KbX7mDRZEGyO2XTvovL
- /ETPPRQDucfaV34FW14DMhggIXAwrg3r48lABfzMoJtWEYIiBnlRVHFE7efSeuIrotpJ
- yf7w==
+ bh=gi+ukBCOErHL45ERN6Ib1p4GgIF2LltQZlgS/5QMd38=;
+ b=P0Vy8EKQn2DNVqUaENaXxrd4w37jYc+W8hpJUP/poGho6O447IMG/rc9TD1g/B3Wtv
+ SbW6Gpf9NSAE0bpxggJHmYMOgjxB5hUIoaobWKEc477zOYCaMG8p50gdMs1sx0BxU4/L
+ jqIhZA5qdpJ11OjmaegT3JXvgS3vbZMr19r/sWyiTS2BnjCbhUtTHpFoZwnmpG2b5wK9
+ zSp6G1DAuksQ0Nd5vEk8mG1QQ1y4LdZqNuWJfR92Hbersv2XvjMIPNSE31EKhpdmDjx+
+ Zncg+2FVvxduuDsVe3u86vF+elfRgS7w1l3oMfT81yWWyL/qkKVuSGt0Xrz0F8vHUxgf
+ zfrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1736854706; x=1737459506;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=q0SipZjZSJ8RGOzW6wWIIrmkUJqEseFLNGa6w4kFsPM=;
- b=V+DLz6phcrIYpOvgRNR7pxc4++NEX7m2M9Je6Z0nIbM3t4PEhi8APPCenSYHFTVy2a
- JpkMbZH+XYuHlSQLv/q8tA9Vg4nQyzqp4eZClHPDN2mbwokU72tsnfYJk4geZXSvljBF
- /lNdl7xS1pRqu3iXyH1pAWnvpMWSwXsKjRPztFIedW7PrK9fbDC5G9U6tJBUugcMivqn
- pDwq87bDJjuDH/PmSaNGawCmcg0MSkzw2SgBKKHrx3+uQs0JMGTKtlKwfDaZLwh4W9sB
- 9Iw5TQcN0EUfAeoOkPIUF8Hyq+fKutZE7Esc7uwvJhv5QPwyAf1t4MhakAxhbwfj81Ux
- C+QQ==
-X-Gm-Message-State: AOJu0YxRrr7MxT3q36Fz/a7eyuK94TEm8GvJHlfJeC7/JJ4ay+oRMVmR
- Qep+1eC8tGERu57/3hM+6NbwwxUkDk+B2Pbz9+CwKaLgIf1vxFNt2Lyi0Yn+6hg=
-X-Gm-Gg: ASbGncsW5J64gIZr21cGnqAZmWwBkJ9Do5ArM7foMYZHWLDyjJjCYB/QvTK9wsmA11Y
- t5WYNYm8lC91/XQV8VQQDpFjGzcauNo+BwjcvZh7ULNHADZ9OB8r/z6RrxzKHmp7b7Kv191qDUq
- pJjxTeAWtiotJd8s+SkZAUeGEhnqfWgU0VZBYHttZhWdhWKHgpoko5Ks65PfLd8gX02FQVN1mE7
- kmoebnYSfoaph/ZViEK80hzBSNNctGr8QkJU4JKJMYViBgS37zd4Ug=
-X-Google-Smtp-Source: AGHT+IEsdf4iZVC3apfhiO0ODtJgm+ywWlh0cRwM9wDem0JxkPyAtQ/tsbOCVAfRqqc3sqITnHMYAA==
-X-Received: by 2002:a05:6402:5250:b0:5d9:6633:8e9b with SMTP id
- 4fb4d7f45d1cf-5d98a10660amr17120511a12.1.1736854705477; 
+ bh=gi+ukBCOErHL45ERN6Ib1p4GgIF2LltQZlgS/5QMd38=;
+ b=pJR4QNS4a/aGZBfhs+7mBNQMmKWrQHgJ91R9MvF2bUF1NL5tvjEjM91aMyUj7LWeap
+ f42gChM74wh8lZQDT7xckGkX87CQDZLaH3pR0T8/A66P1SPKLBMMdUdjQrvRcuJYOFvv
+ bZQN3jlbr7QkDcywAp4eRtz8iGpqMuh6aPvSWWiUTfW4vjDdDQ/v+SSA7Kd4Br/qveK0
+ 89dEmVM4Q8uliKMs15af6SrH6eg4gkwr/LZDo6eWW2GRwmxxVn7PYV66GZ0WnsKBWv9T
+ XQtXJKt3dOd8wvGv4GoSNrnY9umV+EVp6gI/7WCKseeNHgZopdEY9RtQAMScfYqMm5Tk
+ CnOQ==
+X-Gm-Message-State: AOJu0Yxf6zDNeQSr/XaiU+V/qQuZpjBxRgVilOnpu73BRGUzsXx4kvWd
+ /+LsTrD0Hbwju+lO/yNUoijWwpd/hbZkoFD9qDV+6cjfWtcBjUvY1ItyDSbilQE=
+X-Gm-Gg: ASbGncs3lHgfe9HzbgTlDo3zt8WPjSbmY/k7zcpAtfkaBX8jLHEt2S6vqJhOuiJg0Tp
+ XxYGVcY225OU+ZHUtO/UzxCIVLxLCzdUXIQxZLF3KpeNB7HvOSgEs/JisJO+Vl/nvfDt9xzAV/T
+ zGs5vCoTFnQ4HMbdNf4042qTDXbduKeGLYgWVQi+0q5Fs+NcVZ6S2bq7kPutMuQ6FtBbjvNDyzG
+ qhgbI08QcN9NLn1q1p/IInKhDZ9LQIvNHowIzDEJuKvRpob4A5XdFw=
+X-Google-Smtp-Source: AGHT+IErM1tlIZTvq4ZNTn0gF3vXT/XwiZNqXiD6pGnxLcF7SPv/i3SsQtFz9nEYCbd2nxDHpHP0vA==
+X-Received: by 2002:a05:6402:270d:b0:5d9:ad1:dafc with SMTP id
+ 4fb4d7f45d1cf-5d972e639famr55412470a12.25.1736854705994; 
  Tue, 14 Jan 2025 03:38:25 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d9900c4b2fsm5959449a12.29.2025.01.14.03.38.23
+ a640c23a62f3a-ab2c90da8b2sm618578866b.44.2025.01.14.03.38.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 14 Jan 2025 03:38:24 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 50F485F93C;
+ by draig.lan (Postfix) with ESMTP id 686115F945;
  Tue, 14 Jan 2025 11:38:22 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -70,17 +70,17 @@ Cc: Thomas Huth <thuth@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v2 06/37] semihosting/console: Avoid including 'cpu.h'
-Date: Tue, 14 Jan 2025 11:37:50 +0000
-Message-Id: <20250114113821.768750-7-alex.bennee@linaro.org>
+Subject: [PATCH v2 07/37] semihosting/meson: Build config.o and console.o once
+Date: Tue, 14 Jan 2025 11:37:51 +0000
+Message-Id: <20250114113821.768750-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250114113821.768750-1-alex.bennee@linaro.org>
 References: <20250114113821.768750-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,63 +105,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The CPUState structure is declared in "hw/core/cpu.h",
-the EXCP_HALTED definition in "exec/cpu-common.h".
-Both headers are indirectly include by "cpu.h". In
-order to remove "cpu.h" from "semihosting/console.h",
-explicitly include them in console.c, otherwise we'd
-get:
-
-  ../semihosting/console.c:88:11: error: incomplete definition of type 'struct CPUState'
-     88 |         cs->exception_index = EXCP_HALTED;
-        |         ~~^
-  ../semihosting/console.c:88:31: error: use of undeclared identifier 'EXCP_HALTED'
-     88 |         cs->exception_index = EXCP_HALTED;
-        |                               ^
+config.c and console.c don't use any target specific
+headers anymore, move them from specific_ss[] to
+system_ss[] so they are built once, but will also be
+linked once, removing global symbol clash in a single
+QEMU binary.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250103171037.11265-5-philmd@linaro.org>
+Message-Id: <20250103171037.11265-6-philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- include/semihosting/console.h | 2 --
- semihosting/console.c         | 3 ++-
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ semihosting/meson.build | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/include/semihosting/console.h b/include/semihosting/console.h
-index bd78e5f03f..1c12e178ee 100644
---- a/include/semihosting/console.h
-+++ b/include/semihosting/console.h
-@@ -9,8 +9,6 @@
- #ifndef SEMIHOST_CONSOLE_H
- #define SEMIHOST_CONSOLE_H
+diff --git a/semihosting/meson.build b/semihosting/meson.build
+index 34933e5a19..86f5004bed 100644
+--- a/semihosting/meson.build
++++ b/semihosting/meson.build
+@@ -4,13 +4,16 @@ specific_ss.add(when: 'CONFIG_SEMIHOSTING', if_true: files(
+ ))
  
--#include "cpu.h"
--
- /**
-  * qemu_semihosting_console_read:
-  * @cs: CPUState
-diff --git a/semihosting/console.c b/semihosting/console.c
-index 60102bbab6..c3683a1566 100644
---- a/semihosting/console.c
-+++ b/semihosting/console.c
-@@ -18,14 +18,15 @@
- #include "qemu/osdep.h"
- #include "semihosting/semihost.h"
- #include "semihosting/console.h"
-+#include "exec/cpu-common.h"
- #include "exec/gdbstub.h"
--#include "exec/exec-all.h"
- #include "qemu/log.h"
- #include "chardev/char.h"
- #include "chardev/char-fe.h"
- #include "qemu/main-loop.h"
- #include "qapi/error.h"
- #include "qemu/fifo8.h"
-+#include "hw/core/cpu.h"
+ specific_ss.add(when: ['CONFIG_SEMIHOSTING', 'CONFIG_SYSTEM_ONLY'], if_true: files(
+-  'config.c',
+-  'console.c',
+   'uaccess.c',
+ ))
  
- /* Access to this structure is protected by the BQL */
- typedef struct SemihostingConsole {
+ common_ss.add(when: ['CONFIG_SEMIHOSTING', 'CONFIG_SYSTEM_ONLY'], if_false: files('stubs-all.c'))
+-system_ss.add(when: ['CONFIG_SEMIHOSTING'], if_false: files('stubs-system.c'))
++system_ss.add(when: ['CONFIG_SEMIHOSTING'], if_true: files(
++  'config.c',
++  'console.c',
++), if_false: files(
++  'stubs-system.c',
++))
+ 
+ specific_ss.add(when: ['CONFIG_ARM_COMPATIBLE_SEMIHOSTING'],
+ 		if_true: files('arm-compat-semi.c'))
 -- 
 2.39.5
 
