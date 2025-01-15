@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D7B6A1242A
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 13:54:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0AFEA12417
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 13:52:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY2rp-0007mI-I1; Wed, 15 Jan 2025 07:51:29 -0500
+	id 1tY2sH-0008OS-0B; Wed, 15 Jan 2025 07:51:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tY2rO-0007eO-DK; Wed, 15 Jan 2025 07:51:05 -0500
-Received: from nyc.source.kernel.org ([147.75.193.91])
+ id 1tY2rQ-0007ef-BD; Wed, 15 Jan 2025 07:51:06 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tY2rM-0006sR-Ki; Wed, 15 Jan 2025 07:51:02 -0500
+ id 1tY2rM-0006sc-PM; Wed, 15 Jan 2025 07:51:03 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 36C7AA41F55;
- Wed, 15 Jan 2025 12:48:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FCAEC4CEED;
+ by dfw.source.kernel.org (Postfix) with ESMTP id 4FA305C5C71;
+ Wed, 15 Jan 2025 12:50:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33423C4CEEC;
  Wed, 15 Jan 2025 12:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1736945441;
- bh=V1mKz61FdUoHAGH3dpkETvRbC+klSr1z3HPtcSnP78w=;
+ bh=oVp3XpOKbd948VgOdJ8Xfp7/WBRW0R3mJMUfyy5sZvw=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=qb2EVWmN8/ZGjzaoFfVhcFuGnVswwZ8MZj9i9+6ENbK5743RiAqEI4L1TZohQFd88
- C73P7csuPGCBzBd+L9SUEhfNKAcWXkXZtJgWASm9t3cCXL61ePRbmW10ncNY+T7Tek
- SEBYnbfs3mSALGoyhriJVxzg8ZlKQLy2+WogkU/hsEnUYLecFQdN5OdSMDT6VTC8Uq
- vzlHXH5YFt4R+L9LZOULxvQ+13+X9CImLM/j+FhhOKXaSI4wqqhjkHhqNZXthxMdJt
- e5Ztq7zOffaZevk2987D1GjzeRJqdOyLUIW/v7vuqDCPIS0r2OnJ+9PD78AYRyMCkO
- 6j8IeO+RUAALg==
+ b=YEM7BM7XQOaDxHGzhXU4bDsEc9YIdw4a0qqJSmbzm7kM/iR0dvkCTt+CMnEPJhdyc
+ RSo/8T5i1dMXVPeJnjOukS1PFn06s1zsRNCVogPQSeLmU7qB6JerbtI7rBSU91K3Ey
+ aCUmamVxOoMpawKrz/dRs3S/zTmlnL5HE48Pjb3qFm8uhy3oMuWRW5s9a4u6KZiTdr
+ n4F1J1PDo9GgbvjNRnkpwuBIhh3gE6BgrD1+WhxvCGnaezkVODZEQneZ2uiu+mfyzQ
+ Y6RE1FuJ08JPSZmfvmMxBcixxfwMdlosfoNbtfAKYwfBol0GYmTAN2YrsBlmoHHuec
+ nGDmpXWKQUbJA==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1tY2r1-00000004yGE-1XDe; Wed, 15 Jan 2025 13:50:39 +0100
+ id 1tY2r1-00000004yGI-1eD5; Wed, 15 Jan 2025 13:50:39 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
@@ -41,23 +41,23 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  qemu-devel@nongnu.org, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
  Ani Sinha <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
  linux-kernel@vger.kernel.org
-Subject: [PATCH v7 13/16] acpi/ghes: better name the offset of the hardware
- error firmware
-Date: Wed, 15 Jan 2025 13:50:29 +0100
-Message-ID: <ddbb94294bafee998f12fede3ba0b05dae5ee45f.1736945236.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v7 14/16] acpi/ghes: move offset calculus to a separate
+ function
+Date: Wed, 15 Jan 2025 13:50:30 +0100
+Message-ID: <60fdd1bf379ba1db3099710868802aa49a27febb.1736945236.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <cover.1736945236.git.mchehab+huawei@kernel.org>
 References: <cover.1736945236.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=147.75.193.91;
- envelope-from=mchehab+huawei@kernel.org; helo=nyc.source.kernel.org
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
+Received-SPF: pass client-ip=139.178.84.217;
+ envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -71
+X-Spam_score: -7.2
+X-Spam_bar: -------
+X-Spam_report: (-7.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -75,79 +75,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The hardware error firmware is where HEST error structures are
-stored. Those can be GHESv2, but they can also be other types.
+Currently, CPER address location is calculated as an offset of
+the hardware_errors table. It is also badly named, as the
+offset actually used is the address where the CPER data starts,
+and not the beginning of the error source.
 
-Better name the location of the hardware error.
+Move the logic which calculates such offset to a separate
+function, in preparation for a patch that will be changing the
+logic to calculate it from the HEST table.
 
-No functional changes.
+While here, properly name the variable which stores the cper
+address.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 ---
- hw/acpi/generic_event_device.c | 4 ++--
- hw/acpi/ghes.c                 | 4 ++--
- include/hw/acpi/ghes.h         | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ hw/acpi/ghes.c | 40 +++++++++++++++++++++++++++++++---------
+ 1 file changed, 31 insertions(+), 9 deletions(-)
 
-diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index 58540c0aaf26..c85d97ca3776 100644
---- a/hw/acpi/generic_event_device.c
-+++ b/hw/acpi/generic_event_device.c
-@@ -363,7 +363,7 @@ static const VMStateDescription vmstate_ghes = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .fields = (const VMStateField[]) {
--        VMSTATE_UINT64(ghes_addr_le, AcpiGhesState),
-+        VMSTATE_UINT64(hw_error_le, AcpiGhesState),
-         VMSTATE_END_OF_LIST()
-     },
- };
-@@ -371,7 +371,7 @@ static const VMStateDescription vmstate_ghes = {
- static bool ghes_needed(void *opaque)
- {
-     AcpiGedState *s = opaque;
--    return s->ghes_state.ghes_addr_le;
-+    return s->ghes_state.hw_error_le;
- }
- 
- static const VMStateDescription vmstate_ghes_state = {
 diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index 3f94a5542bb4..983e28505a08 100644
+index 983e28505a08..8f59d327d3e5 100644
 --- a/hw/acpi/ghes.c
 +++ b/hw/acpi/ghes.c
-@@ -359,7 +359,7 @@ void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
- 
-     /* Create a read-write fw_cfg file for Address */
-     fw_cfg_add_file_callback(s, ACPI_HW_ERROR_ADDR_FW_CFG_FILE, NULL, NULL,
--        NULL, &(ags->ghes_addr_le), sizeof(ags->ghes_addr_le), false);
-+        NULL, &(ags->hw_error_le), sizeof(ags->hw_error_le), false);
- 
+@@ -364,10 +364,37 @@ void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
      ags->present = true;
  }
-@@ -385,7 +385,7 @@ void ghes_record_cper_errors(const void *cper, size_t len,
-     }
-     ags = &acpi_ged_state->ghes_state;
  
--    start_addr = le64_to_cpu(ags->ghes_addr_le);
-+    start_addr = le64_to_cpu(ags->hw_error_le);
++static void get_hw_error_offsets(uint64_t ghes_addr,
++                                 uint64_t *cper_addr,
++                                 uint64_t *read_ack_register_addr)
++{
++    if (!ghes_addr) {
++        return;
++    }
++
++    /*
++     * non-HEST version supports only one source, so no need to change
++     * the start offset based on the source ID. Also, we can't validate
++     * the source ID, as it is stored inside the HEST table.
++     */
++
++    cpu_physical_memory_read(ghes_addr, cper_addr,
++                             sizeof(*cper_addr));
++
++    *cper_addr = le64_to_cpu(*cper_addr);
++
++    /*
++     * As the current version supports only one source, the ack offset is
++     * just sizeof(uint64_t).
++     */
++    *read_ack_register_addr = ghes_addr +
++			      ACPI_GHES_ERROR_SOURCE_COUNT * sizeof(uint64_t);
++}
++
+ void ghes_record_cper_errors(const void *cper, size_t len,
+                              uint16_t source_id, Error **errp)
+ {
+-    uint64_t error_block_addr, read_ack_register_addr, read_ack_register = 0;
++    uint64_t cper_addr = 0, read_ack_register_addr = 0, read_ack_register;
+     uint64_t start_addr;
+     AcpiGedState *acpi_ged_state;
+     AcpiGhesState *ags;
+@@ -389,18 +416,13 @@ void ghes_record_cper_errors(const void *cper, size_t len,
  
      start_addr += source_id * sizeof(uint64_t);
  
-diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
-index 21666a4bcc8b..39619a2457cb 100644
---- a/include/hw/acpi/ghes.h
-+++ b/include/hw/acpi/ghes.h
-@@ -65,7 +65,7 @@ enum {
- };
+-    cpu_physical_memory_read(start_addr, &error_block_addr,
+-                             sizeof(error_block_addr));
++    get_hw_error_offsets(start_addr, &cper_addr, &read_ack_register_addr);
  
- typedef struct AcpiGhesState {
--    uint64_t ghes_addr_le;
-+    uint64_t hw_error_le;
-     bool present; /* True if GHES is present at all on this board */
- } AcpiGhesState;
+-    error_block_addr = le64_to_cpu(error_block_addr);
+-    if (!error_block_addr) {
++    if (!cper_addr) {
+         error_setg(errp, "can not find Generic Error Status Block");
+         return;
+     }
  
+-    read_ack_register_addr = start_addr +
+-                             ACPI_GHES_ERROR_SOURCE_COUNT * sizeof(uint64_t);
+-
+     cpu_physical_memory_read(read_ack_register_addr,
+                              &read_ack_register, sizeof(read_ack_register));
+ 
+@@ -421,7 +443,7 @@ void ghes_record_cper_errors(const void *cper, size_t len,
+                               &read_ack_register, sizeof(uint64_t));
+ 
+     /* Write the generic error data entry into guest memory */
+-    cpu_physical_memory_write(error_block_addr, cper, len);
++    cpu_physical_memory_write(cper_addr, cper, len);
+ 
+     return;
+ }
 -- 
 2.47.1
 
