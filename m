@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE43A12F2E
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 00:25:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEEB4A12F2C
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 00:24:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYCjc-0001FY-1a; Wed, 15 Jan 2025 18:23:40 -0500
+	id 1tYCjh-0001es-3J; Wed, 15 Jan 2025 18:23:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCjZ-00015D-0u
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:23:37 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCje-0001d1-Rd
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:23:42 -0500
 Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCjX-0003rp-6D
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:23:36 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCjd-0003su-2a
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:23:42 -0500
 Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-436ce2ab251so1475135e9.1
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 15:23:34 -0800 (PST)
+ 5b1f17b1804b1-43626213fffso8865245e9.1
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 15:23:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736983413; x=1737588213; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736983419; x=1737588219; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LtVr4r34NQSIQO5b8dinugUm7VG2kyr9M3gSUVOEACI=;
- b=c1vEzXtqwVykYLPn1fI5agGsAcr9JAQA7oLPYXUKi2U8pUjSwSgYxgcIOkaAai6zdo
- yh2OWMOIG0/QYSawczdQ3hq0indRG0eFkeywl2HvQyEGoJv5jb8ceAisKHLFJCPWhOkD
- gT2m7RRzRJ/ZpEDYsPTAMqXum75kZVX1AbeUd4aZBzy+EJZYBnntiEC/7Gmi2Hr8jKzl
- MVyfbJGzOxtlXS6a6TSvI1YhXrzcSiOI7oIqF9PfDB8vokBdQ5gB2Z4bJoaNKNoas9Cr
- vQAioPXFTzR+gHAqdOtAGJSC/bLsLa+nYucOVJQ+pC5G3Qx/YIoyn3SXTo38utZ7CQ1J
- UVVg==
+ bh=OuY7XK/c0FM5xJPshFmNC9eVlLzvGQYZs65GXrUSy+M=;
+ b=vNBMtishQtPP/t538Uo+Ff72aptiBcuLeCTWDGokhQY7OSTuWG0ZeQQJRSUwyb7Yg/
+ VbwkRe5ZHiME4gYGRNLD4vlmIKqvA8gLJtCHjmS/WfxbtOEjzbZGMkLWr2s04x8l/cZB
+ eeI0BuymsPVIsW8McDb729KAaYq43Ihnx+fLYIcPhXGdy3LL6zWWqQL3MPMoVHKCdXKa
+ FW0be2esMvOrm+6p4Zzf3HVnBvzNd7e125OXjO/jlaeSMZoiNdyK7KPAWOgTSOXdMOC5
+ 6Vw0YiAHb9Ytoe433xV95uaRUsgv7nQPNs51VEsx71LRYkC7k49+lloh9iy4XyfXnMpW
+ kLRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736983413; x=1737588213;
+ d=1e100.net; s=20230601; t=1736983419; x=1737588219;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LtVr4r34NQSIQO5b8dinugUm7VG2kyr9M3gSUVOEACI=;
- b=S5E+5IUsqvI4qa7IuZ6ByY+NOW0OVhaZqisOXB/zr0MXrDy5awRwR/TflE5vrqoA7M
- 8nTVDak5/fymv0hum4Zcj1f7GC+RfkmtA0lc+e0X5uUb7DxlYiH0ugDR+w2o0N5TSOSG
- DyJDeWqEiT9pPyWjjswsDUtGQNhz/zC45QdsfM2AfvHu52P9Dug6l0TYAg05l0eWJrWO
- z8BOgxmT+HkDm5hDC2WzIqv06kZ4pHIQEr1+GaEiHvxcO5IGGjc+7rITjnwSCCcSPNRH
- fWN12LOcbXOSHgt70m8DvTFb/YISWkLdztwcm71zf9Df2kmm2P7AqtuZ+xZPc5tYDnWh
- PX0Q==
-X-Gm-Message-State: AOJu0YwchH3XIat7MvJn1zd23mbPDiunDzsUZG2OMW2n8o/uclMtDLQy
- pNFboVacmVgh/e6srFYQ2bi759pK66X/BBBwMyl/p97NmrGy6PPqFxoFB1D5XcsNLpQA1h0MwLt
- z3Dc=
-X-Gm-Gg: ASbGncuu3yTbZCTObA3E5y94CEHFpzuXAPg/7Wtb4lg+eO8k+mX3fh4eeCzLWYGQe9S
- GkktCxjMIi9GVKGTyM2nJkQBX11xs99zMbWZTxo6P3JVtvhX0U8KwQ2VAE4/qmGWkMGqw6XZ5Qj
- 4o6w8TiR3fCo0Y9nrFKT0SOJkhvTunusbXuLMJY2dptGHREAhAdTD7UAUV41WM4nhiYRBmPon54
- ctNWvjX3u6+H2dIax24q+suagsnfzzO+Jw8K4gVVSEEABMdkVU/UdFby2+ickw5uN5X7sIVIV1Z
- aiENflPKqpAsVMDzY18mV/NkvJkkBTI=
-X-Google-Smtp-Source: AGHT+IFqETvma2LLKyg0yB6yeVeoENyeDtumRwcDAA8uvIiSiSihe37ZvLYtPYCcoU1HDvdZVopRNQ==
-X-Received: by 2002:a05:600c:a09:b0:434:f1e9:afb3 with SMTP id
- 5b1f17b1804b1-436e267863emr268361935e9.3.1736983413393; 
- Wed, 15 Jan 2025 15:23:33 -0800 (PST)
+ bh=OuY7XK/c0FM5xJPshFmNC9eVlLzvGQYZs65GXrUSy+M=;
+ b=WKfS/nxl84dgNnWtbcOKCapQI3GFd/w3MAjCOJZQKDFcPEX/bxTlAw3Ex5zZpqCyfM
+ LrYpQv3lMV4h4W3pTIW35iRe1HYYwmvgijDcFTAc2DTYdPOQSsFnbrpg9pnoMVeTuqBV
+ xcuj8bUmAmKpOBd24TysDfEYkTkymUi46DpSjDbY2A0WB16OBmW35WoduBTR7/AyE4vt
+ 2FUYoneP2M82ldZ9/yx5H+V2cWN5jl9RF61E9BuSoaDLF578vB1yjE8zVmYiQUkq7eZq
+ AnGswGAhZH/sPkCQxc/dKvTAigO8O/E2/J/IKfuqUeGOMW5YJ7jJ2vH5EfBRSxq5Jr6L
+ ZcpA==
+X-Gm-Message-State: AOJu0YxYYI9Wv1a0rrIi7V4xs1pI502IUCysg2sTDGS4OrlfFPKDLiVK
+ sUByYQM9Rv/oCrE+gelLdvtbzn8+knwdgLOZvewzgX5NHik0gy2bnHXw10y4ytI4wbplFPJ9fwn
+ ZtwA=
+X-Gm-Gg: ASbGncudGCw6hlVsCvF3O904fIcjdsi0/ldzMpG7O/vwzLHYylZlBdBfv2zfdTA2WG3
+ x8sMJV47tVWTTC5YLtxtJhLdOCrEpzUAx6UgqUhpaaMMXxELeKUxDiJV+25el4Tym1NIjmOlduE
+ +ctBtqcWFT4AnVKqKMAoWhm9YO1liKbt2hwVji0CytxFIkDGuNlwGdkIIMcq0rvNZftY2HGUWaU
+ D3QXtorEmUvitIr+LLyFfz+h8WaHRR5+cAd02HMU4mNbbLzeHqM0RX0u9cvbgTgu6Ej4/N+dcvh
+ QfsUsUhalGigI3EX51D5AvaQOOljIdk=
+X-Google-Smtp-Source: AGHT+IFkqaiAf0xdKKh0b/pmQ7c7zqPgSwzWI6TXIrJoG+6WyJd7yrJkaBjhEO18U0vInVSSBrC4BA==
+X-Received: by 2002:a05:6000:1889:b0:38b:d807:f3be with SMTP id
+ ffacd0b85a97d-38bec4eecbemr318972f8f.3.1736983419051; 
+ Wed, 15 Jan 2025 15:23:39 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c749935fsm39309645e9.3.2025.01.15.15.23.32
+ ffacd0b85a97d-38bebd72582sm466070f8f.7.2025.01.15.15.23.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 15 Jan 2025 15:23:32 -0800 (PST)
+ Wed, 15 Jan 2025 15:23:37 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
@@ -72,9 +72,10 @@ Cc: Jason Wang <jasowang@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Gerd Hoffmann <kraxel@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH 08/21] hw/net/e1000: Remove unused E1000_FLAG_MAC flag
-Date: Thu, 16 Jan 2025 00:22:34 +0100
-Message-ID: <20250115232247.30364-9-philmd@linaro.org>
+Subject: [PATCH 09/21] hw/virtio/virtio-pci: Remove
+ VIRTIO_PCI_FLAG_MIGRATE_EXTRA definition
+Date: Thu, 16 Jan 2025 00:22:35 +0100
+Message-ID: <20250115232247.30364-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250115232247.30364-1-philmd@linaro.org>
 References: <20250115232247.30364-1-philmd@linaro.org>
@@ -105,120 +106,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-E1000_FLAG_MAC was only used by the hw_compat_2_4[] array,
-via the 'extra_mac_registers=off' property. We removed all
-machines using that array, lets remove all the code around
-E1000_FLAG_MAC.
+VIRTIO_PCI_FLAG_MIGRATE_EXTRA was only used by the
+hw_compat_2_4[] array, via the 'migrate-extra=true'
+property. We removed all machines using that array,
+lets remove all the code around VIRTIO_PCI_FLAG_MIGRATE_EXTRA.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/net/e1000.c | 63 +++++++++-----------------------------------------
- 1 file changed, 11 insertions(+), 52 deletions(-)
+ include/hw/virtio/virtio-pci.h |  4 ----
+ hw/virtio/virtio-pci.c         | 10 ----------
+ 2 files changed, 14 deletions(-)
 
-diff --git a/hw/net/e1000.c b/hw/net/e1000.c
-index 3d0b2277039..14d2133cd80 100644
---- a/hw/net/e1000.c
-+++ b/hw/net/e1000.c
-@@ -127,10 +127,8 @@ struct E1000State_st {
-     QEMUTimer *flush_queue_timer;
+diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
+index 971c5fabd44..dd6eb9a4fc7 100644
+--- a/include/hw/virtio/virtio-pci.h
++++ b/include/hw/virtio/virtio-pci.h
+@@ -32,7 +32,6 @@ DECLARE_OBJ_CHECKERS(VirtioPCIBusState, VirtioPCIBusClass,
+ enum {
+     VIRTIO_PCI_FLAG_BUS_MASTER_BUG_MIGRATION_BIT,
+     VIRTIO_PCI_FLAG_USE_IOEVENTFD_BIT,
+-    VIRTIO_PCI_FLAG_MIGRATE_EXTRA_BIT,
+     VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY_BIT,
+     VIRTIO_PCI_FLAG_DISABLE_PCIE_BIT,
+     VIRTIO_PCI_FLAG_PAGE_PER_VQ_BIT,
+@@ -57,9 +56,6 @@ enum {
+ /* virtio version flags */
+ #define VIRTIO_PCI_FLAG_DISABLE_PCIE (1 << VIRTIO_PCI_FLAG_DISABLE_PCIE_BIT)
  
- /* Compatibility flags for migration to/from qemu 1.3.0 and older */
--#define E1000_FLAG_MAC_BIT 2
- #define E1000_FLAG_TSO_BIT 3
- #define E1000_FLAG_VET_BIT 4
--#define E1000_FLAG_MAC (1 << E1000_FLAG_MAC_BIT)
- #define E1000_FLAG_TSO (1 << E1000_FLAG_TSO_BIT)
- #define E1000_FLAG_VET (1 << E1000_FLAG_VET_BIT)
- 
-@@ -1218,46 +1216,17 @@ enum { MAC_ACCESS_PARTIAL = 1, MAC_ACCESS_FLAG_NEEDED = 2 };
-  * n - flag needed
-  * p - partially implenented */
- static const uint8_t mac_reg_access[0x8000] = {
--    [IPAV]    = markflag(MAC),    [WUC]     = markflag(MAC),
--    [IP6AT]   = markflag(MAC),    [IP4AT]   = markflag(MAC),
--    [FFVT]    = markflag(MAC),    [WUPM]    = markflag(MAC),
--    [ECOL]    = markflag(MAC),    [MCC]     = markflag(MAC),
--    [DC]      = markflag(MAC),    [TNCRS]   = markflag(MAC),
--    [RLEC]    = markflag(MAC),    [XONRXC]  = markflag(MAC),
--    [XOFFTXC] = markflag(MAC),    [RFC]     = markflag(MAC),
--    [TSCTFC]  = markflag(MAC),    [MGTPRC]  = markflag(MAC),
--    [WUS]     = markflag(MAC),    [AIT]     = markflag(MAC),
--    [FFLT]    = markflag(MAC),    [FFMT]    = markflag(MAC),
--    [SCC]     = markflag(MAC),    [FCRUC]   = markflag(MAC),
--    [LATECOL] = markflag(MAC),    [COLC]    = markflag(MAC),
--    [SEQEC]   = markflag(MAC),    [CEXTERR] = markflag(MAC),
--    [XONTXC]  = markflag(MAC),    [XOFFRXC] = markflag(MAC),
--    [RJC]     = markflag(MAC),    [RNBC]    = markflag(MAC),
--    [MGTPDC]  = markflag(MAC),    [MGTPTC]  = markflag(MAC),
--    [RUC]     = markflag(MAC),    [ROC]     = markflag(MAC),
--    [GORCL]   = markflag(MAC),    [GORCH]   = markflag(MAC),
--    [GOTCL]   = markflag(MAC),    [GOTCH]   = markflag(MAC),
--    [BPRC]    = markflag(MAC),    [MPRC]    = markflag(MAC),
--    [TSCTC]   = markflag(MAC),    [PRC64]   = markflag(MAC),
--    [PRC127]  = markflag(MAC),    [PRC255]  = markflag(MAC),
--    [PRC511]  = markflag(MAC),    [PRC1023] = markflag(MAC),
--    [PRC1522] = markflag(MAC),    [PTC64]   = markflag(MAC),
--    [PTC127]  = markflag(MAC),    [PTC255]  = markflag(MAC),
--    [PTC511]  = markflag(MAC),    [PTC1023] = markflag(MAC),
--    [PTC1522] = markflag(MAC),    [MPTC]    = markflag(MAC),
--    [BPTC]    = markflag(MAC),
+-/* migrate extra state */
+-#define VIRTIO_PCI_FLAG_MIGRATE_EXTRA (1 << VIRTIO_PCI_FLAG_MIGRATE_EXTRA_BIT)
 -
--    [TDFH]  = markflag(MAC) | MAC_ACCESS_PARTIAL,
--    [TDFT]  = markflag(MAC) | MAC_ACCESS_PARTIAL,
--    [TDFHS] = markflag(MAC) | MAC_ACCESS_PARTIAL,
--    [TDFTS] = markflag(MAC) | MAC_ACCESS_PARTIAL,
--    [TDFPC] = markflag(MAC) | MAC_ACCESS_PARTIAL,
--    [RDFH]  = markflag(MAC) | MAC_ACCESS_PARTIAL,
--    [RDFT]  = markflag(MAC) | MAC_ACCESS_PARTIAL,
--    [RDFHS] = markflag(MAC) | MAC_ACCESS_PARTIAL,
--    [RDFTS] = markflag(MAC) | MAC_ACCESS_PARTIAL,
--    [RDFPC] = markflag(MAC) | MAC_ACCESS_PARTIAL,
--    [PBM]   = markflag(MAC) | MAC_ACCESS_PARTIAL,
-+    [TDFH]  = MAC_ACCESS_PARTIAL,
-+    [TDFT]  = MAC_ACCESS_PARTIAL,
-+    [TDFHS] = MAC_ACCESS_PARTIAL,
-+    [TDFTS] = MAC_ACCESS_PARTIAL,
-+    [TDFPC] = MAC_ACCESS_PARTIAL,
-+    [RDFH]  = MAC_ACCESS_PARTIAL,
-+    [RDFT]  = MAC_ACCESS_PARTIAL,
-+    [RDFHS] = MAC_ACCESS_PARTIAL,
-+    [RDFTS] = MAC_ACCESS_PARTIAL,
-+    [RDFPC] = MAC_ACCESS_PARTIAL,
-+    [PBM]   = MAC_ACCESS_PARTIAL,
+ /* have pio notification for modern device ? */
+ #define VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY \
+     (1 << VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY_BIT)
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index c773a9130c7..8dca3ae73e6 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -144,13 +144,6 @@ static const VMStateDescription vmstate_virtio_pci = {
+     }
  };
  
- static void
-@@ -1419,13 +1388,6 @@ static int e1000_tx_tso_post_load(void *opaque, int version_id)
-     return 0;
- }
- 
--static bool e1000_full_mac_needed(void *opaque)
+-static bool virtio_pci_has_extra_state(DeviceState *d)
 -{
--    E1000State *s = opaque;
+-    VirtIOPCIProxy *proxy = to_virtio_pci_proxy(d);
 -
--    return chkflag(MAC);
+-    return proxy->flags & VIRTIO_PCI_FLAG_MIGRATE_EXTRA;
 -}
 -
- static bool e1000_tso_state_needed(void *opaque)
+ static void virtio_pci_save_extra_state(DeviceState *d, QEMUFile *f)
  {
-     E1000State *s = opaque;
-@@ -1451,7 +1413,6 @@ static const VMStateDescription vmstate_e1000_full_mac_state = {
-     .name = "e1000/full_mac_state",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .needed = e1000_full_mac_needed,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(mac_reg, E1000State, 0x8000),
-         VMSTATE_END_OF_LIST()
-@@ -1679,8 +1640,6 @@ static void pci_e1000_realize(PCIDevice *pci_dev, Error **errp)
- 
- static const Property e1000_properties[] = {
-     DEFINE_NIC_PROPERTIES(E1000State, conf),
--    DEFINE_PROP_BIT("extra_mac_registers", E1000State,
--                    compat_flags, E1000_FLAG_MAC_BIT, true),
-     DEFINE_PROP_BIT("migrate_tso_props", E1000State,
-                     compat_flags, E1000_FLAG_TSO_BIT, true),
-     DEFINE_PROP_BIT("init-vet", E1000State,
+     VirtIOPCIProxy *proxy = to_virtio_pci_proxy(d);
+@@ -2352,8 +2345,6 @@ static void virtio_pci_bus_reset_hold(Object *obj, ResetType type)
+ static const Property virtio_pci_properties[] = {
+     DEFINE_PROP_BIT("virtio-pci-bus-master-bug-migration", VirtIOPCIProxy, flags,
+                     VIRTIO_PCI_FLAG_BUS_MASTER_BUG_MIGRATION_BIT, false),
+-    DEFINE_PROP_BIT("migrate-extra", VirtIOPCIProxy, flags,
+-                    VIRTIO_PCI_FLAG_MIGRATE_EXTRA_BIT, true),
+     DEFINE_PROP_BIT("modern-pio-notify", VirtIOPCIProxy, flags,
+                     VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY_BIT, false),
+     DEFINE_PROP_BIT("x-disable-pcie", VirtIOPCIProxy, flags,
+@@ -2601,7 +2592,6 @@ static void virtio_pci_bus_class_init(ObjectClass *klass, void *data)
+     k->load_queue = virtio_pci_load_queue;
+     k->save_extra_state = virtio_pci_save_extra_state;
+     k->load_extra_state = virtio_pci_load_extra_state;
+-    k->has_extra_state = virtio_pci_has_extra_state;
+     k->query_guest_notifiers = virtio_pci_query_guest_notifiers;
+     k->set_guest_notifiers = virtio_pci_set_guest_notifiers;
+     k->set_host_notifier_mr = virtio_pci_set_host_notifier_mr;
 -- 
 2.47.1
 
