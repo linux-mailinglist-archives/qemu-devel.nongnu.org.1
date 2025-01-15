@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92407A12A91
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 19:12:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B0E6A12A8E
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 19:11:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY7qy-0008BP-Hw; Wed, 15 Jan 2025 13:10:57 -0500
+	id 1tY7rl-0003W7-BW; Wed, 15 Jan 2025 13:11:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7ps-0006zz-Ma
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:09:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7px-00074I-EE
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:09:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7pr-0006gM-3t
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:09:48 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7pv-0006gp-UB
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:09:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736964586;
+ s=mimecast20190719; t=1736964591;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ETnhhwJ4AroiA4dDpka4gKiY7LenBhWoiTYTB5Wyngk=;
- b=XH6j248wY8hUmWLYjDz8AhhKFQwQUTgY+5IDupFeyLiqY3HW5/VXkfGbZKb4UKj8y+ufEk
- WqcvfymIYh6YCITmquaDg0fl0VVkYGly4C8O6A7N95W3i1N8PjA0KyXR0UhFHOQebNfoNY
- m/DzOzpOGS8PNbwqTqXJtYp3Lpj/sGA=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3jraWayqR6S0TF4m7yuNwt/0UGk8nDQ+cyMTXQFXBV8=;
+ b=LbFv8hrVQ05IUnsEp3oUFt6zOPkuYdECdHVCG8NTHm099n+zQehqFDIxJAQVEnTOelvpSV
+ RBkyzOKCHUnhziT1vHDLJOsql6r7HoQqe4lfPf3mY0Io7PyVjCVXfYqv/k3ZHfqZZLcY9J
+ dE0DQpA+cvvTvHeMi23oE0SV9ReCPHM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-48-DPch8Q0-O0KZYBurOtnO7g-1; Wed, 15 Jan 2025 13:09:44 -0500
-X-MC-Unique: DPch8Q0-O0KZYBurOtnO7g-1
-X-Mimecast-MFC-AGG-ID: DPch8Q0-O0KZYBurOtnO7g
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-386333ea577so39088f8f.1
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 10:09:44 -0800 (PST)
+ us-mta-441-1Xzz5eM4PiCnCvL4UM0pRA-1; Wed, 15 Jan 2025 13:09:48 -0500
+X-MC-Unique: 1Xzz5eM4PiCnCvL4UM0pRA-1
+X-Mimecast-MFC-AGG-ID: 1Xzz5eM4PiCnCvL4UM0pRA
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-43628594d34so39267705e9.2
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 10:09:47 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736964583; x=1737569383;
+ d=1e100.net; s=20230601; t=1736964586; x=1737569386;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ETnhhwJ4AroiA4dDpka4gKiY7LenBhWoiTYTB5Wyngk=;
- b=efoP+TLuKvb9AAmjv/JYM7wQCN4AQnwub9GD8Fv0MuZ17jCybT8Lmg+2VTk//kAfwo
- DdWuVFNgGMvBCbm3hAazVbPq3wAK1pu4moXns3xcfCZcC55J23dEwmaRNlUhDDGEww8P
- mf8VartF1heb3sR6Vfnnw7OIVuYDUYDpWgCJEoSks4l1MeTvzYzGg+osF00zaVvHBdB4
- 2aPafVlVsRXubvL8N1jV6EQTbVyJWyn42rX0IGK2YPw767rFeQ0adY8aY5HiSd9jxyFq
- VBkOnlGKX3o8LCcc7LcFZNr2rg3EPNhtnvzCjjmUMEps0Ww5VMMi4vod59saGsBwHeWl
- Htuw==
-X-Gm-Message-State: AOJu0Yx7P5+K31TAkXn4bw4bNQ89/gvk4bdluUDQDLacGNjGhzR8i3eH
- OW/j9xuYftG/vpayDaejZt6u5A5NNmgaU42S+90higb4DkWiL/sfmGr16r2+uh2TlznRuARt2vu
- nH/DJk9UU60/gbfO5OGELIY6Q5UB4/VI8Y3MdeicURlh9N407yPYHkK2WveHT7n5DuO0RC9Z8xx
- uUM2rMhZ4uec5k0yoNeS2UjPawv+5Rog==
-X-Gm-Gg: ASbGncu/rzNmK1fFlEOcH99hGAWrOBftvCChv+PTx3xFoOGKMe4Wa2WDCM7a65ILKMK
- II0cqUiNGVqd8iQ3fYPU3AjSjA/+qCSzftxA1bhjbyUawkT6C/K/mVs4t3wdFAipvILQNV6hU6G
- ZV2msRWUR2fkO39hEF3SJDFU07ByHFxG52rOYibj1zrtmr/DhEmxfxVESivCPbmNbzL9SNX+dS4
- f9emgHx79L7fCpGZv/nOU4hdCQPC4G14wYlAnuoujtc+5UxbCxu
-X-Received: by 2002:adf:a108:0:b0:38a:88ac:ed10 with SMTP id
- ffacd0b85a97d-38a88acedf9mr22371451f8f.25.1736964583237; 
- Wed, 15 Jan 2025 10:09:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEvEpBYCLwLSaI0pWIX/41ba8W5NS9zsXJ3fcnlLOa/9SCF30PmW2rUDzr2AUVT4IZCXVjhJg==
-X-Received: by 2002:adf:a108:0:b0:38a:88ac:ed10 with SMTP id
- ffacd0b85a97d-38a88acedf9mr22371416f8f.25.1736964582780; 
- Wed, 15 Jan 2025 10:09:42 -0800 (PST)
+ bh=3jraWayqR6S0TF4m7yuNwt/0UGk8nDQ+cyMTXQFXBV8=;
+ b=A8bpdy7RVmruy4VmihymiYQQs9mZDC5Jxlasv6btud8wRDoiPxVunrQRBe2VPxFTJj
+ 2Zk9+qklb90BOM2o196+J1ihHEvq/wDjkuL7jXukSOzxGzUkEuhqCwLUtp+v+tIG1YeT
+ ivAQxRWmBbinv6QuD/mZ6INK6DX5LKI2R3hu2ZJDeBSaOarg1t0HLzpRUNEraZwX5XUq
+ iGexKKi991hb+vAkLafb+FqV3B4qJFUVFTHP3o0TSN3FZn9NLh7uLuFcpYl4b1GiA5b2
+ NcJ1V4TuLjg51Ofwa9KIAiQWNkNe3ykkUnG1pttOp+9dBdAXVM6jAgs5G6fY9PXGYI7G
+ dmRw==
+X-Gm-Message-State: AOJu0Yyi0rYCUf22YnEFP+9gznbabHUnQBdyJ+3UCKSNJ+LAdP49rujm
+ 7Rye2o1yJeVKhBX0JU69r6XggVYjlw59+ORFH53o4KTgtnX7cC2VJ7eYpe40At/JJIGkjKXyInp
+ 06clLVCgXyIG1hTb4nBONxvmJE/73k1/xZAIW78CsRJTbOc6WhzwiG69n31XTik5uDCLje/42Ea
+ 7qohq+rRytMHNXHl647oQ9cusMo+t+Pw==
+X-Gm-Gg: ASbGncuFxBikJ6qiLv4b7tvZuN1lA9UbuUN/WQK6qjq4PuTcKA0usKDexRBeNeDqp3g
+ 1IeclZGzG9xuH+G2J52PaPYAd9vLN8qC0MOc3+uSIFeCEuWvdMpqGOiqQjR6KP+svAqMOefFVIh
+ ZTxQJZ4baHi4yiRYOcT+nvwv0l03vcosBJnUz7WymqYHvi7+BWZkrtWP4/Oqj0Hrr1B4KkMnfRL
+ Ehu55YxKS/S4XBbLS45fp71+x3/FTTlbFJBqAvZCCBiaeelMgue
+X-Received: by 2002:a05:600c:1d96:b0:434:f219:6b28 with SMTP id
+ 5b1f17b1804b1-436e26d9477mr239161825e9.24.1736964586413; 
+ Wed, 15 Jan 2025 10:09:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEeia6cob8To7qK8qMsr72Dx38m0WozvozxqB69X5RHH0cHm8nleanwVrYFqs/Qu25xxqGoEA==
+X-Received: by 2002:a05:600c:1d96:b0:434:f219:6b28 with SMTP id
+ 5b1f17b1804b1-436e26d9477mr239161435e9.24.1736964585973; 
+ Wed, 15 Jan 2025 10:09:45 -0800 (PST)
 Received: from redhat.com ([2a0d:6fc7:342:db8c:4ec4:322b:a6a8:f411])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c74c475csm32200845e9.20.2025.01.15.10.09.40
+ 5b1f17b1804b1-437c7499884sm32110985e9.5.2025.01.15.10.09.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Jan 2025 10:09:42 -0800 (PST)
-Date: Wed, 15 Jan 2025 13:09:39 -0500
+ Wed, 15 Jan 2025 10:09:45 -0800 (PST)
+Date: Wed, 15 Jan 2025 13:09:43 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Jason Wang <jasowang@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
- Yi Sun <yi.y.sun@linux.intel.com>,
  =?utf-8?Q?Cl=C3=A9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yi Liu <yi.l.liu@intel.com>, Jason Wang <jasowang@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 23/48] intel_iommu: Introduce a property x-flts for stage-1
- translation
-Message-ID: <aa68a9fbdb81c47c2a48a3199559df470c3d9eba.1736964488.git.mst@redhat.com>
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 24/48] intel_iommu: Introduce a property to control FS1GP cap
+ bit setting
+Message-ID: <d9d32478ed4543539322761c19a73edf5d0be059.1736964488.git.mst@redhat.com>
 References: <cover.1736964487.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -90,16 +89,16 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1736964487.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.793,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,127 +116,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Intel VT-d 3.0 introduces scalable mode, and it has a bunch of capabilities
-related to scalable mode translation, thus there are multiple combinations.
+This gives user flexibility to turn off FS1GP for debug purpose.
 
-This vIOMMU implementation wants to simplify it with a new property "x-flts".
-When turned on in scalable mode, stage-1 translation is supported. When turned
-on in legacy mode, throw out error.
+It is also useful for future nesting feature. When host IOMMU doesn't
+support FS1GP but vIOMMU does, nested page table on host side works
+after turning FS1GP off in vIOMMU.
 
-With stage-1 translation support exposed to user, also accurate the pasid entry
-check in vtd_pe_type_check().
+This property has no effect when vIOMMU is in legacy mode or x-flts=off
+in scalable modme.
 
-Suggested-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
-Message-Id: <20241212083757.605022-19-zhenzhong.duan@intel.com>
+Reviewed-by: Yi Liu <yi.l.liu@intel.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20241212083757.605022-20-zhenzhong.duan@intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/intel_iommu_internal.h |  2 ++
- hw/i386/intel_iommu.c          | 28 +++++++++++++++++++---------
- 2 files changed, 21 insertions(+), 9 deletions(-)
+ include/hw/i386/intel_iommu.h | 1 +
+ hw/i386/intel_iommu.c         | 5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
-index 2c977aa7da..e8b211e8b0 100644
---- a/hw/i386/intel_iommu_internal.h
-+++ b/hw/i386/intel_iommu_internal.h
-@@ -195,6 +195,7 @@
- #define VTD_ECAP_PASID              (1ULL << 40)
- #define VTD_ECAP_SMTS               (1ULL << 43)
- #define VTD_ECAP_SLTS               (1ULL << 46)
-+#define VTD_ECAP_FLTS               (1ULL << 47)
+diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
+index 72428fefa4..9e92bffd5a 100644
+--- a/include/hw/i386/intel_iommu.h
++++ b/include/hw/i386/intel_iommu.h
+@@ -307,6 +307,7 @@ struct IntelIOMMUState {
+     bool dma_drain;                 /* Whether DMA r/w draining enabled */
+     bool dma_translation;           /* Whether DMA translation supported */
+     bool pasid;                     /* Whether to support PASID */
++    bool fs1gp;                     /* First Stage 1-GByte Page Support */
  
- /* CAP_REG */
- /* (offset >> 4) << 24 */
-@@ -211,6 +212,7 @@
- #define VTD_CAP_SLLPS               ((1ULL << 34) | (1ULL << 35))
- #define VTD_CAP_DRAIN_WRITE         (1ULL << 54)
- #define VTD_CAP_DRAIN_READ          (1ULL << 55)
-+#define VTD_CAP_FS1GP               (1ULL << 56)
- #define VTD_CAP_DRAIN               (VTD_CAP_DRAIN_READ | VTD_CAP_DRAIN_WRITE)
- #define VTD_CAP_CM                  (1ULL << 7)
- #define VTD_PASID_ID_SHIFT          20
+     /* Transient Mapping, Reserved(0) since VTD spec revision 3.2 */
+     bool stale_tm;
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 7d4b99523d..0111186f7a 100644
+index 0111186f7a..f366c223d0 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -803,16 +803,18 @@ static inline bool vtd_is_fl_level_supported(IntelIOMMUState *s, uint32_t level)
- }
- 
- /* Return true if check passed, otherwise false */
--static inline bool vtd_pe_type_check(X86IOMMUState *x86_iommu,
--                                     VTDPASIDEntry *pe)
-+static inline bool vtd_pe_type_check(IntelIOMMUState *s, VTDPASIDEntry *pe)
- {
-     switch (VTD_PE_GET_TYPE(pe)) {
--    case VTD_SM_PASID_ENTRY_SLT:
--        return true;
--    case VTD_SM_PASID_ENTRY_PT:
--        return x86_iommu->pt_supported;
-     case VTD_SM_PASID_ENTRY_FLT:
-+        return !!(s->ecap & VTD_ECAP_FLTS);
-+    case VTD_SM_PASID_ENTRY_SLT:
-+        return !!(s->ecap & VTD_ECAP_SLTS);
-     case VTD_SM_PASID_ENTRY_NESTED:
-+        /* Not support NESTED page table type yet */
-+        return false;
-+    case VTD_SM_PASID_ENTRY_PT:
-+        return !!(s->ecap & VTD_ECAP_PT);
-     default:
-         /* Unknown type */
-         return false;
-@@ -861,7 +863,6 @@ static int vtd_get_pe_in_pasid_leaf_table(IntelIOMMUState *s,
-     uint8_t pgtt;
-     uint32_t index;
-     dma_addr_t entry_size;
--    X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
- 
-     index = VTD_PASID_TABLE_INDEX(pasid);
-     entry_size = VTD_PASID_ENTRY_SIZE;
-@@ -875,7 +876,7 @@ static int vtd_get_pe_in_pasid_leaf_table(IntelIOMMUState *s,
-     }
- 
-     /* Do translation type check */
--    if (!vtd_pe_type_check(x86_iommu, pe)) {
-+    if (!vtd_pe_type_check(s, pe)) {
-         return -VTD_FR_PASID_TABLE_ENTRY_INV;
-     }
- 
-@@ -3827,6 +3828,7 @@ static const Property vtd_properties[] = {
-                       VTD_HOST_ADDRESS_WIDTH),
-     DEFINE_PROP_BOOL("caching-mode", IntelIOMMUState, caching_mode, FALSE),
-     DEFINE_PROP_BOOL("x-scalable-mode", IntelIOMMUState, scalable_mode, FALSE),
-+    DEFINE_PROP_BOOL("x-flts", IntelIOMMUState, flts, FALSE),
-     DEFINE_PROP_BOOL("snoop-control", IntelIOMMUState, snoop_control, false),
-     DEFINE_PROP_BOOL("x-pasid-mode", IntelIOMMUState, pasid, false),
+@@ -3834,6 +3834,7 @@ static const Property vtd_properties[] = {
      DEFINE_PROP_BOOL("dma-drain", IntelIOMMUState, dma_drain, true),
-@@ -4557,7 +4559,10 @@ static void vtd_cap_init(IntelIOMMUState *s)
-     }
+     DEFINE_PROP_BOOL("dma-translation", IntelIOMMUState, dma_translation, true),
+     DEFINE_PROP_BOOL("stale-tm", IntelIOMMUState, stale_tm, false),
++    DEFINE_PROP_BOOL("fs1gp", IntelIOMMUState, fs1gp, true),
+ };
  
+ /* Read IRTE entry with specific index */
+@@ -4561,7 +4562,9 @@ static void vtd_cap_init(IntelIOMMUState *s)
      /* TODO: read cap/ecap from host to decide which cap to be exposed. */
--    if (s->scalable_mode) {
-+    if (s->flts) {
-+        s->ecap |= VTD_ECAP_SMTS | VTD_ECAP_FLTS;
-+        s->cap |= VTD_CAP_FS1GP;
-+    } else if (s->scalable_mode) {
+     if (s->flts) {
+         s->ecap |= VTD_ECAP_SMTS | VTD_ECAP_FLTS;
+-        s->cap |= VTD_CAP_FS1GP;
++        if (s->fs1gp) {
++            s->cap |= VTD_CAP_FS1GP;
++        }
+     } else if (s->scalable_mode) {
          s->ecap |= VTD_ECAP_SMTS | VTD_ECAP_SRS | VTD_ECAP_SLTS;
      }
- 
-@@ -4736,6 +4741,11 @@ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
-         }
-     }
- 
-+    if (!s->scalable_mode && s->flts) {
-+        error_setg(errp, "x-flts is only available in scalable mode");
-+        return false;
-+    }
-+
-     if (!s->flts && s->aw_bits != VTD_HOST_AW_39BIT &&
-         s->aw_bits != VTD_HOST_AW_48BIT) {
-         error_setg(errp, "%s: supported values for aw-bits are: %d, %d",
 -- 
 MST
 
