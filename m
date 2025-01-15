@@ -2,58 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E1FFA1256D
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 14:51:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34687A12570
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 14:52:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY3na-0006hn-4b; Wed, 15 Jan 2025 08:51:10 -0500
+	id 1tY3na-0006jW-Mf; Wed, 15 Jan 2025 08:51:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1tY3nL-0006Ze-6y
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 08:50:55 -0500
+ id 1tY3nN-0006eH-Kq
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 08:50:58 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1tY3nJ-0007uZ-5s
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 08:50:54 -0500
+ id 1tY3nM-0007uk-0m
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 08:50:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736949052;
+ s=mimecast20190719; t=1736949054;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xsKepFBipeuwCEkbj9TToSPlSSF2s/jUgoEpM16fklg=;
- b=VXpptz3zCVdqb3+jdgC1lEyOmLHWAgeWBLDj1mgkuIISYUkxA8h1aEYANNCOoa6eBuYxGS
- PaFkcjmU0n9itkBrxbgM+WoH9+ysaWJzGAAbf2ThDY6pMJ82vu58n4iT61/H8ORggwl7T9
- 1OML7kQTatCw0VES3fLEp7Z3uOcV1mI=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=wBVkcW5CGvtlFb1EfsIoXBs6ncD8DVmImAJX2HMJ6vg=;
+ b=cyzIGl2T+vfeCe07DqPc6xdp26+EptlSgRoTuoyYtCG50JgR4w9wg30v1gjjS7z2SWUdaV
+ sk1Pam6v1XgCeNhWIZgD34GVb2EzrwQvvmp+GZGLzGilkgip5B8EWUclRq5rSkr9D2MCmW
+ XFPtO109+J5Oa9gRl4BFLZE5Y5w2Hfg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-363-GpbBqshOOX-0kccjMcRxBA-1; Wed,
- 15 Jan 2025 08:50:50 -0500
-X-MC-Unique: GpbBqshOOX-0kccjMcRxBA-1
-X-Mimecast-MFC-AGG-ID: GpbBqshOOX-0kccjMcRxBA
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-223-YTQ8Nif6PDC5ogc41gIRBg-1; Wed,
+ 15 Jan 2025 08:50:53 -0500
+X-MC-Unique: YTQ8Nif6PDC5ogc41gIRBg-1
+X-Mimecast-MFC-AGG-ID: YTQ8Nif6PDC5ogc41gIRBg
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 28215197700A
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 13:50:50 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 381181955D64
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 13:50:52 +0000 (UTC)
 Received: from lenovo-t14s.redhat.com (unknown [10.39.192.232])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7D5AB19560A3; Wed, 15 Jan 2025 13:50:48 +0000 (UTC)
+ id C2DD619560AD; Wed, 15 Jan 2025 13:50:50 +0000 (UTC)
 From: Laurent Vivier <lvivier@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Hanna Czenczek <hreitz@redhat.com>,
  Jason Wang <jasowang@redhat.com>
-Subject: [PATCH v2 1/2] vhost: Add stubs for the migration state transfer
- interface
-Date: Wed, 15 Jan 2025 14:50:43 +0100
-Message-ID: <20250115135044.799698-2-lvivier@redhat.com>
+Subject: [PATCH v2 2/2] virtio-net: vhost-user: Implement internal migration
+Date: Wed, 15 Jan 2025 14:50:44 +0100
+Message-ID: <20250115135044.799698-3-lvivier@redhat.com>
 In-Reply-To: <20250115135044.799698-1-lvivier@redhat.com>
 References: <20250115135044.799698-1-lvivier@redhat.com>
 MIME-Version: 1.0
@@ -84,70 +83,175 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Migration state transfer interface is only used by vhost-user-fs,
-so the interface needs to be defined only when vhost is built.
-
-But I need to use this interface with virtio-net and vhost is not always
-enabled, and to avoid undefined reference error during build, define stub
-functions for vhost_supports_device_state(), vhost_save_backend_state() and
-vhost_load_backend_state().
+Add support of VHOST_USER_PROTOCOL_F_DEVICE_STATE in virtio-net
+with vhost-user backend.
 
 Cc: Hanna Czenczek <hreitz@redhat.com>
 Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 ---
- include/hw/virtio/vhost.h | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ hw/net/virtio-net.c | 135 ++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 112 insertions(+), 23 deletions(-)
 
-diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-index 461c168c3739..a9469d50bca1 100644
---- a/include/hw/virtio/vhost.h
-+++ b/include/hw/virtio/vhost.h
-@@ -365,7 +365,14 @@ static inline int vhost_reset_device(struct vhost_dev *hdev)
-  * Returns true if the device supports these commands, and false if it
-  * does not.
-  */
-+#ifdef CONFIG_VHOST
- bool vhost_supports_device_state(struct vhost_dev *dev);
-+#else
-+static inline bool vhost_supports_device_state(struct vhost_dev *dev)
-+{
-+    return false;
-+}
-+#endif
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 06f096abf678..85e14b788cf2 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -3337,6 +3337,117 @@ static const VMStateDescription vmstate_virtio_net_rss = {
+     },
+ };
  
- /**
-  * vhost_set_device_state_fd(): Begin transfer of internal state from/to
-@@ -448,7 +455,15 @@ int vhost_check_device_state(struct vhost_dev *dev, Error **errp);
-  *
-  * Returns 0 on success, and -errno otherwise.
-  */
-+#ifdef CONFIG_VHOST
- int vhost_save_backend_state(struct vhost_dev *dev, QEMUFile *f, Error **errp);
-+#else
-+static inline int vhost_save_backend_state(struct vhost_dev *dev, QEMUFile *f,
-+                                           Error **errp)
++static struct vhost_dev *virtio_net_get_vhost(VirtIODevice *vdev)
 +{
-+    return -ENOSYS;
++    VirtIONet *n = VIRTIO_NET(vdev);
++    NetClientState *nc;
++    struct vhost_net *net;
++
++    if (!n->nic) {
++        return NULL;
++    }
++
++    nc = qemu_get_queue(n->nic);
++    if (!nc) {
++        return NULL;
++    }
++
++    net = get_vhost_net(nc->peer);
++    if (!net) {
++        return NULL;
++    }
++
++    return &net->dev;
 +}
-+#endif
- 
- /**
-  * vhost_load_backend_state(): High-level function to load a vhost
-@@ -465,6 +480,14 @@ int vhost_save_backend_state(struct vhost_dev *dev, QEMUFile *f, Error **errp);
-  *
-  * Returns 0 on success, and -errno otherwise.
-  */
-+#ifdef CONFIG_VHOST
- int vhost_load_backend_state(struct vhost_dev *dev, QEMUFile *f, Error **errp);
-+#else
-+static inline int vhost_load_backend_state(struct vhost_dev *dev, QEMUFile *f,
-+                                           Error **errp)
++
++static int vhost_user_net_save_state(QEMUFile *f, void *pv, size_t size,
++                                     const VMStateField *field,
++                                     JSONWriter *vmdesc)
 +{
-+    return -ENOSYS;
++    VirtIONet *n = pv;
++    VirtIODevice *vdev = VIRTIO_DEVICE(n);
++    struct vhost_dev *vhdev;
++    Error *local_error = NULL;
++    int ret;
++
++    vhdev = virtio_net_get_vhost(vdev);
++    if (vhdev == NULL) {
++        error_reportf_err(local_error,
++                          "Error getting vhost back-end of %s device %s: ",
++                          vdev->name, vdev->parent_obj.canonical_path);
++        return -1;
++    }
++
++    ret = vhost_save_backend_state(vhdev, f, &local_error);
++    if (ret < 0) {
++        error_reportf_err(local_error,
++                          "Error saving back-end state of %s device %s: ",
++                          vdev->name, vdev->parent_obj.canonical_path);
++        return ret;
++    }
++
++    return 0;
 +}
-+#endif
++
++static int vhost_user_net_load_state(QEMUFile *f, void *pv, size_t size,
++                                     const VMStateField *field)
++{
++    VirtIONet *n = pv;
++    VirtIODevice *vdev = VIRTIO_DEVICE(n);
++    struct vhost_dev *vhdev;
++    Error *local_error = NULL;
++    int ret;
++
++    vhdev = virtio_net_get_vhost(vdev);
++    if (vhdev == NULL) {
++        error_reportf_err(local_error,
++                          "Error getting vhost back-end of %s device %s: ",
++                          vdev->name, vdev->parent_obj.canonical_path);
++        return -1;
++    }
++
++    ret = vhost_load_backend_state(vhdev, f, &local_error);
++    if (ret < 0) {
++        error_reportf_err(local_error,
++                          "Error loading  back-end state of %s device %s: ",
++                          vdev->name, vdev->parent_obj.canonical_path);
++        return ret;
++    }
++
++    return 0;
++}
++
++static bool vhost_user_net_is_internal_migration(void *opaque)
++{
++    VirtIONet *n = opaque;
++    VirtIODevice *vdev = VIRTIO_DEVICE(n);
++    struct vhost_dev *vhdev;
++
++    vhdev = virtio_net_get_vhost(vdev);
++    if (vhdev == NULL) {
++        return false;
++    }
++
++    return vhost_supports_device_state(vhdev);
++}
++
++static const VMStateDescription vhost_user_net_backend_state = {
++    .name = "virtio-net-device/backend",
++    .version_id = 0,
++    .needed = vhost_user_net_is_internal_migration,
++    .fields = (const VMStateField[]) {
++        {
++            .name = "backend",
++            .info = &(const VMStateInfo) {
++                .name = "virtio-net vhost-user backend state",
++                .get = vhost_user_net_load_state,
++                .put = vhost_user_net_save_state,
++            },
++         },
++         VMSTATE_END_OF_LIST()
++    }
++};
++
+ static const VMStateDescription vmstate_virtio_net_device = {
+     .name = "virtio-net-device",
+     .version_id = VIRTIO_NET_VM_VERSION,
+@@ -3389,6 +3500,7 @@ static const VMStateDescription vmstate_virtio_net_device = {
+     },
+     .subsections = (const VMStateDescription * const []) {
+         &vmstate_virtio_net_rss,
++        &vhost_user_net_backend_state,
+         NULL
+     }
+ };
+@@ -3950,29 +4062,6 @@ static bool dev_unplug_pending(void *opaque)
+     return vdc->primary_unplug_pending(dev);
+ }
  
- #endif
+-static struct vhost_dev *virtio_net_get_vhost(VirtIODevice *vdev)
+-{
+-    VirtIONet *n = VIRTIO_NET(vdev);
+-    NetClientState *nc;
+-    struct vhost_net *net;
+-
+-    if (!n->nic) {
+-        return NULL;
+-    }
+-
+-    nc = qemu_get_queue(n->nic);
+-    if (!nc) {
+-        return NULL;
+-    }
+-
+-    net = get_vhost_net(nc->peer);
+-    if (!net) {
+-        return NULL;
+-    }
+-
+-    return &net->dev;
+-}
+-
+ static const VMStateDescription vmstate_virtio_net = {
+     .name = "virtio-net",
+     .minimum_version_id = VIRTIO_NET_VM_VERSION,
 -- 
 2.47.1
 
