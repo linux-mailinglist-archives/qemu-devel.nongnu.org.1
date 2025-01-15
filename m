@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E025EA126C1
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 16:01:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E0AA126CA
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 16:03:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY4tg-0004Dh-Lh; Wed, 15 Jan 2025 10:01:32 -0500
+	id 1tY4th-0004E2-NU; Wed, 15 Jan 2025 10:01:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tY4tb-0004CZ-Lz; Wed, 15 Jan 2025 10:01:27 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1tY4tf-0004D8-FX; Wed, 15 Jan 2025 10:01:31 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tY4tZ-0002sG-K2; Wed, 15 Jan 2025 10:01:26 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-21a7ed0155cso119440915ad.3; 
- Wed, 15 Jan 2025 07:01:23 -0800 (PST)
+ id 1tY4td-0002tI-PO; Wed, 15 Jan 2025 10:01:31 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-2166360285dso123124625ad.1; 
+ Wed, 15 Jan 2025 07:01:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1736953282; x=1737558082; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=bP4N8FKxiB5/9gCXiyE1+NC4Ty7YL+cQj1EaOo/86NE=;
- b=QZ1KH2454/gj2UbcdyldPNdnjBNlYYoziEabgS8+k2tXe1yrb7mXDFzkYR5dI4SiyV
- eB4iJcmj4gZL7hW8/LqRLNWxytBJSDbxL8eMJy0Y7LJl5z7mEur9j2EimRhnMhu1o09d
- vZtVyiy7EHkFgAwfrz3cYp+kyfdZZFJA8DuRY9bSzZ/n6Sncu+SxeYwxf5aPFiB4twRF
- 0ayKVtuwweRRhXCNlgfYmOWpMA4NjFFD9VeEx0ptH/sUBQmSbc6j32Zv033eEPRSKARG
- EYpmc/DNPWpl9GqXcJCiS9ivKrQuMghX1m4l4KvAnhN+/BiR7yeLZ6+7PuWTnLeqldG/
- p2QQ==
+ d=gmail.com; s=20230601; t=1736953287; x=1737558087; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bRTDyBdfnK9kAprnP+Hh3qG7LUon4ziNP1QIA/V4/Ww=;
+ b=LqP5KzG4xj1klLDyaKBr1PDy7gLDptupJSMc7MrhJfd8B+CZ2TR28iUv74ULLwPhWm
+ IgvJvub+PqTR4o+565e8L3cK0ldOQFjZpUj0f2FvWHmyc4fz+dO0Q7WqzgyF0X21ar0u
+ g6pSkPoQNl0oixICt7BQxzVIjs3i73Fi3fM8v+QAy0reCKdeS3Q0lgyn0rxCNF7/8kwm
+ dj3u6e3AsGhwEq5bSmHKSGxeOYCL7WB1iFOq1WM277oyFokl8uztfb/dMN4scqFe2vAA
+ ey79kkFc9cXXSL7Zqj0NErIhoY+vmKqFrfkuZDmUiPbxuqELZDGGvCjIu2dX11VeTZ+D
+ IJdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736953282; x=1737558082;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=bP4N8FKxiB5/9gCXiyE1+NC4Ty7YL+cQj1EaOo/86NE=;
- b=R2PV62LKz8ZIZrfjz6pnC/uwsNbiejzd9FIlotxxxphSPqnIZLrGIItvSKwdNDSVO1
- Pd2TBBnDWY5ndFPaXcjDxGS6AgLYUKCtRyA/RZMA3NkIum8bosU4o5PLwKZbFuvuiuoF
- JuCSgmllMtidbWul6+pU8g8NtNHMb8gm9+9Dsn2kDE7r8XZ+YSGlkhSrD+a2LBfBl72x
- Irt2uWNzu0JLBKj88EB/BFXdOYzGU9xQNfJmNFYJFVelmIKfkwd/xCFfDIrO6Yu+2u4A
- foVRX4LKkL1BkdBX+lATEOwykx4X0rYa2Ohdox+NkEPtRpZ8C1VkB7KFcuKW4ShviGlU
- 2Z0w==
+ d=1e100.net; s=20230601; t=1736953287; x=1737558087;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bRTDyBdfnK9kAprnP+Hh3qG7LUon4ziNP1QIA/V4/Ww=;
+ b=FRupjqm5n49H0edGhWcpzVGiHnLM25NFSu+VsuIsvkeIjMSsRjll7ZLpBHfXrsTZUa
+ UQcZr0jAyMvDw+JDISl6tIw94S8hrB3lX+sd/qKYP7PSJZY22LsqLiSbP/5oiKb/lDd8
+ n/DH5jL4Zrnx+fcCkYjikcJueiFoaftMTdNBZnFLMzVBli+pjfZOxPGQvPH1ssPhEdBZ
+ LEhYi6802UgxyjO28VHiFoo69CMuYMTMf6aK04BBJOBF59SDpvVYpEJ7FTGTuy3H9cvH
+ NnQoOczqazrm/xK0utm+C0b1rEdyU6Ju1y098ux5fnFhgKmlfGP6CxeT3Ey199JDSF78
+ AlOw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWFSy9v/LxY2vglBD06ZCNHiAQPlJflK6J0pxbU/XC40YjEg2nUc2GJ/c9Bic4Qo9TWsaLxIzIK8W9/@nongnu.org
-X-Gm-Message-State: AOJu0Yz6l2SoqVkJcNGXrYEE3IOD5WG39ZS3+ectT9eNHJtWbJesdPWn
- tLuTwyxuSdexLL3FxrUQG6MY27IPSFKgtOD5fhYkJRa6JMsK6NCrYX6Qbg==
-X-Gm-Gg: ASbGnctDvf8isVzjoerfxSVchSjzAkPfC32XAqgx4R+jv00DqORrfeF+Sqm48DcvWgB
- 873KQJvwXiqQXhWUnQKBlk0+dVAPF5SaPTXYjeo86BENdhFnop7eUubMoNGQheDx6P0c+sqE/wY
- QGc6T1cY/g5g4353K3d80oP9Olm6FxFWTYi0WvcQSPaYAgmX92OVkKNgMBo6+nEnaw3iLZyidOV
- zBQYkiV2FyQQCHwHwMxSTGW1fp6czE0kFaLQr8vG8a9d0vK1e4HIi2sx9BuUw==
-X-Google-Smtp-Source: AGHT+IFNDvfEneccpnYtsqZlg7T5OT2s7v3apepSbFq89C6AEXsPNIzS0X8fDQXp7+qqe6RLb6w4bg==
-X-Received: by 2002:a05:6a00:1255:b0:71e:6c3f:2fb6 with SMTP id
- d2e1a72fcca58-72d21f4b05emr48465909b3a.8.1736953281659; 
- Wed, 15 Jan 2025 07:01:21 -0800 (PST)
+ AJvYcCWyyZvZwygKJZHiym5fN2tz0OUVUyybiPsorcQO0WhTvr1twmTb4asVYA1M8BqXN8Ik5R9sKuZWD/0n@nongnu.org
+X-Gm-Message-State: AOJu0YxcVrHEU8ZXqPaJQ+fSh7p6K10GyOltJ8Efj78IXY6rnl7DUN4I
+ z2dhwZNhTgOeecPSMDYBYyucyPR4kKznHo2m+0Lc+UFxU4wGD3gySNkHuQ==
+X-Gm-Gg: ASbGncsPG5Fa4povmv9bswKNQhFSCRHqDoyCU5jycVHpGnr/gw00mKQmXMDtsBPJh5X
+ XuVcgd/J1B/FQvOUb1GZ+yjEK7gFY6AR1GkCLQCfXI73p9E7k+JAQoJ8tTw7jV3JgEIKN39fIsC
+ pBUJyPbYHAZ2uvnDcK2ttxan7WHPGsZf7Pe10xKxiSFU+UvXSm+k3isZ2JqRkvUZG/8oLL9TA9I
+ TjSLdYksMbpQDQVcm0gwzsne8DaNOniFfWu0ZWNOMJV4x8dcwfIBWeF5ghuAg==
+X-Google-Smtp-Source: AGHT+IFXaXzY6Y5xpzCSgv6aikowSpTB99cwOlYwLyAWXoXKcEo2L9NLx+DBCwXcrd4dsCS0GayUBg==
+X-Received: by 2002:a05:6a00:ac2:b0:725:e1de:c0bf with SMTP id
+ d2e1a72fcca58-72d21f2dcbcmr37039713b3a.9.1736953286796; 
+ Wed, 15 Jan 2025 07:01:26 -0800 (PST)
 Received: from wheely.local0.net ([118.210.104.29])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72d40658a7esm9519592b3a.106.2025.01.15.07.01.16
+ d2e1a72fcca58-72d40658a7esm9519592b3a.106.2025.01.15.07.01.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Jan 2025 07:01:21 -0800 (PST)
+ Wed, 15 Jan 2025 07:01:26 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -69,14 +70,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Dmitry Fleytman <dmitry.fleytman@gmail.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
  Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, qemu-block@nongnu.org
-Subject: [PATCH v2 0/5] qtest: pci and e1000e/igb msix fixes
-Date: Thu, 16 Jan 2025 01:01:06 +1000
-Message-ID: <20250115150112.346497-1-npiggin@gmail.com>
+Subject: [PATCH v2 1/5] qtest/pci: Enforce balanced iomap/unmap
+Date: Thu, 16 Jan 2025 01:01:07 +1000
+Message-ID: <20250115150112.346497-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20250115150112.346497-1-npiggin@gmail.com>
+References: <20250115150112.346497-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,45 +102,180 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series fixes some iomap balance issues and enables msix
-sharing bar0, which will be required for some future XHCI
-test cases.
+Add assertions to ensure a BAR is not mapped twice, and only
+previously mapped BARs are unmapped. This can help catch some
+bugs.
 
-It also removes the invalid write to msix PBA memory by
-qtest, and fixes that properly by unmasking and taking
-delivery of the msix interrupt in e1000e and igb tests, as
-other test cases do.
-
-Since v1:
-- Patch 4 update comments as suggested by Akihiko Odaki.
-- Patch 5 significantly rework and simplify also suggested
-  by Akihiko Odaki. In particular the msi vectors are always
-  unmasked to avoid the extra case of handling masked.
-
-Thanks,
-Nick
-
-Nicholas Piggin (5):
-  qtest/pci: Enforce balanced iomap/unmap
-  qtest/libqos/pci: Fix qpci_msix_enable sharing bar0
-  qtest/libqos/pci: Do not write to PBA memory
-  qtest/e1000e|igb: Clear interrupt-cause bits after irq
-  qtest/e1000e|igb: Fix msix to re-trigger interrupts
-
+Cc: Michael S. Tsirkin <mst@redhat.com>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
  tests/qtest/libqos/ahci.h       |  1 +
- tests/qtest/libqos/e1000e.h     | 11 ++++-
- tests/qtest/libqos/pci.h        |  3 ++
+ tests/qtest/libqos/pci.h        |  2 ++
  tests/qtest/libqos/virtio-pci.h |  1 +
- tests/qtest/ahci-test.c         |  2 +
- tests/qtest/e1000e-test.c       |  4 ++
- tests/qtest/igb-test.c          |  4 ++
- tests/qtest/libqos/ahci.c       |  6 +++
- tests/qtest/libqos/e1000e.c     | 87 +++++++++++++++++++++++++++++++--
- tests/qtest/libqos/igb.c        |  9 ++++
- tests/qtest/libqos/pci.c        | 74 ++++++++++++++++++++++++----
- tests/qtest/libqos/virtio-pci.c |  6 ++-
- 12 files changed, 193 insertions(+), 15 deletions(-)
+ tests/qtest/ahci-test.c         |  2 ++
+ tests/qtest/libqos/ahci.c       |  6 ++++++
+ tests/qtest/libqos/pci.c        | 32 +++++++++++++++++++++++++++++++-
+ tests/qtest/libqos/virtio-pci.c |  6 +++++-
+ 7 files changed, 48 insertions(+), 2 deletions(-)
 
+diff --git a/tests/qtest/libqos/ahci.h b/tests/qtest/libqos/ahci.h
+index a0487a1557d..5d7e26aee2a 100644
+--- a/tests/qtest/libqos/ahci.h
++++ b/tests/qtest/libqos/ahci.h
+@@ -575,6 +575,7 @@ QPCIDevice *get_ahci_device(QTestState *qts, uint32_t *fingerprint);
+ void free_ahci_device(QPCIDevice *dev);
+ void ahci_pci_enable(AHCIQState *ahci);
+ void start_ahci_device(AHCIQState *ahci);
++void stop_ahci_device(AHCIQState *ahci);
+ void ahci_hba_enable(AHCIQState *ahci);
+ 
+ /* Port Management */
+diff --git a/tests/qtest/libqos/pci.h b/tests/qtest/libqos/pci.h
+index 83896145235..9dc82ea723a 100644
+--- a/tests/qtest/libqos/pci.h
++++ b/tests/qtest/libqos/pci.h
+@@ -65,6 +65,8 @@ struct QPCIDevice
+ {
+     QPCIBus *bus;
+     int devfn;
++    bool bars_mapped[6];
++    QPCIBar bars[6];
+     bool msix_enabled;
+     QPCIBar msix_table_bar, msix_pba_bar;
+     uint64_t msix_table_off, msix_pba_off;
+diff --git a/tests/qtest/libqos/virtio-pci.h b/tests/qtest/libqos/virtio-pci.h
+index f5115cacba2..efdf904b254 100644
+--- a/tests/qtest/libqos/virtio-pci.h
++++ b/tests/qtest/libqos/virtio-pci.h
+@@ -26,6 +26,7 @@ typedef struct QVirtioPCIDevice {
+     uint64_t config_msix_addr;
+     uint32_t config_msix_data;
+ 
++    bool enabled;
+     int bar_idx;
+ 
+     /* VIRTIO 1.0 */
+diff --git a/tests/qtest/ahci-test.c b/tests/qtest/ahci-test.c
+index 5a1923f721b..b3dae7a8ce4 100644
+--- a/tests/qtest/ahci-test.c
++++ b/tests/qtest/ahci-test.c
+@@ -1483,6 +1483,8 @@ static void test_reset_pending_callback(void)
+     /* Wait for throttled write to finish. */
+     sleep(1);
+ 
++    stop_ahci_device(ahci);
++
+     /* Start again. */
+     ahci_clean_mem(ahci);
+     ahci_pci_enable(ahci);
+diff --git a/tests/qtest/libqos/ahci.c b/tests/qtest/libqos/ahci.c
+index 34a75b7f43b..cfc435b6663 100644
+--- a/tests/qtest/libqos/ahci.c
++++ b/tests/qtest/libqos/ahci.c
+@@ -217,6 +217,12 @@ void start_ahci_device(AHCIQState *ahci)
+     qpci_device_enable(ahci->dev);
+ }
+ 
++void stop_ahci_device(AHCIQState *ahci)
++{
++    /* Map AHCI's ABAR (BAR5) */
++    qpci_iounmap(ahci->dev, ahci->hba_bar);
++}
++
+ /**
+  * Test and initialize the AHCI's HBA memory areas.
+  * Initialize and start any ports with devices attached.
+diff --git a/tests/qtest/libqos/pci.c b/tests/qtest/libqos/pci.c
+index b23d72346b6..a42ca08261d 100644
+--- a/tests/qtest/libqos/pci.c
++++ b/tests/qtest/libqos/pci.c
+@@ -93,12 +93,17 @@ QPCIDevice *qpci_device_find(QPCIBus *bus, int devfn)
+ void qpci_device_init(QPCIDevice *dev, QPCIBus *bus, QPCIAddress *addr)
+ {
+     uint16_t vendor_id, device_id;
++    int i;
+ 
+     qpci_device_set(dev, bus, addr->devfn);
+     vendor_id = qpci_config_readw(dev, PCI_VENDOR_ID);
+     device_id = qpci_config_readw(dev, PCI_DEVICE_ID);
+     g_assert(!addr->vendor_id || vendor_id == addr->vendor_id);
+     g_assert(!addr->device_id || device_id == addr->device_id);
++
++    for (i = 0; i < 6; i++) {
++        g_assert(!dev->bars_mapped[i]);
++    }
+ }
+ 
+ static uint8_t qpci_find_resource_reserve_capability(QPCIDevice *dev)
+@@ -531,6 +536,8 @@ QPCIBar qpci_iomap(QPCIDevice *dev, int barno, uint64_t *sizeptr)
+     uint64_t loc;
+ 
+     g_assert(barno >= 0 && barno <= 5);
++    g_assert(!dev->bars_mapped[barno]);
++
+     bar_reg = bar_reg_map[barno];
+ 
+     qpci_config_writel(dev, bar_reg, 0xFFFFFFFF);
+@@ -574,12 +581,35 @@ QPCIBar qpci_iomap(QPCIDevice *dev, int barno, uint64_t *sizeptr)
+     }
+ 
+     bar.addr = loc;
++
++    dev->bars_mapped[barno] = true;
++    dev->bars[barno] = bar;
++
+     return bar;
+ }
+ 
+ void qpci_iounmap(QPCIDevice *dev, QPCIBar bar)
+ {
+-    /* FIXME */
++    static const int bar_reg_map[] = {
++        PCI_BASE_ADDRESS_0, PCI_BASE_ADDRESS_1, PCI_BASE_ADDRESS_2,
++        PCI_BASE_ADDRESS_3, PCI_BASE_ADDRESS_4, PCI_BASE_ADDRESS_5,
++    };
++    int bar_reg;
++    int i;
++
++    for (i = 0; i < 6; i++) {
++        if (!dev->bars_mapped[i]) {
++            continue;
++        }
++        if (dev->bars[i].addr == bar.addr) {
++            dev->bars_mapped[i] = false;
++            bar_reg = bar_reg_map[i];
++            qpci_config_writel(dev, bar_reg, 0xFFFFFFFF);
++            /* FIXME: the address space is leaked */
++            return;
++        }
++    }
++    g_assert_not_reached();
+ }
+ 
+ QPCIBar qpci_legacy_iomap(QPCIDevice *dev, uint16_t addr)
+diff --git a/tests/qtest/libqos/virtio-pci.c b/tests/qtest/libqos/virtio-pci.c
+index 485b8f6b7e0..2b59fb181c9 100644
+--- a/tests/qtest/libqos/virtio-pci.c
++++ b/tests/qtest/libqos/virtio-pci.c
+@@ -304,11 +304,15 @@ void qvirtio_pci_device_enable(QVirtioPCIDevice *d)
+ {
+     qpci_device_enable(d->pdev);
+     d->bar = qpci_iomap(d->pdev, d->bar_idx, NULL);
++    d->enabled = true;
+ }
+ 
+ void qvirtio_pci_device_disable(QVirtioPCIDevice *d)
+ {
+-    qpci_iounmap(d->pdev, d->bar);
++    if (d->enabled) {
++        qpci_iounmap(d->pdev, d->bar);
++        d->enabled = false;
++    }
+ }
+ 
+ void qvirtqueue_pci_msix_setup(QVirtioPCIDevice *d, QVirtQueuePCI *vqpci,
 -- 
 2.45.2
 
