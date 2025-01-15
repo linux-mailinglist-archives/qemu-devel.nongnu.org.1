@@ -2,97 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 999FFA125A1
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 15:10:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A012A125DF
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 15:21:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY45d-0000OQ-Sq; Wed, 15 Jan 2025 09:09:49 -0500
+	id 1tY3W1-0007Lr-58; Wed, 15 Jan 2025 08:33:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shalini@linux.ibm.com>)
- id 1tY3Uj-00075W-8q; Wed, 15 Jan 2025 08:31:41 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1tY3Vz-0007Ku-Dl
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 08:32:59 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shalini@linux.ibm.com>)
- id 1tY3Uh-000516-Tc; Wed, 15 Jan 2025 08:31:41 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50FBqbUr010136;
- Wed, 15 Jan 2025 13:31:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=FZMQMvsZc9j0UILCt
- c/w/QNYDtg3drTL6UoNfEZ4nJM=; b=MElpd0GOc7IIyqLy8UcPiaGyq0o6w5dbo
- FzopKzpy/1m5t4/QLzxjEdw/AIgkDmdN8X0B35cCJfXDNcZKNqkW+SOUk9TILyG6
- kQ9mji60cw3UOpjpyInU+lkqUSNjOjBpiB7PzqgffieQTVOHl9kq3yXWIZdW0QN2
- xTJTULZd8NZXNe7BJJyU38jpXX+HUvivB8vC4wa2386HTfl0SqiiI4g9u3/E+sRd
- +/tmF1kO12wchdpHcUgdUQrk8Hce2gpm0Jypzf4XqntUjRSS8MZMNOn3n6GeERnS
- EyGvv2IWWmmr4ieeJmt+/s73ZH5OMgV7c/r2CHFkq0dF3Qtkfb0/g==
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4461rbjy94-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 15 Jan 2025 13:31:38 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50FBKKO4017003;
- Wed, 15 Jan 2025 13:31:37 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4444fk8dkg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 15 Jan 2025 13:31:37 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 50FDVXk939322010
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 15 Jan 2025 13:31:33 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BE49C20043;
- Wed, 15 Jan 2025 13:31:33 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A2C8D20040;
- Wed, 15 Jan 2025 13:31:33 +0000 (GMT)
-Received: from a46lp68.lnxne.boe (unknown [9.152.108.100])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 15 Jan 2025 13:31:33 +0000 (GMT)
-From: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
-To: qemu-s390x mailing list <qemu-s390x@nongnu.org>
-Cc: qemu-devel mailing list <qemu-devel@nongnu.org>,
- Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
- Hendrik Brueckner <brueckner@linux.ibm.com>,
- Shalini Chellathurai Saroja <shalini@linux.ibm.com>
-Subject: [PATCH v1 3/3] hw/s390x: support migration of CPI values
-Date: Wed, 15 Jan 2025 14:31:06 +0100
-Message-ID: <20250115133106.3034445-3-shalini@linux.ibm.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250115133106.3034445-1-shalini@linux.ibm.com>
-References: <20250115133106.3034445-1-shalini@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1tY3Vx-0005L4-DM
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 08:32:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736947974;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=NDdgoOGs3Q5Ss9ynoB2S+9JxEp57xcwinijLEkBmjmA=;
+ b=L91PO79pkD5XLl+gGfjXiYIl8wOnqONVMVtZM+zDcp7UHPtS164qgZq44gwevw3/4zqa94
+ 6u34y7jBtZvQYSIxp1F3SkpLI0w8VflHV6Ugpp2wwMTM2x1QtAt7kb6QVOdrgR4lcBu6NV
+ wzGQkom9AG73GhyjSjy5ojHcC1+tVR8=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-687-EdqykUeZPmO_-rTjTCCFIg-1; Wed, 15 Jan 2025 08:32:51 -0500
+X-MC-Unique: EdqykUeZPmO_-rTjTCCFIg-1
+X-Mimecast-MFC-AGG-ID: EdqykUeZPmO_-rTjTCCFIg
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7b6ee0af16dso1131862285a.3
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 05:32:50 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736947970; x=1737552770;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=NDdgoOGs3Q5Ss9ynoB2S+9JxEp57xcwinijLEkBmjmA=;
+ b=m5tRlzPKN0vtXpPC1JWNAC48QU+SnkRrhg/nITbBDOWrncQ2b+iyxw6R+lJTkXlZ6u
+ Z6liAa9UK4icZRuOy3WCYPObW0SeSkFm7MF086FxVtCCnOvA0dUQ9tNTqL7dq9JI5O9v
+ JIj7RS4/vUasvZzdURUMAiqpt8zawDXN+/gUT2fcEJUFyS25qrezjcrBy0YcYzsa13GE
+ F4yJ0iCCt10D6hL0219FRNnwlm94SkXbLK59X2hEN3PVCBAX2i+IVNRuWyBNMUjiCrOl
+ mca4l/Vb++xexf/cKw1NUp5Q32BWUoVjClGEtrk0rjC0hirEXlHfySFw5DmbruxULIfW
+ XX7w==
+X-Gm-Message-State: AOJu0YwrU71PtkIwkrLvqslFpUrkbzxfrLgj5/sez0Bs8FA+NwaJq6KU
+ 2L00gTClEMxm9jQqwd3GiEWacyGo6UmIIU+vd21229Fuf80tJYAUV2t1tYv76b2xrQklpABVpOg
+ 7JyAtinCAXlpnwroomWGGq7kYjLRAer5ZK+GQQdTDwQunn/c1O1GKHCJxl6LSUHTBdCc/OVmypI
+ e4NeCkyjIAGBkHbKcQbHjeNMbB8tja+97o96g=
+X-Gm-Gg: ASbGnctYY7zEO3d+PrQHmJ8VUjSKdEWBVPI3kNqwIiixKMtMuYRWzySKwagu0FdhMyz
+ yeOndphE8Bae0ZE+TuqoUwS8V3SpEjoIp3GEM871/
+X-Received: by 2002:a05:620a:1b89:b0:7b6:f6ac:60e with SMTP id
+ af79cd13be357-7bcd979c8f2mr5269196885a.36.1736947970012; 
+ Wed, 15 Jan 2025 05:32:50 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEWxyO9lL0KXTtZqRgKHIr2rkcKQLB5HkXmSDK6x1UMQioeSEZf+Nuy8+V4dRwQRDW/Ba52oK8NzJzB/p6JPno=
+X-Received: by 2002:a05:620a:1b89:b0:7b6:f6ac:60e with SMTP id
+ af79cd13be357-7bcd979c8f2mr5269193985a.36.1736947969797; Wed, 15 Jan 2025
+ 05:32:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: biwQ9JhAcUufSjsK8ZToKBvRos5eqyI-
-X-Proofpoint-GUID: biwQ9JhAcUufSjsK8ZToKBvRos5eqyI-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-15_05,2025-01-15_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 impostorscore=0 mlxscore=0 suspectscore=0
- mlxlogscore=890 adultscore=0 bulkscore=0 phishscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501150102
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=shalini@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=-1.793, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20241216154552.213961-1-kkostiuk@redhat.com>
+ <20241216154552.213961-2-kkostiuk@redhat.com>
+ <CAPMcbCrP4Y3uXYWzEQ3FpD_0Tm-Of6HJs7L8SEfwVxz1omO82g@mail.gmail.com>
+In-Reply-To: <CAPMcbCrP4Y3uXYWzEQ3FpD_0Tm-Of6HJs7L8SEfwVxz1omO82g@mail.gmail.com>
+From: Konstantin Kostiuk <kkostiuk@redhat.com>
+Date: Wed, 15 Jan 2025 15:32:39 +0200
+X-Gm-Features: AbW1kvakQ13Tx3kPwYUdMfFkrRLzTl9g2RZNdGaJl5Saqs6IZRIdblXZ4RiLNME
+Message-ID: <CAPMcbCpehnLsQUzs+BgFE8qwdgg7XqqLyrRM7u7a9tXQkuEwig@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] qga: Add log to guest-fsfreeze-thaw command
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Michael Roth <michael.roth@amd.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: multipart/alternative; boundary="000000000000bbc10e062bbeb64f"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 15 Jan 2025 09:09:45 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,50 +102,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit saves the state of CPI values in the guest and
-transfers this state during live migration of the guest.
+--000000000000bbc10e062bbeb64f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
----
- hw/s390x/s390-virtio-ccw.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ping
 
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 35fb523af9..8fe0c5c1cb 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -259,6 +259,20 @@ static void s390_create_sclpconsole(SCLPDevice *sclp,
-     qdev_realize_and_unref(dev, ev_fac_bus, &error_fatal);
- }
- 
-+static const VMStateDescription vmstate_cpi = {
-+    .name = "s390_cpi",
-+    .version_id = 0,
-+    .minimum_version_id = 0,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT8_ARRAY(system_type, Cpi, 8),
-+        VMSTATE_UINT8_ARRAY(system_name, Cpi, 8),
-+        VMSTATE_UINT64(system_level, Cpi),
-+        VMSTATE_UINT8_ARRAY(sysplex_name, Cpi, 8),
-+        VMSTATE_UINT64(timestamp, Cpi),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- static void ccw_init(MachineState *machine)
- {
-     MachineClass *mc = MACHINE_GET_CLASS(machine);
-@@ -307,6 +321,9 @@ static void ccw_init(MachineState *machine)
-     ret = css_create_css_image(VIRTUAL_CSSID, true);
-     assert(ret == 0);
- 
-+    /* register CPI values */
-+    vmstate_register_any(NULL, &vmstate_cpi, &ms->cpi);
-+
-     css_register_vmstate();
- 
-     /* Create VirtIO network adapters */
--- 
-2.47.0
+On Mon, Jan 6, 2025 at 11:37=E2=80=AFAM Konstantin Kostiuk <kkostiuk@redhat=
+.com>
+wrote:
+
+> ping
+>
+> On Mon, Dec 16, 2024 at 5:47=E2=80=AFPM Konstantin Kostiuk <kkostiuk@redh=
+at.com>
+> wrote:
+>
+>> Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+>> ---
+>>  qga/commands-posix.c | 2 ++
+>>  qga/commands-win32.c | 3 +++
+>>  2 files changed, 5 insertions(+)
+>>
+>> diff --git a/qga/commands-posix.c b/qga/commands-posix.c
+>> index 636307bedf..359a56be81 100644
+>> --- a/qga/commands-posix.c
+>> +++ b/qga/commands-posix.c
+>> @@ -805,8 +805,10 @@ int64_t qmp_guest_fsfreeze_thaw(Error **errp)
+>>      int ret;
+>>
+>>      ret =3D qmp_guest_fsfreeze_do_thaw(errp);
+>> +
+>>      if (ret >=3D 0) {
+>>          ga_unset_frozen(ga_state);
+>> +        slog("guest-fsthaw called");
+>>          execute_fsfreeze_hook(FSFREEZE_HOOK_THAW, errp);
+>>      } else {
+>>          ret =3D 0;
+>> diff --git a/qga/commands-win32.c b/qga/commands-win32.c
+>> index 038beb8cfa..7d8e260e1f 100644
+>> --- a/qga/commands-win32.c
+>> +++ b/qga/commands-win32.c
+>> @@ -1273,6 +1273,9 @@ int64_t qmp_guest_fsfreeze_thaw(Error **errp)
+>>      qga_vss_fsfreeze(&i, false, NULL, errp);
+>>
+>>      ga_unset_frozen(ga_state);
+>> +
+>> +    slog("guest-fsthaw called");
+>> +
+>>      return i;
+>>  }
+>>
+>> --
+>> 2.47.1
+>>
+>>
+>>
+
+--000000000000bbc10e062bbeb64f
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>ping<br></div><br><div class=3D"gmail_quote gmail_quo=
+te_container"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jan 6, 2025 at =
+11:37=E2=80=AFAM Konstantin Kostiuk &lt;<a href=3D"mailto:kkostiuk@redhat.c=
+om">kkostiuk@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
+quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,=
+204);padding-left:1ex"><div dir=3D"ltr">ping<br></div><br><div class=3D"gma=
+il_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Dec 16, 2024 at 5:4=
+7=E2=80=AFPM Konstantin Kostiuk &lt;<a href=3D"mailto:kkostiuk@redhat.com" =
+target=3D"_blank">kkostiuk@redhat.com</a>&gt; wrote:<br></div><blockquote c=
+lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
+d rgb(204,204,204);padding-left:1ex">Signed-off-by: Konstantin Kostiuk &lt;=
+<a href=3D"mailto:kkostiuk@redhat.com" target=3D"_blank">kkostiuk@redhat.co=
+m</a>&gt;<br>
+---<br>
+=C2=A0qga/commands-posix.c | 2 ++<br>
+=C2=A0qga/commands-win32.c | 3 +++<br>
+=C2=A02 files changed, 5 insertions(+)<br>
+<br>
+diff --git a/qga/commands-posix.c b/qga/commands-posix.c<br>
+index 636307bedf..359a56be81 100644<br>
+--- a/qga/commands-posix.c<br>
++++ b/qga/commands-posix.c<br>
+@@ -805,8 +805,10 @@ int64_t qmp_guest_fsfreeze_thaw(Error **errp)<br>
+=C2=A0 =C2=A0 =C2=A0int ret;<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0ret =3D qmp_guest_fsfreeze_do_thaw(errp);<br>
++<br>
+=C2=A0 =C2=A0 =C2=A0if (ret &gt;=3D 0) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ga_unset_frozen(ga_state);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 slog(&quot;guest-fsthaw called&quot;);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0execute_fsfreeze_hook(FSFREEZE_HOOK_THAW,=
+ errp);<br>
+=C2=A0 =C2=A0 =C2=A0} else {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D 0;<br>
+diff --git a/qga/commands-win32.c b/qga/commands-win32.c<br>
+index 038beb8cfa..7d8e260e1f 100644<br>
+--- a/qga/commands-win32.c<br>
++++ b/qga/commands-win32.c<br>
+@@ -1273,6 +1273,9 @@ int64_t qmp_guest_fsfreeze_thaw(Error **errp)<br>
+=C2=A0 =C2=A0 =C2=A0qga_vss_fsfreeze(&amp;i, false, NULL, errp);<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0ga_unset_frozen(ga_state);<br>
++<br>
++=C2=A0 =C2=A0 slog(&quot;guest-fsthaw called&quot;);<br>
++<br>
+=C2=A0 =C2=A0 =C2=A0return i;<br>
+=C2=A0}<br>
+<br>
+-- <br>
+2.47.1<br>
+<br>
+<br>
+</blockquote></div>
+</blockquote></div></div>
+
+--000000000000bbc10e062bbeb64f--
 
 
