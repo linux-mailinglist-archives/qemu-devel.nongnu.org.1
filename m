@@ -2,137 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB2AA1291F
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 17:46:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEBE2A1292A
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 17:50:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY6XL-0006k5-Ix; Wed, 15 Jan 2025 11:46:37 -0500
+	id 1tY6aW-0007qG-J4; Wed, 15 Jan 2025 11:49:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew.cooper@cloud.com>)
- id 1tY6XC-0006eS-0C
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 11:46:26 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tY6aO-0007pt-Ux
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 11:49:45 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <andrew.cooper@cloud.com>)
- id 1tY6X9-0002we-2j
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 11:46:25 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5d9f06f8cf2so5527854a12.3
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 08:46:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=citrix.com; s=google; t=1736959581; x=1737564381; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=jfVZOgROECUa2tEcjDX9j+CT/akKl22KV7shucLuS+o=;
- b=ia4CmMYit8dqODgyakJqkC/oyyw0VgIwn205nlcuo1WqGfMYFqxJHfFb5TnFtIm2cX
- VGqb9/W/zPX+fQlDgzTjctfUd900wYBAyrS7pQf5ierA9a+8/oUh8x8BkXZ1kZu0nWRP
- ZNrgsmQk7WQtR6VpknHTmfU62W8aGot6ptNgc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736959581; x=1737564381;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jfVZOgROECUa2tEcjDX9j+CT/akKl22KV7shucLuS+o=;
- b=E4QaLIdpqUtekTQ/1pFHbgPy2zlLJCYn6oONC5Ks6m/C/Cf7MFssBgyG+MI4wldZJO
- YZMeM3lrMNB0vEqQMAIowpz4RQ+OYHwumWg2sb1NUykOINxeNLL7F36uN3I7zOtSjwWC
- m3FomM+2umavNefaQ3Z63cvdQ+uUnniOtiZ3zP29KzKi+SLv/PGP9GJCDjB1f+qvd4KT
- JLqprTvUHy2NSbpuo6eMcQ1KOBHA8HJ76RXdI0BwEnu39w5K3VosjfI8TOVtlHEKnZzH
- DyV++OOPtuGU/PFNe31Qob+HCSwZryKayjrtJ3988lW0W5+Y1QmhgWQ4t0LHy0ipbLQb
- Ru6g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV+Havb0nPPa4fF76NAGtqjtfOL+fHIeB9zwfRBxBMeA2gL2AU9XJ8OfHF7nbXFLI0e+uxwy7VxtLiO@nongnu.org
-X-Gm-Message-State: AOJu0Yznw6m3+L2IXw8HELJLEAOHZDwvC4fUJhqKDYclC97zyekG1UE8
- s53NLT5f96Mm+w9EHy0gzH1x9FQkHA5NJodO7ONn+Up+EUVIYnzE30ftCOn6BSk=
-X-Gm-Gg: ASbGncvw0wSFKFLlbU3UCE9LQDiN+3KFbF2ZiJ9RreS9/KjT4nuAT1cJx583on0eJaY
- oZClTg9qQwE6ZWWTBjzwLTgQFUprQirVU7a5XDsGuOend27hnHiM3C/d2f/3tn+nVHAPHjbP9KO
- tkGIJcBG+zHL8Fxzzj3Kx1b2kOUoIfgxUHK2dyy9LJvDJawp2nIkjiP621vQpQATHEqojaHeOaP
- bB1bqnnTxiX8cfWMxgWKxCbtUVJW/282UQQ3a2LIrDTkig5snJnNHcFpfExoSBUCQ==
-X-Google-Smtp-Source: AGHT+IG9fwelL/D1La5pjNNAMd5O1WUger0zgOHHaIfFhCoUhFkGEau2NPSm8M/aLbMcdXbqStHbhg==
-X-Received: by 2002:a05:6402:254b:b0:5d8:a46f:110b with SMTP id
- 4fb4d7f45d1cf-5d972e17033mr29190036a12.17.1736959580989; 
- Wed, 15 Jan 2025 08:46:20 -0800 (PST)
-Received: from [10.81.35.177] ([46.149.103.9])
- by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d99046a195sm7385437a12.57.2025.01.15.08.46.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 Jan 2025 08:46:20 -0800 (PST)
-Message-ID: <43161e04-a32e-4ef5-a310-84b7bfc9d50d@citrix.com>
-Date: Wed, 15 Jan 2025 16:46:19 +0000
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tY6aM-0003DW-Pn
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 11:49:44 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 420721F7C0;
+ Wed, 15 Jan 2025 16:49:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1736959779; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=zA3RKcUixx4ZeTnWOP230OH0WBrF+g1aSEj2WD8eznk=;
+ b=Q8iXpYMVtjQodf4Qsgoii/ZAk7Bhe2UwddSSqXRhfwn2xu5fv60eqlFIUmP3SYKXVcwRIh
+ VaPMdJaFByBeQ94HNPvZXpgtN9xVJdPHFiv4JUqAgRoxlayEWYLU2dsfIbUQEB2SuZJYpb
+ nhXChRMYl3m7okhOeanOA9aIezYOfAA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1736959779;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=zA3RKcUixx4ZeTnWOP230OH0WBrF+g1aSEj2WD8eznk=;
+ b=9x5L0W1O8opYnXG+SowvG0W7kL1uXy9H4+p1r/vsJYxpfClkRKZdljTkiIt4JRwx2PKOhr
+ C73f6nPoh+QTnpBA==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Q8iXpYMV;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9x5L0W1O
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1736959779; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=zA3RKcUixx4ZeTnWOP230OH0WBrF+g1aSEj2WD8eznk=;
+ b=Q8iXpYMVtjQodf4Qsgoii/ZAk7Bhe2UwddSSqXRhfwn2xu5fv60eqlFIUmP3SYKXVcwRIh
+ VaPMdJaFByBeQ94HNPvZXpgtN9xVJdPHFiv4JUqAgRoxlayEWYLU2dsfIbUQEB2SuZJYpb
+ nhXChRMYl3m7okhOeanOA9aIezYOfAA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1736959779;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=zA3RKcUixx4ZeTnWOP230OH0WBrF+g1aSEj2WD8eznk=;
+ b=9x5L0W1O8opYnXG+SowvG0W7kL1uXy9H4+p1r/vsJYxpfClkRKZdljTkiIt4JRwx2PKOhr
+ C73f6nPoh+QTnpBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BC40713A6F;
+ Wed, 15 Jan 2025 16:49:38 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id cSDVHyLnh2djIwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 15 Jan 2025 16:49:38 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: peterx@redhat.com, Juraj Marcin <jmarcin@redhat.com>, Julia Suvorova
+ <jusual@redhat.com>, Prasad Pandit <ppandit@redhat.com>
+Subject: Re: [PATCH 00/16] migration: Switchover phase refactoring
+In-Reply-To: <20250114230746.3268797-1-peterx@redhat.com>
+References: <20250114230746.3268797-1-peterx@redhat.com>
+Date: Wed, 15 Jan 2025 13:49:36 -0300
+Message-ID: <878qrcf2e7.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/7] xen: do not use '%ms' scanf specifier
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>
-Cc: Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, Kevin Wolf
- <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
- xen-devel@lists.xenproject.org, qemu-block@nongnu.org
-References: <20250115163542.291424-1-dwmw2@infradead.org>
- <20250115163542.291424-3-dwmw2@infradead.org>
-Content-Language: en-GB
-From: Andrew Cooper <andrew.cooper3@citrix.com>
-Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
- 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
- 6+ahAA==
-In-Reply-To: <20250115163542.291424-3-dwmw2@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=andrew.cooper@cloud.com; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- HEADER_FROM_DIFFERENT_DOMAINS=0.248, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 420721F7C0
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ RCVD_TLS_ALL(0.00)[]; MIME_TRACE(0.00)[0:+];
+ MISSING_XM_UA(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ TO_DN_SOME(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ MID_RHS_MATCH_FROM(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCPT_COUNT_FIVE(0.00)[6]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.51
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -148,25 +124,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/01/2025 4:27 pm, David Woodhouse wrote:
-> diff --git a/hw/xen/xen-bus.c b/hw/xen/xen-bus.c
-> index adfc4efad0..85b92cded4 100644
-> --- a/hw/xen/xen-bus.c
-> +++ b/hw/xen/xen-bus.c
-> @@ -650,6 +650,16 @@ int xen_device_frontend_scanf(XenDevice *xendev, const char *key,
->      return rc;
->  }
->  
-> +char *xen_device_frontend_read(XenDevice *xendev, const char *key)
-> +{
-> +    XenBus *xenbus = XEN_BUS(qdev_get_parent_bus(DEVICE(xendev)));
-> +
-> +    g_assert(xenbus->xsh);
-> +
-> +    return xs_node_read(xenbus->xsh, XBT_NULL, NULL, NULL, "%s/%s",
-> +                        xendev->frontend_path, key);;
+Peter Xu <peterx@redhat.com> writes:
 
-Double ;;
+> CI: https://gitlab.com/peterx/qemu/-/pipelines/1625266692
+>     (note: warning is present on rust stuff, but shouldn't be relevant)
+>
+> This series refactors the migration switchover path quite a bit.  I started
+> this work initially to measure the JSON writer overhead, but then I decided
+> to cleanup the switchover path in general when I am at it altogether, as I
+> wanted to do this for a long time.
+>
+> A few major things I tried to do:
+>
+>   - About the JSON writer
+>
+>     Currently, precopy migration always dumps a chunk of data called VM
+>     description (QEMU_VM_VMDESCRIPTION) for debugging purpose.  That is a
+>     JSON blob explaining all the vmstates dumped in the migration stream.
+>     QEMU has a machine property suppress-vmdesc deciding whether migration
+>     will have that JSON chunk included.
+>
+>     Postcopy does not have such JSON dump because postcopy is live session
+>     and it can't normally be debugged from stream level (e.g. as a streamed
+>     file).
+>
+>     A tiny problem is we don't yet have a clue on how much cpu cycles we
+>     need to construct and dump these JSONs even if they're only for
+>     debugging, and even if suppress-vmdesc=on QEMU will still try to
+>     construct these JSONs (e.g. also for postcopy).
+>
+>     This series has a few patches just to make sure the JSON blob won't be
+>     constructed if not needed (either postcopy, or suppress-vmdesc=on).  I
+>     tried to measure the downtime diff with/without these changes, the time
+>     QEMU takes to construct / dump the JSON blob is still not measurable.
+>     So I suppose unconditionally having this is ok.  Said that, let's still
+>     have these changes around so we avoid JSON operations if not needed.
+>
+>   - DEVICE migration state
+>
+>     QEMU has a very special DEVICE migration state, that only happens with
+>     precopy, and only when pause-before-switchover capability is enabled.
+>     Due to that specialty we can't merge precopy and postcopy code on
+>     switchover starts, because the state machine will be different.
+>
+>     However after I checked the history and also with libvirt developers,
+>     this seems unnecessary.  So I had one patch making DEVICE state to be
+>     the "switchover" phase for precopy/postcopy unconditionally.  That will
+>     make the state machine much easier for both modes, meanwhile nothing is
+>     expected to break with it (but please still shoot if anyone knows /
+>     suspect something will, or could, break..).
+>
+>   - General cleanups and fixes
+>
+>     Most of the rest changes are random cleanups and fixes in the
+>     switchover path.
+>
+>     E.g., postcopy_start() has some code that isn't easy to read due to
+>     some special flags here and there, mostly around the two calls of
+>     qemu_savevm_state_complete_precopy().  This series will remove most of
+>     those special treatments here and there.
+>
+>     We could have done something twice in the past in postcopy switchover
+>     (e.g. I believe we sync CPU twice.. but only happens with postcopy),
+>     now they should all be sorted out.
+>
+>     And quite some other things hopefully can be separately discussed and
+>     justified in each patch.  After these cleanups, we will be able to have
+>     an unified entrance for precopy/postcopy on switchover.
+>
+> Initially I thought this could optimize the downtime slightly, but after
+> some tests, it turns out there's no measureable difference, at least in my
+> current setup... So let's take this as a cleanup series at least for now,
+> and I hope they would still make some sense.  Comments welcomed.
+>
+> Thanks,
+>
+> Peter Xu (16):
+>   migration: Remove postcopy implications in should_send_vmdesc()
+>   migration: Do not construct JSON description if suppressed
+>   migration: Optimize postcopy on downtime by avoiding JSON writer
+>   migration: Avoid two src-downtime-end tracepoints for postcopy
+>   migration: Drop inactivate_disk param in qemu_savevm_state_complete*
+>   migration: Synchronize all CPU states only for non-iterable dump
+>   migration: Adjust postcopy bandwidth during switchover
+>   migration: Adjust locking in migration_maybe_pause()
+>   migration: Drop cached migration state in migration_maybe_pause()
+>   migration: Take BQL slightly longer in postcopy_start()
+>   migration: Notify COMPLETE once for postcopy
+>   migration: Unwrap qemu_savevm_state_complete_precopy() in postcopy
+>   migration: Cleanup qemu_savevm_state_complete_precopy()
+>   migration: Always set DEVICE state
+>   migration: Merge precopy/postcopy on switchover start
+>   migration: Trivial cleanup on JSON writer of vmstate_save()
+>
+>  qapi/migration.json         |   7 +-
+>  migration/migration.h       |   1 +
+>  migration/savevm.h          |   6 +-
+>  migration/migration.c       | 209 +++++++++++++++++++++++-------------
+>  migration/savevm.c          | 116 ++++++++------------
+>  migration/vmstate.c         |   6 +-
+>  tests/qtest/libqos/libqos.c |   3 +-
+>  migration/trace-events      |   2 +-
+>  tests/qemu-iotests/194.out  |   1 +
+>  tests/qemu-iotests/203.out  |   1 +
+>  tests/qemu-iotests/234.out  |   2 +
+>  tests/qemu-iotests/262.out  |   1 +
+>  tests/qemu-iotests/280.out  |   1 +
+>  13 files changed, 200 insertions(+), 156 deletions(-)
 
-~Andrew
+Queued, thanks!
 
