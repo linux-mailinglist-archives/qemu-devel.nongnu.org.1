@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E28A2A12F4B
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 00:31:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01BECA12F4C
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 00:31:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYCqb-0006re-Cb; Wed, 15 Jan 2025 18:30:53 -0500
+	id 1tYCqX-0006nx-Nc; Wed, 15 Jan 2025 18:30:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCqP-0006iD-W3
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCqP-0006iB-Vu
  for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:30:42 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCqM-00054s-Fj
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCqM-00054y-FQ
  for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:30:40 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4361f664af5so2560555e9.1
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-436326dcb1cso1603225e9.0
  for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 15:30:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736983830; x=1737588630; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736983834; x=1737588634; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BRQx0SkOCPWyQiRMduvrQcrReIn+M/C8yaM71k53eWQ=;
- b=MD072fNfggVuLh8kkvaHTJ9t46asxgcvx/iQKupeijLdAfgr3uqxGCcl6K/4iuk+Uy
- xacoYB6k25MCnRlij/yxPj5LFSTdUR8jhmWby4ANpElufdmKFiRvg3aha4drJ6/9rQz3
- cuEK117e7NXQaoQ5WPVLACiZBGlomMQOMQxdZHb99AR6BULvhQFc6rm6ci+LQLGapHO4
- cBDFWC9VcpokF4ejhCsWADdQSpGnrLmTtt5l39VmXuPp3AbsxXOmk1xB0g376DeaRFHq
- VjGM+GgkUyHpmG7qcOTQJwnM7LCLk4YNTYapFuxzHO52MP86FSAkCoPAaaZkCkMRNa9x
- 7exA==
+ bh=fM8QVpnVbNxu0PP9F/y6d561pLUgSoGsgnDh4Rg5A+E=;
+ b=OnxdvwQjwE/deAOnM1K7e8f6Umekr7xUzo6Uvh6dsvpRUTePSNQ5g4r0aqhkrMPwnP
+ oU+KZzIcTFCzCBjSuXF7/096Lb3T8h/wZqr8nRDDDkgrGONh3qirRUNMEJhUsVdj5ju9
+ yChAva72d4oJvYWDriu+OaTj9Yy61E6aDP7tGBIGraYLrGgznP0/w3NScCIRxvvrCQac
+ Snn47jblud2k2J7uk4cb3RhjQ+cmmeZ4/5e4Ub4sSgY1ME1r5YxE9DSLwDFzXeBwS+Xy
+ ZdO2jiiiKTGJ+03gmTLsWm+TtVphVpmo8Izr91wuhGWCqukpmh7pZlFpY+JEduVFWmFW
+ zwBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736983830; x=1737588630;
+ d=1e100.net; s=20230601; t=1736983834; x=1737588634;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BRQx0SkOCPWyQiRMduvrQcrReIn+M/C8yaM71k53eWQ=;
- b=OIojuwl2b2Ugnxb05/CWGHMR1RsD3fS9QgASJpcgKYgUNRFREk7+F+12GIVjIZxrIG
- 5TeV++tkNBkeiUEai6KgZurThle04aHbnq94ngh2vxMFxw2fuIBHUqGHOEi+TVCcuX3w
- AMLJyyUcnF2TZBI6MlM3+f2AJRQh1MsSy+KFsfqZPpEn6ZSYt+fSh0oCh7KKJC1nyRbR
- Qp53c3fsdkiyOL3C8PInPd/fnBH2JgVuFzEe3Qi4cIf03xDUdVTepBEKkvcHwtosQNRe
- 34g/Xam/YZ86c44KzTTaLE3sk/1sI+GjjAx5bhjzwyV1/36DbH9bpj5W/SV+ao+0V4nv
- 5l4w==
-X-Gm-Message-State: AOJu0YyxfgWZckzU+A0awig8PZ/80u9HIIBJ4bsTcO9yZ+s1EXsXk8zf
- 9qftM+71CYGDMG7ON5FFSsSRwiEzQQq0FvMzCU+tj+9kEh7kGbbbRt8A9DTd4xDgnjpD1uPEe92
- gv3Y=
-X-Gm-Gg: ASbGnctjoEbQmkel9ZahYevi9LgcH7oiDe584DGZzHEAW/EkDeSPCrRKQAYUMG4O3w2
- 2rsdiGnzxJ14K5i2HoNilHmXAJN2YK1g9eYIpc9pG0upq7nZVh+q7oSabNSOydg00oJeyBx0d9k
- 1qAq7fLRcyrwY+k5Fnu2wFEroF2fGBAIyUlz+XfJbw8DvOZTXXGyc8oHGojt/ZFyXBFiqgIzqcY
- NrmwmvIBFY40kCSkjAsgxyePfmpF8NHMHeOZoED6NxO10j0s0J8WhKasjAYLXRESPWRQqobcen1
- SVKYTUGLuTJRZjWNnGGT0j+yzY19uJc=
-X-Google-Smtp-Source: AGHT+IH6GvWohGKr1oWh06khHkQDZX6EiyaZ7GIFVzj8Xgtb55wE8/gSn9Kv4JxvIbKxN7Pm0dDEAA==
-X-Received: by 2002:a05:600c:3ca4:b0:436:6460:e680 with SMTP id
- 5b1f17b1804b1-436e26c3331mr272373125e9.16.1736983830075; 
- Wed, 15 Jan 2025 15:30:30 -0800 (PST)
+ bh=fM8QVpnVbNxu0PP9F/y6d561pLUgSoGsgnDh4Rg5A+E=;
+ b=AfVieOnPaGdTZJZewIAzMwu4neOCCAxKXPl3VUFXxqxFmIphOg3IharQStPmy1HJu9
+ ku2ddT7pFoN3tutoPmAgzLTDJJda9IFeVYOc83jZKI69zkneRhuZ3rn4CdHHeeBc7Cfc
+ iihqyB8I+RX9RFqrGLkuaqyA1ci6EYm2i6hWESTLO85rG3BimoHs1l0js4kttZ5Q1gjU
+ EP4EKnwdWWUfMbYrUQvcoEUwTyJlUoHFkwqsghMI3K7HyP6ZhAhVYfHLgqFNHw6Y7JFg
+ 8DDYdNd0XW2VXlB74k4Kdjh8AzRsPJ/zgJRnUSnf7R/DKe8s8oY+xscDxNmLauZqAteH
+ SPRg==
+X-Gm-Message-State: AOJu0Yxo6FrGkU66OVaiXSLDfZoPymkvLGxaOoU6/UKAnnUBtCBC+VzJ
+ hW6+v53L3XtqD5RZnTLeyIUNzrq/+f9RVDO+dGurGvrQU+MnQk6D6ySrLPfRpKOVlYShlQ9+Sth
+ WXaE=
+X-Gm-Gg: ASbGncsValyjgZZDWQmQCTBbr37H46MhzuzK57HQsNk+0jOuhhOOCQmwOGXz/O4b06x
+ a5D0GWa2L5nSaZJ2CkoLrl+9FEIs4yG2tsJPqfp5I069C2BW2B9GnbbcgZpfJl/jOglpaGJ8Fwx
+ RW0epHiZ4uiTsglqWjYfJl4R2NqjRKRwcoida4p0xBqfcwPfWz8aTy/4ZdssigIEUS928pN6JtY
+ CdmJQ6Q0oDY9Wus1wFkj3GrQ6Al95su1czZN1gL6ZdT+ou6am2QNoX72Ja3KAQgM7HpLaBAqDyP
+ HCCEXWPtV70VLkM0PXLnI38cvVIDP2M=
+X-Google-Smtp-Source: AGHT+IG5Rw3meZcPTpFQZvHiTYRV2SIeQt5p2vF2D6q5+u7IY8f0TDR/BQd1Ppa5RxgJXAtHKm2pjQ==
+X-Received: by 2002:a05:600c:4744:b0:434:a7e7:a1ca with SMTP id
+ 5b1f17b1804b1-436e26f043dmr261071995e9.20.1736983834635; 
+ Wed, 15 Jan 2025 15:30:34 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c74c475csm39595935e9.20.2025.01.15.15.30.29
+ 5b1f17b1804b1-437c753caf3sm38034465e9.38.2025.01.15.15.30.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 15 Jan 2025 15:30:29 -0800 (PST)
+ Wed, 15 Jan 2025 15:30:34 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Huacai Chen <chenhuacai@kernel.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 07/11] hw/mips/loongson3_virt: Propagate cpu_count to
- init_boot_param()
-Date: Thu, 16 Jan 2025 00:29:47 +0100
-Message-ID: <20250115232952.31166-8-philmd@linaro.org>
+Subject: [PATCH v2 08/11] hw/mips/loongson3_bootp: Propagate processor_id to
+ init_cpu_info()
+Date: Thu, 16 Jan 2025 00:29:48 +0100
+Message-ID: <20250115232952.31166-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250115232952.31166-1-philmd@linaro.org>
 References: <20250115232952.31166-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,46 +100,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove one use of the 'current_machine' global.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/mips/loongson3_virt.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ hw/mips/loongson3_bootp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index 93700a1612e..46b298f6d72 100644
---- a/hw/mips/loongson3_virt.c
-+++ b/hw/mips/loongson3_virt.c
-@@ -173,7 +173,7 @@ static uint64_t get_cpu_freq_hz(const MIPSCPU *cpu)
-     return DEF_LOONGSON3_FREQ;
- }
+diff --git a/hw/mips/loongson3_bootp.c b/hw/mips/loongson3_bootp.c
+index 91b58a71a68..1aab26df69e 100644
+--- a/hw/mips/loongson3_bootp.c
++++ b/hw/mips/loongson3_bootp.c
+@@ -27,12 +27,12 @@
+ #include "hw/mips/loongson3_bootp.h"
  
--static void init_boot_param(void)
-+static void init_boot_param(unsigned cpu_count)
+ static void init_cpu_info(void *g_cpuinfo, uint32_t cpu_count,
+-                          uint64_t cpu_freq)
++                          uint32_t processor_id, uint64_t cpu_freq)
  {
-     static void *p;
-     struct boot_params *bp;
-@@ -184,8 +184,7 @@ static void init_boot_param(void)
-     bp->efi.smbios.vers = cpu_to_le16(1);
-     init_reset_system(&(bp->reset_system));
-     p += ROUND_UP(sizeof(struct boot_params), 64);
--    init_loongson_params(&(bp->efi.smbios.lp), p,
--                         current_machine->smp.cpus,
-+    init_loongson_params(&(bp->efi.smbios.lp), p, cpu_count,
-                          loaderparams.cpu_freq, loaderparams.ram_size);
+     struct efi_cpuinfo_loongson *c = g_cpuinfo;
  
-     rom_add_blob_fixed("params_rom", bp,
-@@ -642,7 +641,7 @@ static void mips_loongson3_virt_init(MachineState *machine)
-         loaderparams.kernel_entry = load_kernel(&cpu->env);
- 
-         init_boot_rom();
--        init_boot_param();
-+        init_boot_param(machine->smp.cpus);
+     c->cputype = cpu_to_le32(Loongson_3A);
+-    c->processor_id = cpu_to_le32(MIPS_CPU(first_cpu)->env.CP0_PRid);
++    c->processor_id = cpu_to_le32(processor_id);
+     if (cpu_freq > UINT_MAX) {
+         c->cpu_clock_freq = cpu_to_le32(UINT_MAX);
      } else {
-         filename = qemu_find_file(QEMU_FILE_TYPE_BIOS,
-                                   machine->firmware ?: LOONGSON3_BIOSNAME);
+@@ -115,7 +115,7 @@ void init_loongson_params(struct loongson_params *lp, void *p,
+                           uint32_t cpu_count,
+                           uint64_t cpu_freq, uint64_t ram_size)
+ {
+-    init_cpu_info(p, cpu_count, cpu_freq);
++    init_cpu_info(p, MIPS_CPU(first_cpu)->env.CP0_PRid, cpu_count, cpu_freq);
+     lp->cpu_offset = cpu_to_le64((uintptr_t)p - (uintptr_t)lp);
+     p += ROUND_UP(sizeof(struct efi_cpuinfo_loongson), 64);
+ 
 -- 
 2.47.1
 
