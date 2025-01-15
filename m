@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3253FA12981
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 18:12:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C25A0A12988
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 18:12:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY6ul-0007RD-P5; Wed, 15 Jan 2025 12:10:47 -0500
+	id 1tY6uo-0007S3-PI; Wed, 15 Jan 2025 12:10:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tY6uh-0007QV-C9
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 12:10:43 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tY6um-0007RX-2X
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 12:10:48 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tY6uf-0006Za-Tl
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 12:10:43 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-38632b8ae71so42545f8f.0
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 09:10:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tY6uk-0006ab-E0
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 12:10:47 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-436a39e4891so48817925e9.1
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 09:10:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736961040; x=1737565840; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736961045; x=1737565845; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KLyfo8A7IZIE7IOrZd9qH5+UHn+eynSluJZ+bRJ10/s=;
- b=Y1mof02fdBTswiEUSGVm4FqMYLmwpohZLULN7oTQyFOWLHNQf8cLAweM231D0tyEwu
- EjaqkvRH6ah4T4z/cFMPPsHGyzBBPwWcU79KHWW1hGojhAK8eqQQifggW8MT9oq+UKkp
- cSHjqx1Zwlzxhd/l0zrzzYUpAIZBGNn6KWOIdhdD0XQ37g6MgQiOjISb8zAWe/tJeo/U
- 6JYdTorirH3WDILqSEmYcRMA+O2CEVKd/xXIQBK8pRIeDioWC+1sQgsG+z+EXhPLvYHl
- 9bMckJ6FS9pzgrHgJsK4btSXaZsN3XFT73sRMsDffNPmJddu47d0IJx5NNqFooVDvvBZ
- uOMA==
+ bh=+rpS4UoGMNFWvPB8UZ1XtPkvHJUg2YKopwCuDHPyLwI=;
+ b=P6M+Zvz+hcU9nfpTr6Blmwce3ktOcXbQnX6+VdhCdAyf5zE0GwCPYCaRxJCB2UHuaq
+ 4KOCR6CLtbag9NjFi0M/8Ss0gVke8Lm27xqEJ75MPmIMPug40UHgzyqK8Un0qr7as4K8
+ p63Hj2vIYifURDSDo+nlnp7ewQDsUf65Cee6o1R4z0MdI2RYVoMSx5uOXFQGsbhns3IG
+ kPRg8pyVg6eqxOaCCy/rcXAB98lyTEN9QQuxmsYCgJxBz4/FmlfyvmHmFNNKBZPbgHud
+ 8+EYhdJjC8STjvKKZ4f2x5Z2jN6gi+isILTEQC8M3uiLBgCD1myfonL5tfIJZ4I4eICK
+ SqDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736961040; x=1737565840;
+ d=1e100.net; s=20230601; t=1736961045; x=1737565845;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KLyfo8A7IZIE7IOrZd9qH5+UHn+eynSluJZ+bRJ10/s=;
- b=r5+BzSzA2b4/bEfQzeFwy2og4uv45pj8NyfBHHmrVFGZTkU3cGRd3In8o7tyRJ2x4R
- NjZgir9XzI8Rjue8s+b7l8meLVN/NxBgsqwabe1WP1ZOx+aLQ5LNkW43M3VHyy/kSCG7
- r0IcdC82LnB9TJaIC6hkyTc2CSOWctrZb1Li3B6oIePfOeNwL7CizeMkT9nkGNbgf8lB
- h9ryHMUqItr5eNOBur4dvnG2q9cUbVHY0WrWQ/EYDNQs4vpW0vAumfRQJon8jOKl8NZt
- QFKOrRJM/kjn++nkgl7XvANEnNvt/aprmzlCw21wk3diCp0V03RkTvMgvb4LOdBFay8g
- Vr1g==
-X-Gm-Message-State: AOJu0YwDZcOfmJcIM3G1PmnTgponFCcc0NTBIkykAY+X2HPwBlRRxyTx
- yqC+kTdhUzjvkpA3QMhwpEGaWBBqpxsUE3jQWXPzLSrl0rhyJTpHdOH+1llpyjCd7sbYyiyVnrU
- fmuY=
-X-Gm-Gg: ASbGncs1gITy66M10GhcSD6G3RzXHpdPcJNrhMTk51JviXUCXR8+JgwtnamiBiaBYQu
- D3KfIf9KiudRjAc4UzkeV8Bcb6BXq4Z1ZZxGFcNS5H55mVS/iIBKZdDf8+C4gwU2U9B+0ssei47
- siyxXD4iKBFJbhPzbSkX1gxYKYUImtbznUa0/ZESmljSTmV77eeC+8CpEDUU6ECqBHSKgBF+sHL
- iJ7OTDKl0XoKg7nOs/oWsJgu2wC3DR1e/8YZQysNRn+Lp/6tOKori8gziyjvlsByKkFxyZWSyIN
- PKEnzqTo+KCIKecvD0/PbkuWM7cUKgbs7V8q
-X-Google-Smtp-Source: AGHT+IEewz6G4VAcWkXSJWgHbrI3YcLVGLWnoWAclkHQ8MH9KvNFGDSsG0PllBaS1l2s+02bHlOhqg==
-X-Received: by 2002:a5d:64ed:0:b0:38a:4b8a:e477 with SMTP id
- ffacd0b85a97d-38a87306a84mr28026807f8f.22.1736961039922; 
- Wed, 15 Jan 2025 09:10:39 -0800 (PST)
+ bh=+rpS4UoGMNFWvPB8UZ1XtPkvHJUg2YKopwCuDHPyLwI=;
+ b=nDRwhxc2jSngPPHf4/HXSeIoF1L9wOawj3zP/XxthOIZOa78r4NIiOwJmP6MG0Z0D2
+ igacmbMXOl8euV0pO4THWw3DB2aaRvYtNeobB+6QbgSaXvyTaOnJdT+QpoBAt9OMaDqw
+ rdvx6Kdoadwqiq0BxV19iU93kjvJazMkw+y+uCAH/uPURDBTwgJ8hbVbuFSB4kqheRYp
+ PfwBqM/7JNin6CjKAicmV8dr6gCHkXJwWcyYwETw5YZGJ3+pgXBkCo+JU4lKiyqNYFmQ
+ kGfeuHJvbb4wuo9Su0LWMkpX9Ui/C7+PdqnU58XbfP45QX+ODo5Ilz63Wnpa2tbEPylr
+ 2KGw==
+X-Gm-Message-State: AOJu0Yzm7etfHHkphwdfW1mJZs55DzJmloEW/vHbDI3NhkQ2sQ7GzXhX
+ hXuQxAHb2k1DdI/PH7VzJ99rd/qgL5u9pX5E2bgoUTkteFdfhxTCy7wjcdGhtT9JJGkixx7zhJz
+ IAY4=
+X-Gm-Gg: ASbGncua5SW6ouRRm6y2dleB1gbmgBjA6mOU2kk4D0wY7FFrlsqvcqdQePVvzh5YNOj
+ R/PfFmG0aRIytQ5CXCazQheS3yi5xfiKPrtRFTJkW4AS0HUtNRY28oqJZ7zgBInDy3SpDz8pbPw
+ EHbcuJ42VMA6AgaBF7wSikp2vB9IUPY76ra2qa2W2I9ogBUyPJGjeoh1n7hHdZ1CdZm4m4ztICk
+ nKr75+R/BUD2M5l1f5lm0qiV6q9L7UgDNeP+3LOtCJroLXfmdLsvLp0kh0Cn1nHDPL8XcMDPzDW
+ VsOxohMwxTihqRDFN+FaODsZvWnmxNm+ykFJ
+X-Google-Smtp-Source: AGHT+IGwIMmh5nVSPuxckx/5uYr/mS/yXYwsEBpL4JrB/ufEyTJQypWVkjFP/rKPOL87TxcbnDBPyA==
+X-Received: by 2002:a05:600c:4f4e:b0:434:a902:97cd with SMTP id
+ 5b1f17b1804b1-436e26935cbmr265279745e9.12.1736961044600; 
+ Wed, 15 Jan 2025 09:10:44 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c74995f6sm30405545e9.1.2025.01.15.09.10.38
+ ffacd0b85a97d-38a8e37e36asm17745917f8f.5.2025.01.15.09.10.43
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 15 Jan 2025 09:10:39 -0800 (PST)
+ Wed, 15 Jan 2025 09:10:44 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Ani Sinha <anisinha@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
@@ -68,17 +68,18 @@ Cc: Ani Sinha <anisinha@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Shannon Zhao <shannon.zhaosl@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 06/13] hw/arm/virt: Remove deprecated virt-2.8 machine
-Date: Wed, 15 Jan 2025 18:10:02 +0100
-Message-ID: <20250115171009.19302-7-philmd@linaro.org>
+Subject: [PATCH 07/13] hw/arm/virt: Remove
+ VirtMachineClass::claim_edge_triggered_timers field
+Date: Wed, 15 Jan 2025 18:10:03 +0100
+Message-ID: <20250115171009.19302-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250115171009.19302-1-philmd@linaro.org>
 References: <20250115171009.19302-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,53 +102,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This machines has been supported for a period of more than 6 years.
-According to our versioned machine support policy (see commit
-ce80c4fa6ff "docs: document special exception for machine type
-deprecation & removal") it can now be removed.
+The VirtMachineClass::claim_edge_triggered_timers field
+was only used by virt-2.8 machine, which got removed.
+Remove it and simplify fdt_add_timer_nodes() and build_gtdt().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- docs/about/removed-features.rst |  4 ++--
- hw/arm/virt.c                   | 13 -------------
- 2 files changed, 2 insertions(+), 15 deletions(-)
+ include/hw/arm/virt.h    | 1 -
+ hw/arm/virt-acpi-build.c | 5 +----
+ hw/arm/virt.c            | 5 -----
+ 3 files changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index 435f081d805..732ec2cd05d 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -1065,8 +1065,8 @@ for all machine types using the PXA2xx and OMAP2 SoCs. We are also
- dropping the ``cheetah`` OMAP1 board, because we don't have any
- test images for it and don't know of anybody who does.
+diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+index 463ac09615e..9c531e28d04 100644
+--- a/include/hw/arm/virt.h
++++ b/include/hw/arm/virt.h
+@@ -118,7 +118,6 @@ typedef enum VirtGICType {
+ struct VirtMachineClass {
+     MachineClass parent;
+     bool no_tcg_its;
+-    bool claim_edge_triggered_timers;
+     bool smbios_old_sys_ver;
+     bool no_highmem_compact;
+     bool no_highmem_ecam;
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index ccecea9e09b..6e04fea165a 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -537,15 +537,12 @@ build_srat(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+ static void
+ build_gtdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+ {
+-    VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
+     /*
+      * Table 5-117 Flag Definitions
+      * set only "Timer interrupt Mode" and assume "Timer Interrupt
+      * polarity" bit as '0: Interrupt is Active high'
+      */
+-    uint32_t irqflags = vmc->claim_edge_triggered_timers ?
+-        1 : /* Interrupt is Edge triggered */
+-        0;  /* Interrupt is Level triggered  */
++    const uint32_t irqflags = 0;  /* Interrupt is Level triggered  */
+     AcpiTable table = { .sig = "GTDT", .rev = 3, .oem_id = vms->oem_id,
+                         .oem_table_id = vms->oem_table_id };
  
--Arm ``virt-2.6`` and ``virt-2.7`` (removed in 10.0)
--'''''''''''''''''''''''''''''''''''''''''''''''''''
-+Arm ``virt-2.6`` up to ``virt-2.8`` (removed in 10.0)
-+'''''''''''''''''''''''''''''''''''''''''''''''''''''
- These versioned machines have been supported for a period of more than 6 years.
- 
- linux-user mode CPUs
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index d7a7cee79df..4ec94190769 100644
+index 4ec94190769..ec47ee4755a 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -3556,16 +3556,3 @@ static void virt_machine_2_9_options(MachineClass *mc)
-     compat_props_add(mc->compat_props, hw_compat_2_9, hw_compat_2_9_len);
- }
- DEFINE_VIRT_MACHINE(2, 9)
+@@ -361,14 +361,9 @@ static void fdt_add_timer_nodes(const VirtMachineState *vms)
+      * the correct information.
+      */
+     ARMCPU *armcpu;
+-    VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
+     uint32_t irqflags = GIC_FDT_IRQ_FLAGS_LEVEL_HI;
+     MachineState *ms = MACHINE(vms);
+ 
+-    if (vmc->claim_edge_triggered_timers) {
+-        irqflags = GIC_FDT_IRQ_FLAGS_EDGE_LO_HI;
+-    }
 -
--static void virt_machine_2_8_options(MachineClass *mc)
--{
--    VirtMachineClass *vmc = VIRT_MACHINE_CLASS(OBJECT_CLASS(mc));
--
--    virt_machine_2_9_options(mc);
--    compat_props_add(mc->compat_props, hw_compat_2_8, hw_compat_2_8_len);
--    /* For 2.8 and earlier we falsely claimed in the DT that
--     * our timers were edge-triggered, not level-triggered.
--     */
--    vmc->claim_edge_triggered_timers = true;
--}
--DEFINE_VIRT_MACHINE(2, 8)
+     if (vms->gic_version == VIRT_GIC_VERSION_2) {
+         irqflags = deposit32(irqflags, GIC_FDT_IRQ_PPI_CPU_START,
+                              GIC_FDT_IRQ_PPI_CPU_WIDTH,
 -- 
 2.47.1
 
