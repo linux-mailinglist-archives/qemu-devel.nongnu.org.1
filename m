@@ -2,64 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E19FA1292C
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 17:50:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2CA8A1295B
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 18:03:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY6aZ-0007rG-QR; Wed, 15 Jan 2025 11:49:55 -0500
+	id 1tY6lm-0002CF-0Q; Wed, 15 Jan 2025 12:01:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anthony@xenproject.org>)
- id 1tY6aS-0007q6-Vb; Wed, 15 Jan 2025 11:49:49 -0500
-Received: from mail.xenproject.org ([104.130.215.37])
+ (Exim 4.90_1) (envelope-from <akrowiak@linux.ibm.com>)
+ id 1tY6lO-00025U-Tx; Wed, 15 Jan 2025 12:01:22 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anthony@xenproject.org>)
- id 1tY6aR-0003Dh-92; Wed, 15 Jan 2025 11:49:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=xenproject.org; s=20200302mail; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date;
- bh=giFZVBXvBz5ocUI8W7ZNYz1JX4g1+Rv5di62MVhfyX0=; b=YNYy+BDsm6/M7B/b0tosWcIXKC
- WK7Btz8FRB1hHViajVZHZPyqAFTJEtuiOtLQUlQsZKgKtjh3kYm4T+dVaIKBoW7l9BF/F/aoTp+SY
- 9KoQ5g0mtUCo1n8wA6+r+xPqpfYbLGYC5dnF4yvkKFtC0wF35YTO2O4tdA7EymioQ4LY=;
-Received: from xenbits.xenproject.org ([104.239.192.120])
- by mail.xenproject.org with esmtp (Exim 4.96)
- (envelope-from <anthony@xenproject.org>) id 1tY6aJ-00666Q-2D;
- Wed, 15 Jan 2025 16:49:39 +0000
-Received: from [2a01:e0a:1da:8420:b77:bd5:6e45:7633] (helo=l14)
- by xenbits.xenproject.org with esmtpsa (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.96)
- (envelope-from <anthony@xenproject.org>) id 1tY6aJ-006iXJ-2B;
- Wed, 15 Jan 2025 16:49:39 +0000
-Date: Wed, 15 Jan 2025 17:49:37 +0100
-From: Anthony PERARD <anthony@xenproject.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: qemu-devel@nongnu.org,
- Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
- Stefano Stabellini <sstabellini@kernel.org>, Paul Durrant <paul@xen.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Jason Wang <jasowang@redhat.com>, xen-devel@lists.xenproject.org,
- qemu-block@nongnu.org
-Subject: Re: [PATCH v3 7/7] hw/xen: Fix errp handling in xen_console
-Message-ID: <Z4fnIQ8YbTP_i0U9@l14>
-References: <20250115163542.291424-1-dwmw2@infradead.org>
- <20250115163542.291424-8-dwmw2@infradead.org>
+ (Exim 4.90_1) (envelope-from <akrowiak@linux.ibm.com>)
+ id 1tY6lK-0004cj-St; Wed, 15 Jan 2025 12:01:06 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50FGYWtB002063;
+ Wed, 15 Jan 2025 17:00:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=0ZZgPx
+ gFquZTcN46EiAokZobN9PdTLMPuJXd327rnt4=; b=gVGBsxTnFwpa+e8fvNQtkP
+ AWVv0UPA11E4IgpVrAN/V6M/yLrcxCoRmxVv6m670nveZPxyiKWQIBxQb1hlU9I+
+ v1kDIES2Xv+IQWf5Caz/WF9emG2dqE5xYwjkiOS/rjwkNwNyTANT17pg1mo7gjFS
+ 1KZnVk475a42Wzb4ISo7mPIE38DrCJXjyZMyTHmmF9T1hpKyH6gg+aWRLsNKrVRs
+ T7VCsoRy/ONin/XoDL5Rnf1x8Vh/yhzlvsdk28xYYOjgekes2opOjzJlsVGsNNVL
+ VQtVpt9F02J+iTS6WVq743oS7ugzUmTK4sWDtt178kTCGxB5L9H6adEgdfH/zcBA
+ ==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4465gbugks-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 15 Jan 2025 17:00:58 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50FE97p5016976;
+ Wed, 15 Jan 2025 17:00:57 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4444fk9bmm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 15 Jan 2025 17:00:57 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
+ [10.39.53.229])
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 50FH0ujx31589022
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 15 Jan 2025 17:00:56 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4C7925805E;
+ Wed, 15 Jan 2025 17:00:56 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2820F58058;
+ Wed, 15 Jan 2025 17:00:55 +0000 (GMT)
+Received: from [9.61.176.130] (unknown [9.61.176.130])
+ by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 15 Jan 2025 17:00:55 +0000 (GMT)
+Message-ID: <64671de6-f1c9-47df-997e-2cc15f7ff78c@linux.ibm.com>
+Date: Wed, 15 Jan 2025 12:00:54 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250115163542.291424-8-dwmw2@infradead.org>
-Received-SPF: pass client-ip=104.130.215.37;
- envelope-from=anthony@xenproject.org; helo=mail.xenproject.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/5] hw/vfio/ap: notification handler for AP config
+ changed event
+To: Rorie Reyes <rreyes@linux.ibm.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org
+Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
+ jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
+ alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com
+References: <20250107184354.91079-1-rreyes@linux.ibm.com>
+ <20250107184354.91079-3-rreyes@linux.ibm.com>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20250107184354.91079-3-rreyes@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: GYzvntiFUuB3P86PSUKCE1V9pVNe__Cj
+X-Proofpoint-ORIG-GUID: GYzvntiFUuB3P86PSUKCE1V9pVNe__Cj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-15_08,2025-01-15_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 spamscore=0
+ adultscore=0 mlxlogscore=999 phishscore=0 priorityscore=1501
+ suspectscore=0 bulkscore=0 malwarescore=0 impostorscore=0
+ lowpriorityscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2501150125
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=akrowiak@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=-1.793, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,53 +111,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 15, 2025 at 04:27:25PM +0000, David Woodhouse wrote:
-> diff --git a/hw/char/xen_console.c b/hw/char/xen_console.c
-> index e61902461b..9e7f6da343 100644
-> --- a/hw/char/xen_console.c
-> +++ b/hw/char/xen_console.c
-> @@ -581,19 +581,27 @@ static void xen_console_device_create(XenBackendInstance *backend,
->                         output);
->              goto fail;
->          }
-> -    } else if (number) {
-> -        cd = serial_hd(number);
-> -        if (!cd) {
-> -            error_prepend(errp, "console: No serial device #%ld found: ",
-> -                          number);
-> -            goto fail;
-> -        }
-> +    } else if (errno != ENOENT) {
-> +        error_prepend(errp, "console: No valid chardev found: ");
-> +        goto fail;
->      } else {
-> -        /* No 'output' node on primary console: use null. */
-> -        cd = qemu_chr_new(label, "null", NULL);
-> -        if (!cd) {
-> -            error_setg(errp, "console: failed to create null device");
-> -            goto fail;
-> +        if (errp) {
 
-I don't think you need this check, with ERRP_GUARD() macro `errp` is
-never NULL.
 
-> +            error_free(*errp);
 
-After this, I think you still need
-    *errp = NULL;
+On 1/7/25 1:43 PM, Rorie Reyes wrote:
+> Register an event notifier handler to process AP configuration
+> change events by queuing the event and generating a CRW to let
+> the guest know its AP configuration has changed
+>
+> Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
+> Reviewed-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+> Tested-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+> ---
+>   hw/vfio/ap.c | 27 +++++++++++++++++++++++++++
+>   1 file changed, 27 insertions(+)
+>
+> diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+> index 30b08ad375..533cadb2dd 100644
+> --- a/hw/vfio/ap.c
+> +++ b/hw/vfio/ap.c
+> @@ -18,6 +18,7 @@
+>   #include "hw/vfio/vfio-common.h"
+>   #include "system/iommufd.h"
+>   #include "hw/s390x/ap-device.h"
+> +#include "hw/s390x/css.h"
+>   #include "qemu/error-report.h"
+>   #include "qemu/event_notifier.h"
+>   #include "qemu/main-loop.h"
+> @@ -37,6 +38,7 @@ struct VFIOAPDevice {
+>       APDevice apdev;
+>       VFIODevice vdev;
+>       EventNotifier req_notifier;
+> +    EventNotifier cfg_notifier;
+>   };
+>   
+>   OBJECT_DECLARE_SIMPLE_TYPE(VFIOAPDevice, VFIO_AP_DEVICE)
+> @@ -70,6 +72,18 @@ static void vfio_ap_req_notifier_handler(void *opaque)
+>       }
+>   }
+>   
+> +static void vfio_ap_cfg_chg_notifier_handler(void *opaque)
+> +{
+> +    VFIOAPDevice *vapdev = opaque;
+> +
+> +    if (!event_notifier_test_and_clear(&vapdev->cfg_notifier)) {
+> +        warn_report("Event notifier not initialized");
+> +        return;
+> +    }
+> +
+> +    css_generate_css_crws(0);
+> +}
+> +
+>   static bool vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
+>                                             unsigned int irq, Error **errp)
+>   {
+> @@ -85,6 +99,10 @@ static bool vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
+>           notifier = &vapdev->req_notifier;
+>           fd_read = vfio_ap_req_notifier_handler;
+>           break;
+> +    case VFIO_AP_CFG_CHG_IRQ_INDEX:
+> +        notifier = &vapdev->cfg_notifier;
+> +        fd_read = vfio_ap_cfg_chg_notifier_handler;
+> +        break;
+>       default:
+>           error_setg(errp, "vfio: Unsupported device irq(%d)", irq);
+>           return false;
+> @@ -175,6 +193,15 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
+>           warn_report_err(err);
+>       }
 
-> +        }
-> +        if (number) {
-> +            cd = serial_hd(number);
-> +            if (!cd) {
-> +                error_setg(errp, "console: No serial device #%ld found: ",
+I missed this in my previous reviews; however, this needs a function to 
+unregister the
+VFIO_AP_CFG_CHG_IRQ_INDEX notifier.
 
-That error message doesn't need the ": " at the end anymore.
+>   
+> +    if (!vfio_ap_register_irq_notifier(vapdev, VFIO_AP_CFG_CHG_IRQ_INDEX, &err))
+> +    {
+> +        /*
+> +         * Report this error, but do not make it a failing condition.
+> +         * Lack of this IRQ in the host does not prevent normal operation.
+> +         */
+> +        warn_report_err(err);
+> +    }
+> +
+>       return;
+>   
+>   error:
 
-With those fixed: Reviewed-by: Anthony PERARD <anthony.perard@vates.tech>
-
-Cheers,
-
--- 
-Anthony PERARD
 
