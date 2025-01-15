@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5468EA12AB1
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 19:16:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D12B7A12AA6
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 19:14:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY7p7-0006PE-2p; Wed, 15 Jan 2025 13:09:01 -0500
+	id 1tY7p7-0006PZ-Kl; Wed, 15 Jan 2025 13:09:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7p2-0006OP-63
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:08:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7p6-0006P5-BJ
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:09:00 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7p0-0006Wn-NL
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:08:55 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7p4-0006XA-QR
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:09:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736964533;
+ s=mimecast20190719; t=1736964537;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=o8FUzP/ipOTW2ewlNfL+QvXOqY/FnUZooNamJ6cM0LY=;
- b=e9zMirwDLCHyuICV+ZjrCZ4fEUa2sxZYEEC0th4MvvJXCfLWESC3hRN977Eh3/8eZZPP0N
- ef/6LjXgfI4Rs2bH2lL9dBiBz5+jbb8aDErc+wBvJWVgA3WfDgzDrK2O9AWswsP8EB5bTX
- hmdj9HdZh7sxcm7FYLpDP4iNZ0ecbtY=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=53vmistltzrVou/xTWf8YxfnU3gKvkLoNxNSySUwMVU=;
+ b=DrOExO3MsJBCrbOEWm5hzxJV0BXv43VcNCXGnVaZfk/WzX6gPLuxPy/HAfAy9pJHZojcHI
+ xDzlQAwZcgGtl22VEODey4g+eSR4Y03eXtrlmQ/XksvTuFsY24LNVQ0oAujRmfCipqTrlG
+ LwfGQC5qNNnW2c0WCaSu2Rcov3jJ5u4=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-408-YuYkSA2DOHC4RkaqQfvfbw-1; Wed, 15 Jan 2025 13:08:52 -0500
-X-MC-Unique: YuYkSA2DOHC4RkaqQfvfbw-1
-X-Mimecast-MFC-AGG-ID: YuYkSA2DOHC4RkaqQfvfbw
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-436289a570eso32466685e9.0
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 10:08:52 -0800 (PST)
+ us-mta-127-UcXeNrBiMrGb3PHqZ_-l2A-1; Wed, 15 Jan 2025 13:08:55 -0500
+X-MC-Unique: UcXeNrBiMrGb3PHqZ_-l2A-1
+X-Mimecast-MFC-AGG-ID: UcXeNrBiMrGb3PHqZ_-l2A
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-385e2579507so36138f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 10:08:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736964530; x=1737569330;
+ d=1e100.net; s=20230601; t=1736964534; x=1737569334;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=o8FUzP/ipOTW2ewlNfL+QvXOqY/FnUZooNamJ6cM0LY=;
- b=BkuYBWFEaU0eAUZ6dw1BjSlOwjcFEP2vFB3r8LvLVK1xagZvT46H1yl/l+1qsWMyhW
- 3YDkhkpzyMBxrkpMhnuS6Z40qOHP4LTmQ3XM13ie+ntYbMk8FhMrBhk6MN/xBEjB5/Pr
- qercIw3LzEE08ZbbSEcplrZtldhwUFb+C3Q+58LYVPLUg83RT5OMnYtiUL+SmZesYaFL
- pWZMlo/l7meysp7yj4hExPlwAc0V+MPPHtAJfRKmJsEFiK6Q3FRKAy8FGXtYbW7iTHgZ
- /N5i3wWSg7EEK2VWsasEiSA3iI+Q02jB/ZuKVfTq8c9+WW/lkec+GWpZrs3HDO/vb7R9
- mBpw==
-X-Gm-Message-State: AOJu0YyJaTz9fUZkjdZDjiBEKvNsLhY4EVXDAZkXc9ha2LQme329j5fM
- lXFawpSeAWnB5cMiEEyNv8aUec6s4wFhZ+j+YpZG2gJez4g0XKaxOXObq7cZiOsNr2t3MqnCFLT
- 0MxkOdJZOEXRUnyNGjUz+0BI6uE98yse9qzPtCGzj1IzQmnT2r2tk+QIXG6XN4ertbuQ1LJOLRB
- urH3Hzlooj+9xewnum4hWp2FIk6knIvA==
-X-Gm-Gg: ASbGncu9mHgrE7t6sDuP1XeZuuIIddygxUWdUO9NQ70LHiXY5eljZgBO7Xl24enf6WS
- Zv0PlaK+xKROkUd+06E9cN0ZcM7rB5bcItKAOMrsR5FS4sCyxZXJJSv4G0gsC7avQZwpMFy+kyn
- FVtM2xiTaTtW4oNLsvsR5Ot913QYsW97dxdUvjNIiaJ2eB+J2WZxmddEfhSpZOkIxBDnB9UUSyS
- LSmHHBrQtqaQf5PFF/zr5gfIbK9gEEdWjHfcLJ1fBxKI2RDhuBZ
-X-Received: by 2002:a05:600c:450d:b0:434:a734:d279 with SMTP id
- 5b1f17b1804b1-436e26a8927mr346818355e9.16.1736964530607; 
- Wed, 15 Jan 2025 10:08:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH6sxC7X2XFgof1z74pcowgq7OTwbb8OZI96cM+j+2HZdcu6GORvYhO6QKL/FZ81UUNvDkRGw==
-X-Received: by 2002:a05:600c:450d:b0:434:a734:d279 with SMTP id
- 5b1f17b1804b1-436e26a8927mr346818005e9.16.1736964530188; 
- Wed, 15 Jan 2025 10:08:50 -0800 (PST)
+ bh=53vmistltzrVou/xTWf8YxfnU3gKvkLoNxNSySUwMVU=;
+ b=gZkkGtWboydNJwZ3Gh6slQMfG+FEOuse03HKkD9RbPYEKi8BiqDQl5J00gD/clOV5K
+ 5OfKhmFEEZnrkUBHQ+xJZrQ6izj4h67USlXLqF+wkDGEWyCNXQz8DnexlcRA2epn3Pqs
+ yYZHuhrrZ/OD9Q8K8D9oxqmxWW6Dn4xGcGqsHLEWTXpNeinUv9T5ndz8Zeub7aGOQxkX
+ Of3Ag/zJko7QG6ItDFelI7Awydx2MFr6oUpknZ/U9p3CFwxzY7HsvV/0xpxK8eeB4Bim
+ e/C3HevzXLqhZ55hWACus1WSZOI3RFmihvkr+s+QORoEH52XgNosYY9dEAainq7282V3
+ mhwA==
+X-Gm-Message-State: AOJu0Yw2Wojg0SNwnWGfwDktde47MxuQxdHw1nhZOjjtnztpEL6MSnyF
+ eUCPO/+ntpXr42gEfamRYBHgarr56+VKBVQrBgEoUfSbtsrdA9Tzhts24F0Q4VJV/+FAyhDrnmH
+ Qd3BkN04LBPGQcWfWNnQCWyMgSIwHVupeiVDvDhB+IZ2E3co62m8uDdvOu3AvMg1tTh7/wQM9kB
+ WCLpFRgzZh8RRYVk/O1jrTO5PdzW+UqQ==
+X-Gm-Gg: ASbGncs66kwpc65BVCCuSUMTEg8Zj7L8n/4IYKPYmU++8XP76Esje2W3oZAq6Jfk5qs
+ s3MEfp1DOEBAuedF+fTR21LzpPyH/9w4cNBSSkePlfMNjBx5z5y9L3PQw96r4eW9xdGOTvt7Nz8
+ QFgszzVLeEMBm9BKNhdF3yQT7CENuMLuWsB+oIYjURkCU5yL0OIyOLdJsk5/0XWUIJtLVLOUA1s
+ T08NSt97xnUMhNDAM2hV+vgoTixPV9l6zTHNJ8ta7R+zesEN5JV
+X-Received: by 2002:a05:6000:1847:b0:386:4a24:18f2 with SMTP id
+ ffacd0b85a97d-38a8730adf0mr30686485f8f.25.1736964533952; 
+ Wed, 15 Jan 2025 10:08:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHX2fYI7at9FIo8s3RZXuB0hggqKBz8NCyGGATLJaiO+fP75UQmOINK8D7DEooOYHQy9g18Pg==
+X-Received: by 2002:a05:6000:1847:b0:386:4a24:18f2 with SMTP id
+ ffacd0b85a97d-38a8730adf0mr30686453f8f.25.1736964533503; 
+ Wed, 15 Jan 2025 10:08:53 -0800 (PST)
 Received: from redhat.com ([2a0d:6fc7:342:db8c:4ec4:322b:a6a8:f411])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c74e59fasm32071025e9.34.2025.01.15.10.08.48
+ ffacd0b85a97d-38a8e37d085sm18563905f8f.13.2025.01.15.10.08.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Jan 2025 10:08:49 -0800 (PST)
-Date: Wed, 15 Jan 2025 13:08:47 -0500
+ Wed, 15 Jan 2025 10:08:52 -0800 (PST)
+Date: Wed, 15 Jan 2025 13:08:50 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>, Yi Liu <yi.l.liu@intel.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Yi Liu <yi.l.liu@intel.com>, Jason Wang <jasowang@redhat.com>,
  =?utf-8?Q?Cl=C3=A9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
- Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 07/48] intel_iommu: Make pasid entry type check accurate
-Message-ID: <b291dae33d1dab48670b86807a71cb1cbadf39aa.1736964488.git.mst@redhat.com>
+Subject: [PULL 08/48] intel_iommu: Add a placeholder variable for scalable
+ mode stage-1 translation
+Message-ID: <791346f93d2aa3b7eaebf4a12f4b7c558e94ff6b.1736964488.git.mst@redhat.com>
 References: <cover.1736964487.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -87,16 +89,16 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1736964487.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.793,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,53 +116,83 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-When guest configures Nested Translation(011b) or First-stage Translation only
-(001b), type check passed unaccurately.
+Add an new element flts in IntelIOMMUState to mark stage-1 translation support
+in scalable mode, this element will be exposed as an intel_iommu property
+x-flts finally.
 
-Fails the type check in those cases as their simulation isn't supported yet.
+For now, it's only a placehholder and used for address width compatibility
+check and block host device passthrough until nesting is supported.
 
-Fixes: fb43cf739e1 ("intel_iommu: scalable mode emulation")
-Suggested-by: Yi Liu <yi.l.liu@intel.com>
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 Reviewed-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
 Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20241212083757.605022-3-zhenzhong.duan@intel.com>
+Message-Id: <20241212083757.605022-4-zhenzhong.duan@intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/intel_iommu.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ include/hw/i386/intel_iommu.h |  1 +
+ hw/i386/intel_iommu.c         | 23 ++++++++++++++++++-----
+ 2 files changed, 19 insertions(+), 5 deletions(-)
 
+diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
+index d372cd396b..b19f3004f0 100644
+--- a/include/hw/i386/intel_iommu.h
++++ b/include/hw/i386/intel_iommu.h
+@@ -262,6 +262,7 @@ struct IntelIOMMUState {
+ 
+     bool caching_mode;              /* RO - is cap CM enabled? */
+     bool scalable_mode;             /* RO - is Scalable Mode supported? */
++    bool flts;                      /* RO - is stage-1 translation supported? */
+     bool snoop_control;             /* RO - is SNP filed supported? */
+ 
+     dma_addr_t root;                /* Current root table pointer */
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 0ab1676d5f..bd639b7ff7 100644
+index bd639b7ff7..d0c1d73974 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -759,20 +759,16 @@ static inline bool vtd_pe_type_check(X86IOMMUState *x86_iommu,
-                                      VTDPASIDEntry *pe)
- {
-     switch (VTD_PE_GET_TYPE(pe)) {
--    case VTD_SM_PASID_ENTRY_FLT:
-     case VTD_SM_PASID_ENTRY_SLT:
--    case VTD_SM_PASID_ENTRY_NESTED:
--        break;
-+        return true;
-     case VTD_SM_PASID_ENTRY_PT:
--        if (!x86_iommu->pt_supported) {
--            return false;
--        }
--        break;
-+        return x86_iommu->pt_supported;
-+    case VTD_SM_PASID_ENTRY_FLT:
-+    case VTD_SM_PASID_ENTRY_NESTED:
-     default:
-         /* Unknown type */
+@@ -3917,7 +3917,13 @@ static bool vtd_check_hiod(IntelIOMMUState *s, HostIOMMUDevice *hiod,
          return false;
      }
+ 
 -    return true;
++    if (!s->flts) {
++        /* All checks requested by VTD stage-2 translation pass */
++        return true;
++    }
++
++    error_setg(errp, "host device is uncompatible with stage-1 translation");
++    return false;
  }
  
- static inline bool vtd_pdire_present(VTDPASIDDirEntry *pdire)
+ static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
+@@ -4307,14 +4313,21 @@ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
+         }
+     }
+ 
+-    /* Currently only address widths supported are 39 and 48 bits */
+-    if ((s->aw_bits != VTD_HOST_AW_39BIT) &&
+-        (s->aw_bits != VTD_HOST_AW_48BIT)) {
+-        error_setg(errp, "Supported values for aw-bits are: %d, %d",
++    if (!s->flts && s->aw_bits != VTD_HOST_AW_39BIT &&
++        s->aw_bits != VTD_HOST_AW_48BIT) {
++        error_setg(errp, "%s: supported values for aw-bits are: %d, %d",
++                   s->scalable_mode ? "Scalable mode(flts=off)" : "Legacy mode",
+                    VTD_HOST_AW_39BIT, VTD_HOST_AW_48BIT);
+         return false;
+     }
+ 
++    if (s->flts && s->aw_bits != VTD_HOST_AW_48BIT) {
++        error_setg(errp,
++                   "Scalable mode(flts=on): supported value for aw-bits is: %d",
++                   VTD_HOST_AW_48BIT);
++        return false;
++    }
++
+     if (s->scalable_mode && !s->dma_drain) {
+         error_setg(errp, "Need to set dma_drain for scalable mode");
+         return false;
 -- 
 MST
 
