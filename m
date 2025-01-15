@@ -2,80 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19490A12AC0
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 19:19:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92407A12A91
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 19:12:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY7s9-000632-RS; Wed, 15 Jan 2025 13:12:09 -0500
+	id 1tY7qy-0008BP-Hw; Wed, 15 Jan 2025 13:10:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7pq-0006zg-8y
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:09:51 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7ps-0006zz-Ma
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:09:52 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7pn-0006fz-H7
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:09:45 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7pr-0006gM-3t
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:09:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736964582;
+ s=mimecast20190719; t=1736964586;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ag3nS8CSRSWzObDvb75VNRNg7yyr8lxnvn6CfDV/TZ4=;
- b=MgIyACh72iJo7lxm96PPggAFctgXZbqIjJ+420AJ3NuRw40bv5t174nuaJMYEDVRLCmUgG
- jxKMHcfL22y5GL+P/BYjspLbpVyNelmJsREZvl8JZmls2y9YlsGnW8t9PnC84yStq5qE90
- 8WiFhRhwqtOpFqbsmqWH98dmqM34c5g=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ETnhhwJ4AroiA4dDpka4gKiY7LenBhWoiTYTB5Wyngk=;
+ b=XH6j248wY8hUmWLYjDz8AhhKFQwQUTgY+5IDupFeyLiqY3HW5/VXkfGbZKb4UKj8y+ufEk
+ WqcvfymIYh6YCITmquaDg0fl0VVkYGly4C8O6A7N95W3i1N8PjA0KyXR0UhFHOQebNfoNY
+ m/DzOzpOGS8PNbwqTqXJtYp3Lpj/sGA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-622-XtLt5IrVNz-KDr0HD35U7w-1; Wed, 15 Jan 2025 13:09:41 -0500
-X-MC-Unique: XtLt5IrVNz-KDr0HD35U7w-1
-X-Mimecast-MFC-AGG-ID: XtLt5IrVNz-KDr0HD35U7w
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-43646b453bcso36825145e9.3
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 10:09:41 -0800 (PST)
+ us-mta-48-DPch8Q0-O0KZYBurOtnO7g-1; Wed, 15 Jan 2025 13:09:44 -0500
+X-MC-Unique: DPch8Q0-O0KZYBurOtnO7g-1
+X-Mimecast-MFC-AGG-ID: DPch8Q0-O0KZYBurOtnO7g
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-386333ea577so39088f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 10:09:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736964580; x=1737569380;
+ d=1e100.net; s=20230601; t=1736964583; x=1737569383;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ag3nS8CSRSWzObDvb75VNRNg7yyr8lxnvn6CfDV/TZ4=;
- b=VT9nOoOeFDdnX3YmdHbyqJKZfBsNfQTcO+tzG9pVfJyHI3oAYaK6ySVkg3w7cp2tBQ
- ynUASsCZ56DV9kPiW49164I1oA1W36M0WJ3igPOHdPMsiCObGiKkC0Dizb3jW77Vxxlv
- wZqer2JhQBnG2rIZlEbHI6+yS+1hslZF3n4wgaay4dQ86JU/wrmLK9T/zXJQsHG0eZ1P
- SIzv/qfP0HtG2HwtIg3YIvCzzdeQQtwk2+mjwgY/26tmBqnSDXDKSMGhiqxawy8PEImV
- CUcmC9q/DfJ83A6mab9Q43haZiiqaKIURpgETN98JFeoJ9O2jcx/Gj8D0EHCNErXq7Dz
- /0jA==
-X-Gm-Message-State: AOJu0YyoCtrXw7HDcq/7NQB58GSi/A+Of1VtbkiEMtWR6WCvX320DX+C
- J78dydefP6RATn5f2C6EcrIimAVzvX2KQi/TbJ8xlIO2Hh75HYCEEwAgRv5fucAVhgIXFtzB7YC
- v4p4NMIeJGYQI4TvlNr5hAPb5hhIF9jxJM07t60uUR71+9x5emIrbjKZfeQIQpGlq6LTcxFXhKr
- t6P3rL4g+tQvTw0Xff/21Is7wagCBjwQ==
-X-Gm-Gg: ASbGnctGhtQG4coLvsTlP+ncz0QLpK2+RcTJP7UKF2V7Eoyz44Qw8YXABQ6y9mb5Sub
- Y96jBHXO5r1qXVuOSBExLCwN7Hlj+hifmt5HA0zs34rtJO5eoUraLNMyxrbjQHEgCJCd1RyNU6e
- qFrEjAneWBCZ4TOb8doxb2BB8CPfuSJsbkC3SOVlKgOSKCjlL3oOo0Myq1bTXWRyVMC+UwHD83y
- j21YhF4reSisIIefAok9cmEANrTW/RdfJH/CLWL3Yfw+3uMKlep
-X-Received: by 2002:a05:600c:468a:b0:434:a968:89a3 with SMTP id
- 5b1f17b1804b1-436e26a78a5mr234939245e9.9.1736964579900; 
- Wed, 15 Jan 2025 10:09:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG1aZa0Ck+WEMB49/GhnZBuRGAB7VVFOIbhKJYK3EAUM5ujYSmPju3bAXwtFhZGKBqH4W08/A==
-X-Received: by 2002:a05:600c:468a:b0:434:a968:89a3 with SMTP id
- 5b1f17b1804b1-436e26a78a5mr234938975e9.9.1736964579486; 
- Wed, 15 Jan 2025 10:09:39 -0800 (PST)
+ bh=ETnhhwJ4AroiA4dDpka4gKiY7LenBhWoiTYTB5Wyngk=;
+ b=efoP+TLuKvb9AAmjv/JYM7wQCN4AQnwub9GD8Fv0MuZ17jCybT8Lmg+2VTk//kAfwo
+ DdWuVFNgGMvBCbm3hAazVbPq3wAK1pu4moXns3xcfCZcC55J23dEwmaRNlUhDDGEww8P
+ mf8VartF1heb3sR6Vfnnw7OIVuYDUYDpWgCJEoSks4l1MeTvzYzGg+osF00zaVvHBdB4
+ 2aPafVlVsRXubvL8N1jV6EQTbVyJWyn42rX0IGK2YPw767rFeQ0adY8aY5HiSd9jxyFq
+ VBkOnlGKX3o8LCcc7LcFZNr2rg3EPNhtnvzCjjmUMEps0Ww5VMMi4vod59saGsBwHeWl
+ Htuw==
+X-Gm-Message-State: AOJu0Yx7P5+K31TAkXn4bw4bNQ89/gvk4bdluUDQDLacGNjGhzR8i3eH
+ OW/j9xuYftG/vpayDaejZt6u5A5NNmgaU42S+90higb4DkWiL/sfmGr16r2+uh2TlznRuARt2vu
+ nH/DJk9UU60/gbfO5OGELIY6Q5UB4/VI8Y3MdeicURlh9N407yPYHkK2WveHT7n5DuO0RC9Z8xx
+ uUM2rMhZ4uec5k0yoNeS2UjPawv+5Rog==
+X-Gm-Gg: ASbGncu/rzNmK1fFlEOcH99hGAWrOBftvCChv+PTx3xFoOGKMe4Wa2WDCM7a65ILKMK
+ II0cqUiNGVqd8iQ3fYPU3AjSjA/+qCSzftxA1bhjbyUawkT6C/K/mVs4t3wdFAipvILQNV6hU6G
+ ZV2msRWUR2fkO39hEF3SJDFU07ByHFxG52rOYibj1zrtmr/DhEmxfxVESivCPbmNbzL9SNX+dS4
+ f9emgHx79L7fCpGZv/nOU4hdCQPC4G14wYlAnuoujtc+5UxbCxu
+X-Received: by 2002:adf:a108:0:b0:38a:88ac:ed10 with SMTP id
+ ffacd0b85a97d-38a88acedf9mr22371451f8f.25.1736964583237; 
+ Wed, 15 Jan 2025 10:09:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEvEpBYCLwLSaI0pWIX/41ba8W5NS9zsXJ3fcnlLOa/9SCF30PmW2rUDzr2AUVT4IZCXVjhJg==
+X-Received: by 2002:adf:a108:0:b0:38a:88ac:ed10 with SMTP id
+ ffacd0b85a97d-38a88acedf9mr22371416f8f.25.1736964582780; 
+ Wed, 15 Jan 2025 10:09:42 -0800 (PST)
 Received: from redhat.com ([2a0d:6fc7:342:db8c:4ec4:322b:a6a8:f411])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c753c617sm31454915e9.37.2025.01.15.10.09.37
+ 5b1f17b1804b1-437c74c475csm32200845e9.20.2025.01.15.10.09.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Jan 2025 10:09:38 -0800 (PST)
-Date: Wed, 15 Jan 2025 13:09:36 -0500
+ Wed, 15 Jan 2025 10:09:42 -0800 (PST)
+Date: Wed, 15 Jan 2025 13:09:39 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Jason Wang <jasowang@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
+ Yi Sun <yi.y.sun@linux.intel.com>,
  =?utf-8?Q?Cl=C3=A9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 22/48] tests/acpi: q35: Update host address width in DMAR
-Message-ID: <81ab964f21620db32558277f220eb0d803c14109.1736964488.git.mst@redhat.com>
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 23/48] intel_iommu: Introduce a property x-flts for stage-1
+ translation
+Message-ID: <aa68a9fbdb81c47c2a48a3199559df470c3d9eba.1736964488.git.mst@redhat.com>
 References: <cover.1736964487.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -111,78 +117,127 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Differences:
+Intel VT-d 3.0 introduces scalable mode, and it has a bunch of capabilities
+related to scalable mode translation, thus there are multiple combinations.
 
-@@ -1,39 +1,39 @@
- /*
-  * Intel ACPI Component Architecture
-  * AML/ASL+ Disassembler version 20200925 (64-bit version)
-  * Copyright (c) 2000 - 2020 Intel Corporation
-  *
-- * Disassembly of tests/data/acpi/x86/q35/DMAR.dmar, Mon Nov 11 15:31:18 2024
-+ * Disassembly of /tmp/aml-SPJ4W2, Mon Nov 11 15:31:18 2024
-  *
-  * ACPI Data Table [DMAR]
-  *
-  * Format: [HexOffset DecimalOffset ByteLength]  FieldName : FieldValue
-  */
+This vIOMMU implementation wants to simplify it with a new property "x-flts".
+When turned on in scalable mode, stage-1 translation is supported. When turned
+on in legacy mode, throw out error.
 
- [000h 0000   4]                    Signature : "DMAR"    [DMA Remapping table]
- [004h 0004   4]                 Table Length : 00000078
- [008h 0008   1]                     Revision : 01
--[009h 0009   1]                     Checksum : 15
-+[009h 0009   1]                     Checksum : 0C
- [00Ah 0010   6]                       Oem ID : "BOCHS "
- [010h 0016   8]                 Oem Table ID : "BXPC    "
- [018h 0024   4]                 Oem Revision : 00000001
- [01Ch 0028   4]              Asl Compiler ID : "BXPC"
- [020h 0032   4]        Asl Compiler Revision : 00000001
+With stage-1 translation support exposed to user, also accurate the pasid entry
+check in vtd_pe_type_check().
 
--[024h 0036   1]           Host Address Width : 26
-+[024h 0036   1]           Host Address Width : 2F
- [025h 0037   1]                        Flags : 01
- [026h 0038  10]                     Reserved : 00 00 00 00 00 00 00 00 00 00
-
- [030h 0048   2]                Subtable Type : 0000 [Hardware Unit Definition]
- [032h 0050   2]                       Length : 0040
-
- [034h 0052   1]                        Flags : 00
- [035h 0053   1]                     Reserved : 00
- [036h 0054   2]           PCI Segment Number : 0000
- [038h 0056   8]        Register Base Address : 00000000FED90000
-
- [040h 0064   1]            Device Scope Type : 03 [IOAPIC Device]
- [041h 0065   1]                 Entry Length : 08
- [042h 0066   2]                     Reserved : 0000
- [044h 0068   1]               Enumeration ID : 00
- [045h 0069   1]               PCI Bus Number : FF
-
+Suggested-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Acked-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
-Message-Id: <20241212083757.605022-18-zhenzhong.duan@intel.com>
+Reviewed-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
+Message-Id: <20241212083757.605022-19-zhenzhong.duan@intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h |   1 -
- tests/data/acpi/x86/q35/DMAR.dmar           | Bin 120 -> 120 bytes
- 2 files changed, 1 deletion(-)
+ hw/i386/intel_iommu_internal.h |  2 ++
+ hw/i386/intel_iommu.c          | 28 +++++++++++++++++++---------
+ 2 files changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index 46f80be9ca..dfb8523c8b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1,2 +1 @@
- /* List of comma-separated changed AML files to ignore */
--"tests/data/acpi/x86/q35/DMAR.dmar",
-diff --git a/tests/data/acpi/x86/q35/DMAR.dmar b/tests/data/acpi/x86/q35/DMAR.dmar
-index 0dca6e68ad8a8ca5b981bcfbc745385a63e9f216..0c05976715c6f2f6ec46ef6d37790f86a392b5ea 100644
-GIT binary patch
-delta 21
-ccmb=Z;BxVG460yYU|{5#$R)+7KT$Op05(qqk^lez
-
-delta 21
-ccmb=Z;BxVG460yYU|<xT$R)+7Hc>Sg05*ICk^lez
-
+diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
+index 2c977aa7da..e8b211e8b0 100644
+--- a/hw/i386/intel_iommu_internal.h
++++ b/hw/i386/intel_iommu_internal.h
+@@ -195,6 +195,7 @@
+ #define VTD_ECAP_PASID              (1ULL << 40)
+ #define VTD_ECAP_SMTS               (1ULL << 43)
+ #define VTD_ECAP_SLTS               (1ULL << 46)
++#define VTD_ECAP_FLTS               (1ULL << 47)
+ 
+ /* CAP_REG */
+ /* (offset >> 4) << 24 */
+@@ -211,6 +212,7 @@
+ #define VTD_CAP_SLLPS               ((1ULL << 34) | (1ULL << 35))
+ #define VTD_CAP_DRAIN_WRITE         (1ULL << 54)
+ #define VTD_CAP_DRAIN_READ          (1ULL << 55)
++#define VTD_CAP_FS1GP               (1ULL << 56)
+ #define VTD_CAP_DRAIN               (VTD_CAP_DRAIN_READ | VTD_CAP_DRAIN_WRITE)
+ #define VTD_CAP_CM                  (1ULL << 7)
+ #define VTD_PASID_ID_SHIFT          20
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index 7d4b99523d..0111186f7a 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -803,16 +803,18 @@ static inline bool vtd_is_fl_level_supported(IntelIOMMUState *s, uint32_t level)
+ }
+ 
+ /* Return true if check passed, otherwise false */
+-static inline bool vtd_pe_type_check(X86IOMMUState *x86_iommu,
+-                                     VTDPASIDEntry *pe)
++static inline bool vtd_pe_type_check(IntelIOMMUState *s, VTDPASIDEntry *pe)
+ {
+     switch (VTD_PE_GET_TYPE(pe)) {
+-    case VTD_SM_PASID_ENTRY_SLT:
+-        return true;
+-    case VTD_SM_PASID_ENTRY_PT:
+-        return x86_iommu->pt_supported;
+     case VTD_SM_PASID_ENTRY_FLT:
++        return !!(s->ecap & VTD_ECAP_FLTS);
++    case VTD_SM_PASID_ENTRY_SLT:
++        return !!(s->ecap & VTD_ECAP_SLTS);
+     case VTD_SM_PASID_ENTRY_NESTED:
++        /* Not support NESTED page table type yet */
++        return false;
++    case VTD_SM_PASID_ENTRY_PT:
++        return !!(s->ecap & VTD_ECAP_PT);
+     default:
+         /* Unknown type */
+         return false;
+@@ -861,7 +863,6 @@ static int vtd_get_pe_in_pasid_leaf_table(IntelIOMMUState *s,
+     uint8_t pgtt;
+     uint32_t index;
+     dma_addr_t entry_size;
+-    X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
+ 
+     index = VTD_PASID_TABLE_INDEX(pasid);
+     entry_size = VTD_PASID_ENTRY_SIZE;
+@@ -875,7 +876,7 @@ static int vtd_get_pe_in_pasid_leaf_table(IntelIOMMUState *s,
+     }
+ 
+     /* Do translation type check */
+-    if (!vtd_pe_type_check(x86_iommu, pe)) {
++    if (!vtd_pe_type_check(s, pe)) {
+         return -VTD_FR_PASID_TABLE_ENTRY_INV;
+     }
+ 
+@@ -3827,6 +3828,7 @@ static const Property vtd_properties[] = {
+                       VTD_HOST_ADDRESS_WIDTH),
+     DEFINE_PROP_BOOL("caching-mode", IntelIOMMUState, caching_mode, FALSE),
+     DEFINE_PROP_BOOL("x-scalable-mode", IntelIOMMUState, scalable_mode, FALSE),
++    DEFINE_PROP_BOOL("x-flts", IntelIOMMUState, flts, FALSE),
+     DEFINE_PROP_BOOL("snoop-control", IntelIOMMUState, snoop_control, false),
+     DEFINE_PROP_BOOL("x-pasid-mode", IntelIOMMUState, pasid, false),
+     DEFINE_PROP_BOOL("dma-drain", IntelIOMMUState, dma_drain, true),
+@@ -4557,7 +4559,10 @@ static void vtd_cap_init(IntelIOMMUState *s)
+     }
+ 
+     /* TODO: read cap/ecap from host to decide which cap to be exposed. */
+-    if (s->scalable_mode) {
++    if (s->flts) {
++        s->ecap |= VTD_ECAP_SMTS | VTD_ECAP_FLTS;
++        s->cap |= VTD_CAP_FS1GP;
++    } else if (s->scalable_mode) {
+         s->ecap |= VTD_ECAP_SMTS | VTD_ECAP_SRS | VTD_ECAP_SLTS;
+     }
+ 
+@@ -4736,6 +4741,11 @@ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
+         }
+     }
+ 
++    if (!s->scalable_mode && s->flts) {
++        error_setg(errp, "x-flts is only available in scalable mode");
++        return false;
++    }
++
+     if (!s->flts && s->aw_bits != VTD_HOST_AW_39BIT &&
+         s->aw_bits != VTD_HOST_AW_48BIT) {
+         error_setg(errp, "%s: supported values for aw-bits are: %d, %d",
 -- 
 MST
 
