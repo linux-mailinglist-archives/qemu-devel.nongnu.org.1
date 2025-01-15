@@ -2,91 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8E26A12985
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 18:12:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78871A12983
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 18:12:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY6vI-0008BH-OZ; Wed, 15 Jan 2025 12:11:20 -0500
+	id 1tY6uu-0007cL-PM; Wed, 15 Jan 2025 12:10:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tY6vE-0007xb-5t
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 12:11:16 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tY6vC-0006eH-OQ
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 12:11:15 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-436345cc17bso50455725e9.0
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 09:11:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736961073; x=1737565873; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=kOweRygtApOATxyfDtRFWpTcMZz+FkF5/nAzWV1Nj4A=;
- b=Al01Wlt8FmYtUEcZiX9EUSzXmO0AibwOPydsLTxq10135Zu5iquGBA0cvYcH/fcZB2
- /vwFiqM+2h7kcQI22GOBIIoumXECjoVSLdnewW14JT7JrP/59B4WGpCfmhzppGlLrlz1
- AxsGTsdXZffgFirM56fjQvgzCZNLcC2haOtQfh90BVpzE7OFHwnHzomyZ5sTmjSuOb0X
- +qy9J1kcEfRdg1M/2/j1bCPoP8lkqvph+b3Pm8GnPgUXmpDZs1fvk10RFHzcEwRZZ/s8
- tDxd8sfJt/WKwKnt9NyntgF8aFl8uKbDhLcIuI8MsqrRIX+XOt10QAlG+U4cbSNfOtfo
- vDHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736961073; x=1737565873;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=kOweRygtApOATxyfDtRFWpTcMZz+FkF5/nAzWV1Nj4A=;
- b=ME16nb+2EKRE+ADhqzoFZP1aZNscGZtfBE7w4ZO4EAOP9LAh1DWBdS+8JaKp/NkjOP
- IhlGSwUAJF1H48BwLvWTkqXVho4FN0FNpfHGQs8Dorg0smKqneLi4WKBZN6itLe/HTb2
- 6sRiLX75Tj0ZDRqE2acrJMVcUPtx8eJa1zwmQoE455uyA17pzbC5LnlDOH2bQLvAv3cH
- 2tVeEzUD9wwkyrT0lH9+CuWzFWyEF8cuNqBJMrfkYki2P8QlEERPdMLd8H1V6h4vb+mZ
- 0xKuFmi0uSOlsg60ZnHTWBpvFhoWESVsvx49E/KTMEBaFFSGDdpYXA+PEZOR1fmiYFki
- 8Fiw==
-X-Gm-Message-State: AOJu0YyYUicKbahHvwfZhoQ5/aNbgxaLt1n+yGd4mAA7LuYhIBSBDUeb
- yojQsOXyDK8vEfrAAo6aHbrx/aH/H/DjzC5hpqk6cumncyIEfSNXGjpmJqLW0irs6ubHpuXYFIZ
- u2HU=
-X-Gm-Gg: ASbGncsRzIY1Lkd1hERT8Js4RC0YBJH7k7NII/hTNJAMP+1AAtqXtn6ugf1QlD92fp9
- GHGwDonMH3u2MglAUgEb+IJD1ZrsKAWNRNut2IgvT52M2jR41MA4BMh9pNbWKk7K8sXo3+f/6BN
- Ei5k8WPwfm4R3ubadM3x1xJhfa8565/Pn5Wp0SO6xIPpH1W+SjwzsLWvjTH/L/8hOG1Q2DvnjNA
- mgEsOU80IF1yVbOUVxNHTyCVMCoGfqx+q881LhFVQdPipNv/gEp8/fbN3lSK4oCWTyDhI8LVjOP
- pgFDrOtS3Wc9Cqo4pe5TmDJXoe87eUp9X3QN
-X-Google-Smtp-Source: AGHT+IHygtNrtl0yKo3HXkXcDAd+L/glqB1lS78FqEMnUXMC0epOBXRkJcYcQDtP6B8DJUkT4H0p4w==
-X-Received: by 2002:a05:600c:3543:b0:434:f767:68ea with SMTP id
- 5b1f17b1804b1-436e2677c7dmr305800585e9.5.1736961073027; 
- Wed, 15 Jan 2025 09:11:13 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c7499502sm30038845e9.4.2025.01.15.09.11.12
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 15 Jan 2025 09:11:12 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Ani Sinha <anisinha@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Andrew Jones <ajones@ventanamicro.com>, qemu-arm@nongnu.org,
- Shannon Zhao <shannon.zhaosl@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 13/13] hw/arm/virt: Remove VirtMachineClass::no_highmem_ecam
- field
-Date: Wed, 15 Jan 2025 18:10:09 +0100
-Message-ID: <20250115171009.19302-14-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250115171009.19302-1-philmd@linaro.org>
-References: <20250115171009.19302-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
+ id 1tY6us-0007b0-P7
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 12:10:54 -0500
+Received: from kylie.crudebyte.com ([5.189.157.229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
+ id 1tY6uq-0006b3-JM
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 12:10:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+ Content-ID:Content-Description;
+ bh=HxYPVI0db+zJBEPZe30z7M0BE1l32v4jduW8lkTA9HQ=; b=jp/F3ey/0Ilzki/zFo41GbNZXK
+ VlijkZ9HOSeDdVqQ6cLM2P1pt9esr/44HYNa4E9pdp4v+RCgQx6pNNbPpDChZ/Pfi6I9B0VqubUMp
+ QzqEtMD+7k9z9QeZHxLyXbwZd0NDlKDi5nKh87QM3hhtrFyemjby7LqXogbw7fCoBVtIzEpi1O5sF
+ +Cjnjx7VqHI/iPC/8oyv/bNIk9r5hCsRUunWNBnZSql5eFoPHWwllBXoCa+/Ek16VsBHI04D6Lfq6
+ YDMCwyCWy5shbeze1ns6aPxbCczbozDfLe0KtRxJNQPk6Xr3+2asZK/2VDh+g3TDu1btqTN9UKZVv
+ yS2YLh2bHb08FhBJUT+/b5sBWAunCsr4ogqO67xHc5nog5+Je4B9KKivg5LsVc+ASop2JA8UmxyXj
+ gFtRwxi85G6FNLQWUAsiX52UdWG44Kf9Aj5ERT375r4m4QlyTqXf0hFMphX27uTwQK0Emuq8jjjY5
+ 7HeyE/cdb77Bpm6zm3iED2u0OdpHnq8qYGryusC1jGxOYX3kOtBN76KCCRTvM8zobrywmxlAtA8gL
+ 9bVg2lJXy+L6PGpJLMRrEuK5f7NT7XWtGK7fYj92udJ17pMEo0rqs7VE5RQM7T4a4Z5Cl5lY4TN7V
+ K6+D1AtOLKn9jWcOwVeW3XFPRJ7t7OuISlDU1Tx1U=;
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+To: Gerd Hoffmann <kraxel@redhat.com>,
+ Philippe =?ISO-8859-1?Q?Mathieu=2DDaud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: devel@daynix.com, Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: Re: [PATCH v3 1/2] coreaudio: Commit the result of init in the end
+Date: Wed, 15 Jan 2025 18:10:47 +0100
+Message-ID: <7790509.UIITUpbOhM@silver>
+In-Reply-To: <6383b75b-2dae-4777-a794-644d87b604fc@daynix.com>
+References: <20250115-coreaudio-v3-0-bdb6bcb5bf9f@daynix.com>
+ <2489919.FfEH3XSh6J@silver>
+ <6383b75b-2dae-4777-a794-644d87b604fc@daynix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Received-SPF: pass client-ip=5.189.157.229;
+ envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,42 +71,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The VirtMachineClass::no_highmem_ecam field was only
-used by virt-2.12 machine, which got removed. Remove it
-and simplify virt_instance_init().
+On Wednesday, January 15, 2025 4:37:28 PM CET Akihiko Odaki wrote:
+> On 2025/01/16 0:14, Christian Schoenebeck wrote:
+> > On Wednesday, January 15, 2025 1:06:55 PM CET Akihiko Odaki wrote:
+> >> init_out_device may only commit some part of the result and leave the
+> >> state inconsistent when it encounters an error. Commit the result in
+> >> the end of the function so that it commits the result iff it sees no
+> > 
+> > Typo "if".
+> 
+> I meant if and only if.
+> 
+> > 
+> >> error.
+> >>
+> >> With this change, handle_voice_change can rely on core->outputDeviceID
+> >> to know whether the output device is initialized after calling
+> >> init_out_device.
+> >>
+> >> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> >> ---
+> >>   audio/coreaudio.m | 49 +++++++++++++++++++++++++++----------------------
+> >>   1 file changed, 27 insertions(+), 22 deletions(-)
+> >>
+> >> diff --git a/audio/coreaudio.m b/audio/coreaudio.m
+> >> index cadd729d5053..b9e1a952ed37 100644
+> >> --- a/audio/coreaudio.m
+> >> +++ b/audio/coreaudio.m
+> >> @@ -355,7 +355,10 @@ static OSStatus audioDeviceIOProc(
+> >>   static OSStatus init_out_device(coreaudioVoiceOut *core)
+> >>   {
+> >>       OSStatus status;
+> >> +    AudioDeviceID deviceID;
+> > 
+> > I would probably preserve the name 'outputDeviceID' to make it more clear that
+> > it's for output.
+> 
+> I omitted output because this function is for the output device; every 
+> variable in this function is for output and prefixing them with output 
+> makes the code verbose.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/hw/arm/virt.h | 1 -
- hw/arm/virt.c         | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+Disagree. When you review audio driver code there are many 'devices', so it is
+helpful to see the context straight away. Especially on large functions like
+this one.
 
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index b2cc012a402..9a1b0f53d21 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -119,7 +119,6 @@ struct VirtMachineClass {
-     MachineClass parent;
-     bool no_tcg_its;
-     bool no_highmem_compact;
--    bool no_highmem_ecam;
-     bool no_ged;   /* Machines < 4.2 have no support for ACPI GED device */
-     bool kvm_no_adjvtime;
-     bool no_kvm_steal_time;
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index a607a66a198..4de5ce3c541 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -3267,7 +3267,7 @@ static void virt_instance_init(Object *obj)
-     vms->highmem_compact = !vmc->no_highmem_compact;
-     vms->gic_version = VIRT_GIC_VERSION_NOSEL;
- 
--    vms->highmem_ecam = !vmc->no_highmem_ecam;
-+    vms->highmem_ecam = true;
-     vms->highmem_mmio = true;
-     vms->highmem_redists = true;
- 
--- 
-2.47.1
+> > 
+> >>       AudioValueRange frameRange;
+> >> +    UInt32 audioDevicePropertyBufferFrameSize;
+> >> +    AudioDeviceIOProcID ioprocid;
+> >>   
+> >>       AudioStreamBasicDescription streamBasicDescription = {
+> >>           .mBitsPerChannel = core->hw.info.bits,
+> >> @@ -368,20 +371,19 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
+> >>           .mSampleRate = core->hw.info.freq
+> >>       };
+> >>   
+> >> -    status = coreaudio_get_voice(&core->outputDeviceID);
+> >> +    status = coreaudio_get_voice(&deviceID);
+> >>       if (status != kAudioHardwareNoError) {
+> >>           coreaudio_playback_logerr (status,
+> >>                                      "Could not get default output Device\n");
+> >>           return status;
+> >>       }
+> >> -    if (core->outputDeviceID == kAudioDeviceUnknown) {
+> >> +    if (deviceID == kAudioDeviceUnknown) {
+> >>           dolog ("Could not initialize playback - Unknown Audiodevice\n");
+> >>           return status;
+> >>       }
+> >>   
+> >>       /* get minimum and maximum buffer frame sizes */
+> >> -    status = coreaudio_get_framesizerange(core->outputDeviceID,
+> >> -                                          &frameRange);
+> >> +    status = coreaudio_get_framesizerange(deviceID, &frameRange);
+> >>       if (status == kAudioHardwareBadObjectError) {
+> >>           return 0;
+> >>       }
+> >> @@ -392,31 +394,31 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
+> >>       }
+> >>   
+> >>       if (frameRange.mMinimum > core->frameSizeSetting) {
+> >> -        core->audioDevicePropertyBufferFrameSize = (UInt32) frameRange.mMinimum;
+> >> +        audioDevicePropertyBufferFrameSize = (UInt32) frameRange.mMinimum;
+> >>           dolog ("warning: Upsizing Buffer Frames to %f\n", frameRange.mMinimum);
+> >>       } else if (frameRange.mMaximum < core->frameSizeSetting) {
+> >> -        core->audioDevicePropertyBufferFrameSize = (UInt32) frameRange.mMaximum;
+> >> +        audioDevicePropertyBufferFrameSize = (UInt32) frameRange.mMaximum;
+> >>           dolog ("warning: Downsizing Buffer Frames to %f\n", frameRange.mMaximum);
+> >>       } else {
+> >> -        core->audioDevicePropertyBufferFrameSize = core->frameSizeSetting;
+> >> +        audioDevicePropertyBufferFrameSize = core->frameSizeSetting;
+> >>       }
+> >>   
+> >>       /* set Buffer Frame Size */
+> >> -    status = coreaudio_set_framesize(core->outputDeviceID,
+> >> -                                     &core->audioDevicePropertyBufferFrameSize);
+> >> +    status = coreaudio_set_framesize(deviceID,
+> >> +                                     &audioDevicePropertyBufferFrameSize);
+> >>       if (status == kAudioHardwareBadObjectError) {
+> >>           return 0;
+> >>       }
+> >>       if (status != kAudioHardwareNoError) {
+> >>           coreaudio_playback_logerr (status,
+> >>                                       "Could not set device buffer frame size %" PRIu32 "\n",
+> >> -                                    (uint32_t)core->audioDevicePropertyBufferFrameSize);
+> >> +                                    (uint32_t)audioDevicePropertyBufferFrameSize);
+> > 
+> > 'audioDevicePropertyBufferFrameSize' is declared as UInt32, so I guess the
+> > cast can be dropped.
+> 
+> It had a cast even though core->audioDevicePropertyBufferFrameSize is 
+> also UInt32. I suspect there are some cases where uint32_t and UInt32 
+> are defined as different types and the compiler complains for "wrong" 
+> print format.
+
+This was introduced by cbc36cb05. While changing the format specifier made
+sense, the cast was unnecessary, but ... never mind.
+
+> > 
+> >>           return status;
+> >>       }
+> >>   
+> >>       /* get Buffer Frame Size */
+> >> -    status = coreaudio_get_framesize(core->outputDeviceID,
+> >> -                                     &core->audioDevicePropertyBufferFrameSize);
+> >> +    status = coreaudio_get_framesize(deviceID,
+> >> +                                     &audioDevicePropertyBufferFrameSize);
+> >>       if (status == kAudioHardwareBadObjectError) {
+> >>           return 0;
+> >>       }
+> >> @@ -425,11 +427,9 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
+> >>                                       "Could not get device buffer frame size\n");
+> >>           return status;
+> >>       }
+> >> -    core->hw.samples = core->bufferCount * core->audioDevicePropertyBufferFrameSize;
+> > 
+> > Are you sure this should be deferred to the end of the function?
+> 
+> Yes. Setting core->hw.samples only makes sense after 
+> AudioDeviceCreateIOProcID() succeeds, which starts generating samples 
+> according to the set value.
+
+OK, I just reviewed the pathes in this function that return zero, and realized
+that these were added by you (3ba6e3f6), however I don't see any comment on
+why you have treated them as returning as non-error cases there.
+
+In general I highly recommend to be more verbose on your changes. For instance
+for this patch here it would have helped to see a comment which error path
+exactly you encountered. Because it makes it more easy for other people to
+understand what you are trying to fix exactly.
+
+/Christian
+
 
 
