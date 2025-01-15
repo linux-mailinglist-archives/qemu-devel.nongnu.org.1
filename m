@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D6C6A11B1A
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 08:40:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 869AEA11B16
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 08:40:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXxzR-0005D6-Gr; Wed, 15 Jan 2025 02:39:01 -0500
+	id 1tXxzS-0005Db-DJ; Wed, 15 Jan 2025 02:39:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tXxzF-0005BB-DE
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 02:38:51 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tXxzL-0005C8-6X
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 02:38:56 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tXxzD-0007r0-B8
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 02:38:48 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tXxzH-0007rX-Lq
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 02:38:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736926725;
+ s=mimecast20190719; t=1736926731;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6mSwaRpbAuTYLJ2B90/k/hO71Lvficje9/134uhXQL0=;
- b=XutEJMagC+NyzVnnPz51vq0n9ONF51Qh/o2HmcYvlpoqgmdwA/+E//+ahbOWIeTdjBwnnE
- Ob1x7S5CFwZek+QJFTepK/3FwGY9iAEdFvENUewt+sncXxKP8qLtnyDdHzRlxv/bM9HsAJ
- davWqsNdE85c1lY/CjySuz8wWxcmX1E=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=R/s9ylzySq9LcwHOdmgaAwoeyJjP8KZiwu31E+GKARc=;
+ b=h/JKwl153yWGxkB+0bgPZAN77pfwi5RBDuv5JOtd6MiNiuB29mPQ1pssdfCwX6UyKFnqtk
+ PKYTz6AQjeg+HidZ5F6YIa0iB14G/YRzjTVSaJtZgApdqgVhQioisDYoYZgQzQQbVyY37g
+ jmc3pASuk4d4YgMv5DaxThOQLAO4YJc=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-564-Yrfvzwa3NSqq8fGcqpyFrw-1; Wed,
- 15 Jan 2025 02:38:40 -0500
-X-MC-Unique: Yrfvzwa3NSqq8fGcqpyFrw-1
-X-Mimecast-MFC-AGG-ID: Yrfvzwa3NSqq8fGcqpyFrw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-Izd_QJi6O-ugpDNG4F3bsQ-1; Wed,
+ 15 Jan 2025 02:38:46 -0500
+X-MC-Unique: Izd_QJi6O-ugpDNG4F3bsQ-1
+X-Mimecast-MFC-AGG-ID: Izd_QJi6O-ugpDNG4F3bsQ
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3B8D5195604F; Wed, 15 Jan 2025 07:38:39 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EBAFF1955DD0; Wed, 15 Jan 2025 07:38:43 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.143])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1EB9719560B7; Wed, 15 Jan 2025 07:38:35 +0000 (UTC)
+ id D1D0B195608A; Wed, 15 Jan 2025 07:38:39 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
  David Hildenbrand <david@redhat.com>
@@ -50,10 +50,10 @@ Cc: qemu-devel@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
  Eric Farman <farman@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 3/8] hw/s390x/s390-stattrib: Remove the old migration_enabled
+Subject: [PATCH 4/8] hw/intc/s390_flic: Remove the obsolete migration_enabled
  flag
-Date: Wed, 15 Jan 2025 08:38:14 +0100
-Message-ID: <20250115073819.15452-4-thuth@redhat.com>
+Date: Wed, 15 Jan 2025 08:38:15 +0100
+Message-ID: <20250115073819.15452-5-thuth@redhat.com>
 In-Reply-To: <20250115073819.15452-1-thuth@redhat.com>
 References: <20250115073819.15452-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -89,68 +89,65 @@ false are gone, we can remove it and the related code.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- include/hw/s390x/storage-attributes.h | 1 -
- hw/s390x/s390-stattrib-kvm.c          | 2 +-
- hw/s390x/s390-stattrib.c              | 7 +------
- 3 files changed, 2 insertions(+), 8 deletions(-)
+ include/hw/s390x/s390_flic.h |  1 -
+ hw/intc/s390_flic.c          | 14 --------------
+ 2 files changed, 15 deletions(-)
 
-diff --git a/include/hw/s390x/storage-attributes.h b/include/hw/s390x/storage-attributes.h
-index 8921a04d51..b5c6d8fa55 100644
---- a/include/hw/s390x/storage-attributes.h
-+++ b/include/hw/s390x/storage-attributes.h
-@@ -25,7 +25,6 @@ OBJECT_DECLARE_TYPE(S390StAttribState, S390StAttribClass, S390_STATTRIB)
- struct S390StAttribState {
-     DeviceState parent_obj;
-     uint64_t migration_cur_gfn;
+diff --git a/include/hw/s390x/s390_flic.h b/include/hw/s390x/s390_flic.h
+index 85016d5ccc..91edaaca40 100644
+--- a/include/hw/s390x/s390_flic.h
++++ b/include/hw/s390x/s390_flic.h
+@@ -42,7 +42,6 @@ OBJECT_DECLARE_TYPE(S390FLICState, S390FLICStateClass,
+ struct S390FLICState {
+     SysBusDevice parent_obj;
+     bool ais_supported;
 -    bool migration_enabled;
  };
  
  
-diff --git a/hw/s390x/s390-stattrib-kvm.c b/hw/s390x/s390-stattrib-kvm.c
-index 2a8e31718b..d0ff04364d 100644
---- a/hw/s390x/s390-stattrib-kvm.c
-+++ b/hw/s390x/s390-stattrib-kvm.c
-@@ -185,7 +185,7 @@ static long long kvm_s390_stattrib_get_dirtycount(S390StAttribState *sa)
- 
- static int kvm_s390_stattrib_get_active(S390StAttribState *sa)
- {
--    return kvm_s390_cmma_active() && sa->migration_enabled;
-+    return kvm_s390_cmma_active();
+diff --git a/hw/intc/s390_flic.c b/hw/intc/s390_flic.c
+index c20f4c1075..4fae023197 100644
+--- a/hw/intc/s390_flic.c
++++ b/hw/intc/s390_flic.c
+@@ -470,11 +470,6 @@ static void qemu_s390_flic_class_init(ObjectClass *oc, void *data)
+     fsc->inject_crw_mchk = qemu_s390_inject_crw_mchk;
  }
  
- static void kvm_s390_stattrib_class_init(ObjectClass *oc, void *data)
-diff --git a/hw/s390x/s390-stattrib.c b/hw/s390x/s390-stattrib.c
-index 8e07acbddc..d720f05cce 100644
---- a/hw/s390x/s390-stattrib.c
-+++ b/hw/s390x/s390-stattrib.c
-@@ -304,7 +304,7 @@ static int qemu_s390_set_migrationmode_stub(S390StAttribState *sa, bool value,
- 
- static int qemu_s390_get_active(S390StAttribState *sa)
- {
--    return sa->migration_enabled;
-+    return true;
- }
- 
- static void qemu_s390_stattrib_class_init(ObjectClass *oc, void *data)
-@@ -360,10 +360,6 @@ static void s390_stattrib_realize(DeviceState *dev, Error **errp)
-                          &savevm_s390_stattrib_handlers, dev);
- }
- 
--static const Property s390_stattrib_props[] = {
--    DEFINE_PROP_BOOL("migration-enabled", S390StAttribState, migration_enabled, true),
+-static const Property s390_flic_common_properties[] = {
+-    DEFINE_PROP_BOOL("migration-enabled", S390FLICState,
+-                     migration_enabled, true),
 -};
 -
- static void s390_stattrib_class_init(ObjectClass *oc, void *data)
+ static void s390_flic_common_realize(DeviceState *dev, Error **errp)
+ {
+     S390FLICState *fs = S390_FLIC_COMMON(dev);
+@@ -486,7 +481,6 @@ static void s390_flic_class_init(ObjectClass *oc, void *data)
  {
      DeviceClass *dc = DEVICE_CLASS(oc);
-@@ -371,7 +367,6 @@ static void s390_stattrib_class_init(ObjectClass *oc, void *data)
-     dc->hotpluggable = false;
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-     dc->realize = s390_stattrib_realize;
--    device_class_set_props(dc, s390_stattrib_props);
+ 
+-    device_class_set_props(dc, s390_flic_common_properties);
+     dc->realize = s390_flic_common_realize;
  }
  
- static void s390_stattrib_instance_init(Object *obj)
+@@ -515,18 +509,10 @@ static void qemu_s390_flic_register_types(void)
+ 
+ type_init(qemu_s390_flic_register_types)
+ 
+-static bool adapter_info_so_needed(void *opaque)
+-{
+-    S390FLICState *fs = s390_get_flic();
+-
+-    return fs->migration_enabled;
+-}
+-
+ const VMStateDescription vmstate_adapter_info_so = {
+     .name = "s390_adapter_info/summary_offset",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .needed = adapter_info_so_needed,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(summary_offset, AdapterInfo),
+         VMSTATE_END_OF_LIST()
 -- 
 2.47.1
 
