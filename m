@@ -2,61 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19BC5A12432
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 13:55:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CD6A12436
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 13:55:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY2sQ-0008Vq-3Y; Wed, 15 Jan 2025 07:52:06 -0500
+	id 1tY2uK-0005GC-BK; Wed, 15 Jan 2025 07:54:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tY2sJ-0008SC-2c; Wed, 15 Jan 2025 07:51:59 -0500
-Received: from nyc.source.kernel.org ([2604:1380:45d1:ec00::3])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1tY2uB-0004Tr-3J
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 07:53:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tY2sG-0006zD-K1; Wed, 15 Jan 2025 07:51:58 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 92013A41F36;
- Wed, 15 Jan 2025 12:50:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D80CC4CEDF;
- Wed, 15 Jan 2025 12:51:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1736945515;
- bh=xVlIA1ZBfx9UjaShX5trBrkyVh5DWAz9sUCHbHTMPHk=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=Ez+TasmlorDLtiE3xHdMvQyNqBQ9bEUBPw1D/lPvwZ6i9hMavx+dCQeD4k/+gQZ/0
- /EdF/Q/QhFP+3N/E7HNmevCo7xS0bU+CkX7TYNrp0gp0zsdubMHegpwofloNSyJW7i
- HtA6UpPisawcHNGfTi2jw0LlnLrGgpg6+cMOokpQSzt/KhzKpVUhckyLZvcsS5dZGV
- AmQv3V2lgM2lXy4WyqwTnIM6E1Yc2i+Pz4X5R3j+qEgYv2Lerq64/r1E50mnbMWFMj
- VqQ76DTvDBQ57y5xAhdZGWEPG42AJsoUJ6+0kGJ5SqofK6j2ThIRHZupxOtpbLEoT1
- i7sIA06EoxhYA==
-Date: Wed, 15 Jan 2025 13:51:49 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Shiju Jose
- <shiju.jose@huawei.com>, Ani Sinha <anisinha@redhat.com>, Dongjiu Geng
- <gengdongjiu1@gmail.com>, Igor Mammedov <imammedo@redhat.com>, Paolo
- Bonzini <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v6 00/16] Prepare GHES driver to support error injection
-Message-ID: <20250115135149.24d1f53f@foz.lan>
-In-Reply-To: <20250115060854-mutt-send-email-mst@kernel.org>
-References: <cover.1733561462.git.mchehab+huawei@kernel.org>
- <20250115060854-mutt-send-email-mst@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1tY2u8-0007BN-EN
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 07:53:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1736945630;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=QR2recj94CXxXW868WLXMz2gHMTs59hzapF3MWLD2w4=;
+ b=K+S6QK/bdRM7xVk8cb7ix4D3jOZ3r1P+tWnzanQfzLok1fQR3gE2L64yZ89EPWXVE5Q87b
+ 8dcKIh4+QIB0myUHy4K227p83naRZ5mbu/1hvUouO333kw3YHv6nebq0K0ZG2Kte+JE4PN
+ gF8d0Fa7TZ1XN49v3zxTfGo5Qg+/t1g=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-353-_srh7JIrMcOf7H-knY7i5w-1; Wed,
+ 15 Jan 2025 07:53:49 -0500
+X-MC-Unique: _srh7JIrMcOf7H-knY7i5w-1
+X-Mimecast-MFC-AGG-ID: _srh7JIrMcOf7H-knY7i5w
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A350A1955BDA
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 12:53:47 +0000 (UTC)
+Received: from dell-r430-03.lab.eng.brq2.redhat.com
+ (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 4096F19560AD; Wed, 15 Jan 2025 12:53:45 +0000 (UTC)
+From: Igor Mammedov <imammedo@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com,
+	anisinha@redhat.com
+Subject: [PATCH 0/3] workaround Windows always reading _DSM(func=7)
+Date: Wed, 15 Jan 2025 13:53:39 +0100
+Message-ID: <20250115125342.3883374-1-imammedo@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2604:1380:45d1:ec00::3;
- envelope-from=mchehab+huawei@kernel.org; helo=nyc.source.kernel.org
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,111 +82,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Em Wed, 15 Jan 2025 06:09:12 -0500
-"Michael S. Tsirkin" <mst@redhat.com> escreveu:
+subj causes PCI devices that do not have acpi-index assigned,
+having bogus 'PCI Label Id = 0'.
 
-> On Sat, Dec 07, 2024 at 09:54:06AM +0100, Mauro Carvalho Chehab wrote:
-> > Hi Michael,
-> > 
-> > Please ignore the patch series I sent yesterday:
-> > 	https://lore.kernel.org/qemu-devel/20241207093922.1efa02ec@foz.lan/T/#t
-> > 
-> > The git range was wrong, and it was supposed to be v6. This is the right one.
-> > It is based on the top of v9.2.0-rc3.
-> > 
-> > Could you please merge this series for ACPI stuff? All patches were already
-> > reviewed by Igor. The changes against v4 are just on some patch descriptions,
-> > plus the addition of Reviewed-by. No Code changes.
-> > 
-> > Thanks,
-> > Mauro  
-> 
-> 
-> Still waiting for a version with minor nits fixed.
+The later triggers another Windows bug that leads to guest hang
+in case of localized Windows versions [1].
 
-Just sent v7 addressing the minor nits on patch 9.
+Workaround is for QEMU to return invalid Package on _DSM(func=7) request
+if acpi-index is not configured, which makes Windows ignore returned value
+and not assign 'PCI Label Id'.
 
-> > -
-> > 
-> > During the development of a patch series meant to allow GHESv2 error injections,
-> > it was requested a change on how CPER offsets are calculated, by adding a new
-> > BIOS pointer and reworking the GHES logic. See:
-> > 
-> > https://lore.kernel.org/qemu-devel/cover.1726293808.git.mchehab+huawei@kernel.org/
-> > 
-> > Such change ended being a big patch, so several intermediate steps are needed,
-> > together with several cleanups and renames.
-> > 
-> > As agreed duing v10 review, I'll be splitting the big patch series into separate pull 
-> > requests, starting with the cleanup series. This is the first patch set, containing
-> > only such preparation patches.
-> > 
-> > The next series will contain the shift to use offsets from the location of the
-> > HEST table, together with a migration logic to make it compatible with 9.1.
-> > 
-> > ---
-> > 
-> > v5:
-> > - some changes at patches description and added some R-B;
-> > - no changes at the code.
-> > 
-> > v4:
-> > - merged a patch renaming the function which calculate offsets to:
-> >   get_hw_error_offsets(), to avoid the need of such change at the next
-> >   patch series;
-> > - removed a functional change at the logic which makes
-> >   the GHES record generation more generic;
-> > - a couple of trivial changes on patch descriptions and line break cleanups.
-> > 
-> > v3:
-> > - improved some patch descriptions;
-> > - some patches got reordered to better reflect the changes;
-> > - patch v2 08/15: acpi/ghes: Prepare to support multiple sources on ghes
-> >   was split on two patches. The first one is in this cleanup series:
-> >       acpi/ghes: Change ghes fill logic to work with only one source
-> >   contains just the simplification logic. The actual preparation will
-> >   be moved to this series:
-> >      https://lore.kernel.org/qemu-devel/cover.1727782588.git.mchehab+huawei@kernel.org/
-> > 
-> > v2: 
-> > - some indentation fixes;
-> > - some description improvements;
-> > - fixed a badly-solved merge conflict that ended renaming a parameter.
-> > 
-> > Mauro Carvalho Chehab (16):
-> >   acpi/ghes: get rid of ACPI_HEST_SRC_ID_RESERVED
-> >   acpi/ghes: simplify acpi_ghes_record_errors() code
-> >   acpi/ghes: simplify the per-arch caller to build HEST table
-> >   acpi/ghes: better handle source_id and notification
-> >   acpi/ghes: Fix acpi_ghes_record_errors() argument
-> >   acpi/ghes: Remove a duplicated out of bounds check
-> >   acpi/ghes: Change the type for source_id
-> >   acpi/ghes: don't check if physical_address is not zero
-> >   acpi/ghes: make the GHES record generation more generic
-> >   acpi/ghes: better name GHES memory error function
-> >   acpi/ghes: don't crash QEMU if ghes GED is not found
-> >   acpi/ghes: rename etc/hardware_error file macros
-> >   acpi/ghes: better name the offset of the hardware error firmware
-> >   acpi/ghes: move offset calculus to a separate function
-> >   acpi/ghes: Change ghes fill logic to work with only one source
-> >   docs: acpi_hest_ghes: fix documentation for CPER size
-> > 
-> >  docs/specs/acpi_hest_ghes.rst  |   6 +-
-> >  hw/acpi/generic_event_device.c |   4 +-
-> >  hw/acpi/ghes-stub.c            |   2 +-
-> >  hw/acpi/ghes.c                 | 259 +++++++++++++++++++--------------
-> >  hw/arm/virt-acpi-build.c       |   5 +-
-> >  include/hw/acpi/ghes.h         |  16 +-
-> >  target/arm/kvm.c               |   2 +-
-> >  7 files changed, 169 insertions(+), 125 deletions(-)
-> > 
-> > -- 
-> > 2.47.1
-> >   
-> 
+It should help [1] users to boot localized Windows variants as long as
+no PCI devices have acpi-index explicitly assigned.
 
+1) https://gitlab.com/qemu-project/qemu/-/issues/774 
 
+Igor Mammedov (3):
+  tests: acpi: whitelist expected blobs
+  pci: acpi: Windows 'PCI Label Id' bug workaround
+  tests: acpi: update expected blobs
 
-Thanks,
-Mauro
+ tests/qtest/bios-tables-test-allowed-diff.h   |  40 ++++++++++++++++++
+ hw/i386/acpi-build.c                          |  33 ++++++++++-----
+ tests/data/acpi/x86/pc/DSDT                   | Bin 8526 -> 8544 bytes
+ tests/data/acpi/x86/pc/DSDT.acpierst          | Bin 8437 -> 8455 bytes
+ tests/data/acpi/x86/pc/DSDT.acpihmat          | Bin 9851 -> 9869 bytes
+ tests/data/acpi/x86/pc/DSDT.bridge            | Bin 15397 -> 15415 bytes
+ tests/data/acpi/x86/pc/DSDT.cphp              | Bin 8990 -> 9008 bytes
+ tests/data/acpi/x86/pc/DSDT.dimmpxm           | Bin 10180 -> 10198 bytes
+ tests/data/acpi/x86/pc/DSDT.hpbridge          | Bin 8477 -> 8495 bytes
+ tests/data/acpi/x86/pc/DSDT.ipmikcs           | Bin 8598 -> 8616 bytes
+ tests/data/acpi/x86/pc/DSDT.memhp             | Bin 9885 -> 9903 bytes
+ tests/data/acpi/x86/pc/DSDT.nohpet            | Bin 8384 -> 8402 bytes
+ tests/data/acpi/x86/pc/DSDT.numamem           | Bin 8532 -> 8550 bytes
+ tests/data/acpi/x86/pc/DSDT.roothp            | Bin 12319 -> 12337 bytes
+ tests/data/acpi/x86/q35/DSDT                  | Bin 8355 -> 8373 bytes
+ tests/data/acpi/x86/q35/DSDT.acpierst         | Bin 8372 -> 8390 bytes
+ tests/data/acpi/x86/q35/DSDT.acpihmat         | Bin 9680 -> 9698 bytes
+ .../data/acpi/x86/q35/DSDT.acpihmat-generic-x | Bin 12565 -> 12583 bytes
+ .../acpi/x86/q35/DSDT.acpihmat-noinitiator    | Bin 8634 -> 8652 bytes
+ tests/data/acpi/x86/q35/DSDT.applesmc         | Bin 8401 -> 8419 bytes
+ tests/data/acpi/x86/q35/DSDT.bridge           | Bin 11968 -> 11986 bytes
+ tests/data/acpi/x86/q35/DSDT.core-count       | Bin 12913 -> 12931 bytes
+ tests/data/acpi/x86/q35/DSDT.core-count2      | Bin 33770 -> 33788 bytes
+ tests/data/acpi/x86/q35/DSDT.cphp             | Bin 8819 -> 8837 bytes
+ tests/data/acpi/x86/q35/DSDT.cxl              | Bin 13146 -> 13164 bytes
+ tests/data/acpi/x86/q35/DSDT.dimmpxm          | Bin 10009 -> 10027 bytes
+ tests/data/acpi/x86/q35/DSDT.ipmibt           | Bin 8430 -> 8448 bytes
+ tests/data/acpi/x86/q35/DSDT.ipmismbus        | Bin 8443 -> 8461 bytes
+ tests/data/acpi/x86/q35/DSDT.ivrs             | Bin 8372 -> 8390 bytes
+ tests/data/acpi/x86/q35/DSDT.memhp            | Bin 9714 -> 9732 bytes
+ tests/data/acpi/x86/q35/DSDT.mmio64           | Bin 9485 -> 9503 bytes
+ tests/data/acpi/x86/q35/DSDT.multi-bridge     | Bin 13208 -> 13226 bytes
+ tests/data/acpi/x86/q35/DSDT.nohpet           | Bin 8213 -> 8231 bytes
+ tests/data/acpi/x86/q35/DSDT.numamem          | Bin 8361 -> 8379 bytes
+ tests/data/acpi/x86/q35/DSDT.pvpanic-isa      | Bin 8456 -> 8474 bytes
+ tests/data/acpi/x86/q35/DSDT.thread-count     | Bin 12913 -> 12931 bytes
+ tests/data/acpi/x86/q35/DSDT.thread-count2    | Bin 33770 -> 33788 bytes
+ tests/data/acpi/x86/q35/DSDT.tis.tpm12        | Bin 8961 -> 8979 bytes
+ tests/data/acpi/x86/q35/DSDT.tis.tpm2         | Bin 8987 -> 9005 bytes
+ tests/data/acpi/x86/q35/DSDT.type4-count      | Bin 18589 -> 18607 bytes
+ tests/data/acpi/x86/q35/DSDT.viot             | Bin 14612 -> 14630 bytes
+ tests/data/acpi/x86/q35/DSDT.xapic            | Bin 35718 -> 35736 bytes
+ 42 files changed, 63 insertions(+), 10 deletions(-)
+
+-- 
+2.43.0
+
 
