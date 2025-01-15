@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D20A12978
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 18:11:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3253FA12981
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 18:12:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY6uf-0007OU-00; Wed, 15 Jan 2025 12:10:41 -0500
+	id 1tY6ul-0007RD-P5; Wed, 15 Jan 2025 12:10:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tY6uc-0007O7-Dj
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 12:10:38 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tY6uh-0007QV-C9
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 12:10:43 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tY6ua-0006Yk-Cl
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 12:10:38 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-436341f575fso74225935e9.1
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 09:10:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tY6uf-0006Za-Tl
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 12:10:43 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-38632b8ae71so42545f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 09:10:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736961034; x=1737565834; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736961040; x=1737565840; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZpQYY+dgdMviIpUml6KdhqzTGvxqX3W0VvYn2a5rV6U=;
- b=Ifu41O6QZhcpadZ39CgiSDcztnvchIZG5CgFd81aDO5YIc8SzlF7AzbRws8PZ11te5
- X6PuDdfnm9UTncq9JRsmUQFTXmTjmNgRTNgxf0zcMPb7cUfIFU272ZIi1hFXfWOMbNoR
- 1ggCetkCMVuv83y/5ilkaO4wWf626Dlmh7CaTHCxLFKjDnUjU1n9wNEY9jgvHMAlycDu
- i77WdYKNY1gkss1Y3B5MtBkyG7pR1TnUnrXJmDWqcv7B94mEyG0GNfPYb/sAR11jdzWT
- ywtYbxhq6PTqMJWRfmhL8kKoSvWiRGfsU2oFyHoLUMfWoXshwGMsa/0DzUmhXhapa2cK
- Skqw==
+ bh=KLyfo8A7IZIE7IOrZd9qH5+UHn+eynSluJZ+bRJ10/s=;
+ b=Y1mof02fdBTswiEUSGVm4FqMYLmwpohZLULN7oTQyFOWLHNQf8cLAweM231D0tyEwu
+ EjaqkvRH6ah4T4z/cFMPPsHGyzBBPwWcU79KHWW1hGojhAK8eqQQifggW8MT9oq+UKkp
+ cSHjqx1Zwlzxhd/l0zrzzYUpAIZBGNn6KWOIdhdD0XQ37g6MgQiOjISb8zAWe/tJeo/U
+ 6JYdTorirH3WDILqSEmYcRMA+O2CEVKd/xXIQBK8pRIeDioWC+1sQgsG+z+EXhPLvYHl
+ 9bMckJ6FS9pzgrHgJsK4btSXaZsN3XFT73sRMsDffNPmJddu47d0IJx5NNqFooVDvvBZ
+ uOMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736961034; x=1737565834;
+ d=1e100.net; s=20230601; t=1736961040; x=1737565840;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZpQYY+dgdMviIpUml6KdhqzTGvxqX3W0VvYn2a5rV6U=;
- b=NjRwu2mSuWRMvW+YLzd7SP2sVwj0eEVa3YOYgMkIDHMoANYXyQDjH3s0FTo3NgrH9x
- W+JCBA2j05WVsYtpQOO2zw4rWnx4JCtanMgbTly707P9WdsJeiMhqsECSmlUx55MDgwR
- Agz52JwuBBlxKxs3cUg1eHPrV0+LEIQ+1Tk6KH2UjbXEIPSiiS8rtyAUD2WjGbzwN3WE
- 5gd3ot5qrvILq51OGuvZe6VfPuOoAGak1QWaxhz56dqw58wT8X7gvMxs/wj/bDbKNIy3
- io2uMgpfmBx7T9pQ7LF29NvugyH4qlzWr6ZllzMqRMg0s7DLdI04Pom5vvhExML1YBay
- UJwQ==
-X-Gm-Message-State: AOJu0YwEtD9PC8iKpeX3BDYXWdKX1Dtj+h/z7FQ9iAj5dkos09KV9Wnf
- AN0lf1XtrH6Sd/vJtW0KWR9sbx8JrWrTEGGzzCAdZa3/34iKGF3fCU0MBDoSYBo4yaqLOyfra/c
- x+QQ=
-X-Gm-Gg: ASbGncupoUbCLS9OGoEyg8655GH0yaXB0NygEXKOeo/8JrGNDk5UnH3ln3zLIMTM4tf
- lqunk4b8m/tIBbYYm9fy65WjP1wijgAZlULnvxSvrRz4nmSlWBnFO9/omZpAi4emrlKSK1/It5j
- YkjGyUE4SOVSKAt16+nWQsZUihU/lYk6MSJuEiHfrdNV4A3BnWB9CQLbkzNylXUbdnypN5zirYD
- Y8AIwYPAzVCydzggrVMUZj5QZnBX4syKLCCTvkpRbPU7YtdRMF+PPBrGDbUj90+XsKdYmy4+rTG
- CurghKspXMPF6CE0XVIpMfzzQWet7Hgy/Mgq
-X-Google-Smtp-Source: AGHT+IHpWPvqjQwMeUSXZ98zby5MmvBkVROMrpWWhbVVWcttenbsUtuQjxj4Nd6K0F5i5WHPwBtMdg==
-X-Received: by 2002:a05:600c:a09:b0:434:f753:6012 with SMTP id
- 5b1f17b1804b1-436e26aa593mr307632195e9.17.1736961034507; 
- Wed, 15 Jan 2025 09:10:34 -0800 (PST)
+ bh=KLyfo8A7IZIE7IOrZd9qH5+UHn+eynSluJZ+bRJ10/s=;
+ b=r5+BzSzA2b4/bEfQzeFwy2og4uv45pj8NyfBHHmrVFGZTkU3cGRd3In8o7tyRJ2x4R
+ NjZgir9XzI8Rjue8s+b7l8meLVN/NxBgsqwabe1WP1ZOx+aLQ5LNkW43M3VHyy/kSCG7
+ r0IcdC82LnB9TJaIC6hkyTc2CSOWctrZb1Li3B6oIePfOeNwL7CizeMkT9nkGNbgf8lB
+ h9ryHMUqItr5eNOBur4dvnG2q9cUbVHY0WrWQ/EYDNQs4vpW0vAumfRQJon8jOKl8NZt
+ QFKOrRJM/kjn++nkgl7XvANEnNvt/aprmzlCw21wk3diCp0V03RkTvMgvb4LOdBFay8g
+ Vr1g==
+X-Gm-Message-State: AOJu0YwDZcOfmJcIM3G1PmnTgponFCcc0NTBIkykAY+X2HPwBlRRxyTx
+ yqC+kTdhUzjvkpA3QMhwpEGaWBBqpxsUE3jQWXPzLSrl0rhyJTpHdOH+1llpyjCd7sbYyiyVnrU
+ fmuY=
+X-Gm-Gg: ASbGncs1gITy66M10GhcSD6G3RzXHpdPcJNrhMTk51JviXUCXR8+JgwtnamiBiaBYQu
+ D3KfIf9KiudRjAc4UzkeV8Bcb6BXq4Z1ZZxGFcNS5H55mVS/iIBKZdDf8+C4gwU2U9B+0ssei47
+ siyxXD4iKBFJbhPzbSkX1gxYKYUImtbznUa0/ZESmljSTmV77eeC+8CpEDUU6ECqBHSKgBF+sHL
+ iJ7OTDKl0XoKg7nOs/oWsJgu2wC3DR1e/8YZQysNRn+Lp/6tOKori8gziyjvlsByKkFxyZWSyIN
+ PKEnzqTo+KCIKecvD0/PbkuWM7cUKgbs7V8q
+X-Google-Smtp-Source: AGHT+IEewz6G4VAcWkXSJWgHbrI3YcLVGLWnoWAclkHQ8MH9KvNFGDSsG0PllBaS1l2s+02bHlOhqg==
+X-Received: by 2002:a5d:64ed:0:b0:38a:4b8a:e477 with SMTP id
+ ffacd0b85a97d-38a87306a84mr28026807f8f.22.1736961039922; 
+ Wed, 15 Jan 2025 09:10:39 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c74f9ccasm29516495e9.39.2025.01.15.09.10.33
+ 5b1f17b1804b1-437c74995f6sm30405545e9.1.2025.01.15.09.10.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 15 Jan 2025 09:10:34 -0800 (PST)
+ Wed, 15 Jan 2025 09:10:39 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Ani Sinha <anisinha@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
@@ -68,17 +68,17 @@ Cc: Ani Sinha <anisinha@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Shannon Zhao <shannon.zhaosl@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 05/13] hw/arm/virt: Remove VirtMachineClass::no_its field
-Date: Wed, 15 Jan 2025 18:10:01 +0100
-Message-ID: <20250115171009.19302-6-philmd@linaro.org>
+Subject: [PATCH 06/13] hw/arm/virt: Remove deprecated virt-2.8 machine
+Date: Wed, 15 Jan 2025 18:10:02 +0100
+Message-ID: <20250115171009.19302-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250115171009.19302-1-philmd@linaro.org>
 References: <20250115171009.19302-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,87 +101,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The VirtMachineClass::no_its field was only used by
-virt-2.7 machine, which got removed. Remove it and
-simplify virt_instance_init() and virt_acpi_build().
+This machines has been supported for a period of more than 6 years.
+According to our versioned machine support policy (see commit
+ce80c4fa6ff "docs: document special exception for machine type
+deprecation & removal") it can now be removed.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/arm/virt.h    |  1 -
- hw/arm/virt-acpi-build.c |  5 ++---
- hw/arm/virt.c            | 16 ++++++----------
- 3 files changed, 8 insertions(+), 14 deletions(-)
+ docs/about/removed-features.rst |  4 ++--
+ hw/arm/virt.c                   | 13 -------------
+ 2 files changed, 2 insertions(+), 15 deletions(-)
 
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index 5d3b25509ff..463ac09615e 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -117,7 +117,6 @@ typedef enum VirtGICType {
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index 435f081d805..732ec2cd05d 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -1065,8 +1065,8 @@ for all machine types using the PXA2xx and OMAP2 SoCs. We are also
+ dropping the ``cheetah`` OMAP1 board, because we don't have any
+ test images for it and don't know of anybody who does.
  
- struct VirtMachineClass {
-     MachineClass parent;
--    bool no_its;
-     bool no_tcg_its;
-     bool claim_edge_triggered_timers;
-     bool smbios_old_sys_ver;
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index c9b13057a34..ccecea9e09b 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -670,7 +670,6 @@ static void
- build_madt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
- {
-     int i;
--    VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
-     const MemMapEntry *memmap = vms->memmap;
-     AcpiTable table = { .sig = "APIC", .rev = 4, .oem_id = vms->oem_id,
-                         .oem_table_id = vms->oem_table_id };
-@@ -741,7 +740,7 @@ build_madt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-                                           memmap[VIRT_HIGH_GIC_REDIST2].size);
-         }
+-Arm ``virt-2.6`` and ``virt-2.7`` (removed in 10.0)
+-'''''''''''''''''''''''''''''''''''''''''''''''''''
++Arm ``virt-2.6`` up to ``virt-2.8`` (removed in 10.0)
++'''''''''''''''''''''''''''''''''''''''''''''''''''''
+ These versioned machines have been supported for a period of more than 6 years.
  
--        if (its_class_name() && !vmc->no_its) {
-+        if (its_class_name()) {
-             /*
-              * ACPI spec, Revision 6.0 Errata A
-              * (original 6.0 definition has invalid Length)
-@@ -974,7 +973,7 @@ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
-                           vms->oem_table_id);
-     }
- 
--    if (its_class_name() && !vmc->no_its) {
-+    if (its_class_name()) {
-         acpi_add_table(table_offsets, tables_blob);
-         build_iort(tables_blob, tables->linker, vms);
-     }
+ linux-user mode CPUs
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 7747dae4dc7..d7a7cee79df 100644
+index d7a7cee79df..4ec94190769 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -3278,17 +3278,13 @@ static void virt_instance_init(Object *obj)
-     vms->highmem_mmio = true;
-     vms->highmem_redists = true;
- 
--    if (vmc->no_its) {
--        vms->its = false;
--    } else {
--        /* Default allows ITS instantiation */
--        vms->its = true;
-+    /* Default allows ITS instantiation */
-+    vms->its = true;
- 
--        if (vmc->no_tcg_its) {
--            vms->tcg_its = false;
--        } else {
--            vms->tcg_its = true;
--        }
-+    if (vmc->no_tcg_its) {
-+        vms->tcg_its = false;
-+    } else {
-+        vms->tcg_its = true;
-     }
- 
-     /* Default disallows iommu instantiation */
+@@ -3556,16 +3556,3 @@ static void virt_machine_2_9_options(MachineClass *mc)
+     compat_props_add(mc->compat_props, hw_compat_2_9, hw_compat_2_9_len);
+ }
+ DEFINE_VIRT_MACHINE(2, 9)
+-
+-static void virt_machine_2_8_options(MachineClass *mc)
+-{
+-    VirtMachineClass *vmc = VIRT_MACHINE_CLASS(OBJECT_CLASS(mc));
+-
+-    virt_machine_2_9_options(mc);
+-    compat_props_add(mc->compat_props, hw_compat_2_8, hw_compat_2_8_len);
+-    /* For 2.8 and earlier we falsely claimed in the DT that
+-     * our timers were edge-triggered, not level-triggered.
+-     */
+-    vmc->claim_edge_triggered_timers = true;
+-}
+-DEFINE_VIRT_MACHINE(2, 8)
 -- 
 2.47.1
 
