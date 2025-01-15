@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE89A12A77
+	by mail.lfdr.de (Postfix) with ESMTPS id B27A6A12A76
 	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 19:09:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY7op-0006JP-OJ; Wed, 15 Jan 2025 13:08:43 -0500
+	id 1tY7ow-0006Mo-2a; Wed, 15 Jan 2025 13:08:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7oo-0006JG-8Z
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:08:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7or-0006M1-Qr
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:08:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7ol-0006V9-UL
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:08:41 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7op-0006VI-ME
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:08:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736964518;
+ s=mimecast20190719; t=1736964521;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=J6zW/tI+F7p0x6goRAt5C2uJU7HPuN9SAqTiBTbnTho=;
- b=Laq/U5vRDVw4pQCyrUVnqUJukEjlJETIaaarWCfkyl2P0hsKTGnDN5Of03XfhTioFlcAhJ
- FDm8ON/tNGQFEJe1rAWXPN67awkykbS1siyQ/t8U4+awfLB61s3XMF24+I57q7qJSZGFgY
- PR84CB2ayKw9YJxxUbHK/tJDdJ53IxI=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=eDEb1jmCYlGsY9igpHDK8At5L72Z0Fy0/80IJEPSb0E=;
+ b=Af8kAWTavQM3rO/e4dRWDGrHx9alJ9qepXAc4XIyZn+dVkrmS7VS9c8jKGV5PPFK6ECjUc
+ ALJTRZWdgNG2cKwQdAr5figpQvU6YLcVCxBG/obuEeBAqMdo1lqBhHcEb+n1lKqRV28Pmc
+ da/nP9aGmOWH2aqEPwnHlfmWKw2kaeI=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-251-Q5go176UMyeaYCDL9LuoAw-1; Wed, 15 Jan 2025 13:08:36 -0500
-X-MC-Unique: Q5go176UMyeaYCDL9LuoAw-1
-X-Mimecast-MFC-AGG-ID: Q5go176UMyeaYCDL9LuoAw
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4361ecebc5bso36861405e9.1
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 10:08:36 -0800 (PST)
+ us-mta-630-bC_ToINANyGpMyksH5xzzw-1; Wed, 15 Jan 2025 13:08:39 -0500
+X-MC-Unique: bC_ToINANyGpMyksH5xzzw-1
+X-Mimecast-MFC-AGG-ID: bC_ToINANyGpMyksH5xzzw
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-436289a570eso32464695e9.0
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 10:08:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736964515; x=1737569315;
+ d=1e100.net; s=20230601; t=1736964518; x=1737569318;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=J6zW/tI+F7p0x6goRAt5C2uJU7HPuN9SAqTiBTbnTho=;
- b=dxHr3uIZ0J+FWkJflLtzhWYc2us7ZGPG6+gF3hZH/kzN5avPyXhmMncP5GgaEbrkkf
- /30NH0O44D8AW8YbAfEHX2YZDM4g2DUKgZEt1FVyfScJcaHwyJv/Qxx1BfeClngyWAMg
- xP7nDi704HCSqKXk6eoyaka5h/Mjp1FRukuWzv6MPUc0Lghe15oHVRQY0Nk0xUqbBH7h
- 1KPCt0GWgf3UGYA+fXiMrRBkdD+6iqCB7T5YNPcn0ycRCYElP6CrgY+BO+dmJBGsdIJq
- Xi22q4eiKv/5tlR5QGoxY96d24LXnd5bBHUNmndPNv2P9vzSdVcdqXbt/KfKBhS00Cv+
- qfyQ==
-X-Gm-Message-State: AOJu0Yx+ZN22Lu2xM7CYkuBxMgRJHYvZIuT3u/yyJf3uuyPmUvw0nHGZ
- KpNSO2B7FCFsOqhUeCmkaXZBc+vkqugKcZeZ2/udNZxBvFeFAGBojMvHAwQPk9PVJDwXpcCwM2B
- CrXqve9KmCObYSZBgM1o7cqteil+gPrzGV380teWZn4NfgcfdS8ZNaygGmN678Fi09QbxhQFfAR
- jAhe/O6XJm2vwdxeqzkyVM6bgv8YMxjA==
-X-Gm-Gg: ASbGncstlvkJy/V4hHA1nUiljOSX2rz3p+PhWedg/K6xavCWlVWg+DsCsFycJnlCR60
- 4BHwusjNIoxVMe1aarxc/eV0UwFMc2pSwc1c3IRbtIAeZn+o8qxoGnge3W8EbAwMcDqJXTHePUa
- sST+Usfhw8w6p9IvK4Dcqc5z3ibUa0KcdAqtV8ed4EalZ5STpKDIfjDCvrAUCf5D0XzzlNFD+IQ
- zGjkvUi6YxM0mQ9ImaDnRZ7jHY3ni2OvCqweRlNxWoBXa9wv/CZ
-X-Received: by 2002:a5d:5f85:0:b0:387:86cf:4e87 with SMTP id
- ffacd0b85a97d-38a872deb33mr27774461f8f.15.1736964515263; 
- Wed, 15 Jan 2025 10:08:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEkEdSlnyCI6GfyLWe8aYr6j8sU27WGhXY9nSoAfTgOoEkAxv8uLmqHuGImGuQOR/4iNrkrjw==
-X-Received: by 2002:a5d:5f85:0:b0:387:86cf:4e87 with SMTP id
- ffacd0b85a97d-38a872deb33mr27774423f8f.15.1736964514878; 
- Wed, 15 Jan 2025 10:08:34 -0800 (PST)
+ bh=eDEb1jmCYlGsY9igpHDK8At5L72Z0Fy0/80IJEPSb0E=;
+ b=F0Knr/d+SwdG48s45orEm+2buWNLMA+Nt/1b0mDDA165ZC4NDhSyy1Zw/Y8IyJeVE8
+ 794ysECAVfXPidPL0wdkXm81x2hInoUXFOCkkcspI3rfsC7T/LH6PMaa5jJrbMG8Pz7Q
+ c9Qei0r5iA0qRTsBglFSsUi6nmCSmX8OA4OarGdhwwpfQcW6o8e1DHTY3eBJmid7GT0H
+ TN7koVEKvOwoe0af9Q+pSjswuoyotisFmwkJHScsMbeb5niKFUCEFe/oNWJHkKfzRkKt
+ +CG7jPhBSP1P53uU5mhc991VtIFBJAvxZeeHSqMITu82aXQG5iNLK5R77fpQ5JE01YmQ
+ /Miw==
+X-Gm-Message-State: AOJu0Yx9X/+ooi8WT9iLcx14Yhp+kDeHidCTtv2XBXSUjJ0o66mxknQy
+ LzqCfzwBUWGLvNVMJ+z6DM3/RPM6beBRySa3IkHk7Vl6u5vP5Ga31UFtPQtVmDsd8SqavwD8Ryn
+ AQTRRzkzCFBXln1kEF8rAOLlXwnWHCGBCBpNURhHRsANerKaRd1W2pwG6QdvXhy/oyclxbKRuNr
+ +oDLN17wspDc8+VEr3DD9CgWOU93EVEg==
+X-Gm-Gg: ASbGncsrc3Te2ZVQ4J/zO1M+LHUNFNskWptltkwKh/dGMMlhJxfZ2PkDf0rpXkk812i
+ ft8UuDLA14YXk96sn7MklLRUPZXzgrw30tP/rRfBc28voHeNddhnKToYI0tuB3/Jh0giHgobf4b
+ T+iZjB53wVZ1QHLWjjuyvOx33RuzKRWSTBYyUlT8H8Io9hVtqRvc3GqoGMLM9qSI67ppjM/aJps
+ iKkNusT6HyQsQHgjutN7dr+M4o4JGH765To8FtgBSVYV+XvpKtG
+X-Received: by 2002:a05:600c:1e02:b0:434:f131:1e71 with SMTP id
+ 5b1f17b1804b1-436f04e048cmr205157085e9.8.1736964517997; 
+ Wed, 15 Jan 2025 10:08:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGErAs7BJq0grzq6CVsX59y15FOyD2Vvu/EOBUzx2FqIr0DwQCLG2wx+zOqn4xKFoK4buAq9w==
+X-Received: by 2002:a05:600c:1e02:b0:434:f131:1e71 with SMTP id
+ 5b1f17b1804b1-436f04e048cmr205156825e9.8.1736964517618; 
+ Wed, 15 Jan 2025 10:08:37 -0800 (PST)
 Received: from redhat.com ([2a0d:6fc7:342:db8c:4ec4:322b:a6a8:f411])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e383882sm18422257f8f.34.2025.01.15.10.08.33
+ ffacd0b85a97d-38a8e37d0b1sm18410878f8f.12.2025.01.15.10.08.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Jan 2025 10:08:34 -0800 (PST)
-Date: Wed, 15 Jan 2025 13:08:32 -0500
+ Wed, 15 Jan 2025 10:08:36 -0800 (PST)
+Date: Wed, 15 Jan 2025 13:08:35 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Sebastian Ott <sebott@redhat.com>, Zhenyu Zhang <zhenyzha@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 02/48] pci: ensure valid link status bits for downstream ports
-Message-ID: <694632fd44987cc4618612a38ad151047524a590.1736964488.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Eric Mackay <eric.mackay@oracle.com>,
+ Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 03/48] tests: acpi: whitelist expected blobs
+Message-ID: <e043be2290ffdd666ad2ab35d2341c137b21a3b4.1736964488.git.mst@redhat.com>
 References: <cover.1736964487.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -82,16 +81,16 @@ Content-Disposition: inline
 In-Reply-To: <cover.1736964487.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.793,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,64 +106,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sebastian Ott <sebott@redhat.com>
+From: Igor Mammedov <imammedo@redhat.com>
 
-PCI hotplug for downstream endpoints on arm fails because Linux'
-PCIe hotplug driver doesn't like the QEMU provided LNKSTA:
-
-  pcieport 0000:08:01.0: pciehp: Slot(2): Card present
-  pcieport 0000:08:01.0: pciehp: Slot(2): Link Up
-  pcieport 0000:08:01.0: pciehp: Slot(2): Cannot train link: status 0x2000
-
-There's 2 cases where LNKSTA isn't setup properly:
-* the downstream device has no express capability
-* max link width of the bridge is 0
-
-Move the sanity checks added via 88c869198aa63
-("pci: Sanity test minimum downstream LNKSTA") outside of the
-branch to make sure downstream ports always have a valid LNKSTA.
-
-Signed-off-by: Sebastian Ott <sebott@redhat.com>
-Tested-by: Zhenyu Zhang <zhenyzha@redhat.com>
-Message-Id: <20241203121928.14861-1-sebott@redhat.com>
-Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Message-Id: <20241210163945.3422623-2-imammedo@redhat.com>
+Tested-by: Eric Mackay <eric.mackay@oracle.com>
+Acked-by: Ani Sinha <anisinha@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/pci/pcie.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ tests/qtest/bios-tables-test-allowed-diff.h | 42 +++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-index 0b455c8654..1b12db6fa2 100644
---- a/hw/pci/pcie.c
-+++ b/hw/pci/pcie.c
-@@ -1113,18 +1113,22 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
-         if ((lnksta & PCI_EXP_LNKSTA_NLW) > (lnkcap & PCI_EXP_LNKCAP_MLW)) {
-             lnksta &= ~PCI_EXP_LNKSTA_NLW;
-             lnksta |= lnkcap & PCI_EXP_LNKCAP_MLW;
--        } else if (!(lnksta & PCI_EXP_LNKSTA_NLW)) {
--            lnksta |= QEMU_PCI_EXP_LNKSTA_NLW(QEMU_PCI_EXP_LNK_X1);
-         }
- 
-         if ((lnksta & PCI_EXP_LNKSTA_CLS) > (lnkcap & PCI_EXP_LNKCAP_SLS)) {
-             lnksta &= ~PCI_EXP_LNKSTA_CLS;
-             lnksta |= lnkcap & PCI_EXP_LNKCAP_SLS;
--        } else if (!(lnksta & PCI_EXP_LNKSTA_CLS)) {
--            lnksta |= QEMU_PCI_EXP_LNKSTA_CLS(QEMU_PCI_EXP_LNK_2_5GT);
-         }
-     }
- 
-+    if (!(lnksta & PCI_EXP_LNKSTA_NLW)) {
-+        lnksta |= QEMU_PCI_EXP_LNKSTA_NLW(QEMU_PCI_EXP_LNK_X1);
-+    }
-+
-+    if (!(lnksta & PCI_EXP_LNKSTA_CLS)) {
-+        lnksta |= QEMU_PCI_EXP_LNKSTA_CLS(QEMU_PCI_EXP_LNK_2_5GT);
-+    }
-+
-     pci_word_test_and_clear_mask(exp_cap + PCI_EXP_LNKSTA,
-                                  PCI_EXP_LNKSTA_CLS | PCI_EXP_LNKSTA_NLW);
-     pci_word_test_and_set_mask(exp_cap + PCI_EXP_LNKSTA, lnksta &
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..a1047913af 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,43 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/x86/pc/DSDT",
++"tests/data/acpi/x86/pc/DSDT.acpierst",
++"tests/data/acpi/x86/pc/DSDT.acpihmat",
++"tests/data/acpi/x86/pc/DSDT.bridge",
++"tests/data/acpi/x86/pc/DSDT.cphp",
++"tests/data/acpi/x86/pc/DSDT.dimmpxm",
++"tests/data/acpi/x86/pc/DSDT.hpbridge",
++"tests/data/acpi/x86/pc/DSDT.hpbrroot",
++"tests/data/acpi/x86/pc/DSDT.ipmikcs",
++"tests/data/acpi/x86/pc/DSDT.memhp",
++"tests/data/acpi/x86/pc/DSDT.nohpet",
++"tests/data/acpi/x86/pc/DSDT.numamem",
++"tests/data/acpi/x86/pc/DSDT.roothp",
++"tests/data/acpi/x86/q35/DSDT",
++"tests/data/acpi/x86/q35/DSDT.acpierst",
++"tests/data/acpi/x86/q35/DSDT.acpihmat",
++"tests/data/acpi/x86/q35/DSDT.acpihmat-generic-x",
++"tests/data/acpi/x86/q35/DSDT.acpihmat-noinitiator",
++"tests/data/acpi/x86/q35/DSDT.applesmc",
++"tests/data/acpi/x86/q35/DSDT.bridge",
++"tests/data/acpi/x86/q35/DSDT.core-count",
++"tests/data/acpi/x86/q35/DSDT.core-count2",
++"tests/data/acpi/x86/q35/DSDT.cphp",
++"tests/data/acpi/x86/q35/DSDT.cxl",
++"tests/data/acpi/x86/q35/DSDT.dimmpxm",
++"tests/data/acpi/x86/q35/DSDT.ipmibt",
++"tests/data/acpi/x86/q35/DSDT.ipmismbus",
++"tests/data/acpi/x86/q35/DSDT.ivrs",
++"tests/data/acpi/x86/q35/DSDT.memhp",
++"tests/data/acpi/x86/q35/DSDT.mmio64",
++"tests/data/acpi/x86/q35/DSDT.multi-bridge",
++"tests/data/acpi/x86/q35/DSDT.noacpihp",
++"tests/data/acpi/x86/q35/DSDT.nohpet",
++"tests/data/acpi/x86/q35/DSDT.numamem",
++"tests/data/acpi/x86/q35/DSDT.pvpanic-isa",
++"tests/data/acpi/x86/q35/DSDT.thread-count",
++"tests/data/acpi/x86/q35/DSDT.thread-count2",
++"tests/data/acpi/x86/q35/DSDT.tis.tpm12",
++"tests/data/acpi/x86/q35/DSDT.tis.tpm2",
++"tests/data/acpi/x86/q35/DSDT.type4-count",
++"tests/data/acpi/x86/q35/DSDT.viot",
++"tests/data/acpi/x86/q35/DSDT.xapic",
 -- 
 MST
 
