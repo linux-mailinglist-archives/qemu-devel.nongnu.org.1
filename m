@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD610A12B65
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 20:03:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A635A12B6E
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 20:04:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY8dY-0007G9-Sz; Wed, 15 Jan 2025 14:01:08 -0500
+	id 1tY8dY-0007Fv-6t; Wed, 15 Jan 2025 14:01:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tY8dU-0007ED-50
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 14:01:04 -0500
+ id 1tY8dT-0007E7-TZ
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 14:01:03 -0500
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tY8dS-0005bt-5z
+ id 1tY8dS-0005bw-7g
  for qemu-devel@nongnu.org; Wed, 15 Jan 2025 14:01:03 -0500
 Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50FHtkPP008408;
- Wed, 15 Jan 2025 19:00:59 GMT
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50FHtkoO008404;
+ Wed, 15 Jan 2025 19:01:00 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=bTbRZ0lOL1adHfUHHwrFkeZpGff4obp6NVKETfMxoIQ=; b=
- BJNxcEvKLLhc7tqHSY2DJwyzAMiq5uiNhK9OpiPa1l6VKgiyjws4UI7STPEhLCgy
- CIFUGmGa/8Pp+ONiS5jtrub3bN0y6ppEPdB8vqI9rtv2To83GkyhcOdPh8ZAhcKX
- JpokO4mPdZgWet0RWH+5AELeEAlbCeKxVEraGU8jgpu3cvDWc5BWBxSgiqrHfDMY
- 78Im3RSqnbSR7FiqxBFaWoszMsR3HUZ9ubgP0qBN72pik0qLlqHfHXGdDkT0pi1h
- 70T2zrBMuR9s+K05mkWHSi+iTQOsDRCy6AucZteuWyWQuTOdmAxBgb4DJr/42woW
- tj0TpsI+y+5kOi7E0mDe8g==
+ corp-2023-11-20; bh=+HadwAGdJ+iSEEMK4EvnnIajika603utvB3vpuYF8wc=; b=
+ LTRSNjQvLUIwCYBEzWiX823YLAFg7EeDJ8+EyBvGK1/YkR5p9J4wY5phfvagaXzL
+ 6QrGdnnkABmHTXRv4LN2nSNVxCMqb6VQPKfq8A6URkcDgCm3WlTJ8SsX683MaQ8J
+ v+r2dMSOsg911AgQlH97NB54CIlWIWBpWDiNFW4ntouIyelEIfc1jorcMmRHIJq6
+ uMnCNO4jq1V3rrgTUebb2+NkoOoIez3qg4s2x/MK6iCctTowY2jwT1sL/EzD6PEa
+ Y/WdWw9Yx1h7yXSAlq6o0/qyddcZB7wk4CFbbdnHH+t+g+c66Kz7GrO06BgM9rBB
+ BRUSMVVNzHuE4AlMwGUHCw==
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 443f2c0r1w-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 443f2c0r1y-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 15 Jan 2025 19:00:58 +0000 (GMT)
+ Wed, 15 Jan 2025 19:00:59 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 50FHcjZY034966; Wed, 15 Jan 2025 19:00:58 GMT
+ with ESMTP id 50FIWYUI034946; Wed, 15 Jan 2025 19:00:58 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 443f39ur35-1
+ 443f39ur3d-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 15 Jan 2025 19:00:57 +0000
+ Wed, 15 Jan 2025 19:00:58 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 50FJ0pe9016497;
- Wed, 15 Jan 2025 19:00:57 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 50FJ0peB016497;
+ Wed, 15 Jan 2025 19:00:58 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 443f39uqwr-9; Wed, 15 Jan 2025 19:00:57 +0000
+ ESMTP id 443f39uqwr-10; Wed, 15 Jan 2025 19:00:58 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,9 +62,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V7 08/24] physmem: preserve ram blocks for cpr
-Date: Wed, 15 Jan 2025 11:00:34 -0800
-Message-Id: <1736967650-129648-9-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V7 09/24] hostmem-memfd: preserve for cpr
+Date: Wed, 15 Jan 2025 11:00:35 -0800
+Message-Id: <1736967650-129648-10-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1736967650-129648-1-git-send-email-steven.sistare@oracle.com>
 References: <1736967650-129648-1-git-send-email-steven.sistare@oracle.com>
@@ -76,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  suspectscore=0 phishscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
  definitions=main-2501150138
-X-Proofpoint-ORIG-GUID: mhcTnEoiVv20Y5-m7xKJK64tzT97YvaH
-X-Proofpoint-GUID: mhcTnEoiVv20Y5-m7xKJK64tzT97YvaH
+X-Proofpoint-ORIG-GUID: bkJhyIq6sd5d4EjFtSg8Y1rk1ZbE8ewi
+X-Proofpoint-GUID: bkJhyIq6sd5d4EjFtSg8Y1rk1ZbE8ewi
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -103,132 +103,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Save the memfd for ramblocks in CPR state, along with a name that
-uniquely identifies it.  The block's idstr is not yet set, so it
-cannot be used for this purpose.  Find the saved memfd in new QEMU when
-creating a block.  If size of a resizable block is larger in new QEMU,
-extend it via the file_ram_alloc truncate parameter, and the extra space
-will be usable after a guest reset.
+Preserve memory-backend-memfd memory objects during cpr-transfer.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- system/physmem.c | 44 +++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 39 insertions(+), 5 deletions(-)
+ backends/hostmem-memfd.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/system/physmem.c b/system/physmem.c
-index cb80ce3..67c9db9 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -70,6 +70,7 @@
- 
- #include "qemu/pmem.h"
- 
+diff --git a/backends/hostmem-memfd.c b/backends/hostmem-memfd.c
+index 1672da9..85daa14 100644
+--- a/backends/hostmem-memfd.c
++++ b/backends/hostmem-memfd.c
+@@ -17,6 +17,7 @@
+ #include "qemu/module.h"
+ #include "qapi/error.h"
+ #include "qom/object.h"
 +#include "migration/cpr.h"
- #include "migration/vmstate.h"
  
- #include "qemu/range.h"
-@@ -1661,6 +1662,18 @@ void qemu_ram_unset_idstr(RAMBlock *block)
-     }
- }
+ OBJECT_DECLARE_SIMPLE_TYPE(HostMemoryBackendMemfd, MEMORY_BACKEND_MEMFD)
  
-+static char *cpr_name(MemoryRegion *mr)
-+{
-+    const char *mr_name = memory_region_name(mr);
-+    g_autofree char *id = mr->dev ? qdev_get_dev_path(mr->dev) : NULL;
-+
-+    if (id) {
-+        return g_strdup_printf("%s/%s", id, mr_name);
-+    } else {
-+        return g_strdup(mr_name);
-+    }
-+}
-+
- size_t qemu_ram_pagesize(RAMBlock *rb)
+@@ -33,15 +34,19 @@ static bool
+ memfd_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
  {
-     return rb->page_size;
-@@ -2080,15 +2093,25 @@ RAMBlock *qemu_ram_alloc_from_file(ram_addr_t size, MemoryRegion *mr,
-  * shared with another process if CPR is being used.  Use memfd if available
-  * because it has no size limits, else use POSIX shm.
-  */
--static int qemu_ram_get_shared_fd(const char *name, Error **errp)
-+static int qemu_ram_get_shared_fd(const char *name, bool *reused, Error **errp)
- {
--    int fd;
+     HostMemoryBackendMemfd *m = MEMORY_BACKEND_MEMFD(backend);
+-    g_autofree char *name = NULL;
++    g_autofree char *name = host_memory_backend_get_name(backend);
 +    int fd = cpr_find_fd(name, 0);
-+
+     uint32_t ram_flags;
+-    int fd;
+ 
+     if (!backend->size) {
+         error_setg(errp, "can't create backend with size 0");
+         return false;
+     }
+ 
 +    if (fd >= 0) {
-+        *reused = true;
-+        return fd;
++        goto have_fd;
 +    }
- 
-     if (qemu_memfd_check(0)) {
-         fd = qemu_memfd_create(name, 0, 0, 0, 0, errp);
-     } else {
-         fd = qemu_shm_alloc(0, errp);
-     }
 +
-+    if (fd >= 0) {
-+        cpr_save_fd(name, 0, fd);
-+    }
-+    *reused = false;
-     return fd;
- }
- #endif
-@@ -2118,8 +2141,9 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
-             ram_flags |= RAM_SHARED;
-         }
-         if (ram_flags & RAM_SHARED) {
--            const char *name = memory_region_name(mr);
--            int fd = qemu_ram_get_shared_fd(name, errp);
-+            bool reused;
-+            g_autofree char *name = cpr_name(mr);
-+            int fd = qemu_ram_get_shared_fd(name, &reused, errp);
- 
-             if (fd < 0) {
-                 return NULL;
-@@ -2133,9 +2157,14 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
-              * fd is not supported, but previous QEMU versions that called
-              * qemu_anon_ram_alloc for anonymous shared memory could have
-              * succeeded.  Quietly fail and fall back.
-+             *
-+             * After cpr-transfer, new QEMU could create a memory region
-+             * with a larger max size than old, so pass reused to grow the
-+             * region if necessary.  The extra space will be usable after a
-+             * guest reset.
-              */
-             new_block = qemu_ram_alloc_from_fd(size, max_size, resized, mr,
--                                               ram_flags, fd, 0, false, NULL);
-+                                               ram_flags, fd, 0, reused, NULL);
-             if (new_block) {
-                 trace_qemu_ram_alloc_shared(name, new_block->used_length,
-                                             new_block->max_length, fd,
-@@ -2143,6 +2172,7 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
-                 return new_block;
-             }
- 
-+            cpr_delete_fd(name, 0);
-             close(fd);
-             /* fall back to anon allocation */
-         }
-@@ -2221,6 +2251,8 @@ static void reclaim_ramblock(RAMBlock *block)
- 
- void qemu_ram_free(RAMBlock *block)
- {
-+    g_autofree char *name = NULL;
-+
-     if (!block) {
-         return;
+     fd = qemu_memfd_create(TYPE_MEMORY_BACKEND_MEMFD, backend->size,
+                            m->hugetlb, m->hugetlbsize, m->seal ?
+                            F_SEAL_GROW | F_SEAL_SHRINK | F_SEAL_SEAL : 0,
+@@ -49,9 +54,10 @@ memfd_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
+     if (fd == -1) {
+         return false;
      }
-@@ -2231,6 +2263,8 @@ void qemu_ram_free(RAMBlock *block)
-     }
++    cpr_save_fd(name, 0, fd);
  
-     qemu_mutex_lock_ramlist();
-+    name = cpr_name(block->mr);
-+    cpr_delete_fd(name, 0);
-     QLIST_REMOVE_RCU(block, next);
-     ram_list.mru_block = NULL;
-     /* Write list before version */
++have_fd:
+     backend->aligned = true;
+-    name = host_memory_backend_get_name(backend);
+     ram_flags = backend->share ? RAM_SHARED : RAM_PRIVATE;
+     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
+     ram_flags |= backend->guest_memfd ? RAM_GUEST_MEMFD : 0;
 -- 
 1.8.3.1
 
