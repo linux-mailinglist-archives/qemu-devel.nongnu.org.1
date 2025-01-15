@@ -2,87 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83FFA1256E
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 14:51:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C2D6A12573
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 14:52:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY3n8-00065c-Nn; Wed, 15 Jan 2025 08:50:42 -0500
+	id 1tY3mp-0005vc-Qp; Wed, 15 Jan 2025 08:50:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tY3n2-00063w-L6
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 08:50:37 -0500
-Received: from mail-oi1-x242.google.com ([2607:f8b0:4864:20::242])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tY3n0-0007tS-Tz
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 08:50:36 -0500
-Received: by mail-oi1-x242.google.com with SMTP id
- 5614622812f47-3eba5848ee4so1784214b6e.3
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 05:50:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1736949033; x=1737553833; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mNweTshZFgKWk8rKIiPuDmmq9oD0ful1jcMYNBMGKvA=;
- b=U1+SCdPzN92ZvuOC8ASMvAg7jkUP5vK0sB2dsZMvijUz0HP7FNvCBn3pu9cAilYSGc
- 7F4Zk7jfzZaSSXCdh4OpYPB4HqpYiqL1LUDHkbhG9wkPD3pHWiZg7IIuxAmDE0ynezkT
- aPyJNgRx5czk/TKtyhfovEDXUJNI4S9w1g4olfzbIz1Q8OcwkC55Lslb6VhX4Oq2U0gB
- xXVLf0T65E3CF8F/SCb44IpF8F2UBRv92BCJEEb00aXiqJFJdjgywThzfEsmD6Jwq1Bv
- 7Ypq5YlyusST9NkmjYRzgRcIF5OWEAqOpPcXJf9uillUYh/PTNQv5Cg5Xs2io2P+VZyD
- XBOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736949033; x=1737553833;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mNweTshZFgKWk8rKIiPuDmmq9oD0ful1jcMYNBMGKvA=;
- b=HYbv0+HYYf2+HArDGe+2JB5JfH7gyD45S9F4IdugQUXbQICKX0OrIRwxu/icoDNOCx
- rWkdQuioHpbwHhSFY+toOcARvGzlguLTXlRf1dbiJCMjQgCKUj3H5wwbQ9WEkQurdpsX
- bMe7LqqdTHIDwpGOe1W732OPvDdDn6tN0HWfUcrjB26hRiY+v52h1cgq3tDNRL9HJ158
- wU7ZucX6Ble68RjGVMSxBf236QzAxeWxoucXlo5aZPWPXzVH1cro6kLRkwQ9tgcEXlQc
- ocrT2I842HjbrpV1bayPw0CyzHLxDe7QpYI7KG8RrbVkuraQO1cBVfX1ErQNlbgz0+kb
- hHMw==
-X-Gm-Message-State: AOJu0Ywx7kd02JkVMr/6vdsuxq7VfNd+qczHWd71eePI+2MtunSl/0Be
- SM0d5FGABqQouRoVoz9BXwR+vuJJVxZfZ/M+2/Kq8ZNwtgucrplL7nZAfRdL10I4oo0LGyRgGT5
- ABOpD7w==
-X-Gm-Gg: ASbGncs4Th/YK5VOed7BYc8ExEcyCyti5+nDIO+CL5AEpOVhTqgItN3aKDEG8a6DQR7
- IljeATnfioHVHAuZ1sOSGdsnXbdQ7R78o3u/ZfNxLDJhCaD2JaEaunqSNAmNZW1DHtGwJCS0m9Z
- HxDwRch3VaA3TdykcFafWiu1TbviUWDXU+9CkD6IeumGaVzOSRobQHMa+6foYf4id/Mzikq8Myo
- cBn3kNnlaKB+IftDOO2Tt9ISek87tLB12d1aY+7p53bh1XXt2mcg6nHpns=
-X-Google-Smtp-Source: AGHT+IHy+H/gPhjCG043RtLz2g8d3phatJF0cSNze7FpoZXnlrbZ7N4SHWX9jPw70dl0ZIL21GGttw==
-X-Received: by 2002:a05:6808:1808:b0:3eb:5160:f859 with SMTP id
- 5614622812f47-3ef2ebb9771mr20358012b6e.9.1736949033535; 
- Wed, 15 Jan 2025 05:50:33 -0800 (PST)
-Received: from grind.. ([191.202.238.10]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3f0379eff69sm4952177b6e.41.2025.01.15.05.50.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Jan 2025 05:50:32 -0800 (PST)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v3 6/6] target/riscv: add RVA23S64 profile
-Date: Wed, 15 Jan 2025 10:49:57 -0300
-Message-ID: <20250115134957.2179085-7-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250115134957.2179085-1-dbarboza@ventanamicro.com>
-References: <20250115134957.2179085-1-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1tY3mn-0005v9-NU
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 08:50:21 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1tY3mj-0007qw-F3
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 08:50:21 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YY6lc4DgHz6LD3k;
+ Wed, 15 Jan 2025 21:48:28 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id C0FB1140257;
+ Wed, 15 Jan 2025 21:50:13 +0800 (CST)
+Received: from localhost (10.122.19.247) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 15 Jan
+ 2025 14:50:13 +0100
+Date: Wed, 15 Jan 2025 13:50:11 +0000
+To: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Fan Ni
+ <fan.ni@samsung.com>, "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>
+Subject: Re: [PATCH v2] hw/cxl: Fix msix_notify: Assertion `vector <
+ dev->msix_entries_nr`
+Message-ID: <20250115135011.000015f3@huawei.com>
+In-Reply-To: <20250115112214.0000550f@huawei.com>
+References: <20241213093602.3248246-1-lizhijian@fujitsu.com>
+ <20250110154432.000031b0@huawei.com>
+ <4d4a138f-4648-4733-933b-02cd8d934699@fujitsu.com>
+ <20250115112214.0000550f@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::242;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x242.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.122.19.247]
+X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -59
+X-Spam_score: -6.0
+X-Spam_bar: ------
+X-Spam_report: (-6.0 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=-1.793, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,112 +68,244 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add RVA23S64 as described in [1]. This profile inherits all mandatory
-extensions of RVA23U64 and RVA22S64, making it a child of both profiles.
+On Wed, 15 Jan 2025 11:22:14 +0000
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-A new "rva23s64" profile CPU is also added. This is the generated
-riscv,isa for it (taken via -M dumpdtb):
+> On Wed, 15 Jan 2025 07:48:59 +0000
+> "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com> wrote:
+> 
+> > On 10/01/2025 23:44, Jonathan Cameron wrote:  
+> > > On Fri, 13 Dec 2024 17:36:02 +0800
+> > > Li Zhijian <lizhijian@fujitsu.com> wrote:
+> > >     
+> > >> This assertion always happens when we sanitize the CXL memory device.
+> > >> $ echo 1 > /sys/bus/cxl/devices/mem0/security/sanitize
+> > >>
+> > >> It is incorrect to register an MSIX number beyond the device's capability.
+> > >>
+> > >> Expand the device's MSIX number and use the enum to maintain the *USED*
+> > >> and MAX MSIX number
+> > >>
+> > >> Fixes: 43efb0bfad2b ("hw/cxl/mbox: Wire up interrupts for background completion")
+> > >> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+> > >> ---
+> > >> V2: just increase msix number and add enum to maintainer their values #
+> > >> Jonathan    
+> > > 
+> > > Ah. Sorry I was unclear. Two patches please
+> > > 
+> > > 1. Make the number bigger to fix the bug. Only this one gets a fixes tag and
+> > >     is suitable for backporting.
+> > > 
+> > > 2. Add an enum including all numbers currently used and use that throughout the
+> > >     type3 related code. That will prevent use accidentally introducing the
+> > >     bug in future but doesn't need to be backported.
+> > >       
+> > 
+> > Understood, it make sense.
+> > 
+> > 
+> >   
+> > > A few other comments inline.
+> > > 
+> > > Thanks
+> > > 
+> > > Jonathan
+> > >     
+> > >> ---
+> > >>   hw/cxl/cxl-device-utils.c   |  6 ++----
+> > >>   hw/mem/cxl_type3.c          | 10 +++++-----
+> > >>   include/hw/cxl/cxl_device.h |  7 +++++++
+> > >>   3 files changed, 14 insertions(+), 9 deletions(-)
+> > >>
+> > >> diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
+> > >> index 035d034f6d..bc2171e3d4 100644
+> > >> --- a/hw/cxl/cxl-device-utils.c
+> > >> +++ b/hw/cxl/cxl-device-utils.c
+> > >> @@ -354,8 +354,6 @@ static void device_reg_init_common(CXLDeviceState *cxl_dstate)
+> > >>   
+> > >>   static void mailbox_reg_init_common(CXLDeviceState *cxl_dstate)
+> > >>   {
+> > >> -    const uint8_t msi_n = 9;
+> > >> -
+> > >>       /* 2048 payload size */
+> > >>       ARRAY_FIELD_DP32(cxl_dstate->mbox_reg_state32, CXL_DEV_MAILBOX_CAP,
+> > >>                        PAYLOAD_SIZE, CXL_MAILBOX_PAYLOAD_SHIFT);
+> > >> @@ -364,8 +362,8 @@ static void mailbox_reg_init_common(CXLDeviceState *cxl_dstate)
+> > >>       ARRAY_FIELD_DP32(cxl_dstate->mbox_reg_state32, CXL_DEV_MAILBOX_CAP,
+> > >>                        BG_INT_CAP, 1);
+> > >>       ARRAY_FIELD_DP32(cxl_dstate->mbox_reg_state32, CXL_DEV_MAILBOX_CAP,
+> > >> -                     MSI_N, msi_n);
+> > >> -    cxl_dstate->mbox_msi_n = msi_n;
+> > >> +                     MSI_N, CXL_MSIX_MBOX);    
+> > > 
+> > > Should be passed in from the type 3 specific call so add a parameter to this
+> > > function and pass this from cxl_device_register_init_t3.
+> > > Even better pass it into there from ct3d_reset()
+> > >     
+> > 
+> > At a glance, `ct3d_reset()` has the following prototype: `typedef void (*DeviceReset)(DeviceState *dev)`,
+> > which is inherited from the QEMU device framework. Consequently, it is hard to extend `ct3d_reset()`
+> > to include an additional parameter.  
+> 
+> I wasn't clear in that statement.   ct3d_reset() calls cxl_device_register_init_t3(). Change
+> the signature of cxl_device_register_init_t3() so that takes the appropriate MSI index.
+> that puts the source of the information in the cxl_type3.c code, not the core support in hw / CXL.
+> No change to ct3d_reset() signature needed.
+> 
+> > 
+> > 
+> >   
+> > > Will potentially be a different number for the switch CCI passed in from
+> > > the call of cxl_device_register_init_swcci() in switch-mailbox-cci.c    
+> > 
+> > It sounds reasonable, offering a more flexible design for the future.
+> > 
+> > Currently, mailbox_reg_init_common() will be called from type3 device and swcci,
+> > however, I didn't see any where the swcci itself have setup the msi/msix at all.
+> > 
+> > Is this expected, feel free to let me know if I'm missing something.  
+> Currently that is in cxl_device_register_init_swcci() via
+> mailbox_reg_init_common()
+> Suggestion is to like the above type 3 case move it into the specific driver
+> by having cxl_device_register_init_swcci() take it as a parameter and
+> pass that in from cswmbcci_reset() in switch-mailbox-cci.c
 
-rv64imafdcbvh_zic64b_zicbom_zicbop_zicboz_ziccamoa_ziccif_zicclsm_
-ziccrse_zicond_zicntr_zicsr_zifencei_zihintntl_zihintpause_zihpm_zimop_
-zmmul_za64rs_zaamo_zalrsc_zawrs_zfa_zfhmin_zca_zcb_zcd_zcmop_zba_zbb_zbs_
-zkt_zvbb_zve32f_zve32x_zve64f_zve64d_zve64x_zvfhmin_zvkb_zvkt_shcounterenw_
-sha_shgatpa_shtvala_shvsatpa_shvstvala_shvstvecd_smnpm_smstateen_ssccptr_
-sscofpmf_sscounterenw_ssnpm_ssstateen_sstc_sstvala_sstvecd_ssu64xl_
-supm_svade_svinval_svnapot_svpbmt
+Ah.  I now see what you mean - no msix bar setup.
+I guess the switch cci support has accidentally been falling back to polled mode.  
+That needs fixing but is a separate issue.
 
-[1] https://github.com/riscv/riscv-profiles/blob/main/src/rva23-profile.adoc
+Jonathan
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- target/riscv/cpu-qom.h |  1 +
- target/riscv/cpu.c     | 39 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 40 insertions(+)
-
-diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-index 53ead481a9..4cfdb74891 100644
---- a/target/riscv/cpu-qom.h
-+++ b/target/riscv/cpu-qom.h
-@@ -41,6 +41,7 @@
- #define TYPE_RISCV_CPU_RVA22U64         RISCV_CPU_TYPE_NAME("rva22u64")
- #define TYPE_RISCV_CPU_RVA22S64         RISCV_CPU_TYPE_NAME("rva22s64")
- #define TYPE_RISCV_CPU_RVA23U64         RISCV_CPU_TYPE_NAME("rva23u64")
-+#define TYPE_RISCV_CPU_RVA23S64         RISCV_CPU_TYPE_NAME("rva23s64")
- #define TYPE_RISCV_CPU_IBEX             RISCV_CPU_TYPE_NAME("lowrisc-ibex")
- #define TYPE_RISCV_CPU_SHAKTI_C         RISCV_CPU_TYPE_NAME("shakti-c")
- #define TYPE_RISCV_CPU_SIFIVE_E31       RISCV_CPU_TYPE_NAME("sifive-e31")
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 761da41e53..50e65932f6 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -2421,10 +2421,41 @@ static RISCVCPUProfile RVA23U64 = {
-     }
- };
- 
-+/*
-+ * As with RVA23U64, RVA23S64 also defines 'named features'.
-+ *
-+ * Cache related features that we consider enabled since we don't
-+ * implement cache: Ssccptr
-+ *
-+ * Other named features that we already implement: Sstvecd, Sstvala,
-+ * Sscounterenw, Ssu64xl
-+ *
-+ * The remaining features/extensions comes from RVA23U64.
-+ */
-+static RISCVCPUProfile RVA23S64 = {
-+    .u_parent = &RVA23U64,
-+    .s_parent = &RVA22S64,
-+    .name = "rva23s64",
-+    .misa_ext = RVS,
-+    .priv_spec = PRIV_VERSION_1_13_0,
-+    .satp_mode = VM_1_10_SV39,
-+    .ext_offsets = {
-+        /* New in RVA23S64 */
-+        CPU_CFG_OFFSET(ext_svnapot), CPU_CFG_OFFSET(ext_sstc),
-+        CPU_CFG_OFFSET(ext_sscofpmf), CPU_CFG_OFFSET(ext_ssnpm),
-+
-+        /* Named features: Sha */
-+        CPU_CFG_OFFSET(ext_sha),
-+
-+        RISCV_PROFILE_EXT_LIST_END
-+    }
-+};
-+
- RISCVCPUProfile *riscv_profiles[] = {
-     &RVA22U64,
-     &RVA22S64,
-     &RVA23U64,
-+    &RVA23S64,
-     NULL,
- };
- 
-@@ -2918,6 +2949,13 @@ static void rva23u64_profile_cpu_init(Object *obj)
- 
-     RVA23U64.enabled = true;
- }
-+
-+static void rva23s64_profile_cpu_init(Object *obj)
-+{
-+    rv64i_bare_cpu_init(obj);
-+
-+    RVA23S64.enabled = true;
-+}
- #endif
- 
- static const gchar *riscv_gdb_arch_name(CPUState *cs)
-@@ -3198,6 +3236,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-     DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22U64,  MXL_RV64,  rva22u64_profile_cpu_init),
-     DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22S64,  MXL_RV64,  rva22s64_profile_cpu_init),
-     DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA23U64,  MXL_RV64,  rva23u64_profile_cpu_init),
-+    DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA23S64,  MXL_RV64,  rva23s64_profile_cpu_init),
- #endif /* TARGET_RISCV64 */
- };
- 
--- 
-2.47.1
+> 
+> 
+> >   
+> > > 
+> > >     
+> > >> +    cxl_dstate->mbox_msi_n = CXL_MSIX_MBOX;
+> > >>       ARRAY_FIELD_DP32(cxl_dstate->mbox_reg_state32, CXL_DEV_MAILBOX_CAP,
+> > >>                        MBOX_READY_TIME, 0); /* Not reported */
+> > >>       ARRAY_FIELD_DP32(cxl_dstate->mbox_reg_state32, CXL_DEV_MAILBOX_CAP,
+> > >> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> > >> index 5cf754b38f..f2f060ed9e 100644
+> > >> --- a/hw/mem/cxl_type3.c
+> > >> +++ b/hw/mem/cxl_type3.c
+> > >> @@ -843,7 +843,6 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
+> > >>       ComponentRegisters *regs = &cxl_cstate->crb;
+> > >>       MemoryRegion *mr = &regs->component_registers;
+> > >>       uint8_t *pci_conf = pci_dev->config;
+> > >> -    unsigned short msix_num = 6;
+> > >>       int i, rc;
+> > >>       uint16_t count;
+> > >>   
+> > >> @@ -884,16 +883,17 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
+> > >>                        &ct3d->cxl_dstate.device_registers);
+> > >>   
+> > >>       /* MSI(-X) Initialization */
+> > >> -    rc = msix_init_exclusive_bar(pci_dev, msix_num, 4, NULL);
+> > >> +    rc = msix_init_exclusive_bar(pci_dev, CXL_MSIX_MAX, 4, NULL);
+> > >>       if (rc) {
+> > >>           goto err_address_space_free;
+> > >>       }
+> > >> -    for (i = 0; i < msix_num; i++) {
+> > >> +    for (i = 0; i < CXL_MSIX_MAX; i++) {
+> > >>           msix_vector_use(pci_dev, i);
+> > >>       }
+> > >>   
+> > >>       /* DOE Initialization */
+> > >> -    pcie_doe_init(pci_dev, &ct3d->doe_cdat, 0x190, doe_cdat_prot, true, 0);
+> > >> +    pcie_doe_init(pci_dev, &ct3d->doe_cdat, 0x190, doe_cdat_prot, true,
+> > >> +                  CXL_MSIX_PCIE_DOE);
+> > >>   
+> > >>       cxl_cstate->cdat.build_cdat_table = ct3_build_cdat_table;
+> > >>       cxl_cstate->cdat.free_cdat_table = ct3_free_cdat_table;
+> > >> @@ -908,7 +908,7 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
+> > >>       if (rc) {
+> > >>           goto err_release_cdat;
+> > >>       }
+> > >> -    cxl_event_init(&ct3d->cxl_dstate, 2);
+> > >> +    cxl_event_init(&ct3d->cxl_dstate, CXL_MSIX_EVENT_START);
+> > >>   
+> > >>       /* Set default value for patrol scrub attributes */
+> > >>       ct3d->patrol_scrub_attrs.scrub_cycle_cap =
+> > >> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> > >> index 561b375dc8..3f89b041ce 100644
+> > >> --- a/include/hw/cxl/cxl_device.h
+> > >> +++ b/include/hw/cxl/cxl_device.h
+> > >> @@ -133,6 +133,13 @@ typedef enum {
+> > >>       CXL_MBOX_MAX = 0x20
+> > >>   } CXLRetCode;
+> > >>   
+> > >> +enum {    
+> > > 
+> > > Maybe worth naming these to be type3 specific.    
+> > 
+> > It sounds good to me.
+> > 
+> >   
+> > >     
+> > >> +    CXL_MSIX_PCIE_DOE = 0,    
+> > > Name it to include that this is specifically the DOE for the table access protocol.
+> > > 
+> > >     CXL_MSIX_PCIE_DOE_TABLE_ACCESS    
+> > 
+> > make sense.
+> > 
+> >   
+> > > 
+> > > 
+> > > This should be private to cxl_type3.c which should be possible by passing
+> > > it to a few more calls from there.
+> > >     
+> > 
+> > If we make the entire enumeration `cxl_type3` private, it appears unnecessary to pass it through several more calls.  
+> 
+> Key is to make sure it is in cxl_type3.c  For that to work you need to pass it as
+> described above so that we can set the relevant values in various registers
+> configured by the hw/cxl/* code.
+> 
+> > 
+> > How about this
+> > 
+> > +/* type3 device private */
+> > +enum CXL_T3_MSIX_VECTOR {
+> > +    CXL_T3_MSIX_PCIE_DOE_TABLE_ACCESS = 0,  
+> 
+> What is on 1?  We don't need to maintain backwards compatibility (migration
+> is broken in lots of other ways and not high on priority list to fix) so should
+> be no need to skip it. If you really want to add a reserved entry and we will
+> fill it in later.
+> 
+> > +    CXL_T3_MSIX_EVENT_START = 2,
+> > +    CXL_T3_MSIX_MBOX = CXL_T3_MSIX_EVENT_START + CXL_EVENT_TYPE_MAX,
+> > +    CXL_T3_MSIX_VECTOR_NR
+> > +};
+> > +
+> >   
+> Hope that helps,
+> 
+> Jonathan
+> 
+> > 
+> > Thanks
+> > Zhijian
+> >   
+> > >> +    CXL_MSIX_EVENT_START = 2,
+> > >> +    CXL_MSIX_MBOX = CXL_MSIX_EVENT_START + CXL_EVENT_TYPE_MAX,
+> > >> +    CXL_MSIX_MAX
+> > >> +};
+> > >> +
+> > >>   typedef struct CXLCCI CXLCCI;
+> > >>   typedef struct cxl_device_state CXLDeviceState;
+> > >>   struct cxl_cmd;    
+> > >    
+> 
+> 
+> 
 
 
