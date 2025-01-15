@@ -2,92 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23072A12441
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F0BBA12442
 	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 13:57:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY2vn-00010d-SE; Wed, 15 Jan 2025 07:55:36 -0500
+	id 1tY2vx-0001WB-Hx; Wed, 15 Jan 2025 07:55:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tY2va-0000sF-1F
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 07:55:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tY2vm-00019u-JL; Wed, 15 Jan 2025 07:55:34 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tY2vY-0007gq-9h
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 07:55:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736945717;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=hpIJ5X5NNxdmUsUFZLhjndj1jKyLSLco7XkVHjzdcWc=;
- b=cbPHBVCxksI9OyHYOkFGpxBRZvH5C98GudMUqyC7ZptZm1mhaLchiWnnnDXrfxyiGh900L
- hBMDesrYD0ldcOwKa1r96gVOY9i4CQqoO2p3/Z/qtGa9wHBIE8k1kzc5jwq66yi2j7lLAh
- tdAGBPDYY8FJoqgpZleKJK9G3IRVeS0=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-Tsgl0EmZO3q7HMbzqvD0_w-1; Wed, 15 Jan 2025 07:55:16 -0500
-X-MC-Unique: Tsgl0EmZO3q7HMbzqvD0_w-1
-X-Mimecast-MFC-AGG-ID: Tsgl0EmZO3q7HMbzqvD0_w
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-4678f97242fso176594091cf.0
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 04:55:16 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736945715; x=1737550515;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hpIJ5X5NNxdmUsUFZLhjndj1jKyLSLco7XkVHjzdcWc=;
- b=F/VTl0iP+feB8owNOTlc5Q3y2EAK0xZyiZBUJtbHbAQQjRK1k983bYnZYTgktlzKSN
- eSlz9Rew2anHdacY5yx65oGWS2FGsJtiIJ3kvpfzuMcV/2KaKpLQeS8dOHx2RwEGmydF
- QXmKW15Axa+cF5A4ENrUd9BI0KMhle4eB3beK5mzP+xBhEyp0bhjLxMOD6NaaNNQXps5
- b76WNn531bQxl6PeE02ht/kV9W1rsqKjQGonIBhWdADU7hulJEnsfu2m+LEEdBz7zkPg
- zVLg0FT9ee1GdBxKrcNYezLG5QOkRSqBq6mhhADk8eVoEGOOuXHjzxrnjbsKkSwcpujF
- IkZQ==
-X-Gm-Message-State: AOJu0YwgrRjr3fe779ZXF1lpnLMGBkvY3qnpWbupCQ9l8m1bQFN8ARp0
- z4+WbIL2WvSjX7thy9rlWyHkEqfXR3O0luqt2RGGHf857Xz1uFrMfP/sRq3kecUPaF7OQR0uvj7
- Qm0LLtQJ2PqROP2owM8LEgmyz8D9jbs+ThXboCobpHr+UqTQhSRKn
-X-Gm-Gg: ASbGncsOb+i8gpito8NoGJ0OPFCO7dmZGzUZyzlF1zVv38h+d0zQXzjsbUZ6++sWAUU
- DGz1wB+0drWWFV+Q776vcd6wneelyZLEaAT7tgMb+6UVMzVOBtjdZmpKgTha7+xBxi4bAP8Sjuj
- TqMWvzM3klNJOVvJFA5k1K3RQUpJAaXT++xVg4aEDWnL3a0T8lh73ztbx9PB1y8g6ooFh54uBHZ
- hBlqIhtPYD/xrHAwoH3+MbFve2GgHqpNdoxnJCYlrDtP0eb752VVELffzeqyC1dA2ntrrA4HxpY
- SltG1NzSl1Jni/qL3w==
-X-Received: by 2002:a05:622a:254:b0:462:bb8d:3673 with SMTP id
- d75a77b69052e-46c7107e0e1mr492271981cf.35.1736945715581; 
- Wed, 15 Jan 2025 04:55:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHQzXx295uQdkAG1vIE5kLoqBgf8/UliXJPC+Vp/GRYJS6k5tU4rej8cX5M4n9tY6FhIvOL/w==
-X-Received: by 2002:a05:622a:254:b0:462:bb8d:3673 with SMTP id
- d75a77b69052e-46c7107e0e1mr492271641cf.35.1736945715307; 
- Wed, 15 Jan 2025 04:55:15 -0800 (PST)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-46c873216dbsm64307791cf.7.2025.01.15.04.55.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Jan 2025 04:55:14 -0800 (PST)
-Date: Wed, 15 Jan 2025 07:55:13 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Jiri Denemark <jdenemar@redhat.com>
-Cc: qemu-devel@nongnu.org, Juraj Marcin <jmarcin@redhat.com>,
- Julia Suvorova <jusual@redhat.com>,
- Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH 00/16] migration: Switchover phase refactoring
-Message-ID: <Z4ewMbck5qDrRjlw@x1n>
-References: <20250114230746.3268797-1-peterx@redhat.com>
- <Z4d8DWKgWveN17M9@orkuz.int.mamuti.net>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tY2vk-0007hz-Nk; Wed, 15 Jan 2025 07:55:34 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 51107D82EA;
+ Wed, 15 Jan 2025 15:55:24 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id A747819C2DE;
+ Wed, 15 Jan 2025 15:55:29 +0300 (MSK)
+Message-ID: <823b6f0c-7e2f-4cc2-bf5f-79f34c77d7f6@tls.msk.ru>
+Date: Wed, 15 Jan 2025 15:55:29 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Z4d8DWKgWveN17M9@orkuz.int.mamuti.net>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.793,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/13] hw/sd/sdhci: Set SDHC_NIS_DMA bit when
+ appropriate
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ Guenter Roeck <linux@roeck-us.net>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>, qemu-arm@nongnu.org,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Laurent Vivier <lvivier@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
+ qemu-block@nongnu.org, qemu-stable <qemu-stable@nongnu.org>
+References: <20250111183711.2338-1-shentey@gmail.com>
+ <20250111183711.2338-2-shentey@gmail.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <20250111183711.2338-2-shentey@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,40 +111,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 15, 2025 at 10:12:45AM +0100, Jiri Denemark wrote:
-> On Tue, Jan 14, 2025 at 18:07:30 -0500, Peter Xu wrote:
-> > CI: https://gitlab.com/peterx/qemu/-/pipelines/1625266692
-> >     (note: warning is present on rust stuff, but shouldn't be relevant)
-> > 
-> > This series refactors the migration switchover path quite a bit.  I started
-> > this work initially to measure the JSON writer overhead, but then I decided
-> > to cleanup the switchover path in general when I am at it altogether, as I
-> > wanted to do this for a long time.
-> > 
-> > A few major things I tried to do:
-> > 
-> ...
-> >   - DEVICE migration state
-> > 
-> >     QEMU has a very special DEVICE migration state, that only happens with
-> >     precopy, and only when pause-before-switchover capability is enabled.
-> >     Due to that specialty we can't merge precopy and postcopy code on
-> >     switchover starts, because the state machine will be different.
-> > 
-> >     However after I checked the history and also with libvirt developers,
-> >     this seems unnecessary.  So I had one patch making DEVICE state to be
-> >     the "switchover" phase for precopy/postcopy unconditionally.  That will
-> >     make the state machine much easier for both modes, meanwhile nothing is
-> >     expected to break with it (but please still shoot if anyone knows /
-> >     suspect something will, or could, break..).
+11.01.2025 21:36, Bernhard Beschow wrote:
+> In U-Boot, the fsl_esdhc[_imx] driver waits for both "transmit completed" and
+> "DMA" bits in esdhc_send_cmd_common() by means of DATA_COMPLETE constant. QEMU
+> currently misses to set the DMA bit which causes the driver to loop forever. Fix
+> that by setting the DMA bit if enabled when doing DMA block transfers.
 > 
-> No problem from libvirt side...
-> 
-> Tested-by: Jiri Denemark <jdenemar@redhat.com>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 
-This is definitely reassuring.. thanks a lot, Jiri!
+Is this a qemu-stable material?
 
--- 
-Peter Xu
+Thanks,
 
+/mjt
 
