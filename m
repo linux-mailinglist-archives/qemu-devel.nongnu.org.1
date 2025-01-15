@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A791EA12F31
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 00:25:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24C33A12F23
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 00:23:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYCjQ-0000QU-Vr; Wed, 15 Jan 2025 18:23:29 -0500
+	id 1tYCjS-0000Wg-6N; Wed, 15 Jan 2025 18:23:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCjI-0000Ja-Gf
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:23:21 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCjP-0000QS-Kv
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:23:28 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCjG-0003qM-VL
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:23:20 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-38789e5b6a7so203820f8f.1
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 15:23:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCjN-0003qk-SN
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:23:27 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-38a88ba968aso317347f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 15:23:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736983397; x=1737588197; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736983403; x=1737588203; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HiK7kWV2YxErB75r1QBmNlphCk6c+f8aCYytVgiOb3Y=;
- b=aP4cuog0Baamh/hg4i/i8jm1SUiLSDpal1AmNASjt8X/A87qx3wyoXGk0T0pjJBb8w
- l/2ATZB9sF/lxbJ4tjE6++RLhoNt3my6fkX98SNvsf9z/nkCSRQhLKLyvyAWKtvNXLhI
- FFozDGAspABnSiIJbiZ30yHVFyfMpQ6TEUpoAaaiW3twJ1xLzvdR//3yxxGqsVDkxcQq
- ZgecDEVkBHMEV2SsndSQBGs3o/E5fKUW5SIOwhu1O4H5aCShgWxuMBCCCGmvF9swYNqn
- 2dw7s3Zjh6zrR9Nu1/vr9k3Gz2CPNwqQsHeqBn14jI4hguKeaWONf9VSGmWb7AiOz/aq
- 21Fg==
+ bh=KUxPrJq33zbqetS3KdsFfaEYg8U4Um6tBpvIBoEhOmo=;
+ b=Urj+UI/cC7YzUcZ+zR42IsDEC9hphQP2YH++S6N6XS7N2q58MaHU08mIwUa53pTx9J
+ 0g6bK4E1zjCL24bt1z6ao6urue9qZcqOP9087/BO/I/Amnh/rxfmPNL8SrkQoqXlg7AL
+ iJRMD9YyONn1NDXV+NXTox4HSAS8foUSvfUj6oROnHxGnVLOrbvEyCODTBxkZszPaKVw
+ N0WIzP8OtPKIyd/3cGilWe6YceSZnYyO5TEGeTWHbFCTERsxUoLZ8TG+Iblo5rGzbwHx
+ 2B58ZBrfKrjLLkaR+qtQrwabvnKH72bzBBQ9T3f9nqIx78v6tvnsKUXsTmWsrLGMnwEX
+ coiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736983397; x=1737588197;
+ d=1e100.net; s=20230601; t=1736983403; x=1737588203;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HiK7kWV2YxErB75r1QBmNlphCk6c+f8aCYytVgiOb3Y=;
- b=Lge6mMpyUnr/LsYx90jmCjWa/zVYW8Gbo7yMI9rCo06ynA7Fc5yLjz2rX6VDH9WOwG
- eEoUA/0HCh2ENXqbs6SFp2HX1ybo0ZdCMV9mReM3DZ8OWjBuKR0ibGStUWGYjB0nCn33
- SkwxmhwK/3uD/okzzgx8CRLB2KiaNEJO5Qtfu3ZltdNaH/85CUaEfoudWOFJvT2R/iT0
- SDfR5KUd8Cs0JCZg4p+gQyJcMM9TyZK59/XUmD0YGt3Or8UB6LgsqEwcTGMVrErBmnAk
- nc3MsRF7R/0dtUA2wcukdcP8Ctw74iPBVMfydaWuePz46/mxIa0avY/qPIC8PBCHWVVx
- Hn3Q==
-X-Gm-Message-State: AOJu0YwoWspAUZY9Wywq8qZvuwlSHBAPQ6pWCOdMMrMALW19TxV27uvv
- kEWvVGqtQMit9pC3TMZjcAVUNZSO2rBFmZApWt8bLQZHv6V/EH+rQS81pZjyMLGSnl9QdhhmauR
- Q1Gk=
-X-Gm-Gg: ASbGnctu+SOOPza96ZNf27x2kte3rm98VogS1sA6eDPG2XcjoGifHE0q4INJ+Vd/YZZ
- EuPmHCQBGEyYkqAt8n9XxlvByKQBnpNwYjcWz768pBGTGF0CyZsvFtDpx4eqTR4E2Uk+1o5niAO
- 0wOLxwWay7CgzZqgL92yclVU6e/etYCYep7eBU2KrJx+hp2x1S7+uPqal+DsD5Bf/7bil5dGhOK
- nFRTVuWx0DSmfVV9f6Pe8va8vsQCoNlvAhK2OfETCussMaAs624x+YNGIEAgzPfTfaQFhMAL2u9
- mzNJX8XGsgKzJ22qVragu2pbeB1fdWk=
-X-Google-Smtp-Source: AGHT+IF4aPTTANd00MhfnjjKHU9Z7l1eY0wyhqkRLgoKYUUb7vQyLWliC9eqwzg19q6RydsD/c5r0w==
-X-Received: by 2002:a5d:5c0c:0:b0:385:fc00:f5d4 with SMTP id
- ffacd0b85a97d-38a8730acf1mr25197093f8f.29.1736983396953; 
- Wed, 15 Jan 2025 15:23:16 -0800 (PST)
+ bh=KUxPrJq33zbqetS3KdsFfaEYg8U4Um6tBpvIBoEhOmo=;
+ b=ah6K8A2/Fohi4GCeTrIjCvdxpd6HGmyrPhrf+feqgzxJu0r1jEs6HvZVF5rcHgZMD1
+ XzXfMfcFQBcZU6BQ15Y+tGDOdc6UArcm1Jf8iwubyyvkxXWsfwYyr+tkx6yHhKuq4slp
+ 9Xkp+LmFXZ6IqPNTyynWgZz9PfCJb7NiC9Br2AxPLYr5L9QO58/WxrgVMHndTlEmlzJ+
+ MnshXzLLluxcoD5p0bCZtrmXKfXuYb6zCvrgr3vjtZ2vVd4Q320Wpt0j9BHLU2oUnch7
+ SP4t6OA2M0RjTDCHbSNxhChwLhA2W0rkss+yBcEoB4H3uwGmLEiQrMaA9OK3b/oKK62O
+ y/Fg==
+X-Gm-Message-State: AOJu0YzGS7cBQh5mgSDNiywIC/dOUb9UPFjFPC7/mRKDpRRa89LTCYzi
+ 7psFoXEpbM/jjDaasuXStvRi5jnAUTdDKZTDJra6pCnX0tmINl3l8fwm6/BHfOuReEpb0Fh76vs
+ VDVA=
+X-Gm-Gg: ASbGncsoonEt6CiK0a//CgYqqybaegiI4saOA/OCvQkGxBMhREeAbM5k2Mv8bV9i4Jj
+ CKkodlhWrAI0lnUF4zAoHgT3VSVuMv/cWk88F0hNTElBTjd8dbvRLmpE27/eNJgv0pkkS1CELdj
+ PGzt6s4iMOwwdWlGfLEul9BiNN7ZcJLC9o8wke+ZrgGEC+gIlE/muN4Q8KT2o0w4jRdHDJltnG4
+ Z6e2WHryjWhbu93a6uKdM1keQtSud0OutJcxk+pp57v9BSYa7P6g64TuwEguHHilxW5RlEAGLFp
+ m7aoX+6Lvor5dlVUpQr+cbA8/lguZTw=
+X-Google-Smtp-Source: AGHT+IEAOL0BiVVPNhg3ZJxG+vdyKt8Dc59/uzDX0sZYzNdKS/ldU5vA9XjjgjfFWFSVTrqEOjY0mw==
+X-Received: by 2002:a05:6000:4618:b0:385:f560:7916 with SMTP id
+ ffacd0b85a97d-38a8732aeefmr32429907f8f.35.1736983402754; 
+ Wed, 15 Jan 2025 15:23:22 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e4c1b44sm19019124f8f.90.2025.01.15.15.23.15
+ ffacd0b85a97d-38a8e3853b6sm18634302f8f.44.2025.01.15.15.23.20
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 15 Jan 2025 15:23:16 -0800 (PST)
+ Wed, 15 Jan 2025 15:23:22 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
@@ -72,17 +72,18 @@ Cc: Jason Wang <jasowang@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Gerd Hoffmann <kraxel@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH 05/21] target/i386/cpu: Remove X86CPU::check_cpuid field
-Date: Thu, 16 Jan 2025 00:22:31 +0100
-Message-ID: <20250115232247.30364-6-philmd@linaro.org>
+Subject: [PATCH 06/21] target/i386/cpu: Pass Error** to
+ x86_cpu_filter_features()
+Date: Thu, 16 Jan 2025 00:22:32 +0100
+Message-ID: <20250115232247.30364-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250115232247.30364-1-philmd@linaro.org>
 References: <20250115232247.30364-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,50 +106,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The X86CPU::check_cpuid boolean was only set in the
-pc_compat_2_4[] array, via the 'check=off' property.
-We removed all machines using that array, lets remove
-that CPU property and simplify x86_cpu_realizefn().
+Simplify x86_cpu_realizefn() by passing an Error**
+argument to x86_cpu_filter_features().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/i386/cpu.h | 1 -
- target/i386/cpu.c | 3 +--
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ target/i386/cpu.c | 26 +++++++++-----------------
+ 1 file changed, 9 insertions(+), 17 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index dbd8f1ffc79..87917b7f895 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2091,7 +2091,6 @@ struct ArchCPU {
-     uint8_t hyperv_ver_id_sb;
-     uint32_t hyperv_ver_id_sn;
- 
--    bool check_cpuid;
-     bool enforce_cpuid;
-     /*
-      * Force features to be enabled even if the host doesn't support them.
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 0b639848cd6..42227643126 100644
+index 42227643126..c48241fb902 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -7822,7 +7822,7 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+@@ -5896,7 +5896,7 @@ static void x86_cpu_parse_featurestr(const char *typename, char *features,
+     }
+ }
+ 
+-static bool x86_cpu_filter_features(X86CPU *cpu, bool verbose);
++static bool x86_cpu_filter_features(X86CPU *cpu, Error **errp);
+ 
+ /* Build a list with the name of all features on a feature word array */
+ static void x86_cpu_list_feature_names(FeatureWordArray features,
+@@ -6084,7 +6084,7 @@ static void x86_cpu_class_check_missing_features(X86CPUClass *xcc,
+         error_free(err);
+     }
+ 
+-    x86_cpu_filter_features(xc, false);
++    x86_cpu_filter_features(xc, NULL);
+ 
+     x86_cpu_list_feature_names(xc->filtered_features, tail);
+ 
+@@ -7650,7 +7650,7 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+  *
+  * Returns: true if any flag is not supported by the host, false otherwise.
+  */
+-static bool x86_cpu_filter_features(X86CPU *cpu, bool verbose)
++static bool x86_cpu_filter_features(X86CPU *cpu, Error **errp)
+ {
+     CPUX86State *env = &cpu->env;
+     FeatureWord w;
+@@ -7660,7 +7660,7 @@ static bool x86_cpu_filter_features(X86CPU *cpu, bool verbose)
+     uint32_t eax_0, ebx_0, ecx_0, edx_0;
+     uint32_t eax_1, ebx_1, ecx_1, edx_1;
+ 
+-    if (verbose) {
++    if (errp) {
+         prefix = accel_uses_host_cpuid()
+                  ? "host doesn't support requested feature"
+                  : "TCG doesn't support requested feature";
+@@ -7712,15 +7712,13 @@ static bool x86_cpu_filter_features(X86CPU *cpu, bool verbose)
+         uint8_t version = ebx_0 & 0xff;
+ 
+         if (version < env->avx10_version) {
+-            if (prefix) {
+-                warn_report("%s: avx10.%d. Adjust to avx10.%d",
+-                            prefix, env->avx10_version, version);
+-            }
++            error_setg(errp, "%s: avx10.%d. Adjust to avx10.%d",
++                       prefix, env->avx10_version, version);
+             env->avx10_version = version;
+             have_filtered_features = true;
+         }
+     } else if (env->avx10_version && prefix) {
+-        warn_report("%s: avx10.%d.", prefix, env->avx10_version);
++        error_setg(errp, "%s: avx10.%d.", prefix, env->avx10_version);
+         have_filtered_features = true;
+     }
+ 
+@@ -7822,14 +7820,8 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
          }
      }
  
--    if (x86_cpu_filter_features(cpu, cpu->check_cpuid || cpu->enforce_cpuid)) {
-+    if (x86_cpu_filter_features(cpu, cpu->enforce_cpuid)) {
-         if (cpu->enforce_cpuid) {
-             error_setg(&local_err,
-                        accel_uses_host_cpuid() ?
-@@ -8491,7 +8491,6 @@ static const Property x86_cpu_properties[] = {
-     DEFINE_PROP_UINT8("hv-version-id-sbranch", X86CPU, hyperv_ver_id_sb, 0),
-     DEFINE_PROP_UINT32("hv-version-id-snumber", X86CPU, hyperv_ver_id_sn, 0),
+-    if (x86_cpu_filter_features(cpu, cpu->enforce_cpuid)) {
+-        if (cpu->enforce_cpuid) {
+-            error_setg(&local_err,
+-                       accel_uses_host_cpuid() ?
+-                       "Host doesn't support requested features" :
+-                       "TCG doesn't support requested features");
+-            goto out;
+-        }
++    if (x86_cpu_filter_features(cpu, cpu->enforce_cpuid ? &local_err : NULL)) {
++        goto out;
+     }
  
--    DEFINE_PROP_BOOL("check", X86CPU, check_cpuid, true),
-     DEFINE_PROP_BOOL("enforce", X86CPU, enforce_cpuid, false),
-     DEFINE_PROP_BOOL("x-force-features", X86CPU, force_features, false),
-     DEFINE_PROP_BOOL("kvm", X86CPU, expose_kvm, true),
+     /* On AMD CPUs, some CPUID[8000_0001].EDX bits must match the bits on
 -- 
 2.47.1
 
