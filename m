@@ -2,44 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F0BBA12442
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 13:57:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C47FDA12455
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 14:03:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY2vx-0001WB-Hx; Wed, 15 Jan 2025 07:55:45 -0500
+	id 1tY327-0000N8-Kc; Wed, 15 Jan 2025 08:02:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tY2vm-00019u-JL; Wed, 15 Jan 2025 07:55:34 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1tY31n-0000L7-C6
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 08:01:48 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tY2vk-0007hz-Nk; Wed, 15 Jan 2025 07:55:34 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1tY31k-0008Pk-UQ
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 08:01:46 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 51107D82EA;
- Wed, 15 Jan 2025 15:55:24 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 5D1CCD82F8;
+ Wed, 15 Jan 2025 16:01:37 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id A747819C2DE;
- Wed, 15 Jan 2025 15:55:29 +0300 (MSK)
-Message-ID: <823b6f0c-7e2f-4cc2-bf5f-79f34c77d7f6@tls.msk.ru>
-Date: Wed, 15 Jan 2025 15:55:29 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id C2E0D19C2E5;
+ Wed, 15 Jan 2025 16:01:42 +0300 (MSK)
+Message-ID: <374d7103-d307-4428-ba97-b197cddc4ffd@tls.msk.ru>
+Date: Wed, 15 Jan 2025 16:01:42 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/13] hw/sd/sdhci: Set SDHC_NIS_DMA bit when
- appropriate
-To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
- Guenter Roeck <linux@roeck-us.net>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Andrey Smirnov <andrew.smirnov@gmail.com>, qemu-arm@nongnu.org,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Laurent Vivier <lvivier@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
- qemu-block@nongnu.org, qemu-stable <qemu-stable@nongnu.org>
-References: <20250111183711.2338-1-shentey@gmail.com>
- <20250111183711.2338-2-shentey@gmail.com>
+Subject: Re: [PATCH v2] backends/cryptodev-vhost-user: Fix local_error leaks
+To: Gabriel Barrantes <gabriel.barrantes.dev@outlook.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "arei.gonglei@huawei.com" <arei.gonglei@huawei.com>,
+ "pizhenwei@bytedance.com" <pizhenwei@bytedance.com>
+References: <DM8PR13MB50781054A4FDACE6F4FB6469B30F2@DM8PR13MB5078.namprd13.prod.outlook.com>
 Content-Language: en-US, ru-RU
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
@@ -85,7 +77,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
  ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
  3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
-In-Reply-To: <20250111183711.2338-2-shentey@gmail.com>
+In-Reply-To: <DM8PR13MB50781054A4FDACE6F4FB6469B30F2@DM8PR13MB5078.namprd13.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -111,18 +103,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-11.01.2025 21:36, Bernhard Beschow wrote:
-> In U-Boot, the fsl_esdhc[_imx] driver waits for both "transmit completed" and
-> "DMA" bits in esdhc_send_cmd_common() by means of DATA_COMPLETE constant. QEMU
-> currently misses to set the DMA bit which causes the driver to loop forever. Fix
-> that by setting the DMA bit if enabled when doing DMA block transfers.
+28.12.2024 04:16, Gabriel Barrantes wrote:
+>  From 532af9eecee4695abb02b40f2c18b711370aa7d2 Mon Sep 17 00:00:00 2001
+> From: Gabriel Barrantes <gabriel.barrantes.dev@outlook.com>
+> Date: Fri, 27 Dec 2024 18:02:32 -0600
+> Subject: [PATCH v2] backends/cryptodev-vhost-user: Fix local_error leaks
 > 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> Do not propagate error to the upper, directly output the error to
+> avoid leaks.
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2714
+> Fixes: 2fda101de07 ("virtio-crypto: Support asynchronous mode")
 
-Is this a qemu-stable material?
+This looks like a qemu-stable material.  Please let me know if it is not.
 
 Thanks,
 
 /mjt
+
+> Signed-off-by: Gabriel Barrantes <gabriel.barrantes.dev@outlook.com>
+> ---
+> Changes in v2:
+> 
+>   *
+>     Add full link to issue.
+>   *
+>     Add reference to first bad commit.
+> 
+> ---
+> backends/cryptodev-vhost-user.c | 4 ++--
+> 1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/backends/cryptodev-vhost-user.c b/backends/cryptodev-vhost-user.
+> c
+> index 43efdf9747..f87172b330 100644
+> --- a/backends/cryptodev-vhost-user.c
+> +++ b/backends/cryptodev-vhost-user.c
+> @@ -281,8 +281,8 @@ static int cryptodev_vhost_user_create_session(
+>          break;
+> 
+>      default:
+> -        error_setg(&local_error, "Unsupported opcode :%" PRIu32 "",
+> -                   sess_info->op_code);
+> +        error_report("Unsupported opcode :%" PRIu32 "",
+> +                     sess_info->op_code);
+>          return -VIRTIO_CRYPTO_NOTSUPP;
+>      }
+> 
+> -- 
+> 2.34.1
+> 
+
 
