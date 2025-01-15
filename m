@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B82A11999
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 07:27:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0251A1199C
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 07:27:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXwqq-0005eU-MW; Wed, 15 Jan 2025 01:26:04 -0500
+	id 1tXwqs-0005fG-QN; Wed, 15 Jan 2025 01:26:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tXwqm-0005eA-Ot
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 01:26:00 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1tXwqq-0005el-DL
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 01:26:04 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tXwqk-0006XB-GI
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 01:26:00 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-2165448243fso138187215ad.1
- for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 22:25:58 -0800 (PST)
+ id 1tXwqo-0006XT-FT
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 01:26:03 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-2161eb94cceso77607265ad.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Jan 2025 22:26:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1736922357; x=1737527157;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1736922361; x=1737527161;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=DwPNPMiit1+SXCCQTkug81gRYC66draPHi9DabeLSP4=;
- b=DbX9wFVXo8/LaDbefmpILmpIcCzuRUzhFqgvzbsBe0YurxBalwGaSQFu6L8M4NzetD
- Us88HYwFPudjzGKcNMWG/GCLlIjS4u1XAOI3wrGnAKbKIV1FyBV829ZsNxaOJfBeujCR
- BStAs+kaIlNcXbid/dcVKf45l3e2oqWqQNCwU/hEqJqoIwFjvAg2lsw0+gJz45pcM284
- FO/Nkfkxf96PJPO2W80+tURutYHP3h1T6p1EP2UN26kC1mrzx/hL2KQaOHSxSFprdy0J
- IFEwe++T/U9jr/WS8FjVuAQ5/D7N0p0zo1dmepmjZU8SGF6BjPvKYdtEVKWxDTmZMvZp
- 415Q==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=Pdcvm4r1FFh3mjhqnqaxRGqrOq+krKeGclEgq6h25tg=;
+ b=Xq5jWB4N8crDa6D42Wy5UbO7Ep62/K8RwYu7HmVzKY7pOLdhTxe+MJVQU7s8GRELHH
+ aa60qc2/jXhKmoydxoVqD66R51ARVXV7nHe1L+Y5Sc2HU1b6oQjN77IH26wdfYn6D6fH
+ in8QFiNZbAp550I/Nuz+I73zx1B2cuj2gVG6CoMvM7mI4CnP943zFJ2Sex2Yn3p1plev
+ sHEZCFRe7Nwx/c/DFEwgF4nt4nyd8QRnBkL8uZ5L7tZP5vGUnWFfK7chlrlD6Jtd2tTp
+ iBJbzrKpGFVCD+kKeLaUFcNS3+JjvhOaPS5vd6XqAjxaEJ4uGihj5d4zN0GbXsuY/TDB
+ HMYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736922357; x=1737527157;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=DwPNPMiit1+SXCCQTkug81gRYC66draPHi9DabeLSP4=;
- b=DpX0ANSlb/nIWaFwvb8l0/7Zx4+HAccFYg9Tgz/6tEaIsfRaqo25e5tCvG8WEskrr+
- 7Y+yvt5NjRf2S5RlrVfCaBUz00Kt1Kzs+nfUOtzRqYXWOzk5bX0ISsBL1d2RLyFTDBpE
- aaDChVrmyV7kEUg8R/vNWmcerelkaOOp5StIn6U+DpZkhzaBNlSKAM+ICCm32rJGeTOs
- 4Hrg3hcWk/6zZm2lVqg+8VRnzoMcZVUjf8uoElQkEfg5fxKO4zyUAwrssvhTgfqhQoFk
- PJFC11NIX6LvEZ9Ega4WRgktaq3pzoJAHyH9r7GGqOtuCLH7BohsCbhb69ubFqWQqZTi
- klLg==
-X-Gm-Message-State: AOJu0Yw+HreUN18pPXNrdR7O7TwB2LHdR6Qp/hUiVh+nBrzSE6uc/DhA
- Dvn2q+oqqjcN9lyfalRvDz9oKMyOZaUccuL8QfEOaF21MjQM2rXqQrxGXiXz0+o=
-X-Gm-Gg: ASbGnctfyRiI7yBCeXKKIq6/4QwiUdqmlvgYuG1FnItJmiD1r3MWr47q92JvLwmGi5o
- LbjQ3hllx3iLY6330XpVfJBZ30NNzBtIPQ0oKdJMPADjqmjwvbMLxZS6q1CUD6tHYlOM8j4uFFU
- Juwno1hclIN2DH9qrzUfIrpEjYnwOb7Vo3KM0b+zeyPFBkzkCtXBAFwajeScIQPEhpjSX5llBL1
- AyT8t6GLCtnGxJ4NMlsMfiUdnxCHuZfBPFeYyMh3zMOD3LbmqTcEayRPbc=
-X-Google-Smtp-Source: AGHT+IGgSIj+5bfNjTKCeUh566yT356Y3Ni7Di1/ok2MFsc9zR0whW/QTGH43yyHepnMVGKP5DBK8Q==
-X-Received: by 2002:a05:6a21:108c:b0:1e5:f930:c710 with SMTP id
- adf61e73a8af0-1e88d1d4a4dmr40961830637.20.1736922357014; 
- Tue, 14 Jan 2025 22:25:57 -0800 (PST)
+ d=1e100.net; s=20230601; t=1736922361; x=1737527161;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Pdcvm4r1FFh3mjhqnqaxRGqrOq+krKeGclEgq6h25tg=;
+ b=ubauyHrgLhpkbjDclwUv9tbhpqip1aWZLx+Js/5dceQIyRgYOkLbrrwu2m3A0Gicpc
+ TmpfqDHW4P5mMt0d+Ru5OrgbYGYmTICpDUfyrewAKCB2+5ND3VZQnteg/BpvBQufZxXx
+ xBBLPm3jI2yBps7T6ltVtYn1PiN2nWMYCEPjIMQKppuhEaYTad4zijoh4I7ndGbetceM
+ 69zFACV0Y+ZFoxkgMhRebHLGXIIXjmmUIrb1xvGepjm1crZ3sRMlFIOZ/CQ9e/+P/0Qq
+ IzYo4HK/z31fOTDYlFEDSO9CYQTAryupIvpEhKNN2qyq04Or3Wl7c5ZUYgn8kl81bedj
+ rpVg==
+X-Gm-Message-State: AOJu0Yx4c9z89rNwOSXCa1S7//w7RAb4VXo5qOWmeiKpHEFnshRXaPoQ
+ XsvYDDzoShL3oB46InwI6uZrIN1QL4HA6aj3xhyowYyy5G9xdq++Sz7rvM/v2W0=
+X-Gm-Gg: ASbGnctmTyq1iJO32nElDDT83PLdy66TYh6lMBZW+ASETcEzyCrKW71ZVhO946M2/ZD
+ SbD075tlqkP4fBcly/o+VjufgthTYmT6f581Ni/L7H20rFHtmGdnXLB3/EjQvQ2MaVOl0C4FRDi
+ qti5sZYfwHGZeQDEQGa2M9DnARvjk7AZJVROV8crxbvbhZvTor2lRIYesyI2eu+0lldlOV6Y2YE
+ eSVF8F8s8XBiL3PdmtBbjO3lB36HPUQA6ZrSQwi+mWfVaeY73itgDbzji0=
+X-Google-Smtp-Source: AGHT+IG7TdAwhLeVX2A4dCE/eNC9Oh9DqjvjsX2UJ9zSLDGU0IAo3zNr8oAgWMDKgfV3YU9AVXhlGA==
+X-Received: by 2002:a17:902:e84f:b0:216:410d:4c53 with SMTP id
+ d9443c01a7336-21a83fc6db1mr389792495ad.41.1736922361061; 
+ Tue, 14 Jan 2025 22:26:01 -0800 (PST)
 Received: from localhost ([157.82.203.37]) by smtp.gmail.com with UTF8SMTPSA id
- 41be03b00d2f7-a3184b68b3csm9099117a12.25.2025.01.14.22.25.54
+ d9443c01a7336-21a9f10f97csm76565705ad.16.2025.01.14.22.25.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Jan 2025 22:25:56 -0800 (PST)
+ Tue, 14 Jan 2025 22:26:00 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v3 0/2] tap: Use g_spawn_sync() and g_spawn_check_wait_status()
-Date: Wed, 15 Jan 2025 15:25:45 +0900
-Message-Id: <20250115-glib-v3-0-bd3153344698@daynix.com>
+Date: Wed, 15 Jan 2025 15:25:46 +0900
+Subject: [PATCH v3 1/2] glib-compat: Define g_spawn_check_wait_status()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAOlUh2cC/12MQQ6CMBBFr0K6tmZmWhRceQ/jgtICkyiQ1jQQw
- t0tRBe6fD//vUUE59kFcckW4V3kwEOfQB0yUXdV3zrJNrEgIIWEpWwfbCQoXSltDOS2EOk6etf
- wtGdu98Qdh9fg570acVv/AhElSDSgwVJxMiVebTX3PB3r4Sm2QqSvlQOC/li0WQSoGuXyc0E/1
- rqub6zpBJHPAAAA
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250115-glib-v3-1-bd3153344698@daynix.com>
+References: <20250115-glib-v3-0-bd3153344698@daynix.com>
+In-Reply-To: <20250115-glib-v3-0-bd3153344698@daynix.com>
 To: Jason Wang <jasowang@redhat.com>, 
  =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, devel@daynix.com, 
  Akihiko Odaki <akihiko.odaki@daynix.com>, Lei Yang <leiyang@redhat.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,37 +96,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-g_spawn_sync() gives an informative message if it fails to execute
-the script instead of reporting exiting status 1.
-
-g_spawn_check_wait_status() also gives an message easier to understand
-than the raw value returned by waitpid().
+g_spawn_check_exit_status() is renamed to g_spawn_check_wait_status()
+in 2.70.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
 ---
-Changes in v3:
-- Added GLIB_CHECK_VERSION(2, 70, 0) for patch "glib-compat: Define
-  g_spawn_check_wait_status()". (Daniel P. Berrangé)
-- Link to v2: https://lore.kernel.org/r/20250104-glib-v2-0-12013f3e5782@daynix.com
+ include/glib-compat.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-Changes in v2:
-- Rebased.
-- Link to v1: https://lore.kernel.org/r/20231219-glib-v1-0-1b040d286b91@daynix.com
+diff --git a/include/glib-compat.h b/include/glib-compat.h
+index 86be439ba0ef..a553ba13a36e 100644
+--- a/include/glib-compat.h
++++ b/include/glib-compat.h
+@@ -68,6 +68,17 @@
+  * without generating warnings.
+  */
+ 
++static inline gboolean g_spawn_check_wait_status_qemu(gint wait_status,
++                                                      GError **error)
++{
++#if GLIB_CHECK_VERSION(2, 70, 0)
++    return g_spawn_check_wait_status(wait_status, error);
++#else
++    return g_spawn_check_exit_status(wait_status, error);
++#endif
++}
++#define g_spawn_check_wait_status(w, e) g_spawn_check_wait_status_qemu(w, e)
++
+ /*
+  * g_memdup2_qemu:
+  * @mem: (nullable): the memory to copy.
 
----
-Akihiko Odaki (2):
-      glib-compat: Define g_spawn_check_wait_status()
-      tap: Use g_spawn_sync() and g_spawn_check_wait_status()
-
- include/glib-compat.h |  11 ++++
- net/tap.c             | 169 ++++++++++++++++++++------------------------------
- 2 files changed, 77 insertions(+), 103 deletions(-)
----
-base-commit: 38d0939b86e2eef6f6a622c6f1f7befda0146595
-change-id: 20231219-glib-034a34bb05d8
-
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.47.1
 
 
