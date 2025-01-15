@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 869AEA11B16
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 08:40:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A5CA11B21
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 08:40:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXxzS-0005Db-DJ; Wed, 15 Jan 2025 02:39:02 -0500
+	id 1tXxzT-0005EM-3S; Wed, 15 Jan 2025 02:39:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tXxzL-0005C8-6X
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 02:38:56 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tXxzP-0005Cs-4G
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 02:39:00 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tXxzH-0007rX-Lq
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 02:38:53 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tXxzJ-0007rl-J8
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 02:38:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736926731;
+ s=mimecast20190719; t=1736926733;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=R/s9ylzySq9LcwHOdmgaAwoeyJjP8KZiwu31E+GKARc=;
- b=h/JKwl153yWGxkB+0bgPZAN77pfwi5RBDuv5JOtd6MiNiuB29mPQ1pssdfCwX6UyKFnqtk
- PKYTz6AQjeg+HidZ5F6YIa0iB14G/YRzjTVSaJtZgApdqgVhQioisDYoYZgQzQQbVyY37g
- jmc3pASuk4d4YgMv5DaxThOQLAO4YJc=
+ bh=lT1USb8ZJXMg/PWsYChXUOI3OwyVGK3IFnPJMj4KoV0=;
+ b=f8KwQkYJ3VY0lVeez3Ypdpg+E5pLLwHpURlHM+vvVckZ/6ZYLXks/XpxX1SxfZY971KpDN
+ Izw4koV7+tyhMol9Fp3pnd6tE2Ml02VB9I+2LvF55RHOelNYrHD19OARoU7NqQR/FU/4Pj
+ G4g+IBQh5Wbu7sMxbmHzwYe223I91ig=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-Izd_QJi6O-ugpDNG4F3bsQ-1; Wed,
- 15 Jan 2025 02:38:46 -0500
-X-MC-Unique: Izd_QJi6O-ugpDNG4F3bsQ-1
-X-Mimecast-MFC-AGG-ID: Izd_QJi6O-ugpDNG4F3bsQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-320-rZZ4cXYZOba2chQ6050btA-1; Wed,
+ 15 Jan 2025 02:38:49 -0500
+X-MC-Unique: rZZ4cXYZOba2chQ6050btA-1
+X-Mimecast-MFC-AGG-ID: rZZ4cXYZOba2chQ6050btA
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EBAFF1955DD0; Wed, 15 Jan 2025 07:38:43 +0000 (UTC)
+ id 920CA1955DCC; Wed, 15 Jan 2025 07:38:47 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.143])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D1D0B195608A; Wed, 15 Jan 2025 07:38:39 +0000 (UTC)
+ id 7581619560AB; Wed, 15 Jan 2025 07:38:44 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
  David Hildenbrand <david@redhat.com>
@@ -50,10 +50,10 @@ Cc: qemu-devel@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
  Eric Farman <farman@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 4/8] hw/intc/s390_flic: Remove the obsolete migration_enabled
- flag
-Date: Wed, 15 Jan 2025 08:38:15 +0100
-Message-ID: <20250115073819.15452-5-thuth@redhat.com>
+Subject: [PATCH 5/8] hw/s390x/s390-virtio-ccw: Remove the deprecated 2.10 and
+ 2.11 machine types
+Date: Wed, 15 Jan 2025 08:38:16 +0100
+Message-ID: <20250115073819.15452-6-thuth@redhat.com>
 In-Reply-To: <20250115073819.15452-1-thuth@redhat.com>
 References: <20250115073819.15452-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -68,7 +68,7 @@ X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.794,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,70 +84,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that the machine types that set the migration_enabled flag to
-false are gone, we can remove it and the related code.
+They are older than 6 years, so according to our machine support
+policy, they can be removed now.
+
+There was not anything special in the 2.10 machine type, so just remove
+it together with the 2.11 machine type. The 2.11 machine type switched
+some configuration that needs additional cleanups in the following
+patches.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- include/hw/s390x/s390_flic.h |  1 -
- hw/intc/s390_flic.c          | 14 --------------
- 2 files changed, 15 deletions(-)
+ hw/s390x/s390-virtio-ccw.c | 37 -------------------------------------
+ 1 file changed, 37 deletions(-)
 
-diff --git a/include/hw/s390x/s390_flic.h b/include/hw/s390x/s390_flic.h
-index 85016d5ccc..91edaaca40 100644
---- a/include/hw/s390x/s390_flic.h
-+++ b/include/hw/s390x/s390_flic.h
-@@ -42,7 +42,6 @@ OBJECT_DECLARE_TYPE(S390FLICState, S390FLICStateClass,
- struct S390FLICState {
-     SysBusDevice parent_obj;
-     bool ais_supported;
--    bool migration_enabled;
- };
- 
- 
-diff --git a/hw/intc/s390_flic.c b/hw/intc/s390_flic.c
-index c20f4c1075..4fae023197 100644
---- a/hw/intc/s390_flic.c
-+++ b/hw/intc/s390_flic.c
-@@ -470,11 +470,6 @@ static void qemu_s390_flic_class_init(ObjectClass *oc, void *data)
-     fsc->inject_crw_mchk = qemu_s390_inject_crw_mchk;
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index b5635c43c4..44f8082326 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -1201,43 +1201,6 @@ static void ccw_machine_2_12_class_options(MachineClass *mc)
  }
+ DEFINE_CCW_MACHINE(2, 12);
  
--static const Property s390_flic_common_properties[] = {
--    DEFINE_PROP_BOOL("migration-enabled", S390FLICState,
--                     migration_enabled, true),
--};
+-#ifdef CONFIG_S390X_LEGACY_CPUS
 -
- static void s390_flic_common_realize(DeviceState *dev, Error **errp)
- {
-     S390FLICState *fs = S390_FLIC_COMMON(dev);
-@@ -486,7 +481,6 @@ static void s390_flic_class_init(ObjectClass *oc, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(oc);
- 
--    device_class_set_props(dc, s390_flic_common_properties);
-     dc->realize = s390_flic_common_realize;
- }
- 
-@@ -515,18 +509,10 @@ static void qemu_s390_flic_register_types(void)
- 
- type_init(qemu_s390_flic_register_types)
- 
--static bool adapter_info_so_needed(void *opaque)
+-static void ccw_machine_2_11_instance_options(MachineState *machine)
 -{
--    S390FLICState *fs = s390_get_flic();
+-    static const S390FeatInit qemu_cpu_feat = { S390_FEAT_LIST_QEMU_V2_11 };
+-    ccw_machine_2_12_instance_options(machine);
 -
--    return fs->migration_enabled;
+-    /* before 2.12 we emulated the very first z900 */
+-    s390_set_qemu_cpu_model(0x2064, 7, 1, qemu_cpu_feat);
 -}
 -
- const VMStateDescription vmstate_adapter_info_so = {
-     .name = "s390_adapter_info/summary_offset",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .needed = adapter_info_so_needed,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(summary_offset, AdapterInfo),
-         VMSTATE_END_OF_LIST()
+-static void ccw_machine_2_11_class_options(MachineClass *mc)
+-{
+-    static GlobalProperty compat[] = {
+-        { TYPE_SCLP_EVENT_FACILITY, "allow_all_mask_sizes", "off", },
+-    };
+-
+-    ccw_machine_2_12_class_options(mc);
+-    compat_props_add(mc->compat_props, hw_compat_2_11, hw_compat_2_11_len);
+-    compat_props_add(mc->compat_props, compat, G_N_ELEMENTS(compat));
+-}
+-DEFINE_CCW_MACHINE(2, 11);
+-
+-static void ccw_machine_2_10_instance_options(MachineState *machine)
+-{
+-    ccw_machine_2_11_instance_options(machine);
+-}
+-
+-static void ccw_machine_2_10_class_options(MachineClass *mc)
+-{
+-    ccw_machine_2_11_class_options(mc);
+-    compat_props_add(mc->compat_props, hw_compat_2_10, hw_compat_2_10_len);
+-}
+-DEFINE_CCW_MACHINE(2, 10);
+-
+-#endif
+-
+ static void ccw_machine_register_types(void)
+ {
+     type_register_static(&ccw_machine_info);
 -- 
 2.47.1
 
