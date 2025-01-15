@@ -2,92 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC250A12F0E
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 00:22:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2156BA12F1E
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 00:23:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYCgj-00080I-Ow; Wed, 15 Jan 2025 18:20:41 -0500
+	id 1tYCit-0000C6-NA; Wed, 15 Jan 2025 18:22:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tYCgf-000803-5m
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:20:37 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tYCgd-0003dY-KJ
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:20:36 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50FHX4iC024068;
- Wed, 15 Jan 2025 23:20:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=pp1; bh=HbxI+QiiaARw4OuL3n6af2R2FAqDIIf5w54NMFwCw
- 4U=; b=TnWqo3EHgAsuLvD7+Jkq657XHnlw5+N27InOVesNVW3p7HFFOH3s2qesr
- zIGC6QmJFc9zCEfTVyRFckysTcof4N5Y/8QzRpFE0PUV+uotPMXpXwOLycqiH7PM
- qCS/NudzexaE0eJedC24llHHB5X8GhyE1xnB2Syj0ROzrFK6Rg4pE7GEqG8nHVgL
- iTtErqKRT+X1vzWa7NqG7zv3CaWTv/MNKRFHs5G9xHU+ixQ2crVFxesJTrGKE6sU
- BhnbBqme8nwIKQQOKmRaq7dfikjTQnGcb26as/Fo1/PH8u9TDUvXiO9WyNd8DckX
- NMMtZ4AzTSg9QI/N9CtysO6BUqNrA==
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44697342jt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 15 Jan 2025 23:20:32 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50FLUAp2017359;
- Wed, 15 Jan 2025 23:20:31 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4444fkau59-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 15 Jan 2025 23:20:31 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 50FNKRgP26804526
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 15 Jan 2025 23:20:27 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A7CB320043;
- Wed, 15 Jan 2025 23:20:27 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 63BCC20040;
- Wed, 15 Jan 2025 23:20:27 +0000 (GMT)
-Received: from heavy.ibm.com (unknown [9.171.76.104])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 15 Jan 2025 23:20:27 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Subject: [PATCH] accel/tcg: Call tcg_tb_insert() for one-insn TBs
-Date: Thu, 16 Jan 2025 00:20:19 +0100
-Message-ID: <20250115232022.27332-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCir-0000BT-Kh
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:22:53 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCip-0003nW-Qt
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:22:53 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4361815b96cso1499055e9.1
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 15:22:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1736983370; x=1737588170; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=v1ksYOM0o00abVVAGTGDr7lB/CzuY5HznVZ0izWIqZs=;
+ b=bgWsKyWprwKilpkggrVmc3cJwF+vg1BwEk1Xmjg+Z4CtzcbesMoZ3qfOjjFNt2z8Fr
+ gr4djez9E5vZW4xzVRIqVL92q3lfr81w2eSCp10qvTkf22xeWZpyQTkmv/XyyQxVGFSB
+ 9I2sBQyp8alrUi1ACZrVslll7Soe+gDY2wwYXlFRMCYyUIDPfvbIgiA7RJblmZMzETDG
+ HjED8pOC/nFTKdev1SN8fko0Lptc1RIbTNgK/sEeFAQUMeVGaun7CK10GI9POtKWaqjI
+ /oQrB+byWr0cTPrGKKRpzC2KG+qeLBAO6Z25jCZMQiyge8VcbgwKAW3Zh0fWWnRu7Zzb
+ I/ZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1736983370; x=1737588170;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=v1ksYOM0o00abVVAGTGDr7lB/CzuY5HznVZ0izWIqZs=;
+ b=Mf0en9bhT7x+sx6MnrjropImuvYbeKFJOB0/7sZO1jyHDiSIaLeKaFEbL2zwWuy1dd
+ +BfC6cTdpadERERJQac7oW57Y5YMDe/1b3OHbvButNN0nHEo+oMVT6D9R5S636fTiXBK
+ 94aaE5yJJroBbpXt2oFY/CjAjyv8+CLHuEZd8DIz8Li66pkfMKzYRTBcwq7ZLduU/6S1
+ pESSseC7rAkRS6JdW3qofgxpwc8gOkvx9W98RjHm4WQNXS9l4C1WosLTpa7kPs4rmFEo
+ aomQBH+aY9d1hQufNdQHYBT9gZi/6B9gKILr/bNOQN9ZJJbnCyIlt+upOusSqJJ1OxLn
+ i9OQ==
+X-Gm-Message-State: AOJu0Yyaar1Up0Wp7Ufi02cIp6gG0cC1q736MsYr3+IizC7A6xeZRgyJ
+ YSAnoQacXRmxD5q4QdX7TOKXIsICuNYN2urxCl+lBxq2fwf77VUwlLetctt5U5jQ5IJh5qNhqFW
+ XPsg=
+X-Gm-Gg: ASbGncv3qb1wihWI4cG3nZw6tjK4rSubPf1kXM5amzv9AU/drvoqG/Zow9jyPwm3yc2
+ VNTeLvi06f6hx8mU0dp31p2+iRlaMJ3la+3uqdkfvZYRseWq/aA5OXM4q/5Bv7evRCGkVTIttTT
+ 94n7TYo9nJMNo20drY+RcpduwlkniWZodf17ObK5xw/E7Dz1Ffc30bF6F1SpB4yIInDmQz4TuIb
+ NVT4WQQgCF5cSlJrVAP2PNgFFdqAfrd5NHk68T3FWkD27w0D0OZl3TahChDaNmjI2F6a39Z75G2
+ SZXePPD0U2q765qJH2YAN36AACVMAt4=
+X-Google-Smtp-Source: AGHT+IHT129G4fGxNCf1AMZdn85+6KHjetTbYExn40sz/eGQYUBhLWdZdN4+0JxI/MLzrXcfodZagg==
+X-Received: by 2002:a05:600c:1c14:b0:436:1ac2:1ad2 with SMTP id
+ 5b1f17b1804b1-436e26c0400mr248555525e9.19.1736983369774; 
+ Wed, 15 Jan 2025 15:22:49 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-437c7525ee9sm38108385e9.32.2025.01.15.15.22.48
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 15 Jan 2025 15:22:49 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Jason Wang <jasowang@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>, qemu-block@nongnu.org,
+ Fam Zheng <fam@euphon.net>, Paolo Bonzini <pbonzini@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Kevin Wolf <kwolf@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, John Snow <jsnow@redhat.com>
+Subject: [PATCH 00/21] hw/i386/pc: Remove deprecated 2.4 and 2.5 PC machines
+Date: Thu, 16 Jan 2025 00:22:26 +0100
+Message-ID: <20250115232247.30364-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: S_umNTJmiIJXq99TXwX57q3kGmXZjryg
-X-Proofpoint-GUID: S_umNTJmiIJXq99TXwX57q3kGmXZjryg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-15_10,2025-01-15_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0
- malwarescore=0 adultscore=0 priorityscore=1501 phishscore=0 clxscore=1015
- suspectscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
- mlxlogscore=827 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501150165
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=-1.793, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,60 +102,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently single-insn TBs created from I/O memory are not added to
-region_trees. Therefore, when they generate exceptions, they are not
-handled by cpu_restore_state_from_tb(). For x86 this is not a problem,
-because x86_restore_state_to_opc() only restores pc and cc, which are
-already correct. However, on several other architectures,
-restore_state_to_opc() restores more registers, and guests can notice
-incorrect values.
+The versioned 'pc' and 'q35' machines up to 2.12 been marked
+as deprecated two releases ago, and are older than 6 years,
+so according to our support policy we can remove them.
 
-Fix by always calling tcg_tb_insert(). This may increase the size of
-region_trees, but tcg_region_reset_all() clears it once code_gen_buffer
-fills up, so it will not grow uncontrollably.
+This series only includes the 2.4 and 2.5 machines removal,
+as it is a big enough number of LoC removed. Rest will
+follow. Highlight is the legacy fw_cfg API removal :)
 
-Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- accel/tcg/translate-all.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+Philippe Mathieu-Daudé (21):
+  hw/i386/pc: Remove unused pc_compat_2_3 declarations
+  hw/i386/pc: Remove deprecated pc-q35-2.4 and pc-i440fx-2.4 machines
+  hw/i386/pc: Remove PCMachineClass::broken_reserved_end field
+  hw/i386/pc: Remove pc_compat_2_4[] array
+  target/i386/cpu: Remove X86CPU::check_cpuid field
+  target/i386/cpu: Pass Error** to x86_cpu_filter_features()
+  hw/core/machine: Remove hw_compat_2_4[] array
+  hw/net/e1000: Remove unused E1000_FLAG_MAC flag
+  hw/virtio/virtio-pci: Remove VIRTIO_PCI_FLAG_MIGRATE_EXTRA definition
+  hw/virtio/virtio-pci: Remove VIRTIO_PCI_FLAG_DISABLE_PCIE definition
+  hw/i386/pc: Remove deprecated pc-q35-2.5 and pc-i440fx-2.5 machines
+  hw/i386/x86: Remove X86MachineClass::save_tsc_khz field
+  hw/nvram/fw_cfg: Remove legacy FW_CFG_ORDER_OVERRIDE
+  hw/core/machine: Remove hw_compat_2_5[] array
+  hw/block/fdc-isa: Remove 'fallback' property
+  hw/scsi/vmw_pvscsi: Remove PVSCSI_COMPAT_OLD_PCI_CONFIGURATION
+    definition
+  hw/scsi/vmw_pvscsi: Remove PVSCSI_COMPAT_DISABLE_PCIE_BIT definition
+  hw/scsi/vmw_pvscsi: Convert DeviceRealize -> InstanceInit
+  hw/net/vmxnet3: Remove VMXNET3_COMPAT_FLAG_OLD_MSI_OFFSETS definition
+  hw/net/vmxnet3: Remove VMXNET3_COMPAT_FLAG_DISABLE_PCIE definition
+  hw/net/vmxnet3: Merge DeviceRealize in InstanceInit
 
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index 453eb20ec95..6333302813e 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -531,23 +531,23 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
-         tb_reset_jump(tb, 1);
-     }
- 
-+    /*
-+     * Insert TB into the corresponding region tree before publishing it
-+     * through QHT. Otherwise rewinding happened in the TB might fail to
-+     * lookup itself using host PC.
-+     */
-+    tcg_tb_insert(tb);
-+
-     /*
-      * If the TB is not associated with a physical RAM page then it must be
-      * a temporary one-insn TB, and we have nothing left to do. Return early
--     * before attempting to link to other TBs or add to the lookup table.
-+     * before attempting to link to other TBs.
-      */
-     if (tb_page_addr0(tb) == -1) {
-         assert_no_pages_locked();
-         return tb;
-     }
- 
--    /*
--     * Insert TB into the corresponding region tree before publishing it
--     * through QHT. Otherwise rewinding happened in the TB might fail to
--     * lookup itself using host PC.
--     */
--    tcg_tb_insert(tb);
--
-     /*
-      * No explicit memory barrier is required -- tb_link_page() makes the
-      * TB visible in a consistent state.
+ docs/about/removed-features.rst |   4 ++
+ include/hw/boards.h             |   9 +--
+ include/hw/i386/pc.h            |  10 ---
+ include/hw/i386/x86.h           |   5 --
+ include/hw/loader.h             |   2 -
+ include/hw/nvram/fw_cfg.h       |  10 ---
+ include/hw/virtio/virtio-pci.h  |   8 ---
+ target/i386/cpu.h               |   1 -
+ hw/block/fdc-isa.c              |   4 +-
+ hw/core/loader.c                |  14 ----
+ hw/core/machine.c               |  18 ------
+ hw/i386/pc.c                    |  42 ++----------
+ hw/i386/pc_piix.c               |  26 --------
+ hw/i386/pc_q35.c                |  26 --------
+ hw/i386/x86.c                   |   1 -
+ hw/net/e1000.c                  |  63 ++++--------------
+ hw/net/vmxnet3.c                |  44 ++-----------
+ hw/nvram/fw_cfg.c               | 109 ++------------------------------
+ hw/scsi/vmw_pvscsi.c            |  67 ++++----------------
+ hw/virtio/virtio-pci.c          |  15 +----
+ system/vl.c                     |   5 --
+ target/i386/cpu.c               |  27 +++-----
+ target/i386/machine.c           |   5 +-
+ 23 files changed, 61 insertions(+), 454 deletions(-)
+
 -- 
 2.47.1
 
