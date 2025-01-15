@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D30CA12AB6
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 19:17:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5468EA12AB1
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 19:16:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY7p5-0006Oi-6H; Wed, 15 Jan 2025 13:08:59 -0500
+	id 1tY7p7-0006PE-2p; Wed, 15 Jan 2025 13:09:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7p0-0006OA-UK
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:08:55 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7p2-0006OP-63
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:08:57 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7oz-0006WY-5h
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:08:54 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7p0-0006Wn-NL
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:08:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736964531;
+ s=mimecast20190719; t=1736964533;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BA+AAiUYSVdwa0YScwU4cx7B/C7WfTspevhXkrQeIKc=;
- b=WTnNpIvIOc8+aQki81AdsdEdZKw5Y5tUaBahLBtLS2U+/zjilNj0h0zf9OqZeaDDT+WPoj
- 2sMIhzJ7hAkRq5a2UWjPiMR2APZtQ2kjy+QZW0C7IJsOaqeVLz7N4UYyoThoVUiIfOt1W8
- VqpWBkC+o9LigJOerkyJqHTUZIBtrmE=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=o8FUzP/ipOTW2ewlNfL+QvXOqY/FnUZooNamJ6cM0LY=;
+ b=e9zMirwDLCHyuICV+ZjrCZ4fEUa2sxZYEEC0th4MvvJXCfLWESC3hRN977Eh3/8eZZPP0N
+ ef/6LjXgfI4Rs2bH2lL9dBiBz5+jbb8aDErc+wBvJWVgA3WfDgzDrK2O9AWswsP8EB5bTX
+ hmdj9HdZh7sxcm7FYLpDP4iNZ0ecbtY=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-166-PVMmn7k0PsOtgECQyvRMTw-1; Wed, 15 Jan 2025 13:08:50 -0500
-X-MC-Unique: PVMmn7k0PsOtgECQyvRMTw-1
-X-Mimecast-MFC-AGG-ID: PVMmn7k0PsOtgECQyvRMTw
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-436723db6c4so47624185e9.3
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 10:08:48 -0800 (PST)
+ us-mta-408-YuYkSA2DOHC4RkaqQfvfbw-1; Wed, 15 Jan 2025 13:08:52 -0500
+X-MC-Unique: YuYkSA2DOHC4RkaqQfvfbw-1
+X-Mimecast-MFC-AGG-ID: YuYkSA2DOHC4RkaqQfvfbw
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-436289a570eso32466685e9.0
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 10:08:52 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736964527; x=1737569327;
+ d=1e100.net; s=20230601; t=1736964530; x=1737569330;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BA+AAiUYSVdwa0YScwU4cx7B/C7WfTspevhXkrQeIKc=;
- b=jpio+Ug6EvyTzyMDyRx8BS4igacFDBg+05YBE15GgzZdHU8JP306Qm+mBgEgQ0qTyh
- bpnaHR8V9oTZ5NFx1Nfb6CSMFQfJ/xvvBLw3rEcOILKceit3hNJkX6o+u/wMdZmfTvko
- ocwYeMMLzE2Y1/RnPfOl54IJb+v2z3Q25btDDg4yziZTY56tJkaMUmtL+JaIkYaCa99P
- 0OAm2VQgok0EpBKNjQv+E0J04Ww6/5SYiumTBO1VzGmIScwkbRsxkdUFyk2oVTDcZD0k
- 4dRtpGsZYue8MSfzlTupG9T4PHtuksP4vYn+87UKsJI7Re0gdYINoQ2XiVzPc0GGIRMr
- AX5w==
-X-Gm-Message-State: AOJu0Yw30RzN7NwEXrCiL84KZRXe7KqAjRvMkp9bCpVwDfgqRY6g7LTU
- mH7nOqx8TCg4bZTLERWgcTDEcsNsuzDhs3N/xFmFkuYtcbgs2XRTPJmG19yQ4aCWwcIbbZnm3ij
- /9UZq0P8bRtDEjNf6RYqJsgtDkuu0raj4m+ovnlk7QxgLjgzBJzDPFkK8VoecXYaLrxJXDj41cd
- 2WNq+QmtW3m2WO4FrHqnKfll/EmpX0Tg==
-X-Gm-Gg: ASbGncto84OqFqMpGrdyKaXEzk0kiZ7XU8mR/be1ZUVxtuJjzRYHWFiQVgyQxtkzPGa
- TIjH/L1r4kcMm5dIELtMF3i5F/7ULtttUmMJJwFzqwXQL79iR58k9tS8eJrDbBA/r3yogd2g3a4
- gui/58MvG8KgKkHVYE7NIPe2kicsgacUQ+TP3xbIJBAo2/HUttODV3MEg/Zx+tE1PUhO+2p6IM+
- M3aTh7XyMqumPX1bSoAV6umrXiJvnMIv9FrK1I63MqF7k4kLVn1
-X-Received: by 2002:a05:600c:3ba0:b0:434:a802:43d with SMTP id
- 5b1f17b1804b1-436e27170c7mr248548195e9.27.1736964527411; 
- Wed, 15 Jan 2025 10:08:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGi/RGdHLBf5LDbvhVDMM/MOlTqSeNTzFMKzF9AvI/GEK715h4l13UDc/Xmkd3tleUOgpw3Ig==
-X-Received: by 2002:a05:600c:3ba0:b0:434:a802:43d with SMTP id
- 5b1f17b1804b1-436e27170c7mr248547855e9.27.1736964526923; 
- Wed, 15 Jan 2025 10:08:46 -0800 (PST)
+ bh=o8FUzP/ipOTW2ewlNfL+QvXOqY/FnUZooNamJ6cM0LY=;
+ b=BkuYBWFEaU0eAUZ6dw1BjSlOwjcFEP2vFB3r8LvLVK1xagZvT46H1yl/l+1qsWMyhW
+ 3YDkhkpzyMBxrkpMhnuS6Z40qOHP4LTmQ3XM13ie+ntYbMk8FhMrBhk6MN/xBEjB5/Pr
+ qercIw3LzEE08ZbbSEcplrZtldhwUFb+C3Q+58LYVPLUg83RT5OMnYtiUL+SmZesYaFL
+ pWZMlo/l7meysp7yj4hExPlwAc0V+MPPHtAJfRKmJsEFiK6Q3FRKAy8FGXtYbW7iTHgZ
+ /N5i3wWSg7EEK2VWsasEiSA3iI+Q02jB/ZuKVfTq8c9+WW/lkec+GWpZrs3HDO/vb7R9
+ mBpw==
+X-Gm-Message-State: AOJu0YyJaTz9fUZkjdZDjiBEKvNsLhY4EVXDAZkXc9ha2LQme329j5fM
+ lXFawpSeAWnB5cMiEEyNv8aUec6s4wFhZ+j+YpZG2gJez4g0XKaxOXObq7cZiOsNr2t3MqnCFLT
+ 0MxkOdJZOEXRUnyNGjUz+0BI6uE98yse9qzPtCGzj1IzQmnT2r2tk+QIXG6XN4ertbuQ1LJOLRB
+ urH3Hzlooj+9xewnum4hWp2FIk6knIvA==
+X-Gm-Gg: ASbGncu9mHgrE7t6sDuP1XeZuuIIddygxUWdUO9NQ70LHiXY5eljZgBO7Xl24enf6WS
+ Zv0PlaK+xKROkUd+06E9cN0ZcM7rB5bcItKAOMrsR5FS4sCyxZXJJSv4G0gsC7avQZwpMFy+kyn
+ FVtM2xiTaTtW4oNLsvsR5Ot913QYsW97dxdUvjNIiaJ2eB+J2WZxmddEfhSpZOkIxBDnB9UUSyS
+ LSmHHBrQtqaQf5PFF/zr5gfIbK9gEEdWjHfcLJ1fBxKI2RDhuBZ
+X-Received: by 2002:a05:600c:450d:b0:434:a734:d279 with SMTP id
+ 5b1f17b1804b1-436e26a8927mr346818355e9.16.1736964530607; 
+ Wed, 15 Jan 2025 10:08:50 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH6sxC7X2XFgof1z74pcowgq7OTwbb8OZI96cM+j+2HZdcu6GORvYhO6QKL/FZ81UUNvDkRGw==
+X-Received: by 2002:a05:600c:450d:b0:434:a734:d279 with SMTP id
+ 5b1f17b1804b1-436e26a8927mr346818005e9.16.1736964530188; 
+ Wed, 15 Jan 2025 10:08:50 -0800 (PST)
 Received: from redhat.com ([2a0d:6fc7:342:db8c:4ec4:322b:a6a8:f411])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c74e3b97sm30941335e9.32.2025.01.15.10.08.44
+ 5b1f17b1804b1-437c74e59fasm32071025e9.34.2025.01.15.10.08.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Jan 2025 10:08:46 -0800 (PST)
-Date: Wed, 15 Jan 2025 13:08:43 -0500
+ Wed, 15 Jan 2025 10:08:49 -0800 (PST)
+Date: Wed, 15 Jan 2025 13:08:47 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Yu Zhang <yu.c.zhang@linux.intel.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>, Yi Liu <yi.l.liu@intel.com>,
  =?utf-8?Q?Cl=C3=A9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
- Yi Liu <yi.l.liu@intel.com>, Jason Wang <jasowang@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 06/48] intel_iommu: Use the latest fault reasons defined by spec
-Message-ID: <a84e37af36ca89880395bf999873f1a477bf6fa7.1736964488.git.mst@redhat.com>
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 07/48] intel_iommu: Make pasid entry type check accurate
+Message-ID: <b291dae33d1dab48670b86807a71cb1cbadf39aa.1736964488.git.mst@redhat.com>
 References: <cover.1736964487.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -114,136 +112,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yu Zhang <yu.c.zhang@linux.intel.com>
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Spec revision 3.0 or above defines more detailed fault reasons for
-scalable mode. So introduce them into emulation code, see spec
-section 7.1.2 for details.
+When guest configures Nested Translation(011b) or First-stage Translation only
+(001b), type check passed unaccurately.
 
-Note spec revision has no relation with VERSION register, Guest
-kernel should not use that register to judge what features are
-supported. Instead cap/ecap bits should be checked.
+Fails the type check in those cases as their simulation isn't supported yet.
 
-Signed-off-by: Yu Zhang <yu.c.zhang@linux.intel.com>
+Fixes: fb43cf739e1 ("intel_iommu: scalable mode emulation")
+Suggested-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
 Reviewed-by: Yi Liu <yi.l.liu@intel.com>
 Acked-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20241212083757.605022-2-zhenzhong.duan@intel.com>
+Message-Id: <20241212083757.605022-3-zhenzhong.duan@intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/intel_iommu_internal.h |  9 ++++++++-
- hw/i386/intel_iommu.c          | 25 ++++++++++++++++---------
- 2 files changed, 24 insertions(+), 10 deletions(-)
+ hw/i386/intel_iommu.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
-index 4323fc5d6d..a987023692 100644
---- a/hw/i386/intel_iommu_internal.h
-+++ b/hw/i386/intel_iommu_internal.h
-@@ -311,7 +311,14 @@ typedef enum VTDFaultReason {
-                                   * request while disabled */
-     VTD_FR_IR_SID_ERR = 0x26,   /* Invalid Source-ID */
- 
--    VTD_FR_PASID_TABLE_INV = 0x58,  /*Invalid PASID table entry */
-+    /* PASID directory entry access failure */
-+    VTD_FR_PASID_DIR_ACCESS_ERR = 0x50,
-+    /* The Present(P) field of pasid directory entry is 0 */
-+    VTD_FR_PASID_DIR_ENTRY_P = 0x51,
-+    VTD_FR_PASID_TABLE_ACCESS_ERR = 0x58, /* PASID table entry access failure */
-+    /* The Present(P) field of pasid table entry is 0 */
-+    VTD_FR_PASID_ENTRY_P = 0x59,
-+    VTD_FR_PASID_TABLE_ENTRY_INV = 0x5b,  /*Invalid PASID table entry */
- 
-     /* Output address in the interrupt address range for scalable mode */
-     VTD_FR_SM_INTERRUPT_ADDR = 0x87,
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index a8c275f9ce..0ab1676d5f 100644
+index 0ab1676d5f..bd639b7ff7 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -796,7 +796,7 @@ static int vtd_get_pdire_from_pdir_table(dma_addr_t pasid_dir_base,
-     addr = pasid_dir_base + index * entry_size;
-     if (dma_memory_read(&address_space_memory, addr,
-                         pdire, entry_size, MEMTXATTRS_UNSPECIFIED)) {
--        return -VTD_FR_PASID_TABLE_INV;
-+        return -VTD_FR_PASID_DIR_ACCESS_ERR;
-     }
- 
-     pdire->val = le64_to_cpu(pdire->val);
-@@ -814,6 +814,7 @@ static int vtd_get_pe_in_pasid_leaf_table(IntelIOMMUState *s,
-                                           dma_addr_t addr,
-                                           VTDPASIDEntry *pe)
+@@ -759,20 +759,16 @@ static inline bool vtd_pe_type_check(X86IOMMUState *x86_iommu,
+                                      VTDPASIDEntry *pe)
  {
-+    uint8_t pgtt;
-     uint32_t index;
-     dma_addr_t entry_size;
-     X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
-@@ -823,7 +824,7 @@ static int vtd_get_pe_in_pasid_leaf_table(IntelIOMMUState *s,
-     addr = addr + index * entry_size;
-     if (dma_memory_read(&address_space_memory, addr,
-                         pe, entry_size, MEMTXATTRS_UNSPECIFIED)) {
--        return -VTD_FR_PASID_TABLE_INV;
-+        return -VTD_FR_PASID_TABLE_ACCESS_ERR;
+     switch (VTD_PE_GET_TYPE(pe)) {
+-    case VTD_SM_PASID_ENTRY_FLT:
+     case VTD_SM_PASID_ENTRY_SLT:
+-    case VTD_SM_PASID_ENTRY_NESTED:
+-        break;
++        return true;
+     case VTD_SM_PASID_ENTRY_PT:
+-        if (!x86_iommu->pt_supported) {
+-            return false;
+-        }
+-        break;
++        return x86_iommu->pt_supported;
++    case VTD_SM_PASID_ENTRY_FLT:
++    case VTD_SM_PASID_ENTRY_NESTED:
+     default:
+         /* Unknown type */
+         return false;
      }
-     for (size_t i = 0; i < ARRAY_SIZE(pe->val); i++) {
-         pe->val[i] = le64_to_cpu(pe->val[i]);
-@@ -831,11 +832,13 @@ static int vtd_get_pe_in_pasid_leaf_table(IntelIOMMUState *s,
+-    return true;
+ }
  
-     /* Do translation type check */
-     if (!vtd_pe_type_check(x86_iommu, pe)) {
--        return -VTD_FR_PASID_TABLE_INV;
-+        return -VTD_FR_PASID_TABLE_ENTRY_INV;
-     }
- 
--    if (!vtd_is_level_supported(s, VTD_PE_GET_LEVEL(pe))) {
--        return -VTD_FR_PASID_TABLE_INV;
-+    pgtt = VTD_PE_GET_TYPE(pe);
-+    if (pgtt == VTD_SM_PASID_ENTRY_SLT &&
-+        !vtd_is_level_supported(s, VTD_PE_GET_LEVEL(pe))) {
-+            return -VTD_FR_PASID_TABLE_ENTRY_INV;
-     }
- 
-     return 0;
-@@ -876,7 +879,7 @@ static int vtd_get_pe_from_pasid_table(IntelIOMMUState *s,
-     }
- 
-     if (!vtd_pdire_present(&pdire)) {
--        return -VTD_FR_PASID_TABLE_INV;
-+        return -VTD_FR_PASID_DIR_ENTRY_P;
-     }
- 
-     ret = vtd_get_pe_from_pdire(s, pasid, &pdire, pe);
-@@ -885,7 +888,7 @@ static int vtd_get_pe_from_pasid_table(IntelIOMMUState *s,
-     }
- 
-     if (!vtd_pe_present(pe)) {
--        return -VTD_FR_PASID_TABLE_INV;
-+        return -VTD_FR_PASID_ENTRY_P;
-     }
- 
-     return 0;
-@@ -938,7 +941,7 @@ static int vtd_ce_get_pasid_fpd(IntelIOMMUState *s,
-     }
- 
-     if (!vtd_pdire_present(&pdire)) {
--        return -VTD_FR_PASID_TABLE_INV;
-+        return -VTD_FR_PASID_DIR_ENTRY_P;
-     }
- 
-     /*
-@@ -1795,7 +1798,11 @@ static const bool vtd_qualified_faults[] = {
-     [VTD_FR_ROOT_ENTRY_RSVD] = false,
-     [VTD_FR_PAGING_ENTRY_RSVD] = true,
-     [VTD_FR_CONTEXT_ENTRY_TT] = true,
--    [VTD_FR_PASID_TABLE_INV] = false,
-+    [VTD_FR_PASID_DIR_ACCESS_ERR] = false,
-+    [VTD_FR_PASID_DIR_ENTRY_P] = true,
-+    [VTD_FR_PASID_TABLE_ACCESS_ERR] = false,
-+    [VTD_FR_PASID_ENTRY_P] = true,
-+    [VTD_FR_PASID_TABLE_ENTRY_INV] = true,
-     [VTD_FR_SM_INTERRUPT_ADDR] = true,
-     [VTD_FR_MAX] = false,
- };
+ static inline bool vtd_pdire_present(VTDPASIDDirEntry *pdire)
 -- 
 MST
 
