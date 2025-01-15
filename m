@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C85CEA12B5C
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 20:02:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 472C4A12B60
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 20:03:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY8dc-0007JQ-Ff; Wed, 15 Jan 2025 14:01:12 -0500
+	id 1tY8dd-0007KB-Cs; Wed, 15 Jan 2025 14:01:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tY8dX-0007Fo-CD
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 14:01:07 -0500
+ id 1tY8dY-0007GA-E0
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 14:01:08 -0500
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tY8dV-0005dI-9r
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 14:01:07 -0500
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50FHtoqA027994;
+ id 1tY8dW-0005dT-4n
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 14:01:08 -0500
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50FHtrM9009505;
  Wed, 15 Jan 2025 19:01:02 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=kCHlHLjR18k1Pqlms+ywU8yWmIhLhIYcY/4kHbhVxVA=; b=
- gHbLg0Z+ntM4d5Cq6tEN00paGCWyov0Bu3YctU3t4/uRMp59A8+ubyu8Q9oE2eZe
- yYMC+3fsxnaUgtV9R/AAgRi1oxz4FeujADOAxMn3+RdFazdNY5WvsijfWbHDHPQZ
- 3Ugzq1vWv6WjjmFCBfjUYC3nIGvdMEV6hWXDR58l1jeBQ2YZ0wNlGN+EGvRzg+Bl
- yc7oedDcMQc/gx0GzWELTJMuoPX+giH72rDB21nRLC7xgFcDBd99pE1OPlTPdtBU
- pVVkta9yMfZRYNKvIy8I0Gt94E58PjrBPFquHDdAw+UhYj9I0TH0wWIaQUX9vuX1
- 6H+Rfuptj4SR6DWhE9sYfw==
+ corp-2023-11-20; bh=WPtAzp3t63GKnHndvZ80otHiF6D7mgKfuGwae+4YY/0=; b=
+ GpDsNTBUrtMKsI0vxkoNsYD7GEZGzIS7MuYeUgDOFZZIcr7TGxDXRd8zAoueS2wt
+ NnuXr+Zth8Nltu7onFGzP9KrVyVfP/h1+OP2lM36ndm/bc7iJ3oNkWFxuNeRibpU
+ /l4HtHZRZy7r4r/fQW9ibakvQH8ZbYm1lCBIuTvLyY3IuRADsUbYGPWSGUVZ+6Gd
+ 7yrpRpOJeC6zwiQ0STyFzGROexC1OCLPt6g8M7FFDb05Xq2Fp0E/BcMLcuqW9KTJ
+ 1hIP0e6XbdySb8UNrJ2A9XiKnA3vkIf4lJKeGaw66sNhdBfCBVnzadhBSHr3B20o
+ XcNC9w1+HFNJi18nI34n6Q==
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 446912scv3-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 443h6t0nqb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 15 Jan 2025 19:01:01 +0000 (GMT)
+ Wed, 15 Jan 2025 19:01:02 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 50FHKrHL034834; Wed, 15 Jan 2025 19:01:01 GMT
+ with ESMTP id 50FHFkHL033248; Wed, 15 Jan 2025 19:01:01 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 443f39ur56-1
+ 443f39ur5v-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 15 Jan 2025 19:01:00 +0000
+ Wed, 15 Jan 2025 19:01:01 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 50FJ0peH016497;
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 50FJ0peJ016497;
  Wed, 15 Jan 2025 19:01:00 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 443f39uqwr-13; Wed, 15 Jan 2025 19:01:00 +0000
+ ESMTP id 443f39uqwr-14; Wed, 15 Jan 2025 19:01:00 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,9 +62,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V7 12/24] migration: incoming channel
-Date: Wed, 15 Jan 2025 11:00:38 -0800
-Message-Id: <1736967650-129648-13-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V7 13/24] migration: SCM_RIGHTS for QEMUFile
+Date: Wed, 15 Jan 2025 11:00:39 -0800
+Message-Id: <1736967650-129648-14-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1736967650-129648-1-git-send-email-steven.sistare@oracle.com>
 References: <1736967650-129648-1-git-send-email-steven.sistare@oracle.com>
@@ -76,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  suspectscore=0 phishscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
  definitions=main-2501150138
-X-Proofpoint-ORIG-GUID: _KLUo5wkRCe91yaDL72Ir6GhUBKrhIza
-X-Proofpoint-GUID: _KLUo5wkRCe91yaDL72Ir6GhUBKrhIza
+X-Proofpoint-GUID: Fgg53a-YwVS2NqYqIThUoFg0bDtRcuO3
+X-Proofpoint-ORIG-GUID: Fgg53a-YwVS2NqYqIThUoFg0bDtRcuO3
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -45
@@ -103,184 +103,191 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extend the -incoming option to allow an @MigrationChannel to be specified.
-This allows channels other than 'main' to be described on the command
-line, which will be needed for CPR.
+Define functions to put/get file descriptors to/from a QEMUFile, for qio
+channels that support SCM_RIGHTS.  Maintain ordering such that
+  put(A), put(fd), put(B)
+followed by
+  get(A), get(fd), get(B)
+always succeeds.  Other get orderings may succeed but are not guaranteed.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Acked-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- migration/migration.c | 21 ++++++++++++++++-----
- qemu-options.hx       | 21 +++++++++++++++++++++
- system/vl.c           | 36 +++++++++++++++++++++++++++++++++---
- 3 files changed, 70 insertions(+), 8 deletions(-)
+ migration/qemu-file.c  | 84 +++++++++++++++++++++++++++++++++++++++++++++++---
+ migration/qemu-file.h  |  2 ++
+ migration/trace-events |  2 ++
+ 3 files changed, 84 insertions(+), 4 deletions(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index b5ee98e..5f2540f 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -695,7 +695,8 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
-     if (channels) {
-         /* To verify that Migrate channel list has only item */
-         if (channels->next) {
--            error_setg(errp, "Channel list has more than one entries");
-+            error_setg(errp, "Channel list must have only one entry, "
-+                             "for type 'main'");
-             return;
-         }
-         addr = channels->value->addr;
-@@ -2054,6 +2055,7 @@ void qmp_migrate(const char *uri, bool has_channels,
-     MigrationState *s = migrate_get_current();
-     g_autoptr(MigrationChannel) channel = NULL;
-     MigrationAddress *addr = NULL;
-+    MigrationChannel *channelv[MIGRATION_CHANNEL_TYPE__MAX] = { NULL };
+diff --git a/migration/qemu-file.c b/migration/qemu-file.c
+index b6d2f58..1303a5b 100644
+--- a/migration/qemu-file.c
++++ b/migration/qemu-file.c
+@@ -37,6 +37,11 @@
+ #define IO_BUF_SIZE 32768
+ #define MAX_IOV_SIZE MIN_CONST(IOV_MAX, 64)
  
-     /*
-      * Having preliminary checks for uri and channel
-@@ -2064,12 +2066,21 @@ void qmp_migrate(const char *uri, bool has_channels,
-     }
++typedef struct FdEntry {
++    QTAILQ_ENTRY(FdEntry) entry;
++    int fd;
++} FdEntry;
++
+ struct QEMUFile {
+     QIOChannel *ioc;
+     bool is_writable;
+@@ -51,6 +56,9 @@ struct QEMUFile {
  
-     if (channels) {
--        /* To verify that Migrate channel list has only item */
--        if (channels->next) {
--            error_setg(errp, "Channel list has more than one entries");
-+        for ( ; channels; channels = channels->next) {
-+            MigrationChannelType type = channels->value->channel_type;
+     int last_error;
+     Error *last_error_obj;
 +
-+            if (channelv[type]) {
-+                error_setg(errp, "Channel list has more than one %s entry",
-+                           MigrationChannelType_str(type));
-+                return;
-+            }
-+            channelv[type] = channels->value;
-+        }
-+        addr = channelv[MIGRATION_CHANNEL_TYPE_MAIN]->addr;
-+        if (!addr) {
-+            error_setg(errp, "Channel list has no main entry");
-             return;
-         }
--        addr = channels->value->addr;
-     }
++    bool can_pass_fd;
++    QTAILQ_HEAD(, FdEntry) fds;
+ };
  
-     if (uri) {
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 90fad31..3d1af73 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -4940,10 +4940,18 @@ DEF("incoming", HAS_ARG, QEMU_OPTION_incoming, \
-     "-incoming exec:cmdline\n" \
-     "                accept incoming migration on given file descriptor\n" \
-     "                or from given external command\n" \
-+    "-incoming <channel>\n" \
-+    "                accept incoming migration on the migration channel\n" \
-     "-incoming defer\n" \
-     "                wait for the URI to be specified via migrate_incoming\n",
-     QEMU_ARCH_ALL)
- SRST
-+The -incoming option specifies the migration channel for an incoming
-+migration.  It may be used multiple times to specify multiple
-+migration channel types.  The channel type is specified in <channel>,
-+or is 'main' for all other forms of -incoming.  If multiple -incoming
-+options are specified for a channel type, the last one takes precedence.
-+
- ``-incoming tcp:[host]:port[,to=maxport][,ipv4=on|off][,ipv6=on|off]``
-   \ 
- ``-incoming rdma:host:port[,ipv4=on|off][,ipv6=on|off]``
-@@ -4963,6 +4971,19 @@ SRST
-     Accept incoming migration as an output from specified external
-     command.
+ /*
+@@ -109,6 +117,8 @@ static QEMUFile *qemu_file_new_impl(QIOChannel *ioc, bool is_writable)
+     object_ref(ioc);
+     f->ioc = ioc;
+     f->is_writable = is_writable;
++    f->can_pass_fd = qio_channel_has_feature(ioc, QIO_CHANNEL_FEATURE_FD_PASS);
++    QTAILQ_INIT(&f->fds);
  
-+``-incoming <channel>``
-+    Accept incoming migration on the migration channel.  For the syntax
-+    of <channel>, see the QAPI documentation of ``MigrationChannel``.
-+    Examples:
-+    ::
-+
-+        -incoming '{"channel-type": "main",
-+                    "addr": { "transport": "socket",
-+                              "type": "unix",
-+                              "path": "my.sock" }}'
-+
-+        -incoming main,addr.transport=socket,addr.type=unix,addr.path=my.sock
-+
- ``-incoming defer``
-     Wait for the URI to be specified via migrate\_incoming. The monitor
-     can be used to change settings (such as migration parameters) prior
-diff --git a/system/vl.c b/system/vl.c
-index 61285ad..251efa0 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -123,6 +123,7 @@
- #include "qapi/qapi-visit-block-core.h"
- #include "qapi/qapi-visit-compat.h"
- #include "qapi/qapi-visit-machine.h"
-+#include "qapi/qapi-visit-migration.h"
- #include "qapi/qapi-visit-ui.h"
- #include "qapi/qapi-commands-block-core.h"
- #include "qapi/qapi-commands-migration.h"
-@@ -159,6 +160,8 @@ typedef struct DeviceOption {
- static const char *cpu_option;
- static const char *mem_path;
- static const char *incoming;
-+static const char *incoming_str[MIGRATION_CHANNEL_TYPE__MAX];
-+static MigrationChannel *incoming_channels[MIGRATION_CHANNEL_TYPE__MAX];
- static const char *loadvm;
- static const char *accelerators;
- static bool have_custom_ram_size;
-@@ -1822,6 +1825,30 @@ static void object_option_add_visitor(Visitor *v)
-     QTAILQ_INSERT_TAIL(&object_opts, opt, next);
+     return f;
  }
+@@ -310,6 +320,10 @@ static ssize_t coroutine_mixed_fn qemu_fill_buffer(QEMUFile *f)
+     int len;
+     int pending;
+     Error *local_error = NULL;
++    g_autofree int *fds = NULL;
++    size_t nfd = 0;
++    int **pfds = f->can_pass_fd ? &fds : NULL;
++    size_t *pnfd = f->can_pass_fd ? &nfd : NULL;
  
-+static void incoming_option_parse(const char *str)
-+{
-+    MigrationChannelType type = MIGRATION_CHANNEL_TYPE_MAIN;
-+    MigrationChannel *channel;
-+    Visitor *v;
-+
-+    if (!strcmp(str, "defer")) {
-+        channel = NULL;
-+    } else if (migrate_is_uri(str)) {
-+        migrate_uri_parse(str, &channel, &error_fatal);
-+    } else {
-+        v = qobject_input_visitor_new_str(str, "channel-type", &error_fatal);
-+        visit_type_MigrationChannel(v, NULL, &channel, &error_fatal);
-+        visit_free(v);
-+        type = channel->channel_type;
+     assert(!qemu_file_is_writable(f));
+ 
+@@ -325,10 +339,9 @@ static ssize_t coroutine_mixed_fn qemu_fill_buffer(QEMUFile *f)
+     }
+ 
+     do {
+-        len = qio_channel_read(f->ioc,
+-                               (char *)f->buf + pending,
+-                               IO_BUF_SIZE - pending,
+-                               &local_error);
++        struct iovec iov = { f->buf + pending, IO_BUF_SIZE - pending };
++        len = qio_channel_readv_full(f->ioc, &iov, 1, pfds, pnfd, 0,
++                                     &local_error);
+         if (len == QIO_CHANNEL_ERR_BLOCK) {
+             if (qemu_in_coroutine()) {
+                 qio_channel_yield(f->ioc, G_IO_IN);
+@@ -348,9 +361,66 @@ static ssize_t coroutine_mixed_fn qemu_fill_buffer(QEMUFile *f)
+         qemu_file_set_error_obj(f, len, local_error);
+     }
+ 
++    for (int i = 0; i < nfd; i++) {
++        FdEntry *fde = g_new0(FdEntry, 1);
++        fde->fd = fds[i];
++        QTAILQ_INSERT_TAIL(&f->fds, fde, entry);
 +    }
 +
-+    /* New incoming spec replaces the previous */
-+    qapi_free_MigrationChannel(incoming_channels[type]);
-+    incoming_channels[type] = channel;
-+    incoming_str[type] = str;
-+    incoming = incoming_str[MIGRATION_CHANNEL_TYPE_MAIN];
+     return len;
+ }
+ 
++int qemu_file_put_fd(QEMUFile *f, int fd)
++{
++    int ret = 0;
++    QIOChannel *ioc = qemu_file_get_ioc(f);
++    Error *err = NULL;
++    struct iovec iov = { (void *)" ", 1 };
++
++    /*
++     * Send a dummy byte so qemu_fill_buffer on the receiving side does not
++     * fail with a len=0 error.  Flush first to maintain ordering wrt other
++     * data.
++     */
++
++    qemu_fflush(f);
++    if (qio_channel_writev_full(ioc, &iov, 1, &fd, 1, 0, &err) < 1) {
++        error_report_err(error_copy(err));
++        qemu_file_set_error_obj(f, -EIO, err);
++        ret = -1;
++    }
++    trace_qemu_file_put_fd(f->ioc->name, fd, ret);
++    return ret;
 +}
 +
- static void object_option_parse(const char *str)
- {
-     QemuOpts *opts;
-@@ -2753,8 +2780,11 @@ void qmp_x_exit_preconfig(Error **errp)
-     if (incoming) {
-         Error *local_err = NULL;
-         if (strcmp(incoming, "defer") != 0) {
--            qmp_migrate_incoming(incoming, false, NULL, true, true,
--                                 &local_err);
-+            g_autofree MigrationChannelList *channels =
-+                g_new0(MigrationChannelList, 1);
++int qemu_file_get_fd(QEMUFile *f)
++{
++    int fd = -1;
++    FdEntry *fde;
 +
-+            channels->value = incoming_channels[MIGRATION_CHANNEL_TYPE_MAIN];
-+            qmp_migrate_incoming(NULL, true, channels, true, true, &local_err);
-             if (local_err) {
-                 error_reportf_err(local_err, "-incoming %s: ", incoming);
-                 exit(1);
-@@ -3503,7 +3533,7 @@ void qemu_init(int argc, char **argv)
-                 if (!incoming) {
-                     runstate_set(RUN_STATE_INMIGRATE);
-                 }
--                incoming = optarg;
-+                incoming_option_parse(optarg);
-                 break;
-             case QEMU_OPTION_only_migratable:
-                 only_migratable = 1;
++    if (!f->can_pass_fd) {
++        Error *err = NULL;
++        error_setg(&err, "%s does not support fd passing", f->ioc->name);
++        error_report_err(error_copy(err));
++        qemu_file_set_error_obj(f, -EIO, err);
++        goto out;
++    }
++
++    /* Force the dummy byte and its fd passenger to appear. */
++    qemu_peek_byte(f, 0);
++
++    fde = QTAILQ_FIRST(&f->fds);
++    if (fde) {
++        qemu_get_byte(f);       /* Drop the dummy byte */
++        fd = fde->fd;
++        QTAILQ_REMOVE(&f->fds, fde, entry);
++        g_free(fde);
++    }
++out:
++    trace_qemu_file_get_fd(f->ioc->name, fd);
++    return fd;
++}
++
+ /** Closes the file
+  *
+  * Returns negative error value if any error happened on previous operations or
+@@ -361,11 +431,17 @@ static ssize_t coroutine_mixed_fn qemu_fill_buffer(QEMUFile *f)
+  */
+ int qemu_fclose(QEMUFile *f)
+ {
++    FdEntry *fde, *next;
+     int ret = qemu_fflush(f);
+     int ret2 = qio_channel_close(f->ioc, NULL);
+     if (ret >= 0) {
+         ret = ret2;
+     }
++    QTAILQ_FOREACH_SAFE(fde, &f->fds, entry, next) {
++        warn_report("qemu_fclose: received fd %d was never claimed", fde->fd);
++        close(fde->fd);
++        g_free(fde);
++    }
+     g_clear_pointer(&f->ioc, object_unref);
+     error_free(f->last_error_obj);
+     g_free(f);
+diff --git a/migration/qemu-file.h b/migration/qemu-file.h
+index 11c2120..3e47a20 100644
+--- a/migration/qemu-file.h
++++ b/migration/qemu-file.h
+@@ -79,5 +79,7 @@ size_t qemu_get_buffer_at(QEMUFile *f, const uint8_t *buf, size_t buflen,
+                           off_t pos);
+ 
+ QIOChannel *qemu_file_get_ioc(QEMUFile *file);
++int qemu_file_put_fd(QEMUFile *f, int fd);
++int qemu_file_get_fd(QEMUFile *f);
+ 
+ #endif
+diff --git a/migration/trace-events b/migration/trace-events
+index 4e3061b..abd9cdf 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -88,6 +88,8 @@ put_qlist_end(const char *field_name, const char *vmsd_name) "%s(%s)"
+ 
+ # qemu-file.c
+ qemu_file_fclose(void) ""
++qemu_file_put_fd(const char *name, int fd, int ret) "ioc %s, fd %d -> status %d"
++qemu_file_get_fd(const char *name, int fd) "ioc %s -> fd %d"
+ 
+ # ram.c
+ get_queued_page(const char *block_name, uint64_t tmp_offset, unsigned long page_abs) "%s/0x%" PRIx64 " page_abs=0x%lx"
 -- 
 1.8.3.1
 
