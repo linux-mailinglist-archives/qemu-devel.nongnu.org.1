@@ -2,89 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D15A125A0
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 15:10:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAB37A125CF
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 15:19:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY45V-0000MC-D0; Wed, 15 Jan 2025 09:09:41 -0500
+	id 1tY4DO-0003wp-Eo; Wed, 15 Jan 2025 09:17:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1tY45M-0000Kl-CO
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 09:09:32 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1tY45K-0002Lv-BS
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 09:09:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736950168;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ke609aWK2vFg3JmHGilestAfWBKgGdOp7VW0p6BaeHQ=;
- b=gZyUB7+V5y2BwkMQxU2if4zwj4BnnStrjr7SUohI1fcVhUvKM0VgmWdwRXWVN2c8e17zqq
- bWIb6+HMLIyEq6F3e4yDRNYMScBTsaW5xZvTI4bOBJBcRsPqyJlcucDbHQ2o2JlSNG9Qg3
- oxKlByipe8JXiNfspdCmhy+e2S2UqWo=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-586-hTABSVO9OeKoRYQPn_F1gg-1; Wed, 15 Jan 2025 09:09:27 -0500
-X-MC-Unique: hTABSVO9OeKoRYQPn_F1gg-1
-X-Mimecast-MFC-AGG-ID: hTABSVO9OeKoRYQPn_F1gg
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-aa63b02c69cso96597966b.0
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 06:09:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1tY4DL-0003vp-87
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 09:17:48 -0500
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1tY4DJ-00043w-Bh
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 09:17:46 -0500
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-2ee9a780de4so8542321a91.3
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 06:17:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1736950663; x=1737555463; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=hGKhrWasU+AV7YHxN8tVRXvw4hZD+9qEd3l1jgWJACs=;
+ b=RdrARRDDRpo/cE3DUMULVtFYrvLsQ+k370ueAnA8sObgfmk6pRsPxra869Nj9zLXcR
+ fkFNgZSQTMqSwgd0Elow11SDScjhA+HYW/dRM+Qi2DqN1ZFPmfswNuAXt5wcCXIiVMvM
+ De2hfH6eBPb4fTTr7Ac+qQRLyg0QduXek/DKjeaZxDTpje3w5YHf2nDSFYe6OQk4R9zQ
+ Zv+YolbEszHDUqmtpDvkp/Yo6UjMAQbWLavqnv1Zovct4Z5tlIGlYD6vucUYsYxM3h+s
+ oNEVBrI0IBi8oVMXI1mn2r4h7IrStfrrybj2FUsuWoMtIrdYIJxgvv+OXJ5P3xW4YT/V
+ cvjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736950165; x=1737554965;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ke609aWK2vFg3JmHGilestAfWBKgGdOp7VW0p6BaeHQ=;
- b=g7rFyIFeglaQsv01SvPJllSvSIIPDKnKZl/As6Y6poiOMXY/5GkWWlXWKSaRZHuNYT
- U7xuVC5Xs80UaaYisYhlTEcr8j2GH9u2F9asef7hJxajg9NUhsoAI0wGj3LCMl3f7498
- 4VVLXQrPV07f9u2+WRD7dAkaQMYVc4j9lr5r4hF2Fj9rxs2CrCAtwVeRumvlKhtmG0Zb
- /mzL9x5Lbcoe4HZ9vXVPClRl4bVlWrzgQnsWlZU9wipabuh0CUTdvEOd4ldLNOxp/HWt
- 7rrO2dyIUZzL2ywc8lMrtbydzb36MUXSsMIDtIJsxiLOEJT9qjV/GuukMJ7Z+Mgxd2st
- 92wA==
-X-Gm-Message-State: AOJu0YzdHBPhy+Qls5SbnpOFMa88lrAj2kOd7kx4XpbXNaBj2pW4xbae
- Nz3wjzrr6ekm9lDPaJrw/xs9eISZl7M+7FNysTuOOwNDTV8Xe3dhbXXTkk7r+dsSi5Gv/WZmpPy
- 85cOn15M3xpU3B+9koxR5ZR7gTEQJ0wqGt5iP3FCBG1iDF0XszVIlVj74QDmpoIurVsFPcngYle
- m9kesUIfIwj/V2VXSFNCLAe0LNBQD6ZAZl/o8=
-X-Gm-Gg: ASbGncvNkVIignH2+gjjcwYaVZ+pq7bdFxb5BlgrtCnhmnp2M/m4in3BM7Sv2GKRUGh
- S6Z0W9wm7wH2EcgstCqDwZHfRA2oqE+nvgWMsxHxx
-X-Received: by 2002:a17:907:1b05:b0:aab:a02c:764e with SMTP id
- a640c23a62f3a-ab2c3c7a0c6mr2421076466b.14.1736950165570; 
- Wed, 15 Jan 2025 06:09:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGrg9tg2ZWhKCQxZLiW2IXXbWPx7VDHsdtZ2gfz8Fd1QxxdC0iQFrtU4Hd4+PAZRQo4Tt9JL9Q9wpXzCj/E1z4=
-X-Received: by 2002:a17:907:1b05:b0:aab:a02c:764e with SMTP id
- a640c23a62f3a-ab2c3c7a0c6mr2421070866b.14.1736950165035; Wed, 15 Jan 2025
- 06:09:25 -0800 (PST)
+ d=1e100.net; s=20230601; t=1736950663; x=1737555463;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hGKhrWasU+AV7YHxN8tVRXvw4hZD+9qEd3l1jgWJACs=;
+ b=Ir0NEWbPE6+Xkc9uuM5nnHwqAxhFDtg/EGdzhNuoCda/q8tywab42tq9rlpklx+bYc
+ rmKeSiQDuZviBQzEauQngn4qJ8g4LSxFPjxOC8dF4ZycOOpoziP+Ae5ob15WYXe/Ozak
+ 8Gico0ReuVtvGtxlX/RmIZ9sMXH55si09mz8pWvCYsjfxzk1LDO9LdVbWXjcXJ02XG8n
+ zqrhCx0190U8x0k9Tj12bnikIGhSqkC7E15DIHAYUj7d+TP07Y4ehELHVmUnJ+t9m+XA
+ miiTa0b4AcjE4tsEJu1K50Fgp8hWe8B/axF/E27LRCThv9Wnh7rHNdkb3jFSMB/Y23Uc
+ +Geg==
+X-Gm-Message-State: AOJu0YwENQJdDKo+pCPZ49bVpxUGBRHGZTsM9HHjwHqe5MP3BwDE5jUK
+ 8edq+oBAOo5C/KcnINssI8OOZQdMVOuIJQxq8e1NWKRubRK1RbtYNnvk6Tm8Nr90dv5qA3sOfX/
+ Iy/q39FymfFvJ7EoC24+jsaEW30YbIYf1L2RHzstcwK6oSJ65KZO2yBNIhaOx2tsJaqObh9kbzk
+ 6n4q/Z4mWuc5Zw7wK2vg4oBSAXmkmYqG1JQtwK8EM=
+X-Gm-Gg: ASbGncuiJ4mBK+A54j8qw6zImjeRuP520xftuhA2GMCgPvuVnDZM+13S0BTqe5ZsZMn
+ g95e6FeBz3DZfmg++PMMhTQggxYQpVreONig0w5qpileKGwAoicGYwSHjm6Isal1T/I7whoqnp1
+ x1BP/rICWvqSLDdeEcyz0XbQ3wpFmepkrVbgdBKAR4sBcHT5a0nHXxfyN4wtvi1qwk4E2yy7aRs
+ z/5RMB50QnFM12L70BonBdv5i8yo5KIbRKqFcGQjc1bI2hgK0TxqMY5zy8pjzhTD6lfNyWZ//j8
+ 7aPTBRjQ
+X-Google-Smtp-Source: AGHT+IHC0TaKPKwHRkMVLPM8XqOe4416utXrCwUeh0aZ+sdMHuRGT11QxGOIiQHFF5f9w3gx8ksK0w==
+X-Received: by 2002:a17:90b:2b8b:b0:2ee:d824:b594 with SMTP id
+ 98e67ed59e1d1-2f548f761d7mr37381677a91.31.1736950662494; 
+ Wed, 15 Jan 2025 06:17:42 -0800 (PST)
+Received: from hsinchu16.internal.sifive.com ([210.176.154.34])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2f72c1cba9csm1432858a91.24.2025.01.15.06.17.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 15 Jan 2025 06:17:41 -0800 (PST)
+From: Jason Chien <jason.chien@sifive.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Jason Chien <jason.chien@sifive.com>,
+ Andrew Jones <ajones@ventanamicro.com>
+Subject: [PATCH v3 1/2] hw/riscv/riscv-iommu: Remove redundant struct members
+Date: Wed, 15 Jan 2025 22:17:29 +0800
+Message-ID: <20250115141730.30858-1-jason.chien@sifive.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-References: <20250115125342.3883374-1-imammedo@redhat.com>
- <20250115125342.3883374-2-imammedo@redhat.com>
-In-Reply-To: <20250115125342.3883374-2-imammedo@redhat.com>
-From: Ani Sinha <anisinha@redhat.com>
-Date: Wed, 15 Jan 2025 19:39:14 +0530
-X-Gm-Features: AbW1kvYLiTgrta6pslgdebOyVPghUUWLtURMr22qccBYgNtlYA4MsJUl8LouJ4c
-Message-ID: <CAK3XEhPROPEoMfym93-Oc7xLkRFrs_4u7FW=e8uzUUPAd9-37Q@mail.gmail.com>
-Subject: Re: [PATCH 1/3] tests: acpi: whitelist expected blobs
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: qemu-devel@nongnu.org, mst@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.793,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=jason.chien@sifive.com; helo=mail-pj1-x1030.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,66 +102,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 15, 2025 at 6:23=E2=80=AFPM Igor Mammedov <imammedo@redhat.com>=
- wrote:
->
-> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Initially, the IOMMU would create a thread, but this thread was removed in
+the merged version. The struct members for thread control should have been
+removed as well, but they were not removed in commit 0c54acb8243
+("hw/riscv: add RISC-V IOMMU base emulation").
 
-Acked-by: Ani Sinha <anisinha@redhat.com>
+Signed-off-by: Jason Chien <jason.chien@sifive.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+---
+ hw/riscv/riscv-iommu.h | 5 -----
+ 1 file changed, 5 deletions(-)
 
-> ---
->  tests/qtest/bios-tables-test-allowed-diff.h | 40 +++++++++++++++++++++
->  1 file changed, 40 insertions(+)
->
-> diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bi=
-os-tables-test-allowed-diff.h
-> index dfb8523c8b..085dfa9ff4 100644
-> --- a/tests/qtest/bios-tables-test-allowed-diff.h
-> +++ b/tests/qtest/bios-tables-test-allowed-diff.h
-> @@ -1 +1,41 @@
->  /* List of comma-separated changed AML files to ignore */
-> +"tests/data/acpi/x86/pc/DSDT",
-> +"tests/data/acpi/x86/pc/DSDT.acpierst",
-> +"tests/data/acpi/x86/pc/DSDT.acpihmat",
-> +"tests/data/acpi/x86/pc/DSDT.bridge",
-> +"tests/data/acpi/x86/pc/DSDT.cphp",
-> +"tests/data/acpi/x86/pc/DSDT.dimmpxm",
-> +"tests/data/acpi/x86/pc/DSDT.hpbridge",
-> +"tests/data/acpi/x86/pc/DSDT.ipmikcs",
-> +"tests/data/acpi/x86/pc/DSDT.memhp",
-> +"tests/data/acpi/x86/pc/DSDT.nohpet",
-> +"tests/data/acpi/x86/pc/DSDT.numamem",
-> +"tests/data/acpi/x86/pc/DSDT.roothp",
-> +"tests/data/acpi/x86/q35/DSDT",
-> +"tests/data/acpi/x86/q35/DSDT.acpierst",
-> +"tests/data/acpi/x86/q35/DSDT.acpihmat",
-> +"tests/data/acpi/x86/q35/DSDT.acpihmat-generic-x",
-> +"tests/data/acpi/x86/q35/DSDT.acpihmat-noinitiator",
-> +"tests/data/acpi/x86/q35/DSDT.applesmc",
-> +"tests/data/acpi/x86/q35/DSDT.bridge",
-> +"tests/data/acpi/x86/q35/DSDT.core-count",
-> +"tests/data/acpi/x86/q35/DSDT.core-count2",
-> +"tests/data/acpi/x86/q35/DSDT.cphp",
-> +"tests/data/acpi/x86/q35/DSDT.cxl",
-> +"tests/data/acpi/x86/q35/DSDT.dimmpxm",
-> +"tests/data/acpi/x86/q35/DSDT.ipmibt",
-> +"tests/data/acpi/x86/q35/DSDT.ipmismbus",
-> +"tests/data/acpi/x86/q35/DSDT.ivrs",
-> +"tests/data/acpi/x86/q35/DSDT.memhp",
-> +"tests/data/acpi/x86/q35/DSDT.mmio64",
-> +"tests/data/acpi/x86/q35/DSDT.multi-bridge",
-> +"tests/data/acpi/x86/q35/DSDT.nohpet",
-> +"tests/data/acpi/x86/q35/DSDT.numamem",
-> +"tests/data/acpi/x86/q35/DSDT.pvpanic-isa",
-> +"tests/data/acpi/x86/q35/DSDT.thread-count",
-> +"tests/data/acpi/x86/q35/DSDT.thread-count2",
-> +"tests/data/acpi/x86/q35/DSDT.tis.tpm12",
-> +"tests/data/acpi/x86/q35/DSDT.tis.tpm2",
-> +"tests/data/acpi/x86/q35/DSDT.type4-count",
-> +"tests/data/acpi/x86/q35/DSDT.viot",
-> +"tests/data/acpi/x86/q35/DSDT.xapic",
-> --
-> 2.43.0
->
+diff --git a/hw/riscv/riscv-iommu.h b/hw/riscv/riscv-iommu.h
+index 9424989df4..fa8a50fa24 100644
+--- a/hw/riscv/riscv-iommu.h
++++ b/hw/riscv/riscv-iommu.h
+@@ -58,11 +58,6 @@ struct RISCVIOMMUState {
+     /* interrupt notifier */
+     void (*notify)(RISCVIOMMUState *iommu, unsigned vector);
+ 
+-    /* IOMMU State Machine */
+-    QemuThread core_proc; /* Background processing thread */
+-    QemuCond core_cond;   /* Background processing wake up signal */
+-    unsigned core_exec;   /* Processing thread execution actions */
+-
+     /* IOMMU target address space */
+     AddressSpace *target_as;
+     MemoryRegion *target_mr;
+-- 
+2.43.2
 
 
