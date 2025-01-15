@@ -2,52 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA65A12413
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 13:52:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19BC5A12432
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 13:55:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY2s9-00085I-0N; Wed, 15 Jan 2025 07:51:50 -0500
+	id 1tY2sQ-0008Vq-3Y; Wed, 15 Jan 2025 07:52:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tY2rO-0007eP-EE; Wed, 15 Jan 2025 07:51:06 -0500
+ id 1tY2sJ-0008SC-2c; Wed, 15 Jan 2025 07:51:59 -0500
 Received: from nyc.source.kernel.org ([2604:1380:45d1:ec00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tY2rM-0006sQ-MZ; Wed, 15 Jan 2025 07:51:02 -0500
+ id 1tY2sG-0006zD-K1; Wed, 15 Jan 2025 07:51:58 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 1BAEFA41F4D;
- Wed, 15 Jan 2025 12:48:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD4EC4AF0D;
- Wed, 15 Jan 2025 12:50:41 +0000 (UTC)
+ by nyc.source.kernel.org (Postfix) with ESMTP id 92013A41F36;
+ Wed, 15 Jan 2025 12:50:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D80CC4CEDF;
+ Wed, 15 Jan 2025 12:51:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1736945441;
- bh=DZq3ehynlc63lZ3iGs1SNcajfqzDutIBxgWe19LJFlA=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Q4rApGEkZ/pEwqEbS8M4GYUjAEI5caZ2FvJ2qbXVivtz9ndeD4LQ4rTm6SCXqNgzB
- 2d6F9XSdfOw6XhRhir7hwx8YQbNbMe19VcAdDHpE6pzptnZCRBZEg/OBlRoPynOjK7
- W+JHdyJMDAa13OaWO1Ot9V3RscESSozTbejv8PPOVSCiANGB3gjo+ZageahhBirQqc
- lmwDXK1GYZRK696mhSz3ugF4Qlf6oNuQle38rrH5TBPCLFNYwSkX6BzB7LUGpaoG+n
- aStZwreC8IoB4BhYf+of7mzDU2pJ8D8SzFBEFfR4Gj3GF5731/U5c4U0sfvrkOYmAO
- XLWvWcMV62c7w==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98)
- (envelope-from <mchehab+huawei@kernel.org>)
- id 1tY2r1-00000004yGQ-1s8I; Wed, 15 Jan 2025 13:50:39 +0100
+ s=k20201202; t=1736945515;
+ bh=xVlIA1ZBfx9UjaShX5trBrkyVh5DWAz9sUCHbHTMPHk=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=Ez+TasmlorDLtiE3xHdMvQyNqBQ9bEUBPw1D/lPvwZ6i9hMavx+dCQeD4k/+gQZ/0
+ /EdF/Q/QhFP+3N/E7HNmevCo7xS0bU+CkX7TYNrp0gp0zsdubMHegpwofloNSyJW7i
+ HtA6UpPisawcHNGfTi2jw0LlnLrGgpg6+cMOokpQSzt/KhzKpVUhckyLZvcsS5dZGV
+ AmQv3V2lgM2lXy4WyqwTnIM6E1Yc2i+Pz4X5R3j+qEgYv2Lerq64/r1E50mnbMWFMj
+ VqQ76DTvDBQ57y5xAhdZGWEPG42AJsoUJ6+0kGJ5SqofK6j2ThIRHZupxOtpbLEoT1
+ i7sIA06EoxhYA==
+Date: Wed, 15 Jan 2025 13:51:49 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Shiju Jose <shiju.jose@huawei.com>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Dongjiu Geng <gengdongjiu1@gmail.com>, linux-kernel@vger.kernel.org
-Subject: [PATCH v7 16/16] docs: acpi_hest_ghes: fix documentation for CPER size
-Date: Wed, 15 Jan 2025 13:50:32 +0100
-Message-ID: <f7e94433bec19a9d6b23ecccc24b5fe3a6f7f52b.1736945236.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <cover.1736945236.git.mchehab+huawei@kernel.org>
-References: <cover.1736945236.git.mchehab+huawei@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Shiju Jose
+ <shiju.jose@huawei.com>, Ani Sinha <anisinha@redhat.com>, Dongjiu Geng
+ <gengdongjiu1@gmail.com>, Igor Mammedov <imammedo@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH v6 00/16] Prepare GHES driver to support error injection
+Message-ID: <20250115135149.24d1f53f@foz.lan>
+In-Reply-To: <20250115060854-mutt-send-email-mst@kernel.org>
+References: <cover.1733561462.git.mchehab+huawei@kernel.org>
+ <20250115060854-mutt-send-email-mst@kernel.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=2604:1380:45d1:ec00::3;
  envelope-from=mchehab+huawei@kernel.org; helo=nyc.source.kernel.org
 X-Spam_score_int: -44
@@ -72,36 +73,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While the spec defines a CPER size of 4KiB for each record,
-currently it is set to 1KiB. Fix the documentation and add
-a pointer to the macro name there, as this may help to keep
-it updated.
+Em Wed, 15 Jan 2025 06:09:12 -0500
+"Michael S. Tsirkin" <mst@redhat.com> escreveu:
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
----
- docs/specs/acpi_hest_ghes.rst | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+> On Sat, Dec 07, 2024 at 09:54:06AM +0100, Mauro Carvalho Chehab wrote:
+> > Hi Michael,
+> > 
+> > Please ignore the patch series I sent yesterday:
+> > 	https://lore.kernel.org/qemu-devel/20241207093922.1efa02ec@foz.lan/T/#t
+> > 
+> > The git range was wrong, and it was supposed to be v6. This is the right one.
+> > It is based on the top of v9.2.0-rc3.
+> > 
+> > Could you please merge this series for ACPI stuff? All patches were already
+> > reviewed by Igor. The changes against v4 are just on some patch descriptions,
+> > plus the addition of Reviewed-by. No Code changes.
+> > 
+> > Thanks,
+> > Mauro  
+> 
+> 
+> Still waiting for a version with minor nits fixed.
 
-diff --git a/docs/specs/acpi_hest_ghes.rst b/docs/specs/acpi_hest_ghes.rst
-index 68f1fbe0a4af..c3e9f8d9a702 100644
---- a/docs/specs/acpi_hest_ghes.rst
-+++ b/docs/specs/acpi_hest_ghes.rst
-@@ -67,8 +67,10 @@ Design Details
- (3) The address registers table contains N Error Block Address entries
-     and N Read Ack Register entries. The size for each entry is 8-byte.
-     The Error Status Data Block table contains N Error Status Data Block
--    entries. The size for each entry is 4096(0x1000) bytes. The total size
--    for the "etc/hardware_errors" fw_cfg blob is (N * 8 * 2 + N * 4096) bytes.
-+    entries. The size for each entry is defined at the source code as
-+    ACPI_GHES_MAX_RAW_DATA_LENGTH (currently 1024 bytes). The total size
-+    for the "etc/hardware_errors" fw_cfg blob is
-+    (N * 8 * 2 + N * ACPI_GHES_MAX_RAW_DATA_LENGTH) bytes.
-     N is the number of the kinds of hardware error sources.
- 
- (4) QEMU generates the ACPI linker/loader script for the firmware. The
--- 
-2.47.1
+Just sent v7 addressing the minor nits on patch 9.
 
+> > -
+> > 
+> > During the development of a patch series meant to allow GHESv2 error injections,
+> > it was requested a change on how CPER offsets are calculated, by adding a new
+> > BIOS pointer and reworking the GHES logic. See:
+> > 
+> > https://lore.kernel.org/qemu-devel/cover.1726293808.git.mchehab+huawei@kernel.org/
+> > 
+> > Such change ended being a big patch, so several intermediate steps are needed,
+> > together with several cleanups and renames.
+> > 
+> > As agreed duing v10 review, I'll be splitting the big patch series into separate pull 
+> > requests, starting with the cleanup series. This is the first patch set, containing
+> > only such preparation patches.
+> > 
+> > The next series will contain the shift to use offsets from the location of the
+> > HEST table, together with a migration logic to make it compatible with 9.1.
+> > 
+> > ---
+> > 
+> > v5:
+> > - some changes at patches description and added some R-B;
+> > - no changes at the code.
+> > 
+> > v4:
+> > - merged a patch renaming the function which calculate offsets to:
+> >   get_hw_error_offsets(), to avoid the need of such change at the next
+> >   patch series;
+> > - removed a functional change at the logic which makes
+> >   the GHES record generation more generic;
+> > - a couple of trivial changes on patch descriptions and line break cleanups.
+> > 
+> > v3:
+> > - improved some patch descriptions;
+> > - some patches got reordered to better reflect the changes;
+> > - patch v2 08/15: acpi/ghes: Prepare to support multiple sources on ghes
+> >   was split on two patches. The first one is in this cleanup series:
+> >       acpi/ghes: Change ghes fill logic to work with only one source
+> >   contains just the simplification logic. The actual preparation will
+> >   be moved to this series:
+> >      https://lore.kernel.org/qemu-devel/cover.1727782588.git.mchehab+huawei@kernel.org/
+> > 
+> > v2: 
+> > - some indentation fixes;
+> > - some description improvements;
+> > - fixed a badly-solved merge conflict that ended renaming a parameter.
+> > 
+> > Mauro Carvalho Chehab (16):
+> >   acpi/ghes: get rid of ACPI_HEST_SRC_ID_RESERVED
+> >   acpi/ghes: simplify acpi_ghes_record_errors() code
+> >   acpi/ghes: simplify the per-arch caller to build HEST table
+> >   acpi/ghes: better handle source_id and notification
+> >   acpi/ghes: Fix acpi_ghes_record_errors() argument
+> >   acpi/ghes: Remove a duplicated out of bounds check
+> >   acpi/ghes: Change the type for source_id
+> >   acpi/ghes: don't check if physical_address is not zero
+> >   acpi/ghes: make the GHES record generation more generic
+> >   acpi/ghes: better name GHES memory error function
+> >   acpi/ghes: don't crash QEMU if ghes GED is not found
+> >   acpi/ghes: rename etc/hardware_error file macros
+> >   acpi/ghes: better name the offset of the hardware error firmware
+> >   acpi/ghes: move offset calculus to a separate function
+> >   acpi/ghes: Change ghes fill logic to work with only one source
+> >   docs: acpi_hest_ghes: fix documentation for CPER size
+> > 
+> >  docs/specs/acpi_hest_ghes.rst  |   6 +-
+> >  hw/acpi/generic_event_device.c |   4 +-
+> >  hw/acpi/ghes-stub.c            |   2 +-
+> >  hw/acpi/ghes.c                 | 259 +++++++++++++++++++--------------
+> >  hw/arm/virt-acpi-build.c       |   5 +-
+> >  include/hw/acpi/ghes.h         |  16 +-
+> >  target/arm/kvm.c               |   2 +-
+> >  7 files changed, 169 insertions(+), 125 deletions(-)
+> > 
+> > -- 
+> > 2.47.1
+> >   
+> 
+
+
+
+Thanks,
+Mauro
 
