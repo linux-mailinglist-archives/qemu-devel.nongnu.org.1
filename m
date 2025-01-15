@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B08DA12A79
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 19:09:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B774EA12A84
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Jan 2025 19:11:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tY7on-0006IY-TC; Wed, 15 Jan 2025 13:08:41 -0500
+	id 1tY7on-0006If-St; Wed, 15 Jan 2025 13:08:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7oj-0006H5-1F
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7oj-0006I0-Tn
  for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:08:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7of-0006UD-W0
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:08:36 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tY7oi-0006UV-Dk
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 13:08:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1736964512;
+ s=mimecast20190719; t=1736964515;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=9Y40wc+DZhits8ejNBj4b0Ojfrrmn6jpUjml+NjRDvs=;
- b=dR0n8mnBDkSJIjwtkDi8UL5qcadnkR1eaOpmkffpW9QO7lSstFLF2s+gGqSl1ykb0nrAw/
- d5LHyqwV9IJEeUez8AAZ8L0GYChKCs2FW2NTHZZFDanEan80xs2LNv6JvCbMt8Rwfue6eG
- O9CXmf93Hj4rMEVUx9IYMdRTkUIo5vo=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=m6fmu5UNbIG+Zy8TKEXBZ0Py33cRbkHlfHziwEK/kCk=;
+ b=ZQaO3yloSOQBjl9t/45YaAlTRNbJW+fBufx4B2lqtuvOtSoXmxee9wsDfWAqttrcq6ov5y
+ lIrdEiQvN3bazfdMP4W5FpLvPM/yptnumJo+oJpDnqApXFfaJsnN3e1cHMIso/SKm2KJX+
+ ghPZTcT4CZPe5ira5PxptrqqTg7/RiY=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-19-pbaHgDU6MM-lIQ-XHClj9A-1; Wed, 15 Jan 2025 13:08:30 -0500
-X-MC-Unique: pbaHgDU6MM-lIQ-XHClj9A-1
-X-Mimecast-MFC-AGG-ID: pbaHgDU6MM-lIQ-XHClj9A
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-385d52591d6so38825f8f.1
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 10:08:30 -0800 (PST)
+ us-mta-271-xxJtlPcJNseZcQJ-4VX8BA-1; Wed, 15 Jan 2025 13:08:33 -0500
+X-MC-Unique: xxJtlPcJNseZcQJ-4VX8BA-1
+X-Mimecast-MFC-AGG-ID: xxJtlPcJNseZcQJ-4VX8BA
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-385d7611ad3so44609f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 10:08:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736964509; x=1737569309;
- h=content-transfer-encoding:content-disposition:mime-version
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9Y40wc+DZhits8ejNBj4b0Ojfrrmn6jpUjml+NjRDvs=;
- b=mU3V+sKyqZUeK7grt+GaECEHb7PfMr5NTi8+q7IUPWTn5FmmB8QV5Gl5eBeJ2PM26f
- FMxisvflfCapUub1lCeAtF2M8JZ/fdh/nQpW8PPsEt7ZBBSf/+LLiUWEzjqUHXDsscGO
- 4LaGaz8yz3Yl5ZnN3prhwHbqalBeIgXvipsKw+lnFq3Te52Uu0Kmg5Js78TnJ/SUcHyc
- C1Nq57jC5SI4JxaT4Mcu1h9pDLk/GI8flDWwJqlM26LQA9vJ43e8gJxExRjcKvczejTT
- 4PmiChVoJU/5+l8CQSnWvxKKJ34PlV84pf3dALbNvCq/8rV9AauTphpv+OX5vhCXowXc
- Ev8w==
-X-Gm-Message-State: AOJu0YwTtm3hd+z3FntMsZ6D88BmMAGnz1g8JMc55itJ6cLwXQxgwQHy
- q8CFUbCMTYUTbQws+syagIO5CDGgEYicxt09/NStcyrp18U0Q5Et4Z11TiqPvsORjgGASEOdtQE
- nTCMtycrEHyIaWo9UrEakgHNIfwdHGX6P+Ngd7AW8mwZnH9/O2PcqhkdHdBsTza9XJ7rRRP9B3X
- YOmx8qIK3oe3Ao/AAC3ueEU7aawAuKVQ==
-X-Gm-Gg: ASbGncvbkc/BgIAb+mgGHbteG+5WnLTP6ldfSEHkWcFibtFLhZNTKZiZoxPEXUdqJeL
- ww+c+lL2mpO5BL8DogZuh8HTw9zl2RUP9rsZQ7S4IGqxZXo5o9AjNh7Yl8jXxdwRewX78iOYhVO
- Fw9IrUlRKO+iWgt4BFGTybLALVK/vgFZmyy2DjpRHslLHaVxpg7eE8ADZ2b2zlwX4B53ZQxQ2RP
- k7MW2O2FA/ypauMtbmluE+ldtSNQMua0UYN2zMZXZKhFfxikwIC
-X-Received: by 2002:a05:6000:1445:b0:386:4a16:dadb with SMTP id
- ffacd0b85a97d-38a8b0c712fmr21160380f8f.11.1736964509083; 
- Wed, 15 Jan 2025 10:08:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFKLAWaTK3OWJbnHyAQUiHxzihXHtOgU28MUdR/c1Qvcp+fKEbUKT3RpcfzxlznY3DsRH2yuw==
-X-Received: by 2002:a05:6000:1445:b0:386:4a16:dadb with SMTP id
- ffacd0b85a97d-38a8b0c712fmr21160345f8f.11.1736964508542; 
- Wed, 15 Jan 2025 10:08:28 -0800 (PST)
+ d=1e100.net; s=20230601; t=1736964512; x=1737569312;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=m6fmu5UNbIG+Zy8TKEXBZ0Py33cRbkHlfHziwEK/kCk=;
+ b=cJXxIsxjoFjDOC07lJdOLr/wMfL7Yz4jQ/SuBs6duFcCWf2perMVXAiWeWa9DtB4Um
+ SVRIRKiqo6A8xbocUhFA42eYUk+FTF7OtaSB4oXL3VbBBIZKL1qz7Zvguvtee6g2+Hq3
+ 37hTNib4BDQIKoHZXkNIbRhm1mnmk6KNJ0K3YTGph9lI/zun6W04fryztEk3QSikjuCU
+ GmRCTGBFR+K8X0X0gPU2KudiOvLhCeFsCtbQJ6fWQ8Y1keoRyTBSpoAfM8uCHdowNW/x
+ H9V6FQm//2GfI8sVCX8wp39Bws5XHMtmlOpEHrKDPFF2XtKy0HdPOTZS5xdVh5BeI6iz
+ p8Qg==
+X-Gm-Message-State: AOJu0YzCZ0RyKiqSUHBUsaB39W/sLGRAH0q3a0KXnYr62mWzFldZXX9b
+ VXv7fseZssE29dPxMIwlO2YUQP9Fl9rr7X6iB99AQ8gNnui150Auj48EOvXfrftZ4z0F02DJyvH
+ QW5BgRTwrS5LZBE2OBxH6aek9mKBh2gse8O9ZhrxgaKWAzR0r9DNAiFkVR5X++EErMVUbzXCRA1
+ PAYI40/Sdy/qhAl+SXg+l4lZVvWJ59Fg==
+X-Gm-Gg: ASbGncvjS7wIaCfP47xi8v+5Ill0+c4+0ZX1eslpCysfZp92Oft6IbHoQfZzLxl619w
+ RqZ4csaMLXcPgNi+nQ9CN505iPgK5cpmKMVsrNSGXwOiir5/eRCSvW8jfMH6XEPW8gkY73QCnLp
+ /F8W0r3u7KkZos9DB/U5hDoK3EDkXSXbrPdsMyht8CxQbjQfNvfO3egvydOHfqMpgbWP0fa3isc
+ 0K3WHhFVQYTdC3IPeMTrKt3OlJGFvf1eC7zwCgKriU2M1rYZz10
+X-Received: by 2002:a05:6000:1563:b0:385:f44a:a53 with SMTP id
+ ffacd0b85a97d-38a872cfe40mr21742476f8f.4.1736964512091; 
+ Wed, 15 Jan 2025 10:08:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHHDJaD8CKwez+RznVpLdNivNogm5ATuB3y63h+XfrYTOdlxbIWQxZGVvPN/VDISNafahRZZw==
+X-Received: by 2002:a05:6000:1563:b0:385:f44a:a53 with SMTP id
+ ffacd0b85a97d-38a872cfe40mr21742449f8f.4.1736964511676; 
+ Wed, 15 Jan 2025 10:08:31 -0800 (PST)
 Received: from redhat.com ([2a0d:6fc7:342:db8c:4ec4:322b:a6a8:f411])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c74c475csm32168725e9.20.2025.01.15.10.08.26
+ ffacd0b85a97d-38a8e38378csm18138284f8f.25.2025.01.15.10.08.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Jan 2025 10:08:27 -0800 (PST)
-Date: Wed, 15 Jan 2025 13:08:25 -0500
+ Wed, 15 Jan 2025 10:08:31 -0800 (PST)
+Date: Wed, 15 Jan 2025 13:08:28 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 00/48] virtio,pc,pci: features, fixes, cleanups
-Message-ID: <cover.1736964487.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Dorinda Bassey <dbassey@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Subject: [PULL 01/48] virtio-gpu: Add definition for resource_uuid feature
+Message-ID: <1e77a4a32f8b7b6699a2f8b1f98e8fada902ba1f.1736964488.git.mst@redhat.com>
+References: <cover.1736964487.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1736964487.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
@@ -103,170 +107,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 7433709a147706ad7d1956b15669279933d0f82b:
+From: Dorinda Bassey <dbassey@redhat.com>
 
-  Merge tag 'hw-misc-20250113' of https://github.com/philmd/qemu into staging (2025-01-14 12:46:56 -0500)
+Add the VIRTIO_GPU_F_RESOURCE_UUID feature to enable the assignment
+of resources UUIDs for export to other virtio devices.
 
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
-
-for you to fetch changes up to 60f543ad917fad731e39ff8ce2ca83b9a9cc9d90:
-
-  virtio-net: vhost-user: Implement internal migration (2025-01-15 13:07:34 -0500)
-
-----------------------------------------------------------------
-virtio,pc,pci: features, fixes, cleanups
-
-The big thing here are:
-stage-1 translation in vtd
-internal migration in vhost-user
-ghes driver preparation for error injection
-new resource uuid feature in virtio gpu
-
-And as usual, fixes and cleanups.
-
+Signed-off-by: Dorinda Bassey <dbassey@redhat.com>
+Message-Id: <20241007070013.3350752-1-dbassey@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+---
+ include/hw/virtio/virtio-gpu.h | 3 +++
+ hw/display/vhost-user-gpu.c    | 8 ++++++++
+ hw/display/virtio-gpu-base.c   | 3 +++
+ 3 files changed, 14 insertions(+)
 
-----------------------------------------------------------------
-Clément Mathieu--Drif (4):
-      intel_iommu: Check if the input address is canonical
-      intel_iommu: Set accessed and dirty bits during stage-1 translation
-      intel_iommu: Add an internal API to find an address space with PASID
-      intel_iommu: Add support for PASID-based device IOTLB invalidation
-
-Dorinda Bassey (1):
-      virtio-gpu: Add definition for resource_uuid feature
-
-Igor Mammedov (6):
-      tests: acpi: whitelist expected blobs
-      cpuhp: make sure that remove events are handled within the same SCI
-      tests: acpi: update expected blobs
-      tests: acpi: whitelist expected blobs
-      pci: acpi: Windows 'PCI Label Id' bug workaround
-      tests: acpi: update expected blobs
-
-Laurent Vivier (2):
-      vhost: Add stubs for the migration state transfer interface
-      virtio-net: vhost-user: Implement internal migration
-
-Li Zhijian (1):
-      hw/cxl: Fix msix_notify: Assertion `vector < dev->msix_entries_nr`
-
-Mauro Carvalho Chehab (16):
-      acpi/ghes: get rid of ACPI_HEST_SRC_ID_RESERVED
-      acpi/ghes: simplify acpi_ghes_record_errors() code
-      acpi/ghes: simplify the per-arch caller to build HEST table
-      acpi/ghes: better handle source_id and notification
-      acpi/ghes: Fix acpi_ghes_record_errors() argument
-      acpi/ghes: Remove a duplicated out of bounds check
-      acpi/ghes: Change the type for source_id
-      acpi/ghes: don't check if physical_address is not zero
-      acpi/ghes: make the GHES record generation more generic
-      acpi/ghes: better name GHES memory error function
-      acpi/ghes: don't crash QEMU if ghes GED is not found
-      acpi/ghes: rename etc/hardware_error file macros
-      acpi/ghes: better name the offset of the hardware error firmware
-      acpi/ghes: move offset calculus to a separate function
-      acpi/ghes: Change ghes fill logic to work with only one source
-      docs: acpi_hest_ghes: fix documentation for CPER size
-
-Nicholas Piggin (1):
-      pci/msix: Fix msix pba read vector poll end calculation
-
-Sebastian Ott (1):
-      pci: ensure valid link status bits for downstream ports
-
-Yi Liu (2):
-      intel_iommu: Rename slpte to pte
-      intel_iommu: Implement stage-1 translation
-
-Yu Zhang (1):
-      intel_iommu: Use the latest fault reasons defined by spec
-
-Zhenzhong Duan (13):
-      intel_iommu: Make pasid entry type check accurate
-      intel_iommu: Add a placeholder variable for scalable mode stage-1 translation
-      intel_iommu: Flush stage-2 cache in PASID-selective PASID-based iotlb invalidation
-      intel_iommu: Check stage-1 translation result with interrupt range
-      intel_iommu: Flush stage-1 cache in iotlb invalidation
-      intel_iommu: Process PASID-based iotlb invalidation
-      intel_iommu: piotlb invalidation should notify unmap
-      tests/acpi: q35: allow DMAR acpi table changes
-      intel_iommu: Set default aw_bits to 48 starting from QEMU 9.2
-      tests/acpi: q35: Update host address width in DMAR
-      intel_iommu: Introduce a property x-flts for stage-1 translation
-      intel_iommu: Introduce a property to control FS1GP cap bit setting
-      tests/qtest: Add intel-iommu test
-
- hw/i386/intel_iommu_internal.h                    | 101 ++-
- include/hw/acpi/ghes.h                            |  16 +-
- include/hw/i386/intel_iommu.h                     |   8 +-
- include/hw/virtio/vhost.h                         |  23 +
- include/hw/virtio/virtio-gpu.h                    |   3 +
- hw/acpi/cpu.c                                     |  43 +-
- hw/acpi/generic_event_device.c                    |   4 +-
- hw/acpi/ghes-stub.c                               |   2 +-
- hw/acpi/ghes.c                                    | 256 ++++----
- hw/arm/virt-acpi-build.c                          |   5 +-
- hw/display/vhost-user-gpu.c                       |   8 +
- hw/display/virtio-gpu-base.c                      |   3 +
- hw/i386/acpi-build.c                              |  33 +-
- hw/i386/intel_iommu.c                             | 734 +++++++++++++++++-----
- hw/i386/pc.c                                      |   1 +
- hw/mem/cxl_type3.c                                |   2 +-
- hw/net/virtio-net.c                               | 135 +++-
- hw/pci/msix.c                                     |   2 +-
- hw/pci/pcie.c                                     |  12 +-
- target/arm/kvm.c                                  |   2 +-
- tests/qtest/intel-iommu-test.c                    |  64 ++
- MAINTAINERS                                       |   1 +
- docs/specs/acpi_hest_ghes.rst                     |   6 +-
- tests/data/acpi/x86/pc/DSDT                       | Bin 8526 -> 8611 bytes
- tests/data/acpi/x86/pc/DSDT.acpierst              | Bin 8437 -> 8522 bytes
- tests/data/acpi/x86/pc/DSDT.acpihmat              | Bin 9851 -> 9936 bytes
- tests/data/acpi/x86/pc/DSDT.bridge                | Bin 15397 -> 15482 bytes
- tests/data/acpi/x86/pc/DSDT.cphp                  | Bin 8990 -> 9075 bytes
- tests/data/acpi/x86/pc/DSDT.dimmpxm               | Bin 10180 -> 10265 bytes
- tests/data/acpi/x86/pc/DSDT.hpbridge              | Bin 8477 -> 8562 bytes
- tests/data/acpi/x86/pc/DSDT.hpbrroot              | Bin 5033 -> 5100 bytes
- tests/data/acpi/x86/pc/DSDT.ipmikcs               | Bin 8598 -> 8683 bytes
- tests/data/acpi/x86/pc/DSDT.memhp                 | Bin 9885 -> 9970 bytes
- tests/data/acpi/x86/pc/DSDT.nohpet                | Bin 8384 -> 8469 bytes
- tests/data/acpi/x86/pc/DSDT.numamem               | Bin 8532 -> 8617 bytes
- tests/data/acpi/x86/pc/DSDT.roothp                | Bin 12319 -> 12404 bytes
- tests/data/acpi/x86/q35/DMAR.dmar                 | Bin 120 -> 120 bytes
- tests/data/acpi/x86/q35/DSDT                      | Bin 8355 -> 8440 bytes
- tests/data/acpi/x86/q35/DSDT.acpierst             | Bin 8372 -> 8457 bytes
- tests/data/acpi/x86/q35/DSDT.acpihmat             | Bin 9680 -> 9765 bytes
- tests/data/acpi/x86/q35/DSDT.acpihmat-generic-x   | Bin 12565 -> 12650 bytes
- tests/data/acpi/x86/q35/DSDT.acpihmat-noinitiator | Bin 8634 -> 8719 bytes
- tests/data/acpi/x86/q35/DSDT.applesmc             | Bin 8401 -> 8486 bytes
- tests/data/acpi/x86/q35/DSDT.bridge               | Bin 11968 -> 12053 bytes
- tests/data/acpi/x86/q35/DSDT.core-count           | Bin 12913 -> 12998 bytes
- tests/data/acpi/x86/q35/DSDT.core-count2          | Bin 33770 -> 33855 bytes
- tests/data/acpi/x86/q35/DSDT.cphp                 | Bin 8819 -> 8904 bytes
- tests/data/acpi/x86/q35/DSDT.cxl                  | Bin 13146 -> 13231 bytes
- tests/data/acpi/x86/q35/DSDT.dimmpxm              | Bin 10009 -> 10094 bytes
- tests/data/acpi/x86/q35/DSDT.ipmibt               | Bin 8430 -> 8515 bytes
- tests/data/acpi/x86/q35/DSDT.ipmismbus            | Bin 8443 -> 8528 bytes
- tests/data/acpi/x86/q35/DSDT.ivrs                 | Bin 8372 -> 8457 bytes
- tests/data/acpi/x86/q35/DSDT.memhp                | Bin 9714 -> 9799 bytes
- tests/data/acpi/x86/q35/DSDT.mmio64               | Bin 9485 -> 9570 bytes
- tests/data/acpi/x86/q35/DSDT.multi-bridge         | Bin 13208 -> 13293 bytes
- tests/data/acpi/x86/q35/DSDT.noacpihp             | Bin 8235 -> 8302 bytes
- tests/data/acpi/x86/q35/DSDT.nohpet               | Bin 8213 -> 8298 bytes
- tests/data/acpi/x86/q35/DSDT.numamem              | Bin 8361 -> 8446 bytes
- tests/data/acpi/x86/q35/DSDT.pvpanic-isa          | Bin 8456 -> 8541 bytes
- tests/data/acpi/x86/q35/DSDT.thread-count         | Bin 12913 -> 12998 bytes
- tests/data/acpi/x86/q35/DSDT.thread-count2        | Bin 33770 -> 33855 bytes
- tests/data/acpi/x86/q35/DSDT.tis.tpm12            | Bin 8961 -> 9046 bytes
- tests/data/acpi/x86/q35/DSDT.tis.tpm2             | Bin 8987 -> 9072 bytes
- tests/data/acpi/x86/q35/DSDT.type4-count          | Bin 18589 -> 18674 bytes
- tests/data/acpi/x86/q35/DSDT.viot                 | Bin 14612 -> 14697 bytes
- tests/data/acpi/x86/q35/DSDT.xapic                | Bin 35718 -> 35803 bytes
- tests/qtest/meson.build                           |   1 +
- 67 files changed, 1132 insertions(+), 333 deletions(-)
- create mode 100644 tests/qtest/intel-iommu-test.c
+diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+index bd93672185..a42957c4e2 100644
+--- a/include/hw/virtio/virtio-gpu.h
++++ b/include/hw/virtio/virtio-gpu.h
+@@ -98,6 +98,7 @@ enum virtio_gpu_base_conf_flags {
+     VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED,
+     VIRTIO_GPU_FLAG_RUTABAGA_ENABLED,
+     VIRTIO_GPU_FLAG_VENUS_ENABLED,
++    VIRTIO_GPU_FLAG_RESOURCE_UUID_ENABLED,
+ };
+ 
+ #define virtio_gpu_virgl_enabled(_cfg) \
+@@ -114,6 +115,8 @@ enum virtio_gpu_base_conf_flags {
+     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED))
+ #define virtio_gpu_rutabaga_enabled(_cfg) \
+     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_RUTABAGA_ENABLED))
++#define virtio_gpu_resource_uuid_enabled(_cfg) \
++    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_RESOURCE_UUID_ENABLED))
+ #define virtio_gpu_hostmem_enabled(_cfg) \
+     (_cfg.hostmem > 0)
+ #define virtio_gpu_venus_enabled(_cfg) \
+diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
+index 12d5c37ee5..2aed6243f6 100644
+--- a/hw/display/vhost-user-gpu.c
++++ b/hw/display/vhost-user-gpu.c
+@@ -631,6 +631,14 @@ vhost_user_gpu_device_realize(DeviceState *qdev, Error **errp)
+         error_report("EDID requested but the backend doesn't support it.");
+         g->parent_obj.conf.flags &= ~(1 << VIRTIO_GPU_FLAG_EDID_ENABLED);
+     }
++    if (virtio_has_feature(g->vhost->dev.features,
++        VIRTIO_GPU_F_RESOURCE_UUID)) {
++        g->parent_obj.conf.flags |= 1 << VIRTIO_GPU_FLAG_RESOURCE_UUID_ENABLED;
++    }
++    if (virtio_has_feature(g->vhost->dev.features,
++        VIRTIO_GPU_F_RESOURCE_UUID)) {
++        g->parent_obj.conf.flags |= 1 << VIRTIO_GPU_FLAG_RESOURCE_UUID_ENABLED;
++    }
+ 
+     if (!virtio_gpu_base_device_realize(qdev, NULL, NULL, errp)) {
+         return;
+diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
+index 4fc7ef8896..7827536ac4 100644
+--- a/hw/display/virtio-gpu-base.c
++++ b/hw/display/virtio-gpu-base.c
+@@ -235,6 +235,9 @@ virtio_gpu_base_get_features(VirtIODevice *vdev, uint64_t features,
+     if (virtio_gpu_context_init_enabled(g->conf)) {
+         features |= (1 << VIRTIO_GPU_F_CONTEXT_INIT);
+     }
++    if (virtio_gpu_resource_uuid_enabled(g->conf)) {
++        features |= (1 << VIRTIO_GPU_F_RESOURCE_UUID);
++    }
+ 
+     return features;
+ }
+-- 
+MST
 
 
