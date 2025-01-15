@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8A0A12F48
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 00:31:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA92A12F55
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 00:42:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYCqi-0007aZ-44; Wed, 15 Jan 2025 18:31:00 -0500
+	id 1tYD0T-0005ZW-5L; Wed, 15 Jan 2025 18:41:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCqc-0007BS-92
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:30:54 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tYD0N-0005Yu-Nd
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:40:59 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCqa-0005CY-DT
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:30:53 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-437a92d7b96so2243365e9.2
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 15:30:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tYD0L-0006MT-1e
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:40:58 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-21675fd60feso5521715ad.2
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 15:40:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736983850; x=1737588650; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7DNHrtCXUBQyNp6czmCeP9tPr+zdqB+MqJBbYxRNIgo=;
- b=hamJ5yiL2K5FJXt7utojqV+Mx+ldY8x2X4cVS8CIzEo/fzXHucf0Dd/oGxtWhLo9dc
- ABE5dn3fYoGaRdim3oLXSPxZ4rrKgj8u26EhV3HKHbaKZiqSpbeYBygKFH0qIS6kzf2l
- eL8jPyt4fXpRvy/cuSIl+liXtlJiH75oCxkvaXZK/XtUDhQe2mFnZFzrpWuJuTCyiu0A
- J+L/mrC+DGYwzZFVoNq720waxEoTToJNfv8VkzYT5wzXvQtAF/jdABjcFygY6PXSNg6t
- fpAK/linUFoXHRq3xCFdg9z+SESnASSgjb+DzuwN6Y30f6j1S6FCKvRHawbM50rckDYB
- Vtqg==
+ d=linaro.org; s=google; t=1736984455; x=1737589255; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=eU4s+1LjKlD9KbXrZMS0oJ8bcsP+ZYXoZaUXV7g+A9M=;
+ b=WnlLD3azBRmjx+sj+2k+E5bkF0Rq6TZot1phPdbzZQ5Ywc4ih5rNNCNFG3TQq8bVnV
+ POQk1KaqmOvV3T7RfdnkKehFlpx9TLY+NTbly0J9Ktar9fQknYS5rhrzSfFR901XXJq7
+ S/AmmYIPYeSo/uz13Kpa9340SL/HqEtWXi56x7ATAWRlz6rsdOqCTZoXFAKAigGrhijb
+ ARc6vdkb6rJEEbKbtwjhYSK4it1jKYcq+kQxvJwzBdIbCpUl+x2Oho8Si2k6ck1jFsKz
+ hbpLIpExQbwgdR8ISbbLls4X8kditDJYC+WZF6yWGFAhdT5tg8/nebgkEeg52FlEPsAr
+ 2tBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736983850; x=1737588650;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7DNHrtCXUBQyNp6czmCeP9tPr+zdqB+MqJBbYxRNIgo=;
- b=R5jkC/Y4aWFmPFGV2Mio2QCDaxPng/ZP9bI0IL5k7xIcVnZDMd95H6g6pGIkdEAO7g
- EfhrouUcwKa1hs0ZS+Dku3PGvBIi50USMC+YB0kFoSdcSYV7nhLjhjMwzQ7bAmACjoM/
- rZcQayQu1iKo8lfOvDvIWdNWWvyZ2RfpZvBgrmGPs62hMo2X9xYZTUIzJfcmjucwd+r0
- QriiFWYEJseVAJ35kRz4aYeY9ikxkkfHDNvHOrLemosumpLmuahNddPD74xGiXAvd81I
- X8exdrQwOmRYdIXWFV4dIPMqp4hT11MM7OrQEKo9RChADu8emlKtlIF61LS0LksAUy+k
- mu2g==
-X-Gm-Message-State: AOJu0YyGbRnev1J61TJ7zviARtA4mtoiP16Cwz+i2zEBGYXW4Z0aIdyN
- hDMA9aBd0YqweeuRij5vC9LePZcco6kkqWa6YCOP7WOoWJ4fzwSpGE9tfQDA8bRXkiu07L3ZDhE
- +xlc=
-X-Gm-Gg: ASbGncsesiauDmiSBJHiEoTw+L23unJ1zmNUcE/7K/w27LlygvUwlFeL5dXE/Th+koq
- XiCw10AVNS00eozpRmeiJKHii/Jm+oPiUjg11ymQhSNiME4Sh86oSYNL132eeedSAlRE8psz60x
- Ebqbje+b2E5nmCWdeao8yvNZkAlfK0e/FFeslWkjE4yTp8DankYiX44oeR1m4sZhqLEoAAZPn+j
- AIXy/QM6WoKftfmmSeXXzEdgbCrulvID2AT5KrWkAEFUr46VgLZFXCs7hhkUWUNnZOKmvX5pgd/
- jIRWohC50cESCnLATz30sAVMmsur0qg=
-X-Google-Smtp-Source: AGHT+IE8BvobjsS4J1B0Sa/UkwX8XRTPMB7NVtCNm0yz1CwICFnZHzJL4qV0gSkbmaYtIC154XStEQ==
-X-Received: by 2002:a05:600c:5112:b0:434:a386:6cf with SMTP id
- 5b1f17b1804b1-436e267f77amr270344785e9.2.1736983849976; 
- Wed, 15 Jan 2025 15:30:49 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c74bfa35sm38536625e9.18.2025.01.15.15.30.47
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 15 Jan 2025 15:30:48 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Huacai Chen <chenhuacai@kernel.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 11/11] hw/mips/loongson3_bootp: Move to common_ss[]
-Date: Thu, 16 Jan 2025 00:29:51 +0100
-Message-ID: <20250115232952.31166-12-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250115232952.31166-1-philmd@linaro.org>
-References: <20250115232952.31166-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1736984455; x=1737589255;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eU4s+1LjKlD9KbXrZMS0oJ8bcsP+ZYXoZaUXV7g+A9M=;
+ b=i4Q22jQCy18FtsIYEdYHNCiRqdzF3iHghkzUGvE756AsoN2jeBKG3EOwMLvqQIVKoI
+ sDAL1opupFBWaEAkmtH1Bsrqpy9JF+2a0EOEY2PSvPmPtXO4uzpp0UuvJZdN7vSKPleA
+ l5qtU0oOL6e2aqCRN5IWfep6rOUhKZ7cba2NsJ2Ug1C3SaNKGYJ4KEESrmNZpZvBsHa3
+ KA6gZCiS0g7rYiO2ilwqfwIg3aPkX3pK7HXXxgBJUvZ3+gwiklCDCV1MEPMLegZ+lA9I
+ 07gbAFCyIKz4U7QpFOS8UcGU346qpxwcQ6JGSn+KLw0OeYGG8MhvO/wKLoe3eiH72EqT
+ Tp8Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXhsYYil91UcOlzlFP++oWkXCCGN7sMJlU/j2FsVlkQZHHUG4xIryX6BDfDT8xaMKWqrHIPf6ii9MMb@nongnu.org
+X-Gm-Message-State: AOJu0YwFlgfCfYMyeXTg1V7Co+ylDNEClNpT/qoSqkL4ATYdlV5u6m9U
+ bIibkhjT9QIADc2ruBz4amtKZLz0OiuFjLt4z19WfTwVuehzw5Ec632aWxH51uo=
+X-Gm-Gg: ASbGncsVqRxoJJmUyHSbZ2iTuePaghe3EcaLhFIKypbtjoBzcTfPphEPwxIrQG7BhR/
+ 7vnV/zlhiQ78LIBgJX2e78DxXYz43bS8FexAbGZvTRM67xNMs2uQ24qpuZG9150iZr7ye7w7FQr
+ hO5ybA8YLlUWTbCBsOcXigdGsoHH5bVFmoE6jo3ozjk5SCjZHTbiLuBvmLN7Lgk/RjcKax1nVnV
+ umbaCc8IjLqOZJDyr1XWzZ8yftTzblgo6C40K/q+J2VlmVOm/Yv004DRuJ2uLkNKg0xlgRQBUAm
+ EXIPFn/ogwhOKo52bAtHymk=
+X-Google-Smtp-Source: AGHT+IE3Hn5YvpJ+8RzUNtzYapaR+sOj2jheCQuaOSmjYB1+kG511yj7V4l/VXGUahLuLCDec3LXpw==
+X-Received: by 2002:a17:903:2452:b0:216:6f1e:5799 with SMTP id
+ d9443c01a7336-21a83fe4f75mr484166125ad.35.1736984455140; 
+ Wed, 15 Jan 2025 15:40:55 -0800 (PST)
+Received: from [192.168.0.4] (174-21-71-127.tukw.qwest.net. [174.21.71.127])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-21a9f10df7asm87335225ad.47.2025.01.15.15.40.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 15 Jan 2025 15:40:54 -0800 (PST)
+Message-ID: <f05247a6-b4b0-4c06-827a-74b3fe4d4f9f@linaro.org>
+Date: Wed, 15 Jan 2025 15:40:52 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/81] tcg: Add TCGOP_FLAGS
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: pierrick.bouvier@linaro.org
+References: <20250107080112.1175095-1-richard.henderson@linaro.org>
+ <20250107080112.1175095-6-richard.henderson@linaro.org>
+ <8ce2bb26-b2c3-4665-bb1a-2576859aaaca@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <8ce2bb26-b2c3-4665-bb1a-2576859aaaca@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,30 +103,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-loongson3_bootp.c doesn't contain any target-specific code
-and can be build generically, move it to common_ss[].
+On 1/15/25 13:16, Philippe Mathieu-Daudé wrote:
+> On 7/1/25 08:59, Richard Henderson wrote:
+>> To be used by some integer operations instead of, or in addition to,
+>> a trailing constant argument.
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   include/tcg/tcg.h | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+>> index 5d96cdfc30..e80b1f6efc 100644
+>> --- a/include/tcg/tcg.h
+>> +++ b/include/tcg/tcg.h
+>> @@ -440,6 +440,7 @@ struct TCGOp {
+>>   #define TCGOP_CALLO(X)    (X)->param2
+>>   #define TCGOP_TYPE(X)     (X)->param1
+>> +#define TCGOP_FLAGS(X)    (X)->param1
+> 
+> I skipped this because there was some code smell around I
+> couldn't figure. Hopefully a typo :)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- hw/mips/meson.build | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Yes, a typo.  Thankfully this field isn't within these converted opcodes.
 
-diff --git a/hw/mips/meson.build b/hw/mips/meson.build
-index fcbee53bb32..31dbd2bf4d9 100644
---- a/hw/mips/meson.build
-+++ b/hw/mips/meson.build
-@@ -1,7 +1,8 @@
- mips_ss = ss.source_set()
- mips_ss.add(files('bootloader.c', 'mips_int.c'))
- common_ss.add(when: 'CONFIG_FW_CFG_MIPS', if_true: files('fw_cfg.c'))
--mips_ss.add(when: 'CONFIG_LOONGSON3V', if_true: files('loongson3_bootp.c', 'loongson3_virt.c'))
-+common_ss.add(when: 'CONFIG_LOONGSON3V', if_true: files('loongson3_bootp.c'))
-+mips_ss.add(when: 'CONFIG_LOONGSON3V', if_true: files('loongson3_virt.c'))
- mips_ss.add(when: 'CONFIG_MALTA', if_true: files('malta.c'))
- mips_ss.add(when: 'CONFIG_MIPS_CPS', if_true: files('cps.c'))
- 
--- 
-2.47.1
 
+r~
 
