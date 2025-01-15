@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE24A12F24
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 00:24:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A791EA12F31
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 00:25:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYCjI-0000H6-AE; Wed, 15 Jan 2025 18:23:21 -0500
+	id 1tYCjQ-0000QU-Vr; Wed, 15 Jan 2025 18:23:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCjD-0000G1-9c
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:23:15 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCjI-0000Ja-Gf
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:23:21 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCjB-0003pr-RB
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:23:15 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4361815b96cso1500465e9.1
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 15:23:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYCjG-0003qM-VL
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 18:23:20 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-38789e5b6a7so203820f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 15:23:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1736983392; x=1737588192; darn=nongnu.org;
+ d=linaro.org; s=google; t=1736983397; x=1737588197; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=L0j4K60G/+NPzfBz6VwUPX3RpYVnufxaRC/J6EqkjwQ=;
- b=OeAwRl8R1DtjiYSUEYn6GRIvLzX4adm566pH8ICfsYY3+H1J15ECdPWRrYxx/zIbYD
- CMbAlfzeOaBPW87gzxBxC8rCQRk2DzRRe2PE5Xi24GG27wqBC5W9S9CRf7tTNXQ0Om5h
- LYYwhaXtWBar0tdzKGe15D5ev7knPv9Xhgp6/m3ZanlJtO+Hf1wnP2t9D99JpeOYPdh3
- KnS6lvpRP8IBu9wTT8lUSym7caHiuk1BR02aDGwUD7OuZnOUkle8WuuweO2Ydaa66w5N
- yTbm9XmWeVKQZhaQDceXBEnwbMaInAAZ9ydE7Vbne1a4iJZTWbkl3dSr7witbPoqjyXv
- LlwA==
+ bh=HiK7kWV2YxErB75r1QBmNlphCk6c+f8aCYytVgiOb3Y=;
+ b=aP4cuog0Baamh/hg4i/i8jm1SUiLSDpal1AmNASjt8X/A87qx3wyoXGk0T0pjJBb8w
+ l/2ATZB9sF/lxbJ4tjE6++RLhoNt3my6fkX98SNvsf9z/nkCSRQhLKLyvyAWKtvNXLhI
+ FFozDGAspABnSiIJbiZ30yHVFyfMpQ6TEUpoAaaiW3twJ1xLzvdR//3yxxGqsVDkxcQq
+ ZgecDEVkBHMEV2SsndSQBGs3o/E5fKUW5SIOwhu1O4H5aCShgWxuMBCCCGmvF9swYNqn
+ 2dw7s3Zjh6zrR9Nu1/vr9k3Gz2CPNwqQsHeqBn14jI4hguKeaWONf9VSGmWb7AiOz/aq
+ 21Fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736983392; x=1737588192;
+ d=1e100.net; s=20230601; t=1736983397; x=1737588197;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=L0j4K60G/+NPzfBz6VwUPX3RpYVnufxaRC/J6EqkjwQ=;
- b=EOe6F6CSI34PZ4NL8+WO2DTlBCjyNQjin2C8bngG4eaCh700KdnbF+TwF6sNOYN8D6
- W/fZ7Pnnm10IZWq75jUbQqFBhvhHHq/XXBj1jaYCSbnaJQ0/xo59zQKVWYmteJFZp8Un
- NKJB1aS2yGEyJqtT2/M3uTG+tsEDYn30wZd1p9hlZwgbsWX1rMbbWAkviX6E32rbJNzA
- QoGDMsnvXaAkaqjKcrG01/MOFx4A4fJTptc8eLyBB1+WvfTpPraUSNniyy6JXSKyDSk6
- 7MfQ/EHFWCGt6lNbWCRFYPQwnSfAyAZyhG8ZzhWVYcDuYR5WkQlLPtsbYF1kTYHk/Jqj
- vLgA==
-X-Gm-Message-State: AOJu0YzDo2MmYd8BbzT4qedg+CQ3Naec9qZebic8Jx8DRoMSzjOM4PAR
- i9GFuGYQInNurknNY9p3QvdBZvSvQLLCt32XUZMELCaHjhOlswLmT0zKPxzrDuW4Lqp4lQxBuCR
- htyQ=
-X-Gm-Gg: ASbGncuF+BPqMfFcdzbq6VydsJFy8mGy/6c9uHfmAVmGK5nu9Qfvtbd7RaOwLcK+wum
- i5YGz/TKxu7qk7dGPIgv2CvBCgJe/l98AlrWNSa0EtCVoM4bSa0R9QWCkdu9M5pl+ineiRywe71
- pvk6v9tO4QmDcI+r+wkcW8Bllylkh6zKIwyBUE3s0WvPKgo/mkr/dMS5l7dvYxw3CsmuE77OJnn
- u9lB6tqP4UW/jX8pgRbIMurAr+fNGG0wP2XxARAKNBSfcFhGIx+mnoURMWbe8zIqh4YszcSR/55
- ElOiKZxO/k6+yaaxB9o6uoasztyvlH4=
-X-Google-Smtp-Source: AGHT+IG5m+ucvFC6ezRuwfSJFcIil8xHuKtwE8Itvgp5ddw3WTU47NgNTI23V7VI/jcyvo/67IxqNw==
-X-Received: by 2002:a05:600c:4ecd:b0:434:f335:83b with SMTP id
- 5b1f17b1804b1-436e269723emr313900205e9.5.1736983392101; 
- Wed, 15 Jan 2025 15:23:12 -0800 (PST)
+ bh=HiK7kWV2YxErB75r1QBmNlphCk6c+f8aCYytVgiOb3Y=;
+ b=Lge6mMpyUnr/LsYx90jmCjWa/zVYW8Gbo7yMI9rCo06ynA7Fc5yLjz2rX6VDH9WOwG
+ eEoUA/0HCh2ENXqbs6SFp2HX1ybo0ZdCMV9mReM3DZ8OWjBuKR0ibGStUWGYjB0nCn33
+ SkwxmhwK/3uD/okzzgx8CRLB2KiaNEJO5Qtfu3ZltdNaH/85CUaEfoudWOFJvT2R/iT0
+ SDfR5KUd8Cs0JCZg4p+gQyJcMM9TyZK59/XUmD0YGt3Or8UB6LgsqEwcTGMVrErBmnAk
+ nc3MsRF7R/0dtUA2wcukdcP8Ctw74iPBVMfydaWuePz46/mxIa0avY/qPIC8PBCHWVVx
+ Hn3Q==
+X-Gm-Message-State: AOJu0YwoWspAUZY9Wywq8qZvuwlSHBAPQ6pWCOdMMrMALW19TxV27uvv
+ kEWvVGqtQMit9pC3TMZjcAVUNZSO2rBFmZApWt8bLQZHv6V/EH+rQS81pZjyMLGSnl9QdhhmauR
+ Q1Gk=
+X-Gm-Gg: ASbGnctu+SOOPza96ZNf27x2kte3rm98VogS1sA6eDPG2XcjoGifHE0q4INJ+Vd/YZZ
+ EuPmHCQBGEyYkqAt8n9XxlvByKQBnpNwYjcWz768pBGTGF0CyZsvFtDpx4eqTR4E2Uk+1o5niAO
+ 0wOLxwWay7CgzZqgL92yclVU6e/etYCYep7eBU2KrJx+hp2x1S7+uPqal+DsD5Bf/7bil5dGhOK
+ nFRTVuWx0DSmfVV9f6Pe8va8vsQCoNlvAhK2OfETCussMaAs624x+YNGIEAgzPfTfaQFhMAL2u9
+ mzNJX8XGsgKzJ22qVragu2pbeB1fdWk=
+X-Google-Smtp-Source: AGHT+IF4aPTTANd00MhfnjjKHU9Z7l1eY0wyhqkRLgoKYUUb7vQyLWliC9eqwzg19q6RydsD/c5r0w==
+X-Received: by 2002:a5d:5c0c:0:b0:385:fc00:f5d4 with SMTP id
+ ffacd0b85a97d-38a8730acf1mr25197093f8f.29.1736983396953; 
+ Wed, 15 Jan 2025 15:23:16 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c749989asm39785625e9.2.2025.01.15.15.23.10
+ ffacd0b85a97d-38a8e4c1b44sm19019124f8f.90.2025.01.15.15.23.15
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 15 Jan 2025 15:23:11 -0800 (PST)
+ Wed, 15 Jan 2025 15:23:16 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
@@ -72,17 +72,17 @@ Cc: Jason Wang <jasowang@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Gerd Hoffmann <kraxel@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH 04/21] hw/i386/pc: Remove pc_compat_2_4[] array
-Date: Thu, 16 Jan 2025 00:22:30 +0100
-Message-ID: <20250115232247.30364-5-philmd@linaro.org>
+Subject: [PATCH 05/21] target/i386/cpu: Remove X86CPU::check_cpuid field
+Date: Thu, 16 Jan 2025 00:22:31 +0100
+Message-ID: <20250115232247.30364-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250115232247.30364-1-philmd@linaro.org>
 References: <20250115232247.30364-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,59 +105,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The pc_compat_2_4[] array was only used by the pc-q35-2.4
-and pc-i440fx-2.4 machines, which got removed. Remove it.
+The X86CPU::check_cpuid boolean was only set in the
+pc_compat_2_4[] array, via the 'check=off' property.
+We removed all machines using that array, lets remove
+that CPU property and simplify x86_cpu_realizefn().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/i386/pc.h |  3 ---
- hw/i386/pc.c         | 19 -------------------
- 2 files changed, 22 deletions(-)
+ target/i386/cpu.h | 1 -
+ target/i386/cpu.c | 3 +--
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 7fc34bb4a34..31e799061ef 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -298,9 +298,6 @@ extern const size_t pc_compat_2_6_len;
- extern GlobalProperty pc_compat_2_5[];
- extern const size_t pc_compat_2_5_len;
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index dbd8f1ffc79..87917b7f895 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2091,7 +2091,6 @@ struct ArchCPU {
+     uint8_t hyperv_ver_id_sb;
+     uint32_t hyperv_ver_id_sn;
  
--extern GlobalProperty pc_compat_2_4[];
--extern const size_t pc_compat_2_4_len;
--
- #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
-     static void pc_machine_##suffix##_class_init(ObjectClass *oc, void *data) \
-     { \
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index bf5308160e4..6d0c9014d63 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -257,25 +257,6 @@ const size_t pc_compat_2_6_len = G_N_ELEMENTS(pc_compat_2_6);
- GlobalProperty pc_compat_2_5[] = {};
- const size_t pc_compat_2_5_len = G_N_ELEMENTS(pc_compat_2_5);
+-    bool check_cpuid;
+     bool enforce_cpuid;
+     /*
+      * Force features to be enabled even if the host doesn't support them.
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 0b639848cd6..42227643126 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7822,7 +7822,7 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+         }
+     }
  
--GlobalProperty pc_compat_2_4[] = {
--    PC_CPU_MODEL_IDS("2.4.0")
--    { "Haswell-" TYPE_X86_CPU, "abm", "off" },
--    { "Haswell-noTSX-" TYPE_X86_CPU, "abm", "off" },
--    { "Broadwell-" TYPE_X86_CPU, "abm", "off" },
--    { "Broadwell-noTSX-" TYPE_X86_CPU, "abm", "off" },
--    { "host" "-" TYPE_X86_CPU, "host-cache-info", "on" },
--    { TYPE_X86_CPU, "check", "off" },
--    { "qemu64" "-" TYPE_X86_CPU, "sse4a", "on" },
--    { "qemu64" "-" TYPE_X86_CPU, "abm", "on" },
--    { "qemu64" "-" TYPE_X86_CPU, "popcnt", "on" },
--    { "qemu32" "-" TYPE_X86_CPU, "popcnt", "on" },
--    { "Opteron_G2" "-" TYPE_X86_CPU, "rdtscp", "on" },
--    { "Opteron_G3" "-" TYPE_X86_CPU, "rdtscp", "on" },
--    { "Opteron_G4" "-" TYPE_X86_CPU, "rdtscp", "on" },
--    { "Opteron_G5" "-" TYPE_X86_CPU, "rdtscp", "on", }
--};
--const size_t pc_compat_2_4_len = G_N_ELEMENTS(pc_compat_2_4);
--
- /*
-  * @PC_FW_DATA:
-  * Size of the chunk of memory at the top of RAM for the BIOS ACPI tables
+-    if (x86_cpu_filter_features(cpu, cpu->check_cpuid || cpu->enforce_cpuid)) {
++    if (x86_cpu_filter_features(cpu, cpu->enforce_cpuid)) {
+         if (cpu->enforce_cpuid) {
+             error_setg(&local_err,
+                        accel_uses_host_cpuid() ?
+@@ -8491,7 +8491,6 @@ static const Property x86_cpu_properties[] = {
+     DEFINE_PROP_UINT8("hv-version-id-sbranch", X86CPU, hyperv_ver_id_sb, 0),
+     DEFINE_PROP_UINT32("hv-version-id-snumber", X86CPU, hyperv_ver_id_sn, 0),
+ 
+-    DEFINE_PROP_BOOL("check", X86CPU, check_cpuid, true),
+     DEFINE_PROP_BOOL("enforce", X86CPU, enforce_cpuid, false),
+     DEFINE_PROP_BOOL("x-force-features", X86CPU, force_features, false),
+     DEFINE_PROP_BOOL("kvm", X86CPU, expose_kvm, true),
 -- 
 2.47.1
 
