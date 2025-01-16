@@ -2,51 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 909F0A13903
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 12:32:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9C63A13909
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 12:33:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYO5c-0007gB-Cm; Thu, 16 Jan 2025 06:31:08 -0500
+	id 1tYO7I-0001tl-Ia; Thu, 16 Jan 2025 06:32:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1tYO5D-0007d5-O8
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 06:30:43 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1tYO59-0005Md-Jk
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 06:30:42 -0500
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8Axjq_b7Yhn0mBkAA--.41997S3;
- Thu, 16 Jan 2025 19:30:35 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMAxfcXZ7YhneOQkAA--.11212S8;
- Thu, 16 Jan 2025 19:30:34 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH v2 6/6] target/loongarch: Dump all generic CSR registers
-Date: Thu, 16 Jan 2025 19:30:32 +0800
-Message-Id: <20250116113032.599899-7-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20250116113032.599899-1-maobibo@loongson.cn>
-References: <20250116113032.599899-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tYO74-0001kp-PS
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 06:32:40 -0500
+Received: from mail-yb1-xb2b.google.com ([2607:f8b0:4864:20::b2b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tYO72-0005lX-9L
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 06:32:38 -0500
+Received: by mail-yb1-xb2b.google.com with SMTP id
+ 3f1490d57ef6-e3a26de697fso1282237276.3
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 03:32:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1737027155; x=1737631955; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=XVXCmA4jNWdfTjbWvZeFtT4EP5A/IfJW6OBDMfSth3A=;
+ b=eBcJmMvNJfI67wuhPs4lISqmWitBW8v+F3aWvsJWFXKC8QOEo4zluTlW8DYVnb+EaU
+ OLqjR/cL0Jhlg+xij9XQVd2rSJz9odaYU8E0j8ugZZdnf1Qa9dJvRFGWFpzzG0JwSyIx
+ Wh7QCGRVKb7wy0/3d+M0ftqQ9RLXG1dsio6E/IIDFLkXoGsPZLcWQPMVltn0l2aIXS+O
+ 5G0HhCWXMKyBbxdsZ+qv9dp3/1buEh0FzgZSQRfqPoWzzS+J2HyM9h+dTg9Jeev5ktH8
+ fmsc+v2KdAi1thPbH7HQ4ArfQbt/lCkk8NZqqXG8v36+yCTC6SMvKjEVjHo36/AEQo0o
+ tjVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737027155; x=1737631955;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XVXCmA4jNWdfTjbWvZeFtT4EP5A/IfJW6OBDMfSth3A=;
+ b=K6ZJHj+S/eoPkKJv+jKFoN/eRcxdzBF2AQvMqWr/EAfXpo2qacXtreyzPnkUsL9Coz
+ dTgjN2O2nomBtNYpYGV7yTR9VLxBGMwgSwfNtplx4iLrWCxiVpfOxaiG9/ENh0iqPJos
+ x6CHsb5Eo/R6JO407yuIKYxAPZOjZuQBfN+xJLDssR+p0kyL0QTRLnzV1D1Kv+ZFW3j2
+ VJZ3/HFYx0+YN74pNb41z9/OfSswxxCyJCx8MGSgvVsIO2EHriGjUE0ckoAox7cPOGaf
+ rndUX/9GGjc3lrL3gNbsRkJDvXIE9k1MyW6DWrJ9cLNpD8ayBoeD73yITOuhfioePa+W
+ GwIw==
+X-Gm-Message-State: AOJu0YyYRC8uOQDEWlPwn58xqdDlKo/E/4yM+am3e+NjClTfzj1z+gKj
+ vHH381DnAhrvD9m+TjrtE04G0NR5divRUqooP9pGZFlTk2RBItzi7KY+dzdISC0TqTA8yCvCJTB
+ tPChK/eIF7CHVbPmC9HoKMBRcDvXx4Mysy4BKTw==
+X-Gm-Gg: ASbGnctsXHQj0FluJ1cvRXyaQFivn4woEvjLTDjPHF1+GvMRMAjO2ZBboPrXFzwEOLk
+ qRru2j6BFJN4righzDblVHKu8ORjN/w0mBV121BM=
+X-Google-Smtp-Source: AGHT+IEh8K0LarobC+hTKs4kgVkYpehx6sFM4n6aW5pkN+xo0PGQQe36O/pGqK+BpnxH6WjVazJMbGfXHhF/k/dCKFE=
+X-Received: by 2002:a81:fa07:0:b0:6f6:d428:39c7 with SMTP id
+ 00721157ae682-6f6d4283a04mr33328237b3.37.1737027155062; Thu, 16 Jan 2025
+ 03:32:35 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMAxfcXZ7YhneOQkAA--.11212S8
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250116111600.2570490-1-anasonov@astralinux.ru>
+In-Reply-To: <20250116111600.2570490-1-anasonov@astralinux.ru>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 16 Jan 2025 11:32:23 +0000
+X-Gm-Features: AbW1kvZZUEKseMHKWgku35XYwORZfx2EX4EwASM-gJNw3l3ke3lqrdrHF-U4src
+Message-ID: <CAFEAcA_S1COmR=_t8Q7mXoEoAwYSbxUNRSvZmp35LiH9JSbtPg@mail.gmail.com>
+Subject: Re: [PATCH] hw/ide: replace assert with proper error handling
+To: Artem Nasonov <anasonov@astralinux.ru>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, jsnow@redhat.com, 
+ sdl.qemu@linuxtesting.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,146 +89,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CSR registers is import system control registers, it had better
-dump all CSR registers when VM is running in system mode.
+On Thu, 16 Jan 2025 at 11:17, Artem Nasonov <anasonov@astralinux.ru> wrote:
+>
+> This assert was found during fuzzing and can be triggered with some qtest commands.
+> So instead of assert failure I suggest to handle this error and abort the command.
+> This patch is required at least to improve fuzzing process and do not spam with this assert.
+> RFC.
+>
+> Found by Linux Verification Center (linuxtesting.org) with libFuzzer.
+>
+> Fixes: ed78352a59 ("ide: Fix incorrect handling of some PRDTs in ide_dma_cb()")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2777
+> Signed-off-by: Artem Nasonov <anasonov@astralinux.ru>
+> ---
+>  hw/ide/core.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/hw/ide/core.c b/hw/ide/core.c
+> index f9baba59e9..baca7121ec 100644
+> --- a/hw/ide/core.c
+> +++ b/hw/ide/core.c
+> @@ -931,7 +931,10 @@ static void ide_dma_cb(void *opaque, int ret)
+>      s->io_buffer_size = n * 512;
+>      prep_size = s->bus->dma->ops->prepare_buf(s->bus->dma, s->io_buffer_size);
+>      /* prepare_buf() must succeed and respect the limit */
+> -    assert(prep_size >= 0 && prep_size <= n * 512);
+> +    if (prep_size < 0 || prep_size > n * 512) {
+> +        ide_dma_error(s);
+> +        return;
+> +    }
 
-Here is dump output example of CSR registers:
- CSR000: CRMD b4                 PRMD 4                  EUEN 0                  MISC 0
- CSR004: ECFG 71c1c              ESTAT 0                 ERA 9000000002901300    BADV 12022c0e0
- CSR008: BADI 2b0000
- CSR012: EENTRY 9000000100250000
- CSR016: TLBIDX ffffffff8e000228 TLBEHI 120228000        TLBELO0 400000016f0a001f TLBELO1 400000016f0b401f
- CSR024: ASID a0003              PGDL 900000010432c000   PGDH 9000000004350000   PGD 0
- CSR028: PWCL 5e56e              PWCH 2e4                STLBPS e                RVACFG 0
- CSR032: CPUID 3                 PRCFG1 72f8             PRCFG2 3ffff000         PRCFG3 8073f2
- CSR048: SAVE0 0                 SAVE1 171c              SAVE2 12010c3b8         SAVE3 8e30000
- CSR052: SAVE4 0                 SAVE5 0                 SAVE6 0                 SAVE7 0
- CSR064: TID 1                   TCFG 60670              TVAL 60670              CNTC fffffffffe6002cb
- CSR068: TICLR 0
- CSR096: LLBCTL 0
- CSR136: TLBRENTRY 10025a000     TLBRBADV 139ef6708      TLBRERA 120113d98       TLBRSAVE d901
- CSR140: TLBRELO0 0              TLBRELO1 0              TLBREHI 139ef600e       TLBRPRMD 7
- CSR384: DMW0 8000000000000001   DMW1 9000000000000011   DMW2 0                  DMW3 0
+Now the comment and the code disagree (the comment
+says that the callback must never do the thing that we
+now have code to handle).
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- target/loongarch/cpu.c | 62 +++++++++++++++++++++++++++++++-----------
- target/loongarch/csr.c |  2 ++
- target/loongarch/csr.h |  1 +
- 3 files changed, 49 insertions(+), 16 deletions(-)
+What's the actual situation when the prepare_buf callback hits
+this assertion? Is the problem in this code, or is it in the
+callback implementation? Which IDEDMAOps is involved?
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index a744010332..502258d54e 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -793,6 +793,50 @@ static ObjectClass *loongarch_cpu_class_by_name(const char *cpu_model)
-     return oc;
- }
- 
-+static void loongarch_cpu_dump_csr(CPUState *cs, FILE *f)
-+{
-+#ifndef CONFIG_USER_ONLY
-+    CPULoongArchState *env = cpu_env(cs);
-+    CSRInfo *csr_info;
-+    int64_t *addr;
-+    int i, j, len, col = 0;
-+
-+    qemu_fprintf(f, "\n");
-+
-+    /* Dump all generic CSR register */
-+    for (i = 0; i < LOONGARCH_CSR_DBG; i++) {
-+        csr_info = get_csr(i);
-+        if (!csr_info || (csr_info->flags & CSRFL_UNUSED)) {
-+            if (i == (col + 3)) {
-+                qemu_fprintf(f, "\n");
-+            }
-+
-+            continue;
-+        }
-+
-+        if ((i >  (col + 3)) || (i == col)) {
-+            col = i & ~3;
-+            qemu_fprintf(f, " CSR%03d:", col);
-+        }
-+
-+        addr = (void *)env + csr_info->offset;
-+        qemu_fprintf(f, " %s %" PRIx64, csr_info->name, *addr);
-+        len = find_last_bit((void *)addr, BITS_PER_LONG) & (BITS_PER_LONG - 1);
-+        len = strlen(csr_info->name) + len / 4 + 1;
-+        if (len < 22) {
-+            for (j = 0; j < (22 - len); j++) {
-+                qemu_fprintf(f, " ");
-+            }
-+        }
-+
-+        if (i == (col + 3)) {
-+            qemu_fprintf(f, "\n");
-+        }
-+    }
-+    qemu_fprintf(f, "\n");
-+#endif
-+}
-+
- static void loongarch_cpu_dump_state(CPUState *cs, FILE *f, int flags)
- {
-     CPULoongArchState *env = cpu_env(cs);
-@@ -812,22 +856,8 @@ static void loongarch_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-         }
-     }
- 
--    qemu_fprintf(f, "CRMD=%016" PRIx64 "\n", env->CSR_CRMD);
--    qemu_fprintf(f, "PRMD=%016" PRIx64 "\n", env->CSR_PRMD);
--    qemu_fprintf(f, "EUEN=%016" PRIx64 "\n", env->CSR_EUEN);
--    qemu_fprintf(f, "ESTAT=%016" PRIx64 "\n", env->CSR_ESTAT);
--    qemu_fprintf(f, "ERA=%016" PRIx64 "\n", env->CSR_ERA);
--    qemu_fprintf(f, "BADV=%016" PRIx64 "\n", env->CSR_BADV);
--    qemu_fprintf(f, "BADI=%016" PRIx64 "\n", env->CSR_BADI);
--    qemu_fprintf(f, "EENTRY=%016" PRIx64 "\n", env->CSR_EENTRY);
--    qemu_fprintf(f, "PRCFG1=%016" PRIx64 ", PRCFG2=%016" PRIx64 ","
--                 " PRCFG3=%016" PRIx64 "\n",
--                 env->CSR_PRCFG1, env->CSR_PRCFG2, env->CSR_PRCFG3);
--    qemu_fprintf(f, "TLBRENTRY=%016" PRIx64 "\n", env->CSR_TLBRENTRY);
--    qemu_fprintf(f, "TLBRBADV=%016" PRIx64 "\n", env->CSR_TLBRBADV);
--    qemu_fprintf(f, "TLBRERA=%016" PRIx64 "\n", env->CSR_TLBRERA);
--    qemu_fprintf(f, "TCFG=%016" PRIx64 "\n", env->CSR_TCFG);
--    qemu_fprintf(f, "TVAL=%016" PRIx64 "\n", env->CSR_TVAL);
-+    /* csr */
-+    loongarch_cpu_dump_csr(cs, f);
- 
-     /* fpr */
-     if (flags & CPU_DUMP_FPU) {
-diff --git a/target/loongarch/csr.c b/target/loongarch/csr.c
-index 87bd24e8cd..7ea0a30450 100644
---- a/target/loongarch/csr.c
-+++ b/target/loongarch/csr.c
-@@ -9,12 +9,14 @@
- 
- #define CSR_OFF_FUNCS(NAME, FL, RD, WR)                    \
-     [LOONGARCH_CSR_##NAME] = {                             \
-+        .name   = (stringify(NAME)),                       \
-         .offset = offsetof(CPULoongArchState, CSR_##NAME), \
-         .flags = FL, .readfn = RD, .writefn = WR           \
-     }
- 
- #define CSR_OFF_ARRAY(NAME, N)                                \
-     [LOONGARCH_CSR_##NAME(N)] = {                             \
-+        .name   = (stringify(NAME##N)),                       \
-         .offset = offsetof(CPULoongArchState, CSR_##NAME[N]), \
-         .flags = 0, .readfn = NULL, .writefn = NULL           \
-     }
-diff --git a/target/loongarch/csr.h b/target/loongarch/csr.h
-index deb1aacc33..81a656baae 100644
---- a/target/loongarch/csr.h
-+++ b/target/loongarch/csr.h
-@@ -17,6 +17,7 @@ enum {
- };
- 
- typedef struct {
-+    const char *name;
-     int offset;
-     int flags;
-     GenCSRFunc readfn;
--- 
-2.39.3
-
+thanks
+-- PMM
 
