@@ -2,94 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E473AA13DBB
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 16:34:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E981A13DCF
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 16:36:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYRsB-0004T7-Gq; Thu, 16 Jan 2025 10:33:31 -0500
+	id 1tYRuW-0006LP-7J; Thu, 16 Jan 2025 10:35:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1tYRs6-0004Sf-Mz; Thu, 16 Jan 2025 10:33:26 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1tYRuT-0006Kd-8A
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 10:35:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1tYRs5-00032I-0k; Thu, 16 Jan 2025 10:33:26 -0500
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50GCSTjb005745;
- Thu, 16 Jan 2025 15:33:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=2cBZ8N
- EeTutt8vgABvfEDuF5e4p0OqAtId8jBtC6t5g=; b=rAqje5KTu3kiVz0pnUQuTR
- u1R7LdpPPZRJCZs64eGKpH53Cwl/S+1gG9XcxFh1X1n2PkVYfKNMSHkG/RtG4BlU
- FZYlaY1iVizmNaaWmvgi9rkXmjz4E92Cl6WedolVRd2/Qhb2kGc5owNVneGQDwUp
- 3QG3qkm3Akw4LhdlY9i0u1RUMIDYY75q+l2p0+3MDojGRxSVmdedwbLsRGDmTACI
- ip136mJLOhOUTQGnX4sqEVkRvePexIR9AyE97F69yjZKg0DREZeZBYxOZUzbzPrz
- Ddkf7B46CcYCPNID2MdWyaB/3VQDiMH0Zg/p0g2muUWFM0kaUvjyJ/b2dG2I17cQ
- ==
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 446tkhb8sf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Jan 2025 15:33:21 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50GCtZd4002693;
- Thu, 16 Jan 2025 15:33:20 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4443byejy1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Jan 2025 15:33:20 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
- [10.39.53.231])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 50GFXIOH47251950
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 16 Jan 2025 15:33:19 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DC9FC58054;
- Thu, 16 Jan 2025 15:33:18 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D4AC258050;
- Thu, 16 Jan 2025 15:33:17 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
- [9.67.174.5]) by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 16 Jan 2025 15:33:17 +0000 (GMT)
-Message-ID: <0f063b4c07b56a26b208d07654ba33531b6ab48b.camel@linux.ibm.com>
-Subject: Re: [PATCH 0/3] pc-bios/s390-ccw: Fix problems related to network
- booting
-From: Eric Farman <farman@linux.ibm.com>
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org, Jared Rossi
- <jrossi@linux.ibm.com>
-Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>
-Date: Thu, 16 Jan 2025 10:33:17 -0500
-In-Reply-To: <20250116115826.192047-1-thuth@redhat.com>
-References: <20250116115826.192047-1-thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1tYRuR-0003WV-MX
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 10:35:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737041747;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KjIpcD7YWjfIwGyoS2xumZ713mFtxVG+uRPiveCy82g=;
+ b=KnhGQTLDTXTm5vaNam0UBzWvObAgT97H5wwxu3FLtXKsrcZ/LfSesdVVABEpDkzLNRNo4i
+ r7BeMcyCuyloUnyyNMHEFKvgVSBQSybcy1c7MWdUh1XRJBQxyGmVCJMoyUS8xhgsVcpOpH
+ eZw3ErAa8unig54JMtSfb5wEbIYLu3k=
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
+ [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-575-6831t00xP0Wp4wOvtZspJw-1; Thu, 16 Jan 2025 10:35:46 -0500
+X-MC-Unique: 6831t00xP0Wp4wOvtZspJw-1
+X-Mimecast-MFC-AGG-ID: 6831t00xP0Wp4wOvtZspJw
+Received: by mail-io1-f71.google.com with SMTP id
+ ca18e2360f4ac-844ebc11477so10756839f.3
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 07:35:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737041745; x=1737646545;
+ h=content-transfer-encoding:mime-version:organization:references
+ :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=KjIpcD7YWjfIwGyoS2xumZ713mFtxVG+uRPiveCy82g=;
+ b=M71/ImNLY2bvuGCT3ZDOShjVkonYAWmqFXnhZ4uoa792v+sv6PRtBtzwLgoZmWPYCU
+ 8yoq0rJjvAPOkLgYypGDKCABJOEJlMhA60vlCdVYMd/llqU6jMZ1YCHeLAO7g+Bt/dRa
+ mi++lH0rnanjmCmTWuOenapmjb8QNSTZfMm80WIDatqYuco2csbDrERKXECWXrmiJKjg
+ F2UlIHAjV+D+xjqBvPi3NVP7v6bwgj8z4LTORwzjyQ03uJuNWyxwBeigL/oeZcI3IMJ/
+ oR/xnGW5ZVd5Np95yF7qVahI+hEw5fU3803j0OtGqIQl+WWuchpjrej7i0k/NyDt0qLO
+ purw==
+X-Gm-Message-State: AOJu0Yx/qaMNeaCcxBzr8tGEjrgJdQ5qh+EuaBfxG5CtZDQ2zAL4yFbV
+ zOLqNqR6CopNf4SN7ehQGSRI6WL2A5rmizWq/nXAW0Y5vCob0wpuav3RwxrfTsoZDEWiPzat2A/
+ JZMud/eFuUkc7aNm8qt34arbUOaOTAlh+zrAzPPe1FkmSyyeAUxj/
+X-Gm-Gg: ASbGncvSBifAOkG8ycekfP9joHCz/8yhQXDfnlF245nLuJDIw6edlXUyXcJZED+bYPu
+ IQPSxXHwxFraMSXWDUr7oD4T4ZYP8PnI9u5it0OxchTlAWlGKabMRHVixvYvPye3ijHkUv4F37J
+ mocYx+TuGNv7YwmYnZfiEzrwMSAF58hEWEDvqUGEXgTqq2quiV/QDCNbvmfqApyaicqPDTNUVDt
+ XFsGFxlP79wakAPrej4C3KQwotuZqoRwJwp9TgOd+JdWPJMLtpaRgrrBQ82
+X-Received: by 2002:a05:6602:6d1a:b0:83a:9350:68b with SMTP id
+ ca18e2360f4ac-84cdfddfb66mr811917939f.0.1737041745698; 
+ Thu, 16 Jan 2025 07:35:45 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH7QFqbYKh3e3NGUt2NwBhYNKuCm/9f819uqsIQokVRh2lY9gixa9mUR5R3g1P6ULulldpTKA==
+X-Received: by 2002:a05:6602:6d1a:b0:83a:9350:68b with SMTP id
+ ca18e2360f4ac-84cdfddfb66mr811917439f.0.1737041745363; 
+ Thu, 16 Jan 2025 07:35:45 -0800 (PST)
+Received: from redhat.com ([38.15.36.11]) by smtp.gmail.com with ESMTPSA id
+ 8926c6da1cb9f-4ea75649c1esm70662173.78.2025.01.16.07.35.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 16 Jan 2025 07:35:44 -0800 (PST)
+Date: Thu, 16 Jan 2025 10:35:30 -0500
+From: Alex Williamson <alex.williamson@redhat.com>
+To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH] vfio/igd: Fix potential overflow in igd_gtt_memory_size()
+Message-ID: <20250116103530.2cb45731.alex.williamson@redhat.com>
+In-Reply-To: <20250107130604.669697-1-clg@redhat.com>
+References: <20250107130604.669697-1-clg@redhat.com>
+Organization: Red Hat
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: LJu7ud7pjRE_ZPvOKEdGso2q_cz0mmUm
-X-Proofpoint-ORIG-GUID: LJu7ud7pjRE_ZPvOKEdGso2q_cz0mmUm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-16_06,2025-01-16_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 mlxscore=0 clxscore=1015
- bulkscore=0 lowpriorityscore=0 mlxlogscore=781 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501160117
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=farman@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=-1.797, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=alex.williamson@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.093,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -107,31 +105,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 2025-01-16 at 12:58 +0100, Thomas Huth wrote:
-> The boot can currently fail after the s390-ccw bios used a network
-> device since we do not properly shut down the device afterwards, so
-> that incoming network packets can corrupt the memory. We have to make
-> sure to put the virtio-net device into a sane state again afterwards.
->=20
-> The third patch is unrelated, but I spotted this rather cosmetic
-> problem while working on the code in netmain.c, so I included it here,
-> too.
->=20
-> Thomas Huth (3):
->   pc-bios/s390-ccw/virtio: Add a function to reset a virtio device
->   pc-bios/s390-ccw: Fix boot problem with virtio-net devices
->   pc-bios/s390-ccw/netmain: Fix error messages with regards to the TFTP
->     server
+On Tue,  7 Jan 2025 14:06:04 +0100
+C=C3=A9dric Le Goater <clg@redhat.com> wrote:
 
-Looks good to me; Thank you, Thomas! For the series:
-
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
-
+> The risk is mainly theoretical since the applied bit mask will keep
+> the 'ggms' shift value below 3. Nevertheless, let's use a 64 bit
+> integer type and resolve the coverity issue.
 >=20
->  pc-bios/s390-ccw/virtio.h     |  2 ++
->  pc-bios/s390-ccw/netmain.c    | 52 +++++++++++++++++++++--------------
->  pc-bios/s390-ccw/virtio-net.c |  5 ++++
->  pc-bios/s390-ccw/virtio.c     |  7 ++++-
->  4 files changed, 44 insertions(+), 22 deletions(-)
+> Resolves: Coverity CID 1585908
+> Fixes: 1e1eac5f3dcd ("vfio/igd: canonicalize memory size calculations")
+> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
+> ---
+>  hw/vfio/igd.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >=20
+> diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
+> index 0740a5dd8cc9346a92c4613194faa8dea42e1d98..b5303ea565d6a344d0a43273f=
+288bbb4a7f48327 100644
+> --- a/hw/vfio/igd.c
+> +++ b/hw/vfio/igd.c
+> @@ -133,7 +133,7 @@ static uint64_t igd_gtt_memory_size(int gen, uint16_t=
+ gmch)
+>      } else {
+>          ggms =3D (gmch >> IGD_GMCH_GEN8_GGMS_SHIFT) & IGD_GMCH_GEN8_GGMS=
+_MASK;
+>          if (ggms !=3D 0) {
+> -            ggms =3D 1 << ggms;
+> +            ggms =3D 1ULL << ggms;
+>          }
+>      }
+> =20
+
+Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+
 
