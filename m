@@ -2,95 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D3BFA13F17
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 17:18:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A8A0A13F7C
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 17:28:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYSYh-0005SI-Cl; Thu, 16 Jan 2025 11:17:30 -0500
+	id 1tYSj7-0004iY-7I; Thu, 16 Jan 2025 11:28:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1tYSXg-0005Jb-Jx
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:16:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1tYSj4-0004i9-EA
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:28:10 -0500
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1tYSXe-0005wb-VH
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:16:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737044180;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Qn7pHeSHWwfaxBoO+rtO+9M10JkOv/FnvuiE2vosEgY=;
- b=TBHp4WJqjcydz4c73dgiARdQgaHPHNG/2yZgDNJmXGKeYSsCJBuKMHKH06nDsJgVaCdDZJ
- RctBKK69xbF3mieLWCsW0GJ1fFGDi+8OwTACcNtAlM43D5JhtltC138Fdg1MQcAmcRVTgw
- VM8R0ERP+estOzGR+QjyuGWVsmzNo/w=
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
- [209.85.166.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-538-Udl_L8OvPIOt-fghWMjQZg-1; Thu, 16 Jan 2025 11:16:17 -0500
-X-MC-Unique: Udl_L8OvPIOt-fghWMjQZg-1
-X-Mimecast-MFC-AGG-ID: Udl_L8OvPIOt-fghWMjQZg
-Received: by mail-io1-f70.google.com with SMTP id
- ca18e2360f4ac-849cc81984eso739039f.1
- for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 08:16:17 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737044177; x=1737648977;
- h=content-transfer-encoding:mime-version:organization:references
- :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Qn7pHeSHWwfaxBoO+rtO+9M10JkOv/FnvuiE2vosEgY=;
- b=gkNAB2SlOzBZkgQtruxmn9nYtE3gZ4le+1lG4mWeQohc5id73wjBgK3W9LBFwZ15XN
- QyQm5UEUgqBR2Lzs5uOPrmwI9N7qZt7UeukWWy2V6orwDjuAMRuEh10lK6IAqF5NGyvx
- p0MyJIj41xMv2Usuksi0DB3G3XTtv7mW3CDyOCYpdtj7z1Hn5eqv6awduELa1K8TBGwt
- gaaBaB72q4buOIZYOSkRpkfZj8s4GaX484JZQUHwZVMbAOeWscQbfqLIjKNnyHn3xqYP
- cGuYgAAAwEV6WzOpBJZqh31nwQJChZqWfpliG43T5LW5GsLL6sTmdxKI1Bbr4hyj2Pce
- MNUQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUBL8qCHy38rd30n9suoLq0/H66FC1HzmwKCeAhcs/SRS/8h+QW48ZXXNKjS5VuwUi3947orwLmYaEo@nongnu.org
-X-Gm-Message-State: AOJu0Yw+SSLRujAWO7wADwpWXGa8IvbY0yiB0VrsRpquh+jwd9FmzmzF
- 6bgL3TRu3Pd4yzJeIucubztfVJ7L0xAom7uFdNhazEAXS9jO2gPnH8NaNCKkGQu31ReyAroNjN8
- 1tEe+Su10L3qAvstdNoCSTRme0LE0m2TfpI5HMzNPGb8FAwJCyP08
-X-Gm-Gg: ASbGncv0ZhYsZcDj6aMpKvjCI7iWHpU7ejIDN4a6+E/KeenUUy69ABWCGp8d9u3Wl/L
- bMr2/ffYhmhOcgKNI6s8hyjUANJySHvmBSbVoNWyJ8U90TXmOs7hFpwb5RTf3tYlqHiOMcDkKjN
- P8KKEDGfndcJaljp5q0Kjs/w546crUC/tbjFcFt2HJRWRbPep8b6jFQ5gayi2WkB8wHksxtHlu9
- CTfZpnj+nNQYMgn1t479peaPQr8m2DBMJLXsk+nWlSaQgxboZVfh3W5qf+J
-X-Received: by 2002:a05:6602:6d13:b0:84a:51e2:6642 with SMTP id
- ca18e2360f4ac-84ce00817f9mr885112839f.2.1737044177051; 
- Thu, 16 Jan 2025 08:16:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHanRnHrSQEM0emHuJ5Ax5uVYPsydLP2tP42N5j61iK36kRj4z061TmBJvdAxYeEOW/TukioA==
-X-Received: by 2002:a05:6602:6d13:b0:84a:51e2:6642 with SMTP id
- ca18e2360f4ac-84ce00817f9mr885112039f.2.1737044176733; 
- Thu, 16 Jan 2025 08:16:16 -0800 (PST)
-Received: from redhat.com ([38.15.36.11]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4ea756806dcsm90778173.131.2025.01.16.08.16.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Jan 2025 08:16:16 -0800 (PST)
-Date: Thu, 16 Jan 2025 11:16:03 -0500
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Tomita Moeko <tomitamoeko@gmail.com>
-Cc: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 0/3] vfio/igd: VFIOConfigMirrorQuirk for igd mirrored
- registers
-Message-ID: <20250116111603.20ae42db.alex.williamson@redhat.com>
-In-Reply-To: <20250104154219.7209-1-tomitamoeko@gmail.com>
-References: <20250104154219.7209-1-tomitamoeko@gmail.com>
-Organization: Red Hat
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1tYSj2-0008Us-K2
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:28:10 -0500
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id D349849044;
+ Thu, 16 Jan 2025 17:27:58 +0100 (CET)
+Message-ID: <f49b2c63-33aa-446a-bf47-a59faf49dc2a@proxmox.com>
+Date: Thu, 16 Jan 2025 17:27:57 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] pci: acpi: Windows 'PCI Label Id' bug workaround
+To: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org
+Cc: mst@redhat.com, anisinha@redhat.com
+References: <20250115125342.3883374-1-imammedo@redhat.com>
+ <20250115125342.3883374-3-imammedo@redhat.com>
+Content-Language: en-US
+From: Fiona Ebner <f.ebner@proxmox.com>
+In-Reply-To: <20250115125342.3883374-3-imammedo@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.093,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.797,
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -108,38 +58,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat,  4 Jan 2025 23:42:15 +0800
-Tomita Moeko <tomitamoeko@gmail.com> wrote:
+Am 15.01.25 um 13:53 schrieb Igor Mammedov:
+> Current versions of Windows call _DSM(func=7) regardless
+> of whether it is supported or not. It leads to NICs having bogus
+> 'PCI Label Id = 0', where none should be set at all.
+> 
+> Also presence of 'PCI Label Id' triggers another Windows bug
+> on localized versions that leads to hangs. The later bug is fixed
+> in latest updates for 'Windows Server' but not in consumer
+> versions of Windows (and there is no plans to fix it
+> as far as I'm aware).
+> 
+> Given it's easy, implement Microsoft suggested workaround
+> (return invalid Package) so that affected Windows versions
+> could boot on QEMU.
+> This would effectvely remove bogus 'PCI Label Id's on NICs,
+> but MS teem confirmed that flipping 'PCI Label Id' should not
+> change 'Network Connection' ennumeration, so it should be safe
+> for QEMU to change _DSM without any compat code.
+> 
+> Smoke tested with WinXP and WS2022
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/774
+> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 
-> In commit 1a2623b5c9e7 ("vfio/igd: add macro for declaring mirrored
-> registers"), I introduced a macro to handle mirrored registers in igd
-> bar0. However, using the existing VFIOConfigMirrorQuirk should be a
-> better approach I think after going through the vfio code.
-> 
-> This patch set introduces a new header file, pci-quirks.h, to hold
-> generic quirk declarations, and extends VFIOConfigMirrorQuirk to
-> support offsets in PCI config space. This eliminates the need for
-> the previously introduced macro.
-> 
-> Changelog:
-> v2:
-> * Removed 'const Property' change, it was a mistake in rebasing.
-> * Removed unnecessary initializing config_offset explicitly.
-> * Separated GGC and BDSM mirror into 2 quirks.
-> Link: https://lore.kernel.org/all/20241231151953.59992-1-tomitamoeko@gmail.com/
-> 
-> Tomita Moeko (3):
->   vfio/pci: declare generic quirks in a new header file
->   vfio/pci: introduce config_offset field in VFIOConfigMirrorQuirk
->   vfio/igd: use VFIOConfigMirrorQuirk for mirrored registers
-> 
->  hw/vfio/igd.c        | 125 +++++++++++--------------------------------
->  hw/vfio/pci-quirks.c |  57 +++-----------------
->  hw/vfio/pci-quirks.h |  72 +++++++++++++++++++++++++
->  3 files changed, 109 insertions(+), 145 deletions(-)
->  create mode 100644 hw/vfio/pci-quirks.h
-> 
+Tested-by: Fiona Ebner <f.ebner@proxmox.com>
 
-Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes the VirtIO NIC issue with a German Windows 10 guest for me.
 
 
