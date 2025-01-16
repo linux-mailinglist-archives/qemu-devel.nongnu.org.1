@@ -2,71 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF152A13A11
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 13:41:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD211A13A15
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 13:41:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYPB3-00005N-Ic; Thu, 16 Jan 2025 07:40:49 -0500
+	id 1tYPBT-0000aw-Tq; Thu, 16 Jan 2025 07:41:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tYPAl-0008UI-OW
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 07:40:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tYPAj-0003dH-UF
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 07:40:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737031229;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=iBjPR3V1IWujIeNx1ikIVImipKb5BNuaOQax++1CYfs=;
- b=e28f3UR0a/mK7cj2L1EqsZHv8p4Ja2IG24oRUeDzj4reTinY6yYfzNMxeP52w1U9htMjDj
- y/7n67GBialr6IDiWHvRHs3G/j1sXTmm54gXM9eDuKuovsBwCXZ+wrGoyZayvMrvNo3KPR
- JHqdiqpjlFQNvMl3Gk7HId1laPaMYEQ=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-617-qEUoemckMjm6zTA1RVdfWQ-1; Thu,
- 16 Jan 2025 07:40:27 -0500
-X-MC-Unique: qEUoemckMjm6zTA1RVdfWQ-1
-X-Mimecast-MFC-AGG-ID: qEUoemckMjm6zTA1RVdfWQ
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5ECED1955DB9; Thu, 16 Jan 2025 12:40:26 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.48])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 18C8019560A3; Thu, 16 Jan 2025 12:40:26 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B1C9A21E6924; Thu, 16 Jan 2025 13:40:23 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Zhang Boyang <zhangboyang.id@gmail.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH] qapi/ui: Fix documentation of upper bound value in
- InputMoveEvent
-In-Reply-To: <20250116104433.12114-1-zhangboyang.id@gmail.com> (Zhang Boyang's
- message of "Thu, 16 Jan 2025 18:44:33 +0800")
-References: <20250116104433.12114-1-zhangboyang.id@gmail.com>
-Date: Thu, 16 Jan 2025 13:40:23 +0100
-Message-ID: <87ed136ifc.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tYPBO-0000TF-V8
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 07:41:11 -0500
+Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tYPBM-0003iV-Ss
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 07:41:10 -0500
+Received: by mail-oi1-x22c.google.com with SMTP id
+ 5614622812f47-3ebc678b5c9so577242b6e.3
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 04:41:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1737031264; x=1737636064; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=yHr/thHl0Pqp9/aPVplGb+KVLdIqWX3rtBZC0y7+oOI=;
+ b=B1XwhFeothEla8KGY2/acZjpr0EzmrnYw6eryF6azA5zyWT/va66sqrap/BYq/hSAI
+ 2qbs7cJ2Pt8GNanst9RI7a+YQp/Dk34AfXpWSsG6t9jDHA8muSGm/OXKoN+GRX03KkES
+ d/bzz5trG0anu5HGOnLKyV4UDiYsWXExp446zicCut2iT8AEw5inU/4GSPiZ4nCM5HBg
+ kylwj2VRYvpEILuPNvhgCcCCe5M+2siARoyebNuhsu51JJhZab8UOG4HM9HNElot9+Yv
+ VHXYgi5qAhGPJd4+i737+NmDLM8V1JvlCsi0vo04N0Eo3oiemjodIj4d+bH6m+cfDnfn
+ VR6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737031264; x=1737636064;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=yHr/thHl0Pqp9/aPVplGb+KVLdIqWX3rtBZC0y7+oOI=;
+ b=Knn/V21O3dPd9Np1hCMNv7ydEGisMdFIjk8BbQdGybcjizUEQ/d0qUEPjilzmJnhp4
+ vfWYK1n4mrFh0JStjkii1P60WLIvLeEVgoCTqEDU9ml1e+lzn5gha8L4dAxmUTWNk2+i
+ ajeN4cBlmlnNNmQAWyQiQk1ZB/1pRuOI2ZG+D3xlbNUTCNprzITgoCviotBhr7V/mAEN
+ 4GxHPWwpJUSOhJUF73R3eDCKy1e16P1Fv3GIPVGItPOUJrImtdghW0lIL9AC4tiSdhIk
+ t3KkcLu86cuZOzpul9nJ3ljVi3eJaVdmrw+Xt2j5iJrwuKq4L3JogvOHERFY1zLagWQU
+ C2aQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUc+jYhv6XnXRd/8WvkCdhvUgoBQ0j+AJCGPZliJXxg8Qb5SyGZoawODdJQh/+6p4AUpMplEJYZYEwE@nongnu.org
+X-Gm-Message-State: AOJu0YznyGt/2YqHp8KKbB3nsgfcawPdEE+DXo40JsF9aOdqYsOCvMlM
+ +0xf+YZRPACmYdPpi1g1gR/GaqWR7ORE/YJOO4FvqOSi12rhTknsB5n0GyprvGc=
+X-Gm-Gg: ASbGncu17E5i/Ts808PRfszkInorm3g8OTRo6np/QOGEijDdg+B4wzl/XMCABDy41Yu
+ pAERNsteKp5Mx0huo9Xk0M+DasdfWMw7y1MsFPDSOkQ5n3Y4RUBAThX+MyeC0mD2sjnSlW9adPH
+ XEldWhPPcy/PmmJbPu7QCuc6dxRXLB1z3abGV2TYc5IFDmnHoQmggy1CG+9ACy3tG1qNX239rFj
+ CtVRBzj28+vCzzqZE/mJmW54r9IOYg9sV825pxRyCoWFQZma7UNjaDFwhiP5sU1C97un9c=
+X-Google-Smtp-Source: AGHT+IEfic0JF87hjS6ph0rzOMfaHfjjVoSE9SSeL4LSiPH1rN6IjjqglU/ZnJnAe/GMvu+bDZ3vjw==
+X-Received: by 2002:a05:6808:1449:b0:3e6:6097:847d with SMTP id
+ 5614622812f47-3ef2ebf8a75mr22500109b6e.7.1737031264619; 
+ Thu, 16 Jan 2025 04:41:04 -0800 (PST)
+Received: from [192.168.68.110] ([191.202.238.10])
+ by smtp.gmail.com with ESMTPSA id
+ 5614622812f47-3f037654176sm5762191b6e.14.2025.01.16.04.40.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 16 Jan 2025 04:41:03 -0800 (PST)
+Message-ID: <423806dd-34f3-4d78-ae69-688f965c92e8@ventanamicro.com>
+Date: Thu, 16 Jan 2025 09:40:57 -0300
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 5/6] hw/riscv/riscv-iommu: Acquire device IDs
+ dynamically
+To: Jason Chien <jason.chien@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ "open list:MCIMX7D SABRE / i..." <qemu-arm@nongnu.org>
+References: <20241216004857.9367-1-jason.chien@sifive.com>
+ <20241216004857.9367-6-jason.chien@sifive.com>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20241216004857.9367-6-jason.chien@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x22c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.093,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,34 +109,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Zhang Boyang <zhangboyang.id@gmail.com> writes:
 
-> The upper bound of pointer position in InputMoveEvent should be 0x7fff,
-> according to INPUT_EVENT_ABS_MAX.
->
-> Signed-off-by: Zhang Boyang <zhangboyang.id@gmail.com>
+
+On 12/15/24 9:48 PM, Jason Chien wrote:
+> When all memory transactions from a PCIe host write to the same IOMMU
+> memory region, we need to distinguish the source device dynamically.
+> 
+> Signed-off-by: Jason Chien <jason.chien@sifive.com>
 > ---
->  qapi/ui.json | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/qapi/ui.json b/qapi/ui.json
-> index 460a26b981..7b18662018 100644
-> --- a/qapi/ui.json
-> +++ b/qapi/ui.json
-> @@ -1133,7 +1133,7 @@
->  # @axis: Which axis is referenced by @value.
->  #
->  # @value: Pointer position.  For absolute coordinates the valid range
-> -#     is 0 -> 0x7ffff
-> +#     is 0 -> 0x7fff
 
-Opportunity to replace "->" by "to" or "..".  If you agree, I'll squash
-that into your patch in my tree.
+I'm not sure whether this should be squashed in patch 4 but the code LGTM,
+so either way:
 
->  #
->  # Since: 2.0
->  ##
 
-Acked-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+
+>   hw/riscv/riscv-iommu.c | 17 +++++++++++++----
+>   1 file changed, 13 insertions(+), 4 deletions(-)
+> 
+> diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
+> index f5d53a36b2..e4b7008306 100644
+> --- a/hw/riscv/riscv-iommu.c
+> +++ b/hw/riscv/riscv-iommu.c
+> @@ -48,6 +48,7 @@ struct RISCVIOMMUSpace {
+>       RISCVIOMMUState *iommu;     /* Managing IOMMU device state */
+>       uint32_t devid;             /* Requester identifier, AKA device_id */
+>       bool notifier;              /* IOMMU unmap notifier enabled */
+> +    bool dynamic_devid;         /* Acquiring device_id dynamically */
+>       QLIST_ENTRY(RISCVIOMMUSpace) list;
+>   };
+>   
+> @@ -1184,7 +1185,8 @@ static void riscv_iommu_ctx_put(RISCVIOMMUState *s, void *ref)
+>   }
+>   
+>   /* Find or allocate address space for a given device */
+> -static AddressSpace *riscv_iommu_space(RISCVIOMMUState *s, uint32_t devid)
+> +static AddressSpace *riscv_iommu_space(RISCVIOMMUState *s, uint32_t devid,
+> +                                       bool dynamic)
+>   {
+>       RISCVIOMMUSpace *as;
+>   
+> @@ -1203,6 +1205,7 @@ static AddressSpace *riscv_iommu_space(RISCVIOMMUState *s, uint32_t devid)
+>   
+>           as->iommu = s;
+>           as->devid = devid;
+> +        as->dynamic_devid = dynamic;
+>   
+>           snprintf(name, sizeof(name), "riscv-iommu-%04x:%02x.%d-iova",
+>               PCI_BUS_NUM(as->devid), PCI_SLOT(as->devid), PCI_FUNC(as->devid));
+> @@ -2415,7 +2418,8 @@ static AddressSpace *riscv_iommu_find_as(PCIBus *bus, void *opaque, int devfn)
+>   
+>       /* Find first matching IOMMU */
+>       while (s != NULL && as == NULL) {
+> -        as = riscv_iommu_space(s, PCI_BUILD_BDF(pci_bus_num(bus), devfn));
+> +        as = riscv_iommu_space(s, PCI_BUILD_BDF(pci_bus_num(bus), devfn),
+> +                               false);
+>           s = s->iommus.le_next;
+>       }
+>   
+> @@ -2438,11 +2442,10 @@ void riscv_iommu_pci_setup_iommu(RISCVIOMMUState *iommu, PCIBus *bus,
+>           pci_setup_iommu(bus, &riscv_iommu_ops, iommu);
+>       } else if (bus->iommu_ops && bus->iommu_ops->set_memory_region) {
+>           /*
+> -         * TODO:
+>            * All memory transactions of this bus will be directed to this AS.
+>            * We need to distinguish the source device dynamically.
+>            */
+> -        AddressSpace *as = riscv_iommu_space(iommu, 0);
+> +        AddressSpace *as = riscv_iommu_space(iommu, 0, true);
+>           pci_setup_iommu_downstream_mem(bus, as->root);
+>       } else {
+>           error_setg(errp, "can't register secondary IOMMU for PCI bus #%d",
+> @@ -2453,6 +2456,12 @@ void riscv_iommu_pci_setup_iommu(RISCVIOMMUState *iommu, PCIBus *bus,
+>   static int riscv_iommu_memory_region_index(IOMMUMemoryRegion *iommu_mr,
+>       MemTxAttrs attrs)
+>   {
+> +    RISCVIOMMUSpace *as = container_of(iommu_mr, RISCVIOMMUSpace, iova_mr);
+> +
+> +    if (as->dynamic_devid) {
+> +        as->devid = attrs.requester_id;
+> +    }
+> +
+>       return attrs.unspecified ? RISCV_IOMMU_NOPROCID : (int)attrs.pid;
+>   }
+>   
 
 
