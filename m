@@ -2,92 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6837BA13853
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 11:53:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1B60A13864
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 11:59:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYNU2-0003AY-2V; Thu, 16 Jan 2025 05:52:18 -0500
+	id 1tYNZh-0005DS-UI; Thu, 16 Jan 2025 05:58:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tYNTo-00032v-Cy
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 05:52:05 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1tYNZf-0005Cj-Ee; Thu, 16 Jan 2025 05:58:07 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tYNTm-0006uv-P7
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 05:52:04 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-38789e5b6a7so432819f8f.1
- for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 02:52:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1tYNZd-0007jK-Ou; Thu, 16 Jan 2025 05:58:07 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-21680814d42so10694235ad.2; 
+ Thu, 16 Jan 2025 02:58:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737024720; x=1737629520; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tWAY9nFwSu7kgYW7ClZSo4bYY2o5wAOQVudqPA4FJNI=;
- b=CQz9C08SjzeSLrHRG7oE1ig4rI5+JkIwU0RIMu+xJ8bqfJ8X7Mslc3ZhQvbFQFHQ6C
- +ZcVXo61VRbNz/srCmvwjcDrntGB3w2pp+Cq21Suh2GzCUzwyGTj9dHDyCRYDq9M38/F
- NgJdgqDfQaWzxIvcTeI8LyQXlo35VNK0OlxGm4TTllucEZGX2pGd9AIn3Qz4V3j6Y/gl
- uPR8LTbk1xqErw81fTe5fqQ3dWq6hxs8cI3bYji2lYqDyTfs22aW0nmTtRnr9E1ZCkF6
- GYX2q1i9wJDnmHW9KmpFKVOAEWPz9pA6NRKi3qTdf4D4EjjbyH9bO2iabxgRoERovzRO
- B/cQ==
+ d=gmail.com; s=20230601; t=1737025083; x=1737629883; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=mfbEp2qYxtrBIIbyBCDjoEqzeGlkCi1sJCwdB657Q2A=;
+ b=Xvg0CUxCXZ1r/3bZDUxSeUzLVAi73ME1fvOPcdJh4rAakK4q7jgBA1RYtswdzX866t
+ /yTG+6BIRPMlwJMCMQT61rc5QTGV6FVOMUxPXAKnV23IaG1Dd0zrI62EJoqXbPBb+X/w
+ KkPfJ2JvTm7/XMNlbBehIBjFjp8lPScZrMJxF30UI+3hJPhwOP1H9/7cw+6mDL4HZXDy
+ FQ2LUxhiss2vDdHUWj6CjbjuDWXtk30dukpYtqYEbOs5jhg2QZ+5zFmU26znzG8WJFHj
+ AFyF6xwWlhBo30GC4YJcTDXmTrim5+jje5UXhUs3RNYOjedHAm6OeGo2jC+3LwFpO6LO
+ 06gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737024720; x=1737629520;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=tWAY9nFwSu7kgYW7ClZSo4bYY2o5wAOQVudqPA4FJNI=;
- b=cIYYavU33JKYIyxSzuOzW8bMM53ubWd5/gHtafN4bHNg8OgXrGycdhdjDzJ7AANMA+
- 81LCM7HGyoP7k6+n+ucW+6TmFrVzUuYDrogBBJpXRy9uFobsu0+bdkdSK2cL+N6ZZ5yz
- hsOYAT5eClaXVGZlGmZXgKh/z+C3O3mW1Vz6h1o5j8MRgC0cN+AS8ddQeBbqj7RoChh7
- 3Lyci5kXXmm24SjiH6ONAYf/bdQt75ZxWwEe4k9GnLKP9ty7f/PYyd4fcx44allwU0JD
- erodup3NWmdQS3msliNdHW9yRuUXhr4lsozH5dmsb8mtrgxXh78dKZtiivC7o9x8r/lK
- ftyQ==
+ d=1e100.net; s=20230601; t=1737025083; x=1737629883;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=mfbEp2qYxtrBIIbyBCDjoEqzeGlkCi1sJCwdB657Q2A=;
+ b=eL3i6BLrrcrPgNRyWvcL/BhDZptzPqYI4iViCftNztt2fPoj2u7rw4YvYbiO1k4Mgc
+ XI0V8/w2KqWWr3YZwf2EyBDFztiKKDeMU17AmuXghwCAfFee6wZ36c8xM0VgjIqbH4jr
+ 0v42rZtHh0xyxlxpvx+BZ8yYmzJmwArC0Ra4DOSZvNXhJ9KFtW+vedSyMzo3+gQmH4bW
+ r5IEdkTOQnswXjcCl+susDVLYO9C0z1/xce3UUpBIDFbWG7DZ01xrtB4A7CwojRpeAeO
+ nviCrP3J+ujXIS4Fl+yUzG+fx8zMeOGizREZItzgWUpfBu5+40chhzlvQSHk3ro3RhQe
+ pZaw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVfpi7stzdnBeTsw4bl+OyJTMrIHnO4AX4iQ2A8SO33Rr/tTPUKGOkMv7V98jZft6DYr/i1M8xewFcP@nongnu.org
-X-Gm-Message-State: AOJu0YwiB5eoT+UBl8xXTrIAStntvZXQ8///ICtIWi5Iqq2mCvv34PFD
- q4HPVx821qLx1Sf9wukFkDSTsn36WzDqY2/pTrjzwKR0bnsxUpGIZaFlQ3DQWGA=
-X-Gm-Gg: ASbGncsLtr5273QFhzVi6dnWqKLJik+hE7oKb85AUCb8+NIdKJuXrcUMn3eyrB03NSH
- dVKiqbqOQ6+yTKlqWppfqVQVf1olfyP5o/Kem9aZnanvcUzXjhYzxTzKoWoVna12+PCvEaTBzmR
- N3beEJUhSXhA0yeD5Bc5rk01el2HHEuVYjF7aIJ+fmdBxN9k2IrGfLtFxycKDRaotv/kTatnFsN
- AnEJmLNjI8BuccGFR/2z5wJ3FM9TU9sHJK9pYmqia8vZkX1/Ytr2p8=
-X-Google-Smtp-Source: AGHT+IF0JZjsZr53E9gsxvIFP96yMGoH4Cm+VUlHj5v2ZhEUofChnS/X6KvBqa6VhLGTXIGio7Zz2Q==
-X-Received: by 2002:a05:6000:1862:b0:38a:41a3:218 with SMTP id
- ffacd0b85a97d-38a8733899emr27204455f8f.36.1737024720548; 
- Thu, 16 Jan 2025 02:52:00 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e383dedsm20444054f8f.35.2025.01.16.02.51.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Jan 2025 02:52:00 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2EDE35F8B3;
- Thu, 16 Jan 2025 10:51:59 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Ilya Leoshkevich <iii@linux.ibm.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>,  Paolo Bonzini
- <pbonzini@redhat.com>,  qemu-devel@nongnu.org,  Nina Schoetterl-Glausch
- <nsg@linux.ibm.com>
-Subject: Re: [PATCH] accel/tcg: Call tcg_tb_insert() for one-insn TBs
-In-Reply-To: <a82c41712409ac77d66f03e19b98382bcf11ba45.camel@linux.ibm.com>
- (Ilya Leoshkevich's message of "Thu, 16 Jan 2025 10:19:30 +0100")
-References: <20250115232022.27332-1-iii@linux.ibm.com>
- <ac4d48c3-d139-4af0-ab28-f2674b74cb8c@linaro.org>
- <a82c41712409ac77d66f03e19b98382bcf11ba45.camel@linux.ibm.com>
-User-Agent: mu4e 1.12.8; emacs 29.4
-Date: Thu, 16 Jan 2025 10:51:59 +0000
-Message-ID: <87frljhvzk.fsf@draig.linaro.org>
+ AJvYcCVl4FsnU7e/AWfh9rqeKvPNgEyyHiqAIrgq1LGXFMv6KUnSy5k3VIJXLYFscqxalCZ6x9SnZ4C0plqM@nongnu.org
+X-Gm-Message-State: AOJu0YxuVyyHC+peUz0e9UM098f+hapa+LpSi1ByrDNJwnYjrpQItYDv
+ Mjp4CJxMSnB++32/GrVNiD5JnNC866HyoTBel+0zRk8MgOSh1J4f
+X-Gm-Gg: ASbGnctzzciMhyPghESKupILRv428C1nKKk8i+yo8T55glGd2YebsTBdIKkns7pQC4+
+ jvKvPwpJR19eH+YTYNOqFRCfKFgJDbXowQPT3OkHKOyT/HfpvoZTZvoqonGmcSM2BeDuMjt5Ae1
+ jLgVEPofXpeGP+nbMPEQphixryG8RCFUFw3O0qQEabpNDyYqQJOELKcXpxLQrDQddZpLdY9c3yw
+ N0iVBK/DYWb4sWv1zYg7lnXLgBGiY0l3qIXs4cdEexUBqogaBVg4ADZXS/5fFX6Zg==
+X-Google-Smtp-Source: AGHT+IHo4uqU7Q94psZC02VFyR7gvA+prqi1bvmTBZ86rCM3PvrWGicu1YlKvhHbTU27o6P0A/2HMQ==
+X-Received: by 2002:a17:902:f70f:b0:212:4c82:e3d4 with SMTP id
+ d9443c01a7336-21a83fd90e6mr501215705ad.46.1737025083495; 
+ Thu, 16 Jan 2025 02:58:03 -0800 (PST)
+Received: from [192.168.68.110] ([191.202.238.10])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-21a9f253a7bsm95021185ad.222.2025.01.16.02.57.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 16 Jan 2025 02:58:02 -0800 (PST)
+Message-ID: <482d9d0c-e112-49c1-8102-f263d11127e4@gmail.com>
+Date: Thu, 16 Jan 2025 07:57:58 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/9] ppc/ppc405: Remove CPU
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, Laurent Vivier <laurent@vivier.eu>
+References: <20250110141800.1587589-1-clg@redhat.com>
+ <20250110141800.1587589-4-clg@redhat.com>
+ <1c294e9e-8774-4e3c-874c-d64bcc0f7ce7@linaro.org>
+ <08932dd4-f4d2-4eae-b237-2975c820cec1@linaro.org>
+ <D71LX5ZNBHSB.9MP9IHEN5WLU@gmail.com>
+Content-Language: en-US
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <D71LX5ZNBHSB.9MP9IHEN5WLU@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=danielhb413@gmail.com; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,71 +105,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ilya Leoshkevich <iii@linux.ibm.com> writes:
 
-> On Wed, 2025-01-15 at 16:08 -0800, Richard Henderson wrote:
->> On 1/15/25 15:20, Ilya Leoshkevich wrote:
->> > Currently single-insn TBs created from I/O memory are not added to
->> > region_trees. Therefore, when they generate exceptions, they are
->> > not
->> > handled by cpu_restore_state_from_tb(). For x86 this is not a
->> > problem,
->> > because x86_restore_state_to_opc() only restores pc and cc, which
->> > are
->> > already correct. However, on several other architectures,
->> > restore_state_to_opc() restores more registers, and guests can
->> > notice
->> > incorrect values.
->> >=20
->> > Fix by always calling tcg_tb_insert(). This may increase the size
->> > of
->> > region_trees, but tcg_region_reset_all() clears it once
->> > code_gen_buffer
->> > fills up, so it will not grow uncontrollably.
->> >=20
->> > Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
->> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
->> > ---
->>=20
->> This needs something else.=C2=A0 The reason why they're not insertted is
->> that they're not valid=20
->> for a second execution.=C2=A0 We need to not find them in the search tre=
-e.
->
-> I have the impression that code_gen_buffer is=C2=A0append-only, so after =
-we
-> create a new TB for the second execution, the first TB should not
-> be deleted - is this correct? At least I haven't found=C2=A0code_gen_ptr
-> decrements, besides the rollback at the end of tb_gen_code(). Then,
-> since region_trees are indexed by code_gen_buffer pointers, and not
-> guest pointers, this should not introduce any stale entries.
 
-We used to generate a temporary TB, execute it and then wind codeptr
-back. We simplified the code to generate the TB but then not add it to
-QHT - I think the original reasoning was saving on scarce CF_ flags and
-not over complicating the tb_gen_code function. See around 873d64ac30
-(accel/tcg: re-factor non-RAM execution code).
+On 1/14/25 4:11 AM, Nicholas Piggin wrote:
+> On Sat Jan 11, 2025 at 2:25 AM AEST, Richard Henderson wrote:
+>> On 1/10/25 08:15, Philippe Mathieu-Daudé wrote:
+>>> Hi Cédric,
+>>>
+>>> Cc'ing Laurent & Richard for user emulation.
+>>>
+>> ...
+>>> The deprecation message (see previous patch) was about the
+>>> "ppc ``ref405ep`` machine". Is that OK we remove these CPUs
+>>> for user emulation?
+>>>
+>>> $ qemu-ppc -cpu help|fgrep 405
+>>> PowerPC 405d2            PVR 20010000
+>>> PowerPC 405gpa           PVR 40110000
+>>> PowerPC 405gpb           PVR 40110040
+>>> PowerPC 405cra           PVR 40110041
+>>> PowerPC 405gpc           PVR 40110082
+>>> PowerPC 405gpd           PVR 401100c4
+>>> PowerPC 405gp            (alias for 405gpd)
+>>> PowerPC 405crb           PVR 401100c5
+>>> PowerPC 405crc           PVR 40110145
+>>> PowerPC 405cr            (alias for 405crc)
+>>> PowerPC 405gpe           (alias for 405crc)
+>>> PowerPC npe405h          PVR 414100c0
+>>> PowerPC npe405h2         PVR 41410140
+>>> PowerPC 405ez            PVR 41511460
+>>> PowerPC npe405l          PVR 416100c0
+>>> PowerPC 405d4            PVR 41810000
+>>> PowerPC 405              (alias for 405d4)
+>>> PowerPC 405lp            PVR 41f10000
+>>> PowerPC 405gpr           PVR 50910951
+>>> PowerPC 405ep            PVR 51210950
+>>
+>> Up to the ppc maintainers.  I don't know of anything interesting at the user-only level
+>> wrt these cpus.
+> 
+> Just getting back to things after the break...
+> 
+> We are looking at modeling some microcontrollers on the POWER
+> chips. There is an OCC power management controller which is a 405
+> and some other weird cut down 405 derivatives, we're not up to
+> those yet but we want to model them.
+> 
+> We should be able to remove a bunch of boards and CPUs, I just
+> haven't started looking, so might be easier to wait for a bit.
+> If it's not causing others too much problem, could we leave this
+> in for the time being?
 
-This does have the effect of potentially regenerating the same TB
-over and over again but usually there only a few insns executed out of
-IO space.
 
-However some arches do more of this than others. And now we have devices
-such as CXL where people do want to run large amounts of code directly
-out of io address space. This eventually exhausts the codegen buffer so
-we do a tb_flush() and start again. This is obviously sloooooow.
+That's fine, but then we need to at least mark you as a maintainer here:
 
->
-> While we might not need to find the ones created for the first
-> execution, we still need to find the ones for executions that fail -
-> and there is no way to tell in advance, which ones these are going to
-> be, so the idea here is to register all of them.
->
-> Am I missing something?
->
->> r~
+PowerPC Machines
+----------------
+405 (ref405ep)
+L: qemu-ppc@nongnu.org
+S: Orphan  <----------------
+F: hw/ppc/ppc405*
+F: tests/functional/test_ppc_405.py
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Either with "S: Odd Fixes" or "S: Maintained" (or S: Supported, if that's really the
+case). And perhaps re-visit the deprecation notice too.
+
+I'm being petty here because, right now, all 405 code is marked for deprecation, has no
+firmware images and Linux support and etc like Cedric mentioned, and it fits exactly
+the criteria everyone else uses for removal. If we want to keep it around we'll need
+at least MAINTAINER changes to indicate it.
+
+
+Thanks,
+
+Daniel
+
+
+> 
+> Thanks,
+> Nick
+
 
