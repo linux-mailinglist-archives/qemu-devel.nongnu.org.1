@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2383A137A7
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 11:18:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60050A137A8
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 11:20:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYMxM-0005FL-5B; Thu, 16 Jan 2025 05:18:32 -0500
+	id 1tYMyd-0005wS-FH; Thu, 16 Jan 2025 05:19:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tYMxJ-0005Ez-V4
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 05:18:29 -0500
+ id 1tYMyU-0005vb-Pf
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 05:19:44 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tYMxI-0001Or-Df
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 05:18:29 -0500
+ id 1tYMyQ-0001UI-5z
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 05:19:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737022707;
+ s=mimecast20190719; t=1737022761;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UIgfVGfkArrj0EB1HijQrCuCYlntrLwmWUmviyH93JA=;
- b=bnUJk3WdmdcKZHZLQEDOIUEyrNgGgB4LKJsu7n7wZcLhqUq5MrJJv8J8DF6ls1dzCmYesL
- U09d//k6rRJlBOEpTATy9zG/nFoaDGjZ9CAKf837KHLm2I4WkGwWL62NXoHwtBe1Us/zDr
- eOy5IHRupczejBmzqbyhjA9QyMMfQnE=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=09nMgNzItT0Ya5i2ZVN5LrsZV88LgKu1tVGOGs2ku+k=;
+ b=D+s77leazV/tVAifTFTWDnNUn1+iJbcr1KRsOGf/q5pF42jg6uSt/fbEvCafqk+VE4cqIf
+ 2FjxU8w8088frEu89W6TezflyP5q2gxtNpMvRf7Sf7TUME/bRlxdPIesc2EIFbBTA/T7Lz
+ c8heSnmvPNVHp5sD8VsPlVhvqKkr3QA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-66-eTDsI_OCN5SG-74mQCHHyg-1; Thu,
- 16 Jan 2025 05:18:22 -0500
-X-MC-Unique: eTDsI_OCN5SG-74mQCHHyg-1
-X-Mimecast-MFC-AGG-ID: eTDsI_OCN5SG-74mQCHHyg
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-ZNCexOFxMvCxQOg-vRld_Q-1; Thu,
+ 16 Jan 2025 05:19:18 -0500
+X-MC-Unique: ZNCexOFxMvCxQOg-vRld_Q-1
+X-Mimecast-MFC-AGG-ID: ZNCexOFxMvCxQOg-vRld_Q
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1CCEA19560A1; Thu, 16 Jan 2025 10:18:20 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A901A19560BB; Thu, 16 Jan 2025 10:19:16 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.111])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 523961955F1B; Thu, 16 Jan 2025 10:18:14 +0000 (UTC)
-Date: Thu, 16 Jan 2025 10:18:09 +0000
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E262830044C6; Thu, 16 Jan 2025 10:19:10 +0000 (UTC)
+Date: Thu, 16 Jan 2025 10:19:07 +0000
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
@@ -59,18 +59,18 @@ Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Gerd Hoffmann <kraxel@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: Re: [PATCH 17/21] hw/scsi/vmw_pvscsi: Remove
- PVSCSI_COMPAT_DISABLE_PCIE_BIT definition
-Message-ID: <Z4jc4W4w7GPe-EFY@redhat.com>
+Subject: Re: [PATCH 18/21] hw/scsi/vmw_pvscsi: Convert DeviceRealize ->
+ InstanceInit
+Message-ID: <Z4jdG8vSXAiugCxH@redhat.com>
 References: <20250115232247.30364-1-philmd@linaro.org>
- <20250115232247.30364-18-philmd@linaro.org>
+ <20250115232247.30364-19-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250115232247.30364-18-philmd@linaro.org>
+In-Reply-To: <20250115232247.30364-19-philmd@linaro.org>
 User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -39
@@ -97,16 +97,14 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jan 16, 2025 at 12:22:43AM +0100, Philippe Mathieu-Daudé wrote:
-> PVSCSI_COMPAT_DISABLE_PCIE_BIT was only used by the
-> hw_compat_2_5[] array, via the 'x-disable-pcie=on' property.
-> We removed all machines using that array, lets remove all the
-> code around PVSCSI_COMPAT_DISABLE_PCIE_BIT.
+On Thu, Jan 16, 2025 at 12:22:44AM +0100, Philippe Mathieu-Daudé wrote:
+> Simplify replacing pvscsi_realize() by pvscsi_instance_init(),
+> removing the need for device_class_set_parent_realize().
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  hw/scsi/vmw_pvscsi.c | 44 ++++++++------------------------------------
->  1 file changed, 8 insertions(+), 36 deletions(-)
+>  hw/scsi/vmw_pvscsi.c | 13 +++----------
+>  1 file changed, 3 insertions(+), 10 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
