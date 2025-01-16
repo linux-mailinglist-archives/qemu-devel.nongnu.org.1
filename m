@@ -2,99 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 188DAA13669
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 10:17:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6854A13678
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 10:20:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYLyI-00051p-MB; Thu, 16 Jan 2025 04:15:26 -0500
+	id 1tYM2O-0006Dn-S8; Thu, 16 Jan 2025 04:19:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tYLy8-000505-Dw
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 04:15:21 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tYLy6-0005eO-HF
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 04:15:16 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-2165448243fso14599235ad.1
- for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 01:15:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1737018912; x=1737623712;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4/lL4UidUy1I4CY8mtnumDmLoZlT8YIlEtOPTU6JD7g=;
- b=3OWE9w30ePhiDjpAU3wg3QlpOGDg08klkqHqskYeKa1a7lkOPC/6p4upmqHZJDwZMb
- /+ZXajUQo85t4MYv56SHmFbZvuzs1W86UfvNBqHE81VFlDBduLxZ7Uw+0EVMegA5uw5v
- PHqfJ3tOQnffMayBHygX75kzfTCukpRkZBUBFepd7JL66SmJefb9q92VWuK8hc9sUT0P
- BRa19paOobF6efq8orBacxikr5/EzE6rHuPli596FAJIen6IQT1u/MFtumeCflFwvxTe
- Zkv0YEVPLtce4KTejHuGC3RPKxOE1yB75BLnXdQ3bY0G52f3gZCd6iQn61qfzCbw/LuQ
- lP5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737018912; x=1737623712;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4/lL4UidUy1I4CY8mtnumDmLoZlT8YIlEtOPTU6JD7g=;
- b=bZXaCJey3wAByUcn4tU0qvXt4uanxb2PuQ8lVT/W5nK/0hfzGgD9/AGTvqddMtBUdZ
- K2kv0irZF8ZFliEA2vjug9/OTQFAFE1LkZlFZbWEmpLw7V2rLIp7MyE3kZTtMTVGFfes
- tMA3gvgYNNv3SnIkVwFXuE+PGbayi6Sl8QZV0SuHsjKxjSKVQtSVfg590mWs+0HYXgvJ
- hGZ+vUh3zjKLl9umaB89JA1Be/0XrD6soUkw2VXDYhv9SGpAwbzDkEg7uHnqbXbY7GLS
- T+C2I+dZR8mzCFRfZNz1zhVTUIceZRcjAZaA2BDBP0fnTyrjrqw3LKUfd2ipwkV/zbyb
- 80Cw==
-X-Gm-Message-State: AOJu0Yw7iDDGA6u5g+PNafrBj+jAGgNTPJwsg7ocwbjw/BMIZsiqt2Ph
- H+jXVhUONMVj2n4R46gkrw+fult1neubC2MCi1wRj50AUoUzh/7e3z3ZKwLrRL4=
-X-Gm-Gg: ASbGnct6bwinplbeY/nOKxjAeKWhlwA7RfkVmycIbNvXW/tssaajYoXj+r+nDJHNVOP
- uFbwtfjAlMkgw8QPAM42+qEiA1Tk2lSDTxnriUbshc8dfz3tzeGDgF87I9VAGDJWVGY+BW3ZJNg
- ndt6RbMMwcpSlkP98G8gqJZ/7fAlIfloaUouGSfo0NDvt10xecwCdbrfmZDqcGjB4d0HJHmbXj/
- 9xl0iccIeERW8ihJHZQ1ah0jnwXje6/PYxCL5NRroCElFpBjrhRkhhYlIGSS5wwOyk=
-X-Google-Smtp-Source: AGHT+IE8xHHaZ8Xruqw8xP5MRTMNO2dH92dkkayqQJGpUMRsj8qQ/XyrkO1exHpMXPSFam+gExAycg==
-X-Received: by 2002:a17:903:187:b0:20c:9936:f0ab with SMTP id
- d9443c01a7336-21a84009ab8mr496111205ad.47.1737018912405; 
- Thu, 16 Jan 2025 01:15:12 -0800 (PST)
-Received: from [157.82.203.37] ([157.82.203.37])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21a9f1381a6sm95311265ad.93.2025.01.16.01.15.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Jan 2025 01:15:12 -0800 (PST)
-Message-ID: <f706c171-f1ae-4baf-bb90-8dfb2678a164@daynix.com>
-Date: Thu, 16 Jan 2025 18:15:06 +0900
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tYM2M-0006DN-12
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 04:19:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tYM2J-0006ML-KN
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 04:19:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737019173;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=NaNpcZC03XR556acppGo2qY5hiEOeo5x3/frL0+2vVA=;
+ b=Cpno7KeyptS78uJ/qgwfvpZcnDnamTq/iIh3vSgzYQ8k50BWAspIhf7SLygXHi7d5lSQVk
+ 3Bq6IeyWMYjxFKEyVpMcjWKuKH6n0GP9GTgYtkjpxLeBIN9kPO1w/MiYChzepRemJkIjxu
+ POL/zqRgVk4+7kfhc41YZcjRzX/D+nw=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-207-JXV3InpaPnCKx61B3Hjx-w-1; Thu,
+ 16 Jan 2025 04:19:28 -0500
+X-MC-Unique: JXV3InpaPnCKx61B3Hjx-w-1
+X-Mimecast-MFC-AGG-ID: JXV3InpaPnCKx61B3Hjx-w
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7E83219560A1; Thu, 16 Jan 2025 09:19:27 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.111])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AC07619560AA; Thu, 16 Jan 2025 09:19:24 +0000 (UTC)
+Date: Thu, 16 Jan 2025 09:19:20 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH] docs/about: Change notes on x86 machine type deprecation
+ into a general one
+Message-ID: <Z4jPGGezEK3XRMl8@redhat.com>
+References: <20250116064644.65670-1-thuth@redhat.com>
+ <ad3d06df-f0ae-4508-b979-c838b3647510@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 09/14] pcie_sriov: Reuse SR-IOV VF device instances
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>, Markus Armbruster <armbru@redhat.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Shivaprasad G Bhat <sbhat@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, devel@daynix.com
-References: <20250109-reuse-v19-0-f541e82ca5f7@daynix.com>
- <20250109-reuse-v19-9-f541e82ca5f7@daynix.com>
- <01eac6ff-e128-4b1c-a5de-66ffa28b43b1@linaro.org>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <01eac6ff-e128-4b1c-a5de-66ffa28b43b1@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+In-Reply-To: <ad3d06df-f0ae-4508-b979-c838b3647510@linaro.org>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,52 +87,115 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/01/09 19:51, Philippe Mathieu-Daudé wrote:
-> Hi Akihiko,
+On Thu, Jan 16, 2025 at 09:48:50AM +0100, Philippe Mathieu-Daudé wrote:
+> On 16/1/25 07:46, Thomas Huth wrote:
+> > We now have a general note about versioned machine types getting
+> > deprecated and removed at the beginning of the deprecated.rst file,
+> > so we should also have a general note about this in removed-features.rst
+> > (which will also apply to versioned non-x86 machine types) instead of
+> > listing individual old machine types in the document.
+> > 
+> > Signed-off-by: Thomas Huth <thuth@redhat.com>
+> > ---
+> >   docs/about/deprecated.rst       |  7 -------
+> >   docs/about/removed-features.rst | 11 +++++------
+> >   2 files changed, 5 insertions(+), 13 deletions(-)
+> > 
+> > diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> > index 4a3c302962..7b42d6eecc 100644
+> > --- a/docs/about/deprecated.rst
+> > +++ b/docs/about/deprecated.rst
+> > @@ -236,13 +236,6 @@ deprecated; use the new name ``dtb-randomness`` instead. The new name
+> >   better reflects the way this property affects all random data within
+> >   the device tree blob, not just the ``kaslr-seed`` node.
+> > -``pc-i440fx-2.4`` up to ``pc-i440fx-2.12`` (since 9.1)
+> > -''''''''''''''''''''''''''''''''''''''''''''''''''''''
+> > -
+> > -These old machine types are quite neglected nowadays and thus might have
+> > -various pitfalls with regards to live migration. Use a newer machine type
+> > -instead.
+> > -
+> >   PPC 405 ``ref405ep`` machine (since 9.1)
+> >   ''''''''''''''''''''''''''''''''''''''''
+> > diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+> > index c6616ce05e..156c0c253c 100644
+> > --- a/docs/about/removed-features.rst
+> > +++ b/docs/about/removed-features.rst
+> > @@ -972,6 +972,11 @@ from Linux in 2021, and is not supported anymore by QEMU either.
+> >   System emulator machines
+> >   ------------------------
+> > +Note: Versioned machine types that have been introduced in a QEMU version
+> > +that has initially been released more than 6 years before are considered
+> > +obsolete and will be removed without further notice in this document.
+> > +Please use newer machine types instead.
 > 
-> On 9/1/25 07:29, Akihiko Odaki wrote:
->> Disable SR-IOV VF devices by reusing code to power down PCI devices
->> instead of removing them when the guest requests to disable VFs. This
->> allows to realize devices and report VF realization errors at PF
->> realization time.
->>
->> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->> ---
->>   include/hw/pci/pcie_sriov.h |  1 -
->>   hw/pci/pci.c                | 14 ++++++-
->>   hw/pci/pcie_sriov.c         | 94 ++++++++++++++++++ 
->> +--------------------------
->>   3 files changed, 51 insertions(+), 58 deletions(-)
+> This is an improvement. I still wonder if we shouldn't list them removed
+> machines here, to help old users.
 > 
+>   Removed in 4.0:
+>     - pc-0.10
+>     - ...
+>   Removed in 9.0:
+>     - pc-i440fx-2.3
+>   Remove in 10.0:
+>     - pc-i440fx-2.4
+>     - pc-i440fx-2.5
+>     - pc-i440fx-2.6
+>     - pc-q35-2.4
+>     - pc-q35-2.5
+>     - pc-q35-2.6
+>     - ARM virt-2.6
+>     ...
 > 
->>   void pci_set_enabled(PCIDevice *d, bool state)
->> @@ -2977,7 +2987,7 @@ void pci_set_enabled(PCIDevice *d, bool state)
->>       memory_region_set_enabled(&d->bus_master_enable_region,
->>                                 (pci_get_word(d->config + PCI_COMMAND)
->>                                  & PCI_COMMAND_MASTER) && d->enabled);
->> -    if (!d->enabled) {
->> +    if (d->qdev.realized) {
-> 
-> I'm not a big fan of accessing an internal field that way, without
-> accessor. Besides, we use this field atomicly within qdev.c.
+> ?
 
-I changed it to use qdev_is_realized() with v20.
+A big part of the reason for the macros for machine type deprecation & then
+skipping machine registration, was to eliminate repeated manual work that is
+visible to users if forgotten. 
 
-> 
->>           pci_device_reset(d);
-> 
-> Anyhow, resetting an unrealized device is a bug IMO.
+We still have the actual code deletion which is manual, but that's harmless
+as even if forgotten, such that the code exists, the machine type will have
+been entirely removed from view.
 
-Right. Calling pci_set_enabled() for an unrealized device to set the 
-initial value is fine. This code ensures it will not trigger resetting 
-the device.
+As such I'm pretty reluctant to suggest we create a new place which needs
+manually updating when we remove machine types.
 
-> 
->>       }
->>   }
-> 
+I wonder if its possible to get an auto-generated version number into the
+documentation though ?
+
+eg, so we can have an entry in 'deprecated.rst'
+
+  Versioned machine types for x86_64, i386, aarch64  <other targets here>
+  -----------------------------------------------------------------------
+
+  In accordance with our versioned machine type deprecation policy,
+  all machine types older than 7.0.0 have been deprecated.
+
+and in 'removed-features.rst'
+
+  Versioned machine types for x86_64, i386, aarch64  <other targets here>
+  -----------------------------------------------------------------------
+
+  In accordance with our versioned machine type removal policy,
+  all machine types older than 4.1.0 have been removed.
+
+
+where both '7.0.0' and '4.1.0' are variables substituted in by the
+docs generator in some manner, so we never need touch them manually ?
+
+NB, this auto-deletion logic is currently hacked to only come into
+effect from 10.1.0 onwards, so we're 1 cycle too early currently
+(see commit c9fd2d9a48ee3c195cf83cc611b87b09f02f0013)
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
