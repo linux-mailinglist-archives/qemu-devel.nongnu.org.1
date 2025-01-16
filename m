@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E66A1451A
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 00:06:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8396A14519
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 00:06:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYYus-0005uo-86; Thu, 16 Jan 2025 18:04:46 -0500
+	id 1tYYuv-0005vn-FT; Thu, 16 Jan 2025 18:04:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYYup-0005ud-B4
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 18:04:43 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYYut-0005vP-3J
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 18:04:47 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYYum-0004xJ-MN
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 18:04:43 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-385de9f789cso1126129f8f.2
- for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 15:04:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYYur-0004xs-Fk
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 18:04:46 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-385ddcfc97bso1202166f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 15:04:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737068679; x=1737673479; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=L/Xc2XaAlWpyN5NpG603Hh+ExSXBxGrhRynU37t6mFU=;
- b=gkLSrPW4Sa/TCnlnNJ3g/5pxMcqBE8rfXCABf33WK5OQLeEITzAtbsKTdXfFObSlJa
- xz0QSZwnYQ7mHZkHSe2M2m571o/UpYn4jTgWlA849N1LNX1yIxVIs7Tr7ex1+9RU5rQV
- pDx6lXaV5cJP/lnK4ByuZrC8/8QiVjgk9iZxCzDR7BA6ZocnryHvDZPEablJIrjSRaAL
- SYoNSz0OTKRiwbZvvNHMAvnqkS6CpdloBSH+k9HByDx3Uo6sArFA/ZxuD9y4E3hYhM8L
- p21J9JcUI7vjt/v4cZcYKTD5Rk+W3qMitSrw6wCvxxz3quTeAyvYUME/QZXcrx+a6PCH
- y/qw==
+ d=linaro.org; s=google; t=1737068684; x=1737673484; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nLjAfEesdApASDyVsAST+uy4KXHzjDdggJGXjuSffuw=;
+ b=cd2eACeMmBeD5o7k/NuSiehHU/jHI7jfjmz2v0QOB44X3A2HWBC+XQabqTltDVgtx3
+ ZZYA8KWsoCpU2KoUviauY+TqfGErtzMTirg59OBtlc3EcEAkupAfYa1C20FielgaDKGz
+ 1N563iup0W97wutj5z6U3cIQgolpQxxWBTMHZ0GxC3RYghWMHLDhnEFU6akNqYidicdI
+ FUQwvvmxVJ3WxuBsETniy0m3bLgbwkBAKTA+c0S7/iJEA1mnog03rVNMtvFS0JTgvOrK
+ HCquYQwlnhSua7W8jIxe3JPuXLgsonAwiYf6L46yjS5+4d+wPpso9rg1OaHx/wYudCbo
+ Sxzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737068679; x=1737673479;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=L/Xc2XaAlWpyN5NpG603Hh+ExSXBxGrhRynU37t6mFU=;
- b=YaGFKBwlIMkZIz5dPJ5L/tOYwSjzF06V0kOIyrrin32SiXpDkSR7rPRq+mRenBc0X0
- K2QpIZPZJplEfIQ7Nsgh6pZpkku75yFyJC5j8zF4wipejGX7eLHC1zAahbg0+LE2+fdY
- PEa2vd7zOQNhWCw4hVAjcUPCqoIzFlmK8Dv474bo1xFxL8bBgR0K/rJqKzchoEwJ2w/p
- 4wuXMMhBB5NTLPjR6Py98RrzAWxjvrEixzC9mhorg4An4hdTZuweqcHxr7xH3CGr0WiU
- mfTMqI1V85PzgJMVX5NgDjz0doHZsSTPeDN6uNa8MU8k9LHrWbnhcVwR0LX1snkNVEXC
- 4GQQ==
-X-Gm-Message-State: AOJu0Yz1sAP6/acjh/chvQYny/qvRCSMR7W+8gPsyQS1ILCbZabjJoeQ
- zph/dwv5ySWCUa+iCqUROxpOCUp5Hdg/NGbHiWIruTRUM/Tp0HkiyDUBqPkf88d60g7f0ZyfQks
- XQNQ=
-X-Gm-Gg: ASbGncsx0Gs+TKI1xvqVRZMiqEJYF8atIKlGsNLJ3HMBt9brchJId82rttMjnySBz2m
- fCAkGMTng7aUb5Ba+J7F58ywg+DJtuzGJnHr4orAYYl8ZdThpNpvcgaksSA78iD6paWHFdOeCX6
- ZBA46zuQWURke9PjyZij/LzQcA8r63DKACluFXRoWgQGfyTGEGpUJp4BHkYL8uPpppBWEC9Ll23
- pKVjyADtOkFLHX7D6+lNKYtmQLtdvPIv3Z6Q/vCGY6y6mdJwCJ45s3rVbmVwRvlM3fCh+KRYNs4
- D3B216mpbXorLOAHjgyAGUEpyvLDRRU=
-X-Google-Smtp-Source: AGHT+IGo+4BOn4N/u8HKLEKf9M9tdN4J/vS5A9410nA0KIGbxXGttI4vBFtbCEQw2W+SGYIS9Id8Ew==
-X-Received: by 2002:a5d:5f54:0:b0:385:fa33:29ed with SMTP id
- ffacd0b85a97d-38bf57d2cc4mr295816f8f.47.1737068678720; 
- Thu, 16 Jan 2025 15:04:38 -0800 (PST)
+ d=1e100.net; s=20230601; t=1737068684; x=1737673484;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nLjAfEesdApASDyVsAST+uy4KXHzjDdggJGXjuSffuw=;
+ b=hjmB+T686x6mBvuw5ib/sRW1JTZzCDK8l1xN5ygl8X0RJR19gx0N0tKgUSJiMJWrLk
+ +KFt87BvYCtWu5uLyPVqN7NIvn573B2lDgwDl7+CAABlsXpp5XEvAI9rxmG9aVtJ8nCw
+ omxUqBq5SyJc0PydM27gKqJnTKmLy9GNYXGA23zeZ4cgVm9y4yC72OBXWMtFR+dpZcRz
+ fzDPW1V0ziaOHw6+byfrn7tyQXwSaXW7dBOSFXOD5lshfaPPD5gfTf3RG6TA50XuR0n2
+ MXblnEaiXP+5ZP5lAUC8u5/PldjcYLNbMRhAh6R4Wemoau3a05S6f2upcb+5OJ2TIKxT
+ +PPQ==
+X-Gm-Message-State: AOJu0YwbEjMnBPL7CVH7oTZxmYRD9iHrgCkrrs4kRL2yfEomPpzp9mm6
+ Zqx11u2Br8mdxNfTl4d+sQbGk/k6eovg+VMH/VgiDMBhY02dXBLKye2m18bzQAvMP8LGuzN9eYS
+ sp4k=
+X-Gm-Gg: ASbGncsYhWzYhs7MlyTnnpDtLbq8kSvCJLAsvq/OFnWnWrrvTrT26yjqZSzdKmAT+MM
+ HLl04cKU2dOfrnzjJFWGHLeyX2VVe1LnTrOIb4tSsdHbSbf3j1xe4MVHZkWgWUDnJaLfinTgYb5
+ 6FC6V4Ht8pGc0Fcnx4GFrpiTPO53YWy0ot0DcUKwNo1H/Nn8SE9NPmox1VJSsZAclAGf7Siy/Vm
+ I07xQPZAZvOG18f1d4lXgm6fECB//sDEpdlyP8DEfro+NDOSgwPuqydp4roG8Y6ZfgL7stwOoyp
+ OZPFplPmmECRGl6voD4nJTComu0TfDY=
+X-Google-Smtp-Source: AGHT+IGhjTugVyMuVVwIEtirXSVUO7G45R1rLYAYuF6AuwFyONi/aB8WDZMv3X/rtJKqVClbvw7PEQ==
+X-Received: by 2002:a5d:64a1:0:b0:385:f44a:a53 with SMTP id
+ ffacd0b85a97d-38bf5655b07mr267507f8f.4.1737068683638; 
+ Thu, 16 Jan 2025 15:04:43 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c7499bbasm76971975e9.3.2025.01.16.15.04.36
+ ffacd0b85a97d-38bf327dee3sm922535f8f.86.2025.01.16.15.04.42
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 16 Jan 2025 15:04:37 -0800 (PST)
+ Thu, 16 Jan 2025 15:04:42 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -66,22 +67,25 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [RFC PATCH 0/2] target/arm: Constify helpers taking CPUARMState arg
-Date: Fri, 17 Jan 2025 00:04:33 +0100
-Message-ID: <20250116230435.87580-1-philmd@linaro.org>
+Subject: [RFC PATCH 1/2] cpus: Introduce const_cpu_env() and
+ const_env_archcpu()
+Date: Fri, 17 Jan 2025 00:04:34 +0100
+Message-ID: <20250116230435.87580-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250116230435.87580-1-philmd@linaro.org>
+References: <20250116230435.87580-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,35 +101,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+const_cpu_env() is similar to cpu_env() but return a const
+CPU 'env' state.
+Same for const_env_archcpu() w.r.t. env_archcpu().
 
-I'd like to enforce some CpuClass handlers to take a
-const CPUState* argument, but before I need to clean
-each target. RFC starting with ARM, mostly to get
-feedback on const_cpu_env() and const_env_archcpu().
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/exec/cpu-common.h | 5 +++++
+ include/hw/core/cpu.h     | 6 ++++++
+ 2 files changed, 11 insertions(+)
 
-Thanks,
-
-Phil.
-
-Based-on: <20250116214359.67295-1-philmd@linaro.org>
- "softfloat: Constify helpers returning float_status field"
-
-Philippe Mathieu-Daudé (2):
-  cpus: Introduce const_cpu_env() and const_env_archcpu()
-  target/arm: Constify lot of helpers taking CPUARMState argument
-
- include/exec/cpu-common.h |  5 +++
- include/hw/core/cpu.h     |  6 ++++
- target/arm/cpu-features.h |  2 +-
- target/arm/cpu.h          | 71 ++++++++++++++++++++-------------------
- target/arm/internals.h    | 10 +++---
- target/arm/helper.c       | 25 +++++++-------
- target/arm/ptw.c          |  2 +-
- target/arm/tcg/m_helper.c |  8 ++---
- target/arm/vfp_helper.c   |  6 ++--
- 9 files changed, 74 insertions(+), 61 deletions(-)
-
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index b1d76d69850..f765e97a973 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -250,6 +250,11 @@ static inline ArchCPU *env_archcpu(CPUArchState *env)
+     return (void *)env - sizeof(CPUState);
+ }
+ 
++static inline const ArchCPU *const_env_archcpu(const CPUArchState *env)
++{
++    return (const void *)env - sizeof(CPUState);
++}
++
+ /**
+  * env_cpu_const(env)
+  * @env: The architecture environment
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index c3ca0babcb3..ecb31221b26 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -588,6 +588,12 @@ static inline CPUArchState *cpu_env(CPUState *cpu)
+     return (CPUArchState *)(cpu + 1);
+ }
+ 
++static inline const CPUArchState *const_cpu_env(const CPUState *cpu)
++{
++    /* We validate that CPUArchState follows CPUState in cpu-all.h. */
++    return (const CPUArchState *)(cpu + 1);
++}
++
+ typedef QTAILQ_HEAD(CPUTailQ, CPUState) CPUTailQ;
+ extern CPUTailQ cpus_queue;
+ 
 -- 
 2.47.1
 
