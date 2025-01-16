@@ -2,69 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B05A0A13CF2
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 15:55:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5670BA13D1A
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 16:02:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYRH0-00007h-1I; Thu, 16 Jan 2025 09:55:06 -0500
+	id 1tYRLd-0001xH-1i; Thu, 16 Jan 2025 09:59:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+cabf69696ff47aa9dee2+7816+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1tYRGw-00007D-Lv
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 09:55:02 -0500
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+cabf69696ff47aa9dee2+7816+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1tYRGu-0007H6-8i
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 09:55:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
- In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=i96eW4hQcro2Zy0yIvntB3ydnmreNGHavHZJR/viQnc=; b=QqGdhRAX0o1aanWFSWl1BK0bhT
- Uz12f5y3PB5Qck5CZB0mDzi0M4zxHeWjqogSBmBmCODVUp7x5nbIwVbqShoe1yPA50tQi4sGGCiN8
- 516ss0r4eo9Mr4sTcGnkRxClEv66nsF+DkKmIe8LRbPjPmJM4R/thnQHJJiKTc+AdvTFcgWlWiTYO
- NlVlHQi1BgdrFLw00wWYLTx2EAWWxVZkdqlfi+ZLRJkvI+OonGx8ao/vefBU/jB2E9LMkKdyFR8rx
- JEdg+zOhbVU0kP4thtcqXuOZWEWCbec/JNXO9F42mxHbDYybuNDIHyUnkikXnW2BSMX5N27WGBlV/
- I0eGWlqw==;
-Received: from 54-240-197-226.amazon.com ([54.240.197.226]
- helo=u09cd745991455d.ant.amazon.com)
- by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
- id 1tYRGp-0000000Fi2a-2ILE; Thu, 16 Jan 2025 14:54:55 +0000
-Message-ID: <1705c9f50314535c3d47a99c3067233504756729.camel@infradead.org>
-Subject: Re: [PATCH v7 0/3] hw/acpi: Add vmclock device
-From: David Woodhouse <dwmw2@infradead.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, Igor
- Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>, Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>, Richard Henderson
- <richard.henderson@linaro.org>,  Eduardo Habkost <eduardo@habkost.net>,
- Cornelia Huck <cohuck@redhat.com>, Peter Hilber <quic_philber@quicinc.com>,
- "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>, paul <paul@xen.org>
-Date: Thu, 16 Jan 2025 15:54:53 +0100
-In-Reply-To: <20250116094429-mutt-send-email-mst@kernel.org>
-References: <20250116140315.2455143-1-dwmw2@infradead.org>
- <20250116094429-mutt-send-email-mst@kernel.org>
-Content-Type: multipart/signed; micalg="sha-256";
- protocol="application/pkcs7-signature"; 
- boundary="=-1jVqpq32OiFNNU+yS2MJ"
-User-Agent: Evolution 3.52.3-0ubuntu1 
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYRLa-0001wr-82
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 09:59:50 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYRLY-0008F1-Lj
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 09:59:49 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-437a92d7b96so9640515e9.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 06:59:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1737039587; x=1737644387; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6pmziWnNaDV6beFRLi5dxmWiupvkK6+TjRcXkuuJ1cs=;
+ b=CNW9o3awO/0L9hzbJSra31gUVrn/11HUw8bX5RVqUs5uh/9+vuLtQO02UOuSIhMiXA
+ ceKbJypVgSMFPUk0BvSIarUl9cF1OC3DOnFqTVQ/UHBHUOhwkHudjtpqCaCuvA47SYZz
+ A/wv9M7bWvJgJ9NuB+3CkIsk2/s13GciW90cAWtx+qZi6LZ+2xl1I8tEex/iu3HJPtEK
+ gqpSeNH6sPSAa0KxAP7ItgiJ6eXJoJY6eIM38RDn5cSvGIES8iRCB5xrEUZ0z+1aZ9UA
+ vhBxgcQnLvkOuHI9mAx2i3EUEibCMugLOa0XiONOzOcHv1bhkVYOmXk0tZABr3PdJ2XG
+ v1+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737039587; x=1737644387;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6pmziWnNaDV6beFRLi5dxmWiupvkK6+TjRcXkuuJ1cs=;
+ b=nAQU/UctYUyZxQBFfFol0hPDfWQqgqjIlNnRJd6W8m7N57SL822Zmk4ZhrYUR49xwg
+ 67E9mE2rHXoBr/ijZsvJQokUMGzMfdctlhiciu15JO0Bk/IhbeN0iECjzoKq77HesdB1
+ vI3YJvMZN4md/rq8x61iEL0AKa+l22/2jWQDYiWCTnuUKcCAMoh0ycYTJHDnZwceRdRz
+ WvtLyGDdAhGpjKBP5K8igO+vE9B/bU8Js8kBmqGHd8yRuJYdkE6EoruP5/GVN4c2wa8A
+ BMYzl67nLCL1lmjgK3k4YobHQlelEiUJWvkoqJOB3TIJqPaECzVmgyU8/ShTbzVkNg6k
+ vh4Q==
+X-Gm-Message-State: AOJu0YyLbWJuQahLrrYgquPboOkTL/PoFwFVeaNX/249HuSNaTQwa0Bd
+ m3mV6924CFQwJihfPz2XFQCVpZIIareCMEZVW4L06qsLYeokVyb0bEc7ue3VCdYf09EKwui/LJ9
+ 39W4=
+X-Gm-Gg: ASbGncvP+1j0g5lInvhsi3Qb2gv9fM0rxqEd3hfoijcPYBmeCSd5nkF7jrmTMlkrWcs
+ niLytBDD4+AovdyAR3XC/hE6YlKC88Hc3DqLYl56kAqF5NbcV/YB10DY/9ofSUZumgHMC/k/qjt
+ d5RFtKTOASP4+fFG9Pz/iNxEGbbOyhIfu6Y3Oi/na/94spWq+f7VzCkf8w3X2IaqmavKlBR80WR
+ pcFyTDHW7j3v17E9/famAbOswCi+BomDOZKvpUQ5xK3RHw8RG2xAWH00npimjBCXLu3bgBke4oQ
+ zqXGQ6YlHT6GIPpx2zzxGI023RngVPY=
+X-Google-Smtp-Source: AGHT+IGhBahpXmlwOAM1TWFTZKRt57VqRUEyN64K4dImnjWAujJuoRZ7ymPjwp1yEQDXpmf6jqPSag==
+X-Received: by 2002:a05:6000:4023:b0:385:f44a:a3b with SMTP id
+ ffacd0b85a97d-38a87330649mr31307055f8f.41.1737039586851; 
+ Thu, 16 Jan 2025 06:59:46 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38bf3215066sm93922f8f.11.2025.01.16.06.59.45
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 16 Jan 2025 06:59:46 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Igor Mammedov <imammedo@redhat.com>,
+ Andrew Jones <ajones@ventanamicro.com>, Thomas Huth <thuth@redhat.com>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-10.1 v2 00/13] hw/arm: Remove virt-2.6 up to virt-2.12
+ machines
+Date: Thu, 16 Jan 2025 15:59:31 +0100
+Message-ID: <20250116145944.38028-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+cabf69696ff47aa9dee2+7816+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,117 +99,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The versioned 'virt' machines up to 2.12 been marked as deprecated
+two releases ago, and are older than 6 years, so according to our
+support policy we can remove them. Remove associated dead code.
 
---=-1jVqpq32OiFNNU+yS2MJ
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Since v1:
+- Corrected disallow_affinity_adjustment removal (Thomas)
+- Do not modify docs/about/removed-features.rst (Thomas & Daniel)
 
-On Thu, 2025-01-16 at 09:44 -0500, Michael S. Tsirkin wrote:
->=20
-> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
->=20
-> feel free to merge.
+Philippe Mathieu-Daudé (13):
+  hw/arm/virt: Remove deprecated virt-2.6 machine
+  hw/arm/virt: Remove VirtMachineClass::no_pmu field
+  hw/arm/virt: Remove VirtMachineClass::disallow_affinity_adjustment
+  hw/arm/virt: Remove deprecated virt-2.7 machine
+  hw/arm/virt: Remove VirtMachineClass::no_its field
+  hw/arm/virt: Remove deprecated virt-2.8 machine
+  hw/arm/virt: Remove VirtMachineClass::claim_edge_triggered_timers
+    field
+  hw/arm/virt: Remove deprecated virt-2.9 machine
+  hw/arm/virt: Remove deprecated virt-2.10 machine
+  hw/arm/virt: Remove deprecated virt-2.11 machine
+  hw/arm/virt: Remove VirtMachineClass::smbios_old_sys_ver field
+  hw/arm/virt: Remove deprecated virt-2.12 machine
+  hw/arm/virt: Remove VirtMachineClass::no_highmem_ecam field
 
-Thanks. I've added your R-b to all three (replacing your previous
-Acked-by), and will post the PR tomorrow to give others a chance to
-comment on the header bits.
+ include/hw/arm/virt.h    |   6 --
+ hw/arm/virt-acpi-build.c |  10 +--
+ hw/arm/virt.c            | 136 +++++++--------------------------------
+ 3 files changed, 26 insertions(+), 126 deletions(-)
 
+-- 
+2.47.1
 
---=-1jVqpq32OiFNNU+yS2MJ
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDExNjE0NTQ1
-M1owLwYJKoZIhvcNAQkEMSIEIA7vyEOp/ahaDr25uLe/TpY6LVjg0PADNqX6wZ5xFp9yMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAmnASm8lOE0Ne
-bnklsbfK5pfgnPF5h0ukFBzrhmNTcsoz6sqJ3y/ES2EMubO1d0RtzvI9bPH7v4eco3FFCBwYOAeh
-JgLlPTiDTm4lCR2mM7CXmS5uAFRikvk/yvWha6u9hcU43GhwNcDjVAgCOI9MVQObNFMW95Qpe7Gx
-J/y1RJ0nea/slvnY/CPEaedojEFj0ziPuSeS2VJKi67SJM1c9FRGxR0os/FB3NTMaFSprXZr2pvX
-ubrL+OQhnriVxk4asqI8LIms33FVLp9au7mSh5fdVgYmMgmbggi4W/BTFdHV2bRwLCQePL9EonUy
-eXOLKq4JyMmHGlDHcmeWn64bzJLkghqR6NDxTpJoimZpo8rkX48bKWaRdvD99JN+5JultZ8pGg8K
-BcIYixw2JE7qLMdnxNR1ZVTlzU4vHHyZS7SyMskP7hc+eolnJRVFQjuU0Emz8+4hELKOGw4O1PuK
-wfJc4ZCgT64mxGrapVvEcME3R1TGgsYgPOjtZ8Kv413h6/GkZl0xF94URyQMN6Hmk6VDWxa/UScM
-eUhrpSS/UDsUJGNdfubBnlKA0ErFg1kEAITbIIpV9k+MOcO/0dxuntm2enGtanPPQUZGRe4uMd59
-JOx4wHoBRrj+SZZbiWC7wrYkyV0w1rKlHUNhU/gCrzKD1isMa6ixHBvzgmqvnWcAAAAAAAA=
-
-
---=-1jVqpq32OiFNNU+yS2MJ--
 
