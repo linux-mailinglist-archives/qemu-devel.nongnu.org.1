@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3334DA14086
+	by mail.lfdr.de (Postfix) with ESMTPS id 32599A14085
 	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 18:17:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYTU0-0002l2-PM; Thu, 16 Jan 2025 12:16:41 -0500
+	id 1tYTU2-0002lY-Qc; Thu, 16 Jan 2025 12:16:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tYTTx-0002kb-Aq
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 12:16:37 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tYTTz-0002l1-Kz
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 12:16:39 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tYTTu-0000Iy-6G
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 12:16:37 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tYTTy-0000KO-5q
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 12:16:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737047784;
+ s=mimecast20190719; t=1737047797;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Hn/e1VzB0S1oIr3WtW6eeQA6TXlfLrfb4lAqn+p1EYQ=;
- b=FylLBekZRLKO00LQCpGQhdCILMko1Mf7aSENyjqKiaz0aHv+LHriFE+mRZS4BUoTve37/z
- 5p7OK/lytI1iw3XGtLdDO0whPHlqaJdwW2TESi3hF1SNIqXW6zrdZuLpeIa4cDae/Ujd6b
- Kgxsu0NGy3qC/JHPFTnr+MVO8cewoxs=
+ bh=jLf0a+uWrlY3CBhS4twrHFpg6r7keS/CHGqK/Nszags=;
+ b=ExA7pnVFbRWXAgm3hkR3nElNy3TL57vHL2lhXum4otaScZ4IwsHQTTDVMHwk123FPX5ySU
+ hPGFitezHi83SKhc7u/oIK4VUNBZp2cHpBsjhKBDPpaXwlwXkkkaFa42ATibgEbJfInDgk
+ 34e3wduC5ZkFnQJjoVgFBqxfOItvA4w=
 Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
  [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-n0JvSyVyPGO8GNVmAG4SQw-1; Thu, 16 Jan 2025 12:16:18 -0500
-X-MC-Unique: n0JvSyVyPGO8GNVmAG4SQw-1
-X-Mimecast-MFC-AGG-ID: n0JvSyVyPGO8GNVmAG4SQw
+ us-mta-383-4EnX1-O6P6WMkuXvC2N28g-1; Thu, 16 Jan 2025 12:16:34 -0500
+X-MC-Unique: 4EnX1-O6P6WMkuXvC2N28g-1
+X-Mimecast-MFC-AGG-ID: 4EnX1-O6P6WMkuXvC2N28g
 Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-385d735965bso763007f8f.1
- for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 09:16:18 -0800 (PST)
+ ffacd0b85a97d-385e00ebb16so502168f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 09:16:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737047777; x=1737652577;
+ d=1e100.net; s=20230601; t=1737047792; x=1737652592;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Hn/e1VzB0S1oIr3WtW6eeQA6TXlfLrfb4lAqn+p1EYQ=;
- b=FuibM4ZHquZXdu8TVozd36omulGmlT5SyJqU1BgXWu25ION4HyeYtkNLE6laSQg+GB
- jL/ZhM/xih5jTKKSBbdphMRxJlqqjxgGAcXLQbJMEaYlJvUhcka1da2c9p4SJGtIicxP
- 1Nx/Zcmj5gad0VrVa8if63cG87uFABnHdi2BByswsvQjk0AK8IR+qld+Rn/LLlGsEHRb
- Pj/cfTp7dnJUd//2VWh+Sc33oZsKMuhsjntIfgucGWseKAKfDOPO4hc40FbBN8MCs3KV
- GGeH3JtPP0hXZS52Yp2DnXRiO+rD4QU9jh6gNVsXK0p0/ig8JkrmjfvNkqtyM/gmSLvP
- EELQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWeoz1W7nSynPYLDOf4lEJd0chGkjNPUYeh22vpvmH5VAKQz9fZOwXI+q8Au44miZmQJIbS/R7ElfR5@nongnu.org
-X-Gm-Message-State: AOJu0YwKfW1rOshCNjIS8RsK0LOWNFb7l+EWk1P0dV/1K42k7PwJHXUn
- E2W3YbXNZjfNnwRTePMfpA0Z4mU52NmgUh6YsLMcqbyIgugwItvHNuL6FBVZS93uobo1N+jyM0b
- JG/J36fP/h39h4LZXT8A2V/OzdrcKemQDAmF39mFricTaOtQUhVCu
-X-Gm-Gg: ASbGncsMpLg+Vl6B7enOSiy6AMdcj3uSYASRJJbbHkUEVizeHjWgra3Zu3prrCFSXkH
- BPB+z9UpT6P99YkAGz/XFxrhtYo4eiUclOFlb2Yth3RoTbRECN1Dm/3gdjymJvYJfMLpp3bJ8Fi
- BwumsbVRRXACPz9qQUFGrCU8yUEhdsOPIzhA8NKHsZVV7iy2bAysqontQcx0kWxH+r4odRFaOCm
- tzzMhfyk+mRQ+H7HhDxl/ntOobbr8aXtH81HNy5h/DuPJ5XpWErnfqRQm4PslRHVyEE8BbdwZpZ
- Uwa5YlAAb1tcXdX66yQ=
-X-Received: by 2002:adf:c08c:0:b0:38a:88ac:f115 with SMTP id
- ffacd0b85a97d-38a88acf14fmr23430878f8f.34.1737047777447; 
- Thu, 16 Jan 2025 09:16:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFM/TQDOwHX44Dp+ikLalQDNW4+Tmap/Y48wz5dZBITLd4SK/vccvvHekYx8JxIZmWuYpxUvw==
-X-Received: by 2002:adf:c08c:0:b0:38a:88ac:f115 with SMTP id
- ffacd0b85a97d-38a88acf14fmr23430856f8f.34.1737047777118; 
- Thu, 16 Jan 2025 09:16:17 -0800 (PST)
+ bh=jLf0a+uWrlY3CBhS4twrHFpg6r7keS/CHGqK/Nszags=;
+ b=iy6j+JeP2VhBp52Q361kSJIb5uwV2MogxW//DmRoWyr9PoNU6Cdm7R3O2CU3AererB
+ 1q3dVBVlKFmVi20S+So1drFbDFmT6Q9RN028PjQR/u6xuyeU9HWU8c1zzh1JOjK+fgZF
+ nMLM/doz2PyuaEtJTS6R+xUMTBC53SNlxeIrY6E2VZ8xqN0E9jJcXqI5I8oHnEJk8fAS
+ HgDBWbIT2Tkb4mJe2dBs5kUBnk/DeCLFkXZlpetsf8hV5QtzAzBNCYU2FkCg46PM5zQv
+ Grrr17vtL0B8iQLPJCzAZyKMvyUo0T9el2qYZjtHtnUnvP42kVHS3RLW4jB6x4RcANWA
+ pMww==
+X-Gm-Message-State: AOJu0YzSJyOQ8iwnNladxBX/4905oyipYPySdWLYCEZLTYP+XzN0MsHb
+ 65zHrIl6JY38c+tnxLGqU7mU2vE8CWW9j0y6kmV+tL2gxZvLFJla2iff9/MefY2bKIgF8Pl9qhK
+ 7DUz4w7g/YgrIn+UGHO9luOyOtJUHp9dZYGifGkITcT1XoXa7ijHPuD8V1lEIBqBpIm+grh/riz
+ ZKIcbZTPjNLLf8Tmt7XT2121X5FMhpZA==
+X-Gm-Gg: ASbGncs+NfqhNbot0CVPCET1sBTpaIPWDjFmonNmK4XkvnIhnMhLpmiFwFwOjVftkmw
+ 2fM9r6FbkzRUmRY0ISIVS+TPP2TFhPBMLjRIHG/znlBEplpNb6xygqa/uuOgGHv89QDPXJql4HG
+ s4axiykISsLVJDhKCd1tpmVgGtOh7jXGOMBO2Zm0P3ULFJLgVphWsgjQGiDdDJMSiuduoTN1h+J
+ 6R93NV3X1Pga2I5Sfyj6chzYNgNmISg5lGaV7lVp+Qc4VZwt7teUEfz2/ceYmDcGEuTbZiQ51Xg
+ dt2ISsf3LoUwwTkrfho=
+X-Received: by 2002:a5d:64eb:0:b0:386:41bd:53a3 with SMTP id
+ ffacd0b85a97d-38a87310667mr29962623f8f.50.1737047792541; 
+ Thu, 16 Jan 2025 09:16:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEVvSQsFHvJi6/U7i+sOm6Adw+Q1syjYITWbJWeKEIWw1/BS6HFEXTe33OQ2AtEW2M8WTQCxQ==
+X-Received: by 2002:a5d:64eb:0:b0:386:41bd:53a3 with SMTP id
+ ffacd0b85a97d-38a87310667mr29962593f8f.50.1737047792142; 
+ Thu, 16 Jan 2025 09:16:32 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c749956fsm66115125e9.4.2025.01.16.09.16.16
+ 5b1f17b1804b1-437c753ca42sm63997695e9.35.2025.01.16.09.16.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Jan 2025 09:16:16 -0800 (PST)
-Message-ID: <c460c005-1cc5-42a2-a08e-c9c9d10e12b1@redhat.com>
-Date: Thu, 16 Jan 2025 18:16:15 +0100
+ Thu, 16 Jan 2025 09:16:31 -0800 (PST)
+Message-ID: <af0a3f93-18e4-47d6-8b36-d79ea88e1be3@redhat.com>
+Date: Thu, 16 Jan 2025 18:16:30 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vfio/iommufd: Fix SIGSEV in iommufd_cdev_attach()
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, eric.auger@redhat.com, yi.l.liu@intel.com,
- chao.p.peng@intel.com
-References: <20250116102307.260849-1-zhenzhong.duan@intel.com>
+Subject: Re: [PATCH] vfio/igd: Fix potential overflow in igd_gtt_memory_size()
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>
+References: <20250107130604.669697-1-clg@redhat.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -125,9 +123,9 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250116102307.260849-1-zhenzhong.duan@intel.com>
+In-Reply-To: <20250107130604.669697-1-clg@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -153,16 +151,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/16/25 11:23, Zhenzhong Duan wrote:
-> When iommufd_cdev_ram_block_discard_disable() fails for whatever reason,
-> errp should be set or else SIGSEV is triggered in vfio_realize() when
-> error_prepend() is called.
+On 1/7/25 14:06, Cédric Le Goater wrote:
+> The risk is mainly theoretical since the applied bit mask will keep
+> the 'ggms' shift value below 3. Nevertheless, let's use a 64 bit
+> integer type and resolve the coverity issue.
 > 
-> By this chance, use the same error message for both legacy and iommufd
-> backend.
-> 
-> Fixes: 5ee3dc7af785 ("vfio/iommufd: Implement the iommufd backend")
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Resolves: Coverity CID 1585908
+> Fixes: 1e1eac5f3dcd ("vfio/igd: canonicalize memory size calculations")
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
 
 
 Applied to vfio-next.
@@ -173,30 +169,20 @@ C.
 
 
 > ---
->   hw/vfio/iommufd.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
+>   hw/vfio/igd.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-> index 3490a8f1eb..df61edffc0 100644
-> --- a/hw/vfio/iommufd.c
-> +++ b/hw/vfio/iommufd.c
-> @@ -515,8 +515,8 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
->           } else {
->               ret = iommufd_cdev_ram_block_discard_disable(true);
->               if (ret) {
-> -                error_setg(errp,
-> -                              "Cannot set discarding of RAM broken (%d)", ret);
-> +                error_setg_errno(errp, -ret,
-> +                                 "Cannot set discarding of RAM broken");
->                   goto err_discard_disable;
->               }
->               goto found_container;
-> @@ -544,6 +544,7 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
->   
->       ret = iommufd_cdev_ram_block_discard_disable(true);
->       if (ret) {
-> +        error_setg_errno(errp, -ret, "Cannot set discarding of RAM broken");
->           goto err_discard_disable;
+> diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
+> index 0740a5dd8cc9346a92c4613194faa8dea42e1d98..b5303ea565d6a344d0a43273f288bbb4a7f48327 100644
+> --- a/hw/vfio/igd.c
+> +++ b/hw/vfio/igd.c
+> @@ -133,7 +133,7 @@ static uint64_t igd_gtt_memory_size(int gen, uint16_t gmch)
+>       } else {
+>           ggms = (gmch >> IGD_GMCH_GEN8_GGMS_SHIFT) & IGD_GMCH_GEN8_GGMS_MASK;
+>           if (ggms != 0) {
+> -            ggms = 1 << ggms;
+> +            ggms = 1ULL << ggms;
+>           }
 >       }
 >   
 
