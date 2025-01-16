@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1695A135B6
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 09:44:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB5B5A135C4
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 09:46:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYLTu-0006tX-Cx; Thu, 16 Jan 2025 03:44:02 -0500
+	id 1tYLTv-0006uB-0j; Thu, 16 Jan 2025 03:44:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+cabf69696ff47aa9dee2+7816+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1tYLTm-0006pP-H8; Thu, 16 Jan 2025 03:43:54 -0500
+ id 1tYLTm-0006pQ-Mz; Thu, 16 Jan 2025 03:43:55 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+cabf69696ff47aa9dee2+7816+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1tYLTg-0006nj-QU; Thu, 16 Jan 2025 03:43:54 -0500
+ id 1tYLTg-0006nm-Pt; Thu, 16 Jan 2025 03:43:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
  To:From:Reply-To:Content-ID:Content-Description;
- bh=OYFjBLn6xVJHbZhWxQv4vOgSmuf1vV6rSJAY+96mfc8=; b=d+U5EkTgZ5pFrvJohXFqCoGsqb
- LR3vJ3gOBwJ+0J6fy0xJm8d4BKL1KooTEOJ2xy7zbQKYY4XgJ75GINFidKcmUeuCG0mzPik75R7JP
- bpwGynA4tfUP/lwO7T26CRU8/RIocs2rbRMhJt5jZ4fxizIJARvdfYDlo7wOwyoc7JZeD7+Te+Ncq
- R+eKMT2TlTC0/rYD3Ez3u547HJVZzJBH/1KpR4A3yu00ogCWOoQuGN+YA1O9IFN8k0VgH1zW4m1gD
- y6O3lNIeQr60Z0SVcUZ3gwqOFZ8wfWF+hAfRWOjR9LICx2bvjW2H/L87Kcu5jMEFkR8lP104NiSRc
- f7bL0PCA==;
+ bh=DR5mFAf4m4LBhzxhAqxWzplLWjQI40VGtvjtZ6+t6c4=; b=RWoIb912hQmTElYRyXcO6i7n/6
+ 7aQ9mKlddz4vnYA/tzUwlragwZcQDpyLdZkOYQnx8QY0PAzPrbo/hFyjICLNx3nX5LK9sdaCEnkYc
+ ibJ5bH5g9pycHzKmZKbT669twWv62Tj28hLXUCyVEebvwnvm4GnObo2c7OOK+s6st3nY9Lb6MQSI6
+ F3DZ2j8vrn+TZ1sBjPjnYFrB5ZG3DYRJrH8+zBq3keHAVzKms0GxU7ZR241ztLkCkdifRfCxHVOho
+ erHBwyIjIDYQMok8bacin7Vczk5KiVXXyGBZczbCYCUG1+gk3lHW2T01z7ILoGDU/kIJ4kjcQmLYW
+ PsynnlsQ==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
- id 1tYLTc-0000000AkbB-3O43; Thu, 16 Jan 2025 08:43:44 +0000
+ id 1tYLTc-0000000AkbC-3UJK; Thu, 16 Jan 2025 08:43:44 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.98 #2 (Red Hat
- Linux)) id 1tYLTc-00000007pHc-2AtI; Thu, 16 Jan 2025 08:43:44 +0000
+ Linux)) id 1tYLTc-00000007pHh-2K0i; Thu, 16 Jan 2025 08:43:44 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: Stefan Hajnoczi <stefanha@redhat.com>,
 	qemu-devel@nongnu.org
@@ -44,12 +44,12 @@ Cc: Stefano Stabellini <sstabellini@kernel.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
  xen-devel@lists.xenproject.org, qemu-block@nongnu.org,
  Phil Dennis-Jordan <phil@philjordan.eu>,
+ Roger Pau Monne <roger.pau@citrix.com>,
  David Woodhouse <dwmw@amazon.co.uk>,
- =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
  Anthony PERARD <anthony.perard@vates.tech>
-Subject: [PULL 1/8] hw/xen: Add xs_node_read() helper function
-Date: Thu, 16 Jan 2025 08:43:25 +0000
-Message-ID: <20250116084332.1864967-2-dwmw2@infradead.org>
+Subject: [PULL 2/8] xen: do not use '%ms' scanf specifier
+Date: Thu, 16 Jan 2025 08:43:26 +0000
+Message-ID: <20250116084332.1864967-3-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250116084332.1864967-1-dwmw2@infradead.org>
 References: <20250116084332.1864967-1-dwmw2@infradead.org>
@@ -83,89 +83,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Roger Pau Monne <roger.pau@citrix.com>
 
-This returns the full contents of the node, having created the node path
-from the printf-style format string provided in its arguments.
+The 'm' parameter used to request auto-allocation of the destination variable
+is not supported on FreeBSD, and as such leads to failures to parse.
 
-This will save various callers from having to do so for themselves (and
-from using xs_node_scanf() with the non-portable %ms format string.
+What's more, the current usage of '%ms' with xs_node_scanf() is pointless, as
+it just leads to a double allocation of the same string.  Instead use
+xs_node_read() to read the whole xenstore node.
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-[remove double newline and constify trace parameters]
+Fixes: a783f8ad4ec9 ('xen: add a mechanism to automatically create XenDevice-s...')
+Fixes: 9b7737469080 ('hw/xen: update Xen console to XenDevice model')
 Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Anthony PERARD <anthony.perard@vates.tech>
 ---
- hw/xen/trace-events             |  1 +
- hw/xen/xen-bus-helper.c         | 22 ++++++++++++++++++++++
- include/hw/xen/xen-bus-helper.h |  9 +++++++++
- 3 files changed, 32 insertions(+)
+ hw/block/xen-block.c     |  3 ++-
+ hw/char/xen_console.c    |  6 ++++--
+ hw/xen/xen-bus.c         | 14 ++++++++++++--
+ include/hw/xen/xen-bus.h |  1 +
+ 4 files changed, 19 insertions(+), 5 deletions(-)
 
-diff --git a/hw/xen/trace-events b/hw/xen/trace-events
-index a07fe41c6d..461dee7b23 100644
---- a/hw/xen/trace-events
-+++ b/hw/xen/trace-events
-@@ -39,6 +39,7 @@ xs_node_create(const char *node) "%s"
- xs_node_destroy(const char *node) "%s"
- xs_node_vprintf(char *path, char *value) "%s %s"
- xs_node_vscanf(char *path, char *value) "%s %s"
-+xs_node_read(const char *path, const char *value) "%s %s"
- xs_node_watch(char *path) "%s"
- xs_node_unwatch(char *path) "%s"
+diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
+index 306d38927c..034a18b70e 100644
+--- a/hw/block/xen-block.c
++++ b/hw/block/xen-block.c
+@@ -239,7 +239,8 @@ static void xen_block_connect(XenDevice *xendev, Error **errp)
+         return;
+     }
  
-diff --git a/hw/xen/xen-bus-helper.c b/hw/xen/xen-bus-helper.c
-index b2b2cc9c5d..22fd2f6c1a 100644
---- a/hw/xen/xen-bus-helper.c
-+++ b/hw/xen/xen-bus-helper.c
-@@ -142,6 +142,28 @@ int xs_node_scanf(struct qemu_xs_handle *h,  xs_transaction_t tid,
+-    if (xen_device_frontend_scanf(xendev, "protocol", "%ms", &str) != 1) {
++    str = xen_device_frontend_read(xendev, "protocol");
++    if (!str) {
+         /* x86 defaults to the 32-bit protocol even for 64-bit guests. */
+         if (object_dynamic_cast(OBJECT(qdev_get_machine()), "x86-machine")) {
+             protocol = BLKIF_PROTOCOL_X86_32;
+diff --git a/hw/char/xen_console.c b/hw/char/xen_console.c
+index ef0c2912ef..cb39b21504 100644
+--- a/hw/char/xen_console.c
++++ b/hw/char/xen_console.c
+@@ -550,7 +550,8 @@ static void xen_console_device_create(XenBackendInstance *backend,
+         goto fail;
+     }
+ 
+-    if (xs_node_scanf(xsh, XBT_NULL, fe, "type", errp, "%ms", &type) != 1) {
++    type = xs_node_read(xsh, XBT_NULL, NULL, errp, "%s/%s", fe, "type");
++    if (!type) {
+         error_prepend(errp, "failed to read console device type: ");
+         goto fail;
+     }
+@@ -568,7 +569,8 @@ static void xen_console_device_create(XenBackendInstance *backend,
+ 
+     snprintf(label, sizeof(label), "xencons%ld", number);
+ 
+-    if (xs_node_scanf(xsh, XBT_NULL, fe, "output", NULL, "%ms", &output) == 1) {
++    output = xs_node_read(xsh, XBT_NULL, NULL, NULL, "%s/%s", fe, "output");
++    if (output) {
+         /*
+          * FIXME: sure we want to support implicit
+          * muxed monitors here?
+diff --git a/hw/xen/xen-bus.c b/hw/xen/xen-bus.c
+index adfc4efad0..feeb612681 100644
+--- a/hw/xen/xen-bus.c
++++ b/hw/xen/xen-bus.c
+@@ -156,8 +156,8 @@ again:
+             !strcmp(key[i], "hotplug-status"))
+             continue;
+ 
+-        if (xs_node_scanf(xenbus->xsh, tid, path, key[i], NULL, "%ms",
+-                          &val) == 1) {
++        val = xs_node_read(xenbus->xsh, tid, NULL, NULL, "%s/%s", path, key[i]);
++        if (val) {
+             qdict_put_str(opts, key[i], val);
+             free(val);
+         }
+@@ -650,6 +650,16 @@ int xen_device_frontend_scanf(XenDevice *xendev, const char *key,
      return rc;
  }
  
-+char *xs_node_read(struct qemu_xs_handle *h, xs_transaction_t tid,
-+                   unsigned int *len, Error **errp,
-+                   const char *path_fmt, ...)
++char *xen_device_frontend_read(XenDevice *xendev, const char *key)
 +{
-+    char *path, *value;
-+    va_list ap;
++    XenBus *xenbus = XEN_BUS(qdev_get_parent_bus(DEVICE(xendev)));
 +
-+    va_start(ap, path_fmt);
-+    path = g_strdup_vprintf(path_fmt, ap);
-+    va_end(ap);
++    g_assert(xenbus->xsh);
 +
-+    value = qemu_xen_xs_read(h, tid, path, len);
-+    trace_xs_node_read(path, value);
-+    if (!value) {
-+        error_setg_errno(errp, errno, "failed to read from '%s'", path);
-+    }
-+
-+    g_free(path);
-+
-+    return value;
++    return xs_node_read(xenbus->xsh, XBT_NULL, NULL, NULL, "%s/%s",
++                        xendev->frontend_path, key);
 +}
 +
- struct qemu_xs_watch *xs_node_watch(struct qemu_xs_handle *h, const char *node,
-                                     const char *key, xs_watch_fn fn,
-                                     void *opaque, Error **errp)
-diff --git a/include/hw/xen/xen-bus-helper.h b/include/hw/xen/xen-bus-helper.h
-index d8dcc2f010..e9911115b3 100644
---- a/include/hw/xen/xen-bus-helper.h
-+++ b/include/hw/xen/xen-bus-helper.h
-@@ -38,6 +38,15 @@ int xs_node_scanf(struct qemu_xs_handle *h,  xs_transaction_t tid,
-                   const char *fmt, ...)
-     G_GNUC_SCANF(6, 7);
+ static void xen_device_frontend_set_state(XenDevice *xendev,
+                                           enum xenbus_state state,
+                                           bool publish)
+diff --git a/include/hw/xen/xen-bus.h b/include/hw/xen/xen-bus.h
+index 38d40afa37..2adb2af839 100644
+--- a/include/hw/xen/xen-bus.h
++++ b/include/hw/xen/xen-bus.h
+@@ -91,6 +91,7 @@ void xen_device_frontend_printf(XenDevice *xendev, const char *key,
+ int xen_device_frontend_scanf(XenDevice *xendev, const char *key,
+                               const char *fmt, ...)
+     G_GNUC_SCANF(3, 4);
++char *xen_device_frontend_read(XenDevice *xendev, const char *key);
  
-+/*
-+ * Unlike other functions here, the printf-formatted path_fmt is for
-+ * the XenStore path, not the contents of the node.
-+ */
-+char *xs_node_read(struct qemu_xs_handle *h, xs_transaction_t tid,
-+                   unsigned int *len, Error **errp,
-+                   const char *path_fmt, ...)
-+    G_GNUC_PRINTF(5, 6);
-+
- /* Watch node/key unless node is empty, in which case watch key */
- struct qemu_xs_watch *xs_node_watch(struct qemu_xs_handle *h, const char *node,
-                                     const char *key, xs_watch_fn fn,
+ void xen_device_set_max_grant_refs(XenDevice *xendev, unsigned int nr_refs,
+                                    Error **errp);
 -- 
 2.47.0
 
