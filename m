@@ -2,91 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74CC2A13D8D
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 16:23:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6727A13DBC
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 16:34:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYRhC-0002Qn-GB; Thu, 16 Jan 2025 10:22:10 -0500
+	id 1tYRrh-0004Qd-8C; Thu, 16 Jan 2025 10:33:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYRh9-0002QU-Ak
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 10:22:07 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYRh7-00060e-Ba
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 10:22:06 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-21654fdd5daso18999245ad.1
- for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 07:22:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737040924; x=1737645724; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=249OkPv8wccfOTfDDb+64dpBEQsJ0BUVMW+Lh4dFj5M=;
- b=Q64ziyrswrUchikw3kHiLU9+JRSDjfBpH7BoddMt5WD8cIIYab9leVEQ3g6Ip7xf5b
- QMtHqCDT/xJrZKB/jEsufeG2xXIP8B0dcphpaUnaiSo66SAzaOAiohiPJ2slfS/XC3Nq
- 4tjQhGBa4XPI3YENBQt7CANUGBMq6qdav4GOD3Nk0d5HZooQ/TsaQoElYpsOtWGiVD/Y
- pi0WZ/H54ynEwNI/Rk+LR+bYdmm/F9km5PMlBjqDOXLfOhc5Egx+BCYcHYAxTBQKYR2f
- vJbfa3ojCT6y3Av5WjqCUwMEBr3hWlVY0n9FelnSTnNx0G9vdJRt5G9Y6c+6yHo5udcY
- IWGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737040924; x=1737645724;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=249OkPv8wccfOTfDDb+64dpBEQsJ0BUVMW+Lh4dFj5M=;
- b=gOhHTvhNil43s6zYzqD8caVemAV9Nv9FZy7razAkq2AsqYlBXnWPJdA6jZFTMjCaSO
- WxP2wbruPK4WLoYVeF5ngvvkFOUsHWIh6+WFjKIZy+ovrnDGZSn8os0xUeXo2r/8mjbI
- /iM0q8jSS63BrhTNpAAE50vsg87fxP73wN8xFy5rDNWzxOYNqGkZybFImpIHKydvSY/b
- 1fnPfOkuMnLkcmwcfI+60FNQNXgw689isBej7BFHYAr5/yg7c4FPPlrn3vWTJB1RHKtv
- iFePFtAXvkE3oKSm6YQd2xGUw2VkA0LQIC7WKVb7C1AwQjNxWskrhl8+MYjNKhkOs3FY
- omjA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWeqvVpDvWZzRlC5O+wsbO0nNx0VHaHKRjCSj+O+cpiyE88adETbX33DZdm78DKzRgUHWNSkcV8kWnm@nongnu.org
-X-Gm-Message-State: AOJu0YyThZ3Si3VBwBIfvh4n4GCpiYELha+lIjyKI9P0NKEi1aiEtNEO
- Oh2fvoPc22Wfz/c3UEDcw7NuaUN1hxo0RsnZaXzrw38OlSC6AEzI/z3OISDICr8=
-X-Gm-Gg: ASbGncsd1AneSy7NMeBtUtiduf4Yavu/7Tq9FyBEoyNGCSUgTiBrI3DSM7Tq7fLKU6+
- qDjpg48NHq/wXlt/oRwjB998KgB2z1Dpz79qpM9HBAl+rJdR/HUQtZHt30upN8Zl9DLnBqKBRJf
- 1Ti3ytAptxAO1dCVoKo/sUINxafx59OzL/P9bBe1ux3ylcPnxR2OU6K8rCkp+lSYwGc6MIE+KyG
- 5f4JRFilUmOPFyvpPo43ce6V7xjAAI5UxJiv82m+vMKnWHzK4Nduj8pJ8W258KjdDCnXN4uSwgc
- LSY1L6wdNKl32InzNstBPKA=
-X-Google-Smtp-Source: AGHT+IFqfC9hedX1ADS5NDYX9E9OaZSohp0E3UqZX7LbmljlT7J4TK9sfxi2Zz0DpIR0t2OZ7ejhDQ==
-X-Received: by 2002:a17:902:e885:b0:215:aae1:40f0 with SMTP id
- d9443c01a7336-21a83da6ebbmr584316935ad.0.1737040923628; 
- Thu, 16 Jan 2025 07:22:03 -0800 (PST)
-Received: from [192.168.0.4] (174-21-71-127.tukw.qwest.net. [174.21.71.127])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21c2d3ac93bsm1620295ad.157.2025.01.16.07.22.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Jan 2025 07:22:03 -0800 (PST)
-Message-ID: <7f645bf5-3d57-4803-a937-f8e558391e8d@linaro.org>
-Date: Thu, 16 Jan 2025 07:22:01 -0800
+ (Exim 4.90_1) (envelope-from
+ <BATV+cabf69696ff47aa9dee2+7816+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1tYRrb-0004QO-6H
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 10:32:55 -0500
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from
+ <BATV+cabf69696ff47aa9dee2+7816+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1tYRrY-0002ws-NF
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 10:32:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=92nB5nMOglfOKetVnlgvYyqyFFUD4iRE2qg/r32p0Wk=; b=mYQLPmM/86gvKFZNHghCbSWqBF
+ liANinvVfH809oUEYZk40w53Lg0Zs93yhSKNbZeTbHYeTEaQQvm6lSD5baEZu13vr40wmCgEKjOu6
+ I92qfu1bO6PeitMfHlHbb+mK4xPd+D9WNGVrRHt0VeumdejtCE/RoFBil8B0RyZm0RhHfpL+RbJgC
+ apiVkpB26bBMHY9bC5U7Hl3wcbrrXPA66FV6C/ZwiAN+INo/FYHu9dttv8zCIOFpikkjinY8YpoWr
+ h5uCQfxMwuW5ocxwcEtsUi7Gja4dv7g9hJHlH1bFETU6OpktTUnQE1wE5B4CfJIwjttIGYaral2fv
+ F/G6qd2w==;
+Received: from 54-240-197-234.amazon.com ([54.240.197.234]
+ helo=u09cd745991455d.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+ id 1tYRrQ-0000000GFXZ-2peH; Thu, 16 Jan 2025 15:32:44 +0000
+Message-ID: <b5850fa317e89e4e0de1bfe478a7d2cfd9422c37.camel@infradead.org>
+Subject: Re: [PATCH v7 3/3] hw/acpi: Add vmclock device
+From: David Woodhouse <dwmw2@infradead.org>
+To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>,  Igor Mammedov <imammedo@redhat.com>, Ani Sinha
+ <anisinha@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,  Eduardo Habkost
+ <eduardo@habkost.net>, Cornelia Huck <cohuck@redhat.com>, Peter Hilber
+ <quic_philber@quicinc.com>,  "Mohamed Abuelfotoh, Hazem"
+ <abuehaze@amazon.com>, paul <paul@xen.org>
+Date: Thu, 16 Jan 2025 16:32:43 +0100
+In-Reply-To: <56e3ad5c-758b-4799-86a4-bb503aa34cea@linaro.org>
+References: <20250116140315.2455143-1-dwmw2@infradead.org>
+ <20250116140315.2455143-4-dwmw2@infradead.org>
+ <56e3ad5c-758b-4799-86a4-bb503aa34cea@linaro.org>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-+N0WIWvy4VfmOopJSO/z"
+User-Agent: Evolution 3.52.3-0ubuntu1 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] target/i386: Do not raise Invalid for 0 * Inf + QNaN
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>
-References: <20250116112536.4117889-1-peter.maydell@linaro.org>
- <20250116112536.4117889-2-peter.maydell@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250116112536.4117889-2-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+cabf69696ff47aa9dee2+7816+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,69 +83,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/16/25 03:25, Peter Maydell wrote:
-> In commit 8adcff4ae7 ("fpu: handle raising Invalid for infzero in
-> pick_nan_muladd") we changed the handling of 0 * Inf + QNaN to always
-> raise the Invalid exception regardless of target architecture.  (This
-> was a change affecting hppa, i386, sh4 and tricore.) However, this
-> was incorrect for i386, which documents in the SDM section 14.5.2
-> that for the 0 * Inf + NaN case that it will only raise the Invalid
-> exception when the input is an SNaN.  (This is permitted by the IEEE
-> 754-2008 specification, which documents that whether we raise Invalid
-> for 0 * Inf + QNaN is implementation defined.)
-> 
-> Adjust the softfloat pick_nan_muladd code to allow the target to
-> suppress the raising of Invalid for the inf * zero + NaN case (as an
-> extra flag orthogonal to its choice for when to use the default NaN),
-> and enable that for x86.
-> 
-> We do not revert here the behaviour change for hppa, sh4 or tricore:
->   * The sh4 manual is clear that it should signal Invalid
->   * The tricore manual is a bit vague but doesn't say it shouldn't
->   * The hppa manual doesn't talk about fused multiply-add corner
->     cases at all
-> 
-> Cc: qemu-stable@nongnu.org
-> Fixes: 8adcff4ae7 (""fpu: handle raising Invalid for infzero in pick_nan_muladd")
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   include/fpu/softfloat-types.h | 16 +++++++++++++---
->   target/i386/tcg/fpu_helper.c  |  5 ++++-
->   fpu/softfloat-parts.c.inc     |  5 +++--
->   3 files changed, 20 insertions(+), 6 deletions(-)
-> 
-> diff --git a/include/fpu/softfloat-types.h b/include/fpu/softfloat-types.h
-> index 9d37cdfaa8e..c51b2a5b3de 100644
-> --- a/include/fpu/softfloat-types.h
-> +++ b/include/fpu/softfloat-types.h
-> @@ -278,11 +278,21 @@ typedef enum __attribute__((__packed__)) {
->       /* No propagation rule specified */
->       float_infzeronan_none = 0,
->       /* Result is never the default NaN (so always the input NaN) */
-> -    float_infzeronan_dnan_never,
-> +    float_infzeronan_dnan_never = 1,
->       /* Result is always the default NaN */
-> -    float_infzeronan_dnan_always,
-> +    float_infzeronan_dnan_always = 2,
->       /* Result is the default NaN if the input NaN is quiet */
-> -    float_infzeronan_dnan_if_qnan,
-> +    float_infzeronan_dnan_if_qnan = 3,
-> +    /*
-> +     * Don't raise Invalid for 0 * Inf + NaN. Default is to raise.
-> +     * IEEE 754-2008 section 7.2 makes it implementation defined whether
-> +     * 0 * Inf + QNaN raises Invalid or not. Note that 0 * Inf + SNaN will
-> +     * raise the Invalid flag for the SNaN anyway.
-> +     *
-> +     * This is a flag which can be ORed in with any of the above
-> +     * DNaN behaviour options.
-> +     */
-> +    float_infzeronan_suppress_invalid = (1 << 7),
 
-Why 128 and not 4?
+--=-+N0WIWvy4VfmOopJSO/z
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Otherwise,
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+On Thu, 2025-01-16 at 16:15 +0100, Philippe Mathieu-Daud=C3=A9 wrote:
+>=20
+> > --- a/hw/acpi/Kconfig
+> > +++ b/hw/acpi/Kconfig
+> > @@ -60,6 +60,11 @@ config ACPI_VMGENID
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 default y
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on PC
+> > =C2=A0=C2=A0=20
+> > +config ACPI_VMCLOCK
+> > +=C2=A0=C2=A0=C2=A0 bool
+> > +=C2=A0=C2=A0=C2=A0 default y
+> > +=C2=A0=C2=A0=C2=A0 depends on PC
+>=20
+> This doesn't look right (apparently the kernel side also build on ARM).
+
+I don't think it's strictly wrong; there are no circumstances in which
+PC is set not I386 && ACPI, or vice versa? I was just going from the
+existing setup for VMGENID, which I think could also theoretically
+exist on Arm too?
+
+> I'm only seeing e820_add_entry (I386) and ACPI API called. So:
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0 depends on I386 && ACPI
+>=20
+> If later we want ARM support we'll have to rework the e820_add_entry()
+> call.
+
+Sure, that certainly makes it easier to add Arm later, and I really do
+intend to do so. I've done it in my tree. Thanks.
+
+--=-+N0WIWvy4VfmOopJSO/z
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDExNjE1MzI0
+M1owLwYJKoZIhvcNAQkEMSIEIB543ZpADGDtBT9638QwT081VyvSObYfdjltc8HYb6IjMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAQsyd0ZUV6va0
+Nt0u4uJy3WzExfUn+OTGHLB95S0dv7+3Tb1olxT4b3xp+x8dExVWKhEJ3PHodo/clyNVMZCaO9gU
+UNH/U5RlYkMaPRMzMnH4YrmOriI7EiwVRMk2IBbzMwA/ZvZtBMU0illwjWbTvJa4SVZitlmA5oNj
+1QfWZvfCST8rWHp28dmtTXr7rLGV5vkGrcwCPFtZmDbNbf2KrLI5b6ZXdMT7ORUr3FEQWNb3JRUz
+ngOzZjSixZUr34crk6sKUNuuyHMsgL2Jns4wgDBVQPMbuQGXPYz352Wo+MfHHqD8BLq/wfM2O1dA
+AN5z7OsXzE/uju7gwzt72jCkLYRt/3LeGTJSGkW0FJMz/Urc/VbnD38x4ojf075cRkJSS30w5Zqj
+N/HyI5q63w/tkdk6RBRsedmF1zE+CL2NaEYut1oMaye9hgSDrzRBDrJg7vl9Fr1412P857X/VBb3
+i9WpZl07xsi+ENoNG4EVGzV939QOG7naLAwKyQiLHpSBWQkGxNfUj3ndk++Lf5jxDKERe1oIUPko
+fz9c6fLWsL3nrdCn3p+aSyMjJR/8hm3pskJT4TWuEbRJ9Omkrja5uDzkSLubi6CLqh/jN59Ls+4C
+fHR5Eui3/E8u+yIiUYV0yAme6TJkshYs9BbqW+ahlCNzg2wcr0eUlOUs4vz5+3IAAAAAAAA=
 
 
-r~
+--=-+N0WIWvy4VfmOopJSO/z--
 
