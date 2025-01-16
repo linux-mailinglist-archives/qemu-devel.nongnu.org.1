@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 705EEA135BE
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 09:46:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F31A135BC
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 09:45:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYLTt-0006tK-FT; Thu, 16 Jan 2025 03:44:01 -0500
+	id 1tYLTp-0006q2-Ia; Thu, 16 Jan 2025 03:43:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+cabf69696ff47aa9dee2+7816+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1tYLTm-0006p1-8D; Thu, 16 Jan 2025 03:43:54 -0500
+ id 1tYLTl-0006oS-Ay; Thu, 16 Jan 2025 03:43:53 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+cabf69696ff47aa9dee2+7816+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1tYLTg-0006nk-OV; Thu, 16 Jan 2025 03:43:53 -0500
+ id 1tYLTg-0006no-OU; Thu, 16 Jan 2025 03:43:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
- Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
- To:From:Reply-To:Content-ID:Content-Description;
- bh=9YnMqT9L5zpcIdMPGD+T5rZV+9M0PECfN24dS3f5adI=; b=QAhTn+9luHDcx4ZBpcWeH90OPD
- kUrxeCoetP1gumKPKrYKI0tOm+chuyObKhh8XsUWhf15Snreba/gTrp9g4OmorKfNLsrOLHPEUpWP
- PQ+WEsNZikrHtjPm+i/8KmuA1lmh2mEXDeBieo3/4G2hhT/FN+eykSgP6+rjuBL2ftHX8UAtx8ih5
- Bfcijh2bcxhKSL53SrxjdJIdyfwH/zccZnOt15oaxu+YZqIvHSP3CQoRNquwqLGot4MaBi9TKU+2A
- Uuz7NHdmOX8hnCLRLt6l7tmi54R1Ra25u9P6DxwUasWLonC7win3ViRVG9hZPpALXtbzuGHC9Y1cH
- T3091e/A==;
+ MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+ Reply-To:Content-Type:Content-ID:Content-Description;
+ bh=rf4XQLZvATxaJ4ZS360lOa75wV7gwRBU9Wx/NrfpNKM=; b=sFlr5bcNd4N4BJ5gR3Jk2RMuSZ
+ 5ueFpFbkgmzLDSSjXJ4F7E+VBxywP+JIRlQoRKp3wkAY8M1RXh+2AgFkdaR0I+RJ/HbnrYMA+Z0zU
+ 2lmxNsy2Qy/lJdQ9rSRQOyDus7jTuvUOxbVmPxnvd+PQKO1ZzaiVWnoNH0DVgLxdULgr2CX7e6mvu
+ QrD2RyTvgL5O6bdVak0nEQCYiMG6AHb8ODInb95f1z/eiaN9PgRwMoW9LxHdxLVJTzHvEJkOKa99m
+ RL0y+rCcqZpKVNodam5HJp2Ry+5gdt3tdeSL9bekAURJVRyjXefSwKZWd44xr0u1/xBMze+9o1USG
+ +58fvVNg==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
- id 1tYLTd-0000000AkbV-0JOu; Thu, 16 Jan 2025 08:43:45 +0000
+ id 1tYLTd-0000000AkbX-0VhX; Thu, 16 Jan 2025 08:43:45 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.98 #2 (Red Hat
- Linux)) id 1tYLTc-00000007pI8-3Dc0; Thu, 16 Jan 2025 08:43:44 +0000
+ Linux)) id 1tYLTc-00000007pIG-3SiW; Thu, 16 Jan 2025 08:43:44 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: Stefan Hajnoczi <stefanha@redhat.com>,
 	qemu-devel@nongnu.org
@@ -45,17 +45,14 @@ Cc: Stefano Stabellini <sstabellini@kernel.org>,
  xen-devel@lists.xenproject.org, qemu-block@nongnu.org,
  Phil Dennis-Jordan <phil@philjordan.eu>,
  David Woodhouse <dwmw@amazon.co.uk>,
- Anthony PERARD <anthony.perard@vates.tech>,
- =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>
-Subject: [PULL 6/8] hw/xen: Use xs_node_read() from xenstore_read_str()
- instead of open-coding it
-Date: Thu, 16 Jan 2025 08:43:30 +0000
-Message-ID: <20250116084332.1864967-7-dwmw2@infradead.org>
+ Anthony PERARD <anthony.perard@vates.tech>
+Subject: [PULL 7/8] hw/xen: Fix errp handling in xen_console
+Date: Thu, 16 Jan 2025 08:43:31 +0000
+Message-ID: <20250116084332.1864967-8-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250116084332.1864967-1-dwmw2@infradead.org>
 References: <20250116084332.1864967-1-dwmw2@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
  casper.infradead.org. See http://www.infradead.org/rpr.html
@@ -86,39 +83,72 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
+When attempting to read the 'output' node, interpret any error *other*
+than ENOENT as a fatal error. For ENOENT, fall back to serial_hd() to
+find a character device, or create a null device.
+
+Do not attempt to prepend to errp when serial_hd() fails; the error
+isn't relevant (and prior to this change, wasn't set anyway).
+
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Anthony PERARD <anthony.perard@vates.tech>
-Acked-by: Roger Pau Monné <roger.pau@citrix.com>
 ---
- hw/xen/xen_pvdev.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ hw/char/xen_console.c | 34 +++++++++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 13 deletions(-)
 
-diff --git a/hw/xen/xen_pvdev.c b/hw/xen/xen_pvdev.c
-index c5ad71e8dc..c9143ba259 100644
---- a/hw/xen/xen_pvdev.c
-+++ b/hw/xen/xen_pvdev.c
-@@ -22,6 +22,7 @@
- #include "qemu/main-loop.h"
- #include "hw/qdev-core.h"
- #include "hw/xen/xen-legacy-backend.h"
-+#include "hw/xen/xen-bus-helper.h"
- #include "hw/xen/xen_pvdev.h"
+diff --git a/hw/char/xen_console.c b/hw/char/xen_console.c
+index e61902461b..d03c188d1d 100644
+--- a/hw/char/xen_console.c
++++ b/hw/char/xen_console.c
+@@ -569,7 +569,7 @@ static void xen_console_device_create(XenBackendInstance *backend,
  
- /* private */
-@@ -81,12 +82,9 @@ int xenstore_write_str(const char *base, const char *node, const char *val)
+     snprintf(label, sizeof(label), "xencons%ld", number);
  
- char *xenstore_read_str(const char *base, const char *node)
- {
--    char abspath[XEN_BUFSIZE];
--    unsigned int len;
-     char *str, *ret = NULL;
+-    output = xs_node_read(xsh, XBT_NULL, NULL, NULL, "%s/%s", fe, "output");
++    output = xs_node_read(xsh, XBT_NULL, NULL, errp, "%s/%s", fe, "output");
+     if (output) {
+         /*
+          * FIXME: sure we want to support implicit
+@@ -581,19 +581,27 @@ static void xen_console_device_create(XenBackendInstance *backend,
+                        output);
+             goto fail;
+         }
+-    } else if (number) {
+-        cd = serial_hd(number);
+-        if (!cd) {
+-            error_prepend(errp, "console: No serial device #%ld found: ",
+-                          number);
+-            goto fail;
+-        }
++    } else if (errno != ENOENT) {
++        error_prepend(errp, "console: No valid chardev found: ");
++        goto fail;
+     } else {
+-        /* No 'output' node on primary console: use null. */
+-        cd = qemu_chr_new(label, "null", NULL);
+-        if (!cd) {
+-            error_setg(errp, "console: failed to create null device");
+-            goto fail;
++        error_free(*errp);
++        *errp = NULL;
++
++        if (number) {
++            cd = serial_hd(number);
++            if (!cd) {
++                error_setg(errp, "console: No serial device #%ld found",
++                           number);
++                goto fail;
++            }
++        } else {
++            /* No 'output' node on primary console: use null. */
++            cd = qemu_chr_new(label, "null", NULL);
++            if (!cd) {
++                error_setg(errp, "console: failed to create null device");
++                goto fail;
++            }
+         }
+     }
  
--    snprintf(abspath, sizeof(abspath), "%s/%s", base, node);
--    str = qemu_xen_xs_read(xenstore, 0, abspath, &len);
-+    str = xs_node_read(xenstore, 0, NULL, NULL, "%s/%s", base, node);
-     if (str != NULL) {
-         /* move to qemu-allocated memory to make sure
-          * callers can safely g_free() stuff. */
 -- 
 2.47.0
 
