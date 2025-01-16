@@ -2,87 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14E2AA13EF5
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 17:12:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34566A13F16
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 17:18:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYSSX-0007jC-Bd; Thu, 16 Jan 2025 11:11:05 -0500
+	id 1tYSVc-0000OM-3c; Thu, 16 Jan 2025 11:14:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vliaskovitis@suse.com>)
- id 1tYSRk-0006qA-I0
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:10:19 -0500
-Received: from mail-wm1-x344.google.com ([2a00:1450:4864:20::344])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <vliaskovitis@suse.com>)
- id 1tYSRh-0003sN-1n
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:10:15 -0500
-Received: by mail-wm1-x344.google.com with SMTP id
- 5b1f17b1804b1-4361b6f9faeso7412405e9.1
- for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 08:10:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=suse.com; s=google; t=1737043811; x=1737648611; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=GEWldn/GMK3xl84pELbqj9/jbZSGKnwPEb6qTgzibUk=;
- b=YdYRxYAlyz6QpvU0lgLQg8UKXU8bB9GJU4WpKpkQyDQWHcspxPoFR/wNnA7IAxqA6p
- FcMrcb2RiM+rjh9SIFuHt4jKUrLRzMgzJO6e+Q7GunFuhAVGJh4NaBHFPO13+y1P66nG
- DhmC4LbKVZgG7PdKRMgM9rTHG+AbzsIeS3Hq8VXwdzpYgWec2f/IGgUQn7ZLkVXtaPS3
- FqmSG9XSJGt/HS+4tDO++MAiGhVDgUIoRw59nBWtzarZ7sC34xBp82P9QpIeXfTi0x7O
- NkwifFosDTnQLW+GAltTC5gMBnCrExZ3ab9YkS0DCnSIkXV0CTu3wp8GHcbo1kPxAqY9
- 7bDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737043811; x=1737648611;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=GEWldn/GMK3xl84pELbqj9/jbZSGKnwPEb6qTgzibUk=;
- b=kl21GsK2VBdIsRs/bff4CdyNYdIJrZ1+nYRthwsgHfkI9bKq/uBcjbPMmTRbx4pK8/
- VxPSb+QZetMoW1kiGqUGxKwic/z8Gxj0NaxL33ke+3VzsWCXiR8kooE1ds5XZ/MrRk1I
- gRllvQXVtbUkwSKNsC9h6M5KDSw3Oq2T8vEWFexgdT1IRqXRff7zfDjqTIeqpy/CDvXf
- FZeI9q+ZpLHSOfw/RKrRZ6Jo3JlF4B+smo7j0ho9Ckq2v08H3c/bpTLCGyHPjy+WGQ5B
- 94YNruLN/yDK0sD3Xg4gf0ed9XbvqikBNb/exm5vJiI9AYgTTkVXkqMSR5yW0O0o8FFJ
- kYVw==
-X-Gm-Message-State: AOJu0Yydg63YbOAr3ciWsA0hsLxYHGCC0twG5HjkXQWyPS0v7/q9hbYU
- 30RHF/EhJYo9caFMy6B9nm73xsFRSBJ2N+P5GwB2iyhsvKnJG7nMG2i1sh/S/Ni5HoZKNe73Wko
- TtbsMYg==
-X-Gm-Gg: ASbGnctoobLvnrf4uiPMdPpXkLUw44j8y46YLD2tBTH0FMSDVTAJJihptFh1WQ/fRjE
- FxQmiIO5I44nphz+bew/+/zM5uoIaxr5WAcVwwnBzyK4m8IyN5AcVr5JEuHYbG7l1c3zQVN4vdu
- sHgXhAVKnP6zML/zqQ07M5llg0eYvwOjXOEuA77FReYM2Y7BFVuvMNFF/Fw6yPiRGhfpU51Ulza
- dcYo8f/bfu9629I9AfaAFGEgd342516026lp2wvywMHqK52c+Q5fjemZCoFe8PDzhdFby6pawaL
- qIRvx9ul
-X-Google-Smtp-Source: AGHT+IGEs5ZldKpKOPzsJdIV/PYK/jtP5uJe8daS7b/olvgKwpSmVh2yw4R/3tL6gBmyoVazpwLMmw==
-X-Received: by 2002:a05:600c:3c96:b0:42c:b8c9:16c8 with SMTP id
- 5b1f17b1804b1-437c6b1d2d0mr71836485e9.10.1737043810689; 
- Thu, 16 Jan 2025 08:10:10 -0800 (PST)
-Received: from localhost (ppp-2-86-138-70.home.otenet.gr. [2.86.138.70])
- by smtp.gmail.com with UTF8SMTPSA id
- 5b1f17b1804b1-43890417a76sm3651405e9.16.2025.01.16.08.10.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Jan 2025 08:10:10 -0800 (PST)
-From: Vasilis Liaskovitis <vliaskovitis@suse.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, jason.chien@sifive.com,
- zhiwei_liu@linux.alibaba.com, dbarboza@ventanamicro.com,
- ajones@ventanamicro.com, bmeng.cn@gmail.com, liwei1518@gmail.com,
- philmd@linaro.org, Vasilis Liaskovitis <vliaskovitis@suse.com>
-Subject: [PATCH v3] hw/riscv/virt: Add serial alias in DTB
-Date: Thu, 16 Jan 2025 17:10:07 +0100
-Message-ID: <20250116161007.39710-1-vliaskovitis@suse.com>
-X-Mailer: git-send-email 2.46.0
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tYSUW-0004iE-IR; Thu, 16 Jan 2025 11:13:10 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tYSUU-0004mF-54; Thu, 16 Jan 2025 11:13:08 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 465E84E603E;
+ Thu, 16 Jan 2025 17:13:03 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id 4hNBsxdYkAAM; Thu, 16 Jan 2025 17:13:00 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id E57384E6063; Thu, 16 Jan 2025 17:13:00 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id E28F474577C;
+ Thu, 16 Jan 2025 17:13:00 +0100 (CET)
+Date: Thu, 16 Jan 2025 17:13:00 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Peter Maydell <peter.maydell@linaro.org>
+cc: Peter Xu <peterx@redhat.com>, Akihiko Odaki <akihiko.odaki@daynix.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ David Gibson <david@gibson.dropbear.id.au>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+ Alexey Kardashevskiy <aik@ozlabs.ru>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>, 
+ Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>, 
+ David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>, 
+ Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org, 
+ qemu-block@nongnu.org, qemu-ppc@nongnu.org, devel@daynix.com
+Subject: Re: [PATCH v7 1/2] memory: Update inline documentation
+In-Reply-To: <CAFEAcA87oYqMj1t+yriXHLuTg3G-=eRwOvt4-n4uJmeNujTBxQ@mail.gmail.com>
+Message-ID: <d9acf231-829e-4a9c-7429-282fcc2ae756@eik.bme.hu>
+References: <59e70978-8895-f513-1b5e-1dc599e288ff@eik.bme.hu>
+ <Z4AjkXbZeu3T94Y1@x1n> <Z4AldAcucTyqZ0HJ@x1n>
+ <811633f6-6bf8-4a22-a21a-789e9a4747d7@daynix.com> <Z4E6TnKaUt8FMWIv@x1n>
+ <9bb5f964-f930-4428-b800-8b589920fe1d@daynix.com> <Z4U30j9w1kPnKX9U@x1n>
+ <5dc54c92-0382-4a70-9dad-588572698eed@daynix.com> <Z4aYpo0VEgaQedKp@x1n>
+ <CAFEAcA_mpWZO8V9cE74bKzveEEZDXkqE+XbOFFdhmKUKO3dmSw@mail.gmail.com>
+ <Z4a3GxEbz1jjCDc5@x1n>
+ <CAFEAcA87oYqMj1t+yriXHLuTg3G-=eRwOvt4-n4uJmeNujTBxQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::344;
- envelope-from=vliaskovitis@suse.com; helo=mail-wm1-x344.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,38 +83,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add an "aliases" node with a "serial0" entry for the single UART
-in the riscv virt machine.
+On Thu, 16 Jan 2025, Peter Maydell wrote:
+> On Tue, 14 Jan 2025 at 19:12, Peter Xu <peterx@redhat.com> wrote:
+>>
+>> On Tue, Jan 14, 2025 at 05:42:57PM +0000, Peter Maydell wrote:
+>>> There's at least one test in the arm qtests that will hit this.
+>>> I suspect that you'll find that most architectures except x86
+>>> (where we don't have models of complex SoCs and the few
+>>> machines we do have tend to be old code that is less QOMified)
+>>> will hit similar issues. I think there's a general issue here,
+>>> this isn't just "some particular ppc device is wrongly coded".
+>>
+>> I see.  Do you know how many of them would be important memory leaks that
+>> we should fix immediately?
+>
+> None of these are important memory leaks, because the device is
+> almost always present for the lifetime of the simulation. The
+> only case you'd actually get a visible leak would be if you
+> could hot-unplug the device, and even then you'd have to
+> deliberately sit there doing hot-plug-then-unplug cycles to
+> leak an interesting amount of memory.
+>
+> The main reason to want to fix them is that it lets us run
+> "make check" under the sanitizer and catch other, more
+> interesting leaks.
+>
+>> I mean, we have known memory leaks in QEMU in many places I assume.  I am
+>> curious how important this problem is, and whether such would justify a
+>> memory API change that is not reaching a quorum state (and, imho, add
+>> complexity to memory core and of course that spreads to x86 too even if it
+>> was not affected) to be merged.  Or perhaps we can fix the important ones
+>> first from the device model directly instead.
+>
+> The problem is generic, and the problem is that we have not actually
+> nailed down how this is supposed to work, i.e:
+> * what are the reference counts counting?
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2774
-Signed-off-by: Vasilis Liaskovitis <vliaskovitis@suse.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
----
- hw/riscv/virt.c | 3 +++
- 1 file changed, 3 insertions(+)
+It would be very unintuitive if ref counts not counted the number of 
+references to the object that contains this ref count. If I understood 
+correctly that's the reason for this discussion that in this case the ref 
+count of the owner is counting the MRs instead of its own references and 
+the MR's ref count is not used which is confusing.
 
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 2bc5a9dd98..fb1928cebf 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -971,6 +971,7 @@ static void create_fdt_uart(RISCVVirtState *s, const MemMapEntry *memmap,
-     }
- 
-     qemu_fdt_setprop_string(ms->fdt, "/chosen", "stdout-path", name);
-+    qemu_fdt_setprop_string(ms->fdt, "/aliases", "serial0", name);
- }
- 
- static void create_fdt_rtc(RISCVVirtState *s, const MemMapEntry *memmap,
-@@ -1180,6 +1181,8 @@ static void create_fdt(RISCVVirtState *s, const MemMapEntry *memmap)
-     qemu_fdt_setprop(ms->fdt, "/chosen", "rng-seed",
-                      rng_seed, sizeof(rng_seed));
- 
-+    qemu_fdt_add_subnode(ms->fdt, "/aliases");
-+
-     create_fdt_flash(s, memmap);
-     create_fdt_fw_cfg(s, memmap);
-     create_fdt_pmu(s);
--- 
-2.46.0
+> * if a device has this kind of memory region inside another,
+>   how is it supposed to be coded so as to not leak memory?
+>
+> If we can figure out how the lifecycle and memory management
+> is supposed to work, then yes, we can fix the relevant device
+> models so that they follow whatever the rules are. But it seems
 
+If looking for rules to follow one proven and relatively simple set is 
+what Cocoa uses on macOS. There's a very short introduction here:
+https://www.peachpit.com/articles/article.aspx?p=377302&seqNum=2
+and a bit longer more complete here:
+https://www.tomdalling.com/blog/cocoa/an-in-depth-look-at-manual-memory-management-in-objective-c/
+
+I think this case is one which is shortly mentioned at the end of the 
+second link which is solved by not retaining the contained objects so this 
+is closer to what PeterX suggests just dropping the refcounting on the 
+owner and consider the MRs owned by the superregions once added there. 
+This means add subregion would pass the reference to the owner and remove 
+subregion passes it back to who called it so the MR's ref count needs no 
+change but then who added the MR should not use it after passing it to the 
+superregion and who called remove subregion should release it. But I don't 
+really understans the problem so maybe it's more complex.
+
+Regards,
+BALATON Zoltan
+
+> to me that at the moment we have not got a consensus on how
+> this is supposed to work. Until we have that, there's no way to
+> fix this at the device model level, because we don't know what
+> changes we need to make.
+>
+> thanks
+> -- PMM
+>
+>
 
