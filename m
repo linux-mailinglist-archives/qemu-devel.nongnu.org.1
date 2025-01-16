@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB6DA13EFE
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 17:13:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6F4BA13F0C
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 17:15:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYSUW-0004RL-PM; Thu, 16 Jan 2025 11:13:10 -0500
+	id 1tYSW1-0001Nd-AI; Thu, 16 Jan 2025 11:14:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tYSTi-0003Vt-PF
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:12:19 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1tYSTs-0003ln-DB
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:12:42 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tYSTd-0004SH-KM
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:12:18 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-38633b5dbcfso1245666f8f.2
- for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 08:12:13 -0800 (PST)
+ id 1tYSTi-0004WJ-FO
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:12:26 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3863c36a731so972831f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 08:12:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737043932; x=1737648732; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737043937; x=1737648737; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kTnA9glybPs3zdhSbJS9OZOTx27Sx361JrQqUOFibUA=;
- b=GrMyWh77BuK5ZnWghuQ68UwzBMwX0pOX2WYvCuniuLvWXAlAlEQs1GibfRv5JV5gAT
- gricQFT/oJIedGBlCcJcdjqL+kgtID82ndbbLBBYipj4fuwsEcfzD679FCFsqr+aaNig
- j0Z7L6fcrUZtB9DRQlG3JkyWmJ2nvFo4PoRVd3UGN/1BjCxGM6LPdj5uCDh/hRlXvuF/
- oKXndqG6Xy3xw6QZg9ABrXdW+H9gdbbC2/EAR9WvK1WcYIirEv0+dBakk+Lc95wFPmN5
- v/XozvEraeBg91tLJLl2W11jEy5dDOnEB5S5E2vF176BcCeHoLMteeKr17S0rRmsDyov
- mJug==
+ bh=pERnavJS02WsVkpfgEIKcxRU3EPSk+CF5JdtAAMvhiw=;
+ b=zzqMGghh+t31Z5RHf7Slz3eW1XWjS3xX1YjiKNwfnnnLe/Dxa3lNtCi+dGidvSttBn
+ /+y8LC3VQuFYkNsI804cgnRdgqlSn5gPVN7K3gTd/ne8DBlioqBXTKTg1RWPwZoduRYJ
+ zH6gJF3wPsy3wOWe7E24OrZjoC0GvjA45pebIfahfV+IEdAeKUwnaypP0x8wYDh8tPtL
+ fuMZFkUaXxUo4pH7De7O2a313PCnoig41GEU7KMy8D1QKEFhn+lcJw8AwM7WFl+NIIs1
+ 7deO8SOnuErnwUwmVPMuzYOxw67NSuXApMS+/TPvm1TwDkGPtMuYSNd1lNWi3V9jdTxG
+ qc+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737043932; x=1737648732;
+ d=1e100.net; s=20230601; t=1737043937; x=1737648737;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kTnA9glybPs3zdhSbJS9OZOTx27Sx361JrQqUOFibUA=;
- b=HclcsZaTIzRMKyPlbGP1EnZFNMxFsaw06jOioGrISISoiOfzoGdmGbj1dqriq/8iMS
- 1mDGeHn+AkiJbawjOaZl1vxnM7r8PtRnxSRk9pNv3sF1wIXVh9qjVoyxVXjtxbI9aYVF
- fvq17YKjRGg9XwWtubEN9dBHbPlKik/j+0QhAXyvyoWgavf28L3xjPzHeU9YS5M55gNf
- /VN7shEQmdoDyZY89UrBGIfrAMVsdj+oIXIzopJmAJV5GsS5DdBO2M1RGgJs+u6ggOlu
- zq/PU1ErPQRZGvBIhuJkzCPGl8EwzoorndJP5BEY3/er0B8HUVU5jdkoGKxOUjrz9zNP
- lLVw==
-X-Gm-Message-State: AOJu0YxzD+Qg9dJWTr0QsYnT1L/Fp8J4Ur/C8Q81TalAQDm9aGGfTD14
- QzHzJqRuVzSaCm0KbJtUuiJX/5RkerXpK6IhrubUVapMnbsS5Cn/A4Jw20w38P8=
-X-Gm-Gg: ASbGncsCqR9Sv/eiOta7sPOhXso5MBkJGY11tD7NByucVJjJa2xPIlVRqjp7dsbCm1O
- ulFlj4F16z6a4+tYKMXi3NFsfr95Eq72JbYy4pTJoIYxVvGyuUEeVquKkHy0c1qLWs10z4+q4w3
- i31oz90GfRg1/rq20Y/Rcrkt2J/jOhMjMNRAIEcjyjskIEWPDsTcr0B7Ulg0y+b2gKkpd5SijbG
- GDmCkQz0fg8l2ytIwN5JxjEGe1lYNViq32t2NQ48QnuSl2SlWQY0YE=
-X-Google-Smtp-Source: AGHT+IGvtjX2xsiveTduwOnA0JLVAZWs/Xv9QW0KwwvS0uANAGT5sCVzNb0nZ+RlpmfU5Cvp4SHb0A==
-X-Received: by 2002:a5d:59ab:0:b0:385:eb7c:5d0f with SMTP id
- ffacd0b85a97d-38a8730db6cmr30348488f8f.26.1737043931956; 
- Thu, 16 Jan 2025 08:12:11 -0800 (PST)
+ bh=pERnavJS02WsVkpfgEIKcxRU3EPSk+CF5JdtAAMvhiw=;
+ b=LXIUgSeUwt6h8KabDxa0LPLH6A2YRu/b9WB9DSMp619ZN62m+bIesLSNBd+1BFPPD2
+ mgb6tNGmvhCqaYEK2EI9/LuTNV2woDsdfufrVv7t3AveiqfmY2iJaVIwWI4KBYNZPOSB
+ UEJy1bwfchmUkD0FPCkHZ/sUPrLOEd4aisBIWp4HS756IxSYtrKWcJ+CyGlAkgiZwT0l
+ /ITDqLZYXCV02foECGEG1PVG54+ew98oInkJ8374OZjxTO/1r5KPGtqahOzlLddP8gpl
+ bbdCDsLA6k7DA3rHBHD3vdNIYmKRmojba9ttSyUbGKW6vZqbBnp/swBZp+BO/X+9+JHt
+ mEvw==
+X-Gm-Message-State: AOJu0Yx2w6gJFUQ74rksyFvuhQeg1xOUkPbz9uQ8zWRt0BW747p9ph7c
+ PtCwwle8NXQ+rG1pZXE/UGtN6WFat6586O8xQgogW3BvDP5DukMLoED8fWNaoEo=
+X-Gm-Gg: ASbGncv8BHwxOkb41Msichbe3dPaNUkFy4bU1WRCWwm37jQoei1a/FA0cFL685jQyq1
+ +7Vi4cxu0Oi5G+a/pPDEm0OC1c7TBTHfoFPomdeCbw4KCkXJV1468BQzq8RUY54DgIIIXf+TPkk
+ NraI414MSwW/qSW2rU4GJfPMf9Si3R8rUx3SmDWHc29H3UOT/Jrg+ItnIs9ldTrE54IM44opu0g
+ ICNLh7nLIUsOJg0nH/qcLpMjlmkLBCSE+g9ZMVnlJs97lcK96+A0wc=
+X-Google-Smtp-Source: AGHT+IGgmmk0oyXe3GGpOdxL1Kug7gXIyETMxKRMvrOZ/lal+msBkCz621EF+qn4zaDEXtaemVbxNQ==
+X-Received: by 2002:a5d:584f:0:b0:38a:68f4:66a2 with SMTP id
+ ffacd0b85a97d-38a87312bdfmr30802999f8f.31.1737043936687; 
+ Thu, 16 Jan 2025 08:12:16 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38bf3275995sm221666f8f.74.2025.01.16.08.12.08
+ 5b1f17b1804b1-437c753c617sm64370335e9.37.2025.01.16.08.12.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Jan 2025 08:12:11 -0800 (PST)
+ Thu, 16 Jan 2025 08:12:15 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 511FE608B7;
+ by draig.lan (Postfix) with ESMTP id 6A8F7608C2;
  Thu, 16 Jan 2025 16:03:08 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -88,24 +88,24 @@ Cc: qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Warner Losh <imp@bsdimp.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 19/37] contrib/plugins/hwprofile: fix 32-bit build
-Date: Thu, 16 Jan 2025 16:02:48 +0000
-Message-Id: <20250116160306.1709518-20-alex.bennee@linaro.org>
+Subject: [PATCH v3 20/37] contrib/plugins/hotpages: fix 32-bit build
+Date: Thu, 16 Jan 2025 16:02:49 +0000
+Message-Id: <20250116160306.1709518-21-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250116160306.1709518-1-alex.bennee@linaro.org>
 References: <20250116160306.1709518-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,90 +125,40 @@ From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20241217224306.2900490-10-pierrick.bouvier@linaro.org>
+Message-Id: <20241217224306.2900490-11-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- contrib/plugins/hwprofile.c | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ contrib/plugins/hotpages.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/contrib/plugins/hwprofile.c b/contrib/plugins/hwprofile.c
-index 739ac0c66b..2a4cbc47d4 100644
---- a/contrib/plugins/hwprofile.c
-+++ b/contrib/plugins/hwprofile.c
-@@ -43,6 +43,8 @@ typedef struct {
- 
- static GMutex lock;
- static GHashTable *devices;
-+static struct qemu_plugin_scoreboard *source_pc_scoreboard;
-+static qemu_plugin_u64 source_pc;
- 
- /* track the access pattern to a piece of HW */
- static bool pattern;
-@@ -159,7 +161,7 @@ static DeviceCounts *new_count(const char *name, uint64_t base)
-     count->name = name;
-     count->base = base;
-     if (pattern || source) {
--        count->detail = g_hash_table_new(NULL, NULL);
-+        count->detail = g_hash_table_new(g_int64_hash, g_int64_equal);
-     }
-     g_hash_table_insert(devices, (gpointer) name, count);
-     return count;
-@@ -169,7 +171,7 @@ static IOLocationCounts *new_location(GHashTable *table, uint64_t off_or_pc)
+diff --git a/contrib/plugins/hotpages.c b/contrib/plugins/hotpages.c
+index 8316ae50c7..c6e6493719 100644
+--- a/contrib/plugins/hotpages.c
++++ b/contrib/plugins/hotpages.c
+@@ -103,7 +103,7 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
+ static void plugin_init(void)
  {
-     IOLocationCounts *loc = g_new0(IOLocationCounts, 1);
-     loc->off_or_pc = off_or_pc;
--    g_hash_table_insert(table, (gpointer) off_or_pc, loc);
-+    g_hash_table_insert(table, &loc->off_or_pc, loc);
-     return loc;
+     page_mask = (page_size - 1);
+-    pages = g_hash_table_new(NULL, g_direct_equal);
++    pages = g_hash_table_new(g_int64_hash, g_int64_equal);
  }
  
-@@ -224,12 +226,12 @@ static void vcpu_haddr(unsigned int cpu_index, qemu_plugin_meminfo_t meminfo,
+ static void vcpu_haddr(unsigned int cpu_index, qemu_plugin_meminfo_t meminfo,
+@@ -130,12 +130,12 @@ static void vcpu_haddr(unsigned int cpu_index, qemu_plugin_meminfo_t meminfo,
+     page &= ~page_mask;
  
-         /* either track offsets or source of access */
-         if (source) {
--            off = (uint64_t) udata;
-+            off = qemu_plugin_u64_get(source_pc, cpu_index);
-         }
+     g_mutex_lock(&lock);
+-    count = (PageCounters *) g_hash_table_lookup(pages, GUINT_TO_POINTER(page));
++    count = (PageCounters *) g_hash_table_lookup(pages, &page);
  
-         if (pattern || source) {
-             IOLocationCounts *io_count = g_hash_table_lookup(counts->detail,
--                                                             (gpointer) off);
-+                                                             &off);
-             if (!io_count) {
-                 io_count = new_location(counts->detail, off);
-             }
-@@ -247,10 +249,14 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
- 
-     for (i = 0; i < n; i++) {
-         struct qemu_plugin_insn *insn = qemu_plugin_tb_get_insn(tb, i);
--        gpointer udata = (gpointer) (source ? qemu_plugin_insn_vaddr(insn) : 0);
-+        if (source) {
-+            uint64_t pc = qemu_plugin_insn_vaddr(insn);
-+            qemu_plugin_register_vcpu_mem_inline_per_vcpu(
-+                    insn, rw, QEMU_PLUGIN_INLINE_STORE_U64,
-+                    source_pc, pc);
-+        }
-         qemu_plugin_register_vcpu_mem_cb(insn, vcpu_haddr,
--                                         QEMU_PLUGIN_CB_NO_REGS,
--                                         rw, udata);
-+                                         QEMU_PLUGIN_CB_NO_REGS, rw, NULL);
+     if (!count) {
+         count = g_new0(PageCounters, 1);
+         count->page_address = page;
+-        g_hash_table_insert(pages, GUINT_TO_POINTER(page), (gpointer) count);
++        g_hash_table_insert(pages, &count->page_address, count);
      }
- }
- 
-@@ -306,10 +312,9 @@ int qemu_plugin_install(qemu_plugin_id_t id, const qemu_info_t *info,
-         return -1;
-     }
- 
--    /* Just warn about overflow */
--    if (info->system.smp_vcpus > 64 ||
--        info->system.max_vcpus > 64) {
--        fprintf(stderr, "hwprofile: can only track up to 64 CPUs\n");
-+    if (source) {
-+        source_pc_scoreboard = qemu_plugin_scoreboard_new(sizeof(uint64_t));
-+        source_pc = qemu_plugin_scoreboard_u64(source_pc_scoreboard);
-     }
- 
-     plugin_init();
+     if (qemu_plugin_mem_is_store(meminfo)) {
+         count->writes++;
 -- 
 2.39.5
 
