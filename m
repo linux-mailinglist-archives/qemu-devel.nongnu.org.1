@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2EAA13EFB
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 17:12:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 301B4A13F15
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 17:18:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYSTn-0003PL-3m; Thu, 16 Jan 2025 11:12:26 -0500
+	id 1tYSVW-0008Lr-LQ; Thu, 16 Jan 2025 11:14:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tYSTd-00039R-PV
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:12:14 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1tYSTw-0003m1-9V
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:12:41 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tYSTb-0004RC-OV
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:12:13 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-436281c8a38so7429425e9.3
- for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 08:12:10 -0800 (PST)
+ id 1tYSTj-0004Wx-Hr
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:12:29 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-385de9f789cso880794f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 08:12:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737043929; x=1737648729; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737043938; x=1737648738; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/xR1sdOln5uQTQB+HehunftAymFm05ADSFOJij2asec=;
- b=iiuoRKLjGRlVmkwluMh+Asqh6FoeT+QL4DXxM+4o1etriMpjfzBECAMoj6EDQIrc5N
- W8viv+cJNTDsi1p5uvGHAg0ityNpCPCW9ZTbhZeFbfKsM06kefgb3gTmnQ60zlbNi6te
- /sWa1m8+wehnX3X4zJuwRT9MMBZbYzEwqiPxIKiEvaY6AKpGM0z2F63UnqIYJW41y2It
- ZZyRhW8hcuKzaO57wMs9coMyLwCDur4QrAiX1AcgeAkacNvywNZUl+aAmGhXNMCq9R5R
- rOHCsKnoWik+ffveQR/LpJ9E4whSaBy6QyfJDtpZhJKz8sxuPBNy4cuRFo3Ed88gylpm
- utKA==
+ bh=r8aoZ+4wIpFt1loPUkrjNZIwpI4hyfnz2K8d4L8ae9I=;
+ b=dyGCsp8MXtoz1cxO0M2BIymsCRCpWD5xJg6dQGTg8oSihysF2KUVO++6c46OzaUPIf
+ 0WGTFQ24V4WyLhgJmxnxylJ1Yicx46rRsWxvXhdfPr5OlRLEJxMUlQBq6D4Bf6Zjg8X3
+ zOEPP3T12Bmt1BlsyFRSJ4aHBLvghh/kLMSdZaQrKBwm6LAHKbavd8mrlbd3bKHqUgWy
+ g+3zRNGROStNfYR3/v+C8QJnTIFZ/VKZ6ScdQl0HsSb2KAoj5Yam1zNu/q6gII7a69lB
+ OTYXJw9cWK03X6aB8oDAn/jcWpbrNREgwSpc6Lk18Q84ykxhYPbEx//OpPc/zQjL/j2w
+ RGJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737043929; x=1737648729;
+ d=1e100.net; s=20230601; t=1737043938; x=1737648738;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/xR1sdOln5uQTQB+HehunftAymFm05ADSFOJij2asec=;
- b=Vf5NloSW5QaTO/PDH3wa0ATxXspXnddSXo3ZMVvAl87G58AOgwu5ieuIZhBqD9qzQ5
- RaLGdOJ6K6KqYAfyIJ3Vd0CK0bdcc0j8uEgJF7JRYVAMCI3g3bfnZUitrAE1SF9dKcIw
- EdvmHaFoZmzSEU3VGT8soGWqLdDpSKqKHTL36tNpwddmTEz+XeBtnfe64iLrJ8HYxVnp
- MYj3GPcAooDz6k9flAb6othKgoCIv+ReYGIrAkLir8T83OlRStlSIBMAwXG/tpN850Jz
- ARe8lIWWdkm7nrPWofM+81ECnL6E+SQgm3j/tOP0mKzZM39I8EPcjPysH+39PMnylkUH
- ntjg==
-X-Gm-Message-State: AOJu0YzcOyExrxfd2h+NiMcgo+QLPIlyw9Dcde3xX1/WrD5E2YJ9HwDA
- XlmrR9xCqDzRvyUbCHnXUg/nVTvlndLuud3BC26RWPMTMVQ+F3pX4zg0MDo35oE=
-X-Gm-Gg: ASbGnctNS71yAiYHypdFD92iUZtK/wC+CxGa50OmIiiYsTMmYDs4+LL0PyugvRiEHJ8
- 3XBvaOW8KWGjeswaL5gEmFYAHQ4VwU76WshHKywAuSmH5Kkqt2cLRqXpwKRAoLLCTKOhgp+KDCA
- lNQv1kIhh1LUPJ2WQ4pZ2eJJwKdqIQjlPOG2kFkfYhN/RyNMP1nkKoXneELnE6SsnNtDaNV0+yv
- vCzBHBudZfa+tiwv/21GQJaABSqI+JcALx4nmPj75OHpLNGI6PO4qs=
-X-Google-Smtp-Source: AGHT+IHdWFTZASu7Hc8sMZxPrXtsbEADpl6QGERQc2vb+b7U3ExpmtwhGcHbtIIQPwtCJyi+DyUFyg==
-X-Received: by 2002:a5d:59af:0:b0:385:f677:859b with SMTP id
- ffacd0b85a97d-38a872f7fbdmr34031511f8f.10.1737043929538; 
- Thu, 16 Jan 2025 08:12:09 -0800 (PST)
+ bh=r8aoZ+4wIpFt1loPUkrjNZIwpI4hyfnz2K8d4L8ae9I=;
+ b=N0Hvy4+hin5+7v5cnkrgvC6t/7X9eQEY7LBYuw4ZVcnMaKAl1aXXnccF5vPseWChC+
+ I+OfVZYat0tTOEYwbewZ8hS3ygnMn/fIFO2A94btZqcIHqW/hYhQ8mAzRLjpoFRndOiM
+ TOXF/dNDiixOGOQbnX7TI8rjrYUGCaDkqA+yoUkAXi+o9LOoQL68S6lzTIG7yMPioSJB
+ JBffh2bC6j4tGlOJEuS6Y1Ygt4azmvPSbcP6BuJacl3NcaftHriLt9F9UmaKJRFB6OMw
+ ooyDB040XNpYTKIlj+i67FYmxg5M3cOjOSiLqGGXzuYJX1wwCsnfF1kbcnMf/7Stf31U
+ tYRA==
+X-Gm-Message-State: AOJu0Yze4eBzpO5rSJdYobLnJKwjFsbNgQodyby7Pz3ZlPRmjoG9HLSC
+ sDCwnlOXCFvwcq4q9HM4rFFQNEij8I2CKHa7kfOT6OndNwdPY4NWp6ehDglMfB0=
+X-Gm-Gg: ASbGncveAtGryZo+FzpCCdN4DsyOSSkzpDrMl7n14cPgjCEiuDFpgDS9leZ0bQyjgOb
+ v3jQ71ZXxp+yuiLeLMsU8Oc6iLcqArPH4/wB4lJZxdQoS8MwAlB5hVksIRGYLND4QsPvyQP1aZ4
+ 8iBIVWJIxWFE0If2nyD4nZnKITrNsaonisWXgmp5qBaXyWBSg5Lql8F/8bRe7I23H4mA2bDAikj
+ /slbqowVD4FJm/lb051qlxsP7wT4FsKZiDmrLFJBrnEqFnpOOLHt6g=
+X-Google-Smtp-Source: AGHT+IFaB1wLQxQYs7LjX16DzCaYtwmpePr9HH7XSW4w/QdpdC0d/9H4WPpLX9h8tVZERkhRdWPAYw==
+X-Received: by 2002:a5d:47c5:0:b0:38b:ed6f:f00f with SMTP id
+ ffacd0b85a97d-38bed6ff21emr2468045f8f.17.1737043937822; 
+ Thu, 16 Jan 2025 08:12:17 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38bf322ad74sm242024f8f.56.2025.01.16.08.12.08
+ ffacd0b85a97d-38bf3221b5asm238633f8f.21.2025.01.16.08.12.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Jan 2025 08:12:09 -0800 (PST)
+ Thu, 16 Jan 2025 08:12:15 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 99552608C3;
+ by draig.lan (Postfix) with ESMTP id B1806608D2;
  Thu, 16 Jan 2025 16:03:08 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -87,20 +87,18 @@ Cc: qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
  Laurent Vivier <lvivier@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Warner Losh <imp@bsdimp.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Julian Ganz <neither@nut.email>
-Subject: [PATCH v3 22/37] accel/tcg: also suppress asynchronous IRQs for
- cpu_io_recompile
-Date: Thu, 16 Jan 2025 16:02:51 +0000
-Message-Id: <20250116160306.1709518-23-alex.bennee@linaro.org>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v3 23/37] win32: remove usage of attribute gcc_struct
+Date: Thu, 16 Jan 2025 16:02:52 +0000
+Message-Id: <20250116160306.1709518-24-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250116160306.1709518-1-alex.bennee@linaro.org>
 References: <20250116160306.1709518-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -123,38 +121,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While it would be technically correct to allow an IRQ to happen (as
-the offending instruction never really completed) it messes up
-instrumentation. We already take care to only use memory
-instrumentation on the block, we should also suppress IRQs.
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Message-Id: <20250109170619.2271193-23-alex.bennee@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Julian Ganz <neither@nut.email>
+This attribute is not recognized by clang.
+
+An investigation has been performed to ensure this attribute has no
+effect on layout of structures we use in QEMU [1], so it's safe to
+remove now.
+
+In the future, we'll forbid introducing new bitfields in packed struct,
+as they are the one potentially impacted by this change.
+
+[1] https://lore.kernel.org/qemu-devel/66c346de-7e20-4831-b3eb-1cda83240af9@linaro.org/
+
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Tested-by: Stefan Weil <sw@weilnetz.de>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20250110203401.178532-2-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Julian Ganz <neither@nut.email>
 ---
- accel/tcg/translate-all.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ meson.build                               | 5 -----
+ include/qemu/compiler.h                   | 7 +------
+ scripts/cocci-macro-file.h                | 6 +-----
+ subprojects/libvhost-user/libvhost-user.h | 6 +-----
+ 4 files changed, 3 insertions(+), 21 deletions(-)
 
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index 453eb20ec9..d56ca13cdd 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -633,9 +633,10 @@ void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr)
-      * Exit the loop and potentially generate a new TB executing the
-      * just the I/O insns. We also limit instrumentation to memory
-      * operations only (which execute after completion) so we don't
--     * double instrument the instruction.
-+     * double instrument the instruction. Also don't let an IRQ sneak
-+     * in before we execute it.
-      */
--    cpu->cflags_next_tb = curr_cflags(cpu) | CF_MEMI_ONLY | n;
-+    cpu->cflags_next_tb = curr_cflags(cpu) | CF_MEMI_ONLY | CF_NOIRQ | n;
+diff --git a/meson.build b/meson.build
+index d06f59095c..da279cc112 100644
+--- a/meson.build
++++ b/meson.build
+@@ -377,11 +377,6 @@ elif host_os == 'sunos'
+   qemu_common_flags += '-D__EXTENSIONS__'
+ elif host_os == 'haiku'
+   qemu_common_flags += ['-DB_USE_POSITIVE_POSIX_ERRORS', '-D_BSD_SOURCE', '-fPIC']
+-elif host_os == 'windows'
+-  if not compiler.compiles('struct x { int y; } __attribute__((gcc_struct));',
+-                           args: '-Werror')
+-    error('Your compiler does not support __attribute__((gcc_struct)) - please use GCC instead of Clang')
+-  endif
+ endif
  
-     if (qemu_loglevel_mask(CPU_LOG_EXEC)) {
-         vaddr pc = cpu->cc->get_pc(cpu);
+ # Choose instruction set (currently x86-only)
+diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
+index c06954ccb4..d904408e5e 100644
+--- a/include/qemu/compiler.h
++++ b/include/qemu/compiler.h
+@@ -22,12 +22,7 @@
+ #define QEMU_EXTERN_C extern
+ #endif
+ 
+-#if defined(_WIN32) && (defined(__x86_64__) || defined(__i386__))
+-# define QEMU_PACKED __attribute__((gcc_struct, packed))
+-#else
+-# define QEMU_PACKED __attribute__((packed))
+-#endif
+-
++#define QEMU_PACKED __attribute__((packed))
+ #define QEMU_ALIGNED(X) __attribute__((aligned(X)))
+ 
+ #ifndef glue
+diff --git a/scripts/cocci-macro-file.h b/scripts/cocci-macro-file.h
+index d247a5086e..c64831d540 100644
+--- a/scripts/cocci-macro-file.h
++++ b/scripts/cocci-macro-file.h
+@@ -23,11 +23,7 @@
+ #define G_GNUC_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
+ #define G_GNUC_NULL_TERMINATED __attribute__((sentinel))
+ 
+-#if defined(_WIN32) && (defined(__x86_64__) || defined(__i386__))
+-# define QEMU_PACKED __attribute__((gcc_struct, packed))
+-#else
+-# define QEMU_PACKED __attribute__((packed))
+-#endif
++#define QEMU_PACKED __attribute__((packed))
+ 
+ #define cat(x,y) x ## y
+ #define cat2(x,y) cat(x,y)
+diff --git a/subprojects/libvhost-user/libvhost-user.h b/subprojects/libvhost-user/libvhost-user.h
+index deb40e77b3..2ffc58c11b 100644
+--- a/subprojects/libvhost-user/libvhost-user.h
++++ b/subprojects/libvhost-user/libvhost-user.h
+@@ -186,11 +186,7 @@ typedef struct VhostUserShared {
+     unsigned char uuid[UUID_LEN];
+ } VhostUserShared;
+ 
+-#if defined(_WIN32) && (defined(__x86_64__) || defined(__i386__))
+-# define VU_PACKED __attribute__((gcc_struct, packed))
+-#else
+-# define VU_PACKED __attribute__((packed))
+-#endif
++#define VU_PACKED __attribute__((packed))
+ 
+ typedef struct VhostUserMsg {
+     int request;
 -- 
 2.39.5
 
