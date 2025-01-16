@@ -2,62 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ECC8A1307E
+	by mail.lfdr.de (Postfix) with ESMTPS id AE6B9A1307F
 	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 02:10:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYENq-0003X7-IB; Wed, 15 Jan 2025 20:09:18 -0500
+	id 1tYENw-0003YG-Sj; Wed, 15 Jan 2025 20:09:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=104bc4e84=wilfred.mallawa@wdc.com>)
- id 1tYENn-0003Wh-Tx; Wed, 15 Jan 2025 20:09:15 -0500
-Received: from esa4.hgst.iphmx.com ([216.71.154.42])
+ id 1tYENt-0003Xh-B9; Wed, 15 Jan 2025 20:09:22 -0500
+Received: from esa3.hgst.iphmx.com ([216.71.153.141])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=104bc4e84=wilfred.mallawa@wdc.com>)
- id 1tYENm-0004DC-2S; Wed, 15 Jan 2025 20:09:15 -0500
+ id 1tYENr-0004Dt-HY; Wed, 15 Jan 2025 20:09:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
- t=1736989754; x=1768525754;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=1STTjrDBmra11zsVfv/orRLamkndqjMZdOyKZ2Vt5iw=;
- b=l5DAMcfCuTUOHgOBqoJSHUtRU4GZ9lYGB9yUvvaJBeaiYVcR8NF1q6ch
- 7tdn89s1pC35IQSEv/T6iODGuObW4KDUtqHS13f8Acl45p5eCeGWf35c4
- lQipQC5Lwfn1909Bcl5F/AbH6tbK4igGA9LfPAfILRIVshz/umyqS2OFj
- wfFtj0VDJZdFvFMKB3H5AZjLTEYtM2I+dfZqyIP33I146KBie+ApkXeK0
- t6H2EYEgHuZLcXgqHcfSdp0lk0ITaEnUgFf6nTQ4atPpDfQQadlz7k79y
- bwWHpVnmpd0S4RBsXi+znwCNnOC3aBprQLr1HBny7KlILHuStMbPa2pvk w==;
-X-CSE-ConnectionGUID: vxadmS+2T/GnCg63oOWX7g==
-X-CSE-MsgGUID: ww4uvH6bS2mpfqvp/JT2gQ==
-X-IronPort-AV: E=Sophos;i="6.13,207,1732550400"; d="scan'208";a="35419683"
-Received: from h199-255-45-15.hgst.com (HELO uls-op-cesaep02.wdc.com)
- ([199.255.45.15])
- by ob1.hgst.iphmx.com with ESMTP; 16 Jan 2025 09:09:10 +0800
-IronPort-SDR: 67884d5d_g8wf2fbRwusVW+Uo769kq8wxsUtOR+miB9lUtUEHWSFEsiV
- z58foXs9sB3J5/0W7oqq4e3SnFGO3z5kjEPETOA==
+ t=1736989759; x=1768525759;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=RIcE4V9Oau2BlIHui7UckYA4eT7nPs0+wP+wuZKNg6E=;
+ b=reR8xH4bQeSvuyJsVsZn34pDDdzj4hfTaq1p4XNNWU64lNUSZdJuu2CA
+ 6UVv3QIsCf4s5az+gGjqaMfrgVAI1JW9ynP2FnFy4dQK6yBmU++je4vnm
+ a1JxMrkW3tfV2s5/iCmRZBJgake0i8FEdwaWneguSNVlXL+4C/WkCtQh7
+ Cp7PFc6y/aIzs+Sjfu9oXMCoTHUgURdmsWxO4AR++pBGWm6v+m9YQec7+
+ EJaqyjF96WHRxJ0nAkzPTcg79iNbg6qzlkYg54o2PFiSJ8HiA/yn40Ygr
+ tczkBLqnaVk+7mPL97fykANlSSGj7ZpY14oPKBUNjjogiYGyy5ULfLe07 A==;
+X-CSE-ConnectionGUID: uKb/pkYGQiyaZWeS0+fVDg==
+X-CSE-MsgGUID: DpjyAkRNT26mSua+NIXS0A==
+X-IronPort-AV: E=Sophos;i="6.13,207,1732550400"; d="scan'208";a="36036489"
+Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com)
+ ([199.255.45.14])
+ by ob1.hgst.iphmx.com with ESMTP; 16 Jan 2025 09:09:16 +0800
+IronPort-SDR: 67884eae_KlBupYu34GYman1vMH9LAReNkN9sDIo1IgH+MR+8cKrpFUm
+ RKqpZ5WYgvzMipG/WlsJQwKkaWc071lDa9h56Yg==
 Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
- by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256;
- 15 Jan 2025 16:05:49 -0800
+ by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256;
+ 15 Jan 2025 16:11:26 -0800
 WDCIronportException: Internal
 Received: from unknown (HELO fedora.wdc.com) ([10.225.165.91])
- by uls-op-cesaip02.wdc.com with ESMTP; 15 Jan 2025 17:09:05 -0800
+ by uls-op-cesaip02.wdc.com with ESMTP; 15 Jan 2025 17:09:11 -0800
 To: qemu-devel@nongnu.org,
 	qemu-block@nongnu.org
 Cc: alistair.francis@wdc.com, kbusch@kernel.org, its@irrelevant.dk,
  foss@defmacro.it, stefanha@redhat.com, fam@euphon.net, philmd@linaro.org,
  kwolf@redhat.com, hreitz@redhat.com, mst@redhat.com,
  marcel.apfelbaum@gmail.com, Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Subject: [RFC v2 0/3] Add SPDM over Storage transport support for NVMe
-Date: Thu, 16 Jan 2025 11:08:54 +1000
-Message-ID: <20250116010856.95115-2-wilfred.mallawa@wdc.com>
+Subject: [RFC v2 1/3] spdm: add spdm storage transport virtual header
+Date: Thu, 16 Jan 2025 11:08:55 +1000
+Message-ID: <20250116010856.95115-3-wilfred.mallawa@wdc.com>
 X-Mailer: git-send-email 2.48.0
+In-Reply-To: <20250116010856.95115-2-wilfred.mallawa@wdc.com>
+References: <20250116010856.95115-2-wilfred.mallawa@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=216.71.154.42;
- envelope-from=prvs=104bc4e84=wilfred.mallawa@wdc.com; helo=esa4.hgst.iphmx.com
+Received-SPF: pass client-ip=216.71.153.141;
+ envelope-from=prvs=104bc4e84=wilfred.mallawa@wdc.com; helo=esa3.hgst.iphmx.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -83,37 +85,37 @@ From:  Wilfred Mallawa via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series adds support for SPDM to be used over the storage transport, as
-defined by the DMTF DSP0286 [1] for NVMe. That is, using the admin
-NVMe Security Send/Receive commands, support transport for SPDM as per
-DSP0286 [1]. The binding specification (DSP0286) is still currently a draft
-specification that has an "Expected release Q4 2024" [2].
+This header contains the transport encoding for an SPDM message that
+uses the SPDM over Storage transport as defined by the DMTF DSP0286.
 
-In anticipation of it's release, this series is an RFC.
+Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+---
+ include/system/spdm-socket.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-[1] https://www.dmtf.org/sites/default/files/standards/documents/DSP0286_1.0.0WIP90.pdf
-[2] https://www.dmtf.org/content/now-available-%E2%80%93-spdm-storage-binding-specification-wip
-
-Changes V1 -> V2:
-  - Split out the SPDM Socket API patch for separate send/recv functions
-  - Addressed comments from Klaus Jensen
-    - Dropped unnecessary allocation length check
-    - Dropped unnecessary alloc_len alignment check
-    - Fixed up `nvme_security_receive: dw10` SPSP bit-masking
-
-Wilfred Mallawa (3):
-  spdm: add spdm storage transport virtual header
-  hw/nvme: add NVMe Admin Security SPDM support
-  hw/nvme: connect SPDM over NVMe Security Send/Recv
-
- docs/specs/spdm.rst          |  10 +-
- hw/nvme/ctrl.c               | 265 +++++++++++++++++++++++++++++++++--
- hw/nvme/nvme.h               |   5 +
- include/block/nvme.h         |  15 ++
- include/hw/pci/pci_device.h  |   1 +
- include/system/spdm-socket.h |  12 ++
- 6 files changed, 294 insertions(+), 14 deletions(-)
-
+diff --git a/include/system/spdm-socket.h b/include/system/spdm-socket.h
+index 2b7d03f82d..fc007e5b48 100644
+--- a/include/system/spdm-socket.h
++++ b/include/system/spdm-socket.h
+@@ -88,6 +88,18 @@ bool spdm_socket_send(const int socket, uint32_t socket_cmd,
+  */
+ void spdm_socket_close(const int socket, uint32_t transport_type);
+ 
++/*
++ * Defines the transport encoding for SPDM, this information shall be passed
++ * down to the SPDM server, when conforming to the SPDM over Storage standard
++ * as defined by DSP0286.
++ */
++typedef struct QEMU_PACKED {
++    uint8_t security_protocol;
++    uint16_t security_protocol_specific;
++    bool inc_512;
++    uint32_t length;
++} StorageSpdmTransportHeader;
++
+ #define SPDM_SOCKET_COMMAND_NORMAL                0x0001
+ #define SPDM_SOCKET_STORAGE_CMD_IF_SEND           0x0002
+ #define SPDM_SOCKET_STORAGE_CMD_IF_RECV           0x0003
 -- 
 2.48.0
 
