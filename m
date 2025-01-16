@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26038A13032
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 01:51:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3CBA13031
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 01:51:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYE4x-00085h-9x; Wed, 15 Jan 2025 19:49:47 -0500
+	id 1tYE4x-00085j-Ae; Wed, 15 Jan 2025 19:49:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1tYE4p-00084F-E8
+ id 1tYE4q-00084L-Fs
  for qemu-devel@nongnu.org; Wed, 15 Jan 2025 19:49:40 -0500
 Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1tYE4n-00012w-Bj
- for qemu-devel@nongnu.org; Wed, 15 Jan 2025 19:49:39 -0500
+ id 1tYE4o-00013K-3c
+ for qemu-devel@nongnu.org; Wed, 15 Jan 2025 19:49:40 -0500
 Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-2163bd70069so5808465ad.0
- for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 16:49:36 -0800 (PST)
+ d9443c01a7336-2162c0f6a39so29612125ad.0
+ for <qemu-devel@nongnu.org>; Wed, 15 Jan 2025 16:49:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1736988575; x=1737593375;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1736988576; x=1737593376;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=kqUbD+dP6YKBEqfxOFTFYLUPlQ2bAs6lr1qlPkJnA2k=;
- b=lxqNIE0AXNCTw6azUVRqije++mc4oyza/ci4m8yBnKkywgsu6sc5B4KCfxkFAtcnNz
- SJOY9f6xmhVhcGzhUT+E1AtiXn7/F1AEe0WxiLLGNNmi9RnH9Th/6eLYwaP8HmzUEWkR
- YyXRqYx7wDlkhXHKAWVoXU2K3sBNGvi1z3YbX6qskopwIwBuFDb4YcJd9TsIJIkZD6rx
- w/I0Hw9FxugsLyZmfThkrqSnTQkhWG0bce/ugIcjHS8gEIfR3Uemtyte9XQrC6BLnTTm
- 31K8vUuWkNJBYNf3dciekwUCx4BYpL88U1xCyTTk5ifraftebRDo25bRO9wt5HJL7PUJ
- MyAQ==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=ZkbB4hKqhuUPLPk9u5+LDLyPT5P/mS71agdt5ZhzHx0=;
+ b=LzzM433GCYkn1RJyndD6jf3/v6zc/K2iaEy6ZDcjnilG7sgaJGvM2aqN75x3qYAUJj
+ Ca3qqP8EnGVwXcYVQbBPpSa8yTw5CtWO//cOTRwMQf14X1KWtj2W8TAl/oyu3Qc5x8LY
+ rydDoOOAW/ZQDbiSc7IUowYg8F8xlEAUkL8Xg2tHBMZsyvC8Enn8HecnYOwjh9QQVflp
+ 3H/jwcXyIWhvw3EVbpSpD1ltVIv/ygkwGh1Diu6yO9kBtXS2DOyAz+Acve502LUlH+GW
+ 78yJsZ2NMgx8ca9EwEfKxzslLECuA+ahS8Cum2yw/8WLzII6pta1TjNNu3yIU2YlNGlR
+ zGzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1736988575; x=1737593375;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=kqUbD+dP6YKBEqfxOFTFYLUPlQ2bAs6lr1qlPkJnA2k=;
- b=f9n5ph/jLAebjEQEkLspvvjgmmSPXx0dZmJRIYq0lzE28KmV94Se15E6c2U4QeBiSR
- jVqqXk6q+xOc/0sME61GS5RccFPn5EGpJNVxGcXylIgDP51cakh8hNjyPwCucVDcQMaM
- e2f9Oa7Y4NF5MFcF/X0LqV7EUV2/3YeEXeortiNrOHglB1MOEQNMZpbEpwveJg0CX/lG
- gr7seXNqyAUA4CHhTdWwPGHiTvAK69fBImcPExH4Ac60UI0be0Bkdu0hD2rWyW0hNpqc
- Llui0r8gLzdi1nelcxMnt7ilSL11ywQvkQ5F9aISPS4EYLm0Tc2+GXWlc56ynGvKm0wf
- Xk0w==
+ d=1e100.net; s=20230601; t=1736988576; x=1737593376;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ZkbB4hKqhuUPLPk9u5+LDLyPT5P/mS71agdt5ZhzHx0=;
+ b=Mtb99MMM0PI5dVhUzKqGkU/9rDAboPDsBO57rRsDoy2HqZyHqYRZlbas8+jvyKda0j
+ t8B1CW1tyU1MRgKvLWfJM61PcYB7+7Ny+E8AH284YLN5rHpZcY5yBOtHoTGof0mzZl23
+ 6IT1XMGHt3p7T4t97XfVQUPx5wPRZeR7LZXc5tnx4wgGh4QLPZuqI0XrT/BJPsKICt8o
+ CIaVilVGb1nR0kSRYBp1C2RhRPVcC9acZMGMa9hAlkpKvrAQUBI7AkzY2WXUxiieFQzx
+ UsL6y5uOUr0TnPLhQhnjX1659gpXdzbZLJwJNiA+ooIal5ex1UIkUKWmZd2S7ujHswVV
+ mT+Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUIagkH6Bi8M4wDxeB5seiy9jYhL7a12GrhgfeMXdoJzPar+7QIeBkicRscs+iuPd5IIg/3j5JJJIS2@nongnu.org
-X-Gm-Message-State: AOJu0Yw3os/yEdnoz6//aJtLPH8Tm0GVt+hcDxL16px64l2L651f5B0l
- oAkKO1dirFvSGlDTlZPBdiRwiXqQwsgEkpZgmR33mmpS3EVf5eITa+buOB4lXTitFxuuFI2ZANZ
- c
-X-Gm-Gg: ASbGncsLbpfo/3SS0FvOMQfIluQvRrLvAmI7kTHNfL1Lgb0hcl2owaNZG0X3wdlQXRy
- Pywmw9nX6XPpm1K/gIvQeOaurDKOWHTpdjosG3y8kvNjT9kXKZ9lmLn/6bJ3ek2066OTL9Z4Lbl
- Il0D03OYGiXLwrlHpc8PIcj1yJbIOy8FyLhlBtPX8s9uur50SH4cZuGNYr3EsBfwZ6RhKdWg/5W
- 3tQAfWDpI7ogBjiZletU50ZA3yrSi9upnZ3x8f3B4zxcEEGLVR6izfj6kdiGmkB/yevPQ==
-X-Google-Smtp-Source: AGHT+IE7uBXmbSI6Ml8gdSwZ0aHHEvuvY0CMJCsMXO7DHFEKXS9WhgETPySV1jdgSWMfC0wyM6fX+Q==
-X-Received: by 2002:a05:6a00:9a3:b0:725:eacf:cfdb with SMTP id
- d2e1a72fcca58-72d22033ef6mr47666283b3a.24.1736988575199; 
- Wed, 15 Jan 2025 16:49:35 -0800 (PST)
+ AJvYcCU+xPv+fgzjAVoFu9Qp0KgYj9hSuUlJEjNOdVZL85GxwJL8RmZlVKRKL45gptQ9Di4ScdTeMfGvRPOm@nongnu.org
+X-Gm-Message-State: AOJu0YyBSD5pGBr93XTI36kQ5Jt9U2U5lD1bqfLb1SsgnqpQvhmv/l8H
+ ZYdyjavpdjlUtp7xR/S9yjC9EKn8GCtxSH3tJPzEGlbbeEDmnOJ3KY/ZVqAIEhHjQDrEfFGd5s7
+ U
+X-Gm-Gg: ASbGncvxyfa/2Crt4oPT25tzzLX6O+DEhXeoMv6INhoUeZUHgt4woD9eSlk9VIfrdrf
+ 2PGoZI0XUXT1fOaqNkUdnR3xOYF9iG9FZ1++nyB+ivwsJZHzzqV4+wkdeO3gGnYoLP/ArGQOmvb
+ fJkEX96zMISFapenFOekz4fZHODCLYlx4w940aOlE4j5N5hK2OHSLAoav1TsZB5g68vYrtJTV55
+ 9wE1iD5AxIPFiGwrWNDmVPRIV6XZMqt2alEQmiT+E7HPGgzkjlgwWy268kKevSK0P0eKw==
+X-Google-Smtp-Source: AGHT+IFd11hEaCIlqsLgYaiVOBiDsWMyOfgilx4UwUmGCpUEsiTWL0OLIlPWjHh2fPeeylkWLc+qxQ==
+X-Received: by 2002:a05:6a20:d494:b0:1e1:ad90:dda6 with SMTP id
+ adf61e73a8af0-1eb025ac6damr7932449637.20.1736988576259; 
+ Wed, 15 Jan 2025 16:49:36 -0800 (PST)
 Received: from atishp.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72d406587a1sm10036256b3a.105.2025.01.15.16.49.34
+ d2e1a72fcca58-72d406587a1sm10036256b3a.105.2025.01.15.16.49.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Jan 2025 16:49:34 -0800 (PST)
+ Wed, 15 Jan 2025 16:49:35 -0800 (PST)
 From: Atish Patra <atishp@rivosinc.com>
-Subject: [PATCH 0/2] Minor mhpmevent related fixes
-Date: Wed, 15 Jan 2025 16:49:31 -0800
-Message-Id: <20250115-pmu_minor_fixes-v1-0-c32388defb02@rivosinc.com>
+Date: Wed, 15 Jan 2025 16:49:32 -0800
+Subject: [PATCH 1/2] target/riscv: Fix the hpmevent mask
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJtXiGcC/x3LQQqAIBBA0avIrBPUsqKrRIjVVLNIQykC8e5Jy
- 8fnJ4gYCCMMLEHAhyJ5VyArBsth3Y6c1mJQQmkhpebXeZuTnA9moxcj76yae6xb3WMD5boC/qF
- M45TzB+hUg6FhAAAA
+Message-Id: <20250115-pmu_minor_fixes-v1-1-c32388defb02@rivosinc.com>
+References: <20250115-pmu_minor_fixes-v1-0-c32388defb02@rivosinc.com>
+In-Reply-To: <20250115-pmu_minor_fixes-v1-0-c32388defb02@rivosinc.com>
 To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
 Cc: Atish Patra <atishp@rivosinc.com>, liwei1518@gmail.com, 
  zhiwei_liu@linux.alibaba.com, bin.meng@windriver.com, 
@@ -101,26 +100,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Here are two small fixes around mhpmevent encoding and reset value.
-The first patch is picked from the platform specific event encoding
-series[1].
+As per the latest privilege specification v1.13[1], the sscofpmf
+only reserves first 8 bits of hpmeventX. Update the corresponding
+masks accordingly.
 
-[1] https://lore.kernel.org/qemu-devel/20241009-pmu_event_machine-v1-0-dcbd7a60e3ba@rivosinc.com/
+[1]https://github.com/riscv/riscv-isa-manual/issues/1578
 
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
 ---
-Atish Patra (2):
-      target/riscv: Fix the hpmevent mask
-      target/riscv: Mask out upper sscofpmf bits during validation
-
  target/riscv/cpu_bits.h | 9 ++++++---
- target/riscv/pmu.c      | 2 +-
- 2 files changed, 7 insertions(+), 4 deletions(-)
----
-base-commit: b82a273fb2210edf7beb9e5ca1401927fbcbe164
-change-id: 20250115-pmu_minor_fixes-7a2b8e3658e4
---
-Regards,
-Atish patra
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+index f97c48a3943f..b48c0af9d48e 100644
+--- a/target/riscv/cpu_bits.h
++++ b/target/riscv/cpu_bits.h
+@@ -9,6 +9,10 @@
+                  (((uint64_t)(val) * ((mask) & ~((mask) << 1))) & \
+                  (uint64_t)(mask)))
+ 
++#ifndef GENMASK_ULL
++#define GENMASK_ULL(h, l) (((~0ULL) >> (63 - (h) + (l))) << (l))
++#endif
++
+ /* Extension context status mask */
+ #define EXT_STATUS_MASK     0x3ULL
+ 
+@@ -933,9 +937,8 @@ typedef enum RISCVException {
+                                             MHPMEVENTH_BIT_VSINH | \
+                                             MHPMEVENTH_BIT_VUINH)
+ 
+-#define MHPMEVENT_SSCOF_MASK               _ULL(0xFFFF000000000000)
+-#define MHPMEVENT_IDX_MASK                 0xFFFFF
+-#define MHPMEVENT_SSCOF_RESVD              16
++#define MHPMEVENT_SSCOF_MASK               GENMASK_ULL(63, 56)
++#define MHPMEVENT_IDX_MASK                 (~MHPMEVENT_SSCOF_MASK)
+ 
+ /* RISC-V-specific interrupt pending bits. */
+ #define CPU_INTERRUPT_RNMI                 CPU_INTERRUPT_TGT_EXT_0
+
+-- 
+2.34.1
 
 
