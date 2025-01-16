@@ -2,84 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 425CFA135E3
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 09:55:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CD4CA1360B
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 10:02:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYLdi-0006qd-Mj; Thu, 16 Jan 2025 03:54:11 -0500
+	id 1tYLka-000896-IE; Thu, 16 Jan 2025 04:01:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tYLdf-0006qL-UJ
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 03:54:07 -0500
-Received: from mgamail.intel.com ([198.175.65.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tYLdc-0008Fs-W9
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 03:54:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737017646; x=1768553646;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=yZw1YWix7/0v17N1NyNVK3/J2P5q4Pb8NI/rZF51DAI=;
- b=HDaynqYQn/+7EmFg4bS65jx3AWKY3l7vo0eqDbrDcrKfsgRNRYQdu9Ps
- ztg2HxF2n4a9nHw6RSu3qRPZ2NEeef9SJkehPoQ0q+OOsv57I5IHVfpZS
- OR3dGL6wwf1FxKDn4vhkSapXw1fSfGpe2gQhDYXLxSPuZcgr2cQjvj1Fi
- cHb6DyYmhEA9u1YSGBExAnWNZsdbFjvpT1UES1EKz4kRX3UJIhseYitgu
- 12Hw+bWLlTUMb+X+Eg4vhKthcqQoKC4s8IK3XLevdiPypJwarWRs7mXKq
- LGNLlGqrs7bRCg7JQ7m2TclGvNKCO9PtikJ2uuDNdm+tzi3DCbCaR/XzS Q==;
-X-CSE-ConnectionGUID: UnqHbNBSRmyGvzkJvqIapQ==
-X-CSE-MsgGUID: Nu0jbO7bT1iE+PzhtxWlhA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="41069506"
-X-IronPort-AV: E=Sophos;i="6.13,208,1732608000"; d="scan'208";a="41069506"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jan 2025 00:54:01 -0800
-X-CSE-ConnectionGUID: JcpwkuKERM6AP3SrjlcAZA==
-X-CSE-MsgGUID: wvbgJKILTuSSIhHdUD1R+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,208,1732608000"; d="scan'208";a="105471015"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
- ([10.124.247.1])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jan 2025 00:53:55 -0800
-Message-ID: <3345330e-c111-4d08-9852-9dede46957d2@intel.com>
-Date: Thu, 16 Jan 2025 16:53:51 +0800
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1tYLkY-00088D-Cq
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 04:01:15 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1tYLkV-0000vY-Ka
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 04:01:13 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-2166360285dso11111405ad.1
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 01:01:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1737018069; x=1737622869;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=z4fcvrtFMb3tEXkyl3/g+nhsL3eRNfTE0SsG8nv6/mo=;
+ b=16N0uLrRecDV2QeTP8XpMeiQQbddIgAcUtOureDRWBxu5nwQN4n/43GzkFVayHLxA4
+ tZxXCJZRfY1n+MAqZC/AQpaqRhw+u+fDuBxUDsf9hVPi+JLJDjX8aUyLYfT6NKCxIt/r
+ 6UkymnfL4lFIdTUk8bScYuOEho2w6Y778rXi/JyjM43lz0Wxia2UBJ7c4mv85540cpT1
+ vfMGetQHIquRcwwTVSWcCSVxprk/UgT7KiiiBzpFL5Pxl2Krhq1PdRnNlPm1YQ/h9NPM
+ JFHnnDbuA7/C5N4tVmEZZuve7Wl8lxYcEeBnhiErxI9gS2zjeyrLICaZbESt1FQtUoif
+ vGfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737018069; x=1737622869;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=z4fcvrtFMb3tEXkyl3/g+nhsL3eRNfTE0SsG8nv6/mo=;
+ b=oHcsd2YNy5+3tPexWWTZMSuoJ+QuiySvs6CxW956W64nZFqDpjLzUGXkc41NvZ1uDo
+ I559by40dOzV+xxLNmyT9xijg9OoYZ1AK8aP56/4S6NM6sLdP2bdAM2E3fYEvb+pV0Pf
+ JVVjZzGWj+8Lbod4n16OVTWlhHAr00Q0bAb4FJHkuzb88eBssXfgLwGk/r88STT7k26D
+ w/kth3Eh7Z8us3xKRyl32yIDDZferHJKwa6b58PL21w5N1K78hvz+6wSEwOp5sbd4wIZ
+ sdCaXQhKiPOBGFIkhX9DWGlVRZ9dHldjw5MvX0BjkLMGME/7F0G0+zJy8+jMLznB/+kJ
+ CfRg==
+X-Gm-Message-State: AOJu0YyZB6MG21MFmWGb/Efi3rtvdZNfhmUzG6AAAu3G5Km0/xj/0jXe
+ ryE8mh5K2tap28VZ72iubzGbk9Wal0EtDz+P9ko0pUwI6/p3NCihepfa4sInPnM=
+X-Gm-Gg: ASbGncuT8hCR6wP80OhY8FSFkHKwC9u5sqVyhazNNp3bJGeD7Kasg74ZRRaKouPiJ8X
+ ag0OPKMGs8j9y0LtCW8bBwIMC0mLX5O2rwGmL+s+V7XQRN/vkRpc1QvBjXJbAeDqnQRpVrPvQmN
+ C3X5vxmdDg0Mo9t3Tg+j4ExBp4r9Hp5oYy0DZfCRlakIDtH3RXr2PuAY4siWNeFK6BeNm++vtDD
+ hh2oPXQHNowHrEIwOtJ8RCc/jFCvzBHirmpqmVRdYd3E3LXj8aXoDyKh3o=
+X-Google-Smtp-Source: AGHT+IGpPDz88/31QaLUa6y+8THg9rpxFbiEEYXjVWVTSLwesxyH6XMH8jo9TvLnir3F8+44t98LqQ==
+X-Received: by 2002:a17:902:f54f:b0:211:e812:3948 with SMTP id
+ d9443c01a7336-21a83da2b03mr512285885ad.0.1737018069414; 
+ Thu, 16 Jan 2025 01:01:09 -0800 (PST)
+Received: from localhost ([157.82.203.37]) by smtp.gmail.com with UTF8SMTPSA id
+ d9443c01a7336-21a9f25c661sm94536825ad.248.2025.01.16.01.01.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 16 Jan 2025 01:01:08 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v20 00/11] hw/pci: SR-IOV related fixes and improvements
+Date: Thu, 16 Jan 2025 18:00:51 +0900
+Message-Id: <20250116-reuse-v20-0-7cb370606368@daynix.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 56/60] i386/tdx: Don't treat SYSCALL as unavailable
-To: Paolo Bonzini <pbonzini@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
- Richard Henderson <richard.henderson@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Cornelia Huck <cohuck@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, rick.p.edgecombe@intel.com,
- kvm@vger.kernel.org, qemu-devel@nongnu.org
-References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
- <20241105062408.3533704-57-xiaoyao.li@intel.com>
- <f1c7bba2-7b21-4e10-a245-36673e93f8b7@redhat.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <f1c7bba2-7b21-4e10-a245-36673e93f8b7@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.15; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -52
-X-Spam_score: -5.3
-X-Spam_bar: -----
-X-Spam_report: (-5.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-1.793, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-B4-Tracking: v=1; b=H4sIAMPKiGcC/23SS27bMBCA4asEWlfBzPDdVe8RZMHHMNGidiC1R
+ oLAdy/pRhQDeilC30gk/89p43Xhbfr58DmtfFm25XwqDwQ/Hqb46k8vPC+pLEwEJAHJzSv/3Xj
+ O3jNRQHRCTuXdt5Xz8n4b9PRcnl+X7c95/bjNvWBd/T+BQHxNuOAMswpso4qshbC/kv84Le+P8
+ fx7qiMu1DGEnVFhJIMnr4C0o4GJntHORGEW0ARtXWSTByZ7JncmK3M+gRMeTJYDUz2zO1OFscw
+ RI7qgvBuY7hi1vem6N5bkyQaIedyb6Vn7SVOZiyhDDE4RD8z2rP2krcyS1kAWWcPA3MEEqp25w
+ rTxXjufZVJiYAiH02TafUOBJnoIlpNIbrwC7EKx0K4Oayk5WBGCLeeZwwiph+1csLaShBMQJSK
+ G8TxR9LBtEWstpXDvZTIppzuwy8Xi0XTtRUZUIWpmYD3CLhhLB7wVk1K5QA1MdiwGu2Rc98XaT
+ ALUQQaZNd754hENlutvsFYTkokoBAnDY9rYslGA3anWbqKQjn1OVps7AbgeugZrOVlJZEvRq2y
+ +wev1+g/Z5zBEjgQAAA==
+To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Alex Williamson <alex.williamson@redhat.com>, 
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>, 
+ Klaus Jensen <its@irrelevant.dk>, Markus Armbruster <armbru@redhat.com>, 
+ Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+ Shivaprasad G Bhat <sbhat@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, devel@daynix.com, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.14-dev-fd6e3
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,67 +115,174 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/5/2024 5:59 PM, Paolo Bonzini wrote:
-> On 11/5/24 07:24, Xiaoyao Li wrote:
->> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->> ---
->>   target/i386/kvm/tdx.c | 7 +++++++
->>   1 file changed, 7 insertions(+)
->>
->> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
->> index 9cb099e160e4..05475edf72bd 100644
->> --- a/target/i386/kvm/tdx.c
->> +++ b/target/i386/kvm/tdx.c
->> @@ -734,6 +734,13 @@ static int 
->> tdx_check_features(X86ConfidentialGuest *cg, CPUState *cs)
->>           requested = env->features[w];
->>           unavailable = requested & ~actual;
->> +        /*
->> +         * Intel enumerates SYSCALL bit as 1 only when processor in 
->> 64-bit
->> +         * mode and before vcpu running it's not in 64-bit mode.
->> +         */
->> +        if (w == FEAT_8000_0001_EDX && unavailable & 
->> CPUID_EXT2_SYSCALL) {
->> +            unavailable &= ~CPUID_EXT2_SYSCALL;
->> +        }
->>           mark_unavailable_features(cpu, w, unavailable, unav_prefix);
->>           if (unavailable) {
->>               mismatch = true;
-> 
-> This seems like a TDX module bug?  
+Supersedes: <20240714-rombar-v2-0-af1504ef55de@daynix.com>
+("[PATCH v2 0/4] hw/pci: Convert rom_bar into OnOffAuto")
 
-I don't think so. The value of CPUID_EXT2_SYSCALL depends on the mode of 
-the vcpu. Per SDM, it's 0 outside 64-bit mode.
+I submitted a RFC series[1] to add support for SR-IOV emulation to
+virtio-net-pci. During the development of the series, I fixed some
+trivial bugs and made improvements that I think are independently
+useful. This series extracts those fixes and improvements from the RFC
+series.
 
-The initial state of TDX vcpu is 32-bit protected mode. At the time of 
-calling KVM_TDX_GET_CPUID, vcpu hasn't started running. So the value 
-should be 0.
+[1]: https://patchew.org/QEMU/20231210-sriov-v2-0-b959e8a6dfaf@daynix.com/
 
-There indeed is a TDX module. After vcpu starts running and TD guest 
-switches to 64-bit mode. The value of this bit returned by TDX module 
-via global metadata CPUID value still remains 0.
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Changes in v20:
+- Use qdev_is_realized().
+- Link to v19: https://lore.kernel.org/r/20250109-reuse-v19-0-f541e82ca5f7@daynix.com
 
-Off the topic, for me, it's really a bad API to return TDX's CPUID value 
-via TD-scope metadata. It fits better with TD VCPU scope metadata.
+Changes in v19:
+- Avoided inling pci_set_power().
+- Link to v18: https://lore.kernel.org/r/20250104-reuse-v18-0-c349eafd8673@daynix.com
 
-> It's the kind of thing that I guess 
-> could be worked around in KVM.
-> 
-> If we do it in QEMU, I'd rather see it as
-> 
->              actual = cpuid_entry_get_reg(entry, wi->cpuid.reg);
->              switch (w) {
->              case FEAT_8000_0001_EDX:
->                  actual |= CPUID_EXT2_SYSCALL;
->                  break;
->              }
->              break;
+Changes in v18:
+- Rebased.
+- Link to v17: https://lore.kernel.org/r/20241022-reuse-v17-0-bd7c133237e4@daynix.com
 
-I'll change to this way.
+Changes in v17:
+- Added patch "pcie_sriov: Ensure VF addr does not overflow".
+- Changed not to link VF with sPAPR DRC.
+- Asserted pci_is_vf() when zpci is not found. (Cédric Le Goater)
+- Link to v16: https://lore.kernel.org/r/20240913-reuse-v16-0-d016b4b4f616@daynix.com
 
+Changes in v16:
+- Added patch "s390x/pci: Avoid creating zpci for VFs".
+- Added patch "s390x/pci: Allow plugging SR-IOV devices".
+- Link to v15: https://lore.kernel.org/r/20240823-reuse-v15-0-eddcb960e289@daynix.com
 
-> Paolo
-> 
+Changes in v15:
+- Fixed variable shadowing in patch
+  "pcie_sriov: Remove num_vfs from PCIESriovPF"
+- Link to v14: https://lore.kernel.org/r/20240813-reuse-v14-0-4c15bc6ee0e6@daynix.com
+
+Changes in v14:
+- Dropped patch "pcie_sriov: Ensure VF function number does not
+  overflow" as I found the restriction it imposes is unnecessary.
+- Link to v13: https://lore.kernel.org/r/20240805-reuse-v13-0-aaeaa4d7dfd2@daynix.com
+
+Changes in v13:
+- Added patch "s390x/pci: Check for multifunction after device
+  realization". I found SR-IOV devices, which are multifunction devices,
+  are not supposed to work at all with s390x on QEMU.
+- Link to v12: https://lore.kernel.org/r/20240804-reuse-v12-0-d3930c4111b2@daynix.com
+
+Changes in v12:
+- Changed to ignore invalid PCI_SRIOV_NUM_VF writes as done for
+  PCI_SRIOV_CTRL_VFE.
+- Updated the message for patch "hw/pci: Use -1 as the default value for
+  rombar". (Markus Armbruster)
+- Link to v11: https://lore.kernel.org/r/20240802-reuse-v11-0-fb83bb8c19fb@daynix.com
+
+Changes in v11:
+- Rebased.
+- Dropped patch "hw/pci: Convert rom_bar into OnOffAuto".
+- Added patch "hw/pci: Use -1 as the default value for rombar".
+- Added for-9.2 to give a testing period for possible breakage with
+  libvirt/s390x.
+- Link to v10: https://lore.kernel.org/r/20240627-reuse-v10-0-7ca0b8ed3d9f@daynix.com
+
+Changes in v10:
+- Added patch "hw/ppc/spapr_pci: Do not reject VFs created after a PF".
+- Added patch "hw/ppc/spapr_pci: Do not create DT for disabled PCI device".
+- Added patch "hw/pci: Convert rom_bar into OnOffAuto".
+- Dropped patch "hw/pci: Determine if rombar is explicitly enabled".
+- Dropped patch "hw/qdev: Remove opts member".
+- Link to v9: https://lore.kernel.org/r/20240315-reuse-v9-0-67aa69af4d53@daynix.com
+
+Changes in v9:
+- Rebased.
+- Restored '#include "qapi/error.h"' (Michael S. Tsirkin)
+- Added patch "pcie_sriov: Ensure VF function number does not overflow"
+  to fix abortion with wrong PF addr.
+- Link to v8: https://lore.kernel.org/r/20240228-reuse-v8-0-282660281e60@daynix.com
+
+Changes in v8:
+- Clarified that "hw/pci: Replace -1 with UINT32_MAX for romsize" is
+  not a bug fix. (Markus Armbruster)
+- Squashed patch "vfio: Avoid inspecting option QDict for rombar" into
+  "hw/pci: Determine if rombar is explicitly enabled".
+  (Markus Armbruster)
+- Noted the minor semantics change for patch "hw/pci: Determine if
+  rombar is explicitly enabled". (Markus Armbruster)
+- Link to v7: https://lore.kernel.org/r/20240224-reuse-v7-0-29c14bcb952e@daynix.com
+
+Changes in v7:
+- Replaced -1 with UINT32_MAX when expressing uint32_t.
+  (Markus Armbruster)
+- Added patch "hw/pci: Replace -1 with UINT32_MAX for romsize".
+- Link to v6: https://lore.kernel.org/r/20240220-reuse-v6-0-2e42a28b0cf2@daynix.com
+
+Changes in v6:
+- Fixed migration.
+- Added patch "pcie_sriov: Do not manually unrealize".
+- Restored patch "pcie_sriov: Release VFs failed to realize" that was
+  missed in v5.
+- Link to v5: https://lore.kernel.org/r/20240218-reuse-v5-0-e4fc1c19b5a9@daynix.com
+
+Changes in v5:
+- Added patch "hw/pci: Always call pcie_sriov_pf_reset()".
+- Added patch "pcie_sriov: Reset SR-IOV extended capability".
+- Removed a reference to PCI_SRIOV_CTRL_VFE in hw/nvme.
+  (Michael S. Tsirkin)
+- Noted the impact on the guest of patch "pcie_sriov: Do not reset
+  NumVFs after unregistering VFs". (Michael S. Tsirkin)
+- Changed to use pcie_sriov_num_vfs().
+- Restored pci_set_power() and changed it to call pci_set_enabled() only
+  for PFs with an expalanation. (Michael S. Tsirkin)
+- Reordered patches.
+- Link to v4: https://lore.kernel.org/r/20240214-reuse-v4-0-89ad093a07f4@daynix.com
+
+Changes in v4:
+- Reverted the change to pci_rom_bar_explicitly_enabled().
+  (Michael S. Tsirkin)
+- Added patch "pcie_sriov: Do not reset NumVFs after unregistering VFs".
+- Added patch "hw/nvme: Refer to dev->exp.sriov_pf.num_vfs".
+- Link to v3: https://lore.kernel.org/r/20240212-reuse-v3-0-8017b689ce7f@daynix.com
+
+Changes in v3:
+- Extracted patch "hw/pci: Use -1 as a default value for rombar" from
+  patch "hw/pci: Determine if rombar is explicitly enabled"
+  (Philippe Mathieu-Daudé)
+- Added an audit result of PCIDevice::rom_bar to the message of patch
+  "hw/pci: Use -1 as a default value for rombar"
+  (Philippe Mathieu-Daudé)
+- Link to v2: https://lore.kernel.org/r/20240210-reuse-v2-0-24ba2a502692@daynix.com
+
+Changes in v2:
+- Reset after enabling a function so that NVMe VF state gets updated.
+- Link to v1: https://lore.kernel.org/r/20240203-reuse-v1-0-5be8c5ce6338@daynix.com
+
+---
+Akihiko Odaki (11):
+      hw/ppc/spapr_pci: Do not create DT for disabled PCI device
+      hw/ppc/spapr_pci: Do not reject VFs created after a PF
+      s390x/pci: Avoid creating zpci for VFs
+      s390x/pci: Allow plugging SR-IOV devices
+      s390x/pci: Check for multifunction after device realization
+      pcie_sriov: Do not manually unrealize
+      pcie_sriov: Ensure VF addr does not overflow
+      pcie_sriov: Reuse SR-IOV VF device instances
+      pcie_sriov: Release VFs failed to realize
+      pcie_sriov: Remove num_vfs from PCIESriovPF
+      pcie_sriov: Register VFs after migration
+
+ docs/pcie_sriov.txt         |   8 ++-
+ include/hw/pci/pcie_sriov.h |   9 +--
+ hw/net/igb.c                |  10 ++-
+ hw/nvme/ctrl.c              |  22 +++---
+ hw/pci/pci.c                |  21 +++++-
+ hw/pci/pcie_sriov.c         | 159 ++++++++++++++++++++++++--------------------
+ hw/ppc/spapr_pci.c          |  20 +++++-
+ hw/s390x/s390-pci-bus.c     |  42 +++++++++---
+ hw/pci/trace-events         |   2 +-
+ 9 files changed, 187 insertions(+), 106 deletions(-)
+---
+base-commit: 7433709a147706ad7d1956b15669279933d0f82b
+change-id: 20240129-reuse-faae22b11934
+
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
