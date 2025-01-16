@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0CE5A13F12
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 17:17:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF07BA13ECC
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 17:07:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYSVO-00079z-IT; Thu, 16 Jan 2025 11:14:02 -0500
+	id 1tYSNL-0006ct-J8; Thu, 16 Jan 2025 11:05:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tYSTo-0003jd-OG
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:12:31 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1tYSLC-0003Yr-RD
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:03:33 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tYSTh-0004Ue-1L
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:12:22 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43621d27adeso7365125e9.2
- for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 08:12:16 -0800 (PST)
+ id 1tYSL3-0001KI-Qr
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:03:30 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-43626213fffso13957395e9.1
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 08:03:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737043935; x=1737648735; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737043400; x=1737648200; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WLe5w9j4DHWXPaIRe+z3KvHnXl+5bNcDKy/lW4VDWAc=;
- b=b8AgYZ7v4Ci5SiEAI1jmHvCkVJkCFl3OIi1EMoENcN/OgUvOoOu0oYOic9VipuR3aA
- 7+raSBpQbI+k2xNQyCHeB5H6OwGV5NGDy+/MwkQwf7CjKqOPTboXh7oNd0N1/xHXTTtC
- 4bneX0fUk4un/hp1JSJTG3b2jUvOG82iaeSfPP7+l8im1AUfyyKuJ6v2hcPSxeKPQcRJ
- OahPh0JShLO/9wUbwB03Lzy4R6fU+2D7ddMjhp6RtQlBqiLx9l86sCrGVX/t+JUsHgHA
- 0ERnfQb3oBetbpiCO5Z0oMXgGmBMSQIuU7v5Oaq5KxAdpgTaU9lOKd7Uv7uBsANZhv94
- jbDw==
+ bh=1MpW/2n8t4Ifykf0XW914wylYygUjob9/Znajs96aYA=;
+ b=FNiUvkM7sFZQ+a2zMmgWkVi7l+PH2hFj57ISsO/gO9zQxUVuOq0T7bIvg2H8XAhL8i
+ 0V/M0HKR4OFgNoVbOe+1KlyjoVXHdzqmacrPK+kplBlhxPXRiYH0azNZYvrv1B3fSY2G
+ o0fq1nhgnBc/09XECcgn7WFxsFMULpN+jwW6gbQMEtg3DIc63ODAKMJ2Pl1veju7NBJu
+ Bixj+7AHcKC2sqT1NjOcKVoEZXRLYLBvW3dC7cRgy6+yYobJrSLZC8USF+foNHJ3Rr3j
+ hk1S1PI8UC6yxr6EBlDFjcM0KuVQlJVeRe0FL2Eae9dykHvXTScN2bu4SoXlEzQAGF1V
+ 4qzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737043935; x=1737648735;
+ d=1e100.net; s=20230601; t=1737043400; x=1737648200;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WLe5w9j4DHWXPaIRe+z3KvHnXl+5bNcDKy/lW4VDWAc=;
- b=G7W+7lOTyTYFMPBmS7k9kSUVWS+N4T5Lw6CME5Q9XbFQEACMdwSORc2XvR/3JZ4VDK
- 7a8lva2zeXA/AxNNWsehWLVoZb5UuroEFp3O6vKFgDZvRhVH7LUlbPNI8Dabs87ZpvBd
- INQvns6B0rPVaDnJGCIVFXmE+pYTWdoQ4Ysa9HxEbjCU+V54KLCPdtHrkT21vZAyAm7k
- 6SAko0HcQ3/rVD7rJIWdKqT2W9jmu5iPRMbKaHsIBgFUtbiF4qP+CD97DwV9Pbel4us9
- ndu0ePmNe2EbMnPHfLVXuIf0zjGYmvXFeRv/iPxsM8aYWf843EYpBxT1Je5DZRbvnnsj
- ZLcQ==
-X-Gm-Message-State: AOJu0YySfY78MYmFq/D4gtntMXb2dcZZ7h+uzsX95ocs7bpjjGQTAbVr
- EJmQZabu3BgW2AJnKireQ/I0fkLkHMtBBeg0OvbRCDiKSGLj7xLKXjvHRN6v8RQ=
-X-Gm-Gg: ASbGncuUig/CPYCJLXR6E9cYm7a/bDd4m1NZW1BenXBAW97McLfJJaxwHBYyLSMmXRO
- N1Z7TJspoaEZKSvGM8DysH5muUDsqn0yox3hJmmoeNbG40HchYa84bsiTCE5xrfzen37E2u2UXQ
- j0XSNyHASYMExRYUW/62HU6hRjKjGNHfS0NIKA1+dZwlZ1Nrs6kgJTVqHnb0cT2FC0S2wNeJyYm
- ROwYRFBiEAYbCfyTgf9zezwX9e45olRmlEH3NKgHIqEjctinjX/w30=
-X-Google-Smtp-Source: AGHT+IGW5wYt2DWPIkVBjiq06mGFgkl2qsUn7l82B2h4BRIDMEcksTW2k1cc1Zs0sXRM401iXHBwUA==
-X-Received: by 2002:a05:600c:314b:b0:436:5fc9:30ba with SMTP id
- 5b1f17b1804b1-436e26ebb6fmr201501935e9.29.1737043934086; 
- Thu, 16 Jan 2025 08:12:14 -0800 (PST)
+ bh=1MpW/2n8t4Ifykf0XW914wylYygUjob9/Znajs96aYA=;
+ b=jI1Ut4uMbsc6Ug+ShPUdNqQ470qGZ/hv95qPMTvLz5va0os2TpOsLS5qypdXub1TIF
+ ov4KGOmApbeAOzoxf+C9VIo2wE6fBfHPh8jyIWux4LShw0Cf4UYu4uk5SAxZbxzcjiq7
+ XkFXNx/++uyVJnbwA+s6R1RWgI+pkIc2JgRQXnTOStDPSMotLyDXvluhdCrHyPugGGvc
+ 7yx1XOajZKQoaJk8BVrAe8rWRhpcz8PcitBG9PxkpHvS+0km9mTwwEX4DKgoGb8L7Heu
+ xhPIoQDgMJZcly1WdD7VSDr1Ro/NXKhdxUPCoGZe00FlldQMdgZnmE4hRP9lDQezFqJ6
+ FopA==
+X-Gm-Message-State: AOJu0YzWZfuNVUqdpNV5f8wZa7IK8++spWun39FdXxmmMGbKH3lj6YVJ
+ ieIw6Srabe3z4aOeRqQY+hUXz5OycEt85iqiLF9Sx8ygvM0D3/M7RDBz+62kiC0=
+X-Gm-Gg: ASbGncsJKoWAksZGTQSllcBxGXToymCjZHnwfOPoKb7o4rgT3u2FgIAbsNO6ZO/CHW9
+ JSo3lVTZVknl+PN60MtuKYwnVc+NTj13ZBEmd9LX/6mElJvJ4grjGxwKhtnQ4YenVMV9u4UVH+m
+ oud192Ie0I76PQUJLRkkFhtqnqXTDmDyeMX54/sXVF1f2xuYJ1UX2cjXEHmxmpCjxaUEtECkQwv
+ tp66cpdYlYBaLguEHCxHQa3qDP812lWfGb6oOR6zHk3H3g++8RNvxM=
+X-Google-Smtp-Source: AGHT+IEzCBNZqjXj7lI7kQGMQKTBiw3kExicUVC7Y/NSCX3NC0264VjSQecdUyV2soEPeDvQrXfDkg==
+X-Received: by 2002:a05:600c:4f54:b0:434:fddf:5c06 with SMTP id
+ 5b1f17b1804b1-437c6aecbf0mr65929325e9.1.1737043398506; 
+ Thu, 16 Jan 2025 08:03:18 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c74c6179sm63871185e9.22.2025.01.16.08.12.10
+ 5b1f17b1804b1-43890367b48sm3792705e9.0.2025.01.16.08.03.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Jan 2025 08:12:11 -0800 (PST)
+ Thu, 16 Jan 2025 08:03:16 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 36F35608DD;
+ by draig.lan (Postfix) with ESMTP id 52FBD608DF;
  Thu, 16 Jan 2025 16:03:09 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -88,24 +88,24 @@ Cc: qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Warner Losh <imp@bsdimp.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 28/37] tests/qtest: fix some copy and paste errors in kdoc
-Date: Thu, 16 Jan 2025 16:02:57 +0000
-Message-Id: <20250116160306.1709518-29-alex.bennee@linaro.org>
+Subject: [PATCH v3 29/37] include/exec: fix some copy and paste errors in kdoc
+Date: Thu, 16 Jan 2025 16:02:58 +0000
+Message-Id: <20250116160306.1709518-30-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250116160306.1709518-1-alex.bennee@linaro.org>
 References: <20250116160306.1709518-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,54 +127,31 @@ definition. Fix those cases.
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- tests/qtest/libqos/qgraph.h | 2 +-
- tests/qtest/libqtest.h      | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ include/exec/memory.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qtest/libqos/qgraph.h b/tests/qtest/libqos/qgraph.h
-index 1b5de02e7b..81fbfdd0e2 100644
---- a/tests/qtest/libqos/qgraph.h
-+++ b/tests/qtest/libqos/qgraph.h
-@@ -355,7 +355,7 @@ void qos_object_start_hw(QOSGraphObject *obj);
- QOSGraphObject *qos_machine_new(QOSGraphNode *node, QTestState *qts);
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 9458e2801d..605687befa 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -1194,7 +1194,7 @@ static inline bool MemoryRegionSection_eq(MemoryRegionSection *a,
+ MemoryRegionSection *memory_region_section_new_copy(MemoryRegionSection *s);
  
  /**
-- * qos_machine_new(): instantiate a new driver node
-+ * qos_driver_new(): instantiate a new driver node
-  * @node: A driver node to be instantiated
-  * @parent: A #QOSGraphObject to be consumed by the new driver node
-  * @alloc: An allocator to be used by the new driver node.
-diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
-index f23d80e9e5..fa08c7eca5 100644
---- a/tests/qtest/libqtest.h
-+++ b/tests/qtest/libqtest.h
-@@ -365,7 +365,7 @@ QDict *qtest_qmp_event_ref(QTestState *s, const char *event);
- char *qtest_hmp(QTestState *s, const char *fmt, ...) G_GNUC_PRINTF(2, 3);
+- * memory_region_section_new_copy: Free a copied memory region section
++ * memory_region_section_free_copy: Free a copied memory region section
+  *
+  * Free a copy of a memory section created via memory_region_section_new_copy().
+  * properly dropping references on all relevant members.
+@@ -2510,7 +2510,7 @@ MemoryRegionSection memory_region_find(MemoryRegion *mr,
+ void memory_global_dirty_log_sync(bool last_stage);
  
  /**
-- * qtest_hmpv:
-+ * qtest_vhmp:
-  * @s: #QTestState instance to operate on.
-  * @fmt: HMP command to send to QEMU, formats arguments like vsprintf().
-  * @ap: HMP command arguments
-@@ -904,7 +904,7 @@ void qtest_qmp_assert_success(QTestState *qts, const char *fmt, ...)
- 
- #ifndef _WIN32
- /**
-- * qtest_qmp_fd_assert_success_ref:
-+ * qtest_qmp_fds_assert_success_ref:
-  * @qts: QTestState instance to operate on
-  * @fds: the file descriptors to send
-  * @nfds: number of @fds to send
-@@ -921,7 +921,7 @@ QDict *qtest_qmp_fds_assert_success_ref(QTestState *qts, int *fds, size_t nfds,
-     G_GNUC_PRINTF(4, 5);
- 
- /**
-- * qtest_qmp_fd_assert_success:
-+ * qtest_qmp_fds_assert_success:
-  * @qts: QTestState instance to operate on
-  * @fds: the file descriptors to send
-  * @nfds: number of @fds to send
+- * memory_global_dirty_log_sync: synchronize the dirty log for all memory
++ * memory_global_after_dirty_log_sync: synchronize the dirty log for all memory
+  *
+  * Synchronizes the vCPUs with a thread that is reading the dirty bitmap.
+  * This function must be called after the dirty log bitmap is cleared, and
 -- 
 2.39.5
 
