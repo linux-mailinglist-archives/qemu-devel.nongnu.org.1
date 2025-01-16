@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B338A13B9A
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 15:05:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94833A13B94
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 15:05:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYQTD-0004Jg-7v; Thu, 16 Jan 2025 09:03:39 -0500
+	id 1tYQTE-0004KK-5L; Thu, 16 Jan 2025 09:03:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+cabf69696ff47aa9dee2+7816+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1tYQT0-0004ID-Pb
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 09:03:27 -0500
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ <BATV+b63efa7a8ebec188a7bb+7816+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1tYQT2-0004IU-1k
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 09:03:31 -0500
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+cabf69696ff47aa9dee2+7816+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1tYQSw-0008AW-He
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 09:03:24 -0500
+ <BATV+b63efa7a8ebec188a7bb+7816+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1tYQSz-0008BI-1d
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 09:03:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
- Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=2hzkk/wFSYMvPROnyoi5otvp0+90Pj7TiuP+ZDQ69LY=; b=MFFmPb0LzkCU2Bpv8ua3i/kQKQ
- deYfg8DVqK4/46ITR0O8DVahkQhyZHTJhmb9GcVe46s4miMAo11quTQcFVt4ymGxN2kNeAhviV44x
- WHWZoBJqEi6wokX48ZpUYan+ompPaZ89YwJ9PoaCRAtdA9ApuUiSV5lwN0jvE105R80KfqsyzgLoN
- 4fafeOOh1RuobUCIjoA0LjEJrhGvizAlOCtsBAM5SDa3cIEB7IEWc503Qt4lqSYv/+4bK4eiJiBCw
- A5NKB7YGMnzkNwp5d95b7PCEM+lO0JH+oUaEqsaP+whY3MslnOAH4RTT/5jZXQEip5wag967qL6+a
- 7kniHBDg==;
+ d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+ Reply-To:Content-Type:Content-ID:Content-Description;
+ bh=kfz/t/H0vrCPNearb0ZL87O6Nl+p8Kr51/xvrkTk6NQ=; b=Pej2dyL97bmwOGLtS4whFKYG3r
+ KkZybTvvwCDhsEJZLX/mbGRs6hKBtTWBWF2Mqg8OnqlT16x0nD+mS3PJUvxJZ+yvtuHSFRV9Nmep+
+ AKUmP+iLz6KXC4jb71gek1Wq3HsgdogzpdXx5eq9nd3DyxluV3o8AsW7dnX3wLRHmgDafKS4hAHjo
+ GEzqiLvSkyFE0cltfFnlqV7C+pBkwelTk9NhxOojiwoQ85xu7Fad59URFCtQ15J3T9KFUG1dJKPNX
+ x3FhWMbuQKIt8PBlB6T2DHXzR4BAFhWl4m595fbrpampydyJ5/RICtzrLV7KJhQmADsvJRC+eBB0A
+ JsuXNVzg==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
- id 1tYQSq-0000000Ezl2-2UcR; Thu, 16 Jan 2025 14:03:16 +0000
+ by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+ id 1tYQSr-0000000BFGg-3GVT; Thu, 16 Jan 2025 14:03:19 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.98 #2 (Red Hat
- Linux)) id 1tYQSq-0000000AJgl-1MjU; Thu, 16 Jan 2025 14:03:16 +0000
+ Linux)) id 1tYQSq-0000000AJgs-1chn; Thu, 16 Jan 2025 14:03:16 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -44,19 +44,21 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>, Cornelia Huck <cohuck@redhat.com>,
  Peter Hilber <quic_philber@quicinc.com>,
- "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>, paul <paul@xen.org>
-Subject: [PATCH v7 0/3] hw/acpi: Add vmclock device
-Date: Thu, 16 Jan 2025 13:59:40 +0000
-Message-ID: <20250116140315.2455143-1-dwmw2@infradead.org>
+ "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>, paul <paul@xen.org>,
+ David Woodhouse <dwmw@amazon.co.uk>
+Subject: [PATCH v7 1/3] linux-headers: Add vmclock-abi.h
+Date: Thu, 16 Jan 2025 13:59:41 +0000
+Message-ID: <20250116140315.2455143-2-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250116140315.2455143-1-dwmw2@infradead.org>
+References: <20250116140315.2455143-1-dwmw2@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+cabf69696ff47aa9dee2+7816+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+b63efa7a8ebec188a7bb+7816+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -79,87 +81,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-(Posting one last time with the header commits split out).
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-The vmclock device addresses the problem of live migration with
-precision clocks. The tolerances of a hardware counter (e.g. TSC) are
-typically around ±50PPM. A guest will use NTP/PTP/PPS to discipline that
-counter against an external source of 'real' time, and track the precise
-frequency of the counter as it changes with environmental conditions.
+This isn't a Linux-specific ABI but Linux does export the header file
+with its definition, so import it from there instead of creating our own.
 
-When a guest is live migrated, anything it knows about the frequency of
-the underlying counter becomes invalid. It may move from a host where
-the counter running at -50PPM of its nominal frequency, to a host where
-it runs at +50PPM. There will also be a step change in the value of the
-counter, as the correctness of its absolute value at migration is
-limited by the accuracy of the source and destination host's time
-synchronization.
-
-The device exposes a shared memory region to guests, which can be mapped
-all the way to userspace. In the first phase, this merely advertises a
-'disruption_marker', which indicates that the guest should throw away any
-NTP synchronization it thinks it has, and start again.
-
-Because the region can be exposed all the way to userspace, applications
-can still use time from a fast vDSO 'system call', and check the
-disruption marker to be sure that their timestamp is indeed truthful.
-
-The structure also allows for the precise time, as known by the host, to
-be exposed directly to guests so that they don't have to wait for NTP to
-resync from scratch.
-
-The values and fields are based on the nascent virtio-rtc specification,
-and the intent is that a version (hopefully precisely this version) of
-this structure will be included as an optional part of that spec. In the
-meantime, a simple ACPI device along the lines of VMGENID is perfectly
-sufficient and is compatible with what's being shipped in certain
-commercial hypervisors.
-
-Linux guest support was merged into the 6.13-rc1 kernel:
-https://git.kernel.org/torvalds/c/205032724226
-
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 ---
-v7:
- • Split update-kernel-headers.sh and the addition of the new header
-   file into separate commits, add MAINTAINERS entry.
+ scripts/update-linux-headers.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
-v6:
- • Rebase for DEFINE_PROP_END_OF_LIST removal and sysemu→system
-   rename.
-
-v5:
- • Trivial simplification to AML generation.
- • Import vmclock-abi.h from Linux now the guest support is merged.
-
-v4:
- • Trivial checkpatch fixes and comment improvements.
-
-v3:
- • Add comment that vmclock-abi.h will come from the Linux kernel
-   headers once it gets merged there.
-
-v2:
- • Change esterror/maxerror fields to nanoseconds.
- • Change to officially assigned AMZNC10C ACPI HID.
- • Fix little-endian handling of fields in update.
-
-David Woodhouse (3):
-      linux-headers: Add vmclock-abi.h
-      linux-headers: Update to Linux 6.13-rc7
-      hw/acpi: Add vmclock device
-
- MAINTAINERS                                  |   5 +
- hw/acpi/Kconfig                              |   5 +
- hw/acpi/meson.build                          |   1 +
- hw/acpi/vmclock.c                            | 179 ++++++++++++++++++++++++++
- hw/i386/Kconfig                              |   1 +
- hw/i386/acpi-build.c                         |  10 +-
- include/hw/acpi/vmclock.h                    |  34 +++++
- include/standard-headers/linux/vmclock-abi.h | 182 +++++++++++++++++++++++++++
- linux-headers/linux/iommufd.h                |  31 +++--
- linux-headers/linux/stddef.h                 |  13 +-
- scripts/update-linux-headers.sh              |   1 +
- 11 files changed, 447 insertions(+), 15 deletions(-)
-
+diff --git a/scripts/update-linux-headers.sh b/scripts/update-linux-headers.sh
+index 99a8d9fa4c..8913e4fb99 100755
+--- a/scripts/update-linux-headers.sh
++++ b/scripts/update-linux-headers.sh
+@@ -258,6 +258,7 @@ for i in "$hdrdir"/include/linux/*virtio*.h \
+          "$hdrdir/include/linux/kernel.h" \
+          "$hdrdir/include/linux/kvm_para.h" \
+          "$hdrdir/include/linux/vhost_types.h" \
++         "$hdrdir/include/linux/vmclock-abi.h" \
+          "$hdrdir/include/linux/sysinfo.h"; do
+     cp_portable "$i" "$output/include/standard-headers/linux"
+ done
+-- 
+2.47.0
 
 
