@@ -2,95 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32638A13677
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 10:20:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD1DBA1368B
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 10:25:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYM2Q-0006E9-5D; Thu, 16 Jan 2025 04:19:42 -0500
+	id 1tYM75-0008Fy-Dj; Thu, 16 Jan 2025 04:24:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tYM2M-0006Dc-RS
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 04:19:38 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tYM2K-0006Ma-Oc
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 04:19:38 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50FNwFCL028423;
- Thu, 16 Jan 2025 09:19:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=eNFNgO
- 9/nHaba1RdKFDNMKi56d4BQ94JMBIC4qd0VaQ=; b=dEAmodwvzU3zPAVu6E/C2p
- 0MKpg1IhvmWtwaLwXyOUmew8KqrV8sTeztKedtU999BFu4Edr+kBGIOicy8LGWhY
- i+hwHscPy4U7wLKu9AOfSoQlQa9PNOiU5+Efvj+6JHAOltPLB/a/VIu6Atd+kmcp
- HHXat6ipEnNedvHBMrieQYOhgOewTr5JuFtcQ9O3C1Rm2uzLcLg2Qazz3WE4DZ+t
- 3RIfj6yAFSODSz/NTrwr5tC+HTocPVxO7jxzb1nqpizaUHUhNho1n7iDW+GjJjZV
- wd7pPj2rUZVVJ4ONpyXTTcQeAi95e/P4aoFrkQc4s4BIMfvBG+MIJQ7lCX+fMWLw
- ==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 446q5ht2t1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Jan 2025 09:19:34 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50G5qbRP007364;
- Thu, 16 Jan 2025 09:19:33 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4443ynd0uq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Jan 2025 09:19:33 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 50G9JVE651642694
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 16 Jan 2025 09:19:31 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2EA262015E;
- Thu, 16 Jan 2025 09:19:31 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D95C42015D;
- Thu, 16 Jan 2025 09:19:30 +0000 (GMT)
-Received: from [127.0.0.1] (unknown [9.152.108.100])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 16 Jan 2025 09:19:30 +0000 (GMT)
-Message-ID: <a82c41712409ac77d66f03e19b98382bcf11ba45.camel@linux.ibm.com>
-Subject: Re: [PATCH] accel/tcg: Call tcg_tb_insert() for one-insn TBs
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>, Paolo Bonzini
- <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Date: Thu, 16 Jan 2025 10:19:30 +0100
-In-Reply-To: <ac4d48c3-d139-4af0-ab28-f2674b74cb8c@linaro.org>
-References: <20250115232022.27332-1-iii@linux.ibm.com>
- <ac4d48c3-d139-4af0-ab28-f2674b74cb8c@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+ (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
+ id 1tYM70-0008AQ-Sc
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 04:24:26 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
+ id 1tYM6y-00075G-Qg
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 04:24:26 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4364a37a1d7so5865515e9.3
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 01:24:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1737019463; x=1737624263;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=n4tO2lpWLUlWhElOcxn349LZsfQHzK7a0FiyfdeojG0=;
+ b=EA2WLkHMjjEJ54nOa0F9om2VAi0ao5h8VAKOWEqm99N/tx0ysxI1Rq/kTQ/mLp1CQW
+ Ad80qfdWQ2/h3fAXKPzCzqzFWW9plRuUuIzrcAdcM0T/6zG3vjdKw/oiCYeVbQWUu9Hm
+ 0qMdMaIDbQtO3fwRmEXWkOqFpzHPNPyvL936cP+86GJmBli842nltrvNXgVrFctPzN6H
+ 8yr+hGP7G5GQJSqb8wiQu7XuxPZSy1NQ4lvUm6WdE/PwckHYh21zzdumLoT7BqLdEIrP
+ E/GwG7tjT9Jh5OfLMgwmfPGNcUK5WEkwjQN67wlObwIJdVaD4U9Qj2OmV0KKyvIWZtLd
+ 0Ocw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737019463; x=1737624263;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=n4tO2lpWLUlWhElOcxn349LZsfQHzK7a0FiyfdeojG0=;
+ b=CAVCbwWKDCW+yDYZr2cof0ptpypDOGtL38eoxdqF8QwIBcGH4jzFS5QtXwVhRERQIn
+ OeC11yPai6+fGndx9KeZjFeFBUbh9U4m6TICcCUski65duwBPFzWAYJSBEc4Ysj0ZK8w
+ 2yROLj06RNN0zghgmXdzhBlB1YONIEo4JgQt5itY3rbNsKI4IaLpExiGwm9qAZMB9JTL
+ BzW6w48Wa4SwWYyndTQ9nwDlJ/JLpxQjsPHqPZTzukMvOMM2jNKSa3BSuHRg6e5Yi9QP
+ MzVvuYekuyU5nRBaiSGop1zMMUypvN4xsGCgeZnt/wgPekv2xglmjaOkE5R4VTkUdHnG
+ cT5w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV30vIJgTuciZFvXQrFkhFl70h/YlvJ7UB1DWMlBjeuUF42RzLv2Yv/YiVud8Rr4eg2DVpDGUIXiUXi@nongnu.org
+X-Gm-Message-State: AOJu0YxybUfhrIeEJkORKINb5Ddb32gsRGV8gXGMUf0zUE1sMhCq3t7V
+ 6S6KeWn4JudQMDXpgxwxYkhdUm1CjawRMlnlefhVSSNcORvReYL0MEKmkMgaPcE=
+X-Gm-Gg: ASbGnctzWzVTwvrgLLlXn0fmq20WU2ssDLfh4Kk9yH0i5odVjAxo32dvDzODB29FwGK
+ MAipV34bSMMe+1y8rVStVKYnYu1Df55AAlbeLAiCAqGLHM7S43h8nKvXR2vzrVPrGMVosmDqjdB
+ r+eu8ZyRrn67tYGFkacsFdersmx5nO8VMmaO12EOiMbZNoDrc5pHtxXaykLftbLpaSxYngub10h
+ 6EjstxnBov6l5h9cGV1Gz3aa2Rm/H+0ZJWMwiB/f2udcqelbGTPMCrZNQ==
+X-Google-Smtp-Source: AGHT+IGzECVt+hIOy0AQktvrXyKxuw2pm8Ehw6Lrm2mWldlU0RH4XsvxuUG21oXWUIEIaU0fXGEAwg==
+X-Received: by 2002:a05:600c:c0e:b0:436:488f:4d8 with SMTP id
+ 5b1f17b1804b1-436eb9a154amr295847425e9.11.1737019462656; 
+ Thu, 16 Jan 2025 01:24:22 -0800 (PST)
+Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-437c74aca93sm53391365e9.13.2025.01.16.01.24.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 16 Jan 2025 01:24:22 -0800 (PST)
+From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
+To: qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>
+Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Ved Shanbhogue <ved@rivosinc.com>, Atish Patra <atishp@rivosinc.com>,
+ qemu-devel@nongnu.org
+Subject: [PATCH] riscv: disable Smdbltrp for the max cpu
+Date: Thu, 16 Jan 2025 10:23:45 +0100
+Message-ID: <20250116092352.1630278-1-cleger@rivosinc.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: hk2hPUl25K_fld1RPVs2KJqTjzHfR5G0
-X-Proofpoint-GUID: hk2hPUl25K_fld1RPVs2KJqTjzHfR5G0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-16_03,2025-01-16_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0
- phishscore=0 suspectscore=0 spamscore=0 mlxlogscore=866 clxscore=1015
- priorityscore=1501 impostorscore=0 mlxscore=0 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501160065
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=-1.793, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=cleger@rivosinc.com; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,49 +100,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2025-01-15 at 16:08 -0800, Richard Henderson wrote:
-> On 1/15/25 15:20, Ilya Leoshkevich wrote:
-> > Currently single-insn TBs created from I/O memory are not added to
-> > region_trees. Therefore, when they generate exceptions, they are
-> > not
-> > handled by cpu_restore_state_from_tb(). For x86 this is not a
-> > problem,
-> > because x86_restore_state_to_opc() only restores pc and cc, which
-> > are
-> > already correct. However, on several other architectures,
-> > restore_state_to_opc() restores more registers, and guests can
-> > notice
-> > incorrect values.
-> >=20
-> > Fix by always calling tcg_tb_insert(). This may increase the size
-> > of
-> > region_trees, but tcg_region_reset_all() clears it once
-> > code_gen_buffer
-> > fills up, so it will not grow uncontrollably.
-> >=20
-> > Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> > ---
->=20
-> This needs something else.=C2=A0 The reason why they're not insertted is
-> that they're not valid=20
-> for a second execution.=C2=A0 We need to not find them in the search tree=
-.
+When present, Smdbltrp is enabled by default and MDT needs to be cleared
+to avoid generating a double trap. Since not all firmwares are currently
+ready to handle that, disable it for the max cpu.
 
-I have the impression that code_gen_buffer is=C2=A0append-only, so after we
-create a new TB for the second execution, the first TB should not
-be deleted - is this correct? At least I haven't found=C2=A0code_gen_ptr
-decrements, besides the rollback at the end of tb_gen_code(). Then,
-since region_trees are indexed by code_gen_buffer pointers, and not
-guest pointers, this should not introduce any stale entries.
+Reported-by: Atish Patra <atishp@rivosinc.com>
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
 
-While we might not need to find the ones created for the first
-execution, we still need to find the ones for executions that fail -
-and there is no way to tell in advance, which ones these are going to
-be, so the idea here is to register all of them.
+---
+ target/riscv/tcg/tcg-cpu.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Am I missing something?
-
-> r~
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 48be24bbbe..0a137281de 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -1439,6 +1439,16 @@ static void riscv_init_max_cpu_extensions(Object *obj)
+         isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_smrnmi), false);
+         qemu_log("Smrnmi is disabled in the 'max' type CPU\n");
+     }
++
++    /*
++     * ext_smdbltrp requires the firmware to clear MSTATUS.MDT on startup to
++     * avoid generating a double trap. OpenSBI does not currently support it,
++     * disable it for now.
++     */
++    if (cpu->cfg.ext_smdbltrp) {
++        isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_smdbltrp), false);
++        qemu_log("Smdbltrp is disabled in the 'max' type CPU\n");
++    }
+ }
+ 
+ static bool riscv_cpu_has_max_extensions(Object *cpu_obj)
+-- 
+2.47.1
 
 
