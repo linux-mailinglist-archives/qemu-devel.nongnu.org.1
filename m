@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9A13A13EBB
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 17:05:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 070BDA13EB8
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 17:05:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYSLa-0003nR-QN; Thu, 16 Jan 2025 11:03:55 -0500
+	id 1tYSLf-0003z4-9B; Thu, 16 Jan 2025 11:03:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tYSKy-0003U9-FV
+ id 1tYSKy-0003UA-IQ
  for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:03:18 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tYSKu-0001DI-9X
+ id 1tYSKu-0001Dm-9t
  for qemu-devel@nongnu.org; Thu, 16 Jan 2025 11:03:16 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-435f8f29f8aso7224955e9.2
- for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 08:03:10 -0800 (PST)
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-385e0e224cbso607690f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 08:03:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737043389; x=1737648189; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737043390; x=1737648190; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=swWbfqbBQuWTwxy/6Yz7+TAY9SVPbs3mxyJnC781jXo=;
- b=GLK8vyRyDD60NByImrO1vr9zCDqVSn5Q4iYpZTonThQ1VZ4F6/epwlQWvKXhNiRu9K
- ZvyXFjc0xa4Q6Gx+f71arOXCsv+keMSSDX7NnVo6VFgldQajT6TtHX2zXZLp1rCRQqbi
- tCH8twoG89MdxBs3+ljO7IhYhkp8VAqBJjZWq9dgIUWZ1cEGTH0bEacO9pPwe55G3n3a
- ommwJ3e5vCuYX8TknpdyjPq/rfqtFFXrhnzR5v+r3Z+kGHr7R8e9yT0xvPRnizw4gqz6
- dltxUWoXzERTvZdaQRgOp2aMHE8VWaV9/yRDB8svILSertR5OlAHapha0KjNT2xrNj+/
- sGxQ==
+ bh=7fkCPXOa8A9Xl79fpL/YYXVm1xiiiaH5KvVpCQywK3U=;
+ b=l3KhOnra/ebllztPf8lZiKoPSuFutKDaLy24gnm7FUd0Ri9urTMRSTwZJWVmSecI7F
+ pX9fQsgO8PWVP3Z1L9E9gogqMSLupzfOHekSR137/vbdIYjFfCOwdtCY5nyOIRPpm3hM
+ T1EBCeQnuaBPhSpZWMrM8jNMjKx6xVBbYYm09l4CR5VRewqgGplX4amR8fbFFi//7IHl
+ hQOENcSumNPkRWDMGtBQFP1WiOBLrL7E90Je7+HD65knfvubaHo66fFIgiZwP1XBBQd9
+ jg37P1lPUN0X1ydt85ugtP2VHqUl+I2b1MRo7rrFaiUSp6gqUBe9CPElIVrUYUFyopiy
+ v+zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737043389; x=1737648189;
+ d=1e100.net; s=20230601; t=1737043390; x=1737648190;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=swWbfqbBQuWTwxy/6Yz7+TAY9SVPbs3mxyJnC781jXo=;
- b=sGdD9PXOBJzEqJnBNU+S9L9lMnYdpTNskx5xPnD23Skes5HZNEcIxojCxxk/UgTYMs
- VEKmjREjemTlTE1826akaaioFMkA3U2+s6yG9/4K7JghcT9fZW9+isL6+QyPr6ObIM6/
- EGc66ut5oCuyVx787FwqG3N3OvVf4iPpAf8IhPI3gXcAcfYMvRDvs8mF2rsmS+DB7PRB
- WqMNNik4OWygDF0HbVRc16zyBaY6VHU33eL0s9WFMfibZr6x1jP6yIXuyGkKtQvGsV8H
- HZDspsmutsIdeNyp+uJch702+sqUk/Xvb48yR4QwQruuD2cTTILPFEADXon0ec4t3giJ
- nF4g==
-X-Gm-Message-State: AOJu0Yy8HW/AY0Gx+B0S+1epzGZdxYwjn6kclB8EQsKWxEMnWqLFvphp
- yoz+Jcyhppg4/HPewGIBhUy18J+8L+yuEAr7q5kjHr93KPHWJZpKQWCmIWWBqFM=
-X-Gm-Gg: ASbGncs9AVI9i4pE+bcTsbOeQ+hIK5aK2aHRC/ZetdZ8j1FxuAYQi2UZ+twXTzWzwrE
- 1PldncUXXnEGkmmOwBa68oKIY1Bl/Usalaa/L/eVwn0cP9SaG2HEvIa0JInQiMCIE/xb8wVc60G
- 5uS92q4v+VMUxLvuWCY/dnM5pyGigD09A72XKEnkvQVsi8DpuiUUoJuef+5bnBrt6cRfGer3MHW
- 28mSzoaRniPPOWIrPo3dwROiJztvCfKmZ3ZS9ID/SZoll6HcxZG2AE=
-X-Google-Smtp-Source: AGHT+IGDVhkdNqtV71Fzt8tgrL7Sg15xkpEMJXUX56WGHJMVpFHHOLDbbkYOEd5mmOS0V7uYolunPQ==
-X-Received: by 2002:a05:600c:1987:b0:436:1aa6:b8ee with SMTP id
- 5b1f17b1804b1-436e2677378mr298564195e9.2.1737043388725; 
+ bh=7fkCPXOa8A9Xl79fpL/YYXVm1xiiiaH5KvVpCQywK3U=;
+ b=H9wubZ/SUHbUF76XhkMX+S5/OuqkjtU/JUTMJnsYItpfz9UOxqeh96p1JDGOhZll13
+ OKT3aW4iZrFuJJeKLW/CWVVTDzCju8Mdp/j06N7cwG+yUDZwRXeG4aipWNccVSoa3J4Z
+ cg2PTrNuspuO8qAMKpOySG8c5qPUeZm53OY7nyAKZHorVPQf6ALX5C12IUwkWZD+BB61
+ 7vPTQsvFwqp915kRWBuWADNaCcycE8oUy2xi4WoQFahsk9ctVmJqi6GadzJxfwVaag1L
+ DJ1vwbnOc+Yy0N8P+xAKPC0pky/nJflDa1QcjV1zygE6XyOj52+iosCAJG/nLZZXxbRN
+ BgaQ==
+X-Gm-Message-State: AOJu0Yw8s6lujWPgBHGZrGD0DnudnBJcWGJeayMRT3QRq85nRpAKQPZN
+ XXrkrhX9UTAbdp/ZxXAB7uwSdZq8xCLEBrHnHva7boNsAlaxKAS4Am5bFSHK9gs=
+X-Gm-Gg: ASbGncs7/WjyvlbT/iqt8yX6CFo2dkip0jYSeINOFHV7vLsTery7VhbTaNMLZe48gNz
+ XxgBlAa0eBVFXwd85HVa+Ko0KqKLmGExSzQ9ZFjlWyNdNniGr9oZyjzM4tlHpD5KZx5cSrXzEZn
+ s16k4L45SNETgiDNHxHpf+NCGKxS37DJVomSiAi2JX+k8c0p0iS8wQlf7BFaOWTobMWgP/8qKjz
+ PXYSLXe801RcF1UmMYrgMYuq0AL7YwjXYhw32KAS795JrGoeyydLwQ=
+X-Google-Smtp-Source: AGHT+IFa4n+BncQnewR1Jg1djeKaVr4RR2pXWc1CHFzSf5t4d46GkYoAjeRWZ7tTyFjZ3QegYwekIQ==
+X-Received: by 2002:a05:6000:184e:b0:385:f560:7911 with SMTP id
+ ffacd0b85a97d-38a872c93e3mr31122860f8f.10.1737043388342; 
  Thu, 16 Jan 2025 08:03:08 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38bf321537dsm232527f8f.13.2025.01.16.08.03.07
+ ffacd0b85a97d-38bf32754f5sm203303f8f.79.2025.01.16.08.03.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 16 Jan 2025 08:03:07 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id AF04C6084C;
+ by draig.lan (Postfix) with ESMTP id C6CE760853;
  Thu, 16 Jan 2025 16:03:06 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -88,18 +88,18 @@ Cc: qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Warner Losh <imp@bsdimp.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 03/37] semihosting/syscalls: Include missing
- 'exec/cpu-defs.h' header
-Date: Thu, 16 Jan 2025 16:02:32 +0000
-Message-Id: <20250116160306.1709518-4-alex.bennee@linaro.org>
+Subject: [PATCH v3 04/37] semihosting/uaccess: Include missing
+ 'exec/cpu-all.h' header
+Date: Thu, 16 Jan 2025 16:02:33 +0000
+Message-Id: <20250116160306.1709518-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250116160306.1709518-1-alex.bennee@linaro.org>
 References: <20250116160306.1709518-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -124,34 +124,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-target_ulong is defined in each target "cpu-param.h",
-itself included by "exec/cpu-defs.h".
-Include the latter in order to avoid when refactoring:
+TLB_INVALID_MASK is defined in "exec/cpu-all.h".
+Include it in order to avoid when refactoring:
 
-  include/semihosting/syscalls.h:26:24: error: unknown type name 'target_ulong'
-     26 |                        target_ulong fname, target_ulong fname_len,
-        |                        ^
+  ../semihosting/uaccess.c:41:21: error: use of undeclared identifier 'TLB_INVALID_MASK'
+     41 |         if (flags & TLB_INVALID_MASK) {
+        |                     ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250103171037.11265-2-philmd@linaro.org>
+Message-Id: <20250103171037.11265-3-philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- include/semihosting/syscalls.h | 1 +
+ semihosting/uaccess.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/include/semihosting/syscalls.h b/include/semihosting/syscalls.h
-index b5937c619a..6627c45fb2 100644
---- a/include/semihosting/syscalls.h
-+++ b/include/semihosting/syscalls.h
-@@ -9,6 +9,7 @@
- #ifndef SEMIHOSTING_SYSCALLS_H
- #define SEMIHOSTING_SYSCALLS_H
+diff --git a/semihosting/uaccess.c b/semihosting/uaccess.c
+index dc587d73bc..382a366ce3 100644
+--- a/semihosting/uaccess.c
++++ b/semihosting/uaccess.c
+@@ -8,6 +8,7 @@
+  */
  
-+#include "exec/cpu-defs.h"
- #include "gdbstub/syscalls.h"
+ #include "qemu/osdep.h"
++#include "exec/cpu-all.h"
+ #include "exec/exec-all.h"
+ #include "semihosting/uaccess.h"
  
- /*
 -- 
 2.39.5
 
