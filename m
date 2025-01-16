@@ -2,92 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF359A135A2
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 09:43:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69244A135B7
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Jan 2025 09:45:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYLSs-0005kd-TL; Thu, 16 Jan 2025 03:42:59 -0500
+	id 1tYLTv-0006uX-Fo; Thu, 16 Jan 2025 03:44:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYLSk-0005kQ-PV
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 03:42:51 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYLSj-0006gP-7n
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 03:42:50 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-43624b2d453so5401205e9.2
- for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 00:42:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737016967; x=1737621767; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=oeVnZZxDZCC6UIiWdDDXFU4rImc3pg6DoahRCAJfVvA=;
- b=CT15vnmB+93C9/Fe13TJ4TqoCJ0/g88MEW1YnPhpYLB446J21NcD+SwSqFvUOZ1I9M
- 8pI7fXeFB+KsYurnEigeYNWH/VfvDSS09iwE8a77lKjU+YOuetB8tZgBwYd5OlY3McND
- mmi8LgFVSyW3bEGy6IBC8Atpn8Pjk85vJFUCjzGaQGVMAjTZQRLoxx5oXVQB/8+N4zhM
- 4ohXgI3hAS66nXvcBmWwZqBpheuTaKtJsGplKBPnmcFuYBk1MuZbJeq0XXgKnmQHiEDT
- pkE8BCsMrOdZINqfZDI/ThDrumEljSEyFicQtBWAIWt05J5GcUPALJcv2rehGRuRDrup
- tleA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737016967; x=1737621767;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oeVnZZxDZCC6UIiWdDDXFU4rImc3pg6DoahRCAJfVvA=;
- b=LRf9WgNRIwiVXvf5T1zeCagExURD8KF5w3vGm2/3RRx27tE91TTd65KQnK9rah0L8l
- KJ7R1DKXwWP9NjaSZc2nCp2uyELQ1TjOhisFT3FK2HoQUdK2GsktfiC+9WjmQnRviS3V
- zc3WgAk6voohtjLpCld1UlsMhuaD7JA9oVLDHZu5ytZucVNVpMvgOZDdTepDNc1RdG7H
- J+IweXzJx1se8aovutTXcotQPx9R8yQ0DvZQVv8LiGl8C88q4fNNlro9d+BqS/RVWA+T
- 3c/QrXxKQiMeuR/ped1RowV42XL1btbnZhMnbJcRiQhVrzCwaG2P7A54cSdsowKJnG2j
- RbLQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWmDLwDXdjdMdjn9fuDxOWqjCNiiOu+9DbnyrE5gp+Xb1sv4o5WwCBvLo3kNC+iaaeissvZMqu7JfrH@nongnu.org
-X-Gm-Message-State: AOJu0Yx/3WuJeg7SLztCmRfGlY3SPTU2eyntqP/9gIyw/iupIKXZ+/ms
- 5U9PfkrjVhxljFq/rCByWQLHqGwhTRLlgj24SlGhjh/pOBMuqnyrswp07CH2toU=
-X-Gm-Gg: ASbGncsIP3Rh81CLu+jdcz0UZrRDksSXIuhqdMKTq3zhIu0qWb1D79TGyblNfk30Kkf
- e0uTJrKhlmkcG8xCFHwtI3a1mOlzAr+SsHyatq/mFi+BGRPY4yY2RrJIaNm+1D0U3YLQcfoGH1A
- EECcx8QVC8zN9ykTA8ZD3E6AXv8hljHb/7T99rTjipsDPtNbH+H8m1H9W7E53D+l/f/OsZHaVhS
- 6sBrTPv7pc9KoTIrDvEVJczPXfFF5DOV1WmNQyDvlenmmEwMMgLWbe8YqW/kXtfSv/g//zDIhhe
- 3Y6yFyJaLn654lRRMZRk58kz
-X-Google-Smtp-Source: AGHT+IGiWMeDv9PAhtkzL5eh97DdicfTmJjHLEjfCxeovVvq9YP+8CYwByY73IkNSHBMYxIi5dExvw==
-X-Received: by 2002:a5d:6483:0:b0:385:fabf:13d5 with SMTP id
- ffacd0b85a97d-38a8730d55cmr33585638f8f.25.1737016967628; 
- Thu, 16 Jan 2025 00:42:47 -0800 (PST)
-Received: from [192.168.69.181] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a8e4c1c01sm20144699f8f.97.2025.01.16.00.42.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Jan 2025 00:42:46 -0800 (PST)
-Message-ID: <c79554e7-3308-4f9c-9aa3-c6b2116e0705@linaro.org>
-Date: Thu, 16 Jan 2025 09:42:46 +0100
+ (Exim 4.90_1) (envelope-from
+ <BATV+b63efa7a8ebec188a7bb+7816+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1tYLTn-0006pX-2v; Thu, 16 Jan 2025 03:43:55 -0500
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from
+ <BATV+b63efa7a8ebec188a7bb+7816+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1tYLTk-0006oc-7W; Thu, 16 Jan 2025 03:43:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+ Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=cRHcaJ8qr8tMPnLKEmxRjL10dz3nijScrW9hqSSprGI=; b=a0JdykAwXTVMSDZdFhhN4Z7cfQ
+ +hkqZYOFUzj70KfuL/shYChBrPpS9OMTKdQKym7SM9hE75EgIt1beZsZ0VBiTWMBI1q73n2/jeldh
+ vAyBP6Ntre/VpAlcAU3eiPuyy5qA+jQDwXdNq9JuAEyohhdwg3ByFzsHqoGk9rO54aFoxmtz2SyuI
+ u871I5zV6ZqIPcS/EyGJfbpuJvQy+1ZQOdWvTJ9iELFBkqicl4xAcN3C2b9ooQu696jWtHhpgL56+
+ xGUEtMxgXnjleq3ScpuIxnmoVy21iSD4zLs19jrJgW9gRgdLYTZj9x6/4z7LYj1Lhz0ANBOHl2keZ
+ 915QaGmQ==;
+Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
+ by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+ id 1tYLTe-0000000B1PZ-02zV; Thu, 16 Jan 2025 08:43:46 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.98 #2 (Red Hat
+ Linux)) id 1tYLTc-00000007pHU-1vM7; Thu, 16 Jan 2025 08:43:44 +0000
+From: David Woodhouse <dwmw2@infradead.org>
+To: Stefan Hajnoczi <stefanha@redhat.com>,
+	qemu-devel@nongnu.org
+Cc: Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ xen-devel@lists.xenproject.org, qemu-block@nongnu.org,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ David Woodhouse <dwmw@amazon.co.uk>
+Subject: [PULL 0/8] Xen regression fixes and cleanups
+Date: Thu, 16 Jan 2025 08:43:24 +0000
+Message-ID: <20250116084332.1864967-1-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] MAINTAINERS: Remove myself as Avocado Framework
- reviewer
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>
-References: <20250106055024.70139-1-philmd@linaro.org>
- <41e195c3-7dbd-4e39-aaeb-0a40119cc5b0@linaro.org>
- <94b3ae30-e6ab-4c8a-a5e0-21544c6bfe34@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <94b3ae30-e6ab-4c8a-a5e0-21544c6bfe34@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+b63efa7a8ebec188a7bb+7816+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,27 +79,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/1/25 07:40, Thomas Huth wrote:
-> On 15/01/2025 20.58, Philippe Mathieu-Daudé wrote:
->> On 6/1/25 06:50, Philippe Mathieu-Daudé wrote:
->>> While I was very enthusiastic when Avocado was presented to
->>> the QEMU community and pushed forward to have it integrated,
->>> time passed and I lost interest. Be honest, remove my R: tag
->>> to not give fake expectation I'd review patches related to
->>> Avocado anymore.
->>>
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>>   MAINTAINERS | 1 -
->>>   1 file changed, 1 deletion(-)
+From: David Woodhouse <dwmw@amazon.co.uk>
 
+The following changes since commit 7433709a147706ad7d1956b15669279933d0f82b:
 
-> 
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> 
-> I can take it with my next functional testing pull request if nobody 
-> else picks it up before.
+  Merge tag 'hw-misc-20250113' of https://github.com/philmd/qemu into staging (2025-01-14 12:46:56 -0500)
 
-Thanks :)
+are available in the Git repository at:
 
+  git://git.infradead.org/users/dwmw2/qemu.git tags/pull-xenfv-20250116
+
+for you to fetch changes up to e7bc0204e57836b3df611b73d2decc56ed698c4a:
+
+  system/runstate: Fix regression, clarify BQL status of exit notifiers (2025-01-15 18:05:19 +0000)
+
+----------------------------------------------------------------
+Xen regression fixes and cleanups
+
+----------------------------------------------------------------
+David Woodhouse (6):
+      hw/xen: Add xs_node_read() helper function
+      hw/xen: Use xs_node_read() from xs_node_vscanf()
+      hw/xen: Use xs_node_read() from xen_console_get_name()
+      hw/xen: Use xs_node_read() from xen_netdev_get_name()
+      hw/xen: Use xs_node_read() from xenstore_read_str() instead of open-coding it
+      hw/xen: Fix errp handling in xen_console
+
+Phil Dennis-Jordan (1):
+      system/runstate: Fix regression, clarify BQL status of exit notifiers
+
+Roger Pau Monné (1):
+      xen: do not use '%ms' scanf specifier
+
+ hw/block/xen-block.c            |  3 ++-
+ hw/char/xen_console.c           | 56 ++++++++++++++++++++++++-----------------
+ hw/net/xen_nic.c                | 13 +++++-----
+ hw/xen/trace-events             |  2 +-
+ hw/xen/xen-bus-helper.c         | 37 ++++++++++++++++++++-------
+ hw/xen/xen-bus.c                | 14 +++++++++--
+ hw/xen/xen_pvdev.c              |  6 ++---
+ include/hw/xen/xen-bus-helper.h |  9 +++++++
+ include/hw/xen/xen-bus.h        |  1 +
+ include/system/system.h         |  1 +
+ system/runstate.c               |  1 +
+ 11 files changed, 96 insertions(+), 47 deletions(-)
 
