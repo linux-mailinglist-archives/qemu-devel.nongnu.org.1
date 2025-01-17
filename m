@@ -2,87 +2,152 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 228AAA156BE
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:33:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C38A1574A
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:45:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYr6M-0000Wc-SX; Fri, 17 Jan 2025 13:29:51 -0500
+	id 1tYrK1-0003lE-FQ; Fri, 17 Jan 2025 13:43:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr5p-0006KA-U9
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:29:18 -0500
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr5o-0000LL-4P
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:29:17 -0500
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2ef72924e53so4221460a91.3
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:29:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737138555; x=1737743355; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GAiwkYkJhNlr+QIGt+u6tAyqiV7uHPYy+16J2GO4X34=;
- b=HsfBVp2SyIyE5i2N/TV+AUFckmV0WK7bpN78XdNdppQz2O16ynrO2SkFOMOYWk2bhF
- ekEeqr+YmOv7t8GMPy7ZVb8sCgV2xpPNIyDIr3kkBhOaavVF0ZQTaqzNpbCI0r1oXIaK
- EMX8D+ecLWaKqvW6olySImq8xGHClW8MpTwWGwL8CYxkKwLceIfJg7fHlqzgMDPHp5P3
- pEUiRrbGqItuyj73n30JwSvWlSJe4B0Nbn0ONd+0RSR9c1S9PB9hlmoJr783wAR74/IJ
- jNM/hw0R0n6idRxdGtMW0uuwUQE8v6xr6BOn/zMx7onFwbraCt8aOm0T0jZudsnHS1gG
- MS8A==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tYrJw-0003kj-Vq
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:43:52 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tYrJu-0002Ow-FO
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:43:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737139429;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=fP7I+7ZvJh7Ba16bfVNTaTOb20T2GjstRw5JtMGzZZY=;
+ b=c9WNhUZXPLBQyalCDIlZd0Xf5BReM0d9iWthNkDdxe15lQQgS9xEzkkLR69nPrd7jBBVrm
+ 02W/IbzXfn2v8XxxXG5sVkwuai2BwYu/Q1QvLdyK9aumQrk+jFOOzP60vybiSH3jv0MKtu
+ l7tWbLGm5KUWQsP85GSqdIxrOiSlkhU=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-13-L5t3G-_RMfCP_Qmb6vcQmQ-1; Fri, 17 Jan 2025 13:43:45 -0500
+X-MC-Unique: L5t3G-_RMfCP_Qmb6vcQmQ-1
+X-Mimecast-MFC-AGG-ID: L5t3G-_RMfCP_Qmb6vcQmQ
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4361f371908so17612085e9.0
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:43:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737138555; x=1737743355;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GAiwkYkJhNlr+QIGt+u6tAyqiV7uHPYy+16J2GO4X34=;
- b=oQEHHy3x+Ib2sCVdWqdRHDbPYobFIVWQtyEZUjrbN+CN0I9fbV1QNxPBS3h1zmbOE/
- 4F/dqOshF7P8Vu2G8EGW7alLGhSP6ikQeNzqzCjPQQ2CBzlNMNTUSUGRt6wtc125IlDM
- qoye6mJumEK/1dg2npU+33P+YJiAtNIEgbjvBzfONREIVhPqD6wFuf/XazXkPSCQsc8a
- JJgMZeggVm91Ld3zYzVnt3pi/JYlq1D7oCOP6GgwCAUM6Z7ij7TdKhC6ZcJH3O7US/I3
- 9jH8/pcwM1HTSkR3aHzYOr+MHfYNJHfArQE1U9GO8tITX56CNWaBbH952aSlbzW0OwPz
- eccw==
-X-Gm-Message-State: AOJu0Ywcza2hHP44xl12+w0cEIFUjK3cm5mpndR+7L06plpgYfxJKb+V
- /fBuwgsjwOrEwCk2+AOe3MSEzvsaag8Ggv3tVWjV8XDKN6zUD09dn+ZCKgXuaaRt0fwzzDHxMMF
- f
-X-Gm-Gg: ASbGncsHoss7GZXQ5zvpBJNRJJmJWWfvrSlDprPFgyp0r3XKksNqfpHeeJe5sXEj9Ou
- g3KcV+OrXB85G69H0b6wjZJDOFOixiiejsLnvxJoIOrRxzIUtO+5BRTgfMND9jkMid3AnKIEqkX
- /PefZR2Wb+ndHe7HOWLqr3GU+FcTEh/v3rBIetFlzlQallSWGOl8qxA9VLbzmuNPaIPNS9TG1gW
- ucB41midQt3ULuVBlxh85VHfjffAZciz06g1Z6K8XApH91e2eSJSqES3nhTMe/KN7VRWW6pAGZS
- 2sZ1QAZkh+CD4Y8=
-X-Google-Smtp-Source: AGHT+IET9LwXabtjzbgxUS2oYUexJ0sAKMhHXw8kAf7BjZ8pG+K8CmBSLUnlV+IirmuhTdGSNBehUw==
-X-Received: by 2002:a17:90b:1f91:b0:2ee:45fd:34f2 with SMTP id
- 98e67ed59e1d1-2f782c62983mr4984856a91.6.1737138554829; 
- Fri, 17 Jan 2025 10:29:14 -0800 (PST)
-Received: from stoup.. (174-21-71-127.tukw.qwest.net. [174.21.71.127])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f77629bf96sm2614105a91.36.2025.01.17.10.29.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 10:29:14 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 68/68] softfloat: Constify helpers returning float_status field
-Date: Fri, 17 Jan 2025 10:24:56 -0800
-Message-ID: <20250117182456.2077110-69-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250117182456.2077110-1-richard.henderson@linaro.org>
-References: <20250117182456.2077110-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1737139424; x=1737744224;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=fP7I+7ZvJh7Ba16bfVNTaTOb20T2GjstRw5JtMGzZZY=;
+ b=UcOVKfZkR35wmn8AHRxymCvABM9iZ+1NyfqMde5l2xyng0KxMNgPVori+ttTs88WyA
+ 68V1tgyL7lsijncbub8Xkj/Y9aU36AQiwTq1TifKGDo+LHsA8uWBHNDQVwgIfJ0QfCPr
+ OkRzSPg0/xWq6cyt+aJYOYEn5C2b5a5G9sMpadbMDUSNBOKONYVAM2AwZl4oN4m6WSQI
+ GGntUeuMvswS4oGOhENWbIC1KZdixLuknbZdWOgwdyzikimrQUhHCEgzeEdsVa4R/h59
+ gI9xjSAse9VZNtjJbTVl2evsiFj6USw6msuILvFm968D7GyW0RWgGf7vhDMpBEOPDXby
+ QX0w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXZ0s+rt/+wlV785XJLasp97N/NH2RfVIJYQrQrHdvX8Rmfq1qIWSICIyCCPSzJTov47ujA+65v72es@nongnu.org
+X-Gm-Message-State: AOJu0YzPxokUerxEwfoOKWJVacauxewW/sZQbpcY9OYYglH/iErwJ3MV
+ K1rE+FshSmMobx4vJBL22Qi3AVv9N5e8cmw6aplCf1pMMfpFLkdszBQTsbMlbzv3HzdE6Y4IfyY
+ SNP0hPrtIUGrl0OV7d1jemFZ1hoKmIwc/dNdRuwZhWmjjpgWsJ6OY
+X-Gm-Gg: ASbGncsSkt8P4uIWR19vbI+D2GwtQlL4kHQUKoSvwAHwjVxPrOch8kZXYspAuGVPVJE
+ 1EOVIkWReLnhWbVINkHrhsRztAocqSkRVS7gbW4ID9yu/uARfvvOVIHK7vYHQmpg8oZurhVz+Qy
+ MNwcPvce1rNd4Gy/qSQh1QGzjb6azPUJRMNrgUGeTLkKSPbGamAlPoKasP3l3Fmbl76W5OTtpO0
+ tfEmOrOIrARNyxJA/r7e6yxnzBxxkKO1Drr+TP52M/JxyBfvYH16I+DG7kS2lZMxMnKY4hKOADP
+ JmWEuOvhKmUs
+X-Received: by 2002:a05:600c:4743:b0:434:a802:43d with SMTP id
+ 5b1f17b1804b1-438914315afmr34324625e9.27.1737139423955; 
+ Fri, 17 Jan 2025 10:43:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFG/MRLOTDNjR+xeojUpYL30qgnmET+XokFUQqNwu0CKcyn4bHQGEYJPCbUGxJG795CMm5QKA==
+X-Received: by 2002:a05:600c:4743:b0:434:a802:43d with SMTP id
+ 5b1f17b1804b1-438914315afmr34324395e9.27.1737139423573; 
+ Fri, 17 Jan 2025 10:43:43 -0800 (PST)
+Received: from [192.168.0.7] (ip-109-42-51-119.web.vodafone.de.
+ [109.42.51.119]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-437c7499932sm101797355e9.7.2025.01.17.10.43.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 17 Jan 2025 10:43:43 -0800 (PST)
+Message-ID: <ed04717a-0522-4898-913b-6f473b82fd21@redhat.com>
+Date: Fri, 17 Jan 2025 19:43:41 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/21] hw/virtio/virtio-pci: Remove
+ VIRTIO_PCI_FLAG_DISABLE_PCIE definition
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Jason Wang <jasowang@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>, qemu-block@nongnu.org,
+ Fam Zheng <fam@euphon.net>, Paolo Bonzini <pbonzini@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Kevin Wolf <kwolf@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, John Snow <jsnow@redhat.com>
+References: <20250115232247.30364-1-philmd@linaro.org>
+ <20250115232247.30364-11-philmd@linaro.org>
+ <aa863f22-57fb-4ddd-bce4-1b0a86c9023b@redhat.com>
+ <6b916259-da1a-4a16-84a3-64eb466714c8@linaro.org>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <6b916259-da1a-4a16-84a3-64eb466714c8@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.132,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,96 +163,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+On 17/01/2025 17.43, Philippe Mathieu-Daudé wrote:
+> On 17/1/25 10:08, Thomas Huth wrote:
+>> On 16/01/2025 00.22, Philippe Mathieu-Daudé wrote:
+>>> VIRTIO_PCI_FLAG_DISABLE_PCIE was only used by the
+>>> hw_compat_2_4[] array, via the 'x-disable-pcie=false'
+>>> property. We removed all machines using that array,
+>>> lets remove all the code around VIRTIO_PCI_FLAG_DISABLE_PCIE.
+>>>
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> ---
+>>>   include/hw/virtio/virtio-pci.h | 4 ----
+>>>   hw/virtio/virtio-pci.c         | 5 +----
+>>>   2 files changed, 1 insertion(+), 8 deletions(-)
+>>>
+>>> diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/ virtio- 
+>>> pci.h
+>>> index dd6eb9a4fc7..1ca7419cd43 100644
+>>> --- a/include/hw/virtio/virtio-pci.h
+>>> +++ b/include/hw/virtio/virtio-pci.h
+>>> @@ -33,7 +33,6 @@ enum {
+>>>       VIRTIO_PCI_FLAG_BUS_MASTER_BUG_MIGRATION_BIT,
+>>>       VIRTIO_PCI_FLAG_USE_IOEVENTFD_BIT,
+>>>       VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY_BIT,
+>>> -    VIRTIO_PCI_FLAG_DISABLE_PCIE_BIT,
+>>>       VIRTIO_PCI_FLAG_PAGE_PER_VQ_BIT,
+>>>       VIRTIO_PCI_FLAG_ATS_BIT,
+>>>       VIRTIO_PCI_FLAG_INIT_DEVERR_BIT,
+>>
+>> I assume it's ok that the other following bits change their value here?
+> 
+> I followed previous commit 9a4c0e220d8 ("hw/virtio-pci:
+> fix virtio behaviour"):
+> 
+> diff --git a/hw/virtio/virtio-pci.h b/hw/virtio/virtio-pci.h
+> index e4548c2f970..25fbf8a375d 100644
+> --- a/hw/virtio/virtio-pci.h
+> +++ b/hw/virtio/virtio-pci.h
+> @@ -61,8 +61,6 @@ typedef struct VirtioBusClass VirtioPCIBusClass;
+>   enum {
+>       VIRTIO_PCI_FLAG_BUS_MASTER_BUG_MIGRATION_BIT,
+>       VIRTIO_PCI_FLAG_USE_IOEVENTFD_BIT,
+> -    VIRTIO_PCI_FLAG_DISABLE_LEGACY_BIT,
+> -    VIRTIO_PCI_FLAG_DISABLE_MODERN_BIT,
+>       VIRTIO_PCI_FLAG_MIGRATE_EXTRA_BIT,
+>       VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY_BIT,
+>       VIRTIO_PCI_FLAG_DISABLE_PCIE_BIT,
 
-These helpers don't alter float_status. Make it const.
+Ok, if it has been done before and nobody complained, the exact numbering 
+likely doesn't matter here :-)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250116214359.67295-1-philmd@linaro.org>
----
- include/fpu/softfloat-helpers.h | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
-
-diff --git a/include/fpu/softfloat-helpers.h b/include/fpu/softfloat-helpers.h
-index dceee23c82..4cb30a4822 100644
---- a/include/fpu/softfloat-helpers.h
-+++ b/include/fpu/softfloat-helpers.h
-@@ -124,58 +124,61 @@ static inline void set_no_signaling_nans(bool val, float_status *status)
-     status->no_signaling_nans = val;
- }
- 
--static inline bool get_float_detect_tininess(float_status *status)
-+static inline bool get_float_detect_tininess(const float_status *status)
- {
-     return status->tininess_before_rounding;
- }
- 
--static inline FloatRoundMode get_float_rounding_mode(float_status *status)
-+static inline FloatRoundMode get_float_rounding_mode(const float_status *status)
- {
-     return status->float_rounding_mode;
- }
- 
--static inline int get_float_exception_flags(float_status *status)
-+static inline int get_float_exception_flags(const float_status *status)
- {
-     return status->float_exception_flags;
- }
- 
- static inline FloatX80RoundPrec
--get_floatx80_rounding_precision(float_status *status)
-+get_floatx80_rounding_precision(const float_status *status)
- {
-     return status->floatx80_rounding_precision;
- }
- 
--static inline Float2NaNPropRule get_float_2nan_prop_rule(float_status *status)
-+static inline Float2NaNPropRule
-+get_float_2nan_prop_rule(const float_status *status)
- {
-     return status->float_2nan_prop_rule;
- }
- 
--static inline Float3NaNPropRule get_float_3nan_prop_rule(float_status *status)
-+static inline Float3NaNPropRule
-+get_float_3nan_prop_rule(const float_status *status)
- {
-     return status->float_3nan_prop_rule;
- }
- 
--static inline FloatInfZeroNaNRule get_float_infzeronan_rule(float_status *status)
-+static inline FloatInfZeroNaNRule
-+get_float_infzeronan_rule(const float_status *status)
- {
-     return status->float_infzeronan_rule;
- }
- 
--static inline uint8_t get_float_default_nan_pattern(float_status *status)
-+static inline uint8_t get_float_default_nan_pattern(const float_status *status)
- {
-     return status->default_nan_pattern;
- }
- 
--static inline bool get_flush_to_zero(float_status *status)
-+static inline bool get_flush_to_zero(const float_status *status)
- {
-     return status->flush_to_zero;
- }
- 
--static inline bool get_flush_inputs_to_zero(float_status *status)
-+static inline bool get_flush_inputs_to_zero(const float_status *status)
- {
-     return status->flush_inputs_to_zero;
- }
- 
--static inline bool get_default_nan_mode(float_status *status)
-+static inline bool get_default_nan_mode(const float_status *status)
- {
-     return status->default_nan_mode;
- }
--- 
-2.43.0
+  Thomas
 
 
