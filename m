@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F6FCA1567A
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:26:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6311DA156B1
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:32:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYr1z-00044n-2V; Fri, 17 Jan 2025 13:25:19 -0500
+	id 1tYr1r-0003v5-90; Fri, 17 Jan 2025 13:25:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr1r-0003vx-HI
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:11 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1tYr1n-0003u9-5n
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:07 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr1l-0007pP-HO
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:11 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-216395e151bso35159595ad.0
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:25:05 -0800 (PST)
+ id 1tYr1l-0007pK-1j
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:06 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-21675fd60feso55032975ad.2
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:25:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1737138303; x=1737743103; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SkmlLK7Fahw0RO7FW2rGNPWMoqBNxNRmAvk5ugcs8i8=;
- b=RsXteXrIN5foSrSQoYrkp0ZKchJUJigaNGRlbdktxTc9J9syTNnlD45M6UlW90xo7f
- j320VbjVj53jNR1NROyRH0T9PIFWrA7oxRNRHShl9PJ7F717PCzsVM843o31p8QXxgrm
- GqhmFAgL7aZHYpRoFly5iGaE/Q2GgM9ruLoBIMEn1pXL/JwAswhmxK0b3N4DOdY0mIUh
- 46UGLmHPi9+Oqk+KW9UUzvSJs9qr4i03POExvdSW0AcEksK5poeGHPGYJRfKbbTBFQX2
- 4OSna5LqNPN1874j32j2jJ92ebt+5AIDSxd36Qnenqsjdc5PzB6PYjpcTbAr/e1jhE34
- jvxA==
+ bh=sKZ4GjtoygI38RsFhp13dWyLZZ39a3F3n4T5V19Yyos=;
+ b=mFBE0gwYJ1gOrMfy+bt5OkhXgHST7Ou9OHgFTWIhCVNivUIohCyCA4iaDIAevOiRci
+ qEA7q9kwmnVJsM0di5eYdoDJj5i8ty760FpJAWkBiuu4o1xz0QasJc6q3o/CPwXxL07K
+ 34yrBeIp8CsZhbTnN1I4kll+QEDibmSIX0RXRZDuFy0wuoXa6fEAI7W0xsZRxsOj6XfS
+ wuYnhkpWc+Im4i5lVKegrEXOYslKB52qckVZtbUf5Z8+0QrOXBKk/H6Wa8Hh90ZCCtoY
+ ostXcw8gH7ZZdI2iNvtydU7d1SsXWnlwKc9ouiJU6OCbpRSp6U40jlD1Fh3q9eW5Acny
+ XATQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1737138303; x=1737743103;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SkmlLK7Fahw0RO7FW2rGNPWMoqBNxNRmAvk5ugcs8i8=;
- b=FQ4Da39R6o5tS1FkyZLpB2PXaP5yjXVPWEzBHeV7KwILs9Xp3ac9e/+Zo5UXdTWjji
- shrqsdBdu4NThQ1/f8GGxlWqSb+0vTTc+GmycnNAxY2wFMr9pFCkWKYWWvL3O/H/BxZK
- diqxN79pBh1pmFu7i8fs6Mp+b6/ZL/nnF0t2/hBMDwG58bEztn/1aRue6AimWrDY+Dru
- /18PPWOqOkvn0K+jQ6FrboSXCFdzOU8qiUVH3WL7gIRauKpkn9GsJZnMB/T80Qyvzmw/
- hHT43bTHTvCXxiVAfeC5CQizMSNYngXlrgFUFwOrTkHqS+WNQnhHaHTMEFO1ZF8R2rw8
- Jeog==
-X-Gm-Message-State: AOJu0YwoZwgCCMANH9v9kaoOLn0XkYl4blfqnbiLGZSZ5Jzk/iMV+BQb
- MFUUBotnDT/3mIUvCPNCQQTdIAa3oh1u3bwXcT7S4JbCjamt72EazUOdrJrzuYwSILSG1b5s7UG
- K
-X-Gm-Gg: ASbGncuPL3nEd/ATK8+O0pxpjZraBdT8OLcT1ZoMyraOStBUfrXdQsjLkUzK5JnXnAx
- 5AYhrgl90tlLFWwKPbp7sxFN12T3vbq1T+Z7PG66JLWJAJy6GroHa9xdz/rIl4rmR1/WJpZUAcU
- 1Rqb9r7UdM0gFIsDtTqqpCJCXjuNXIOaUOAz6b9KeHe81VttCxXgW9f9l5i8JE5GAU7f+PwBUHO
- ux9GPoLhtsqfbC4L7/5bhEfrg5uUpMoSprDogvR88sy5U8It1gubeUeKu0WrQrKywDOL7XOWqPM
- FEldeEnN+2VdFYw=
-X-Google-Smtp-Source: AGHT+IHejYBf6r5BXJgc/X8yuDSfdQxFa/rg6dm3BVy8eb9+ECdzggm3Murr/MCJQj2exEU3XXaLZg==
-X-Received: by 2002:a17:903:2352:b0:215:58be:334e with SMTP id
- d9443c01a7336-21c35c9af72mr53230595ad.10.1737138303011; 
+ bh=sKZ4GjtoygI38RsFhp13dWyLZZ39a3F3n4T5V19Yyos=;
+ b=ftp9nHBVKuHPGRG1miwC503j5wnIbDIVXsKcO7SwTdVKQHyi7wrON9iORR+zBfKEYj
+ cc2T+HQl7hdSAzsT2pqB1oW83HwoFM2K2RlwXVruruhRl6QispccBEmHFxlzWrbXtc7a
+ Y6RZQfd3Ux633qvCrfa1hPOd7Tg0NGVlxw+MFWr4Ren0Q6d/n1mWkJpAg0BCFhAR7N/N
+ zhoxqXYjZQb6S3BszZPMoDzAwf8U/xAXeaBHtT32Zst6//cO4N/6bF0EkcARu2Dzo5fk
+ S7C17Zmk8AGisED8YwOikOLAU1o5odcsgFVhaNk/J8kSu9hzmMggwRDtpvdGalKqA66N
+ CFfQ==
+X-Gm-Message-State: AOJu0YxuBClhdmDshU07VR4NkwtxY2uRWZuU20PuHMweT72aPgj+Tl+B
+ 4TkX+8vUP8kgZEVC+RaoqoGeZu0wlyECgp536MLICwNV56idDPLBCYIFoblnuT+l/MpAvf4TbWl
+ a
+X-Gm-Gg: ASbGncvHWcMkOCojD8e97NR+DaDqBbcHqF/gZTaSggQIyHD2dfYV9rSUDjBVaBMFjYd
+ ZufeQ4HSm83sUappac7EtyYYwAW9GNKt5YOAyaNhVCVWBZcTJnBLfpoIcFCVvBJ+g7tYEDIPMKy
+ /MuywBkW3gqa2ZSORwjwS3btt3kG6M+KqRD0gqI1ZVWY3YxQJpnITUefDZRRFkVkZHfLC3ypXFS
+ E+VpjMKGi9HjwoBJhLYZ/zZh8Nk6iIlG7IL2+Ht87NLGhAAy8nJRcaYfUB/hdZFlIA5IRhUTg+H
+ e6jkIHR8B4t3A/Q=
+X-Google-Smtp-Source: AGHT+IGhCzFTWOShjDnAq+SYcN4p+5rmEhQkzpk9b/VP3syDEsH2HI+1nqScyK5Y3S+5bWGTEB1U6A==
+X-Received: by 2002:a17:903:2306:b0:216:4676:dfaf with SMTP id
+ d9443c01a7336-21c355eeb01mr50560705ad.34.1737138303633; 
  Fri, 17 Jan 2025 10:25:03 -0800 (PST)
 Received: from stoup.. (174-21-71-127.tukw.qwest.net. [174.21.71.127])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21c2d3acccesm18879005ad.123.2025.01.17.10.25.02
+ d9443c01a7336-21c2d3acccesm18879005ad.123.2025.01.17.10.25.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 10:25:02 -0800 (PST)
+ Fri, 17 Jan 2025 10:25:03 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 07/68] tcg: Add type and flags arguments to tcg_op_supported
-Date: Fri, 17 Jan 2025 10:23:55 -0800
-Message-ID: <20250117182456.2077110-8-richard.henderson@linaro.org>
+Subject: [PULL 08/68] target/arm: Do not test TCG_TARGET_HAS_bitsel_vec
+Date: Fri, 17 Jan 2025 10:23:56 -0800
+Message-ID: <20250117182456.2077110-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250117182456.2077110-1-richard.henderson@linaro.org>
 References: <20250117182456.2077110-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,60 +98,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Rely on tcg-op-vec.c to expand the opcode if missing.
+
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/tcg.h |  7 ++++++-
- tcg/tcg.c         | 11 +++++++----
- 2 files changed, 13 insertions(+), 5 deletions(-)
+ target/arm/tcg/translate-sve.c | 20 ++++----------------
+ 1 file changed, 4 insertions(+), 16 deletions(-)
 
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index 238c55c9ac..ac0a080b15 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -834,7 +834,12 @@ typedef struct TCGTargetOpDef {
-     const char *args_ct_str[TCG_MAX_OP_ARGS];
- } TCGTargetOpDef;
- 
--bool tcg_op_supported(TCGOpcode op);
-+/*
-+ * tcg_op_supported:
-+ * Query if @op, for @type and @flags, is supported by the host
-+ * on which we are currently executing.
-+ */
-+bool tcg_op_supported(TCGOpcode op, TCGType type, unsigned flags);
- 
- void tcg_gen_call0(void *func, TCGHelperInfo *, TCGTemp *ret);
- void tcg_gen_call1(void *func, TCGHelperInfo *, TCGTemp *ret, TCGTemp *);
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index f2bbff8079..43293ca255 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -1931,9 +1931,11 @@ TCGTemp *tcgv_i32_temp(TCGv_i32 v)
- }
- #endif /* CONFIG_DEBUG_TCG */
- 
--/* Return true if OP may appear in the opcode stream.
--   Test the runtime variable that controls each opcode.  */
--bool tcg_op_supported(TCGOpcode op)
-+/*
-+ * Return true if OP may appear in the opcode stream with TYPE.
-+ * Test the runtime variable that controls each opcode.
-+ */
-+bool tcg_op_supported(TCGOpcode op, TCGType type, unsigned flags)
+diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
+index 49d32fabc9..732453db6f 100644
+--- a/target/arm/tcg/translate-sve.c
++++ b/target/arm/tcg/translate-sve.c
+@@ -596,14 +596,8 @@ static void gen_bsl1n_i64(TCGv_i64 d, TCGv_i64 n, TCGv_i64 m, TCGv_i64 k)
+ static void gen_bsl1n_vec(unsigned vece, TCGv_vec d, TCGv_vec n,
+                           TCGv_vec m, TCGv_vec k)
  {
-     const bool have_vec
-         = TCG_TARGET_HAS_v64 | TCG_TARGET_HAS_v128 | TCG_TARGET_HAS_v256;
-@@ -6243,7 +6245,8 @@ int tcg_gen_code(TCGContext *s, TranslationBlock *tb, uint64_t pc_start)
-             /* fall through */
-         default:
-             /* Sanity check that we've not introduced any unhandled opcodes. */
--            tcg_debug_assert(tcg_op_supported(opc));
-+            tcg_debug_assert(tcg_op_supported(opc, TCGOP_TYPE(op),
-+                                              TCGOP_FLAGS(op)));
-             /* Note: in order to speed up the code, it would be much
-                faster to have specialized register allocator functions for
-                some common argument patterns */
+-    if (TCG_TARGET_HAS_bitsel_vec) {
+-        tcg_gen_not_vec(vece, n, n);
+-        tcg_gen_bitsel_vec(vece, d, k, n, m);
+-    } else {
+-        tcg_gen_andc_vec(vece, n, k, n);
+-        tcg_gen_andc_vec(vece, m, m, k);
+-        tcg_gen_or_vec(vece, d, n, m);
+-    }
++    tcg_gen_not_vec(vece, n, n);
++    tcg_gen_bitsel_vec(vece, d, k, n, m);
+ }
+ 
+ static void gen_bsl1n(unsigned vece, uint32_t d, uint32_t n, uint32_t m,
+@@ -640,14 +634,8 @@ static void gen_bsl2n_i64(TCGv_i64 d, TCGv_i64 n, TCGv_i64 m, TCGv_i64 k)
+ static void gen_bsl2n_vec(unsigned vece, TCGv_vec d, TCGv_vec n,
+                           TCGv_vec m, TCGv_vec k)
+ {
+-    if (TCG_TARGET_HAS_bitsel_vec) {
+-        tcg_gen_not_vec(vece, m, m);
+-        tcg_gen_bitsel_vec(vece, d, k, n, m);
+-    } else {
+-        tcg_gen_and_vec(vece, n, n, k);
+-        tcg_gen_or_vec(vece, m, m, k);
+-        tcg_gen_orc_vec(vece, d, n, m);
+-    }
++    tcg_gen_not_vec(vece, m, m);
++    tcg_gen_bitsel_vec(vece, d, k, n, m);
+ }
+ 
+ static void gen_bsl2n(unsigned vece, uint32_t d, uint32_t n, uint32_t m,
 -- 
 2.43.0
 
