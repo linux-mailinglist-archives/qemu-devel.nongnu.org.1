@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E907EA15691
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:29:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13C7DA156A4
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:31:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYr2Q-0004UO-GU; Fri, 17 Jan 2025 13:25:46 -0500
+	id 1tYr2O-0004NZ-6x; Fri, 17 Jan 2025 13:25:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr29-0004AO-5Q
+ id 1tYr29-0004AN-5H
  for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:29 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr27-0007uk-46
+ id 1tYr27-0007uz-7w
  for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:28 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-21661be2c2dso48278725ad.1
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:25:24 -0800 (PST)
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-2166022c5caso43159885ad.2
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:25:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737138323; x=1737743123; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737138325; x=1737743125; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+Du/hcUzCRJCFSS7gZnhBMRv2GOlMkHp+q13zYEfxw8=;
- b=Ob6FmSdDTixNi07w48hCDCOv0rcosHU9ELPR3aoBUd+VtR33ge7DMsYSeMe8SHaNrX
- 4osimsgMTlsNt96+9XUWHo1TcqLOS8qRDvx7edC1+mawxEQj86wLEtbG1xa5y9L3V/OC
- Z87HyiQBp8SV0ylmfCxjt+BA0s/Aj3Uy3eYCocLZ1Hpjv6z+0cmoBViuo5Bytwg83fiN
- ByhvHkhlj69nCjGJqfQuqcsfvyazS7p7NYs9fgfUWvep0osJnAHASe5wGap+T0ZbZKHl
- lbaAP0OTyv4Bpw9NOe2/3n4tBiZqw7XWKeQpxBH7Htwd152skBiMj8F85KwWv6LIGZle
- N7pg==
+ bh=jrF/n7KBeARlzDdAnf5wLY/6SKHxmfqpW88RYm3jHsU=;
+ b=v598refaZBk3OpcEhs9UPe0ukI3GALqplY/GVTyZxODh5gpmX9heaMFPeHKY/AQqGw
+ NS0bhFMFgxfWi5AwoNs6ktwEEjA6aSy9e50vFqOi2WG84j6UvJPN9FPG5RH2XKjSdaQU
+ bd3pnn0FUCUF9wAgvN5XEOs7GSn9rszN7Lw0EJxpg6N+zGddLSoFAwbbFCnd6BN3SK8h
+ T2MqZvMf/t4D0YQLwz/RSMBqT64zvF/fj2tN/dvEEwU4d5fPpcG2Owe8Yn5C917XsFdQ
+ Off9X1HOCAkoZUGH9I1CSAByJxVlss5rExeYws9NVf9+VJLduP6yv/w9XwYZyltCrTkH
+ hH4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737138323; x=1737743123;
+ d=1e100.net; s=20230601; t=1737138325; x=1737743125;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+Du/hcUzCRJCFSS7gZnhBMRv2GOlMkHp+q13zYEfxw8=;
- b=b1BrHptAMBBoxJq9WDXg8UjDHoBNLNuv0NOdhJSVjEUjXESFr2y9qC0nAzF/99DYx+
- 8yukzcHPNCwuYfNDNIjGoIgjuhxAorss/dhrsVfojDAGm7rTm/y7wSDhl96grKW7+ulR
- WuniHUAZEaOXT7OLvFKUkqBSu1+rLsvDtPmy4NCbXX1atsGkeUU6igse6cjyF4B2gOUZ
- D6CrK1X6TkDFsqh0B1NpIv815tsZIW3h4IgpIu//2bsomWMRLzopaWcR28/qNEZt4622
- RX1PO1DJsgEqzLe3C5yG5IFILS9nbtKg9uFzaIofdLkMjjtgIVeGuTIiOYJMjrCsRw0H
- Z4jQ==
-X-Gm-Message-State: AOJu0Yzjjzq95jCp6eceLBmZ7FVwi2riHkHWP7ZYl9ol8RqASGDs3KIB
- 1fCIoUQSQpPZQXr4BPIK03ooyPreLFluv4ooDVPMFUkBpfCIXgWrE27P0Elvj2fwu5Te2vK++05
- b
-X-Gm-Gg: ASbGncsFGmmXV35r+Q4hwJr/N22ypEaV7wUBa0mgB8pRKNrYKpi7f7Yc6FtIjQAlE7/
- Uh+zAruw6pdwjIhoelhsgR9b6bkiRPF0iapWeLGI3GhdqnF99fiqEfbJ8gKziJmaamdP7F65tdF
- C+r+yBRApzg9eAtl//Fctojom9hQVErSTciPRSyiKRfpxU2CUeFebS6S59IwO9tt0f0esqwRfup
- WWTWgJ+KN6jQ/FyA4jIZWNKoWW4sJyqVc10o1K/qQmzPMR+D+aMitb1r87Yq/mvmqSekxVY3IvN
- 5k6q6eKScsBthNg=
-X-Google-Smtp-Source: AGHT+IGvlXhHot+TZtaSReiscRsImwCaWNWSqkhko6qlOV7OPNVNpDHU43BOhqVGs3aOV84JSzhfVQ==
-X-Received: by 2002:a17:902:e80a:b0:216:6769:9ed7 with SMTP id
- d9443c01a7336-21c355c7dc2mr59086525ad.40.1737138323361; 
- Fri, 17 Jan 2025 10:25:23 -0800 (PST)
+ bh=jrF/n7KBeARlzDdAnf5wLY/6SKHxmfqpW88RYm3jHsU=;
+ b=EwelbrX7pSeVBAwDXpWGdd+knOIPe4aiWZ08sgFpuv3ioeG4X5+80mAW5W3wpVh8S8
+ B+zqWLSnWW802XyQ5m4OAfbd5XY1s2INXN8UUGRr+Y2GjkkQEkku+4i7xoDi6xwh1NAc
+ ebN1PvXBUW4ik5lYVBsqvmfGEOuLk4JAW0ETabdJJxKXzuiS5dUXY1P4IGGxtkYsefdc
+ MsHYtKt0RTjTG8m9/fw99uPTe54oZj0u2ICKhrSmhdwD5CAuiUNgBElleNI9RzUU2oiU
+ ieOvk16PwZeRQTgKNQ4t30cr700Cw0VcQHLUx2dSmS3xmx/Ya/+a6iqWQHLlAVOBkFCP
+ XGUA==
+X-Gm-Message-State: AOJu0YwmSsq9T5bCndbDojXbgMqT6TntZWkaKLbi1D/D4kNC4xDcvNOy
+ 2ZBONI6dh/766FokHlTy/1dhR4aNaOcmuEgwSjqH46d9Qgh4ftyO5B0/TEZUdX1vP+eBGtBztEM
+ g
+X-Gm-Gg: ASbGncs1TqpEMl/jYfw6kVBqixMc0N9uUeyhb5CsS+Xt0NU0kmRnDskpo9YGtFdeGBN
+ fABZy+S7VgmGPKySS9DAJ3MwvwCsT4JX5OfyS5Oe2zVNkHs7flZ8RsTErYsJjY6Ug5huaRsvOu+
+ q5YF60enKZw1EsSjF6LmWWYQEaHBazzntf4Nhyp3dcbPO1XrPgBeGlZK1ohrYxx8o00+4Ops+gB
+ Jufpj/Dodzk/TgsEVr2g0T8E9C29yY1mLa5kBvs/bzhPZRIPoskbo1KQUQD5FEf4U9dFSJ8uH5e
+ WmpslNOkGpO9X9g=
+X-Google-Smtp-Source: AGHT+IHDbc/fsnvclMkBgeMH3M10llw9nT8ErGEHcsWCW49eUzOcxFRRr9L1em2clAIEweUFNh+dQw==
+X-Received: by 2002:a17:902:f105:b0:216:7c33:8994 with SMTP id
+ d9443c01a7336-21c3561fef9mr40014485ad.53.1737138324705; 
+ Fri, 17 Jan 2025 10:25:24 -0800 (PST)
 Received: from stoup.. (174-21-71-127.tukw.qwest.net. [174.21.71.127])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21c2d3acccesm18879005ad.123.2025.01.17.10.25.22
+ d9443c01a7336-21c2d3acccesm18879005ad.123.2025.01.17.10.25.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 17 Jan 2025 10:25:23 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 34/68] tcg: Use C_NotImplemented in tcg_target_op_def
-Date: Fri, 17 Jan 2025 10:24:22 -0800
-Message-ID: <20250117182456.2077110-35-richard.henderson@linaro.org>
+Subject: [PULL 35/68] tcg: Change have_vec to has_type in tcg_op_supported
+Date: Fri, 17 Jan 2025 10:24:23 -0800
+Message-ID: <20250117182456.2077110-36-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250117182456.2077110-1-richard.henderson@linaro.org>
 References: <20250117182456.2077110-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,192 +98,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Return C_NotImplemented instead of asserting for opcodes
-not implemented by the backend.  For now, the assertion
-moves to process_op_defs.
+Test each vector type, not just lumping them all together.
+Add tests for I32 (always true) and I64 (64-bit hosts).
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/tcg.c                        | 10 ++++++----
- tcg/aarch64/tcg-target.c.inc     |  2 +-
- tcg/arm/tcg-target.c.inc         |  2 +-
- tcg/i386/tcg-target.c.inc        |  2 +-
- tcg/loongarch64/tcg-target.c.inc |  2 +-
- tcg/mips/tcg-target.c.inc        |  2 +-
- tcg/ppc/tcg-target.c.inc         |  2 +-
- tcg/riscv/tcg-target.c.inc       |  2 +-
- tcg/s390x/tcg-target.c.inc       |  2 +-
- tcg/sparc64/tcg-target.c.inc     |  2 +-
- tcg/tci/tcg-target.c.inc         |  2 +-
- 11 files changed, 16 insertions(+), 14 deletions(-)
+ tcg/tcg.c | 66 ++++++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 43 insertions(+), 23 deletions(-)
 
 diff --git a/tcg/tcg.c b/tcg/tcg.c
-index 3576299a1c..05bb464940 100644
+index 05bb464940..915a181596 100644
 --- a/tcg/tcg.c
 +++ b/tcg/tcg.c
-@@ -862,6 +862,7 @@ static int tcg_out_pool_finalize(TCGContext *s)
- #define C_N1_O1_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_n1_o1_i4_, O1, O2, I1, I2, I3, I4),
+@@ -2136,8 +2136,28 @@ TCGTemp *tcgv_i32_temp(TCGv_i32 v)
+  */
+ bool tcg_op_supported(TCGOpcode op, TCGType type, unsigned flags)
+ {
+-    const bool have_vec
+-        = TCG_TARGET_HAS_v64 | TCG_TARGET_HAS_v128 | TCG_TARGET_HAS_v256;
++    bool has_type;
++
++    switch (type) {
++    case TCG_TYPE_I32:
++        has_type = true;
++        break;
++    case TCG_TYPE_I64:
++        has_type = TCG_TARGET_REG_BITS == 64;
++        break;
++    case TCG_TYPE_V64:
++        has_type = TCG_TARGET_HAS_v64;
++        break;
++    case TCG_TYPE_V128:
++        has_type = TCG_TARGET_HAS_v128;
++        break;
++    case TCG_TYPE_V256:
++        has_type = TCG_TARGET_HAS_v256;
++        break;
++    default:
++        has_type = false;
++        break;
++    }
  
- typedef enum {
-+    C_NotImplemented = -1,
- #include "tcg-target-con-set.h"
- } TCGConstraintSetIndex;
- 
-@@ -3176,6 +3177,7 @@ static void process_op_defs(TCGContext *s)
-         const TCGTargetOpDef *tdefs;
-         bool saw_alias_pair = false;
-         int i, o, i2, o2, nb_args;
-+        TCGConstraintSetIndex con_set;
- 
-         if (def->flags & TCG_OPF_NOT_PRESENT) {
-             continue;
-@@ -3188,11 +3190,11 @@ static void process_op_defs(TCGContext *s)
- 
-         /*
-          * Macro magic should make it impossible, but double-check that
--         * the array index is in range.  Since the signness of an enum
--         * is implementation defined, force the result to unsigned.
-+         * the array index is in range.  At the same time, double-check
-+         * that the opcode is implemented, i.e. not C_NotImplemented.
-          */
--        unsigned con_set = tcg_target_op_def(op);
--        tcg_debug_assert(con_set < ARRAY_SIZE(constraint_sets));
-+        con_set = tcg_target_op_def(op);
-+        tcg_debug_assert(con_set >= 0 && con_set < ARRAY_SIZE(constraint_sets));
-         tdefs = &constraint_sets[con_set];
- 
-         for (i = 0; i < nb_args; i++) {
-diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
-index d77d305f30..d1e08def60 100644
---- a/tcg/aarch64/tcg-target.c.inc
-+++ b/tcg/aarch64/tcg-target.c.inc
-@@ -3158,7 +3158,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-         return C_O1_I2(w, 0, w);
- 
-     default:
--        g_assert_not_reached();
-+        return C_NotImplemented;
-     }
- }
- 
-diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
-index 90ac80077f..b4cd36a9b8 100644
---- a/tcg/arm/tcg-target.c.inc
-+++ b/tcg/arm/tcg-target.c.inc
-@@ -2260,7 +2260,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     switch (op) {
+     case INDEX_op_discard:
+@@ -2376,60 +2396,60 @@ bool tcg_op_supported(TCGOpcode op, TCGType type, unsigned flags)
+     case INDEX_op_or_vec:
+     case INDEX_op_xor_vec:
+     case INDEX_op_cmp_vec:
+-        return have_vec;
++        return has_type;
+     case INDEX_op_dup2_vec:
+-        return have_vec && TCG_TARGET_REG_BITS == 32;
++        return has_type && TCG_TARGET_REG_BITS == 32;
+     case INDEX_op_not_vec:
+-        return have_vec && TCG_TARGET_HAS_not_vec;
++        return has_type && TCG_TARGET_HAS_not_vec;
+     case INDEX_op_neg_vec:
+-        return have_vec && TCG_TARGET_HAS_neg_vec;
++        return has_type && TCG_TARGET_HAS_neg_vec;
+     case INDEX_op_abs_vec:
+-        return have_vec && TCG_TARGET_HAS_abs_vec;
++        return has_type && TCG_TARGET_HAS_abs_vec;
+     case INDEX_op_andc_vec:
+-        return have_vec && TCG_TARGET_HAS_andc_vec;
++        return has_type && TCG_TARGET_HAS_andc_vec;
+     case INDEX_op_orc_vec:
+-        return have_vec && TCG_TARGET_HAS_orc_vec;
++        return has_type && TCG_TARGET_HAS_orc_vec;
+     case INDEX_op_nand_vec:
+-        return have_vec && TCG_TARGET_HAS_nand_vec;
++        return has_type && TCG_TARGET_HAS_nand_vec;
+     case INDEX_op_nor_vec:
+-        return have_vec && TCG_TARGET_HAS_nor_vec;
++        return has_type && TCG_TARGET_HAS_nor_vec;
+     case INDEX_op_eqv_vec:
+-        return have_vec && TCG_TARGET_HAS_eqv_vec;
++        return has_type && TCG_TARGET_HAS_eqv_vec;
+     case INDEX_op_mul_vec:
+-        return have_vec && TCG_TARGET_HAS_mul_vec;
++        return has_type && TCG_TARGET_HAS_mul_vec;
+     case INDEX_op_shli_vec:
+     case INDEX_op_shri_vec:
+     case INDEX_op_sari_vec:
+-        return have_vec && TCG_TARGET_HAS_shi_vec;
++        return has_type && TCG_TARGET_HAS_shi_vec;
+     case INDEX_op_shls_vec:
+     case INDEX_op_shrs_vec:
+     case INDEX_op_sars_vec:
+-        return have_vec && TCG_TARGET_HAS_shs_vec;
++        return has_type && TCG_TARGET_HAS_shs_vec;
+     case INDEX_op_shlv_vec:
+     case INDEX_op_shrv_vec:
+     case INDEX_op_sarv_vec:
+-        return have_vec && TCG_TARGET_HAS_shv_vec;
++        return has_type && TCG_TARGET_HAS_shv_vec;
+     case INDEX_op_rotli_vec:
+-        return have_vec && TCG_TARGET_HAS_roti_vec;
++        return has_type && TCG_TARGET_HAS_roti_vec;
+     case INDEX_op_rotls_vec:
+-        return have_vec && TCG_TARGET_HAS_rots_vec;
++        return has_type && TCG_TARGET_HAS_rots_vec;
+     case INDEX_op_rotlv_vec:
+     case INDEX_op_rotrv_vec:
+-        return have_vec && TCG_TARGET_HAS_rotv_vec;
++        return has_type && TCG_TARGET_HAS_rotv_vec;
+     case INDEX_op_ssadd_vec:
+     case INDEX_op_usadd_vec:
+     case INDEX_op_sssub_vec:
+     case INDEX_op_ussub_vec:
+-        return have_vec && TCG_TARGET_HAS_sat_vec;
++        return has_type && TCG_TARGET_HAS_sat_vec;
+     case INDEX_op_smin_vec:
+     case INDEX_op_umin_vec:
+     case INDEX_op_smax_vec:
+     case INDEX_op_umax_vec:
+-        return have_vec && TCG_TARGET_HAS_minmax_vec;
++        return has_type && TCG_TARGET_HAS_minmax_vec;
      case INDEX_op_bitsel_vec:
-         return C_O1_I3(w, w, w, w);
-     default:
--        g_assert_not_reached();
-+        return C_NotImplemented;
-     }
- }
- 
-diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-index 167228a781..813c12ca0e 100644
---- a/tcg/i386/tcg-target.c.inc
-+++ b/tcg/i386/tcg-target.c.inc
-@@ -3885,7 +3885,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-         return C_O1_I4(x, x, x, xO, x);
- 
-     default:
--        g_assert_not_reached();
-+        return C_NotImplemented;
-     }
- }
- 
-diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index a273e7fce5..686b94ccda 100644
---- a/tcg/loongarch64/tcg-target.c.inc
-+++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -2391,7 +2391,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-         return C_O1_I3(w, w, w, w);
- 
-     default:
--        g_assert_not_reached();
-+        return C_NotImplemented;
-     }
- }
- 
-diff --git a/tcg/mips/tcg-target.c.inc b/tcg/mips/tcg-target.c.inc
-index 8857398893..199bd97c0e 100644
---- a/tcg/mips/tcg-target.c.inc
-+++ b/tcg/mips/tcg-target.c.inc
-@@ -2292,7 +2292,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-                 : C_O0_I4(rZ, rZ, r, r));
- 
-     default:
--        g_assert_not_reached();
-+        return C_NotImplemented;
-     }
- }
- 
-diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-index 94997b126f..3ce4fa1db6 100644
---- a/tcg/ppc/tcg-target.c.inc
-+++ b/tcg/ppc/tcg-target.c.inc
-@@ -4354,7 +4354,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-         return C_O1_I4(v, v, v, vZM, v);
- 
-     default:
--        g_assert_not_reached();
-+        return C_NotImplemented;
-     }
- }
- 
-diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
-index 7d1bba100a..51cd7e7586 100644
---- a/tcg/riscv/tcg-target.c.inc
-+++ b/tcg/riscv/tcg-target.c.inc
-@@ -2767,7 +2767,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+-        return have_vec && TCG_TARGET_HAS_bitsel_vec;
++        return has_type && TCG_TARGET_HAS_bitsel_vec;
      case INDEX_op_cmpsel_vec:
-         return C_O1_I4(v, v, vL, vK, vK);
-     default:
--        g_assert_not_reached();
-+        return C_NotImplemented;
-     }
- }
- 
-diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
-index fdf57c0b07..98925b1d5d 100644
---- a/tcg/s390x/tcg-target.c.inc
-+++ b/tcg/s390x/tcg-target.c.inc
-@@ -3427,7 +3427,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-                 : C_O1_I4(v, v, v, vZ, v));
+-        return have_vec && TCG_TARGET_HAS_cmpsel_vec;
++        return has_type && TCG_TARGET_HAS_cmpsel_vec;
  
      default:
--        g_assert_not_reached();
-+        return C_NotImplemented;
-     }
- }
- 
-diff --git a/tcg/sparc64/tcg-target.c.inc b/tcg/sparc64/tcg-target.c.inc
-index fe3e727399..1201607722 100644
---- a/tcg/sparc64/tcg-target.c.inc
-+++ b/tcg/sparc64/tcg-target.c.inc
-@@ -1627,7 +1627,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-         return C_O1_I2(r, r, r);
- 
-     default:
--        g_assert_not_reached();
-+        return C_NotImplemented;
-     }
- }
- 
-diff --git a/tcg/tci/tcg-target.c.inc b/tcg/tci/tcg-target.c.inc
-index 5f88ca0537..74b649c902 100644
---- a/tcg/tci/tcg-target.c.inc
-+++ b/tcg/tci/tcg-target.c.inc
-@@ -186,7 +186,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-         return TCG_TARGET_REG_BITS == 64 ? C_O0_I2(r, r) : C_O0_I4(r, r, r, r);
- 
-     default:
--        g_assert_not_reached();
-+        return C_NotImplemented;
-     }
- }
- 
+         tcg_debug_assert(op > INDEX_op_last_generic && op < NB_OPS);
 -- 
 2.43.0
 
