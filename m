@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7FA4A1568B
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:29:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58778A156D5
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:35:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYr5k-0005Q8-Gl; Fri, 17 Jan 2025 13:29:12 -0500
+	id 1tYr5m-0005kp-FE; Fri, 17 Jan 2025 13:29:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr5e-0004xe-AN
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:29:06 -0500
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ id 1tYr5f-00050r-0C
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:29:07 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr5c-0000FF-4k
+ id 1tYr5d-0000FY-2T
  for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:29:06 -0500
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-2f78a4ca5deso1118782a91.0
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:29:03 -0800 (PST)
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-216728b1836so44552175ad.0
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:29:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1737138543; x=1737743343; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3NPfmN7vMo+libG/5c+CuF6EQ8tBzjs2DEYBljqFu3U=;
- b=rySccsW3oRMJ2umc/HyGR/sQYRUKrBNxVjldTYe4eaaB131v8OcltddA8CKOnIjP54
- HNcGywq+gCrxbrwDF7F1hhIDkHQxNQ/uGjX5qyqE7sSs6lXBLQuRl/q6hUyiApoKbj4/
- fwTaY/0YtJEEwzu7QEtZrMZqOXtAm8nWfyYfsFM4MOz+4MjRyFeDL6rdOCbwQaaa/tVH
- 3Y5+NoaFPdZmzS6aT3qU2Jg2D4DM6sslhZquURZEPr2s8DNOm3tB82u1onvaZy4SZzDa
- 80ryaBVbYQ20ilqpcn9OJX8gOKpTAiJfbamF6Pmc87+eMM2EKWJeLTcuhwOc5RuVfI8Z
- W8OA==
+ bh=KWp2/JFv2fva2VTRy/d8GxCMMgAUanLYBFx81Z63oKk=;
+ b=V8KaUMTkGiukZ731Py50F1jIl2aGlOoq/Oxrm5+m/IY0tYy9nFbsak9W6fAy5jJkH/
+ E7PeUcMEV4kRhEGl3tOD+CFuuZNCC8PYXAnQkzMP6lzFmg2147oE5Ff8E7OgQQYu+e7Z
+ fRNuXEE/HjbeA5dpQu4DcM4+FkH+gxHjw5DViqqchb/QK6pP2wTYPg4aDUU8BhKCVMt6
+ IvIWTfw7DUh+5q0K8ecXXtWhA4OpzgiH8bBmI3rbikaBwaBteQBNKY16VK8iAk8G35MX
+ imoRgIVxZLqmfvGL2kRxCKUE8se38prj8c6FnA/krvYBMRdOwOoow4AVQ5Yz3F3Lz1px
+ ZskA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1737138543; x=1737743343;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3NPfmN7vMo+libG/5c+CuF6EQ8tBzjs2DEYBljqFu3U=;
- b=RWM1fkfdPMp+U6DcybMJSRtf+BhW3YuLFVXoLdvNdK3zrKTzDwU4sx7Sv6TawWRmU1
- FK8Z2eAGsuJ9Gol3sr3/1FBQb1iwBuUOgf3eNgRt5LnNBADsdXKXBGEYwKvZiWhRUB8I
- a1qELHHAqo1E+m76/4agfx43gDkcMB7owsf/us/MTH4SUkC2k2bdLEkxziht9k0zmFKA
- dqNE7QBJJsdQq/RlA4T0jhKLuTgTk2vKSmzV5eL3w6hWjQpTLYiNx7qH3BhxjslOg8Kt
- Lu02HZYYFzcZmo9x17mCtbv8H4TRdNi0f98RTLlptaXt9Xx/Wa2DrVWOfTwfxF5I6q2A
- bxag==
-X-Gm-Message-State: AOJu0YyRlSztVlAY0YmNlL2W8xr4zT7y0I8rQJdsctM4HEw4mtJqcqsF
- 6bf/YvQoT1ABz3T59vfwJFgvI+TcA4OOjgD3yndhpXI2fy2FaGQ2YEKeiEDtA79ohcLkT+FE93s
- B
-X-Gm-Gg: ASbGncsGS+aeMNNISdZKvZyycC3h221fSLqUngwI2J4mo09CKvWTf9G0bIDVaeqS+nQ
- 6us8yRrlzdUkyH4XXgmFJy28z1AX6WDHHlRLh1p6BYqOyLQJL79vnmL08IU5qqukmP5ldLlV15w
- jQPWxEbFMGxEEWwcNzTJHLYcn1oB1G+is2r19B0Pnwfe5URfDtECNMwKhJbafoRbLbvE/XCHxXn
- AmX3p4b+bvZt2OYKo6rzpo+4cmnmw1hTeuPq7rSAQiOHkIXrLZ1udzju2MUlvFdjB1IhO3QDNoT
- I1Gx0AzeWNvcIkc=
-X-Google-Smtp-Source: AGHT+IEHyxMl16cxzxxsGA9PZtvlaRSLntZk+pQesmJPx7JyOt6yegUQiQKhexwDikQP/DVE0JFdrg==
-X-Received: by 2002:a17:90b:3a08:b0:2ee:dcf6:1c77 with SMTP id
- 98e67ed59e1d1-2f782c9cb1emr5784504a91.16.1737138542916; 
- Fri, 17 Jan 2025 10:29:02 -0800 (PST)
+ bh=KWp2/JFv2fva2VTRy/d8GxCMMgAUanLYBFx81Z63oKk=;
+ b=QjyxLplLc2MuPPw89iqDIFefZYx9SdKAuN4Ey4DhlEP2alVIaafe2Aoq+J0X/KO69G
+ ATWo0mx/wRp972z29Q9a6YHXQJFciI78USkEuFWQeTzYjePwijAYkeQ1dMt18wdOFznv
+ pmHE/grxaMIqJAyzEFve+cgxckNRfePsgPjsloKF+G8yLg3FnFUtNKrtsIPBypVNENDx
+ 3F18KBxm6ytT6lg+ACBZAzNvj05s/xFZfOyH9ldkKE2gXuO/CFkqwMya15cNoceFn8JI
+ C10YXBRg1jKeKfOMDTzApqOV4FzeFP1/jEF5UeVWhPMqxFwx6F3dPC3KKb5d8Qs0YUnR
+ vUhA==
+X-Gm-Message-State: AOJu0YwAUbbgFKWpPtd+SFFYD9qpofWHxwK9dGO56NQxU28HxiROArFo
+ G/Q4yEuhghpRVCcDnvloAfEfP6btpVqGvgkJkLZwqMauQXsbKG1bhEbG8/ADN3kjifAdKM6cUkW
+ h
+X-Gm-Gg: ASbGncukrp0mY/VB2bg49hw6NISl5eQFVY99wcC/67qX7xVyfTOoXtpmHyjds2wYows
+ 3/6Z0nRFH+2onFSj8GeJjyP5iX92bHBsJglppUE/BD/AT1DTggZYXSQRFFjh6XGvo2QiwpleBY8
+ pHSaDYcf3g+dvJCAQhx8x4/XAIrSRkYoQuCaSY0f65WGCtZdXIrOH7ZvOpc17Pw1VEYYz6p9m/K
+ 0qYD0SxZj5TIlOZndAh+5kcLrD1dRBloBn47GDKe/H4H7iR1gIUY9+5WBQCphilOCnKJ4OuJ9+e
+ oIs7pssEFQxFfZ8=
+X-Google-Smtp-Source: AGHT+IE0DQs4nFw2lwWbJskcnD31LHQgyDTjZh5a0pKrUIv6SHuOU9mgHqEkSJjDVwf5My6OXt+yUw==
+X-Received: by 2002:a17:90b:3503:b0:2ea:61de:38f7 with SMTP id
+ 98e67ed59e1d1-2f782d59adbmr5059850a91.29.1737138543528; 
+ Fri, 17 Jan 2025 10:29:03 -0800 (PST)
 Received: from stoup.. (174-21-71-127.tukw.qwest.net. [174.21.71.127])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f77629bf96sm2614105a91.36.2025.01.17.10.29.02
+ 98e67ed59e1d1-2f77629bf96sm2614105a91.36.2025.01.17.10.29.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 10:29:02 -0800 (PST)
+ Fri, 17 Jan 2025 10:29:03 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 50/68] tcg/aarch64: Expand extract with offset 0 with andi
-Date: Fri, 17 Jan 2025 10:24:38 -0800
-Message-ID: <20250117182456.2077110-51-richard.henderson@linaro.org>
+Subject: [PULL 51/68] tcg/arm: Add full [US]XT[BH] into {s}extract
+Date: Fri, 17 Jan 2025 10:24:39 -0800
+Message-ID: <20250117182456.2077110-52-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250117182456.2077110-1-richard.henderson@linaro.org>
 References: <20250117182456.2077110-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,33 +98,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We're about to change canonicalization of masks as extract
-instead of and.  Retain the andi expansion here.
+The armv6 uxt and sxt opcodes have a 2-bit rotate field
+which supports extractions from ofs = {0,8,16,24}.
+Special case ofs = 0, len <= 8 as AND.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/aarch64/tcg-target.c.inc | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tcg/arm/tcg-target-has.h | 21 ++++++++++++++--
+ tcg/arm/tcg-target.c.inc | 54 +++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 67 insertions(+), 8 deletions(-)
 
-diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
-index ede6f47235..66eb4b73b5 100644
---- a/tcg/aarch64/tcg-target.c.inc
-+++ b/tcg/aarch64/tcg-target.c.inc
-@@ -2450,7 +2450,12 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType ext,
+diff --git a/tcg/arm/tcg-target-has.h b/tcg/arm/tcg-target-has.h
+index 316185500d..d9f3311102 100644
+--- a/tcg/arm/tcg-target-has.h
++++ b/tcg/arm/tcg-target-has.h
+@@ -41,8 +41,8 @@ extern bool use_neon_instructions;
+ #define TCG_TARGET_HAS_ctz_i32          use_armv7_instructions
+ #define TCG_TARGET_HAS_ctpop_i32        0
+ #define TCG_TARGET_HAS_deposit_i32      use_armv7_instructions
+-#define TCG_TARGET_HAS_extract_i32      use_armv7_instructions
+-#define TCG_TARGET_HAS_sextract_i32     use_armv7_instructions
++#define TCG_TARGET_HAS_extract_i32      1
++#define TCG_TARGET_HAS_sextract_i32     1
+ #define TCG_TARGET_HAS_extract2_i32     1
+ #define TCG_TARGET_HAS_negsetcond_i32   1
+ #define TCG_TARGET_HAS_mulu2_i32        1
+@@ -82,4 +82,21 @@ extern bool use_neon_instructions;
+ #define TCG_TARGET_HAS_cmpsel_vec       0
+ #define TCG_TARGET_HAS_tst_vec          1
  
-     case INDEX_op_extract_i64:
-     case INDEX_op_extract_i32:
--        tcg_out_ubfm(s, ext, a0, a1, a2, a2 + args[3] - 1);
-+        if (a2 == 0) {
-+            uint64_t mask = MAKE_64BIT_MASK(0, args[3]);
-+            tcg_out_logicali(s, I3404_ANDI, ext, a0, a1, mask);
-+        } else {
-+            tcg_out_ubfm(s, ext, a0, a1, a2, a2 + args[3] - 1);
-+        }
-         break;
++static inline bool
++tcg_target_extract_valid(TCGType type, unsigned ofs, unsigned len)
++{
++    if (use_armv7_instructions) {
++        return true;  /* SBFX or UBFX */
++    }
++    switch (len) {
++    case 8:   /* SXTB or UXTB */
++    case 16:  /* SXTH or UXTH */
++        return (ofs % 8) == 0;
++    }
++    return false;
++}
++
++#define TCG_TARGET_extract_valid   tcg_target_extract_valid
++#define TCG_TARGET_sextract_valid  tcg_target_extract_valid
++
+ #endif
+diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
+index 9cfb733a14..12dad7307f 100644
+--- a/tcg/arm/tcg-target.c.inc
++++ b/tcg/arm/tcg-target.c.inc
+@@ -1036,19 +1036,61 @@ static void tcg_out_deposit(TCGContext *s, ARMCond cond, TCGReg rd,
+ static void tcg_out_extract(TCGContext *s, ARMCond cond, TCGReg rd,
+                             TCGReg rn, int ofs, int len)
+ {
+-    /* ubfx */
+-    tcg_out32(s, 0x07e00050 | (cond << 28) | (rd << 12) | rn
+-              | (ofs << 7) | ((len - 1) << 16));
++    /* According to gcc, AND can be faster. */
++    if (ofs == 0 && len <= 8) {
++        tcg_out_dat_imm(s, cond, ARITH_AND, rd, rn,
++                        encode_imm_nofail((1 << len) - 1));
++        return;
++    }
++
++    if (use_armv7_instructions) {
++        /* ubfx */
++        tcg_out32(s, 0x07e00050 | (cond << 28) | (rd << 12) | rn
++                  | (ofs << 7) | ((len - 1) << 16));
++        return;
++    }
++
++    assert(ofs % 8 == 0);
++    switch (len) {
++    case 8:
++        /* uxtb */
++        tcg_out32(s, 0x06ef0070 | (cond << 28) | (rd << 12) | (ofs << 7) | rn);
++        break;
++    case 16:
++        /* uxth */
++        tcg_out32(s, 0x06ff0070 | (cond << 28) | (rd << 12) | (ofs << 7) | rn);
++        break;
++    default:
++        g_assert_not_reached();
++    }
+ }
  
-     case INDEX_op_sextract_i64:
+ static void tcg_out_sextract(TCGContext *s, ARMCond cond, TCGReg rd,
+                              TCGReg rn, int ofs, int len)
+ {
+-    /* sbfx */
+-    tcg_out32(s, 0x07a00050 | (cond << 28) | (rd << 12) | rn
+-              | (ofs << 7) | ((len - 1) << 16));
++    if (use_armv7_instructions) {
++        /* sbfx */
++        tcg_out32(s, 0x07a00050 | (cond << 28) | (rd << 12) | rn
++                  | (ofs << 7) | ((len - 1) << 16));
++        return;
++    }
++
++    assert(ofs % 8 == 0);
++    switch (len) {
++    case 8:
++        /* sxtb */
++        tcg_out32(s, 0x06af0070 | (cond << 28) | (rd << 12) | (ofs << 7) | rn);
++        break;
++    case 16:
++        /* sxth */
++        tcg_out32(s, 0x06bf0070 | (cond << 28) | (rd << 12) | (ofs << 7) | rn);
++        break;
++    default:
++        g_assert_not_reached();
++    }
+ }
+ 
++
+ static void tcg_out_ld32u(TCGContext *s, ARMCond cond,
+                           TCGReg rd, TCGReg rn, int32_t offset)
+ {
 -- 
 2.43.0
 
