@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E83F3A148F5
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 05:45:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE315A14957
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 06:58:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYeE8-0004ZN-Jb; Thu, 16 Jan 2025 23:45:00 -0500
+	id 1tYfKx-0004bh-PB; Fri, 17 Jan 2025 00:56:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYeE6-0004ZF-Rz
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 23:44:58 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1tYfKw-0004bH-7N
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 00:56:06 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYeE5-0004Ya-9A
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 23:44:58 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-219f8263ae0so30064275ad.0
- for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 20:44:56 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1tYfKu-0005sP-8e
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 00:56:05 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-21634338cfdso42874865ad.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 21:56:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737089095; x=1737693895; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=eUl0fj7MYVDuVkrVvDwHU5rwBz2SYuSXgOUFfEbuRa4=;
- b=wuLrMj6MhFJexcXqPot5EXiRm7gMoFNLPlHw8W1vtTf0cqHh5Cpk3AEvz/RxgoYlGW
- GuU1HY6ztTCkrm2LiHRCS4QuaZ9POG62I+PApzgFkvCOwZN+vPC6R5o8dOBJYjV2b6O8
- wp5CXI6MvRS4BFiGA2BxNfzBAceXpIz8Vd7MAYHn+jdO2WZ2Amb8I73RQZIXaXp+CwiA
- fbXfb/TbWZllYL5dyganDAMNSocu7ooYcFaiTgRNLth6PoxSZdfUz1LJIu27o48wEfN8
- qrIdbPIB9hdKvKXoC4Et32JYdOj7L7iztoro2xVz1hFW4N+ZFjPOQD2+mhEpSk9zmqiR
- ryjQ==
+ d=gmail.com; s=20230601; t=1737093362; x=1737698162; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=o/DZGZeWD0MxvygJ9aCip0QDeN363QjnwDH1CWULPhM=;
+ b=mgnKYUeQRLqlzRMDHNrS84sYgBCDhPtw42CMWRPy7nNaQPGDRPtjsjzNtB4+8x5nbB
+ z9YABT0RR00vhGzbQCu0YMb7mXclO9KunE6gJDpF/n8IHI1QsnHfYdhjh1UN6lWzzmPi
+ /nrOyEsCDl9Ax/80NY+abpAk9oxr0Umx23/GSEF63WYpoFTAyaBWXqT34nnriATMI672
+ 1b69c3GTeaFjgr3w1oAkHSxzQ6vLoNxGVDwzm2x5DIf3f9KEAe6NhkwY8yv4zQjzPw4+
+ Xvr9VXKiGkCLBJhASj420Y8k0agJS2RM91H30NegnILwSLPHHcIfle0um1u3xza8/gZx
+ 2gEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737089095; x=1737693895;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eUl0fj7MYVDuVkrVvDwHU5rwBz2SYuSXgOUFfEbuRa4=;
- b=AFGJ2tb51exqa3WFyM0kLZPvCW5G7SSp7oio3pULKhJPeIiYcQVkAyBQzx4yYg11Yx
- 3iTH/KXP9SJlbQyUQcnsT0Dq2zXVo5gGBM6dMZw7/5/nSJnUCLWmZREw2N9vQZ26ajJe
- zjg+Z2Q9XFlP9AZOKmQ5XJuTlVpFaS+MNxqkii0j19rNYsq6BKmA5lgmmi624aPGr/+a
- z69OmtRlG1dmYUUeI6fbBdWiAO/w36W++7rg2G2b/A0FNcHmL+W1EbZ+lHbqFF6P5nn1
- Oi7DRlLcvWQxLxMGZkgSrOFzkET10oLMJ7aP0hesZpZb02/lScwt0YLJVqHQwcKcI6tz
- A5ng==
-X-Gm-Message-State: AOJu0Yz9ACesMyJ92tqrviCztSsJQE/s0wRqRxYXaYE5paUhLRWItjYJ
- 9mLMOCfAuSDXRaVM0zTOmBbw5u9K4BnvOZ/3JrqPkjO2ciK03K5zzAcgvVl4t2s=
-X-Gm-Gg: ASbGnctIab1zqAKZ6FKf5PnBZUKjLqp9b/kaN4p2tcxE8rJwUeOIumbBKY08sQtM7mO
- iua4G9ofAG8tWD2+Ly2U9gb2ptNhINbF/i0BVyiSIenSgRp7ezBrrUmSuHG6HlRtEm9f6N4AwuO
- vKZZk2thtxdJVeUFjnGTAvuzmyNj+hEqrT0CtU8JiCdU3/nxZwbc7/lWPlebHtvSCfWez07/neI
- Doa/mbDSKnU78QxE8DVoyE+UfkQXWb7lXqTKDCsGFJkCwUPHqEAKbDeCuYmlHfdUmAvDgPy3EU4
- ALGRNMrgVVsVlM5kXZ3FMnY=
-X-Google-Smtp-Source: AGHT+IEH7WRXySF0C7waDhggBJ7RTPVmRZVvWFAw+Mr/3HKVXAPSWYE3TJBHRXOzzm8iw13TEKe96A==
-X-Received: by 2002:a05:6a20:9143:b0:1dc:bdb1:349e with SMTP id
- adf61e73a8af0-1eb214a08c1mr2200209637.17.1737089095443; 
- Thu, 16 Jan 2025 20:44:55 -0800 (PST)
-Received: from [192.168.0.4] (174-21-71-127.tukw.qwest.net. [174.21.71.127])
+ d=1e100.net; s=20230601; t=1737093362; x=1737698162;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=o/DZGZeWD0MxvygJ9aCip0QDeN363QjnwDH1CWULPhM=;
+ b=g4Hy33bpPmyOF4z8Fmi+iRekO9NDic03Xx/juBmzCt2wnORpbokD2DfhSUXvBUA2pl
+ HQzNIv5TS2DMY1oVFJNZ07/VlWSoO++MKbhXzS9MWd9b7wMhzq0fevddHe3p1b0EwHFS
+ iezGZbCuplC92xV2xLJnkmasNbHxG2caNbvzlav1kwWhmMigO0ggszXSTjB/UO7wba5t
+ 7RDR8xQnUyny+IkgIDFfpmqoPBO3/f9Nt/8Fb61S6dqkw8KFo1SZI45nTjtHVnb/tmqt
+ Y9GIuSpGtCZpRHEFxemYFPydJahk/JTZm+RXMsVBGXvtp/hyFvs+Y1c2Kr2+r7bVHEzd
+ I5Rg==
+X-Gm-Message-State: AOJu0Yxl3bFg96ZZ/muNB1oKapHiiFsmbM/wwdtj6GqDUVxb6B180SPz
+ Va+GdhdE/yYXFCgf0H6HHqh9ikLx23Z2CxihE56K6Fq/B+Ur5eJPy31nHg==
+X-Gm-Gg: ASbGncsmRrDyYSHuBdgFdV9X1LX/LKGYGS5M/uQy0meIcZmYd7TdygirDO7ZEmKtT8z
+ 9R0vmP9HH4VfeVnLfkCy/L5dCk3FssDMzYbG8qDNOnYCYbWtkyFNqanzST0djcrbeDuqLiXnpdg
+ UW21MFnueYMOFsG/f1mbLFgKVftZD/Kl2E6mOnD0bqVjFwef2OKnMUG90AhMfpNnz0B2QRX34p0
+ pW0pdZ/pnaBbEwIBqTydqL9mU0Va3yMW+X+pqWE507CIujiUHM4ZJwugGQk/ZOrZ/6tcghc2N9M
+ B41kJLeLMMbDbmNZXwxW7cn28Hb5W36PVVFkWzbmmrgkmyNDGszKL6gt4acW
+X-Google-Smtp-Source: AGHT+IF0D2cx5M2E2iypYtYivzKLTiQSWOJFTOGFMTJDfHCE9vKI8UkTzg0mGhIzmHp06ppjkvOm3g==
+X-Received: by 2002:a17:903:32ce:b0:215:b190:de6 with SMTP id
+ d9443c01a7336-21c3553b341mr18521805ad.3.1737093361826; 
+ Thu, 16 Jan 2025 21:56:01 -0800 (PST)
+Received: from toolbox.alistair23.me
+ (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
+ [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-a9bce1bd33fsm866603a12.35.2025.01.16.20.44.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Jan 2025 20:44:55 -0800 (PST)
-Message-ID: <65ee37e0-d188-4795-b69c-32f82e0929e3@linaro.org>
-Date: Thu, 16 Jan 2025 20:44:53 -0800
+ d9443c01a7336-21c2d3d6fbbsm8563595ad.168.2025.01.16.21.55.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 16 Jan 2025 21:56:01 -0800 (PST)
+From: Alistair Francis <alistair23@gmail.com>
+X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
+To: qemu-devel@nongnu.org
+Cc: alistair23@gmail.com,
+	Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 00/50] riscv-to-apply queue
+Date: Fri, 17 Jan 2025 15:55:02 +1000
+Message-ID: <20250117055552.108376-1-alistair.francis@wdc.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] tcg: Document tb_lookup() and tcg_tb_lookup()
-To: Ilya Leoshkevich <iii@linux.ibm.com>, Paolo Bonzini
- <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org
-References: <20250116213214.5695-1-iii@linux.ibm.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250116213214.5695-1-iii@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,104 +99,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/16/25 13:31, Ilya Leoshkevich wrote:
-> These similarly named functions serve different purposes; add
-> docstrings to highlight them.
-> 
-> Suggested-by: Alex Bennée <alex.bennee@linaro.org>
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> ---
->   accel/tcg/cpu-exec.c | 15 ++++++++++++++-
->   include/tcg/tcg.h    | 41 +++++++++++++++++++++++++++++++++++++++++
->   2 files changed, 55 insertions(+), 1 deletion(-)
+The following changes since commit 4d5d933bbc7cc52f6cc6b9021f91fa06266222d5:
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+  Merge tag 'pull-xenfv-20250116' of git://git.infradead.org/users/dwmw2/qemu into staging (2025-01-16 09:03:43 -0500)
 
+are available in the Git repository at:
 
-r~
+  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20250117-2
 
-> 
-> diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-> index d48b82a9325..8b773d88478 100644
-> --- a/accel/tcg/cpu-exec.c
-> +++ b/accel/tcg/cpu-exec.c
-> @@ -249,7 +249,20 @@ static TranslationBlock *tb_htable_lookup(CPUState *cpu, vaddr pc,
->       return qht_lookup_custom(&tb_ctx.htable, &desc, h, tb_lookup_cmp);
->   }
->   
-> -/* Might cause an exception, so have a longjmp destination ready */
-> +/**
-> + * tb_lookup:
-> + * @cpu: CPU that will execute the returned translation block
-> + * @pc: guest PC
-> + * @cs_base: arch-specific value associated with translation block
-> + * @flags: arch-specific translation block flags
-> + * @cflags: CF_* flags
-> + *
-> + * Look up a translation block inside the QHT using @pc, @cs_base, @flags and
-> + * @cflags. Uses @cpu's tb_jmp_cache. Might cause an exception, so have a
-> + * longjmp destination ready.
-> + *
-> + * Returns: an existing translation block or NULL.
-> + */
->   static inline TranslationBlock *tb_lookup(CPUState *cpu, vaddr pc,
->                                             uint64_t cs_base, uint32_t flags,
->                                             uint32_t cflags)
-> diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-> index a77ed12b9dc..057df6c4599 100644
-> --- a/include/tcg/tcg.h
-> +++ b/include/tcg/tcg.h
-> @@ -746,10 +746,51 @@ void tcg_region_reset_all(void);
->   size_t tcg_code_size(void);
->   size_t tcg_code_capacity(void);
->   
-> +/**
-> + * tcg_tb_insert:
-> + * @tb: translation block to insert
-> + *
-> + * Insert @tb into the region trees.
-> + */
->   void tcg_tb_insert(TranslationBlock *tb);
-> +
-> +/**
-> + * tcg_tb_remove:
-> + * @tb: translation block to remove
-> + *
-> + * Remove @tb from the region trees.
-> + */
->   void tcg_tb_remove(TranslationBlock *tb);
-> +
-> +/**
-> + * tcg_tb_lookup:
-> + * @tc_ptr: host PC to look up
-> + *
-> + * Look up a translation block inside the region trees by @tc_ptr. This is
-> + * useful for exception handling, but must not be used for the purposes of
-> + * executing the returned translation block. See struct tb_tc for more
-> + * information.
-> + *
-> + * Returns: a translation block previously inserted into the region trees,
-> + * such that @tc_ptr points anywhere inside the code generated for it, or
-> + * NULL.
-> + */
->   TranslationBlock *tcg_tb_lookup(uintptr_t tc_ptr);
-> +
-> +/**
-> + * tcg_tb_foreach:
-> + * @func: callback
-> + * @user_data: opaque value to pass to @callback
-> + *
-> + * Call @func for each translation block inserted into the region trees.
-> + */
->   void tcg_tb_foreach(GTraverseFunc func, gpointer user_data);
-> +
-> +/**
-> + * tcg_nb_tbs:
-> + *
-> + * Returns: the number of translation blocks inserted into the region trees.
-> + */
->   size_t tcg_nb_tbs(void);
->   
->   /* user-mode: Called with mmap_lock held.  */
+for you to fetch changes up to f195d4af294f76762407e2273a564950a8f42db6:
 
+  hw/char/riscv_htif: Convert HTIF_DEBUG() to trace events (2025-01-17 15:52:56 +1000)
+
+----------------------------------------------------------------
+Second RISC-V PR for 10.0
+
+* Reduce the overhead for simple RISC-V vector unit-stride loads and stores
+* Add V bit to GDB priv reg
+* Add 'sha' support
+* Add traces for exceptions in user mode
+* Update Pointer Masking to Zjpm v1.0
+* Add Smrnmi support
+* Fix timebase-frequency when using KVM acceleration
+* Add RISC-V Counter delegation ISA extension support
+* Add support for Smdbltrp and Ssdbltrp extensions
+* Introduce a translation tag for the IOMMU page table cache
+* Support Supm and Sspm as part of Zjpm v1.0
+* Convert htif debug prints to trace events
+
+----------------------------------------------------------------
+Alexey Baturo (8):
+      target/riscv: Remove obsolete pointer masking extension code.
+      target/riscv: Add new CSR fields for S{sn, mn, m}pm extensions as part of Zjpm v1.0
+      target/riscv: Add helper functions to calculate current number of masked bits for pointer masking
+      target/riscv: Add pointer masking tb flags
+      target/riscv: Update address modify functions to take into account pointer masking
+      target/riscv: Apply pointer masking for virtualized memory accesses
+      target/riscv: Enable updates for pointer masking variables and thus enable pointer masking extension
+      target/riscv: Support Supm and Sspm as part of Zjpm v1.0
+
+Atish Patra (5):
+      target/riscv: Enable S*stateen bits for AIA
+      target/riscv: Add properties for counter delegation ISA extensions
+      target/riscv: Invoke pmu init after feature enable
+      target/riscv: Add implied rule for counter delegation extensions
+      target/riscv: Add configuration for S[m|s]csrind, Smcdeleg/Ssccfg
+
+Clément Léger (9):
+      target/riscv: Fix henvcfg potentially containing stale bits
+      target/riscv: Add Ssdbltrp CSRs handling
+      target/riscv: Implement Ssdbltrp sret, mret and mnret behavior
+      target/riscv: Implement Ssdbltrp exception handling
+      target/riscv: Add Ssdbltrp ISA extension enable switch
+      target/riscv: Add Smdbltrp CSRs handling
+      target/riscv: Implement Smdbltrp sret, mret and mnret behavior
+      target/riscv: Implement Smdbltrp behavior
+      target/riscv: Add Smdbltrp ISA extension enable switch
+
+Craig Blackmore (2):
+      target/riscv: rvv: fix typo in vext continuous ldst function names
+      target/riscv: rvv: speed up small unit-stride loads and stores
+
+Daniel Henrique Barboza (9):
+      target/riscv: add shcounterenw
+      target/riscv: add shvstvala
+      target/riscv: add shtvala
+      target/riscv: add shvstvecd
+      target/riscv: add shvsatpa
+      target/riscv: add shgatpa
+      target/riscv/tcg: add sha
+      target/riscv: use RISCVException enum in exception helpers
+      target/riscv: add trace in riscv_raise_exception()
+
+Frank Chang (1):
+      target/riscv: Add Zicfilp support for Smrnmi
+
+Jason Chien (1):
+      hw/riscv/riscv-iommu.c: Introduce a translation tag for the page table cache
+
+Kaiwen Xue (6):
+      target/riscv: Add properties for Indirect CSR Access extension
+      target/riscv: Decouple AIA processing from xiselect and xireg
+      target/riscv: Support generic CSR indirect access
+      target/riscv: Add counter delegation definitions
+      target/riscv: Add select value range check for counter delegation
+      target/riscv: Add counter delegation/configuration support
+
+Philippe Mathieu-Daudé (3):
+      target/riscv: Have kvm_riscv_get_timebase_frequency() take RISCVCPU cpu
+      hw/riscv/virt: Remove unnecessary use of &first_cpu
+      hw/char/riscv_htif: Convert HTIF_DEBUG() to trace events
+
+Tommy Wu (5):
+      target/riscv: Add 'ext_smrnmi' in the RISCVCPUConfig
+      target/riscv: Add Smrnmi CSRs
+      target/riscv: Handle Smrnmi interrupt and exception
+      target/riscv: Add Smrnmi mnret instruction
+      target/riscv: Add Smrnmi cpu extension
+
+Yanfeng Liu (1):
+      riscv/gdbstub: add V bit to priv reg
+
+ include/hw/riscv/riscv_hart.h                  |    4 +
+ target/riscv/cpu.h                             |   65 +-
+ target/riscv/cpu_bits.h                        |  157 ++-
+ target/riscv/cpu_cfg.h                         |   13 +
+ target/riscv/helper.h                          |    1 +
+ target/riscv/internals.h                       |   54 +
+ target/riscv/kvm/kvm_riscv.h                   |    4 +-
+ target/riscv/pmp.h                             |    1 +
+ target/riscv/insn32.decode                     |    3 +
+ hw/char/riscv_htif.c                           |   15 +-
+ hw/riscv/riscv-iommu.c                         |  205 +++-
+ hw/riscv/riscv_hart.c                          |   41 +
+ hw/riscv/virt.c                                |    2 +-
+ target/riscv/cpu.c                             |   97 +-
+ target/riscv/cpu_helper.c                      |  311 +++++-
+ target/riscv/csr.c                             | 1257 +++++++++++++++++-------
+ target/riscv/gdbstub.c                         |   23 +-
+ target/riscv/kvm/kvm-cpu.c                     |    4 +-
+ target/riscv/machine.c                         |   18 +-
+ target/riscv/op_helper.c                       |  126 ++-
+ target/riscv/pmp.c                             |   14 +-
+ target/riscv/tcg/tcg-cpu.c                     |   50 +-
+ target/riscv/translate.c                       |   49 +-
+ target/riscv/vector_helper.c                   |   31 +-
+ target/riscv/insn_trans/trans_privileged.c.inc |   20 +
+ hw/char/trace-events                           |    4 +
+ target/riscv/trace-events                      |    3 +
+ tests/data/acpi/riscv64/virt/RHCT              |  Bin 332 -> 390 bytes
+ 28 files changed, 1852 insertions(+), 720 deletions(-)
 
