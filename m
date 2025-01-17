@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25BD0A14C2E
+	by mail.lfdr.de (Postfix) with ESMTPS id EA5F3A14C2F
 	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 10:29:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYida-0002dq-KD; Fri, 17 Jan 2025 04:27:34 -0500
+	id 1tYidY-0002c7-53; Fri, 17 Jan 2025 04:27:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tYidT-0002cC-GH
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 04:27:29 -0500
+ id 1tYidR-0002be-Rz
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 04:27:25 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tYidN-0003Rc-Gi
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 04:27:26 -0500
+ id 1tYidO-0003S8-0p
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 04:27:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737106039;
+ s=mimecast20190719; t=1737106041;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BITrw44P4w2bvCQ1NpWsRn31RrbjunDLRRexWgq3HHQ=;
- b=cBEpa6tTSr9OZLep4eBvBFSl7361A3XexiPUi8MBXAn00QaDHC/Li+Ot7Pcj1E6mfbi4YF
- I6RsFQFTRU5jekEEY8gbNMr7BhR2FHdokEoBQcA4dWtXgzlYSxu4Ge/E6AXDRg7//5v4TR
- uQFC+QkfRgkm/ucu+aq9jXuWkK/4jik=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=538rbrB5J5+iKYFhFGUAKX87kAz6wpkNaI2Nuc/tl2c=;
+ b=Alzo2H7PjS+6TbpZhb0uTHaKdftLykdXno0HdKQpu/KHN58ScOkeNbIvz9+NuSrBHCmfZj
+ m660AtDga8H+UI3abf3B6U0aoSsKEhYmHuT/uGeE6t3h5oXo4uL7J+ysJA3qLqMNcELGLL
+ 8GTpNpEv0Ocy8WnK2rpsQJD0afyP1o8=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-lQqNfVpwOPifA77sfM9dFg-1; Fri, 17 Jan 2025 04:27:17 -0500
-X-MC-Unique: lQqNfVpwOPifA77sfM9dFg-1
-X-Mimecast-MFC-AGG-ID: lQqNfVpwOPifA77sfM9dFg
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-5d3d2cccbe4so1808033a12.3
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 01:27:17 -0800 (PST)
+ us-mta-665-Syxuow68MSKB7yo_uGLjlg-1; Fri, 17 Jan 2025 04:27:19 -0500
+X-MC-Unique: Syxuow68MSKB7yo_uGLjlg-1
+X-Mimecast-MFC-AGG-ID: Syxuow68MSKB7yo_uGLjlg
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-aa634496f58so186393866b.2
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 01:27:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737106035; x=1737710835;
+ d=1e100.net; s=20230601; t=1737106038; x=1737710838;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BITrw44P4w2bvCQ1NpWsRn31RrbjunDLRRexWgq3HHQ=;
- b=PetL3lx+XdrSfYjFq3vSF9tYM/2F2DwNSR8/UvuCVLqlXkB2zZgAy8rNhqoMN9baUv
- JuSalQIuTB0Rw4QbaLRzOU3P9nspY6M0clhs9UC9l8KzfPEOJLaMxjLWewmmV1FRIeL4
- S7E8Q9g1JiRiMS7gEUuwuB78Dg/D2loQRvgiMS/EwkAE13tYLTENduycLwJjw7H6nYVh
- xivLR8KECXpBmdJb6aNvU785DxeQaiHSnji6dWx8sQcRwipBNxWAj8SXcwweYW9mCHyc
- TL0cA+SjSfx4mlog4MMAVaDnk1YN9Ia7cQ8SKoaAdF0fERBWFsvOQHYaJciG5Sa4K2oM
- Sotg==
-X-Gm-Message-State: AOJu0YwrME5kjd9Z0rFfmJI/6paN+LDruNcPK+Pt11sGn5hcGiWVvHB9
- O/9XfWObzqKW6UT9WngAa1mOJ1YEQoKHhcZ+3rJes5CziBeXB8CUilIShfnDfd8iIPky/k5MQX2
- HF9Cbs3AvWrutR4APbaXgAc+V4P2arwWY/Q9mNqNZcwz9DMLNwT7ICZFoL5fd3Dv4OAjj/vUIJW
- 6SkRpO/z4xOBVoEsNM2s32ddUz3XWxoy/VzAfn9oo=
-X-Gm-Gg: ASbGncvKOWIJ9Tm7uKZV/HnC1zxrdoaQV3k4dHWePDYtPVMdNCY6fToH8V8POmA452y
- iSA1ekWlATsQfa5EJykuXgg0oepsR+BiVO0tUQJEC0c7zWJhEOcsQh4BnE0T8p4Q8j4fipReJ0V
- 5rLWeEnXN03aMkA3p/GunLP48nZvB3xds3p2Lkb5MM9oB6ADOhfq1lL654imRSA5LDZxIvA1W5p
- dHW8fBZdRVqzM5pdEe4hO/zeWwW9Az/vgZEFZAvbiDqCoLzIymWxA70pQce
-X-Received: by 2002:a17:907:d87:b0:aab:d4f0:c598 with SMTP id
- a640c23a62f3a-ab38b163e88mr182766466b.27.1737106035526; 
- Fri, 17 Jan 2025 01:27:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHM3xBiLlu1RrP/TGFxrKCGnXWRBJYhH422XRXl47H2MI/ZbKF33AxiB9YjlvutaayNsAPfgA==
-X-Received: by 2002:a17:907:d87:b0:aab:d4f0:c598 with SMTP id
- a640c23a62f3a-ab38b163e88mr182764766b.27.1737106035051; 
- Fri, 17 Jan 2025 01:27:15 -0800 (PST)
+ bh=538rbrB5J5+iKYFhFGUAKX87kAz6wpkNaI2Nuc/tl2c=;
+ b=wg77tZERefBD+bvaEfqjvoMKSMI78bvy2nJOrP/0UcTixcYj88yEbcc5A/FYvX6qx4
+ duFjP52QHNSDjuGRT6SEgJz5Eret4lPj5HmsZTMXjzP5Irbw+aT43wwNUZ0qjb2I2/cc
+ 1wmhY7sl4WVTJevzb5xbhJjoTPTtc8V+AElp8ityNj9mqWFojTqSh+ytj+6BB+Qmsany
+ rWvY0qK7Ndymn1BSt/njGkdiyt68wbhYnR68zgDWU56baaUiUum7dvefHo4kIxjrd4ew
+ RoHBxLNLd4xOpjwtce/MLgd8nVZSTWeO6pax4XNzDQwWelGLU/Qr5auIKv8adny2XFQV
+ lnEQ==
+X-Gm-Message-State: AOJu0YyUrWLJ3cigFoOPbkXuhG949ZtEUpSkf296I8h2lXItzmLsPocu
+ mJU0ovk481CVZpvGmuTlNXvmbKhBLEyG+rREW+DHD7xHJZ9uUkKdn3MvDblD1Nf/ZMXxXiiU8tN
+ pQqFMn6qnbvKh8fPBsSIq5iZyRGJ+xoEFuEiT+5B+qgyJiagZ60rGqtkkuVEaIsiIh7C6zVWC9c
+ 254bQBhiV3R5OvIRq8vs7DR9I2rrSiUmOYzGoDVfk=
+X-Gm-Gg: ASbGncsxoV9ZoDOtMUC7P1X3lMMD27xxrkNrp+RIKqdTNnELgi0nymukc4k1CZBNoV0
+ 5+6NZh3P1axvTdzrfmBNtyMd2v9kKlhiKxpE7E7zP7+udusaB32GTPHokgKbKNcHk9pk2c2ixKS
+ PBnnklL9KeQuL/d33QPgUqFns/dk1JwMnff2iCuvBKshdrvKmEDhkO8VFyf+rwbt+rb3Rrv15gA
+ ZZhOjgHwKia4lDjkYCxtch6/T9NcWoqAoTahe/DVvTeroPiT8TpzIQul7HD
+X-Received: by 2002:a17:907:7da2:b0:aa6:8a1b:8b84 with SMTP id
+ a640c23a62f3a-ab38b5342demr211529066b.57.1737106037641; 
+ Fri, 17 Jan 2025 01:27:17 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGVqG+RfH01JbScVMhK0hergPcEkoF02jSu7bcLe4UjTPb/cCZHpm3dL7gwCCHZiJ7iTX4U9Q==
+X-Received: by 2002:a17:907:7da2:b0:aa6:8a1b:8b84 with SMTP id
+ a640c23a62f3a-ab38b5342demr211526766b.57.1737106037144; 
+ Fri, 17 Jan 2025 01:27:17 -0800 (PST)
 Received: from [192.168.10.3] ([176.206.124.70])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab384f2242bsm137373666b.118.2025.01.17.01.27.13
+ a640c23a62f3a-ab384c61388sm138174466b.20.2025.01.17.01.27.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 01:27:13 -0800 (PST)
+ Fri, 17 Jan 2025 01:27:16 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org
-Subject: [PATCH 07/10] rust: pl011: wrap registers with BqlRefCell
-Date: Fri, 17 Jan 2025 10:26:54 +0100
-Message-ID: <20250117092657.1051233-8-pbonzini@redhat.com>
+Subject: [PATCH 08/10] rust: pl011: remove duplicate definitions
+Date: Fri, 17 Jan 2025 10:26:55 +0100
+Message-ID: <20250117092657.1051233-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250117092657.1051233-1-pbonzini@redhat.com>
 References: <20250117092657.1051233-1-pbonzini@redhat.com>
@@ -105,194 +105,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a step towards making memory ops use a shared reference to the
-device type; it's not yet possible due to the calls to character device
-functions.
+Unify the "Interrupt" enum and the "INT_*" constants with a struct
+that contains the bits.  The "int_level" and "int_enabled" fields
+could use a crate such as "bitflags".
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs       | 38 +++++++++++++-------------
- rust/hw/char/pl011/src/device_class.rs |  8 +++---
- rust/hw/char/pl011/src/memory_ops.rs   |  2 +-
- 3 files changed, 24 insertions(+), 24 deletions(-)
+ rust/hw/char/pl011/src/device.rs | 36 ++++++++++++-------------
+ rust/hw/char/pl011/src/lib.rs    | 46 +++++++++++---------------------
+ 2 files changed, 33 insertions(+), 49 deletions(-)
 
 diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 476abe765a9..1d3da59e481 100644
+index 1d3da59e481..6ecbfb9ac84 100644
 --- a/rust/hw/char/pl011/src/device.rs
 +++ b/rust/hw/char/pl011/src/device.rs
-@@ -102,14 +102,14 @@ pub struct PL011Registers {
- }
- 
- #[repr(C)]
--#[derive(Debug, qemu_api_macros::Object, qemu_api_macros::offsets)]
-+#[derive(qemu_api_macros::Object, qemu_api_macros::offsets)]
- /// PL011 Device Model in QEMU
- pub struct PL011State {
-     pub parent_obj: ParentField<SysBusDevice>,
-     pub iomem: MemoryRegion,
-     #[doc(alias = "chr")]
-     pub char_backend: CharBackend,
--    pub regs: PL011Registers,
-+    pub regs: BqlRefCell<PL011Registers>,
-     /// QEMU interrupts
-     ///
-     /// ```text
-@@ -530,8 +530,8 @@ fn post_init(&self) {
-         }
-     }
- 
-+    #[allow(clippy::needless_pass_by_ref_mut)]
-     pub fn read(&mut self, offset: hwaddr, _size: u32) -> ControlFlow<u64, u64> {
--        let regs = &mut self.regs;
-         match RegisterOffset::try_from(offset) {
-             Err(v) if (0x3f8..0x400).contains(&(v >> 2)) => {
-                 let device_id = self.get_class().device_id;
-@@ -541,7 +541,7 @@ pub fn read(&mut self, offset: hwaddr, _size: u32) -> ControlFlow<u64, u64> {
-                 // qemu_log_mask(LOG_GUEST_ERROR, "pl011_read: Bad offset 0x%x\n", (int)offset);
-                 ControlFlow::Break(0)
+@@ -183,7 +183,7 @@ pub(self) fn read(&mut self, offset: RegisterOffset) -> ControlFlow<u32, u32> {
+                     self.flags.set_receive_fifo_empty(true);
+                 }
+                 if self.read_count + 1 == self.read_trigger {
+-                    self.int_level &= !registers::INT_RX;
++                    self.int_level &= !Interrupt::RX.0;
+                 }
+                 // Update error bits.
+                 self.receive_status_error_clear.set_from_data(c);
+@@ -232,7 +232,7 @@ pub(self) fn write(
+                 }
+                 // interrupts always checked
+                 let _ = self.loopback_tx(value);
+-                self.int_level |= registers::INT_TX;
++                self.int_level |= Interrupt::TX.0;
+                 return true;
              }
--            Ok(field) => match regs.read(field) {
-+            Ok(field) => match self.regs.borrow_mut().read(field) {
-                 ControlFlow::Break(value) => ControlFlow::Break(value.into()),
-                 ControlFlow::Continue(value) => {
-                     self.update();
-@@ -552,7 +552,7 @@ pub fn read(&mut self, offset: hwaddr, _size: u32) -> ControlFlow<u64, u64> {
-     }
+             RSR => {
+@@ -356,19 +356,19 @@ fn loopback_mdmctrl(&mut self) -> bool {
+         // Change interrupts based on updated FR
+         let mut il = self.int_level;
  
-     pub fn write(&mut self, offset: hwaddr, value: u64) {
--        let regs = &mut self.regs;
-+        let mut regs = self.regs.borrow_mut();
-         if let Ok(field) = RegisterOffset::try_from(offset) {
-             if regs.write(field, value as u32, &mut self.char_backend) {
-                 self.update();
-@@ -564,19 +564,19 @@ pub fn write(&mut self, offset: hwaddr, value: u64) {
+-        il &= !Interrupt::MS;
++        il &= !Interrupt::MS.0;
  
-     pub fn can_receive(&self) -> bool {
-         // trace_pl011_can_receive(s->lcr, s->read_count, r);
--        let regs = &self.regs;
-+        let regs = self.regs.borrow();
-         regs.read_count < regs.fifo_depth()
-     }
- 
--    pub fn receive(&mut self, ch: u32) {
--        let regs = &mut self.regs;
-+    pub fn receive(&self, ch: u32) {
-+        let mut regs = self.regs.borrow_mut();
-         if !regs.loopback_enabled() && regs.put_fifo(ch) {
-             self.update();
+         if self.flags.data_set_ready() {
+-            il |= Interrupt::DSR as u32;
++            il |= Interrupt::DSR.0;
          }
-     }
- 
--    pub fn event(&mut self, event: QEMUChrEvent) {
--        let regs = &mut self.regs;
-+    pub fn event(&self, event: QEMUChrEvent) {
-+        let mut regs = self.regs.borrow_mut();
-         if event == bindings::QEMUChrEvent::CHR_EVENT_BREAK && !regs.loopback_enabled() {
-             let update = regs.put_fifo(registers::Data::BREAK.into());
-             if update {
-@@ -603,19 +603,19 @@ pub fn realize(&mut self) {
-     }
- 
-     pub fn reset(&mut self) {
--        self.regs.reset();
-+        self.regs.borrow_mut().reset();
-     }
- 
-     pub fn update(&self) {
--        let regs = &self.regs;
-+        let regs = self.regs.borrow();
-         let flags = regs.int_level & regs.int_enabled;
-         for (irq, i) in self.interrupts.iter().zip(IRQMASK) {
-             irq.set(flags & i != 0);
+         if self.flags.data_carrier_detect() {
+-            il |= Interrupt::DCD as u32;
++            il |= Interrupt::DCD.0;
          }
-     }
- 
--    pub fn post_load(&mut self, _version_id: u32) -> Result<(), ()> {
--        self.regs.post_load()
-+    pub fn post_load(&self, _version_id: u32) -> Result<(), ()> {
-+        self.regs.borrow_mut().post_load()
-     }
- }
- 
-@@ -657,10 +657,10 @@ pub fn post_load(&mut self, _version_id: u32) -> Result<(), ()> {
- pub unsafe extern "C" fn pl011_receive(opaque: *mut c_void, buf: *const u8, size: c_int) {
-     unsafe {
-         debug_assert!(!opaque.is_null());
--        let mut state = NonNull::new_unchecked(opaque.cast::<PL011State>());
-+        let state = NonNull::new_unchecked(opaque.cast::<PL011State>());
-         if size > 0 {
-             debug_assert!(!buf.is_null());
--            state.as_mut().receive(u32::from(buf.read_volatile()));
-+            state.as_ref().receive(u32::from(buf.read_volatile()));
+         if self.flags.clear_to_send() {
+-            il |= Interrupt::CTS as u32;
++            il |= Interrupt::CTS.0;
          }
+         if self.flags.ring_indicator() {
+-            il |= Interrupt::RI as u32;
++            il |= Interrupt::RI.0;
+         }
+         self.int_level = il;
+         true
+@@ -446,7 +446,7 @@ pub fn put_fifo(&mut self, value: u32) -> bool {
+         }
+ 
+         if self.read_count == self.read_trigger {
+-            self.int_level |= registers::INT_RX;
++            self.int_level |= Interrupt::RX.0;
+             return true;
+         }
+         false
+@@ -622,16 +622,16 @@ pub fn post_load(&self, _version_id: u32) -> Result<(), ()> {
+ /// Which bits in the interrupt status matter for each outbound IRQ line ?
+ const IRQMASK: [u32; 6] = [
+     /* combined IRQ */
+-    Interrupt::E
+-        | Interrupt::MS
+-        | Interrupt::RT as u32
+-        | Interrupt::TX as u32
+-        | Interrupt::RX as u32,
+-    Interrupt::RX as u32,
+-    Interrupt::TX as u32,
+-    Interrupt::RT as u32,
+-    Interrupt::MS,
+-    Interrupt::E,
++    Interrupt::E.0
++        | Interrupt::MS.0
++        | Interrupt::RT.0
++        | Interrupt::TX.0
++        | Interrupt::RX.0,
++    Interrupt::RX.0,
++    Interrupt::TX.0,
++    Interrupt::RT.0,
++    Interrupt::MS.0,
++    Interrupt::E.0,
+ ];
+ 
+ /// # Safety
+diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
+index 2baacba2306..300c732ae1d 100644
+--- a/rust/hw/char/pl011/src/lib.rs
++++ b/rust/hw/char/pl011/src/lib.rs
+@@ -100,7 +100,6 @@ enum RegisterOffset {
+     //Reserved = 0x04C,
+ }
+ 
+-#[allow(dead_code)]
+ mod registers {
+     //! Device registers exposed as typed structs which are backed by arbitrary
+     //! integer bitmaps. [`Data`], [`Control`], [`LineControl`], etc.
+@@ -521,38 +520,23 @@ fn default() -> Self {
+     }
+ 
+     /// Interrupt status bits in UARTRIS, UARTMIS, UARTIMSC
+-    pub const INT_OE: u32 = 1 << 10;
+-    pub const INT_BE: u32 = 1 << 9;
+-    pub const INT_PE: u32 = 1 << 8;
+-    pub const INT_FE: u32 = 1 << 7;
+-    pub const INT_RT: u32 = 1 << 6;
+-    pub const INT_TX: u32 = 1 << 5;
+-    pub const INT_RX: u32 = 1 << 4;
+-    pub const INT_DSR: u32 = 1 << 3;
+-    pub const INT_DCD: u32 = 1 << 2;
+-    pub const INT_CTS: u32 = 1 << 1;
+-    pub const INT_RI: u32 = 1 << 0;
+-    pub const INT_E: u32 = INT_OE | INT_BE | INT_PE | INT_FE;
+-    pub const INT_MS: u32 = INT_RI | INT_DSR | INT_DCD | INT_CTS;
+-
+-    #[repr(u32)]
+-    pub enum Interrupt {
+-        OE = 1 << 10,
+-        BE = 1 << 9,
+-        PE = 1 << 8,
+-        FE = 1 << 7,
+-        RT = 1 << 6,
+-        TX = 1 << 5,
+-        RX = 1 << 4,
+-        DSR = 1 << 3,
+-        DCD = 1 << 2,
+-        CTS = 1 << 1,
+-        RI = 1 << 0,
+-    }
++    pub struct Interrupt(pub u32);
+ 
+     impl Interrupt {
+-        pub const E: u32 = INT_OE | INT_BE | INT_PE | INT_FE;
+-        pub const MS: u32 = INT_RI | INT_DSR | INT_DCD | INT_CTS;
++        pub const OE: Self = Self(1 << 10);
++        pub const BE: Self = Self(1 << 9);
++        pub const PE: Self = Self(1 << 8);
++        pub const FE: Self = Self(1 << 7);
++        pub const RT: Self = Self(1 << 6);
++        pub const TX: Self = Self(1 << 5);
++        pub const RX: Self = Self(1 << 4);
++        pub const DSR: Self = Self(1 << 3);
++        pub const DCD: Self = Self(1 << 2);
++        pub const CTS: Self = Self(1 << 1);
++        pub const RI: Self = Self(1 << 0);
++
++        pub const E: Self = Self(Self::OE.0 | Self::BE.0 | Self::PE.0 | Self::FE.0);
++        pub const MS: Self = Self(Self::RI.0 | Self::DSR.0 | Self::DCD.0 | Self::CTS.0);
      }
  }
-@@ -673,8 +673,8 @@ pub fn post_load(&mut self, _version_id: u32) -> Result<(), ()> {
- pub unsafe extern "C" fn pl011_event(opaque: *mut c_void, event: QEMUChrEvent) {
-     unsafe {
-         debug_assert!(!opaque.is_null());
--        let mut state = NonNull::new_unchecked(opaque.cast::<PL011State>());
--        state.as_mut().event(event)
-+        let state = NonNull::new_unchecked(opaque.cast::<PL011State>());
-+        state.as_ref().event(event)
-     }
- }
  
-@@ -700,7 +700,7 @@ pub fn post_load(&mut self, _version_id: u32) -> Result<(), ()> {
- }
- 
- #[repr(C)]
--#[derive(Debug, qemu_api_macros::Object)]
-+#[derive(qemu_api_macros::Object)]
- /// PL011 Luminary device model.
- pub struct PL011Luminary {
-     parent_obj: ParentField<PL011State>,
-diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
-index e25645ceb0d..06178778a8e 100644
---- a/rust/hw/char/pl011/src/device_class.rs
-+++ b/rust/hw/char/pl011/src/device_class.rs
-@@ -6,7 +6,7 @@
- use std::os::raw::{c_int, c_void};
- 
- use qemu_api::{
--    bindings::*, c_str, vmstate_clock, vmstate_fields, vmstate_of, vmstate_struct,
-+    bindings::*, c_str, prelude::*, vmstate_clock, vmstate_fields, vmstate_of, vmstate_struct,
-     vmstate_subsections, vmstate_unused, zeroable::Zeroable,
- };
- 
-@@ -35,8 +35,8 @@ extern "C" fn pl011_clock_needed(opaque: *mut c_void) -> bool {
- extern "C" fn pl011_post_load(opaque: *mut c_void, version_id: c_int) -> c_int {
-     unsafe {
-         debug_assert!(!opaque.is_null());
--        let mut state = NonNull::new_unchecked(opaque.cast::<PL011State>());
--        let result = state.as_mut().post_load(version_id as u32);
-+        let state = NonNull::new_unchecked(opaque.cast::<PL011State>());
-+        let result = state.as_ref().post_load(version_id as u32);
-         if result.is_err() {
-             -1
-         } else {
-@@ -76,7 +76,7 @@ extern "C" fn pl011_post_load(opaque: *mut c_void, version_id: c_int) -> c_int {
-     post_load: Some(pl011_post_load),
-     fields: vmstate_fields! {
-         vmstate_unused!(core::mem::size_of::<u32>()),
--        vmstate_struct!(PL011State, regs, &VMSTATE_PL011_REGS, PL011Registers),
-+        vmstate_struct!(PL011State, regs, &VMSTATE_PL011_REGS, BqlRefCell<PL011Registers>),
-     },
-     subsections: vmstate_subsections! {
-         VMSTATE_PL011_CLOCK
-diff --git a/rust/hw/char/pl011/src/memory_ops.rs b/rust/hw/char/pl011/src/memory_ops.rs
-index c4e8599ba43..8f66c8d492c 100644
---- a/rust/hw/char/pl011/src/memory_ops.rs
-+++ b/rust/hw/char/pl011/src/memory_ops.rs
-@@ -26,7 +26,7 @@
- unsafe extern "C" fn pl011_read(opaque: *mut c_void, addr: hwaddr, size: c_uint) -> u64 {
-     assert!(!opaque.is_null());
-     let mut state = unsafe { NonNull::new_unchecked(opaque.cast::<PL011State>()) };
--    let val = unsafe { state.as_mut().read(addr, size) };
-+    let val = unsafe { state.as_mut() }.read(addr, size);
-     match val {
-         std::ops::ControlFlow::Break(val) => val,
-         std::ops::ControlFlow::Continue(val) => {
 -- 
 2.47.1
 
