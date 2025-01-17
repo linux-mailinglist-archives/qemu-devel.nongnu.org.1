@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF7FAA156B8
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:33:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E0D1A15690
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:29:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYr28-0004A9-C6; Fri, 17 Jan 2025 13:25:28 -0500
+	id 1tYr2G-0004Ag-Mq; Fri, 17 Jan 2025 13:25:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr24-00048s-AV
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:24 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1tYr27-00049o-Fx
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:27 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr21-0007tt-Uv
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:24 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-21654fdd5daso44792115ad.1
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:25:21 -0800 (PST)
+ id 1tYr23-0007uA-It
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:25 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-2166f1e589cso61674395ad.3
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:25:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737138320; x=1737743120; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737138321; x=1737743121; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hCUX/DPDGPc0y6F9MMMJg3Ro6007rNQHHQot/Hz+zUg=;
- b=G+IWmvYEEYLi4ZfBNnBfARRXXpE7QNjgIuUhyxqqCkbtAZhOWrZmdhEv7ezL7p8ko6
- YAb/Z/Q8SUO2KNcJ+2cF4KnUnNHx8Q9QmG1Da1UjJRh3KUZy2ZPACxY7xzKV4YtxBpRo
- cpHiNgaSOsDGVGjKHpmBv8CiO6WJqYzoGuP4Bh9MB5CsWLNBVdFr5HArC/UaDi+uJNaz
- yMQR3YrQEHC2R2rrTxDzMYjKBmfVKacM3ztl4mQ/fALGqV57q+CEUaMQ+YFLX0xbx1pp
- qtMYs44/70ydwup7fm1sqCbDOb24tjJ+tEYyI4Du6AZBsXJ9Fp+P6eY1kX++ff1BprIJ
- pnPw==
+ bh=IxMn5wJHRN3fIBCSyLsUosuOZgtHeKHyf3XHFjAQWv0=;
+ b=SUjk52X9Pg6mkAadYru6UctC223wShlaHNfiUbnVocZohP9J50zclBK8tyCM3xz86i
+ CrIA1jjaN3S5v1SdQFZHHNbDZa+7xdL+C0NZohf4b6YYALCLd8JCcD67FXoXqmDtAAOO
+ VCXThrYa/CZ0L012ZpIj4KRA7Otnee2CutFZUhU+DWnOUH4scX3ULtgoJRQxE0h0LYkE
+ +baSn/LqzWS515MdQjl9SFAO0TGoMQZEyLRFm7lYLdkkemeBIcQ7ZFo0MY8GqyyZwygA
+ 1S5OVO48ZUbZER+oOeaJl3YbxiqsW0opaqxRgGtgq9qpVLMcCy8SIKcS10z+pNM9FE12
+ UlTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737138320; x=1737743120;
+ d=1e100.net; s=20230601; t=1737138321; x=1737743121;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hCUX/DPDGPc0y6F9MMMJg3Ro6007rNQHHQot/Hz+zUg=;
- b=TfU6J2mccZEQ+IdbgI2UwInX2ZgGPGFa65Th3KbjXwrOsfciJ1zqwfPj5kd2uVFmeh
- OusvxfKK85YOL+vi35Qkm7WyrET8NEC1h3uwGgZn+yAyVn76hj0s3r9zk7IeOufcTxwo
- 0Gzld/fIHDV2IeBcrpA7vKDgIb2Afjr3gGf004FUYPA5pvXn1wSxNn9jbzHv1u88ObyE
- 7meTJlQY13nrY50UfK5xJy3efTNgNTsyDDT0JjrOLjttf4gWQCzrkuGiZOuHxmLJJGp8
- qso+zZNcxGL8x0w2KhjyTid+5G4ow/+gDenDc5MLQA/inHUbm40jqcih8AkC/MoMFKZ4
- NSsA==
-X-Gm-Message-State: AOJu0Yxv4fRzzp6Zk4T2RLWY2FVprnDwVoLvlXAY8EiQqaG0Z0f8nuqp
- ks6d3WFDAkWWfmWbu896upOnp0Rw5MCBAQ3GhBYLPnjON0L/6gFoGlbusMJOrzzz5lnlQzZINDa
- b
-X-Gm-Gg: ASbGncu0hoUqZlDTG72zXTmuStqIXZF1NUxW2QhNX2hskVX7+qSvif7UnUfSB+0OECq
- /U60dNP3zcRo7QFrtY62EH+mpBzl/TgT/fVldTb1/hIbe6yC/0Nm++3Kc6Cnatup6EAFkWsoeVx
- buLrZY6QmeIXAF6uc4PTgvBMTYRBA6iSBcNPmpmjJnHyN7BMz6na245NdYcH2lHXoL7kjg3zeeA
- GCxr3IVYtfQisCx0aJeine1h4mb6lfnRka15caKAed9s2rR0Uwn9ZpGBlQ7GYclLEM9TOgtkaTE
- RxfaTVF7op51+LY=
-X-Google-Smtp-Source: AGHT+IHyGIDxjpFnAZM6bkQ1ow/N9PLwCgePA1U7AJIn43Kxa0uVbEO+QeGsJzuu77I0VcpmdKqdgw==
-X-Received: by 2002:a17:902:cf01:b0:215:94e0:17 with SMTP id
- d9443c01a7336-21c35530228mr57777795ad.23.1737138320285; 
- Fri, 17 Jan 2025 10:25:20 -0800 (PST)
+ bh=IxMn5wJHRN3fIBCSyLsUosuOZgtHeKHyf3XHFjAQWv0=;
+ b=HVKXupYyXNpgXu8mjMRmGJRLcEQQjlY3vu4JDHcZxSheS9Lzqszl8lGJCO/V6+2ijd
+ u+VsYtj9+CYgLZ3ux6jwUqV96Op2Q+IeCEpANoSeritT8gzZMjAPiTBN/KzoxVieiDgc
+ +aFO92XYBTPRTXwcZoB1WIe7xUfwuMW3IlqVnogwewfyGg1j0CYWWjzXU5dev+se1DPR
+ gXr+x0LOadCFJZWIZGqCDzAm9jIE5kKdqQPeqRprMcgJNGz/C/UuSKfmctTpN5bOynVd
+ IehxOSHv9JpAQkZ+UlyhMUbDmiuYVgaTM2rbxyxc1si7pDECKbuust7mC8rIcVUJf6mN
+ W9eg==
+X-Gm-Message-State: AOJu0Yw1bdvnpoTOD+TbG7/UBZ1ny/hOExr/2NDt/cIPU/iRWFcc3uyO
+ ZYavpCowCIdUv3oxXxFRk+FfNP/PrKeYJslQqrU8J0qqx8sntcVJRAXUg8jOVLHEc5zEx9Gm8lS
+ r
+X-Gm-Gg: ASbGncvv5nBdjRnfNTb1wMQdbj2jIfksTMwWAR3UoykvIOa6X/kXo0BPXW46SYVd2f9
+ I7YcVjUzF7IyNOtAyNlPlPHicJJDjB8wNlgAgjuyux8hngPET+R8kVb4HcVnDa94jykb8pQgKGA
+ nHSwyYDb5k+RjvaDO/QlkWfAFhv6/jKtDll6fDqViPQ1ctTzGZODFA8FDUb1WE0WpWsSjJ/bXiK
+ OapsJ6iBlwPijeEgocfK9d3XIDWbtpCWczpAwq2fY/hTtZn2bpSXg/zP7utPILWIiauSEBvCxUP
+ sWYx8gohNeG8gwA=
+X-Google-Smtp-Source: AGHT+IHwKJaMB8InW6WVATXxSB89YoSFtfvwSX6PxhL3vC3/5DSkCdkEvoAKNSoo8zttqqwxZhJNIQ==
+X-Received: by 2002:a17:903:244f:b0:216:643a:535a with SMTP id
+ d9443c01a7336-21c355c7c15mr46382745ad.20.1737138321177; 
+ Fri, 17 Jan 2025 10:25:21 -0800 (PST)
 Received: from stoup.. (174-21-71-127.tukw.qwest.net. [174.21.71.127])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21c2d3acccesm18879005ad.123.2025.01.17.10.25.19
+ d9443c01a7336-21c2d3acccesm18879005ad.123.2025.01.17.10.25.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 10:25:19 -0800 (PST)
+ Fri, 17 Jan 2025 10:25:20 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 30/68] tcg/tci: Extract TCG_TARGET_HAS_foo defs to
- 'tcg-target-has.h'
-Date: Fri, 17 Jan 2025 10:24:18 -0800
-Message-ID: <20250117182456.2077110-31-richard.henderson@linaro.org>
+Subject: [PULL 31/68] tcg: Include 'tcg-target-has.h' once in 'tcg-has.h'
+Date: Fri, 17 Jan 2025 10:24:19 -0800
+Message-ID: <20250117182456.2077110-32-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250117182456.2077110-1-richard.henderson@linaro.org>
 References: <20250117182456.2077110-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,188 +100,164 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250108215156.8731-13-philmd@linaro.org>
+Message-ID: <20250108215156.8731-14-philmd@linaro.org>
 ---
- tcg/tci/tcg-target-has.h | 83 ++++++++++++++++++++++++++++++++++++++++
- tcg/tci/tcg-target.h     | 75 +-----------------------------------
- 2 files changed, 84 insertions(+), 74 deletions(-)
- create mode 100644 tcg/tci/tcg-target-has.h
+ tcg/aarch64/tcg-target.h     | 2 --
+ tcg/arm/tcg-target.h         | 2 --
+ tcg/i386/tcg-target.h        | 2 --
+ tcg/loongarch64/tcg-target.h | 2 --
+ tcg/mips/tcg-target.h        | 2 --
+ tcg/ppc/tcg-target.h         | 2 --
+ tcg/riscv/tcg-target.h       | 2 --
+ tcg/s390x/tcg-target.h       | 2 --
+ tcg/sparc64/tcg-target.h     | 2 --
+ tcg/tcg-has.h                | 2 ++
+ tcg/tci/tcg-target.h         | 2 --
+ 11 files changed, 2 insertions(+), 20 deletions(-)
 
-diff --git a/tcg/tci/tcg-target-has.h b/tcg/tci/tcg-target-has.h
-new file mode 100644
-index 0000000000..3397403910
---- /dev/null
-+++ b/tcg/tci/tcg-target-has.h
-@@ -0,0 +1,83 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Define target-specific opcode support
-+ * Copyright (c) 2009, 2011 Stefan Weil
-+ */
+diff --git a/tcg/aarch64/tcg-target.h b/tcg/aarch64/tcg-target.h
+index 9a682e51a4..1ef8b2e300 100644
+--- a/tcg/aarch64/tcg-target.h
++++ b/tcg/aarch64/tcg-target.h
+@@ -47,8 +47,6 @@ typedef enum {
+ 
+ #define TCG_TARGET_NB_REGS 64
+ 
+-#include "tcg-target-has.h"
+-
+ #define TCG_TARGET_DEFAULT_MO (0)
+ 
+ #endif /* AARCH64_TCG_TARGET_H */
+diff --git a/tcg/arm/tcg-target.h b/tcg/arm/tcg-target.h
+index e114f7ddf4..21563e00f9 100644
+--- a/tcg/arm/tcg-target.h
++++ b/tcg/arm/tcg-target.h
+@@ -70,8 +70,6 @@ typedef enum {
+ 
+ #define TCG_TARGET_NB_REGS 32
+ 
+-#include "tcg-target-has.h"
+-
+ #define TCG_TARGET_DEFAULT_MO (0)
+ 
+ #endif
+diff --git a/tcg/i386/tcg-target.h b/tcg/i386/tcg-target.h
+index a1dfdeb28d..e6d7fd526e 100644
+--- a/tcg/i386/tcg-target.h
++++ b/tcg/i386/tcg-target.h
+@@ -88,8 +88,6 @@ typedef enum {
+     TCG_REG_CALL_STACK = TCG_REG_ESP
+ } TCGReg;
+ 
+-#include "tcg-target-has.h"
+-
+ /* This defines the natural memory order supported by this
+  * architecture before guarantees made by various barrier
+  * instructions.
+diff --git a/tcg/loongarch64/tcg-target.h b/tcg/loongarch64/tcg-target.h
+index a3a6130720..0432a4ebbd 100644
+--- a/tcg/loongarch64/tcg-target.h
++++ b/tcg/loongarch64/tcg-target.h
+@@ -85,8 +85,6 @@ typedef enum {
+     TCG_VEC_TMP0 = TCG_REG_V23,
+ } TCGReg;
+ 
+-#include "tcg-target-has.h"
+-
+ #define TCG_TARGET_DEFAULT_MO (0)
+ 
+ #endif /* LOONGARCH_TCG_TARGET_H */
+diff --git a/tcg/mips/tcg-target.h b/tcg/mips/tcg-target.h
+index a34765b389..210044ca12 100644
+--- a/tcg/mips/tcg-target.h
++++ b/tcg/mips/tcg-target.h
+@@ -70,8 +70,6 @@ typedef enum {
+     TCG_AREG0 = TCG_REG_S8,
+ } TCGReg;
+ 
+-#include "tcg-target-has.h"
+-
+ #define TCG_TARGET_DEFAULT_MO           0
+ 
+ #endif
+diff --git a/tcg/ppc/tcg-target.h b/tcg/ppc/tcg-target.h
+index fa2cc28183..0bc13d7363 100644
+--- a/tcg/ppc/tcg-target.h
++++ b/tcg/ppc/tcg-target.h
+@@ -53,8 +53,6 @@ typedef enum {
+     TCG_AREG0 = TCG_REG_R27
+ } TCGReg;
+ 
+-#include "tcg-target-has.h"
+-
+ #define TCG_TARGET_DEFAULT_MO (0)
+ 
+ #endif
+diff --git a/tcg/riscv/tcg-target.h b/tcg/riscv/tcg-target.h
+index c710321bdb..4c40662402 100644
+--- a/tcg/riscv/tcg-target.h
++++ b/tcg/riscv/tcg-target.h
+@@ -57,8 +57,6 @@ typedef enum {
+     TCG_REG_TMP2       = TCG_REG_T4,
+ } TCGReg;
+ 
+-#include "tcg-target-has.h"
+-
+ #define TCG_TARGET_DEFAULT_MO (0)
+ 
+ #endif
+diff --git a/tcg/s390x/tcg-target.h b/tcg/s390x/tcg-target.h
+index 220ed68b1f..f790b77075 100644
+--- a/tcg/s390x/tcg-target.h
++++ b/tcg/s390x/tcg-target.h
+@@ -51,8 +51,6 @@ typedef enum TCGReg {
+ 
+ #define TCG_TARGET_NB_REGS 64
+ 
+-#include "tcg-target-has.h"
+-
+ #define TCG_TARGET_DEFAULT_MO (TCG_MO_ALL & ~TCG_MO_ST_LD)
+ 
+ #endif
+diff --git a/tcg/sparc64/tcg-target.h b/tcg/sparc64/tcg-target.h
+index 1462144631..5ecca5586b 100644
+--- a/tcg/sparc64/tcg-target.h
++++ b/tcg/sparc64/tcg-target.h
+@@ -66,8 +66,6 @@ typedef enum {
+ 
+ #define TCG_AREG0 TCG_REG_I0
+ 
+-#include "tcg-target-has.h"
+-
+ #define TCG_TARGET_DEFAULT_MO (0)
+ 
+ #endif
+diff --git a/tcg/tcg-has.h b/tcg/tcg-has.h
+index c09ce13389..65b6a0b0cf 100644
+--- a/tcg/tcg-has.h
++++ b/tcg/tcg-has.h
+@@ -7,6 +7,8 @@
+ #ifndef TCG_HAS_H
+ #define TCG_HAS_H
+ 
++#include "tcg-target-has.h"
 +
-+#ifndef TCG_TARGET_HAS_H
-+#define TCG_TARGET_HAS_H
-+
-+#define TCG_TARGET_HAS_bswap16_i32      1
-+#define TCG_TARGET_HAS_bswap32_i32      1
-+#define TCG_TARGET_HAS_div_i32          1
-+#define TCG_TARGET_HAS_rem_i32          1
-+#define TCG_TARGET_HAS_ext8s_i32        1
-+#define TCG_TARGET_HAS_ext16s_i32       1
-+#define TCG_TARGET_HAS_ext8u_i32        1
-+#define TCG_TARGET_HAS_ext16u_i32       1
-+#define TCG_TARGET_HAS_andc_i32         1
-+#define TCG_TARGET_HAS_deposit_i32      1
-+#define TCG_TARGET_HAS_extract_i32      1
-+#define TCG_TARGET_HAS_sextract_i32     1
-+#define TCG_TARGET_HAS_extract2_i32     0
-+#define TCG_TARGET_HAS_eqv_i32          1
-+#define TCG_TARGET_HAS_nand_i32         1
-+#define TCG_TARGET_HAS_nor_i32          1
-+#define TCG_TARGET_HAS_clz_i32          1
-+#define TCG_TARGET_HAS_ctz_i32          1
-+#define TCG_TARGET_HAS_ctpop_i32        1
-+#define TCG_TARGET_HAS_not_i32          1
-+#define TCG_TARGET_HAS_orc_i32          1
-+#define TCG_TARGET_HAS_rot_i32          1
-+#define TCG_TARGET_HAS_negsetcond_i32   0
-+#define TCG_TARGET_HAS_muls2_i32        1
-+#define TCG_TARGET_HAS_muluh_i32        0
-+#define TCG_TARGET_HAS_mulsh_i32        0
-+#define TCG_TARGET_HAS_qemu_st8_i32     0
-+
-+#if TCG_TARGET_REG_BITS == 64
-+#define TCG_TARGET_HAS_extr_i64_i32     0
-+#define TCG_TARGET_HAS_bswap16_i64      1
-+#define TCG_TARGET_HAS_bswap32_i64      1
-+#define TCG_TARGET_HAS_bswap64_i64      1
-+#define TCG_TARGET_HAS_deposit_i64      1
-+#define TCG_TARGET_HAS_extract_i64      1
-+#define TCG_TARGET_HAS_sextract_i64     1
-+#define TCG_TARGET_HAS_extract2_i64     0
-+#define TCG_TARGET_HAS_div_i64          1
-+#define TCG_TARGET_HAS_rem_i64          1
-+#define TCG_TARGET_HAS_ext8s_i64        1
-+#define TCG_TARGET_HAS_ext16s_i64       1
-+#define TCG_TARGET_HAS_ext32s_i64       1
-+#define TCG_TARGET_HAS_ext8u_i64        1
-+#define TCG_TARGET_HAS_ext16u_i64       1
-+#define TCG_TARGET_HAS_ext32u_i64       1
-+#define TCG_TARGET_HAS_andc_i64         1
-+#define TCG_TARGET_HAS_eqv_i64          1
-+#define TCG_TARGET_HAS_nand_i64         1
-+#define TCG_TARGET_HAS_nor_i64          1
-+#define TCG_TARGET_HAS_clz_i64          1
-+#define TCG_TARGET_HAS_ctz_i64          1
-+#define TCG_TARGET_HAS_ctpop_i64        1
-+#define TCG_TARGET_HAS_not_i64          1
-+#define TCG_TARGET_HAS_orc_i64          1
-+#define TCG_TARGET_HAS_rot_i64          1
-+#define TCG_TARGET_HAS_negsetcond_i64   0
-+#define TCG_TARGET_HAS_muls2_i64        1
-+#define TCG_TARGET_HAS_add2_i32         1
-+#define TCG_TARGET_HAS_sub2_i32         1
-+#define TCG_TARGET_HAS_mulu2_i32        1
-+#define TCG_TARGET_HAS_add2_i64         1
-+#define TCG_TARGET_HAS_sub2_i64         1
-+#define TCG_TARGET_HAS_mulu2_i64        1
-+#define TCG_TARGET_HAS_muluh_i64        0
-+#define TCG_TARGET_HAS_mulsh_i64        0
-+#else
-+#define TCG_TARGET_HAS_mulu2_i32        1
-+#endif /* TCG_TARGET_REG_BITS == 64 */
-+
-+#define TCG_TARGET_HAS_qemu_ldst_i128   0
-+
-+#define TCG_TARGET_HAS_tst              1
-+
-+#endif
+ #if TCG_TARGET_REG_BITS == 32
+ /* Turn some undef macros into false macros.  */
+ #define TCG_TARGET_HAS_extr_i64_i32     0
 diff --git a/tcg/tci/tcg-target.h b/tcg/tci/tcg-target.h
-index d7650343a3..899d9861a6 100644
+index 899d9861a6..fea92f7848 100644
 --- a/tcg/tci/tcg-target.h
 +++ b/tcg/tci/tcg-target.h
-@@ -44,80 +44,7 @@
+@@ -44,8 +44,6 @@
  #define TCG_TARGET_INSN_UNIT_SIZE 4
  #define MAX_CODE_GEN_BUFFER_SIZE  ((size_t)-1)
  
--/* Optional instructions. */
+-#include "tcg-target-has.h"
 -
--#define TCG_TARGET_HAS_bswap16_i32      1
--#define TCG_TARGET_HAS_bswap32_i32      1
--#define TCG_TARGET_HAS_div_i32          1
--#define TCG_TARGET_HAS_rem_i32          1
--#define TCG_TARGET_HAS_ext8s_i32        1
--#define TCG_TARGET_HAS_ext16s_i32       1
--#define TCG_TARGET_HAS_ext8u_i32        1
--#define TCG_TARGET_HAS_ext16u_i32       1
--#define TCG_TARGET_HAS_andc_i32         1
--#define TCG_TARGET_HAS_deposit_i32      1
--#define TCG_TARGET_HAS_extract_i32      1
--#define TCG_TARGET_HAS_sextract_i32     1
--#define TCG_TARGET_HAS_extract2_i32     0
--#define TCG_TARGET_HAS_eqv_i32          1
--#define TCG_TARGET_HAS_nand_i32         1
--#define TCG_TARGET_HAS_nor_i32          1
--#define TCG_TARGET_HAS_clz_i32          1
--#define TCG_TARGET_HAS_ctz_i32          1
--#define TCG_TARGET_HAS_ctpop_i32        1
--#define TCG_TARGET_HAS_not_i32          1
--#define TCG_TARGET_HAS_orc_i32          1
--#define TCG_TARGET_HAS_rot_i32          1
--#define TCG_TARGET_HAS_negsetcond_i32   0
--#define TCG_TARGET_HAS_muls2_i32        1
--#define TCG_TARGET_HAS_muluh_i32        0
--#define TCG_TARGET_HAS_mulsh_i32        0
--#define TCG_TARGET_HAS_qemu_st8_i32     0
--
--#if TCG_TARGET_REG_BITS == 64
--#define TCG_TARGET_HAS_extr_i64_i32     0
--#define TCG_TARGET_HAS_bswap16_i64      1
--#define TCG_TARGET_HAS_bswap32_i64      1
--#define TCG_TARGET_HAS_bswap64_i64      1
--#define TCG_TARGET_HAS_deposit_i64      1
--#define TCG_TARGET_HAS_extract_i64      1
--#define TCG_TARGET_HAS_sextract_i64     1
--#define TCG_TARGET_HAS_extract2_i64     0
--#define TCG_TARGET_HAS_div_i64          1
--#define TCG_TARGET_HAS_rem_i64          1
--#define TCG_TARGET_HAS_ext8s_i64        1
--#define TCG_TARGET_HAS_ext16s_i64       1
--#define TCG_TARGET_HAS_ext32s_i64       1
--#define TCG_TARGET_HAS_ext8u_i64        1
--#define TCG_TARGET_HAS_ext16u_i64       1
--#define TCG_TARGET_HAS_ext32u_i64       1
--#define TCG_TARGET_HAS_andc_i64         1
--#define TCG_TARGET_HAS_eqv_i64          1
--#define TCG_TARGET_HAS_nand_i64         1
--#define TCG_TARGET_HAS_nor_i64          1
--#define TCG_TARGET_HAS_clz_i64          1
--#define TCG_TARGET_HAS_ctz_i64          1
--#define TCG_TARGET_HAS_ctpop_i64        1
--#define TCG_TARGET_HAS_not_i64          1
--#define TCG_TARGET_HAS_orc_i64          1
--#define TCG_TARGET_HAS_rot_i64          1
--#define TCG_TARGET_HAS_negsetcond_i64   0
--#define TCG_TARGET_HAS_muls2_i64        1
--#define TCG_TARGET_HAS_add2_i32         1
--#define TCG_TARGET_HAS_sub2_i32         1
--#define TCG_TARGET_HAS_mulu2_i32        1
--#define TCG_TARGET_HAS_add2_i64         1
--#define TCG_TARGET_HAS_sub2_i64         1
--#define TCG_TARGET_HAS_mulu2_i64        1
--#define TCG_TARGET_HAS_muluh_i64        0
--#define TCG_TARGET_HAS_mulsh_i64        0
--#else
--#define TCG_TARGET_HAS_mulu2_i32        1
--#endif /* TCG_TARGET_REG_BITS == 64 */
--
--#define TCG_TARGET_HAS_qemu_ldst_i128   0
--
--#define TCG_TARGET_HAS_tst              1
-+#include "tcg-target-has.h"
- 
  /* Number of registers available. */
  #define TCG_TARGET_NB_REGS 16
+ 
 -- 
 2.43.0
 
