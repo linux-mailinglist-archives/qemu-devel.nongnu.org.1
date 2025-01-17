@@ -2,62 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B41A14E4B
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 12:18:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90926A14E75
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 12:26:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYkM4-0003zq-M6; Fri, 17 Jan 2025 06:17:36 -0500
+	id 1tYkT5-00071r-MT; Fri, 17 Jan 2025 06:24:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1tYkLp-0003zK-Ti
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 06:17:21 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tYkT2-00071g-Rl
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 06:24:48 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1tYkLm-0002kx-8n
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 06:17:21 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tYkSz-0003Xl-Vi
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 06:24:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737112636;
+ s=mimecast20190719; t=1737113084;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1e1EoMtzClgZuD0WOSRDYZYUPPimek40ubocF2UXxJI=;
- b=TNgciuVyMsgZScUCLrpD3u2eklhblTqHs8PvHuLcLNPePvS5q9lrK9uQgajlcC01KoSGAV
- yXrDaVgaU1hfQ3hgk7K0H/5OeU9suz+NGFuajldxeViUvIiC7OJNUsPZGF4lbUJs3g0CfJ
- dExvJbRFoFiuTtJCyd5u7UoS+UwJ/oQ=
+ bh=5vM9WhxgvuYwcMhLCch7HdF1mcoSgklVIalTHV1MYKU=;
+ b=YBUzyxKpJUglED+imq2eQNYM58+3WKV8odADYv3pRt4QE45PRnuayzxFcu5cytESTQVqVD
+ pEGxGuMk8IRqnhkTeLs5h/5xklb8Hku5cegWr9Xm6XF/9YEGaobYUpF0sKH6k568MReHej
+ ycjsgXuVSM49NiGKR24m0th2S5Fqw54=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-KjCCcHh6N3yaQP7xBfz-uw-1; Fri,
- 17 Jan 2025 06:17:15 -0500
-X-MC-Unique: KjCCcHh6N3yaQP7xBfz-uw-1
-X-Mimecast-MFC-AGG-ID: KjCCcHh6N3yaQP7xBfz-uw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-335-tAqiejv6OSOPCZbdk-cgBw-1; Fri,
+ 17 Jan 2025 06:24:40 -0500
+X-MC-Unique: tAqiejv6OSOPCZbdk-cgBw-1
+X-Mimecast-MFC-AGG-ID: tAqiejv6OSOPCZbdk-cgBw
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ADB3D19560AF
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 11:17:14 +0000 (UTC)
-Received: from lenovo-t14s.redhat.com (unknown [10.39.193.59])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BA4DE195E3E0; Fri, 17 Jan 2025 11:17:13 +0000 (UTC)
-From: Laurent Vivier <lvivier@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 2/2] net/dump: Correctly compute Ethernet packet offset
-Date: Fri, 17 Jan 2025 12:17:09 +0100
-Message-ID: <20250117111709.970789-3-lvivier@redhat.com>
-In-Reply-To: <20250117111709.970789-1-lvivier@redhat.com>
-References: <20250117111709.970789-1-lvivier@redhat.com>
+ id 395671956056; Fri, 17 Jan 2025 11:24:38 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.176])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5ACCF195608A; Fri, 17 Jan 2025 11:24:34 +0000 (UTC)
+Date: Fri, 17 Jan 2025 12:24:31 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Kyle Evans <kevans@freebsd.org>,
+ Hanna Reitz <hreitz@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Warner Losh <imp@bsdimp.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-block@nongnu.org, armbru@redhat.com,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: Re: [PATCH v2] qemu/compiler: Absorb 'clang-tsa.h'
+Message-ID: <Z4o9738w_9vNjVal@redhat.com>
+References: <20250116211111.53961-1-philmd@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250116211111.53961-1-philmd@linaro.org>
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=lvivier@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -82,64 +86,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When a packet is sent with QEMU_NET_PACKET_FLAG_RAW by QEMU it
-never includes virtio-net header even if qemu_get_vnet_hdr_len()
-is not 0, and filter-dump is not managing this case.
+Am 16.01.2025 um 22:11 hat Philippe Mathieu-Daudé geschrieben:
+> We already have "qemu/compiler.h" for compiler-specific arrangements,
+> automatically included by "qemu/osdep.h" for each source file. No
+> need to explicitly include a header for a Clang particularity,
+> let the common "qemu/compiler.h" deal with that by having it
+> include "qemu/clang-tsa.h" (renamed as qemu/clang-tsa.h.inc).
+> Add a check to not include "qemu/clang-tsa.h.inc" directly,
+> remove previous "qemu/clang-tsa.h" inclusions.
+> 
+> Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The only user of QEMU_NET_PACKET_FLAG_RAW is announce_self,
-we can show the problem using it and tcpddump:
+Don't we normally try to reduce the number of header files that need to
+be opened during the build instead of increasing it?
 
-- QEMU parameters:
+Either way, if we do want to do this, the implementation looks correct.
 
-  .. -monitor stdio \
-     -netdev bridge,id=netdev0,br=virbr0 \
-     -device virtio-net,mac=9a:2b:2c:2d:2e:2f,netdev=netdev0 \
-     -object filter-dump,netdev=netdev0,file=log.pcap,id=pcap0
-
-- HMP command:
-
-  (qemu) announce_self
-
-- TCP dump:
-
-  $ tcpdump -nxr log.pcap
-
-  without the fix:
-
-    08:00:06:04:00:03 > 2e:2f:80:35:00:01, ethertype Unknown (0x9a2b), length 50:
-         0x0000:  2c2d 2e2f 0000 0000 9a2b 2c2d 2e2f 0000
-         0x0010:  0000 0000 0000 0000 0000 0000 0000 0000
-         0x0020:  0000 0000
-
-  with the fix:
-
-    ARP, Reverse Request who-is 9a:2b:2c:2d:2e:2f tell 9a:2b:2c:2d:2e:2f, length 46
-         0x0000:  0001 0800 0604 0003 9a2b 2c2d 2e2f 0000
-         0x0010:  0000 9a2b 2c2d 2e2f 0000 0000 0000 0000
-         0x0020:  0000 0000 0000 0000 0000 0000 0000
-
-Fixes: 481c52320a26 ("net: Strip virtio-net header when dumping")
-Cc: akihiko.odaki@daynix.com
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
----
- net/dump.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/dump.c b/net/dump.c
-index d7dd2ce461de..140215aa1054 100644
---- a/net/dump.c
-+++ b/net/dump.c
-@@ -155,7 +155,8 @@ static ssize_t filter_dump_receive_iov(NetFilterState *nf, NetClientState *sndr,
- {
-     NetFilterDumpState *nfds = FILTER_DUMP(nf);
- 
--    dump_receive_iov(&nfds->ds, iov, iovcnt, qemu_get_vnet_hdr_len(nf->netdev));
-+    dump_receive_iov(&nfds->ds, iov, iovcnt, flags & QEMU_NET_PACKET_FLAG_RAW ?
-+                     0 : qemu_get_vnet_hdr_len(nf->netdev));
-     return 0;
- }
- 
--- 
-2.47.1
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 
 
