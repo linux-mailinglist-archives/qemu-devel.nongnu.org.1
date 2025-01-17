@@ -2,80 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF691A14DF1
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 11:50:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 231E7A14E1F
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 12:03:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYjuj-0002qP-To; Fri, 17 Jan 2025 05:49:21 -0500
+	id 1tYk6V-0007IP-F3; Fri, 17 Jan 2025 06:01:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tYjuh-0002pt-Fm
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 05:49:19 -0500
-Received: from mail-vk1-xa30.google.com ([2607:f8b0:4864:20::a30])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tYjuf-0007jh-KU
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 05:49:19 -0500
-Received: by mail-vk1-xa30.google.com with SMTP id
- 71dfb90a1353d-51878d9511bso597145e0c.0
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 02:49:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1737110955; x=1737715755;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=n4NuWJxOx3mu33CTYwEBJSMLzUPzZfqG4RG4jYeLOTo=;
- b=UDczaKdXS013DIsmIlV106rKCAwa37izHBMAN6rUU7RS9M548z6Bcv5+ZtffxTld2Y
- SGf0gSN3U5rfMJXDcQVQxzoekxKaI/k1cCRl0L31EE+HSmyh+4Nsne/dhw1gni/0IjUt
- ac3gnkFmHRUw7tBbY2owWoRcUfrEpLBbLmcTVyOhacPYO36H5/hgvOrHkbfluV6+FxRD
- O/aK2Q/1NJxWb4RqrNtnM8o2lt3iqzf0WWmXGlw2jXJL3zpFB43BpUp/ZrUbshh7iiiq
- opH5NabGbgvGpyQgwcM7W8B1JV0AujhddwEg/3enkrOS9lnzP+UMF3cMd3zIq+B2/uCJ
- XiGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737110955; x=1737715755;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=n4NuWJxOx3mu33CTYwEBJSMLzUPzZfqG4RG4jYeLOTo=;
- b=VaMCggHSE0/roKKBv3P6luaKUYzB5hIHEU8XlPYIuGkAoj8WT3dU5UfdJHFCCw5CDG
- k2QKsh3Pe5AjeMk4D+lSBTpW7XGOkmIFF4DHilcAVmZKw4TUAd4Fw4J/WeOpDi3pg6Jh
- o3GIEWosRMIjCeaWUyrkTAHn7wOrZ24ui/P/r98VwsPttOrYcpIkFt9IuZktcLnTjc//
- pLKW9+7l9bFMJe+0/9idLNJ9tM98lh7ZDDAv3VgEBcBuWdP8Br5lZup5KlXT3vizUwqA
- q54AI3yD4JLgcIxiyomw8mvnpfQ8b/+7s7lwLVyAqJm+g2p7hE5ZLpCt2aw93EtS/aCF
- ToJQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXEqAqT0i7UD38YBSiTp655GA2fXqPpwxiKhJ+L/5v90RkIVWWPVIpOu7DrTCQXaGm85cnVz7yT+noF@nongnu.org
-X-Gm-Message-State: AOJu0YzlFM6lNdhhwoqsFM6hk2tpT9c2DONRLTT2Tei6efpr03J+EFxN
- y++JTPniNJ04Pvus5dcLzakXJEsRo23no+lGrK2aqQjhogG9vwbXJeb/0Xki8MKz9lL5UDSUs84
- /0j1Y9vdLhOFGhlCxUhTfQoiKoqDcywXBWttB
-X-Gm-Gg: ASbGncselkA7Mj8y12qkNmHiNCw725g3CBjDcbMqbpU/o47Iil9g2239ArTrmsVn54G
- e1wGndUa8rWCYw/VMX1JSWpgNHoWEZqYPHsElIQ==
-X-Google-Smtp-Source: AGHT+IH4ij7t2YqNAHp50WuDuwXtNOKzSmwYgrR/K+Rp/DQeORqBQke3IdObKvN6pIfnPmahRiFcdZDdsdqNy3cEnTU=
-X-Received: by 2002:a05:6122:8c3:b0:51c:baa4:122a with SMTP id
- 71dfb90a1353d-51d5b26cb5cmr1328428e0c.5.1737110955435; Fri, 17 Jan 2025
- 02:49:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tYk6N-0007I2-UN
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 06:01:25 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tYk6L-0000mm-Uv
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 06:01:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737111680;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4opUbAhPeDpMc4HGkna32ivLpdJsbrXGWy+UyBGTIUQ=;
+ b=G4RlqmodaXMQJzvM8eGgtmfwFRjiKDjmFL1z8900zSUU4wwcgjKHauJLVZ03jSPmCXIUU+
+ FWpMYpMkl0L9tnlWFDHhg0VqhZBW8Qsg01HfcroOrjcvp9QuBRPey6cRSP9K6yc+2sIiTB
+ DZGHorEuasXEkSMCL4yS5+iwd54EcI4=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-383-X2IQ4hXwPWm2PNw1h8L9cQ-1; Fri,
+ 17 Jan 2025 06:01:13 -0500
+X-MC-Unique: X2IQ4hXwPWm2PNw1h8L9cQ-1
+X-Mimecast-MFC-AGG-ID: X2IQ4hXwPWm2PNw1h8L9cQ
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2B49E1955D80; Fri, 17 Jan 2025 11:01:10 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.60])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 841A019560BF; Fri, 17 Jan 2025 11:01:05 +0000 (UTC)
+Date: Fri, 17 Jan 2025 11:01:02 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, qemu-arm@nongnu.org
+Subject: Re: [PATCH-for-10.1 v2 00/13] hw/arm: Remove virt-2.6 up to
+ virt-2.12 machines
+Message-ID: <Z4o4bkxPbFOWOF74@redhat.com>
+References: <20250116145944.38028-1-philmd@linaro.org>
+ <823a0892-e9d9-4d26-b862-83ffd60c2ad1@linaro.org>
+ <d9f97b63-dbfc-4322-b7a1-8759d6be5cd7@redhat.com>
+ <Z4oP9YEBc-opiL4K@redhat.com>
+ <70342038-6bd6-4c80-b46f-69a3c58fb5b5@redhat.com>
 MIME-Version: 1.0
-References: <20250116084332.1864967-1-dwmw2@infradead.org>
- <20250116221027.GA378432@fedora>
-In-Reply-To: <20250116221027.GA378432@fedora>
-From: Phil Dennis-Jordan <phil@philjordan.eu>
-Date: Fri, 17 Jan 2025 11:49:04 +0100
-X-Gm-Features: AbW1kvb4AeccwBqIzFVHnPiFJhTWZ1TstlsQUXoSrYiE5sx0D-GJpwLMYQbE0uk
-Message-ID: <CAAibmn0Tsn9ZQ1wgoLLhCY=DQAkSDDtKBYOKKoSGmYe2TDTZuQ@mail.gmail.com>
-Subject: Re: [PULL 0/8] Xen regression fixes and cleanups
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="0000000000006f3e29062be4a92b"
-Received-SPF: neutral client-ip=2607:f8b0:4864:20::a30;
- envelope-from=phil@philjordan.eu; helo=mail-vk1-xa30.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <70342038-6bd6-4c80-b46f-69a3c58fb5b5@redhat.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.093,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,47 +93,100 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000006f3e29062be4a92b
-Content-Type: text/plain; charset="UTF-8"
+On Fri, Jan 17, 2025 at 09:29:40AM +0100, Thomas Huth wrote:
+> On 17/01/2025 09.09, Daniel P. Berrangé wrote:
+> > On Fri, Jan 17, 2025 at 07:47:15AM +0100, Thomas Huth wrote:
+> > > On 16/01/2025 22.13, Philippe Mathieu-Daudé wrote:
+> > > > Hi Peter,
+> > > > 
+> > > > On 16/1/25 15:59, Philippe Mathieu-Daudé wrote:
+> > > > > The versioned 'virt' machines up to 2.12 been marked as deprecated
+> > > > > two releases ago, and are older than 6 years, so according to our
+> > > > > support policy we can remove them. Remove associated dead code.
+> > > > 
+> > > > > Philippe Mathieu-Daudé (13):
+> > > > >     hw/arm/virt: Remove deprecated virt-2.6 machine
+> > > > >     hw/arm/virt: Remove VirtMachineClass::no_pmu field
+> > > > >     hw/arm/virt: Remove VirtMachineClass::disallow_affinity_adjustment
+> > > > >     hw/arm/virt: Remove deprecated virt-2.7 machine
+> > > > >     hw/arm/virt: Remove VirtMachineClass::no_its field
+> > > > >     hw/arm/virt: Remove deprecated virt-2.8 machine
+> > > > >     hw/arm/virt: Remove VirtMachineClass::claim_edge_triggered_timers
+> > > > >       field
+> > > > >     hw/arm/virt: Remove deprecated virt-2.9 machine
+> > > > >     hw/arm/virt: Remove deprecated virt-2.10 machine
+> > > > >     hw/arm/virt: Remove deprecated virt-2.11 machine
+> > > > >     hw/arm/virt: Remove VirtMachineClass::smbios_old_sys_ver field
+> > > > >     hw/arm/virt: Remove deprecated virt-2.12 machine
+> > > > >     hw/arm/virt: Remove VirtMachineClass::no_highmem_ecam field
+> > > > 
+> > > > Please ignore this (reviewed) series for now. I'll rebase it and
+> > > > repost after the 10.0 release.
+> > > 
+> > > Why? IMHO it should be ok to include them now already. While Daniel's macro
+> > > only starts the automatic disablement for 10.1, it should be ok to remove
+> > > them now already according to our normal deprecation policy: The machines
+> > > have been marked as deprecated in the 9.1 release already (via commit
+> > > https://gitlab.com/qemu-project/qemu/-/commit/ce80c4fa6ff ), and thus they
+> > > have been deprecated since two releases already. So it should be fine to
+> > > remove them now, shouldn't it?
+> > 
+> > No, because as of 9.1.0 we documented that machine types are under the
+> > new policy, and these were only deprecated in 9.1.0, hence the new policy
+> > applies to them.
+> 
+> Hm, I guess we could argue now about the wording (I don't see a spot in
+> ce80c4fa6ff that says that this only happens starting with 10.1), but in the
+> long run, it doesn't really matter much whether we remove these machines
+> with 10.0 already or just with 10.1, so let's go with 10.1 instead.
 
-On Thu, 16 Jan 2025 at 23:10, Stefan Hajnoczi <stefanha@redhat.com> wrote:
+That's the wrong commit - I documented the delayed impl of deletion
+in a separate commit, so that we could just revert that part on its
+own in 10.1 dev:
 
-> Applied, thanks.
->
-> Please update the changelog at https://wiki.qemu.org/ChangeLog/10.0 for
-> any user-visible changes.
->
+  commit c9fd2d9a48ee3c195cf83cc611b87b09f02f0013
+  Author: Daniel P. Berrangé <berrange@redhat.com>
+  Date:   Thu Jun 20 17:57:37 2024 +0100
 
-This note made me realise that my feature addition (macOS PV graphics
-device) that caused the regression requiring my patch in this series hasn't
-made it into the changelog. I'd be happy to add it myself, but I don't have
-a wiki account. How do I get one?
+    include/hw: temporarily disable deletion of versioned machine types
+    
+    The new deprecation and deletion policy for versioned machine types is
+    being introduced in QEMU 9.1.0.
+    
+    Under the new policy a number of old machine types (any prior to 2.12)
+    would be liable for immediate deletion which would be a violation of our
+    historical deprecation and removal policy
+    
+    Thus automatic deletions (by skipping QOM registration) are temporarily
+    gated on existance of the env variable "QEMU_DELETE_MACHINES" / QEMU
+    version number >= 10.1.0. This allows opt-in testing of the automatic
+    deletion logic, while activating it fully in QEMU >= 10.1.0.
+    
+    This whole commit should be reverted in the 10.1.0 dev cycle or shortly
+    thereafter.
+    
+    Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+    Reviewed-by: Thomas Huth <thuth@redhat.com>
+    Message-ID: <20240620165742.1711389-10-berrange@redhat.com>
+    Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Thanks,
-Phil
 
---0000000000006f3e29062be4a92b
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+If a machine type was deprected *before* the 9.1 release cycle, I think
+it is fair game to delete it under the historical deprecation rules.
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
-mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, 16 Jan =
-2025 at 23:10, Stefan Hajnoczi &lt;<a href=3D"mailto:stefanha@redhat.com">s=
-tefanha@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote=
-" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);=
-padding-left:1ex">Applied, thanks.<br>
-<br>
-Please update the changelog at <a href=3D"https://wiki.qemu.org/ChangeLog/1=
-0.0" rel=3D"noreferrer" target=3D"_blank">https://wiki.qemu.org/ChangeLog/1=
-0.0</a> for any user-visible changes.<br></blockquote><div><br></div><div>T=
-his note made me realise that my feature addition (macOS PV graphics device=
-) that caused the regression requiring my patch in this series hasn&#39;t m=
-ade it into the changelog. I&#39;d be happy to add it myself, but I don&#39=
-;t have a wiki account. How do I get one?</div><div><br></div><div>Thanks,<=
-/div><div>Phil</div><div><br></div><div>=C2=A0</div></div></div>
+If a machine type was deprecated in 9.1, or later cycles, I think that
+deletion is gated until 10.1.0 under the policy applied by that commit
+above.
 
---0000000000006f3e29062be4a92b--
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
