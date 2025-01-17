@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A1DDA14E0A
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 11:57:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ADCBA14E30
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 12:09:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYk1B-0005JJ-2p; Fri, 17 Jan 2025 05:56:01 -0500
+	id 1tYkCS-0000IZ-34; Fri, 17 Jan 2025 06:07:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tYk17-0005Im-Em; Fri, 17 Jan 2025 05:55:57 -0500
-Received: from mgamail.intel.com ([192.198.163.8])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tYkCO-0000GD-LT
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 06:07:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tYk15-0000B8-70; Fri, 17 Jan 2025 05:55:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737111355; x=1768647355;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=zzlSGjWEBiAzt8BVRjUGQb5eR0GNjttLRovMi6NHpw8=;
- b=CAOtcoJfRre2hY8I6RYNwYWT6FrJSVnfNZ5OsOgRUJ239doVq8kJfn9L
- yvaVn0VYR3yTeDYneoWUsCPJ7TsvXnIwrrNctaC3xv7yzDlpAe39NEGe9
- KdE/TxVIIpT1vuwXe5DfDXgH6AVYFjoiSKiPnFQBqLvdywzh2RgH/g7y8
- LvKpXgfTzIiKTjlhhr0CD1xVzLoS9UoZ88UmvoQmVYsInILZZnu2U1BHS
- 7VU1r31YCRL+zRibcSsMKIHe8oJuMNkjBg7xFq/xsNS/5iM98+52gg871
- blReO0fegWY+WsFNT6uLOomSCgOUHVC7KdEENCfcBPqRCoe7lwdVCNurO Q==;
-X-CSE-ConnectionGUID: rr4+uPvIT0KeDjrtLKzHxg==
-X-CSE-MsgGUID: oVuR8izBQeaoZvDZyA53eg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11317"; a="55087976"
-X-IronPort-AV: E=Sophos;i="6.13,212,1732608000"; d="scan'208";a="55087976"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jan 2025 02:55:50 -0800
-X-CSE-ConnectionGUID: V1FA4IXLQVGkTQjCoCX9Rw==
-X-CSE-MsgGUID: eJQ2ZzsoSBS2BfP2KBqnjQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="136656268"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 17 Jan 2025 02:55:46 -0800
-Date: Fri, 17 Jan 2025 19:14:37 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Junjie Mao <junjie.mao@hotmail.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
- qemu-rust@nongnu.org
-Subject: Re: [RFC 04/13] rust: add bindings for gpio_{in|out} initialization
-Message-ID: <Z4o7nbonhTHftVXq@intel.com>
-References: <20241205060714.256270-1-zhao1.liu@intel.com>
- <20241205060714.256270-5-zhao1.liu@intel.com>
- <6108dfe6-f629-431c-be91-51abff338e85@redhat.com>
- <Z1XJBJp+l92+OrY9@intel.com>
- <CABgObfaeoLociD5rzptg4Uj4anMonc0M8iP_TK3qa-17FecR2A@mail.gmail.com>
- <Z4h3Q/JBxtWxi+bK@intel.com>
- <CABgObfYeRASh3oao6fpKBcijnhGaMKdAWsAQbrya7rwwOJfE1g@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tYkCN-0001X1-2Y
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 06:07:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737112052;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=9b7K8QteWYX8b5ZKtc6AtfKS5KI6GtIF3lNxlJpR1uY=;
+ b=S+bj21cDxQRxNEIUgrHNyPOuVnrvz8PjXvPG81SP05bC5oZvN9eEZyE1eoEXCOWxDGmaZM
+ aqNqVOlg3QoIwoIPfsBH3Gfnl683+PieflbnuVdtF8dETcN5X0mJxW4erGJiPsppKv4YgZ
+ fvFMJv7U19yv6yJ8142T+rqJH5o2BJ8=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-404-1CqDuJ4XMqmwwp0Co-dNoQ-1; Fri,
+ 17 Jan 2025 06:07:27 -0500
+X-MC-Unique: 1CqDuJ4XMqmwwp0Co-dNoQ-1
+X-Mimecast-MFC-AGG-ID: 1CqDuJ4XMqmwwp0Co-dNoQ
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5DFCE195605A; Fri, 17 Jan 2025 11:07:25 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.60])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B96C43003FD3; Fri, 17 Jan 2025 11:07:21 +0000 (UTC)
+Date: Fri, 17 Jan 2025 11:07:18 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ devel@lists.libvirt.org, Kashyap Chamarthy <kchamart@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: [PATCH 0/3] Remove deprecated machines pc-i440fx-2.4 up to
+ pc-i440fx-2.12
+Message-ID: <Z4o55sRqJJtMd-zI@redhat.com>
+References: <20250117102738.59714-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CABgObfYeRASh3oao6fpKBcijnhGaMKdAWsAQbrya7rwwOJfE1g@mail.gmail.com>
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250117102738.59714-1-thuth@redhat.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -39
+X-Spam_score: -4.0
 X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.093,
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.093,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.797,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,56 +89,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> >         unsafe {
-> >             qdev_init_gpio_in(
-> >                 self.upcast::<DeviceState>() as *const DeviceState as *mut DeviceState,
-> 
-> I think you can use self.as_mut_ptr::<DeviceState>() or something like that.
+On Fri, Jan 17, 2025 at 11:27:35AM +0100, Thomas Huth wrote:
+> While our new auto-disablement of old machine types will only kick
+> in with the next (v10.1) release, the pc-i440fx-2.* machine types
+> have been explicitly marked as deprecated via our old deprecation
+> policy mechanism before (two releases ago), so it should be fine to
+> remove them now already.
 
-Yes, thank you!
+These were marked deprecated manually in 9.1.0 with:
 
-> 
-> >         assert!(pins.len() > 0);
-> 
-> !pins.is_empty().
+  commit 792b4fdd4eb8197bd6eb9e80a1dfaf0cb3b54aeb
+  Author: Philippe Mathieu-Daudé <philmd@linaro.org>
+  Date:   Wed Feb 28 10:34:35 2024 +0100
 
-Yes.
+    hw/i386/pc: Deprecate 2.4 to 2.12 pc-i440fx machines
+    
+    Similarly to the commit c7437f0ddb "docs/about: Mark the
+    old pc-i440fx-2.0 - 2.3 machine types as deprecated",
+    deprecate the 2.4 to 2.12 machines.
 
-> But I am not sure it's needed...
-> >
-> >         unsafe {
-> >             qdev_init_gpio_out(
-> >                 self.upcast::<DeviceState>() as *const DeviceState as *mut DeviceState,
-> >                 pins[0].as_ptr(),
-> >                 pins.len() as c_int,
-> 
-> ... if you use instead pins.as_ptr() without the initial dereference.
+but that commit was reverted a couple of weeks later in 9.1.0 dev
+when I added the automatic deprecation/deletion logic
 
-Emm, pins.as_ptr() returns `*const InterruptSource`, which can't be
-converted to `*mut *mut IRQState` with InterruptSource::as_ptr().
+  commit 37193b7b43b6a973e56fa115098c5895ebdc7145
+  Author: Daniel P. Berrangé <berrange@redhat.com>
+  Date:   Thu Jun 20 17:57:41 2024 +0100
 
-So I haven't thought of a better way yet...
+    hw/i386: remove obsolete manual deprecation reason string of i440fx machines
 
-> > impl HPETState {
-> >     ...
-> >
-> >     fn handle_legacy_irq(&self, irq: u32, level: u32) {
-> >         if irq == HPET_LEGACY_PIT_INT {
-> >             if !self.is_legacy_mode() {
-> >                 self.irqs[0].set(level != 0);
-> >             }
-> >         } else {
-> >             self.rtc_irq_level.set(level as u8);
-> 
-> Any reason why you defined rtc_irq_level as InterruptSource<u8>
-> instead of InterruptSource<u32>?
+IOW, in terms of releases, these deprecations were introduced under
+the new policy rather than the old policy.
 
-Thanks! I missed to clean up this, having previously used u8.
+> Note that we can not do much additional clean ups on top yet since
+> the corresponding q35 machines (which share the same compatibility knobs)
+> are still around and only will be removed for the 10.1 release instead.
+> So the bigger clean-up can only be done for 10.1, but removing the i440fx
+> machine types now will still have at least a small benefit of accelerating
+> our CI a little bit (since we don't have to run tests for these old machine
+> types anymore).
 
-Regards,
-Zhao
+FYI Philippe had a series removing i440fx 2.4 & 2.5 which includes alot of
+the extra cleanups:
+
+  https://lists.nongnu.org/archive/html/qemu-devel/2025-01/msg02710.html
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
