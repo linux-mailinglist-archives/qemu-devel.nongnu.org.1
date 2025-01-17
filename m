@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91DBCA1497B
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 07:05:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB59FA14976
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 07:05:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYfMg-0007Pg-5p; Fri, 17 Jan 2025 00:58:00 -0500
+	id 1tYfMu-0007uz-Sv; Fri, 17 Jan 2025 00:58:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tYfMI-0007GN-Na
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 00:57:30 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1tYfML-0007KY-3D
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 00:57:33 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tYfMH-00063N-3l
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 00:57:30 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-2163dc5155fso31302735ad.0
- for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 21:57:28 -0800 (PST)
+ id 1tYfMJ-00063j-IN
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 00:57:32 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-21628b3fe7dso31153655ad.3
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 21:57:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737093447; x=1737698247; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1737093450; x=1737698250; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sbmZFP4XCtouA6CK9YZLO8kEiCPTIzzgDDbq0k5y8NE=;
- b=Kzh8rzWczgzfQPFbxpDkIzzUAslk6O7uX5/okLs3dcOsWpjjO80JGQXfJcWknHyMq3
- 17Vm6nLA1Een96s9U/ZFlUAI2MeSspUV3IyrfSlBS81b5Co/Oz93LuE1gXyhkCwyoDte
- RIiUDKpSxDl/+MR7R1kypF8TljMpXvHVgPx6cVJB9uzsIiAKk8vCfkKRs0CNSeGh/Tdb
- UWsRseZYaLftYEgfNNGFIangKgKqosIUkJ3BraPUQSyoXOiIfR6HjrIsb9jLX0EDSG9z
- Ld4g/pqUcrlfNBi7a6jZaFrVfXS+u0hlRIwzdy9AZHrfJQ9ytfkyGVfDfnX0LK+FwO8L
- HvdQ==
+ bh=SvKTZTfwHo09+/+9jpS1HMWs+F6dxpkz87v0o67vzNg=;
+ b=hP9lsflQGoTxsogiEfo7eHu5PBdpVTkGhcVKmyHVKt+VFtMUp02oiw8rTtpqQWWyMZ
+ ZV8dLVyeGlcCOK/JSSi7Faf0peI9w99WSt3BH4p2ji2Ch4NRg/1Xv7YGZF2iM2+WcXQP
+ wOMKVd5uuBpudoVPhbhK1qh3vPpsYhYzWHaEpJJs0RdOrgRf0W3oXwMZWb9DJpBntO/T
+ 9iyPhzlugF+uz7pBmHDiQhHGwx0SGqNzYmQeePQXPKeuXPQJIEL/BSvhRdf+D1Zzp5X9
+ iKM9jFJRusK9upVIZ78qHG5NzZE05zuXMTnTZuSIpF3WKplrKNFCJETqgo6caoe9BB3f
+ OFtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737093447; x=1737698247;
+ d=1e100.net; s=20230601; t=1737093450; x=1737698250;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sbmZFP4XCtouA6CK9YZLO8kEiCPTIzzgDDbq0k5y8NE=;
- b=rfRzL9bq7MMMB6n+4vETddJ6kGQ26XGSWSIeXz7cW0R79EXlPHXvaTb/VTtYR1olio
- /lXBXSemyDAZCJwAVLMfHTIePv+yE/ql7z2v4VwvJU3u23wPHdY6Nlf1N0n68chqsjHz
- Jir19JWWV+gDBrcWExz//AyLEmSLAY0ozLmQ/zVmjMlQZhENDSe7rYt5/p/1f4/d2+pO
- 0xZ51Vt39RucX00KakPuEro8FI/91M1TFSsUd/9osv5j7eMbWG28NCnZw6V7t7NhHzfr
- rQgQijB8aW81IAwGYDP6okR5lKKIXTjr7e0+Kx91j8V2ZgfyKbzxEQVebXzteWw4eQIq
- gajQ==
-X-Gm-Message-State: AOJu0Yx0oy5F6RURcRhAY80obvzrWiF06qQ0P+DLHWMmtycYl+VZFrcg
- 7M8+JY8tBpOVY1GoCK1Rk4FJNcFZ6jsEff6zjC5fJX5W5L7rXQvHlcQwag==
-X-Gm-Gg: ASbGncuqD+PT1e3610riOE9+67EFIrichSpkY7H8ksi3z5+f6h4k0OD2GJ55VgWVEaU
- qfoMp7t4jRGcSOiPaoBo5NLR5rnu0cMCAP5slXbkhtrLF1erwgEsk4keuB04kMFhvdofon6nfeU
- LCiuK8mrrhQQcND2pSOngia57RLUpSPDuVT9MyZ22OfqMYIh16NuaI1T0TF6ROqBfGd8D7dZVvg
- wxJ8iL7Y+NKVhkaHJZ7FNnql5DxW+tQCvntvWNPOvwmmUw6lXjzWBGtgIbKsIJUy65+rAbeC4Y5
- fRjdBsl5+LhJj2+xMZOpV95P5LprIIB8V+1cLD3x9hof+BaZHi6w9P6oMI0c
-X-Google-Smtp-Source: AGHT+IFx8yXJR0i08tz7DZYjoUNu5mMzPUJAF/a/8pEbmUgyMhNiFugJscEw8zYQ5dHdsc1QVVW2/g==
-X-Received: by 2002:a17:902:d2d2:b0:215:6cb2:7877 with SMTP id
- d9443c01a7336-21c352c7b8emr27888365ad.4.1737093447142; 
- Thu, 16 Jan 2025 21:57:27 -0800 (PST)
+ bh=SvKTZTfwHo09+/+9jpS1HMWs+F6dxpkz87v0o67vzNg=;
+ b=JbABR0AFrmE0Av1nOoJpRFj7KPNjMu0pAFwNJOnpANZ8WTa3FKJSaptF0l64NKsFQI
+ jdWYifCJPZTPqG80FRY41BpXhr2aKPFaV3t2vMWmPL+xxOcbJu/1/iLH7jx14ULds1vl
+ xJ8e9nBL1AYx7iUffNa0DmmLo0oi94D4xa9buvL94SKHcaBbbBlDaZDOjJJGnNxEWzuU
+ /SnKsumK1anN4Isn/HB0WUCH0XriE0c0n1Z4PkTEMqqVB9iNL+u4xLHhtlSydyK/xkuq
+ F8TMNuNv0Acp+xjZJg2phv3oEnOjCgW8v3cByUQ3Bft9xsRkdILYYAnkCTVkjvIf0lmJ
+ 5TWQ==
+X-Gm-Message-State: AOJu0Yy3x6LoB9MJ/BjE6IjC+qiykc1sd+ZngQd9ms+3/qYCn5bTcAfW
+ YmsSJlqeTHxBljizcxKNuU0xcpOLT4R3/DDL8XuZAgHADDkeRGWYBjqktw==
+X-Gm-Gg: ASbGnctkrC5474aITCdb7CmowIWvWBG3eQcfV1KHhJefOB+iS0b2uMMJPiIvef9hBio
+ ElufB2qakF2801GBXZTIBCEpzot5wrX+eKjm4D9MRVErHQPsh5pEBXXZN66zDqMmJwzaqGYnJ9u
+ m/Xs1cqoI/MbVOW86jjSzyZefe7vIXbGcyzd1Imk7iaypOMUhEjGnSSNcBUgJEdeoeqKqYh9NWY
+ /80wjNkHtE/B3YtxW25zswvWAEwCvrXfjbSKdc/L8Q6Z7PoXl5K+nhBiWLFCLmDvz6q+niLCk4W
+ qeQPPC+mp/V+uPaqFHmHJZQhF8TRNKchk9+N6iIyPuyI3w2Vpqb9uKEHiFnv
+X-Google-Smtp-Source: AGHT+IFQ13IrIEhUrSeLUUrdUogfH3V0amQwH3oJwmoWf+oqimlmsZK3GElmUCR/tkUGWSYHbQTVOg==
+X-Received: by 2002:a17:903:2342:b0:215:cbbf:8926 with SMTP id
+ d9443c01a7336-21c355b053fmr20983145ad.35.1737093450042; 
+ Thu, 16 Jan 2025 21:57:30 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21c2d3d6fbbsm8563595ad.168.2025.01.16.21.57.24
+ d9443c01a7336-21c2d3d6fbbsm8563595ad.168.2025.01.16.21.57.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Jan 2025 21:57:26 -0800 (PST)
+ Thu, 16 Jan 2025 21:57:29 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Frank Chang <frank.chang@sifive.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: alistair23@gmail.com,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 25/50] target/riscv: Add Zicfilp support for Smrnmi
-Date: Fri, 17 Jan 2025 15:55:27 +1000
-Message-ID: <20250117055552.108376-26-alistair.francis@wdc.com>
+Subject: [PULL 26/50] target/riscv: Have kvm_riscv_get_timebase_frequency()
+ take RISCVCPU cpu
+Date: Fri, 17 Jan 2025 15:55:28 +1000
+Message-ID: <20250117055552.108376-27-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250117055552.108376-1-alistair.francis@wdc.com>
 References: <20250117055552.108376-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -102,88 +104,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Frank Chang <frank.chang@sifive.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Zicfilp extension introduces the MNPELP (bit 9) in mnstatus.
-The MNPELP field holds the previous ELP.
+Keep kvm_riscv_get_timebase_frequency() prototype aligned with
+the other ones declared in "kvm_riscv.h", have it take a RISCVCPU
+cpu as argument. Include "target/riscv/cpu-qom.h" which declares
+the RISCVCPU typedef.
 
-When a RNMI trap is delivered, the MNPELP is set to ELP and ELP set
-to NO_LP_EXPECTED. Upon a mnret, if the mnstatus.MNPP holds the
-value y, then ELP is set to the value of MNPELP if yLPE is 1;
-otherwise, it is set to NO_LP_EXPECTED.
-
-Signed-off-by: Frank Chang <frank.chang@sifive.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250106054336.1878291-7-frank.chang@sifive.com>
+Message-ID: <20250112231344.34632-2-philmd@linaro.org>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_bits.h   |  1 +
- target/riscv/cpu_helper.c | 11 ++++++++++-
- target/riscv/op_helper.c  |  9 +++++++++
- 3 files changed, 20 insertions(+), 1 deletion(-)
+ target/riscv/kvm/kvm_riscv.h | 4 +++-
+ hw/riscv/virt.c              | 2 +-
+ target/riscv/kvm/kvm-cpu.c   | 4 ++--
+ 3 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index 32525f00d6..d51f3d8cef 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -613,6 +613,7 @@ typedef enum {
- /* RNMI mnstatus CSR mask */
- #define MNSTATUS_NMIE       0x00000008
- #define MNSTATUS_MNPV       0x00000080
-+#define MNSTATUS_MNPELP     0x00000200
- #define MNSTATUS_MNPP       0x00001800
+diff --git a/target/riscv/kvm/kvm_riscv.h b/target/riscv/kvm/kvm_riscv.h
+index 5851898868..b2bcd1041f 100644
+--- a/target/riscv/kvm/kvm_riscv.h
++++ b/target/riscv/kvm/kvm_riscv.h
+@@ -19,6 +19,8 @@
+ #ifndef QEMU_KVM_RISCV_H
+ #define QEMU_KVM_RISCV_H
  
- /* VM modes (satp.mode) privileged ISA 1.10 */
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 4c70db6def..3318ce440d 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1966,6 +1966,10 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-         env->mnepc = env->pc;
-         env->pc = env->rnmi_irqvec;
- 
-+        if (cpu_get_fcfien(env)) {
-+            env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPELP, env->elp);
-+        }
++#include "target/riscv/cpu-qom.h"
 +
-         /* Trapping to M mode, virt is disabled */
-         riscv_cpu_set_mode(env, PRV_M, false);
+ void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
+ void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
+ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+@@ -28,6 +30,6 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+ void riscv_kvm_aplic_request(void *opaque, int irq, int level);
+ int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
+ void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp);
+-uint64_t kvm_riscv_get_timebase_frequency(CPUState *cs);
++uint64_t kvm_riscv_get_timebase_frequency(RISCVCPU *cpu);
  
-@@ -2133,7 +2137,12 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-         /* handle the trap in M-mode */
-         /* save elp status */
-         if (cpu_get_fcfien(env)) {
--            env->mstatus = set_field(env->mstatus, MSTATUS_MPELP, env->elp);
-+            if (nnmi_excep) {
-+                env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPELP,
-+                                          env->elp);
-+            } else {
-+                env->mstatus = set_field(env->mstatus, MSTATUS_MPELP, env->elp);
-+            }
-         }
- 
-         if (riscv_has_ext(env, RVH)) {
-diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-index bb022d89e2..c825336519 100644
---- a/target/riscv/op_helper.c
-+++ b/target/riscv/op_helper.c
-@@ -409,6 +409,15 @@ target_ulong helper_mnret(CPURISCVState *env)
- 
-     riscv_cpu_set_mode(env, prev_priv, prev_virt);
- 
-+    /*
-+     * If forward cfi enabled for new priv, restore elp status
-+     * and clear mnpelp in mnstatus
-+     */
-+    if (cpu_get_fcfien(env)) {
-+        env->elp = get_field(env->mnstatus, MNSTATUS_MNPELP);
-+    }
-+    env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPELP, 0);
-+
-     return retpc;
+ #endif
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index 2bc5a9dd98..9e8876be29 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -750,7 +750,7 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
+     qemu_fdt_add_subnode(ms->fdt, "/cpus");
+     qemu_fdt_setprop_cell(ms->fdt, "/cpus", "timebase-frequency",
+                           kvm_enabled() ?
+-                          kvm_riscv_get_timebase_frequency(first_cpu) :
++                          kvm_riscv_get_timebase_frequency(RISCV_CPU(first_cpu)) :
+                           RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ);
+     qemu_fdt_setprop_cell(ms->fdt, "/cpus", "#size-cells", 0x0);
+     qemu_fdt_setprop_cell(ms->fdt, "/cpus", "#address-cells", 0x1);
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 11278ea778..23ce779359 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -758,11 +758,11 @@ static void kvm_riscv_put_regs_timer(CPUState *cs)
+     env->kvm_timer_dirty = false;
  }
  
+-uint64_t kvm_riscv_get_timebase_frequency(CPUState *cs)
++uint64_t kvm_riscv_get_timebase_frequency(RISCVCPU *cpu)
+ {
+     uint64_t reg;
+ 
+-    KVM_RISCV_GET_TIMER(cs, frequency, reg);
++    KVM_RISCV_GET_TIMER(CPU(cpu), frequency, reg);
+ 
+     return reg;
+ }
 -- 
 2.47.1
 
