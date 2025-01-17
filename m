@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5254A156AB
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:31:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E86EA156D1
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:35:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYr5J-0003pv-5T; Fri, 17 Jan 2025 13:28:45 -0500
+	id 1tYr5H-0003lH-9p; Fri, 17 Jan 2025 13:28:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr5D-0003kI-RJ
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:28:39 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1tYr5C-0003iH-9u
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:28:38 -0500
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr58-00004w-NU
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:28:39 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-2166360285dso49851225ad.1
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:28:33 -0800 (PST)
+ id 1tYr59-00005E-Oi
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:28:37 -0500
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-2ee86a1a92dso3574267a91.1
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:28:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737138513; x=1737743313; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737138514; x=1737743314; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7OmaCO2bufcDc4uzKJ+mlpKa3QcKVund6mv3MhkLwck=;
- b=Yy4TVRywzbFuyeYccvZjqe6JSWNq/1HsI3Vwyi/WeZ8DpKdZeW8tY4r1R/juuG9g49
- j4EzLm+kxJasdu3Kq3XZvS5hNZYJSd1EjwKFj1OAJ3vO+qryxhvSHyR9KUzlWYqS4RMX
- jgNiHEgRMGwEBSTYuaoSqKxU9FXyrvw5PqUxpfMG3KhAo2+xk11KVELaiM2K+wefprn0
- HVq1aQBKPmIf5skidhmf6PRZ7U4xFQwv+dMkGHJggOwdxQLHooKBqpWZgMVNjU0GmoGe
- WB1lsQwAJj9fIpILZT0vpxRWWUgBq5PM8B0s6YMplwCTbsPtM2WdXq+C+EzI5dsqALYc
- YGjw==
+ bh=lkg9fxzYnG4S81y8aBxwl4d3ZJN+dnyX/D5oQckVa00=;
+ b=ph5gSqgc71dfoaFmnxi+7wOHOqomW2An5qVyi8Ptx93Z7M4WmCdvOJ/axPpz6uKSrc
+ AYTwOE+xDxOUUbM62PctR+49RLrXGwVF7JXzw+LcbHcjObReNp26mVDH17kZqiG8MRUM
+ NwIW+WBJoiYR8oYVYGTsPuq0Tq0CNqSqsMLqubhnDlO3vP5+m2gXB5hBP1qaZ9e8qJl3
+ QsMVYYNNO9EV8YAlKwkixRzNz1oP2jyAfTtS4ATagxcmke0C3UdgflA9DqrmB2PxCwAi
+ 96c0RQVkfVxoKwxzMSgLEaUGAbZe1WUkYGuU4nWpqp+shjAtS7ME0dmabr5qnzg4MQ4B
+ 7iEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737138513; x=1737743313;
+ d=1e100.net; s=20230601; t=1737138514; x=1737743314;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7OmaCO2bufcDc4uzKJ+mlpKa3QcKVund6mv3MhkLwck=;
- b=tboOCuXpB/XM7oJv2fPv7O1aaszjsNJL0ROTpSGJrzZeI43LACufZmyrXhkS0epBpr
- 4QGiSFY8O1nnuoWCQFLxBCKatfHjkruBi8t46Y0l9C54FkgOst5yI1wg9N/kpj0Cvpgc
- DagiBfy/NVrDvit9rTB1IWzv6xDE2kUjeyCWmjBRB7MYIgBFIKA9mvvDDatWA2t8fNJp
- mOOUm4vKPrkUfxfSPsdxDU0vyw6oPsb1xW1ThGe+LPKPieFSX6s4Pd9K2sx9WBTVmlp4
- XWjVjMMRyj5ywMH6+b9yTT1l3Q8m4oeCsDEQ6zmco22TKXY/VF5xHmgCfAPes9Dnpf/A
- zdVw==
-X-Gm-Message-State: AOJu0YwFXIcoGI1rYN0aMjzStWDwM4YScggn942TMJrcEey1wewp7dvx
- hte3rrG+Sxq6L1Pg+C1oalgTb96AbmyXSXN4PL9CSmcsmBhSV15FFWnYy71Q/gZX+OR4qvZYmya
- j
-X-Gm-Gg: ASbGnctUeM8OyO9jqiJncV5fI8IffelYhMC7WHVAs1zFuXw2BZEkczPS2HLGjvf4kyy
- tRuSkl7ONWtKaIpRxCwxw1en2Lu+JQzu1dvC5Bwlv9OV7ACIs+nK6dXeO/DppsjNmGM7+7rk9QZ
- 41T723bc/ocUqEBv3XEjC6soRxfaAPm7FI9uL0/0b+s1nw0b2q6W553YDLItETy65O8rwRK1wcS
- QZ/als7FL/kmpOqLCNtINuvt4I+oB0u2EVxxsAQTsq4VrsFwxAy3nwHH/Kyx//33hGhBDW2sjMJ
- hMw3h+TaAL6cFyo=
-X-Google-Smtp-Source: AGHT+IHE+0h5bqvuewwHidO3HxPF0ThyzF0xqA/na5A3N+gHswbF9EFGXb6PsyuXxuZuj1uqTYABGQ==
-X-Received: by 2002:a17:90a:da8e:b0:2f2:3efd:96da with SMTP id
- 98e67ed59e1d1-2f782d38a48mr5620633a91.24.1737138512849; 
- Fri, 17 Jan 2025 10:28:32 -0800 (PST)
+ bh=lkg9fxzYnG4S81y8aBxwl4d3ZJN+dnyX/D5oQckVa00=;
+ b=JMGqCJWWTVP95wJkAkuGWt/aTZ7cjeubLKjuQ7QsubOMRE6rxtXyY7uE5LVI87Aavx
+ ARIB1qtrzplscitnSDUSZrtuNGJmK/Gy45ISw8cjGoZHeiDmF/ODdg9EznP25h333qkl
+ krhFkV6Mz4p+s5xtqzTTB2UNlWChCHOTeZ7gDrO1H/1z0uOaG7kmi2RrS02Zp8w/Nq+F
+ ps8qJLTIz/1b3+y38yT7vYB8sS2XNJZAfgK3mWEp5qbXg+SZNTH8hTUruusYNE88DaYn
+ 63OOpSkoErLo+LPpurSVhHBT7n99SnprAbn9Rknca1UJWnST5MpC7mUtZQtiZgqRYZ9Q
+ ic7w==
+X-Gm-Message-State: AOJu0Yz64c/2eNjxkQiiaWTztg7f28a9nMcqAj82VbWfhbcJ187PEt1m
+ INnhFz48JltIKpKxVyKrJaAEEaoMJhuR7HOIFmg9lALsBzYET/FRoB1XaalB+jEJlSbAtzMQX0r
+ 1
+X-Gm-Gg: ASbGncvufUmNVc2d+BBsICyUk1s42LtmyVgqzewkxpy/vvS6fjzOthJJsa7QB9brVrZ
+ REV1lMHDp6ZoVrC4gp6ff4Ha1kzSfpZiVcreZp3JwjuhO//gLFOMTTlbdCsBH5Pn/ZHVpswI88v
+ 0waILd4GVnCdgZMCAxk7GkDpBJoSLdGBFcpQhtFTgVjsEEb0SBYgz4fA3dxYmSdtcCip11tEW51
+ 6GKlgd5cpOmCUO7MMdzWQfoJ/NuX0FbJYf52BYru2SoYJTTXraVPsHOdMr15XyOLMK6F2J7Z68M
+ 0TDWPk/+IDGVmxs=
+X-Google-Smtp-Source: AGHT+IHWgGJHok0EEcuxRJXx5wUN6VcbS2u+/0iGx2YfunX4CQNq4o1DPnfdeTWhF/iczK5Q2EmbmQ==
+X-Received: by 2002:a17:90a:e18f:b0:2ee:693e:ed7a with SMTP id
+ 98e67ed59e1d1-2f782d8651amr5122327a91.35.1737138514015; 
+ Fri, 17 Jan 2025 10:28:34 -0800 (PST)
 Received: from stoup.. (174-21-71-127.tukw.qwest.net. [174.21.71.127])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f77629bf96sm2614105a91.36.2025.01.17.10.28.32
+ 98e67ed59e1d1-2f77629bf96sm2614105a91.36.2025.01.17.10.28.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 10:28:32 -0800 (PST)
+ Fri, 17 Jan 2025 10:28:33 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 40/68] tcg: Add TCG_OPF_NOT_PRESENT to opcodes without inputs
- or outputs
-Date: Fri, 17 Jan 2025 10:24:28 -0800
-Message-ID: <20250117182456.2077110-41-richard.henderson@linaro.org>
+Subject: [PULL 41/68] tcg: Pass type and flags to tcg_target_op_def
+Date: Fri, 17 Jan 2025 10:24:29 -0800
+Message-ID: <20250117182456.2077110-42-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250117182456.2077110-1-richard.henderson@linaro.org>
 References: <20250117182456.2077110-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,65 +98,186 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The br, mb, goto_tb and exit_tb opcodes do not have
-register operands, only constants, flags, or labels.
-Remove the special case in opcode_args_ct by including
-TCG_OPF_NOT_PRESENT in the flags for these opcodes.
+Allow the backend to make constraint choices based on more parameters.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/tcg-opc.h | 8 ++++----
- tcg/tcg.c             | 3 ---
- 2 files changed, 4 insertions(+), 7 deletions(-)
+ tcg/tcg.c                        | 4 ++--
+ tcg/aarch64/tcg-target.c.inc     | 3 ++-
+ tcg/arm/tcg-target.c.inc         | 3 ++-
+ tcg/i386/tcg-target.c.inc        | 3 ++-
+ tcg/loongarch64/tcg-target.c.inc | 3 ++-
+ tcg/mips/tcg-target.c.inc        | 3 ++-
+ tcg/ppc/tcg-target.c.inc         | 3 ++-
+ tcg/riscv/tcg-target.c.inc       | 3 ++-
+ tcg/s390x/tcg-target.c.inc       | 3 ++-
+ tcg/sparc64/tcg-target.c.inc     | 3 ++-
+ tcg/tci/tcg-target.c.inc         | 3 ++-
+ 11 files changed, 22 insertions(+), 12 deletions(-)
 
-diff --git a/include/tcg/tcg-opc.h b/include/tcg/tcg-opc.h
-index 14aff6e7f9..724e7a9de8 100644
---- a/include/tcg/tcg-opc.h
-+++ b/include/tcg/tcg-opc.h
-@@ -33,7 +33,7 @@ DEF(set_label, 0, 0, 1, TCG_OPF_BB_END | TCG_OPF_NOT_PRESENT)
- /* variable number of parameters */
- DEF(call, 0, 0, 3, TCG_OPF_CALL_CLOBBER | TCG_OPF_NOT_PRESENT)
- 
--DEF(br, 0, 0, 1, TCG_OPF_BB_END)
-+DEF(br, 0, 0, 1, TCG_OPF_BB_END | TCG_OPF_NOT_PRESENT)
- 
- #define IMPL(X) (__builtin_constant_p(X) && (X) <= 0 ? TCG_OPF_NOT_PRESENT : 0)
- #if TCG_TARGET_REG_BITS == 32
-@@ -42,7 +42,7 @@ DEF(br, 0, 0, 1, TCG_OPF_BB_END)
- # define IMPL64  TCG_OPF_64BIT
- #endif
- 
--DEF(mb, 0, 0, 1, 0)
-+DEF(mb, 0, 0, 1, TCG_OPF_NOT_PRESENT)
- 
- DEF(mov_i32, 1, 1, 0, TCG_OPF_NOT_PRESENT)
- DEF(setcond_i32, 1, 2, 1, 0)
-@@ -193,8 +193,8 @@ DEF(mulsh_i64, 1, 2, 0, IMPL64 | IMPL(TCG_TARGET_HAS_mulsh_i64))
- /* There are tcg_ctx->insn_start_words here, not just one. */
- DEF(insn_start, 0, 0, DATA64_ARGS, TCG_OPF_NOT_PRESENT)
- 
--DEF(exit_tb, 0, 0, 1, TCG_OPF_BB_EXIT | TCG_OPF_BB_END)
--DEF(goto_tb, 0, 0, 1, TCG_OPF_BB_EXIT | TCG_OPF_BB_END)
-+DEF(exit_tb, 0, 0, 1, TCG_OPF_BB_EXIT | TCG_OPF_BB_END | TCG_OPF_NOT_PRESENT)
-+DEF(goto_tb, 0, 0, 1, TCG_OPF_BB_EXIT | TCG_OPF_BB_END | TCG_OPF_NOT_PRESENT)
- DEF(goto_ptr, 0, 1, 0, TCG_OPF_BB_EXIT | TCG_OPF_BB_END)
- 
- DEF(plugin_cb, 0, 0, 1, TCG_OPF_NOT_PRESENT)
 diff --git a/tcg/tcg.c b/tcg/tcg.c
-index b9119a1ec7..e9ecdc5eeb 100644
+index e9ecdc5eeb..83356d932d 100644
 --- a/tcg/tcg.c
 +++ b/tcg/tcg.c
-@@ -3371,9 +3371,6 @@ static const TCGArgConstraint *opcode_args_ct(const TCGOp *op)
-     assert(tcg_op_supported(op->opc, TCGOP_TYPE(op), TCGOP_FLAGS(op)));
- #endif
+@@ -866,7 +866,7 @@ typedef enum {
+ #include "tcg-target-con-set.h"
+ } TCGConstraintSetIndex;
  
--    if (def->nb_iargs + def->nb_oargs == 0) {
--        return NULL;
--    }
-     if (def->flags & TCG_OPF_NOT_PRESENT) {
+-static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode);
++static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode, TCGType, unsigned);
+ 
+ #undef C_O0_I1
+ #undef C_O0_I2
+@@ -3375,7 +3375,7 @@ static const TCGArgConstraint *opcode_args_ct(const TCGOp *op)
          return empty_cts;
      }
+ 
+-    con_set = tcg_target_op_def(op->opc);
++    con_set = tcg_target_op_def(op->opc, TCGOP_TYPE(op), TCGOP_FLAGS(op));
+     tcg_debug_assert(con_set >= 0 && con_set < ARRAY_SIZE(constraint_sets));
+ 
+     /* The constraint arguments must match TCGOpcode arguments. */
+diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
+index d1e08def60..9116f85667 100644
+--- a/tcg/aarch64/tcg-target.c.inc
++++ b/tcg/aarch64/tcg-target.c.inc
+@@ -2962,7 +2962,8 @@ void tcg_expand_vec_op(TCGOpcode opc, TCGType type, unsigned vece,
+     }
+ }
+ 
+-static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
++static TCGConstraintSetIndex
++tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
+ {
+     switch (op) {
+     case INDEX_op_goto_ptr:
+diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
+index b4cd36a9b8..182cac1a8a 100644
+--- a/tcg/arm/tcg-target.c.inc
++++ b/tcg/arm/tcg-target.c.inc
+@@ -2124,7 +2124,8 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+     }
+ }
+ 
+-static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
++static TCGConstraintSetIndex
++tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
+ {
+     switch (op) {
+     case INDEX_op_goto_ptr:
+diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+index 813c12ca0e..64826c7419 100644
+--- a/tcg/i386/tcg-target.c.inc
++++ b/tcg/i386/tcg-target.c.inc
+@@ -3627,7 +3627,8 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+     }
+ }
+ 
+-static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
++static TCGConstraintSetIndex
++tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
+ {
+     switch (op) {
+     case INDEX_op_goto_ptr:
+diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
+index 686b94ccda..2f0d4d01ff 100644
+--- a/tcg/loongarch64/tcg-target.c.inc
++++ b/tcg/loongarch64/tcg-target.c.inc
+@@ -2191,7 +2191,8 @@ void tcg_expand_vec_op(TCGOpcode opc, TCGType type, unsigned vece,
+     g_assert_not_reached();
+ }
+ 
+-static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
++static TCGConstraintSetIndex
++tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
+ {
+     switch (op) {
+     case INDEX_op_goto_ptr:
+diff --git a/tcg/mips/tcg-target.c.inc b/tcg/mips/tcg-target.c.inc
+index 199bd97c0e..b89b279a0e 100644
+--- a/tcg/mips/tcg-target.c.inc
++++ b/tcg/mips/tcg-target.c.inc
+@@ -2151,7 +2151,8 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+     }
+ }
+ 
+-static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
++static TCGConstraintSetIndex
++tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
+ {
+     switch (op) {
+     case INDEX_op_goto_ptr:
+diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
+index 3ce4fa1db6..1e7b8a204c 100644
+--- a/tcg/ppc/tcg-target.c.inc
++++ b/tcg/ppc/tcg-target.c.inc
+@@ -4140,7 +4140,8 @@ void tcg_expand_vec_op(TCGOpcode opc, TCGType type, unsigned vece,
+     va_end(va);
+ }
+ 
+-static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
++static TCGConstraintSetIndex
++tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
+ {
+     switch (op) {
+     case INDEX_op_goto_ptr:
+diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
+index 51cd7e7586..432a2fe26f 100644
+--- a/tcg/riscv/tcg-target.c.inc
++++ b/tcg/riscv/tcg-target.c.inc
+@@ -2583,7 +2583,8 @@ int tcg_can_emit_vec_op(TCGOpcode opc, TCGType type, unsigned vece)
+     }
+ }
+ 
+-static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
++static TCGConstraintSetIndex
++tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
+ {
+     switch (op) {
+     case INDEX_op_goto_ptr:
+diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
+index 98925b1d5d..e09a726ecf 100644
+--- a/tcg/s390x/tcg-target.c.inc
++++ b/tcg/s390x/tcg-target.c.inc
+@@ -3207,7 +3207,8 @@ void tcg_expand_vec_op(TCGOpcode opc, TCGType type, unsigned vece,
+     va_end(va);
+ }
+ 
+-static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
++static TCGConstraintSetIndex
++tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
+ {
+     switch (op) {
+     case INDEX_op_goto_ptr:
+diff --git a/tcg/sparc64/tcg-target.c.inc b/tcg/sparc64/tcg-target.c.inc
+index 1201607722..48de490120 100644
+--- a/tcg/sparc64/tcg-target.c.inc
++++ b/tcg/sparc64/tcg-target.c.inc
+@@ -1532,7 +1532,8 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+     }
+ }
+ 
+-static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
++static TCGConstraintSetIndex
++tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
+ {
+     switch (op) {
+     case INDEX_op_goto_ptr:
+diff --git a/tcg/tci/tcg-target.c.inc b/tcg/tci/tcg-target.c.inc
+index 74b649c902..662acbdcb6 100644
+--- a/tcg/tci/tcg-target.c.inc
++++ b/tcg/tci/tcg-target.c.inc
+@@ -36,7 +36,8 @@
+ #endif
+ #define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_NORMAL
+ 
+-static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
++static TCGConstraintSetIndex
++tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
+ {
+     switch (op) {
+     case INDEX_op_goto_ptr:
 -- 
 2.43.0
 
