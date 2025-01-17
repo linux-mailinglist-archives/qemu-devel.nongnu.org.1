@@ -2,79 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD7CA15844
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 20:41:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C81A15842
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 20:41:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYsCV-0001Sa-Tc; Fri, 17 Jan 2025 14:40:15 -0500
+	id 1tYsCZ-0001WD-0S; Fri, 17 Jan 2025 14:40:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tYsCU-0001Rw-MU
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 14:40:14 -0500
+ id 1tYsCW-0001Un-ST
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 14:40:16 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tYsCR-0002Aq-Rz
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 14:40:14 -0500
+ id 1tYsCV-0002BS-A6
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 14:40:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737142810;
+ s=mimecast20190719; t=1737142814;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=oL6dTYh2RuaJWRfVXT8oeGcsfRJVUnHMv7b65g9t8lI=;
- b=CWUojGwMbXVnstQ5SUF6I5ygG02h5NGsqqfKrMeL9oVn7A/dpznMzVvy2QDSuldJ0d+ThD
- y1kiRZ3KsLkDEb/KQkuHx3vo4PDyIiGTRdF88yeZGdcOpTXxleD+boRNdNA161ITGq1T/6
- lIDYK5OibwWu4SG4yuLHwnvorTBr7ec=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=vaboZ+TQyEKNVXlrPQA7ag9T+Mayf0OWrnAczy+Hp9Q=;
+ b=d3Vmz48bnYP+Qw1+uHf3DQRcrcv9z22eIb4YuNGxtt5NyRQBAb56fYv6BVu3qFmwRoM0AK
+ yLAjbXaBRbcuFdEbGrFJaPpYv33sVGqxu6aBHIstSxXZxesRTLs/wFaZShGDyvA/3LkuCx
+ VJM3+NRbzp0hn9JvKxAEi5JUYJecaTU=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-611-MdPWBfylPpWVvZbcEi8J8A-1; Fri, 17 Jan 2025 14:40:07 -0500
-X-MC-Unique: MdPWBfylPpWVvZbcEi8J8A-1
-X-Mimecast-MFC-AGG-ID: MdPWBfylPpWVvZbcEi8J8A
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-aa6b904a886so210478666b.0
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 11:40:07 -0800 (PST)
+ us-mta-451-GozuQNAlMNil04DBgb2Rrw-1; Fri, 17 Jan 2025 14:40:13 -0500
+X-MC-Unique: GozuQNAlMNil04DBgb2Rrw-1
+X-Mimecast-MFC-AGG-ID: GozuQNAlMNil04DBgb2Rrw
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-5d40c0c728aso2307609a12.2
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 11:40:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737142805; x=1737747605;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=oL6dTYh2RuaJWRfVXT8oeGcsfRJVUnHMv7b65g9t8lI=;
- b=X/Edrw7v5w8P3JfG+0/xecJbMWElZOPVloJDRFlA8NFxXSqEkDP6i+ZcZeeHyowlRV
- Xet6TCt1Da4R+eqrPtRK6Jz5XDOzfsFwrP9JOf40znSOOrzCYmMakWJeqZDHgo7xMDT5
- 2Dl0MjB/pwQma1k3IA14H+LNhSJTNpIzovhtsSOpYTN+2Z2SZyW9eaWGqLTTlzG7d1sx
- Y/KV31ozEEY5XJXMMJtRqB45QSKuPsIEptOr01LpyONSYwMYXnGKK3Lbo+G1qMDiadji
- RmxAJ7I3XEASvVIxXNbOJJYm0hGgqxdcB1k88eD7yg7io5z9Wwtqk7M2TVWGj51/A/bL
- JAUA==
-X-Gm-Message-State: AOJu0YzZu05zxpIZjAUKav+1YYfT/FfxLqmYYik/0YeJ9ODq8RfkB/RQ
- 8wPUORs3pzUJGLPuCOX43Ds413+2TcEJ0xhRdQBhLHZFRRT2dDRrt0drU2ZBE2P8UUF3dCAa5NT
- CpgkP1YOIkc695NCZtxkLB6Uz+SXgSYQ+plixuUubL+T8cqq9OMXXOsMgWXhuzF1gvJwZlC4lNF
- oNghKAbaJQ5oJxtEtd/haSkqx1Gmk37iYj7F8WECA=
-X-Gm-Gg: ASbGncukuSmjFhlwLmeloEb3H/7CgO0JbmkUtZ71dSNFrr5QI2xpdgPNIbcZEEhu4r9
- shU9Vs1f/juhzcesyIyHMzvMXUCzGuHtONdThTcMXnrYICayBRMgM3JhbQ3pKVBZJ7D4qe8O9Uw
- A9uV1CtA8z1oVsw8jyKrC/S9g4Nt4/G/dJcc5v2zJxPITOQxWmS2plFvh7aV5xrZ1S2EdOx1AOE
- XHMUIYNoL4aIzj4V0WTSDYtLtBFX+DahXxrUYQ7qfOTxID0FSPlNvJvkbh1Ng==
-X-Received: by 2002:a17:906:4783:b0:aa6:3f93:fb99 with SMTP id
- a640c23a62f3a-ab38b3841e5mr384936366b.36.1737142805426; 
- Fri, 17 Jan 2025 11:40:05 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHLBuBP70OXFnADQniFxop/Iejj77O7nKrcI4gYoTNBzUMbfLUHoSgnVW0jFBV892kB6ui8uQ==
-X-Received: by 2002:a17:906:4783:b0:aa6:3f93:fb99 with SMTP id
- a640c23a62f3a-ab38b3841e5mr384934066b.36.1737142804891; 
- Fri, 17 Jan 2025 11:40:04 -0800 (PST)
+ d=1e100.net; s=20230601; t=1737142810; x=1737747610;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vaboZ+TQyEKNVXlrPQA7ag9T+Mayf0OWrnAczy+Hp9Q=;
+ b=mEZ/tuClcEZ9NUKCqzKGMJiOdl2owGMeeqvDpHUXMbChUIcDpX7vt+LlTYx0uwZ8n2
+ 3etDK1sNBxAsbjVLF5cRY9aHQ4NT0BAgLwcVykmwQiADASSbiJw8jmRb4AmtniMOrSOy
+ FmPRNgp0zpFvF5BJKxzGRjTSdn+hxyNk4DHs4b5oSKKGNXEcj+t3rXvJhw+rLRCzCmy1
+ I9QsDpaJGgFsSDzdg6WRV8EVCIIwqhGIO/bjzZZQO6UaU3n1ZVWamPd17uBK4zHAWGcm
+ Y6UcjGZfKY5M0qXWcx5SMpDTJu/zWHOXsTU/WU+gD9ukgaQN70Y3oEG3D3Nj82tUob3S
+ mG9w==
+X-Gm-Message-State: AOJu0Yx8SNpNwDLtEFUxdC85JoHFULeX+ofCY3syh13T7sVtw77QDH8t
+ nYC2JQy5oGOIdL2LfDGj6YwNJRAd///8Zr21DBTuc2IjrXMH3oeYvVFV2TMj+/jNW9pqnwHM7fp
+ bBxMt0p50wgcPVFyfqhRuFsqS+oLCj22p0RDGsmCX8gPV0nZu1EeVEkbzGj8d6DnNsi8joo8wOv
+ iBIQDfwy/to3n4aKlOr0DtuPSjJ+9dYoffdcs12A0=
+X-Gm-Gg: ASbGnctViUnbf7f88otu7UgzzDjqGPKzcdFhcjsiJXHQfPYo3FGDdzhvUt8+9zeLITa
+ KiipTTcJyZCaS0Ty7XrLzKxXioDFUfVDRa3ZyXXYWvoxLcu+PGnSSELrkRqjkhiOK1Be6csPCrU
+ Li/1ZggqapFaMtYsNo5SPQC6t1wN8W+WvQZJOVXuRTwAZ3tHLJJLiQOpHzalpchkrFFiHuemsRF
+ 7fsculqwv7h32LvGqKSQJNPz2Gu4ZvL9+Qrk/Py7xUdyrEsZ+6ZRkr6solH4g==
+X-Received: by 2002:a05:6402:524b:b0:5d0:9054:b119 with SMTP id
+ 4fb4d7f45d1cf-5db7db07787mr8615037a12.21.1737142810512; 
+ Fri, 17 Jan 2025 11:40:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHDQN3/+dlRteAovEglF5VL6vxcKS7afffhvsgRaXODoQ26l5oelB3KyewP+DUvzPrRvfyxEA==
+X-Received: by 2002:a05:6402:524b:b0:5d0:9054:b119 with SMTP id
+ 4fb4d7f45d1cf-5db7db07787mr8614735a12.21.1737142807492; 
+ Fri, 17 Jan 2025 11:40:07 -0800 (PST)
 Received: from [192.168.10.47] ([176.206.124.70])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab384f22457sm215552666b.114.2025.01.17.11.40.04
+ 4fb4d7f45d1cf-5db73642247sm1949804a12.2.2025.01.17.11.40.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 11:40:04 -0800 (PST)
+ Fri, 17 Jan 2025 11:40:05 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org
-Subject: [RFC PATCH 00/10] rust: remaining part of qdev bindings
-Date: Fri, 17 Jan 2025 20:39:53 +0100
-Message-ID: <20250117194003.1173231-1-pbonzini@redhat.com>
+Cc: qemu-rust@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH 01/10] rust: qemu-api: add sub-subclass to the integration
+ tests
+Date: Fri, 17 Jan 2025 20:39:54 +0100
+Message-ID: <20250117194003.1173231-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250117194003.1173231-1-pbonzini@redhat.com>
+References: <20250117194003.1173231-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
@@ -86,7 +91,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.132,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,71 +107,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is what I have left for qdev bindings, including 1) reference
-counting and object creation 2) clocks 3) Resettable 4) MemoryRegionOps.
-I have no rush for this series, and I expect HPET to be merged before it.
-The documentation is not yet complete (will be fixed) and the API is
-limited to what is needed for pl011 (which I am not considering a bug,
-since the QEMU API is so large), but I think it's already ready for an
-initial review.
+From: Zhao Liu <zhao1.liu@intel.com>
 
-The most interesting part is perhaps the usage of the builder pattern
-for MemoryRegionOps:
+missing signed-off-by from zhao
+---
+ rust/qemu-api/tests/tests.rs | 56 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 53 insertions(+), 3 deletions(-)
 
-    static PL011_OPS: MemoryRegionOps<PL011State> = MemoryRegionOpsBuilder::<PL011State>::new()
-        .read(&PL011State::read) 
-        .write(&PL011State::write)   
-        .native_endian()
-        .impl_sizes(4, 4)
-        .build();
-
-The code is getting closer to the synopsis at
-https://lists.nongnu.org/archive/html/qemu-rust/2024-12/msg00006.html,
-except that it works (at least as far as CI is concerned) instead of just
-compiling. :)  And since I'm citing it, a reminder that it may still be
-worth asking your Rust questions as replies to that message.
-
-You can find the code in the rust-next branch of
-https://gitlab.com/bonzini/qemu/, where it passed CI.
-
-Paolo
-
-Paolo Bonzini (9):
-  rust: qom: add reference counting functionality
-  rust: qom: add object creation functionality
-  rust: callbacks: allow passing optional callbacks as ()
-  rust: qdev: add clock creation
-  rust: qom: allow initializing interface vtables
-  rust: qdev: make ObjectImpl a supertrait of DeviceImpl
-  rust: qdev: switch from legacy reset to Resettable
-  rust: bindings: add Sync markers to types referred to by
-    MemoryRegionOps
-  rust: bindings for MemoryRegionOps
-
-Zhao Liu (1):
-  rust: qemu-api: add sub-subclass to the integration tests
-
- meson.build                          |   1 +
- rust/hw/char/pl011/src/device.rs     |  88 ++++++++--------
- rust/hw/char/pl011/src/lib.rs        |   1 -
- rust/hw/char/pl011/src/memory_ops.rs |  36 -------
- rust/qemu-api/meson.build            |   1 +
- rust/qemu-api/src/bindings.rs        |  19 +++-
- rust/qemu-api/src/callbacks.rs       |  97 ++++++++++++++++++
- rust/qemu-api/src/irq.rs             |   3 +
- rust/qemu-api/src/lib.rs             |   1 +
- rust/qemu-api/src/memory.rs          | 191 +++++++++++++++++++++++++++++++++++
- rust/qemu-api/src/prelude.rs         |   4 +
- rust/qemu-api/src/qdev.rs            | 188 +++++++++++++++++++++++++++++-----
- rust/qemu-api/src/qom.rs             | 181 ++++++++++++++++++++++++++++++++-
- rust/qemu-api/src/sysbus.rs          |   7 +-
- rust/qemu-api/src/vmstate.rs         |  10 +-
- rust/qemu-api/src/zeroable.rs        |  12 +++
- rust/qemu-api/tests/tests.rs         |  87 ++++++++++++----
- 17 files changed, 793 insertions(+), 134 deletions(-)
- delete mode 100644 rust/hw/char/pl011/src/memory_ops.rs
- create mode 100644 rust/qemu-api/src/memory.rs
-
+diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
+index 526c3f4f8ea..5c3e75ed3d5 100644
+--- a/rust/qemu-api/tests/tests.rs
++++ b/rust/qemu-api/tests/tests.rs
+@@ -14,8 +14,8 @@
+     cell::{self, BqlCell},
+     declare_properties, define_property,
+     prelude::*,
+-    qdev::{DeviceImpl, DeviceState, Property},
+-    qom::{ObjectImpl, ParentField},
++    qdev::{DeviceClass, DeviceImpl, DeviceState, Property},
++    qom::{ClassInitImpl, ObjectImpl, ParentField},
+     vmstate::VMStateDescription,
+     zeroable::Zeroable,
+ };
+@@ -37,6 +37,10 @@ pub struct DummyState {
+ 
+ qom_isa!(DummyState: Object, DeviceState);
+ 
++pub struct DummyClass {
++    parent_class: <DeviceState as ObjectType>::Class,
++}
++
+ declare_properties! {
+     DUMMY_PROPERTIES,
+         define_property!(
+@@ -49,7 +53,7 @@ pub struct DummyState {
+ }
+ 
+ unsafe impl ObjectType for DummyState {
+-    type Class = <DeviceState as ObjectType>::Class;
++    type Class = DummyClass;
+     const TYPE_NAME: &'static CStr = c_str!("dummy");
+ }
+ 
+@@ -67,6 +71,51 @@ fn vmsd() -> Option<&'static VMStateDescription> {
+     }
+ }
+ 
++// `impl<T> ClassInitImpl<DummyClass> for T` doesn't work since it violates
++// orphan rule.
++impl ClassInitImpl<DummyClass> for DummyState {
++    fn class_init(klass: &mut DummyClass) {
++        <Self as ClassInitImpl<DeviceClass>>::class_init(&mut klass.parent_class);
++    }
++}
++
++#[derive(qemu_api_macros::offsets)]
++#[repr(C)]
++#[derive(qemu_api_macros::Object)]
++pub struct DummyChildState {
++    parent: ParentField<DummyState>,
++}
++
++qom_isa!(DummyChildState: Object, DeviceState, DummyState);
++
++pub struct DummyChildClass {
++    parent_class: <DummyState as ObjectType>::Class,
++}
++
++unsafe impl ObjectType for DummyChildState {
++    type Class = DummyChildClass;
++    const TYPE_NAME: &'static CStr = c_str!("dummy_child");
++}
++
++impl ObjectImpl for DummyChildState {
++    type ParentType = DummyState;
++    const ABSTRACT: bool = false;
++}
++
++impl DeviceImpl for DummyChildState {}
++
++impl ClassInitImpl<DummyClass> for DummyChildState {
++    fn class_init(klass: &mut DummyClass) {
++        <Self as ClassInitImpl<DeviceClass>>::class_init(&mut klass.parent_class);
++    }
++}
++
++impl ClassInitImpl<DummyChildClass> for DummyChildState {
++    fn class_init(klass: &mut DummyChildClass) {
++        <Self as ClassInitImpl<DummyClass>>::class_init(&mut klass.parent_class);
++    }
++}
++
+ fn init_qom() {
+     static ONCE: BqlCell<bool> = BqlCell::new(false);
+ 
+@@ -85,6 +134,7 @@ fn test_object_new() {
+     init_qom();
+     unsafe {
+         object_unref(object_new(DummyState::TYPE_NAME.as_ptr()).cast());
++        object_unref(object_new(DummyChildState::TYPE_NAME.as_ptr()).cast());
+     }
+ }
+ 
 -- 
 2.47.1
 
