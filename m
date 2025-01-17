@@ -2,78 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56AFFA150E2
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 14:48:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB8AA15110
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 14:57:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYmfN-0005Qv-1i; Fri, 17 Jan 2025 08:45:41 -0500
+	id 1tYmq2-00081b-Pj; Fri, 17 Jan 2025 08:56:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tYmea-0004yR-Od
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 08:44:54 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tYmeY-0002Tf-BO
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 08:44:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737121487;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=91H7ukp8R9LpkT5AJeFzoFnnKB32e8InjF0jwAls9FE=;
- b=heEGuGAPQN06NeTa5Z9LHOA//lfJGGmg7ALcxoQk/l0A6tysMlmOpSWBXdUWHkvcLmi6c3
- c1+xszS3p2Mee3hAs6+5YYBd2COgzK2ZbzcbPkoL/3QNj24Mt1ftuBHQh9tdGimbwY62oh
- ogm6DFl4xY3W5u7z2Ely6aaBE+j6gCE=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-481-bkYrNjWkMLiEN5J1bF2qfA-1; Fri,
- 17 Jan 2025 08:44:43 -0500
-X-MC-Unique: bkYrNjWkMLiEN5J1bF2qfA-1
-X-Mimecast-MFC-AGG-ID: bkYrNjWkMLiEN5J1bF2qfA
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 596A519560BA; Fri, 17 Jan 2025 13:44:42 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.48])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 922D519560A3; Fri, 17 Jan 2025 13:44:41 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6BC5521E6924; Fri, 17 Jan 2025 14:44:39 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Fabiano Rosas
- <farosas@suse.de>,  David Hildenbrand <david@redhat.com>,  Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>,  Eduardo Habkost
- <eduardo@habkost.net>,  Philippe Mathieu-Daude <philmd@linaro.org>,  Paolo
- Bonzini <pbonzini@redhat.com>,  "Daniel P. Berrange" <berrange@redhat.com>
-Subject: Re: [PATCH V5 15/23] migration: cpr-transfer mode
-In-Reply-To: <2ae6c272-837c-4d88-bcfa-fc7719cc447d@oracle.com> (Steven
- Sistare's message of "Tue, 7 Jan 2025 10:38:27 -0500")
-References: <1735057028-308595-1-git-send-email-steven.sistare@oracle.com>
- <1735057028-308595-16-git-send-email-steven.sistare@oracle.com>
- <87ed1eakxr.fsf@pond.sub.org>
- <2ae6c272-837c-4d88-bcfa-fc7719cc447d@oracle.com>
-Date: Fri, 17 Jan 2025 14:44:39 +0100
-Message-ID: <87bjw5tv08.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1tYmpy-00081O-Vq
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 08:56:39 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1tYmpx-0004Qd-Ce
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 08:56:38 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5d0d32cd31aso3218015a12.0
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 05:56:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1737122195; x=1737726995; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=v804b44pqbaXJHdnWbsXOKQhx5m98xwWf/V+CtD5pCQ=;
+ b=kFXnyk3E9PAfHJll2JZj/lpMZMBJ7jb4rB6H4z3ntCa17tAOnCvR4ejdk23Pvw5ODh
+ I/T0z4lUEclpRjOrNXzCyjvMkVl8/9VwCHWW6+wdXsDMA/5pBNUXWxwjymbsu4HrMQFt
+ f2UNYenw3VS6OOdocNnbsRCDCFWgKUhm48PVtg2WaOyRNumD925mDCCQJoqMT+AqJQCK
+ Kta6T8QsbqbsJ3cgxpp0pyn6mqH1kjpFXjztqQRC9U76ThnNLLsfCZU1VgaC4bqKPpeP
+ tHIetaoZsZeSLTZG5UH/FA+IfJkRoaLxJk0y5GoVolDSWsWytM6UeVetxk+zPUZe5LEn
+ JBUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737122195; x=1737726995;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=v804b44pqbaXJHdnWbsXOKQhx5m98xwWf/V+CtD5pCQ=;
+ b=TxlZYzK1I143pkShxZvW1ClrRZMibx5uHSPbfdjioLbc/v4HpzLy1YTd3ASyb2smDb
+ MwcaNDG5dNfKpOK39IfWwdhTBHaDFAxdBZfNBUNBDUZ5pRNmZSEidDW+0WsBdAvZ6AzE
+ Z0y3Gg6Ja1Td390DKVZPpU/0L34NRg3+6Hdzs2IAV0h7sW00zoJZkvSBM5UEytdsJ7WY
+ 7N6q+mDWeae+TNJ4Gd8F1JXU+Mr5LCaRRUvISVEW6j6AacLwqavQsaiJ0DDAqprP8zmy
+ uMTTkRKwdSF9qXnuJzmwFSyUPPTWC1y393mRD7ygiUH5jcZDzAS+SIK1TSuoK+Dx/BXK
+ tMiw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXnj3tQZdlK813fEEoTn7YS2SFkWBbgecSei7r8UIDZ9OLMmo4GWb8r+h6G/xfIfU+l4AMMV6CAwEwD@nongnu.org
+X-Gm-Message-State: AOJu0Yyw65aMWorCazqDVLPKpNpCFOD2JOyq1F3jX8az6coPAxrQLNY9
+ rMotLTUBbA80AvFE5nxZDJIMtibWcUMcpGNlUvEzcygjS3jVkT8IX785NS7APkWbowzcJP6Prp4
+ yLwbZCYYMmD0DGYL4AVT23+wxReg=
+X-Gm-Gg: ASbGncv+7Irz3hgvDqKpHY/gza/q56PXoToEE0q0hSYFs6sdMDvOSf1dJTrYAH7uGG5
+ G5MSKsi+h3pPIlvLbEpEL21qbvUeRLRxdoyOq
+X-Google-Smtp-Source: AGHT+IFGJO6PtPhRgT0lXBPRYTiuPy6Oh6hhdJYMgvusiG5zWnA5SlsKS+pmJ2Jba/Wx8K9Y8Dwx28oPZrPLZjwhGl4=
+X-Received: by 2002:a05:6402:2681:b0:5d0:8f1c:d9d7 with SMTP id
+ 4fb4d7f45d1cf-5db7d2dc2d0mr6547236a12.4.1737122194447; Fri, 17 Jan 2025
+ 05:56:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20250116084332.1864967-1-dwmw2@infradead.org>
+ <20250116221027.GA378432@fedora>
+ <CAAibmn0Tsn9ZQ1wgoLLhCY=DQAkSDDtKBYOKKoSGmYe2TDTZuQ@mail.gmail.com>
+ <43e9e8b7b2aea133d0353908b1bf09ae8d75a3d0.camel@infradead.org>
+In-Reply-To: <43e9e8b7b2aea133d0353908b1bf09ae8d75a3d0.camel@infradead.org>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Fri, 17 Jan 2025 08:56:21 -0500
+X-Gm-Features: AbW1kvZ6Qb0Dhqexpko0g3oRhNT3NRR7KJgYRzw1ZW3GjBK0zUxSoTalsuqXO_M
+Message-ID: <CAJSP0QWFCnf5zweSLwYXKJA=ByBB8JyJ1OOT7uAn0wQoYem0MA@mail.gmail.com>
+Subject: Re: [PULL 0/8] Xen regression fixes and cleanups
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Phil Dennis-Jordan <phil@philjordan.eu>,
+ Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=stefanha@gmail.com; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.132,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,229 +94,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Steven Sistare <steven.sistare@oracle.com> writes:
-
-> On 1/7/2025 7:05 AM, Markus Armbruster wrote:
->> Steve Sistare <steven.sistare@oracle.com> writes:
->> 
->>> Add the cpr-transfer migration mode, which allows the user to transfer
->>> a guest to a new QEMU instance on the same host with minimal guest pause
->>> time, by preserving guest RAM in place, albeit with new virtual addresses
->>> in new QEMU, and by preserving device file descriptors.  Pages that were
->>> locked in memory for DMA in old QEMU remain locked in new QEMU, because the
->>> descriptor of the device that locked them remains open.
->>>
->>> cpr-transfer preserves memory and devices descriptors by sending them to
->>> new QEMU over a unix domain socket using SCM_RIGHTS.  Such CPR state cannot
->>> be sent over the normal migration channel, because devices and backends
->>> are created prior to reading the channel,
->>
->> Is that an artifact of the way QEMU starts up, or is it fundamental?
+On Fri, 17 Jan 2025 at 06:37, David Woodhouse <dwmw2@infradead.org> wrote:
 >
-> Hi Markus, welcome back and Happy New Year!
-
-Thank you!  A late happy new year for you, too!
-
-> This is a deeply ingrained artifact.  Changing it would require radically
-> refactoring the information passed on the command line vs the information
-> passed via monitor.
-
-More on this below.
-
->>>                                             so this mode sends CPR state
->>> over a second "cpr" migration channel.  New QEMU reads the cpr channel
->>> prior to creating devices or backends.  The user specifies the cpr channel
->>> in the channel arguments on the outgoing side, and in a second -incoming
->>> command-line parameter on the incoming side.
->>>
->>> The user must start old QEMU with the the '-machine aux-ram-share=on' option,
->>> which allows anonymous memory to be transferred in place to the new process
->>> by transferring a memory descriptor for each ram block.  Memory-backend
->>> objects must have the share=on attribute, but memory-backend-epc is not
->>> supported.
->>>
->>> The user starts new QEMU on the same host as old QEMU, with command-line
->>> arguments to create the same machine, plus the -incoming option for the
->>> main migration channel, like normal live migration.  In addition, the user
->>> adds a second -incoming option with channel type "cpr".  The CPR channel
->>> address must be a type, such as unix socket, that supports SCM_RIGHTS.
->>>
->>> To initiate CPR, the user issues a migrate command to old QEMU, adding
->>> a second migration channel of type "cpr" in the channels argument.
->>> Old QEMU stops the VM, saves state to the migration channels, and enters
->>> the postmigrate state.  New QEMU mmap's memory descriptors, and execution
->>> resumes.
->>>
->>> The implementation splits qmp_migrate into start and finish functions.
->>> Start sends CPR state to new QEMU, which responds by closing the CPR
->>> channel.  Old QEMU detects the HUP then calls finish, which connects the
->>> main migration channel.
->>>
->>> In summary, the usage is:
->>>
->>>    qemu-system-$arch -machine aux-ram-share=on ...
->>>
->>>    start new QEMU with "-incoming <main-uri> -incoming <cpr-channel>"
->>>
->>>    Issue commands to old QEMU:
->>>      migrate_set_parameter mode cpr-transfer
->>>
->>>      {"execute": "migrate", ...
->>>          {"channel-type": "main"...}, {"channel-type": "cpr"...} ... }
->>>
->>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->> [...]
->> 
->>> diff --git a/migration/vmstate-types.c b/migration/vmstate-types.c
->>> index f31deb3..2210f0c 100644
->>> --- a/migration/vmstate-types.c
->>> +++ b/migration/vmstate-types.c
->>> @@ -15,6 +15,7 @@
->>>   #include "qemu-file.h"
->>>   #include "migration.h"
->>>   #include "migration/vmstate.h"
->>> +#include "migration/client-options.h"
->>>   #include "qemu/error-report.h"
->>>   #include "qemu/queue.h"
->>>   #include "trace.h"
->>> diff --git a/qapi/migration.json b/qapi/migration.json
->>> index a605dc2..35309dc 100644
->>> --- a/qapi/migration.json
->>> +++ b/qapi/migration.json
->>> @@ -614,9 +614,47 @@
->>>   #     or COLO.
->>>   #
->>>   #     (since 8.2)
->>> +#
->>> +# @cpr-transfer: This mode allows the user to transfer a guest to a
->>> +#     new QEMU instance on the same host with minimal guest pause
->>> +#     time, by preserving guest RAM in place, albeit with new virtual
->>> +#     addresses in new QEMU.  Devices and their pinned pages will also
->>> +#     be preserved in a future QEMU release.
->>
->> Maybe "@cpr-transfer: Checkpoint and restart migration mode minimizes
->> guest pause time by transferring guest RAM without copying it."
+> On Fri, 2025-01-17 at 11:49 +0100, Phil Dennis-Jordan wrote:
+> >
+> > This note made me realise that my feature addition (macOS PV graphics
+> > device) that caused the regression requiring my patch in this series
+> > hasn't made it into the changelog. I'd be happy to add it myself, but
+> > I don't have a wiki account. How do I get one?
 >
-> "Checkpoint and restart migration mode" is ambiguous.  It would be
-> "Checkpoint and restart transfer migration mode".  That's a mouthful!
-> "This mode" is unambiguous, and matches the concise style of describing
-> options in this file.  Few if any of the options in this file repeat the
-> name of the option in the description.
-
-True.  But will readers understand what "CPR" stands for?  Do they need
-to understand?
-
->> If you want to mention the guest RAM mapping differs between old and new
->> QEMU, that's fine, but it's also detail, so I'd do it further down.
+> I think the automatic account creation and you have to mail someone to
+> get access, but I can't remember whom.
 >
-> I'll strike it.  I agree the user does not need to know.
->
->>> +#
->>> +#     The user starts new QEMU on the same host as old QEMU, with
->>> +#     command-line arguments to create the same machine, plus the
->>> +#     -incoming option for the main migration channel, like normal
->>> +#     live migration.  In addition, the user adds a second -incoming
->>> +#     option with channel type "cpr".  The CPR channel address must
->>> +#     be a type, such as unix socket, that supports SCM_RIGHTS.
->>
->> Permit me to indulge in a bit of pedantry...  A channel address doesn't
->> support SCM_RIGHTS, only a channel may.  A channel supports it when it
->> is backed by a UNIX domain socket.  The channel's socket's transport
->> type need not be 'unix' for that, it could also be 'fd'.
->>
->> Suggest something like "This CPR channel must be a UNIX domain socket."
->>
->> If you want to say why, that's fine: "This CPR channel must support file
->> descriptor transfer, i.e. it must be a UNIX domain socket."
->>
->> If you want to mention SCM_RIGHTS, that's fine, too: "This CPR channel
->> must support file descriptor transfer with SCM_RIGHTS, i.e. it must be a
->> UNIX domain socket."
->
-> OK.
->
->>> +#
->>> +#     To initiate CPR, the user issues a migrate command to old QEMU,
->>> +#     adding a second migration channel of type "cpr" in the channels
->>
->> in the channel's
->> 
->>> +#     argument.  Old QEMU stops the VM, saves state to the migration
->>> +#     channels, and enters the postmigrate state.  Execution resumes
->>> +#     in new QEMU.
->>> +#
->>> +#     New QEMU reads the CPR channel before opening a monitor, hence
->>> +#     the CPR channel cannot be specified in the list of channels for
->>> +#     a migrate-incoming command.  It may only be specified on the
->>> +#     command line.
->>
->> This is a restriction that could conceivably be lifted in the future,
->> right?
->
-> Yes, but lifting it requires the big command-line vs monitor restructuring
-> I mentioned earlier.  IMO that is far enough in the future (and possibly never)
-> that adding a "Currently" disclaimer would be deceptive.
+> If you want to give me something I can cut/paste, I can add it for you.
 
-Now I'm confused.
+Any existing wiki user can create a new account for someone:
+https://wiki.qemu.org/Special:CreateAccount
 
-Earlier, you explained why we can't simply send CPR state via the normal
-migration channel: we create devices and backends much earlier long
-before we receive from the migration channel.  Correct?
+I have created an account for Phil and will send him the login details
+in a private email.
 
-Here, you're documenting that the CPR channel can only be specified on
-the command line, not with migrate-incoming.  Isn't that a different
-problem?
-
->> What happens if a user tries to specify it with migrate-incoming?  Fails
->> cleanly?  What's the error message?
->
-> It fails cleanly with a pre-existing error message that could be more
-> descriptive, so I will improve it, thanks.
->
->> Maybe simply:
->>
->>           Currently, the CPR channel can only be specified on the command
->>           line, not with the migrate-incoming command.
->>
->> with a big, fat comment explaining the restriction next to the spot
->> that reports the error.
->> 
->>> +#
->>> +#     The main channel address cannot be a file type, and for the tcp
->>> +#     type, the port cannot be 0 (meaning dynamically choose a port).
->>
->> What's "the tcp type"?  URI "tcp:..." / channel
->> addr.transport=socket,addr.type=inet?
->
-> I will clarify.
->
->>> +#
->>> +#     Memory-backend objects must have the share=on attribute, but
->>> +#     memory-backend-epc is not supported.  The VM must be started
->>> +#     with the '-machine aux-ram-share=on' option.
->>> +#
->>> +#     When using -incoming defer, you must issue the migrate command
->>> +#     to old QEMU before issuing any monitor commands to new QEMU.
->>> +#     However, new QEMU does not open and read the migration stream
->>> +#     until you issue the migrate incoming command.
->>
->> I think some (all?) instances of "old QEMU" and "new QEMU" would read
->> better as "the old QEMU" and "the new QEMU".
->
-> Maybe slightly,
-
-A second opinion from a native speaker would be nice.
-
->                 but I consciously standardized on the terms old QEMU and
-> new QEMU to be concise, and they are used everywhere: cover letter, commits,
-> comments, API, user documentation, and in already-committed cpr-reboot patches.
-> Adding "the" would require changes in all those places, for consistency.
-> IMO it is acceptable with or without the article.
-
-Yes, consistency is desirable.
-
-Thanks!
-
-[...]
-
+Stefan
 
