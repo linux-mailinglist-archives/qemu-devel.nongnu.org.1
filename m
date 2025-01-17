@@ -2,86 +2,146 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C3F1A149CB
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 07:48:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B919A149CD
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 07:48:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYg9M-0003J3-6A; Fri, 17 Jan 2025 01:48:12 -0500
+	id 1tYg9K-0003DI-RF; Fri, 17 Jan 2025 01:48:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tYg8p-0002xZ-Ni
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tYg8n-0002wq-Lj
  for qemu-devel@nongnu.org; Fri, 17 Jan 2025 01:47:39 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tYg8j-000577-3Y
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 01:47:38 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-21a7ed0155cso26807335ad.3
- for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 22:47:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1737096448; x=1737701248;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=oD5ynekI1pncuUsoZ3D40zipNa+S5IKwwfMz+sh95pQ=;
- b=BMbL2T5saP7+FA3BYW4rhDSk94WtvQNVcs5Qr4IYyMrSEUoGlqIcml46DxJkIzC6md
- +rKhbwrTwTSfcus7XcbCDYzvWpNbuHl2+dH4XmX0KvvGHSUfprEYk8cmbLPAAr19bSJS
- FstrGaxxB9UMG8OPL7Fx9ZJutf+YJM9P9E6Sob8sEq2zTt9YLVRDtbEqqU9MC/REMTSs
- /sFz1if07knVLzyR5js6hlfIgC7KgW5zxBWvYAkLfeDu4ILOOdkZ7FLBhlIFTfM72teY
- Png3Ld5JuyeeyBzWRBDgdTojXxtrJv85bCcg3L3IGx92gS/MMky6rFjA4GGOUNQJTXz9
- or/g==
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tYg8c-00056S-54
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 01:47:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737096445;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=8O8Pt6oWzja2Q8mXOpV/OrAWEaZ4o8p1z/FEELrJ8xU=;
+ b=J5ovfHHhfY7zXRCdhKeCo8wHZCzwxiKoiRXkvnHkcMFVduuHKNexksSzNtiTZZmFzK4EFu
+ uJP0FWFasIqyyRVt9FiVbWpLGNrM56oRlzKzThBdWOidK8qDrQuDnJp3nqyuk6IfSVWS43
+ fSuj4NWP7zp/jzAmRbtDP77pgnNLNIo=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-532-62HAAfT6NJCFqSEKkCYD4g-1; Fri, 17 Jan 2025 01:47:20 -0500
+X-MC-Unique: 62HAAfT6NJCFqSEKkCYD4g-1
+X-Mimecast-MFC-AGG-ID: 62HAAfT6NJCFqSEKkCYD4g
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-385e3cbf308so713249f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 22:47:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737096448; x=1737701248;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=oD5ynekI1pncuUsoZ3D40zipNa+S5IKwwfMz+sh95pQ=;
- b=XQ4I2pFE1ZdzeUVt9HNAjDcQlVptLT/ehYd6iGKMJaKuop2+stWMFTi+ZEqL4IfTpH
- aiic9LJ7P5/fecoVChtvdTfolNxUyeZY/HUwm4CVqeQW39sxCsQ66R+vKY6d2+hPneYu
- YpKtgDEQkUT020Tqxcmsi7VdxL6pwXf8DmpRaohchZ35onlhTUj99uOGtQwdZtXxPf1B
- dseNAWVvTjw2XUIwdHmIch18NoBe3FvEuGZmeAnTD9IhgHKzBufSrTMSx8jugUPsrK5w
- ACeLKKoGuqisaZAEsphblrZG7wpZ4LV8WBKO83Vy3IcemeGDC8iKcjAb/I8fPp6Cj1jL
- Bc1Q==
-X-Gm-Message-State: AOJu0Yw6ah/jPqmnb7ZWtZoXpSBy0GLtXSTuCX82Id+oAVB/GznYfdVW
- wjmQfxBbnuFqFcCkUtTagj0USXuniXTCG9+DaRF5kHRn02eyfwXeFy8pcEwBVsw=
-X-Gm-Gg: ASbGncvhgP3eYq8jf8JBlqY2CAX91VZjbS0gKorLTQDWqNIJIWpL0W3F2xWtg7/Jma1
- eRf+ta9wNsvJsaKi7YmSskKY5sLzDWUUthL14XebOmf9dUkBBY/lpcQgqn57H5KZkjaQsYmchLF
- mJtEyKz9gl46avuhzxF8jM6NvnFCW0nsnoLBkcv3m7PYaUjO3BczStsPwuI/fPsrHet/39Bf8lu
- XiL2VE13nnFXwJtPjdwJ6HtCfg1UKoPtIXH2JnQUInus8McbIyALMUOgvc=
-X-Google-Smtp-Source: AGHT+IFTUgQOgRUIYM0TAKwq8GsySnUp6unfk8UgsYsGr4Vu6buAMgsowUdvcJ3PeVkGjgu4NeHGrA==
-X-Received: by 2002:a17:903:2b06:b0:216:1367:7e48 with SMTP id
- d9443c01a7336-21c34cd5e4emr26690545ad.0.1737096448329; 
- Thu, 16 Jan 2025 22:47:28 -0800 (PST)
-Received: from localhost ([157.82.203.37]) by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-21c2cea07b6sm9617865ad.35.2025.01.16.22.47.26
+ d=1e100.net; s=20230601; t=1737096439; x=1737701239;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8O8Pt6oWzja2Q8mXOpV/OrAWEaZ4o8p1z/FEELrJ8xU=;
+ b=C5jujSmnDilCvs9sMxLmH7jcbK7eOB9TqgYPJQvgaLrpwoSV/tEgcpmccBy+gG8Kxt
+ 0zDXmRf7gIOxlZZRRjSj5M9UdnlyKcOVLMjj5YsRjxsqwIJL0LuWqRTe1HN4xYWjMMaN
+ UluA6Dpvtpyxcb0O9r41EtIjKhX3nrOj663ZlBgAFnsBK4q/DIAQ/SOLvrD1a9mbWDo9
+ WgwvyhayZ+u7SM4SAtkU2tntq+j2LQFPZ2edgn8vRiqxvRh0r0qriUDfRykCWZNCx4So
+ S6oRkm0/R47MlOQNdgKRYBRdfZj+jNXUvM8tomChsWnEc9Oi4UB3aQU5i9rRJ+x3FYVG
+ R4vw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUnwJwbQQfFTIlooWmgWUvmhe4365VTRrmlMQzpd/enYKnfSQy3X0U9kobMM0sKAfh8MHUll9TZLrKI@nongnu.org
+X-Gm-Message-State: AOJu0YzD3mrHSmhK3bWTEa/T6c/ubXPwpGsqhJ4aHxAbWcNIjvFc+JxG
+ dbGkdgPGqI5Rv+uzjQ+q31E/E0Q+wWANnykeJRgp0BFWinwkOgZrpLkSGVXD/StTakZBBW9kQ9d
+ dcqPVte1ITGq7lbceVG5VQ67/yVGVr6Y325MRwN7OeoxWZIeU/gyq
+X-Gm-Gg: ASbGnct9njaO4nurUgCL88MTQUchdgt+M7LYmrBn46rHYn6eyXRGeTfRO3w6/KQFn7y
+ +hNpX2t3dBHBfRdMS6i9nrRQN9hw11B6Wkgyzd5NPOZZbwCdVaNWYEAhHi0EX4iMJPDwLm1vBdH
+ QYH8TghcHJw04B/7Le8sYkHv8MF77V0Y7ZRpV55ZWaVxsu11L5elZfhfwInEhrbgiDLPH6mLEKd
+ XSuneKuE7excuE8Au+HzzWuhld1GnvmWHXPxiW9V6HaVGEE4jwjAcLMXqAaykorUHtEGtqSVQLP
+ 2d/wpUk+sWUg
+X-Received: by 2002:a5d:4b48:0:b0:38a:41a3:218 with SMTP id
+ ffacd0b85a97d-38bf57a2612mr754153f8f.36.1737096439515; 
+ Thu, 16 Jan 2025 22:47:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGBRZbhinDnLlh0PDsXCPWNcT3ZV46Y1MSdhL81JACtfzpG71rBAdQ602JqS+3vAr08UqZN+w==
+X-Received: by 2002:a5d:4b48:0:b0:38a:41a3:218 with SMTP id
+ ffacd0b85a97d-38bf57a2612mr754144f8f.36.1737096439203; 
+ Thu, 16 Jan 2025 22:47:19 -0800 (PST)
+Received: from [192.168.0.7] (ip-109-42-51-119.web.vodafone.de.
+ [109.42.51.119]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-437c103f0afsm53174265e9.2.2025.01.16.22.47.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Jan 2025 22:47:28 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Fri, 17 Jan 2025 15:47:02 +0900
-Subject: [PATCH v4 3/3] coreaudio: Initialize the buffer for device change
+ Thu, 16 Jan 2025 22:47:18 -0800 (PST)
+Message-ID: <d9f97b63-dbfc-4322-b7a1-8759d6be5cd7@redhat.com>
+Date: Fri, 17 Jan 2025 07:47:15 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250117-coreaudio-v4-3-f8d4fa4cb5f4@daynix.com>
-References: <20250117-coreaudio-v4-0-f8d4fa4cb5f4@daynix.com>
-In-Reply-To: <20250117-coreaudio-v4-0-f8d4fa4cb5f4@daynix.com>
-To: Gerd Hoffmann <kraxel@redhat.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Christian Schoenebeck <qemu_oss@crudebyte.com>
-Cc: qemu-devel@nongnu.org, devel@daynix.com, 
- Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-10.1 v2 00/13] hw/arm: Remove virt-2.6 up to virt-2.12
+ machines
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ "Daniel P. Berrange" <berrange@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>, qemu-arm@nongnu.org
+References: <20250116145944.38028-1-philmd@linaro.org>
+ <823a0892-e9d9-4d26-b862-83ffd60c2ad1@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <823a0892-e9d9-4d26-b862-83ffd60c2ad1@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.093,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.797,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,28 +157,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reallocate buffers when the active device change as the required buffer
-size may differ.
+On 16/01/2025 22.13, Philippe Mathieu-Daudé wrote:
+> Hi Peter,
+> 
+> On 16/1/25 15:59, Philippe Mathieu-Daudé wrote:
+>> The versioned 'virt' machines up to 2.12 been marked as deprecated
+>> two releases ago, and are older than 6 years, so according to our
+>> support policy we can remove them. Remove associated dead code.
+> 
+>> Philippe Mathieu-Daudé (13):
+>>    hw/arm/virt: Remove deprecated virt-2.6 machine
+>>    hw/arm/virt: Remove VirtMachineClass::no_pmu field
+>>    hw/arm/virt: Remove VirtMachineClass::disallow_affinity_adjustment
+>>    hw/arm/virt: Remove deprecated virt-2.7 machine
+>>    hw/arm/virt: Remove VirtMachineClass::no_its field
+>>    hw/arm/virt: Remove deprecated virt-2.8 machine
+>>    hw/arm/virt: Remove VirtMachineClass::claim_edge_triggered_timers
+>>      field
+>>    hw/arm/virt: Remove deprecated virt-2.9 machine
+>>    hw/arm/virt: Remove deprecated virt-2.10 machine
+>>    hw/arm/virt: Remove deprecated virt-2.11 machine
+>>    hw/arm/virt: Remove VirtMachineClass::smbios_old_sys_ver field
+>>    hw/arm/virt: Remove deprecated virt-2.12 machine
+>>    hw/arm/virt: Remove VirtMachineClass::no_highmem_ecam field
+> 
+> Please ignore this (reviewed) series for now. I'll rebase it and
+> repost after the 10.0 release.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- audio/coreaudio.m | 1 +
- 1 file changed, 1 insertion(+)
+Why? IMHO it should be ok to include them now already. While Daniel's macro 
+only starts the automatic disablement for 10.1, it should be ok to remove 
+them now already according to our normal deprecation policy: The machines 
+have been marked as deprecated in the 9.1 release already (via commit 
+https://gitlab.com/qemu-project/qemu/-/commit/ce80c4fa6ff ), and thus they 
+have been deprecated since two releases already. So it should be fine to 
+remove them now, shouldn't it?
 
-diff --git a/audio/coreaudio.m b/audio/coreaudio.m
-index b9e1a952ed37..72a6df0f75ee 100644
---- a/audio/coreaudio.m
-+++ b/audio/coreaudio.m
-@@ -466,6 +466,7 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
-     core->outputDeviceID = deviceID;
-     core->audioDevicePropertyBufferFrameSize = audioDevicePropertyBufferFrameSize;
-     core->hw.samples = core->bufferCount * core->audioDevicePropertyBufferFrameSize;
-+    audio_generic_initialize_buffer_out(&core->hw);
-     core->ioprocid = ioprocid;
- 
-     return 0;
-
--- 
-2.47.1
+  Thomas
 
 
