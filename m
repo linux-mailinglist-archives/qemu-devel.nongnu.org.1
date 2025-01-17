@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7AD1A14BC0
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 10:04:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99475A14BB6
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 10:01:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYiE7-0001tu-Us; Fri, 17 Jan 2025 04:01:15 -0500
+	id 1tYiEG-0001wk-FV; Fri, 17 Jan 2025 04:01:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tYiE2-0001s1-UQ
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 04:01:10 -0500
+ id 1tYiEA-0001uM-JT
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 04:01:20 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tYiE0-00084L-HL
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 04:01:10 -0500
+ id 1tYiE8-00084n-BU
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 04:01:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737104467;
+ s=mimecast20190719; t=1737104471;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xdreYeMEubtp69jK34KWNVurrSUZ81kztZbhs4Qnr14=;
- b=Qy/ohh0AMHR5VkGHJAtXMlHJOt8Ngo/f1EnZyoYNNKGXeTy6RoX0BE2V+GX9O5RVUjZZOP
- DjbeMUvzynvSTL2HWI0Lus9U66ACr2OwDV6oUfP4obkb3ZR5f87fHvputn4FQrK9tPsVZX
- XZsZv4vHWyTyxnsrGcEYrkSo6EA9jdE=
+ bh=EthFAxtcH1LlnwWWbd3845lmR+MXoAUnpKNrFECKNWo=;
+ b=gA63xjTlXq2gfnT9Lv2u+JGuupX6+UA3tFi8j/Uk4PGEV4so39C/Y9Oj+r5dT8qMnHq9zD
+ SMYkEunKsS5q09Ot2SYTzl5Cppo/rYhqjVu9zMixTwbsRR6SjOFIfWupIvIXN8hQ0k/he7
+ WDf/g/ClRvVKwDIhipyl1/6Bp9sB+8M=
 Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
  [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-660-N_B46DiSM2iOIbcn9FCbXA-1; Fri, 17 Jan 2025 04:01:06 -0500
-X-MC-Unique: N_B46DiSM2iOIbcn9FCbXA-1
-X-Mimecast-MFC-AGG-ID: N_B46DiSM2iOIbcn9FCbXA
+ us-mta-656-nuoTdXq2Nca4KxLCrrsEJA-1; Fri, 17 Jan 2025 04:01:09 -0500
+X-MC-Unique: nuoTdXq2Nca4KxLCrrsEJA-1
+X-Mimecast-MFC-AGG-ID: nuoTdXq2Nca4KxLCrrsEJA
 Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-aa689b88293so167627966b.3
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 01:01:06 -0800 (PST)
+ a640c23a62f3a-aa67f18cb95so183429266b.1
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 01:01:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737104465; x=1737709265;
+ d=1e100.net; s=20230601; t=1737104467; x=1737709267;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xdreYeMEubtp69jK34KWNVurrSUZ81kztZbhs4Qnr14=;
- b=Y77JlAoePOeE2iXQ8OE9p866y26K1ILzmC1XX5Oy0QgRIM86cc2getR4ARts/41SQZ
- oJ3ma7K0aRfiKdf1KmuGNf4fKi3nnB5MVMbFXqonMZl/tET6+gKjx/wU+JcqNrBu90S1
- u3p+J9Fdod+Qixtt230/nQvcmtN/t3JawjAsxhs+2S+WvizKxWjGkULqwaoJkgR0SkAm
- /KGHpqBAy/iUCxuOS5uwURqHYCvU5sPfZLTzwN7atnGm2A47RE6KFhL0WHoVko6/uGdO
- wcCkFy1+mB3DaYMYVrqKIs360E3YqPFP//2B4Ox4BMux0YxsDVEei66WSxTDD0GQYwuP
- /QhQ==
-X-Gm-Message-State: AOJu0YzrWBmEAnSEcijRL64QJc9D3WqyEdN6Y9hwHDsxYAiQ26Lfq/MI
- 6XwRanLauU++/HBqnFJPWtJ259GQN8rF4rbZwCiNE2A3JW4D6dXEs6ZJRL7i3HI+S6fxgLpuvWA
- 2rbGED5AVJlA7YfjcFLYfaDhArFRgXnG3/f9Fq4/I3DMzPu+dYD6iyKW8im7acxcHfLy8x9KlAX
- YrQ8IgyKRzVVO+lFuSic+wb8c7wMo1MQSc3eoJWuk=
-X-Gm-Gg: ASbGnctcKmzgs+M8d/bAGwyOPOp/wg0Q85p2iaujjUFh/TgzphRCly4CCZAsRptfAC8
- CknGGvdIvbl6lI9iFBJLrii2fJZU2NJ5tJbIUjIkppxcYb5gwAUhb0s9441JgGo8UtyKNr+56Oc
- 2fpHeGQXRsIpe9gDlfSfzVSq4qUOIXrBCnUCeULaCHS+zpmznK6IlVqPX+pVZyYeCDIaNO3QDou
- qpGluT1DEGfcyCDQtqLzfAvJomomsEA37aEbiV4InP63m0ZoRGGGIcfNEpz
-X-Received: by 2002:a17:907:da1:b0:aa6:2a17:b54c with SMTP id
- a640c23a62f3a-ab38b0b90cemr140565866b.6.1737104464193; 
- Fri, 17 Jan 2025 01:01:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEZaX3okgIENGKGPd3rboDkpet2tArpnH9QQT90G2DeRuoPWbhXI0s19A0Ujf9WwzIfjHfobw==
-X-Received: by 2002:a17:907:da1:b0:aa6:2a17:b54c with SMTP id
- a640c23a62f3a-ab38b0b90cemr140562066b.6.1737104463613; 
- Fri, 17 Jan 2025 01:01:03 -0800 (PST)
+ bh=EthFAxtcH1LlnwWWbd3845lmR+MXoAUnpKNrFECKNWo=;
+ b=F6QDnAzEq1+6L3GJImUKtOZsq9x3f6M6gckQxqQP/fcgxfBfdwFDL+WwwI+JPwlU0B
+ g6rFJZLaZsD5LNNAzkwF5ZXKgX+W75x/GyuFpQpxkIksKjX6qqBTLlgLhXc/PaGt5LOS
+ CPFqzY0N5XYjKzzNjZ/7VTBi2tQPN9+zIkkSCZtTSlh8Ofz0A7Aul48YdmCSvGBZEGxw
+ TV/wgFhdko6m83iWA9aGIrCx2mNBPPBuJ4HGVQSFSkrvnwATOPCsdhoaCc48xev/t7sZ
+ BTtmx/beVwF7oDOXBpwgiyc1Z6hDSggBJWPw77B4eBAeOtA1ZG8p43ljsnKG/1CsiAnK
+ tBVA==
+X-Gm-Message-State: AOJu0YyBt/HVFPT/6eqD1UPxiafy6/V3HBo1py6ydMrU2Urp3wOmYwMo
+ czIOzTawQJ79i9XmLzRThVd4qPNXITx4gcuwnchcYg1E2VcL6oLx8MTHS8mMRR3+uOry41qErRi
+ 77DMda48vvCrl7P8xUi6kkxE6BjSxNWLCwNLzf70CIpMEm1aYM5OXvLqYt8P+a56epbXnAvsSYx
+ mT+6Cldvf5XiBKiMekHZ8c0ui6z8T+2S7oi+gmGWY=
+X-Gm-Gg: ASbGncvr/DspVENR/T/gVSy3qv+88JxWp0CH229YDR6HNQCXXQHSDkzIWvBprzWKvG0
+ yh5BvytpkmI27I56zWZ84kweovBmNLPZqxkh19rw1M/tmoVj1jfDzkmiFZK8VuGqGZjdxDVAv6D
+ gOFwqJwcLPS2T3L+ry0BQhaWi/RuYzKVbYKNyeHQe7L0FukwW4SlHLhzFxfDV2W29knvqeSadfz
+ ghyuNsYH3ZHGHq213z6KXtFoR7sblroYCOoCb3vJA9F5A1zsgJYiQpLy8Fc
+X-Received: by 2002:a17:907:6d09:b0:aa6:8935:ae71 with SMTP id
+ a640c23a62f3a-ab38b0b7f21mr158639866b.12.1737104466879; 
+ Fri, 17 Jan 2025 01:01:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHl/IKBTGZxcZgEsrNvJ9xZiD9KHQ8ZGesgLhiG9rSCCkYdsh+PBqgBcViTMwpptnt2vvXy/g==
+X-Received: by 2002:a17:907:6d09:b0:aa6:8935:ae71 with SMTP id
+ a640c23a62f3a-ab38b0b7f21mr158636166b.12.1737104466250; 
+ Fri, 17 Jan 2025 01:01:06 -0800 (PST)
 Received: from [192.168.10.3] ([176.206.124.70])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab384fcbb46sm133128666b.166.2025.01.17.01.01.00
+ a640c23a62f3a-ab384c5c486sm138716166b.12.2025.01.17.01.01.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 01:01:01 -0800 (PST)
+ Fri, 17 Jan 2025 01:01:04 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: zhao1.liu@intel.com,
 	qemu-rust@nongnu.org
-Subject: [PATCH 05/10] rust: vmstate: implement VMState for scalar types
-Date: Fri, 17 Jan 2025 10:00:41 +0100
-Message-ID: <20250117090046.1045010-6-pbonzini@redhat.com>
+Subject: [PATCH 06/10] rust: vmstate: add public utility macros to implement
+ VMState
+Date: Fri, 17 Jan 2025 10:00:42 +0100
+Message-ID: <20250117090046.1045010-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250117090046.1045010-1-pbonzini@redhat.com>
 References: <20250117090046.1045010-1-pbonzini@redhat.com>
@@ -106,226 +107,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Scalar types are those that have their own VMStateInfo.  This poses
-a problem in that references to VMStateInfo can only be included in
-associated consts starting with Rust 1.83.0, when the const_refs_static
-was stabilized.  Removing the requirement is done by placing a limited
-list of VMStateInfos in an enum, and going from enum to &VMStateInfo
-only when building the VMStateField.
-
-The same thing cannot be done with VMS_STRUCT because the set of
-VMStateDescriptions extends to structs defined by the devices.
-Therefore, structs and cells cannot yet use vmstate_of!.
-
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/vmstate.rs | 128 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 126 insertions(+), 2 deletions(-)
+ rust/qemu-api/src/vmstate.rs | 61 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 58 insertions(+), 3 deletions(-)
 
 diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index 22a5ed50d4a..b0a2ce105cc 100644
+index b0a2ce105cc..8f32c72a0fd 100644
 --- a/rust/qemu-api/src/vmstate.rs
 +++ b/rust/qemu-api/src/vmstate.rs
-@@ -21,8 +21,11 @@
+@@ -4,13 +4,18 @@
  
- use core::{marker::PhantomData, mem, ptr::NonNull};
- 
--pub use crate::bindings::{VMStateDescription, VMStateField};
- use crate::bindings::VMStateFlags;
-+pub use crate::{
-+    bindings::{self, VMStateDescription, VMStateField},
-+    zeroable::Zeroable,
-+};
- 
- /// This macro is used to call a function with a generic argument bound
- /// to the type of a field.  The function must take a
-@@ -61,6 +64,70 @@ const fn phantom__<T>(_: &T) -> ::core::marker::PhantomData<T> { ::core::marker:
-     };
+ //! Helper macros to declare migration state for device models.
+ //!
+-//! This module includes three families of macros:
++//! This module includes four families of macros:
+ //!
+ //! * [`vmstate_unused!`](crate::vmstate_unused) and
+ //!   [`vmstate_of!`](crate::vmstate_of), which are used to express the
+ //!   migration format for a struct.  This is based on the [`VMState`] trait,
+ //!   which is defined by all migrateable types.
+ //!
++//! * [`impl_vmstate_forward`](crate::impl_vmstate_forward) and
++//!   [`impl_vmstate_bitsized`](crate::impl_vmstate_bitsized), which help with
++//!   the definition of the [`VMState`] trait (respectively for transparent
++//!   structs and for `bilge`-defined types)
++//!
+ //! * helper macros to declare a device model state struct, in particular
+ //!   [`vmstate_subsections`](crate::vmstate_subsections) and
+ //!   [`vmstate_fields`](crate::vmstate_fields).
+@@ -134,7 +139,9 @@ macro_rules! info_enum_to_ref {
+ /// # Safety
+ ///
+ /// The contents of this trait go straight into structs that are parsed by C
+-/// code and used to introspect into other structs.  Be careful.
++/// code and used to introspect into other structs.  Generally, you don't need
++/// to implement it except via macros that do it for you, such as
++/// `impl_vmstate_bitsized!`.
+ pub unsafe trait VMState {
+     /// The `info` member of a `VMStateField` is a pointer and as such cannot
+     /// yet be included in the [`BASE`](VMState::BASE) associated constant;
+@@ -188,7 +195,9 @@ pub const fn vmstate_varray_flag<T: VMState>(_: PhantomData<T>) -> VMStateField
+ /// * an array of any of the above
+ ///
+ /// In order to support other types, the trait `VMState` must be implemented
+-/// for them.
++/// for them.  The macros
++/// [`impl_vmstate_bitsized!`](crate::impl_vmstate_bitsized)
++/// and [`impl_vmstate_forward!`](crate::impl_vmstate_forward) help with this.
+ #[macro_export]
+ macro_rules! vmstate_of {
+     ($struct_name:ty, $field_name:ident $([0 .. $num:ident $(* $factor:expr)?])? $(,)?) => {
+@@ -276,6 +285,32 @@ pub const fn with_varray_multiply(mut self, num: u32) -> VMStateField {
+     }
  }
  
-+/// Workaround for lack of `const_refs_static`: references to global variables
-+/// can be included in a `static`, but not in a `const`; unfortunately, this
-+/// is exactly what would go in the `VMStateField`'s `info` member.
++/// This macro can be used (by just passing it a type) to forward the `VMState`
++/// trait to the first field of a tuple.  This is a workaround for lack of
++/// support of nested [`offset_of`](core::mem::offset_of) until Rust 1.82.0.
 +///
-+/// This enum contains the contents of the `VMStateField`'s `info` member,
-+/// but as an `enum` instead of a pointer.
-+#[allow(non_camel_case_types)]
-+pub enum VMStateFieldType {
-+    null,
-+    vmstate_info_bool,
-+    vmstate_info_int8,
-+    vmstate_info_int16,
-+    vmstate_info_int32,
-+    vmstate_info_int64,
-+    vmstate_info_uint8,
-+    vmstate_info_uint16,
-+    vmstate_info_uint32,
-+    vmstate_info_uint64,
-+    vmstate_info_timer,
-+}
-+
-+/// Workaround for lack of `const_refs_static`.  Converts a `VMStateFieldType`
-+/// to a `*const VMStateInfo`, for inclusion in a `VMStateField`.
++/// # Examples
++///
++/// ```
++/// # use qemu_api::vmstate::impl_vmstate_forward;
++/// pub struct Fifo([u8; 16]);
++/// impl_vmstate_forward!(Fifo);
++/// ```
 +#[macro_export]
-+macro_rules! info_enum_to_ref {
-+    ($e:expr) => {
-+        unsafe {
-+            match $e {
-+                $crate::vmstate::VMStateFieldType::null => ::core::ptr::null(),
-+                $crate::vmstate::VMStateFieldType::vmstate_info_bool => {
-+                    ::core::ptr::addr_of!($crate::bindings::vmstate_info_bool)
-+                }
-+                $crate::vmstate::VMStateFieldType::vmstate_info_int8 => {
-+                    ::core::ptr::addr_of!($crate::bindings::vmstate_info_int8)
-+                }
-+                $crate::vmstate::VMStateFieldType::vmstate_info_int16 => {
-+                    ::core::ptr::addr_of!($crate::bindings::vmstate_info_int16)
-+                }
-+                $crate::vmstate::VMStateFieldType::vmstate_info_int32 => {
-+                    ::core::ptr::addr_of!($crate::bindings::vmstate_info_int32)
-+                }
-+                $crate::vmstate::VMStateFieldType::vmstate_info_int64 => {
-+                    ::core::ptr::addr_of!($crate::bindings::vmstate_info_int64)
-+                }
-+                $crate::vmstate::VMStateFieldType::vmstate_info_uint8 => {
-+                    ::core::ptr::addr_of!($crate::bindings::vmstate_info_uint8)
-+                }
-+                $crate::vmstate::VMStateFieldType::vmstate_info_uint16 => {
-+                    ::core::ptr::addr_of!($crate::bindings::vmstate_info_uint16)
-+                }
-+                $crate::vmstate::VMStateFieldType::vmstate_info_uint32 => {
-+                    ::core::ptr::addr_of!($crate::bindings::vmstate_info_uint32)
-+                }
-+                $crate::vmstate::VMStateFieldType::vmstate_info_uint64 => {
-+                    ::core::ptr::addr_of!($crate::bindings::vmstate_info_uint64)
-+                }
-+                $crate::vmstate::VMStateFieldType::vmstate_info_timer => {
-+                    ::core::ptr::addr_of!($crate::bindings::vmstate_info_timer)
-+                }
-+            }
++macro_rules! impl_vmstate_forward {
++    // This is similar to impl_vmstate_transparent below, but it
++    // uses the same trick as vmstate_of! to obtain the type of
++    // the first field of the tuple
++    ($tuple:ty) => {
++        unsafe impl $crate::vmstate::VMState for $tuple {
++            const SCALAR_TYPE: $crate::vmstate::VMStateFieldType =
++                $crate::call_func_with_field!($crate::vmstate::vmstate_scalar_type, $tuple, 0);
++            const BASE: $crate::bindings::VMStateField =
++                $crate::call_func_with_field!($crate::vmstate::vmstate_base, $tuple, 0);
 +        }
 +    };
 +}
 +
- /// A trait for types that can be included in a device's migration stream.  It
- /// provides the base contents of a `VMStateField` (minus the name and offset).
- ///
-@@ -69,6 +136,12 @@ const fn phantom__<T>(_: &T) -> ::core::marker::PhantomData<T> { ::core::marker:
- /// The contents of this trait go straight into structs that are parsed by C
- /// code and used to introspect into other structs.  Be careful.
- pub unsafe trait VMState {
-+    /// The `info` member of a `VMStateField` is a pointer and as such cannot
-+    /// yet be included in the [`BASE`](VMState::BASE) associated constant;
-+    /// this is only allowed by Rust 1.83.0 and newer.  For now, include the
-+    /// member as an enum which is stored in a separate constant.
-+    const SCALAR_TYPE: VMStateFieldType = VMStateFieldType::null;
-+
-     /// The base contents of a `VMStateField` (minus the name and offset) for
-     /// the type that is implementing the trait.
-     const BASE: VMStateField;
-@@ -83,6 +156,12 @@ pub unsafe trait VMState {
-     };
- }
+ // Transparent wrappers: just use the internal type
  
-+/// Internal utility function to retrieve a type's `VMStateFieldType`;
-+/// used by [`vmstate_of!`](crate::vmstate_of).
-+pub const fn vmstate_scalar_type<T: VMState>(_: PhantomData<T>) -> VMStateFieldType {
-+    T::SCALAR_TYPE
-+}
-+
- /// Internal utility function to retrieve a type's `VMStateField`;
- /// used by [`vmstate_of!`](crate::vmstate_of).
- pub const fn vmstate_base<T: VMState>(_: PhantomData<T>) -> VMStateField {
-@@ -99,6 +178,15 @@ pub const fn vmstate_varray_flag<T: VMState>(_: PhantomData<T>) -> VMStateField
- /// Return the `VMStateField` for a field of a struct.  The field must be
- /// visible in the current scope.
- ///
-+/// Only a limited set of types is supported out of the box:
-+/// * scalar types (integer and `bool`)
-+/// * the C struct `QEMUTimer`
-+/// * a transparent wrapper for any of the above (`Cell`, `UnsafeCell`,
-+///   [`BqlCell`](crate::cell::BqlCell), [`BqlRefCell`](crate::cell::BqlRefCell)
-+/// * a raw pointer to any of the above
-+/// * a `NonNull` pointer to any of the above, possibly wrapped with `Option`
-+/// * an array of any of the above
-+///
- /// In order to support other types, the trait `VMState` must be implemented
- /// for them.
- #[macro_export]
-@@ -109,8 +197,14 @@ macro_rules! vmstate_of {
-                 .as_bytes()
-                 .as_ptr() as *const ::std::os::raw::c_char,
-             offset: $crate::offset_of!($struct_name, $field_name),
--            // Compute most of the VMStateField from the type of the field.
-             $(.num_offset: $crate::offset_of!($struct_name, $num),)?
-+            // The calls to `call_func_with_field!` are the magic that
-+            // computes most of the VMStateField from the type of the field.
-+            info: $crate::info_enum_to_ref!($crate::call_func_with_field!(
-+                $crate::vmstate::vmstate_scalar_type,
-+                $struct_name,
-+                $field_name
-+            )),
-             ..$crate::call_func_with_field!(
-                 $crate::vmstate::vmstate_base,
-                 $struct_name,
-@@ -187,6 +281,7 @@ pub const fn with_varray_multiply(mut self, num: u32) -> VMStateField {
  macro_rules! impl_vmstate_transparent {
-     ($type:ty where $base:tt: VMState $($where:tt)*) => {
-         unsafe impl<$base> VMState for $type where $base: VMState $($where)* {
-+            const SCALAR_TYPE: VMStateFieldType = <$base as VMState>::SCALAR_TYPE;
-             const BASE: VMStateField = VMStateField {
-                 size: mem::size_of::<$type>(),
-                 ..<$base as VMState>::BASE
-@@ -201,6 +296,33 @@ unsafe impl<$base> VMState for $type where $base: VMState $($where)* {
+@@ -296,6 +331,26 @@ unsafe impl<$base> VMState for $type where $base: VMState $($where)* {
  impl_vmstate_transparent!(crate::cell::BqlCell<T> where T: VMState);
  impl_vmstate_transparent!(crate::cell::BqlRefCell<T> where T: VMState);
  
-+// Scalar types using predefined VMStateInfos
-+
-+macro_rules! impl_vmstate_scalar {
-+    ($info:ident, $type:ty$(, $varray_flag:ident)?) => {
-+        unsafe impl VMState for $type {
-+            const SCALAR_TYPE: VMStateFieldType = VMStateFieldType::$info;
-+            const BASE: VMStateField = VMStateField {
-+                size: mem::size_of::<$type>(),
-+                flags: VMStateFlags::VMS_SINGLE,
-+                ..Zeroable::ZERO
-+            };
-+            $(const VARRAY_FLAG: VMStateFlags = VMStateFlags::$varray_flag;)?
++#[macro_export]
++macro_rules! impl_vmstate_bitsized {
++    ($type:ty) => {
++        unsafe impl $crate::vmstate::VMState for $type {
++            const SCALAR_TYPE: $crate::vmstate::VMStateFieldType =
++                                        <<<$type as ::bilge::prelude::Bitsized>::ArbitraryInt
++                                          as ::bilge::prelude::Number>::UnderlyingType
++                                         as $crate::vmstate::VMState>::SCALAR_TYPE;
++            const BASE: $crate::bindings::VMStateField =
++                                        <<<$type as ::bilge::prelude::Bitsized>::ArbitraryInt
++                                          as ::bilge::prelude::Number>::UnderlyingType
++                                         as $crate::vmstate::VMState>::BASE;
++            const VARRAY_FLAG: $crate::bindings::VMStateFlags =
++                                        <<<$type as ::bilge::prelude::Bitsized>::ArbitraryInt
++                                          as ::bilge::prelude::Number>::UnderlyingType
++                                         as $crate::vmstate::VMState>::VARRAY_FLAG;
 +        }
 +    };
 +}
 +
-+impl_vmstate_scalar!(vmstate_info_bool, bool);
-+impl_vmstate_scalar!(vmstate_info_int8, i8);
-+impl_vmstate_scalar!(vmstate_info_int16, i16);
-+impl_vmstate_scalar!(vmstate_info_int32, i32);
-+impl_vmstate_scalar!(vmstate_info_int64, i64);
-+impl_vmstate_scalar!(vmstate_info_uint8, u8, VMS_VARRAY_UINT8);
-+impl_vmstate_scalar!(vmstate_info_uint16, u16, VMS_VARRAY_UINT16);
-+impl_vmstate_scalar!(vmstate_info_uint32, u32, VMS_VARRAY_UINT32);
-+impl_vmstate_scalar!(vmstate_info_uint64, u64);
-+impl_vmstate_scalar!(vmstate_info_timer, bindings::QEMUTimer);
-+
- // Pointer types using the underlying type's VMState plus VMS_POINTER
- // Note that references are not supported, though references to cells
- // could be allowed.
-@@ -208,6 +330,7 @@ unsafe impl<$base> VMState for $type where $base: VMState $($where)* {
- macro_rules! impl_vmstate_pointer {
-     ($type:ty where $base:tt: VMState $($where:tt)*) => {
-         unsafe impl<$base> VMState for $type where $base: VMState $($where)* {
-+            const SCALAR_TYPE: VMStateFieldType = <T as VMState>::SCALAR_TYPE;
-             const BASE: VMStateField = <$base as VMState>::BASE.with_pointer_flag();
-         }
-     };
-@@ -225,6 +348,7 @@ unsafe impl<$base> VMState for $type where $base: VMState $($where)* {
- // VMS_ARRAY/VMS_ARRAY_OF_POINTER
+ // Scalar types using predefined VMStateInfos
  
- unsafe impl<T: VMState, const N: usize> VMState for [T; N] {
-+    const SCALAR_TYPE: VMStateFieldType = <T as VMState>::SCALAR_TYPE;
-     const BASE: VMStateField = <T as VMState>::BASE.with_array_flag(N);
- }
- 
+ macro_rules! impl_vmstate_scalar {
 -- 
 2.47.1
 
