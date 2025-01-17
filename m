@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B503A146FA
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 01:17:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91A3BA146FC
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 01:17:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYa1x-00029Q-PG; Thu, 16 Jan 2025 19:16:09 -0500
+	id 1tYa22-0002AP-QF; Thu, 16 Jan 2025 19:16:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tYa1s-00028t-8M
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 19:16:04 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tYa1p-0008KD-8R
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tYa1r-00028F-Lz
  for qemu-devel@nongnu.org; Thu, 16 Jan 2025 19:16:03 -0500
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50GLYbiH004831;
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tYa1p-0008LE-4j
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 19:16:03 -0500
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50GE6LZO024421;
  Fri, 17 Jan 2025 00:15:49 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:message-id
- :mime-version:subject:to; s=pp1; bh=8YKG0AaYRFWyo5KefnSbVZ7OEmZ6
- fnFf0gWYq8KvBno=; b=QlfzufvkByOFLsRspGgvwXUcLYVgqww+GMh7yTuHbXTW
- epeQ4Hv/bO8Lj07tmmcvRQGdkblifpxwYO4qNf80iMQ9/Y+o6IpTqBVhQ2Gp94Ki
- b9viKDRKB3aJCQgEQbfsD0Mc8D8r4ODdJxca+8ltFkUF5fx76UXhWq2vJL2Bua+9
- 5qM21dKlY6Jh1DwZ04lAARCF/75G75CcsFzG5BChwMiEDvsv2+zUfyhRu6UdTwsZ
- yHoxfWvVJ4XbbYviXUYrc6iVeTaZ6bkpURUhYuiHVwiqFZwsnC03k1nkdNbMeNSB
- 0xuLmjDrlBsxVyByztzmgK/hdY160aUmeAfMKS1qAw==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 446tkhdg91-1
+ :content-transfer-encoding:date:from:in-reply-to:message-id
+ :mime-version:references:subject:to; s=pp1; bh=Fsssl3rVDoQ/QfSTr
+ ko38/tT8zJbgxDACXrxI8DUNKs=; b=SFyMeaJhvWnmy+GyQvMFyTEPU1DJuqzrx
+ wdVDniSk3NxzI2wuBB5I+2eW7yikywgZ4g3qO2aAPVdR4I/A2/2Tn/LDjjIQr4QE
+ peMLkvsrFR54KkD5OeaGGhILOq7w4qbZCPto4AEhqsxU0PqZ1HhD8YFSE8X9MSAS
+ 4/FJ66JGi30umn/txHZIsUTtKmAvlvc8016rVHuNfJxMACLVv7IdHwl+ffwJ3FF0
+ D3qoMVRCsGjiZsK6/04gnGKxwkf3dezs4Eec3A5ymxFjMStvTIafLOfbv2vLT1VC
+ zFNTTLA9hYuEcspO4dMci3f1L35CG5HS9V+iVw//+C1EXityXyxXA==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4473k5akw3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Fri, 17 Jan 2025 00:15:48 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50GLK9XR007519;
- Fri, 17 Jan 2025 00:15:47 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4443yngctf-1
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50GMSKLV016512;
+ Fri, 17 Jan 2025 00:15:48 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4445p20192-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Fri, 17 Jan 2025 00:15:47 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
  [10.20.54.102])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 50H0FjB057278738
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 50H0FkVV40042936
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 17 Jan 2025 00:15:45 GMT
+ Fri, 17 Jan 2025 00:15:46 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AAF2820043;
- Fri, 17 Jan 2025 00:15:45 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 392EC20043;
+ Fri, 17 Jan 2025 00:15:46 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 368A820040;
+ by IMSVA (Postfix) with ESMTP id BBEB920040;
  Fri, 17 Jan 2025 00:15:45 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.171.62.46])
  by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -65,27 +65,28 @@ Cc: Kyle Evans <kevans@freebsd.org>,
  qemu-devel@nongnu.org,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v6 0/8] gdbstub: Allow late attachment
-Date: Fri, 17 Jan 2025 01:11:25 +0100
-Message-ID: <20250117001542.8290-1-iii@linux.ibm.com>
+Subject: [PATCH v6 1/8] gdbstub: Allow the %d placeholder in the socket path
+Date: Fri, 17 Jan 2025 01:11:26 +0100
+Message-ID: <20250117001542.8290-2-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250117001542.8290-1-iii@linux.ibm.com>
+References: <20250117001542.8290-1-iii@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 1UVLglIKbeJmWOPdyDywOopKmp2LMg2O
-X-Proofpoint-ORIG-GUID: 1UVLglIKbeJmWOPdyDywOopKmp2LMg2O
+X-Proofpoint-GUID: H3iC7AHEcdYD1myWPr_ZugzN8uzrlkO0
+X-Proofpoint-ORIG-GUID: H3iC7AHEcdYD1myWPr_ZugzN8uzrlkO0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-01-16_10,2025-01-16_01,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 mlxscore=0 clxscore=1015
- bulkscore=0 lowpriorityscore=0 mlxlogscore=789 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501160178
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ phishscore=0 spamscore=0
+ adultscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=999 impostorscore=0
+ clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501160178
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -44
 X-Spam_score: -4.5
 X-Spam_bar: ----
@@ -109,98 +110,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based-on: <20250116160306.1709518-1-alex.bennee@linaro.org>
+Just like for QEMU_LOG_FILENAME, replace %d with PID in the GDB socket
+path. This allows running multi-process applications with, e.g.,
+export QEMU_GDB=/tmp/qemu-%d.sock. Currently this is not possible,
+since the first process will cause the subsequent ones to fail due to
+not being able to bind() the GDB socket.
 
-v5: https://lore.kernel.org/qemu-devel/20250110141255.2328-1-iii@linux.ibm.com/
-v5 -> v6: Rebase on top of the Alex's changes.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Warner Losh <imp@bsdimp.com>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ gdbstub/user.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-v4: https://lore.kernel.org/qemu-devel/20250108202625.149869-1-iii@linux.ibm.com/
-v4 -> v5: Fix the qemu-user-only build by adding qemu-sockets.c to it.
-          Drop the qapi_bool_parse() changes (Daniel).
-
-v3: https://lore.kernel.org/qemu-devel/20241216123412.77450-1-iii@linux.ibm.com/
-v3 -> v4: Rebase.
-          Add missing "\n"s to error messages.
-          Use unix_listen() (Alex).
-          Use qapi_bool_parse() and patch it to accept NULL (Alex).
-          Remove a leftover include (Alex).
-          Rename port_or_path to path, set it to NULL after freeing (Alex).
-
-v2: https://lore.kernel.org/qemu-devel/20241106223629.2608-1-iii@linux.ibm.com/
-v2 -> v3: Rebase.
-          Patches that need review:
-          - [PATCH 2/8] gdbstub: Try unlinking the unix socket before binding
-          - [PATCH 4/8] user: Introduce host_interrupt_signal  # linux part
-          - [PATCH 6/8] gdbstub: Allow late attachment
-          - [PATCH 7/8] docs/user: Document the %d placeholder and suspend=n QEMU_GDB features
-          - [PATCH 8/8] tests/tcg: Add late gdbstub attach test
-
-v1: https://lore.kernel.org/qemu-devel/20241024200031.80327-1-iii@linux.ibm.com/
-v1 -> v2: Rebase, fix conflicts with the QEMU_RTSIG_MAP patch.
-          Use qemu_get_thread_id() for %d (Helge, Richard, Warner).
-          Add R-bs, except for the Richard's one on 4/8, since
-          conflict resolution caused a noticeable change.
-
-Hi,
-
-This series adds the ability to attach GDB to a running qemu-user
-instance. This is useful for debugging multi-process apps.
-
-Patches 1 and 2 implement a small related feature: the ability to
-create individual UNIX sockets for each child process.
-
-Patches 3-5 add the required infrastructure. In particular, we need
-to reserve a host signal for waking up threads, as discussed in [1].
-By the way, the problem with atomicity of checking for pending signals
-and invoking syscalls that I'm describing in that thread seems to
-have already been solved by the safe_syscall infrastructure, so the
-changes are fairly simple.
-
-Patch 6 is the implementation, patch 7 is a documentation update,
-patch 8 is a test. I tested this series on Linux and only
-compile-tested on the BSDs.
-
-If this series is accepted, I will rebase the all-stop series on top
-of it.
-
-Best regards,
-Ilya
-
-Ilya Leoshkevich (8):
-  gdbstub: Allow the %d placeholder in the socket path
-  gdbstub: Try unlinking the unix socket before binding
-  user: Introduce user/signal.h
-  user: Introduce host_interrupt_signal
-  osdep: Introduce qemu_kill_thread()
-  gdbstub: Allow late attachment
-  docs/user: Document the %d placeholder and suspend=n QEMU_GDB features
-  tests/tcg: Add late gdbstub attach test
-
- bsd-user/main.c                            |   1 -
- bsd-user/signal-common.h                   |   1 -
- bsd-user/signal.c                          |  13 ++
- docs/user/main.rst                         |  16 ++-
- gdbstub/user.c                             | 150 ++++++++++++++++-----
- include/qemu/osdep.h                       |   9 ++
- include/user/signal.h                      |  25 ++++
- linux-user/main.c                          |   1 -
- linux-user/signal-common.h                 |   1 -
- linux-user/signal.c                        |  26 +++-
- linux-user/syscall.c                       |   1 +
- stubs/meson.build                          |   2 +
- stubs/monitor-fd.c                         |   9 ++
- tests/guest-debug/run-test.py              |  15 ++-
- tests/tcg/multiarch/Makefile.target        |   9 +-
- tests/tcg/multiarch/gdbstub/late-attach.py |  28 ++++
- tests/tcg/multiarch/late-attach.c          |  41 ++++++
- util/meson.build                           |   2 +
- util/oslib-posix.c                         |  15 +++
- 19 files changed, 314 insertions(+), 51 deletions(-)
- create mode 100644 include/user/signal.h
- create mode 100644 stubs/monitor-fd.c
- create mode 100644 tests/tcg/multiarch/gdbstub/late-attach.py
- create mode 100644 tests/tcg/multiarch/late-attach.c
-
+diff --git a/gdbstub/user.c b/gdbstub/user.c
+index c2bdfc3d491..fd29d595f40 100644
+--- a/gdbstub/user.c
++++ b/gdbstub/user.c
+@@ -317,9 +317,19 @@ static bool gdb_accept_socket(int gdb_fd)
+ 
+ static int gdbserver_open_socket(const char *path)
+ {
++    g_autoptr(GString) buf = g_string_new("");
+     struct sockaddr_un sockaddr = {};
++    char *pid_placeholder;
+     int fd, ret;
+ 
++    pid_placeholder = strstr(path, "%d");
++    if (pid_placeholder != NULL) {
++        g_string_append_len(buf, path, pid_placeholder - path);
++        g_string_append_printf(buf, "%d", qemu_get_thread_id());
++        g_string_append(buf, pid_placeholder + 2);
++        path = buf->str;
++    }
++
+     fd = socket(AF_UNIX, SOCK_STREAM, 0);
+     if (fd < 0) {
+         perror("create socket");
 -- 
 2.47.1
 
