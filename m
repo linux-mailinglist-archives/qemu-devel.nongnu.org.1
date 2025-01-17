@@ -2,91 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 132E5A149BA
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 07:30:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CAC8A149C8
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 07:48:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYfrg-0006zO-7f; Fri, 17 Jan 2025 01:29:56 -0500
+	id 1tYg8Y-0002tG-BW; Fri, 17 Jan 2025 01:47:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tYfrd-0006yo-Jg; Fri, 17 Jan 2025 01:29:53 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tYfrb-0002kM-Jr; Fri, 17 Jan 2025 01:29:53 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 87C86D96F8;
- Fri, 17 Jan 2025 09:29:41 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 8697519D09B;
- Fri, 17 Jan 2025 09:29:49 +0300 (MSK)
-Message-ID: <1e110577-8784-4c6c-8d2c-f4f0c1321eb4@tls.msk.ru>
-Date: Fri, 17 Jan 2025 09:29:49 +0300
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1tYg8V-0002sz-LZ
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 01:47:19 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1tYg8R-00055I-V3
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 01:47:18 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-2165448243fso39792435ad.1
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 22:47:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1737096434; x=1737701234;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=RPGtldq2AToABPoGlvtRrOakExknZokmZy+QMhvNIp4=;
+ b=JW4QIS7PwaD4B3szwYBpAH1aSq1Gbj2Hyo3Wq+Dr0fDqoFSC4BZRuqG6T6BVAXCZ33
+ JH6dn/uNpESYT5tzptDG82nbO26omtHE7N2U2wNQGI2Byh0JQtZkJTXAiIvY7t9U59xC
+ kBs+9LSZidooIj8Ku5EQpROkGbCXqGo9OnYBCZSCdItgetwiHQ07bbmsQRckmp+eBHWo
+ YN6meM+hvBYqRT2cHi/NCgXe5YsE3YCv1W4pTXQTZT7fZh8mA7Pu9JbNatexYXjQnTUR
+ jwIk3vwR/SyLTq79Ihz/cXPZRFfmrYI/lLshppvJkBcLtM6Ie3KzQhQDtwbHUdp/1klU
+ 3XRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737096434; x=1737701234;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=RPGtldq2AToABPoGlvtRrOakExknZokmZy+QMhvNIp4=;
+ b=jumLgRmQmLhk95vvWnk9r/xJyMeE1z0tBKsGiDhzFKeNAUuyyyK3vGPHRe9QzXRnf6
+ s2ZAzFxtujHVDHyU/cm8si7i/iArwQRvfQHml/LneBCH/HsOs0yCnV87C1Kh+eOl0YhA
+ Gnas+MXa6LQ2KiE8Bdb4/GBlfrexm0Adt2IYbqgDu96U2BJ4e/VmxB9P/jbj9MUK5XED
+ jFtugrxHOK0STgfHAfpT7sBIkRGnssclRrfSbNC6BGv+SKl0PWvo2LbkxuJh2Q+4+1LB
+ KHOzj3stGysT8LTZo1aVG0v4zeFHG4TVPs4di5FQLcabMSY0U63dLj6PU0CGcD/+ooF9
+ kTNQ==
+X-Gm-Message-State: AOJu0Yw/b3JglZf+8QOfRe7aLp9ZARpMQ2V5m7CwaABpRiVO7VwJwP3N
+ jfM9WpWp5Zf7HJ6Z8cEFj6BFM7f9KAp6fN5F15onXU6aD1EE3gLnP6Jze0K6JPk=
+X-Gm-Gg: ASbGnctoZk9fkUjhVWqnnz1OvuuScbBleL7c46UtZ7Os9XHS0U5Qz5leR4t/EOqouM5
+ 6T8mIB1PCEG2dJrjIwX/dsJeKosZpzTkOkzWIc03Nzx8cDU1suFwQlNrziXotrYq48R2ZguiXTn
+ DpqaAuRi+xJ4dI2LnGXXNorxfJ9N+rwD7n+dVJV5V37dKyBsm7vCMyjxyQGxp1NvPlYo9Eehi3X
+ +1xbv4Uaj6uTsADmBTUUSkMzybHociiQgRL47GU6bRLubP2QIlZr7FApKU=
+X-Google-Smtp-Source: AGHT+IF4ziTWiN1zYOMCG6aNy9FKknQChL4hpMwe+6+4QHJRTSNGNjQPWoTGn5SsPQIsKeB2i1MtYw==
+X-Received: by 2002:a05:6a00:4fd3:b0:728:e1e3:3d88 with SMTP id
+ d2e1a72fcca58-72daf9bec6amr2792941b3a.7.1737096433975; 
+ Thu, 16 Jan 2025 22:47:13 -0800 (PST)
+Received: from localhost ([157.82.203.37]) by smtp.gmail.com with UTF8SMTPSA id
+ d2e1a72fcca58-72dab7f1776sm1068924b3a.7.2025.01.16.22.47.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 16 Jan 2025 22:47:13 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v4 0/3] coreaudio fixes
+Date: Fri, 17 Jan 2025 15:46:59 +0900
+Message-Id: <20250117-coreaudio-v4-0-f8d4fa4cb5f4@daynix.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] pci: acpi: Windows 'PCI Label Id' bug workaround
-To: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org
-Cc: mst@redhat.com, anisinha@redhat.com, qemu-stable <qemu-stable@nongnu.org>
-References: <20250115125342.3883374-1-imammedo@redhat.com>
- <20250115125342.3883374-3-imammedo@redhat.com>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsFNBGYpLkcBEACsajkUXU2lngbm6RyZuCljo19q/XjZTMikctzMoJnBGVSmFV66kylUghxs
- HDQQF2YZJbnhSVt/mP6+V7gG6MKR5gYXYxLmypgu2lJdqelrtGf1XtMrobG6kuKFiD8OqV6l
- 2M5iyOZT3ydIFOUX0WB/B9Lz9WcQ6zYO9Ohm92tiWWORCqhAnwZy4ua/nMZW3RgO7bM6GZKt
- /SFIorK9rVqzv40D6KNnSyeWfqf4WN3EvEOozMfWrXbEqA7kvd6ShjJoe1FzCEQ71Fj9dQHL
- DZG+44QXvN650DqEtQ4RW9ozFk3Du9u8lbrXC5cqaCIO4dx4E3zxIddqf6xFfu4Oa5cotCM6
- /4dgxDoF9udvmC36qYta+zuDsnAXrYSrut5RBb0moez/AR8HD/cs/dS360CLMrl67dpmA+XD
- 7KKF+6g0RH46CD4cbj9c2egfoBOc+N5XYyr+6ejzeZNf40yjMZ9SFLrcWp4yQ7cpLsSz08lk
- a0RBKTpNWJdblviPQaLW5gair3tyJR+J1ER1UWRmKErm+Uq0VgLDBDQoFd9eqfJjCwuWZECp
- z2JUO+zBuGoKDzrDIZH2ErdcPx3oSlVC2VYOk6H4cH1CWr9Ri8i91ClivRAyVTbs67ha295B
- y4XnxIVaZU+jJzNgLvrXrkI1fTg4FJSQfN4W5BLCxT4sq8BDtwARAQABzSBNaWNoYWVsIFRv
- a2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLBlAQTAQoAPhYhBJ2L4U4/Kp3XkZko8WGtPZjs3yyO
- BQJmKS5HAhsDBQkSzAMABQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEGGtPZjs3yyOZSAP
- /ibilK1gbHqEI2zR2J59Dc0tjtbByVmQ8IMh0SYU3j1jeUoku2UCgdnGKpwvLXtwZINgdl6Q
- cEaDBRX6drHLJFAi/sdgwVgdnDxaWVJO/ZIN/uJI0Tx7+FSAk8CWSa4IWUOzPNmtrDfb4z6v
- G36rppY8bTNKbX6nWFXuv2LXQr7g6+kKnbwv4QFpD+UFF1CrLm3byMq4ikdBXpZx030qBL61
- b7PrfXcBLao0357kWGH6C2Zu4wBnDUJwGi68pI5rzSRAFyAQsE89sjLdR1yFoBH8NiFnAQXP
- LA8Am9FMsC7D/bi/kwKTJdcZvzdGU1HG6tJvXLWC+nqGpJNBzRdDpjqtxNuL76vVd/JbsFMS
- JchLN+01fNQ5FHglvkd6md7vO+ULq+r9An5hMiDoRbYVUOBN8uiYNk+qKbdgSfbhsgPURqHi
- 1bXkgMeMasqWbGMe7iBW/YH2ePfZ6HuKLNQDCkiWZYPQZvyXHvQHjuJJ5+US81tkqM+Q6Snq
- 0L/O/LD0qLlbinHrcx0abg06VXBoYmGICJpf/3hhWQM4f+B/5w4vpl8q0B6Osz01pBUBfYak
- CiYCNHMWWVZkW9ZnY7FWiiPOu8iE1s5oPYqBljk3FNUk04SDKMF5TxL87I2nMBnVnvp0ZAuY
- k9ojiLqlhaKnZ1+zwmwmPmXzFSwlyMczPUMSzsFNBGYpLkcBEAC0mxV2j5M1x7GiXqxNVyWy
- OnlWqJkbkoyMlWFSErf+RUYlC9qVGwUihgsgEhQMg0nJiSISmU3vsNEx5j0T13pTEyWXWBdS
- XtZpNEW1lZ2DptoGg+6unpvxd2wn+dqzJqlpr4AY3vc95q4Za/NptWtSCsyJebZ7DxCCkzET
- tzbbnCjW1souCETrMy+G916w1gJkz4V1jLlRMEEoJHLrr1XKDdJRk/34AqXPKOzILlWRFK6s
- zOWa80/FNQV5cvjc2eN1HsTMFY5hjG3zOZb60WqwTisJwArjQbWKF49NLHp/6MpiSXIxF/FU
- jcVYrEk9sKHN+pERnLqIjHA8023whDWvJide7f1V9lrVcFt0zRIhZOp0IAE86E3stSJhZRhY
- xyIAx4dpDrw7EURLOhu+IXLeEJbtW89tp2Ydm7TVAt5iqBubpHpGTWV7hwPRQX2w2MBq1hCn
- K5Xx79omukJisbLqG5xUCR1RZBUfBlYnArssIZSOpdJ9wWMK+fl5gn54cs+yziUYU3Tgk0fJ
- t0DzQsgfd2JkxOEzJACjJWti2Gh3szmdgdoPEJH1Og7KeqbOu2mVCJm+2PrNlzCybOZuHOV5
- +vSarkb69qg9nU+4ZGX1m+EFLDqVUt1g0SjY6QmM5yjGBA46G3dwTEV0/u5Wh7idNT0mRg8R
- eP/62iTL55AM6QARAQABwsF8BBgBCgAmFiEEnYvhTj8qndeRmSjxYa09mOzfLI4FAmYpLkcC
- GwwFCRLMAwAACgkQYa09mOzfLI53ag/+ITb3WW9iqvbjDueV1ZHwUXYvebUEyQV7BFofaJbJ
- Sr7ek46iYdV4Jdosvq1FW+mzuzrhT+QzadEfYmLKrQV4EK7oYTyQ5hcch55eX00o+hyBHqM2
- RR/B5HGLYsuyQNv7a08dAUmmi9eAktQ29IfJi+2Y+S1okAEkWFxCUs4EE8YinCrVergB/MG5
- S7lN3XxITIaW00faKbqGtNqij3vNxua7UenN8NHNXTkrCgA+65clqYI3MGwpqkPnXIpTLGl+
- wBI5S540sIjhgrmWB0trjtUNxe9QcTGHoHtLeGX9QV5KgzNKoUNZsyqh++CPXHyvcN3OFJXm
- VUNRs/O3/b1capLdrVu+LPd6Zi7KAyWUqByPkK18+kwNUZvGsAt8WuVQF5telJ6TutfO8xqT
- FUzuTAHE+IaRU8DEnBpqv0LJ4wqqQ2MeEtodT1icXQ/5EDtM7OTH231lJCR5JxXOnWPuG6el
- YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
- ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
- 3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
-In-Reply-To: <20250115125342.3883374-3-imammedo@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-B4-Tracking: v=1; b=H4sIAOP8iWcC/03MQQ6DIBCF4auYWZcGVKx21Xs0LgSGOouCgZZoD
+ HcvNV10+b+8fDtEDIQRrtUOARNF8q5Ee6pAz5N7ICNTGmpeSy74wLQPOL0NeaaHvu34BYXpNZT
+ /EtDSelj3sfRM8eXDdtCp+a4/Rcg/JTWMM2VUp7SSyg72ZqbN0XrW/gljzvkDZlDXLaMAAAA=
+To: Gerd Hoffmann <kraxel@redhat.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Christian Schoenebeck <qemu_oss@crudebyte.com>
+Cc: qemu-devel@nongnu.org, devel@daynix.com, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.14-dev-fd6e3
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,100 +98,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-15.01.2025 15:53, Igor Mammedov wrote:
-> Current versions of Windows call _DSM(func=7) regardless
-> of whether it is supported or not. It leads to NICs having bogus
-> 'PCI Label Id = 0', where none should be set at all.
-> 
-> Also presence of 'PCI Label Id' triggers another Windows bug
-> on localized versions that leads to hangs. The later bug is fixed
-> in latest updates for 'Windows Server' but not in consumer
-> versions of Windows (and there is no plans to fix it
-> as far as I'm aware).
-> 
-> Given it's easy, implement Microsoft suggested workaround
-> (return invalid Package) so that affected Windows versions
-> could boot on QEMU.
-> This would effectvely remove bogus 'PCI Label Id's on NICs,
-> but MS teem confirmed that flipping 'PCI Label Id' should not
-> change 'Network Connection' ennumeration, so it should be safe
-> for QEMU to change _DSM without any compat code.
+This series contains two fixes for coreaudio. See each one for details.
 
-While this is not a qemu bug fix, this change feels like a good
-candidate for qemu-stable, - what do you think?  I picked it up
-for current stable series, which are 7.2, 8.2, 9.1 and 9.2.
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Changes in v4:
+- Splitted patch "audio: Add functions to initialize buffers" from
+  patch "coreaudio: Initialize the buffer for device change".
+- Changed the message of patch "coreaudio: Commit the result of init in
+  the end" to tell that early returns happen when there is a fatal error
+  or the device gets unplugged.
+- Link to v3: https://lore.kernel.org/r/20250115-coreaudio-v3-0-bdb6bcb5bf9f@daynix.com
 
-Thanks,
+---
+Akihiko Odaki (3):
+      coreaudio: Commit the result of init in the end
+      audio: Add functions to initialize buffers
+      coreaudio: Initialize the buffer for device change
 
-/mjt
+ audio/audio_int.h |  2 ++
+ audio/audio.c     | 24 ++++++++++++++++++------
+ audio/coreaudio.m | 50 ++++++++++++++++++++++++++++----------------------
+ 3 files changed, 48 insertions(+), 28 deletions(-)
+---
+base-commit: 38d0939b86e2eef6f6a622c6f1f7befda0146595
+change-id: 20250109-coreaudio-c984607e1d8c
 
-> Smoke tested with WinXP and WS2022
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/774
-> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-> ---
->   hw/i386/acpi-build.c | 33 +++++++++++++++++++++++----------
->   1 file changed, 23 insertions(+), 10 deletions(-)
-> 
-> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-> index 733b8f0851..1311a0d4f3 100644
-> --- a/hw/i386/acpi-build.c
-> +++ b/hw/i386/acpi-build.c
-> @@ -654,6 +654,7 @@ static Aml *aml_pci_pdsm(void)
->       Aml *acpi_index = aml_local(2);
->       Aml *zero = aml_int(0);
->       Aml *one = aml_int(1);
-> +    Aml *not_supp = aml_int(0xFFFFFFFF);
->       Aml *func = aml_arg(2);
->       Aml *params = aml_arg(4);
->       Aml *bnum = aml_derefof(aml_index(params, aml_int(0)));
-> @@ -678,7 +679,7 @@ static Aml *aml_pci_pdsm(void)
->            */
->           ifctx1 = aml_if(aml_lnot(
->                        aml_or(aml_equal(acpi_index, zero),
-> -                            aml_equal(acpi_index, aml_int(0xFFFFFFFF)), NULL)
-> +                            aml_equal(acpi_index, not_supp), NULL)
->                    ));
->           {
->               /* have supported functions */
-> @@ -704,18 +705,30 @@ static Aml *aml_pci_pdsm(void)
->       {
->          Aml *pkg = aml_package(2);
->   
-> -       aml_append(pkg, zero);
-> -       /*
-> -        * optional, if not impl. should return null string
-> -        */
-> -       aml_append(pkg, aml_string("%s", ""));
-> -       aml_append(ifctx, aml_store(pkg, ret));
-> -
->          aml_append(ifctx, aml_store(aml_call2("AIDX", bnum, sunum), acpi_index));
-> +       aml_append(ifctx, aml_store(pkg, ret));
->          /*
-> -        * update acpi-index to actual value
-> +        * Windows calls func=7 without checking if it's available,
-> +        * as workaround Microsoft has suggested to return invalid for func7
-> +        * Package, so return 2 elements package but only initialize elements
-> +        * when acpi_index is supported and leave them uninitialized, which
-> +        * leads elements to being Uninitialized ObjectType and should trip
-> +        * Windows into discarding result as an unexpected and prevent setting
-> +        * bogus 'PCI Label' on the device.
->           */
-> -       aml_append(ifctx, aml_store(acpi_index, aml_index(ret, zero)));
-> +       ifctx1 = aml_if(aml_lnot(aml_lor(
-> +                    aml_equal(acpi_index, zero), aml_equal(acpi_index, not_supp)
-> +                )));
-> +       {
-> +           aml_append(ifctx1, aml_store(acpi_index, aml_index(ret, zero)));
-> +           /*
-> +            * optional, if not impl. should return null string
-> +            */
-> +           aml_append(ifctx1, aml_store(aml_string("%s", ""),
-> +                                        aml_index(ret, one)));
-> +       }
-> +       aml_append(ifctx, ifctx1);
-> +
->          aml_append(ifctx, aml_return(ret));
->       }
->   
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
