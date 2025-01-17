@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F63A150D1
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 14:46:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56120A150C8
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 14:45:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYmdN-0001Hu-RZ; Fri, 17 Jan 2025 08:43:37 -0500
+	id 1tYmdE-00018y-QL; Fri, 17 Jan 2025 08:43:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tYmcu-0000xH-Jg
+ id 1tYmcu-0000x5-IN
  for qemu-devel@nongnu.org; Fri, 17 Jan 2025 08:43:08 -0500
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tYmcq-0002CS-7x
+ id 1tYmcq-0002D9-8e
  for qemu-devel@nongnu.org; Fri, 17 Jan 2025 08:43:07 -0500
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-ab2c9b8aecaso329038566b.0
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 05:43:00 -0800 (PST)
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5d932eac638so4156158a12.1
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 05:43:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737121379; x=1737726179; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737121381; x=1737726181; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iXBLUkL8+yV2RgOy7GvclV3RoZ3IJx6imsmC3PeKgzg=;
- b=GVokmrSdyT/lwVZRQaZofRkTOLzLgB493e+eKcmLXCkXZ2bUarJBrJqogyNVspnN61
- +aEolV7NbFb5/WatLbfZZiK6ImDE9+Loy7c8IjoAd20Qgh2e6dtwsPPCEE59yHSFz+cL
- 1zdRMfZO3MMZ/804uAZUI4hPuT8TaxM5iiATtfMGvGgu5Jv0N0GykNcDVKF0KjuqMJxl
- g/zGUWTX5pwJ0C5rvUhP2HZFC/JPryLGoAlPeMaBm/QsNL/1B7ksuWkQjihgVgaZ4VW/
- foXhzUnl30GabcsMZrSWLznfHuSxgfe/kDhMXgN4a9Czx/dFdGYFhcNBOA3D9kh4b+uj
- 5wyg==
+ bh=9VoavrIr417Jut4poNQurXRcCbKSqVL6eDWL02YIVTs=;
+ b=fFM9F6sPiEcKqKuQ1fOk7rSuVGlisfoSviJegPfsbnTiFbcsB5mK5vZv3g3xMS2LEQ
+ pnLORanv8suQ9EmIdmxYigdCuz//+T6VTNjqydoGLiWRDMYJmipxtf6xZeszcxoCQ9np
+ ecWnC9LvnWQl+vrMltbN75fKPdj32aEBkesYf8szDxyV3hbMryuTqCpJ9jwvcIEVZ4KR
+ OMp/AuGeWwUC0kS9st2Kn/w82RfB0z84B8dfhKoT4lG7xoZs74AvHbKiaMYGlPRqAIbQ
+ HDYpfEYLlBw50vNzEYzuV/NqERG3n12MiilQF5OEDlohTpPB7LfH2rqxTQ21s+x6O5Wv
+ OD4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737121379; x=1737726179;
+ d=1e100.net; s=20230601; t=1737121381; x=1737726181;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iXBLUkL8+yV2RgOy7GvclV3RoZ3IJx6imsmC3PeKgzg=;
- b=oOVzLuUTDC6BtRAuVwL7zIHUf4oRHHGE7PdSjvyi4trlme7BGaxTRodwEy7tGkWfXP
- z+ydLVEsWhR3jV2DiNEEbuDl8G1Jwit3uTDF1Vu2O85AgjvICIA7QP8gQf3v/H6FhuOo
- yaIA3mFn0ceq8ak1x8EH9pVnQ5g17SuQu47Cv4g9UzhvHE/JB2dPLlTT7W9Dmxtrpx6T
- arpYnbo+eh69h9dnN3djSaiWtcm1bWwDQUKm/WM6FL/C6gbAEtGrxKycuKdRrWxJm5oK
- c/4bO016F+GrSRSUHV/WVSbIMI2eJ6R9c0f8Y/6niBpPoJ3CVxDQ6mPLmkJHgF6eF3ek
- CsCw==
-X-Gm-Message-State: AOJu0YxkGQcd6RFLvpS3pJ1M9afJVIvdG6AQSVfzZflnDjDjsFW39C5s
- VhIzAyvmkpqlOdgnUv+nQvoQYDtTZAb33b0cfN2ol2P+9T4pXqEJ6VZOVFfRZOI=
-X-Gm-Gg: ASbGncvf7GNHlVKkohnNU6uMVLHF/3qrYXvChKf3+EBQGWK5YmcdvUfBfLAyrbfaU3X
- 5M3je9LvNey13wdljIY1M7WNR0KgcU+fYpbJrjP8scA8HS0m/cU3v36We/LIEAeVfyQxaicgUai
- tLJBnLgEjhViF0Q2IL676/lkZ2Xytt1Jy3tgWSumfTlRZNaFabXBh1i/QofaQYGnd+qSsNLmUxr
- Oveg+nI4eifILF6zP7vHmStbfKi5nw0cpZdMovtFPxJIBtduiB/yzI=
-X-Google-Smtp-Source: AGHT+IGrA5oXTZWhIgwpgVfchuwVEnNvwRhAFU9mByMYIEI0vD6r2UZTeA59LAsmKiaoc5w8heKZUg==
-X-Received: by 2002:a17:907:72d4:b0:ab3:84b2:4247 with SMTP id
- a640c23a62f3a-ab38b3808fcmr272000666b.40.1737121378861; 
- Fri, 17 Jan 2025 05:42:58 -0800 (PST)
+ bh=9VoavrIr417Jut4poNQurXRcCbKSqVL6eDWL02YIVTs=;
+ b=W4RLN+N6fS3cLCU4r9lPLilBXmjISgiOUqUpH1ynBMuv2edxjlr1zZJPqQJYPGn+1l
+ 3D7MMppfh3o/+LGb/Sj/e23sgACvwV6AEEgqyrYZ+Rqh4CHYz7iS9PozXrlK3TYeyx24
+ mBD8E7Q+UzYKevEeiOgRyLuonH3zNTVGceTm0opg3bbC6G4ybLQSYwE2ZrdZUxgNJUVI
+ YQgJ+ZgAmh+BvXgazej/MO8DTdPS1+1gZUHAKnqSTM0cK5402TRrT0Owr8zQEuSPm/Vl
+ e7f/iUeOuaNSNmzL/3WtuZJWUV5EoqXRLkH29JnzWHNNlI4JveuD+4SY5+ms3p4PBkxz
+ idTw==
+X-Gm-Message-State: AOJu0YyygASydgh/2cTqWHZamB/J97+DLXYw4pHrgz37Rxzc9DFh5GLh
+ EQopNGlfxTSaL+oB0i+Az7QjDHDZ+Pii/CbPdFQAk+chAjC+tNsa7nk8gzodxIv8OseJQU5lLKb
+ rW3M=
+X-Gm-Gg: ASbGncsLVhm+8ds4F1eW7l3iXDZpcstT4HIICyMnO2qOa5qmQE/zaS3fWtTbF0n6Zfw
+ WQIklhvmLUzFj4VdWUr/Vf3PEpguOzWG4p5XlvhzsJU5mpo29Y6aTIeAMWLTpP8EevEM4JNg4UZ
+ wbl7jH1Nl1OvkNKkZzK5WMNxPCHgv+GVORKLFZt8c59aPaz4nGYmx2teEQgQXdBWjUbDZyER0S9
+ DaCEf/h5JbOyGGn3Hw9mSwy3uogcryneMedalbmC5s6E1ygrAfC6Oc=
+X-Google-Smtp-Source: AGHT+IGghSK6EBRcnNWRat+qlJI9x6+vfc81c3FyFI6E1VuG9/5l5urI9iP9EofcALk6DD6ZNop2lA==
+X-Received: by 2002:a05:6402:2803:b0:5d2:723c:a568 with SMTP id
+ 4fb4d7f45d1cf-5db7d2f105fmr2103569a12.10.1737121381278; 
+ Fri, 17 Jan 2025 05:43:01 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab384fcd90csm169662666b.181.2025.01.17.05.42.57
+ 4fb4d7f45d1cf-5db73eb59dcsm1513790a12.61.2025.01.17.05.42.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 05:42:57 -0800 (PST)
+ Fri, 17 Jan 2025 05:42:58 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 28B8A60858;
+ by draig.lan (Postfix) with ESMTP id 3DCFA60859;
  Fri, 17 Jan 2025 13:42:57 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 03/37] semihosting/syscalls: Include missing 'exec/cpu-defs.h'
+Subject: [PULL 04/37] semihosting/uaccess: Include missing 'exec/cpu-all.h'
  header
-Date: Fri, 17 Jan 2025 13:42:22 +0000
-Message-Id: <20250117134256.2079356-4-alex.bennee@linaro.org>
+Date: Fri, 17 Jan 2025 13:42:23 +0000
+Message-Id: <20250117134256.2079356-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250117134256.2079356-1-alex.bennee@linaro.org>
 References: <20250117134256.2079356-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,32 +104,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-target_ulong is defined in each target "cpu-param.h",
-itself included by "exec/cpu-defs.h".
-Include the latter in order to avoid when refactoring:
+TLB_INVALID_MASK is defined in "exec/cpu-all.h".
+Include it in order to avoid when refactoring:
 
-  include/semihosting/syscalls.h:26:24: error: unknown type name 'target_ulong'
-     26 |                        target_ulong fname, target_ulong fname_len,
-        |                        ^
+  ../semihosting/uaccess.c:41:21: error: use of undeclared identifier 'TLB_INVALID_MASK'
+     41 |         if (flags & TLB_INVALID_MASK) {
+        |                     ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250103171037.11265-2-philmd@linaro.org>
+Message-Id: <20250103171037.11265-3-philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250116160306.1709518-4-alex.bennee@linaro.org>
+Message-Id: <20250116160306.1709518-5-alex.bennee@linaro.org>
 
-diff --git a/include/semihosting/syscalls.h b/include/semihosting/syscalls.h
-index b5937c619a..6627c45fb2 100644
---- a/include/semihosting/syscalls.h
-+++ b/include/semihosting/syscalls.h
-@@ -9,6 +9,7 @@
- #ifndef SEMIHOSTING_SYSCALLS_H
- #define SEMIHOSTING_SYSCALLS_H
+diff --git a/semihosting/uaccess.c b/semihosting/uaccess.c
+index dc587d73bc..382a366ce3 100644
+--- a/semihosting/uaccess.c
++++ b/semihosting/uaccess.c
+@@ -8,6 +8,7 @@
+  */
  
-+#include "exec/cpu-defs.h"
- #include "gdbstub/syscalls.h"
+ #include "qemu/osdep.h"
++#include "exec/cpu-all.h"
+ #include "exec/exec-all.h"
+ #include "semihosting/uaccess.h"
  
- /*
 -- 
 2.39.5
 
