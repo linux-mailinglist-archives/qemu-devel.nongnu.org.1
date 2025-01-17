@@ -2,117 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC7BA154D4
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 17:50:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE53EA154F2
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 17:53:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYpXg-0004HC-Bf; Fri, 17 Jan 2025 11:49:56 -0500
+	id 1tYpaD-0008QN-P8; Fri, 17 Jan 2025 11:52:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tYpXd-0004Gq-TD
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 11:49:53 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYpa9-0008Q0-K3
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 11:52:29 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tYpXc-0001Fc-40
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 11:49:53 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id A5CAC21237;
- Fri, 17 Jan 2025 16:49:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1737132589; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=eyORXA8e+vvqhf5HUyhp611IAuk4cWL51dd1rEUZeSg=;
- b=eVjnTjl48MdILXZ2NQbM9Yq1NPO1DkTvanu20LMY7NejUJSz78CWqWTVJjnAveU6kVrkih
- u/GVzKBYz6trz/8ADgddyBJlHpgHjqL1h4/BtWhRXWIJx1EZwxaOZBmtE0E2lgoawtXC3w
- 7rYA06U+PN382Hlnv9TD0OgK8lxrVOI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1737132589;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=eyORXA8e+vvqhf5HUyhp611IAuk4cWL51dd1rEUZeSg=;
- b=V+c9o3wO513ivw3a90J58obl/XSjU11Fl3FoNT1oylWp3d9CZJhcdRdhcMUUXANVkTXTYh
- IGpVDwNym9dNACAA==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eVjnTjl4;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=V+c9o3wO
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1737132589; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=eyORXA8e+vvqhf5HUyhp611IAuk4cWL51dd1rEUZeSg=;
- b=eVjnTjl48MdILXZ2NQbM9Yq1NPO1DkTvanu20LMY7NejUJSz78CWqWTVJjnAveU6kVrkih
- u/GVzKBYz6trz/8ADgddyBJlHpgHjqL1h4/BtWhRXWIJx1EZwxaOZBmtE0E2lgoawtXC3w
- 7rYA06U+PN382Hlnv9TD0OgK8lxrVOI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1737132589;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=eyORXA8e+vvqhf5HUyhp611IAuk4cWL51dd1rEUZeSg=;
- b=V+c9o3wO513ivw3a90J58obl/XSjU11Fl3FoNT1oylWp3d9CZJhcdRdhcMUUXANVkTXTYh
- IGpVDwNym9dNACAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8F2D013332;
- Fri, 17 Jan 2025 16:49:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 4Hz+EiyKimftQgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 17 Jan 2025 16:49:48 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>
-Subject: [PULL 5/5] tests/qtest/test-x86-cpuid-compat: Remove tests related to
- pc-i440fx-2.3
-Date: Fri, 17 Jan 2025 13:49:36 -0300
-Message-Id: <20250117164936.22223-6-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20250117164936.22223-1-farosas@suse.de>
-References: <20250117164936.22223-1-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYpa7-0001k7-T2
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 11:52:29 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4361f65ca01so22738005e9.1
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 08:52:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1737132745; x=1737737545; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=X7kRQyS0bgwOu0TqrPtZcEBd9tfNhc1jRVYE3AXsm/c=;
+ b=eSr7S0rFUkvcnc4DcRDbFtdbmDoL4ORAwJ+s18BBGghh2DPqwtPvnTY94QIet68t2K
+ zIAdcy3VrDbQHjpSWWwOXpQftfDEuXzTFixVJAQkPJTkQvLX3atTaXBOgjPitrnTVHwd
+ mXtNIhH2/xcBYUmdvL3ii5XL7kFkbDirVrBtrULB9eH1JfnhLhumK8lJ5/MNCCb8Wfuh
+ RnjfMoLQhwGLcSLG6MqutD5D7hcALNrBXoACV8/xJVBUZPQCcPeqA1AhTkHQMAx86B8I
+ aQfETAl5nnF0iuXN9zhX2D5olAIEQlU/p2tnlr6mbD1SojWUAjdd7dZjtVo/lJSMH5E6
+ jpLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737132745; x=1737737545;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=X7kRQyS0bgwOu0TqrPtZcEBd9tfNhc1jRVYE3AXsm/c=;
+ b=i54FO4SgODrmonVZd44ox3/brQO+eTeEhuqVN3ySoRPWb4jmcs2BiVe6birLY7TNeF
+ ACcxNxieGd/oXNg1FczIqPpv7BfLAhmP6iABzKgFhymHSdvLzF2xfQcIIW4/C89RLk0P
+ f9wrwKdJohzABhNiKxDOYRlBJ0GBzy3nOeFZedFO8xZQug6chiDSK3MRMXzU1tPytmQy
+ vW8iagJigWGpfeUZXlBgHqx0J1N9Ta23IpQPJlFvgFQJl/G8mJoMpIE0wFU4Kh7YQZ5U
+ ao9sfTSCyzlIB8CM9S+fVGtTHDWw63l01xEc71enHgPeJsvdqzN9ZKOmrpsxC9CUO7g1
+ qYUA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVtu2AVlkhgQ0nQgvd7CWP37SoJGIcShT8Scd1zdFNDJGWtSEnBi5Emp/ZR6yL8zr4Bdw0ks28u7JE6@nongnu.org
+X-Gm-Message-State: AOJu0Ywc4yBWjhPiFtg7gUqHq2DIh+EWOxpXC82l1z5e22U1m05+oSqF
+ QY9XtaPDQJt6EUNTgEi5ZRAl2ivQftjv5UoBufe123T1ALp57nYUQoy+FRBgS80=
+X-Gm-Gg: ASbGncvZ2bTir18gQXMNrsVJLDtb7uv8VTpL9qTBWvOkNKsPkVHhB3h2YLHFK0UIZLT
+ CPTejyG49spi3i7qEycfdJvjMGfzlDHAbcGtPcQLKqdQvcQGtq/mFh62W3ZlWlAPuZJSEoxZwFC
+ sLwNYotW3TCfDkP7ppEsXxRS8grCUuA0iaRpviogDMbhQ4ug2tFbG3ca/F9Mkp0Iyv58QiLtdut
+ 2VmavvVVuPywL988gx9FcKMd9+7E1fcgQBAEYuJlg9yHjfjjDhcv5TmSiqemjvZyDtRi5TNqVwJ
+ qFjLGGfGuDVf+1Iu1dFIUiBh
+X-Google-Smtp-Source: AGHT+IFhbWesp7KMvmsDc8KkgPezQWWTN21rG/mnu4IlV7F6dtIu3tDUSuv62ttY95QVb5uh23OS8Q==
+X-Received: by 2002:a05:600c:5027:b0:434:f5c0:3288 with SMTP id
+ 5b1f17b1804b1-43891430ed1mr34770305e9.29.1737132745356; 
+ Fri, 17 Jan 2025 08:52:25 -0800 (PST)
+Received: from [192.168.69.151] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-437c753ca42sm96978235e9.35.2025.01.17.08.52.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 17 Jan 2025 08:52:24 -0800 (PST)
+Message-ID: <1b111fa7-a2f6-499f-8556-775d2a10eb13@linaro.org>
+Date: Fri, 17 Jan 2025 17:52:23 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A5CAC21237
-X-Spam-Score: -3.01
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- MIME_TRACE(0.00)[0:+];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_HAS_DN(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:mid,suse.de:email];
- RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- RCPT_COUNT_TWO(0.00)[2];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] Remove deprecated machines pc-i440fx-2.4 up to
+ pc-i440fx-2.12
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Cc: devel@lists.libvirt.org, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Kashyap Chamarthy <kchamart@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+References: <20250117102738.59714-1-thuth@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250117102738.59714-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -129,57 +104,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+On 17/1/25 11:27, Thomas Huth wrote:
+> While our new auto-disablement of old machine types will only kick
+> in with the next (v10.1) release, the pc-i440fx-2.* machine types
+> have been explicitly marked as deprecated via our old deprecation
+> policy mechanism before (two releases ago), so it should be fine to
+> remove them now already.
+> 
+> Note that we can not do much additional clean ups on top yet since
+> the corresponding q35 machines (which share the same compatibility knobs)
+> are still around and only will be removed for the 10.1 release instead.
+> So the bigger clean-up can only be done for 10.1, but removing the i440fx
+> machine types now will still have at least a small benefit of accelerating
+> our CI a little bit (since we don't have to run tests for these old machine
+> types anymore).
+> 
+> Thomas Huth (3):
+>    tests/qtest/test-x86-cpuid-compat: Remove tests related to
+>      pc-i440fx-2.3
+>    hw/i386/pc_piix: Remove pc-i440fx-2.4 up to pc-i440fx-2.12
+>    tests/qtest/test-x86-cpuid-compat: Replaced the removed pc-i440fx-2.*
+>      machines
 
-The pc-i440fx-2.3 machine type has been removed in commit 46a2bd5257
-("hw/i386/pc: Remove deprecated pc-i440fx-2.3 machine") already, so
-these tests are just dead code by now.
-
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20250117102738.59714-2-thuth@redhat.com
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- tests/qtest/test-x86-cpuid-compat.c | 18 ------------------
- 1 file changed, 18 deletions(-)
-
-diff --git a/tests/qtest/test-x86-cpuid-compat.c b/tests/qtest/test-x86-cpuid-compat.c
-index b9e7e5ef7b..9cbc8b7ae9 100644
---- a/tests/qtest/test-x86-cpuid-compat.c
-+++ b/tests/qtest/test-x86-cpuid-compat.c
-@@ -357,19 +357,6 @@ int main(int argc, char **argv)
-                        "486", "xstore=on", "pc-i440fx-2.7",
-                        "xlevel2", 0);
-     }
--    /*
--     * QEMU 2.3.0 had auto-level enabled for CPUID[7], already,
--     * and the compat code that sets default level shouldn't
--     * disable the auto-level=7 code:
--     */
--    if (qtest_has_machine("pc-i440fx-2.3")) {
--        add_cpuid_test("x86/cpuid/auto-level7/pc-i440fx-2.3/off",
--                       "Penryn", NULL, "pc-i440fx-2.3",
--                       "level", 4);
--        add_cpuid_test("x86/cpuid/auto-level7/pc-i440fx-2.3/on",
--                       "Penryn", "erms=on", "pc-i440fx-2.3",
--                       "level", 7);
--    }
-     if (qtest_has_machine("pc-i440fx-2.9")) {
-         add_cpuid_test("x86/cpuid/auto-level7/pc-i440fx-2.9/off",
-                        "Conroe", NULL, "pc-i440fx-2.9",
-@@ -384,11 +371,6 @@ int main(int argc, char **argv)
-      * code on old machine-types.  Just check that the compat code
-      * is working correctly:
-      */
--    if (qtest_has_machine("pc-i440fx-2.3")) {
--        add_cpuid_test("x86/cpuid/xlevel-compat/pc-i440fx-2.3",
--                       "SandyBridge", NULL, "pc-i440fx-2.3",
--                       "xlevel", 0x8000000a);
--    }
-     if (qtest_has_machine("pc-i440fx-2.4")) {
-         add_cpuid_test("x86/cpuid/xlevel-compat/pc-i440fx-2.4/npt-off",
-                        "SandyBridge", NULL, "pc-i440fx-2.4",
--- 
-2.35.3
-
+Moving #3 before #2 seems a bit more logical to me :)
 
