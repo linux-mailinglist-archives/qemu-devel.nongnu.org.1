@@ -2,137 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B919A149CD
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 07:48:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90444A149F6
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 08:07:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYg9K-0003DI-RF; Fri, 17 Jan 2025 01:48:10 -0500
+	id 1tYgQl-0000Wk-PT; Fri, 17 Jan 2025 02:06:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tYg8n-0002wq-Lj
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 01:47:39 -0500
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1tYgQk-0000WS-1u
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 02:06:10 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tYg8c-00056S-54
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 01:47:37 -0500
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1tYgQf-0007TT-3o
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 02:06:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737096445;
+ s=mimecast20190719; t=1737097563;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=8O8Pt6oWzja2Q8mXOpV/OrAWEaZ4o8p1z/FEELrJ8xU=;
- b=J5ovfHHhfY7zXRCdhKeCo8wHZCzwxiKoiRXkvnHkcMFVduuHKNexksSzNtiTZZmFzK4EFu
- uJP0FWFasIqyyRVt9FiVbWpLGNrM56oRlzKzThBdWOidK8qDrQuDnJp3nqyuk6IfSVWS43
- fSuj4NWP7zp/jzAmRbtDP77pgnNLNIo=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=Y6Yesf3+j/k7hgOXyFBBoT9cNkww3rV6IdUuwKkJFrw=;
+ b=SsYKOvI/6rTyMFs4RgUC0P0pDC2NSm9GLZDuILMUnx1yr2tVzNtuhuTR/o7gfZQwxuyOoQ
+ coH5M0s2AeiIvHdMcJjk5XczaK5ATQAS8jt/LuEInhVA/F3yH0YTVc/n1sTUVaAvSZ3Ze1
+ 3pJqx9UmgZGWytMGZhg29dLcysoB+2g=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-532-62HAAfT6NJCFqSEKkCYD4g-1; Fri, 17 Jan 2025 01:47:20 -0500
-X-MC-Unique: 62HAAfT6NJCFqSEKkCYD4g-1
-X-Mimecast-MFC-AGG-ID: 62HAAfT6NJCFqSEKkCYD4g
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-385e3cbf308so713249f8f.2
- for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 22:47:20 -0800 (PST)
+ us-mta-428-3e4ac6VaO5-Wl9ZZqHQSXA-1; Fri, 17 Jan 2025 02:06:01 -0500
+X-MC-Unique: 3e4ac6VaO5-Wl9ZZqHQSXA-1
+X-Mimecast-MFC-AGG-ID: 3e4ac6VaO5-Wl9ZZqHQSXA
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-aa6b904a886so147680966b.0
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 23:06:00 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737096439; x=1737701239;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=8O8Pt6oWzja2Q8mXOpV/OrAWEaZ4o8p1z/FEELrJ8xU=;
- b=C5jujSmnDilCvs9sMxLmH7jcbK7eOB9TqgYPJQvgaLrpwoSV/tEgcpmccBy+gG8Kxt
- 0zDXmRf7gIOxlZZRRjSj5M9UdnlyKcOVLMjj5YsRjxsqwIJL0LuWqRTe1HN4xYWjMMaN
- UluA6Dpvtpyxcb0O9r41EtIjKhX3nrOj663ZlBgAFnsBK4q/DIAQ/SOLvrD1a9mbWDo9
- WgwvyhayZ+u7SM4SAtkU2tntq+j2LQFPZ2edgn8vRiqxvRh0r0qriUDfRykCWZNCx4So
- S6oRkm0/R47MlOQNdgKRYBRdfZj+jNXUvM8tomChsWnEc9Oi4UB3aQU5i9rRJ+x3FYVG
- R4vw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUnwJwbQQfFTIlooWmgWUvmhe4365VTRrmlMQzpd/enYKnfSQy3X0U9kobMM0sKAfh8MHUll9TZLrKI@nongnu.org
-X-Gm-Message-State: AOJu0YzD3mrHSmhK3bWTEa/T6c/ubXPwpGsqhJ4aHxAbWcNIjvFc+JxG
- dbGkdgPGqI5Rv+uzjQ+q31E/E0Q+wWANnykeJRgp0BFWinwkOgZrpLkSGVXD/StTakZBBW9kQ9d
- dcqPVte1ITGq7lbceVG5VQ67/yVGVr6Y325MRwN7OeoxWZIeU/gyq
-X-Gm-Gg: ASbGnct9njaO4nurUgCL88MTQUchdgt+M7LYmrBn46rHYn6eyXRGeTfRO3w6/KQFn7y
- +hNpX2t3dBHBfRdMS6i9nrRQN9hw11B6Wkgyzd5NPOZZbwCdVaNWYEAhHi0EX4iMJPDwLm1vBdH
- QYH8TghcHJw04B/7Le8sYkHv8MF77V0Y7ZRpV55ZWaVxsu11L5elZfhfwInEhrbgiDLPH6mLEKd
- XSuneKuE7excuE8Au+HzzWuhld1GnvmWHXPxiW9V6HaVGEE4jwjAcLMXqAaykorUHtEGtqSVQLP
- 2d/wpUk+sWUg
-X-Received: by 2002:a5d:4b48:0:b0:38a:41a3:218 with SMTP id
- ffacd0b85a97d-38bf57a2612mr754153f8f.36.1737096439515; 
- Thu, 16 Jan 2025 22:47:19 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGBRZbhinDnLlh0PDsXCPWNcT3ZV46Y1MSdhL81JACtfzpG71rBAdQ602JqS+3vAr08UqZN+w==
-X-Received: by 2002:a5d:4b48:0:b0:38a:41a3:218 with SMTP id
- ffacd0b85a97d-38bf57a2612mr754144f8f.36.1737096439203; 
- Thu, 16 Jan 2025 22:47:19 -0800 (PST)
-Received: from [192.168.0.7] (ip-109-42-51-119.web.vodafone.de.
- [109.42.51.119]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c103f0afsm53174265e9.2.2025.01.16.22.47.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Jan 2025 22:47:18 -0800 (PST)
-Message-ID: <d9f97b63-dbfc-4322-b7a1-8759d6be5cd7@redhat.com>
-Date: Fri, 17 Jan 2025 07:47:15 +0100
+ d=1e100.net; s=20230601; t=1737097560; x=1737702360;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Y6Yesf3+j/k7hgOXyFBBoT9cNkww3rV6IdUuwKkJFrw=;
+ b=tOlkrXQKmB/e9cPHPMFiJ2BJ5DcyefpDeOwoE5MtbAQbC2d8UayH/CN6ZyRNSYPXxh
+ QabWHE1/eMfVy6qyHuZI/pM76Q3tRom9gg6bfmy1irWxCXrViRgmo88wKQdmPyV8WFfJ
+ KYGWG9EZbxtgG1ePkS8tsRLDSzFJxUGtRfB+MguxBqyYq/sKYla/q7QjN7e5r2Kx30Vs
+ yadQGlvckPrHhx1G36W3XlEl5PH07Dv/z8gZzWzqlCPvfUloNPzgORAEl/TX8n/xbjM6
+ cURH1t/P7bPhJCA0yJVA0wTUaf1A5w2tsRnTYXOzAK8zpu90s49zUiPRNRkdc7mshtcl
+ pbgA==
+X-Gm-Message-State: AOJu0YzvQPcZD05Z4wmZK1q3kYCbMNht8W2+avemICAWDAlvYiKctr59
+ EZ0+wpYeW+5pmTMq1C0inXaV75Ds/XNMQPenyjkppVHpDM5KpHbAqL3naGuwMVecCzCIN4U2j1x
+ rsVF5YqYm6hXsNZK0YqBzYwtQAvPxL8wYSqDrmo4lppxK73NrLL1V35RDkcNYLQpn0vvaxvq+3b
+ 4sfyLy60orlqHef+ZK6RVcoeP2www=
+X-Gm-Gg: ASbGncs40BN1vCwziqr6pUoX2dr+NDoPtxtlbFhxpzk8q/TbMVT2FrrDPPokCzO5oVT
+ dnUsskG+FXtlNYfELoM54Hc4WCAz1BsMufF6m
+X-Received: by 2002:a17:907:1c11:b0:ab3:7720:d87c with SMTP id
+ a640c23a62f3a-ab38b384218mr168132166b.35.1737097559783; 
+ Thu, 16 Jan 2025 23:05:59 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHwETaH2rX9YsPRXWvj9jAvOVM9lqy1b9q/Qi6KKd2cb7qEfE2s8W9DvUw5wHii+Ifasw/rSG8+kbs8hrkVfvw=
+X-Received: by 2002:a17:907:1c11:b0:ab3:7720:d87c with SMTP id
+ a640c23a62f3a-ab38b384218mr168129566b.35.1737097559392; Thu, 16 Jan 2025
+ 23:05:59 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-10.1 v2 00/13] hw/arm: Remove virt-2.6 up to virt-2.12
- machines
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- "Daniel P. Berrange" <berrange@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>, qemu-arm@nongnu.org
-References: <20250116145944.38028-1-philmd@linaro.org>
- <823a0892-e9d9-4d26-b862-83ffd60c2ad1@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <823a0892-e9d9-4d26-b862-83ffd60c2ad1@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+References: <20250115125342.3883374-1-imammedo@redhat.com>
+ <20250115125342.3883374-3-imammedo@redhat.com>
+In-Reply-To: <20250115125342.3883374-3-imammedo@redhat.com>
+From: Ani Sinha <anisinha@redhat.com>
+Date: Fri, 17 Jan 2025 12:35:47 +0530
+X-Gm-Features: AbW1kvY4jlfdV69jkaVYrSanRjbf_2mqsxf63SArSTLaKOrEbSPmAg5XD32hSLs
+Message-ID: <CAK3XEhNMFrvN4dkHj93fapCqCcAaHr5gp+TTbNfGF==YwJGR+A@mail.gmail.com>
+Subject: Re: [PATCH 2/3] pci: acpi: Windows 'PCI Label Id' bug workaround
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: qemu-devel@nongnu.org, mst@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -39
 X-Spam_score: -4.0
@@ -141,7 +84,7 @@ X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.093,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.797,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -157,41 +100,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/01/2025 22.13, Philippe Mathieu-Daudé wrote:
-> Hi Peter,
-> 
-> On 16/1/25 15:59, Philippe Mathieu-Daudé wrote:
->> The versioned 'virt' machines up to 2.12 been marked as deprecated
->> two releases ago, and are older than 6 years, so according to our
->> support policy we can remove them. Remove associated dead code.
-> 
->> Philippe Mathieu-Daudé (13):
->>    hw/arm/virt: Remove deprecated virt-2.6 machine
->>    hw/arm/virt: Remove VirtMachineClass::no_pmu field
->>    hw/arm/virt: Remove VirtMachineClass::disallow_affinity_adjustment
->>    hw/arm/virt: Remove deprecated virt-2.7 machine
->>    hw/arm/virt: Remove VirtMachineClass::no_its field
->>    hw/arm/virt: Remove deprecated virt-2.8 machine
->>    hw/arm/virt: Remove VirtMachineClass::claim_edge_triggered_timers
->>      field
->>    hw/arm/virt: Remove deprecated virt-2.9 machine
->>    hw/arm/virt: Remove deprecated virt-2.10 machine
->>    hw/arm/virt: Remove deprecated virt-2.11 machine
->>    hw/arm/virt: Remove VirtMachineClass::smbios_old_sys_ver field
->>    hw/arm/virt: Remove deprecated virt-2.12 machine
->>    hw/arm/virt: Remove VirtMachineClass::no_highmem_ecam field
-> 
-> Please ignore this (reviewed) series for now. I'll rebase it and
-> repost after the 10.0 release.
+On Wed, Jan 15, 2025 at 6:23=E2=80=AFPM Igor Mammedov <imammedo@redhat.com>=
+ wrote:
+>
+> Current versions of Windows call _DSM(func=3D7) regardless
+> of whether it is supported or not. It leads to NICs having bogus
+> 'PCI Label Id =3D 0', where none should be set at all.
+>
+> Also presence of 'PCI Label Id' triggers another Windows bug
+> on localized versions that leads to hangs. The later bug is fixed
+> in latest updates for 'Windows Server' but not in consumer
+> versions of Windows (and there is no plans to fix it
+> as far as I'm aware).
+>
+> Given it's easy, implement Microsoft suggested workaround
+> (return invalid Package) so that affected Windows versions
+> could boot on QEMU.
+> This would effectvely remove bogus 'PCI Label Id's on NICs,
+> but MS teem confirmed that flipping 'PCI Label Id' should not
+> change 'Network Connection' ennumeration, so it should be safe
+> for QEMU to change _DSM without any compat code.
+>
+> Smoke tested with WinXP and WS2022
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/774
+> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+> ---
+>  hw/i386/acpi-build.c | 33 +++++++++++++++++++++++----------
+>  1 file changed, 23 insertions(+), 10 deletions(-)
+>
+> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+> index 733b8f0851..1311a0d4f3 100644
+> --- a/hw/i386/acpi-build.c
+> +++ b/hw/i386/acpi-build.c
+> @@ -654,6 +654,7 @@ static Aml *aml_pci_pdsm(void)
+>      Aml *acpi_index =3D aml_local(2);
+>      Aml *zero =3D aml_int(0);
+>      Aml *one =3D aml_int(1);
+> +    Aml *not_supp =3D aml_int(0xFFFFFFFF);
+>      Aml *func =3D aml_arg(2);
+>      Aml *params =3D aml_arg(4);
+>      Aml *bnum =3D aml_derefof(aml_index(params, aml_int(0)));
+> @@ -678,7 +679,7 @@ static Aml *aml_pci_pdsm(void)
+>           */
+>          ifctx1 =3D aml_if(aml_lnot(
+>                       aml_or(aml_equal(acpi_index, zero),
+> -                            aml_equal(acpi_index, aml_int(0xFFFFFFFF)), =
+NULL)
+> +                            aml_equal(acpi_index, not_supp), NULL)
+>                   ));
+>          {
+>              /* have supported functions */
+> @@ -704,18 +705,30 @@ static Aml *aml_pci_pdsm(void)
+>      {
+>         Aml *pkg =3D aml_package(2);
+>
+> -       aml_append(pkg, zero);
+> -       /*
+> -        * optional, if not impl. should return null string
+> -        */
+> -       aml_append(pkg, aml_string("%s", ""));
+> -       aml_append(ifctx, aml_store(pkg, ret));
+> -
+>         aml_append(ifctx, aml_store(aml_call2("AIDX", bnum, sunum), acpi_=
+index));
+> +       aml_append(ifctx, aml_store(pkg, ret));
+>         /*
+> -        * update acpi-index to actual value
+> +        * Windows calls func=3D7 without checking if it's available,
+> +        * as workaround Microsoft has suggested to return invalid for fu=
+nc7
+> +        * Package, so return 2 elements package but only initialize elem=
+ents
+> +        * when acpi_index is supported and leave them uninitialized, whi=
+ch
+> +        * leads elements to being Uninitialized ObjectType and should tr=
+ip
+> +        * Windows into discarding result as an unexpected and prevent se=
+tting
+> +        * bogus 'PCI Label' on the device.
 
-Why? IMHO it should be ok to include them now already. While Daniel's macro 
-only starts the automatic disablement for 10.1, it should be ok to remove 
-them now already according to our normal deprecation policy: The machines 
-have been marked as deprecated in the 9.1 release already (via commit 
-https://gitlab.com/qemu-project/qemu/-/commit/ce80c4fa6ff ), and thus they 
-have been deprecated since two releases already. So it should be fine to 
-remove them now, shouldn't it?
+This comment is very confusing!
 
-  Thomas
+>          */
+> -       aml_append(ifctx, aml_store(acpi_index, aml_index(ret, zero)));
+> +       ifctx1 =3D aml_if(aml_lnot(aml_lor(
+> +                    aml_equal(acpi_index, zero), aml_equal(acpi_index, n=
+ot_supp)
+> +                )));
+
+So this conditional checks if the acpi index is supported (because its
+aml_lnot()).
+
+> +       {
+> +           aml_append(ifctx1, aml_store(acpi_index, aml_index(ret, zero)=
+));
+> +           /*
+> +            * optional, if not impl. should return null string
+> +            */
+
+I know this comes from the existing code but I am still confused. Why
+is this appending "return null string" logic to "if acpi index is
+supprted" conditional?
+
+> +           aml_append(ifctx1, aml_store(aml_string("%s", ""),
+> +                                        aml_index(ret, one)));
+> +       }
+> +       aml_append(ifctx, ifctx1);
+> +
+>         aml_append(ifctx, aml_return(ret));
+>      }
+>
+> --
+> 2.43.0
+>
 
 
