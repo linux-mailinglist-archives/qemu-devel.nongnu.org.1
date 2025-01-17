@@ -2,94 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D070A14C25
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 10:28:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0947A14C32
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 10:29:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYidf-0002lD-Er; Fri, 17 Jan 2025 04:27:39 -0500
+	id 1tYifU-0008Ld-Nv; Fri, 17 Jan 2025 04:29:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tYidW-0002dJ-8D
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 04:27:31 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tYidS-0003T1-AH
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 04:27:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737106045;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=dQr5RCbFdS/oHuH0+9xIml7K7ZNy+hcaQwV4qGT2rv8=;
- b=jH8lxNlFZTlPO0rm7WUyG0rDu/1BSVh5dmeWEMitBxG/D5l3SZ/jPTzLvwq/It41ZkDO+0
- a/ajvdRPynI56dhyvw728l1fL33E2sW6pRnRgx7D9goD9hktPcs1N5lY6eJARdqtvwLr1F
- xfq/q0kvbaxsA67UsMUM50qp+MeAnus=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-D3StjTfANsWSJ4wxWltlhg-1; Fri, 17 Jan 2025 04:27:23 -0500
-X-MC-Unique: D3StjTfANsWSJ4wxWltlhg-1
-X-Mimecast-MFC-AGG-ID: D3StjTfANsWSJ4wxWltlhg
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-aa689b88293so170728566b.3
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 01:27:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1tYifA-00082B-5l; Fri, 17 Jan 2025 04:29:12 -0500
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1tYif8-0003oc-0g; Fri, 17 Jan 2025 04:29:11 -0500
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-ab34a170526so259765566b.0; 
+ Fri, 17 Jan 2025 01:29:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1737106147; x=1737710947; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=x3OXCptAB3T1Y5AIABafbO97M/zyNcnw8SxPu1ye6Nc=;
+ b=hTAnEo+KjWSJNdJ6mU2KpJTtt7rkfmG5Crwr4AdlFvSHOimEc83tE897eGwNdUrV6E
+ GpSOwcJ/cm+dGhH2Bb5EAJYt16s1Az4Bx0JQPeR5+wl/ZcF7MjghxfFrs4YxGXtbtUBr
+ R7IfBuF/nRkkLWFBWaTpUs30cIfo5PnbPj3wkMkVMUbIRXWXbfrSbpHVF0MtwzX0Mctj
+ gv0XDzivpHlPEqKt7o94wmJCdQNUihESJRjWJI4wEVrgj6ODDqj4ZF8ymRv89tqKiZGA
+ 1EXCUujDrlsdZnI2DRpwKx+BoMDI9aiTJzK7MAeN0iPHXsRL31pOckk5cAEo2a3BlguR
+ +6YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737106042; x=1737710842;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1737106147; x=1737710947;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dQr5RCbFdS/oHuH0+9xIml7K7ZNy+hcaQwV4qGT2rv8=;
- b=hP6MUH4fqtW2PBPMgbSYiwZkF/NgUqjJ7sjMzM2wSb5uJvtP53UXTxP6D1lMFmbYFB
- 2/rPoiiQGOSjIojp7zxcBVfVlEFpbmgGly4cNHyluA6BbqeopM5GMfHlGhQuAlNZBX1m
- +JTqbv2U+CCJNdMt3F35jBKCUH6RIGp7agoL9g6O3MvuQNkvlvrA7CctPmtaZwSuFGzW
- tGmH43zI069A6NNZ6YC0ljSem0rixxsog4y90LqWNYtKRjRLm4hYF6yxweyVE4RK9d2o
- BgRjhJFoXNquBNXKMTxvQenXtuAisj1AbTNKhanBC4tz/tvBtPqsHVThwRQJPHSvK7zY
- 7Ffg==
-X-Gm-Message-State: AOJu0Yy1953pPOW0E8JPXE9p69+FRXEpYVgHY1k4T2WQswYMf7OWbEm/
- CljYL4EqKt4rw3iYETZdBRgwLDanY2YI7wuiUCFlIUa5zT6W/9HpItiyHSyi0umBYY9WkfWoJlX
- ZybiKcBbexDDojUpmMrAe2DfheL45uT1XSbaVYEkvttywP5NRhLToKa4ceM4wm4Pwn7tYS6AKDO
- XTynBGE6tXB18SBw7X2hmO++zaxwfZIpkFVPhdcaU=
-X-Gm-Gg: ASbGnctvWJATknF9jODpsgEhl7D7yKy1KFKcjhqQACtFdq9NGyGV5FfHY1mbeX06RRb
- rjRIpa1lyDV59k2Oo1hn6n9UF2ZMGwDirNN20Ci9k6xCaen4PMth0Kck5L2m3BdDM5FIWQ1Usx2
- HOCgaWXDE3GPkpQztgpiPrqg/PENCGiOu/QYsGW2lCqtoH/RcXPhAt2cAg14b1v4mHdyZ9cPR5I
- 8YniI6bepX59KtUFxTmpLii45uG2TT+3n6kwsyVh/vhEyfPodPbBT6MJ3Jx
-X-Received: by 2002:a17:907:7f03:b0:ab2:d96d:6364 with SMTP id
- a640c23a62f3a-ab38b10ade0mr170623166b.18.1737106042097; 
- Fri, 17 Jan 2025 01:27:22 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGSdKkAVtnSSAasBosqLjZLUARijfc4OnYQL6bPMd9C4NKnh3l5NI42h6VDZaIVxZs5bkT+5w==
-X-Received: by 2002:a17:907:7f03:b0:ab2:d96d:6364 with SMTP id
- a640c23a62f3a-ab38b10ade0mr170620566b.18.1737106041655; 
- Fri, 17 Jan 2025 01:27:21 -0800 (PST)
-Received: from [192.168.10.3] ([176.206.124.70])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab384fcb5desm135754966b.165.2025.01.17.01.27.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 01:27:20 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org
-Subject: [PATCH 10/10] rust: qdev: make reset take a shared reference
-Date: Fri, 17 Jan 2025 10:26:57 +0100
-Message-ID: <20250117092657.1051233-11-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250117092657.1051233-1-pbonzini@redhat.com>
-References: <20250117092657.1051233-1-pbonzini@redhat.com>
+ bh=x3OXCptAB3T1Y5AIABafbO97M/zyNcnw8SxPu1ye6Nc=;
+ b=HFcrat+EMbtHXp7qD3Ymaa+qlIImQn+vHWQEMpafJm3+JCrUADz8xJMgnZGvTz7pLv
+ SP4LgBMQncJHYY+TPZeagqcAfSCVIawvsOlwawH2DVEgQGA3isCiuVj5IT3Iz1UzXier
+ undYa4eXl6qnWanoetoQTn5QGeOmc6VjoZfHwp5tveWSh1gJUJeRTk9i1ivjrKZ4qFmG
+ J7SXqhwAsYTcIvDO6eTRnVdsvgNpTWtoHj9puaYaNPM83C1PNqol0iglqCLHJTw3jHsI
+ rM1q15EaDUxYg26zbyAq4U7DpQB4Rno95JNAjGOiNghxtALzrRW7+5n4hPKv+2liD7am
+ glzA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWQfQ0ymqjCCTPrCxmReQc9QJKldnD5oWlYUyuIBlHqNzIIjebMJsfLd9bmVD/ID1baKoThDsmvOw==@nongnu.org,
+ AJvYcCWbYnko6rNMaMFj7GWr+YNqINaJFa6imkNNz+xtKY6TG9e3HnEOJgHxe3N9Nmc6Z6d0LcOKsnAWbWHPcQ==@nongnu.org,
+ AJvYcCXTyTTDkxSz9A7PaBi69taT3mrOeeOGTNYS5hbjypccB/B9SJUFCBdEGc/hrGOMMLBBArSSJfBqdu3paQ==@nongnu.org
+X-Gm-Message-State: AOJu0YzUU2Qq5BwqXhT75v2AD3VY7ZE6ftbA9imBPlHZ1CLmua7HztJO
+ ej7kdfzgzU3MsG7rXDW3Pjkt4Xsd+faayAHNPTWVSubBZFqNFA0W
+X-Gm-Gg: ASbGncuqcRxcUWoKIbXP4sovhCo+fRa7mXAFU4uF0Hq0UeLmA4tOZ4B4Kc4nDxltQLu
+ 7rvMFRjg/IrMJH+TclVG/mHLXoqBG49bdAlQTbz9rBLSnU4lss+b5brGzJ83FGXc4Vi0/L02qvV
+ y4CULckJIsk9/5uYIfM/grE/lbl4GU+MjpS4RlE6FaE3ehtheoJXswxmAINlIK/LFkUsGZ6Lscg
+ gj47BfvSax9wLo7TEVIyT8qFnAdf/5N5g46JOU13bTQ2zXFKpCwhClUDhocDE9e+5PSJtX5TNWe
+ BSPM2sD4LorKGz1FZn7ynRDxX8hR
+X-Google-Smtp-Source: AGHT+IFwj8FfS2YUPofAJpydk6wLFSDxXKtRFbNLv3+R7NEgvBETlZtMTkuKXUrbKRDJaj0Sfy78mg==
+X-Received: by 2002:a17:907:724d:b0:aa6:b1b3:2b82 with SMTP id
+ a640c23a62f3a-ab38b0b7f70mr74454066b.3.1737106147366; 
+ Fri, 17 Jan 2025 01:29:07 -0800 (PST)
+Received: from [127.0.0.1] (dynamic-089-012-021-087.89.12.pool.telefonica.de.
+ [89.12.21.87]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ab384ce1687sm138288366b.49.2025.01.17.01.29.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 17 Jan 2025 01:29:07 -0800 (PST)
+Date: Fri, 17 Jan 2025 09:29:04 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+CC: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ Guenter Roeck <linux@roeck-us.net>, Peter Maydell <peter.maydell@linaro.org>, 
+ Andrey Smirnov <andrew.smirnov@gmail.com>, qemu-arm@nongnu.org,
+ =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Laurent Vivier <lvivier@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
+ qemu-block@nongnu.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_07/13=5D_hw/sd/sd=3A_Allow_for_inverti?=
+ =?US-ASCII?Q?ng_polarities_of_presence_and_write-protect_GPIOs?=
+In-Reply-To: <8e61492c-e293-4bea-a0e0-e41d815d8b47@linaro.org>
+References: <20250111183711.2338-1-shentey@gmail.com>
+ <20250111183711.2338-8-shentey@gmail.com>
+ <8e61492c-e293-4bea-a0e0-e41d815d8b47@linaro.org>
+Message-ID: <1B33AD33-9D74-4F18-B9E9-EF6973962601@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.093,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.797,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,51 +109,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because register reset is within a borrow_mut() call, reset
-does not need anymore a mut reference to the PL011State.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- rust/hw/char/pl011/src/device.rs | 4 ++--
- rust/qemu-api/src/qdev.rs        | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index af0f451deb2..019c1617807 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -164,7 +164,7 @@ fn vmsd() -> Option<&'static VMStateDescription> {
-         Some(&device_class::VMSTATE_PL011)
-     }
-     const REALIZE: Option<fn(&mut Self)> = Some(Self::realize);
--    const RESET: Option<fn(&mut Self)> = Some(Self::reset);
-+    const RESET: Option<fn(&Self)> = Some(Self::reset);
- }
- 
- impl PL011Registers {
-@@ -604,7 +604,7 @@ pub fn realize(&mut self) {
-         }
-     }
- 
--    pub fn reset(&mut self) {
-+    pub fn reset(&self) {
-         self.regs.borrow_mut().reset();
-     }
- 
-diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
-index 686054e737a..4658409bebb 100644
---- a/rust/qemu-api/src/qdev.rs
-+++ b/rust/qemu-api/src/qdev.rs
-@@ -30,7 +30,7 @@ pub trait DeviceImpl {
-     ///
-     /// Rust does not yet support the three-phase reset protocol; this is
-     /// usually okay for leaf classes.
--    const RESET: Option<fn(&mut Self)> = None;
-+    const RESET: Option<fn(&Self)> = None;
- 
-     /// An array providing the properties that the user can set on the
-     /// device.  Not a `const` because referencing statics in constants
--- 
-2.47.1
+Am 15=2E Januar 2025 17:32:13 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <p=
+hilmd@linaro=2Eorg>:
+>On 11/1/25 19:37, Bernhard Beschow wrote:
+>> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
+>> ---
+>>   hw/sd/sd=2Ec | 12 ++++++++----
+>>   1 file changed, 8 insertions(+), 4 deletions(-)
+>
+>See question on v1:
+>https://lore=2Ekernel=2Eorg/qemu-devel/e202623e-eac7-4ed3-87fb-002491ddf7=
+45@linaro=2Eorg/
 
+Oh, I missed that=2E I answered there to keep the context=2E
 
