@@ -2,65 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FEFFA157F3
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 20:12:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59C59A15814
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 20:21:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYrkd-0005Yn-DM; Fri, 17 Jan 2025 14:11:27 -0500
+	id 1tYruF-0002UN-2p; Fri, 17 Jan 2025 14:21:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kchamart@redhat.com>)
- id 1tYrkb-0005Tp-Jq
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 14:11:25 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tYruC-0002UA-5m
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 14:21:20 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kchamart@redhat.com>)
- id 1tYrkZ-0006gP-Qk
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 14:11:25 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tYruA-0008BY-Ez
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 14:21:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737141082;
+ s=mimecast20190719; t=1737141677;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Vocor7ji6a0ZalKT0F5SpYX94+ZVs7kkvUFkosAMxTA=;
- b=ezcQxH2vaKmoI6epdkEqV3JDB6Ad9d/X3UFGuYemKfBO6ZXCcx5Yf/5576CrwtchNVM9Mp
- 8NcWtC5Ka6CDBQdYzllwrbrVW89b7E9O9Ja0Mr1jS0r+z+Yvf44tow9D/mZM9R/iE7aoQ3
- xQbjExGBmTBBHdvnh82wgQ95Rpb9tks=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=aCpLVc9AMKm7QfyYqSU8fXrC2KisDrJRpA7sf4qSdCw=;
+ b=c+Cw0DJJ7v1nDZQJ1ZNDYXOXbWNT7N8O9yNKCyYyG2rV4oGKdFMf8d3oZm9c49gkhbeSTb
+ JA+mB1QLuwQVy1iYffSKZH1BRruXCocYrvxy40HEnl8gylNSG9HcZ1g8EPlorP5fGCS663
+ exixjpRfW718UY/FVBy6R3mj+DQzab8=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-435-eVwqRoYXOYGGHCHlAz-6gA-1; Fri,
- 17 Jan 2025 14:11:18 -0500
-X-MC-Unique: eVwqRoYXOYGGHCHlAz-6gA-1
-X-Mimecast-MFC-AGG-ID: eVwqRoYXOYGGHCHlAz-6gA
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-571-T0aMoKWOM8KL1KlLRrH0eg-1; Fri,
+ 17 Jan 2025 14:21:11 -0500
+X-MC-Unique: T0aMoKWOM8KL1KlLRrH0eg-1
+X-Mimecast-MFC-AGG-ID: T0aMoKWOM8KL1KlLRrH0eg
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C806F1955DCF; Fri, 17 Jan 2025 19:11:16 +0000 (UTC)
-Received: from gezellig.redhat.com (unknown [10.39.192.203])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8590519560BF; Fri, 17 Jan 2025 19:11:14 +0000 (UTC)
-From: Kashyap Chamarthy <kchamart@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, maz@kernel.org, sebott@redhat.com,
- Peter Maydell <peter.maydell@linaro.org>,
- Kashyap Chamarthy <kchamart@redhat.com>
-Subject: [PATCH 2/2] docs/cpu-features: Update "PAuth" (Pointer
- Authentication) details
-Date: Fri, 17 Jan 2025 20:11:06 +0100
-Message-ID: <20250117191106.322363-3-kchamart@redhat.com>
-In-Reply-To: <20250117191106.322363-1-kchamart@redhat.com>
-References: <20250117191106.322363-1-kchamart@redhat.com>
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 89FE5196A961; Fri, 17 Jan 2025 19:21:10 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.47])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id EBC0B19560AE; Fri, 17 Jan 2025 19:21:07 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH] hw/i386/pc: Fix crash that occurs when introspecting
+ TYPE_PC_MACHINE machines
+Date: Fri, 17 Jan 2025 20:21:06 +0100
+Message-ID: <20250117192106.471029-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kchamart@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -85,58 +80,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PAuth (Pointer Authentication), a security feature in software, is
-relevant for both KVM and QEMU.  Relect this fact into the docs:
+QEMU currently crashes when you try to inspect the machines based on
+TYPE_PC_MACHINE for their properties:
 
-  - For KVM, `pauth` is a binary, "on" vs "off" option.  The host CPU
-    will choose the cryptographic algorithm.
+ $ echo '{ "execute": "qmp_capabilities" }
+         { "execute": "qom-list-properties","arguments":
+                      { "typename": "pc-q35-10.0-machine"}}' \
+   | ./qemu-system-x86_64 -M pc -qmp stdio
+ {"QMP": {"version": {"qemu": {"micro": 50, "minor": 2, "major": 9},
+  "package": "v9.2.0-1070-g87e115c122-dirty"}, "capabilities": ["oob"]}}
+ {"return": {}}
+ Segmentation fault (core dumped)
 
-  - For TCG, however, along with `pauth`, a couple of properties can be
-    controlled -- they're are related to cryptographic algorithm choice.
+This happens because TYPE_PC_MACHINE machines add a machine_init-
+done_notifier in their instance_init function - but instance_init
+of machines are not only called for machines that are realized,
+but also for machines that are introspected, so in this case the
+listener is added for a q35 machine that is never realized. But
+since there is already a running pc machine, the listener function
+is triggered immediately, causing a crash since it was not for the
+right machine it was meant for.
 
-Thanks to Peter Maydell and Marc Zyngier for explaining more about PAuth
-on IRC (#qemu, OFTC).
+Such listener functions must never be installed from an instance_init
+function. Let's do it from pc_basic_device_init() instead - this
+function is called from the MachineClass->init() function instead,
+i.e. guaranteed to be only called once in the lifetime of a QEMU
+process.
 
-Signed-off-by: Kashyap Chamarthy <kchamart@redhat.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2779
+Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- docs/system/arm/cpu-features.rst | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ hw/i386/pc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/docs/system/arm/cpu-features.rst b/docs/system/arm/cpu-features.rst
-index 78f18c87a81..7f99f7614b4 100644
---- a/docs/system/arm/cpu-features.rst
-+++ b/docs/system/arm/cpu-features.rst
-@@ -204,11 +204,26 @@ the list of KVM vCPU features and their descriptions.
-   the guest scheduler behavior and/or be exposed to the guest
-   userspace.
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index b46975c8a4..85b8a76455 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1241,6 +1241,9 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+     /* Super I/O */
+     pc_superio_init(isa_bus, create_fdctrl, pcms->i8042_enabled,
+                     pcms->vmport != ON_OFF_AUTO_ON, &error_fatal);
++
++    pcms->machine_done.notify = pc_machine_done;
++    qemu_add_machine_init_done_notifier(&pcms->machine_done);
+ }
  
--TCG vCPU Features
--=================
-+"PAuth" (Pointer Authentication)
-+================================
-+
-+PAuth (Pointer Authentication) is a security feature in software that
-+was introduced in Armv8.3-A and Armv9.0-A.  It aims to protect against
-+ROP (return-oriented programming) attacks.
-+
-+KVM
-+---
-+
-+``pauth``
-+
-+  Enable or disable ``FEAT_Pauth``.  The host silicon will choose the
-+  cryptographic algorithm.  No other properties can be controlled.
-+
-+TCG
-+---
+ void pc_nic_init(PCMachineClass *pcmc, ISABus *isa_bus, PCIBus *pci_bus)
+@@ -1714,9 +1717,6 @@ static void pc_machine_initfn(Object *obj)
+     if (pcmc->pci_enabled) {
+         cxl_machine_init(obj, &pcms->cxl_devices_state);
+     }
+-
+-    pcms->machine_done.notify = pc_machine_done;
+-    qemu_add_machine_init_done_notifier(&pcms->machine_done);
+ }
  
--TCG vCPU features are CPU features that are specific to TCG.
--Below is the list of TCG vCPU features and their descriptions.
-+For TCG, along with ``pauth``, it is possible to control a few other
-+properties of PAuth:
- 
- ``pauth``
-   Enable or disable ``FEAT_Pauth`` entirely.
+ static void pc_machine_reset(MachineState *machine, ResetType type)
 -- 
 2.48.1
 
