@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6311DA156B1
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:32:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B06CA15689
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:29:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYr1r-0003v5-90; Fri, 17 Jan 2025 13:25:11 -0500
+	id 1tYr1t-0003zC-QJ; Fri, 17 Jan 2025 13:25:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr1n-0003u9-5n
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:07 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1tYr1n-0003uY-Vn
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:08 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr1l-0007pK-1j
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:06 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-21675fd60feso55032975ad.2
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:25:04 -0800 (PST)
+ id 1tYr1l-0007pZ-Kw
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:07 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-21619108a6bso44007515ad.3
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:25:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737138303; x=1737743103; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737138304; x=1737743104; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sKZ4GjtoygI38RsFhp13dWyLZZ39a3F3n4T5V19Yyos=;
- b=mFBE0gwYJ1gOrMfy+bt5OkhXgHST7Ou9OHgFTWIhCVNivUIohCyCA4iaDIAevOiRci
- qEA7q9kwmnVJsM0di5eYdoDJj5i8ty760FpJAWkBiuu4o1xz0QasJc6q3o/CPwXxL07K
- 34yrBeIp8CsZhbTnN1I4kll+QEDibmSIX0RXRZDuFy0wuoXa6fEAI7W0xsZRxsOj6XfS
- wuYnhkpWc+Im4i5lVKegrEXOYslKB52qckVZtbUf5Z8+0QrOXBKk/H6Wa8Hh90ZCCtoY
- ostXcw8gH7ZZdI2iNvtydU7d1SsXWnlwKc9ouiJU6OCbpRSp6U40jlD1Fh3q9eW5Acny
- XATQ==
+ bh=QXZzdIlxIFjTwtimzoQBa4lLqmXgKR1E12aAeDzxQGs=;
+ b=Z5Z5kAuNs8LEl69EUfBidcP2BsNkEYePd2rJARQTLrg55Ot4JkD4G9ZdFOjT+YFQCb
+ BZqOR38JmwK0IAfQcGOi7RUYGzOwEIWTM0eWtKNS9rNX2YxBXdpoWU7b4XA4nqaUkHhV
+ LL8HWAk5CHjQF+PYJ73dKABS+1N6XGH0IGlUcYUNkgw8jErfy6fxR4cUrdEJTN4INefn
+ DpZZOyuA/g/ARCF/LaY0GIorauQt2xN9eDF8jUtmR7Pt3bxkjrHmMox55y13zjqcKQPN
+ pMqvNQ40czHe8heXJ8cxt61Ju0B0V+FpGiJepjwrVXgwGIQ3r/PgahDAg5Sf+3wtc3rW
+ qGCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737138303; x=1737743103;
+ d=1e100.net; s=20230601; t=1737138304; x=1737743104;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sKZ4GjtoygI38RsFhp13dWyLZZ39a3F3n4T5V19Yyos=;
- b=ftp9nHBVKuHPGRG1miwC503j5wnIbDIVXsKcO7SwTdVKQHyi7wrON9iORR+zBfKEYj
- cc2T+HQl7hdSAzsT2pqB1oW83HwoFM2K2RlwXVruruhRl6QispccBEmHFxlzWrbXtc7a
- Y6RZQfd3Ux633qvCrfa1hPOd7Tg0NGVlxw+MFWr4Ren0Q6d/n1mWkJpAg0BCFhAR7N/N
- zhoxqXYjZQb6S3BszZPMoDzAwf8U/xAXeaBHtT32Zst6//cO4N/6bF0EkcARu2Dzo5fk
- S7C17Zmk8AGisED8YwOikOLAU1o5odcsgFVhaNk/J8kSu9hzmMggwRDtpvdGalKqA66N
- CFfQ==
-X-Gm-Message-State: AOJu0YxuBClhdmDshU07VR4NkwtxY2uRWZuU20PuHMweT72aPgj+Tl+B
- 4TkX+8vUP8kgZEVC+RaoqoGeZu0wlyECgp536MLICwNV56idDPLBCYIFoblnuT+l/MpAvf4TbWl
- a
-X-Gm-Gg: ASbGncvHWcMkOCojD8e97NR+DaDqBbcHqF/gZTaSggQIyHD2dfYV9rSUDjBVaBMFjYd
- ZufeQ4HSm83sUappac7EtyYYwAW9GNKt5YOAyaNhVCVWBZcTJnBLfpoIcFCVvBJ+g7tYEDIPMKy
- /MuywBkW3gqa2ZSORwjwS3btt3kG6M+KqRD0gqI1ZVWY3YxQJpnITUefDZRRFkVkZHfLC3ypXFS
- E+VpjMKGi9HjwoBJhLYZ/zZh8Nk6iIlG7IL2+Ht87NLGhAAy8nJRcaYfUB/hdZFlIA5IRhUTg+H
- e6jkIHR8B4t3A/Q=
-X-Google-Smtp-Source: AGHT+IGhCzFTWOShjDnAq+SYcN4p+5rmEhQkzpk9b/VP3syDEsH2HI+1nqScyK5Y3S+5bWGTEB1U6A==
-X-Received: by 2002:a17:903:2306:b0:216:4676:dfaf with SMTP id
- d9443c01a7336-21c355eeb01mr50560705ad.34.1737138303633; 
- Fri, 17 Jan 2025 10:25:03 -0800 (PST)
+ bh=QXZzdIlxIFjTwtimzoQBa4lLqmXgKR1E12aAeDzxQGs=;
+ b=hvTstBsJtA5sV7A4pENfBrzrSmRaf5btexZAd7Y7cBoSGbDCAFWxh9i5Bd7ebpn5NR
+ 4ixg7FuKx3JlC5PT8yBt9tRv7IIN+7POijUlkPu3b7VuHQ5dRgK+s1huiAOlKDxqFGtv
+ N1w4WKgtHMuC/CRi1ONhZLzFHcR02xr9K6y8NqZEi035X1h9EANYVt1GqaDZRgeOhzG4
+ oKwwG91VC8qtuhcvEHMQXKtRlCcg3d5omkR+OcknqteU+2Jykl6COeYK/sOWo+Mz9vj0
+ Dp8v+gEX/2iGjE4glb9rlL+wxV9byc/wGZ3RdWPQ8VH55pSjMGIBZgT3NxwXnhXLK2FL
+ MWRQ==
+X-Gm-Message-State: AOJu0Ywh13/qfz7SJkr6F+gLVk7VDvswuK3Mh66fhT3HwP/AKOebJP68
+ qhCTGY1NuzQi6eT2VeCfo4uyRoMAmNeRUZIdUwjFmnLPgGlXZC931L3EW7KFzqmVzYdYnVy72Og
+ r
+X-Gm-Gg: ASbGncuu9xLOpgjJ4iz7F9EzBA6I8hjfZf094GjnGJ7TOem8qI0zMaU80BRi5LumQiF
+ /KPzye7XZiPgdaEZDL2qACydPqfC98JEL6XJqEGTs9pLeNiAyBhWtbropzRFL8h5H/qx2feedjD
+ oWEmwUiNbxPbCmVpT0JPYKg4659P6XC1TNnxoADdVTjABg+jgSccQSgfnATKwHYXkfZGPyalhnw
+ dKyZ88I2DOVraXJb/Z00GQ8+49bTxiuQ7O8dGiggqWDCI2m3V4b+009jbelRkj7opZDKDb/7E2Z
+ PNFCd02DYLrW+bM=
+X-Google-Smtp-Source: AGHT+IGVIexlqyv8cGgYO660iDPEA8/csgXpFA2On1ce+orBnW6DnYzecFRyVuSTeRCiLfi2x/0CrA==
+X-Received: by 2002:a17:902:f688:b0:215:aee1:7e3e with SMTP id
+ d9443c01a7336-21c352d664fmr49588305ad.5.1737138304206; 
+ Fri, 17 Jan 2025 10:25:04 -0800 (PST)
 Received: from stoup.. (174-21-71-127.tukw.qwest.net. [174.21.71.127])
  by smtp.gmail.com with ESMTPSA id
  d9443c01a7336-21c2d3acccesm18879005ad.123.2025.01.17.10.25.03
@@ -65,17 +65,17 @@ Received: from stoup.. (174-21-71-127.tukw.qwest.net. [174.21.71.127])
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 08/68] target/arm: Do not test TCG_TARGET_HAS_bitsel_vec
-Date: Fri, 17 Jan 2025 10:23:56 -0800
-Message-ID: <20250117182456.2077110-9-richard.henderson@linaro.org>
+Subject: [PULL 09/68] target/arm: Use tcg_op_supported
+Date: Fri, 17 Jan 2025 10:23:57 -0800
+Message-ID: <20250117182456.2077110-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250117182456.2077110-1-richard.henderson@linaro.org>
 References: <20250117182456.2077110-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,52 +98,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rely on tcg-op-vec.c to expand the opcode if missing.
+Do not reference TCG_TARGET_HAS_* directly.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-sve.c | 20 ++++----------------
- 1 file changed, 4 insertions(+), 16 deletions(-)
+ target/arm/tcg/translate-a64.c | 10 ++++++----
+ target/arm/tcg/translate-sve.c |  2 +-
+ target/arm/tcg/translate.c     |  2 +-
+ 3 files changed, 8 insertions(+), 6 deletions(-)
 
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 7c65fc3a3b..bd814849c1 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -8219,6 +8219,7 @@ static bool trans_CCMP(DisasContext *s, arg_CCMP *a)
+     TCGv_i64 tcg_rn, tcg_y;
+     DisasCompare c;
+     unsigned nzcv;
++    bool has_andc;
+ 
+     /* Set T0 = !COND.  */
+     arm_test_cc(&c, a->cond);
+@@ -8249,17 +8250,18 @@ static bool trans_CCMP(DisasContext *s, arg_CCMP *a)
+     tcg_gen_subi_i32(tcg_t2, tcg_t0, 1);
+ 
+     nzcv = a->nzcv;
++    has_andc = tcg_op_supported(INDEX_op_andc_i32, TCG_TYPE_I32, 0);
+     if (nzcv & 8) { /* N */
+         tcg_gen_or_i32(cpu_NF, cpu_NF, tcg_t1);
+     } else {
+-        if (TCG_TARGET_HAS_andc_i32) {
++        if (has_andc) {
+             tcg_gen_andc_i32(cpu_NF, cpu_NF, tcg_t1);
+         } else {
+             tcg_gen_and_i32(cpu_NF, cpu_NF, tcg_t2);
+         }
+     }
+     if (nzcv & 4) { /* Z */
+-        if (TCG_TARGET_HAS_andc_i32) {
++        if (has_andc) {
+             tcg_gen_andc_i32(cpu_ZF, cpu_ZF, tcg_t1);
+         } else {
+             tcg_gen_and_i32(cpu_ZF, cpu_ZF, tcg_t2);
+@@ -8270,7 +8272,7 @@ static bool trans_CCMP(DisasContext *s, arg_CCMP *a)
+     if (nzcv & 2) { /* C */
+         tcg_gen_or_i32(cpu_CF, cpu_CF, tcg_t0);
+     } else {
+-        if (TCG_TARGET_HAS_andc_i32) {
++        if (has_andc) {
+             tcg_gen_andc_i32(cpu_CF, cpu_CF, tcg_t1);
+         } else {
+             tcg_gen_and_i32(cpu_CF, cpu_CF, tcg_t2);
+@@ -8279,7 +8281,7 @@ static bool trans_CCMP(DisasContext *s, arg_CCMP *a)
+     if (nzcv & 1) { /* V */
+         tcg_gen_or_i32(cpu_VF, cpu_VF, tcg_t1);
+     } else {
+-        if (TCG_TARGET_HAS_andc_i32) {
++        if (has_andc) {
+             tcg_gen_andc_i32(cpu_VF, cpu_VF, tcg_t1);
+         } else {
+             tcg_gen_and_i32(cpu_VF, cpu_VF, tcg_t2);
 diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index 49d32fabc9..732453db6f 100644
+index 732453db6f..e303196592 100644
 --- a/target/arm/tcg/translate-sve.c
 +++ b/target/arm/tcg/translate-sve.c
-@@ -596,14 +596,8 @@ static void gen_bsl1n_i64(TCGv_i64 d, TCGv_i64 n, TCGv_i64 m, TCGv_i64 k)
- static void gen_bsl1n_vec(unsigned vece, TCGv_vec d, TCGv_vec n,
-                           TCGv_vec m, TCGv_vec k)
+@@ -622,7 +622,7 @@ static void gen_bsl2n_i64(TCGv_i64 d, TCGv_i64 n, TCGv_i64 m, TCGv_i64 k)
+      *       =         | ~(m | k)
+      */
+     tcg_gen_and_i64(n, n, k);
+-    if (TCG_TARGET_HAS_orc_i64) {
++    if (tcg_op_supported(INDEX_op_orc_i64, TCG_TYPE_I64, 0)) {
+         tcg_gen_or_i64(m, m, k);
+         tcg_gen_orc_i64(d, n, m);
+     } else {
+diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
+index c16b59ab88..68ac393415 100644
+--- a/target/arm/tcg/translate.c
++++ b/target/arm/tcg/translate.c
+@@ -493,7 +493,7 @@ static void gen_add_CC(TCGv_i32 dest, TCGv_i32 t0, TCGv_i32 t1)
+ static void gen_adc_CC(TCGv_i32 dest, TCGv_i32 t0, TCGv_i32 t1)
  {
--    if (TCG_TARGET_HAS_bitsel_vec) {
--        tcg_gen_not_vec(vece, n, n);
--        tcg_gen_bitsel_vec(vece, d, k, n, m);
--    } else {
--        tcg_gen_andc_vec(vece, n, k, n);
--        tcg_gen_andc_vec(vece, m, m, k);
--        tcg_gen_or_vec(vece, d, n, m);
--    }
-+    tcg_gen_not_vec(vece, n, n);
-+    tcg_gen_bitsel_vec(vece, d, k, n, m);
- }
- 
- static void gen_bsl1n(unsigned vece, uint32_t d, uint32_t n, uint32_t m,
-@@ -640,14 +634,8 @@ static void gen_bsl2n_i64(TCGv_i64 d, TCGv_i64 n, TCGv_i64 m, TCGv_i64 k)
- static void gen_bsl2n_vec(unsigned vece, TCGv_vec d, TCGv_vec n,
-                           TCGv_vec m, TCGv_vec k)
- {
--    if (TCG_TARGET_HAS_bitsel_vec) {
--        tcg_gen_not_vec(vece, m, m);
--        tcg_gen_bitsel_vec(vece, d, k, n, m);
--    } else {
--        tcg_gen_and_vec(vece, n, n, k);
--        tcg_gen_or_vec(vece, m, m, k);
--        tcg_gen_orc_vec(vece, d, n, m);
--    }
-+    tcg_gen_not_vec(vece, m, m);
-+    tcg_gen_bitsel_vec(vece, d, k, n, m);
- }
- 
- static void gen_bsl2n(unsigned vece, uint32_t d, uint32_t n, uint32_t m,
+     TCGv_i32 tmp = tcg_temp_new_i32();
+-    if (TCG_TARGET_HAS_add2_i32) {
++    if (tcg_op_supported(INDEX_op_add2_i32, TCG_TYPE_I32, 0)) {
+         tcg_gen_movi_i32(tmp, 0);
+         tcg_gen_add2_i32(cpu_NF, cpu_CF, t0, tmp, cpu_CF, tmp);
+         tcg_gen_add2_i32(cpu_NF, cpu_CF, cpu_NF, cpu_CF, t1, tmp);
 -- 
 2.43.0
 
