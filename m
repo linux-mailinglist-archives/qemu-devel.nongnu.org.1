@@ -2,89 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2885BA14C2A
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 10:28:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDAD9A14C28
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 10:28:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYidC-0002WG-8N; Fri, 17 Jan 2025 04:27:10 -0500
+	id 1tYidD-0002Wd-98; Fri, 17 Jan 2025 04:27:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tYid9-0002VG-5d
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 04:27:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tYidB-0002W8-2L
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 04:27:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tYid7-0003O7-03
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 04:27:06 -0500
+ id 1tYid9-0003Ot-Kq
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 04:27:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737106023;
+ s=mimecast20190719; t=1737106027;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=b486P7QDYUT1skG7NsQHZqf9CNEnvk1cpaVCEyko9DU=;
- b=KGfGtmlATX4wxq8n+ARC863kGJbLGIn47+le1WuBbeogJtfOSpDndBvJ75y94cLVbDS92y
- PgC1NAIMAl3tCilyo23Hbvcf7trFXTpg5qP7tJVPoKUzf+FX/+VwNwFzF5Urxzpzy9h5RQ
- AWt1xCcMdGgIz3dpS/d4gHKoCFOI5IE=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1sWErDgBgStcF4IIFiG2aKGTxEPfyMd9ElyExlJqlCM=;
+ b=ONve/fNpDatv6lxUyE4GDQfHMxe6B9vWz2qSr1kNFK2VQfySrI59LTY9k678hvUaKvtLC8
+ bFPzkhFFRWSRyEaR2ESzNKwPQTlt3ov3XLy/gDlCxSq67ek1DQcoeLjgxlJn9vPFYH0V94
+ 3rloVJZMbLYMqY4lh7Q9mRGRZIPFd80=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-277-5DRFyNMuOxKv_k6C7CXHZQ-1; Fri, 17 Jan 2025 04:27:01 -0500
-X-MC-Unique: 5DRFyNMuOxKv_k6C7CXHZQ-1
-X-Mimecast-MFC-AGG-ID: 5DRFyNMuOxKv_k6C7CXHZQ
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-aa6a87f324cso210624066b.1
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 01:27:01 -0800 (PST)
+ us-mta-58-QLcPmEuAMhO0hr0dj48pYQ-1; Fri, 17 Jan 2025 04:27:03 -0500
+X-MC-Unique: QLcPmEuAMhO0hr0dj48pYQ-1
+X-Mimecast-MFC-AGG-ID: QLcPmEuAMhO0hr0dj48pYQ
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-aa67855b3deso169525966b.1
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 01:27:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737106019; x=1737710819;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=b486P7QDYUT1skG7NsQHZqf9CNEnvk1cpaVCEyko9DU=;
- b=csAf1p8FlHLDcUvlAu8KqXVIF0+QYEGPT7hFBirZJpFnqgMIWNcaaxLjTS2ViR1DHz
- T3YmrmeYxBRyB6N6jCLfxfYHbTF+dV8fpm08GbmCNW+oh6WEx72vUKvVxvj7q09SbIVR
- lRM3+a7S5RgyN2Pr/ZcN8LXFqwo0C0Jq+4iQdmoj/GLAUqSPwf/bWmA0P9alh+ZEoFvs
- 5dr1N/xGI9QBYJsdiy4grgwgS6oXVMmKB/lgQk+7GyQMVBsnQn6am1PRV2YHtnvMDi9x
- J9B5CEqS+oo1PpVXRz5MXJNGBi8JvqNNAjo5N9buiAW8zpfvHnMk32Dtn1sx8PeFPu6N
- djHw==
-X-Gm-Message-State: AOJu0YxZW6zjCQO0jIU3dIGPtG7G81HTQYeug8HwXGQKo8GIMe7bilOc
- blB/Gkct/5+SasdjB/O5yXISleaFen3U6qaN7DmLDNfX0+4ocvrwHqKOI7UkXMhkfg/wUCb/lMG
- B72MwlYai0IrydEOIyXvd1Dh8OV3m1vgec0JTmPuCB6yzUebhgFNR02gQiG0n1DU90luSzmfVBU
- 28MyGUZ87uMVjYpXiv0HP03p7tU4vtz5LhZJbZNDs=
-X-Gm-Gg: ASbGnctBY9WXvPFX3ggzn6QtL1w+kWLnZOwAylhDLLTMjD0fUlrVeM5oE4+8VHlXlnK
- akCR0CkzxCvffwAQdDC8UBUTMXGEV3cZrysYFOEN2OaEIDfIqp6BewTSlR1RjkO8iIwDQQDD34R
- kUqlxd38Ae9I8+7c/h0xRvn6AMe7qviEEI5+4w4VgGYePqulc3cD6LNVGf2S7hNCdacNoBRuV5B
- YLXZu2M14FiYa47/YxHoxEoz9N8bOYwWRmG7544UHUBIauD/GPb0ZosOZls
-X-Received: by 2002:a17:907:9803:b0:ab3:47ce:7931 with SMTP id
- a640c23a62f3a-ab38b42ad35mr158066466b.44.1737106019564; 
- Fri, 17 Jan 2025 01:26:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEymVy78kMxXiofVYv+pkVdNjWFf53m+NmdS3yabEnhJIOFVdAosEYy9sJMWX42n/UbGs7NOg==
-X-Received: by 2002:a17:907:9803:b0:ab3:47ce:7931 with SMTP id
- a640c23a62f3a-ab38b42ad35mr158065066b.44.1737106019032; 
- Fri, 17 Jan 2025 01:26:59 -0800 (PST)
+ d=1e100.net; s=20230601; t=1737106022; x=1737710822;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=1sWErDgBgStcF4IIFiG2aKGTxEPfyMd9ElyExlJqlCM=;
+ b=lWzGGu+6H1TQULm1IXmAm0bV1Tuks6Nl0YVLFwuKuKuuGWQRf0jVRS/0R+7oXTTU9v
+ CeOpJcfU+J7m2CRsoOwCeCvCxb5vSG7KMJnt6lvZKo9nFv6EngZ7zTrBsmcxycmOVMbZ
+ /M+byU07RW+7xyJgq+UJfx2hmy43azyDDuhTWtzqKxUYZSvXY3YDU1rBXpbbgDU2Jui1
+ apUXvZt26RLIQMQNNhRFTJBz6Ae0PN69rNlu17/o3x/F2MQZeBkYrzgJGc+LIkB1VlqR
+ xsY3LOPMXLo8vfBD9biTMN2bbLshsq9YRf4yH2OdEHdMb2hlOwcjzFWWd8pxg2HYW2Wy
+ tpiQ==
+X-Gm-Message-State: AOJu0YwHXBxZ8pYXS7OB69PBrm3KS2d9DeTu69+2X0dYivFAdL7OhyrA
+ 43ArEVVj7Dv892g4gGkZsZAqzOAiF3Q943dCe3lg3vibeDyYn5+CK4gi89J1ymV3jzkPpCADP/n
+ k6HVwyHafsbDvXKJgoIqLd0hqe08PeMv3IWdwFG02FrUIulU/3vEGWh+14dXRK2BybXlVZ05YYA
+ AyDXh4XAGnYOETTekRrO5q/4dj2SoQdPuuc+O9Z9s=
+X-Gm-Gg: ASbGncvEIZiTVbl2inxKzLtA/A2RhWCKCpUgtxX3gmNwRa2yIrfSt2sQA8dnXoEcpi1
+ NDxUqtUNA7Z1cpsFtmZyBH7spdmMjpeBpDCmpMMziTEtZbKv7pc8xEdYQ4Cc8Go45ZEv0Z2rYgX
+ d4AjhAu6DaQleJYl1nqT0n1gkiE4/DBfvZLgiFjRdgrtj2D+kdqLH/QGhjHudUT/LIZELSWxaxk
+ 2Zi7Mdb4DHDrQNUvJWK1FO99z9UoOS+AyZvbQaN981peVQBTVWKYTBe2I6z
+X-Received: by 2002:a17:907:98b:b0:aa6:aa8a:9088 with SMTP id
+ a640c23a62f3a-ab38b44d471mr186961466b.41.1737106021750; 
+ Fri, 17 Jan 2025 01:27:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEk6bG2UE+cUPVwBEJo1OkWk6DXnHkUE1Q7mZ9OfUwZKkowqMCw3iuNOMc2f8aHnNafDdTF0g==
+X-Received: by 2002:a17:907:98b:b0:aa6:aa8a:9088 with SMTP id
+ a640c23a62f3a-ab38b44d471mr186959466b.41.1737106021300; 
+ Fri, 17 Jan 2025 01:27:01 -0800 (PST)
 Received: from [192.168.10.3] ([176.206.124.70])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab384ce109asm141088566b.51.2025.01.17.01.26.58
+ a640c23a62f3a-ab398ac5879sm14112366b.162.2025.01.17.01.26.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 01:26:58 -0800 (PST)
+ Fri, 17 Jan 2025 01:27:00 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org
-Subject: [PATCH 00/10] rust: pl011: correctly use interior mutability
-Date: Fri, 17 Jan 2025 10:26:47 +0100
-Message-ID: <20250117092657.1051233-1-pbonzini@redhat.com>
+Subject: [PATCH 01/10] rust: pl011: remove unnecessary "extern crate"
+Date: Fri, 17 Jan 2025 10:26:48 +0100
+Message-ID: <20250117092657.1051233-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250117092657.1051233-1-pbonzini@redhat.com>
+References: <20250117092657.1051233-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.093,
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.093,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.797,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,44 +105,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QOM devices are aliased from the moment that they are added to the
-QOM tree, and therefore must not use &mut.  This has been a known
-issue since the beginning of the Rust in QEMU project, and since
-then a solution was developed in the form of BqlCell and BqlRefCell.
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ rust/hw/char/pl011/src/lib.rs | 4 ----
+ 1 file changed, 4 deletions(-)
 
-This series moves the MMIO code and registers from PL011State to
-a new struct PL011Registers, which is wrapped with BqlRefCell.
-This also allows to remove device-specific code from the device's
-MemoryRegionOps callbacks, paving the way for MemoryRegionOps
-bindings.
-
-I am making this series a prerequisite to the usage of Resettable,
-because it allows reset to reset take a shared reference to the
-device.  Thus the Resettable implementation will not have to
-temporarily take a mut reference.
-
-Paolo
-
-
-Paolo Bonzini (10):
-  rust: pl011: remove unnecessary "extern crate"
-  rust: pl011: hide unnecessarily "pub" items from outside pl011::device
-  rust: pl011: extract conversion to RegisterOffset
-  rust: pl011: extract CharBackend receive logic into a separate function
-  rust: pl011: pull interrupt updates out of read/write ops
-  rust: pl011: extract PL011Registers
-  rust: pl011: wrap registers with BqlRefCell
-  rust: pl011: remove duplicate definitions
-  rust: pl011: pull device-specific code out of MemoryRegionOps callbacks
-  rust: qdev: make reset take a shared reference
-
- rust/hw/char/pl011/src/device.rs       | 458 ++++++++++++++-----------
- rust/hw/char/pl011/src/device_class.rs |  52 +--
- rust/hw/char/pl011/src/lib.rs          |  61 ++--
- rust/hw/char/pl011/src/memory_ops.rs   |  23 +-
- rust/qemu-api/src/qdev.rs              |   2 +-
- 5 files changed, 314 insertions(+), 282 deletions(-)
-
+diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
+index f30f9850ad4..d10f0805aac 100644
+--- a/rust/hw/char/pl011/src/lib.rs
++++ b/rust/hw/char/pl011/src/lib.rs
+@@ -25,10 +25,6 @@
+ #![allow(clippy::upper_case_acronyms)]
+ #![allow(clippy::result_unit_err)]
+ 
+-extern crate bilge;
+-extern crate bilge_impl;
+-extern crate qemu_api;
+-
+ use qemu_api::c_str;
+ 
+ pub mod device;
 -- 
 2.47.1
 
