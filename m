@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD691A1568A
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:29:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1179A15682
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:27:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYr1y-00041V-0T; Fri, 17 Jan 2025 13:25:18 -0500
+	id 1tYr1t-0003zK-QJ; Fri, 17 Jan 2025 13:25:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr1r-0003vr-6o
+ id 1tYr1r-0003wr-SG
  for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:11 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr1p-0007qp-Fd
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:10 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-216281bc30fso57582635ad.0
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:25:09 -0800 (PST)
+ id 1tYr1p-0007qm-Sy
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:11 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-21654fdd5daso44789195ad.1
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:25:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737138308; x=1737743108; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737138307; x=1737743107; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Va9p08X93j/jzeWcLncWLYR0nY5/Q2/Ig5KLzRua/5s=;
- b=IVc8dmjSDb3up//lOkzIi16taE4VCM7a4USzE4oRdyrBCL3xFBySh8QZMAq0jeE58P
- 7/Tc3c7lSNp2GSTuZ/zIV3oW0zQcAs35gp3M6TLy5x7DHLycG/FUTQ5Ap97XtJCgakEq
- 3LsP0fnxEUj0X8sFiI1PJ6g5mGt94WnghLjuHH9dZ8bvxMzEX4l/lZU23FrqN7N6Z8Us
- gqwRSvDHL/vy1A0cMvSE9xznr+4PghId6N3Ud4VtAmXqzU2TX7FZSlRnPePs+kW7p9kY
- Mstw0bUFSAs/riGLUwhGo7WE4dmccxMgUJn0UZ+jOnLts6WcHsFc963vPyo0to0mWevk
- TsUw==
+ bh=QHTGG97acyPD34Tp+rqh/MGzijUGRlOPz3TDCzFvbmE=;
+ b=wvDgaX1CZMgqETr9C8DS0SFJaEHe1T0EuKoYjBQ00VXt50/0TttO3veqRA8Xr6xcfA
+ SlBzReCiJ/6EkIOo0MuN5k0RBvz0KDAAPyvXQiRxP7aIA2YLf03huxEYejxzsRlpIHi7
+ I1dWEQCsddLODszYqrxrJRjE/CH0pXEmpu2+PDTcjkm9ANKWb3/ziR7/R8HxVsDsCM+W
+ 2pKRZIccdv4y0b8bd//VaPh/GaE1JppCvVsRDIQ2uw7SXim7usIzRT+LUoHycSLz3S/z
+ wefFfoGvF8jjaoWZJrRdSATxAWUrUh0V/adRr7lClXiutZ6sP9iggR+7Yqs1ebV6cq1/
+ EJ8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737138308; x=1737743108;
+ d=1e100.net; s=20230601; t=1737138307; x=1737743107;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Va9p08X93j/jzeWcLncWLYR0nY5/Q2/Ig5KLzRua/5s=;
- b=GZKumb8L6b1eW3rDTZWF/IYI5cAEgx/08wlil0YHRr14adVgZqbgpCN8sPU0E04OKY
- EldVRCcldddOHT0Rtrm8TwGN+Z6tzHJNh8X2pBElesEuIklXR8C5Kiz3aA2ZiL9I+Qep
- 1YwCMJbKn10lA2v1QMgzMpoyqa0ngYYWVFqeFC+CR4QVgCUN5tzq8QIu1pCmxyveuU3w
- WQBIid8/JKOgghBG/FCyGmbY4xVb1QCo3XmubGJVjBWK0hzk1fXcTu70J7bPZylnmA7c
- paaZwGaRzjlh6o5UhtL99IpbaeKf86+xRZBtlvqmEkblhHNsl5z9HkmEcAKFxoJfUOCd
- +9/A==
-X-Gm-Message-State: AOJu0YysiyLIjPrxcFdzKAYxH/qVPQaYQEj5on7r0fOschoSYmHj8s+N
- UUHHmqhlEDZQIwSzav0q+Ym50vGjPeVa2kHFcpULmJ2RT2zoculJ4/GGA9+P5cKX0jRzHOKAi0M
- K
-X-Gm-Gg: ASbGncvUGeJN8Ov7cnph0OkA6s6WfkkJuW42HNwKRewhjYQfXEr6j4qsjbpFG3vU4J8
- qthaRR1qA+sIDmzjPOb2PSAcjDc3atcBUovH+h0ZqujtcM82WMnJhCqwo9x343NZqd4hkyfVnUQ
- kxgEdHHJIhyJ65DS78Z9A2iACzE+wKhJiVFlr2Ep90bcC8lAKQdtbakNrBtoIC19gV+FXF7GD6S
- TEoJqrjJSKDe6ywcq+6eNw1ciQoOF1mZB9CH/GBVV3G5C9UlWzMNohoBe1MdElMP/k2T17ZUtnI
- JFWVN++qFCQLzVE=
-X-Google-Smtp-Source: AGHT+IGBo7FEjNXLXI4JxkXEtrpeBjsE/PS+yQIDqgGCz8g3EemOlSvZCTLJ1vxLzpXTe11OBChutw==
-X-Received: by 2002:a17:902:d492:b0:216:1543:195e with SMTP id
- d9443c01a7336-21c3553b227mr58921525ad.5.1737138306908; 
- Fri, 17 Jan 2025 10:25:06 -0800 (PST)
+ bh=QHTGG97acyPD34Tp+rqh/MGzijUGRlOPz3TDCzFvbmE=;
+ b=cpiBWcDOFXHjMqLIBFCA0v/RJU5yeOximVsQr2GdXHx1BDfdMl6pM1dgayfW5TJBp3
+ duXR412Dy+AW+RH8LEN9UlJ4WZBnWTnu/1C3wE7M8xWZfHd8Q8Z8EborzcwxnM6n2PG7
+ fQ4K3sgILPzHKv56S6jJwrR/lKFQj/zzNXhs5mP06mgHr50pObnpsLjgSwazrdtz0bWa
+ ZfyJ9GuQp/VeE+mpiQtKIIgZVC4emVsi1iitv5VwBvIP2ZFYzXOyZvUwFZZt3DXI1/KU
+ cynVo3J+2cqGLzkwc5nkWXpd0KkYsXZDvdx6hXRc/yWxngg1aiVt40MY+OECbNnTllE2
+ GtBQ==
+X-Gm-Message-State: AOJu0YyaYVdWPOahXAPwSwSKFIP3x3klMD+9xXhO02r3PbBDaXRRcp0K
+ o0hwejSfiMuItH/vMh44p9bL02epUXN9FDypmBZv54Por5LWjwKQJn4eaot0fn/pLTxZAa6QfBK
+ e
+X-Gm-Gg: ASbGncsEcdwwzMbIJZsRWs7ab1uG+JshekY0jNM+RCYbD/sIuIbG7OHqTBTNj988H87
+ rF8nd7hgMM/taYday1YiT9ALURez3r9YXeFkY7e/ZP+RdX7EIToNIgF5Zduyb+1I4W1FwGC7AOk
+ ECr0bgdUrm34OAGxs2qTdYEtnqV+fjsiGWgWGA05s9BZ7iyd7HfUitPN73cRCJ4dI1TA8+ryEsA
+ L53mk7Ar+R7isQ7lxZxeZDaTcOv7sgae6uz7GlYclAGQ8u5CkVnIGhT3lgijG6K+XxFjwkBJ9Oz
+ cIcfdHou4gsBtyY=
+X-Google-Smtp-Source: AGHT+IHz8XHiQyiyX/3oWdzP6xm5F2W+GU5ucJk340ib4Vahr3CDF8aMbknt2mg9T4tePdrt76lBpA==
+X-Received: by 2002:a17:902:db10:b0:215:a2e2:53fe with SMTP id
+ d9443c01a7336-21c355c7a3dmr58479905ad.40.1737138307566; 
+ Fri, 17 Jan 2025 10:25:07 -0800 (PST)
 Received: from stoup.. (174-21-71-127.tukw.qwest.net. [174.21.71.127])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21c2d3acccesm18879005ad.123.2025.01.17.10.25.06
+ d9443c01a7336-21c2d3acccesm18879005ad.123.2025.01.17.10.25.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 10:25:06 -0800 (PST)
+ Fri, 17 Jan 2025 10:25:07 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 13/68] target/i386: Use tcg_op_deposit_valid
-Date: Fri, 17 Jan 2025 10:24:01 -0800
-Message-ID: <20250117182456.2077110-14-richard.henderson@linaro.org>
+Subject: [PULL 14/68] target/i386: Use tcg_op_supported
+Date: Fri, 17 Jan 2025 10:24:02 -0800
+Message-ID: <20250117182456.2077110-15-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250117182456.2077110-1-richard.henderson@linaro.org>
 References: <20250117182456.2077110-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,47 +98,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avoid direct usage of TCG_TARGET_deposit_*_valid.
+Do not reference TCG_TARGET_HAS_* directly.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/i386/tcg/emit.c.inc | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ target/i386/tcg/emit.c.inc | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index ab416627b7..a2b940a5c3 100644
+index a2b940a5c3..f305640182 100644
 --- a/target/i386/tcg/emit.c.inc
 +++ b/target/i386/tcg/emit.c.inc
-@@ -25,10 +25,8 @@
+@@ -24,9 +24,9 @@
+  * The exact opcode to check depends on 32- vs. 64-bit.
   */
  #ifdef TARGET_X86_64
- #define TCG_TARGET_HAS_extract2_tl      TCG_TARGET_HAS_extract2_i64
--#define TCG_TARGET_deposit_tl_valid     TCG_TARGET_deposit_i64_valid
+-#define TCG_TARGET_HAS_extract2_tl      TCG_TARGET_HAS_extract2_i64
++#define INDEX_op_extract2_tl            INDEX_op_extract2_i64
  #else
- #define TCG_TARGET_HAS_extract2_tl      TCG_TARGET_HAS_extract2_i32
--#define TCG_TARGET_deposit_tl_valid     TCG_TARGET_deposit_i32_valid
+-#define TCG_TARGET_HAS_extract2_tl      TCG_TARGET_HAS_extract2_i32
++#define INDEX_op_extract2_tl            INDEX_op_extract2_i32
  #endif
  
  #define MMX_OFFSET(reg)                        \
-@@ -3449,7 +3447,7 @@ static void gen_RCL(DisasContext *s, X86DecodedInsn *decode)
-     }
- 
-     /* Compute high part, including incoming carry.  */
--    if (!have_1bit_cin || TCG_TARGET_deposit_tl_valid(1, TARGET_LONG_BITS - 1)) {
-+    if (!have_1bit_cin || tcg_op_deposit_valid(TCG_TYPE_TL, 1, TARGET_LONG_BITS - 1)) {
-         /* high = (T0 << 1) | cin */
-         TCGv cin = have_1bit_cin ? decode->cc_dst : decode->cc_src;
-         tcg_gen_deposit_tl(high, cin, s->T0, 1, TARGET_LONG_BITS - 1);
-@@ -3501,7 +3499,7 @@ static void gen_RCR(DisasContext *s, X86DecodedInsn *decode)
-     }
- 
-     /* Save incoming carry into high, it will be shifted later.  */
--    if (!have_1bit_cin || TCG_TARGET_deposit_tl_valid(1, TARGET_LONG_BITS - 1)) {
-+    if (!have_1bit_cin || tcg_op_deposit_valid(TCG_TYPE_TL, 1, TARGET_LONG_BITS - 1)) {
-         TCGv cin = have_1bit_cin ? decode->cc_dst : decode->cc_src;
-         tcg_gen_deposit_tl(high, cin, s->T0, 1, TARGET_LONG_BITS - 1);
-     } else {
+@@ -2993,7 +2993,7 @@ static void gen_PMOVMSKB(DisasContext *s, X86DecodedInsn *decode)
+     tcg_gen_ld8u_tl(s->T0, tcg_env, offsetof(CPUX86State, xmm_t0.ZMM_B(vec_len - 1)));
+     while (vec_len > 8) {
+         vec_len -= 8;
+-        if (TCG_TARGET_HAS_extract2_tl) {
++        if (tcg_op_supported(INDEX_op_extract2_tl, TCG_TYPE_TL, 0)) {
+             /*
+              * Load the next byte of the result into the high byte of T.
+              * TCG does a similar expansion of deposit to shl+extract2; by
 -- 
 2.43.0
 
