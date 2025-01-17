@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B05A150F1
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 14:53:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32692A150DF
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 14:48:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYmm2-0002Vf-E2; Fri, 17 Jan 2025 08:52:34 -0500
+	id 1tYmdz-0002GX-9C; Fri, 17 Jan 2025 08:44:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tYmlu-0002U5-Bn
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 08:52:26 -0500
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ id 1tYmd1-00012Z-3i
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 08:43:15 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tYmlr-0003l6-6c
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 08:52:26 -0500
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-aab6fa3e20eso401427666b.2
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 05:52:21 -0800 (PST)
+ id 1tYmcz-0002HD-H3
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 08:43:14 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3cf094768so3703051a12.0
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 05:43:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737121940; x=1737726740; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737121392; x=1737726192; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HtCDv3d7Fj7JdhWS0o/IEH/Zvi/ajW/ZDQ9T4eeCRh8=;
- b=ijbLpktOx3ZPF0CEinUFtewiSich2KRhHN3ayksE7Gm05I3ZvR+wkX3sZ9eL/2a+pp
- A8UIfuABoyLqnWag8sC69SNwPjEBAF8x37uiVKRqQ8CBSPnp4ORs3RbnJ5VBwaoT33qF
- 8RdnZGtvt7Bgs/9GALivxL5sT45Epo1nEmdEWSfCNIId4wcAPtWreLQcjGd7W3V2Rm8K
- BN1OwC8cPRQJFTbnXe6tjYvWZXp/KBKciFu12zKmsRHdO3FEua546TSRDTlIUGc9NzB6
- J13gpy3c5hphRM9vLWdHkhOb+XpqFzAivPo9dC7RswSWxeP6L3jZIaHN9QhM0Ph+XvQU
- iXKA==
+ bh=4xuiCI7PA8RfyoMtUNzdFe3eSRNq2phrVz5fhVl8TLw=;
+ b=d7qzB0Dg+c5stXWn2L321nKNY0XRVaQwlEJj7bHChaS6YvvIV2dh/bGRBM0AtsPi1n
+ VVMyonDB20skRHdrwTeKvniHjGV9VQ082ZFJr0WHnSYhRiFBY7IPku/7ka7Q+MNh/BiG
+ EakPDG7WsxbWW/fH2Hk+wokLTMEd8d7ODhlwijPJ5CAn4VW2vGdcKfh8nDZTugVV3eDs
+ cHALDCdgJ8EfGjDTNHp3hkIec5fAiH+UlAZ/YnumfuRINxpNjLTBiW44/xsqNL2XCHm8
+ 1v0ojXQ5SvNP7Ckl2UdJGLK5HgP7NZJMnaH8hH4xJzKauh5bstafW4W5MR/+3n2tgA7+
+ UOsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737121940; x=1737726740;
+ d=1e100.net; s=20230601; t=1737121392; x=1737726192;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HtCDv3d7Fj7JdhWS0o/IEH/Zvi/ajW/ZDQ9T4eeCRh8=;
- b=VhmicbRf98enW1OqU3S/vRl5mGse5fGCB3Z9TLrbX6UjxaSiV6Wk2+ZgCHo4EJh+/R
- lq4LmYzBOtFFy3Z+FVhJmwb+sqqAYr8IAlWUzrMVWH3YyXKkssnKmqTTWAmrmdpHzX7w
- uBp4OBTTWDZBvBBuIvak5gTNOYKMNAOPhWAq+FOr5FW6hKKQToH8nHkzH1+cYAY1fhZo
- 8U91QNr6sZnNIYH2wyOnEq9Y4UI6SCtDeFD38/kq8NFn8xULY/BYv7wM8+0N/V6pqrus
- jsXe2+drvYNC2ErddpbP79o5p/uLpRpjj2wodJxcMw2VZeSzRIL6+BdKItwPyNmXQ0ZX
- nWIQ==
-X-Gm-Message-State: AOJu0YxrYdv9ipw6EYh3cIX/dwwrGc+EG1mhKSqPs/9CbOp8UtvI0tmy
- 4SPxEtZVFDWWmY/zBzGKKIsEjs/M30KUv8wKHE0OqMDKh14vRBILNNHSDcj+ojI=
-X-Gm-Gg: ASbGncvGnscNBBHl5UAs58zZNfIcJDJ4PJ4gdLjqmLXcfOrACA2JwPKSeb5zF+Dj0wy
- sKlrfN5j44W2M/tK7xlXZv3p0S89Q3I/aje6VAxggn2GHyXjbmtd6rcib8MdBoAxzA4ATSyitSj
- MIXiZaEuNoBML9ay9Rp4G61L91HywLmiIsiJsx8oSEfAw1YS6XHvmGWBwjIGlQxW4iRjhxc3Wn7
- 2mQ1h/JkGrsmfb+Fc0DxDtTt2UjxNPYNDXVk4RYDycUu5QZRRcVEDE=
-X-Google-Smtp-Source: AGHT+IEot0OJi02dAtKnC0F2Jjse2aekavj1JmXqkk9hpxKnQkkCGBlBw4Mww+b1TQWuBZGQhwGUMQ==
-X-Received: by 2002:a17:907:60d2:b0:aac:43e:ffa5 with SMTP id
- a640c23a62f3a-ab38b1ff088mr231210666b.15.1737121940138; 
- Fri, 17 Jan 2025 05:52:20 -0800 (PST)
+ bh=4xuiCI7PA8RfyoMtUNzdFe3eSRNq2phrVz5fhVl8TLw=;
+ b=athHIcwTjT4tbChum8oqEHlmQSlb8rJaSPDRtYuBufRqZb+l5zQZhuP9pV8dsHkbrP
+ FBK4h/llPCvMgsDwF3/OGpDB33lvzUWT/TlNJyRxsbij3ihRcgiFfevNktZH9qgs6986
+ mBmE3w9T6dwY2Qmcb0WTXIfiz3CxcOlFKc5XcsHeQr00rtmZfAmDZvUwbQe/H8O2PhwU
+ 5UY5JvNVyrP+tbuXPkLr6xLdLfrHYjfWoCNovR+i24zk8aTi4P/DsCgAUaPYLMKw1wHb
+ MdROzHqPCe6ELXdi5xwpXRR09F+mGDRsymhf3gSN/sC1RG1GNAXfHop/+XtU36z2ZN5a
+ bbDw==
+X-Gm-Message-State: AOJu0Yya0m8MVw7TSFphfbLyOwvaT9OE1v/0vQiNZeQjnCcUBlCnJABS
+ lTFhAs8oaXQIypo+SSYMZi9Zbe9GhJxxBV8cWeMW6t6jnkPwsS9XEDUJW9YCBgw=
+X-Gm-Gg: ASbGncvqErAAD/uhj04SeEBjtUpLlH1b4z2idFV/Ze40xGw8ta1udTjZ+Ap2QRUmCZ3
+ oaFy2RBjCRcICCIWZk5I0lz81LrqQM736HZIK0lv8FSJPL+Djk5KeuqSLH+1OlEmOBZwQLq0G/B
+ Fsico2itVtjSv9KZ9b6Tgd1exoOkBQG6DRxvAZHHKrJdGNKsI1sqUjCSvNfjW27aix/eH04d3xc
+ U4gzaM6NFjEfZii5VSQEoKN5HWcPYwovr82zElFKH3ZGPDhEFRnOHA=
+X-Google-Smtp-Source: AGHT+IGF+Gm/f1PNYFKM83X+vDlXCClrRtie2cNqA1eMIbmFB+odbv9zJX0hBJFbVVvLFQgugzrmqg==
+X-Received: by 2002:a17:907:3e1d:b0:ab3:974:3d45 with SMTP id
+ a640c23a62f3a-ab38b0a186cmr298609666b.1.1737121392001; 
+ Fri, 17 Jan 2025 05:43:12 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab384f86fa4sm174040666b.143.2025.01.17.05.52.17
+ a640c23a62f3a-ab384ce0f58sm172496766b.48.2025.01.17.05.43.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 05:52:19 -0800 (PST)
+ Fri, 17 Jan 2025 05:43:07 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 66A1E608DD;
+ by draig.lan (Postfix) with ESMTP id 7E7E26083E;
  Fri, 17 Jan 2025 13:42:59 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 26/37] plugins: fix kdoc annotation
-Date: Fri, 17 Jan 2025 13:42:45 +0000
-Message-Id: <20250117134256.2079356-27-alex.bennee@linaro.org>
+Subject: [PULL 27/37] editorconfig: update for perl scripts
+Date: Fri, 17 Jan 2025 13:42:46 +0000
+Message-Id: <20250117134256.2079356-28-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250117134256.2079356-1-alex.bennee@linaro.org>
 References: <20250117134256.2079356-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,25 +99,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The function is qemu_plugin_mem_get_value()
+We have two types of perl scripts in the tree. The ones from the
+kernel are mostly tab based where as scripts we have written ourselves
+use 4 space indentation.
+
+Attempt to codify that in our .editorconfig
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250116160306.1709518-27-alex.bennee@linaro.org>
+Message-Id: <20250116160306.1709518-28-alex.bennee@linaro.org>
 
-diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-index 0fba36ae02..3a850aa216 100644
---- a/include/qemu/qemu-plugin.h
-+++ b/include/qemu/qemu-plugin.h
-@@ -583,7 +583,7 @@ QEMU_PLUGIN_API
- bool qemu_plugin_mem_is_store(qemu_plugin_meminfo_t info);
- 
- /**
-- * qemu_plugin_mem_get_mem_value() - return last value loaded/stored
-+ * qemu_plugin_mem_get_value() - return last value loaded/stored
-  * @info: opaque memory transaction handle
-  *
-  * Returns: memory value
+diff --git a/.editorconfig b/.editorconfig
+index 7303759ed7..a04cb9054c 100644
+--- a/.editorconfig
++++ b/.editorconfig
+@@ -47,3 +47,16 @@ emacs_mode = glsl
+ [*.json]
+ indent_style = space
+ emacs_mode = python
++
++# by default follow QEMU's style
++[*.pl]
++indent_style = space
++indent_size = 4
++emacs_mode = perl
++
++# but user kernel "style" for imported scripts
++[scripts/{kernel-doc,get_maintainer.pl,checkpatch.pl}]
++indent_style = tab
++indent_size = 8
++emacs_mode = perl
++
 -- 
 2.39.5
 
