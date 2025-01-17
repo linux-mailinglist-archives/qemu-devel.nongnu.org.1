@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33F4DA1569C
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:31:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7266A15673
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:26:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYr1v-00040e-SC; Fri, 17 Jan 2025 13:25:15 -0500
+	id 1tYr1x-000431-KC; Fri, 17 Jan 2025 13:25:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr1s-0003yQ-NE
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:12 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1tYr1v-00040g-3E
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:15 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr1q-0007r9-PR
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:12 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-21669fd5c7cso45849125ad.3
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:25:09 -0800 (PST)
+ id 1tYr1r-0007rH-AM
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:13 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-21636268e43so58625235ad.2
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:25:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737138309; x=1737743109; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737138310; x=1737743110; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wWOubo1yw/jMK9n7npaDQ/kdBR0LHc4+hHuxEbmZxkw=;
- b=ocAFvnUlPu/0w5IUFBYl7jRv8B88wNs+ry6v1cxdDxAujF+qFMUBrI+tPCnxUVAVKd
- j6aKtfSp7ao4BnU2vuLyBxoyyzhTXGndWUKR6VxQvr77z232JRjGeBnLRaroENIOWGHw
- W33VoJc+tJp1PcjEfnUADlNDnFcp/jpIwhVDRXfvJDpdwur/VENy8aSfWzBfHXRj9Oyt
- zMBvPVZEMl+sVJgFnJOu12oe02s0eC+t1yFYckwX9mmeKoTkWY45Ud/OrBrkUuep7ZV1
- 4/zYKUKS0sNb2KlFyDGUw2DkHOVlHvebw1OGjmBLCyrfZrelv89aZvfI0cLmvjF0qCQk
- EK2Q==
+ bh=pQva3q+MWFJ9pcoUzbmbXwAhlkVRuQCmcAHZ1Ju2AJA=;
+ b=VKajTxHq+V/nOaQCoqV5AoNRcDdpTdAeCpKyLtsWHHuPERMRpRsDslhqr3YCjE9w++
+ 2LUJC5rTc0Q0TpnwZqKkhjIRlC1gX/XIjGz0boMUcnAyCJlYH4L20gGJwmlPA+44bkhP
+ oZ3WVPaqJ9826PdC4b7+S/9mZMzxUTNjqZ6NAXwQYxARIS7lpJmeGE02ptsjkLydBkRn
+ /RSbUPrL7QcouuG0f63qps/0qgxZG26qqTi4rppaCNfa5uAlviWjLTnaDCM/NHyIe/1A
+ UWx+MOJDfOLutSOjy9adJTe+Kg/6OK1d/tjgs2JLZZF+LjrMtmXF9L6MHdRxJ9X0/EPN
+ v8tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737138309; x=1737743109;
+ d=1e100.net; s=20230601; t=1737138310; x=1737743110;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wWOubo1yw/jMK9n7npaDQ/kdBR0LHc4+hHuxEbmZxkw=;
- b=GBzOqzCnJwO+NPYUN2e6d/VYJHCqOwB6sQecyfdr/ajlSnEJJQCCoVFlfQukTsMLjE
- LMMNRNDKp6mjTSWVGFFy2HDmsrq4vELNHBhZZWObV4f0F5MUPljviLvsQlL/DE5VsHT+
- PjyGfwziG2DE60uDfAMYcEdg0aT/0Utc2W78m48aflfVWUOcCNoiYdV1gUAhpmbJNiTp
- T2drecy//MA+ivgCtTreI6Zn+3tmma1VcpfDRIKE238sCw+p8GkSy2kp3HLL1JVs9RMg
- +trbKmO5JRf4Ur9iTCco1HbAD2oFqSAgRjQYmnobyHSxJcdmM07Dgp8yozDQ5qAmDmsC
- Rnnw==
-X-Gm-Message-State: AOJu0Yx4LJaEJepPq7SYWg+XRHnoYmDVkfC/TYtcXrTuNOTGFSyCJ9rN
- Xbc0OO20Zrr+JMIhrMFiDJe4aIsK3GfSGunz2yuGsKxHxjE8OnUH0KhNPhItj/sZjRJ6DbXXY5w
- C
-X-Gm-Gg: ASbGncuXiwP9ehC12uN29pupSwVEXbCD92oq3cXxJYkDL6XHjR+Yl2pFZJtRLpNsros
- 0L20ZW1adrNUzicV5tYss+jGzY0xve4+JWBOtkT+P1CZ3RyU62W60RWewb1BAsLBZUe05Coezmr
- P7B0OnYVoYGkow0weIzll3CKv3jJ/EVV31ItH+3dOYJsM14yxa0AF6cbpOTX4gfd8nXzk/3VC13
- vldhuM5cefxxRq7hLXxXb0LNCZO9zVatwdScP8JQpbXgYzI5QYh0XTPy6K3GxHI0PCEcQ8V2UH4
- G8UO65tB83foQYA=
-X-Google-Smtp-Source: AGHT+IHCQj2W9FI5/5LdK/a6NASONSIJERqffvlA61KQvb6e64CyCM+PB2dteAzEFfaV8kHekAGw8g==
-X-Received: by 2002:a17:902:d4c8:b0:216:725c:a11a with SMTP id
- d9443c01a7336-21c352c8145mr62648135ad.10.1737138308995; 
- Fri, 17 Jan 2025 10:25:08 -0800 (PST)
+ bh=pQva3q+MWFJ9pcoUzbmbXwAhlkVRuQCmcAHZ1Ju2AJA=;
+ b=OrcktC06wjKJgVAF+uZf3UhlyAZwZ/cxn0Th+3JGxpu5ARw0mc/zBI/8PoEGlQwndH
+ v6iNZ+ElWT8OAa7Yw8798Ye8THImud1+5gnR5H/aw3vywmSHHKOCKTl64lP1ibwwdCXN
+ zR1hK5yQadDtOLa4ST/kpY/df/pjVAJdIlvxpXG6vyBI14LjnMiyVvLY7li43Y45yJf7
+ s2P/J91DLRuxad6sW3wc698Hfnrv3u+oaDuREFfkB+P8tbLU1GREAaVrAkG5Z2L2Fp5s
+ Vjf5f7SaLmHh8WSQW2Q70HJzi6qx2AphQfUO5fCxk0+efR4/JJz0Ygnc9W5YPMpatQ+0
+ zWZQ==
+X-Gm-Message-State: AOJu0Yy1+Mx6t1rQ7/t7fG4IIuDi7bu6Owbo16EsomDpkSn5clC327By
+ 7kjz+PWd7Dfyezg7RYmYxz8bN0zdxTZAeof1jKQ1Q+ZCwJ3pb0K8F1dRgDZtD7UdGxneu9t9HiJ
+ y
+X-Gm-Gg: ASbGncuF3zeh0XTRDgEj4GFSSaZSY37yjvVbn9d4rr2dFTJH9fFeHd3r5vrH95KijKV
+ 7p46Z6xwxpL5sxa4IF+HJqIsxe+wn9Tw4Hq9pWjisa9MH/voMopYEyqeNhdwAf1RWyDH7dtZoRz
+ jc6gahAGEs/xbC+Ds++bpb9DIpswoxts7a3CODM56htyC2UT8sSNrSoOiGCH9Ak1WcDQbJ5hZvd
+ eR9ZqoSk80lC/pe40Hln4kPjPzc2Bz44UbLYmoeW6ApeTWfPNU9wV+h9AyaxOdSVsIFWm6Nh2P3
+ E1yBxx9wiJUHQHY=
+X-Google-Smtp-Source: AGHT+IE0ec2R8QTr3Zxmci7Hmw3ShAreTkYm9zsRplsc9QivcY8jf5DmRh5bKFSSorJT3ZSh20xn9w==
+X-Received: by 2002:a17:902:f7ce:b0:215:773a:c168 with SMTP id
+ d9443c01a7336-21c352de425mr55852865ad.1.1737138309885; 
+ Fri, 17 Jan 2025 10:25:09 -0800 (PST)
 Received: from stoup.. (174-21-71-127.tukw.qwest.net. [174.21.71.127])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21c2d3acccesm18879005ad.123.2025.01.17.10.25.08
+ d9443c01a7336-21c2d3acccesm18879005ad.123.2025.01.17.10.25.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 10:25:08 -0800 (PST)
+ Fri, 17 Jan 2025 10:25:09 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 16/68] tcg: Rename tcg-target.opc.h to tcg-target-opc.h.inc
-Date: Fri, 17 Jan 2025 10:24:04 -0800
-Message-ID: <20250117182456.2077110-17-richard.henderson@linaro.org>
+Subject: [PULL 17/68] tcg/tci: Move TCI specific opcodes to
+ tcg-target-opc.h.inc
+Date: Fri, 17 Jan 2025 10:24:05 -0800
+Message-ID: <20250117182456.2077110-18-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250117182456.2077110-1-richard.henderson@linaro.org>
 References: <20250117182456.2077110-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,99 +99,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In addition, add empty files for mips, sparc64 and tci.
-Make the include unconditional within tcg-opc.h.
+Now that tcg-target-opc.h.inc is unconditional,
+we can move these out of the generic header.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/tcg-opc.h                                      | 4 +---
- tcg/aarch64/{tcg-target.opc.h => tcg-target-opc.h.inc}     | 0
- tcg/arm/{tcg-target.opc.h => tcg-target-opc.h.inc}         | 0
- tcg/i386/{tcg-target.opc.h => tcg-target-opc.h.inc}        | 0
- tcg/loongarch64/{tcg-target.opc.h => tcg-target-opc.h.inc} | 0
- tcg/mips/tcg-target-opc.h.inc                              | 1 +
- tcg/ppc/{tcg-target.opc.h => tcg-target-opc.h.inc}         | 0
- tcg/riscv/{tcg-target.opc.h => tcg-target-opc.h.inc}       | 0
- tcg/s390x/{tcg-target.opc.h => tcg-target-opc.h.inc}       | 0
- tcg/sparc64/tcg-target-opc.h.inc                           | 1 +
- tcg/tci/tcg-target-opc.h.inc                               | 1 +
- 11 files changed, 4 insertions(+), 3 deletions(-)
- rename tcg/aarch64/{tcg-target.opc.h => tcg-target-opc.h.inc} (100%)
- rename tcg/arm/{tcg-target.opc.h => tcg-target-opc.h.inc} (100%)
- rename tcg/i386/{tcg-target.opc.h => tcg-target-opc.h.inc} (100%)
- rename tcg/loongarch64/{tcg-target.opc.h => tcg-target-opc.h.inc} (100%)
- create mode 100644 tcg/mips/tcg-target-opc.h.inc
- rename tcg/ppc/{tcg-target.opc.h => tcg-target-opc.h.inc} (100%)
- rename tcg/riscv/{tcg-target.opc.h => tcg-target-opc.h.inc} (100%)
- rename tcg/s390x/{tcg-target.opc.h => tcg-target-opc.h.inc} (100%)
- create mode 100644 tcg/sparc64/tcg-target-opc.h.inc
- create mode 100644 tcg/tci/tcg-target-opc.h.inc
+ include/tcg/tcg-opc.h        | 6 ------
+ tcg/tci/tcg-target-opc.h.inc | 5 ++++-
+ 2 files changed, 4 insertions(+), 7 deletions(-)
 
 diff --git a/include/tcg/tcg-opc.h b/include/tcg/tcg-opc.h
-index 546eb49c11..93622f3f6b 100644
+index 93622f3f6b..14aff6e7f9 100644
 --- a/include/tcg/tcg-opc.h
 +++ b/include/tcg/tcg-opc.h
-@@ -301,9 +301,7 @@ DEF(cmpsel_vec, 1, 4, 1, IMPLVEC | IMPL(TCG_TARGET_HAS_cmpsel_vec))
+@@ -303,12 +303,6 @@ DEF(last_generic, 0, 0, 0, TCG_OPF_NOT_PRESENT)
  
- DEF(last_generic, 0, 0, 0, TCG_OPF_NOT_PRESENT)
+ #include "tcg-target-opc.h.inc"
  
--#if TCG_TARGET_MAYBE_vec
--#include "tcg-target.opc.h"
+-#ifdef TCG_TARGET_INTERPRETER
+-/* These opcodes are only for use between the tci generator and interpreter. */
+-DEF(tci_movi, 1, 0, 1, TCG_OPF_NOT_PRESENT)
+-DEF(tci_movl, 1, 0, 1, TCG_OPF_NOT_PRESENT)
 -#endif
-+#include "tcg-target-opc.h.inc"
- 
- #ifdef TCG_TARGET_INTERPRETER
- /* These opcodes are only for use between the tci generator and interpreter. */
-diff --git a/tcg/aarch64/tcg-target.opc.h b/tcg/aarch64/tcg-target-opc.h.inc
-similarity index 100%
-rename from tcg/aarch64/tcg-target.opc.h
-rename to tcg/aarch64/tcg-target-opc.h.inc
-diff --git a/tcg/arm/tcg-target.opc.h b/tcg/arm/tcg-target-opc.h.inc
-similarity index 100%
-rename from tcg/arm/tcg-target.opc.h
-rename to tcg/arm/tcg-target-opc.h.inc
-diff --git a/tcg/i386/tcg-target.opc.h b/tcg/i386/tcg-target-opc.h.inc
-similarity index 100%
-rename from tcg/i386/tcg-target.opc.h
-rename to tcg/i386/tcg-target-opc.h.inc
-diff --git a/tcg/loongarch64/tcg-target.opc.h b/tcg/loongarch64/tcg-target-opc.h.inc
-similarity index 100%
-rename from tcg/loongarch64/tcg-target.opc.h
-rename to tcg/loongarch64/tcg-target-opc.h.inc
-diff --git a/tcg/mips/tcg-target-opc.h.inc b/tcg/mips/tcg-target-opc.h.inc
-new file mode 100644
-index 0000000000..84e777bfe5
---- /dev/null
-+++ b/tcg/mips/tcg-target-opc.h.inc
-@@ -0,0 +1 @@
-+/* No target specific opcodes. */
-diff --git a/tcg/ppc/tcg-target.opc.h b/tcg/ppc/tcg-target-opc.h.inc
-similarity index 100%
-rename from tcg/ppc/tcg-target.opc.h
-rename to tcg/ppc/tcg-target-opc.h.inc
-diff --git a/tcg/riscv/tcg-target.opc.h b/tcg/riscv/tcg-target-opc.h.inc
-similarity index 100%
-rename from tcg/riscv/tcg-target.opc.h
-rename to tcg/riscv/tcg-target-opc.h.inc
-diff --git a/tcg/s390x/tcg-target.opc.h b/tcg/s390x/tcg-target-opc.h.inc
-similarity index 100%
-rename from tcg/s390x/tcg-target.opc.h
-rename to tcg/s390x/tcg-target-opc.h.inc
-diff --git a/tcg/sparc64/tcg-target-opc.h.inc b/tcg/sparc64/tcg-target-opc.h.inc
-new file mode 100644
-index 0000000000..84e777bfe5
---- /dev/null
-+++ b/tcg/sparc64/tcg-target-opc.h.inc
-@@ -0,0 +1 @@
-+/* No target specific opcodes. */
+-
+ #undef DATA64_ARGS
+ #undef IMPL
+ #undef IMPL64
 diff --git a/tcg/tci/tcg-target-opc.h.inc b/tcg/tci/tcg-target-opc.h.inc
-new file mode 100644
-index 0000000000..84e777bfe5
---- /dev/null
+index 84e777bfe5..ecc8c4e55e 100644
+--- a/tcg/tci/tcg-target-opc.h.inc
 +++ b/tcg/tci/tcg-target-opc.h.inc
-@@ -0,0 +1 @@
-+/* No target specific opcodes. */
+@@ -1 +1,4 @@
+-/* No target specific opcodes. */
++/* SPDX-License-Identifier: MIT */
++/* These opcodes for use between the tci generator and interpreter. */
++DEF(tci_movi, 1, 0, 1, TCG_OPF_NOT_PRESENT)
++DEF(tci_movl, 1, 0, 1, TCG_OPF_NOT_PRESENT)
 -- 
 2.43.0
 
