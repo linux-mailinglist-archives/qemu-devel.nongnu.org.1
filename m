@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F23A1495A
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 06:59:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A16A8A1494D
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 06:57:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYfL8-0004df-Tc; Fri, 17 Jan 2025 00:56:18 -0500
+	id 1tYfLB-0004ef-Q4; Fri, 17 Jan 2025 00:56:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tYfL6-0004dF-Ne
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 00:56:16 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1tYfL9-0004dh-F7
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 00:56:19 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tYfL5-0005tY-7R
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 00:56:16 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-21628b3fe7dso31141105ad.3
- for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 21:56:14 -0800 (PST)
+ id 1tYfL7-0005ts-U3
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 00:56:19 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-2166651f752so39880945ad.3
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 21:56:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737093373; x=1737698173; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1737093376; x=1737698176; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=A9MI3wwvWzZPtm9HfZbzVXJ1epUGZtSKbQl6ZaMiUfI=;
- b=WGhfSDwvmWNvcfqAtFM9pCOQbfTdcb1ZuExdVFxzlMmBwKw0InmQ8eO2KNDrJL9naC
- Ty6K+h68M+wUhgRwYCmX4h/ua44MsH+S0u1EnVvDSK1IgzzwGxSS9pozgpDhbD3M9C4o
- kytXUJmqnGtG6qMAYq8qoNWFzK4BLzfcI0qmRSRW/MgmKghBKbpFTfr51QQFMDDq+16s
- 9jakyoqZOKOwgKcDTpG3fQJ6/c/GH7UMmrGcJrBc+ajHeI5sDwbeNJMKhnzv7WnA9cCt
- ubbcQ5YybUMes5M0o5CXHIWevi0ZQUvofd8sLa0u0FRboh4Bh7m8oOG1IzZFcweLttJA
- LU3w==
+ bh=gF93jEnbQURpG8lMWRD7YR9EDFuOs9U0IQbQ7/L5COE=;
+ b=gnewG2Rwdl/ZobCYOCCvCIH9PKV445dpPyjYPy2At3nznuQ375j1tls5dhdgLGhnuR
+ pgfPQqJZiuno7RismsYpqSWQFPl40uopmKc6EEpbk5aOOyKUsUeUf66XovLsY9D9vq96
+ b0ZIfQR7t2/sWnpplKtG8XAPBmjPV101vjIWX5dskRFlxIY4vM4aZwC754JsRnxHIb7i
+ eR/vJcjIUwoOoRXmjDagsyTZCNBMmXI0aMakosSZoYGpqUkV2L5Ybp0YBSFZAfBjNLfA
+ 8uxF6hKygBObWWztfjUFbBHadwVuN4z0U4Am66/tsEaq5RDFmM5vs5CPsteLtlTvOItq
+ rtUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737093373; x=1737698173;
+ d=1e100.net; s=20230601; t=1737093376; x=1737698176;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=A9MI3wwvWzZPtm9HfZbzVXJ1epUGZtSKbQl6ZaMiUfI=;
- b=wUd8W3Wh3hwDprr3sFr761VOYqA3/i3I8oplk9ypg9TBrCzEdes9QSoIdHzb7rRRJx
- 9QOl8xNLnbe4AQ/3VI1VaRhWMhyTDyjcvBnec8OoI3Y8xifdw13bkYU9sLrImT7xb9VD
- qNWEtYqiUYR8guoV7H2PNLA11T98yn1O6LXxCo2Z7mpBzfuK7JyP+QswSlANhRSdeMG0
- dIJkehqQoFvJAktFpRWP/XNFCyhxwjfv4mojAHpGv4gnJQggam9/WTyn5lKchX+9DuEU
- pPk1VrN3QUZE3k9TuTjC0QwyJCGwcIwgBSAMq181kEPvPpS4nEJ4P7C1JxK3N/SEP9Hj
- 2KIQ==
-X-Gm-Message-State: AOJu0Yw1Qf4dPiZP7ZMP2zm4rd5hnqrfwTtwT08skg31brJTuKImQVJ7
- d4sp1ImQ527llwQLT8A1OXBuiuOijnQSQMwWKiE0JFPTfRs4+NUvSRNyRA==
-X-Gm-Gg: ASbGncvHV3SP7fOd0BJ9+9+eLIihdbzRObTFRHmt5r8Ys9/T+cti247klpGqTahg8I5
- vTUCygH7O85u93HK6Uc8a46WcI+cEv7G5ECwHyHAf/4TY8TUkt7wAC9dk3W/Rhq2hEa/lt81zVK
- rYiggrLs098nzT/92Etb7GuKEkfbxP0BIDL353NsIvtBGihvkhThLLKCeBWTi3ozCs/iY2crGAx
- VioAtRe+cMcNpzXriLhQSFoEu6/7mNAIQSFNKIqEQxELXEaFJD3OLJZ1B5VvxSwsvCEBUxNUfHT
- wXO9ILf5igRiQi+zirP68p3071fOAsdbDi283bcTRZXlutF0UNNYrBaUG5Mg
-X-Google-Smtp-Source: AGHT+IHoU5zzIK9SuE1WJs1x21DX6psUM4dzF1b6R6oMkXV04wXOKohwzjDdl+by3Xz31T0S2MPYrA==
-X-Received: by 2002:a17:903:2d2:b0:216:2804:a241 with SMTP id
- d9443c01a7336-21c355bc154mr22134645ad.37.1737093373448; 
- Thu, 16 Jan 2025 21:56:13 -0800 (PST)
+ bh=gF93jEnbQURpG8lMWRD7YR9EDFuOs9U0IQbQ7/L5COE=;
+ b=nk9IZlc3UAzGXaF7gBELOKuispcUnojjxablrHYF0dyH6xGDub65zq8MRyy8mfwB3/
+ 2u9yQNi5ltODyEb4lgAcnigT4aP16GWF9zPIWTheOlc3lyID7U0ounfSV0S0mCOjvBmE
+ rrG9DS6n5IYznEYGt4TC4zN6PzjhxOyhO0YR6MJ9VXfDFpjyXPulMt4k02TQy2GoJ8ok
+ gyr/+8rmYyGLcQViOW8063GttLa4RK2u1hVwRUV7VUVgV/BecgBKiAqgTs233hj6FTnZ
+ YyR0GlcnDDbZXRfJa8ECkrtJlv6MWeewF7W7T4v2V7YcwEkw6Eg5wbli1u4n1ml7WMWZ
+ 9hww==
+X-Gm-Message-State: AOJu0YyQXum0f71P/UZBvB9cTYB/OCcM6lAGErEtvRCcl0Y+sHVbtETS
+ QXcbeD2VRmr72uKj3Z71/G4HJsWuQlsCAlUOcmtidqJzQTonHmbOJOf9ug==
+X-Gm-Gg: ASbGnctjV+l1u5ywXxjCTwfbhdTNHq9JuCvoyaLwWMNSIdZsYAQbCRTBRD6Bk1VE8q7
+ DcpuxERjP9jj6g940S2DVeXVBhI02FqVMfg6N8Kjr2A1OLRASzvsdy7+QNj5KcU1Q2gSTJUcW1/
+ tr47G09u3EE6hfI9PoyrJEWGbNfUufvhZubwdor6GZ1UPhh4K9GKQ0W70y2QKKE1MjbLblrc6O1
+ l6CW0iS63vd1N4gjyD5qfhj0LxxZkuQAKuuSr8wLnPFt5e85M8bXLqllQQ+/Tm2acZiltbe5P0y
+ A9HPkXJMy7qzfNnQJ0ElFLO1RuaAM5A7B1rbp18PXPc3NcTzxTUDEvDwiy/J
+X-Google-Smtp-Source: AGHT+IGypwjVGJe+n19FgiLWfdHpgeysQCmfOd1HC85lQA2pRnCkvJW5Ie8fZYGh8Qh9/pVGbZgb9g==
+X-Received: by 2002:a17:902:c94f:b0:216:25a2:2ebe with SMTP id
+ d9443c01a7336-21c35542151mr20772815ad.19.1737093376430; 
+ Thu, 16 Jan 2025 21:56:16 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21c2d3d6fbbsm8563595ad.168.2025.01.16.21.56.10
+ d9443c01a7336-21c2d3d6fbbsm8563595ad.168.2025.01.16.21.56.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Jan 2025 21:56:12 -0800 (PST)
+ Thu, 16 Jan 2025 21:56:15 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Yanfeng Liu <yfliu2008@qq.com>,
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 03/50] riscv/gdbstub: add V bit to priv reg
-Date: Fri, 17 Jan 2025 15:55:05 +1000
-Message-ID: <20250117055552.108376-4-alistair.francis@wdc.com>
+Subject: [PULL 04/50] target/riscv: add shcounterenw
+Date: Fri, 17 Jan 2025 15:55:06 +1000
+Message-ID: <20250117055552.108376-5-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250117055552.108376-1-alistair.francis@wdc.com>
 References: <20250117055552.108376-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -101,64 +101,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yanfeng Liu <yfliu2008@qq.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-This adds virtualization mode (V bit) as bit(2) of register `priv`
-per RiscV debug spec v1.0.0-rc4. Checked with gdb-multiarch v12.1.
+shcounterenw is defined in RVA22 as:
 
-Note that GDB may display `INVALID` tag for `priv` reg when V bit
-is set, this doesn't affect actual access to the bit though.
+"For any hpmcounter that is not read-only zero, the corresponding bit in
+hcounteren must be writable."
 
-Signed-off-by: Yanfeng Liu <yfliu2008@qq.com>
+This is always true in TCG so let's claim support for it.
+
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <tencent_1993B55C24DE7979BF34B200F78287002907@qq.com>
+Message-ID: <20241218114026.1652352-4-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/gdbstub.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ target/riscv/cpu.c                |   1 +
+ tests/data/acpi/riscv64/virt/RHCT | Bin 332 -> 346 bytes
+ 2 files changed, 1 insertion(+)
 
-diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
-index c07df972f1..18e88f416a 100644
---- a/target/riscv/gdbstub.c
-+++ b/target/riscv/gdbstub.c
-@@ -213,7 +213,10 @@ static int riscv_gdb_get_virtual(CPUState *cs, GByteArray *buf, int n)
-         RISCVCPU *cpu = RISCV_CPU(cs);
-         CPURISCVState *env = &cpu->env;
- 
--        return gdb_get_regl(buf, env->priv);
-+        /* Per RiscV debug spec v1.0.0 rc4 */
-+        target_ulong vbit = (env->virt_enabled) ? BIT(2) : 0;
-+
-+        return gdb_get_regl(buf, env->priv | vbit);
- #endif
-     }
-     return 0;
-@@ -226,10 +229,22 @@ static int riscv_gdb_set_virtual(CPUState *cs, uint8_t *mem_buf, int n)
-         RISCVCPU *cpu = RISCV_CPU(cs);
-         CPURISCVState *env = &cpu->env;
- 
--        env->priv = ldtul_p(mem_buf) & 0x3;
--        if (env->priv == PRV_RESERVED) {
--            env->priv = PRV_S;
-+        target_ulong new_priv = ldtul_p(mem_buf) & 0x3;
-+        bool new_virt = 0;
-+
-+        if (new_priv == PRV_RESERVED) {
-+            new_priv = PRV_S;
-+        }
-+
-+        if (new_priv != PRV_M) {
-+            new_virt = (ldtul_p(mem_buf) & BIT(2)) >> 2;
-         }
-+
-+        if (riscv_has_ext(env, RVH) && new_virt != env->virt_enabled) {
-+            riscv_cpu_swap_hypervisor_regs(env);
-+        }
-+
-+        riscv_cpu_set_mode(env, new_priv, new_virt);
- #endif
-         return sizeof(target_ulong);
-     }
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index b8d5120106..07bcf96e86 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -183,6 +183,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zvkt, PRIV_VERSION_1_12_0, ext_zvkt),
+     ISA_EXT_DATA_ENTRY(zhinx, PRIV_VERSION_1_12_0, ext_zhinx),
+     ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
++    ISA_EXT_DATA_ENTRY(shcounterenw, PRIV_VERSION_1_12_0, has_priv_1_12),
+     ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
+     ISA_EXT_DATA_ENTRY(smcntrpmf, PRIV_VERSION_1_12_0, ext_smcntrpmf),
+     ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
+diff --git a/tests/data/acpi/riscv64/virt/RHCT b/tests/data/acpi/riscv64/virt/RHCT
+index 4f231735ab..460808d017 100644
+Binary files a/tests/data/acpi/riscv64/virt/RHCT and b/tests/data/acpi/riscv64/virt/RHCT differ
 -- 
 2.47.1
 
