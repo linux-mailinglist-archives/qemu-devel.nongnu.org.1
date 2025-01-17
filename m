@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C076AA156AE
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:31:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0503FA156A9
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:31:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYr5i-0005Cp-Ii; Fri, 17 Jan 2025 13:29:10 -0500
+	id 1tYr5i-0005D6-RY; Fri, 17 Jan 2025 13:29:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr5a-0004th-MP
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:29:03 -0500
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1tYr5f-00050s-2G
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:29:07 -0500
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr5Z-0000Do-3u
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:29:02 -0500
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-2ef6c56032eso3302762a91.2
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:28:59 -0800 (PST)
+ id 1tYr5Z-0000EF-N6
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:29:06 -0500
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-2ef72924e53so4221098a91.3
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:29:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737138539; x=1737743339; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737138540; x=1737743340; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oeoxNnJvMgFI3q4piiiduYU8RMXHoVGq3FrMzVqgkyQ=;
- b=xegajlZ4Y7RdAIVY7r3vpR1gj167f/fztGcHm+eiqQZKPqvmC30NB8p92eq05+auCH
- qkVjSUOlUNFvebuehNp/wlQKXZ6KAykBMWW1H68dD0SBvHWupBME6J2mAhclJ8PBk8WO
- Y6sstZNzugb5q45qiNLh79TmCibKjz/OZEPNogg61fMwFAP1P0TFLYGluFasz3JlpDMf
- RSw9E2feIxJT1eovjyeUUlR3hsZ4CTqFqBpmPyfvx4gjWQjudslXDZtUPjNGF8ViPdKU
- +j8b+3mYW+tH6zrz0vRBewGCdm7n3ceBIKpPsDp3OW6sLuyWBKWSz2aJmcaGP1O0XVe4
- KUbw==
+ bh=q6H6mZe5i1rQYMAvgy3QE9HZBzXOhIJyN9wM3xSG7jg=;
+ b=YDEMQZv5gGtTy3LLnfiiC0eWiuNMBgM0a4R9/v2uPD+0XeDP1xsTA/AyjejOdfVVEq
+ O8e7tr+8KKKlU+6aeuX6LMg0nkmbJUBAu+cl1Mu9bUC5v5OXq/Rvh8skG+C0cinmHSss
+ jK4f8PH49RSnQxdPQTloI56ahzlOwhkEq3zc8PkxP8OeSPLhJaeV3MTTskGM4+3NQR4F
+ oWPFY8Usn5/FYfA1VpV6h1Thb19q83SZ/xqSKPxKfDVm1D46KaLfW3PCKmTh60UOv6Uv
+ aLcxrUNxQsqURAGxOg27wJRFx9m5+DlbMXU8VoGVIHfG4TM9RxmSrNWGUNE6VE2f+VUn
+ ZfuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737138539; x=1737743339;
+ d=1e100.net; s=20230601; t=1737138540; x=1737743340;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oeoxNnJvMgFI3q4piiiduYU8RMXHoVGq3FrMzVqgkyQ=;
- b=bkgtnsCVNqFKrzgoQCyHDyLJhMI9mcSQsVBV647hvGeGdUavJGuc2KkbxFvNR9gX1q
- 4oukd7P6evI6ZLriZB7oRfu8mXmy0OK9yuuIgpUdXNSDiV7L/P31qKNWKCZHOSWHVQmS
- c6RVJFY6kUEmoDeN4JvfH9bWJ623+NlcSJ5hLJLCY2eLATQLJfg8zKmT6SRq7+KF7fCZ
- V1qlV1DCFOQd8klH6pFUXzcTPi5cWKX2Ud7jvPU+oAr/h0VCMsxzwcO7OPrZHVmHztnz
- ljwenxiF5nX8dTSIue78vn/ZehPXRDcYMw6OkWfGKj87f7c90VSJ2Ru/B7cuxzd/t/T0
- L4oA==
-X-Gm-Message-State: AOJu0YxGCtZqLh7Rzn5Ki5p15xwNIutWA/G6x8b0yZPMzgwW5kGJZTsl
- EQs2Hdxhvo7IFaeHsyG/hP5lOTQ9ZhP0seVPsyLdxqOFkWKjup8AB56n4e7y8aHphKY0rO++S/0
- y
-X-Gm-Gg: ASbGncvNcvloO5hCo7yhJquJyD/F5r0XvP/BcRuM47pIrY8RC0Zi9V6FehoooROwNn8
- NnV5UYm5HTv6GDqJfRRHUBgetaDsKgGwj0FOMDVM4lmpbKrcGgiZRLpwO/OoZx9h0xFYPSZTlKA
- ceHrIcig3+YD0isEu6yiTBPBiIunZgk2I49gHjvkzsh1PKW8GEIHoP4YZDbZgJtvYG1/AWMGcTn
- vtjQF1QC4tm7rFzjc2QPLp98/gB8YGJP7Bj799kux8eAcojq+EisJRlZk1qW+45W+X/REP2IbWQ
- IQ0ttDov3yxS4ys=
-X-Google-Smtp-Source: AGHT+IETpzgYZ7t2x1r8uYJ1KJkCWCVSz7Of5KNyF25cp4/BFKoWdbYupKw5bV6jmnNWSsIDvXxoeg==
-X-Received: by 2002:a17:90b:1f8e:b0:2ef:114d:7bf8 with SMTP id
- 98e67ed59e1d1-2f782c4ff33mr4792978a91.6.1737138539086; 
- Fri, 17 Jan 2025 10:28:59 -0800 (PST)
+ bh=q6H6mZe5i1rQYMAvgy3QE9HZBzXOhIJyN9wM3xSG7jg=;
+ b=AvFFKs1FnRYiso+240t5Wiayql/rxZEhhrzFTGzY5HFO8Na5sDaiV9WwSBkfuyE2iz
+ nOhHa8GK7j8VQlQrjey9IYR0SaB6x8wiJf4NCAfdMj8bpf2+/yOh6momu/X+KW75rSvD
+ kLTdlRqlUltjSkxhMbGOSpmrV0KGDcn7gTsLuduZz6liN7GDbI+L4oD3tyFDYKznPkWO
+ HLlMVOHoi8qSiwfaKtJCXBlz/3a0C0kFeJTYmktBns4pfPICPG5HkAUDipKlOFNrl2AG
+ lKitRA+65s2oUvlYOKQ1fC6rLfa1dNvuKzFItHWAq+gj6cZY6jrUTxJ1xrbboI5oOHTX
+ 0fcg==
+X-Gm-Message-State: AOJu0YyevKsS+yDjSr76yJc3lQ4fvLvXVapn1qo3ItALPlSw33pMcYeU
+ Ya1tScYTsPDEQmQh1o1FYIrMp+PePp2goh3cEGrWWXRNrAhxR8luH47wq+0z4HNTmntQ7uElpzD
+ A
+X-Gm-Gg: ASbGncselP0h8o+CiNizbMxZmXt1agzOKpTZsW+s1yr3ZDgHbb9+FX+fPonnArX5fii
+ OZ9eNSvFfbUWhNEek4rG9MhHGb4tl0MfEruTv3zRIBRFXb+m9eV30zXlL1PjGHHXn/MEeGJXR+V
+ 06dSGyy8vDpPI7QxSBn3Qm0BtXXCMvNYh6y+5poxKGhfEk2HDLQW6cLD1lg8q7XPceYKqSMtm1p
+ GmtDc7O/Bo9i3U1tsC7x9+I9i47vtBrOQsHNjbFrpT+VIyI8NEvIFFVYHHc9CCZtgUZG9URvLkg
+ s2gofl+lZrug4Tg=
+X-Google-Smtp-Source: AGHT+IE+QKgKBcs30s2J1UsvnC4KUFxfvsYKyhcItM3ukOkn3N/1323dwh/iea8Dcys45uzXUKmMaQ==
+X-Received: by 2002:a17:90b:5211:b0:2ee:9902:18b4 with SMTP id
+ 98e67ed59e1d1-2f782d4ef70mr5129078a91.27.1737138540376; 
+ Fri, 17 Jan 2025 10:29:00 -0800 (PST)
 Received: from stoup.. (174-21-71-127.tukw.qwest.net. [174.21.71.127])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f77629bf96sm2614105a91.36.2025.01.17.10.28.54
+ 98e67ed59e1d1-2f77629bf96sm2614105a91.36.2025.01.17.10.28.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 10:28:55 -0800 (PST)
+ Fri, 17 Jan 2025 10:28:59 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 46/68] tcg/mips: Expand bswap unconditionally
-Date: Fri, 17 Jan 2025 10:24:34 -0800
-Message-ID: <20250117182456.2077110-47-richard.henderson@linaro.org>
+Subject: [PULL 47/68] tcg/i386: Handle all 8-bit extensions for i686
+Date: Fri, 17 Jan 2025 10:24:35 -0800
+Message-ID: <20250117182456.2077110-48-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250117182456.2077110-1-richard.henderson@linaro.org>
 References: <20250117182456.2077110-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,48 +98,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We always provide bswap subroutines, whether they are optimized
-using mips32r2 when available or not.
+When we generalize {s}extract_i32, we'll lose the
+specific register constraints on ext8u and ext8s.
+It's just as easy to emit a couple of insns instead.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/mips/tcg-target-has.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tcg/i386/tcg-target.c.inc | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/tcg/mips/tcg-target-has.h b/tcg/mips/tcg-target-has.h
-index 5dbc63cef6..d3d874ffd1 100644
---- a/tcg/mips/tcg-target-has.h
-+++ b/tcg/mips/tcg-target-has.h
-@@ -51,6 +51,7 @@ extern bool use_mips32r2_instructions;
- #define TCG_TARGET_HAS_muls2_i32        (!use_mips32r6_instructions)
- #define TCG_TARGET_HAS_muluh_i32        1
- #define TCG_TARGET_HAS_mulsh_i32        1
-+#define TCG_TARGET_HAS_bswap16_i32      1
- #define TCG_TARGET_HAS_bswap32_i32      1
- #define TCG_TARGET_HAS_negsetcond_i32   0
+diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+index 8d1057cdb3..ed064c38d4 100644
+--- a/tcg/i386/tcg-target.c.inc
++++ b/tcg/i386/tcg-target.c.inc
+@@ -1329,16 +1329,31 @@ static inline void tcg_out_rolw_8(TCGContext *s, int reg)
  
-@@ -78,7 +79,6 @@ extern bool use_mips32r2_instructions;
- #endif
+ static void tcg_out_ext8u(TCGContext *s, TCGReg dest, TCGReg src)
+ {
+-    /* movzbl */
+-    tcg_debug_assert(src < 4 || TCG_TARGET_REG_BITS == 64);
++    if (TCG_TARGET_REG_BITS == 32 && src >= 4) {
++        tcg_out_mov(s, TCG_TYPE_I32, dest, src);
++        if (dest >= 4) {
++            tcg_out_modrm(s, OPC_ARITH_EvIz, ARITH_AND, dest);
++            tcg_out32(s, 0xff);
++            return;
++        }
++        src = dest;
++    }
+     tcg_out_modrm(s, OPC_MOVZBL + P_REXB_RM, dest, src);
+ }
  
- /* optional instructions detected at runtime */
--#define TCG_TARGET_HAS_bswap16_i32      use_mips32r2_instructions
- #define TCG_TARGET_HAS_deposit_i32      use_mips32r2_instructions
- #define TCG_TARGET_HAS_extract_i32      use_mips32r2_instructions
- #define TCG_TARGET_HAS_sextract_i32     0
-@@ -92,9 +92,9 @@ extern bool use_mips32r2_instructions;
- #define TCG_TARGET_HAS_qemu_st8_i32     0
+ static void tcg_out_ext8s(TCGContext *s, TCGType type, TCGReg dest, TCGReg src)
+ {
+     int rexw = type == TCG_TYPE_I32 ? 0 : P_REXW;
+-    /* movsbl */
+-    tcg_debug_assert(src < 4 || TCG_TARGET_REG_BITS == 64);
++
++    if (TCG_TARGET_REG_BITS == 32 && src >= 4) {
++        tcg_out_mov(s, TCG_TYPE_I32, dest, src);
++        if (dest >= 4) {
++            tcg_out_shifti(s, SHIFT_SHL, dest, 24);
++            tcg_out_shifti(s, SHIFT_SAR, dest, 24);
++            return;
++        }
++        src = dest;
++    }
+     tcg_out_modrm(s, OPC_MOVSBL + P_REXB_RM + rexw, dest, src);
+ }
  
- #if TCG_TARGET_REG_BITS == 64
--#define TCG_TARGET_HAS_bswap16_i64      use_mips32r2_instructions
--#define TCG_TARGET_HAS_bswap32_i64      use_mips32r2_instructions
--#define TCG_TARGET_HAS_bswap64_i64      use_mips32r2_instructions
-+#define TCG_TARGET_HAS_bswap16_i64      1
-+#define TCG_TARGET_HAS_bswap32_i64      1
-+#define TCG_TARGET_HAS_bswap64_i64      1
- #define TCG_TARGET_HAS_deposit_i64      use_mips32r2_instructions
- #define TCG_TARGET_HAS_extract_i64      use_mips32r2_instructions
- #define TCG_TARGET_HAS_sextract_i64     0
 -- 
 2.43.0
 
