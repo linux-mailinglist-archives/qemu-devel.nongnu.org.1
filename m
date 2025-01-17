@@ -2,100 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CBE6A14701
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 01:17:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B962A14703
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 01:26:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYa23-0002AZ-2e; Thu, 16 Jan 2025 19:16:15 -0500
+	id 1tYaAE-0007sJ-LF; Thu, 16 Jan 2025 19:24:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tYa1t-00029J-A7
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 19:16:05 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <itaru.kitayama@linux.dev>)
+ id 1tYaAB-0007s1-A1
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 19:24:40 -0500
+Received: from out-175.mta1.migadu.com ([95.215.58.175])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tYa1r-0008Lo-DW
- for qemu-devel@nongnu.org; Thu, 16 Jan 2025 19:16:05 -0500
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50GNJ2Gb024549;
- Fri, 17 Jan 2025 00:15:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=tsiq3P
- pA+x6eAbd49Fo7iQWURP0I24ow4GmDFFNiP4k=; b=PWSWnUq+ItoxzwHOKWWN4w
- h0vEWu3zgDnyv63FV7HCuCP6CSFscUugtV8Rne3IiftY9RGiEX7xTj9jDgJMCUsd
- kxZ3vdKiCvWg/vqC9R7ijRbXMc5SZpkPtiE13aPU0moqzS3XaMTeoobZBmlmg4qO
- VThlUDT0SAzLoZNXuhoJJ36DlHVOinNg4a1kMNGj39ZaTeazpGhzAgZF5kurgnw3
- iq9cApmUVpUVyc13aKfTwowPMFLz95vwYXr7wsZofO+MTmoTmLFD6kzFStnDgGqo
- PpfRDPbJfExQcZkJaDprodI/a6hB5fC4KTHhdXCfeTLOoitEEt6fBP605tLOULdw
- ==
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4473k5akw8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Jan 2025 00:15:52 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50GLXBRC016994;
- Fri, 17 Jan 2025 00:15:52 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4444fkgat2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Jan 2025 00:15:52 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 50H0FoH714221600
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 17 Jan 2025 00:15:50 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EE5AC20040;
- Fri, 17 Jan 2025 00:15:49 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7C6B32004B;
- Fri, 17 Jan 2025 00:15:49 +0000 (GMT)
-Received: from heavy.ibm.com (unknown [9.171.62.46])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 17 Jan 2025 00:15:49 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Warner Losh <imp@bsdimp.com>, Riku Voipio <riku.voipio@iki.fi>,
- Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Kyle Evans <kevans@freebsd.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v6 8/8] tests/tcg: Add late gdbstub attach test
-Date: Fri, 17 Jan 2025 01:11:33 +0100
-Message-ID: <20250117001542.8290-9-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250117001542.8290-1-iii@linux.ibm.com>
-References: <20250117001542.8290-1-iii@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 4dBgSmg8HS3HgW1w-GUXho0Ygo3jBP3h
-X-Proofpoint-ORIG-GUID: 4dBgSmg8HS3HgW1w-GUXho0Ygo3jBP3h
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-16_10,2025-01-16_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 spamscore=0
- adultscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
- lowpriorityscore=0 bulkscore=0 mlxlogscore=999 impostorscore=0
- clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501160178
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=-1.797, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <itaru.kitayama@linux.dev>)
+ id 1tYaA8-0000rG-KP
+ for qemu-devel@nongnu.org; Thu, 16 Jan 2025 19:24:39 -0500
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+ t=1737073473;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LCKFR+/+9ig7WOQZWf5TdCH6BD1FyjSsB0Pw5mMJOIg=;
+ b=nyJ2kJ3uEjiYPzpLljaQb32xWcZvaoFlQ+xrfyxVOxhmeC+h+z9oUWbo384/oUX8Trb8qd
+ 3eafSTnX5EpQc6YXITCqI0l0gBbJgUJcZC5GH7JxEuMVPfOlXrWgWG3mGAk3x8/Pvej3Iz
+ ypxh/Uul5eS7yFDnH9u9YA+bqgsX78o=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
+Subject: Re: CXL emulation on aarch64
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
+ include these headers.
+From: Itaru Kitayama <itaru.kitayama@linux.dev>
+In-Reply-To: <20250116105833.000056da@huawei.com>
+Date: Fri, 17 Jan 2025 09:24:15 +0900
+Cc: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>,
+ qemu-devel@nongnu.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C7740553-EA65-4576-9FAB-13780CA3D810@linux.dev>
+References: <0C019F50-9020-42ED-B051-998F03BFB709@linux.dev>
+ <483e8037-3c72-4560-b4b8-2437d37ca8c4@fujitsu.com>
+ <20250110123128.00004a5b@huawei.com>
+ <09D52CDC-44E5-48C4-8D32-E4DD0964F9AF@linux.dev>
+ <20250114102626.00000c53@huawei.com>
+ <88E9D774-A760-45F7-A173-24A07BB55733@linux.dev>
+ <20250116105833.000056da@huawei.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+X-Migadu-Flow: FLOW_OUT
+Received-SPF: pass client-ip=95.215.58.175;
+ envelope-from=itaru.kitayama@linux.dev; helo=out-175.mta1.migadu.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -112,164 +75,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a small test to prevent regressions.
-Make sure that host_interrupt_signal is not visible to the guest.
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/guest-debug/run-test.py              | 15 ++++++--
- tests/tcg/multiarch/Makefile.target        |  9 ++++-
- tests/tcg/multiarch/gdbstub/late-attach.py | 28 +++++++++++++++
- tests/tcg/multiarch/late-attach.c          | 41 ++++++++++++++++++++++
- 4 files changed, 90 insertions(+), 3 deletions(-)
- create mode 100644 tests/tcg/multiarch/gdbstub/late-attach.py
- create mode 100644 tests/tcg/multiarch/late-attach.c
 
-diff --git a/tests/guest-debug/run-test.py b/tests/guest-debug/run-test.py
-index 5a091db8be9..75e9c92e036 100755
---- a/tests/guest-debug/run-test.py
-+++ b/tests/guest-debug/run-test.py
-@@ -36,6 +36,8 @@ def get_args():
-     parser.add_argument("--gdb-args", help="Additional gdb arguments")
-     parser.add_argument("--output", help="A file to redirect output to")
-     parser.add_argument("--stderr", help="A file to redirect stderr to")
-+    parser.add_argument("--no-suspend", action="store_true",
-+                        help="Ask the binary to not wait for GDB connection")
- 
-     return parser.parse_args()
- 
-@@ -73,10 +75,19 @@ def log(output, msg):
- 
-     # Launch QEMU with binary
-     if "system" in args.qemu:
-+        if args.no_suspend:
-+            suspend = ''
-+        else:
-+            suspend = ' -S'
-         cmd = f'{args.qemu} {args.qargs} {args.binary}' \
--            f' -S -gdb unix:path={socket_name},server=on'
-+            f'{suspend} -gdb unix:path={socket_name},server=on'
-     else:
--        cmd = f'{args.qemu} {args.qargs} -g {socket_name} {args.binary}'
-+        if args.no_suspend:
-+            suspend = ',suspend=n'
-+        else:
-+            suspend = ''
-+        cmd = f'{args.qemu} {args.qargs} -g {socket_name}{suspend}' \
-+            f' {args.binary}'
- 
-     log(output, "QEMU CMD: %s" % (cmd))
-     inferior = subprocess.Popen(shlex.split(cmd))
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index 18d3cf4ae00..688a6be203c 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -130,6 +130,13 @@ run-gdbstub-follow-fork-mode-parent: follow-fork-mode
- 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/follow-fork-mode-parent.py, \
- 	following parents on fork)
- 
-+run-gdbstub-late-attach: late-attach
-+	$(call run-test, $@, env LATE_ATTACH_PY=1 $(GDB_SCRIPT) \
-+		--gdb $(GDB) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" --no-suspend \
-+		--bin $< --test $(MULTIARCH_SRC)/gdbstub/late-attach.py, \
-+	attaching to a running process)
-+
- else
- run-gdbstub-%:
- 	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst -%,,$(TARGET_NAME)) support")
-@@ -139,7 +146,7 @@ EXTRA_RUNS += run-gdbstub-sha1 run-gdbstub-qxfer-auxv-read \
- 	      run-gdbstub-registers run-gdbstub-prot-none \
- 	      run-gdbstub-catch-syscalls run-gdbstub-follow-fork-mode-child \
- 	      run-gdbstub-follow-fork-mode-parent \
--	      run-gdbstub-qxfer-siginfo-read
-+	      run-gdbstub-qxfer-siginfo-read run-gdbstub-late-attach
- 
- # ARM Compatible Semi Hosting Tests
- #
-diff --git a/tests/tcg/multiarch/gdbstub/late-attach.py b/tests/tcg/multiarch/gdbstub/late-attach.py
-new file mode 100644
-index 00000000000..1d40efb5ec8
---- /dev/null
-+++ b/tests/tcg/multiarch/gdbstub/late-attach.py
-@@ -0,0 +1,28 @@
-+"""Test attaching GDB to a running process.
-+
-+SPDX-License-Identifier: GPL-2.0-or-later
-+"""
-+from test_gdbstub import main, report
-+
-+
-+def run_test():
-+    """Run through the tests one by one"""
-+    try:
-+        phase = gdb.parse_and_eval("phase").string()
-+    except gdb.error:
-+        # Assume the guest did not reach main().
-+        phase = "start"
-+
-+    if phase == "start":
-+        gdb.execute("break sigwait")
-+        gdb.execute("continue")
-+        phase = gdb.parse_and_eval("phase").string()
-+    report(phase == "sigwait", "{} == \"sigwait\"".format(phase))
-+
-+    gdb.execute("signal SIGUSR1")
-+
-+    exitcode = int(gdb.parse_and_eval("$_exitcode"))
-+    report(exitcode == 0, "{} == 0".format(exitcode))
-+
-+
-+main(run_test)
-diff --git a/tests/tcg/multiarch/late-attach.c b/tests/tcg/multiarch/late-attach.c
-new file mode 100644
-index 00000000000..20a364034b5
---- /dev/null
-+++ b/tests/tcg/multiarch/late-attach.c
-@@ -0,0 +1,41 @@
-+/*
-+ * Test attaching GDB to a running process.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
-+#include <signal.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+
-+static const char *phase = "start";
-+
-+int main(void)
-+{
-+    sigset_t set;
-+    int sig;
-+
-+    assert(sigfillset(&set) == 0);
-+    assert(sigprocmask(SIG_BLOCK, &set, NULL) == 0);
-+
-+    /* Let GDB know it can send SIGUSR1. */
-+    phase = "sigwait";
-+    if (getenv("LATE_ATTACH_PY")) {
-+        assert(sigwait(&set, &sig) == 0);
-+        if (sig != SIGUSR1) {
-+            fprintf(stderr, "Unexpected signal %d\n", sig);
-+            return EXIT_FAILURE;
-+        }
-+    }
-+
-+    /* Check that the guest does not see host_interrupt_signal. */
-+    assert(sigpending(&set) == 0);
-+    for (sig = 1; sig < NSIG; sig++) {
-+        if (sigismember(&set, sig)) {
-+            fprintf(stderr, "Unexpected signal %d\n", sig);
-+            return EXIT_FAILURE;
-+        }
-+    }
-+
-+    return EXIT_SUCCESS;
-+}
--- 
-2.47.1
+> On Jan 16, 2025, at 19:58, Jonathan Cameron =
+<Jonathan.Cameron@huawei.com> wrote:
+>=20
+> On Thu, 16 Jan 2025 15:04:53 +0900
+> Itaru Kitayama <itaru.kitayama@linux.dev> wrote:
+>=20
+>> Hi Jonathan,
+>>=20
+>>> On Jan 14, 2025, at 19:26, Jonathan Cameron =
+<Jonathan.Cameron@huawei.com> wrote:
+>>>=20
+>>> On Tue, 14 Jan 2025 12:03:03 +0900
+>>> Itaru Kitayama <itaru.kitayama@linux.dev> wrote:
+>>>=20
+>>>> Hi Jonathan,=20
+>>>>=20
+>>>>> On Jan 10, 2025, at 21:31, Jonathan Cameron =
+<Jonathan.Cameron@huawei.com> wrote:
+>>>>>=20
+>>>>> On Fri, 10 Jan 2025 09:20:54 +0000
+>>>>> "Zhijian Li (Fujitsu)" via <qemu-devel@nongnu.org> wrote:
+>>>>>=20
+>>>>>> On 10/01/2025 13:29, Itaru Kitayama wrote:   =20
+>>>>>>> Hi,
+>>>>>>> Is anybody working on the CXL emulation on aarch64?     =20
+>>>>>>=20
+>>>>>> I'm not currently working on the CXL emulation on aarch64.
+>>>>>>=20
+>>>>>> However, IIRC the CXL maintainer's tree should work.
+>>>>>> https://gitlab.com/jic23/qemu/   =20
+>>>>>=20
+>>>>> Pick up latest branch from there. I'm prepping a rebased version
+>>>>> with some new stuff but might take a few more days.   =20
+>>>>=20
+>>>> Thanks for sharing your work with us.  Your master and =
+cxl-2024-11-27 branches give:
+>>>>=20
+>>>> $ qemu-system-aarch64: -accel tcg,cxl=3Don: Property =
+'tcg-accel.cxl' not found =20
+>>>=20
+>>> cxl is a machine property not a accel one. So needs to be after virt
+>>> There are tests in the tree for bios tables. Copy the command line =
+from those.
+>>>=20
+>>>>=20
+>>>> My commands are below:
+>>>> $HOME/projects/qemu/build/qemu-system-aarch64 \
+>>>>       -M virt,virtualization=3Don,gic-version=3D3 \
+>>>>       -M acpi=3Doff -cpu max,sme=3Doff -m 8G -smp 4 \
+>>>>       -accel tcg,cxl=3Don \
+>>>>       -nographic \
+>>>>       -bios $HOME/cca-v4/out/bin/flash.bin \
+>>>>       -kernel Image-cca \
+>>>>       -drive =
+format=3Draw,if=3Dnone,file=3D$HOME/cca-v4/out-or/images/rootfs.ext2,id=3D=
+hd0 \
+>>>>       -device virtio-blk-pci,drive=3Dhd0 \
+>>>>       -append root=3D/dev/vda \
+>>>>       -nodefaults \
+>>>>       --serial tcp:localhost:54320 \
+>>>>        -serial tcp:localhost:54321 \
+>>>>        -append "root=3D/dev/vda earlycon console=3Dhvc0" \
+>>>>        -device virtio-net-pci,netdev=3Dnet0 \
+>>>>        -netdev user,id=3Dnet0 \
+>>>>        -device virtio-9p-device,fsdev=3Dshr0,mount_tag=3Dshr0 \
+>>>>        -fsdev local,security_model=3Dnone,path=3D../../,id=3Dshr0
+>>>>=20
+>>>> Yes, I=E2=80=99m using Linaro=E2=80=99s CCA capable OP-TEE builds =
+above. =20
+>>>=20
+>>> I'm a little curious why optee is relevant for this but shouldn't =
+matter as long
+>>> as an appropriate EDK2 is loaded.
+>>>=20
+>>=20
+>> I picked up your tree=E2=80=99s =E2=80=9Cmaster=E2=80=9D and =
+=E2=80=9Ccxl-next=E2=80=9D as of today, and only the latter at least =
+booted.
+>> The former gives:
+>>=20
+>> qemu-system-aarch64: Property 'virt-9.2-machine.cxl' not found
+>>=20
+>> Should I stick with the cxl-next? My concern is that the base QEMU =
+version is a bit old
+>> 7.0.50.
+>=20
+> Always use the latest dated branch on that tree.  I release whenever =
+there
+> is something new to carry or a major rebase needed.
+>=20
+> cxl-<date> is the right branch to use. Hope that helps.
+>=20
+
+Okay the cxl-2024-11-27 gives this:
+
+qemu-system-aarch64: CFMWS does not fit under PA limit
+
+Below is my QEMU options I use currently:
+
+/home/itaru/projects/qemu/build/qemu-system-aarch64 \
+         -M =
+virt,virtualization=3Don,pflash0=3Drom,pflash1=3Defivars,gic-version=3D3,v=
+irtualization=3Don,cxl=3Don -m 8192 \
+         -cpu cortex-a53 \
+         -smp 2 \
+         -accel tcg \
+         -nographic \
+         -display none \
+         -kernel ${HOME}/projects/linux/arch/arm64/boot/Image \
+         -append "root=3D/dev/vda rw earlycon acpi=3Dforce" \
+         -drive format=3Draw,if=3Dnone,file=3D${HOME}/ubuntu24.img,id=3Dhd=
+0 \
+         -device virtio-blk-pci,drive=3Dhd0 \
+         -nodefaults \
+         -serial mon:stdio \
+         -device virtio-net-pci,netdev=3Dnet0 \
+         -netdev user,id=3Dnet0,hostfwd=3Dtcp::8024-:22 \
+         -blockdev =
+node-name=3Drom,driver=3Dfile,filename=3Dedk2-aarch64-code.fd,read-only=3D=
+true \
+         -blockdev =
+node-name=3Defivars,driver=3Dfile,filename=3Dqemu-arm64-efivars.test \
+         -object =
+memory-backend-file,id=3Dcxl-mem1,share=3Don,mem-path=3D/tmp/cxltest.raw,s=
+ize=3D256M \
+         -object =
+memory-backend-file,id=3Dcxl-lsa1,share=3Don,mem-path=3D/tmp/lsa.raw,size=3D=
+256M \
+         -device pxb-cxl,bus_nr=3D12,bus=3Dpcie.0,id=3Dcxl.1 \
+         -device cxl-rp,port=3D0,bus=3Dcxl.1,id=3Droot_port13,chassis=3D0,=
+slot=3D2 \
+         -device =
+cxl-type3,bus=3Droot_port13,memdev=3Dcxl-mem1,lsa=3Dcxl-lsa1,id=3Dcxl-pmem=
+0 \
+         -M cxl-fmw.0.targets.0=3Dcxl.1,cxl-fmw.0.size=3D4G
+
+> Jonathan
+>=20
+>>=20
+>> Thanks,
+>> Itaru.
+>>=20
+>>> Jonathan
+>>>=20
+>>>>=20
+>>>> Let me know which branch you were suggesting.
+>>>>=20
+>>>> Thanks,
+>>>> Itaru.=20
+>>>>=20
+>>>>>=20
+>>>>> Note my main development work is on arm64 so that tends to work
+>>>>> more reliably than x86 which I only lightly test for stuff that
+>>>>> isn't ready for upstream yet.
+>>>>>=20
+>>>>> Give me a shout if you run into any problems.
+>>>>>=20
+>>>>> The main blocker on upstreaming this is resolving the missing =
+device tree
+>>>>> support for PCI expander bridges.  I've not made any progress on =
+this since
+>>>>> talk at Linaro connect in 2023.
+>>>>>=20
+>>>>> Jonathan
+>>>>>=20
+>>>>>=20
+>>>>>>=20
+>>>>>>=20
+>>>>>> Thanks
+>>>>>> Zhijian
+>>>>>>=20
+>>>>>>> If there=E2=80=99s a WIP branch, a pointer would be appreciated.
+>>>>>>>=20
+>>>>>>> Itaru     =20
+
 
 
