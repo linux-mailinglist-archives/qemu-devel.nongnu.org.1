@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0496DA156C3
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:34:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7FA4A1568B
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:29:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYr5l-0005Ux-4l; Fri, 17 Jan 2025 13:29:13 -0500
+	id 1tYr5k-0005Q8-Gl; Fri, 17 Jan 2025 13:29:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr5e-0004xV-3k
+ id 1tYr5e-0004xe-AN
  for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:29:06 -0500
-Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr5b-0000Ez-Iw
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:29:05 -0500
-Received: by mail-pj1-x102b.google.com with SMTP id
- 98e67ed59e1d1-2ee67e9287fso4256736a91.0
+ id 1tYr5c-0000FF-4k
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:29:06 -0500
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-2f78a4ca5deso1118782a91.0
  for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:29:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737138542; x=1737743342; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737138543; x=1737743343; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aO2r2snLcJ0kLlp5tQSSFnCT2bNr1MNinqvZmmW2keo=;
- b=bo1ksHgSokK/UKNeZvPIPft/mMRX2OlNdn8KFuxlkuCYRyOWKLIeh/e34Z3ObWrvSf
- Ww/0w3MnVw9pH1sqlDY2DMCd+PT+12Hmx5AdTky5YvkPBA7XAGfBCqe2EQXkS/tsn+4y
- 1IVpfX3Y7kaSliK43w027I3nQJ44urzzyTzJx+sz0xFWaJxcvi6Iu1T5Xt8XBXbj4lX9
- /4iBHisXEr+HYM5s/hav6yldSlQOnRDdCxU4KrG/JrH1yWdkeAhc29n6rS14l7e1mpsQ
- hf4JhSJrOLyEP9Uyx/9ny92gj4DGNphJjYbl3B0eG+dt94usFybB82EArcGM6NztCPok
- +ShQ==
+ bh=3NPfmN7vMo+libG/5c+CuF6EQ8tBzjs2DEYBljqFu3U=;
+ b=rySccsW3oRMJ2umc/HyGR/sQYRUKrBNxVjldTYe4eaaB131v8OcltddA8CKOnIjP54
+ HNcGywq+gCrxbrwDF7F1hhIDkHQxNQ/uGjX5qyqE7sSs6lXBLQuRl/q6hUyiApoKbj4/
+ fwTaY/0YtJEEwzu7QEtZrMZqOXtAm8nWfyYfsFM4MOz+4MjRyFeDL6rdOCbwQaaa/tVH
+ 3Y5+NoaFPdZmzS6aT3qU2Jg2D4DM6sslhZquURZEPr2s8DNOm3tB82u1onvaZy4SZzDa
+ 80ryaBVbYQ20ilqpcn9OJX8gOKpTAiJfbamF6Pmc87+eMM2EKWJeLTcuhwOc5RuVfI8Z
+ W8OA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737138542; x=1737743342;
+ d=1e100.net; s=20230601; t=1737138543; x=1737743343;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aO2r2snLcJ0kLlp5tQSSFnCT2bNr1MNinqvZmmW2keo=;
- b=XhMxNkOsgtfjy4vZIle+n+xc+g8Gze00IY/zLAYaQv6UXZ3qcRLvsue47pZEWH2NLq
- LnKp5nixm6EUQkm8HDjCuhQ5guD6fQ1isB9SAq7I7KCPunZZ6rd7yTNp8kSy385fCEVl
- H05ljo3hS+IWsxiPK6as6xsvAHAPbUshGkuUQBYOGNXhKyQch2sm84YLBD1mD9aveLBa
- UzrplQLP0LgPwXZtQH+HTXboe2UDzLBqMSu/5v30wnPbA5J4rgA7ibcQrHwr7hpV8Tl6
- jZe/lr1amHkRbZFZATUVF6AMmnC0td1OPdwZ8l60HAGdIe/egUNPZLOtug8ragxM3GAR
- Qz4g==
-X-Gm-Message-State: AOJu0YyFlUlES+EVeHDigEEuwwznGsrxeJOOZrbtov/NikrANCVSSFtF
- mswcjeOdUN9+aWLxZG1rVTwd4xgtpRGYuvFgsHcNHP4OwfnygaCTRRC/PGkGVnHv7bX/OwUKp8K
- z
-X-Gm-Gg: ASbGncsIo9Bw68o474PGE41INkdwD77U2Bnf0PirNzrMUIsh3+MU91sgT2nPxrjsooK
- OdQwzwa3iSWLpslrG17RweWCvbeRJrc9UtTU0nPZUf/ASdYTmJIndv+e73c7zoEf2g0xJ6GdAFP
- cRNgyIV0ECBAng8SGy55qyLs3FtUOjzbd8UMlfw8qqd3eOZIerE48jh2TKEr7gRJe6o/5WAW5WZ
- 7PEv+tHReXoYuViqy3KOH6+adOIY1r+9gz4XMtf9xGsIU3Bgh1JZjVMtF7K5YoUxR7UfIHscVJ5
- Vw9dEdNT+9QOzjY=
-X-Google-Smtp-Source: AGHT+IHOJPKmI7BbmEzOb5tOUd15evvEGCsft4wZ9LoqVRglxc8omPR1CQuriJn8RMEFQxalfUGneA==
-X-Received: by 2002:a17:90b:2709:b0:2f6:be57:49d2 with SMTP id
- 98e67ed59e1d1-2f782cb58b8mr6020109a91.17.1737138542154; 
+ bh=3NPfmN7vMo+libG/5c+CuF6EQ8tBzjs2DEYBljqFu3U=;
+ b=RWM1fkfdPMp+U6DcybMJSRtf+BhW3YuLFVXoLdvNdK3zrKTzDwU4sx7Sv6TawWRmU1
+ FK8Z2eAGsuJ9Gol3sr3/1FBQb1iwBuUOgf3eNgRt5LnNBADsdXKXBGEYwKvZiWhRUB8I
+ a1qELHHAqo1E+m76/4agfx43gDkcMB7owsf/us/MTH4SUkC2k2bdLEkxziht9k0zmFKA
+ dqNE7QBJJsdQq/RlA4T0jhKLuTgTk2vKSmzV5eL3w6hWjQpTLYiNx7qH3BhxjslOg8Kt
+ Lu02HZYYFzcZmo9x17mCtbv8H4TRdNi0f98RTLlptaXt9Xx/Wa2DrVWOfTwfxF5I6q2A
+ bxag==
+X-Gm-Message-State: AOJu0YyRlSztVlAY0YmNlL2W8xr4zT7y0I8rQJdsctM4HEw4mtJqcqsF
+ 6bf/YvQoT1ABz3T59vfwJFgvI+TcA4OOjgD3yndhpXI2fy2FaGQ2YEKeiEDtA79ohcLkT+FE93s
+ B
+X-Gm-Gg: ASbGncsGS+aeMNNISdZKvZyycC3h221fSLqUngwI2J4mo09CKvWTf9G0bIDVaeqS+nQ
+ 6us8yRrlzdUkyH4XXgmFJy28z1AX6WDHHlRLh1p6BYqOyLQJL79vnmL08IU5qqukmP5ldLlV15w
+ jQPWxEbFMGxEEWwcNzTJHLYcn1oB1G+is2r19B0Pnwfe5URfDtECNMwKhJbafoRbLbvE/XCHxXn
+ AmX3p4b+bvZt2OYKo6rzpo+4cmnmw1hTeuPq7rSAQiOHkIXrLZ1udzju2MUlvFdjB1IhO3QDNoT
+ I1Gx0AzeWNvcIkc=
+X-Google-Smtp-Source: AGHT+IEHyxMl16cxzxxsGA9PZtvlaRSLntZk+pQesmJPx7JyOt6yegUQiQKhexwDikQP/DVE0JFdrg==
+X-Received: by 2002:a17:90b:3a08:b0:2ee:dcf6:1c77 with SMTP id
+ 98e67ed59e1d1-2f782c9cb1emr5784504a91.16.1737138542916; 
  Fri, 17 Jan 2025 10:29:02 -0800 (PST)
 Received: from stoup.. (174-21-71-127.tukw.qwest.net. [174.21.71.127])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f77629bf96sm2614105a91.36.2025.01.17.10.29.01
+ 98e67ed59e1d1-2f77629bf96sm2614105a91.36.2025.01.17.10.29.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 10:29:01 -0800 (PST)
+ Fri, 17 Jan 2025 10:29:02 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 49/68] tcg/aarch64: Provide TCG_TARGET_{s}extract_valid
-Date: Fri, 17 Jan 2025 10:24:37 -0800
-Message-ID: <20250117182456.2077110-50-richard.henderson@linaro.org>
+Subject: [PULL 50/68] tcg/aarch64: Expand extract with offset 0 with andi
+Date: Fri, 17 Jan 2025 10:24:38 -0800
+Message-ID: <20250117182456.2077110-51-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250117182456.2077110-1-richard.henderson@linaro.org>
 References: <20250117182456.2077110-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,26 +98,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Trivially mirrors TCG_TARGET_HAS_{s}extract_*.
+We're about to change canonicalization of masks as extract
+instead of and.  Retain the andi expansion here.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/aarch64/tcg-target-has.h | 3 +++
- 1 file changed, 3 insertions(+)
+ tcg/aarch64/tcg-target.c.inc | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tcg/aarch64/tcg-target-has.h b/tcg/aarch64/tcg-target-has.h
-index 0e79e01266..26ce65b6a5 100644
---- a/tcg/aarch64/tcg-target-has.h
-+++ b/tcg/aarch64/tcg-target-has.h
-@@ -116,4 +116,7 @@
- #define TCG_TARGET_HAS_cmpsel_vec       0
- #define TCG_TARGET_HAS_tst_vec          1
+diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
+index ede6f47235..66eb4b73b5 100644
+--- a/tcg/aarch64/tcg-target.c.inc
++++ b/tcg/aarch64/tcg-target.c.inc
+@@ -2450,7 +2450,12 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType ext,
  
-+#define TCG_TARGET_extract_valid(type, ofs, len)   1
-+#define TCG_TARGET_sextract_valid(type, ofs, len)  1
-+
- #endif
+     case INDEX_op_extract_i64:
+     case INDEX_op_extract_i32:
+-        tcg_out_ubfm(s, ext, a0, a1, a2, a2 + args[3] - 1);
++        if (a2 == 0) {
++            uint64_t mask = MAKE_64BIT_MASK(0, args[3]);
++            tcg_out_logicali(s, I3404_ANDI, ext, a0, a1, mask);
++        } else {
++            tcg_out_ubfm(s, ext, a0, a1, a2, a2 + args[3] - 1);
++        }
+         break;
+ 
+     case INDEX_op_sextract_i64:
 -- 
 2.43.0
 
