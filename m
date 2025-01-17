@@ -2,96 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F30A14BC1
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 10:04:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F6CEA14BBE
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 10:02:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYiEI-00020V-AY; Fri, 17 Jan 2025 04:01:26 -0500
+	id 1tYiF6-0002kM-Nj; Fri, 17 Jan 2025 04:02:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tYiEC-0001vP-UF
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 04:01:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tYiEB-00085p-Db
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 04:01:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737104477;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BPqO3KKHtl5ANg7/aro6hR1uN7oeqpunby/BKuICj8Q=;
- b=SqLIJGQsHuPlT6AfrKKICz0VExj78Ky4I3Fl9imPamuuBA+KDXXZDXSm3vzr1PGj2mg36a
- 8FdKx1O2NlX5zly8s2qGrO2fjQU7hUiL9tyAkhBkbNQuIv9gpN6XNLmW+CNbgSFzTYQPab
- 0PY4W148kASR47Fvukp9ANQtj/98ScM=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-308-hNB8QV7_PZONVlQJyXG4Hw-1; Fri, 17 Jan 2025 04:01:16 -0500
-X-MC-Unique: hNB8QV7_PZONVlQJyXG4Hw-1
-X-Mimecast-MFC-AGG-ID: hNB8QV7_PZONVlQJyXG4Hw
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-aaf901a0ef9so164145566b.0
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 01:01:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
+ id 1tYiF1-0002ah-03
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 04:02:12 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
+ id 1tYiEy-0008Bh-Ol
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 04:02:10 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-385f06d0c8eso974470f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 01:02:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1737104526; x=1737709326;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=jCt7kzcuNwkvxmtrk64kX3QJrtJaNrqEtkO0ONKUO8Y=;
+ b=cFw6uKTDyXfXVLAxd1+/HbHKxWSkRSukRoMeZZxAH1ENwrBKWkr43MEUITUZbHl3Xy
+ uuXEh0SBa/uHWNFjWxhadJMCWmxTCwpkvsSe/PC6JFV1Q83N7aADM9WFPqmb/TLO2KxO
+ xl31zGQnMQA9TqFU3zMl8tof7QTizm+y7xzkUv/zQ8Mz1VJ7MDHrGV/0AiReSYNUu8jp
+ lfUg9oK9UEAQh/s1nHwtFh+Al2c7fC3wqdFJm4lx+9+0Q6aBCq2Hzeic7/zcWkHjqJlJ
+ YFgStUYXQuJ4YpQclxQo8FG6lsabnJ0bMjlvrFyEKebYZaBmPa0N7+UFdMF/werPMiVa
+ jxdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737104474; x=1737709274;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BPqO3KKHtl5ANg7/aro6hR1uN7oeqpunby/BKuICj8Q=;
- b=H1iEvGDhCPSywU8cycOQcQRBlgCk1DKe583gja0wx2H79bF8ugF3iERFs1WENPeUE6
- GiTeBBqB8UIDQt2q/zD6adYy3Ke5/fll14RHZKoRaOTD16x5HvTK2bJeoBlJsOOQcJ78
- NWWtwTeARayRe0JJuTZZ6q1nuVf1TXJhFSA4b4r/KcibUfWLuPn9iXO8AjGoT1LCBYxZ
- FiOdcV5cCff41uIIKYTBYeTeYcBCNKfzZZkOqvBzpBqR2e1jMOx4EH8619Y41cMiakP1
- Xlu6cWVgcJqZrU1gPwkFOrDK8pUhHTmi0+wJe0UKm+rp0QIJzs1jqD5Upu2J6ZKNGEW1
- Me1w==
-X-Gm-Message-State: AOJu0Yw7xZntvJYEOQzOO75vW5o2raRE/eGKd5hf8O+hqcvzOIVP6q8V
- mzjkOWBkLnlwPc78BsZof4WyVx2tKHo8daUyXZztfDeOaXTecwihZrG7xScNwGEPRmgeuUg3ORR
- VeFJtFnEYAQMjpuAzG5UR3thX9ths9t7IinIRZFIVhgEd7OSJXNeGLKlXe5unVeM3DjJ2LeiXkh
- MtSkGD9Zz0JCAhYf3P/XXNnlL2H6ARSeW/zIgFmMY=
-X-Gm-Gg: ASbGncvC6QkV/j6sy+30mwwIuheuMSzlk9I1363rmyIgz6BGFWo5esJZKZCo5myhEaO
- rgdatS1DmMkSc6pRnwtBUohF6rfBBmCqLHRD8R7k47MX/RWgUZ3ZREo7eHhsqbPHO9nNI7kfg7z
- x+ZsvBrN9DSPQ0mk/GRAT9O6zMdREeQ5aLbzQSTQYYKulebsBKB3K7gw1b0wNX+0cF20SrrmRRD
- 1NHGx1t1AZqhawkwHnoRSBnW5aSfrbE0OW0u0LkJQy5sNUcsDAL/0ggpdyL
-X-Received: by 2002:a17:907:86a3:b0:ab2:db7b:5db3 with SMTP id
- a640c23a62f3a-ab38b4c8520mr216833766b.54.1737104473914; 
- Fri, 17 Jan 2025 01:01:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGqVVadJoAURPuj9qG6UA2d1Ww6Do42aCy9rlg3bBLIvmHMy9EWjTbuoQ4KFXomFtmR5sShBQ==
-X-Received: by 2002:a17:907:86a3:b0:ab2:db7b:5db3 with SMTP id
- a640c23a62f3a-ab38b4c8520mr216829166b.54.1737104473456; 
- Fri, 17 Jan 2025 01:01:13 -0800 (PST)
-Received: from [192.168.10.3] ([176.206.124.70])
+ d=1e100.net; s=20230601; t=1737104526; x=1737709326;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=jCt7kzcuNwkvxmtrk64kX3QJrtJaNrqEtkO0ONKUO8Y=;
+ b=EbltINbVoOUrPuKwkMP5vGj/VPuchQm6xQGHf1rh1AUyPNj9ZlugOF3V5+jZ5W3AxU
+ HD9PgAME/6FQT9UDmrbwxbAVK8z14LahTaVr1tBAwuRBzgIiPj9HswZsBy/xkJrT/cEH
+ e5HRe9ZyhCRn+AHeiHhuJi5OSp5RrHw+5EcyUmxg0C1fhe4Mt9OH+2+0z8q1L7HVFsxP
+ Ovtxonm5F5SC3H99Vyo+eXpzd5QdpbHEKqAEyoiDJcuDknY0GmZCQIXlIPEtGWAVTbyv
+ YSxdjumACsDXm2Vjh+pcODKT61HtRgCLA7A+WR0PZ5zwgxU4KRVaQtezJ5SeTRy+zObK
+ CJ7A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWPdYjtOyAhLWKzRXUv+VNQ/m76xdB+CbDhPUXDBvgHBPJyhGSkI6/WLA3IYdwHWVZIlQ0rbRACGzgg@nongnu.org
+X-Gm-Message-State: AOJu0YyvVIGuZzmdO3lOaNB7+PXAt1/APzB5SQ6TiiWfxfQ0ifJ+06qG
+ 4qX32VaXmrCk1hXChzvaw5vfp7bjtj0tOnrpme3MGLyRt4qrW2G16pCFv/WLhz4=
+X-Gm-Gg: ASbGncsToZ1IuR49KH5Rp46Dx8gd0etwfYB3jYsmO+nKa/vQukKhywZR49L9P5w+2VW
+ E4owfBkkOt8Z+u/bah1lh5cYzd9fxcQxmwP1tnWOnBLbVyTZMGtqdEKIEKSUQH9MiuWP54jUW/J
+ ha38jYbZIpLTDh5D74p3Z9QF4bPQKbc4dH1vDAXVZXxBy/8METUib4Njp3okhNOXKLY6ksSEZ+K
+ tjVkIHd8UoZ+MCD0wQ1uJPUc+hySthAj/JPF9pVsnrK+Rmpst0uYGluN2mbVrky6RRzqduS+b24
+ RicXPuWB8WeVTP/RPoCK/CZpaA==
+X-Google-Smtp-Source: AGHT+IHwlm2AlHTH9dL9npjSppF7Cz+cBUZyqohmpo8XmZ5VECIMfKv/oboP8ma9XvwZdk5d4pB0Yw==
+X-Received: by 2002:a05:6000:1a45:b0:385:eecb:6f02 with SMTP id
+ ffacd0b85a97d-38bf5798338mr1197135f8f.28.1737104525992; 
+ Fri, 17 Jan 2025 01:02:05 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:e17:9700:16d2:7456:6634:9626?
+ ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab384f223fesm135133266b.105.2025.01.17.01.01.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 01:01:12 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: zhao1.liu@intel.com,
-	qemu-rust@nongnu.org
-Subject: [PATCH 10/10] rust: vmstate: make order of parameters consistent in
- vmstate_clock
-Date: Fri, 17 Jan 2025 10:00:46 +0100
-Message-ID: <20250117090046.1045010-11-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250117090046.1045010-1-pbonzini@redhat.com>
-References: <20250117090046.1045010-1-pbonzini@redhat.com>
+ 5b1f17b1804b1-43890468480sm26174905e9.33.2025.01.17.01.02.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 17 Jan 2025 01:02:05 -0800 (PST)
+Message-ID: <957cd781-7d3b-4483-b2b1-5f1ec18beac7@rivosinc.com>
+Date: Fri, 17 Jan 2025 10:02:04 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 47/50] target/riscv: Add Smdbltrp ISA extension enable
+ switch
+To: Alistair Francis <alistair23@gmail.com>, qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair.francis@wdc.com>
+References: <20250117055552.108376-1-alistair.francis@wdc.com>
+ <20250117055552.108376-48-alistair.francis@wdc.com>
+Content-Language: en-US
+From: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>
+In-Reply-To: <20250117055552.108376-48-alistair.francis@wdc.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.093,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.797,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=cleger@rivosinc.com; helo=mail-wr1-x42b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,41 +103,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Place struct_name before field_name, similar to offset_of.
+Hey Alistair,
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- rust/hw/char/pl011/src/device_class.rs | 2 +-
- rust/qemu-api/src/vmstate.rs           | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+While doing a non regression with default bios (OpenSBI 1.5) and max
+cpu, Atish found that this breaks boot with OpenSBI 1.5 since it does
+not have support for double trap clearing. On Henrique guidance,  I
+resent this patch alone with an associated fix. :
 
-diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
-index e0d3532e956..b052d98803f 100644
---- a/rust/hw/char/pl011/src/device_class.rs
-+++ b/rust/hw/char/pl011/src/device_class.rs
-@@ -27,7 +27,7 @@ extern "C" fn pl011_clock_needed(opaque: *mut c_void) -> bool {
-     minimum_version_id: 1,
-     needed: Some(pl011_clock_needed),
-     fields: vmstate_fields! {
--        vmstate_clock!(clock, PL011State),
-+        vmstate_clock!(PL011State, clock),
-     },
-     ..Zeroable::ZERO
- };
-diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index 70dd3c4fc48..89ca643a58f 100644
---- a/rust/qemu-api/src/vmstate.rs
-+++ b/rust/qemu-api/src/vmstate.rs
-@@ -457,7 +457,7 @@ macro_rules! vmstate_struct {
- #[doc(alias = "VMSTATE_CLOCK")]
- #[macro_export]
- macro_rules! vmstate_clock {
--    ($field_name:ident, $struct_name:ty) => {{
-+    ($struct_name:ty, $field_name:ident) => {{
-         $crate::bindings::VMStateField {
-             name: ::core::concat!(::core::stringify!($field_name), "\0")
-                 .as_bytes()
--- 
-2.47.1
+https://lore.kernel.org/qemu-riscv/7d3df2ef-14b0-47ad-a843-668f146e26de@ventanamicro.com/T/#t
+
+Sorry for the trouble, thanks,
+
+Clément
+
+On 17/01/2025 06:55, Alistair Francis wrote:
+> From: Clément Léger <cleger@rivosinc.com>
+> 
+> Add the switch to enable the Smdbltrp ISA extension.
+> 
+> Signed-off-by: Clément Léger <cleger@rivosinc.com>
+> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> Message-ID: <20250110125441.3208676-10-cleger@rivosinc.com>
+> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+> ---
+>  target/riscv/cpu.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index e3ed11b0fd..bddf1ba75e 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -194,6 +194,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+>      ISA_EXT_DATA_ENTRY(smcdeleg, PRIV_VERSION_1_13_0, ext_smcdeleg),
+>      ISA_EXT_DATA_ENTRY(smcntrpmf, PRIV_VERSION_1_12_0, ext_smcntrpmf),
+>      ISA_EXT_DATA_ENTRY(smcsrind, PRIV_VERSION_1_13_0, ext_smcsrind),
+> +    ISA_EXT_DATA_ENTRY(smdbltrp, PRIV_VERSION_1_13_0, ext_smdbltrp),
+>      ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
+>      ISA_EXT_DATA_ENTRY(smrnmi, PRIV_VERSION_1_12_0, ext_smrnmi),
+>      ISA_EXT_DATA_ENTRY(smmpm, PRIV_VERSION_1_13_0, ext_smmpm),
+> @@ -1626,6 +1627,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+>      MULTI_EXT_CFG_BOOL("ssnpm", ext_ssnpm, false),
+>  
+>      MULTI_EXT_CFG_BOOL("smaia", ext_smaia, false),
+> +    MULTI_EXT_CFG_BOOL("smdbltrp", ext_smdbltrp, false),
+>      MULTI_EXT_CFG_BOOL("smepmp", ext_smepmp, false),
+>      MULTI_EXT_CFG_BOOL("smrnmi", ext_smrnmi, false),
+>      MULTI_EXT_CFG_BOOL("smmpm", ext_smmpm, false),
 
 
