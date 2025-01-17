@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60E2FA14DC5
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D070A14DC6
 	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 11:39:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYjkC-0006QM-7y; Fri, 17 Jan 2025 05:38:28 -0500
+	id 1tYjkD-0006T2-5E; Fri, 17 Jan 2025 05:38:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tYjk2-0006Nt-1o
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 05:38:19 -0500
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ id 1tYjk7-0006PS-RQ
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 05:38:25 -0500
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tYjjz-0006Ez-4A
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 05:38:17 -0500
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-aafc9d75f8bso328127766b.2
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 02:38:13 -0800 (PST)
+ id 1tYjk6-0006FV-At
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 05:38:23 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-aaf6b1a5f2bso596708066b.1
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 02:38:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737110292; x=1737715092; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737110300; x=1737715100; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vRFyWxzilTzqm609RjKfzFEx0OMx7BNr5J1PdPzYF+g=;
- b=QH4rATXW1raKb7/zvgWz/PUhr/BeqllktIOo9FiApsE2RxS50/IumgnhP4PrCxKrOe
- KB4cgvGQ7/9r78Suk+GrOZ7xK2frAifVJ1pbfkvnCeuQ2foBEEUXA6YoxLsRZMU9M8e8
- udEXXeQDsIh9Jg2LfsiE0rNSfe4+KQlzmLHau4Pm1/iPusInLayGhPHs46Q2/Pt5MAOy
- QkxO9Ws6+bGldKAbxZLGqHKh35O+u4hU15/X8wuylEOKoIRetZRK22ZHwdJOTV3hITxE
- 5G8dadgA7/hYGTI58F/mycWL6dbQJbeAzqRLFGEG/MNlv9dYfvIN2VeQRS8LsCigjTmU
- 2pLw==
+ bh=dA4cABuQ7O+G2L4wqAZH5Yk7B1njb+jBnA7h7zxdLc0=;
+ b=gu8VNU2nGT+879hPnaBGYD9v1UQ1ZJpmDV9/HZo8mbpchPNqxHVzZH85VI7rAKxzGu
+ 1KB5CHCSZOIoThnuEAMfd7Vn7nPcE/zQT/S1X2lY8whuPPde2k9vSCCZuSDqNUCJl64M
+ qPGKSeNUMnGoIBORZ0L1NjnY84vKI+Pwc4jV1iY0Qjyo24xbtK9TrNwFwifdjjFVdTE9
+ zTXnyKc0L1JcdIfEhPKEUwrrBlsfX+uzouU72g5BCC5iHNOlpDFY5PsStJpbjQsTGEjL
+ abLgR6U3xGay8aImVjEGHfy+lgWDUXf7If7zFL7rhvcORSQmCkTsSdg2OVniaPcuXpPR
+ CwRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737110292; x=1737715092;
+ d=1e100.net; s=20230601; t=1737110300; x=1737715100;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=vRFyWxzilTzqm609RjKfzFEx0OMx7BNr5J1PdPzYF+g=;
- b=A4q9ojF9XgLoPad9ts4lFcvREq2zDngxHzKHDicL0kqD1ki25I1Rpi5n/kOTrGOcYO
- n3nUzWQisLtSR08PO6gj/SPfUArf5MtYXWAUqInnf1mo5C7L2fBC56RwrXoRKG2Rrjpx
- RkdpDT9vMHuQfI0zR9ImBDIdjGu+0NQtzaWaYu3ApiPE+36CXvL+QXSv+qUTqiz1+pwl
- X92A+yJydkemiLsssDrZjYHGxC9KrEc9XHUQ7PED6D5flug3qPQ7VzW9jkuyp56fgBNI
- blNh8UEdZ57jaajIQ/TxUopzrVhKYDrXI2xV0V/9cgsMc4NgdHFvPBX1rBz0VfM36Vgh
- 8Ewg==
+ bh=dA4cABuQ7O+G2L4wqAZH5Yk7B1njb+jBnA7h7zxdLc0=;
+ b=c4eOguoaXuO+VNqNRGohrK5u+/L0i6FYlIRPv6tE8TjOrwR5KMiCVYvCMbD6x/jKgU
+ 5qCyAQt9IlCCOlPR+a6ywkePNg6jHJpwotb5kJ+lkPqmsnpxdDHWgUhP8bPtAGCVLyX9
+ 6/Et2eNwW65q7LX16Xu6KO5z8tQoPoL2wQ6Nbbp9UVcg+N6+gYx5R73/ZiSo9p1fkK6k
+ YMJ7xCivOlLazL5hjoOIk0j/+JwzeNRhvQV/ve8jkTcBR1CEmBBmfe1ZeriiAB5UTdsd
+ A/HvNvtYqqPws5n+qwz1e7E87VQLh2PHI1YmKEfbbTf8Gh6vV3X0CS9l4XTNuvF7v9As
+ 115A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUH4/k5t6oNbTsjPtqbV5WeQNBfmn63Mj535ue+XVxqsT3fkv6uZTMRZL7gysf1cbjl9diZjB5vYnmG@nongnu.org
-X-Gm-Message-State: AOJu0Yx7t63oXnhSUaJyaCb8ooUVewS4neqhOTu8cC43OmpOpDKq10VM
- gWabKkjmENUmw+4pnKVEv5DLcWnJa9bOkujRHy1oDrrYZ6rb+oxSZ1rLiaruYRPunnufzt+G+oP
- 8Fag=
-X-Gm-Gg: ASbGncu4FIDSyGt3eLIA9yduWvBfkzUyhCIYMGOkljptZ0/ecn5wmbRvDRw7VTuDc4b
- l+AittIpHfslnFOF/h7nWK19q/nC6z0Y21aYjGZye5ocbqMDS2MTHIWKA/DPzycy0NWcCLEOAHF
- By4ESpixsOkhUQElNyXEhN+Z+anWwqyF3u6oDwyHvuSxfnX45+ZE+e6zgEucy3Ucct7hg7WQ7B4
- FLNG/4gpwzk3Ug93+DxT9gOKDt683vbMeAtSVp10xLLACKts4nvVJQ=
-X-Google-Smtp-Source: AGHT+IGQF3SRExeWmZHjj4auvOZtfO/UR9lI0meRdRr6SQU8DY1a/fRDnLBxIDR9Vlo1fYf7NqTRRQ==
-X-Received: by 2002:a17:907:969f:b0:ab3:76fb:7523 with SMTP id
- a640c23a62f3a-ab38b4a8ed8mr231543266b.53.1737110292226; 
- Fri, 17 Jan 2025 02:38:12 -0800 (PST)
+ AJvYcCUskNiAoIcHaPEdGMB1OH4leqaAypYlu2fH9eSLWfbABj4ew7ezfkyIwLxUUvkCYEM0onDI/SlP6xpr@nongnu.org
+X-Gm-Message-State: AOJu0Yyl3syeIIXjA0O0+e0mqvwNEp/Sm9LoatjsIonbfKORqbUpm+Ot
+ jM4N9QxsGT/aCA+2qqnlGghhVJ0VpEv5xYdF/aiX1bEA0BHC8trxJ7Kj44NjOPc=
+X-Gm-Gg: ASbGncv55TF4XArG9HnM9CICEJPqPofGeNhnG8OyS7bQRsGL2oC9P9ELAoJ/eYjrxQQ
+ kmzEe4fq5PuVTyLAAX5iVD08DWjDZM8CU/QaOp2stQyB8mbBDji3QW5glM6BDlCw5Ws+n8Y6RR3
+ GhTzmfBAJ1rBA2nBtAwfLDnbyDD3pfgBqI+rYnHTH9g5mHXQ3IIEuLRxQZ/yuk4+FHLw0Tvg2ug
+ +WjNkCH4mv+J5d4xfp7YTJudYGHPV+ldc1fUmWRoSGh74xl1qCDwFc=
+X-Google-Smtp-Source: AGHT+IGXgDFRNs9z6PqN/p7CZqgDgbhAKhdlLrOza7NKJNlUe1L+MTg6HmNN2PJJujI5g68DfaKvCg==
+X-Received: by 2002:a17:907:9729:b0:aa6:9d09:b17b with SMTP id
+ a640c23a62f3a-ab36e49ef53mr464378166b.28.1737110300322; 
+ Fri, 17 Jan 2025 02:38:20 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab384ce2105sm149491666b.67.2025.01.17.02.38.11
+ 4fb4d7f45d1cf-5db73edccd4sm1293037a12.77.2025.01.17.02.38.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 02:38:11 -0800 (PST)
+ Fri, 17 Jan 2025 02:38:19 -0800 (PST)
 Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C4E716083E;
- Fri, 17 Jan 2025 10:38:10 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 396E56083E;
+ Fri, 17 Jan 2025 10:38:19 +0000 (GMT)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Ilya Leoshkevich <iii@linux.ibm.com>
 Cc: Richard Henderson <richard.henderson@linaro.org>,  Paolo Bonzini
  <pbonzini@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 1/2] tcg: Document tb_lookup() and tcg_tb_lookup()
-In-Reply-To: <20250116213214.5695-1-iii@linux.ibm.com> (Ilya Leoshkevich's
- message of "Thu, 16 Jan 2025 22:31:32 +0100")
+ qemu-devel@nongnu.org,  Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Subject: Re: [PATCH v2 2/2] accel/tcg: Call tcg_tb_insert() for one-insn TBs
+In-Reply-To: <20250116213214.5695-2-iii@linux.ibm.com> (Ilya Leoshkevich's
+ message of "Thu, 16 Jan 2025 22:31:33 +0100")
 References: <20250116213214.5695-1-iii@linux.ibm.com>
+ <20250116213214.5695-2-iii@linux.ibm.com>
 User-Agent: mu4e 1.12.8; emacs 29.4
-Date: Fri, 17 Jan 2025 10:38:10 +0000
-Message-ID: <87frlhhgj1.fsf@draig.linaro.org>
+Date: Fri, 17 Jan 2025 10:38:19 +0000
+Message-ID: <87a5bphgis.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,10 +107,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Ilya Leoshkevich <iii@linux.ibm.com> writes:
 
-> These similarly named functions serve different purposes; add
-> docstrings to highlight them.
+> Currently one-insn TBs created from I/O memory are not added to
+> region_trees. Therefore, when they generate exceptions, they are not
+> handled by cpu_restore_state_from_tb().
 >
-> Suggested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> For x86 this is not a problem, because x86_restore_state_to_opc() only
+> restores pc and cc, which already have the correct values if the first
+> TB instruction causes an exception. However, on several other
+> architectures, restore_state_to_opc() is not stricly limited to state
+> restoration and affects some exception-related registers, where guests
+> can notice incorrect values, for example:
+>
+> - arm's exception.syndrome;
+> - hppa's unwind_breg;
+> - riscv's excp_uw2;
+> - s390x's int_pgm_ilen.
+>
+> Fix by always calling tcg_tb_insert(). This may increase the size of
+> region_trees, but tcg_region_reset_all() clears it once code_gen_buffer
+> fills up, so it will not grow uncontrollably.
+>
+> Do not call tb_link_page(), which would add such TBs to the QHT, to
+> prevent tb_lookup() from finding them. These TBs are single-use, since
+> subsequent reads from I/O memory may return different values; they are
+> not removed from code_gen_buffer only in order to keep things simple.
+>
+> Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 
 Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
