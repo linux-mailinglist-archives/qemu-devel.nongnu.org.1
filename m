@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B082CA15683
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:27:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42886A15697
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:30:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYr1p-0003ua-P7; Fri, 17 Jan 2025 13:25:09 -0500
+	id 1tYr1s-0003xO-Rs; Fri, 17 Jan 2025 13:25:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr1m-0003te-E1
+ id 1tYr1m-0003tt-LX
  for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:06 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr1j-0007eF-Fr
+ id 1tYr1k-0007eQ-TZ
  for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:06 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-21654fdd5daso44787895ad.1
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:25:02 -0800 (PST)
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-2165cb60719so46216135ad.0
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:25:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1737138302; x=1737743102; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8kbD2fy0ZsrIZjczUigAT7kEYROqKzeHL89DQQ9XFYc=;
- b=dbNfKwoGYzFcogVw2pMjmyooeUt/e4yYa49cqxxrIfFSJHrl5DGubbJsg7mdfiJz5A
- HiDqxtptNKDe4YsVxgh8buYwAo79YUU0IoH2UAC4HShUJfEnCF1AF7XC5dkHVb7qbOPN
- P38bGK9klwiMbxPbk8SQ1GjQGT4GsCkXf2PdkTxZcpc+dscB0isLOByBOn9uTPHuKiA1
- 4wqTa3W2ZpzPHiJlNn4k0kEiM6UxFgU+bwXcQm+D6VvZ+cfq6SDmCjTE3CmSoXEZrliV
- JXzilStwzvpcEd/Z6wyCvZZ1q6l22xeKhGuS331t/MOWB1XSRMdJ+0Qifezc4quKUyMZ
- 9n3Q==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=5tL6sktYYC9Rw5x1UyaJLj4KaE42qpOUtqK87mSas4w=;
+ b=ZAayI/ZY81Xkz2HS9XNY7OVV4LbY2RmXCget2imidI2TFP2xDyxcKE0Kmb3cOthU+K
+ iWF84cH25qag94kRO6A+BurJdMAkBvv6Lcf9ifzpaWYT53nP12cSq3ypM0MOweOp+0HK
+ LdGSg1b24LMZzLNnpVRhiV0Mf4iSAKBJ2QbkwTkjVJdeCB3dI9BB02zBNEkuHySd5R/z
+ vxq52I1CtWlaOzkdCQdVzydHZBUxFXH9zm+N/aNbNsJ0yFJcHENnHZ5wVLOdv6fyCv5j
+ FKEcNEd5wM6IvaVJg+93jTM+X6YLFQ2wSBzbCqb0NdHEf4JYA+u6VudbhhUmXZ5uxYJv
+ A0MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1737138302; x=1737743102;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8kbD2fy0ZsrIZjczUigAT7kEYROqKzeHL89DQQ9XFYc=;
- b=XYMR9oDyFF9VGwkchbCmSb2TA8Dtf/E+W3Og18EeRt//+NT/JYUYHn3NtcX+i9yGgl
- n/OEexfSJjcJLJvXFFKfZaazeu517I/r96pNHn8D1SrahMllJvaPybYuguXVlXRWrX9U
- Uvg1rw5hSNBx7TzBR+rvYFJNJD88mzlB1J/gREh5Oum6+wH+P/n+mafXxVeK68ykYnRQ
- 5CLP1oEhWv6Aqm6cnupXlJJ02JqUTCBv5uUEhXmmWkoL63ASKYvGReTMG+obaJiaYzHU
- WopJwxNUBKLq6TK2cwL48HiYDP5P8/hee/Homc87pBC19yYrFaEagEeHotyFMI5fAigN
- L54Q==
-X-Gm-Message-State: AOJu0Yz/I+4gjP6FqgIxdY5HRg4mPbZ+D8vedBMe//lMHf3+NCRWn489
- 7wEna0iw0f1ujtAdvdZ1XwU5qvw+wPeVfE0nO5xpOdb34aq9Q8WkH0HyJJjyOxH9x+f53M2stHI
- a
-X-Gm-Gg: ASbGncsk1jR0PtENyOfFYShHPP/PyqWPR/jfyf2aLheIZQmjjnD8pVHV8lDlyTS1+78
- sYCetlxtfTwNnm9rWOpk1N5pGTlR+/UeARU8wLsrICcEgtaYtqj8q0VyGo3xx9CMyDffaz2WB9C
- SvRXsLUjp4IlxI3BZor15dVolGTaSWdmm63efXMj5vNWSXdVJcbzshKttO6fZoaSVNbOxuJnuIT
- 77ub2X+6isbUgZijWYR0ewqXYxhD9PUcLQbHTBXB7otNAWzcrCLRqsAioqd0N6D6vvwOzHRVjCa
- gHZGb4W9m+/1bx0=
-X-Google-Smtp-Source: AGHT+IEKzADLG1zTjlrGJJMmCLlyLKvS2bC7GrFGYDe0iV/sj6H+oCW7z7/EculFSQdIEV7Umx8bvg==
-X-Received: by 2002:a17:903:41c4:b0:215:b75f:a1cb with SMTP id
- d9443c01a7336-21c352c7d9cmr51724725ad.9.1737138301798; 
- Fri, 17 Jan 2025 10:25:01 -0800 (PST)
+ bh=5tL6sktYYC9Rw5x1UyaJLj4KaE42qpOUtqK87mSas4w=;
+ b=DbWJmB9M2zySHIkJj8CZW6jUOS1l3aPzr4kNkpkkPzenOQgffBJY17TFxwe9c4F/ik
+ xk5XjoGa4rlUHtkQu1kOhK8hsnEXPtnVvjBI6uZrhNOSF8NCvNoUICq1DErN6+ZWyXtv
+ HROi+1mL3k8mgkeT/RKa6SgOnUTu8gAEgtzfcHujHHTKCrvUYLngm40JLFQm7sMZqWlh
+ ++9NwsL/D1/uSklVVEM1x/aIlw8TPFb4B1i++mfV93V3sae0GbQp9Gr/nN5hz+yw2vvP
+ 4UAMzD3So2h8sUhFNl57qRlAfWvZnZyiGKIzXUzLdAxM80vh9EvC7C93T9LhPHKJorV1
+ 03Kw==
+X-Gm-Message-State: AOJu0YxwGUyylyScYpJJO9QvJ/CP3C8A6S0bBYz5nzEtM7sQsDF5kIeW
+ NTgbLbiS8M1EoSd/phSXWNeQWulRzSg2MFLA9oyxp7a2BCy4g8YS4kJ3mQT9UVnhedvnhFCUYwE
+ J
+X-Gm-Gg: ASbGncs86IgYQw6Bj2zLWd45vZLMGfo4ArPvd68ohrV5I0cvoPai9f++Pjhs2e2mXFR
+ bm7/G2nflNpVOGLAXj7/5389DDemPBzOSJ3riYNwfbE1d/v1OxyhZfSZELGNfiII14yrxZ7u4KK
+ h0fWuBhBP5SqEV6jVlexz5yNo8MMZbZ1fcf36wUzD2cINajRB10hV3SMMj0bShpg34gXchZTgQk
+ 608aJ0kGS31lWEwCt//G4LltBAW7p8SjpjVwSwnKI2fE2Q7GrcHUW9A02v0SXPoggm1PuYf/o2F
+ 7JW80NXpK8sl20o=
+X-Google-Smtp-Source: AGHT+IHdMDxaanPNM8TFNLWtgemz3tdFGcTGjmczSDUpNixmiE2kX/hJnp+XDuDCpMcF/mSvoqDVdQ==
+X-Received: by 2002:a17:902:e80a:b0:216:6769:9ed7 with SMTP id
+ d9443c01a7336-21c355c7dc2mr59064705ad.40.1737138302408; 
+ Fri, 17 Jan 2025 10:25:02 -0800 (PST)
 Received: from stoup.. (174-21-71-127.tukw.qwest.net. [174.21.71.127])
  by smtp.gmail.com with ESMTPSA id
  d9443c01a7336-21c2d3acccesm18879005ad.123.2025.01.17.10.25.01
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 10:25:01 -0800 (PST)
+ Fri, 17 Jan 2025 10:25:02 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 05/68] tcg: Copy TCGOP_TYPE in tcg_op_insert_{after,before}
-Date: Fri, 17 Jan 2025 10:23:53 -0800
-Message-ID: <20250117182456.2077110-6-richard.henderson@linaro.org>
+Subject: [PULL 06/68] tcg: Add TCGOP_FLAGS
+Date: Fri, 17 Jan 2025 10:23:54 -0800
+Message-ID: <20250117182456.2077110-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250117182456.2077110-1-richard.henderson@linaro.org>
 References: <20250117182456.2077110-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,37 +96,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Simplify use within the optimizers by defaulting the
-new opcode to the same type as the old opcode.
+To be used by some integer operations instead of,
+or in addition to, a trailing constant argument.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/tcg.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/tcg/tcg.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index 6838ecdefc..f2bbff8079 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -3249,6 +3249,8 @@ TCGOp *tcg_op_insert_before(TCGContext *s, TCGOp *old_op,
-                             TCGOpcode opc, unsigned nargs)
- {
-     TCGOp *new_op = tcg_op_alloc(opc, nargs);
-+
-+    TCGOP_TYPE(new_op) = TCGOP_TYPE(old_op);
-     QTAILQ_INSERT_BEFORE(old_op, new_op, link);
-     return new_op;
- }
-@@ -3257,6 +3259,8 @@ TCGOp *tcg_op_insert_after(TCGContext *s, TCGOp *old_op,
-                            TCGOpcode opc, unsigned nargs)
- {
-     TCGOp *new_op = tcg_op_alloc(opc, nargs);
-+
-+    TCGOP_TYPE(new_op) = TCGOP_TYPE(old_op);
-     QTAILQ_INSERT_AFTER(&s->ops, old_op, new_op, link);
-     return new_op;
- }
+diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+index 5d96cdfc30..238c55c9ac 100644
+--- a/include/tcg/tcg.h
++++ b/include/tcg/tcg.h
+@@ -440,6 +440,7 @@ struct TCGOp {
+ #define TCGOP_CALLO(X)    (X)->param2
+ 
+ #define TCGOP_TYPE(X)     (X)->param1
++#define TCGOP_FLAGS(X)    (X)->param2
+ #define TCGOP_VECE(X)     (X)->param2
+ 
+ /* Make sure operands fit in the bitfields above.  */
 -- 
 2.43.0
 
