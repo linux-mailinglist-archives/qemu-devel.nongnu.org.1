@@ -2,106 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0645A154C8
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 17:50:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC3D7A154D2
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 17:50:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYpXb-0004D4-12; Fri, 17 Jan 2025 11:49:51 -0500
+	id 1tYpXc-0004Fd-Vb; Fri, 17 Jan 2025 11:49:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tYpXX-0004Cj-T4
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 11:49:47 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tYpXZ-0004D6-J3
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 11:49:49 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tYpXT-0001Ec-Od
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 11:49:45 -0500
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tYpXX-0001Ej-Ki
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 11:49:49 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 2668E21237;
- Fri, 17 Jan 2025 16:49:42 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 4B96C2124A;
+ Fri, 17 Jan 2025 16:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1737132582; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1737132584; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fi0jKUEwhd0YLlGhaubav7efwCCkTd+0CwkJUiNtcak=;
- b=qnZOpb9Dp2+3vmLfDhPSsCN/ihyYINEggHOeQlDAUSQ4+1c488Sz69mQhr8zPkL14nJu06
- b48pKCPoxkAnCfRhXpuCZ9nLDHO2YZDYDKDX3a79h0brQTGopbPHVmIbIJL42SD/PHOMGI
- ZQ0ydz5Qgkd58k7A0igJC+q2kjdLZrU=
+ bh=egkqiUdcl/1o5gN6c9wxmbbtscH/gM7mMCyj63nHiW8=;
+ b=DJ2iwv0QfL8NLYEtu7G9U+10kqdG64AfqGIezIuAYi+NZRqM89Mz2Phko8Lr4kll5OOfoV
+ CWI4gFnxz7Q7enikz2OaK1aXreW17tVqA+0FUhQpZIRW0MG5Ix3DRNYfCxHGAkSQrBNdbR
+ 74R0aYYXOZzdJlKV+j6u7P1mBqGa7VQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1737132582;
+ s=susede2_ed25519; t=1737132584;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fi0jKUEwhd0YLlGhaubav7efwCCkTd+0CwkJUiNtcak=;
- b=czbS4sCzSfvit6QGiYrYeNXG0/b3klB12syw4bM5aEMzRgH+Fi9Rry9iMyQj2UvOcLbekI
- aaufMfFCcEmOH4Aw==
+ bh=egkqiUdcl/1o5gN6c9wxmbbtscH/gM7mMCyj63nHiW8=;
+ b=xlELgvCPGM2Pbrv/+HF6qBuLAsJf4j2GZvQ6B+XJAenLIDa/mTNcBbbXrGd338n33ckjAu
+ wmKg1Z7XJcLrrHBA==
 Authentication-Results: smtp-out1.suse.de;
-	none
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DJ2iwv0Q;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xlELgvCP
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1737132582; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1737132584; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fi0jKUEwhd0YLlGhaubav7efwCCkTd+0CwkJUiNtcak=;
- b=qnZOpb9Dp2+3vmLfDhPSsCN/ihyYINEggHOeQlDAUSQ4+1c488Sz69mQhr8zPkL14nJu06
- b48pKCPoxkAnCfRhXpuCZ9nLDHO2YZDYDKDX3a79h0brQTGopbPHVmIbIJL42SD/PHOMGI
- ZQ0ydz5Qgkd58k7A0igJC+q2kjdLZrU=
+ bh=egkqiUdcl/1o5gN6c9wxmbbtscH/gM7mMCyj63nHiW8=;
+ b=DJ2iwv0QfL8NLYEtu7G9U+10kqdG64AfqGIezIuAYi+NZRqM89Mz2Phko8Lr4kll5OOfoV
+ CWI4gFnxz7Q7enikz2OaK1aXreW17tVqA+0FUhQpZIRW0MG5Ix3DRNYfCxHGAkSQrBNdbR
+ 74R0aYYXOZzdJlKV+j6u7P1mBqGa7VQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1737132582;
+ s=susede2_ed25519; t=1737132584;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fi0jKUEwhd0YLlGhaubav7efwCCkTd+0CwkJUiNtcak=;
- b=czbS4sCzSfvit6QGiYrYeNXG0/b3klB12syw4bM5aEMzRgH+Fi9Rry9iMyQj2UvOcLbekI
- aaufMfFCcEmOH4Aw==
+ bh=egkqiUdcl/1o5gN6c9wxmbbtscH/gM7mMCyj63nHiW8=;
+ b=xlELgvCPGM2Pbrv/+HF6qBuLAsJf4j2GZvQ6B+XJAenLIDa/mTNcBbbXrGd338n33ckjAu
+ wmKg1Z7XJcLrrHBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C319B13332;
- Fri, 17 Jan 2025 16:49:40 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A624613332;
+ Fri, 17 Jan 2025 16:49:42 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id oKWkHySKimftQgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 17 Jan 2025 16:49:40 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id eK6dGCaKimftQgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 17 Jan 2025 16:49:42 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Ivan Klokov <ivan.klokov@syntacore.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL 1/5] target/riscv: Add RISC-V CSR qtest support
-Date: Fri, 17 Jan 2025 13:49:32 -0300
-Message-Id: <20250117164936.22223-2-farosas@suse.de>
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 2/5] tests/qtest: QTest example for RISC-V CSR register
+Date: Fri, 17 Jan 2025 13:49:33 -0300
+Message-Id: <20250117164936.22223-3-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250117164936.22223-1-farosas@suse.de>
 References: <20250117164936.22223-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Rspamd-Queue-Id: 4B96C2124A
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.996];
- MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
- TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ ARC_NA(0.00)[]; TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
  RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email];
- RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ FROM_HAS_DN(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ FROM_EQ_ENVFROM(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email, suse.de:dkim, suse.de:mid,
+ imap1.dmz-prg2.suse.org:helo, imap1.dmz-prg2.suse.org:rdns]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.01
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -120,164 +130,94 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ivan Klokov <ivan.klokov@syntacore.com>
 
-The RISC-V architecture supports the creation of custom
-CSR-mapped devices. It would be convenient to test them in the same way
-as MMIO-mapped devices. To do this, a new call has been added
-to read/write CSR registers.
+Added demo for reading CSR register from qtest environment.
 
 Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
-Acked-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- hw/riscv/riscv_hart.c  | 55 ++++++++++++++++++++++++++++++++++++++++++
- tests/qtest/libqtest.c | 27 +++++++++++++++++++++
- tests/qtest/libqtest.h | 14 +++++++++++
- 3 files changed, 96 insertions(+)
+ tests/qtest/meson.build      |  2 +-
+ tests/qtest/riscv-csr-test.c | 56 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 57 insertions(+), 1 deletion(-)
+ create mode 100644 tests/qtest/riscv-csr-test.c
 
-diff --git a/hw/riscv/riscv_hart.c b/hw/riscv/riscv_hart.c
-index bc9ffdd2d4..5d64271718 100644
---- a/hw/riscv/riscv_hart.c
-+++ b/hw/riscv/riscv_hart.c
-@@ -22,6 +22,8 @@
- #include "qapi/error.h"
- #include "qemu/module.h"
- #include "system/reset.h"
-+#include "system/qtest.h"
-+#include "qemu/cutils.h"
- #include "hw/sysbus.h"
- #include "target/riscv/cpu.h"
- #include "hw/qdev-properties.h"
-@@ -41,6 +43,55 @@ static void riscv_harts_cpu_reset(void *opaque)
-     cpu_reset(CPU(cpu));
- }
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index edd53ec995..94b28e5a53 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -274,7 +274,7 @@ qtests_s390x = \
+ qtests_riscv32 = \
+   (config_all_devices.has_key('CONFIG_SIFIVE_E_AON') ? ['sifive-e-aon-watchdog-test'] : [])
  
-+#ifndef CONFIG_USER_ONLY
-+static void csr_call(char *cmd, uint64_t cpu_num, int csrno, uint64_t *val)
-+{
-+    RISCVCPU *cpu = RISCV_CPU(cpu_by_arch_id(cpu_num));
-+    CPURISCVState *env = &cpu->env;
-+
-+    int ret = RISCV_EXCP_NONE;
-+    if (strcmp(cmd, "get_csr") == 0) {
-+        ret = riscv_csrr(env, csrno, (target_ulong *)val);
-+    } else if (strcmp(cmd, "set_csr") == 0) {
-+        ret = riscv_csrrw(env, csrno, NULL, *(target_ulong *)val,
-+                MAKE_64BIT_MASK(0, TARGET_LONG_BITS));
-+    }
-+
-+    g_assert(ret == RISCV_EXCP_NONE);
-+}
-+
-+static bool csr_qtest_callback(CharBackend *chr, gchar **words)
-+{
-+    if (strcmp(words[0], "csr") == 0) {
-+
-+        uint64_t cpu;
-+        uint64_t val;
-+        int rc, csr;
-+
-+        rc = qemu_strtou64(words[2], NULL, 0, &cpu);
-+        g_assert(rc == 0);
-+        rc = qemu_strtoi(words[3], NULL, 0, &csr);
-+        g_assert(rc == 0);
-+        rc = qemu_strtou64(words[4], NULL, 0, &val);
-+        g_assert(rc == 0);
-+        csr_call(words[1], cpu, csr, &val);
-+
-+        qtest_send_prefix(chr);
-+        qtest_sendf(chr, "OK 0 "TARGET_FMT_lx"\n", (target_ulong)val);
-+
-+        return true;
-+    }
-+
-+    return false;
-+}
-+
-+static void riscv_cpu_register_csr_qtest_callback(void)
-+{
-+    static GOnce once;
-+    g_once(&once, (GThreadFunc)qtest_set_command_cb, csr_qtest_callback);
-+}
-+#endif
-+
- static bool riscv_hart_realize(RISCVHartArrayState *s, int idx,
-                                char *cpu_type, Error **errp)
- {
-@@ -58,6 +109,10 @@ static void riscv_harts_realize(DeviceState *dev, Error **errp)
+-qtests_riscv64 = \
++qtests_riscv64 = ['riscv-csr-test'] + \
+   (unpack_edk2_blobs ? ['bios-tables-test'] : [])
  
-     s->harts = g_new0(RISCVCPU, s->num_harts);
- 
-+#ifndef CONFIG_USER_ONLY
-+    riscv_cpu_register_csr_qtest_callback();
-+#endif
-+
-     for (n = 0; n < s->num_harts; n++) {
-         if (!riscv_hart_realize(s, n, s->cpu_type, errp)) {
-             return;
-diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-index 8de5f1fde3..4bc9643aad 100644
---- a/tests/qtest/libqtest.c
-+++ b/tests/qtest/libqtest.c
-@@ -1218,6 +1218,33 @@ uint64_t qtest_rtas_call(QTestState *s, const char *name,
-     return 0;
- }
- 
-+static void qtest_rsp_csr(QTestState *s, uint64_t *val)
-+{
-+    gchar **args;
-+    uint64_t ret;
-+    int rc;
-+
-+    args = qtest_rsp_args(s, 3);
-+
-+    rc = qemu_strtou64(args[1], NULL, 16, &ret);
-+    g_assert(rc == 0);
-+    rc = qemu_strtou64(args[2], NULL, 16, val);
-+    g_assert(rc == 0);
-+
-+    g_strfreev(args);
-+}
-+
-+uint64_t qtest_csr_call(QTestState *s, const char *name,
-+                         uint64_t cpu, int csr,
-+                         uint64_t *val)
-+{
-+    qtest_sendf(s, "csr %s 0x%"PRIx64" %d 0x%"PRIx64"\n",
-+                    name, cpu, csr, *val);
-+
-+    qtest_rsp_csr(s, val);
-+    return 0;
-+}
-+
- void qtest_add_func(const char *str, void (*fn)(void))
- {
-     gchar *path = g_strdup_printf("/%s/%s", qtest_get_arch(), str);
-diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
-index f23d80e9e5..d771f29d63 100644
---- a/tests/qtest/libqtest.h
-+++ b/tests/qtest/libqtest.h
-@@ -600,6 +600,20 @@ uint64_t qtest_rtas_call(QTestState *s, const char *name,
-                          uint32_t nargs, uint64_t args,
-                          uint32_t nret, uint64_t ret);
- 
-+/**
-+ * qtest_csr_call:
-+ * @s: #QTestState instance to operate on.
-+ * @name: name of the command to call.
-+ * @cpu: hart number.
-+ * @csr: CSR number.
-+ * @val: Value for reading/writing.
+ qos_test_ss = ss.source_set()
+diff --git a/tests/qtest/riscv-csr-test.c b/tests/qtest/riscv-csr-test.c
+new file mode 100644
+index 0000000000..ff5c29e6c6
+--- /dev/null
++++ b/tests/qtest/riscv-csr-test.c
+@@ -0,0 +1,56 @@
++/*
++ * QTest testcase for RISC-V CSRs
 + *
-+ * Call an RISC-V CSR read/write function
++ * Copyright (c) 2024 Syntacore.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
++ * for more details.
 + */
-+uint64_t qtest_csr_call(QTestState *s, const char *name,
-+                         uint64_t cpu, int csr,
-+                         uint64_t *val);
 +
- /**
-  * qtest_bufread:
-  * @s: #QTestState instance to operate on.
++#include "qemu/osdep.h"
++#include "libqtest.h"
++
++#define CSR_MVENDORID       0xf11
++#define CSR_MISELECT        0x350
++
++static void run_test_csr(void)
++{
++    uint64_t res;
++    uint64_t val = 0;
++
++    QTestState *qts = qtest_init("-machine virt -cpu veyron-v1");
++
++    res = qtest_csr_call(qts, "get_csr", 0, CSR_MVENDORID, &val);
++
++    g_assert_cmpint(res, ==, 0);
++    g_assert_cmpint(val, ==, 0x61f);
++
++    val = 0xff;
++    res = qtest_csr_call(qts, "set_csr", 0, CSR_MISELECT, &val);
++
++    g_assert_cmpint(res, ==, 0);
++
++    val = 0;
++    res = qtest_csr_call(qts, "get_csr", 0, CSR_MISELECT, &val);
++
++    g_assert_cmpint(res, ==, 0);
++    g_assert_cmpint(val, ==, 0xff);
++
++    qtest_quit(qts);
++}
++
++int main(int argc, char **argv)
++{
++    g_test_init(&argc, &argv, NULL);
++
++    qtest_add_func("/cpu/csr", run_test_csr);
++
++    return g_test_run();
++}
 -- 
 2.35.3
 
