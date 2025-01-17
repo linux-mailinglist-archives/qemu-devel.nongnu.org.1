@@ -2,92 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E332AA15846
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 20:42:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB4AA15847
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 20:42:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYsCr-0001cK-Kk; Fri, 17 Jan 2025 14:40:37 -0500
+	id 1tYsCr-0001bt-5M; Fri, 17 Jan 2025 14:40:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tYsCp-0001ae-3n
+ id 1tYsCp-0001af-44
  for qemu-devel@nongnu.org; Fri, 17 Jan 2025 14:40:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tYsCg-0002DJ-JQ
+ id 1tYsCh-0002DP-8R
  for qemu-devel@nongnu.org; Fri, 17 Jan 2025 14:40:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737142825;
+ s=mimecast20190719; t=1737142826;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tB+0wLdGKfYjOO1CK7DKuiSRMJWw6EIiF2Kmen84UhQ=;
- b=Ud+5pwq8/f0pK9z3CJdpY8OtXhpTlnqb10gKE7WQuSyZmaney4YXZgaZzEcJLh54is2eun
- ikTrg/6m2Qou4X+rocviVQMo4/kAs+VcTVCBj32Coq1xHcCWw4H/put9B0pKiJVng0ARSW
- iFEtUiMxK2xlM/dokfzMTDqEjeCgAnM=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=A81qJn2EL6E/QyMc/gOAoSx6A9iJTPC6iOP+Z5fufcI=;
+ b=QSLF7rqyjU2wKC1h3Fujf/HnzZrbJXwsjV4ogrJ5CjcHqEoHp5RwPfFjbELOFlSqCQP1k7
+ pU+PUMAHFhy+01swIz9FqbMYaQg7adw5g58AG8xOx2lisrOzmo3gZywJGm6AVTPUHwWYyq
+ euifvoNqhJ9cUy2yrPVyv8gAsYn2wRM=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-338-OjsqiqEPPWKxEvtnav0Bjg-1; Fri, 17 Jan 2025 14:40:23 -0500
-X-MC-Unique: OjsqiqEPPWKxEvtnav0Bjg-1
-X-Mimecast-MFC-AGG-ID: OjsqiqEPPWKxEvtnav0Bjg
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-5d89a53fc46so3165208a12.2
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 11:40:23 -0800 (PST)
+ us-mta-183-mU27WBnFNkSrN1kJjUUbuA-1; Fri, 17 Jan 2025 14:40:25 -0500
+X-MC-Unique: mU27WBnFNkSrN1kJjUUbuA-1
+X-Mimecast-MFC-AGG-ID: mU27WBnFNkSrN1kJjUUbuA
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-aa68952272bso289582766b.2
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 11:40:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737142821; x=1737747621;
+ d=1e100.net; s=20230601; t=1737142823; x=1737747623;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tB+0wLdGKfYjOO1CK7DKuiSRMJWw6EIiF2Kmen84UhQ=;
- b=PjvZHXz/DT77Go0nsLDLJO09GR+qg4mG10EP8NQ69ate1A9OZroWPW9MnUg5I8S9Eh
- GtkMiIpfQJekHgq1InEwTwHj8IlAzbKXQD0PapXeCJj1huch5oKPXNIDenhAdYYeFe8E
- ONHjgsfM1YsgNokBYRo60eJ5jRhmPRCoi/fjeXzAXtWrDiSbLdsUxwvDaiF1YCBgLpvL
- XzQQOAbeEGpKe0Y+8BrUuzDLmcbg4tVxDy4BCH9ieqGi8NaczBSmAgW6k8hBxW+KOR8c
- 7NGuUnavWXpcVZtPo1OPL1eFkO6xS8Wq3wgjbio1TBbOVOD/agC7RyGAmxQPe/3aJopg
- mDYA==
-X-Gm-Message-State: AOJu0Ywo3tYW/PrqRHOiS8yTpXmo7hikbOgh92Hl4rN5BA96puOI2A5u
- OhMh8sIhNvo2MakrmDFJZQCAsh3caWs5N907m43vzSz8n/E38ZX+FRlGo4WJDegCRI7WmrPYl6K
- nlum+jhe4SM2FX3yMRgsxr+Eb7/W9bYYBxlkWHLwlRlovTz/slQcZg3uYguRkGYktycX2K0lu71
- tC1qRrtfqGdFKo+H8LX9KYfFTtIsGZZrX7OsLPKw8=
-X-Gm-Gg: ASbGnctPtsAsTxriqlGE6So+Bzfk9uNzEKP2pQVMh+fDkMQXb9DEPQkkvCHCPnBhXUD
- gibR69KFwsZW//rEpUt+M2s/c021RQvmkY9C/C5YpybFuh3tR9l186jz4Nxry8OK0/PzLETxO21
- McJp2WLYGaRgu0xu6opsA+m/GR++lmKnHmfLrfMdymOv0lnSbsTdiOnJh2OF0hM46REGietFUfq
- sypvLWXYl92PRiCGaGhfR9f7ugH0Is7qRpJaNPx/3lVxw2MXVUiVPBwJ5ZJEg==
-X-Received: by 2002:a05:6402:2342:b0:5db:67a7:e742 with SMTP id
- 4fb4d7f45d1cf-5db7d2f947dmr3591163a12.8.1737142821022; 
- Fri, 17 Jan 2025 11:40:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHbHfDaPZvPVis45W8G4jtQRMfhXqK0bY0Sa1dU3kx3iXc5jJ4dYg7FVyd2EaIFIN225cnciQ==
-X-Received: by 2002:a05:6402:2342:b0:5db:67a7:e742 with SMTP id
- 4fb4d7f45d1cf-5db7d2f947dmr3591134a12.8.1737142820549; 
- Fri, 17 Jan 2025 11:40:20 -0800 (PST)
+ bh=A81qJn2EL6E/QyMc/gOAoSx6A9iJTPC6iOP+Z5fufcI=;
+ b=JhlgucIt2OaL288MfoT/1L476tISzPWd6B1ERTl+YIOeBPWpw62WtGWlhHw+mbnHmC
+ PeXTNpat39VmZq0XpUxe+YDzY07iT7nk+nW226JKnGbSribDjLwWHy5bv1ATgQroacMc
+ ypAz2uHdLyi4T6BKxUx+/5wLY4Nf/xSqJwFtONQKOF7v8oqLObVSkvGazl9WxKm+m4Q6
+ 2HxifAg1HNyOqLPO1fm16IoczEV+Enx0OPDT8zLZqpcq74KC1iehKqEqG3+AonaQilii
+ mNik0L9PDpfYTcPRUZ2tLwTj8WxxtCXZdLcq6JYBfSNmNSegg7xbHGWSEVOC6dtrSSYk
+ 9AHg==
+X-Gm-Message-State: AOJu0Yy95z6/0JSEgHwP4VYdNgE+9HfCljmV/fW1qfxkwZqUAF6GS3c0
+ /L369aM9fPeEvH2kVET27kcOoYQuYVj+58ibfrrKv0HDsJ48Y4WS27GDkt9n6L3gU4r2zjGGOOi
+ CyG57DhR42sK7OWXT3Q52F6vn+Pz6AleY4w5dYWJ6bFDg3MrG9EeWEqEaDivyRMlpPYUriZ+ksB
+ v1WissMrTZWhR872lVpsTDkQQtXa1EXSDDD9SltRM=
+X-Gm-Gg: ASbGnctgtPqZu+qx3bPv1USIO9mj24m3UDujqb2lE3rXCA/UveYi8lsqeiCpn2uQhgU
+ OFoglJAdTB5TMdv0DUi5o4mkQAodHQNrCFktYSqxXEU/trXatvP+DmirwVK5lxHxy877cJ1Y/Op
+ MXIl13PkSr5RbGKmAYYc+andg1ToyEIKcv5l7/RaFUtL+ITznmtECWv+bKIYhccCUE+NdXzaTah
+ 1u74Vq3aZGeZIGAvW2IUDVlLAI1CcHAN8/QniQ46S4s6wVAeodD2gInXASf6g==
+X-Received: by 2002:a17:907:9802:b0:aae:8491:bab5 with SMTP id
+ a640c23a62f3a-ab38b30e1admr345573766b.26.1737142823242; 
+ Fri, 17 Jan 2025 11:40:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG2DRY5RAxoi0USi7TxLjP6LuLwhm7HLPfDLog2RFrIdUOus5b4CwuEYkSzedMlE9HVgpG5AA==
+X-Received: by 2002:a17:907:9802:b0:aae:8491:bab5 with SMTP id
+ a640c23a62f3a-ab38b30e1admr345571766b.26.1737142822809; 
+ Fri, 17 Jan 2025 11:40:22 -0800 (PST)
 Received: from [192.168.10.47] ([176.206.124.70])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5db73642580sm1910393a12.15.2025.01.17.11.40.17
+ a640c23a62f3a-ab3848b2047sm218476466b.0.2025.01.17.11.40.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 11:40:17 -0800 (PST)
+ Fri, 17 Jan 2025 11:40:22 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org
-Subject: [PATCH 06/10] rust: qom: allow initializing interface vtables
-Date: Fri, 17 Jan 2025 20:39:59 +0100
-Message-ID: <20250117194003.1173231-7-pbonzini@redhat.com>
+Subject: [PATCH 07/10] rust: qdev: make ObjectImpl a supertrait of DeviceImpl
+Date: Fri, 17 Jan 2025 20:40:00 +0100
+Message-ID: <20250117194003.1173231-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250117194003.1173231-1-pbonzini@redhat.com>
 References: <20250117194003.1173231-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.132,
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.132,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.79,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,92 +105,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unlike regular classes, interface vtables can only be obtained via
-object_class_dynamic_cast.  Provide a wrapper that allows accessing
-the vtable and pass it to a ClassInitImpl implementation, for example
-ClassInitImpl<ResettableClass>.
+In practice it has to be implemented always in order to access an
+implementation of ClassInitImpl<ObjectClass>.  Make the relationship
+explicit in the code.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/prelude.rs |  1 +
- rust/qemu-api/src/qom.rs     | 45 ++++++++++++++++++++++++++++++++++--
- 2 files changed, 44 insertions(+), 2 deletions(-)
+ rust/qemu-api/src/qdev.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/qemu-api/src/prelude.rs b/rust/qemu-api/src/prelude.rs
-index 87e3ce90f26..254edb476dd 100644
---- a/rust/qemu-api/src/prelude.rs
-+++ b/rust/qemu-api/src/prelude.rs
-@@ -9,6 +9,7 @@
- 
- pub use crate::qdev::DeviceMethods;
- 
-+pub use crate::qom::InterfaceType;
- pub use crate::qom::IsA;
- pub use crate::qom::Object;
- pub use crate::qom::ObjectCast;
-diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
-index 6f7db3eabcb..8b2dbb3919c 100644
---- a/rust/qemu-api/src/qom.rs
-+++ b/rust/qemu-api/src/qom.rs
-@@ -66,8 +66,8 @@
- 
- use crate::{
-     bindings::{
--        self, object_dynamic_cast, object_get_class, object_get_typename, object_new, object_ref,
--        object_unref, TypeInfo,
-+        self, object_class_dynamic_cast, object_dynamic_cast, object_get_class,
-+        object_get_typename, object_new, object_ref, object_unref, TypeInfo,
-     },
-     cell::bql_locked,
+diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
+index f573712550e..ab883e2faef 100644
+--- a/rust/qemu-api/src/qdev.rs
++++ b/rust/qemu-api/src/qdev.rs
+@@ -21,7 +21,7 @@
  };
-@@ -256,6 +256,47 @@ unsafe fn as_object_mut_ptr(&self) -> *mut Object {
-     }
- }
  
-+/// Trait exposed by all structs corresponding to QOM interfaces.
-+/// Unlike `ObjectType`, it is implemented on the class type (which provides
-+/// the vtable for the interfaces).
-+///
-+/// # Safety
-+///
-+/// `TYPE` must match the contents of the `TypeInfo` as found in the C code;
-+/// right now, interfaces can only be declared in C.
-+pub unsafe trait InterfaceType: Sized {
-+    /// The name of the type, which can be passed to
-+    /// `object_class_dynamic_cast()` to obtain the pointer to the vtable
-+    /// for this interface.
-+    const TYPE_NAME: &'static CStr;
-+
-+    /// Initialize the vtable for the interface; the generic argument `T` is the
-+    /// type being initialized, while the generic argument `U` is the type that
-+    /// lists the interface in its `TypeInfo`.
-+    ///
-+    /// # Panics
-+    ///
-+    /// Panic if the incoming argument if `T` does not implement the interface.
-+    fn interface_init<
-+        T: ObjectType + ClassInitImpl<Self> + ClassInitImpl<U::Class>,
-+        U: ObjectType,
-+    >(
-+        klass: &mut U::Class,
-+    ) {
-+        unsafe {
-+            // SAFETY: upcasting to ObjectClass is always valid, and the
-+            // return type is either NULL or the argument itself
-+            let result: *mut Self = object_class_dynamic_cast(
-+                (klass as *mut U::Class).cast(),
-+                Self::TYPE_NAME.as_ptr(),
-+            )
-+            .cast();
-+
-+            <T as ClassInitImpl<Self>>::class_init(result.as_mut().unwrap())
-+        }
-+    }
-+}
-+
- /// This trait provides safe casting operations for QOM objects to raw pointers,
- /// to be used for example for FFI. The trait can be applied to any kind of
- /// reference or smart pointers, and enforces correctness through the [`IsA`]
+ /// Trait providing the contents of [`DeviceClass`].
+-pub trait DeviceImpl {
++pub trait DeviceImpl: ObjectImpl {
+     /// _Realization_ is the second stage of device creation. It contains
+     /// all operations that depend on device properties and can fail (note:
+     /// this is not yet supported for Rust devices).
 -- 
 2.47.1
 
