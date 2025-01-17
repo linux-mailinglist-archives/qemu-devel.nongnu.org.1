@@ -2,93 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B5AA154BF
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 17:49:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 489AAA154D3
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 17:50:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYpWW-0003R9-7D; Fri, 17 Jan 2025 11:48:44 -0500
+	id 1tYpXc-0004El-02; Fri, 17 Jan 2025 11:49:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYpWU-0003Qw-1M
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 11:48:42 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tYpXX-0004Ck-T8
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 11:49:47 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tYpWS-00015y-Et
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 11:48:41 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4361c705434so16086695e9.3
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 08:48:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737132518; x=1737737318; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=EyB/skZvZi5uJeOintJiNKAPBkRWLZ20o9jozeM0sDo=;
- b=sihHzkFXDXtdfgrPlaZRKVYlgwt0ta99oZHE7fqsJB1XRD0yFyPbqTNnTAY4eH06/j
- plV4ZTJykBgwhy3LzY6Xvg6obMQ/IgJt7s9nHjyC0k5HBaiyJrjPb6+CF31mjyCcv8e7
- JexVm7B6iT0rJRNErWdHXqAulaRZN8XO7ChdMHKT6UQ7Ddn4cqnlYugYoho2tbePeW4/
- 3QZ/HRlNucVrtbIB7xoYbW32mOiErqYtLozzhXh/aGSCuNM8QxonYsFz+JABiLkVaqd5
- UpHIteJ8xATfhvrFxnuQkpjrn7TcrSRVn/gPnOIDzjrW2sRDJM3T2m0YCn7Td8JvDBzW
- BKdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737132518; x=1737737318;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EyB/skZvZi5uJeOintJiNKAPBkRWLZ20o9jozeM0sDo=;
- b=WCmaycVN65k38PPtSdjOwJcTC7iFXDUaeV+88vB/CCC4FAZgh3yNTKa8scNcDIUmpf
- 0hacFl2BNyOx9mHi6spouLK+R0zhrQ22l1JGrE69Sw5yI8klz0oW3g1oJSvkIDPK4x8j
- dNXPbbtPWleL+Qf+ced7MUmmgtSQSFKNc7xKao98Fyn6TTfjzW7505YLouaHVud3h4KT
- XbMlrV3mvjBLtPNy9wE2IB8J2twaWM//kx177iRs4oirmuWfP6TS0gI8bnVznsVXoO9y
- S/6oXnNJ3WHwNvZbqUwwPCub8eKS2W7CAhOOKtxHWqpSHnb4n+dKR2LDO8k3jFb3XuWE
- dq9A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX7mDB0r7X6xShDIUhbKtaxtWT3looZTpQPdO3XW7w7Gexdt+1To1yHshRg33B2Ou+susN7xwqnaSjd@nongnu.org
-X-Gm-Message-State: AOJu0YzTB/es3ZWMcQhLtHvBJSLvBjFyyZHuOuTugawzaMnfMhZ/gB0u
- 4MS9N9bNSHlJCtHyguD3CAa244oShm2+C54JgqW1CZk4zJbyZoj/SildgRrDbEQ=
-X-Gm-Gg: ASbGncujuZUlYl4IeAB5DzCU0NEZtShnK/+zNmmVQ6RMh0b791JhUy9AKZLVKvVoup6
- TtHlLgwSu1xGi6PY8FDC0EO+b6xKVuOPKYuVZRKkEbdXX+oZfQeAv8S/5aqqQQhsFZupf8e6MIF
- zGEqWN+NFRtPunqRvQ2s3aOkh/zSJQ+JsAYQ6CYfgyRRW6TFlIcezQe4126BVT/DrNBcpKncPo2
- SORQBmcH9Sce5Yr505zIfPGplastSMTCKcDBZkwzg4ltae4IdxJWR3C60ScwmVP0NNy2pmhaJGL
- /nVMRYC3t7xxKccPQfXCrOa3
-X-Google-Smtp-Source: AGHT+IHcwTZqhllsjZcr6dTTjo21JPVBa85FJBWd3krKSuv4oWAYor30jLWPmcSzlCHrKV0c65cBtw==
-X-Received: by 2002:a05:600c:46c5:b0:434:a4b3:5ebe with SMTP id
- 5b1f17b1804b1-438914297c0mr33579875e9.24.1737132517696; 
- Fri, 17 Jan 2025 08:48:37 -0800 (PST)
-Received: from [192.168.69.151] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38bf3275622sm2968059f8f.69.2025.01.17.08.48.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 17 Jan 2025 08:48:37 -0800 (PST)
-Message-ID: <7991a31a-7397-4f31-963a-5818d388c096@linaro.org>
-Date: Fri, 17 Jan 2025 17:48:36 +0100
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tYpXT-0001ER-Ki
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 11:49:45 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 44E691F38E
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 16:49:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1737132580; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=7bmDq0P2u7/6nj3MECEu/MSguwOhxzBRHU8QfIp6/dw=;
+ b=sVPuD+FQEBrbEC3ZyeGG8oGcHoevL7YaFYOtAHZRQQQpj3nSDMrFA/rE7QuciXyQRDS/Dy
+ f1GHT2Uui1WlC0yl600Lukkt1T5Z9XetsPWD46makQzEkkknHSRJw4xUTO/ElmCqQMXuab
+ s6aWfvWAyiKbPYxlkfaEVWOWxDMcLtg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1737132580;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=7bmDq0P2u7/6nj3MECEu/MSguwOhxzBRHU8QfIp6/dw=;
+ b=gp9dfjmH8o5yKc16rNY4D0uPiUmu63yLH62jGm2oI/Y7e5ml+QMdsNPuIKxCX5F8jtd6SY
+ d2xjVBVOXpPrlwDA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1737132580; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=7bmDq0P2u7/6nj3MECEu/MSguwOhxzBRHU8QfIp6/dw=;
+ b=sVPuD+FQEBrbEC3ZyeGG8oGcHoevL7YaFYOtAHZRQQQpj3nSDMrFA/rE7QuciXyQRDS/Dy
+ f1GHT2Uui1WlC0yl600Lukkt1T5Z9XetsPWD46makQzEkkknHSRJw4xUTO/ElmCqQMXuab
+ s6aWfvWAyiKbPYxlkfaEVWOWxDMcLtg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1737132580;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=7bmDq0P2u7/6nj3MECEu/MSguwOhxzBRHU8QfIp6/dw=;
+ b=gp9dfjmH8o5yKc16rNY4D0uPiUmu63yLH62jGm2oI/Y7e5ml+QMdsNPuIKxCX5F8jtd6SY
+ d2xjVBVOXpPrlwDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6E44913332
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 16:49:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id huQMCyOKimftQgAAD6G6ig
+ (envelope-from <farosas@suse.de>)
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 16:49:39 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/5] QTest patches for 2025-01-17
+Date: Fri, 17 Jan 2025 13:49:31 -0300
+Message-Id: <20250117164936.22223-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] tests/qtest/test-x86-cpuid-compat: Remove tests
- related to pc-i440fx-2.3
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Cc: devel@lists.libvirt.org, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Kashyap Chamarthy <kchamart@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-References: <20250117102738.59714-1-thuth@redhat.com>
- <20250117102738.59714-2-thuth@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250117102738.59714-2-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; RCPT_COUNT_ONE(0.00)[1];
+ ARC_NA(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; TO_DN_NONE(0.00)[];
+ PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
+ RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,16 +108,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/1/25 11:27, Thomas Huth wrote:
-> The pc-i440fx-2.3 machine type has been removed in commit 46a2bd5257
-> ("hw/i386/pc: Remove deprecated pc-i440fx-2.3 machine") already, so
-> these tests are just dead code by now.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   tests/qtest/test-x86-cpuid-compat.c | 18 ------------------
->   1 file changed, 18 deletions(-)
+The following changes since commit 4d5d933bbc7cc52f6cc6b9021f91fa06266222d5:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+  Merge tag 'pull-xenfv-20250116' of git://git.infradead.org/users/dwmw2/qemu into staging (2025-01-16 09:03:43 -0500)
+
+are available in the Git repository at:
+
+  https://gitlab.com/farosas/qemu.git tags/qtest-20250117-pull-request
+
+for you to fetch changes up to aa601bd4f1208d85906f7778679c57d91cef6c70:
+
+  tests/qtest/test-x86-cpuid-compat: Remove tests related to pc-i440fx-2.3 (2025-01-17 11:48:44 -0300)
+
+----------------------------------------------------------------
+Qtest pull request
+
+- RISCV CSR test
+- migration recover changed to OOB
+- removal of dead code in test-x86-cpuid-compat
+
+----------------------------------------------------------------
+
+Ivan Klokov (2):
+  target/riscv: Add RISC-V CSR qtest support
+  tests/qtest: QTest example for RISC-V CSR register
+
+Juraj Marcin (2):
+  tests/qtest: Introduce qtest_init_with_env_and_capabilities()
+  tests/qtest/migration: Use out-of-band execution for migrate-recover
+
+Thomas Huth (1):
+  tests/qtest/test-x86-cpuid-compat: Remove tests related to
+    pc-i440fx-2.3
+
+ hw/riscv/riscv_hart.c                 | 55 ++++++++++++++++++++++++++
+ tests/qtest/libqtest.c                | 45 ++++++++++++++++++++-
+ tests/qtest/libqtest.h                | 31 +++++++++++++++
+ tests/qtest/meson.build               |  2 +-
+ tests/qtest/migration/framework.c     | 23 ++++++++++-
+ tests/qtest/migration/framework.h     |  2 +
+ tests/qtest/migration/migration-qmp.c |  2 +-
+ tests/qtest/riscv-csr-test.c          | 56 +++++++++++++++++++++++++++
+ tests/qtest/test-x86-cpuid-compat.c   | 18 ---------
+ 9 files changed, 210 insertions(+), 24 deletions(-)
+ create mode 100644 tests/qtest/riscv-csr-test.c
+
+-- 
+2.35.3
 
 
