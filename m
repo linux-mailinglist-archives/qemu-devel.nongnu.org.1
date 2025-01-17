@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8069DA149C7
+	by mail.lfdr.de (Postfix) with ESMTPS id CBFFBA149C9
 	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 07:48:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYg8a-0002tx-M9; Fri, 17 Jan 2025 01:47:27 -0500
+	id 1tYg95-0002xv-I1; Fri, 17 Jan 2025 01:48:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tYg8X-0002tU-Qp
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 01:47:21 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1tYg8n-0002wp-Ku
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 01:47:39 -0500
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tYg8W-00055h-3X
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 01:47:21 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-21634338cfdso43680265ad.2
- for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 22:47:19 -0800 (PST)
+ id 1tYg8b-00056H-FG
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 01:47:27 -0500
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-2ef6c56032eso2382612a91.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Jan 2025 22:47:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1737096438; x=1737701238;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1737096443; x=1737701243;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=8flhO7OFgjJStUozbkecdgxyph0L237eJ5zpIYSa2Sg=;
- b=DPN33yAKGBMW399gIsW2D+kd3TuFyt7Nl3SIt2IjRccYxGrWuC7ElNUfXIcV8Z5yNo
- bQGbKR4RNcs04jLq4r6P0c1WN+5spoWaeR0C8dd9skCrf+bw22iRD3Czp/k4J4K6ZaDC
- VpNqD4jX2pL8ixyTGNy4P7DbrPVrFGKOBslIFR4LnqV2+OiHuj837CQkjmmsLbQlL2qa
- fB3FjmzGQZsSOy0NSu1eMzp204vwMXZrPUxd0bAFRjLHetxwyhxNeISKmVjrhJGTwl5U
- tG+DxOs7YcM8qeNiSQULdLYZwDcYOChFqXSE5SpYECwVl4sJRtTQ98EHOpoSKHnqIH/j
- iQXA==
+ :reply-to; bh=qdmdAb2d8j2jwxZ4AeBFUh6ixb+QzL3NZeL44K9HsII=;
+ b=14C01nMjFjQDQ5uqEO+oweu29yT61/wV0cOd5ZgGXesZwB4WepH/FHCh3TeIF6WIuy
+ Z5PbvD4rxvHgwir+QLuUGR0oWXQQTI9e6EZvhu2xG5nXYq8++q9clS0ffH3BpX3gQYmZ
+ ACP5DgTJLWvSUmF4Bsrn3mqGalJd6sVpKWjr6WLpD9xzNND6qnYTds8h6xyWGY+d05wh
+ Aa8yQ6IQf6gwPa/PzxGHUdg1dJG3Y6dc8uqL/ahvEAAkJw3KqE+FMZKckAoQ5/g/0LF/
+ Ac8Uz8Y1Q7aIufBD6ZzuLK8MHe1kd0wnL6itJ0zC+QcVoak4M7vIssOKHUGBEuZWCfhg
+ mvrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737096438; x=1737701238;
+ d=1e100.net; s=20230601; t=1737096443; x=1737701243;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8flhO7OFgjJStUozbkecdgxyph0L237eJ5zpIYSa2Sg=;
- b=aA+7kdHxVuG973T/156iX77CaMDXkh6jn6vhnZONU5/yJoQtVS8DcXNLXomZ7oyfzv
- wA9QPYAQ0xNvZ48/InjwnfTrMz/Dw5MJOvZP0R4HercF6LeT1UJtDwAtyzm9+wB3x8ST
- /C1lIwClVzUPsSO8hrNZY7osDr/2bXiq5hS+lV3+Rky99sUKaNp3mHUDw8u8uDCnlrDV
- i2myhLo9Z9+Vr69KLz8rfWIatieEY0TvhIT4YzXe0lEEeMRXxW1/aJgH4u9n65SBdiKb
- 081s99CkK/J7qe/0OzxpZdICuPl7IblUpETT3AN40pAkpSlUL8Rc+sefyWgi9w31lkvc
- aTnA==
-X-Gm-Message-State: AOJu0Yz/IvBC8p3QdpwwYhq8biHx2lEyPmPBhP0iQZ5SFJOyAzGMS0DU
- Qc6Q2jItpeGVIrFJYvdTVxPaFnuU5wNxqWcdbQVUxP0ALQo/YVwhgEM43SqORVJpw/8r0dlZwBB
- 1lfU=
-X-Gm-Gg: ASbGncsGeLe5Gt2Cr74DtgO/ZAp4c8q3OrD387Buu663LAHxzua2fGnAPyaeL18whmI
- 1gq0Mrz7B0inwDecQ0CEw5tAP31q8xTccfpAhHcfilKSOxDo06ZwzxciKxbxl6i1LQF7XLQJfrW
- FOnAMvSuY4cadi+0BQ3uAUtpULr+wvrBGqObBryIT2jwqZxYVjbKS9YT1htlwrjQ9dOlwvLnxs8
- IucRqY7nwfmGnRX6sQrLLdbBnI1zSLLZOmt/f2NPVN4c05J5vy2m7qRFc0=
-X-Google-Smtp-Source: AGHT+IHV5dMaPbzQuZ146GM/a7AvsMUpDkmdomN1PPjW4v9cqR9c7OLKfYUD5VzW2DtIK4aze7KMcQ==
-X-Received: by 2002:a17:903:32cf:b0:216:5af7:5a8e with SMTP id
- d9443c01a7336-21c355ec9c0mr24055655ad.26.1737096438591; 
- Thu, 16 Jan 2025 22:47:18 -0800 (PST)
+ bh=qdmdAb2d8j2jwxZ4AeBFUh6ixb+QzL3NZeL44K9HsII=;
+ b=sqtVc5XreIZMbdNpYQtsvadUjwaBLWN9UuPJ7uO3w40eHaivywNUlKBbS4f63LOkZQ
+ ZYBZZO71ruiq7CmDq76Oag70P6EwQqYVn6NajSXwBPZXAcZjuQZmkOWaKxgx4k3PjqWy
+ gRhCXwdLMfYe07ytikdrQdCcZTVrFpIpnmUsnMCB0KUv0opItYJtDio86xIQCeRVI7Yl
+ aeAU3QszLZXKR/ekQ/Yw5L1drh4SMvvk6FvJB/HpR3H9ZTrZi+bXBzIvh4CCFFxXEvZZ
+ t9SMMJDB5ebHIzV+8xzttUVGXqxMnWsJ/It4M1GJt6dvLjz7cI94mZJcTpWRHsQmrZk7
+ eqww==
+X-Gm-Message-State: AOJu0Yw9+UEv3JhOmQxw4jLkqq3K6A/BrhcwStPeSo5YM5zEfPvdB88p
+ wPKRpXLi8g8gpeLaxgp5YlaFFZH8c8dYZqzyZDr59hvAOa1b5yFNCkC9g7iZtl0=
+X-Gm-Gg: ASbGnctbZf5o0xtTdV4qkk7YGIc0Z/2EGKXxBFmBrx5eHUbvdfum9O5E91FGv1j/U8n
+ V/rjMy1yoQykmMFKkHBey7WKjvBaw1eOT0I3QHCTOSJgGo5wCFbsS8NkcpkSNYHfVjtjZh8BkVP
+ EHsB5/aReIWwyvdGr+x2A+hQ1ML7ditA5udtidK9sn8rPs2QI2XgtWBPtmO6o2CUaEe2y9gli3z
+ okZaKwFNAi8v8RDf33QpHhPpyXlZBRnfaYM2PSN3KB/A/7U6v9AKMcHUU8=
+X-Google-Smtp-Source: AGHT+IEuX0Td4PteDnvdTD/uRs0VsrvojFg/1YDJPmRTcCvjsRKKAMK/wTjHfn/HdcGOgR9LG4l26A==
+X-Received: by 2002:a17:90b:2748:b0:2ea:59e3:2d2e with SMTP id
+ 98e67ed59e1d1-2f782c73b7fmr2321359a91.10.1737096443330; 
+ Thu, 16 Jan 2025 22:47:23 -0800 (PST)
 Received: from localhost ([157.82.203.37]) by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-21c2d4027e3sm9309305ad.222.2025.01.16.22.47.16
+ 98e67ed59e1d1-2f70bd40b8csm2324740a91.1.2025.01.16.22.47.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Jan 2025 22:47:18 -0800 (PST)
+ Thu, 16 Jan 2025 22:47:23 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Fri, 17 Jan 2025 15:47:00 +0900
-Subject: [PATCH v4 1/3] coreaudio: Commit the result of init in the end
+Date: Fri, 17 Jan 2025 15:47:01 +0900
+Subject: [PATCH v4 2/3] audio: Add functions to initialize buffers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250117-coreaudio-v4-1-f8d4fa4cb5f4@daynix.com>
+Message-Id: <20250117-coreaudio-v4-2-f8d4fa4cb5f4@daynix.com>
 References: <20250117-coreaudio-v4-0-f8d4fa4cb5f4@daynix.com>
 In-Reply-To: <20250117-coreaudio-v4-0-f8d4fa4cb5f4@daynix.com>
 To: Gerd Hoffmann <kraxel@redhat.com>, 
@@ -75,8 +74,8 @@ To: Gerd Hoffmann <kraxel@redhat.com>,
 Cc: qemu-devel@nongnu.org, devel@daynix.com, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1032.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,163 +97,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-init_out_device may only commit some part of the result and leave the
-state inconsistent when it encounters a fatal error or the device gets
-unplugged during the operation, which is expressed by
-kAudioHardwareBadObjectError or kAudioHardwareBadDeviceError. Commit the
-result in the end of the function so that it commits the result iff it
-sees no fatal error and the device remains plugged.
-
-With this change, handle_voice_change can rely on core->outputDeviceID
-to know whether the output device is initialized after calling
-init_out_device.
+These functions can be used to re-initialize buffers when hardware
+parameters change due to device hotplug, for example.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- audio/coreaudio.m | 49 +++++++++++++++++++++++++++----------------------
- 1 file changed, 27 insertions(+), 22 deletions(-)
+ audio/audio_int.h |  2 ++
+ audio/audio.c     | 24 ++++++++++++++++++------
+ 2 files changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/audio/coreaudio.m b/audio/coreaudio.m
-index cadd729d5053..b9e1a952ed37 100644
---- a/audio/coreaudio.m
-+++ b/audio/coreaudio.m
-@@ -355,7 +355,10 @@ static OSStatus audioDeviceIOProc(
- static OSStatus init_out_device(coreaudioVoiceOut *core)
- {
-     OSStatus status;
-+    AudioDeviceID deviceID;
-     AudioValueRange frameRange;
-+    UInt32 audioDevicePropertyBufferFrameSize;
-+    AudioDeviceIOProcID ioprocid;
+diff --git a/audio/audio_int.h b/audio/audio_int.h
+index 2d079d00a259..9ba4a144d571 100644
+--- a/audio/audio_int.h
++++ b/audio/audio_int.h
+@@ -187,9 +187,11 @@ struct audio_pcm_ops {
+     void   (*volume_in)(HWVoiceIn *hw, Volume *vol);
+ };
  
-     AudioStreamBasicDescription streamBasicDescription = {
-         .mBitsPerChannel = core->hw.info.bits,
-@@ -368,20 +371,19 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
-         .mSampleRate = core->hw.info.freq
-     };
- 
--    status = coreaudio_get_voice(&core->outputDeviceID);
-+    status = coreaudio_get_voice(&deviceID);
-     if (status != kAudioHardwareNoError) {
-         coreaudio_playback_logerr (status,
-                                    "Could not get default output Device\n");
-         return status;
-     }
--    if (core->outputDeviceID == kAudioDeviceUnknown) {
-+    if (deviceID == kAudioDeviceUnknown) {
-         dolog ("Could not initialize playback - Unknown Audiodevice\n");
-         return status;
-     }
- 
-     /* get minimum and maximum buffer frame sizes */
--    status = coreaudio_get_framesizerange(core->outputDeviceID,
--                                          &frameRange);
-+    status = coreaudio_get_framesizerange(deviceID, &frameRange);
-     if (status == kAudioHardwareBadObjectError) {
-         return 0;
-     }
-@@ -392,31 +394,31 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
-     }
- 
-     if (frameRange.mMinimum > core->frameSizeSetting) {
--        core->audioDevicePropertyBufferFrameSize = (UInt32) frameRange.mMinimum;
-+        audioDevicePropertyBufferFrameSize = (UInt32) frameRange.mMinimum;
-         dolog ("warning: Upsizing Buffer Frames to %f\n", frameRange.mMinimum);
-     } else if (frameRange.mMaximum < core->frameSizeSetting) {
--        core->audioDevicePropertyBufferFrameSize = (UInt32) frameRange.mMaximum;
-+        audioDevicePropertyBufferFrameSize = (UInt32) frameRange.mMaximum;
-         dolog ("warning: Downsizing Buffer Frames to %f\n", frameRange.mMaximum);
-     } else {
--        core->audioDevicePropertyBufferFrameSize = core->frameSizeSetting;
-+        audioDevicePropertyBufferFrameSize = core->frameSizeSetting;
-     }
- 
-     /* set Buffer Frame Size */
--    status = coreaudio_set_framesize(core->outputDeviceID,
--                                     &core->audioDevicePropertyBufferFrameSize);
-+    status = coreaudio_set_framesize(deviceID,
-+                                     &audioDevicePropertyBufferFrameSize);
-     if (status == kAudioHardwareBadObjectError) {
-         return 0;
-     }
-     if (status != kAudioHardwareNoError) {
-         coreaudio_playback_logerr (status,
-                                     "Could not set device buffer frame size %" PRIu32 "\n",
--                                    (uint32_t)core->audioDevicePropertyBufferFrameSize);
-+                                    (uint32_t)audioDevicePropertyBufferFrameSize);
-         return status;
-     }
- 
-     /* get Buffer Frame Size */
--    status = coreaudio_get_framesize(core->outputDeviceID,
--                                     &core->audioDevicePropertyBufferFrameSize);
-+    status = coreaudio_get_framesize(deviceID,
-+                                     &audioDevicePropertyBufferFrameSize);
-     if (status == kAudioHardwareBadObjectError) {
-         return 0;
-     }
-@@ -425,11 +427,9 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
-                                     "Could not get device buffer frame size\n");
-         return status;
-     }
--    core->hw.samples = core->bufferCount * core->audioDevicePropertyBufferFrameSize;
- 
-     /* set Samplerate */
--    status = coreaudio_set_streamformat(core->outputDeviceID,
--                                        &streamBasicDescription);
-+    status = coreaudio_set_streamformat(deviceID, &streamBasicDescription);
-     if (status == kAudioHardwareBadObjectError) {
-         return 0;
-     }
-@@ -437,7 +437,6 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
-         coreaudio_playback_logerr (status,
-                                    "Could not set samplerate %lf\n",
-                                    streamBasicDescription.mSampleRate);
--        core->outputDeviceID = kAudioDeviceUnknown;
-         return status;
-     }
- 
-@@ -451,20 +450,24 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
-      * Therefore, the specified callback must be designed to avoid a deadlock
-      * with the callers of AudioObjectGetPropertyData.
-      */
--    core->ioprocid = NULL;
--    status = AudioDeviceCreateIOProcID(core->outputDeviceID,
-+    ioprocid = NULL;
-+    status = AudioDeviceCreateIOProcID(deviceID,
-                                        audioDeviceIOProc,
-                                        &core->hw,
--                                       &core->ioprocid);
-+                                       &ioprocid);
-     if (status == kAudioHardwareBadDeviceError) {
-         return 0;
-     }
--    if (status != kAudioHardwareNoError || core->ioprocid == NULL) {
-+    if (status != kAudioHardwareNoError || ioprocid == NULL) {
-         coreaudio_playback_logerr (status, "Could not set IOProc\n");
--        core->outputDeviceID = kAudioDeviceUnknown;
-         return status;
-     }
- 
-+    core->outputDeviceID = deviceID;
-+    core->audioDevicePropertyBufferFrameSize = audioDevicePropertyBufferFrameSize;
-+    core->hw.samples = core->bufferCount * core->audioDevicePropertyBufferFrameSize;
-+    core->ioprocid = ioprocid;
-+
-     return 0;
++void audio_generic_initialize_buffer_in(HWVoiceIn *hw);
+ void audio_generic_run_buffer_in(HWVoiceIn *hw);
+ void *audio_generic_get_buffer_in(HWVoiceIn *hw, size_t *size);
+ void audio_generic_put_buffer_in(HWVoiceIn *hw, void *buf, size_t size);
++void audio_generic_initialize_buffer_out(HWVoiceOut *hw);
+ void audio_generic_run_buffer_out(HWVoiceOut *hw);
+ size_t audio_generic_buffer_get_free(HWVoiceOut *hw);
+ void *audio_generic_get_buffer_out(HWVoiceOut *hw, size_t *size);
+diff --git a/audio/audio.c b/audio/audio.c
+index 87b4e9b6f2f3..17c6bbd0ae9e 100644
+--- a/audio/audio.c
++++ b/audio/audio.c
+@@ -1407,12 +1407,18 @@ void audio_run(AudioState *s, const char *msg)
+ #endif
  }
  
-@@ -548,7 +551,9 @@ static OSStatus handle_voice_change(
-         fini_out_device(core);
-     }
- 
--    if (!init_out_device(core)) {
-+    init_out_device(core);
++void audio_generic_initialize_buffer_in(HWVoiceIn *hw)
++{
++    g_free(hw->buf_emul);
++    hw->size_emul = hw->samples * hw->info.bytes_per_frame;
++    hw->buf_emul = g_malloc(hw->size_emul);
++    hw->pos_emul = hw->pending_emul = 0;
++}
 +
-+    if (core->outputDeviceID) {
-         update_device_playback_state(core);
+ void audio_generic_run_buffer_in(HWVoiceIn *hw)
+ {
+     if (unlikely(!hw->buf_emul)) {
+-        hw->size_emul = hw->samples * hw->info.bytes_per_frame;
+-        hw->buf_emul = g_malloc(hw->size_emul);
+-        hw->pos_emul = hw->pending_emul = 0;
++        audio_generic_initialize_buffer_in(hw);
      }
  
+     while (hw->pending_emul < hw->size_emul) {
+@@ -1446,6 +1452,14 @@ void audio_generic_put_buffer_in(HWVoiceIn *hw, void *buf, size_t size)
+     hw->pending_emul -= size;
+ }
+ 
++void audio_generic_initialize_buffer_out(HWVoiceOut *hw)
++{
++    g_free(hw->buf_emul);
++    hw->size_emul = hw->samples * hw->info.bytes_per_frame;
++    hw->buf_emul = g_malloc(hw->size_emul);
++    hw->pos_emul = hw->pending_emul = 0;
++}
++
+ size_t audio_generic_buffer_get_free(HWVoiceOut *hw)
+ {
+     if (hw->buf_emul) {
+@@ -1477,9 +1491,7 @@ void audio_generic_run_buffer_out(HWVoiceOut *hw)
+ void *audio_generic_get_buffer_out(HWVoiceOut *hw, size_t *size)
+ {
+     if (unlikely(!hw->buf_emul)) {
+-        hw->size_emul = hw->samples * hw->info.bytes_per_frame;
+-        hw->buf_emul = g_malloc(hw->size_emul);
+-        hw->pos_emul = hw->pending_emul = 0;
++        audio_generic_initialize_buffer_out(hw);
+     }
+ 
+     *size = MIN(hw->size_emul - hw->pending_emul,
 
 -- 
 2.47.1
