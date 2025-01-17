@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E1ABA1567E
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:26:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C70C9A15684
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Jan 2025 19:27:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tYr2Q-0004WE-Vp; Fri, 17 Jan 2025 13:25:47 -0500
+	id 1tYr2P-0004C0-JK; Fri, 17 Jan 2025 13:25:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr2E-0004BT-S8
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:36 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1tYr2B-0004Av-P5
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:32 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tYr27-0007v9-Bg
- for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:34 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-2165448243fso57144995ad.1
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:25:26 -0800 (PST)
+ id 1tYr29-0007vd-IC
+ for qemu-devel@nongnu.org; Fri, 17 Jan 2025 13:25:31 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-2164b662090so47461115ad.1
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 10:25:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737138326; x=1737743126; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737138328; x=1737743128; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DHOuFKbiyyQEX/klSmP2CeFyRwv+iNHGvEa+p7k0Rd8=;
- b=lmXMPTXJ4qVTpzCjmMbZ6ezy53w/5BwExyCfHeLKtj4dT89kJ17w0Oq7P+/6vJcVvg
- GegT7k1fhjAO/ZT+8MkfVzdRk0zLBlldhkFR/qnMatNtsFxg/Y+JvrGDmzYzLAzYZmzJ
- KoAEiIX4Zo4/EK7S4S74QwNgVCMduKZbGiRlubyKDoS3wk0zMS+wYxArSlbA2vFivExh
- PoxzMkTjDtyOrt5LouvhpowuoLI6QbUcSdMn2uAuTSGYLblp8sLFYoFL1b0gGR4WKzQ0
- JJpDmIAb4CitjM3NFL6b69pRYhJT87yhsDsHQt2fO4DH2XjRFAenPiGV3QY+to64qX4W
- 77iQ==
+ bh=hZKhK0VW7EkxUROV1Mw2sNMrRo2GVhvDfIPbGj8+yGM=;
+ b=kxs/3aUvMt+j/7V3pKAJl462xfS1Ru+9X/3po9ZZdSUqcljWSjH4GO77RPXClhCjFD
+ 5ry0FVFjNtr6uVkL/iceClsuH6Mlvu/7A2VrnSDoIteu1Q5m3pMU55MrguCihIg0fO+V
+ +RCbsYDpWfTkYknSIZdiJk7cwTtbg4B7Ng2110CE3YpY53Ca3AQ6ebo7v3BxOv5vYv4H
+ q8hFVXk+UwxbcQVb09db8BnNzyB3ghf6LpDwzoh8FddJhmnfIZBuPoOr7pl1JY+DvdEo
+ 0TH/dCLyrifI4w4SFHhIYMpukM9jKv9HeeSCsnwcrR9/1xq761YtYC7GvNvG8u7+vQDY
+ kVZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737138326; x=1737743126;
+ d=1e100.net; s=20230601; t=1737138328; x=1737743128;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DHOuFKbiyyQEX/klSmP2CeFyRwv+iNHGvEa+p7k0Rd8=;
- b=wOChX6VwPrjTVyNG635QUODy/wXqlHCcJYaVpz+Px1ZgwhX8TThJF23Ey1mMvrw76N
- glIShCluYUB4ipO50RmR3tgapkGP5b5eARF9Wkyv6OgsZE+PFhkVmR9vHmK/G2AlZUhH
- hQWy6NsQzjhlIs3yMDMY/TgGIp81EBi+E+emw2+JaNTBV/ShO8I/OvdMqHgZJhyZVupM
- gVPyg26rM8fSzFHvMitYHDkk9/x3LJ3uUz6oIv1+n1FjO2eZUR9rh15r4vFvwb4VSKjA
- 05vJyozh+U45vCqA8MsOC5xSd3OV4z+BKf7McuhskVgERZbvFZB4a/2sdZd1xANCcqDd
- 6YrA==
-X-Gm-Message-State: AOJu0YxFTo4dBjdfTOsZafmr0+W3gcTXWKq68fYMAP9zZxxbCdGkKAk0
- OWtXHYJFduwjr1DeBCZ5zM068sh+JKJbOmxUVeArmH3xrkEyNvIX+XZsbo/FkPCZcecqiBSzJ7f
- y
-X-Gm-Gg: ASbGncsDFtCcXj3GFSx908pdynmMUz29WdsTRKi88wFBNGKoJr5jH7GE2huVFST47/l
- XhEKPSHRXLDXgJRloToxZopPNDXMxw70lH7C0sv0oUQIUH5iAbA06P8u81Tb+ySgyTm2vCbdeOv
- MnPX+mwPeYUfBD3yh5kmHKzyblKxxKcNzpfoiNoQ/opKF09nJ/+QgUsRGTFKfTwlYVZn+Gxivt9
- AxqpOkl1SCL7hgqgSSizVR+ocOzhcEf+F3VgqxR1WuXiuyZKN7MjQuMIR7McfGuCMZFIPSFyCih
- z3ImhLB1vK3d1W8=
-X-Google-Smtp-Source: AGHT+IFrsATpKJGWWXrmuZpjtl1CU2xr4aRnzklWAAZmhfh9Bdj6uy2VjrOiHMLfmP+e0fUhmvat+w==
-X-Received: by 2002:a17:903:1d1:b0:216:4724:2757 with SMTP id
- d9443c01a7336-21c353eed3fmr55248215ad.4.1737138325883; 
- Fri, 17 Jan 2025 10:25:25 -0800 (PST)
+ bh=hZKhK0VW7EkxUROV1Mw2sNMrRo2GVhvDfIPbGj8+yGM=;
+ b=hM9anJ3Y13rcNEjC4ilNvpUtM7yrya1dXx7KK6m+eyP1p/sNc3DSBMowTZL8cEQiCv
+ 1Dl2slpAX8E5lkQGR5ABGyk3JP/al6n0nNUWr82DTP/ytwQIyTVRjfxkgCbeE1VpYxq5
+ aujaux+/sL2/hxvcjZE2WUgp4Vr3gxN5uPGtYsE3qNaTHlbMKntFt3cfZSlFOtgPIqO6
+ hRslPTFOwXMTAk5wRXHobRiy9UxLqxq7+UgBboFn6AdniONk+jV1m/y95uGvgGZ1XnRd
+ pvM4hb8O+YYx3Nbdmr8xnv0UehmqcArw4fDIYkv5qCmUZBTvajQxegCZEyrMTNb5YBKu
+ Xl/g==
+X-Gm-Message-State: AOJu0YwfY3rd5+to6xccwewJ8HMelqSxds3kmwfsU0TRLD2kXtOCPuTp
+ urGpBT0VWlYyGv1jFiD1E0/A/lXxjvyzSUAgbPJHy52ryYfHfjaeqrTPHsLEcY+WCRYrMl91fGf
+ +
+X-Gm-Gg: ASbGncsEb2NFbL/GB5j/G0ngYzbUCqI7j8wHQju66EgklhXSg1R9l6bXwsfg67gkst+
+ PfIXFlkgGGdoYdfcuJciTMYMs0+WoeBzsrN20gmNdbqaWs8vcqJYzyJBA1hJinjevUJHoAmrDc9
+ VIHd4hhVtlpJTozv6ZUSh3VdkIBqLw8TGwxDJMXNNtDh5yM3Ttp8pQWE9niJQQeZqBqGCOSISRR
+ T0RjfdIBMCeFcl1h7BcZeibdnDF3Ly5eIg4MI21UK3bpZwl6diJT8fIbHWNZoPL44pVMM6mExv1
+ cgumpBdeeKM4+iM=
+X-Google-Smtp-Source: AGHT+IGtRHhMt7TMRChfAMMomjg81pwBSAF7DujHZyRUeMKYkQZB0We+imdgQ0N3vczc8sdx8ZfXPw==
+X-Received: by 2002:a17:902:e548:b0:216:60a3:b3fd with SMTP id
+ d9443c01a7336-21c351d345amr45013705ad.3.1737138328217; 
+ Fri, 17 Jan 2025 10:25:28 -0800 (PST)
 Received: from stoup.. (174-21-71-127.tukw.qwest.net. [174.21.71.127])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21c2d3acccesm18879005ad.123.2025.01.17.10.25.24
+ d9443c01a7336-21c2d3acccesm18879005ad.123.2025.01.17.10.25.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 10:25:25 -0800 (PST)
+ Fri, 17 Jan 2025 10:25:26 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 36/68] tcg: Reorg process_op_defs
-Date: Fri, 17 Jan 2025 10:24:24 -0800
-Message-ID: <20250117182456.2077110-37-richard.henderson@linaro.org>
+Subject: [PULL 37/68] tcg: Remove args_ct from TCGOpDef
+Date: Fri, 17 Jan 2025 10:24:25 -0800
+Message-ID: <20250117182456.2077110-38-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250117182456.2077110-1-richard.henderson@linaro.org>
 References: <20250117182456.2077110-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,201 +98,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Process each TCGConstraintSetIndex first.  Allocate TCGArgConstraint
-arrays based on those.  Only afterward process the TCGOpcodes and
-share those TCGArgConstraint arrays.
+Introduce a new function, opcode_args_ct, to look up the argument
+set for an opcode.  We lose the ability to assert the correctness
+of the map from TCGOpcode to constraint sets at startup, but we can
+still validate at runtime upon lookup.
+
+Rename process_op_defs to process_constraint_sets, as it now does
+nothing to TCGOpDef.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/tcg.h |   7 +-
- tcg/tcg.c         | 272 +++++++++++++++++++++++-----------------------
- 2 files changed, 136 insertions(+), 143 deletions(-)
+ include/tcg/tcg.h |  1 -
+ tcg/tcg-common.c  |  2 +-
+ tcg/tcg.c         | 82 ++++++++++++++++++++++-------------------------
+ 3 files changed, 40 insertions(+), 45 deletions(-)
 
 diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index e5fa69d20b..a02de82508 100644
+index a02de82508..e28894c57b 100644
 --- a/include/tcg/tcg.h
 +++ b/include/tcg/tcg.h
-@@ -714,17 +714,12 @@ typedef struct TCGOpDef {
+@@ -714,7 +714,6 @@ typedef struct TCGOpDef {
      const char *name;
      uint8_t nb_oargs, nb_iargs, nb_cargs, nb_args;
      uint8_t flags;
--    TCGArgConstraint *args_ct;
-+    const TCGArgConstraint *args_ct;
+-    const TCGArgConstraint *args_ct;
  } TCGOpDef;
  
  extern TCGOpDef tcg_op_defs[];
- extern const size_t tcg_op_defs_max;
+diff --git a/tcg/tcg-common.c b/tcg/tcg-common.c
+index fadc33c3d1..0f30e5b3ec 100644
+--- a/tcg/tcg-common.c
++++ b/tcg/tcg-common.c
+@@ -28,7 +28,7 @@
  
--typedef struct TCGTargetOpDef {
--    TCGOpcode op;
--    const char *args_ct_str[TCG_MAX_OP_ARGS];
--} TCGTargetOpDef;
--
- /*
-  * tcg_op_supported:
-  * Query if @op, for @type and @flags, is supported by the host
+ TCGOpDef tcg_op_defs[] = {
+ #define DEF(s, oargs, iargs, cargs, flags) \
+-         { #s, oargs, iargs, cargs, iargs + oargs + cargs, flags, NULL },
++         { #s, oargs, iargs, cargs, iargs + oargs + cargs, flags },
+ #include "tcg/tcg-opc.h"
+ #undef DEF
+ };
 diff --git a/tcg/tcg.c b/tcg/tcg.c
-index 915a181596..d5ab0abe9d 100644
+index d5ab0abe9d..df7c4dab88 100644
 --- a/tcg/tcg.c
 +++ b/tcg/tcg.c
-@@ -887,31 +887,35 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode);
- 
- /* Put all of the constraint sets into an array, indexed by the enum. */
- 
--#define C_O0_I1(I1)                     { .args_ct_str = { #I1 } },
--#define C_O0_I2(I1, I2)                 { .args_ct_str = { #I1, #I2 } },
--#define C_O0_I3(I1, I2, I3)             { .args_ct_str = { #I1, #I2, #I3 } },
--#define C_O0_I4(I1, I2, I3, I4)         { .args_ct_str = { #I1, #I2, #I3, #I4 } },
-+typedef struct TCGConstraintSet {
-+    uint8_t nb_oargs, nb_iargs;
-+    const char *args_ct_str[TCG_MAX_OP_ARGS];
-+} TCGConstraintSet;
- 
--#define C_O1_I1(O1, I1)                 { .args_ct_str = { #O1, #I1 } },
--#define C_O1_I2(O1, I1, I2)             { .args_ct_str = { #O1, #I1, #I2 } },
--#define C_O1_I3(O1, I1, I2, I3)         { .args_ct_str = { #O1, #I1, #I2, #I3 } },
--#define C_O1_I4(O1, I1, I2, I3, I4)     { .args_ct_str = { #O1, #I1, #I2, #I3, #I4 } },
-+#define C_O0_I1(I1)                     { 0, 1, { #I1 } },
-+#define C_O0_I2(I1, I2)                 { 0, 2, { #I1, #I2 } },
-+#define C_O0_I3(I1, I2, I3)             { 0, 3, { #I1, #I2, #I3 } },
-+#define C_O0_I4(I1, I2, I3, I4)         { 0, 4, { #I1, #I2, #I3, #I4 } },
- 
--#define C_N1_I2(O1, I1, I2)             { .args_ct_str = { "&" #O1, #I1, #I2 } },
--#define C_N1O1_I1(O1, O2, I1)           { .args_ct_str = { "&" #O1, #O2, #I1 } },
--#define C_N2_I1(O1, O2, I1)             { .args_ct_str = { "&" #O1, "&" #O2, #I1 } },
-+#define C_O1_I1(O1, I1)                 { 1, 1, { #O1, #I1 } },
-+#define C_O1_I2(O1, I1, I2)             { 1, 2, { #O1, #I1, #I2 } },
-+#define C_O1_I3(O1, I1, I2, I3)         { 1, 3, { #O1, #I1, #I2, #I3 } },
-+#define C_O1_I4(O1, I1, I2, I3, I4)     { 1, 4, { #O1, #I1, #I2, #I3, #I4 } },
- 
--#define C_O2_I1(O1, O2, I1)             { .args_ct_str = { #O1, #O2, #I1 } },
--#define C_O2_I2(O1, O2, I1, I2)         { .args_ct_str = { #O1, #O2, #I1, #I2 } },
--#define C_O2_I3(O1, O2, I1, I2, I3)     { .args_ct_str = { #O1, #O2, #I1, #I2, #I3 } },
--#define C_O2_I4(O1, O2, I1, I2, I3, I4) { .args_ct_str = { #O1, #O2, #I1, #I2, #I3, #I4 } },
--#define C_N1_O1_I4(O1, O2, I1, I2, I3, I4) { .args_ct_str = { "&" #O1, #O2, #I1, #I2, #I3, #I4 } },
-+#define C_N1_I2(O1, I1, I2)             { 1, 2, { "&" #O1, #I1, #I2 } },
-+#define C_N1O1_I1(O1, O2, I1)           { 2, 1, { "&" #O1, #O2, #I1 } },
-+#define C_N2_I1(O1, O2, I1)             { 2, 1, { "&" #O1, "&" #O2, #I1 } },
- 
--static const TCGTargetOpDef constraint_sets[] = {
-+#define C_O2_I1(O1, O2, I1)             { 2, 1, { #O1, #O2, #I1 } },
-+#define C_O2_I2(O1, O2, I1, I2)         { 2, 2, { #O1, #O2, #I1, #I2 } },
-+#define C_O2_I3(O1, O2, I1, I2, I3)     { 2, 3, { #O1, #O2, #I1, #I2, #I3 } },
-+#define C_O2_I4(O1, O2, I1, I2, I3, I4) { 2, 4, { #O1, #O2, #I1, #I2, #I3, #I4 } },
-+#define C_N1_O1_I4(O1, O2, I1, I2, I3, I4) { 2, 4, { "&" #O1, #O2, #I1, #I2, #I3, #I4 } },
-+
-+static const TCGConstraintSet constraint_sets[] = {
- #include "tcg-target-con-set.h"
- };
- 
--
- #undef C_O0_I1
- #undef C_O0_I2
- #undef C_O0_I3
-@@ -1499,32 +1503,12 @@ static TCGTemp *tcg_global_reg_new_internal(TCGContext *s, TCGType type,
- static void tcg_context_init(unsigned max_cpus)
- {
-     TCGContext *s = &tcg_init_ctx;
--    int op, total_args, n, i;
--    TCGOpDef *def;
--    TCGArgConstraint *args_ct;
-+    int n, i;
-     TCGTemp *ts;
- 
-     memset(s, 0, sizeof(*s));
-     s->nb_globals = 0;
- 
--    /* Count total number of arguments and allocate the corresponding
--       space */
--    total_args = 0;
--    for(op = 0; op < NB_OPS; op++) {
--        def = &tcg_op_defs[op];
--        n = def->nb_iargs + def->nb_oargs;
--        total_args += n;
--    }
--
--    args_ct = g_new0(TCGArgConstraint, total_args);
--
--    for(op = 0; op < NB_OPS; op++) {
--        def = &tcg_op_defs[op];
--        def->args_ct = args_ct;
--        n = def->nb_iargs + def->nb_oargs;
--        args_ct += n;
--    }
--
-     init_call_layout(&info_helper_ld32_mmu);
-     init_call_layout(&info_helper_ld64_mmu);
-     init_call_layout(&info_helper_ld128_mmu);
-@@ -3132,10 +3116,12 @@ void tcg_dump_ops(TCGContext *s, FILE *f, bool have_prefs)
+@@ -1496,7 +1496,7 @@ static void init_call_layout(TCGHelperInfo *info)
  }
  
- /* we give more priority to constraints with less registers */
--static int get_constraint_priority(const TCGOpDef *def, int k)
-+static int get_constraint_priority(const TCGArgConstraint *arg_ct, int k)
+ static int indirect_reg_alloc_order[ARRAY_SIZE(tcg_target_reg_alloc_order)];
+-static void process_op_defs(TCGContext *s);
++static void process_constraint_sets(void);
+ static TCGTemp *tcg_global_reg_new_internal(TCGContext *s, TCGType type,
+                                             TCGReg reg, const char *name);
+ 
+@@ -1517,7 +1517,7 @@ static void tcg_context_init(unsigned max_cpus)
+     init_call_layout(&info_helper_st128_mmu);
+ 
+     tcg_target_init(s);
+-    process_op_defs(s);
++    process_constraint_sets();
+ 
+     /* Reverse the order of the saved registers, assuming they're all at
+        the start of tcg_target_reg_alloc_order.  */
+@@ -3176,7 +3176,7 @@ static void sort_constraints(TCGArgConstraint *a, int start, int n)
+ static const TCGArgConstraint empty_cts[TCG_MAX_OP_ARGS];
+ static TCGArgConstraint all_cts[ARRAY_SIZE(constraint_sets)][TCG_MAX_OP_ARGS];
+ 
+-static void process_op_defs(TCGContext *s)
++static void process_constraint_sets(void)
  {
--    const TCGArgConstraint *arg_ct = &def->args_ct[k];
--    int n = ctpop64(arg_ct->regs);
-+    int n;
-+
-+    arg_ct += k;
-+    n = ctpop64(arg_ct->regs);
- 
-     /*
-      * Sort constraints of a single register first, which includes output
-@@ -3164,10 +3150,9 @@ static int get_constraint_priority(const TCGOpDef *def, int k)
- }
- 
- /* sort from highest priority to lowest */
--static void sort_constraints(TCGOpDef *def, int start, int n)
-+static void sort_constraints(TCGArgConstraint *a, int start, int n)
- {
-     int i, j;
--    TCGArgConstraint *a = def->args_ct;
- 
-     for (i = 0; i < n; i++) {
-         a[start + i].sort_index = start + i;
-@@ -3177,8 +3162,8 @@ static void sort_constraints(TCGOpDef *def, int start, int n)
+     for (size_t c = 0; c < ARRAY_SIZE(constraint_sets); ++c) {
+         const TCGConstraintSet *tdefs = &constraint_sets[c];
+@@ -3360,38 +3360,28 @@ static void process_op_defs(TCGContext *s)
+         sort_constraints(args_ct, 0, nb_oargs);
+         sort_constraints(args_ct, nb_oargs, nb_iargs);
      }
-     for (i = 0; i < n - 1; i++) {
-         for (j = i + 1; j < n; j++) {
--            int p1 = get_constraint_priority(def, a[start + i].sort_index);
--            int p2 = get_constraint_priority(def, a[start + j].sort_index);
-+            int p1 = get_constraint_priority(a, a[start + i].sort_index);
-+            int p2 = get_constraint_priority(a, a[start + j].sort_index);
-             if (p1 < p2) {
-                 int tmp = a[start + i].sort_index;
-                 a[start + i].sort_index = a[start + j].sort_index;
-@@ -3188,57 +3173,39 @@ static void sort_constraints(TCGOpDef *def, int start, int n)
-     }
- }
++}
  
-+static const TCGArgConstraint empty_cts[TCG_MAX_OP_ARGS];
-+static TCGArgConstraint all_cts[ARRAY_SIZE(constraint_sets)][TCG_MAX_OP_ARGS];
-+
- static void process_op_defs(TCGContext *s)
- {
--    TCGOpcode op;
--
--    for (op = 0; op < NB_OPS; op++) {
+-    for (TCGOpcode op = 0; op < NB_OPS; op++) {
 -        TCGOpDef *def = &tcg_op_defs[op];
--        const TCGTargetOpDef *tdefs;
-+    for (size_t c = 0; c < ARRAY_SIZE(constraint_sets); ++c) {
-+        const TCGConstraintSet *tdefs = &constraint_sets[c];
-+        TCGArgConstraint *args_ct = all_cts[c];
-+        int nb_oargs = tdefs->nb_oargs;
-+        int nb_iargs = tdefs->nb_iargs;
-+        int nb_args = nb_oargs + nb_iargs;
-         bool saw_alias_pair = false;
--        int i, o, i2, o2, nb_args;
+-        const TCGConstraintSet *tdefs;
 -        TCGConstraintSetIndex con_set;
+-        int nb_args;
++static const TCGArgConstraint *opcode_args_ct(const TCGOp *op)
++{
++    TCGOpDef *def = &tcg_op_defs[op->opc];
++    TCGConstraintSetIndex con_set;
  
--        if (def->flags & TCG_OPF_NOT_PRESENT) {
+-        nb_args = def->nb_iargs + def->nb_oargs;
+-        if (nb_args == 0) {
 -            continue;
 -        }
 -
--        nb_args = def->nb_iargs + def->nb_oargs;
--        if (nb_args == 0) {
+-        if (def->flags & TCG_OPF_NOT_PRESENT) {
+-            def->args_ct = empty_cts;
 -            continue;
 -        }
 -
@@ -303,264 +203,132 @@ index 915a181596..d5ab0abe9d 100644
 -         */
 -        con_set = tcg_target_op_def(op);
 -        tcg_debug_assert(con_set >= 0 && con_set < ARRAY_SIZE(constraint_sets));
+-
+-        /* The constraint arguments must match TCGOpcode arguments. */
 -        tdefs = &constraint_sets[con_set];
+-        tcg_debug_assert(tdefs->nb_oargs == def->nb_oargs);
+-        tcg_debug_assert(tdefs->nb_iargs == def->nb_iargs);
 -
--        for (i = 0; i < nb_args; i++) {
-+        for (int i = 0; i < nb_args; i++) {
-             const char *ct_str = tdefs->args_ct_str[i];
--            bool input_p = i >= def->nb_oargs;
--
--            /* Incomplete TCGTargetOpDef entry. */
--            tcg_debug_assert(ct_str != NULL);
-+            bool input_p = i >= nb_oargs;
-+            int o;
- 
-             switch (*ct_str) {
-             case '0' ... '9':
-                 o = *ct_str - '0';
-                 tcg_debug_assert(input_p);
--                tcg_debug_assert(o < def->nb_oargs);
--                tcg_debug_assert(def->args_ct[o].regs != 0);
--                tcg_debug_assert(!def->args_ct[o].oalias);
--                def->args_ct[i] = def->args_ct[o];
-+                tcg_debug_assert(o < nb_oargs);
-+                tcg_debug_assert(args_ct[o].regs != 0);
-+                tcg_debug_assert(!args_ct[o].oalias);
-+                args_ct[i] = args_ct[o];
-                 /* The output sets oalias.  */
--                def->args_ct[o].oalias = 1;
--                def->args_ct[o].alias_index = i;
-+                args_ct[o].oalias = 1;
-+                args_ct[o].alias_index = i;
-                 /* The input sets ialias. */
--                def->args_ct[i].ialias = 1;
--                def->args_ct[i].alias_index = o;
--                if (def->args_ct[i].pair) {
-+                args_ct[i].ialias = 1;
-+                args_ct[i].alias_index = o;
-+                if (args_ct[i].pair) {
-                     saw_alias_pair = true;
-                 }
-                 tcg_debug_assert(ct_str[1] == '\0');
-@@ -3246,41 +3213,41 @@ static void process_op_defs(TCGContext *s)
- 
-             case '&':
-                 tcg_debug_assert(!input_p);
--                def->args_ct[i].newreg = true;
-+                args_ct[i].newreg = true;
-                 ct_str++;
-                 break;
- 
-             case 'p': /* plus */
-                 /* Allocate to the register after the previous. */
--                tcg_debug_assert(i > (input_p ? def->nb_oargs : 0));
-+                tcg_debug_assert(i > (input_p ? nb_oargs : 0));
-                 o = i - 1;
--                tcg_debug_assert(!def->args_ct[o].pair);
--                tcg_debug_assert(!def->args_ct[o].ct);
--                def->args_ct[i] = (TCGArgConstraint){
-+                tcg_debug_assert(!args_ct[o].pair);
-+                tcg_debug_assert(!args_ct[o].ct);
-+                args_ct[i] = (TCGArgConstraint){
-                     .pair = 2,
-                     .pair_index = o,
--                    .regs = def->args_ct[o].regs << 1,
--                    .newreg = def->args_ct[o].newreg,
-+                    .regs = args_ct[o].regs << 1,
-+                    .newreg = args_ct[o].newreg,
-                 };
--                def->args_ct[o].pair = 1;
--                def->args_ct[o].pair_index = i;
-+                args_ct[o].pair = 1;
-+                args_ct[o].pair_index = i;
-                 tcg_debug_assert(ct_str[1] == '\0');
-                 continue;
- 
-             case 'm': /* minus */
-                 /* Allocate to the register before the previous. */
--                tcg_debug_assert(i > (input_p ? def->nb_oargs : 0));
-+                tcg_debug_assert(i > (input_p ? nb_oargs : 0));
-                 o = i - 1;
--                tcg_debug_assert(!def->args_ct[o].pair);
--                tcg_debug_assert(!def->args_ct[o].ct);
--                def->args_ct[i] = (TCGArgConstraint){
-+                tcg_debug_assert(!args_ct[o].pair);
-+                tcg_debug_assert(!args_ct[o].ct);
-+                args_ct[i] = (TCGArgConstraint){
-                     .pair = 1,
-                     .pair_index = o,
--                    .regs = def->args_ct[o].regs >> 1,
--                    .newreg = def->args_ct[o].newreg,
-+                    .regs = args_ct[o].regs >> 1,
-+                    .newreg = args_ct[o].newreg,
-                 };
--                def->args_ct[o].pair = 2;
--                def->args_ct[o].pair_index = i;
-+                args_ct[o].pair = 2;
-+                args_ct[o].pair_index = i;
-                 tcg_debug_assert(ct_str[1] == '\0');
-                 continue;
-             }
-@@ -3288,16 +3255,16 @@ static void process_op_defs(TCGContext *s)
-             do {
-                 switch (*ct_str) {
-                 case 'i':
--                    def->args_ct[i].ct |= TCG_CT_CONST;
-+                    args_ct[i].ct |= TCG_CT_CONST;
-                     break;
- 
-                 /* Include all of the target-specific constraints. */
- 
- #undef CONST
- #define CONST(CASE, MASK) \
--    case CASE: def->args_ct[i].ct |= MASK; break;
-+    case CASE: args_ct[i].ct |= MASK; break;
- #define REGS(CASE, MASK) \
--    case CASE: def->args_ct[i].regs |= MASK; break;
-+    case CASE: args_ct[i].regs |= MASK; break;
- 
- #include "tcg-target-con-str.h"
- 
-@@ -3308,15 +3275,12 @@ static void process_op_defs(TCGContext *s)
-                 case '&':
-                 case 'p':
-                 case 'm':
--                    /* Typo in TCGTargetOpDef constraint. */
-+                    /* Typo in TCGConstraintSet constraint. */
-                     g_assert_not_reached();
-                 }
-             } while (*++ct_str != '\0');
-         }
- 
--        /* TCGTargetOpDef entry with too much information? */
--        tcg_debug_assert(i == TCG_MAX_OP_ARGS || tdefs->args_ct_str[i] == NULL);
--
-         /*
-          * Fix up output pairs that are aliased with inputs.
-          * When we created the alias, we copied pair from the output.
-@@ -3337,51 +3301,53 @@ static void process_op_defs(TCGContext *s)
-          * first output to pair=3, and the pair_index'es to match.
-          */
-         if (saw_alias_pair) {
--            for (i = def->nb_oargs; i < nb_args; i++) {
-+            for (int i = nb_oargs; i < nb_args; i++) {
-+                int o, o2, i2;
-+
-                 /*
-                  * Since [0-9pm] must be alone in the constraint string,
-                  * the only way they can both be set is if the pair comes
-                  * from the output alias.
-                  */
--                if (!def->args_ct[i].ialias) {
-+                if (!args_ct[i].ialias) {
-                     continue;
-                 }
--                switch (def->args_ct[i].pair) {
-+                switch (args_ct[i].pair) {
-                 case 0:
-                     break;
-                 case 1:
--                    o = def->args_ct[i].alias_index;
--                    o2 = def->args_ct[o].pair_index;
--                    tcg_debug_assert(def->args_ct[o].pair == 1);
--                    tcg_debug_assert(def->args_ct[o2].pair == 2);
--                    if (def->args_ct[o2].oalias) {
-+                    o = args_ct[i].alias_index;
-+                    o2 = args_ct[o].pair_index;
-+                    tcg_debug_assert(args_ct[o].pair == 1);
-+                    tcg_debug_assert(args_ct[o2].pair == 2);
-+                    if (args_ct[o2].oalias) {
-                         /* Case 1a */
--                        i2 = def->args_ct[o2].alias_index;
--                        tcg_debug_assert(def->args_ct[i2].pair == 2);
--                        def->args_ct[i2].pair_index = i;
--                        def->args_ct[i].pair_index = i2;
-+                        i2 = args_ct[o2].alias_index;
-+                        tcg_debug_assert(args_ct[i2].pair == 2);
-+                        args_ct[i2].pair_index = i;
-+                        args_ct[i].pair_index = i2;
-                     } else {
-                         /* Case 1b */
--                        def->args_ct[i].pair_index = i;
-+                        args_ct[i].pair_index = i;
-                     }
-                     break;
-                 case 2:
--                    o = def->args_ct[i].alias_index;
--                    o2 = def->args_ct[o].pair_index;
--                    tcg_debug_assert(def->args_ct[o].pair == 2);
--                    tcg_debug_assert(def->args_ct[o2].pair == 1);
--                    if (def->args_ct[o2].oalias) {
-+                    o = args_ct[i].alias_index;
-+                    o2 = args_ct[o].pair_index;
-+                    tcg_debug_assert(args_ct[o].pair == 2);
-+                    tcg_debug_assert(args_ct[o2].pair == 1);
-+                    if (args_ct[o2].oalias) {
-                         /* Case 1a */
--                        i2 = def->args_ct[o2].alias_index;
--                        tcg_debug_assert(def->args_ct[i2].pair == 1);
--                        def->args_ct[i2].pair_index = i;
--                        def->args_ct[i].pair_index = i2;
-+                        i2 = args_ct[o2].alias_index;
-+                        tcg_debug_assert(args_ct[i2].pair == 1);
-+                        args_ct[i2].pair_index = i;
-+                        args_ct[i].pair_index = i2;
-                     } else {
-                         /* Case 2 */
--                        def->args_ct[i].pair = 3;
--                        def->args_ct[o2].pair = 3;
--                        def->args_ct[i].pair_index = o2;
--                        def->args_ct[o2].pair_index = i;
-+                        args_ct[i].pair = 3;
-+                        args_ct[o2].pair = 3;
-+                        args_ct[i].pair_index = o2;
-+                        args_ct[o2].pair_index = i;
-                     }
-                     break;
-                 default:
-@@ -3391,8 +3357,40 @@ static void process_op_defs(TCGContext *s)
-         }
- 
-         /* sort the constraints (XXX: this is just an heuristic) */
--        sort_constraints(def, 0, def->nb_oargs);
--        sort_constraints(def, def->nb_oargs, def->nb_iargs);
-+        sort_constraints(args_ct, 0, nb_oargs);
-+        sort_constraints(args_ct, nb_oargs, nb_iargs);
+-        def->args_ct = all_cts[con_set];
++    if (def->nb_iargs + def->nb_oargs == 0) {
++        return NULL;
+     }
++    if (def->flags & TCG_OPF_NOT_PRESENT) {
++        return empty_cts;
 +    }
 +
-+    for (TCGOpcode op = 0; op < NB_OPS; op++) {
-+        TCGOpDef *def = &tcg_op_defs[op];
-+        const TCGConstraintSet *tdefs;
-+        TCGConstraintSetIndex con_set;
-+        int nb_args;
++    con_set = tcg_target_op_def(op->opc);
++    tcg_debug_assert(con_set >= 0 && con_set < ARRAY_SIZE(constraint_sets));
 +
-+        nb_args = def->nb_iargs + def->nb_oargs;
-+        if (nb_args == 0) {
-+            continue;
-+        }
++    /* The constraint arguments must match TCGOpcode arguments. */
++    tcg_debug_assert(constraint_sets[con_set].nb_oargs == def->nb_oargs);
++    tcg_debug_assert(constraint_sets[con_set].nb_iargs == def->nb_iargs);
 +
-+        if (def->flags & TCG_OPF_NOT_PRESENT) {
-+            def->args_ct = empty_cts;
-+            continue;
-+        }
-+
-+        /*
-+         * Macro magic should make it impossible, but double-check that
-+         * the array index is in range.  At the same time, double-check
-+         * that the opcode is implemented, i.e. not C_NotImplemented.
-+         */
-+        con_set = tcg_target_op_def(op);
-+        tcg_debug_assert(con_set >= 0 && con_set < ARRAY_SIZE(constraint_sets));
-+
-+        /* The constraint arguments must match TCGOpcode arguments. */
-+        tdefs = &constraint_sets[con_set];
-+        tcg_debug_assert(tdefs->nb_oargs == def->nb_oargs);
-+        tcg_debug_assert(tdefs->nb_iargs == def->nb_iargs);
-+
-+        def->args_ct = all_cts[con_set];
-     }
++    return all_cts[con_set];
  }
  
+ static void remove_label_use(TCGOp *op, int idx)
+@@ -3864,6 +3854,7 @@ liveness_pass_1(TCGContext *s)
+         TCGTemp *ts;
+         TCGOpcode opc = op->opc;
+         const TCGOpDef *def = &tcg_op_defs[opc];
++        const TCGArgConstraint *args_ct;
+ 
+         switch (opc) {
+         case INDEX_op_call:
+@@ -4153,8 +4144,9 @@ liveness_pass_1(TCGContext *s)
+                 break;
+ 
+             default:
++                args_ct = opcode_args_ct(op);
+                 for (i = nb_oargs; i < nb_oargs + nb_iargs; i++) {
+-                    const TCGArgConstraint *ct = &def->args_ct[i];
++                    const TCGArgConstraint *ct = &args_ct[i];
+                     TCGRegSet set, *pset;
+ 
+                     ts = arg_temp(op->args[i]);
+@@ -4941,6 +4933,7 @@ static void tcg_reg_alloc_dup(TCGContext *s, const TCGOp *op)
+ {
+     const TCGLifeData arg_life = op->life;
+     TCGRegSet dup_out_regs, dup_in_regs;
++    const TCGArgConstraint *dup_args_ct;
+     TCGTemp *its, *ots;
+     TCGType itype, vtype;
+     unsigned vece;
+@@ -4967,8 +4960,9 @@ static void tcg_reg_alloc_dup(TCGContext *s, const TCGOp *op)
+         return;
+     }
+ 
+-    dup_out_regs = tcg_op_defs[INDEX_op_dup_vec].args_ct[0].regs;
+-    dup_in_regs = tcg_op_defs[INDEX_op_dup_vec].args_ct[1].regs;
++    dup_args_ct = opcode_args_ct(op);
++    dup_out_regs = dup_args_ct[0].regs;
++    dup_in_regs = dup_args_ct[1].regs;
+ 
+     /* Allocate the output register now.  */
+     if (ots->val_type != TEMP_VAL_REG) {
+@@ -5054,6 +5048,7 @@ static void tcg_reg_alloc_op(TCGContext *s, const TCGOp *op)
+     int i, k, nb_iargs, nb_oargs;
+     TCGReg reg;
+     TCGArg arg;
++    const TCGArgConstraint *args_ct;
+     const TCGArgConstraint *arg_ct;
+     TCGTemp *ts;
+     TCGArg new_args[TCG_MAX_OP_ARGS];
+@@ -5098,6 +5093,8 @@ static void tcg_reg_alloc_op(TCGContext *s, const TCGOp *op)
+         break;
+     }
+ 
++    args_ct = opcode_args_ct(op);
++
+     /* satisfy input constraints */
+     for (k = 0; k < nb_iargs; k++) {
+         TCGRegSet i_preferred_regs, i_required_regs;
+@@ -5105,9 +5102,9 @@ static void tcg_reg_alloc_op(TCGContext *s, const TCGOp *op)
+         TCGTemp *ts2;
+         int i1, i2;
+ 
+-        i = def->args_ct[nb_oargs + k].sort_index;
++        i = args_ct[nb_oargs + k].sort_index;
+         arg = op->args[i];
+-        arg_ct = &def->args_ct[i];
++        arg_ct = &args_ct[i];
+         ts = arg_temp(arg);
+ 
+         if (ts->val_type == TEMP_VAL_CONST
+@@ -5137,7 +5134,7 @@ static void tcg_reg_alloc_op(TCGContext *s, const TCGOp *op)
+                  * register and move it.
+                  */
+                 if (temp_readonly(ts) || !IS_DEAD_ARG(i)
+-                    || def->args_ct[arg_ct->alias_index].newreg) {
++                    || args_ct[arg_ct->alias_index].newreg) {
+                     allocate_new_reg = true;
+                 } else if (ts->val_type == TEMP_VAL_REG) {
+                     /*
+@@ -5322,10 +5319,10 @@ static void tcg_reg_alloc_op(TCGContext *s, const TCGOp *op)
+         }
+ 
+         /* satisfy the output constraints */
+-        for(k = 0; k < nb_oargs; k++) {
+-            i = def->args_ct[k].sort_index;
++        for (k = 0; k < nb_oargs; k++) {
++            i = args_ct[k].sort_index;
+             arg = op->args[i];
+-            arg_ct = &def->args_ct[i];
++            arg_ct = &args_ct[i];
+             ts = arg_temp(arg);
+ 
+             /* ENV should not be modified.  */
+@@ -5465,8 +5462,7 @@ static bool tcg_reg_alloc_dup2(TCGContext *s, const TCGOp *op)
+     /* Allocate the output register now.  */
+     if (ots->val_type != TEMP_VAL_REG) {
+         TCGRegSet allocated_regs = s->reserved_regs;
+-        TCGRegSet dup_out_regs =
+-            tcg_op_defs[INDEX_op_dup_vec].args_ct[0].regs;
++        TCGRegSet dup_out_regs = opcode_args_ct(op)[0].regs;
+         TCGReg oreg;
+ 
+         /* Make sure to not spill the input registers. */
 -- 
 2.43.0
 
