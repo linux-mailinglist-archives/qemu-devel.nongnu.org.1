@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 231F2A15E24
+	by mail.lfdr.de (Postfix) with ESMTPS id 31515A15E25
 	for <lists+qemu-devel@lfdr.de>; Sat, 18 Jan 2025 17:42:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZBt3-0003z4-EZ; Sat, 18 Jan 2025 11:41:29 -0500
+	id 1tZBt1-0003x0-Ta; Sat, 18 Jan 2025 11:41:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1tZBst-0003wa-27
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 11:41:20 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ id 1tZBss-0003wM-6d
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 11:41:18 -0500
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1tZBsq-0007oK-PT
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 11:41:18 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-aaf0f1adef8so620804566b.3
- for <qemu-devel@nongnu.org>; Sat, 18 Jan 2025 08:41:15 -0800 (PST)
+ id 1tZBsq-0007oM-Ps
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 11:41:17 -0500
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-aa6a92f863cso579483466b.1
+ for <qemu-devel@nongnu.org>; Sat, 18 Jan 2025 08:41:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737218474; x=1737823274; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=voproMK0qNLO31B6xoJmJki4e827lXTY8uYATHmgzcQ=;
- b=dWa6IkZGn2fwOVqtSwC7G1ka37a70gY6BTyf3ClTUGXvIBnIyexsRu17D/hYxABkXQ
- ZXXyYqynJIvHyu6t179yDYeoRu6MtJmwsGhUPb50eUi7CetCSZCAhDw3fmrbYMhMVjwd
- h6ovyQhhZdWvADHCAkTZ1dal1aU3JWjGOBuFnC7t1uvVEBQ9JcxeFB3e8Rj3DL4sGk/X
- 2bYq0jrwDV7kmftx4wPWVvtCklUS2/3GRNUJUoX4uIxot5nrsNUk+Zizfqq9rBZ9Mqrz
- 8hnra1bST2/Bv7csEg+DQcxNUIdvIMOVvdT6nhR35aGvIPFPEOJb4bDE0XNvBRkYJFsv
- OXvw==
+ d=gmail.com; s=20230601; t=1737218475; x=1737823275; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nIPWAoeGDqsyBcSrsU1gBMWUp3dbZoF1r347tTfkcPM=;
+ b=SfXs+hI3hq63fGpDcoX8p2oFDRktJBNPe/+mqxDdfbQHk2vpw/8rUY2xh8JVsphOJi
+ 7iWCDJib/HekgIMLD+A+HJErNsORocNiWDtVpLetDX9Sua5pdq4m+kYzFrTOw2amdKV0
+ n0T3pSIearOCEbbv9NVggWrbeQdkqENSh8IEHDVQ/j6l6+zx6d93QGpFiBUdRBGg/7ex
+ qoc/0ZeijcL79th0fZSDytS/W6IFjSuS3EIXfiS1KPQxVHdJoEqpq8sk/SB/uBXOTRun
+ mqvEUWOcP7uV8Q/LBzbFyXkLAO6XMwZTDOlIHb3ugCsm85pc2w+jkZoQQAJf4v8xnU8i
+ fZGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737218474; x=1737823274;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=voproMK0qNLO31B6xoJmJki4e827lXTY8uYATHmgzcQ=;
- b=NtH98eJhDY2NoGxeVdQQ+cZ3y1vyM11NbvFFvQNzVFuOUK7w4ua2ggmcn/KPVUc2RP
- gs4bpLuebrAYCdtjjFrQthbMyD96rqoiT541Uyr4CtDi30chJAk+iiehFK0DPPgagVFZ
- SQ7K4WRuMLoz/MolaupQjdUWJbJ3D+XmMV1+xigHJ9o+tw6oRUAH0WAQt6um5Ku8lsmX
- BEzDqUtURyqVXhYhkUYaiM4tmY+jkqWLY+2dvO1Bq7P2HA8mrjxgml0cNBauJBNHU34i
- 9vrBdg8O2OSRR6hN8c6I/Pht2tQAunn7QAl0Ksor20dWHDOxri9Js//5nK17P0M2gazS
- 3TTw==
+ d=1e100.net; s=20230601; t=1737218475; x=1737823275;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nIPWAoeGDqsyBcSrsU1gBMWUp3dbZoF1r347tTfkcPM=;
+ b=NwX0kRvqGLp5PByuVLDm8URfDud9kxU+9UdJDoKBlIxz2y2pvEo0L3/CPW1u4c2qnK
+ bJ9+iOliuR9V13RStGocZPRUS1BpW59W8la8fmCRq63hI3UZ7HYhIw/g/R6K3/Tqwa8Q
+ viASkrSiNxBUzNDg0iPVUeAdtIisIIjALl1JQV3yudBQn1MjZbFC1t9vC9Fv/GRrxhoO
+ OESGfRqb4EbcpqUdR0zZD3R9yygwnKHlLIdd0mFiRd9Y/86pTes9m7DynPyhZsjJdIpE
+ DOIpfQXzq/HrLw9Ts8PmiEZpVrt5g0vk80LZSgkJdEcebO7TWBuz5k9uMyb/WRGwwmlM
+ QZbQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV3fC8xNdJOT5npe0NMkwltV1x7dsFz/07meMXhd8YL8znCjWblDmdIpzeDIzMl7CuwyIhEgogjE4gU@nongnu.org
-X-Gm-Message-State: AOJu0YwUEIuVQtNLDSUY+miskVLmoIwpU2eI+gLAtz3IXRnTfPQ/Ejm5
- 1jMo36HJ9fUZ+ekoqJuP+OTL/jCDU9CtdZDCLfuqrq8s8bfzy7jt
-X-Gm-Gg: ASbGncvxtfFn+YrhJBZnW2gCm89gFNqy6B0DqVSM0dwSlEkEXyuwprcZAbM7eX6qFvd
- Oqoe2GM28SrIDi8SII/N1ejsPOfqzNXnGOR/sKfWu8KMCEY8dsxfeD8X7VaPlN3vSjLCNSw+FMj
- Zg26XbNYmlC9I8To2q4ZfzuMz4Ytakq8P8Uitzt76Kw3QEvuixevqos7GUzIundIddr3+z2BAhw
- +y496gKzRlIyqmnYCM/0xObeu1MUWP99Bu7yV2qPhSWzrexUyPn3ZxPYwvUapJy2RpdTWfqWjZy
- ePo=
-X-Google-Smtp-Source: AGHT+IFbqo6yPhlnzoB1RHj7Qp9dLyiI+nFqRTErtf6e1suvyIyVzM4jlrrgxXwOZXVceyejU8/nKw==
-X-Received: by 2002:a17:907:d0f:b0:aae:bd4c:2683 with SMTP id
- a640c23a62f3a-ab38b3c63f5mr696372166b.49.1737218473777; 
- Sat, 18 Jan 2025 08:41:13 -0800 (PST)
+ AJvYcCVdIrlXsC9eNGK66B8vd70QVY8EYR5hFxjAjlIo+gMjiN6qFBT+niVNf0/Cm6yKwf1KaLCfqf2/wPrk@nongnu.org
+X-Gm-Message-State: AOJu0YzwVvL6qg4xZ5hIZn/7zD6f/tFhKdGaq+voltFrDopYOrDXVHPJ
+ Rq1Co3FmggxVcFy2gR+RaDwd5Ooa5OotobjoO8izA7h73n5AjeyLK66HMg==
+X-Gm-Gg: ASbGncvwVqSpIgcDay8h9C2v98n1huwyvrT7GBLtHqaT6uOw8kVAFbrcNac9iiSoyAp
+ VXI3uBHOznr9g7TCsqR5LkXmSnPwq91o+GWQrCxa2t1/HLCI0VbOC6IgyY1fDk2SYTlhFanXFMq
+ p/XHYjsPO6neJEAaRghK1OCaovq8q7NanBy7AYQv8SyNsOaRMFeqJqX3rjAV2QQYzeKFhfyaZT4
+ zQnqpGuv9kCEutsQk+W5G/L68Uc8iEIFy/bADZEneJkJS81IlchSBmEs2223NJhFfkhX/1aQGLx
+ sOc=
+X-Google-Smtp-Source: AGHT+IFaE9AcVkpMcTW1FPwREWX7vqAnBzVZRki39Gifmf5UR8j72jn/2xoMHQKg+dO53+HjFSNUsw==
+X-Received: by 2002:a17:907:948a:b0:aae:8843:9029 with SMTP id
+ a640c23a62f3a-ab38b4aa395mr623622666b.48.1737218474693; 
+ Sat, 18 Jan 2025 08:41:14 -0800 (PST)
 Received: from think.fritz.box ([2a02:8109:8384:1400:d15a:20d8:4bbe:9a4c])
  by smtp.gmail.com with ESMTPSA id
  a640c23a62f3a-ab384f8624fsm358331266b.150.2025.01.18.08.41.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 18 Jan 2025 08:41:13 -0800 (PST)
+ Sat, 18 Jan 2025 08:41:14 -0800 (PST)
 From: Roman Penyaev <r.peniaev@gmail.com>
 To: 
 Cc: Roman Penyaev <r.peniaev@gmail.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  qemu-devel@nongnu.org
-Subject: [PATCH v7 0/4] chardev: implement backend chardev multiplexing
-Date: Sat, 18 Jan 2025 17:40:48 +0100
-Message-ID: <20250118164056.830721-1-r.peniaev@gmail.com>
+Subject: [PATCH v7 1/4] chardev/char-pty: send CHR_EVENT_CLOSED on disconnect
+Date: Sat, 18 Jan 2025 17:40:49 +0100
+Message-ID: <20250118164056.830721-2-r.peniaev@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250118164056.830721-1-r.peniaev@gmail.com>
+References: <20250118164056.830721-1-r.peniaev@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=r.peniaev@gmail.com; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=r.peniaev@gmail.com; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,151 +101,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mux is a character backend (host side) device, which multiplexes
-multiple frontends with one backend device. The following is a
-few lines from the QEMU manpage [1]:
+Change makes code symmetric to the code, which handles
+the "connected" state, i.e. send CHR_EVENT_CLOSED when
+state changes from "connected" to "disconnected".
 
-  A multiplexer is a "1:N" device, and here the "1" end is your
-  specified chardev backend, and the "N" end is the various parts
-  of QEMU that can talk to a chardev.
-
-But sadly multiple backends are not supported.
-
-This work implements a new chardev backend `hub` device, which
-aggregates input from multiple backend devices and forwards it to a
-single frontend device. Additionally, `hub` device takes the output
-from the frontend device and sends it back to all the connected
-backend devices. This allows for seamless interaction between
-different backend devices and a single frontend interface.
-
-The motivation is the EVE project [2], where it would be very
-convenient to have a virtio console frontend device on the guest that
-can be controlled from multiple backend devices, namely VNC and local
-TTY emulator. The following is an example of the QEMU command line:
-
-    -chardev pty,path=/tmp/pty,id=pty0 \
-    -chardev vc,id=vc0 \
-    -chardev hub,id=hub0,chardevs.0=pty0,chardevs.1=vc0 \
-    -device virtconsole,chardev=hub0 \
-    -vnc 0.0.0.0:0
-
-Which creates two backend devices:
-
-* Text virtual console (`vc0`)
-* A pseudo TTY (`pty0`) connected to the single virtio hvc console with the
-  help of a new backend aggregator (`hub0`)
-
-`vc0` renders text to an image, which can be shared over the VNC
-protocol.  `pty0` is a pseudo TTY backend which provides bidirectional
-communication to the virtio hvc console.
-
-Once QEMU starts, the VNC client and any TTY emulator can be used to
-control a single hvc console. For example, these two different
-consoles should have similar input and output due to the buffer
-aggregation:
-
-    # Start TTY emulator
-    tio /tmp/pty
-
-    # Start VNC client and switch to virtual console Ctrl-Alt-2
-    vncviewer :0
-
-'chardevs.N' list syntax is used for the sake of compatibility with
-the representation of JSON lists in 'key=val' pairs format of the
-util/keyval.c, despite the fact that modern QAPI way of parsing,
-namely qobject_input_visitor_new_str(), is not used. Choice of keeping
-QAPI list sytax may help to smoothly switch to modern parsing in the
-future.
-
-v6 .. v7:
-
-After discussing v6 it was decided to:
-
-* Rename "multiplexer" to "aggregator"
-* Rename "mux-be" device type to "hub"
-* Drop all changes related to the original multiplexer implementation
-
-Code changes:
-
-* Added counting of CHR_EVENT_OPENED and CHR_EVENT_CLOSED events
-coming from backend devices. This prevents frontend devices from
-closing if one of the backend devices has been disconnected. The
-logic is simple: "the last one turns off the light".
-
-v5 .. v6:
-
-* Rebased on latest master
-* Changed how chardev is attached to a multiplexer: with version 6
-mux should specify list elements with ID of chardevs:
-
-    chardevs.0=ID[,chardevs.N=ID]
-
-'chardevs.N' list syntax is used for the sake of compatibility with
-the representation of JSON lists in 'key=val' pairs format of the
-util/keyval.c, despite the fact that modern QAPI way of parsing,
-namely qobject_input_visitor_new_str(), is not used. Choice of keeping
-QAPI list sytax may help to smoothly switch to modern parsing in the
-future.
-
-v4 .. v5:
-
-* Spelling fixes in qemu-options description
-* Memory leaks fixes in mux-be tests
-* Add sanity checks to chardev to avoid stacking of mux devices
-* Add corresponding unit test case to cover the creation of stacked
-  muxers: `-chardev mux-be,mux-id-be=ID`, which is forbidden
-* Reflect the fact that stacking is not supported in the documentation
-
-v3 .. v4:
-
-* Rebase on latest chardev changes
-* Add unit tests which test corner cases:
-   * Inability to remove mux with active frontend
-   * Inability to add more chardevs to a mux than `MUX_MAX`
-   * Inability to mix mux-fe and mux-be for the same chardev
-
-v2 .. v3:
-
-* Split frontend and backend multiplexer implementations and
-  move them to separate files: char-mux-fe.c and char-mux-be.c
-
-v1 .. v2:
-
-* Separate type for the backend multiplexer `mux-be`
-* Handle EAGAIN on write to the backend device
-* Support of watch of previously failed backend device
-* Proper json support of the `mux-be-id` option
-* Unit test for the `mux-be` multiplexer
-
-[1] https://www.qemu.org/docs/master/system/qemu-manpage.html#hxtool-6
-[2] https://github.com/lf-edge/eve
+This behavior is similar to char-socket, for example.
 
 Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
 Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>
-Cc: Kevin Wolf <kwolf@redhat.com>
 Cc: qemu-devel@nongnu.org
+---
+ chardev/char-pty.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Roman Penyaev (4):
-  chardev/char-pty: send CHR_EVENT_CLOSED on disconnect
-  chardev/char-hub: implement backend chardev aggregator
-  tests/unit/test-char: add unit tests for hub chardev backend
-  qemu-options.hx: describe hub chardev and aggregation of several
-    backends
-
- chardev/char-fe.c          |   9 +
- chardev/char-hub.c         | 334 +++++++++++++++++++++++++++++++
- chardev/char-pty.c         |   3 +-
- chardev/char.c             |  26 ++-
- chardev/chardev-internal.h |  56 +++++-
- chardev/meson.build        |   1 +
- include/chardev/char.h     |   1 +
- qapi/char.json             |  27 +++
- qemu-options.hx            |  48 ++++-
- tests/unit/test-char.c     | 399 +++++++++++++++++++++++++++++++++++++
- 10 files changed, 896 insertions(+), 8 deletions(-)
- create mode 100644 chardev/char-hub.c
-
+diff --git a/chardev/char-pty.c b/chardev/char-pty.c
+index cbb21b76ae8d..10a6ee94d55c 100644
+--- a/chardev/char-pty.c
++++ b/chardev/char-pty.c
+@@ -181,6 +181,9 @@ static void pty_chr_state(Chardev *chr, int connected)
+ 
+     if (!connected) {
+         remove_fd_in_watch(chr);
++        if (s->connected) {
++            qemu_chr_be_event(chr, CHR_EVENT_CLOSED);
++        }
+         s->connected = 0;
+         /* (re-)connect poll interval for idle guests: once per second.
+          * We check more frequently in case the guests sends data to
+@@ -215,7 +217,6 @@ static void char_pty_finalize(Object *obj)
+     pty_chr_state(chr, 0);
+     object_unref(OBJECT(s->ioc));
+     pty_chr_timer_cancel(s);
+-    qemu_chr_be_event(chr, CHR_EVENT_CLOSED);
+ }
+ 
+ #if defined HAVE_PTY_H
 -- 
 2.43.0
 
