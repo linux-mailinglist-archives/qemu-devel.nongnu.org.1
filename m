@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AADA0A15BAD
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F35A15BA9
 	for <lists+qemu-devel@lfdr.de>; Sat, 18 Jan 2025 08:10:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZ2xX-0003Fn-DG; Sat, 18 Jan 2025 02:09:31 -0500
+	id 1tZ2xY-0003G9-ST; Sat, 18 Jan 2025 02:09:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tZ2xS-0003Dv-Oe
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 02:09:27 -0500
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tZ2xW-0003FZ-CC
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 02:09:30 -0500
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tZ2xQ-0007ps-Rk
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 02:09:26 -0500
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-2ef70c7efa5so4109691a91.2
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 23:09:24 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tZ2xU-0007qS-IN
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 02:09:30 -0500
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-2ef72924e53so4953326a91.3
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 23:09:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737184163; x=1737788963; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1737184167; x=1737788967; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Auj/lFHkLSk6o6v8/a4KxcoWT3RjhdCD5eZzJWt0p3Y=;
- b=GCsphVSMJNz+jR0/gX7CYWAZtOHe1fquDmVI3h6vOhufqqm1bjUTBFcGkgCRLSNRM3
- hWMMw31474jl/uwAT98yFUm9kUqRlxLncLRJ6oLlJMxYqxDuFn48uejh0dcEVrQqmH0k
- nknXc0kpsQklX40sslj4hbV8IkpyCmI0QB/4mXL8/Gwwr4F10EX5/D+ZD22jbvXrFDRE
- 6y6h/ih2Bg+bPIhyN/Bd76LBgOkI+641zO7cuIfUDdGdKUfIBYbNf5af3BE9IxdfKFam
- YDao0gYG5xwjXgntZHuPcPeBlFnjUnWnnqpRz3fsIZ8ncF3z93mX5wRvU18lQZwtj8li
- LBfQ==
+ bh=NiA0OcT7kkutyeI3Mw8qH8TpIB7VaMZJNO6sZmBmX5c=;
+ b=DSCSMx4uG08s9avsnqRxoWZxcY5jqQz4MFZYQTK0MzPX2Ga/dBNlFy/K1HZJzsJpe3
+ a8n1jL1PLbBvDQr3C+NB02rPYcAcFy/B4Hv3QM6OItM6RQiXMBnk5Q7Ei1Hc12mcaIGG
+ 62WJnUm5G3bA7rTBFHTqDZlETmJuTyqvNGiXz/yN8Lt/1PsldS6S7BWx/ZAIO2ZRdWE/
+ ECxra8FLYDwORHErHqFkalCILdf2g/AxmaUZNfG/Z5oVvnE1mcQF2F7Aj19yYkhkCGbx
+ Jju6mZDZL5XLCM1uPJfNfbmkz4rvxAoP8T8igeePYPJ/q87jrHa+GygqReOuPzXtaKvM
+ STzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737184163; x=1737788963;
+ d=1e100.net; s=20230601; t=1737184167; x=1737788967;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Auj/lFHkLSk6o6v8/a4KxcoWT3RjhdCD5eZzJWt0p3Y=;
- b=bhTq0aMOIgmWBWP7qJOpNBXNf7y2dVZ/xHeBWl8lbEyKdhpA0YkfcOFvRvAe0h9vUc
- dLAzAf8MmP3NcHFldjeV7mvoMI5gtEhcseASgyvTbBIm4SxoqPBzjVWZafnl2+2X5AAN
- 4DAvmjloyB9yJLyRH+eWzO7UoTz3+uNSdmSgsFfU0duAnpCLCe4njyCtdcnNCRBfeWl4
- qx2V0lmM0sNAogPlyXS9bkCJ0gAfIfJDMtDGSp0QtmXKdq+oy5y7QdY0zU1nx1dNwqI+
- pnIR3USrsYQhgQk+B2lymUqcB5MjRwmjQSJqEJgOzYwuNG49+MBKWkTPe/YYAu4TYQFz
- HQuA==
-X-Gm-Message-State: AOJu0YymuRXZuPjXo8LONpRm3zlZUhqtON2I2XSdit/pk/MvS3B/TsX7
- iR9ydojwzAxsI7VlNySA7+NuvwC37gQ9czMRXCJQUp88bO0jA63IjtrtKQ==
-X-Gm-Gg: ASbGnct7Ymn6TO0H7alu84HoU8DZTAZobJXhpffGfzG1DupM9ccwSqAjauWkOxMtt2N
- l1PxQhTg26T/4IJy/jg8KfGCDy/DaD0V6QJt5luxBLUkMboLKSXCyS0GkBkn7sptUjikbTfBW+D
- smKLj11JtdfeahypZ2AVJzbVApaK9WMFLAomh4cR/B9J1W+6gLdzCc28qaZ4gEw+4f9I19AxU0w
- dpQDq7IYo7V2bsl7RRyRtqg5D8Ly6WjwuKuSjvNg3r6Aoi4+Z6xc7GczxerHORS8REd2xI/RB6S
- a6LS2BTDNC81HL/U6feHNNfe/Vxj
-X-Google-Smtp-Source: AGHT+IH4Ln7YyDyAVGQur8xll+OxxFjkqlv83CnGLLq0I4r5KEJMBbg6taLXxuKnSG3WQPNSNmD/NA==
-X-Received: by 2002:a05:6a00:1a94:b0:725:ea30:aafc with SMTP id
- d2e1a72fcca58-72daf929f5cmr6365577b3a.5.1737184162848; 
- Fri, 17 Jan 2025 23:09:22 -0800 (PST)
+ bh=NiA0OcT7kkutyeI3Mw8qH8TpIB7VaMZJNO6sZmBmX5c=;
+ b=dh0v0MjmeEYoCC3q40svw5uN6O0GqYqkmm2KijTi+Q01xa4im4HRPMXENTz4c53KoT
+ p4RsHy6owlbtHBsk/otEaWLBcfxxC1KAoVHv7DmPHPQSa3NZYlZlWC1fnPmOO7v2crmU
+ YQnWPmbWQZFuKroBdiybb45uWMyLczDoLyyRc+FQw2mZOAYiY5dzdYF52wYZpLxEQ2pS
+ YbxL3bc3yjYSOwUW92v50T/JA62TLubGWIqIOIuc+xSqyUfayAUJVc3rdTQnM8dSZ8H6
+ 0owr+7tqcFpbAGa0lKvp5cue7MrS9feVG7UG1BV9BopaLf4XHjzqSWWYetezAYroZorM
+ T0TQ==
+X-Gm-Message-State: AOJu0YwToHLA6kKcj0aU+pFmHq+TsDnn3lSqAX5jc0ut+eA1LJTiqisi
+ EXUEzlZJN8FgitjuhwK8KEPuGhCYIfv/sCVvByWyU/U1DPQ+y0x3afbgTA==
+X-Gm-Gg: ASbGncsIIsUoupWF4tZ894BEy+l7U9WNG+wSR65PJrfchKpO0y1vIIzKKueFpjsZGhT
+ n38GfzNFYiZUsLsdrtszxjSj2p8KM/rkuFP6J77ZriPzqx4T0Q3Q+V6AYn/rRUTr/9ayPmFGs4s
+ zvhtsQ8R9rCs/HIUcyZlJgrpptwtCBu6CNLAG5XfZwJAB8RehbAk8yEnu2DwCtHS9+qGW1SWdSz
+ IGP98d1OakhzvcMA4Ma+s9TZXr+TUyvnOJSOHm92jdMpQGiqAIbQIjEArPzc5TjAp/mHcMYZJPG
+ jT0hbIyzv/Nptdp3bY8NoWZ2UNjhZTV/JbTelUw=
+X-Google-Smtp-Source: AGHT+IHnQfPGkLhPVoHjlW8FXQKRT/P6TOBtzhBUJcvdILFAYZ/NAyMNY7iZ4B/pNEpdy5234x+g9A==
+X-Received: by 2002:a05:6a00:cc9:b0:729:1c0f:b94a with SMTP id
+ d2e1a72fcca58-72dafbc0447mr8682310b3a.23.1737184167005; 
+ Fri, 17 Jan 2025 23:09:27 -0800 (PST)
 Received: from wheely.local0.net (124-169-212-233.tpgi.com.au.
  [124.169.212.233]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72dab9c95adsm3192880b3a.107.2025.01.17.23.09.19
+ d2e1a72fcca58-72dab9c95adsm3192880b3a.107.2025.01.17.23.09.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 23:09:22 -0800 (PST)
+ Fri, 17 Jan 2025 23:09:26 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -66,16 +66,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
  Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PATCH v2 5/8] tests/qtest/xhci: add a test for TR NOOP commands
-Date: Sat, 18 Jan 2025 17:08:50 +1000
-Message-ID: <20250118070853.653778-6-npiggin@gmail.com>
+Subject: [PATCH v2 6/8] tests/qtest/xhci: test the qemu-xhci device
+Date: Sat, 18 Jan 2025 17:08:51 +1000
+Message-ID: <20250118070853.653778-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20250118070853.653778-1-npiggin@gmail.com>
 References: <20250118070853.653778-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1035.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,69 +98,219 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Run some TR NOOP commands through the transfer ring.
+Add support in the test code for running multiple drivers, and add
+tests for the qemu-xhci device.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tests/qtest/usb-hcd-xhci-test.c | 36 ++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ tests/qtest/usb-hcd-xhci-test.c | 96 +++++++++++++++++++++------------
+ 1 file changed, 63 insertions(+), 33 deletions(-)
 
 diff --git a/tests/qtest/usb-hcd-xhci-test.c b/tests/qtest/usb-hcd-xhci-test.c
-index b9fb2356d26..63359fb70b9 100644
+index 63359fb70b9..4efe7b69d4f 100644
 --- a/tests/qtest/usb-hcd-xhci-test.c
 +++ b/tests/qtest/usb-hcd-xhci-test.c
-@@ -361,9 +361,33 @@ static void submit_cr_trb(XHCIQState *s, XHCITRB *trb)
-     xhci_db_writel(s, 0, 0); /* doorbell 0 */
+@@ -13,10 +13,15 @@
+ #include "libqos/libqos-pc.h"
+ #include "libqtest-single.h"
+ #include "libqos/usb.h"
++#include "hw/pci/pci.h"
+ #include "hw/pci/pci_ids.h"
+ #include "hw/pci/pci_regs.h"
+ #include "hw/usb/hcd-xhci.h"
+ 
++typedef struct TestData {
++    const char *device;
++} TestData;
++
+ /*** Test Setup & Teardown ***/
+ typedef struct XHCIQSlotState {
+     /* In-memory arrays */
+@@ -56,6 +61,8 @@ typedef struct XHCIQState {
+     XHCIQSlotState slots[32];
+ } XHCIQState;
+ 
++#define XHCI_QEMU_ID (PCI_DEVICE_ID_REDHAT_XHCI << 16 | \
++                      PCI_VENDOR_ID_REDHAT)
+ #define XHCI_NEC_ID (PCI_DEVICE_ID_NEC_UPD720200 << 16 | \
+                      PCI_VENDOR_ID_NEC)
+ 
+@@ -76,6 +83,7 @@ static QPCIDevice *get_xhci_device(QTestState *qts, uint32_t *fingerprint)
+ 
+     xhci_fingerprint = qpci_config_readl(xhci, PCI_VENDOR_ID);
+     switch (xhci_fingerprint) {
++    case XHCI_QEMU_ID:
+     case XHCI_NEC_ID:
+         break;
+     default:
+@@ -128,20 +136,21 @@ static XHCIQState *xhci_boot(const char *cli, ...)
+     XHCIQState *s;
+     va_list ap;
+ 
+-    if (cli) {
+-        va_start(ap, cli);
+-        s = xhci_vboot(cli, ap);
+-        va_end(ap);
+-    } else {
+-        s = xhci_boot("-M q35 "
+-                      "-device nec-usb-xhci,id=xhci,bus=pcie.0,addr=1d.0 "
+-                      "-drive id=drive0,if=none,file=null-co://,"
+-                          "file.read-zeroes=on,format=raw");
+-    }
++    va_start(ap, cli);
++    s = xhci_vboot(cli, ap);
++    va_end(ap);
+ 
+     return s;
  }
  
-+static void submit_tr_trb(XHCIQState *s, int slot, XHCITRB *trb)
++static XHCIQState *xhci_boot_dev(const char *device)
 +{
-+    XHCIQSlotState *sl = &s->slots[slot];
-+    uint64_t tr_addr = sl->transfer_ring + sl->tr_trb_idx * TRB_SIZE;
-+    XHCITRB t;
-+
-+    trb->control |= sl->tr_trb_c; /* C */
-+
-+    t.parameter = cpu_to_le64(trb->parameter);
-+    t.status = cpu_to_le32(trb->status);
-+    t.control = cpu_to_le32(trb->control);
-+
-+    qtest_memwrite(s->parent->qts, tr_addr, &t, TRB_SIZE);
-+    sl->tr_trb_idx++;
-+    /* Last entry contains the link, so wrap back */
-+    if (sl->tr_trb_idx == sl->tr_trb_entries - 1) {
-+        set_link_trb(s, sl->transfer_ring, sl->tr_trb_c, sl->tr_trb_entries);
-+        sl->tr_trb_idx = 0;
-+        sl->tr_trb_c ^= 1;
-+    }
-+    xhci_db_writel(s, slot, 1); /* doorbell slot, EP0 target */
++    return xhci_boot("-M q35 "
++                    "-device %s,id=xhci,bus=pcie.0,addr=1d.0 "
++                    "-drive id=drive0,if=none,file=null-co://,"
++                        "file.read-zeroes=on,format=raw", device);
 +}
 +
- /*
-  * This test brings up an endpoint and runs some noops through its command
-- * ring and gets responses back on the event ring.
-+ * ring and gets responses back on the event ring, then brings up a device
-+ * context and runs some noops through its transfer ring.
-  *
+ /**
+  * Clean up the PCI device, then terminate the QEMU instance.
+  */
+@@ -156,12 +165,13 @@ static void xhci_shutdown(XHCIQState *xhci)
+ 
+ /*** tests ***/
+ 
+-static void test_xhci_hotplug(void)
++static void test_xhci_hotplug(const void *arg)
+ {
++    const TestData *td = arg;
+     XHCIQState *s;
+     QTestState *qts;
+ 
+-    s = xhci_boot(NULL);
++    s = xhci_boot_dev(td->device);
+     qts = s->parent->qts;
+ 
+     usb_test_hotplug(qts, "xhci", "1", NULL);
+@@ -169,12 +179,13 @@ static void test_xhci_hotplug(void)
+     xhci_shutdown(s);
+ }
+ 
+-static void test_usb_uas_hotplug(void)
++static void test_usb_uas_hotplug(const void *arg)
+ {
++    const TestData *td = arg;
+     XHCIQState *s;
+     QTestState *qts;
+ 
+-    s = xhci_boot(NULL);
++    s = xhci_boot_dev(td->device);
+     qts = s->parent->qts;
+ 
+     qtest_qmp_device_add(qts, "usb-uas", "uas", "{}");
+@@ -191,12 +202,13 @@ static void test_usb_uas_hotplug(void)
+     xhci_shutdown(s);
+ }
+ 
+-static void test_usb_ccid_hotplug(void)
++static void test_usb_ccid_hotplug(const void *arg)
+ {
++    const TestData *td = arg;
+     XHCIQState *s;
+     QTestState *qts;
+ 
+-    s = xhci_boot(NULL);
++    s = xhci_boot_dev(td->device);
+     qts = s->parent->qts;
+ 
+     qtest_qmp_device_add(qts, "usb-ccid", "ccid", "{}");
+@@ -392,8 +404,9 @@ static void submit_tr_trb(XHCIQState *s, int slot, XHCITRB *trb)
   * This could be librified in future (like AHCI0 to have a way to bring up
   * an endpoint to test device protocols.
-@@ -519,6 +543,16 @@ static void pci_xhci_stress_rings(void)
+  */
+-static void pci_xhci_stress_rings(void)
++static void test_xhci_stress_rings(const void *arg)
+ {
++    const TestData *td = arg;
+     XHCIQState *s;
+     uint32_t value;
+     uint64_t input_context;
+@@ -405,11 +418,11 @@ static void pci_xhci_stress_rings(void)
+     int i;
  
-     /* XXX: Could check EP state is running */
+     s = xhci_boot("-M q35 "
+-            "-device nec-usb-xhci,id=xhci,bus=pcie.0,addr=1d.0 "
++            "-device %s,id=xhci,bus=pcie.0,addr=1d.0 "
+             "-device usb-storage,bus=xhci.0,drive=drive0 "
+             "-drive id=drive0,if=none,file=null-co://,"
+-                "file.read-zeroes=on,format=raw "
+-            );
++                "file.read-zeroes=on,format=raw ",
++            td->device);
  
-+    /* Wrap the transfer ring a few times */
-+    for (i = 0; i < 100; i++) {
-+        /* Issue a transfer ring slot 0 noop */
-+        memset(&trb, 0, TRB_SIZE);
-+        trb.control |= TR_NOOP << TRB_TYPE_SHIFT;
-+        trb.control |= TRB_TR_IOC;
-+        submit_tr_trb(s, slotid, &trb);
-+        wait_event_trb(s, &trb);
-+    }
+     hcsparams1 = xhci_cap_readl(s, XHCI_HCCAP_REG_HCSPARAMS1);
+     s->maxports = (hcsparams1 >> 24) & 0xff;
+@@ -567,11 +580,37 @@ static void pci_xhci_stress_rings(void)
+     xhci_shutdown(s);
+ }
+ 
++static void add_test(const char *name, TestData *td, void (*fn)(const void *))
++{
++    g_autofree char *full_name = g_strdup_printf(
++            "/xhci/pci/%s/%s", td->device, name);
++    qtest_add_data_func(full_name, td, fn);
++}
 +
-     /* Shut it down */
-     qpci_msix_disable(s->dev);
++static void add_tests(TestData *td)
++{
++    add_test("hotplug", td, test_xhci_hotplug);
++    if (qtest_has_device("usb-uas")) {
++        add_test("usb-uas", td, test_usb_uas_hotplug);
++    }
++    if (qtest_has_device("usb-ccid")) {
++        add_test("usb-ccid", td, test_usb_ccid_hotplug);
++    }
++    if (qtest_has_device("usb-storage")) {
++        add_test("xhci-stress-rings", td, test_xhci_stress_rings);
++    }
++}
++
+ /* tests */
+ int main(int argc, char **argv)
+ {
+     int ret;
+     const char *arch;
++    int i;
++    TestData td[] = {
++        { .device = "qemu-xhci", },
++        { .device = "nec-usb-xhci", },
++    };
  
+     g_test_init(&argc, &argv, NULL);
+ 
+@@ -582,19 +621,10 @@ int main(int argc, char **argv)
+         return 0;
+     }
+ 
+-    if (!qtest_has_device("nec-usb-xhci")) {
+-        return 0;
+-    }
+-
+-    qtest_add_func("/xhci/pci/hotplug", test_xhci_hotplug);
+-    if (qtest_has_device("usb-uas")) {
+-        qtest_add_func("/xhci/pci/hotplug/usb-uas", test_usb_uas_hotplug);
+-    }
+-    if (qtest_has_device("usb-ccid")) {
+-        qtest_add_func("/xhci/pci/hotplug/usb-ccid", test_usb_ccid_hotplug);
+-    }
+-    if (qtest_has_device("usb-storage")) {
+-        qtest_add_func("/xhci/pci/xhci-stress-rings", pci_xhci_stress_rings);
++    for (i = 0; i < ARRAY_SIZE(td); i++) {
++        if (qtest_has_device(td[i].device)) {
++            add_tests(&td[i]);
++        }
+     }
+ 
+     ret = g_test_run();
 -- 
 2.45.2
 
