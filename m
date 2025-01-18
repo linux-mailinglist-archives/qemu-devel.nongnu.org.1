@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3418A15EB8
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Jan 2025 21:18:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 260EBA15EB9
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Jan 2025 21:21:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZFFp-0000hQ-4y; Sat, 18 Jan 2025 15:17:13 -0500
+	id 1tZFIr-0001eq-UF; Sat, 18 Jan 2025 15:20:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tZFFf-0000gy-SO; Sat, 18 Jan 2025 15:17:05 -0500
+ id 1tZFIp-0001eY-40; Sat, 18 Jan 2025 15:20:19 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tZFFd-0001u1-W7; Sat, 18 Jan 2025 15:17:03 -0500
+ id 1tZFIn-0002Kk-Ij; Sat, 18 Jan 2025 15:20:18 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 53328DA92E;
- Sat, 18 Jan 2025 23:16:46 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 14406DA931;
+ Sat, 18 Jan 2025 23:20:05 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id CE48519EA74;
- Sat, 18 Jan 2025 23:16:56 +0300 (MSK)
-Message-ID: <563fdc15-b52b-4683-a5bb-26dc0638fc8c@tls.msk.ru>
-Date: Sat, 18 Jan 2025 23:16:56 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8EA8819EA79;
+ Sat, 18 Jan 2025 23:20:15 +0300 (MSK)
+Message-ID: <f508fd5f-23c6-4f0c-8fdc-bfedd5a9e9e0@tls.msk.ru>
+Date: Sat, 18 Jan 2025 23:20:15 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] gdbstub/user-target: fix gdbserver int format (%d -> %x)
-To: Dominik 'Disconnect3d' Czarnota <dominik.b.czarnota@gmail.com>,
- qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org, philmd@linaro.org, qemu-trivial@nongnu.org
-References: <20241227170413.72438-1-dominik.b.czarnota@gmail.com>
+Subject: Re: [PATCH 0/2] net: Fix announce_self with vhost
+To: Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org
+Cc: Jason Wang <jasowang@redhat.com>, QEMU Trivial <qemu-trivial@nongnu.org>, 
+ qemu-stable <qemu-stable@nongnu.org>
+References: <20250117111709.970789-1-lvivier@redhat.com>
 Content-Language: en-US, ru-RU
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
@@ -76,7 +76,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
  ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
  3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
-In-Reply-To: <20241227170413.72438-1-dominik.b.czarnota@gmail.com>
+In-Reply-To: <20250117111709.970789-1-lvivier@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -102,21 +102,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-27.12.2024 20:04, Dominik 'Disconnect3d' Czarnota wrote:
-> From: disconnect3d <dominik.b.czarnota@gmail.com>
+17.01.2025 14:17, Laurent Vivier wrote:
+> announce_self that sends a RARP packet after migration
+> or with announce_self QMP/HMP command doesn't work with
+> vhost because of the vnet headers.
 > 
-> This commit fixes an incorrect format string for formatting integers
-> provided to GDB when debugging a target run in QEMU user mode.
+> announce_self is the only user of QEMU_NET_PACKET_FLAG_RAW and
+> this flag is not correctly managed.
 > 
-> The correct format is hexadecimal for both success and errno values,
-> some of which can be seen here [0].
+> This series fix a problem with this flag in filter-dump and in
+> qemu_deliver_packet_iov().
 > 
-> [0] https://github.com/bminor/binutils-gdb/blob/e65a355022d0dc6b5707310876a72b5693ec0aa5/gdbserver/hostio.cc#L196-L213
+> Laurent Vivier (2):
+>    net: Fix announce_self
+>    net/dump: Correctly compute Ethernet packet offset
+> 
+>   net/dump.c | 3 ++-
+>   net/net.c  | 1 +
+>   2 files changed, 3 insertions(+), 1 deletion(-)
 
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 
-Unfortunately we can't apply this one without Signed-off-by: tag
-from you, and maybe without fixing the first From: line.
+Applied to trivial-patches and queued for qemu-stable.
 
 Thanks,
 
