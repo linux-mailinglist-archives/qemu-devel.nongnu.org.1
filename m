@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F35A15BA9
+	by mail.lfdr.de (Postfix) with ESMTPS id 94663A15BAB
 	for <lists+qemu-devel@lfdr.de>; Sat, 18 Jan 2025 08:10:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZ2xY-0003G9-ST; Sat, 18 Jan 2025 02:09:32 -0500
+	id 1tZ2xc-0003Gd-Ny; Sat, 18 Jan 2025 02:09:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tZ2xW-0003FZ-CC
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 02:09:30 -0500
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tZ2xa-0003GJ-Mo
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 02:09:34 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tZ2xU-0007qS-IN
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 02:09:30 -0500
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2ef72924e53so4953326a91.3
- for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 23:09:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tZ2xY-0007qy-Sn
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 02:09:34 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-21a7ed0155cso45360905ad.3
+ for <qemu-devel@nongnu.org>; Fri, 17 Jan 2025 23:09:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737184167; x=1737788967; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1737184171; x=1737788971; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NiA0OcT7kkutyeI3Mw8qH8TpIB7VaMZJNO6sZmBmX5c=;
- b=DSCSMx4uG08s9avsnqRxoWZxcY5jqQz4MFZYQTK0MzPX2Ga/dBNlFy/K1HZJzsJpe3
- a8n1jL1PLbBvDQr3C+NB02rPYcAcFy/B4Hv3QM6OItM6RQiXMBnk5Q7Ei1Hc12mcaIGG
- 62WJnUm5G3bA7rTBFHTqDZlETmJuTyqvNGiXz/yN8Lt/1PsldS6S7BWx/ZAIO2ZRdWE/
- ECxra8FLYDwORHErHqFkalCILdf2g/AxmaUZNfG/Z5oVvnE1mcQF2F7Aj19yYkhkCGbx
- Jju6mZDZL5XLCM1uPJfNfbmkz4rvxAoP8T8igeePYPJ/q87jrHa+GygqReOuPzXtaKvM
- STzg==
+ bh=zNO5lCbo8e/XtcQXdeEOm1z3tzxTfEs5Ck6HtIwTvS8=;
+ b=ASi6HtQxLUyjt4LBGnqEzwueVSlJ+WcBWk7vWwMG6pCvAVIxdWUa8LFBwiArYJdNoT
+ AGzS0hi9Nr1q7hjtfMPZiFY9fWObIhVvzWKEKQc9bG+ssrNRGkOhwX8Wlcm0hiVqlcdZ
+ YUucBcfDOAuLU6mtpcn+syS7HrrjTp2t3Zf/1fQcmZKoS2PY0gkq2xCsaZNGv/fpWwxW
+ 8p1qDYYiy1deuTXOYwgcxl+/0Gt4m3K2ub6ntp2YN1RqmO8SviRDld8C0+2DjPVbp4IL
+ RSSNSIviRbPYfjHWTWYs7pqK18Avgp2YEssKHigLvxgHGHXDVytcS7RP0BQqRvMFlng1
+ dU4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737184167; x=1737788967;
+ d=1e100.net; s=20230601; t=1737184171; x=1737788971;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NiA0OcT7kkutyeI3Mw8qH8TpIB7VaMZJNO6sZmBmX5c=;
- b=dh0v0MjmeEYoCC3q40svw5uN6O0GqYqkmm2KijTi+Q01xa4im4HRPMXENTz4c53KoT
- p4RsHy6owlbtHBsk/otEaWLBcfxxC1KAoVHv7DmPHPQSa3NZYlZlWC1fnPmOO7v2crmU
- YQnWPmbWQZFuKroBdiybb45uWMyLczDoLyyRc+FQw2mZOAYiY5dzdYF52wYZpLxEQ2pS
- YbxL3bc3yjYSOwUW92v50T/JA62TLubGWIqIOIuc+xSqyUfayAUJVc3rdTQnM8dSZ8H6
- 0owr+7tqcFpbAGa0lKvp5cue7MrS9feVG7UG1BV9BopaLf4XHjzqSWWYetezAYroZorM
- T0TQ==
-X-Gm-Message-State: AOJu0YwToHLA6kKcj0aU+pFmHq+TsDnn3lSqAX5jc0ut+eA1LJTiqisi
- EXUEzlZJN8FgitjuhwK8KEPuGhCYIfv/sCVvByWyU/U1DPQ+y0x3afbgTA==
-X-Gm-Gg: ASbGncsIIsUoupWF4tZ894BEy+l7U9WNG+wSR65PJrfchKpO0y1vIIzKKueFpjsZGhT
- n38GfzNFYiZUsLsdrtszxjSj2p8KM/rkuFP6J77ZriPzqx4T0Q3Q+V6AYn/rRUTr/9ayPmFGs4s
- zvhtsQ8R9rCs/HIUcyZlJgrpptwtCBu6CNLAG5XfZwJAB8RehbAk8yEnu2DwCtHS9+qGW1SWdSz
- IGP98d1OakhzvcMA4Ma+s9TZXr+TUyvnOJSOHm92jdMpQGiqAIbQIjEArPzc5TjAp/mHcMYZJPG
- jT0hbIyzv/Nptdp3bY8NoWZ2UNjhZTV/JbTelUw=
-X-Google-Smtp-Source: AGHT+IHnQfPGkLhPVoHjlW8FXQKRT/P6TOBtzhBUJcvdILFAYZ/NAyMNY7iZ4B/pNEpdy5234x+g9A==
-X-Received: by 2002:a05:6a00:cc9:b0:729:1c0f:b94a with SMTP id
- d2e1a72fcca58-72dafbc0447mr8682310b3a.23.1737184167005; 
- Fri, 17 Jan 2025 23:09:27 -0800 (PST)
+ bh=zNO5lCbo8e/XtcQXdeEOm1z3tzxTfEs5Ck6HtIwTvS8=;
+ b=sHAoDC++ibafHdX1U++RZRXMQYQee0gzDyaP7im/6O6Lu5hh3qbmRYSF8PSEezeI82
+ vy/Iq8OyYzxRC1oGgl6kTyJ0Az6OrbhIr5lQQ/nV/6O738SCR4M2FAuHejedqd4E78CL
+ LGceejkSGOlY0plrKXhgFNycW4BluVGR47qrPMXNXpgIbCsg1YES58cxeUvbBg+0P1Vb
+ p0MNmM8H9JVkaOgrKE5ssu+DxNDOdGj+dI+hV/TjibsWhOvVG12LL+nSOOPdVj3LByY2
+ fxguxUbFevPHGQ+7yWnig25FiYRSenquJh1MeWfDy3unv2Kl9klSZLNHa1BhNQQY9K5G
+ jSHA==
+X-Gm-Message-State: AOJu0YwgcIeD+nFRHnNeqR74vM20jjsZFkrS5nj/r6DJg4JwSL318zo0
+ DFcBPnb1HHXp6DIIYu1oZAhWLkvhsPNa5qPALwPPy/7qW9eelVaEQzoEtg==
+X-Gm-Gg: ASbGncuxlCif+WUEvdMq0ZFPx6xXoq9Vi3uZULm8e7cwbKJS2aQt1k/NBbU1FVBvxsk
+ RccMVZ5ej3H9YUykkeEmoIduego+B9kt95EfCbgMGVu6uR/3+R/G4v2DhivIphouXHhqZSdOBCt
+ YDrX+g5r6CikABbICAuMbt2KG1/Q/VS8VWHSxb6qcUzTCuyUGrCXMkHIqipW9U1ogtxPJPfgemB
+ 3VULnWMRCiapilZ5vo7+P3QFp4+/YdhaHBQTqQ5t0R61mv+TWEDCIl9maBluDRJybN/nEg1Ylb7
+ KU6kDGxS2nuxfoWxV4BwXgUOP0XE
+X-Google-Smtp-Source: AGHT+IHTIyDz59+ao77xTX8w8z7Xcv6QgYRVD0mUOErdh75QSiXfyu86OuXYqFjDtKiPIGgnqlt0dg==
+X-Received: by 2002:a05:6a00:9082:b0:725:cfa3:bc6b with SMTP id
+ d2e1a72fcca58-72daf931c0dmr9001992b3a.3.1737184171026; 
+ Fri, 17 Jan 2025 23:09:31 -0800 (PST)
 Received: from wheely.local0.net (124-169-212-233.tpgi.com.au.
  [124.169.212.233]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72dab9c95adsm3192880b3a.107.2025.01.17.23.09.23
+ d2e1a72fcca58-72dab9c95adsm3192880b3a.107.2025.01.17.23.09.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Jan 2025 23:09:26 -0800 (PST)
+ Fri, 17 Jan 2025 23:09:30 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -66,16 +66,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
  Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PATCH v2 6/8] tests/qtest/xhci: test the qemu-xhci device
-Date: Sat, 18 Jan 2025 17:08:51 +1000
-Message-ID: <20250118070853.653778-7-npiggin@gmail.com>
+Subject: [PATCH v2 7/8] hw/usb/hcd-xhci-pci: Make PCI device more configurable
+Date: Sat, 18 Jan 2025 17:08:52 +1000
+Message-ID: <20250118070853.653778-8-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20250118070853.653778-1-npiggin@gmail.com>
 References: <20250118070853.653778-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,219 +98,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add support in the test code for running multiple drivers, and add
-tests for the qemu-xhci device.
+To prepare to support another USB PCI Host Controller, make some PCI
+configuration dynamic.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tests/qtest/usb-hcd-xhci-test.c | 96 +++++++++++++++++++++------------
- 1 file changed, 63 insertions(+), 33 deletions(-)
+ hw/usb/hcd-xhci-pci.h |  9 +++++
+ hw/usb/hcd-xhci-pci.c | 87 +++++++++++++++++++++++++++++++++++++------
+ 2 files changed, 85 insertions(+), 11 deletions(-)
 
-diff --git a/tests/qtest/usb-hcd-xhci-test.c b/tests/qtest/usb-hcd-xhci-test.c
-index 63359fb70b9..4efe7b69d4f 100644
---- a/tests/qtest/usb-hcd-xhci-test.c
-+++ b/tests/qtest/usb-hcd-xhci-test.c
-@@ -13,10 +13,15 @@
- #include "libqos/libqos-pc.h"
- #include "libqtest-single.h"
- #include "libqos/usb.h"
-+#include "hw/pci/pci.h"
- #include "hw/pci/pci_ids.h"
- #include "hw/pci/pci_regs.h"
- #include "hw/usb/hcd-xhci.h"
+diff --git a/hw/usb/hcd-xhci-pci.h b/hw/usb/hcd-xhci-pci.h
+index 08f70ce97cc..213076aabf6 100644
+--- a/hw/usb/hcd-xhci-pci.h
++++ b/hw/usb/hcd-xhci-pci.h
+@@ -40,6 +40,15 @@ typedef struct XHCIPciState {
+     XHCIState xhci;
+     OnOffAuto msi;
+     OnOffAuto msix;
++    uint8_t cache_line_size;
++    uint8_t pm_cap_off;
++    uint8_t pcie_cap_off;
++    uint8_t msi_cap_off;
++    uint8_t msix_cap_off;
++    int msix_bar_nr;
++    uint64_t msix_bar_size;
++    uint32_t msix_table_off;
++    uint32_t msix_pba_off;
+ } XHCIPciState;
  
-+typedef struct TestData {
-+    const char *device;
-+} TestData;
-+
- /*** Test Setup & Teardown ***/
- typedef struct XHCIQSlotState {
-     /* In-memory arrays */
-@@ -56,6 +61,8 @@ typedef struct XHCIQState {
-     XHCIQSlotState slots[32];
- } XHCIQState;
+ #endif
+diff --git a/hw/usb/hcd-xhci-pci.c b/hw/usb/hcd-xhci-pci.c
+index 49642aab58e..525537c2b7e 100644
+--- a/hw/usb/hcd-xhci-pci.c
++++ b/hw/usb/hcd-xhci-pci.c
+@@ -32,9 +32,6 @@
+ #include "trace.h"
+ #include "qapi/error.h"
  
-+#define XHCI_QEMU_ID (PCI_DEVICE_ID_REDHAT_XHCI << 16 | \
-+                      PCI_VENDOR_ID_REDHAT)
- #define XHCI_NEC_ID (PCI_DEVICE_ID_NEC_UPD720200 << 16 | \
-                      PCI_VENDOR_ID_NEC)
- 
-@@ -76,6 +83,7 @@ static QPCIDevice *get_xhci_device(QTestState *qts, uint32_t *fingerprint)
- 
-     xhci_fingerprint = qpci_config_readl(xhci, PCI_VENDOR_ID);
-     switch (xhci_fingerprint) {
-+    case XHCI_QEMU_ID:
-     case XHCI_NEC_ID:
-         break;
-     default:
-@@ -128,20 +136,21 @@ static XHCIQState *xhci_boot(const char *cli, ...)
-     XHCIQState *s;
-     va_list ap;
- 
--    if (cli) {
--        va_start(ap, cli);
--        s = xhci_vboot(cli, ap);
--        va_end(ap);
--    } else {
--        s = xhci_boot("-M q35 "
--                      "-device nec-usb-xhci,id=xhci,bus=pcie.0,addr=1d.0 "
--                      "-drive id=drive0,if=none,file=null-co://,"
--                          "file.read-zeroes=on,format=raw");
--    }
-+    va_start(ap, cli);
-+    s = xhci_vboot(cli, ap);
-+    va_end(ap);
- 
-     return s;
+-#define OFF_MSIX_TABLE  0x3000
+-#define OFF_MSIX_PBA    0x3800
+-
+ static void xhci_pci_intr_update(XHCIState *xhci, int n, bool enable)
+ {
+     XHCIPciState *s = container_of(xhci, XHCIPciState, xhci);
+@@ -105,6 +102,31 @@ static int xhci_pci_vmstate_post_load(void *opaque, int version_id)
+    return 0;
  }
  
-+static XHCIQState *xhci_boot_dev(const char *device)
++static int xhci_pci_add_pm_capability(PCIDevice *pci_dev, uint8_t offset,
++                                      Error **errp)
 +{
-+    return xhci_boot("-M q35 "
-+                    "-device %s,id=xhci,bus=pcie.0,addr=1d.0 "
-+                    "-drive id=drive0,if=none,file=null-co://,"
-+                        "file.read-zeroes=on,format=raw", device);
++    int err;
++
++    err = pci_add_capability(pci_dev, PCI_CAP_ID_PM, offset,
++                             PCI_PM_SIZEOF, errp);
++    if (err < 0) {
++        return err;
++    }
++
++    pci_set_word(pci_dev->config + offset + PCI_PM_PMC,
++                 PCI_PM_CAP_VER_1_2 |
++                 PCI_PM_CAP_D1 | PCI_PM_CAP_D2 |
++                 PCI_PM_CAP_PME_D0 | PCI_PM_CAP_PME_D1 |
++                 PCI_PM_CAP_PME_D2 | PCI_PM_CAP_PME_D3hot);
++    pci_set_word(pci_dev->wmask + offset + PCI_PM_PMC, 0);
++    pci_set_word(pci_dev->config + offset + PCI_PM_CTRL,
++                 PCI_PM_CTRL_NO_SOFT_RESET);
++    pci_set_word(pci_dev->wmask + offset + PCI_PM_CTRL,
++                 PCI_PM_CTRL_STATE_MASK);
++
++    return 0;
 +}
 +
- /**
-  * Clean up the PCI device, then terminate the QEMU instance.
-  */
-@@ -156,12 +165,13 @@ static void xhci_shutdown(XHCIQState *xhci)
- 
- /*** tests ***/
- 
--static void test_xhci_hotplug(void)
-+static void test_xhci_hotplug(const void *arg)
- {
-+    const TestData *td = arg;
-     XHCIQState *s;
-     QTestState *qts;
- 
--    s = xhci_boot(NULL);
-+    s = xhci_boot_dev(td->device);
-     qts = s->parent->qts;
- 
-     usb_test_hotplug(qts, "xhci", "1", NULL);
-@@ -169,12 +179,13 @@ static void test_xhci_hotplug(void)
-     xhci_shutdown(s);
- }
- 
--static void test_usb_uas_hotplug(void)
-+static void test_usb_uas_hotplug(const void *arg)
- {
-+    const TestData *td = arg;
-     XHCIQState *s;
-     QTestState *qts;
- 
--    s = xhci_boot(NULL);
-+    s = xhci_boot_dev(td->device);
-     qts = s->parent->qts;
- 
-     qtest_qmp_device_add(qts, "usb-uas", "uas", "{}");
-@@ -191,12 +202,13 @@ static void test_usb_uas_hotplug(void)
-     xhci_shutdown(s);
- }
- 
--static void test_usb_ccid_hotplug(void)
-+static void test_usb_ccid_hotplug(const void *arg)
- {
-+    const TestData *td = arg;
-     XHCIQState *s;
-     QTestState *qts;
- 
--    s = xhci_boot(NULL);
-+    s = xhci_boot_dev(td->device);
-     qts = s->parent->qts;
- 
-     qtest_qmp_device_add(qts, "usb-ccid", "ccid", "{}");
-@@ -392,8 +404,9 @@ static void submit_tr_trb(XHCIQState *s, int slot, XHCITRB *trb)
-  * This could be librified in future (like AHCI0 to have a way to bring up
-  * an endpoint to test device protocols.
-  */
--static void pci_xhci_stress_rings(void)
-+static void test_xhci_stress_rings(const void *arg)
- {
-+    const TestData *td = arg;
-     XHCIQState *s;
-     uint32_t value;
-     uint64_t input_context;
-@@ -405,11 +418,11 @@ static void pci_xhci_stress_rings(void)
-     int i;
- 
-     s = xhci_boot("-M q35 "
--            "-device nec-usb-xhci,id=xhci,bus=pcie.0,addr=1d.0 "
-+            "-device %s,id=xhci,bus=pcie.0,addr=1d.0 "
-             "-device usb-storage,bus=xhci.0,drive=drive0 "
-             "-drive id=drive0,if=none,file=null-co://,"
--                "file.read-zeroes=on,format=raw "
--            );
-+                "file.read-zeroes=on,format=raw ",
-+            td->device);
- 
-     hcsparams1 = xhci_cap_readl(s, XHCI_HCCAP_REG_HCSPARAMS1);
-     s->maxports = (hcsparams1 >> 24) & 0xff;
-@@ -567,11 +580,37 @@ static void pci_xhci_stress_rings(void)
-     xhci_shutdown(s);
- }
- 
-+static void add_test(const char *name, TestData *td, void (*fn)(const void *))
-+{
-+    g_autofree char *full_name = g_strdup_printf(
-+            "/xhci/pci/%s/%s", td->device, name);
-+    qtest_add_data_func(full_name, td, fn);
-+}
-+
-+static void add_tests(TestData *td)
-+{
-+    add_test("hotplug", td, test_xhci_hotplug);
-+    if (qtest_has_device("usb-uas")) {
-+        add_test("usb-uas", td, test_usb_uas_hotplug);
-+    }
-+    if (qtest_has_device("usb-ccid")) {
-+        add_test("usb-ccid", td, test_usb_ccid_hotplug);
-+    }
-+    if (qtest_has_device("usb-storage")) {
-+        add_test("xhci-stress-rings", td, test_xhci_stress_rings);
-+    }
-+}
-+
- /* tests */
- int main(int argc, char **argv)
+ static void usb_xhci_pci_realize(struct PCIDevice *dev, Error **errp)
  {
      int ret;
-     const char *arch;
-+    int i;
-+    TestData td[] = {
-+        { .device = "qemu-xhci", },
-+        { .device = "nec-usb-xhci", },
-+    };
+@@ -113,7 +135,7 @@ static void usb_xhci_pci_realize(struct PCIDevice *dev, Error **errp)
  
-     g_test_init(&argc, &argv, NULL);
+     dev->config[PCI_CLASS_PROG] = 0x30;    /* xHCI */
+     dev->config[PCI_INTERRUPT_PIN] = 0x01; /* interrupt pin 1 */
+-    dev->config[PCI_CACHE_LINE_SIZE] = 0x10;
++    dev->config[PCI_CACHE_LINE_SIZE] = s->cache_line_size;
+     dev->config[0x60] = 0x30; /* release number */
  
-@@ -582,19 +621,10 @@ int main(int argc, char **argv)
-         return 0;
+     object_property_set_link(OBJECT(&s->xhci), "host", OBJECT(s), NULL);
+@@ -126,8 +148,16 @@ static void usb_xhci_pci_realize(struct PCIDevice *dev, Error **errp)
+         s->xhci.nec_quirks = true;
      }
  
--    if (!qtest_has_device("nec-usb-xhci")) {
--        return 0;
--    }
--
--    qtest_add_func("/xhci/pci/hotplug", test_xhci_hotplug);
--    if (qtest_has_device("usb-uas")) {
--        qtest_add_func("/xhci/pci/hotplug/usb-uas", test_usb_uas_hotplug);
--    }
--    if (qtest_has_device("usb-ccid")) {
--        qtest_add_func("/xhci/pci/hotplug/usb-ccid", test_usb_ccid_hotplug);
--    }
--    if (qtest_has_device("usb-storage")) {
--        qtest_add_func("/xhci/pci/xhci-stress-rings", pci_xhci_stress_rings);
-+    for (i = 0; i < ARRAY_SIZE(td); i++) {
-+        if (qtest_has_device(td[i].device)) {
-+            add_tests(&td[i]);
++    if (s->pm_cap_off) {
++        if (xhci_pci_add_pm_capability(dev, s->pm_cap_off, &err)) {
++            error_propagate(errp, err);
++            return;
++        }
++    }
++
+     if (s->msi != ON_OFF_AUTO_OFF) {
+-        ret = msi_init(dev, 0x70, s->xhci.numintrs, true, false, &err);
++        ret = msi_init(dev, s->msi_cap_off, s->xhci.numintrs,
++                       true, false, &err);
+         /*
+          * Any error other than -ENOTSUP(board's MSI support is broken)
+          * is a programming error
+@@ -144,22 +174,47 @@ static void usb_xhci_pci_realize(struct PCIDevice *dev, Error **errp)
+         /* With msi=auto, we fall back to MSI off silently */
+         error_free(err);
+     }
++
+     pci_register_bar(dev, 0,
+                      PCI_BASE_ADDRESS_SPACE_MEMORY |
+                      PCI_BASE_ADDRESS_MEM_TYPE_64,
+                      &s->xhci.mem);
+ 
+     if (pci_bus_is_express(pci_get_bus(dev))) {
+-        ret = pcie_endpoint_cap_init(dev, 0xa0);
++        ret = pcie_endpoint_cap_init(dev, s->pcie_cap_off);
+         assert(ret > 0);
+     }
+ 
+     if (s->msix != ON_OFF_AUTO_OFF) {
+-        /* TODO check for errors, and should fail when msix=on */
+-        msix_init(dev, s->xhci.numintrs,
+-                  &s->xhci.mem, 0, OFF_MSIX_TABLE,
+-                  &s->xhci.mem, 0, OFF_MSIX_PBA,
+-                  0x90, NULL);
++        MemoryRegion *msix_bar = &s->xhci.mem;
++
++        if (s->msix_bar_nr != 0) {
++            memory_region_init(&dev->msix_exclusive_bar, OBJECT(dev),
++                               "xhci-msix", s->msix_bar_size);
++            msix_bar = &dev->msix_exclusive_bar;
++            pci_register_bar(dev, s->msix_bar_nr,
++                             PCI_BASE_ADDRESS_SPACE_MEMORY |
++                             PCI_BASE_ADDRESS_MEM_TYPE_64,
++                             msix_bar);
++        }
++
++        ret = msix_init(dev, s->xhci.numintrs,
++                        msix_bar, s->msix_bar_nr, s->msix_table_off,
++                        msix_bar, s->msix_bar_nr, s->msix_pba_off,
++                        s->msix_cap_off, &err);
++        if (ret == -ENOTSUP && s->msi == ON_OFF_AUTO_AUTO) {
++            /* report that msix is not supported, but do not error out */
++            warn_report_err(err);
++        } else if (ret == -ENOTSUP) {
++            /* Can't satisfy user's explicit msix=on request, fail */
++            error_append_hint(&err, "You have to use msix=auto (default) or "
++                    "msix=off with this machine type.\n");
++            error_propagate(errp, err);
++            return;
++        } else if (ret < 0) {
++            error_propagate(errp, err);
++            return;
 +        }
      }
+     s->xhci.as = pci_get_address_space(dev);
+ }
+@@ -196,6 +251,16 @@ static void xhci_instance_init(Object *obj)
+     PCI_DEVICE(obj)->cap_present |= QEMU_PCI_CAP_EXPRESS;
+     object_initialize_child(obj, "xhci-core", &s->xhci, TYPE_XHCI);
+     qdev_alias_all_properties(DEVICE(&s->xhci), obj);
++
++    s->cache_line_size = 0x10;
++    s->pm_cap_off = 0;
++    s->pcie_cap_off = 0xa0;
++    s->msi_cap_off = 0x70;
++    s->msix_cap_off = 0x90;
++    s->msix_bar_nr = 0;
++    s->msix_bar_size = 0;
++    s->msix_table_off = 0x3000;
++    s->msix_pba_off = 0x3800;
+ }
  
-     ret = g_test_run();
+ static const Property xhci_pci_properties[] = {
 -- 
 2.45.2
 
