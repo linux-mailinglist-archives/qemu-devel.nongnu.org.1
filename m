@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23F52A15ED6
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Jan 2025 21:56:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9550DA15ED8
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Jan 2025 22:03:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZFrT-0000NE-8B; Sat, 18 Jan 2025 15:56:07 -0500
+	id 1tZFxr-0001ZA-2P; Sat, 18 Jan 2025 16:02:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tZFrQ-0000LH-9f; Sat, 18 Jan 2025 15:56:04 -0500
+ id 1tZFxj-0001Yn-Vn; Sat, 18 Jan 2025 16:02:36 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tZFrO-0007ut-Lt; Sat, 18 Jan 2025 15:56:04 -0500
+ id 1tZFxi-0008P8-Ei; Sat, 18 Jan 2025 16:02:35 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5ECA1DA950;
- Sat, 18 Jan 2025 23:55:48 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id DCB8ADA977;
+ Sun, 19 Jan 2025 00:02:21 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id DDC2B19EA99;
- Sat, 18 Jan 2025 23:55:58 +0300 (MSK)
-Message-ID: <565c1712-0f20-4d24-b809-a4e18c827da7@tls.msk.ru>
-Date: Sat, 18 Jan 2025 23:55:58 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6B13519EABB;
+ Sun, 19 Jan 2025 00:02:32 +0300 (MSK)
+Message-ID: <7b87000c-bdb4-41c0-8fe0-9bb0c4e8cd85@tls.msk.ru>
+Date: Sun, 19 Jan 2025 00:02:32 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] vvfat: refresh writing long filename
-To: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org,
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, =?UTF-8?Q?Volker_R=C3=BCmelin?=
+ <vr_qemu@t-online.de>, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  qemu-block@nongnu.org, qemu-trivial@nongnu.org
 References: <20250118182109.2695C19E94D@tsrv.corpit.ru>
- <fcd930c1-5071-47ce-a400-0a52ba673c20@t-online.de>
+ <df622cbd-32a1-29b3-5518-fa4d5e1d7c40@eik.bme.hu>
 Content-Language: en-US, ru-RU
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
@@ -78,7 +79,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
  ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
  3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
-In-Reply-To: <fcd930c1-5071-47ce-a400-0a52ba673c20@t-online.de>
+In-Reply-To: <df622cbd-32a1-29b3-5518-fa4d5e1d7c40@eik.bme.hu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -104,15 +105,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-18.01.2025 23:32, Volker Rümelin wrote:
+18.01.2025 23:54, BALATON Zoltan wrote:
 
-> The rules are:
-> If the file name length in characters is a multiple of 13 you are done.
-> Otherwise the remaining unused LFN direntry name array elements have to
-> be filled with one 0x0000 (a 16 bit 0) and the rest with 0xffff.
+>> +typedef struct lfn_direntry_t {
+>> +    uint8_t sequence;
+>> +    uint8_t name01[10];
+>> +    uint8_t attributes;
+>> +    uint8_t direntry_type;
+>> +    uint8_t sfn_checksum;
+>> +    uint8_t name0e[12];
+>> +    uint16_t begin;
+>> +    uint8_t name1c[4];
+>> +} QEMU_PACKED lfn_direntry_t;
 
-BTW, are we really okay with a single dirent if the name length is exactly
-13 utf16 chars?  Don't it need a null terminator?
+>> +static unsigned write_lfn_part(uint8_t *dest, unsigned dsize,
+>> +                               const gunichar2 *lptr, const gunichar2 *lend)
+>> +{
+>> +    unsigned i;
+>> +    for(i = 0; i < dsize / 2 && lptr + i < lend; ++i) {
+>> +        dest[i / 2 + 0] = lptr[i] & 0xff;
+>> +        dest[i / 2 + 1] = lptr[i] >> 8;
+> 
+> Why not uint16_t and maybe cpu_to_le (or whatever that's called) if needed? May be simpler than handling it byte by byte.
+
+The dest array is unaligned - this is, eg, name01 in the above struct.
+Will it work to use entry->name01[i] = cpu_to_le16(lptr[i]) here,
+provided lfn_direntry_t=>name is declared as uint16_t name[5] ?
+
+I haven't done programming for quite a while... ;)
 
 /mjt
 
