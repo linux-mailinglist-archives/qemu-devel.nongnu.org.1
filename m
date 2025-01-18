@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB64A15E23
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Jan 2025 17:42:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2480A15E22
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Jan 2025 17:42:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZBt4-0003zs-Bh; Sat, 18 Jan 2025 11:41:30 -0500
+	id 1tZBt5-00040a-5T; Sat, 18 Jan 2025 11:41:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1tZBsu-0003wd-AQ
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 11:41:22 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1tZBsv-0003we-5N
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 11:41:23 -0500
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1tZBsr-0007oS-Mc
+ id 1tZBss-0007oU-Qn
  for qemu-devel@nongnu.org; Sat, 18 Jan 2025 11:41:20 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-5d3f57582a2so8513005a12.1
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-aa67ac42819so463605966b.0
  for <qemu-devel@nongnu.org>; Sat, 18 Jan 2025 08:41:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737218476; x=1737823276; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1737218477; x=1737823277; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=d+wE3Swfoh6salpcQwR9qOMCQ5Jvi+Z3uZrnQwuPDqk=;
- b=ZEut6+g8ntPws/tMA3alCg1pdbOvtRbD98ZHJjIKtvrlNKyUgn84GdFM4cCjgUBwwQ
- HzbT0unDOFzuw9en/rFGi9SpxYMQUPIRWKJf14IkXl+UdAT2QW8crUuwxnmExjoyf1sI
- AhrKbQCYkS0qXKkZiojuF2SX8INJsKsznzsl/jZ+RL9f7Cmjs/ks0quUYRMm3Y21lmUR
- W+51qVT1DIU6NKCR6799mAQMVLlyfoo5H4MtPBZwel+CfYjTnvXEQHi/LYwuhA5Ryoiv
- J6A3g+GfM29DUPqBZskStUDRFFRcQqQ2HzdA9vo3272AURRw9GYAmFGnuN/ntpjn/v6D
- Bn6w==
+ bh=YY54bev7L3dmyzD400AvB/ybrot8HwOgUnWozmkH4kE=;
+ b=UqWAhfm5yh4Pg96aONX7C3ZR0DrirIWZ1byIc9GwgmIprTNOvmvf8jsekb72HqxHWE
+ 7CCf3JGszbua6/gVpzzLKb6wIdJhPgElTEE/isP59+ZDTfqBUroovv86YJqQxGwhOPOH
+ s0AnaCFceHDj+QtA7b1W3ZpM3BBwQ73QrGof9C2zlGek9cDYZdyE5fpPSZBiBy0HbbIR
+ 5G8UkJ25dRre4BHRUsHVjLMFBYkIPdQmLDPvopgJH87s0EcqudkGwDkxPcMVUcX/jZ3p
+ bfbGhU+9fIDi9vXlgMJdfc4Cbl+x39s5VSop+1WS8IEmakhQdt95+cJToy/sec32MDtM
+ zfTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737218476; x=1737823276;
+ d=1e100.net; s=20230601; t=1737218477; x=1737823277;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=d+wE3Swfoh6salpcQwR9qOMCQ5Jvi+Z3uZrnQwuPDqk=;
- b=rQWB/XB4oS3rDtlLIpC+ZVXm6HuEdg2QNozNR0s7GfhRwNReXBCjhUVBOL7MpvIUpe
- dDyhVecLqYj9L070MyoQ53hvb4dZwZGmvefpUu88Nwv/LXs3Q0Eh3/I1PsfBzRmAhWQY
- a/kQIdEMtHsHoyff0XziBMeYjwROiTGqJHrBp0/6n1VW1DKuObClito23tvvpF/4gd5g
- T1Q+V5JFnScRhuOvLMF/QTyT485hd5S6nODk9O5pe6APMJM41BTAjgGXRlBw0ajCGEP4
- B2plrpD5/w8m9UX28Wc8xnbQK+PwoGmDAXbERiE3srn+TCqSThqnReTQ6noAZhH3IwjQ
- oKoQ==
+ bh=YY54bev7L3dmyzD400AvB/ybrot8HwOgUnWozmkH4kE=;
+ b=CU4x2SwtjzxAGZQ8Q9mQ8iqWjm52PatlqyblSsi/+Tg1rmMzPKvQ9fa3aTdwfNxQ81
+ 87YY3sa1PVTXje16hG+4HVFqAgKHmyWz+RRG1IM8qKhthXXbp5+MwOGJwVu7Y2ZKgWqW
+ X4V2g8U4sillCTAF0YE9K1Du5Eq7Ty6YONad7191Fn10eXOfwyveTiEQHHoGbI75bFuS
+ vN/5j5JVGu00pDTEQGhWQVsK2mEJwA0D/83I0kHP2sgjbothIVvylLx3qylI1AJhEJPl
+ ksNiZYrKHqrtByTq3k6GkDzQa7mnAsmIyqe/B3Br4xczKJBxrBnI8iEYzmVuFR07jjFj
+ bTow==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXXM7Q7Ll+MnmvH/336aeMEuResf10Kh8BzT12MaDjxybqco9sHETu8AuDj2pLR4tdoK1FRoU+JJ8IB@nongnu.org
-X-Gm-Message-State: AOJu0Yw8wfz+R2C5hpPXvBaH8eFNWmAPf1Ki9Ce7qae4YWhhfjtVPT7p
- TsESr/APBPSqDneWGTUyMsoZM8jMeD51rQm7BdAjxNkErUbWCHds
-X-Gm-Gg: ASbGncsPLrW+prK9LvCqamCPE9W3bD7EmEUthcTIaXsAtncNZA9oOL3N+P58n4OJNkm
- 9T3k3xySXNfxvwbKmddNn57OEXQem/FCeZwJbSOZhjJ7XKwQLJCC2SWnFaj54K3NeOe+9A7ezPf
- yGXsTVfKnVAxWcHAYYro0NKMCE0HNxLWfAfoK+lMwhc6l5O7f9VhwbtPMHyCalAyFnE17BXLDBD
- GBBEboMLSVva4N1fx0NMO3A2Y8IeDOR/viuU8AOq5CCajwxHQ39yilpvudzcNbrqnkNxdIxQsMT
- wtE=
-X-Google-Smtp-Source: AGHT+IEK5JS+f384lQ+QzM3xRo6AHb3TR1VZE0742dL9hi63zSQ27yn89P6EB8Gflro3oK5Z1Ss9gg==
-X-Received: by 2002:a17:906:7954:b0:ab3:a515:c41 with SMTP id
- a640c23a62f3a-ab3a5155d68mr281436566b.16.1737218475894; 
- Sat, 18 Jan 2025 08:41:15 -0800 (PST)
+ AJvYcCX8MasGm1Ty91+C3xR8/UCk5AFezhitsM5sMsXKZka8dqyDONYVfHETKg44TETF1PWbelgYI6Q5+Qz6@nongnu.org
+X-Gm-Message-State: AOJu0YwVoH6mffHjx5ddUgPxcKuY7XDSVLWbrtimq0R7zcouGDtukYza
+ 3NVaoVov0KPytRyxjwoYJADNHzbeXqG3YeVVSgpj36htdAPUBFlv
+X-Gm-Gg: ASbGncvFYl/vIeAeKM2h9rLROgv24uuYhy2J6dINBJN4RS4NbMhyhmOXAXFTXB2/QDV
+ ILQiqVTq/mHZYDThJyFkAuLdHZAmvYU2bLxsfvW5fx2llOtpHz1PO0pLSTrCoA48CS2TXp0RkUT
+ 2bw7s5fzG82Ua22YMCS9nUvyDjP1qlU7cuFnrdq1h/fXmDJ2CdjlXizxJYvt1XSfVMJEUjeslU+
+ c1hKL4ZYTUe36bIU3LOUj9AlmPZejIaqP/ZKqOg2qPD1jMhYB84m7lAxMI2IW4O0hQcuecOnzkS
+ MdE=
+X-Google-Smtp-Source: AGHT+IHfYtK4ipygTEJharwXyH1UErQ1CAfSiTJRDSTUb6Ahriony8M51rfZJqDw6jIkMsBxbLfDiA==
+X-Received: by 2002:a17:906:dc8f:b0:ab3:ed0:8d7 with SMTP id
+ a640c23a62f3a-ab38b15cd26mr668831566b.23.1737218476563; 
+ Sat, 18 Jan 2025 08:41:16 -0800 (PST)
 Received: from think.fritz.box ([2a02:8109:8384:1400:d15a:20d8:4bbe:9a4c])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab384f8624fsm358331266b.150.2025.01.18.08.41.14
+ a640c23a62f3a-ab384f8624fsm358331266b.150.2025.01.18.08.41.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 18 Jan 2025 08:41:14 -0800 (PST)
+ Sat, 18 Jan 2025 08:41:16 -0800 (PST)
 From: Roman Penyaev <r.peniaev@gmail.com>
 To: 
 Cc: Roman Penyaev <r.peniaev@gmail.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  qemu-devel@nongnu.org
-Subject: [PATCH v7 2/4] chardev/char-hub: implement backend chardev aggregator
-Date: Sat, 18 Jan 2025 17:40:50 +0100
-Message-ID: <20250118164056.830721-3-r.peniaev@gmail.com>
+Subject: [PATCH v7 3/4] tests/unit/test-char: add unit tests for hub chardev
+ backend
+Date: Sat, 18 Jan 2025 17:40:51 +0100
+Message-ID: <20250118164056.830721-4-r.peniaev@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250118164056.830721-1-r.peniaev@gmail.com>
 References: <20250118164056.830721-1-r.peniaev@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=r.peniaev@gmail.com; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=r.peniaev@gmail.com; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,656 +102,474 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch implements a new chardev backend `hub` device, which
-aggregates input from multiple backend devices and forwards it to a
-single frontend device. Additionally, `hub` device takes the output
-from the frontend device and sends it back to all the connected
-backend devices. This allows for seamless interaction between
-different backend devices and a single frontend interface.
+This commit introduces a new test function `char_hub_test` to validate
+the functionality and constraints of the "hub" chardev backend in QEMU.
+The test includes multiple scenarios:
 
-The idea of the change is trivial: keep list of backend devices
-(up to 4), init them on demand and forward data buffer back and
-forth.
+1. Invalid hub creation:
+   - Creating a hub without defining `chardevs.N` (expects an error).
+   - Creating a hub with an embedded multiplexer (`mux=on`) or a chardev
+     already in use (expects errors).
 
-The following is QEMU command line example:
+2. Max backend limit:
+   - Ensures the hub does not accept more backends than the maximum
+     allowed, with appropriate error handling.
 
-   -chardev pty,path=/tmp/pty,id=pty0 \
-   -chardev vc,id=vc0 \
-   -chardev hub,id=hub0,chardevs.0=pty0,chardevs.1=vc0 \
-   -device virtconsole,chardev=hub0 \
-   -vnc 0.0.0.0:0
+3. Valid hub creation and data aggregation:
+   - Successfully creating a hub with two ring buffer backends.
+   - Verifying data aggregation from backends to a frontend and vice versa.
+   - Ensuring correct error handling for attempts to attach a hub multiple
+     times or remove busy chardevs.
 
-Which creates 2 backend devices: text virtual console (`vc0`) and a
-pseudo TTY (`pty0`) connected to the single virtio hvc console with
-the backend aggregator (`hub0`) help. `vc0` renders text to an image,
-which can be shared over the VNC protocol.  `pty0` is a pseudo TTY
-backend which provides biderectional communication to the virtio hvc
-console.
+4. Extended EAGAIN simulation (non-Windows only):
+   - Simulates a setup with three backends, including a pipe, to test
+     EAGAIN handling and watcher behavior.
+   - Verifies data flow and recovery in scenarios involving buffer
+     overflows and drained pipes.
 
-'chardevs.N' list syntax is used for the sake of compatibility with
-the representation of JSON lists in 'key=val' pairs format of the
-util/keyval.c, despite the fact that modern QAPI way of parsing,
-namely qobject_input_visitor_new_str(), is not used. Choice of keeping
-QAPI list sytax may help to smoothly switch to modern parsing in the
-future.
+The test also ensures correct cleanup of chardevs in all cases, covering
+both valid and invalid configurations.
 
 Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
 Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
 Cc: qemu-devel@nongnu.org
 ---
- chardev/char-fe.c          |   9 +
- chardev/char-hub.c         | 334 +++++++++++++++++++++++++++++++++++++
- chardev/char.c             |  26 ++-
- chardev/chardev-internal.h |  56 ++++++-
- chardev/meson.build        |   1 +
- include/chardev/char.h     |   1 +
- qapi/char.json             |  27 +++
- 7 files changed, 451 insertions(+), 3 deletions(-)
- create mode 100644 chardev/char-hub.c
+ chardev/char-hub.c     |   4 +-
+ tests/unit/test-char.c | 399 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 401 insertions(+), 2 deletions(-)
 
-diff --git a/chardev/char-fe.c b/chardev/char-fe.c
-index 158a5f4f551e..cfd0577c3f46 100644
---- a/chardev/char-fe.c
-+++ b/chardev/char-fe.c
-@@ -200,6 +200,12 @@ bool qemu_chr_fe_init(CharBackend *b, Chardev *s, Error **errp)
-             if (!mux_chr_attach_frontend(d, b, &tag, errp)) {
-                 return false;
-             }
-+        } else if (CHARDEV_IS_HUB(s)) {
-+            HubChardev *d = HUB_CHARDEV(s);
-+
-+            if (!hub_chr_attach_frontend(d, b, errp)) {
-+                return false;
-+            }
-         } else if (s->be) {
-             error_setg(errp, "chardev '%s' is already in use", s->label);
-             return false;
-@@ -226,6 +232,9 @@ void qemu_chr_fe_deinit(CharBackend *b, bool del)
-         if (CHARDEV_IS_MUX(b->chr)) {
-             MuxChardev *d = MUX_CHARDEV(b->chr);
-             mux_chr_detach_frontend(d, b->tag);
-+        } else if (CHARDEV_IS_HUB(b->chr)) {
-+            HubChardev *d = HUB_CHARDEV(b->chr);
-+            hub_chr_detach_frontend(d);
-         }
-         if (del) {
-             Object *obj = OBJECT(b->chr);
 diff --git a/chardev/char-hub.c b/chardev/char-hub.c
-new file mode 100644
-index 000000000000..9b53df51de44
---- /dev/null
+index 9b53df51de44..fb514d92111b 100644
+--- a/chardev/char-hub.c
 +++ b/chardev/char-hub.c
-@@ -0,0 +1,336 @@
-+/*
-+ * QEMU Character Hub Device
-+ *
-+ * Author: Roman Penyaev <r.peniaev@gmail.com>
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "qemu/option.h"
-+#include "chardev/char.h"
-+#include "chardev-internal.h"
-+
-+/*
-+ * Character hub device aggregates input from multiple backend devices
-+ * and forwards it to a single frontend device. Additionally, hub
-+ * device takes the output from the frontend device and sends it back
-+ * to all the connected backend devices.
-+ */
-+
-+/*
-+ * Write to all backends. Different backend devices accept data with
-+ * various rate, so it is quite possible that one device returns less,
-+ * then others. In this case we return minimum to the caller,
-+ * expecting caller will repeat operation soon. When repeat happens
-+ * send to the devices which consume data faster must be avoided
-+ * for obvious reasons not to send data, which was already sent.
-+ */
-+static int hub_chr_write_to_all(HubChardev *d, const uint8_t *buf, int len)
-+{
-+    int r, i, ret = len;
-+    unsigned int written;
-+
-+    /* Invalidate index on every write */
-+    d->be_eagain_ind = -1;
-+
-+    for (i = 0; i < d->be_cnt; i++) {
-+        if (!d->backends[i].be.chr->be_open) {
-+            /* Skip closed backend */
-+            continue;
-+        }
-+        written = d->be_written[i] - d->be_min_written;
-+        if (written) {
-+            /* Written in the previous call so take into account */
-+            ret = MIN(written, ret);
-+            continue;
-+        }
-+        r = qemu_chr_fe_write(&d->backends[i].be, buf, len);
-+        if (r < 0 && errno == EAGAIN) {
-+            /*
-+             * Fail immediately if write would block. Expect to be called
-+             * soon on watch wake up.
-+             */
-+            d->be_eagain_ind = i;
-+            return r;
-+        } else if (r < 0) {
-+            /*
-+             * Ignore all other errors and pretend the entire buffer is
-+             * written to avoid this chardev being watched. This device
-+             * becomes disabled until the following write succeeds, but
-+             * writing continues to others.
-+             */
-+            r = len;
-+        }
-+        d->be_written[i] += r;
-+        ret = MIN(r, ret);
-+    }
-+    d->be_min_written += ret;
-+
-+    return ret;
-+}
-+
-+/* Called with chr_write_lock held.  */
-+static int hub_chr_write(Chardev *chr, const uint8_t *buf, int len)
-+{
-+    HubChardev *d = HUB_CHARDEV(chr);
-+    return hub_chr_write_to_all(d, buf, len);
-+}
-+
-+static int hub_chr_can_read(void *opaque)
-+{
-+    HubCharBackend *backend = opaque;
-+    CharBackend *fe = backend->hub->frontend;
-+
-+    if (fe && fe->chr_can_read) {
-+        return fe->chr_can_read(fe->opaque);
-+    }
-+
-+    return 0;
-+}
-+
-+static void hub_chr_read(void *opaque, const uint8_t *buf, int size)
-+{
-+    HubCharBackend *backend = opaque;
-+    CharBackend *fe = backend->hub->frontend;
-+
-+
-+    if (fe && fe->chr_read) {
-+        fe->chr_read(fe->opaque, buf, size);
-+    }
-+}
-+
-+static void hub_chr_event(void *opaque, QEMUChrEvent event)
-+{
-+    HubCharBackend *backend = opaque;
-+    HubChardev *d = backend->hub;
-+    CharBackend *fe = d->frontend;
-+
-+    if (event == CHR_EVENT_OPENED) {
-+        /*
-+         * Catch up with what was already written while this backend
-+         * was closed
-+         */
-+        d->be_written[backend->be_ind] = d->be_min_written;
-+
-+        if (d->be_event_opened_cnt++) {
-+            /* Ignore subsequent open events from other backends */
-+            return;
-+        }
-+    } else if (event == CHR_EVENT_CLOSED) {
-+        if (!d->be_event_opened_cnt) {
-+            /* Don't go below zero. Probably assert is better */
-+            return;
-+        }
-+        if (--d->be_event_opened_cnt) {
-+            /* Serve only the last one close event */
-+            return;
-+        }
-+    }
-+
-+    if (fe && fe->chr_event) {
-+        fe->chr_event(fe->opaque, event);
-+    }
-+}
-+
-+static GSource *hub_chr_add_watch(Chardev *s, GIOCondition cond)
-+{
-+    HubChardev *d = HUB_CHARDEV(s);
-+    Chardev *chr;
-+    ChardevClass *cc;
-+
-+    if (d->be_eagain_ind == -1) {
-+        return NULL;
-+    }
-+
-+    assert(d->be_eagain_ind < d->be_cnt);
-+    chr = qemu_chr_fe_get_driver(&d->backends[d->be_eagain_ind].be);
-+    cc = CHARDEV_GET_CLASS(chr);
-+    if (!cc->chr_add_watch) {
-+        return NULL;
-+    }
-+
-+    return cc->chr_add_watch(chr, cond);
-+}
-+
-+static bool hub_chr_attach_chardev(HubChardev *d, Chardev *chr,
-+                                   Error **errp)
-+{
-+    bool ret;
-+
-+    if (d->be_cnt >= MAX_HUB) {
-+        error_setg(errp, "hub: too many uses of chardevs '%s'"
-+                   " (maximum is " stringify(MAX_HUB) ")",
+@@ -223,8 +223,8 @@ static void hub_chr_update_read_handlers(Chardev *chr)
+ bool hub_chr_attach_frontend(HubChardev *d, CharBackend *b, Error **errp)
+ {
+     if (d->frontend) {
+-        error_setg(errp, "hub: multiplexed chardev '%s' is already used "
+-                   "for multiplexing", d->parent.label);
++        error_setg(errp, "hub: chardev '%s' is already used",
 +                   d->parent.label);
-+        return false;
-+    }
-+    ret = qemu_chr_fe_init(&d->backends[d->be_cnt].be, chr, errp);
-+    if (ret) {
-+        d->backends[d->be_cnt].hub = d;
-+        d->backends[d->be_cnt].be_ind = d->be_cnt;
-+        d->be_cnt += 1;
-+    }
-+
-+    return ret;
-+}
-+
-+static void char_hub_finalize(Object *obj)
+         return false;
+     }
+     d->frontend = b;
+diff --git a/tests/unit/test-char.c b/tests/unit/test-char.c
+index 98a60d86b143..e0b15f0b5d0d 100644
+--- a/tests/unit/test-char.c
++++ b/tests/unit/test-char.c
+@@ -359,6 +359,404 @@ static void char_mux_test(void)
+     qmp_chardev_remove("mux-label", &error_abort);
+ }
+ 
++static void char_hub_test(void)
 +{
-+    HubChardev *d = HUB_CHARDEV(obj);
-+    CharBackend *fe = d->frontend;
-+    int i;
++    QemuOpts *opts;
++    Chardev *hub, *chr1, *chr2, *base;
++    char *data;
++    FeHandler h = { 0, false, 0, false, };
++    Error *error = NULL;
++    CharBackend chr_be;
++    int ret, i;
 +
-+    if (fe) {
-+        fe->chr = NULL;
-+    }
-+    for (i = 0; i < d->be_cnt; i++) {
-+        qemu_chr_fe_deinit(&d->backends[i].be, false);
-+    }
-+}
++#define RB_SIZE 128
 +
-+static void hub_chr_update_read_handlers(Chardev *chr)
-+{
-+    HubChardev *d = HUB_CHARDEV(chr);
-+    int i;
++    /*
++     * Create invalid hub
++     * 1. Create hub without a 'chardevs.N' defined (expect error)
++     */
++    opts = qemu_opts_create(qemu_find_opts("chardev"), "hub0",
++                            1, &error_abort);
++    qemu_opt_set(opts, "backend", "hub", &error_abort);
++    hub = qemu_chr_new_from_opts(opts, NULL, &error);
++    g_assert_cmpstr(error_get_pretty(error), ==,
++                    "hub: 'chardevs' list is not defined");
++    error_free(error);
++    error = NULL;
++    qemu_opts_del(opts);
 +
-+    for (i = 0; i < d->be_cnt; i++) {
-+        qemu_chr_fe_set_handlers_full(&d->backends[i].be,
-+                                      hub_chr_can_read,
-+                                      hub_chr_read,
-+                                      hub_chr_event,
-+                                      NULL,
-+                                      &d->backends[i],
-+                                      chr->gcontext, true, false);
-+    }
-+}
++    /*
++     * Create invalid hub
++     * 1. Create chardev with embedded mux: 'mux=on'
++     * 2. Create hub which refers mux
++     * 3. Create hub which refers chardev already attached
++     *    to the mux (already in use, expect error)
++     */
++    opts = qemu_opts_create(qemu_find_opts("chardev"), "chr0",
++                            1, &error_abort);
++    qemu_opt_set(opts, "mux", "on", &error_abort);
++    qemu_opt_set(opts, "backend", "ringbuf", &error_abort);
++    qemu_opt_set(opts, "size", stringify(RB_SIZE), &error_abort);
++    base = qemu_chr_new_from_opts(opts, NULL, &error_abort);
++    g_assert_nonnull(base);
++    qemu_opts_del(opts);
 +
-+bool hub_chr_attach_frontend(HubChardev *d, CharBackend *b, Error **errp)
-+{
-+    if (d->frontend) {
-+        error_setg(errp, "hub: multiplexed chardev '%s' is already used "
-+                   "for multiplexing", d->parent.label);
-+        return false;
-+    }
-+    d->frontend = b;
++    opts = qemu_opts_create(qemu_find_opts("chardev"), "hub0",
++                            1, &error_abort);
++    qemu_opt_set(opts, "backend", "hub", &error_abort);
++    qemu_opt_set(opts, "chardevs.0", "chr0", &error_abort);
++    hub = qemu_chr_new_from_opts(opts, NULL, &error);
++    g_assert_cmpstr(error_get_pretty(error), ==,
++                    "hub: multiplexers and hub devices can't be "
++                    "stacked, check chardev 'chr0', chardev should "
++                    "not be a hub device or have 'mux=on' enabled");
++    error_free(error);
++    error = NULL;
++    qemu_opts_del(opts);
 +
-+    return true;
-+}
++    opts = qemu_opts_create(qemu_find_opts("chardev"), "hub0",
++                            1, &error_abort);
++    qemu_opt_set(opts, "backend", "hub", &error_abort);
++    qemu_opt_set(opts, "chardevs.0", "chr0-base", &error_abort);
++    hub = qemu_chr_new_from_opts(opts, NULL, &error);
++    g_assert_cmpstr(error_get_pretty(error), ==,
++                    "chardev 'chr0-base' is already in use");
++    error_free(error);
++    error = NULL;
++    qemu_opts_del(opts);
 +
-+void hub_chr_detach_frontend(HubChardev *d)
-+{
-+    d->frontend = NULL;
-+}
++    /* Finalize chr0 */
++    qmp_chardev_remove("chr0", &error_abort);
 +
-+static void qemu_chr_open_hub(Chardev *chr,
-+                                 ChardevBackend *backend,
-+                                 bool *be_opened,
-+                                 Error **errp)
-+{
-+    ChardevHub *hub = backend->u.hub.data;
-+    HubChardev *d = HUB_CHARDEV(chr);
-+    strList *list = hub->chardevs;
++    /*
++     * Create invalid hub with more than maximum allowed backends
++     * 1. Create more than maximum allowed 'chardevs.%d' options for
++     *    hub (expect error)
++     */
++    opts = qemu_opts_create(qemu_find_opts("chardev"), "hub0",
++                            1, &error_abort);
++    for (i = 0; i < 10; i++) {
++        char key[32], val[32];
 +
-+    d->be_eagain_ind = -1;
++        snprintf(key, sizeof(key), "chardevs.%d", i);
++        snprintf(val, sizeof(val), "chr%d", i);
++        qemu_opt_set(opts, key, val, &error);
++        if (error) {
++            char buf[64];
 +
-+    if (list == NULL) {
-+        error_setg(errp, "hub: 'chardevs' list is not defined");
-+        return;
-+    }
-+
-+    while (list) {
-+        Chardev *s;
-+
-+        s = qemu_chr_find(list->value);
-+        if (s == NULL) {
-+            error_setg(errp, "hub: chardev can't be found by id '%s'",
-+                       list->value);
-+            return;
-+        }
-+        if (CHARDEV_IS_HUB(s) || CHARDEV_IS_MUX(s)) {
-+            error_setg(errp, "hub: multiplexers and hub devices can't be "
-+                       "stacked, check chardev '%s', chardev should not "
-+                       "be a hub device or have 'mux=on' enabled",
-+                       list->value);
-+            return;
-+        }
-+        if (!hub_chr_attach_chardev(d, s, errp)) {
-+            return;
-+        }
-+        list = list->next;
-+    }
-+
-+    /* Closed until an explicit event from backend */
-+    *be_opened = false;
-+}
-+
-+static void qemu_chr_parse_hub(QemuOpts *opts, ChardevBackend *backend,
-+                                  Error **errp)
-+{
-+    ChardevHub *hub;
-+    strList **tail;
-+    int i;
-+
-+    backend->type = CHARDEV_BACKEND_KIND_HUB;
-+    hub = backend->u.hub.data = g_new0(ChardevHub, 1);
-+    qemu_chr_parse_common(opts, qapi_ChardevHub_base(hub));
-+
-+    tail = &hub->chardevs;
-+
-+    for (i = 0; i < MAX_HUB; i++) {
-+        char optbuf[16];
-+        const char *dev;
-+
-+        snprintf(optbuf, sizeof(optbuf), "chardevs.%u", i);
-+        dev = qemu_opt_get(opts, optbuf);
-+        if (!dev) {
++            snprintf(buf, sizeof(buf), "Invalid parameter 'chardevs.%d'", i);
++            g_assert_cmpstr(error_get_pretty(error), ==, buf);
++            error_free(error);
 +            break;
 +        }
-+
-+        QAPI_LIST_APPEND(tail, g_strdup(dev));
 +    }
-+}
++    g_assert_nonnull(error);
++    error = NULL;
++    qemu_opts_del(opts);
 +
-+static void char_hub_class_init(ObjectClass *oc, void *data)
-+{
-+    ChardevClass *cc = CHARDEV_CLASS(oc);
++    /*
++     * Create hub with 2 backend chardevs and 1 frontend and perform
++     * data aggregation
++     * 1. Create 2 ringbuf backend chardevs
++     * 2. Create 1 frontend
++     * 3. Create hub which refers 2 backend chardevs
++     * 4. Attach hub to a frontend
++     * 5. Attach hub to a frontend second time (expect error)
++     * 6. Perform data aggregation
++     * 7. Remove chr1 ("chr1 is busy", expect error)
++     * 8. Remove hub0 ("hub0 is busy", expect error);
++     * 9. Finilize frontend, hub and backend chardevs in correct order
++     */
 +
-+    cc->parse = qemu_chr_parse_hub;
-+    cc->open = qemu_chr_open_hub;
-+    cc->chr_write = hub_chr_write;
-+    cc->chr_add_watch = hub_chr_add_watch;
-+    /* We handle events from backends only */
-+    cc->chr_be_event = NULL;
-+    cc->chr_update_read_handler = hub_chr_update_read_handlers;
-+}
++    /* Create first chardev */
++    opts = qemu_opts_create(qemu_find_opts("chardev"), "chr1",
++                            1, &error_abort);
++    qemu_opt_set(opts, "backend", "ringbuf", &error_abort);
++    qemu_opt_set(opts, "size", stringify(RB_SIZE), &error_abort);
++    chr1 = qemu_chr_new_from_opts(opts, NULL, &error_abort);
++    g_assert_nonnull(chr1);
++    qemu_opts_del(opts);
 +
-+static const TypeInfo char_hub_type_info = {
-+    .name = TYPE_CHARDEV_HUB,
-+    .parent = TYPE_CHARDEV,
-+    .class_init = char_hub_class_init,
-+    .instance_size = sizeof(HubChardev),
-+    .instance_finalize = char_hub_finalize,
-+};
++    /* Create second chardev */
++    opts = qemu_opts_create(qemu_find_opts("chardev"), "chr2",
++                            1, &error_abort);
++    qemu_opt_set(opts, "backend", "ringbuf", &error_abort);
++    qemu_opt_set(opts, "size", stringify(RB_SIZE), &error_abort);
++    chr2 = qemu_chr_new_from_opts(opts, NULL, &error_abort);
++    g_assert_nonnull(chr2);
++    qemu_opts_del(opts);
 +
-+static void register_types(void)
-+{
-+    type_register_static(&char_hub_type_info);
-+}
++    /* Create hub0 and refer 2 backend chardevs */
++    opts = qemu_opts_create(qemu_find_opts("chardev"), "hub0",
++                            1, &error_abort);
++    qemu_opt_set(opts, "backend", "hub", &error_abort);
++    qemu_opt_set(opts, "chardevs.0", "chr1", &error_abort);
++    qemu_opt_set(opts, "chardevs.1", "chr2", &error_abort);
++    hub = qemu_chr_new_from_opts(opts, NULL, &error_abort);
++    g_assert_nonnull(hub);
++    qemu_opts_del(opts);
 +
-+type_init(register_types);
-diff --git a/chardev/char.c b/chardev/char.c
-index 7705da5ad02b..31536f4b7356 100644
---- a/chardev/char.c
-+++ b/chardev/char.c
-@@ -334,6 +334,9 @@ static bool qemu_chr_is_busy(Chardev *s)
-     if (CHARDEV_IS_MUX(s)) {
-         MuxChardev *d = MUX_CHARDEV(s);
-         return d->mux_bitset != 0;
-+    } else if (CHARDEV_IS_HUB(s)) {
-+        HubChardev *d = HUB_CHARDEV(s);
-+        return d->frontend != NULL;
-     } else {
-         return s->be != NULL;
-     }
-@@ -943,7 +946,26 @@ QemuOptsList qemu_chardev_opts = {
-         },{
-             .name = "chardev",
-             .type = QEMU_OPT_STRING,
-+        },
++    /* Attach hub to a frontend */
++    qemu_chr_fe_init(&chr_be, hub, &error_abort);
++    qemu_chr_fe_set_handlers(&chr_be,
++                             fe_can_read,
++                             fe_read,
++                             fe_event,
++                             NULL,
++                             &h,
++                             NULL, true);
++
++    /* Fails second time */
++    qemu_chr_fe_init(&chr_be, hub, &error);
++    g_assert_cmpstr(error_get_pretty(error), ==, "hub: chardev "
++                    "'hub0' is already used");
++    error_free(error);
++    error = NULL;
++
++    /* Write to backend, chr1 */
++    base = qemu_chr_find("chr1");
++    g_assert_cmpint(qemu_chr_be_can_write(base), !=, 0);
++
++    qemu_chr_be_write(base, (void *)"hello", 6);
++    g_assert_cmpint(h.read_count, ==, 6);
++    g_assert_cmpstr(h.read_buf, ==, "hello");
++    h.read_count = 0;
++
++    /* Write to backend, chr2 */
++    base = qemu_chr_find("chr2");
++    g_assert_cmpint(qemu_chr_be_can_write(base), !=, 0);
++
++    qemu_chr_be_write(base, (void *)"olleh", 6);
++    g_assert_cmpint(h.read_count, ==, 6);
++    g_assert_cmpstr(h.read_buf, ==, "olleh");
++    h.read_count = 0;
++
++    /* Write to frontend, chr_be */
++    ret = qemu_chr_fe_write(&chr_be, (void *)"heyhey", 6);
++    g_assert_cmpint(ret, ==, 6);
++
++    data = qmp_ringbuf_read("chr1", RB_SIZE, false, 0, &error_abort);
++    g_assert_cmpint(strlen(data), ==, 6);
++    g_assert_cmpstr(data, ==, "heyhey");
++    g_free(data);
++
++    data = qmp_ringbuf_read("chr2", RB_SIZE, false, 0, &error_abort);
++    g_assert_cmpint(strlen(data), ==, 6);
++    g_assert_cmpstr(data, ==, "heyhey");
++    g_free(data);
++
++    /* Can't be removed, depends on hub0 */
++    qmp_chardev_remove("chr1", &error);
++    g_assert_cmpstr(error_get_pretty(error), ==, "Chardev 'chr1' is busy");
++    error_free(error);
++    error = NULL;
++
++    /* Can't be removed, depends on frontend chr_be */
++    qmp_chardev_remove("hub0", &error);
++    g_assert_cmpstr(error_get_pretty(error), ==, "Chardev 'hub0' is busy");
++    error_free(error);
++    error = NULL;
++
++    /* Finalize frontend */
++    qemu_chr_fe_deinit(&chr_be, false);
++
++    /* Finalize hub0 */
++    qmp_chardev_remove("hub0", &error_abort);
++
++    /* Finalize backend chardevs */
++    qmp_chardev_remove("chr1", &error_abort);
++    qmp_chardev_remove("chr2", &error_abort);
++
++#ifndef _WIN32
++    /*
++     * Create 3 backend chardevs to simulate EAGAIN and watcher.
++     * Mainly copied from char_pipe_test().
++     * 1. Create 2 ringbuf backend chardevs
++     * 2. Create 1 pipe backend chardev
++     * 3. Create 1 frontend
++     * 4. Create hub which refers 2 backend chardevs
++     * 5. Attach hub to a frontend
++     * 6. Perform data aggregation and check watcher
++     * 7. Finilize frontend, hub and backend chardevs in correct order
++     */
++    {
++        gchar *tmp_path = g_dir_make_tmp("qemu-test-char.XXXXXX", NULL);
++        gchar *in, *out, *pipe = g_build_filename(tmp_path, "pipe", NULL);
++        Chardev *chr3;
++        int fd, len;
++        char buf[128];
++
++        in = g_strdup_printf("%s.in", pipe);
++        if (mkfifo(in, 0600) < 0) {
++            abort();
++        }
++        out = g_strdup_printf("%s.out", pipe);
++        if (mkfifo(out, 0600) < 0) {
++            abort();
++        }
++
++        /* Create first chardev */
++        opts = qemu_opts_create(qemu_find_opts("chardev"), "chr1",
++                                1, &error_abort);
++        qemu_opt_set(opts, "backend", "ringbuf", &error_abort);
++        qemu_opt_set(opts, "size", stringify(RB_SIZE), &error_abort);
++        chr1 = qemu_chr_new_from_opts(opts, NULL, &error_abort);
++        g_assert_nonnull(chr1);
++        qemu_opts_del(opts);
++
++        /* Create second chardev */
++        opts = qemu_opts_create(qemu_find_opts("chardev"), "chr2",
++                                1, &error_abort);
++        qemu_opt_set(opts, "backend", "ringbuf", &error_abort);
++        qemu_opt_set(opts, "size", stringify(RB_SIZE), &error_abort);
++        chr2 = qemu_chr_new_from_opts(opts, NULL, &error_abort);
++        g_assert_nonnull(chr2);
++        qemu_opts_del(opts);
++
++        /* Create third chardev */
++        opts = qemu_opts_create(qemu_find_opts("chardev"), "chr3",
++                                1, &error_abort);
++        qemu_opt_set(opts, "backend", "pipe", &error_abort);
++        qemu_opt_set(opts, "path", pipe, &error_abort);
++        chr3 = qemu_chr_new_from_opts(opts, NULL, &error_abort);
++        g_assert_nonnull(chr3);
++
++        /* Create hub0 and refer 3 backend chardevs */
++        opts = qemu_opts_create(qemu_find_opts("chardev"), "hub0",
++                                1, &error_abort);
++        qemu_opt_set(opts, "backend", "hub", &error_abort);
++        qemu_opt_set(opts, "chardevs.0", "chr1", &error_abort);
++        qemu_opt_set(opts, "chardevs.1", "chr2", &error_abort);
++        qemu_opt_set(opts, "chardevs.2", "chr3", &error_abort);
++        hub = qemu_chr_new_from_opts(opts, NULL, &error_abort);
++        g_assert_nonnull(hub);
++        qemu_opts_del(opts);
++
++        /* Attach hub to a frontend */
++        qemu_chr_fe_init(&chr_be, hub, &error_abort);
++        qemu_chr_fe_set_handlers(&chr_be,
++                                 fe_can_read,
++                                 fe_read,
++                                 fe_event,
++                                 NULL,
++                                 &h,
++                                 NULL, true);
++
++        /* Write to frontend, chr_be */
++        ret = qemu_chr_fe_write(&chr_be, (void *)"thisis", 6);
++        g_assert_cmpint(ret, ==, 6);
++
++        data = qmp_ringbuf_read("chr1", RB_SIZE, false, 0, &error_abort);
++        g_assert_cmpint(strlen(data), ==, 6);
++        g_assert_cmpstr(data, ==, "thisis");
++        g_free(data);
++
++        data = qmp_ringbuf_read("chr2", RB_SIZE, false, 0, &error_abort);
++        g_assert_cmpint(strlen(data), ==, 6);
++        g_assert_cmpstr(data, ==, "thisis");
++        g_free(data);
++
++        fd = open(out, O_RDWR);
++        ret = read(fd, buf, sizeof(buf));
++        g_assert_cmpint(ret, ==, 6);
++        buf[ret] = 0;
++        g_assert_cmpstr(buf, ==, "thisis");
++        close(fd);
++
++        /* Add watch. 0 indicates no watches if nothing to wait for */
++        ret = qemu_chr_fe_add_watch(&chr_be, G_IO_OUT | G_IO_HUP,
++                                    NULL, NULL);
++        g_assert_cmpint(ret, ==, 0);
++
 +        /*
-+         * Multiplexer options. Follows QAPI array syntax.
-+         * See MAX_HUB macro to obtain array capacity.
++         * Write to frontend, chr_be, until EAGAIN. Make sure length is
++         * power of two to fit nicely the whole pipe buffer.
 +         */
-+        {
-+            .name = "chardevs.0",
-+            .type = QEMU_OPT_STRING,
-+        },{
-+            .name = "chardevs.1",
-+            .type = QEMU_OPT_STRING,
-         },{
-+            .name = "chardevs.2",
-+            .type = QEMU_OPT_STRING,
-+        },{
-+            .name = "chardevs.3",
-+            .type = QEMU_OPT_STRING,
-+        },
++        len = 0;
++        while ((ret = qemu_chr_fe_write(&chr_be, (void *)"thisisit", 8))
++               != -1) {
++            len += ret;
++        }
++        g_assert_cmpint(errno, ==, EAGAIN);
 +
-+        {
-             .name = "append",
-             .type = QEMU_OPT_BOOL,
-         },{
-@@ -1106,8 +1128,8 @@ ChardevReturn *qmp_chardev_change(const char *id, ChardevBackend *backend,
-         return NULL;
-     }
- 
--    if (CHARDEV_IS_MUX(chr)) {
--        error_setg(errp, "Mux device hotswap not supported yet");
-+    if (CHARDEV_IS_MUX(chr) || CHARDEV_IS_HUB(chr)) {
-+        error_setg(errp, "For mux or hub device hotswap is not supported yet");
-         return NULL;
-     }
- 
-diff --git a/chardev/chardev-internal.h b/chardev/chardev-internal.h
-index 853807f3cb88..ff5432008aad 100644
---- a/chardev/chardev-internal.h
-+++ b/chardev/chardev-internal.h
-@@ -29,13 +29,16 @@
- #include "chardev/char-fe.h"
- #include "qom/object.h"
- 
-+#define MAX_HUB 4
- #define MAX_MUX 4
- #define MUX_BUFFER_SIZE 32 /* Must be a power of 2.  */
- #define MUX_BUFFER_MASK (MUX_BUFFER_SIZE - 1)
- 
- struct MuxChardev {
-     Chardev parent;
-+    /* Linked frontends */
-     CharBackend *backends[MAX_MUX];
-+    /* Linked backend */
-     CharBackend chr;
-     unsigned long mux_bitset;
-     int focus;
-@@ -53,11 +56,59 @@ struct MuxChardev {
-     int64_t timestamps_start;
- };
- typedef struct MuxChardev MuxChardev;
-+typedef struct HubChardev HubChardev;
-+typedef struct HubCharBackend HubCharBackend;
++        /* Further all writes should cause EAGAIN */
++        ret = qemu_chr_fe_write(&chr_be, (void *)"b", 1);
++        g_assert_cmpint(ret, ==, -1);
++        g_assert_cmpint(errno, ==, EAGAIN);
 +
-+/*
-+ * Back-pointer on a hub, actual backend and its index in
-+ * `hub->backends` array
-+ */
-+struct HubCharBackend {
-+    HubChardev   *hub;
-+    CharBackend  be;
-+    unsigned int be_ind;
-+};
++        /*
++         * Add watch. Non 0 indicates we have a blocked chardev, which
++         * can wakes us up when write is possible.
++         */
++        ret = qemu_chr_fe_add_watch(&chr_be, G_IO_OUT | G_IO_HUP,
++                                    NULL, NULL);
++        g_assert_cmpint(ret, !=, 0);
++        g_source_remove(ret);
 +
-+struct HubChardev {
-+    Chardev parent;
-+    /* Linked frontend */
-+    CharBackend *frontend;
-+    /* Linked backends */
-+    HubCharBackend backends[MAX_HUB];
-+    /*
-+     * Number of backends attached to this hub. Once attached, a
-+     * backend can't be detached, so the counter is only increasing.
-+     * To safely remove a backend, hub has to be removed first.
-+     */
-+    unsigned int be_cnt;
-+    /*
-+     * Number of CHR_EVEN_OPENED events from all backends. Needed to
-+     * send CHR_EVEN_CLOSED only when counter goes to zero.
-+     */
-+    unsigned int be_event_opened_cnt;
-+    /*
-+     * Counters of written bytes from a single frontend device
-+     * to multiple backend devices.
-+     */
-+    unsigned int be_written[MAX_HUB];
-+    unsigned int be_min_written;
-+    /*
-+     * Index of a backend device which got EAGAIN on last write,
-+     * -1 is invalid index.
-+     */
-+    int be_eagain_ind;
-+};
-+typedef struct HubChardev HubChardev;
- 
- DECLARE_INSTANCE_CHECKER(MuxChardev, MUX_CHARDEV,
-                          TYPE_CHARDEV_MUX)
--#define CHARDEV_IS_MUX(chr)                             \
-+DECLARE_INSTANCE_CHECKER(HubChardev, HUB_CHARDEV,
-+                         TYPE_CHARDEV_HUB)
++        /* Drain pipe and ring buffers */
++        fd = open(out, O_RDWR);
++        while ((ret = read(fd, buf, MIN(sizeof(buf), len))) != -1 && len > 0) {
++            len -= ret;
++        }
++        close(fd);
 +
-+#define CHARDEV_IS_MUX(chr)                                \
-     object_dynamic_cast(OBJECT(chr), TYPE_CHARDEV_MUX)
-+#define CHARDEV_IS_HUB(chr)                                \
-+    object_dynamic_cast(OBJECT(chr), TYPE_CHARDEV_HUB)
- 
- bool mux_chr_attach_frontend(MuxChardev *d, CharBackend *b,
-                              unsigned int *tag, Error **errp);
-@@ -65,6 +116,9 @@ bool mux_chr_detach_frontend(MuxChardev *d, unsigned int tag);
- void mux_set_focus(Chardev *chr, unsigned int focus);
- void mux_chr_send_all_event(Chardev *chr, QEMUChrEvent event);
- 
-+bool hub_chr_attach_frontend(HubChardev *d, CharBackend *b, Error **errp);
-+void hub_chr_detach_frontend(HubChardev *d);
++        data = qmp_ringbuf_read("chr1", RB_SIZE, false, 0, &error_abort);
++        g_assert_cmpint(strlen(data), ==, 128);
++        g_free(data);
 +
- Object *get_chardevs_root(void);
- 
- #endif /* CHARDEV_INTERNAL_H */
-diff --git a/chardev/meson.build b/chardev/meson.build
-index 70070a8279a9..56ee39ac0b01 100644
---- a/chardev/meson.build
-+++ b/chardev/meson.build
-@@ -3,6 +3,7 @@ chardev_ss.add(files(
-   'char-file.c',
-   'char-io.c',
-   'char-mux.c',
-+  'char-hub.c',
-   'char-null.c',
-   'char-pipe.c',
-   'char-ringbuf.c',
-diff --git a/include/chardev/char.h b/include/chardev/char.h
-index 01df55f9e8c8..429852f8d9d3 100644
---- a/include/chardev/char.h
-+++ b/include/chardev/char.h
-@@ -232,6 +232,7 @@ OBJECT_DECLARE_TYPE(Chardev, ChardevClass, CHARDEV)
- 
- #define TYPE_CHARDEV_NULL "chardev-null"
- #define TYPE_CHARDEV_MUX "chardev-mux"
-+#define TYPE_CHARDEV_HUB "chardev-hub"
- #define TYPE_CHARDEV_RINGBUF "chardev-ringbuf"
- #define TYPE_CHARDEV_PTY "chardev-pty"
- #define TYPE_CHARDEV_CONSOLE "chardev-console"
-diff --git a/qapi/char.json b/qapi/char.json
-index e04535435034..f02b66c06b3e 100644
---- a/qapi/char.json
-+++ b/qapi/char.json
-@@ -332,6 +332,19 @@
-   'data': { 'chardev': 'str' },
-   'base': 'ChardevCommon' }
- 
-+##
-+# @ChardevHub:
-+#
-+# Configuration info for hub chardevs.
-+#
-+# @chardevs: List of chardev IDs, which should be added to this hub
-+#
-+# Since: 10.0
-+##
-+{ 'struct': 'ChardevHub',
-+  'data': { 'chardevs': ['str'] },
-+  'base': 'ChardevCommon' }
++        data = qmp_ringbuf_read("chr2", RB_SIZE, false, 0, &error_abort);
++        g_assert_cmpint(strlen(data), ==, 128);
++        g_free(data);
 +
- ##
- # @ChardevStdio:
- #
-@@ -479,6 +492,8 @@
- #
- # @mux: (since 1.5)
- #
-+# @hub: (since 10.0)
-+#
- # @msmouse: emulated Microsoft serial mouse (since 1.5)
- #
- # @wctablet: emulated Wacom Penpartner serial tablet (since 2.9)
-@@ -521,6 +536,7 @@
-             'pty',
-             'null',
-             'mux',
-+            'hub',
-             'msmouse',
-             'wctablet',
-             { 'name': 'braille', 'if': 'CONFIG_BRLAPI' },
-@@ -595,6 +611,16 @@
- { 'struct': 'ChardevMuxWrapper',
-   'data': { 'data': 'ChardevMux' } }
- 
-+##
-+# @ChardevHubWrapper:
-+#
-+# @data: Configuration info for hub chardevs
-+#
-+# Since: 10.0
-+##
-+{ 'struct': 'ChardevHubWrapper',
-+  'data': { 'data': 'ChardevHub' } }
++        /*
++         * Now we are good to go, first repeat "lost" sequence, which
++         * was already consumed and drained by the ring buffers, but
++         * pipe have not recieved that yet.
++         */
++        ret = qemu_chr_fe_write(&chr_be, (void *)"thisisit", 8);
++        g_assert_cmpint(ret, ==, 8);
 +
- ##
- # @ChardevStdioWrapper:
- #
-@@ -703,6 +729,7 @@
-             'pty': 'ChardevPtyWrapper',
-             'null': 'ChardevCommonWrapper',
-             'mux': 'ChardevMuxWrapper',
-+            'hub': 'ChardevHubWrapper',
-             'msmouse': 'ChardevCommonWrapper',
-             'wctablet': 'ChardevCommonWrapper',
-             'braille': { 'type': 'ChardevCommonWrapper',
++        ret = qemu_chr_fe_write(&chr_be, (void *)"streamisrestored", 16);
++        g_assert_cmpint(ret, ==, 16);
++
++        data = qmp_ringbuf_read("chr1", RB_SIZE, false, 0, &error_abort);
++        g_assert_cmpint(strlen(data), ==, 16);
++        /* Only last 16 bytes, see big comment above */
++        g_assert_cmpstr(data, ==, "streamisrestored");
++        g_free(data);
++
++        data = qmp_ringbuf_read("chr2", RB_SIZE, false, 0, &error_abort);
++        g_assert_cmpint(strlen(data), ==, 16);
++        /* Only last 16 bytes, see big comment above */
++        g_assert_cmpstr(data, ==, "streamisrestored");
++        g_free(data);
++
++        fd = open(out, O_RDWR);
++        ret = read(fd, buf, sizeof(buf));
++        g_assert_cmpint(ret, ==, 24);
++        buf[ret] = 0;
++        /* Both 8 and 16 bytes */
++        g_assert_cmpstr(buf, ==, "thisisitstreamisrestored");
++        close(fd);
++
++        g_free(in);
++        g_free(out);
++        g_free(tmp_path);
++        g_free(pipe);
++
++        /* Finalize frontend */
++        qemu_chr_fe_deinit(&chr_be, false);
++
++        /* Finalize hub0 */
++        qmp_chardev_remove("hub0", &error_abort);
++
++        /* Finalize backend chardevs */
++        qmp_chardev_remove("chr1", &error_abort);
++        qmp_chardev_remove("chr2", &error_abort);
++        qmp_chardev_remove("chr3", &error_abort);
++    }
++#endif
++}
+ 
+ static void websock_server_read(void *opaque, const uint8_t *buf, int size)
+ {
+@@ -1507,6 +1905,7 @@ int main(int argc, char **argv)
+     g_test_add_func("/char/invalid", char_invalid_test);
+     g_test_add_func("/char/ringbuf", char_ringbuf_test);
+     g_test_add_func("/char/mux", char_mux_test);
++    g_test_add_func("/char/hub", char_hub_test);
+ #ifdef _WIN32
+     g_test_add_func("/char/console/subprocess", char_console_test_subprocess);
+     g_test_add_func("/char/console", char_console_test);
 -- 
 2.43.0
 
