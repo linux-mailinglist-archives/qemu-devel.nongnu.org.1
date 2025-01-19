@@ -2,88 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42E7EA15FC2
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Jan 2025 02:19:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24CE1A15F90
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Jan 2025 02:13:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZJrt-00012E-3b; Sat, 18 Jan 2025 20:12:49 -0500
+	id 1tZJrv-000135-VR; Sat, 18 Jan 2025 20:12:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tZJrq-00011v-KZ
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:12:46 -0500
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
+ id 1tZJrt-00012Z-NG
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:12:49 -0500
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tZJrp-00038D-5s
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:12:46 -0500
-Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-2f42992f608so4731189a91.0
- for <qemu-devel@nongnu.org>; Sat, 18 Jan 2025 17:12:44 -0800 (PST)
+ id 1tZJrs-00038m-9Y
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:12:49 -0500
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-2ee76befe58so5795436a91.2
+ for <qemu-devel@nongnu.org>; Sat, 18 Jan 2025 17:12:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737249163; x=1737853963; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1737249166; x=1737853966; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bewvRjNkwqzDyxfwcvQhUAmA2KHQQaF3sWX+p2yTLCo=;
- b=dbFe24Syp1R7KP8zqq1V8vkiT7lzM1mSfQAS4pbAEpnIT4IMOKJxDnx7DbNHs257nX
- jibf/F5FEudEbFIqqJtT6nWRTzwNQANtByCxX0hIZU1l16lqCcUAiJe9uLH44XpYW/MO
- oD20t/L0YnyDpowPSNcSqzGODFLFUXz5VHgdUGurha63xxpbFZBmEPve6xQ4zpSZiWLt
- fnHW3CtvR/4uU9e4CWEYiJFnkRVMg0twQ7PREEvgY0R7qQRx9S5H2gyMHPEfrKrQK0hn
- Yz5m2P8+EDGyTCAvJU+/jDqqB/0CDN/YpD6rp4UO+KUIcL489pHD5B/pY0gBzUMcFRpS
- 8p1g==
+ bh=MPHsueaOT0a7n8Avkp+AlyLkA7DW96RFcdAuFjHGVlc=;
+ b=kNAc8yJS0oYGpqD5NxJ0CWar7Q4UD4BzFmmcKjkyTtUCsSzqU3bZqBtb5vFZx6mV1o
+ /wgX4l7PEA+VSxEwymYe0PjROABEWj4INJku2pB+roxmAOohPuTf0IGhOi0x3C7PFhE3
+ 1MKs3F6Dob2a1b+hv6RhSKYgUhGXArA5hMIPOkmnt9VGkdSH0E1VSS9MYxzpjdS7hKa7
+ JMlKHkkr+LxYqCKLdaxzsUs1Nh38odsE6p0k+FbI9rW1tEn2pgQ5U7bDkr1ehb/7sp51
+ FO4SRuQTBhVQhoqqNmB4VQHCuufu1HCL/yr1PpPFDqQEcqucbHOx4EQOZw9vwAOvkW6r
+ CCTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737249163; x=1737853963;
+ d=1e100.net; s=20230601; t=1737249166; x=1737853966;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bewvRjNkwqzDyxfwcvQhUAmA2KHQQaF3sWX+p2yTLCo=;
- b=FBmbjq2LDJZuSSaAB1aXlqT5PSqPVHpVCt0fsb/EColk2ravctq/kb/EkgDqzijN+U
- Z4Y+KvGMxDGKISGlNJ7l5akRB9MhVKOD19TjLf0SZTKsOGkKlJ5t5jUclNBMLb3zteV6
- SvlObZezOdd51lgKT5X7KYjCB5x0KQbluxw2NBEj5aOjjFp1Sbx09jZ8Oo6RZzYZMm2Y
- 1EugfIXP/o4o/Ht0XpmT8ofse4OSE2vXdmiTH5JOK+7tUqBXskpn+wi6PNmyWo2ZSoA3
- H8JKz7ANOjECr7lGkxzqhhyrFlhraBd00/1hCSrFnMP7bdEeLRzCxoiLnAiBD0ji936y
- ry3A==
-X-Gm-Message-State: AOJu0YzBj/DlJsP0i8C4DyEvX33TzoOCVIYFu9MT6sK8J7BIfjvMzvEj
- BC5cgDlamfDs5Sig9s5leJI+1KGSwfCdgi3bIb7YFXNqeVju/7igNuRodqBY
-X-Gm-Gg: ASbGnctqdXYszQP8lHwb/DRgqMfOEw8sPIyHkpO3XN8dRydTHs3DKqZmIyTzJIJPSSa
- H7PYhv8ROCIbti3aWOU9up/r5hwKb58lVQoGWiGvoNmqob5KJRRX4q4rnSF8fIU0K7DL8GvlcqY
- Mh8Si0wjaCXdacuquIH0o3y5oKFX7kNkhI+B225Y4k/NzWqMz001wFClezet+Dy/gJZvbtebVmh
- Av1dzTbkPnAgRAEJ1+Ht9Ln39PdCpAVAXXQvX2DhhL/IkQtmwBMtgm5AI63eCvvdAEkVbTGQQDi
- Vp9ZDh2vy2m/SV62vUCISOAL20tWy2GdHm71qzBOYWfyPhOb6DSL420QfPyYEV7tvaVTgEC+sQ=
+ bh=MPHsueaOT0a7n8Avkp+AlyLkA7DW96RFcdAuFjHGVlc=;
+ b=lNXqLBjfh7ivxFc3GvKzhzpzyTX5HlAlvJ0p0uupyySaVjzXbjnZMBvacKuaP+U49P
+ SOTMeXNeLPKsISTCfMyWK4Qd66essrQLIJeft1D8oMSZhD179B9w/8Hg2Nya+YVZ3n/s
+ lFel//OqIlnFlBqzmZYAx9016lyYbhHADhaUMvQYBYletjzW2JnGX5hXRLOhZQ7Elq3f
+ Jcc2ykCnoGrLCZNq6etyomrPvLs38HiGloNk3PF3qIlvqojJpYjKp6ZFLFX3S9cvpCKa
+ WrKpSgpUYzcw6M7844FCV/vX3xUwakHg14yAgxVX77Cpdy+WaEvbgpFb/awgBxFoWaeh
+ AGcw==
+X-Gm-Message-State: AOJu0YxpWjVIyTR+7C9xlxJgmRelim2okvKtjYSJhwLvgR0h6hb2eXfT
+ F9WdQTPSIsm0h1EuODNiI2Tr6qc6LKWde1fduQ1lIW3G6+7HjPduqzrz8QBn
+X-Gm-Gg: ASbGncsaHz8QBfEfLzX/PiTak7djdouZ32dLBC+gaLyGWwgmk3haEERw2CRbFkmEEut
+ vKypCTIB2cmdk2DJAT+LrqaPXxn+q29nssDS8VS/JIKLhHZiCdG40zptvbPyb6HSmg/VMatSJ5o
+ V8ltE+ReGhRMpYQXYI6rmDJhrDJyy6W7rM5AJ39jdTeKMVZRW1iF60HmNhUJzys6TLKSEHdw2lD
+ wldRZgsGI2/opluCP7R0ewQc4DeTZ6wjwIYAXj5x2U/pBcohLBv+szmtUHm8WxL5IOcveUyjvTQ
+ uxaJEDPV+SuHWar7qrFcknfA/iZCPtN1Oz3e82vdnlkD/7vzavc/Pq+peOHveucPkFaoFqhf3A=
  =
-X-Google-Smtp-Source: AGHT+IFFy3+z0tgjnmFOQBfg1TY0JCGMpscuRtaPkj9a7FnI10ItfzFckEshdejKn7dVB7K7RsrS/Q==
-X-Received: by 2002:a17:90b:2e41:b0:2ee:f19b:86e5 with SMTP id
- 98e67ed59e1d1-2f782c71ec7mr13084516a91.14.1737249163587; 
- Sat, 18 Jan 2025 17:12:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHBP/Xc75bkcu5rtG2Nt8FrC2E4ClVMbluMI2t+G4INTe4U2n9sscaCgT/zXuWGt5eoYoRd3w==
+X-Received: by 2002:a17:90b:2c83:b0:2ee:c918:cd42 with SMTP id
+ 98e67ed59e1d1-2f782d4eea7mr10295572a91.22.1737249166639; 
+ Sat, 18 Jan 2025 17:12:46 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f776185b02sm4760314a91.21.2025.01.18.17.12.39
+ 98e67ed59e1d1-2f776185b02sm4760314a91.21.2025.01.18.17.12.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 18 Jan 2025 17:12:43 -0800 (PST)
+ Sat, 18 Jan 2025 17:12:46 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Craig Blackmore <craig.blackmore@embecosm.com>,
- Helene CHELIN <helene.chelin@embecosm.com>,
- Paolo Savini <paolo.savini@embecosm.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: alistair23@gmail.com, Yanfeng Liu <yfliu2008@qq.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 02/50] target/riscv: rvv: speed up small unit-stride loads
- and stores
-Date: Sun, 19 Jan 2025 11:11:37 +1000
-Message-ID: <20250119011225.11452-3-alistair.francis@wdc.com>
+Subject: [PULL v2 03/50] riscv/gdbstub: add V bit to priv reg
+Date: Sun, 19 Jan 2025 11:11:38 +1000
+Message-ID: <20250119011225.11452-4-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250119011225.11452-1-alistair.francis@wdc.com>
 References: <20250119011225.11452-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x1031.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=alistair23@gmail.com; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -107,53 +102,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Craig Blackmore <craig.blackmore@embecosm.com>
+From: Yanfeng Liu <yfliu2008@qq.com>
 
-Calling `vext_continuous_ldst_tlb` for load/stores up to 6 bytes
-significantly improves performance.
+This adds virtualization mode (V bit) as bit(2) of register `priv`
+per RiscV debug spec v1.0.0-rc4. Checked with gdb-multiarch v12.1.
 
-Co-authored-by: Helene CHELIN <helene.chelin@embecosm.com>
-Co-authored-by: Paolo Savini <paolo.savini@embecosm.com>
-Co-authored-by: Craig Blackmore <craig.blackmore@embecosm.com>
+Note that GDB may display `INVALID` tag for `priv` reg when V bit
+is set, this doesn't affect actual access to the bit though.
 
-Signed-off-by: Helene CHELIN <helene.chelin@embecosm.com>
-Signed-off-by: Paolo Savini <paolo.savini@embecosm.com>
-Signed-off-by: Craig Blackmore <craig.blackmore@embecosm.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20241218142353.1027938-3-craig.blackmore@embecosm.com>
+Signed-off-by: Yanfeng Liu <yfliu2008@qq.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <tencent_1993B55C24DE7979BF34B200F78287002907@qq.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/vector_helper.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ target/riscv/gdbstub.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 0f57e48cc5..ead3ec5194 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -393,6 +393,22 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-         return;
-     }
+diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
+index c07df972f1..18e88f416a 100644
+--- a/target/riscv/gdbstub.c
++++ b/target/riscv/gdbstub.c
+@@ -213,7 +213,10 @@ static int riscv_gdb_get_virtual(CPUState *cs, GByteArray *buf, int n)
+         RISCVCPU *cpu = RISCV_CPU(cs);
+         CPURISCVState *env = &cpu->env;
  
-+#if defined(CONFIG_USER_ONLY)
-+    /*
-+     * For data sizes <= 6 bytes we get better performance by simply calling
-+     * vext_continuous_ldst_tlb
-+     */
-+    if (nf == 1 && (evl << log2_esz) <= 6) {
-+        addr = base + (env->vstart << log2_esz);
-+        vext_continuous_ldst_tlb(env, ldst_tlb, vd, evl, addr, env->vstart, ra,
-+                                 esz, is_load);
+-        return gdb_get_regl(buf, env->priv);
++        /* Per RiscV debug spec v1.0.0 rc4 */
++        target_ulong vbit = (env->virt_enabled) ? BIT(2) : 0;
 +
-+        env->vstart = 0;
-+        vext_set_tail_elems_1s(evl, vd, desc, nf, esz, max_elems);
-+        return;
-+    }
-+#endif
++        return gdb_get_regl(buf, env->priv | vbit);
+ #endif
+     }
+     return 0;
+@@ -226,10 +229,22 @@ static int riscv_gdb_set_virtual(CPUState *cs, uint8_t *mem_buf, int n)
+         RISCVCPU *cpu = RISCV_CPU(cs);
+         CPURISCVState *env = &cpu->env;
+ 
+-        env->priv = ldtul_p(mem_buf) & 0x3;
+-        if (env->priv == PRV_RESERVED) {
+-            env->priv = PRV_S;
++        target_ulong new_priv = ldtul_p(mem_buf) & 0x3;
++        bool new_virt = 0;
 +
-     /* Calculate the page range of first page */
-     addr = base + ((env->vstart * nf) << log2_esz);
-     page_split = -(addr | TARGET_PAGE_MASK);
++        if (new_priv == PRV_RESERVED) {
++            new_priv = PRV_S;
++        }
++
++        if (new_priv != PRV_M) {
++            new_virt = (ldtul_p(mem_buf) & BIT(2)) >> 2;
+         }
++
++        if (riscv_has_ext(env, RVH) && new_virt != env->virt_enabled) {
++            riscv_cpu_swap_hypervisor_regs(env);
++        }
++
++        riscv_cpu_set_mode(env, new_priv, new_virt);
+ #endif
+         return sizeof(target_ulong);
+     }
 -- 
 2.48.1
 
