@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF0FA15F9A
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Jan 2025 02:14:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65608A15FAA
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Jan 2025 02:17:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZJtN-0005hz-BE; Sat, 18 Jan 2025 20:14:21 -0500
+	id 1tZJtN-0005io-JY; Sat, 18 Jan 2025 20:14:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tZJtJ-0005XX-2G
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:14:17 -0500
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ id 1tZJtK-0005e1-Lg
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:14:18 -0500
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tZJtF-0003KR-DN
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:14:16 -0500
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-2ee9a780de4so4366030a91.3
- for <qemu-devel@nongnu.org>; Sat, 18 Jan 2025 17:14:12 -0800 (PST)
+ id 1tZJtJ-0003Ks-00
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:14:18 -0500
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-2ef70c7efa5so4702222a91.2
+ for <qemu-devel@nongnu.org>; Sat, 18 Jan 2025 17:14:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737249252; x=1737854052; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1737249255; x=1737854055; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NdLEaQfdnKEQEDdTsYjN/zThxqSlLF48asIv/trDC5U=;
- b=fy2Id470hVPQ19pNDsM9IWI4J1eKWLimkX3jPLNuLHbNPcqI4AqD3QjGG980t9ib2d
- TRkDV2eqIcu6yzlKfiSQ8mDyd9rMZkzsDty7UMosm/HL27pMIblgVJunyNeda1U/kepW
- rf0FjHyzbgtLM2bULCHfX7Cjp723bovRzlMOKJmKdumOKSG4j6HePrSAZtEwFEyTyqNt
- F9ryAz+IDIUZ+R0QtBSDEeKlnQVn2dbPja5UHt5jRtduCDsuCWGX1aZpUP4otwvI1eHZ
- SznN6dpxn7wrP0ajlMEbWzSR5ep6XjuGbjxM6VfMciVpTqphG0KsKOqLJtwcGyRpc8A7
- 2pSw==
+ bh=2LHXMBF6i1q7RRjNkT6ZcWgA0CuRJJd6cB+bhUvNlRg=;
+ b=eZJXade34d3vyLrJrLYM/XHMt7J4za1yjs2jKFqqL7JaeUzUrSKKujY6xbwDTMPRSD
+ BPyq/XBGhKTDKHssIdWJT4ofr/oXmRC1BIdSt1n/fl/s2ggB6QLs/eW9D+o4iz8p27gQ
+ 7KhWC0HNao5c42+XPhyfGkIh/rN2K7wfONP5DaHGu94kxezuM5iyantOftOIx8nJHri1
+ hhUS7la3M4+SsGImj43cLQNrEEU83e2SKMNP7hQmhbFbdH0TWBI2aY10WHE68hrwkVLc
+ dvA9gj/oOssUybJ+rQ33jY/UWuW+gtyJmPoaCvgGgy7YDcSU2fdXMSDDPXfmtfkU+do7
+ O6bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737249252; x=1737854052;
+ d=1e100.net; s=20230601; t=1737249255; x=1737854055;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NdLEaQfdnKEQEDdTsYjN/zThxqSlLF48asIv/trDC5U=;
- b=j9SQWy7TKVX3nnW0lH9+xVJbVL/1XjtjdBMkV8YJ03wB2u2zRw0OpLWeNnFx0EMkHe
- CyXN38LKeQ7/0f8W+EXc/7O/iWBiF7h9ko3IDKn0BHpCV0htCXk2tuYoHluJKJaLgwAi
- MxHVla4fOPZvky7yiZ3XInxHCGAG/7RTOqJLOlpJjxrSH/3VEGkpLnm1Gq2203UAMMqb
- Rmwlmp82Cc09bMS1U1CrRTvH5cnTAwjzmmQamNDnASHVdHvK3/o5tTgtzHOxH7NXstAQ
- S2E5tfcy0RgJ5D5vSEJpBNHOqqhSNc1q6gbXN8NaxRgAZ7GTvszdr9XyZkI+cVL9KzwJ
- XrRA==
-X-Gm-Message-State: AOJu0YzMobIm0iXGEf1/dLl8AoStsK+puLfdRc/dHuMGe7wQBYJ0GmqT
- buCrAs1NB/7n73HLNmgwq4oFuoPmfWIcWP1kAiYKX4yUZ/hZNtMtvBdRq+mB
-X-Gm-Gg: ASbGncsXbEFeEXQ0lbQBD9bL8bQ9zQ8b4RlcmQbMzXsOMjDscXqFmIvbX+B781z3F+l
- dw1E7HlwkU+apmoujZ2rhT0HesK2izg11uOARmWfp/vmFtLy2wbtFAZNjGsxf3br6ZCBVlurgN0
- CXOvz+zKoaw+tFokbjS/pdYa7JyIu14ki1prtO/VI4BJlzcI/ET1iGx6rj1WP/K5Vht3dovfdaN
- RLp3HJhrngqi14dmn/LoqJk6wIaV2e1JnF+Tv7JhlKEWmAi5bScR0b4YCl3mcG20syKqnkRAaLu
- pX9MPayjxKu5NHLvN2EuEY6V8W4HKQsN3pvCzskF860edkaqG7AVLMy3m/e4FN4zkfl2If+Jow=
+ bh=2LHXMBF6i1q7RRjNkT6ZcWgA0CuRJJd6cB+bhUvNlRg=;
+ b=Ip0wUjaqgDbi2okaZUNXE3iEc7Zc7n0aKc5NVM8Avw7c5sIXPG0DJTk1p3i1GsuP/J
+ ogoLzV4OCNe7YEtUi0OGlFCds1g1iVus4Q1d5+q1Peorn2DE0lQ70jgFiqtcLI1vxtnU
+ ck303mFPcraFSkC2JOSAUBCj2mLmGC94bdGNqlLYbM9s9/So9XuJrLWGrl790cskHMbY
+ xyL9XUtA/1b5HdWFFZ548vGH5dZEwBJUOgpR3w22XmtGjrWGwIcdshcxX541v5OI2qpM
+ 8F1NPiQUuFlYUNwcLjYHZbLcv6mKtLQyp4WI/q2SNJ0O/MxfL/hH+hfMI+0iu7X2kUx/
+ PItw==
+X-Gm-Message-State: AOJu0YzqwXjJfpJB3hud8pCj8ymccJpGdjkZaBZ63wrQKCOyehc0bD8n
+ H4uiojQYSk/LLFEbb0tGrCpY2xvWI6VmLh4cUZQFtYvqQKEuEUvCj+T0x4Hp
+X-Gm-Gg: ASbGncvDtov4EHDUeAXoVr+lV9RvbHSztXMXOqWOVBnSSsUcqP9IrLsOlelPHPiyBWF
+ 4NlggLn/AVHZW4l9R/KDQWdi7LYW579RUNaJH4v5GYLTyUBKst9DatGKLPwOk5O2c9GkE22hJsA
+ 5V+G2AbyWS2aVcHEuL7TydzNcFrU/Hwyd2LTmNBHN0wdZvjWTghWXgOvsiUpRh+en98+6B4n9/3
+ +g4Dr1hl9Znb9J2/7C55Bj+B/QM9x/NNmgkuvaKf7V2sUXjdH86d9XuHbpAGEtN3/eoRtAEvCrl
+ XAElrl23DZsTnPYUqUyoEwW9ufbvStGK4zRFUxyvpsubl//0ge7bvhwvJIFzytVz9QhWYl6org=
  =
-X-Google-Smtp-Source: AGHT+IEWpacPsKaadIgjRuh4J84ePW6xg7qrmEo6HagbmOpRRFBHbIVc6mF5WFZD+X6XqFp2nGJA+w==
-X-Received: by 2002:a17:90a:c883:b0:2ee:b2be:f390 with SMTP id
- 98e67ed59e1d1-2f782d37d55mr11524979a91.28.1737249251797; 
- Sat, 18 Jan 2025 17:14:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEssHuh6zF3OwrMK4BngBUfA8Pi6Ix9k8LcgORQLRcvNZPV0DrEY3B1j2PKzF0lQ02BgukG1w==
+X-Received: by 2002:a17:90b:2dc9:b0:2f6:be57:49cd with SMTP id
+ 98e67ed59e1d1-2f782d306f5mr11166568a91.25.1737249255538; 
+ Sat, 18 Jan 2025 17:14:15 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f776185b02sm4760314a91.21.2025.01.18.17.14.09
+ 98e67ed59e1d1-2f776185b02sm4760314a91.21.2025.01.18.17.14.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 18 Jan 2025 17:14:11 -0800 (PST)
+ Sat, 18 Jan 2025 17:14:15 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 27/50] hw/riscv/virt: Remove unnecessary use of &first_cpu
-Date: Sun, 19 Jan 2025 11:12:02 +1000
-Message-ID: <20250119011225.11452-28-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Kaiwen Xue <kaiwenx@rivosinc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Atish Patra <atishp@rivosinc.com>
+Subject: [PULL v2 28/50] target/riscv: Add properties for Indirect CSR Access
+ extension
+Date: Sun, 19 Jan 2025 11:12:03 +1000
+Message-ID: <20250119011225.11452-29-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250119011225.11452-1-alistair.francis@wdc.com>
 References: <20250119011225.11452-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x102a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=alistair23@gmail.com; helo=mail-pj1-x1034.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -104,45 +105,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Kaiwen Xue <kaiwenx@rivosinc.com>
 
-virt_machine_init() creates the HARTs vCPUs, then later
-virt_machine_done() calls create_fdt_sockets(), so the
-latter has access to the first vCPU via:
+This adds the properties for sxcsrind. Definitions of new registers and
+implementations will come with future patches.
 
-  RISCVVirtState {
-    RISCVHartArrayState {
-      RISCVCPU *harts;
-      ...
-
-    } soc[VIRT_SOCKETS_MAX];
-    ...
-
-  } s;
-
-Directly use that instead of the &first_cpu global.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250112231344.34632-3-philmd@linaro.org>
+Signed-off-by: Kaiwen Xue <kaiwenx@rivosinc.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Signed-off-by: Atish Patra <atishp@rivosinc.com>
+Message-ID: <20250110-counter_delegation-v5-1-e83d797ae294@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/virt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/riscv/cpu_cfg.h | 2 ++
+ target/riscv/cpu.c     | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 9e8876be29..241389d72f 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -750,7 +750,7 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
-     qemu_fdt_add_subnode(ms->fdt, "/cpus");
-     qemu_fdt_setprop_cell(ms->fdt, "/cpus", "timebase-frequency",
-                           kvm_enabled() ?
--                          kvm_riscv_get_timebase_frequency(RISCV_CPU(first_cpu)) :
-+                          kvm_riscv_get_timebase_frequency(&s->soc->harts[0]) :
-                           RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ);
-     qemu_fdt_setprop_cell(ms->fdt, "/cpus", "#size-cells", 0x0);
-     qemu_fdt_setprop_cell(ms->fdt, "/cpus", "#address-cells", 0x1);
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index ee7c908710..4fe2144ec7 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -79,6 +79,8 @@ struct RISCVCPUConfig {
+     bool ext_smstateen;
+     bool ext_sstc;
+     bool ext_smcntrpmf;
++    bool ext_smcsrind;
++    bool ext_sscsrind;
+     bool ext_svadu;
+     bool ext_svinval;
+     bool ext_svnapot;
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index dace670e5e..4f5772ae5b 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -192,6 +192,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(shvstvecd, PRIV_VERSION_1_12_0, has_priv_1_12),
+     ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
+     ISA_EXT_DATA_ENTRY(smcntrpmf, PRIV_VERSION_1_12_0, ext_smcntrpmf),
++    ISA_EXT_DATA_ENTRY(smcsrind, PRIV_VERSION_1_13_0, ext_smcsrind),
+     ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
+     ISA_EXT_DATA_ENTRY(smrnmi, PRIV_VERSION_1_12_0, ext_smrnmi),
+     ISA_EXT_DATA_ENTRY(smmpm, PRIV_VERSION_1_13_0, ext_smmpm),
+@@ -201,6 +202,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(ssccptr, PRIV_VERSION_1_11_0, has_priv_1_11),
+     ISA_EXT_DATA_ENTRY(sscofpmf, PRIV_VERSION_1_12_0, ext_sscofpmf),
+     ISA_EXT_DATA_ENTRY(sscounterenw, PRIV_VERSION_1_12_0, has_priv_1_12),
++    ISA_EXT_DATA_ENTRY(sscsrind, PRIV_VERSION_1_12_0, ext_sscsrind),
+     ISA_EXT_DATA_ENTRY(ssnpm, PRIV_VERSION_1_13_0, ext_ssnpm),
+     ISA_EXT_DATA_ENTRY(ssstateen, PRIV_VERSION_1_12_0, ext_ssstateen),
+     ISA_EXT_DATA_ENTRY(sstc, PRIV_VERSION_1_12_0, ext_sstc),
 -- 
 2.48.1
 
