@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A011AA15FC0
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Jan 2025 02:19:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D85A15FA0
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Jan 2025 02:15:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZJtx-0000zW-0N; Sat, 18 Jan 2025 20:14:57 -0500
+	id 1tZJuF-0001dv-GF; Sat, 18 Jan 2025 20:15:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tZJts-0000bg-0z
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:14:52 -0500
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1tZJtw-0001Hg-3i
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:14:56 -0500
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tZJtq-0003Q9-8Y
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:14:51 -0500
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2ee67e9287fso5829442a91.0
- for <qemu-devel@nongnu.org>; Sat, 18 Jan 2025 17:14:49 -0800 (PST)
+ id 1tZJtu-0003Qz-8k
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:14:55 -0500
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-2f78a4ca5deso2184682a91.0
+ for <qemu-devel@nongnu.org>; Sat, 18 Jan 2025 17:14:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737249289; x=1737854089; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1737249293; x=1737854093; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jaW0tvq1/a5Vft8d/Xnu1qTzcCymb3qmshGEmEVK9kY=;
- b=CU3YDSqqNoTos/St6L79fqSaul9jU6B/ul//L6y0YUyEhjiDA1R8C5YX1BK/8xzLHy
- JCxl8kHcIFC/co/Y3A+qLK30WR1BmLVQm16Bd976mAF86XlR4iZXJuJduaE5+FNoBHdn
- vmVBwCkbNa+PFplaDK4/iRf8igmggCzHnYjep0fkjsHoapBBHEKyCTWj0NOrKC051EQs
- 5l3vwnrOa5d5gmNewZKJw2H0ATws5P0afTW9MTGAuTUOCAaxwDM2mYeceo97R7HvKPnO
- 61xeJkt2wiKymcnPMmGyfRYFLMnO+jwLsM4QzgMYGNFb1qCLe/IWCADqoUF2NmhyF0kl
- pmYQ==
+ bh=t14AYRuGs2SL7RwFjkxmv907YPXKPHoDqrHxeht7Kdk=;
+ b=GLx/lNV23Z01ITYcOioH00L7Dbtbms8R6fmwwcg73ytHytxMd5VavXvyGiqspF9zME
+ t0mDej/MdAABV5/of7ydOwQFKnwj14cN0ciz7OGDZodhhG5QKgaCoynp5Xdy5nII1T50
+ SxKcCxunjyeEZqfmo/po/3zsD8D82XPegybi4C9fGar+o6WQ0fnIST8jTithGR83ARrR
+ ilnf/y/jLPJEr80ZmWxjrhpPu9zijZX4oSP8jOKZfMSvtUSg+T6H1EIlQ1rbdFLur2ce
+ MTtHaHzrt9e1H3NT4oq3yGb6+oas+qtbWAkhh/YLSAvuIfidHOmsgvanPFORTokKOuvJ
+ HSRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737249289; x=1737854089;
+ d=1e100.net; s=20230601; t=1737249293; x=1737854093;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jaW0tvq1/a5Vft8d/Xnu1qTzcCymb3qmshGEmEVK9kY=;
- b=oitPUvW6xApkGuWfXJhk1TCH6LUn9s37ASUGWbP9MCFQpRtCD78jnOtokiHw4fRK9t
- r3OwUzAHWmMlT5UK7brQuc4F+AwyXM8WVaBx1n2RybI6yWNTHf/GzyvcrUKOAwmXmnLV
- XLH0Op4lnwMiesW10cygaoeVG0PwUToqiWWhNL+hSD1TieyfqsOEoGVD7CWcfIDiJRP1
- lX4UKv8O3rdvlvPl7y8BZGNwvPj1QL3kcZ6eC+YEPvRqPUoknYEJ5TIhluy1JFBAO49q
- y8Ri287/byomNn2Ky6Y70YkgtPyQdlAeZ4cNua8PkyXdEd1mx46yF5xe4oiEtK9I/0ck
- jL2A==
-X-Gm-Message-State: AOJu0YyzxIL9S32I1eG1hrmIfKZ7kGoK+WcB/ncLyIkY1oCfWLH+Qwqn
- DC5M1VFdG0nAi+G7piTBeqBpetN2B/z/8UcuRZBp3VHzVkxLxBmfYByVYQjm
-X-Gm-Gg: ASbGncuWAqXBu6uuW0ps8e/yRAg6MvltaJfa5z67K1WIesVapSPS21Wp58g/Aqlltez
- 2R+/HeH8YTgYla4WeGXTwWc8J4Add9vRsFJUJRK68cjUHSxjPLzySV0e8xExbSFDqXTingEM0CU
- g2cm1PaBR7X3fwot3eGSrOdlgRazcLG/9RZLj7hT0lewWACTf6AS2qGcU7MnCGrBGdMFREAeySF
- VA2alzi+rH+hRKnvq7Jhdb/eDYsNZ6gT4/91IjzLW7hBs16PujWbtmmnxl6hEw34DivIAiDw8ai
- XWmRTA7NATi8/JDhCSMBsRM4a+at3t81yHbAQ/n22AXHirkrRDa3NvGX4iGxHcyQi/WwLccxfg=
+ bh=t14AYRuGs2SL7RwFjkxmv907YPXKPHoDqrHxeht7Kdk=;
+ b=Q7oDUvdHgrdSigTyWhd3Z/lAdc1kJEJt+4pEtetlIxWcHKqrv7V5ziNh/o0InhD/7e
+ gctcIY4nBhiuHLRvYLrE2iiZ0k/v3gc7PHwPfv4w0RveN+W8TXQLvSp4RmgkHEzgghXS
+ 4Bi9xPrWkvbUHEvGPQuvyrXsvQQs7JiQ5vBGKfA3S6TVpoBSCnPd3ztpYrXkJYLFTrdL
+ Tm3HGnaPuorWCjD/qvGZZpv38+Ltx8YttE0wmX0mSy4kkyfo5ES+9CRKlrZh4byUjeSD
+ m2ChZZns7sdVU2oQn3vlnam3J1gDHSWKF/SyWnG6BeZTG/76lQiHw7iAii/i7CqZn1hj
+ v2Jw==
+X-Gm-Message-State: AOJu0YyUZhkqkD45xdXSyOeSg2kpKGX7foyvpxym2mXdnak8Soo61cII
+ X/GZ7zYH7ym1uOe7pzvRUm/+MvEKB1/WzvZuV+Gpc5XXZhP/98xDLhnW+xCM
+X-Gm-Gg: ASbGncvz2wsrkaCYazAosls43/9Q+kcJVTaWwVUhAyRxkxRASlydTreBguX4mi/cV2W
+ VgZLIVdgBm8WpTTVhFtkPFfrNt+3VbevEydrTLVM4efjRMJPNopd7Bb2Xn34RzMf0HDrQ2DKWI4
+ 5vl8ZBdvAS/WSPEf6siSgjsAc7txTgna8ozPEqQeZaUiOJFOXpLM5rmVA+zsaLGsmr5pmvmQyH8
+ SChgHigla+1Kr1CRUJRDyZlOfgW0QURmQza/VtUo7rrbDXUQ+1idw+5/t88+bU7z7XZLb3gL4+E
+ 6HAA8LlXwb+CVLwsaVjALULbu1ZA594lkYGVUZNN5TFJtisZEPp+gC7me/oCsfiq1ecNLZxcRg=
  =
-X-Google-Smtp-Source: AGHT+IE7fyr13Ys0HxTYXr4arcBJeTYAFH6jjZnwmv2oOQSTvdN1G2t4otoMFAQpSkpCsVt3YFPMhw==
-X-Received: by 2002:a17:90b:54cb:b0:2ee:dcf6:1c8f with SMTP id
- 98e67ed59e1d1-2f782cb4d3fmr12976874a91.16.1737249288755; 
- Sat, 18 Jan 2025 17:14:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEV70DFh59o4QWzZrSB41B8RlQz1Vy1n60J83eNdnG4CoPeSl2tqYekOCvgqW9AvzIzKonN3A==
+X-Received: by 2002:a17:90b:2652:b0:2ee:599e:f411 with SMTP id
+ 98e67ed59e1d1-2f782d8cf56mr10084011a91.34.1737249292666; 
+ Sat, 18 Jan 2025 17:14:52 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f776185b02sm4760314a91.21.2025.01.18.17.14.45
+ 98e67ed59e1d1-2f776185b02sm4760314a91.21.2025.01.18.17.14.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 18 Jan 2025 17:14:48 -0800 (PST)
+ Sat, 18 Jan 2025 17:14:52 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Atish Patra <atishp@rivosinc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 37/50] target/riscv: Add implied rule for counter delegation
- extensions
-Date: Sun, 19 Jan 2025 11:12:12 +1000
-Message-ID: <20250119011225.11452-38-alistair.francis@wdc.com>
+ Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PULL v2 38/50] target/riscv: Add configuration for S[m|s]csrind,
+ Smcdeleg/Ssccfg
+Date: Sun, 19 Jan 2025 11:12:13 +1000
+Message-ID: <20250119011225.11452-39-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250119011225.11452-1-alistair.francis@wdc.com>
 References: <20250119011225.11452-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=alistair23@gmail.com; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -106,54 +106,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Atish Patra <atishp@rivosinc.com>
 
-The counter delegation/configuration extensions depend on the following
-extensions.
+Add configuration options so that they can be enabled/disabld from
+qemu commandline.
 
-1. Smcdeleg - To enable counter delegation from M to S
-2. S[m|s]csrind - To enable indirect access CSRs
-
-Add an implied rule so that these extensions are enabled by default
-if the sscfg extension is enabled.
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
-Message-ID: <20250110-counter_delegation-v5-10-e83d797ae294@rivosinc.com>
+Message-ID: <20250110-counter_delegation-v5-11-e83d797ae294@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ target/riscv/cpu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index da40f68715..671fc3d1c1 100644
+index 671fc3d1c1..fe470f646d 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -2760,6 +2760,16 @@ static RISCVCPUImpliedExtsRule ZVKSG_IMPLIED = {
-     },
- };
- 
-+static RISCVCPUImpliedExtsRule SSCFG_IMPLIED = {
-+    .ext = CPU_CFG_OFFSET(ext_ssccfg),
-+    .implied_multi_exts = {
-+        CPU_CFG_OFFSET(ext_smcsrind), CPU_CFG_OFFSET(ext_sscsrind),
-+        CPU_CFG_OFFSET(ext_smcdeleg),
-+
-+        RISCV_IMPLIED_EXTS_RULE_END
-+    },
-+};
-+
- RISCVCPUImpliedExtsRule *riscv_misa_ext_implied_rules[] = {
-     &RVA_IMPLIED, &RVD_IMPLIED, &RVF_IMPLIED,
-     &RVM_IMPLIED, &RVV_IMPLIED, NULL
-@@ -2777,7 +2787,7 @@ RISCVCPUImpliedExtsRule *riscv_multi_ext_implied_rules[] = {
-     &ZVE64X_IMPLIED, &ZVFBFMIN_IMPLIED, &ZVFBFWMA_IMPLIED,
-     &ZVFH_IMPLIED, &ZVFHMIN_IMPLIED, &ZVKN_IMPLIED,
-     &ZVKNC_IMPLIED, &ZVKNG_IMPLIED, &ZVKNHB_IMPLIED,
--    &ZVKS_IMPLIED,  &ZVKSC_IMPLIED, &ZVKSG_IMPLIED,
-+    &ZVKS_IMPLIED,  &ZVKSC_IMPLIED, &ZVKSG_IMPLIED, &SSCFG_IMPLIED,
-     NULL
- };
- 
+@@ -1587,6 +1587,10 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+     /* Defaults for standard extensions */
+     MULTI_EXT_CFG_BOOL("sscofpmf", ext_sscofpmf, false),
+     MULTI_EXT_CFG_BOOL("smcntrpmf", ext_smcntrpmf, false),
++    MULTI_EXT_CFG_BOOL("smcsrind", ext_smcsrind, false),
++    MULTI_EXT_CFG_BOOL("smcdeleg", ext_smcdeleg, false),
++    MULTI_EXT_CFG_BOOL("sscsrind", ext_sscsrind, false),
++    MULTI_EXT_CFG_BOOL("ssccfg", ext_ssccfg, false),
+     MULTI_EXT_CFG_BOOL("zifencei", ext_zifencei, true),
+     MULTI_EXT_CFG_BOOL("zicfilp", ext_zicfilp, false),
+     MULTI_EXT_CFG_BOOL("zicfiss", ext_zicfiss, false),
 -- 
 2.48.1
 
