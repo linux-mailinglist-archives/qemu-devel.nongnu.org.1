@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B78A1602F
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C9A0A1602D
 	for <lists+qemu-devel@lfdr.de>; Sun, 19 Jan 2025 05:43:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZN7x-0005UJ-Hj; Sat, 18 Jan 2025 23:41:37 -0500
+	id 1tZN7y-0005Ub-3L; Sat, 18 Jan 2025 23:41:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tZN7v-0005Tj-UN
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tZN7w-0005U3-8r
  for qemu-devel@nongnu.org; Sat, 18 Jan 2025 23:41:36 -0500
 Received: from nyc.source.kernel.org ([2604:1380:45d1:ec00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tZN7t-0003XD-RY
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 23:41:35 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tZN7u-0003XO-Ih
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 23:41:36 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 640B0A4005E;
- Sun, 19 Jan 2025 04:39:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76AC8C4CED6;
- Sun, 19 Jan 2025 04:41:30 +0000 (UTC)
+ by nyc.source.kernel.org (Postfix) with ESMTP id 3B144A40221;
+ Sun, 19 Jan 2025 04:39:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1BCC4CEE2;
+ Sun, 19 Jan 2025 04:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1737261691;
- bh=BS3tR4Akvbj/4B9tMkagVRFMT0yEiYwE3uNPhrWhlsg=;
+ s=k20201202; t=1737261693;
+ bh=UoKNIg1BVV2B35JmDx3qsOSk4IWWs53EChpYtm/qpbU=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=WfE26Vx+AVNqDuRtKLbiHymO/YNa6WvEIaom2YMqRN5gwCDFMjfLtc24iZrMu2KgL
- v7ZOwOKrA4ncxK3I2co48dCY9AGQ3gwOqcO0su8nyo1FTKqQrYu++erM+GJq1wKjws
- rtglb0GB1R+rB1CpQvng4yQs1lt9YLWXl/6vzr9XF0nVGcegGjVolPFsvYtytbUmAB
- ngOFNHe+pQQC+ne0OAbBlF0BOoZSvtFsancb6/53ztqmHc4y8QvVXgywnBYith2HO3
- iVUutAYWNaxhyAEGTsxEJcmAdQMhdoApJQKtR0xXQEyJMRCkaF1dqRTALBQ55vSEcI
- Lf+codCDM2lBg==
+ b=tkQwfM+xaJ5JDOCzXlLwXBLILhYw//05iRlgT0DOkyUlHi3lYdH+fLeOAsYQw7bQN
+ 8q7iXy/YjVhfO1hOuUNWRKYUmsqhR/4uG5OEg5vo0xjoDqEAtH5L3v/GXrTHtXf/5Y
+ i1hfN9qJPXbOGzfr/NbfAY4QTuGleW0iJBljZDUew6mPOpT7Ddw+zus1BTb08h7Oql
+ uWPwrizfKCyvSfRqgxuh3Mxbv8oCSmPj1LaMyD6/r0us6RzMGFJZ6CCOMRgZVJmQyo
+ J3xSkl8duxrKnk8WPo+931fQNYobeu374XLz+BCQ9+oQhPloxXhNtJJoUY9ugzw35v
+ f+1a1lrqp/6fQ==
 From: deller@kernel.org
 To: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org,
  Stefan Hajnoczi <stefanha@gmail.com>
 Cc: deller@gmx.de
-Subject: [PATCH v3 3/6] linux-user: netlink: Add IP_PKTINFO cmsg parsing
-Date: Sun, 19 Jan 2025 05:41:19 +0100
-Message-ID: <20250119044122.9637-4-deller@kernel.org>
+Subject: [PATCH v3 4/6] linux-user: netlink: Add emulation of IP_MULTICAST_IF
+Date: Sun, 19 Jan 2025 05:41:20 +0100
+Message-ID: <20250119044122.9637-5-deller@kernel.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250119044122.9637-1-deller@kernel.org>
 References: <20250119044122.9637-1-deller@kernel.org>
@@ -71,56 +71,115 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Fixes those warnings:
- Unsupported host ancillary data: 0/8
+Add IP_MULTICAST_IF and share the code with IP_ADD_MEMBERSHIP / IP_DROP_MEMBERSHIP.
+Sharing the code makes sense, because the manpage of ip(7)  says:
+
+IP_MULTICAST_IF (since Linux 1.2)
+      Set the local device for a multicast socket.  The argument
+      for setsockopt(2) is an ip_mreqn or (since Linux 3.5)
+      ip_mreq structure similar to IP_ADD_MEMBERSHIP, or an
+      in_addr structure.  (The kernel determines which structure
+      is being passed based on the size passed in optlen.)  For
+      getsockopt(2), the argument is an in_addr structure.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 
 v2: (based on feedback by Laurent Vivier)
-- add target_in_pktinfo struct and fix copying target_in_addr fields
----
- linux-user/syscall.c      | 10 ++++++++++
- linux-user/syscall_defs.h |  6 ++++++
- 2 files changed, 16 insertions(+)
+- refined commit message and restructure the copying of ip_mreqn fields
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index a157abc40c..df8609b4d8 100644
+index bbe2560927..4360543e20 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -1998,6 +1998,16 @@ static inline abi_long host_to_target_cmsg(struct target_msghdr *target_msgh,
-                     (void *) &errh->offender, sizeof(errh->offender));
-                 break;
+@@ -2130,16 +2130,23 @@ static abi_long do_setsockopt(int sockfd, int level, int optname,
              }
-+            case IP_PKTINFO:
-+            {
-+                struct in_pktinfo *pkti = data;
-+                struct target_in_pktinfo *target_pi = target_data;
-+
-+                __put_user(pkti->ipi_ifindex, &target_pi->ipi_ifindex);
-+                target_pi->ipi_spec_dst.s_addr = pkti->ipi_spec_dst.s_addr;
-+                target_pi->ipi_addr.s_addr = pkti->ipi_addr.s_addr;
-+                break;
+             ret = get_errno(setsockopt(sockfd, level, optname, &val, sizeof(val)));
+             break;
++        case IP_MULTICAST_IF:
+         case IP_ADD_MEMBERSHIP:
+         case IP_DROP_MEMBERSHIP:
+         {
+             struct ip_mreqn ip_mreq;
+             struct target_ip_mreqn *target_smreqn;
++            int min_size;
+
+             QEMU_BUILD_BUG_ON(sizeof(struct ip_mreq) !=
+                               sizeof(struct target_ip_mreq));
+
+-            if (optlen < sizeof (struct target_ip_mreq) ||
++            if (optname == IP_MULTICAST_IF) {
++                min_size = sizeof(struct in_addr);
++            } else {
++                min_size = sizeof(struct target_ip_mreq);
 +            }
-             default:
-                 goto unimplemented;
++            if (optlen < min_size ||
+                 optlen > sizeof (struct target_ip_mreqn)) {
+                 return -TARGET_EINVAL;
              }
-diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
-index faad9147c9..86d773add7 100644
---- a/linux-user/syscall_defs.h
-+++ b/linux-user/syscall_defs.h
-@@ -2622,6 +2622,12 @@ struct target_ucred {
-     abi_uint gid;
- };
+@@ -2149,7 +2156,9 @@ static abi_long do_setsockopt(int sockfd, int level, int optname,
+                 return -TARGET_EFAULT;
+             }
+             ip_mreq.imr_multiaddr.s_addr = target_smreqn->imr_multiaddr.s_addr;
+-            ip_mreq.imr_address.s_addr = target_smreqn->imr_address.s_addr;
++            if (optlen >= sizeof(struct target_ip_mreq)) {
++                ip_mreq.imr_address.s_addr = target_smreqn->imr_address.s_addr;
++            }
+             if (optlen == sizeof(struct target_ip_mreqn)) {
+                 ip_mreq.imr_ifindex = tswapal(target_smreqn->imr_ifindex);
+                 optlen = sizeof(struct ip_mreqn);
+---
+ linux-user/syscall.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
+
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index df8609b4d8..6ee02383da 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -2130,16 +2130,23 @@ static abi_long do_setsockopt(int sockfd, int level, int optname,
+             }
+             ret = get_errno(setsockopt(sockfd, level, optname, &val, sizeof(val)));
+             break;
++        case IP_MULTICAST_IF:
+         case IP_ADD_MEMBERSHIP:
+         case IP_DROP_MEMBERSHIP:
+         {
+             struct ip_mreqn ip_mreq;
+             struct target_ip_mreqn *target_smreqn;
++            int min_size;
  
-+struct target_in_pktinfo {
-+    abi_int               ipi_ifindex;
-+    struct target_in_addr ipi_spec_dst;
-+    struct target_in_addr ipi_addr;
-+};
-+
- typedef abi_int target_timer_t;
+             QEMU_BUILD_BUG_ON(sizeof(struct ip_mreq) !=
+                               sizeof(struct target_ip_mreq));
  
- #define TARGET_SIGEV_MAX_SIZE 64
+-            if (optlen < sizeof (struct target_ip_mreq) ||
++            if (optname == IP_MULTICAST_IF) {
++                min_size = sizeof(struct in_addr);
++            } else {
++                min_size = sizeof(struct target_ip_mreq);
++            }
++            if (optlen < min_size ||
+                 optlen > sizeof (struct target_ip_mreqn)) {
+                 return -TARGET_EINVAL;
+             }
+@@ -2149,13 +2156,14 @@ static abi_long do_setsockopt(int sockfd, int level, int optname,
+                 return -TARGET_EFAULT;
+             }
+             ip_mreq.imr_multiaddr.s_addr = target_smreqn->imr_multiaddr.s_addr;
+-            ip_mreq.imr_address.s_addr = target_smreqn->imr_address.s_addr;
+-            if (optlen == sizeof(struct target_ip_mreqn)) {
+-                ip_mreq.imr_ifindex = tswapal(target_smreqn->imr_ifindex);
+-                optlen = sizeof(struct ip_mreqn);
++            if (optlen >= sizeof(struct target_ip_mreq)) {
++                ip_mreq.imr_address.s_addr = target_smreqn->imr_address.s_addr;
++                if (optlen >= sizeof(struct target_ip_mreqn)) {
++                    __put_user(target_smreqn->imr_ifindex, &ip_mreq.imr_ifindex);
++                    optlen = sizeof(struct ip_mreqn);
++                }
+             }
+             unlock_user(target_smreqn, optval_addr, 0);
+-
+             ret = get_errno(setsockopt(sockfd, level, optname, &ip_mreq, optlen));
+             break;
+         }
 -- 
 2.47.0
 
