@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD3F6A16033
+	by mail.lfdr.de (Postfix) with ESMTPS id 80111A16031
 	for <lists+qemu-devel@lfdr.de>; Sun, 19 Jan 2025 05:43:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZN81-0005Vi-4e; Sat, 18 Jan 2025 23:41:41 -0500
+	id 1tZN81-0005Vm-Lr; Sat, 18 Jan 2025 23:41:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tZN7y-0005Ud-FG
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 23:41:38 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tZN7z-0005Vb-OY
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 23:41:39 -0500
 Received: from nyc.source.kernel.org ([147.75.193.91])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tZN7w-0003Xw-MC
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 23:41:38 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tZN7y-0003YC-AZ
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 23:41:39 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 103B5A4005E;
- Sun, 19 Jan 2025 04:39:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E02C4CED6;
- Sun, 19 Jan 2025 04:41:33 +0000 (UTC)
+ by nyc.source.kernel.org (Postfix) with ESMTP id DD348A4012B;
+ Sun, 19 Jan 2025 04:39:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFBB4C4CEE2;
+ Sun, 19 Jan 2025 04:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1737261695;
- bh=VrpxIp6ajcb8m1RwibVb7PCFaMtlMIRUlr7wJ5a/Ea0=;
+ s=k20201202; t=1737261697;
+ bh=hhDwBSEsbXupi99avxyU1H6RABU9+QfFVDRuVvqtm6Y=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=kxWfnqmjMiuugTYWLxCG1Ml1J9JfBQZjtPay4UL+T6kAnHDdoCB+LkZRoDAAdoHNK
- sUfYQLeIwLf3XNUbNKo5tOvqOa0Q9TqD2rFLVb33YV7JtbOVoyUMysxrqu/M1IPkno
- XAVDjMyCbe4sUfbWAn+pVy158CFXs6ngpUIWmiHFS8CiHTYyiEEZFPDwyW8e22JJlG
- uJE1MrAeUETH2Sw66/zVEtpLVHbgMqCoZ9peNl1N5o90yDHkxgZ0oCG9IfasRF9mg5
- FSe4S0JsFlPTRs2vjHVnNNRSgdX2YF6c8adM9q6dLiD68G2XruahZX96FCYkUhmoBK
- uHQit5/V9+fUA==
+ b=fTRfXs+6/khlwJLOY9HrxqwBfEY63dhQJmNmiQooViKJPo+I7VVBT0UC5CV/6wVSU
+ eb2v/8j6p79MYUOYWPBJP9yO++lmF43KDyBG73koL6sw56+3DemNZl8A1qEhaoQTgf
+ OLUnpiddRmoZsJQ8DeuY9uk9zOhDCbhpt5t1/j1b5AhefotBMMQ4m6OPfSIZK7c77X
+ cbnz1jZwJ9KxwuIEI+7XCEFWm/LfqE1HCvKlurQzXkMhVZgQm8yN75AWwHsB23JgqK
+ Z1ZnVmwFYzG81C50Iph+D0AWLxKH31OnEojdN8zj160DKWuML+/LOSpIsL27q28bXY
+ 50smccRtGfkwA==
 From: deller@kernel.org
 To: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org,
  Stefan Hajnoczi <stefanha@gmail.com>
 Cc: deller@gmx.de
-Subject: [PATCH v3 5/6] linux-user: netlink: add netlink neighbour emulation
-Date: Sun, 19 Jan 2025 05:41:21 +0100
-Message-ID: <20250119044122.9637-6-deller@kernel.org>
+Subject: [PATCH v3 6/6] linux-user: netlink: Add missing QEMU_IFLA entries
+Date: Sun, 19 Jan 2025 05:41:22 +0100
+Message-ID: <20250119044122.9637-7-deller@kernel.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250119044122.9637-1-deller@kernel.org>
 References: <20250119044122.9637-1-deller@kernel.org>
@@ -72,200 +72,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Fixes various warnings in the testsuite while building gupnp:
- gssdp-net-DEBUG: Failed to send netlink message: Operation not supported
- gupnp-context-DEBUG: Mismatch between host header and host IP (example.com, expected: 127.0.0.1)
- gupnp-context-DEBUG: Mismatch between host header and host port (80, expected 4711)
- gupnp-context-DEBUG: Mismatch between host header and host IP (192.168.1.2, expected: 127.0.0.1)
- gupnp-context-DEBUG: Mismatch between host header and host IP (fe80::01, expected: 127.0.0.1)
- gupnp-context-DEBUG: Mismatch between host header and host port (80, expected 4711)
- gupnp-context-DEBUG: Failed to parse HOST header from request: Invalid IPv6 address ?[fe80::01%1]? in URI
- gupnp-context-DEBUG: Failed to parse HOST header from request: Invalid IPv6 address ?[fe80::01%eth0]? in URI
- gupnp-context-DEBUG: Failed to parse HOST header from request: Could not parse port ?:1? in URI
- gupnp-context-DEBUG: Mismatch between host header and host IP (example.com, expected: ::1)
- gupnp-context-DEBUG: Mismatch between host header and host port (80, expected 4711)
- gupnp-context-DEBUG: Mismatch between host header and host IP (example.com, expected: ::1)
- gupnp-context-DEBUG: Mismatch between host header and host port (80, expected 4711)
- gupnp-context-DEBUG: Mismatch between host header and host IP (example.com, expected: ::1)
+This fixes the following qemu warnings when building debian gupnp package:
+ Unknown host QEMU_IFLA type: 61
+ Unknown host QEMU_IFLA type: 58
+ Unknown host QEMU_IFLA type: 59
+ Unknown host QEMU_IFLA type: 60
+ Unknown host QEMU_IFLA type: 32820
+
+QEMU_IFLA type 32820 is actually NLA_NESTED | QEMU_IFLA_PROP_LIST (a nested
+entry), which is why rta_type needs to be masked with NLA_TYPE_MASK.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 ---
- linux-user/fd-trans.c | 100 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 100 insertions(+)
+ linux-user/fd-trans.c | 36 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
 
 diff --git a/linux-user/fd-trans.c b/linux-user/fd-trans.c
-index a86ed2f4b4..a5e6c6b6f2 100644
+index a5e6c6b6f2..6a8775bb55 100644
 --- a/linux-user/fd-trans.c
 +++ b/linux-user/fd-trans.c
-@@ -25,12 +25,16 @@
- #ifdef CONFIG_RTNETLINK
- #include <linux/rtnetlink.h>
- #include <linux/if_bridge.h>
-+#include <linux/neighbour.h>
- #endif
- #include "qemu.h"
- #include "user-internals.h"
- #include "fd-trans.h"
- #include "signal-common.h"
+@@ -145,6 +145,14 @@ enum {
+     QEMU_IFLA_PROTO_DOWN_REASON,
+     QEMU_IFLA_PARENT_DEV_NAME,
+     QEMU_IFLA_PARENT_DEV_BUS_NAME,
++    QEMU_IFLA_GRO_MAX_SIZE,
++    QEMU_IFLA_TSO_MAX_SIZE,
++    QEMU_IFLA_TSO_MAX_SEGS,
++    QEMU_IFLA_ALLMULTI,
++    QEMU_IFLA_DEVLINK_PORT,
++    QEMU_IFLA_GSO_IPV4_MAX_SIZE,
++    QEMU_IFLA_GRO_IPV4_MAX_SIZE,
++    QEMU_IFLA_DPLL_PIN,
+     QEMU___IFLA_MAX
+ };
  
-+#define NDM_RTA(r)  ((struct rtattr*)(((char*)(r)) + \
-+                    NLMSG_ALIGN(sizeof(struct ndmsg))))
-+
- enum {
-     QEMU_IFLA_BR_UNSPEC,
-     QEMU_IFLA_BR_FORWARD_DELAY,
-@@ -1210,6 +1214,35 @@ static abi_long host_to_target_data_route_rtattr(struct rtattr *rtattr)
+@@ -986,6 +994,22 @@ static abi_long host_to_target_data_vfinfo_nlattr(struct nlattr *nlattr,
      return 0;
  }
  
-+static abi_long host_to_target_data_neigh_rtattr(struct rtattr *rtattr)
++static abi_long host_to_target_data_prop_nlattr(struct nlattr *nlattr,
++                                                void *context)
 +{
-+    struct nda_cacheinfo *ndac;
-+    uint32_t *u32;
-+
-+    switch (rtattr->rta_type) {
-+    case NDA_UNSPEC:
-+    case NDA_DST:
-+    case NDA_LLADDR:
-+        break;
-+    case NDA_PROBES:
-+        u32 = RTA_DATA(rtattr);
-+        *u32 = tswap32(*u32);
-+        break;
-+    case NDA_CACHEINFO:
-+        ndac = RTA_DATA(rtattr);
-+        ndac->ndm_confirmed = tswap32(ndac->ndm_confirmed);
-+        ndac->ndm_used      = tswap32(ndac->ndm_used);
-+        ndac->ndm_updated   = tswap32(ndac->ndm_updated);
-+        ndac->ndm_refcnt    = tswap32(ndac->ndm_refcnt);
++    switch (nlattr->nla_type) {
++    /* string */
++    case QEMU_IFLA_ALT_IFNAME:
 +        break;
 +    default:
-+        qemu_log_mask(LOG_UNIMP, "Unknown host to target NEIGH type: %d\n",
-+                      rtattr->rta_type);
++        qemu_log_mask(LOG_UNIMP, "Unknown host PROP type: %d\n",
++                      nlattr->nla_type);
 +        break;
 +    }
 +    return 0;
 +}
 +
- static abi_long host_to_target_link_rtattr(struct rtattr *rtattr,
-                                          uint32_t rtattr_len)
- {
-@@ -1231,12 +1264,20 @@ static abi_long host_to_target_route_rtattr(struct rtattr *rtattr,
-                                           host_to_target_data_route_rtattr);
- }
- 
-+static abi_long host_to_target_neigh_rtattr(struct rtattr *rtattr,
-+                                         uint32_t rtattr_len)
-+{
-+    return host_to_target_for_each_rtattr(rtattr, rtattr_len,
-+                                          host_to_target_data_neigh_rtattr);
-+}
 +
- static abi_long host_to_target_data_route(struct nlmsghdr *nlh)
- {
-     uint32_t nlmsg_len;
-     struct ifinfomsg *ifi;
-     struct ifaddrmsg *ifa;
-     struct rtmsg *rtm;
-+    struct ndmsg *ndm;
- 
-     nlmsg_len = nlh->nlmsg_len;
-     switch (nlh->nlmsg_type) {
-@@ -1263,6 +1304,17 @@ static abi_long host_to_target_data_route(struct nlmsghdr *nlh)
-                                        nlmsg_len - NLMSG_LENGTH(sizeof(*ifa)));
-         }
-         break;
-+    case RTM_NEWNEIGH:
-+    case RTM_DELNEIGH:
-+    case RTM_GETNEIGH:
-+        if (nlh->nlmsg_len >= NLMSG_LENGTH(sizeof(*ndm))) {
-+            ndm = NLMSG_DATA(nlh);
-+            ndm->ndm_ifindex = tswap32(ndm->ndm_ifindex);
-+            ndm->ndm_state = tswap16(ndm->ndm_state);
-+            host_to_target_neigh_rtattr(NDM_RTA(ndm),
-+                                    nlmsg_len - NLMSG_LENGTH(sizeof(*ndm)));
-+        }
-+        break;
-     case RTM_NEWROUTE:
-     case RTM_DELROUTE:
-     case RTM_GETROUTE:
-@@ -1410,6 +1462,35 @@ static abi_long target_to_host_data_addr_rtattr(struct rtattr *rtattr)
-     return 0;
- }
- 
-+static abi_long target_to_host_data_neigh_rtattr(struct rtattr *rtattr)
-+{
-+    struct nda_cacheinfo *ndac;
-+    uint32_t *u32;
-+
-+    switch (rtattr->rta_type) {
-+    case NDA_UNSPEC:
-+    case NDA_DST:
-+    case NDA_LLADDR:
-+        break;
-+    case NDA_PROBES:
-+        u32 = RTA_DATA(rtattr);
-+        *u32 = tswap32(*u32);
-+        break;
-+    case NDA_CACHEINFO:
-+        ndac = RTA_DATA(rtattr);
-+        ndac->ndm_confirmed = tswap32(ndac->ndm_confirmed);
-+        ndac->ndm_used      = tswap32(ndac->ndm_used);
-+        ndac->ndm_updated   = tswap32(ndac->ndm_updated);
-+        ndac->ndm_refcnt    = tswap32(ndac->ndm_refcnt);
-+        break;
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "Unknown target NEIGH type: %d\n",
-+                      rtattr->rta_type);
-+        break;
-+    }
-+    return 0;
-+}
-+
- static abi_long target_to_host_data_route_rtattr(struct rtattr *rtattr)
+ static abi_long host_to_target_data_link_rtattr(struct rtattr *rtattr)
  {
      uint32_t *u32;
-@@ -1448,6 +1529,13 @@ static void target_to_host_addr_rtattr(struct rtattr *rtattr,
-                                    target_to_host_data_addr_rtattr);
- }
+@@ -994,7 +1018,7 @@ static abi_long host_to_target_data_link_rtattr(struct rtattr *rtattr)
+     struct rtnl_link_ifmap *map;
+     struct linkinfo_context li_context;
  
-+static void target_to_host_neigh_rtattr(struct rtattr *rtattr,
-+                                     uint32_t rtattr_len)
-+{
-+    target_to_host_for_each_rtattr(rtattr, rtattr_len,
-+                                   target_to_host_data_neigh_rtattr);
-+}
-+
- static void target_to_host_route_rtattr(struct rtattr *rtattr,
-                                      uint32_t rtattr_len)
- {
-@@ -1460,6 +1548,7 @@ static abi_long target_to_host_data_route(struct nlmsghdr *nlh)
-     struct ifinfomsg *ifi;
-     struct ifaddrmsg *ifa;
-     struct rtmsg *rtm;
-+    struct ndmsg *ndm;
- 
-     switch (nlh->nlmsg_type) {
-     case RTM_NEWLINK:
-@@ -1486,6 +1575,17 @@ static abi_long target_to_host_data_route(struct nlmsghdr *nlh)
-                                        NLMSG_LENGTH(sizeof(*ifa)));
-         }
+-    switch (rtattr->rta_type) {
++    switch (rtattr->rta_type & NLA_TYPE_MASK) {
+     /* binary stream */
+     case QEMU_IFLA_ADDRESS:
+     case QEMU_IFLA_BROADCAST:
+@@ -1032,6 +1056,12 @@ static abi_long host_to_target_data_link_rtattr(struct rtattr *rtattr)
+     case QEMU_IFLA_CARRIER_DOWN_COUNT:
+     case QEMU_IFLA_MIN_MTU:
+     case QEMU_IFLA_MAX_MTU:
++    case QEMU_IFLA_GRO_MAX_SIZE:
++    case QEMU_IFLA_TSO_MAX_SIZE:
++    case QEMU_IFLA_TSO_MAX_SEGS:
++    case QEMU_IFLA_ALLMULTI:
++    case QEMU_IFLA_GSO_IPV4_MAX_SIZE:
++    case QEMU_IFLA_GRO_IPV4_MAX_SIZE:
+         u32 = RTA_DATA(rtattr);
+         *u32 = tswap32(*u32);
          break;
-+    case RTM_NEWNEIGH:
-+    case RTM_DELNEIGH:
-+    case RTM_GETNEIGH:
-+        if (nlh->nlmsg_len >= NLMSG_LENGTH(sizeof(*ndm))) {
-+            ndm = NLMSG_DATA(nlh);
-+            ndm->ndm_ifindex = tswap32(ndm->ndm_ifindex);
-+            ndm->ndm_state = tswap16(ndm->ndm_state);
-+            target_to_host_neigh_rtattr(NDM_RTA(ndm), nlh->nlmsg_len -
-+                                       NLMSG_LENGTH(sizeof(*ndm)));
-+        }
-+        break;
-     case RTM_NEWROUTE:
-     case RTM_DELROUTE:
-     case RTM_GETROUTE:
+@@ -1127,6 +1157,10 @@ static abi_long host_to_target_data_link_rtattr(struct rtattr *rtattr)
+         return host_to_target_for_each_nlattr(RTA_DATA(rtattr), rtattr->rta_len,
+                                               NULL,
+                                              host_to_target_data_vfinfo_nlattr);
++    case QEMU_IFLA_PROP_LIST:
++        return host_to_target_for_each_nlattr(RTA_DATA(rtattr), rtattr->rta_len,
++                                              NULL,
++                                             host_to_target_data_prop_nlattr);
+     default:
+         qemu_log_mask(LOG_UNIMP, "Unknown host QEMU_IFLA type: %d\n",
+                       rtattr->rta_type);
 -- 
 2.47.0
 
