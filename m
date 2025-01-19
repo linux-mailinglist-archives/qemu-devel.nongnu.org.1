@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22D85A15FA0
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Jan 2025 02:15:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 357A2A15FA7
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Jan 2025 02:16:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZJuF-0001dv-GF; Sat, 18 Jan 2025 20:15:15 -0500
+	id 1tZJuJ-000265-RR; Sat, 18 Jan 2025 20:15:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tZJtw-0001Hg-3i
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:14:56 -0500
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
+ id 1tZJu0-0001eh-3X
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:15:03 -0500
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tZJtu-0003Qz-8k
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:14:55 -0500
-Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-2f78a4ca5deso2184682a91.0
- for <qemu-devel@nongnu.org>; Sat, 18 Jan 2025 17:14:53 -0800 (PST)
+ id 1tZJty-0003Rj-Am
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:14:59 -0500
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-2ee8aa26415so5810846a91.1
+ for <qemu-devel@nongnu.org>; Sat, 18 Jan 2025 17:14:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737249293; x=1737854093; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1737249297; x=1737854097; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=t14AYRuGs2SL7RwFjkxmv907YPXKPHoDqrHxeht7Kdk=;
- b=GLx/lNV23Z01ITYcOioH00L7Dbtbms8R6fmwwcg73ytHytxMd5VavXvyGiqspF9zME
- t0mDej/MdAABV5/of7ydOwQFKnwj14cN0ciz7OGDZodhhG5QKgaCoynp5Xdy5nII1T50
- SxKcCxunjyeEZqfmo/po/3zsD8D82XPegybi4C9fGar+o6WQ0fnIST8jTithGR83ARrR
- ilnf/y/jLPJEr80ZmWxjrhpPu9zijZX4oSP8jOKZfMSvtUSg+T6H1EIlQ1rbdFLur2ce
- MTtHaHzrt9e1H3NT4oq3yGb6+oas+qtbWAkhh/YLSAvuIfidHOmsgvanPFORTokKOuvJ
- HSRA==
+ bh=q+JZitJ5X0eLTwWV1TxpFzX8qirOhwdqWIWi206MQik=;
+ b=RG4NcCfNqnWUydRWrr2xehJhCST/ofaVTexPLfbegz+BMN6ptH44U6eqSq5aumVgTl
+ 6VkRe9NvEbzIgCEmZYpf1cG4VvsNQcY7AhizvOQCFi7/SzTjvjM8mcUxhTxwlQPqUQht
+ ERuajTl2i5JOtbnkH2+ySi61J8WHp6Es2eRaC4MKQyoT/VLr4AtjYmV9slyvhU71hyXP
+ YGENaHyGSKxamdVb8wDe97dv6LuT3f/IAbHTmer5iCiDUL9FGXI6pb1MUJ+/9623LfZo
+ eJVY2MJ4BBFDfdG4ygq6dx5GhRbDdwXRXeZ2Fg/gf+xJgUXzVlAMGkF7CRbm3l4yIAQO
+ rfOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737249293; x=1737854093;
+ d=1e100.net; s=20230601; t=1737249297; x=1737854097;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=t14AYRuGs2SL7RwFjkxmv907YPXKPHoDqrHxeht7Kdk=;
- b=Q7oDUvdHgrdSigTyWhd3Z/lAdc1kJEJt+4pEtetlIxWcHKqrv7V5ziNh/o0InhD/7e
- gctcIY4nBhiuHLRvYLrE2iiZ0k/v3gc7PHwPfv4w0RveN+W8TXQLvSp4RmgkHEzgghXS
- 4Bi9xPrWkvbUHEvGPQuvyrXsvQQs7JiQ5vBGKfA3S6TVpoBSCnPd3ztpYrXkJYLFTrdL
- Tm3HGnaPuorWCjD/qvGZZpv38+Ltx8YttE0wmX0mSy4kkyfo5ES+9CRKlrZh4byUjeSD
- m2ChZZns7sdVU2oQn3vlnam3J1gDHSWKF/SyWnG6BeZTG/76lQiHw7iAii/i7CqZn1hj
- v2Jw==
-X-Gm-Message-State: AOJu0YyUZhkqkD45xdXSyOeSg2kpKGX7foyvpxym2mXdnak8Soo61cII
- X/GZ7zYH7ym1uOe7pzvRUm/+MvEKB1/WzvZuV+Gpc5XXZhP/98xDLhnW+xCM
-X-Gm-Gg: ASbGncvz2wsrkaCYazAosls43/9Q+kcJVTaWwVUhAyRxkxRASlydTreBguX4mi/cV2W
- VgZLIVdgBm8WpTTVhFtkPFfrNt+3VbevEydrTLVM4efjRMJPNopd7Bb2Xn34RzMf0HDrQ2DKWI4
- 5vl8ZBdvAS/WSPEf6siSgjsAc7txTgna8ozPEqQeZaUiOJFOXpLM5rmVA+zsaLGsmr5pmvmQyH8
- SChgHigla+1Kr1CRUJRDyZlOfgW0QURmQza/VtUo7rrbDXUQ+1idw+5/t88+bU7z7XZLb3gL4+E
- 6HAA8LlXwb+CVLwsaVjALULbu1ZA594lkYGVUZNN5TFJtisZEPp+gC7me/oCsfiq1ecNLZxcRg=
+ bh=q+JZitJ5X0eLTwWV1TxpFzX8qirOhwdqWIWi206MQik=;
+ b=ZUqS99SswSKZwXsKSpYNH3dxNyv9gi/V7EuYX68GelsH1eFVdOQSjarRpabgdqSWWo
+ ZFxG77IkJ0Sc6y5wx7jSbRh+waI6CpvPBqu39TXelDsg40bByEuYGO+U/G2a96yl1pAM
+ O7rOp/AbM/FI8fCyS+YtVqso2OzC8QiS+tgm9Lie1VMwgZMFr/rUNU5n8U5SKaIxXmB8
+ oTgassbdLRde8u0nCmIiRmN01+Dc854J1sTJGCdvAF6cyDw2Wsc04ZatmcOq6WbvOXuQ
+ NYm1Ysd+8FF4GydpNQXfhe2tH5+m0NDdV2naM0hp1Yv7afY7ATpj1izJKGFl4Wd6U7if
+ r//w==
+X-Gm-Message-State: AOJu0Yxyg/zZULxegg8nG0ZLtY1S3U+nRdxJn/D32tzK/nr1i4ggaPkd
+ Z/WF0Rs9g5AYJyC+tKEL85vL6wmWZrLCqVMAoQtZsEOY7cfGhM1CYFzpo9Rn
+X-Gm-Gg: ASbGncsiZrAxopoG710XrmHvbw+kC7JGxpahOFpqBDBW+pnqyZbnoftBTMGhTuFLrLW
+ rbe3K2qMaL1AKfxMaIugWeTSiw3VebHw4bnbhjduox+aeiEZ6050C9m8T2S2Cy0ETrtQU0xDGui
+ 1/NGgjCBNbz+txa5Jj8Y4WhkhSORtTzIGOPZqV2T3URrdzeShZv/0FR3JO2mtbGOXPvYnE9v9Za
+ cyzmRij8qDi/7d1kUe/M8G20LciMYKfJYyBcQDZlUW7A2d81W2fNmW3klr8hMn46QUcE4TrWNG7
+ 3AfwqFVPZ/xYFBNoBJvAxsrjiaxGNeWBRy82iTS5nKNoN3S/fix58ja9BzCTAiQ0z6/s33CQVA=
  =
-X-Google-Smtp-Source: AGHT+IEV70DFh59o4QWzZrSB41B8RlQz1Vy1n60J83eNdnG4CoPeSl2tqYekOCvgqW9AvzIzKonN3A==
-X-Received: by 2002:a17:90b:2652:b0:2ee:599e:f411 with SMTP id
- 98e67ed59e1d1-2f782d8cf56mr10084011a91.34.1737249292666; 
- Sat, 18 Jan 2025 17:14:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFtMqr1mtyE1U7fPUbZXhd7fPiQ7D3LpDIBFCrGUXrCmYd09bWVUdy68GXer75rhFkiGwse+A==
+X-Received: by 2002:a17:90b:2cc3:b0:2ee:d193:f3d5 with SMTP id
+ 98e67ed59e1d1-2f782c628ddmr12912778a91.7.1737249296746; 
+ Sat, 18 Jan 2025 17:14:56 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f776185b02sm4760314a91.21.2025.01.18.17.14.49
+ 98e67ed59e1d1-2f776185b02sm4760314a91.21.2025.01.18.17.14.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 18 Jan 2025 17:14:52 -0800 (PST)
+ Sat, 18 Jan 2025 17:14:56 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Atish Patra <atishp@rivosinc.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL v2 38/50] target/riscv: Add configuration for S[m|s]csrind,
- Smcdeleg/Ssccfg
-Date: Sun, 19 Jan 2025 11:12:13 +1000
-Message-ID: <20250119011225.11452-39-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com,
+ =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL v2 39/50] target/riscv: Fix henvcfg potentially containing
+ stale bits
+Date: Sun, 19 Jan 2025 11:12:14 +1000
+Message-ID: <20250119011225.11452-40-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250119011225.11452-1-alistair.francis@wdc.com>
 References: <20250119011225.11452-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x1031.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=alistair23@gmail.com; helo=mail-pj1-x1034.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -104,35 +106,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Atish Patra <atishp@rivosinc.com>
+From: Clément Léger <cleger@rivosinc.com>
 
-Add configuration options so that they can be enabled/disabld from
-qemu commandline.
+With the current implementation, if we had the following scenario:
+- Set bit x in menvcfg
+- Set bit x in henvcfg
+- Clear bit x in menvcfg
+then, the internal variable env->henvcfg would still contain bit x due
+to both a wrong menvcfg mask used in write_henvcfg() as well as a
+missing update of henvcfg upon menvcfg update.
+This can lead to some wrong interpretation of the context. In order to
+update henvcfg upon menvcfg writing, call write_henvcfg() after writing
+menvcfg. Clearing henvcfg upon writing the new value is also needed in
+write_henvcfg() as well as clearing henvcfg upper part when writing it
+with write_henvcfgh().
 
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Signed-off-by: Atish Patra <atishp@rivosinc.com>
-Message-ID: <20250110-counter_delegation-v5-11-e83d797ae294@rivosinc.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20250110125441.3208676-2-cleger@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ target/riscv/csr.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 671fc3d1c1..fe470f646d 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1587,6 +1587,10 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     /* Defaults for standard extensions */
-     MULTI_EXT_CFG_BOOL("sscofpmf", ext_sscofpmf, false),
-     MULTI_EXT_CFG_BOOL("smcntrpmf", ext_smcntrpmf, false),
-+    MULTI_EXT_CFG_BOOL("smcsrind", ext_smcsrind, false),
-+    MULTI_EXT_CFG_BOOL("smcdeleg", ext_smcdeleg, false),
-+    MULTI_EXT_CFG_BOOL("sscsrind", ext_sscsrind, false),
-+    MULTI_EXT_CFG_BOOL("ssccfg", ext_ssccfg, false),
-     MULTI_EXT_CFG_BOOL("zifencei", ext_zifencei, true),
-     MULTI_EXT_CFG_BOOL("zicfilp", ext_zicfilp, false),
-     MULTI_EXT_CFG_BOOL("zicfiss", ext_zicfiss, false),
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index eddcf5a5d0..279293b86d 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -2946,6 +2946,8 @@ static RISCVException read_menvcfg(CPURISCVState *env, int csrno,
+     return RISCV_EXCP_NONE;
+ }
+ 
++static RISCVException write_henvcfg(CPURISCVState *env, int csrno,
++                                    target_ulong val);
+ static RISCVException write_menvcfg(CPURISCVState *env, int csrno,
+                                     target_ulong val)
+ {
+@@ -2974,6 +2976,7 @@ static RISCVException write_menvcfg(CPURISCVState *env, int csrno,
+         }
+     }
+     env->menvcfg = (env->menvcfg & ~mask) | (val & mask);
++    write_henvcfg(env, CSR_HENVCFG, env->henvcfg);
+ 
+     return RISCV_EXCP_NONE;
+ }
+@@ -2985,6 +2988,8 @@ static RISCVException read_menvcfgh(CPURISCVState *env, int csrno,
+     return RISCV_EXCP_NONE;
+ }
+ 
++static RISCVException write_henvcfgh(CPURISCVState *env, int csrno,
++                                    target_ulong val);
+ static RISCVException write_menvcfgh(CPURISCVState *env, int csrno,
+                                      target_ulong val)
+ {
+@@ -2996,6 +3001,7 @@ static RISCVException write_menvcfgh(CPURISCVState *env, int csrno,
+     uint64_t valh = (uint64_t)val << 32;
+ 
+     env->menvcfg = (env->menvcfg & ~mask) | (valh & mask);
++    write_henvcfgh(env, CSR_HENVCFGH, env->henvcfg >> 32);
+ 
+     return RISCV_EXCP_NONE;
+ }
+@@ -3101,7 +3107,7 @@ static RISCVException write_henvcfg(CPURISCVState *env, int csrno,
+         }
+     }
+ 
+-    env->henvcfg = (env->henvcfg & ~mask) | (val & mask);
++    env->henvcfg = val & mask;
+ 
+     return RISCV_EXCP_NONE;
+ }
+@@ -3134,7 +3140,7 @@ static RISCVException write_henvcfgh(CPURISCVState *env, int csrno,
+         return ret;
+     }
+ 
+-    env->henvcfg = (env->henvcfg & ~mask) | (valh & mask);
++    env->henvcfg = (env->henvcfg & 0xFFFFFFFF) | (valh & mask);
+     return RISCV_EXCP_NONE;
+ }
+ 
 -- 
 2.48.1
 
