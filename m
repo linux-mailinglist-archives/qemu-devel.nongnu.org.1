@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 272FAA15F91
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Jan 2025 02:13:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42E7EA15FC2
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Jan 2025 02:19:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZJro-00011V-2Y; Sat, 18 Jan 2025 20:12:44 -0500
+	id 1tZJrt-00012E-3b; Sat, 18 Jan 2025 20:12:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tZJrm-00011N-7p
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:12:42 -0500
+ id 1tZJrq-00011v-KZ
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:12:46 -0500
 Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tZJrk-00037e-OO
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:12:42 -0500
+ id 1tZJrp-00038D-5s
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:12:46 -0500
 Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-2ee76befe58so5795347a91.2
- for <qemu-devel@nongnu.org>; Sat, 18 Jan 2025 17:12:40 -0800 (PST)
+ 98e67ed59e1d1-2f42992f608so4731189a91.0
+ for <qemu-devel@nongnu.org>; Sat, 18 Jan 2025 17:12:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737249159; x=1737853959; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1737249163; x=1737853963; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yaTS6py126U4BbD4RQuuk4UG2ehBqDT81irsaHxix9k=;
- b=epSysjT6E9JrcqLHozkQGMr9ut5tipve0o/ypguJ9Ok7pk59zf2BVnjuf9i++fEjJ7
- npMyZBlJnLKuRWbYHEnIZhv+rjYWFF6gOKS8PZWljIcT7EWmRQN986QtjfwSszOH3yMa
- 6GhQbwuU2HMZKgaYbUzWiC4qj8CxSN8JNbDSr7IVt4omf5ewkKtkcNYMNcJsD2aB2yf+
- qJzYZIazfkAvlxnljXr+p7ds8LhZWy3DZBhFTBYOl2hcAeikd5CGxoFhCvknuLLpjA3A
- mr02LeJXqoLgrWo48pUWFO+M9/WMVlb7CcE9H8fDY9+S67slj7rtfzOjKsXa/2iBv2Ag
- sDrQ==
+ bh=bewvRjNkwqzDyxfwcvQhUAmA2KHQQaF3sWX+p2yTLCo=;
+ b=dbFe24Syp1R7KP8zqq1V8vkiT7lzM1mSfQAS4pbAEpnIT4IMOKJxDnx7DbNHs257nX
+ jibf/F5FEudEbFIqqJtT6nWRTzwNQANtByCxX0hIZU1l16lqCcUAiJe9uLH44XpYW/MO
+ oD20t/L0YnyDpowPSNcSqzGODFLFUXz5VHgdUGurha63xxpbFZBmEPve6xQ4zpSZiWLt
+ fnHW3CtvR/4uU9e4CWEYiJFnkRVMg0twQ7PREEvgY0R7qQRx9S5H2gyMHPEfrKrQK0hn
+ Yz5m2P8+EDGyTCAvJU+/jDqqB/0CDN/YpD6rp4UO+KUIcL489pHD5B/pY0gBzUMcFRpS
+ 8p1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737249159; x=1737853959;
+ d=1e100.net; s=20230601; t=1737249163; x=1737853963;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yaTS6py126U4BbD4RQuuk4UG2ehBqDT81irsaHxix9k=;
- b=EWm3GVdzwcKtKMWaU1YSOHg/QnVfJsAX/gR+Wrfrdp5IA19jZgO6G7y3or4ODftHtJ
- gxQYqnGfXBPQsZZRnWbU6p5Hg6al/tWG72Gu1banmobcShhfts6OBVQoeHPmikseq4wL
- 05adDtLpZNj3cre9ngaVy+zxW4M8q+gYrnMjTB7pmMkcc58AQi88JfQ2IUrhcnTqq++O
- 7vZhR6WdOkFJ6BPwnbPqgv0E7moOcBxCBCffhzsHNfWyi+QPHxbEvAamIrgtedIwKoZH
- y2pWM5qUv5F7vEBnKJYlyaV2DC5xq89mkMzSBvjLgt2tBvqwp2lIrrE9yF3AXUN2rAs8
- KIkQ==
-X-Gm-Message-State: AOJu0YzV3BhFcl2Nf42BLD/hpGkGnpPrz6PKWicBEoapZ/xUKweH9riA
- FuQWUgnX4xaOkZlmZgEeHiK8ughCcE2P+JKDPns+lNwgSzYfqzkIqNYquQaV
-X-Gm-Gg: ASbGncszfMX6vK77GlD4ixZhkqol+MkStPNJ2bBPNcWCgEjGizJkwcv/y8Y/E20Zr+7
- yXvaohIZikwkPZIAYi3qmQUDmzRDo6eJOPPeejSYonukfvPMVQRG4+u9C55IrHUH73/JPX+ugSl
- p0JEqU9ApnnHGMz1Y0QtvL3X5Sg3ANIvgmkubhJz6zzusr377/EE+eIfOJO+f2sXCyOZuswu1gh
- 9/UELKyKiyqTv1LgyvrIzAlOmRz2LOpyBiV4/JRFSN2Kr05zrD/aiEXFIFDYKk3S4IVG3lq+DcB
- AnvG5LEoOzcQbZwGEvMWjJMWpSAIgteTIpYSTydbX1SeuM4EaQpUCxkqD/xoevv+oGWQhkZ4Eg=
+ bh=bewvRjNkwqzDyxfwcvQhUAmA2KHQQaF3sWX+p2yTLCo=;
+ b=FBmbjq2LDJZuSSaAB1aXlqT5PSqPVHpVCt0fsb/EColk2ravctq/kb/EkgDqzijN+U
+ Z4Y+KvGMxDGKISGlNJ7l5akRB9MhVKOD19TjLf0SZTKsOGkKlJ5t5jUclNBMLb3zteV6
+ SvlObZezOdd51lgKT5X7KYjCB5x0KQbluxw2NBEj5aOjjFp1Sbx09jZ8Oo6RZzYZMm2Y
+ 1EugfIXP/o4o/Ht0XpmT8ofse4OSE2vXdmiTH5JOK+7tUqBXskpn+wi6PNmyWo2ZSoA3
+ H8JKz7ANOjECr7lGkxzqhhyrFlhraBd00/1hCSrFnMP7bdEeLRzCxoiLnAiBD0ji936y
+ ry3A==
+X-Gm-Message-State: AOJu0YzBj/DlJsP0i8C4DyEvX33TzoOCVIYFu9MT6sK8J7BIfjvMzvEj
+ BC5cgDlamfDs5Sig9s5leJI+1KGSwfCdgi3bIb7YFXNqeVju/7igNuRodqBY
+X-Gm-Gg: ASbGnctqdXYszQP8lHwb/DRgqMfOEw8sPIyHkpO3XN8dRydTHs3DKqZmIyTzJIJPSSa
+ H7PYhv8ROCIbti3aWOU9up/r5hwKb58lVQoGWiGvoNmqob5KJRRX4q4rnSF8fIU0K7DL8GvlcqY
+ Mh8Si0wjaCXdacuquIH0o3y5oKFX7kNkhI+B225Y4k/NzWqMz001wFClezet+Dy/gJZvbtebVmh
+ Av1dzTbkPnAgRAEJ1+Ht9Ln39PdCpAVAXXQvX2DhhL/IkQtmwBMtgm5AI63eCvvdAEkVbTGQQDi
+ Vp9ZDh2vy2m/SV62vUCISOAL20tWy2GdHm71qzBOYWfyPhOb6DSL420QfPyYEV7tvaVTgEC+sQ=
  =
-X-Google-Smtp-Source: AGHT+IGNtfaRdDLhRfAuoPkLcNbg5V7zZoZ8Hxm5R/90W2UqsYkwA9xTkGGh5NEOGoNNfEaLa7v9cA==
-X-Received: by 2002:a17:90b:3a08:b0:2ee:c291:765a with SMTP id
- 98e67ed59e1d1-2f782c8f352mr11972822a91.8.1737249159167; 
- Sat, 18 Jan 2025 17:12:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFFy3+z0tgjnmFOQBfg1TY0JCGMpscuRtaPkj9a7FnI10ItfzFckEshdejKn7dVB7K7RsrS/Q==
+X-Received: by 2002:a17:90b:2e41:b0:2ee:f19b:86e5 with SMTP id
+ 98e67ed59e1d1-2f782c71ec7mr13084516a91.14.1737249163587; 
+ Sat, 18 Jan 2025 17:12:43 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f776185b02sm4760314a91.21.2025.01.18.17.12.35
+ 98e67ed59e1d1-2f776185b02sm4760314a91.21.2025.01.18.17.12.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 18 Jan 2025 17:12:38 -0800 (PST)
+ Sat, 18 Jan 2025 17:12:43 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Craig Blackmore <craig.blackmore@embecosm.com>,
+ Helene CHELIN <helene.chelin@embecosm.com>,
+ Paolo Savini <paolo.savini@embecosm.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Max Chou <max.chou@sifive.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 01/50] target/riscv: rvv: fix typo in vext continuous ldst
- function names
-Date: Sun, 19 Jan 2025 11:11:36 +1000
-Message-ID: <20250119011225.11452-2-alistair.francis@wdc.com>
+Subject: [PULL v2 02/50] target/riscv: rvv: speed up small unit-stride loads
+ and stores
+Date: Sun, 19 Jan 2025 11:11:37 +1000
+Message-ID: <20250119011225.11452-3-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250119011225.11452-1-alistair.francis@wdc.com>
 References: <20250119011225.11452-1-alistair.francis@wdc.com>
@@ -108,60 +109,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Craig Blackmore <craig.blackmore@embecosm.com>
 
-Replace `continus` with `continuous`.
+Calling `vext_continuous_ldst_tlb` for load/stores up to 6 bytes
+significantly improves performance.
 
+Co-authored-by: Helene CHELIN <helene.chelin@embecosm.com>
+Co-authored-by: Paolo Savini <paolo.savini@embecosm.com>
+Co-authored-by: Craig Blackmore <craig.blackmore@embecosm.com>
+
+Signed-off-by: Helene CHELIN <helene.chelin@embecosm.com>
+Signed-off-by: Paolo Savini <paolo.savini@embecosm.com>
 Signed-off-by: Craig Blackmore <craig.blackmore@embecosm.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Max Chou <max.chou@sifive.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20241218142353.1027938-2-craig.blackmore@embecosm.com>
+Message-ID: <20241218142353.1027938-3-craig.blackmore@embecosm.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/vector_helper.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ target/riscv/vector_helper.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
 diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index a85dd1d200..0f57e48cc5 100644
+index 0f57e48cc5..ead3ec5194 100644
 --- a/target/riscv/vector_helper.c
 +++ b/target/riscv/vector_helper.c
-@@ -195,7 +195,7 @@ GEN_VEXT_ST_ELEM(ste_w, uint32_t, H4, stl)
- GEN_VEXT_ST_ELEM(ste_d, uint64_t, H8, stq)
+@@ -393,6 +393,22 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
+         return;
+     }
  
- static inline QEMU_ALWAYS_INLINE void
--vext_continus_ldst_tlb(CPURISCVState *env, vext_ldst_elem_fn_tlb *ldst_tlb,
-+vext_continuous_ldst_tlb(CPURISCVState *env, vext_ldst_elem_fn_tlb *ldst_tlb,
-                        void *vd, uint32_t evl, target_ulong addr,
-                        uint32_t reg_start, uintptr_t ra, uint32_t esz,
-                        bool is_load)
-@@ -207,7 +207,7 @@ vext_continus_ldst_tlb(CPURISCVState *env, vext_ldst_elem_fn_tlb *ldst_tlb,
- }
- 
- static inline QEMU_ALWAYS_INLINE void
--vext_continus_ldst_host(CPURISCVState *env, vext_ldst_elem_fn_host *ldst_host,
-+vext_continuous_ldst_host(CPURISCVState *env, vext_ldst_elem_fn_host *ldst_host,
-                         void *vd, uint32_t evl, uint32_t reg_start, void *host,
-                         uint32_t esz, bool is_load)
- {
-@@ -342,8 +342,8 @@ vext_page_ldst_us(CPURISCVState *env, void *vd, target_ulong addr,
- 
-     if (flags == 0) {
-         if (nf == 1) {
--            vext_continus_ldst_host(env, ldst_host, vd, evl, env->vstart, host,
--                                    esz, is_load);
-+            vext_continuous_ldst_host(env, ldst_host, vd, evl, env->vstart,
-+                                      host, esz, is_load);
-         } else {
-             for (i = env->vstart; i < evl; ++i) {
-                 k = 0;
-@@ -357,7 +357,7 @@ vext_page_ldst_us(CPURISCVState *env, void *vd, target_ulong addr,
-         env->vstart += elems;
-     } else {
-         if (nf == 1) {
--            vext_continus_ldst_tlb(env, ldst_tlb, vd, evl, addr, env->vstart,
-+            vext_continuous_ldst_tlb(env, ldst_tlb, vd, evl, addr, env->vstart,
-                                    ra, esz, is_load);
-         } else {
-             /* load bytes from guest memory */
++#if defined(CONFIG_USER_ONLY)
++    /*
++     * For data sizes <= 6 bytes we get better performance by simply calling
++     * vext_continuous_ldst_tlb
++     */
++    if (nf == 1 && (evl << log2_esz) <= 6) {
++        addr = base + (env->vstart << log2_esz);
++        vext_continuous_ldst_tlb(env, ldst_tlb, vd, evl, addr, env->vstart, ra,
++                                 esz, is_load);
++
++        env->vstart = 0;
++        vext_set_tail_elems_1s(evl, vd, desc, nf, esz, max_elems);
++        return;
++    }
++#endif
++
+     /* Calculate the page range of first page */
+     addr = base + ((env->vstart * nf) << log2_esz);
+     page_split = -(addr | TARGET_PAGE_MASK);
 -- 
 2.48.1
 
