@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CB82A15F9B
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Jan 2025 02:14:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F040A15F93
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Jan 2025 02:14:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZJsA-00015J-2g; Sat, 18 Jan 2025 20:13:06 -0500
+	id 1tZJsE-0001Ag-1K; Sat, 18 Jan 2025 20:13:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tZJs8-00014q-3o
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:13:04 -0500
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ id 1tZJsB-00017m-8C
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:13:07 -0500
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tZJs6-0003AJ-IR
- for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:13:03 -0500
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-2ee8aa26415so5809535a91.1
- for <qemu-devel@nongnu.org>; Sat, 18 Jan 2025 17:13:02 -0800 (PST)
+ id 1tZJs9-0003Aj-PN
+ for qemu-devel@nongnu.org; Sat, 18 Jan 2025 20:13:06 -0500
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-2ef760a1001so5877643a91.0
+ for <qemu-devel@nongnu.org>; Sat, 18 Jan 2025 17:13:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737249181; x=1737853981; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1737249184; x=1737853984; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6HWWsLugXEr9up/g4/JxXJKxCn4PeYas5O5GPDoslqE=;
- b=kfcmbw36Eeu9o85ET1Hw3LyDLBhX9Cp+aZdumoED40vgJRRNQAL0JQRtgOzVz0fuLE
- JayVAC2p+qYoKt3fqV/VFYk0jlLrqdLDzDPUTWrkFykxB9LIoNLlmfxCiiFw9dA5igZ7
- CFQstsXU8fDPoutsETSsYZFAwchXc9BarYSuBOzQ/1bJq/k7bPiSyXQgLbLvY3zrnRcp
- /71SnT4TKsAZ1cmrtxFZX8p0q23mJ+9PrnMNTjwpeBFJbYjC+8R+OVg0l6wE9QNutedL
- RE0S7PwGm3rRL/Jjh3FILf7f2LWK7vS4uuzADUcALQXuy4KYJy3E7siK/7ruuc+2/vua
- LRuw==
+ bh=8DOhQ+RXBVevo1zbAu7m7gJRKhDeUWa02zeKmgIvRqw=;
+ b=bo6cmvci3CnaxMiCmXjcV4VEgVi4XKqCH02tstfNZXZT3zey/gDEuayVBZuR+0AZzk
+ OcrCeG2R+InOKucne1d1VTn4CNyrfp/NV44dS6r2/jlzMuPzRxkqME0QdfiJok5si46u
+ 1eO7qP0w4uI4ggicyeu8tOoZDSg8Nu53rQ6UdajOcNVzaRb9vhB07di5QJy2QoYTZxkA
+ SHEZstQ9KwBEcM+ZWu2JMZ6EeYPdf7NxlOSohsXvCDiqXhdMLzURx052PbRrzJqFrh8M
+ FF5Av5kfPqA69bKtXLSDqsH4glJGaZpiBYPXkXjWsy7OIrXrcjYtQ5X230do1ejL35sx
+ jthw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737249181; x=1737853981;
+ d=1e100.net; s=20230601; t=1737249184; x=1737853984;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6HWWsLugXEr9up/g4/JxXJKxCn4PeYas5O5GPDoslqE=;
- b=wNTb13hb8aufTh69pLcAirk5wCbCGEPfmT44cPj5+6znzaj9I4ZdHWLjmFq83v2d8C
- U4veZ/dxcmzYan2vGm7Yyw/6aEZckWCz/F/Cx/LlfV3XlXA6SBeiU0x0G2DFdyLxilUk
- k/+uyDMUKe2reyIzIaSYlB18v5J/Lo19Cu6EJLM1mczTq16RFJdgAD/3vBdhbcO67i+N
- W4G02Z1VdkB5K3sWtkIrAdEW3SQl5r1+kSK2+DB9FyQmmUhWT/CdEnnPavZirI3wZkmz
- cybuS8Al9z+l91XpVzxYOKTKaCWMfDpIZSmwcDe/jBm0ik8/JlmH+6i2wtilxeLvfApg
- xieg==
-X-Gm-Message-State: AOJu0YwJbsvQk64Z7g355iVi6zBwiolVMfVkTHZDkvK5U5AVsyHSqWnI
- e4EASZKfv4aev57BTPvZglqdMh0mDyHa1KcHmnFvNo5U/lrgIkxCsPO8GFry
-X-Gm-Gg: ASbGncuy+efV2U5AdOqM28BWjn4SPH+OJxbJM4tCjUXyOO7VunIM/9vknB6aApx0qlp
- rB237S7udA4YdoIMvXEJFzFeec9d4cMJfdncpbyIP9MituJ5S3wQexL267K3GD7hC4tQ8gIsMDt
- aoiQ5L3ehzLntfflLWYgKWodnOc76FrpHqdB+cC93qkCKGQspL8NxCyREjA8OpPNMIRzsS1y1wR
- qHEeYVaAPWs2y20Frk9TsUpiDidHG7ohAjcGBDAJ9QO5tRVeXT4AIus21DaA2w+1UvaBeM2mzOg
- 48V9L0eP/rzKIHtKqltQv3o0p27Wo0PKo0phKl2V42ZWm8PAK5y9Y4UWwKKaeAGWqJwuzb2Qug=
+ bh=8DOhQ+RXBVevo1zbAu7m7gJRKhDeUWa02zeKmgIvRqw=;
+ b=oOuheACqvcpZfqf1r/B2CuIBP2oS9n1gvoMM9Q3x/8RPXdGXGNh3oyiMgCbzZN2/l9
+ 8cUIogNrDwd2RQEdHFS1AbIISQdkeaWh4L+Bzficnhnjfn58Tc2uznN6p+XZRwqplYf7
+ ttwmF2ImC52d6TkQ1Z65L6SacNc83Bbu8H0ytAWR9SKcE6nfBkAKgYsaXeqThktI9z18
+ zU4dO1e3ECV+trulFgck9Mx4oCqc2LxcwSzI70Hj5ak/srC53lv7sgD4ECE29pcjdRrr
+ pKod/gwe7a8Az8j5oUNpcMmAk/uvm2p8+fZinNvMWcJCmGHY437IbLGagOTRaxujr4nN
+ iWDw==
+X-Gm-Message-State: AOJu0YwQ6poSHFYW6DpX8KfR4F0MDd0BnrwSyCOZtG6eUSpNI6+YheMS
+ I3g8H9m6gjqkA6P+eYVm5GuxhHU4V49I8Cy1xwclx9RVxs8rW6DrgiLJjB7f
+X-Gm-Gg: ASbGncsLSYYp2ehy2Y1ULXZb432/1215OoItYzOWPPmBo5/lYm+KKzrOWbDDzpIBmZu
+ S3AXimk1B+bJCm2GfaQJb5/4D+Bksm+z+6sRZr27w4T4m2yQTw9Arqc7oIgdX76GINTsYJ7es8g
+ uJ/0Xz7xQAlUpJzTPNH9EuZ2tN5aCrGcBgZ8+RrxOPcFStp8CBbmnPg8oLJJdapNqUIhIK5GNTd
+ 9jPIab45Nm5EtBk8Xgdn21OxrQrnh3wfpzFBZBWVPor18070f2Ev4NywxqmdqUVS8GWaIPddXaa
+ mJN78+lRyDPap3pF+MlKSGYYo6R60S7RGYJWygFn5MqHveQCa9udsknk71KLtwuIazTfbxyeHQ=
  =
-X-Google-Smtp-Source: AGHT+IE4iImaV41IMPTC64WaEg9Ifi9JRKwJ4AfIvYYtGH7XcgEIgovlesJYGVgrd2/h/R00vYz5ow==
-X-Received: by 2002:a17:90b:2c83:b0:2ee:c918:cd42 with SMTP id
- 98e67ed59e1d1-2f782d4eea7mr10296300a91.22.1737249180863; 
- Sat, 18 Jan 2025 17:13:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGuuT+yyZhp4Nv6LSb8zXuUepsck96krlomKMIUv5JWG1CuvEkCAMHIdPl86b5/kMswyaCdGw==
+X-Received: by 2002:a17:90b:1f8f:b0:2ea:bf1c:1e3a with SMTP id
+ 98e67ed59e1d1-2f782c71e64mr13880188a91.12.1737249184173; 
+ Sat, 18 Jan 2025 17:13:04 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f776185b02sm4760314a91.21.2025.01.18.17.12.57
+ 98e67ed59e1d1-2f776185b02sm4760314a91.21.2025.01.18.17.13.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 18 Jan 2025 17:13:00 -0800 (PST)
+ Sat, 18 Jan 2025 17:13:03 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 07/50] target/riscv: add shvstvecd
-Date: Sun, 19 Jan 2025 11:11:42 +1000
-Message-ID: <20250119011225.11452-8-alistair.francis@wdc.com>
+Subject: [PULL v2 08/50] target/riscv: add shvsatpa
+Date: Sun, 19 Jan 2025 11:11:43 +1000
+Message-ID: <20250119011225.11452-9-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250119011225.11452-1-alistair.francis@wdc.com>
 References: <20250119011225.11452-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x102a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=alistair23@gmail.com; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -104,37 +104,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-shvstvecd is defined in RVA22 as:
+shvsatpa is defined in RVA22 as:
 
-"vstvec.MODE must be capable of holding the value 0 (Direct).
-When vstvec.MODE=Direct, vstvec.BASE must be capable of holding any
-valid four-byte-aligned address."
+"All translation modes supported in satp must be supported in vsatp."
 
-This is always true for TCG so let's claim support for it.
+This is always true in TCG so let's claim support for it.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20241218114026.1652352-7-dbarboza@ventanamicro.com>
+Message-ID: <20241218114026.1652352-8-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
  target/riscv/cpu.c                |   1 +
- tests/data/acpi/riscv64/virt/RHCT | Bin 364 -> 374 bytes
+ tests/data/acpi/riscv64/virt/RHCT | Bin 374 -> 382 bytes
  2 files changed, 1 insertion(+)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index fe5f7b572f..20cbb6b2f4 100644
+index 20cbb6b2f4..2f58eeb689 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -186,6 +186,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+@@ -185,6 +185,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
      ISA_EXT_DATA_ENTRY(shcounterenw, PRIV_VERSION_1_12_0, has_priv_1_12),
      ISA_EXT_DATA_ENTRY(shtvala, PRIV_VERSION_1_12_0, has_priv_1_12),
++    ISA_EXT_DATA_ENTRY(shvsatpa, PRIV_VERSION_1_12_0, has_priv_1_12),
      ISA_EXT_DATA_ENTRY(shvstvala, PRIV_VERSION_1_12_0, has_priv_1_12),
-+    ISA_EXT_DATA_ENTRY(shvstvecd, PRIV_VERSION_1_12_0, has_priv_1_12),
+     ISA_EXT_DATA_ENTRY(shvstvecd, PRIV_VERSION_1_12_0, has_priv_1_12),
      ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
-     ISA_EXT_DATA_ENTRY(smcntrpmf, PRIV_VERSION_1_12_0, ext_smcntrpmf),
-     ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
 diff --git a/tests/data/acpi/riscv64/virt/RHCT b/tests/data/acpi/riscv64/virt/RHCT
-index 065f894010..2c7dc6c9ab 100644
+index 2c7dc6c9ab..fcd9c95a6a 100644
 Binary files a/tests/data/acpi/riscv64/virt/RHCT and b/tests/data/acpi/riscv64/virt/RHCT differ
 -- 
 2.48.1
