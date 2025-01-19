@@ -2,87 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3343BA1637D
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Jan 2025 19:10:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B20E2A1641E
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Jan 2025 23:03:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZZiv-0004rd-N0; Sun, 19 Jan 2025 13:08:37 -0500
+	id 1tZdN2-0006yv-6t; Sun, 19 Jan 2025 17:02:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tZZiu-0004rO-8n
- for qemu-devel@nongnu.org; Sun, 19 Jan 2025 13:08:36 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tZZis-0007gf-Gz
- for qemu-devel@nongnu.org; Sun, 19 Jan 2025 13:08:36 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-2166f1e589cso91690675ad.3
- for <qemu-devel@nongnu.org>; Sun, 19 Jan 2025 10:08:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737310112; x=1737914912; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=TQpGR+TaNjjK6c3dT4bQhQ22jG+p9IsWqOSn/ko3HkU=;
- b=Cr2fxhbBBimuGdwszFgxOyohz6mZ82YBxMrG415oujcHNzDV3YLktDDxRsu50uuoD/
- QgNn4T6Sy1uPyk7hqnxnbCiP7i0oXhix96psMq+toHwlLqWJTelWKDyXftwutLjiop8B
- Tx+uJ8VcRvFsTsj6nmowI+LXpCn7dOYpEUoNX0UNWzdMFWQ700/20jUN5l4SEbXO+rPn
- VMdUoei+pW2V3S1SdBTF0KAGrphyBlC4Jd2huvAjf2BQjsqFZL9l/vBS1VOYLZYPbgLf
- Cf+k9cZUdHNEGwgqUdBGXo/gF6LGzBAceqjKOkq1CxcLHoAb5nCYFrmJeWC8H9FfBMO3
- ZomQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737310112; x=1737914912;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TQpGR+TaNjjK6c3dT4bQhQ22jG+p9IsWqOSn/ko3HkU=;
- b=Nx8moq4VvQaxC/fXBG0pxkAtvRQ54AeQnWAob+f6UpDgrFTehqzn3NFkiK/5xiftEJ
- 99nkmXF/6jIynmRUA9sGXe0//d4nOtKoyFs/WM9GH8rezidbsb0R1Sc7ACG8nRDQbejP
- PaSx5fX5kKEDS302EbHxEMN5niQ8Fggyxt+TzLlQjgYEtazbsUcpeVLCq/LuSVQSIly/
- N0T4rbQptR7gRWrqyw6bENq+/XFpBFsEJuzePbRLwQ+JaR/Gj7K0kUdEPjfSKPO3k5DY
- g3lpANfTKPUWvIzNsMH0FFNRY6sk4Tw03XM5HyqDW4B8p8B+0efmGVypMRI3wsTZtxJZ
- tT/A==
-X-Gm-Message-State: AOJu0YzYYLu/NnfBXXM5g6pzCLsYhP+ySfDbhoRSxz+mWQahxbkc/2Db
- YLCkgBwt9r4bAElDWaztwcgrAZFZ8FapXvkcJ/IyVsPGMWyu2v3Ed+JEhlvOc7c=
-X-Gm-Gg: ASbGncsSxyHky6mPytrCvkicRsODXGWWRmvt/jFfGpytEA57ZkIgaADf5Cc7PrYKL4k
- VlOEuPcv+zloxybv2h6C2ilAQ9wvzQrT7WyyoAXZyPrvV5CvErjliTD3KKUSUYSfGq7ln43J8sr
- E9BP9/PRrPIqx539h+3zi+0DvpBM87Q8PDxJQEFZA15m8L84qclWFB8IrLViXIUmWF/9ogEjke7
- r5Nw5kaiNui8my5kx8fGY671BxJ6/xIc/S5neh5AbcNfLopWkFO3pVF+QK9XjRk1nmTtQN/2HSx
- ms2GrEcJKyTzjp1GqoYDA7U7RBtaagi8wb5k
-X-Google-Smtp-Source: AGHT+IHKQvk0OsW30ESKfX92VXj7r+/1uAOQb6JwOPKqwXfTVDyqnDgCiTvuFq461i55lTAZM9POwA==
-X-Received: by 2002:a05:6a20:2589:b0:1e0:d6ef:521a with SMTP id
- adf61e73a8af0-1eb2146127dmr16165880637.1.1737310112312; 
- Sun, 19 Jan 2025 10:08:32 -0800 (PST)
-Received: from [192.168.0.4] (174-21-71-127.tukw.qwest.net. [174.21.71.127])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72dab9c9462sm5562502b3a.100.2025.01.19.10.08.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 19 Jan 2025 10:08:31 -0800 (PST)
-Message-ID: <15862b4c-4be2-4c71-a2ad-c34004230d01@linaro.org>
-Date: Sun, 19 Jan 2025 10:08:29 -0800
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1tZdMz-0006yl-Pc
+ for qemu-devel@nongnu.org; Sun, 19 Jan 2025 17:02:14 -0500
+Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1tZdMw-00087G-TF
+ for qemu-devel@nongnu.org; Sun, 19 Jan 2025 17:02:13 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1737324112; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=a6Lvm2xuwfOl6gl2YIChKDZ4+NZ4hUJOQn8ma+/tTli6BXOr0DjbJz0m96Wtl7Vv3NybCoe/ANLTCmbNcTbOkbefCc6fyMpfWt0y1pH/76R3s15YNhTaA9Fkb925bY4y8xc96SjMdjmYl+oqctJPLM7eEBE3KB+YBpKTC8Zjxn8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1737324112;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=5KV22j8fpmZ8XVK9fnwL+eHAmBMku7xLIqhPClLIXMU=; 
+ b=Ctn6MkHmPgCkexlzG/6RHj1QeoqKhZKuXScLhoSEbjePNsyy0vhFHNOg9wYIKjj6hUh/x9t3Mq/aeFUota24qjEs3kFQYCsLgAP0v7lLdPWZiqhK7P2EI3zC9JX8VPAw6ZITrq/q2MTo/HesklZ+I9xcTHgN0RgfTdargXHxABI=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+ dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1737324112; 
+ s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
+ h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=5KV22j8fpmZ8XVK9fnwL+eHAmBMku7xLIqhPClLIXMU=;
+ b=ialdMxK2SDWV9anrerqHvfrPqPhmNpp3NXq/Bo8lvNZW49qnibDK97ZLQb4N+J16
+ s3fZjfnKopZaV4B7M6wXLcKLCi/e30kniqe6NIvgJFVQfvkN06ORn3/9clhWuOYGkUE
+ XVLXTifE/iZv/0oCuixBLVVjBlE4QPs/B1isB/QQ=
+Received: by mx.zohomail.com with SMTPS id 1737324109599205.35630521334429;
+ Sun, 19 Jan 2025 14:01:49 -0800 (PST)
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
+ Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
+ =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Stefano Stabellini <stefano.stabellini@amd.com>,
+ =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
+ Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
+ Yiwei Zhang <zzyiwei@chromium.org>, Sergio Lopez Pascual <slp@redhat.com>
+Subject: [PATCH v5 0/8] Support virtio-gpu DRM native context
+Date: Mon, 20 Jan 2025 01:00:42 +0300
+Message-ID: <20250119220050.15167-1-dmitry.osipenko@collabora.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/68] tcg patch queue
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org
-References: <20250118234930.GA448811@fedora>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250118234930.GA448811@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
+Received-SPF: pass client-ip=136.143.188.112;
+ envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.024,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,45 +90,177 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/18/25 15:49, Stefan Hajnoczi wrote:
-> Hi Richard,
-> 1. This pull request is not a signed tag. Please push a signed tag.
-> 2. I can't find a key for richard.henderson@linaro.org on
->     keys.openpgp.org. Please check again and send the key fingerprint.
+This patchset adds DRM native context support to VirtIO-GPU on Qemu.
 
-It is a signed tag:
+Contarary to Virgl and Venus contexts that mediates high level GFX APIs,
+DRM native context [1] mediates lower level kernel driver UAPI, which
+reflects in a less CPU overhead and less/simpler code needed to support it.
+DRM context consists of a host and guest parts that have to be implemented
+for each GPU driver. On a guest side, DRM context presents a virtual GPU as
+a real/native host GPU device for GL/VK applications.
 
-$ git tag -v pull-tcg-20250117
-object db1649823d4f27b924a5aa5f9e0111457accb798
-type commit
-tag pull-tcg-20250117
-tagger Richard Henderson <richard.henderson@linaro.org> 1737137605 -0800
+[1] https://www.youtube.com/watch?v=9sFP_yddLLQ
 
-tcg:
-   - Add TCGOP_TYPE, TCGOP_FLAGS.
-   - Pass type and flags to tcg_op_supported, tcg_target_op_def.
-   - Split out tcg-target-has.h and unexport from tcg.h.
-   - Reorg constraint processing; constify TCGOpDef.
-   - Make extract, sextract, deposit opcodes mandatory.
-   - Merge ext{8,16,32}{s,u} opcodes into {s}extract.
-tcg/mips: Expand bswap unconditionally
-tcg/riscv: Use SRAIW, SRLIW for {s}extract_i64
-tcg/riscv: Use BEXTI for single-bit extractions
-tcg/sparc64: Use SRA, SRL for {s}extract_i64
+Today there are four known DRM native context drivers existing in a wild:
 
-disas/riscv: Guard dec->cfg dereference for host disassemble
-util/cpuinfo-riscv: Detect Zbs
-accel/tcg: Call tcg_tb_insert() for one-insn TBs
-linux-user: Add missing /proc/cpuinfo fields for sparc
-gpg: Signature made Fri 17 Jan 2025 10:19:33 AM PST
-gpg:                using RSA key 7A481E78868B4DB6A85A05C064DF38E8AF7E215F
-gpg:                issuer "richard.henderson@linaro.org"
-gpg: Good signature from "Richard Henderson <richard.henderson@linaro.org>" [ultimate]
+  - Freedreno (Qualcomm SoC GPUs), completely upstreamed
+  - AMDGPU, mostly merged into upstreams
+  - Intel (i915), merge requests are opened
+  - Asahi (Apple SoC GPUs), WIP status
 
 
-I don't know why one cannot search by email on keys.openpgp.org,
-but you can search by the key above.
+# How to try out DRM context:
+
+1. DRM context uses host blobs and requires latest developer version 
+of Linux kernel [2] that has necessary KVM fixes.
+
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/
+
+2. Use latest libvirglrenderer from upstream git/main for Freedreno
+and AMDGPU native contexts. For Intel use patches [3].
+
+[3] https://gitlab.freedesktop.org/virgl/virglrenderer/-/merge_requests/1384
+
+3. On guest, use latest Mesa version for Freedreno. For AMDGPU use
+Mesa patches [4], for Intel [5].
+
+[4] https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/21658
+[5] https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/29870
+
+4. On guest, use latest Linux kernel v6.6+. Apply patch [6] if you're
+   running Xorg in guest.
+
+[6] https://lore.kernel.org/dri-devel/20241020224725.179937-1-dmitry.osipenko@collabora.com/
+
+Example Qemu cmdline that enables DRM context:
+
+  qemu-system-x86_64 -device virtio-vga-gl,hostmem=4G,blob=on,drm_native_context=on \
+      -machine q35,accel=kvm,memory-backend=mem1 \
+      -object memory-backend-memfd,id=mem1,size=8G -m 8G
 
 
-r~
+# Note about known performance problem in Qemu:
+
+DRM contexts are mapping host blobs extensively and these mapping
+operations work slowly in Qemu. Exact reason is unknown. Mappings work
+fast on Crosvm For DRM contexts this problem is more visible than for
+Venus/Virgl.
+
+Changelog:
+
+v5: - Added r-bs from Akihiko Odaki.
+
+    - Added acks from Michael Tsirkin.
+
+    - Fixed compilation warning using older version of virglrenderer that
+      was reported by Alex Bennée. Noticed that I need to keep old
+      virgl_write_fence() code around for the older virglrenderer in
+      "Support  asynchronous fencing" patch, so added it back and verified
+      that old virglrenderer works properly.
+
+    - Added new patch from Alex Bennée that adds more virtio-gpu 
+      documentation with a couple corrections and additions to it from me.
+
+    - Rebased patches on top of latest staging tree.
+
+v4: - Improved SDL2/dmabuf patch by reusing existing Meson X11 config 
+      option, better handling EGL error and extending comment telling
+      that it's safe to enable SDL2 EGL preference hint. As was suggested
+      by Akihiko Odaki.
+
+    - Replaced another QSLIST_FOREACH_SAFE with QSLIST_EMPTY+FIRST in
+      the async-fencing patch for more consistency of the code. As was
+      suggested by Akihiko Odaki.
+
+    - Added missing braces around if-statement that was spotted by
+      Alex Bennée.
+
+    - Renamed 'drm=on' option of virtio-gpu-gl device to 
+      'drm_native_context=on' for more clarity as was suggested by 
+      Alex Bennée. Haven't added added new context-type option that 
+      was also proposed by Alex, might do it with a separate patch.
+      This context-type option will duplicate and depecate existing
+      options, but in a longer run likely will be worthwhile adding
+      it.
+
+    - Dropped Linux headers-update patch as headers has been updated
+      in the staging tree.
+
+v3: - Improved EGL presence-check code on X11 systems for the SDL2
+      hint that prefers EGL over GLX by using better ifdefs and checking
+      Xlib presence at a build time to avoid build failure if lib SDL2
+      and system are configured with a disabled X11 support. Also added
+      clarifying comment telling that X11 hint doesn't affect Wayland
+      systems. Suggested by Akihiko Odaki.
+
+    - Corrected strerror(err) that used negative error where it should
+      be positive and vice versa that was caught by Akihiko Odaki. Added
+      clarifying comment for the case where we get positive error code
+      from virglrenderer that differs from other virglrenderer API functions.
+
+    - Improved QSLIST usage by dropping mutex protecting the async fence
+      list and using atomic variant of QSLIST helpers instead. Switched away
+      from using FOREACH helper to improve readability of the code, showing
+      that we don't precess list in unoptimal way. Like was suggested by
+      Akihiko Odaki.
+
+    - Updated patchset base to Venus v18.
+
+v2: - Updated SDL2-dmabuf patch by making use of error_report() and
+      checking presense of X11+EGL in the system before making SDL2
+      to prefer EGL backend over GLX, suggested by Akihiko Odaki.
+
+    - Improved SDL2's dmabuf-presence check that wasn't done properly
+      in v1, where EGL was set up only after first console was fully
+      inited, and thus, SDL's display .has_dmabuf callback didn't work
+      for the first console. Now dmabuf support status is pre-checked
+      before console is registered.
+
+    - Updated commit description of the patch that fixes SDL2's context
+      switching logic with a more detailed explanation of the problem.
+      Suggested by Akihiko Odaki.
+
+    - Corrected rebase typo in the async-fencing patch and switched
+      async-fencing to use a sigle-linked list instead of the double,
+      as was suggested by Akihiko Odaki.
+
+    - Replaced "=true" with "=on" in the DRM native context documentation
+      example and made virtio_gpu_virgl_init() to fail with a error message
+      if DRM context can't be initialized instead of giving a warning
+      message, as was suggested by Akihiko Odaki.
+
+    - Added patchew's dependecy tag to the cover letter as was suggested by
+      Akihiko Odaki.
+
+
+Alex Bennée (1):
+  docs/system: Expand the virtio-gpu documentation
+
+Dmitry Osipenko (6):
+  ui/sdl2: Restore original context after new context creation
+  virtio-gpu: Handle virgl fence creation errors
+  virtio-gpu: Support asynchronous fencing
+  virtio-gpu: Support DRM native context
+  ui/sdl2: Don't disable scanout when display is refreshed
+  ui/gtk: Don't disable scanout when display is refreshed
+
+Pierre-Eric Pelloux-Prayer (1):
+  ui/sdl2: Implement dpy dmabuf functions
+
+ docs/system/devices/virtio-gpu.rst | 105 +++++++++++++++++--
+ hw/display/virtio-gpu-gl.c         |   5 +
+ hw/display/virtio-gpu-virgl.c      | 159 ++++++++++++++++++++++++++++-
+ hw/display/virtio-gpu.c            |  15 +++
+ include/hw/virtio/virtio-gpu.h     |  16 +++
+ include/ui/sdl2.h                  |   7 ++
+ meson.build                        |   6 +-
+ ui/gtk-egl.c                       |   1 -
+ ui/gtk-gl-area.c                   |   1 -
+ ui/sdl2-gl.c                       |  68 +++++++++++-
+ ui/sdl2.c                          |  42 ++++++++
+ 11 files changed, 411 insertions(+), 14 deletions(-)
+
+-- 
+2.47.1
+
 
