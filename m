@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7EB1A173A9
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 21:39:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C092A173BD
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 21:43:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZyXh-00046E-1Y; Mon, 20 Jan 2025 15:38:41 -0500
+	id 1tZyXj-00047z-FC; Mon, 20 Jan 2025 15:38:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tZyXU-00042x-JC; Mon, 20 Jan 2025 15:38:28 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ id 1tZyXW-00044Y-4X; Mon, 20 Jan 2025 15:38:30 -0500
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tZyXS-0002aF-Mq; Mon, 20 Jan 2025 15:38:28 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5d90a5581fcso8641472a12.1; 
- Mon, 20 Jan 2025 12:38:26 -0800 (PST)
+ id 1tZyXU-0002aY-5p; Mon, 20 Jan 2025 15:38:29 -0500
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3e6f6cf69so8016296a12.1; 
+ Mon, 20 Jan 2025 12:38:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737405504; x=1738010304; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1737405506; x=1738010306; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Fzc6m2g5iiLvtqeih5u2IFw38y7XBfSQIzXv6KF9Euc=;
- b=COH2sbM6mjbRTjt0cz3Pf+sQHxW5NeBbUjZDMq6TADpUCA62nfOh/xkiPd5nn+1xrJ
- Nm6/RC5AKrf0osOX2AgO4B7V1G6fX+4eaZiLb+FHp/6dp6fC90HNZmULSvzR9Tna4cBG
- DszQvtgCZufqiR/VyoVANCb3lia99O851ZihxAgQJ0Xzdgv6QurcoyhcoSgOa5dF+i5S
- JP4LAm95b6XTaE/HWGRJ0C580TZUsn/aXYRzVPaxw6PK3qlarsyKMUnZo5DjU1STd8hd
- nrnBgws7XL2CS7t91i9FvImqVgNxnM3LdSRbMJqO7B2RumSYti0yHvmWET/wqKKC+Tcq
- Q74A==
+ bh=dJh/wjKW7N+k5IBXoYv5hsPWIKX+2pFf2CEXXareyRo=;
+ b=cTnHKD9LAf4S+lfsqbf6h5+un9RWErs/Xfzyh7W6CfLes3tHFWQPM5eeqsEessB0Br
+ 0icxr/LKxutwry1eFOLqf5YTO1RJCrGT20kyI1Ej8I4WbYIh1mf/kL6N+jkvRlfVvttS
+ ymAc2m00U6DI96Rlx2jGDEmJObGpr8/V+5Y2IMVLgkWpq5ugjCNjP9B5Xlgqo7c0d/U6
+ eot/KPTbdbJZLT5/5PaD86vjkXta8vx4cCWGtMGE2cTwiwEFav15A8WiQ1JB0HUAqElo
+ tl5ylZKxmPfmnRTw6cOAP5ZWfKsx+qGabp8MbySo5keWmxJX3lBa+8J9okzcfwOIPXAP
+ 4tcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737405504; x=1738010304;
+ d=1e100.net; s=20230601; t=1737405506; x=1738010306;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Fzc6m2g5iiLvtqeih5u2IFw38y7XBfSQIzXv6KF9Euc=;
- b=uVdYq3KbRgRUCfX36MVz4zAnp/ujUDpkNEu3qjgN6YchTPvIsCy1z+vTsfNKsu2UJB
- acUdVrxtE+yBkIfnXFFC8fWB0H69ZKp/+8Xgii+zjIix5W/qBSry1Skaqa+gPeNXw1BR
- 6dwAQPKM64nBQhUO78m0IbYYEfg112UYbJyy5rJ4P8SLh83tR1N+XGbzzAi2HuXJEmCv
- ZBzTWDK8pkwE4YfJoadYjSD43bLWi6DwSk6KIIdntzauxHvGRS99/+V8cnP5XjMEkmdr
- wXi8JvtMQq9IAEUrf3aW0t58RexQlnaLS/QCZ9qkrulF+1rOP3BfvVhll0pBXufhr/7K
- A98Q==
+ bh=dJh/wjKW7N+k5IBXoYv5hsPWIKX+2pFf2CEXXareyRo=;
+ b=S5mK0m3GHjYoGlu8wna+jZxdI5gWaG48mSSBXkcdQWrR+ll9n0aSggDYwZwKs0B6bo
+ MdEMuSwt7GGPrSdVc1/lDcHpCnDEc74FWYdFCaExOn8CRgQ4UJt0sysu+p8Xo/xGrD03
+ b886OUVaKtMM0drPIsGa9V31HNarz+nq94duJQovRHmdeTSwETxca4KiH32nM5ENOhad
+ 6Qi6LjESLX9+M9rXEhtzJFfkG1BKIdUZLZYbTS0T8KOrBR2gLmvqgMvOaelQaHXvYRyu
+ 4gEZWJzUixqy7vyPt1nu4kHJ7PLmWZChmJFR4AkeX6A7lGMqKIZ1uyk9M+lMcNRoRfUe
+ raAg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXf1IV/tNEf8BbNk3tk4GBuQRKd1wtV5Nvk1uu8+Qz1razm8R5EbCKqNVsUKtHE9VjDBoQ9YtIP0g==@nongnu.org
-X-Gm-Message-State: AOJu0YzEqIK5c+OS0Ozv2EDQbHBItEutaN2zX+2PMnlEueUcQymoQ2VX
- XvR+hAE/XshMmAS7cOxq9lflqiKLS81ZD4L+pMvsL5Ih63omm0SkCfclEuwj
-X-Gm-Gg: ASbGncvSlxH3K+WNsRh3t5zkoAND75jRDt0nHlCyvSnBjjN8K4RAPuAHIeKdhFmObU1
- r/9MJxYYb1gAM/O6wlVfC2usaNHnrMOSsktxYElxB69XDl0g4yBLe3mht2z1jgYXuvJ4x2qcFxd
- x8TFQJpn3NqUyzAftQtyD542LddeTIFNCSuEa/2XPMdOW811upBXLKR9IvI5GC63G7qLrHcO/OU
- JRgLg0447UMJ2aWkrLAWTUmkBvNKQAhl/Z5Tqgg/Cj8uQ2MKekdt+alHcns53eEBG0ZFJyhf1AN
- m0oHQtaNqJLqD2pi6qu1b5adRDlE2NWuD8p1qYD8ijWUaXQFppaGQK0s49Yp
-X-Google-Smtp-Source: AGHT+IHOcTeF+6oQ7MptGi4n4ofel+2NKQSTQgmb03i2NICItpwGE0/01IxgGABX7c05+H5SCB99Jw==
-X-Received: by 2002:a05:6402:2686:b0:5db:67a7:e741 with SMTP id
- 4fb4d7f45d1cf-5db7d2f5e87mr10808839a12.8.1737405504325; 
- Mon, 20 Jan 2025 12:38:24 -0800 (PST)
+ AJvYcCUz+M0g9tQpnFKHvfdJHq45CHU+HCzdY/+lj8KwBWGXhNJod5jRvtL2R2F9kqtNotLi8ThE1mddRg==@nongnu.org
+X-Gm-Message-State: AOJu0YzvrOjrcwKDP5v1V+0B/RHibaqhwMU+hNzN9q1xIVMot2WdO1yv
+ An9s+YP8TNteeO9sBtapoE0PsJdacYiAsbF/gc8VMTvZ5qN5aQ1mZjVbDJHM
+X-Gm-Gg: ASbGncs4TxFdvauwuIxfC2fEWQYVxvp26W/4QGdAZpmbkrnLQdPfprRv07Q3peXvCOa
+ AkxgHSlZAHvz731veKN7mCQQJUtz45ozwov2leXhCkXUKDmnYRl13MPFzxfuwgQ3ixL5bgHAnFQ
+ bal6yKMkQCqTvYgg9rHsUljXyEzAv9vb+gzivmLeremzHdWFduesoSwbGvPeP4BkfMnXxarNM+H
+ lBTuMds4zE2Fjdl6/9LsPdZYnv0K9aOlHGB+bNlWcXeLUGU6EBZYk9QozADFuqbpjTJPqsTU0Vy
+ APKplCgSX/6tL7HNPFaZifEf5wg9FBCFRqupArd73eviEk2pqneb7vY7pviD
+X-Google-Smtp-Source: AGHT+IG0oJGcY0XP+0b3aSAFoCPun5qjE3H2KQpRXBC7N1guHlv9qXlvThhRVP1Ich4eXMHK3eRT1A==
+X-Received: by 2002:a05:6402:2341:b0:5d9:f5c4:a227 with SMTP id
+ 4fb4d7f45d1cf-5db7d3550camr12529766a12.20.1737405505808; 
+ Mon, 20 Jan 2025 12:38:25 -0800 (PST)
 Received: from Provence.localdomain
  (dynamic-077-183-181-102.77.183.pool.telefonica.de. [77.183.181.102])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5db7364258csm6021077a12.1.2025.01.20.12.38.23
+ 4fb4d7f45d1cf-5db7364258csm6021077a12.1.2025.01.20.12.38.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 20 Jan 2025 12:38:23 -0800 (PST)
+ Mon, 20 Jan 2025 12:38:24 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -72,16 +72,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Andrey Smirnov <andrew.smirnov@gmail.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 19/21] hw/rtc: Add Ricoh RS5C372 RTC emulation
-Date: Mon, 20 Jan 2025 21:37:46 +0100
-Message-ID: <20250120203748.4687-20-shentey@gmail.com>
+Subject: [PATCH 20/21] hw/i2c: Import TCA6416 emulation from Xilinx
+Date: Mon, 20 Jan 2025 21:37:47 +0100
+Message-ID: <20250120203748.4687-21-shentey@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250120203748.4687-1-shentey@gmail.com>
 References: <20250120203748.4687-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,297 +104,211 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The implementation just allows Linux to determine date and time.
+Xilinx QEMU implements a TCA6416 device model which may be useful for the
+broader QEMU community, so upstream it. In the Xilinx fork, the device model
+gets compiled whenever CONFIG_CADENCE is true, so have it maintained by the
+"hw/*/cadence_*" maintainers.
+
+The code is based on Xilinx QEMU version xilinx_v2024.2 plus the following
+modifications:
+* Use OBJECT_DECLARE_SIMPLE_TYPE()
+* Port from DPRINTF() to trace events
+* Follow QEMU conventions for naming of state struct
+* Rename type to not contain a ','
+* Use DEFINE_TYPES() macro
+* Implement under hw/gpio since device is i2c client and gpio provider
+* Have dedicated Kconfig switch
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+
+--
+I have a use for TCA6416 emulation. Question: Are Xilinx Zynq maintainers
+willing to maintain this device model?
 ---
- MAINTAINERS         |   1 +
- hw/rtc/rs5c372.c    | 227 ++++++++++++++++++++++++++++++++++++++++++++
- hw/rtc/Kconfig      |   5 +
- hw/rtc/meson.build  |   1 +
- hw/rtc/trace-events |   4 +
- 5 files changed, 238 insertions(+)
- create mode 100644 hw/rtc/rs5c372.c
+ MAINTAINERS          |   1 +
+ hw/gpio/tca6416.c    | 122 +++++++++++++++++++++++++++++++++++++++++++
+ hw/gpio/Kconfig      |   5 ++
+ hw/gpio/meson.build  |   1 +
+ hw/gpio/trace-events |   4 ++
+ 5 files changed, 133 insertions(+)
+ create mode 100644 hw/gpio/tca6416.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index d2cdc790ff..7531d65429 100644
+index 7531d65429..0cac9c90bc 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -827,6 +827,7 @@ F: hw/arm/imx8mp-evk.c
- F: hw/arm/fsl-imx8mp.c
- F: hw/misc/imx8mp_*.c
- F: hw/pci-host/fsl_imx8m_phy.c
-+F: hw/rtc/rs5c372.c
- F: include/hw/arm/fsl-imx8mp.h
- F: include/hw/misc/imx8mp_*.h
- F: include/hw/pci-host/fsl_imx8m_phy.h
-diff --git a/hw/rtc/rs5c372.c b/hw/rtc/rs5c372.c
+@@ -1030,6 +1030,7 @@ S: Maintained
+ F: hw/*/xilinx_*
+ F: hw/*/cadence_*
+ F: hw/misc/zynq_slcr.c
++F: hw/gpio/tca6416.c
+ F: hw/adc/zynq-xadc.c
+ F: include/hw/misc/zynq_slcr.h
+ F: include/hw/adc/zynq-xadc.h
+diff --git a/hw/gpio/tca6416.c b/hw/gpio/tca6416.c
 new file mode 100644
-index 0000000000..d300f93e13
+index 0000000000..81ed7a654d
 --- /dev/null
-+++ b/hw/rtc/rs5c372.c
-@@ -0,0 +1,227 @@
++++ b/hw/gpio/tca6416.c
+@@ -0,0 +1,122 @@
 +/*
-+ * Ricoh RS5C372, R222x I2C RTC
++ * QEMU model of TCA6416 16-Bit I/O Expander
 + *
-+ * Copyright (c) 2025 Bernhard Beschow <shentey@gmail.com>
++ * Copyright (c) 2018 Xilinx Inc.
 + *
-+ * Based on hw/rtc/ds1338.c
++ * Written by Sai Pavan Boddu <sai.pavan.boddu@xilinx.com>
 + *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
++ * Permission is hereby granted, free of charge, to any person obtaining a copy
++ * of this software and associated documentation files (the "Software"), to deal
++ * in the Software without restriction, including without limitation the rights
++ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++ * copies of the Software, and to permit persons to whom the Software is
++ * furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
++ * THE SOFTWARE.
 + */
-+
 +#include "qemu/osdep.h"
 +#include "hw/i2c/i2c.h"
-+#include "migration/vmstate.h"
-+#include "qemu/bcd.h"
-+#include "qom/object.h"
-+#include "system/rtc.h"
 +#include "trace.h"
 +
-+#define NVRAM_SIZE 0x10
++#define TYPE_TCA6416 "tca6416"
++OBJECT_DECLARE_SIMPLE_TYPE(Tca6416State, TCA6416)
 +
-+/* Flags definitions */
-+#define SECONDS_CH 0x80
-+#define HOURS_PM   0x20
-+#define CTRL2_24   0x20
++#define IN_PORT0    0
++#define IN_PORT1    1
++#define OUT_PORT0   2
++#define OUT_PORT1   3
++#define POL_INV0    4
++#define POL_INV1    5
++#define CONF_PORT0  6
++#define CONF_PORT1  7
++#define RMAX (CONF_PORT1 + 1)
 +
-+#define TYPE_RS5C372 "rs5c372"
-+OBJECT_DECLARE_SIMPLE_TYPE(RS5C372State, RS5C372)
-+
-+struct RS5C372State {
-+    I2CSlave parent_obj;
-+
-+    int64_t offset;
-+    uint8_t wday_offset;
-+    uint8_t nvram[NVRAM_SIZE];
-+    uint8_t ptr;
-+    uint8_t tx_format;
-+    bool addr_byte;
++enum tca6416_events {
++     ADDR_DONE,
++     ADDRESSING,
 +};
 +
-+static const VMStateDescription vmstate_rs5c372 = {
-+    .name = "rs5c372",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_I2C_SLAVE(parent_obj, RS5C372State),
-+        VMSTATE_INT64(offset, RS5C372State),
-+        VMSTATE_UINT8_V(wday_offset, RS5C372State, 2),
-+        VMSTATE_UINT8_ARRAY(nvram, RS5C372State, NVRAM_SIZE),
-+        VMSTATE_UINT8(ptr, RS5C372State),
-+        VMSTATE_UINT8(tx_format, RS5C372State),
-+        VMSTATE_BOOL(addr_byte, RS5C372State),
-+        VMSTATE_END_OF_LIST()
-+    }
++struct Tca6416State {
++     I2CSlave i2c;
++
++     uint8_t addr;
++     uint8_t state;
++     uint8_t regs[RMAX];
 +};
 +
-+static void capture_current_time(RS5C372State *s)
++static uint8_t tca6416_read(I2CSlave *i2c)
 +{
-+    /*
-+     * Capture the current time into the secondary registers which will be
-+     * actually read by the data transfer operation.
-+     */
-+    struct tm now;
-+    qemu_get_timedate(&now, s->offset);
-+    s->nvram[0] = to_bcd(now.tm_sec);
-+    s->nvram[1] = to_bcd(now.tm_min);
-+    if (s->nvram[0xf] & CTRL2_24) {
-+        s->nvram[2] = to_bcd(now.tm_hour);
++    Tca6416State *s = TCA6416(i2c);
++    uint8_t ret;
++
++    ret = s->regs[s->addr];
++    trace_tca6416_read(ret);
++    return ret;
++}
++
++static int tca6416_write(I2CSlave *i2c, uint8_t data)
++{
++    Tca6416State *s = TCA6416(i2c);
++
++    trace_tca6416_write(data);
++    if (s->state == ADDRESSING) {
++        s->addr = data;
 +    } else {
-+        int tmp = now.tm_hour;
-+        if (tmp % 12 == 0) {
-+            tmp += 12;
-+        }
-+        if (tmp <= 12) {
-+            s->nvram[2] = to_bcd(tmp);
-+        } else {
-+            s->nvram[2] = HOURS_PM | to_bcd(tmp - 12);
-+        }
++        s->regs[s->addr] = data;
 +    }
-+    s->nvram[3] = (now.tm_wday + s->wday_offset) % 7 + 1;
-+    s->nvram[4] = to_bcd(now.tm_mday);
-+    s->nvram[5] = to_bcd(now.tm_mon + 1);
-+    s->nvram[6] = to_bcd(now.tm_year - 100);
++
++    return 0;
 +}
 +
-+static void inc_regptr(RS5C372State *s)
++static void tca6416_realize(DeviceState *dev, Error **errp)
 +{
-+    s->ptr = (s->ptr + 1) & (NVRAM_SIZE - 1);
++    Tca6416State *s = TCA6416(dev);
++
++    s->regs[CONF_PORT0] = 0xFF;
++    s->regs[CONF_PORT1] = 0xFF;
 +}
 +
-+static int rs5c372_event(I2CSlave *i2c, enum i2c_event event)
++static int tca6416_event(I2CSlave *i2c, enum i2c_event event)
 +{
-+    RS5C372State *s = RS5C372(i2c);
++    Tca6416State *s = TCA6416(i2c);
 +
 +    switch (event) {
-+    case I2C_START_RECV:
-+        /*
-+         * In h/w, capture happens on any START condition, not just a
-+         * START_RECV, but there is no need to actually capture on
-+         * START_SEND, because the guest can't get at that data
-+         * without going through a START_RECV which would overwrite it.
-+         */
-+        capture_current_time(s);
-+        s->ptr = 0xf;
-+        break;
 +    case I2C_START_SEND:
-+        s->addr_byte = true;
++        s->state = ADDRESSING;
 +        break;
 +    default:
-+        break;
-+    }
-+
++         s->state = ADDR_DONE;
++    };
 +    return 0;
 +}
 +
-+static uint8_t rs5c372_recv(I2CSlave *i2c)
-+{
-+    RS5C372State *s = RS5C372(i2c);
-+    uint8_t res;
-+
-+    res  = s->nvram[s->ptr];
-+
-+    trace_rs5c372_recv(s->ptr, res);
-+
-+    inc_regptr(s);
-+    return res;
-+}
-+
-+static int rs5c372_send(I2CSlave *i2c, uint8_t data)
-+{
-+    RS5C372State *s = RS5C372(i2c);
-+
-+    if (s->addr_byte) {
-+        s->ptr = data >> 4;
-+        s->tx_format = data & 0xf;
-+        s->addr_byte = false;
-+        return 0;
-+    }
-+
-+    trace_rs5c372_send(s->ptr, data);
-+
-+    if (s->ptr < 7) {
-+        /* Time register. */
-+        struct tm now;
-+        qemu_get_timedate(&now, s->offset);
-+        switch (s->ptr) {
-+        case 0:
-+            now.tm_sec = from_bcd(data & 0x7f);
-+            break;
-+        case 1:
-+            now.tm_min = from_bcd(data & 0x7f);
-+            break;
-+        case 2:
-+            if (s->nvram[0xf] & CTRL2_24) {
-+                now.tm_hour = from_bcd(data & 0x3f);
-+            } else {
-+                int tmp = from_bcd(data & (HOURS_PM - 1));
-+                if (data & HOURS_PM) {
-+                    tmp += 12;
-+                }
-+                if (tmp % 12 == 0) {
-+                    tmp -= 12;
-+                }
-+                now.tm_hour = tmp;
-+            }
-+            break;
-+        case 3:
-+            {
-+                /*
-+                 * The day field is supposed to contain a value in the range
-+                 * 1-7. Otherwise behavior is undefined.
-+                 */
-+                int user_wday = (data & 7) - 1;
-+                s->wday_offset = (user_wday - now.tm_wday + 7) % 7;
-+            }
-+            break;
-+        case 4:
-+            now.tm_mday = from_bcd(data & 0x3f);
-+            break;
-+        case 5:
-+            now.tm_mon = from_bcd(data & 0x1f) - 1;
-+            break;
-+        case 6:
-+            now.tm_year = from_bcd(data) + 100;
-+            break;
-+        }
-+        s->offset = qemu_timedate_diff(&now);
-+    } else {
-+        s->nvram[s->ptr] = data;
-+    }
-+    inc_regptr(s);
-+    return 0;
-+}
-+
-+static void rs5c372_reset(DeviceState *dev)
-+{
-+    RS5C372State *s = RS5C372(dev);
-+
-+    /* The clock is running and synchronized with the host */
-+    s->offset = 0;
-+    s->wday_offset = 0;
-+    memset(s->nvram, 0, NVRAM_SIZE);
-+    s->ptr = 0;
-+    s->addr_byte = false;
-+}
-+
-+static void rs5c372_class_init(ObjectClass *klass, void *data)
++static void tca6416_class_init(ObjectClass *klass, void *data)
 +{
 +    DeviceClass *dc = DEVICE_CLASS(klass);
 +    I2CSlaveClass *k = I2C_SLAVE_CLASS(klass);
 +
-+    k->event = rs5c372_event;
-+    k->recv = rs5c372_recv;
-+    k->send = rs5c372_send;
-+    device_class_set_legacy_reset(dc, rs5c372_reset);
-+    dc->vmsd = &vmstate_rs5c372;
++    dc->realize = tca6416_realize;
++    k->recv = tca6416_read;
++    k->send = tca6416_write;
++    k->event = tca6416_event;
 +}
 +
-+static const TypeInfo rs5c372_types[] = {
++static const TypeInfo tca6416_types[] = {
 +    {
-+        .name          = TYPE_RS5C372,
-+        .parent        = TYPE_I2C_SLAVE,
-+        .instance_size = sizeof(RS5C372State),
-+        .class_init    = rs5c372_class_init,
-+    },
++        .name = TYPE_TCA6416,
++        .parent = TYPE_I2C_SLAVE,
++        .class_init = tca6416_class_init,
++        .instance_size = sizeof(Tca6416State),
++    }
 +};
 +
-+DEFINE_TYPES(rs5c372_types)
-diff --git a/hw/rtc/Kconfig b/hw/rtc/Kconfig
-index 2fe04ec1d0..315b0e4ecc 100644
---- a/hw/rtc/Kconfig
-+++ b/hw/rtc/Kconfig
-@@ -26,3 +26,8 @@ config GOLDFISH_RTC
- 
- config LS7A_RTC
++DEFINE_TYPES(tca6416_types)
+diff --git a/hw/gpio/Kconfig b/hw/gpio/Kconfig
+index c423e10f59..a240cf2de2 100644
+--- a/hw/gpio/Kconfig
++++ b/hw/gpio/Kconfig
+@@ -20,5 +20,10 @@ config PCF8574
      bool
-+
-+config RS5C372_RTC
+     depends on I2C
+ 
++config TCA6416
 +    bool
 +    depends on I2C
 +    default y if I2C_DEVICES
-diff --git a/hw/rtc/meson.build b/hw/rtc/meson.build
-index 8ecc2d792c..6c87864dc0 100644
---- a/hw/rtc/meson.build
-+++ b/hw/rtc/meson.build
-@@ -13,3 +13,4 @@ system_ss.add(when: 'CONFIG_GOLDFISH_RTC', if_true: files('goldfish_rtc.c'))
- system_ss.add(when: 'CONFIG_LS7A_RTC', if_true: files('ls7a_rtc.c'))
- system_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true: files('allwinner-rtc.c'))
- system_ss.add(when: 'CONFIG_MC146818RTC', if_true: files('mc146818rtc.c'))
-+system_ss.add(when: 'CONFIG_RS5C372_RTC', if_true: files('rs5c372.c'))
-diff --git a/hw/rtc/trace-events b/hw/rtc/trace-events
-index 8012afe102..b9f2852d35 100644
---- a/hw/rtc/trace-events
-+++ b/hw/rtc/trace-events
-@@ -35,3 +35,7 @@ m48txx_nvram_mem_write(uint32_t addr, uint32_t value) "mem write addr:0x%04x val
- # goldfish_rtc.c
- goldfish_rtc_read(uint64_t addr, uint64_t value) "addr 0x%02" PRIx64 " value 0x%08" PRIx64
- goldfish_rtc_write(uint64_t addr, uint64_t value) "addr 0x%02" PRIx64 " value 0x%08" PRIx64
 +
-+# rs5c372.c
-+rs5c372_recv(uint32_t addr, uint8_t value) "[0x%" PRIx32 "] -> 0x%02" PRIx8
-+rs5c372_send(uint32_t addr, uint8_t value) "[0x%" PRIx32 "] <- 0x%02" PRIx8
+ config ZAURUS_SCOOP
+     bool
+diff --git a/hw/gpio/meson.build b/hw/gpio/meson.build
+index 74840619c0..b3ff7c7460 100644
+--- a/hw/gpio/meson.build
++++ b/hw/gpio/meson.build
+@@ -18,3 +18,4 @@ system_ss.add(when: 'CONFIG_STM32L4X5_SOC', if_true: files('stm32l4x5_gpio.c'))
+ system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files('aspeed_gpio.c'))
+ system_ss.add(when: 'CONFIG_SIFIVE_GPIO', if_true: files('sifive_gpio.c'))
+ system_ss.add(when: 'CONFIG_PCF8574', if_true: files('pcf8574.c'))
++system_ss.add(when: 'CONFIG_TCA6416', if_true: files('tca6416.c'))
+diff --git a/hw/gpio/trace-events b/hw/gpio/trace-events
+index cea896b28f..6724f2efb8 100644
+--- a/hw/gpio/trace-events
++++ b/hw/gpio/trace-events
+@@ -46,3 +46,7 @@ stm32l4x5_gpio_read(char *gpio, uint64_t addr) "GPIO%s addr: 0x%" PRIx64 " "
+ stm32l4x5_gpio_write(char *gpio, uint64_t addr, uint64_t data) "GPIO%s addr: 0x%" PRIx64 " val: 0x%" PRIx64 ""
+ stm32l4x5_gpio_update_idr(char *gpio, uint32_t old_idr, uint32_t new_idr) "GPIO%s from: 0x%x to: 0x%x"
+ stm32l4x5_gpio_pins(char *gpio, uint16_t disconnected, uint16_t high) "GPIO%s disconnected pins: 0x%x levels: 0x%x"
++
++# tca6416.c
++tca6416_write(uint8_t value) "0x%02x"
++tca6416_read(uint8_t value) "0x%02x"
 -- 
 2.48.1
 
