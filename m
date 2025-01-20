@@ -2,69 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F3A1A191F0
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 13:59:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3C58A1923E
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 14:20:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taaKC-0002qU-L6; Wed, 22 Jan 2025 07:59:16 -0500
+	id 1taadW-0007rU-IR; Wed, 22 Jan 2025 08:19:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1taaKA-0002pw-70; Wed, 22 Jan 2025 07:59:14 -0500
-Received: from mgamail.intel.com ([192.198.163.9])
+ (Exim 4.90_1) (envelope-from <kchamart@redhat.com>)
+ id 1taadO-0007r9-6D
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 08:19:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1taaK8-0000kw-OA; Wed, 22 Jan 2025 07:59:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737550752; x=1769086752;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=oWOfeYtoPAEzW8Z6IDVJJ/UHz7wmFjuEAjMUPF2/JBo=;
- b=OGx4qzJh6zX8WzSM6q3OjMvYFKInDN8FRrdISY4Ry3yxBtqMRjv9wesh
- aoKCMy0Uj+MXndS+ms9R/z61aW2qeNQQWOCIp4y9kXQj0Qpo4/bD82XfB
- q5xtNKU4FFc44+7OfskM8VboMMr3TwnMfKg+rar6EGZ8l/jweG2lxhztv
- 16mIM2vHEaHyJjdXEm8InoenQThBfxLiZbEzhTgfbEyG9j9v/dnQOD+Vz
- h6ttyLrOhutisNZQbmwLrnv1dOYScaQczb2gIMqItHq++elpnUKXJk+su
- +UY4aRmHL8wsnP94vO0hjIxxISij8jb2rdUqR9dC8qXV1ICNmRkwK+4wv g==;
-X-CSE-ConnectionGUID: WcArOK8DT16Wc0InvFrQFg==
-X-CSE-MsgGUID: hRFq1Nx/RuS0S4JGg3U2Cw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="48668298"
-X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="48668298"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 04:59:10 -0800
-X-CSE-ConnectionGUID: d8MmLcTESDiEPaoaCjrjow==
-X-CSE-MsgGUID: KqfmYJKkRneanSgv4LC2aQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="108013505"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa008.jf.intel.com with ESMTP; 22 Jan 2025 04:59:09 -0800
-Date: Wed, 22 Jan 2025 21:18:31 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 10/10] rust: vmstate: make order of parameters consistent
- in vmstate_clock
-Message-ID: <Z5DwJ+RoAF2yz0Bt@intel.com>
-References: <20250117090046.1045010-1-pbonzini@redhat.com>
- <20250117090046.1045010-11-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <kchamart@redhat.com>)
+ id 1taadK-0006hW-HV
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 08:19:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737551940;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ resent-to:resent-from:resent-message-id:in-reply-to:in-reply-to:
+ references:references; bh=ETvbZ1y0GnXnCEHw9vHGB65cA/LrS2sr6MMnCAtgtMo=;
+ b=Y4PWXSuv16dJsrLc+A7Xb4JLvoIxiUv4tVjLbLpNGGq1bMTWbHGwpEA0MmR44+l7S0PjWO
+ mHOxMzM4tNXqatCDttVrZQIgTSV2uvhcwLkR14TTooennqwWE2UiWJ8NkeWycVP1yXDABU
+ zymMONSgTWmChUW0+Ptc5+8R2MBkMcE=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-280-kUwP-R5IORSIxoozOS5WWw-1; Wed,
+ 22 Jan 2025 08:18:56 -0500
+X-MC-Unique: kUwP-R5IORSIxoozOS5WWw-1
+X-Mimecast-MFC-AGG-ID: kUwP-R5IORSIxoozOS5WWw
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1A2E81955DD4; Wed, 22 Jan 2025 13:18:54 +0000 (UTC)
+Received: from gezellig (unknown [10.39.192.136])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1B6DF19560AA; Wed, 22 Jan 2025 13:18:52 +0000 (UTC)
+Resent-From: Kashyap Chamarthy <kchamart@redhat.com>
+Resent-Date: Wed, 22 Jan 2025 14:18:49 +0100
+Resent-Message-ID: <Z5DwOQ64Mftg8o4v@gezellig>
+Resent-To: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Date: Mon, 20 Jan 2025 10:06:07 +0100
+From: Kashyap Chamarthy <kchamart@redhat.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, sebott@redhat.com,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH 2/2] docs/cpu-features: Update "PAuth" (Pointer
+ Authentication) details
+Message-ID: <Z44R-cUz9CWMp5Gi@gezellig>
+References: <20250117191106.322363-1-kchamart@redhat.com>
+ <20250117191106.322363-3-kchamart@redhat.com>
+ <87sepgtp3e.wl-maz@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250117090046.1045010-11-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -73
-X-Spam_score: -7.4
-X-Spam_bar: -------
-X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+In-Reply-To: <87sepgtp3e.wl-maz@kernel.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kchamart@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.043,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,21 +89,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 17, 2025 at 10:00:46AM +0100, Paolo Bonzini wrote:
-> Date: Fri, 17 Jan 2025 10:00:46 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 10/10] rust: vmstate: make order of parameters consistent
->  in vmstate_clock
-> X-Mailer: git-send-email 2.47.1
-> 
-> Place struct_name before field_name, similar to offset_of.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/hw/char/pl011/src/device_class.rs | 2 +-
->  rust/qemu-api/src/vmstate.rs           | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+On Sat, Jan 18, 2025 at 10:04:37AM +0000, Marc Zyngier wrote:
+> On Fri, 17 Jan 2025 19:11:06 +0000,
+> Kashyap Chamarthy <kchamart@redhat.com> wrote:
+> > 
+> > PAuth (Pointer Authentication), a security feature in software, is
+> > relevant for both KVM and QEMU.  Relect this fact into the docs:
+> > 
+> >   - For KVM, `pauth` is a binary, "on" vs "off" option.  The host CPU
+> >     will choose the cryptographic algorithm.
+> > 
+> >   - For TCG, however, along with `pauth`, a couple of properties can be
+> >     controlled -- they're are related to cryptographic algorithm choice.
+> > 
+> > Thanks to Peter Maydell and Marc Zyngier for explaining more about PAuth
+> > on IRC (#qemu, OFTC).
+> > 
+> > Signed-off-by: Kashyap Chamarthy <kchamart@redhat.com>
+> > ---
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+[...]
+
+> > -TCG vCPU Features
+> > -=================
+> > +"PAuth" (Pointer Authentication)
+> > +================================
+> > +
+> > +PAuth (Pointer Authentication) is a security feature in software that
+> > +was introduced in Armv8.3-A and Armv9.0-A.  It aims to protect against
+> 
+> nit: given that ARMv9.0 is congruent to ARMv8.5 and therefore has all
+> the ARMv8.5 features, mentioning ARMv8.3 should be enough (but I don't
+> feel strongly about this). I feel much strongly about the use of
+> capital letters, but I live in a distant past... ;-)
+
+Sure, I can keep it to just v8.3.
+
+On capitalization, I don't feel strongly about it, I just followed this
+commit[1], which explained that the rebranding changed "ARM" to "Arm":
+
+    6fe6d6c9a95 (docs: Be consistent about capitalization of 'Arm',
+    2020-03-09)
+
+That's why I went with it.  I see you know this by your "distant past"
+remark :)  To match the above, I'll keep the capitalization to "Arm".
+
+> > +ROP (return-oriented programming) attacks.
+> > +
+> > +KVM
+> > +---
+> > +
+> > +``pauth``
+> > +
+> > +  Enable or disable ``FEAT_Pauth``.  The host silicon will choose the
+> > +  cryptographic algorithm.  No other properties can be controlled.
+> 
+> nit: "choose" is a an odd choice of word. The host implementation
+> defines, or even imposes the signature algorithm, as well as the level
+> of PAuth support (PAuth, EPAC, PAuth2, FPAC, FPACCOMBINE, ...), some
+> of which are mutually exclusive (EPAC and PAuth2 are incompatible).
+> 
+> Maybe it would be worth capturing some of these details, as this has a
+> direct influence on the ability to migrate a VM.
+
+Yeah, I thought about it but I was not sure if it's the right place.  As
+you point out, there's a live-migration impact depending on the level of
+PAuth support, so mentioning these details will be useful.
+
+I'll come up with something for v2.  Thanks for looking!
+
+-- 
+/kashyap
 
 
