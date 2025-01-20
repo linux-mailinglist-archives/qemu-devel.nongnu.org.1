@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D547A17232
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 18:45:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E56BA17225
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 18:43:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZvmh-0004iu-9l; Mon, 20 Jan 2025 12:41:59 -0500
+	id 1tZvmh-0004j5-9v; Mon, 20 Jan 2025 12:41:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
- id 1tZvmb-0004bw-Rg
+ id 1tZvmc-0004c5-3k
  for qemu-devel@nongnu.org; Mon, 20 Jan 2025 12:41:54 -0500
-Received: from smarthost3.eviden.com ([80.78.11.84])
+Received: from smarthost4.eviden.com ([80.78.11.85])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
- id 1tZvmX-0000ZQ-Gh
+ id 1tZvmY-0000Ze-GQ
  for qemu-devel@nongnu.org; Mon, 20 Jan 2025 12:41:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=eviden.com; i=@eviden.com; q=dns/txt; s=mail;
- t=1737394909; x=1768930909;
+ t=1737394911; x=1768930911;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=nm91vlwGe5D+P6Uq5nJl+1ahvziKN3ReGpZa9nFH6IE=;
- b=d+jViTI9/Syj1djzaDYHZkDjt105W0O0GP5aDz1EjqRSDKOLNYfkb8hj
- H/HE5VUNFoG/MrBqQuPeFC8UHyiVqp3aIHhVn9B6Dh9q7dMbGxroohJFD
- LTGzoy45KRXUOEr2J33UWDW4fWtfFK5GMrCjDog3blXFJRUO0QMTrIN3w
- 5yWCADg/0XIAHdKXENTHn7A2Qb3wI8FhabvK2UevsPp1iJSfLU8hmYh18
- s8T9wIXmOBA0gv14i4yCskC+AG7tnDykHs7GJqNcTgBT5QLjsmokSou/s
- OkaKr+umt0zLWobx2Dvqhonqb6gl2qa0BSbuPUJ8dTDwX/OKog2vgB6HZ w==;
-X-CSE-ConnectionGUID: WhFqQ3IXR06tq/EP9KJy+A==
-X-CSE-MsgGUID: NOXLJ1yPSh+YYt2Gvilofg==
-X-IronPort-AV: E=Sophos;i="6.13,219,1732575600"; d="scan'208";a="29125395"
-X-MGA-submission: =?us-ascii?q?MDGCNDPG0jb0gvufw9cl56ciFo57gjLkKQxnxp?=
- =?us-ascii?q?pgeESJObntp6ePeZkBODaLibps6zj0SgksxOnyouP9006HcLcjHJldMh?=
- =?us-ascii?q?/8aBpZDiZZ+AYnDK4rCf3MD5f3zt2aLX/tZLwVdWvpstp/aD4Fmv2cgA?=
- =?us-ascii?q?I4xTc7ngmd3QbrQixQndxPwA=3D=3D?=
-Received: from mail-db8eur05lp2107.outbound.protection.outlook.com (HELO
- EUR05-DB8-obe.outbound.protection.outlook.com) ([104.47.17.107])
- by smarthost3.eviden.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384;
- 20 Jan 2025 18:41:46 +0100
+ bh=v2duwbg7QR28N2W4UNpyDMAV4hcBkv6EViHQREdJvHQ=;
+ b=oJJM7MI4A7XlmQ8xk1LDsLcZ4NTbQcbRUiYdyQtJbb/voA8G/1611qyA
+ swJLPzl64IOewcW27Nd9BBVey+shVqoAN/C9yowB8sCY2dZJSY4RBV/qI
+ XoPqUYI60A7gCYmyltUfy5/U4aABgJ4ROmN4+UQKMD009T4Uyl1oZ2irs
+ xh6PP4zS9o9rKCTDSSdKn0QFoBuAhLUWvzyF7G0oWPmKIAUsPCm3D9qPg
+ oN3OSX+fdxxzwafw+NvVSGcepujPhzTWVXI8nxVqPLzNKv2HslUCSh6bo
+ 4U/l1Rc95219OwzU85eI4vZ0teyNmub9rkMr73v0fdn+IjmSizNNkgKqk A==;
+X-CSE-ConnectionGUID: R2Sscq6dTPukvu9xIr7/Cg==
+X-CSE-MsgGUID: vcfcOemLR9CIxhTTUvHRDg==
+X-IronPort-AV: E=Sophos;i="6.13,219,1732575600"; d="scan'208";a="30291720"
+X-MGA-submission: =?us-ascii?q?MDH/PuE3+IHgGnkr/orbSoNEJwueGtca4u5Khm?=
+ =?us-ascii?q?RlVZtzg9z+EcdAiw7xYTC1EqR7IaE7W37oFP3y6ycpMSQ7YYIB4pVe4j?=
+ =?us-ascii?q?qFOYx0Hh4Y0mtsccZPA2Ux7z8z8M3ESxe/1/a4hUfKo5ercm87DH2YIC?=
+ =?us-ascii?q?VhG65rzzChP7SzqApHEFAn9g=3D=3D?=
+Received: from mail-db8eur05lp2110.outbound.protection.outlook.com (HELO
+ EUR05-DB8-obe.outbound.protection.outlook.com) ([104.47.17.110])
+ by smarthost4.eviden.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384;
+ 20 Jan 2025 18:41:47 +0100
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HHAkGSpQhmFaiTJ7coWpyj10s+lz6cSH6E1UvUM8PUh9lCFFZhCJaKMf6cgiK5RQfsELDj+J4aFMlfXa2eiHJPEoZhIH2Vixh00xvoAwWM4KGwWurfqRmQuTIzImGSrSe2YktmwcNImxO4qtb7hx/d7knALfes7S1L+dHtnbopp/BzbWUBnDba0yiCJnqt3gJIAZKxvb0ME5CNKbJBD2981IAtIarroRE6sYDqdUtokWqsVd8ktSAkaIgi0za8lOQRf6ruEmz9QfcMJqeIO5TwP+F86Gx8pul5f4eJ+MDZY+QdCheq2In8CdbPzx6vVpKMMpxXonzBfeAJTfucG6kw==
+ b=XYmyIqhJx9aysfVcikT+kkjd2M9qrOQ1UXMUVMe+e762t9DqqHIUFxCrjzsSRt6uxXlz6fN72QpIU17x+RA5cT4GgnWHxQZZuMsHV1qqbwgollao37Ex7cJKvjBbl8JH2OWsJcIJQQAiWlr14mD3+sTWr7/4dklDhsm0E21zFhciGXXTiu25RmyYAnzQ6YuJul+Hk3sN/RqI9U4TA3VhU7vqDyLz0iSKNS7luQHuoFVnO6ex1Z0K64JKBiDyu+2mxO1nTrltaSsqRb+Uyh71EYryxYRbK1XViHfK/j60jb4hqFCgngYgL2RBsjCkINqbpoRSQPP1JMwyALWDlUohjQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mxMhYZFYSn3X2ZShgsvqQ85rnjzav49VlNt0u4XhQeU=;
- b=Yspy+3GzYEawiS4rahghcijSoMTCClDxRt4WW1ZSxy1pmJj+hRlyrUjNxAOOgQwV8vDa1R7zJjw/LBOw7nme9FYCvP7OeJFMBse4NsJx+++LlcPhBee9yuIk7vNe9+KIO9Bq/OYhRdCCSBOhWWeTJKfgsm6d9WTBjR72hF2y9Hwa3FC/xNZQJ6njBrDEgViGbo7rZ/bi3TLeC089RqcH+B4twYUsY2txb1Gyw6Trhw6anrSAZx8ahaaca1XgLH5fKJCfYC/MRyo1585ktcZkmcwcvArVsXEWdVqPs7kUgmVGb4H8OvChsdxkFdBiYeX8k/p8bAHW3Ia2J9vnZZXdqg==
+ bh=yKQbMkjT4VGlff0Vr6hWS1E7CHdK47iwGetnD3ykSVs=;
+ b=PzvoMfFkG6sLUJREDyYfqdgQSPvWGqe3q7b4zdIzX9pD/tQQv56TqXM7jxxQ4XC5hQg790IDYDrGqx7betF308y0tZRcLXdH21QkiicJGXZeY1YmrTEDsVK5vaeiwoylX3Be7PvCNXjygpAtOHF4e4zBqzMq2dJT1W6gE75enqWVEoHrQVYDQOA8fvgp7U5qbma9ZDmqsMR16Do/qlGSgFBc7grYUXzDPysFkLeW+XFh7FeXngKV+4OxTAPJsqG16E0nXtWJAn48/r018klM2EDX8SZnDs4W5jT9Jm3B8aiOK9Kqz+cJJjRx0Zog0O4Pu5yrXIY/ILcYQcnuc+Ddsw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=eviden.com; dmarc=pass action=none header.from=eviden.com;
  dkim=pass header.d=eviden.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Eviden.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mxMhYZFYSn3X2ZShgsvqQ85rnjzav49VlNt0u4XhQeU=;
- b=e96Mp88oGbuYL31lRMInraFds+Ffd5xSDkHiTZmaqNiQGJ5Ivgv01AfmyMs9yt1c/W4ta0+bxVnF1zm6VsUXgG5A30H7Oz3Hd6VsFXab3LVn2/04ARvpr//5uiQlKrsb/mEskuHTNLWJMyYOFSsypoJYJ5j4UZlPaO9WV+OqaF4NwcZss1nF+Mqwz3jzi7QwOmiuVd/NNiWDDGstItmtid8GaTll/cdf78xWTTOW6VMWAQVbvIZ6O2bk4Q+uNHsZ8oS/eD2qtpVaMP+Wt/5Pv035unpkfgi83JLTZcQZNK80pqtdb7dl2UDnjalku7ipEDxR5sZkU6nfZ32pt3yAbg==
+ bh=yKQbMkjT4VGlff0Vr6hWS1E7CHdK47iwGetnD3ykSVs=;
+ b=dBsm7JIXfFn7g6xSCy8sALntW+m7TyuOWGVRXHZN4/72IWJlKfKbToqf7h9vfFOIJFbaULFzpj0++QQB+D36v1p4R/wXsmXiyO+SWfaCzOzAqQob0O3dj9/bwxcwhrCjHoy8Q6e6478f4dm4gCIQi5QdbeXGGvLJ3Zov/6m+1E6ywaZJM3kfOLVgk8xClIZ5NYc9VHriGf6sknqDEYQXUoBgvUUE/WScksgiBsH8LMNpeBj2QztQcTu0xTFSQCOGv+vAyo4A7dQAck3VBdy+HhQB8YnxTg4BUNp2s5zuVxlAVzlTcLdNvkz51TNbIgw1dGDfYyCssnEJ7af4sK3vLQ==
 Received: from AM8PR07MB7602.eurprd07.prod.outlook.com (2603:10a6:20b:24b::7)
  by DBBPR07MB7548.eurprd07.prod.outlook.com (2603:10a6:10:1eb::15)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.21; Mon, 20 Jan
- 2025 17:41:45 +0000
+ 2025 17:41:46 +0000
 Received: from AM8PR07MB7602.eurprd07.prod.outlook.com
  ([fe80::fbd7:ca71:b636:6f9d]) by AM8PR07MB7602.eurprd07.prod.outlook.com
  ([fe80::fbd7:ca71:b636:6f9d%5]) with mapi id 15.20.8356.020; Mon, 20 Jan 2025
- 17:41:45 +0000
+ 17:41:46 +0000
 From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
 To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
 CC: "jasowang@redhat.com" <jasowang@redhat.com>, "zhenzhong.duan@intel.com"
@@ -74,11 +74,12 @@ CC: "jasowang@redhat.com" <jasowang@redhat.com>, "zhenzhong.duan@intel.com"
  "mst@redhat.com" <mst@redhat.com>, "tjeznach@rivosinc.com"
  <tjeznach@rivosinc.com>, "minwoo.im@samsung.com" <minwoo.im@samsung.com>,
  CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
-Subject: [PATCH v2 07/19] pcie: Helper function to check if ATS is enabled
-Thread-Topic: [PATCH v2 07/19] pcie: Helper function to check if ATS is enabled
-Thread-Index: AQHba2KScjmpYxRe6UitchMA/gFjVA==
-Date: Mon, 20 Jan 2025 17:41:45 +0000
-Message-ID: <20250120174033.308518-8-clement.mathieu--drif@eviden.com>
+Subject: [PATCH v2 08/19] pci: Cache the bus mastering status in the device
+Thread-Topic: [PATCH v2 08/19] pci: Cache the bus mastering status in the
+ device
+Thread-Index: AQHba2KTcxDTuKZ/OEGVhSISWwoG/Q==
+Date: Mon, 20 Jan 2025 17:41:46 +0000
+Message-ID: <20250120174033.308518-9-clement.mathieu--drif@eviden.com>
 References: <20250120174033.308518-1-clement.mathieu--drif@eviden.com>
 In-Reply-To: <20250120174033.308518-1-clement.mathieu--drif@eviden.com>
 Accept-Language: en-GB, fr-FR, en-US
@@ -89,86 +90,86 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=eviden.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: AM8PR07MB7602:EE_|DBBPR07MB7548:EE_
-x-ms-office365-filtering-correlation-id: 7f362ab4-7987-48d6-42ee-08dd3979b56e
+x-ms-office365-filtering-correlation-id: 5f0f9445-41c6-4c63-d886-08dd3979b5f3
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
  ARA:13230040|1800799024|366016|7416014|376014|38070700018; 
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?wZL2E1p6PW/toeyns141XkWb6pu3HGrcokwC2mWhiWuVBk+cw3hGtTl8sf?=
- =?iso-8859-1?Q?B41sPpETHMlX3ltmmary0rKPjSimnox3tKTnoxDS7nfx6RSDl3DCi1NGeX?=
- =?iso-8859-1?Q?qjr69sPe2fDGawpS65w6nh3JOR+TcIVMFV7LoJeOg2Jzd5rAmzv9PuZuUr?=
- =?iso-8859-1?Q?3P/hyaJXd0v42lXuG6cqFSM/jIu6GcByDOmUbWktyjqHH1rzT/dFnas1YB?=
- =?iso-8859-1?Q?P78GMMjGP13fFBIZr3zrLJbHFhnhEhhk2sUR43wepIEtPvdmRZ0rpbhzJu?=
- =?iso-8859-1?Q?FA1mUUDov0L3y6W7l/rzitWlwjv4+QMsA6eHcKaZV8qnbFeATU8cPbyZt5?=
- =?iso-8859-1?Q?p8HIe1mOoHBhR2QMVPYVqzSit2UPqwM8DgUtIJradf+s0ATLXgzwbooYGs?=
- =?iso-8859-1?Q?x5PqKvtvvG67EPpwElsAtmoB3iudg28SCYT58eGCNndZ/Zp9N3Eba9cl1j?=
- =?iso-8859-1?Q?ZKsEWbR+r/j48saWQR5qUFaNQy9SBY9qzCxh1bnkF2ULjxjSubN/9xcZpS?=
- =?iso-8859-1?Q?qt0Kd552vXNyaROiHKyXgkCH9mWeRqY0v56f2qFLmxJdcV/hrdgmUiEXSz?=
- =?iso-8859-1?Q?H1ThcoGx6MlTyMOZf2N7Ptio2wdSqyfuU8ouF4JP1MS+xIg1sqv7wvXTj+?=
- =?iso-8859-1?Q?exlZLsO1mZhOveM3QXVqqkfMREdkzCylJJ+9MrfCx7PKaEl+anh8d3trIA?=
- =?iso-8859-1?Q?G87joq7cOGPn0u0R/9O0rIvKf9L2I4ZDQTwWtdy6j33mRHqVp9BJ0gyFXm?=
- =?iso-8859-1?Q?kDyezoF5GbVxB+LxVzvxvEBAC0GMwNfIinDXRucxFvH5jKstwhx/Yk8+YL?=
- =?iso-8859-1?Q?pqFES7R9dkpNjtw4+lF3zGNZvAWr4eY2yk9fpGK3QY+zHqqtVC3xYBY1mU?=
- =?iso-8859-1?Q?tGbsJyghdQDSfr1PI0XZnyDZQt2P+bXffY9WSl6ePKaiUoNt5a3rhz1hR9?=
- =?iso-8859-1?Q?iBUgs73XvmE5is6pj3dqWv1Bd8jOM/QsxJqcRLzrv8Ye8VGyi/PXpMLrZg?=
- =?iso-8859-1?Q?jDmj0pemX40M6RPOotxMXAhh/18hXArWomfwcOriAMIRKrDhytMjsTbCDN?=
- =?iso-8859-1?Q?X//BaBK/v4pW/pnIRB9BITSaw08XI1J88Ouj+ZkAL4SQOguPRAOGGPARtR?=
- =?iso-8859-1?Q?trIPCShXbnD3lWqfVkaTs3FyaeESbeof6hIcceeao2a7dTZVN/6dpf55RY?=
- =?iso-8859-1?Q?lDW9iXtvH7fiMkVzlkjfDUHx56QprJJW6WZd6FdCErWQ1lzO8RQEuAuHmt?=
- =?iso-8859-1?Q?1haY0JwYqQCFiLfr45+U+crfBnO/LvPBFu7qqou2UYPvKxbWftz8Aroq3d?=
- =?iso-8859-1?Q?cybW4Drg3gnaRCC+voMs4DWbTaGX7DrJUOZu4DNapKzo2DG5RQWl54+LWt?=
- =?iso-8859-1?Q?qEXV+eQgXIjm15xlWWxG4BEeduhOgAH6zcvUjMx5J9pvug0cQtY6b6SipY?=
- =?iso-8859-1?Q?YozPEqnULOnX7710JKC3TQzmRY2GyPUTck0Rm8qRTJtTHOulsb63olgVEX?=
- =?iso-8859-1?Q?VvHK99OpWKuzxMt0s5eOmH?=
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?K039ILat+ZTw9aoUctqZj9cHwEX1jzXoImGCfbUL4otz4j8jehXk1RsdwF?=
+ =?iso-8859-1?Q?jOwdiK1aXFxr8h1x/EDGXAqzGeoefFJ4bJr59qkXTjB3NWOlOVkaPrQO97?=
+ =?iso-8859-1?Q?+t/Gdx533ReGoiykgnAFdfhNY14IldViu+YRSf+vDsuMMY+oENwtfh6k5H?=
+ =?iso-8859-1?Q?9bzqWi07ggyejA/Ce8+dO7unBOZYOjWc6FjVOv6YQE77ousyyqzUvQxmxY?=
+ =?iso-8859-1?Q?XQcLonTfR3IdpxbkQRHH2S/HZ/6UEHZclsEtKlkq1pDzEACfAj3JurLAM6?=
+ =?iso-8859-1?Q?NhMfLoy3Eg9A3NIjA5/CU9r7VQFPRO6txrAKgH41bG0/w9vMZ8BEDNOGv3?=
+ =?iso-8859-1?Q?PMt4UighgG3K0unJPgKWXd0Vt2BmbLEkgfmxISDLVdf/fI/Te7MqWqMU1S?=
+ =?iso-8859-1?Q?atIJ7z3q4rBmUy3IP5/6SUx43OwCkR7Yl4X+BOxIBMgGvCxU49+RNwQTN0?=
+ =?iso-8859-1?Q?HHNFOiB8yJzsFn3yEX/xxFUV370BHsYrWopHovvMebeEdWQok4lo/G8Fjs?=
+ =?iso-8859-1?Q?sSP3F9uOdVix0arZJzwG7JryIp6am4IaMPGn9VhziHnMgjPM0e+HH+mesh?=
+ =?iso-8859-1?Q?+WQHGlZJwv3Ut5QsIX43I1uPgAzZIpBabQkRFJzrvieo+NtEPOQg4CHzq3?=
+ =?iso-8859-1?Q?th+mUACNtEKq8Ys7N6+ubFwHfdsjBQIm46fHs4dXdJ6K0B1hs1DYxoTSXz?=
+ =?iso-8859-1?Q?o3owIpZysECvh2DPCAIZ14VqeLgt5/NZFIPF9sj9lSThZhOG+n6Dy9wfu8?=
+ =?iso-8859-1?Q?zt7uvnKaA0e8Xs2Y3VLG6wk5OTZGw8bsMxIliDcJrd8GTQ7S6GYcLg7wd9?=
+ =?iso-8859-1?Q?evXZVHcCIUrvgfxUu77KdsJUdbV4kMvHzxAC6qeKNMFFAthBkMnzvN+Gy5?=
+ =?iso-8859-1?Q?dofJfI1WR3FIfsPA2cDGs9ckcf8l1T5W0HbvB+fpndduwZYsFFW0DhwR1s?=
+ =?iso-8859-1?Q?t7ihTYUNQdHpX3Rm08jYOQtaW0/ek+OeiT2s2/nzB82qoaL24D4JbHw+EZ?=
+ =?iso-8859-1?Q?CrZBVGTWro+AbkuPe6YYjKDeAZM16V43g8UXBcRiRHbrRWNpiPlgApYkJR?=
+ =?iso-8859-1?Q?5MDcxJWWRj8ohkI+0pHmgtZN+r1peJXwvJJUT+X78Nrghj6Otncln3AdJE?=
+ =?iso-8859-1?Q?wmY6Xreji1WFv0GFJVDX8EGEZJntufdwXOwAw2npFlwRlvjvt69pi/qiR9?=
+ =?iso-8859-1?Q?/sI4Q8cplHcNMmDpOSXE0pIYfFAqZZ3ZLtscNVowycGn8aBSahylcHYE4D?=
+ =?iso-8859-1?Q?s0D9/QvQMqcZ/FZddrn/HPkZwbUCIQLuH7D0LVuV1UO+3xBEY/bjao+r3u?=
+ =?iso-8859-1?Q?jjIsnHfr8QhfmY6i6CFF01tz+wgtA1RG5M47jN2+YGD61TSB5fTAZNL9IS?=
+ =?iso-8859-1?Q?5cUo+e4qq/tAhzUhbLK8kKYj76bGsOiKrAZqw7t5c/o0JKEznuhiu22Gil?=
+ =?iso-8859-1?Q?JmHj2IpoqdAUYSTZeQOC+A9C/Edp/kKZmza+syNnVLVSnIzgWXFNnD090d?=
+ =?iso-8859-1?Q?Oev4hHX0/xG+z4L5ktVzjT?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:AM8PR07MB7602.eurprd07.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700018); DIR:OUT;
  SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?BIkAFxVpv9EjB9+k28B0Io9peKTJiH8JuVEoJLzjk/HmSgRV/MfBXifTXv?=
- =?iso-8859-1?Q?wIvVmoP2svzZntCDCeb9ijuWQ5ep+lsEhY+vjFxq1s55rUwKtX6bBhJzSn?=
- =?iso-8859-1?Q?q7Y/6gS86cOG1vZhXp9DXu0ZkDMU5Vkiis9dcvTfAz/xgh+km58AFewL+a?=
- =?iso-8859-1?Q?ogu0D5mTetzdX8+zqGY1XsGfKvbNI87tfCXe0QVp9kOpH08BXW7CbGTgSt?=
- =?iso-8859-1?Q?0lLCjfePSGZEGi23n78aStkALvwsfrwsNyyuLB+O1Ua3mZOHj3JxuCSjBe?=
- =?iso-8859-1?Q?HIQpkCORhwXs+TynjctwUKF5Jgugf9Pyh15/y96FtMuUmKmLYwQ+q708bS?=
- =?iso-8859-1?Q?gxXyKx/BMxvOP0UYKPBoX9KW9cG+8MgKUxnpDUqlE5HMd1JYVRxezI5s4F?=
- =?iso-8859-1?Q?yeleShbf+cs2a4VAoz1BvDvaPJhOPs9DxShJ144zPS96uA0JsCCFhfCO1R?=
- =?iso-8859-1?Q?9zyKvHDCvlx7poq3UqNIumiCoKgHGArDd+umm/2C9W4wYxQQaQ+mJEP3oc?=
- =?iso-8859-1?Q?5Ke8crQx24WyHEvpUbhoRonPPipfjjXds9ZX9oUn/Buxdy0AxEaD6DUpt6?=
- =?iso-8859-1?Q?Q7DjS9k/QrE6D3rGW9VnbRaM8S0KMldYj+W2sXFC3drIdt/sglmAVo/i+O?=
- =?iso-8859-1?Q?Q3+sgBnRdPkiAzgM1wUHt+3g7fY6L+EYoJvtxfKAkxI/vaRVP8JmAQzo0z?=
- =?iso-8859-1?Q?kX2J0Y6BKVsx/s0Z3PvkjAhvFGOtrryGTJoa82zh/WlPgCci2DqZPMpvoI?=
- =?iso-8859-1?Q?jBTqG/LVxyr64n46z7le7CnjJJLk7AtcuoQfP4ui6uupStQaH5VAjL48bA?=
- =?iso-8859-1?Q?EYjtaDVk+9sK6mvEYbpJxAAeRH5a93d7v7kUlF79Ag3znXRRVMN54HfvOE?=
- =?iso-8859-1?Q?AtFkM82vbl12wjUwcj2vUKhqT9du1dG2oLWEQBn6v/lZZZjNn0DavhoMa5?=
- =?iso-8859-1?Q?DH6U4WDrRr0N9TMcQgHrlBQR8ZxaxN5eKQvlYcReIE+1zehzly3NlFw33t?=
- =?iso-8859-1?Q?QnhhcjnmuoFK2Y5oubfBwBk3Pu9YvRjWk4uTecHe3TGTcL+Ye3jn5vXa/+?=
- =?iso-8859-1?Q?X7+2m8AelwpwLsltLr7FKBIHfe/vmkbeIU2IIqo1tF9ifv98XxpoAZR9E4?=
- =?iso-8859-1?Q?PxXSI6ArS1zj4Kocf1VfbCZfuK5doo/+O05iCt8J9S5i+RH3ye+tC4981X?=
- =?iso-8859-1?Q?OVKdz2VZ4OKyVWEND4OGhgKeCun4O7HVMYeN8XM6zpw3yF4VogdLrirNY+?=
- =?iso-8859-1?Q?pZKOcgROajgZEFq1zIYuYC2KbevqQLgsEAwCvwpXJ2v92uhpunLliFrTdM?=
- =?iso-8859-1?Q?j9ncY1dXLyXDhA2ahLNKo/khTvXHWIUCJgUxWAP7qNGoCLv+8c+zgRYefj?=
- =?iso-8859-1?Q?e2au3gUGvKFDWTti7fVUjv4sw80T+Ba+H5IX2ZSBd+WMs7HrQ1MDq1oiaP?=
- =?iso-8859-1?Q?hJkOpXLxWUsdq1CFXvYmYMdN0f4IwYcrX04uZJ7LGBxqX9OgdKAdT0UpQg?=
- =?iso-8859-1?Q?usNsN2lx/dl4UvHvyM96S5t2FlbYq2AB1ahltsTxi7KbvG915tVktQzk1R?=
- =?iso-8859-1?Q?kaNCBepX6R/3rxtYuJoUAxQnymB24Gfw0f2I4aHIvnqGbY22baITeVx1Mm?=
- =?iso-8859-1?Q?TODfR0JqRJ+wp2iG3UgYcLNpe5mHzpP8K+bAdk1ppV2WBlvOb8kHkNytLZ?=
- =?iso-8859-1?Q?w6rN8+2As4WQkgS88AE=3D?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?domHKLbMdylHvTYUYym0qxOX5gBbcI6lMV64n6QyelmbpdQdEM762TOaNr?=
+ =?iso-8859-1?Q?0vOyVV2OpgvcMTqwvE7AdSjCQANxWJwTCNC3u/ooJCBctSzicVqbgeBfJA?=
+ =?iso-8859-1?Q?iTbSOR+9LjBomzPaZVknxD5Q/irHOUgU6jQLog68kqE7rpU0xR/5WCmUTU?=
+ =?iso-8859-1?Q?6a/Mqz0igrAZQBpp9j0l3UK8Lm4XI1Pe1jgOcOhftT2mdhy0jW5zFgugsm?=
+ =?iso-8859-1?Q?wRigQL8iWXmOg30stu4G/UYAVO3z841iZ87/grdJXQNxgkqdi4JBssQCym?=
+ =?iso-8859-1?Q?yN2RxXrHNjWkMXki+LnVy5rXxkR79r112Zan/U3L/ujGKcOpy/wpzldQsr?=
+ =?iso-8859-1?Q?NcY+c+dAjjMkB/J+KEKrL+umlwzE/Pmr50OBGCt/+r2wSpW7bOnPewrFuB?=
+ =?iso-8859-1?Q?cecHNk9Cziv6TGycHxkCSfxvNm+QNfQkBv2pncbru5nO4JdPjwWGjJDXuA?=
+ =?iso-8859-1?Q?/BIjLbfi6pE8yR0vK9Ba3d/ruqc37dGl9Qqo/eEvRS9yIaVVOdSmYq9hkJ?=
+ =?iso-8859-1?Q?YHGPZpPIL4c0doPZS06dD+Fa4J379RrCGkphgNLqgyWk1KqTs4dLV1vlks?=
+ =?iso-8859-1?Q?pZA0qGuaf+6IjiDbn5S/7wCJK7wInUgmWaA5liMWeVEpbhiuVfG06SkzNL?=
+ =?iso-8859-1?Q?QNkKITW6jrefcfEeKBhKSKLq+/LvBGQLI3aaRf769wGquTF8B43KTc7YSS?=
+ =?iso-8859-1?Q?6edDWRo8+KlX955V+xrVAdljQFQbq+nmpnKEP//u7eOqeSmGrnLQWfFgjN?=
+ =?iso-8859-1?Q?D2u+amvs5IeZ31ygdTNTS6yR1QcMVQ0DRUNHyWOjRU95BfnMkUss4SjvRm?=
+ =?iso-8859-1?Q?j6yighzz7GLLDNscRxo0v2ZXnttCVHWJ1WvNJic82w+VHmZS84RqWhzDOs?=
+ =?iso-8859-1?Q?tPqUN8gSAZcSc6v8ZuXoNlf0CMRNCsU54k2hyrxj07bg/tB0QNjFPyEmZz?=
+ =?iso-8859-1?Q?hhfN04dG8D7m5qy6V/tgxREnJLGXwLfAshKXL4uqCbMjTUHQnljNfqrKt/?=
+ =?iso-8859-1?Q?rpnYDkEwXe6W6kb+NCdA4NgvJf2ltVIqJiw4KC3/yT69FRtcpYJ6cKczEa?=
+ =?iso-8859-1?Q?0UwjHJrNuEJjk7GWociUIdHQCbqtw+IPxwu/fMinzD5BGHRiIwYYSEuxaz?=
+ =?iso-8859-1?Q?EkNiQZ+56uoOkYskFYQq9pzztK+0qbF/uduwgqpCTlMFA3rl9KUC3wbO78?=
+ =?iso-8859-1?Q?eoEBbFGQvRNAVZzzXlk5HW7aTliohZ3eOm1EzYAAg3SJh/x/H73P+qgjWj?=
+ =?iso-8859-1?Q?SGUhPCOUDS0GNczagcpLSm/UzzEbuW1vc0cAHQbR2x+WHtpqLl9A3QQMyJ?=
+ =?iso-8859-1?Q?CH10UN7QZyOmdSf/y7W4VMnJydbpNUn9KnbOxe/Eoqk2fxqWAzOJRYUFfG?=
+ =?iso-8859-1?Q?TJV9pqFVKzfmjNym1FAxKbtRHNrcovrV9/GTt3BTjabrFWNBoNPFyKOV3v?=
+ =?iso-8859-1?Q?IxTNWkpYo1JgYypSxsNFP0p2nUlAEXsmIvuE99f2TALCHxj9JugDoVqMAZ?=
+ =?iso-8859-1?Q?+IvxVWym0gwxI2xy4CrMabfjfk6q2xOmjnMYSKL9OOlAWDjYikoZj2Y0W3?=
+ =?iso-8859-1?Q?4K90313BbX+xQaqR9ZgwnVOLNm2499g01Fu1H+hdAR28YQ9v+XhpVrsyZ6?=
+ =?iso-8859-1?Q?O0bRAGOT78fs9oRLG88Ry4vKKTmCzKLU9z/JMko9nFta0cHiToZVwHjdwF?=
+ =?iso-8859-1?Q?Frb1wZFRdN/iwl2vZs0=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: eviden.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: AM8PR07MB7602.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7f362ab4-7987-48d6-42ee-08dd3979b56e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jan 2025 17:41:45.3872 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5f0f9445-41c6-4c63-d886-08dd3979b5f3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jan 2025 17:41:46.2467 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 7d1c7785-2d8a-437d-b842-1ed5d8fbe00a
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 1cOlyrk9CRxFuMZe8svV552c45S/x363IcvywTVsZESa9WA6DbfipQuPoAfOW8NiIX+KK0dVMjRafPbtt4FT41wQR19S5r9YdMg4JC3dFJlFNx5YA8cRx/oGCO1/5pB/
+X-MS-Exchange-CrossTenant-userprincipalname: iAJHuvmc9kw3cdW/Nl8VBa2Ef3y6K8N93fWfWspXhgJzAriQceZAnM/iEMGihYuZTOgkPmRRW2Y2yFRqeGDQNhfWhhuB1vXxHHz3iW3jcwwtfvLgxR6705ksToxSx5LP
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR07MB7548
-Received-SPF: pass client-ip=80.78.11.84;
- envelope-from=clement.mathieu--drif@eviden.com; helo=smarthost3.eviden.com
+Received-SPF: pass client-ip=80.78.11.85;
+ envelope-from=clement.mathieu--drif@eviden.com; helo=smarthost4.eviden.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -193,45 +194,95 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
 
-ats_enabled checks whether the capability is
-present or not. If so, we read the configuration space to get
-the status of the feature (enabled or not).
+The cached is_master value is necessary to know if a device is
+allowed to issue ATS requests or not.
+This behavior is implemented in an upcoming patch.
 
 Signed-off-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
 ---
- hw/pci/pcie.c         | 9 +++++++++
- include/hw/pci/pcie.h | 1 +
- 2 files changed, 10 insertions(+)
+ hw/pci/pci.c                | 25 +++++++++++++++----------
+ include/hw/pci/pci_device.h |  1 +
+ 2 files changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-index 8186d64234..3b8fd6f33c 100644
---- a/hw/pci/pcie.c
-+++ b/hw/pci/pcie.c
-@@ -1247,3 +1247,12 @@ bool pcie_pasid_enabled(const PCIDevice *dev)
-     return (pci_get_word(dev->config + dev->exp.pasid_cap + PCI_PASID_CTRL=
-) &
-                 PCI_PASID_CTRL_ENABLE) !=3D 0;
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 2afa423925..164bb22e05 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -134,6 +134,12 @@ static GSequence *pci_acpi_index_list(void)
+     return used_acpi_index_list;
  }
-+
-+bool pcie_ats_enabled(const PCIDevice *dev)
-+{
-+    if (!pci_is_express(dev) || !dev->exp.ats_cap) {
-+        return false;
-+    }
-+    return (pci_get_word(dev->config + dev->exp.ats_cap + PCI_ATS_CTRL) &
-+                PCI_ATS_CTRL_ENABLE) !=3D 0;
-+}
-diff --git a/include/hw/pci/pcie.h b/include/hw/pci/pcie.h
-index 63604ccc6e..7e7b8baa6e 100644
---- a/include/hw/pci/pcie.h
-+++ b/include/hw/pci/pcie.h
-@@ -158,4 +158,5 @@ void pcie_pasid_init(PCIDevice *dev, uint16_t offset, u=
-int8_t pasid_width,
-                      bool exec_perm, bool priv_mod);
 =20
- bool pcie_pasid_enabled(const PCIDevice *dev);
-+bool pcie_ats_enabled(const PCIDevice *dev);
- #endif /* QEMU_PCIE_H */
++static void pci_set_master(PCIDevice *d, bool enable)
++{
++    memory_region_set_enabled(&d->bus_master_enable_region, enable);
++    d->is_master =3D enable; /* cache the status */
++}
++
+ static void pci_init_bus_master(PCIDevice *pci_dev)
+ {
+     AddressSpace *dma_as =3D pci_device_iommu_address_space(pci_dev);
+@@ -141,7 +147,7 @@ static void pci_init_bus_master(PCIDevice *pci_dev)
+     memory_region_init_alias(&pci_dev->bus_master_enable_region,
+                              OBJECT(pci_dev), "bus master",
+                              dma_as->root, 0, memory_region_size(dma_as->r=
+oot));
+-    memory_region_set_enabled(&pci_dev->bus_master_enable_region, false);
++    pci_set_master(pci_dev, false);
+     memory_region_add_subregion(&pci_dev->bus_master_container_region, 0,
+                                 &pci_dev->bus_master_enable_region);
+ }
+@@ -727,9 +733,8 @@ static int get_pci_config_device(QEMUFile *f, void *pv,=
+ size_t size,
+         pci_bridge_update_mappings(PCI_BRIDGE(s));
+     }
+=20
+-    memory_region_set_enabled(&s->bus_master_enable_region,
+-                              pci_get_word(s->config + PCI_COMMAND)
+-                              & PCI_COMMAND_MASTER);
++    pci_set_master(s, pci_get_word(s->config + PCI_COMMAND)
++                      & PCI_COMMAND_MASTER);
+=20
+     g_free(config);
+     return 0;
+@@ -1684,9 +1689,10 @@ void pci_default_write_config(PCIDevice *d, uint32_t=
+ addr, uint32_t val_in, int
+=20
+     if (ranges_overlap(addr, l, PCI_COMMAND, 2)) {
+         pci_update_irq_disabled(d, was_irq_disabled);
+-        memory_region_set_enabled(&d->bus_master_enable_region,
+-                                  (pci_get_word(d->config + PCI_COMMAND)
+-                                   & PCI_COMMAND_MASTER) && d->enabled);
++        pci_set_master(d,
++                       (pci_get_word(d->config + PCI_COMMAND) &
++                        PCI_COMMAND_MASTER) &&
++                           d->enabled);
+     }
+=20
+     msi_write_config(d, addr, val_in, l);
+@@ -2974,9 +2980,8 @@ void pci_set_enabled(PCIDevice *d, bool state)
+=20
+     d->enabled =3D state;
+     pci_update_mappings(d);
+-    memory_region_set_enabled(&d->bus_master_enable_region,
+-                              (pci_get_word(d->config + PCI_COMMAND)
+-                               & PCI_COMMAND_MASTER) && d->enabled);
++    pci_set_master(d, (pci_get_word(d->config + PCI_COMMAND)
++                      & PCI_COMMAND_MASTER) && d->enabled);
+     if (!d->enabled) {
+         pci_device_reset(d);
+     }
+diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
+index add208edfa..40606baa5d 100644
+--- a/include/hw/pci/pci_device.h
++++ b/include/hw/pci/pci_device.h
+@@ -88,6 +88,7 @@ struct PCIDevice {
+     char name[64];
+     PCIIORegion io_regions[PCI_NUM_REGIONS];
+     AddressSpace bus_master_as;
++    bool is_master;
+     MemoryRegion bus_master_container_region;
+     MemoryRegion bus_master_enable_region;
+=20
 --=20
 2.47.1
 
