@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3908FA173E9
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 22:04:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A79EA173E2
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 22:03:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZyur-0001xU-Tu; Mon, 20 Jan 2025 16:02:37 -0500
+	id 1tZyuv-00022H-J5; Mon, 20 Jan 2025 16:02:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tZyua-0001cK-96
- for qemu-devel@nongnu.org; Mon, 20 Jan 2025 16:02:22 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ id 1tZyuY-0001bJ-3T
+ for qemu-devel@nongnu.org; Mon, 20 Jan 2025 16:02:19 -0500
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tZyuW-0002wD-Mv
- for qemu-devel@nongnu.org; Mon, 20 Jan 2025 16:02:19 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-5d9f0a6adb4so9995931a12.1
- for <qemu-devel@nongnu.org>; Mon, 20 Jan 2025 13:02:16 -0800 (PST)
+ id 1tZyuW-0002w7-Dr
+ for qemu-devel@nongnu.org; Mon, 20 Jan 2025 16:02:17 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-aaf0f1adef8so951730366b.3
+ for <qemu-devel@nongnu.org>; Mon, 20 Jan 2025 13:02:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737406935; x=1738011735; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737406934; x=1738011734; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oWOWHYCR1Up3N6CQ+zs5ErSlqDqJEtYq0Ac6711jAJE=;
- b=wyWpY3rR9KQYuZUnINPqXmPOQGY2NENLUIlrlJOERruEY2NDcXDuYEWawxhq2pknKm
- DR4TAXIhGhR0BPaEA/LQYr9YnCJEuuV00wU43b85igpxMATgIrGluj0O9FVs7DUX70av
- S7knR0ay/zteYiyIgXBoSBjdJhLPiIFs9f2GemJsjhfgiH+HMqTKO7ZM3aAjsQkj17f1
- 3EBwNigUbJZTwljXekud3mRHc8ttm9auq8287BkXULacy5TrymCetjH6hT5sA2EHLNb2
- scNODD6SWpOqNrZLppuZkiM0p9r2aU3b9pImSmOhSSiQ9G7aGFNjjFL/9a79zE/LVk8Y
- r9Rw==
+ bh=+48eX+l7U8ZWofmz36TBzUOPc9ZUOZwyExE6gyBI1a0=;
+ b=oMAXsNttBz86KeIZqg4mdPZTxKBCULiJAzjqtR92Gsro2nqC8PKb0gu+oGeemwdsYa
+ 6+RkeuZwxDnrj/re5umy3t24Grq4mV3+4YqVWJLom5WjutXmOppNMu1eQdEBsx7j4Qwr
+ NzYmycvMoPSIHVpIUr8CZ8EX52kN3QLQGssv6B1NV3qEqnb1xj6DqvEJnXAbs+aZwAyO
+ +9WCvfD3IHjtec6vToAIRQQQ9CqwXg2dnrBcTSnGDi9Ygpv7Rjxlf9EmkFtftDQp6qh5
+ lfJxE2qpYhHAceMc5o9Bvby36eBGrGMkdm+t8UcuBeFlEdsp+i8nuVmowAQapw/xGCqI
+ qGPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737406935; x=1738011735;
+ d=1e100.net; s=20230601; t=1737406934; x=1738011734;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oWOWHYCR1Up3N6CQ+zs5ErSlqDqJEtYq0Ac6711jAJE=;
- b=q9nEN/1SCIwp2D/MI7Jw7js5hzhbnKpHLQY0qCjFhPQCWGud3epX6v1ZXlASc42Ac1
- Vpw/Y1rHvUmwXmhk3vBk1NC+g3lYuk3h+rbGPMAKCCenf2pMSNQ16bWdjrKltf+hnGfz
- B64fobKE8W/0WPKju2WMVfTYGvQ9P93VJpkAWD5ZZB/zYc9CkprCk7Gow2RUavV81eEt
- VDvKu2LpqdS4JHWP6mNdrvnXyl4UZULpUdktgjTuhxNdi7RKDupZSRPagSb1DNJI9C2H
- kT6GhPGjjVYDw8fEARR4EahyUwdMIZGW3DLxdNv4T2NJL2DKxNXMq/MIes8OQ6fR6887
- VXfA==
-X-Gm-Message-State: AOJu0YzFRKC616+rM+0eP4Xx1cp0lKUw3ymEpNkqy1c3ey6IQ19hTtOL
- EIkALX3T/m2Nmd6OV+Zm4tfI1sTM5HQe+CMAv3y4d3TiMTbKLFnmKhZqskIlZNpgQS6E9bMFBY9
- AKho=
-X-Gm-Gg: ASbGnctKmoBgkm1J4NZEGMqSFKxYpG8525afZ2jsbcxCAjIy5IksExb3BCldu/3LLKX
- 1J5yRby15KlRRn9gDJGvYEdS/7/CcpLrXTu87WBViB7MznvnnvStMq987LgPi0QkBMmhQ1ZpOvF
- yT3H7CPAXk9Oa6B6EK3/3o5hmmrMlGzdXYiqIoqD/5UUbllzZLok0aKEkAnwbvRrJJrz26by9L7
- aZnJUmkGmxujS7i5B6C4W50sT3T3NSDerGGftj4/Gqlgvbvqg58t8LKjMX13jn7BFrK
-X-Google-Smtp-Source: AGHT+IErDS/5Wt7zJKLNVZ6e9Jeu/zsDBi4d6zj/1XSL66rmmb4TsVnqSJn6Wkx+5YLipE7odzfXkg==
-X-Received: by 2002:a05:6402:5194:b0:5d4:3105:c929 with SMTP id
- 4fb4d7f45d1cf-5db7db07853mr14025988a12.23.1737406934983; 
+ bh=+48eX+l7U8ZWofmz36TBzUOPc9ZUOZwyExE6gyBI1a0=;
+ b=sNkngisJeeM4E9ZTJm8RqI7/CNgdhqzhZTZOJIF1RZ1dKp0KtRF3g8NTnL7tDzYGCp
+ MeOyWhDDGJNfp5pPciJJiZomXgkBE9860Om6eTKfiU/qw0fiI/stDSde9VQe5xCveKnG
+ n6qnakpiYHHxznHzg5YRIqgmNp/59sAnGVWYnSmHzHJPRRXT+GEZihLtXQub1vJsk6TW
+ EpFkEaEt9BH2bM9IR3DkM8wbEyQs2VlY/AT3tcRnLn1ADVzQFanXTPQd39eIovepWCNl
+ JzfhpmUTO5QH1PIsIUInLdpvWPLcGZYzuijUunvS8ZAhMePHIVJtoneGbhc4HF147iLA
+ Ug9g==
+X-Gm-Message-State: AOJu0YxHIP5Cb2iIXfjnPA9f3NvHBAla6oc3qwPHCYa92Ri/hhE83Hvg
+ P2kBIInXEHjSZWx0GdyUjT3QOxQ94hgThIpO0cV+uDtPr9yrCtwjQ//Cc/rNMTM=
+X-Gm-Gg: ASbGncuAY7H3+pqJsgNnSAYHwOuD5KMPQDaWpWbah1g1VT1zwS+chWYvmNuL9zibBhJ
+ 7AMJfLZTkPHh2IInrIYRgoy8iL1FOxmMXdY9DdpydlRsz6RvROEUFndSNif1Jh2WMrYeX3NjKTg
+ nifIFOpwnhgxp2NtMtVL6uTFJhl3g43mf0XLNUptYeI1tmyQKRey6o8PoiVXnaAxqJSMQkB9vj1
+ Rj0cGlkkrUXXvldaz9HtmSCkrcGh4yd5Zpz421Hib+S+uG9X1jXjk45e858Gt0JyNRu
+X-Google-Smtp-Source: AGHT+IETxmPf336ELEiXbW5XHVlzHnbDegLldjJi9NvriPfHvvRvL3Fw/A8nHshtkWoMZkw/+TdxMg==
+X-Received: by 2002:a17:907:3e0b:b0:aa6:94c0:f753 with SMTP id
+ a640c23a62f3a-ab38b17b9e0mr1068680966b.33.1737406934320; 
  Mon, 20 Jan 2025 13:02:14 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5db73edbaffsm6178874a12.66.2025.01.20.13.02.13
+ a640c23a62f3a-ab384c5c3e1sm660622466b.7.2025.01.20.13.02.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 20 Jan 2025 13:02:14 -0800 (PST)
+ Mon, 20 Jan 2025 13:02:13 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 11BFD5F9D8;
+ by draig.lan (Postfix) with ESMTP id 246155F9DA;
  Mon, 20 Jan 2025 21:02:13 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, qemu-arm@nongnu.org, Thomas Huth <thuth@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
  Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 2/7] tests/qtest: don't attempt to clock_step while waiting
- for virtio ISR
-Date: Mon, 20 Jan 2025 21:02:07 +0000
-Message-Id: <20250120210212.3890255-3-alex.bennee@linaro.org>
+Subject: [PATCH 3/7] tests/qtest: don't step clock at start of npcm7xx
+ periodic IRQ test
+Date: Mon, 20 Jan 2025 21:02:08 +0000
+Message-Id: <20250120210212.3890255-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250120210212.3890255-1-alex.bennee@linaro.org>
 References: <20250120210212.3890255-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,56 +104,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This replicates the changes from 92cb8f8bf6 (tests/qtest: remove
-clock_steps from virtio tests) as there are no timers in the virtio
-code. We still busy wait and timeout though.
+Until there are timers enabled the semantics of clock_step_next() will
+fail. Since d524441a36 (system/qtest: properly feedback results of
+clock_[step|set]) we will signal a FAIL if time doesn't advance.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/qtest/libqos/virtio-pci-modern.c | 6 ++----
- tests/qtest/libqos/virtio-pci.c        | 6 ++----
- 2 files changed, 4 insertions(+), 8 deletions(-)
+ tests/qtest/npcm7xx_timer-test.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tests/qtest/libqos/virtio-pci-modern.c b/tests/qtest/libqos/virtio-pci-modern.c
-index 18d118866f..f6e3e32891 100644
---- a/tests/qtest/libqos/virtio-pci-modern.c
-+++ b/tests/qtest/libqos/virtio-pci-modern.c
-@@ -173,13 +173,11 @@ static bool get_config_isr_status(QVirtioDevice *d)
+diff --git a/tests/qtest/npcm7xx_timer-test.c b/tests/qtest/npcm7xx_timer-test.c
+index 58f58c2f71..43711049ca 100644
+--- a/tests/qtest/npcm7xx_timer-test.c
++++ b/tests/qtest/npcm7xx_timer-test.c
+@@ -465,7 +465,6 @@ static void test_periodic_interrupt(gconstpointer test_data)
+     int i;
  
- static void wait_config_isr_status(QVirtioDevice *d, gint64 timeout_us)
- {
--    QVirtioPCIDevice *dev = container_of(d, QVirtioPCIDevice, vdev);
-     gint64 start_time = g_get_monotonic_time();
+     tim_reset(td);
+-    clock_step_next();
  
--    do {
-+    while (!get_config_isr_status(d)) {
-         g_assert(g_get_monotonic_time() - start_time <= timeout_us);
--        qtest_clock_step(dev->pdev->bus->qts, 100);
--    } while (!get_config_isr_status(d));
-+    } 
- }
- 
- static void queue_select(QVirtioDevice *d, uint16_t index)
-diff --git a/tests/qtest/libqos/virtio-pci.c b/tests/qtest/libqos/virtio-pci.c
-index 485b8f6b7e..002bf8b8c2 100644
---- a/tests/qtest/libqos/virtio-pci.c
-+++ b/tests/qtest/libqos/virtio-pci.c
-@@ -171,13 +171,11 @@ static bool qvirtio_pci_get_config_isr_status(QVirtioDevice *d)
- static void qvirtio_pci_wait_config_isr_status(QVirtioDevice *d,
-                                                gint64 timeout_us)
- {
--    QVirtioPCIDevice *dev = container_of(d, QVirtioPCIDevice, vdev);
-     gint64 start_time = g_get_monotonic_time();
- 
--    do {
-+    while (!qvirtio_pci_get_config_isr_status(d)) {
-         g_assert(g_get_monotonic_time() - start_time <= timeout_us);
--        qtest_clock_step(dev->pdev->bus->qts, 100);
--    } while (!qvirtio_pci_get_config_isr_status(d));
-+    }
- }
- 
- static void qvirtio_pci_queue_select(QVirtioDevice *d, uint16_t index)
+     tim_write_ticr(td, count);
+     tim_write_tcsr(td, CEN | IE | MODE_PERIODIC | PRESCALE(ps));
 -- 
 2.39.5
 
