@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44573A173A4
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 21:39:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B6FCA173B6
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 21:42:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZyXJ-0003uB-LZ; Mon, 20 Jan 2025 15:38:17 -0500
+	id 1tZyXQ-0003xN-Cd; Mon, 20 Jan 2025 15:38:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tZyXD-0003sm-Tx; Mon, 20 Jan 2025 15:38:12 -0500
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ id 1tZyXH-0003uV-Kx; Mon, 20 Jan 2025 15:38:16 -0500
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tZyXC-0002Vr-9T; Mon, 20 Jan 2025 15:38:11 -0500
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-5d3e6f6cf69so8015936a12.1; 
- Mon, 20 Jan 2025 12:38:09 -0800 (PST)
+ id 1tZyXE-0002WE-LR; Mon, 20 Jan 2025 15:38:15 -0500
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-5d4e2aa7ea9so9081892a12.2; 
+ Mon, 20 Jan 2025 12:38:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737405488; x=1738010288; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1737405489; x=1738010289; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dk4yhPHq4YZzlaSH8EBkC5hExkhjEj2J5c93kzLklPM=;
- b=RD12raj99Y62rEEQ2JBKF4poEdxktmnUmqScm346a7ybqE97N6hSGMyZuQAuwkJ8eC
- 9f6JAmkTnSuUJOYukWECDZ85gZCVvQqpM6FepYX7bXG6o4ENejsGrYy9Wry5TfWXYo8m
- eKpadZsMniJgyOy7hHzQW8cBYvL+Sv5tdHKiAccgUtdZxtyQzMGmp/Dy7QVAytidLzuf
- 9b3H3/wIw9J0KOzODsV0v00HumvU5yDWJFDn/yZWBdmPUYSyKaqfKOSX/wX+zTDP6/F0
- fzt+3IX6sc5kLZu9r8jDbEtvmFrKDT4+hEUlDBrJSonUcUudlx9defe2YPXyr4T3CYRx
- Y5Aw==
+ bh=cA7O5qdyy7L6qxlGQzv6WrxKBhqdYSGnpUIYYsZuZEA=;
+ b=IiKDVONbHydYLUmHFsEg0K+mByGzKSUVyNpJ6juIEm2XgIX7JcztHt/u3+mlq3CYdr
+ lPQf5GZzCpEwIDy1tOjPyGNqDfOWS8vVlIGi8X5WDyaZEIRwJ0T/VunqiTkskfTFtF72
+ bM7adtCuf2J0a6qACyxyqT9Qq7sm04b/55VcXGutMwF2FW3D5RNIU7L165BAiqhyTMdA
+ Wio/SXaNhBTF4YHBD9XjhMbjC2S1XFcxnEvHxUDb8UUSrQKVcjUoAsy86cLm2G2rBrM7
+ EX4upDtAPrqn+fdr4wQjN+M242WHOiskfd2zHI4WI6f5dbz5aHG2lgpjaURvnZ2GGdiL
+ sCEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737405488; x=1738010288;
+ d=1e100.net; s=20230601; t=1737405489; x=1738010289;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dk4yhPHq4YZzlaSH8EBkC5hExkhjEj2J5c93kzLklPM=;
- b=AA9tGxM9KaHqkEMB8cDXts7FGNdUpirVnkL/lQvBymSD2iORjwSEb5BP8nXsmxNJiW
- F6ZSP/S90wd3JZuu+icx8f3wEfRp6bMVD74+EvMptLzGzY5pDREWVGHOfMPSi8wXYImA
- An7s7jqr6xQf0KdQyIoc8+SZbMA9qfqn5x9K4mAH8I0ibyngS33WWLz6dBIyYpZ3cn7H
- EskMvF84HWLCWuYkthhGtLZK+Tey/BeAU3N1USEYL/xbltMMMA2lLVer4ltj7yt8P94u
- 1lZB/vdQTBn/geW4Tn3G/5ojdlWngd8r+O40cldiiFLKX0FpeWrGZs1sybXyORDDL24i
- soBA==
+ bh=cA7O5qdyy7L6qxlGQzv6WrxKBhqdYSGnpUIYYsZuZEA=;
+ b=vrCtDSQP4DgGJ3alTRYfINPfVuinSjBg5YnuZvPBciyfjy0fUekjT2maR0/gE+buw7
+ +QZiIkawUiIMUiYoiBlOgvN87u0o5GN7VOz6XWSqsZntE4vKhRUyk2UBk2sooVRqjaW3
+ K3FSFdhRliBhYOaSyV4UTGVgkQG1F1iKL57aWmcoWFzOpN92AT9C13Opo0xKFYhfBAFG
+ qVdh/H9FI0RIFY+SwlTynzDEbRPB5wdbAzsVJy1qt3iFGFs76//Mh0/S2BUb14Djz8Ha
+ l9C+kuef5u1G5rUVG6ruqhCdPH4GxDXValQaOpKcOa8341E5cJUl77WhXV2XM+q8flZv
+ pu4w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUPBZTK1bx5WRVNElKnNr9zohejRFSeMehIMfjBGLYHJLVmSFCszG2Gem3crMhsvn2OedKRYAieBA==@nongnu.org
-X-Gm-Message-State: AOJu0Yz3pEnJstCfdkXMF7ZeUkZdlgBpa7gTagv7/8XaXccfuM6+Vmqk
- wNibmo3fY2aSB3hbLxm4zm6pOEUNWwnmf0/s6KDFxMvtCoSFW2jh+TGQQ1xc
-X-Gm-Gg: ASbGncsk2IpCf+/J7CNLpHyK8Ic30+8kDGuiJSWw3x6LK3Eud5icrTiq89NcXuq3lsU
- wLY1uhE/GU9U6knBXrTyv6vJav9yVKSDqT/jzhPGU5qJKx6NN6qKiqGFeqajBSiZ9rxWErOEfTh
- FECYhFP5SjM+V053HR7wHpHbV7qgCC+VgSVHtKfEK8IW5Ce7G/jSzksQEuWoJ6rD+ZrnSLPw8im
- XScoXbRjrhI7+WltSqAhxcXs1Kc7uY6YSiITEKFC38dBwG2eQCC89NK3s0NTd6YJwcdkK4Tnki2
- Ni7s3yayWdONTeCZyidaazbCydT//ZEiXR6bjb33PFQTGRdWxdluMHwpeLd2
-X-Google-Smtp-Source: AGHT+IHhiQYeFJ6VQA0kAN/0J/2S4mOroe2htqBZ2UeQb8pXMziYVYO8KMEKcc+kUNJ4bH0vvvwDeQ==
-X-Received: by 2002:a05:6402:50cb:b0:5d3:e45d:ba91 with SMTP id
- 4fb4d7f45d1cf-5db7db12ccfmr13918379a12.32.1737405487849; 
- Mon, 20 Jan 2025 12:38:07 -0800 (PST)
+ AJvYcCX5cg+yrH/NTLzbud2Uzx2mF8q0Z7M0ZK/PcAk8LSKvx0rPF7ef33GhwDm+AG1qIfZgQ2Qix+YXvA==@nongnu.org
+X-Gm-Message-State: AOJu0YykfsywK2m3Fjp8XrG3iyC9zKxwfmWxp1cuklf9/tkx3nOsYhy3
+ v+h6dG0CZhaEfaKHffxHY+1TogTRUi8mtSU9OjyX7zyjuO7K9/4GR2w+uQqZ
+X-Gm-Gg: ASbGncuqqpGvtpIgvQjgm1EzNy2mVYRpwkKzUvQTp/4jtec9BgGZ2CUWizgsJntVsK3
+ 93svnVGGyRKaTgK7GDKvppbD3TCTaMQlKzFykvkpT5MvKytFbgqzAdg5PLJgt2AHY/y99Qq/z2I
+ HFbCYCd6VQoNkf4vq8kfISPDi9Ymnzd9ZuWPaAau8W3hW7RqCAbJeZOBHgtaJymwU9NE8CdxTTP
+ oUoArpcqRYpGZMegvTcMFV+QRTPfUDdd0g0tSAGevLYUFNCtDzIlOdHpKdPzPr+xzd+N4mOCyr2
+ IygZZGHONfUzVzQoR7cvaS0b7JPOT2mVl3CCHBlgMakxHB8zi5BhpfkyOnVh
+X-Google-Smtp-Source: AGHT+IHVAZz3usPw3rIBQt9CGVAZR/z4v5/ADPox0JUqqfcx0UbcS+xUQguJF8W6V5kqfbQ+BHsaPg==
+X-Received: by 2002:a05:6402:2812:b0:5cf:bcaf:98ec with SMTP id
+ 4fb4d7f45d1cf-5db7db077b0mr12968293a12.26.1737405488981; 
+ Mon, 20 Jan 2025 12:38:08 -0800 (PST)
 Received: from Provence.localdomain
  (dynamic-077-183-181-102.77.183.pool.telefonica.de. [77.183.181.102])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5db7364258csm6021077a12.1.2025.01.20.12.38.06
+ 4fb4d7f45d1cf-5db7364258csm6021077a12.1.2025.01.20.12.38.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 20 Jan 2025 12:38:07 -0800 (PST)
+ Mon, 20 Jan 2025 12:38:08 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -72,16 +72,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Andrey Smirnov <andrew.smirnov@gmail.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 07/21] hw/arm/fsl-imx8mp: Add SNVS
-Date: Mon, 20 Jan 2025 21:37:34 +0100
-Message-ID: <20250120203748.4687-8-shentey@gmail.com>
+Subject: [PATCH 08/21] hw/arm/fsl-imx8mp: Add USDHC storage controllers
+Date: Mon, 20 Jan 2025 21:37:35 +0100
+Message-ID: <20250120203748.4687-9-shentey@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250120203748.4687-1-shentey@gmail.com>
 References: <20250120203748.4687-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,84 +104,223 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SNVS contains an RTC which allows Linux to deal correctly with time. This is
-particularly useful when handling persistent storage which will be done in the
-next patch.
+The USDHC emulation allows for running real-world images such as those generated
+by Buildroot. Convert the board documentation accordingly instead of running a
+Linux kernel with ephemeral storage.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- docs/system/arm/imx8mp-evk.rst |  1 +
- include/hw/arm/fsl-imx8mp.h    |  2 ++
- hw/arm/fsl-imx8mp.c            | 10 ++++++++++
- 3 files changed, 13 insertions(+)
+ docs/system/arm/imx8mp-evk.rst | 39 +++++++++++++++++++++++-----------
+ include/hw/arm/fsl-imx8mp.h    |  7 ++++++
+ hw/arm/fsl-imx8mp.c            | 28 ++++++++++++++++++++++++
+ hw/arm/imx8mp-evk.c            | 18 ++++++++++++++++
+ hw/arm/Kconfig                 |  1 +
+ 5 files changed, 81 insertions(+), 12 deletions(-)
 
 diff --git a/docs/system/arm/imx8mp-evk.rst b/docs/system/arm/imx8mp-evk.rst
-index 3de4a73530..d7d08cc198 100644
+index d7d08cc198..1514bc5864 100644
 --- a/docs/system/arm/imx8mp-evk.rst
 +++ b/docs/system/arm/imx8mp-evk.rst
 @@ -13,6 +13,7 @@ The ``imx8mp-evk`` machine implements the following devices:
   * Up to 4 Cortex-A53 Cores
   * Generic Interrupt Controller (GICv3)
   * 4 UARTs
-+ * Secure Non-Volatile Storage (SNVS) including an RTC
++ * 3 USDHC Storage Controllers
+  * Secure Non-Volatile Storage (SNVS) including an RTC
   * Clock Tree
  
- Boot options
+@@ -25,25 +26,39 @@ for loading a Linux kernel.
+ Direct Linux Kernel Boot
+ ''''''''''''''''''''''''
+ 
+-Linux mainline v6.12 release is tested at the time of writing. To build a Linux
+-mainline kernel that can be booted by the ``imx8mp-evk`` machine, simply
+-configure the kernel using the defconfig configuration:
++Probably the easiest way to get started with a whole Linux system on the machine
++is to generate an image with Buildroot. Version 2024.11.1 is tested at the time
++of writing and involves three steps. First run the following command in the
++toplevel directory of the Buildroot source tree:
+ 
+ .. code-block:: bash
+ 
+-  $ export ARCH=arm64
+-  $ export CROSS_COMPILE=aarch64-linux-gnu-
+-  $ make defconfig
++  $ make freescale_imx8mpevk_defconfig
+   $ make
+ 
+-To boot the newly built Linux kernel in QEMU with the ``imx8mp-evk`` machine,
+-run:
++Once finished successfully there is an ``output/image`` subfolder. Navigate into
++it and resize the SD card image to a power of two:
++
++.. code-block:: bash
++
++  $ qemu-img resize sdcard.img 256M
++
++Finally, the device tree needs to be patched with the following commands which
++will remove the ``cpu-idle-states`` properties from CPU nodes:
++
++.. code-block:: bash
++
++  $ dtc imx8mp-evk.dtb | sed '/cpu-idle-states/d' > imx8mp-evk-patched.dts
++  $ dtc imx8mp-evk-patched.dts -o imx8mp-evk-patched.dtb
++
++Now that everything is prepared the newly built image can be run in the QEMU
++``imx8mp-evk`` machine:
+ 
+ .. code-block:: bash
+ 
+   $ qemu-system-aarch64 -M imx8mp-evk -smp 4 -m 3G \
+       -display none -serial null -serial stdio \
+-      -kernel arch/arm64/boot/Image \
+-      -dtb arch/arm64/boot/dts/freescale/imx8mp-evk.dtb \
+-      -initrd /path/to/rootfs.ext4 \
+-      -append "root=/dev/ram"
++      -kernel Image \
++      -dtb imx8mp-evk-patched.dtb \
++      -append "root=/dev/mmcblk2p2" \
++      -drive file=sdcard.img,if=sd,bus=2,format=raw,id=mmcblk2
 diff --git a/include/hw/arm/fsl-imx8mp.h b/include/hw/arm/fsl-imx8mp.h
-index 979cdbd8c4..9d2a757c2a 100644
+index 9d2a757c2a..9832c05e8c 100644
 --- a/include/hw/arm/fsl-imx8mp.h
 +++ b/include/hw/arm/fsl-imx8mp.h
-@@ -12,6 +12,7 @@
- #include "cpu.h"
- #include "hw/char/imx_serial.h"
+@@ -14,6 +14,7 @@
  #include "hw/intc/arm_gicv3_common.h"
-+#include "hw/misc/imx7_snvs.h"
+ #include "hw/misc/imx7_snvs.h"
  #include "hw/misc/imx8mp_ccm.h"
++#include "hw/sd/sdhci.h"
  #include "qom/object.h"
  #include "qemu/units.h"
-@@ -35,6 +36,7 @@ struct FslImx8mpState {
-     GICv3State         gic;
-     IMX8MPCCMState     ccm;
-     IMX8MPAnalogState  analog;
-+    IMX7SNVSState      snvs;
-     IMXSerialState     uart[FSL_IMX8MP_NUM_UARTS];
+ 
+@@ -27,6 +28,7 @@ enum FslImx8mpConfiguration {
+     FSL_IMX8MP_NUM_CPUS         = 4,
+     FSL_IMX8MP_NUM_IRQS         = 160,
+     FSL_IMX8MP_NUM_UARTS        = 4,
++    FSL_IMX8MP_NUM_USDHCS       = 3,
  };
  
+ struct FslImx8mpState {
+@@ -38,6 +40,7 @@ struct FslImx8mpState {
+     IMX8MPAnalogState  analog;
+     IMX7SNVSState      snvs;
+     IMXSerialState     uart[FSL_IMX8MP_NUM_UARTS];
++    SDHCIState         usdhc[FSL_IMX8MP_NUM_USDHCS];
+ };
+ 
+ enum FslImx8mpMemoryRegions {
+@@ -183,6 +186,10 @@ enum FslImx8mpMemoryRegions {
+ };
+ 
+ enum FslImx8mpIrqs {
++    FSL_IMX8MP_USDHC1_IRQ   = 22,
++    FSL_IMX8MP_USDHC2_IRQ   = 23,
++    FSL_IMX8MP_USDHC3_IRQ   = 24,
++
+     FSL_IMX8MP_UART1_IRQ    = 26,
+     FSL_IMX8MP_UART2_IRQ    = 27,
+     FSL_IMX8MP_UART3_IRQ    = 28,
 diff --git a/hw/arm/fsl-imx8mp.c b/hw/arm/fsl-imx8mp.c
-index 311b8ee0cd..0abde2b1fc 100644
+index 0abde2b1fc..612ea7bf93 100644
 --- a/hw/arm/fsl-imx8mp.c
 +++ b/hw/arm/fsl-imx8mp.c
-@@ -204,6 +204,8 @@ static void fsl_imx8mp_init(Object *obj)
- 
-     object_initialize_child(obj, "analog", &s->analog, TYPE_IMX8MP_ANALOG);
- 
-+    object_initialize_child(obj, "snvs", &s->snvs, TYPE_IMX7_SNVS);
-+
-     for (i = 0; i < FSL_IMX8MP_NUM_UARTS; i++) {
+@@ -210,6 +210,11 @@ static void fsl_imx8mp_init(Object *obj)
          snprintf(name, NAME_SIZE, "uart%d", i + 1);
          object_initialize_child(obj, name, &s->uart[i], TYPE_IMX_SERIAL);
-@@ -348,6 +350,13 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
+     }
++
++    for (i = 0; i < FSL_IMX8MP_NUM_USDHCS; i++) {
++        snprintf(name, NAME_SIZE, "usdhc%d", i + 1);
++        object_initialize_child(obj, name, &s->usdhc[i], TYPE_IMX_USDHC);
++    }
+ }
+ 
+ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
+@@ -350,6 +355,28 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
                             qdev_get_gpio_in(gicdev, serial_table[i].irq));
      }
  
-+    /* SNVS */
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->snvs), errp)) {
-+        return;
-+    }
-+    sysbus_mmio_map(SYS_BUS_DEVICE(&s->snvs), 0,
-+                    fsl_imx8mp_memmap[FSL_IMX8MP_SNVS_HP].addr);
++    /* USDHCs */
++    for (i = 0; i < FSL_IMX8MP_NUM_USDHCS; i++) {
++        static const struct {
++            hwaddr addr;
++            unsigned int irq;
++        } usdhc_table[FSL_IMX8MP_NUM_USDHCS] = {
++            { fsl_imx8mp_memmap[FSL_IMX8MP_USDHC1].addr, FSL_IMX8MP_USDHC1_IRQ },
++            { fsl_imx8mp_memmap[FSL_IMX8MP_USDHC2].addr, FSL_IMX8MP_USDHC2_IRQ },
++            { fsl_imx8mp_memmap[FSL_IMX8MP_USDHC3].addr, FSL_IMX8MP_USDHC3_IRQ },
++        };
 +
-     /* Unimplemented devices */
-     for (i = 0; i < ARRAY_SIZE(fsl_imx8mp_memmap); i++) {
-         switch (i) {
-@@ -356,6 +365,7 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
-         case FSL_IMX8MP_GIC_DIST:
-         case FSL_IMX8MP_GIC_REDIST:
++        object_property_set_uint(OBJECT(&s->usdhc[i]), "vendor",
++                                 SDHCI_VENDOR_IMX, &error_abort);
++        if (!sysbus_realize(SYS_BUS_DEVICE(&s->usdhc[i]), errp)) {
++            return;
++        }
++
++        sysbus_mmio_map(SYS_BUS_DEVICE(&s->usdhc[i]), 0, usdhc_table[i].addr);
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->usdhc[i]), 0,
++                           qdev_get_gpio_in(gicdev, usdhc_table[i].irq));
++    }
++
+     /* SNVS */
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->snvs), errp)) {
+         return;
+@@ -367,6 +394,7 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
          case FSL_IMX8MP_RAM:
-+        case FSL_IMX8MP_SNVS_HP:
+         case FSL_IMX8MP_SNVS_HP:
          case FSL_IMX8MP_UART1 ... FSL_IMX8MP_UART4:
++        case FSL_IMX8MP_USDHC1 ... FSL_IMX8MP_USDHC3:
              /* device implemented and treated above */
              break;
+ 
+diff --git a/hw/arm/imx8mp-evk.c b/hw/arm/imx8mp-evk.c
+index 2756d4c21c..27d9e9e8ee 100644
+--- a/hw/arm/imx8mp-evk.c
++++ b/hw/arm/imx8mp-evk.c
+@@ -11,6 +11,7 @@
+ #include "hw/arm/boot.h"
+ #include "hw/arm/fsl-imx8mp.h"
+ #include "hw/boards.h"
++#include "hw/qdev-properties.h"
+ #include "system/qtest.h"
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
+@@ -40,6 +41,23 @@ static void imx8mp_evk_init(MachineState *machine)
+     memory_region_add_subregion(get_system_memory(), FSL_IMX8MP_RAM_START,
+                                 machine->ram);
+ 
++    for (int i = 0; i < FSL_IMX8MP_NUM_USDHCS; i++) {
++        BusState *bus;
++        DeviceState *carddev;
++        BlockBackend *blk;
++        DriveInfo *di = drive_get(IF_SD, i, 0);
++
++        if (!di) {
++            continue;
++        }
++
++        blk = blk_by_legacy_dinfo(di);
++        bus = qdev_get_child_bus(DEVICE(&s->usdhc[i]), "sd-bus");
++        carddev = qdev_new(TYPE_SD_CARD);
++        qdev_prop_set_drive_err(carddev, "drive", blk, &error_fatal);
++        qdev_realize_and_unref(carddev, bus, &error_fatal);
++    }
++
+     if (!qtest_enabled()) {
+         arm_load_kernel(&s->cpu[0], machine, &boot_info);
+     }
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index adb4ed8076..f880c03d35 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -582,6 +582,7 @@ config FSL_IMX8MP
+     imply TEST_DEVICES
+     select ARM_GIC
+     select IMX
++    select SDHCI
+     select UNIMP
+ 
+ config FSL_IMX8MP_EVK
 -- 
 2.48.1
 
