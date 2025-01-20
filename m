@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42DB6A17478
+	by mail.lfdr.de (Postfix) with ESMTPS id 266D2A17476
 	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 23:00:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZzo2-0006zr-60; Mon, 20 Jan 2025 16:59:38 -0500
+	id 1tZznv-0006t1-5B; Mon, 20 Jan 2025 16:59:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Huibo.Wang@amd.com>)
- id 1tZzRw-0002Dg-Bl
- for qemu-devel@nongnu.org; Mon, 20 Jan 2025 16:36:52 -0500
-Received: from mail-mw2nam10on2049.outbound.protection.outlook.com
- ([40.107.94.49] helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ id 1tZzNP-0005LL-PO
+ for qemu-devel@nongnu.org; Mon, 20 Jan 2025 16:32:09 -0500
+Received: from mail-dm6nam12on20620.outbound.protection.outlook.com
+ ([2a01:111:f403:2417::620]
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Huibo.Wang@amd.com>)
- id 1tZzRt-0002PY-MD
- for qemu-devel@nongnu.org; Mon, 20 Jan 2025 16:36:48 -0500
+ id 1tZzNM-0000Ae-7p
+ for qemu-devel@nongnu.org; Mon, 20 Jan 2025 16:32:06 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nwH9GfUmLD07YcvKtBdUkWNw3wXLUVtcTkM/KZ+PLcyr0MZPv8zRYCbBITK1luPHMtd8vThoFvXUhby4i+hjjCFO+qx16ADcx40qv+E8VgVFlvd29M1dNp2wSAyOJnqiWx9/hZGH7Z79cTWhLh80jj4Xz/GM3VXOAeRkVcBRmjKhH7iPAkDOvPLqUYB2ERle4TtWLZNX17UPkMOwZ6Pv0XjUfHQtuCHUXN/pXU/6ciPH2bmWX/IYnzhgforTBUNdWCg29Svp3xo7JcgjOKQ8HYZZeoDZ/1uc7iB7xdM+zUaqCZUCu25YCq1zoLbHaolji/pAL6M1qz5/uRk/QaXyxA==
+ b=p44sw0Fr8/3oF9AZONjOYM/SZfMNijA2zvdM3UE5Lkl2tPj9kAJrHZeWwIHRhPGrH10nO+jeS1jtdl1CxPviZGCvjKZZegjICPxyP6EajEe+dz1kwTF4oX0iaKsQvmqxafzBLgu5Mxa/hgEYah/22KzWsKeLs2ZaM4Eut3dKD7jyjFaL4iw3oapYoPP8OsAdod/j2mYtI6qjFaW97mJDI5vf4AQg5v6MplmqRVzhNIDDl/zbr1xEej2ZHgAJRBPC6A0JYs8uHXiLHGWkWP5qf9jSN5yqLnFriTH0wdZRvlYdAIlsio4jejawVK2XjQG9d0xSefDBd9jsSdSp4lJYVw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nkN0kETK4FYLVdivoNDUGZ0u0viRnxS05EHhYVLgfgg=;
- b=lzhYHrw0L3X1OCHaAPItVrhaY74qEV1sIifN2U36Fjm+a4aABuzCzUSGXYVXE/pWum9LkVGf2T/zluXMJHuL7bjB3NY0s+8fYkGPjvzIlvWGPclivTpD7q3fhS2+pDyfw4ju5v7G1wMBuLfCVU6JF2MZF8PTyLkl70bk/iFseUdOwqXlcmvP4iSXGO9aKEqt7ZeLID91wUKE5Z7zOdj72hOQ8p3L/I3bvyImiEon8XTJ6YOeKkp+qFuDmAcPKrHUqyXZj7JSnU5ky8c2QwMQ3GiXz9e5pbvDrfvRTInjB1RODG2kuYu2h+RsxlpfSIvuGqu6po58vFEo+6Nnj1NNdQ==
+ bh=j2l8yRSZ0y9gIqCPFqo4uHuFSQMFdEflfSEpPyuuGtA=;
+ b=Tc0yLzu0WZN9PbXaYNhnXSibAfNXpGCpOpXGmrWkHO8+UDz3qfy404d/+zTavLU5UczBRa3wyNdbrcjHgwTuVo+9XwqqaI74yAAoruK+B9lpATVz3qZWofkVzrS2DWAUz8UT4AqJHvf/mXhd5sx2Aa/1LIVCK019O5/VaZUzYhAzPtrVSGskgoDRGBk4qd+NjfbGjm6e9bhiUYZLnYomRno/T30HwbXcgPlD5wEJ0gQmsQUrTEG4PGIpx94U3yAMlgGmh+x1OW4ZYd9XKOd94RYbDsYepte+ZXPktNSU71vnkPAtYck2cjL28CU9JVNRmFzUWOt/aFd9MmuDmh2jyQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nkN0kETK4FYLVdivoNDUGZ0u0viRnxS05EHhYVLgfgg=;
- b=cal6AACjzDBFhm0famxreEXhn1Q3X1UWoIkZb83xo/9DMMmafhRmaetUn2xTpfsptkWEAWxSteGWlTwBFXEOoT+zk5nxWBl+bDnPpxKVGEM6l9tQpGXjJpVS/ph42F7twesr//s+U96yWn9ht6TdvH1/XaTxmmmescgFSJFe0QI=
-Received: from MN2PR20CA0007.namprd20.prod.outlook.com (2603:10b6:208:e8::20)
- by PH7PR12MB6812.namprd12.prod.outlook.com (2603:10b6:510:1b6::15)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.14; Mon, 20 Jan
- 2025 21:31:34 +0000
-Received: from BN1PEPF0000467F.namprd03.prod.outlook.com
- (2603:10b6:208:e8:cafe::ba) by MN2PR20CA0007.outlook.office365.com
- (2603:10b6:208:e8::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8335.17 via Frontend Transport; Mon,
- 20 Jan 2025 21:31:34 +0000
+ bh=j2l8yRSZ0y9gIqCPFqo4uHuFSQMFdEflfSEpPyuuGtA=;
+ b=sydIUPLuOVy9eLX6WTpgPpc3TYTCBaTWbDGAESmBTkhxmnrRJFUNPheEL2y194OYrjZ+quc7AIzrBYlmUZzh9v6yrKqBxpgP8HbNGKiof+Zutq+18g45VgwS3r21u/0u5KZYGya9VpVoDQegFTomhonZJIpNsAucpP8iaX9ifCk=
+Received: from LV3P220CA0006.NAMP220.PROD.OUTLOOK.COM (2603:10b6:408:234::9)
+ by SJ0PR12MB8114.namprd12.prod.outlook.com (2603:10b6:a03:4e8::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.21; Mon, 20 Jan
+ 2025 21:31:58 +0000
+Received: from BN1PEPF00004681.namprd03.prod.outlook.com
+ (2603:10b6:408:234:cafe::7a) by LV3P220CA0006.outlook.office365.com
+ (2603:10b6:408:234::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.22 via Frontend Transport; Mon,
+ 20 Jan 2025 21:31:57 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -51,94 +52,88 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN1PEPF0000467F.mail.protection.outlook.com (10.167.243.84) with Microsoft
+ BN1PEPF00004681.mail.protection.outlook.com (10.167.243.87) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8377.8 via Frontend Transport; Mon, 20 Jan 2025 21:31:34 +0000
+ 15.20.8377.8 via Frontend Transport; Mon, 20 Jan 2025 21:31:57 +0000
 Received: from ruby-9130host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 20 Jan
- 2025 15:31:33 -0600
+ 2025 15:31:56 -0600
 From: Melody Wang <huibo.wang@amd.com>
 To: <qemu-devel@nongnu.org>
 CC: Tom Lendacky <thomas.lendacky@amd.com>, Paolo Bonzini
  <pbonzini@redhat.com>, <eduardo@habkost.net>, <berrange@redhat.com>,
  <armbru@redhat.com>, <pankaj.gupta@amd.com>, <jroedel@suse.com>,
  <michael.roth@amd.com>, Melody Wang <huibo.wang@amd.com>
-Subject: [RFC PATCH v2 0/3] SEV-SNP: Add support for SNP certificate fetching
-Date: Mon, 20 Jan 2025 21:31:13 +0000
-Message-ID: <20250120213116.521519-1-huibo.wang@amd.com>
+Subject: [RFC PATCH v2 1/3] linux-headers: Update for 6.12 and SNP certificate
+ support
+Date: Mon, 20 Jan 2025 21:31:14 +0000
+Message-ID: <20250120213116.521519-2-huibo.wang@amd.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250120213116.521519-1-huibo.wang@amd.com>
+References: <20250120213116.521519-1-huibo.wang@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.180.168.240]
 X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF0000467F:EE_|PH7PR12MB6812:EE_
-X-MS-Office365-Filtering-Correlation-Id: ce745378-d46c-432c-05a1-08dd3999d05a
+X-MS-TrafficTypeDiagnostic: BN1PEPF00004681:EE_|SJ0PR12MB8114:EE_
+X-MS-Office365-Filtering-Correlation-Id: db9a1247-6779-4968-dd5e-08dd3999de32
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|82310400026|1800799024|376014; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?YnJhcGFJU0Q4SlEyYzNCTzkrckJRbTlCZm5sQzBWdEtZenVmOUxzdVU4bVlX?=
- =?utf-8?B?ZHFabWF4RGNNQXJ4RHhKaXlIUnM3L0NTWEd4TzVKa1F4eEoxQzlMRWdGeEpX?=
- =?utf-8?B?bWFMbzdzdHMyNjRmVFExWlNTWEpTV1ZCWWJQOUFWYm10aVNtc0Y3eXNYTFdS?=
- =?utf-8?B?NVZMRG1BK2ZVaU0yU1g5dStuWUpueUxiUW1OWktFdGRhaFdvSm1CNWZZVjJl?=
- =?utf-8?B?UTEyeHl0UGRBT1BWem5uckFYdE1oVStOanU0YlR4aXZFeXFiMndXVEJSeTRD?=
- =?utf-8?B?MUdLaDYwOWxYN2pXRy9hR1l6ejd0bFBrZmdyTFl2YmkwUW1VUVZNZU1udzln?=
- =?utf-8?B?UlRDdlFYMTM3dHV2V3BPSmk4YkVOZUQ4YXlmbWlTaFdnWXJ1dkhyZ1JMK1VD?=
- =?utf-8?B?VTVEVk9HdnlacUJIUmpmd2hSbS8yckZYM2l6K1VHKzk3OUJrQjIyeWk3U1Bn?=
- =?utf-8?B?K1FUQjR5T1dRN2JNdUxJSFFnSitqY0FkOHlIMWltWFVyTXhuTGJjTllHM1pQ?=
- =?utf-8?B?RHdaMDZSTFJNdjgxMWVUY1h1RUFXZGU5dndDMWd6Q2dzRWNndHVOaE9SNk81?=
- =?utf-8?B?ZWJhQzFobitOdm9CeWFYN1dCTXEzN0pWeHJ6d2tNenVHbWJBZ3VZWEFJZ2o5?=
- =?utf-8?B?T1B3THFld3A3YWlBaWFUQmxCa0RCRlhvNXg4MmNZUmUzVHJ5dHNMeDM4cnhL?=
- =?utf-8?B?c210bk5IQzZpblhDc3hENDBMbWxNcnkxUTYyaVpXRHhBYTJRcHAvaTVZTnhk?=
- =?utf-8?B?Wi90NjJJaXFmelJIM09UN00wWmFTNkE3cWlmSDZLbG1EQ0ZINmNydFRCYXZ6?=
- =?utf-8?B?czNiNTRtSURkS05rOTIzQU9pK1Z2MUx4UGhiQThFNFRvb0R0V3VxaHNoS1Zr?=
- =?utf-8?B?dGlCdldYb2xMVzNEdXV3dFNNK0NoTWxURzNadDdFemZHRHNUQ09aVTBndFUz?=
- =?utf-8?B?dnBrOHVFSWNRZHJoYjJQN0t0NnVqRUQ4VzB5aHF3QlBybkZHS1Ftelh1eEhC?=
- =?utf-8?B?Q1U1K2h5RXVlUzYyaytXU2pnTW01VUx4R0NtQ2tmVER6OWN3c2xhM0VYeCtM?=
- =?utf-8?B?cmMvdjJoRDZIQk5UNlk5dFhxZm43QlF6UWdLVlIwZHNHM1BSd0hySXFtVVdy?=
- =?utf-8?B?a3Z0bFJMVmE4MDJZdVhzWmczK3MwM0QxY2cyZ2FOb2FobEp4aDRLOTVQdW1P?=
- =?utf-8?B?T1liaUVVcWhvTUN1SFlnN0FYVS9EVXk2ejJrYlYzVGVzU3ZJUWZCdjBraUlE?=
- =?utf-8?B?bkJyV3dNVnpBZTdGK1JrNEdJbWNnRy9iTklReXVPSjdiUjFOZ1BId1VTMWhi?=
- =?utf-8?B?VDJuLzJIcjltN3o2MElTM3BRdVNOWTBJamJ0RDlqcm1OUWoxVXVEblhpVDNx?=
- =?utf-8?B?ZjY5SldBemYrM3hiazZ6SGhmaXZFUHI5akYzc003a0VhaWlpUERsMGljTWxm?=
- =?utf-8?B?S1VUMytTSjhGcUUzbEp1dHRTSXNUUlFkbnJBK2hmd1llSEF5YkxVNjVNTThj?=
- =?utf-8?B?QlVETFllMTVCYU56YVFYcGY0NFZIMlI5RklXUWxsZXRtZ25maWxPRitGR041?=
- =?utf-8?B?ZVV1alBKMEZmZk9STGpFOGRuZzZyY002N3ZkOTdWNWIwajRmbDFmTkZPaS9C?=
- =?utf-8?B?WU8zaUFOUTlFRVlsZ1ZNZ0hkeFp1M1hyRVNQQ044NjMwaWJrSHh3akY0TTQ5?=
- =?utf-8?B?QVJnSGtaNXZsU3FZWjJCb3ZNdklsMTdsZ2g5ejNzQ00yNFQwWXNmK2pyM2V1?=
- =?utf-8?B?U2N1d3gvaVRRMXJ2RVBGcjVpc1BOSDJCVUxHMDQwNDkzYmtBd2VNMFJ1bFp4?=
- =?utf-8?B?eDlDSHZobWVxaHZkWmtlOGhocUhKWUpsTndXLzNHV2tUUjZCWWlNS1NtSW9E?=
- =?utf-8?B?K283QjdXZWpGb3o3UExxUkU1bHZuMzJnMU8rdk5UN2RKRVMySmxlYXZUMFJV?=
- =?utf-8?Q?QSWf8vc6j4FMCGMu+JzHMpZUzLfrjmHp?=
+ ARA:13230040|36860700013|376014|82310400026|1800799024; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?J8Zk6+1bysTUJZiajneDEStF3SNubGfXY9a9909u4gZvtza/Qkwty2ZaR9vD?=
+ =?us-ascii?Q?4LV1MRNEIih15zm5nGea36ecgCe5Zuoo0z4UCSazYjO7J6fhaoP7c2bILEPV?=
+ =?us-ascii?Q?UWZBEcyyc8ITTej8T/0q2Y6GpRiB4jeCpWCX3kYkdBpFVE6fdDQ9HWGqmvSY?=
+ =?us-ascii?Q?lD3W0l1yXCwnPlNkU6BtcXJmd+AviTV4dYwKW+2g4TzCL2QDsQXU3wnH3OzZ?=
+ =?us-ascii?Q?UPnvzbeksmDtcykZYhddb0aMX5DCwU0TZnxBwhZM2UXg9LYiUl8QKOvW7YmL?=
+ =?us-ascii?Q?5FLFA0U12HYZUZS6jjVzb1ziJjfTwAC5/wtrfjsbWvkGZjVwe01M85Yy3Tn9?=
+ =?us-ascii?Q?rzII5m8sil/lV/XOX9xn5hjYGkAgGepPKQXEL44/xJVEkPGJAgX1UG0ehiNR?=
+ =?us-ascii?Q?9r3BnPHmz8uFQYUlNpLmkDvW7BTKg5ckB20iBcn8m60vI4OvC5FQgl7ITBdP?=
+ =?us-ascii?Q?gka8ivgTytvASOMSyxP9I+z6CKroZSoBgKHChnhHu8F7jfTzJOjVVfcxWv9h?=
+ =?us-ascii?Q?ibCn+CX6f/Czf5gNhQOZcgDOUt70hpFNxqk0Mq8V3L6cfwIThgFi+fwLQNDh?=
+ =?us-ascii?Q?kzK2rR9KqYNkhJqc9Orb5V6yw2qktQiisgUEdiIpD4ZDHd0dXyrwjnrD4ueZ?=
+ =?us-ascii?Q?u30AoR0e0XbnlJJGwVFxRI2ICIeQxuvDxogrTrfXs5x12Ux+0P3kvEvrSuhu?=
+ =?us-ascii?Q?jD7UDKSxAXllpe0kRKDfncx3+sk4UTsoE7ejR4VYNq13FRsKk/ZM4uDnToUs?=
+ =?us-ascii?Q?VxAdW+4o0g6vxcvn4rhRNSj5J5Xfdpq0vkUPJaYwLQZ6ab6iu+FBXCUKqUY8?=
+ =?us-ascii?Q?yHB4lPFIG3vJlY77idApbPjPw7dxKweN0pI3ZXksdjbho/sW9VH9vpNAxS4O?=
+ =?us-ascii?Q?lTfFi5ej+HwU1ZlaQkFOxjNEtoOHJj6QQt1OrqSxRl36YTP626qpiyrxNR7k?=
+ =?us-ascii?Q?hZQDLggLXl+Qd7kpTR+JclbCMlQZnZ2vd/rrO3SWYh8CYWoQrGXGa//5Vr0q?=
+ =?us-ascii?Q?xZ8khluybrBOEY8yAFoYvbvLboH77fLIYx5Fs8M7Thha9H9HzWR7DPIsFVuo?=
+ =?us-ascii?Q?OAkGe7hYuehmWVWq6k/egGJRRhutswj6EmdYqjDWwt5Z82m1LWWQkjAwa71h?=
+ =?us-ascii?Q?vUM/pCSI9GweFbzOSuVZ5CV4MnXFasn0z8pdNbWDcNyVSXd91KjTOZlKDCKM?=
+ =?us-ascii?Q?w5piBRh/5iKLsWTAUiQFt/VNmocGcpLe5ydXHgUzzvutzY24g3mqL8DDBhSp?=
+ =?us-ascii?Q?kVlBYSsCBwyDKfRoAbdTpoRKQlT56Cb9CN/aRQtSvDPMSn2EhxWx/zqE+B55?=
+ =?us-ascii?Q?tIIItleMy2Ix3FllvzYZsORvA86EVXMG9znyUjA5v26hQKnelSPIuEGpAp3g?=
+ =?us-ascii?Q?BEPF1nDF3qmaz0YzSwC40SbeEFd4/X7HxI4/btIqT9gUYzOYhCUuAYnaaCPO?=
+ =?us-ascii?Q?/cyXS4XC+UG9xa9fZtuOroipOjSWw0IbtQyv+72XNZxujUNKW2Xs9xADxoQb?=
+ =?us-ascii?Q?Df0WvqEo67q6Jog=3D?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014); DIR:OUT;
+ SFS:(13230040)(36860700013)(376014)(82310400026)(1800799024); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2025 21:31:34.4037 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ce745378-d46c-432c-05a1-08dd3999d05a
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2025 21:31:57.6508 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: db9a1247-6779-4968-dd5e-08dd3999de32
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN1PEPF0000467F.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BN1PEPF00004681.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6812
-Received-SPF: permerror client-ip=40.107.94.49;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB8114
+Received-SPF: permerror client-ip=2a01:111:f403:2417::620;
  envelope-from=Huibo.Wang@amd.com;
- helo=NAM10-MW2-obe.outbound.protection.outlook.com
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
 X-Spam_bar: -----
 X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-3,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.036,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-Mailman-Approved-At: Mon, 20 Jan 2025 16:59:27 -0500
@@ -156,162 +151,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset is also available at:
+From: Michael Roth <michael.roth@amd.com>
 
-  https://github.com/amdese/qemu/commits/snp-certs-rfc2
+Add defines for SNP certificate support.
 
-and is based on top of qemu master (7433709a1477)
+Signed-off-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Melody Wang <huibo.wang@amd.com>
+---
+ linux-headers/linux/kvm.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-
-Overview
---------
-
-The GHCB 2.0 specification defines 2 GHCB request types to allow SNP guests
-to send encrypted messages/requests to firmware: SNP Guest Requests and SNP
-Extended Guest Requests. These encrypted messages are used for things like
-servicing attestation requests issued by the guest. Implementing support for
-these is required to be fully GHCB-compliant.
-
-For the most part, KVM only needs to handle forwarding these requests to
-firmware (to be issued via the SNP_GUEST_REQUEST firmware command defined
-in the SEV-SNP Firmware ABI), and then forwarding the encrypted response to
-the guest.
-
-However, in the case of SNP Extended Guest Requests, the host is also
-able to provide the certificate data corresponding to the endorsement key
-used by firmware to sign attestation report requests. This certificate data
-is provided by userspace because:
-
-  1) It allows for different keys/key types to be used for each particular
-     guest with requiring any sort of KVM API to configure the certificate
-     table in advance on a per-guest basis.
-
-  2) It provides additional flexibility with how attestation requests might
-     be handled during live migration where the certificate data for
-     source/dest might be different.
-
-  3) It allows all synchronization between certificates and firmware/signing
-     key updates to be handled purely by userspace rather than requiring
-     some in-kernel mechanism to facilitate it. [1]
-
-To support fetching certificate data from userspace, a new KVM
-KVM_EXIT_SNP_REQ_CERTS exit type is used to fetch the data similarly to
-KVM_EXIT_MMIO/etc, with an associate KVM capability to detect/enable the
-exits depending on whether userspace has been configured to provide
-certificate data.
-
-Add support for this exit in QEMU. Additionally, because some of the locking
-behavior relies on kvm_immediate_exit, add an some infrastructure to allow
-for callbacks to be registered and executed upon a kvm_immediate_exit-induced
-exit from KVM.
-
-See the Documentation in the related KVM patches for more details on the
-expected usage and kvm_immediate_exit handling:
-
-  https://lore.kernel.org/kvm/20241218152226.1113411-1-michael.roth@amd.com/#t
-
-[1] https://lore.kernel.org/kvm/ZS614OSoritrE1d2@google.com/
-
-
-Testing
--------
-
-For testing this, use the following host kernel:
-
-  https://github.com/amdese/linux/commits/snp-certs-v3
-
-For the guest, any 5.19 or newer kernel will do.
-
-A basic command-line invocation for an SNP guest with certificate data
-supplied would be:
-
- qemu-system-x86_64 -smp 32,maxcpus=255 -cpu EPYC-Milan-v2
-  -machine q35,confidential-guest-support=sev0,memory-backend=ram1
-  -object memory-backend-memfd,id=ram1,size=4G,share=true,reserve=false
-  -object sev-snp-guest,id=sev0,cbitpos=51,reduced-phys-bits=1,id-auth=,certs-path=/home/mroth/cert.blob
-  -bios OVMF.fd
-
-Something like the following simple example can be used to simulate an
-exclusive lock being held on the certificate by management tools performing an
-update:
-
-  #include <stdlib.h>
-  #include <stdio.h>
-  #define __USE_GNU
-  #include <fcntl.h>
-  #include <unistd.h>
-  #include <errno.h>
-  #include <stdbool.h>
-  #include <sys/types.h>
-  #include <sys/stat.h>
-  
-  int main(int argc, void **argv)
-  {
-      int ret, fd, i = 0;
-      char *path = argv[1];
-  
-      struct flock fl = {
-          .l_whence = SEEK_SET,
-          .l_start = 0,
-          .l_len = 0,
-          .l_type = F_WRLCK
-      };
-  
-      fd = open(path, O_RDWR);
-      ret = fcntl(fd, F_OFD_SETLK, &fl);
-      if (ret) {
-          printf("error locking file, ret %d errno %d\n", ret, errno);
-          return ret;
-      }
-  
-      while (true) {
-          i++;
-          printf("now holding lock (%d seconds elapsed)...\n", i);
-          usleep(1000 * 1000);
-      }
-  
-      return 0;
-  }
-
-For requesting attestation with certificate data attached, you can use
-something like the following tool/workflow:
-
-  https://github.com/virtee/snpguest?tab=readme-ov-file#extended-attestation-workflow
-
-The format of the certificate blob is defined in the GHCB 2.0 specification,
-but if it's not being parsed on the guest-side then random data will suffice
-for testing the KVM bits.
-
-Any feedback/review is appreciated.
-
-Thanks!
-
--Melody
-
-Changes from v1 to v2:
-
-- Recreation race problem: Add a while(1) loop using the libvirt example
-  with fstat and stat for the locking certificate blob code in
-  open_certs_locked() to fix the recreation race problem suggested by
-  Daniel P. Berrangé.
-- Fix the json format and filename suggested by Markus Armbruster.
-- Some text formulation comments.
-
-Michael Roth (3):
-  linux-headers: Update for 6.12 and SNP certificate support
-  accel/kvm: Add kvm_immediate_exit callback infrastructure
-  i386/sev: Add KVM_EXIT_SNP_REQ_CERTS support for certificate-fetching
-
- accel/kvm/kvm-all.c           |  43 ++++++
- include/system/kvm.h          |   3 +
- linux-headers/linux/kvm.h     |  10 ++
- qapi/qom.json                 |  21 ++-
- target/i386/kvm/kvm.c         |  10 ++
- target/i386/sev-system-stub.c |   5 +
- target/i386/sev.c             | 277 ++++++++++++++++++++++++++++++++++
- target/i386/sev.h             |   2 +-
- 8 files changed, 369 insertions(+), 2 deletions(-)
-
+diff --git a/linux-headers/linux/kvm.h b/linux-headers/linux/kvm.h
+index 3bcd4eabe3..10f6c908d9 100644
+--- a/linux-headers/linux/kvm.h
++++ b/linux-headers/linux/kvm.h
+@@ -135,6 +135,12 @@ struct kvm_xen_exit {
+ 	} u;
+ };
+ 
++struct kvm_exit_snp_req_certs {
++	__u64 gfn;
++	__u32 npages;
++	__u32 ret;
++};
++
+ #define KVM_S390_GET_SKEYS_NONE   1
+ #define KVM_S390_SKEYS_MAX        1048576
+ 
+@@ -178,6 +184,7 @@ struct kvm_xen_exit {
+ #define KVM_EXIT_NOTIFY           37
+ #define KVM_EXIT_LOONGARCH_IOCSR  38
+ #define KVM_EXIT_MEMORY_FAULT     39
++#define KVM_EXIT_SNP_REQ_CERTS    40
+ 
+ /* For KVM_EXIT_INTERNAL_ERROR */
+ /* Emulate instruction failed. */
+@@ -438,6 +445,8 @@ struct kvm_run {
+ 			__u64 gpa;
+ 			__u64 size;
+ 		} memory_fault;
++		/* KVM_EXIT_SNP_REQ_CERTS */
++		struct kvm_exit_snp_req_certs snp_req_certs;
+ 		/* Fix the size of the union. */
+ 		char padding[256];
+ 	};
+@@ -925,6 +934,7 @@ struct kvm_enable_cap {
+ #define KVM_CAP_PRE_FAULT_MEMORY 236
+ #define KVM_CAP_X86_APIC_BUS_CYCLES_NS 237
+ #define KVM_CAP_X86_GUEST_MODE 238
++#define KVM_CAP_EXIT_SNP_REQ_CERTS 239
+ 
+ struct kvm_irq_routing_irqchip {
+ 	__u32 irqchip;
 -- 
 2.34.1
 
