@@ -2,87 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 396CFA164A3
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 01:36:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F77DA164B1
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 01:39:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZfkk-0006qI-Gg; Sun, 19 Jan 2025 19:34:54 -0500
+	id 1tZfoR-0000on-VT; Sun, 19 Jan 2025 19:38:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1tZfkf-0006q3-Gq
- for qemu-devel@nongnu.org; Sun, 19 Jan 2025 19:34:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tZfoP-0000oO-Bg
+ for qemu-devel@nongnu.org; Sun, 19 Jan 2025 19:38:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1tZfkd-000471-Ry
- for qemu-devel@nongnu.org; Sun, 19 Jan 2025 19:34:49 -0500
+ id 1tZfoN-0004aa-JI
+ for qemu-devel@nongnu.org; Sun, 19 Jan 2025 19:38:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737333286;
+ s=mimecast20190719; t=1737333517;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bRHiqA+Tg4XuUV7fQjItzR8Q7urlqtioweKD4uQAS6s=;
- b=ILofYmWFuqN+tlfmSzoe+gxa6bDil/FIJi7Ul4rwZ/6DSlenigPuy7AUn/D02TsrWN2j94
- PyKWuulk2smjO2rDueHtAY9nzH4phLb+LUbax+7RsakG/qA7lLGuNMmnHBJ7LYvP6PbiNy
- ClMBKRbxe5BbftfdUnMcDt+aD/Wc5NM=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DjWdn8xl/OI5t6Lswmbh/wxUTZQgdGoDKQ7FHZq4m0Q=;
+ b=NmHIfzGFkqhxZFvIkZ7MCGUbM6ge4HEKgOH+cxokgrFIoQTN4/5GSN6Itl8HrEBDfPLaUE
+ vK7Sr3E2UezgO5TYLsmqI6xmiF6wDQZXe+bP1EWnNLnnPYxji31tQtAqLXOqHdXg319X7F
+ p6QqX7vLcC1wqYDEjwuGy6u6Ur8VOOg=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-573-AsKeNjUbNBi6aorYiRyW0w-1; Sun, 19 Jan 2025 19:34:44 -0500
-X-MC-Unique: AsKeNjUbNBi6aorYiRyW0w-1
-X-Mimecast-MFC-AGG-ID: AsKeNjUbNBi6aorYiRyW0w
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-216750b679eso52639625ad.1
- for <qemu-devel@nongnu.org>; Sun, 19 Jan 2025 16:34:44 -0800 (PST)
+ us-mta-518-IbwifaPfMoiJ0eGBZtAq4g-1; Sun, 19 Jan 2025 19:38:35 -0500
+X-MC-Unique: IbwifaPfMoiJ0eGBZtAq4g-1
+X-Mimecast-MFC-AGG-ID: IbwifaPfMoiJ0eGBZtAq4g
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-2f5538a2356so7207711a91.2
+ for <qemu-devel@nongnu.org>; Sun, 19 Jan 2025 16:38:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737333283; x=1737938083;
+ d=1e100.net; s=20230601; t=1737333514; x=1737938314;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bRHiqA+Tg4XuUV7fQjItzR8Q7urlqtioweKD4uQAS6s=;
- b=h5+72ddJMyw0HNGQ5uW7XlB6Ak6ldblDEYTp7wKE9qmrgq3RkqFEL2xE9xsmx8CuJ+
- YI7ZV92mLehjEHDHKlmjqKORwaLI0y9MYPa9P3EvBFfiG6owu7/5qgerKib8ZgBxvJfp
- pMtxjnaCFsR+pW2ntfucjOi1Ah6xK79d+BdwGt/kCoDufRz4nJSPkC7Yf1BdVpCRGuJY
- qSX3LwMWWc7/4hgOEcu3iWGTgRrbolUIh8VAlaH6duP8YgHw2zm9Mt0oMNMMsig64SkS
- gPJVISU4bGz6xcT03qaQEDO98X7JmewvpUJt5jSFAl6pc+/a1nSzfSwAFtD2JNXOrIqN
- kykQ==
-X-Gm-Message-State: AOJu0Yxa8ylgbkBKJ2GzqlL+nxG5t9zltlMTJl4LmaUlDVkKYSq3ZLc7
- MLznwlGLH10WMiGE7hbMOL8Ig45UFe4ZpFCI3gegYVPUTEPgboZpfec/4phmLRZHLcYzRRfpOeC
- VJN4V22u+A4APZiqahuMu+VwLP4HgMn5hPXnnPZK9oVUOcPW0biumGRKbb18zOeIhA4xDMN5cP4
- fhoGsqPHIpIbfQTCcCDXizjPauuhbt/4WJw8HfUA==
-X-Gm-Gg: ASbGncsQ8S5x+jWGRJNsyN+XuUQ0s+n6Talndk6VWS5UVXSk2CvDSFGyUpC1GFoR4hM
- +t7bAXGItFV9Dke3cHvFGGXfEnj97gtATAQ8UHIJeBcez8ElXs8O4
-X-Received: by 2002:a05:6a20:3d86:b0:1e0:9cc2:84b1 with SMTP id
- adf61e73a8af0-1eb2158d07amr19054641637.30.1737333283313; 
- Sun, 19 Jan 2025 16:34:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGmtYmfSdqflvyiEMLDE1TkUDrWmzM73y7b4/rPYAO5+6Aujmr8IZ9C7hdThn4fLkTNbE52PyB62jH3j9VpGxs=
-X-Received: by 2002:a05:6a20:3d86:b0:1e0:9cc2:84b1 with SMTP id
- adf61e73a8af0-1eb2158d07amr19054610637.30.1737333282864; Sun, 19 Jan 2025
- 16:34:42 -0800 (PST)
+ bh=DjWdn8xl/OI5t6Lswmbh/wxUTZQgdGoDKQ7FHZq4m0Q=;
+ b=sv1phTeh1VyaOnkVKzprxkmKEWWCVXCOiQI+oMCT5Ut+j5bWIzGUlHzjmHzGatyt6c
+ p2kcaXNbVoICfdr3qahYFZZWNU07DHBGlyDDRyEd7wVuT5O5hZFB09swa81c/Bi2i2mu
+ it0SycmYUWiDnj1m9Xuz7y1vin3Wb3ZkhI9RTutddyj7WFEFTpMXEgX84MJ0bKqFhLlz
+ r+XiSPRVo6rPGozbSr4qhzAMrGbtMoYp0yGjeFaPjiJgofsx27kzGdMy863fQeahRceK
+ xC4LSCTPfUwoCWwKJkiL/d9YJnSd6eWJeH+Ww0Rbg9ttqFLHte6HFcjf9cZ7fsqBVS/h
+ JRqA==
+X-Gm-Message-State: AOJu0YweWI4KTDOIqab/VNFDjwOKqNzmxUcPn9OyYp5TyH37L172cg6M
+ blfXtIJmnG73vG6DCQkuRVREXmhoPxTCokqCEIpo8OBWQpQgFMyarT56s5p/IKo/GyH9O0LiB+a
+ azz49febh21tHe+sfN+4CjR5DpdLELYqcqxJ5EFSNWoM9bjmTRn7UIpLD7x9lDqd7XpoRWIagsO
+ ukAEJ3McitkTfGCR5ZlSX8sGQBzwJWxHvA6cEQZAka
+X-Gm-Gg: ASbGncuujUxuEF7kI4L5dtBfPJCg1ttLQ08Cv/wOCNX2waMKIVGn7zRD+TnPOk5SqZ+
+ Z2VOgTfxvKYE6BnPNdYDSVtZ91TrErBVU2MarTW/LUNCyjEGQrRTn
+X-Received: by 2002:a17:90b:3a46:b0:2ee:ab29:1a63 with SMTP id
+ 98e67ed59e1d1-2f782c519e2mr14220749a91.3.1737333514235; 
+ Sun, 19 Jan 2025 16:38:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGeI8e7xkkppAe8kylSGXaCsTWOQvepF5LeJEypsCvrJtdQ/S4LtJSBV6IdRNedDC5UjvIy4B1Tuyxtdqx6VLI=
+X-Received: by 2002:a17:90b:3a46:b0:2ee:ab29:1a63 with SMTP id
+ 98e67ed59e1d1-2f782c519e2mr14220725a91.3.1737333513744; Sun, 19 Jan 2025
+ 16:38:33 -0800 (PST)
 MIME-Version: 1.0
-References: <20250117111709.970789-1-lvivier@redhat.com>
- <20250117111709.970789-3-lvivier@redhat.com>
-In-Reply-To: <20250117111709.970789-3-lvivier@redhat.com>
+References: <20241008-macvtap-v1-1-2032caa25b6d@daynix.com>
+ <CACGkMEvmEsFdLRgF9CLQCEo0jt3dX8wAPLjRC2pNb4ofD8dLNQ@mail.gmail.com>
+ <469f9995-9182-43c2-93d7-ab8dbefb9eb9@daynix.com>
+ <CACGkMEs2hkX7S3QJK1yLbJjSxW=obiSOYwKA4w2xiJwuOooq4g@mail.gmail.com>
+ <74d218be-2119-4977-8d2e-40a51cccde9d@daynix.com>
+ <50e784b2-850d-4d1b-9fc8-7fb6076f101e@daynix.com>
+ <CACGkMEu6sFRm+xVxEp6X+N_qRH+qcbi_W3onXxX3uRPjS0hiFA@mail.gmail.com>
+ <db4deda5-2869-45d2-8d56-9ba390324cd6@daynix.com>
+ <CACGkMEv0XwU=P-V6RiRgBFtzZt19En921SPuTj+bNhYFyMSrFQ@mail.gmail.com>
+ <bd84bba9-3aef-4c4e-a88a-566815903599@daynix.com>
+In-Reply-To: <bd84bba9-3aef-4c4e-a88a-566815903599@daynix.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Mon, 20 Jan 2025 08:34:30 +0800
-X-Gm-Features: AbW1kvbentXiW8c0BJzXAGdYUoAkgWh0HNJ7KWYP-H0S5vBD3AyI8wCrLrtcpL8
-Message-ID: <CACGkMEsMEddt_-4Yj3xGbPRF-OcU87C6J9P8qehMoXsKEZzO8A@mail.gmail.com>
-Subject: Re: [PATCH 2/2] net/dump: Correctly compute Ethernet packet offset
-To: Laurent Vivier <lvivier@redhat.com>
+Date: Mon, 20 Jan 2025 08:38:22 +0800
+X-Gm-Features: AbW1kvb_OftQGplZZYC0jczpza1xWQrB48yZW-66s4vwlKVRaFL6819pOpX9jBE
+Message-ID: <CACGkMEtRbiBxW5_n_Ja-V33gMVUuyBSynNqLtxXRVQEkigoEwQ@mail.gmail.com>
+Subject: Re: [PATCH] tap-linux: Open ipvtap and macvtap
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -60
-X-Spam_score: -6.1
-X-Spam_bar: ------
-X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.024,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,54 +108,194 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 17, 2025 at 7:17=E2=80=AFPM Laurent Vivier <lvivier@redhat.com>=
- wrote:
+On Thu, Jan 16, 2025 at 1:27=E2=80=AFPM Akihiko Odaki <akihiko.odaki@daynix=
+.com> wrote:
 >
-> When a packet is sent with QEMU_NET_PACKET_FLAG_RAW by QEMU it
-> never includes virtio-net header even if qemu_get_vnet_hdr_len()
-> is not 0, and filter-dump is not managing this case.
+> On 2025/01/16 10:17, Jason Wang wrote:
+> > On Wed, Jan 15, 2025 at 1:17=E2=80=AFPM Akihiko Odaki <akihiko.odaki@da=
+ynix.com> wrote:
+> >>
+> >> On 2025/01/13 11:59, Jason Wang wrote:
+> >>> On Sat, Jan 11, 2025 at 1:43=E2=80=AFPM Akihiko Odaki <akihiko.odaki@=
+daynix.com> wrote:
+> >>>>
+> >>>> Hi Jason,
+> >>>>
+> >>>> Can you check this patch again?
+> >>>
+> >>> I would like to have this if
+> >>>
+> >>> 1) it would be used by libvirt.
+> >>>
+> >>> or
+> >>>
+> >>> 2) there's no other way to do this
+> >>
+> >> I need this to make QEMU work with macvtap on mkosi, and this patch is
+> >> an effective way to accomplish the goal.
+> >
+> > I'm not sure how to define "effective" here.
 >
-> The only user of QEMU_NET_PACKET_FLAG_RAW is announce_self,
-> we can show the problem using it and tcpddump:
+> I just meant it requires me writing less code.
 >
-> - QEMU parameters:
+> >
+> >>
+> >> Requiring to pass a file descriptor is simply less convenient. Most (i=
+f
+> >> not all) aspects of QEMU can be configured without file descriptors; I
+> >> don't think there is a reason to make tap exceptional.
+> >
+> > TUNSETIFF requires CAP_NET_ADMIN and qemu doesn't want to run with
+> > privilege, so fd is prefered in the case of tuntap.
+> >
+> > For macvtap,ipvtap, though open, doesn't require any privilege.
+> > Passing fd via SCM_RIGHTS is still preferable as it eases the
+> > interaction with security facilities (for example, you may want to
+> > whitelist /dev/tapX for Qemu to access etc).
 >
->   .. -monitor stdio \
->      -netdev bridge,id=3Dnetdev0,br=3Dvirbr0 \
->      -device virtio-net,mac=3D9a:2b:2c:2d:2e:2f,netdev=3Dnetdev0 \
->      -object filter-dump,netdev=3Dnetdev0,file=3Dlog.pcap,id=3Dpcap0
+> That is true for almost any kind of files, and QEMU provides options to
+> specify files with file descriptor for this reason. However, it also
+> provides alternative options to specify files with e.g., path for
+> convenience.
 >
-> - HMP command:
->
->   (qemu) announce_self
->
-> - TCP dump:
->
->   $ tcpdump -nxr log.pcap
->
->   without the fix:
->
->     08:00:06:04:00:03 > 2e:2f:80:35:00:01, ethertype Unknown (0x9a2b), le=
-ngth 50:
->          0x0000:  2c2d 2e2f 0000 0000 9a2b 2c2d 2e2f 0000
->          0x0010:  0000 0000 0000 0000 0000 0000 0000 0000
->          0x0020:  0000 0000
->
->   with the fix:
->
->     ARP, Reverse Request who-is 9a:2b:2c:2d:2e:2f tell 9a:2b:2c:2d:2e:2f,=
- length 46
->          0x0000:  0001 0800 0604 0003 9a2b 2c2d 2e2f 0000
->          0x0010:  0000 9a2b 2c2d 2e2f 0000 0000 0000 0000
->          0x0020:  0000 0000 0000 0000 0000 0000 0000
->
-> Fixes: 481c52320a26 ("net: Strip virtio-net header when dumping")
-> Cc: akihiko.odaki@daynix.com
-> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-> ---
+> This patch does not add a entirely-new complex, high-level feature. It
+> only pushes the macvtap/ipvtap support to the same level with tuntap and
+> other features interacting with files.
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+Fair enough. I've queued this.
 
 Thanks
+
+>
+> Regards,
+> Akihiko Odaki
+>
+> >
+> > Thanks
+> >
+> >>
+> >> Regards,
+> >> Akihiko Odaki
+> >>
+> >>>
+> >>> Thanks
+> >>>
+> >>>>
+> >>>> Regards,
+> >>>> Akihiko Odaki
+> >>>>
+> >>>> On 2024/10/22 13:59, Akihiko Odaki wrote:
+> >>>>> On 2024/10/18 17:10, Jason Wang wrote:
+> >>>>>> On Sat, Oct 12, 2024 at 5:05=E2=80=AFPM Akihiko Odaki
+> >>>>>> <akihiko.odaki@daynix.com> wrote:
+> >>>>>>>
+> >>>>>>> On 2024/10/09 16:41, Jason Wang wrote:
+> >>>>>>>> On Tue, Oct 8, 2024 at 2:52=E2=80=AFPM Akihiko Odaki
+> >>>>>>>> <akihiko.odaki@daynix.com> wrote:
+> >>>>>>>>>
+> >>>>>>>>> ipvtap and macvtap create a file for each interface unlike tunt=
+ap,
+> >>>>>>>>> which
+> >>>>>>>>> creates one file shared by all interfaces. Try to open a file
+> >>>>>>>>> dedicated
+> >>>>>>>>> to the interface first for ipvtap and macvtap.
+> >>>>>>>>>
+> >>>>>>>>
+> >>>>>>>> Management layers usually pass these fds via SCM_RIGHTS. Is this=
+ for
+> >>>>>>>> testing purposes? (Note that we can use something like -netdev
+> >>>>>>>> tap,fd=3D10 10<>/dev/tap0).
+> >>>>>>>
+> >>>>>>> I used this for testing.
+> >>>>>>
+> >>>>>> Anything that prevents you from using fd redirection? If not
+> >>>>>> management interest and we had already had a way for testing, I te=
+nd
+> >>>>>> to not introduce new code as it may bring bugs.
+> >>>>>
+> >>>>> I don't know what ifindex the macvtap device has so it's easier to =
+use
+> >>>>> if QEMU can automatically figure out the it.
+> >>>>>
+> >>>>>>
+> >>>>>>>
+> >>>>>>>>
+> >>>>>>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> >>>>>>>>> ---
+> >>>>>>>>>      net/tap-linux.c | 17 ++++++++++++++---
+> >>>>>>>>>      1 file changed, 14 insertions(+), 3 deletions(-)
+> >>>>>>>>>
+> >>>>>>>>> diff --git a/net/tap-linux.c b/net/tap-linux.c
+> >>>>>>>>> index 1226d5fda2d9..22ec2f45d2b7 100644
+> >>>>>>>>> --- a/net/tap-linux.c
+> >>>>>>>>> +++ b/net/tap-linux.c
+> >>>>>>>>> @@ -45,10 +45,21 @@ int tap_open(char *ifname, int ifname_size,=
+ int
+> >>>>>>>>> *vnet_hdr,
+> >>>>>>>>>          int len =3D sizeof(struct virtio_net_hdr);
+> >>>>>>>>>          unsigned int features;
+> >>>>>>>>>
+> >>>>>>>>> -    fd =3D RETRY_ON_EINTR(open(PATH_NET_TUN, O_RDWR));
+> >>>>>>>>> +
+> >>>>>>>>> +    ret =3D if_nametoindex(ifname);
+> >>>>>>>>> +    if (ret) {
+> >>>>>>>>> +        g_autofree char *file =3D g_strdup_printf("/dev/tap%d"=
+, ret);
+> >>>>>>>>> +        fd =3D open(file, O_RDWR);
+> >>>>>>>>> +    } else {
+> >>>>>>>>> +        fd =3D -1;
+> >>>>>>>>> +    }
+> >>>>>>>>> +
+> >>>>>>>>>          if (fd < 0) {
+> >>>>>>>>> -        error_setg_errno(errp, errno, "could not open %s",
+> >>>>>>>>> PATH_NET_TUN);
+> >>>>>>>>> -        return -1;
+> >>>>>>>>> +        fd =3D RETRY_ON_EINTR(open(PATH_NET_TUN, O_RDWR));
+> >>>>>>>>
+> >>>>>>>> Any reason tuntap were tried after the macvtap/ipvtap?
+> >>>>>>>
+> >>>>>>> If we try tuntap first, we will know that it is not tuntap when c=
+alling
+> >>>>>>> TUNSETIFF. We will need to call TUNGETFEATURES and TUNSETVNETHDRS=
+Z again
+> >>>>>>> in such a case because they precede TUNSETIFF. Calling them twice=
+ is
+> >>>>>>> troublesome.
+> >>>>>>
+> >>>>>> I may miss something, we are only at the phase of open() not TUNSE=
+TIFF?
+> >>>>>
+> >>>>> We can tell if it is macvtap/ipvtap just by trying opening the devi=
+ce
+> >>>>> file. That is not possible with tuntap because tuntap uses /dev/net=
+/tun,
+> >>>>> a device file common for all tuntap interfaces and its presence doe=
+s not
+> >>>>> tell if the interface is tuntap.
+> >>>>>
+> >>>>>>
+> >>>>>>>
+> >>>>>>> This is also consistent with libvirt. libvirt first checks if
+> >>>>>>> g_strdup_printf("/dev/tap%d", ifindex) exists, and falls back to =
+tuntap
+> >>>>>>> otherwise.
+> >>>>>>
+> >>>>>> This is not what I understand from how layered products work. Libv=
+irt
+> >>>>>> should align with Qemu for low level things like TAP, not the reve=
+rse.
+> >>>>>
+> >>>>> This change is intended for the use case where libvirt is not in us=
+e. In
+> >>>>> particular, I use mkosi, which is not a full fledged layering mecha=
+nism.
+> >>>>>
+> >>>>> Regards,
+> >>>>> Akihiko Odaki
+> >>>>
+> >>>
+> >>
+> >
+>
 
 
