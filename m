@@ -2,110 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51F73A17034
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 17:33:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C25DA17005
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 17:21:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZugz-0004p8-0b; Mon, 20 Jan 2025 11:32:01 -0500
+	id 1tZuVJ-00023c-PZ; Mon, 20 Jan 2025 11:19:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tZugt-0004ob-Do
- for qemu-devel@nongnu.org; Mon, 20 Jan 2025 11:31:56 -0500
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tZugp-0007ct-NS
- for qemu-devel@nongnu.org; Mon, 20 Jan 2025 11:31:54 -0500
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-ab34a170526so676746566b.0
- for <qemu-devel@nongnu.org>; Mon, 20 Jan 2025 08:31:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737390710; x=1737995510; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :subject:to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=t/+3j/VbAnvty6PPbjZXEv6+6kI/aTPexZ9QKyJKZvo=;
- b=tKP0wIgvbKQdvLomU95cgwsF764QSYSpWC6QW6KVg5s3x5EaQ6t89jTXqHm/5Khw8o
- Qu4auPs2YaWDifGZGIJQ2UTeD+zQ2mWRru2CUrVixYPPk30mkE5Qe/m1x0u/7NFdKKP2
- AmUeqfUL/XvWVqMukjnbxFbyfK0DP803tpvGRxMZdAROLutuApbN0RXTvYWnR8fUIV5R
- rIzrnwRiOJTztGkN4HZb5luM9GpIVQT2s/2iS91WZ43zBkNmH7qZdKhY1M80Rwp6W8Lm
- M/hphdqJyLAwG0MCyvoGa0yQ2GW0dderieH3nsMLF6k4Bb7CLCQm1UJpgr8MtDlwU/Gt
- PzzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737390710; x=1737995510;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :subject:to:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=t/+3j/VbAnvty6PPbjZXEv6+6kI/aTPexZ9QKyJKZvo=;
- b=aiCNufYNsZv6N5UZaz/GSk8K1e9TY443k+Ku3QteqF0D1CsfZm7XuhiLwQS3SO8eFb
- JHYk9fB8SQsZw6wcZPqoF+v774LqYL7J50/nE2atw6Q3tlP8L/AyhfmWKD1Ycf86zvdo
- 2LbcXnOb8LsNR7qDgEJIGEfYgBk4s/6IeOoj09fOS4Py3eMx1o2XBwoFTEXcylloOvzp
- LOhXmj2SBSLHtJayKB4BvT0sWZa9mjNIGr4P4Ds+oQlNylCIE9twYP7+Rwwo4foPCFnJ
- M8l3hoBBDUZ7UOuB/IdWv+5WkLYZB+N/S0oVkNat9BWwK20rJw4psMffZSzg2j0cPjda
- r/qg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU0yC3hprjMy+vNGiIhcNEPYVxGwMp41cFkgceezr58leym5Jp/JtXEq7LKTqxMM8PltBQAg6HWE9uq@nongnu.org
-X-Gm-Message-State: AOJu0YzihSvMrd64D908w96UJ2E6Pwv4ssnmkqX04XFBLf7U6S/qYqCZ
- dzFUXmwvH0RLGH9NuggJGfATfGakqO+Wb7NYMtV6O5wdpLanrQP+vyL0/mcBo5g=
-X-Gm-Gg: ASbGnctbIZktJPCVMsNqKT8qJqBvxARjHpyCEYEaIMyZEwqRTuTkHDqekYRGidtlXrj
- /KeA+vLgMH5vS4VuG08jWnRD2kmzwAnC6+hES5K86rlC0iT0QAgFim1FQwrLo7YE5rQCp35BS23
- QPqelMASZa4UIs1anPsOxeV0A9v7wkKyoDB+ypzMw/C2ppDGCs5lwG50RopiNZ09rwS3CpwN27X
- icPAOZxEz+ldk1YEDOz0ujn/RuQRG19ENjARoVak9XyORuCnh2dRrSbTsuqH750XkGv
-X-Google-Smtp-Source: AGHT+IE6zytdzEnk/3kQ0UJ57d8A2WX15BSl8IynJB+eYPSo4wMj2nl3plrk1Mp+LllnmfupGBnYjg==
-X-Received: by 2002:a17:907:2d0b:b0:aa5:225f:47d9 with SMTP id
- a640c23a62f3a-ab38b166602mr1474433966b.29.1737390709688; 
- Mon, 20 Jan 2025 08:31:49 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab384f2911fsm630517966b.120.2025.01.20.08.31.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 20 Jan 2025 08:31:49 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 3BD535F780;
- Mon, 20 Jan 2025 16:31:48 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Alessandro Di Federico <ale@rev.ng>, Alistair Francis
- <alistair.francis@wdc.com>, Anton Johansson <anjo@rev.ng>, Markus
- Armbruster <armbru@redhat.com>, Brian Cain <bcain@quicinc.com>, "Daniel P.
- Berrange" <berrange@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
- cjia@nvidia.com, =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- cw@f00f.org,
- dhedde@kalrayinc.com, Eric Blake <eblake@redhat.com>, eblot@rivosinc.com,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, Eduardo Habkost
- <eduardo@habkost.net>, Elena Ufimtseva <elena.ufimtseva@oracle.com>, Auger
- Eric <eric.auger@redhat.com>, felipe@nutanix.com, iggy@theiggy.com, Warner
- Losh <imp@bsdimp.com>, Jan Kiszka <jan.kiszka@web.de>, Jason Gunthorpe
- <jgg@nvidia.com>, jidong.xiao@gmail.com, Jim Shu <jim.shu@sifive.com>,
- Joao Martins <joao.m.martins@oracle.com>, Konrad Rzeszutek Wilk
- <konrad.wilk@oracle.com>, Luc Michel <luc@lmichel.fr>, Manos Pitsidianakis
- <manos.pitsidianakis@linaro.org>, Max Chou <max.chou@sifive.com>, Mark
- Burton <mburton@qti.qualcomm.com>, mdean@redhat.com,
- mimu@linux.vnet.ibm.com, "Ho, Nelson" <nelson.ho@windriver.com>, Paul
- Walmsley <paul.walmsley@sifive.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Phil =?utf-8?Q?Mathieu-Daud?=
- =?utf-8?Q?=C3=A9?=
- <philmd@linaro.org>, QEMU Developers <qemu-devel@nongnu.org>, Richard
- Henderson <richard.henderson@linaro.org>, Shameerali Kolothum Thodi
- <shameerali.kolothum.thodi@huawei.com>, Bernhard Beschow
- <shentey@gmail.com>, Stefan Hajnoczi <stefanha@gmail.com>, Thomas Huth
- <thuth@redhat.com>, Wei Wang <wei.w.wang@intel.com>, z.huo@139.com, LIU
- Zhiwei <zhiwei_liu@linux.alibaba.com>, zwu.kernel@gmail.com
-Subject: KVM/QEMU Community Call 21/01/25 agenda items?
-User-Agent: mu4e 1.12.8; emacs 29.4
-Date: Mon, 20 Jan 2025 16:31:48 +0000
-Message-ID: <87jzapphu3.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tZuVG-00023R-46
+ for qemu-devel@nongnu.org; Mon, 20 Jan 2025 11:19:54 -0500
+Received: from mgamail.intel.com ([192.198.163.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tZuVC-0005BX-SR
+ for qemu-devel@nongnu.org; Mon, 20 Jan 2025 11:19:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1737389991; x=1768925991;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=CbA2GnEOPDu3SGJ0SDfwD4v/VuuqOtnKHiG+E4e1hB8=;
+ b=RWowc352tyH+l1sG2E0ahO4MYe0g0+ec6pTgGOU1PMdnCWeLbKPP+Bqt
+ 24GAqGOI5pnPgqBD8BC5KEVAmq0EOWBc4DpdhE7Ie0SkMuBGcdQstQW59
+ H9FmO0nPFfwIrh5kF3+cKxGo2ldwAITViO5kTaoYqee5qo6Mw/RE+yFMx
+ qLGS31QiakbSUjKZL5qP71AEvZUx7qKAzMnM8nJhtzqHiPPoWdot7dQVn
+ sje0IlL2Joyg8R0xgj7hX7IsMRrMg8ftO1XpgyXoJuvRriD7vkNIVBeIx
+ 1jXpfRyHPAIu74fAZEgHrE/+e3Nn994wHhT/P4cd8FQT7LOHI9l2FXWxE Q==;
+X-CSE-ConnectionGUID: bG4S+IJ8SR+dJ1khSvx+oA==
+X-CSE-MsgGUID: PxVjJHNBR/GyUtAmBRonJw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="49206688"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="49206688"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jan 2025 08:19:47 -0800
+X-CSE-ConnectionGUID: sG/beUKVSPK+3ykQYIP3Tg==
+X-CSE-MsgGUID: ytWe6xW7RauXDOLkC4wauw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,219,1732608000"; d="scan'208";a="106687918"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa008.fm.intel.com with ESMTP; 20 Jan 2025 08:19:46 -0800
+Date: Tue, 21 Jan 2025 00:38:39 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=C3?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH 1/2] memattrs: Get rid of bit fields
+Message-ID: <Z458D/RuBQ8Kq0al@intel.com>
+References: <20250120074258.2204342-1-zhao1.liu@intel.com>
+ <20250120074258.2204342-2-zhao1.liu@intel.com>
+ <CAFEAcA_VAOU+p_BC5bpnk2GKa5piywjf+yhFTh=-3O7TGut+uA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x633.google.com
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- SORTED_RECIPS=2.499, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA_VAOU+p_BC5bpnk2GKa5piywjf+yhFTh=-3O7TGut+uA@mail.gmail.com>
+Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -73
+X-Spam_score: -7.4
+X-Spam_bar: -------
+X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-3,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,18 +85,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Peter,
 
-Hi,
+> >      /*
+> >       * PID (PCI PASID) support: Limited to 8 bits process identifier.
+> >       */
+> > -    unsigned int pid:8;
+> > -} MemTxAttrs;
+> > +    uint8_t pid;
+> > +
+> > +    /* Requester ID (for MSI for example) */
+> > +    uint16_t requester_id;
+> > +} QEMU_PACKED MemTxAttrs;
+>
+> If we pull the requester_id up to the top of the struct
+> we don't need the QEMU_PACKED, I think? (You get worse codegen
+> on some platforms if you use 'packed' when you don't need to.)
 
-The KVM/QEMU community call is at:
+Yes! I agree.
 
-https://meet.jit.si/kvmcallmeeting
-@
-21/01/2025 14:00 UTC
+> It would be good to note in the commit message:
+> (1) that this doesn't change the size of MemTxAttrs,
+> which is important because we pass it around directly,
+> not via a pointer (or does it raise it from 4 to 8 bytes?)
 
-Are there any agenda items for the sync-up?
+MemTxAttrs is raised to 8 bytes (yes, I should mention this).
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+> (2) that it does mean we have no spare space in the
+> struct for new fields without moving beyond 8 bytes.
+
+Thanks for the reminder, yes it is currently full. I found I missed
+a commnet from Paolo [*], that he suggested only convert `unspecified`
+to a bool. My bad :-(
+
+It still raises the size to 8 bytes but saves spare space, like:
+
+typedef struct MemTxAttrs {
+    unsigned int secure:1;
+    unsigned int space:2;
+    unsigned int user:1;
+    unsigned int memory:1;
+    unsigned int requester_id:16;
+    unsigned int pid:8;
+    bool unspecified;
+    uint8_t _reserved1;
+    uint16_t _reserved2;
+} MemTxAttrs;
+
+Similar to your comment above, to get pakced structure, I think I need
+push `unspecified` field down to other bit fields.
+
+The rust side would require extra work to ZERO the other bit fields
+though. I'll go back to that mail thread and discuss the details again.
+
+[*]: https://lore.kernel.org/qemu-devel/20241205060714.256270-1-zhao1.liu@intel.com/T/#m8b05874d630e3ec8834617babb97b32ec3b39fce
+
+> In particular we're talking about maybe adding a
+> "debug" attribute; so this is an unfortunate refactoring
+> from that point of view.
+
+Thank you for your comment. In v2, I will try converting only
+`unspecified` to a bool. Will that meet your expectations?
+
+Regards,
+Zhao
+
 
