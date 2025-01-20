@@ -2,99 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49618A1661E
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 05:40:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D43A16662
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 06:34:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZjZN-0004AV-Lp; Sun, 19 Jan 2025 23:39:26 -0500
+	id 1tZkOs-0002tu-TC; Mon, 20 Jan 2025 00:32:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1tZjZK-0004AL-KP
- for qemu-devel@nongnu.org; Sun, 19 Jan 2025 23:39:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1tZjZJ-000052-37
- for qemu-devel@nongnu.org; Sun, 19 Jan 2025 23:39:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737347959;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vwiXxTc7xFDKV1c7kXLl1EzuQbCxBUqxjJnvRGVrIss=;
- b=Kh3ytsIVy8GARhJSq8qWp+AKXZviwxNAU9dJWn0ZF2zQn1evJgmJHw/YoLN55J70YfPDqE
- 8UlpPvnuULyL0V6DkmkgvQa24jH2wMeJSMPNaeDx12s41Nf96HbtODy9ZcEyy1kScrstZT
- QME+nTFs9ue9TPMZ/NLoltprQcxzErs=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-25-63Cr7D_JNpqKYnnmC2JR7g-1; Sun, 19 Jan 2025 23:39:14 -0500
-X-MC-Unique: 63Cr7D_JNpqKYnnmC2JR7g-1
-X-Mimecast-MFC-AGG-ID: 63Cr7D_JNpqKYnnmC2JR7g
-Received: by mail-pj1-f71.google.com with SMTP id
- 98e67ed59e1d1-2ef9dbeb848so7591733a91.0
- for <qemu-devel@nongnu.org>; Sun, 19 Jan 2025 20:39:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tZkLc-0002Zy-UZ
+ for qemu-devel@nongnu.org; Mon, 20 Jan 2025 00:29:17 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tZkLb-0006pT-6B
+ for qemu-devel@nongnu.org; Mon, 20 Jan 2025 00:29:16 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-435f8f29f8aso27980495e9.2
+ for <qemu-devel@nongnu.org>; Sun, 19 Jan 2025 21:29:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1737350948; x=1737955748; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=c5rAfiZJz+9oEvlJoSXxBPIfjutD28B8EZy7D2WO+Ns=;
+ b=bRLa65rLDr3bTZUva9Frx4dym7gpand44f4j82Uu6BpxKcOsTULcjuO7fu7HXCpmRY
+ L687HEyiAEO4b1tg0k1RYaZMriM532rZriUCJs52P7R5Zwrrv2VBwDA1y668MAERrjr3
+ DO5e6Wp5khzrjBGfBrkf0O58BOwdbzr4yHUz2iW0DLzQvq0uGcbGWHaIPx+nQ8mgWaBA
+ wr5tQjLgOVRk4EBDWhq7MbcgnMBLRIxiK60eGoeFjDq+OYNuzFlfza/JpRtpLrn8NZ4q
+ y9WS9hf/fp4HJulEY4UeZpSgnHAqdKSYKKNlIPuax6brtGDpow0pMYo5r9zfuR6hqppZ
+ ItbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737347953; x=1737952753;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vwiXxTc7xFDKV1c7kXLl1EzuQbCxBUqxjJnvRGVrIss=;
- b=KlqPdrre9ahMSCUnEcFVkG7jsuxjU7+nRBIgTVKUCr4V1yKwdakPgqLrXF3lhAyfkJ
- LxOGV16BzSiVZHFwA0EmgbqRuaS4TR+beLvqWjKZW3DbR8SaE8zZcMNoC1PylOpwF6fu
- crPkT3MaMgbozkp/D7YF+/RQXgi3NtKxEi5qvaMkHJkIXm0ZlVCGHL2e/nvIuRmDYR0B
- YvaEZMJlzcUuy1MJkad4SmhFAP03vQTE748+HSxF1boJcBJg6jzyhyYd2l43d/4TpCoX
- dsQgE78doDa+KlkVpyrQhYNDfEHXKhaK596Wq0P7uHwEc4Rk+qIY3gJS6Z+VhkqH1Fjs
- qyAA==
-X-Gm-Message-State: AOJu0YzWZ6PsB+GOXNub4m7IUehc/E1+LkvwTPXsZbJkCFUYFVd/6qL3
- cLl9uJymzhbYLNxw1URe4M4mnkufpbEjaB/zPirA401asiMtI4MJ6rBI+OXC202ohcJUU5b2JKU
- ThXnXNl8uY3vWM+wkH8M21/1TPj0xaD3o0Ry+jHaU5xIBUGB+uqU4
-X-Gm-Gg: ASbGncvBNYdJAzMPIWD2ahrrorzrVvtLHDNrS1PytRryHc8o6gnaS9vu9ds85z+FKu8
- TKBz+sWZURyoXvS4owUj2bc7Kt1+Zd/e7tKhr+j5Q++4gyyPvrRzV5FuLp/p16DV7wbpqagwCcy
- oUusq2V0fUCkYT7raCE+IyCvWGW2MoIxIJte+t4nm77pKFy9KMyMNdLNrR+CQ488RhtjXIk+qNm
- VAZIt63u0JsrVjXrsk09XTVLpBpZikYZPmxyGI84AXGrlZuFZPRNzipdTdDk9lYvHRxvM37mg0I
- n0AqGlhWTFGxaX+u
-X-Received: by 2002:a17:90a:c883:b0:2ee:b2be:f390 with SMTP id
- 98e67ed59e1d1-2f782d37d55mr16960303a91.28.1737347952887; 
- Sun, 19 Jan 2025 20:39:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE/LLVNdSVYHUzksYfnrqOjOTr5MyK4oVWBqScHPNmHMLpefkCEwE5saBhiUFItI2773g4LFw==
-X-Received: by 2002:a17:90a:c883:b0:2ee:b2be:f390 with SMTP id
- 98e67ed59e1d1-2f782d37d55mr16960274a91.28.1737347952440; 
- Sun, 19 Jan 2025 20:39:12 -0800 (PST)
-Received: from localhost.localdomain ([115.96.115.34])
- by smtp.googlemail.com with ESMTPSA id
- 41be03b00d2f7-a9bcc3232a4sm5889604a12.30.2025.01.19.20.39.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 19 Jan 2025 20:39:11 -0800 (PST)
-From: Ani Sinha <anisinha@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Ani Sinha <anisinha@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH v6 3/3] tests/qtest/vmcoreinfo: add a unit test to exercize
- basic vmcoreinfo function
-Date: Mon, 20 Jan 2025 10:08:34 +0530
-Message-ID: <20250120043847.954881-4-anisinha@redhat.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250120043847.954881-1-anisinha@redhat.com>
-References: <20250120043847.954881-1-anisinha@redhat.com>
+ d=1e100.net; s=20230601; t=1737350948; x=1737955748;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=c5rAfiZJz+9oEvlJoSXxBPIfjutD28B8EZy7D2WO+Ns=;
+ b=q+jNP+Ti8mq+ZH74rKKBCjsFZUTo1yYoKhWEzMwNJEq4TMUPcatqLJcTN4fxPVWsKl
+ B9KpvIxMbhNcozbOq5MP+2JEjU7F3Qmb1cloWNLySRgLdcR1MHBHEWcjQgqA3GYJEYvR
+ uDh3BTHImdNEc0SKh5GYEcR26P5r3okkltmNCu8ixwTmwqt15JaiPtZmQJaSwRIAGcFz
+ n2dNWTWwVoakgB+I0whrW6ggmBLJsIMFYyBn8wvr0uMlsTZwAXoNz1rP9je5P+NEBKr1
+ UZW9MzMs/7911rcuEeqHS50jAkqGmNAOA79fVsTWpxWCQe475WHTD2yutV1SPnhbuPUb
+ u63A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUNW8Mx3reLucXu4twpmdkOTFTxT1kf0zXgQ6M/OGIxAlWsfaeHS3jbNtVhJYIs2OSxRDJIjD8L6XmV@nongnu.org
+X-Gm-Message-State: AOJu0Yygc47d1fNOHpE7cln4WW+TEQKyMqANS2dn8bY2Mm1MbsPZEFtT
+ OD02ZWlv+3YXLbn6KpAO10CL6bQ+BK62cpEiq9U5KUY4kUlDS2og8C9Tgu9cMoZcOlqsN8cSTrk
+ 2E/U=
+X-Gm-Gg: ASbGncsbvNHpvDqi1IrPafz7Sla8cMfqmLQRAVwyQ1tM6gbvoweOsszCTOLR5m6FFUj
+ KeMn6oPuOaCDWEiQVZzR6pzX7jQGlYYxp+dpqvVee6mE4J3zLI838nta0ivfvgFoXpLqUOsC478
+ DQFwVUabTOsNuLxBLkMYMhD95KYkw3L8dQ3vUtTLIaKen2SvMeGn5u1Dq0QefbqypuzWcBalRD3
+ clmVcNZUR9kIM0nZ2MA5O4GYQoue9A68dNSjsKwJlOygOtkFFCP2HINAec+4gsgq0nhEq5OYmDw
+ NAY5PZ6Q1M8/km/1GDoSVGqP9ZmmUGA8nLFc+Q==
+X-Google-Smtp-Source: AGHT+IF0GPfjd8bIW6bmq7/U5eWQ84xO0CCqrhisRqpAGZfZoGhRmXA0Y9vXYPpEbnCnKr3PbeWcNA==
+X-Received: by 2002:a05:600c:3b94:b0:434:9934:575 with SMTP id
+ 5b1f17b1804b1-438913e02f8mr127283675e9.16.1737350948485; 
+ Sun, 19 Jan 2025 21:29:08 -0800 (PST)
+Received: from [192.168.69.181] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4389041fe29sm123825645e9.22.2025.01.19.21.29.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 19 Jan 2025 21:29:07 -0800 (PST)
+Message-ID: <0584eb66-ab11-40ab-bf97-64299eaab52d@linaro.org>
+Date: Mon, 20 Jan 2025 06:29:05 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -60
-X-Spam_score: -6.1
-X-Spam_bar: ------
-X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/4] qtest/libqos/pci: Enforce balanced iomap/unmap
+To: Nicholas Piggin <npiggin@gmail.com>, Fabiano Rosas <farosas@suse.de>
+Cc: John Snow <jsnow@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Akihiko Odaki
+ <akihiko.odaki@daynix.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-block@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20250117172244.406206-1-npiggin@gmail.com>
+ <20250117172244.406206-3-npiggin@gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250117172244.406206-3-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,147 +104,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A new qtest is written that exercizes the fw-cfg DMA based read and write ops
-to write values into vmcoreinfo fw-cfg file and read them back and verify that
-they are the same.
+Hi Nick,
 
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
----
- MAINTAINERS                   |  2 +
- tests/qtest/meson.build       |  1 +
- tests/qtest/vmcoreinfo-test.c | 90 +++++++++++++++++++++++++++++++++++
- 3 files changed, 93 insertions(+)
- create mode 100644 tests/qtest/vmcoreinfo-test.c
+Only nitpicking comments...
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 846b81e3ec..57167c3c73 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3016,6 +3016,7 @@ F: include/system/device_tree.h
- Dump
- S: Supported
- M: Marc-André Lureau <marcandre.lureau@redhat.com>
-+R: Ani Sinha <anisinha@redhat.com>
- F: dump/
- F: hw/misc/vmcoreinfo.c
- F: include/hw/misc/vmcoreinfo.h
-@@ -3026,6 +3027,7 @@ F: qapi/dump.json
- F: scripts/dump-guest-memory.py
- F: stubs/dump.c
- F: docs/specs/vmcoreinfo.rst
-+F: tests/qtest/vmcoreinfo-test.c
- 
- Error reporting
- M: Markus Armbruster <armbru@redhat.com>
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 94b28e5a53..fc669336a6 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -57,6 +57,7 @@ qtests_i386 = \
-   (config_all_devices.has_key('CONFIG_AHCI_ICH9') ? ['tco-test'] : []) +                    \
-   (config_all_devices.has_key('CONFIG_FDC_ISA') ? ['fdc-test'] : []) +                      \
-   (config_all_devices.has_key('CONFIG_I440FX') ? ['fw_cfg-test'] : []) +                    \
-+  (config_all_devices.has_key('CONFIG_FW_CFG_DMA') ? ['vmcoreinfo-test'] : []) +            \
-   (config_all_devices.has_key('CONFIG_I440FX') ? ['i440fx-test'] : []) +                    \
-   (config_all_devices.has_key('CONFIG_I440FX') ? ['ide-test'] : []) +                       \
-   (config_all_devices.has_key('CONFIG_I440FX') ? ['numa-test'] : []) +                      \
-diff --git a/tests/qtest/vmcoreinfo-test.c b/tests/qtest/vmcoreinfo-test.c
-new file mode 100644
-index 0000000000..dcf3b5ae05
---- /dev/null
-+++ b/tests/qtest/vmcoreinfo-test.c
-@@ -0,0 +1,90 @@
-+/*
-+ * qtest vmcoreinfo test case
-+ *
-+ * Copyright Red Hat. 2025.
-+ *
-+ * Authors:
-+ *  Ani Sinha   <anisinha@redhat.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/units.h"
-+#include "libqos/libqos-pc.h"
-+#include "libqtest.h"
-+#include "standard-headers/linux/qemu_fw_cfg.h"
-+#include "libqos/fw_cfg.h"
-+#include "qemu/bswap.h"
-+#include "hw/misc/vmcoreinfo.h"
-+
-+static void test_vmcoreinfo_write_basic(void)
-+{
-+    QFWCFG *fw_cfg;
-+    QOSState *qs;
-+    FWCfgVMCoreInfo info;
-+    size_t filesize;
-+    uint16_t guest_format;
-+    uint16_t host_format;
-+    uint32_t size;
-+    uint64_t paddr;
-+
-+    qs = qtest_pc_boot("-device vmcoreinfo");
-+    fw_cfg = pc_fw_cfg_init(qs->qts);
-+
-+    memset(&info, 0 , sizeof(info));
-+    /* read vmcoreinfo and read back the host format */
-+    filesize = qfw_cfg_read_file(fw_cfg, qs, FW_CFG_VMCOREINFO_FILENAME,
-+                                &info, sizeof(info));
-+    g_assert_cmpint(filesize, ==, sizeof(info));
-+
-+    host_format = le16_to_cpu(info.host_format);
-+    g_assert_cmpint(host_format, ==, FW_CFG_VMCOREINFO_FORMAT_ELF);
-+
-+    memset(&info, 0 , sizeof(info));
-+    info.guest_format = cpu_to_le16(FW_CFG_VMCOREINFO_FORMAT_ELF);
-+    info.size = cpu_to_le32(1 * MiB);
-+    info.paddr = cpu_to_le64(0xffffff00);
-+    info.host_format = cpu_to_le16(host_format);
-+
-+    /* write the values to the host */
-+    filesize = qfw_cfg_write_file(fw_cfg, qs, FW_CFG_VMCOREINFO_FILENAME,
-+                                  &info, sizeof(info));
-+    g_assert_cmpint(filesize, ==, sizeof(info));
-+
-+    memset(&info, 0 , sizeof(info));
-+
-+    /* now read back the values we wrote and compare that they are the same */
-+    filesize = qfw_cfg_read_file(fw_cfg, qs, FW_CFG_VMCOREINFO_FILENAME,
-+                                &info, sizeof(info));
-+    g_assert_cmpint(filesize, ==, sizeof(info));
-+
-+    size = le32_to_cpu(info.size);
-+    paddr = le64_to_cpu(info.paddr);
-+    guest_format = le16_to_cpu(info.guest_format);
-+
-+    g_assert_cmpint(size, ==, 1 * MiB);
-+    g_assert_cmpint(paddr, ==, 0xffffff00);
-+    g_assert_cmpint(guest_format, ==, FW_CFG_VMCOREINFO_FORMAT_ELF);
-+
-+    pc_fw_cfg_uninit(fw_cfg);
-+    qtest_shutdown(qs);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    const char *arch = qtest_get_arch();
-+
-+    g_test_init(&argc, &argv, NULL);
-+
-+    if (strcmp(arch, "i386") && strcmp(arch, "x86_64")) {
-+        /* skip for non-x86 */
-+        exit(EXIT_SUCCESS);
-+    }
-+
-+    qtest_add_func("vmcoreinfo/basic-write",
-+                   test_vmcoreinfo_write_basic);
-+
-+    return g_test_run();
-+}
--- 
-2.45.2
+On 17/1/25 18:22, Nicholas Piggin wrote:
+> Add assertions to ensure a BAR is not mapped twice, and only
+> previously mapped BARs are unmapped. This can help catch some
+> bugs.
+> 
+> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   tests/qtest/libqos/ahci.h       |  1 +
+>   tests/qtest/libqos/pci.h        |  2 ++
+>   tests/qtest/libqos/virtio-pci.h |  1 +
+>   tests/qtest/ahci-test.c         |  2 ++
+>   tests/qtest/libqos/ahci.c       |  6 ++++++
+>   tests/qtest/libqos/pci.c        | 32 +++++++++++++++++++++++++++++++-
+>   tests/qtest/libqos/virtio-pci.c |  6 +++++-
+>   7 files changed, 48 insertions(+), 2 deletions(-)
 
+Maybe put the AHCI fix in a preliminary patch?
+
+> diff --git a/tests/qtest/libqos/pci.h b/tests/qtest/libqos/pci.h
+> index 83896145235..9dc82ea723a 100644
+> --- a/tests/qtest/libqos/pci.h
+> +++ b/tests/qtest/libqos/pci.h
+
+Consider using a definition rather than a magic value:
+
+   #define PCI_BAR_COUNT 6
+
+> @@ -65,6 +65,8 @@ struct QPCIDevice
+>   {
+>       QPCIBus *bus;
+>       int devfn;
+> +    bool bars_mapped[6];
+> +    QPCIBar bars[6];
+
+
+> diff --git a/tests/qtest/libqos/pci.c b/tests/qtest/libqos/pci.c
+> index a59197b9922..05089a5f24f 100644
+> --- a/tests/qtest/libqos/pci.c
+> +++ b/tests/qtest/libqos/pci.c
+> @@ -93,12 +93,17 @@ QPCIDevice *qpci_device_find(QPCIBus *bus, int devfn)
+>   void qpci_device_init(QPCIDevice *dev, QPCIBus *bus, QPCIAddress *addr)
+>   {
+>       uint16_t vendor_id, device_id;
+> +    int i;
+>   
+>       qpci_device_set(dev, bus, addr->devfn);
+>       vendor_id = qpci_config_readw(dev, PCI_VENDOR_ID);
+>       device_id = qpci_config_readw(dev, PCI_DEVICE_ID);
+>       g_assert(!addr->vendor_id || vendor_id == addr->vendor_id);
+>       g_assert(!addr->device_id || device_id == addr->device_id);
+> +
+> +    for (i = 0; i < 6; i++) {
+> +        g_assert(!dev->bars_mapped[i]);
+> +    }
+>   }
+
+
+> @@ -572,12 +579,35 @@ QPCIBar qpci_iomap(QPCIDevice *dev, int barno, uint64_t *sizeptr)
+>       }
+>   
+>       bar.addr = loc;
+> +
+> +    dev->bars_mapped[barno] = true;
+> +    dev->bars[barno] = bar;
+> +
+>       return bar;
+>   }
+>   
+>   void qpci_iounmap(QPCIDevice *dev, QPCIBar bar)
+>   {
+> -    /* FIXME */
+> +    static const int bar_reg_map[] = {
+> +        PCI_BASE_ADDRESS_0, PCI_BASE_ADDRESS_1, PCI_BASE_ADDRESS_2,
+> +        PCI_BASE_ADDRESS_3, PCI_BASE_ADDRESS_4, PCI_BASE_ADDRESS_5,
+> +    };
+> +    int bar_reg;
+> +    int i;
+> +
+> +    for (i = 0; i < 6; i++) {
+> +        if (!dev->bars_mapped[i]) {
+> +            continue;
+> +        }
+> +        if (dev->bars[i].addr == bar.addr) {
+> +            dev->bars_mapped[i] = false;
+> +            bar_reg = bar_reg_map[i];
+> +            qpci_config_writel(dev, bar_reg, 0xFFFFFFFF);
+> +            /* FIXME: the address space is leaked */
+> +            return;
+> +        }
+> +    }
+> +    g_assert_not_reached();
+>   }
+Regards,
+
+Phil.
 
