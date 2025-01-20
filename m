@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B645BA173D5
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 21:54:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 807E1A173E1
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 22:03:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZymd-0005md-Uv; Mon, 20 Jan 2025 15:54:08 -0500
+	id 1tZyuo-0001rz-Jc; Mon, 20 Jan 2025 16:02:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tZymA-0005Vo-Cv
- for qemu-devel@nongnu.org; Mon, 20 Jan 2025 15:53:40 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tZyub-0001cT-Db
+ for qemu-devel@nongnu.org; Mon, 20 Jan 2025 16:02:23 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tZym7-0008R7-O9
- for qemu-devel@nongnu.org; Mon, 20 Jan 2025 15:53:37 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4363ae65100so54189365e9.0
- for <qemu-devel@nongnu.org>; Mon, 20 Jan 2025 12:53:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tZyuY-0002wm-04
+ for qemu-devel@nongnu.org; Mon, 20 Jan 2025 16:02:21 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-5d88c355e0dso9482174a12.0
+ for <qemu-devel@nongnu.org>; Mon, 20 Jan 2025 13:02:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737406414; x=1738011214; darn=nongnu.org;
- h=content-transfer-encoding:subject:from:cc:to:content-language
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=e/T6FUXw2U17q5T/G0ZMwFbS3MJSG5yoD7pRY5rVIaQ=;
- b=ViQIdVDclNQdXNrLRaFUAWc0pfszjd09DpyNfNW81gbKyZKDSjMMN8fDPROrV6IPVR
- 9dV+L/pwGng5Qa15JV7ODAihqtImL63UvvhAtWe1Sux3Vv99Gkn0U2RegyAseMSXDK63
- Im89LEaKQOuQt/ezBmbnTbAxfRp3UzZPlnzZZbYmA5b16D/DG8xhTrKPJg2LqKUrS9v4
- bBaAUVCx9EZfljIzrIisQGCXR3VulvIGlEpxdkOLwVjLXev1C3zRAoqGIaji1ZfQVXq0
- I/QujEVIpW+Bi1ddHPQiIidsWlBdc4QQnrG1kv42bz6tk8Lh1tTSStbv0qEb0mxE40Mp
- QRJw==
+ d=linaro.org; s=google; t=1737406936; x=1738011736; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ihiKrKRxDJxLxAaYATB66nrO+RRpI0LPvSiH9m1+/fU=;
+ b=nG5pElsE0m1SeAyXGmYYpS3bWqCSYr8GZiedPTPZttIyxTP2P827n40JjHNX9didBu
+ 44f4g2EoxGofWARROosMsVrS15CpN+ot/Cdy8ieUobDYWlNjBugx5uNyRjL+1Svhl8OO
+ K6mEzs1UaoMMff6s8Uc9yvMNEdL8RE2RFDHcq8BvO56EGmV75zMF6YP6Z/CRtTnvlV3Q
+ xshxPDgEzWyWisqi6vtkjTzl70pw76I4ni2JZWWM9mOla4wOhw+98RO3qGAeZqGyPXQE
+ 5K0j2ljMwTXjP7EOdHKrG4GJ9lb9B63rU6orYDuzF61DCOK05NiDayPI2XJ+gfd+lIVg
+ czSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737406414; x=1738011214;
- h=content-transfer-encoding:subject:from:cc:to:content-language
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=e/T6FUXw2U17q5T/G0ZMwFbS3MJSG5yoD7pRY5rVIaQ=;
- b=N0L0bK3BRL7uET5VzphlI0L+YNRYX6xlJLl4Ba6+EJGqlxEcLCvCLntpSS1EAW+wQ2
- PP3//BtFg3oRgvFjBIAE775hUJOy18/VeKNcZq9+BuacI2IRif+Yke+bYjU1U/kv5Wjj
- vj+etR7f5Z86iz5Ik+v8NqbMfhrlncnnvkiwIbfXkr+D5WIOhS/w/X04SqXT4SblbRMM
- s/wBMK0aj1Xpl+yl9UNfEPDdSzMv5gms6LTp/gqET1tjqwUPMOLNDopnWQRrmeP7g+p5
- +Ktmi4WjqDyHMGPnTia+Zhkj9D/z+/Y4bR7XEiq6y5o2EtamXOofZhTV74z/dh4WXZxg
- PPSw==
-X-Gm-Message-State: AOJu0YwjVhn1sU/SVhdp8/+exH72xizk8acQe6Lw1b/YSSUcr8jNNU7x
- 9LPQ2Dtv5Qyct/nEF9m24P1tFcR59R0QXeQ5elHmDroG7QqEsDeeOGDlsB1Jl2Y=
-X-Gm-Gg: ASbGncsEipLDCVn7Mo0IWFuyVZKyv7MwJOA/Qg4X6sLiJZxqaqXxYczSQeSl9CwQmz/
- Ko/gTgtltzpl+GLd9euuGcNC62DlNvu6/3wBdgaT70ubNu1Tnv8kw90xdThlIRslI5M1jrVuwQ/
- ZLvgDX3HP5WSN9NugvbavWR5J8toMeMmW2iJas8A7XrNYHg5d9wMWWTTvrkqyO/TLldLPJqjcuQ
- D9J4XUircCMQ22XYgb2ArTS4ayNe4SKcFabMGIlb2Syg6YZqMsUeWjQR7BL/Sjye+fmi9oDdtjz
- GUKACJvlaakChl20N40F3ft7Y+5816Gy5Ndg+g==
-X-Google-Smtp-Source: AGHT+IG/Ch/XqdOeqjfD2tHzoZ6ai9XIVmXxhDxvcHb+uK9TDnLjGNfateWYG1oEaRDb1Ait1PcWkQ==
-X-Received: by 2002:a05:600c:4f47:b0:430:57e8:3c7e with SMTP id
- 5b1f17b1804b1-43891453ab8mr124583665e9.28.1737406413705; 
- Mon, 20 Jan 2025 12:53:33 -0800 (PST)
-Received: from [192.168.69.181] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43890413795sm150223055e9.14.2025.01.20.12.53.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Jan 2025 12:53:33 -0800 (PST)
-Message-ID: <3709ba37-fa92-467a-ba3c-85355762e0e9@linaro.org>
-Date: Mon, 20 Jan 2025 21:53:32 +0100
+ d=1e100.net; s=20230601; t=1737406936; x=1738011736;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ihiKrKRxDJxLxAaYATB66nrO+RRpI0LPvSiH9m1+/fU=;
+ b=TCbVHBpC4UTv5195w77CDbxTbvzioCl4km8Zv2fIF8nU2YadKRr90KFfGqKFAKun7L
+ tmzcPy9QJ+GWnkwVTaOusgosTf0HyyItyPfezh+/wboEB9Uy1H9sB++TdBbh2DLySHcg
+ JF7sWKg+kDthSm5My65qqAugY2PIdWG4JAiu+cLnLsZAuXgvc1IBEUa5IocVeQpBhZ1d
+ T3p+puZqetRsJGZl/lrVmd7UjxbEwCK4clfNnYXHATeqYkTGk6UjM8gKzmX6WgKGI1Jo
+ aMs+ajeMI9OM2FxHUrcx9by5a77eel9V8kjUblKfJVvF5qOEU6TCIXm2XrLNH6btZ2LY
+ G/9A==
+X-Gm-Message-State: AOJu0Yx2Z0fn6BN7g/vcFnKY63/JyCbeulX6ei8KH/eRQCgR6JN1KaKz
+ 7NJa1G6jV2vqNhNuVcpo8HrRP4lJrKMPlfG/NQE+VP3LIFAC71cR/J3pnwS4VtXkK2UKA4gXlR3
+ /mKc=
+X-Gm-Gg: ASbGncuBldjW8y5mE0x49I16aySmEiehyw4CzzDicUN4rzvRI+tO2baXetRFDuUXNKp
+ jb80ig/5gWeYF1Yrfwx1GgSLEuB8g3PM1+/Xg2KfxN8bf6nDmc6QZ7XWJovXz5Eu2HAySECitIf
+ AEoCKxY08U1qGEr7mnmopoq+bqbelvONVrtKDbz4FWuiAggcfiTIY9v9E8EfG9bViLAiFpdl5Dy
+ zW9Fr41lRbbVLORoK25mMJAgW10PcPh2Aj45uI4WQnoQ0LX3SiH146A11cfXt4P8aOi
+X-Google-Smtp-Source: AGHT+IHBHe/qLI/S6AsR179BQPMj/PPC/XwLLOL1fS9l1j4mvLxhnswmVJBmSvcVm77xJ+0uZKUl9g==
+X-Received: by 2002:a05:6402:2110:b0:5cf:e894:8de9 with SMTP id
+ 4fb4d7f45d1cf-5db7d2e7da7mr13973182a12.3.1737406936337; 
+ Mon, 20 Jan 2025 13:02:16 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5db73670dbbsm6283722a12.28.2025.01.20.13.02.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 20 Jan 2025 13:02:15 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id DCFB15F713;
+ Mon, 20 Jan 2025 21:02:12 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, qemu-arm@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH 0/7] testing/next (qtest timer stuff)
+Date: Mon, 20 Jan 2025 21:02:05 +0000
+Message-Id: <20250120210212.3890255-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Alberto Garcia <berto@igalia.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>, Thomas Huth <thuth@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: hw/ipack: Is IndustryPack still useful to maintain?
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,19 +98,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Alberto,
+Hi,
 
-You are listed as odd-fix maintainer for IPack.
+Thomas found that a number of tests fail under CFI and other exotic
+setups. The eventual realisation was that --enable-slirp masks a lot
+of timer misuse because it ensures there is always a timer and
+therefor things tend to move on (until the system is shutting down).
 
-After your contribution in 2012, I only see maintenance
-changes on this code (besides test addition by Andreas in 2014).
+It turns out that bc02be4508 wasn't the solution after all. The first
+few patches are clean-ups and various tightening of test expectations
+before we revert the patch.
 
-Is it still worthwhile maintaining this code? If so, can we
-have real world tests? I'm updating legacy APIs and these
-files use some; and I wonder how many community effort it is
-worth to invest here.
+Please review:
 
-Thanks,
+  Revert "util/timer: avoid deadlock when shutting down"
+  tests/qtest: tighten up the checks on clock_step
+  tests/qtest: rename qtest_send_prefix and roll-up into qtest_send
+  tests/qtest: simplify qtest_process_inbuf
+  tests/qtest: don't step clock at start of npcm7xx periodic IRQ test
+  tests/qtest: don't attempt to clock_step while waiting for virtio ISR
+  tests/docker: replicate the check-rust-tools-nightly CI job
 
-Phil.
+Alex.
+
+Alex Bennée (7):
+  tests/docker: replicate the check-rust-tools-nightly CI job
+  tests/qtest: don't attempt to clock_step while waiting for virtio ISR
+  tests/qtest: don't step clock at start of npcm7xx periodic IRQ test
+  tests/qtest: simplify qtest_process_inbuf
+  tests/qtest: rename qtest_send_prefix and roll-up into qtest_send
+  tests/qtest: tighten up the checks on clock_step
+  Revert "util/timer: avoid deadlock when shutting down"
+
+ include/system/qtest.h                 |  1 -
+ hw/ppc/spapr_rtas.c                    |  1 -
+ hw/riscv/riscv_hart.c                  |  1 -
+ system/qtest.c                         | 53 +++++++++-----------------
+ tests/qtest/libqos/virtio-pci-modern.c |  6 +--
+ tests/qtest/libqos/virtio-pci.c        |  6 +--
+ tests/qtest/npcm7xx_timer-test.c       |  1 -
+ util/qemu-timer.c                      | 16 ++------
+ tests/docker/Makefile.include          |  3 ++
+ tests/docker/test-rust                 | 21 ++++++++++
+ 10 files changed, 48 insertions(+), 61 deletions(-)
+ create mode 100755 tests/docker/test-rust
+
+-- 
+2.39.5
+
 
