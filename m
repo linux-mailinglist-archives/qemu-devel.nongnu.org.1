@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23826A17435
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 22:35:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6235EA17437
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 22:35:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZzPY-0005mu-4d; Mon, 20 Jan 2025 16:34:20 -0500
+	id 1tZzPk-0005np-2P; Mon, 20 Jan 2025 16:34:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tZzPD-0005iY-Nx
- for qemu-devel@nongnu.org; Mon, 20 Jan 2025 16:33:59 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tZzPF-0005jC-2K
+ for qemu-devel@nongnu.org; Mon, 20 Jan 2025 16:34:02 -0500
 Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tZzPA-0000w1-Pd
- for qemu-devel@nongnu.org; Mon, 20 Jan 2025 16:33:58 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tZzPD-0000wh-FB
+ for qemu-devel@nongnu.org; Mon, 20 Jan 2025 16:34:00 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id DEE705C5E4E;
- Mon, 20 Jan 2025 21:33:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FC3C4CEE0;
- Mon, 20 Jan 2025 21:33:47 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTP id B2EF25C5E4F;
+ Mon, 20 Jan 2025 21:33:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C60FC4CEDD;
+ Mon, 20 Jan 2025 21:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1737408829;
- bh=ccz5LM+xc8j0WKFoIHGpIfYu4qedCCNtwYrf+iuAPzY=;
+ s=k20201202; t=1737408830;
+ bh=Ovgym6COY+4COyqSeNlwwKYtZTk/Tq2Ej2TcJmZIyic=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=DS0Zmd1939gRRIXbXGh+heY73ujrYY18lgrHVBHZkGuLIarXqog//en0fMuCsIXG4
- IsT/3+Mr4PXR62ZPf148X+m1A/ffvAD3Q3v9gmPE/089cCuHT9C6nX5p9GSQJjjLVQ
- E6dHkIB+B/zCIPjHUxsikqKmtMzb4uzF3iETHj/Jow5kYjYFMIoHSdTUEv0FQosxPZ
- gs31Fbb0qR9zT7XHxN3Gr7D4n5T7kzUrIQssp45V33ixmfCSM0Y6FRAc9vG/5flpFx
- cJVqrA6VidoPVPthblTlqjrQwwJGME6p1BbdS5JY9Pzl4B3M9LOBMykOXQFEFKt/dU
- 5vVztGVkfBqAw==
+ b=Xx5wspfvHjB0XdZ/mjQRujjxiSA4xgHfcwhYTUf4RQONH5waZWYM5UeOsw7nzWvNs
+ gSrUkj2TIBZ0oyoDRWgwzVKl798/mb3cFgh24YPzQrSIIMsh2Vu7XhDjJL8ve2vPCm
+ C5uQKd9en1Mr3mn3Th/AJYwleoeHj1Ac52puChKHDiOQ/eMpkiRe13EEaE++T1ZoJa
+ ttS51wFtUuJ7p3ebUkQ+g5qdAtmA1wr89sH4B8jjrTrnjYDSnLj3SP9PWH7s8cuocK
+ faTzaGyG+R1rUH344rscYUkuGn1QrJuzLJCe+/zl5J/0QTLMRCwVNmlllmSwUWdI+P
+ F55kRH0zRJhIg==
 From: deller@kernel.org
 To: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org,
  Stefan Hajnoczi <stefanha@gmail.com>
 Cc: deller@gmx.de
-Subject: [PATCH v4 3/7] linux-user: netlink: Add IP_PKTINFO cmsg parsing
-Date: Mon, 20 Jan 2025 22:33:36 +0100
-Message-ID: <20250120213340.359195-4-deller@kernel.org>
+Subject: [PATCH v4 4/7] linux-user: netlink: Add emulation of IP_MULTICAST_IF
+Date: Mon, 20 Jan 2025 22:33:37 +0100
+Message-ID: <20250120213340.359195-5-deller@kernel.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250120213340.359195-1-deller@kernel.org>
 References: <20250120213340.359195-1-deller@kernel.org>
@@ -72,54 +72,72 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Fixes those warnings:
- Unsupported host ancillary data: 0/8
+Add IP_MULTICAST_IF and share the code with IP_ADD_MEMBERSHIP / IP_DROP_MEMBERSHIP.
+Sharing the code makes sense, because the manpage of ip(7) says:
+
+IP_MULTICAST_IF (since Linux 1.2)
+      Set the local device for a multicast socket.  The argument
+      for setsockopt(2) is an ip_mreqn or (since Linux 3.5)
+      ip_mreq structure similar to IP_ADD_MEMBERSHIP, or an
+      in_addr structure.  (The kernel determines which structure
+      is being passed based on the size passed in optlen.)  For
+      getsockopt(2), the argument is an in_addr structure.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 ---
- linux-user/syscall.c      | 10 ++++++++++
- linux-user/syscall_defs.h |  6 ++++++
- 2 files changed, 16 insertions(+)
+ linux-user/syscall.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index a157abc40c..df8609b4d8 100644
+index df8609b4d8..6ee02383da 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -1998,6 +1998,16 @@ static inline abi_long host_to_target_cmsg(struct target_msghdr *target_msgh,
-                     (void *) &errh->offender, sizeof(errh->offender));
-                 break;
+@@ -2130,16 +2130,23 @@ static abi_long do_setsockopt(int sockfd, int level, int optname,
              }
-+            case IP_PKTINFO:
-+            {
-+                struct in_pktinfo *pkti = data;
-+                struct target_in_pktinfo *target_pi = target_data;
-+
-+                __put_user(pkti->ipi_ifindex, &target_pi->ipi_ifindex);
-+                target_pi->ipi_spec_dst.s_addr = pkti->ipi_spec_dst.s_addr;
-+                target_pi->ipi_addr.s_addr = pkti->ipi_addr.s_addr;
-+                break;
+             ret = get_errno(setsockopt(sockfd, level, optname, &val, sizeof(val)));
+             break;
++        case IP_MULTICAST_IF:
+         case IP_ADD_MEMBERSHIP:
+         case IP_DROP_MEMBERSHIP:
+         {
+             struct ip_mreqn ip_mreq;
+             struct target_ip_mreqn *target_smreqn;
++            int min_size;
+ 
+             QEMU_BUILD_BUG_ON(sizeof(struct ip_mreq) !=
+                               sizeof(struct target_ip_mreq));
+ 
+-            if (optlen < sizeof (struct target_ip_mreq) ||
++            if (optname == IP_MULTICAST_IF) {
++                min_size = sizeof(struct in_addr);
++            } else {
++                min_size = sizeof(struct target_ip_mreq);
 +            }
-             default:
-                 goto unimplemented;
++            if (optlen < min_size ||
+                 optlen > sizeof (struct target_ip_mreqn)) {
+                 return -TARGET_EINVAL;
              }
-diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
-index faad9147c9..86d773add7 100644
---- a/linux-user/syscall_defs.h
-+++ b/linux-user/syscall_defs.h
-@@ -2622,6 +2622,12 @@ struct target_ucred {
-     abi_uint gid;
- };
- 
-+struct target_in_pktinfo {
-+    abi_int               ipi_ifindex;
-+    struct target_in_addr ipi_spec_dst;
-+    struct target_in_addr ipi_addr;
-+};
-+
- typedef abi_int target_timer_t;
- 
- #define TARGET_SIGEV_MAX_SIZE 64
+@@ -2149,13 +2156,14 @@ static abi_long do_setsockopt(int sockfd, int level, int optname,
+                 return -TARGET_EFAULT;
+             }
+             ip_mreq.imr_multiaddr.s_addr = target_smreqn->imr_multiaddr.s_addr;
+-            ip_mreq.imr_address.s_addr = target_smreqn->imr_address.s_addr;
+-            if (optlen == sizeof(struct target_ip_mreqn)) {
+-                ip_mreq.imr_ifindex = tswapal(target_smreqn->imr_ifindex);
+-                optlen = sizeof(struct ip_mreqn);
++            if (optlen >= sizeof(struct target_ip_mreq)) {
++                ip_mreq.imr_address.s_addr = target_smreqn->imr_address.s_addr;
++                if (optlen >= sizeof(struct target_ip_mreqn)) {
++                    __put_user(target_smreqn->imr_ifindex, &ip_mreq.imr_ifindex);
++                    optlen = sizeof(struct ip_mreqn);
++                }
+             }
+             unlock_user(target_smreqn, optval_addr, 0);
+-
+             ret = get_errno(setsockopt(sockfd, level, optname, &ip_mreq, optlen));
+             break;
+         }
 -- 
 2.47.0
 
