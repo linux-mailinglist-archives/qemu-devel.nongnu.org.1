@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C092A173BD
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 21:43:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 595DFA173A5
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Jan 2025 21:39:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tZyXj-00047z-FC; Mon, 20 Jan 2025 15:38:43 -0500
+	id 1tZyXm-00048O-3v; Mon, 20 Jan 2025 15:38:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tZyXW-00044Y-4X; Mon, 20 Jan 2025 15:38:30 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ id 1tZyXW-000459-EU; Mon, 20 Jan 2025 15:38:30 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tZyXU-0002aY-5p; Mon, 20 Jan 2025 15:38:29 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5d3e6f6cf69so8016296a12.1; 
- Mon, 20 Jan 2025 12:38:27 -0800 (PST)
+ id 1tZyXV-0002ac-14; Mon, 20 Jan 2025 15:38:30 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5d96944401dso8752993a12.0; 
+ Mon, 20 Jan 2025 12:38:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737405506; x=1738010306; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1737405507; x=1738010307; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dJh/wjKW7N+k5IBXoYv5hsPWIKX+2pFf2CEXXareyRo=;
- b=cTnHKD9LAf4S+lfsqbf6h5+un9RWErs/Xfzyh7W6CfLes3tHFWQPM5eeqsEessB0Br
- 0icxr/LKxutwry1eFOLqf5YTO1RJCrGT20kyI1Ej8I4WbYIh1mf/kL6N+jkvRlfVvttS
- ymAc2m00U6DI96Rlx2jGDEmJObGpr8/V+5Y2IMVLgkWpq5ugjCNjP9B5Xlgqo7c0d/U6
- eot/KPTbdbJZLT5/5PaD86vjkXta8vx4cCWGtMGE2cTwiwEFav15A8WiQ1JB0HUAqElo
- tl5ylZKxmPfmnRTw6cOAP5ZWfKsx+qGabp8MbySo5keWmxJX3lBa+8J9okzcfwOIPXAP
- 4tcA==
+ bh=Dduh5qxzvgywVTMZ79RZj2ewixgRwgKTdJW6HsnUmTY=;
+ b=LQeKg4HvlHJ1q90PlT6FXHOpo/i6xAM6CBd9lvnMi3P4HZWOgqadfJpEJ0z1nwy8P+
+ w+gJaIihI7m1aU+c4ivxwCCZ8jIZXmHNjcLUztYOva/OGsoaxyddkl2q2fdyJuJvf+h7
+ 3FOP7oTkztQMRjGfKE2+uX0FVCZBLce8LqOPMjeedXww8fJudXAzDcezzjjCKo5HW5so
+ K9CYmwvXZgwMTNsabG9Ct6cKiVMLRL8jX1AeKNi8ulqOzQh4rTY/iYkvsLSb9izOZnSs
+ orKUKotuWeig0HVco1Xyu745qjeIDjgdDEwUylzR60Pi6LQJ8vGxffrbN1LgsYNamKcf
+ 2FyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737405506; x=1738010306;
+ d=1e100.net; s=20230601; t=1737405507; x=1738010307;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dJh/wjKW7N+k5IBXoYv5hsPWIKX+2pFf2CEXXareyRo=;
- b=S5mK0m3GHjYoGlu8wna+jZxdI5gWaG48mSSBXkcdQWrR+ll9n0aSggDYwZwKs0B6bo
- MdEMuSwt7GGPrSdVc1/lDcHpCnDEc74FWYdFCaExOn8CRgQ4UJt0sysu+p8Xo/xGrD03
- b886OUVaKtMM0drPIsGa9V31HNarz+nq94duJQovRHmdeTSwETxca4KiH32nM5ENOhad
- 6Qi6LjESLX9+M9rXEhtzJFfkG1BKIdUZLZYbTS0T8KOrBR2gLmvqgMvOaelQaHXvYRyu
- 4gEZWJzUixqy7vyPt1nu4kHJ7PLmWZChmJFR4AkeX6A7lGMqKIZ1uyk9M+lMcNRoRfUe
- raAg==
+ bh=Dduh5qxzvgywVTMZ79RZj2ewixgRwgKTdJW6HsnUmTY=;
+ b=MMwKxaVjVsc+Z6LR7QEbEXdEanCBISqIXaxE03dNr+2TMV7cZ6NfJ5PMQ8KsZcVN8H
+ Uh0m+lSk1FzjkdMGN3SGwGwpaMOJyrulOsldyVXqs8AX8OsmodC05hM7+bPDExNsPZqI
+ W7y4fdo3WUUOHDaQSAhpYQ2w7BcSga0uFZ+IEgBi0/DP7m4YSX5BWZbIWfEydtlFvvbd
+ IV9/O1m5W9cLT1mGq4IDehkfptoLz5xuZXXku+uDj7lWhAizElGYt6SX2w6eJvTFFcLi
+ KumYvq6KE66MjaDE5OTNr0zzzi/zXvrncuNl8mHZP2LxZRLNIUjvTHjzZjMF0Sw3L7Dz
+ yCkw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUz+M0g9tQpnFKHvfdJHq45CHU+HCzdY/+lj8KwBWGXhNJod5jRvtL2R2F9kqtNotLi8ThE1mddRg==@nongnu.org
-X-Gm-Message-State: AOJu0YzvrOjrcwKDP5v1V+0B/RHibaqhwMU+hNzN9q1xIVMot2WdO1yv
- An9s+YP8TNteeO9sBtapoE0PsJdacYiAsbF/gc8VMTvZ5qN5aQ1mZjVbDJHM
-X-Gm-Gg: ASbGncs4TxFdvauwuIxfC2fEWQYVxvp26W/4QGdAZpmbkrnLQdPfprRv07Q3peXvCOa
- AkxgHSlZAHvz731veKN7mCQQJUtz45ozwov2leXhCkXUKDmnYRl13MPFzxfuwgQ3ixL5bgHAnFQ
- bal6yKMkQCqTvYgg9rHsUljXyEzAv9vb+gzivmLeremzHdWFduesoSwbGvPeP4BkfMnXxarNM+H
- lBTuMds4zE2Fjdl6/9LsPdZYnv0K9aOlHGB+bNlWcXeLUGU6EBZYk9QozADFuqbpjTJPqsTU0Vy
- APKplCgSX/6tL7HNPFaZifEf5wg9FBCFRqupArd73eviEk2pqneb7vY7pviD
-X-Google-Smtp-Source: AGHT+IG0oJGcY0XP+0b3aSAFoCPun5qjE3H2KQpRXBC7N1guHlv9qXlvThhRVP1Ich4eXMHK3eRT1A==
-X-Received: by 2002:a05:6402:2341:b0:5d9:f5c4:a227 with SMTP id
- 4fb4d7f45d1cf-5db7d3550camr12529766a12.20.1737405505808; 
- Mon, 20 Jan 2025 12:38:25 -0800 (PST)
+ AJvYcCWG1fFhpDkMGAF8QKX/w+UuZwTFOzCwaWL+BRmYEAT44ALCfW+93Gt5G1AFLbDR2GcqQM9jbL1HQw==@nongnu.org
+X-Gm-Message-State: AOJu0YzwSqKYv8GMXP59V/cF/mF4oaNJiHhErgWLjkAbgvU3O4EjH67v
+ OYDIwVHgLvFh7N2Vl7uhM2DoRM7raTg5k/5PDRY2XFD5r9CZH03xTrGN0Sf5
+X-Gm-Gg: ASbGncvub88i6gwxR0T//6DL8sIR7u9KrveVRtdckeBB/J0lX9YJXhjG1FB+DGtZrHy
+ NAhyaq5wCu2wNdTKa6Ql0kwSV7Yu6NecWeuHuHYOrZjoXx7Rds7UH3VjEJx1PXumtyb1t7XeWqO
+ kdlHdo3KQRk6XEAm/ZYdqqQDW+rbKqgN50tUpgoHMpst9bJDWV+bOyTWw2xahS4pDC123yJKai6
+ nSSeJvbnu5Fuib1o3g/mcskspHJMJhsTmClRuHf8U8ADF7E9/ct9M6kntG/lX/bf/xt7v1Sbx79
+ xlT61MsRLtYj8sxDzAEgVt7trze+WytwdigzymlO8aVmsTV7Bw9qwcQ1BlKL
+X-Google-Smtp-Source: AGHT+IEYHyK1T2usOsqekOItcjP2iVn8VtsKNgVmfIzQzGZNZJEvlGa7nFj7j+mmxlxc6s0AjqNorA==
+X-Received: by 2002:a17:907:7243:b0:aa6:87e8:1d08 with SMTP id
+ a640c23a62f3a-ab38b0b9b3amr1278335866b.8.1737405506640; 
+ Mon, 20 Jan 2025 12:38:26 -0800 (PST)
 Received: from Provence.localdomain
  (dynamic-077-183-181-102.77.183.pool.telefonica.de. [77.183.181.102])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5db7364258csm6021077a12.1.2025.01.20.12.38.24
+ 4fb4d7f45d1cf-5db7364258csm6021077a12.1.2025.01.20.12.38.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 20 Jan 2025 12:38:24 -0800 (PST)
+ Mon, 20 Jan 2025 12:38:26 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -72,16 +72,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Andrey Smirnov <andrew.smirnov@gmail.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 20/21] hw/i2c: Import TCA6416 emulation from Xilinx
-Date: Mon, 20 Jan 2025 21:37:47 +0100
-Message-ID: <20250120203748.4687-21-shentey@gmail.com>
+Subject: [PATCH 21/21] hw/gpio/imx_gpio: Don't clear input GPIO values upon
+ reset
+Date: Mon, 20 Jan 2025 21:37:48 +0100
+Message-ID: <20250120203748.4687-22-shentey@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250120203748.4687-1-shentey@gmail.com>
 References: <20250120203748.4687-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,211 +105,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Xilinx QEMU implements a TCA6416 device model which may be useful for the
-broader QEMU community, so upstream it. In the Xilinx fork, the device model
-gets compiled whenever CONFIG_CADENCE is true, so have it maintained by the
-"hw/*/cadence_*" maintainers.
-
-The code is based on Xilinx QEMU version xilinx_v2024.2 plus the following
-modifications:
-* Use OBJECT_DECLARE_SIMPLE_TYPE()
-* Port from DPRINTF() to trace events
-* Follow QEMU conventions for naming of state struct
-* Rename type to not contain a ','
-* Use DEFINE_TYPES() macro
-* Implement under hw/gpio since device is i2c client and gpio provider
-* Have dedicated Kconfig switch
+Input GPIO values such as a present SD card may get notified before the GPIO
+controller itself gets reset. Claring the input values thus loses data. Assuming
+that input GPIO events are only fired when the state changes, the input values
+shouldn't be reset.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-
---
-I have a use for TCA6416 emulation. Question: Are Xilinx Zynq maintainers
-willing to maintain this device model?
 ---
- MAINTAINERS          |   1 +
- hw/gpio/tca6416.c    | 122 +++++++++++++++++++++++++++++++++++++++++++
- hw/gpio/Kconfig      |   5 ++
- hw/gpio/meson.build  |   1 +
- hw/gpio/trace-events |   4 ++
- 5 files changed, 133 insertions(+)
- create mode 100644 hw/gpio/tca6416.c
+ hw/gpio/imx_gpio.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7531d65429..0cac9c90bc 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1030,6 +1030,7 @@ S: Maintained
- F: hw/*/xilinx_*
- F: hw/*/cadence_*
- F: hw/misc/zynq_slcr.c
-+F: hw/gpio/tca6416.c
- F: hw/adc/zynq-xadc.c
- F: include/hw/misc/zynq_slcr.h
- F: include/hw/adc/zynq-xadc.h
-diff --git a/hw/gpio/tca6416.c b/hw/gpio/tca6416.c
-new file mode 100644
-index 0000000000..81ed7a654d
---- /dev/null
-+++ b/hw/gpio/tca6416.c
-@@ -0,0 +1,122 @@
-+/*
-+ * QEMU model of TCA6416 16-Bit I/O Expander
-+ *
-+ * Copyright (c) 2018 Xilinx Inc.
-+ *
-+ * Written by Sai Pavan Boddu <sai.pavan.boddu@xilinx.com>
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ */
-+#include "qemu/osdep.h"
-+#include "hw/i2c/i2c.h"
-+#include "trace.h"
-+
-+#define TYPE_TCA6416 "tca6416"
-+OBJECT_DECLARE_SIMPLE_TYPE(Tca6416State, TCA6416)
-+
-+#define IN_PORT0    0
-+#define IN_PORT1    1
-+#define OUT_PORT0   2
-+#define OUT_PORT1   3
-+#define POL_INV0    4
-+#define POL_INV1    5
-+#define CONF_PORT0  6
-+#define CONF_PORT1  7
-+#define RMAX (CONF_PORT1 + 1)
-+
-+enum tca6416_events {
-+     ADDR_DONE,
-+     ADDRESSING,
-+};
-+
-+struct Tca6416State {
-+     I2CSlave i2c;
-+
-+     uint8_t addr;
-+     uint8_t state;
-+     uint8_t regs[RMAX];
-+};
-+
-+static uint8_t tca6416_read(I2CSlave *i2c)
-+{
-+    Tca6416State *s = TCA6416(i2c);
-+    uint8_t ret;
-+
-+    ret = s->regs[s->addr];
-+    trace_tca6416_read(ret);
-+    return ret;
-+}
-+
-+static int tca6416_write(I2CSlave *i2c, uint8_t data)
-+{
-+    Tca6416State *s = TCA6416(i2c);
-+
-+    trace_tca6416_write(data);
-+    if (s->state == ADDRESSING) {
-+        s->addr = data;
-+    } else {
-+        s->regs[s->addr] = data;
-+    }
-+
-+    return 0;
-+}
-+
-+static void tca6416_realize(DeviceState *dev, Error **errp)
-+{
-+    Tca6416State *s = TCA6416(dev);
-+
-+    s->regs[CONF_PORT0] = 0xFF;
-+    s->regs[CONF_PORT1] = 0xFF;
-+}
-+
-+static int tca6416_event(I2CSlave *i2c, enum i2c_event event)
-+{
-+    Tca6416State *s = TCA6416(i2c);
-+
-+    switch (event) {
-+    case I2C_START_SEND:
-+        s->state = ADDRESSING;
-+        break;
-+    default:
-+         s->state = ADDR_DONE;
-+    };
-+    return 0;
-+}
-+
-+static void tca6416_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    I2CSlaveClass *k = I2C_SLAVE_CLASS(klass);
-+
-+    dc->realize = tca6416_realize;
-+    k->recv = tca6416_read;
-+    k->send = tca6416_write;
-+    k->event = tca6416_event;
-+}
-+
-+static const TypeInfo tca6416_types[] = {
-+    {
-+        .name = TYPE_TCA6416,
-+        .parent = TYPE_I2C_SLAVE,
-+        .class_init = tca6416_class_init,
-+        .instance_size = sizeof(Tca6416State),
-+    }
-+};
-+
-+DEFINE_TYPES(tca6416_types)
-diff --git a/hw/gpio/Kconfig b/hw/gpio/Kconfig
-index c423e10f59..a240cf2de2 100644
---- a/hw/gpio/Kconfig
-+++ b/hw/gpio/Kconfig
-@@ -20,5 +20,10 @@ config PCF8574
-     bool
-     depends on I2C
+diff --git a/hw/gpio/imx_gpio.c b/hw/gpio/imx_gpio.c
+index 549a281ed7..25546221e0 100644
+--- a/hw/gpio/imx_gpio.c
++++ b/hw/gpio/imx_gpio.c
+@@ -298,7 +298,6 @@ static void imx_gpio_reset(DeviceState *dev)
  
-+config TCA6416
-+    bool
-+    depends on I2C
-+    default y if I2C_DEVICES
-+
- config ZAURUS_SCOOP
-     bool
-diff --git a/hw/gpio/meson.build b/hw/gpio/meson.build
-index 74840619c0..b3ff7c7460 100644
---- a/hw/gpio/meson.build
-+++ b/hw/gpio/meson.build
-@@ -18,3 +18,4 @@ system_ss.add(when: 'CONFIG_STM32L4X5_SOC', if_true: files('stm32l4x5_gpio.c'))
- system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files('aspeed_gpio.c'))
- system_ss.add(when: 'CONFIG_SIFIVE_GPIO', if_true: files('sifive_gpio.c'))
- system_ss.add(when: 'CONFIG_PCF8574', if_true: files('pcf8574.c'))
-+system_ss.add(when: 'CONFIG_TCA6416', if_true: files('tca6416.c'))
-diff --git a/hw/gpio/trace-events b/hw/gpio/trace-events
-index cea896b28f..6724f2efb8 100644
---- a/hw/gpio/trace-events
-+++ b/hw/gpio/trace-events
-@@ -46,3 +46,7 @@ stm32l4x5_gpio_read(char *gpio, uint64_t addr) "GPIO%s addr: 0x%" PRIx64 " "
- stm32l4x5_gpio_write(char *gpio, uint64_t addr, uint64_t data) "GPIO%s addr: 0x%" PRIx64 " val: 0x%" PRIx64 ""
- stm32l4x5_gpio_update_idr(char *gpio, uint32_t old_idr, uint32_t new_idr) "GPIO%s from: 0x%x to: 0x%x"
- stm32l4x5_gpio_pins(char *gpio, uint16_t disconnected, uint16_t high) "GPIO%s disconnected pins: 0x%x levels: 0x%x"
-+
-+# tca6416.c
-+tca6416_write(uint8_t value) "0x%02x"
-+tca6416_read(uint8_t value) "0x%02x"
+     s->dr       = 0;
+     s->gdir     = 0;
+-    s->psr      = 0;
+     s->icr      = 0;
+     s->imr      = 0;
+     s->isr      = 0;
 -- 
 2.48.1
 
