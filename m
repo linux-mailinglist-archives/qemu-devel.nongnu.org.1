@@ -2,55 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE148A175E4
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E7F7A175E2
 	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 03:16:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ta3nJ-00023W-TB; Mon, 20 Jan 2025 21:15:09 -0500
+	id 1ta3nK-00023j-8V; Mon, 20 Jan 2025 21:15:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1ta3nH-000235-Ha
- for qemu-devel@nongnu.org; Mon, 20 Jan 2025 21:15:07 -0500
+ id 1ta3nI-00023D-0Z
+ for qemu-devel@nongnu.org; Mon, 20 Jan 2025 21:15:08 -0500
 Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1ta3nF-0002bj-4e
+ id 1ta3nG-0002n1-DL
  for qemu-devel@nongnu.org; Mon, 20 Jan 2025 21:15:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737425705; x=1768961705;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=twlGqArSii9kEA2RCj+H8LMbUnuyTZAHn+IKIhMzHDg=;
- b=cWo1YumcKq2nUdndTfjhPJInPlPZEGJR1NqWdX2Kvw9nQfOMkYvIsNkq
- ic+9OII/8jSOIGzg2VMLqmcsdmf/U+iBqx9jEzZUuRQdVZjzQaYv2IyJk
- D3NMCuKKaoDu9fGukjUiOtx3iym3tkcp8eXyiWFDoQkeL82D34TzPuCIu
- tGnja8h+PE+6O94OJmj5gcPqIr+XLif+7BWoHQPXgoa0K6pWtJRXr3cbw
- ZiRMQcBiyuMi7fAclZCV4ffEIHDlZnlTjuGAXT97TtAxrfz6czTOJ8YDF
- Yd1tzJl7pm1ycpa9+Weo1wrTKfSnhWvyaq8k7E5a7KgWVWc2NPV68XSsU A==;
-X-CSE-ConnectionGUID: lYIZ7kTdR7ijAdBvbAAYiA==
-X-CSE-MsgGUID: fvCoycA2St6UgNfjfvK17Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11321"; a="48320153"
-X-IronPort-AV: E=Sophos;i="6.13,220,1732608000"; d="scan'208";a="48320153"
+ t=1737425707; x=1768961707;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=XTfta7ONUOxsfA5PdRCrhWIh3f0K363C/r73/SFk49A=;
+ b=Voq3Qp4FGenBjmFQm/quQ2ST4GC+VBet6oK2jfjoqTwehUvv2utibdS8
+ ciTzPWAphMfzg3LlfSTrfv7g/8mvJH2sEx41GfkUoKxUrT3JRETiM9KGL
+ cA8gN134hGe5qHvzQKVD7I7bAqTWEClqSP8vPTNiEp3EWTg6q+jBHIrqK
+ 5sFqXbER5Bk8u0AfajL4QycitYEiT2G6VBsyw4+D1S0ijPhjBrEZ+LzYU
+ RwdmrdrnvYJzhZMxKCroyfhdpt04iukvHPjwo/TQTzGszqxWQZG4zE1tp
+ wKyx2a2mFDMID1ggGTDsyYk2T8J5Am9ltXMjlVozrdpbQxsHoKRI0gKX/ Q==;
+X-CSE-ConnectionGUID: AqsktypUSoyFS7ev089tQw==
+X-CSE-MsgGUID: 1ZdVNK0KRK6DCRdisklguA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11321"; a="48320155"
+X-IronPort-AV: E=Sophos;i="6.13,220,1732608000"; d="scan'208";a="48320155"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2025 18:15:01 -0800
-X-CSE-ConnectionGUID: gCk7wlsdSxq94+X+UEIeDg==
-X-CSE-MsgGUID: SmcL/aUlRfe5F8oeIdHJOw==
+ 20 Jan 2025 18:15:03 -0800
+X-CSE-ConnectionGUID: ngaJ5KzcSkW99zZJBV/I2Q==
+X-CSE-MsgGUID: hoJDec7PRtCepx769v9Vjw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,220,1732608000"; d="scan'208";a="106599352"
+X-IronPort-AV: E=Sophos;i="6.13,220,1732608000"; d="scan'208";a="106599359"
 Received: from st-server.bj.intel.com ([10.240.193.102])
- by fmviesa007.fm.intel.com with ESMTP; 20 Jan 2025 18:14:58 -0800
+ by fmviesa007.fm.intel.com with ESMTP; 20 Jan 2025 18:15:00 -0800
 From: Tao Su <tao1.su@linux.intel.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, imammedo@redhat.com, xiaoyao.li@intel.com,
  zhao1.liu@linux.intel.com, xuelian.guo@intel.com, tao1.su@linux.intel.com
-Subject: [PATCH 0/4] Introduce SierraForest-v2 and ClearwaterForest CPU model
-Date: Tue, 21 Jan 2025 10:06:46 +0800
-Message-Id: <20250121020650.1899618-1-tao1.su@linux.intel.com>
+Subject: [PATCH 1/4] target/i386: Introduce SierraForest-v2 model
+Date: Tue, 21 Jan 2025 10:06:47 +0800
+Message-Id: <20250121020650.1899618-2-tao1.su@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250121020650.1899618-1-tao1.su@linux.intel.com>
+References: <20250121020650.1899618-1-tao1.su@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=198.175.65.11;
@@ -77,29 +79,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sorry for resending this series, because it didn't seem to be received by
-the mailing list before.
+Update SierraForest CPU model to add LAM, 4 bits indicating certain bits
+of IA32_SPEC_CTR are supported(intel-psfd, ipred-ctrl, rrsba-ctrl,
+bhi-ctrl) and the missing features(ss, tsc-adjust, cldemote, movdiri,
+movdir64b)
 
-Update SierraForest CPU model to stepping 3 as adding LAM and missing
-features.
+Also add GDS-NO and RFDS-NO to indicate the related vulnerabilities are
+mitigated in stepping 3.
 
-Clearwater Forest is a new Intel Xeon processor, which will debut in the
-market in 2025, add the new CPU model ClearwaterForest based on
-SierraForest-v2 CPU model.
+Tested-by: Xuelian Guo <xuelian.guo@intel.com>
+Signed-off-by: Tao Su <tao1.su@linux.intel.com>
+---
+ target/i386/cpu.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-Tao Su (4):
-  target/i386: Introduce SierraForest-v2 model
-  target/i386: Export BHI_NO bit to guests
-  target/i386: Add new CPU model ClearwaterForest
-  docs: Add GNR, SRF and CWF CPU models
-
- docs/system/cpu-models-x86.rst.inc |  42 ++++++++
- target/i386/cpu.c                  | 156 ++++++++++++++++++++++++++++-
- target/i386/cpu.h                  |  33 ++++--
- 3 files changed, 224 insertions(+), 7 deletions(-)
-
-
-base-commit: 20fac491cfeebb042f59cc61ae76fed1b397d25c
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 1b9c11022c..6db8d6c9ba 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -4549,6 +4549,25 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+         .model_id = "Intel Xeon Processor (SierraForest)",
+         .versions = (X86CPUVersionDefinition[]) {
+             { .version = 1 },
++            {
++                .version = 2,
++                .props = (PropValue[]) {
++                    { "ss", "on" },
++                    { "tsc-adjust", "on" },
++                    { "cldemote", "on" },
++                    { "movdiri", "on" },
++                    { "movdir64b", "on" },
++                    { "gds-no", "on" },
++                    { "rfds-no", "on" },
++                    { "lam", "on" },
++                    { "intel-psfd", "on"},
++                    { "ipred-ctrl", "on"},
++                    { "rrsba-ctrl", "on"},
++                    { "bhi-ctrl", "on"},
++                    { "stepping", "3" },
++                    { /* end of list */ }
++                }
++            },
+             { /* end of list */ },
+         },
+     },
 -- 
 2.34.1
 
