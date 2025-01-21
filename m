@@ -2,89 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 163CDA17D2C
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 12:42:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C8A6A17D24
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 12:42:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taCdx-0005zG-7r; Tue, 21 Jan 2025 06:42:05 -0500
+	id 1taCdL-00051k-Ue; Tue, 21 Jan 2025 06:41:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taCdr-0005sI-Cr
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 06:41:59 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taCdk-0003Su-5S
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 06:41:59 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-4362bae4d7dso39753585e9.1
- for <qemu-devel@nongnu.org>; Tue, 21 Jan 2025 03:41:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737459709; x=1738064509; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JKO/X1IO97t8jG/iIr5dS6mXwUKP9YiNx8QxL9MbrbA=;
- b=mv7Ew0+1zn6sgpGDe8hH7tsfmrArrw8vfYhUwUt9G9tbBQccn+h3bZnIlnGWMUdp8N
- tbL9a3CRJXhFKE7o9vtsiGIjxIyur32sEe/vpoa9C10lRzSZ2fyTf4q6l3+T21hRommT
- xOQbsy53MiICeuAmxepsmm5xn/Ghqr4ySXrqLYMtp2j/ce/igmxdsbIz6FaTqiRT3gei
- ya8PRkY987XkIyQdjPa5W/be64Yej/1m7ahaeANEmPlDaoDxIWwp4UnStVvbg+aa+DZH
- cqUHvh+dxlaCegVq1/KoIlNcR00RVZbUQZz7bZMkmeu2k+U5/otl7Pptpa6CqdaAHI5A
- FVJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737459709; x=1738064509;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JKO/X1IO97t8jG/iIr5dS6mXwUKP9YiNx8QxL9MbrbA=;
- b=l13eeCtixFMbx7zsrL9QOKPeNuRBnRH6dBwtIhaVdxUNupvGahkkg+lZDBssBIzDVw
- s5R9pnjyctRySzp39SlvtfsGJNV8uXm/+3dw+kkrO5B06wQedw+h6OHpFQCVQlB+JShr
- TF2eLFmihyTGaBNzQ38+2UKmbC1doPQPMR/nxhxYhKNR3AXTisiPhN/9xON95K2WRKi7
- tvtOtD5v01Qz2NDJ2/K3wuMz8rR4HEO2+wXgNFDgfVdKJ1xo5N+1cXgze18uMgWO3lbW
- S5FRg1S4dLWjZRCbEDN8nU+3SXb0o64abOtqab8WUcT01YoDPVc1uQ2BXMXqzoG+yhm7
- UXUg==
-X-Gm-Message-State: AOJu0YzQig0wXWBgrv9F8ZUsywyFBAxeCLNjOU/T8LiZNS68+NXksqzm
- hEpSkxHqC45Y8kgeVynGRP6UD18XVc1prZjQZSjAKuj3oMcotQOcwDof7kHXFwWHOnHq7k1p+/x
- dcHA=
-X-Gm-Gg: ASbGncuQ8vPzqLc0jOPiYyDhteIzefnjcM2NtNZYwpA4xxXGpwV3jwtGNwK+1pSHz4S
- IjqzFIW/yUBAGZyEFJQ6t5+1KIhfftajMzy73mGAuQuMStrYoxA7rqZQpy8sNhSEizKQWnpRbxg
- rUjM3tq51V8pnjXVQMoUxKcbfY3wcn+aC6V0FoZq8OOfnsXPnmq8j3t2PshcLiNDXy3mCiD4vmF
- 04a9ewXmfqUCug7oTQk2mDw2lVhcT2KXe2g4P0RGZA6+x5GXkx3lIEBIaW69SIUy4upyB51KkSW
- BwsdzfwvIQ9oy3su03kD8c6XdRfSr1YnVptvdGj6jpoU
-X-Google-Smtp-Source: AGHT+IEF6r/BOM15SlwCgbDLBO7CnzXyrWtA2PXkV9Mzb5yTQDnNfIiv2ZYAH4Cn6iQ5ZwFQlubQ1A==
-X-Received: by 2002:a5d:64a3:0:b0:38a:624b:d55e with SMTP id
- ffacd0b85a97d-38bf57a684fmr18798886f8f.41.1737459708732; 
- Tue, 21 Jan 2025 03:41:48 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38bf322a859sm12903513f8f.43.2025.01.21.03.41.47
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Jan 2025 03:41:48 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-arm@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 11/11] target/openrisc: Prefer cached CpuClass over
- CPU_GET_CLASS() macro
-Date: Tue, 21 Jan 2025 12:40:56 +0100
-Message-ID: <20250121114056.53949-12-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250121114056.53949-1-philmd@linaro.org>
-References: <20250121114056.53949-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
+ id 1taCdI-00051P-JB
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 06:41:24 -0500
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
+ id 1taCd7-0003K7-Ft
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 06:41:24 -0500
+Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:5a2a:0:640:6073:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 65AC460F4D;
+ Tue, 21 Jan 2025 14:41:01 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b70b::1:2e] (unknown
+ [2a02:6b8:b081:b70b::1:2e])
+ by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id xeUHc51IbKo0-bnULOYTk; Tue, 21 Jan 2025 14:41:00 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1737459660;
+ bh=NEjROP6mb/aATCYeNsKNDq/xgTCQPlIEJL65p08l7aA=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=FlNnFWZu+MnVAaqf4RjHiVPeQ47GZriyIu5OK15FiospoNY4OnBYOdsst1MwzXX27
+ hbF4VEburUlnVFaJzd51i5D9aXXp2dcWaqjfyxFf7u3QyKpnvroQTBk4zxKn7EF8SJ
+ yf6Nw1jJKzepUCwc3IS8oHLMYAGyPU0btAaK4DIg=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <1b86788b-d366-4c1c-bbca-246d0dfcc0c6@yandex-team.ru>
+Date: Tue, 21 Jan 2025 14:40:59 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/4] overcommit: introduce mem-lock=on-fault
+To: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: Stefan Weil <sw@weilnetz.de>, Fabiano Rosas <farosas@suse.de>,
+ qemu-devel@nongnu.org
+References: <20241211230433.1371327-1-d-tatianin@yandex-team.ru>
+ <20241211230433.1371327-5-d-tatianin@yandex-team.ru> <Z1sNV-kHCJw9S9Di@x1n>
+ <b5ec2f53-4a03-499b-be17-49729a6efca9@yandex-team.ru> <Z3_aoLOjzQ8M0h81@x1n>
+Content-Language: en-US
+From: Daniil Tatianin <d-tatianin@yandex-team.ru>
+In-Reply-To: <Z3_aoLOjzQ8M0h81@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=d-tatianin@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,33 +79,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CpuState caches its CPUClass since commit 6fbdff87062
-("cpu: cache CPUClass in CPUState for hot code paths"),
-use it.
+On 1/9/25 5:18 PM, Peter Xu wrote:
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/openrisc/gdbstub.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+> On Thu, Jan 09, 2025 at 11:47:40AM +0300, Daniil Tatianin wrote:
+>> On 12/12/24 7:20 PM, Peter Xu wrote:
+>>
+>>> On Thu, Dec 12, 2024 at 02:04:33AM +0300, Daniil Tatianin wrote:
+>>>> Locking the memory without MCL_ONFAULT instantly prefaults any mmaped
+>>>> anonymous memory with a write-fault, which introduces a lot of extra
+>>>> overhead in terms of memory usage when all you want to do is to prevent
+>>>> kcompactd from migrating and compacting QEMU pages. Add an option to
+>>>> only lock pages lazily as they're faulted by the process by using
+>>>> MCL_ONFAULT if asked.
+>>>>
+>>>> Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+>>> Reviewed-by: Peter Xu <peterx@redhat.com>
+>> Hi there! This series has 2 reviewed-bys, is there any way you could queue
+>> it?
+> I think this part belongs to mainloop/posix.. so maybe Paolo?
+>
+> Also copied Phil and Peter Maydell.
+>
+Ping :)
 
-diff --git a/target/openrisc/gdbstub.c b/target/openrisc/gdbstub.c
-index c2a77d5d4d5..7b6a31fc97d 100644
---- a/target/openrisc/gdbstub.c
-+++ b/target/openrisc/gdbstub.c
-@@ -47,11 +47,10 @@ int openrisc_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- 
- int openrisc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
- {
--    CPUClass *cc = CPU_GET_CLASS(cs);
-     CPUOpenRISCState *env = cpu_env(cs);
-     uint32_t tmp;
- 
--    if (n > cc->gdb_num_core_regs) {
-+    if (n > cs->cc->gdb_num_core_regs) {
-         return 0;
-     }
- 
--- 
-2.47.1
 
 
