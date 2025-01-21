@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8744A17859
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 08:08:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E98E1A1785A
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 08:08:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ta8Ks-00009c-3w; Tue, 21 Jan 2025 02:06:06 -0500
+	id 1ta8Ku-0000Kl-GP; Tue, 21 Jan 2025 02:06:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1ta8Ki-0007zu-1C; Tue, 21 Jan 2025 02:05:59 -0500
+ id 1ta8Kl-00088l-V8; Tue, 21 Jan 2025 02:06:00 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1ta8Kg-0001eA-L1; Tue, 21 Jan 2025 02:05:55 -0500
+ id 1ta8Kk-0001hy-Bd; Tue, 21 Jan 2025 02:05:59 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 21 Jan
- 2025 15:04:29 +0800
+ 2025 15:04:30 +0800
 Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Tue, 21 Jan 2025 15:04:29 +0800
+ Transport; Tue, 21 Jan 2025 15:04:30 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
@@ -30,9 +30,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 15/18] hw/misc/aspeed_hace: Fix coding style
-Date: Tue, 21 Jan 2025 15:04:21 +0800
-Message-ID: <20250121070424.2465942-16-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 16/18] hw/misc/aspeed_hace: Add AST2700 support
+Date: Tue, 21 Jan 2025 15:04:22 +0800
+Message-ID: <20250121070424.2465942-17-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250121070424.2465942-1-jamin_lin@aspeedtech.com>
 References: <20250121070424.2465942-1-jamin_lin@aspeedtech.com>
@@ -64,43 +64,63 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix coding style issues from checkpatch.pl.
+Introduce a new ast2700 class to support AST2700.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/misc/aspeed_hace.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ hw/misc/aspeed_hace.c         | 20 ++++++++++++++++++++
+ include/hw/misc/aspeed_hace.h |  1 +
+ 2 files changed, 21 insertions(+)
 
 diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
-index e3f7df2e86..18b85081c7 100644
+index 18b85081c7..86422cb3be 100644
 --- a/hw/misc/aspeed_hace.c
 +++ b/hw/misc/aspeed_hace.c
-@@ -75,9 +75,12 @@ static const struct {
-     { HASH_ALGO_SHA1, QCRYPTO_HASH_ALGO_SHA1 },
-     { HASH_ALGO_SHA224, QCRYPTO_HASH_ALGO_SHA224 },
-     { HASH_ALGO_SHA256, QCRYPTO_HASH_ALGO_SHA256 },
--    { HASH_ALGO_SHA512_SERIES | HASH_ALGO_SHA512_SHA512, QCRYPTO_HASH_ALGO_SHA512 },
--    { HASH_ALGO_SHA512_SERIES | HASH_ALGO_SHA512_SHA384, QCRYPTO_HASH_ALGO_SHA384 },
--    { HASH_ALGO_SHA512_SERIES | HASH_ALGO_SHA512_SHA256, QCRYPTO_HASH_ALGO_SHA256 },
-+    { HASH_ALGO_SHA512_SERIES | HASH_ALGO_SHA512_SHA512,
-+      QCRYPTO_HASH_ALGO_SHA512 },
-+    { HASH_ALGO_SHA512_SERIES | HASH_ALGO_SHA512_SHA384,
-+      QCRYPTO_HASH_ALGO_SHA384 },
-+    { HASH_ALGO_SHA512_SERIES | HASH_ALGO_SHA512_SHA256,
-+      QCRYPTO_HASH_ALGO_SHA256 },
+@@ -552,12 +552,32 @@ static const TypeInfo aspeed_ast1030_hace_info = {
+     .class_init = aspeed_ast1030_hace_class_init,
  };
  
- static int hash_algo_lookup(uint32_t reg)
-@@ -201,7 +204,8 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-             haddr = address_space_map(&s->dram_as, addr, &plen, false,
-                                       MEMTXATTRS_UNSPECIFIED);
-             if (haddr == NULL) {
--                qemu_log_mask(LOG_GUEST_ERROR, "%s: qcrypto failed\n", __func__);
-+                qemu_log_mask(LOG_GUEST_ERROR,
-+                              "%s: qcrypto failed\n", __func__);
-                 return;
-             }
-             iov[i].iov_base = haddr;
++static void aspeed_ast2700_hace_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    AspeedHACEClass *ahc = ASPEED_HACE_CLASS(klass);
++
++    dc->desc = "AST2700 Hash and Crypto Engine";
++
++    ahc->src_mask = 0x7FFFFFFF;
++    ahc->dest_mask = 0x7FFFFFF8;
++    ahc->key_mask = 0x7FFFFFF8;
++    ahc->hash_mask = 0x00147FFF;
++}
++
++static const TypeInfo aspeed_ast2700_hace_info = {
++    .name = TYPE_ASPEED_AST2700_HACE,
++    .parent = TYPE_ASPEED_HACE,
++    .class_init = aspeed_ast2700_hace_class_init,
++};
++
+ static void aspeed_hace_register_types(void)
+ {
+     type_register_static(&aspeed_ast2400_hace_info);
+     type_register_static(&aspeed_ast2500_hace_info);
+     type_register_static(&aspeed_ast2600_hace_info);
+     type_register_static(&aspeed_ast1030_hace_info);
++    type_register_static(&aspeed_ast2700_hace_info);
+     type_register_static(&aspeed_hace_info);
+ }
+ 
+diff --git a/include/hw/misc/aspeed_hace.h b/include/hw/misc/aspeed_hace.h
+index 4af9919195..d13fd3da07 100644
+--- a/include/hw/misc/aspeed_hace.h
++++ b/include/hw/misc/aspeed_hace.h
+@@ -18,6 +18,7 @@
+ #define TYPE_ASPEED_AST2500_HACE TYPE_ASPEED_HACE "-ast2500"
+ #define TYPE_ASPEED_AST2600_HACE TYPE_ASPEED_HACE "-ast2600"
+ #define TYPE_ASPEED_AST1030_HACE TYPE_ASPEED_HACE "-ast1030"
++#define TYPE_ASPEED_AST2700_HACE TYPE_ASPEED_HACE "-ast2700"
+ 
+ OBJECT_DECLARE_TYPE(AspeedHACEState, AspeedHACEClass, ASPEED_HACE)
+ 
 -- 
 2.34.1
 
