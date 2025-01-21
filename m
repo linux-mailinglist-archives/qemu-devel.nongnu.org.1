@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F512A17C7C
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 11:57:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87249A17C76
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 11:57:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taBwA-0006i0-6h; Tue, 21 Jan 2025 05:56:50 -0500
+	id 1taBw8-0006gt-JI; Tue, 21 Jan 2025 05:56:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1taBvx-0006ef-Sh
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 05:56:39 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1taBvz-0006ek-MX
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 05:56:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1taBvs-00056Z-Qt
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 05:56:35 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1taBvx-00056s-7r
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 05:56:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737456991;
+ s=mimecast20190719; t=1737456996;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7y2fdrZMckfoQ3ZY0BldNlgQWpxrizZusmKLoxlslvw=;
- b=gEBeYD6CFrACyAE5uHDJm3coov88zYmTNu9lZGVBUprawsIK46RhjWn40YexKqfnnyuW3I
- PykRZ3OyMQqbC6/M5YLhULSLKH+LbI4F5qzyEAQzpJiNNwHqzaIe1rVO8CoAIrlG+6HcGK
- jM0TvkroMSXCmPvlKGCDuHfJwpkIqsk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=91Ph9kNYeXsoVFO6NxOH/K8Dbo3YcWqv4IxMaz5wxg8=;
+ b=NJSWUZRLMOJQcDutDw3n1nMKr6nXx6pCyLfN6kW3gjaBIk7K9FVP53TAVnNp6cvZlBbg39
+ LQLlN85NYLTYnNdLwt3tv9CfM+2PUubObyBvCN5I87Wpveh8fyZAC6ErGRQSqROuWrLsTb
+ Pvz9wgKFDXvwZe6+6RdnHuC4jfzD9KE=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-623-Wjiy3NBtOpmS_7vDx9CzAQ-1; Tue,
- 21 Jan 2025 05:56:29 -0500
-X-MC-Unique: Wjiy3NBtOpmS_7vDx9CzAQ-1
-X-Mimecast-MFC-AGG-ID: Wjiy3NBtOpmS_7vDx9CzAQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-180-txlZHH0pOYSyvuusR7v7tA-1; Tue,
+ 21 Jan 2025 05:56:30 -0500
+X-MC-Unique: txlZHH0pOYSyvuusR7v7tA-1
+X-Mimecast-MFC-AGG-ID: txlZHH0pOYSyvuusR7v7tA
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4029419560B7
- for <qemu-devel@nongnu.org>; Tue, 21 Jan 2025 10:56:27 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8713C195604F; Tue, 21 Jan 2025 10:56:29 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.56])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6D67B19560B1; Tue, 21 Jan 2025 10:56:25 +0000 (UTC)
+ id 047C519560A7; Tue, 21 Jan 2025 10:56:27 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, David Hildenbrand <david@redhat.com>
-Subject: [PULL 4/9] hw/s390x: Fix crash that occurs when inspecting older
- versioned machines types
-Date: Tue, 21 Jan 2025 11:56:06 +0100
-Message-ID: <20250121105613.1286672-5-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Jared Rossi <jrossi@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>
+Subject: [PULL 5/9] pc-bios/s390-ccw/virtio: Add a function to reset a virtio
+ device
+Date: Tue, 21 Jan 2025 11:56:07 +0100
+Message-ID: <20250121105613.1286672-6-thuth@redhat.com>
 In-Reply-To: <20250121105613.1286672-1-thuth@redhat.com>
 References: <20250121105613.1286672-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
 X-Spam_bar: -----
 X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-3,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.036,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -81,93 +81,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu-system-s390x currently crashes when trying to inspect older
-machines types, for example:
+To be able to properly silence a virtio device after using it,
+we need a global function to reset the device.
 
- $ echo '{ "execute": "qmp_capabilities" }
-         { "execute": "qom-list-properties","arguments":
-           { "typename": "s390-ccw-virtio-3.0-machine"}}' \
-   | ./qemu-system-s390x -qmp stdio -no-shutdown
- {"QMP": {"version": {"qemu": {"micro": 50, "minor": 2, "major": 9},
-  "package": "v9.2.0-1071-g81e97df3e7"}, "capabilities": ["oob"]}}
- {"return": {}}
- **
- Bail out! ERROR:../target/s390x/cpu_models.c:832:s390_set_qemu_cpu_model:
-  assertion failed: (QTAILQ_EMPTY_RCU(&cpus_queue))
- Aborted (core dumped)
-
-The problem is that the versioned s390-ccw-virtio machine types
-use instance_init() to set global state that should be initialized
-before the CPUs get instantiated. But instance_init() is not called
-only for the machine that is finally used, it is also called for
-temporary instances of objects that are e.g. just created for
-introspection. That means that those instance_init() functions can
-also be called while a machine (and its CPUs) is already created,
-which triggers the assertion in cpu_models.c.
-
-So we must not use instance_init() for setting global state, but
-use the machine->init() function instead, which is really only called
-once when the machine comes to life.
-
-Fixes: 3b00f702c2 ("s390x/cpumodel: add zpci, aen and ais facilities")
-Message-ID: <20250120085059.239345-1-thuth@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Jared Rossi <jrossi@linux.ibm.com>
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Tested-by: Jared Rossi <jrossi@linux.ibm.com>
+Message-ID: <20250116115826.192047-2-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/s390x/s390-virtio-ccw.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ pc-bios/s390-ccw/virtio.h | 1 +
+ pc-bios/s390-ccw/virtio.c | 7 ++++++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 38aeba14ee..3af613d4e9 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -782,7 +782,6 @@ static void ccw_machine_class_init(ObjectClass *oc, void *data)
+diff --git a/pc-bios/s390-ccw/virtio.h b/pc-bios/s390-ccw/virtio.h
+index 9faf3986b1..f13fa6f5fe 100644
+--- a/pc-bios/s390-ccw/virtio.h
++++ b/pc-bios/s390-ccw/virtio.h
+@@ -274,6 +274,7 @@ void vring_send_buf(VRing *vr, void *p, int len, int flags);
+ int vr_poll(VRing *vr);
+ int vring_wait_reply(void);
+ int virtio_run(VDev *vdev, int vqid, VirtioCmd *cmd);
++int virtio_reset(VDev *vdev);
+ int virtio_setup_ccw(VDev *vdev);
  
-     s390mc->hpage_1m_allowed = true;
-     s390mc->max_threads = 1;
--    mc->init = ccw_init;
-     mc->reset = s390_machine_reset;
-     mc->block_default_type = IF_VIRTIO;
-     mc->no_cdrom = 1;
-@@ -852,6 +851,12 @@ static const TypeInfo ccw_machine_info = {
- };
+ int virtio_net_init(void *mac_addr);
+diff --git a/pc-bios/s390-ccw/virtio.c b/pc-bios/s390-ccw/virtio.c
+index 8b5a370bb3..cd6c99c7e3 100644
+--- a/pc-bios/s390-ccw/virtio.c
++++ b/pc-bios/s390-ccw/virtio.c
+@@ -217,6 +217,11 @@ int virtio_run(VDev *vdev, int vqid, VirtioCmd *cmd)
+     return 0;
+ }
  
- #define DEFINE_CCW_MACHINE_IMPL(latest, ...)                                  \
-+    static void MACHINE_VER_SYM(mach_init, ccw, __VA_ARGS__)(MachineState *mach) \
-+    {                                                                         \
-+        current_mc = S390_CCW_MACHINE_CLASS(MACHINE_GET_CLASS(mach));         \
-+        MACHINE_VER_SYM(instance_options, ccw, __VA_ARGS__)(mach);            \
-+        ccw_init(mach);                                                       \
-+    }                                                                         \
-     static void MACHINE_VER_SYM(class_init, ccw, __VA_ARGS__)(                \
-         ObjectClass *oc,                                                      \
-         void *data)                                                           \
-@@ -859,24 +864,18 @@ static const TypeInfo ccw_machine_info = {
-         MachineClass *mc = MACHINE_CLASS(oc);                                 \
-         MACHINE_VER_SYM(class_options, ccw, __VA_ARGS__)(mc);                 \
-         mc->desc = "Virtual s390x machine (version " MACHINE_VER_STR(__VA_ARGS__) ")"; \
-+        mc->init = MACHINE_VER_SYM(mach_init, ccw, __VA_ARGS__);              \
-         MACHINE_VER_DEPRECATION(__VA_ARGS__);                                 \
-         if (latest) {                                                         \
-             mc->alias = "s390-ccw-virtio";                                    \
-             mc->is_default = true;                                            \
-         }                                                                     \
-     }                                                                         \
--    static void MACHINE_VER_SYM(instance_init, ccw, __VA_ARGS__)(Object *obj) \
--    {                                                                         \
--        MachineState *machine = MACHINE(obj);                                 \
--        current_mc = S390_CCW_MACHINE_CLASS(MACHINE_GET_CLASS(machine));      \
--        MACHINE_VER_SYM(instance_options, ccw, __VA_ARGS__)(machine);         \
--    }                                                                         \
-     static const TypeInfo MACHINE_VER_SYM(info, ccw, __VA_ARGS__) =           \
-     {                                                                         \
-         .name = MACHINE_VER_TYPE_NAME("s390-ccw-virtio", __VA_ARGS__),        \
-         .parent = TYPE_S390_CCW_MACHINE,                                      \
-         .class_init = MACHINE_VER_SYM(class_init, ccw, __VA_ARGS__),          \
--        .instance_init = MACHINE_VER_SYM(instance_init, ccw, __VA_ARGS__),    \
-     };                                                                        \
-     static void MACHINE_VER_SYM(register, ccw, __VA_ARGS__)(void)             \
-     {                                                                         \
++int virtio_reset(VDev *vdev)
++{
++    return run_ccw(vdev, CCW_CMD_VDEV_RESET, NULL, 0, false);
++}
++
+ int virtio_setup_ccw(VDev *vdev)
+ {
+     int i, cfg_size = 0;
+@@ -235,7 +240,7 @@ int virtio_setup_ccw(VDev *vdev)
+     vdev->config.blk.blk_size = 0; /* mark "illegal" - setup started... */
+     vdev->guessed_disk_nature = VIRTIO_GDN_NONE;
+ 
+-    run_ccw(vdev, CCW_CMD_VDEV_RESET, NULL, 0, false);
++    virtio_reset(vdev);
+ 
+     status = VIRTIO_CONFIG_S_ACKNOWLEDGE;
+     if (run_ccw(vdev, CCW_CMD_WRITE_STATUS, &status, sizeof(status), false)) {
 -- 
 2.48.1
 
