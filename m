@@ -2,98 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD40A17C92
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 12:04:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0472A17D0B
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 12:31:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taC2p-0006yN-Ri; Tue, 21 Jan 2025 06:03:43 -0500
+	id 1taCTC-000301-84; Tue, 21 Jan 2025 06:30:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <foss@defmacro.it>)
- id 1taC2n-0006xs-0d; Tue, 21 Jan 2025 06:03:41 -0500
-Received: from fhigh-b7-smtp.messagingengine.com ([202.12.124.158])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <foss@defmacro.it>)
- id 1taC2l-0005iz-8M; Tue, 21 Jan 2025 06:03:40 -0500
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal
- [10.202.2.51])
- by mailfhigh.stl.internal (Postfix) with ESMTP id 48F9C254019D;
- Tue, 21 Jan 2025 06:03:36 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
- by phl-compute-11.internal (MEProxy); Tue, 21 Jan 2025 06:03:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=defmacro.it; h=
- cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm2; t=1737457416;
- x=1737543816; bh=q1ZP9/03USQz16X2Ct+K2f6P+e4Ndh+3J3jfR/ShJ38=; b=
- IUiHO5S67Po3QIyXk7mvhQ7y/yvZXS72j9RCKEb1vJQ5pTohP8UPKQlFVG/7HWoh
- OKmZ9Ci6l+HJsMPlIoAghQKNFZnidFX27XgwF9s3SQwlShiNC2FWPriPjenTr36Q
- 4TJCDpJWDfDu9xMq8uOCUYs7vAgWl8xB4vbUU2oOHBqIscmcZYwvXzavp1HHgpI3
- nlCeDBIwlENbCCEnHLIcHUQcZ5iTNZoBFiCstX3NLxUWMQCVgRTA4iqfS5iiw5C4
- xzJCqikmkV2srQ3tgMu2bVaA8lY4tDdCGY9LUA0LfkLV4qRJt4C9gb5TEztvar9I
- H7OUIhCmFs6ZQ1002zNGmA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1737457416; x=
- 1737543816; bh=q1ZP9/03USQz16X2Ct+K2f6P+e4Ndh+3J3jfR/ShJ38=; b=e
- kP7Wm/i+nTJ6KFTAsvfEkHo4TScJiEW+98KtLwQfaA64H+OM1H32P5b9MfG1qCy0
- z77Uv47dRloVtyotab1z0ox9k/50/EV+SqomOvDmFdM1UeN/dauGolrNrNIsGMl1
- zzmo8J4A4mdtycMq70HF/2OnCo8TnKr0iAAxgV7MoOkzwvXSyCvxb7O8Uo+Ugg77
- Fixxi9+uxjhe4FtVOxFh1KWKdqPwtbWu2ELKnIPXY8WA5Eyk8gceJ2pGNjevG8C8
- dMl7cGA3vf7Un4FbZC6KcA5mGJDXwMuoZqwN2v9v1idRkpEAJS+58ft/Tiab9shv
- HMNi1jbOQXeaek0uuclhg==
-X-ME-Sender: <xms:B3-PZ8XmQ6-xgl6bGD4gezfnxGwjwaCyEskkTkrBh-wYCSrmFRRRHA>
- <xme:B3-PZwlc0HwTLraGmXFL5uyqFRAiZIw_1r7RUTkm0Fi5N1CQD5YGe_pc_j3mhO6eT
- IpXDwo_IkMYyKQImlk>
-X-ME-Received: <xmr:B3-PZwaeE_X64UhANoWoXdSZ_2_IFXT-kC5ZFc4y838gHw80DJfu9z2WB2Qo0YYyQ-CGRiARZaIpzpIMpFyMMJ6JiDzNBa6vBQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudejuddgvddvucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
- rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
- htshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdej
- necuhfhrohhmpeflvghsphgvrhcuhggvnhguvghlucffvghvrghnthhivghruceofhhosh
- hsseguvghfmhgrtghrohdrihhtqeenucggtffrrghtthgvrhhnpeekteekueelkeduueeh
- vdekvefgheeigfdvfffhgfejheeivdegfffhueelfffggfenucevlhhushhtvghrufhiii
- gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfohhsshesuggvfhhmrggtrhhordhi
- thdpnhgspghrtghpthhtohephedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepih
- htshesihhrrhgvlhgvvhgrnhhtrdgukhdprhgtphhtthhopehksghushgthheskhgvrhhn
- vghlrdhorhhgpdhrtghpthhtohepqhgvmhhuqdgslhhotghksehnohhnghhnuhdrohhrgh
- dprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthht
- ohepkhdrjhgvnhhsvghnsehsrghmshhunhhgrdgtohhm
-X-ME-Proxy: <xmx:B3-PZ7UYvx9WquMT3NEylqn1kIgi9mZQ10Pogb3CfDV-XqNTwOi26g>
- <xmx:B3-PZ2nnry00BL-VvvbbUS3mZgENWbCm6sqmeWa_HwhbO-vselgK9g>
- <xmx:B3-PZwd6gGGoJgd25XVQm_aaD1rvAlNtqpl3t15JTWGRL8L18J08_w>
- <xmx:B3-PZ4HQZ_TVzJqh_B2zPUfUU1gDQgP-W26z3ooFul4CZIU6-Y2lKg>
- <xmx:CH-PZ9s71lC-ut-KaFFLxDVZFCzlbHqQCOKOsRUHBEGyF52gKyGZ7W7v>
-Feedback-ID: ic0014905:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 21 Jan 2025 06:03:34 -0500 (EST)
-Message-ID: <49517f53-d2f7-4143-858f-7400bbf7e6f2@defmacro.it>
-Date: Tue, 21 Jan 2025 12:03:33 +0100
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taCT3-0002xt-ND
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 06:30:49 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taCSZ-0001uS-BI
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 06:30:25 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-385e27c75f4so4543317f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 21 Jan 2025 03:30:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1737459016; x=1738063816; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=0rtGCuKXTuEWbszCwRV5C+wCQNbs2Gdh30z0rJAoE9w=;
+ b=b2pNKrIG1ccOf6h0VdrMZ7Ka/gDQeHFYE5hzkYsIAZO6PUjUVDjqKkRHoa/ysMvXkV
+ h7hXTGoModBs/VeJSlQAr/bZu6eul7sGDOgBEhPFwr3/VmkJ+Dsy25g4WKYno1uo3nm7
+ llQGe1AEE+kwb36HWnb0uhlpgGqAZ1uju6BV03f85gXbW7uYhqw0aqqAqSts/6r5XXmc
+ tPQJSIytwzCv66BjkL61Pe0gSLgoMwjvhI4WqU987IP1dN/wJ+7opZl0tz3PgFVVjmdq
+ MGbTIF+bOvcz8tpWX9aTk0NtGXA3DdXuvyMMiH56z+x1XQjebRdm7FyZ5rD2AD8M7PIs
+ 8NMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737459016; x=1738063816;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=0rtGCuKXTuEWbszCwRV5C+wCQNbs2Gdh30z0rJAoE9w=;
+ b=XeZaH/ltqAqj6NlQ3GhJ1fxpDS3wMwBo+LZXITywD7I0zE44Xw/a1JVjQj162UA9gQ
+ Feb3WTEUqEEcnSi5cnCVzC1epjYv234KWrJHmmSXUn0dIl9hQDq8g86yJwf5FXNXuAH7
+ IIXI+avap1EYdF4wrfOoSDlZtpODkYeFXdw3MAXWJhQscwg7EXzibCyWol799ep3eTyU
+ Mgpy5xnRRwY6hqzAiVp4tJ0u96/S0XvL3s5b2oYuA/ZMH/SNbCi8ObLaB25pFUugruHc
+ 0ygQ5yByfJC8q9V8fRZGaK71VV7w1Dd482ser8TqEjrlIUPIqqdl51aH1tGea3689OKl
+ E1oQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXs1xX9cb0jFL1sXmOQ51x0AjnZA0QAhH8/CMKTJMdebnRHwISq3bgjPZ1Rc3adjPcl8DCtcLtr6SrQ@nongnu.org
+X-Gm-Message-State: AOJu0YyM0zaHqhMezoXOH78kJeA4UFAps8az3Gn4SyOLvozwar87sR7c
+ RLz+FEaz9Dx7+NfaucmQMzyZRgmsGSyEQEzbkJ9N8hA6C/qOBVk5wbIyfNP0VHw=
+X-Gm-Gg: ASbGncvve8mLGd0F7OVDWH3er2st9tX6QC2LuuBkgsV7SMt98zYvgWuMpLPrg1YLLu0
+ CraZLNkxCj31qy+GEvafKu6zHfQVJdq19rbod1okOMI6HDqS/5JD0LBpYBLvuzzB9CmPmNPAIim
+ YCxb+HgDv8yf5CwLUwAxQL22RshY8iEurN3Ako8TqHqpQndv4OmnqjOtK4d2fasRBKeGak/lSf1
+ UMKtg6RPEGXd9h8wsNcmCWQkd4fIHcABhBGuUbX14jPNl3hOPbt7e7MSLMvUUTzWD/omy4wiQnU
+ WkLtHx6rmadANu8wZv1KxL5iRYs+ZWz4f9FR5Q==
+X-Google-Smtp-Source: AGHT+IG5h6G8BxEhcgs3Ogs2YOLAYAWSruyj+tqdnLekIeamIuy/+2sxfSHIgcIIz31iV/WSUDSPHw==
+X-Received: by 2002:a05:6000:1a87:b0:38b:da31:3e3b with SMTP id
+ ffacd0b85a97d-38bf5678466mr15537947f8f.3.1737459016265; 
+ Tue, 21 Jan 2025 03:30:16 -0800 (PST)
+Received: from [192.168.69.181] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38bf32151e6sm12872826f8f.20.2025.01.21.03.30.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 Jan 2025 03:30:15 -0800 (PST)
+Message-ID: <50fe71c0-4b15-427e-933f-68a95b0adf12@linaro.org>
+Date: Tue, 21 Jan 2025 12:30:15 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/9] hw/nvme: refactor/cleanup
-To: Klaus Jensen <its@irrelevant.dk>, Keith Busch <kbusch@kernel.org>,
- qemu-block@nongnu.org, qemu-devel@nongnu.org
-Cc: Klaus Jensen <k.jensen@samsung.com>
-References: <20241216-nvme-queue-v1-0-4e42212b92f7@samsung.com>
+Subject: Re: [PATCH] mips: Mark the "mipssim" machine as deprecated
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Aleksandar Rikalo <arikalo@gmail.com>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
+References: <20250121103655.1285596-1-thuth@redhat.com>
 Content-Language: en-US
-From: Jesper Wendel Devantier <foss@defmacro.it>
-In-Reply-To: <20241216-nvme-queue-v1-0-4e42212b92f7@samsung.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250121103655.1285596-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=202.12.124.158; envelope-from=foss@defmacro.it;
- helo=fhigh-b7-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -110,44 +99,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/16/24 13:53, Klaus Jensen wrote:
-> Apart from some random small fixes here and there, the major thing here
-> is cleaning up how we handle command sets. Prior to this series, the
-> controller would not correctly validate namespace command sets against
-> CC.CSS. This is fixed here.
->
-> The most clean way of doing this (as far as I could tell) was to make
-> sure an nvme-subsys device exists (creating it if necessary). This
-> allows us to "store" the namespaces in the subsystem, using existing
-> functionality, and attach supported namespaces when the device is
-> started (instead of when the device is created/realized).
->
-> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+On 21/1/25 11:36, Thomas Huth wrote:
+> We are not aware of anybody still using this machine, support for it
+> has been withdrawn from the Linux kernel (i.e. there also won't be
+> any future development anymore), and we are not aware of any binaries
+> online that could be used for regression testing to avoid that the
+> machine bitrots ... thus let's mark it as deprecated now.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
-> Klaus Jensen (9):
->        hw/nvme: always initialize a subsystem
->        hw/nvme: make oacs dynamic
->        hw/nvme: add knob for doorbell buffer config support
->        nvme: fix iocs status code values
->        hw/nvme: be compliant wrt. dsm processing limits
->        hw/nvme: rework csi handling
->        hw/nvme: only set command abort requested when cancelled due to Abort
->        hw/nvme: set error status code explicitly for misc commands
->        hw/nvme: remove nvme_aio_err()
->
->   hw/nvme/ctrl.c       | 430 ++++++++++++++++++++++++++++-----------------------
->   hw/nvme/ns.c         |  62 ++------
->   hw/nvme/nvme.h       |  10 +-
->   include/block/nvme.h |  22 ++-
->   4 files changed, 276 insertions(+), 248 deletions(-)
-> ---
-> base-commit: ca80a5d026a280762e0772615f1988db542b3ade
-> change-id: 20241216-nvme-queue-f4151c5d7507
->
-> Best regards,
+>   If anybody is still using this machine, please speak up now!
+> 
+>   docs/about/deprecated.rst | 13 +++++++++++++
+>   1 file changed, 13 insertions(+)
 
-Read, looks good to me.
-
-Reviewed-by: Jesper Wendel Devantier <foss@defmacro.it>
+Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
