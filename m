@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA6B0A17D30
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 12:43:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38AE4A17D2E
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 12:42:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taCdW-0005NW-Np; Tue, 21 Jan 2025 06:41:39 -0500
+	id 1taCdr-0005kx-R3; Tue, 21 Jan 2025 06:41:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taCdT-0005MS-5s
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 06:41:35 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taCdi-0005gf-Do
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 06:41:50 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taCdQ-0003PU-DK
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 06:41:34 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4363ae65100so60364995e9.0
- for <qemu-devel@nongnu.org>; Tue, 21 Jan 2025 03:41:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taCdb-0003Qs-1f
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 06:41:50 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4361b0ec57aso56670195e9.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Jan 2025 03:41:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737459690; x=1738064490; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737459695; x=1738064495; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DeYTxKfeYGnuCZs4uhCLhCH6gP528hwEuAlYwVcOULg=;
- b=W3GP7sLeHtet/KBti2TeVQYKTq+uKCeFPGzKZo0EVnE5A9L+MdrCWkU6jEjYR4WJfy
- nkLVVxGhkLnKGSIJiuyMgHofvMajBw3Mndls4wkbNJwQM/WuALUdV8g+nw/Jcgzn3TOy
- dA7DFzPHXHPfSIJ1/LKU/dZXpTiuoSu+5A4J/bcjF53Je3ot5dr37xpwdVJmnY6bFtdL
- OmgK2l44RmdkV2faN9mOPFqCkJJ68uerM5xFt39FaW1l8CZqK6ZQeO7n5mlTRwBGPfyF
- cxglLsKloocSRv7dPvrgbVWcKKVIzf/BfCpOVuAKA8TitiXoMT2iW+V9AHRGuiO5oRUC
- hMjQ==
+ bh=8EBvExqekhvI6jcPU9fttVcHOfFc5T0tfJ+EZdg5nMg=;
+ b=qXcuvQ8KDvy+Sqgb920fqpJBtbf6OFybJQYhK6E7vU0IVBzr0IlVvmqtOPHjn8jryR
+ XRIN7GpHiDDPWJkT9B/cV6WertJz5Xaosrzat+WDqJRGm0Tsj6WotZfbKgVfsIfl2aVC
+ a0HLjrdYbLFsBq31Hb7MNCptjANTuabUccZNZJnPSksINW9KqsFs9y6Peq+RzNNmTMro
+ n1z35uhECZnjTR4+2alVZAjarNTnj7dW0nyuJcCheC1SY7bNRGkaKFxX1j4XpSmXF1ZL
+ r5+0R8CpGtDQ0ZwUcjwO2a12rdcb0xGIZQLxCKQUX9fIbYteLXMiiXP5kujDFS77X6Kz
+ B4bQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737459690; x=1738064490;
+ d=1e100.net; s=20230601; t=1737459695; x=1738064495;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DeYTxKfeYGnuCZs4uhCLhCH6gP528hwEuAlYwVcOULg=;
- b=LbXZcQRHaIBIbnkoXrQHyHTRWKAIqY7GYfQ0R7jCC4Ywdt7zKjugkP+pbZj3CxPPNQ
- ZULrq+yDyGl/Qy/mdbQgIvVtja8IezfdgYm6qRy9rTccfLSDehGmI1PIN2TOjrSllNOS
- aiFVFfPYQbCsA4iQBiYaU+PL9WwZPSjKNVp78EZOofffA9vfj6kIDlXWKaKm1+SKGi0d
- vyJ/VMWhm7FkBUkmNW4xI1/16Pzeyr/Vd0PIt1ufse/HkwJBJzzp2s3W3LsxfKUhKyyy
- VgbLXksAtrv8j2pT/Y1vr/Kl43bVq0CLLkZxRpnK22eS1rKZVQUv97uenXZATbumFstT
- C/zA==
-X-Gm-Message-State: AOJu0YxfHW7/moh53HoFPiPuux4S8Bk6iLL3AS9cph5lWS9+Nepd9HOy
- 8Uoc8tasoMIxC3rDl1qKc2CuOiFuLi8j93KwBKHTpYnQPbfdYEMtLRaZiNmZCaLRDymvss+aITK
- gWP8=
-X-Gm-Gg: ASbGnctAvLuZV2ZJ5z2mmMwCCgBurJAWGX1AFYPoI/26h0gTvCxTaVF+WE0cCJ2fiz1
- 8YdVNAzbzel2zCCRDCqE725ppyWdy76p2cDphMBa+iYIeB/q6er06SzJ0abRo8VBJzsTPtdOsv8
- lNYmBe8/Z9pWg0Bfs4rRMdsS3Ta9+XYVh2kdGtjCLc+EtMKxmAPYrYsasAjTh6/YSXHbKc8BwbI
- hlzDfqWeNhaFMCFKg9vPzhV5bpe8AJu1ctgvqGKr/RSJHRVYM9pcN5zBAcw8+jMVSpSBYBYhNVI
- f5YA37kWYZyBBlKUQ7ZK551FZmvA0EvSgnzuuVT2TLci
-X-Google-Smtp-Source: AGHT+IFYePQ7W9qEBZjkBoTzSbXA4iRi/jfN3vePvpN5KZLxmU/7I4ErTsDfpMpd1xt0kQIOxaZvCg==
-X-Received: by 2002:a05:600c:6c95:b0:438:a1f5:3e41 with SMTP id
- 5b1f17b1804b1-438a1f53fa6mr113851535e9.12.1737459690343; 
- Tue, 21 Jan 2025 03:41:30 -0800 (PST)
+ bh=8EBvExqekhvI6jcPU9fttVcHOfFc5T0tfJ+EZdg5nMg=;
+ b=N4vSNR0crA4tXLjS9ke1QkscJtkszGiXU0Zy2OVj0ymUF3+ORMPmIWOg9gDMaZvB9U
+ cZ019X+MugW77zO7N6DYNFi30Zd2I13/yhwHAH7wYgAKY1HHYMNXl7Ee3eYQIhbfoHza
+ GWfoGwiPgwTxAJl7SMoap5smCyQIPeuK7NS0sdrE/KV7fB0/kDDmrDsf2atyPVXx1xe6
+ SyyfsEWvlFEa+BHNG5sq7XxwR56NnmxUR6Kh0eQhSrptfPvfr01RJ+NDkcWADFHSzgtd
+ nb2xyQZqulB9ws/LUGPbZouaHzMg+bWsk/91jbSoYneGbeNswBFDNJ72Kp4JGeQnG96r
+ qY0w==
+X-Gm-Message-State: AOJu0YzxYyiN6Wz6tYeOEgapAWKS5v5MBwVZ3esFej7rDqPdG9WFPjn2
+ 0lnWMs1I+U1dUDnNlC+NkUg3qhDVJBjDP/Hbr73yd+d3Bgtpu8e5ApYKvdBkffiEEwb1yVwW8kS
+ Rj5o=
+X-Gm-Gg: ASbGncu2THvvlFKSH0SljSV1rEwOwuuPVyrdmy5DUJGmjzD/kSVb5EaWhaAlKPEcAUT
+ 44YMPC+45ImYQLsz5srL2QmQZGliY+JIRfN0pZfZdomRPAH7xrxzJK9gChMk0dADl5G8/3gacZF
+ FYKyFoYTIHAG7TiIMp7wWjUHfMAwLfBITCudB6S1J1Ps5i+wvLhvip2XxtM45H5O9+p7lgFoL57
+ EsQeJBYiKl9+VTBukn9JJ3u1tRG5xGrHv6CKpsuIbu0QUDfAIvuXryY9+J0ovg0OnxEFTjXYEGZ
+ dczTGwRs/RekZpiQTMbr4f7HXcNtt4beRrI1/kMpMhKP
+X-Google-Smtp-Source: AGHT+IE+K5MC6VWNvBNlmvep3x60OHi1bN+kYIodq+lGzOgTwLM8ACjm1FxvjtkMJ+iiA85448mYhg==
+X-Received: by 2002:a05:600c:511b:b0:435:14d:f61a with SMTP id
+ 5b1f17b1804b1-438914304a8mr123262745e9.25.1737459694869; 
+ Tue, 21 Jan 2025 03:41:34 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c75290a2sm238291245e9.29.2025.01.21.03.41.29
+ 5b1f17b1804b1-438a46b0497sm109750045e9.28.2025.01.21.03.41.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Jan 2025 03:41:29 -0800 (PST)
+ Tue, 21 Jan 2025 03:41:34 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 07/11] hw/acpi: Prefer cached CpuClass over CPU_GET_CLASS()
- macro
-Date: Tue, 21 Jan 2025 12:40:52 +0100
-Message-ID: <20250121114056.53949-8-philmd@linaro.org>
+Subject: [PATCH 08/11] hw/core/generic-loader: Prefer cached CpuClass over
+ CPU_GET_CLASS macro
+Date: Tue, 21 Jan 2025 12:40:53 +0100
+Message-ID: <20250121114056.53949-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250121114056.53949-1-philmd@linaro.org>
 References: <20250121114056.53949-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,41 +106,26 @@ use it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/acpi/cpu.c         | 4 ++--
- hw/acpi/cpu_hotplug.c | 3 +--
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ hw/core/generic-loader.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-index f70a2c045e1..6f1ae79edbf 100644
---- a/hw/acpi/cpu.c
-+++ b/hw/acpi/cpu.c
-@@ -235,8 +235,8 @@ void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
+diff --git a/hw/core/generic-loader.c b/hw/core/generic-loader.c
+index fb354693aff..0ddb3a359a2 100644
+--- a/hw/core/generic-loader.c
++++ b/hw/core/generic-loader.c
+@@ -48,11 +48,8 @@ static void generic_loader_reset(void *opaque)
+     GenericLoaderState *s = GENERIC_LOADER(opaque);
  
- static AcpiCpuStatus *get_cpu_status(CPUHotplugState *cpu_st, DeviceState *dev)
- {
--    CPUClass *k = CPU_GET_CLASS(dev);
--    uint64_t cpu_arch_id = k->get_arch_id(CPU(dev));
-+    CPUState *cpu = CPU(dev);
-+    uint64_t cpu_arch_id = cpu->cc->get_arch_id(cpu);
-     int i;
+     if (s->set_pc) {
+-        CPUClass *cc = CPU_GET_CLASS(s->cpu);
+         cpu_reset(s->cpu);
+-        if (cc) {
+-            cc->set_pc(s->cpu, s->addr);
+-        }
++        s->cpu->cc->set_pc(s->cpu, s->addr);
+     }
  
-     for (i = 0; i < cpu_st->dev_count; i++) {
-diff --git a/hw/acpi/cpu_hotplug.c b/hw/acpi/cpu_hotplug.c
-index 83b8bc5deb8..aa0e1e3efa5 100644
---- a/hw/acpi/cpu_hotplug.c
-+++ b/hw/acpi/cpu_hotplug.c
-@@ -62,10 +62,9 @@ static const MemoryRegionOps AcpiCpuHotplug_ops = {
- static void acpi_set_cpu_present_bit(AcpiCpuHotplug *g, CPUState *cpu,
-                                      bool *swtchd_to_modern)
- {
--    CPUClass *k = CPU_GET_CLASS(cpu);
-     int64_t cpu_id;
- 
--    cpu_id = k->get_arch_id(cpu);
-+    cpu_id = cpu->cc->get_arch_id(cpu);
-     if ((cpu_id / 8) >= ACPI_GPE_PROC_LEN) {
-         object_property_set_bool(g->device, "cpu-hotplug-legacy", false,
-                                  &error_abort);
+     if (s->data_len) {
 -- 
 2.47.1
 
