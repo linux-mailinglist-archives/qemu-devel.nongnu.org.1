@@ -2,88 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0472A17D0B
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 12:31:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B21BEA17D25
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 12:42:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taCTC-000301-84; Tue, 21 Jan 2025 06:30:58 -0500
+	id 1taCcX-0004ra-UY; Tue, 21 Jan 2025 06:40:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taCT3-0002xt-ND
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 06:30:49 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taCSZ-0001uS-BI
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 06:30:25 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-385e27c75f4so4543317f8f.2
- for <qemu-devel@nongnu.org>; Tue, 21 Jan 2025 03:30:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737459016; x=1738063816; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0rtGCuKXTuEWbszCwRV5C+wCQNbs2Gdh30z0rJAoE9w=;
- b=b2pNKrIG1ccOf6h0VdrMZ7Ka/gDQeHFYE5hzkYsIAZO6PUjUVDjqKkRHoa/ysMvXkV
- h7hXTGoModBs/VeJSlQAr/bZu6eul7sGDOgBEhPFwr3/VmkJ+Dsy25g4WKYno1uo3nm7
- llQGe1AEE+kwb36HWnb0uhlpgGqAZ1uju6BV03f85gXbW7uYhqw0aqqAqSts/6r5XXmc
- tPQJSIytwzCv66BjkL61Pe0gSLgoMwjvhI4WqU987IP1dN/wJ+7opZl0tz3PgFVVjmdq
- MGbTIF+bOvcz8tpWX9aTk0NtGXA3DdXuvyMMiH56z+x1XQjebRdm7FyZ5rD2AD8M7PIs
- 8NMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737459016; x=1738063816;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0rtGCuKXTuEWbszCwRV5C+wCQNbs2Gdh30z0rJAoE9w=;
- b=XeZaH/ltqAqj6NlQ3GhJ1fxpDS3wMwBo+LZXITywD7I0zE44Xw/a1JVjQj162UA9gQ
- Feb3WTEUqEEcnSi5cnCVzC1epjYv234KWrJHmmSXUn0dIl9hQDq8g86yJwf5FXNXuAH7
- IIXI+avap1EYdF4wrfOoSDlZtpODkYeFXdw3MAXWJhQscwg7EXzibCyWol799ep3eTyU
- Mgpy5xnRRwY6hqzAiVp4tJ0u96/S0XvL3s5b2oYuA/ZMH/SNbCi8ObLaB25pFUugruHc
- 0ygQ5yByfJC8q9V8fRZGaK71VV7w1Dd482ser8TqEjrlIUPIqqdl51aH1tGea3689OKl
- E1oQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXs1xX9cb0jFL1sXmOQ51x0AjnZA0QAhH8/CMKTJMdebnRHwISq3bgjPZ1Rc3adjPcl8DCtcLtr6SrQ@nongnu.org
-X-Gm-Message-State: AOJu0YyM0zaHqhMezoXOH78kJeA4UFAps8az3Gn4SyOLvozwar87sR7c
- RLz+FEaz9Dx7+NfaucmQMzyZRgmsGSyEQEzbkJ9N8hA6C/qOBVk5wbIyfNP0VHw=
-X-Gm-Gg: ASbGncvve8mLGd0F7OVDWH3er2st9tX6QC2LuuBkgsV7SMt98zYvgWuMpLPrg1YLLu0
- CraZLNkxCj31qy+GEvafKu6zHfQVJdq19rbod1okOMI6HDqS/5JD0LBpYBLvuzzB9CmPmNPAIim
- YCxb+HgDv8yf5CwLUwAxQL22RshY8iEurN3Ako8TqHqpQndv4OmnqjOtK4d2fasRBKeGak/lSf1
- UMKtg6RPEGXd9h8wsNcmCWQkd4fIHcABhBGuUbX14jPNl3hOPbt7e7MSLMvUUTzWD/omy4wiQnU
- WkLtHx6rmadANu8wZv1KxL5iRYs+ZWz4f9FR5Q==
-X-Google-Smtp-Source: AGHT+IG5h6G8BxEhcgs3Ogs2YOLAYAWSruyj+tqdnLekIeamIuy/+2sxfSHIgcIIz31iV/WSUDSPHw==
-X-Received: by 2002:a05:6000:1a87:b0:38b:da31:3e3b with SMTP id
- ffacd0b85a97d-38bf5678466mr15537947f8f.3.1737459016265; 
- Tue, 21 Jan 2025 03:30:16 -0800 (PST)
-Received: from [192.168.69.181] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38bf32151e6sm12872826f8f.20.2025.01.21.03.30.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 Jan 2025 03:30:15 -0800 (PST)
-Message-ID: <50fe71c0-4b15-427e-933f-68a95b0adf12@linaro.org>
-Date: Tue, 21 Jan 2025 12:30:15 +0100
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1taCcP-0004rE-5q
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 06:40:29 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1taCcH-0003BU-Cw
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 06:40:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737459618;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Elt+lFLmwXJG20xP3B41lkgHw56Aa5HMxnF3Sst+52E=;
+ b=cXvqgpx+VXgEgZE/mMfwDkVBVt1IkMRg2ipzlkDlKq6aPWmVpM3JzBgJXrxLKo7bf8+Ut2
+ A4TPIan48vz90cLnf8HAl0ojsBJweMr9WYRNNbsaplxs+p042puQS0yjRXYJBLePgRudlr
+ SgbOQmpmsmchxz0XckFpWaPC3owa3jo=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-637-iR7lWcbiNCKN_eK5R5Mh3g-1; Tue,
+ 21 Jan 2025 06:40:15 -0500
+X-MC-Unique: iR7lWcbiNCKN_eK5R5Mh3g-1
+X-Mimecast-MFC-AGG-ID: iR7lWcbiNCKN_eK5R5Mh3g
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 15BAF195604F; Tue, 21 Jan 2025 11:40:12 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.23])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7DA8119560AD; Tue, 21 Jan 2025 11:40:08 +0000 (UTC)
+Date: Tue, 21 Jan 2025 12:40:05 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Fahrzin Hemmati <fahhem@fahhem.com>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org,
+ Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org
+Subject: Re: [PATCH] Skip resizing image to the same size
+Message-ID: <Z4-HlVbF2gRAgi86@redhat.com>
+References: <20250120103711.836753-1-fahhem@fahhem.com>
+ <Z45ANK-m2XZazDi3@redhat.com>
+ <CAHJ_xmW3YCrKEpNGBJxRzqM99Aoe=nwOSJWF+BO5VbySP9763g@mail.gmail.com>
+ <b3e7b218-66eb-4d5f-b9ed-6a20dbca2a8a@tls.msk.ru>
+ <CAHJ_xmVDZ159ixki4qpvOMdA1zLpwSkVnB_ukx_EfW1ve0o=+A@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mips: Mark the "mipssim" machine as deprecated
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Aleksandar Rikalo <arikalo@gmail.com>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-References: <20250121103655.1285596-1-thuth@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250121103655.1285596-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <CAHJ_xmVDZ159ixki4qpvOMdA1zLpwSkVnB_ukx_EfW1ve0o=+A@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-3,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,20 +87,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/1/25 11:36, Thomas Huth wrote:
-> We are not aware of anybody still using this machine, support for it
-> has been withdrawn from the Linux kernel (i.e. there also won't be
-> any future development anymore), and we are not aware of any binaries
-> online that could be used for regression testing to avoid that the
-> machine bitrots ... thus let's mark it as deprecated now.
+Am 20.01.2025 um 23:21 hat Fahrzin Hemmati geschrieben:
+> Happy to wait until your patchset is in.
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   If anybody is still using this machine, please speak up now!
-> 
->   docs/about/deprecated.rst | 13 +++++++++++++
->   1 file changed, 13 insertions(+)
+> Yes, this is a no-op, but it reads the entire disk image to perform that
+> no-op, so this is merely a time-saving improvement, not a behavior change.
 
-Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Can you give more context on what exactly you're doing that it reads the
+entire disk image just to resize it? This sounds completely unexpected
+and if it does, there may be a different problem to be solved.
+
+In my test, for a raw image, I see a single ftruncate() call, which is
+unnecessary, but shouldn't cause any measurable time difference for the
+qemu-img run. qcow2 has a little more code in QEMU to figure out that
+there is nothing to do, but it doesn't involve any syscall and certainly
+not reading the whole image.
+
+Kevin
+
+> On Mon Jan 20, 2025, 09:49 PM GMT, Michael Tokarev <mjt@tls.msk.ru> wrote:
+> 
+> 20.01.2025 23:17, Fahrzin Hemmati wrote:
+> 
+> My apologies, I saw the Signed-off-by requirement at first, but as I
+> followed the docs I got to "git publish" and didn't realize "git publish"
+> was
+> actually able to send emails on my system (I don't remember setting up any
+> SMTP settings). By that time, I forgot and thought this patch was short
+> enough to not warrant much of a commit message.
+> 
+> The main practical advantage is for users that call "qemu-img resize" via
+> scripts or other systems (like Packer in my case) that don't check the
+> image
+> size ahead of time. I can upstream this change into them (by using
+> "qemu-img info —output=json ...") but I figured it would be useful to more
+> users here.
+> 
+> This could trivially be added to block/io.c:bdrv_co_truncate(), as well as
+> blockdev.c:qmp_block_resize() with a little more work. I'm not familiar
+> with those workflows, but if needed I can do that as well.
+> 
+> Here's the new patch:
+> 
+> From 17f5c5f03d930c4816b92b97e0e54db0725d7b94 Mon Sep 17 00:00:00 2001
+> From: Fahrzin Hemmati <fahhem@fahhem.com <mailto:fahhem@fahhem.com>>
+> Date: Mon, 20 Jan 2025 01:56:24 -0800
+> Subject: [PATCH] Skip resizing image to the same size
+> 
+> Higher-level software, such as Packer, blindly call "qemu-img resize"
+> even when the size is the same. This change can be pushed to those
+> users, but it's very cheap to check and can save many other users more
+> time here.
+> 
+> Signed-off-by: Fahrzin Hemmati <fahhem@fahhem.com <mailto:fahhem@fahhem.com
+> >>
+> ---
+> qemu-img.c | 6 ++++++
+> tests/qemu-iotests/061 | 8 ++++++++
+> tests/qemu-iotests/061.out | 9 +++++++++
+> 3 files changed, 23 insertions(+)
+> 
+> diff --git a/qemu-img.c b/qemu-img.c
+> index 2f2fac90e8..3345c4e63f 100644
+> --- a/qemu-img.c
+> +++ b/qemu-img.c
+> @@ -4184,6 +4184,12 @@ static int img_resize(int argc, char **argv)
+> goto out;
+> }
+> 
+> + if (total_size == current_size) {
+> + qprintf(quiet, "Image already has the desired size.\n");
+> + ret = 0;
+> + goto out;
+> + }
+> 
+> 
+> 
+> I don't think this is necessary: the actual operation is a no-op
+> anyway, there's no need to special-case it.
+> 
+> Please also refrain from changing qemu-img until my refresh
+> patchset is either accepted or rejected. It was a large work
+> and it'd be sad to lose it.
+> 
+> Thanks,
+> 
+> /mjt
 
 
