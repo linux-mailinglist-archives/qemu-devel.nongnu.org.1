@@ -2,88 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C4A6A1855F
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 19:49:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 286F8A18567
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 19:50:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taJIr-0003Fj-K9; Tue, 21 Jan 2025 13:48:45 -0500
+	id 1taJJ6-00045O-Gz; Tue, 21 Jan 2025 13:49:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1taJI5-00035v-Gi
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 13:48:01 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1taJJ2-0003zW-SX
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 13:48:56 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1taJI2-00055i-SN
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 13:47:56 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5dbe8e62407so1356005a12.2
- for <qemu-devel@nongnu.org>; Tue, 21 Jan 2025 10:47:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1taJJ1-0005K2-38
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 13:48:56 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-21680814d42so99100465ad.2
+ for <qemu-devel@nongnu.org>; Tue, 21 Jan 2025 10:48:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737485272; x=1738090072; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0Nesju9X6p+NFxhLVMdf2JYbIJ9FHseiolXicW/bOKs=;
- b=nDxB2DRUvmpGIjppGK+7lpWnQpemwNsUAnZTx83GrGmptpqf6FG2aCEQjCTB4+tX/B
- AwC6O7ty1FliaCSXTyyya+Duco7s/iRf1UU/CpD8Aj2c1WS6GKCFlj91xWAJ4YaabqXz
- uwnxpePD4xG9u42iLidvH/8oz850a0qWlPNcjVsZg4IoiszeD70CktynP5dKPm1lTU60
- DcP/Xr2frVVoO66PZ/ml8rTF0o9MqPDMt3F1q7BXRG9FsLIxSUPWEOs4xLjdB//lDA09
- ZmGYro5G9CYFLvopy7qATBsrz81OXXElN2keZknXtTx41uW1dHwzPMcVpNd62v7d/Lhi
- SD/Q==
+ d=ventanamicro.com; s=google; t=1737485333; x=1738090133; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=HG44YAgLX/F1jYL73raIbfXoUDahSn4ZA9nq+CnEpzo=;
+ b=piVTqquoz8bRAixmi9bY6GyQ/vo3vEy+ZBW+vy1GxUGXHyRw26qwWU4sq6tPnLkIYU
+ N3R9v27Dgk4Gurj/85queFoJUgPkU5jeeStGVvlwl7BxRglRsoGYCw3qSzKojWDVBh1h
+ QClYB8I2XnWJu91IDOzh5IF9QXN5PqbvqpX9hLnY/aKV29qwUbzkuKYd3gLoqDIGURpO
+ gtitS7Tfjns6E71v3Mmi1DKXdSysSTfDTT5xLjbbM71fReTbzRFvzA5tzqiYtD5d+nSU
+ lZtIe6DbJc29inC8LaYnCRFfvfTGH0vE7wWWk2mrtPbqUKJa24hFqTxgEawURCNDhSLH
+ UW6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737485272; x=1738090072;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0Nesju9X6p+NFxhLVMdf2JYbIJ9FHseiolXicW/bOKs=;
- b=KZKTitcQuZYZGZ0J9T+E6aK2lHXoGqYzNb11lEXhNfMcc75zxKfGTFMZyNbhwB6oAP
- xNKkT11q1ZouiOX/WPfy7/2h3MChsOPtYs/YEOexnCUjRnu4iCmQVrSA2MvnDzf4V4uL
- ub3rzs8zZNoZetF4LY9YZnNgopS2RiAxJTqdVfmyM2kvpOuUsQTUmqw207tHlfBm8NJ0
- rluFK7W7uTQ61SlkV0F/mRFHRoi9sa8G2BpSB2tIgRjxdpHejRm85yBRXxEACp88fbs7
- GSLHyaEZKEEwylCnYhT+vUHJynrErgwleRjMZGCttiaflbuXT0MrA2wC2juPRmG1EDFh
- MNAA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWZnFkstnQ1G+sqY6MdLOysBpcEaKzpqiAuYzpch1X+Szra3dizsw3b5JGdER17oPVmtFsSs30oYDhO@nongnu.org
-X-Gm-Message-State: AOJu0Yw8UPoHYOYij2SVA0m5cAoX54A/D7pXzGm2pe8/ssCKYmhRpmAF
- ZZs45QQtUHp+2GbudxnIHExE38iAXlJiFEs/aJJKJkt5H7nOVZsg
-X-Gm-Gg: ASbGncstR4UA70HuougYIC4d2nbI87zQIU1Zn29aORfdrOsHVPja8KsdKJRLsJQSzLm
- BPmMUXBGj6/tcL5WW98H1LamJYw1ZJkNjYQW+Gu1zwtByPxdy8YsOnSYcX37JuQrjWvKf8I1OSz
- LsT7hgfHhzwEZk73ClxQLsMX5JXk4h05HvCd2VLf1tNRx9GowRYrVto1o2SGPNRJbpZ/CBeaLkJ
- jgXUBezIOcBZ9qJ90J4oDHW506VxTsw9em4YtbnNiWH/k9wDWAQi5GebOVoBCbmyz6q/FKRx3w=
-X-Google-Smtp-Source: AGHT+IGKVaPz7AsY1tZKN7me2w9WwxNA5PON4CzqDBAsyehMIIoZu7UwtxmmaEg+61Pr0+zRmLZCog==
-X-Received: by 2002:a17:907:7205:b0:ab3:88a0:b71d with SMTP id
- a640c23a62f3a-ab38b2e734fmr2030102366b.34.1737485271593; 
- Tue, 21 Jan 2025 10:47:51 -0800 (PST)
-Received: from think.fritz.box ([2a02:8109:8384:1400:381c:a1:b53:524d])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab384f223e7sm785745166b.111.2025.01.21.10.47.50
+ d=1e100.net; s=20230601; t=1737485333; x=1738090133;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HG44YAgLX/F1jYL73raIbfXoUDahSn4ZA9nq+CnEpzo=;
+ b=T8iYMLieqBz2HscaI1WyTzgHBQj4kJVxeJawzPvy06CRVBqNMMvumQSmbSXRwRbvIg
+ Hl2Q1dOMHnDSH89wVAXFgDerA4+qN67l43mCo9AZG6i1Lr/asVb/XvWo4UqU/jcXp1dr
+ +3wum5ts5ItNzYtnDL9BpYjmTpLf4YJmYZ7fbRmeWQGrYS463L6PzgpGxDqxIfDUk5nf
+ HXTVDROPa+Xf7T5PDvlr+34tdSV0G5xNSJP+4JNEXHaVlHaqIWN630A4PBkuC2ncU09b
+ P0lXJXTw+C/AnW9NAInrMWmmQh03TDA5cn5djmL6KjX2r3OOQJx+xgmr18/vBRszZPVa
+ Rs9w==
+X-Gm-Message-State: AOJu0YyCiBPN0nfX7neJC/uMrGWNr3+e8w7iV26ng2/BExZGoT716LOx
+ QZl02T2bfK6JKmZmeyVVYGHkGYW3iJJ8EgYMj3r8HwiLswrWQFzV/3uwJUS2/tCpAeyheu+GlDI
+ M
+X-Gm-Gg: ASbGnct2UqrjZEQfiEz6HRMoiL6gRhPxGfiZS52mIf49mERUq7gZNykMfGjIO8MULNb
+ h7Ph8YuWSNqKFmvwkqLmab8d+JnP/V1CaG91Gbgd/cdGi/idV80srrCJlBha4QiLAWCJZ7IrBBI
+ 60VfXUcFy/5HzBL7sc0DQceqCyxWsrCp5ZN1GOGf8CYR4M9kPEQviQ/hvQ7wlV/5D+xnt5xNfpG
+ zXlyHgcEpQtoEVNTULpM6KfBV/RLqBm+/ywJPRU9YyjnzB6LzvtVE1URkOt6eZD7YmXDixw
+X-Google-Smtp-Source: AGHT+IHXWsk48Dox1AzMJ4wxxmU09J21v13OZS35EaHo61xoKVYETYf787BNw2+6N4akSg5xIyg64w==
+X-Received: by 2002:a17:903:943:b0:21d:3bd7:afdf with SMTP id
+ d9443c01a7336-21d3bd7b381mr73503305ad.0.1737485332898; 
+ Tue, 21 Jan 2025 10:48:52 -0800 (PST)
+Received: from grind.. ([191.202.238.10]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-21c2ceba56asm81121865ad.98.2025.01.21.10.48.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Jan 2025 10:47:50 -0800 (PST)
-From: Roman Penyaev <r.peniaev@gmail.com>
-To: 
-Cc: Roman Penyaev <r.peniaev@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org
-Subject: [PATCH v8 4/4] qemu-options.hx: describe hub chardev and aggregation
- of several backends
-Date: Tue, 21 Jan 2025 19:47:44 +0100
-Message-ID: <20250121184746.920841-5-r.peniaev@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250121184746.920841-1-r.peniaev@gmail.com>
-References: <20250121184746.920841-1-r.peniaev@gmail.com>
+ Tue, 21 Jan 2025 10:48:52 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ peter.maydell@linaro.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH 0/5] target/riscv: Coverity fixes
+Date: Tue, 21 Jan 2025 15:48:42 -0300
+Message-ID: <20250121184847.2109128-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=r.peniaev@gmail.com; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,92 +95,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds a few lines describing `hub` aggregator configuration
-for aggregation of several backend devices with a single frontend
-device.
+Hi,
 
-Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
-Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org
----
- qemu-options.hx | 49 +++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 45 insertions(+), 4 deletions(-)
+This series contains Coverity fixes for issues found in the latest
+RISC-V pull made yesterday.
 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 7090d59f6f10..8e28bd41a9c3 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -3720,7 +3720,7 @@ SRST
- The general form of a character device option is:
+Coverity CIDs being resolved: 1590355, 1590356, 1590357, 1590358 and
+1590359.
+
+Patches based on master. 
  
- ``-chardev backend,id=id[,mux=on|off][,options]``
--    Backend is one of: ``null``, ``socket``, ``udp``, ``msmouse``,
-+    Backend is one of: ``null``, ``socket``, ``udp``, ``msmouse``, ``hub``,
-     ``vc``, ``ringbuf``, ``file``, ``pipe``, ``console``, ``serial``,
-     ``pty``, ``stdio``, ``braille``, ``parallel``,
-     ``spicevmc``, ``spiceport``. The specific backend will determine the
-@@ -3777,9 +3777,10 @@ The general form of a character device option is:
-     the QEMU monitor, and ``-nographic`` also multiplexes the console
-     and the monitor to stdio.
- 
--    There is currently no support for multiplexing in the other
--    direction (where a single QEMU front end takes input and output from
--    multiple chardevs).
-+    If you need to aggregate data in the opposite direction (where one
-+    QEMU frontend interface receives input and output from multiple
-+    backend chardev devices), please refer to the paragraph below
-+    regarding chardev ``hub`` aggregator device configuration.
- 
-     Every backend supports the ``logfile`` option, which supplies the
-     path to a file to record all data transmitted via the backend. The
-@@ -3879,6 +3880,46 @@ The available backends are:
-     Forward QEMU's emulated msmouse events to the guest. ``msmouse``
-     does not take any options.
- 
-+``-chardev hub,id=id,chardevs.0=id[,chardevs.N=id]``
-+    Explicitly create chardev backend hub device with the possibility
-+    to aggregate input from multiple backend devices and forward it to
-+    a single frontend device. Additionally, ``hub`` device takes the
-+    output from the frontend device and sends it back to all the
-+    connected backend devices. This allows for seamless interaction
-+    between different backend devices and a single frontend
-+    interface. Aggregation supported for up to 4 chardev
-+    devices. (Since 10.0)
-+
-+    For example, the following is a use case of 2 backend devices:
-+    virtual console ``vc0`` and a pseudo TTY ``pty0`` connected to
-+    a single virtio hvc console frontend device with a hub ``hub0``
-+    help. Virtual console renders text to an image, which can be
-+    shared over the VNC protocol. In turn, pty backend provides
-+    bidirectional communication to the virtio hvc console over the
-+    pseudo TTY file. The example configuration can be as follows:
-+
-+    ::
-+
-+       -chardev pty,path=/tmp/pty,id=pty0 \
-+       -chardev vc,id=vc0 \
-+       -chardev hub,id=hub0,chardevs.0=pty0,chardevs.1=vc0 \
-+       -device virtconsole,chardev=hub0 \
-+       -vnc 0.0.0.0:0
-+
-+    Once QEMU starts VNC client and any TTY emulator can be used to
-+    control a single hvc console:
-+
-+    ::
-+
-+       # Start TTY emulator
-+       tio /tmp/pty
-+
-+       # Start VNC client and switch to virtual console Ctrl-Alt-2
-+       vncviewer :0
-+
-+    Several frontend devices is not supported. Stacking of multiplexers
-+    and hub devices is not supported as well.
-+
- ``-chardev vc,id=id[[,width=width][,height=height]][[,cols=cols][,rows=rows]]``
-     Connect to a QEMU text console. ``vc`` may optionally be given a
-     specific size.
+
+Daniel Henrique Barboza (5):
+  target/riscv/csr.c: fix deadcode in rmw_xireg()
+  target/riscv/csr.c: fix 'ret' deadcode in rmw_xireg()
+  target/riscv/csr.c: fix deadcode in rmw_xiregi()
+  target/riscv/csr.c: fix deadcode in aia_smode32()
+  target/riscv/cpu_helper.c: fix bad_shift in riscv_cpu_interrupt()
+
+ target/riscv/cpu_helper.c |  4 +++-
+ target/riscv/csr.c        | 24 +++---------------------
+ 2 files changed, 6 insertions(+), 22 deletions(-)
+
 -- 
-2.43.0
+2.47.1
 
 
