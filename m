@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E168AA178B3
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 08:45:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 989A4A178EF
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 08:58:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ta8w1-0001bq-JC; Tue, 21 Jan 2025 02:44:29 -0500
+	id 1ta986-00047H-Sz; Tue, 21 Jan 2025 02:56:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ta8w0-0001bg-34
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 02:44:28 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ta983-000471-5M
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 02:56:55 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ta8vy-0005av-H0
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 02:44:27 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3863703258fso4162377f8f.1
- for <qemu-devel@nongnu.org>; Mon, 20 Jan 2025 23:44:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ta97z-0006nD-7j
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 02:56:53 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4361f65ca01so54136915e9.1
+ for <qemu-devel@nongnu.org>; Mon, 20 Jan 2025 23:56:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737445464; x=1738050264; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gCByY4xFxKSas0mj1fQXD4ORekE5ijPVfSFdvDNgJM0=;
- b=kZ3VCByrCGzc+z0+NgqfOvs0h5VEe+Byw3fIcPu3X2cYnZuT58qEFCyuVJ1Cffkxw8
- CvcOHFrgVEOLZ+uXvkQtDo4HkVsY8P8iq03aEy9eeNZEBQswH0bG65JyWnnSZTY4F21I
- uFrswMPtNq/AfqJdd7i6E7CK8Uf7PqrPthr/lxToX4+oPUjQnsbdQSdVUBUajCd2gHOx
- e3UA+UJJTSNuJWKplR98A7Cy2B4Dms//Aqct2+eLRFgbXZOtZtlEOeyJ+VCnMU84hnma
- XaFfvPEATbACMdiejCUiv+tGdf6ZGRyYCEn3XE002hyx+mUyXZSbhCsuqDtnJjR1aS1p
- iZuw==
+ d=linaro.org; s=google; t=1737446208; x=1738051008; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3nnJzC/PO6uLiXSqil3pz4K7XaqHg0mQN6UMQeI9gOc=;
+ b=UJPzfzfNq9DpEP6eQGyi3Bka9r6yPrnEHEQ1rCLfusJiXtWpKJ2uHf4QNySBunEEr4
+ bhKmZCiwMWmGHx/4vxLIGKuHpBbZErG4xecapjcYgXWTJiOkD6hoZsJQxiF05Y79q0i6
+ GlV3p3iCnVMnNcTlvabNf6CRlfaYwuJopbSMPnjzXtewCYxjtHf0Hm1gt40pvgunwEby
+ dUKGNxyLivXKxxg+lBv4715zo/1oNKGtO8sFBBkqxkbR0pVM4RLlQ74z6Eez4vauU03a
+ YWX4Yt23ibvqCP7btc10mqpwRm7zhvuuMOi+xVmcSAYAJq2zdm9HYYtkPl0vMOOGgzGz
+ SHIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737445464; x=1738050264;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=gCByY4xFxKSas0mj1fQXD4ORekE5ijPVfSFdvDNgJM0=;
- b=IQeXDrImqDBnMgsTVlZbmfeLLieKjqy51DJZ3eprfwyvzEd5nBMi1d2JwMmAFjO1Cg
- dfb/BJ9lXgPu8n5igO5Z1D371Q2CEZoLYq4vzF/ypmCzZ+nJQrgF4GmXd/XHisGb3YKX
- mPjLS9E37C9cEcXYqIAivP53KXBx7T+yDB0JkHBL+E1hHH5vG2kgO2VqQpX4pmXlq8YV
- sfa2RMVERIdIUBXDAq//hZDlclV4+q+7zWEZ1FhVcEuK57tuV9uZigQdgNsvZWD4nKjA
- fKocKp/CQkCxhcRp5TBIBBMwo8KQHLB/WkZZDeT/Kcdeed4DeeLsrdcHM7gvQ+6mNa3J
- YVyg==
-X-Gm-Message-State: AOJu0YxMrVOXKHlx46wmw51VtGq0B2JjxO25ffbV0pxH2KSzg3DMSy2I
- KQ6GJuBebwccrA+NB8YkIE6p5klF0m5eUXnLnTs9C6RgvsPJhtkIrmwLibl0Up45WvP/aN8KoV3
- 9BZE=
-X-Gm-Gg: ASbGncsKkcA1fJ7bu1BdDocG05Kgt3w9+h6C4AMozi3V2xcrB6ngXiSAHt1zd8Gy4DI
- TPWBztpLIqYGYGk6elguLRCztzGPPHh0TJPb3j0JkuQMULQiKI53H9ljmx3wcfiGHRYrMopDTfC
- 6GFPctY+Oo07z0qbhpfuVZtKeWrLOCu+KAIfMZ2srWmgvtafPWFOCi4+GeVcVdocvi2dATwc/2M
- KmpoF4qVoDZD9T2rUds8qkZU8jDXiigrdxwR6Uk9082peRD9tdw0nSwWWWT+VcFcd7diNwTE9uB
- eU0yvHP0cSA0QJqFoApAUjO7ST6n5HYVmQyRgDNWFJZT
-X-Google-Smtp-Source: AGHT+IHBGfF2lw1s7z0jLTy9HMMsQBFwcIT+bzXwRduHKmursZYlmsPQrZzuMK/g9Hz8DJi0rvuIrQ==
-X-Received: by 2002:a05:6000:1786:b0:38a:8d32:2707 with SMTP id
- ffacd0b85a97d-38bec548925mr21229320f8f.26.1737445464531; 
- Mon, 20 Jan 2025 23:44:24 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1737446208; x=1738051008;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3nnJzC/PO6uLiXSqil3pz4K7XaqHg0mQN6UMQeI9gOc=;
+ b=qXf58rehapQJJMXfTkkfTjmgXmwj0UkRFhJmHY04aA8PYptxf0mnkRExGwt2YabluN
+ gFMFtAhIRFECzczfL0ABMI4SNIPx5coK/dJ0D8OzlHEbHhisSxpIDVMT4bc2gMIn/MPF
+ OE/ad/KW8S7mA7KK1L5tYX8vU77PElSSYBrG2oI/lVeSB/5+9SZsLS4v6uZUIAK3fO7b
+ TA24usDHClRk6bWvSOTQWZTOaGxV0JPNtrWul3VhBhcbbpxuCQ/uvEJwzVN5p9s/u3Zv
+ g8ozp1n8vR5AyHeAR2+oa3BjNDFjg6foSjtA2LwzjVLoW6if3Jeg2129Z+/ZwBFfF8Cd
+ hZeg==
+X-Gm-Message-State: AOJu0Yy1UBuvCQiGj6LT3AXrjIWy6aqdVcipT9aCTNjHdCY475fDbNJ6
+ +e12KUvH0wZqTT0YGHveuvXvuacFbjPbvr9C5oBAX5QT+qNyakyjJePNcQ5juOF0GWkygCdfTX+
+ HuJM=
+X-Gm-Gg: ASbGncuZP8p+kSYGlkO3PKbfykH2nrqA4VR5Vz4oQw32mXwlRLVQ+TrWxn36bji8nhc
+ bEfzziLfsUOm6bwQvYtoB1XHzMs1Mz0QhTJqOiYX0PfzQHM5t+U3rptzSCQp5X+YiJ1FCDni/Jg
+ kGaP+cLASEXPfKBXpF7pZ+3e0xzaVZ0pE3mO+uXIGgAHW5HaA2aazQ5uJqAHS05qvCS53w6TBUo
+ 0xRnolXZJ8xw79B6DfSx7eURcONuWKwNOhjtaGXUXB3iy9w+JIqQcAj7sA9HzOxHj75KjkTGeiL
+ gRIaYklUk/1NzHXbGcPmMp/humJlD4QdpCtnYA==
+X-Google-Smtp-Source: AGHT+IHZmB8sGdXH6LISxwVv8YtnylU0j3OUp58d9CaxT7W3CO4jf88/c/yQPq9qXC80No0a/eZKaw==
+X-Received: by 2002:a05:600c:468e:b0:436:5165:f1ec with SMTP id
+ 5b1f17b1804b1-4389143145bmr150550395e9.30.1737446206442; 
+ Mon, 20 Jan 2025 23:56:46 -0800 (PST)
+Received: from [192.168.69.181] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c0f026c0sm120518235e9.0.2025.01.20.23.44.22
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 20 Jan 2025 23:44:23 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ 5b1f17b1804b1-43890408447sm168728025e9.1.2025.01.20.23.56.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 20 Jan 2025 23:56:46 -0800 (PST)
+Message-ID: <6fce3a32-08f1-44f6-9e92-fb95c48ef66f@linaro.org>
+Date: Tue, 21 Jan 2025 08:56:45 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] hw/ipack: Remove legacy qemu_allocate_irqs() use
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Alberto Garcia <berto@igalia.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  Bernhard Beschow <shentey@gmail.com>, Laurent Vivier <lvivier@redhat.com>,
- Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/2] hw/ipack: Remove legacy qemu_allocate_irqs() use
-Date: Tue, 21 Jan 2025 08:44:12 +0100
-Message-ID: <20250121074412.70292-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250121074412.70292-1-philmd@linaro.org>
+ Fabiano Rosas <farosas@suse.de>
 References: <20250121074412.70292-1-philmd@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+ <20250121074412.70292-3-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250121074412.70292-3-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,85 +101,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No need to dynamically allocate IRQ when we know before hands
-how many we'll use. Declare the 2 of them in IPackDevice state
-and initialize them in the DeviceRealize handler.
+On 21/1/25 08:44, Philippe Mathieu-Daudé wrote:
+> No need to dynamically allocate IRQ when we know before hands
+> how many we'll use. Declare the 2 of them in IPackDevice state
+> and initialize them in the DeviceRealize handler.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   include/hw/ipack/ipack.h | 7 ++-----
+>   hw/ipack/ipack.c         | 7 +++----
+>   2 files changed, 5 insertions(+), 9 deletions(-)
+> 
+> diff --git a/include/hw/ipack/ipack.h b/include/hw/ipack/ipack.h
+> index cbcdda509d3..14540281496 100644
+> --- a/include/hw/ipack/ipack.h
+> +++ b/include/hw/ipack/ipack.h
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/hw/ipack/ipack.h | 7 ++-----
- hw/ipack/ipack.c         | 7 +++----
- 2 files changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/include/hw/ipack/ipack.h b/include/hw/ipack/ipack.h
-index cbcdda509d3..14540281496 100644
---- a/include/hw/ipack/ipack.h
-+++ b/include/hw/ipack/ipack.h
-@@ -12,6 +12,7 @@
- #define QEMU_IPACK_H
- 
- #include "hw/qdev-core.h"
-+#include "hw/irq.h"
- #include "qom/object.h"
- 
- 
-@@ -19,10 +20,8 @@
- OBJECT_DECLARE_SIMPLE_TYPE(IPackBus, IPACK_BUS)
- 
- struct IPackBus {
--    /*< private >*/
-     BusState parent_obj;
- 
--    /* All fields are private */
-     uint8_t n_slots;
-     uint8_t free_slot;
-     qemu_irq_handler set_irq;
-@@ -58,13 +57,11 @@ struct IPackDeviceClass {
- };
- 
- struct IPackDevice {
--    /*< private >*/
-     DeviceState parent_obj;
--    /*< public >*/
- 
-     int32_t slot;
-     /* IRQ objects for the IndustryPack INT0# and INT1# */
--    qemu_irq *irq;
-+    qemu_irq irq[2];
- };
- 
- extern const VMStateDescription vmstate_ipack_device;
-diff --git a/hw/ipack/ipack.c b/hw/ipack/ipack.c
-index ed75f791832..ef59f5dcd62 100644
---- a/hw/ipack/ipack.c
-+++ b/hw/ipack/ipack.c
-@@ -55,22 +55,21 @@ static void ipack_device_realize(DeviceState *dev, Error **errp)
-     }
-     bus->free_slot = idev->slot + 1;
- 
--    idev->irq = qemu_allocate_irqs(bus->set_irq, idev, 2);
-+    for (int i = 0; i < ARRAY_SIZE(idev->irq); i++) {
-+        qemu_init_irq(idev->irq[i], bus->set_irq, idev, i);
-+    }
- 
-     k->realize(dev, errp);
- }
- 
- static void ipack_device_unrealize(DeviceState *dev)
- {
--    IPackDevice *idev = IPACK_DEVICE(dev);
-     IPackDeviceClass *k = IPACK_DEVICE_GET_CLASS(dev);
- 
-     if (k->unrealize) {
-         k->unrealize(dev);
-         return;
-     }
--
--    qemu_free_irqs(idev->irq, 2);
- }
- 
- static const Property ipack_device_props[] = {
--- 
-2.47.1
+>   struct IPackDevice {
+> -    /*< private >*/
+>       DeviceState parent_obj;
+> -    /*< public >*/
+>   
+>       int32_t slot;
+>       /* IRQ objects for the IndustryPack INT0# and INT1# */
+> -    qemu_irq *irq;
+> +    qemu_irq irq[2];
+
+Oops forgot to commit:
+
+   -    qemu_irq irq[2];
+   +    IRQState irq[2];
+
+>   };
 
 
