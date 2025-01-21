@@ -2,67 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C7F9A17F4A
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 14:59:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28037A17F13
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 14:43:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taEln-00045L-BG; Tue, 21 Jan 2025 08:58:19 -0500
+	id 1taEWQ-0007Nm-Qw; Tue, 21 Jan 2025 08:42:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berto@igalia.com>) id 1taEll-000456-Vb
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 08:58:17 -0500
-Received: from fanzine.igalia.com ([178.60.130.6] helo=fanzine2.igalia.com)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1taEWF-0007My-HF
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 08:42:16 -0500
+Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berto@igalia.com>) id 1taElj-0007Oi-UP
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 08:58:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
- Date:References:In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=N2H1/CEjYoPvf7ecB/MdIdbvoOxXgD54Fas+gcdO22U=; b=ffjRUcC+GsARW6STKNcWgV5cXV
- xT/XrCBroPBTN2p1sjtOAPzn9Hs37tr5WNVc8To97RDJTnnTpiqL+rRBqyeuVDQInTNTtP+y+QW91
- nj0KoEBCIzYoTKvzhWt15CUehCiNUwWaYFjQSg9tgL9tJ7fmlOa2S7m+QDgiEk1FDzJkaxCbxJhll
- yVfVQwuFiUEnevMy+G+of8AWIr6hECGxZwxbaCwmckQtCIQPPMQ9eI7eOLf8gZD7Gs4XbmUAAPhVU
- LgknLk0QoM+ZFJNtHPQFiosghuVSHiOzCJaYJLIh27gFl4jEtBm+JgnLb6DDY8PFNipcnj0wlQUmo
- MpLCfXhg==;
-Received: from maestria.local.igalia.com ([192.168.10.14] helo=mail.igalia.com)
- by fanzine2.igalia.com with esmtps 
- (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1taElW-0007HC-Ce; Tue, 21 Jan 2025 14:58:02 +0100
-Received: from gate.service.igalia.com ([192.168.21.52])
- by mail.igalia.com with esmtp (Exim)
- id 1taElU-000K4o-7a; Tue, 21 Jan 2025 14:58:02 +0100
-Received: from berto by gate.service.igalia.com with local (Exim 4.96)
- (envelope-from <berto@igalia.com>) id 1taElU-0003BN-0E;
- Tue, 21 Jan 2025 13:58:00 +0000
-From: Alberto Garcia <berto@igalia.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: QEMU Developers <qemu-devel@nongnu.org>, Thomas Huth <thuth@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, =?utf-8?Q?Daniel_P=2E_Berrang?=
- =?utf-8?Q?=C3=A9?= <berrange@redhat.com>
-Subject: Re: hw/ipack: Is IndustryPack still useful to maintain?
-In-Reply-To: <3709ba37-fa92-467a-ba3c-85355762e0e9@linaro.org>
-References: <3709ba37-fa92-467a-ba3c-85355762e0e9@linaro.org>
-Date: Tue, 21 Jan 2025 14:57:59 +0100
-Message-ID: <w51zfjkfevs.fsf@igalia.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1taEWD-0005Sf-O9
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 08:42:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1737466933; x=1769002933;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=MZB7qv2zEFLJ0rFzdkMC19zKNxW1JIUku/QSmxpL4G8=;
+ b=JAF1spCyI+nLA9IbtKRs5FAF/R4t0wl9FIiDudGj9In5X9RszxQ085Kk
+ S1gs/CVFDA9w8brWy3X3Y0zqHdqFLtxQM6ZrjsR+7L4ISotOz68GFMMn3
+ UaCtKqcCgvx5uucacMIe3VqoNo7Ux20LFNBUi3MO0vOMs5hOrjmO22kuL
+ KvepYXqMcbCyS0a6NNZdXo4hVL6MTDJR4aRD9EHsb/m/iDvim6AUxJyt+
+ 4+ZgvT0wwUlknzVXnQrJJT7Q7HWZFT8C9XWn5s92jrO94xqjOWNXKUyvv
+ 9bQt4veLqdXQvePMi6y/Mrb9vr1Z+hl0qzCXrF+Yr5m4N1dyNC0IFsDRO g==;
+X-CSE-ConnectionGUID: MWpiQKV8Te2tnCPvfOTUHw==
+X-CSE-MsgGUID: neA9OuKDRlCbY4LEAZzcuA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="37793650"
+X-IronPort-AV: E=Sophos;i="6.13,222,1732608000"; d="scan'208";a="37793650"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jan 2025 05:42:09 -0800
+X-CSE-ConnectionGUID: JJYT/Lc4TqKe6/oAZdKrgQ==
+X-CSE-MsgGUID: Jk93buC+RlaJe0oR5arLFw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,222,1732608000"; d="scan'208";a="107411954"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by fmviesa009.fm.intel.com with ESMTP; 21 Jan 2025 05:42:07 -0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=83?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH RESEND] i386: Only configure HPET firmware info when HPET is
+ enabled
+Date: Tue, 21 Jan 2025 22:01:21 +0800
+Message-Id: <20250121140121.84550-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Score: -1
-X-Spam-Bar: /
-Received-SPF: pass client-ip=178.60.130.6; envelope-from=berto@igalia.com;
- helo=fanzine2.igalia.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -73
+X-Spam_score: -7.4
+X-Spam_bar: -------
+X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,13 +85,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon 20 Jan 2025 09:53:32 PM +01, Philippe Mathieu-Daud=C3=A9 wrote:
-> Is it still worthwhile maintaining this code? If so, can we have real
-> world tests? I'm updating legacy APIs and these files use some; and I
-> wonder how many community effort it is worth to invest here.
+At present, the hpet_cfg is written unconditionally since 40ac17cd56eb
+("pass info about hpets to seabios.]"), because it concerns ACPI HPET is
+created unconditionally.
 
-From my side I think we can remove the IPack code (that would include
-the IP-Octal 232 emulation).
+But that fact has changed since 51124bbfd2ea ("i386: acpi: Don't build
+HPET ACPI entry if HPET is disabled") and ACPI checks if HPET device
+exists in (hw/i386/acpi-build.c).
 
-Berto
+Therefore, configure HPET firmware information if and only if HPET is
+enabled.
+
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+---
+Resend:
+ * Resend the patch since it was missed on https://lore.kernel.org/qemu-devel/.
+---
+ hw/i386/fw_cfg.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
+index 91bf1df0f2e4..d2cb08715a21 100644
+--- a/hw/i386/fw_cfg.c
++++ b/hw/i386/fw_cfg.c
+@@ -149,7 +149,14 @@ FWCfgState *fw_cfg_arch_create(MachineState *ms,
+ #endif
+     fw_cfg_add_i32(fw_cfg, FW_CFG_IRQ0_OVERRIDE, 1);
+ 
+-    fw_cfg_add_bytes(fw_cfg, FW_CFG_HPET, &hpet_cfg, sizeof(hpet_cfg));
++#ifdef CONFIG_HPET
++    PCMachineState *pcms =
++        (PCMachineState *)object_dynamic_cast(OBJECT(ms), TYPE_PC_MACHINE);
++    if (pcms && pcms->hpet_enabled) {
++        fw_cfg_add_bytes(fw_cfg, FW_CFG_HPET, &hpet_cfg, sizeof(hpet_cfg));
++    }
++#endif
++
+     /* allocate memory for the NUMA channel: one (64bit) word for the number
+      * of nodes, one word for each VCPU->node and one word for each node to
+      * hold the amount of memory.
+-- 
+2.34.1
+
 
