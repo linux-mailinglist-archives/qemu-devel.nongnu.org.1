@@ -2,88 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E00DAA18566
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 19:50:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84C28A1856A
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 19:54:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taJJT-0005qu-Sl; Tue, 21 Jan 2025 13:49:23 -0500
+	id 1taJNi-0003pZ-8j; Tue, 21 Jan 2025 13:53:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1taJJJ-00055j-Nc
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 13:49:13 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taJNf-0003oa-GV
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 13:53:43 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1taJJG-0005No-Dx
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 13:49:13 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-21649a7bcdcso102557235ad.1
- for <qemu-devel@nongnu.org>; Tue, 21 Jan 2025 10:49:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taJNd-0006F9-Bk
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 13:53:42 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-436281c8a38so44155735e9.3
+ for <qemu-devel@nongnu.org>; Tue, 21 Jan 2025 10:53:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1737485348; x=1738090148; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YvLXXAKDH9ahcunPLK9b2L9XTGiX+9XTb+WMW9ld36E=;
- b=eEiEz7aw4F43SF5blxeSRRixrmMbLpfGf+qbRExr9jvY4AjdicL6Q9DghtQVij9FaP
- B9WUpQAUVG9eBwy8QjO2IOfGXJvYa7q7BlTaWl+Ew8E/gcFFxsqdWZnFDOic9BjFX5Us
- hkgcfu/Se/kk+Iw2QCgfUylc22+Dg42SV/OmrcXwf6pJbQiZqYr5WcNaorHwLu3qjSnM
- xQexYo9yr+Y7j+QExt0GLnkIJy3yLEFOFm+SLxQniIlM2gNRbkJQYJiykcb/i3iI8ZGK
- YO2ci2O0xEA5hS4Om5+PmkY29PX2Qds7mEjRrJmCh7nZgZYSZOLDhACwMc/n6JNHb9fK
- oS3A==
+ d=linaro.org; s=google; t=1737485619; x=1738090419; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1mp4kixCqNF5aY/wzjvtuJsTc0Evfg7uUcJP3WcQbTQ=;
+ b=KFjRmxjbO+fAJp6oNFs7a6XMgRF5H5Gd4d6BH6+izvwinVz675b6qCDASO4hW1Zorx
+ zk+3CI0wIKAAnE0+SdGHjmvNeVuaRM8F66O8oHIcns0iSuBY5/JOFx9vPiJE6DKBQLxc
+ lMBw6KtI8zlTkVHHVuCaHpI6yvhZG446dXwA/EhiSkU5q8nbNQOeaYoX5lYc04fImrcl
+ 3TsjY/+HVuySwl3CDwDaHvX8Yh9zn02jPd4EfWlB8HgRdM00QW3SHTV+/DESep2q1e8s
+ 1i8VCNHrKExZD2jSaKnWPA74m2uwWdoUXPi+xD2RYRJkFxoPn22sTyHTe4aj31zB9jCR
+ K4bQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737485348; x=1738090148;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YvLXXAKDH9ahcunPLK9b2L9XTGiX+9XTb+WMW9ld36E=;
- b=Zt9XTvdZFfeGS7fke97AM8lcN+IDem3CgAAh/Qifioa1xZ0e4sA4xC2zZ098wrQYDa
- +RmCLxHpfZVSf4K3qrYi5VlT0LK3Zy8VFGYCMROhi379xusF8esaPiGv+k+pSbGv+TzI
- QfvfCrK7m0391kecOx187Uo5YWbVXEVo+RzGXbgjZ2+7JnHQckmox9xvQokses20USh/
- ClF9ahlX9pbBxzBWcGgbDdElJ6zgSg7qFTjsDTovveZfvLHH+LBQG7UPWk0QsQioMboA
- LOrsOoCjJ9aINcVeVClaFf1dnLmyMbb1QyiR8M5Lxy2sYb9rwp0wX9cyR3NATLAwIPjX
- x1Jw==
-X-Gm-Message-State: AOJu0Yxz2LY7Rr8XqEGlp0WbqHeVUjMbfVjMW1LXOwIx9EZyIsOjHj0l
- /SbOfkN/eUDhUuy+/yoKgYBInmouNwt+vqFx6LoBYOJOE+drIS7IfH9PPtTMT0pfY0ouQxW3plK
- Q
-X-Gm-Gg: ASbGncuu2sEfAABfDupjiN8U6Bk8AHRB6wZyjUuhzNDPnQy7HFzc+E525TpHNKiToZN
- 5s/b1qMNIDIX65dq1WHf65gCb50x2zI5eEOIkaPuw0MT8LbjaASPZv/3OyL2EOiXjbjaJRViryT
- QkM1JHRumEvNi+G5Ts6NG7RFpQAAhCZtz2pfpdT/DWkw0zoJ6VFjcbjBjHdAQyzrwoGeijGN+5C
- YwMnlxfVl2p49lgcb+f14jWI3krrVSexju1RndRwv7a1HrEuQf00BULeDZ71vHzEckddwRk
-X-Google-Smtp-Source: AGHT+IGemy6A+esvt/sUQ6h7P7vlMAEZgDNh/xiJfGyHmsLHZ1zQ/nDOezuNTESLT+1COu1kWoIy3Q==
-X-Received: by 2002:a17:903:32c1:b0:21b:d126:6d30 with SMTP id
- d9443c01a7336-21c355c433amr246020075ad.33.1737485348333; 
- Tue, 21 Jan 2025 10:49:08 -0800 (PST)
-Received: from grind.. ([191.202.238.10]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21c2ceba56asm81121865ad.98.2025.01.21.10.49.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Jan 2025 10:49:07 -0800 (PST)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- peter.maydell@linaro.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 5/5] target/riscv/cpu_helper.c: fix bad_shift in
- riscv_cpu_interrupt()
-Date: Tue, 21 Jan 2025 15:48:47 -0300
-Message-ID: <20250121184847.2109128-6-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250121184847.2109128-1-dbarboza@ventanamicro.com>
-References: <20250121184847.2109128-1-dbarboza@ventanamicro.com>
+ d=1e100.net; s=20230601; t=1737485619; x=1738090419;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1mp4kixCqNF5aY/wzjvtuJsTc0Evfg7uUcJP3WcQbTQ=;
+ b=B6UW4add9UuUY6Nny44Ew4tLx5R+Kz6K/emlxwODQE424AJYgINVGI7PBIFkq/CHqe
+ u3nBzAU8DFRPFmQiuvLlR6khj764nrfeSY4OQO7Wp91t87NQ1MD8oULIqz7F7EEVuw55
+ OqFq87pa1OHSFtCuHl6BIsU1Bc62xKGfUxsCkjFX7L3e1T59Kr/0YNGc9Me6YZEDHY0f
+ NcTYX7m7a1oUyAcFFTlyRjAxVbmdxNXlXWhMzL/ja4PtHhn4qTSEabiqz5Xcz8BTGzbq
+ am0QRvfxAywSN9B3pFNT2Ib3piHqM0GfIzGK8jqBoz+DzNUh2rVy+6Qpi1VxPvvzA/wL
+ g1cA==
+X-Gm-Message-State: AOJu0YwFVYOm/KShHXgN9TOc6uNen4oV3EVDk8cNiDgzXxMcL4E4jNKx
+ de8VM0iksQ7J4fF8YOPiEk052YLKDq+s4JrPnsWB+0nKiqhxIPbVitc94kYZoZ1ojYZIHRoKpuY
+ jAiQ=
+X-Gm-Gg: ASbGncu6/MkM0okojqZU2b2fx0lkK/p0bwp1+6ariVpMvW6BNTG7GE41luwCuLehH2u
+ gyQachU9x7MLqhl2nrz5f1kE2JRpTkzv5Fjc8iyjA7AhJz0YHm51I7aONqGD7JHyFL86wqvIRiF
+ 3xVlTyJBLjQAJZtRPv8WtwSFohTtf0pdndDlf3mG5XsgTgDrwv4Ov58qoMFUe1iX6RSzlZRAzyX
+ 6Qb3FUEf2BiXMJtjaGit+aB0yRru2FTeVRl9T6TM9MQmOf84sM1tzqXOLfRgx4FFky2kPmbzeos
+ 8gMqFEk5s/sr6wZlHSjHNKbcaYVS9TDt5eRGdQ==
+X-Google-Smtp-Source: AGHT+IGO8yqv3zKETuNLrHZbLjKMOpTtPhjzdTGGrEX0ZlfKUrs7B3cHEUln8mfJuSHcc0Xq+c2jWg==
+X-Received: by 2002:a05:600c:450c:b0:434:a91e:c709 with SMTP id
+ 5b1f17b1804b1-4389145145fmr157533605e9.28.1737485619042; 
+ Tue, 21 Jan 2025 10:53:39 -0800 (PST)
+Received: from [192.168.69.181] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-438b171e68bsm5143915e9.0.2025.01.21.10.53.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 Jan 2025 10:53:38 -0800 (PST)
+Message-ID: <67ed0028-e559-40d1-8266-0a220021b244@linaro.org>
+Date: Tue, 21 Jan 2025 19:53:37 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 08/11] hw/core/generic-loader: Prefer cached CpuClass over
+ CPU_GET_CLASS macro
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, qemu-arm@nongnu.org
+References: <20250121114056.53949-1-philmd@linaro.org>
+ <20250121114056.53949-9-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250121114056.53949-9-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,45 +100,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverity reported a BAD_SHIFT issue in the following code:
+On 21/1/25 12:40, Philippe Mathieu-Daudé wrote:
+> CpuState caches its CPUClass since commit 6fbdff87062
+> ("cpu: cache CPUClass in CPUState for hot code paths"),
+> use it.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/core/generic-loader.c | 5 +----
+>   1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/hw/core/generic-loader.c b/hw/core/generic-loader.c
+> index fb354693aff..0ddb3a359a2 100644
+> --- a/hw/core/generic-loader.c
+> +++ b/hw/core/generic-loader.c
+> @@ -48,11 +48,8 @@ static void generic_loader_reset(void *opaque)
+>       GenericLoaderState *s = GENERIC_LOADER(opaque);
+>   
+>       if (s->set_pc) {
+> -        CPUClass *cc = CPU_GET_CLASS(s->cpu);
+>           cpu_reset(s->cpu);
+> -        if (cc) {
+> -            cc->set_pc(s->cpu, s->addr);
+> -        }
+> +        s->cpu->cc->set_pc(s->cpu, s->addr);
 
- > 2097
- >>>>      CID 1590355:  Integer handling issues  (BAD_SHIFT)
- >>>>      In expression "hdeleg >> cause", right shifting by more than 63
-       bits has undefined behavior.  The shift amount, "cause", is at least 64.
- > 2098         vsmode_exc = env->virt_enabled && (((hdeleg >> cause) & 1) || vs_injected);
- > 2099         /*
+I guess we can directly use:
 
-It is not clear to me how the tool guarantees that '"cause" is at least
-64', but indeed there's no guarantees that it would be < 64 in the
-'async = true' code path.
+            cpu_set_pc(s->cpu, s->addr);
 
-A simple fix to avoid a potential UB is to add a 'cause < 64' guard like
-'mode' is already doing right before 'vsmode_exc'.
-
-Resolves: Coverity CID 1590355
-Fixes: 967760f62c ("target/riscv: Implement Ssdbltrp exception handling")
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- target/riscv/cpu_helper.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index e1dfc4ecbf..64d1d68550 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -2095,7 +2095,9 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-     mode = env->priv <= PRV_S && cause < 64 &&
-         (((deleg >> cause) & 1) || s_injected || vs_injected) ? PRV_S : PRV_M;
- 
--    vsmode_exc = env->virt_enabled && (((hdeleg >> cause) & 1) || vs_injected);
-+    vsmode_exc = env->virt_enabled && cause < 64 &&
-+        (((hdeleg >> cause) & 1) || vs_injected);
-+
-     /*
-      * Check double trap condition only if already in S-mode and targeting
-      * S-mode
--- 
-2.47.1
+>       }
+>   
+>       if (s->data_len) {
 
 
