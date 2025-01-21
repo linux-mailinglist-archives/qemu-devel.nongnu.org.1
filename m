@@ -2,102 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0238BA1813F
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 16:39:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87BF8A1811A
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 16:25:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taGKs-0005QR-0l; Tue, 21 Jan 2025 10:38:38 -0500
+	id 1taG7w-00079x-RK; Tue, 21 Jan 2025 10:25:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1taGKi-0005M5-RX
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 10:38:30 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1taG7g-000765-AG; Tue, 21 Jan 2025 10:25:02 -0500
+Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1taGKf-0007sq-SA
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 10:38:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737473903;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=7vWlp2CUskTYXbSVehnKEKMyRmaqBpVNMhezv4fMKgM=;
- b=JXZSg1aEgZssqmi33MMdzSG8j5MhzK1YBA29Ci42MuZ728UxeGt9T48e8cDu6EZt0bCbOw
- DTbXj/E066jaZalF6Vn9A/XpxffV4cBA7vt12VurFU0G+AwAaGLdshIupBAyuhix2vWewT
- 41zgiM9NHBAGKgt+XfjJCiztfLoEAL8=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-548-V3BRIrspNEqbBXt3Bs0eLg-1; Tue, 21 Jan 2025 10:38:21 -0500
-X-MC-Unique: V3BRIrspNEqbBXt3Bs0eLg-1
-X-Mimecast-MFC-AGG-ID: V3BRIrspNEqbBXt3Bs0eLg
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-6d87d6c09baso85453006d6.3
- for <qemu-devel@nongnu.org>; Tue, 21 Jan 2025 07:38:21 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737473901; x=1738078701;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7vWlp2CUskTYXbSVehnKEKMyRmaqBpVNMhezv4fMKgM=;
- b=jSoi+rV6UO34UxqwFiPKutB+kqOzYSbiC26LS2CfhlWBUZCw+Kcu6avdMnpeB3ax2Z
- TeusoCYqGZ0NNLofNOWzMYslq3OgoFKqYkGA4vAZoGWNsTME8cZerWja2Ug+oOQv7jCL
- +wfGuDUZs5OFLYKrra7n+UxkLoJBmzG4CUrKsDYuPmqGTAJXle1NO/nX4aE9AsTErkFj
- j5p1Kei51HoMuPRkmr5nPMafXHn4mz2XT2UoKu28ol7BrTN3D4gELO21lBClfBUQ+wa7
- pyRvyXozrYqmX8DPi/U6agLjo94GyP35OE/5bHUMmyaDkqO4q4LfUdQtdEk1lEtbUTDG
- JSlw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVLA25P+3k+ioHAIlL4YiPDoBVvA+ottiK8j6gJWT7c8FV4es3f+QE0lMLKmWk762V196Nn7SXzrOd1@nongnu.org
-X-Gm-Message-State: AOJu0YwPCWv+sndPtS7D8R+K2hZgHHBM0keiJZcWzmcUMP0aEE9cd1eP
- 7+nAdjdQUv3pLURU5U7Fk49o0egJw1mX8TJxlea9mtMpbxru5Udo4yn/DOs8pTMCwh/ZmFBkRpx
- ttxSBSXbRTqJPJB9czMGTdLvUCw/v6V5cijBTWgNUFiaQwn2kVWFq
-X-Gm-Gg: ASbGncvuuxqjS4PjX8NV4MVQsYRqrZhNEI47npG7hXwRjPts0AN/1g7HiPhFINBzsyp
- D/CoUAC36jQUCaU2e09zfCQoHtHjwUXFh0MG5UfHIeTpW4CJMwrH4tep/OwTm5UF+W+IjqJf6Q+
- Bo3CyX6xupTf+GPsG/vZ7jRDSAfQM+OvQW2vE8RIZNK3QLXfZoYvlJQl6sStBA6CzNluO4/2Zts
- 0YDP1j2n0pMMOO6RH08CfxHXng8VbxwOZQ42jI4EXBAlszUdZsp3s8RAaK//LJFKON5jG61pQ1Q
- +wQBrMSFRp7Tm7ZdYIa3mLMIGfJ6VNo=
-X-Received: by 2002:a05:6214:1305:b0:6d3:fa03:23f1 with SMTP id
- 6a1803df08f44-6e1b2186a41mr285474056d6.13.1737473901083; 
- Tue, 21 Jan 2025 07:38:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHgfx1VJkB5kdl2P+V5WFmu/JkUYutt6JPaRTYfjpiG4rWtIeQDLUTt4TZ3FFWubwJB5OXSGA==
-X-Received: by 2002:a05:6214:1305:b0:6d3:fa03:23f1 with SMTP id
- 6a1803df08f44-6e1b2186a41mr285473756d6.13.1737473900788; 
- Tue, 21 Jan 2025 07:38:20 -0800 (PST)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6e1afbf3783sm51948996d6.7.2025.01.21.07.38.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Jan 2025 07:38:20 -0800 (PST)
-Date: Tue, 21 Jan 2025 10:38:11 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Chenyi Qiang <chenyi.qiang@intel.com>
-Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
- Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
- Xu Yilun <yilun.xu@intel.com>
-Subject: Re: [PATCH 2/7] guest_memfd: Introduce an object to manage the
- guest-memfd with RamDiscardManager
-Message-ID: <Z4-_Y-Yqmz_wBWaU@x1n>
-References: <20241213070852.106092-1-chenyi.qiang@intel.com>
- <20241213070852.106092-3-chenyi.qiang@intel.com>
- <Z46RT__q02nhz3dc@x1n>
- <a55048ec-c02d-4845-8595-cc79b7a5e340@intel.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1taG7Y-0004q4-1K; Tue, 21 Jan 2025 10:24:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1737473092; x=1769009092;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=sBoM8VbyjbRHsxpBifS88o/i94+X4mAgrq2AfHsN/rE=;
+ b=Z/lOlw5HkPGCHLbFWvZkUmTB/PAUfQBc7+Xb/Nuj/MXPEP5o8CZ2PSeL
+ /SxeA8dwbwqQidS3QMaQ0u5uQwg7SyVc7Ta5iBu8Cgi9LXsVbmHeDMC+p
+ WX6KtMOjHTBwykEbjvz02b/LbbtVKrLbf9JFaYTKj0sPVsZs8r30HggHt
+ cTwvuyEkT8DqY6uThUZNGQWjhec2BBtEPfFYFcq+tHKphCBF7/qfSUMAb
+ pY9nT14pX6bf2Q6AqaFGEA1m7SQ588ajlAQhJ92LcCtTIqmCBiinVKe7g
+ K+Vi2YIi/711XFRBynSSTL0YyDiDBw/pM2TiWILBQwPCq+4qQNuYSegCf w==;
+X-CSE-ConnectionGUID: f6ffFvUjToCMRVjp547ffw==
+X-CSE-MsgGUID: bZjqfgO1RuWmV99IRcUC7g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="37161725"
+X-IronPort-AV: E=Sophos;i="6.13,222,1732608000"; d="scan'208";a="37161725"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jan 2025 07:24:48 -0800
+X-CSE-ConnectionGUID: HGrUpOkKRouOSlElOm+adw==
+X-CSE-MsgGUID: ngnpjfRBQ2y6Om3ZGv162w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="144089178"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by orviesa001.jf.intel.com with ESMTP; 21 Jan 2025 07:24:47 -0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
+ qemu-stable@nongnu.org
+Subject: [PATCH] stub: Fix build failure with --enable-user --disable-system
+ --enable-tools
+Date: Tue, 21 Jan 2025 23:43:18 +0800
+Message-Id: <20250121154318.214680-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <a55048ec-c02d-4845-8595-cc79b7a5e340@intel.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -73
+X-Spam_score: -7.4
+X-Spam_bar: -------
+X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.086,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,44 +77,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 21, 2025 at 05:00:45PM +0800, Chenyi Qiang wrote:
-> >> +
-> >> +    /* block size and alignment */
-> >> +    uint64_t block_size;
-> > 
-> > Can we always fetch it from the MR/ramblock? If this is needed, better add
-> > some comment explaining why.
-> 
-> The block_size is the granularity used to track the private/shared
-> attribute in the bitmap. It is currently hardcoded to 4K as guest_memfd
-> may manipulate the page conversion in at least 4K size and alignment.
-> I think It is somewhat a variable to cache the size and can avoid many
-> getpagesize() calls.
+Configuring "--enable-user --disable-system --enable-tools" causes the
+build failure with the following information:
 
-Though qemu does it frequently.. e.g. qemu_real_host_page_size() wraps
-that.  So IIUC that's not a major concern, and if it's a concern maybe we
-can cache it globally instead.
+/usr/bin/ld: libhwcore.a.p/hw_core_qdev.c.o: in function `device_finalize':
+/qemu/build/../hw/core/qdev.c:688: undefined reference to `qapi_event_send_device_deleted'
+collect2: error: ld returned 1 exit status
 
-OTOH, this is not a per-ramblock limitation either, IIUC.  So maybe instead
-of caching it per manager, we could have memory_attr_manager_get_psize()
-helper (or any better name..):
+To fix the above issue, add qdev.c stub when build with `have_tools`.
 
-memory_attr_manager_get_psize(MemoryAttrManager *mgr)
-{
-        /* Due to limitation of ... always notify with host psize */
-        return qemu_real_host_page_size();
-}
+With this fix, QEMU could be successfully built in the following cases:
+ --enable-user --disable-system --enable-tools
+ --enable-user --disable-system --disable-tools
+ --enable-user --disable-system
 
-Then in the future if necessary, switch to:
+Cc: qemu-stable@nongnu.org
+Fixes: 388b849fb6c3 ("stubs: avoid duplicate symbols in libqemuutil.a")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2766
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+---
+ stubs/meson.build | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-memory_attr_manager_get_psize(MemoryAttrManager *mgr)
-{
-        return mgr->mr->ramblock->pagesize;
-}
-
-Thanks,
-
+diff --git a/stubs/meson.build b/stubs/meson.build
+index e91614a874dc..a8b3aeb56450 100644
+--- a/stubs/meson.build
++++ b/stubs/meson.build
+@@ -57,8 +57,8 @@ if have_user
+   stub_ss.add(files('cpu-synchronize-state.c'))
+ 
+   # Stubs for QAPI events.  Those can always be included in the build, but
+-  # they are not built at all for --disable-system --disable-tools builds.
+-  if not (have_system or have_tools)
++  # they are not built at all for --disable-system builds.
++  if not have_system
+     stub_ss.add(files('qdev.c'))
+   endif
+ endif
 -- 
-Peter Xu
+2.34.1
 
 
