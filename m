@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901F2A181E2
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 17:19:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8EA7A181E9
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 17:19:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taGxY-0000NY-BA; Tue, 21 Jan 2025 11:18:36 -0500
+	id 1taGxZ-0000QU-Nr; Tue, 21 Jan 2025 11:18:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taGxP-0000Lu-ML
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 11:18:28 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taGxU-0000Nd-K1
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 11:18:32 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taGxN-0005zT-R6
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 11:18:27 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-436a39e4891so40398045e9.1
- for <qemu-devel@nongnu.org>; Tue, 21 Jan 2025 08:18:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taGxS-000609-Kl
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 11:18:31 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-43621d27adeso40350745e9.2
+ for <qemu-devel@nongnu.org>; Tue, 21 Jan 2025 08:18:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737476304; x=1738081104; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737476309; x=1738081109; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+2sEtAFoFWHQ01p5+N4SGtbcml5iyx/5IH+2u55pyYU=;
- b=uWmqTyWAUkYeY11VIzZzNu6dkww2abQGqIPyIPcJiT6iiW53J9mPvCLcIzMHdPWed/
- ML+nUUvEiFtIwCYzDqmDCzqblnJaybxjbp2oEwbmSUMeKU9KIVb1OZYhr6KlSe+4CTF4
- vKWsJq95jnDlc4UmFwkPYZXZwN3gIi6554wGS0Wb8pmeRnL5lZ5HugUhq+5sZxWQyypv
- /m7H8IiTSem7UbSuPqg41JabIt6WMpfoydt/Vo08cFK9kToYxjJFkEjpbWMX2lKNwX/W
- kB2CzQmPfPtZm6oAfZrdg59+qbAYx4stB3j/87uUnkga/Ac3bZfoUvRGSZbC5w5hIoJP
- GgVg==
+ bh=4AQT8m8tl5nDLX+ETLTSG96DbyWQcasjgSWfLcAwrhg=;
+ b=bQ+0j9EPkOxrwWI0iG8ILlSOQOO6MEezvOWBdCTEvDx2MfCk3nhFgbPH/blP7D2XUn
+ HjI43qUl6VlIM8zY0opQDdPVSlAYjbVfeDp4ge7DUW2JBiXwjNN4RJxLxh52eJZIAGuA
+ ULeLO44SrMl8q035e7y2+KYLLL06RDfUy7d/3xQXwZ7ltK/3fkGWOw2u1X3BTLyEdb6M
+ kg7NVwlGImNF0TWUhmSre5D1dq5Y+9lp8ll5DOvmALb4iS5/SQX/2ZXVOi0yvrjcmUmY
+ O0m/+SXtfu4MUncvDAHJzz5om2hpJ1DCv2C19GSZ+IAjiMSQSQlQ1shCY0ejN0JaI2Bm
+ ssHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737476304; x=1738081104;
+ d=1e100.net; s=20230601; t=1737476309; x=1738081109;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+2sEtAFoFWHQ01p5+N4SGtbcml5iyx/5IH+2u55pyYU=;
- b=C9ihxdttRYUrRaryyyHTAz+lBiwy7TgWcVAr2/d076BgNbu407y9OVZ3YZ9sFFI9wM
- 79Q41Th2t/uBU7WocGjUbpBBnBETmS0yiCBOEHO5NODBvCBjhRjs8rm/ifIwKAemy6Po
- rOHC28+sVBuyx7xOo05REmTQK5jHo8bxI9f2pMD1zQMPYndn0oRVusvDmbeYAb43WA1R
- AXDahb9CafE+QlBhRE9mipAcBdIQYK+GXZoV4mnRPelXI+QTKvDaiP5TDJxf/OmK5Eks
- XRWTkmnGn5YUTEDGoJzgEzVE+Egk4vcgPrsykJyw/wcVMsZpkUbDQh+68rG7MmkAgN+q
- iZdQ==
-X-Gm-Message-State: AOJu0Yy2VX4pZgFneBIYfGHYSBOUfD3vVE8GqMpFOThqhCyHfUoU01Zc
- flXTvoACMo7NBBKL6to7o7PZSRp1aTWaageIIylMzvTlnrfKGc5qQJ6k9R/gNFDd7L7k5akkumm
- nojM=
-X-Gm-Gg: ASbGncsZiYgTIpaIR3srxQdevKrIrCzoRYSiTF0Ju30Hn63Wvr3It+X8v5ACJU71yqt
- MjceuVr8Q96zoVZNRKZrM2dbetWECOwgNoWkdMOBkDrpXK1q2zFRZDagkpbVrwl9HIC7J1/+HGn
- XSHZ5Wbr5khMuD0bWVtUfT2vd9yQfAe/tNrwRfgmaZ+8QlrMXLuVvWR4L2vUZOCS2/7Ld2CPT1O
- iq8zUL5j79jZAOiTnJNlHqOB4o/cbyqoLGCUZxb8rfHnLsUBlmhiiVJiz2BTQ6i3nOcvYQcKtIc
- A8ze0qmxYXCkuGz4mvhp+MuF5N/GZx9d2nloCtn9Q2ge
-X-Google-Smtp-Source: AGHT+IHVqbmzrHpbpgLX2XakH9ckSR0ikqCPW62HV7ihCVZEp/lxxvZN70vOCdo3IgRSKmMJZzamwA==
-X-Received: by 2002:adf:f1cc:0:b0:38b:ed88:f045 with SMTP id
- ffacd0b85a97d-38bf566fb1bmr14177124f8f.33.1737476303934; 
- Tue, 21 Jan 2025 08:18:23 -0800 (PST)
+ bh=4AQT8m8tl5nDLX+ETLTSG96DbyWQcasjgSWfLcAwrhg=;
+ b=ntnwGaAgsVDdL2HC6kJvh7IsIIVGetgMMmyJjIrBXisMBhr/BHSaVW4MJMbVzj874f
+ r4unWkXbvwvIquSA0PSTGnF6ws5JGhd+YdCq03LpGBPLVeVrqshgGzIIk4r5DjPhV/PA
+ fxN5VCVzQgiXRk+TIrjqvMiHb+SU5xLtcjuali1Je+Zn3QZyfmc7NS9+pgomvg5wXxTw
+ m7znswO7bIHLjsGQ2cIanJ0FfsPPsQWlpqd83ivS04i4pcfQTDhRxlDp4Biqz1906BHR
+ WyOwwO3M7NTKd/ex+jY6LurqBd0UYwsb03c922nbuhogj8Ez77q9eXwC61CGntkfmFD3
+ OjRg==
+X-Gm-Message-State: AOJu0YwrGnpYeUyffDRgXH8HOxACoFVBwx8A3JsgeBjjdXDOVAUp1Ibc
+ XGil54YTQFMI6Wvfx5foAkk17ql7lpVKmzOmxu4Rh+3T6Nt9mALy8X6jZq2T+HlP8e+AHPSMlt8
+ Cl+4=
+X-Gm-Gg: ASbGnctsb1cLzx3iZEzzmqG/OPS59saXkiqLnZkVc09f+qyxpBOKrnkp6jKCybMzeZY
+ n3XRNGIMAhVfdMNs4xxvRKV8ku5wvvxfW8hCDjmF4OUGc0SEkCBRgqLpXsfjI6CxhEr8GFjJDxW
+ qGVhwAiau0y6oT3sJWWR1u5xf//DyZoAG1R3GGTA8/rKmDd3IVyVETWSIYCY2ZfJYmQLMB9/7i/
+ nA0ZAAmU1/lKi/yDmUGjrmVw08d3B8C7e2brLl0EsBe6Ogv2kMAaXpn1LnPnA2TGDH3QV4tYJBn
+ w9PfDvmMDPdhQpU1A5rQLiXqUrL03PUclNCAEaVDoqUB
+X-Google-Smtp-Source: AGHT+IGxC/Y3dOIvCvZZz1/tVy6LDHduH8KEbQ/91AQXvuWOks2izhVM+gNaeze66ac0fs1klldjWg==
+X-Received: by 2002:a05:6000:1a8c:b0:38a:888c:6786 with SMTP id
+ ffacd0b85a97d-38bf57c063fmr16833268f8f.52.1737476308711; 
+ Tue, 21 Jan 2025 08:18:28 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38bf322ad81sm13927504f8f.52.2025.01.21.08.18.23
+ ffacd0b85a97d-38bf322aa0asm14022691f8f.50.2025.01.21.08.18.27
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Jan 2025 08:18:23 -0800 (PST)
+ Tue, 21 Jan 2025 08:18:28 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
@@ -67,18 +67,20 @@ Cc: =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Huacai Chen <chenhuacai@kernel.org>, Aurelien Jarno <aurelien@aurel32.net>
-Subject: [PATCH 1/6] hw/pci-host/bonito: Expose output IRQ as QDev GPIO
-Date: Tue, 21 Jan 2025 17:18:12 +0100
-Message-ID: <20250121161817.33654-2-philmd@linaro.org>
+ Huacai Chen <chenhuacai@kernel.org>, Aurelien Jarno <aurelien@aurel32.net>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH 2/6] target/mips: Create clock *after* accelerator vCPU is
+ realized
+Date: Tue, 21 Jan 2025 17:18:13 +0100
+Message-ID: <20250121161817.33654-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250121161817.33654-1-philmd@linaro.org>
 References: <20250121161817.33654-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,103 +103,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Expose IRQ using qdev_init_gpio_out() in bonito_host_realize(),
-wire it using qdev_connect_gpio_out() in bonito_init().
+Architecture specific hardware doesn't have a particular dependency
+on the accelerator vCPU (created with cpu_exec_realizefn), and can
+be initialized *after* the vCPU is realized.
 
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/mips/mips.h |  2 +-
- hw/mips/fuloong2e.c    |  2 +-
- hw/pci-host/bonito.c   | 14 +++++++-------
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ target/mips/cpu.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/include/hw/mips/mips.h b/include/hw/mips/mips.h
-index 101799f7d3e..1176291cca6 100644
---- a/include/hw/mips/mips.h
-+++ b/include/hw/mips/mips.h
-@@ -10,7 +10,7 @@
- #include "exec/memory.h"
+diff --git a/target/mips/cpu.c b/target/mips/cpu.c
+index 0b3ac4e60a3..028a3c91afb 100644
+--- a/target/mips/cpu.c
++++ b/target/mips/cpu.c
+@@ -462,20 +462,6 @@ static void mips_cpu_realizefn(DeviceState *dev, Error **errp)
+     MIPSCPUClass *mcc = MIPS_CPU_GET_CLASS(dev);
+     Error *local_err = NULL;
  
- /* bonito.c */
--PCIBus *bonito_init(qemu_irq *pic);
-+PCIBus *bonito_init(qemu_irq irq);
+-    if (!clock_get(cpu->clock)) {
+-#ifndef CONFIG_USER_ONLY
+-        if (!qtest_enabled()) {
+-            g_autofree char *cpu_freq_str = freq_to_str(CPU_FREQ_HZ_DEFAULT);
+-
+-            warn_report("CPU input clock is not connected to any output clock, "
+-                        "using default frequency of %s.", cpu_freq_str);
+-        }
+-#endif
+-        /* Initialize the frequency in case the clock remains unconnected. */
+-        clock_set_hz(cpu->clock, CPU_FREQ_HZ_DEFAULT);
+-    }
+-    mips_cp0_period_set(cpu);
+-
+     cpu_exec_realizefn(cs, &local_err);
+     if (local_err != NULL) {
+         error_propagate(errp, local_err);
+@@ -490,6 +476,20 @@ static void mips_cpu_realizefn(DeviceState *dev, Error **errp)
+     fpu_init(env, env->cpu_model);
+     mvp_init(env);
  
- /* rc4030.c */
- typedef struct rc4030DMAState *rc4030_dma;
-diff --git a/hw/mips/fuloong2e.c b/hw/mips/fuloong2e.c
-index 16b6a5129e7..160ceb769dc 100644
---- a/hw/mips/fuloong2e.c
-+++ b/hw/mips/fuloong2e.c
-@@ -282,7 +282,7 @@ static void mips_fuloong2e_init(MachineState *machine)
-     cpu_mips_clock_init(cpu);
++    if (!clock_get(cpu->clock)) {
++#ifndef CONFIG_USER_ONLY
++        if (!qtest_enabled()) {
++            g_autofree char *cpu_freq_str = freq_to_str(CPU_FREQ_HZ_DEFAULT);
++
++            warn_report("CPU input clock is not connected to any output clock, "
++                        "using default frequency of %s.", cpu_freq_str);
++        }
++#endif
++        /* Initialize the frequency in case the clock remains unconnected. */
++        clock_set_hz(cpu->clock, CPU_FREQ_HZ_DEFAULT);
++    }
++    mips_cp0_period_set(cpu);
++
+     cpu_reset(cs);
+     qemu_init_vcpu(cs);
  
-     /* North bridge, Bonito --> IP2 */
--    pci_bus = bonito_init((qemu_irq *)&(env->irq[2]));
-+    pci_bus = bonito_init(env->irq[2]);
- 
-     /* South bridge -> IP5 */
-     pci_dev = pci_new_multifunction(PCI_DEVFN(FULOONG2E_VIA_SLOT, 0),
-diff --git a/hw/pci-host/bonito.c b/hw/pci-host/bonito.c
-index 49669148923..6bc66c9e227 100644
---- a/hw/pci-host/bonito.c
-+++ b/hw/pci-host/bonito.c
-@@ -234,7 +234,7 @@ typedef struct PCIBonitoState PCIBonitoState;
- 
- struct BonitoState {
-     PCIHostState parent_obj;
--    qemu_irq *pic;
-+    qemu_irq irq;
-     PCIBonitoState *pci_dev;
-     MemoryRegion pci_mem;
- };
-@@ -554,17 +554,16 @@ static const MemoryRegionOps bonito_spciconf_ops = {
- static void pci_bonito_set_irq(void *opaque, int irq_num, int level)
- {
-     BonitoState *s = opaque;
--    qemu_irq *pic = s->pic;
-     PCIBonitoState *bonito_state = s->pci_dev;
-     int internal_irq = irq_num - BONITO_IRQ_BASE;
- 
-     if (bonito_state->regs[BONITO_INTEDGE] & (1 << internal_irq)) {
--        qemu_irq_pulse(*pic);
-+        qemu_irq_pulse(s->irq);
-     } else {   /* level triggered */
-         if (bonito_state->regs[BONITO_INTPOL] & (1 << internal_irq)) {
--            qemu_irq_raise(*pic);
-+            qemu_irq_raise(s->irq);
-         } else {
--            qemu_irq_lower(*pic);
-+            qemu_irq_lower(s->irq);
-         }
-     }
- }
-@@ -631,6 +630,7 @@ static void bonito_host_realize(DeviceState *dev, Error **errp)
-     BonitoState *bs = BONITO_PCI_HOST_BRIDGE(dev);
-     MemoryRegion *pcimem_lo_alias = g_new(MemoryRegion, 3);
- 
-+    qdev_init_gpio_out(dev, &bs->irq, 1);
-     memory_region_init(&bs->pci_mem, OBJECT(dev), "pci.mem", BONITO_PCIHI_SIZE);
-     phb->bus = pci_register_root_bus(dev, "pci",
-                                      pci_bonito_set_irq, pci_bonito_map_irq,
-@@ -734,7 +734,7 @@ static void bonito_pci_realize(PCIDevice *dev, Error **errp)
-     pci_set_byte(dev->config + PCI_MAX_LAT, 0x00);
- }
- 
--PCIBus *bonito_init(qemu_irq *pic)
-+PCIBus *bonito_init(qemu_irq irq)
- {
-     DeviceState *dev;
-     BonitoState *pcihost;
-@@ -745,8 +745,8 @@ PCIBus *bonito_init(qemu_irq *pic)
-     dev = qdev_new(TYPE_BONITO_PCI_HOST_BRIDGE);
-     phb = PCI_HOST_BRIDGE(dev);
-     pcihost = BONITO_PCI_HOST_BRIDGE(dev);
--    pcihost->pic = pic;
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+    qdev_connect_gpio_out(dev, 0, irq);
- 
-     d = pci_new(PCI_DEVFN(0, 0), TYPE_PCI_BONITO);
-     s = PCI_BONITO(d);
 -- 
 2.47.1
 
