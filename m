@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F92AA17FDE
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 15:32:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB042A17FB4
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 15:25:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taFB6-0000az-B5; Tue, 21 Jan 2025 09:24:28 -0500
+	id 1taFB9-0000j9-HL; Tue, 21 Jan 2025 09:24:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taFAz-0000Xj-21
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 09:24:21 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taFB4-0000aN-6B
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 09:24:26 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taFAw-00035r-Rl
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 09:24:20 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3862f32a33eso2605101f8f.3
- for <qemu-devel@nongnu.org>; Tue, 21 Jan 2025 06:24:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taFB1-000379-Mz
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 09:24:25 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4368a293339so65574685e9.3
+ for <qemu-devel@nongnu.org>; Tue, 21 Jan 2025 06:24:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737469457; x=1738074257; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737469462; x=1738074262; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TsVY/fcRHeZXKk3a5d2Km1G2q9T8ML5TT9t31iGbzvY=;
- b=NfXod6/rdzemCPAe4mdDtTTVgoo7y7nMq/o094G+cJwnJVpmBIVRUmtN3/9cGuec6q
- F569eYFvRyOERouYEgHCZJWJWy8R7tV1bnzas6k7NU6C5NH6VTpEivlFkAoNypY4q90W
- wbHP3nMRf0hqL3pZR3sV6GnloQyuBIzykVVAM3ni1ncbsVOpAqnS2KtgU9gE21WD7rt+
- e4ihH6NFnbH+LxSOh/AtlrUwSLf9ITzyweCLpqJEtVI++sitzdu4YhzFegx4cCLdLirI
- UJ5aZzLty/1JmI1qt1aMgdsRH5IN1dVw9kidF/s9WZ9MrhDIs45BYqeSFKK9JlvJxIFm
- 77sw==
+ bh=k0wDf/v1rzss+MDug7NzvC/4aBpdZSiYNuTsdH6L/x4=;
+ b=DZpJgyMKiq84AbJ+d9mDJcCdIeyXn+WnR44sn+SYVVr09UA81Z7rgE/AvBJyO1AiDi
+ Q4O+uhVd0CfxvU2xhxqCNq3il5CeHt/dGkPRvOdM54LzPwHXvN2y2qgECYzfR6INtU9X
+ GsU9BOzN1iFM/B+NOfZWxDORztQFKIBos1xv2RvcdrMz3vm/lPiRd3C1f6sQKCnsfZtJ
+ OBfYoxsqe4mgZFfjwGa9RoYKEHy4egDe01pL5OKIBqoCUTlN2vGwDtY/0uysO6BZdNPG
+ GIsv9icRlBK2POww3O4eH4d5q+0Hf66RDFbYLsZZu1QPeNyRPkumYdGrVRyFKYKh15yS
+ kLCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737469457; x=1738074257;
+ d=1e100.net; s=20230601; t=1737469462; x=1738074262;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TsVY/fcRHeZXKk3a5d2Km1G2q9T8ML5TT9t31iGbzvY=;
- b=qdiEo1nI9GvWwYVVkCwvUZa5fPK4BHLIa/MGx2dgVfix58z9hqvRujyHOrRAajBzPl
- imhdQDIA5fY1ec6LHNpnWy76osfWzyqhqJhgemPPKVsFbur1ljTHK4mHypw5mxTBM6Rx
- PPX2hm3+8tRSEkG/2T9H2V7wY/iU/Tueewuxo6hgTGsqpjnayd8Z+VBTd0p8yAhSfDwf
- 0/ZRZMt7yDOB8fD8xcY6C9jf6n71xF0NaBACf3kH5HwWcX+NciCe7D7Xfn0BIpO7ojaA
- U9npq+BbCWy6CREpsSCLLRdSj5B7qs1EnUsb0DedepuFzt187f/JGJ/9G1tO6UdbQc1n
- Bffw==
-X-Gm-Message-State: AOJu0YyPFkZ0MFx8VsgnJs/3zaC8/9pP7aIVp1jUBkOpSLIwID0wQKjS
- MAgx+UEr1Booj0q5P/bAkkA/vXWQSqlBnp9mJT4uKmcyc5m/hngiFI/yopQJ8rMRA//ZiGFdB/u
- gtHI=
-X-Gm-Gg: ASbGncsVS2jI2tgUpCzJrhbqv6tUZDmmEFzGzXsjmAI3ZfzqlLOUA1nhE0eo4nUxSdK
- GHMsYQKrcyezfmqL/chel3is/mJA71wFrcqKTcumiSRNdjsF1LXcbXp8gvvDRLjhJDK6oxP31NN
- ydq4HC3KPUNXWrXEvttDahpPc1JOiEvvoBESP3zH8ww/WVc23Hv6juWu7U57TiLUCkW0YTIKxIe
- Tc61BAqzHTOBdJzZCFg4ys7m7RoXVF/FqbohYUUUEp7YnD7U9Ky8LrjRygNn2TxEw3/tpnefnVm
- 1J72JzYadd6JJYHgm7XYIet0jZ1C8hcl3QIvoDrHhiZY
-X-Google-Smtp-Source: AGHT+IGTydqLNfzweZB411kRbV7hpURXpknMF7xt9dbj/T0lfmlVTsVP5DxJy6Q4H4Keq+8EUtkGcw==
-X-Received: by 2002:a05:6000:2a9:b0:385:dea3:6059 with SMTP id
- ffacd0b85a97d-38bf57b64d5mr15824747f8f.49.1737469456865; 
- Tue, 21 Jan 2025 06:24:16 -0800 (PST)
+ bh=k0wDf/v1rzss+MDug7NzvC/4aBpdZSiYNuTsdH6L/x4=;
+ b=l00hmFG/CkQSCuGnbJMrymSdOOumH5IbkByAxnnl0eZnpwdg0tW7TKad9/uVldud+t
+ 5PWCUuv/bpmSxSVT+ScgTsn7aAKe3A9ddK97juil4I+T70lk1Nu06u2ZYntFir12A2pX
+ 9wd8lknmkFjfHUyJ9rv9fDSNDvkVNMxrVNbPy2+fEa92ZRcjlDUq7A1sMnTnwd7YULlK
+ d7jb3usHwv2oJR1ZKzKLeHVK0rFbJYt6svzePeoxrvjO+djQFhuAZp9GoWuvPDBiwgmn
+ mKcS+efRoTipafuakJqLOz/h9OtT1R7cIYKF2rYPbGsTtzafPMo7Ina9vmxfEUFWXvUM
+ /RMQ==
+X-Gm-Message-State: AOJu0Yy3wLsDB8MwfOzPVGfSHAxhac+/4GCvqLlTgzvZ9eOnlWOF8dMl
+ 0uT+8vDeVbJ5OkcMbng7LujOvdxIaPntkPdPQo9VGxA6ZvboQLa/C/Oemx8F91nIXmLPCuAqEeH
+ UviE=
+X-Gm-Gg: ASbGncuCQUFKMFe4pk29iCBRnjGtpJkHlnOFDkJKBc3a5Fr44py7rFHVdFq3yuby2rf
+ 1jkNA+vtvQADkdL/s7jitmLOE4Xj8Tf3Xiqo19knPOHNs1nwUtvvygCwEsRe3fQnNlwt9UV2O9X
+ n31su7FzarSyJ7mFMJKNdUOTvABHYpOZcjKYrDKWOCSimo1QbLab4yIVVaUsQ7sjSFmPnv22wCS
+ nP29yF1yIdAESs/epxu5UIgI7/BDhVkddjDZiarjd6rpNUWE8Q51EZZfhpXaMoBhqjqwDNkhAhm
+ naeJbRG1O+dEdn8VoN//WhuzyUgET2efrk/87Ij9A68S
+X-Google-Smtp-Source: AGHT+IHYUFOS6tZvpJOkAfU3W0IUvXEkurbm7qTDimNOrMxqJ3vKyynrsbG/ez0xMFK9Dxc30Yf2ug==
+X-Received: by 2002:a05:600c:4f42:b0:434:a7e3:db5c with SMTP id
+ 5b1f17b1804b1-438913cafacmr182541425e9.11.1737469461663; 
+ Tue, 21 Jan 2025 06:24:21 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38bf32755cesm13442420f8f.78.2025.01.21.06.24.15
+ 5b1f17b1804b1-438a1f07e1bsm134634695e9.7.2025.01.21.06.24.20
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Jan 2025 06:24:16 -0800 (PST)
+ Tue, 21 Jan 2025 06:24:21 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-riscv@nongnu.org,
  qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 07/28] cpus: Introduce SysemuCPUOps::has_work() handler
-Date: Tue, 21 Jan 2025 15:23:20 +0100
-Message-ID: <20250121142341.17001-8-philmd@linaro.org>
+Subject: [PATCH 08/28] target/alpha: Move has_work() from CPUClass to
+ SysemuCPUOps
+Date: Tue, 21 Jan 2025 15:23:21 +0100
+Message-ID: <20250121142341.17001-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250121142341.17001-1-philmd@linaro.org>
 References: <20250121142341.17001-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,45 +100,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SysemuCPUOps::has_work() is similar to CPUClass::has_work(),
-but only exposed on system emulation.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/core/sysemu-cpu-ops.h | 4 ++++
- hw/core/cpu-system.c             | 4 ++++
- 2 files changed, 8 insertions(+)
+ target/alpha/cpu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/core/sysemu-cpu-ops.h b/include/hw/core/sysemu-cpu-ops.h
-index 0df5b058f50..dee8a62ca98 100644
---- a/include/hw/core/sysemu-cpu-ops.h
-+++ b/include/hw/core/sysemu-cpu-ops.h
-@@ -16,6 +16,10 @@
-  * struct SysemuCPUOps: System operations specific to a CPU class
-  */
- typedef struct SysemuCPUOps {
-+    /**
-+     * @has_work: Callback for checking if there is work to do.
-+     */
-+    bool (*has_work)(CPUState *cpu);
-     /**
-      * @get_memory_mapping: Callback for obtaining the memory mappings.
-      */
-diff --git a/hw/core/cpu-system.c b/hw/core/cpu-system.c
-index 16d5efee12d..7b16bda2250 100644
---- a/hw/core/cpu-system.c
-+++ b/hw/core/cpu-system.c
-@@ -25,6 +25,10 @@
- 
- bool cpu_has_work(CPUState *cpu)
- {
-+    if (cpu->cc->sysemu_ops->has_work) {
-+        return cpu->cc->sysemu_ops->has_work(cpu);
-+    }
-+
-     g_assert(cpu->cc->has_work);
-     return cpu->cc->has_work(cpu);
+diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
+index e1b898e5755..83164a694d8 100644
+--- a/target/alpha/cpu.c
++++ b/target/alpha/cpu.c
+@@ -63,6 +63,7 @@ static void alpha_restore_state_to_opc(CPUState *cs,
+     }
  }
+ 
++#ifndef CONFIG_USER_ONLY
+ static bool alpha_cpu_has_work(CPUState *cs)
+ {
+     /* Here we are checking to see if the CPU should wake up from HALT.
+@@ -77,6 +78,7 @@ static bool alpha_cpu_has_work(CPUState *cs)
+                                     | CPU_INTERRUPT_SMP
+                                     | CPU_INTERRUPT_MCHK);
+ }
++#endif /* !CONFIG_USER_ONLY */
+ 
+ static int alpha_cpu_mmu_index(CPUState *cs, bool ifetch)
+ {
+@@ -216,6 +218,7 @@ static void alpha_cpu_initfn(Object *obj)
+ #include "hw/core/sysemu-cpu-ops.h"
+ 
+ static const struct SysemuCPUOps alpha_sysemu_ops = {
++    .has_work = alpha_cpu_has_work,
+     .get_phys_page_debug = alpha_cpu_get_phys_page_debug,
+ };
+ #endif
+@@ -251,7 +254,6 @@ static void alpha_cpu_class_init(ObjectClass *oc, void *data)
+                                     &acc->parent_realize);
+ 
+     cc->class_by_name = alpha_cpu_class_by_name;
+-    cc->has_work = alpha_cpu_has_work;
+     cc->mmu_index = alpha_cpu_mmu_index;
+     cc->dump_state = alpha_cpu_dump_state;
+     cc->set_pc = alpha_cpu_set_pc;
 -- 
 2.47.1
 
