@@ -2,94 +2,181 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87441A1865C
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 22:04:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF08A187ED
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 23:56:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taLPE-0006BF-DG; Tue, 21 Jan 2025 16:03:28 -0500
+	id 1taN8p-00005U-5D; Tue, 21 Jan 2025 17:54:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1taLPB-00067u-1c; Tue, 21 Jan 2025 16:03:25 -0500
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1taLP8-0008O4-Na; Tue, 21 Jan 2025 16:03:24 -0500
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-aa689a37dd4so1124427366b.3; 
- Tue, 21 Jan 2025 13:03:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <william.roche@oracle.com>)
+ id 1taN8l-0008WM-B2
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 17:54:35 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <william.roche@oracle.com>)
+ id 1taN8j-0001XW-Nv
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 17:54:35 -0500
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50LJKs4P000899;
+ Tue, 21 Jan 2025 22:54:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=corp-2023-11-20; bh=PAsrN+frazq9MZ+P
+ 11h+Iv68z5m4Zd/MbTsJZrTj7VU=; b=hSgTbaNTOjKBlc59qcAS/f3svAeMo0hK
+ c8+cwLjHfMWJB9lg7APpdo48aK4IF/ggPg+GL7xQEHK6JpSGWhXC0hgp8Qn6G0zR
+ CIokZIBhKPdvEENptvb3rZ9tae9NE3Cr60ohyvPNXAcsMTOiwkpIA/aMB/epebZn
+ UH2LEZBug6ZNbi2lb/Hm8iNuhKQuUATATbjz6C76mztVHPwo9R8SKRWCKV41IDwm
+ sc/HZzMcilSMW4u0e9daWKuo3Odzvf4qWmyqg+I8jbBxVtgISateiwMEvIDpoKOH
+ OwcS7MhMa649FvQ9nwp+3DO5SyZa1q949QtqtTyyZGT0LFKnXitjnA==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4485q56qmw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 21 Jan 2025 22:54:31 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 50LMUKTa030388; Tue, 21 Jan 2025 22:54:30 GMT
+Received: from nam12-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam12lp2177.outbound.protection.outlook.com [104.47.59.177])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 4491fjem4e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 21 Jan 2025 22:54:29 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bzag1WEHzrrTqlv6qYyE1f3H8fHR9t53UBWOmdpXmB70jylZMOBwjp9ZErEWxdRZcBnEHFWaXB/x4RyizSi+YDfGN3T7ZuFTYnp2Maae/k4Rpgb+4pZL4EXUhms8EjFXUN0Tww17OYb1PEGhyF0+1FmqoSzZfW5vmWSsAOSKj/1r4U0QwqX626lBdCBYe3bAJfEJGzM5VbIYTtBQCWRj7DPguqrPOwK5OCMAisN9/C/P/Z7f6/lfv2CBeGR0AUk8+537OIJjVp5vF5WRX0QaQNl3XIgm8uQlIgRwak24ZGLO8O+k7mivzW9VORfNEbpLv6S3/x3k31/861XsMehVxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PAsrN+frazq9MZ+P11h+Iv68z5m4Zd/MbTsJZrTj7VU=;
+ b=lvJETkKIf8lSh9v5RUvxKUxsEktgsPajcjeARb8Nu3G5frZdozNsIPEbDKY/APcjftZDwfAvf9cuAmu3o/xtngPUI25hXAtxazbXb8XxIu+AkDct2sK9y7uSeZl3VqUlNdBF8sPhO78Noam/BH1XmMmdEKbi4x+3niIOVKSLp4M6H6Lo0crLzVa2qcc8Vd8pinnxO8aKi9yZl33NQEK7NzrETUJcswxKhEHwU2AYOO9Ta1tO2wBSzlxAOeXqUzQNJ+1So3KNa0FvpwgBo3i3NUBgTpuzZkEVbfq7COGKF5b7hvCNHIpRXLVPtAeH1kS11z/MINYO2ju90otpu5MkJQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737493400; x=1738098200; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=j7LQMBxJ1iBdb7PgB2zJunhftYpi3JMsr8ixp4Yc1ZI=;
- b=ZoTbzwGjpy6EmeuZoMx1rq9rSCmfqK6wHFzMXj226AXCWIU4CCHOdm4xrXM9jz33Dv
- 7v+SW+ZXP/dZxkK04wP2UKgpucZltHwTYi1rmHA7+K69UL1OIZRdfBVeiWJVb+LgviPT
- iKlXYTUtVx5AExkPdH9aLIsgdCMt0wYdq8mRVEq18X3DRR+OTgSMRwx3ml29ecQ39uVF
- gtnflG8lEKvvXxsxZFsh/KyCPcKesnV4v6QWYnG9/xbKI8C/t8pdmK+8VL2/ZT45QBrZ
- JnxZacRlPI7xGy7mJtdN/gli7tR1f0h+5qBSPtdEDUm3XI+h5jFwboGAenGuaY1Mq1Vn
- 7xOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737493400; x=1738098200;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=j7LQMBxJ1iBdb7PgB2zJunhftYpi3JMsr8ixp4Yc1ZI=;
- b=ZrXeHJ4ZomiIbKH+7a4pdzvmXW7SkFlQ541ge6eGR7vGoMzTn7ilHy9+DBAnZKEiF4
- Aeap9uAVMjt3B8HFbTIfS7aZJJWY/aW0haREFrwFdYpMHLWyJwZu52SPBgb701OUpjia
- d+12mBooC0l/YNei9Rdn6zwNHgir0C6KwdjG9xBlnra/ICrsZLLwLVFcLSBF3ByBNzlz
- 2CSl0QxTeohDHrstsqsiO0ACn4n+EkCfQed3UEUNs52zq7DM3rogSr6kVnaPX92WCfKJ
- GDO8Hn6nnpla77tzWuH/NJWKKKgBQI+kDv4yLD00b/T/EtobX4ehGyhuiO/9u0eD9QYy
- tJrA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX9dNBXiT9siSNBQZm4M+zxabkBk1V1gqKD/CklLw65fZXBCZ8bUPqUttakJM+bzzzTuSdUdil7Nw==@nongnu.org
-X-Gm-Message-State: AOJu0Yy7rZh42FOz5CNHRkHoZ+otkXJIWi0Y0boRP9lH9s7NCs2M8Qoh
- v6uy4E4BYHPvVHKdMuVS9VB7WHLPKRQwQIMhFdFVMq/DE8Y4GJOY
-X-Gm-Gg: ASbGncslL+R6J+wYEY3pGMb+2NbBqbpcD9QFYmlxL+jQqVhHU1qJBLoXxNA/5q+/NxC
- A97s8JbBLf6hgr5MVUOk8WCLMqxcbXGx5zoscGjyZfttDVXBYp7rOK5y6KkIbCyZhIuAdp/U4dB
- V2yOvhwEUc1c50e7nJJIdsQWiC5F8OQCy2o9Yb8LHJNbZdWCXnqHMxYWfxLnH+axjTOlE4pDzQe
- 7JtfeK35gawSu3wkZgXpxAGFJiOdWc5J3svJPUpIke/+oEWfVy/Gpndu/dVBTyJ3IIk1oSBsKxF
- cn7PO9zHEFnJ2X7zF2WcvEVEWJm+A7c9lySD2Ulc2Q==
-X-Google-Smtp-Source: AGHT+IFKcqBWPaOjE7YIGfPpkTc9s0uF572+APav0lgeK7HVfitZtFppk2TxwG/mDbvxXpTXRIQX4Q==
-X-Received: by 2002:a17:907:7eaa:b0:aac:439:10ce with SMTP id
- a640c23a62f3a-ab38b2cef0bmr1924745766b.27.1737493399921; 
- Tue, 21 Jan 2025 13:03:19 -0800 (PST)
-Received: from [127.0.0.1] (dynamic-078-055-084-069.78.55.pool.telefonica.de.
- [78.55.84.69]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab384f2911fsm795340666b.120.2025.01.21.13.03.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 Jan 2025 13:03:19 -0800 (PST)
-Date: Tue, 21 Jan 2025 21:03:19 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-CC: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
- Alistair Francis <alistair@alistair23.me>,
- Peter Maydell <peter.maydell@linaro.org>,
- Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: Re: [PATCH 17/21] hw/arm/fsl-imx8mp: Add boot ROM
-In-Reply-To: <e3004582-40cc-e35c-91fe-88947cbb4978@eik.bme.hu>
-References: <20250120203748.4687-1-shentey@gmail.com>
- <20250120203748.4687-18-shentey@gmail.com>
- <e3004582-40cc-e35c-91fe-88947cbb4978@eik.bme.hu>
-Message-ID: <A48CB744-0C99-4979-B941-BC80E013FCE8@gmail.com>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PAsrN+frazq9MZ+P11h+Iv68z5m4Zd/MbTsJZrTj7VU=;
+ b=M9OXDPIJVrF9YEZVOWx0Zep9AajG6wZvqEUHtV4SedJ9S3NQcRKVF6H9o21dJ4eeh5tK1uF6uF2TRTjaSA/1biW81CoWcgLu0oRf9u/oLTUVx0+TAMF2Lq8enslTBoinIGjoxJGcaBchSvwJp8rkiGSdw4aIT0C0C//nU1Kn3dw=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by SA3PR10MB7072.namprd10.prod.outlook.com (2603:10b6:806:31d::15)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.16; Tue, 21 Jan
+ 2025 22:54:28 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23%5]) with mapi id 15.20.8356.020; Tue, 21 Jan 2025
+ 22:54:28 +0000
+From: =?UTF-8?q?=E2=80=9CWilliam=20Roche?= <william.roche@oracle.com>
+To: david@redhat.com, peterx@redhat.com, qemu-devel@nongnu.org,
+ pbonzini@redhat.com, philmd@linaro.org
+Cc: william.roche@oracle.com
+Subject: [PATCH v2 0/1] fallocate missing fd_offset
+Date: Tue, 21 Jan 2025 22:54:25 +0000
+Message-ID: <20250121225426.3043160-1-william.roche@oracle.com>
+X-Mailer: git-send-email 2.43.5
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MN2PR05CA0050.namprd05.prod.outlook.com
+ (2603:10b6:208:236::19) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|SA3PR10MB7072:EE_
+X-MS-Office365-Filtering-Correlation-Id: fd8fa502-dcab-46dc-31ea-08dd3a6e8f0f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?wi/fkOTJNQCAxgj7mQGfgcW+WrD/q2vhk4baUv1+ejCldaogKqjQd0Txbuk8?=
+ =?us-ascii?Q?Fre4CXuJ90Q6dFtoJ22HYLfKfXcBPq93c26Vo/zgnhjIu9t+WpDZCeA5Pasp?=
+ =?us-ascii?Q?juxWvcEKBeYypRLvcW04D+gGBSmn1cVdmc+Ppd61RStaYjCgikQcHCw46tMk?=
+ =?us-ascii?Q?rvIjEFOtTyMC70rBrLKROWGCyK5mp1vqjvDCklAqxqcQOkCE7tGIAQRKHqSE?=
+ =?us-ascii?Q?yJm1Jp8t3oBip0LExCCnz1PwPv+r+8RAhH9AfTedDTEY08mEWyWIXQE34gTz?=
+ =?us-ascii?Q?4H3QJJTX++mt4SRsZPkpJ2HX7UKpTRdCp+zqEy6Big1OSxl+Q8Zk9/H1VsWn?=
+ =?us-ascii?Q?x68Ue/In1xaYut2KNdv61Jn7haKZewqpKUpFz9ar1NGpZqLxYZRgs2mE941D?=
+ =?us-ascii?Q?60xjgFOgfk6a8VaJZ3bEeS3GP8c7JAOW6MoMkFqMZerQc6QDpcqfb0PsV4r1?=
+ =?us-ascii?Q?DZTgb6OKyIAzx2VN8eYks0Cw9TcFpIrLMmIWmE9IeNkHIaF5Q3k7pAxnHyNu?=
+ =?us-ascii?Q?tSpW0hKDFFZKZi0iTwxjENw3x1NNPV9UUPBF8UQaPro1LzPu/pHSrMl1XdZU?=
+ =?us-ascii?Q?uSLDpdB8sVQ/AFTtrclCFNhxadw3EyfXR4/tHSLAuaeonCwPLCSDPcNvgq3x?=
+ =?us-ascii?Q?TxI7a+Iu+E0wc9OaCZQhHwwoBbMrrXfLE+7X9WirTUbrGq7ILJpt41NicLdi?=
+ =?us-ascii?Q?kTiXorKQ4PHJiPep68KrxZxyL8Pu1F/gqRO3PRbhDaSucyNr2tgXLP6CK/lT?=
+ =?us-ascii?Q?+b4+VEA4sfD9ROQ9dLb0704133GDUSNroVV5fPOoMck67QgM3hIKKT38Juu6?=
+ =?us-ascii?Q?YpnCbu84Jnc3sOUZZozidsCEmQARby1s3LjapDUoI8uEZcDRApsKy2RUJA8T?=
+ =?us-ascii?Q?pSJz+8VdR9Efkn03EII5dVfXF1tmEYrnkhVVN89MZ113iW27GXaBvqqaVwmx?=
+ =?us-ascii?Q?sL32qTP38DcTX1kEYYVeqCDptkhEmbDHAE+ghqIQ9yKKmVNNnVgaCodsHx5i?=
+ =?us-ascii?Q?32wtx7XGb++hC304EWT6Piv8trM0eFI7sFX/ylB51DJsolwhcC60db+en106?=
+ =?us-ascii?Q?qUfZVDJExsNO0fkcHD+MCmTB1YLvMvVm2qmptgDy52RI2d+4DbOZD7aHB0Fo?=
+ =?us-ascii?Q?EHjbNsMv+G/DKm8IcdAAb66LOWxjXdAu4BFRhFlQV9IW7BEalaZDz9ZVaIZD?=
+ =?us-ascii?Q?figv4zNbgQur0Pk2J/dJH6lxRhOM5g2cFbwi2LIeT5YHC9saDAM6Pn/R/4lP?=
+ =?us-ascii?Q?EfpXvDiAU4jKQqip1GbJgNxjL+aJjC72xzrTmlBy93BJJnIBrLz8yFXg9MwW?=
+ =?us-ascii?Q?KR1gg34xJUH4O9DEL5hu54zzuBXH7yNaGVMAZFmD6d8y8yIoIaDVqeRUEyqD?=
+ =?us-ascii?Q?ehBEtQWQKHEpOtI55heJmzi25X1R?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH3PR10MB7329.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?YudkySPo/SHkQpRj+/maIAS2FJ07RDm15b+qHq5aoPnLDJ6lQgvfKCL6k2WB?=
+ =?us-ascii?Q?Ae3SDeh1rCJwiEguTtoCLsz4Fezfr6iEtXRbn9ngXvcVk75KEk1cP65ozRd0?=
+ =?us-ascii?Q?SllzzKwAL8JJo8bnPYgTqelMwjOXSPsAk31xwCdAeMoGFHEwSx7Si7OpfAsT?=
+ =?us-ascii?Q?nts1Tb7QYw34Sxdm0Lx/ICLemKfgTbmyHCupo4K3mMBJUvMPKHlnjs4QIqAU?=
+ =?us-ascii?Q?Rir//xmqylH+tkAm8En634CPv6dMfrdpOTZxezq0Y3nvIUN/nn8Toc4VQBhY?=
+ =?us-ascii?Q?Ey2e/lSF+9zAH8N5xHqyjEW7AanNO7/ZL+LAMAXptzN0yVdYRCw7n0cOcnEF?=
+ =?us-ascii?Q?+30BuOGVd0G/78BrMaL7j7lIgfZ8VhYyCSuAiEUGad7m7xaaZz/z5uYglHE1?=
+ =?us-ascii?Q?7NFpdJrE5ZcOEtRSRVds5bZhebs8AGuXdKxIIa1GqP3AV50dpE/d3H4UGzZL?=
+ =?us-ascii?Q?VzwdhxPBcwkqxPReaTuG+DO6DV04Ee08yiOR/6TagbQYjvJbxAy7pUkshHF1?=
+ =?us-ascii?Q?9v2O5iyN4DWwiIK88Dp0IQisKZ5VOqyJwqzBcM41gBquoMTSgMcZ/6RtFWfZ?=
+ =?us-ascii?Q?3CfGPCm4FBrELUATe+Jg9xz8qbcrK59r4iEHsYfRb5IkoTyC7jp4jJAIAVvP?=
+ =?us-ascii?Q?AEbAOOJ3Ayn8XSV7CrY9CIQLReuA5myRsDXSPQBhD9mQXcAbPdA4b/yY8e5x?=
+ =?us-ascii?Q?YtASOzTuhOSOM1j2bpUmLHsO1YpMrsQ5sdLy1pi4dV2V80bmzVGqR6NSTKQo?=
+ =?us-ascii?Q?G+k/i0ZJhQu8fkwB8PTW4aS+C1LmqYVQXzrZZEn8JtD2klkVkoqyrAoZH5s6?=
+ =?us-ascii?Q?lCzeG0sCoYhU5DHCZQvelaC3CAHWEYlEjKKca/LGPqCFeWN5OeDCSx35/7e/?=
+ =?us-ascii?Q?+yZZdy292q69iMr6KGkX2FUMdlqlDsKT3Mb4ASdv12n0uF0MXwoSHRyU1cyT?=
+ =?us-ascii?Q?B5VMHy0WAPtsxXqHpuFJ0LUjfHDg3mdEhlL2N5JDiUKGgOASq2Q1LpbFNzxC?=
+ =?us-ascii?Q?qSmO+aUx4jjW/4Abcdc9D6aW7XxmV6V6qY1faP2DgTjIQr8TfBiOzGR9FAb/?=
+ =?us-ascii?Q?1rJZ8yoNHPWEiAaOf+K7A9hrm8YKoM1SXuPFfPoqJR4pvuRlQ/YHtO1RyVhJ?=
+ =?us-ascii?Q?36cXT4MtqCfBjBFL9R2dj1CsGn083K8lKu5qaD1FafsKr9vyjW3xH7Bit4qk?=
+ =?us-ascii?Q?OhScrg+IxdilMrDQ9GwdDJgmK0Vxl9w8yGtgNc7TeLRqVBW5riJK1Tqq06gS?=
+ =?us-ascii?Q?T/KdISS3k1NAALHXjaT2X2ypuwadKYCxVEf+xXbXJPxvXF2IYJA2m7DTsKzj?=
+ =?us-ascii?Q?Wf/fRJjFelsR2+/pdqEJbKj/2Sn0taLcFmPCpExlH+tNaU95uNgMMLY8eElX?=
+ =?us-ascii?Q?thueAMM5+Y4Bgx2UXE+x2w41FGgesfokLQPE6RA8oOYF/B5gqU7xafS6tCQ3?=
+ =?us-ascii?Q?z/0U/0Qt5wIa1wwz87MgGJipPFYHCe6Y2/3tDc2HdfDM7b5+fCV0DDZwd0x4?=
+ =?us-ascii?Q?IlfDoDspkOVOWg+hDboMaQsilI0HEswGHAQJIWvRbW33cQdNEkE2F4ZBGjRP?=
+ =?us-ascii?Q?xCC+FSR6rkHmDxXNDy/upcbaSOnUFVDsIVfsFy0VWNt+n83IiKjW0ObsAX4g?=
+ =?us-ascii?Q?FQ=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: O+gNM7TzUojOMru+cmQKmF+CZ6p3pA/lEcx4NZshWdK7msYPBRbsqrZ/MPIsx9tUK9ECXgXRhP6ETLuGE1Gp9JA45wZd4s2H/ZxgPmOTZThu9rgDl7w4YDOgD9f229WzcqpaL/Z0+yEkRf29pT7NsqlFlcDPzaXePrP9xunImsCF+iar7PS7Abai9LevYVvZWkSZhDTK5joz5SKnqTbhvR2ZvKWLzHMnsVDP0iXBaLRdytFRvs8WoLV3o89gnGcaKNkPR1OZULc7b1aq7AVcOOKCZDLk5F9y3UC/NWRy1TCxSJYMUXJKaMjSi3jBfXcpL6oQJjzcRYeOskuFE34WVNtVUXlguqqas5Hw6rJiyv9P2uTKa8KdUwNwMPqdt165eFeFrKp3M0A2KvWqwLk5yZIllLpCbcsV7oSjc2rEuitf8dTOIHtq2o+SES+ZRmGp6bXwB+EJpUiDHnexxOCxPOFeYTWIvAqiIPh4AOUgthrgXWUY0DRf3SKYJW4i/Q9vFaiaZ6dWkk+fHv6uGvHyfC2l7DA9rbIVZGGNSNyVWHmnU/c5oFlYyy7Wvwd5AK/wOozQap6VNCZfm21O/hfwZZez9u+hklFFpClidQAeyFc=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fd8fa502-dcab-46dc-31ea-08dd3a6e8f0f
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jan 2025 22:54:27.8553 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: B9jNZMarWoRDmpeLvEqPX9wIRjxr/z9pidgC0ZTOZyM4Vv0OX6Sz+QqjcCoqWUUOvnyWv9cGov3m5NS3Lk5AALlbgMqkbvE6BKRsUrOzPco=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR10MB7072
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-21_09,2025-01-21_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ bulkscore=0
+ malwarescore=0 mlxscore=0 mlxlogscore=999 adultscore=0 phishscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2411120000 definitions=main-2501210182
+X-Proofpoint-GUID: 2xRn1ixtZEBsb0Zj-InIxkhnbic0h-r2
+X-Proofpoint-ORIG-GUID: 2xRn1ixtZEBsb0Zj-InIxkhnbic0h-r2
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=william.roche@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.086,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,176 +192,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: William Roche <william.roche@oracle.com>
+
+Working on the poisoned memory recovery mechanisms with David
+Hildenbrand, it appeared that the file hole punching done with
+the memory discard functions are missing the file offset value
+fd_offset to correctly modify the right file location.
+
+Note that guest_memfd would not currently take into account
+fd_offset, so I'm adding a comment next to the fallocate use
+in ram_block_discard_guest_memfd_range().
+
+This version is also checkpatch.pl clean
+make check runs fine on both ARM and x86
+
+v1->v2
+  . replacing the ram_block_discard_guest_memfd_range()
+    modifications with a comment
+  . use a local variable for the global file offset
 
 
-Am 21=2E Januar 2025 03:00:17 UTC schrieb BALATON Zoltan <balaton@eik=2Ebm=
-e=2Ehu>:
->On Mon, 20 Jan 2025, Bernhard Beschow wrote:
->> On a real device, the boot ROM contains the very first instructions the=
- CPU
->> executes=2E Also, U-Boot calls into the ROM to determine the boot devic=
-e=2E While
->> we're not actually implementing this here, let's create the infrastruct=
-ure and
->> add a dummy ROM with all zeros=2E This allows for implementing a ROM la=
-ter without
->> touching the source code and even allows for users to provide their own=
- ROMs=2E
->>=20
->> The imx8mp-boot=2Erom was created with
->> `dd if=3D/dev/zero of=3Dimx8mp-boot=2Erom bs=3D1 count=3D258048`=2E
->>=20
->> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->> ---
->> MAINTAINERS                 |   1 +
->> include/hw/arm/fsl-imx8mp=2Eh |   1 +
->> hw/arm/fsl-imx8mp=2Ec         |  18 ++++++++++++++++++
->> pc-bios/imx8mp-boot=2Erom     | Bin 0 -> 258048 bytes
->> pc-bios/meson=2Ebuild         |   1 +
->> 5 files changed, 21 insertions(+)
->> create mode 100644 pc-bios/imx8mp-boot=2Erom
->>=20
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 76b416831d=2E=2Ed2cdc790ff 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -830,6 +830,7 @@ F: hw/pci-host/fsl_imx8m_phy=2Ec
->> F: include/hw/arm/fsl-imx8mp=2Eh
->> F: include/hw/misc/imx8mp_*=2Eh
->> F: include/hw/pci-host/fsl_imx8m_phy=2Eh
->> +F: pc-bios/imx8mp*
->> F: docs/system/arm/imx8mp-evk=2Erst
->>=20
->> MPS2 / MPS3
->> diff --git a/include/hw/arm/fsl-imx8mp=2Eh b/include/hw/arm/fsl-imx8mp=
-=2Eh
->> index 1b8a5cbbba=2E=2E326c4ddf69 100644
->> --- a/include/hw/arm/fsl-imx8mp=2Eh
->> +++ b/include/hw/arm/fsl-imx8mp=2Eh
->> @@ -67,6 +67,7 @@ struct FslImx8mpState {
->>     DesignwarePCIEHost pcie;
->>     FslImx8mPciePhyState   pcie_phy;
->>     OrIRQState         gpt5_gpt6_irq;
->> +    MemoryRegion       boot_rom;
->>=20
->>     uint32_t           phy_num;
->>     bool               phy_connected;
->> diff --git a/hw/arm/fsl-imx8mp=2Ec b/hw/arm/fsl-imx8mp=2Ec
->> index 5b9781a424=2E=2E9688e2e962 100644
->> --- a/hw/arm/fsl-imx8mp=2Ec
->> +++ b/hw/arm/fsl-imx8mp=2Ec
->> @@ -9,12 +9,14 @@
->>  */
->>=20
->> #include "qemu/osdep=2Eh"
->> +#include "qemu/datadir=2Eh"
->> #include "exec/address-spaces=2Eh"
->> #include "hw/arm/bsa=2Eh"
->> #include "hw/arm/fsl-imx8mp=2Eh"
->> #include "hw/intc/arm_gicv3=2Eh"
->> #include "hw/misc/unimp=2Eh"
->> #include "hw/boards=2Eh"
->> +#include "hw/loader=2Eh"
->> #include "system/system=2Eh"
->> #include "target/arm/cpu-qom=2Eh"
->> #include "qapi/qmp/qlist=2Eh"
->> @@ -266,6 +268,7 @@ static void fsl_imx8mp_realize(DeviceState *dev, Er=
-ror **errp)
->>     MachineState *ms =3D MACHINE(qdev_get_machine());
->>     FslImx8mpState *s =3D FSL_IMX8MP(dev);
->>     DeviceState *gicdev =3D DEVICE(&s->gic);
->> +    g_autofree char *filename =3D NULL;
->>     int i;
->>=20
->>     if (ms->smp=2Ecpus > FSL_IMX8MP_NUM_CPUS) {
->> @@ -648,10 +651,25 @@ static void fsl_imx8mp_realize(DeviceState *dev, =
-Error **errp)
->>     sysbus_mmio_map(SYS_BUS_DEVICE(&s->pcie_phy), 0,
->>                     fsl_imx8mp_memmap[FSL_IMX8MP_PCIE_PHY1]=2Eaddr);
->>=20
->> +    /* ROM memory */
->> +    if (!memory_region_init_ram(&s->boot_rom, OBJECT(dev),
->> +                                fsl_imx8mp_memmap[FSL_IMX8MP_BOOT_ROM]=
-=2Ename,
->> +                                fsl_imx8mp_memmap[FSL_IMX8MP_BOOT_ROM]=
-=2Esize,
->> +                                errp)) {
->> +        return;
->> +    }
->
->If it's ROM why not memory_region_init_rom?
+William Roche (1):
+  system/physmem: take into account fd_offset for file fallocate
 
-Indeed, this should be memory_region_init_rom()=2E Will be fixed in next i=
-teration=2E
+ system/physmem.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-Thanks,
-Bernhard
+-- 
+2.43.5
 
->
->Regards,
->BALATON Zoltan
->
->> +    filename =3D qemu_find_file(QEMU_FILE_TYPE_BIOS, "imx8mp-boot=2Ero=
-m");
->> +    load_image_size(filename, memory_region_get_ram_ptr(&s->boot_rom),
->> +                    memory_region_size(&s->boot_rom));
->> +    memory_region_add_subregion(get_system_memory(),
->> +                                fsl_imx8mp_memmap[FSL_IMX8MP_BOOT_ROM]=
-=2Eaddr,
->> +                                &s->boot_rom);
->> +
->>     /* Unimplemented devices */
->>     for (i =3D 0; i < ARRAY_SIZE(fsl_imx8mp_memmap); i++) {
->>         switch (i) {
->>         case FSL_IMX8MP_ANA_PLL:
->> +        case FSL_IMX8MP_BOOT_ROM:
->>         case FSL_IMX8MP_CCM:
->>         case FSL_IMX8MP_GIC_DIST:
->>         case FSL_IMX8MP_GIC_REDIST:
->> diff --git a/pc-bios/imx8mp-boot=2Erom b/pc-bios/imx8mp-boot=2Erom
->> new file mode 100644
->> index 0000000000000000000000000000000000000000=2E=2E5324b5eed200e723d04=
-8f8476e4d96d45622fd4d
->> GIT binary patch
->> literal 258048
->> zcmeIuF#!Mo0K%a4Pi+Q&h(KY$fB^#r3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM
->> z7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM7%*VKfB^#r3>YwAz<>b*
->> z1`HT5V8DO@0|pEjFkrxd0RsjM7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd
->> z0RsjM7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM7%*VKfB^#r3>YwA
->> zz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@0|pEj
->> zFkrxd0RsjM7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM7%*VKfB^#r
->> z3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@
->> z0|pEjFkrxd0RsjM7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM7%*VK
->> zfB^#r3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM7%*VKfB^#r3>YwAz<>b*1`HT5
->> zV8DO@0|pEjFkrxd0RsjM7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM
->> z7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM7%*VKfB^#r3>YwAz<>b*
->> z1`HT5V8DO@0|pEjFkrxd0RsjM7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd
->> z0RsjM7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM7%*VKfB^#r3>YwA
->> zz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@0|pEj
->> zFkrxd0RsjM7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM7%*VKfB^#r
->> z3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@
->> z0|pEjFkrxd0RsjM7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM7%*VK
->> zfB^#r3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM7%*VKfB^#r3>YwAz<>b*1`HT5
->> zV8DO@0|pEjFkrxd0RsjM7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM
->> z7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM7%*VKfB^#r3>YwAz<>b*
->> z1`HT5V8DO@0|pEjFkrxd0RsjM7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd
->> z0RsjM7%*VKfB^#r3>YwAz<>b*1`HT5V8DO@0|pEjFkrxd0RsjM7%*VKfB^#r3>f$Z
->> E2JkHa0RR91
->>=20
->> literal 0
->> HcmV?d00001
->>=20
->> diff --git a/pc-bios/meson=2Ebuild b/pc-bios/meson=2Ebuild
->> index b68b29cc7d=2E=2E64d3286fdd 100644
->> --- a/pc-bios/meson=2Ebuild
->> +++ b/pc-bios/meson=2Ebuild
->> @@ -60,6 +60,7 @@ blobs =3D [
->>   'efi-virtio=2Erom',
->>   'efi-e1000e=2Erom',
->>   'efi-vmxnet3=2Erom',
->> +  'imx8mp-boot=2Erom',
->>   'qemu-nsis=2Ebmp',
->>   'multiboot=2Ebin',
->>   'multiboot_dma=2Ebin',
->>=20
 
