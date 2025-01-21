@@ -2,145 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6792AA1794A
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 09:33:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E1C7A17977
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 09:46:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ta9gD-0000eC-Kj; Tue, 21 Jan 2025 03:32:13 -0500
+	id 1ta9sZ-0002dg-HT; Tue, 21 Jan 2025 03:44:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1ta9gB-0000dT-5e
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 03:32:11 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1ta9g9-0002wB-6a
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 03:32:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737448320;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=BfyVSrWMHEiziEzHGs6F8vZZOIls9tuwoD7VwZmXX5o=;
- b=V8P0iYlinz7UPcZOVAyz3+qXBfm1XHct5t4lBELnlDqfW7XZYX1ecJKusM7EurVpKxS9qd
- gJp14N6qBEv2Rtt361+YFlK/hijMPxiz6Esfo5JnNrgMjVpKcCctrE3AuHIgNePVeJfr4u
- WWG3wyeGj0mNemWLk1uHDr1WVVgx02E=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-498-ddC2ER1BO5KkwdSFd5C2DA-1; Tue, 21 Jan 2025 03:31:56 -0500
-X-MC-Unique: ddC2ER1BO5KkwdSFd5C2DA-1
-X-Mimecast-MFC-AGG-ID: ddC2ER1BO5KkwdSFd5C2DA
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43621907030so41913655e9.1
- for <qemu-devel@nongnu.org>; Tue, 21 Jan 2025 00:31:56 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ta9sX-0002dS-PP
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 03:44:57 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ta9sW-0004LR-9B
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 03:44:57 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-385f07cd1a4so4060963f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 21 Jan 2025 00:44:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1737449094; x=1738053894; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=kRBL9pD3EvH7+CBr6dhdQc07O4NtFY1guIK0UpswibY=;
+ b=KRScAiqKRMKV+BqbB7KWOnsTfDPFGINooPY1oTlY1VYC+/7ZLcI86xxqrlkpfsifqu
+ di2ww23T5XxBYwPzcQdGJgLLwfcd43PxBM5RKiL4/xfpzdbH7NnOLzDEnN++D7LMSiQl
+ 66aFnZ4oJWGmqQX6T5UmhIRLk3cWoTCs9YVpv9j2E05m+6FSwSGwW+pttoDO/WH+r9EC
+ zQcG/biSdEKGUFZhg7m8i5PQoIrp82YXPPSoSnVdjp77Wtgvq4UjIzgzMmO4Zu1siLsX
+ 7BWvDHE3R2NYaAyi3ErDmkuSy649nq8uxDJqrBwMS1KgdJvH53CejESZVOmeYk8zYl9b
+ 3Klw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737448315; x=1738053115;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BfyVSrWMHEiziEzHGs6F8vZZOIls9tuwoD7VwZmXX5o=;
- b=RVwVXHf4egeaZ1y+OoNS91zQxMSBRWaBCZ0aL0s4YajvqsYEeI4rYjw2FZMAL2jKAa
- sj7zYnqBusXJ6bGxNRX8gceqyNsVyJcmwj/HGdMzubvzkjgTWE26doeFUKzkWIek+1hu
- HTI+tMx5ASUasXXDETuGk+z5UNpZZ1ibM+rZvZJ+++FrSln01f+ha+FNqZSl9V+I2e6q
- znlBeH4P9QNJMZXLDHm5BTWoi90JCcWC7m+O2kNE0O7EAmy9YRojZTc7HICFnBVdyFHR
- 2K0vfbFYDhbKJoa+qJErusyYZByjB7MfgnUl240xUm/U6SoP/pje/pfnT/OJbGAD/LhR
- b8Jw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVGQqDUP07QnXBfS+vEpK25LofNsj/ui6Z9ldl9AJ4HQ5C8CZfFSqUqGzXqzTd/CE7RULP2lCos+ugJ@nongnu.org
-X-Gm-Message-State: AOJu0YyicvSIlSJiDh9uj031pfhNb6+TM+LOITAw7Tyo+5G3/ULsMHHT
- zfuBDnJKrxaUAt9y7wxk6H8H8nrmyDgx7L13kK5Zk7cStlpGgEc63isyncW0lRvwWLjo5KayT5A
- rntt6yto6NicGvmM6TppLh4Jf0h6gS0325MXBjGB64scZJgemad3H
-X-Gm-Gg: ASbGnctkEc/tcsZvopbCr74xOp5jf4o3h+oP1Mae/+PXIVb2IltUEUE9IGQ/an9xM3h
- i/+yGhTi14+CsumGIESRNygGKW/JSqWZDzPcbaa4ybf6e7h8Ux4bI6O4L3O+g52fjSH8PAx37yn
- LP3xw23EGsbWKQOtqSJxmcxYDZ8vjVA6cotG1TjpWSY9EyQR74gBZGGL2qevI3AXnFx+9C+888E
- A9QxK7E1fAnKeLBVj2Z1kJ9SruCDnkxsnH2nv+18wUqoL8m+4EehRh4KbU3/skMe6zzk1tR8QeK
- DwtMBB/pwbYperCtkSDwJs+V6miem9KZ
-X-Received: by 2002:a05:600c:3d96:b0:434:a26c:8291 with SMTP id
- 5b1f17b1804b1-4389143b5dbmr137259775e9.24.1737448315294; 
- Tue, 21 Jan 2025 00:31:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG6Zo/EnA5SV3PJWuFEu2GpdE8tNqjUIAouYuirlbpdtz7tfpdn571uqB13cMF1lIaCSzRi5Q==
-X-Received: by 2002:a05:600c:3d96:b0:434:a26c:8291 with SMTP id
- 5b1f17b1804b1-4389143b5dbmr137259395e9.24.1737448314823; 
- Tue, 21 Jan 2025 00:31:54 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:e10:ef90:343a:68f:2e91:95c?
- ([2a01:e0a:e10:ef90:343a:68f:2e91:95c])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-437c74ac712sm226732715e9.12.2025.01.21.00.31.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 Jan 2025 00:31:53 -0800 (PST)
-Message-ID: <3aaaf5c8-b1f0-4237-b50e-bb28fd297bb1@redhat.com>
-Date: Tue, 21 Jan 2025 09:31:53 +0100
+ d=1e100.net; s=20230601; t=1737449094; x=1738053894;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kRBL9pD3EvH7+CBr6dhdQc07O4NtFY1guIK0UpswibY=;
+ b=VuUa2Lq6tBl+kzQzlc/qpvZor7+GXkN/XDPdmPghPGRKvLpbUoDOuQqHQrgUajtgd4
+ +PzXw3lPwF04iyT7+MH1OaGZ3XtUceUZoUkrW1aEffizZwUg6MvB+Dp2UIa+1gYlf+bl
+ Jnu46i6PXuTXaYcTnXXXTzi7c8L/fxeTv5HccB+DECc/GyOTSI46GJbLTgXDlcOAXNT0
+ do9H3WE615ppHoWHlLrawDfmOP6SpPYseVRylkFrTcFBmwxZ/3cmPh7EYv+CwI28JQcC
+ /iWSJMrcUs4fMnagE9A7TR9N4DkL6HmRUCvXvXmlzlx1qaktw/ljFmmBoqPP6VMG2I+r
+ MgHA==
+X-Gm-Message-State: AOJu0YxI9uySieZNDubN5UheR77VgDJ1YKfcsyX8TcXl3cJi5ZTJqf9V
+ r4tCK2M1kViMEedRuFOkpFYnW8G1sSUx8KHSZlKab/lUt+leRA60uLd4natiWE7RXWCswdo3vng
+ /+Wo=
+X-Gm-Gg: ASbGnct52RWIlNzihEXrgdLqutmA0Ny/pS18I6Ff3vF18HikZKnTPiWgHPAivCPmcYq
+ ukFQl5HMMM3SOIY7cD+h2459gVr+LriCgQmWOpjJuimD+kQxtcrl1Q02iKFeIWetl/UfrUk5Hlt
+ 2nZHP/Er2ITmjmuH1HsgfRyCp7CWHj6SLrUOZrvCwUJnQYfNampteUcbLsBgFCSwWKtqKIzdkns
+ rgq0L2Y+7SGdm9ZLEpVn8E6QWJCqVYDoQJfKVfHpshB2zS8JaMYEjhPjlcGAqUDXPeFsofLGg53
+ 5t1eL7hjm9ZC1WYgGy76IDKbXz3t1FU2XsUy3/llsQLK
+X-Google-Smtp-Source: AGHT+IH4H3IruuXS1yXn+nUseVO5byUdkRpXWJrtrAx/ovMnj6LTzF/k23gkoCS+XmcoC4nGONA0GQ==
+X-Received: by 2002:adf:e84a:0:b0:385:f0c9:4b66 with SMTP id
+ ffacd0b85a97d-38bf5686090mr11836905f8f.33.1737449094238; 
+ Tue, 21 Jan 2025 00:44:54 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38bf322a414sm12648233f8f.47.2025.01.21.00.44.52
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 21 Jan 2025 00:44:53 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Alberto Garcia <berto@igalia.com>, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>, Bernhard Beschow <shentey@gmail.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 0/2] hw/ipack: Minor dust removal
+Date: Tue, 21 Jan 2025 09:44:50 +0100
+Message-ID: <20250121084452.81941-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/virtio/vhost: Disable IOTLB callbacks when IOMMU gets
- disabled
-To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
- qemu-devel@nongnu.org, mst@redhat.com, jasowang@redhat.com,
- sgarzare@redhat.com
-Cc: zhenzhong.duan@intel.com
-References: <20250120173339.865681-1-eric.auger@redhat.com>
-Content-Language: en-US
-From: Laurent Vivier <lvivier@redhat.com>
-Autocrypt: addr=lvivier@redhat.com; keydata=
- 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
-In-Reply-To: <20250120173339.865681-1-eric.auger@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lvivier@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-3,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.036,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -156,51 +97,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/01/2025 18:33, Eric Auger wrote:
-> When a guest exposed with a vhost device and protected by an
-> intel IOMMU gets rebooted, we sometimes observe a spurious warning:
-> 
-> Fail to lookup the translated address ffffe000
-> 
-> We observe that the IOMMU gets disabled through a write to the global
-> command register (CMAR_GCMD.TE) before the vhost device gets stopped.
-> When this warning happens it can be observed an inflight IOTLB
-> miss occurs after the IOMMU disable and before the vhost stop. In
-> that case a flat translation occurs and the check in
-> vhost_memory_region_lookup() fails.
-> 
-> Let's disable the IOTLB callbacks when all IOMMU MRs have been
-> unregistered.
-> 
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> ---
->   hw/virtio/vhost.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-> index 6aa72fd434..128c2ab094 100644
-> --- a/hw/virtio/vhost.c
-> +++ b/hw/virtio/vhost.c
-> @@ -931,6 +931,10 @@ static void vhost_iommu_region_del(MemoryListener *listener,
->               break;
->           }
->       }
-> +    if (QLIST_EMPTY(&dev->iommu_list) &&
-> +        dev->vhost_ops->vhost_set_iotlb_callback) {
-> +        dev->vhost_ops->vhost_set_iotlb_callback(dev, false);
-> +    }
->   }
->   
->   void vhost_toggle_device_iotlb(VirtIODevice *vdev)
+Clarify what is what in Kconfig,
+replace qemu_allocate_irqs() by qemu_init_irq().
 
-I think you need the counterpart in vhost_iommu_region_del() (for instance if we have an 
-add after a del that results in an empty list).
-But you cannot unconditionally enable it (for instance if vhost is not started)
+Since v1:
+- s/qemu_irq/IRQState/ in IPackDevice state
 
-Perhaps you should move the vhost_set_iotlb_callback() call from 
-vhost_start()/vhost_stop() to vhost_iommu_region_add()/vhost_iommu_region_del()?
+Philippe Mathieu-Daudé (2):
+  hw/ipack: Clarify KConfig symbols
+  hw/ipack: Remove legacy qemu_allocate_irqs() use
 
-Thanks,
-Laurent
+ include/hw/ipack/ipack.h       | 7 ++-----
+ hw/char/ipoctal232.c           | 4 ++--
+ hw/ipack/ipack.c               | 7 +++----
+ hw/ipack/tpci200.c             | 6 +++---
+ hw/char/Kconfig                | 5 +++++
+ hw/char/meson.build            | 2 +-
+ hw/ipack/Kconfig               | 4 ++++
+ hw/ipack/meson.build           | 3 ++-
+ tests/qtest/libqos/meson.build | 4 +++-
+ tests/qtest/meson.build        | 4 +++-
+ 10 files changed, 28 insertions(+), 18 deletions(-)
+
+-- 
+2.47.1
 
 
