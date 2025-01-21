@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC1B0A17850
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 08:07:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8ED0A17854
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 08:08:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ta8Kw-0000Sf-E1; Tue, 21 Jan 2025 02:06:10 -0500
+	id 1ta8Kw-0000SX-FL; Tue, 21 Jan 2025 02:06:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1ta8Kp-0008Sn-D6; Tue, 21 Jan 2025 02:06:03 -0500
+ id 1ta8Kq-0000AH-NR; Tue, 21 Jan 2025 02:06:04 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1ta8Km-0001hy-Rb; Tue, 21 Jan 2025 02:06:02 -0500
+ id 1ta8Kp-0001hy-6r; Tue, 21 Jan 2025 02:06:04 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 21 Jan
@@ -30,9 +30,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 17/18] hw/arm/aspeed_ast27x0: Add HACE support for AST2700
-Date: Tue, 21 Jan 2025 15:04:23 +0800
-Message-ID: <20250121070424.2465942-18-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 18/18] hw/misc/aspeed_hace: (DROP) Fix boot issue in the
+ Crypto Manager Self Test(WORKAROUND)
+Date: Tue, 21 Jan 2025 15:04:24 +0800
+Message-ID: <20250121070424.2465942-19-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250121070424.2465942-1-jamin_lin@aspeedtech.com>
 References: <20250121070424.2465942-1-jamin_lin@aspeedtech.com>
@@ -64,55 +65,57 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The HACE controller between AST2600 and AST2700 are almost identical.
-The HACE controller registers base address starts at 0x1207_0000 and
-its alarm interrupt is connected to GICINT4.
+Currently, it does not support the CRYPT command.
+Instead, it only sends an interrupt to notify the firmware
+that the crypt command has completed.
+It is a temporary workaround to resolve the boot issue in
+the Crypto Manager Self Test.
+Full support for the CRYPT command will be implemented in the future.
+
+It only for reviewer testing and please drop this patch.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/arm/aspeed_ast27x0.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ hw/misc/aspeed_hace.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index e0a29c9053..0b82b2eab5 100644
---- a/hw/arm/aspeed_ast27x0.c
-+++ b/hw/arm/aspeed_ast27x0.c
-@@ -68,6 +68,7 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
-     [ASPEED_DEV_SDHCI]     =  0x14080000,
-     [ASPEED_DEV_TIMER1]    =  0x12C10000,
-     [ASPEED_DEV_INTC1]     =  0x14C18000,
-+    [ASPEED_DEV_HACE]      =  0x12070000,
- };
- 
- #define AST2700_MAX_IRQ 256
-@@ -478,6 +479,9 @@ static void aspeed_soc_ast2700_init(Object *obj)
- 
-     snprintf(typename, sizeof(typename), "aspeed.timer-%s", socname);
-     object_initialize_child(obj, "timerctrl", &s->timerctrl, typename);
+diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
+index 86422cb3be..c3ec6179b9 100644
+--- a/hw/misc/aspeed_hace.c
++++ b/hw/misc/aspeed_hace.c
+@@ -58,6 +58,7 @@
+ #define  HASH_HASH_THEN_CRYPT           (BIT(0) | BIT(1))
+ /* Other cmd bits */
+ #define  HASH_IRQ_EN                    BIT(9)
++#define  CRYPT_IRQ_EN                  BIT(12)
+ #define  HASH_SG_EN                     BIT(18)
+ /* Scatter-gather data list */
+ #define SG_LIST_LEN_SIZE                4
+@@ -343,6 +344,13 @@ static void aspeed_hace_write(void *opaque, hwaddr addr, uint64_t data,
+                 qemu_irq_lower(s->irq);
+             }
+         }
++        if (data & CRYPT_IRQ) {
++            data &= ~CRYPT_IRQ;
 +
-+    snprintf(typename, sizeof(typename), "aspeed.hace-%s", socname);
-+    object_initialize_child(obj, "hace", &s->hace, typename);
- }
- 
- /*
-@@ -833,6 +837,17 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->timerctrl), i, irq);
-     }
- 
-+    /* HACE */
-+    object_property_set_link(OBJECT(&s->hace), "dram", OBJECT(s->dram_mr),
-+                             &error_abort);
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->hace), errp)) {
-+        return;
-+    }
-+    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->hace), 0,
-+                    sc->memmap[ASPEED_DEV_HACE]);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&s->hace), 0,
-+                       aspeed_soc_get_irq(s, ASPEED_DEV_HACE));
-+
-     create_unimplemented_device("ast2700.dpmcu", 0x11000000, 0x40000);
-     create_unimplemented_device("ast2700.iomem0", 0x12000000, 0x01000000);
-     create_unimplemented_device("ast2700.iomem1", 0x14000000, 0x01000000);
++            if (s->regs[addr] & CRYPT_IRQ) {
++                qemu_irq_lower(s->irq);
++            }
++        }
+         break;
+     case R_HASH_SRC:
+         data &= ahc->src_mask;
+@@ -388,6 +396,10 @@ static void aspeed_hace_write(void *opaque, hwaddr addr, uint64_t data,
+     case R_CRYPT_CMD:
+         qemu_log_mask(LOG_UNIMP, "%s: Crypt commands not implemented\n",
+                        __func__);
++        s->regs[R_STATUS] |= CRYPT_IRQ;
++        if (data & CRYPT_IRQ_EN) {
++            qemu_irq_raise(s->irq);
++        }
+         break;
+     default:
+         break;
 -- 
 2.34.1
 
