@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5EFA17D99
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 13:11:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F342A17D97
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 13:11:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taD5i-0002IY-Gy; Tue, 21 Jan 2025 07:10:46 -0500
+	id 1taD5k-0002LX-1N; Tue, 21 Jan 2025 07:10:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1taD5f-0002AG-83
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 07:10:43 -0500
+ id 1taD5g-0002GF-LN
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 07:10:44 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1taD5c-0007Pg-Pe
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 07:10:42 -0500
+ (envelope-from <maobibo@loongson.cn>) id 1taD5d-0007Ph-1m
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 07:10:44 -0500
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8BxYa+6jo9nMMNmAA--.5599S3;
+ by gateway (Coremail) with SMTP id _____8Axjq+6jo9nMsNmAA--.46229S3;
  Tue, 21 Jan 2025 20:10:34 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMDxrcW4jo9nQ9ApAA--.26988S4;
- Tue, 21 Jan 2025 20:10:33 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMDxrcW4jo9nQ9ApAA--.26988S5;
+ Tue, 21 Jan 2025 20:10:34 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH 2/3] hw/loongarch/virt: Remove unused ipistate
-Date: Tue, 21 Jan 2025 20:10:31 +0800
-Message-Id: <20250121121032.475235-3-maobibo@loongson.cn>
+Subject: [PATCH 3/3] hw/loongarch/virt: CPU irq line connection improvement
+Date: Tue, 21 Jan 2025 20:10:32 +0800
+Message-Id: <20250121121032.475235-4-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20250121121032.475235-1-maobibo@loongson.cn>
 References: <20250121121032.475235-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMDxrcW4jo9nQ9ApAA--.26988S4
+X-CM-TRANSID: qMiowMDxrcW4jo9nQ9ApAA--.26988S5
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,54 +63,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Field ipistate in LoongArch CPU object is not used any more,
-remove it here.
+Interrupt controller extioi and ipi connect to CPU with irq line method.
+There are two improvements, one is move it to machine done callback,
+and the other is to use possible_cpu_arch_ids() rather than smp.cpus.
+
+With command -smp x, -device la464-loongarch-cpu, smp.cpus
+is not accurate for all possible CPU objects, possible_cpu_arch_ids()
+is used here.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- hw/loongarch/virt.c    | 5 -----
- target/loongarch/cpu.h | 2 --
- 2 files changed, 7 deletions(-)
+ hw/loongarch/virt.c         | 60 ++++++++++++++++++++++---------------
+ include/hw/loongarch/virt.h |  2 ++
+ 2 files changed, 38 insertions(+), 24 deletions(-)
 
 diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 15022505c7..97c7da4815 100644
+index 97c7da4815..1be4ca9cfd 100644
 --- a/hw/loongarch/virt.c
 +++ b/hw/loongarch/virt.c
-@@ -848,8 +848,6 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
-     DeviceState *pch_pic, *pch_msi, *cpudev;
+@@ -681,6 +681,37 @@ static void virt_fdt_setup(LoongArchVirtMachineState *lvms)
+             rom_ptr_for_as(&address_space_memory, FDT_BASE, lvms->fdt_size));
+ }
+ 
++static void virt_cpu_irq_setup(LoongArchVirtMachineState *lvms)
++{
++    int num, pin;
++    MachineState *ms = MACHINE(lvms);
++    MachineClass *mc = MACHINE_GET_CLASS(ms);
++    const CPUArchIdList *possible_cpus;
++    CPUState *cs;
++
++    /* cpu nodes */
++    possible_cpus = mc->possible_cpu_arch_ids(ms);
++    for (num = 0; num < possible_cpus->len; num++) {
++        cs = possible_cpus->cpus[num].cpu;
++        if (cs == NULL) {
++            continue;
++        }
++
++        /* connect ipi irq to cpu irq */
++        qdev_connect_gpio_out(lvms->ipi, num,
++                              qdev_get_gpio_in(DEVICE(cs), IRQ_IPI));
++
++        /*
++         * connect ext irq to the cpu irq
++         * cpu_pin[9:2] <= intc_pin[7:0]
++         */
++        for (pin = 0; pin < LS3A_INTC_IP; pin++) {
++            qdev_connect_gpio_out(lvms->extioi, (num * 8 + pin),
++                                  qdev_get_gpio_in(DEVICE(cs), pin + 2));
++        }
++    }
++}
++
+ static void virt_done(Notifier *notifier, void *data)
+ {
+     LoongArchVirtMachineState *lvms = container_of(notifier,
+@@ -688,6 +719,7 @@ static void virt_done(Notifier *notifier, void *data)
+     virt_build_smbios(lvms);
+     loongarch_acpi_setup(lvms);
+     virt_fdt_setup(lvms);
++    virt_cpu_irq_setup(lvms);
+ }
+ 
+ static void virt_powerdown_req(Notifier *notifier, void *opaque)
+@@ -844,12 +876,10 @@ static void virt_devices_init(DeviceState *pch_pic,
+ 
+ static void virt_irq_init(LoongArchVirtMachineState *lvms)
+ {
+-    MachineState *ms = MACHINE(lvms);
+-    DeviceState *pch_pic, *pch_msi, *cpudev;
++    DeviceState *pch_pic, *pch_msi;
      DeviceState *ipi, *extioi;
      SysBusDevice *d;
--    LoongArchCPU *lacpu;
--    CPULoongArchState *env;
-     CPUState *cpu_state;
-     int cpu, pin, i, start, num;
+-    CPUState *cpu_state;
+-    int cpu, pin, i, start, num;
++    int i, start, num;
  
-@@ -910,12 +908,9 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
-     for (cpu = 0; cpu < ms->smp.cpus; cpu++) {
-         cpu_state = qemu_get_cpu(cpu);
-         cpudev = DEVICE(cpu_state);
--        lacpu = LOONGARCH_CPU(cpu_state);
--        env = &(lacpu->env);
+     /*
+      * Extended IRQ model.
+@@ -897,6 +927,7 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
  
-         /* connect ipi irq to cpu irq */
-         qdev_connect_gpio_out(ipi, cpu, qdev_get_gpio_in(cpudev, IRQ_IPI));
--        env->ipistate = ipi;
+     /* Create IPI device */
+     ipi = qdev_new(TYPE_LOONGARCH_IPI);
++    lvms->ipi = ipi;
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(ipi), &error_fatal);
+ 
+     /* IPI iocsr memory region */
+@@ -905,16 +936,9 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
+     memory_region_add_subregion(&lvms->system_iocsr, MAIL_SEND_ADDR,
+                    sysbus_mmio_get_region(SYS_BUS_DEVICE(ipi), 1));
+ 
+-    for (cpu = 0; cpu < ms->smp.cpus; cpu++) {
+-        cpu_state = qemu_get_cpu(cpu);
+-        cpudev = DEVICE(cpu_state);
+-
+-        /* connect ipi irq to cpu irq */
+-        qdev_connect_gpio_out(ipi, cpu, qdev_get_gpio_in(cpudev, IRQ_IPI));
+-    }
+-
+     /* Create EXTIOI device */
+     extioi = qdev_new(TYPE_LOONGARCH_EXTIOI);
++    lvms->extioi = extioi;
+     if (virt_is_veiointc_enabled(lvms)) {
+         qdev_prop_set_bit(extioi, "has-virtualization-extension", true);
+     }
+@@ -926,18 +950,6 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
+                     sysbus_mmio_get_region(SYS_BUS_DEVICE(extioi), 1));
      }
  
-     /* Create EXTIOI device */
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 8eee49a984..f2a23b7a43 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -385,8 +385,6 @@ typedef struct CPUArchState {
-     bool load_elf;
-     uint64_t elf_address;
-     uint32_t mp_state;
--    /* Store ipistate to access from this struct */
--    DeviceState *ipistate;
+-    /*
+-     * connect ext irq to the cpu irq
+-     * cpu_pin[9:2] <= intc_pin[7:0]
+-     */
+-    for (cpu = 0; cpu < ms->smp.cpus; cpu++) {
+-        cpudev = DEVICE(qemu_get_cpu(cpu));
+-        for (pin = 0; pin < LS3A_INTC_IP; pin++) {
+-            qdev_connect_gpio_out(extioi, (cpu * 8 + pin),
+-                                  qdev_get_gpio_in(cpudev, pin + 2));
+-        }
+-    }
+-
+     pch_pic = qdev_new(TYPE_LOONGARCH_PIC);
+     num = VIRT_PCH_PIC_IRQ_NUM;
+     qdev_prop_set_uint32(pch_pic, "pch_pic_irq_num", num);
+diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
+index 9ba47793ef..260e6bd7cf 100644
+--- a/include/hw/loongarch/virt.h
++++ b/include/hw/loongarch/virt.h
+@@ -60,6 +60,8 @@ struct LoongArchVirtMachineState {
+     MemoryRegion iocsr_mem;
+     AddressSpace as_iocsr;
+     struct loongarch_boot_info bootinfo;
++    DeviceState *ipi;
++    DeviceState *extioi;
+ };
  
-     struct loongarch_boot_info *boot_info;
- #endif
+ #define TYPE_LOONGARCH_VIRT_MACHINE  MACHINE_TYPE_NAME("virt")
 -- 
 2.39.3
 
