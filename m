@@ -2,67 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8683EA17F19
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 14:46:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 454F9A17FBB
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Jan 2025 15:27:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taEZz-0000TZ-1l; Tue, 21 Jan 2025 08:46:07 -0500
+	id 1taFAT-0000Je-Vn; Tue, 21 Jan 2025 09:23:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1taEZe-0000RK-1d; Tue, 21 Jan 2025 08:45:46 -0500
-Received: from mgamail.intel.com ([192.198.163.14])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1taEZb-0005tB-S1; Tue, 21 Jan 2025 08:45:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737467144; x=1769003144;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=OsIWBqlrGVm71pj8dI8rY/GCT36H3RyHgbAeCp1q76o=;
- b=hD8g8EVbb0ZuGThAm0qkqF6NERKQNEtqcyiZ3x7Hf1ouSn8YSgZTnm9F
- Xgd/JZbgcCeTKXvO+vmejWi2zbhBxZgoPnvvHH6o3C4ZEbU7U08Vpt1NY
- Tw0VSiRKOwGprh15IdMIhG2igk55owwpXt8ZrbUMIzgakgcK5e1LG0dcc
- wlp3SpwJcyb9N9jNugQA75oSOpsTheCmrR15pnPzKytRx6DeIQgyyf+ER
- QOHEubkhv0y8QMUFLiU8e0bTCFiun/4IcZwXqwXOXbp4OfOPiNWXO4+1w
- twT587Sx677mKD13gXPd2Yq51Eenz3sGaYDagyZyi2z5aBFs8b+XDVjIz Q==;
-X-CSE-ConnectionGUID: LMexH0opSHO0rJT8v/tC0A==
-X-CSE-MsgGUID: TuBaYDdDQweKfMcxwkzagg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="38123112"
-X-IronPort-AV: E=Sophos;i="6.13,222,1732608000"; d="scan'208";a="38123112"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2025 05:45:42 -0800
-X-CSE-ConnectionGUID: i0quFSvGQGq7jtnfXHqbDw==
-X-CSE-MsgGUID: ComJf3WDQkaqxVh6jfuklg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,222,1732608000"; d="scan'208";a="106822617"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa006.jf.intel.com with ESMTP; 21 Jan 2025 05:45:40 -0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=83?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH RESEND 2/2] rust/pl011: Avoid bindings::*
-Date: Tue, 21 Jan 2025 22:04:57 +0800
-Message-Id: <20250121140457.84631-3-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250121140457.84631-1-zhao1.liu@intel.com>
-References: <20250121140457.84631-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taFAS-0000IG-3I
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 09:23:48 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taFAP-0002wm-Vj
+ for qemu-devel@nongnu.org; Tue, 21 Jan 2025 09:23:47 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-436345cc17bso41072825e9.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Jan 2025 06:23:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1737469424; x=1738074224; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=huBnZLMMoWYJ6yRI7yv6u3SXGmIuRg6gkaMshUEQcb4=;
+ b=wf3kJWY2nzHFXuAKFGXVp+bjIkUfBgIzC6JWfyyzE8V5a8mEKk1/q+2HmbrzIUdtRL
+ ahH03jR5fjKyld7zFTylCNDDfPrTnc6/bF6VOFyBhz4kUK5Dv1BtIA4viEadhvXdbYF9
+ ULHthNGDW1/1MEx+CN4bppx2wmw7p26FRdxwpoD5fK22HL9VtO02PzoX2P9DKioWqt1C
+ dZFrY7uOc7DlzfeguAQ3uUrvCVspN3tkvAzMNJVRIl8KzFXLnhpcA7629gnEYjmKg55z
+ lMC47lhA5Gw2BhskEw/PwhjyJ2yPjbSlszHf/vn9lWYdfiur/DbTWzzLfKpZM/KsBkAj
+ 16aA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737469424; x=1738074224;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=huBnZLMMoWYJ6yRI7yv6u3SXGmIuRg6gkaMshUEQcb4=;
+ b=GbWI0BL3AtUqgHxpyfztSNi1qw8PCCBe9ZSRD/wDRCpek+KSTQGhWgDCj/8Tep3JpK
+ EuYOB5Ykv3dmg93Hj4JRvIwjbsT7NpBKc6sLppPf407M7jH/AEOZPb/xEVG2tWrbB90p
+ 1GIqom1W+RptzQrYKmK8nbmgNBz6NFap62DvZaZVMoKOoG5t4AV6dxJ1blHbOKM+fMg/
+ qm2MKm0xbqiZcnyh3204EOxaWGBQFSJHXEL1GewnF2NbHay4i1RC8BcMR4rJLgxw7ZFN
+ Jyd/JJ0ppxDLJJd9QHjGMy8BDXV+B2sTSro8u6HtcxYD5bbjDufQ+9kebrPIvdZokuH7
+ 1JGA==
+X-Gm-Message-State: AOJu0YxWdkNe2Oicl+Q1p9w9n1/lquuoKuHcIdPAYcLxyzZ2cJ61U7eI
+ A99D9nvcI5qKltdm04Od4upSlGr9zEMtfn08hbdboixUWLtrJbEqNrhuDNIHl36fZzk43CDz0Ov
+ wBDk=
+X-Gm-Gg: ASbGncvH0DbHkDdiQqPgXAHX5ZgCBToItReR7B+xKhxiE2zSTsvPPWX7fxcuLJgpFQA
+ aW9y8RrkMzvkh+RTlHyXXCqyZ4uouda8BsaL04oRz/JXvGH+2FJt4izHCW1RA8NKuflk09ec0+e
+ g8H6rh7vP36Mq6EYUiazRGtVZJLBRXR+8ICp8reOA6AKlBgp/7km5lGEKqo3OnKVd+9aJ5f6zHf
+ LsT5cvoQnWgVVrFN1TFMiKCNo6KLUbWwSQ03NOi9f/YHRZkbKieYB7aVdRo4O97K0Qnc7SLve4j
+ 3rBvqIwAgQkP39WkR7IVTApSTTfp5IhnfTCql7oOygWT
+X-Google-Smtp-Source: AGHT+IENTRqkRL3QRIymaYWOvoK2ecbtBLz5P2eTuEdDsBRulofhxM0CiB5iXk4AtpEAwZvnBOSL5g==
+X-Received: by 2002:a05:600c:1da8:b0:434:a711:ace4 with SMTP id
+ 5b1f17b1804b1-4389eca3ca1mr159671455e9.17.1737469423851; 
+ Tue, 21 Jan 2025 06:23:43 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43890469ba8sm178907415e9.37.2025.01.21.06.23.42
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 21 Jan 2025 06:23:43 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 00/28] cpus: Restrict CPU has_work() handlers to system
+ emulation
+Date: Tue, 21 Jan 2025 15:23:13 +0100
+Message-ID: <20250121142341.17001-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -73
-X-Spam_score: -7.4
-X-Spam_bar: -------
-X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,52 +97,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-List all the necessary bindings to better identify gaps in rust/qapi.
-And include the bindings wrapped by rust/qapi instead mapping the raw
-bindings directly.
+On user emulation, threads always have work to do, and
+CPUClass::has_work() is never called. Restrict it to system
+emulation, allowing to simplify a bit and reduce code built
+on user emulation.
 
-Inspired-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- rust/hw/char/pl011/src/device.rs | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+Based-on: <20250121114056.53949-1-philmd@linaro.org>
+ "cpus: Prefer cached CpuClass over CPU_GET_CLASS() macro"
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index c64af2684b7d..c95ab49fd62e 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -9,12 +9,19 @@
- };
- 
- use qemu_api::{
--    bindings::{self, *},
-+    bindings::{
-+        error_fatal, hwaddr, memory_region_init_io, qdev_init_clock_in, qdev_new,
-+        qdev_prop_set_chr, qemu_chr_fe_ioctl, qemu_chr_fe_set_handlers, qemu_chr_fe_write_all,
-+        qemu_irq, sysbus_connect_irq, sysbus_mmio_map, sysbus_realize_and_unref, CharBackend,
-+        Chardev, Clock, ClockEvent, MemoryRegion, QEMUChrEvent, CHR_IOCTL_SERIAL_SET_BREAK,
-+    },
-     c_str,
-     irq::InterruptSource,
-     prelude::*,
--    qdev::DeviceImpl,
-+    qdev::{DeviceImpl, DeviceState, Property},
-     qom::{ClassInitImpl, ObjectImpl, ParentField},
-+    sysbus::{SysBusDevice, SysBusDeviceClass},
-+    vmstate::VMStateDescription,
- };
- 
- use crate::{
-@@ -493,7 +500,7 @@ pub fn can_receive(&self) -> bool {
-     }
- 
-     pub fn event(&mut self, event: QEMUChrEvent) {
--        if event == bindings::QEMUChrEvent::CHR_EVENT_BREAK && !self.loopback_enabled() {
-+        if event == QEMUChrEvent::CHR_EVENT_BREAK && !self.loopback_enabled() {
-             self.put_fifo(registers::Data::BREAK.into());
-         }
-     }
+Philippe Mathieu-Daudé (28):
+  target/hexagon: Ensure not being build on system emulation
+  target/rx: Ensure not being build on user emulation
+  target/tricore: Ensure not being build on user emulation
+  cpus: Restrict cpu_get_memory_mapping() to system emulation
+  cpus: Restrict cpu_has_work() to system emulation
+  cpus: Un-inline cpu_has_work()
+  cpus: Introduce SysemuCPUOps::has_work() handler
+  target/alpha: Move has_work() from CPUClass to SysemuCPUOps
+  target/arm: Move has_work() from CPUClass to SysemuCPUOps
+  target/avr: Move has_work() from CPUClass to SysemuCPUOps
+  target/hexagon: Remove CPUClass:has_work() handler
+  target/hppa: Move has_work() from CPUClass to SysemuCPUOps
+  target/i386: Move has_work() from CPUClass to SysemuCPUOps
+  target/loongarch: Move has_work() from CPUClass to SysemuCPUOps
+  target/m68k: Move has_work() from CPUClass to SysemuCPUOps
+  target/microblaze: Move has_work() from CPUClass to SysemuCPUOps
+  target/mips: Move has_work() from CPUClass to SysemuCPUOps
+  target/openrisc: Move has_work() from CPUClass to SysemuCPUOps
+  target/ppc: Move has_work() from CPUClass to SysemuCPUOps
+  target/riscv: Move has_work() from CPUClass to SysemuCPUOps
+  target/rx: Move has_work() from CPUClass to SysemuCPUOps
+  target/s390x: Restrict I/O handler installers to system emulation
+  target/s390x: Move has_work() from CPUClass to SysemuCPUOps
+  target/sh4: Move has_work() from CPUClass to SysemuCPUOps
+  target/sparc: Move has_work() from CPUClass to SysemuCPUOps
+  target/tricore: Move has_work() from CPUClass to SysemuCPUOps
+  target/xtensa: Move has_work() from CPUClass to SysemuCPUOps
+  cpus: Remove CPUClass::has_work() handler
+
+ include/hw/core/cpu.h            | 30 ++++++++++++------------------
+ include/hw/core/sysemu-cpu-ops.h |  4 ++++
+ target/hexagon/cpu.h             |  4 ++++
+ target/i386/cpu.h                |  4 ++--
+ target/mips/internal.h           |  4 ++--
+ target/riscv/cpu.h               |  9 +++++----
+ target/riscv/internals.h         |  3 ---
+ target/rx/cpu.h                  |  6 ++++--
+ target/s390x/s390x-internal.h    |  5 +++++
+ target/tricore/cpu.h             |  4 ++++
+ hw/core/cpu-common.c             |  6 ------
+ hw/core/cpu-system.c             |  6 ++++++
+ target/alpha/cpu.c               |  4 +++-
+ target/arm/cpu.c                 |  4 +++-
+ target/avr/cpu.c                 |  2 +-
+ target/hexagon/cpu.c             |  6 ------
+ target/hppa/cpu.c                |  4 +++-
+ target/i386/cpu.c                |  8 +++-----
+ target/loongarch/cpu.c           |  8 +++-----
+ target/m68k/cpu.c                |  4 +++-
+ target/microblaze/cpu.c          |  4 +++-
+ target/mips/cpu.c                |  4 +++-
+ target/openrisc/cpu.c            |  4 +++-
+ target/ppc/cpu_init.c            |  4 +++-
+ target/riscv/cpu.c               |  8 +++-----
+ target/rx/cpu.c                  |  8 +-------
+ target/rx/helper.c               |  4 ----
+ target/s390x/cpu-system.c        | 18 ++++++++++++++++++
+ target/s390x/cpu.c               | 18 ------------------
+ target/s390x/interrupt.c         |  8 ++------
+ target/sh4/cpu.c                 |  4 ++--
+ target/sparc/cpu.c               |  4 +++-
+ target/tricore/cpu.c             |  2 +-
+ target/xtensa/cpu.c              | 12 +++++-------
+ 34 files changed, 114 insertions(+), 113 deletions(-)
+
 -- 
-2.34.1
+2.47.1
 
 
