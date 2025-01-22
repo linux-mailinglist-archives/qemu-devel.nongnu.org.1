@@ -2,89 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A24A196DA
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 17:50:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABB94A19687
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 17:32:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tadvF-0002Vg-AT; Wed, 22 Jan 2025 11:49:46 -0500
+	id 1tadeD-0005di-94; Wed, 22 Jan 2025 11:32:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tadvB-0002V0-Pe
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 11:49:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1taddz-0005ZM-0t; Wed, 22 Jan 2025 11:31:59 -0500
+Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tadv9-0005Cw-Q9
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 11:49:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737564578;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ewwt2ACOxa4uDhbRVGHGO38ZWqXmpYtep152cfUhE7o=;
- b=d6yFakRemnn3LjcjntEnwYEumxA3icGNFXy2evG1mmTiUhlWloCDqAnWHpwi3kal48oU5+
- HSe542zdTcTlzfgFaeU1Z3A4iuZTC+7vVw9qIuB91kO+fkOAnfHcLJ6GOW50qjazXMDIRr
- Mduk3GtgUme8+nzAzeKvEbwxx/iRk34=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-552-_1cG-jjHMeCIxHP7HsYIxw-1; Wed, 22 Jan 2025 11:49:35 -0500
-X-MC-Unique: _1cG-jjHMeCIxHP7HsYIxw-1
-X-Mimecast-MFC-AGG-ID: _1cG-jjHMeCIxHP7HsYIxw
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-385dcae001fso3151424f8f.1
- for <qemu-devel@nongnu.org>; Wed, 22 Jan 2025 08:49:35 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737564574; x=1738169374;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ewwt2ACOxa4uDhbRVGHGO38ZWqXmpYtep152cfUhE7o=;
- b=knsstqd0QuhSGirV2GxzyKP+0zYtFVllQEMnBlQ9h/+xxVOjR3RErdPjH3cfWY5NW7
- 6YFUop9vQXnr8HZjH7JEdOhgFzUmt9QobfiLDoRGc21WkJRZNO6+dTbaoNJAbJvDcN4p
- 36wc++FyLQ/BHXuBm/e2TlnQR7btYeSo9wvOdNEP9IcDRqRCtCQDmRe+TkCHYi5odgN/
- lCSnj0hmv1IL7T5wzzjAQhFFKR7x+vRHCj+Gff3dPZ5pyBUXzk0hI3WozHQp0ciSDtUk
- XO06rS3qqqbhrRDErgUpHcanFvr/9bYoukaleRlkUZ3e08vzUgmgP2kvaKX93IiGf3Dm
- 5YfA==
-X-Gm-Message-State: AOJu0Yy/3uFXTkDHXwspFD5HgQKuKhgx6s0wRGbP3lc74NyJQ/mtA7Ef
- 7YgAq2kR5n2QH9d4YyzdSkk0xHa6FPz2L3HoBTfrBO7LFFTt2C9cbuzwYG8kXBKztXzU4Qi5ElA
- 8MnrTmglj7u0IcbyIAyzsnsHSsI1KC0PMPHxS6t8BJxEGXT1bgi6t7oGo7sZFvaBIuAoRD7cPGB
- OdiNlfGzY6jKrMBfV+VGYi21KId5k=
-X-Gm-Gg: ASbGncvHjjXxAZxkU+Zcbau/pNemijo7I1Mb64CthJUJK/6zDnoy1R/AI9wUS86J45C
- qlQbWVf9lCr7DsgS0MooKlpskPBR0dBpCG7MB3kOKvTNmZyIi6FGG
-X-Received: by 2002:a5d:6c68:0:b0:385:ef39:6cd5 with SMTP id
- ffacd0b85a97d-38bf5656ddfmr20447883f8f.1.1737564574700; 
- Wed, 22 Jan 2025 08:49:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFIlUdFElqPlZD3AMZVNXG5fTQ1sRYntTeK5AVMOO8Y1xb54ZQPiE0GPkMoE9XMhk5DK8ZUZE/2ZzFpUrUaz5c=
-X-Received: by 2002:a5d:6c68:0:b0:385:ef39:6cd5 with SMTP id
- ffacd0b85a97d-38bf5656ddfmr20447864f8f.1.1737564574415; Wed, 22 Jan 2025
- 08:49:34 -0800 (PST)
-MIME-Version: 1.0
-References: <20250117092657.1051233-1-pbonzini@redhat.com>
- <20250117092657.1051233-6-pbonzini@redhat.com>
- <Z5Eh4Yj2Mp+xQV5Z@intel.com>
-In-Reply-To: <Z5Eh4Yj2Mp+xQV5Z@intel.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 22 Jan 2025 17:49:23 +0100
-X-Gm-Features: AWEUYZlBceISABhncib1v-cMxvi0U0RBkasFmvdpWFE-I2wJRl98yh0eb_vTwMg
-Message-ID: <CABgObfYf4ZmFANOVja=DGVzhn9rKR6yT7tt_e6DqKTtOb5DiDQ@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1taddt-0006Zz-4n; Wed, 22 Jan 2025 11:31:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1737563509; x=1769099509;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=W0CEBDItbQycNDfZ7B7OcSu3dB5zqUDBtqxse3ndIY0=;
+ b=RME/J/SDft4wlCbbou3lMO5md6HEx8YiK+aLlPXU6jlYtS9zdwphnSxp
+ UfjffPnTMks6IuyvH2oV7zo6yRvcY5++UJ9Vd3PmsSeiNkfBTUDE29bz7
+ RbvEoTK2rt4DqILqxST4HlFUtnfG3NF1/kpuzi14iIWx2CoCaVl1EogfM
+ rFGbMINWRjz06CbMTuHh6KboXCzLxn0mFzJnTz8ZgV7TV9+On/i93YjdZ
+ ebB2p8m3DeGhqWlf9AAF+SJJeD9dyks5nVg3CP+QZXytxs8G4xO00HduB
+ iQ5yeyJ1DGfoz6yaqPnIDCIvHiFJFppo7bGfHo6yIy9LM/0Z/OZ5J5g+M A==;
+X-CSE-ConnectionGUID: uKznSBkCQv+v2aD1YU0iGg==
+X-CSE-MsgGUID: 8Kc+VPjKS4+Y5h8kbdn3VQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="48624788"
+X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="48624788"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 08:31:20 -0800
+X-CSE-ConnectionGUID: sPifOw+7RUiC8+5H83MOoQ==
+X-CSE-MsgGUID: ykdb5zhISSWtqndLz07VzA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="107631399"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa007.jf.intel.com with ESMTP; 22 Jan 2025 08:31:19 -0800
+Date: Thu, 23 Jan 2025 00:50:41 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
 Subject: Re: [PATCH 05/10] rust: pl011: pull interrupt updates out of
  read/write ops
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-rust@nongnu.org
-Content-Type: multipart/alternative; boundary="0000000000003b9fba062c4e471c"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+Message-ID: <Z5Eh4Yj2Mp+xQV5Z@intel.com>
+References: <20250117092657.1051233-1-pbonzini@redhat.com>
+ <20250117092657.1051233-6-pbonzini@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250117092657.1051233-6-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -73
+X-Spam_score: -7.4
+X-Spam_bar: -------
+X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.043,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,53 +80,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000003b9fba062c4e471c
-Content-Type: text/plain; charset="UTF-8"
+On Fri, Jan 17, 2025 at 10:26:52AM +0100, Paolo Bonzini wrote:
+> Date: Fri, 17 Jan 2025 10:26:52 +0100
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 05/10] rust: pl011: pull interrupt updates out of
+>  read/write ops
+> X-Mailer: git-send-email 2.47.1
+> 
+> qemu_irqs are not part of the vmstate, therefore they will remain in
+> PL011State.  Update them if needed after regs_read()/regs_write().
+> 
+> Apply #[must_use] to functions that return whether the interrupt state
+> could have changed, so that it's harder to forget the call to update().
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  rust/hw/char/pl011/src/device.rs | 68 ++++++++++++++++++--------------
+>  1 file changed, 38 insertions(+), 30 deletions(-)
+> 
 
-Il mer 22 gen 2025, 17:31 Zhao Liu <zhao1.liu@intel.com> ha scritto:
+[snip]
 
-> >          if event == bindings::QEMUChrEvent::CHR_EVENT_BREAK &&
-> !self.loopback_enabled() {
-> > -            self.put_fifo(registers::Data::BREAK.into());
-> > +            let update = self.put_fifo(registers::Data::BREAK.into());
->
-> We can omit this `update` variable.
->
+>  
+>      pub fn event(&mut self, event: QEMUChrEvent) {
+>          if event == bindings::QEMUChrEvent::CHR_EVENT_BREAK && !self.loopback_enabled() {
+> -            self.put_fifo(registers::Data::BREAK.into());
+> +            let update = self.put_fifo(registers::Data::BREAK.into());
 
-Indeed, but sometimes I left it because of long lines or to clarify the
-meaning of the "bool" (or both).
+We can omit this `update` variable.
 
-Paolo
+> +            if update {
+> +                self.update();
+> +            }
+>          }
+>      }
+
+Nice refactoring!
 
 Reviewed-by: Zhao Liu <zhao.liu@intel.com>
-
---0000000000003b9fba062c4e471c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">Il mer 22 gen 2025, 17:31 Zhao Liu &lt;<a href=3D"mail=
-to:zhao1.liu@intel.com" target=3D"_blank" rel=3D"noreferrer">zhao1.liu@inte=
-l.com</a>&gt; ha scritto:</div><blockquote class=3D"gmail_quote" style=3D"m=
-argin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left=
-:1ex">
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if event =3D=3D bindings::QEMUChrEve=
-nt::CHR_EVENT_BREAK &amp;&amp; !self.loopback_enabled() {<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self.put_fifo(registers::Da=
-ta::BREAK.into());<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 let update =3D self.put_fif=
-o(registers::Data::BREAK.into());<br>
-<br>
-We can omit this `update` variable.<br></blockquote></div></div><div dir=3D=
-"auto"><br></div><div dir=3D"auto">Indeed, but sometimes I left it because =
-of long lines or to clarify the meaning of the &quot;bool&quot; (or both).<=
-/div><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</div><div dir=3D"a=
-uto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote cla=
-ss=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid =
-rgb(204,204,204);padding-left:1ex">Reviewed-by: Zhao Liu &lt;<a href=3D"mai=
-lto:zhao.liu@intel.com" rel=3D"noreferrer noreferrer" target=3D"_blank">zha=
-o.liu@intel.com</a>&gt;</blockquote></div></div></div>
-
---0000000000003b9fba062c4e471c--
 
 
