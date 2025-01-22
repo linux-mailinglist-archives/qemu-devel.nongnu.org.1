@@ -2,64 +2,129 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 414CCA19357
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 15:08:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8865A193CE
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 15:22:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tabOB-000605-46; Wed, 22 Jan 2025 09:07:27 -0500
+	id 1tabav-0000Os-IE; Wed, 22 Jan 2025 09:20:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1tabO8-0005zp-G1
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 09:07:24 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1tabas-0000OJ-JM
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 09:20:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1tabO5-0007mb-HF
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 09:07:24 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YdQnq0Ytfz6J7fM;
- Wed, 22 Jan 2025 22:05:19 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id BEFCB140136;
- Wed, 22 Jan 2025 22:07:14 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 22 Jan
- 2025 15:07:14 +0100
-Date: Wed, 22 Jan 2025 14:07:12 +0000
-To: Jonathan Cameron via <qemu-devel@nongnu.org>
-CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Itaru Kitayama
- <itaru.kitayama@linux.dev>, "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
-Subject: Re: CXL emulation on aarch64
-Message-ID: <20250122140712.00000682@huawei.com>
-In-Reply-To: <20250117094311.00000e64@huawei.com>
-References: <0C019F50-9020-42ED-B051-998F03BFB709@linux.dev>
- <483e8037-3c72-4560-b4b8-2437d37ca8c4@fujitsu.com>
- <20250110123128.00004a5b@huawei.com>
- <09D52CDC-44E5-48C4-8D32-E4DD0964F9AF@linux.dev>
- <20250114102626.00000c53@huawei.com>
- <88E9D774-A760-45F7-A173-24A07BB55733@linux.dev>
- <20250116105833.000056da@huawei.com>
- <9DF43D0C-E03E-420E-AB4E-0EE571D06A38@linux.dev>
- <20250117094311.00000e64@huawei.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1tabaq-0001l3-En
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 09:20:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737555631;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Dut6hZbDd6BfAIsiyGgJ+kYCdZA4Ogbk5rArrmutuEA=;
+ b=YskXaTJWq4gAyteG64sA9zgujP9BbFEVqXaOLB+XGqXxxoFuMU9UhEhau/DnPC5z98SHZi
+ dZEwDlkztVFes7u69UvyBtZnmpq6C3JtUp1z/boAVd3GghUkDNY9FU14RrX9hTGvrSkTZI
+ 7hXtWzp5yuersPjz40n/cmNAGntlueY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-147-3_JogLlJPSm-y9BpJ-CFYw-1; Wed, 22 Jan 2025 09:20:29 -0500
+X-MC-Unique: 3_JogLlJPSm-y9BpJ-CFYw-1
+X-Mimecast-MFC-AGG-ID: 3_JogLlJPSm-y9BpJ-CFYw
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4361ac8b25fso37790265e9.2
+ for <qemu-devel@nongnu.org>; Wed, 22 Jan 2025 06:20:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737555628; x=1738160428;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Dut6hZbDd6BfAIsiyGgJ+kYCdZA4Ogbk5rArrmutuEA=;
+ b=ljEmIJLXhGPdreAQOfWVbOX3kLkpBa7yZkeaqcojdVN9iTZz0KO8gYKi3W2cn+j+Sj
+ qy6jmdNd1vAV0vwMo5TRX5eadR27VpjQnZMUphYokE4gSWxqBWEdJQwRtO846ihlJnY+
+ ER6YRpBrOAcgT/LidqxL2aBVPe+voExj9skZ0iEGO9XdpNtIA9ZZg5qDPaReutUExqdb
+ XCfsXmkiadumCMRAMOYtafvjRG4xYBPCkfMDQXcUIb6QWqDYIjBglkJDNs2Vgh6SIIZl
+ IawvKnLrmSm9YtsUpqgl1OHZMZowYjwxsl34OaWZxrlGZvh4NWgxcDuJ1/JHEgEKWX8L
+ lwJA==
+X-Gm-Message-State: AOJu0YyHnue9MOTqxqGKcn/UJ0qz73T2ZY8dFmse6CW3T9ujdY5xXRYZ
+ +eHb7ltbNcpYe33fmYrIa5QKlODkj9gs7bUqECrqjlvMCOVgpakvANcVhJZ/IqlBXqnQmdRyLgm
+ y4XQDVCk4cnzyQMp1dAAIajaTUHB4gAbKLA/fjUyMHvtaQT6+NU7IpYAfBvU8ZsA=
+X-Gm-Gg: ASbGncvG+41t/HsAb0eU85q4bmZu81dgKYrXiXDmeCnw1ntbjzeosfDPg6fFu2sHFo/
+ C9AK1VrbQgHNYefs8fRRhsq7UYyfNLJrQ+Jes4UfqlQ+YsKOi7WA1irdnWCz6yXqstsRet4lMVH
+ ZNPG+uq+fu2v1yJq/la4vS1VIsP7QxHaGfKUNTYPotde/m0tplvTwY6B8ulGiuffrfbmkmqY8vh
+ T4lztmUqgUCE3OtCNYqHyD8FHQSMZYvHN68DigIf8G9FOcojW5JurV2lKXa0bUpto7oB+f6Q8eT
+ cfQpPyVlcXHo8vnFBuiFnyXKP30T7E3huqGF26Dz8Q==
+X-Received: by 2002:a05:600c:4710:b0:434:a59c:43c6 with SMTP id
+ 5b1f17b1804b1-43891451388mr174742355e9.26.1737555627656; 
+ Wed, 22 Jan 2025 06:20:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG5NEdwGW3AASXDNblTqeS/rrJSs7oL8g6o9u0iasINje1Lj5tIEqz7MQ/xoV62NeqtH0NxQQ==
+X-Received: by 2002:a05:600c:4710:b0:434:a59c:43c6 with SMTP id
+ 5b1f17b1804b1-43891451388mr174742065e9.26.1737555627147; 
+ Wed, 22 Jan 2025 06:20:27 -0800 (PST)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-438b31af925sm26918075e9.23.2025.01.22.06.20.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 22 Jan 2025 06:20:26 -0800 (PST)
+Date: Wed, 22 Jan 2025 15:20:23 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini
+ <pbonzini@redhat.com>, Max Filippov <jcmvbkbc@gmail.com>, David Hildenbrand
+ <david@redhat.com>, Peter Xu <peterx@redhat.com>, Anton Johansson
+ <anjo@rev.ng>, Peter Maydell <peter.maydell@linaro.org>,
+ kvm@vger.kernel.org, Marek Vasut <marex@denx.de>, David Gibson
+ <david@gibson.dropbear.id.au>, Brian Cain <bcain@quicinc.com>, Yoshinori
+ Sato <ysato@users.sourceforge.jp>, "Edgar E . Iglesias"
+ <edgar.iglesias@gmail.com>, Claudio Fontana <cfontana@suse.de>, Daniel
+ Henrique Barboza <dbarboza@ventanamicro.com>, Artyom Tarasenko
+ <atar4qemu@gmail.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ qemu-ppc@nongnu.org, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Aurelien
+ Jarno <aurelien@aurel32.net>, Ilya Leoshkevich <iii@linux.ibm.com>, Daniel
+ Henrique Barboza <danielhb413@gmail.com>, Bastian Koppelmann
+ <kbastian@mail.uni-paderborn.de>, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater
+ <clg@kaod.org>, Alistair Francis <alistair.francis@wdc.com>, Alessandro Di
+ Federico <ale@rev.ng>, Song Gao <gaosong@loongson.cn>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Chris Wulff <crwulff@gmail.com>, "Michael S.
+ Tsirkin" <mst@redhat.com>, Alistair Francis <alistair@alistair23.me>,
+ Fabiano Rosas <farosas@suse.de>, qemu-s390x@nongnu.org, Yanan Wang
+ <wangyanan55@huawei.com>, Luc Michel <luc@lmichel.fr>, Weiwei Li
+ <liweiwei@iscas.ac.cn>, Bin Meng <bin.meng@windriver.com>, Stafford Horne
+ <shorne@gmail.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>, "Daniel P .
+ Berrange" <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-arm@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, Richard
+ Henderson <richard.henderson@linaro.org>, Aleksandar Rikalo
+ <aleksandar.rikalo@syrmia.com>, Bernhard Beschow <shentey@gmail.com>, Mark
+ Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-riscv@nongnu.org, Alex
+ =?UTF-8?B?QmVubsOpZQ==?= <alex.bennee@linaro.org>, Nicholas Piggin
+ <npiggin@gmail.com>, Greg Kurz <groug@kaod.org>, Michael Rolnik
+ <mrolnik@gmail.com>, Eduardo Habkost <eduardo@habkost.net>, Markus
+ Armbruster <armbru@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>
+Subject: Re: [PATCH 06/22] exec/cpu: Call cpu_remove_sync() once in
+ cpu_common_unrealize()
+Message-ID: <20250122152023.5ee90f50@imammedo.users.ipa.redhat.com>
+In-Reply-To: <5f25576c-598f-4fd7-8238-61edcff2c411@linaro.org>
+References: <20230918160257.30127-1-philmd@linaro.org>
+ <20230918160257.30127-7-philmd@linaro.org>
+ <20231128174215.32d2a350@imammedo.users.ipa.redhat.com>
+ <5f25576c-598f-4fd7-8238-61edcff2c411@linaro.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
- frapeml500008.china.huawei.com (7.182.85.71)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.043, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,221 +137,142 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 17 Jan 2025 09:43:11 +0000
-Jonathan Cameron via <qemu-devel@nongnu.org> wrote:
+On Thu, 16 Jan 2025 19:05:46 +0100
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
 
-> On Fri, 17 Jan 2025 10:13:41 +0900
-> Itaru Kitayama <itaru.kitayama@linux.dev> wrote:
->=20
-> > > On Jan 16, 2025, at 19:58, Jonathan Cameron <Jonathan.Cameron@huawei.=
-com> wrote:
-> > >=20
-> > > On Thu, 16 Jan 2025 15:04:53 +0900
-> > > Itaru Kitayama <itaru.kitayama@linux.dev> wrote:
-> > >    =20
-> > >> Hi Jonathan,
-> > >>    =20
-> > >>> On Jan 14, 2025, at 19:26, Jonathan Cameron <Jonathan.Cameron@huawe=
-i.com> wrote:
-> > >>>=20
-> > >>> On Tue, 14 Jan 2025 12:03:03 +0900
-> > >>> Itaru Kitayama <itaru.kitayama@linux.dev> wrote:
-> > >>>    =20
-> > >>>> Hi Jonathan,=20
-> > >>>>    =20
-> > >>>>> On Jan 10, 2025, at 21:31, Jonathan Cameron <Jonathan.Cameron@hua=
-wei.com> wrote:
-> > >>>>>=20
-> > >>>>> On Fri, 10 Jan 2025 09:20:54 +0000
-> > >>>>> "Zhijian Li (Fujitsu)" via <qemu-devel@nongnu.org> wrote:
-> > >>>>>    =20
-> > >>>>>> On 10/01/2025 13:29, Itaru Kitayama wrote:       =20
-> > >>>>>>> Hi,
-> > >>>>>>> Is anybody working on the CXL emulation on aarch64?         =20
-> > >>>>>>=20
-> > >>>>>> I'm not currently working on the CXL emulation on aarch64.
-> > >>>>>>=20
-> > >>>>>> However, IIRC the CXL maintainer's tree should work.
-> > >>>>>> https://gitlab.com/jic23/qemu/       =20
-> > >>>>>=20
-> > >>>>> Pick up latest branch from there. I'm prepping a rebased version
-> > >>>>> with some new stuff but might take a few more days.       =20
-> > >>>>=20
-> > >>>> Thanks for sharing your work with us.  Your master and cxl-2024-11=
--27 branches give:
-> > >>>>=20
-> > >>>> $ qemu-system-aarch64: -accel tcg,cxl=3Don: Property 'tcg-accel.cx=
-l' not found     =20
-> > >>>=20
-> > >>> cxl is a machine property not a accel one. So needs to be after virt
-> > >>> There are tests in the tree for bios tables. Copy the command line =
-from those.
-> > >>>    =20
-> > >>>>=20
-> > >>>> My commands are below:
-> > >>>> $HOME/projects/qemu/build/qemu-system-aarch64 \
-> > >>>>       -M virt,virtualization=3Don,gic-version=3D3 \
-> > >>>>       -M acpi=3Doff -cpu max,sme=3Doff -m 8G -smp 4 \
-> > >>>>       -accel tcg,cxl=3Don \
-> > >>>>       -nographic \
-> > >>>>       -bios $HOME/cca-v4/out/bin/flash.bin \
-> > >>>>       -kernel Image-cca \
-> > >>>>       -drive format=3Draw,if=3Dnone,file=3D$HOME/cca-v4/out-or/ima=
-ges/rootfs.ext2,id=3Dhd0 \
-> > >>>>       -device virtio-blk-pci,drive=3Dhd0 \
-> > >>>>       -append root=3D/dev/vda \
-> > >>>>       -nodefaults \
-> > >>>>       --serial tcp:localhost:54320 \
-> > >>>>        -serial tcp:localhost:54321 \
-> > >>>>        -append "root=3D/dev/vda earlycon console=3Dhvc0" \
-> > >>>>        -device virtio-net-pci,netdev=3Dnet0 \
-> > >>>>        -netdev user,id=3Dnet0 \
-> > >>>>        -device virtio-9p-device,fsdev=3Dshr0,mount_tag=3Dshr0 \
-> > >>>>        -fsdev local,security_model=3Dnone,path=3D../../,id=3Dshr0
-> > >>>>=20
-> > >>>> Yes, I=E2=80=99m using Linaro=E2=80=99s CCA capable OP-TEE builds =
-above.     =20
-> > >>>=20
-> > >>> I'm a little curious why optee is relevant for this but shouldn't m=
-atter as long
-> > >>> as an appropriate EDK2 is loaded.
-> > >>>    =20
-> > >>=20
-> > >> I picked up your tree=E2=80=99s =E2=80=9Cmaster=E2=80=9D and =E2=80=
-=9Ccxl-next=E2=80=9D as of today, and only the latter at least booted.
-> > >> The former gives:
-> > >>=20
-> > >> qemu-system-aarch64: Property 'virt-9.2-machine.cxl' not found
-> > >>=20
-> > >> Should I stick with the cxl-next? My concern is that the base QEMU v=
-ersion is a bit old
-> > >> 7.0.50.   =20
-> > >=20
-> > > Always use the latest dated branch on that tree.  I release whenever =
-there
-> > > is something new to carry or a major rebase needed.
-> > >=20
-> > > cxl-<date> is the right branch to use. Hope that helps.   =20
-> >=20
-> > When do you think you want to get them (aarch64 specific?) merged mainl=
-ine. Any reason you want to carry the patches by yourself? =20
->=20
-> Nothing much has changed since I presented on this at Linaro connect in 2=
-023.
-> https://resources.linaro.org/en/resource/hM986DSHfoTrZ98UjpvLg1
->=20
-> The issue is device tree bindings for PCI Expander bridgess and the fact =
-that
-> those need to be generated without the full enumeration that EDK2 is doing
-> prior to ACPI final table builds. In order to move forward with that it
-> needs a bunch of work to prove that we absolutely cannot get patches
-> upstream to support kernel base enumeration and breaking up of the
-> various resources (like EDK2 does).
-
-I was talking to Peter Maydell earlier and given developments in the last c=
-ouple
-of years that have by necessity been ACPI only in arm virt he is less
-opposed to ACPI only features being added where device tree is challenging.
-
-So we may be able to move forwards without device tree support.
-
-The PXB enumeration question is also relevant for managing multiple
-vIOMMUs to represent multiple physical IOMMUs with the correct isolation
-and do it efficiently which is probably a more pressing usecase than CXL em=
-ulation.
-The discussion was mainly about that usecase, but maybe it also unblocks
-upstreaming this support.
-
-Thanks,
-
-Jonathan
-
->=20
-> Given PXB enumeration in kernel has some issues on ARM anyway (that you c=
-an paper
-> over with _DSM 5 - it self requiring an extra patch that isn't upstreamab=
-le because
-> of IO port issues) there is quite a bit of work needed, mostly not in QEM=
-U.
-> Or convince Peter and others that not all virt support needs DT bindings
-> (note that PXB for PCIE has been supported for years without an DT suppor=
-t,
-> just no one noticed!)
->=20
-> After that we'd need to figure out CXL DT bindings in general and add ker=
-nel
-> code support - despite there being no known DT based CXL systems out ther=
-e, so
-> that is going to be hard to do.  Various CXL kernel maintainers have expr=
-essed
-> they aren't against such support, but it's hardly going to be review prio=
-rity
-> (other than for me if someone else does the work!)
->=20
-> For me this isn't particularly high priority. The ARM bit is fairly easy =
-to rebase.
-> I would like to see it solved, but it is behind various other items on my
-> backlog.
->=20
-> There are SBSA machine patches on list, but it's not a useful platform for
-> CXL kernel code development because of the limited supported configuratio=
-ns
-> (in keeping with the more or less fixed model that SBSA-ref uses).
->=20
-> Jonathan
->=20
->=20
->=20
-> >=20
-> > Itaru.
+> On 28/11/23 17:42, Igor Mammedov wrote:
+> > On Mon, 18 Sep 2023 18:02:39 +0200
+> > Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
 > >  =20
-> > >=20
-> > > Jonathan
-> > >    =20
-> > >>=20
-> > >> Thanks,
-> > >> Itaru.
-> > >>    =20
-> > >>> Jonathan
-> > >>>    =20
-> > >>>>=20
-> > >>>> Let me know which branch you were suggesting.
-> > >>>>=20
-> > >>>> Thanks,
-> > >>>> Itaru.=20
-> > >>>>    =20
-> > >>>>>=20
-> > >>>>> Note my main development work is on arm64 so that tends to work
-> > >>>>> more reliably than x86 which I only lightly test for stuff that
-> > >>>>> isn't ready for upstream yet.
-> > >>>>>=20
-> > >>>>> Give me a shout if you run into any problems.
-> > >>>>>=20
-> > >>>>> The main blocker on upstreaming this is resolving the missing dev=
-ice tree
-> > >>>>> support for PCI expander bridges.  I've not made any progress on =
-this since
-> > >>>>> talk at Linaro connect in 2023.
-> > >>>>>=20
-> > >>>>> Jonathan
-> > >>>>>=20
-> > >>>>>    =20
-> > >>>>>>=20
-> > >>>>>>=20
-> > >>>>>> Thanks
-> > >>>>>> Zhijian
-> > >>>>>>    =20
-> > >>>>>>> If there=E2=80=99s a WIP branch, a pointer would be appreciated.
-> > >>>>>>>=20
-> > >>>>>>> Itaru         =20
+> >> While create_vcpu_thread() creates a vCPU thread, its counterpart
+> >> is cpu_remove_sync(), which join and destroy the thread.
+> >>
+> >> create_vcpu_thread() is called in qemu_init_vcpu(), itself called
+> >> in cpu_common_realizefn(). Since we don't have qemu_deinit_vcpu()
+> >> helper (we probably don't need any), simply destroy the thread in
+> >> cpu_common_unrealizefn().
+> >>
+> >> Note: only the PPC and X86 targets were calling cpu_remove_sync(),
+> >> meaning all other targets were leaking the thread when the vCPU
+> >> was unrealized (mostly when vCPU are hot-unplugged).
+> >>
+> >> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> >> ---
+> >>   hw/core/cpu-common.c  | 3 +++
+> >>   target/i386/cpu.c     | 1 -
+> >>   target/ppc/cpu_init.c | 2 --
+> >>   3 files changed, 3 insertions(+), 3 deletions(-)
+> >>
+> >> diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+> >> index a3b8de7054..e5841c59df 100644
+> >> --- a/hw/core/cpu-common.c
+> >> +++ b/hw/core/cpu-common.c
+> >> @@ -221,6 +221,9 @@ static void cpu_common_unrealizefn(DeviceState *de=
+v)
+> >>  =20
+> >>       /* NOTE: latest generic point before the cpu is fully unrealized=
+ */
+> >>       cpu_exec_unrealizefn(cpu);
+> >> +
+> >> +    /* Destroy vCPU thread */
+> >> +    cpu_remove_sync(cpu);
+> >>   }
+> >>  =20
+> >>   static void cpu_common_initfn(Object *obj)
+> >> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> >> index cb41d30aab..d79797d963 100644
+> >> --- a/target/i386/cpu.c
+> >> +++ b/target/i386/cpu.c
+> >> @@ -7470,7 +7470,6 @@ static void x86_cpu_unrealizefn(DeviceState *dev)
+> >>       X86CPUClass *xcc =3D X86_CPU_GET_CLASS(dev);
+> >>  =20
+> >>   #ifndef CONFIG_USER_ONLY
+> >> -    cpu_remove_sync(CPU(dev));
+> >>       qemu_unregister_reset(x86_cpu_machine_reset_cb, dev);
+> >>   #endif =20
 > >=20
-> >  =20
+> > missing  followup context:
+> >      ...
+> >      xcc->parent_unrealize(dev);
+> >=20
+> > Before the patch, vcpu thread is stopped and onnly then
+> > clean up happens.
+> >=20
+> > After the patch we have cleanup while vcpu thread is still running.
+> >=20
+> > Even if it doesn't explode, such ordering still seems to be wrong. =20
 >=20
+> OK.
+
+looking at all users, some do stop vcpu thread before tearing down vcpu obj=
+ect
+and interrupt controller, while some do it other way around or mix of both.
+
+It's probably safe to stop vcpu thread wrt intc cleanup.
+Can you check what would happen if there were a pending interrupt,
+but then flowing would happen:
+ 1. destroying intc
+ 2. can vcpu thread just kicked out from KVM_RUN,
+    trip over missing/invalid intc state while thread runs towards its exit=
+ point?
+
+If above can't crash then,
+I'd prefer to stop vcpu at least before vcpu cleanup is run.
+i.e. put cpu_remove_sync() as the very 1st call inside of cpu_common_unreal=
+izefn()
+
+> >> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+> >> index e2c06c1f32..24d4e8fa7e 100644
+> >> --- a/target/ppc/cpu_init.c
+> >> +++ b/target/ppc/cpu_init.c
+> >> @@ -6853,8 +6853,6 @@ static void ppc_cpu_unrealize(DeviceState *dev)
+> >>  =20
+> >>       pcc->parent_unrealize(dev);
+> >>  =20
+> >> -    cpu_remove_sync(CPU(cpu)); =20
+> >=20
+> > bug in current code? =20
+>=20
+> Plausibly. See:
+>=20
+> commit f1023d21e81b7bf523ddf2ac91a48117f20ef9d7
+> Author: Greg Kurz <groug@kaod.org>
+> Date:   Thu Oct 15 23:18:32 2020 +0200
+>=20
+>      spapr: Unrealize vCPUs with qdev_unrealize()
+>=20
+>      Since we introduced CPU hot-unplug in sPAPR, we don't unrealize the
+>      vCPU objects explicitly. Instead, we let QOM handle that for us
+>      under object_property_del_all() when the CPU core object is
+>      finalized. The only thing we do is calling cpu_remove_sync() to
+>      tear the vCPU thread down.
+>=20
+>      This happens to work but it is ugly because:
+>      - we call qdev_realize() but the corresponding qdev_unrealize() is
+>        buried deep in the QOM code
+>      - we call cpu_remove_sync() to undo qemu_init_vcpu() called by
+>        ppc_cpu_realize() in target/ppc/translate_init.c.inc
+>      - the CPU init and teardown paths aren't really symmetrical
+>=20
+>      The latter didn't bite us so far but a future patch that greatly
+>      simplifies the CPU core realize path needs it to avoid a crash
+>      in QOM.
+>=20
+>      For all these reasons, have ppc_cpu_unrealize() to undo the changes
+>      of ppc_cpu_realize() by calling cpu_remove_sync() at the right
+>      place, and have the sPAPR CPU core code to call qdev_unrealize().
+>=20
+>      This requires to add a missing stub because translate_init.c.inc is
+>      also compiled for user mode.
+>=20
+> >  =20
+> >> -
+> >>       destroy_ppc_opcodes(cpu);
+> >>   }
+> >>    =20
 >=20
 
 
