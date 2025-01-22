@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35061A18C93
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D634A18C94
 	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 08:11:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taUs0-0005I3-2U; Wed, 22 Jan 2025 02:09:48 -0500
+	id 1taUs6-0005KF-92; Wed, 22 Jan 2025 02:09:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1taUrx-0005Fg-DT
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 02:09:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1taUs3-0005JT-Bp
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 02:09:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1taUrv-0008Pr-PC
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 02:09:45 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1taUrz-0008QX-QJ
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 02:09:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737529783;
+ s=mimecast20190719; t=1737529787;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HCgBPHkwQ9noTFqoX4NtX4SFLU9O8jURWveoSWvlS7U=;
- b=ie8BYGyzWnaRA9aVTBx4/V0eKplGM7gF0OudGthchPBycnkG65/xTy3D3c8TdDSct8c/DN
- t0ZfHmdUBL9cS+ldKcIe8UcDeBe2i1pSwjIm78lLeISB03msASqNdTQOQdjZPmJGxUgXgT
- 725/FGaeCE0kqAj5VO4GUaFP4FLzvvw=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=hAhVlXQET5eW9qZ7pK9kd+FVFwJRgIZEg09bqeq/ImE=;
+ b=UYIx8EhAE89UL4z7slycAtA91DbjpDJwhTt+TNAuQXw5RdSVFuJ9miCiYZ5QmOJMhe87iu
+ Fhh/C8AM/R/5aTEQX5iFOyiKququwAPH06KazM4xuvsqy7GoVAWU7lsdh/JIpt6jZtb4j3
+ jWWHsfdZhtXcgXNeHbFYUMbxLMTCj3w=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-59-fExaK_lFO6iG2gnGkO0ahA-1; Wed,
- 22 Jan 2025 02:09:37 -0500
-X-MC-Unique: fExaK_lFO6iG2gnGkO0ahA-1
-X-Mimecast-MFC-AGG-ID: fExaK_lFO6iG2gnGkO0ahA
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-316--zDHzrPWPN6ptbN5m9tjFQ-1; Wed,
+ 22 Jan 2025 02:09:40 -0500
+X-MC-Unique: -zDHzrPWPN6ptbN5m9tjFQ-1
+X-Mimecast-MFC-AGG-ID: -zDHzrPWPN6ptbN5m9tjFQ
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2281D1956054; Wed, 22 Jan 2025 07:09:36 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3722C19560A1; Wed, 22 Jan 2025 07:09:39 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.154])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9D5813003E7F; Wed, 22 Jan 2025 07:09:33 +0000 (UTC)
+ id 6AFB63003FD1; Wed, 22 Jan 2025 07:09:36 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
@@ -51,23 +51,23 @@ Cc: Joel Stanley <joel@jms.id.au>,
  Troy Lee <troy_lee@aspeedtech.com>, Jamin Lin <jamin_lin@aspeedtech.com>,
  Steven Lee <steven_lee@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH 6/9] aspeed/soc: Support Timer for AST2700
-Date: Wed, 22 Jan 2025 08:09:06 +0100
-Message-ID: <20250122070909.1138598-7-clg@redhat.com>
+Subject: [PATCH 7/9] test/functional: Update the Aspeed aarch64 test
+Date: Wed, 22 Jan 2025 08:09:07 +0100
+Message-ID: <20250122070909.1138598-8-clg@redhat.com>
 In-Reply-To: <20250122070909.1138598-1-clg@redhat.com>
 References: <20250122070909.1138598-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
+X-Spam_score_int: -51
+X-Spam_score: -5.2
 X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.086,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -85,81 +85,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jamin Lin <jamin_lin@aspeedtech.com>
+Bumped SDK version to v09.03. v09.04 is available but not yet
+supported in QEMU.
 
-Add Timer model for AST2700 Timer support. The Timer controller include 8 sets
-of 32-bit decrement counters.
-
-The base address of TIMER0 to TIMER7 as following.
-Base Address of Timer 0 = 0x12C1_0000
-Base Address of Timer 1 = 0x12C1_0040
-Base Address of Timer 2 = 0x12C1_0080
-Base Address of Timer 3 = 0x12C1_00C0
-Base Address of Timer 4 = 0x12C1_0100
-Base Address of Timer 5 = 0x12C1_0140
-Base Address of Timer 6 = 0x12C1_0180
-Base Address of Timer 7 = 0x12C1_01C0
-
-The interrupt of TIMER0 to TIMER7 as following.
-GICINT16 = TIMER 0 interrupt
-GICINT17 = TIMER 1 interrupt
-GICINT18 = TIMER 2 interrupt
-GICINT19 = TIMER 3 interrupt
-GICINT20 = TIMER 4 interrupt
-GICINT21 = TIMER 5 interrupt
-GICINT22 = TIMER 6 interrupt
-GICINT23 = TIMER 7 interrupt
-
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/r/20250113064455.1660564-4-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed_ast27x0.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ tests/functional/test_aarch64_aspeed.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index fee37558372a..4114e15dddf4 100644
---- a/hw/arm/aspeed_ast27x0.c
-+++ b/hw/arm/aspeed_ast27x0.c
-@@ -66,6 +66,7 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
-     [ASPEED_DEV_GPIO]      =  0x14C0B000,
-     [ASPEED_DEV_RTC]       =  0x12C0F000,
-     [ASPEED_DEV_SDHCI]     =  0x14080000,
-+    [ASPEED_DEV_TIMER1]    =  0x12C10000,
- };
+diff --git a/tests/functional/test_aarch64_aspeed.py b/tests/functional/test_aarch64_aspeed.py
+index 141d86385936..6a9ae2a34956 100755
+--- a/tests/functional/test_aarch64_aspeed.py
++++ b/tests/functional/test_aarch64_aspeed.py
+@@ -27,14 +27,14 @@ def do_test_aarch64_aspeed_sdk_start(self, image):
+         wait_for_console_pattern(self, '## Loading kernel from FIT Image')
+         wait_for_console_pattern(self, 'Starting kernel ...')
  
- #define AST2700_MAX_IRQ 256
-@@ -397,6 +398,9 @@ static void aspeed_soc_ast2700_init(Object *obj)
+-    ASSET_SDK_V902_AST2700 = Asset(
+-            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.02/ast2700-default-obmc.tar.gz',
+-            'ac969c2602f4e6bdb69562ff466b89ae3fe1d86e1f6797bb7969d787f82116a7')
++    ASSET_SDK_V903_AST2700 = Asset(
++            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.03/ast2700-default-obmc.tar.gz',
++            '91225f50d255e2905ba8d8e0c80b71b9d157c3609770c7a740cd786370d85a77')
  
-     object_initialize_child(obj, "emmc-controller.sdhci", &s->emmc.slots[0],
-                             TYPE_SYSBUS_SDHCI);
-+
-+    snprintf(typename, sizeof(typename), "aspeed.timer-%s", socname);
-+    object_initialize_child(obj, "timerctrl", &s->timerctrl, typename);
- }
+     def test_aarch64_ast2700_evb_sdk_v09_02(self):
+         self.set_machine('ast2700-evb')
  
- /*
-@@ -716,6 +720,19 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-     sysbus_connect_irq(SYS_BUS_DEVICE(&s->emmc), 0,
-                        aspeed_soc_get_irq(s, ASPEED_DEV_EMMC));
+-        self.archive_extract(self.ASSET_SDK_V902_AST2700)
++        self.archive_extract(self.ASSET_SDK_V903_AST2700)
  
-+    /* Timer */
-+    object_property_set_link(OBJECT(&s->timerctrl), "scu", OBJECT(&s->scu),
-+                             &error_abort);
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->timerctrl), errp)) {
-+        return;
-+    }
-+    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->timerctrl), 0,
-+                    sc->memmap[ASPEED_DEV_TIMER1]);
-+    for (i = 0; i < ASPEED_TIMER_NR_TIMERS; i++) {
-+        irq = aspeed_soc_get_irq(s, ASPEED_DEV_TIMER1 + i);
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->timerctrl), i, irq);
-+    }
-+
-     create_unimplemented_device("ast2700.dpmcu", 0x11000000, 0x40000);
-     create_unimplemented_device("ast2700.iomem0", 0x12000000, 0x01000000);
-     create_unimplemented_device("ast2700.iomem1", 0x14000000, 0x01000000);
+         num_cpu = 4
+         uboot_size = os.path.getsize(self.scratch_file('ast2700-default',
 -- 
 2.48.1
 
