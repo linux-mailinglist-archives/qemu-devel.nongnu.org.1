@@ -2,70 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53378A1967C
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 17:30:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 971A0A196AF
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 17:41:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tadcJ-0004Ee-U0; Wed, 22 Jan 2025 11:30:12 -0500
+	id 1tadmI-0007aT-Ig; Wed, 22 Jan 2025 11:40:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tadcG-0004Dk-QH
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 11:30:08 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tadmA-0007Zr-NT
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 11:40:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tadcE-00061U-Ff
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 11:30:08 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tadm6-0003MZ-J7
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 11:40:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737563405;
+ s=mimecast20190719; t=1737564016;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=btR3MJM2DEWzFjmowVl6zkGGsSnQRStWFAvTog0Uj2w=;
- b=NpKhA+vN9+TR5P44jCqFRFcQ7g7o6c4qsjxIOWmcW/8pj3pY2a282kWQdzdsHm8JInrzMU
- ksCxmwRdGShgQWtSd2b7aX+EmIjuvnJE0nrvr+pV3lFwBS53ipY+vTiDADJ9VuVOHAxdfO
- JOYcXj/OXgLN/S9ahr+ygdizC611o9M=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-433-n1a0zezvOEaGdD2C1455aQ-1; Wed,
- 22 Jan 2025 11:30:03 -0500
-X-MC-Unique: n1a0zezvOEaGdD2C1455aQ-1
-X-Mimecast-MFC-AGG-ID: n1a0zezvOEaGdD2C1455aQ
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5417B1953944
- for <qemu-devel@nongnu.org>; Wed, 22 Jan 2025 16:30:02 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.37])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AC28A195E3DE; Wed, 22 Jan 2025 16:30:01 +0000 (UTC)
-Date: Wed, 22 Jan 2025 11:30:00 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: [PULL v2 0/9] s390x and test patches 2025-01-21
-Message-ID: <20250122163000.GA183250@fedora>
-References: <20250122080151.1400422-1-thuth@redhat.com>
+ bh=s7FXfjhNE42rwKWKgzXOoZyoZvfkqN5Prnao7VTqtss=;
+ b=ZebYiKDjJniqXRPa8u26LpByHzkTHNqp1zkElV1F5xNhN2X6dA2K4NO6IJ8yJttLbP+Lax
+ AyMI/C7tdHZ1mP2LQGNAdTLJlApnvPQc7JcY8YNtYnPH4DVl/Qh4VmKhyJq8TEc0pScdQO
+ xvZuwauLSCyZ3CSQ6YKTmd7YQyXsrg4=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-650-K7q6ByglPGWPLJoOZLLwcg-1; Wed, 22 Jan 2025 11:40:14 -0500
+X-MC-Unique: K7q6ByglPGWPLJoOZLLwcg-1
+X-Mimecast-MFC-AGG-ID: K7q6ByglPGWPLJoOZLLwcg
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7b6c6429421so1156906785a.0
+ for <qemu-devel@nongnu.org>; Wed, 22 Jan 2025 08:40:14 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737564013; x=1738168813;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=s7FXfjhNE42rwKWKgzXOoZyoZvfkqN5Prnao7VTqtss=;
+ b=Q/O9g9c4OxeAi2V+YzejuxxBVSY5b81F/eQ8xbOsks3AgPXKOxPgvsgnjiUrRdu8/y
+ EVybi/qUPTEpX+gHSoFnAnuA4noKaKAIn+bwEJy7ZdCEeNadT2IBTmktBv0feqWIUOO0
+ 4FnlkbpYrnmghezE1kKeiA98aaIh1SAR2k54+SAsriVWTnn5P3Q0VSnp0nxhYrWMop56
+ bbv1Ply32jRdhIr2FIpsV5SQO0zqmP08r+vktHE8DM0U1EpdIRrKgYJqId9rC0X5S/wQ
+ xsKP1VjUCBNB32ISyNrduEl2gECL1Ynt00em5z9dg9eSYacQaXtTjhoWLuuLzjk6ftgI
+ GiGQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXBTxIHXyFwuQwst6EMF12zblAlHNnPUwHySlvQT2C78B9GUBLHp4rIIDFoD8J5xxuGBipPTG0y2U0Y@nongnu.org
+X-Gm-Message-State: AOJu0YyizN9RnLg1h9NLKzhQ2roak3+DCSqP70z5Rph+tikDDziJu0tM
+ XA3I0WyfvvgPJCC5Hgj4I2Qg0NwBbxgSFaAG8IB+LxyUeHwoeXAY7hHmAXKUjn07el9Yo9vIEhn
+ 4NRxHzgZc4r/iWTeiKxe19hhGFa/EPSPnijBjHFPyUbY/QUvq458SJFP0BIyc
+X-Gm-Gg: ASbGncvxH+YlbhB3vfmTbpBeSKimqLudx08FUiY9WSmhKQ6pBy0AEuGKJbz6TUZa3di
+ pR8DqJL/I9U1A72Fts7ZJFvZkrJ4f4byrMRgcEql1Mfzsrm6CgWeKuDV8yXp3EqNj2tySmg5xOP
+ 4WormYfSsI7z1ZncHi36KQXzycl8p0ylhw6F4LYkUgUF9FWeZmo6JrPEmOrJkp38MdRlxpTJeJ7
+ 5gvS+/L0GgUEtNJfDRQN5HjH7c2MMf4dUXpSDLX7tOc6WexsrPYK0ckalGhV+R2sopF9xVO3c6T
+ TCIHohywc71zWR3ES3Q3IAv9Q2uEY2I=
+X-Received: by 2002:a05:620a:288a:b0:7b6:6d99:ecfc with SMTP id
+ af79cd13be357-7be6318ac7amr3300920485a.0.1737564013660; 
+ Wed, 22 Jan 2025 08:40:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHTto66wpN4Xl4z+TFxOWYxjbdcDmFpIP7PSZD/qwEtr1lDNq0JtCcluPWoNHv+um/PFpnfpA==
+X-Received: by 2002:a05:620a:288a:b0:7b6:6d99:ecfc with SMTP id
+ af79cd13be357-7be6318ac7amr3300917485a.0.1737564013357; 
+ Wed, 22 Jan 2025 08:40:13 -0800 (PST)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7be614eee4bsm676589285a.91.2025.01.22.08.40.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 22 Jan 2025 08:40:12 -0800 (PST)
+Date: Wed, 22 Jan 2025 11:40:10 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Shivam Kumar <shivam.kumar1@nutanix.com>
+Cc: Fabiano Rosas <farosas@suse.de>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Re: [RFC PATCH] Fix race in live migration failure path
+Message-ID: <Z5EfapuXuV7oFL7A@x1n>
+References: <20250110100707.4805-1-shivam.kumar1@nutanix.com>
+ <87frlqerxp.fsf@suse.de> <Z4U_emPVDfTb1VmF@x1n>
+ <0C92F4E5-56EE-4036-927C-2F06F9F29252@nutanix.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="TuJjUFoARTHL+Amn"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250122080151.1400422-1-thuth@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0C92F4E5-56EE-4036-927C-2F06F9F29252@nutanix.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
 X-Spam_bar: -----
 X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.043,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,30 +109,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi, Shivam,
 
---TuJjUFoARTHL+Amn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Wed, Jan 22, 2025 at 10:54:17AM +0000, Shivam Kumar wrote:
+> There is one place where we set the migration status to FAILED but we don’t set
+> s->error, i.e. in save_snapshot workflow, please check qemu_savevm_state but
+> not sure setting s->error in this case is possible (or required), as it seems a
+> different workflow to me.
 
-Applied, thanks.
+Yes it's very different indeed.  I may not yet fully get the challenge on
+how switching to s->error (implies FAILING) would affect this one, though.
+I mean, in qemu_savevm_state() it tries to fetch qemufile errors with:
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/10.0 for any user-visible changes.
+    ret = qemu_file_get_error(f);
 
---TuJjUFoARTHL+Amn
-Content-Type: application/pgp-signature; name="signature.asc"
+IIUC we could also try to fetch s->error just like what migration thread
+does, and if it sets means it's failing?
 
------BEGIN PGP SIGNATURE-----
+> 
+> In addition, one potentially real problem that I see is this comment in
+> migration_detect_error:
+> /*
+>  * For postcopy, we allow the network to be down for a
+>  * while. After that, it can be continued by a
+>  * recovery phase.
+>  */
+> Let's say if we set s->error at some place and there was a file error on either
+> source or destination (qemu_file_get_error_obj_any returns a positive value
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmeRHQgACgkQnKSrs4Gr
-c8gTeggAg0cFN3G7Dm8fsTUKbnGAvxyv2O+TqtMLp20L9LeOFUgtpk1AaZVa6MkL
-pqojV8zN6unspKdJ883MtcuvvmS+v9XlzV+5kwvxvnGorPzJIKVanKXcwL85o2Pf
-9k9r6GQuEwpnpZOvDM2gKwJweeG2X4KzIfjm8e9J5/eA3ngfDmx7fLbHv0BCuBKM
-buMZGPwsNgYbM/nmlfUAvb96Z0c/xzQxKQoBTBqrSLnUNml3veYeIVr7tqJixTlY
-kIRYQFfs+1C1MmQcJREWmFlARfArBx/rkmX8OIvYyRilSeA1Wa8XBsXnitjONgPY
-sYOw8txTHqHkV7QqhaNXdAOfJ190jg==
-=tmPK
------END PGP SIGNATURE-----
+This is trivial, but I suppose you meant s/positive/negative/ here.. as
+qemufile's last_error should always be negative, iiuc.
 
---TuJjUFoARTHL+Amn--
+> when called by migration_detect_error). We expect migration to fail in this
+> case but migration will continue to run since post-copy migration is tolerant
+> to file errors?
+
+Yes it can halt at postcopy_pause().  I'm not yet understand why it's an
+issue to using s->error, though.
+
+In general, I'm thinking whether we could also check s->error in detect
+error path like this:
+
+===8<===
+diff --git a/migration/migration.c b/migration/migration.c
+index 2d1da917c7..fbd97395e0 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -3015,17 +3015,17 @@ static MigThrError migration_detect_error(MigrationState *s)
+     ret = qemu_file_get_error_obj_any(s->to_dst_file,
+                                       s->postcopy_qemufile_src,
+                                       &local_error);
+-    if (!ret) {
+-        /* Everything is fine */
+-        assert(!local_error);
+-        return MIG_THR_ERR_NONE;
+-    }
+-
+-    if (local_error) {
++    if (ret) {
++        /* Passover qemufile errors to s->error */
++        assert(local_error);
+         migrate_set_error(s, local_error);
+         error_free(local_error);
+     }
+ 
++    if (!migrate_has_error(s)) {
++        return MIG_THR_ERR_NONE;
++    }
++
+     if (state == MIGRATION_STATUS_POSTCOPY_ACTIVE && ret) {
+         /*
+          * For postcopy, we allow the network to be down for a
+@@ -3037,6 +3037,8 @@ static MigThrError migration_detect_error(MigrationState *s)
+         /*
+          * For precopy (or postcopy with error outside IO), we fail
+          * with no time.
++         *
++         * TODO: update FAILED only until the end of migration in BH.
+          */
+         migrate_set_state(&s->state, state, MIGRATION_STATUS_FAILED);
+         trace_migration_thread_file_err();
+===8<===
+
+I kept a TODO above, I would hope if you reworked everything to route
+errors to s->error, then we can move this to the cleanup BH to avoid the
+race.
+
+Do you think that could work?
+
+Thanks,
+
+-- 
+Peter Xu
 
 
