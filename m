@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6E7A1923D
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 14:20:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32995A19240
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 14:20:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taad6-0007nj-KC; Wed, 22 Jan 2025 08:18:48 -0500
+	id 1taaeL-0008Eu-Ts; Wed, 22 Jan 2025 08:20:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1taad3-0007lo-4x; Wed, 22 Jan 2025 08:18:45 -0500
-Received: from mgamail.intel.com ([198.175.65.9])
+ id 1taae3-0008BA-LU; Wed, 22 Jan 2025 08:19:47 -0500
+Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1taacz-0006fZ-DB; Wed, 22 Jan 2025 08:18:44 -0500
+ id 1taae1-0006ks-LC; Wed, 22 Jan 2025 08:19:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737551922; x=1769087922;
+ t=1737551986; x=1769087986;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=uO3GwZQDSdxNqtjyuP4Js7fdfnXJwEt29QyTP1TsNys=;
- b=CW1k+2UKBSOoq6jBwT86PDEPe4i5Yioo2BORJtha3/gwnJRxTdSw7Get
- UcSETAPyCMpa6SGeWzWLLv9v63HY6wyZI0uYoEB8VSbdmhenSoiPYUxRk
- FEv/od+FFfSvYc+iiXl1Q6jqyZA5wqL1JQ8IPT+iQ+BAUBfB1EUhEiaeJ
- 6p4oaqA07AZXb600MId4nqSe5d2idpmQnaEALAQ3OSn+z/DmJGuDHgBJW
- qFNo33LEptkrQxHqWdfGH5oND2OtqE8au+ejn4xibTmLraEfq4Pt92cMz
- jxOjOpvgvRBG4xRv78o+tqu0EjY+MHBX6KR7LxhO5Fan5omwGmZ13KIi3 g==;
-X-CSE-ConnectionGUID: s7p2tVR2SrOZQKm7/1/zSw==
-X-CSE-MsgGUID: SHQBv8gnSOiEYt2dUDRuuw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="60475635"
-X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="60475635"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 05:18:34 -0800
-X-CSE-ConnectionGUID: JgHGJhViSkCgcLMruGbqoA==
-X-CSE-MsgGUID: cegjEaa2SZSj6iDJQLVVUA==
+ bh=Ojv5QrTK/it8nf4qOPUO8BNwhuSJcBS9bLeRkI2TH/Y=;
+ b=fGUR72A7dMFD/CyncOYzsXaw7qkyDqsclfGnugvIXStMKYgDF5Yp50u1
+ wMspdGdvYn9nZKzwLX/M9FBPHvhKPg4DoAx/+QCJZdzBnvyFzWbUbf7Ly
+ lktlNqTQ0TJbntuqMCpQJC8NLCh6ZrTgffl9qGL0mRWxqI305wiVUsrTl
+ 8EuXFt0+IARXFlrK0cL0FhFNogVnNCC3sdZxeOLOUUa65MZqlof9AKYf6
+ vkTLoAlBmf8R6CxgHQiPuhqV3VMcuNbnymktX2JqH0RFbwrRMztxe4FNH
+ lEHlbb+Edwqpna0VwfO4xmnnTZ/HnLXmOLxtd+RtOTBtXwKCjfHFL/582 w==;
+X-CSE-ConnectionGUID: 7lMYbcsnQI2vRGfbdQEiLA==
+X-CSE-MsgGUID: V9WHgYtsQ9WFmOFM3EWEjQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="38256643"
+X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="38256643"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 05:19:43 -0800
+X-CSE-ConnectionGUID: qJO4BTwQQsanwUgyqp1jTQ==
+X-CSE-MsgGUID: moYdAgTeTzOTJMJysvWH6A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="107163720"
+X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="112152707"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa006.jf.intel.com with ESMTP; 22 Jan 2025 05:18:33 -0800
-Date: Wed, 22 Jan 2025 21:37:55 +0800
+ by fmviesa004.fm.intel.com with ESMTP; 22 Jan 2025 05:19:41 -0800
+Date: Wed, 22 Jan 2025 21:39:03 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 01/10] rust: pl011: remove unnecessary "extern crate"
-Message-ID: <Z5D0szRoyR24EqlU@intel.com>
+Subject: Re: [PATCH 02/10] rust: pl011: hide unnecessarily "pub" items from
+ outside pl011::device
+Message-ID: <Z5D097/Eqen1BZhE@intel.com>
 References: <20250117092657.1051233-1-pbonzini@redhat.com>
- <20250117092657.1051233-2-pbonzini@redhat.com>
+ <20250117092657.1051233-3-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250117092657.1051233-2-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250117092657.1051233-3-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -73
 X-Spam_score: -7.4
@@ -79,18 +80,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 17, 2025 at 10:26:48AM +0100, Paolo Bonzini wrote:
-> Date: Fri, 17 Jan 2025 10:26:48 +0100
+On Fri, Jan 17, 2025 at 10:26:49AM +0100, Paolo Bonzini wrote:
+> Date: Fri, 17 Jan 2025 10:26:49 +0100
 > From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 01/10] rust: pl011: remove unnecessary "extern crate"
+> Subject: [PATCH 02/10] rust: pl011: hide unnecessarily "pub" items from
+>  outside pl011::device
 > X-Mailer: git-send-email 2.47.1
+> 
+> The only public interfaces for pl011 are TYPE_PL011 and pl011_create.
+> Remove pub from everything else.
+> 
+> Note: the "allow(dead_code)" is removed later.
 > 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  rust/hw/char/pl011/src/lib.rs | 4 ----
->  1 file changed, 4 deletions(-)
-
-Yes, it's unnecessary from Rust 2018.
+>  rust/hw/char/pl011/src/device.rs       |  2 +-
+>  rust/hw/char/pl011/src/device_class.rs |  2 +-
+>  rust/hw/char/pl011/src/lib.rs          | 13 ++++++++-----
+>  3 files changed, 10 insertions(+), 7 deletions(-)
+> 
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
