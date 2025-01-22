@@ -2,68 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFAEBA19136
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 13:15:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27D54A1916B
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 13:36:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taZcq-000679-Vz; Wed, 22 Jan 2025 07:14:29 -0500
+	id 1taZvq-0002kF-OL; Wed, 22 Jan 2025 07:34:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1taZcj-00062W-8n; Wed, 22 Jan 2025 07:14:21 -0500
-Received: from mgamail.intel.com ([192.198.163.19])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1taZvn-0002jB-N1; Wed, 22 Jan 2025 07:34:03 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1taZcg-0000fb-7a; Wed, 22 Jan 2025 07:14:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737548058; x=1769084058;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=p/MEDBHQJ56AH0MsVuiWC0F2edG1GENGkpR5CUKIRac=;
- b=DC0YeActwjr6CGkNoQdEXEoO2IMWExC0fhBWm0z0y8n3jA7IOEQNsokI
- r3xX1ExNRIaSO61XrM/vP93lNZFbyC9G1tfTwPWR+gH2eRZVENLRbpmHq
- bp1vZ2e6ufRiDlDd1AvcerA6Dnom1fMBx2T7tPujdmKw19IprnvxuZC+q
- 4y0zhuL97PceW0+n0XeGpJBM/lvjLQ3S51Tvab2IfnAKzH4UEGARqBSuy
- 1AuCagf9HePk7cDn0uBkoGeOC5OVMFGmihS65nHsUvxzLfKaw0Y2UaE/F
- VKFZSrPZ1Tw9OnIw32auM+OSraCd8OkhICjjNUywNP1Zj04w/1iTbUdkO g==;
-X-CSE-ConnectionGUID: RuEei4hKROykgR0itjku1w==
-X-CSE-MsgGUID: COY3TeQYSB2on8sEAgROxQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="37211821"
-X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="37211821"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2025 04:14:14 -0800
-X-CSE-ConnectionGUID: spvVcfSYTlGtK4JbZ2Hoow==
-X-CSE-MsgGUID: xrUxPDnySvq67xNPURIq/Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111764691"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa005.fm.intel.com with ESMTP; 22 Jan 2025 04:14:12 -0800
-Date: Wed, 22 Jan 2025 20:33:34 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 05/10] rust: vmstate: implement VMState for scalar types
-Message-ID: <Z5DlngFjERVqmxca@intel.com>
-References: <20250117090046.1045010-1-pbonzini@redhat.com>
- <20250117090046.1045010-6-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1taZvk-0007X7-Ng; Wed, 22 Jan 2025 07:34:03 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 27CF7DD3AF;
+ Wed, 22 Jan 2025 15:33:40 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4DA6C1A1DBF;
+ Wed, 22 Jan 2025 15:33:56 +0300 (MSK)
+Message-ID: <4a6a4432-f4b7-4c2e-8889-581c1cc983ca@tls.msk.ru>
+Date: Wed, 22 Jan 2025 15:33:56 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250117090046.1045010-6-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -73
-X-Spam_score: -7.4
-X-Spam_bar: -------
-X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] vvfat: fix out of bounds array write
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org, qemu-devel@nongnu.org
+References: <20250105135929.6286-1-vr_qemu@t-online.de>
+ <f616a4b4-2161-42c8-9f92-e3a939ba173a@tls.msk.ru>
+ <54df1904-0e2c-4c4f-b242-1c8865ad0af1@linaro.org>
+ <1e2389b1-07c5-49dd-96c6-8bac84d7c95e@tls.msk.ru>
+ <05a22f99-65c2-299f-a180-ba02289dff67@eik.bme.hu>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <05a22f99-65c2-299f-a180-ba02289dff67@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,71 +108,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 17, 2025 at 10:00:41AM +0100, Paolo Bonzini wrote:
-> Date: Fri, 17 Jan 2025 10:00:41 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 05/10] rust: vmstate: implement VMState for scalar types
-> X-Mailer: git-send-email 2.47.1
+22.01.2025 15:19, BALATON Zoltan wrote:
+> On Wed, 22 Jan 2025, Michael Tokarev wrote:
+>> 22.01.2025 02:14, Pierrick Bouvier wrote:
+>> ..
+>>> I agree the existing code (and this patch) is pretty cryptic for anyone not familiar with FAT format.
+>>> However, I think it could be a good thing to first merge this one (which is correct, and works), and refactor this in a second time, so the current 
+>>> ubsan issue is fixed upstream as soon as possible.
+>>
+>> For an actual *fix*, please take a look at
+>> https://lore.kernel.org/qemu-devel/20250119093233.9E4C450B6D@localhost.tls.msk.ru/
+>>
+>> which is minimal, understandable, verified and works.
 > 
-> Scalar types are those that have their own VMStateInfo.  This poses
-> a problem in that references to VMStateInfo can only be included in
-> associated consts starting with Rust 1.83.0, when the const_refs_static
-> was stabilized.  Removing the requirement is done by placing a limited
-> list of VMStateInfos in an enum, and going from enum to &VMStateInfo
-> only when building the VMStateField.
-> 
-> The same thing cannot be done with VMS_STRUCT because the set of
-> VMStateDescriptions extends to structs defined by the devices.
-> Therefore, structs and cells cannot yet use vmstate_of!.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/qemu-api/src/vmstate.rs | 128 ++++++++++++++++++++++++++++++++++-
->  1 file changed, 126 insertions(+), 2 deletions(-)
+> Just noticed in that patch you have several &(s->directory) where () is not needed, -> is higher priority than & (address_of).
 
+Yes.  I especially mentioned that I kept the original style,
+to minimize the changes.  It is not needed to fix the issue
+at hand, the fix is maximally targeted (or minimally).
 
->  /// Internal utility function to retrieve a type's `VMStateField`;
->  /// used by [`vmstate_of!`](crate::vmstate_of).
->  pub const fn vmstate_base<T: VMState>(_: PhantomData<T>) -> VMStateField {
-> @@ -99,6 +178,15 @@ pub const fn vmstate_varray_flag<T: VMState>(_: PhantomData<T>) -> VMStateField
->  /// Return the `VMStateField` for a field of a struct.  The field must be
->  /// visible in the current scope.
->  ///
-> +/// Only a limited set of types is supported out of the box:
-> +/// * scalar types (integer and `bool`)
-> +/// * the C struct `QEMUTimer`
-> +/// * a transparent wrapper for any of the above (`Cell`, `UnsafeCell`,
-> +///   [`BqlCell`](crate::cell::BqlCell), [`BqlRefCell`](crate::cell::BqlRefCell)
-> +/// * a raw pointer to any of the above
-> +/// * a `NonNull` pointer to any of the above, possibly wrapped with `Option`
+The subsequent patch - which is optional, unrelated to the issue
+at hand - changes all that stuff to adhere to qemu coding style
+(and yes, this is a style thing, for some, these parens makes it
+more readable).
 
-I just found your rust-next has already updated and removed `Option` :-)
+Thanks,
 
-> +/// * an array of any of the above
-> +///
->  /// In order to support other types, the trait `VMState` must be implemented
->  /// for them.
->  #[macro_export]
-> @@ -109,8 +197,14 @@ macro_rules! vmstate_of {
->                  .as_bytes()
->                  .as_ptr() as *const ::std::os::raw::c_char,
->              offset: $crate::offset_of!($struct_name, $field_name),
-> -            // Compute most of the VMStateField from the type of the field.
-
-Rebase mistake? This comment seems no need to be deleted.
-
->              $(.num_offset: $crate::offset_of!($struct_name, $num),)?
-> +            // The calls to `call_func_with_field!` are the magic that
-> +            // computes most of the VMStateField from the type of the field.
-> +            info: $crate::info_enum_to_ref!($crate::call_func_with_field!(
-> +                $crate::vmstate::vmstate_scalar_type,
-> +                $struct_name,
-> +                $field_name
-> +            )),
->
-
-Only a nit above,
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+/mjt
 
