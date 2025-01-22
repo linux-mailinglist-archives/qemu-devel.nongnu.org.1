@@ -2,62 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92BAEA195B8
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 16:48:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B31A195BF
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 16:49:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tacwe-0004yv-DE; Wed, 22 Jan 2025 10:47:09 -0500
+	id 1tacwu-00051Y-F8; Wed, 22 Jan 2025 10:47:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tacwQ-0004vr-VK; Wed, 22 Jan 2025 10:46:54 -0500
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ id 1tacwS-0004x9-DX; Wed, 22 Jan 2025 10:46:56 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tacwP-0006rW-1f; Wed, 22 Jan 2025 10:46:54 -0500
+ id 1tacwQ-0006rT-27; Wed, 22 Jan 2025 10:46:56 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 141625C607D;
+ by dfw.source.kernel.org (Postfix) with ESMTP id 232D95C6083;
  Wed, 22 Jan 2025 15:46:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D76BFC4AF0B;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B56C4CEE4;
  Wed, 22 Jan 2025 15:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1737560799;
- bh=L9zIZD2Brt7xrZs2jK5Zsf83XHA4Wpm8uMTXvnIC9LU=;
+ bh=SDAM2Hf0+OjvENc78mlriwxC/2c7OGDKK+nhESUWpgE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=d5E5U5/ZnmqZmiZDowtfuTIlDQT1MCfXdiXtVI5lvCLNI46dwlawZceD/klFQ6jRT
- Od1QHpqsYcRcrZeINQzeP3zaeaIrreL3szF9YCKoT54+9GVGbuEqAC9IjCviFrTzxt
- ZGe2+yx9276HHaLtXav9Rh+3FUjgPU09/xTlaEhEVzr1RGAvKycLLpSfuXvmlDasA+
- V+2OU6yJTxnHaz57CBGFqeinPdqsZ4x5JbBSZWhDSKMGNLfynY5TEyYnRnYW07k9+e
- nDq32RuM7Z2ywWBLZElTWMFMiDArk+68Qeu1MyFBY7BpiUwPADmxO7hiR+4jh86/bv
- YKYE4/UJe5Riw==
+ b=WoQ5v/Rg8D57ii/NQ0uNW6JD9BzuQ1V4D89wzL2hK4zrO5HyCWSQef4TqC8edvJM2
+ lKzhNp4d4kxEG6LYjj0QVncNjsVooYp7GNM93wh4lukvszBIjW+EIHIvemN6taSowR
+ 5n8Uze/3ee/XcI3LeTj/ekV+PV/kmkOI860gil1MjptMK/TisF/w2Dt1PDIAfg6N0X
+ rMqTC+d91EOCD4gcP+kaobSknP6eXoc6/tsnpZlea/8RI+B/Oh11fUfix24YIBA5Np
+ Tq4mwZpcM4RlkiJVUicNVoka8rFN44uuWy6wEl4g6GoIBTsQqbRpd6bgXb8wL0NADK
+ mT3HoOrfAONgA==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1tacw9-00000008ogc-3qU0; Wed, 22 Jan 2025 16:46:37 +0100
+ id 1tacw9-00000008ogg-3xHu; Wed, 22 Jan 2025 16:46:37 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Shiju Jose <shiju.jose@huawei.com>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
  Ani Sinha <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, kvm@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: [PATCH 06/11] acpi/ghes: add a notifier to notify when error data is
- ready
-Date: Wed, 22 Jan 2025 16:46:23 +0100
-Message-ID: <b359780154cdd4b4813ee0f6c3ae5a0bb622eb8a.1737560101.git.mchehab+huawei@kernel.org>
+Subject: [PATCH 07/11] acpi/ghes: Cleanup the code which gets ghes ged state
+Date: Wed, 22 Jan 2025 16:46:24 +0100
+Message-ID: <200501cb372d5121c44128a79b8775e529dc46e6.1737560101.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1737560101.git.mchehab+huawei@kernel.org>
 References: <cover.1737560101.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+Received-SPF: pass client-ip=139.178.84.217;
  envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -73
-X-Spam_score: -7.4
-X-Spam_bar: -------
-X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+X-Spam_score_int: -100
+X-Spam_score: -10.1
+X-Spam_bar: ----------
+X-Spam_report: (-10.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -74,53 +76,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some error injection notify methods are async, like GPIO
-notify. Add a notifier to be used when the error record is
-ready to be sent to the guest OS.
+Move the check logic into a common function and simplify the
+code which checks if GHES is enabled and was properly setup.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- hw/acpi/ghes.c         | 5 ++++-
- include/hw/acpi/ghes.h | 3 +++
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ hw/acpi/ghes-stub.c    |  4 ++--
+ hw/acpi/ghes.c         | 33 +++++++++++----------------------
+ include/hw/acpi/ghes.h |  9 +++++----
+ target/arm/kvm.c       |  2 +-
+ 4 files changed, 19 insertions(+), 29 deletions(-)
 
+diff --git a/hw/acpi/ghes-stub.c b/hw/acpi/ghes-stub.c
+index 7cec1812dad9..fbabf955155a 100644
+--- a/hw/acpi/ghes-stub.c
++++ b/hw/acpi/ghes-stub.c
+@@ -16,7 +16,7 @@ int acpi_ghes_memory_errors(uint16_t source_id, uint64_t physical_address)
+     return -1;
+ }
+ 
+-bool acpi_ghes_present(void)
++AcpiGhesState *acpi_ghes_get_state(void)
+ {
+-    return false;
++    return NULL;
+ }
 diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index 86c97f60d6a0..961fc38ea8f5 100644
+index 961fc38ea8f5..5d29db3918dd 100644
 --- a/hw/acpi/ghes.c
 +++ b/hw/acpi/ghes.c
-@@ -506,6 +506,9 @@ static void get_ghes_source_offsets(uint16_t source_id, uint64_t hest_addr,
-                              sizeof(*read_ack_start_addr));
- }
+@@ -420,10 +420,6 @@ static void get_hw_error_offsets(uint64_t ghes_addr,
+                                  uint64_t *cper_addr,
+                                  uint64_t *read_ack_register_addr)
+ {
+-    if (!ghes_addr) {
+-        return;
+-    }
+-
+     /*
+      * non-HEST version supports only one source, so no need to change
+      * the start offset based on the source ID. Also, we can't validate
+@@ -451,10 +447,6 @@ static void get_ghes_source_offsets(uint16_t source_id, uint64_t hest_addr,
+     uint64_t err_source_struct, error_block_addr;
+     uint32_t num_sources, i;
  
-+NotifierList acpi_generic_error_notifiers =
-+    NOTIFIER_LIST_INITIALIZER(error_device_notifiers);
-+
- void ghes_record_cper_errors(const void *cper, size_t len,
+-    if (!hest_addr) {
+-        return;
+-    }
+-
+     cpu_physical_memory_read(hest_addr, &num_sources, sizeof(num_sources));
+     num_sources = le32_to_cpu(num_sources);
+ 
+@@ -513,7 +505,6 @@ void ghes_record_cper_errors(const void *cper, size_t len,
                               uint16_t source_id, Error **errp)
  {
-@@ -561,7 +564,7 @@ void ghes_record_cper_errors(const void *cper, size_t len,
-     /* Write the generic error data entry into guest memory */
-     cpu_physical_memory_write(cper_addr, cper, len);
+     uint64_t cper_addr = 0, read_ack_register_addr = 0, read_ack_register;
+-    AcpiGedState *acpi_ged_state;
+     AcpiGhesState *ags;
  
--    return;
-+    notifier_list_notify(&acpi_generic_error_notifiers, NULL);
+     if (len > ACPI_GHES_MAX_RAW_DATA_LENGTH) {
+@@ -521,13 +512,10 @@ void ghes_record_cper_errors(const void *cper, size_t len,
+         return;
+     }
+ 
+-    acpi_ged_state = ACPI_GED(object_resolve_path_type("", TYPE_ACPI_GED,
+-                                                       NULL));
+-    if (!acpi_ged_state) {
+-        error_setg(errp, "Can't find ACPI_GED object");
++    ags = acpi_ghes_get_state();
++    if (!ags) {
+         return;
+     }
+-    ags = &acpi_ged_state->ghes_state;
+ 
+     if (!ags->hest_lookup) {
+         get_hw_error_offsets(le64_to_cpu(ags->hw_error_le),
+@@ -537,11 +525,6 @@ void ghes_record_cper_errors(const void *cper, size_t len,
+                                 &cper_addr, &read_ack_register_addr, errp);
+     }
+ 
+-    if (!cper_addr) {
+-        error_setg(errp, "can not find Generic Error Status Block");
+-        return;
+-    }
+-
+     cpu_physical_memory_read(read_ack_register_addr,
+                              &read_ack_register, sizeof(read_ack_register));
+ 
+@@ -605,7 +588,7 @@ int acpi_ghes_memory_errors(uint16_t source_id, uint64_t physical_address)
+     return 0;
  }
  
- int acpi_ghes_memory_errors(uint16_t source_id, uint64_t physical_address)
+-bool acpi_ghes_present(void)
++AcpiGhesState *acpi_ghes_get_state(void)
+ {
+     AcpiGedState *acpi_ged_state;
+     AcpiGhesState *ags;
+@@ -614,8 +597,14 @@ bool acpi_ghes_present(void)
+                                                        NULL));
+ 
+     if (!acpi_ged_state) {
+-        return false;
++        return NULL;
+     }
+     ags = &acpi_ged_state->ghes_state;
+-    return ags->present;
++    if (!ags->present) {
++        return NULL;
++    }
++    if (!ags->hw_error_le && !ags->hest_addr_le) {
++        return NULL;
++    }
++    return ags;
+ }
 diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
-index 164ed8b0f9a3..2e8405edfe27 100644
+index 2e8405edfe27..64fe2b5bea65 100644
 --- a/include/hw/acpi/ghes.h
 +++ b/include/hw/acpi/ghes.h
-@@ -24,6 +24,9 @@
+@@ -91,10 +91,11 @@ void ghes_record_cper_errors(const void *cper, size_t len,
+                              uint16_t source_id, Error **errp);
  
- #include "hw/acpi/bios-linker-loader.h"
- #include "qapi/error.h"
-+#include "qemu/notify.h"
-+
-+extern NotifierList acpi_generic_error_notifiers;
+ /**
+- * acpi_ghes_present: Report whether ACPI GHES table is present
++ * acpi_ghes_get_state: Get a pointer for ACPI ghes state
+  *
+- * Returns: true if the system has an ACPI GHES table and it is
+- * safe to call acpi_ghes_memory_errors() to record a memory error.
++ * Returns: a pointer to ghes state if the system has an ACPI GHES table,
++ * it is enabled and it is safe to call acpi_ghes_memory_errors() to record
++ * a memory error. Returns false, otherwise.
+  */
+-bool acpi_ghes_present(void);
++AcpiGhesState *acpi_ghes_get_state(void);
+ #endif
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index da30bdbb2349..0283089713b9 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -2369,7 +2369,7 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
  
- /*
-  * Values for Hardware Error Notification Type field
+     assert(code == BUS_MCEERR_AR || code == BUS_MCEERR_AO);
+ 
+-    if (acpi_ghes_present() && addr) {
++    if (acpi_ghes_get_state() && addr) {
+         ram_addr = qemu_ram_addr_from_host(addr);
+         if (ram_addr != RAM_ADDR_INVALID &&
+             kvm_physical_memory_addr_from_host(c->kvm_state, addr, &paddr)) {
 -- 
 2.48.1
 
