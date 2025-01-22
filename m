@@ -2,72 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 873E2A18B0D
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 05:34:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6688CA18B63
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 06:40:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taSQR-0003LJ-5d; Tue, 21 Jan 2025 23:33:11 -0500
+	id 1taTRc-000368-Ue; Wed, 22 Jan 2025 00:38:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pawan.kumar.gupta@linux.intel.com>)
- id 1taSQN-0003L7-Gw
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 23:33:07 -0500
-Received: from mgamail.intel.com ([192.198.163.16])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1taTRa-00035f-4M
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 00:38:26 -0500
+Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pawan.kumar.gupta@linux.intel.com>)
- id 1taSQL-000775-6d
- for qemu-devel@nongnu.org; Tue, 21 Jan 2025 23:33:07 -0500
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1taTRX-0008Iw-U6
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 00:38:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737520385; x=1769056385;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=/yxkAvJRbypz92v/vB2rv4ucDx08n8mSWSZXugsEP6g=;
- b=m6NDc/AB0ZQ/f1nULFReMyyIA7Mb7mhpt82eUicYQ4/5x7+wTlqksBcL
- 32fQIZMQFmD+0NnitoINMFEO+l6w4O/SAPphmLc4rcZQnveUZRV59mfdz
- ptrYkd3fJ2FX5iiEZmMwKxDoRKEO+yOBb7hYA9uefTWbUfW73BfB7xEsH
- VDgOO/1IRcQon+6XForAE+Dkwx3jQEtOTzbMeAF7+HSCxQ2odAr6HlLy1
- xljsLNwRkp5R8Nl6GIbst88tsVWM4SgILDmFAK+WGfhEfuWdjkOkFDKPc
- zaPL5dfAfp5DUphu7HDzu9BQZHsOgvQsOCviPr4TlF699or9abo2S6/be Q==;
-X-CSE-ConnectionGUID: 5QY+yBPdTQupHkuR+PsQEQ==
-X-CSE-MsgGUID: zZtd2bJxQmuV1yIK8JTatg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="25566461"
-X-IronPort-AV: E=Sophos;i="6.13,224,1732608000"; d="scan'208";a="25566461"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2025 20:33:00 -0800
-X-CSE-ConnectionGUID: WptrvI7jT/2PvZtAn2n85w==
-X-CSE-MsgGUID: IniWmpuKQ2uEPxkd+6FD5A==
+ t=1737524304; x=1769060304;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=hCFELfX33+SpB61aujnTEhoiWRqMisYxArlO5OLg5PQ=;
+ b=dA2qclx/W7bQ1xTxWyYXY9SHHh88vwXvnnqyxZgS8e7Cnxdni2h+b7pk
+ IlVRhwRsZ2zJgrSl5T2tscv2N+YQ7upwcQtVzFbNoNuzhjPJkv17YGS2Q
+ auvU5v4K+CefKXcx9I2S+pUuxcq5YLCSI3Ks3N00zXHYPy9qfoA/vhrhm
+ FWZgkY5LaDVVFyLZL6FV3dEheX5yMcZLcb79e13X05mXSiJEwTq5es6El
+ SY/g/3se9IP6qYpWebqoQLI1MT4HXvT/nhVuC2sT52R6BdLQyKEUcymBC
+ vBzbJ7r4BRlHvpiBrnBxaqfPHrVJ/tC2rK5P38V6gVs0vLyZRCsnBtvko Q==;
+X-CSE-ConnectionGUID: qf7Je8TSTXSX5cFmDjNATA==
+X-CSE-MsgGUID: UriWAm7JTJmdV0erFP7gjA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="41640259"
+X-IronPort-AV: E=Sophos;i="6.13,224,1732608000"; d="scan'208";a="41640259"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jan 2025 21:38:20 -0800
+X-CSE-ConnectionGUID: JAzO+VjjTgiaYXv7+YRR9g==
+X-CSE-MsgGUID: F1iyDj4KTDSKYmJGyxmekA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="137892969"
-Received: from mnoman-mobl1.amr.corp.intel.com (HELO desk) ([10.125.145.99])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2025 20:33:00 -0800
-Date: Tue, 21 Jan 2025 20:32:48 -0800
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Tao Su <tao1.su@linux.intel.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, imammedo@redhat.com,
- xiaoyao.li@intel.com, zhao1.liu@linux.intel.com, xuelian.guo@intel.com
-Subject: Re: [PATCH 1/4] target/i386: Introduce SierraForest-v2 model
-Message-ID: <20250122043248.7dsnczy4rojyhdeg@desk>
-References: <20250121020650.1899618-1-tao1.su@linux.intel.com>
- <20250121020650.1899618-2-tao1.su@linux.intel.com>
- <20250121173458.udetzrvr7mq6pjce@desk>
- <Z5BG9aEO3zSg6Fkg@linux.bj.intel.com>
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111643454"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
+ ([10.124.247.1])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jan 2025 21:38:16 -0800
+Message-ID: <9d4df308-2dfd-4fa0-a19b-ccbbce13a2fc@intel.com>
+Date: Wed, 22 Jan 2025 13:38:14 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z5BG9aEO3zSg6Fkg@linux.bj.intel.com>
-Received-SPF: none client-ip=192.198.163.16;
- envelope-from=pawan.kumar.gupta@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -72
-X-Spam_score: -7.3
-X-Spam_bar: -------
-X-Spam_report: (-7.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/7] guest_memfd: Introduce an object to manage the
+ guest-memfd with RamDiscardManager
+To: Chenyi Qiang <chenyi.qiang@intel.com>, Peter Xu <peterx@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@amd.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
+ Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
+ Xu Yilun <yilun.xu@intel.com>
+References: <20241213070852.106092-3-chenyi.qiang@intel.com>
+ <d0b30448-5061-4e35-97ba-2d360d77f150@amd.com>
+ <80ac1338-a116-48f5-9874-72d42b5b65b4@intel.com>
+ <9dfde186-e3af-40e3-b79f-ad4c71a4b911@redhat.com>
+ <c1723a70-68d8-4211-85f1-d4538ef2d7f7@amd.com>
+ <f3aaffe7-7045-4288-8675-349115a867ce@redhat.com> <Z46GIsAcXJTPQ8yN@x1n>
+ <7e60d2d8-9ee9-4e97-8a45-bd35a3b7b2a2@redhat.com> <Z46W7Ltk-CWjmCEj@x1n>
+ <8e144c26-b1f4-4156-b959-93dc19ab2984@intel.com> <Z4_MvGSq2B4zptGB@x1n>
+ <c5148428-9ebe-4659-953c-6c9d0eea1051@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <c5148428-9ebe-4659-953c-6c9d0eea1051@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=198.175.65.15; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -63
+X-Spam_score: -6.4
+X-Spam_bar: ------
+X-Spam_report: (-6.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,35 +98,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 22, 2025 at 09:16:37AM +0800, Tao Su wrote:
-> On Tue, Jan 21, 2025 at 09:34:58AM -0800, Pawan Gupta wrote:
-> > On Tue, Jan 21, 2025 at 10:06:47AM +0800, Tao Su wrote:
-> > > Update SierraForest CPU model to add LAM, 4 bits indicating certain bits
-> > > of IA32_SPEC_CTR are supported(intel-psfd, ipred-ctrl, rrsba-ctrl,
-> > > bhi-ctrl) and the missing features(ss, tsc-adjust, cldemote, movdiri,
-> > > movdir64b)
-> > > 
-> > > Also add GDS-NO and RFDS-NO to indicate the related vulnerabilities are
-> > > mitigated in stepping 3.
-> > 
-> > Does this only apply to stepping 3? I don't think Sierra Forest was ever
-> > vulnerable to GDS and RFDS [1].
-> > 
+On 1/22/2025 11:28 AM, Chenyi Qiang wrote:
 > 
-> On the real machine, stepping 0 does not set GDS_NO and RFDS_NO, but
-> stepping 3 does.
-
-Ah, I see. Thanks for clarifying.
-
 > 
-> > There are many other vulnerabilities that Sierra Forest is not vulnerable to,
-> > is it really necessary to add the *_NO bits to CPU definitions?
-> > 
-> > [1] https://www.intel.com/content/www/us/en/developer/topic-technology/software-security-guidance/processors-affected-consolidated-product-cpu-model.html
+> On 1/22/2025 12:35 AM, Peter Xu wrote:
+>> On Tue, Jan 21, 2025 at 09:35:26AM +0800, Chenyi Qiang wrote:
+>>>
+>>>
+>>> On 1/21/2025 2:33 AM, Peter Xu wrote:
+>>>> On Mon, Jan 20, 2025 at 06:54:14PM +0100, David Hildenbrand wrote:
+>>>>> On 20.01.25 18:21, Peter Xu wrote:
+>>>>>> On Mon, Jan 20, 2025 at 11:48:39AM +0100, David Hildenbrand wrote:
+>>>>>>> Sorry, I was traveling end of last week. I wrote a mail on the train and
+>>>>>>> apparently it was swallowed somehow ...
+>>>>>>>
+>>>>>>>>> Not sure that's the right place. Isn't it the (cc) machine that controls
+>>>>>>>>> the state?
+>>>>>>>>
+>>>>>>>> KVM does, via MemoryRegion->RAMBlock->guest_memfd.
+>>>>>>>
+>>>>>>> Right; I consider KVM part of the machine.
+>>>>>>>
+>>>>>>>
+>>>>>>>>
+>>>>>>>>> It's not really the memory backend, that's just the memory provider.
+>>>>>>>>
+>>>>>>>> Sorry but is not "providing memory" the purpose of "memory backend"? :)
+>>>>>>>
+>>>>>>> Hehe, what I wanted to say is that a memory backend is just something to
+>>>>>>> create a RAMBlock. There are different ways to create a RAMBlock, even
+>>>>>>> guest_memfd ones.
+>>>>>>>
+>>>>>>> guest_memfd is stored per RAMBlock. I assume the state should be stored per
+>>>>>>> RAMBlock as well, maybe as part of a "guest_memfd state" thing.
+>>>>>>>
+>>>>>>> Now, the question is, who is the manager?
+>>>>>>>
+>>>>>>> 1) The machine. KVM requests the machine to perform the transition, and the
+>>>>>>> machine takes care of updating the guest_memfd state and notifying any
+>>>>>>> listeners.
+>>>>>>>
+>>>>>>> 2) The RAMBlock. Then we need some other Object to trigger that. Maybe
+>>>>>>> RAMBlock would have to become an object, or we allocate separate objects.
+>>>>>>>
+>>>>>>> I'm leaning towards 1), but I might be missing something.
+>>>>>>
+>>>>>> A pure question: how do we process the bios gmemfds?  I assume they're
+>>>>>> shared when VM starts if QEMU needs to load the bios into it, but are they
+>>>>>> always shared, or can they be converted to private later?
+>>>>>
+>>>>> You're probably looking for memory_region_init_ram_guest_memfd().
+>>>>
+>>>> Yes, but I didn't see whether such gmemfd needs conversions there.  I saw
+>>>> an answer though from Chenyi in another email:
+>>>>
+>>>> https://lore.kernel.org/all/fc7194ee-ed21-4f6b-bf87-147a47f5f074@intel.com/
+>>>>
+>>>> So I suppose the BIOS region must support private / share conversions too,
+>>>> just like the rest part.
+>>>
+>>> Yes, the BIOS region can support conversion as well. I think guest_memfd
+>>> backed memory regions all follow the same sequence during setup time:
+>>>
+>>> guest_memfd is shared when the guest_memfd fd is created by
+>>> kvm_create_guest_memfd() in ram_block_add(), But it will sooner be
+>>> converted to private just after kvm_set_user_memory_region() in
+>>> kvm_set_phys_mem(). So at the boot time of cc VM, the default attribute
+>>> is private. During runtime, the vBIOS can also do the conversion if it
+>>> wants.
+>>
+>> I see.
+>>
+>>>
+>>>>
+>>>> Though in that case, I'm not 100% sure whether that could also be done by
+>>>> reusing the major guest memfd with some specific offset regions.
+>>>
+>>> Not sure if I understand you clearly. guest_memfd is per-Ramblock. It
+>>> will have its own slot. So the vBIOS can use its own guest_memfd to get
+>>> the specific offset regions.
+>>
+>> Sorry to be confusing, please feel free to ignore my previous comment.
+>> That came from a very limited mindset that maybe one confidential VM should
+>> only have one gmemfd..
+>>
+>> Now I see it looks like it's by design open to multiple gmemfds for each
+>> VM, then it's definitely ok that bios has its own.
+>>
+>> Do you know why the bios needs to be convertable?  I wonder whether the VM
+>> can copy it over to a private region and do whatever it wants, e.g.  attest
+>> the bios being valid.  However this is also more of a pure question.. and
+>> it can be offtopic to this series, so feel free to ignore.
 > 
-> *_NO bits indicate processor is not affected by *, so adding these to the
-> CPU model will prevent the guest OS (using the CPU model) from trying to
-> use related software mitigation, which I think is reasonable.
+> AFAIK, the vBIOS won't do conversion after it is set as private at the
+> beginning. But in theory, the VM can do the conversion at runtime with
+> current implementation. As for why make the vBIOS convertable, I'm also
+> uncertain about it. Maybe convenient for managing the private/shared
+> status by guest_memfd as it's also converted once at the beginning.
 
-Ok, thanks. I got it mixed up with "-cpu host" option.
+The reason is just that we are too lazy to implement a variant of guest 
+memfd for vBIOS that is disallowed to be converted from private to shared.
+
+>>
+>> Thanks,
+>>
+> 
+
 
