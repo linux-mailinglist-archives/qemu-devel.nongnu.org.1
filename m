@@ -2,85 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8480EA19407
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 15:35:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F298EA1939A
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 15:16:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tabnl-0002vc-MQ; Wed, 22 Jan 2025 09:33:53 -0500
+	id 1tabVY-0007FL-EY; Wed, 22 Jan 2025 09:15:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tabnO-0002ui-JY
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 09:33:31 -0500
-Received: from mail-yb1-xb33.google.com ([2607:f8b0:4864:20::b33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tabnN-0007yw-09
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 09:33:30 -0500
-Received: by mail-yb1-xb33.google.com with SMTP id
- 3f1490d57ef6-e46c6547266so10020194276.3
- for <qemu-devel@nongnu.org>; Wed, 22 Jan 2025 06:33:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737556407; x=1738161207; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ILzJBeVeOJaRt3x33tApk0oBq1fwp9tG/YCqca+lHK8=;
- b=ufCx//4E5Y9H3ZCQYoPBxaOt7IIKlbGmheuvuQZzDOzP7kiUu13bg8XdtFO1eMOjnv
- NFUxa8Gb13InhDYulMvrAn4gkta2IZnEIuEZx+Jo8AnY1hXMq1CALqnUKvaQecPh1w8q
- Oq37NJ1FW8yUPNOif46beW5GpZhUjx6dHwphB9IoIxuT8Ki2/b5Y02RE6Rv/b8GHL9Qm
- TxbjRXULKu5/sCCbmuVl57ezWycO1DGqoD8OufZUcKOZaOIIgQmcZ4IaPczo0n6q9q6h
- p8a0WP5aeD6rPG5vRtLXXc1aJCMX/z5RpW+jxnnHysFBmtki7+CVNFLboA/QYJfFWhuz
- C79A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737556407; x=1738161207;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ILzJBeVeOJaRt3x33tApk0oBq1fwp9tG/YCqca+lHK8=;
- b=G5utj7Ur7Es4Hh0vuvUfMGFBKfSD8Zu3+8VZwgCU1akGaHLKpMXOpc5FYKNCT2Hx/m
- BMSMK+fxiIr71V82iujDUlvMohdYdw8WhkHBGyAtx7t68Tdxz54Vcqa6LTf8MDynGsO3
- F08fLNtVwp8WJCZS8JN1SLv7I+1hxAVrJmwKKGOCBFJHduqXI4uaZcld04XRprad1kue
- rkev5F70XhKwBWK/ncotyayEc3Q6e5N3XZNoxyMLNuj1Pmb9769H/38oZiL2Tfa3v3sC
- m9lzTY8IhVpAIqJEP8Rzxc/dVpsvuI/W2/u/5WVhMl7yvFxAIdbCwMFmcRko/8h6ILuJ
- ffOw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVzVObZbSO7RuWf7MpoQ0fOn13/XJyRtgkj5Ka6NxqtDsw49A5Qh6M5UqDDlfjMRxTpzZL6/Pv6LPu7@nongnu.org
-X-Gm-Message-State: AOJu0YwQByIDSkrHHMpo65rjcquoQOBJeVapINLLio2S8FGxzXa/igUY
- Kj0Mm9fECky0xotb2Pd9Bc8lKMXFqZw11Kx3FfiXm7dvEwtdY3HGQCAg/ZSvKEv+Sl2Zz9C76nN
- BdnDIatObREqA+CR7QD92CBmvHJmAjguCriFmcw==
-X-Gm-Gg: ASbGncv0I7OKBymWNYtPJsEqh1cYMNwsFQ2hlaq5dxs4U75A+aRBVVf6YHtH9EsA/H/
- F36yXNOApdQOHinMBoLSllZf7cF07J3k726dElqS54oRG8ivOVDCM
-X-Google-Smtp-Source: AGHT+IFVL8AtuKGf7k45657vuRUJUq7An+jskfJi1SyJiVO60AbiRFok5TWAQiQPPSowUpindKJtIsMrlbu1TfeabG4=
-X-Received: by 2002:a25:d34a:0:b0:e57:d22a:1914 with SMTP id
- 3f1490d57ef6-e57d22a1a98mr9243264276.16.1737556407155; Wed, 22 Jan 2025
- 06:33:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tabVM-0007EY-D6; Wed, 22 Jan 2025 09:14:54 -0500
+Received: from mgamail.intel.com ([198.175.65.9])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tabVI-0000KD-0F; Wed, 22 Jan 2025 09:14:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1737555288; x=1769091288;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=4XkzYjEnxy/zWhUwK1HhvVt/+RjVEjrPXsIrPO1Wp70=;
+ b=KdgN4V1OVAKgRvoL5eQ9SySrIWH0mW602L5gtFgMwxD4wers406BE/N/
+ GKOaLWOUKJSaFBZ8BviB1SEIk0adjoqDKBNlxOOHMHWt4K/1d7D8hTeTZ
+ BByrAXPVm/UcOpmXxFa+MBfxtHeK7sFzPl7PmVpoz0j18fx8VtoHef164
+ d5usjG2axydyGL0LR2sVNwMAimBWt+evQD2R0Jj97OEaHP59EPnNA+77Q
+ y1KWL05YjmNkyDL8YXYbVTSMN89TvrNqn4JtZthGV3FSFa/1tGG4JdCVN
+ hRQXFAfwDeyhL5obJ1nfneg50J+YXpUx54mymhFjJlu4j2qFyFP2jZW9w w==;
+X-CSE-ConnectionGUID: YB08vuguR3moz3MCf0b70w==
+X-CSE-MsgGUID: 1TBSVX9cRs2YyT24VAGjhw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="60481649"
+X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="60481649"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 06:14:44 -0800
+X-CSE-ConnectionGUID: N/9jOM56Smetn/r1qf3CIg==
+X-CSE-MsgGUID: rnsDzu+sQ1eOZMPTFGme+A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="112182940"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa004.jf.intel.com with ESMTP; 22 Jan 2025 06:14:43 -0800
+Date: Wed, 22 Jan 2025 22:34:05 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 03/10] rust: pl011: extract conversion to RegisterOffset
+Message-ID: <Z5EB3b0VqvqxUaWm@intel.com>
+References: <20250117092657.1051233-1-pbonzini@redhat.com>
+ <20250117092657.1051233-4-pbonzini@redhat.com>
 MIME-Version: 1.0
-References: <20250122103223.55523-1-philmd@linaro.org>
- <6393ca88-0613-415e-8178-18a34778b2ab@redhat.com>
-In-Reply-To: <6393ca88-0613-415e-8178-18a34778b2ab@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 22 Jan 2025 14:33:15 +0000
-X-Gm-Features: AbW1kvaNKBFSOoDang2ocA2MTL_mQ3HqVlrsCrKIuJElqBfV3yrn1D-l1GHiPFg
-Message-ID: <CAFEAcA-+9xhH+gXWGfN9bN=rnsShyRs0i+Kd0NDfMYrSNVbF4w@mail.gmail.com>
-Subject: Re: [PATCH] hw/boards: Convert MachineClass bitfields to boolean
-To: Thomas Huth <thuth@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b33;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb33.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250117092657.1051233-4-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -73
+X-Spam_score: -7.4
+X-Spam_bar: -------
+X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,57 +79,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 22 Jan 2025 at 12:36, Thomas Huth <thuth@redhat.com> wrote:
->
-> On 22/01/2025 11.32, Philippe Mathieu-Daud=C3=A9 wrote:
-> > As Daniel mentioned:
-> >
-> >   "The number of instances of MachineClass is not large enough
-> >    that we save a useful amount of memory through bitfields."
-> >
-> > Also, see recent commit ecbf3567e21 ("docs/devel/style: add a
-> > section about bitfield, and disallow them for packed structures").
-> >
-> > Convert the MachineClass bitfields used as boolean as real ones.
-> >
-> > Suggested-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> > ---
-> >   include/hw/boards.h        | 14 +++++++-------
-> >   hw/arm/aspeed.c            |  6 +++---
-> >   hw/arm/fby35.c             |  4 ++--
-> >   hw/arm/npcm7xx_boards.c    |  6 +++---
-> >   hw/arm/raspi.c             |  6 +++---
-> >   hw/arm/sbsa-ref.c          |  2 +-
-> >   hw/arm/virt.c              |  2 +-
-> >   hw/arm/xilinx_zynq.c       |  2 +-
-> >   hw/avr/arduino.c           |  6 +++---
-> >   hw/core/null-machine.c     | 10 +++++-----
-> >   hw/i386/microvm.c          |  2 +-
-> >   hw/i386/pc_piix.c          |  2 +-
-> >   hw/i386/pc_q35.c           |  4 ++--
-> >   hw/loongarch/virt.c        |  2 +-
-> >   hw/m68k/virt.c             |  6 +++---
-> >   hw/ppc/pnv.c               |  2 +-
-> >   hw/ppc/spapr.c             |  2 +-
-> >   hw/riscv/virt.c            |  2 +-
-> >   hw/s390x/s390-virtio-ccw.c |  8 ++++----
-> >   hw/xtensa/sim.c            |  2 +-
-> >   20 files changed, 45 insertions(+), 45 deletions(-)
->
-> So if you are touching all these files, why not go with an even more
-> meaningful rework instead? Flip the meaning of the "no_*" flags to the
-> opposite, so that we e.g. have "has_default_cdrom" instead of "no_cdrom",
-> then new boards would not have to remember to set these ugly "no_" flags
-> anymore. It's quite a bit of work, but it could certainly be helpful in t=
-he
-> long run.
+On Fri, Jan 17, 2025 at 10:26:50AM +0100, Paolo Bonzini wrote:
+> Date: Fri, 17 Jan 2025 10:26:50 +0100
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 03/10] rust: pl011: extract conversion to RegisterOffset
+> X-Mailer: git-send-email 2.47.1
+> 
+> As an added bonus, this also makes the new function return u32 instead
+> of u64, thus factoring some casts into a single place.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  rust/hw/char/pl011/src/device.rs | 114 +++++++++++++++++--------------
+>  1 file changed, 63 insertions(+), 51 deletions(-)
 
-Well, that depends on what you think the default for new
-boards should be. I suspect these are all no_foo because
-when they were put in the idea was "all boards should
-be default have a foo, and 'this board defaults to not
-having a foo' is the rarer special case it has to set"...
+[snip]
 
--- PMM
+> -    pub fn read(&mut self, offset: hwaddr, _size: c_uint) -> std::ops::ControlFlow<u64, u64> {
+> +    fn regs_read(&mut self, offset: RegisterOffset) -> ControlFlow<u32, u32> {
+>          use RegisterOffset::*;
+
+Can we move this "use" to the start of the file?
+
+IMO, placing it in the local scope appears unnecessary and somewhat
+fragmented.
+
+> -        let value = match RegisterOffset::try_from(offset) {
+> -            Err(v) if (0x3f8..0x400).contains(&(v >> 2)) => {
+> -                let device_id = self.get_class().device_id;
+> -                u32::from(device_id[(offset - 0xfe0) >> 2])
+> -            }
+> -            Err(_) => {
+> -                // qemu_log_mask(LOG_GUEST_ERROR, "pl011_read: Bad offset 0x%x\n", (int)offset);
+> -                0
+> -            }
+> -            Ok(DR) => {
+> +        std::ops::ControlFlow::Break(match offset {
+
+std::ops can be omitted now.
+
+> +            DR => {
+>                  self.flags.set_receive_fifo_full(false);
+>                  let c = self.read_fifo[self.read_pos];
+>                  if self.read_count > 0 {
+
+[snip]
+
+> -    pub fn write(&mut self, offset: hwaddr, value: u64) {
+> +    fn regs_write(&mut self, offset: RegisterOffset, value: u32) {
+>          // eprintln!("write offset {offset} value {value}");
+>          use RegisterOffset::*;
+> -        let value: u32 = value as u32;
+> -        match RegisterOffset::try_from(offset) {
+> -            Err(_bad_offset) => {
+> -                eprintln!("write bad offset {offset} value {value}");
+> -            }
+> -            Ok(DR) => {
+> +        match offset {
+> +            DR => {
+>                  // ??? Check if transmitter is enabled.
+>                  let ch: u8 = value as u8;
+>                  // XXX this blocks entire thread. Rewrite to use
+> @@ -290,22 +277,22 @@ pub fn write(&mut self, offset: hwaddr, value: u64) {
+>                  self.int_level |= registers::INT_TX;
+>                  self.update();
+>              }
+> -            Ok(RSR) => {
+> -                self.receive_status_error_clear.reset();
+> +            RSR => {
+> +                self.receive_status_error_clear = 0.into();
+
+Emm, why do we use 0.into() instead of reset() here? It looks they're
+same.
+
+[snip]
+
+> @@ -562,6 +549,31 @@ pub fn post_load(&mut self, _version_id: u32) -> Result<(), ()> {
+>  
+>          Ok(())
+>      }
+> +
+> +    pub fn read(&mut self, offset: hwaddr, _size: u32) -> ControlFlow<u64, u64> {
+
+Maybe pub(crate)? But both are fine for me :-)
+
+> +        match RegisterOffset::try_from(offset) {
+> +            Err(v) if (0x3f8..0x400).contains(&(v >> 2)) => {
+> +                let device_id = self.get_class().device_id;
+> +                ControlFlow::Break(u64::from(device_id[(offset - 0xfe0) >> 2]))
+> +            }
+> +            Err(_) => {
+> +                // qemu_log_mask(LOG_GUEST_ERROR, "pl011_read: Bad offset 0x%x\n", (int)offset);
+> +                ControlFlow::Break(0)
+> +            }
+> +            Ok(field) => match self.regs_read(field) {
+> +                ControlFlow::Break(value) => ControlFlow::Break(value.into()),
+> +                ControlFlow::Continue(value) => ControlFlow::Continue(value.into()),
+> +            }
+> +        }
+> +    }
+> +
+
+Look good to me,
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
 
