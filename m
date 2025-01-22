@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59412A18E6F
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 10:33:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 331CCA18E68
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 10:32:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taX4a-0001JO-BH; Wed, 22 Jan 2025 04:30:56 -0500
+	id 1taX4c-0001PC-Gz; Wed, 22 Jan 2025 04:30:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taX4S-0001DO-9d
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 04:30:49 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taX4U-0001FV-Vz
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 04:30:52 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taX4L-0003Cn-R7
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 04:30:43 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4361b0ec57aso68496625e9.0
- for <qemu-devel@nongnu.org>; Wed, 22 Jan 2025 01:30:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taX4S-0003Da-3J
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 04:30:50 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-437a92d7b96so65653335e9.2
+ for <qemu-devel@nongnu.org>; Wed, 22 Jan 2025 01:30:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737538240; x=1738143040; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737538244; x=1738143044; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Exwv2SUshKwTjHy8msyqoapLFQlZN2ZYaumIRAoksx4=;
- b=B1uWhsUUirJqiJilOepJQOlg7boSiweOkSghn3oQgmW9JtU97oDI1cItnVqnQETQDk
- I3A76BEv19VAc/qvdzpu3ktDh2psEaXAdfsDB5LgTblxJgQSHmfe2vNs2tOu60v7mV0R
- gUbs2VppR2m+l7S7XvapLgWCbFlEQRFy5ZV9v5Qd3JxsQzUP8AWcZ4669YUs1YK3VRnO
- 9yQ98+471ewyNTmFqHf447h+7AkuP63rirubYaHuHMZVbKfeszDCQrNivCbBWx+EukX4
- VsFqxi4olRm/zdNQYoIIJeo78NEFVlcg6vhhvMF3aKKCKNAKA+iW1mDcSjqFf08/D7PL
- z50w==
+ bh=JSvw35u1c/GeD9pKIKqf6WHVcOBbPhJhoq/j5sOwl2I=;
+ b=d5Kprf1hmbAcIK7tj2CBTj44Kwb1h2fIzgDGVgiZvPWesGLHtSQizNTS52iZyB/yqS
+ sXdtZsvf4DH/mDJoyRJJGUqn+cmeFkrFS19xDN4SsDw+jTmV1AdRuwSaBI/3ix41kxtl
+ 1e42p+PHljs50DU8Alw/UyHpoclK9/iohldsy6XIgGHoFO+CcE/zSdk/90bpwkXotsIf
+ F+UAluw5Yud6VTdTjgBq1rb6PcEERWZyVFF+N/xFzR/TzeNa0T+7ArvXiV28j8TldE49
+ Y8sBhB5y/0n7ScZZ7IEur2RSHC8PWyHaVn2WyB6sd7+4Bkwmv0lc+dkf+jDZTT/4awzq
+ YSnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737538240; x=1738143040;
+ d=1e100.net; s=20230601; t=1737538244; x=1738143044;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Exwv2SUshKwTjHy8msyqoapLFQlZN2ZYaumIRAoksx4=;
- b=Cn27QaeE2TyF4kPPEWDZ0oT+N/zLI15cOnzH1OD+PNnyRvFS2DDEYDFUTzK4zF3Udd
- j/lhKPTMVsQNnflPypfMu0yMWS4ysLinLLUojNJdM8eQgp55+IyaP5sAlCz91f2RY8UM
- vtym9qP4pZNdYvEWh+SO2O8qYi4yblaV6vV18lnrguXUBfYhur6qheiClGwmynXt49mv
- 3gEebzz6AEnCgOsffdEmIeEUZUO9uVXKOptPEbA699bxcK7yWbe3OixHvCykNpIoctp+
- uSE/ta7j8461YjBwfpd3PaKyngTwTSLp7/zAcTtTZ4qrIEJaJtcugvjme6vWH7DMx0OL
- ilRg==
-X-Gm-Message-State: AOJu0Yx5+Bs5wPVKRLrrqbUpdhXdA38FUBoAko0mZoT+hkkcaxVpVgJC
- 3WBZhbdKPdFaH8cTvItt6IAIHV8XZ7lP5JrJOw2MUzYwMp+RkmjHHAw4W1GSu2WavaNNAs7saYf
- ocZI=
-X-Gm-Gg: ASbGnct2+b34Ok4VYqbiRkHWYACL1YzoNYh/n5k7bLDVgupW2fCCj6TqFozgcsX2di+
- x7/Y9nwtwO4SdtdBvbw+2OUXPftYFywE2Ta87lFcl6xlKYE8LHVPwI0X/87n7HVrM5wmplUBz1c
- 8jLZ3grN2AYyjJiXJ75mOD8x8QMJJUGQKjRmqBtXcS6B+LcO+9qCCl4EtYiRIX5B0l2+xuEAzwN
- 2IZklNHfPHBDWEjlB1HG4/srWgqZLRGQdqfYEsbD2psI5kFDy1YN5FOQYqAI4wUxfQ7GedQkhYs
- nxO1q9xiCrSd7lyc07jz7k3jO4mVzsUqpQebzx58kCYj
-X-Google-Smtp-Source: AGHT+IEZYV0UXoFjfU+tl1VOkpos+WFwna6iC8gUcKm8PVyAYHRasOGF7v+cm7JbdRsSBECp5+5ksg==
-X-Received: by 2002:a05:600c:ccc:b0:436:1bbe:f686 with SMTP id
- 5b1f17b1804b1-4389141c073mr153240065e9.21.1737538239766; 
- Wed, 22 Jan 2025 01:30:39 -0800 (PST)
+ bh=JSvw35u1c/GeD9pKIKqf6WHVcOBbPhJhoq/j5sOwl2I=;
+ b=oIxQqeQ5kh3ZVCKwcjykfeI9IWoamBUh/5zXdLNXfvwE6rV32YEzE5/ZF4VaArE84M
+ 1JVG4hCRPUgSiP/2124865QpWOXO512Lp+zN2Eir7aNpGd/MWeVq35sd3ElNMq+mINWS
+ PyhTECY663KPlwdVEAqW+YzjhGjyhZgQ7zKch/mJO48rEGNb+EI1M0uFCIbFCeJs8wBd
+ o8dnPSSQrFBPdO4TRB4t8fAs164jvyRdocROEr4/b/y79gsKIjKSjA5vlR7qMj2NfMM+
+ aiE3ZKZZszT62qCg8jq/+6TS/lgOatSEuixEd94KeTw5c5Oe+aFwRzmwyxNaXm9FLbwq
+ G9KQ==
+X-Gm-Message-State: AOJu0YxYc7zFCob6UIQdYW76jdfQuqLnj7ugOVPkjeD0RdaFBVYZJD1L
+ oqv8Y9eB+Yt5KamJ1+YvdE+5dV3pG4MxHzRW1sT4Da/yXSeLsKDNZiLODo6W6pn6nLdn6lWPeGK
+ FEjI=
+X-Gm-Gg: ASbGncuR5mlo3gjPCi/5zntcvX8411g9AR0DbyQS4O5hhthQGtutM59PlIGaxJj6ZfN
+ fw5yf4lPRZop9LPnocfrktO4TNSkJ21dksnmW3BmV2KRpQxqoZLNa36fMbhW5faQfavtAkiORVh
+ yK1NcKDmON2DAwAvVIxr7/Aw0Ey5IEbNkIfHvbq3uBMs8bDnvKTT1cFETmidSXO0MFbRnbRuMoi
+ 1akDfcEoa2G6hGvxk3XiKKuX57BbOgSej2t5ZMuZUvu4be5CcTQJ/zq9r5sWMpvsOb+F2H5BCcP
+ Wb1svjJeDvWsv6klGsoW8Y8+5VvMfqfuCkkoFXNsJR+b
+X-Google-Smtp-Source: AGHT+IHiUZIdO9A6w16zxh/DaE5cD8lYprARYeJQ+U96OYFnahGVEXjmjwj0vMVEtFkeOyFPL/1N+w==
+X-Received: by 2002:a05:600c:3593:b0:431:5632:448b with SMTP id
+ 5b1f17b1804b1-4389144eed4mr166894525e9.25.1737538244298; 
+ Wed, 22 Jan 2025 01:30:44 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438b31afb70sm17224715e9.19.2025.01.22.01.30.39
+ 5b1f17b1804b1-438b31a1e7fsm17313825e9.10.2025.01.22.01.30.43
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 22 Jan 2025 01:30:39 -0800 (PST)
+ Wed, 22 Jan 2025 01:30:43 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 02/10] gdbstub: Clarify no more than @gdb_num_core_regs can
- be accessed
-Date: Wed, 22 Jan 2025 10:30:20 +0100
-Message-ID: <20250122093028.52416-3-philmd@linaro.org>
+Subject: [PATCH v2 03/10] cpus: Cache CPUClass early in instance_init() handler
+Date: Wed, 22 Jan 2025 10:30:21 +0100
+Message-ID: <20250122093028.52416-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250122093028.52416-1-philmd@linaro.org>
 References: <20250122093028.52416-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,92 +98,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both CPUClass::gdb_read_register() and CPUClass::gdb_write_register()
-handlers are called from common gdbstub code, and won't be called with
-register index over CPUClass::gdb_num_core_regs:
-
-  int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
-  {
-      CPUClass *cc = CPU_GET_CLASS(cpu);
-
-      if (reg < cc->gdb_num_core_regs) {
-          return cc->gdb_read_register(cpu, buf, reg);
-      }
-      ...
-  }
-
-  static int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
-  {
-      CPUClass *cc = CPU_GET_CLASS(cpu);
-
-      if (reg < cc->gdb_num_core_regs) {
-          return cc->gdb_write_register(cpu, mem_buf, reg);
-      }
-      ...
-  }
-
-Clarify that in CPUClass docstring, and remove unreachable code on
-the microblaze and tricore implementations.
+Cache CPUClass as early as possible, when the instance
+is initialized.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/core/cpu.h       | 2 ++
- target/microblaze/gdbstub.c | 5 -----
- target/openrisc/gdbstub.c   | 5 -----
- 3 files changed, 2 insertions(+), 10 deletions(-)
+ cpu-target.c         | 3 ---
+ hw/core/cpu-common.c | 3 +++
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index fb397cdfc53..7b6b22c431b 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -124,7 +124,9 @@ struct SysemuCPUOps;
-  * @get_pc: Callback for getting the Program Counter register.
-  *       As above, with the semantics of the target architecture.
-  * @gdb_read_register: Callback for letting GDB read a register.
-+ *                     No more than @gdb_num_core_regs registers can be read.
-  * @gdb_write_register: Callback for letting GDB write a register.
-+ *                     No more than @gdb_num_core_regs registers can be written.
-  * @gdb_adjust_breakpoint: Callback for adjusting the address of a
-  *       breakpoint.  Used by AVR to handle a gdb mis-feature with
-  *       its Harvard architecture split code and data.
-diff --git a/target/microblaze/gdbstub.c b/target/microblaze/gdbstub.c
-index 09d74e164d0..d493681d38d 100644
---- a/target/microblaze/gdbstub.c
-+++ b/target/microblaze/gdbstub.c
-@@ -110,14 +110,9 @@ int mb_cpu_gdb_read_stack_protect(CPUState *cs, GByteArray *mem_buf, int n)
+diff --git a/cpu-target.c b/cpu-target.c
+index 667688332c9..89874496a41 100644
+--- a/cpu-target.c
++++ b/cpu-target.c
+@@ -134,9 +134,6 @@ const VMStateDescription vmstate_cpu_common = {
  
- int mb_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+ bool cpu_exec_realizefn(CPUState *cpu, Error **errp)
  {
--    CPUClass *cc = CPU_GET_CLASS(cs);
-     CPUMBState *env = cpu_env(cs);
-     uint32_t tmp;
- 
--    if (n > cc->gdb_num_core_regs) {
--        return 0;
--    }
+-    /* cache the cpu class for the hotpath */
+-    cpu->cc = CPU_GET_CLASS(cpu);
 -
-     tmp = ldl_p(mem_buf);
- 
-     switch (n) {
-diff --git a/target/openrisc/gdbstub.c b/target/openrisc/gdbstub.c
-index c2a77d5d4d5..45bba80d878 100644
---- a/target/openrisc/gdbstub.c
-+++ b/target/openrisc/gdbstub.c
-@@ -47,14 +47,9 @@ int openrisc_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- 
- int openrisc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+     if (!accel_cpu_common_realize(cpu, errp)) {
+         return false;
+     }
+diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+index cb79566cc51..ff605059c15 100644
+--- a/hw/core/cpu-common.c
++++ b/hw/core/cpu-common.c
+@@ -238,6 +238,9 @@ static void cpu_common_initfn(Object *obj)
  {
--    CPUClass *cc = CPU_GET_CLASS(cs);
-     CPUOpenRISCState *env = cpu_env(cs);
-     uint32_t tmp;
+     CPUState *cpu = CPU(obj);
  
--    if (n > cc->gdb_num_core_regs) {
--        return 0;
--    }
--
-     tmp = ldl_p(mem_buf);
- 
-     if (n < 32) {
++    /* cache the cpu class for the hotpath */
++    cpu->cc = CPU_GET_CLASS(cpu);
++
+     gdb_init_cpu(cpu);
+     cpu->cpu_index = UNASSIGNED_CPU_INDEX;
+     cpu->cluster_index = UNASSIGNED_CLUSTER_INDEX;
 -- 
 2.47.1
 
