@@ -2,69 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14002A18C95
+	by mail.lfdr.de (Postfix) with ESMTPS id E4455A18C96
 	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 08:11:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taUrp-00054p-UQ; Wed, 22 Jan 2025 02:09:38 -0500
+	id 1taUrp-00053i-JM; Wed, 22 Jan 2025 02:09:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1taUrf-0004tg-2Q
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1taUrg-0004ty-64
  for qemu-devel@nongnu.org; Wed, 22 Jan 2025 02:09:28 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1taUrd-0008MK-MV
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 02:09:26 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1taUre-0008MS-GC
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 02:09:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1737529765;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=a5zRK4w93ha2FoItkWXVYXXXZYKCxwCxJZ1l8gtg9Sk=;
- b=FrI8KKJbrmjI9dUwfo6LAFNcdIpNsz2kj9z8drW77LztbHIrR+qbT/f5AwrW81AsKPbKSD
- BK+7/mghbRmC3DHg4OgWYLiG6yR74p7dM24nlwnFpMFYFCw5Cceq4FIAzubZwf1u9xW7tt
- QyvUG9IFMnezYd5BEF67RAJvMYwbj6w=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ifvU6q0Cr9WI7jkOBvYCbrw0QaRB0v618Dxm7o9kGgE=;
+ b=JiX/5tbHGAlteHP3Ih84XneCZGs3ZrfOWJfgpw9HyO/eU39tVMISd6ajPlPa2czbWRt/it
+ R5HkVyDdG2hzA5KugjrqxmjWROcDPqkHsA0gT6DpuQOSXx3axDGAz65HIqFHqDOBcQt7BL
+ nxnzgzPyb+NrasKpAMJ/LpNFx3A9uek=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-401-QdS95OjrOSutfgnV-LUefg-1; Wed,
- 22 Jan 2025 02:09:19 -0500
-X-MC-Unique: QdS95OjrOSutfgnV-LUefg-1
-X-Mimecast-MFC-AGG-ID: QdS95OjrOSutfgnV-LUefg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-48-10Ns6XEVOne-piBszQVrFg-1; Wed,
+ 22 Jan 2025 02:09:22 -0500
+X-MC-Unique: 10Ns6XEVOne-piBszQVrFg-1
+X-Mimecast-MFC-AGG-ID: 10Ns6XEVOne-piBszQVrFg
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B03CB1956050; Wed, 22 Jan 2025 07:09:15 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8F466195608B; Wed, 22 Jan 2025 07:09:20 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.154])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7C3763003E7F; Wed, 22 Jan 2025 07:09:11 +0000 (UTC)
+ id 1CBA23003FD1; Wed, 22 Jan 2025 07:09:15 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Joel Stanley <joel@jms.id.au>,
  Andrew Jeffery <andrew@codeconstruct.com.au>,
  Troy Lee <troy_lee@aspeedtech.com>, Jamin Lin <jamin_lin@aspeedtech.com>,
- Steven Lee <steven_lee@aspeedtech.com>,
+ Steven Lee <steven_lee@aspeedtech.com>, Kenneth Jia <kenneth_jia@asus.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH 0/9] aspeed: pre-PR for QEMU 10.0 (RESEND)
-Date: Wed, 22 Jan 2025 08:09:00 +0100
-Message-ID: <20250122070909.1138598-1-clg@redhat.com>
+Subject: [PATCH 1/9] hw/arm/aspeed: fix connect_serial_hds_to_uarts
+Date: Wed, 22 Jan 2025 08:09:01 +0100
+Message-ID: <20250122070909.1138598-2-clg@redhat.com>
+In-Reply-To: <20250122070909.1138598-1-clg@redhat.com>
+References: <20250122070909.1138598-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
+X-Spam_score_int: -51
+X-Spam_score: -5.2
 X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.086,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -82,46 +85,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+From: Kenneth Jia <kenneth_jia@asus.com>
 
-Here are the changes I plan to send as a PR for QEMU 10.0, this week
-or the next. The last 3 patches still need a review. An Ack would be
-appreciated.
+In the loop, we need ignore the index increase when uart == uart_chosen
+We should increase the index only after we allocate a serial.
 
-Thanks,
+Signed-off-by: Kenneth Jia <kenneth_jia@asus.com>
+Fixes: d2b3eaefb4d7 ("aspeed: Refactor UART init for multi-SoC machines")
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Link: https://lore.kernel.org/r/5f9b0c53f1644922ba85522046e92f4c@asus.com
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ hw/arm/aspeed.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-C.
-
-Cédric Le Goater (3):
-  test/functional: Update the Aspeed aarch64 test
-  test/functional: Update buildroot images to 2024.11
-  aspeed: Create sd devices only when defaults are enabled
-
-Jamin Lin (5):
-  hw/sd/sdhci: Introduce a new Write Protected pin inverted property
-  hw/arm/aspeed: Invert sdhci write protected pin for AST2600 EVB
-  hw/timer/aspeed: Refactor Timer Callbacks for SoC-Specific
-    Implementations
-  hw/timer/aspeed: Add AST2700 Support
-  aspeed/soc: Support Timer for AST2700
-
-Kenneth Jia (1):
-  hw/arm/aspeed: fix connect_serial_hds_to_uarts
-
- include/hw/arm/aspeed.h                     |   1 +
- include/hw/sd/sdhci.h                       |   5 +
- include/hw/timer/aspeed_timer.h             |   1 +
- hw/arm/aspeed.c                             |  15 +-
- hw/arm/aspeed_ast27x0.c                     |  17 ++
- hw/sd/sdhci.c                               |   6 +
- hw/timer/aspeed_timer.c                     | 263 ++++++++++++++++++--
- hw/timer/trace-events                       |   2 +-
- tests/functional/aspeed.py                  |   2 +-
- tests/functional/test_aarch64_aspeed.py     |   8 +-
- tests/functional/test_arm_aspeed_ast2500.py |   8 +-
- tests/functional/test_arm_aspeed_ast2600.py |   8 +-
- 12 files changed, 303 insertions(+), 33 deletions(-)
-
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index a18d4ed1fb10..2662465ada4f 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -364,11 +364,11 @@ static void connect_serial_hds_to_uarts(AspeedMachineState *bmc)
+     int uart_chosen = bmc->uart_chosen ? bmc->uart_chosen : amc->uart_default;
+ 
+     aspeed_soc_uart_set_chr(s, uart_chosen, serial_hd(0));
+-    for (int i = 1, uart = sc->uarts_base; i < sc->uarts_num; i++, uart++) {
++    for (int i = 1, uart = sc->uarts_base; i < sc->uarts_num; uart++) {
+         if (uart == uart_chosen) {
+             continue;
+         }
+-        aspeed_soc_uart_set_chr(s, uart, serial_hd(i));
++        aspeed_soc_uart_set_chr(s, uart, serial_hd(i++));
+     }
+ }
+ 
 -- 
 2.48.1
 
