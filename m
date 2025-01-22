@@ -2,77 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 645FEA19020
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 11:47:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD238A18FC0
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 11:31:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taYFN-0006Ar-Ax; Wed, 22 Jan 2025 05:46:09 -0500
+	id 1taXzt-0001WK-TB; Wed, 22 Jan 2025 05:30:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1taYF8-00068b-Mg
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 05:45:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1taXzm-0001Ri-6P; Wed, 22 Jan 2025 05:30:05 -0500
+Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1taYF5-00038A-KS
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 05:45:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737542751;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=H0ezmLNRc+dY13l3WQ1ASeSxqFaS+7aY1B9Ht/jPH1o=;
- b=E8qHCBOrdv8hCfXXj5OTCy9JRQr+NHJ3RcmOmcQb3hg7VNMgPa5d3bPSAPWrJYbnRO8Ar6
- FJXSuHQNUxI7g/MpUHSEWv1izaYIbReMPjFtlstrmnmL8Muw6SY/nXg+pzgjaZcb5Idyh2
- UjT/WvB4ysL/Gu42T4t9u20qNmGkQMQ=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-686--Nls20rgMRuffKSpAerpVw-1; Wed,
- 22 Jan 2025 05:45:45 -0500
-X-MC-Unique: -Nls20rgMRuffKSpAerpVw-1
-X-Mimecast-MFC-AGG-ID: -Nls20rgMRuffKSpAerpVw
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0E8CF19560A2; Wed, 22 Jan 2025 10:45:44 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.43])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C5593195608E; Wed, 22 Jan 2025 10:45:40 +0000 (UTC)
-Date: Wed, 22 Jan 2025 10:45:37 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- qemu-riscv@nongnu.org, qemu-arm@nongnu.org
-Subject: Re: [PATCH] hw/boards: Convert MachineClass bitfields to boolean
-Message-ID: <Z5DMUVoEcaO4Mzp2@redhat.com>
-References: <20250122103223.55523-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1taXzj-0004oO-UD; Wed, 22 Jan 2025 05:30:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1737541800; x=1769077800;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=1RrwgssKEK25K5PKpW3gE7SUjcQRKfYVJLxYPvUtzXs=;
+ b=lr2YXheGk35ggB8PqkuBxd2DfP87ZbjYK5V9uB6+6EJ8AN5WJe6JGZYj
+ 63vUV3MYc4ow6IWJkhgl5QQnJSsYtotTDMp8G/8gLk5PiamcX/LYQ2cH/
+ PtPvw8MD7b7K52LvKwZWw9L/41KX2oN5KjQ3BkSVtKNoA/AZcxymvNyoV
+ N5Ib34xYDEaFN2iCwIQUCXum7Z1m8Hv9c1bgEKPJcHGLh++XUHSSkMFXW
+ PzUnfrioHuCq2TUqVjjg5Jhe1ejI21IOp35yhnE7hP8DBS53WmzrBx0Zk
+ wOfZrxoJv2jTOVcxQNK0jNv4gzaHCBxQw3UiJIl6pvbbWY58HPb72shay g==;
+X-CSE-ConnectionGUID: iPJpMT1rSHCI5ZCusGHX3Q==
+X-CSE-MsgGUID: ewDfMeX9R4u+WPGMVoV63w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="38094458"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="38094458"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 02:29:56 -0800
+X-CSE-ConnectionGUID: kU6RKQHITXmGjFJ5tuFb2w==
+X-CSE-MsgGUID: 8kHla6krQGmHLigG0NV5TQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,224,1732608000"; d="scan'208";a="112128098"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa004.jf.intel.com with ESMTP; 22 Jan 2025 02:29:55 -0800
+Date: Wed, 22 Jan 2025 18:49:17 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 02/10] rust: vmstate: implement VMState for non-leaf types
+Message-ID: <Z5DNLaEkklbInqh9@intel.com>
+References: <20250117090046.1045010-1-pbonzini@redhat.com>
+ <20250117090046.1045010-3-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250122103223.55523-1-philmd@linaro.org>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+In-Reply-To: <20250117090046.1045010-3-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.18; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -73
+X-Spam_score: -7.4
+X-Spam_bar: -------
+X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.086,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,64 +76,25 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 22, 2025 at 11:32:23AM +0100, Philippe Mathieu-Daudé wrote:
-> As Daniel mentioned:
+On Fri, Jan 17, 2025 at 10:00:38AM +0100, Paolo Bonzini wrote:
+> Date: Fri, 17 Jan 2025 10:00:38 +0100
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 02/10] rust: vmstate: implement VMState for non-leaf types
+> X-Mailer: git-send-email 2.47.1
 > 
->  "The number of instances of MachineClass is not large enough
->   that we save a useful amount of memory through bitfields."
+> Arrays, pointers and cells use a VMStateField that is based on that
+> for the inner type.  The implementation therefore delegates to the
+> VMState implementation of the inner type.
 > 
-> Also, see recent commit ecbf3567e21 ("docs/devel/style: add a
-> section about bitfield, and disallow them for packed structures").
-
-Also developers incorrectly think these are already booleans:
-
-$ git grep  -E '\b(no_parallel|no_serial|no_floppy|no_cdrom|no_sdcard|pci_allow_0_address|legacy_fw_cfg_order)\b' | grep -E '(true|false)'
-hw/arm/sbsa-ref.c:    mc->pci_allow_0_address = true;
-hw/arm/virt.c:    mc->pci_allow_0_address = true;
-hw/arm/xlnx-versal-virt.c:    mc->no_cdrom = true;
-hw/m68k/next-cube.c:    mc->no_cdrom = true;
-hw/ppc/spapr.c:    mc->pci_allow_0_address = true;
-hw/riscv/virt.c:    mc->pci_allow_0_address = true;
-
-> 
-> Convert the MachineClass bitfields used as boolean as real ones.
-> 
-> Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  include/hw/boards.h        | 14 +++++++-------
->  hw/arm/aspeed.c            |  6 +++---
->  hw/arm/fby35.c             |  4 ++--
->  hw/arm/npcm7xx_boards.c    |  6 +++---
->  hw/arm/raspi.c             |  6 +++---
->  hw/arm/sbsa-ref.c          |  2 +-
->  hw/arm/virt.c              |  2 +-
->  hw/arm/xilinx_zynq.c       |  2 +-
->  hw/avr/arduino.c           |  6 +++---
->  hw/core/null-machine.c     | 10 +++++-----
->  hw/i386/microvm.c          |  2 +-
->  hw/i386/pc_piix.c          |  2 +-
->  hw/i386/pc_q35.c           |  4 ++--
->  hw/loongarch/virt.c        |  2 +-
->  hw/m68k/virt.c             |  6 +++---
->  hw/ppc/pnv.c               |  2 +-
->  hw/ppc/spapr.c             |  2 +-
->  hw/riscv/virt.c            |  2 +-
->  hw/s390x/s390-virtio-ccw.c |  8 ++++----
->  hw/xtensa/sim.c            |  2 +-
->  20 files changed, 45 insertions(+), 45 deletions(-)
+>  rust/qemu-api/src/vmstate.rs | 79 +++++++++++++++++++++++++++++++++++-
+>  1 file changed, 78 insertions(+), 1 deletion(-)
+> 
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
