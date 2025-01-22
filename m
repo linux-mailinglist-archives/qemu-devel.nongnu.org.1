@@ -2,71 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59427A18E2A
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 10:17:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE51DA18E62
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 10:31:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taWqN-0007ei-2c; Wed, 22 Jan 2025 04:16:19 -0500
+	id 1taX4a-0001Jq-Pt; Wed, 22 Jan 2025 04:30:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1taWpp-0007cQ-9U
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 04:15:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1taWpn-0004x5-Dt
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 04:15:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737537337;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=LBm4xsqcyi0CTkYq7bhZmD9hUKCAAfGetIKqX1St/f8=;
- b=MbWc17k0txCBRqSkfQ8ddVvi1tTVFWEVDZF5LNbiZ/3eZuucdueJRHluYjtlUO6yy8beMD
- pze+zAcJv6Cy6caNj4tKDXzNeDV4RwFJI8DYJDRDIEscdt1f0d9AnKuC3DZHBFtEkoYnL1
- hoXvXZOSMY3FOLE4i4qJHlHZHBnBWWQ=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-259-ubrmFrhAN56xbb5Wh4TdvQ-1; Wed,
- 22 Jan 2025 04:15:31 -0500
-X-MC-Unique: ubrmFrhAN56xbb5Wh4TdvQ-1
-X-Mimecast-MFC-AGG-ID: ubrmFrhAN56xbb5Wh4TdvQ
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0EB851955F69; Wed, 22 Jan 2025 09:15:29 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.246])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DB257195608A; Wed, 22 Jan 2025 09:15:23 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH] tests/functional: Fix the aarch64_tcg_plugins test
-Date: Wed, 22 Jan 2025 10:15:17 +0100
-Message-ID: <20250122091517.1429734-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taX4E-00018e-Tc
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 04:30:39 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taX4D-0003BA-8V
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 04:30:34 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4361e89b6daso45837965e9.3
+ for <qemu-devel@nongnu.org>; Wed, 22 Jan 2025 01:30:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1737538231; x=1738143031; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6JCKxl/E/lMfjQGnH4P9B5vjq2aSMsz2teDy8pH82EM=;
+ b=m/B1MMkWWSrKSgyIWzgIaeTOlUetUXpzjal2EuskhFuBPVCib1GzovGejuoVVpne4R
+ 7ZqNSMkW2F7FrlinAMmjbUE3idrIuYabvKGNqc3ATqnh7nkiONgJCtmA89489h+AkNtX
+ qNF46DBdUYOQa2IecGMHT+GdqQevd505mdV1K8i+TlqxWr1cfGEQe/o/OXPPvPU29UGD
+ b/3rLni3ahMa1S6t4aDcTzpeR3XcpgKWv8YQ6sL0vqgzdSSVdITwNvbgT/+/nUlKNsux
+ aH5rDX0RdVhmHiJCVk1Vc1L/Ef00zReWC9bYbmvpNlilYJ+0N+r9mebUlyITumqd9KGq
+ NR9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737538231; x=1738143031;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6JCKxl/E/lMfjQGnH4P9B5vjq2aSMsz2teDy8pH82EM=;
+ b=GrcBkQGlW+hP281ojBiqkBwxGvK291qLPrDJK/HQGs5HtB+aMlv5qdSXn+PGON6zf0
+ pGdGLjq4nYE1rNSMFp/XSeujYTD0Ocvg5KbQVusJidJaG2nwBoMQ3uzgKH6CpohN0LZO
+ P2QIs3ktLMfNvR9+MaoNnjXCZqOw47R3uyY5A/c54OhnLd8GOJ3bQeVzaQ8WIH4Ie3+A
+ mHrOTxnqF+UguA6TXeyDoRuuzpPEUs4Ad6wnP8by8ZTwAnkJwa+QoOcQi5Xrc59mDVG2
+ RCLFZDFl2DO38HQYaaw1iwAKHEfo9Oqnh6q0jrlF96rhQx+lDQQoiZA/0c2MYjRThDmS
+ JfCw==
+X-Gm-Message-State: AOJu0Yx/0b/NaggEeUS8aJiuKNhpUdLxJ6f3qzQXtQkKzIAo0brPU8Pi
+ w6XZDpQ+fhnWxXhQY2CCQsYogAOCh/CwTIGulw9TpPSxtSFgxvSuV5IjO8uYWDm3O5yZo6L59iv
+ vTzg=
+X-Gm-Gg: ASbGncvsqeKmPUmsQ3iBmftuY/58DYm06bJjY8H/4pemaL6hudM9s/fMRsO/Am3XMX0
+ PeK395K6/luGKZQV9sRPN6B4uXJ3g43UUeyoVlaDWGCU6nX9e4r7j2gE2u+dTtnVf1YQ+43WpCU
+ CuyOh3mOHUHKMABc6aoUDMghnFyQph9GiXch4F7wwVAdT7LhCb0HxoqqvSPvbdf5hl7P6luGXQx
+ FOfmg9b7juJ7ZF2h73Hc6g4iEiR0nUYsGC1oYAl3c7lXmAhBtNKCymr0z++8b4HpbTjCffhjHHq
+ i5F065b/jJyVdxWeF5rTewFCJqEA0n2Ach+PsUBR4bHf
+X-Google-Smtp-Source: AGHT+IHEJolaNlR785vud4ZQQFbDX1NKMiQ949Usvi04hkcDEpvfNpYc5F2gnYirYUfibGJ87n1ATQ==
+X-Received: by 2002:a05:600c:5486:b0:434:a10f:c3 with SMTP id
+ 5b1f17b1804b1-438913cae48mr176319165e9.9.1737538230734; 
+ Wed, 22 Jan 2025 01:30:30 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38bf321503fsm16019060f8f.12.2025.01.22.01.30.29
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 22 Jan 2025 01:30:30 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 00/10] cpus: Prefer cached CpuClass over CPU_GET_CLASS()
+ macro
+Date: Wed, 22 Jan 2025 10:30:18 +0100
+Message-ID: <20250122093028.52416-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,72 +96,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unfortunately, this test had not been added to meson.build, so we did
-not notice a regression: Looking for 'Kernel panic - not syncing: VFS:'
-as the indication for the final boot state of the kernel was a bad
-idea since 'Kernel panic - not syncing' is the default failure
-message of the LinuxKernelTest class, and since we're now reading
-the console input byte by byte instead of linewise (see commit
-cdad03b74f75), the failure now triggers before we fully read the
-success string. Let's fix this by simply looking for the previous
-line in the console output instead.
+Missing review: 1 & 2
 
-Also, replace the call to cancel() - this was only available in the
-Avocado framework. In the functional framework, we must use skipTest()
-instead.
+v1 cover:
+Use cached CPUState::cc to get CPUClass.
+Main rationale is overall code style.
 
-Fixes: 3abc545e66 ("tests/functional: Convert the tcg_plugins test")
-Fixes: cdad03b74f ("tests/functional: rewrite console handling to be bytewise")
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- tests/functional/meson.build                 | 1 +
- tests/functional/test_aarch64_tcg_plugins.py | 6 +++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+Philippe Mathieu-Daudé (10):
+  hw/core/generic-loader: Do not open-code cpu_set_pc()
+  gdbstub: Clarify no more than @gdb_num_core_regs can be accessed
+  cpus: Cache CPUClass early in instance_init() handler
+  cpus: Prefer cached CpuClass over CPU_GET_CLASS() macro
+  accel: Prefer cached CpuClass over CPU_GET_CLASS() macro
+  user: Prefer cached CpuClass over CPU_GET_CLASS() macro
+  disas: Prefer cached CpuClass over CPU_GET_CLASS() macro
+  gdbstub: Prefer cached CpuClass over CPU_GET_CLASS() macro
+  hw/acpi: Prefer cached CpuClass over CPU_GET_CLASS() macro
+  target/arm: Prefer cached CpuClass over CPU_GET_CLASS() macro
 
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 5457331643..e0a276f349 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -72,6 +72,7 @@ tests_aarch64_system_thorough = [
-   'aarch64_sbsaref',
-   'aarch64_sbsaref_alpine',
-   'aarch64_sbsaref_freebsd',
-+  'aarch64_tcg_plugins',
-   'aarch64_tuxrun',
-   'aarch64_virt',
-   'aarch64_xlnx_versal',
-diff --git a/tests/functional/test_aarch64_tcg_plugins.py b/tests/functional/test_aarch64_tcg_plugins.py
-index 01660eb090..357eb48477 100755
---- a/tests/functional/test_aarch64_tcg_plugins.py
-+++ b/tests/functional/test_aarch64_tcg_plugins.py
-@@ -46,7 +46,7 @@ def run_vm(self, kernel_path, kernel_command_line,
-         except:
-             # TODO: probably fails because plugins not enabled but we
-             # can't currently probe for the feature.
--            self.cancel("TCG Plugins not enabled?")
-+            self.skipTest("TCG Plugins not enabled?")
- 
-         self.wait_for_console_pattern(console_pattern, vm)
-         # ensure logs are flushed
-@@ -65,7 +65,7 @@ def test_aarch64_virt_insn(self):
-         kernel_path = self.ASSET_KERNEL.fetch()
-         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-                                'console=ttyAMA0')
--        console_pattern = 'Kernel panic - not syncing: VFS:'
-+        console_pattern = 'Please append a correct "root=" boot option'
- 
-         plugin_log = tempfile.NamedTemporaryFile(mode="r+t", prefix="plugin",
-                                                  suffix=".log")
-@@ -91,7 +91,7 @@ def test_aarch64_virt_insn_icount(self):
-         kernel_path = self.ASSET_KERNEL.fetch()
-         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-                                'console=ttyAMA0')
--        console_pattern = 'Kernel panic - not syncing: VFS:'
-+        console_pattern = 'Please append a correct "root=" boot option'
- 
-         plugin_log = tempfile.NamedTemporaryFile(mode="r+t", prefix="plugin",
-                                                  suffix=".log")
+ include/hw/core/cpu.h          | 12 ++++----
+ linux-user/alpha/target_proc.h |  2 +-
+ accel/accel-target.c           | 12 ++++----
+ accel/tcg/tcg-accel-ops.c      |  3 +-
+ accel/tcg/translate-all.c      |  2 +-
+ accel/tcg/watchpoint.c         |  9 +++---
+ bsd-user/signal.c              |  4 +--
+ cpu-common.c                   | 10 +++----
+ cpu-target.c                   |  9 ++----
+ disas/disas-common.c           |  5 ++--
+ gdbstub/gdbstub.c              | 26 ++++++----------
+ gdbstub/system.c               |  7 ++---
+ gdbstub/user-target.c          |  6 ++--
+ gdbstub/user.c                 |  7 ++---
+ hw/acpi/cpu.c                  |  4 +--
+ hw/acpi/cpu_hotplug.c          |  3 +-
+ hw/core/cpu-common.c           | 16 +++++-----
+ hw/core/cpu-system.c           | 55 ++++++++++++----------------------
+ hw/core/generic-loader.c       |  5 +---
+ linux-user/signal.c            |  4 +--
+ target/arm/cpu.c               |  3 +-
+ target/arm/tcg/cpu-v7m.c       |  3 +-
+ target/microblaze/gdbstub.c    |  5 ----
+ target/openrisc/gdbstub.c      |  5 ----
+ 24 files changed, 76 insertions(+), 141 deletions(-)
+
 -- 
-2.48.1
+2.47.1
 
 
