@@ -2,85 +2,145 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08954A194EE
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 16:19:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D2E5A1953D
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 16:29:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tacUO-0004dS-AR; Wed, 22 Jan 2025 10:17:56 -0500
+	id 1tacdr-0001UL-Q5; Wed, 22 Jan 2025 10:27:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1tacUH-0004c4-Ak
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 10:17:49 -0500
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1tacUF-0004YS-AP
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 10:17:49 -0500
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-540215984f0so7557116e87.1
- for <qemu-devel@nongnu.org>; Wed, 22 Jan 2025 07:17:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737559065; x=1738163865; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pqRa8FFc9ZnkHdjIHp11NgOuWfTjv/uu7r5K+YDgjn8=;
- b=ker4+gDXTB4O5HB/bMsVJ7YeRXrSDMWrX8Cq3Uh2uXC/wipUFYXK/Gj9BpDgSto2jG
- n9smUmXigAqwyrl1HO9CFEVYGFGgRKTfFpZ2aWbMPFIn5JJuirSj4ePpy4pbTvJ2OG91
- wYN1WsEiICWrA1J9Rn2xj9OoZsIYoewZT7T2R2UtbZztg1dbr3ZjYEX3xcVW5GKGMoxH
- Y5IhOJmFATvlqRYv0E5E4XBUpUVEOLNKdswcfibDqI3ngU6ZlrRfl6MUTkuR589+LHBx
- w70Z9ke8bZ9+UqbTLl48z2Lo5iVGYKrez1YJPjJe75WjvbOB8idmP+okT6kMCkEHRWCh
- HVng==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tacdm-0001Tb-BD
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 10:27:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tacdj-0007xE-SJ
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 10:27:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737559654;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=Qxxz+QaKLMMvWQmRtjrKTl87WsQJfovc75MrJcr6l0E=;
+ b=Q9ABILLcuXoXKDfKsx2pq8X/Sv5aLv5Iw233eGUX9SyCLCVA+inq04jr39GQLDuAyBYEwQ
+ cLHaE0Laj1VPWmQq9G9biZ1XznPtQqLpF0O8xagWXt7szPnoM0Uah1OmabcC2pR0vtS/M1
+ +ZVHSD+1hR5HeAtvWUncPsNAQdKodcM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-237-v3T8Gh_rNKiWKGq2WEk9gw-1; Wed, 22 Jan 2025 10:27:33 -0500
+X-MC-Unique: v3T8Gh_rNKiWKGq2WEk9gw-1
+X-Mimecast-MFC-AGG-ID: v3T8Gh_rNKiWKGq2WEk9gw
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-43646b453bcso36908785e9.3
+ for <qemu-devel@nongnu.org>; Wed, 22 Jan 2025 07:27:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737559065; x=1738163865;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pqRa8FFc9ZnkHdjIHp11NgOuWfTjv/uu7r5K+YDgjn8=;
- b=c7aC5FMparBVfhE8TI5yYNhcle/cBVPDEVgVmwnn04tJOED2tODkOUJzhG7QwP8yxD
- FYYpuzq2sTVGKm9w0/kUPQ+ROKyy/vUzIxBZATok8ST0s+mL76fOQo1Bwyn6zdKpj8fT
- I2zGNZyrM/iPiImQnBaZ2LsUdSnp6FKzNHuiNaSQvBRN079F4cJEyEgMKv2R80GRBfRC
- FPCRlJ/x8hGyVsgqF7rBdlOIloKhr43kE+fbM6GuJ+eBGNmW9HwVI9GCoTneRJgzWeMi
- D/P17txVqhUrcdX3CsabxDEHx5QgeADHOLeE5g/DzOY90XbKo8tpmgS41naAdGSo3wPg
- xHKA==
+ d=1e100.net; s=20230601; t=1737559652; x=1738164452;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Qxxz+QaKLMMvWQmRtjrKTl87WsQJfovc75MrJcr6l0E=;
+ b=V4orTZUnA8bXWkdgjul/3LnQ040WEXBHqZfal+LxLUseutdfi58r1S9ARNZYf51gyX
+ BzFYLSkyLidI0wzlq8o2iTtbgCoEMVRwbwJPcei2ZtjbBBcqLGkpyvUXZovQMPQPRJ+C
+ KHWSa4n2AuPL74ESKWE1fC/83zD2cjnP58EUrQJjxa/63accQog7bOmZ/XhP3kC1Qhyp
+ tJiq+RcKnymztkUjWj+08aQFUnKeiUYCpXGE0cuYD2hl2YTt9T7Nd0crvsi5f/8P2iQE
+ QSh9Qjj1hCYEaGWLY1TA2iPdkOdWnsZrUhs9lPTxWDKQDPB4qteWBp1/q/yp9LLr0M3m
+ y4kA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUTq/GaGBPIlXH+lRR20aPQTykc1o3wG7zAvHjcb7bA3clxob7D2jJcWYMpxJkw0sVFEUSWVX/Bu47Z@nongnu.org
-X-Gm-Message-State: AOJu0Yz0AfZUHY+m6yMlB300TklRkth6IpQYpqDRtdcwYw0MWLUD2gee
- 8zlSkdzzcTDK/liaCt5Ha+sshMuLWraTYZf+rHa/EhA65vV0ctaGcoKQJE074q5+mxXH7fCufjy
- JGt7yh0bFOX1e/E7Q14favdLfqm8=
-X-Gm-Gg: ASbGncsQvBn9H2MH94mMa79LG0cNGS8HOoW/du8Qr+pyKm3mWf3ovFOxwAbZdOKpdqg
- NbX+H4LGbPM8Y1qcogYfCMw5smCGYh8D0S09eG4ZmJDSXhFoS+68=
-X-Google-Smtp-Source: AGHT+IHhlv8QkwpUReV1C2Oq1czJrprEe65ts5tuo5zH6JnxBkT98fOKpR61HtqJpvknn+cRJwAx+QUTEnjpMLA1EuI=
-X-Received: by 2002:ac2:4851:0:b0:540:1b41:c75f with SMTP id
- 2adb3069b0e04-5439c247804mr7785082e87.16.1737559064578; Wed, 22 Jan 2025
- 07:17:44 -0800 (PST)
+ AJvYcCXo1336zZYFDyTxVr6c1zD5sguFumdtAvb6ASLb0ev7DChw77Vdw4qypS2F8PNSRbeOsSM4m4QjTV7+@nongnu.org
+X-Gm-Message-State: AOJu0YwXlm64R/j3rKiZYrNWo0jVKPeo72oOI+RggyVItJyNZGr0T2P0
+ Tayxxg9pgcmFg9BpCQrsXuJW5pZfKn2/wXOdrTazS9+64nL4SsYZwOHz2cjnSv/Po+j551vX282
+ kfXetXdVOZdHzZoOQMv8UmzfdKMSSEwMpw/kqdkmk6sLIFCCOVhxW
+X-Gm-Gg: ASbGncv2ixjZCTOKIb/KN5pY3szZjdutdv3el5uwOKSbiLTrWFbUhpK8NAhuvXIfzEh
+ OCMo3ho//+xuWAk1Fhya9dR7dfyEp+m7QoL7Lg5DDuaDmbBWwwAlt8vNw4j2xb1AbeBYUsgLZfa
+ EnQPGGSlgYgsM4oRjvsU+KJIqSyRCitiUXesCi4jb2zMZkv9mSlaes/7quclEkHWRJE6ewYyfRA
+ 5dTMGSLF0PGAUvQrisB5AyO9Awxu1O5j5SpPAsMLh54pysjK1Z6QfhBL/j7UXApxVxmoyLnNmmC
+ fJTzaXgpS3C3w5nVUdRzG+PWOQ==
+X-Received: by 2002:a05:600c:5012:b0:434:9e46:5bc with SMTP id
+ 5b1f17b1804b1-438913ca718mr230934065e9.10.1737559651900; 
+ Wed, 22 Jan 2025 07:27:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHT11404+Xx3pCQporn1MWXM+lPjschxGFY9xwgSKXtAt7ziT58YPI4PXzWLXiB5H/c3xSBTQ==
+X-Received: by 2002:a05:600c:5012:b0:434:9e46:5bc with SMTP id
+ 5b1f17b1804b1-438913ca718mr230933755e9.10.1737559651450; 
+ Wed, 22 Jan 2025 07:27:31 -0800 (PST)
+Received: from [192.168.0.7] (ip-109-42-48-103.web.vodafone.de.
+ [109.42.48.103]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-438b31b7655sm27791295e9.30.2025.01.22.07.27.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 22 Jan 2025 07:27:30 -0800 (PST)
+Message-ID: <a48356fd-d964-4bd8-b349-3f63c92431a2@redhat.com>
+Date: Wed, 22 Jan 2025 16:27:29 +0100
 MIME-Version: 1.0
-References: <20250118164056.830721-1-r.peniaev@gmail.com>
- <20250118164056.830721-3-r.peniaev@gmail.com>
- <871pwuoqm9.fsf@draig.linaro.org>
-In-Reply-To: <871pwuoqm9.fsf@draig.linaro.org>
-From: Roman Penyaev <r.peniaev@gmail.com>
-Date: Wed, 22 Jan 2025 16:17:33 +0100
-X-Gm-Features: AbW1kvYrg3Lfr3b3jSTrPDCrssxjcfBDoo1OG6p7h7xtzocVf1S4vMmS5sMeqIg
-Message-ID: <CACZ9PQVCS+XWrchNnCWzRqcO_vKo_bOinDgSJV4q8F1aBd5Z4g@mail.gmail.com>
-Subject: Re: [PATCH v7 2/4] chardev/char-hub: implement backend chardev
- aggregator
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=r.peniaev@gmail.com; helo=mail-lf1-x12c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/boards: Convert MachineClass bitfields to boolean
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-riscv@nongnu.org,
+ qemu-arm@nongnu.org, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>
+References: <20250122103223.55523-1-philmd@linaro.org>
+ <6393ca88-0613-415e-8178-18a34778b2ab@redhat.com>
+ <CAFEAcA-+9xhH+gXWGfN9bN=rnsShyRs0i+Kd0NDfMYrSNVbF4w@mail.gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <CAFEAcA-+9xhH+gXWGfN9bN=rnsShyRs0i+Kd0NDfMYrSNVbF4w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,105 +156,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 22, 2025 at 3:44=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@linar=
-o.org> wrote:
->
-> Roman Penyaev <r.peniaev@gmail.com> writes:
->
-> > This patch implements a new chardev backend `hub` device, which
-> > aggregates input from multiple backend devices and forwards it to a
-> > single frontend device. Additionally, `hub` device takes the output
-> > from the frontend device and sends it back to all the connected
-> > backend devices. This allows for seamless interaction between
-> > different backend devices and a single frontend interface.
-> >
-> > The idea of the change is trivial: keep list of backend devices
-> > (up to 4), init them on demand and forward data buffer back and
-> > forth.
-> >
-> > The following is QEMU command line example:
-> >
-> >    -chardev pty,path=3D/tmp/pty,id=3Dpty0 \
-> >    -chardev vc,id=3Dvc0 \
-> >    -chardev hub,id=3Dhub0,chardevs.0=3Dpty0,chardevs.1=3Dvc0 \
-> >    -device virtconsole,chardev=3Dhub0 \
-> >    -vnc 0.0.0.0:0
-> >
-> > Which creates 2 backend devices: text virtual console (`vc0`) and a
-> > pseudo TTY (`pty0`) connected to the single virtio hvc console with
-> > the backend aggregator (`hub0`) help. `vc0` renders text to an image,
-> > which can be shared over the VNC protocol.  `pty0` is a pseudo TTY
-> > backend which provides biderectional communication to the virtio hvc
-> > console.
-> >
-> <snip>
-> > +static void qemu_chr_open_hub(Chardev *chr,
-> > +                                 ChardevBackend *backend,
-> > +                                 bool *be_opened,
-> > +                                 Error **errp)
-> > +{
-> > +    ChardevHub *hub =3D backend->u.hub.data;
-> > +    HubChardev *d =3D HUB_CHARDEV(chr);
-> > +    strList *list =3D hub->chardevs;
-> > +
-> > +    d->be_eagain_ind =3D -1;
-> > +
-> > +    if (list =3D=3D NULL) {
-> > +        error_setg(errp, "hub: 'chardevs' list is not defined");
-> > +        return;
-> > +    }
-> > +
-> > +    while (list) {
-> > +        Chardev *s;
-> > +
-> > +        s =3D qemu_chr_find(list->value);
-> > +        if (s =3D=3D NULL) {
-> > +            error_setg(errp, "hub: chardev can't be found by id '%s'",
-> > +                       list->value);
-> > +            return;
-> > +        }
-> > +        if (CHARDEV_IS_HUB(s) || CHARDEV_IS_MUX(s)) {
-> > +            error_setg(errp, "hub: multiplexers and hub devices can't =
-be "
-> > +                       "stacked, check chardev '%s', chardev should no=
-t "
-> > +                       "be a hub device or have 'mux=3Don' enabled",
-> > +                       list->value);
-> > +            return;
->
-> So I was looking at this to see if I could implement what I wanted which
-> was a tee-like copy of a serial port output while maintaining the C-a
-> support of the mux.
->
-> Normally I just use the shortcut -serial mon:stdio
->
-> However that form is a special case so I tried the following and ran
-> into the above:
->
->           -chardev stdio,mux=3Don,id=3Dchar0 \
->           -chardev file,path=3Dconsole.log,id=3Dclog  \
->           -mon chardev=3Dchar0,mode=3Dreadline \
->           -chardev hub,id=3Dhub0,chardevs.0=3Dchar0,chardevs.1=3Dclog
->
-> Giving:
->   qemu-system-aarch64: -chardev -hub,id=3Dhub0,chardevs.0=3Dchar0,chardev=
-s.1=3Dclog: hub: -multiplexers and hub devices can't be stacked, check char=
-dev
->             -'char0', chardev should not be a hub device or have 'mux=3Do=
-n' -enabled
->
-> So what stops this sort of chain?
+On 22/01/2025 15.33, Peter Maydell wrote:
+> On Wed, 22 Jan 2025 at 12:36, Thomas Huth <thuth@redhat.com> wrote:
+>>
+>> On 22/01/2025 11.32, Philippe Mathieu-Daudé wrote:
+>>> As Daniel mentioned:
+>>>
+>>>    "The number of instances of MachineClass is not large enough
+>>>     that we save a useful amount of memory through bitfields."
+>>>
+>>> Also, see recent commit ecbf3567e21 ("docs/devel/style: add a
+>>> section about bitfield, and disallow them for packed structures").
+>>>
+>>> Convert the MachineClass bitfields used as boolean as real ones.
+>>>
+>>> Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> ---
+>>>    include/hw/boards.h        | 14 +++++++-------
+>>>    hw/arm/aspeed.c            |  6 +++---
+>>>    hw/arm/fby35.c             |  4 ++--
+>>>    hw/arm/npcm7xx_boards.c    |  6 +++---
+>>>    hw/arm/raspi.c             |  6 +++---
+>>>    hw/arm/sbsa-ref.c          |  2 +-
+>>>    hw/arm/virt.c              |  2 +-
+>>>    hw/arm/xilinx_zynq.c       |  2 +-
+>>>    hw/avr/arduino.c           |  6 +++---
+>>>    hw/core/null-machine.c     | 10 +++++-----
+>>>    hw/i386/microvm.c          |  2 +-
+>>>    hw/i386/pc_piix.c          |  2 +-
+>>>    hw/i386/pc_q35.c           |  4 ++--
+>>>    hw/loongarch/virt.c        |  2 +-
+>>>    hw/m68k/virt.c             |  6 +++---
+>>>    hw/ppc/pnv.c               |  2 +-
+>>>    hw/ppc/spapr.c             |  2 +-
+>>>    hw/riscv/virt.c            |  2 +-
+>>>    hw/s390x/s390-virtio-ccw.c |  8 ++++----
+>>>    hw/xtensa/sim.c            |  2 +-
+>>>    20 files changed, 45 insertions(+), 45 deletions(-)
+>>
+>> So if you are touching all these files, why not go with an even more
+>> meaningful rework instead? Flip the meaning of the "no_*" flags to the
+>> opposite, so that we e.g. have "has_default_cdrom" instead of "no_cdrom",
+>> then new boards would not have to remember to set these ugly "no_" flags
+>> anymore. It's quite a bit of work, but it could certainly be helpful in the
+>> long run.
+> 
+> Well, that depends on what you think the default for new
+> boards should be. I suspect these are all no_foo because
+> when they were put in the idea was "all boards should
+> be default have a foo, and 'this board defaults to not
+> having a foo' is the rarer special case it has to set"...
 
-Hi Alex,
+That might have been the reasoning for the naming 20 years ago. But times 
+have changed... which recent board does still have a floppy drive? parallel 
+port? And the others are also not that common anymore...
 
-You define 'char0' as a mux device (the "mux=3Don" option). That is not sup=
-ported
-simply to avoid circle dependencies. To be frank I never considered
-this use-case,
-although chains might be useful. If you need this use-case we can
-think of a more
-proper (or advance) check.
+  Thomas
 
---
-Roman
 
