@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6766FA18E65
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 10:31:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2A5EA18E63
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 10:31:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taX4v-0001wl-NQ; Wed, 22 Jan 2025 04:31:17 -0500
+	id 1taX51-00026s-Kj; Wed, 22 Jan 2025 04:31:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taX4t-0001vy-Ix
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 04:31:15 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taX4y-00025D-2r
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 04:31:20 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taX4r-0003K3-SQ
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 04:31:15 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-38a8b35e168so409887f8f.1
- for <qemu-devel@nongnu.org>; Wed, 22 Jan 2025 01:31:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taX4w-0003Kd-Hh
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 04:31:19 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43622267b2eso65858095e9.0
+ for <qemu-devel@nongnu.org>; Wed, 22 Jan 2025 01:31:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737538272; x=1738143072; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737538276; x=1738143076; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XAK8+ZcQI8PZXdkgjSlPlEy1wFV5KzZpV4Si9c0ft5M=;
- b=VXAjRfjE8OylNIyuOsBkgXwpcq94dayKhJgrI1QhZitsYBaSz7jvIi1OjIHZ8hg6aH
- 0HapH6CoLoXR1YVkvOu/+FfZX+abTU1UuIcx/Ziiqpd4eEXpzgWORCqGeO9rnn2Qi388
- PSmQisliiPSz37rcNI8q5JaUiuLvuJjQzA5HWCItW+GW7BvNkSh9YYcgkP51o1f0gg4H
- K8VfRudtaxQqTXBD+dZUVNAA7cWlY7WGWHF2c9LC2R0xDMI45axgpKXz6rLX5u+IuhoN
- zPw9E6/ulbeQFsxE1pwOItw5lvOJqDn3LzyakVszCqkHNeheDehXxGU5Ca6heDeXzPUj
- 6pHQ==
+ bh=zX6wKmzI06nCmXct1pzxbuNtoEp265I9BJm+57rS6fc=;
+ b=E0XnPb6KePl8gWoAp6nEc4OJu6MMWT+oFyLVvHN5GMFpBmDMP6fovKeMmqEHzQa4F4
+ pWVtyg+agUupVTtV1W+IF57IJ8Tf5Oee4gJvbRCGs3hJThvR0PrYD+ZqkC5iXML26j2B
+ qnGvxKFmE5cL9zwHdiLQlGwjSis9CnSAOPS/6RL5bR2rF5AB44y4O5uwtgxOhhhvL+Yz
+ GLsOOUuqzRUC4iBBBY6KIFReLvPtjaovuUnfx7VRQe5kf8BPAV3R6y7uktz8RBtrCO/5
+ /n5WViq8sHxtJzEXpSQIze5PwVfRp8cKinxTryuxlik1Lh3Y3/yAn51y74C7RS1nHQSE
+ sIow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737538272; x=1738143072;
+ d=1e100.net; s=20230601; t=1737538276; x=1738143076;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XAK8+ZcQI8PZXdkgjSlPlEy1wFV5KzZpV4Si9c0ft5M=;
- b=dj8O3ZHCG0GPQMWZZOxVo68q2mF+WEah1AfCB1+1zZfIdfYBuQvk30yh26XI/gTll1
- nVSQ1mkxhwG/nZcsnFlMhf7PumhjOdKK4gDZGnXrdheEcqEAs5bNu8S71I0ikQzvJaVG
- fkrqhmx0zN4Ou5gdExpef3Zd74y+VBO7nAd4m8VXKtAAcXkSmzhavwYvrA7/ZFBUxWxV
- 0g50d8NEUYShbmO8JUWpfniQtgT7ZYxjpI/VfiCQid1D5eWDSLNFRpF3RHleBsSehoDI
- qG6h2Uv81OB6KEySfNv9AEwc49vai4jMBi0a/Z6ihg21HLzE3M9m4Fe8H63VEyZFO93n
- 8v7Q==
-X-Gm-Message-State: AOJu0Yyr2GmF1Z6bi5tJENq64pVXxSQeF5yZ7EpdOKxNvUmGrWqKq7KU
- DhEwzCHZ7Tm12TiIttrypuLblY/SWQcHeGKzU3umAUJ946eI889UTrqICqagiV/kOr9TugSpwci
- DGcs=
-X-Gm-Gg: ASbGncuNhmTHMxy7qNSruaQJrGpbhs/bKu8BP3jykiCOKu5y0x5Q99NHPlo+V9WPfVD
- g1Kiev7Qedo0hzKnRSKMahFWBEM++dToqMHbVlJl1PdNCXtZ6yoSXtMG2zJULjdtcQyirZZIUdS
- hOpzZSfcf7ql5G3MYT87OhHk6pSUC8NbXaSKfU3cjg/bwsLucXIecGoKI7GyPNlI/Aw4i89daVX
- Er0kSCS+3QYzuwqzteWlyC+KdfPfxzNXN3vYYv1yb/m4pOAGW4OI+/rA4AZsZGB/Uzbrmjw8En+
- rSj3BR/wUePP3GnUSXdLCF3XRl2xEE5IOGyFtbihlum+
-X-Google-Smtp-Source: AGHT+IFai9mD8GltFAw7gxPrREpzrvJjo+UMSvD2ijZjgbzRv5dMrin2AUgKp4k7hnSrJKSzVAnRdw==
-X-Received: by 2002:a5d:64e6:0:b0:381:ed32:d604 with SMTP id
- ffacd0b85a97d-38bf5ad3a71mr16765849f8f.10.1737538271919; 
- Wed, 22 Jan 2025 01:31:11 -0800 (PST)
+ bh=zX6wKmzI06nCmXct1pzxbuNtoEp265I9BJm+57rS6fc=;
+ b=dZLC7YuaQkHCp1bHTMtExVWK3qy/5m7Y7103HWk4/U6d9IWeEAIuIZL4nlwmyKB6Z1
+ c4TQ8RRuekvSPDyb2mSBr+us9orO6xjwvQnH+/2P1BrW/JjsP/vOKIM7Ym0/GDgzUMKw
+ eVGfD8rS2glp1qcSOfCcl69orgc4lamBT/LzlCU18Ft1+B14bG1mmNMSpR1ZcHVdl0Ds
+ ObxK8n6vqWR+AJ6FTDtufPtyzQHC7fIHedUYMDSX9BvMjvzPUvG8BYycZjEnCTNtOnhs
+ 9yfdpCqrxiTlWcUBXA3MAKtibuV12h4natnJ/Vqe0ETnrft+TO7yI/CwwFmDjFzCvBC2
+ q8Kw==
+X-Gm-Message-State: AOJu0YwOjgFjGiE0WslXOHEr6Y2Rj3zIukdkESpQ4s4lMNPGTkiSfn+G
+ d4YmhzOr37Ojw6HeIjBO6qURsjaEZqICZzW6Eq2bpJyaH+cvYQ67aDWBlRVKc9m6o/HxvGBpzWX
+ nGFQ=
+X-Gm-Gg: ASbGncvpc2V5HbFioNFTD8pZ3cB1PSCtNdkwZeorDx4Q1ScV6IlzRURpZb/PF3SJ2OT
+ 6DZj+3BoFT8Mrxxrhiepg2/Atm5ArN6XpJR3K2eedrpdep/9EqlLXLmOPkZog8jDnt4PjDQjOmw
+ pBUVl7AMy4N0WjPvhbbu03i5fYFwpjifL+oAlEOIYveaNbAwLRxcDqLkySAmWbn5R8yBFSXdSPD
+ iPT6Ri8/nFaIU+q45XaR6W+uL8PhsaSlW6jxn9FXgInegIrc3NlX8wgCCs77su2YNSPdrqsRpmd
+ yjCMzGvfUw9D0KPWiesaazs22AljF4mYKFG0RQhy4VpB
+X-Google-Smtp-Source: AGHT+IG6O9YAZndqYHtLAOIJrxfLy8HdpLW0g3XjNE4dMucyHCtbEMrzySz5+yEgU7OfImhUVkvOdw==
+X-Received: by 2002:a05:600c:83ce:b0:436:ed33:1535 with SMTP id
+ 5b1f17b1804b1-438913e0384mr202379415e9.12.1737538276486; 
+ Wed, 22 Jan 2025 01:31:16 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38bf322a414sm15660432f8f.47.2025.01.22.01.31.11
+ 5b1f17b1804b1-438b318aae1sm17628795e9.1.2025.01.22.01.31.15
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 22 Jan 2025 01:31:11 -0800 (PST)
+ Wed, 22 Jan 2025 01:31:16 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 09/10] hw/acpi: Prefer cached CpuClass over CPU_GET_CLASS()
- macro
-Date: Wed, 22 Jan 2025 10:30:27 +0100
-Message-ID: <20250122093028.52416-10-philmd@linaro.org>
+Subject: [PATCH v2 10/10] target/arm: Prefer cached CpuClass over
+ CPU_GET_CLASS() macro
+Date: Wed, 22 Jan 2025 10:30:28 +0100
+Message-ID: <20250122093028.52416-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250122093028.52416-1-philmd@linaro.org>
 References: <20250122093028.52416-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,41 +106,52 @@ use it.
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/acpi/cpu.c         | 4 ++--
- hw/acpi/cpu_hotplug.c | 3 +--
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ target/arm/cpu.c         | 3 +--
+ target/arm/tcg/cpu-v7m.c | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-index f70a2c045e1..6f1ae79edbf 100644
---- a/hw/acpi/cpu.c
-+++ b/hw/acpi/cpu.c
-@@ -235,8 +235,8 @@ void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index dc0231233a6..048b825a006 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -846,7 +846,6 @@ static inline bool arm_excp_unmasked(CPUState *cs, unsigned int excp_idx,
  
- static AcpiCpuStatus *get_cpu_status(CPUHotplugState *cpu_st, DeviceState *dev)
+ static bool arm_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
  {
--    CPUClass *k = CPU_GET_CLASS(dev);
--    uint64_t cpu_arch_id = k->get_arch_id(CPU(dev));
-+    CPUState *cpu = CPU(dev);
-+    uint64_t cpu_arch_id = cpu->cc->get_arch_id(cpu);
-     int i;
+-    CPUClass *cc = CPU_GET_CLASS(cs);
+     CPUARMState *env = cpu_env(cs);
+     uint32_t cur_el = arm_current_el(env);
+     bool secure = arm_is_secure(env);
+@@ -946,7 +945,7 @@ static bool arm_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+  found:
+     cs->exception_index = excp_idx;
+     env->exception.target_el = target_el;
+-    cc->tcg_ops->do_interrupt(cs);
++    cs->cc->tcg_ops->do_interrupt(cs);
+     return true;
+ }
  
-     for (i = 0; i < cpu_st->dev_count; i++) {
-diff --git a/hw/acpi/cpu_hotplug.c b/hw/acpi/cpu_hotplug.c
-index 83b8bc5deb8..aa0e1e3efa5 100644
---- a/hw/acpi/cpu_hotplug.c
-+++ b/hw/acpi/cpu_hotplug.c
-@@ -62,10 +62,9 @@ static const MemoryRegionOps AcpiCpuHotplug_ops = {
- static void acpi_set_cpu_present_bit(AcpiCpuHotplug *g, CPUState *cpu,
-                                      bool *swtchd_to_modern)
+diff --git a/target/arm/tcg/cpu-v7m.c b/target/arm/tcg/cpu-v7m.c
+index 03acdf83e00..d2d0b94b630 100644
+--- a/target/arm/tcg/cpu-v7m.c
++++ b/target/arm/tcg/cpu-v7m.c
+@@ -19,7 +19,6 @@
+ 
+ static bool arm_v7m_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
  {
--    CPUClass *k = CPU_GET_CLASS(cpu);
-     int64_t cpu_id;
- 
--    cpu_id = k->get_arch_id(cpu);
-+    cpu_id = cpu->cc->get_arch_id(cpu);
-     if ((cpu_id / 8) >= ACPI_GPE_PROC_LEN) {
-         object_property_set_bool(g->device, "cpu-hotplug-legacy", false,
-                                  &error_abort);
+-    CPUClass *cc = CPU_GET_CLASS(cs);
+     ARMCPU *cpu = ARM_CPU(cs);
+     CPUARMState *env = &cpu->env;
+     bool ret = false;
+@@ -35,7 +34,7 @@ static bool arm_v7m_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+     if (interrupt_request & CPU_INTERRUPT_HARD
+         && (armv7m_nvic_can_take_pending_exception(env->nvic))) {
+         cs->exception_index = EXCP_IRQ;
+-        cc->tcg_ops->do_interrupt(cs);
++        cs->cc->tcg_ops->do_interrupt(cs);
+         ret = true;
+     }
+     return ret;
 -- 
 2.47.1
 
