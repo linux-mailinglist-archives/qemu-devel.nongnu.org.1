@@ -2,89 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D1E4A18E70
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 10:33:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF37A18E8C
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 10:43:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taX6e-0004Ja-AG; Wed, 22 Jan 2025 04:33:04 -0500
+	id 1taXFC-0002H5-Bz; Wed, 22 Jan 2025 04:41:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taX6Q-0003mV-DZ
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 04:32:52 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1taX6M-0003TH-I4
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 04:32:49 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-43618283dedso68333765e9.3
- for <qemu-devel@nongnu.org>; Wed, 22 Jan 2025 01:32:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737538364; x=1738143164; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=U+c1swIdX25raxhIVr45XwfuWhAb+MHj2TpSRJRPmw4=;
- b=goQieLPQU+R/W6HQOcToU+/yvk1bYP1VbvBN2+sYuS2ceO51rEVkqNcpezi9tohpXY
- 2ISBeunF4Q4zflUTc5aKPoGEcww0PI3o5g559t9/XxlmXV08CAsSp9fTOq3vH9U8Rolt
- 6PqQHlK6o2xgBjZAmPntexjt5Q9GY9u9tVm6Bkh1CHsm9XTExqCIcFIh7FO39MOZLtGB
- r3g/68OvqpxZORsCw8+jtvN5tStJstEtHkuQPqZrNk4YZ77ToHH9k4ZV3ceDyoqOFerp
- Pyo6LFZJOEMqyv4h1dzcg8XoqUWdJZ1AjCnlNuIvZl7cjoyz0aQdFFsuOmWwnhVoZ5BA
- sAWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737538364; x=1738143164;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=U+c1swIdX25raxhIVr45XwfuWhAb+MHj2TpSRJRPmw4=;
- b=cz95jAN9kFlsaHYc8H1uo94K5U6lICOW1OK4sOF/E4/6OmloQ7tSU2U5hbHUblqLVy
- J9EEVg8zzbmsIBo6HnT/Lmy4vRK8BkdIBXMFFrWqfz/gHnjBYc/v/ReDLLbesycjmSmW
- AkYZI7JJOWV4l2wk/14lznKvoVjXntqBbS9Bb3V5qFmnRPfXRMZlXoakXHYUL54mEvke
- 2nA/hwOs25B4DuKoDl57IJSmhJ5jhsMkaq3XthD6Rwp+XWKz6Wu0gdvHPHp80ETmuy4a
- Ly9dwSWNCUnyVmR1Fj8PRiFXhqsc1Kl1M86yI/0d1EgG2kN2WFYe4WA5VDT9SMyQLFte
- qtjg==
-X-Gm-Message-State: AOJu0Yz0cEECeP4zmSPOpVjWRVz62VZkKj4db0vsX7D3jMmdoYmLGi6h
- 0nkR5rf8h1NO1pesnziJp7BG+okQWN91KG75kViFQqtJY0ddUXxh/KVmBk/xHmRNBqTYlDX266l
- 0d30=
-X-Gm-Gg: ASbGncvDSMhMotFK9ZdG4G/ODWRztiFTKce3aUFlFz8eN/XS9G1/gUclkYISmC+QZ+0
- BDPRKHkx16u7LVTCr0xNlk/Rb+74G+b8It/4o8tE7NDdhGwE+JtAIgIcQ9uCMeqSff0m34Jrxkw
- 99L5QV4wJwWWydv9V2PhkdzocuLUDO6di5Z71cfdVWZYtbEHUksAaE7XcBUqCQk1vQKTvwwc6u8
- V8l+7MEm8TE9dw6DvAXd1Vkb7JGyeZLN8dVPFQlfbOqaXrKYPFoXxYTNlwzQesTEy7Pkh5DQZxf
- ExpJP8Jb8oUcz7b5WP8NoJmKplsfx9BPkbo+Gg==
-X-Google-Smtp-Source: AGHT+IFnb94z8uN14ed8JufyynaaLzmxZhewH5ITBpwDQCN121Y+HFMqyEfhMa6yMCQQLL16jM8/SA==
-X-Received: by 2002:a05:600c:1f8f:b0:431:93d8:e1a1 with SMTP id
- 5b1f17b1804b1-43891430defmr164864795e9.27.1737538364286; 
- Wed, 22 Jan 2025 01:32:44 -0800 (PST)
-Received: from [192.168.69.181] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438b1d904cbsm12962295e9.1.2025.01.22.01.32.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 22 Jan 2025 01:32:43 -0800 (PST)
-Message-ID: <dda293ce-575c-45c8-ab36-93938a7c5bdc@linaro.org>
-Date: Wed, 22 Jan 2025 10:32:43 +0100
+ (Exim 4.90_1) (envelope-from <yilun.xu@linux.intel.com>)
+ id 1taXF9-0002Gx-HA
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 04:41:51 -0500
+Received: from mgamail.intel.com ([192.198.163.8])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <yilun.xu@linux.intel.com>)
+ id 1taXF7-0004yG-4N
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 04:41:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1737538909; x=1769074909;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=owsEZA7axqN2tzMnFMwmr8Y1RsBH0gepw5uM/bZOsI0=;
+ b=Z6d3VrgaEK3UEvavOWxrR9P8nseE6PKZy00mNMadeuoAy+cWaGpvvsCc
+ mzotzDtZ0CvJymnSajT1KBjF9J31sxtVuNfJHEPLiNpWuGffKCPt1crXj
+ J75KodFo8gsDO1gMvWKp3P5uUDdhzMs7TPWQ9Q/mjJUpiXL7If54AGu2d
+ LuNETOd1LBKlI8kwIS23wRjsy/8jqB66gnrZn6SvJooxjAigaqWCfcr+k
+ 1le6ZSYUAVXfAUwftn7DcBVTJw+48anKgRG0Wo9AqeMPnXCVlPtzRahWW
+ wv1j49pw5yLxQnOWReWCcQhYFtAWfgyE+HvF957tpN78XJu+S7kg3UXv9 A==;
+X-CSE-ConnectionGUID: 02p4JeGjS9eahUNbvxR/bA==
+X-CSE-MsgGUID: J8fHoRFKSbWF0V3zysFjkA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="55537245"
+X-IronPort-AV: E=Sophos;i="6.13,224,1732608000"; d="scan'208";a="55537245"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 01:41:44 -0800
+X-CSE-ConnectionGUID: pwElfivTTTaVwZNRiKbgxw==
+X-CSE-MsgGUID: KLNJcEWXTJe9+yRx0qnWng==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,224,1732608000"; d="scan'208";a="112099494"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost)
+ ([10.239.159.165])
+ by fmviesa004.fm.intel.com with ESMTP; 22 Jan 2025 01:41:41 -0800
+Date: Wed, 22 Jan 2025 17:41:31 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: Peter Xu <peterx@redhat.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
+ David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
+ Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
+ Xu Yilun <yilun.xu@intel.com>
+Subject: Re: [PATCH 2/7] guest_memfd: Introduce an object to manage the
+ guest-memfd with RamDiscardManager
+Message-ID: <Z5C9SzXxX7M1DBE3@yilunxu-OptiPlex-7050>
+References: <ca9bc239-d59b-4c53-9f14-aa212d543db9@intel.com>
+ <4d22d3ce-a5a1-49f2-a578-8e0fe7d26893@amd.com>
+ <2b799426-deaa-4644-aa17-6ef31899113b@intel.com>
+ <2400268e-d26a-4933-80df-cfe44b38ae40@amd.com>
+ <590432e1-4a26-4ae8-822f-ccfbac352e6b@intel.com>
+ <2b2730f3-6e1a-4def-b126-078cf6249759@amd.com>
+ <Z462F1Dwm6cUdCcy@x1n> <ZnmfUelBs3Cm0ZHd@yilunxu-OptiPlex-7050>
+ <Z4-6u5_9NChu_KZq@x1n>
+ <95a14f7d-4782-40b3-a55d-7cf67b911bbe@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/10] gdbstub: Clarify no more than @gdb_num_core_regs
- can be accessed
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-References: <20250122093028.52416-1-philmd@linaro.org>
- <20250122093028.52416-3-philmd@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250122093028.52416-3-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <95a14f7d-4782-40b3-a55d-7cf67b911bbe@amd.com>
+Received-SPF: none client-ip=192.198.163.8;
+ envelope-from=yilun.xu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -72
+X-Spam_score: -7.3
+X-Spam_bar: -------
+X-Spam_report: (-7.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,42 +94,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/1/25 10:30, Philippe Mathieu-Daudé wrote:
-> Both CPUClass::gdb_read_register() and CPUClass::gdb_write_register()
-> handlers are called from common gdbstub code, and won't be called with
-> register index over CPUClass::gdb_num_core_regs:
+On Wed, Jan 22, 2025 at 03:30:05PM +1100, Alexey Kardashevskiy wrote:
 > 
->    int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
->    {
->        CPUClass *cc = CPU_GET_CLASS(cpu);
 > 
->        if (reg < cc->gdb_num_core_regs) {
->            return cc->gdb_read_register(cpu, buf, reg);
->        }
->        ...
->    }
+> On 22/1/25 02:18, Peter Xu wrote:
+> > On Tue, Jun 25, 2024 at 12:31:13AM +0800, Xu Yilun wrote:
+> > > On Mon, Jan 20, 2025 at 03:46:15PM -0500, Peter Xu wrote:
+> > > > On Mon, Jan 20, 2025 at 09:22:50PM +1100, Alexey Kardashevskiy wrote:
+> > > > > > It is still uncertain how to implement the private MMIO. Our assumption
+> > > > > > is the private MMIO would also create a memory region with
+> > > > > > guest_memfd-like backend. Its mr->ram is true and should be managed by
+> > > > > > RamdDiscardManager which can skip doing DMA_MAP in VFIO's region_add
+> > > > > > listener.
+> > > > > 
+> > > > > My current working approach is to leave it as is in QEMU and VFIO.
+> > > > 
+> > > > Agreed.  Setting ram=true to even private MMIO sounds hackish, at least
+> > > 
+> > > The private MMIO refers to assigned MMIO, not emulated MMIO. IIUC,
+> > > normal assigned MMIO is always set ram=true,
+> > > 
+> > > void memory_region_init_ram_device_ptr(MemoryRegion *mr,
+> > >                                         Object *owner,
+> > >                                         const char *name,
+> > >                                         uint64_t size,
+> > >                                         void *ptr)
+> > > {
+> > >      memory_region_init(mr, owner, name, size);
+> > >      mr->ram = true;
+> > > 
+> > > 
+> > > So I don't think ram=true is a problem here.
+> > 
+> > I see.  If there's always a host pointer then it looks valid.  So it means
+> > the device private MMIOs are always mappable since the start?
 > 
->    static int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
->    {
->        CPUClass *cc = CPU_GET_CLASS(cpu);
-> 
->        if (reg < cc->gdb_num_core_regs) {
->            return cc->gdb_write_register(cpu, mem_buf, reg);
->        }
->        ...
->    }
-> 
-> Clarify that in CPUClass docstring, and remove unreachable code on
-> the microblaze and tricore implementations.
+> Yes. VFIO owns the mapping and does not treat shared/private MMIO any
+> different at the moment. Thanks,
 
-s/tricore/openrisc/ 🤦
+mm.. I'm actually expecting private MMIO not have a host pointer, just
+as private memory do.
+
+But I'm not sure why having host pointer correlates mr->ram == true.
+
+Thanks,
+Yilun
 
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   include/hw/core/cpu.h       | 2 ++
->   target/microblaze/gdbstub.c | 5 -----
->   target/openrisc/gdbstub.c   | 5 -----
->   3 files changed, 2 insertions(+), 10 deletions(-)
-
+> > 
+> > Thanks,
+> > 
+> 
+> -- 
+> Alexey
+> 
 
