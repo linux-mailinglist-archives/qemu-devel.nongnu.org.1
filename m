@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0916A194EA
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 16:19:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 589B3A194F8
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 16:20:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tacUH-0004bc-Lg; Wed, 22 Jan 2025 10:17:49 -0500
+	id 1tacUK-0004cV-O1; Wed, 22 Jan 2025 10:17:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tacUF-0004bH-Pd
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 10:17:47 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tacUH-0004c3-A7
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 10:17:49 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tacUE-0004YT-Ag
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 10:17:47 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tacUE-0004Ye-Vo
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 10:17:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737559065;
+ s=mimecast20190719; t=1737559066;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uCH6PrnlcUl+bRd4c5qQ28sEk/fKhW973tgX711Eulk=;
- b=G0CbGUu/bPCjUqmFgvJsOkvI0Tgk2PlvAlbGaeB3gRxKe7K37KFkjofQtPNuT0ukbAagNb
- NQYMMS36an9Va+EbDqMRrhfJ+XqRThMyt7/MmmJ2Ru2AsUL46EQgivjepeHNCKtPW+eFum
- clpGRFFqmfbRnxuiGNbBQusCmZCgYf0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=++9SJZ2wWg4Pbvd90BZMzoeNDlPsajzo7tBFGHJvvZU=;
+ b=HCCfCk0sVKKmMi0RQpWMQa9GaDIIPcmWXPSS8BCXGEnoTKX1iogp14EDsxLjkAcyNyo75U
+ HMUat6HV4boya4qgBzUVmCDjHqumzJz9M50wOeFQMS/y1eq+mOCkYIesKpP956A0fkaVWS
+ hosTiCZKwQHFVSPOKLgJfk1UTao2ZYo=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-157-uNqx4XTTOJeTRPK0ulYp2g-1; Wed,
- 22 Jan 2025 10:17:42 -0500
-X-MC-Unique: uNqx4XTTOJeTRPK0ulYp2g-1
-X-Mimecast-MFC-AGG-ID: uNqx4XTTOJeTRPK0ulYp2g
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-515-Z2lNY_ThMi6fCFKiCqt9Vg-1; Wed,
+ 22 Jan 2025 10:17:44 -0500
+X-MC-Unique: Z2lNY_ThMi6fCFKiCqt9Vg-1
+X-Mimecast-MFC-AGG-ID: Z2lNY_ThMi6fCFKiCqt9Vg
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B473E19560B3
- for <qemu-devel@nongnu.org>; Wed, 22 Jan 2025 15:17:40 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D8F211955D53
+ for <qemu-devel@nongnu.org>; Wed, 22 Jan 2025 15:17:43 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.154])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9A22119560AA; Wed, 22 Jan 2025 15:17:39 +0000 (UTC)
+ id 2196D19560AA; Wed, 22 Jan 2025 15:17:40 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH 2/5] vfio: Modify vfio_viommu_preset() parameter
-Date: Wed, 22 Jan 2025 16:17:29 +0100
-Message-ID: <20250122151732.1351821-3-clg@redhat.com>
+Subject: [PATCH 3/5] vfio: Improve error reporting when MMIO region mapping
+ fails
+Date: Wed, 22 Jan 2025 16:17:30 +0100
+Message-ID: <20250122151732.1351821-4-clg@redhat.com>
 In-Reply-To: <20250122151732.1351821-1-clg@redhat.com>
 References: <20250122151732.1351821-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -82,59 +83,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We plan to use vfio_viommu_preset() in MemoryListener handlers which
-operate at the container level. Change the parameter to VFIOContainerBase
-to ease future changes.
+When the IOMMU address space width is smaller than the physical
+address width, a MMIO region of a device can fail to map because the
+region is outside the supported IOVA ranges of the VM. In this case,
+PCI peer-to-peer transactions on BARs are not supported.
+
+This can occur with the 39-bit IOMMU address space width, as can be
+the case on consumer processors or when using a vIOMMU device with
+default settings.
+
+The current error message is unclear. Change the error report to a
+warning because it is a non fatal condition for the VM, clarify the
+induced limitations for the user and provide advice on how to possibly
+resolve this issue: setting the CPU address space width of the IOMMU
+address space width accordingly.
 
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-common.h | 2 +-
- hw/vfio/common.c              | 4 ++--
- hw/vfio/migration.c           | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ hw/vfio/common.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 48018dc751e51066769b23bc6e4675a7167b099e..fcfe0b4b8cbe907877e366117e7bb7f74311d4f6 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -274,7 +274,7 @@ extern int vfio_kvm_device_fd;
- bool vfio_mig_active(void);
- int vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp);
- void vfio_unblock_multiple_devices_migration(void);
--bool vfio_viommu_preset(VFIODevice *vbasedev);
-+bool vfio_viommu_preset(VFIOContainerBase *bcontainer);
- int64_t vfio_mig_bytes_transferred(void);
- void vfio_reset_bytes_transferred(void);
- bool vfio_device_state_is_running(VFIODevice *vbasedev);
 diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 2660a42f9edc9346f2e62652efb0c78a8b48b52b..3ca5dbf883ed2262e36952fcc47e717ff4154f12 100644
+index 3ca5dbf883ed2262e36952fcc47e717ff4154f12..561be7f57cf903e6e2bcbbb708be9e4d4ee8941c 100644
 --- a/hw/vfio/common.c
 +++ b/hw/vfio/common.c
-@@ -142,9 +142,9 @@ void vfio_unblock_multiple_devices_migration(void)
-     migrate_del_blocker(&multiple_devices_migration_blocker);
+@@ -569,6 +569,20 @@ static bool vfio_get_section_iova_range(VFIOContainerBase *bcontainer,
+     return true;
  }
  
--bool vfio_viommu_preset(VFIODevice *vbasedev)
-+bool vfio_viommu_preset(VFIOContainerBase *bcontainer)
++static void vfio_container_p2p_error_append(VFIOContainerBase *bcontainer,
++                                            Error **errp)
++{
++    error_append_hint(errp, "PCI peer-to-peer transactions on BARs "
++                      "are not supported. ");
++    if (vfio_viommu_preset(bcontainer)) {
++        error_append_hint(errp, "Try setting the vIOMMU \"aw-bits\" "
++                          "property to match CPU address space width\n");
++    } else {
++        error_append_hint(errp, "Try setting the CPU \"phys-bits\" "
++                          "property to match IOMMU address space width\n");
++    }
++}
++
+ static void vfio_listener_region_add(MemoryListener *listener,
+                                      MemoryRegionSection *section)
  {
--    return vbasedev->bcontainer->space->as != &address_space_memory;
-+    return bcontainer->space->as != &address_space_memory;
- }
- 
- static void vfio_set_migration_error(int ret)
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index adfa752db5272e37d73fc0a435a0834e74e3f2fe..347390adb27bc3cd123f3eec1de6dc6986d8d952 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -1069,7 +1069,7 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-         goto out_deinit;
-     }
- 
--    if (vfio_viommu_preset(vbasedev)) {
-+    if (vfio_viommu_preset(vbasedev->bcontainer)) {
-         error_setg(&err, "%s: Migration is currently not supported "
-                    "with vIOMMU enabled", vbasedev->name);
-         goto add_blocker;
+@@ -685,9 +699,13 @@ static void vfio_listener_region_add(MemoryListener *listener,
+                    "0x%"HWADDR_PRIx", %p) = %d (%s)",
+                    bcontainer, iova, int128_get64(llsize), vaddr, ret,
+                    strerror(-ret));
++        /*
++         * MMIO region mapping failures are not fatal but in this case
++         * PCI peer-to-peer transactions are broken.
++         */
+         if (memory_region_is_ram_device(section->mr)) {
+-            /* Allow unexpected mappings not to be fatal for RAM devices */
+-            error_report_err(err);
++            vfio_container_p2p_error_append(bcontainer, &err);
++            warn_report_err(err);
+             return;
+         }
+         goto fail;
 -- 
 2.48.1
 
