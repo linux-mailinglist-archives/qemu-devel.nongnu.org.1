@@ -2,53 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7AA8A190F7
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 12:53:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB090A190FA
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 12:53:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taZGZ-0002WU-30; Wed, 22 Jan 2025 06:51:27 -0500
+	id 1taZHy-0003qV-J3; Wed, 22 Jan 2025 06:52:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1taZGV-0002Tz-8p
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 06:51:23 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1taZHa-0003D1-TY
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 06:52:34 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1taZGR-00084Z-FO
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 06:51:23 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1taZHY-0000vp-1D
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 06:52:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737546677;
+ s=mimecast20190719; t=1737546747;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=XxJdYSqB1OrxPSS/sqz/Tl+I9kros+QMSq9QNTHNmlw=;
- b=D5sGyvQ5Botmjayz8hP1p4CNfMuCeZdcY+R3kSCdFuokWf97UoOpWlvG+7P3lWjZgflDPY
- udZ/nmStl+ae80XZVIQQMQ+R78ror15t/alZVNthnTEFDjf7NzhX/D2ri0ZwdDpqnqO7QO
- 7Heic7QXJnAYIkDh/ma/efaNMnlP0Uw=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bpGQXazZRTs7fXzsCi2gPR/wNSY6kSjuxkw2BiXV7oA=;
+ b=bokufthJjs2mVB3tk/EV/aM3X+DmRAsp77rVt4myd68bxgit9GVFOea3VTPfUc6QE/JjEH
+ KIHEaoXsRb81ZuZlZyPQhif5lt1dxFULvNcYhno4wX2mbHKwAfCmYYel1zptqkpT1elW2T
+ ukVT9JDVb8Z2dOspsjFLUV7zr0sWb9c=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-312-sAXbIUI1Neuz_X1-ZcejCw-1; Wed,
- 22 Jan 2025 06:51:15 -0500
-X-MC-Unique: sAXbIUI1Neuz_X1-ZcejCw-1
-X-Mimecast-MFC-AGG-ID: sAXbIUI1Neuz_X1-ZcejCw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-223-fcet-vwSN1qP4gPSCpqiWQ-1; Wed,
+ 22 Jan 2025 06:51:20 -0500
+X-MC-Unique: fcet-vwSN1qP4gPSCpqiWQ-1
+X-Mimecast-MFC-AGG-ID: fcet-vwSN1qP4gPSCpqiWQ
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AE3AC19560B1; Wed, 22 Jan 2025 11:51:14 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 931AF1955DC9; Wed, 22 Jan 2025 11:51:19 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.193.195])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9952619560AA; Wed, 22 Jan 2025 11:51:12 +0000 (UTC)
+ id 16E9B1956053; Wed, 22 Jan 2025 11:51:14 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, hreitz@redhat.com, pkrempa@redhat.com, peterx@redhat.com,
  qemu-devel@nongnu.org
-Subject: [PATCH 0/9] block: Managing inactive nodes (QSD migration)
-Date: Wed, 22 Jan 2025 12:50:37 +0100
-Message-ID: <20250122115046.51216-1-kwolf@redhat.com>
+Subject: [PATCH 1/9] block: Allow inactivating already inactive nodes
+Date: Wed, 22 Jan 2025 12:50:38 +0100
+Message-ID: <20250122115046.51216-2-kwolf@redhat.com>
+In-Reply-To: <20250122115046.51216-1-kwolf@redhat.com>
+References: <20250122115046.51216-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
@@ -61,7 +64,7 @@ X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.086,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,58 +80,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series adds a mechanism that allows the user or management tool to
-manually activate and inactivate block nodes instead of fully relying on
-the automatic management in the migration code.
+What we wanted to catch with the assertion is cases where the recursion
+finds that a child was inactive before its parent. This should never
+happen. But if the user tries to inactivate an image that is already
+inactive, that's harmless and we don't want to fail the assertion.
 
-One case where this is needed is for migration with shared storage and
-devices backed by qemu-storage-daemon, which as an external process is
-not involved in the VM migration. Management tools can manually
-orchestrate the handover in this scenario. The new qemu-iotests case
-qsd-migrate demonstrates this.
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+---
+ block.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-There are other cases without qemu-storage-daemon where manual
-management is necessary. For example, after migration, the destination
-VM only activates images on 'cont', but after migrating a paused VM, the
-user may want to perform operations on a block node while the VM is
-still paused.
-
-This series adds support for block exports on an inactive node (needed
-for shared storage migration with qemu-storage-daemon) only to NBD.
-Adding it to other export types will be done in a future series.
-
-Kevin Wolf (9):
-  block: Allow inactivating already inactive nodes
-  block: Add option to create inactive nodes
-  block: Support inactive nodes in blk_insert_bs()
-  block/export: Don't ignore image activation error in blk_exp_add()
-  block/export: Add option to allow export of inactive nodes
-  nbd/server: Support inactive nodes
-  block: Add blockdev-set-active QMP command
-  iotests: Add filter_qtest()
-  iotests: Add qsd-migrate case
-
- qapi/block-core.json                          |  38 +++++
- qapi/block-export.json                        |  10 +-
- include/block/block-common.h                  |   1 +
- include/block/block-global-state.h            |   6 +
- include/block/export.h                        |   3 +
- block.c                                       |  50 ++++++-
- block/block-backend.c                         |  14 +-
- block/export/export.c                         |  29 +++-
- blockdev.c                                    |  32 +++++
- nbd/server.c                                  |  17 +++
- tests/qemu-iotests/iotests.py                 |   4 +
- tests/qemu-iotests/041                        |   4 +-
- tests/qemu-iotests/165                        |   4 +-
- tests/qemu-iotests/tests/copy-before-write    |   3 +-
- tests/qemu-iotests/tests/migrate-bitmaps-test |   7 +-
- tests/qemu-iotests/tests/qsd-migrate          | 132 ++++++++++++++++++
- tests/qemu-iotests/tests/qsd-migrate.out      |  51 +++++++
- 17 files changed, 379 insertions(+), 26 deletions(-)
- create mode 100755 tests/qemu-iotests/tests/qsd-migrate
- create mode 100644 tests/qemu-iotests/tests/qsd-migrate.out
-
+diff --git a/block.c b/block.c
+index f60606f242..43ed632a7a 100644
+--- a/block.c
++++ b/block.c
+@@ -6955,7 +6955,8 @@ bdrv_has_bds_parent(BlockDriverState *bs, bool only_active)
+     return false;
+ }
+ 
+-static int GRAPH_RDLOCK bdrv_inactivate_recurse(BlockDriverState *bs)
++static int GRAPH_RDLOCK
++bdrv_inactivate_recurse(BlockDriverState *bs, bool top_level)
+ {
+     BdrvChild *child, *parent;
+     int ret;
+@@ -6973,7 +6974,14 @@ static int GRAPH_RDLOCK bdrv_inactivate_recurse(BlockDriverState *bs)
+         return 0;
+     }
+ 
+-    assert(!(bs->open_flags & BDRV_O_INACTIVE));
++    /*
++     * Inactivating an already inactive node on user request is harmless, but if
++     * a child is already inactive before its parent, that's bad.
++     */
++    if (bs->open_flags & BDRV_O_INACTIVE) {
++        assert(top_level);
++        return 0;
++    }
+ 
+     /* Inactivate this node */
+     if (bs->drv->bdrv_inactivate) {
+@@ -7010,7 +7018,7 @@ static int GRAPH_RDLOCK bdrv_inactivate_recurse(BlockDriverState *bs)
+ 
+     /* Recursively inactivate children */
+     QLIST_FOREACH(child, &bs->children, next) {
+-        ret = bdrv_inactivate_recurse(child->bs);
++        ret = bdrv_inactivate_recurse(child->bs, false);
+         if (ret < 0) {
+             return ret;
+         }
+@@ -7035,7 +7043,7 @@ int bdrv_inactivate_all(void)
+         if (bdrv_has_bds_parent(bs, false)) {
+             continue;
+         }
+-        ret = bdrv_inactivate_recurse(bs);
++        ret = bdrv_inactivate_recurse(bs, true);
+         if (ret < 0) {
+             bdrv_next_cleanup(&it);
+             break;
 -- 
 2.48.1
 
