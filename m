@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B631A190F6
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 12:53:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADD34A190F8
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 12:53:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taZGm-0002cy-VG; Wed, 22 Jan 2025 06:51:40 -0500
+	id 1taZGp-0002dr-KX; Wed, 22 Jan 2025 06:51:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1taZGl-0002cS-Ao
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 06:51:39 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1taZGo-0002dY-B1
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 06:51:42 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1taZGj-0008Ap-L1
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 06:51:39 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1taZGm-0008FZ-0q
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 06:51:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737546697;
+ s=mimecast20190719; t=1737546698;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eclF9e9zIzUicX4hqn+OMI1DBWFsq28pajQTP44/ZJI=;
- b=XakxvKkTtO8muYu2OT8QoYHwbTGbp5LNHz2bm1c5csGMPWIEcxrQcXvrJlR7uhexDFWISX
- nHB8zgYMeox4F+5HPfEVs5p7eUfvP+2nH3WISYgzmnBAH1IbULIGDiPuIPKXiPGGTEWeu4
- Z0vcZ5lFJK6gBm3tzVs20Bvhp7qL1WU=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=DkCHPTSgu46sKfQlR+iwsxq9+VZrqAq4gn91UtuoshE=;
+ b=DakP55BdlhNwJoCoTnXX8d5MbFqKqTDvpnnBSoSyKrzgui6rAszzRQM2qBws+Hvp+k8el8
+ f9M5PsHztqFEHtRMSy/xjpd8BYpfj2gy4leawYN5HFtS09h1hE/liTZihR6wbbSFER4BkQ
+ c1OJhX2/PuPo9blRLJ1fmdEjMevPwZ8=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-siAW2UWKOjqdTTn4fLMQ-w-1; Wed,
- 22 Jan 2025 06:51:33 -0500
-X-MC-Unique: siAW2UWKOjqdTTn4fLMQ-w-1
-X-Mimecast-MFC-AGG-ID: siAW2UWKOjqdTTn4fLMQ-w
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-497-1uZ4jF45MX-0NUb_fkIFIA-1; Wed,
+ 22 Jan 2025 06:51:35 -0500
+X-MC-Unique: 1uZ4jF45MX-0NUb_fkIFIA-1
+X-Mimecast-MFC-AGG-ID: 1uZ4jF45MX-0NUb_fkIFIA
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 655E519560B0; Wed, 22 Jan 2025 11:51:32 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AB50119560AB; Wed, 22 Jan 2025 11:51:34 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.193.195])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BF3DB19560AA; Wed, 22 Jan 2025 11:51:30 +0000 (UTC)
+ id C530D19560AA; Wed, 22 Jan 2025 11:51:32 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, hreitz@redhat.com, pkrempa@redhat.com, peterx@redhat.com,
  qemu-devel@nongnu.org
-Subject: [PATCH 7/9] block: Add blockdev-set-active QMP command
-Date: Wed, 22 Jan 2025 12:50:44 +0100
-Message-ID: <20250122115046.51216-8-kwolf@redhat.com>
+Subject: [PATCH 8/9] iotests: Add filter_qtest()
+Date: Wed, 22 Jan 2025 12:50:45 +0100
+Message-ID: <20250122115046.51216-9-kwolf@redhat.com>
 In-Reply-To: <20250122115046.51216-1-kwolf@redhat.com>
 References: <20250122115046.51216-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -80,171 +80,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The system emulator tries to automatically activate and inactivate block
-nodes at the right point during migration. However, there are still
-cases where it's necessary that the user can do this manually.
-
-Images are only activated on the destination VM of a migration when the
-VM is actually resumed. If the VM was paused, this doesn't happen
-automatically. The user may want to perform some operation on a block
-device (e.g. taking a snapshot or starting a block job) without also
-resuming the VM yet. This is an example where a manual command is
-necessary.
-
-Another example is VM migration when the image files are opened by an
-external qemu-storage-daemon instance on each side. In this case, the
-process that needs to hand over the images isn't even part of the
-migration and can't know when the migration completes. Management tools
-need a way to explicitly inactivate images on the source and activate
-them on the destination.
-
-This adds a new blockdev-set-active QMP command that lets the user
-change the status of individual nodes (this is necessary in
-qemu-storage-daemon because it could be serving multiple VMs and only
-one of them migrates at a time). For convenience, operating on all
-devices (like QEMU does automatically during migration) is offered as an
-option, too, and can be used in the context of single VM.
+The open-coded form of this filter has been copied into enough tests
+that it's better to move it into iotests.py.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- qapi/block-core.json               | 32 ++++++++++++++++++++++++++++++
- include/block/block-global-state.h |  3 +++
- block.c                            | 21 ++++++++++++++++++++
- blockdev.c                         | 32 ++++++++++++++++++++++++++++++
- 4 files changed, 88 insertions(+)
+ tests/qemu-iotests/iotests.py                 | 4 ++++
+ tests/qemu-iotests/041                        | 4 +---
+ tests/qemu-iotests/165                        | 4 +---
+ tests/qemu-iotests/tests/copy-before-write    | 3 +--
+ tests/qemu-iotests/tests/migrate-bitmaps-test | 7 +++----
+ 5 files changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 5bc164dbed..39c675a036 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -4941,6 +4941,38 @@
- { 'command': 'blockdev-del', 'data': { 'node-name': 'str' },
-   'allow-preconfig': true }
+diff --git a/tests/qemu-iotests/iotests.py b/tests/qemu-iotests/iotests.py
+index 19817c7353..9c9c908983 100644
+--- a/tests/qemu-iotests/iotests.py
++++ b/tests/qemu-iotests/iotests.py
+@@ -701,6 +701,10 @@ def _filter(_key, value):
+ def filter_nbd_exports(output: str) -> str:
+     return re.sub(r'((min|opt|max) block): [0-9]+', r'\1: XXX', output)
  
-+##
-+# @blockdev-set-active:
-+#
-+# Activate or inactive a block device. Use this to manage the handover of block
-+# devices on migration with qemu-storage-daemon.
-+#
-+# Activating a node automatically activates all of its child nodes first.
-+# Inactivating a node automatically inactivates any of its child nodes that are
-+# not in use by a still active node.
-+#
-+# @node-name: Name of the graph node to activate or inactivate. By default, all
-+#     nodes are affected by the operation.
-+#
-+# @active: true if the nodes should be active when the command returns success,
-+#     false if they should be inactive.
-+#
-+# Since: 10.0
-+#
-+# .. qmp-example::
-+#
-+#     -> { "execute": "blockdev-set-active",
-+#          "arguments": {
-+#               "node-name": "node0",
-+#               "active": false
-+#          }
-+#        }
-+#     <- { "return": {} }
-+##
-+{ 'command': 'blockdev-set-active',
-+  'data': { '*node-name': 'str', 'active': 'bool' },
-+  'allow-preconfig': true }
-+
- ##
- # @BlockdevCreateOptionsFile:
- #
-diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
-index a826bf5f78..9be34b3c99 100644
---- a/include/block/block-global-state.h
-+++ b/include/block/block-global-state.h
-@@ -184,6 +184,9 @@ bdrv_activate(BlockDriverState *bs, Error **errp);
- int coroutine_fn no_co_wrapper_bdrv_rdlock
- bdrv_co_activate(BlockDriverState *bs, Error **errp);
++def filter_qtest(output: str) -> str:
++    output = re.sub(r'^\[I \d+\.\d+\] OPENED\n', '', output)
++    output = re.sub(r'\n?\[I \+\d+\.\d+\] CLOSED\n?$', '', output)
++    return output
  
-+int no_coroutine_fn
-+bdrv_inactivate(BlockDriverState *bs, Error **errp);
-+
- void bdrv_activate_all(Error **errp);
- int bdrv_inactivate_all(void);
+ Msg = TypeVar('Msg', Dict[str, Any], List[Any], str)
  
-diff --git a/block.c b/block.c
-index 76cddd6757..ebb6a7baeb 100644
---- a/block.c
-+++ b/block.c
-@@ -7040,6 +7040,27 @@ bdrv_inactivate_recurse(BlockDriverState *bs, bool top_level)
-     return 0;
- }
+diff --git a/tests/qemu-iotests/041 b/tests/qemu-iotests/041
+index 98d17b1388..8452845f44 100755
+--- a/tests/qemu-iotests/041
++++ b/tests/qemu-iotests/041
+@@ -1100,10 +1100,8 @@ class TestRepairQuorum(iotests.QMPTestCase):
  
-+int bdrv_inactivate(BlockDriverState *bs, Error **errp)
-+{
-+    int ret;
-+
-+    GLOBAL_STATE_CODE();
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+
-+    if (bdrv_has_bds_parent(bs, true)) {
-+        error_setg(errp, "Node has active parent node");
-+        return -EPERM;
-+    }
-+
-+    ret = bdrv_inactivate_recurse(bs, true);
-+    if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to inactivate node");
-+        return ret;
-+    }
-+
-+    return 0;
-+}
-+
- int bdrv_inactivate_all(void)
- {
-     BlockDriverState *bs = NULL;
-diff --git a/blockdev.c b/blockdev.c
-index 218024497b..874cef0299 100644
---- a/blockdev.c
-+++ b/blockdev.c
-@@ -3455,6 +3455,38 @@ void qmp_blockdev_del(const char *node_name, Error **errp)
-     bdrv_unref(bs);
- }
+         # Check the full error message now
+         self.vm.shutdown()
+-        log = self.vm.get_log()
+-        log = re.sub(r'^\[I \d+\.\d+\] OPENED\n', '', log)
++        log = iotests.filter_qtest(self.vm.get_log())
+         log = re.sub(r'^Formatting.*\n', '', log)
+-        log = re.sub(r'\n\[I \+\d+\.\d+\] CLOSED\n?$', '', log)
+         log = re.sub(r'^%s: ' % os.path.basename(iotests.qemu_prog), '', log)
  
-+void qmp_blockdev_set_active(const char *node_name, bool active, Error **errp)
-+{
-+    int ret;
-+
-+    GLOBAL_STATE_CODE();
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+
-+    if (!node_name) {
-+        if (active) {
-+            bdrv_activate_all(errp);
-+        } else {
-+            ret = bdrv_inactivate_all();
-+            if (ret < 0) {
-+                error_setg_errno(errp, -ret, "Failed to inactivate all nodes");
-+            }
-+        }
-+    } else {
-+        BlockDriverState *bs = bdrv_find_node(node_name);
-+        if (!bs) {
-+            error_setg(errp, "Failed to find node with node-name='%s'",
-+                       node_name);
-+            return;
-+        }
-+
-+        if (active) {
-+            bdrv_activate(bs, errp);
-+        } else {
-+            bdrv_inactivate(bs, errp);
-+        }
-+    }
-+}
-+
- static BdrvChild * GRAPH_RDLOCK
- bdrv_find_child(BlockDriverState *parent_bs, const char *child_name)
- {
+         self.assertEqual(log,
+diff --git a/tests/qemu-iotests/165 b/tests/qemu-iotests/165
+index b24907a62f..b3b1709d71 100755
+--- a/tests/qemu-iotests/165
++++ b/tests/qemu-iotests/165
+@@ -82,9 +82,7 @@ class TestPersistentDirtyBitmap(iotests.QMPTestCase):
+         self.vm.shutdown()
+ 
+         #catch 'Persistent bitmaps are lost' possible error
+-        log = self.vm.get_log()
+-        log = re.sub(r'^\[I \d+\.\d+\] OPENED\n', '', log)
+-        log = re.sub(r'\[I \+\d+\.\d+\] CLOSED\n?$', '', log)
++        log = iotests.filter_qtest(self.vm.get_log())
+         if log:
+             print(log)
+ 
+diff --git a/tests/qemu-iotests/tests/copy-before-write b/tests/qemu-iotests/tests/copy-before-write
+index d33bea577d..498c558008 100755
+--- a/tests/qemu-iotests/tests/copy-before-write
++++ b/tests/qemu-iotests/tests/copy-before-write
+@@ -95,8 +95,7 @@ class TestCbwError(iotests.QMPTestCase):
+ 
+         self.vm.shutdown()
+         log = self.vm.get_log()
+-        log = re.sub(r'^\[I \d+\.\d+\] OPENED\n', '', log)
+-        log = re.sub(r'\[I \+\d+\.\d+\] CLOSED\n?$', '', log)
++        log = iotests.filter_qtest(log)
+         log = iotests.filter_qemu_io(log)
+         return log
+ 
+diff --git a/tests/qemu-iotests/tests/migrate-bitmaps-test b/tests/qemu-iotests/tests/migrate-bitmaps-test
+index f98e721e97..8fb4099201 100755
+--- a/tests/qemu-iotests/tests/migrate-bitmaps-test
++++ b/tests/qemu-iotests/tests/migrate-bitmaps-test
+@@ -122,11 +122,10 @@ class TestDirtyBitmapMigration(iotests.QMPTestCase):
+ 
+         # catch 'Could not reopen qcow2 layer: Bitmap already exists'
+         # possible error
+-        log = self.vm_a.get_log()
+-        log = re.sub(r'^\[I \d+\.\d+\] OPENED\n', '', log)
+-        log = re.sub(r'^(wrote .* bytes at offset .*\n.*KiB.*ops.*sec.*\n){3}',
++        log = iotests.filter_qtest(self.vm_a.get_log())
++        log = re.sub(r'^(wrote .* bytes at offset .*\n'
++                     r'.*KiB.*ops.*sec.*\n?){3}',
+                      '', log)
+-        log = re.sub(r'\[I \+\d+\.\d+\] CLOSED\n?$', '', log)
+         self.assertEqual(log, '')
+ 
+         # test that bitmap is still persistent
 -- 
 2.48.1
 
