@@ -2,83 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F20A9A1915F
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 13:27:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFAEBA19136
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 13:15:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1taZnb-00011j-JJ; Wed, 22 Jan 2025 07:25:35 -0500
+	id 1taZcq-000679-Vz; Wed, 22 Jan 2025 07:14:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1taZnZ-00011R-6G
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 07:25:33 -0500
-Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1taZcj-00062W-8n; Wed, 22 Jan 2025 07:14:21 -0500
+Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1taZnX-00059U-8K
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 07:25:32 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1737548716; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=gco2NJ+ppndj3eyrfTDU1X5X5wpIFeR/OES1JdNxbY7cNaHMPwKhNv6eAXDprOpkrJG/+Q/p8mJFg7/RlpC53AB1UD5R4HGBmqt+cQxPUthBkJjxibcdtkwH+yUgH60CrG9Y5gC1J4UuT778PGemp0vZnDvwUUQ9rYYC5aVWThw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1737548716;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=aeL3pKVgxdVJAHyAkM4qtzvjecypl5g5T84vRGLboQI=; 
- b=dz5wbdclK1pHI6PpRT5CT8i0hYFGD2Z0W9cBIvP85HYrvITEqCtUFzoQ3MzEaCaznOwGknAFxi+DLylYoa5m9u/xcyAEmH0xDHrhmzKPjjHr4uJ6acOFLlqOP5EIpWAM244uZ3Cf60vqG2EOB817znOZqBTDH70VsnYSOFDxejA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=collabora.com;
- spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
- dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1737548716; 
- s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=aeL3pKVgxdVJAHyAkM4qtzvjecypl5g5T84vRGLboQI=;
- b=F1l8qvF3dJOcGr4FbRSwj75XXjRPWFjfyiVn23Em/1hRSU1j/2w2iocTyCrqlaUc
- r5eF/0YgFJmU5OlfuiG2nX9lHJVI1zre087Zyb+cg96b75vAr2UxLxunVSECKgU/8jS
- FzGqQ0D3oVkPOQ5H44UCg2yzT1FlUay5pxS3b2tQ=
-Received: by mx.zohomail.com with SMTPS id 1737548714913397.03862598191154;
- Wed, 22 Jan 2025 04:25:14 -0800 (PST)
-Message-ID: <f0f5efe3-6cc6-49fa-8d15-c16725380e89@collabora.com>
-Date: Wed, 22 Jan 2025 15:25:08 +0300
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1taZcg-0000fb-7a; Wed, 22 Jan 2025 07:14:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1737548058; x=1769084058;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=p/MEDBHQJ56AH0MsVuiWC0F2edG1GENGkpR5CUKIRac=;
+ b=DC0YeActwjr6CGkNoQdEXEoO2IMWExC0fhBWm0z0y8n3jA7IOEQNsokI
+ r3xX1ExNRIaSO61XrM/vP93lNZFbyC9G1tfTwPWR+gH2eRZVENLRbpmHq
+ bp1vZ2e6ufRiDlDd1AvcerA6Dnom1fMBx2T7tPujdmKw19IprnvxuZC+q
+ 4y0zhuL97PceW0+n0XeGpJBM/lvjLQ3S51Tvab2IfnAKzH4UEGARqBSuy
+ 1AuCagf9HePk7cDn0uBkoGeOC5OVMFGmihS65nHsUvxzLfKaw0Y2UaE/F
+ VKFZSrPZ1Tw9OnIw32auM+OSraCd8OkhICjjNUywNP1Zj04w/1iTbUdkO g==;
+X-CSE-ConnectionGUID: RuEei4hKROykgR0itjku1w==
+X-CSE-MsgGUID: COY3TeQYSB2on8sEAgROxQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="37211821"
+X-IronPort-AV: E=Sophos;i="6.13,225,1732608000"; d="scan'208";a="37211821"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2025 04:14:14 -0800
+X-CSE-ConnectionGUID: spvVcfSYTlGtK4JbZ2Hoow==
+X-CSE-MsgGUID: xrUxPDnySvq67xNPURIq/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111764691"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa005.fm.intel.com with ESMTP; 22 Jan 2025 04:14:12 -0800
+Date: Wed, 22 Jan 2025 20:33:34 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 05/10] rust: vmstate: implement VMState for scalar types
+Message-ID: <Z5DlngFjERVqmxca@intel.com>
+References: <20250117090046.1045010-1-pbonzini@redhat.com>
+ <20250117090046.1045010-6-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/8] Support virtio-gpu DRM native context
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Gert Wollny
- <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
- Yiwei Zhang <zzyiwei@chromium.org>, Sergio Lopez Pascual <slp@redhat.com>
-References: <20250119220050.15167-1-dmitry.osipenko@collabora.com>
- <871pwxqyr3.fsf@draig.linaro.org>
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Content-Language: en-US
-In-Reply-To: <871pwxqyr3.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-Received-SPF: pass client-ip=136.143.188.112;
- envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.043,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250117090046.1045010-6-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -73
+X-Spam_score: -7.4
+X-Spam_bar: -------
+X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,53 +79,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/20/25 18:41, Alex Bennée wrote:
-> Dmitry Osipenko <dmitry.osipenko@collabora.com> writes:
+On Fri, Jan 17, 2025 at 10:00:41AM +0100, Paolo Bonzini wrote:
+> Date: Fri, 17 Jan 2025 10:00:41 +0100
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 05/10] rust: vmstate: implement VMState for scalar types
+> X-Mailer: git-send-email 2.47.1
 > 
->> This patchset adds DRM native context support to VirtIO-GPU on Qemu.
->>
->> Contarary to Virgl and Venus contexts that mediates high level GFX APIs,
->> DRM native context [1] mediates lower level kernel driver UAPI, which
->> reflects in a less CPU overhead and less/simpler code needed to support it.
->> DRM context consists of a host and guest parts that have to be implemented
->> for each GPU driver. On a guest side, DRM context presents a virtual GPU as
->> a real/native host GPU device for GL/VK applications.
->>
->> [1] https://www.youtube.com/watch?v=9sFP_yddLLQ
->>
->> Today there are four known DRM native context drivers existing in a wild:
->>
->>   - Freedreno (Qualcomm SoC GPUs), completely upstreamed
->>   - AMDGPU, mostly merged into upstreams
->>   - Intel (i915), merge requests are opened
+> Scalar types are those that have their own VMStateInfo.  This poses
+> a problem in that references to VMStateInfo can only be included in
+> associated consts starting with Rust 1.83.0, when the const_refs_static
+> was stabilized.  Removing the requirement is done by placing a limited
+> list of VMStateInfos in an enum, and going from enum to &VMStateInfo
+> only when building the VMStateField.
 > 
-> With the patch for the build failure:
+> The same thing cannot be done with VMS_STRUCT because the set of
+> VMStateDescriptions extends to structs defined by the devices.
+> Therefore, structs and cells cannot yet use vmstate_of!.
 > 
-> Tested-by: Alex Bennée <alex.bennee@linaro.org>
-> 
-> Host:
-> 
->   x86
->   Trixie
->   virglrenderer @ digitx/native-context-iris/a0b1872d252430a2b7f007db9fdbb0526385cfc0 
->   -display sdl,gl=on
-> 
-> KVM Guest
-> 
->   x86
->   Trixie
->   mesa @ digitx/native-context-iris/78b1508c3f06
-> 
-> With gtk,gl=on I'm still seeing a lot of screen corruption which mirrors
-> the terminal an leaves a destructive trail under the mouse cursor.
-> show-cursor on or off makes no difference.
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  rust/qemu-api/src/vmstate.rs | 128 ++++++++++++++++++++++++++++++++++-
+>  1 file changed, 126 insertions(+), 2 deletions(-)
 
-Thank you for the review and testing! I'm looking into that issue. Only
-some people are hitting it and Pierre-Eric said he had that mirroring
-issue without using nctx. Still interesting that the bug affects only
-certain setups and is triggered by nctx.
 
--- 
-Best regards,
-Dmitry
+>  /// Internal utility function to retrieve a type's `VMStateField`;
+>  /// used by [`vmstate_of!`](crate::vmstate_of).
+>  pub const fn vmstate_base<T: VMState>(_: PhantomData<T>) -> VMStateField {
+> @@ -99,6 +178,15 @@ pub const fn vmstate_varray_flag<T: VMState>(_: PhantomData<T>) -> VMStateField
+>  /// Return the `VMStateField` for a field of a struct.  The field must be
+>  /// visible in the current scope.
+>  ///
+> +/// Only a limited set of types is supported out of the box:
+> +/// * scalar types (integer and `bool`)
+> +/// * the C struct `QEMUTimer`
+> +/// * a transparent wrapper for any of the above (`Cell`, `UnsafeCell`,
+> +///   [`BqlCell`](crate::cell::BqlCell), [`BqlRefCell`](crate::cell::BqlRefCell)
+> +/// * a raw pointer to any of the above
+> +/// * a `NonNull` pointer to any of the above, possibly wrapped with `Option`
+
+I just found your rust-next has already updated and removed `Option` :-)
+
+> +/// * an array of any of the above
+> +///
+>  /// In order to support other types, the trait `VMState` must be implemented
+>  /// for them.
+>  #[macro_export]
+> @@ -109,8 +197,14 @@ macro_rules! vmstate_of {
+>                  .as_bytes()
+>                  .as_ptr() as *const ::std::os::raw::c_char,
+>              offset: $crate::offset_of!($struct_name, $field_name),
+> -            // Compute most of the VMStateField from the type of the field.
+
+Rebase mistake? This comment seems no need to be deleted.
+
+>              $(.num_offset: $crate::offset_of!($struct_name, $num),)?
+> +            // The calls to `call_func_with_field!` are the magic that
+> +            // computes most of the VMStateField from the type of the field.
+> +            info: $crate::info_enum_to_ref!($crate::call_func_with_field!(
+> +                $crate::vmstate::vmstate_scalar_type,
+> +                $struct_name,
+> +                $field_name
+> +            )),
+>
+
+Only a nit above,
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
 
