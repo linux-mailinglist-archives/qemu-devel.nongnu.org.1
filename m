@@ -2,146 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB034A196B0
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 17:41:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA92A196C6
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Jan 2025 17:43:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tadnB-0007zP-IE; Wed, 22 Jan 2025 11:41:25 -0500
+	id 1tadp4-0000xi-Pk; Wed, 22 Jan 2025 11:43:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1tadn9-0007up-Lu
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 11:41:23 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tador-0000xO-36
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 11:43:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1tadn7-0003u8-LX
- for qemu-devel@nongnu.org; Wed, 22 Jan 2025 11:41:23 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tadop-00048z-D8
+ for qemu-devel@nongnu.org; Wed, 22 Jan 2025 11:43:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737564079;
+ s=mimecast20190719; t=1737564186;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=JkWyNTIkap4TrPbaXOEeu1OUYYpcllGw8Q1rkM+h0w0=;
- b=GZja03vc2/5cHkVbG+vvqBjx7ejLzinW+KUII+3ifO1NZ0pUqyNlQOfzsuomQtOGiCCmSI
- QKmrFSAnORSyn76V7+wFioaxNRI1sFEu66GYdO6dtgWcDeA387ylUmJ1MA/lqMk7d+//JT
- 42ByKWwbzSuRGNuuBN7SbniFuNeL+kI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=3y0fMZSE7a+ty4qcm/cQWGtpuEjSKpLOhWLAcuXU2f0=;
+ b=LYVa0uMOeruWKGr4VIHW0uEvmLut/1P554HlzZCAHeyAuXN1C7lF+o62ABTf+atih1XTT3
+ CE9VHuou5FXdV6Z74UoaDeVIna55cEWtUw6MXom9KeuBEtgF42fwQTJFAy16xehKWD4Zsq
+ BGrygCuNPkJ4/BA+BkEVqY17HF/yHzc=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-295-kBvWsNfxN7aiQJhGsh7fLw-1; Wed, 22 Jan 2025 11:41:18 -0500
-X-MC-Unique: kBvWsNfxN7aiQJhGsh7fLw-1
-X-Mimecast-MFC-AGG-ID: kBvWsNfxN7aiQJhGsh7fLw
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4361d4e8359so54174615e9.3
- for <qemu-devel@nongnu.org>; Wed, 22 Jan 2025 08:41:17 -0800 (PST)
+ us-mta-494-h19pdPFsPnaz1vA7fR5m1w-1; Wed, 22 Jan 2025 11:43:05 -0500
+X-MC-Unique: h19pdPFsPnaz1vA7fR5m1w-1
+X-Mimecast-MFC-AGG-ID: h19pdPFsPnaz1vA7fR5m1w
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-468f80df8caso129070801cf.2
+ for <qemu-devel@nongnu.org>; Wed, 22 Jan 2025 08:43:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737564077; x=1738168877;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ d=1e100.net; s=20230601; t=1737564184; x=1738168984;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JkWyNTIkap4TrPbaXOEeu1OUYYpcllGw8Q1rkM+h0w0=;
- b=X+Juf4edEC+XQheXNYewM9RfHA9RMvtbWuGBsBHZd91jph1p0z7aV8E/8mKEQqN6sO
- RpVXc9sCRgBG37R+lhbMhtWuLgAY02T2HNtJLuwADfCMfO3D3uoDGKIVBJW+kD88WFWD
- abQX2tCC2QC5UmaVQIceZT+CdVti9ba93cRm33DFHoH5BJIgGOwYnPkRFWzw6bkRrNV+
- 4+rbTICfpqQkTCE9HPpJN0Id7N38PM8UyzEYkmKDXE7h1XwW6KiOabQo1uG37Xi6bCKj
- lvSk5ZrNgFfD/vk1oxhCS1jZfpIy+NXZLnQh6xTyh4Bk5YoItqQaQd1DLRPv5CIzfqV0
- kXqQ==
-X-Gm-Message-State: AOJu0Yx6jMrWuMTc1cQfmdW5E29ZcHw4R9yPZtYLcMnqXr1LR0ji/Dtd
- DIrwj/E7dS/BRF1znkgMxDDE+EIAzNFHJC8Vn29IXBaNO4RQaz8tM8LpZHvliiluv04yZ7Vq9sN
- OCftgtpCx81oXbTNrDRC8YiO6EbylM1sCIobkG+kSql7ZKAYSvGA0
-X-Gm-Gg: ASbGncvvBRAZKqqk2CBDfNaqWeUZswIBdfiLGbWYhxauka/R50/cifeHmtsHMiAlwG+
- LHJX5uwXkr5asvfCci1Pt3a9bCU9VUD1K0MV7zhob9kmniuwqDvKp1gm/vki8vHWu2HrmiBuhaR
- mvix1AX12Uc820ms/fQyHgpU3CHkdStPMz54UrcBI7GWO9lE3e/V31ahktkeGrIopg7L17DuF/Q
- ztFWueTXXc47rSEUoLd7XM/DmMm93wTzWDjWgxgCUQcGSOY0IZoit1vi5HtPN33DMdpqCx6VrML
- wjoIGcZL5UyRgifejSBmRyYHSn03uv5t
-X-Received: by 2002:a05:600c:4f84:b0:434:a90b:94fe with SMTP id
- 5b1f17b1804b1-438913ca9bamr222956265e9.10.1737564076674; 
- Wed, 22 Jan 2025 08:41:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF7zLZ/N/tRbcjLiIR2P6ouU4SXCWmlOYKvwtQH/pIAwhh3Zobc1ZFe/vVzVSPrY6kN1Ae6fw==
-X-Received: by 2002:a05:600c:4f84:b0:434:a90b:94fe with SMTP id
- 5b1f17b1804b1-438913ca9bamr222955975e9.10.1737564076250; 
- Wed, 22 Jan 2025 08:41:16 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:e10:ef90:343a:68f:2e91:95c?
- ([2a01:e0a:e10:ef90:343a:68f:2e91:95c])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438b31c8ac5sm31668205e9.39.2025.01.22.08.41.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 22 Jan 2025 08:41:15 -0800 (PST)
-Message-ID: <044af96f-791b-471f-ae90-c17597445fd3@redhat.com>
-Date: Wed, 22 Jan 2025 17:41:15 +0100
+ bh=3y0fMZSE7a+ty4qcm/cQWGtpuEjSKpLOhWLAcuXU2f0=;
+ b=k1l09bQmaXH6+RCInnbsl8Ts/49D3l+dbotDXA6SxHET63vdPT05mHJBvB7rBIsz9f
+ Ow0W+wQGREfaS+PTPNxviFYxbETGi9/QSkMjspf27H49UgvQZA6/kzIU8cIK95JhVcFF
+ DImj29eBwG2jq2/xojVNSzaDPXPrLAsinyy25Uo4u/YYhQ53bGBWhaDraKPg8J3fwuoA
+ ch2dxpdsk4t4D1xGApKTDYCh3OBAZPAWY+xrT0KEvUT8n2lDtPPcP5IdXy6raWY+EQ+f
+ 0W4406wrDAceu1/L0xHK92puGsNfscpELKZ0jge66xwrZoL41w3ldC8z4UAiKQdW/H+4
+ YvJQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVDOSKAgjD65AzbMEUPJEAyk/aIFD0TtR496vFCfHhgnUuA7EGD5Tsk9965Y/twhDmmLAPyKSLRFHXB@nongnu.org
+X-Gm-Message-State: AOJu0YyQ/Qa4bFw57qsOD7dPc4VA+SdhlD9MEj6IT+rFqaIt1I3J6UeQ
+ SMEdizboJQjz0Nur/kVT2HFEhUbsoqY0zDAoKtMEce9KY7bnYATtQ56+/+MjzRMduXACyG2L3Lo
+ s4tJ101L6wa0uoDx/c6NZv+g6WdRBd/JoBncKAtfjUJXJbDEjAjKR
+X-Gm-Gg: ASbGncs4lqamhDippWS5h+FG4R73HD4viLetEf3O6TgpmmObODdQJJRqI2U9yRnxbHe
+ SIvowdQbXRNIXH0lnOs1JhmzGs0ClRdWSTyEIcC6oX/HDYLSV0Esgs4nOKSWapxo0+HXfEZkfvD
+ kHpD6Vm2o0vGEL2vLqgHEQI1RH9r6jt7myQCtfRzn1q0H+45PxnixIJ66qIAJRZ1kWeokIhVZBI
+ kHmGt8frG3HSIRfg+NvlEf5Csifrpb3x+245ME7tz8knZoX8nqOsggRGm5sBzfSuQPqLhlx65CB
+ YOktxBqN2nl+OcLk4Q76NCsjEsoJWRQ=
+X-Received: by 2002:ac8:7f83:0:b0:467:681c:425f with SMTP id
+ d75a77b69052e-46e12a1e89amr335229471cf.4.1737564184261; 
+ Wed, 22 Jan 2025 08:43:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IETxltspJm2hV7oT91UaMx+gaN/Hy/EpGHdI43Wk+riEdrbGMvExnVUyAvjtxygRe6Mo7vWDQ==
+X-Received: by 2002:ac8:7f83:0:b0:467:681c:425f with SMTP id
+ d75a77b69052e-46e12a1e89amr335229041cf.4.1737564183924; 
+ Wed, 22 Jan 2025 08:43:03 -0800 (PST)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-46e102ec205sm65385351cf.11.2025.01.22.08.43.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 22 Jan 2025 08:43:03 -0800 (PST)
+Date: Wed, 22 Jan 2025 11:43:01 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
+ David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
+ Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
+ Xu Yilun <yilun.xu@intel.com>
+Subject: Re: [PATCH 2/7] guest_memfd: Introduce an object to manage the
+ guest-memfd with RamDiscardManager
+Message-ID: <Z5EgFaWIyjIiOZnv@x1n>
+References: <4d22d3ce-a5a1-49f2-a578-8e0fe7d26893@amd.com>
+ <2b799426-deaa-4644-aa17-6ef31899113b@intel.com>
+ <2400268e-d26a-4933-80df-cfe44b38ae40@amd.com>
+ <590432e1-4a26-4ae8-822f-ccfbac352e6b@intel.com>
+ <2b2730f3-6e1a-4def-b126-078cf6249759@amd.com>
+ <Z462F1Dwm6cUdCcy@x1n> <ZnmfUelBs3Cm0ZHd@yilunxu-OptiPlex-7050>
+ <Z4-6u5_9NChu_KZq@x1n>
+ <95a14f7d-4782-40b3-a55d-7cf67b911bbe@amd.com>
+ <Z5C9SzXxX7M1DBE3@yilunxu-OptiPlex-7050>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vhost-user: Silence unsupported
- VHOST_USER_PROTOCOL_F_RARP error
-To: Stefano Garzarella <sgarzare@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>
-References: <20250121100029.1106973-1-lvivier@redhat.com>
- <3mcx7u456pawkgz4dgf6tvk7izczuy55guipqacqkl66jhtltq@fofd5u3el4nj>
- <20250122085828-mutt-send-email-mst@kernel.org>
- <bfc3rstsxuapkjlea4lia3bn44rt7hhsf6kagtkltfssqynx6z@4dodvso73pel>
-Content-Language: en-US
-From: Laurent Vivier <lvivier@redhat.com>
-Autocrypt: addr=lvivier@redhat.com; keydata=
- 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
-In-Reply-To: <bfc3rstsxuapkjlea4lia3bn44rt7hhsf6kagtkltfssqynx6z@4dodvso73pel>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=lvivier@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Z5C9SzXxX7M1DBE3@yilunxu-OptiPlex-7050>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- PDS_OTHER_BAD_TLD=0.756, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.043,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -157,92 +119,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/01/2025 17:20, Stefano Garzarella wrote:
-> On Wed, Jan 22, 2025 at 08:59:22AM -0500, Michael S. Tsirkin wrote:
->> On Wed, Jan 22, 2025 at 02:42:14PM +0100, Stefano Garzarella wrote:
->>> On Tue, Jan 21, 2025 at 11:00:29AM +0100, Laurent Vivier wrote:
->>> > In vhost_user_receive() if vhost_net_notify_migration_done() reports
->>> > an error we display on the console:
->>> >
->>> >  Vhost user backend fails to broadcast fake RARP
->>> >
->>> > This message can be useful if there is a problem to execute
->>> > VHOST_USER_SEND_RARP but it is useless if the backend doesn't
->>> > support VHOST_USER_PROTOCOL_F_RARP.
->>> >
->>> > Don't report the error if vhost_net_notify_migration_done()
->>> > returns -ENOTSUP (from vhost_user_migration_done())
->>> >
->>> > Update vhost_net-stub.c to return -ENOTSUP too.
->>> >
->>> > Signed-off-by: Laurent Vivier <lvivier@redhat.com>
->>> > ---
->>> > hw/net/vhost_net-stub.c | 2 +-
->>> > net/vhost-user.c        | 2 +-
->>> > 2 files changed, 2 insertions(+), 2 deletions(-)
->>> >
->>> > diff --git a/hw/net/vhost_net-stub.c b/hw/net/vhost_net-stub.c
->>> > index 72df6d757e4d..875cd6c2b9c8 100644
->>> > --- a/hw/net/vhost_net-stub.c
->>> > +++ b/hw/net/vhost_net-stub.c
->>> > @@ -93,7 +93,7 @@ void vhost_net_config_mask(VHostNetState *net, VirtIODevice *dev, 
->>> bool mask)
->>> >
->>> > int vhost_net_notify_migration_done(struct vhost_net *net, char* mac_addr)
->>> > {
->>> > -    return -1;
->>> > +    return -ENOTSUP;
->>> > }
->>> >
->>> > VHostNetState *get_vhost_net(NetClientState *nc)
->>> > diff --git a/net/vhost-user.c b/net/vhost-user.c
->>> > index 12555518e838..636fff8a84a2 100644
->>> > --- a/net/vhost-user.c
->>> > +++ b/net/vhost-user.c
->>> > @@ -146,7 +146,7 @@ static ssize_t vhost_user_receive(NetClientState *nc, const 
->>> uint8_t *buf,
->>> >
->>> >         r = vhost_net_notify_migration_done(s->vhost_net, mac_addr);
->>> >
->>> > -        if ((r != 0) && (display_rarp_failure)) {
->>> > +        if ((r != 0) && (r != -ENOTSUP) && (display_rarp_failure)) {
->>> >             fprintf(stderr,
->>> >                     "Vhost user backend fails to broadcast fake RARP\n");
->>> >             fflush(stderr);
->>> > --
->>> > 2.47.1
->>> >
->>>
->>> IIUC the message was there since the introduction about 10 years ago
->>> from commit 3e866365e1 ("vhost user: add rarp sending after live
->>> migration for legacy guest"). IIUC -ENOTSUP is returned when both F_RARP
->>> and F_GUEST_ANNOUNCE are not negotiated.
->>>
->>> That said, I honestly don't know what F_RARP or F_GUEST_ANNOUNCE is for,
->>
->> rarp is to have destination host broadcast a message with VM address
->> to update the network. Guest announce is when it will instead
->> ask the guest to do this.
-> 
-> Okay, thanks for explaining to me.
-> So if both features are not negotiated, no one is going to broadcast
-> the message, right?
-> 
-> Could that be a valid reason to print an error message in QEMU?
-> 
-> To me it might be reasonable because the user might experience some
-> network problems, but I'm not a network guy :-)
+On Wed, Jan 22, 2025 at 05:41:31PM +0800, Xu Yilun wrote:
+> On Wed, Jan 22, 2025 at 03:30:05PM +1100, Alexey Kardashevskiy wrote:
+> > 
+> > 
+> > On 22/1/25 02:18, Peter Xu wrote:
+> > > On Tue, Jun 25, 2024 at 12:31:13AM +0800, Xu Yilun wrote:
+> > > > On Mon, Jan 20, 2025 at 03:46:15PM -0500, Peter Xu wrote:
+> > > > > On Mon, Jan 20, 2025 at 09:22:50PM +1100, Alexey Kardashevskiy wrote:
+> > > > > > > It is still uncertain how to implement the private MMIO. Our assumption
+> > > > > > > is the private MMIO would also create a memory region with
+> > > > > > > guest_memfd-like backend. Its mr->ram is true and should be managed by
+> > > > > > > RamdDiscardManager which can skip doing DMA_MAP in VFIO's region_add
+> > > > > > > listener.
+> > > > > > 
+> > > > > > My current working approach is to leave it as is in QEMU and VFIO.
+> > > > > 
+> > > > > Agreed.  Setting ram=true to even private MMIO sounds hackish, at least
+> > > > 
+> > > > The private MMIO refers to assigned MMIO, not emulated MMIO. IIUC,
+> > > > normal assigned MMIO is always set ram=true,
+> > > > 
+> > > > void memory_region_init_ram_device_ptr(MemoryRegion *mr,
+> > > >                                         Object *owner,
+> > > >                                         const char *name,
+> > > >                                         uint64_t size,
+> > > >                                         void *ptr)
 
-I'm working on adding vhost-user to passt[1], and in this case we don't need to broadcast 
-any message.
+[1]
 
-So I don't implement VHOST_USER_SEND_RARP and I don't want the error message to spoil my 
-console.
+> > > > {
+> > > >      memory_region_init(mr, owner, name, size);
+> > > >      mr->ram = true;
+> > > > 
+> > > > 
+> > > > So I don't think ram=true is a problem here.
+> > > 
+> > > I see.  If there's always a host pointer then it looks valid.  So it means
+> > > the device private MMIOs are always mappable since the start?
+> > 
+> > Yes. VFIO owns the mapping and does not treat shared/private MMIO any
+> > different at the moment. Thanks,
+> 
+> mm.. I'm actually expecting private MMIO not have a host pointer, just
+> as private memory do.
+> 
+> But I'm not sure why having host pointer correlates mr->ram == true.
 
--ENOTSUP is an error message for developer not for user.
+If there is no host pointer, what would you pass into "ptr" as referenced
+at [1] above when creating the private MMIO memory region?
+
+OTOH, IIUC guest private memory finally can also have a host pointer (aka,
+mmap()-able), it's just that even if it exists, accessing it may crash QEMU
+if it's private.
 
 Thanks,
-Laurent
-[1] https://passt.top/passt/
+
+-- 
+Peter Xu
 
 
