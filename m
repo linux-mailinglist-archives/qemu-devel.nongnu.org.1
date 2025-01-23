@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E757A1AD97
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 00:49:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28F6CA1AD8C
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 00:48:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tb6t7-0006yA-M1; Thu, 23 Jan 2025 18:45:30 -0500
+	id 1tb6tC-0007I9-Mq; Thu, 23 Jan 2025 18:45:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb6t3-0006rQ-Ho
- for qemu-devel@nongnu.org; Thu, 23 Jan 2025 18:45:25 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb6t6-00073s-Tl
+ for qemu-devel@nongnu.org; Thu, 23 Jan 2025 18:45:29 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb6t0-0004Gy-AK
- for qemu-devel@nongnu.org; Thu, 23 Jan 2025 18:45:25 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4361f796586so16011755e9.3
- for <qemu-devel@nongnu.org>; Thu, 23 Jan 2025 15:45:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb6t4-0004JS-BO
+ for qemu-devel@nongnu.org; Thu, 23 Jan 2025 18:45:28 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-436281c8a38so10710715e9.3
+ for <qemu-devel@nongnu.org>; Thu, 23 Jan 2025 15:45:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737675920; x=1738280720; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737675924; x=1738280724; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KLiVQy6/uYr9fS/vE5notUMei/mcFiOsSDRea34SIY0=;
- b=h6937nvEdYMeCIIS+GtLYVN4CwpFkVX0s57GdJkeLhjh6qm4EyFz3ODp0dXigT5pE+
- 4ruophxsuGWTrolSobuDG+uQdjcQcUWFMTk8Ow1++nb/bAkLQwVvJPx/T85TmLswhoLd
- UzqRhZhOV+jQOKMk6C5a4VfsCOlH6bny9oW7DaBcadGneHg60FMSyjli7Z+n9DOiR5Cx
- goJpKtG6zv6gpd2AFGh02+Qgcl9cx3re08r+OuTRhijdQ86ipocS526+RScZmIBrwMye
- piSRPQGCRytBvPSK1H80S17NGwqn2mtzb+v9Sq0NPZAf6KoHpk435yCVqoNGi2gwYvDC
- +BeA==
+ bh=MdlpzTogAHHu3L1/GbHJ1cNEJlm92RpTH1AYDuj/6CU=;
+ b=HlEzBrFeis/p/buZw/+pZg3M/SggCMDoWtcQvpJcnopGfawipph5W67X9NZRIF9mTS
+ ttHPhnczkEesa1KfHEIwEnmWFTHkGVwIclAHmEEDMG+/wavln9s+ytd+ySYM7wVdPSra
+ QudrTjPD6hVdTSUa5+39bPw8EEf5hYG16u0xjRHaFCO99fOnkHdN84YGKMhInBBksIxP
+ 0g/jNbjxHZ73WoXtvxLw7a9RSUF2H03m9XjNOpLGQVySTZiDEnFGK9DmMZEx5hXfsPre
+ oqfU9V4SC+x9DNQTK94w3a3FOvi37+R7BA2TWWPh84n/SRiJDjZv1iqDHJI2fsfCDDp6
+ HjYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737675920; x=1738280720;
+ d=1e100.net; s=20230601; t=1737675924; x=1738280724;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KLiVQy6/uYr9fS/vE5notUMei/mcFiOsSDRea34SIY0=;
- b=VtQwZl8flg5t6RR+GYWBVj4WFH8fAO7F2mRmy/5rXF4ZZUmFyDY1MtcX6WkMkjciys
- hciwbUGlRYGfP4yPfZRkQ6pbJ5or89Y3oe5o8FabEwAd9/n8qP3IWDTVpeTuwhC/RV4A
- 8WQT81dcIIQYf7lIdNRLohGsJk1/hnXswXDth3O+ENebJ9T+kRMJZeW52VgX41oO9qts
- k2h7Fc4asIfwQfQv+RTehpptmUWVhF1BqaO1/Bjn2oV9CRCH6//kzsjnvNRXOxWfZNj5
- BhycWaV4QijveQvzYqnpgeWWRofVWUD8xKd+NIsTpANPRADlDAyf4wMdO6U1tHx2+Hn2
- f65Q==
-X-Gm-Message-State: AOJu0YwD4N1YopVn+mZ1w3W1AC2Xl6zWwgTVkzSOQkV9mV972eCsyl3w
- mDqUObYWQox/SM+UvUq4B2dhZQeK30+lTSyYJ3hbvY1f5eWLpl2moSXR9xbDusTed/C4xrIc2Sz
- WpE4=
-X-Gm-Gg: ASbGnct8mNy3R8UqVqohvItEGJhWzFBEQ744ttX1Nd7E2fDp0bwCjj2a3nIlTMO3ky3
- Q960SZ0Ywc1gw1fQGCOVogEAnLoGlY1Gl8NV/mLMkliYKJ2SXpLidkVnSHwS9WO4xKRpO74tbx3
- Xjsw9yalaFInz7jerLQBcNO4nMG7z5XSEhgvVoU5hDjWpIj3zZjE2nUPbwQwqQAxImoHFoPaYL/
- jVYKkr7qNCkFP3mmbJNWdy7S6r7h45BUvfDefGqgLnigLhMMzB6h7f6N57SvTmti/RwI/jcKvRC
- wV7lMtz3nTdEeXHcDaRTJn2KHqoRv2vtGbkdBRhHKPi1eWowVLzFXdw=
-X-Google-Smtp-Source: AGHT+IHCUhXEKn4F81kx6ZpXqs9faqGpJN5W9Mj/EUJJpXYvZE3+gYqYLTjnf0hJ5kDL6XLUxlFm9g==
-X-Received: by 2002:a05:600c:1913:b0:434:f4fa:83c4 with SMTP id
- 5b1f17b1804b1-43891453fa7mr280858325e9.29.1737675919693; 
- Thu, 23 Jan 2025 15:45:19 -0800 (PST)
+ bh=MdlpzTogAHHu3L1/GbHJ1cNEJlm92RpTH1AYDuj/6CU=;
+ b=dEoSm4xC3n3mILM6LnTenauXS2taXYzVWN5B+w+CUuQl38X9MqilHxgObrFiy/KxY3
+ 1DVaoFeveLISWvbuwEoBtMBcv7ZIVp2n2d4i5mGLu4bW1rkdRMMvRpZ9aKi8nUwZ8GRE
+ 4VJLd1XxIXW0eI4bxDbo+caX3mCZ5zHOQCX9kJ2ZAx1PZ/16VUatL/Uavkwkclff+w7g
+ HvlC+XGdt44Qh/HDDlNwqiBQBD3q5f0GL1DA7bxomikNSRWTvsyiG68LRqk483CjFXbw
+ 20x0DvU8FIexEsLpwRJ8BqiwjptCQ9EDmydcznJ5AtowYf5p52WrogqvBdCzNhcOndSF
+ L6XA==
+X-Gm-Message-State: AOJu0YxbsAlYoahgOjfvOxvKnvbg3zJyEJSixAej72VmlqHScCKG5BKC
+ qfKGt7EqtG8YRtREkA9KXGdswL4LFdiOjIoYGFbBvsTI0IC5lGtukTLYWsOneU5BtAJYZZn5H9R
+ +wWs=
+X-Gm-Gg: ASbGncvAvaT40KzrhFZ10sv4KhaUEoBzlVrMkYoIi+3c9/NPeSnY4WnN6U4wmarYcLM
+ QMfpCYmu02iSFnm638nsZssyVJI7bxMbv99yykmFP/3z+7sBc9cEoGuJU1tUhL+acFrVTCJs+h9
+ lY8KOTzeJqks8pG++9RqOmwc7LahQUT+QV7Cl0+dukQrat+1bfpqE22l1thWo+1c83nrW1AnUzj
+ sN644+rAUhPsu1Z1dEicEp9f1gEZX6OsvMx47evZswhfBinJCLADOKJqlXMf5wBZkWSNIRz1GlL
+ xR8kPEnEMlRtTwsaGK3vYAf2q5nfyZUz9qSYhdfjMYvPxucB4O5E9Ec=
+X-Google-Smtp-Source: AGHT+IEwKoXpxcAtZxGgBrKoty0PAI7DEzj3vUSJHkmHg5BnQeEwYri/vD7fXqCVh16ykXZTkiP5lQ==
+X-Received: by 2002:a05:600c:1987:b0:436:faf1:9da with SMTP id
+ 5b1f17b1804b1-438913c68ebmr255744445e9.2.1737675924510; 
+ Thu, 23 Jan 2025 15:45:24 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd54c0f7sm6499935e9.28.2025.01.23.15.45.17
+ 5b1f17b1804b1-438bd4fa416sm6932195e9.6.2025.01.23.15.45.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 23 Jan 2025 15:45:18 -0800 (PST)
+ Thu, 23 Jan 2025 15:45:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -71,18 +71,17 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  xen-devel@lists.xenproject.org,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 11/20] accel: Rename 'hw/core/accel-cpu.h' ->
- 'accel/accel-cpu-target.h'
-Date: Fri, 24 Jan 2025 00:44:05 +0100
-Message-ID: <20250123234415.59850-12-philmd@linaro.org>
+Subject: [PATCH 12/20] accel/accel-cpu-target.h: Include missing 'cpu.h' header
+Date: Fri, 24 Jan 2025 00:44:06 +0100
+Message-ID: <20250123234415.59850-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250123234415.59850-1-philmd@linaro.org>
 References: <20250123234415.59850-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,177 +104,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-AccelCPUClass is for accelerator to initialize target specific
-features of a vCPU. Not really related to hardware emulation,
-rename "hw/core/accel-cpu.h" as "accel/accel-cpu-target.h"
-(using the explicit -target suffix).
+CPU_RESOLVING_TYPE is declared per target in "cpu.h". Include
+it (along with "qom/object.h") to avoid when moving code around:
 
-More importantly, target specific header often access the
-target specific definitions which are in each target/FOO/cpu.h
-header, usually included generically as "cpu.h" relative to
-target/FOO/. However, there is already a "cpu.h" in hw/core/
-which takes precedence. This change allows "accel-cpu-target.h"
-to include a target "cpu.h".
-
-Mechanical change doing:
-
- $  git mv include/hw/core/accel-cpu.h \
-           include/accel/accel-cpu-target.h
- $  sed -i -e 's,hw/core/accel-cpu.h,accel/accel-cpu-target.h,' \
-   $(git grep -l hw/core/accel-cpu.h)
-
-and renaming header guard 'ACCEL_CPU_TARGET_H'.
+  include/accel/accel-cpu-target.h:26:50: error: expected ')'
+     26 | DECLARE_CLASS_CHECKERS(AccelCPUClass, ACCEL_CPU, TYPE_ACCEL_CPU)
+        |                                                  ^
+  include/accel/accel-cpu-target.h:23:33: note: expanded from macro 'TYPE_ACCEL_CPU'
+     23 | #define TYPE_ACCEL_CPU "accel-" CPU_RESOLVING_TYPE
+        |                                 ^
+  include/accel/accel-cpu-target.h:26:1: note: to match this '('
+     26 | DECLARE_CLASS_CHECKERS(AccelCPUClass, ACCEL_CPU, TYPE_ACCEL_CPU)
+        | ^
+  include/qom/object.h:196:14: note: expanded from macro 'DECLARE_CLASS_CHECKERS'
+    196 |     { return OBJECT_GET_CLASS(ClassType, obj, TYPENAME); } \
+        |              ^
+  include/qom/object.h:558:5: note: expanded from macro 'OBJECT_GET_CLASS'
+    558 |     OBJECT_CLASS_CHECK(class, object_get_class(OBJECT(obj)), name)
+        |     ^
+  include/qom/object.h:544:74: note: expanded from macro 'OBJECT_CLASS_CHECK'
+    544 |     ((class_type *)object_class_dynamic_cast_assert(OBJECT_CLASS(class), (name), \
+        |                                                                          ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS                                               | 2 +-
- include/{hw/core/accel-cpu.h => accel/accel-cpu-target.h} | 4 ++--
- accel/accel-target.c                                      | 2 +-
- cpu-target.c                                              | 2 +-
- target/i386/hvf/hvf-cpu.c                                 | 2 +-
- target/i386/kvm/kvm-cpu.c                                 | 2 +-
- target/i386/tcg/tcg-cpu.c                                 | 2 +-
- target/ppc/kvm.c                                          | 2 +-
- target/riscv/kvm/kvm-cpu.c                                | 2 +-
- target/riscv/tcg/tcg-cpu.c                                | 2 +-
- 10 files changed, 11 insertions(+), 11 deletions(-)
- rename include/{hw/core/accel-cpu.h => accel/accel-cpu-target.h} (95%)
+ include/accel/accel-cpu-target.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index fa46d077d30..e4521852519 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -499,7 +499,7 @@ R: Paolo Bonzini <pbonzini@redhat.com>
- S: Maintained
- F: include/qemu/accel.h
- F: include/system/accel-*.h
--F: include/hw/core/accel-cpu.h
-+F: include/accel/accel-cpu-target.h
- F: accel/accel-*.c
- F: accel/Makefile.objs
- F: accel/stubs/Makefile.objs
-diff --git a/include/hw/core/accel-cpu.h b/include/accel/accel-cpu-target.h
-similarity index 95%
-rename from include/hw/core/accel-cpu.h
-rename to include/accel/accel-cpu-target.h
-index 24dad45ab9e..0a8e518600d 100644
---- a/include/hw/core/accel-cpu.h
+diff --git a/include/accel/accel-cpu-target.h b/include/accel/accel-cpu-target.h
+index 0a8e518600d..37dde7fae3e 100644
+--- a/include/accel/accel-cpu-target.h
 +++ b/include/accel/accel-cpu-target.h
-@@ -8,8 +8,8 @@
-  * See the COPYING file in the top-level directory.
+@@ -20,6 +20,9 @@
+  * subclasses in target/, or the accel implementation itself in accel/
   */
  
--#ifndef ACCEL_CPU_H
--#define ACCEL_CPU_H
-+#ifndef ACCEL_CPU_TARGET_H
-+#define ACCEL_CPU_TARGET_H
- 
- /*
-  * This header is used to define new accelerator-specific target-specific
-diff --git a/accel/accel-target.c b/accel/accel-target.c
-index 08626c00c2d..09c1e1053e0 100644
---- a/accel/accel-target.c
-+++ b/accel/accel-target.c
-@@ -27,7 +27,7 @@
- #include "qemu/accel.h"
- 
- #include "cpu.h"
--#include "hw/core/accel-cpu.h"
-+#include "accel/accel-cpu-target.h"
- 
- #ifndef CONFIG_USER_ONLY
- #include "accel-system.h"
-diff --git a/cpu-target.c b/cpu-target.c
-index 75501a909df..f97f3a14751 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
-@@ -44,7 +44,7 @@
- #include "exec/tb-flush.h"
- #include "exec/translation-block.h"
- #include "exec/log.h"
--#include "hw/core/accel-cpu.h"
-+#include "accel/accel-cpu-target.h"
- #include "trace/trace-root.h"
- #include "qemu/accel.h"
- 
-diff --git a/target/i386/hvf/hvf-cpu.c b/target/i386/hvf/hvf-cpu.c
-index 560b5a05940..b5f4c80028f 100644
---- a/target/i386/hvf/hvf-cpu.c
-+++ b/target/i386/hvf/hvf-cpu.c
-@@ -14,7 +14,7 @@
- #include "system/system.h"
- #include "hw/boards.h"
- #include "system/hvf.h"
--#include "hw/core/accel-cpu.h"
-+#include "accel/accel-cpu-target.h"
- #include "hvf-i386.h"
- 
- static void hvf_cpu_max_instance_init(X86CPU *cpu)
-diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
-index 1bda403f88b..6269fa80452 100644
---- a/target/i386/kvm/kvm-cpu.c
-+++ b/target/i386/kvm/kvm-cpu.c
-@@ -15,7 +15,7 @@
- #include "hw/boards.h"
- 
- #include "kvm_i386.h"
--#include "hw/core/accel-cpu.h"
-+#include "accel/accel-cpu-target.h"
- 
- static void kvm_set_guest_phys_bits(CPUState *cs)
- {
-diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
-index f09ee813ac9..b8aff825eec 100644
---- a/target/i386/tcg/tcg-cpu.c
-+++ b/target/i386/tcg/tcg-cpu.c
-@@ -21,7 +21,7 @@
- #include "cpu.h"
- #include "helper-tcg.h"
- #include "qemu/accel.h"
--#include "hw/core/accel-cpu.h"
-+#include "accel/accel-cpu-target.h"
- #include "exec/translation-block.h"
- 
- #include "tcg-cpu.h"
-diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-index 966c2c65723..216638dee40 100644
---- a/target/ppc/kvm.c
-+++ b/target/ppc/kvm.c
-@@ -49,7 +49,7 @@
- #include "elf.h"
- #include "system/kvm_int.h"
- #include "system/kvm.h"
--#include "hw/core/accel-cpu.h"
-+#include "accel/accel-cpu-target.h"
- 
- #include CONFIG_DEVICES
- 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 23ce7793594..7e4443c5bda 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -32,7 +32,7 @@
- #include "system/kvm_int.h"
- #include "cpu.h"
- #include "trace.h"
--#include "hw/core/accel-cpu.h"
-+#include "accel/accel-cpu-target.h"
- #include "hw/pci/pci.h"
- #include "exec/memattrs.h"
- #include "exec/address-spaces.h"
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index e40c8e85b26..79345e4b89d 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -30,7 +30,7 @@
- #include "qemu/accel.h"
- #include "qemu/error-report.h"
- #include "qemu/log.h"
--#include "hw/core/accel-cpu.h"
-+#include "accel/accel-cpu-target.h"
- #include "accel/tcg/cpu-ops.h"
- #include "tcg/tcg.h"
- #ifndef CONFIG_USER_ONLY
++#include "qom/object.h"
++#include "cpu.h"
++
+ #define TYPE_ACCEL_CPU "accel-" CPU_RESOLVING_TYPE
+ #define ACCEL_CPU_NAME(name) (name "-" TYPE_ACCEL_CPU)
+ typedef struct AccelCPUClass AccelCPUClass;
 -- 
 2.47.1
 
