@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8480CA1AC2D
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Jan 2025 22:57:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FE1CA1AC2E
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Jan 2025 22:57:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tb5BV-0004pQ-Rf; Thu, 23 Jan 2025 16:56:21 -0500
+	id 1tb5Bb-0004q5-6x; Thu, 23 Jan 2025 16:56:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb5BT-0004os-C6
- for qemu-devel@nongnu.org; Thu, 23 Jan 2025 16:56:19 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb5BY-0004pq-8O
+ for qemu-devel@nongnu.org; Thu, 23 Jan 2025 16:56:24 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb5BR-0002iJ-Uf
- for qemu-devel@nongnu.org; Thu, 23 Jan 2025 16:56:19 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-385f07cd1a4so1388581f8f.1
- for <qemu-devel@nongnu.org>; Thu, 23 Jan 2025 13:56:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb5BW-0002jA-Pu
+ for qemu-devel@nongnu.org; Thu, 23 Jan 2025 16:56:24 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-385e0e224cbso841340f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 23 Jan 2025 13:56:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737669376; x=1738274176; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737669381; x=1738274181; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ycsjGlBlHbu4fIwJ8eBiUHF+eH/dzlIjpqCh9RpatQY=;
- b=V1XoC5FmU/XuUuuVeZ9X439SJzKMH2/jz8q+RQPCzJ0EPjc1zSxWVphbZ9futE/Iqe
- lKYLUyz/CZvG3eBAc6AQIz/3Oldn/olEeovF9KZzNK7WUNY4XSBGRHmqszolDsxHsp2z
- JRZLPioTH1MZqh4sW5nu1Rk8VqBhtNrxVGJTLedwM1P36JtegCSy2zooDCOkK11AVVo7
- m7LqbVF7EBMXA14Yczmy+D0x1TcPXU0T0mOn+WSV+dC3Ry17hhXEwH6Bu0w0UzD0a2E7
- HOjwmcqR4txMLctz1z4zbszFtsMgY2zZbXVW90plXoCUOymaj3+eY/f/hPeFNUMozwK2
- 76pg==
+ bh=bH5J3cRQDjcVRgPq7zp3SpsLhqrv1PdlyvsdQnQjIBk=;
+ b=Eh6Z+/BIeON7Np2C8AGq6cvYnbSqAAvojCEn7CYn6/UwLmDUXUP6BiXyKAVDkB13Dv
+ 5gF0RQwlQcJBuImrhD9BtqPRSgxgRVCU5Q9X5g1BgHNttzkvFg9uwJjZMGNaQULDc0zK
+ ixNxvVT1dI0PoljLaDnB3ppFzmFLj5X2WyDDAWF88S8m7ed9wlrSzJ2N3vdfh+vIWtSA
+ tEk4FZ9Y+ZrS04IPQiYk1zkkNCS5kOfu1ugkuQXE6Lph0LLFzYSa56Y8ksrqIOEcY/dL
+ 6Af7hFifuwCsyn4eANGeDRtCFAs738BwgL1g5x5Hqc6SXXCiIZV/mPsTvnnmU49CTd0S
+ XVOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737669376; x=1738274176;
+ d=1e100.net; s=20230601; t=1737669381; x=1738274181;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ycsjGlBlHbu4fIwJ8eBiUHF+eH/dzlIjpqCh9RpatQY=;
- b=wWHfarM2uUnOtXo2+OStyDxwz96e/YdbxMzzih8qH3vDC9iSbGebrB95vlxwxhaX46
- M5dtOCMaIl5LmgBKix604dGY41VBiEZTlZaba7NYahNjjJyq8rcVFzedHS7mrjcMB7jJ
- dVE85+v46M46o7CWLt9g+7nN5LfwyYk3zXs6NxV98s+PzCVSEFjXLikBvxLC8mF5wEWr
- PvJMCADVB+EtsU/yy2io3W7d39DSzVJNXnVnuV1OjDAZJthMfZe+pg6BFOuTD+uQ5jF+
- Iqytc3Dinf2hcdBOe94ExRUeR/fOHj7DM3CrUNq2KyQscxnMqmYpJxVO/SGJ6PT6xxgC
- JFgQ==
-X-Gm-Message-State: AOJu0Yy8gCwKJxjymitq3W1QG/MQtjhJ3eu4L3vKeGEQYKnadFytHyiu
- gxA7ZFxj/uvULeQGcF67p9BSln//cbs7vZJMvRhiuEyImO2/pLi7uBqcA3EaUJHptK2b/yaGkW4
- cvO8=
-X-Gm-Gg: ASbGncuZfCNe2/qiI853/xfyauewQrHhr4XJqULWzzfcF3WWPFMMrqf5PdKzAUu1SQe
- zJLFozl/U90bno2wMmICcBpaORlNBIj8WNJD2eTgivR8ojshmWX7w0QvcwrEZBo7JSzEwTdAXbk
- xOh6b00CL/IsmqfMxorELp49k5CYq6hhyeEIYJDwWSSbQ5KP+ZXKQFkOCCAqmFithfUKNy+Jo79
- yqb4d349KVrZPZSWKIz7aXakJXlbJ8xTeCxDyixFLs4IKcFDhbFBFiwBIc5+zyR7LhSYDsOqEr6
- LHyDho2swbW6cqbGD/UYiwVYZ97MZQxtw+FXefb5uBI7J7a0TCr6c3A=
-X-Google-Smtp-Source: AGHT+IHSDshZcdAuExEjrtTmP5u0w6XR7kak9SjCVOACkNTzDEbogZ0T74bFO5Y4pX12LmUKvyzYJQ==
-X-Received: by 2002:a5d:5f8c:0:b0:386:3329:6a04 with SMTP id
- ffacd0b85a97d-38bf57a957cmr32823500f8f.39.1737669376244; 
- Thu, 23 Jan 2025 13:56:16 -0800 (PST)
+ bh=bH5J3cRQDjcVRgPq7zp3SpsLhqrv1PdlyvsdQnQjIBk=;
+ b=Sbq4anpk1qH0Eq+25fNDwP/UD4ZoEmMVbHNTT8rTajYviPEGDEm//+0evYzyJTb7pH
+ pwMAoqZOYslLmpYahCAGO3h6t1JtIMFYdDFF9dh8Sf8oGLLC/cy0aiEqr4CbXW0uCbvv
+ eZrUNvNz/N1Z4FMg8qe+uiSQ5XaEH07TO9XArbtm8rgsFdPZbpeYaTcV6pbot2K3rY8G
+ JpgGLJq2fdP4q8tS79TYGNqUwAA5G8cdCwrwHYe5JXf5AKlWwmzg7f7X7yN2TUsSQrBo
+ LoDFr19sSjRnGQgqwud7IKUzSRzuHZH4u0ku+SYXsPeuxdtht5OqUqGM+0rOPzvZfUDV
+ Bfqg==
+X-Gm-Message-State: AOJu0Yzwc4ylgWXccyg3dzCofXXYnJGNX4gYTparFmqFqXeAKyaP2ERB
+ ysdP/m6kPwRt5wB6Cbq92CLl8J96IxcBHgMAF/z+H7Cg9E7EFMROK+Vt2mbL5sB+c+zFP4AVe7l
+ wtio=
+X-Gm-Gg: ASbGncvQyXG1eMQDQdZWnJ2z4DG0AMEiqlEXjxWixvSz7wFIFYmvyS3kqsOSC2u05tm
+ CFmjgG3ohe5J3Xo0VrhzHF43tOWakBKtfD7PKaD8fFfTsNxswC+aWCxcPMpTxSB0JDt8hBr/2wx
+ gKapDPDKxtd5/7OlaSjrpEeRnOBDFQQbfJZLPto85dj2lVptGsUZa3GOr29rCZWFzO48x0HarBm
+ Cg9l4VujEwI7Lz79huuuY8ne+k6gWCIvVT3KlWusQwjtE3SmQ01u6mbBKGE1ZOpEJW7luXL/6L3
+ 83ifAsCV1iYKGCFeSZ2R/DiMiBIWnJAgK+iei0FmuCgYGq38eUmiv6k=
+X-Google-Smtp-Source: AGHT+IEMuB+bskUbKGysrMlSDbqUlZX0V4nRiLrAkQKdCjm2SlFYcl8mqJ3QAH4OTPbPkMqlN7ycdw==
+X-Received: by 2002:a05:6000:1863:b0:385:f560:7911 with SMTP id
+ ffacd0b85a97d-38bf5655589mr26500138f8f.10.1737669381002; 
+ Thu, 23 Jan 2025 13:56:21 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a1c42fcsm791958f8f.96.2025.01.23.13.56.15
+ ffacd0b85a97d-38c2a1ca723sm772228f8f.101.2025.01.23.13.56.20
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 23 Jan 2025 13:56:15 -0800 (PST)
+ Thu, 23 Jan 2025 13:56:20 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
@@ -67,24 +67,25 @@ Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
  Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 01/15] hw/ppc/spapr: Restrict CONFER hypercall to TCG
-Date: Thu, 23 Jan 2025 22:55:55 +0100
-Message-ID: <20250123215609.30432-2-philmd@linaro.org>
+Subject: [PATCH 02/15] hw/ppc/spapr: Restrict part of PAGE_INIT hypercall to
+ TCG
+Date: Thu, 23 Jan 2025 22:55:56 +0100
+Message-ID: <20250123215609.30432-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250123215609.30432-1-philmd@linaro.org>
 References: <20250123215609.30432-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,28 +101,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TODO: Add PPC folks why :)
+Restrict the tb_flush() call to TCG. Assert we are using KVM or TCG.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-RFC: Missing appropriate commit description...
-
- hw/ppc/spapr_hcall.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/ppc/spapr_hcall.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
-index f8ab7670630..dbf30358a1a 100644
+index dbf30358a1a..4f1933b8da6 100644
 --- a/hw/ppc/spapr_hcall.c
 +++ b/hw/ppc/spapr_hcall.c
-@@ -578,6 +578,8 @@ static target_ulong h_confer(PowerPCCPU *cpu, SpaprMachineState *spapr,
-     CPUState *cs = CPU(cpu);
-     SpaprCpuState *spapr_cpu;
+@@ -299,8 +299,10 @@ static target_ulong h_page_init(PowerPCCPU *cpu, SpaprMachineState *spapr,
+     if (flags & (H_ICACHE_SYNCHRONIZE | H_ICACHE_INVALIDATE)) {
+         if (kvm_enabled()) {
+             kvmppc_icbi_range(cpu, pdst, len);
+-        } else {
++        } else if (tcg_enabled()) {
+             tb_flush(CPU(cpu));
++        } else {
++            g_assert_not_reached();
+         }
+     }
  
-+    assert(tcg_enabled()); /* KVM will have handled this */
-+
-     /*
-      * -1 means confer to all other CPUs without dispatch counter check,
-      *  otherwise it's a targeted confer.
 -- 
 2.47.1
 
