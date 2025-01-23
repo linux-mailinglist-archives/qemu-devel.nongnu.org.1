@@ -2,83 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A0CA1A2E0
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Jan 2025 12:25:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7EB1A1A33C
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Jan 2025 12:41:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tavJu-0002vT-Lb; Thu, 23 Jan 2025 06:24:22 -0500
+	id 1tavYo-0006gi-TI; Thu, 23 Jan 2025 06:39:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1tavJs-0002vA-8K
- for qemu-devel@nongnu.org; Thu, 23 Jan 2025 06:24:20 -0500
-Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tavYi-0006gQ-T7
+ for qemu-devel@nongnu.org; Thu, 23 Jan 2025 06:39:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1tavJo-0002Ak-J4
- for qemu-devel@nongnu.org; Thu, 23 Jan 2025 06:24:20 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1737631441; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=SdXWJcpDj07pRFlPzXWy1WDiXIjW+HMPcfKoigYlE/5YLOCzoZdTVp2pKzlYBTrzjULgYVwLWWfurSFcCjIbSktm54QU1I1X6yP5RWgs0L9fMPeAGEuS7Ga/P7blaRzwI8JOOc/GO85lfG7qVZjs8++lmPtIQp+k0LHSGxUkBcg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1737631441;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=z4kGZnJ9mOaDzGLdYHfjgS5EwIsicC6M7Qi0ox7Xafg=; 
- b=U9F5AfCrmnOVVO0YQW3Dzlvgx38iBhwibwqOILziFSzv6SFTLAOa/3xWbAHM84VRlqzz70CkEfGLOGdY17JTqnoULSrdos2MIcybb7wwwNj0RxRsdg1aFuDTj+5D7PrOqb0t7oaSpNXpoLmN9BrUzri9JLNAnOGvwQ52clP23pY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=collabora.com;
- spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
- dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1737631441; 
- s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=z4kGZnJ9mOaDzGLdYHfjgS5EwIsicC6M7Qi0ox7Xafg=;
- b=Qn7zNyj+NBn1+/ppoFvun+U9DPjkVucxxPu7a0hjWTH0B0VLApWpMoU6Y/j26B1R
- oxletUMWkVS4j3hs57rm72VgTLHrUCO4IvJYJXXiUEGCHltjp2ic80TXahcTN/m0Gp6
- QgHrpHQR2gOGrZTEmvc5SRkpdDms6WG/1KDfPdwI=
-Received: by mx.zohomail.com with SMTPS id 1737631435080590.2073650241499;
- Thu, 23 Jan 2025 03:23:55 -0800 (PST)
-Message-ID: <f5c8e901-5d36-47b0-91d3-40699c51c259@collabora.com>
-Date: Thu, 23 Jan 2025 14:23:48 +0300
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tavYg-0004tc-2e
+ for qemu-devel@nongnu.org; Thu, 23 Jan 2025 06:39:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737632374;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=NfIPI43CAMMrZiN3MykY/a/0KgySdDMND+MClJN4K+0=;
+ b=N0mk/F5zjy8hWIG/sMYkRFrG6h/uiiNQd+iMRDnbkCEDD6nyTEo1jNVRZcUc6XWcL4Jtkj
+ XKYi8WuYXxcRonoW6lkEMvJK4DBUdkjTYcNVcMxoy4ubLzFr0X91UzKgo2LjUJwtNMhgs4
+ oCCSAN/cbn/vNl6IigQSAH1CGF4qJHU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-641-9tGY19usP2iQXOPLDAy9WQ-1; Thu, 23 Jan 2025 06:39:31 -0500
+X-MC-Unique: 9tGY19usP2iQXOPLDAy9WQ-1
+X-Mimecast-MFC-AGG-ID: 9tGY19usP2iQXOPLDAy9WQ
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-38c24ac3415so587328f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 23 Jan 2025 03:39:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737632371; x=1738237171;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=NfIPI43CAMMrZiN3MykY/a/0KgySdDMND+MClJN4K+0=;
+ b=UGDjNRWg3c5n4dPt7ivSpCKQHwP0eVfk+ZI7jfHWyzn/LmAf95zFf/oAnPB9QSO0Fm
+ QN61Obrj/cx6X7eGRNN+uMVTq+a1d2YwCHPJJzYq72L020tcmghCNbh5WwPTC5kvBQi6
+ jtmG7uWBxxlYmTkVfgTsDq0UtqTsJt615fOQTlaVuidHTGFKianuWa+3dW/enZp1vI6X
+ sfqMaKTW29lX/Cu4OjCurpxvvOOUatkJdY5fctj2iRvjFs6xuCAPnbzUg4w4wVfhfKQX
+ swbs/mzw0C5wMydkwUn2vDn0gAHg89SlnzXAtg/6gpPNwZlQJwa6eDh9f8e7qm4AEOCR
+ ULEw==
+X-Gm-Message-State: AOJu0YysmuCNljcdoXiJEiIDgDUlbJ4SqcHGpBHWliPfYMFtuLnxvFpr
+ hQpv1rJdtVveQe/kDqDSKtQUsmarRc5u6evnRb7oBkNoXac4ERb1ceTCwF+YntYPaXzUjsqXlyb
+ 7wQeVEKpKBhbRimGoURV5yYA1+BvN66njP4FO6f6J508oBd/d2nvsEcb+Nk6gS2cMsVpoM83ekO
+ qzpFN3syQLgXwu7AR9AjmGG821g8o=
+X-Gm-Gg: ASbGncu+XcolCbn1RaPY2f3ZnC1DNIKPH2KBdLmYbKzUhC/jLUlVToSxwUMHxpNbKIt
+ ZdzSLr7O+9T74wujL3dOPf7Z5bQhEdTTUa9an1BXhypPv8HJkPUM=
+X-Received: by 2002:a5d:6d86:0:b0:388:c75d:be97 with SMTP id
+ ffacd0b85a97d-38bf564960cmr24214479f8f.11.1737632370689; 
+ Thu, 23 Jan 2025 03:39:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH8W9KZ08JbT0ArBgx0yPrzTDMvKQObHmGD9FAqVYg0Zsb/Ahfi73r+I/JrwK5gpONkkNK9nowhgaglsgTgIIk=
+X-Received: by 2002:a5d:6d86:0:b0:388:c75d:be97 with SMTP id
+ ffacd0b85a97d-38bf564960cmr24214452f8f.11.1737632370303; Thu, 23 Jan 2025
+ 03:39:30 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/8] Support virtio-gpu DRM native context
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Gert Wollny
- <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
- Yiwei Zhang <zzyiwei@chromium.org>, Sergio Lopez Pascual <slp@redhat.com>
-References: <20250119220050.15167-1-dmitry.osipenko@collabora.com>
- <87jzamn5ri.fsf@draig.linaro.org>
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Content-Language: en-US
-In-Reply-To: <87jzamn5ri.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-Received-SPF: pass client-ip=136.143.188.112;
- envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.043,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250117092657.1051233-1-pbonzini@redhat.com>
+ <20250117092657.1051233-8-pbonzini@redhat.com>
+ <Z5HX2G0+bt+3vzVB@intel.com>
+ <CABgObfYRG-BFGj3cK4xz_PZYSiVgCY-YkSJitQMSk=2AtkcBcA@mail.gmail.com>
+ <Z5IK1zuMJS+P3t9j@intel.com>
+In-Reply-To: <Z5IK1zuMJS+P3t9j@intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 23 Jan 2025 12:39:18 +0100
+X-Gm-Features: AWEUYZlXxmU1Wa29oudi5DaxTYLqCkerx3HFfJCwxbdVS6jXOB4tjsQ3XugBfnY
+Message-ID: <CABgObfbKqQFe8TXi2idjJs_WJZDVs=M02LTq5T9nJqLU1Gd7dg@mail.gmail.com>
+Subject: Re: [PATCH 07/10] rust: pl011: wrap registers with BqlRefCell
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-rust@nongnu.org
+Content-Type: multipart/alternative; boundary="0000000000002ec368062c5e10d2"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,67 +102,199 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/22/25 20:00, Alex Bennée wrote:
-> Dmitry Osipenko <dmitry.osipenko@collabora.com> writes:
-> 
->> This patchset adds DRM native context support to VirtIO-GPU on Qemu.
->>
->> Contarary to Virgl and Venus contexts that mediates high level GFX APIs,
->> DRM native context [1] mediates lower level kernel driver UAPI, which
->> reflects in a less CPU overhead and less/simpler code needed to support it.
->> DRM context consists of a host and guest parts that have to be implemented
->> for each GPU driver. On a guest side, DRM context presents a virtual GPU as
->> a real/native host GPU device for GL/VK applications.
->>
->> [1] https://www.youtube.com/watch?v=9sFP_yddLLQ
->>
->> Today there are four known DRM native context drivers existing in a wild:
->>
->>   - Freedreno (Qualcomm SoC GPUs), completely upstreamed
->>   - AMDGPU, mostly merged into upstreams
-> 
-> I tried my AMD system today with:
-> 
-> Host:
->   Aarch64 AVA system
->   Trixie
->   virglrenderer @ v1.1.0/99557f5aa130930d11f04ffeb07f3a9aa5963182
->   -display sdl,gl=on (gtk,gl=on also came up but handled window resizing
->   poorly)
->   
-> KVM Guest
-> 
->   Aarch64
->   Trixie
->   mesa @ main/d27748a76f7dd9236bfcf9ef172dc13b8c0e170f
->   -Dvulkan-drivers=virtio,amd -Dgallium-drivers=virgl,radeonsi -Damdgpu-virtio=true
-> 
-> However when I ran vulkan-info --summary KVM faulted with:
-> 
->   debian-trixie login: error: kvm run failed Bad address
->    PC=0000ffffb9aa1eb0 X00=0000ffffba0450a4 X01=0000aaaaf7f32400
->   X02=000000000000013c X03=0000ffffba045098 X04=0000aaaaf7f3253c
->   X05=0000ffffba0451d4 X06=00000000c0016900 X07=000000000000000e
->   X08=0000000000000014 X09=00000000000000ff X10=0000aaaaf7f32500
->   X11=0000aaaaf7e4d028 X12=0000aaaaf7edbcb0 X13=0000000000000001
->   X14=000000000000000c X15=0000000000007718 X16=0000ffffb93601f0
->   X17=0000ffffb9aa1dc0 X18=00000000000076f0 X19=0000aaaaf7f31330
->   X20=0000aaaaf7f323f0 X21=0000aaaaf7f235e0 X22=000000000000004c
->   X23=0000aaaaf7f2b5e0 X24=0000aaaaf7ee0cb0 X25=00000000000000ff
->   X26=0000000000000076 X27=0000ffffcd2b18a8 X28=0000aaaaf7ee0cb0
->   X29=0000ffffcd2b0bd0 X30=0000ffffb86c8b98  SP=0000ffffcd2b0bd0
->   PSTATE=20001000 --C- EL0t
->   QEMU 9.2.50 monitor - type 'help' for more information
->   (qemu) quit
-> 
-> Which looks very much like the PFN locking failure. However booting up
-> with venus=on instead works. Could there be any differences in the way
-> device memory is mapped in the two cases?
+--0000000000002ec368062c5e10d2
+Content-Type: text/plain; charset="UTF-8"
 
-Memory mapping works exactly the same for nctx and venus. Are you on
-6.13 host kernel?
+Il gio 23 gen 2025, 10:05 Zhao Liu <zhao1.liu@intel.com> ha scritto:
 
--- 
-Best regards,
-Dmitry
+> > I will double check. But I do see that there is no mut access inside, at
+> > least not until the qemu_chr_fe_accept_input() is moved here.
+> Unfortunately
+> > until all MemoryRegion and CharBackend bindings are available the uses of
+> > &mut and the casts to *mut are really really wonky.
+>
+> yes, I agree here we should remove mut :-). (if needless_pass_by_ref_mut
+> doesn't work on this place, I think we can drop it.)
+>
+
+&mut is not needed here, but it is needed in write(). After accept_input()
+is moved to out of memory_ops.rs, the #[allow] can be removed.
+
+I will do that in v2.
+
+Paolo
+
+
+> > (On the other hand it wouldn't be possible to have a grip on the qemu_api
+> > code without users).
+> >
+> > Paolo
+> >
+> > > @@ -603,19 +603,19 @@ pub fn realize(&mut self) {
+> > > >      }
+> > > >
+> > > >      pub fn reset(&mut self) {
+> > >
+> > > In principle, this place should also trigger
+> `needless_pass_by_ref_mut`.
+> > >
+> >
+> > Yes but clippy hides it because this function is assigned to a function
+> > pointer const. At least I think so---the point is more generally that you
+> > can't change &mut to & without breaking compilation.
+>
+> Make sense!
+>
+> > > > -        self.regs.reset();
+> > > > +        self.regs.borrow_mut().reset();
+> > > >      }
+> > >
+> > > [snip]
+> > >
+> > > > @@ -657,10 +657,10 @@ pub fn post_load(&mut self, _version_id: u32)
+> ->
+> > > Result<(), ()> {
+> > > >  pub unsafe extern "C" fn pl011_receive(opaque: *mut c_void, buf:
+> *const
+> > > u8, size: c_int) {
+> > > >      unsafe {
+> > > >          debug_assert!(!opaque.is_null());
+> > > > -        let mut state =
+> > > NonNull::new_unchecked(opaque.cast::<PL011State>());
+> > > > +        let state =
+> NonNull::new_unchecked(opaque.cast::<PL011State>());
+> > >
+> > > Perhaps we can use NonNull::new and unwrap()? Then debug_assert! is
+> > > unnecessary.
+> > >
+> > > let state = unsafe {
+> > > NonNull::new(opaque.cast::<PL011State>()).unwrap().as_ref() };
+> > >
+> >
+> > Yeah, though that's preexisting and it's code that will go away
+> relatively
+> > soon. I tried to minimize unrelated changes and changes to these
+> temporary
+> > unsafe functions, but in some cases there were some that sneaked in.
+> >
+> > Let me know what you prefer.
+> >
+>
+> I prefer to use NonNull::new and unwrap(). Too much assert() pattern is
+> not user-friendly. I also think it's unnecessary to change NonNull
+> interface in this patch, we can see what's left when you're done with
+> the most QAPI work.
+>
+> Thanks,
+> Zhao
+>
+>
+>
+
+--0000000000002ec368062c5e10d2
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
+ner"><div dir=3D"ltr" class=3D"gmail_attr">Il gio 23 gen 2025, 10:05 Zhao L=
+iu &lt;<a href=3D"mailto:zhao1.liu@intel.com">zhao1.liu@intel.com</a>&gt; h=
+a scritto:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0=
+px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">&gt; =
+I will double check. But I do see that there is no mut access inside, at<br=
+>
+&gt; least not until the qemu_chr_fe_accept_input() is moved here. Unfortun=
+ately<br>
+&gt; until all MemoryRegion and CharBackend bindings are available the uses=
+ of<br>
+&gt; &amp;mut and the casts to *mut are really really wonky.<br>
+<br>
+yes, I agree here we should remove mut :-). (if needless_pass_by_ref_mut<br=
+>
+doesn&#39;t work on this place, I think we can drop it.)<br></blockquote></=
+div></div><div dir=3D"auto"><br></div><div dir=3D"auto">&amp;mut is not nee=
+ded here, but it is needed in write(). After accept_input() is moved to out=
+ of <a href=3D"http://memory_ops.rs">memory_ops.rs</a>, the #[allow] can be=
+ removed.</div><div dir=3D"auto"><br></div><div dir=3D"auto">I will do that=
+ in v2.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</div><div =
+dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote gmail_qu=
+ote_container"><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0p=
+x 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+&gt; (On the other hand it wouldn&#39;t be possible to have a grip on the q=
+emu_api<br>
+&gt; code without users).<br>
+&gt; <br>
+&gt; Paolo<br>
+&gt; <br>
+&gt; &gt; @@ -603,19 +603,19 @@ pub fn realize(&amp;mut self) {<br>
+&gt; &gt; &gt;=C2=A0 =C2=A0 =C2=A0 }<br>
+&gt; &gt; &gt;<br>
+&gt; &gt; &gt;=C2=A0 =C2=A0 =C2=A0 pub fn reset(&amp;mut self) {<br>
+&gt; &gt;<br>
+&gt; &gt; In principle, this place should also trigger `needless_pass_by_re=
+f_mut`.<br>
+&gt; &gt;<br>
+&gt; <br>
+&gt; Yes but clippy hides it because this function is assigned to a functio=
+n<br>
+&gt; pointer const. At least I think so---the point is more generally that =
+you<br>
+&gt; can&#39;t change &amp;mut to &amp; without breaking compilation.<br>
+<br>
+Make sense!<br>
+<br>
+&gt; &gt; &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 self.regs.reset();<br>
+&gt; &gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 self.regs.borrow_mut().reset();=
+<br>
+&gt; &gt; &gt;=C2=A0 =C2=A0 =C2=A0 }<br>
+&gt; &gt;<br>
+&gt; &gt; [snip]<br>
+&gt; &gt;<br>
+&gt; &gt; &gt; @@ -657,10 +657,10 @@ pub fn post_load(&amp;mut self, _versi=
+on_id: u32) -&gt;<br>
+&gt; &gt; Result&lt;(), ()&gt; {<br>
+&gt; &gt; &gt;=C2=A0 pub unsafe extern &quot;C&quot; fn pl011_receive(opaqu=
+e: *mut c_void, buf: *const<br>
+&gt; &gt; u8, size: c_int) {<br>
+&gt; &gt; &gt;=C2=A0 =C2=A0 =C2=A0 unsafe {<br>
+&gt; &gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 debug_assert!(!opaque.is_n=
+ull());<br>
+&gt; &gt; &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 let mut state =3D<br>
+&gt; &gt; NonNull::new_unchecked(opaque.cast::&lt;PL011State&gt;());<br>
+&gt; &gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 let state =3D NonNull::new_unch=
+ecked(opaque.cast::&lt;PL011State&gt;());<br>
+&gt; &gt;<br>
+&gt; &gt; Perhaps we can use NonNull::new and unwrap()? Then debug_assert! =
+is<br>
+&gt; &gt; unnecessary.<br>
+&gt; &gt;<br>
+&gt; &gt; let state =3D unsafe {<br>
+&gt; &gt; NonNull::new(opaque.cast::&lt;PL011State&gt;()).unwrap().as_ref()=
+ };<br>
+&gt; &gt;<br>
+&gt; <br>
+&gt; Yeah, though that&#39;s preexisting and it&#39;s code that will go awa=
+y relatively<br>
+&gt; soon. I tried to minimize unrelated changes and changes to these tempo=
+rary<br>
+&gt; unsafe functions, but in some cases there were some that sneaked in.<b=
+r>
+&gt; <br>
+&gt; Let me know what you prefer.<br>
+&gt;<br>
+<br>
+I prefer to use NonNull::new and unwrap(). Too much assert() pattern is<br>
+not user-friendly. I also think it&#39;s unnecessary to change NonNull<br>
+interface in this patch, we can see what&#39;s left when you&#39;re done wi=
+th<br>
+the most QAPI work.<br>
+<br>
+Thanks,<br>
+Zhao<br>
+<br>
+<br>
+</blockquote></div></div></div>
+
+--0000000000002ec368062c5e10d2--
+
 
