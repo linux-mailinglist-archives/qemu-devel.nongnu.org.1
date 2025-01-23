@@ -2,70 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82FCAA1A052
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Jan 2025 10:06:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EB17A1A0C9
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Jan 2025 10:28:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tat9V-00041V-4x; Thu, 23 Jan 2025 04:05:29 -0500
+	id 1tatUg-0007gv-OI; Thu, 23 Jan 2025 04:27:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tat9R-00041J-Ok; Thu, 23 Jan 2025 04:05:25 -0500
-Received: from mgamail.intel.com ([198.175.65.16])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tatUe-0007gS-1f
+ for qemu-devel@nongnu.org; Thu, 23 Jan 2025 04:27:20 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tat9N-0002ih-Md; Thu, 23 Jan 2025 04:05:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737623122; x=1769159122;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=hu9u32yL3yzPovbh79n//6bS6f/cnZyQCC+CXnJQj7s=;
- b=WNwVa+c/0tlJl5suxWNHaL/FVRp2cuBpGInNpQxvXD83tXIiaZwW9XEl
- gD4wBHjhSdYl7iFgxZlsNxCRnedm93exFM/cpn2iUTJ/XvkqOVJqa7lGZ
- Qu6c1YAIu3EDP7PIDMIxlPjkxCQEHSraoAwwrjgqusQ6SLf/BWbTrAjoW
- SqNB7Zpfnh4oc6YbnjUVM6UzehpWwD0zUvU8thTLj9RyDXTAluVvD/rs+
- n221amz2RvvSFPQK1onkJ9kJJe8o1dvXK3g2+KQlrnZFJoTyWtU0R3DoA
- iUCYxe1+r+bar5hA8zSnJT/2NfJKZW4p9d+5Xx9EF4Bb54zbfUx1Z2KEY Q==;
-X-CSE-ConnectionGUID: wGPJ6Sj7QMCnz1WbGSwsPw==
-X-CSE-MsgGUID: EIyBLHjAQOCSajZqEDyIag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="38260471"
-X-IronPort-AV: E=Sophos;i="6.13,227,1732608000"; d="scan'208";a="38260471"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jan 2025 01:05:19 -0800
-X-CSE-ConnectionGUID: A21SoZo6QHqwftZeSwlt8Q==
-X-CSE-MsgGUID: L1vK8jpiTDir0NBvT6Z4MA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="107832495"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa007.jf.intel.com with ESMTP; 23 Jan 2025 01:05:17 -0800
-Date: Thu, 23 Jan 2025 17:24:39 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-rust@nongnu.org
-Subject: Re: [PATCH 07/10] rust: pl011: wrap registers with BqlRefCell
-Message-ID: <Z5IK1zuMJS+P3t9j@intel.com>
-References: <20250117092657.1051233-1-pbonzini@redhat.com>
- <20250117092657.1051233-8-pbonzini@redhat.com>
- <Z5HX2G0+bt+3vzVB@intel.com>
- <CABgObfYRG-BFGj3cK4xz_PZYSiVgCY-YkSJitQMSk=2AtkcBcA@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tatUb-0006UP-Ru
+ for qemu-devel@nongnu.org; Thu, 23 Jan 2025 04:27:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737624435;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XRAt+EBDydf8E3UMbddzHHhrJ81CYp/yg4UufRki7f4=;
+ b=MArgeEAJ6v33heDhr71+M5mivwnPiV8OOl/NXjviLTsvRb7XnXaFzICXeZht8fDuj03EvE
+ Ltz38MthNDRJFSCTzYrF0fTFcuFenS4NX/ExFwZm/bB04vOz5xJS2YLZevoyWQLB6w8aH2
+ l6F1xSdFJtwmJiFN/dsTzTbbAz2ftCI=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-256-v_xMutDFP0C1JfGmpDtBHw-1; Thu, 23 Jan 2025 04:27:13 -0500
+X-MC-Unique: v_xMutDFP0C1JfGmpDtBHw-1
+X-Mimecast-MFC-AGG-ID: v_xMutDFP0C1JfGmpDtBHw
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-38639b4f19cso425159f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 23 Jan 2025 01:27:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737624432; x=1738229232;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=XRAt+EBDydf8E3UMbddzHHhrJ81CYp/yg4UufRki7f4=;
+ b=AEqkSp7C+FtQqWAIgrvBB+20jm4xuRHi/O9NJEXcDxDFlCYFZp5/NcNHMm3tep5Nnr
+ 5+b8mlqBFhQMAqi8tBizYRVZvg1i/qh7UtLoV0JILzwvjitCfMJIdw3e0E7Te2SN+/X5
+ TgghNCzdo6IWH1olk5Wh5flucEXG7752Y4wJ5odgnJrf2YyXw5SWkjISJvyipldBJx1o
+ 5mzOXaMbfgFrRB1z8s8fSGIDCjntKKnPOhk4a3gpDx87v2wrH4CIQpaccGTQOHaBBcUr
+ OjkWb48/a6RZ25Q31ySbaOgJ2kdREa8iIQnhZrIfWur58MLd1rsrTPsBWduEaYRucwCV
+ dq/A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXFKTEE/mkAkAd9y2dzocEHdtUSygxd1woGaVjTCrDFVMS/hOO3luj4v3CoWzQycofDtM5yG3X08aKe@nongnu.org
+X-Gm-Message-State: AOJu0YwNWdHNksQYSRPHUr7MCtG7Yf0dTBk7mBxvLS0MwzKUkL9ixKaQ
+ 69WA4hioe3SaXOu842wJ6ubTBhMcmM7vZA4WhXX9g9zEhv2h0WCXsIOhs63l4g8GS76yyr6YuFj
+ 9P010nYVb3LXrBb1kBqX6G+T9doVHRON8WiZGY5jvFn88TQqn7Laxm84kKQ69Ih63geVAbu2sei
+ Q45ZdrqiDWf5Ne01yz2+Wep4B0lXw=
+X-Gm-Gg: ASbGnctJpAw7jIRe2hPZJxyQ9M3k4ZLZcXbaaOk6f4G5PtREdoOn0574DQmn3ijcThx
+ yqZXbVsjUj9WxY0X/c/Jflk0DsCOUKXBm1JP7GZ43VhSMSB719Ls=
+X-Received: by 2002:a5d:648a:0:b0:385:fb8d:865b with SMTP id
+ ffacd0b85a97d-38bf57be4a2mr26650571f8f.48.1737624432629; 
+ Thu, 23 Jan 2025 01:27:12 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHrnVICL8VuXZBvjbyI9zHTPwhHz9TWdybdDSxdHs/SoIuYE6nliRsoOjrti8Qem/1CQNf1KKNHw5GDxeo0V28=
+X-Received: by 2002:a5d:648a:0:b0:385:fb8d:865b with SMTP id
+ ffacd0b85a97d-38bf57be4a2mr26650534f8f.48.1737624432274; Thu, 23 Jan 2025
+ 01:27:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABgObfYRG-BFGj3cK4xz_PZYSiVgCY-YkSJitQMSk=2AtkcBcA@mail.gmail.com>
-Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -73
-X-Spam_score: -7.4
-X-Spam_bar: -------
-X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+References: <20250122135843.543387-1-mordan@ispras.ru>
+In-Reply-To: <20250122135843.543387-1-mordan@ispras.ru>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 23 Jan 2025 10:26:52 +0100
+X-Gm-Features: AWEUYZl1Yo49uYAW_BFJjh_KkQzuHQAY_o4S7B4rT9dSGtSOZnh2tsR7T_jofdE
+Message-ID: <CABgObfY+xCMEENKoKX4siyyAMNGWkqoGda1dWvLy5BW7ic-puw@mail.gmail.com>
+Subject: Re: [PATCH] Fix a data race with goflag in rcutorture test
+To: Vitalii Mordan <mordan@ispras.ru>
+Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ qemu-devel@nongnu.org, sdl.qemu@linuxtesting.org, 
+ Vadim Mutilin <mutilin@ispras.ru>, Alexey Khoroshilov <khoroshilov@ispras.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.043,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,125 +105,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > >  #[repr(C)]
-> > > -#[derive(Debug, qemu_api_macros::Object, qemu_api_macros::offsets)]
-> >
-> > This is the issue I also met, so why not drive "Debug" for BqlRefCell?
-> >
-> 
-> Because it is not entirely possible to do it safely--there could be
-> outstanding borrows that break invariants and cause debug() to fail. Maybe
-> we could implement it on BqlRefCell<PL011Registers> with a custom derive
-> macro...
-> 
-> RefCell doesn't implement Debug either for the same reason.
-
-Thank you for the clarification, I understand now (I was indeed puzzled
-as to why RefCell didn't do this).
-
-> I tried to do this in [*]. Do we need to reconsider this?
-> >
-> > [*]:
-> > https://lore.kernel.org/qemu-devel/20241205060714.256270-3-zhao1.liu@intel.com/
-> >
-> > > +#[derive(qemu_api_macros::Object, qemu_api_macros::offsets)]
-> > >  /// PL011 Device Model in QEMU
-> > >  pub struct PL011State {
-> > >      pub parent_obj: ParentField<SysBusDevice>,
-> > >      pub iomem: MemoryRegion,
-> > >      #[doc(alias = "chr")]
-> > >      pub char_backend: CharBackend,
-> > > -    pub regs: PL011Registers,
-> > > +    pub regs: BqlRefCell<PL011Registers>,
-> >
-> > This is a good example on the usage of BqlRefCell!
-> >
-> > //! `BqlRefCell` is best suited for data that is primarily accessed by the
-> > //! device's own methods, where multiple reads and writes can be grouped
-> > within
-> > //! a single borrow and a mutable reference can be passed around. "
-> >
-> 
-> Yeah, the comment was inspired by this usage and not vice versa. :D
-> 
-> >      /// QEMU interrupts
-> > >      ///
-> > >      /// ```text
-> > > @@ -530,8 +530,8 @@ fn post_init(&self) {
-> > >          }
-> > >      }
-> > >
-> > > +    #[allow(clippy::needless_pass_by_ref_mut)]
-> >
-> > How did you trigger this lint error? I switched to 1.84 and didn't get
-> > any errors (I noticed that 1.84 fixed the issue of ignoring `self` [*],
-> > but it still doesn't seem to work on my side).
-> >
-> 
-> I will double check. But I do see that there is no mut access inside, at
-> least not until the qemu_chr_fe_accept_input() is moved here. Unfortunately
-> until all MemoryRegion and CharBackend bindings are available the uses of
-> &mut and the casts to *mut are really really wonky.
-
-yes, I agree here we should remove mut :-). (if needless_pass_by_ref_mut
-doesn't work on this place, I think we can drop it.)
-
-> (On the other hand it wouldn't be possible to have a grip on the qemu_api
-> code without users).
-> 
-> Paolo
-> 
-> > @@ -603,19 +603,19 @@ pub fn realize(&mut self) {
-> > >      }
-> > >
-> > >      pub fn reset(&mut self) {
-> >
-> > In principle, this place should also trigger `needless_pass_by_ref_mut`.
-> >
-> 
-> Yes but clippy hides it because this function is assigned to a function
-> pointer const. At least I think so---the point is more generally that you
-> can't change &mut to & without breaking compilation.
-
-Make sense!
-
-> > > -        self.regs.reset();
-> > > +        self.regs.borrow_mut().reset();
-> > >      }
-> >
-> > [snip]
-> >
-> > > @@ -657,10 +657,10 @@ pub fn post_load(&mut self, _version_id: u32) ->
-> > Result<(), ()> {
-> > >  pub unsafe extern "C" fn pl011_receive(opaque: *mut c_void, buf: *const
-> > u8, size: c_int) {
-> > >      unsafe {
-> > >          debug_assert!(!opaque.is_null());
-> > > -        let mut state =
-> > NonNull::new_unchecked(opaque.cast::<PL011State>());
-> > > +        let state = NonNull::new_unchecked(opaque.cast::<PL011State>());
-> >
-> > Perhaps we can use NonNull::new and unwrap()? Then debug_assert! is
-> > unnecessary.
-> >
-> > let state = unsafe {
-> > NonNull::new(opaque.cast::<PL011State>()).unwrap().as_ref() };
-> >
-> 
-> Yeah, though that's preexisting and it's code that will go away relatively
-> soon. I tried to minimize unrelated changes and changes to these temporary
-> unsafe functions, but in some cases there were some that sneaked in.
-> 
-> Let me know what you prefer.
+On Wed, Jan 22, 2025 at 2:59=E2=80=AFPM Vitalii Mordan <mordan@ispras.ru> w=
+rote:
 >
+> This patch addresses a potential data race involving the global variable
+> goflag in the rcutorture test. The issue is resolved by adding the atomic
+> qualifier to ensure proper synchronization.
 
-I prefer to use NonNull::new and unwrap(). Too much assert() pattern is
-not user-friendly. I also think it's unnecessary to change NonNull
-interface in this patch, we can see what's left when you're done with
-the most QAPI work.
+Hello!
 
-Thanks,
-Zhao
+QEMU does not use _Atomic; in general, the C11 committee decision to
+default to sequentially consistent atomics is a bad idea and we prefer
+to annotate _accesses_ rather than _variables_ (yes, I'm aware that
+volatile has the same issue!).
 
+Can you redo the patch to access goflag with qatomic_read and qatomic_set?
+
+Paolo
+
+> Fixes: 8fda74a52b ("rcu: add rcutorture")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2750
+> Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+> ---
+>  tests/unit/rcutorture.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/tests/unit/rcutorture.c b/tests/unit/rcutorture.c
+> index 7662081683..c4971632f8 100644
+> --- a/tests/unit/rcutorture.c
+> +++ b/tests/unit/rcutorture.c
+> @@ -70,7 +70,7 @@ int nthreadsrunning;
+>  #define GOFLAG_RUN  1
+>  #define GOFLAG_STOP 2
+>
+> -static volatile int goflag =3D GOFLAG_INIT;
+> +static _Atomic int goflag =3D GOFLAG_INIT;
+>
+>  #define RCU_READ_RUN 1000
+>
+> --
+> 2.34.1
+>
 
 
