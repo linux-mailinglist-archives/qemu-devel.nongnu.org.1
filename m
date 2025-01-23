@@ -2,51 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F37A19FBA
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Jan 2025 09:20:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67716A19FED
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Jan 2025 09:29:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tasQv-0005Kp-U8; Thu, 23 Jan 2025 03:19:26 -0500
+	id 1tasa9-00014S-NB; Thu, 23 Jan 2025 03:28:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tasQq-0005If-W9; Thu, 23 Jan 2025 03:19:21 -0500
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1tasa7-00014G-1x; Thu, 23 Jan 2025 03:28:55 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tasQp-0002Qj-FA; Thu, 23 Jan 2025 03:19:20 -0500
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 23 Jan
- 2025 16:19:02 +0800
-Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Thu, 23 Jan 2025 16:19:02 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
- Stanley" <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 2/2] aspeed/wdt: Support software reset mode for AST2600
-Date: Thu, 23 Jan 2025 16:19:01 +0800
-Message-ID: <20250123081901.2688471-3-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250123081901.2688471-1-jamin_lin@aspeedtech.com>
-References: <20250123081901.2688471-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1tasa0-0003m3-LL; Thu, 23 Jan 2025 03:28:54 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YdvGS72Sbz6HJbD;
+ Thu, 23 Jan 2025 16:28:16 +0800 (CST)
+Received: from frapeml500006.china.huawei.com (unknown [7.182.85.219])
+ by mail.maildlp.com (Postfix) with ESMTPS id 2F2C2140498;
+ Thu, 23 Jan 2025 16:28:35 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (7.182.85.71) by
+ frapeml500006.china.huawei.com (7.182.85.219) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 23 Jan 2025 09:28:34 +0100
+Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
+ frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
+ Thu, 23 Jan 2025 09:28:34 +0100
+To: Nicolin Chen <nicolinc@nvidia.com>, Donald Dutile <ddutile@redhat.com>
+CC: "eric.auger@redhat.com" <eric.auger@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ =?iso-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, Linuxarm <linuxarm@huawei.com>, "Wangzhou (B)"
+ <wangzhou1@hisilicon.com>, jiangkunkun <jiangkunkun@huawei.com>, "Jonathan
+ Cameron" <jonathan.cameron@huawei.com>, "zhangfei.gao@linaro.org"
+ <zhangfei.gao@linaro.org>, "zhenzhong.duan@intel.com"
+ <zhenzhong.duan@intel.com>
+Subject: RE: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
+ nested SMMUv3
+Thread-Topic: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
+ nested SMMUv3
+Thread-Index: AQHbMeB0+Q5BEZc9JkeH/U6Jz+dF4rLkOMCAgAAM2QCAAAz2gIAEhqeggCVVAYCAAxlYAIAS3VEAgABWAvA=
+Date: Thu, 23 Jan 2025 08:28:34 +0000
+Message-ID: <8fe09b60e6f04cc6aec99b72b46b2fb3@huawei.com>
+References: <20241108125242.60136-1-shameerali.kolothum.thodi@huawei.com>
+ <Z1wh69_gZ9izr1iU@redhat.com> <Z1wsslDnwlth3A8+@nvidia.com>
+ <CAFEAcA8TW2RKyFnh-TZRpfaKfZipHD5TZy_hymUr41GJ4rs4xA@mail.gmail.com>
+ <329445b2f68a47269292aefb34584375@huawei.com>
+ <Z39Ugx2M+FRFVVpB@Asurada-Nvidia>
+ <568014f5-25fd-439b-b70c-9cf50f31255b@redhat.com>
+ <Z5HBJOgO4tUJApY+@nvidia.com>
+In-Reply-To: <Z5HBJOgO4tUJApY+@nvidia.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.203.177.241]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=shameerali.kolothum.thodi@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=-0.043, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,76 +84,86 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
+Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On the AST2400 and AST2500 platforms, the system can only be reset by enabling
-the WDT (Watchdog Timer) and waiting for the WDT timeout. However, starting
-from the AST2600 platform, the reset event can be triggered directly and
-intentionally by software, without relying on the WDT timeout.
 
-This mechanism, referred to as "software restart", is implemented in hardware.
-When using the software restart mechanism, the WDT counter is not enabled.
 
-To trigger a reset generation in software mode, write 0xAEEDF123 to register
-0x24 and software mode reset only support SOC reset mode.
+> -----Original Message-----
+> From: Nicolin Chen <nicolinc@nvidia.com>
+> Sent: Thursday, January 23, 2025 4:10 AM
+> To: Donald Dutile <ddutile@redhat.com>
+> Cc: Shameerali Kolothum Thodi
+> <shameerali.kolothum.thodi@huawei.com>; eric.auger@redhat.com; Peter
+> Maydell <peter.maydell@linaro.org>; Jason Gunthorpe <jgg@nvidia.com>;
+> Daniel P. Berrang=E9 <berrange@redhat.com>; qemu-arm@nongnu.org;
+> qemu-devel@nongnu.org; Linuxarm <linuxarm@huawei.com>; Wangzhou
+> (B) <wangzhou1@hisilicon.com>; jiangkunkun <jiangkunkun@huawei.com>;
+> Jonathan Cameron <jonathan.cameron@huawei.com>;
+> zhangfei.gao@linaro.org
+> Subject: Re: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
+> nested SMMUv3
+>=20
+> Hi Don,
+>=20
+> On Fri, Jan 10, 2025 at 11:05:24PM -0500, Donald Dutile wrote:
+> > On 1/8/25 11:45 PM, Nicolin Chen wrote:
+> > > On Mon, Dec 16, 2024 at 10:01:29AM +0000, Shameerali Kolothum Thodi
+> wrote:
+> > > > And patches prior to this commit adds that support:
+> > > > 4ccdbe3: ("cover-letter: Add HW accelerated nesting support for arm
+> > > > SMMUv3")
+> > > >
+> > > > Nicolin is soon going to send out those for review. Or I can includ=
+e
+> > > > those in this series so that it gives a complete picture. Nicolin?
+> > >
+> > > Just found that I forgot to reply this one...sorry
+> > >
+> > > I asked Don/Eric to take over that vSMMU series:
+> > > https://lore.kernel.org/qemu-devel/Zy0jiPItu8A3wNTL@Asurada-Nvidia/
+> > > (The majority of my effort has been still on the kernel side:
+> > >   previously vIOMMU/vDEVICE, and now vEVENTQ/MSI/vCMDQ..)
+> > >
+> > > Don/Eric, is there any update from your side?
+> > >
+> > Apologies for delayed response, been at customer site, and haven't been
+> keeping up w/biz email.
+> > Eric is probably waiting for me to get back and chat as well.
+> > Will look to reply early next week.
+>=20
+> I wonder if we can make some progress in Feb? If so, we can start
+> to wrap up the iommufd uAPI patches for HWPT, which was a part of
+> intel's series but never got sent since their emulated series is
+> seemingly still pending?
 
-A new function, "aspeed_wdt_is_soc_reset_mode", is introduced to determine
-whether the SoC reset mode is active.
+I think these are the  5 patches that we require from Intel pass-through se=
+ries,
 
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
----
- hw/watchdog/wdt_aspeed.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+vfio/iommufd: Implement [at|de]tach_hwpt handlers
+vfio/iommufd: Implement HostIOMMUDeviceClass::realize_late() handler
+HostIOMMUDevice: Introduce realize_late callback
+vfio/iommufd: Add properties and handlers to TYPE_HOST_IOMMU_DEVICE_IOMMUFD
+backends/iommufd: Add helpers for invalidating user-managed HWPT
 
-diff --git a/hw/watchdog/wdt_aspeed.c b/hw/watchdog/wdt_aspeed.c
-index 22e94e7b9c..94fb643395 100644
---- a/hw/watchdog/wdt_aspeed.c
-+++ b/hw/watchdog/wdt_aspeed.c
-@@ -51,11 +51,20 @@
- #define WDT_TIMEOUT_CLEAR               (0x14 / 4)
- 
- #define WDT_RESTART_MAGIC               0x4755
-+#define WDT_SW_RESET_ENABLE             0xAEEDF123
- 
- #define AST2600_SCU_RESET_CONTROL1      (0x40 / 4)
- #define SCU_RESET_CONTROL1              (0x04 / 4)
- #define    SCU_RESET_SDRAM              BIT(0)
- 
-+static bool aspeed_wdt_is_soc_reset_mode(const AspeedWDTState *s)
-+{
-+    uint32_t mode;
-+
-+    mode = extract32(s->regs[WDT_CTRL], 5, 2);
-+    return (mode == 0);
-+}
-+
- static bool aspeed_wdt_is_enabled(const AspeedWDTState *s)
- {
-     return s->regs[WDT_CTRL] & WDT_CTRL_ENABLE;
-@@ -199,13 +208,18 @@ static void aspeed_wdt_write(void *opaque, hwaddr offset, uint64_t data,
-     case WDT_TIMEOUT_STATUS:
-     case WDT_TIMEOUT_CLEAR:
-     case WDT_RESET_MASK2:
--    case WDT_SW_RESET_CTRL:
-     case WDT_SW_RESET_MASK1:
-     case WDT_SW_RESET_MASK2:
-         qemu_log_mask(LOG_UNIMP,
-                       "%s: uninmplemented write at offset 0x%" HWADDR_PRIx "\n",
-                       __func__, offset);
-         break;
-+    case WDT_SW_RESET_CTRL:
-+        if (aspeed_wdt_is_soc_reset_mode(s) &&
-+            (data == WDT_SW_RESET_ENABLE)) {
-+            watchdog_perform_action();
-+        }
-+        break;
-     default:
-         qemu_log_mask(LOG_GUEST_ERROR,
-                       "%s: Out-of-bounds write at offset 0x%" HWADDR_PRIx "\n",
--- 
-2.34.1
+See the commits from here,
+https://github.com/hisilicon/qemu/commit/bbdc65af38fa5723f1bd9b026e29273090=
+1f57b5
+
+[CC  Zhenzhong]
+
+Hi Zhenzhong,
+
+Just wondering what your plans are for the above patches.  If it make sense=
+ and you
+are fine with it, I think it is a good idea one of us can pick up those fro=
+m that series
+and sent out separately so that it can get some review and take it forward.
+
+Thanks,
+Shameer
+=20
 
 
