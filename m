@@ -2,89 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CAD3A1AC2F
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Jan 2025 22:58:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B11E6A1AC7E
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Jan 2025 23:11:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tb5Cw-0006Co-U0; Thu, 23 Jan 2025 16:57:51 -0500
+	id 1tb5OG-0000Eg-KZ; Thu, 23 Jan 2025 17:09:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb5Cc-0005TO-OG
- for qemu-devel@nongnu.org; Thu, 23 Jan 2025 16:57:38 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb5O2-0000E6-E4
+ for qemu-devel@nongnu.org; Thu, 23 Jan 2025 17:09:20 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb5Cb-0002vX-5L
- for qemu-devel@nongnu.org; Thu, 23 Jan 2025 16:57:30 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3862b40a6e0so1055329f8f.0
- for <qemu-devel@nongnu.org>; Thu, 23 Jan 2025 13:57:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb5Ny-00055E-GQ
+ for qemu-devel@nongnu.org; Thu, 23 Jan 2025 17:09:16 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-436341f575fso15562855e9.1
+ for <qemu-devel@nongnu.org>; Thu, 23 Jan 2025 14:09:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737669447; x=1738274247; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tD14boF6dvwaWjMp/PPnzVj7/mx2oVtmk8yCDrx4k5w=;
- b=gOcW8hXxo14Z8UGAeDg456xJDs+77hBiN2N6Z5P7bFVR8CBVqNQYzmSNKDFtaANeYQ
- vmasrmIxM5Bunk++tWPhJU4jHjq8VOfw6mBWuhumknWn+B9fWhqPXyyj4NgN4MG3Rb2G
- 43QGinRo51B2FTxwufFzIKYuZO+jP1AvcbpbDrr3+awXj95Qmnh01kRYUpmlT370A+jn
- 6h/JjCMXpGW8VQ3VNrrXZunY8py9rX/RYmNk9ZUJXdZ5v920T+0lHiRpGUnkvBWdsE2n
- T5s8XcOWFIDArpFeTzhFOBjbWHtfXFlLbSsR4W8FBK3t/qyy3jlKjryvZ7SvL/yeRfBc
- +Ryw==
+ d=linaro.org; s=google; t=1737670151; x=1738274951; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=toakulm61GOmz1C+G6Cl0lHLUwBaHc7++f3+BYu1QlE=;
+ b=v/Ya+V4gLFJtMjmS9jHPOSsNJaAmfm0THYg8muOaZqHHSa7p4YcIjvjc3w8ovxwp9A
+ HHFpjSs2h+zjT5v/RXGyL54suh70LT9gniO/2AUP8tRnTrgKrTeXinZxqX2uqjdHKyv/
+ hUYzy/YHqHvvQFPFD7Wzm9Xcd3WldGQZrQq+/vom0UrwzB71x7Lt08oriRbKo7PpmWD5
+ Ufgi96fo1H11tde/hQBMhKWsa6SUiU5sH63LBVsdb2DncRNvXcnX7w59i3Y8GpnnEf5E
+ hEQsUj4ut2lFM6sb3MNtVjLara3jYhkTFeT72DTrQAx8yYCh/UbapN1L5Pf8Tq5RB3NL
+ AfZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737669447; x=1738274247;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=tD14boF6dvwaWjMp/PPnzVj7/mx2oVtmk8yCDrx4k5w=;
- b=Z+wy1Q6/WNSROyiRUvF8F+MEDO4HYMOlLhkbVFDEHG86K1q+w2P+H0paEhRJJYekyf
- FSdNPmHALMgHMoIg8mmaor2gLrYW11/3lauTm4d1RbY43hgacYsrrs/72yjg6jRmH0cN
- 7JtwmAO5VO2ig0dnxSduMGIeZyvSGQVnQLJTTdN7eQbQxAMuNougj2WzJmEbTh4Q6e9m
- cAXTD3UeWGUJKGQkxHHTBQ3qK2KAvlrqbfuHD13r5eFmQ9BkOAPu/LIVXzi49xId5bPm
- UsDmsLp2cTr1cIvCu3DYMLdkr6kxzIdV9MgnIe+McXqcVVtkwfY0yTx/lRhltQ3HrZIA
- v31A==
-X-Gm-Message-State: AOJu0YxGcDVRBSJzX5AG4GsLBGngmFfrXEB5UYRptgbkQ76pYejcJ8wy
- QCIz2mW9jO9xLv6ErL7Kh5120zrD7t+lO1G2ScfSdkUrDiBvRbLAPJ9GH1l3Iet3hzFswUqtcJd
- 2Vr4=
-X-Gm-Gg: ASbGncuNU+wWzl21znDMfnGV5QGORTAE3mkFI/07dqZFB/9Bp6aCStdzsu1tb5U3rqs
- epibzuHV9USNIP2lQyHmF9M+RJwzU6ZPp2gNxdMf7bqYW7jjnkLIoyBh+eDqCsAdQirIqen2nDR
- mU/QIDvM2SbWg5TKtplnhMc0nv1iFv+Xqu96iiCLX2G0zCST48pfGNERVThbmtNbl0h2cBDucSu
- 8rIbHftE+zOXaOmzWyZWOkzlV9RBYMyteF7dQYfZdlkSG7MXjg5tAznBNxkqpJSFw8qLYYHA87Z
- /sxfGaIsAqCpZ8rocP2kM/dJE1QTHjAOtvG5K3L0zd2mSl0QJ+RZhlk=
-X-Google-Smtp-Source: AGHT+IEpclplO8xXrWMZOuLiWhOLETM1wTWoOMWmrt0VZkx+BgHqSUEj6wYu+9Jmu//EElruFB4U4Q==
-X-Received: by 2002:a05:6000:144d:b0:385:e01b:7df5 with SMTP id
- ffacd0b85a97d-38bf565c2d0mr29569150f8f.14.1737669446797; 
- Thu, 23 Jan 2025 13:57:26 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1737670151; x=1738274951;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=toakulm61GOmz1C+G6Cl0lHLUwBaHc7++f3+BYu1QlE=;
+ b=v6usjSCJ/k03qGwTTmXJxLeC1HF+B9fX+N/uEbKTvms9vnqJsoqWP/EGM2ytNexMML
+ UyKZD07mXYV1MeScBdq0M5udUp579mvV0nAkc29ktjQ7CSsFdeG6KayZdDByNTfDDjEd
+ 6X66iKtUl/dDMjSDLWIOxzdq932aowN1YKUD10NJ84tkpc3UZcfJlnaER7ABTokL6AUz
+ 8QkKolfs2Qoobw+/fKN1AN8ASg7fSTyovaMMP0NgUmmQmSzV6/Olklg1J5zqEgqWUKiB
+ M4v0nhVt9t/eR34Vwvd5CWJDNMMailemh+oLunzIQ2xQ11B2UlnSNVMHGs8ZKb1jMYYJ
+ ZDVg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWKdmndVHE4evRzL2tVRpITS2WIDIAZnKRzR3U+hUYaF8Sb0OxrKsxcJ8RL2+xC9u5OeoJHbpnU01Yz@nongnu.org
+X-Gm-Message-State: AOJu0Yx/xZykNsAAE8gu0nHjy9wF+DFyyAuHUfdr5/9RvZLHyIVooD/k
+ V4n6//3ZAVcl1vuKd+buw9YEv+JDM3Wig0U5HX85zGtfb7I0kTdzcknROd3rOzw=
+X-Gm-Gg: ASbGncu1nDXkNTpMHTjV62e5COkgnsBNW+mA8Kk6ioQoM+1mC0GfTXU09Y4Q1HW3fV2
+ gVsrZ4kYM6kTcET7v5Ll9k8v9mDezGGGIvjzszMElYhuRzPB2cfXv2JjP9FUdD1IsCOd+7YC3kG
+ Nt9YFI+uqBe5uHjB2p1a7WBWH0SGqG0sZYLWc9N6iIAZpa8pdJKBQDJ1fCZaEcxZKlhhrJslyFw
+ 3M15dZqiYbkGPZ7piOmItZpzVkukYgMCG08tfiF+nxC+bfD/Gh8EKyX9y8Tzp+u3z5EcIkjMScP
+ 3djb9fgEWh9KiAZYO6yQY1KnRkaq3y0bRBj89OluakISm/Oe
+X-Google-Smtp-Source: AGHT+IEgwNfyFVjEC06KcZmhd6zPizj/s2bcBB/LXfAVoz5OCX6vwrl1aCd/u/Q+2V/mR9EvdYJ0Tg==
+X-Received: by 2002:a5d:47a3:0:b0:382:3959:f429 with SMTP id
+ ffacd0b85a97d-38bf5649664mr25655957f8f.5.1737670150778; 
+ Thu, 23 Jan 2025 14:09:10 -0800 (PST)
+Received: from [192.168.69.181] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a17d6e2sm802184f8f.23.2025.01.23.13.57.25
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 23 Jan 2025 13:57:25 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 15/15] target/ppc: Restrict ATTN helper to TCG
-Date: Thu, 23 Jan 2025 22:56:09 +0100
-Message-ID: <20250123215609.30432-16-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250123215609.30432-1-philmd@linaro.org>
-References: <20250123215609.30432-1-philmd@linaro.org>
+ 5b1f17b1804b1-438bd54c0ecsm4617695e9.30.2025.01.23.14.09.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 23 Jan 2025 14:09:10 -0800 (PST)
+Message-ID: <afabb48c-2bf9-42dc-9aa9-f4341285ec38@linaro.org>
+Date: Thu, 23 Jan 2025 23:09:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/usb/hcd-ehci: Fix debug printf format string
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-trivial@nongnu.org
+References: <20250123214831.401B54E601A@zero.eik.bme.hu>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250123214831.401B54E601A@zero.eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,99 +98,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move helper_attn() to tcg-excp_helper.c and make
-raise_exception_err() static.
+Hi Zoltan,
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/ppc/cpu.h             |  2 --
- target/ppc/excp_helper.c     | 20 --------------------
- target/ppc/tcg-excp_helper.c | 13 ++++++++++++-
- 3 files changed, 12 insertions(+), 23 deletions(-)
+On 23/1/25 22:48, BALATON Zoltan wrote:
+> The variable is uint64_t so needs %ld instead of %d.
+> 
 
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index ca5bbd263cb..35b56368eac 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -2752,8 +2752,6 @@ static inline void cpu_get_tb_cpu_state(CPUPPCState *env, vaddr *pc,
- }
- #endif
- 
--G_NORETURN void raise_exception_err(CPUPPCState *env, uint32_t exception,
--                                    uint32_t error_code);
- G_NORETURN void raise_exception_err_ra(CPUPPCState *env, uint32_t exception,
-                                        uint32_t error_code, uintptr_t raddr);
- 
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 2d4d47ee384..eedfa2d1de1 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -31,11 +31,6 @@
- 
- #include "trace.h"
- 
--#ifdef CONFIG_TCG
--#include "exec/helper-proto.h"
--#include "exec/cpu_ldst.h"
--#endif
--
- /*****************************************************************************/
- /* Exception processing */
- #ifndef CONFIG_USER_ONLY
-@@ -400,21 +395,6 @@ static void powerpc_set_excp_state(PowerPCCPU *cpu, target_ulong vector,
-     env->reserve_addr = -1;
- }
- 
--#ifdef CONFIG_TCG
--#if defined(TARGET_PPC64) && !defined(CONFIG_USER_ONLY)
--void helper_attn(CPUPPCState *env)
--{
--    /* POWER attn is unprivileged when enabled by HID, otherwise illegal */
--    if ((*env->check_attn)(env)) {
--        powerpc_checkstop(env, "host executed attn");
--    } else {
--        raise_exception_err(env, POWERPC_EXCP_HV_EMU,
--                            POWERPC_EXCP_INVAL | POWERPC_EXCP_INVAL_INVAL);
--    }
--}
--#endif
--#endif /* CONFIG_TCG */
--
- static void powerpc_mcheck_checkstop(CPUPPCState *env)
- {
-     /* KVM guests always have MSR[ME] enabled */
-diff --git a/target/ppc/tcg-excp_helper.c b/target/ppc/tcg-excp_helper.c
-index 072a7fd0947..b6765835683 100644
---- a/target/ppc/tcg-excp_helper.c
-+++ b/target/ppc/tcg-excp_helper.c
-@@ -56,7 +56,7 @@ void helper_raise_exception(CPUPPCState *env, uint32_t exception)
- 
- #ifndef CONFIG_USER_ONLY
- 
--void raise_exception_err(CPUPPCState *env, uint32_t exception,
-+static G_NORETURN void raise_exception_err(CPUPPCState *env, uint32_t exception,
-                                            uint32_t error_code)
- {
-     raise_exception_err_ra(env, exception, error_code, 0);
-@@ -544,6 +544,17 @@ void helper_pminsn(CPUPPCState *env, uint32_t insn)
-     ppc_maybe_interrupt(env);
- }
- 
-+void helper_attn(CPUPPCState *env)
-+{
-+    /* POWER attn is unprivileged when enabled by HID, otherwise illegal */
-+    if ((*env->check_attn)(env)) {
-+        powerpc_checkstop(env, "host executed attn");
-+    } else {
-+        raise_exception_err(env, POWERPC_EXCP_HV_EMU,
-+                            POWERPC_EXCP_INVAL | POWERPC_EXCP_INVAL_INVAL);
-+    }
-+}
-+
- #endif /* TARGET_PPC64 */
- 
- static void do_rfi(CPUPPCState *env, target_ulong nip, target_ulong msr)
--- 
-2.47.1
+Actually the format is PRIu64.
+
+Fixes: 3ae7eb88c47 ("ehci: fix overflow in frame timer code")
+
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> ---
+>   hw/usb/hcd-ehci.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/usb/hcd-ehci.c b/hw/usb/hcd-ehci.c
+> index 6c4c14c895..23b3e20fdb 100644
+> --- a/hw/usb/hcd-ehci.c
+> +++ b/hw/usb/hcd-ehci.c
+> @@ -2287,7 +2287,7 @@ static void ehci_work_bh(void *opaque)
+>               ehci_update_frindex(ehci, skipped_uframes);
+>               ehci->last_run_ns += UFRAME_TIMER_NS * skipped_uframes;
+>               uframes -= skipped_uframes;
+> -            DPRINTF("WARNING - EHCI skipped %d uframes\n", skipped_uframes);
+> +            DPRINTF("WARNING - EHCI skipped %ld uframes\n", skipped_uframes);
+
+Should we take the opportunity to convert to warn_report()?
+
+>           }
+>   
+>           for (i = 0; i < uframes; i++) {
 
 
