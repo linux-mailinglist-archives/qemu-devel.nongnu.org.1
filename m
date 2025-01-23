@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D4DA1AD78
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 00:46:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FFF5A1AD77
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 00:46:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tb6sE-00069s-66; Thu, 23 Jan 2025 18:44:34 -0500
+	id 1tb6sK-0006CZ-2N; Thu, 23 Jan 2025 18:44:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb6sB-00068n-QQ
- for qemu-devel@nongnu.org; Thu, 23 Jan 2025 18:44:31 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb6sI-0006B1-1G
+ for qemu-devel@nongnu.org; Thu, 23 Jan 2025 18:44:38 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb6s8-0003rn-SZ
- for qemu-devel@nongnu.org; Thu, 23 Jan 2025 18:44:31 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-385de9f789cso1183219f8f.2
- for <qemu-devel@nongnu.org>; Thu, 23 Jan 2025 15:44:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb6sF-0003tb-Ea
+ for qemu-devel@nongnu.org; Thu, 23 Jan 2025 18:44:37 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-38a88ba968aso1439123f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 23 Jan 2025 15:44:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737675867; x=1738280667; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737675873; x=1738280673; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4nuXtmGFXC6ord9LKCUcMBdqEKN9u5T/6Xkbf7Pq9+s=;
- b=aFg1A+iXtHTzplQv2uBeKltCA6R4Lmfe8Eq1rybCKZigLroQLV2B553ijdCSuNhca0
- yitDaVxo5c14Z08YbzOzMHKGdanzlK5lAHIwrXRu56zxD+z3NV4Kri4bTiXf7IRe901u
- ewSh3ODLvS64lVeHaos+QAM2itNnueKwihf/VUbaYhFlz8DUflheKeLMm2CRcBlia0xr
- iA2SOxjzwU3emP659AOOaAbbTQ+iz7899QXBPoQbCAgJ4ilRv0QzKWazafKCia0ryG7m
- g1BJkT5HBi1ykw37JKs5+NntdFySavGUcVpLt0csONEukD40eiA+PEx/JUTLQie5aqC2
- rQ+A==
+ bh=ce4xXqVbqUUJ3kwtGZLdz75HP+CS3yxZeowyzQLM8Ns=;
+ b=ArNhyyY9wHQnUy9VaH2mZVYpmQHRKsjWgCeUgeb6aZqf0NLt+le9c0FxvRDUq4LwT8
+ xpXBUH0SUc8ymZFTrjZqqFqAqmPmTPPwCWjdOG3MpIT+w4lP14yqqpEQ74TJTBZFp6y4
+ qLfQNhghgu106Tpf8/YKWnsvXM1HpjskJLbwG/VVMyjc61E0Q+6KnZZU5Lwv9XIFHVva
+ 7zTeoyBzZRH/BfJIeCKZ7DiLJxCGpbyHYv+iK2Yoyb9X20E2jvPM3vQi49d/PED1AxWg
+ N5iZ2Qp8KujMU8ziwJ5cLzsfzOJVSjTnv8pTDWd4YD/CANL5IIhVBA9/H0WlYVAdvC1S
+ qu4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737675867; x=1738280667;
+ d=1e100.net; s=20230601; t=1737675873; x=1738280673;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4nuXtmGFXC6ord9LKCUcMBdqEKN9u5T/6Xkbf7Pq9+s=;
- b=J3HWu6r3Fr2w8A0WR9XgUNGVa8IyPg2qLX0IUmk6FueSq5bmcxdVCIlpuLKd8PiwX6
- py2YcWuUEXwuERsBZXG/zVyljMnCzu4G4B20O7CzORDYmUegdVSoXu4INqxFkCfcEEMt
- BB9q0wws90M8V/57+AE6XkZoVWbrS6u8aKXFdDsbRJsWZ9IQeAb62NrESpBtDqm92Pv9
- MkUYbQAKMGDbAvcLPbgd5dNzpm9tv/8T40K43NoWklewWIi79Qi6+PlaVJcxI8272pt1
- +d2lslTh2ERHoUcAwGislFuicsHbjVIB05ZI52K+aM7O+4fahUIYDOfyMKkJAVj4aj1g
- fJdg==
-X-Gm-Message-State: AOJu0YwnEXj45bKJ2jlJt5boqTbgXE96iS7fwshzNUiyei5ZHbPjCZm8
- qkh+n036mrzNdzv27FF1Xps1gaPEMrpwSrWyMyhYuUtBh3R7Xwxli24z6UoabFfx6IgrgYf01C3
- 0Wr0=
-X-Gm-Gg: ASbGncvnDRdY3E2i5s1cRh1CtUrVQGr9ZrUgW6t5D7vp2914ON2LJATgV7Ai/SrOIib
- rEWZUrJl4dMt9j/nfvAG/fNCKAqXBaXxQziFswWUzel6lq1iqVmZjrssh54shnf/sKhP3hPCcnp
- 1oRVH8YHjONarl+42khHU2p4m0mlEoVuZGHajrbX4v8VObdKvE8ehrwmtyO0DORTGAVHS25lLfM
- iXjuATjLh//bAJ5/Uk2G9eRn9j2FSd3SC7J1AUU2gTqSmykN8V/9y9FZjTi3UNWTi/O2dlDvEUA
- rDbSqEr376Jkd0xP2v4dhYqiQnyUbUkj7pCcVsBsKjGVb/gx8hB0DIU=
-X-Google-Smtp-Source: AGHT+IHv5zns5zWE/8mYKYb9FdwvG4F/GC7lN2DJcXXFDd0WLjCHyuvzadU0RlDxZ5dNLmoZuF9u5A==
-X-Received: by 2002:a05:6000:1887:b0:38a:87cc:fb42 with SMTP id
- ffacd0b85a97d-38bf56639d5mr27205303f8f.21.1737675867076; 
- Thu, 23 Jan 2025 15:44:27 -0800 (PST)
+ bh=ce4xXqVbqUUJ3kwtGZLdz75HP+CS3yxZeowyzQLM8Ns=;
+ b=alPnPkS4+fTLaxEvNxvftd+EOOXp/ExOZdNmjYhqvNBo2D0Qt1ROfCNA6aKQy3Cgop
+ Ny0C+JtFscFxXzm5dEf/zVyFXjPlPL1JvAiPcxKiYBb1a13x2/NtSCRFzmM8PGvuFpfL
+ 6sdjtXExYkNUXnEtrZzIMna9xZRK+f9y8tWT7nGYN1/aRs4ebnNQYMQVQsCPIRfSsX3r
+ qn+TiIRNX2nL82sr2XtKlvqjl3v/DYJWiWTYF9rV03muda4SaDa+rusHNidSNbSXpTCI
+ xQc/PJsAsCOtL/qRQbw7WKNBUA2fFVw7IuZAMYNReEHeEvlKp9UizZZO7SFtBAYvad8F
+ 5ZJg==
+X-Gm-Message-State: AOJu0Yw6CyxmxsV3my6cMlFgFFDAstt1zwMvfHAD3zzfeOZTTLxFtA1E
+ dvO1OJ7twQ4pOvm21HnHctlZaK5ro0ao2RrC6e22WiPw6jUY4h0YrNdF9vpbmKNdDsgr2LyWv1p
+ JGpA=
+X-Gm-Gg: ASbGncthAvMGR8WJJE4Rpmk5ynr9H6BzNxbP/nLJuXPHnO1i7XL3yf9hE/KXcL+Glyy
+ 1AQB6ssby3jelMZllY1FPmTXqUjQUNWI9fZhRI2bODKFlN0/CxTUw5dRjar88MsxjZXW9uuu8kU
+ yFJKft+45HZionoa0rBiNbcYbJYtLGNH0f1s1d2+NMm4Hp8+0KLaww1EwvgM9+yAO+JCK4NO+Gf
+ t1puobhYzOePmNjleFQnpqvfWohQAOJ/DJS0bunyv7yAGILVOs/8JryS3qS63Bz/e+2qay26Ell
+ mvRPEhP18Tu4twukOs9vowlzX00HTWVRNQtPunsir5oyoiK6UxAKUIhpIJal6cJN+g==
+X-Google-Smtp-Source: AGHT+IF2OW+qflIazHPgiEcST7oe1qZGT6aj/Hik/HFfGWbVcOJj4aFV8515DLdGfzbOF2nObYCMQg==
+X-Received: by 2002:a05:6000:144a:b0:38a:9c1b:df5b with SMTP id
+ ffacd0b85a97d-38bf566a279mr25563799f8f.30.1737675873434; 
+ Thu, 23 Jan 2025 15:44:33 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a17d6e2sm989811f8f.23.2025.01.23.15.44.25
+ ffacd0b85a97d-38c2a1c4006sm982952f8f.94.2025.01.23.15.44.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 23 Jan 2025 15:44:26 -0800 (PST)
+ Thu, 23 Jan 2025 15:44:32 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -71,17 +71,17 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  xen-devel@lists.xenproject.org,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 02/20] user: Extract common MMAP API to 'user/mmap.h'
-Date: Fri, 24 Jan 2025 00:43:56 +0100
-Message-ID: <20250123234415.59850-3-philmd@linaro.org>
+Subject: [PATCH 03/20] gdbstub: Check for TCG before calling tb_flush()
+Date: Fri, 24 Jan 2025 00:43:57 +0100
+Message-ID: <20250123234415.59850-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250123234415.59850-1-philmd@linaro.org>
 References: <20250123234415.59850-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,128 +104,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Keep common MMAP-related declarations in a single place.
-
-Note, this disable ThreadSafetyAnalysis on Linux for:
-- mmap_fork_start()
-- mmap_fork_end().
+Use the tcg_enabled() check so the compiler can elide
+the call when TCG isn't available, allowing to remove
+the tb_flush() stub.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- bsd-user/qemu.h        | 12 +-----------
- include/user/mmap.h    | 32 ++++++++++++++++++++++++++++++++
- linux-user/user-mmap.h | 19 ++-----------------
- 3 files changed, 35 insertions(+), 28 deletions(-)
- create mode 100644 include/user/mmap.h
+ accel/stubs/tcg-stub.c | 4 ----
+ gdbstub/system.c       | 5 ++++-
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-index 4e97c796318..c1c508281a8 100644
---- a/bsd-user/qemu.h
-+++ b/bsd-user/qemu.h
-@@ -32,6 +32,7 @@
- extern char **environ;
+diff --git a/accel/stubs/tcg-stub.c b/accel/stubs/tcg-stub.c
+index 7f4208fddf2..b2b9881bdfb 100644
+--- a/accel/stubs/tcg-stub.c
++++ b/accel/stubs/tcg-stub.c
+@@ -14,10 +14,6 @@
+ #include "exec/tb-flush.h"
+ #include "exec/exec-all.h"
  
- #include "user/thunk.h"
-+#include "user/mmap.h"
- #include "target_arch.h"
- #include "syscall_defs.h"
- #include "target_syscall.h"
-@@ -233,19 +234,8 @@ void print_taken_signal(int target_signum, const target_siginfo_t *tinfo);
- extern int do_strace;
- 
- /* mmap.c */
--int target_mprotect(abi_ulong start, abi_ulong len, int prot);
--abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
--                     int flags, int fd, off_t offset);
--int target_munmap(abi_ulong start, abi_ulong len);
--abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
--                       abi_ulong new_size, unsigned long flags,
--                       abi_ulong new_addr);
- int target_msync(abi_ulong start, abi_ulong len, int flags);
--extern abi_ulong mmap_next_start;
--abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size);
- void mmap_reserve(abi_ulong start, abi_ulong size);
--void TSA_NO_TSA mmap_fork_start(void);
--void TSA_NO_TSA mmap_fork_end(int child);
- 
- /* main.c */
- extern char qemu_proc_pathname[];
-diff --git a/include/user/mmap.h b/include/user/mmap.h
-new file mode 100644
-index 00000000000..4d004e6b822
---- /dev/null
-+++ b/include/user/mmap.h
-@@ -0,0 +1,32 @@
-+/*
-+ * MMAP declarations for QEMU user emulation
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#ifndef USER_MMAP_H
-+#define USER_MMAP_H
-+
-+#include "user/abitypes.h"
-+
-+/*
-+ * mmap_next_start: The base address for the next mmap without hint,
-+ * increased after each successful map, starting at task_unmapped_base.
-+ * This is an optimization within QEMU and not part of ADDR_COMPAT_LAYOUT.
-+ */
-+extern abi_ulong mmap_next_start;
-+
-+int target_mprotect(abi_ulong start, abi_ulong len, int prot);
-+
-+abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
-+                     int flags, int fd, off_t offset);
-+int target_munmap(abi_ulong start, abi_ulong len);
-+abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
-+                       abi_ulong new_size, unsigned long flags,
-+                       abi_ulong new_addr);
-+
-+abi_ulong mmap_find_vma(abi_ulong, abi_ulong, abi_ulong);
-+
-+void TSA_NO_TSA mmap_fork_start(void);
-+void TSA_NO_TSA mmap_fork_end(int child);
-+
-+#endif
-diff --git a/linux-user/user-mmap.h b/linux-user/user-mmap.h
-index b94bcdcf83c..dfc4477a720 100644
---- a/linux-user/user-mmap.h
-+++ b/linux-user/user-mmap.h
-@@ -18,6 +18,8 @@
- #ifndef LINUX_USER_USER_MMAP_H
- #define LINUX_USER_USER_MMAP_H
- 
-+#include "user/mmap.h"
-+
- /*
-  * Guest parameters for the ADDR_COMPAT_LAYOUT personality
-  * (at present this is the only layout supported by QEMU).
-@@ -39,24 +41,7 @@
- extern abi_ulong task_unmapped_base;
- extern abi_ulong elf_et_dyn_base;
- 
--/*
-- * mmap_next_start: The base address for the next mmap without hint,
-- * increased after each successful map, starting at task_unmapped_base.
-- * This is an optimization within QEMU and not part of ADDR_COMPAT_LAYOUT.
-- */
--extern abi_ulong mmap_next_start;
+-void tb_flush(CPUState *cpu)
+-{
+-}
 -
--int target_mprotect(abi_ulong start, abi_ulong len, int prot);
--abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
--                     int flags, int fd, off_t offset);
--int target_munmap(abi_ulong start, abi_ulong len);
--abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
--                       abi_ulong new_size, unsigned long flags,
--                       abi_ulong new_addr);
- abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice);
--abi_ulong mmap_find_vma(abi_ulong, abi_ulong, abi_ulong);
--void mmap_fork_start(void);
--void mmap_fork_end(int child);
- 
- abi_ulong target_shmat(CPUArchState *cpu_env, int shmid,
-                        abi_ulong shmaddr, int shmflg);
+ G_NORETURN void cpu_loop_exit(CPUState *cpu)
+ {
+     g_assert_not_reached();
+diff --git a/gdbstub/system.c b/gdbstub/system.c
+index 8ce79fa88cf..7f047a285c8 100644
+--- a/gdbstub/system.c
++++ b/gdbstub/system.c
+@@ -22,6 +22,7 @@
+ #include "system/cpus.h"
+ #include "system/runstate.h"
+ #include "system/replay.h"
++#include "system/tcg.h"
+ #include "hw/core/cpu.h"
+ #include "hw/cpu/cluster.h"
+ #include "hw/boards.h"
+@@ -171,7 +172,9 @@ static void gdb_vm_state_change(void *opaque, bool running, RunState state)
+         } else {
+             trace_gdbstub_hit_break();
+         }
+-        tb_flush(cpu);
++        if (tcg_enabled()) {
++            tb_flush(cpu);
++        }
+         ret = GDB_SIGNAL_TRAP;
+         break;
+     case RUN_STATE_PAUSED:
 -- 
 2.47.1
 
