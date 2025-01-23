@@ -2,96 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22819A1A7E1
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Jan 2025 17:32:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80BEEA1A7A1
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Jan 2025 17:14:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tb079-0005br-Nt; Thu, 23 Jan 2025 11:31:31 -0500
+	id 1tazou-00020U-PS; Thu, 23 Jan 2025 11:12:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tb074-0005aw-0e
- for qemu-devel@nongnu.org; Thu, 23 Jan 2025 11:31:26 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tazor-0001zj-AE; Thu, 23 Jan 2025 11:12:37 -0500
+Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tb071-0003rX-Ee
- for qemu-devel@nongnu.org; Thu, 23 Jan 2025 11:31:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737649881;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=B1DYv4w8zQZT6U8R0Bhl214YCyVWA/VEvMoYZ/665Mc=;
- b=Ds9vNA1ScuVM/QNLSmVurzeqZjvPc5inwzu1Jd1e7ELJHfYKa/T5dmGxPBnMl23tlSh14Q
- ryiuZB/TNCf2VEjFmBAZAoEavY/gnlulmBXSSGybS7T6jTkjjSyZ2B6b7mMxYJTOF6fOqF
- FCo24MqUGuKq+8fs5BC0biUOPoREKBE=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-68-jEuoRb0uMUC8Nf867CDbOA-1; Thu, 23 Jan 2025 11:31:18 -0500
-X-MC-Unique: jEuoRb0uMUC8Nf867CDbOA-1
-X-Mimecast-MFC-AGG-ID: jEuoRb0uMUC8Nf867CDbOA
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7b7477f005eso243206985a.0
- for <qemu-devel@nongnu.org>; Thu, 23 Jan 2025 08:31:18 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737649878; x=1738254678;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=B1DYv4w8zQZT6U8R0Bhl214YCyVWA/VEvMoYZ/665Mc=;
- b=csF67ni+qOrna1bADrNPSnN1GjNbCoppL2WSeLswLOwu+IrfjCsaMmDIdmXmPoUwRo
- xnbLydQxSwIWNaQeeJAkt1a9kDTcNxy+LVJ53cUnPmqaES9BD+n1/9za44+JNCQdr03s
- XEf1eVzUMOPR2nV+1L50wlehWRcBddkmlJo61aa2E+s8TfMgIBjlHF/BeQOgWIWgRX4Y
- B83eMjo+EzZ6kbIFNI5lOWko7IG2opKfp8mEmW+UsagIyvbDo/r6Iaa5G+74Rkd/txvb
- ugPFYJwwJmjMgDYWTHiOrUz4Lp5RIgQafhvHwc5waIX7vloDYgTjykX8MZXiFSGslRiQ
- r9Gw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUmCAGVdWM51LwF7fPCIK+wXdkH9mFqAYq3PMt3ERqAH8Adeerbk9FH2w4mATbclqVvBaanihK3P0q5@nongnu.org
-X-Gm-Message-State: AOJu0YyA8bJwE5sBQIdOyNWOPqkwzC3nnSdCXIs67rqZCEmjy8YM6XBF
- iS9uDIQFkUehx+49VKvhYhXjyBDFEi+ATQzAJR+lUWh1EDG3j00s6p/R0bCybYLA+5s/5zxAV4K
- 4jhdpBil/9qBeTENHHqg0yoxArssJtrfrlHvFIiieqGQNYFKrF6sV
-X-Gm-Gg: ASbGncuaNF0yb/Edqc2RiGPSw6QegenHMn4lOHbSqbdL6P3wN87gEaKcYw2YzT2KCZJ
- drmm39llEbfguijuqa2OoLw7XJJGN5ogC3emb6YapshM8/Fjf4jYYnNwnFhNH+t84f+Mau8M/gK
- D0qdG8hxvjf6UFJ57gW/7DGFVTDBDYrG5RJ1dXGwO7sPTbITAXxc1T4jM7nAU6uckocBOqHzJwj
- E4/8WSepHkZyY1ziudPlAsCx3OCzfXqKztPv9OvzhrTCxJ0XX7pjJH5QIzRPpRAf1i1qbr/8Xgc
- VSoU4pWVzGxkzxIq82T37ZnIKHnIn70=
-X-Received: by 2002:a05:620a:601a:b0:7b6:f1be:4f7e with SMTP id
- af79cd13be357-7be6320bd00mr4045797585a.26.1737649877966; 
- Thu, 23 Jan 2025 08:31:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFccdTl99KrmqxOf5Xs+ndxLWK8PuavQNR09viJ6etdhXhytQkGNDQA/eDGTiJf/ukHvr7CfQ==
-X-Received: by 2002:a05:620a:601a:b0:7b6:f1be:4f7e with SMTP id
- af79cd13be357-7be6320bd00mr4045793185a.26.1737649877652; 
- Thu, 23 Jan 2025 08:31:17 -0800 (PST)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7be9ae8aa1bsm1187985a.35.2025.01.23.08.31.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Jan 2025 08:31:16 -0800 (PST)
-Date: Thu, 23 Jan 2025 11:31:13 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>,
- Fabiano Rosas <farosas@suse.de>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v4 0/4] overcommit: introduce mem-lock-onfault
-Message-ID: <Z5Ju0ZnR6KEEF-Bu@x1n>
-References: <20250123131944.391886-1-d-tatianin@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tazoo-0000Ar-Lo; Thu, 23 Jan 2025 11:12:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1737648755; x=1769184755;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=tYhUpgqm3nvU5B3a10P7LcCb/l6h12GQjhqy7WIa2OM=;
+ b=clKToP3Ub7nn8EEHIp8Teu0KCuDzYYIyrQEz1ttnSB3NCNTpiD7aPd8v
+ VHp8WdaiMOb3wwHqcNQka1zg6bzqMNytbbRV6KJ407dHXRhXK7wPClWbU
+ C/FCYJnL9OhCICxqj/FjlOqPzsTCHfamRXKrUSwn0WuTRtnAsobLcPldB
+ Ae2oMKL+XW/XMk51n0+Fm9AOs5HtovyxoB2Ot44ioOCB++jo3pejIzNmF
+ wKPxQXFCFfun/0uCf9seNsQ8DMrlwLcxPxm8OlzeFWAm9dkQyrsvcigba
+ B+YnOb/Ov58jWWCYC09LG6Dap2yNW1soJ+9F//5XFO8JQnU5HtUwNry/E A==;
+X-CSE-ConnectionGUID: AeFF3WLXRT2juNSW7kQJig==
+X-CSE-MsgGUID: 7urbIStoRZC/9kPYqmEV9w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11324"; a="37414582"
+X-IronPort-AV: E=Sophos;i="6.13,228,1732608000"; d="scan'208";a="37414582"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jan 2025 08:12:31 -0800
+X-CSE-ConnectionGUID: cC3ePLHnRsWaVNWKjl7jSg==
+X-CSE-MsgGUID: 2A/nTWkqRVCSWGB1bEvZ6w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="107923654"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by orviesa007.jf.intel.com with ESMTP; 23 Jan 2025 08:12:30 -0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH] rust/zeroable: Implement Zeroable with const_zero macro
+Date: Fri, 24 Jan 2025 00:31:43 +0800
+Message-Id: <20250123163143.679841-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250123131944.391886-1-d-tatianin@yandex-team.ru>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -73
+X-Spam_score: -7.4
+X-Spam_bar: -------
+X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.043,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,94 +75,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jan 23, 2025 at 04:19:40PM +0300, Daniil Tatianin wrote:
-> Currently, passing mem-lock=on to QEMU causes memory usage to grow by
-> huge amounts:
-> 
-> no memlock:
->     $ ./qemu-system-x86_64 -overcommit mem-lock=off
->     $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
->     45652
-> 
->     $ ./qemu-system-x86_64 -overcommit mem-lock=off -enable-kvm
->     $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
->     39756
-> 
-> memlock:
->     $ ./qemu-system-x86_64 -overcommit mem-lock=on
->     $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
->     1309876
-> 
->     $ ./qemu-system-x86_64 -overcommit mem-lock=on -enable-kvm
->     $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
->     259956
-> 
-> This is caused by the fact that mlockall(2) automatically
-> write-faults every existing and future anonymous mappings in the
-> process right away.
-> 
-> One of the reasons to enable mem-lock is to protect a QEMU process'
-> pages from being compacted and migrated by kcompactd (which does so
-> by messing with a live process page tables causing thousands of TLB
-> flush IPIs per second) basically stealing all guest time while it's
-> active.
-> 
-> mem-lock=on helps against this (given compact_unevictable_allowed is 0),
-> but the memory overhead it introduces is an undesirable side effect,
-> which we can completely avoid by passing MCL_ONFAULT to mlockall, which
-> is what this series allows to do with a new option for mem-lock called
-> on-fault.
-> 
-> memlock-onfault:
->     $ ./qemu-system-x86_64 -overcommit mem-lock=on-fault
->     $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
->     54004
-> 
->     $ ./qemu-system-x86_64 -overcommit mem-lock=on-fault -enable-kvm
->     $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
->     47772
-> 
-> You may notice the memory usage is still slightly higher, in this case
-> by a few megabytes over the mem-lock=off case. I was able to trace this
-> down to a bug in the linux kernel with MCL_ONFAULT not being honored for
-> the early process heap (with brk(2) etc.) so it is still write-faulted in
-> this case, but it's still way less than it was with just the mem-lock=on.
-> 
-> Changes since v1:
->     - Don't make a separate mem-lock-onfault, add an on-fault option to mem-lock instead
-> 
-> Changes since v2:
->     - Move overcommit option parsing out of line
->     - Make enable_mlock an enum instead
-> 
-> Changes since v3:
->     - Rebase to latest master due to the recent sysemu -> system renames
-> 
-> Daniil Tatianin (4):
->   os: add an ability to lock memory on_fault
->   system/vl: extract overcommit option parsing into a helper
->   system: introduce a new MlockState enum
->   overcommit: introduce mem-lock=on-fault
-> 
->  hw/virtio/virtio-mem.c    |  2 +-
->  include/system/os-posix.h |  2 +-
->  include/system/os-win32.h |  3 ++-
->  include/system/system.h   | 12 ++++++++-
->  migration/postcopy-ram.c  |  4 +--
->  os-posix.c                | 10 ++++++--
->  qemu-options.hx           | 14 +++++++----
->  system/globals.c          | 12 ++++++++-
->  system/vl.c               | 52 +++++++++++++++++++++++++++++++--------
->  9 files changed, 87 insertions(+), 24 deletions(-)
+`const_zero` crate provides a nice macro to zero type-specific
+constants, which doesn't need to enumerates the fields one by one.
 
-Considering it's very mem relevant change and looks pretty benign.. I can
-pick this if nobody disagrees (or beats me to it, which I'd appreciate).
+Introduce `const_zero` macro to QEMU (along with its documentation), and
+use it to simplify the implementation of `Zeroable` trait.
 
-I'll also provide at least one week for people to stop me.
+This is valid since current types that require `Zeroable` support can
+be safely zeroed using `zero_const`.
 
-Thanks,
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+---
+* Based on the commit d3e2a17bb809 ("rust: qemu-api: add sub-subclass to
+  the integration tests") of Paolo's rust-next.
+---
+ rust/qemu-api/src/zeroable.rs | 132 +++++++++++++++-------------------
+ 1 file changed, 56 insertions(+), 76 deletions(-)
 
+diff --git a/rust/qemu-api/src/zeroable.rs b/rust/qemu-api/src/zeroable.rs
+index 57cac96de06f..688ee8b059f2 100644
+--- a/rust/qemu-api/src/zeroable.rs
++++ b/rust/qemu-api/src/zeroable.rs
+@@ -1,13 +1,11 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
+-use std::ptr;
+-
+ /// Encapsulates the requirement that
+ /// `MaybeUninit::<Self>::zeroed().assume_init()` does not cause undefined
+ /// behavior.  This trait in principle could be implemented as just:
+ ///
+ /// ```
+-/// pub unsafe trait Zeroable: Default {
++/// pub unsafe trait Zeroable {
+ ///     const ZERO: Self = unsafe { ::core::mem::MaybeUninit::<Self>::zeroed().assume_init() };
+ /// }
+ /// ```
+@@ -29,23 +27,56 @@ pub unsafe trait Zeroable: Default {
+     const ZERO: Self;
+ }
+ 
+-unsafe impl Zeroable for crate::bindings::Property__bindgen_ty_1 {
+-    const ZERO: Self = Self { i: 0 };
++/// A marco that acts similarly to [`core::mem::zeroed()`], only is const
++///
++/// ## Safety
++/// Similar to `core::mem::zeroed()`, except this zeroes padding bits. Zeroed
++/// padding usually isn't relevant to safety, but might be if a C union is used.
++/// To repeat `core::mem::zeroed()`'s safety, an all zero byte pattern might not
++/// be a valid value for a type; for example, references &T, &mut T.
++///
++/// const_zero does not work on unsized types
++/// ```rust compile_fail
++/// use const_zero::const_zero;
++/// // error[E0277]: the size for values of type `[u8]` cannot be known at compilation time
++/// const BYTES: [u8] = unsafe{const_zero!([u8])};
++/// ```
++/// reference types trigger a (denied by default) lint and cause immediate
++/// undefined behavior if the lint is ignored
++/// ```rust compile_fail
++/// use const_zero::const_zero;
++/// // error: any use of this value will cause an error
++/// // note: `#[deny(const_err)]` on by default
++/// const STR: &str = unsafe{const_zero!(&'static str)};
++/// ```
++///
++/// ## Differences with `core::mem::zeroed`
++/// `const_zero` zeroes padding bits, while `core::mem::zeroed` doesn't
++macro_rules! const_zero {
++    // This macro to zero type-specific constants comes from const_zero crate (v0.1.1):
++    //
++    //     https://docs.rs/const-zero/latest/src/const_zero/lib.rs.html
++    //
++    // used under MIT license
++    ($type_:ty) => {{
++        const TYPE_SIZE: ::core::primitive::usize = ::core::mem::size_of::<$type_>();
++        union TypeAsBytes {
++            bytes: [::core::primitive::u8; TYPE_SIZE],
++            inner: ::core::mem::ManuallyDrop<$type_>,
++        }
++        const ZERO_BYTES: TypeAsBytes = TypeAsBytes {
++            bytes: [0; TYPE_SIZE],
++        };
++        ::core::mem::ManuallyDrop::<$type_>::into_inner(ZERO_BYTES.inner)
++    }};
+ }
+ 
+-unsafe impl Zeroable for crate::bindings::Property {
+-    const ZERO: Self = Self {
+-        name: ptr::null(),
+-        info: ptr::null(),
+-        offset: 0,
+-        bitnr: 0,
+-        bitmask: 0,
+-        set_default: false,
+-        defval: Zeroable::ZERO,
+-        arrayoffset: 0,
+-        arrayinfo: ptr::null(),
+-        arrayfieldsize: 0,
+-        link_type: ptr::null(),
++/// A wrapper to implement `Zeroable` trait by `const_zero` macro.
++macro_rules! impl_zeroable {
++    ($type:ty) => {
++        unsafe impl Zeroable for $type {
++            const ZERO: Self = unsafe { const_zero!($type) };
++        }
+     };
+ }
+ 
+@@ -57,61 +88,10 @@ fn default() -> Self {
+     }
+ }
+ 
+-unsafe impl Zeroable for crate::bindings::VMStateFlags {
+-    const ZERO: Self = Self(0);
+-}
+-
+-unsafe impl Zeroable for crate::bindings::VMStateField {
+-    const ZERO: Self = Self {
+-        name: ptr::null(),
+-        err_hint: ptr::null(),
+-        offset: 0,
+-        size: 0,
+-        start: 0,
+-        num: 0,
+-        num_offset: 0,
+-        size_offset: 0,
+-        info: ptr::null(),
+-        flags: Zeroable::ZERO,
+-        vmsd: ptr::null(),
+-        version_id: 0,
+-        struct_version_id: 0,
+-        field_exists: None,
+-    };
+-}
+-
+-unsafe impl Zeroable for crate::bindings::VMStateDescription {
+-    const ZERO: Self = Self {
+-        name: ptr::null(),
+-        unmigratable: false,
+-        early_setup: false,
+-        version_id: 0,
+-        minimum_version_id: 0,
+-        priority: crate::bindings::MigrationPriority::MIG_PRI_DEFAULT,
+-        pre_load: None,
+-        post_load: None,
+-        pre_save: None,
+-        post_save: None,
+-        needed: None,
+-        dev_unplug_pending: None,
+-        fields: ptr::null(),
+-        subsections: ptr::null(),
+-    };
+-}
+-
+-unsafe impl Zeroable for crate::bindings::MemoryRegionOps__bindgen_ty_1 {
+-    const ZERO: Self = Self {
+-        min_access_size: 0,
+-        max_access_size: 0,
+-        unaligned: false,
+-        accepts: None,
+-    };
+-}
+-
+-unsafe impl Zeroable for crate::bindings::MemoryRegionOps__bindgen_ty_2 {
+-    const ZERO: Self = Self {
+-        min_access_size: 0,
+-        max_access_size: 0,
+-        unaligned: false,
+-    };
+-}
++impl_zeroable!(crate::bindings::Property__bindgen_ty_1);
++impl_zeroable!(crate::bindings::Property);
++impl_zeroable!(crate::bindings::VMStateFlags);
++impl_zeroable!(crate::bindings::VMStateField);
++impl_zeroable!(crate::bindings::VMStateDescription);
++impl_zeroable!(crate::bindings::MemoryRegionOps__bindgen_ty_1);
++impl_zeroable!(crate::bindings::MemoryRegionOps__bindgen_ty_2);
 -- 
-Peter Xu
+2.34.1
 
 
