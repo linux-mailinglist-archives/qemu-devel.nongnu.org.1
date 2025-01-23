@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 210CFA1AA2F
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Jan 2025 20:17:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B23B7A1AA34
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Jan 2025 20:17:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tb2gq-00080h-Pv; Thu, 23 Jan 2025 14:16:33 -0500
+	id 1tb2gp-0007z7-Vf; Thu, 23 Jan 2025 14:16:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tb2gJ-0007xu-P7
+ id 1tb2gK-0007xv-C7
  for qemu-devel@nongnu.org; Thu, 23 Jan 2025 14:16:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tb2gI-0003Cr-8e
- for qemu-devel@nongnu.org; Thu, 23 Jan 2025 14:15:59 -0500
+ id 1tb2gI-0003D4-Rh
+ for qemu-devel@nongnu.org; Thu, 23 Jan 2025 14:16:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737659756;
+ s=mimecast20190719; t=1737659757;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Z4idOmdaT2Lwr+HmD5ha5reAkr+A38GhsY764Z9KdUw=;
- b=hVnoCmibeVcCZdKQCj5EmqVIssg4RKBBD6yMpuEwbI/caTPTpCkAFD33RIeXxkJP3f+hy6
- GcUkKGg4K5ANql++tyKvlQyxzSY6jRdd6uV/FwGalZFkcelGDzbOF/SGyotH9ZT/Q6Tjjd
- p5thsb7mTYmLUEa0dkLWWPrqW+cm9ro=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=GSMHnQ0UwvJD5TIVkw1wFllAM/T0myUxbmcejTHwe3Y=;
+ b=YhYCCiCvNpunBnXfPKhwcm6Qwj/BMj8DULHCADkklCM3mFx/nAsGtEKvPeWR6Jah4xY+a8
+ liNijzr12EnQl3O7F7mXxecYppcL2Czga21DyvSRUoUWBP1x0Z/Hm6i/KH9KcH7H8uyL36
+ RZT600J64LXaSVHlht2Hl2eKY+8HwLs=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-114-5_8EwfKSNxyP7Zr-CiQHrQ-1; Thu,
- 23 Jan 2025 14:15:54 -0500
-X-MC-Unique: 5_8EwfKSNxyP7Zr-CiQHrQ-1
-X-Mimecast-MFC-AGG-ID: 5_8EwfKSNxyP7Zr-CiQHrQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-509-K1ky4SWjOLKkztVSPMrQpw-1; Thu,
+ 23 Jan 2025 14:15:56 -0500
+X-MC-Unique: K1ky4SWjOLKkztVSPMrQpw-1
+X-Mimecast-MFC-AGG-ID: K1ky4SWjOLKkztVSPMrQpw
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2FE46195608B
- for <qemu-devel@nongnu.org>; Thu, 23 Jan 2025 19:15:53 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B27031955DDE
+ for <qemu-devel@nongnu.org>; Thu, 23 Jan 2025 19:15:55 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.222])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D8B163003FD3; Thu, 23 Jan 2025 19:15:50 +0000 (UTC)
+ id 86BC03003E7F; Thu, 23 Jan 2025 19:15:53 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [RFC 4/6] ui/vnc: pre-multiply alpha with alpha cursor
-Date: Thu, 23 Jan 2025 19:15:34 +0000
-Message-ID: <20250123191536.142753-5-berrange@redhat.com>
+Subject: [RFC 5/6] ui/sdl: load cursor in RGBA8888 format not BGRA8888
+Date: Thu, 23 Jan 2025 19:15:35 +0000
+Message-ID: <20250123191536.142753-6-berrange@redhat.com>
 In-Reply-To: <20250123191536.142753-1-berrange@redhat.com>
 References: <20250123191536.142753-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
 X-Spam_bar: -----
 X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.043,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,42 +85,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The RFB specification for the alpha cursor encoding requires that the
-alpha channel is pre-multiplied into the RGB components. This worked
-by luck previously since the virtio-gpu device was not reversing the
-pre-multiplication on data received from the guest. Now virtio-gpu is
-fixed, the VNC server must apply pre-multiplication itself.
+The SDL code was loading cursor data in BGRA8888 format which masked the
+problem with virtio-gpu not supplying data in RGBA8888 format. Now that
+virtio-gpu is fixed, the SDL code needs to be fixed to match.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- ui/vnc.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ ui/sdl2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/ui/vnc.c b/ui/vnc.c
-index 9241caaad9..5ffb50109d 100644
---- a/ui/vnc.c
-+++ b/ui/vnc.c
-@@ -996,6 +996,7 @@ static int vnc_cursor_define(VncState *vs)
-     }
+diff --git a/ui/sdl2.c b/ui/sdl2.c
+index 445eb1dd9f..2d56b4d174 100644
+--- a/ui/sdl2.c
++++ b/ui/sdl2.c
+@@ -772,7 +772,7 @@ static void sdl_mouse_define(DisplayChangeListener *dcl,
  
-     if (vnc_has_feature(vs, VNC_FEATURE_ALPHA_CURSOR)) {
-+        g_autoptr(QEMUCursor) tmpc = cursor_copy(c);
-         vnc_lock_output(vs);
-         vnc_write_u8(vs,  VNC_MSG_SERVER_FRAMEBUFFER_UPDATE);
-         vnc_write_u8(vs,  0);  /*  padding     */
-@@ -1003,7 +1004,11 @@ static int vnc_cursor_define(VncState *vs)
-         vnc_framebuffer_update(vs, c->hot_x, c->hot_y, c->width, c->height,
-                                VNC_ENCODING_ALPHA_CURSOR);
-         vnc_write_s32(vs, VNC_ENCODING_RAW);
--        vnc_write(vs, c->data, c->width * c->height * 4);
-+
-+        // Alpha is required to be pre-multiplied into RGB components
-+        cursor_multiply_alpha(tmpc);
-+
-+        vnc_write(vs, tmpc->data, c->width * c->height * 4);
-         vnc_unlock_output(vs);
-         return 0;
-     }
+     guest_sprite_surface =
+         SDL_CreateRGBSurfaceFrom(c->data, c->width, c->height, 32, c->width * 4,
+-                                 0xff0000, 0x00ff00, 0xff, 0xff000000);
++                                 0xff, 0x00ff00, 0xff0000, 0xff000000);
+ 
+     if (!guest_sprite_surface) {
+         fprintf(stderr, "Failed to make rgb surface from %p\n", c);
 -- 
 2.47.1
 
