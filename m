@@ -2,92 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D05CFA1A035
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Jan 2025 09:54:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E36A1A0B2
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Jan 2025 10:18:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tasy6-0007cT-Dj; Thu, 23 Jan 2025 03:53:42 -0500
+	id 1tatKH-0005bs-3T; Thu, 23 Jan 2025 04:16:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1tasy4-0007c3-8R
- for qemu-devel@nongnu.org; Thu, 23 Jan 2025 03:53:40 -0500
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
- id 1tasy2-0000Y2-B2
- for qemu-devel@nongnu.org; Thu, 23 Jan 2025 03:53:40 -0500
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-5d96944401dso1211013a12.0
- for <qemu-devel@nongnu.org>; Thu, 23 Jan 2025 00:53:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737622417; x=1738227217; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xJoEBFx5uK1qVNB0I6L/KByUsPzfPdocJz4RTcufOaM=;
- b=DzDZmWTLyBf4EtX8niNWR5hWH2Y7XW4B5EOKlLyROe1xj9MLq7ks/UcYWFhqDcefDP
- 75DnAFPUKbRzJOY8OH3SpnCKubSS2N8R88p/AOrwnELPG/sW/V5Jtn9ykLsJdRSfbm8D
- wBTtbdr8vN4EIpWKJAtfiRszCYX4187NYdC4aru4MPEMJnOAtCxBYJ9FG/JMEgfJHq6q
- to9kPWU8w7LQPmMF9STo/KclHUcTBOqKoOPuVj4DKQSv0lg4/+9JllflspvYHSOsH7Sw
- h6aemmklmtkr63u551+VfB5b+dv+RkhDumU/sa2iN+deg8R1hQGPCUuftrDH6wKUu9Dx
- 2bhA==
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tatKF-0005bY-9c
+ for qemu-devel@nongnu.org; Thu, 23 Jan 2025 04:16:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tatKB-0005KE-JJ
+ for qemu-devel@nongnu.org; Thu, 23 Jan 2025 04:16:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737623789;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dka7GSoGZN+xBNJl5mk81pg/2CtNp32GZEgIbMfNWjQ=;
+ b=fkeTSzYB/s3UYg9/9PvH/Dsu2WG2g6xV2WBXcnoYAiuicBkkCwcvllI8JU3qdzoTLQHn+p
+ 2DB38RwsnO+RQLOTQbceaIjCEzN3Liu39z1Y2CSBHeqig3USpcE34ZjgNTZfPa6jKl/5AL
+ IeRboarPduFkb2duYP1j5fhBahN3jdM=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-250-99vF1iTmNcmGtIhrFCKMIQ-1; Thu, 23 Jan 2025 04:16:27 -0500
+X-MC-Unique: 99vF1iTmNcmGtIhrFCKMIQ-1
+X-Mimecast-MFC-AGG-ID: 99vF1iTmNcmGtIhrFCKMIQ
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4361ecebc5bso3043985e9.1
+ for <qemu-devel@nongnu.org>; Thu, 23 Jan 2025 01:16:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737622417; x=1738227217;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xJoEBFx5uK1qVNB0I6L/KByUsPzfPdocJz4RTcufOaM=;
- b=JDGN/sKC9bPEMlAcKSCRRQJU834zS/ioqVi9LPO0jx8i6JqtSRwzupAr4XA0B/v2fl
- HlD2an0oDilGZ0InG/0wGQ2yE0j4KfpUGuf0KanWvzsrvneh4snqOGxEkLjvtu4yfRxn
- spzvdxWjk42TkPacaFLtiMoFffZxX8XSCoAqAYa4/6QmwuY6Z3OVmraZy3rdS4eY9epR
- hqBk0oaPkfr5VhHyfTdAyS0GcpvEz2SoaToLsr+8X72LeufehFiyo0Q+sTxzpJpilgE5
- pzKNo2LKtKs2tvzGQL/NO9jj8qnESq08bRGyEtLm7bd4iJGRmIrMth1OWte4qaalDxub
- Zhdg==
+ d=1e100.net; s=20230601; t=1737623786; x=1738228586;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dka7GSoGZN+xBNJl5mk81pg/2CtNp32GZEgIbMfNWjQ=;
+ b=KPjdsezoJ50Tlxy9N/DqxAtbNGMmSlG7Lp5VEnYYMi6daq5QRH20yHIrIQGV7Io3p3
+ nJqf/VRslPXYKp7PMSBU9XGIsup1uQ97hQ8wX7O3h51X8YgoFTZ5xmut4mUUOyod5VGL
+ 8sogPtoH5IxNNfZxEWOKEFE85uNiERDSR++Bjyu1rmFY8Y42rmeNQAdABZL8DN1A1BMP
+ icvHMK4GL+TV2MmoB+JDGUj+NSURWeeKLGH4XmtLlJIs+LCOb2+UFYJeUSpZOfuCql/x
+ pUxknC9jhbHWTq+tH1VbFKJVVgHxBMwITF9JZhq/RkKUzWujeubTLPeMSmYnLclOwk8i
+ cC2g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVNjMa/WqZuvoqLFEZzFZ9/e7fdchdCwEGnRvJmFbNkngY7IIPc2RdVXurcXeuHB7F/q/8IGPU7OlAR@nongnu.org
-X-Gm-Message-State: AOJu0YxJL2ES5pG29+qOC25fABieTPcgRqVuvr7tUlYB5qu3MzCUfThj
- Pns8ylOowSzdVL28GmeDTClirHNhBMrQ5XwWQ6UjkFdlNI/m5HD6
-X-Gm-Gg: ASbGncv873XvH94jdOtjSzFX9oHpAGIz592ur6FSvlmrvWHDW9L8cn3+LWuSPHeYTjX
- O8mE+opjaSTtQK0i8oXBNGLiacSa2nEz5h/B59VEmr0ns7GoF3PUYWKsgdGva1GVw7SVIg5IgcI
- biEPM9LYN8+S0xJC8rWP+wABDPOAesd8VvD1m3EQ+tfiLBh+w/tu38EgvcfOFq6cp5EQV7bTITx
- C8gYTONMLVVPPlKYM96rZQ3V6qgB/DvuGnQFKbwbrYxjBNNmx5dz3kcQhNZKDbEBvemyfwlZEOw
- +NZX0YxjqdzOYcAx1jVdJtiooI2l
-X-Google-Smtp-Source: AGHT+IHEdC4yg9mCCEpN0eFC6tZWwS0r+icFXihH3CuKR1Cts2dxzw6HjODPmmJuD+9gso1CfDlxyQ==
-X-Received: by 2002:a05:6402:51cb:b0:5d9:fbb5:9ee with SMTP id
- 4fb4d7f45d1cf-5db7d2f8ae3mr24760321a12.13.1737622416707; 
- Thu, 23 Jan 2025 00:53:36 -0800 (PST)
-Received: from think.fkb.profitbricks.net
- ([2a02:8109:8384:1400:b763:14a0:8818:4012])
+ AJvYcCVxQ1K9TD+QHNaiVAWJNIKqSQ5MUoo7yLc4ahY7LljM0F5N2x5SwVzQE7O6KJ01AW4YLlSMRSNgeCbK@nongnu.org
+X-Gm-Message-State: AOJu0Yy1+lnxyGW+zOUyDRZzups69/gVNnUFIyi5V9h1kO4dz8ZMwiKX
+ pxcAHWpW4dS67vjoNZJT0z6pdR+muSEVZk/RXz8U5ZAZ8dspQfP5tRz9zzS+Xay6MBRNx+HPRvT
+ DedMZB/hfv2gylK+JaWhPh80BaJGoSSDfzA4cUo/rKiAAjnkB8ANT
+X-Gm-Gg: ASbGncvkYjvAoU2Q8RE9oDJ1c6kGrGRSo8JvjQwe5bKEepZcWANOzsnar6P4OjqEDVJ
+ tvj71Qqs5aBiek74lbTYBZ/fzlo51LUuKSe8wmK+qtIJNPl8Yp47d0NN7IYOwXdd8z5VJ9GQXft
+ mRB1Yq5MMCZBfkqu7ZKQoiRLNWTDC/q9K8yCV3qORJNOycUOuS+WffJtAbS7I7OKfnOdiTd+hoY
+ egEuO0tjPDkIhuLQtSFPMGapTAkdO2iDzojDtLW907bLmmoRqVEEbR7P6rAFmAfhOcxtLjSBmEs
+ EW406lsrVUKE7bMAaKGM7OurbwH4hZroMoIZf6PrJg==
+X-Received: by 2002:a05:600c:b8a:b0:431:5e3c:2ff0 with SMTP id
+ 5b1f17b1804b1-438913c9f66mr223992245e9.8.1737623786586; 
+ Thu, 23 Jan 2025 01:16:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHaspfz/8dP6qx/jQI1137BeRxZd3eM2BBFA22bhF4D4E2gACqykuV7naKIzL/ZRnbWvELqwQ==
+X-Received: by 2002:a05:600c:b8a:b0:431:5e3c:2ff0 with SMTP id
+ 5b1f17b1804b1-438913c9f66mr223991835e9.8.1737623786137; 
+ Thu, 23 Jan 2025 01:16:26 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5dbcfb8ff37sm4424676a12.72.2025.01.23.00.53.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Jan 2025 00:53:34 -0800 (PST)
-From: Roman Penyaev <r.peniaev@gmail.com>
-To: 
-Cc: Roman Penyaev <r.peniaev@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org
-Subject: [PATCH v9 4/4] qemu-options.hx: describe hub chardev and aggregation
- of several backends
-Date: Thu, 23 Jan 2025 09:53:24 +0100
-Message-ID: <20250123085327.965501-5-r.peniaev@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250123085327.965501-1-r.peniaev@gmail.com>
-References: <20250123085327.965501-1-r.peniaev@gmail.com>
+ 5b1f17b1804b1-438b31898ebsm54953705e9.2.2025.01.23.01.16.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 23 Jan 2025 01:16:25 -0800 (PST)
+Message-ID: <79e908f3-3f93-4245-9e5e-25b8a1026322@redhat.com>
+Date: Thu, 23 Jan 2025 10:16:23 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] intel_iommu: Reset vIOMMU after all the rest of
+ devices
+Content-Language: en-US
+To: peterx@redhat.com, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+ Alex Williamson <alex.williamson@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Cedric Le Goater <clegoate@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+References: <20240117091559.144730-1-peterx@redhat.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20240117091559.144730-1-peterx@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=r.peniaev@gmail.com; helo=mail-ed1-x530.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.043,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,95 +114,75 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds a few lines describing `hub` aggregator configuration
-for aggregation of several backend devices with a single frontend
-device.
+Hi,
 
-Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
-Reviewed-by: "Marc-André Lureau" <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org
----
- qemu-options.hx | 49 +++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 45 insertions(+), 4 deletions(-)
+On 1/17/24 10:15 AM, peterx@redhat.com wrote:
+> From: Peter Xu <peterx@redhat.com>
+>
+> There're issue reported that when syetem_reset the VM with an intel iommu
+> device and MT2892 PF(mlx5_core driver), the host kernel throws DMAR error.
+>
+>   https://issues.redhat.com/browse/RHEL-7188
+>
+> Alex quickly spot a possible issue on ordering of device resets.
+>
+> It's verified by our QE team then that it is indeed the root cause of the
+> problem.  Consider when vIOMMU is reset before a VFIO device in a system
+> reset: the device can be doing DMAs even if the vIOMMU is gone; in this
+> specific context it means the shadow mapping can already be completely
+> destroyed.  Host will see these DMAs as malicious and report.
+>
+> To fix it, we'll need to make sure all devices under the vIOMMU device
+> hierachy will be reset before the vIOMMU itself.  There's plenty of trick
+> inside, one can get those by reading the last patch.
 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 7090d59f6f10..8e28bd41a9c3 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -3720,7 +3720,7 @@ SRST
- The general form of a character device option is:
- 
- ``-chardev backend,id=id[,mux=on|off][,options]``
--    Backend is one of: ``null``, ``socket``, ``udp``, ``msmouse``,
-+    Backend is one of: ``null``, ``socket``, ``udp``, ``msmouse``, ``hub``,
-     ``vc``, ``ringbuf``, ``file``, ``pipe``, ``console``, ``serial``,
-     ``pty``, ``stdio``, ``braille``, ``parallel``,
-     ``spicevmc``, ``spiceport``. The specific backend will determine the
-@@ -3777,9 +3777,10 @@ The general form of a character device option is:
-     the QEMU monitor, and ``-nographic`` also multiplexes the console
-     and the monitor to stdio.
- 
--    There is currently no support for multiplexing in the other
--    direction (where a single QEMU front end takes input and output from
--    multiple chardevs).
-+    If you need to aggregate data in the opposite direction (where one
-+    QEMU frontend interface receives input and output from multiple
-+    backend chardev devices), please refer to the paragraph below
-+    regarding chardev ``hub`` aggregator device configuration.
- 
-     Every backend supports the ``logfile`` option, which supplies the
-     path to a file to record all data transmitted via the backend. The
-@@ -3879,6 +3880,46 @@ The available backends are:
-     Forward QEMU's emulated msmouse events to the guest. ``msmouse``
-     does not take any options.
- 
-+``-chardev hub,id=id,chardevs.0=id[,chardevs.N=id]``
-+    Explicitly create chardev backend hub device with the possibility
-+    to aggregate input from multiple backend devices and forward it to
-+    a single frontend device. Additionally, ``hub`` device takes the
-+    output from the frontend device and sends it back to all the
-+    connected backend devices. This allows for seamless interaction
-+    between different backend devices and a single frontend
-+    interface. Aggregation supported for up to 4 chardev
-+    devices. (Since 10.0)
-+
-+    For example, the following is a use case of 2 backend devices:
-+    virtual console ``vc0`` and a pseudo TTY ``pty0`` connected to
-+    a single virtio hvc console frontend device with a hub ``hub0``
-+    help. Virtual console renders text to an image, which can be
-+    shared over the VNC protocol. In turn, pty backend provides
-+    bidirectional communication to the virtio hvc console over the
-+    pseudo TTY file. The example configuration can be as follows:
-+
-+    ::
-+
-+       -chardev pty,path=/tmp/pty,id=pty0 \
-+       -chardev vc,id=vc0 \
-+       -chardev hub,id=hub0,chardevs.0=pty0,chardevs.1=vc0 \
-+       -device virtconsole,chardev=hub0 \
-+       -vnc 0.0.0.0:0
-+
-+    Once QEMU starts VNC client and any TTY emulator can be used to
-+    control a single hvc console:
-+
-+    ::
-+
-+       # Start TTY emulator
-+       tio /tmp/pty
-+
-+       # Start VNC client and switch to virtual console Ctrl-Alt-2
-+       vncviewer :0
-+
-+    Several frontend devices is not supported. Stacking of multiplexers
-+    and hub devices is not supported as well.
-+
- ``-chardev vc,id=id[[,width=width][,height=height]][[,cols=cols][,rows=rows]]``
-     Connect to a QEMU text console. ``vc`` may optionally be given a
-     specific size.
--- 
-2.43.0
+I have a case with intel iommu and vhost-net where I see that the vIOMMU
+gets disabled by the guest before vhost_dev_stop() causing some spurious
+lookup failures. This happens when rebooting the guest (see [PATCH]
+hw/virtio/vhost: Disable IOTLB callbacks when IOMMU gets disabled
+<https://lore.kernel.org/all/20250120173339.865681-1-eric.auger@redhat.com/>
+https://lore.kernel.org/all/20250120173339.865681-1-eric.auger@redhat.com/
+for more context).
+
+I observe that
+1) the guest disables the IOMMU through the vtd_handle_gcmd_write
+2) vtd_reset (initiated from qemu_system_reset)
+3) vhost_dev_stop (initiated from qemu_system_reset)
+
+So I can effectively see the viommu is reset before vhost-net stop. 2)
+is already an issue that looks the same as the one addressed in this
+series. Now I am also in trouble wrt 1). I don't know yet which chain of
+events causes the VTD GCMD TE bit to be written but this would also
+cause spurious vhost IOLTB misses.
+
+I haven't seen any follow-up on this series. Is anyone still looking at
+this issue? Peter gave some guidance about the way to rework the reset
+chain. Is it still up to date?
+
+Thanks
+
+Eric
+>
+> I didn't check other vIOMMUs, but this series should fix the issue for VT-d
+> as of now.  The solution can be slightly ugly, but a beautiful one can be
+> very non-trivial.
+>
+> Review comments welcomed, thanks.
+>
+> Peter Xu (4):
+>   reset: qemu_register_reset_one()
+>   reset: Allow multiple stages of system resets
+>   intel_iommu: Tear down address spaces before IOMMU reset
+>   intel_iommu: Reset vIOMMU at the last stage of system reset
+>
+>  include/sysemu/reset.h |  5 ++++
+>  hw/core/reset.c        | 67 ++++++++++++++++++++++++++++++------------
+>  hw/i386/intel_iommu.c  | 56 +++++++++++++++++++++++++++++++++--
+>  3 files changed, 107 insertions(+), 21 deletions(-)
+>
 
 
