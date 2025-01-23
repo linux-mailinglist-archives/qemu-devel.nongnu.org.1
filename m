@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2307A1AC37
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Jan 2025 22:58:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F128CA1AC2A
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Jan 2025 22:57:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tb5Bq-0004wc-Ez; Thu, 23 Jan 2025 16:56:42 -0500
+	id 1tb5Bw-0004xa-3b; Thu, 23 Jan 2025 16:56:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb5Bo-0004vl-CM
- for qemu-devel@nongnu.org; Thu, 23 Jan 2025 16:56:40 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb5Bt-0004xD-TT
+ for qemu-devel@nongnu.org; Thu, 23 Jan 2025 16:56:45 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb5Bm-0002ln-WE
- for qemu-devel@nongnu.org; Thu, 23 Jan 2025 16:56:40 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-385eed29d17so786539f8f.0
- for <qemu-devel@nongnu.org>; Thu, 23 Jan 2025 13:56:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tb5Bs-0002me-DK
+ for qemu-devel@nongnu.org; Thu, 23 Jan 2025 16:56:45 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-38789e5b6a7so819956f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 23 Jan 2025 13:56:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737669397; x=1738274197; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737669402; x=1738274202; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1BMW+C7jqPLrnYT1UisfzzT75nHHylLVxw3pRQiBjgM=;
- b=OEoezC6IxlWhLgUHahXWKu7697MUp+HoIsGJszv2rGoNiW/Tb+mU3Mk4X3nkTFaUZ5
- 6Zrm4JL0aRNC/szn+z25mZsCe9GU3EQAZOf1TfhbZc+tb4V3LkCVAgf4twXq/nRXAIyc
- KtbEECX0dl5fYumHDPbc7EIAeSyMEju7Fim5KnvICQDi3GohOQ9s6pTJMmytst7/xUne
- l13fhvrYdvLy5/AaMT6NcnSbNojjZSmuNapFnAFWDyj8ut+Rq2VLuquXIZqxdYfzqUnq
- OYLhPBSGy+IjiIOp0KSQ3gqO7G08BEhJRCVy9tTJw6ziPGIzLPvaJ5LI4aErKpP9noRd
- eRyw==
+ bh=pHD1U6D3WvJOsbcmnGXDiHvtbFUdg0u7emrKOSlHmN4=;
+ b=ZtNq3ZEklS8e4F1uJlKdmF6Dki/rlgEt6EyqLSwNrnBcUsRCunibhEXafPAAtanNKc
+ lEK+LUT0Po9rNn6PBqr2wEpRdt3cR2o3I85akwCy32yHahfmYh+PfU3XbVs5i5Q2JIN3
+ OWdM8uL8fd1yj8ulzmN51eHKdNTw/J8jDv3wCgd2NF2EurnoVuGhBEpUEDTrWElcF9PQ
+ b/ZfAis8ml7rEVCSo+xjUuwbbFW60490Gu9+6EMxY44v85wvevF0LQlzApxgIvm0sv87
+ XFpTz8OMiDCU4UKRdp1vOtrBTS0TPWvXD4+HKD16ZjRku5/hLdDERC7o5vmie6wRelQv
+ K9Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737669397; x=1738274197;
+ d=1e100.net; s=20230601; t=1737669402; x=1738274202;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1BMW+C7jqPLrnYT1UisfzzT75nHHylLVxw3pRQiBjgM=;
- b=hL+RMnua1K+QaadeZD2xF10k/OKUI/KZcdFljMwG+1328prHXfRcNaZyNV6QcWKYLg
- 6ppMxzpd5yH2jQlNmDtgLocmD+Oid06lWuvvGajnEE/m5ZBEjYCgYzyw3eKTK7Ya1ZRQ
- ALAZOaBiiqME2FOdZpv1zVq9OWz2wCHeyF3fUHYGP/z5/ETIdgn1t7nkDFMYDfq5RgfW
- hhzFGYHWEnbUfLzUUrJelLJR+h2yHArMysIMTbLSEqb7OYCpm8iKYKx9uPUyHG3TR3ow
- q4eOAzSk6iz7UjaWT0wMziDzjRpDS1R1QienilhAkriuw8MovJF7w5+75CGWTxnPORZA
- cXMA==
-X-Gm-Message-State: AOJu0Yx8d/PmS9nL/LWgs1+5wdfULC7t6nxpSHIKePCRp+plWznMuChj
- csdGJXD9TGuzGUIkSgm+221zWreEja8W1/KrWGtV8T+l8Kenr6z1B6fqF3cNeevEw3gwqEenBvF
- DFIU=
-X-Gm-Gg: ASbGncuFtQrhYafqQIOHdrLA+tJ+D4UxCAKngXgBUtvQ95diMSMvJyR7wHEmHuC6xK+
- UoeAkg9hCMFKZeNJNOCzhASxsQge/ZZGpoxzRMlWrEyZVF+nw4ZTHzLjRPo1CBMRTKRtFe39WmX
- XcbPFZp9dLE+wviaLt8fm8cyzDNsraAF6DTVp6iw+SP62IJ/vvbqAzso4LyW3aZVu+OQSJ7ARwM
- zEKLwufcdp4K4hpEhkZYXNLSpfNIwyPdNp4BaYVgbTICVfFJIizSrcDix18oG2/TP1q4j8hR+yX
- 0O0kAbuT1q9wdEUAvZ0X77161lk6r3Q3emDZ77oDivnbg+B5+MdLjok=
-X-Google-Smtp-Source: AGHT+IHCDcgKMIOOS/0iKYYwJguoiOXTCB3GDrUqpKkEZa4TNnz/dUqMYE9dYP3RcVyvJGsBcqJOwA==
-X-Received: by 2002:a05:6000:178e:b0:38a:a043:eacc with SMTP id
- ffacd0b85a97d-38bf5655a55mr23265382f8f.1.1737669397200; 
- Thu, 23 Jan 2025 13:56:37 -0800 (PST)
+ bh=pHD1U6D3WvJOsbcmnGXDiHvtbFUdg0u7emrKOSlHmN4=;
+ b=Q4icjzlnB9OLccmEcin0N/M/4nDjxh6h0D+etkeyQst8bfXdE/wgDHKp3T8s7SQM1P
+ SNcPBC/0noy9kN+31E03hytVtXRBji5146Arc7CZr+ushm7juzK/ufJwTKCprsfH14h4
+ KvZSrLg1ucgojqR/6B9xk/10JrvMBvZLkaOeMgeANgDaCxZLo5g6YXvwVX76sxDbWFly
+ H6ZBW/4xSgHW9N4evrYMePFXcwWlNLA1WCXXq11+bYIqR+IQagky8AtNjbwAfInXtS3P
+ 7CDbrK2kEYefUF3OvBNqDOfdslO9nDkJFByrwMEt2HCpul4FUNlQX7nb35L5pXl3+WGc
+ PeuQ==
+X-Gm-Message-State: AOJu0YxMqrfRjhs0Ae+86dI5aR16sJ7VtbKSHG0n0bIY1VJzi+y5S41t
+ yCiaCqxcOoTck9WzrxrdDogJbcH/1W8pE4yrfFyM0wv6h6YZiyzsItVBeoq6r18biTT6TxvA1Wm
+ Lzl8=
+X-Gm-Gg: ASbGncsMStdWzCy08+Y5lH+rxuvRqSNvRmDSGfA9gYMaKPw75VVvwvpHwI6s0U7zepa
+ CYie9P8V0wV4fkdkRClwQfmyWqvfZDQYAuxJ2CL3cA3lnn3pvgrpnJtCbOjzlMnb+ExzqgmEQK1
+ xUoPMtOpoQZ1vVjpkKxKDEvFYjGKSCA3TdpRkMWiBDTgMdKVgHzZSZsJUMGJN+PYe1PgydUo9/i
+ 6qTgrA66XxZ3b7a8pGmchEigz1KOisCcJMSyCiLQbTDS3bhuZYRmYBlZmBdakcNSZrq8y18BVMd
+ G/M7SsmcNV+KdgicYz7WPvcm7p2CC7cuFwqp+V2SjiRjrubleHtujtU=
+X-Google-Smtp-Source: AGHT+IGW6dFDiLoB8AqLGHXeDzhu8K9990Bq9Q8t0O9WqE7YfcLfeC+ZEQ3TuxNwVLyXFtos8porRA==
+X-Received: by 2002:a5d:64e4:0:b0:38a:5ce8:df51 with SMTP id
+ ffacd0b85a97d-38bf564d5f2mr27169952f8f.2.1737669402622; 
+ Thu, 23 Jan 2025 13:56:42 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a1bbd93sm779002f8f.76.2025.01.23.13.56.36
+ ffacd0b85a97d-38c2a188689sm796191f8f.48.2025.01.23.13.56.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 23 Jan 2025 13:56:36 -0800 (PST)
+ Thu, 23 Jan 2025 13:56:41 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
@@ -67,17 +67,18 @@ Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
  Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 05/15] target/ppc: Move ppc_ldl_code() to tcg-excp_helper.c
-Date: Thu, 23 Jan 2025 22:55:59 +0100
-Message-ID: <20250123215609.30432-6-philmd@linaro.org>
+Subject: [PATCH 06/15] target/ppc: Ensure powerpc_checkstop() is only called
+ under TCG
+Date: Thu, 23 Jan 2025 22:56:00 +0100
+Message-ID: <20250123215609.30432-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250123215609.30432-1-philmd@linaro.org>
 References: <20250123215609.30432-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,69 +103,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/ppc/excp_helper.c     | 21 ---------------------
- target/ppc/tcg-excp_helper.c | 18 ++++++++++++++++++
- 2 files changed, 18 insertions(+), 21 deletions(-)
+ target/ppc/excp_helper.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index b05eb7f5aec..8956466db1d 100644
+index 8956466db1d..b08cd53688c 100644
 --- a/target/ppc/excp_helper.c
 +++ b/target/ppc/excp_helper.c
-@@ -136,27 +136,6 @@ static void dump_hcall(CPUPPCState *env)
-                   env->nip);
- }
+@@ -19,6 +19,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/log.h"
++#include "system/tcg.h"
+ #include "system/system.h"
+ #include "system/runstate.h"
+ #include "cpu.h"
+@@ -30,7 +31,6 @@
+ #include "trace.h"
  
--#ifdef CONFIG_TCG
--/* Return true iff byteswap is needed to load instruction */
--static inline bool insn_need_byteswap(CPUArchState *env)
--{
--    /* SYSTEM builds TARGET_BIG_ENDIAN. Need to swap when MSR[LE] is set */
--    return !!(env->msr & ((target_ulong)1 << MSR_LE));
--}
--
--uint32_t ppc_ldl_code(CPUArchState *env, target_ulong addr)
--{
--    uint32_t insn = cpu_ldl_code(env, addr);
--
--    if (insn_need_byteswap(env)) {
--        insn = bswap32(insn);
--    }
--
--    return insn;
--}
--
--#endif
--
- static void ppc_excp_debug_sw_tlb(CPUPPCState *env, int excp)
+ #ifdef CONFIG_TCG
+-#include "system/tcg.h"
+ #include "exec/helper-proto.h"
+ #include "exec/cpu_ldst.h"
+ #endif
+@@ -443,13 +443,11 @@ void helper_attn(CPUPPCState *env)
+ static void powerpc_mcheck_checkstop(CPUPPCState *env)
  {
-     const char *es;
-diff --git a/target/ppc/tcg-excp_helper.c b/target/ppc/tcg-excp_helper.c
-index 3402dbe05ee..6950b78774d 100644
---- a/target/ppc/tcg-excp_helper.c
-+++ b/target/ppc/tcg-excp_helper.c
-@@ -199,4 +199,22 @@ bool ppc_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
-     return false;
+     /* KVM guests always have MSR[ME] enabled */
+-#ifdef CONFIG_TCG
+     if (FIELD_EX64(env->msr, MSR, ME)) {
+         return;
+     }
+-
++    assert(tcg_enabled());
+     powerpc_checkstop(env, "machine check with MSR[ME]=0");
+-#endif
  }
  
-+/* Return true iff byteswap is needed to load instruction */
-+static inline bool insn_need_byteswap(CPUArchState *env)
-+{
-+    /* SYSTEM builds TARGET_BIG_ENDIAN. Need to swap when MSR[LE] is set */
-+    return !!(env->msr & ((target_ulong)1 << MSR_LE));
-+}
-+
-+uint32_t ppc_ldl_code(CPUArchState *env, target_ulong addr)
-+{
-+    uint32_t insn = cpu_ldl_code(env, addr);
-+
-+    if (insn_need_byteswap(env)) {
-+        insn = bswap32(insn);
-+    }
-+
-+    return insn;
-+}
-+
- #endif /* !CONFIG_USER_ONLY */
+ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
 -- 
 2.47.1
 
