@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B5CCA1B73F
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:43:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9452EA1B728
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:41:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbJvQ-0002hg-Lc; Fri, 24 Jan 2025 08:40:44 -0500
+	id 1tbJvh-0004mG-F6; Fri, 24 Jan 2025 08:41:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tbJvH-00025Q-FQ
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:40:35 -0500
+ id 1tbJvN-0002gi-B9
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:40:41 -0500
 Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tbJvF-00041c-DK
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:40:35 -0500
+ id 1tbJvL-00042W-Me
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:40:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737726034; x=1769262034;
+ t=1737726040; x=1769262040;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=lKKhpINOwRUM2TXEgJwHkGVj1DZ5JDaSkIZbWTMQSdU=;
- b=av+VtuL01aRtLbnuommCZUMzk3BqUyTf5rasDtHA2CF0yJJtrqapLY0Z
- mFanoizJaEO+OuuysGG7KpuIAWJ6O0bI11o3GLdegiPaMV+TA3uMMqCZd
- mvb+WA4D1EzzBzhhURBWpNiMqOZzXX410Az69zhSLBZe/JYRqQbvRvTNy
- 4TrtqGHwBccy386vjeadaxztUV+vXBc3ASMGUyaRAsXELEoM/vmuzrjpZ
- lcpsuG2DlpiVjCbjbYeuJrd30oB9B8XcPtfKLncjERmV+24mVcCa2oKD1
- k9omYrt2FjpO2f7IQS7w4oXuvkGjVV7g7uChidstD3emKClKpARVuGER/ Q==;
-X-CSE-ConnectionGUID: cw/PSYPgTVWij064qhMEqg==
-X-CSE-MsgGUID: xmQVc5PARXKjvjIqaLAaDQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="49246640"
-X-IronPort-AV: E=Sophos;i="6.13,231,1732608000"; d="scan'208";a="49246640"
+ bh=JEfor+KFxyDwdyWlWCn598DxuZ06/MpImTaZ99/kE0M=;
+ b=jIUMEhoflSzXwmCGIs+txrWvFqpXElcE9cFnnSA+E+hOh2v6jgSy4g7x
+ +LrGVW9cTtbE0/4cIZynSQBsyo10tDykpfOQMOicABVkAYRxGJ3B3Xf+K
+ SxaVw7Nj76/aoyUz9CIBl7LRqd/XcDB2taYOHPl42y722Dz+7K7C33GH8
+ nz6Y30vwGGvUweI/sE4ZCD79YZghL6x8vqxzWgUHxtbNFwuT4ubEwsfL5
+ S4E+IjKd7bQgr7/5PKBPF+jjlcA7PxG32ohccbogJQCIdwtLY2Ee+Gxss
+ XKK5Jd7rjEoCBKSfotFjLylL9WC+DJbW+oYUNkeHh8EjqvzuOoaFZ8G7W g==;
+X-CSE-ConnectionGUID: RTWVl1H4TgiLUD7ARaPxiA==
+X-CSE-MsgGUID: 4+d457veQUGanjVTpqh0FQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="49246647"
+X-IronPort-AV: E=Sophos;i="6.13,231,1732608000"; d="scan'208";a="49246647"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2025 05:40:06 -0800
-X-CSE-ConnectionGUID: sPnsZByDRfuPsoXWvSIhMg==
-X-CSE-MsgGUID: oe9IJOeQTK2UOcoe9Kz6MQ==
+ 24 Jan 2025 05:40:10 -0800
+X-CSE-ConnectionGUID: EOPIaBMERm+SQz+cyBhuXg==
+X-CSE-MsgGUID: iOiNQdTETdqBQ0Emci0mmw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111804485"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111804490"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2025 05:40:02 -0800
+ by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2025 05:40:06 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -55,9 +55,9 @@ Cc: Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Francesco Lavra <francescolavra.fl@gmail.com>, xiaoyao.li@intel.com,
  qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: [PATCH v7 49/52] i386/tdx: Don't treat SYSCALL as unavailable
-Date: Fri, 24 Jan 2025 08:20:45 -0500
-Message-Id: <20250124132048.3229049-50-xiaoyao.li@intel.com>
+Subject: [PATCH v7 50/52] i386/tdx: Make invtsc default on
+Date: Fri, 24 Jan 2025 08:20:46 -0500
+Message-Id: <20250124132048.3229049-51-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250124132048.3229049-1-xiaoyao.li@intel.com>
 References: <20250124132048.3229049-1-xiaoyao.li@intel.com>
@@ -89,38 +89,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Because it's fixed1 bit that enforced by TDX module.
+
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
-Changes in v7:
- - fix CPUID_EXT2_SYSCALL by adding it to actual;
----
- target/i386/kvm/tdx.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ target/i386/kvm/tdx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index f6a4f3322e61..58ea6a4d3156 100644
+index 58ea6a4d3156..bb75eb06dad9 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -804,6 +804,19 @@ static int tdx_check_features(X86ConfidentialGuest *cg, CPUState *cs)
-             continue;
-         }
+@@ -439,6 +439,9 @@ static void tdx_cpu_instance_init(X86ConfidentialGuest *cg, CPUState *cpu)
  
-+        /* Fixup for special cases */
-+        switch (w) {
-+        case FEAT_8000_0001_EDX:
-+            /*
-+             * Intel enumerates SYSCALL bit as 1 only when processor in 64-bit
-+             * mode and before vcpu running it's not in 64-bit mode.
-+             */
-+            actual |= CPUID_EXT2_SYSCALL;
-+            break;
-+        default:
-+            break;
-+        }
+     object_property_set_bool(OBJECT(cpu), "pmu", false, &error_abort);
+ 
++    /* invtsc is fixed1 for TD guest */
++    object_property_set_bool(OBJECT(cpu), "invtsc", true, &error_abort);
 +
-         requested = env->features[w];
-         unavailable = requested & ~actual;
-         mark_unavailable_features(cpu, w, unavailable, unav_prefix);
+     x86cpu->enable_cpuid_0x1f = true;
+ }
+ 
 -- 
 2.34.1
 
