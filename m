@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F2F3A1B727
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:41:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 917B7A1B75B
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:44:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbJvH-0001ez-Rj; Fri, 24 Jan 2025 08:40:36 -0500
+	id 1tbJub-0000qs-Rn; Fri, 24 Jan 2025 08:39:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tbJuI-0007Ep-To
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:39:35 -0500
+ id 1tbJuP-00089L-09
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:39:41 -0500
 Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tbJuH-00042W-BZ
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:39:34 -0500
+ id 1tbJuN-0003xi-2z
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:39:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737725974; x=1769261974;
+ t=1737725980; x=1769261980;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=0CHytoVi2GC8eQQ7AANbOOAGWz2m8eyJezmiyRUq10I=;
- b=E6Lqi4VPgTgEbjHtd7hr0PXTuf/r46TDKI4fH8pIB9aAbtAn4QTJMOoV
- 8+uX3fY7Wxge66drUQDHoIV+mlLz+cYOlO6BTc+5f0WUO4M9xRdXcOcGv
- R6tBtpxdQdakNMq6PBxwfYIyJDrTKaMDPLyY6Ubc7A7ik6qUe3XMzk5aI
- iKh3XkrngPz/S5l5X98EWoRmp0HfWGQ5wKmgGi0l5///6wXdmVnL2Zp8I
- l/mM07GN09vAqF77IojENcy/iUyF978DTgy+4yvip7utzNQKloMtMKI/D
- SsZ5Ss4PUI7cJVa9A4agock0tmLyNcDP2NHiEfMWLeczVZJqotbt6boKz Q==;
-X-CSE-ConnectionGUID: UEvKGE4aR2OpSJp6oyG0ZQ==
-X-CSE-MsgGUID: xLd3d4a5Tx6pJpQAZDlmTw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="49246508"
-X-IronPort-AV: E=Sophos;i="6.13,231,1732608000"; d="scan'208";a="49246508"
+ bh=VD5cLhhOxm2rY5XZ6+nf6tMgf/SKVeJGzlvaWHkLI9U=;
+ b=fctyXJIGhgS9e8PxmbJwiOCMmZqLpYwAF3SiQCfA39cjKxuOfZ9Gof19
+ vwIoBLL4N018LABwEifzAcr4VMcW3GAlWsCWnSsBYQKIUaL9ZcuqkHjKA
+ kcudhzhZT8/fbvNro445pFIaVH7CCQ5hSF7bBMezCLGsL8InW8qpryPGS
+ eDtpyaKz7VYjMPlCCF+Z7rY92CQcWZuhpzzTA8QkzOLzvIojDAkKyHkOW
+ GCWDdAl7n+ew6JEFKnUIPLDKZpHkb/1NcAFBZQjmsPcXS1+Wt43kOjevF
+ HxL3ppkiebAlmKLM4opV99ejAWrVdo1ZghMak68PZ77VbpkfDqq/ezlPm A==;
+X-CSE-ConnectionGUID: FcC/2t8VQoG6dHbrlMuV+A==
+X-CSE-MsgGUID: dytJ3rjJQ9iCQsza0SuA+g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="49246516"
+X-IronPort-AV: E=Sophos;i="6.13,231,1732608000"; d="scan'208";a="49246516"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2025 05:39:15 -0800
-X-CSE-ConnectionGUID: hYbMASohSQSUYNitfkfutA==
-X-CSE-MsgGUID: djbbnopIQ36NvvDoZQdgXQ==
+ 24 Jan 2025 05:39:19 -0800
+X-CSE-ConnectionGUID: k5hFUSl5SLWds1zHhX0NtQ==
+X-CSE-MsgGUID: ud8VOOXFTjingq/w1aRZCg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111804409"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111804414"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2025 05:39:10 -0800
+ by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2025 05:39:14 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -55,9 +55,9 @@ Cc: Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Francesco Lavra <francescolavra.fl@gmail.com>, xiaoyao.li@intel.com,
  qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: [PATCH v7 35/52] i386/tdx: Disable PIC for TDX VMs
-Date: Fri, 24 Jan 2025 08:20:31 -0500
-Message-Id: <20250124132048.3229049-36-xiaoyao.li@intel.com>
+Subject: [PATCH v7 36/52] i386/tdx: Don't synchronize guest tsc for TDs
+Date: Fri, 24 Jan 2025 08:20:32 -0500
+Message-Id: <20250124132048.3229049-37-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250124132048.3229049-1-xiaoyao.li@intel.com>
 References: <20250124132048.3229049-1-xiaoyao.li@intel.com>
@@ -89,37 +89,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Legacy PIC (8259) cannot be supported for TDX VMs since TDX module
-doesn't allow directly interrupt injection.  Using posted interrupts
-for the PIC is not a viable option as the guest BIOS/kernel will not
-do EOI for PIC IRQs, i.e. will leave the vIRR bit set.
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Hence disable PIC for TDX VMs and error out if user wants PIC.
+TSC of TDs is not accessible and KVM doesn't allow access of
+MSR_IA32_TSC for TDs. To avoid the assert() in kvm_get_tsc, make
+kvm_synchronize_all_tsc() noop for TDs,
 
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Reviewed-by: Connor Kuehl <ckuehl@redhat.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- target/i386/kvm/tdx.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ target/i386/kvm/kvm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 10059ec8cf92..dcbbe350ec91 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -379,6 +379,13 @@ static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-         return -EINVAL;
-     }
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 741b50181ed9..ead1d0263385 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -327,7 +327,7 @@ void kvm_synchronize_all_tsc(void)
+ {
+     CPUState *cpu;
  
-+    if (x86ms->pic == ON_OFF_AUTO_AUTO) {
-+        x86ms->pic = ON_OFF_AUTO_OFF;
-+    } else if (x86ms->pic == ON_OFF_AUTO_ON) {
-+        error_setg(errp, "TDX VM doesn't support PIC");
-+        return -EINVAL;
-+    }
-+
-     if (!tdx_caps) {
-         r = get_tdx_capabilities(errp);
-         if (r) {
+-    if (kvm_enabled()) {
++    if (kvm_enabled() && !is_tdx_vm()) {
+         CPU_FOREACH(cpu) {
+             run_on_cpu(cpu, do_kvm_synchronize_tsc, RUN_ON_CPU_NULL);
+         }
 -- 
 2.34.1
 
