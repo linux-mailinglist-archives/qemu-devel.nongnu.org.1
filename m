@@ -2,73 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 987BCA1B7E4
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 15:29:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F3EA1B800
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 15:43:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbKfV-0000LP-Fm; Fri, 24 Jan 2025 09:28:21 -0500
+	id 1tbKt8-0003im-Jh; Fri, 24 Jan 2025 09:42:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tbKfT-0000L1-G1
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 09:28:19 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tbKfR-0002b7-Pl
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 09:28:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737728896;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=qfxHBh307pomD7AKZxaF/ovGZl8n34HVgvBW9ww/GEI=;
- b=NQ6nW7ElkSXZl+OqzhZyMUPlml3Xxa7e2K90glQhx4tKbOywH+NsUFIplGSbJmAJNuMUDM
- 8MQEKvOngofCWMUry8wTSQ+CGOE6Pc/raegasz88XRvjgTbrKE3E8HwMP54C+Or1uvvZut
- 7fNFc1mcPa4lT5/5OLjJVrc/ZfToq38=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-247-t2tLiMghPoClSUqHApZcjA-1; Fri,
- 24 Jan 2025 09:28:14 -0500
-X-MC-Unique: t2tLiMghPoClSUqHApZcjA-1
-X-Mimecast-MFC-AGG-ID: t2tLiMghPoClSUqHApZcjA
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C117F180035E
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 14:28:13 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.93])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F40F81800344; Fri, 24 Jan 2025 14:28:11 +0000 (UTC)
-Date: Fri, 24 Jan 2025 14:28:08 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [RFC 0/6] RFC: hw/display/virtio-gpu: problems with coloured
- cursors
-Message-ID: <Z5OjeMNP2nS9w94x@redhat.com>
-References: <20250123191536.142753-1-berrange@redhat.com>
- <zde3tzhqrwc66txzl6ydp3xeipg5ohvj7saankjq2ri7p3ofhl@l6aoobdmfrz3>
+ (Exim 4.90_1) (envelope-from <mordan@ispras.ru>) id 1tbKt5-0003iL-Tm
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 09:42:23 -0500
+Received: from mail.ispras.ru ([83.149.199.84])
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mordan@ispras.ru>) id 1tbKt2-0004YM-Ud
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 09:42:23 -0500
+Received: from Neilbrown.intra.ispras.ru (unknown [10.10.2.179])
+ by mail.ispras.ru (Postfix) with ESMTPSA id 6C180407674C;
+ Fri, 24 Jan 2025 14:42:16 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 6C180407674C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+ s=default; t=1737729736;
+ bh=LI0excmxEGTvWAi2bMzSkvHNAqkxXMfiXJ+zEKIjHc4=;
+ h=From:To:Cc:Subject:Date:From;
+ b=WNx8WftjgxjBqDGbiMEOsdlZHDkCScqZMQkxsOjWLbrrYgjbaLkIDxPlRyxpXXGdC
+ X+R0lMCEVZGrlGn4YoxdCzDg8d26tKlncTpT/Tft4WoVyGoFY6c7gGeyF1nI1/hWX0
+ wZBQG01tGnufem98Wj/D0CzxrJl33cREZqhSMpW4=
+From: Vitalii Mordan <mordan@ispras.ru>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Vitalii Mordan <mordan@ispras.ru>, Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ sdl.qemu@linuxtesting.org, Vadim Mutilin <mutilin@ispras.ru>,
+ Alexey Khoroshilov <khoroshilov@ispras.ru>
+Subject: [PATCH v2] Fix a data race with goflag in rcutorture test
+Date: Fri, 24 Jan 2025 17:42:02 +0300
+Message-Id: <20250124144202.743759-1-mordan@ispras.ru>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <zde3tzhqrwc66txzl6ydp3xeipg5ohvj7saankjq2ri7p3ofhl@l6aoobdmfrz3>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=83.149.199.84; envelope-from=mordan@ispras.ru;
+ helo=mail.ispras.ru
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
@@ -84,63 +63,128 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 24, 2025 at 11:00:33AM +0100, Gerd Hoffmann wrote:
->   Hi,
-> 
-> >    The cursor data virtio-gpu is receiving from the guest has
-> >    had the alpha channel pre-multiplied into the RGB components.
-> 
-> The kernel driver simply passes through whatever it gets from userspace.
-> 
-> Not sure what userspace passes to the kernel, I suspect it is whatever
-> typical GPUs can use unmodified as cursor sprite.
-> 
-> >    The cursor data virtio-gpu is receiving from the guest appears
-> >    to be in BGRA8888 format, while GTK/VNC both expect the data to
-> >    be in RGBA8888 format.
-> 
-> The format used by virtio-gpu is DRM_FORMAT_ARGB8888
-> (VIRTIO_GPU_FORMAT_B8G8R8A8_UNORM) on little endian guests.  Byteswapped
-> (DRM_FORMAT_BGRA8888 / VIRTIO_GPU_FORMAT_A8R8G8B8_UNORM) on bigendian
-> guests.
-> 
-> > This series has patches to virtio-gpu which reverse the RGB
-> > components and un-multiply the alpha channel.
-> 
-> I'd tend to simply pass the cursor format information to the ui and
-> leave it to the ui to convert if needed, or just use the data as-is if
-> possible (like SDL does).  Same approach we are using for the
-> framebuffer data.
-> 
-> IIRC the cursor code predates the adoption of pixman in qemu, maybe it
-> makes sense to redesign this around pixman images.
+This patch addresses a potential data race involving the global variable
+goflag in the rcutorture test.
 
-Yeah that all makes sense, but trying it I hit something odd. The
-virtio_gpu_resource_create_2d *always* seems to report the format
-as VIRTIO_GPU_FORMAT_B8G8R8X8_UNORM rather than
-VIRTIO_GPU_FORMAT_B8G8R8A8_UNORM for the cursor resources.
+Fixes: 8fda74a52b ("rcu: add rcutorture")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2750
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+---
+v2: Access goflag using qatomic_read and qatomic_set as requested by
+Paolo Bonzini.
+ tests/unit/rcutorture.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-IOW, the guest is incorrectly telling us there's no alpha channel
-data, so if I honour the guest format, the cursor is filled in
-black wherever there is supposed to be 100% alpha :-(
-
-I can see a place in linux.git virtiogpu_gem.c that has harcoded
-the DRM_FORMAT_HOST_XRGB8888 format for resources, which I guess
-is where its going wrong :-(
-
-I could try to workaround this in QEMU, and blindly assume that
-guests always intend to have an alpha channel with cursors, as
-it makes no sense to not do so.
-
-With regards,
-Daniel
+diff --git a/tests/unit/rcutorture.c b/tests/unit/rcutorture.c
+index 7662081683..30c8ad279f 100644
+--- a/tests/unit/rcutorture.c
++++ b/tests/unit/rcutorture.c
+@@ -123,10 +123,10 @@ static void *rcu_read_perf_test(void *arg)
+ 
+     *(struct rcu_reader_data **)arg = get_ptr_rcu_reader();
+     qatomic_inc(&nthreadsrunning);
+-    while (goflag == GOFLAG_INIT) {
++    while (qatomic_read(&goflag) == GOFLAG_INIT) {
+         g_usleep(1000);
+     }
+-    while (goflag == GOFLAG_RUN) {
++    while (qatomic_read(&goflag) == GOFLAG_RUN) {
+         for (i = 0; i < RCU_READ_RUN; i++) {
+             rcu_read_lock();
+             rcu_read_unlock();
+@@ -149,10 +149,10 @@ static void *rcu_update_perf_test(void *arg)
+ 
+     *(struct rcu_reader_data **)arg = get_ptr_rcu_reader();
+     qatomic_inc(&nthreadsrunning);
+-    while (goflag == GOFLAG_INIT) {
++    while (qatomic_read(&goflag) == GOFLAG_INIT) {
+         g_usleep(1000);
+     }
+-    while (goflag == GOFLAG_RUN) {
++    while (qatomic_read(&goflag) == GOFLAG_RUN) {
+         synchronize_rcu();
+         n_updates_local++;
+     }
+@@ -174,9 +174,9 @@ static void perftestrun(int nthreads, int duration, int nreaders, int nupdaters)
+     while (qatomic_read(&nthreadsrunning) < nthreads) {
+         g_usleep(1000);
+     }
+-    goflag = GOFLAG_RUN;
++    qatomic_set(&goflag, GOFLAG_RUN);
+     g_usleep(duration * G_USEC_PER_SEC);
+-    goflag = GOFLAG_STOP;
++    qatomic_set(&goflag, GOFLAG_STOP);
+     wait_all_threads();
+     printf("n_reads: %lld  n_updates: %ld  nreaders: %d  nupdaters: %d duration: %d\n",
+            n_reads, n_updates, nreaders, nupdaters, duration);
+@@ -253,10 +253,10 @@ static void *rcu_read_stress_test(void *arg)
+     rcu_register_thread();
+ 
+     *(struct rcu_reader_data **)arg = get_ptr_rcu_reader();
+-    while (goflag == GOFLAG_INIT) {
++    while (qatomic_read(&goflag) == GOFLAG_INIT) {
+         g_usleep(1000);
+     }
+-    while (goflag == GOFLAG_RUN) {
++    while (qatomic_read(&goflag) == GOFLAG_RUN) {
+         rcu_read_lock();
+         p = qatomic_rcu_read(&rcu_stress_current);
+         if (qatomic_read(&p->mbtest) == 0) {
+@@ -305,11 +305,11 @@ static void *rcu_update_stress_test(void *arg)
+     rcu_register_thread();
+     *(struct rcu_reader_data **)arg = get_ptr_rcu_reader();
+ 
+-    while (goflag == GOFLAG_INIT) {
++    while (qatomic_read(&goflag) == GOFLAG_INIT) {
+         g_usleep(1000);
+     }
+ 
+-    while (goflag == GOFLAG_RUN) {
++    while (qatomic_read(&goflag) == GOFLAG_RUN) {
+         struct rcu_stress *p;
+         rcu_stress_idx++;
+         if (rcu_stress_idx >= RCU_STRESS_PIPE_LEN) {
+@@ -347,10 +347,10 @@ static void *rcu_fake_update_stress_test(void *arg)
+     rcu_register_thread();
+ 
+     *(struct rcu_reader_data **)arg = get_ptr_rcu_reader();
+-    while (goflag == GOFLAG_INIT) {
++    while (qatomic_read(&goflag) == GOFLAG_INIT) {
+         g_usleep(1000);
+     }
+-    while (goflag == GOFLAG_RUN) {
++    while (qatomic_read(&goflag) == GOFLAG_RUN) {
+         synchronize_rcu();
+         g_usleep(1000);
+     }
+@@ -373,9 +373,9 @@ static void stresstest(int nreaders, int duration)
+     for (i = 0; i < 5; i++) {
+         create_thread(rcu_fake_update_stress_test);
+     }
+-    goflag = GOFLAG_RUN;
++    qatomic_set(&goflag, GOFLAG_RUN);
+     g_usleep(duration * G_USEC_PER_SEC);
+-    goflag = GOFLAG_STOP;
++    qatomic_set(&goflag, GOFLAG_STOP);
+     wait_all_threads();
+     printf("n_reads: %lld  n_updates: %ld  n_mberror: %d\n",
+            n_reads, n_updates, n_mberror);
+@@ -403,9 +403,9 @@ static void gtest_stress(int nreaders, int duration)
+     for (i = 0; i < 5; i++) {
+         create_thread(rcu_fake_update_stress_test);
+     }
+-    goflag = GOFLAG_RUN;
++    qatomic_set(&goflag, GOFLAG_RUN);
+     g_usleep(duration * G_USEC_PER_SEC);
+-    goflag = GOFLAG_STOP;
++    qatomic_set(&goflag, GOFLAG_STOP);
+     wait_all_threads();
+     g_assert_cmpint(n_mberror, ==, 0);
+     for (i = 2; i <= RCU_STRESS_PIPE_LEN; i++) {
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.34.1
 
 
