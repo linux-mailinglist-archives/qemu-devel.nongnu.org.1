@@ -2,59 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCE53A1B69C
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:05:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F8C5A1B78D
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 15:06:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbJLd-0000YY-NY; Fri, 24 Jan 2025 08:03:45 -0500
+	id 1tbKIm-0005ZP-7u; Fri, 24 Jan 2025 09:04:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tbJL7-0000QB-DJ
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:03:22 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tbJL4-0007HE-0k
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:03:11 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id EB2895C5B68;
- Fri, 24 Jan 2025 13:02:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8841DC4CED2;
- Fri, 24 Jan 2025 13:03:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1737723788;
- bh=zy5MMDiEniOCI+VhkESuGBJphCnKoQgFwUB9VGk+qFU=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=tPD6fhIygg8qzfyXDiUFDNKPTnVDC96WNPfHgSCAA/fV81exOJsf9FvP1fQMxYp1R
- KZZ2gMv3s6icILYal4IqiVx7ZLFxGVVVUGxSI2uVytiUtmtHqG8Bwybfq0FimNgUjz
- Dgt1/6/myEwk1OOcupWBopJfB8SBNi+GdYxwjG3KaBiAhPJXsiNYgs5RT9/BVioq7U
- 6Cr0W1s1ZNUW8b9fzTYaYFY2EDCbLajoWb/nhtLEGsQRZTsb9d+ewQ9BvDP6jR30oK
- qEBok8yju/LUr7ZhOXLD1ii5vnJe/5o9DTT6Y3iKgdB70DLrcZboGy+h4Zi731DuaH
- jB++S3Lfvb6rQ==
-From: deller@kernel.org
-To: Laurent Vivier <laurent@vivier.eu>, Stefan Hajnoczi <stefanha@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: deller@gmx.de
-Subject: [PULL v3 6/6] linux-user: netlink: Add missing QEMU_IFLA entries
-Date: Fri, 24 Jan 2025 14:02:54 +0100
-Message-ID: <20250124130254.3134-7-deller@kernel.org>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250124130254.3134-1-deller@kernel.org>
-References: <20250124130254.3134-1-deller@kernel.org>
+ (Exim 4.90_1) (envelope-from <internetarchivedownloads@gmail.com>)
+ id 1tbE9d-0001U0-Dy
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 02:31:01 -0500
+Received: from mail-oa1-x33.google.com ([2001:4860:4864:20::33])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <internetarchivedownloads@gmail.com>)
+ id 1tbE9c-00041F-0D
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 02:31:01 -0500
+Received: by mail-oa1-x33.google.com with SMTP id
+ 586e51a60fabf-2a3d8857a2bso1029513fac.1
+ for <qemu-devel@nongnu.org>; Thu, 23 Jan 2025 23:30:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1737703856; x=1738308656; darn=nongnu.org;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=kd3wmFk6s0Otq/AAAGtttQFgxB4F6buOK8YR3fDNyVk=;
+ b=WjD0Ajn3qN52icmI0N8Ju1Enn9+F4rTnREEfzQdUh/NPoPQ9SZODVpOD3RkFOYXkhb
+ Gb2G8w2rvJua9SoHzrJdtPdzewx5vL3gvL3IfV/qE5wFj1ASUTKOGnBDEB6n/sQhGu0H
+ z05RxAH/mkvvsuJbRosJRbfLK9bjpDLzF6YY+UtZuDpe9UnlxPXn80Chr+oo2LRR4YiD
+ tpH5XjndEHr9gQkSkM7q8c+Wb928eEZttR93ffMajFhadkDouEbRUb/a1ubkFnRbTUTr
+ qHnOXsdTFysQOGh0AaJQt6rAbUknDP1ePaSjL71HmpRcBxvQr+ij9yYqIk38NHLiN342
+ 0UpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737703856; x=1738308656;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=kd3wmFk6s0Otq/AAAGtttQFgxB4F6buOK8YR3fDNyVk=;
+ b=EY50ALxlV2ITao0F7xmKL3mjsS60TCx3CDZCz8Hwnnme1EArCEAcFX5iHCZfWHK8mp
+ x1SP9D+pN4qDpPSbKaZIB3lckpBHrA3Bi7fFvu9mSBQ2JmC+reJCcskiYoRB2u+IJPqx
+ leE9yPrHp+z/vmm81wbfFkjDj1hqrg5g7b77Alk3HVKZsl941i61KlBVsdpBHcArQWF/
+ ftZrZ8ycto7evLDKQBEwfR5Uf/RcebfoTpbEXqbqPUUwbzNjUccFeUf+Z0BI68UB5y+S
+ 4i+ZTnodU/rQsGeqMsFc+krO/Pzbpl6S+956F6hBmMoY0GZWkznw1K8fgioyTq0dsfb+
+ ZOoQ==
+X-Gm-Message-State: AOJu0YzG8GJRRD73TSpDd+Vix/cMCHC3dQMwplTkzBN82t6am31xHIkD
+ jFX6tjmDSI+iyNemqItTOAvNuoRH+FEjrOQNZD0m1BtEgr1Q6mMOPWXqT8MMgcBjw67opBREhuf
+ S7OdyE76n64/a1fDwctiC/C3iYFwTzBfI
+X-Gm-Gg: ASbGncu3vZ+2UoJkAAXuBMNN3LCqFCpvAIc7F9bXlR+VjHize7mlcrtEbNG3rTwhjAp
+ sXrcytp8YSenqiCb1P7zMPJWRKWXP/geNMjV1O+TM5SNjM/lIvHofKpyopM6v5Z6Ys7wfzi3HuJ
+ ag5C1vybobfqk8pHpboII=
+X-Google-Smtp-Source: AGHT+IF5uwy7MI+OuWmZtUC+X4hy1wGfMpkDKEXGUroDab4dVmtcY9XNcQ1ygr/fxIbsBogBW/5sWS5n5ibK2ohO0V8=
+X-Received: by 2002:a05:6870:a54c:b0:29e:32e7:5f17 with SMTP id
+ 586e51a60fabf-2b1c0b50fd3mr18395246fac.28.1737703856255; Thu, 23 Jan 2025
+ 23:30:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -100
-X-Spam_score: -10.1
-X-Spam_bar: ----------
-X-Spam_report: (-10.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+From: internetarchive <internetarchivedownloads@gmail.com>
+Date: Thu, 23 Jan 2025 23:30:45 -0800
+X-Gm-Features: AWEUYZkVBe_iyqDfbepkmTseu8jGKFuWxjH4bpHQ0n2ANiS-X1qO46_eyEuqzIA
+Message-ID: <CAEq-4_OVvPALS5wT0KD+ogDvpNgEYPRcMi_TR46BXBRDd_v1QQ@mail.gmail.com>
+Subject: Basic question about QEMU emulation
+To: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="00000000000013bb0e062c6eb574"
+Received-SPF: pass client-ip=2001:4860:4864:20::33;
+ envelope-from=internetarchivedownloads@gmail.com; helo=mail-oa1-x33.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 24 Jan 2025 09:04:44 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,100 +86,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+--00000000000013bb0e062c6eb574
+Content-Type: text/plain; charset="UTF-8"
 
-This fixes the following qemu warnings when building debian gupnp package:
- Unknown host QEMU_IFLA type: 61
- Unknown host QEMU_IFLA type: 58
- Unknown host QEMU_IFLA type: 59
- Unknown host QEMU_IFLA type: 60
- Unknown host QEMU_IFLA type: 32820
+Hello, I have a basic question about emulation by QEMU when there is no
+hardware peripheral. How does QEMU emulate wifi functionality for VMs if
+the underlying hardware doesn't have wifi RF module ? Basically, how does
+it give the user of the VM internet access through WiFi ? This question can
+be generalized as how does QEMU emulate a peripheral when it is not present
+?
 
-QEMU_IFLA type 32820 is actually NLA_NESTED | QEMU_IFLA_PROP_LIST (a nested
-entry), which is why rta_type needs to be masked with NLA_TYPE_MASK.
+--00000000000013bb0e062c6eb574
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
----
- linux-user/fd-trans.c | 36 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+<div dir=3D"ltr"><span style=3D"color:rgb(27,29,34);font-family:Inter,Twemo=
+ji,&quot;Apple Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,Arial,Helvetica=
+,sans-serif,&quot;Noto Color Emoji&quot;;font-size:15px;letter-spacing:-0.1=
+32px;background-color:rgb(240,242,245)">Hello, I have a basic question abou=
+t emulation by QEMU when there is no hardware peripheral. How does QEMU emu=
+late wifi functionality for VMs if the underlying hardware doesn&#39;t have=
+ wifi RF module ? Basically, how does it give the user of the VM internet a=
+ccess through WiFi ? This question can be generalized as how does QEMU emul=
+ate a peripheral when it is not present ?</span></div>
 
-diff --git a/linux-user/fd-trans.c b/linux-user/fd-trans.c
-index 621e2248b4..f83d1f79d5 100644
---- a/linux-user/fd-trans.c
-+++ b/linux-user/fd-trans.c
-@@ -161,6 +161,14 @@ enum {
-     QEMU_IFLA_PROTO_DOWN_REASON,
-     QEMU_IFLA_PARENT_DEV_NAME,
-     QEMU_IFLA_PARENT_DEV_BUS_NAME,
-+    QEMU_IFLA_GRO_MAX_SIZE,
-+    QEMU_IFLA_TSO_MAX_SIZE,
-+    QEMU_IFLA_TSO_MAX_SEGS,
-+    QEMU_IFLA_ALLMULTI,
-+    QEMU_IFLA_DEVLINK_PORT,
-+    QEMU_IFLA_GSO_IPV4_MAX_SIZE,
-+    QEMU_IFLA_GRO_IPV4_MAX_SIZE,
-+    QEMU_IFLA_DPLL_PIN,
-     QEMU___IFLA_MAX
- };
- 
-@@ -1002,6 +1010,22 @@ static abi_long host_to_target_data_vfinfo_nlattr(struct nlattr *nlattr,
-     return 0;
- }
- 
-+static abi_long host_to_target_data_prop_nlattr(struct nlattr *nlattr,
-+                                                void *context)
-+{
-+    switch (nlattr->nla_type) {
-+    /* string */
-+    case QEMU_IFLA_ALT_IFNAME:
-+        break;
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "Unknown host PROP type: %d\n",
-+                      nlattr->nla_type);
-+        break;
-+    }
-+    return 0;
-+}
-+
-+
- static abi_long host_to_target_data_link_rtattr(struct rtattr *rtattr)
- {
-     uint32_t *u32;
-@@ -1010,7 +1034,7 @@ static abi_long host_to_target_data_link_rtattr(struct rtattr *rtattr)
-     struct rtnl_link_ifmap *map;
-     struct linkinfo_context li_context;
- 
--    switch (rtattr->rta_type) {
-+    switch (rtattr->rta_type & NLA_TYPE_MASK) {
-     /* binary stream */
-     case QEMU_IFLA_ADDRESS:
-     case QEMU_IFLA_BROADCAST:
-@@ -1048,6 +1072,12 @@ static abi_long host_to_target_data_link_rtattr(struct rtattr *rtattr)
-     case QEMU_IFLA_CARRIER_DOWN_COUNT:
-     case QEMU_IFLA_MIN_MTU:
-     case QEMU_IFLA_MAX_MTU:
-+    case QEMU_IFLA_GRO_MAX_SIZE:
-+    case QEMU_IFLA_TSO_MAX_SIZE:
-+    case QEMU_IFLA_TSO_MAX_SEGS:
-+    case QEMU_IFLA_ALLMULTI:
-+    case QEMU_IFLA_GSO_IPV4_MAX_SIZE:
-+    case QEMU_IFLA_GRO_IPV4_MAX_SIZE:
-         u32 = RTA_DATA(rtattr);
-         *u32 = tswap32(*u32);
-         break;
-@@ -1143,6 +1173,10 @@ static abi_long host_to_target_data_link_rtattr(struct rtattr *rtattr)
-         return host_to_target_for_each_nlattr(RTA_DATA(rtattr), rtattr->rta_len,
-                                               NULL,
-                                              host_to_target_data_vfinfo_nlattr);
-+    case QEMU_IFLA_PROP_LIST:
-+        return host_to_target_for_each_nlattr(RTA_DATA(rtattr), rtattr->rta_len,
-+                                              NULL,
-+                                             host_to_target_data_prop_nlattr);
-     default:
-         qemu_log_mask(LOG_UNIMP, "Unknown host QEMU_IFLA type: %d\n",
-                       rtattr->rta_type);
--- 
-2.47.0
-
+--00000000000013bb0e062c6eb574--
 
