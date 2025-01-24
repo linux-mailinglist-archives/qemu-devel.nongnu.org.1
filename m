@@ -2,94 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2FA1A1B2FF
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:50:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E87D4A1B2DA
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:44:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbGHW-0000n4-8Z; Fri, 24 Jan 2025 04:47:18 -0500
+	id 1tbGEn-00068R-8o; Fri, 24 Jan 2025 04:44:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tbGFz-0007Jf-Pp
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:45:44 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
+ id 1tbGEm-00068H-1y
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:44:28 -0500
+Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tbGFx-0003w6-DP
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:45:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737711940;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=WuoN8SLEI/o39maAHg/7so9lLNQmaFy/97KoTszJKKQ=;
- b=XlztEyWJRYeNvB/tiRnUhuMNFRhVKtxp7bDqZSnGCpSEbz3aUPYxmTGtzNazVkvJd5r9MJ
- 5vsuySiUKwYPp22jyp6OGTzPCPkXzdKUtbObHVzQlL3mF1zlaGAGcsqNz1/GNO44oFHMVi
- 65mqbTzmikcLpg7/sjaRy9xZWdRNdV0=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-302-UQNJI1oKO9yvAvo7ljR4Uw-1; Fri, 24 Jan 2025 04:45:38 -0500
-X-MC-Unique: UQNJI1oKO9yvAvo7ljR4Uw-1
-X-Mimecast-MFC-AGG-ID: UQNJI1oKO9yvAvo7ljR4Uw
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4361ac8b25fso10149085e9.2
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 01:45:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737711936; x=1738316736;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=WuoN8SLEI/o39maAHg/7so9lLNQmaFy/97KoTszJKKQ=;
- b=ZLDddjG9xuqmS/cxRqsVM+5Ijck3mxVLuXS0LcIuoi7m+W7ZK0aEg/jeaAeGLCxcDp
- /2rcbkbqSjRMLZDBN2oz76Y3mtxmtEyuYneMad8SPUXqGb9YCLoWGhmm4YI6hi8ZO8dN
- F/GMQ1szmADVyILT1rXltxp+guP5KDWyq/3P43jW++fP5PIkVTWJ4hFZrb/vEXMPtRuE
- R0G8JWvLmehZICh5x8iSF+pqLlwe8cA4G66fzF2UI7+dh1Fxl27viFEsJMs5gqkqrv1Q
- U+xzgKYmLbn1zglu43/xV54SuBa51WHFSbjcN3qGcpBuXjExFQHBB9nHDBFWLA5t4VC1
- jjBA==
-X-Gm-Message-State: AOJu0YzmM+B5gXhLTY3sk66iF//e3wjWRRUH6GYhuVT/7Kd7aydVrG18
- 5YN3vGOhfT1U+8VcDjOnOjStZxlsry7LKHzpfWpKqXvazeJhdNvczysndyn/kZy3bYTl8oKlVqo
- O88+BzttuRY/lH3zv37SdzMoac8Y3kVaNc4F0MskCs5BgQA11ahc/D6hWL4DgkZm4tvRy2LRZqS
- VJxIGE3Wxyxu1t9rnPFG3TrS4Ik6O2XQixp7W9+wY=
-X-Gm-Gg: ASbGncsFa4twHTCy3nKa49QM1rmbH3lMJwAie34EtBwvvWDHprD5I9ifRh0wBzzFoCH
- XYIwiyoiH8wOgUh1CYViZnxEWLyGOlocnzHXvcu7x1CeobOegSxuCG92PwgrGZthukpuegsL9ap
- 4B6QT3FxEV/x1DZuPIqPTo+o4HC0fTVVa3/jXw1EDcUc4V7jXMbuV453uBO2DrxElhsGgzUAouC
- F3+k+9NoXgQ/AiE5tbca6ZXTdF9AKwWdykscBeOasxCJ8k/agjp2AFyf0WUz5i2K5/miExXjg==
-X-Received: by 2002:a05:600c:5021:b0:436:1c0c:bfb6 with SMTP id
- 5b1f17b1804b1-438914514f2mr244848995e9.27.1737711936470; 
- Fri, 24 Jan 2025 01:45:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE+cxcSOIcrJqmFFnL92uu2ZGDmPzzYW4L4730MT2xj8Ea51jXn02blTc6ontKhcpM0Fkw7lA==
-X-Received: by 2002:a05:600c:5021:b0:436:1c0c:bfb6 with SMTP id
- 5b1f17b1804b1-438914514f2mr244848755e9.27.1737711935992; 
- Fri, 24 Jan 2025 01:45:35 -0800 (PST)
-Received: from [192.168.10.48] ([151.95.59.125])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd47f355sm20441285e9.4.2025.01.24.01.45.34
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 01:45:35 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Subject: [PULL 26/48] rust: vmstate: implement VMState for non-leaf types
-Date: Fri, 24 Jan 2025 10:44:20 +0100
-Message-ID: <20250124094442.13207-27-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250124094442.13207-1-pbonzini@redhat.com>
-References: <20250124094442.13207-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
+ id 1tbGEk-0003bx-0h
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:44:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+ Content-ID:Content-Description;
+ bh=vPtFQ5eZ2oQGwwjvMC82PhJbey7v66b3E3FKu8zEncc=; b=Sp0XeuPBWusbQE+YkxKdFTh+uc
+ U13BOBjuTMSAI8WsUAiZhA/0uCWZkHlH4Ib+MtyyCXbj+KJZb9aNUv5SkWmJLilOYqggPUDt66wlT
+ ofGsIMGu5OaQlXw5MtVzKLXFR2+Fe1SLLtvPb6NFAR0kxZFR+0pdXnkeRV8w4rN/Kct7GqtHu9Ptc
+ EPCCn+ZfSboqOEFHmuBgh7c1iU9emvv7BEZevo2xXOdJCz/08wyzgbzKVYGyJJnUTsWYE7S9H1ABr
+ 0XK+IMzOUU6u+tZwEdoH1Le3W/spi/i8JSuQ4cWV1G+3hmlIZbg8GPeJBfEMLFp1JpuiKCVI9K/uf
+ aVQ/Abvi34hiXRkyg8fBqeZcZXzD6A2GSllONxiqENLOFdUkxaVeXYa8soJ9HqQWfhKpGT3YGQMvf
+ ahbcqtxLGHlxlTQx+zlASr2A9CbVsq4OU6JcjDgVWQI9J2EpYQjXBYXMdk5Cn2fumUKSX/hWLZ/LT
+ yJSWUIqOZWK/C4vETYUibvG8oqLGOVbXZihX4R+C5wgHPOoi8PiUv0NjdGBBzusALZorY7+srdrr7
+ hOohDKK1omrSoguCdCMtc0XehhMYwPJley9CoyXvpnUP3ZFdvOBU6QY4nkU5RlvKfz8rZN9UuyZI0
+ NJLlm6ikOk82Mr/Iho+zTb2O8C3O4slScHeUMX+ow=;
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+To: Gerd Hoffmann <kraxel@redhat.com>,
+ Philippe =?ISO-8859-1?Q?Mathieu=2DDaud=E9?= <philmd@linaro.org>,
+ BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org
+Cc: devel@daynix.com, Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: Re: [PATCH v7 2/6] coreaudio: Remove extra whitespaces
+Date: Fri, 24 Jan 2025 10:44:21 +0100
+Message-ID: <16872466.hJq5qvgIpt@silver>
+In-Reply-To: <20250124-coreaudio-v7-2-9d9a4d91db37@daynix.com>
+References: <20250124-coreaudio-v7-0-9d9a4d91db37@daynix.com>
+ <20250124-coreaudio-v7-2-9d9a4d91db37@daynix.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.043,
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Received-SPF: pass client-ip=5.189.157.229;
+ envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,121 +70,344 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Arrays, pointers and cells use a VMStateField that is based on that
-for the inner type.  The implementation therefore delegates to the
-VMState implementation of the inner type.
+On Friday, January 24, 2025 6:12:05 AM CET Akihiko Odaki wrote:
+> Remove extra whitespaces around parentheses.
+> 
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>  audio/coreaudio.m | 108 +++++++++++++++++++++++++++---------------------------
+>  1 file changed, 54 insertions(+), 54 deletions(-)
+> 
+> diff --git a/audio/coreaudio.m b/audio/coreaudio.m
+> index 0b67347ad7e8c43a77af308a1a3a654dd7084083..04e8ac59f4572c1e5fb7dc4f04f5e21520507ab5 100644
+> --- a/audio/coreaudio.m
+> +++ b/audio/coreaudio.m
+> @@ -149,7 +149,7 @@ static OSStatus coreaudio_get_isrunning(AudioDeviceID id, UInt32 *result)
+>                                        result);
+>  }
+>  
+> -static void coreaudio_logstatus (OSStatus status)
+> +static void coreaudio_logstatus(OSStatus status)
+>  {
+>      const char *str = "BUG";
+>  
+> @@ -199,14 +199,14 @@ static void coreaudio_logstatus (OSStatus status)
+>          break;
+>  
+>      default:
+> -        AUD_log (AUDIO_CAP, "Reason: status code %" PRId32 "\n", (int32_t)status);
+> +        AUD_log(AUDIO_CAP, "Reason: status code %" PRId32 "\n", (int32_t)status);
+>          return;
+>      }
+>  
+> -    AUD_log (AUDIO_CAP, "Reason: %s\n", str);
+> +    AUD_log(AUDIO_CAP, "Reason: %s\n", str);
+>  }
+>  
+> -static void G_GNUC_PRINTF (2, 3) coreaudio_logerr (
+> +static void G_GNUC_PRINTF(2, 3) coreaudio_logerr(
+>      OSStatus status,
+>      const char *fmt,
+>      ...
+> @@ -214,14 +214,14 @@ static void G_GNUC_PRINTF (2, 3) coreaudio_logerr (
+>  {
+>      va_list ap;
+>  
+> -    va_start (ap, fmt);
+> -    AUD_log (AUDIO_CAP, fmt, ap);
+> -    va_end (ap);
+> +    va_start(ap, fmt);
+> +    AUD_log(AUDIO_CAP, fmt, ap);
+> +    va_end(ap);
+>  
+> -    coreaudio_logstatus (status);
+> +    coreaudio_logstatus(status);
+>  }
+>  
+> -static void G_GNUC_PRINTF (3, 4) coreaudio_logerr2 (
+> +static void G_GNUC_PRINTF(3, 4) coreaudio_logerr2(
+>      OSStatus status,
+>      const char *typ,
+>      const char *fmt,
+> @@ -230,39 +230,39 @@ static void G_GNUC_PRINTF (3, 4) coreaudio_logerr2 (
+>  {
+>      va_list ap;
+>  
+> -    AUD_log (AUDIO_CAP, "Could not initialize %s\n", typ);
+> +    AUD_log(AUDIO_CAP, "Could not initialize %s\n", typ);
+>  
+> -    va_start (ap, fmt);
+> -    AUD_vlog (AUDIO_CAP, fmt, ap);
+> -    va_end (ap);
+> +    va_start(ap, fmt);
+> +    AUD_vlog(AUDIO_CAP, fmt, ap);
+> +    va_end(ap);
+>  
+> -    coreaudio_logstatus (status);
+> +    coreaudio_logstatus(status);
+>  }
+>  
+>  #define coreaudio_playback_logerr(status, ...) \
+>      coreaudio_logerr2(status, "playback", __VA_ARGS__)
+>  
+> -static int coreaudio_buf_lock (coreaudioVoiceOut *core, const char *fn_name)
+> +static int coreaudio_buf_lock(coreaudioVoiceOut *core, const char *fn_name)
+>  {
+>      int err;
+>  
+> -    err = pthread_mutex_lock (&core->buf_mutex);
+> +    err = pthread_mutex_lock(&core->buf_mutex);
+>      if (err) {
+> -        dolog ("Could not lock voice for %s\nReason: %s\n",
+> -               fn_name, strerror (err));
+> +        dolog("Could not lock voice for %s\nReason: %s\n",
+> +              fn_name, strerror(err));
+>          return -1;
+>      }
+>      return 0;
+>  }
+>  
+> -static int coreaudio_buf_unlock (coreaudioVoiceOut *core, const char *fn_name)
+> +static int coreaudio_buf_unlock(coreaudioVoiceOut *core, const char *fn_name)
+>  {
+>      int err;
+>  
+> -    err = pthread_mutex_unlock (&core->buf_mutex);
+> +    err = pthread_mutex_unlock(&core->buf_mutex);
+>      if (err) {
+> -        dolog ("Could not unlock voice for %s\nReason: %s\n",
+> -               fn_name, strerror (err));
+> +        dolog("Could not unlock voice for %s\nReason: %s\n",
+> +               fn_name, strerror(err));
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- rust/qemu-api/src/vmstate.rs | 79 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 78 insertions(+), 1 deletion(-)
+Nit: this last line should be unindented left by one character. Except of
+that:
 
-diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index b839a7d6b7f..211c3d096b7 100644
---- a/rust/qemu-api/src/vmstate.rs
-+++ b/rust/qemu-api/src/vmstate.rs
-@@ -19,8 +19,9 @@
- //!   `include/migration/vmstate.h`. These are not type-safe and should not be
- //!   used if the equivalent functionality is available with `vmstate_of!`.
- 
--use core::marker::PhantomData;
-+use core::{marker::PhantomData, mem, ptr::NonNull};
- 
-+use crate::bindings::VMStateFlags;
- pub use crate::bindings::{VMStateDescription, VMStateField};
- 
- /// This macro is used to call a function with a generic argument bound
-@@ -102,6 +103,15 @@ macro_rules! vmstate_of {
-     };
- }
- 
-+impl VMStateFlags {
-+    const VMS_VARRAY_FLAGS: VMStateFlags = VMStateFlags(
-+        VMStateFlags::VMS_VARRAY_INT32.0
-+            | VMStateFlags::VMS_VARRAY_UINT8.0
-+            | VMStateFlags::VMS_VARRAY_UINT16.0
-+            | VMStateFlags::VMS_VARRAY_UINT32.0,
-+    );
-+}
-+
- // Add a couple builder-style methods to VMStateField, allowing
- // easy derivation of VMStateField constants from other types.
- impl VMStateField {
-@@ -111,6 +121,73 @@ pub const fn with_version_id(mut self, version_id: i32) -> Self {
-         self.version_id = version_id;
-         self
-     }
-+
-+    #[must_use]
-+    pub const fn with_array_flag(mut self, num: usize) -> Self {
-+        assert!(num <= 0x7FFF_FFFFusize);
-+        assert!((self.flags.0 & VMStateFlags::VMS_ARRAY.0) == 0);
-+        assert!((self.flags.0 & VMStateFlags::VMS_VARRAY_FLAGS.0) == 0);
-+        if (self.flags.0 & VMStateFlags::VMS_POINTER.0) != 0 {
-+            self.flags = VMStateFlags(self.flags.0 & !VMStateFlags::VMS_POINTER.0);
-+            self.flags = VMStateFlags(self.flags.0 | VMStateFlags::VMS_ARRAY_OF_POINTER.0);
-+        }
-+        self.flags = VMStateFlags(self.flags.0 & !VMStateFlags::VMS_SINGLE.0);
-+        self.flags = VMStateFlags(self.flags.0 | VMStateFlags::VMS_ARRAY.0);
-+        self.num = num as i32;
-+        self
-+    }
-+
-+    #[must_use]
-+    pub const fn with_pointer_flag(mut self) -> Self {
-+        assert!((self.flags.0 & VMStateFlags::VMS_POINTER.0) == 0);
-+        self.flags = VMStateFlags(self.flags.0 | VMStateFlags::VMS_POINTER.0);
-+        self
-+    }
-+}
-+
-+// Transparent wrappers: just use the internal type
-+
-+macro_rules! impl_vmstate_transparent {
-+    ($type:ty where $base:tt: VMState $($where:tt)*) => {
-+        unsafe impl<$base> VMState for $type where $base: VMState $($where)* {
-+            const BASE: VMStateField = VMStateField {
-+                size: mem::size_of::<$type>(),
-+                ..<$base as VMState>::BASE
-+            };
-+        }
-+    };
-+}
-+
-+impl_vmstate_transparent!(std::cell::Cell<T> where T: VMState);
-+impl_vmstate_transparent!(std::cell::UnsafeCell<T> where T: VMState);
-+impl_vmstate_transparent!(crate::cell::BqlCell<T> where T: VMState);
-+impl_vmstate_transparent!(crate::cell::BqlRefCell<T> where T: VMState);
-+
-+// Pointer types using the underlying type's VMState plus VMS_POINTER
-+// Note that references are not supported, though references to cells
-+// could be allowed.
-+
-+macro_rules! impl_vmstate_pointer {
-+    ($type:ty where $base:tt: VMState $($where:tt)*) => {
-+        unsafe impl<$base> VMState for $type where $base: VMState $($where)* {
-+            const BASE: VMStateField = <$base as VMState>::BASE.with_pointer_flag();
-+        }
-+    };
-+}
-+
-+impl_vmstate_pointer!(*const T where T: VMState);
-+impl_vmstate_pointer!(*mut T where T: VMState);
-+impl_vmstate_pointer!(NonNull<T> where T: VMState);
-+
-+// Unlike C pointers, Box is always non-null therefore there is no need
-+// to specify VMS_ALLOC.
-+impl_vmstate_pointer!(Box<T> where T: VMState);
-+
-+// Arrays using the underlying type's VMState plus
-+// VMS_ARRAY/VMS_ARRAY_OF_POINTER
-+
-+unsafe impl<T: VMState, const N: usize> VMState for [T; N] {
-+    const BASE: VMStateField = <T as VMState>::BASE.with_array_flag(N);
- }
- 
- #[doc(alias = "VMSTATE_UNUSED_BUFFER")]
--- 
-2.48.1
+Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+
+/Christian
+
+>          return -1;
+>      }
+>      return 0;
+> @@ -271,7 +271,7 @@ static int coreaudio_buf_unlock (coreaudioVoiceOut *core, const char *fn_name)
+>  #define COREAUDIO_WRAPPER_FUNC(name, ret_type, args_decl, args) \
+>      static ret_type glue(coreaudio_, name)args_decl             \
+>      {                                                           \
+> -        coreaudioVoiceOut *core = (coreaudioVoiceOut *) hw;     \
+> +        coreaudioVoiceOut *core = (coreaudioVoiceOut *)hw;      \
+>          ret_type ret;                                           \
+>                                                                  \
+>          if (coreaudio_buf_lock(core, "coreaudio_" #name)) {         \
+> @@ -312,13 +312,13 @@ static OSStatus audioDeviceIOProc(
+>      coreaudioVoiceOut *core = hwptr;
+>      size_t len;
+>  
+> -    if (coreaudio_buf_lock (core, "audioDeviceIOProc")) {
+> +    if (coreaudio_buf_lock(core, "audioDeviceIOProc")) {
+>          inInputTime = 0;
+>          return 0;
+>      }
+>  
+>      if (inDevice != core->outputDeviceID) {
+> -        coreaudio_buf_unlock (core, "audioDeviceIOProc(old device)");
+> +        coreaudio_buf_unlock(core, "audioDeviceIOProc(old device)");
+>          return 0;
+>      }
+>  
+> @@ -328,7 +328,7 @@ static OSStatus audioDeviceIOProc(
+>      /* if there are not enough samples, set signal and return */
+>      if (pending_frames < frameCount) {
+>          inInputTime = 0;
+> -        coreaudio_buf_unlock (core, "audioDeviceIOProc(empty)");
+> +        coreaudio_buf_unlock(core, "audioDeviceIOProc(empty)");
+>          return 0;
+>      }
+>  
+> @@ -348,7 +348,7 @@ static OSStatus audioDeviceIOProc(
+>          out += write_len;
+>      }
+>  
+> -    coreaudio_buf_unlock (core, "audioDeviceIOProc");
+> +    coreaudio_buf_unlock(core, "audioDeviceIOProc");
+>      return 0;
+>  }
+>  
+> @@ -370,12 +370,12 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
+>  
+>      status = coreaudio_get_voice(&core->outputDeviceID);
+>      if (status != kAudioHardwareNoError) {
+> -        coreaudio_playback_logerr (status,
+> -                                   "Could not get default output Device\n");
+> +        coreaudio_playback_logerr(status,
+> +                                  "Could not get default output Device\n");
+>          return status;
+>      }
+>      if (core->outputDeviceID == kAudioDeviceUnknown) {
+> -        dolog ("Could not initialize playback - Unknown Audiodevice\n");
+> +        dolog("Could not initialize playback - Unknown Audiodevice\n");
+>          return status;
+>      }
+>  
+> @@ -386,17 +386,17 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
+>          return 0;
+>      }
+>      if (status != kAudioHardwareNoError) {
+> -        coreaudio_playback_logerr (status,
+> -                                    "Could not get device buffer frame range\n");
+> +        coreaudio_playback_logerr(status,
+> +                                  "Could not get device buffer frame range\n");
+>          return status;
+>      }
+>  
+>      if (frameRange.mMinimum > core->frameSizeSetting) {
+>          core->audioDevicePropertyBufferFrameSize = frameRange.mMinimum;
+> -        dolog ("warning: Upsizing Buffer Frames to %f\n", frameRange.mMinimum);
+> +        dolog("warning: Upsizing Buffer Frames to %f\n", frameRange.mMinimum);
+>      } else if (frameRange.mMaximum < core->frameSizeSetting) {
+>          core->audioDevicePropertyBufferFrameSize = frameRange.mMaximum;
+> -        dolog ("warning: Downsizing Buffer Frames to %f\n", frameRange.mMaximum);
+> +        dolog("warning: Downsizing Buffer Frames to %f\n", frameRange.mMaximum);
+>      } else {
+>          core->audioDevicePropertyBufferFrameSize = core->frameSizeSetting;
+>      }
+> @@ -408,9 +408,9 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
+>          return 0;
+>      }
+>      if (status != kAudioHardwareNoError) {
+> -        coreaudio_playback_logerr (status,
+> -                                    "Could not set device buffer frame size %" PRIu32 "\n",
+> -                                    (uint32_t)core->audioDevicePropertyBufferFrameSize);
+> +        coreaudio_playback_logerr(status,
+> +                                  "Could not set device buffer frame size %" PRIu32 "\n",
+> +                                  (uint32_t)core->audioDevicePropertyBufferFrameSize);
+>          return status;
+>      }
+>  
+> @@ -421,8 +421,8 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
+>          return 0;
+>      }
+>      if (status != kAudioHardwareNoError) {
+> -        coreaudio_playback_logerr (status,
+> -                                    "Could not get device buffer frame size\n");
+> +        coreaudio_playback_logerr(status,
+> +                                  "Could not get device buffer frame size\n");
+>          return status;
+>      }
+>      core->hw.samples = core->bufferCount * core->audioDevicePropertyBufferFrameSize;
+> @@ -434,9 +434,9 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
+>          return 0;
+>      }
+>      if (status != kAudioHardwareNoError) {
+> -        coreaudio_playback_logerr (status,
+> -                                   "Could not set samplerate %lf\n",
+> -                                   streamBasicDescription.mSampleRate);
+> +        coreaudio_playback_logerr(status,
+> +                                  "Could not set samplerate %lf\n",
+> +                                  streamBasicDescription.mSampleRate);
+>          core->outputDeviceID = kAudioDeviceUnknown;
+>          return status;
+>      }
+> @@ -460,7 +460,7 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
+>          return 0;
+>      }
+>      if (status != kAudioHardwareNoError || core->ioprocid == NULL) {
+> -        coreaudio_playback_logerr (status, "Could not set IOProc\n");
+> +        coreaudio_playback_logerr(status, "Could not set IOProc\n");
+>          core->outputDeviceID = kAudioDeviceUnknown;
+>          return status;
+>      }
+> @@ -518,7 +518,7 @@ static void update_device_playback_state(coreaudioVoiceOut *core)
+>          if (!isrunning) {
+>              status = AudioDeviceStart(core->outputDeviceID, core->ioprocid);
+>              if (status != kAudioHardwareBadDeviceError && status != kAudioHardwareNoError) {
+> -                coreaudio_logerr (status, "Could not resume playback\n");
+> +                coreaudio_logerr(status, "Could not resume playback\n");
+>              }
+>          }
+>      } else {
+> @@ -560,7 +560,7 @@ static int coreaudio_init_out(HWVoiceOut *hw, struct audsettings *as,
+>                                void *drv_opaque)
+>  {
+>      OSStatus status;
+> -    coreaudioVoiceOut *core = (coreaudioVoiceOut *) hw;
+> +    coreaudioVoiceOut *core = (coreaudioVoiceOut *)hw;
+>      int err;
+>      Audiodev *dev = drv_opaque;
+>      AudiodevCoreaudioPerDirectionOptions *cpdo = dev->u.coreaudio.out;
+> @@ -569,14 +569,14 @@ static int coreaudio_init_out(HWVoiceOut *hw, struct audsettings *as,
+>      /* create mutex */
+>      err = pthread_mutex_init(&core->buf_mutex, NULL);
+>      if (err) {
+> -        dolog("Could not create mutex\nReason: %s\n", strerror (err));
+> +        dolog("Could not create mutex\nReason: %s\n", strerror(err));
+>          return -1;
+>      }
+>  
+>      obt_as = *as;
+>      as = &obt_as;
+>      as->fmt = AUDIO_FORMAT_F32;
+> -    audio_pcm_init_info (&hw->info, as);
+> +    audio_pcm_init_info(&hw->info, as);
+>  
+>      core->frameSizeSetting = audio_buffer_frames(
+>          qapi_AudiodevCoreaudioPerDirectionOptions_base(cpdo), as, 11610);
+> @@ -587,8 +587,8 @@ static int coreaudio_init_out(HWVoiceOut *hw, struct audsettings *as,
+>                                              &voice_addr, handle_voice_change,
+>                                              core);
+>      if (status != kAudioHardwareNoError) {
+> -        coreaudio_playback_logerr (status,
+> -                                   "Could not listen to voice property change\n");
+> +        coreaudio_playback_logerr(status,
+> +                                  "Could not listen to voice property change\n");
+>          return -1;
+>      }
+>  
+> @@ -612,7 +612,7 @@ static void coreaudio_fini_out (HWVoiceOut *hw)
+>  {
+>      OSStatus status;
+>      int err;
+> -    coreaudioVoiceOut *core = (coreaudioVoiceOut *) hw;
+> +    coreaudioVoiceOut *core = (coreaudioVoiceOut *)hw;
+>  
+>      status = AudioObjectRemovePropertyListener(kAudioObjectSystemObject,
+>                                                 &voice_addr,
+> @@ -627,13 +627,13 @@ static void coreaudio_fini_out (HWVoiceOut *hw)
+>      /* destroy mutex */
+>      err = pthread_mutex_destroy(&core->buf_mutex);
+>      if (err) {
+> -        dolog("Could not destroy mutex\nReason: %s\n", strerror (err));
+> +        dolog("Could not destroy mutex\nReason: %s\n", strerror(err));
+>      }
+>  }
+>  
+>  static void coreaudio_enable_out(HWVoiceOut *hw, bool enable)
+>  {
+> -    coreaudioVoiceOut *core = (coreaudioVoiceOut *) hw;
+> +    coreaudioVoiceOut *core = (coreaudioVoiceOut *)hw;
+>  
+>      core->enabled = enable;
+>      update_device_playback_state(core);
+> @@ -644,7 +644,7 @@ static void coreaudio_enable_out(HWVoiceOut *hw, bool enable)
+>      return dev;
+>  }
+>  
+> -static void coreaudio_audio_fini (void *opaque)
+> +static void coreaudio_audio_fini(void *opaque)
+>  {
+>  }
+>  
+> @@ -670,7 +670,7 @@ static void coreaudio_audio_fini (void *opaque)
+>      .pcm_ops        = &coreaudio_pcm_ops,
+>      .max_voices_out = 1,
+>      .max_voices_in  = 0,
+> -    .voice_size_out = sizeof (coreaudioVoiceOut),
+> +    .voice_size_out = sizeof(coreaudioVoiceOut),
+>      .voice_size_in  = 0
+>  };
+>  
+> 
+> 
+
 
 
