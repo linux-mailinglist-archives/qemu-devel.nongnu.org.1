@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E96AA1B691
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:03:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 143B6A1B692
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:03:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbJLS-0000Sw-3E; Fri, 24 Jan 2025 08:03:35 -0500
+	id 1tbJLY-0000To-26; Fri, 24 Jan 2025 08:03:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tbJKy-0000OU-D5
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:03:05 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tbJKz-0000Ox-Mi
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:03:07 -0500
 Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tbJKw-0007G9-NX
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:03:04 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tbJKx-0007GG-5A
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:03:05 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id F13335C5A69;
- Fri, 24 Jan 2025 13:02:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F5AC4CEE0;
- Fri, 24 Jan 2025 13:02:58 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTP id C8CE15C5B68;
+ Fri, 24 Jan 2025 13:02:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6649EC4CED2;
+ Fri, 24 Jan 2025 13:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1737723780;
- bh=0dCMgv3HdlrGef/55pmBNQDksmQaq+s2c+t9E36FqCc=;
+ s=k20201202; t=1737723781;
+ bh=f4X9zMW2UNRK6C5YvFLwtVaulKW3SQq3pLWgREWOxYk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Cs0kJaSyrWMz36F1Au/9USwvNrXgQpp3NQq/G5+wT4XDRhhhhJsLia2zK29rHtKcI
- 5ryhg8+NoqqO+SLtkSWLtK8x9OHgzCBZH5QjKg+P2PFZdgjtakcROuEoNzYlLnV6w/
- PN6DkGPY1cYqUyeJbakeaUdTsjj1Nq/oCV+o1dQBUwiZTwku4/4aVMesluIYL4JkIv
- 00ZMtIhuKidxeEfqD9Eej2pV0oeiz70jdLoaxOgyJQXgyupec6IFBAjf1ODb/s2Sn9
- luvePZCl0Ie+dqdbwv1t5QouWEFysRpkJOjL5sLCXMQQOrPLX/wXVEor1mXJ3w3Nef
- ibCY9lG8QB44g==
+ b=Zcnn+5+mrMMfXf76PztBcaCVPnjvYdMxwwTjI0iHkY+ebE4WQcvAHv2U3tdeRsNuM
+ +5S1dMjxNH3Kg7P/1ps0Q9GE0uPtiUvOMAewaeAL7om5ZsHej+bHsdkfCaIGL5Voul
+ 1B9YQhFsbLZnO828dZq93ilgK4p/i437LBdCxDiHLhWfhkcE6xgQhequcqldXx898E
+ +1lBuTBsM45YflB3OhtPssvF3sr5EBFNc+OvSOazAPijqMVcxZ18sBCfNjUfQTDNwG
+ GWxVrUFWO4brChFkYyIcKCEN/H0PrsOwbijJWckZmPM6OG9B5qdeA9LKuKNtJAd3e2
+ i0Q930x+V7M0Q==
 From: deller@kernel.org
 To: Laurent Vivier <laurent@vivier.eu>, Stefan Hajnoczi <stefanha@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PULL v3 1/6] linux-user: netlink: Add missing IFA_PROTO to
- host_to_target_data_addr_rtattr()
-Date: Fri, 24 Jan 2025 14:02:49 +0100
-Message-ID: <20250124130254.3134-2-deller@kernel.org>
+Subject: [PULL v3 2/6] linux-user: Use unique error messages for cmsg parsing
+Date: Fri, 24 Jan 2025 14:02:50 +0100
+Message-ID: <20250124130254.3134-3-deller@kernel.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250124130254.3134-1-deller@kernel.org>
 References: <20250124130254.3134-1-deller@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2604:1380:4641:c500::1;
  envelope-from=deller@kernel.org; helo=dfw.source.kernel.org
@@ -71,85 +71,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Fix this warning:
- Unknown host IFA type: 11
-
-While adding IFA_PROTO, convert all IFA_XXX values over to QEMU_IFA_XXX values
-to avoid a build failure on Ubuntu 22.04 (kernel v5.18 which does not know
-IFA_PROTO yet).
+Avoid using the same error message for two different code paths
+as it complicates determining the one which actually triggered.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 ---
- linux-user/fd-trans.c | 33 +++++++++++++++++++++++++--------
- 1 file changed, 25 insertions(+), 8 deletions(-)
+ linux-user/syscall.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/linux-user/fd-trans.c b/linux-user/fd-trans.c
-index c04a97c73a..2e714c8e56 100644
---- a/linux-user/fd-trans.c
-+++ b/linux-user/fd-trans.c
-@@ -31,6 +31,22 @@
- #include "fd-trans.h"
- #include "signal-common.h"
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 78c7c0b34e..a157abc40c 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -1827,7 +1827,7 @@ static inline abi_long target_to_host_cmsg(struct msghdr *msgh,
+                 *dst = tswap32(*dst);
+             }
+         } else {
+-            qemu_log_mask(LOG_UNIMP, "Unsupported ancillary data: %d/%d\n",
++            qemu_log_mask(LOG_UNIMP, "Unsupported target ancillary data: %d/%d\n",
+                           cmsg->cmsg_level, cmsg->cmsg_type);
+             memcpy(data, target_data, len);
+         }
+@@ -2049,7 +2049,7 @@ static inline abi_long host_to_target_cmsg(struct target_msghdr *target_msgh,
  
-+enum {
-+    QEMU_IFA_UNSPEC,
-+    QEMU_IFA_ADDRESS,
-+    QEMU_IFA_LOCAL,
-+    QEMU_IFA_LABEL,
-+    QEMU_IFA_BROADCAST,
-+    QEMU_IFA_ANYCAST,
-+    QEMU_IFA_CACHEINFO,
-+    QEMU_IFA_MULTICAST,
-+    QEMU_IFA_FLAGS,
-+    QEMU_IFA_RT_PRIORITY,
-+    QEMU_IFA_TARGET_NETNSID,
-+    QEMU_IFA_PROTO,
-+    QEMU__IFA__MAX,
-+};
-+
- enum {
-     QEMU_IFLA_BR_UNSPEC,
-     QEMU_IFLA_BR_FORWARD_DELAY,
-@@ -1138,20 +1154,21 @@ static abi_long host_to_target_data_addr_rtattr(struct rtattr *rtattr)
- 
-     switch (rtattr->rta_type) {
-     /* binary: depends on family type */
--    case IFA_ADDRESS:
--    case IFA_LOCAL:
-+    case QEMU_IFA_ADDRESS:
-+    case QEMU_IFA_LOCAL:
-+    case QEMU_IFA_PROTO:
-         break;
-     /* string */
--    case IFA_LABEL:
-+    case QEMU_IFA_LABEL:
-         break;
-     /* u32 */
--    case IFA_FLAGS:
--    case IFA_BROADCAST:
-+    case QEMU_IFA_FLAGS:
-+    case QEMU_IFA_BROADCAST:
-         u32 = RTA_DATA(rtattr);
-         *u32 = tswap32(*u32);
-         break;
-     /* struct ifa_cacheinfo */
--    case IFA_CACHEINFO:
-+    case QEMU_IFA_CACHEINFO:
-         ci = RTA_DATA(rtattr);
-         ci->ifa_prefered = tswap32(ci->ifa_prefered);
-         ci->ifa_valid = tswap32(ci->ifa_valid);
-@@ -1398,8 +1415,8 @@ static abi_long target_to_host_data_addr_rtattr(struct rtattr *rtattr)
- {
-     switch (rtattr->rta_type) {
-     /* binary: depends on family type */
--    case IFA_LOCAL:
--    case IFA_ADDRESS:
-+    case QEMU_IFA_LOCAL:
-+    case QEMU_IFA_ADDRESS:
-         break;
-     default:
-         qemu_log_mask(LOG_UNIMP, "Unknown target IFA type: %d\n",
+         default:
+         unimplemented:
+-            qemu_log_mask(LOG_UNIMP, "Unsupported ancillary data: %d/%d\n",
++            qemu_log_mask(LOG_UNIMP, "Unsupported host ancillary data: %d/%d\n",
+                           cmsg->cmsg_level, cmsg->cmsg_type);
+             memcpy(target_data, data, MIN(len, tgt_len));
+             if (tgt_len > len) {
 -- 
 2.47.0
 
