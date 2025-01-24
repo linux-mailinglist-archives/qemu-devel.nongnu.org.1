@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF64CA1B71A
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:40:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5642A1B773
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:49:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbJuV-0000CD-SG; Fri, 24 Jan 2025 08:39:48 -0500
+	id 1tbJuN-0007Pp-Cj; Fri, 24 Jan 2025 08:39:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tbJtc-0006Zi-Lm
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:38:58 -0500
+ id 1tbJtg-0006cs-HF
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:39:00 -0500
 Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tbJta-00041c-PL
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:38:52 -0500
+ id 1tbJte-00042W-ES
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:38:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737725931; x=1769261931;
+ t=1737725935; x=1769261935;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=9LeRcYgDvW5lMsehq+j8bbe6PQs/g/hSfE4cA/e4doU=;
- b=SlivONiI8mh/8f10tDEcIIqmIDJnCeO415Bizw35hX7PocneU9+y6/bp
- OCwvLAziRFcxFLEQLmNrepPPzQI4g/l6kKDNmP/tLliDfk+PbaKj3tVwp
- AhEtLZzzbcbG0pq0VlBFl5CA/c3mVKc+L3UUwAK+FgwnjlrhcXCJiRYzr
- uhTJ18rgGFsUM+mVA8v/20jEs4PS64LPLjk+kereusjE/xNX00sJrJK3H
- 14/b6Mu87+219pbMv9vcBh2c4Yv/nehUrVGQ/laXlyuSJwGUFznaAMm/8
- 39ohb4cXMBWbHLlCgN2Hvkem/Wc9lBTdZJh3PL4rPr4y6B3J4BC19yGsh g==;
-X-CSE-ConnectionGUID: TsBYQSndS1auoHWN/gTCdA==
-X-CSE-MsgGUID: yGoK038sSumtSeVB0C8YtA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="49246429"
-X-IronPort-AV: E=Sophos;i="6.13,231,1732608000"; d="scan'208";a="49246429"
+ bh=yjeFsx3DLSpiqpqVn548Wr6nyNm4xYxJhSEfr1UJ2Ho=;
+ b=JLUqyW/Dd/9jr49v3gWGiDw/joZFpxBimX+gXAtBJyfBiBvfGjkJF30Y
+ Elojaam8k+x0SVk9c2Pa/+zvRSAS5NhphFYXlOCzY3PoA91HlJVv76eHY
+ un+5pAny+wrd2bEvkEsZagQeVgDRDnNkQDDU14YQtcGvXFuDClzMHtGrt
+ hkEqnT805AEd1/Ob5UvQtWkfafqQJf57DctbkRIiwggGhuBmrgGhCJoE2
+ BbAxv499A/nTxoyqVxS8ipAHWrdyaU5XNtdztTVFZSpbHmrCeMV1/XyvN
+ wc57NarsVHl1wqZSO1DYiJRxXYeHmK8/PoTH8Rt5IwrF0cpEgUg5F1ipp g==;
+X-CSE-ConnectionGUID: MXoKRpwYQEqlOklFKZoDbg==
+X-CSE-MsgGUID: kJUwVudCRVeWpI0xMVB0AA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="49246436"
+X-IronPort-AV: E=Sophos;i="6.13,231,1732608000"; d="scan'208";a="49246436"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2025 05:38:36 -0800
-X-CSE-ConnectionGUID: A65DTX7TRl2FBFd2ClD4QQ==
-X-CSE-MsgGUID: 4nMhs+4ZReudkhpfCqarDQ==
+ 24 Jan 2025 05:38:40 -0800
+X-CSE-ConnectionGUID: s85VyDiiTO6zeiWrug6ntg==
+X-CSE-MsgGUID: BGIFg/2wSx62RdhW/FXsjQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111804321"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111804331"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2025 05:38:32 -0800
+ by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2025 05:38:36 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -55,9 +55,9 @@ Cc: Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Francesco Lavra <francescolavra.fl@gmail.com>, xiaoyao.li@intel.com,
  qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: [PATCH v7 25/52] i386/tdx: Finalize TDX VM
-Date: Fri, 24 Jan 2025 08:20:21 -0500
-Message-Id: <20250124132048.3229049-26-xiaoyao.li@intel.com>
+Subject: [PATCH v7 26/52] i386/tdx: Enable user exit on KVM_HC_MAP_GPA_RANGE
+Date: Fri, 24 Jan 2025 08:20:22 -0500
+Message-Id: <20250124132048.3229049-27-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250124132048.3229049-1-xiaoyao.li@intel.com>
 References: <20250124132048.3229049-1-xiaoyao.li@intel.com>
@@ -89,29 +89,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Invoke KVM_TDX_FINALIZE_VM to finalize the TD's measurement and make
-the TD vCPUs runnable once machine initialization is complete.
+KVM translates TDG.VP.VMCALL<MapGPA> to KVM_HC_MAP_GPA_RANGE, and QEMU
+needs to enable user exit on KVM_HC_MAP_GPA_RANGE in order to handle the
+memory conversion requested by TD guest.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- target/i386/kvm/tdx.c | 3 +++
- 1 file changed, 3 insertions(+)
+changes in v6:
+ - new patch;
+---
+ target/i386/kvm/tdx.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 99c1664d836b..d7f7f8301ca2 100644
+index d7f7f8301ca2..1d0cf29c39f9 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -351,6 +351,9 @@ static void tdx_finalize_vm(Notifier *notifier, void *unused)
-      */
-     ram_block = tdx_guest->tdvf_mr->ram_block;
-     ram_block_discard_range(ram_block, 0, ram_block->max_length);
-+
-+    tdx_vm_ioctl(KVM_TDX_FINALIZE_VM, 0, NULL, &error_fatal);
-+    CONFIDENTIAL_GUEST_SUPPORT(tdx_guest)->ready = true;
- }
+@@ -19,6 +19,8 @@
+ #include "system/system.h"
+ #include "exec/ramblock.h"
  
- static Notifier tdx_machine_done_notify = {
++#include <linux/kvm_para.h>
++
+ #include "hw/i386/e820_memory_layout.h"
+ #include "hw/i386/x86.h"
+ #include "hw/i386/tdvf.h"
+@@ -374,6 +376,11 @@ static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+         }
+     }
+ 
++    /* TDX relies on KVM_HC_MAP_GPA_RANGE to handle TDG.VP.VMCALL<MapGPA> */
++    if (!kvm_enable_hypercall(BIT_ULL(KVM_HC_MAP_GPA_RANGE))) {
++        return -EOPNOTSUPP;
++    }
++
+     qemu_add_machine_init_done_notifier(&tdx_machine_done_notify);
+ 
+     tdx_guest = tdx;
 -- 
 2.34.1
 
