@@ -2,75 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B941AA1B759
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:44:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1207AA1B6D1
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:31:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbJvg-0004da-So; Fri, 24 Jan 2025 08:41:01 -0500
+	id 1tbJkp-0001Gp-Iv; Fri, 24 Jan 2025 08:29:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tbJvV-0003jl-0d
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:40:49 -0500
-Received: from mgamail.intel.com ([198.175.65.13])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tbJkl-0001Fd-9N
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:29:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tbJvS-0003xi-O3
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:40:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737726047; x=1769262047;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=EUwHVgF5vEEMvJW0RWlFhvQxAskobUwBHDJmxFXAZbY=;
- b=ivHu7fnI5EZIHtfO3WRCMbottlHzmcdyCTw06B5bq6U0UaTkZpHWoumH
- wU6eyz89eHB5z9DYOt9SeRUUO6cw1pNqr7LmJtgF/o5HOu0H1PpuRQaYv
- Z8FS2qMqJBf3Mxukq5nYqcIC97TZQgX1qHAgDAMrRh0KPaUrxd9+9vkVn
- ps70FTTD0IIot086dmHdylkyEC8ZJqMy0sgHrfyt1m8O3wfRDb4UT4c+V
- JSsx6NIL7SvSQJZjMC3N14NyLfIDikBIwzJqZkE1JCyoNIJN8gCGDsHLr
- DSc3P1K8B5X02t5o4s+mxX2Tk9RfP3jGI186b1lhQtrvUuTFNXqWFjE3j A==;
-X-CSE-ConnectionGUID: Cf8F2tBeTfeR/E8NWksBfw==
-X-CSE-MsgGUID: QS3yzxkuSIW3F4w4QLvDQA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="49246676"
-X-IronPort-AV: E=Sophos;i="6.13,231,1732608000"; d="scan'208";a="49246676"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2025 05:40:17 -0800
-X-CSE-ConnectionGUID: w195bjlmQeiieJmUoh3uZw==
-X-CSE-MsgGUID: 24wpkVZCSQaDlIoTepYyDw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111804499"
-Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2025 05:40:13 -0800
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>
-Cc: Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Marcelo Tosatti <mtosatti@redhat.com>, Huacai Chen <chenhuacai@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Francesco Lavra <francescolavra.fl@gmail.com>, xiaoyao.li@intel.com,
- qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: [PATCH v7 52/52] docs: Add TDX documentation
-Date: Fri, 24 Jan 2025 08:20:48 -0500
-Message-Id: <20250124132048.3229049-53-xiaoyao.li@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250124132048.3229049-1-xiaoyao.li@intel.com>
-References: <20250124132048.3229049-1-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tbJkj-0002x7-GY
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:29:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737725379;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=qdpgGilDnUOWUiGuoKAy0VLSV2IxQwO5L8RVJiJTu1c=;
+ b=VFt+aXzDgd6D1vv6YZxffBI6XG9TMwEjAlT6Odn4STY/qrs3qhK+SR+FSe+onisLxw5oxO
+ tMTJCZ/9jvVQHqlovgsd57kXGQm6RumqB/6D8KZ81xKqsbbppqq2mLLSJPi72ApMBVQB77
+ oVXNb9yjHqxHvIsJgX4xvLVP3Wwe9b8=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-437-_MAKcSdXMGWafrd2g7Rb5g-1; Fri, 24 Jan 2025 08:29:36 -0500
+X-MC-Unique: _MAKcSdXMGWafrd2g7Rb5g-1
+X-Mimecast-MFC-AGG-ID: _MAKcSdXMGWafrd2g7Rb5g
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-6d8f8b9d43aso38727486d6.0
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 05:29:36 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737725376; x=1738330176;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qdpgGilDnUOWUiGuoKAy0VLSV2IxQwO5L8RVJiJTu1c=;
+ b=vLMIpZ2jwoLET55OvGIAUxJWQlIHPpoWRCiQwhCaf+8Eg3onBx/yd6Jh6NraTMQef4
+ xz7DyMgou7lF/iLiIfztw+82qFiDPUjC+iG3Ek2fzcUyYGOjHIyoCxd2RiSezGQea45h
+ xBv9X304mwhI1+rRDy4rIG8+0ZrnBA9B1Q5A4AnUZXRBEeeofysw6116GRBIIJHvB9JA
+ pjQjX9VYZgYjpShVYEorkZQOP8oT58IsJw0PesUeXTEeL6o7Nl1oT2LFqOshjl6OxCJA
+ lIa499es4NHqHovDohw09cTYYH4YNc+cslzpHpFZTo5WPGQrG28MDVWQ6mi66wCWXd47
+ 5y4A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXkU8xc4BYczA9MT+fpkKYT/yfJ/lhREUBglUNFGhlr6YTeBrlOx97TGPPGwpq/NN9O2yvkL9gM62kk@nongnu.org
+X-Gm-Message-State: AOJu0Yy+z0AvTDP16BOHkOA9dQayp6QUpYfIQqWbC38bIRPuXBDHPJ3N
+ DN93mpeUmwn2F97DdhD/m5hXnlGbnuCH3X+59gFdundZFSRYYpNFSy5fgm3G/msnaAJ5P9n5ObT
+ D/ZhLEXCstRDOLOsIzkTiBNh86xZ6Kbc7X6bovtVdZt9hwPAGjivM
+X-Gm-Gg: ASbGncsQWLuWu3klRioxA/nhOhreQptKgctxzSOSqznF1Cv6BDO10iGKFq9e7xQHrXN
+ WHb5gSF4+IWmAVbIGUHVX24qBFNpVXnjMkYqazihzy8WQegiEm/EbSFCm/h9QUnQJleQd+XLAtK
+ Vyuror2j1iCtS8Am6RAZoL0wSLDSSFNyezE7VJogrLggx5dDNd+AZt3gOAsmUa7NhwbqnP2HKJ0
+ xXatGt7Z3LykOtSOkJz0ul8d2hPRB6VJd0sPfreX7t9loVaorOMRw5iIQTfctigcqWnhYidu071
+ NZqzpDnu3bUv+oQGjwdkGp7BNQ==
+X-Received: by 2002:a05:6214:acc:b0:6dd:3c07:ae48 with SMTP id
+ 6a1803df08f44-6e1b224acf6mr498425916d6.37.1737725376101; 
+ Fri, 24 Jan 2025 05:29:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF33nfNflRPPgLlBhtRnqnjpppODRSkFPyKxCi55RhGRh0OddiRTji+B0XQU5MOAXGP25ggLg==
+X-Received: by 2002:a05:6214:acc:b0:6dd:3c07:ae48 with SMTP id
+ 6a1803df08f44-6e1b224acf6mr498425676d6.37.1737725375838; 
+ Fri, 24 Jan 2025 05:29:35 -0800 (PST)
+Received: from [192.168.0.7] (ip-109-42-48-134.web.vodafone.de.
+ [109.42.48.134]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6e205137058sm8619436d6.22.2025.01.24.05.29.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 24 Jan 2025 05:29:35 -0800 (PST)
+Message-ID: <d9094d1e-10bc-4b15-9efe-ebc8bab5d158@redhat.com>
+Date: Fri, 24 Jan 2025 14:29:32 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 15/32] tests/functional/aarch64: add tests for FEAT_RME
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+References: <20250110131754.2769814-1-alex.bennee@linaro.org>
+ <20250110131754.2769814-16-alex.bennee@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20250110131754.2769814-16-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.13; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -63
-X-Spam_score: -6.4
-X-Spam_bar: ------
-X-Spam_report: (-6.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
@@ -89,219 +153,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add docs/system/i386/tdx.rst for TDX support, and add tdx in
-confidential-guest-support.rst
+On 10/01/2025 14.17, Alex Bennée wrote:
+> From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> 
+> This boot an OP-TEE environment, and launch a nested guest VM inside it
+> using the Realms feature. We do it for virt and sbsa-ref platforms.
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
----
-Changes in v6:
- - Add more information of "Feature configuration"
- - Mark TD Attestation as future work because KVM now drops the support
-   of it.
+  Hi,
 
-Changes in v5:
- - Add TD attestation section and update the QEMU parameter;
+FWIW, I just saw this test_aarch64_rme_virt test failing once. Looking at 
+the console.log, it seems like the guest crashed somewhere at the end of the 
+firmware or very early in the kernel:
 
-Changes since v1:
- - Add prerequisite of private gmem;
- - update example command to launch TD;
+EFI stub: Booting Linux Kernel...
+2025-01-24 13:25:28,226:
+2025-01-24 13:25:28,226:
+2025-01-24 13:25:28,227: Synchronous Exception at 0x00000000BF526498
+2025-01-24 13:25:28,227:
+2025-01-24 13:25:28,227:
+2025-01-24 13:25:28,228: Synchronous Exception at 0x00000000BF526498
 
-Changes since RFC v4:
- - add the restriction that kernel-irqchip must be split
----
- docs/system/confidential-guest-support.rst |   1 +
- docs/system/i386/tdx.rst                   | 156 +++++++++++++++++++++
- docs/system/target-i386.rst                |   1 +
- 3 files changed, 158 insertions(+)
- create mode 100644 docs/system/i386/tdx.rst
+I wasn't able to reproduce it afterwards anymore, but in case somebody runs 
+into this later again and wonders if it is a later regression: It happened 
+for me with commit cf86770c7aa31ebd.
 
-diff --git a/docs/system/confidential-guest-support.rst b/docs/system/confidential-guest-support.rst
-index 0c490dbda2b7..66129fbab64c 100644
---- a/docs/system/confidential-guest-support.rst
-+++ b/docs/system/confidential-guest-support.rst
-@@ -38,6 +38,7 @@ Supported mechanisms
- Currently supported confidential guest mechanisms are:
- 
- * AMD Secure Encrypted Virtualization (SEV) (see :doc:`i386/amd-memory-encryption`)
-+* Intel Trust Domain Extension (TDX) (see :doc:`i386/tdx`)
- * POWER Protected Execution Facility (PEF) (see :ref:`power-papr-protected-execution-facility-pef`)
- * s390x Protected Virtualization (PV) (see :doc:`s390x/protvirt`)
- 
-diff --git a/docs/system/i386/tdx.rst b/docs/system/i386/tdx.rst
-new file mode 100644
-index 000000000000..ea2e601dde9a
---- /dev/null
-+++ b/docs/system/i386/tdx.rst
-@@ -0,0 +1,156 @@
-+Intel Trusted Domain eXtension (TDX)
-+====================================
-+
-+Intel Trusted Domain eXtensions (TDX) refers to an Intel technology that extends
-+Virtual Machine Extensions (VMX) and Multi-Key Total Memory Encryption (MKTME)
-+with a new kind of virtual machine guest called a Trust Domain (TD). A TD runs
-+in a CPU mode that is designed to protect the confidentiality of its memory
-+contents and its CPU state from any other software, including the hosting
-+Virtual Machine Monitor (VMM), unless explicitly shared by the TD itself.
-+
-+Prerequisites
-+-------------
-+
-+To run TD, the physical machine needs to have TDX module loaded and initialized
-+while KVM hypervisor has TDX support and has TDX enabled. If those requirements
-+are met, the ``KVM_CAP_VM_TYPES`` will report the support of ``KVM_X86_TDX_VM``.
-+
-+Trust Domain Virtual Firmware (TDVF)
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Trust Domain Virtual Firmware (TDVF) is required to provide TD services to boot
-+TD Guest OS. TDVF needs to be copied to guest private memory and measured before
-+the TD boots.
-+
-+KVM vcpu ioctl ``KVM_TDX_INIT_MEM_REGION`` can be used to populate the TDVF
-+content into its private memory.
-+
-+Since TDX doesn't support readonly memslot, TDVF cannot be mapped as pflash
-+device and it actually works as RAM. "-bios" option is chosen to load TDVF.
-+
-+OVMF is the opensource firmware that implements the TDVF support. Thus the
-+command line to specify and load TDVF is ``-bios OVMF.fd``
-+
-+Feature Configuration
-+---------------------
-+
-+Unlike non-TDX VM, the CPU features (enumerated by CPU or MSR) of a TD are not
-+under full control of VMM. VMM can only configure part of features of a TD on
-+``KVM_TDX_INIT_VM`` command of VM scope ``MEMORY_ENCRYPT_OP`` ioctl.
-+
-+The configurable features have three types:
-+
-+- Attributes:
-+  - PKS (bit 30) controls whether Supervisor Protection Keys is exposed to TD,
-+  which determines related CPUID bit and CR4 bit;
-+  - PERFMON (bit 63) controls whether PMU is exposed to TD.
-+
-+- XSAVE related features (XFAM):
-+  XFAM is a 64b mask, which has the same format as XCR0 or IA32_XSS MSR. It
-+  determines the set of extended features available for use by the guest TD.
-+
-+- CPUID features:
-+  Only some bits of some CPUID leaves are directly configurable by VMM.
-+
-+What features can be configured is reported via TDX capabilities.
-+
-+TDX capabilities
-+~~~~~~~~~~~~~~~~
-+
-+The VM scope ``MEMORY_ENCRYPT_OP`` ioctl provides command ``KVM_TDX_CAPABILITIES``
-+to get the TDX capabilities from KVM. It returns a data structure of
-+``struct kvm_tdx_capabilities``, which tells the supported configuration of
-+attributes, XFAM and CPUIDs.
-+
-+TD attributes
-+~~~~~~~~~~~~~
-+
-+QEMU supports configuring raw 64-bit TD attributes directly via "attributes"
-+property of "tdx-guest" object. Note, it's users' responsibility to provide a
-+valid value because some bits may not supported by current QEMU or KVM yet.
-+
-+QEMU also supports the configuration of individual attribute bits that are
-+supported by it, via properties of "tdx-guest" object.
-+E.g., "sept-ve-disable" (bit 28).
-+
-+MSR based features
-+~~~~~~~~~~~~~~~~~~
-+
-+Current KVM doesn't support MSR based feature (e.g., MSR_IA32_ARCH_CAPABILITIES)
-+configuration for TDX, and it's a future work to enable it in QEMU when KVM adds
-+support of it.
-+
-+Feature check
-+~~~~~~~~~~~~~
-+
-+QEMU checks if the final (CPU) features, determined by given cpu model and
-+explicit feature adjustment of "+featureA/-featureB", can be supported or not.
-+It can produce feature not supported warning like
-+
-+  "warning: host doesn't support requested feature: CPUID.07H:EBX.intel-pt [bit 25]"
-+
-+It can also produce warning like
-+
-+  "warning: TDX forcibly sets the feature: CPUID.80000007H:EDX.invtsc [bit 8]"
-+
-+if the fixed-1 feature is requested to be disabled explicitly. This is newly
-+added to QEMU for TDX because TDX has fixed-1 features that are forcibly enabled
-+by TDX module and VMM cannot disable them.
-+
-+Launching a TD (TDX VM)
-+-----------------------
-+
-+To launch a TD, the necessary command line options are tdx-guest object and
-+split kernel-irqchip, as below:
-+
-+.. parsed-literal::
-+
-+    |qemu_system_x86| \\
-+        -object tdx-guest,id=tdx0 \\
-+        -machine ...,kernel-irqchip=split,confidential-guest-support=tdx0 \\
-+        -bios OVMF.fd \\
-+
-+Restrictions
-+------------
-+
-+ - kernel-irqchip must be split;
-+
-+ - No readonly support for private memory;
-+
-+ - No SMM support: SMM support requires manipulating the guest register states
-+   which is not allowed;
-+
-+Debugging
-+---------
-+
-+Bit 0 of TD attributes, is DEBUG bit, which decides if the TD runs in off-TD
-+debug mode. When in off-TD debug mode, TD's VCPU state and private memory are
-+accessible via given SEAMCALLs. This requires KVM to expose APIs to invoke those
-+SEAMCALLs and corresonponding QEMU change.
-+
-+It's targeted as future work.
-+
-+TD attestation
-+--------------
-+
-+In TD guest, the attestation process is used to verify the TDX guest
-+trustworthiness to other entities before provisioning secrets to the guest.
-+
-+TD attestation is initiated first by calling TDG.MR.REPORT inside TD to get the
-+REPORT. Then the REPORT data needs to be converted into a remotely verifiable
-+Quote by SGX Quoting Enclave (QE).
-+
-+It's a future work in QEMU to add support of TD attestation since it lacks
-+support in current KVM.
-+
-+Live Migration
-+--------------
-+
-+Future work.
-+
-+References
-+----------
-+
-+- `TDX Homepage <https://www.intel.com/content/www/us/en/developer/articles/technical/intel-trust-domain-extensions.html>`__
-+
-+- `SGX QE <https://github.com/intel/SGXDataCenterAttestationPrimitives/tree/master/QuoteGeneration>`__
-diff --git a/docs/system/target-i386.rst b/docs/system/target-i386.rst
-index ab7af1a75d6e..43b09c79d6be 100644
---- a/docs/system/target-i386.rst
-+++ b/docs/system/target-i386.rst
-@@ -31,6 +31,7 @@ Architectural features
-    i386/kvm-pv
-    i386/sgx
-    i386/amd-memory-encryption
-+   i386/tdx
- 
- OS requirements
- ~~~~~~~~~~~~~~~
--- 
-2.34.1
+  Thomas
 
 
