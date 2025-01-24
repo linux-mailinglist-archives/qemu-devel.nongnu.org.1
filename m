@@ -2,96 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30D43A1BBEC
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 19:11:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B34A1BBBB
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 18:50:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbO8m-00029h-LL; Fri, 24 Jan 2025 13:10:48 -0500
+	id 1tbNom-0000N1-1l; Fri, 24 Jan 2025 12:50:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1tbO8k-00028z-IG; Fri, 24 Jan 2025 13:10:46 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1tbO8i-00076I-Pq; Fri, 24 Jan 2025 13:10:46 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50OFdd4R013684;
- Fri, 24 Jan 2025 18:10:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=x/CUk1
- GoNbuO1ZvMpgkbANBUpyk/TiT3AQ8NOgUGZ14=; b=trZRBXQkYFCtnjPaRvXf05
- W0sNdE2bNfDYcJj7gARWIDOWz57lDguLmV2QTzSQOLlYrlTkt9vmqJbssBAMDwmw
- wTcoeJeG9ERl7OFvsc/UVzvN+1ZodexuMLQN88T8Qf1iPx+ng8hPOEubYM2pgzvW
- SMW6JRqVMllfYDRnrEjhqp4n8CP+tC4CiqUBfcqY+TCVCkq5FXCWI41CuGh8A1sg
- 4wnxJrZPWTNs61VFG4hUTTWaMVUagP1j6YtJ0rxDsUdTo8MMD979kYnMDQA/g3Yz
- +jy+lu4ZLS5xV0XhrsoLt+H2ZsfYNxxov5LW98XTb8KObAONyCgRhXFU5sTSohSg
- ==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44cdptrrdm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Jan 2025 18:10:43 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50OGBmem029538;
- Fri, 24 Jan 2025 18:10:42 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 448qmnvs2w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Jan 2025 18:10:42 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 50OIAd9q30933752
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 24 Jan 2025 18:10:39 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2019E20088;
- Fri, 24 Jan 2025 17:49:46 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C303020087;
- Fri, 24 Jan 2025 17:49:45 +0000 (GMT)
-Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
- [9.179.27.114]) by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 24 Jan 2025 17:49:45 +0000 (GMT)
-Message-ID: <812ab32cb4f2ca3d8290936989491b8f3b970692.camel@linux.ibm.com>
-Subject: Re: [PATCH v1 2/3] hw/s390x: add CPI values to QOM
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-To: Shalini Chellathurai Saroja <shalini@linux.ibm.com>, qemu-s390x
- mailing list <qemu-s390x@nongnu.org>
-Cc: qemu-devel mailing list <qemu-devel@nongnu.org>, Hendrik Brueckner
- <brueckner@linux.ibm.com>
-Date: Fri, 24 Jan 2025 18:49:45 +0100
-In-Reply-To: <20250115133106.3034445-2-shalini@linux.ibm.com>
-References: <20250115133106.3034445-1-shalini@linux.ibm.com>
- <20250115133106.3034445-2-shalini@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tbNoa-0000Fk-DE
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 12:49:58 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tbNoY-000481-WA
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 12:49:56 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-21636268e43so52088685ad.2
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 09:49:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1737740994; x=1738345794; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lprcsEJqJA0BXBRgOLBnGo/4d0TSDe5lsDDbo6MJfjY=;
+ b=n3q5rLXcnXRNfc4EzOaAzDv/gfJcjHCP7VL/L//5wTXZZd6+4eCNqOAWF43ZIU61Cp
+ 4j1cv5onWzuhXqQC/Rnme4mIH8YySh3RFp+pqZqzKNQ5fqjcaqwfdoieeGpdRg2fDJ7s
+ U6nDxXC91UKpfqRZESXFaufqQ24/RmY6yE9G4PAZRe1wohHFYyu9mxZ8ZnOH8e0t/baA
+ vdoP/ggNG6B4vtyokSolFIxE+zppGEh5hcAUHFUck3aVtVHMVxYjZx0l8P52b+jtdOnF
+ YSqPLvePEggvFL6PY7H0Bm2zv0PU7cMEnyiNWD5ZLnwef1/SwGvANM5vdtZLsvo81J+q
+ jqAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737740994; x=1738345794;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lprcsEJqJA0BXBRgOLBnGo/4d0TSDe5lsDDbo6MJfjY=;
+ b=SxKS9UGwGsJOIzKsDVrFhXCEVQoVfSV2KgtgLVFK+DSPgUk+LQR09RWxnjwla3NiT+
+ CTb75BPD8gn/RIxBCaf6/TR2ofxiQRd1lH2D2SDZHoeuuTbLXR3t4TRsAUe3+gzwuK8w
+ vGi5bzKoHAVXjOTG1zg76K5buBvP0Pd+9PFkmyrIWSJc7svOld2tmDbxCHHHcoSuF9xY
+ TwvGpoErADObjmkTnTXdjPKTilSEcqgDh3KkM2XwTkm+vmBLpz/vkXun979p/cj3q52Y
+ K1Tg7YuuI2t7Cq4r1L06f3/Grla1mUvK5DCZ7kTQ9d3uXPOXQbRmIunPT/GjHIg+Mb6U
+ x47w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW1JOeGkdWrJ6CYULOlc4kQtnKDnq8rw6o/EgIMcBWhLqf0Q5rc4hqaCWQKHhYyphm8WosVEYxPjvnK@nongnu.org
+X-Gm-Message-State: AOJu0YykluADcaLG1z6BVQlvIRPym4bHv5z7wdOI+CbjLzQfMot/Dd/f
+ WPe3l5XXYvECQpSKJY+vkFROjRaGwZZOesNLhnwYs+LHFipU0jbIKmMboSjdNtA=
+X-Gm-Gg: ASbGncsrDWQ8tHEW8lz9Ysltwhc5pgAnoJ7Q6WaNcMK6sh5vNV1Y2e3wEPh8h82uLP/
+ wiTtf+K4js6ho12M3IBh6YTamaBR1lu+9I9eU9puHsQQJ18CyrJFNezaB8Zu+y5BNSbFV1s26Z2
+ 4iCAZtGxbz+A1O5MfiVn0ZfC8JYgTcpn3gsryJW7bog33WbXBEKaUL7YJ4fUDewUcv4sKaP/RxB
+ iFn1K1cA5TT/2c+pjkRPH9yxTJZYlugRKW86y9fnaVdxE0UaFwnq6sTNE2olA2uLeJM0p/yaW/Q
+ VcHKlg8aLDDEvQPlYYalCcpAvKh+XyZqooQo3dejJqKWUX4JbcWrif+7pQrutpDbtw==
+X-Google-Smtp-Source: AGHT+IHNnOk1zfZWM/6f3gH4mUbHpY6w8pktKT2uxF9mFZ+o4N7JimLKAlUMYLv5Pi8Rqfg0UhKdvw==
+X-Received: by 2002:a17:902:c946:b0:215:8f2e:eeda with SMTP id
+ d9443c01a7336-21c35609304mr426878185ad.52.1737740993836; 
+ Fri, 24 Jan 2025 09:49:53 -0800 (PST)
+Received: from ?IPV6:2607:fb90:c9e1:9829:9eed:533c:6788:9f4a?
+ ([2607:fb90:c9e1:9829:9eed:533c:6788:9f4a])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-21da3d9c9fdsm19325595ad.4.2025.01.24.09.49.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 24 Jan 2025 09:49:53 -0800 (PST)
+Message-ID: <c6850a53-8f19-4fb1-8117-a9a3589d3806@linaro.org>
+Date: Fri, 24 Jan 2025 09:49:50 -0800
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: QmcXeEd0ccAjetHlErWgwDxhDktokAse
-X-Proofpoint-GUID: QmcXeEd0ccAjetHlErWgwDxhDktokAse
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-24_07,2025-01-23_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0
- priorityscore=1501 impostorscore=0 clxscore=1015 lowpriorityscore=0
- bulkscore=0 mlxlogscore=999 mlxscore=0 malwarescore=0 spamscore=0
- suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2411120000 definitions=main-2501240125
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=nsg@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] hw/hppa: Support up to 256 GiB RAM on 64-bit machines
+To: deller@kernel.org, qemu-devel@nongnu.org
+Cc: Helge Deller <deller@gmx.de>
+References: <20250122180913.18667-1-deller@kernel.org>
+ <20250122180913.18667-2-deller@kernel.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250122180913.18667-2-deller@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,200 +102,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2025-01-15 at 14:31 +0100, Shalini Chellathurai Saroja wrote:
-> This commit adds the firmware control-program
-> identifiers received from a KVM guest via the
-> SCLP event type Control-Program Identification to QOM.
-> A timestamp in which the data is received is also
-> added to QOM.
->=20
-> Example:
-> virsh # qemu-monitor-command vm --pretty '{
-> "execute":"qom-get","arguments": {
-> "path": "/machine", "property": "s390-cpi"}}'
-> {
->   "return": {
->     "timestamp": 1711620874948254000,
->     "system-level": "0x50e00",
->     "sysplex-name": "SYSPLEX ",
->     "system-name": "TESTVM  ",
->     "system-type": "LINUX   "
->   },
->   "id": "libvirt-15"
-> }
->=20
-> Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+On 1/22/25 10:09, deller@kernel.org wrote:
+> From: Helge Deller <deller@gmx.de>
+> 
+> Allow up to 256 GB RAM, which is the maximum a rp8440 machine (the very
+> last 64-bit PA-RISC machine) physically supports.
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
 > ---
->  hw/s390x/s390-virtio-ccw.c         | 26 ++++++++++++++++++++++++++
->  hw/s390x/sclpcpi.c                 | 10 ++++++++++
->  include/hw/s390x/s390-virtio-ccw.h |  8 ++++++++
->  qapi/machine.json                  | 24 ++++++++++++++++++++++++
->  4 files changed, 68 insertions(+)
->=20
-> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-> index 38aeba14ee..35fb523af9 100644
-> --- a/hw/s390x/s390-virtio-ccw.c
-> +++ b/hw/s390x/s390-virtio-ccw.c
-> @@ -49,6 +49,7 @@
->  #include "hw/virtio/virtio-md-pci.h"
->  #include "hw/s390x/virtio-ccw-md.h"
->  #include CONFIG_DEVICES
-> +#include "qapi/qapi-visit-machine.h"
-> =20
->  static Error *pv_mig_blocker;
-> =20
-> @@ -773,6 +774,25 @@ static void machine_set_loadparm(Object *obj, Visito=
-r *v,
->      s390_ipl_fmt_loadparm(ms->loadparm, val, errp);
->  }
-> =20
-> +static void machine_get_cpi(Object *obj, Visitor *v,
-> +                             const char *name, void *opaque, Error **err=
-p)
-> +{
-> +    S390CcwMachineState *ms =3D S390_CCW_MACHINE(obj);
-> +    S390Cpi *cpi;
-> +    cpi =3D &(S390Cpi){
-> +        .system_type =3D g_strndup((char *) ms->cpi.system_type,
-> +                       sizeof(ms->cpi.system_type)),
-> +        .system_name =3D g_strndup((char *) ms->cpi.system_name,
-> +                       sizeof(ms->cpi.system_name)),
-> +        .system_level =3D g_strdup_printf("0x%lx", ms->cpi.system_level)=
-,
+>   hw/hppa/hppa_hardware.h |  2 ++
+>   hw/hppa/machine.c       | 26 +++++++++++++++++++-------
+>   2 files changed, 21 insertions(+), 7 deletions(-)
 
-Is there any way in which it would make sense for the qmp caller to
-interpret this as a number? If so exposing it as a number would be preferab=
-le.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-> +        .sysplex_name =3D g_strndup((char *) ms->cpi.sysplex_name,
-> +                        sizeof(ms->cpi.sysplex_name)),
-> +        .timestamp =3D ms->cpi.timestamp
-> +    };
-> +
-> +    visit_type_S390Cpi(v, name, &cpi, &error_abort);
-> +}
-> +
->  static void ccw_machine_class_init(ObjectClass *oc, void *data)
->  {
->      MachineClass *mc =3D MACHINE_CLASS(oc);
-> @@ -826,6 +846,12 @@ static void ccw_machine_class_init(ObjectClass *oc, =
-void *data)
->              "Up to 8 chars in set of [A-Za-z0-9. ] (lower case chars con=
-verted"
->              " to upper case) to pass to machine loader, boot manager,"
->              " and guest kernel");
-> +    object_class_property_add(oc, "s390-cpi", "S390Cpi",
-> +        machine_get_cpi, NULL, NULL, NULL);
-> +    object_class_property_set_description(oc, "s390-cpi",
-> +        "Control-progam identifiers provide data about the guest "
-> +        "operating system");
-> +
->  }
-> =20
->  static inline void s390_machine_initfn(Object *obj)
-> diff --git a/hw/s390x/sclpcpi.c b/hw/s390x/sclpcpi.c
-> index 64bc730f47..75101b8f61 100644
-> --- a/hw/s390x/sclpcpi.c
-> +++ b/hw/s390x/sclpcpi.c
-> @@ -20,8 +20,11 @@
->   */
-> =20
->  #include "qemu/osdep.h"
-> +#include "qemu/timer.h"
->  #include "hw/s390x/sclp.h"
->  #include "hw/s390x/event-facility.h"
-> +#include "hw/s390x/ebcdic.h"
-> +#include "hw/s390x/s390-virtio-ccw.h"
-> =20
->  typedef struct Data {
->      uint8_t id_format;
-> @@ -60,6 +63,13 @@ static sccb_mask_t receive_mask(void)
->  static int write_event_data(SCLPEvent *event, EventBufferHeader *evt_buf=
-_hdr)
->  {
->      CPI *cpi =3D container_of(evt_buf_hdr, CPI, ebh);
-> +    S390CcwMachineState *ms =3D S390_CCW_MACHINE(qdev_get_machine());
-> +
-> +    ascii_put(ms->cpi.system_type, (char *)cpi->data.system_type, 8);
-> +    ascii_put(ms->cpi.system_name, (char *)cpi->data.system_name, 8);
-> +    ascii_put(ms->cpi.sysplex_name, (char *)cpi->data.sysplex_name, 8);
-> +    ms->cpi.system_level =3D cpi->data.system_level;
-
-cpi is overlayed with the sccb copied from the guest, correct?
-So you need a endianess conversion here.
-
-> +    ms->cpi.timestamp =3D qemu_clock_get_ns(QEMU_CLOCK_HOST);
-> =20
->      cpi->ebh.flags =3D SCLP_EVENT_BUFFER_ACCEPTED;
->      return SCLP_RC_NORMAL_COMPLETION;
-> diff --git a/include/hw/s390x/s390-virtio-ccw.h b/include/hw/s390x/s390-v=
-irtio-ccw.h
-> index 686d9497d2..c4212ff857 100644
-> --- a/include/hw/s390x/s390-virtio-ccw.h
-> +++ b/include/hw/s390x/s390-virtio-ccw.h
-> @@ -19,6 +19,13 @@
-> =20
->  OBJECT_DECLARE_TYPE(S390CcwMachineState, S390CcwMachineClass, S390_CCW_M=
-ACHINE)
-> =20
-> +typedef struct Cpi {
-> +    uint8_t system_type[8];
-> +    uint8_t system_name[8];
-> +    uint64_t system_level;
-> +    uint8_t sysplex_name[8];
-> +    uint64_t timestamp;
-> +} QEMU_PACKED Cpi;
-
-I don't like there being a CPI and a Cpi struct. I'd just go ahead and inli=
-ne the
-definition into S390CcwMachineState and not name this type.
-> =20
->  struct S390CcwMachineState {
->      /*< private >*/
-> @@ -33,6 +40,7 @@ struct S390CcwMachineState {
->      uint64_t max_pagesize;
-> =20
->      SCLPDevice *sclp;
-> +    Cpi cpi;
->  };
-> =20
->  static inline uint64_t s390_get_memory_limit(S390CcwMachineState *s390ms=
-)
-> diff --git a/qapi/machine.json b/qapi/machine.json
-> index a6b8795b09..9dcd2790eb 100644
-> --- a/qapi/machine.json
-> +++ b/qapi/machine.json
-> @@ -1898,3 +1898,27 @@
->  { 'command': 'x-query-interrupt-controllers',
->    'returns': 'HumanReadableText',
->    'features': [ 'unstable' ]}
-> +
-> +##
-> +# @S390Cpi:
-
-Maybe spelling this out would be preferable?
-S390ControlProgramId?
-
-> +#
-> +# Control-program identifiers provide data about Linux instance.
-> +#
-> +# @system-type: operating system of Linux instance
-> +#
-> +# @system-name: system name of Linux instance
-> +#
-> +# @system-level: distribution and kernel version of Linux instance
-> +#
-> +# @sysplex-name: sysplex name of Linux instance
-> +#
-> +# @timestamp: latest update of CPI data
-> +#
-> +# Since: 9.2
-> +##
-> +{ 'struct': 'S390Cpi', 'data': {
-> +     'system-type': 'str',
-> +     'system-name': 'str',
-> +     'system-level': 'str',
-> +     'sysplex-name': 'str',
-> +     'timestamp': 'uint64' } }
-
+r~
 
