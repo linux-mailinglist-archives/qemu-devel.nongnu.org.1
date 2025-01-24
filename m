@@ -2,96 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77DFCA1B30A
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D9EA1B309
 	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:51:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbGHQ-0008O2-CK; Fri, 24 Jan 2025 04:47:13 -0500
+	id 1tbGIA-0004vX-Mh; Fri, 24 Jan 2025 04:47:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tbGFp-00074D-FE
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:45:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tbGFq-00077V-Vm
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:45:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tbGFk-0003u3-3t
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:45:29 -0500
+ id 1tbGFo-0003uV-3r
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:45:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737711927;
+ s=mimecast20190719; t=1737711929;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2JnJ4uWdXLKH0BSsQ/cswZ3Sl3lzRSubbNSrDL/OSsc=;
- b=IJ0+zQyqP4nt7ZT/McAfOfU0+yDlRsijfdJ8TzQcUXN+uqW39DQ9dxeQoedzDGQbGpL29c
- +33FNM4ZLiUdx6wDtfBMUntx27OEpON4lhiZvLCcKhduIKhhrXaal9G7GtehTN8rgPIi8P
- Wy31fqZT+OjAuxy+DhaqADqZZBPnW9w=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Iz+0oRL8E0Alsm18eGzwPgcS9Df+LzoBBQHD3AQeNAQ=;
+ b=ASczHboJXu+CgBtNq0LGYmT7We/reUwHzZLrBFtVl5YD1a8HQC3HgUaMGuSaxmqWgx9UW6
+ So80eW3lxJPuIJgjgs9BuAGw874A388cx4c+cF4D+k6uyOj0fsYUbzoZfQ+fP8U9kQRSxQ
+ vOI+BdSOu9OwtUqgATHG7GStOQXEWXE=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-187-o3gp6_WuNdCDUSH75oRt1A-1; Fri, 24 Jan 2025 04:45:25 -0500
-X-MC-Unique: o3gp6_WuNdCDUSH75oRt1A-1
-X-Mimecast-MFC-AGG-ID: o3gp6_WuNdCDUSH75oRt1A
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-385d7611ad3so1028618f8f.2
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 01:45:25 -0800 (PST)
+ us-mta-620-ZszoNrUbMyK3FqjLb10pYQ-1; Fri, 24 Jan 2025 04:45:27 -0500
+X-MC-Unique: ZszoNrUbMyK3FqjLb10pYQ-1
+X-Mimecast-MFC-AGG-ID: ZszoNrUbMyK3FqjLb10pYQ
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-436248d1240so8883855e9.0
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 01:45:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737711923; x=1738316723;
+ d=1e100.net; s=20230601; t=1737711926; x=1738316726;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2JnJ4uWdXLKH0BSsQ/cswZ3Sl3lzRSubbNSrDL/OSsc=;
- b=fI9WaGXarkiSarFvs9AE9ExkTjE8FbuGfDg2f73KVLcb0hztVM9c1v9jh3x3tIP9Lo
- RYXlt9VMHQRitGrDyTYuD0Ab848wwjOtIzJIkGGcQz5+qQtTDWfF1c3CXyjj+tk3f5nE
- WkWogN1TsPJ/JHfM/hdSHTBdpWckxDbD5PLJq05uyA2qU+3+hTHYlluYDpOF6A18H6kX
- wlzwhJYhdc8xFs4Us/Pzu9gH+vbiLMn16MhpMb5xtz2xQbksbd1/oEzoEo6G7xlxnTQ7
- RWL+9ttsW0oHdNVx6jF9S1hG24dRvAYYWh/ZHWBr5bC0QfMcOkxDPsZN58H1z7tg1iWa
- by+w==
-X-Gm-Message-State: AOJu0Yy6PnuPa1bfCNqOoQFar2kZgULHoYwbqvGfw63t87trl3b+zBxr
- d66Um6swzJy8+ermiiiN4ktx/WgcnuZtPjTqpEZsVFb5Z8T0VaZcjwWIQryey/3MTep6qVc2Z0z
- psj+wJ0m9eahI0F6rHx6EKE390UheUMvhqBxUWXje9/VqvqvJ4HAIbiShha51ZoP1kVn3GT36RX
- 2RjTaVSdA9awY23ZJ1gY2G2stzlJ34tKrMekZtbmM=
-X-Gm-Gg: ASbGncs9Qb5tIa+Dvr7mw5cFQslpGuY2xxXJyzTyRPnVZGitGR/ymOLTwWvIMJGVHYX
- YmcTPeQDXEMfTNuHlwxhLhpeSobbc/9juODb/4TmyUSzp2ReqMklySsDgdsJIVYq47bQ69ZxTbf
- ZnifIftA0hG2qxv9e545Q/wMgb+uTj29UJq9U0fyQ84hOmIAahL/a4Pf4SW0n2Z1o4j64ysdZ/N
- 2CIaeo3VfdkJlZRygzlnTAk3u977Dz6jeVIxNFUWa4o8GqhrXRfbEuSXKnc94TmLyhQoX5g4g==
-X-Received: by 2002:a05:6000:1a8c:b0:38b:ed6f:f00f with SMTP id
- ffacd0b85a97d-38bf56635a1mr25565338f8f.17.1737711923231; 
- Fri, 24 Jan 2025 01:45:23 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFvviF5m5Le9uIdKQug3cLYtChw3LC78akqAs4EDVOcfJv4Ook5jum8vK/EBgn/itTU+PobvA==
-X-Received: by 2002:a05:6000:1a8c:b0:38b:ed6f:f00f with SMTP id
- ffacd0b85a97d-38bf56635a1mr25565307f8f.17.1737711922794; 
- Fri, 24 Jan 2025 01:45:22 -0800 (PST)
+ bh=Iz+0oRL8E0Alsm18eGzwPgcS9Df+LzoBBQHD3AQeNAQ=;
+ b=K5EiCTLQox/BlZ01qK34+3T9XP99TkG9/PVnKtholS6+4qdlWDIOvgbbzYHfLFwbKm
+ z90dT/BKcc3dSomkOzeR7DYJPNCebAttxApFaAl+EnykjPfmOX1I1cylEJBGuLspR+4A
+ HYb2DSOxb0+oyiZ0e2SPrQ725CLsaD36oOYazIwuR06d+PY+KT/CejUM8P9y3eRNv+EA
+ OBpsOPDknIX4DTs77MntTvbcYagpqUJSoYuzUbJ78lOwHvNHQCxOdRtH08nmSS9EHcn1
+ PDDxcf31VzrHu+0jq0GbEQHlvJ5NcxDTy1jMgxfMlLq6rYuw/joGMFTj56VnR9qj49VD
+ zv7w==
+X-Gm-Message-State: AOJu0Ywqv3cN+I8p4wc3BeSwUdpQBiFp/eC4H/USFbqFuTsZz9cs3EVi
+ G4W6JrCvUTzZQGkx1/ighSmTgp85+91caDNGOI1q7c4wsGzC2oGlJQceXDfRK6zmd48xdoLRd9t
+ Aa0dUqhFPFDJKbZlDMVIitIT+mbu2l5ANtlypXkPK+EI0I6mvdUdaqS8CTzHGf25dbvQmdLTv2r
+ g0oalJg1xkqUAhs+ElCgP1qnztEJzfwYVnL339QuU=
+X-Gm-Gg: ASbGncunFNpHuVicyIl6lHLpmIzq9U4hnGfzq3MgDEaJ0yoxdMjHCmmTYCzt2l4WQgi
+ 8IfSw25QSp8IURko2gsrwyjjsPKoZPOgfzJaErSAQUuLF63M0j2+5XDcdOIU6Ixst15hRMihWwz
+ RBGlIjczCJt2dkRL8S+WMx2htAsnF+Ftd3O+c8ydafHfhiR0M7dcrL9nD9PllsNMKGnqTxIdzVU
+ mZoUM2bxEZYb9+ShMznXQGl8m//SbsjpriCS15b3Cd0AVu1XV+dZIB515tgb3/UbFY1o2ygkg==
+X-Received: by 2002:a05:600c:870a:b0:436:e8b4:3cde with SMTP id
+ 5b1f17b1804b1-438913ded64mr303096405e9.14.1737711925891; 
+ Fri, 24 Jan 2025 01:45:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEXSpC+4KZA/BzRCnAv813raC+gdiYw1Sf975YdvHjOWehdfDkA3Vx3ttAodIR60iz3neIHug==
+X-Received: by 2002:a05:600c:870a:b0:436:e8b4:3cde with SMTP id
+ 5b1f17b1804b1-438913ded64mr303096165e9.14.1737711925520; 
+ Fri, 24 Jan 2025 01:45:25 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.59.125])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438b1da8d4asm47818215e9.3.2025.01.24.01.45.21
+ 5b1f17b1804b1-438bd47f120sm21133505e9.2.2025.01.24.01.45.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 01:45:21 -0800 (PST)
+ Fri, 24 Jan 2025 01:45:24 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>,
-	qemu-stable@nongnu.org
-Subject: [PULL 20/48] stub: Fix build failure with --enable-user
- --disable-system --enable-tools
-Date: Fri, 24 Jan 2025 10:44:14 +0100
-Message-ID: <20250124094442.13207-21-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 21/48] rust/qdev: Make REALIZE safe
+Date: Fri, 24 Jan 2025 10:44:15 +0100
+Message-ID: <20250124094442.13207-22-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250124094442.13207-1-pbonzini@redhat.com>
 References: <20250124094442.13207-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
 X-Spam_bar: -----
 X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.043,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,45 +107,79 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Configuring "--enable-user --disable-system --enable-tools" causes the
-build failure with the following information:
+A safe REALIZE accepts immutable reference.
 
-/usr/bin/ld: libhwcore.a.p/hw_core_qdev.c.o: in function `device_finalize':
-/qemu/build/../hw/core/qdev.c:688: undefined reference to `qapi_event_send_device_deleted'
-collect2: error: ld returned 1 exit status
+Since current PL011's realize() only calls a char binding function (
+qemu_chr_fe_set_handlers), it is possible to convert mutable reference
+(&mut self) to immutable reference (&self), which only needs to convert
+the pointers passed to C to mutable pointers.
 
-To fix the above issue, add qdev.c stub when build with `have_tools`.
+Thus, make REALIZE accept immutable reference.
 
-With this fix, QEMU could be successfully built in the following cases:
- --enable-user --disable-system --enable-tools
- --enable-user --disable-system --disable-tools
- --enable-user --disable-system
-
-Cc: qemu-stable@nongnu.org
-Fixes: 388b849fb6c3 ("stubs: avoid duplicate symbols in libqemuutil.a")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2766
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250121154318.214680-1-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20250121140457.84631-2-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- stubs/meson.build | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ rust/hw/char/pl011/src/device.rs | 10 +++++-----
+ rust/qemu-api/src/qdev.rs        |  2 +-
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/stubs/meson.build b/stubs/meson.build
-index e91614a874d..a8b3aeb5645 100644
---- a/stubs/meson.build
-+++ b/stubs/meson.build
-@@ -57,8 +57,8 @@ if have_user
-   stub_ss.add(files('cpu-synchronize-state.c'))
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index 65a1234b9ff..a0e0fbdd9dd 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -2,7 +2,7 @@
+ // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ // SPDX-License-Identifier: GPL-2.0-or-later
  
-   # Stubs for QAPI events.  Those can always be included in the build, but
--  # they are not built at all for --disable-system --disable-tools builds.
--  if not (have_system or have_tools)
-+  # they are not built at all for --disable-system builds.
-+  if not have_system
-     stub_ss.add(files('qdev.c'))
-   endif
- endif
+-use core::ptr::{addr_of_mut, NonNull};
++use core::ptr::{addr_of, addr_of_mut, NonNull};
+ use std::{
+     ffi::CStr,
+     os::raw::{c_int, c_uint, c_void},
+@@ -156,7 +156,7 @@ fn properties() -> &'static [Property] {
+     fn vmsd() -> Option<&'static VMStateDescription> {
+         Some(&device_class::VMSTATE_PL011)
+     }
+-    const REALIZE: Option<fn(&mut Self)> = Some(Self::realize);
++    const REALIZE: Option<fn(&Self)> = Some(Self::realize);
+     const RESET: Option<fn(&mut Self)> = Some(Self::reset);
+ }
+ 
+@@ -439,17 +439,17 @@ fn set_read_trigger(&mut self) {
+         self.read_trigger = 1;
+     }
+ 
+-    pub fn realize(&mut self) {
++    pub fn realize(&self) {
+         // SAFETY: self.char_backend has the correct size and alignment for a
+         // CharBackend object, and its callbacks are of the correct types.
+         unsafe {
+             qemu_chr_fe_set_handlers(
+-                addr_of_mut!(self.char_backend),
++                addr_of!(self.char_backend) as *mut CharBackend,
+                 Some(pl011_can_receive),
+                 Some(pl011_receive),
+                 Some(pl011_event),
+                 None,
+-                addr_of_mut!(*self).cast::<c_void>(),
++                addr_of!(*self).cast::<c_void>() as *mut c_void,
+                 core::ptr::null_mut(),
+                 true,
+             );
+diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
+index 686054e737a..a5121e31a37 100644
+--- a/rust/qemu-api/src/qdev.rs
++++ b/rust/qemu-api/src/qdev.rs
+@@ -23,7 +23,7 @@ pub trait DeviceImpl {
+     ///
+     /// If not `None`, the parent class's `realize` method is overridden
+     /// with the function pointed to by `REALIZE`.
+-    const REALIZE: Option<fn(&mut Self)> = None;
++    const REALIZE: Option<fn(&Self)> = None;
+ 
+     /// If not `None`, the parent class's `reset` method is overridden
+     /// with the function pointed to by `RESET`.
 -- 
 2.48.1
 
