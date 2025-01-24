@@ -2,96 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CCDAA1BD56
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 21:22:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E526A1BD94
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 21:40:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbQBH-0005zh-9e; Fri, 24 Jan 2025 15:21:31 -0500
+	id 1tbQSQ-0001EV-RJ; Fri, 24 Jan 2025 15:39:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1tbQBC-0005z6-UJ; Fri, 24 Jan 2025 15:21:27 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tbQSK-0001ED-GC
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 15:39:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1tbQBB-0007VQ-9P; Fri, 24 Jan 2025 15:21:26 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50OE7SrV013657;
- Fri, 24 Jan 2025 20:21:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=NII/m0+w8LENNtgiu
- Tvt8egbTvpDrOvix91BexPidR8=; b=Xj0oe5EoNXqqQtFWqh7pbdDzNjGiB/fn+
- DRIGkYwFyDrxZhMrzaHxx+TVPL6ZOLvCU9cDBWnU3/L8BNt6MvXLeQz+KcZUa1iN
- PL1zLDLGl4npJz87+O3xJFebQcl/2ZVJPmHPEV0Xk5RK7pRkwN4Gh0lAKH5YEeqi
- jHcleGmlToIPJsVqCze1e9mpoDUTjWGoA9H0H818zxhyYRnZiFwJRYQP3HZ6f5SX
- dYG+hcBlGJAasAEZ/rVsEs24ZjdiHDqnu+6s+aSehqN/pANJy+KJMQv/XxvGQS+B
- o5KGSCshU9be52+z05JZJojVqfMRKzsf8zQTCCrMVz+UVX3GhcFvA==
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44c4p7vpcc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Jan 2025 20:21:19 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50OIMHfb019287;
- Fri, 24 Jan 2025 20:21:19 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 448pmswfc3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Jan 2025 20:21:19 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
- [10.241.53.104])
- by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 50OKLIbH27394770
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 24 Jan 2025 20:21:18 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 20A1458065;
- Fri, 24 Jan 2025 20:21:18 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 512E358056;
- Fri, 24 Jan 2025 20:21:17 +0000 (GMT)
-Received: from li-2311da4c-2e09-11b2-a85c-c003041e9174.ibm.com.com (unknown
- [9.61.77.196]) by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 24 Jan 2025 20:21:17 +0000 (GMT)
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-To: qemu-s390x@nongnu.org
-Cc: farman@linux.ibm.com, schnelle@linux.ibm.com, thuth@redhat.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- clegoate@redhat.com, qemu-devel@nongnu.org
-Subject: [PATCH v3 2/2] s390x/pci: indicate QEMU supports relaxed translation
- for passthrough
-Date: Fri, 24 Jan 2025 15:21:15 -0500
-Message-ID: <20250124202115.349386-3-mjrosato@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250124202115.349386-1-mjrosato@linux.ibm.com>
-References: <20250124202115.349386-1-mjrosato@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tbQSI-0000tI-14
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 15:39:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737751143;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=eG5bWqHH+c4d1MtsT+f8vW1Jd1n6ncZRfUeGbKS71TY=;
+ b=YqNAcGYymRju6Ksz84cLXTuwPj+/Z1ij54gwNe5pZYJthlK/4MLa+Nifa+PetmlHhcxFTi
+ +eXjedVFJ0lHgym1/5Xlt7lmLl41ZdANJ4Ome5YRdEfreZSwDA+vBAFd3Y3boChi7pmI3S
+ yRYZzUJYjIczZPtySqoGtmeFS16xKL0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-99-koZx3QhcNiGUYoM5z_txnQ-1; Fri, 24 Jan 2025 15:38:38 -0500
+X-MC-Unique: koZx3QhcNiGUYoM5z_txnQ-1
+X-Mimecast-MFC-AGG-ID: koZx3QhcNiGUYoM5z_txnQ
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-385dcae001fso1003938f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 12:38:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737751116; x=1738355916;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=eG5bWqHH+c4d1MtsT+f8vW1Jd1n6ncZRfUeGbKS71TY=;
+ b=QPU9TbO1WP5kwHUlohCAsaQQ2wPdYEiLj/BTe8/AzQfIdSE/FZp68ToAShawH7xe5G
+ Q2B2fhA/lewbFhQ7V7kcF417XfgBQxKF4zDcx7X6dVCAL4BQa5EjoZm1kig0okaidzrk
+ bKQadFlJJG1AnqRT4eZWQQ4NNBQn/ywILv6J3ULPrQx+v/4lAg+Kx/P9TFJ2aiNP0i5O
+ r3ZO7JLNxptt4sdxidqqsbICXJtFb781nCI4xA5OdrkUFGbfwIu0/0umrE5YnM2KP9Vx
+ Vx1IoRb1s/x3OImprSgOBMjUPtsfzOJ08f9/wlss1b0VMY6nty38cCbcVe5+Cv531AwQ
+ L9kw==
+X-Gm-Message-State: AOJu0YzMXE2hnw0xWRS87FRt875vcehzWbVJmXKyMCW7WL6GaZfO0dI1
+ FCFTOrBnqPi9unVhAjrWhx1mRSZDQrYiEuQokir0qnhuxIL8Qc+qcsITOZHAQbsNO/xo7W5EeKR
+ PuLmwKAZGFoRVMMvOIaMBxwDZkIa+ffkOgOqr1OLQaKdrwPbYLc65CU1jgnshuO+UD4ZgYhS14z
+ X8ujYtqQhm1D9X1XkJC9iC7jv6KySaXMHw8KfxXA==
+X-Gm-Gg: ASbGncvU1zIhdbGxbdS7bD+XJeLIHbe9zUcAInQ5Ure2Mw5rZp3bIXZ8Co9W5xz7SLs
+ Nv2JVuGkUv9jBUpHPNHHeCt6NXQaa7vEWMnyzDlYXFR1a3t01dCU=
+X-Received: by 2002:a5d:6b8b:0:b0:38a:8b2c:53ac with SMTP id
+ ffacd0b85a97d-38bf57b3fe9mr21523285f8f.42.1737751116596; 
+ Fri, 24 Jan 2025 12:38:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF8zYQ+dRFOzc5c4EvsgVByC99ebPcKEt/rE74XtBzdgN8l6K1zxWzuZNKBA/OwvGDHzeG3it6SBBorvPoSVvw=
+X-Received: by 2002:a5d:6b8b:0:b0:38a:8b2c:53ac with SMTP id
+ ffacd0b85a97d-38bf57b3fe9mr21523263f8f.42.1737751116135; Fri, 24 Jan 2025
+ 12:38:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 9wv69QzFosyTPxyEE41v6TARujfum3AY
-X-Proofpoint-ORIG-GUID: 9wv69QzFosyTPxyEE41v6TARujfum3AY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-24_08,2025-01-23_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 mlxscore=0
- priorityscore=1501 adultscore=0 phishscore=0 clxscore=1015
- lowpriorityscore=0 mlxlogscore=982 bulkscore=0 malwarescore=0
- suspectscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501240137
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=mjrosato@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20250124094442.13207-1-pbonzini@redhat.com>
+ <CAJSP0QXMO8WX1iPKqqfTK7LyDX1kWmgaSbDBVfE6V8go7Vr5WA@mail.gmail.com>
+In-Reply-To: <CAJSP0QXMO8WX1iPKqqfTK7LyDX1kWmgaSbDBVfE6V8go7Vr5WA@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 24 Jan 2025 21:38:24 +0100
+X-Gm-Features: AWEUYZnC92OiEBXQ51AvAQdaAwBelIg-MKTMeMALlWwUdUquf8l6DADujsNM-YE
+Message-ID: <CABgObfZA9jJCUBwFCOPdoxaKbekmUefKnrWxf-pQyspgd7Jo5w@mail.gmail.com>
+Subject: Re: [PULL 00/48] i386, rust changes for 2024-01-24
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>
+Content-Type: multipart/alternative; boundary="000000000000fc5f66062c79b514"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, HTML_OBFUSCATE_05_10=0.26, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,46 +100,302 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Specifying this bit in the guest CLP response indicates that the guest
-can optionally choose to skip translation and instead use
-identity-mapped operations.
+--000000000000fc5f66062c79b514
+Content-Type: text/plain; charset="UTF-8"
 
-Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
----
- hw/s390x/s390-pci-vfio.c        | 5 ++++-
- include/hw/s390x/s390-pci-clp.h | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+Il ven 24 gen 2025, 20:05 Stefan Hajnoczi <stefanha@gmail.com> ha scritto:
 
-diff --git a/hw/s390x/s390-pci-vfio.c b/hw/s390x/s390-pci-vfio.c
-index dad525c81c..69543d1ca8 100644
---- a/hw/s390x/s390-pci-vfio.c
-+++ b/hw/s390x/s390-pci-vfio.c
-@@ -230,8 +230,11 @@ static void s390_pci_read_group(S390PCIBusDevice *pbdev,
-         pbdev->pci_group = s390_group_create(pbdev->zpci_fn.pfgid, start_gid);
- 
-         resgrp = &pbdev->pci_group->zpci_group;
-+        if (pbdev->rtr_allowed) {
-+            resgrp->fr |= CLP_RSP_QPCIG_MASK_RTR;
-+        }
-         if (cap->flags & VFIO_DEVICE_INFO_ZPCI_FLAG_REFRESH) {
--            resgrp->fr = 1;
-+            resgrp->fr |= CLP_RSP_QPCIG_MASK_REFRESH;
-         }
-         resgrp->dasm = cap->dasm;
-         resgrp->msia = cap->msi_addr;
-diff --git a/include/hw/s390x/s390-pci-clp.h b/include/hw/s390x/s390-pci-clp.h
-index 03b7f9ba5f..6a635d693b 100644
---- a/include/hw/s390x/s390-pci-clp.h
-+++ b/include/hw/s390x/s390-pci-clp.h
-@@ -158,6 +158,7 @@ typedef struct ClpRspQueryPciGrp {
- #define CLP_RSP_QPCIG_MASK_NOI 0xfff
-     uint16_t i;
-     uint8_t version;
-+#define CLP_RSP_QPCIG_MASK_RTR     0x20
- #define CLP_RSP_QPCIG_MASK_FRAME   0x2
- #define CLP_RSP_QPCIG_MASK_REFRESH 0x1
-     uint8_t fr;
--- 
-2.48.1
+> Hi Paolo,
+> Please take a look at this failure and send a v2 pull request, if
+> necessary:
+>
+> thread '<unnamed>' panicked at 'already borrowed',
+> rust/qemu-api/libqemu_api.rlib.p/structured/cell.rs:450:5
+> note: run with `RUST_BACKTRACE=1` environment variable to display a
+> backtrace
+> fatal runtime error: failed to initiate panic, error 5
+>
+> https://gitlab.com/qemu-project/qemu/-/jobs/8946857796
+
+
+Yes, it's a real bug.
+
+Paolo
+
+
+>
+> Thanks,
+> Stefan
+>
+> >
+> > ----------------------------------------------------------------
+> > Paolo Bonzini (39):
+> >       rust: pl011: fix repr(C) for PL011Class
+> >       target/i386: inline gen_jcc into sole caller
+> >       target/i386: remove trailing 1 from gen_{j, cmov, set}cc1
+> >       target/i386: unify REP and REPZ/REPNZ generation
+> >       target/i386: unify choice between single and repeated string
+> instructions
+> >       target/i386: reorganize ops emitted by do_gen_rep, drop repz_opt
+> >       target/i386: tcg: move gen_set/reset_* earlier in the file
+> >       target/i386: fix RF handling for string instructions
+> >       target/i386: make cc_op handling more explicit for repeated string
+> instructions.
+> >       target/i386: do not use gen_op_jz_ecx for repeated string
+> operations
+> >       target/i386: optimize CX handling in repeated string operations
+> >       target/i386: execute multiple REP/REPZ iterations without leaving
+> TB
+> >       target/i386: pull computation of string update value out of loop
+> >       target/i386: extract common bits of gen_repz/gen_repz_nz
+> >       target/i386: avoid using s->tmp0 for add to implicit registers
+> >       rust: vmstate: add new type safe implementation
+> >       rust: vmstate: implement VMState for non-leaf types
+> >       rust: vmstate: add varray support to vmstate_of!
+> >       rust: vmstate: implement Zeroable for VMStateField
+> >       rust: vmstate: implement VMState for scalar types
+> >       rust: vmstate: add public utility macros to implement VMState
+> >       rust: qemu_api: add vmstate_struct
+> >       rust: pl011: switch vmstate to new-style macros
+> >       rust: vmstate: remove translation of C vmstate macros
+> >       rust: vmstate: make order of parameters consistent in vmstate_clock
+> >       rust: prefer NonNull::new to assertions
+> >       rust: pl011: remove unnecessary "extern crate"
+> >       rust: pl011: hide unnecessarily "pub" items from outside
+> pl011::device
+> >       rust: pl011: extract conversion to RegisterOffset
+> >       rust: pl011: extract CharBackend receive logic into a separate
+> function
+> >       rust: pl011: pull interrupt updates out of read/write ops
+> >       rust: pl011: extract PL011Registers
+> >       rust: pl011: wrap registers with BqlRefCell
+> >       rust: pl011: remove duplicate definitions
+> >       rust: pl011: pull device-specific code out of MemoryRegionOps
+> callbacks
+> >       rust: pl011: drop use of ControlFlow
+> >       rust: qdev: make reset take a shared reference
+> >       rust/zeroable: Implement Zeroable with const_zero macro
+> >       rust: qemu-api: add sub-subclass to the integration tests
+> >
+> > Tao Su (4):
+> >       target/i386: Introduce SierraForest-v2 model
+> >       target/i386: Export BHI_NO bit to guests
+> >       target/i386: Add new CPU model ClearwaterForest
+> >       docs: Add GNR, SRF and CWF CPU models
+> >
+> > Zhao Liu (5):
+> >       stub: Fix build failure with --enable-user --disable-system
+> --enable-tools
+> >       rust/qdev: Make REALIZE safe
+> >       rust/pl011: Avoid bindings::*
+> >       memattrs: Convert unspecified member to bool
+> >       memattrs: Check the size of MemTxAttrs
+> >
+> >  docs/system/cpu-models-x86.rst.inc     |  50 ++-
+> >  include/exec/memattrs.h                |  21 +-
+> >  target/i386/cpu.h                      |  33 +-
+> >  target/i386/cpu.c                      | 156 +++++++-
+> >  target/i386/tcg/translate.c            | 363 ++++++++++-------
+> >  target/i386/tcg/emit.c.inc             |  55 +--
+> >  rust/hw/char/pl011/src/device.rs       | 489 +++++++++++++----------
+> >  rust/hw/char/pl011/src/device_class.rs |  73 ++--
+> >  rust/hw/char/pl011/src/lib.rs          |  67 ++--
+> >  rust/hw/char/pl011/src/memory_ops.rs   |  25 +-
+> >  rust/qemu-api/src/prelude.rs           |   2 +
+> >  rust/qemu-api/src/qdev.rs              |  16 +-
+> >  rust/qemu-api/src/qom.rs               |  21 +-
+> >  rust/qemu-api/src/vmstate.rs           | 700
+> +++++++++++++++++++++------------
+> >  rust/qemu-api/src/zeroable.rs          | 118 +++---
+> >  rust/qemu-api/tests/tests.rs           |  56 ++-
+> >  stubs/meson.build                      |   4 +-
+> >  17 files changed, 1403 insertions(+), 846 deletions(-)
+> > --
+> > 2.48.1
+> >
+> >
+>
+>
+
+--000000000000fc5f66062c79b514
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
+ner"><div dir=3D"ltr" class=3D"gmail_attr">Il ven 24 gen 2025, 20:05 Stefan=
+ Hajnoczi &lt;<a href=3D"mailto:stefanha@gmail.com">stefanha@gmail.com</a>&=
+gt; ha scritto:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:=
+0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">=
+Hi Paolo,<br>
+Please take a look at this failure and send a v2 pull request, if necessary=
+:<br>
+<br>
+thread &#39;&lt;unnamed&gt;&#39; panicked at &#39;already borrowed&#39;,<br=
+>
+rust/qemu-api/libqemu_api.rlib.p/structured/<a href=3D"http://cell.rs:450" =
+target=3D"_blank" rel=3D"noreferrer">cell.rs:450</a>:5<br>
+note: run with `RUST_BACKTRACE=3D1` environment variable to display a backt=
+race<br>
+fatal runtime error: failed to initiate panic, error 5<br>
+<br>
+<a href=3D"https://gitlab.com/qemu-project/qemu/-/jobs/8946857796" rel=3D"n=
+oreferrer noreferrer" target=3D"_blank">https://gitlab.com/qemu-project/qem=
+u/-/jobs/8946857796</a></blockquote></div></div><div dir=3D"auto"><br></div=
+><div dir=3D"auto">Yes, it&#39;s a real bug.</div><div dir=3D"auto"><br></d=
+iv><div dir=3D"auto">Paolo</div><div dir=3D"auto"><br></div><div dir=3D"aut=
+o"><div class=3D"gmail_quote gmail_quote_container"><blockquote class=3D"gm=
+ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
+204,204);padding-left:1ex"><br>
+<br>
+Thanks,<br>
+Stefan<br>
+<br>
+&gt;<br>
+&gt; ----------------------------------------------------------------<br>
+&gt; Paolo Bonzini (39):<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: pl011: fix repr(C) for PL011Class<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0target/i386: inline gen_jcc into sole caller=
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0target/i386: remove trailing 1 from gen_{j, =
+cmov, set}cc1<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0target/i386: unify REP and REPZ/REPNZ genera=
+tion<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0target/i386: unify choice between single and=
+ repeated string instructions<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0target/i386: reorganize ops emitted by do_ge=
+n_rep, drop repz_opt<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0target/i386: tcg: move gen_set/reset_* earli=
+er in the file<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0target/i386: fix RF handling for string inst=
+ructions<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0target/i386: make cc_op handling more explic=
+it for repeated string instructions.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0target/i386: do not use gen_op_jz_ecx for re=
+peated string operations<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0target/i386: optimize CX handling in repeate=
+d string operations<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0target/i386: execute multiple REP/REPZ itera=
+tions without leaving TB<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0target/i386: pull computation of string upda=
+te value out of loop<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0target/i386: extract common bits of gen_repz=
+/gen_repz_nz<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0target/i386: avoid using s-&gt;tmp0 for add =
+to implicit registers<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: vmstate: add new type safe implementat=
+ion<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: vmstate: implement VMState for non-lea=
+f types<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: vmstate: add varray support to vmstate=
+_of!<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: vmstate: implement Zeroable for VMStat=
+eField<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: vmstate: implement VMState for scalar =
+types<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: vmstate: add public utility macros to =
+implement VMState<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: qemu_api: add vmstate_struct<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: pl011: switch vmstate to new-style mac=
+ros<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: vmstate: remove translation of C vmsta=
+te macros<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: vmstate: make order of parameters cons=
+istent in vmstate_clock<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: prefer NonNull::new to assertions<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: pl011: remove unnecessary &quot;extern=
+ crate&quot;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: pl011: hide unnecessarily &quot;pub&qu=
+ot; items from outside pl011::device<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: pl011: extract conversion to RegisterO=
+ffset<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: pl011: extract CharBackend receive log=
+ic into a separate function<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: pl011: pull interrupt updates out of r=
+ead/write ops<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: pl011: extract PL011Registers<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: pl011: wrap registers with BqlRefCell<=
+br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: pl011: remove duplicate definitions<br=
+>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: pl011: pull device-specific code out o=
+f MemoryRegionOps callbacks<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: pl011: drop use of ControlFlow<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: qdev: make reset take a shared referen=
+ce<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust/zeroable: Implement Zeroable with const=
+_zero macro<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust: qemu-api: add sub-subclass to the inte=
+gration tests<br>
+&gt;<br>
+&gt; Tao Su (4):<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0target/i386: Introduce SierraForest-v2 model=
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0target/i386: Export BHI_NO bit to guests<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0target/i386: Add new CPU model ClearwaterFor=
+est<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0docs: Add GNR, SRF and CWF CPU models<br>
+&gt;<br>
+&gt; Zhao Liu (5):<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0stub: Fix build failure with --enable-user -=
+-disable-system --enable-tools<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust/qdev: Make REALIZE safe<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0rust/pl011: Avoid bindings::*<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0memattrs: Convert unspecified member to bool=
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0memattrs: Check the size of MemTxAttrs<br>
+&gt;<br>
+&gt;=C2=A0 docs/system/cpu-models-x86.rst.inc=C2=A0 =C2=A0 =C2=A0|=C2=A0 50=
+ ++-<br>
+&gt;=C2=A0 include/exec/memattrs.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 |=C2=A0 21 +-<br>
+&gt;=C2=A0 target/i386/cpu.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 33 +-<br>
+&gt;=C2=A0 target/i386/cpu.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 156 +++++++-<br>
+&gt;=C2=A0 target/i386/tcg/translate.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 | 363 ++++++++++-------<br>
+&gt;=C2=A0 target/i386/tcg/emit.c.inc=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0|=C2=A0 55 +--<br>
+&gt;=C2=A0 rust/hw/char/pl011/src/<a href=3D"http://device.rs" rel=3D"noref=
+errer noreferrer" target=3D"_blank">device.rs</a>=C2=A0 =C2=A0 =C2=A0 =C2=
+=A0| 489 +++++++++++++----------<br>
+&gt;=C2=A0 rust/hw/char/pl011/src/<a href=3D"http://device_class.rs" rel=3D=
+"noreferrer noreferrer" target=3D"_blank">device_class.rs</a> |=C2=A0 73 ++=
+--<br>
+&gt;=C2=A0 rust/hw/char/pl011/src/<a href=3D"http://lib.rs" rel=3D"noreferr=
+er noreferrer" target=3D"_blank">lib.rs</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 |=C2=A0 67 ++--<br>
+&gt;=C2=A0 rust/hw/char/pl011/src/<a href=3D"http://memory_ops.rs" rel=3D"n=
+oreferrer noreferrer" target=3D"_blank">memory_ops.rs</a>=C2=A0 =C2=A0|=C2=
+=A0 25 +-<br>
+&gt;=C2=A0 rust/qemu-api/src/<a href=3D"http://prelude.rs" rel=3D"noreferre=
+r noreferrer" target=3D"_blank">prelude.rs</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0|=C2=A0 =C2=A02 +<br>
+&gt;=C2=A0 rust/qemu-api/src/<a href=3D"http://qdev.rs" rel=3D"noreferrer n=
+oreferrer" target=3D"_blank">qdev.rs</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 |=C2=A0 16 +-<br>
+&gt;=C2=A0 rust/qemu-api/src/<a href=3D"http://qom.rs" rel=3D"noreferrer no=
+referrer" target=3D"_blank">qom.rs</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0|=C2=A0 21 +-<br>
+&gt;=C2=A0 rust/qemu-api/src/<a href=3D"http://vmstate.rs" rel=3D"noreferre=
+r noreferrer" target=3D"_blank">vmstate.rs</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0| 700 +++++++++++++++++++++------------<br>
+&gt;=C2=A0 rust/qemu-api/src/<a href=3D"http://zeroable.rs" rel=3D"noreferr=
+er noreferrer" target=3D"_blank">zeroable.rs</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 | 118 +++---<br>
+&gt;=C2=A0 rust/qemu-api/tests/<a href=3D"http://tests.rs" rel=3D"noreferre=
+r noreferrer" target=3D"_blank">tests.rs</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0|=C2=A0 56 ++-<br>
+&gt;=C2=A0 stubs/meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A04 +-<br>
+&gt;=C2=A0 17 files changed, 1403 insertions(+), 846 deletions(-)<br>
+&gt; --<br>
+&gt; 2.48.1<br>
+&gt;<br>
+&gt;<br>
+<br>
+</blockquote></div></div></div>
+
+--000000000000fc5f66062c79b514--
 
 
