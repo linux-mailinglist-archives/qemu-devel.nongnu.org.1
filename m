@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71E00A1B2E9
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:47:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D558A1B315
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:52:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbGHa-0001IT-VM; Fri, 24 Jan 2025 04:47:23 -0500
+	id 1tbGHi-0001tu-Jt; Fri, 24 Jan 2025 04:47:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tbGGI-0007dW-Nj
+ id 1tbGGJ-0007do-9h
  for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:46:04 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tbGGG-0003xu-LV
+ id 1tbGGH-0003y5-FB
  for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:46:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737711959;
+ s=mimecast20190719; t=1737711960;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GX5ZXSWUGkXS8f5Sw6QjzbC9hARnbnbxThpUdHGomPY=;
- b=HOf5tA2aWbrLnhzHrCTJR5b/EsUFHzT+JoOnVOTNSirTuhUivw7LB5asCPRTK1wRsYNWmh
- kS55pBKrQNL0OVljz9puRb+im1oMLyoAA4SBC9sLykqdN7y1b6U5v5P/StsIyr0sGbhPuK
- X5Xz8feG0gigDDdW1T3kjz8DDecWG8Q=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=v046WHBDzXsfnIdlJ2KYuzlpoyQwX0KFTxjaaOlycxU=;
+ b=UKgBrsAazOrxtoNe3PKE4C/5wEDiUwN/nPQiZOR2JiL/emk80dA1z3muiO9Xv+EusV4qdm
+ bUyC4CqJZtpH9INmQzCMDwr++JvsCwmKUXX+9hflaGAkX1ZbvudkdREYoSkNhcFh28ieuD
+ CCIlmbs7DDhiRmwDcjOeo3sfkwL/8rw=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-68-RgrdhWqbOlagfosL1Ofv4g-1; Fri, 24 Jan 2025 04:45:57 -0500
-X-MC-Unique: RgrdhWqbOlagfosL1Ofv4g-1
-X-Mimecast-MFC-AGG-ID: RgrdhWqbOlagfosL1Ofv4g
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4359eb032c9so13289975e9.2
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 01:45:56 -0800 (PST)
+ us-mta-84-ar6S6ekEPU-rw_ZBgnXUAQ-1; Fri, 24 Jan 2025 04:45:58 -0500
+X-MC-Unique: ar6S6ekEPU-rw_ZBgnXUAQ-1
+X-Mimecast-MFC-AGG-ID: ar6S6ekEPU-rw_ZBgnXUAQ
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-38a873178f2so1041969f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 01:45:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737711955; x=1738316755;
+ d=1e100.net; s=20230601; t=1737711957; x=1738316757;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GX5ZXSWUGkXS8f5Sw6QjzbC9hARnbnbxThpUdHGomPY=;
- b=EqwjQsZTMlQIBQYWg/jbwovx4l3/Et7MLIzFoD9IJOZI57k88EAko2i3amMaTrmpK/
- fQSD/pEgDB49GaII7p3z5bSBYzRQWWpVB3uMTJSI3BI0rwgOfAsZRaVhJfK1bbcedj2M
- ouFAYUY5PIzOMrWGxRic93v+qZ+JQhuHIoWxfwKtFn/bJE/QCijL3JhidrUsbVeVgx84
- AaRSOa/0J+zhN69ck857bpWVyiJ6XKJ5Qp9uwDbJmJ3khnOr/Wf9Me355DmeGSePY5K+
- Z2vTgG2NMruXVEVETLkd8YPzLZOifSqQVSxFeu/zpg2hCs8hcuWwaxOVB5odVow8y8TX
- FjXg==
-X-Gm-Message-State: AOJu0YwYVsaswOxK+H+Bz360i7pRoy7HqIkvT3IDbsyILvPvyBQWTnlq
- +edM3DMwq76SCmipFhZIi1zm4OTJ5JjVlvj1v1PNtuOqv5PCaGAkxw20VlbusF11ifDMdkvVvRF
- ItXyTjJBvMv/dZb4Em1RNAeqH45CkoRN7UPy8HVuvlhqu400ig8YnJsA4GtZyTrmQWEaQ7i3vmw
- 6uNuPQBlpfhycyMg0gSU4et9oQKulgd1wrHVWikrU=
-X-Gm-Gg: ASbGncv2GhiIi8tBr6FwpBp2xTa4tWWZ1Rxo/9YZDCY6nTjRSoB6PIWbHDIJZH8Sd6+
- sIoI+bKpx7AeC3OQiLOW/C7zlU6FsFWmJWdyjTA4V7BQOpIB0ozvR99PrJH7zxBlL4sLdpQ7vI2
- LGj2Ed1SG1Elyvjik8lPmMVHAOekbEOAJtg8iaH8hhAnKNSY8FtoEaxgpKfKdgXopcZAaXxDije
- +4tzTbg3Ggtgo8oVocHU7b3kBTJ0767PTKQZ8opZpe8mlKqdKnT1NXH6MdteH8dLUllUWMz3Q==
-X-Received: by 2002:a7b:c3d8:0:b0:436:17e4:ad4c with SMTP id
- 5b1f17b1804b1-438a0d3c71fmr208517655e9.6.1737711955383; 
- Fri, 24 Jan 2025 01:45:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFR9jW+ROCeL72qO2reeDCROKBMuAF3wWj+2qVaXLi7wNINfmAQHvdTWDrQXp4CNcpJCHUt3Q==
-X-Received: by 2002:a7b:c3d8:0:b0:436:17e4:ad4c with SMTP id
- 5b1f17b1804b1-438a0d3c71fmr208517355e9.6.1737711954807; 
- Fri, 24 Jan 2025 01:45:54 -0800 (PST)
+ bh=v046WHBDzXsfnIdlJ2KYuzlpoyQwX0KFTxjaaOlycxU=;
+ b=J+4+SyHHOUFg49P6RnZycuTDIO1joOTbk9ArrZO6D6SbCMzRQteUwCtgctCR+/yD0+
+ x9HH7LcOqOkfWGwLBjaE5SUUr+aYAp6IwFTeaY2z8XrAltBQ2WACEIYmkdEuwcTxDdr7
+ /H6CK+5Sc2ewPS+iLBJ3pWFIqKF8ZHl58BKw1N20wGhqtzqflztbWeDout5IbaYClI/x
+ tSttdP8/9B3+6TpyLLSqw0Jcq+1+9l6g4Jta5PFkQqyqdlxAy86dJ5YcKfh2XXQz0ZiN
+ cH0aUTD17FuHB/9+RUPWqdG/cxN3SfebvsM8reQmjukyR1lrKag1/vlifV/CLw3DLG2p
+ jJCA==
+X-Gm-Message-State: AOJu0YyQOM3oUemAxxPNMuerdmpF4f8OQGV7YdFzU+wiixlhH47Go6Xe
+ D4r+R6YQ62QwdnPLbjHr68e7oxL0Kzd8dq7m7X9LQa330wJ92nyORft7wLMLt1SxmEwATo36FUa
+ sCtNhnmsUAELW2YrxTDSU+FuX0auwvp6cuuXU9edQJvBj3SqLtGhmuM6q9IcseACfWbp8fzB18t
+ mDxHPGg/a1uXIekDckj6Jze4UAyFajKwHu17ILaKc=
+X-Gm-Gg: ASbGncuOQm19XbGideBHFaHhGxL3wv259fQp0HKguQAzZ8A3VkIhqlgyTMsxD9FtEMv
+ b2uYoTS3/uZAlGLqZ6jKaHmvqMj8TmbPquVCiQxGSYin4wmVx18awM32fBzpfmD15Bpm/pOI3de
+ UXZvZFEV/Qgu1W6gPcVd5z2CfYOKeYoffs7mebZfcV2ZWR4oSxCcRxcVVFwGmoVByaqi+KwswL1
+ ZVg3bPeSVgOg1FnHqSeHDfKgs15rpM7KboN18VYmmuknNBsM0wJSWIcJAx8Ur3YIPRA+HO/Lw==
+X-Received: by 2002:adf:f682:0:b0:38b:e26d:ea0b with SMTP id
+ ffacd0b85a97d-38bf566c314mr23371388f8f.25.1737711957189; 
+ Fri, 24 Jan 2025 01:45:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH9aq052Xl/vYca/Bt3phpmiYj9f1dU6/LBU0CGe0yDhe+8K1AAYsDCMBwZXbuSUtf/GeDCMg==
+X-Received: by 2002:adf:f682:0:b0:38b:e26d:ea0b with SMTP id
+ ffacd0b85a97d-38bf566c314mr23371365f8f.25.1737711956840; 
+ Fri, 24 Jan 2025 01:45:56 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.59.125])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd4fa46esm20470025e9.1.2025.01.24.01.45.53
+ 5b1f17b1804b1-438bd4d2c0esm20268945e9.33.2025.01.24.01.45.56
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 01:45:53 -0800 (PST)
+ Fri, 24 Jan 2025 01:45:56 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 35/48] rust: prefer NonNull::new to assertions
-Date: Fri, 24 Jan 2025 10:44:29 +0100
-Message-ID: <20250124094442.13207-36-pbonzini@redhat.com>
+Subject: [PULL 36/48] rust: pl011: remove unnecessary "extern crate"
+Date: Fri, 24 Jan 2025 10:44:30 +0100
+Message-ID: <20250124094442.13207-37-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250124094442.13207-1-pbonzini@redhat.com>
 References: <20250124094442.13207-1-pbonzini@redhat.com>
@@ -105,233 +105,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not use new_unchecked; the effect is the same, but the
-code is easier to read and unsafe regions become smaller.
-Likewise, NonNull::new can be used instead of assertion and
-followed by as_ref() or as_mut() instead of dereferencing the
-pointer.
-
-Suggested-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs       | 17 +++++------------
- rust/hw/char/pl011/src/device_class.rs | 23 +++++++++--------------
- rust/hw/char/pl011/src/memory_ops.rs   |  9 +++------
- rust/qemu-api/src/qdev.rs              | 12 +++++-------
- rust/qemu-api/src/qom.rs               | 21 +++++++++++++--------
- 5 files changed, 35 insertions(+), 47 deletions(-)
+ rust/hw/char/pl011/src/lib.rs | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index a1a522fdcdb..c0b53f2515c 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -593,11 +593,8 @@ pub fn post_load(&mut self, _version_id: u32) -> Result<(), ()> {
- /// the same size as [`PL011State`]. We also expect the device is
- /// readable/writeable from one thread at any time.
- pub unsafe extern "C" fn pl011_can_receive(opaque: *mut c_void) -> c_int {
--    unsafe {
--        debug_assert!(!opaque.is_null());
--        let state = NonNull::new_unchecked(opaque.cast::<PL011State>());
--        state.as_ref().can_receive().into()
--    }
-+    let state = NonNull::new(opaque).unwrap().cast::<PL011State>();
-+    unsafe { state.as_ref().can_receive().into() }
- }
+diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
+index f30f9850ad4..d10f0805aac 100644
+--- a/rust/hw/char/pl011/src/lib.rs
++++ b/rust/hw/char/pl011/src/lib.rs
+@@ -25,10 +25,6 @@
+ #![allow(clippy::upper_case_acronyms)]
+ #![allow(clippy::result_unit_err)]
  
- /// # Safety
-@@ -608,9 +605,8 @@ pub fn post_load(&mut self, _version_id: u32) -> Result<(), ()> {
- ///
- /// The buffer and size arguments must also be valid.
- pub unsafe extern "C" fn pl011_receive(opaque: *mut c_void, buf: *const u8, size: c_int) {
-+    let mut state = NonNull::new(opaque).unwrap().cast::<PL011State>();
-     unsafe {
--        debug_assert!(!opaque.is_null());
--        let mut state = NonNull::new_unchecked(opaque.cast::<PL011State>());
-         if state.as_ref().loopback_enabled() {
-             return;
-         }
-@@ -627,11 +623,8 @@ pub fn post_load(&mut self, _version_id: u32) -> Result<(), ()> {
- /// the same size as [`PL011State`]. We also expect the device is
- /// readable/writeable from one thread at any time.
- pub unsafe extern "C" fn pl011_event(opaque: *mut c_void, event: QEMUChrEvent) {
--    unsafe {
--        debug_assert!(!opaque.is_null());
--        let mut state = NonNull::new_unchecked(opaque.cast::<PL011State>());
--        state.as_mut().event(event)
--    }
-+    let mut state = NonNull::new(opaque).unwrap().cast::<PL011State>();
-+    unsafe { state.as_mut().event(event) }
- }
+-extern crate bilge;
+-extern crate bilge_impl;
+-extern crate qemu_api;
+-
+ use qemu_api::c_str;
  
- /// # Safety
-diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
-index b052d98803f..6fa14ca0f9b 100644
---- a/rust/hw/char/pl011/src/device_class.rs
-+++ b/rust/hw/char/pl011/src/device_class.rs
-@@ -12,12 +12,10 @@
- 
- use crate::device::PL011State;
- 
-+#[allow(clippy::missing_const_for_fn)]
- extern "C" fn pl011_clock_needed(opaque: *mut c_void) -> bool {
--    unsafe {
--        debug_assert!(!opaque.is_null());
--        let state = NonNull::new_unchecked(opaque.cast::<PL011State>());
--        state.as_ref().migrate_clock
--    }
-+    let state = NonNull::new(opaque).unwrap().cast::<PL011State>();
-+    unsafe { state.as_ref().migrate_clock }
- }
- 
- /// Migration subsection for [`PL011State`] clock.
-@@ -33,15 +31,12 @@ extern "C" fn pl011_clock_needed(opaque: *mut c_void) -> bool {
- };
- 
- extern "C" fn pl011_post_load(opaque: *mut c_void, version_id: c_int) -> c_int {
--    unsafe {
--        debug_assert!(!opaque.is_null());
--        let mut state = NonNull::new_unchecked(opaque.cast::<PL011State>());
--        let result = state.as_mut().post_load(version_id as u32);
--        if result.is_err() {
--            -1
--        } else {
--            0
--        }
-+    let mut state = NonNull::new(opaque).unwrap().cast::<PL011State>();
-+    let result = unsafe { state.as_mut().post_load(version_id as u32) };
-+    if result.is_err() {
-+        -1
-+    } else {
-+        0
-     }
- }
- 
-diff --git a/rust/hw/char/pl011/src/memory_ops.rs b/rust/hw/char/pl011/src/memory_ops.rs
-index c4e8599ba43..a286003d136 100644
---- a/rust/hw/char/pl011/src/memory_ops.rs
-+++ b/rust/hw/char/pl011/src/memory_ops.rs
-@@ -25,7 +25,7 @@
- 
- unsafe extern "C" fn pl011_read(opaque: *mut c_void, addr: hwaddr, size: c_uint) -> u64 {
-     assert!(!opaque.is_null());
--    let mut state = unsafe { NonNull::new_unchecked(opaque.cast::<PL011State>()) };
-+    let mut state = NonNull::new(opaque).unwrap().cast::<PL011State>();
-     let val = unsafe { state.as_mut().read(addr, size) };
-     match val {
-         std::ops::ControlFlow::Break(val) => val,
-@@ -43,9 +43,6 @@
- }
- 
- unsafe extern "C" fn pl011_write(opaque: *mut c_void, addr: hwaddr, data: u64, _size: c_uint) {
--    unsafe {
--        assert!(!opaque.is_null());
--        let mut state = NonNull::new_unchecked(opaque.cast::<PL011State>());
--        state.as_mut().write(addr, data)
--    }
-+    let mut state = NonNull::new(opaque).unwrap().cast::<PL011State>();
-+    unsafe { state.as_mut().write(addr, data) }
- }
-diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
-index a5121e31a37..42429903aae 100644
---- a/rust/qemu-api/src/qdev.rs
-+++ b/rust/qemu-api/src/qdev.rs
-@@ -4,7 +4,7 @@
- 
- //! Bindings to create devices and access device functionality from Rust.
- 
--use std::ffi::CStr;
-+use std::{ffi::CStr, ptr::NonNull};
- 
- pub use bindings::{DeviceClass, DeviceState, Property};
- 
-@@ -55,9 +55,8 @@ fn vmsd() -> Option<&'static VMStateDescription> {
- /// can be downcasted to type `T`. We also expect the device is
- /// readable/writeable from one thread at any time.
- unsafe extern "C" fn rust_realize_fn<T: DeviceImpl>(dev: *mut DeviceState, _errp: *mut *mut Error) {
--    assert!(!dev.is_null());
--    let state = dev.cast::<T>();
--    T::REALIZE.unwrap()(unsafe { &mut *state });
-+    let state = NonNull::new(dev).unwrap().cast::<T>();
-+    T::REALIZE.unwrap()(unsafe { state.as_ref() });
- }
- 
- /// # Safety
-@@ -66,9 +65,8 @@ fn vmsd() -> Option<&'static VMStateDescription> {
- /// can be downcasted to type `T`. We also expect the device is
- /// readable/writeable from one thread at any time.
- unsafe extern "C" fn rust_reset_fn<T: DeviceImpl>(dev: *mut DeviceState) {
--    assert!(!dev.is_null());
--    let state = dev.cast::<T>();
--    T::RESET.unwrap()(unsafe { &mut *state });
-+    let mut state = NonNull::new(dev).unwrap().cast::<T>();
-+    T::RESET.unwrap()(unsafe { state.as_mut() });
- }
- 
- impl<T> ClassInitImpl<DeviceClass> for T
-diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
-index 97901fb9084..f50ee371aac 100644
---- a/rust/qemu-api/src/qom.rs
-+++ b/rust/qemu-api/src/qom.rs
-@@ -58,6 +58,7 @@
-     fmt,
-     ops::{Deref, DerefMut},
-     os::raw::c_void,
-+    ptr::NonNull,
- };
- 
- pub use bindings::{Object, ObjectClass};
-@@ -153,27 +154,34 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
- }
- 
- unsafe extern "C" fn rust_instance_init<T: ObjectImpl>(obj: *mut Object) {
-+    let mut state = NonNull::new(obj).unwrap().cast::<T>();
-     // SAFETY: obj is an instance of T, since rust_instance_init<T>
-     // is called from QOM core as the instance_init function
-     // for class T
--    unsafe { T::INSTANCE_INIT.unwrap()(&mut *obj.cast::<T>()) }
-+    unsafe {
-+        T::INSTANCE_INIT.unwrap()(state.as_mut());
-+    }
- }
- 
- unsafe extern "C" fn rust_instance_post_init<T: ObjectImpl>(obj: *mut Object) {
-+    let state = NonNull::new(obj).unwrap().cast::<T>();
-     // SAFETY: obj is an instance of T, since rust_instance_post_init<T>
-     // is called from QOM core as the instance_post_init function
-     // for class T
--    T::INSTANCE_POST_INIT.unwrap()(unsafe { &*obj.cast::<T>() })
-+    T::INSTANCE_POST_INIT.unwrap()(unsafe { state.as_ref() });
- }
- 
- unsafe extern "C" fn rust_class_init<T: ObjectType + ClassInitImpl<T::Class>>(
-     klass: *mut ObjectClass,
-     _data: *mut c_void,
- ) {
-+    let mut klass = NonNull::new(klass)
-+        .unwrap()
-+        .cast::<<T as ObjectType>::Class>();
-     // SAFETY: klass is a T::Class, since rust_class_init<T>
-     // is called from QOM core as the class_init function
-     // for class T
--    T::class_init(unsafe { &mut *klass.cast::<T::Class>() })
-+    T::class_init(unsafe { klass.as_mut() })
- }
- 
- unsafe extern "C" fn drop_object<T: ObjectImpl>(obj: *mut Object) {
-@@ -581,11 +589,8 @@ pub trait ClassInitImpl<T> {
- /// can be downcasted to type `T`. We also expect the device is
- /// readable/writeable from one thread at any time.
- unsafe extern "C" fn rust_unparent_fn<T: ObjectImpl>(dev: *mut Object) {
--    unsafe {
--        assert!(!dev.is_null());
--        let state = core::ptr::NonNull::new_unchecked(dev.cast::<T>());
--        T::UNPARENT.unwrap()(state.as_ref());
--    }
-+    let state = NonNull::new(dev).unwrap().cast::<T>();
-+    T::UNPARENT.unwrap()(unsafe { state.as_ref() });
- }
- 
- impl<T> ClassInitImpl<ObjectClass> for T
+ pub mod device;
 -- 
 2.48.1
 
