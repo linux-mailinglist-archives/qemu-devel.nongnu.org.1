@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E79C4A1B311
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:52:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34BB8A1B2FA
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:50:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbGGo-0007Y5-PG; Fri, 24 Jan 2025 04:46:36 -0500
+	id 1tbGIF-0005Pm-0a; Fri, 24 Jan 2025 04:48:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tbGFt-0007Ai-8Z
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:45:38 -0500
+ id 1tbGFu-0007By-M7
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:45:41 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tbGFq-0003us-4D
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:45:36 -0500
+ id 1tbGFt-0003vD-1S
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:45:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737711933;
+ s=mimecast20190719; t=1737711935;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6bbpMEor1R2bRwOjlbdZexCI/CHydxS93U9CuB4hmPI=;
- b=LFYfq029YPxZCP+6yX7TUBbT/V2LmYaw+yxt8xXcRuw9G350fn+D8THHWxyLczgxeGbvGs
- MaHx9yIGlyHG9kxsJP2h0LmpiTSsZ3MGMdzwW6VgxWeshqVwuaRIM5Uvm0TyYFnbMhVS7F
- fOA/PqcdHBjfcitPT6CzsonihKcY1Yw=
+ bh=yvbr/euLYmsi01MyC/bxJYSQaCK8iNl78JJ9FTSlmig=;
+ b=aztr62+fVqIDyAjMGheHp5SRgo9ts1zNSXmKqjv5qezd+KfJvqJv2JmEk0SbX4NXTbSJjk
+ Jt6lzIvDlmzuyzSzrnCvm59hO5/xKuXEGfMZmVIZW0gLL9VgmjPEdnmzCFpYaVP9CGC4Kg
+ RLNfmIoDCshPlPCRa7COMyqs6UiYTK8=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-38-KCDAK3XlN7GOPnc4eH1kZA-1; Fri, 24 Jan 2025 04:45:31 -0500
-X-MC-Unique: KCDAK3XlN7GOPnc4eH1kZA-1
-X-Mimecast-MFC-AGG-ID: KCDAK3XlN7GOPnc4eH1kZA
+ us-mta-110-kaD5ZBWrMeGlUNqvchK06g-1; Fri, 24 Jan 2025 04:45:33 -0500
+X-MC-Unique: kaD5ZBWrMeGlUNqvchK06g-1
+X-Mimecast-MFC-AGG-ID: kaD5ZBWrMeGlUNqvchK06g
 Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43624b08181so10185575e9.0
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 01:45:31 -0800 (PST)
+ 5b1f17b1804b1-43673af80a6so13352135e9.1
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 01:45:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737711930; x=1738316730;
+ d=1e100.net; s=20230601; t=1737711931; x=1738316731;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6bbpMEor1R2bRwOjlbdZexCI/CHydxS93U9CuB4hmPI=;
- b=eW0BkaEQ18IazG3qLZrG9AbIFGpodbFnJAEj7T3L8Pum7H1I9gdcN1yHuq5Fzkr0e6
- voGpGzYHBXLNI67gVskiuU91patlErEYGOq06X2fdGzrRowsIiQ5Kk8F6gIEVk8HKVC8
- hwpUF9Nt1Bdr62BMc0gmaYt6raYzb2o/v6Y4/zhlNcqnT3zNfOJRj1c35Vvj+nt00pmD
- 8bW3Vl0cU0O49fLRHOEPzXCYApwUMrSRniKgivgiOuc+eBTE0OMffAwiX6Wiz5CPHvXh
- davVXRq21t1+o6MkOlkyedOvmPCMwCthzqHAE4uVAZ08+ZOzvnR2LQdgQaGuBqIHEFSe
- SsNQ==
-X-Gm-Message-State: AOJu0Yx66L5cfqZILQKvUgRvvHq5xBIp4HG1DsG57IYfCRlARvavDpWY
- gMIxPOZDDQ6WbGIMXhGggjuty/pn+Ml0gN0/NDljJDJhCKjzC3dWOwDGJjrPvnLDRLcBqO41HRr
- N2qA9ni45bH1kVhcEm+xvHm1E6u3NGdBReoBkjkIOsn5lTxdUusarCYOCrHAy8E5mRIc579ilF4
- mWmgjSA8hqf4sarIJ/LunPISngyum17Kx/9OrhPi4=
-X-Gm-Gg: ASbGncv3cpvMzGxfepybIoGZpciJ1kJVSvQFUjV3LUGSQ+sLZIzkFjC570NdxbLGPOj
- bLhs83vihQN2Fyp1m52cl+ilZUcb/YiU3O+Pwa9M6V1LBFyiV7XhN/2UPb//0QnMj879ynEIjzu
- MBWSrGeMTA6+nw3sRWQ03eoOMgLu0OKMhcyN2HEsdasriPCrcPOvrE9lwJ0cU7hX7y4lccBJNgn
- xmwqTQuTYmBFz1Kpz//nLzJOK/c99MRupo8y/oxXq2jXitsDSBeRR6xibK7bJl7oey7/IZZaA==
-X-Received: by 2002:a05:600c:4fcf:b0:434:e892:1033 with SMTP id
- 5b1f17b1804b1-438bd052fedmr24335575e9.2.1737711929782; 
- Fri, 24 Jan 2025 01:45:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHMy8nR8jXlLgW7lQ+fq1Z8BGr/NbZMwdE3nztVlUkfmqPqIaKMctM4WuO5lytPuB72ohNnFw==
-X-Received: by 2002:a05:600c:4fcf:b0:434:e892:1033 with SMTP id
- 5b1f17b1804b1-438bd052fedmr24335225e9.2.1737711929329; 
- Fri, 24 Jan 2025 01:45:29 -0800 (PST)
+ bh=yvbr/euLYmsi01MyC/bxJYSQaCK8iNl78JJ9FTSlmig=;
+ b=xJ5RymGhpLOW8c8t1uNiOk3j8BgkXo3VBBE2oPfrWhltBcr+Lwj6KgqP5WE1lyd79w
+ w1yG4PVcXY4Fuwab90Ih/is1GYAUtH8ReHVvJgEXl3W5qWuQux6cHPcIcEyv6J+jmoo/
+ XhEQVO24DQ76AOYHb8/nT5BApIQudLcKBFjCtiX3FxjWj9759YyVwRZDIU0X0dfD/Ziv
+ /fi07Mn1f2XVTTGOzZRegSIFQ0sUReVQcVraW9cj7LwZlYz0QVUseYaO8TM8ANTzMwAC
+ WNFvbUvP3Agr31hkyHKf/wKm7eLzlMO9xXK2TsnlbBGlAEaR1BvbvuuNbKI/EmY4N//t
+ ifmA==
+X-Gm-Message-State: AOJu0YyfSbfgspM6qI1hHNSTdObRDQLE7PP7UTQctvsx6atYj6ZeCWtR
+ lYPsEAgUp/6bDGjs0B5YCWqjh4ipmXgt3qeqzdgKc2wvJBV5lsO3YaQ7MXVrhhhClMCiFbsuqBb
+ MLQnAJG86MUdOee+FrYZwMcKw6UnpTQpSbqTWZmruci8y/n909nzgPgVtmG3c0zvGJXBZrC8roL
+ nmgcS7718s+BCSYXiGrXPNcKqWWBz+AUSspufxIHs=
+X-Gm-Gg: ASbGnctpgQtJQvTpeTdlPzDQO9rcT7ZM1YWGNELRX4viHRI5+GFBH74xI5Ku4l9ElPe
+ wmyMJyebGKgXe4fOZE99O1kp6wujV6oKtEAFzP+VFW5tZsr6DyMc5uz9aUwPkGjoCzZDNtFvf25
+ LYxeLqGn3Rp0ivJmnh31YT3FaF/vMfJRpFf75wyIExEH4QAhl1oOL4o3yERPwS8Gla3H9UYSAr+
+ +njimnAoshJhNa4+3aERPMXQFqEEejKOU1/PE0mnwcWEFRGFl4iYiHMJUROjDifTwgYvdPT/A==
+X-Received: by 2002:a05:600c:511b:b0:435:14d:f61a with SMTP id
+ 5b1f17b1804b1-438914304a8mr213647055e9.25.1737711931674; 
+ Fri, 24 Jan 2025 01:45:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFKkR6w5XYAxB63/i7et5JL3JLz14imn+MOMh1OUbq69Am4fQn2rUta9B+G2TNyg4bTxmuKrw==
+X-Received: by 2002:a05:600c:511b:b0:435:14d:f61a with SMTP id
+ 5b1f17b1804b1-438914304a8mr213646855e9.25.1737711931269; 
+ Fri, 24 Jan 2025 01:45:31 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.59.125])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd507c59sm20071965e9.17.2025.01.24.01.45.28
+ 5b1f17b1804b1-438bd48a906sm20805735e9.18.2025.01.24.01.45.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 01:45:28 -0800 (PST)
+ Fri, 24 Jan 2025 01:45:30 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 23/48] memattrs: Convert unspecified member to bool
-Date: Fri, 24 Jan 2025 10:44:17 +0100
-Message-ID: <20250124094442.13207-24-pbonzini@redhat.com>
+Subject: [PULL 24/48] memattrs: Check the size of MemTxAttrs
+Date: Fri, 24 Jan 2025 10:44:18 +0100
+Message-ID: <20250124094442.13207-25-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250124094442.13207-1-pbonzini@redhat.com>
 References: <20250124094442.13207-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -107,67 +108,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Convert `unspecified` member of MemTxAttrs from bit field to bool, so
-that bindgen could generate more ergonomic Rust binding with bool type.
+Make sure MemTxAttrs is packed into 8 bytes and does not exceed 8 bytes.
 
-As a result, MemTxAttrs needs to be expanded from 4 bytes to 8 bytes.
-
-Therefore, move `unspecified` to after the bit fields and add reserved
-members to ensure that the whole structure is packed into 8 bytes.
-
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+Suggested-by: Philippe Mathieu-DaudÃ <philmd@linaro.org>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250121151322.171832-2-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20250121151322.171832-3-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/exec/memattrs.h | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ include/exec/memattrs.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/include/exec/memattrs.h b/include/exec/memattrs.h
-index e27c18f3dc3..4fde4eee843 100644
+index 4fde4eee843..060b7e71314 100644
 --- a/include/exec/memattrs.h
 +++ b/include/exec/memattrs.h
-@@ -23,12 +23,6 @@
-  * different semantics.
-  */
- typedef struct MemTxAttrs {
--    /* Bus masters which don't specify any attributes will get this
--     * (via the MEMTXATTRS_UNSPECIFIED constant), so that we can
--     * distinguish "all attributes deliberately clear" from
--     * "didn't specify" if necessary.
--     */
--    unsigned int unspecified:1;
-     /*
-      * ARM/AMBA: TrustZone Secure access
-      * x86: System Management Mode access
-@@ -57,6 +51,17 @@ typedef struct MemTxAttrs {
-      * PID (PCI PASID) support: Limited to 8 bits process identifier.
-      */
-     unsigned int pid:8;
-+
-+    /*
-+     * Bus masters which don't specify any attributes will get this
-+     * (via the MEMTXATTRS_UNSPECIFIED constant), so that we can
-+     * distinguish "all attributes deliberately clear" from
-+     * "didn't specify" if necessary.
-+     */
-+    bool unspecified;
-+
-+    uint8_t _reserved1;
-+    uint16_t _reserved2;
+@@ -64,6 +64,8 @@ typedef struct MemTxAttrs {
+     uint16_t _reserved2;
  } MemTxAttrs;
  
++QEMU_BUILD_BUG_ON(sizeof(MemTxAttrs) > 8);
++
  /* Bus masters which don't specify any attributes will get this,
-@@ -64,7 +69,7 @@ typedef struct MemTxAttrs {
+  * which has all attribute bits clear except the topmost one
   * (so that we can distinguish "all attributes deliberately clear"
-  * from "didn't specify" if necessary).
-  */
--#define MEMTXATTRS_UNSPECIFIED ((MemTxAttrs) { .unspecified = 1 })
-+#define MEMTXATTRS_UNSPECIFIED ((MemTxAttrs) { .unspecified = true })
- 
- /* New-style MMIO accessors can indicate that the transaction failed.
-  * A zero (MEMTX_OK) response means success; anything else is a failure
 -- 
 2.48.1
 
