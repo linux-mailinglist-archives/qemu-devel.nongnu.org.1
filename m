@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB828A1BBC0
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 18:51:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBF55A1BBC2
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 18:52:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbNpp-0002ap-Ck; Fri, 24 Jan 2025 12:51:13 -0500
+	id 1tbNrA-0005bM-HF; Fri, 24 Jan 2025 12:52:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbNpl-0002PQ-T0
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 12:51:10 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbNr8-0005bD-EP
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 12:52:34 -0500
 Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbNpk-0004S4-De
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 12:51:09 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbNr6-0004np-Qq
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 12:52:34 -0500
 Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3863494591bso1319739f8f.1
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 09:51:07 -0800 (PST)
+ ffacd0b85a97d-385f06d0c8eso1337219f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 09:52:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737741065; x=1738345865; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rT1MOuQ+ROxukrI9hyYFsi6/FYVxGe6kUzeG59TN43o=;
- b=mP1kDJlcyX3PToWKL1JVhPehpP+k5sJ+yDKW9JIUlaL5XRZezq9DzlFBrRopgYHGQr
- xBeV6dNc9r1sxJ7G3qdj6oeNljvDBqpqA8Am+JNn8Mhh6tTyPP5zGvxrTXyeOHyQaBQQ
- i7Ls7PM/qvgXiuQj/Ri3EIfjJYo8IGBmRhCSk3wtYWRFmDG+nb4t2EwJeiqt+z7Xa2WV
- t/Kv68h9FXH6JqkOwhwzxac6lDC0ImHUFPCiyTynZK7fllrqRO2wpwzlZp/Jd5Hc21B1
- WvUbViz1nLvDx3vkrSKK+8MOXvyBZ99vn/tXgygeWzDGO3ooyhKBkIxJ8/6e2AsLxKhq
- szng==
+ d=linaro.org; s=google; t=1737741151; x=1738345951; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=qnhQdgQQCVH428VYTtbw+snr2O2l9ZoX9BEdJeAVPMA=;
+ b=tOtmoEHjgE2N2bF5I/JacWj5gwKH3CQsWDWu8z5XIbPeA/H9qgfSMM4UBOyUcMHXe6
+ 6Wv6ZWm4z1g66g49Rpn8W2YbWMpirwKb/JCVE/m23wqay3qwfPIbG5xzDseHlxgB/1ya
+ 0qBGK8NYhHCCiPc6bipfup56JIX039UQho4QF9SiaZY6ECeZHDhdk9AVsRg8ByhJ8eDq
+ AnH1hEIa8n1k4CiXlh4NAY3FdldqyUAZEkLY8k1jA6xxHlRAUrN9JUBZJ8uC49ExPISt
+ b6aDfJkXJJBO6mg2pZaNN1F3iQhzJIGQZKLcCiciy/ABD3dCkHIedVSix/uqQI+tmSsb
+ QUlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737741065; x=1738345865;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rT1MOuQ+ROxukrI9hyYFsi6/FYVxGe6kUzeG59TN43o=;
- b=MDjR3xTCqcFdLq2oOad7pMjw0BF6kPYRt+6D31QQdtxVN/o+pVglZ/EmZYCn+25ntk
- VxLZHH/7nZf2PghXl1ROswnthF8yASOCKsmSOyDdAz9FbQyIjdg3G0IfMqM+BCx9YnwP
- AUKnfAtwVvIguP5SbCn8SBAb5XmqXyTWvjHu8bGXmr2cm6MmB3Y5fNtKpBRrytMK1DKE
- CILz2GqHVAUUyUvt7ei61lP+otL2OuLKTd59VSEy7sWROxGOC/8Y4ff38HyTKum/FqzH
- jWkqkmDZxSqbdZ/n4ccO7Ea4Ubu1kmmqN9dw4XaBD+s+o8/th47M6HS84vvuAPX8iDbO
- TXxg==
-X-Gm-Message-State: AOJu0YxOhEfPiF/sgVMvU25HhOfO51krYqtATZoe09pTm2EgJ6ZAbpCe
- vPqCj0JdxRYWRhSR7NV52lvP5GaolvJGNMkBXVgAwwNcehgXtMiYF3SbtYEbfzb7v+8D/MIDsDn
- n/9Q=
-X-Gm-Gg: ASbGncskBpQ8n/sF9v1VjHMoaksEI1ETkWKULPlh0dLa2estRZX5sdBHEHBsha0OhM9
- pzkTVIAZ5Jl0fkl/lfCHVJj/ObHK3XKqBu0oa407MrYjy73PHil/wO1Tj21N96k1UrPNFuyUigC
- 6ly4q1n+/jFHr57k7+G9fX031hDq+216DFa+VCehuEBu8KRmKN11BLUzOw66gNvrSLCnGZ/6yxK
- QLaWtjjOhOxkOUSYsX4Qz6SOwM2mC2LbspdwZt9Zdz+9aq0debmvEVn/7n7+lDXpG1l+oA2NWdN
- Yp4xJ46attNoR9sxJPRerc6UpSNWmfcqXrhzURkocS7CyDD1N1Zwsag=
-X-Google-Smtp-Source: AGHT+IF2DM4YNxdNQ/AzLz6jsx6RJFtgJ+ilfxDanLKp3qC1IQmfxCBCX4gcsBuH9nlCBSlYv/MC4Q==
-X-Received: by 2002:a05:6000:4025:b0:38a:36a5:ff81 with SMTP id
- ffacd0b85a97d-38bf59e254bmr30134847f8f.40.1737741064841; 
- Fri, 24 Jan 2025 09:51:04 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1737741151; x=1738345951;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=qnhQdgQQCVH428VYTtbw+snr2O2l9ZoX9BEdJeAVPMA=;
+ b=jNG3WdzSjrlzSYtb8TEcvryPVJt/bZ1SdE1kq+Z9+wOs7RZU2fHaq35Zdvy/0z7Svy
+ VinjeFoa/l0foWdo/F5rfbScRpsKuxvCpYjZh0wTep+XkGTSP0XuTGeGGRFwj7zFKgvs
+ nYFsL2pRy1ggA7VjtmG9eKsZnDtcWkujc9ZCqLBc88Lyo+f4nUzSgZR6ARWwl6LcwWGV
+ e/dT7gEtJ/qQezoC/miUawmaY41HrSoG/wMYFD9vLNx72PsnCrTnvuG37TGn0Lg9AnKv
+ 8pmZFxklxC2X9e61smn5gWOjbiFPlV+cbFN7UoHLCfZJEiO/ByuRHaNYHiKAP7Jwi/l9
+ xPFw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVNvL1gcxosLxw/Vu2qm9sYi2Uhit7odFdLV5Gp+0CMK9wS5mrOSWx/onPdYy5xwo19bI7F/YQ8Q7m4@nongnu.org
+X-Gm-Message-State: AOJu0YxvsXisS6Nwv91tQuTCGGwEO6TDXGgVMqQ1IYH2EICkqLVC9VUp
+ 0s2BOjN8Hbc8EUcxKO1Hi6s7Lq3mLPBALufRRw6dDKP6TO1tm5hRfeIeYE5B8Bo=
+X-Gm-Gg: ASbGncuKoaT3PnIioLMDjG11SdiI/d4zbKjNE3D0USi7uNoOrBdOlw0Jzoaopvoe3Td
+ VXm7FHnO98I3X1fizLmqrPJQm1g44n7sxZ5FK8txv+n+GLOr7Ph6v9eyeE768qh7kuHgouvsvxV
+ V/SfKX1jVrQVDPcuy/8wb2M5H6ve03C3U5iN89ZEoShEEjzmKLymhi/6CMd2t8jOrDtWeYsBfgp
+ oCzmBiXz8EFqgCi9j/39zIA4LsVjo36H9nixpmpwAe7iLkLcX5xFAbDrw6YOMKUw7ujP3JUYqdi
+ og85vXLUOflbOWrwMWs+yWEu9jE8RZcJAo2WfMKVx2qJjeWu
+X-Google-Smtp-Source: AGHT+IFjMKpj6WUfcVQHn3EA7KdKE5azQXhnyw5lq2joNlmlUjGxpf/Gxizzfi22syi85l9djVJEvg==
+X-Received: by 2002:a5d:6c6f:0:b0:385:ee40:2d88 with SMTP id
+ ffacd0b85a97d-38bf566e691mr29576726f8f.3.1737741151296; 
+ Fri, 24 Jan 2025 09:52:31 -0800 (PST)
+Received: from [192.168.69.181] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a1764b7sm3392126f8f.10.2025.01.24.09.51.03
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 24 Jan 2025 09:51:04 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Bernhard Beschow <shentey@gmail.com>,
- Magnus Damm <magnus.damm@gmail.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/2] hw/char/sh_serial: Convert to TypeInfo
-Date: Fri, 24 Jan 2025 18:50:53 +0100
-Message-ID: <20250124175053.74461-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250124175053.74461-1-philmd@linaro.org>
-References: <20250124175053.74461-1-philmd@linaro.org>
+ ffacd0b85a97d-38c2a1c35e1sm3314215f8f.82.2025.01.24.09.52.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 24 Jan 2025 09:52:30 -0800 (PST)
+Message-ID: <32a9172f-367d-4344-ae63-a9d98dfe8d9a@linaro.org>
+Date: Fri, 24 Jan 2025 18:52:30 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] hw/hppa: Support up to 256 GiB RAM on 64-bit machines
+To: deller@kernel.org, qemu-devel@nongnu.org
+Cc: Helge Deller <deller@gmx.de>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20250122180913.18667-1-deller@kernel.org>
+ <20250122180913.18667-2-deller@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250122180913.18667-2-deller@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
  envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
@@ -100,61 +100,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QOM types are now registered using as TypeInfo via DEFINE_TYPES()
-or type_init(). Update TYPE_SH_SERIAL, removing the empty QOM
-instance_init/finalize handlers.
+On 22/1/25 19:09, deller@kernel.org wrote:
+> From: Helge Deller <deller@gmx.de>
+> 
+> Allow up to 256 GB RAM, which is the maximum a rp8440 machine (the very
+> last 64-bit PA-RISC machine) physically supports.
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> ---
+>   hw/hppa/hppa_hardware.h |  2 ++
+>   hw/hppa/machine.c       | 26 +++++++++++++++++++-------
+>   2 files changed, 21 insertions(+), 7 deletions(-)
+> 
+> diff --git a/hw/hppa/hppa_hardware.h b/hw/hppa/hppa_hardware.h
+> index a9be7bb851..a276240967 100644
+> --- a/hw/hppa/hppa_hardware.h
+> +++ b/hw/hppa/hppa_hardware.h
+> @@ -49,4 +49,6 @@
+>   #define CPU_HPA_CR_REG  7       /* store CPU HPA in cr7 (SeaBIOS internal) */
+>   #define PIM_STORAGE_SIZE 600	/* storage size of pdc_pim_toc_struct (64bit) */
+>   
+> +#define RAM_MAP_HIGH  0x0100000000  /* memory above 3.75 GB is mapped here */
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/char/sh_serial.c | 23 +++++++++++------------
- 1 file changed, 11 insertions(+), 12 deletions(-)
+Should we use ull suffix?
 
-diff --git a/hw/char/sh_serial.c b/hw/char/sh_serial.c
-index 29ac9f9e5e7..b1db91656fe 100644
---- a/hw/char/sh_serial.c
-+++ b/hw/char/sh_serial.c
-@@ -78,10 +78,6 @@ struct SHSerialState {
-     qemu_irq bri;
- };
- 
--typedef struct {} SHSerialStateClass;
--
--OBJECT_DEFINE_TYPE(SHSerialState, sh_serial, SH_SERIAL, SYS_BUS_DEVICE)
--
- static void sh_serial_clear_fifo(SHSerialState *s)
- {
-     memset(s->rx_fifo, 0, SH_RX_FIFO_LENGTH);
-@@ -443,14 +439,6 @@ static void sh_serial_unrealize(DeviceState *dev)
-     timer_del(&s->fifo_timeout_timer);
- }
- 
--static void sh_serial_init(Object *obj)
--{
--}
--
--static void sh_serial_finalize(Object *obj)
--{
--}
--
- static const Property sh_serial_properties[] = {
-     DEFINE_PROP_CHR("chardev", SHSerialState, chr),
-     DEFINE_PROP_UINT8("features", SHSerialState, feat, 0),
-@@ -467,3 +455,14 @@ static void sh_serial_class_init(ObjectClass *oc, void *data)
-     /* Reason: part of SuperH CPU/SoC, needs to be wired up */
-     dc->user_creatable = false;
- }
-+
-+static const TypeInfo sh_serial_types[] = {
-+    {
-+        .name           = TYPE_SH_SERIAL,
-+        .parent         = TYPE_SYS_BUS_DEVICE,
-+        .instance_size  = sizeof(SHSerialState),
-+        .class_init     = sh_serial_class_init,
-+    },
-+};
-+
-+DEFINE_TYPES(sh_serial_types)
--- 
-2.47.1
-
+> +
+>   #endif
 
