@@ -2,92 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03D9EA1B309
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:51:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E76A1B2F6
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:49:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbGIA-0004vX-Mh; Fri, 24 Jan 2025 04:47:59 -0500
+	id 1tbGH3-000811-IE; Fri, 24 Jan 2025 04:46:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tbGFq-00077V-Vm
+ id 1tbGFq-00077U-Tt
  for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:45:37 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tbGFo-0003uV-3r
+ id 1tbGFp-0003ub-8S
  for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:45:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737711929;
+ s=mimecast20190719; t=1737711931;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Iz+0oRL8E0Alsm18eGzwPgcS9Df+LzoBBQHD3AQeNAQ=;
- b=ASczHboJXu+CgBtNq0LGYmT7We/reUwHzZLrBFtVl5YD1a8HQC3HgUaMGuSaxmqWgx9UW6
- So80eW3lxJPuIJgjgs9BuAGw874A388cx4c+cF4D+k6uyOj0fsYUbzoZfQ+fP8U9kQRSxQ
- vOI+BdSOu9OwtUqgATHG7GStOQXEWXE=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=byv7yqpioTnmhdGEjf7rdV0DYWcU89djOSCRL0A/xmg=;
+ b=FcqrFQtBqMy9Mrbty5KFQeS8hT1ZooDw3l/6mIrFBdtH1L7QQSeFSdrCwVdRAwDxcX58iF
+ MnnkomxevpNXFHf5/6k2PyP2t82xBLx44l0LtHr7MkIPZfx49jwMjjz8qXlbGUiWOD7cUQ
+ +5yHm0Y/KSSZ2g6YQylUDJoZMfRBP6M=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-620-ZszoNrUbMyK3FqjLb10pYQ-1; Fri, 24 Jan 2025 04:45:27 -0500
-X-MC-Unique: ZszoNrUbMyK3FqjLb10pYQ-1
-X-Mimecast-MFC-AGG-ID: ZszoNrUbMyK3FqjLb10pYQ
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-436248d1240so8883855e9.0
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 01:45:27 -0800 (PST)
+ us-mta-529-shqhB78XNDGRulA6wtJzjQ-1; Fri, 24 Jan 2025 04:45:29 -0500
+X-MC-Unique: shqhB78XNDGRulA6wtJzjQ-1
+X-Mimecast-MFC-AGG-ID: shqhB78XNDGRulA6wtJzjQ
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-38bf4913669so1009980f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 01:45:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737711926; x=1738316726;
+ d=1e100.net; s=20230601; t=1737711928; x=1738316728;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Iz+0oRL8E0Alsm18eGzwPgcS9Df+LzoBBQHD3AQeNAQ=;
- b=K5EiCTLQox/BlZ01qK34+3T9XP99TkG9/PVnKtholS6+4qdlWDIOvgbbzYHfLFwbKm
- z90dT/BKcc3dSomkOzeR7DYJPNCebAttxApFaAl+EnykjPfmOX1I1cylEJBGuLspR+4A
- HYb2DSOxb0+oyiZ0e2SPrQ725CLsaD36oOYazIwuR06d+PY+KT/CejUM8P9y3eRNv+EA
- OBpsOPDknIX4DTs77MntTvbcYagpqUJSoYuzUbJ78lOwHvNHQCxOdRtH08nmSS9EHcn1
- PDDxcf31VzrHu+0jq0GbEQHlvJ5NcxDTy1jMgxfMlLq6rYuw/joGMFTj56VnR9qj49VD
- zv7w==
-X-Gm-Message-State: AOJu0Ywqv3cN+I8p4wc3BeSwUdpQBiFp/eC4H/USFbqFuTsZz9cs3EVi
- G4W6JrCvUTzZQGkx1/ighSmTgp85+91caDNGOI1q7c4wsGzC2oGlJQceXDfRK6zmd48xdoLRd9t
- Aa0dUqhFPFDJKbZlDMVIitIT+mbu2l5ANtlypXkPK+EI0I6mvdUdaqS8CTzHGf25dbvQmdLTv2r
- g0oalJg1xkqUAhs+ElCgP1qnztEJzfwYVnL339QuU=
-X-Gm-Gg: ASbGncunFNpHuVicyIl6lHLpmIzq9U4hnGfzq3MgDEaJ0yoxdMjHCmmTYCzt2l4WQgi
- 8IfSw25QSp8IURko2gsrwyjjsPKoZPOgfzJaErSAQUuLF63M0j2+5XDcdOIU6Ixst15hRMihWwz
- RBGlIjczCJt2dkRL8S+WMx2htAsnF+Ftd3O+c8ydafHfhiR0M7dcrL9nD9PllsNMKGnqTxIdzVU
- mZoUM2bxEZYb9+ShMznXQGl8m//SbsjpriCS15b3Cd0AVu1XV+dZIB515tgb3/UbFY1o2ygkg==
-X-Received: by 2002:a05:600c:870a:b0:436:e8b4:3cde with SMTP id
- 5b1f17b1804b1-438913ded64mr303096405e9.14.1737711925891; 
- Fri, 24 Jan 2025 01:45:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEXSpC+4KZA/BzRCnAv813raC+gdiYw1Sf975YdvHjOWehdfDkA3Vx3ttAodIR60iz3neIHug==
-X-Received: by 2002:a05:600c:870a:b0:436:e8b4:3cde with SMTP id
- 5b1f17b1804b1-438913ded64mr303096165e9.14.1737711925520; 
- Fri, 24 Jan 2025 01:45:25 -0800 (PST)
+ bh=byv7yqpioTnmhdGEjf7rdV0DYWcU89djOSCRL0A/xmg=;
+ b=G0fKARIazDxLmaNUjFC2Bo2hV/Xw2UyPgtOw0w6fi9/OUUfka37hJAqU/2fv3AZJVn
+ lTye/L9eprtLTna73mfSgkSoaIbkmOtXE3bjbV/78kscpxGjNaNZIkaS+BYNEaRjROTC
+ TI8b7BGHhDOzfQV6FPECzal6ppUPTBwJ8EykqDb987mVFO2e5f4IB14eNl8QTTAKfVm+
+ 5fnO5EQm2hTbgXPPUAEixMXfW8ncGkALLu2RkM2Qk5V0DgOTKvq25ksGNP2pCKFlZUT/
+ YwwXSmfgsrP7bYNUT9RZKKwbRWmj1qtkXjvnphQwtWvskjJUVqYVeiwTVUM3KjUW5tG3
+ sKzw==
+X-Gm-Message-State: AOJu0YwwpeqL7TQnGdC6FYYBh74BGf38unfg4g4we6279Yy5XvwF8Rws
+ 5f7wMbCiBkgtTQm41gMo8dgCp2Uc6IDUsbGPxNuWjuPyHuicPxoBN1Qop60+PXq1TNfegiBWIKL
+ OyGLhXAp1BTe7Ys2sR0Lcg+aLgyugyEOtKaY0QnJmOAeotYNRp4HRvZQZCcVAe82OAzV/hDQJA5
+ oIxEhzI8wPTFS5tXbvLlSbGdjaBFk7bBg8Mki8tOA=
+X-Gm-Gg: ASbGnct/tx+uaCBw/gIOpCOdGC+P/k2eBFXTBkvltUQOP6pfcjCCsbOsa3Jr8usVUEG
+ p4RXVOadi2nPh4NwkMvWWL3f+xm9CDASRZ7Cq+cT6TTjoPauki4b6Z59MlGZJmxlptvwYsKm1jX
+ OSKc/nqJ9N+C0qJz93jQBvfBVqB9TgAh+p684xYdfjP0fMTu+iH1rM4euGu8TxTLIwiGR1Cz5wf
+ goZE5HjbPlUMJX1Lqng5WCsKQAULN7LiTvi5Z4vR7c1XCMMhQH8vMBhAwNkEUMe2QWyqMM4AA==
+X-Received: by 2002:a5d:4007:0:b0:38a:888c:7dec with SMTP id
+ ffacd0b85a97d-38bf5675e61mr24559857f8f.28.1737711927975; 
+ Fri, 24 Jan 2025 01:45:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF36MJ7Wpp4C/FN9fV3gHTkz7acfg7AbPrgVBQAHzyYek9PxgiL8sTcBAlcoWis9fG+Kci8kA==
+X-Received: by 2002:a5d:4007:0:b0:38a:888c:7dec with SMTP id
+ ffacd0b85a97d-38bf5675e61mr24559825f8f.28.1737711927542; 
+ Fri, 24 Jan 2025 01:45:27 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.59.125])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd47f120sm21133505e9.2.2025.01.24.01.45.23
+ ffacd0b85a97d-38c2a1144f6sm2187016f8f.0.2025.01.24.01.45.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 01:45:24 -0800 (PST)
+ Fri, 24 Jan 2025 01:45:26 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 21/48] rust/qdev: Make REALIZE safe
-Date: Fri, 24 Jan 2025 10:44:15 +0100
-Message-ID: <20250124094442.13207-22-pbonzini@redhat.com>
+Subject: [PULL 22/48] rust/pl011: Avoid bindings::*
+Date: Fri, 24 Jan 2025 10:44:16 +0100
+Message-ID: <20250124094442.13207-23-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250124094442.13207-1-pbonzini@redhat.com>
 References: <20250124094442.13207-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
 X-Spam_bar: -----
 X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.043,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -107,79 +107,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-A safe REALIZE accepts immutable reference.
+List all the necessary bindings to better identify gaps in rust/qapi.
+And include the bindings wrapped by rust/qapi instead mapping the raw
+bindings directly.
 
-Since current PL011's realize() only calls a char binding function (
-qemu_chr_fe_set_handlers), it is possible to convert mutable reference
-(&mut self) to immutable reference (&self), which only needs to convert
-the pointers passed to C to mutable pointers.
-
-Thus, make REALIZE accept immutable reference.
-
+Inspired-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250121140457.84631-2-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20250121140457.84631-3-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs | 10 +++++-----
- rust/qemu-api/src/qdev.rs        |  2 +-
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ rust/hw/char/pl011/src/device.rs | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
 diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 65a1234b9ff..a0e0fbdd9dd 100644
+index a0e0fbdd9dd..4f1080ff19f 100644
 --- a/rust/hw/char/pl011/src/device.rs
 +++ b/rust/hw/char/pl011/src/device.rs
-@@ -2,7 +2,7 @@
- // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
- // SPDX-License-Identifier: GPL-2.0-or-later
+@@ -9,12 +9,19 @@
+ };
  
--use core::ptr::{addr_of_mut, NonNull};
-+use core::ptr::{addr_of, addr_of_mut, NonNull};
- use std::{
-     ffi::CStr,
-     os::raw::{c_int, c_uint, c_void},
-@@ -156,7 +156,7 @@ fn properties() -> &'static [Property] {
-     fn vmsd() -> Option<&'static VMStateDescription> {
-         Some(&device_class::VMSTATE_PL011)
+ use qemu_api::{
+-    bindings::{self, *},
++    bindings::{
++        error_fatal, hwaddr, memory_region_init_io, qdev_init_clock_in, qdev_new,
++        qdev_prop_set_chr, qemu_chr_fe_ioctl, qemu_chr_fe_set_handlers, qemu_chr_fe_write_all,
++        qemu_irq, sysbus_connect_irq, sysbus_mmio_map, sysbus_realize_and_unref, CharBackend,
++        Chardev, Clock, ClockEvent, MemoryRegion, QEMUChrEvent, CHR_IOCTL_SERIAL_SET_BREAK,
++    },
+     c_str,
+     irq::InterruptSource,
+     prelude::*,
+-    qdev::DeviceImpl,
++    qdev::{DeviceImpl, DeviceState, Property},
+     qom::{ClassInitImpl, ObjectImpl, ParentField},
++    sysbus::{SysBusDevice, SysBusDeviceClass},
++    vmstate::VMStateDescription,
+ };
+ 
+ use crate::{
+@@ -494,7 +501,7 @@ pub fn can_receive(&self) -> bool {
      }
--    const REALIZE: Option<fn(&mut Self)> = Some(Self::realize);
-+    const REALIZE: Option<fn(&Self)> = Some(Self::realize);
-     const RESET: Option<fn(&mut Self)> = Some(Self::reset);
- }
  
-@@ -439,17 +439,17 @@ fn set_read_trigger(&mut self) {
-         self.read_trigger = 1;
+     pub fn event(&mut self, event: QEMUChrEvent) {
+-        if event == bindings::QEMUChrEvent::CHR_EVENT_BREAK && !self.loopback_enabled() {
++        if event == QEMUChrEvent::CHR_EVENT_BREAK && !self.loopback_enabled() {
+             self.put_fifo(registers::Data::BREAK.into());
+         }
      }
- 
--    pub fn realize(&mut self) {
-+    pub fn realize(&self) {
-         // SAFETY: self.char_backend has the correct size and alignment for a
-         // CharBackend object, and its callbacks are of the correct types.
-         unsafe {
-             qemu_chr_fe_set_handlers(
--                addr_of_mut!(self.char_backend),
-+                addr_of!(self.char_backend) as *mut CharBackend,
-                 Some(pl011_can_receive),
-                 Some(pl011_receive),
-                 Some(pl011_event),
-                 None,
--                addr_of_mut!(*self).cast::<c_void>(),
-+                addr_of!(*self).cast::<c_void>() as *mut c_void,
-                 core::ptr::null_mut(),
-                 true,
-             );
-diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
-index 686054e737a..a5121e31a37 100644
---- a/rust/qemu-api/src/qdev.rs
-+++ b/rust/qemu-api/src/qdev.rs
-@@ -23,7 +23,7 @@ pub trait DeviceImpl {
-     ///
-     /// If not `None`, the parent class's `realize` method is overridden
-     /// with the function pointed to by `REALIZE`.
--    const REALIZE: Option<fn(&mut Self)> = None;
-+    const REALIZE: Option<fn(&Self)> = None;
- 
-     /// If not `None`, the parent class's `reset` method is overridden
-     /// with the function pointed to by `RESET`.
 -- 
 2.48.1
 
