@@ -2,70 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1035A1BC93
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 20:07:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A34E0A1BCAE
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 20:14:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbOzn-0006SM-W4; Fri, 24 Jan 2025 14:05:36 -0500
+	id 1tbP73-0006i9-EX; Fri, 24 Jan 2025 14:13:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1tbOzm-0006R7-2c
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 14:05:34 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
+ id 1tbP72-0006i1-DW
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 14:13:04 -0500
+Received: from mail-pj1-x1044.google.com ([2607:f8b0:4864:20::1044])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1tbOzj-0006tj-St
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 14:05:33 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-5d982de9547so4676302a12.2
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 11:05:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
+ id 1tbP70-0007ou-HO
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 14:13:04 -0500
+Received: by mail-pj1-x1044.google.com with SMTP id
+ 98e67ed59e1d1-2ee74291415so3476121a91.3
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 11:13:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737745530; x=1738350330; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=JFekHD2EvuCMT8dZzvPyg9+AkZ1/H7sjt0Lq8q0Anf8=;
- b=Bvjg3fzJgMDvZ1J6HzMrXoijNQtftmrZtghxivlXGcBFqEfCPi6BJk8sO5+uXC4uIT
- x2yhMr/sXCclmSG+3VdCFQrAdZBTogDE6kWGlxIZrgaRNedp5hvfThIErfk7EHi4Whyk
- 8E/cnBrpXQBbQ4fvYykblvlsfv4pALUDW54JfWmD0ZL99C4dJswaIKpeVT+GJ+pX7gd0
- CCPpgzf142Y8m2lTeE2JF7knZ8OuKVtnF86xtHSiZkqVhtC/k/cCeyhqcO2z4rxChh35
- 5THkBAACChIDVD3JQTQJVm2bkKRcpvfl/V6nuqkvvQU5sM1JHWB5H9u8/aci0kB4HtAq
- TZoA==
+ d=gmail.com; s=20230601; t=1737745980; x=1738350780; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=bGuBtKeysAO8wc8jjeKvdfpWkF8cN+yZwOGAcXA3kBk=;
+ b=cvqQZG+eIJtBuaZpokOZ8dC4Z2NjLS5ymCcnFHKgFdc49tJj1nHTWHRvnag2DVYC4w
+ OiJIjlZgNLAJL6hQY6UrZEII6XSfJZfTlxDXI9Qq+WgX2//49FXprFNLd/YWwsHxjT8t
+ 1up8dtyMUZm8XMA2iYBO6MQKCw+sEB+lzoAE997OuGrp8Z0ckYRfCVWKz1MC5G1SHQMm
+ 45b8D/c7O4sHEptGvL5Zx9aElWcPzXnM/QEJfnwM8nQzEpNMlKiBFJyojIvuP5miFUNN
+ yXzpj60fxQ7KuJdSOY9x+qqJVmtEZsxc8Mw11V5KVfa2GpyFf25TNx3nvX+eVMYyMvyq
+ MmoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737745530; x=1738350330;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1737745980; x=1738350780;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=JFekHD2EvuCMT8dZzvPyg9+AkZ1/H7sjt0Lq8q0Anf8=;
- b=S3aCB0THlr/K9M3WHtZE8HzFlSC1oxvNJWrgtsa9S9HjhOFcdhSuirDpMEoxA34Tew
- LhHyMOYfn6Dni/OZ9n6YyDM2fvTl3pIUeGrV6GldtYIYd/rlSlphjcQsDzaXXdkrYCrh
- JV8JTi8SXIYdqKnqNbxqh8nlMBDFFj/H7yMXkDoji5rGbWOkQkXcoltfeEsWpOUCTRQY
- mIgeBy5qMVkeTHJFpb0Zs17QZ3NspXmoOvMdfbsthhdQ5DJ6Dlqmd4Hvz0aZahZi+OME
- dUG0PLY0wBjC7UGGQz4aWsu4vhIBynKfYNcae8CPP1m/3QQzFqVHl9LCxDAl/LdaT4+m
- tmLQ==
-X-Gm-Message-State: AOJu0Yz5Dpy3w29q3R6Y6ke7yiTFOt6b9klviRfba7WnA/HIKrtvAt/9
- aE2/ozSCKUE+OUSy1sGy6KzooSWGb39aqG+Ag4mr2C/MqJXGWMWKaIeVd5mU3q4Q5YqOT0wMFS7
- nkAz0S3daGcCL5Qig5x5gnGrHLRo=
-X-Gm-Gg: ASbGncvsrSDbwlDYxZIEkTSRkw5EjyceYhgBtyelajxgxoT/mVJ/ufiOEh3S3FCHTVr
- oc/zJUXjrzHk9+9Eopr5t/R/i/VKE6E4InXWzJUsOk+yr+IAdrteuAL4W1irX
-X-Google-Smtp-Source: AGHT+IE/ZFfWTHM16JF/GDbbRs+OsH4MyLL+w8ONpNmgPR4dYn+h0xAsuQFbgj9U8kxB+Fy74bb9IthbRYSNpICnOKo=
-X-Received: by 2002:a05:6402:1d52:b0:5dc:1289:7f1c with SMTP id
- 4fb4d7f45d1cf-5dc1289800bmr5862680a12.29.1737745529531; Fri, 24 Jan 2025
- 11:05:29 -0800 (PST)
+ bh=bGuBtKeysAO8wc8jjeKvdfpWkF8cN+yZwOGAcXA3kBk=;
+ b=fLCx7KLNbme9EtCeN6XR90J0NAariMISfkgsL1wGUV9Idawpjl1b/idiwnLk90EDeS
+ EvKY5+LwWNBKWnMDk6js9TGCBe/FBUFeH7EKmbzAa+/iGiuOjMvll5/pynlAd3j9PAZj
+ GN08y6FcUTEiPI0y261FeLARPXCbkBfhvK3q0rfaQLyMaVQNQN9bUvgFSlgFOdAigUWo
+ VZl3m8grRkUTj45vMp+pfgRjMgzXFKGKF5PS/QAreQc8ivrsTe4C1lJoWk/lEvRutvjM
+ sC/gsHMZiRpICEI8IbtQ6LfFkrhxIDy+pKG39q7u0QiClWstEtqapOBc8Tl+sIchDmCC
+ w40g==
+X-Gm-Message-State: AOJu0YwaNWn7GUOmXVoXKeelNcrfry74p6OhojjIXNgRTQNWeXSUB4+L
+ YmM3Y4SmLysIidGbH7+pDG+Aqzei+QE4QCDM3GRKy1OXceQx214=
+X-Gm-Gg: ASbGnctXtP4EWr0/86+Kexz4o3axK0WWdcQVeT++pu+rsnbNvSPxnEW8GZzf+kjl6zW
+ tuLCUDZ6pePpAxc2QCnbvLnovYPeN2lNEvnkqdGFDNMC2raMv65HFc5qdZd7arRt4VBZ8Wv490p
+ jR0ZiWUXmonI8xeRVnMoXkW5qz8QyASz6mi1TO/mPFNuP0UvkfJCjkyyd54Zl7wCeOZWHecP1q5
+ Znw9/4QZijQNFtIrzZrhuxwLyhuuLm8zWplzzvlgWQs6ORFZN6ESPhfyIz+qqnH1RLmsXWoessH
+ f0oIotiviSEebpM3aA==
+X-Google-Smtp-Source: AGHT+IF5UvHeTndnwO83HvxyxB/csJLzp/OanxEzaihtGmdz/JqEGG2d7DIWDZ1FbrQSrsy8CiaxTg==
+X-Received: by 2002:a05:6a00:148d:b0:725:eb85:f802 with SMTP id
+ d2e1a72fcca58-72daf930e3cmr44209856b3a.2.1737745979970; 
+ Fri, 24 Jan 2025 11:12:59 -0800 (PST)
+Received: from localhost.localdomain ([58.37.175.151])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-72f8a69eb75sm2318406b3a.12.2025.01.24.11.12.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 24 Jan 2025 11:12:59 -0800 (PST)
+From: Tomita Moeko <tomitamoeko@gmail.com>
+To: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Cc: qemu-devel@nongnu.org,
+	Tomita Moeko <tomitamoeko@gmail.com>
+Subject: [PATCH v2 0/5] vfio/igd: remove incorrect IO BAR4 quirk
+Date: Sat, 25 Jan 2025 03:12:40 +0800
+Message-ID: <20250124191245.12464-1-tomitamoeko@gmail.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-References: <20250124094442.13207-1-pbonzini@redhat.com>
-In-Reply-To: <20250124094442.13207-1-pbonzini@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Fri, 24 Jan 2025 14:05:17 -0500
-X-Gm-Features: AWEUYZnvEbMiByAYeIW-jdRuaBlk7OpwisWbYvAnieGtOARQEFqPj_bJYUL9-DY
-Message-ID: <CAJSP0QXMO8WX1iPKqqfTK7LyDX1kWmgaSbDBVfE6V8go7Vr5WA@mail.gmail.com>
-Subject: Re: [PULL 00/48] i386, rust changes for 2024-01-24
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x536.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1044;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pj1-x1044.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,117 +95,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 24 Jan 2025 at 04:52, Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> The following changes since commit d6430c17d7113d3c38480dc34e59d00b0504e2f7:
->
->   Merge tag 'pull-riscv-to-apply-20250119-1' of https://github.com/alistair23/qemu into staging (2025-01-19 08:55:46 -0500)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/bonzini/qemu.git tags/for-upstream
->
-> for you to fetch changes up to 9feb68638e504c91b59e745b94423e8536abfd03:
->
->   rust: qemu-api: add sub-subclass to the integration tests (2025-01-23 19:07:39 +0100)
->
-> ----------------------------------------------------------------
-> * target/i386: optimize string instructions
-> * target/i386: new Sierra Forest and Clearwater Forest models
-> * rust: type-safe vmstate implementation
-> * rust: use interior mutability for PL011
-> * rust: clean ups
-> * memtxattrs: remove usage of bitfields from MEMTXATTRS_UNSPECIFIED
+Based on experiments and reverse engineering about the mysterious IO
+BAR4, it appears that the current quirk implementation is incorrect.
+As discussed in a previous mail thread [1], current implementation
+believes VBIOS is writing HPA of Data Stolen Memory (DSM) in GTT
+entries, so it intercepts and writes (addr - Host BDSM + Guest BDSM)
+instead, probably believes the addresses are hardcoded in VBIOS.
 
-Hi Paolo,
-Please take a look at this failure and send a v2 pull request, if necessary:
+With disassembling a VBIOS of Intel Sandy/Ivy Bridge and Haswell [2]
+(thankfully there is only a few 32-bit out instructions), VBIOS read
+BDSM from pci config space, which is programmed by SeaBIOS [3] in
+guest. That is to say, VBIOS actually writes GPA when programming GTT
+initial entries, the current quirk is incorrect.
 
-thread '<unnamed>' panicked at 'already borrowed',
-rust/qemu-api/libqemu_api.rlib.p/structured/cell.rs:450:5
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-fatal runtime error: failed to initiate panic, error 5
+The change was tested on a Kaby Lake HD620 (Gen 9) by comparing GTT
+entries read from MMIO BAR0 and IO BAR4.
 
-https://gitlab.com/qemu-project/qemu/-/jobs/8946857796
+This patchset also creates a new function vfio_config_quirk_setup()
+for the config space quirk previously in vfio_probe_igd_bar4_quirk().
+The OpRegion quirk in vfio_realize() is also merged into the config
+qurk. Finally all the igd-related codes are moved to igd.c.
 
-Thanks,
-Stefan
+[1] https://lore.kernel.org/qemu-devel/b373a030-5ccf-418c-9213-865ddc6748fd@gmail.com/
+[2] https://winraid.level1techs.com/t/offer-intel-sandy-ivy-bridge-and-haswell-vbios-modules/30272
+[3] https://gitlab.com/qemu-project/seabios/-/blob/1.12-stable/src/fw/pciinit.c#L319-332
 
->
-> ----------------------------------------------------------------
-> Paolo Bonzini (39):
->       rust: pl011: fix repr(C) for PL011Class
->       target/i386: inline gen_jcc into sole caller
->       target/i386: remove trailing 1 from gen_{j, cmov, set}cc1
->       target/i386: unify REP and REPZ/REPNZ generation
->       target/i386: unify choice between single and repeated string instructions
->       target/i386: reorganize ops emitted by do_gen_rep, drop repz_opt
->       target/i386: tcg: move gen_set/reset_* earlier in the file
->       target/i386: fix RF handling for string instructions
->       target/i386: make cc_op handling more explicit for repeated string instructions.
->       target/i386: do not use gen_op_jz_ecx for repeated string operations
->       target/i386: optimize CX handling in repeated string operations
->       target/i386: execute multiple REP/REPZ iterations without leaving TB
->       target/i386: pull computation of string update value out of loop
->       target/i386: extract common bits of gen_repz/gen_repz_nz
->       target/i386: avoid using s->tmp0 for add to implicit registers
->       rust: vmstate: add new type safe implementation
->       rust: vmstate: implement VMState for non-leaf types
->       rust: vmstate: add varray support to vmstate_of!
->       rust: vmstate: implement Zeroable for VMStateField
->       rust: vmstate: implement VMState for scalar types
->       rust: vmstate: add public utility macros to implement VMState
->       rust: qemu_api: add vmstate_struct
->       rust: pl011: switch vmstate to new-style macros
->       rust: vmstate: remove translation of C vmstate macros
->       rust: vmstate: make order of parameters consistent in vmstate_clock
->       rust: prefer NonNull::new to assertions
->       rust: pl011: remove unnecessary "extern crate"
->       rust: pl011: hide unnecessarily "pub" items from outside pl011::device
->       rust: pl011: extract conversion to RegisterOffset
->       rust: pl011: extract CharBackend receive logic into a separate function
->       rust: pl011: pull interrupt updates out of read/write ops
->       rust: pl011: extract PL011Registers
->       rust: pl011: wrap registers with BqlRefCell
->       rust: pl011: remove duplicate definitions
->       rust: pl011: pull device-specific code out of MemoryRegionOps callbacks
->       rust: pl011: drop use of ControlFlow
->       rust: qdev: make reset take a shared reference
->       rust/zeroable: Implement Zeroable with const_zero macro
->       rust: qemu-api: add sub-subclass to the integration tests
->
-> Tao Su (4):
->       target/i386: Introduce SierraForest-v2 model
->       target/i386: Export BHI_NO bit to guests
->       target/i386: Add new CPU model ClearwaterForest
->       docs: Add GNR, SRF and CWF CPU models
->
-> Zhao Liu (5):
->       stub: Fix build failure with --enable-user --disable-system --enable-tools
->       rust/qdev: Make REALIZE safe
->       rust/pl011: Avoid bindings::*
->       memattrs: Convert unspecified member to bool
->       memattrs: Check the size of MemTxAttrs
->
->  docs/system/cpu-models-x86.rst.inc     |  50 ++-
->  include/exec/memattrs.h                |  21 +-
->  target/i386/cpu.h                      |  33 +-
->  target/i386/cpu.c                      | 156 +++++++-
->  target/i386/tcg/translate.c            | 363 ++++++++++-------
->  target/i386/tcg/emit.c.inc             |  55 +--
->  rust/hw/char/pl011/src/device.rs       | 489 +++++++++++++----------
->  rust/hw/char/pl011/src/device_class.rs |  73 ++--
->  rust/hw/char/pl011/src/lib.rs          |  67 ++--
->  rust/hw/char/pl011/src/memory_ops.rs   |  25 +-
->  rust/qemu-api/src/prelude.rs           |   2 +
->  rust/qemu-api/src/qdev.rs              |  16 +-
->  rust/qemu-api/src/qom.rs               |  21 +-
->  rust/qemu-api/src/vmstate.rs           | 700 +++++++++++++++++++++------------
->  rust/qemu-api/src/zeroable.rs          | 118 +++---
->  rust/qemu-api/tests/tests.rs           |  56 ++-
->  stubs/meson.build                      |   4 +-
->  17 files changed, 1403 insertions(+), 846 deletions(-)
-> --
-> 2.48.1
->
->
+Related VBIOS disassembly:
+
+# read BDSM
+6498:	66 53                	push   %ebx
+649a:	66 2e 83 3e 94 64 00 	cmpl   $0x0,%cs:0x6494  # BDSM already read?
+64a1:	74 07                	je     0x64aa
+64a3:	66 2e a1 94 64       	mov    %cs:0x6494,%eax 
+64a8:	eb 0f                	jmp    0x64b9
+64aa:	b8 5e 10             	mov    $0x105e,%ax      # 5e == 5c + 2, that's why shl 16 later?
+                                                    # ((2 << 11) + 0x5e)
+64ad:	e8 55 05             	call   0x6a05           # read config space via port cf8/cfc
+64b0:	66 c1 e0 10          	shl    $0x10,%eax       # eax << 16
+64b4:	66 2e a3 94 64       	mov    %eax,%cs:0x6494  # save BDSM
+64b9:	66 5b                	pop    %ebx
+64bb:	c3                   	ret
+# program single GTT entry, esi: addr, eax: data
+6d16:	66 50                	push   %eax
+6d18:	52                   	push   %dx
+6d19:	2e 8b 16 4a e4       	mov    %cs:-0x1bb6,%dx  # saved MMIO_Index port
+6d1e:	66 96                	xchg   %eax,%esi
+6d20:	66 ef                	out    %eax,(%dx)       # write MMIO_Index
+6d22:	2e 8b 16 4c e4       	mov    %cs:-0x1bb4,%dx  # saved MMIO_Data port
+6d27:	66 96                	xchg   %eax,%esi
+6d29:	66 83 c8 01          	or     $0x1,%eax        # set valid bit
+6d2d:	66 ef                	out    %eax,(%dx)       # write MMIO_Data
+6d2f:	5a                   	pop    %dx
+6d30:	66 58                	pop    %eax
+6d32:	c3                   	ret
+# program GTT entries, esi: entry addr, eax: page addr
+e929:	51                   	push   %cx
+e92a:	e8 6b 7b             	call   0x6498       # read BDSM
+e92d:	25 00 e0             	and    $0xe000,%ax
+e930:	66 83 c8 01          	or     $0x1,%eax    # valid bit
+e934:	66 be 01 00 00 00    	mov    $0x1,%esi    # gtt access bit in addr
+e93a:	e8 d9 83             	call   0x6d16       # single entry routine
+e93d:	66 83 c6 04          	add    $0x4,%esi    # next entry
+e941:	66 05 00 10 00 00    	add    $0x1000,%eax # next page
+e947:	e2 f1                	loop   0xe93a
+e949:	59                   	pop    %cx
+e94a:	c3                   	ret
+
+Observed layout of the undocumented MMIO_Index register:
+ 31                                                   2   1      0
++-------------------------------------------------------------------+
+|                        Offset                        | Rsvd | Sel |
++-------------------------------------------------------------------+
+- Offset: Byte offset in specified region, 4-byte aligned.
+- Sel: Region selector
+       0: MMIO register region (first half of MMIO BAR0)
+       1: GTT region (second half of MMIO BAR0). Pre Gen11 only.
+
+
+Changelog:
+v2:
+* Move the OpRegion quirk from vfio_realize() to vfio_probe_igd_config_
+  quirk(), as proposed in v1, making it reasonable to return bool.
+Link: https://lore.kernel.org/qemu-devel/20250122171731.40444-1-tomitamoeko@gmail.com/
+
+Tomita Moeko (5):
+  vfio/igd: remove GTT write quirk in IO BAR 4
+  vfio/pci: add placeholder for device-specific config space quirks
+  vfio/igd: refactor vfio_probe_igd_bar4_quirk() into pci config quirk
+  vfio/igd: do not include GTT stolen size in etc/igd-bdsm-size
+  vfio/igd: handle x-igd-opregion in vfio_probe_igd_config_quirk()
+
+ hw/vfio/igd.c        | 381 ++++++++++++++-----------------------------
+ hw/vfio/pci-quirks.c |  51 +-----
+ hw/vfio/pci.c        |  29 +---
+ hw/vfio/pci.h        |   7 +-
+ 4 files changed, 136 insertions(+), 332 deletions(-)
+
+-- 
+2.45.2
+
 
