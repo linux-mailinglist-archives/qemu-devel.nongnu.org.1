@@ -2,80 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5D5DA1BADB
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:47:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 814A3A1BACE
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:44:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbMfA-0003Z4-EZ; Fri, 24 Jan 2025 11:36:10 -0500
+	id 1tbMhP-0007a5-5k; Fri, 24 Jan 2025 11:38:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tbMZh-00069e-8a
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:30:32 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1tbMeb-0002r7-3C
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:35:35 -0500
+Received: from mail-yb1-xb2d.google.com ([2607:f8b0:4864:20::b2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tbMZX-00064i-Cq
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:30:22 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-436202dd730so16575645e9.2
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:30:16 -0800 (PST)
+ id 1tbMeZ-0006qA-Ii
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:35:32 -0500
+Received: by mail-yb1-xb2d.google.com with SMTP id
+ 3f1490d57ef6-e53a91756e5so4112597276.1
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:35:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737736215; x=1738341015; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=1n4b3Sbe/IW5K25A4cb6upe/VFAy/+5L91fnNWowiOo=;
- b=PV8FF46EQSv655R6R1CYir2ekj1t3zcuAJArLS0pADO/Je02iwhQwJRko7wWBY24v6
- kJ0D78uSLjpVZeahmynXUu4MiE4Z/WHo+c70WFLhKGLwc5ZzNE6mFEik+FMsJv7UFQ4J
- CjjHi2XQzkSn+CGTAH9wf5oEgHTzdKHfyDNan5s6lFqSS8/ZI7fRyEK3BIFpw6ye72cP
- BG2RBT0kZeX5UpnO/gWpHBxkRd1F3TuDup5x8Oh/ZGTwXGpoLLAFM47sKUJ/fDANGgnf
- SUkTq3cNmCn7lm3zbR6/Hmbq/NjnLp4/udeS2eqDyzKj92eP05MpW8dcG22c3oF8uAcN
- Z49A==
+ d=linaro.org; s=google; t=1737736529; x=1738341329; darn=nongnu.org;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=TxUN8Fd2eU9DUvV9yTSFQlBGvgml4AE9HSaNzAgXGr4=;
+ b=smjrkdqB6qI147hdB4ff7ULiDCXvp0gIgOXKDiwKOGB45iCrAvyPgScBoqj1XgStJI
+ zp+Fv/vuO9A4AefGcu2vpG/dVtTKTbpb3R+G+1+TOHyPdmtSa5Z0cjSidt2Tez+U2jSB
+ +hI17751y0YluKfEmowmY/8CatNorS4lJdTqMuoce5PHkUjBnVSQiw0w3vEMrdRHr71Y
+ H18b2xVRpOWPp0Gads6e83ny11lXxQIvSSdPypW4QBeCw1ikmAsMEgrLQvkoPm8EUtOW
+ bmAtAnhInz68EhYFXYtkU72NaG+gELnYo9KzbUhdq1rbkk+V7yUhXwhHSNxq+1Vkbm4P
+ 5Luw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737736215; x=1738341015;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1n4b3Sbe/IW5K25A4cb6upe/VFAy/+5L91fnNWowiOo=;
- b=SzH5QkVsjpxUjexgYmRBv/46YqraMfZOarzLfJzPDA8f1hs+nJdN4J41HI414QrHSv
- DuG5/zbUYaHtCsLF1QPvdyl2IoFu+AESPU6naq9zZdmWxKaf8QqJP4FAPQf+FEDhKcAy
- hEFMvhEvH+LgML6ULeNzH8MILFT8rqfjdX7nnOOyKzQA7EJAQog+m/qQaeP1cWMqtMXl
- C0Yzwhvf4OFn9rAaquytI0LAsg7O+X/4xO1pW65XziC5xLXDBHCkrvb+/VpgufulFlio
- Zkbgc5zMFd+DCxrxC8mUxwSXnyzDRYCJ9aIIHOhHYfUmvwk164085uene8sltvKVdkIg
- z4fQ==
+ d=1e100.net; s=20230601; t=1737736529; x=1738341329;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TxUN8Fd2eU9DUvV9yTSFQlBGvgml4AE9HSaNzAgXGr4=;
+ b=CNtqKU/8r+WWChtP7dsbA59UWEORAL7qgMWLDYpVSCyx52b8w5R+PtZ2beARa/IPwB
+ sm6vm8p5OA/GcKEQDmS6+y6h3+soJ+lvEAMugzy0vSVT+v1R4QH+uQyBFMz2pv1Vk3hJ
+ O/hoj+A8gKmVVRstJ4cavnnY89oI4nD2olD40I3J6t8sXZEZXFQcHjZBXHN638Y0LiJC
+ B9khrfIQB4mNQRp8/1Tfhn1zXLoBFkwZ6fiyW7szQIDiZhRS7s7/Ha9DLDDJ0YH4sYXO
+ +ggundRhFxV/tamRi+TRL4mL5Hfw+s7eg0RuwQe6emmh6sSLcUvljM/m1avmCHAfAdyR
+ QlsA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWMiN33IcAUQ4UNgkcoGBO5tfHOms/h2PGH5ns7KgE2e8+IoHyClhMuliGF3as7UfbUUeJL0CWNEDTk@nongnu.org
-X-Gm-Message-State: AOJu0YzYprbuhD+fmO2XVA6+SwsJqWcpCqwhQftErGpX+L2HXDmU+YA0
- F5eKCItecrSUQcwJAKlOmFv1go8mDSuJ7YxMKUsWNF9rAgMWfRTh0l4SSjlrb3r0d1Pl+1F9oSa
- 7
-X-Gm-Gg: ASbGnctHZJ55xT/Iqjn3nm1HGt9qTryPFMGCFmn7H9Dw+qVorKMChbpJb/eEb6CdK8G
- KxIyTogA4ETCkb4L0Wa7iCz9gXoGVgVtuAnn59Zk7czG6C7+gRybmA7W6TlMZzAJKAW+LHAX020
- WaekpcfvP+NjOJjGTe8tqaxy2iwehlW0V6KEqRpIqjW7BTu20Bgul5CRN/54K407eRFPrs1dSZX
- cbExH6R5qm2qtyhZ/7eqbNRvfybWf7zhCJUS8l0j1Zkeva9B9zcEXnPnIsgyTOLXpM+x2zb/nx5
- ZkwzKTpYuLs=
-X-Google-Smtp-Source: AGHT+IF7e8PjN4Jru9fKkRWpUImsevZ2iOZzFwEiB4Q8wbpknoCa/I5P4/9ts9hLUEGN5f3qdTTwNQ==
-X-Received: by 2002:a05:600c:4687:b0:435:b064:7dce with SMTP id
- 5b1f17b1804b1-438913f2df1mr295380125e9.18.1737736215407; 
- Fri, 24 Jan 2025 08:30:15 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd47eecasm31683025e9.6.2025.01.24.08.30.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 08:30:14 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH 76/76] tests/tcg/x86_64/fma: add test for exact-denormal output
-Date: Fri, 24 Jan 2025 16:28:36 +0000
-Message-Id: <20250124162836.2332150-77-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250124162836.2332150-1-peter.maydell@linaro.org>
-References: <20250124162836.2332150-1-peter.maydell@linaro.org>
+ AJvYcCU/5w/nnE5eqVzQkbJOjIxuDt9RQZiui8jT4zAFo+A1wFojACr8FZGHE7EJZHWfRTIW20bR41ve23rg@nongnu.org
+X-Gm-Message-State: AOJu0YzyJNgfh/n5Or4eW+8RzWGiGvtjz1XBW0Tw8ckr82jBcnCOeb5b
+ F3ypZSOWLHR6fDGqZYMfJcA4gtHp5BWbmxgXWrObhVxCAuPKcgUQQ7GQffWZf1sjjhyx50QiSbD
+ cNyyifNQrkLzXa5S6qyC5J7FqjG8YF3y4IpSiP+b9NytkslUq
+X-Gm-Gg: ASbGnctLssZ9u0DU7tCh0JrzdfkpT4OexACgFWutbhTu/Nv9dsaIi2s4BdGHPS8gzS+
+ vvJgiwDIQqSPP6x/LNMp4awrWhywkEyBFvkzNtna1WzuNKt/+Pz/g2ydGJ8/z+AU=
+X-Google-Smtp-Source: AGHT+IGolMqCjmD+Qh5sN49kfK1UGcRBR9TVgj5rWOYN+Q9XAjJb9LRmizDnr5gHtY/DBZ4HAMICe+zfXeVlcBZm4Sg=
+X-Received: by 2002:a05:6902:144c:b0:e58:3990:3f77 with SMTP id
+ 3f1490d57ef6-e58399041e4mr4279979276.22.1737736529607; Fri, 24 Jan 2025
+ 08:35:29 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+References: <20250124162836.2332150-1-peter.maydell@linaro.org>
+In-Reply-To: <20250124162836.2332150-1-peter.maydell@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 24 Jan 2025 16:35:17 +0000
+X-Gm-Features: AWEUYZm1HnEMlkcuXd3WrwzLYmOcYihRTgLRdgThh_c2AwdH0FwNrx5NVH8jaQQ
+Message-ID: <CAFEAcA98LTxpbiXj2YdQvRmUfufzqxDkOcPF0iUfF1rKMY3v=g@mail.gmail.com>
+Subject: Re: [PATCH 00/76] target/arm: Implement FEAT_AFP and FEAT_RPRES
+To: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,38 +88,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add some fma test cases that check for correct handling of FTZ and
-for the flag that indicates that the input denormal was consumed.
+On Fri, 24 Jan 2025 at 16:28, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> This patchset implements emulation of the Arm FEAT_AFP and FEAT_RPRES
+> extensions, which are floating-point related. It's based on the
+> small i386 bugfix series I sent out a while back:
+>
+> Based-on: 20250116112536.4117889-1-peter.maydell@linaro.org
+> ("target/i386: Fix 0 * Inf + QNaN regression")
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- tests/tcg/x86_64/fma.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
 
-diff --git a/tests/tcg/x86_64/fma.c b/tests/tcg/x86_64/fma.c
-index 46f863005ed..34219614c0a 100644
---- a/tests/tcg/x86_64/fma.c
-+++ b/tests/tcg/x86_64/fma.c
-@@ -82,6 +82,18 @@ static testdata tests[] = {
-      */
-     { 0x3fdfffffffffffff, 0x001fffffffffffff, 0x801fffffffffffff, true,
-       0x8010000000000000, 0x20 }, /* Enabling FTZ shouldn't change flags */
-+    /*
-+     * normal * 0 + a denormal. With FTZ disabled this gives an exact
-+     * result (equal to the input denormal) that has consumed the denormal.
-+     */
-+    { 0x3cc8000000000000, 0x0000000000000000, 0x8008000000000000, false,
-+      0x8008000000000000, 0x2 }, /* Denormal */
-+    /*
-+     * With FTZ enabled, this consumes the denormal, returns zero (because
-+     * flushed) and indicates also Underflow and Precision.
-+     */
-+    { 0x3cc8000000000000, 0x0000000000000000, 0x8008000000000000, true,
-+      0x8000000000000000, 0x32 }, /* Precision, Underflow, Denormal */
- };
- 
- int main(void)
--- 
-2.34.1
+> I have also some patchs which make target/i386 use the "detect
+> flush to zero after rounding" and "report when input denormal is
+> consumed" softfloat features added here; I don't include them in
+> this patchset (though you can find them in that git branch I
+> mentioned earlier) becaus I haven't done as much testing on the
+> i386 side and in any case this patchset is already pretty long.
+> I expect I'll send them out when this series has been merged.
 
+...having said which, I was so eager to get the series out
+once I'd finished the last test run that I forgot that I
+didn't intend to send out the first two or the last four
+patches in this series; whoops. Feel free to ignore them.
+
+(The patch numbering in the explanation of the series structure
+in the cover letter is all going to be off by 2 as a result,
+as well. This doesn't seem worth resending a monster patchset
+just to fix, though.)
+
+thanks
+-- PMM
 
