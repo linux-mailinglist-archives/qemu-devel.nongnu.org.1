@@ -2,104 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0527A1BAD0
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:45:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B167A1BAEE
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:49:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbMhZ-0008P5-Pv; Fri, 24 Jan 2025 11:38:37 -0500
+	id 1tbMnU-0003VJ-7I; Fri, 24 Jan 2025 11:44:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sbrivio@redhat.com>)
- id 1tbMgc-0006aO-2p
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:37:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tbMmm-0003Kb-BI
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:44:03 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sbrivio@redhat.com>)
- id 1tbMgT-0007KO-UG
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:37:37 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tbMmk-0000ze-Hn
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:43:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737736643;
+ s=mimecast20190719; t=1737737037;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kGUeyc6SbR140JHQdx4tNf9hGmwc1o9CCgwC7kVgEWY=;
- b=RWHNrLH7haSB5DQYMXuLCR2jespRcgbsSiefT3faKSwoeAi0mx1UqtT+ihVvZFlZz0YybX
- rYo2TM5EriIdMyjLuIfUO8jRg0z8BztW10lHJcvMLWLOhvMP6Des1dKIMa8eGsjfeZC5DK
- ZXfy/D4nyFM7IdxwFjJVKbEcsn1mymE=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=IDKUVYKOGSDfpP03QEl3KwwK9q8MuQxs4/UuoRKH5lI=;
+ b=FsXtsscp6c0/EvI0BHRLc3mdfhVa5VryoQFhxJiavge5yFHotByeMa9UyEwbwQVJpflLHk
+ WmCZC4RMEA5tZF6tUAWkqxuKukGv5FVya0JHApdVpEvv4lt5Kr/xMU/E6MyIIqq0HdO58F
+ 24eZ7IODRyxiZVj+Ad2uBm3rfhg0yRA=
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
+ [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-544-utUTwDb-MKWg6OrrR-RDkg-1; Fri, 24 Jan 2025 11:31:48 -0500
-X-MC-Unique: utUTwDb-MKWg6OrrR-RDkg-1
-X-Mimecast-MFC-AGG-ID: utUTwDb-MKWg6OrrR-RDkg
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-5da0ce0ee51so2219819a12.2
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:31:48 -0800 (PST)
+ us-mta-36-JXF_cFceO8WVcUVRuJ0f_g-1; Fri, 24 Jan 2025 11:43:54 -0500
+X-MC-Unique: JXF_cFceO8WVcUVRuJ0f_g-1
+X-Mimecast-MFC-AGG-ID: JXF_cFceO8WVcUVRuJ0f_g
+Received: by mail-ot1-f69.google.com with SMTP id
+ 46e09a7af769-71e13d7e9f2so1583567a34.3
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:43:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737736307; x=1738341107;
- h=content-transfer-encoding:mime-version:organization:references
- :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=kGUeyc6SbR140JHQdx4tNf9hGmwc1o9CCgwC7kVgEWY=;
- b=oNgaNK2Nf44RZ9R9UGKW6j+PNUOqrUYFNUFkWnDhb8ow1KSMZ/Du6l0BQRq6Qnq0KL
- b3GGFfqxx0Q41lE7z5tpHOmPCcX/N0hVhhriVTnD/CEQnmQSI3GO/BSVdWK8/Cj+vvug
- H5J5HInO8dsT26+zidtOYpMQhMMBaNfDr9gswNOeOMvHaGOhwtXAJ6IbdKwOu18qoJ1n
- feqLrBwd843x8pvomKflqYvS+9op//euMs9xgDPTs44yTL4T2cjfGN8M42CREBSzUHhZ
- k8FIGH+M52yrTzJHuS6MWfQ12OiQjvPwJVOc9raL6jWGot539vjDW3FbYZvRGueZJrQE
- SzDw==
+ d=1e100.net; s=20230601; t=1737737033; x=1738341833;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=IDKUVYKOGSDfpP03QEl3KwwK9q8MuQxs4/UuoRKH5lI=;
+ b=PcdTD6HV4kTO9dkC9KxcP7nU/C944nmEgemiJTh1SagutTE0+yVzthOoGOXrSE274c
+ eAelxbB7EiB3GJYxa/LAvrR+8gXrXJwDeUydUDSFG54hU4qhJK2yvQcTfb9koeoXTzCH
+ nSnAY5Xr8y5DrGlH/XUDwG0YpS28U/kFSxkyXzgG2JRwd8GpmaDQ4QhEubUVNOJixNmx
+ lp3P4F8J2ZKLKO4acsePZxGjrPy3yRhQQLK4mQ8+953OROKXZF1rXBsZHQMTUA8jRhdK
+ cCEDyFyTq7VODj7MgJ8FOjRGRg4vylDP9ytwTOgK+cUEm5nrsd6Nxh2iKTjn0Dg+2O0e
+ 1OXg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUDNbfm3CIDDhDZdEiGQNv2s12QQT/hHkg28izvWo7kQf1737vqEZzhi7+xPJQ5q0skJWAS0pU+t6GD@nongnu.org
-X-Gm-Message-State: AOJu0YzaYoZlFmv+A5/bAQlPd4ZPmNgsTZu+aShsPa2Dg6zd+4RyrxhG
- q1eeB1BkCd8SLYzsYj0dLX39MHgq9py0yoTud5Zj2XLYcfr0qpqxur/2WEzul7/wUczVEDRqPVz
- m1H3NwFFKuDE9C+CKpRJDD2HK4EH71cKFtb0pI6wDvRubbLJWRReW
-X-Gm-Gg: ASbGncs+YE7a4dhgRz/BPTtrZFv0q2ljFHE03Ysll4JKU1b51WtUmXagDKQ2Pl9n9nf
- Cjmm7B+DN2JtCMZO652pDqeF/5cU45Q4SrhveeDqkJk6znXKQMBIL3EquzvdNVmbSDmoJ6v8Zur
- DCure9ftp41sWjZY7jgk/Afr27FWcOa2+yls7sssssX7ig4Day+5hTtylJQHCBHXCxt4yzafOZE
- 51PDe/BGECxbaXZ3wPrXlsISuZjID3vMxUx8sEXxnfXTs5+dz7LGKj/jrqJ2+wfnRCWy4am1opu
- p1rZLQ==
-X-Received: by 2002:a05:600c:3593:b0:431:5632:448b with SMTP id
- 5b1f17b1804b1-4389144eed4mr248507575e9.25.1737734610651; 
- Fri, 24 Jan 2025 08:03:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFh8RBZDW6JWrVfbOFPcLEGc6pLkkEdTeWD7+gqFx3gqVnnx5V1kpHM/6RlkFtRTNItrgGfxw==
-X-Received: by 2002:a05:600c:3593:b0:431:5632:448b with SMTP id
- 5b1f17b1804b1-4389144eed4mr248506835e9.25.1737734610060; 
- Fri, 24 Jan 2025 08:03:30 -0800 (PST)
-Received: from maya.myfinge.rs (ifcgrfdd.trafficplex.cloud.
- [2a10:fc81:a806:d6a9::1]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd507e0csm30285245e9.20.2025.01.24.08.03.28
+ AJvYcCW7pCP/TdEOSaBf2KQNFDWdMGLevGhtZEoBNCGPCaXjY9/PlinVrGPsz/fq7Api1OoImpnETQaYtnLf@nongnu.org
+X-Gm-Message-State: AOJu0YzieGNglQTT6yImJtLCM3ZjqG2ueRidIW5m+4DIjrrAkIzpSygb
+ 96vmOuiIvJ9KPk9nDqK24qGRJuoBRKep6zjbyb4rroUG/BULvYGQbR80cxJ4qosFNXGFUq47PBa
+ 1l5PHcQCBHQFsJamc8abTpsX9QJmpXssXdodGKVIpceyvXxroDwAu
+X-Gm-Gg: ASbGncs34lqI38sFvDBtr1EQPpK5qOKcnxiRrUBoS/hkqf34imDT23AwgRBUFLTM126
+ Xv8yDae30K2/u+wd8+dgDVktf0MVfAVZEcIW+7gg9f8GxSU1hh74ymiI12G+Ug4yakdEb813C91
+ MxdEkdkMc/m5RxTTthce8pzDNXuaY78xW1g9PpBG1AFnSn3ATgrVLLB4V8JrcXhjeSMVa+B9U/N
+ vC+5vAMjfodXnCECOiiNP6+1u/fjzUZMui56zQTC+bEGeHaFJELljLS+M5sNm3AazVi2U1Fd+Sc
+ 4eooJZlTu+GctSx7n65cXQ2UP2USnjg=
+X-Received: by 2002:a05:6214:d63:b0:6dd:be26:50ba with SMTP id
+ 6a1803df08f44-6e1b21d4775mr472168246d6.21.1737735158714; 
+ Fri, 24 Jan 2025 08:12:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEkedu4M4bSFyiRgJDvmyb6kS6QCNU3PVd61/eGKd58HzLgZACf+QknYf4i4z86MzQZZnxlEg==
+X-Received: by 2002:a05:6214:d63:b0:6dd:be26:50ba with SMTP id
+ 6a1803df08f44-6e1b21d4775mr472167866d6.21.1737735158385; 
+ Fri, 24 Jan 2025 08:12:38 -0800 (PST)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6e2058c236csm9808906d6.104.2025.01.24.08.12.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 08:03:29 -0800 (PST)
-Date: Fri, 24 Jan 2025 17:03:27 +0100
-From: Stefano Brivio <sbrivio@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Laurent Vivier <lvivier@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
- Thibaut Collet <thibaut.collet@6wind.com>
-Subject: Re: [PATCH] vhost-user: Silence unsupported
- VHOST_USER_PROTOCOL_F_RARP error
-Message-ID: <20250124170327.448805ad@elisabeth>
-In-Reply-To: <kt2sdfv3wg3raylqfmphrdbc2isex2q3jtmgw7oems5xysex4f@lnp3ulutpt6f>
-References: <20250121100029.1106973-1-lvivier@redhat.com>
- <3mcx7u456pawkgz4dgf6tvk7izczuy55guipqacqkl66jhtltq@fofd5u3el4nj>
- <20250122085828-mutt-send-email-mst@kernel.org>
- <bfc3rstsxuapkjlea4lia3bn44rt7hhsf6kagtkltfssqynx6z@4dodvso73pel>
- <044af96f-791b-471f-ae90-c17597445fd3@redhat.com>
- <kt2sdfv3wg3raylqfmphrdbc2isex2q3jtmgw7oems5xysex4f@lnp3ulutpt6f>
-Organization: Red Hat
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+ Fri, 24 Jan 2025 08:12:37 -0800 (PST)
+Date: Fri, 24 Jan 2025 11:12:35 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: Chenyi Qiang <chenyi.qiang@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
+ Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
+ Xu Yilun <yilun.xu@intel.com>
+Subject: Re: [PATCH 2/7] guest_memfd: Introduce an object to manage the
+ guest-memfd with RamDiscardManager
+Message-ID: <Z5O784_wnrBMrV6X@x1n>
+References: <Z46GIsAcXJTPQ8yN@x1n>
+ <7e60d2d8-9ee9-4e97-8a45-bd35a3b7b2a2@redhat.com>
+ <Z46W7Ltk-CWjmCEj@x1n>
+ <8e144c26-b1f4-4156-b959-93dc19ab2984@intel.com>
+ <Z4_MvGSq2B4zptGB@x1n>
+ <c5148428-9ebe-4659-953c-6c9d0eea1051@intel.com>
+ <9d4df308-2dfd-4fa0-a19b-ccbbce13a2fc@intel.com>
+ <b11f240d-ff8c-4c83-9b33-5e556cde0bce@amd.com>
+ <d54f6f53-3d11-477e-8849-cc3d28a201db@intel.com>
+ <2115c769-144c-4254-94b0-6b38b7afc6fc@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sbrivio@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2115c769-144c-4254-94b0-6b38b7afc6fc@amd.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
 X-Spam_bar: -----
 X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
@@ -118,143 +121,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-[Cc'ed Thibaut as author of 3e866365e1eb ("vhost user: add rarp sending
-after live migration for legacy guest")]
+On Fri, Jan 24, 2025 at 04:56:50PM +1100, Alexey Kardashevskiy wrote:
+> > Now, I assume Peter's real question is, if we can copy the vBIOS to a
+> > private region and no need to create a specific guest_memfd-backed
+> > memory region for it?
 
-On Wed, 22 Jan 2025 17:51:07 +0100
-Stefano Garzarella <sgarzare@redhat.com> wrote:
+Yes.
 
-> On Wed, Jan 22, 2025 at 05:41:15PM +0100, Laurent Vivier wrote:
-> >On 22/01/2025 17:20, Stefano Garzarella wrote: =20
-> >>On Wed, Jan 22, 2025 at 08:59:22AM -0500, Michael S. Tsirkin wrote: =20
-> >>>On Wed, Jan 22, 2025 at 02:42:14PM +0100, Stefano Garzarella wrote: =20
-> >>>>On Tue, Jan 21, 2025 at 11:00:29AM +0100, Laurent Vivier wrote: =20
-> >>>>> In vhost_user_receive() if vhost_net_notify_migration_done() reports
-> >>>>> an error we display on the console:
-> >>>>>
-> >>>>>=C2=A0 Vhost user backend fails to broadcast fake RARP
-> >>>>>
-> >>>>> This message can be useful if there is a problem to execute
-> >>>>> VHOST_USER_SEND_RARP but it is useless if the backend doesn't
-> >>>>> support VHOST_USER_PROTOCOL_F_RARP.
-> >>>>>
-> >>>>> Don't report the error if vhost_net_notify_migration_done()
-> >>>>> returns -ENOTSUP (from vhost_user_migration_done())
-> >>>>>
-> >>>>> Update vhost_net-stub.c to return -ENOTSUP too.
-> >>>>>
-> >>>>> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-> >>>>> ---
-> >>>>> hw/net/vhost_net-stub.c | 2 +-
-> >>>>> net/vhost-user.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
-> >>>>> 2 files changed, 2 insertions(+), 2 deletions(-)
-> >>>>>
-> >>>>> diff --git a/hw/net/vhost_net-stub.c b/hw/net/vhost_net-stub.c
-> >>>>> index 72df6d757e4d..875cd6c2b9c8 100644
-> >>>>> --- a/hw/net/vhost_net-stub.c
-> >>>>> +++ b/hw/net/vhost_net-stub.c
-> >>>>> @@ -93,7 +93,7 @@ void vhost_net_config_mask(VHostNetState  =20
-> >>>>*net, VirtIODevice *dev, bool mask) =20
-> >>>>>
-> >>>>> int vhost_net_notify_migration_done(struct vhost_net *net, char* ma=
-c_addr)
-> >>>>> {
-> >>>>> -=C2=A0=C2=A0=C2=A0 return -1;
-> >>>>> +=C2=A0=C2=A0=C2=A0 return -ENOTSUP;
-> >>>>> }
-> >>>>>
-> >>>>> VHostNetState *get_vhost_net(NetClientState *nc)
-> >>>>> diff --git a/net/vhost-user.c b/net/vhost-user.c
-> >>>>> index 12555518e838..636fff8a84a2 100644
-> >>>>> --- a/net/vhost-user.c
-> >>>>> +++ b/net/vhost-user.c
-> >>>>> @@ -146,7 +146,7 @@ static ssize_t  =20
-> >>>>vhost_user_receive(NetClientState *nc, const uint8_t *buf, =20
-> >>>>>
-> >>>>>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 r =3D vhost_net_not=
-ify_migration_done(s->vhost_net, mac_addr);
-> >>>>>
-> >>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if ((r !=3D 0) && (disp=
-lay_rarp_failure)) {
-> >>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if ((r !=3D 0) && (r !=
-=3D -ENOTSUP) && (display_rarp_failure)) {
-> >>>>>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 fprintf(stderr,
-> >>>>>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "Vhost user backend =
-fails to broadcast fake RARP\n");
-> >>>>>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 fflush(stderr);
-> >>>>> --
-> >>>>> 2.47.1
-> >>>>> =20
-> >>>>
-> >>>>IIUC the message was there since the introduction about 10 years ago
-> >>>>from commit 3e866365e1 ("vhost user: add rarp sending after live
-> >>>>migration for legacy guest"). IIUC -ENOTSUP is returned when both F_R=
-ARP
-> >>>>and F_GUEST_ANNOUNCE are not negotiated.
-> >>>>
-> >>>>That said, I honestly don't know what F_RARP or F_GUEST_ANNOUNCE is f=
-or, =20
-> >>>
-> >>>rarp is to have destination host broadcast a message with VM address
-> >>>to update the network. Guest announce is when it will instead
-> >>>ask the guest to do this. =20
-> >>
-> >>Okay, thanks for explaining to me.
-> >>So if both features are not negotiated, no one is going to broadcast
-> >>the message, right?
-> >>
-> >>Could that be a valid reason to print an error message in QEMU?
-> >>
-> >>To me it might be reasonable because the user might experience some
-> >>network problems, but I'm not a network guy :-) =20
-> >
-> >I'm working on adding vhost-user to passt[1], and in this case we=20
-> >don't need to broadcast any message. =20
->=20
-> Okay, so please can you add that to the commit description and also
-> explaining why you don't need that?
+> 
+> I guess we can copy it but we have pc.bios and pc.rom in own memory regions
+> for some reason even for legacy non-secure VMs, for ages, so it has little
+> or nothing to do with whether vBIOS is in private or shared memory. Thanks,
 
-By the way, we don't need that in passt because we don't need to update
-any ARP table. Even if the guest changes its MAC address, with passt,
-nobody is going to notice.
+My previous question is whether they are required to be converted to be
+guest-memfd backed memory regions, irrelevant of whether they're separate
+or not.
 
-> >So I don't implement VHOST_USER_SEND_RARP and I don't want the error=20
-> >message to spoil my console. =20
->=20
-> Fair enough, but at that point, if it's valid to have both feature not
-> negotiated, IMHO is better to return 0 in vhost_user_migration_done().
-> Maybe adding also a comment to explain that in your scenario you don't
-> need to do nothing (like if guest supports GUEST_ANNOUNCE).
->=20
-> >-ENOTSUP is an error message for developer not for user. =20
->=20
-> I was referring to the "Vhost user backend fails to broadcast fake RARP"
-> error message we are skipping here.
+I think I found some answers in the commit logs here (it isn't hiding too
+deep; I could have tried when asking):
 
-By the way, I think that that message is inaccurate on a number of
-other levels:
+===8<===
+commit fc7a69e177e4ba26d11fcf47b853f85115b35a11
+Author: Michael Roth <michael.roth@amd.com>
+Date:   Thu May 30 06:16:40 2024 -0500
 
-- if the back-end doesn't even try, it can't fail, and "fails"
-  indicates... failure?
+    hw/i386: Add support for loading BIOS using guest_memfd
+    
+    When guest_memfd is enabled, the BIOS is generally part of the initial
+    encrypted guest image and will be accessed as private guest memory. Add
+    the necessary changes to set up the associated RAM region with a
+    guest_memfd backend to allow for this.
+    
+    Current support centers around using -bios to load the BIOS data.
+    Support for loading the BIOS via pflash requires additional enablement
+    since those interfaces rely on the use of ROM memory regions which make
+    use of the KVM_MEM_READONLY memslot flag, which is not supported for
+    guest_memfd-backed memslots.
 
-- RARP is an obsolete protocol, but there's no such thing as a fake
-  protocol. It's not even a fake message, it's a simple RARP broadcast
-  message, with the correct MAC address. It's "dummy", at most
+commit 413a67450750e0459efeffc3db3ba9759c3e381c
+Author: Michael Roth <michael.roth@amd.com>
+Date:   Thu May 30 06:16:39 2024 -0500
 
-- I read the whole thread but still I can't understand why we have a
-  capability then: what does it (or its absence) mean?
+    hw/i386/sev: Use guest_memfd for legacy ROMs
+    
+    Current SNP guest kernels will attempt to access these regions with
+    with C-bit set, so guest_memfd is needed to handle that. Otherwise,
+    kvm_convert_memory() will fail when the guest kernel tries to access it
+    and QEMU attempts to call KVM_SET_MEMORY_ATTRIBUTES to set these ranges
+    to private.
+    
+    Whether guests should actually try to access ROM regions in this way (or
+    need to deal with legacy ROM regions at all), is a separate issue to be
+    addressed on kernel side, but current SNP guest kernels will exhibit
+    this behavior and so this handling is needed to allow QEMU to continue
+    running existing SNP guest kernels.
+===8<===
 
-Regardless of that, sure, let's go ahead and add the fake (that one
-*is* fake) callback in passt, which Laurent just sent a patch for. We
-need it anyway as a workaround for compatibility with current/older
-versions of QEMU.
+So IIUC the CoCo VMs will assume they're somehow convertable memories or
+they'll stop working I assume, at least on some existing hardwares.
 
-But I don't understand why we're leaving this as it is.
+Thanks,
 
---=20
-Stefano
+-- 
+Peter Xu
 
 
