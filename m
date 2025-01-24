@@ -2,59 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D82A1B841
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 15:58:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3084AA1B7FE
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 15:41:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbL7L-0007Zj-3B; Fri, 24 Jan 2025 09:57:07 -0500
+	id 1tbKrG-00030T-QG; Fri, 24 Jan 2025 09:40:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1tbL77-0007Yw-CG
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 09:56:54 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tbKrE-000300-JB
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 09:40:28 -0500
+Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1tbL74-0007Ll-PC
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 09:56:53 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Yfgp04QVVz6M4MZ;
- Fri, 24 Jan 2025 22:54:48 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 53D3D140114;
- Fri, 24 Jan 2025 22:56:47 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 24 Jan
- 2025 15:56:46 +0100
-Date: Fri, 24 Jan 2025 14:56:45 +0000
-To: Vinayak Holikatti <vinayak.kh@samsung.com>
-CC: <qemu-devel@nongnu.org>, <krish.reddy@samsung.com>,
- <vishak.g@samsung.com>, <a.manzanares@samsung.com>,
- <alok.rathore@samsung.com>, <s5.kumari@samsung.com>,
- <linux-cxl@vger.kernel.org>
-Subject: Re: [PATCH 1/2] hw/cxl/cxl-mailbox-utils: Add support for Media
- operations discovery commands (8.2.9.9.5.3)
-Message-ID: <20250124145645.00005ba9@huawei.com>
-In-Reply-To: <20250123050903.92336-2-vinayak.kh@samsung.com>
-References: <20250123050903.92336-1-vinayak.kh@samsung.com>
- <CGME20250123050912epcas5p2965fd6efa702030802a42c225f11f65b@epcas5p2.samsung.com>
- <20250123050903.92336-2-vinayak.kh@samsung.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tbKrC-00041a-Qc
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 09:40:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1737729627; x=1769265627;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=lqBcTjUad00nEjl4On6LQYz18KLKlD9aDKrmHzFPdpI=;
+ b=NDTLyfmFeoAg39ChhqLFSP7QBuq5RU3r5yLCppJBh9A/dlJ8Wp5FALHi
+ syh86AKjOunFiO0rM6xLcRbHPaWlkuKMl/H42hHZ6RrL8qoO+F4+TBN+e
+ 1D1T+obv8kz8hIoygq4GwbwmtLDfL3l7ti0kZCO0ZQ9cP964lZrv5dnuP
+ WYRvvRb551j8J8RX7pOj03n+zoUtJ/N+hCG2PCNNk4dKsDyXHCCwwzJfb
+ Gg7lMxlhe/z4Y1PIhMPCeQ7Br4AD9gGgo6HFR3mhh02dS3LzOdhBZkIJr
+ s0f+vLjSjrX3GcbFFb/CAMoCmhl1qwSyvZUA483a+LcpgdeqBCufo0jPA g==;
+X-CSE-ConnectionGUID: RutNHKyyTLCfSVWciA+ivA==
+X-CSE-MsgGUID: IlBozKzfRWuQ/qrfe8nuwA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="48848574"
+X-IronPort-AV: E=Sophos;i="6.13,231,1732608000"; d="scan'208";a="48848574"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jan 2025 06:40:22 -0800
+X-CSE-ConnectionGUID: mbTDrtKNSzCyF5GPWrD/7w==
+X-CSE-MsgGUID: Z5ikiRxSSPiCXFFrBWmsBg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="112915996"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa005.jf.intel.com with ESMTP; 24 Jan 2025 06:40:21 -0800
+Date: Fri, 24 Jan 2025 22:59:44 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH] hpet: do not overwrite properties on post_load
+Message-ID: <Z5Oq4LppNuN7N6NL@intel.com>
+References: <20241205203721.347233-1-pbonzini@redhat.com>
+ <Z1K7oMumN1Mu+1v9@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
- frapeml500008.china.huawei.com (7.182.85.71)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z1K7oMumN1Mu+1v9@intel.com>
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -73
+X-Spam_score: -7.4
+X-Spam_bar: -------
+X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -69,302 +78,33 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 23 Jan 2025 10:39:02 +0530
-Vinayak Holikatti <vinayak.kh@samsung.com> wrote:
+This patch was missed :-) which could free HPETState.flags from a
+BqlCell.
 
-Hi Vinayak,
-
-Thanks for your patch!  Good to add support for this.
-
-Various comments inline, but all fairly minor things.
-
-thanks,
-
-Jonathan
-
-
->     CXL spec 3.1 section 8.2.9.9.5.3 describes media operations commands.
->     CXL devices supports media operations discovery command.
-
-Please don't indent the commit message. Maybe this is a side effect
-of some tooling but definitely clean it up before sending a v2.
-
+> > -    /* Push number of timers into capability returned via HPET_ID */
+> > -    s->capability &= ~HPET_ID_NUM_TIM_MASK;
+> > -    s->capability |= (s->num_timers - 1) << HPET_ID_NUM_TIM_SHIFT;
+> > -    hpet_cfg.hpet[s->hpet_id].event_timer_block_id = (uint32_t)s->capability;
+> > -
+> > -    /* Derive HPET_MSI_SUPPORT from the capability of the first timer. */
+> > -    s->flags &= ~(1 << HPET_MSI_SUPPORT);
+> > -    if (s->timer[0].config & HPET_TN_FSB_CAP) {
+> > -        s->flags |= 1 << HPET_MSI_SUPPORT;
 > 
-> Signed-off-by: Vinayak Holikatti <vinayak.kh@samsung.com>
-+CC linux-cxl to increase chance of review and let people know this
-exists.
-
-> ---
->  hw/cxl/cxl-mailbox-utils.c | 130 ++++++++++++++++++++++++++++++++++++-
->  1 file changed, 128 insertions(+), 2 deletions(-)
+> About the MSI (FSB) support, I haven't seen it being used anywhere. Is it the
+> dead code?
 > 
-> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> index 9c7ea5bc35..2315d07fb1 100644
-> --- a/hw/cxl/cxl-mailbox-utils.c
-> +++ b/hw/cxl/cxl-mailbox-utils.c
-> @@ -87,8 +87,9 @@ enum {
->          #define GET_LSA       0x2
->          #define SET_LSA       0x3
->      SANITIZE    = 0x44,
-> -        #define OVERWRITE     0x0
-> -        #define SECURE_ERASE  0x1
-> +        #define OVERWRITE        0x0
-> +        #define SECURE_ERASE     0x1
-> +        #define MEDIA_OPERATIONS 0x2
 
-Trivial but I've given up trying to keep these aligned.
-It's a fools game as the names get steadily longer.
+I have this question since I find it seems no way to set "msi" and
+"timers" properties by user, and no code sets them.
 
-As such better to just leave the existing pair alone.
+    DEFINE_PROP_UINT8("timers", HPETState, num_timers, HPET_MIN_TIMERS),
+    DEFINE_PROP_BIT("msi", HPETState, flags, HPET_MSI_SUPPORT, false),
 
->      PERSISTENT_MEM = 0x45,
->          #define GET_SECURITY_STATE     0x0
->      MEDIA_AND_POISON = 0x43,
-> @@ -1721,6 +1722,127 @@ static CXLRetCode cmd_sanitize_overwrite(const struct cxl_cmd *cmd,
->      return CXL_MBOX_BG_STARTED;
->  }
->  
-> +enum {
-> +    MEDIA_OP_GENERAL  = 0x0,
-I'd name them so the field id explicit.
-
-MEDIA_OP_CLASS_GENERAL
-etc
-
-> +    MEDIA_OP_SANITIZE = 0x1,
-> +    MEDIA_OP_CLASS_MAX,
-No comma on terminating entry. We don't want it to be easy to add
-stuff after it.
-
-> +} MEDIA_OPERATION_CLASS;
-The enum type is never used.  So might as well keep it anonymous
-like we do for other enums in this file.
-
-> +
-> +enum {
-> +    MEDIA_OP_SUB_DISCOVERY = 0x0,
-This set of class and subcalss is similar to the enum you add
-the MEDIA_OPERATIONS define to above.
-I'd take a similar strategy with
-
-enum {
-    MEDIA_OP_CLASS_GENERAL = 0x0,
-        #define MEDIA_OP_GEN_SUBC_DISCOVERY 0x0
-    MEDIA_OP_CLASS_SANITIZE = 0x1,
-        #define MEDIA_OP_SAN_SUBC_SANITIZE 0x0
-        #define MEDIA_OP_SAN_SUBC_ZERO 0x1
-
-or something like that.
-}
-> +    MEDIA_OP_SUB_SANITIZE = 0x0,
-> +    MEDIA_OP_SUB_ZERO     = 0x1,
-> +    MEDIA_OP_SUB_CLASS_MAX
-No need for SUB_CLASS_MAX as you don't seem to use it.
-
-> +} MEDIA_OPERATION_SUB_CLASS;
-> +
-> +struct media_op_supported_list_entry {
-> +    uint8_t media_op_class;
-> +    uint8_t media_op_subclass;
-> +};
-> +
-> +struct media_op_discovery_out_pl {
-> +    uint64_t dpa_range_granularity;
-> +    uint16_t total_supported_operations;
-> +    uint16_t num_of_supported_operations;
-> +    struct media_op_supported_list_entry entry[0];
-entry[] 
-
-which is the c spec defined way to do variable length last elements.
-The [0] was I think a weird extension that we have moved away from.
-
-> +};
-
-Not strictly necessary but I'd mark it packed as chances of future breakage
-are high with a structure starting at byte 0xC.
-
-> +
-> +#define MAX_SUPPORTED_OPS 3
-I'd avoid explicit define for this and just use ARRAY_SIZE() on the
-array of structures to find out.
-
-> +struct media_op_supported_list_entry media_op_matrix[MAX_SUPPORTED_OPS] = {
-
-Use the defines above rather than the numeric values.
-Then it's obvious what this is, also mark it static const.
-
-static const struct media_op_supported_list_entry media_op_matrix[] =
-    { MEDIA_OP_CLASS_GENERAL, MEDIA_OP_GEN_SUBC_DISCOVERY },
-    { MEDIA_OP_CLASS_SANITIZE, MEDIA_OP_SAN_SUBC_SANITIZE },
-    { MEDIA_OP_CLASS_SANITIZE, MEDIA_OP_SAN_SUBC_ZERO },
-};
-
-> +                                                            {0, 0},
-> +                                                            {1, 0},
-> +                                                            {1, 1} };
-> +
-> +static CXLRetCode cmd_media_operations(const struct cxl_cmd *cmd,
-> +                                         uint8_t *payload_in,
-> +                                         size_t len_in,
-> +                                         uint8_t *payload_out,
-> +                                         size_t *len_out,
-> +                                         CXLCCI *cci)
-> +{
-> +    struct {
-> +    uint8_t media_operation_class;
-    struct {
-        uint8_t media_operation_class;
-
-etc for alignment.
-
-> +    uint8_t media_operation_subclass;
-> +    uint8_t rsvd[2];
-> +    uint32_t dpa_range_count;
-> +    union {
-> +        struct {
-> +            uint64_t starting_dpa;
-> +            uint64_t length;
-> +        } dpa_range_list[0];
-[]
-
-> +        struct {
-> +            uint16_t start_index;
-> +            uint16_t num_supported_ops;
-> +        } discovery_osa;
-> +    };
-
-This is a little tricky as in theory you can have a variable number
-of DPA Range List elements and then the operation specific arguments.
-
-However, general always provides a range count of 0.  Also both sanitize
-and zero have no osa elemetns.  Add a comment
-about this so we don't think it looks wrong in future + do notice that
-this approach doesn't generalize if a new operation allows dpa ranges
-and operation specific parameters.
-
-
-> +    } QEMU_PACKED *media_op_in_pl = (void *)payload_in;
-> +
-> +    uint8_t media_op_cl = media_op_in_pl->media_operation_class;
-> +    uint8_t media_op_subclass = media_op_in_pl->media_operation_subclass;
-> +    uint32_t dpa_range_count = media_op_in_pl->dpa_range_count;
-> +
-> +    if (len_in < sizeof(*media_op_in_pl)) {
-> +        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-> +    }
-
-Test this before getting values to fill in media_op_cl local variables etc.
-It's both logically correct and may constrain the compiler not to get too smart
-if it can see enough to realize what len_in is.
-
-> +
-> +    switch (media_op_cl) {
-> +    case MEDIA_OP_GENERAL:
-> +        switch (media_op_subclass) {
-> +        case MEDIA_OP_SUB_DISCOVERY:
-Given there is only one element, maybe cleaner as
-           if (media_op_subclass != MEDIA_OP_SUB_DISCOVERY) {
-                return CXL_MBOX_UNSUPPORTED;
-           }
-AS reduces indent of the following, helping readability a litle.
-
-> +            int count = 0;
-> +            struct media_op_discovery_out_pl *media_out_pl =
-> +                (void *)payload_out;
-> +            int num_ops = media_op_in_pl->discovery_osa.num_supported_ops;
-> +            int start_index = media_op_in_pl->discovery_osa.start_index;
-> +
-> +            /* As per spec CXL 3.1 8.2.9.9.5.3 dpa_range_count */
-> +            /* should be zero for discovery sub class command */
-Local style is multiline comment as
-               /*
-                * As per spec CXL 3.1...
-                * should be zero...
-                */
-
-> +            if (dpa_range_count) {
-> +                return CXL_MBOX_INVALID_INPUT;
-> +            }
-> +
-> +            if ((start_index >= MEDIA_OP_CLASS_MAX) ||
-> +                (num_ops > MAX_SUPPORTED_OPS)) {
-
-Check here should be for num_ops + start_index > MAX_SUPPORTED OPS
-Comparing start_index against MEDIA_OP_CLASS_MAX doesn't make sense to me
-as I believe it's an index into the array of Class / subclass pairs not
-the class array.
-
-
-> +                return CXL_MBOX_INVALID_INPUT;
-> +            }
-> +
-> +            media_out_pl->dpa_range_granularity = CXL_CAPACITY_MULTIPLIER;
-> +            media_out_pl->total_supported_operations = MAX_SUPPORTED_OPS;
-> +            if (num_ops > 0) {
-> +                for (int i = start_index; i < MAX_SUPPORTED_OPS; i++) {
-> +                    media_out_pl->entry[count].media_op_class =
-> +                            media_op_matrix[i].media_op_class;
-> +                    media_out_pl->entry[count].media_op_subclass =
-> +                            media_op_matrix[i].media_op_subclass;
-> +                    count++;
-> +                    if (count == num_ops) {
-> +                        goto disc_out;
-
-break should be enough and removes need for goto and label.
-
-> +                    }
-> +                }
-> +            }
-> +disc_out:
-> +            media_out_pl->num_of_supported_operations = count;
-> +            *len_out = sizeof(struct media_op_discovery_out_pl) +
-> +            (sizeof(struct media_op_supported_list_entry) * count);
-
-indent this line.
-
-> +            break;
-I'd
-        return CXL_MBOX_SUCCESS;
-
-> +        default:
-> +            return CXL_MBOX_UNSUPPORTED;
-> +        }
-> +        break;
-then this break isn't needed.
-> +    case MEDIA_OP_SANITIZE:
-> +        switch (media_op_subclass) {
-> +
-No blank line here yet.
-> +        default:
-> +            return CXL_MBOX_UNSUPPORTED;
-> +        }
-Similar. Return in all paths so no break.
-> +        break;
-> +    default:
-> +        return CXL_MBOX_UNSUPPORTED;
-> +    }
-> +
-> +    return CXL_MBOX_SUCCESS;
-> +}
-> +
->  static CXLRetCode cmd_get_security_state(const struct cxl_cmd *cmd,
->                                           uint8_t *payload_in,
->                                           size_t len_in,
-> @@ -2864,6 +2986,10 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
->           CXL_MBOX_SECURITY_STATE_CHANGE |
->           CXL_MBOX_BACKGROUND_OPERATION |
->           CXL_MBOX_BACKGROUND_OPERATION_ABORT)},
-> +    [SANITIZE][MEDIA_OPERATIONS] = { "MEDIA_OPERATIONS", cmd_media_operations,
-> +        ~0,
-> +        (CXL_MBOX_IMMEDIATE_DATA_CHANGE |
-> +         CXL_MBOX_BACKGROUND_OPERATION)},
->      [PERSISTENT_MEM][GET_SECURITY_STATE] = { "GET_SECURITY_STATE",
->          cmd_get_security_state, 0, 0 },
->      [MEDIA_AND_POISON][GET_POISON_LIST] = { "MEDIA_AND_POISON_GET_POISON_LIST",
+Thanks,
+Zhao
 
 
