@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63FE2A1B7AB
+	by mail.lfdr.de (Postfix) with ESMTPS id 71442A1B7AC
 	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 15:16:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbKTc-0002y4-2L; Fri, 24 Jan 2025 09:16:06 -0500
+	id 1tbKTl-00032x-Ro; Fri, 24 Jan 2025 09:16:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tbKTV-0002vh-Gf
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 09:15:57 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tbKTW-0002xj-Hp
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 09:15:59 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tbKTT-0001E7-Jy
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 09:15:57 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tbKTT-0001F6-Qf
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 09:15:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1737728153;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aAYwAgX4GuiYEsrkcRmF7pRIVQDIJhG5JIGtUZRITbE=;
- b=GtwZYlCHOhVLQs0vDKMKMNAzjnI9fD/ZnvU/8tydDfZIzjcxwR/wH2it+3+krelU+WZ9mM
- DePG3wVZ3eS0S4EkoNKIFXeiPt7ii8zAAaZcFR2m+Px5Lrqw4bll75ePDeIVbQexv0P42s
- P1YF7/Y6W1T8nxkv2FSMJiDNIHsJ42s=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=361Mg28r39AijLyNBmfEKQDx1yUbtYDrPhh7YomrG6M=;
+ b=JCzRpxGsWss4JHzjBzBqa7anq1omIH8QQwbnrbXgqMb001Ug4TbfBUtRboDPGSzuD65byf
+ bpIUTY5w/jO1yEVWnttaH7y6p8Qyu1memODgj7YY0lAhNR5I/GgkaAvWUUwkTigDHSMRGZ
+ AC2nu3uHPDhOV0MBOaSRkYC8EjWwHsg=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-211-xogSWHSaOhiUgLyPHu-Omw-1; Fri,
- 24 Jan 2025 09:15:46 -0500
-X-MC-Unique: xogSWHSaOhiUgLyPHu-Omw-1
-X-Mimecast-MFC-AGG-ID: xogSWHSaOhiUgLyPHu-Omw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-65-wYvAqBc2OBGaIMxjCZzB3g-1; Fri,
+ 24 Jan 2025 09:15:50 -0500
+X-MC-Unique: wYvAqBc2OBGaIMxjCZzB3g-1
+X-Mimecast-MFC-AGG-ID: wYvAqBc2OBGaIMxjCZzB3g
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9D28C195608F; Fri, 24 Jan 2025 14:15:44 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3A43419560B7; Fri, 24 Jan 2025 14:15:49 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.187])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2450919560A7; Fri, 24 Jan 2025 14:15:40 +0000 (UTC)
+ id 1F89219560B2; Fri, 24 Jan 2025 14:15:44 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
  Paolo Bonzini <pbonzini@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 2/5] tests/functional: Add the ReplayKernelBase class
-Date: Fri, 24 Jan 2025 15:15:26 +0100
-Message-ID: <20250124141529.1626877-3-thuth@redhat.com>
+Subject: [PATCH 3/5] tests/functional/test_mipsel_malta: Convert the mipsel
+ replay tests
+Date: Fri, 24 Jan 2025 15:15:27 +0100
+Message-ID: <20250124141529.1626877-4-thuth@redhat.com>
 In-Reply-To: <20250124141529.1626877-1-thuth@redhat.com>
 References: <20250124141529.1626877-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -83,105 +84,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Copy the ReplayKernelBase class from the avocado tests. We are going
-to need it to convert the related replay tests in the following patches.
+Move the mipsel replay tests from tests/avocado/replay_kernel.py to
+the functional framework. Since the functional tests should be run per
+target, we cannot stick all replay tests in one file. Thus let's add
+these tests to the file where we already use the same asset already.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/replay_kernel.py | 84 +++++++++++++++++++++++++++++++
- 1 file changed, 84 insertions(+)
- create mode 100644 tests/functional/replay_kernel.py
+ tests/avocado/replay_kernel.py        | 54 ---------------------------
+ tests/functional/meson.build          |  1 +
+ tests/functional/test_mipsel_malta.py | 30 +++++++++++++--
+ 3 files changed, 28 insertions(+), 57 deletions(-)
 
-diff --git a/tests/functional/replay_kernel.py b/tests/functional/replay_kernel.py
-new file mode 100644
-index 0000000000..8e8ac7d052
---- /dev/null
-+++ b/tests/functional/replay_kernel.py
-@@ -0,0 +1,84 @@
-+# Record/replay test that boots a Linux kernel
-+#
-+# Copyright (c) 2020 ISP RAS
-+#
-+# Author:
-+#  Pavel Dovgalyuk <Pavel.Dovgaluk@ispras.ru>
-+#
-+# This work is licensed under the terms of the GNU GPL, version 2 or
-+# later.  See the COPYING file in the top-level directory.
+diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
+index e22c200a36..4f50f48163 100644
+--- a/tests/avocado/replay_kernel.py
++++ b/tests/avocado/replay_kernel.py
+@@ -521,57 +521,3 @@ def test_mips64el_malta_5KEc_cpio(self):
+         console_pattern = 'Boot successful.'
+         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5,
+                     args=('-initrd', initrd_path))
+-
+-    def do_test_mips_malta32el_nanomips(self, kernel_path_xz):
+-        kernel_path = self.workdir + "kernel"
+-        with lzma.open(kernel_path_xz, 'rb') as f_in:
+-            with open(kernel_path, 'wb') as f_out:
+-                shutil.copyfileobj(f_in, f_out)
+-
+-        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+-                               'mem=256m@@0x0 '
+-                               'console=ttyS0')
+-        console_pattern = 'Kernel command line: %s' % kernel_command_line
+-        self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
+-
+-    def test_mips_malta32el_nanomips_4k(self):
+-        """
+-        :avocado: tags=arch:mipsel
+-        :avocado: tags=machine:malta
+-        :avocado: tags=endian:little
+-        :avocado: tags=cpu:I7200
+-        """
+-        kernel_url = ('http://mipsdistros.mips.com/LinuxDistro/nanomips/'
+-                      'kernels/v4.15.18-432-gb2eb9a8b07a1-20180627102142/'
+-                      'generic_nano32r6el_page4k.xz')
+-        kernel_hash = '477456aafd2a0f1ddc9482727f20fe9575565dd6'
+-        kernel_path_xz = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+-        self.do_test_mips_malta32el_nanomips(kernel_path_xz)
+-
+-    def test_mips_malta32el_nanomips_16k_up(self):
+-        """
+-        :avocado: tags=arch:mipsel
+-        :avocado: tags=machine:malta
+-        :avocado: tags=endian:little
+-        :avocado: tags=cpu:I7200
+-        """
+-        kernel_url = ('http://mipsdistros.mips.com/LinuxDistro/nanomips/'
+-                      'kernels/v4.15.18-432-gb2eb9a8b07a1-20180627102142/'
+-                      'generic_nano32r6el_page16k_up.xz')
+-        kernel_hash = 'e882868f944c71c816e832e2303b7874d044a7bc'
+-        kernel_path_xz = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+-        self.do_test_mips_malta32el_nanomips(kernel_path_xz)
+-
+-    def test_mips_malta32el_nanomips_64k_dbg(self):
+-        """
+-        :avocado: tags=arch:mipsel
+-        :avocado: tags=machine:malta
+-        :avocado: tags=endian:little
+-        :avocado: tags=cpu:I7200
+-        """
+-        kernel_url = ('http://mipsdistros.mips.com/LinuxDistro/nanomips/'
+-                      'kernels/v4.15.18-432-gb2eb9a8b07a1-20180627102142/'
+-                      'generic_nano32r6el_page64k_dbg.xz')
+-        kernel_hash = '18d1c68f2e23429e266ca39ba5349ccd0aeb7180'
+-        kernel_path_xz = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+-        self.do_test_mips_malta32el_nanomips(kernel_path_xz)
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index b7719ab85f..7d233213c1 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -35,6 +35,7 @@ test_timeouts = {
+   'arm_sx1' : 360,
+   'intel_iommu': 300,
+   'mips_malta' : 120,
++  'mipsel_malta' : 500,
+   'netdev_ethtool' : 180,
+   'ppc_40p' : 240,
+   'ppc64_hv' : 1000,
+diff --git a/tests/functional/test_mipsel_malta.py b/tests/functional/test_mipsel_malta.py
+index fe9c3a172e..fff42c7f4f 100755
+--- a/tests/functional/test_mipsel_malta.py
++++ b/tests/functional/test_mipsel_malta.py
+@@ -9,12 +9,13 @@
+ #
+ # SPDX-License-Identifier: GPL-2.0-or-later
+ 
+-from qemu_test import QemuSystemTest, LinuxKernelTest, Asset
++from qemu_test import QemuSystemTest, Asset, wait_for_console_pattern
+ from qemu_test import interrupt_interactive_console_until_pattern
+-from qemu_test import wait_for_console_pattern
++from qemu_test import skipLongRuntime
++from replay_kernel import ReplayKernelBase
+ 
+ 
+-class MaltaMachineConsole(LinuxKernelTest):
++class MaltaMachineConsole(ReplayKernelBase):
+ 
+     ASSET_KERNEL_4K = Asset(
+         ('http://mipsdistros.mips.com/LinuxDistro/nanomips/'
+@@ -57,6 +58,29 @@ def test_mips_malta32el_nanomips_16k_up(self):
+     def test_mips_malta32el_nanomips_64k_dbg(self):
+         self.do_test_mips_malta32el_nanomips(self.ASSET_KERNEL_64K)
+ 
++    def do_test_replay_mips_malta32el_nanomips(self, kernel_asset):
++        self.set_machine('malta')
++        self.cpu = 'I7200'
++        kernel_path = self.uncompress(kernel_asset)
 +
-+import os
-+import logging
-+import time
-+import subprocess
++        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
++                               'mem=256m@@0x0 '
++                               'console=ttyS0')
++        console_pattern = 'Kernel command line: %s' % kernel_command_line
++        self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
 +
-+from qemu_test.linuxkernel import LinuxKernelTest
++    @skipLongRuntime()
++    def test_replay_mips_malta32el_nanomips_4k(self):
++        self.do_test_replay_mips_malta32el_nanomips(self.ASSET_KERNEL_4K)
 +
-+class ReplayKernelBase(LinuxKernelTest):
-+    """
-+    Boots a Linux kernel in record mode and checks that the console
-+    is operational and the kernel command line is properly passed
-+    from QEMU to the kernel.
-+    Then replays the same scenario and verifies, that QEMU correctly
-+    terminates.
-+    """
++    @skipLongRuntime()
++    def test_replay_mips_malta32el_nanomips_16k_up(self):
++        self.do_test_replay_mips_malta32el_nanomips(self.ASSET_KERNEL_16K)
 +
-+    timeout = 180
-+    REPLAY_KERNEL_COMMAND_LINE = 'printk.time=1 panic=-1 '
++    @skipLongRuntime()
++    def test_replay_mips_malta32el_nanomips_64k_dbg(self):
++        self.do_test_replay_mips_malta32el_nanomips(self.ASSET_KERNEL_64K)
 +
-+    def run_vm(self, kernel_path, kernel_command_line, console_pattern,
-+               record, shift, args, replay_path):
-+        # icount requires TCG to be available
-+        self.require_accelerator('tcg')
-+
-+        logger = logging.getLogger('replay')
-+        start_time = time.time()
-+        vm = self.get_vm()
-+        vm.set_console()
-+        if record:
-+            logger.info('recording the execution...')
-+            mode = 'record'
-+        else:
-+            logger.info('replaying the execution...')
-+            mode = 'replay'
-+        vm.add_args('-icount', 'shift=%s,rr=%s,rrfile=%s' %
-+                    (shift, mode, replay_path),
-+                    '-kernel', kernel_path,
-+                    '-append', kernel_command_line,
-+                    '-net', 'none',
-+                    '-no-reboot')
-+        if args:
-+            vm.add_args(*args)
-+        vm.launch()
-+        self.wait_for_console_pattern(console_pattern, vm)
-+        if record:
-+            vm.shutdown()
-+            logger.info('finished the recording with log size %s bytes'
-+                        % os.path.getsize(replay_path))
-+            self.run_replay_dump(replay_path)
-+            logger.info('successfully tested replay-dump.py')
-+        else:
-+            vm.wait()
-+            logger.info('successfully finished the replay')
-+        elapsed = time.time() - start_time
-+        logger.info('elapsed time %.2f sec' % elapsed)
-+        return elapsed
-+
-+    def run_replay_dump(self, replay_path):
-+        try:
-+            subprocess.check_call(["./scripts/replay-dump.py",
-+                                   "-f", replay_path],
-+                                  stdout=subprocess.DEVNULL)
-+        except subprocess.CalledProcessError:
-+            self.fail('replay-dump.py failed')
-+
-+    def run_rr(self, kernel_path, kernel_command_line, console_pattern,
-+               shift=7, args=None):
-+        replay_path = os.path.join(self.workdir, 'replay.bin')
-+        t1 = self.run_vm(kernel_path, kernel_command_line, console_pattern,
-+                         True, shift, args, replay_path)
-+        t2 = self.run_vm(kernel_path, kernel_command_line, console_pattern,
-+                         False, shift, args, replay_path)
-+        logger = logging.getLogger('replay')
-+        logger.info('replay overhead {:.2%}'.format(t2 / t1 - 1))
+ 
+ class MaltaMachineYAMON(QemuSystemTest):
+ 
 -- 
 2.48.1
 
