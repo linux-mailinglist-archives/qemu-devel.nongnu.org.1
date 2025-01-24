@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86681A1B753
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:44:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4DAEA1B748
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:43:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbJtr-0006Th-IN; Fri, 24 Jan 2025 08:39:19 -0500
+	id 1tbJuL-0007D1-V8; Fri, 24 Jan 2025 08:39:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tbJtT-00062I-OB
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:38:44 -0500
+ id 1tbJta-0006WO-On
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:38:52 -0500
 Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tbJtR-00042W-Vg
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:38:43 -0500
+ id 1tbJtZ-0003xi-4M
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:38:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737725922; x=1769261922;
+ t=1737725930; x=1769261930;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=yKX2C5oNRGllaV58Edxdk4KBInFvfS6cENAd6j8GQ0U=;
- b=XYYwbZwYMaNGDGTgmF/RWAC+SpnOptg86kpElYvEYI36uEDh8uoT1xZZ
- 7wn+ze4Up+AdAXPG8YBXVp/mpVBWgpEsL52S1PTS1Ohs6NYnsAumkT9Cp
- yvU/TNFQmmO4zHYjlIdNrvrHKZ3/cvjlQ2TcKjs3NIEr/kG4MulNk7slT
- svvNDWcXqCTiE9mSms+YSdnfp2W7/+YtiH0RJrrhI9dSLHkG6rBOfvGLQ
- b9rZcYRU36ViIPTPlb8N1wegzR87dmjXF8P/zFUBn2NthmVzhWQhODmFC
- Ov1algIj8/JXrKTE/AmVmXhKMWbjJLs/XeoyIVUCUAvN3hAIIrhztHDSB w==;
-X-CSE-ConnectionGUID: zWaU4wsJS/CkMT1cVtVvJA==
-X-CSE-MsgGUID: DuExvDzLTouBTYnhdXhNng==
-X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="49246413"
-X-IronPort-AV: E=Sophos;i="6.13,231,1732608000"; d="scan'208";a="49246413"
+ bh=ySWxl1vh6c7+aWwfbxhZe7lL3q132WHVTO3Gm/JVrxs=;
+ b=nu6ph5vLs/sXxIw6cycURBM+pOnzvjYdmCb2oMX4A6+DbSD0AJWh0ZxF
+ qFUorluu1UUvSPQjIpHXXtCp94BoLnMi3txZepuod4lNtZN9xyHzRJgq7
+ htoyVdOSyziYtpEPlf/+8HZLNkQ2QMZ/QbJtxEHZ3jnibWTdcc5piCBLR
+ tthVFSX2jaxcJIojHcuvdIXbM3h0TTQ2s9fB+vfFPllK6HNt3st9QrJZo
+ oY1jrWjLNy4Js/hg/HPc8QSMwwzlkQnbKAi/NibjTi5uK/2Xcb1tHjKCg
+ TZfhwHJuL5jDe3I5nfdBUBzSRGtgQczcWXdpZPTjYbummSyYDX5p8fME/ A==;
+X-CSE-ConnectionGUID: 3fCLtbjKRZyuZdyf0N7WDA==
+X-CSE-MsgGUID: Z/lFDOU5QNCxwO1gFHM4yA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="49246420"
+X-IronPort-AV: E=Sophos;i="6.13,231,1732608000"; d="scan'208";a="49246420"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2025 05:38:30 -0800
-X-CSE-ConnectionGUID: 1T8BMRnETISh+Xx12Ivtcg==
-X-CSE-MsgGUID: 2xy4yLmjQpeP+jrArL8pZA==
+ 24 Jan 2025 05:38:33 -0800
+X-CSE-ConnectionGUID: 5YUxK08NRQau1c6UDXrcdw==
+X-CSE-MsgGUID: YYL2jKnuTC+ghi0gVglBIg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111804310"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111804317"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2025 05:38:25 -0800
+ by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2025 05:38:28 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -55,9 +55,10 @@ Cc: Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Francesco Lavra <francescolavra.fl@gmail.com>, xiaoyao.li@intel.com,
  qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: [PATCH v7 23/52] i386/tdx: Add TDVF memory via KVM_TDX_INIT_MEM_REGION
-Date: Fri, 24 Jan 2025 08:20:19 -0500
-Message-Id: <20250124132048.3229049-24-xiaoyao.li@intel.com>
+Subject: [PATCH v7 24/52] i386/tdx: Call KVM_TDX_INIT_VCPU to initialize TDX
+ vcpu
+Date: Fri, 24 Jan 2025 08:20:20 -0500
+Message-Id: <20250124132048.3229049-25-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250124132048.3229049-1-xiaoyao.li@intel.com>
 References: <20250124132048.3229049-1-xiaoyao.li@intel.com>
@@ -89,94 +90,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+TDX vcpu needs to be initialized by SEAMCALL(TDH.VP.INIT) and KVM
+provides vcpu level IOCTL KVM_TDX_INIT_VCPU for it.
 
-TDVF firmware (CODE and VARS) needs to be copied to TD's private
-memory via KVM_TDX_INIT_MEM_REGION, as well as TD HOB and TEMP memory.
+KVM_TDX_INIT_VCPU needs the address of the HOB as input. Invoke it for
+each vcpu after HOB list is created.
 
-If the TDVF section has TDVF_SECTION_ATTRIBUTES_MR_EXTEND set in the
-flag, calling KVM_TDX_EXTEND_MEMORY to extend the measurement.
-
-After populating the TDVF memory, the original image located in shared
-ramblock can be discarded.
-
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
-Changes in v6:
- - switch back to use KVM_TDX_INIT_MEM_REGION according to KVM's change;
----
- target/i386/kvm/tdx.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ target/i386/kvm/tdx.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index cac073a6d291..08320b59b62a 100644
+index 08320b59b62a..99c1664d836b 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -17,6 +17,7 @@
- #include "qom/object_interfaces.h"
- #include "crypto/hash.h"
- #include "system/system.h"
-+#include "exec/ramblock.h"
- 
- #include "hw/i386/e820_memory_layout.h"
- #include "hw/i386/x86.h"
-@@ -270,6 +271,9 @@ static void tdx_finalize_vm(Notifier *notifier, void *unused)
- {
-     TdxFirmware *tdvf = &tdx_guest->tdvf;
-     TdxFirmwareEntry *entry;
-+    RAMBlock *ram_block;
-+    Error *local_err = NULL;
-+    int r;
- 
-     tdx_init_ram_entries();
- 
-@@ -295,6 +299,44 @@ static void tdx_finalize_vm(Notifier *notifier, void *unused)
-           sizeof(TdxRamEntry), &tdx_ram_entry_compare);
- 
-     tdvf_hob_create(tdx_guest, tdx_get_hob_entry(tdx_guest));
-+
-+    for_each_tdx_fw_entry(tdvf, entry) {
-+        struct kvm_tdx_init_mem_region region;
-+        uint32_t flags;
-+
-+        region = (struct kvm_tdx_init_mem_region) {
-+            .source_addr = (uint64_t)entry->mem_ptr,
-+            .gpa = entry->address,
-+            .nr_pages = entry->size >> 12,
-+        };
-+
-+        flags = entry->attributes & TDVF_SECTION_ATTRIBUTES_MR_EXTEND ?
-+                KVM_TDX_MEASURE_MEMORY_REGION : 0;
-+
-+        do {
-+            error_free(local_err);
-+            local_err = NULL;
-+            r = tdx_vcpu_ioctl(first_cpu, KVM_TDX_INIT_MEM_REGION, flags,
-+                               &region, &local_err);
-+        } while (r == -EAGAIN || r == -EINTR);
-+        if (r < 0) {
-+            error_report_err(local_err);
-+            exit(1);
-+        }
-+
-+        if (entry->type == TDVF_SECTION_TYPE_TD_HOB ||
-+            entry->type == TDVF_SECTION_TYPE_TEMP_MEM) {
-+            qemu_ram_munmap(-1, entry->mem_ptr, entry->size);
-+            entry->mem_ptr = NULL;
-+        }
-+    }
-+
-+    /*
-+     * TDVF image has been copied into private region above via
-+     * KVM_MEMORY_MAPPING. It becomes useless.
-+     */
-+    ram_block = tdx_guest->tdvf_mr->ram_block;
-+    ram_block_discard_range(ram_block, 0, ram_block->max_length);
+@@ -267,6 +267,18 @@ static void tdx_init_ram_entries(void)
+     tdx_guest->nr_ram_entries = j;
  }
  
- static Notifier tdx_machine_done_notify = {
++static void tdx_post_init_vcpus(void)
++{
++    TdxFirmwareEntry *hob;
++    CPUState *cpu;
++
++    hob = tdx_get_hob_entry(tdx_guest);
++    CPU_FOREACH(cpu) {
++        tdx_vcpu_ioctl(cpu, KVM_TDX_INIT_VCPU, 0, (void *)hob->address,
++                       &error_fatal);
++    }
++}
++
+ static void tdx_finalize_vm(Notifier *notifier, void *unused)
+ {
+     TdxFirmware *tdvf = &tdx_guest->tdvf;
+@@ -300,6 +312,8 @@ static void tdx_finalize_vm(Notifier *notifier, void *unused)
+ 
+     tdvf_hob_create(tdx_guest, tdx_get_hob_entry(tdx_guest));
+ 
++    tdx_post_init_vcpus();
++
+     for_each_tdx_fw_entry(tdvf, entry) {
+         struct kvm_tdx_init_mem_region region;
+         uint32_t flags;
 -- 
 2.34.1
 
