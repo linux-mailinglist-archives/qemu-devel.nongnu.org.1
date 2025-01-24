@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BEA4A1B6F6
+	by mail.lfdr.de (Postfix) with ESMTPS id 564A2A1B6F5
 	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:38:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbJsg-0003px-C2; Fri, 24 Jan 2025 08:37:54 -0500
+	id 1tbJso-0003rB-Ue; Fri, 24 Jan 2025 08:38:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tbJse-0003p1-3r
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:37:52 -0500
+ id 1tbJsi-0003q2-61
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:37:56 -0500
 Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tbJsc-0003xi-L2
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:37:51 -0500
+ id 1tbJsg-0003xi-EK
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:37:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737725871; x=1769261871;
+ t=1737725875; x=1769261875;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=qmNZXY74mhCvcHjPeZ7Zt9Eiiug9SdAA9hSZ2NO+cEA=;
- b=kZxfGUH8y4VTxegICwkv2Y2ifj+2E0PaYjbSzzvEYyf9Pe8mgqNjHaPb
- AsH6vyMCY2uIb9Xyv0yq1R48icNvZvmjbGD5pFmno7k/8rygP2i8EGgJM
- gaHXhfNHQcTB8Pqd0KDTJzOFYCERuXh+1gmGCM3eSOM6vPeNCOVfU5P9y
- kOZxLBloLFdteBKkcnkqvbkmmfZEwuy8oTJjMAWQBfRB9fp5iUJDyHO6z
- RbAlsQSN0tPSFxsfOIi5i5uq+zKdECXvEnObYRJs+UgHYBebrId9S6/8D
- VyYTY3cSLJRkD2yEt5kUVaCNhovQ3KB+pLRgR3GaNws4+UOHCwLfVaPVo g==;
-X-CSE-ConnectionGUID: 0mOK8CCWT4GftIkhgHvRoA==
-X-CSE-MsgGUID: 0PL6fSpcSu2Yn7yT0j81lQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="49246274"
-X-IronPort-AV: E=Sophos;i="6.13,231,1732608000"; d="scan'208";a="49246274"
+ bh=QQ+mVECDFZb0mkAaU9OtvuN3aHLirivkATTtr/jbCBI=;
+ b=IvNXtskJTDpKuS48JPxRtterREJUV8qsYE6gObkyFqOZxF0/6yfTLZyg
+ Od7qBwZACXav+4Jagz72Z9Vxj2mhBqc/kvvzPE3MPmfVlUd9Hrfwxla4L
+ Q7cqFCHT+h5TfvBMWKR3kUNwwqyQF4YtfrwZ54UfUWQmGS2wr2v67Sk8j
+ UP5CWDNF6qSYbzhKIOdjzq9mh77EIGeTZQPK0r7ZInhbmh6xRXRJ3xwX7
+ 5x8nu3FLb3VOIHGiOkAQIRSiAh431WHqXA0TIo5xT6IWBQD2h0MaKT99L
+ dX96gc3KA2mVHHzup5iGwwjYDWxFMBs1TgMraWD/pI/LHc1ms8dGcLtLQ w==;
+X-CSE-ConnectionGUID: LXgDt8HmTL+g10dr9D28fg==
+X-CSE-MsgGUID: LYzoxyi5RduPeO4vSGUZNA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="49246287"
+X-IronPort-AV: E=Sophos;i="6.13,231,1732608000"; d="scan'208";a="49246287"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2025 05:37:50 -0800
-X-CSE-ConnectionGUID: p75RpVOpQQqG+e6CaUHL2Q==
-X-CSE-MsgGUID: hw4H65BBSYm+zmpJJIXQkQ==
+ 24 Jan 2025 05:37:54 -0800
+X-CSE-ConnectionGUID: O6LbGE7HQISg2e//eEKBdQ==
+X-CSE-MsgGUID: appmcy6vRWqbm5xN1V/jfQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111804209"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111804218"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2025 05:37:46 -0800
+ by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2025 05:37:50 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -55,10 +55,9 @@ Cc: Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Francesco Lavra <francescolavra.fl@gmail.com>, xiaoyao.li@intel.com,
  qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: [PATCH v7 13/52] i386/tdx: Set APIC bus rate to match with what TDX
- module enforces
-Date: Fri, 24 Jan 2025 08:20:09 -0500
-Message-Id: <20250124132048.3229049-14-xiaoyao.li@intel.com>
+Subject: [PATCH v7 14/52] i386/tdx: Implement user specified tsc frequency
+Date: Fri, 24 Jan 2025 08:20:10 -0500
+Message-Id: <20250124132048.3229049-15-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250124132048.3229049-1-xiaoyao.li@intel.com>
 References: <20250124132048.3229049-1-xiaoyao.li@intel.com>
@@ -90,61 +89,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TDX advertises core crystal clock with cpuid[0x15] as 25MHz for TD
-guests and it's unchangeable from VMM. As a result, TDX guest reads
-the APIC timer as the same frequency, 25MHz.
+Reuse "-cpu,tsc-frequency=" to get user wanted tsc frequency and call VM
+scope VM_SET_TSC_KHZ to set the tsc frequency of TD before KVM_TDX_INIT_VM.
 
-While KVM's default emulated frequency for APIC bus is 1GHz, set the
-APIC bus rate to match with TDX explicitly to ensure KVM provide correct
-emulated APIC timer for TD guest.
+Besides, sanity check the tsc frequency to be in the legal range and
+legal granularity (required by TDX module).
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
-Changes in v6:
- - new patch;
----
- target/i386/kvm/tdx.c | 13 +++++++++++++
- target/i386/kvm/tdx.h |  3 +++
- 2 files changed, 16 insertions(+)
+Changes in v3:
+- use @errp to report error info; (Daniel)
 
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index ed843af1d0b6..96138c2d2b73 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -253,6 +253,19 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
-     init_vm = g_malloc0(sizeof(struct kvm_tdx_init_vm) +
-                         sizeof(struct kvm_cpuid_entry2) * KVM_MAX_CPUID_ENTRIES);
+Changes in v1:
+- Use VM scope VM_SET_TSC_KHZ to set the TSC frequency of TD since KVM
+  side drop the @tsc_khz field in struct kvm_tdx_init_vm
+---
+ target/i386/kvm/kvm.c |  9 +++++++++
+ target/i386/kvm/tdx.c | 25 +++++++++++++++++++++++++
+ 2 files changed, 34 insertions(+)
+
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index a537699bb7df..7de5014051eb 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -869,6 +869,15 @@ static int kvm_arch_set_tsc_khz(CPUState *cs)
+     int r, cur_freq;
+     bool set_ioctl = false;
  
-+    if (!kvm_check_extension(kvm_state, KVM_CAP_X86_APIC_BUS_CYCLES_NS)) {
-+        error_setg(errp, "KVM doesn't support KVM_CAP_X86_APIC_BUS_CYCLES_NS");
-+        return -EOPNOTSUPP;
++    /*
++     * TSC of TD vcpu is immutable, it cannot be set/changed via vcpu scope
++     * VM_SET_TSC_KHZ, but only be initialized via VM scope VM_SET_TSC_KHZ
++     * before ioctl KVM_TDX_INIT_VM in tdx_pre_create_vcpu()
++     */
++    if (is_tdx_vm()) {
++        return 0;
 +    }
 +
-+    r = kvm_vm_enable_cap(kvm_state, KVM_CAP_X86_APIC_BUS_CYCLES_NS,
-+                          0, TDX_APIC_BUS_CYCLES_NS);
+     if (!env->tsc_khz) {
+         return 0;
+     }
+diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+index 96138c2d2b73..2124284e1653 100644
+--- a/target/i386/kvm/tdx.c
++++ b/target/i386/kvm/tdx.c
+@@ -20,6 +20,9 @@
+ #include "kvm_i386.h"
+ #include "tdx.h"
+ 
++#define TDX_MIN_TSC_FREQUENCY_KHZ   (100 * 1000)
++#define TDX_MAX_TSC_FREQUENCY_KHZ   (10 * 1000 * 1000)
++
+ #define TDX_TD_ATTRIBUTES_DEBUG             BIT_ULL(0)
+ #define TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE   BIT_ULL(28)
+ #define TDX_TD_ATTRIBUTES_PKS               BIT_ULL(30)
+@@ -266,6 +269,28 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
+         return r;
+     }
+ 
++    if (env->tsc_khz && (env->tsc_khz < TDX_MIN_TSC_FREQUENCY_KHZ ||
++                         env->tsc_khz > TDX_MAX_TSC_FREQUENCY_KHZ)) {
++        error_setg(errp, "Invalid TSC %ld KHz, must specify cpu_frequency "
++                         "between [%d, %d] kHz", env->tsc_khz,
++                         TDX_MIN_TSC_FREQUENCY_KHZ, TDX_MAX_TSC_FREQUENCY_KHZ);
++       return -EINVAL;
++    }
++
++    if (env->tsc_khz % (25 * 1000)) {
++        error_setg(errp, "Invalid TSC %ld KHz, it must be multiple of 25MHz",
++                   env->tsc_khz);
++        return -EINVAL;
++    }
++
++    /* it's safe even env->tsc_khz is 0. KVM uses host's tsc_khz in this case */
++    r = kvm_vm_ioctl(kvm_state, KVM_SET_TSC_KHZ, env->tsc_khz);
 +    if (r < 0) {
-+        error_setg_errno(errp, -r,
-+                         "Unable to set core crystal clock frequency to 25MHz");
++        error_setg_errno(errp, -r, "Unable to set TSC frequency to %ld kHz",
++                         env->tsc_khz);
 +        return r;
 +    }
 +
      if (tdx_guest->mrconfigid) {
          g_autofree uint8_t *data = qbase64_decode(tdx_guest->mrconfigid,
                                strlen(tdx_guest->mrconfigid), &data_len, errp);
-diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
-index e472b11fb0dd..d39e733d9fcc 100644
---- a/target/i386/kvm/tdx.h
-+++ b/target/i386/kvm/tdx.h
-@@ -16,6 +16,9 @@ typedef struct TdxGuestClass {
-     X86ConfidentialGuestClass parent_class;
- } TdxGuestClass;
- 
-+/* TDX requires bus frequency 25MHz */
-+#define TDX_APIC_BUS_CYCLES_NS 40
-+
- typedef struct TdxGuest {
-     X86ConfidentialGuest parent_obj;
- 
 -- 
 2.34.1
 
