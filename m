@@ -2,77 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814A3A1BACE
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:44:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8EFBA1BB1F
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:59:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbMhP-0007a5-5k; Fri, 24 Jan 2025 11:38:29 -0500
+	id 1tbMuF-0000XZ-F0; Fri, 24 Jan 2025 11:51:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tbMeb-0002r7-3C
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:35:35 -0500
-Received: from mail-yb1-xb2d.google.com ([2607:f8b0:4864:20::b2d])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tbMu0-0008TM-5J
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:51:29 -0500
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tbMeZ-0006qA-Ii
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:35:32 -0500
-Received: by mail-yb1-xb2d.google.com with SMTP id
- 3f1490d57ef6-e53a91756e5so4112597276.1
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:35:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tbMtx-0001yb-Cm
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:51:27 -0500
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-2f441904a42so4375290a91.1
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:51:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737736529; x=1738341329; darn=nongnu.org;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+ d=linaro.org; s=google; t=1737737479; x=1738342279; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=TxUN8Fd2eU9DUvV9yTSFQlBGvgml4AE9HSaNzAgXGr4=;
- b=smjrkdqB6qI147hdB4ff7ULiDCXvp0gIgOXKDiwKOGB45iCrAvyPgScBoqj1XgStJI
- zp+Fv/vuO9A4AefGcu2vpG/dVtTKTbpb3R+G+1+TOHyPdmtSa5Z0cjSidt2Tez+U2jSB
- +hI17751y0YluKfEmowmY/8CatNorS4lJdTqMuoce5PHkUjBnVSQiw0w3vEMrdRHr71Y
- H18b2xVRpOWPp0Gads6e83ny11lXxQIvSSdPypW4QBeCw1ikmAsMEgrLQvkoPm8EUtOW
- bmAtAnhInz68EhYFXYtkU72NaG+gELnYo9KzbUhdq1rbkk+V7yUhXwhHSNxq+1Vkbm4P
- 5Luw==
+ bh=gXE15mkcNpzOGS5EJlj1b2+BpeJ5W5y/+0OTdAZnEfE=;
+ b=axKg9WIBX05hkdW4fXdkJP9V/pYEWL1L+Cw5I+ufc0cXYVjR1qaVt38XwSlCBgRTdE
+ xqEGRSal1uiTiXC4KcqCLiULYUtpLBR3Ax7Tntnn0DJPzeoo1Cw64ShCsNjiXxA0hF5p
+ xkjY00CA6jlIFTk/ZjxoS3+eOTr+Z68L7pQMyXPJZyFS9Tr0pFV952aqvVIuuVmnG+FM
+ j7ox+eCe6sR2cZMicMOKyJ+DPupgUkH0WLun+I3obMz69NNZaaiGuJ4C3uop7xagB213
+ 08ezOA+Bi7sk0Xc62O0STYTRpwjMY98DljO+xANYjaCNP1SM+elle2NTm2Cvtpk3tPt1
+ ShmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737736529; x=1738341329;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+ d=1e100.net; s=20230601; t=1737737479; x=1738342279;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TxUN8Fd2eU9DUvV9yTSFQlBGvgml4AE9HSaNzAgXGr4=;
- b=CNtqKU/8r+WWChtP7dsbA59UWEORAL7qgMWLDYpVSCyx52b8w5R+PtZ2beARa/IPwB
- sm6vm8p5OA/GcKEQDmS6+y6h3+soJ+lvEAMugzy0vSVT+v1R4QH+uQyBFMz2pv1Vk3hJ
- O/hoj+A8gKmVVRstJ4cavnnY89oI4nD2olD40I3J6t8sXZEZXFQcHjZBXHN638Y0LiJC
- B9khrfIQB4mNQRp8/1Tfhn1zXLoBFkwZ6fiyW7szQIDiZhRS7s7/Ha9DLDDJ0YH4sYXO
- +ggundRhFxV/tamRi+TRL4mL5Hfw+s7eg0RuwQe6emmh6sSLcUvljM/m1avmCHAfAdyR
- QlsA==
+ bh=gXE15mkcNpzOGS5EJlj1b2+BpeJ5W5y/+0OTdAZnEfE=;
+ b=pKle+4O4S6tQPYHi6cI+FbFvrkRF0vpvWve5I4uI+RJR1dS9R18/P/70Hr0BeR/tG4
+ FzM0tAwDL8QtxSj+UcIyVPhz92k4A17eptL6s9ZhRecK1ZPDg3pF6VO7fDVkcFOL+oOB
+ h9LaMGQMuyrspNHIAWGU7pHYCNocza/PY5jC+D/MVOOwkf5CZZ/f2abzejFTCirgoglz
+ JFr2XcLKUjwmLTZkko/HgwZlwgMd1yGWXmRiGJds0Nlh2Hl2Q3xPbeTT+ZtKyWL7Xidb
+ ahoXGcg2A2mj84aDR0BkwXkjKVNLqFgBT6/njjO15pq+EiGEQwpsNC0Xkphb8RjuNY8s
+ zajQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU/5w/nnE5eqVzQkbJOjIxuDt9RQZiui8jT4zAFo+A1wFojACr8FZGHE7EJZHWfRTIW20bR41ve23rg@nongnu.org
-X-Gm-Message-State: AOJu0YzyJNgfh/n5Or4eW+8RzWGiGvtjz1XBW0Tw8ckr82jBcnCOeb5b
- F3ypZSOWLHR6fDGqZYMfJcA4gtHp5BWbmxgXWrObhVxCAuPKcgUQQ7GQffWZf1sjjhyx50QiSbD
- cNyyifNQrkLzXa5S6qyC5J7FqjG8YF3y4IpSiP+b9NytkslUq
-X-Gm-Gg: ASbGnctLssZ9u0DU7tCh0JrzdfkpT4OexACgFWutbhTu/Nv9dsaIi2s4BdGHPS8gzS+
- vvJgiwDIQqSPP6x/LNMp4awrWhywkEyBFvkzNtna1WzuNKt/+Pz/g2ydGJ8/z+AU=
-X-Google-Smtp-Source: AGHT+IGolMqCjmD+Qh5sN49kfK1UGcRBR9TVgj5rWOYN+Q9XAjJb9LRmizDnr5gHtY/DBZ4HAMICe+zfXeVlcBZm4Sg=
-X-Received: by 2002:a05:6902:144c:b0:e58:3990:3f77 with SMTP id
- 3f1490d57ef6-e58399041e4mr4279979276.22.1737736529607; Fri, 24 Jan 2025
- 08:35:29 -0800 (PST)
+ AJvYcCWZ5pxjU+wnSjcK6wlYCAPd6UPtq9zS3JwbAh3niWE/f9TSsJI712sMWTs7mDtCngsseyHxQ+9GY6nP@nongnu.org
+X-Gm-Message-State: AOJu0YxxHt4tkL5LrIcUFFQFbjYeCsZPe8ofEr90/RcF2M8NwHTtofTv
+ V2f+dZiYVKb/bXOmBObPDbXW6ofBcvQ4mgPWZtr3i2AbiIb8qbm/V3wU4QMAKuk=
+X-Gm-Gg: ASbGnctKgNOxzvd9Mf64jHaXi0f4FV+3CW8K89UFd7A+V1skVyECqzK4gItkr500fay
+ gWeYyHP5gWtSww07uX5Q5c0KGLavKEByJPQhzKMPg7CWBHaSDvaRtHL3HN/KWMLM77DdpVije+A
+ E8d+m6FxFEKXHW95Ud0zmxlkXEmRIvx2VRapJNnlXhtZkqP3ToEoEtlfDsoZhJX0j20XjC8w2lt
+ xAUQvQaEPVVJlclX2leFo6DtEY5tI18StJI8TnEqxD10dztIUvd96rdSbCKU/CPrMo1vby16Nex
+ GZhqXYaiNBWfA3c3JzTCvKXW
+X-Google-Smtp-Source: AGHT+IEzOH0H9LAMqeeid4z976NqSsP24+5Z9ZdBwQk/KKAuIIIGNBIr8tQZhwh7im0j7TLRTMuOgg==
+X-Received: by 2002:a17:90b:5206:b0:2f5:63a:44f9 with SMTP id
+ 98e67ed59e1d1-2f782d4f189mr38966313a91.23.1737737479552; 
+ Fri, 24 Jan 2025 08:51:19 -0800 (PST)
+Received: from [192.168.163.227] ([75.147.178.105])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2f7ffa56160sm1971766a91.18.2025.01.24.08.51.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 24 Jan 2025 08:51:19 -0800 (PST)
+Message-ID: <f6e862cb-09ee-43f8-9131-4f80b0ad7b5c@linaro.org>
+Date: Fri, 24 Jan 2025 08:51:16 -0800
 MIME-Version: 1.0
-References: <20250124162836.2332150-1-peter.maydell@linaro.org>
-In-Reply-To: <20250124162836.2332150-1-peter.maydell@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 24 Jan 2025 16:35:17 +0000
-X-Gm-Features: AWEUYZm1HnEMlkcuXd3WrwzLYmOcYihRTgLRdgThh_c2AwdH0FwNrx5NVH8jaQQ
-Message-ID: <CAFEAcA98LTxpbiXj2YdQvRmUfufzqxDkOcPF0iUfF1rKMY3v=g@mail.gmail.com>
-Subject: Re: [PATCH 00/76] target/arm: Implement FEAT_AFP and FEAT_RPRES
-To: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2d;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2d.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/28] target/rx: Ensure not being build on user emulation
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+References: <20250121142341.17001-1-philmd@linaro.org>
+ <20250121142341.17001-3-philmd@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250121142341.17001-3-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,34 +103,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 24 Jan 2025 at 16:28, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> This patchset implements emulation of the Arm FEAT_AFP and FEAT_RPRES
-> extensions, which are floating-point related. It's based on the
-> small i386 bugfix series I sent out a while back:
->
-> Based-on: 20250116112536.4117889-1-peter.maydell@linaro.org
-> ("target/i386: Fix 0 * Inf + QNaN regression")
+On 1/21/25 06:23, Philippe Mathieu-Daudé wrote:
+> Currently only system emulation is supported.
+> Assert no target code is built for user emulation.
+> Remove #ifdef'ry since more work is required before
+> being able to emulate a user process.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> ---
+>   target/rx/cpu.h    | 6 ++++--
+>   target/rx/cpu.c    | 6 ------
+>   target/rx/helper.c | 4 ----
+>   3 files changed, 4 insertions(+), 12 deletions(-)
 
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-> I have also some patchs which make target/i386 use the "detect
-> flush to zero after rounding" and "report when input denormal is
-> consumed" softfloat features added here; I don't include them in
-> this patchset (though you can find them in that git branch I
-> mentioned earlier) becaus I haven't done as much testing on the
-> i386 side and in any case this patchset is already pretty long.
-> I expect I'll send them out when this series has been merged.
-
-...having said which, I was so eager to get the series out
-once I'd finished the last test run that I forgot that I
-didn't intend to send out the first two or the last four
-patches in this series; whoops. Feel free to ignore them.
-
-(The patch numbering in the explanation of the series structure
-in the cover letter is all going to be off by 2 as a result,
-as well. This doesn't seem worth resending a monster patchset
-just to fix, though.)
-
-thanks
--- PMM
+r~
 
