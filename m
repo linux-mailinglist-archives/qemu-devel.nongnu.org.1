@@ -2,81 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2083EA1BA37
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:23:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 530D5A1BA45
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:25:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbMRr-0006Kt-Ue; Fri, 24 Jan 2025 11:22:23 -0500
+	id 1tbMTf-0007xM-MM; Fri, 24 Jan 2025 11:24:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbMRj-0006Hc-WF
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:22:16 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbMTU-0007ub-8h
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:24:04 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbMRi-0004iK-7k
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:22:15 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-385de59c1a0so1393355f8f.2
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:22:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbMTS-0004pw-OV
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:24:04 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4361f65ca01so23875545e9.1
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:24:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737735732; x=1738340532; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737735840; x=1738340640; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=rkbXvayzTlgOaEErHYllykNxh5YTXXUlWKE2TQcW5NA=;
- b=tdBssMj1YFU0CSTSRqus/GmovTc1eQXyKuglxKY4IyTJHKoIuy7z9c/GNnliWo5hDy
- t6nSS4k3wgOXY0bs2r2bjU0yYzCHk5UL8AOX19YSPMYs6MCGbXeSz2nkglkflizY3bdY
- CpCW/2sTNXF4uHaHFk/GAiyhEyhaOyUONRHmPcEeJf04Wrv8L5gWmy0uR4M92r465lac
- mZwrdFS3xryQanNamS+65dT/SHb/9jFKbT/Hh15VvxKzz+Z+gAJ66BKh39Q8MTkwKQl2
- vHcJUQcxTdGVxcrWWCNr9lSy0tWsRZLcYHAYkS/o9PoUx1AuEzH8v25HLq6nK34DHno/
- 7CVA==
+ bh=GUAB8KJvef72LimTXU1kyCn5E97m7qx6Tv9JQEXMfi8=;
+ b=A1MRrNN4up7lNuGLxd1/4XbuAg0KV1hC9Il3ohCM934NarQYzAwGUaJxqb2EuxFPVo
+ m9R+EIqYWBqcmcgoth3bvM4tzDM+ztNUxO5mQN1qqAePeT2joZ/5DLxAogGS4q4K3FW1
+ 9JMiorF9iDZPYK1zcz73wSJj3a2bI7vQrRmA4W+iXQIIJHl5hWxvU7AVL3KHNXajrKEk
+ Yx2lSexne8n6AKtmiZJ0PEWKKMu2ApDsmxeqQCeXmd3eKQRQ5Pb149tv1oU9heIxfeYv
+ c3Ks71KaEokx8IUQnDbdCh/yNBYML5wTyk4bTDe2mO8IDalkD/m1BBmLBJHiFGGLdY4y
+ 1suA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737735732; x=1738340532;
+ d=1e100.net; s=20230601; t=1737735840; x=1738340640;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rkbXvayzTlgOaEErHYllykNxh5YTXXUlWKE2TQcW5NA=;
- b=NHtt7qqNgqe4OWk8XPlC0uSkdQ9MUhNH7j1PuOEqHhuKc2zklLOhhIPAZvGkCZmkZW
- D4b0DO+DUs6ebzSsk0i94v5Iv/nxM+FMwDjU47LYkWag1XNs8E9uKDJ6sDJud+sZzhI2
- Hot7KTblU8dwWZWlFRuUYbedkL5wNYcE8ZPNiDPH+VttKdRwEEovFHSh25cz/gbpRBRP
- 3qqyRipDq5QA50+EWdjMRaamtSJPUp7H77PZfCiYn/BRVSnMWYYRD4cGuVzOParj22Ib
- zG0i+QP3eo4jlWhNAP5pXoSNjCKK52m2dds4uG+D8muT+JyCUaKe1Z2ExL3m/gWTtWBC
- B/PQ==
+ bh=GUAB8KJvef72LimTXU1kyCn5E97m7qx6Tv9JQEXMfi8=;
+ b=lohoyn2PqzdvHa4h0Q/wgGLvZoehdUxoG+U8D8w/lUsBtD5XSHXKU4HD/fF+ZY/Zs5
+ Hp2u32PH+Px/iYQnwRFRHytai1lrbeI2mCDjmqqITbWEuce2g0SRR16ZFJJ9Bl7bIOYn
+ WXvETxnX/3NAvTCgUddCyzLwqcnZhFi6Ts3xW53l3XUoIhkP8xR1oIC4vk5B8vLP6sWv
+ bSJi+/GaaawptGRiYecUxWS4usG9YyWp3BBww2Va8UXFj7fRimUNnHgZrVCgPzdf5vJq
+ FnXUlzx23bMxCrHrjeIsCFuREKjekZRc5l+dSj1wjK4ExAPFeln38yC7V9Gc/cAq4FNa
+ qwJg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXi++/FK4c+OLJGlUUV2sR44+N8scStnu34eIg5cq7Eu+Cv9OarTvRwXNfNXT5/6MhyLnLEuthU+ZKv@nongnu.org
-X-Gm-Message-State: AOJu0Yw/HISmC5C6KEWJyurEfMood1nXLkIYIpOk2qCgS2cPp8mpYW0E
- V2MQRlsH95cJiNRJObbzxA/omInieFC3fF61Wx07BwdN5D/FCNEP0ZQeXfa+FKI=
-X-Gm-Gg: ASbGncu6EUpQYADst80b6eicpr7RIDZikCgBnnUZIYhSjr+5JWVZOx9N10g9Vv0QB0E
- tFlt8wV/YK4WcW3grRZxD9Zqo4xTgtfYfIIstxchpVYZFggH1VHpmZZukVc3Qa0WAbF3uEDug4p
- Lx98kCu1BeRbMZuSMBOggLv4l6wqM4WCiF0/SH9m69qxc2ah6HC4TTpcRI+eHFVhtDywagV0ibJ
- RXLOl+rhE5Ye9moL38V9VJIqXdevjwHSuSyAF4oRAEW8mSuVmCCB06outa6o0eJLBIOZZ8mfTwc
- WVClvcrr+FS0h+kWkFzvPc/UJC3lJ5LG0edUmgIn7SMXHzGm
-X-Google-Smtp-Source: AGHT+IGG1WnyLsf+fHUS9MFHVUOS/sy79Two8h8h2hQWubp+Df5WYSJavrRFYAkcmpO/0BZfzbcQ6g==
-X-Received: by 2002:adf:e84a:0:b0:385:f0c9:4b66 with SMTP id
- ffacd0b85a97d-38bf5686090mr23148686f8f.33.1737735732379; 
- Fri, 24 Jan 2025 08:22:12 -0800 (PST)
+ AJvYcCVwDkfRaiDDeSP/4MNfpv2klO1woKDs6+JAOyYZemP/kVG1NpToP3Bh+8cLZb3A4IJOaEm5pe9+nIIy@nongnu.org
+X-Gm-Message-State: AOJu0YwgIwbc+SLcU5a610YqxBK9lQl7kdzGfs9IXquwMBwt3RwpEYWw
+ ivF5VDkRRnNPhbn4ZHmwKy1VZoVqKEfaOXWadJDMwMaV0Bkk0tBCOs/IkoY4igY=
+X-Gm-Gg: ASbGncsiulljOvqqySyZunwOgq67O8Tp0bBhNW5Ud6BONOwH/lKlfDPJYanwNO31SdX
+ k+2pO7ff18JhiqFK9GqJzOwOHdcCXgnK/56dbTmHct9bR0yTxiMK69tG81x+yW1us1yueTwwlvS
+ j1X25mw3pPnJeVbZwCkIbyWrdIFrF0aCgvPn24INImRjdZbWhUuICE4/3TuYdsL5NKZNFIJMk4R
+ uubN3bONN2/WYQeZolG3TByoU8zxC5CERUAPNF9haf5lVb7tIU5TfRfEHEkYyPzTvSCEpfDaS11
+ zyZ+CEYzi1gRaRmCELNCCfKnUFnknFFyGXGG7/W5vjsaAWSb
+X-Google-Smtp-Source: AGHT+IH9B151Hho6P2y72c+thC/jbo2cuUqsJOABVeFDxiEwq+c1XgzAIK6IReqjXumoc4UkeKwoCQ==
+X-Received: by 2002:a05:600c:3acd:b0:438:c18c:5ad8 with SMTP id
+ 5b1f17b1804b1-438c18c5b00mr10409135e9.31.1737735840626; 
+ Fri, 24 Jan 2025 08:24:00 -0800 (PST)
 Received: from [192.168.69.181] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a1c4212sm3014955f8f.87.2025.01.24.08.22.11
+ 5b1f17b1804b1-438bd507dc9sm32111745e9.19.2025.01.24.08.23.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 24 Jan 2025 08:22:11 -0800 (PST)
-Message-ID: <35e2dcf5-d1d6-4326-90cb-22dc82023bed@linaro.org>
-Date: Fri, 24 Jan 2025 17:22:11 +0100
+ Fri, 24 Jan 2025 08:24:00 -0800 (PST)
+Message-ID: <f6504464-f9c1-4ecc-a0de-8645e42046e7@linaro.org>
+Date: Fri, 24 Jan 2025 17:23:58 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] Add me as the maintainer for ivshmem-pci
-To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
- armbru@redhat.com
-Cc: alex.bennee@linaro.org
-References: <20250123012212.716499-1-gustavo.romero@linaro.org>
+Subject: Re: [PATCH v2 5/7] memory: pass MemTxAttrs to
+ memory_access_is_direct()
+To: David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Jagannathan Raman <jag.raman@oracle.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>, Stefan Zabka <git@zabka.it>
+References: <20250124154533.3534250-1-david@redhat.com>
+ <20250124154533.3534250-6-david@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250123012212.716499-1-gustavo.romero@linaro.org>
+In-Reply-To: <20250124154533.3534250-6-david@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,21 +108,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/1/25 02:22, Gustavo Romero wrote:
-> Add me as the maintainer for the ivshmem-pci.c device, the ivshmem
-> server, and the ivshmem client tool. Also, adjust remaining parts left
-> behind after ivshmem PCI device was renamed from ivshmem.c to
-> ivshmem-pci.c, like header files, Kconfig, docs, and build scripts.
+On 24/1/25 16:45, David Hildenbrand wrote:
+> We want to pass another flag that will be stored in MemTxAttrs. So pass
+> MemTxAttrs directly.
 > 
-> 
-> Cheers,
-> Gustavo
-> 
-> Gustavo Romero (2):
->    hw/misc/ivshmem-pci: Rename remaining parts for consistency
->    MAINTAINERS: Add me as the maintainer for ivshmem-pci
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>   hw/core/loader.c          |  2 +-
+>   hw/remote/vfio-user-obj.c |  2 +-
+>   include/exec/memory.h     |  5 +++--
+>   system/memory_ldst.c.inc  | 18 +++++++++---------
+>   system/physmem.c          | 12 ++++++------
+>   5 files changed, 20 insertions(+), 19 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-and queued, thanks for volunteering!
 
