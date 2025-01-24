@@ -2,97 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8AEA1BA3C
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:23:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0527A1BAD0
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:45:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbMST-0006x1-4x; Fri, 24 Jan 2025 11:23:01 -0500
+	id 1tbMhZ-0008P5-Pv; Fri, 24 Jan 2025 11:38:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tbMSQ-0006vT-7U
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:22:58 -0500
+ (Exim 4.90_1) (envelope-from <sbrivio@redhat.com>)
+ id 1tbMgc-0006aO-2p
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:37:41 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tbMSO-0004m7-3n
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:22:57 -0500
+ (Exim 4.90_1) (envelope-from <sbrivio@redhat.com>)
+ id 1tbMgT-0007KO-UG
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:37:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737735772;
+ s=mimecast20190719; t=1737736643;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=51dnXDvsNcSCF08xduw6b/Qmzvzq46UpLQCneaoBf8Y=;
- b=PWyZ8ud32AVSRhf1ZVzEHy7Wh2DxjLAzYew1170mYmYlsWr6LkNrtS+wWvnPoI0Ji/gC9b
- P92jjTeFlUQt4qVIDwUSDHZZKWBqYhMzZv5EviREoiOp9K2sAOdzuJog8CB/ww4hgmGaEl
- FjR/p/HVzTHYFTJE6nMsW31fW+nU1j4=
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
- [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kGUeyc6SbR140JHQdx4tNf9hGmwc1o9CCgwC7kVgEWY=;
+ b=RWHNrLH7haSB5DQYMXuLCR2jespRcgbsSiefT3faKSwoeAi0mx1UqtT+ihVvZFlZz0YybX
+ rYo2TM5EriIdMyjLuIfUO8jRg0z8BztW10lHJcvMLWLOhvMP6Des1dKIMa8eGsjfeZC5DK
+ ZXfy/D4nyFM7IdxwFjJVKbEcsn1mymE=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-pHFkaJwEOl-Zfpb6PeKNRw-1; Fri, 24 Jan 2025 11:22:51 -0500
-X-MC-Unique: pHFkaJwEOl-Zfpb6PeKNRw-1
-X-Mimecast-MFC-AGG-ID: pHFkaJwEOl-Zfpb6PeKNRw
-Received: by mail-oo1-f71.google.com with SMTP id
- 006d021491bc7-5f8d5e499a5so1355615eaf.2
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:22:51 -0800 (PST)
+ us-mta-544-utUTwDb-MKWg6OrrR-RDkg-1; Fri, 24 Jan 2025 11:31:48 -0500
+X-MC-Unique: utUTwDb-MKWg6OrrR-RDkg-1
+X-Mimecast-MFC-AGG-ID: utUTwDb-MKWg6OrrR-RDkg
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-5da0ce0ee51so2219819a12.2
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:31:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737735769; x=1738340569;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=51dnXDvsNcSCF08xduw6b/Qmzvzq46UpLQCneaoBf8Y=;
- b=IAnm01c4M42YlW1HULk9E7Wy0b1EZZ3dEDpCw3oiGdeev560OK5HCHsFPAu7VG4AjJ
- lawUF0EY3VvRYl012HaOKaWgVX7BX6uV5OH8C5hupZPd+bGmW+f2dAhKeWlMeLxeJdTU
- oBwx5xdnti95Jf9fp3MY7TAlyMQ/UhRuqkIUshxHE7K3MFJ4EawNpK3DbfNcNu1b7pqw
- Qea2FeOcFmfwRg8xrmbmIOxif6dMhXR2K8xGRB/KoCMpvVKDT3HXL1NckOpY4KC8Gdea
- 01uW7sDx+T2T4AFd7G3r6MpEV0DIVdcFngMyBHCdK7JdnXEUKRnEmhXuXL9TP1EZ/SWS
- +k/g==
+ d=1e100.net; s=20230601; t=1737736307; x=1738341107;
+ h=content-transfer-encoding:mime-version:organization:references
+ :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=kGUeyc6SbR140JHQdx4tNf9hGmwc1o9CCgwC7kVgEWY=;
+ b=oNgaNK2Nf44RZ9R9UGKW6j+PNUOqrUYFNUFkWnDhb8ow1KSMZ/Du6l0BQRq6Qnq0KL
+ b3GGFfqxx0Q41lE7z5tpHOmPCcX/N0hVhhriVTnD/CEQnmQSI3GO/BSVdWK8/Cj+vvug
+ H5J5HInO8dsT26+zidtOYpMQhMMBaNfDr9gswNOeOMvHaGOhwtXAJ6IbdKwOu18qoJ1n
+ feqLrBwd843x8pvomKflqYvS+9op//euMs9xgDPTs44yTL4T2cjfGN8M42CREBSzUHhZ
+ k8FIGH+M52yrTzJHuS6MWfQ12OiQjvPwJVOc9raL6jWGot539vjDW3FbYZvRGueZJrQE
+ SzDw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWRes0qoCJi7dtkf1ho3tGKXiMrTKkoy/acbODTvrwu+H/FvacsxMscxqOe293e0swRQyXj6UYVK+LO@nongnu.org
-X-Gm-Message-State: AOJu0YzGCHSQ36GIc1IpQehwo6c7tvUCjkZiDQypPrt7eB94B9bUKt1F
- KKiY7XYtKKYo6fVDCJ92IBu4NNSzxckn2UCKpSMFcCA1KxkhybaxDwOQ3fB2zrd8xhIt933WCQo
- Giehon2MFhM1XM/LeJrpk0kjDENO2BaLZSFENS7pCYg+ZhYzli87ZmDaALH6Z
-X-Gm-Gg: ASbGnct04npWvTt8VqOou99dzn3XlH754nUqG+C8CT6PiG6SCxGV9YTC6zKK4DpkaMQ
- C16ISX9M4jzYxgPLKVw7xmyXt9zVFJHcKQ2Er5NNhAsHzxLtTUksswktKgR5X4JBrtn7wEebfJ3
- m8nfJit2Kujfhwe83UxVVWiM0F8rqr/eaaZDB+v80Dwoau5kI+5B09hUTFEeq4/cO6yGCYnpkPX
- pX3Z5xknR2Q/QLJhnlLcwEDHMnelm+K9lHQ4IvYXnFGl96e92dqE4ZKrskwGr8V8QC6gcpb3Jp7
- Z9UIBWr8it0UfalJrmfo1X7a/6ROJDU=
-X-Received: by 2002:a05:6214:19c8:b0:6d8:cff9:f373 with SMTP id
- 6a1803df08f44-6e1b21c4106mr427082876d6.30.1737734153259; 
- Fri, 24 Jan 2025 07:55:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGz9G2Pe5z23hXavPMrogrJhKCVJEtNpCmuOw2NH/cjb1ms5gHZUdf8IgcLgtK64ImsjBm57w==
-X-Received: by 2002:a05:6214:19c8:b0:6d8:cff9:f373 with SMTP id
- 6a1803df08f44-6e1b21c4106mr427082656d6.30.1737734152916; 
- Fri, 24 Jan 2025 07:55:52 -0800 (PST)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6e20525abf0sm9759386d6.54.2025.01.24.07.55.51
+ AJvYcCUDNbfm3CIDDhDZdEiGQNv2s12QQT/hHkg28izvWo7kQf1737vqEZzhi7+xPJQ5q0skJWAS0pU+t6GD@nongnu.org
+X-Gm-Message-State: AOJu0YzaYoZlFmv+A5/bAQlPd4ZPmNgsTZu+aShsPa2Dg6zd+4RyrxhG
+ q1eeB1BkCd8SLYzsYj0dLX39MHgq9py0yoTud5Zj2XLYcfr0qpqxur/2WEzul7/wUczVEDRqPVz
+ m1H3NwFFKuDE9C+CKpRJDD2HK4EH71cKFtb0pI6wDvRubbLJWRReW
+X-Gm-Gg: ASbGncs+YE7a4dhgRz/BPTtrZFv0q2ljFHE03Ysll4JKU1b51WtUmXagDKQ2Pl9n9nf
+ Cjmm7B+DN2JtCMZO652pDqeF/5cU45Q4SrhveeDqkJk6znXKQMBIL3EquzvdNVmbSDmoJ6v8Zur
+ DCure9ftp41sWjZY7jgk/Afr27FWcOa2+yls7sssssX7ig4Day+5hTtylJQHCBHXCxt4yzafOZE
+ 51PDe/BGECxbaXZ3wPrXlsISuZjID3vMxUx8sEXxnfXTs5+dz7LGKj/jrqJ2+wfnRCWy4am1opu
+ p1rZLQ==
+X-Received: by 2002:a05:600c:3593:b0:431:5632:448b with SMTP id
+ 5b1f17b1804b1-4389144eed4mr248507575e9.25.1737734610651; 
+ Fri, 24 Jan 2025 08:03:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFh8RBZDW6JWrVfbOFPcLEGc6pLkkEdTeWD7+gqFx3gqVnnx5V1kpHM/6RlkFtRTNItrgGfxw==
+X-Received: by 2002:a05:600c:3593:b0:431:5632:448b with SMTP id
+ 5b1f17b1804b1-4389144eed4mr248506835e9.25.1737734610060; 
+ Fri, 24 Jan 2025 08:03:30 -0800 (PST)
+Received: from maya.myfinge.rs (ifcgrfdd.trafficplex.cloud.
+ [2a10:fc81:a806:d6a9::1]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-438bd507e0csm30285245e9.20.2025.01.24.08.03.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 07:55:52 -0800 (PST)
-Date: Fri, 24 Jan 2025 10:55:49 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
- David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
- Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
- Xu Yilun <yilun.xu@intel.com>
-Subject: Re: [PATCH 2/7] guest_memfd: Introduce an object to manage the
- guest-memfd with RamDiscardManager
-Message-ID: <Z5O4BSCjlhhu4rrw@x1n>
-References: <2b2730f3-6e1a-4def-b126-078cf6249759@amd.com>
- <Z462F1Dwm6cUdCcy@x1n> <ZnmfUelBs3Cm0ZHd@yilunxu-OptiPlex-7050>
- <Z4-6u5_9NChu_KZq@x1n>
- <95a14f7d-4782-40b3-a55d-7cf67b911bbe@amd.com>
- <Z5C9SzXxX7M1DBE3@yilunxu-OptiPlex-7050> <Z5EgFaWIyjIiOZnv@x1n>
- <Z5INAQjxyYhwyc+1@yilunxu-OptiPlex-7050> <Z5Jylb73kDJ6HTEZ@x1n>
- <Z5NhwW/IXaLfvjvb@yilunxu-OptiPlex-7050>
+ Fri, 24 Jan 2025 08:03:29 -0800 (PST)
+Date: Fri, 24 Jan 2025 17:03:27 +0100
+From: Stefano Brivio <sbrivio@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Laurent Vivier <lvivier@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
+ Thibaut Collet <thibaut.collet@6wind.com>
+Subject: Re: [PATCH] vhost-user: Silence unsupported
+ VHOST_USER_PROTOCOL_F_RARP error
+Message-ID: <20250124170327.448805ad@elisabeth>
+In-Reply-To: <kt2sdfv3wg3raylqfmphrdbc2isex2q3jtmgw7oems5xysex4f@lnp3ulutpt6f>
+References: <20250121100029.1106973-1-lvivier@redhat.com>
+ <3mcx7u456pawkgz4dgf6tvk7izczuy55guipqacqkl66jhtltq@fofd5u3el4nj>
+ <20250122085828-mutt-send-email-mst@kernel.org>
+ <bfc3rstsxuapkjlea4lia3bn44rt7hhsf6kagtkltfssqynx6z@4dodvso73pel>
+ <044af96f-791b-471f-ae90-c17597445fd3@redhat.com>
+ <kt2sdfv3wg3raylqfmphrdbc2isex2q3jtmgw7oems5xysex4f@lnp3ulutpt6f>
+Organization: Red Hat
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Z5NhwW/IXaLfvjvb@yilunxu-OptiPlex-7050>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sbrivio@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
@@ -118,145 +118,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 24, 2025 at 05:47:45PM +0800, Xu Yilun wrote:
-> On Thu, Jan 23, 2025 at 11:47:17AM -0500, Peter Xu wrote:
-> > On Thu, Jan 23, 2025 at 05:33:53PM +0800, Xu Yilun wrote:
-> > > On Wed, Jan 22, 2025 at 11:43:01AM -0500, Peter Xu wrote:
-> > > > On Wed, Jan 22, 2025 at 05:41:31PM +0800, Xu Yilun wrote:
-> > > > > On Wed, Jan 22, 2025 at 03:30:05PM +1100, Alexey Kardashevskiy wrote:
-> > > > > > 
-> > > > > > 
-> > > > > > On 22/1/25 02:18, Peter Xu wrote:
-> > > > > > > On Tue, Jun 25, 2024 at 12:31:13AM +0800, Xu Yilun wrote:
-> > > > > > > > On Mon, Jan 20, 2025 at 03:46:15PM -0500, Peter Xu wrote:
-> > > > > > > > > On Mon, Jan 20, 2025 at 09:22:50PM +1100, Alexey Kardashevskiy wrote:
-> > > > > > > > > > > It is still uncertain how to implement the private MMIO. Our assumption
-> > > > > > > > > > > is the private MMIO would also create a memory region with
-> > > > > > > > > > > guest_memfd-like backend. Its mr->ram is true and should be managed by
-> > > > > > > > > > > RamdDiscardManager which can skip doing DMA_MAP in VFIO's region_add
-> > > > > > > > > > > listener.
-> > > > > > > > > > 
-> > > > > > > > > > My current working approach is to leave it as is in QEMU and VFIO.
-> > > > > > > > > 
-> > > > > > > > > Agreed.  Setting ram=true to even private MMIO sounds hackish, at least
-> > > > > > > > 
-> > > > > > > > The private MMIO refers to assigned MMIO, not emulated MMIO. IIUC,
-> > > > > > > > normal assigned MMIO is always set ram=true,
-> > > > > > > > 
-> > > > > > > > void memory_region_init_ram_device_ptr(MemoryRegion *mr,
-> > > > > > > >                                         Object *owner,
-> > > > > > > >                                         const char *name,
-> > > > > > > >                                         uint64_t size,
-> > > > > > > >                                         void *ptr)
-> > > > 
-> > > > [1]
-> > > > 
-> > > > > > > > {
-> > > > > > > >      memory_region_init(mr, owner, name, size);
-> > > > > > > >      mr->ram = true;
-> > > > > > > > 
-> > > > > > > > 
-> > > > > > > > So I don't think ram=true is a problem here.
-> > > > > > > 
-> > > > > > > I see.  If there's always a host pointer then it looks valid.  So it means
-> > > > > > > the device private MMIOs are always mappable since the start?
-> > > > > > 
-> > > > > > Yes. VFIO owns the mapping and does not treat shared/private MMIO any
-> > > > > > different at the moment. Thanks,
-> > > > > 
-> > > > > mm.. I'm actually expecting private MMIO not have a host pointer, just
-> > > > > as private memory do.
-> > > > > 
-> > > > > But I'm not sure why having host pointer correlates mr->ram == true.
-> > > > 
-> > > > If there is no host pointer, what would you pass into "ptr" as referenced
-> > > > at [1] above when creating the private MMIO memory region?
-> > > 
-> > > Sorry for confusion. I mean existing MMIO region use set mr->ram = true,
-> > > and unmappable region (gmem) also set mr->ram = true. So don't know why
-> > > mr->ram = true for private MMIO is hackish.
-> > 
-> > That's exactly what I had on the question in the previous email - please
-> > have a look at what QEMU does right now with memory_access_is_direct().
-> 
-> I see memory_access_is_direct() should exclude mr->ram_device == true, which
-> is the case for normal assigned MMIO and for private assigned MMIO. So
-> this func is not a problem.
+[Cc'ed Thibaut as author of 3e866365e1eb ("vhost user: add rarp sending
+after live migration for legacy guest")]
 
-I'm not sure even if so.
+On Wed, 22 Jan 2025 17:51:07 +0100
+Stefano Garzarella <sgarzare@redhat.com> wrote:
 
-VFIO's current use case is pretty special - it still has a host pointer,
-it's just that things like memcpy() might not be always suitable to be
-applied on MMIO mapped regions.  Alex explained the rational in commit
-4a2e242bbb3.  I mean, the host pointer is valid even if ram_device=true in
-this case.  Even if no direct access allowed (memcpy, etc.) it still
-operates on the host address using ram_device_mem_ops.
+> On Wed, Jan 22, 2025 at 05:41:15PM +0100, Laurent Vivier wrote:
+> >On 22/01/2025 17:20, Stefano Garzarella wrote: =20
+> >>On Wed, Jan 22, 2025 at 08:59:22AM -0500, Michael S. Tsirkin wrote: =20
+> >>>On Wed, Jan 22, 2025 at 02:42:14PM +0100, Stefano Garzarella wrote: =20
+> >>>>On Tue, Jan 21, 2025 at 11:00:29AM +0100, Laurent Vivier wrote: =20
+> >>>>> In vhost_user_receive() if vhost_net_notify_migration_done() reports
+> >>>>> an error we display on the console:
+> >>>>>
+> >>>>>=C2=A0 Vhost user backend fails to broadcast fake RARP
+> >>>>>
+> >>>>> This message can be useful if there is a problem to execute
+> >>>>> VHOST_USER_SEND_RARP but it is useless if the backend doesn't
+> >>>>> support VHOST_USER_PROTOCOL_F_RARP.
+> >>>>>
+> >>>>> Don't report the error if vhost_net_notify_migration_done()
+> >>>>> returns -ENOTSUP (from vhost_user_migration_done())
+> >>>>>
+> >>>>> Update vhost_net-stub.c to return -ENOTSUP too.
+> >>>>>
+> >>>>> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+> >>>>> ---
+> >>>>> hw/net/vhost_net-stub.c | 2 +-
+> >>>>> net/vhost-user.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+> >>>>> 2 files changed, 2 insertions(+), 2 deletions(-)
+> >>>>>
+> >>>>> diff --git a/hw/net/vhost_net-stub.c b/hw/net/vhost_net-stub.c
+> >>>>> index 72df6d757e4d..875cd6c2b9c8 100644
+> >>>>> --- a/hw/net/vhost_net-stub.c
+> >>>>> +++ b/hw/net/vhost_net-stub.c
+> >>>>> @@ -93,7 +93,7 @@ void vhost_net_config_mask(VHostNetState  =20
+> >>>>*net, VirtIODevice *dev, bool mask) =20
+> >>>>>
+> >>>>> int vhost_net_notify_migration_done(struct vhost_net *net, char* ma=
+c_addr)
+> >>>>> {
+> >>>>> -=C2=A0=C2=A0=C2=A0 return -1;
+> >>>>> +=C2=A0=C2=A0=C2=A0 return -ENOTSUP;
+> >>>>> }
+> >>>>>
+> >>>>> VHostNetState *get_vhost_net(NetClientState *nc)
+> >>>>> diff --git a/net/vhost-user.c b/net/vhost-user.c
+> >>>>> index 12555518e838..636fff8a84a2 100644
+> >>>>> --- a/net/vhost-user.c
+> >>>>> +++ b/net/vhost-user.c
+> >>>>> @@ -146,7 +146,7 @@ static ssize_t  =20
+> >>>>vhost_user_receive(NetClientState *nc, const uint8_t *buf, =20
+> >>>>>
+> >>>>>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 r =3D vhost_net_not=
+ify_migration_done(s->vhost_net, mac_addr);
+> >>>>>
+> >>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if ((r !=3D 0) && (disp=
+lay_rarp_failure)) {
+> >>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if ((r !=3D 0) && (r !=
+=3D -ENOTSUP) && (display_rarp_failure)) {
+> >>>>>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 fprintf(stderr,
+> >>>>>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "Vhost user backend =
+fails to broadcast fake RARP\n");
+> >>>>>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 fflush(stderr);
+> >>>>> --
+> >>>>> 2.47.1
+> >>>>> =20
+> >>>>
+> >>>>IIUC the message was there since the introduction about 10 years ago
+> >>>>from commit 3e866365e1 ("vhost user: add rarp sending after live
+> >>>>migration for legacy guest"). IIUC -ENOTSUP is returned when both F_R=
+ARP
+> >>>>and F_GUEST_ANNOUNCE are not negotiated.
+> >>>>
+> >>>>That said, I honestly don't know what F_RARP or F_GUEST_ANNOUNCE is f=
+or, =20
+> >>>
+> >>>rarp is to have destination host broadcast a message with VM address
+> >>>to update the network. Guest announce is when it will instead
+> >>>ask the guest to do this. =20
+> >>
+> >>Okay, thanks for explaining to me.
+> >>So if both features are not negotiated, no one is going to broadcast
+> >>the message, right?
+> >>
+> >>Could that be a valid reason to print an error message in QEMU?
+> >>
+> >>To me it might be reasonable because the user might experience some
+> >>network problems, but I'm not a network guy :-) =20
+> >
+> >I'm working on adding vhost-user to passt[1], and in this case we=20
+> >don't need to broadcast any message. =20
+>=20
+> Okay, so please can you add that to the commit description and also
+> explaining why you don't need that?
 
-> 
-> But I think flatview_access_allowed() is a problem that it doesn't filter
-> out the private memory. When memory is converted to private, the result
-> of host access can't be what you want and should be errored out. IOW,
-> the host ptr is sometimes invalid.
-> 
-> > I'm not 100% sure it'll work if the host pointer doesn't exist.
-> > 
-> > Let's take one user of it to be explicit: flatview_write_continue_step()
-> > will try to access the ram pointer if it's direct:
-> > 
-> >     if (!memory_access_is_direct(mr, true)) {
-> >         ...
-> >     } else {
-> >         /* RAM case */
-> >         uint8_t *ram_ptr = qemu_ram_ptr_length(mr->ram_block, mr_addr, l,
-> >                                                false, true);
-> > 
-> >         memmove(ram_ptr, buf, *l);
-> >         invalidate_and_set_dirty(mr, mr_addr, *l);
-> > 
-> >         return MEMTX_OK;
-> >     }
-> > 
-> > I don't see how QEMU could work yet if one MR set ram=true but without a
-> > host pointer..
-> > 
-> > As discussed previously, IMHO it's okay that the pointer is not accessible,
-> 
-> Maybe I missed something in previous discussion, I assume it is OK cause
-> no address_space_rw is happening on this host ptr when memory is
-> private, is it?
+By the way, we don't need that in passt because we don't need to update
+any ARP table. Even if the guest changes its MAC address, with passt,
+nobody is going to notice.
 
-Yes, and when there is a mapped host address and someone tries to access an
-address that is bound to a private page, QEMU should get a SIGBUS.  This
-code is not ready yet for gmem, but I believe it'll work like that when
-in-place gmem folio conversions will be ready.  So far QEMU's gmem works by
-providing two layers of memory backends, which is IMHO pretty tricky.
+> >So I don't implement VHOST_USER_SEND_RARP and I don't want the error=20
+> >message to spoil my console. =20
+>=20
+> Fair enough, but at that point, if it's valid to have both feature not
+> negotiated, IMHO is better to return 0 in vhost_user_migration_done().
+> Maybe adding also a comment to explain that in your scenario you don't
+> need to do nothing (like if guest supports GUEST_ANNOUNCE).
+>=20
+> >-ENOTSUP is an error message for developer not for user. =20
+>=20
+> I was referring to the "Vhost user backend fails to broadcast fake RARP"
+> error message we are skipping here.
 
-> 
-> > but still I assume QEMU assumes the pointer at least existed for a ram=on
-> > MR.  I don't know whether it's suitable to set ram=on if the pointer
-> > doesn't ever exist.
-> 
-> In theory, any code logic should not depends on an invalid pointer. I
-> think a NULL pointer would be much better than a invalid pointer, at
-> least you can check whether to access. So if you think an invalid
-> pointer is OK, a NULL pointer should be also OK.
+By the way, I think that that message is inaccurate on a number of
+other levels:
 
-Definitely not suggesting to install an invalid pointer anywhere.  The
-mapped pointer will still be valid for gmem for example, but the fault
-isn't.  We need to differenciate two things (1) virtual address mapping,
-then (2) permission and accesses on the folios / pages of the mapping.
-Here I think it's okay if the host pointer is correctly mapped.
+- if the back-end doesn't even try, it can't fail, and "fails"
+  indicates... failure?
 
-For your private MMIO use case, my question is if there's no host pointer
-to be mapped anyway, then what's the benefit to make the MR to be ram=on?
-Can we simply make it a normal IO memory region?  The only benefit of a
-ram=on MR is, IMHO, being able to be accessed as RAM-like.  If there's no
-host pointer at all, I don't yet understand how that helps private MMIO
-from working.
+- RARP is an obsolete protocol, but there's no such thing as a fake
+  protocol. It's not even a fake message, it's a simple RARP broadcast
+  message, with the correct MAC address. It's "dummy", at most
 
-Thanks,
+- I read the whole thread but still I can't understand why we have a
+  capability then: what does it (or its absence) mean?
 
--- 
-Peter Xu
+Regardless of that, sure, let's go ahead and add the fake (that one
+*is* fake) callback in passt, which Laurent just sent a patch for. We
+need it anyway as a workaround for compatibility with current/older
+versions of QEMU.
+
+But I don't understand why we're leaving this as it is.
+
+--=20
+Stefano
 
 
