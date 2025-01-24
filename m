@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822A1A1BA80
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D488AA1BA8A
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:34:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbMbv-0002dj-2t; Fri, 24 Jan 2025 11:32:47 -0500
+	id 1tbMcC-00055v-2c; Fri, 24 Jan 2025 11:33:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tbMYj-0004bI-6C
+ id 1tbMYj-0004cN-HH
  for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:29:29 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tbMYh-0005cw-0L
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:29:28 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43634b570c1so16742425e9.0
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:29:26 -0800 (PST)
+ id 1tbMYh-0005dO-Vm
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:29:29 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-43626213fffso22181515e9.1
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:29:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737736165; x=1738340965; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737736166; x=1738340966; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=v5Tz/8qeASxQsHbh8eTYF0AFW/V0SNYL2us/VX5QjOQ=;
- b=E03nogmvOwWcKOnvcfiv9M9R4vr0jCyaHIbZt0VachBund4gInyQ9oNB79iqWKZDt0
- Rl6MphP9JazBJd8kAHWQWrylJZtclXRxVnX64mVWaedF1bkJJAWVNxZ37r+AhUz4sqwP
- 8w250F0peIit/BlPtz5OccedlNsh/6nrPESX2VIosbiuoVvMDSRtJUYZzM/G7tt+JkST
- 8Mr+k9B394CUWbhgWCn3TC/2gb94qIaSUT1kToBeVncavmE8yHDLmCHKUpykt0omBp5g
- hqkstzMSusoIelkb6NAyX6CxVh3D3aLNVzHk9HuvYkxZueW5+Anvht1paJCfjLjQWFqM
- 3sKw==
+ :reply-to; bh=nKR8uPNYLhAGe3FarqfGbfg+8VB5fh6HLYBVmEiiDLE=;
+ b=W48Sto+0FSdiavBnRQW+/ZwOx+g8Xrm+itB2+ym76WWu11GI6awFBCohIpdLiBIHKZ
+ E9EOZeTcXr0BKqmRNe51yntg/3QAUPyDljIbODaqwDILGM97Z+3N3YudIfJyTHADKWCz
+ bZZJIZUHhpAwL/+kqm0BM35ht+C+G01tiDl3V9iaPMlhVJlvmT9L/HsR96GbYsR4T9ww
+ bt29/uN1x5T8W+mtDlYOUaxfHHr9xvRXF1l5QAAqsRQTkrcJePpS08YDa+0AF12XsKTO
+ jYeQLqSnfl6Eq3DvKMt3kAr9OK04D7i3b0YRZzJYx1HrOHa0BCchD7Uetg983ZC0SVWw
+ yEEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737736165; x=1738340965;
+ d=1e100.net; s=20230601; t=1737736166; x=1738340966;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=v5Tz/8qeASxQsHbh8eTYF0AFW/V0SNYL2us/VX5QjOQ=;
- b=j6jRhz/5TBNl5Iedlbc3VpaekHNm+6Pyu8vMtKXX8FTvxfaxz0SBNt/FChhDcZCGbX
- TfNhckSukRkaq/dLtsmSolK4Z12DH8BxuzRStzSUB3x2Is+m0s94AAIsR1veSmfVlsAy
- WzBhj3S+zOw+4V0Yvt9En9947yAr2Cn4V899Av1Ly9YaTXAVdrzo7MgdIRM7Ezf5E3BG
- q+zCVoAfEdd3TLxu6AD1FPGzsdrj3Rl8qNawVdOY/nWV0QnG+2jRZKEuXajyuZjYLeWd
- wcsYKorKG8vT0W8jBBAOTWAXFdwuAC1uienyqHFmU2SvfeOlEb5LHElI9Lgvh+iyY4hk
- Lcbw==
+ bh=nKR8uPNYLhAGe3FarqfGbfg+8VB5fh6HLYBVmEiiDLE=;
+ b=blCRcMqUHu6WWj9n5cbH8Rq11eSacaBkyq56JKrL/uxFF+1gVPaiVGgoAG9mQqjTaE
+ LJxSJa8uEjLnPQlsDazSqYbt0JZqI+UM0IzNhh58lsf/SLYdd2kYRXv5f+UiSnOJy3oA
+ DKcwWaW/JJ5t89CAmTI91oRPoe2mmqcMnTQhemRRwlrNfXE6zu10XB8gu659aDU3oF8E
+ YIxvhA1a8Lc/qMEwzYHrLRw7OU7NiXl//BMCRnIBZ/vbbW+tQBcl89ZOl+YTgWb+oYkW
+ Hw3Kr3xWa35iFustVXHZwO+58JBSEfq1NlKUW0BXcdYMudlyCWWLvYy8CpV7i62SwvWM
+ baNw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUzzhD/mbJa5wV27eHNjydA9SwH3M78hDfFtcEeV0il+iTpJ+r68P9Zpn+o1ie0a6nXW1ueTp8cl0H0@nongnu.org
-X-Gm-Message-State: AOJu0YwGNMze59aNe//JhCyIU7G+y4+t26cWw2ibOf7LB88igfU7U9YL
- Dz4MpdXb8Uyb1dx1mWTjXS+w8ab+lS+B3nnFnkOZI/lrvj9Y513nITqkGzCP4pM=
-X-Gm-Gg: ASbGnct2jLyRWvydKhE1kG35JDt0NqAUItexQJh9knDMuIMe0Gw4vD2m9w3lgIFKKu+
- W+p5ktnybpBq9oIJ4mNpOd4mhWvbE3t2PgHlNd/jTwXRWFJKJLeNaqO8wd9gVg2A0BfOvlLOg9m
- C0rr4hcrE6gd17iXLzrPwJMJbPwfZh6cXKJTmmYbAV7uz4zAB59Cj2b2EjYAkpAN973EpWZdoEW
- KnTj5iUECOEdnLMDUvq1MVadlzq/qiGwSCBSQ5P0rZAhp5mPA3SQIpjRfQQ7YwaZsb1PLbhbB3A
- xO/FGFzqUQE=
-X-Google-Smtp-Source: AGHT+IFhxEWfwozrb1Va2N7rwV/4svKDaV37P71P6X1gBBjPnIMVPALyIHxcCH6gTiKI5Oib8f2XhA==
-X-Received: by 2002:a05:600c:450c:b0:434:a91e:c709 with SMTP id
- 5b1f17b1804b1-4389145145fmr259338315e9.28.1737736165503; 
- Fri, 24 Jan 2025 08:29:25 -0800 (PST)
+ AJvYcCUMtx3tVjgXL/yBd78PCG8fIx0VXW6H+0IH0AIL51RDKjqq1hk7+T57uk/tTsOlW98oXtyKf7sd4Avu@nongnu.org
+X-Gm-Message-State: AOJu0Yw5cB8qSYKK2YV600GaB9TLnCjbWfmC8KqnVQzvQQIXwO9umwKC
+ 6XdVtB7Ns0Tlq4EwXVqRrTXtfjHwbrhV/FOK1DnMIzoj8ViIBWGjxwE9qwex2xkJCKJYUFaLyPf
+ K
+X-Gm-Gg: ASbGnctchbk55B9YGaY88H6YISEsK/Jadx/TiM6Psni6IodeGrbgz9GHpm+J4+lMjzf
+ 7GbVaLZjGaE3FuX4Q7hUbcAgyl2/7xwZeFt9TXU5KeGE+On2EmpRlUO3RDIr7Dy0dO8D82osf57
+ vyum2SlXXCDnXFQBdNneZahMP34SFH0Uq1q4fMIvrc4+sJV//6pThrvMk8zgCv3miagf+4kButn
+ keox39maHesjNUXXd5Hdh6V/+GjITs0rnS5TGdkC3T3g4p4D0LgsWXzmIx+oZjKv7Yb6ydCQIVJ
+ +gifZP5Oq9g=
+X-Google-Smtp-Source: AGHT+IG6Mttva2ZJdU/FCypjf3E6xFnEn7bAD3qOtpX+tYHcl2/SoZ1fzRwbZZobC/Fs1LYYidHusg==
+X-Received: by 2002:a05:600c:5110:b0:42c:b8c9:16c8 with SMTP id
+ 5b1f17b1804b1-438b885b8c1mr76525055e9.10.1737736166524; 
+ Fri, 24 Jan 2025 08:29:26 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd47eecasm31683025e9.6.2025.01.24.08.29.24
+ 5b1f17b1804b1-438bd47eecasm31683025e9.6.2025.01.24.08.29.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 08:29:24 -0800 (PST)
+ Fri, 24 Jan 2025 08:29:25 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 38/76] target/arm: Handle FPCR.NEP for 3-input scalar
- operations
-Date: Fri, 24 Jan 2025 16:27:58 +0000
-Message-Id: <20250124162836.2332150-39-peter.maydell@linaro.org>
+Subject: [PATCH 39/76] target/arm: Handle FPCR.NEP for BFCVT scalar
+Date: Fri, 24 Jan 2025 16:27:59 +0000
+Message-Id: <20250124162836.2332150-40-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250124162836.2332150-1-peter.maydell@linaro.org>
 References: <20250124162836.2332150-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,73 +98,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Handle FPCR.NEP for the 3-input scalar operations which use
-do_fmla_scalar_idx() and do_fmadd(), by making them call the
-appropriate write_fp_*reg_merging() functions.
+Currently we implement BFCVT scalar via do_fp1_scalar().  This works
+even though BFCVT is a narrowing operation from 32 to 16 bits,
+because we can use write_fp_sreg() for float16. However, FPCR.NEP
+support requires that we use write_fp_hreg_merging() for float16
+outputs, so we can't continue to borrow the non-narrowing
+do_fp1_scalar() function for this. Split out trans_BFCVT_s()
+into its own implementation that honours FPCR.NEP.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ target/arm/tcg/translate-a64.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 19a4ae14c15..66c214ed278 100644
+index 66c214ed278..944bdf8cafe 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -6356,7 +6356,7 @@ static bool do_fmla_scalar_idx(DisasContext *s, arg_rrx_e *a, bool neg)
-                 gen_vfp_negd(t1, t1);
-             }
-             gen_helper_vfp_muladdd(t0, t1, t2, t0, fpstatus_ptr(FPST_FPCR_A64));
--            write_fp_dreg(s, a->rd, t0);
-+            write_fp_dreg_merging(s, a->rd, a->rd, t0);
-         }
-         break;
-     case MO_32:
-@@ -6370,7 +6370,7 @@ static bool do_fmla_scalar_idx(DisasContext *s, arg_rrx_e *a, bool neg)
-                 gen_vfp_negs(t1, t1);
-             }
-             gen_helper_vfp_muladds(t0, t1, t2, t0, fpstatus_ptr(FPST_FPCR_A64));
--            write_fp_sreg(s, a->rd, t0);
-+            write_fp_sreg_merging(s, a->rd, a->rd, t0);
-         }
-         break;
-     case MO_16:
-@@ -6388,7 +6388,7 @@ static bool do_fmla_scalar_idx(DisasContext *s, arg_rrx_e *a, bool neg)
-             }
-             gen_helper_advsimd_muladdh(t0, t1, t2, t0,
-                                        fpstatus_ptr(FPST_FPCR_F16_A64));
--            write_fp_sreg(s, a->rd, t0);
-+            write_fp_hreg_merging(s, a->rd, a->rd, t0);
-         }
-         break;
-     default:
-@@ -6867,7 +6867,7 @@ static bool do_fmadd(DisasContext *s, arg_rrrr_e *a, bool neg_a, bool neg_n)
-             }
-             fpst = fpstatus_ptr(FPST_FPCR_A64);
-             gen_helper_vfp_muladdd(ta, tn, tm, ta, fpst);
--            write_fp_dreg(s, a->rd, ta);
-+            write_fp_dreg_merging(s, a->rd, a->ra, ta);
-         }
-         break;
+@@ -8582,10 +8582,27 @@ static const FPScalar1 f_scalar_frintx = {
+ };
+ TRANS(FRINTX_s, do_fp1_scalar, a, &f_scalar_frintx, -1)
  
-@@ -6885,7 +6885,7 @@ static bool do_fmadd(DisasContext *s, arg_rrrr_e *a, bool neg_a, bool neg_n)
-             }
-             fpst = fpstatus_ptr(FPST_FPCR_A64);
-             gen_helper_vfp_muladds(ta, tn, tm, ta, fpst);
--            write_fp_sreg(s, a->rd, ta);
-+            write_fp_sreg_merging(s, a->rd, a->ra, ta);
-         }
-         break;
+-static const FPScalar1 f_scalar_bfcvt = {
+-    .gen_s = gen_helper_bfcvt,
+-};
+-TRANS_FEAT(BFCVT_s, aa64_bf16, do_fp1_scalar_ah, a, &f_scalar_bfcvt, -1)
++static bool trans_BFCVT_s(DisasContext *s, arg_rr_e *a)
++{
++    ARMFPStatusFlavour fpsttype = s->fpcr_ah ? FPST_FPCR_AH : FPST_FPCR_A64;
++    TCGv_i32 t32;
++    int check;
++
++    if (!dc_isar_feature(aa64_bf16, s)) {
++        return false;
++    }
++
++    check = fp_access_check_scalar_hsd(s, a->esz);
++
++    if (check <= 0) {
++        return check == 0;
++    }
++
++    t32 = read_fp_sreg(s, a->rn);
++    gen_helper_bfcvt(t32, t32, fpstatus_ptr(fpsttype));
++    write_fp_hreg_merging(s, a->rd, a->rd, t32);
++    return true;
++}
  
-@@ -6906,7 +6906,7 @@ static bool do_fmadd(DisasContext *s, arg_rrrr_e *a, bool neg_a, bool neg_n)
-             }
-             fpst = fpstatus_ptr(FPST_FPCR_F16_A64);
-             gen_helper_advsimd_muladdh(ta, tn, tm, ta, fpst);
--            write_fp_sreg(s, a->rd, ta);
-+            write_fp_hreg_merging(s, a->rd, a->ra, ta);
-         }
-         break;
- 
+ static const FPScalar1 f_scalar_frint32 = {
+     NULL,
 -- 
 2.34.1
 
