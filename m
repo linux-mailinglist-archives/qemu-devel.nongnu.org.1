@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C618A1BB08
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:55:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89FC5A1B9DD
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:02:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbMx9-0007n3-LL; Fri, 24 Jan 2025 11:54:43 -0500
+	id 1tbM7S-0000e6-T9; Fri, 24 Jan 2025 11:01:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dhildenb@redhat.com>)
- id 1tbMx0-0007dU-C7
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:54:34 -0500
+ id 1tbM7Q-0000do-D4
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:01:16 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dhildenb@redhat.com>)
- id 1tbMwy-0002c1-Ey
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:54:33 -0500
+ id 1tbM7O-00087x-UY
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:01:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737737669;
+ s=mimecast20190719; t=1737734473;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3ePR9BfsmNf8AyNCl2IDFJ8EDqHaAP0dpO83jGHFUug=;
- b=Iw06NtcaAJU5yyQvuTe4c6y7p9FrUv8GP77uijNgLYtkIdXTEOlY8lyev1f4xB9ozUIu/N
- qA1JZHPP7E65AGYivRsvxBi+wm+3k4STewQEItVwwMCoi6C5XbS6PfH1s8RquQzUlG0iCv
- BlEVUJrLbRwLGvYrFdSz4QExqA5t51U=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zSzhRdn4C5TQknUumN+J2fY4iQC6DedwUvkKqDEpUYM=;
+ b=Y7c0DVPZ/O6im4vbjY6Jk0knMoppYexQM0a2i9rkdWJYhwl7sppPcTtbOnnrxdKlCmtjYI
+ C588xLmKHALt+i05Vyujh1HPTsYG6Kc7yyArfuIoVSEwLjXcOQw6eafH4cw5PMceVhG7OK
+ SK4bc4B80HDGQV1qvoHeSva/tT4C4cQ=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-403-7KvTn-m5OSqCBhTkXAIXaA-1; Fri, 24 Jan 2025 11:54:28 -0500
-X-MC-Unique: 7KvTn-m5OSqCBhTkXAIXaA-1
-X-Mimecast-MFC-AGG-ID: 7KvTn-m5OSqCBhTkXAIXaA
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4361efc9d1fso18498795e9.2
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:54:28 -0800 (PST)
+ us-mta-127-anVxmih_N7KiM3qXq8QP3g-1; Fri, 24 Jan 2025 10:45:46 -0500
+X-MC-Unique: anVxmih_N7KiM3qXq8QP3g-1
+X-Mimecast-MFC-AGG-ID: anVxmih_N7KiM3qXq8QP3g
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-43646b453bcso11101485e9.3
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 07:45:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737737667; x=1738342467;
+ d=1e100.net; s=20230601; t=1737733544; x=1738338344;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3ePR9BfsmNf8AyNCl2IDFJ8EDqHaAP0dpO83jGHFUug=;
- b=gj376MFYtV7KZdeaN+5Tk7ArwTJSnwmXjUdYiNoE211tGOChEWQOpCbNTAfejBkpoi
- m00AtIJwfcqiDb6GaQptywCUYJk/B7/lbo3NtFGD9bOfYTIaxB5Nyn0frYcsXGtGlrC+
- R7Fcf40Deyd7rfxJTnlIi0IqktSpcNjt5nj1/8+Pb9Hxi+FxNY3kfY9IdvqA9GT9/p91
- nimNjQ/L7gGAXfcxOHBlYddBDWawXsuqbCIkiiYGO+txQ9rtJXdnrgFVwjnUXFarbas1
- 5G85OxbUJMVnXohQYZAq8eU/iOYAXAv4oURL9JOG77RZ0FNdF+t3DYeIE89/YKARUB2+
- Qw0g==
-X-Gm-Message-State: AOJu0YwEkGaYCiebJ55bXF4qN/JECN1VQRY2wslko9g0M//yuLX82ZPV
- Tkpzh1Q1pQMY3gSTfzgSsS0e31LIN2tSZRDa4sJZTEU07/1CSe6MkRH28N7WDF7tKjFRw6MO2Lz
- sqbwnX/lHypMQaeOPVKch7CYj6pIG5v9z8K9tK7U+W7P0UYcCoccWPT3WTJFXq2nROXyOMIwIW+
- sj3AqPEAAy3IxXeIFCMKQf39kpjMgF+HPh3436kg==
-X-Gm-Gg: ASbGncsLddl30vupxagIuJU5KElk6/aHPE46d5X2DXOjnexGvvWXg6ugRGhFZO1H8lI
- Zs5HAxVBgG1ewDf9w+iMN6guJl+4CuGAEbsW4q8oDVp5desGW5mFhcNvtVkGWyvg8MTDbNcoGeX
- xaX4xw4fBpx6lW8FO0G4LwD/4IWHjlogirvl6FOjpeabVlIyaLp7ez9AVDhIo/+Qp5VJDcsXNME
- CdW1CdW1q9ReMkd66dUOdN2hHdqXyHskeY8N3W2pjMz4YdLGhuoio8XE4EFHsGMkV0+R1dFPTig
- HWGW36q7llkdhQuG4fgy2xrGGRNV1Uoz6Pjl2YINSQHSkuZA75Lup2k=
-X-Received: by 2002:a05:600c:3b27:b0:434:fd15:3ac9 with SMTP id
- 5b1f17b1804b1-43891438051mr272045895e9.22.1737733541267; 
- Fri, 24 Jan 2025 07:45:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHX+bF1jsoWfK3OOfQ+wEsvfKmRDf/T/plhchDfJQvWcdh9dkSk9uw/jkaH7TgCWS+5ru9R8Q==
-X-Received: by 2002:a05:600c:3b27:b0:434:fd15:3ac9 with SMTP id
- 5b1f17b1804b1-43891438051mr272045555e9.22.1737733540821; 
- Fri, 24 Jan 2025 07:45:40 -0800 (PST)
+ bh=zSzhRdn4C5TQknUumN+J2fY4iQC6DedwUvkKqDEpUYM=;
+ b=ejb/x1NekakxQ+sakRjWVTHZYz5c0sE71ADeKaNLt0GMnRAeo49cSg+AOsoL2qmos8
+ /Wn5aMJzXzWJLbKM6R73ukx19sdxFnNvKCCAUntSEmeqCazoGV5Xl/5Ok3TK7PrHohjz
+ z3HpfBIW7X02+bWUbdVzqMEKIAnwfrRX8+aUgeS2DDA/CW3UeIYsY2mQUv8D/HCtsoRU
+ Ot0RjSv3UCyPFOYuUMzdmmIiIX9rhrrQmtHKQc5Eim/tkJb3MU31jgZ5I9t2GzyxWfju
+ MPWFvpqrVgaRX+YTdcWY8V0/olQfDl39885pPpijzut2mCaMcHsez81Xo/xzngw8cuAe
+ w8Rg==
+X-Gm-Message-State: AOJu0YzGFGsDdCs8hdCPH5b5OkecwsNHxVNnacMKVkxipOf9rWe9cr6M
+ GIYvWzcSYLYwGAv76zcyHTTbfbVVnscypLSi5Jui8kJPjpI2Fa15cB6Nx9ijjpTlWlLuJtDuR8b
+ xvha+/BIMW0U5uGjKc0gYpHu/fBTT3nl/xd4RPzZOoh9hOYDpDwQE+2qQjl3ThYJOHT/KGWc8u6
+ YcTcmnWDwQ/XNLSGXHFnfgbYKGmwVn/I2Tldk6VQ==
+X-Gm-Gg: ASbGncvXPtVSY3wC3ky5jGbP7eQRL/jmgfg4SLjOSDjI6QVlrrO5HXMb31hca1Owpad
+ ME8UvWkwMDhpsP8D5OIwqGHyUhwc0FCQtCNtFKVtsoXo6tRWa6Y7PV1y6l/wJFD5I/sEZQ2/q2Z
+ Qqg+XNgds28baxiepj44xj/H0Fo/AGu3FsKkQoSANuos2mO5K0Fe8V7LCQ5iEZV+OgyB7uuIIkK
+ dh3vWFLxhoTEMb0vRAnrFEkg3olZyr0rsyvwzAmyb9uyx3f7G3tFjZso7khG5V5l25axBo4DOEe
+ xbpOHdNs7HFprlGtzvrYRDqCTu7RJSJMvYRHljn1bssGRZHfjwtR2kI=
+X-Received: by 2002:a05:600c:63d5:b0:438:a46b:1a6 with SMTP id
+ 5b1f17b1804b1-438a46b0388mr226246645e9.18.1737733544518; 
+ Fri, 24 Jan 2025 07:45:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFfev3uAK2i1mnL/YJSd4Cd8F5Oo5ZtUyZyr1LKsC5SY/9ZgQWrvz9QqAqq6os4oHkNx3IZ6g==
+X-Received: by 2002:a05:600c:63d5:b0:438:a46b:1a6 with SMTP id
+ 5b1f17b1804b1-438a46b0388mr226246235e9.18.1737733544022; 
+ Fri, 24 Jan 2025 07:45:44 -0800 (PST)
 Received: from localhost
  (p200300cbc719e000ca2c77c5de7dce89.dip0.t-ipconnect.de.
  [2003:cb:c719:e000:ca2c:77c5:de7d:ce89])
  by smtp.gmail.com with UTF8SMTPSA id
- ffacd0b85a97d-38c2a1764e9sm3070240f8f.17.2025.01.24.07.45.39
+ 5b1f17b1804b1-438bd4d2c0esm30382625e9.33.2025.01.24.07.45.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 24 Jan 2025 07:45:39 -0800 (PST)
+ Fri, 24 Jan 2025 07:45:42 -0800 (PST)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -85,10 +85,10 @@ Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Elena Ufimtseva <elena.ufimtseva@oracle.com>,
  Jagannathan Raman <jag.raman@oracle.com>,
  "Dr. David Alan Gilbert" <dave@treblig.org>, Stefan Zabka <git@zabka.it>
-Subject: [PATCH v2 2/7] physmem: factor out RAM/ROMD check in
- memory_access_is_direct()
-Date: Fri, 24 Jan 2025 16:45:27 +0100
-Message-ID: <20250124154533.3534250-3-david@redhat.com>
+Subject: [PATCH v2 3/7] physmem: factor out direct access check into
+ memory_region_supports_direct_access()
+Date: Fri, 24 Jan 2025 16:45:28 +0100
+Message-ID: <20250124154533.3534250-4-david@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250124154533.3534250-1-david@redhat.com>
 References: <20250124154533.3534250-1-david@redhat.com>
@@ -120,50 +120,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's factor more of the generic "is this directly accessible" check,
-independent of the "write" condition out.
+Let's factor the complete "directly accessible" check independent of
+the "write" condition out so we can reuse it next.
 
-Note that the "!mr->rom_device" check in the write case essentially
-disallows the memory_region_is_romd() condition again. Further note that
-RAM DEVICE regions are also RAM regions, so we can check for RAM+ROMD
-first.
-
-This is a preparation for further changes.
+We can now split up the checks RAM and ROMD check, so we really only check
+for RAM DEVICE in case of RAM -- ROM DEVICE is neither RAM not RAM DEVICE.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- include/exec/memory.h | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ include/exec/memory.h | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
 diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 7931aba2ea..086dec5086 100644
+index 086dec5086..3b4449e847 100644
 --- a/include/exec/memory.h
 +++ b/include/exec/memory.h
-@@ -2987,6 +2987,10 @@ bool prepare_mmio_access(MemoryRegion *mr);
+@@ -2985,10 +2985,13 @@ MemTxResult address_space_write_cached_slow(MemoryRegionCache *cache,
+ int memory_access_size(MemoryRegion *mr, unsigned l, hwaddr addr);
+ bool prepare_mmio_access(MemoryRegion *mr);
  
- static inline bool memory_access_is_direct(MemoryRegion *mr, bool is_write)
+-static inline bool memory_access_is_direct(MemoryRegion *mr, bool is_write)
++static inline bool memory_region_supports_direct_access(MemoryRegion *mr)
  {
-+    /* ROM DEVICE regions only allow direct access if in ROMD mode. */
-+    if (!memory_region_is_ram(mr) && !memory_region_is_romd(mr)) {
-+        return false;
+     /* ROM DEVICE regions only allow direct access if in ROMD mode. */
+-    if (!memory_region_is_ram(mr) && !memory_region_is_romd(mr)) {
++    if (memory_region_is_romd(mr)) {
++        return true;
 +    }
++    if (!memory_region_is_ram(mr)) {
+         return false;
+     }
      /*
-      * RAM DEVICE regions can be accessed directly using memcpy, but it might
+@@ -2996,7 +2999,12 @@ static inline bool memory_access_is_direct(MemoryRegion *mr, bool is_write)
       * be MMIO and access using mempy can be wrong (e.g., using instructions not
-@@ -2996,11 +3000,9 @@ static inline bool memory_access_is_direct(MemoryRegion *mr, bool is_write)
+      * intended for MMIO access). So we treat this as IO.
+      */
+-    if (memory_region_is_ram_device(mr)) {
++    return !memory_region_is_ram_device(mr);
++}
++
++static inline bool memory_access_is_direct(MemoryRegion *mr, bool is_write)
++{
++    if (!memory_region_supports_direct_access(mr)) {
          return false;
      }
      if (is_write) {
--        return memory_region_is_ram(mr) && !mr->readonly &&
--               !mr->rom_device;
--    } else {
--        return memory_region_is_ram(mr) || memory_region_is_romd(mr);
-+        return !mr->readonly && !mr->rom_device;
-     }
-+    return true;
- }
- 
- /**
 -- 
 2.47.1
 
