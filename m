@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DFD8A1BA5A
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:30:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD8BDA1BA6C
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:31:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbMYI-0003jD-Ag; Fri, 24 Jan 2025 11:29:02 -0500
+	id 1tbMYk-0004bb-To; Fri, 24 Jan 2025 11:29:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tbMY6-0003Vo-Rk
+ id 1tbMY7-0003ai-J8
  for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:28:52 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tbMXy-0005LJ-HY
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:28:45 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-43634b570c1so16737145e9.0
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:28:41 -0800 (PST)
+ id 1tbMXz-0005Lf-P3
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:28:48 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-4362bae4d7dso16639895e9.1
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:28:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737736120; x=1738340920; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737736121; x=1738340921; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aZAtVcMAZKjHRvt52hIevKlBELo2Ys5/XXx3UpdxpVg=;
- b=KKDa7+LROzcessQPiB6IqGJhJMGxrlkhFDa83Iobu+rOPy2vqNu+6fwEW6nPuIUhoS
- EQCTqjuNetmlryARHaDbFv7ZoyvCtgoZ7cdfWeD6J3tUEtuwFrYe/JaI6SqsNObarZDz
- xVwRIXecz6UxOssb1QBRK6E2qbgEbBIFxpVQSwXRV5rFdo738NGjyEPs/s0gpqXwicQn
- iopuWzdXp7kivGwS3onsOwyyY+c6BO11FWnWrCafCIRBFUteGRokPn8shm0StY6tgBGX
- 7sa5DagaSBHm+0ZuO/8+tkOrDKtNwlyUbqr+z695tJVhI0jJh2rVV6v07PwN8y/5R67s
- R4Hw==
+ :reply-to; bh=cIp/ry/DGiFODjiThDZlgJEFjr5yBLQ4629/fR6TMgU=;
+ b=eyt0uoBfDPexOTWkAA62YwpBXmkPpUJse9P0JcMVngJSYcrbdVjlt3s3DlxlxS2coM
+ L8lNUilQ191LUpPCl035Fq1Avpm6jdm6qJFbe63rdG3BgG3pdDxJ23KGGbuBdB55twrV
+ Zr7Z+CaaY2knhoCS1uW1XIk8YE8tZtse6e0V7DKxiDWNewez3KyJ/uEBSD5KgIkxmuk+
+ lgS6kpbkxIqR6RksmbNOm0K04fkiQCfAg5vwH4XuQIs9DIy8LViKExN4LevSIiAo44Ic
+ 3CPDkGPW5KMhZpbvPXm06SZjYcE+wKGUWtOcDXiZRxQvRvupAtV4P4JE/ZhbRzI25iv+
+ qlkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737736120; x=1738340920;
+ d=1e100.net; s=20230601; t=1737736121; x=1738340921;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aZAtVcMAZKjHRvt52hIevKlBELo2Ys5/XXx3UpdxpVg=;
- b=V5nPs5SwgWGczV5U6Rv6XalKMa8bLc+Z3SQ4HJ4+yjI9o8EC5kuQRggdCdc+X+Dexj
- gHrNOmIo5cvWBMu7YsGovSHmBVq+eQ4GFzZGi+sNb4S5YZ7sVhF3xNo4SVvW/IXel7Wy
- NnX7a43Lk7XsxI/puGUKXmWDQRL2qSEGnqHC+InAj2PSuZyjYafRa3QisYQRW9Er2CpK
- XPUa5V5aubyclxZEE7gVY8icvGaboy5gIeuIl3lpYModwuiP2pPM3wuD7HgcoM9jkzSN
- 9AMvsUvN/9JNd0En4ubsSuCSYfAFMIIWjN03ae18G7sdTKCHLJvS0L2QR9e0G9rk4bTr
- rq0A==
+ bh=cIp/ry/DGiFODjiThDZlgJEFjr5yBLQ4629/fR6TMgU=;
+ b=s6fOhMEAavupJ/W6nHiFvSTGSYK+IJmOqbEbpg1vxk5N/MlP7PxIZpR4lJuHz/x1Nc
+ OHuXUUSelcd9gk25fshouBpZo7F2FvoQeXLSPll1nrQBbGjG1raojoxZ+1/IGoBvYmNk
+ oy6J5okPZLLbQzPthOW7DZUtJGoCAfjU17GOdeKVFrOing807zseIEKX8nZQTyJnnHbQ
+ 4hv5iJyN1opiiD6Pq+Yxsy22iF5QeDXoub/xhefKo75i6qUFN2a/Ve/qcUqB4WeyNDiC
+ OnbDAqzhzVwsxvtv8g1hO5/w2hOgjMLTtVLo9iZiujFgHac8BdbqcPZ1OkYoVKaSL+iK
+ q3qA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUNGY1FOWc6EG4Mq+a0VWfVWMt0TLgmKj2ceTQA8X8HFv9raK5GJ2WdrmoHUerq6Qak0ALyLqTsD1zn@nongnu.org
-X-Gm-Message-State: AOJu0YxMbZGEor3pYYbQkm4RkqFuc/6cuw215ElRGIvAaDWZ4vI8YgRe
- lIaANU71Psmz0xnBWukiGs0dkkJIGRTAGyiw8qcMmZUXF3N91oU07vkfw68iLvk=
-X-Gm-Gg: ASbGncusKH/wLdqIB5bQKu+4UI/T2xiouBIpqczDfSqbgvmgXm+ExrrDz7F4JGI2w4n
- JTqhzrjBGuUciL5KFF9nl8bsTtXgf1u3xFe13eXNgadGJZWqB89u9vEOqfpPidVsYf2onhsZUN5
- gKNkgSlPxaHX3OOW5Hh6pzg35gk0mVz7DnvR9NAYvCn4BxLSiUO/vZs7qjGMmfq/9LOluXGizLT
- uwjZXZ2KWgPb6+8PzzcOGKBEFypIE7a+m3zN9nhoUwVujjh8ynNB4QY6AdhtWg4GvVftMtJCy9k
- nGDUPtpbDY4=
-X-Google-Smtp-Source: AGHT+IGOUZjXYEuNBjIYqkBLzOOpKGr8pLMeXLweYoHO20oLo58xfpwgqJrYKA+05weulzWov6tu6w==
-X-Received: by 2002:a05:600c:1d1d:b0:434:faa9:5266 with SMTP id
- 5b1f17b1804b1-438913e79e2mr281251225e9.13.1737736120003; 
+ AJvYcCXsRYG2Bd2sYfSHEVky2ZgoNqpLhL2A3TRM/u9rJ5R0wEvzSaVXnKmg/6dPbPxsqIKVQ41/IsKopwfG@nongnu.org
+X-Gm-Message-State: AOJu0YzCcOVBlKEkQJoNWQYwOSTKwv3TqVZL9mVJDTmMtt5EMCwcbXGf
+ XeNCVL0hUFl3tpAUxcSn0qlp9mC1KAl+UbdGY1hfZ/0e5ztxD4sbinGCUx+lwSk=
+X-Gm-Gg: ASbGncvxm0GIKKeqrgiQzVQ9R+e4xRsD5exQkDyP5rKkNmY1cBNeyikB15QGhFp104e
+ Z+9oZ3u2Yj1GYJ99xzo0sHm2ZwnOtujrc54x9iK7SELfH1GEiUImXsDDD/dYt07MZgdL0NMzuD2
+ /0lfRIiRwZR38ClWHb0qV25yXQ6Y2FAvO4VcW9wQ5UgKrGObvULHoJdxvNy+J5lR08Z7ZYoZExl
+ rsG6ldLKUOcuZ76rBAy9SC/pDtk4a5RO+DpmOASKCg5t45zL23Njlqm3i/azP3laURPog38LWq6
+ ox4I4UNfU/IFr8TnMe/peg==
+X-Google-Smtp-Source: AGHT+IGhJP26rmZ+8qOjGIA71hRZDyGCg1aN4M13lOymGNE2lWMHW3w028YQnU1mD0OMlozuKydv6A==
+X-Received: by 2002:a05:600c:1f0d:b0:431:3bf9:3ebb with SMTP id
+ 5b1f17b1804b1-4389143923bmr262859175e9.24.1737736120992; 
  Fri, 24 Jan 2025 08:28:40 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd47eecasm31683025e9.6.2025.01.24.08.28.39
+ 5b1f17b1804b1-438bd47eecasm31683025e9.6.2025.01.24.08.28.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 08:28:39 -0800 (PST)
+ Fri, 24 Jan 2025 08:28:40 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 01/76] target/i386: Do not raise Invalid for 0 * Inf + QNaN
-Date: Fri, 24 Jan 2025 16:27:21 +0000
-Message-Id: <20250124162836.2332150-2-peter.maydell@linaro.org>
+Subject: [PATCH 02/76] tests/tcg/x86_64/fma: Test some x86 fused-multiply-add
+ cases
+Date: Fri, 24 Jan 2025 16:27:22 +0000
+Message-Id: <20250124162836.2332150-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250124162836.2332150-1-peter.maydell@linaro.org>
 References: <20250124162836.2332150-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,105 +98,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In commit 8adcff4ae7 ("fpu: handle raising Invalid for infzero in
-pick_nan_muladd") we changed the handling of 0 * Inf + QNaN to always
-raise the Invalid exception regardless of target architecture.  (This
-was a change affecting hppa, i386, sh4 and tricore.) However, this
-was incorrect for i386, which documents in the SDM section 14.5.2
-that for the 0 * Inf + NaN case that it will only raise the Invalid
-exception when the input is an SNaN.  (This is permitted by the IEEE
-754-2008 specification, which documents that whether we raise Invalid
-for 0 * Inf + QNaN is implementation defined.)
+Add a test case which tests some corner case behaviour of
+fused-multiply-add on x86:
+ * 0 * Inf + SNaN should raise Invalid
+ * 0 * Inf + QNaN shouldh not raise Invalid
+ * tininess should be detected after rounding
 
-Adjust the softfloat pick_nan_muladd code to allow the target to
-suppress the raising of Invalid for the inf * zero + NaN case (as an
-extra flag orthogonal to its choice for when to use the default NaN),
-and enable that for x86.
+There is also one currently-disabled test case:
+ * flush-to-zero should be done after rounding
 
-We do not revert here the behaviour change for hppa, sh4 or tricore:
- * The sh4 manual is clear that it should signal Invalid
- * The tricore manual is a bit vague but doesn't say it shouldn't
- * The hppa manual doesn't talk about fused multiply-add corner
-   cases at all
+This is disabled because QEMU's emulation currently does this
+incorrectly (and so would fail the test).  The test case is kept in
+but disabled, as the justification for why the test running harness
+has support for testing both with and without FTZ set.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 8adcff4ae7 (""fpu: handle raising Invalid for infzero in pick_nan_muladd")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/fpu/softfloat-types.h | 16 +++++++++++++---
- target/i386/tcg/fpu_helper.c  |  5 ++++-
- fpu/softfloat-parts.c.inc     |  5 +++--
- 3 files changed, 20 insertions(+), 6 deletions(-)
+ tests/tcg/x86_64/fma.c           | 109 +++++++++++++++++++++++++++++++
+ tests/tcg/x86_64/Makefile.target |   1 +
+ 2 files changed, 110 insertions(+)
+ create mode 100644 tests/tcg/x86_64/fma.c
 
-diff --git a/include/fpu/softfloat-types.h b/include/fpu/softfloat-types.h
-index 9d37cdfaa8e..d8f831c331d 100644
---- a/include/fpu/softfloat-types.h
-+++ b/include/fpu/softfloat-types.h
-@@ -278,11 +278,21 @@ typedef enum __attribute__((__packed__)) {
-     /* No propagation rule specified */
-     float_infzeronan_none = 0,
-     /* Result is never the default NaN (so always the input NaN) */
--    float_infzeronan_dnan_never,
-+    float_infzeronan_dnan_never = 1,
-     /* Result is always the default NaN */
--    float_infzeronan_dnan_always,
-+    float_infzeronan_dnan_always = 2,
-     /* Result is the default NaN if the input NaN is quiet */
--    float_infzeronan_dnan_if_qnan,
-+    float_infzeronan_dnan_if_qnan = 3,
+diff --git a/tests/tcg/x86_64/fma.c b/tests/tcg/x86_64/fma.c
+new file mode 100644
+index 00000000000..09c622ebc00
+--- /dev/null
++++ b/tests/tcg/x86_64/fma.c
+@@ -0,0 +1,109 @@
++/*
++ * Test some fused multiply add corner cases.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include <stdio.h>
++#include <stdint.h>
++#include <stdbool.h>
++#include <inttypes.h>
++
++#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
++
++/*
++ * Perform one "n * m + a" operation using the vfmadd insn and return
++ * the result; on return *mxcsr_p is set to the bottom 6 bits of MXCSR
++ * (the Flag bits). If ftz is true then we set MXCSR.FTZ while doing
++ * the operation.
++ * We print the operation and its results to stdout.
++ */
++static uint64_t do_fmadd(uint64_t n, uint64_t m, uint64_t a,
++                         bool ftz, uint32_t *mxcsr_p)
++{
++    uint64_t r;
++    uint32_t mxcsr = 0;
++    uint32_t ftz_bit = ftz ? (1 << 15) : 0;
++    uint32_t saved_mxcsr = 0;
++
++    asm volatile("stmxcsr %[saved_mxcsr]\n"
++                 "stmxcsr %[mxcsr]\n"
++                 "andl $0xffff7fc0, %[mxcsr]\n"
++                 "orl %[ftz_bit], %[mxcsr]\n"
++                 "ldmxcsr %[mxcsr]\n"
++                 "movq %[a], %%xmm0\n"
++                 "movq %[m], %%xmm1\n"
++                 "movq %[n], %%xmm2\n"
++                 /* xmm0 = xmm0 + xmm2 * xmm1 */
++                 "vfmadd231sd %%xmm1, %%xmm2, %%xmm0\n"
++                 "movq %%xmm0, %[r]\n"
++                 "stmxcsr %[mxcsr]\n"
++                 "ldmxcsr %[saved_mxcsr]\n"
++                 : [r] "=r" (r), [mxcsr] "=m" (mxcsr),
++                   [saved_mxcsr] "=m" (saved_mxcsr)
++                 : [n] "r" (n), [m] "r" (m), [a] "r" (a),
++                   [ftz_bit] "r" (ftz_bit)
++                 : "xmm0", "xmm1", "xmm2");
++    *mxcsr_p = mxcsr & 0x3f;
++    printf("vfmadd132sd 0x%" PRIx64 " 0x%" PRIx64 " 0x%" PRIx64
++           " = 0x%" PRIx64 " MXCSR flags 0x%" PRIx32 "\n",
++           n, m, a, r, *mxcsr_p);
++    return r;
++}
++
++typedef struct testdata {
++    /* Input n, m, a */
++    uint64_t n;
++    uint64_t m;
++    uint64_t a;
++    bool ftz;
++    /* Expected result */
++    uint64_t expected_r;
++    /* Expected low 6 bits of MXCSR (the Flag bits) */
++    uint32_t expected_mxcsr;
++} testdata;
++
++static testdata tests[] = {
++    { 0, 0x7ff0000000000000, 0x7ff000000000aaaa, false, /* 0 * Inf + SNaN */
++      0x7ff800000000aaaa, 1 }, /* Should be QNaN and does raise Invalid */
++    { 0, 0x7ff0000000000000, 0x7ff800000000aaaa, false, /* 0 * Inf + QNaN */
++      0x7ff800000000aaaa, 0 }, /* Should be QNaN and does *not* raise Invalid */
 +    /*
-+     * Don't raise Invalid for 0 * Inf + NaN. Default is to raise.
-+     * IEEE 754-2008 section 7.2 makes it implementation defined whether
-+     * 0 * Inf + QNaN raises Invalid or not. Note that 0 * Inf + SNaN will
-+     * raise the Invalid flag for the SNaN anyway.
-+     *
-+     * This is a flag which can be ORed in with any of the above
-+     * DNaN behaviour options.
++     * These inputs give a result which is tiny before rounding but which
++     * becomes non-tiny after rounding. x86 is a "detect tininess after
++     * rounding" architecture, so it should give a non-denormal result and
++     * not set the Underflow flag (only the Precision flag for an inexact
++     * result).
 +     */
-+    float_infzeronan_suppress_invalid = (1 << 2),
- } FloatInfZeroNaNRule;
- 
- /*
-diff --git a/target/i386/tcg/fpu_helper.c b/target/i386/tcg/fpu_helper.c
-index d0a1e2f3c8a..e0a072b4ebc 100644
---- a/target/i386/tcg/fpu_helper.c
-+++ b/target/i386/tcg/fpu_helper.c
-@@ -178,8 +178,11 @@ void cpu_init_fp_statuses(CPUX86State *env)
-      * "Fused-Multiply-ADD (FMA) Numeric Behavior" the NaN handling is
-      * specified -- for 0 * inf + NaN the input NaN is selected, and if
-      * there are multiple input NaNs they are selected in the order a, b, c.
-+     * We also do not raise Invalid for the 0 * inf + (Q)NaN case.
-      */
--    set_float_infzeronan_rule(float_infzeronan_dnan_never, &env->sse_status);
-+    set_float_infzeronan_rule(float_infzeronan_dnan_never |
-+                              float_infzeronan_suppress_invalid,
-+                              &env->sse_status);
-     set_float_3nan_prop_rule(float_3nan_prop_abc, &env->sse_status);
-     /* Default NaN: sign bit set, most significant frac bit set */
-     set_float_default_nan_pattern(0b11000000, &env->fp_status);
-diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
-index ebde42992fc..4bb341b2f94 100644
---- a/fpu/softfloat-parts.c.inc
-+++ b/fpu/softfloat-parts.c.inc
-@@ -126,7 +126,8 @@ static FloatPartsN *partsN(pick_nan_muladd)(FloatPartsN *a, FloatPartsN *b,
-         float_raise(float_flag_invalid | float_flag_invalid_snan, s);
-     }
- 
--    if (infzero) {
-+    if (infzero &&
-+        !(s->float_infzeronan_rule & float_infzeronan_suppress_invalid)) {
-         /* This is (0 * inf) + NaN or (inf * 0) + NaN */
-         float_raise(float_flag_invalid | float_flag_invalid_imz, s);
-     }
-@@ -144,7 +145,7 @@ static FloatPartsN *partsN(pick_nan_muladd)(FloatPartsN *a, FloatPartsN *b,
-          * Inf * 0 + NaN -- some implementations return the
-          * default NaN here, and some return the input NaN.
-          */
--        switch (s->float_infzeronan_rule) {
-+        switch (s->float_infzeronan_rule & ~float_infzeronan_suppress_invalid) {
-         case float_infzeronan_dnan_never:
-             break;
-         case float_infzeronan_dnan_always:
++    { 0x3fdfffffffffffff, 0x001fffffffffffff, 0x801fffffffffffff, false,
++      0x8010000000000000, 0x20 },
++    /*
++     * Flushing of denormal outputs to zero should also happen after
++     * rounding, so setting FTZ should not affect the result or the flags.
++     * QEMU currently does not emulate this correctly because we do the
++     * flush-to-zero check before rounding, so we incorrectly produce a
++     * zero result and set Underflow as well as Precision.
++     */
++#ifdef ENABLE_FAILING_TESTS
++    { 0x3fdfffffffffffff, 0x001fffffffffffff, 0x801fffffffffffff, true,
++      0x8010000000000000, 0x20 }, /* Enabling FTZ shouldn't change flags */
++#endif
++};
++
++int main(void)
++{
++    bool passed = true;
++    for (int i = 0; i < ARRAY_SIZE(tests); i++) {
++        uint32_t mxcsr;
++        uint64_t r = do_fmadd(tests[i].n, tests[i].m, tests[i].a,
++                              tests[i].ftz, &mxcsr);
++        if (r != tests[i].expected_r) {
++            printf("expected result 0x%" PRIx64 "\n", tests[i].expected_r);
++            passed = false;
++        }
++        if (mxcsr != tests[i].expected_mxcsr) {
++            printf("expected MXCSR flags 0x%x\n", tests[i].expected_mxcsr);
++            passed = false;
++        }
++    }
++    return passed ? 0 : 1;
++}
+diff --git a/tests/tcg/x86_64/Makefile.target b/tests/tcg/x86_64/Makefile.target
+index d6dff559c7d..be20fc64e88 100644
+--- a/tests/tcg/x86_64/Makefile.target
++++ b/tests/tcg/x86_64/Makefile.target
+@@ -18,6 +18,7 @@ X86_64_TESTS += adox
+ X86_64_TESTS += test-1648
+ X86_64_TESTS += test-2175
+ X86_64_TESTS += cross-modifying-code
++X86_64_TESTS += fma
+ TESTS=$(MULTIARCH_TESTS) $(X86_64_TESTS) test-x86_64
+ else
+ TESTS=$(MULTIARCH_TESTS)
 -- 
 2.34.1
 
