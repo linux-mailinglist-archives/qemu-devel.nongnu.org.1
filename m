@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D694A1BA6D
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:31:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DFD8A1BA5A
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:30:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbMYa-0003ti-HG; Fri, 24 Jan 2025 11:29:20 -0500
+	id 1tbMYI-0003jD-Ag; Fri, 24 Jan 2025 11:29:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tbMY7-0003ah-JK
+ id 1tbMY6-0003Vo-Rk
  for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:28:52 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tbMXw-0005L6-Nd
+ id 1tbMXy-0005LJ-HY
  for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:28:45 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-438a39e659cso15017045e9.2
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:28:40 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-43634b570c1so16737145e9.0
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:28:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737736119; x=1738340919; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=m4yTbDAfs8iCaTC3mSkb2I7MDyFILwuzBVQec5lWumc=;
- b=ABFh6TnuRc22MBWvm4daX7AhzmMe6R+7A76Ac/BwXBCbl1jiZh73P/XRPccFJb6/PI
- 8CinOCbpAh9hEtr/rUj5LwF1XVNCuchRzZqHF4IT8yWZTKXEVhZbgxCtcHf8BYciRi5M
- UF8XxExE6aJEY+2c9MdtVZ1y/WF6lVpH1F0HwCpug8cdX2WRp7+wxZzpZ96SS3zBoS6Y
- mwzrPdIHGRhiWogT5bQ1K7p38iJVW7WvpJ27cplye43MbHrjOvrhVHWmITow/rFVGdwS
- 27QWNZRbSGFZSP0a+rKDinhIGBfQ/8LIe/V4Q9QW9ypE39lFBzxgyDJyPO+0WYr7b22R
- MMzQ==
+ d=linaro.org; s=google; t=1737736120; x=1738340920; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=aZAtVcMAZKjHRvt52hIevKlBELo2Ys5/XXx3UpdxpVg=;
+ b=KKDa7+LROzcessQPiB6IqGJhJMGxrlkhFDa83Iobu+rOPy2vqNu+6fwEW6nPuIUhoS
+ EQCTqjuNetmlryARHaDbFv7ZoyvCtgoZ7cdfWeD6J3tUEtuwFrYe/JaI6SqsNObarZDz
+ xVwRIXecz6UxOssb1QBRK6E2qbgEbBIFxpVQSwXRV5rFdo738NGjyEPs/s0gpqXwicQn
+ iopuWzdXp7kivGwS3onsOwyyY+c6BO11FWnWrCafCIRBFUteGRokPn8shm0StY6tgBGX
+ 7sa5DagaSBHm+0ZuO/8+tkOrDKtNwlyUbqr+z695tJVhI0jJh2rVV6v07PwN8y/5R67s
+ R4Hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737736119; x=1738340919;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=m4yTbDAfs8iCaTC3mSkb2I7MDyFILwuzBVQec5lWumc=;
- b=HJSzUYXyZ2WqHLu6hE9i3gVY/6DKuD2u0RqqIEpaZV47DmGfygSw2q4216rfYU44xV
- ZMYAsiGaL9qH0olWR9Pwb44W1mBRRn135EHdJL8vOzWFe2549ngjmCADzhSmmu61NGHi
- TMobyz7FFdSrhZUOXLqy6gMyE/zW5Vlhr5kmquyEXk+U2eZ60OkdK4rl28Apn52zd55M
- 0WA55bqHOzTW9ivIFwHzIA21PJBFIH2fOXtIshFEiJa/+I0T1gtlYxmq77eLfPflPrbA
- 1/iy6rvkpQIR0WPNKbyJxKKpj3BYc5S5+hJdFGe8ER6kVdVp1zpBOQKP0ArXVauFAxWO
- xINQ==
+ d=1e100.net; s=20230601; t=1737736120; x=1738340920;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=aZAtVcMAZKjHRvt52hIevKlBELo2Ys5/XXx3UpdxpVg=;
+ b=V5nPs5SwgWGczV5U6Rv6XalKMa8bLc+Z3SQ4HJ4+yjI9o8EC5kuQRggdCdc+X+Dexj
+ gHrNOmIo5cvWBMu7YsGovSHmBVq+eQ4GFzZGi+sNb4S5YZ7sVhF3xNo4SVvW/IXel7Wy
+ NnX7a43Lk7XsxI/puGUKXmWDQRL2qSEGnqHC+InAj2PSuZyjYafRa3QisYQRW9Er2CpK
+ XPUa5V5aubyclxZEE7gVY8icvGaboy5gIeuIl3lpYModwuiP2pPM3wuD7HgcoM9jkzSN
+ 9AMvsUvN/9JNd0En4ubsSuCSYfAFMIIWjN03ae18G7sdTKCHLJvS0L2QR9e0G9rk4bTr
+ rq0A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWOFIPKUw0HRoTzyc1ZxrRFRSQzRlfXYxqVcAd6K9Lfssl2TNtiv8/u3gpRhYmIV41flxFib0Ryjgic@nongnu.org
-X-Gm-Message-State: AOJu0Yxy0fMBcKtd3fPkmwYLXeu2/nRCKYrxNOlKeriqIC8N6m12TeSk
- ViD3SGN+VuhsV814Oapo45ktv/yvzJTJHlsesvztJX+bFe1EcjjXwPxbmUBkeJptucxCHzKNrs1
- 7
-X-Gm-Gg: ASbGnct+isae0IJondoeiQURl5rmLJfgrrCza2Mcpm5Qu6xcrVX1xgTVDATybl+Rd3+
- 5ij1xvdCECJBNGvig4cIb49ljyDgERpi5dAIVTuaTRaiPwFm7L+OOb/SGXI+qXVmZe4/QgpuAUo
- HQCBLf36qSkuTj00y9nz3T4zmrU65j6va0K5sb1Ok8SpHByks8gqH7ACKoTDIM0okDEnqVeJoaT
- 2bgykNzSZvOwSblshy0Fx8e/69i9j47L0Uz/IqwXwKja69eyTftrN+eZAi2vcJfXPMGXSYlCQFM
- LkoF4ch1Mco=
-X-Google-Smtp-Source: AGHT+IGDiTS6wt82jLEegIIKbb93QjQREYpQNPjBDwjqwoWVSbNxo5SCHUWAYMrbsncLY/kZ67mbdg==
-X-Received: by 2002:a05:600c:1c93:b0:431:5863:4240 with SMTP id
- 5b1f17b1804b1-43891429c77mr262015145e9.24.1737736118943; 
- Fri, 24 Jan 2025 08:28:38 -0800 (PST)
+ AJvYcCUNGY1FOWc6EG4Mq+a0VWfVWMt0TLgmKj2ceTQA8X8HFv9raK5GJ2WdrmoHUerq6Qak0ALyLqTsD1zn@nongnu.org
+X-Gm-Message-State: AOJu0YxMbZGEor3pYYbQkm4RkqFuc/6cuw215ElRGIvAaDWZ4vI8YgRe
+ lIaANU71Psmz0xnBWukiGs0dkkJIGRTAGyiw8qcMmZUXF3N91oU07vkfw68iLvk=
+X-Gm-Gg: ASbGncusKH/wLdqIB5bQKu+4UI/T2xiouBIpqczDfSqbgvmgXm+ExrrDz7F4JGI2w4n
+ JTqhzrjBGuUciL5KFF9nl8bsTtXgf1u3xFe13eXNgadGJZWqB89u9vEOqfpPidVsYf2onhsZUN5
+ gKNkgSlPxaHX3OOW5Hh6pzg35gk0mVz7DnvR9NAYvCn4BxLSiUO/vZs7qjGMmfq/9LOluXGizLT
+ uwjZXZ2KWgPb6+8PzzcOGKBEFypIE7a+m3zN9nhoUwVujjh8ynNB4QY6AdhtWg4GvVftMtJCy9k
+ nGDUPtpbDY4=
+X-Google-Smtp-Source: AGHT+IGOUZjXYEuNBjIYqkBLzOOpKGr8pLMeXLweYoHO20oLo58xfpwgqJrYKA+05weulzWov6tu6w==
+X-Received: by 2002:a05:600c:1d1d:b0:434:faa9:5266 with SMTP id
+ 5b1f17b1804b1-438913e79e2mr281251225e9.13.1737736120003; 
+ Fri, 24 Jan 2025 08:28:40 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd47eecasm31683025e9.6.2025.01.24.08.28.37
+ 5b1f17b1804b1-438bd47eecasm31683025e9.6.2025.01.24.08.28.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 08:28:37 -0800 (PST)
+ Fri, 24 Jan 2025 08:28:39 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 00/76] target/arm: Implement FEAT_AFP and FEAT_RPRES
-Date: Fri, 24 Jan 2025 16:27:20 +0000
-Message-Id: <20250124162836.2332150-1-peter.maydell@linaro.org>
+Subject: [PATCH 01/76] target/i386: Do not raise Invalid for 0 * Inf + QNaN
+Date: Fri, 24 Jan 2025 16:27:21 +0000
+Message-Id: <20250124162836.2332150-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250124162836.2332150-1-peter.maydell@linaro.org>
+References: <20250124162836.2332150-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,229 +97,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset implements emulation of the Arm FEAT_AFP and FEAT_RPRES
-extensions, which are floating-point related. It's based on the
-small i386 bugfix series I sent out a while back:
+In commit 8adcff4ae7 ("fpu: handle raising Invalid for infzero in
+pick_nan_muladd") we changed the handling of 0 * Inf + QNaN to always
+raise the Invalid exception regardless of target architecture.  (This
+was a change affecting hppa, i386, sh4 and tricore.) However, this
+was incorrect for i386, which documents in the SDM section 14.5.2
+that for the 0 * Inf + NaN case that it will only raise the Invalid
+exception when the input is an SNaN.  (This is permitted by the IEEE
+754-2008 specification, which documents that whether we raise Invalid
+for 0 * Inf + QNaN is implementation defined.)
 
-Based-on: 20250116112536.4117889-1-peter.maydell@linaro.org
-("target/i386: Fix 0 * Inf + QNaN regression")
+Adjust the softfloat pick_nan_muladd code to allow the target to
+suppress the raising of Invalid for the inf * zero + NaN case (as an
+extra flag orthogonal to its choice for when to use the default NaN),
+and enable that for x86.
 
-(It would also have been based on an initial refactoring series
-I sent out on Monday, but AFAICT the list just ate those emails
-and they never arrived anywhere :-(  So you get a bigger series
-here than I'd hoped.)
+We do not revert here the behaviour change for hppa, sh4 or tricore:
+ * The sh4 manual is clear that it should signal Invalid
+ * The tricore manual is a bit vague but doesn't say it shouldn't
+ * The hppa manual doesn't talk about fused multiply-add corner
+   cases at all
 
-If you'd rather have these patches as a git branch:
- https://git.linaro.org/people/pmaydell/qemu-arm.git  feat-afp
-with human readable web view at:
- https://git.linaro.org/people/peter.maydell/qemu-arm.git/log/?h=feat-afp
+Cc: qemu-stable@nongnu.org
+Fixes: 8adcff4ae7 (""fpu: handle raising Invalid for infzero in pick_nan_muladd")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ include/fpu/softfloat-types.h | 16 +++++++++++++---
+ target/i386/tcg/fpu_helper.c  |  5 ++++-
+ fpu/softfloat-parts.c.inc     |  5 +++--
+ 3 files changed, 20 insertions(+), 6 deletions(-)
 
-
-FEAT_AFP defines three new control bits in the FPCR, whose
-operations are basically independent of each other:
- * FPCR.AH: "alternate floating point mode"; this changes floating
-   point behaviour in a variety of ways, including:
-    - the sign of a default NaN is 1, not 0
-    - if FPCR.FZ is also 1, denormals detected after rounding
-      with an unbounded exponent has been applied are flushed to zero
-    - FPCR.FZ does not cause denormalized inputs to be flushed to zero
-    - miscellaneous other corner-case behaviour changes
- * FPCR.FIZ: flush denormalized numbers to zero on input for
-   most instructions
- * FPCR.NEP: makes scalar SIMD operations merge the result with
-   higher vector elements in one of the source registers, instead
-   of zeroing the higher elements of the destination
-
-FEAT_RPRES makes single-precision FRECPE and FRSQRTE use a 12-bit
-mantissa precision instead of 8-bit when FPCR.AH is set.
-
-Because FPCR.AH implies quite a lot of changes to corner cases
-of floating point handling, the resulting patchseries is regrettably
-quite big.
-
-Structure of the patchseries:
- * patch 1 fixes a silly bug in arm_reset_sve_state() which only
-   has a major bad effect once FEAT_AFP is implemented
- * patches 2-16 are a refactoring which splits the existing
-   fp_status and fp_status_f16 so that each have separate a32 and
-   a64 versions. We need this because the FEAT_AFP bits only have
-   an effect for A64 insns, not A32 insns
- * patches 17-22 add some more functionality to softfloat that we
-   need for FEAT_AFP:
-    - an exception flag float_flag_input_denormal_used is set when
-      an input to an fp op is denormal, is not squashed to zero,
-      and is actually consumed (i.e. not an invalid operation or
-      an operation where the other input was a NaN)
-    - a control setting float_detect_ftz which lets the target
-      control whether flush-to-zero of outputs should be done
-      before or after rounding
-   (Both these are needed for correct x86 FP emulation, incidentally.)
- * patches 23-28 define the FPCR bits and implement the parts of the
-   functionality which can be handled by setting softfloat control
-   knobs and adjusting how we handle softfloat exception flags.
-   (This includes all of the FPCR.FIZ behaviour.)
- * patches 29-33 implement FPCR.AH handling of a small group of
-   insns (FRECPE, FRECPS, FRECPX, FRSQRTE, FRSQRTS, BFCVT*, BFMLAL*,
-   BFMLSL*) which must:
-    - never update FPSR exception flags
-    - always round-to-nearest-even
-    - always flush single and double denormal inputs and outputs to zero
-   We implement this via some new float_status fields that we use for
-   this group of insns.
- * patches 34-42 implement the FPCR.NEP "merge high vector elements of
-   a source register with  the result of a scalar operation" behaviour
- * patches 43-49 implement FPCR.AH semantics for FMIN and FMAX:
-    - comparing two zeroes (even of different sign) or comparing a NaN
-      with anything always returns the second argument (possibly
-      squashed to zero)
-    - denormal outputs are not squashed to zero regardless of FZ or FZ16
- * patches 50-65 implement FPCR.AH semantics for abs and neg of floating
-   point values: they must not change the sign bit of a NaN. This applies
-   not just to the ABS and NEG insns but to any other insn whose
-   pseudocode has it doing an FPAbs() or FPNeg() operation (e.g.
-   FMLS, FRECPS, FTSSEL).
- * at this point patch 66 can enable FEAT_AFP for -cpu max
- * patches 67-70 implement FEAT_RPRES
-
-I have also some patchs which make target/i386 use the "detect
-flush to zero after rounding" and "report when input denormal is
-consumed" softfloat features added here; I don't include them in
-this patchset (though you can find them in that git branch I
-mentioned earlier) becaus I haven't done as much testing on the
-i386 side and in any case this patchset is already pretty long.
-I expect I'll send them out when this series has been merged.
-
-
-thanks
--- PMM
-
-
-Peter Maydell (76):
-  target/i386: Do not raise Invalid for 0 * Inf + QNaN
-  tests/tcg/x86_64/fma: Test some x86 fused-multiply-add cases
-  target/arm: arm_reset_sve_state() should set FPSR, not FPCR
-  target/arm: Use FPSR_ constants in vfp_exceptbits_from_host()
-  target/arm: Use uint32_t in vfp_exceptbits_from_host()
-  target/arm: Define new fp_status_a32 and fp_status_a64
-  target/arm: Use vfp.fp_status_a64 in A64-only helper functions
-  target/arm: Use fp_status_a32 in vjvct helper
-  target/arm: Use fp_status_a32 in vfp_cmp helpers
-  target/arm: Use FPST_FPCR_A32 in A32 decoder
-  target/arm: Use FPST_FPCR_A64 in A64 decoder
-  target/arm: Remove now-unused vfp.fp_status and FPST_FPCR
-  target/arm: Define new fp_status_f16_a32 and fp_status_f16_a64
-  target/arm: Use fp_status_f16_a32 in AArch32-only helpers
-  target/arm: Use fp_status_f16_a64 in AArch64-only helpers
-  target/arm: Use FPST_FPCR_F16_A32 in A32 decoder
-  target/arm: Use FPST_FPCR_F16_A64 in A64 decoder
-  target/arm: Remove now-unused vfp.fp_status_f16 and FPST_FPCR_F16
-  fpu: Rename float_flag_input_denormal to
-    float_flag_input_denormal_flushed
-  fpu: Rename float_flag_output_denormal to
-    float_flag_output_denormal_flushed
-  fpu: Fix a comment in softfloat-types.h
-  fpu: Add float_class_denormal
-  fpu: Implement float_flag_input_denormal_used
-  fpu: allow flushing of output denormals to be after rounding
-  target/arm: Remove redundant advsimd float16 helpers
-  target/arm: Use FPST_FPCR_F16_A64 for halfprec-to-other conversions
-  target/arm: Define FPCR AH, FIZ, NEP bits
-  target/arm: Implement FPCR.FIZ handling
-  target/arm: Adjust FP behaviour for FPCR.AH = 1
-  target/arm: Adjust exception flag handling for AH = 1
-  target/arm: Add FPCR.AH to tbflags
-  target/arm: Set up float_status to use for FPCR.AH=1 behaviour
-  target/arm: Use FPST_FPCR_AH for FRECPE, FRECPS, FRECPX, FRSQRTE,
-    FRSQRTS
-  target/arm: Use FPST_FPCR_AH for BFCVT* insns
-  target/arm: Use FPST_FPCR_AH for BFMLAL*, BFMLSL* insns
-  target/arm: Add FPCR.NEP to TBFLAGS
-  target/arm: Define and use new write_fp_*reg_merging() functions
-  target/arm: Handle FPCR.NEP for 3-input scalar operations
-  target/arm: Handle FPCR.NEP for BFCVT scalar
-  target/arm: Handle FPCR.NEP for 1-input scalar operations
-  target/arm: Handle FPCR.NEP in do_cvtf_scalar()
-  target/arm: Handle FPCR.NEP for scalar FABS and FNEG
-  target/arm: Handle FPCR.NEP for FCVTXN (scalar)
-  target/arm: Handle FPCR.NEP for NEP for FMUL, FMULX scalar by element
-  target/arm: Implement FPCR.AH semantics for scalar FMIN/FMAX
-  target/arm: Implement FPCR.AH semantics for vector FMIN/FMAX
-  target/arm: Implement FPCR.AH semantics for FMAXV and FMINV
-  target/arm: Implement FPCR.AH semantics for FMINP and FMAXP
-  target/arm: Implement FPCR.AH semantics for SVE FMAXV and FMINV
-  target/arm: Implement FPCR.AH semantics for SVE FMIN/FMAX immediate
-  target/arm: Implement FPCR.AH semantics for SVE FMIN/FMAX vector
-  target/arm: Implement FPCR.AH handling of negation of NaN
-  target/arm: Implement FPCR.AH handling for scalar FABS and FABD
-  target/arm: Handle FPCR.AH in vector FABD
-  target/arm: Handle FPCR.AH in SVE FNEG
-  target/arm: Handle FPCR.AH in SVE FABS
-  target/arm: Handle FPCR.AH in SVE FABD
-  target/arm: Handle FPCR.AH in negation steps in FCADD
-  target/arm: Handle FPCR.AH in negation steps in SVE FCADD
-  target/arm: Handle FPCR.AH in FMLSL
-  target/arm: Handle FPCR.AH in FRECPS and FRSQRTS scalar insns
-  target/arm: Handle FPCR.AH in FRECPS and FRSQRTS vector insns
-  target/arm: Handle FPCR.AH in negation step in FMLS (indexed)
-  target/arm: Handle FPCR.AH in negation in FMLS (vector)
-  target/arm: Handle FPCR.AH in negation step in SVE FMLS (vector)
-  target/arm: Handle FPCR.AH in SVE FTSSEL
-  target/arm: Handle FPCR.AH in SVE FTMAD
-  target/arm: Enable FEAT_AFP for '-cpu max'
-  target/arm: Plumb FEAT_RPRES frecpe and frsqrte through to new helper
-  target/arm: Implement increased precision FRECPE
-  target/arm: Implement increased precision FRSQRTE
-  target/arm: Enable FEAT_RPRES for -cpu max
-  target/i386: Detect flush-to-zero after rounding
-  target/i386: Use correct type for get_float_exception_flags() values
-  target/i386: Wire up MXCSR.DE and FPUS.DE correctly
-  tests/tcg/x86_64/fma: add test for exact-denormal output
-
- docs/system/arm/emulation.rst    |   2 +
- include/fpu/softfloat-helpers.h  |  11 +
- include/fpu/softfloat-types.h    |  51 +-
- target/arm/cpu-features.h        |  10 +
- target/arm/cpu.h                 |  32 +-
- target/arm/helper.h              |  12 +
- target/arm/internals.h           |   6 +
- target/arm/tcg/helper-a64.h      |  21 +-
- target/arm/tcg/helper-sve.h      | 120 +++++
- target/arm/tcg/translate.h       |  63 ++-
- target/i386/ops_sse.h            |  16 +-
- target/mips/fpu_helper.h         |   6 +
- fpu/softfloat.c                  |  71 ++-
- target/alpha/cpu.c               |   7 +
- target/arm/cpu.c                 |  32 +-
- target/arm/helper.c              |   4 +-
- target/arm/tcg/cpu64.c           |   2 +
- target/arm/tcg/helper-a64.c      | 173 ++++---
- target/arm/tcg/hflags.c          |  13 +
- target/arm/tcg/sme_helper.c      |   6 +-
- target/arm/tcg/sve_helper.c      | 301 ++++++++---
- target/arm/tcg/translate-a64.c   | 850 ++++++++++++++++++++++++-------
- target/arm/tcg/translate-sme.c   |   4 +-
- target/arm/tcg/translate-sve.c   | 280 ++++++----
- target/arm/tcg/translate-vfp.c   |  78 +--
- target/arm/tcg/vec_helper.c      | 174 ++++++-
- target/arm/vfp_helper.c          | 369 +++++++++++---
- target/hppa/fpu_helper.c         |  11 +
- target/i386/tcg/fpu_helper.c     | 110 ++--
- target/m68k/fpu_helper.c         |   2 +-
- target/mips/msa.c                |   9 +
- target/mips/tcg/msa_helper.c     |   4 +-
- target/ppc/cpu_init.c            |   3 +
- target/rx/cpu.c                  |   8 +
- target/rx/op_helper.c            |   4 +-
- target/sh4/cpu.c                 |   8 +
- target/tricore/fpu_helper.c      |   6 +-
- target/tricore/helper.c          |   1 +
- tests/fp/fp-bench.c              |   1 +
- tests/tcg/x86_64/fma.c           | 116 +++++
- fpu/softfloat-parts.c.inc        | 136 ++++-
- tests/tcg/x86_64/Makefile.target |   1 +
- 42 files changed, 2443 insertions(+), 691 deletions(-)
- create mode 100644 tests/tcg/x86_64/fma.c
-
+diff --git a/include/fpu/softfloat-types.h b/include/fpu/softfloat-types.h
+index 9d37cdfaa8e..d8f831c331d 100644
+--- a/include/fpu/softfloat-types.h
++++ b/include/fpu/softfloat-types.h
+@@ -278,11 +278,21 @@ typedef enum __attribute__((__packed__)) {
+     /* No propagation rule specified */
+     float_infzeronan_none = 0,
+     /* Result is never the default NaN (so always the input NaN) */
+-    float_infzeronan_dnan_never,
++    float_infzeronan_dnan_never = 1,
+     /* Result is always the default NaN */
+-    float_infzeronan_dnan_always,
++    float_infzeronan_dnan_always = 2,
+     /* Result is the default NaN if the input NaN is quiet */
+-    float_infzeronan_dnan_if_qnan,
++    float_infzeronan_dnan_if_qnan = 3,
++    /*
++     * Don't raise Invalid for 0 * Inf + NaN. Default is to raise.
++     * IEEE 754-2008 section 7.2 makes it implementation defined whether
++     * 0 * Inf + QNaN raises Invalid or not. Note that 0 * Inf + SNaN will
++     * raise the Invalid flag for the SNaN anyway.
++     *
++     * This is a flag which can be ORed in with any of the above
++     * DNaN behaviour options.
++     */
++    float_infzeronan_suppress_invalid = (1 << 2),
+ } FloatInfZeroNaNRule;
+ 
+ /*
+diff --git a/target/i386/tcg/fpu_helper.c b/target/i386/tcg/fpu_helper.c
+index d0a1e2f3c8a..e0a072b4ebc 100644
+--- a/target/i386/tcg/fpu_helper.c
++++ b/target/i386/tcg/fpu_helper.c
+@@ -178,8 +178,11 @@ void cpu_init_fp_statuses(CPUX86State *env)
+      * "Fused-Multiply-ADD (FMA) Numeric Behavior" the NaN handling is
+      * specified -- for 0 * inf + NaN the input NaN is selected, and if
+      * there are multiple input NaNs they are selected in the order a, b, c.
++     * We also do not raise Invalid for the 0 * inf + (Q)NaN case.
+      */
+-    set_float_infzeronan_rule(float_infzeronan_dnan_never, &env->sse_status);
++    set_float_infzeronan_rule(float_infzeronan_dnan_never |
++                              float_infzeronan_suppress_invalid,
++                              &env->sse_status);
+     set_float_3nan_prop_rule(float_3nan_prop_abc, &env->sse_status);
+     /* Default NaN: sign bit set, most significant frac bit set */
+     set_float_default_nan_pattern(0b11000000, &env->fp_status);
+diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
+index ebde42992fc..4bb341b2f94 100644
+--- a/fpu/softfloat-parts.c.inc
++++ b/fpu/softfloat-parts.c.inc
+@@ -126,7 +126,8 @@ static FloatPartsN *partsN(pick_nan_muladd)(FloatPartsN *a, FloatPartsN *b,
+         float_raise(float_flag_invalid | float_flag_invalid_snan, s);
+     }
+ 
+-    if (infzero) {
++    if (infzero &&
++        !(s->float_infzeronan_rule & float_infzeronan_suppress_invalid)) {
+         /* This is (0 * inf) + NaN or (inf * 0) + NaN */
+         float_raise(float_flag_invalid | float_flag_invalid_imz, s);
+     }
+@@ -144,7 +145,7 @@ static FloatPartsN *partsN(pick_nan_muladd)(FloatPartsN *a, FloatPartsN *b,
+          * Inf * 0 + NaN -- some implementations return the
+          * default NaN here, and some return the input NaN.
+          */
+-        switch (s->float_infzeronan_rule) {
++        switch (s->float_infzeronan_rule & ~float_infzeronan_suppress_invalid) {
+         case float_infzeronan_dnan_never:
+             break;
+         case float_infzeronan_dnan_always:
 -- 
 2.34.1
 
