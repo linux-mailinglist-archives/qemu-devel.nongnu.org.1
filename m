@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD834A1BA8E
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:35:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2989A1BABE
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:40:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbMcF-0005FO-1M; Fri, 24 Jan 2025 11:33:07 -0500
+	id 1tbMcm-0005dP-DV; Fri, 24 Jan 2025 11:33:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tbMZ4-0005o5-8h
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:29:54 -0500
+ id 1tbMZ5-0005og-MF
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:30:00 -0500
 Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tbMZ1-0005jl-N1
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:29:49 -0500
+ id 1tbMZ3-0005kG-W9
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:29:51 -0500
 Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-436202dd730so16572115e9.2
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:29:47 -0800 (PST)
+ 5b1f17b1804b1-4368a293339so25517045e9.3
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:29:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737736186; x=1738340986; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737736188; x=1738340988; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=llFk2Hwm2qS6gPzAdVlCRdXm81oU4Fumc3QBeOF7eqA=;
- b=JRQHoH5AYzaEQa80G4DcEoZs3r/m17URfp5GeF4MqiUD/Hfq7ZB+JQY5QaZi+KQSzQ
- 958wmlivfl6PUx64bhQRqBLifJ7SdBlYqVW+vPn9ws4EnUFpyMl7UcPkhTHEdo8ybRup
- i1GvmwjdyRmq8UqVPPwBBPWJ0dVQPAlH+//fuDJaMAJ+vHrDSGSQPEW1nd3YQvaMiMlG
- YydrmafQ6PzPvKnm6s9UaYpNtmu0mrEyoTJyFOxQk9WQl7JEn8O8aVI+OSR0IkCWaQuM
- nU6SjAhxP6VRj+cZW8NeWw4xxWR9r0j4V/Wm5uzI0Z3oqaRAS3vJ0u6vK5OhKNpiyLC4
- giDw==
+ :reply-to; bh=Xa1fBo10CzOivkmHS7U9EDrLQS1MKeQCJwxUTgWHwhc=;
+ b=a0JyjP0Wk31axheTgrALDgVeRt5IfD7Q9iJmPEX15vG75iFA8WjgpJGaPJKd2ORime
+ G6iP3F6muCgf9amnA+CU3+n4a7qglu10ufGm2rhwdS9AALXI1CtUHgR4nIKOPzNggQUE
+ jd1g4jJ8xE4Fi7iSNM/5epAl/Vbvf7sALxI3kk3UvmhlRkMdsEDOWhG7/w0K/yJL7IKL
+ 0vNavQK4g3SpSO6qFZ+STKBbAJxKfHXbENcXGF1m+0f+6aYWNMnKC4oreZMujK4aUVdI
+ 8OFvBzza8IQe86xYz9SzLVh3YuKhmaqRGYx7iugDLsH+CO7c1MRfnN2zzWstT4CIt731
+ jBiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737736186; x=1738340986;
+ d=1e100.net; s=20230601; t=1737736188; x=1738340988;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=llFk2Hwm2qS6gPzAdVlCRdXm81oU4Fumc3QBeOF7eqA=;
- b=NQ8tuS5hrMLsDmh/HqMNBt41by7xvY/fgsRDb2SV/pGJSz3y8/o5IgMwNWsmRClRzl
- UjMp4qHy/ZpuKnnxFb4f5z7e3Fz6jky2S66OgwP57x8sE1Zk/G3jtxep7obPofTZ0R19
- xYN2Kyu3sJU9etkCslrWc4YFkiV4U6x/mm0XVakEjuJfwwP/ahQ0IzVCp+7TFA/n6ZZt
- PpmqubnUYeW08qz9h2K2CzRhgq4W7Rt7bf2S4uVN4TPgTSGocRGHQ7JTDWN4q0t30CB8
- tlRxHIFsK9dgyiU9fA22a0pGVODNkexBQDoFtVrK8OtXM2f7/DnvbU/zAz1XQQjDRF7g
- iQRw==
+ bh=Xa1fBo10CzOivkmHS7U9EDrLQS1MKeQCJwxUTgWHwhc=;
+ b=lqxChFPlEq0rCniJg6jJ7a0HA2lYQ7iHEDAVREaFCyOqP06EZZKlgvPOJvUSKZp7Y2
+ 58zoskgwExjrTIFuFITXn9AtHwVxiggj210kMGL/Uod0uc3PNPpjTqnZpK+/IwTeM1vE
+ K+iUvvKX9zOSIF7XmF0hJUOa/himdSCKX5qKlB1Fe8n3v7B68M9FAJb4Lt2RuDJJRywS
+ J2ZvNZS4BCnKFLCxUWbwB5k25M3gSOghBa2pmwbUPzSZuSMfmXxjaI4/qSTkrmihHfU8
+ y9K+HZ9cy8zQE8n3CtRaFazPDVwrEQuhd/DOYWM7MB6+rGxxpXOf2bdjT6jIPS827gPS
+ mkWw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX2kWJlYcGkiQ/R2aqWxK8dz11k0v7oIyEq9JZryzs+llLm37XrxZW/OOtJt2wQlgF6fN5g7x7aMtzR@nongnu.org
-X-Gm-Message-State: AOJu0Yw34H6bSh9EHaDsLZC5iYu/4lybLmWti22+9fbnlr9ranxoc7Sb
- LEORwpLP5HHGbIN00iy2QclaNjKurDb9rKkxwJgOBDyi8wHp5cFJ9LleqC76N+YMLJh0xxdJ37G
- k
-X-Gm-Gg: ASbGncvCQIKf7iCbPIsOJt+8z6NtnwCb8Cah1UYASjXFC8DLUs1Rqi+/MJ4SgmVn5Xm
- wNTC84aEWj12+osAzpNJYeQv3p6nqfsjAn99agf5VfZFpqz6p0mN9HHqNowaZCAIcHyeM0i0iR9
- bQNpDNncwgqNVMqQEZjE0VgAug0hKaAzTasdKAPCYv9yK1HsciGxr7c4r6E5KV8AWSo6+6lKcJq
- G7GlPyglBvnJXwaqRM3gNOGOMWdiXSPmBQoADCrEOyCAt5BB7YVWwFKhUHD3pdw3RRJ5yufrN2I
- F4XvfYiffU4=
-X-Google-Smtp-Source: AGHT+IHBakJuFVfACELseKgPwcyXN0eRYuYhWLnSi+ZF0XfWHNFr4KTwphHguU36bmhoIt0y/lBhfA==
-X-Received: by 2002:a05:600c:4687:b0:435:b064:7dce with SMTP id
- 5b1f17b1804b1-438913f2df1mr295364005e9.18.1737736186333; 
- Fri, 24 Jan 2025 08:29:46 -0800 (PST)
+ AJvYcCWB64TmiD/qYWctk1943aYJ3UDl397lAdoI282fZnnt0fBsKNA0PjVX43ocMSb74I4L6S+xCayI3VI9@nongnu.org
+X-Gm-Message-State: AOJu0Yxo/KuwpXLGv9G9FU9Q58e3ud+0q1SDjuZRGtC7rFgES/YmcJpI
+ IQJJxKhq+yy0AMC0GcCfoiEJPKG1odvNCzOqXhOBnWRWl8PwMsHLmIkwIOl5Zegk4BoLA5Y7nsH
+ Z
+X-Gm-Gg: ASbGncvRat7o95qAz83bV//eS78ozbQDbo1tZPv3cEBEV2WCbNRCDimnVDzfSgkbgfb
+ 6BUWMepw3TtZvDbTlO1mqkt/hRT5RNSFB+bjTj8Ii7BRzqeYz6eDgxQf46a+G7QMI8XoYaih3e3
+ 2eNJi4AKZS04Xqj5jdDR1eeGONW9OaOpw9jyKgm5fMcQw0MU12TPanPqZrj2fY3jWmwqXtH2H5P
+ zx67qLYNTz/zCFDbG5EyixH5iuw0rPG9981q3T2aJaFEwLFV/xto/Pv9b/5mZ2HIdHXnHbHJYN7
+ 7Ge6+qXvrmU=
+X-Google-Smtp-Source: AGHT+IHhLeramctmE1Zi1jhJg3//MdIibvW86th2Q4WlTyEkFX1MpOtp6JZKPxzjBzieDAovkaylgg==
+X-Received: by 2002:a05:600c:4e93:b0:436:1b81:b65c with SMTP id
+ 5b1f17b1804b1-438913df89fmr288197655e9.15.1737736187914; 
+ Fri, 24 Jan 2025 08:29:47 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd47eecasm31683025e9.6.2025.01.24.08.29.44
+ 5b1f17b1804b1-438bd47eecasm31683025e9.6.2025.01.24.08.29.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 08:29:45 -0800 (PST)
+ Fri, 24 Jan 2025 08:29:46 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 54/76] target/arm: Handle FPCR.AH in vector FABD
-Date: Fri, 24 Jan 2025 16:28:14 +0000
-Message-Id: <20250124162836.2332150-55-peter.maydell@linaro.org>
+Subject: [PATCH 55/76] target/arm: Handle FPCR.AH in SVE FNEG
+Date: Fri, 24 Jan 2025 16:28:15 +0000
+Message-Id: <20250124162836.2332150-56-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250124162836.2332150-1-peter.maydell@linaro.org>
 References: <20250124162836.2332150-1-peter.maydell@linaro.org>
@@ -98,91 +98,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Split the handling of vector FABD so that it calls a different set
-of helpers when FPCR.AH is 1, which implement the "no negation of
-the sign of a NaN" semantics.
+Make SVE FNEG honour the FPCR.AH "don't negate the sign of a NaN" semantics.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/helper.h            |  4 ++++
- target/arm/tcg/translate-a64.c |  7 ++++++-
- target/arm/tcg/vec_helper.c    | 23 +++++++++++++++++++++++
- 3 files changed, 33 insertions(+), 1 deletion(-)
+ target/arm/tcg/helper-sve.h    | 4 ++++
+ target/arm/tcg/sve_helper.c    | 8 ++++++++
+ target/arm/tcg/translate-sve.c | 7 ++++++-
+ 3 files changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/helper.h b/target/arm/helper.h
-index 15bad0773c0..43505d5fedc 100644
---- a/target/arm/helper.h
-+++ b/target/arm/helper.h
-@@ -722,6 +722,10 @@ DEF_HELPER_FLAGS_5(gvec_fabd_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
- DEF_HELPER_FLAGS_5(gvec_fabd_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
- DEF_HELPER_FLAGS_5(gvec_fabd_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
+diff --git a/target/arm/tcg/helper-sve.h b/target/arm/tcg/helper-sve.h
+index 918f2e61b7e..867a6d96e04 100644
+--- a/target/arm/tcg/helper-sve.h
++++ b/target/arm/tcg/helper-sve.h
+@@ -545,6 +545,10 @@ DEF_HELPER_FLAGS_4(sve_fneg_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_4(sve_fneg_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_4(sve_fneg_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
  
-+DEF_HELPER_FLAGS_5(gvec_ah_fabd_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
-+DEF_HELPER_FLAGS_5(gvec_ah_fabd_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
-+DEF_HELPER_FLAGS_5(gvec_ah_fabd_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
++DEF_HELPER_FLAGS_4(sve_ah_fneg_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(sve_ah_fneg_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(sve_ah_fneg_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
 +
- DEF_HELPER_FLAGS_5(gvec_fceq_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
- DEF_HELPER_FLAGS_5(gvec_fceq_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
- DEF_HELPER_FLAGS_5(gvec_fceq_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 542e774790b..ce9ab75bc2f 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -5899,7 +5899,12 @@ static gen_helper_gvec_3_ptr * const f_vector_fabd[3] = {
-     gen_helper_gvec_fabd_s,
-     gen_helper_gvec_fabd_d,
+ DEF_HELPER_FLAGS_4(sve_not_zpz_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_4(sve_not_zpz_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_4(sve_not_zpz_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
+index a688b98d284..976f3be44e0 100644
+--- a/target/arm/tcg/sve_helper.c
++++ b/target/arm/tcg/sve_helper.c
+@@ -885,6 +885,14 @@ DO_ZPZ(sve_fneg_h, uint16_t, H1_2, DO_FNEG)
+ DO_ZPZ(sve_fneg_s, uint32_t, H1_4, DO_FNEG)
+ DO_ZPZ_D(sve_fneg_d, uint64_t, DO_FNEG)
+ 
++#define DO_AH_FNEG_H(N) (float16_is_any_nan(N) ? (N) : DO_FNEG(N))
++#define DO_AH_FNEG_S(N) (float32_is_any_nan(N) ? (N) : DO_FNEG(N))
++#define DO_AH_FNEG_D(N) (float64_is_any_nan(N) ? (N) : DO_FNEG(N))
++
++DO_ZPZ(sve_ah_fneg_h, uint16_t, H1_2, DO_AH_FNEG_H)
++DO_ZPZ(sve_ah_fneg_s, uint32_t, H1_4, DO_AH_FNEG_S)
++DO_ZPZ_D(sve_ah_fneg_d, uint64_t, DO_AH_FNEG_D)
++
+ #define DO_NOT(N)    (~N)
+ 
+ DO_ZPZ(sve_not_zpz_b, uint8_t, H1, DO_NOT)
+diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
+index 0fed92fa48a..c173627ad49 100644
+--- a/target/arm/tcg/translate-sve.c
++++ b/target/arm/tcg/translate-sve.c
+@@ -789,7 +789,12 @@ static gen_helper_gvec_3 * const fneg_fns[4] = {
+     NULL,                  gen_helper_sve_fneg_h,
+     gen_helper_sve_fneg_s, gen_helper_sve_fneg_d,
  };
--TRANS(FABD_v, do_fp3_vector, a, 0, f_vector_fabd)
-+static gen_helper_gvec_3_ptr * const f_vector_ah_fabd[3] = {
-+    gen_helper_gvec_ah_fabd_h,
-+    gen_helper_gvec_ah_fabd_s,
-+    gen_helper_gvec_ah_fabd_d,
+-TRANS_FEAT(FNEG, aa64_sve, gen_gvec_ool_arg_zpz, fneg_fns[a->esz], a, 0)
++static gen_helper_gvec_3 * const fneg_ah_fns[4] = {
++    NULL,                  gen_helper_sve_ah_fneg_h,
++    gen_helper_sve_ah_fneg_s, gen_helper_sve_ah_fneg_d,
 +};
-+TRANS(FABD_v, do_fp3_vector_2fn, a, 0, f_vector_fabd, f_vector_ah_fabd)
++TRANS_FEAT(FNEG, aa64_sve, gen_gvec_ool_arg_zpz,
++           s->fpcr_ah ? fneg_ah_fns[a->esz] : fneg_fns[a->esz], a, 0)
  
- static gen_helper_gvec_3_ptr * const f_vector_frecps[3] = {
-     gen_helper_gvec_recps_h,
-diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-index d3f2eaa807e..3b87e5b8d6d 100644
---- a/target/arm/tcg/vec_helper.c
-+++ b/target/arm/tcg/vec_helper.c
-@@ -1302,6 +1302,25 @@ static float64 float64_abd(float64 op1, float64 op2, float_status *stat)
-     return float64_abs(float64_sub(op1, op2, stat));
- }
- 
-+/* ABD when FPCR.AH = 1: avoid flipping sign bit of a NaN result */
-+static float16 float16_ah_abd(float16 op1, float16 op2, float_status *stat)
-+{
-+    float16 r = float16_sub(op1, op2, stat);
-+    return float16_is_any_nan(r) ? r : float16_abs(r);
-+}
-+
-+static float32 float32_ah_abd(float32 op1, float32 op2, float_status *stat)
-+{
-+    float32 r = float32_sub(op1, op2, stat);
-+    return float32_is_any_nan(r) ? r : float32_abs(r);
-+}
-+
-+static float64 float64_ah_abd(float64 op1, float64 op2, float_status *stat)
-+{
-+    float64 r = float64_sub(op1, op2, stat);
-+    return float64_is_any_nan(r) ? r : float64_abs(r);
-+}
-+
- /*
-  * Reciprocal step. These are the AArch32 version which uses a
-  * non-fused multiply-and-subtract.
-@@ -1389,6 +1408,10 @@ DO_3OP(gvec_fabd_h, float16_abd, float16)
- DO_3OP(gvec_fabd_s, float32_abd, float32)
- DO_3OP(gvec_fabd_d, float64_abd, float64)
- 
-+DO_3OP(gvec_ah_fabd_h, float16_ah_abd, float16)
-+DO_3OP(gvec_ah_fabd_s, float32_ah_abd, float32)
-+DO_3OP(gvec_ah_fabd_d, float64_ah_abd, float64)
-+
- DO_3OP(gvec_fceq_h, float16_ceq, float16)
- DO_3OP(gvec_fceq_s, float32_ceq, float32)
- DO_3OP(gvec_fceq_d, float64_ceq, float64)
+ static gen_helper_gvec_3 * const sxtb_fns[4] = {
+     NULL,                  gen_helper_sve_sxtb_h,
 -- 
 2.34.1
 
