@@ -2,99 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6A3DA1BA58
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:28:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D9DA1BA4C
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:27:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbMXq-00032H-RV; Fri, 24 Jan 2025 11:28:35 -0500
+	id 1tbMVs-0001GR-OI; Fri, 24 Jan 2025 11:26:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dhildenb@redhat.com>)
- id 1tbMXi-00031H-IP
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:28:27 -0500
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1tbMVh-0001Ex-4E
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:26:23 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dhildenb@redhat.com>)
- id 1tbMXf-0005Ib-4x
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:28:25 -0500
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1tbMVQ-0005A0-9g
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:26:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737736101;
+ s=mimecast20190719; t=1737735959;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Exu5epeTQjUXGqc6EvI9Ro49B7EhhPUJNuPMkX7VzoI=;
- b=gp4q76eYK7EchlRqqB3UG+TJyfWaTbnsLgMXbTXAJHUdl0mxCjZfmcysmaqhRwn+Q3Vu+3
- +KIGe9UqoeVju57d+XGK2+TXohrQsgApoJKOJzZ9XSW75ydFvACHnF/ZJtPh25iEFYD1mf
- Sr8JCSX5zVnHQ5s69ldDeTShvQ4dNMI=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=SzClnTOVV3sLFfzs70bfLmFfGXfwemAQTtKvUxHw2mA=;
+ b=BqInbPMAMmPFnomCwbFjESIhauZZ633eIWoGBXrK4WwM30RJJKpu9jtKPFf2vbRFUMkI1D
+ G1RvTvSiJJLNFJox70P2B9RAR+ATjBdB9Pyh/vzjbVMIDzfNuJE3VWIPOXP3CDBBRdFmsf
+ yTOqVHGnOdP27xHohixT7dJLSzjphnw=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-160-Nyg78LUIP3CSKpp-2B1yig-1; Fri, 24 Jan 2025 11:28:18 -0500
-X-MC-Unique: Nyg78LUIP3CSKpp-2B1yig-1
-X-Mimecast-MFC-AGG-ID: Nyg78LUIP3CSKpp-2B1yig
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-5dbaaed8aeeso2664244a12.1
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:28:18 -0800 (PST)
+ us-mta-64-vTLtcP-3NAaP2r6qH6zmEQ-1; Fri, 24 Jan 2025 11:25:58 -0500
+X-MC-Unique: vTLtcP-3NAaP2r6qH6zmEQ-1
+X-Mimecast-MFC-AGG-ID: vTLtcP-3NAaP2r6qH6zmEQ
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-467bb3eeb04so1963891cf.2
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:25:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737736094; x=1738340894;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Exu5epeTQjUXGqc6EvI9Ro49B7EhhPUJNuPMkX7VzoI=;
- b=a4PqyscTw6+eo8JBmr/17rKHB4KY6+uhRvE89RDApD70sbcULqOdaqi0LOM2lcxFiY
- uDkoLsLcZvWE3ehb2prbt8VigisSoN2/J7F85yRgY/yWHfGSlRkueqe+ypVEBJgIgXfV
- FHpERYxNA/6ITsANcZt3Vf7RM9mBQ1xUBcYG3RsVDc8eaEe3g6Ge6O7gqyGSs1kVoE7L
- SuYHCq5STKw7e4hGWtfzKG7iaLeIWTIVtjI7uSaGV+umeCw5SzxB4vKePSCDf/Cm8y3C
- 4N0DmOrroViVcG8q3eXvkaMmjt6URE/yjADVqaSU1GWqDR1zGQ3BKz8pp8009o8PImmQ
- TgHg==
-X-Gm-Message-State: AOJu0Yx/TH1LDzKLbi4lIAGdq8iD2+j9k6WZBv2P0GgpgyIylEa4JK0I
- PaBysBXlDybQA90l0/zjP2fKuANQetnZxmVkr45ZkiW8IL/DZ12KUx2G64rNUIjC8zH3gPzRNK0
- vCctrtOOFCmIyJ62icdjBSPUIQX1JbPGoCYQHqZ8ixMMRr4KRf23Ci/+6sC6+oT2dO2hkzgAX25
- QUj8SMt4CDDoND25Cd9HoSTrhqkw5YTeXz1Hk2xg==
-X-Gm-Gg: ASbGncsyGYxPTvocMrHZmtThk9vmYdewSG5caoSkbR/w4/hKPcE8R5XzqiNXRWb6pnQ
- cmLkvGfpU3iSh48xoCF3IltiWMSUW0NU+oH3pIYfosX9pTxHEKZr4+iZrL+EQZ7AJvvN26KbZj4
- HolOcyrNwsW+CL2AKAzrXRflJI4ISWiPp3FMMnln9GL31r+f0OPHJoPvWZJC08oiVbw+G5cFko0
- M/LDRjxS3hbZQjf3hu4WSW+QUvK30OaVpSdvVkJxAVS+G0NwVhK7fuzyJZKKfNnN/0yJA47QeTA
- taTokrbYDDik/t95thN7AmYQKaMUzVomuf0GeIgg+5ZhXdsxoqom57A=
-X-Received: by 2002:a05:600c:a03:b0:434:f7e3:bfbd with SMTP id
- 5b1f17b1804b1-4389142e8b5mr278514765e9.23.1737733555850; 
- Fri, 24 Jan 2025 07:45:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHHYcoJ39rm7gawbJbNWFUQOBEGFPj86Ylt2BpokstkF84V5QmwjWichPRMD70s0emuvSL/sA==
-X-Received: by 2002:a05:600c:a03:b0:434:f7e3:bfbd with SMTP id
- 5b1f17b1804b1-4389142e8b5mr278514425e9.23.1737733555431; 
- Fri, 24 Jan 2025 07:45:55 -0800 (PST)
-Received: from localhost
- (p200300cbc719e000ca2c77c5de7dce89.dip0.t-ipconnect.de.
- [2003:cb:c719:e000:ca2c:77c5:de7d:ce89])
- by smtp.gmail.com with UTF8SMTPSA id
- 5b1f17b1804b1-438bd4fa57csm32121725e9.4.2025.01.24.07.45.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 24 Jan 2025 07:45:54 -0800 (PST)
-From: David Hildenbrand <david@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>, Stefan Zabka <git@zabka.it>
-Subject: [PATCH v2 7/7] physmem: teach cpu_memory_rw_debug() to write to more
- memory regions
-Date: Fri, 24 Jan 2025 16:45:32 +0100
-Message-ID: <20250124154533.3534250-8-david@redhat.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250124154533.3534250-1-david@redhat.com>
-References: <20250124154533.3534250-1-david@redhat.com>
+ d=1e100.net; s=20230601; t=1737735647; x=1738340447;
+ h=content-transfer-encoding:mime-version:organization:references
+ :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=SzClnTOVV3sLFfzs70bfLmFfGXfwemAQTtKvUxHw2mA=;
+ b=RIR83yVQo18z7e7oQhcVS7NfPJum3Vj55HxDZQriB2Txbc+aJs6hZPOLK1NmJssmgQ
+ ZrghR8Hky7r8rl/M3zNyp+gHQ6rsh9LTRxEbx+VRdzvFz/yG+9ycStt8KXRDHt6zVr/y
+ Z23/9Ewt+X9H5C+zq/v0vapYtFZ8OPw6Ov6TQoE5KURYPX4J1eF9wV82X5ZxIg436Kj9
+ y5OXhZToZBih2kYkxNkD2LTEo+AqJAKKUWSfd7i6I9rMRsOmYlsYxdaWiBtymbYhAmq5
+ 8RDD9TBlmVLZX4SaAlkgv2A3Q8m9s40H6LUPLFtsWvEF8Z3i77GWSHTqEBFRXLKi0ulv
+ i3hA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXTqmSJErglRzqZv2YIzjfQEDcKmZPYacmUbZEivTW1LAUNusrGxQPz21lNs9kUpgAe0Qbhs0wG2Q1L@nongnu.org
+X-Gm-Message-State: AOJu0YyffCnbtuVSValF+/G50bcqUTOsUC6aeTD+NRD15nMpC2J//4Kj
+ 6MrPIe2HdIPUiPqH6PXkxrP+2AWekXYFhWMskmbR1JOcQ93N1tF6pndHBJbWaAu9/fMGolWaiOe
+ SC9oAcw9cAESuL00nLsjrYVp+p7OuKzEtKZyLvEYaXfHwmQ7jozDd
+X-Gm-Gg: ASbGncvIgvMLaCENUBUP+PhLg8n6XNA3YijDbpCOjD1VdljsaaJKmm1AH42XHvayNRj
+ 3fVnKeTy2KJXekDWAj83Op5gSqk6KcJ9CsmgVFJTsIZHyNnje/5S7t9DW8LxIshtJjIoeajZD3o
+ RaW3QR9qL0ArV0Ag+adRBT2zZ9rK47SzeeV1S0WCwKsc4r7DG/AnJsy9RE42EaeVTPS7ONb490v
+ QmEu/7ShHfeZ0unSMbh7nahtu0djPR8tR3rld2uJxnt3UBxGfRk+pJkA8cV7v0rHdTlVpX45g==
+X-Received: by 2002:a05:6e02:194c:b0:3cf:6c0e:bd with SMTP id
+ e9e14a558f8ab-3cfb193d01cmr30970475ab.6.1737733798432; 
+ Fri, 24 Jan 2025 07:49:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFPGiuaf/ThLT2SirJ0H+hCoi8vnqe9x1Y90uYVYxXGcuLaIkSMKD3gd3PuYjj1QLcrAn/BjQ==
+X-Received: by 2002:a05:6e02:194c:b0:3cf:6c0e:bd with SMTP id
+ e9e14a558f8ab-3cfb193d01cmr30970345ab.6.1737733797992; 
+ Fri, 24 Jan 2025 07:49:57 -0800 (PST)
+Received: from redhat.com ([38.15.36.11]) by smtp.gmail.com with ESMTPSA id
+ 8926c6da1cb9f-4ec1db6d8e2sm673156173.95.2025.01.24.07.49.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 24 Jan 2025 07:49:57 -0800 (PST)
+Date: Fri, 24 Jan 2025 08:49:54 -0700
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Tomita Moeko <tomitamoeko@gmail.com>
+Cc: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 3/4] vfio/igd: refactor vfio_probe_igd_bar4_quirk() into
+ pci config quirk
+Message-ID: <20250124084954.46cdf647.alex.williamson@redhat.com>
+In-Reply-To: <20250122171731.40444-4-tomitamoeko@gmail.com>
+References: <20250122171731.40444-1-tomitamoeko@gmail.com>
+ <20250122171731.40444-4-tomitamoeko@gmail.com>
+Organization: Red Hat
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=dhildenb@redhat.com;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=alex.williamson@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
@@ -120,125 +110,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Right now, we only allow for writing to memory regions that allow direct
-access using memcpy etc; all other writes are simply ignored. This
-implies that debugging guests will not work as expected when writing
-to MMIO device regions.
+On Thu, 23 Jan 2025 01:17:30 +0800
+Tomita Moeko <tomitamoeko@gmail.com> wrote:
 
-Let's extend cpu_memory_rw_debug() to write to more memory regions,
-including MMIO device regions. Reshuffle the condition in
-memory_access_is_direct() to make it easier to read and add a comment.
+> The actual IO BAR4 write quirk in vfio_probe_igd_bar4_quirk() was
+> removed in previous change, leaving the function not matching its name,
+> so move it into the newly introduced vfio_config_quirk_setup(). There
+> is no functional change in this commit. If any failure occurs, the
+> function simply returns and proceeds.
 
-While this change implies that debug access can now also write to MMIO
-devices, we now are also permit ELF image loads and similar users of
-cpu_memory_rw_debug() to write to MMIO devices; currently we ignore
-these writes.
+I don't understand why vfio_config_quirk_setup() returns bool rather
+than void given that it can never fail based on this series.
+Otherwise, while I'm surprised that the GTT re-writing is unnecessary
+(seems I wouldn't have invented such a need), removing it is really the
+only way to fully validate that, and we can always revisit if we start
+getting regression reports.  Thanks,
 
-Peter assumes [1] that there's probably a class of guest images, which
-will start writing junk (likely zeroes) into device model registers; we
-previously would silently ignore any such bogus ELF sections. Likely
-these images are of questionable correctness and this can be ignored. If
-ever a problem, we could make these cases use address_space_write_rom()
-instead, which is left unchanged for now.
+Alex
 
-This patch is based on previous work by Stefan Zabka.
-
-[1] https://lore.kernel.org/all/CAFEAcA_2CEJKFyjvbwmpt=on=GgMVamQ5hiiVt+zUr6AY3X=Xg@mail.gmail.com/
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/213
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- hw/core/cpu-system.c    | 13 +++++++++----
- include/exec/memattrs.h |  5 ++++-
- include/exec/memory.h   |  3 ++-
- system/physmem.c        |  9 ++-------
- 4 files changed, 17 insertions(+), 13 deletions(-)
-
-diff --git a/hw/core/cpu-system.c b/hw/core/cpu-system.c
-index 6aae28a349..6e307c8959 100644
---- a/hw/core/cpu-system.c
-+++ b/hw/core/cpu-system.c
-@@ -51,13 +51,18 @@ hwaddr cpu_get_phys_page_attrs_debug(CPUState *cpu, vaddr addr,
-                                      MemTxAttrs *attrs)
- {
-     CPUClass *cc = CPU_GET_CLASS(cpu);
-+    hwaddr paddr;
- 
-     if (cc->sysemu_ops->get_phys_page_attrs_debug) {
--        return cc->sysemu_ops->get_phys_page_attrs_debug(cpu, addr, attrs);
-+        paddr = cc->sysemu_ops->get_phys_page_attrs_debug(cpu, addr, attrs);
-+    } else {
-+        /* Fallback for CPUs which don't implement the _attrs_ hook */
-+        *attrs = MEMTXATTRS_UNSPECIFIED;
-+        paddr = cc->sysemu_ops->get_phys_page_debug(cpu, addr);
-     }
--    /* Fallback for CPUs which don't implement the _attrs_ hook */
--    *attrs = MEMTXATTRS_UNSPECIFIED;
--    return cc->sysemu_ops->get_phys_page_debug(cpu, addr);
-+    /* Indicate that this is a debug access. */
-+    attrs->debug = 1;
-+    return paddr;
- }
- 
- hwaddr cpu_get_phys_page_debug(CPUState *cpu, vaddr addr)
-diff --git a/include/exec/memattrs.h b/include/exec/memattrs.h
-index e27c18f3dc..14e0edaa58 100644
---- a/include/exec/memattrs.h
-+++ b/include/exec/memattrs.h
-@@ -26,7 +26,8 @@ typedef struct MemTxAttrs {
-     /* Bus masters which don't specify any attributes will get this
-      * (via the MEMTXATTRS_UNSPECIFIED constant), so that we can
-      * distinguish "all attributes deliberately clear" from
--     * "didn't specify" if necessary.
-+     * "didn't specify" if necessary. "debug" can be set alongside
-+     * "unspecified".
-      */
-     unsigned int unspecified:1;
-     /*
-@@ -50,6 +51,8 @@ typedef struct MemTxAttrs {
-      * (see MEMTX_ACCESS_ERROR).
-      */
-     unsigned int memory:1;
-+    /* Debug access that can even write to ROM. */
-+    unsigned int debug:1;
-     /* Requester ID (for MSI for example) */
-     unsigned int requester_id:16;
- 
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index b3287518f0..2b9447ec8f 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -3008,7 +3008,8 @@ static inline bool memory_access_is_direct(MemoryRegion *mr, bool is_write,
-     if (!memory_region_supports_direct_access(mr)) {
-         return false;
-     }
--    if (is_write) {
-+    /* Debug access can write to ROM. */
-+    if (is_write && !attrs.debug) {
-         return !mr->readonly && !mr->rom_device;
-     }
-     return true;
-diff --git a/system/physmem.c b/system/physmem.c
-index 52b20b8ae5..f153f57666 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -3572,13 +3572,8 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
-         if (l > len)
-             l = len;
-         phys_addr += (addr & ~TARGET_PAGE_MASK);
--        if (is_write) {
--            res = address_space_write_rom(cpu->cpu_ases[asidx].as, phys_addr,
--                                          attrs, buf, l);
--        } else {
--            res = address_space_read(cpu->cpu_ases[asidx].as, phys_addr,
--                                     attrs, buf, l);
--        }
-+        res = address_space_rw(cpu->cpu_ases[asidx].as, phys_addr, attrs, buf,
-+                               l, is_write);
-         if (res != MEMTX_OK) {
-             return -1;
-         }
--- 
-2.47.1
+> Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+> ---
+>  hw/vfio/igd.c        | 30 ++++++++++++++++--------------
+>  hw/vfio/pci-quirks.c |  6 +++++-
+>  hw/vfio/pci.h        |  2 +-
+>  3 files changed, 22 insertions(+), 16 deletions(-)
+> 
+> diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
+> index 4f9a90f36f..33e5202052 100644
+> --- a/hw/vfio/igd.c
+> +++ b/hw/vfio/igd.c
+> @@ -359,7 +359,8 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
+>      QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, bdsm_quirk, next);
+>  }
+>  
+> -void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+> +bool vfio_probe_igd_config_quirk(VFIOPCIDevice *vdev,
+> +                                 Error **errp G_GNUC_UNUSED)
+>  {
+>      g_autofree struct vfio_region_info *rom = NULL;
+>      g_autofree struct vfio_region_info *opregion = NULL;
+> @@ -378,10 +379,9 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+>       * PCI bus address.
+>       */
+>      if (!vfio_pci_is(vdev, PCI_VENDOR_ID_INTEL, PCI_ANY_ID) ||
+> -        nr != 4 ||
+>          &vdev->pdev != pci_find_device(pci_device_root_bus(&vdev->pdev),
+>                                         0, PCI_DEVFN(0x2, 0))) {
+> -        return;
+> +        return true;
+>      }
+>  
+>      /*
+> @@ -395,7 +395,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+>                                             "vfio-pci-igd-lpc-bridge")) {
+>          error_report("IGD device %s cannot support legacy mode due to existing "
+>                       "devices at address 1f.0", vdev->vbasedev.name);
+> -        return;
+> +        return true;
+>      }
+>  
+>      /*
+> @@ -407,7 +407,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+>      if (gen == -1) {
+>          error_report("IGD device %s is unsupported in legacy mode, "
+>                       "try SandyBridge or newer", vdev->vbasedev.name);
+> -        return;
+> +        return true;
+>      }
+>  
+>      /*
+> @@ -420,7 +420,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+>      if ((ret || !rom->size) && !vdev->pdev.romfile) {
+>          error_report("IGD device %s has no ROM, legacy mode disabled",
+>                       vdev->vbasedev.name);
+> -        return;
+> +        return true;
+>      }
+>  
+>      /*
+> @@ -431,7 +431,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+>          error_report("IGD device %s hotplugged, ROM disabled, "
+>                       "legacy mode disabled", vdev->vbasedev.name);
+>          vdev->rom_read_failed = true;
+> -        return;
+> +        return true;
+>      }
+>  
+>      /*
+> @@ -444,7 +444,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+>      if (ret) {
+>          error_report("IGD device %s does not support OpRegion access,"
+>                       "legacy mode disabled", vdev->vbasedev.name);
+> -        return;
+> +        return true;
+>      }
+>  
+>      ret = vfio_get_dev_region_info(&vdev->vbasedev,
+> @@ -453,7 +453,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+>      if (ret) {
+>          error_report("IGD device %s does not support host bridge access,"
+>                       "legacy mode disabled", vdev->vbasedev.name);
+> -        return;
+> +        return true;
+>      }
+>  
+>      ret = vfio_get_dev_region_info(&vdev->vbasedev,
+> @@ -462,7 +462,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+>      if (ret) {
+>          error_report("IGD device %s does not support LPC bridge access,"
+>                       "legacy mode disabled", vdev->vbasedev.name);
+> -        return;
+> +        return true;
+>      }
+>  
+>      gmch = vfio_pci_read_config(&vdev->pdev, IGD_GMCH, 4);
+> @@ -476,7 +476,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+>          error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+>          error_report("IGD device %s failed to enable VGA access, "
+>                       "legacy mode disabled", vdev->vbasedev.name);
+> -        return;
+> +        return true;
+>      }
+>  
+>      /* Create our LPC/ISA bridge */
+> @@ -484,7 +484,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+>      if (ret) {
+>          error_report("IGD device %s failed to create LPC bridge, "
+>                       "legacy mode disabled", vdev->vbasedev.name);
+> -        return;
+> +        return true;
+>      }
+>  
+>      /* Stuff some host values into the VM PCI host bridge */
+> @@ -492,14 +492,14 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+>      if (ret) {
+>          error_report("IGD device %s failed to modify host bridge, "
+>                       "legacy mode disabled", vdev->vbasedev.name);
+> -        return;
+> +        return true;
+>      }
+>  
+>      /* Setup OpRegion access */
+>      if (!vfio_pci_igd_opregion_init(vdev, opregion, &err)) {
+>          error_append_hint(&err, "IGD legacy mode disabled\n");
+>          error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+> -        return;
+> +        return true;
+>      }
+>  
+>      /*
+> @@ -561,4 +561,6 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+>  
+>      trace_vfio_pci_igd_bdsm_enabled(vdev->vbasedev.name,
+>                                      (ggms_size + gms_size) / MiB);
+> +
+> +    return true;
+>  }
+> diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
+> index c40e3ca88f..b8379cb512 100644
+> --- a/hw/vfio/pci-quirks.c
+> +++ b/hw/vfio/pci-quirks.c
+> @@ -1169,6 +1169,11 @@ bool vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
+>   */
+>  bool vfio_config_quirk_setup(VFIOPCIDevice *vdev, Error **errp)
+>  {
+> +#ifdef CONFIG_VFIO_IGD
+> +    if (!vfio_probe_igd_config_quirk(vdev, errp)) {
+> +        return false;
+> +    }
+> +#endif
+>      return true;
+>  }
+>  
+> @@ -1220,7 +1225,6 @@ void vfio_bar_quirk_setup(VFIOPCIDevice *vdev, int nr)
+>      vfio_probe_rtl8168_bar2_quirk(vdev, nr);
+>  #ifdef CONFIG_VFIO_IGD
+>      vfio_probe_igd_bar0_quirk(vdev, nr);
+> -    vfio_probe_igd_bar4_quirk(vdev, nr);
+>  #endif
+>  }
+>  
+> diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+> index 5359e94f18..5c64de0270 100644
+> --- a/hw/vfio/pci.h
+> +++ b/hw/vfio/pci.h
+> @@ -217,7 +217,7 @@ bool vfio_add_virt_caps(VFIOPCIDevice *vdev, Error **errp);
+>  void vfio_quirk_reset(VFIOPCIDevice *vdev);
+>  VFIOQuirk *vfio_quirk_alloc(int nr_mem);
+>  void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr);
+> -void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr);
+> +bool vfio_probe_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp);
+>  
+>  extern const PropertyInfo qdev_prop_nv_gpudirect_clique;
+>  
 
 
