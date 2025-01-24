@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527DEA1B72C
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:41:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38344A1B6F2
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:38:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbJsV-0003nM-FU; Fri, 24 Jan 2025 08:37:43 -0500
+	id 1tbJsZ-0003oE-Fd; Fri, 24 Jan 2025 08:37:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tbJsT-0003mb-6E
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:37:41 -0500
+ id 1tbJsX-0003nO-4a
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:37:45 -0500
 Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tbJsR-0003wD-NS
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:37:40 -0500
+ id 1tbJsV-0003xi-K0
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:37:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737725860; x=1769261860;
+ t=1737725864; x=1769261864;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=F8ch/qHyLt2WHZ+uYLam5gSOJtfGWUCHU0mx+JtYsOU=;
- b=YWFrOg9Y+lPTLr4ax6LAStQMzohtlFhL3sGtn0je5bNLL3maYMkXJDlv
- AQnj8detcmPXgs/xQkVZjZXfKT+Vfx0fv26XrP6aOd3zQ4rbV1ONvwyCc
- OF/wtIE4z4YMYaSCRcwwcMpvHj9lM+9OWTAKzuNqmTE9R2xalUavuntQc
- I0uYew7m0obNod5aOM3eNpGDa1SILRFTisM58BZZuFqITJNc8BhU3IloF
- Scaz2nZbkzgH9zfr+CfwGPUXTVbROot99lVUbQZRdg4/2AyGhkJfiyl1P
- GwPyhnw6OcEH/cqahKclKOGUKGUsYQI/lmmclYa8HMBRb31kwPSb45nfF Q==;
-X-CSE-ConnectionGUID: NUgyJxx7RueqSYvnFS+cBQ==
-X-CSE-MsgGUID: 2eNdy9X3THiw/vi4Y517RQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="49246246"
-X-IronPort-AV: E=Sophos;i="6.13,231,1732608000"; d="scan'208";a="49246246"
+ bh=Cfpj4WCxfFDeTOSQgHq6/UjikY4uRx0YKjE6SJdKb/c=;
+ b=OymSXBpW2CcG9+uoXpr4GFF2Jn/es6oDIIvIrNnEOzg+2/RmASEemuOI
+ QA/FcugESwSU6gB06YStL/q+o1IGwqXdfiJUBo62l+da34ieSw0EI5k+P
+ D+VNORbV61E2ll7ScfTtX2qIPHcdkPFxDLVa0dB3v9Xi56s45yZpzGdEw
+ MAgWKCC0Z6sy6Tkv7zU8zZ8WC55tIM8dMYWwlxwwx0mzyG6k97fnUFFyP
+ hWrll8tGC/mBaGTszNjwptWrjVps4T8qyeXgaukItdCq1Zi3oXjtlAY47
+ tmmdr5EltKUlMHNy/7cNleHP9ut1qAAxDIErXEyLWtqUcjfEpnRSyaZQs w==;
+X-CSE-ConnectionGUID: C0DiJrLWQRyeAj4fJkFHlA==
+X-CSE-MsgGUID: 76KRhyzBRh+gE27G4uXpIA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="49246253"
+X-IronPort-AV: E=Sophos;i="6.13,231,1732608000"; d="scan'208";a="49246253"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2025 05:37:39 -0800
-X-CSE-ConnectionGUID: vCehlZIdQm6+gmZkBYWjMA==
-X-CSE-MsgGUID: vRKtt1j1Q2ecC5GamkpXiQ==
+ 24 Jan 2025 05:37:43 -0800
+X-CSE-ConnectionGUID: rE3BlB5cTS6u0AEIazFIlA==
+X-CSE-MsgGUID: V2mWSehdQZWsGWPdWoKM1Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111804188"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="111804196"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2025 05:37:35 -0800
+ by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2025 05:37:38 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -55,9 +55,10 @@ Cc: Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Francesco Lavra <francescolavra.fl@gmail.com>, xiaoyao.li@intel.com,
  qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: [PATCH v7 10/52] i386/tdx: Make sept_ve_disable set by default
-Date: Fri, 24 Jan 2025 08:20:06 -0500
-Message-Id: <20250124132048.3229049-11-xiaoyao.li@intel.com>
+Subject: [PATCH v7 11/52] i386/tdx: Wire CPU features up with attributes of TD
+ guest
+Date: Fri, 24 Jan 2025 08:20:07 -0500
+Message-Id: <20250124132048.3229049-12-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250124132048.3229049-1-xiaoyao.li@intel.com>
 References: <20250124132048.3229049-1-xiaoyao.li@intel.com>
@@ -89,31 +90,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+For QEMU VMs,
+  - PKS is configured via CPUID_7_0_ECX_PKS, e.g., -cpu xxx,+pks  and
+  - PMU is configured by x86cpu->enable_pmu, e.g., -cpu xxx,pmu=on
 
-For TDX KVM use case, Linux guest is the most major one.  It requires
-sept_ve_disable set.  Make it default for the main use case.  For other use
-case, it can be enabled/disabled via qemu command line.
+While the bit 30 (PKS) and bit 63 (PERFMON) of TD's attributes are also
+used to configure the PKS and PERFMON/PMU of TD, reuse the existing
+configuration interfaces of 'cpu' for TD's attributes.
 
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- target/i386/kvm/tdx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/i386/kvm/tdx.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 214ff7409e1f..dcb19a18e405 100644
+index dcb19a18e405..653942d83bcb 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -286,7 +286,7 @@ static void tdx_guest_init(Object *obj)
-     qemu_mutex_init(&tdx->lock);
+@@ -19,6 +19,8 @@
+ #include "tdx.h"
  
-     cgs->require_guest_memfd = true;
--    tdx->attributes = 0;
-+    tdx->attributes = TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE;
+ #define TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE   BIT_ULL(28)
++#define TDX_TD_ATTRIBUTES_PKS               BIT_ULL(30)
++#define TDX_TD_ATTRIBUTES_PERFMON           BIT_ULL(63)
  
-     object_property_add_uint64_ptr(obj, "attributes", &tdx->attributes,
-                                    OBJ_PROP_FLAG_READWRITE);
+ static TdxGuest *tdx_guest;
+ 
+@@ -151,6 +153,15 @@ static int tdx_kvm_type(X86ConfidentialGuest *cg)
+     return KVM_X86_TDX_VM;
+ }
+ 
++static void setup_td_guest_attributes(X86CPU *x86cpu)
++{
++    CPUX86State *env = &x86cpu->env;
++
++    tdx_guest->attributes |= (env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_PKS) ?
++                             TDX_TD_ATTRIBUTES_PKS : 0;
++    tdx_guest->attributes |= x86cpu->enable_pmu ? TDX_TD_ATTRIBUTES_PERFMON : 0;
++}
++
+ static int setup_td_xfam(X86CPU *x86cpu, Error **errp)
+ {
+     CPUX86State *env = &x86cpu->env;
+@@ -214,6 +225,8 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
+     init_vm = g_malloc0(sizeof(struct kvm_tdx_init_vm) +
+                         sizeof(struct kvm_cpuid_entry2) * KVM_MAX_CPUID_ENTRIES);
+ 
++    setup_td_guest_attributes(x86cpu);
++
+     r = setup_td_xfam(x86cpu, errp);
+     if (r) {
+         return r;
 -- 
 2.34.1
 
