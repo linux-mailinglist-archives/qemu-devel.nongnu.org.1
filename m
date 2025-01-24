@@ -2,92 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDFB9A1B2E7
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:47:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA578A1B317
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:52:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbGFI-0006I9-0g; Fri, 24 Jan 2025 04:45:00 -0500
+	id 1tbGFH-0006IA-P5; Fri, 24 Jan 2025 04:44:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tbGFD-0006FN-UL
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:44:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tbGFE-0006G5-9j
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:44:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tbGF9-0003di-Kt
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:44:55 -0500
+ id 1tbGFC-0003dq-M6
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:44:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737711889;
+ s=mimecast20190719; t=1737711892;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=I0AomW1l4KHfrFLmCQFbvJtiWPWMXEyRVqhKBkK9J0U=;
- b=IC6vZHsZgq8UniK/2/M3+MP1h+l0edorGAK8j+Y7tNxh+X1PvHQzLO68+3CMPUTzFd1gOH
- sOz9BWTYGq2NwZjq/mCOJzLcKlKBmdE/KghlYyFXjYP3Yq3/IV5LCWmKUeRedbqCGmArpv
- BmmOJWTsMiaFNfxUbj3abs+scbqD0is=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=C+omDzyHoZTIzAUYMRxi5mDLkt7qKuTv7D0ZlYB6tvI=;
+ b=YJazdJ1Qhr4WSAJt9HIcQ9WMWMQLawEHjCq4bGJR6DrpsGteDtmi/5ck7HpoRVnalTWD7n
+ gWtyplwlIK+lWx2km62ATLvgQwPErDI7NmkyknZ0ifx2cbX+x6BbcuoFgyGGSuZVZXfTHF
+ h9xWxI0/6mk605ClLRejds0RFtwjCOw=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-249-Hkik6ykTPre9I7ak76WZxw-1; Fri, 24 Jan 2025 04:44:47 -0500
-X-MC-Unique: Hkik6ykTPre9I7ak76WZxw-1
-X-Mimecast-MFC-AGG-ID: Hkik6ykTPre9I7ak76WZxw
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-436723bf7ffso13410885e9.3
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 01:44:47 -0800 (PST)
+ us-mta-498-7hifE_YkO8-P40tqEEvKSw-1; Fri, 24 Jan 2025 04:44:49 -0500
+X-MC-Unique: 7hifE_YkO8-P40tqEEvKSw-1
+X-Mimecast-MFC-AGG-ID: 7hifE_YkO8-P40tqEEvKSw
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-38bf4913669so1009534f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 01:44:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737711886; x=1738316686;
+ d=1e100.net; s=20230601; t=1737711888; x=1738316688;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=I0AomW1l4KHfrFLmCQFbvJtiWPWMXEyRVqhKBkK9J0U=;
- b=hgH437P3+3WIYzNLM834iAE1FxDASLbNemZ7hlFiiVVwjQqa3QhsG5/WZBWE7919Bs
- N8sZHZ98tjuQ1nQaqfG/EqT4SJPQTg+W5CuJHlP78YgBWKZNdPHIjkuBDp2SgMIz/C2C
- I6MShFc/cm6WW3fIlfyfYoknoCO0Rd6L3FxSbzVm9+Xv7fUpd9q34+VN2WKs9JvUgCZh
- j8b2jegX9LXqRB/NoEtaglvefWRlE3XTD5m31EiFlif8jxtZOTq4h3+ucea+5Bl2NojI
- xFhHlm61ynjP592QzQfgng6YhHW7ew42fI3CEODFyUUbKS1o7AmXYLOLstge4df9u0vb
- JcMA==
-X-Gm-Message-State: AOJu0Yy7tQXhN9zUB/hWrum2o32Hcd1Bq11JVMXrosn14vPZGUt08ZxI
- we9INf3vF4ozHFW0RS6BoYMiGZsrRmnfDcDzQdhPcCm5a6kPzZwcSMupDPX/AkeATGOTT2dTJcv
- Pr9E+8D1MtHBmZ1aB95PwTh8ji+E9OfwdeoKQ8Vjt5ym2CWtxpHPZggbPG/ZEt64rKUSgvreS3c
- mS5DUQ6JX4JUGZeO0yX3lQCl+3jvlCPXeVvCJX67Q=
-X-Gm-Gg: ASbGncvk4WXAU6w1EdiR9hSYrYvSE9KDTUt9VoyPeAa61JqbB1tgLLfM/udtnkC1FT/
- /bwGMtWhrSmS5FBaqiENdmG7p0MccKNPRu1982ga4NR7dJHCEQ2V68oVGUoKo7+T+D6ij4SZLpE
- ze+vNP2Gha9O42tmYkJBb8PwIVYMcJT58uC0lq8WE9RkbcwWxjzULW9dIP3Tvux8kiml7/Zf+ol
- k7JfsbvbVKC1tznN9UcoqM0BZnUsgzLpP2ts1oDc8g0KC5iicAVa4BNKOE2EFOJH2PO+hDhpw==
-X-Received: by 2002:a05:600c:468d:b0:431:542d:2599 with SMTP id
- 5b1f17b1804b1-4389143b715mr263482075e9.22.1737711885877; 
- Fri, 24 Jan 2025 01:44:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEtYpfq86TqlsdTvONYYwiPM3ymHhxrk7p9ONPBPHO0lVsBIluOqPlON2PzaF5o6EBTQRaYLg==
-X-Received: by 2002:a05:600c:468d:b0:431:542d:2599 with SMTP id
- 5b1f17b1804b1-4389143b715mr263481875e9.22.1737711885464; 
- Fri, 24 Jan 2025 01:44:45 -0800 (PST)
+ bh=C+omDzyHoZTIzAUYMRxi5mDLkt7qKuTv7D0ZlYB6tvI=;
+ b=ltzQ2C8WZFFym/nFgY2cDlvN6LHH1Xywx03UViXOaL/cjyT17485BaYxbQ22kaa0tO
+ 80AVnzvNBtTDOhaO1g7Cz1XzgB1HyXyuXgdYUaS/5w3zZ3VMyGwz5oeXqzUmsO/vok25
+ Gofh51TwdSHcxEZWpaDRM33EzQ+6+kOQTcT8ygdcDWNAOQCqqG2sb+XQLseQbsJ0q35D
+ 5x5APF51yRMx5wV+l/zYbueNapzTeKpste2DUhhN6GStqyj2upPTI1tHJLajPN1c+MGs
+ hPJuwLyejBHNG8X2yG+5Q5s6OBkmkniQfkcI/n04sok9FylpayhpZ5sIY0TuF0ozc87R
+ 4WMQ==
+X-Gm-Message-State: AOJu0YwRNMDwm8T2AOekjIwb9GE39N6o6cp9x+6EmW2/D/sSABKKArYj
+ k55evekpIvkCfs9f3pbHAcouvEahTwUph4kpL2ZSl9e+prmc6A8KGh3aK/OwDaNcha6fybj2Wqc
+ eGXUR80I/a1bJjjcQWCOknXc++ffjqx5gvNUMzB82d6arakungDE+GVNmAkdGeBOsbqr6mVyAdy
+ HZyrVZjuQQxfVkj4qDO7NeAvH0eoyF4USnPGI1fL8=
+X-Gm-Gg: ASbGncvxtxPdw0D+fmM57kxQUrP0QjXivW4s32CrJ4LB/R4OO0g8NAdZeKTEbtFtvMs
+ exJiUl8UzyPzDCKcPSmieqUzDSuTK3ua+9PQFlUJdxZbqVz8iQJuTDU8cZXnt/3lfRdj+JgfiM3
+ ddo6NvMmldpYks0CU+/afUI4wASF3fBwfnNUJOQnkuegGjPBjDIcIPySppi43jEee9ELESv4OhX
+ rd+ga5+Udljcoys77f0ac/5rvzszVDRssr6ErQOe+Tqhe02e7RJqXpnR9UNsw1/0p4STWOdtg==
+X-Received: by 2002:a5d:6650:0:b0:38b:ed0d:c1b0 with SMTP id
+ ffacd0b85a97d-38bf57b41cemr24412400f8f.40.1737711887909; 
+ Fri, 24 Jan 2025 01:44:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGRCY9OUKh8mTE8mS0BrKff1DNNelZch4BhAopUG1VNs5NS/ZuH7ObRdryjqz6groFJVsRxPw==
+X-Received: by 2002:a5d:6650:0:b0:38b:ed0d:c1b0 with SMTP id
+ ffacd0b85a97d-38bf57b41cemr24412383f8f.40.1737711887448; 
+ Fri, 24 Jan 2025 01:44:47 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.59.125])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd54bfb0sm19669085e9.32.2025.01.24.01.44.44
+ ffacd0b85a97d-38c2a17d6e2sm2159361f8f.23.2025.01.24.01.44.46
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 01:44:45 -0800 (PST)
+ Fri, 24 Jan 2025 01:44:46 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/48] rust: pl011: fix repr(C) for PL011Class
-Date: Fri, 24 Jan 2025 10:43:55 +0100
-Message-ID: <20250124094442.13207-2-pbonzini@redhat.com>
+Subject: [PULL 02/48] target/i386: inline gen_jcc into sole caller
+Date: Fri, 24 Jan 2025 10:43:56 +0100
+Message-ID: <20250124094442.13207-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250124094442.13207-1-pbonzini@redhat.com>
 References: <20250124094442.13207-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
 X-Spam_bar: -----
 X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.043,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,24 +105,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+The code of gen_Jcc is very similar to gen_LOOP* and gen_JCXZ, but this
+is hidden by gen_jcc.
+
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Link: https://lore.kernel.org/r/20241215090613.89588-2-pbonzini@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs | 1 +
- 1 file changed, 1 insertion(+)
+ target/i386/tcg/translate.c | 8 --------
+ target/i386/tcg/emit.c.inc  | 5 ++++-
+ 2 files changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 994c2fc0593..65a1234b9ff 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -123,6 +123,7 @@ pub struct PL011State {
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index dbc9d637c4b..3b68441a561 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -1847,14 +1847,6 @@ static void gen_conditional_jump_labels(DisasContext *s, target_long diff,
+     gen_jmp_rel(s, s->dflag, diff, 0);
+ }
  
- qom_isa!(PL011State : SysBusDevice, DeviceState, Object);
+-static void gen_jcc(DisasContext *s, int b, int diff)
+-{
+-    TCGLabel *l1 = gen_new_label();
+-
+-    gen_jcc1(s, b, l1);
+-    gen_conditional_jump_labels(s, diff, NULL, l1);
+-}
+-
+ static void gen_cmovcc1(DisasContext *s, int b, TCGv dest, TCGv src)
+ {
+     CCPrepare cc = gen_prepare_cc(s, b, NULL);
+diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
+index c4cc5f48d83..a193d32ca76 100644
+--- a/target/i386/tcg/emit.c.inc
++++ b/target/i386/tcg/emit.c.inc
+@@ -2297,8 +2297,11 @@ static void gen_IRET(DisasContext *s, X86DecodedInsn *decode)
  
-+#[repr(C)]
- pub struct PL011Class {
-     parent_class: <SysBusDevice as ObjectType>::Class,
-     /// The byte string that identifies the device.
+ static void gen_Jcc(DisasContext *s, X86DecodedInsn *decode)
+ {
++    TCGLabel *taken = gen_new_label();
++
+     gen_bnd_jmp(s);
+-    gen_jcc(s, decode->b & 0xf, decode->immediate);
++    gen_jcc1(s, decode->b & 0xf, taken);
++    gen_conditional_jump_labels(s, decode->immediate, NULL, taken);
+ }
+ 
+ static void gen_JCXZ(DisasContext *s, X86DecodedInsn *decode)
 -- 
 2.48.1
 
