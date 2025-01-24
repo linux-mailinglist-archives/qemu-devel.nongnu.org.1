@@ -2,79 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEB1AA1BAB5
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:39:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10890A1BA56
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:28:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbMc6-00044d-89; Fri, 24 Jan 2025 11:32:58 -0500
+	id 1tbMXV-0002vh-OR; Fri, 24 Jan 2025 11:28:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tbMYn-0004uA-CB
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:29:33 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbMXS-0002vS-9E
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:28:11 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tbMYl-0005ej-Hx
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:29:32 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4362bae4d7dso16645565e9.1
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:29:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbMXN-0005HF-Go
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:28:10 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4361815b96cso15911545e9.1
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:28:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737736170; x=1738340970; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=34luHZDyy2429KmxgwNFbXGPJ5mxedoShXZjqrjksvU=;
- b=q/EKfThNwnS6F1UljhblK22mmQeYpI/va+Q0N4FmJwAugqvip2HI5i0xZL/l7aIwe/
- f2zoyS3qB22EmCvVKzVJ71QdDERD7USgFV6Zpb7RMZJEXGH2S+4KRczFwqt7j8zNY+YL
- lNeemEveOcrohE6GHBHkarx6kiFd7stHcXf5ZHKMrjgyho4kA5D3Jk/vI3KwdCKdurDo
- x8SRYZFObHit2Wx7leePVLXnvRGhH+CnU4Lx4dZiIBqZ4yB55Fx/KmgUHw0ZN3O8tCFQ
- rXDZ8+pgUb5/m/7vCNxON6F6V96ZXu+qKM0f8tkp4A3U9mcPLC7oiUM9zMUAYY90BumX
- ueSA==
+ d=linaro.org; s=google; t=1737736084; x=1738340884; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=eQuYG7upoxbpOPXjG+3hYlhADqAHOSeKyfZmWngrDto=;
+ b=gBXVsLjtsn6mKYE8zqK24jYI3dZbG2PB3vuhrxstsc0y1qtcHv0Ff3dsWXdscnidZz
+ 2Npz6iMi/e+3FX8JO7F7fUVV39LOo0rmnLILiBolwQZm+eqp3Sotwxs73vAP9QFXSIub
+ IaNXs2RvlJnQBZhejwMoDK6zx9BnCMWndpHJ5cdwklgEC/OQAsQin+vXEdH4sfGlFpSS
+ +/mgaJjKbt3kjYBMUGFtMJTE8gmpEmjD5KNQcCc1PE9G++2z7hMOVVpYCoooy44XmVoP
+ dVhwxT9DeVohR1XbGQn/PDHr1Tviwi7Xg0lbpbLk1aGBMivZflmpjcIxXURVijQeGe5D
+ bICw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737736170; x=1738340970;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=34luHZDyy2429KmxgwNFbXGPJ5mxedoShXZjqrjksvU=;
- b=i3pfAoxK2ZRvdze0P4KJCT33fGVt7HW79FBNeojZd4nZXXnRYCQ9iixcmo2pOrdMDu
- WHmozI2me0TWX2GElNUBRblgW3+bz9+T5oep4GxdWGPRoahds1C3nCZ00BTwd3KyV8OH
- TWlKMgd4Qooed+wTe6svERfBUoOaYW2Qzl4c/mC7M5Eiv62YBfzbCb/9FatRfZkHOoKx
- BG7YqJJwXRLhhoSIVQnxVBY8+IcY3a+RtH/w1n09CjeP8XtJTZ36hqXtHl8u0Pz/CXJq
- nUN7cwoMogF3S6bAdyeyg6Hd5UyYmtPfyVUv5iuFyRRKFIsk1wjcFZQTDFfW2JfeMSF9
- zedA==
+ d=1e100.net; s=20230601; t=1737736084; x=1738340884;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eQuYG7upoxbpOPXjG+3hYlhADqAHOSeKyfZmWngrDto=;
+ b=i0K7C22XTfvckGP+cmqK07oxzU/bkyZejs3PpmNS+lS+YdesFqjwQ2Eyww+27wIJqG
+ l4e73BOa2UsjJoqVc0LsUI5sN/JdEOdM80HBVrt+30GNj0jZUv2tweuzgEMlC2h1myPN
+ zVlPR2lCuR1Ry0jtJRFAnlw0PKpUvSP4dc4X8UsdilR8GPwixl2GoEV1ZCZkc44ozXdP
+ azkQ3YwQo6lfdk3ke3PSalasEYDeB/J5zMZc0lqGOZuYxibU8DKnbk+mJXO3vOY0HER2
+ kG4HmwsOz5LgMfc+YgHWff/dgd6pAx0GMLCF8Uq39x1G4uEmECoY6HmiqJKBcCKcb4/u
+ 2ekw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXEyj4LwSe5ylXCyexHp8js9NZJrdRP5LD+PkP8XY7/t1uOiej7lCNI+h9A0+frhbWBo/zEybTI6uZs@nongnu.org
-X-Gm-Message-State: AOJu0Yy+9Hzmx0ji7fUI3rMG/BNVA+f5ODFxTbM0TWwNdI+dRUF5CvjS
- LnH9RwYXF3cjOJ0HR7yPxtSkQyE9E7NI3XuOQCnOolSX2XCLPNbR2ddFzGQ5aZU=
-X-Gm-Gg: ASbGncvkYE2j2NuD8edRW7/oKAJ8MknQ1Od0JWTrqaeZHLsDBpuVU3OJqCa43b2Jv7H
- A0UDN7s2G2XY2OERmeymiZoiPN/DfBIhkKOuYFU/KrxlcrQRK0vyHQ98nlkGT24A1RI+OqNTqRd
- NPSUD2ExYCIrvRC2v8rkvsmTTj+8SX4SGDwthOkSv7l0ttGS/Qmhn9pduaTLnyLU425kfg3Jl1B
- vPJ8Z1DjvYdWw/50t6MVPA8inaikeSFkWHfnV63U4kF5Al5dChkXq+mA2yp5nO0gNGSKEbDGRG1
- 5OaL6zVfxkc=
-X-Google-Smtp-Source: AGHT+IGWz4w6Fzo6hmbLkmmikabUgPyecV011m5r95vt1qy3x03c5L0nwrKjMbxWo2rETIys99WvGg==
-X-Received: by 2002:a05:600c:3542:b0:434:9e1d:7626 with SMTP id
- 5b1f17b1804b1-4389145137dmr242320265e9.25.1737736170078; 
- Fri, 24 Jan 2025 08:29:30 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd47eecasm31683025e9.6.2025.01.24.08.29.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 08:29:29 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH 42/76] target/arm: Handle FPCR.NEP for scalar FABS and FNEG
-Date: Fri, 24 Jan 2025 16:28:02 +0000
-Message-Id: <20250124162836.2332150-43-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250124162836.2332150-1-peter.maydell@linaro.org>
-References: <20250124162836.2332150-1-peter.maydell@linaro.org>
+ AJvYcCWK8lvZKwadDKpVaUkbbaEGBWNUXBJqyyuuf/Esh9muEX1SxeHLFGq0kxBmIbGzUeyF3OUVsL1P5LJU@nongnu.org
+X-Gm-Message-State: AOJu0Ywq7dM868kFfW0mX1WY4wyKoE/qWbzi6D+WVrR8k7jHxxFe8S/S
+ 6X8Jg4b65Ch8lHIa5HIYZMPt6tlcHtI1Z/7S6Ez5jSg+MyqTEBSp1gnHQZ1VVtE=
+X-Gm-Gg: ASbGnctZHOH5iNpV5v3RtqUoYTSxDQ+XsLPjH3vzTEg6Vh5g/U6Endyz/KbOu89NLBw
+ EBdondGkEq9GHLHPDiBtB0vuRPJEfp3C9tLWzfMOg4oGHXO14mdaomYD1RWafzbpHL5DlaRo2F0
+ jhPmYYxY3AYkMq+obs1VGoh2x0d7xJs9j6l5UHuEPcBeMd192/psUCJTTAEOC//zoHjkYRYVVSZ
+ CtvZxHbQS71q/8R/pOeWCDPvQizq4BPL1yEaVtQIqNIuLCgGELmqZcsLn1eoKKe7fjC+lOP0mmp
+ sHsKKzYX1BBL0ntza+/Z8PqnEaDE+zRXLXL4qAf5G0tOM79A
+X-Google-Smtp-Source: AGHT+IG3fmCKw+a3pBlf1FnYOYJRCJUC5s8+rT9MvnA/uEYAXeBwBEQNZ4XYHFtjFYFtk9LZLsHE0A==
+X-Received: by 2002:a05:600c:450e:b0:436:1ac2:1ad2 with SMTP id
+ 5b1f17b1804b1-43891427485mr255507925e9.19.1737736083712; 
+ Fri, 24 Jan 2025 08:28:03 -0800 (PST)
+Received: from [192.168.69.181] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-438b1d904cbsm54934015e9.1.2025.01.24.08.28.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 24 Jan 2025 08:28:03 -0800 (PST)
+Message-ID: <d5749a49-a12f-4485-b2f1-189b3d9cc89e@linaro.org>
+Date: Fri, 24 Jan 2025 17:28:02 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] hw/cxl: Allow tracing component I/O accesses
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Jonathan Cameron via <qemu-devel@nongnu.org>
+Cc: Fan Ni <fan.ni@samsung.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ mst@redhat.com
+References: <20250122065624.34203-1-philmd@linaro.org>
+ <20250122065624.34203-3-philmd@linaro.org>
+ <20250123095151.000041a0@huawei.com> <20250124162028.0000464b@huawei.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250124162028.0000464b@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,92 +102,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Handle FPCR.NEP merging for scalar FABS and FNEG; this requires
-an extra parameter to do_fp1_scalar_int(), since FMOV scalar
-does not have the merging behaviour.
+On 24/1/25 17:20, Jonathan Cameron wrote:
+> On Thu, 23 Jan 2025 09:51:51 +0000
+> Jonathan Cameron via <qemu-devel@nongnu.org> wrote:
+> 
+>> On Wed, 22 Jan 2025 07:56:24 +0100
+>> Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>>> Map the component I/O region as UnimplementedDevice
+>>> to be able to trace guest I/O accesses with '-d unimp'.
+>>>
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> I'm not that familiar with this infrastructure but seems
+>> fine to me.
+>>
+>> I'd definitely be curious if anything is touching this space so
+>> tracing may be helpful for that!
+> Hi Philippe
+> 
+>>
+>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Retract that.
+> 
+> Can't instantiate a CXL device with this patch because:
+> 
+> Device unimplemented-device can not be dynamically instantiated.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- target/arm/tcg/translate-a64.c | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+Hmm the qtests using CXL devices pass, how do you trigger that?
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 6c20293961a..7412787b6b6 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -8437,21 +8437,30 @@ typedef struct FPScalar1Int {
- } FPScalar1Int;
- 
- static bool do_fp1_scalar_int(DisasContext *s, arg_rr_e *a,
--                              const FPScalar1Int *f)
-+                              const FPScalar1Int *f,
-+                              bool merging)
- {
-     switch (a->esz) {
-     case MO_64:
-         if (fp_access_check(s)) {
-             TCGv_i64 t = read_fp_dreg(s, a->rn);
-             f->gen_d(t, t);
--            write_fp_dreg(s, a->rd, t);
-+            if (merging) {
-+                write_fp_dreg_merging(s, a->rd, a->rd, t);
-+            } else {
-+                write_fp_dreg(s, a->rd, t);
-+            }
-         }
-         break;
-     case MO_32:
-         if (fp_access_check(s)) {
-             TCGv_i32 t = read_fp_sreg(s, a->rn);
-             f->gen_s(t, t);
--            write_fp_sreg(s, a->rd, t);
-+            if (merging) {
-+                write_fp_sreg_merging(s, a->rd, a->rd, t);
-+            } else {
-+                write_fp_sreg(s, a->rd, t);
-+            }
-         }
-         break;
-     case MO_16:
-@@ -8461,7 +8470,11 @@ static bool do_fp1_scalar_int(DisasContext *s, arg_rr_e *a,
-         if (fp_access_check(s)) {
-             TCGv_i32 t = read_fp_hreg(s, a->rn);
-             f->gen_h(t, t);
--            write_fp_sreg(s, a->rd, t);
-+            if (merging) {
-+                write_fp_hreg_merging(s, a->rd, a->rd, t);
-+            } else {
-+                write_fp_sreg(s, a->rd, t);
-+            }
-         }
-         break;
-     default:
-@@ -8475,21 +8488,21 @@ static const FPScalar1Int f_scalar_fmov = {
-     tcg_gen_mov_i32,
-     tcg_gen_mov_i64,
- };
--TRANS(FMOV_s, do_fp1_scalar_int, a, &f_scalar_fmov)
-+TRANS(FMOV_s, do_fp1_scalar_int, a, &f_scalar_fmov, false)
- 
- static const FPScalar1Int f_scalar_fabs = {
-     gen_vfp_absh,
-     gen_vfp_abss,
-     gen_vfp_absd,
- };
--TRANS(FABS_s, do_fp1_scalar_int, a, &f_scalar_fabs)
-+TRANS(FABS_s, do_fp1_scalar_int, a, &f_scalar_fabs, true)
- 
- static const FPScalar1Int f_scalar_fneg = {
-     gen_vfp_negh,
-     gen_vfp_negs,
-     gen_vfp_negd,
- };
--TRANS(FNEG_s, do_fp1_scalar_int, a, &f_scalar_fneg)
-+TRANS(FNEG_s, do_fp1_scalar_int, a, &f_scalar_fneg, true)
- 
- typedef struct FPScalar1 {
-     void (*gen_h)(TCGv_i32, TCGv_i32, TCGv_ptr);
--- 
-2.34.1
+> 
+> Reverting this patch on my tree fixes that.
+> 
+>>> ---
+>>>   include/hw/cxl/cxl_component.h |  3 ++-
+>>>   hw/cxl/cxl-component-utils.c   | 14 +++++++++++---
+>>>   hw/cxl/Kconfig                 |  1 +
+>>>   3 files changed, 14 insertions(+), 4 deletions(-)
 
 
