@@ -2,109 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B167A1BAEE
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:49:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4384A1BA34
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:19:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbMnU-0003VJ-7I; Fri, 24 Jan 2025 11:44:44 -0500
+	id 1tbMOf-0003bi-1A; Fri, 24 Jan 2025 11:19:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tbMmm-0003Kb-BI
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:44:03 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tbMmk-0000ze-Hn
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:43:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737737037;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=IDKUVYKOGSDfpP03QEl3KwwK9q8MuQxs4/UuoRKH5lI=;
- b=FsXtsscp6c0/EvI0BHRLc3mdfhVa5VryoQFhxJiavge5yFHotByeMa9UyEwbwQVJpflLHk
- WmCZC4RMEA5tZF6tUAWkqxuKukGv5FVya0JHApdVpEvv4lt5Kr/xMU/E6MyIIqq0HdO58F
- 24eZ7IODRyxiZVj+Ad2uBm3rfhg0yRA=
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
- [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-36-JXF_cFceO8WVcUVRuJ0f_g-1; Fri, 24 Jan 2025 11:43:54 -0500
-X-MC-Unique: JXF_cFceO8WVcUVRuJ0f_g-1
-X-Mimecast-MFC-AGG-ID: JXF_cFceO8WVcUVRuJ0f_g
-Received: by mail-ot1-f69.google.com with SMTP id
- 46e09a7af769-71e13d7e9f2so1583567a34.3
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:43:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tbMOb-0003bK-Mc
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:19:01 -0500
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tbMOa-0004Am-5B
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:19:01 -0500
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-2ef760a1001so4083945a91.0
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:18:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1737735538; x=1738340338; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=P/yOFRSJP0dnAXT9SWTjM1K8xFvmEgyjb1DPUQOqjXE=;
+ b=h7A27os0ikvS5peR7nV3AU0uipIrB/JqNnkzVdY0OJMLHoXnfMU21swmvKQKv7j1Ue
+ A+zmv1vBpD5uxgA4u26dkI0TLCZGcWjoFIRrLmWCbEi2KvDiFk+EB0JNfpDy9Tg/k473
+ GiYee3pj6MA4iHE/9K6oNfO2TJsGpscikvpdhDzNPRh3ZnUBUdwkcAeWehfxRKdINAb8
+ 3qqcmGj9TM7SEVxaYJTzGBznMQti7gJE86r25+LK1Co1YfQMaJ64LErgu9AA0Z6tt/+7
+ lo/WrIruyfwPA+kU1ZhXdJqPjbfVeIM9C9Pim0FbX5BqQ3xPsPjhbN+g1hVb927nRq5E
+ oWlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737737033; x=1738341833;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=IDKUVYKOGSDfpP03QEl3KwwK9q8MuQxs4/UuoRKH5lI=;
- b=PcdTD6HV4kTO9dkC9KxcP7nU/C944nmEgemiJTh1SagutTE0+yVzthOoGOXrSE274c
- eAelxbB7EiB3GJYxa/LAvrR+8gXrXJwDeUydUDSFG54hU4qhJK2yvQcTfb9koeoXTzCH
- nSnAY5Xr8y5DrGlH/XUDwG0YpS28U/kFSxkyXzgG2JRwd8GpmaDQ4QhEubUVNOJixNmx
- lp3P4F8J2ZKLKO4acsePZxGjrPy3yRhQQLK4mQ8+953OROKXZF1rXBsZHQMTUA8jRhdK
- cCEDyFyTq7VODj7MgJ8FOjRGRg4vylDP9ytwTOgK+cUEm5nrsd6Nxh2iKTjn0Dg+2O0e
- 1OXg==
+ d=1e100.net; s=20230601; t=1737735538; x=1738340338;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=P/yOFRSJP0dnAXT9SWTjM1K8xFvmEgyjb1DPUQOqjXE=;
+ b=BhIfD2cKuCzwjTAWM+d3opJxxPYWtE2N1uykXbsX08E+iUoFt3DEGQ8OvtTcRqn24W
+ LZDj3xICwnyX5fvGJorJe+kmom3sAYk4/gXYtZCVyo1ONuP2RIr3o0M+pJJ3JwPh/fIz
+ Gdo/JdCR4TuHoSDydY09rKxQ18s8+DZ5nda1lGdNcTX71Nk9Qj96rBxUJZA4RWqdg0vd
+ tINqp7CIKmDzKmPY7lAqTf+9Hirt4dnDYoPBFuIqg4ZCcXbrsGMHmC/j00zdNiNt90wu
+ 7xSEoyTNQBPGqlI6NTxy4wBCSvV8DcsSA3YhoB1dC0SzE0YMf2eGv5FiVmgIY02k3ynY
+ RUHw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW7pCP/TdEOSaBf2KQNFDWdMGLevGhtZEoBNCGPCaXjY9/PlinVrGPsz/fq7Api1OoImpnETQaYtnLf@nongnu.org
-X-Gm-Message-State: AOJu0YzieGNglQTT6yImJtLCM3ZjqG2ueRidIW5m+4DIjrrAkIzpSygb
- 96vmOuiIvJ9KPk9nDqK24qGRJuoBRKep6zjbyb4rroUG/BULvYGQbR80cxJ4qosFNXGFUq47PBa
- 1l5PHcQCBHQFsJamc8abTpsX9QJmpXssXdodGKVIpceyvXxroDwAu
-X-Gm-Gg: ASbGncs34lqI38sFvDBtr1EQPpK5qOKcnxiRrUBoS/hkqf34imDT23AwgRBUFLTM126
- Xv8yDae30K2/u+wd8+dgDVktf0MVfAVZEcIW+7gg9f8GxSU1hh74ymiI12G+Ug4yakdEb813C91
- MxdEkdkMc/m5RxTTthce8pzDNXuaY78xW1g9PpBG1AFnSn3ATgrVLLB4V8JrcXhjeSMVa+B9U/N
- vC+5vAMjfodXnCECOiiNP6+1u/fjzUZMui56zQTC+bEGeHaFJELljLS+M5sNm3AazVi2U1Fd+Sc
- 4eooJZlTu+GctSx7n65cXQ2UP2USnjg=
-X-Received: by 2002:a05:6214:d63:b0:6dd:be26:50ba with SMTP id
- 6a1803df08f44-6e1b21d4775mr472168246d6.21.1737735158714; 
- Fri, 24 Jan 2025 08:12:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEkedu4M4bSFyiRgJDvmyb6kS6QCNU3PVd61/eGKd58HzLgZACf+QknYf4i4z86MzQZZnxlEg==
-X-Received: by 2002:a05:6214:d63:b0:6dd:be26:50ba with SMTP id
- 6a1803df08f44-6e1b21d4775mr472167866d6.21.1737735158385; 
- Fri, 24 Jan 2025 08:12:38 -0800 (PST)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6e2058c236csm9808906d6.104.2025.01.24.08.12.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 08:12:37 -0800 (PST)
-Date: Fri, 24 Jan 2025 11:12:35 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Chenyi Qiang <chenyi.qiang@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
- Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
- Xu Yilun <yilun.xu@intel.com>
-Subject: Re: [PATCH 2/7] guest_memfd: Introduce an object to manage the
- guest-memfd with RamDiscardManager
-Message-ID: <Z5O784_wnrBMrV6X@x1n>
-References: <Z46GIsAcXJTPQ8yN@x1n>
- <7e60d2d8-9ee9-4e97-8a45-bd35a3b7b2a2@redhat.com>
- <Z46W7Ltk-CWjmCEj@x1n>
- <8e144c26-b1f4-4156-b959-93dc19ab2984@intel.com>
- <Z4_MvGSq2B4zptGB@x1n>
- <c5148428-9ebe-4659-953c-6c9d0eea1051@intel.com>
- <9d4df308-2dfd-4fa0-a19b-ccbbce13a2fc@intel.com>
- <b11f240d-ff8c-4c83-9b33-5e556cde0bce@amd.com>
- <d54f6f53-3d11-477e-8849-cc3d28a201db@intel.com>
- <2115c769-144c-4254-94b0-6b38b7afc6fc@amd.com>
+ AJvYcCUOhUkPHldVd1MSAr1QCwfLSmKM7Jna1xtvtvrGX1YdjJAzPugfTlkiYnBmVeqrVDIrVM5PyvpwfyTK@nongnu.org
+X-Gm-Message-State: AOJu0Yz+5aS2j+oXmIzEEyVB4L2t0lXnEqYQ6Kfe2g+iB1xRvFro3Ftr
+ olXQa6hpzcDyMpSt63oD/nEudTORSn4jO56KbgN21A3Bi+3P08HbXjhJHP1NL1g=
+X-Gm-Gg: ASbGncvc7jYDeTtjw5iyF0yOkdIzD7SjxDMAfQeyW0pWbgPyShtsQ9KmEtv8gy1TOG8
+ NJoOKAhF4PAdBmk/9GLORJhtYCG/jGRWADXkG5WRTOG6sGSbqKGCweHyR2G8JBFm0I1nBy1G31C
+ B3xtkwwmxQXZ1HbQcCO6R0MXDBlkYZTqiJTGL0QSa6xxydV+sNOcxmOQ8SUE4cJ9anoePW2m9R5
+ zzvGRD/rMn53XTd35nio9wZkvO+CwFCb2iVqx51d/daIzlqiQ9BlG/juHLkScVqGJcsmwDPkTnn
+ R/2yL1VmUMXljYd0Fg==
+X-Google-Smtp-Source: AGHT+IFuO84JLZv19/L2uyk3Ve5xzyH9g5fJvaRcj2q4RodoWfyczUzW5d3BF/qMLdVaYoiXHqE5CQ==
+X-Received: by 2002:a17:90b:2703:b0:2ee:d63f:d71 with SMTP id
+ 98e67ed59e1d1-2f782c7252dmr51019266a91.14.1737735537910; 
+ Fri, 24 Jan 2025 08:18:57 -0800 (PST)
+Received: from [192.168.1.67] ([38.39.164.180])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2f7ffa44cb8sm1916187a91.6.2025.01.24.08.18.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 24 Jan 2025 08:18:57 -0800 (PST)
+Message-ID: <a5f10050-1914-4f58-a71e-0703ab9a5a19@linaro.org>
+Date: Fri, 24 Jan 2025 08:18:56 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2115c769-144c-4254-94b0-6b38b7afc6fc@amd.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 15/32] tests/functional/aarch64: add tests for FEAT_RME
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, qemu-devel@nongnu.org
+References: <20250110131754.2769814-1-alex.bennee@linaro.org>
+ <20250110131754.2769814-16-alex.bennee@linaro.org>
+ <d9094d1e-10bc-4b15-9efe-ebc8bab5d158@redhat.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <d9094d1e-10bc-4b15-9efe-ebc8bab5d158@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -121,68 +102,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 24, 2025 at 04:56:50PM +1100, Alexey Kardashevskiy wrote:
-> > Now, I assume Peter's real question is, if we can copy the vBIOS to a
-> > private region and no need to create a specific guest_memfd-backed
-> > memory region for it?
-
-Yes.
-
-> 
-> I guess we can copy it but we have pc.bios and pc.rom in own memory regions
-> for some reason even for legacy non-secure VMs, for ages, so it has little
-> or nothing to do with whether vBIOS is in private or shared memory. Thanks,
-
-My previous question is whether they are required to be converted to be
-guest-memfd backed memory regions, irrelevant of whether they're separate
-or not.
-
-I think I found some answers in the commit logs here (it isn't hiding too
-deep; I could have tried when asking):
-
-===8<===
-commit fc7a69e177e4ba26d11fcf47b853f85115b35a11
-Author: Michael Roth <michael.roth@amd.com>
-Date:   Thu May 30 06:16:40 2024 -0500
-
-    hw/i386: Add support for loading BIOS using guest_memfd
-    
-    When guest_memfd is enabled, the BIOS is generally part of the initial
-    encrypted guest image and will be accessed as private guest memory. Add
-    the necessary changes to set up the associated RAM region with a
-    guest_memfd backend to allow for this.
-    
-    Current support centers around using -bios to load the BIOS data.
-    Support for loading the BIOS via pflash requires additional enablement
-    since those interfaces rely on the use of ROM memory regions which make
-    use of the KVM_MEM_READONLY memslot flag, which is not supported for
-    guest_memfd-backed memslots.
-
-commit 413a67450750e0459efeffc3db3ba9759c3e381c
-Author: Michael Roth <michael.roth@amd.com>
-Date:   Thu May 30 06:16:39 2024 -0500
-
-    hw/i386/sev: Use guest_memfd for legacy ROMs
-    
-    Current SNP guest kernels will attempt to access these regions with
-    with C-bit set, so guest_memfd is needed to handle that. Otherwise,
-    kvm_convert_memory() will fail when the guest kernel tries to access it
-    and QEMU attempts to call KVM_SET_MEMORY_ATTRIBUTES to set these ranges
-    to private.
-    
-    Whether guests should actually try to access ROM regions in this way (or
-    need to deal with legacy ROM regions at all), is a separate issue to be
-    addressed on kernel side, but current SNP guest kernels will exhibit
-    this behavior and so this handling is needed to allow QEMU to continue
-    running existing SNP guest kernels.
-===8<===
-
-So IIUC the CoCo VMs will assume they're somehow convertable memories or
-they'll stop working I assume, at least on some existing hardwares.
-
-Thanks,
-
--- 
-Peter Xu
-
+SGkgVGhvbWFzLA0KDQpPbiAxLzI0LzI1IDA1OjI5LCBUaG9tYXMgSHV0aCB3cm90ZToNCj4g
+T24gMTAvMDEvMjAyNSAxNC4xNywgQWxleCBCZW5uw6llIHdyb3RlOg0KPj4gRnJvbTogUGll
+cnJpY2sgQm91dmllciA8cGllcnJpY2suYm91dmllckBsaW5hcm8ub3JnPg0KPj4NCj4+IFRo
+aXMgYm9vdCBhbiBPUC1URUUgZW52aXJvbm1lbnQsIGFuZCBsYXVuY2ggYSBuZXN0ZWQgZ3Vl
+c3QgVk0gaW5zaWRlIGl0DQo+PiB1c2luZyB0aGUgUmVhbG1zIGZlYXR1cmUuIFdlIGRvIGl0
+IGZvciB2aXJ0IGFuZCBzYnNhLXJlZiBwbGF0Zm9ybXMuDQo+IA0KPiAgICBIaSwNCj4gDQo+
+IEZXSVcsIEkganVzdCBzYXcgdGhpcyB0ZXN0X2FhcmNoNjRfcm1lX3ZpcnQgdGVzdCBmYWls
+aW5nIG9uY2UuIExvb2tpbmcgYXQNCj4gdGhlIGNvbnNvbGUubG9nLCBpdCBzZWVtcyBsaWtl
+IHRoZSBndWVzdCBjcmFzaGVkIHNvbWV3aGVyZSBhdCB0aGUgZW5kIG9mIHRoZQ0KPiBmaXJt
+d2FyZSBvciB2ZXJ5IGVhcmx5IGluIHRoZSBrZXJuZWw6DQo+IA0KPiBFRkkgc3R1YjogQm9v
+dGluZyBMaW51eCBLZXJuZWwuLi4NCj4gMjAyNS0wMS0yNCAxMzoyNToyOCwyMjY6DQo+IDIw
+MjUtMDEtMjQgMTM6MjU6MjgsMjI2Og0KPiAyMDI1LTAxLTI0IDEzOjI1OjI4LDIyNzogU3lu
+Y2hyb25vdXMgRXhjZXB0aW9uIGF0IDB4MDAwMDAwMDBCRjUyNjQ5OA0KPiAyMDI1LTAxLTI0
+IDEzOjI1OjI4LDIyNzoNCj4gMjAyNS0wMS0yNCAxMzoyNToyOCwyMjc6DQo+IDIwMjUtMDEt
+MjQgMTM6MjU6MjgsMjI4OiBTeW5jaHJvbm91cyBFeGNlcHRpb24gYXQgMHgwMDAwMDAwMEJG
+NTI2NDk4DQo+IA0KPiBJIHdhc24ndCBhYmxlIHRvIHJlcHJvZHVjZSBpdCBhZnRlcndhcmRz
+IGFueW1vcmUsIGJ1dCBpbiBjYXNlIHNvbWVib2R5IHJ1bnMNCj4gaW50byB0aGlzIGxhdGVy
+IGFnYWluIGFuZCB3b25kZXJzIGlmIGl0IGlzIGEgbGF0ZXIgcmVncmVzc2lvbjogSXQgaGFw
+cGVuZWQNCj4gZm9yIG1lIHdpdGggY29tbWl0IGNmODY3NzBjN2FhMzFlYmQuDQo+IA0KPiAg
+ICBUaG9tYXMNCj4gDQoNCkkgbWV0IHRoaXMga2luZCBvZiBlcnJvciBiZWZvcmUgKG5vdCBv
+biBybWUpLCBhbmQgaWYgSSByZW1lbWJlciB3ZWxsLCANCml0J3MgY29taW5nIGZyb20gRURL
+Mi4NCg0KV2UgbWlnaHQgaGF2ZSBhIHJhY2UgY29uZGl0aW9uIGhlcmUuDQo=
 
