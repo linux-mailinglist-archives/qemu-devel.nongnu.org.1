@@ -2,59 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87D4A1B2DA
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:44:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA0B1A1B308
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:51:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbGEn-00068R-8o; Fri, 24 Jan 2025 04:44:29 -0500
+	id 1tbGIp-0007Qc-PM; Fri, 24 Jan 2025 04:48:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1tbGEm-00068H-1y
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:44:28 -0500
-Received: from kylie.crudebyte.com ([5.189.157.229])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tbGG2-0007Nn-5T
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:45:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1tbGEk-0003bx-0h
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:44:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
- Content-ID:Content-Description;
- bh=vPtFQ5eZ2oQGwwjvMC82PhJbey7v66b3E3FKu8zEncc=; b=Sp0XeuPBWusbQE+YkxKdFTh+uc
- U13BOBjuTMSAI8WsUAiZhA/0uCWZkHlH4Ib+MtyyCXbj+KJZb9aNUv5SkWmJLilOYqggPUDt66wlT
- ofGsIMGu5OaQlXw5MtVzKLXFR2+Fe1SLLtvPb6NFAR0kxZFR+0pdXnkeRV8w4rN/Kct7GqtHu9Ptc
- EPCCn+ZfSboqOEFHmuBgh7c1iU9emvv7BEZevo2xXOdJCz/08wyzgbzKVYGyJJnUTsWYE7S9H1ABr
- 0XK+IMzOUU6u+tZwEdoH1Le3W/spi/i8JSuQ4cWV1G+3hmlIZbg8GPeJBfEMLFp1JpuiKCVI9K/uf
- aVQ/Abvi34hiXRkyg8fBqeZcZXzD6A2GSllONxiqENLOFdUkxaVeXYa8soJ9HqQWfhKpGT3YGQMvf
- ahbcqtxLGHlxlTQx+zlASr2A9CbVsq4OU6JcjDgVWQI9J2EpYQjXBYXMdk5Cn2fumUKSX/hWLZ/LT
- yJSWUIqOZWK/C4vETYUibvG8oqLGOVbXZihX4R+C5wgHPOoi8PiUv0NjdGBBzusALZorY7+srdrr7
- hOohDKK1omrSoguCdCMtc0XehhMYwPJley9CoyXvpnUP3ZFdvOBU6QY4nkU5RlvKfz8rZN9UuyZI0
- NJLlm6ikOk82Mr/Iho+zTb2O8C3O4slScHeUMX+ow=;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-To: Gerd Hoffmann <kraxel@redhat.com>,
- Philippe =?ISO-8859-1?Q?Mathieu=2DDaud=E9?= <philmd@linaro.org>,
- BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org
-Cc: devel@daynix.com, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: Re: [PATCH v7 2/6] coreaudio: Remove extra whitespaces
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tbGG0-0003wS-Je
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:45:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737711943;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=iUzMFIurVFZDuf9mlbfI79G6/XfuTB6fCKo65mN+6bA=;
+ b=eGDi1ZDYPYDDOMXoVb+fK6Nchki1EBCla7YlV22dsN6+tU8ilgPen/A+4vFj6APLf24g5a
+ jr5fMcIcf8Vn3K3MXOyONLuyJs6z4IwsOggqu7ApA9rKc8S0hEXQ5s5XarbLkJwE0CZExW
+ ZGO5URvwqvY6l+pqZ7T0R+I52XNFcw8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-517-BKGuiY_jN3uqEcFp2Ab2-g-1; Fri, 24 Jan 2025 04:45:42 -0500
+X-MC-Unique: BKGuiY_jN3uqEcFp2Ab2-g-1
+X-Mimecast-MFC-AGG-ID: BKGuiY_jN3uqEcFp2Ab2-g
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-388d1f6f3b2so848841f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 01:45:41 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737711940; x=1738316740;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=iUzMFIurVFZDuf9mlbfI79G6/XfuTB6fCKo65mN+6bA=;
+ b=cSPr9DO9cLObT00lhPKSqmvGEoQFKUhCp5U7y7EOQ4VprloUdlbTuOHxFcmsquv6Ov
+ G1h5Dc8RazQDAooSEoybdlMbTQH1z5sWP+P9APUCyYLCOURIMQ/7sHbaSQfFxlRT1iTO
+ H+G5ZcclvoheBQzHhHsqR9KDlo08hSn+or/NfBF1XbKUlFM01m7uRWScM2+825NCRS0F
+ wFXedWSdYdNPVkuVmQUYQjmM5Oj1teOylJr27AqIqcxvhyVI6U3gXtopFhfFqVhdmIuI
+ lU8oDEyLZM1nhdjXfDHqIlELzY9+I92BVHW7CXHVQl8sRS6ACElMHVWgHjMSxJKkMQAD
+ VOUA==
+X-Gm-Message-State: AOJu0YwcLTgKdbcdq7BHcgCl2j8G4MF5FHquAFj+1GGhSJ8MWQhfo76l
+ ynsNhv6euxyLb0+u/u4m/u2Y/nQxEHTAnuCEehybZst7A9hnbu3oEdVR6E0EfcS9lIuurr7ckj5
+ cSYGeTkgifZwfDVhRFRdizbywxvDfYSlO6HGcYZqUnrEO5IvEr85RDSnuwJJlUUoNWfOT6OkFoJ
+ YsSYLe1folTKezvDPRuCPY4k7dNsSBN8SVLWBEmFQ=
+X-Gm-Gg: ASbGncteUkwdHy9pjrveU17bGc8H7pazjWHbtZxCtWWCcMSrO7pMGdYctFgOko483a7
+ ZeInhbRGW7JvwzlZG6ZQjvrk0cI2tS544ygGqJlxHzbNBD9KToa0QkbC4JTPuQi1P8J17YuYSk2
+ DR/DD6uVNhgCh+9t90SqZRnb4JzCWe38GGN35fIfhre8EeEbJQ6W4D14YdBY0SYShZEs5dfI3B0
+ NBNuyszSKFSeQ1Z26eMfrSbPvokoq8dDwUzZyRQeA07JjIntRwAqivuU4x7TYFdRdV+Ky9UHA==
+X-Received: by 2002:a5d:4207:0:b0:38b:ebcd:305c with SMTP id
+ ffacd0b85a97d-38bf5675826mr21816588f8f.29.1737711939630; 
+ Fri, 24 Jan 2025 01:45:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEVv96LqD7sfaqk8mv6sYQsgNUHWv3HMbkMyQOw0qVEXsAHBPEQQd5mihfPaWGDzMS1uIVEMw==
+X-Received: by 2002:a5d:4207:0:b0:38b:ebcd:305c with SMTP id
+ ffacd0b85a97d-38bf5675826mr21816558f8f.29.1737711939057; 
+ Fri, 24 Jan 2025 01:45:39 -0800 (PST)
+Received: from [192.168.10.48] ([151.95.59.125])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38c2a18859asm2145107f8f.42.2025.01.24.01.45.38
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 24 Jan 2025 01:45:38 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 27/48] rust: vmstate: add varray support to vmstate_of!
 Date: Fri, 24 Jan 2025 10:44:21 +0100
-Message-ID: <16872466.hJq5qvgIpt@silver>
-In-Reply-To: <20250124-coreaudio-v7-2-9d9a4d91db37@daynix.com>
-References: <20250124-coreaudio-v7-0-9d9a4d91db37@daynix.com>
- <20250124-coreaudio-v7-2-9d9a4d91db37@daynix.com>
+Message-ID: <20250124094442.13207-28-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250124094442.13207-1-pbonzini@redhat.com>
+References: <20250124094442.13207-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,344 +105,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Friday, January 24, 2025 6:12:05 AM CET Akihiko Odaki wrote:
-> Remove extra whitespaces around parentheses.
-> 
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->  audio/coreaudio.m | 108 +++++++++++++++++++++++++++---------------------------
->  1 file changed, 54 insertions(+), 54 deletions(-)
-> 
-> diff --git a/audio/coreaudio.m b/audio/coreaudio.m
-> index 0b67347ad7e8c43a77af308a1a3a654dd7084083..04e8ac59f4572c1e5fb7dc4f04f5e21520507ab5 100644
-> --- a/audio/coreaudio.m
-> +++ b/audio/coreaudio.m
-> @@ -149,7 +149,7 @@ static OSStatus coreaudio_get_isrunning(AudioDeviceID id, UInt32 *result)
->                                        result);
->  }
->  
-> -static void coreaudio_logstatus (OSStatus status)
-> +static void coreaudio_logstatus(OSStatus status)
->  {
->      const char *str = "BUG";
->  
-> @@ -199,14 +199,14 @@ static void coreaudio_logstatus (OSStatus status)
->          break;
->  
->      default:
-> -        AUD_log (AUDIO_CAP, "Reason: status code %" PRId32 "\n", (int32_t)status);
-> +        AUD_log(AUDIO_CAP, "Reason: status code %" PRId32 "\n", (int32_t)status);
->          return;
->      }
->  
-> -    AUD_log (AUDIO_CAP, "Reason: %s\n", str);
-> +    AUD_log(AUDIO_CAP, "Reason: %s\n", str);
->  }
->  
-> -static void G_GNUC_PRINTF (2, 3) coreaudio_logerr (
-> +static void G_GNUC_PRINTF(2, 3) coreaudio_logerr(
->      OSStatus status,
->      const char *fmt,
->      ...
-> @@ -214,14 +214,14 @@ static void G_GNUC_PRINTF (2, 3) coreaudio_logerr (
->  {
->      va_list ap;
->  
-> -    va_start (ap, fmt);
-> -    AUD_log (AUDIO_CAP, fmt, ap);
-> -    va_end (ap);
-> +    va_start(ap, fmt);
-> +    AUD_log(AUDIO_CAP, fmt, ap);
-> +    va_end(ap);
->  
-> -    coreaudio_logstatus (status);
-> +    coreaudio_logstatus(status);
->  }
->  
-> -static void G_GNUC_PRINTF (3, 4) coreaudio_logerr2 (
-> +static void G_GNUC_PRINTF(3, 4) coreaudio_logerr2(
->      OSStatus status,
->      const char *typ,
->      const char *fmt,
-> @@ -230,39 +230,39 @@ static void G_GNUC_PRINTF (3, 4) coreaudio_logerr2 (
->  {
->      va_list ap;
->  
-> -    AUD_log (AUDIO_CAP, "Could not initialize %s\n", typ);
-> +    AUD_log(AUDIO_CAP, "Could not initialize %s\n", typ);
->  
-> -    va_start (ap, fmt);
-> -    AUD_vlog (AUDIO_CAP, fmt, ap);
-> -    va_end (ap);
-> +    va_start(ap, fmt);
-> +    AUD_vlog(AUDIO_CAP, fmt, ap);
-> +    va_end(ap);
->  
-> -    coreaudio_logstatus (status);
-> +    coreaudio_logstatus(status);
->  }
->  
->  #define coreaudio_playback_logerr(status, ...) \
->      coreaudio_logerr2(status, "playback", __VA_ARGS__)
->  
-> -static int coreaudio_buf_lock (coreaudioVoiceOut *core, const char *fn_name)
-> +static int coreaudio_buf_lock(coreaudioVoiceOut *core, const char *fn_name)
->  {
->      int err;
->  
-> -    err = pthread_mutex_lock (&core->buf_mutex);
-> +    err = pthread_mutex_lock(&core->buf_mutex);
->      if (err) {
-> -        dolog ("Could not lock voice for %s\nReason: %s\n",
-> -               fn_name, strerror (err));
-> +        dolog("Could not lock voice for %s\nReason: %s\n",
-> +              fn_name, strerror(err));
->          return -1;
->      }
->      return 0;
->  }
->  
-> -static int coreaudio_buf_unlock (coreaudioVoiceOut *core, const char *fn_name)
-> +static int coreaudio_buf_unlock(coreaudioVoiceOut *core, const char *fn_name)
->  {
->      int err;
->  
-> -    err = pthread_mutex_unlock (&core->buf_mutex);
-> +    err = pthread_mutex_unlock(&core->buf_mutex);
->      if (err) {
-> -        dolog ("Could not unlock voice for %s\nReason: %s\n",
-> -               fn_name, strerror (err));
-> +        dolog("Could not unlock voice for %s\nReason: %s\n",
-> +               fn_name, strerror(err));
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ rust/qemu-api/src/vmstate.rs | 42 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 40 insertions(+), 2 deletions(-)
 
-Nit: this last line should be unindented left by one character. Except of
-that:
-
-Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-
-/Christian
-
->          return -1;
->      }
->      return 0;
-> @@ -271,7 +271,7 @@ static int coreaudio_buf_unlock (coreaudioVoiceOut *core, const char *fn_name)
->  #define COREAUDIO_WRAPPER_FUNC(name, ret_type, args_decl, args) \
->      static ret_type glue(coreaudio_, name)args_decl             \
->      {                                                           \
-> -        coreaudioVoiceOut *core = (coreaudioVoiceOut *) hw;     \
-> +        coreaudioVoiceOut *core = (coreaudioVoiceOut *)hw;      \
->          ret_type ret;                                           \
->                                                                  \
->          if (coreaudio_buf_lock(core, "coreaudio_" #name)) {         \
-> @@ -312,13 +312,13 @@ static OSStatus audioDeviceIOProc(
->      coreaudioVoiceOut *core = hwptr;
->      size_t len;
->  
-> -    if (coreaudio_buf_lock (core, "audioDeviceIOProc")) {
-> +    if (coreaudio_buf_lock(core, "audioDeviceIOProc")) {
->          inInputTime = 0;
->          return 0;
->      }
->  
->      if (inDevice != core->outputDeviceID) {
-> -        coreaudio_buf_unlock (core, "audioDeviceIOProc(old device)");
-> +        coreaudio_buf_unlock(core, "audioDeviceIOProc(old device)");
->          return 0;
->      }
->  
-> @@ -328,7 +328,7 @@ static OSStatus audioDeviceIOProc(
->      /* if there are not enough samples, set signal and return */
->      if (pending_frames < frameCount) {
->          inInputTime = 0;
-> -        coreaudio_buf_unlock (core, "audioDeviceIOProc(empty)");
-> +        coreaudio_buf_unlock(core, "audioDeviceIOProc(empty)");
->          return 0;
->      }
->  
-> @@ -348,7 +348,7 @@ static OSStatus audioDeviceIOProc(
->          out += write_len;
->      }
->  
-> -    coreaudio_buf_unlock (core, "audioDeviceIOProc");
-> +    coreaudio_buf_unlock(core, "audioDeviceIOProc");
->      return 0;
->  }
->  
-> @@ -370,12 +370,12 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
->  
->      status = coreaudio_get_voice(&core->outputDeviceID);
->      if (status != kAudioHardwareNoError) {
-> -        coreaudio_playback_logerr (status,
-> -                                   "Could not get default output Device\n");
-> +        coreaudio_playback_logerr(status,
-> +                                  "Could not get default output Device\n");
->          return status;
->      }
->      if (core->outputDeviceID == kAudioDeviceUnknown) {
-> -        dolog ("Could not initialize playback - Unknown Audiodevice\n");
-> +        dolog("Could not initialize playback - Unknown Audiodevice\n");
->          return status;
->      }
->  
-> @@ -386,17 +386,17 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
->          return 0;
->      }
->      if (status != kAudioHardwareNoError) {
-> -        coreaudio_playback_logerr (status,
-> -                                    "Could not get device buffer frame range\n");
-> +        coreaudio_playback_logerr(status,
-> +                                  "Could not get device buffer frame range\n");
->          return status;
->      }
->  
->      if (frameRange.mMinimum > core->frameSizeSetting) {
->          core->audioDevicePropertyBufferFrameSize = frameRange.mMinimum;
-> -        dolog ("warning: Upsizing Buffer Frames to %f\n", frameRange.mMinimum);
-> +        dolog("warning: Upsizing Buffer Frames to %f\n", frameRange.mMinimum);
->      } else if (frameRange.mMaximum < core->frameSizeSetting) {
->          core->audioDevicePropertyBufferFrameSize = frameRange.mMaximum;
-> -        dolog ("warning: Downsizing Buffer Frames to %f\n", frameRange.mMaximum);
-> +        dolog("warning: Downsizing Buffer Frames to %f\n", frameRange.mMaximum);
->      } else {
->          core->audioDevicePropertyBufferFrameSize = core->frameSizeSetting;
->      }
-> @@ -408,9 +408,9 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
->          return 0;
->      }
->      if (status != kAudioHardwareNoError) {
-> -        coreaudio_playback_logerr (status,
-> -                                    "Could not set device buffer frame size %" PRIu32 "\n",
-> -                                    (uint32_t)core->audioDevicePropertyBufferFrameSize);
-> +        coreaudio_playback_logerr(status,
-> +                                  "Could not set device buffer frame size %" PRIu32 "\n",
-> +                                  (uint32_t)core->audioDevicePropertyBufferFrameSize);
->          return status;
->      }
->  
-> @@ -421,8 +421,8 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
->          return 0;
->      }
->      if (status != kAudioHardwareNoError) {
-> -        coreaudio_playback_logerr (status,
-> -                                    "Could not get device buffer frame size\n");
-> +        coreaudio_playback_logerr(status,
-> +                                  "Could not get device buffer frame size\n");
->          return status;
->      }
->      core->hw.samples = core->bufferCount * core->audioDevicePropertyBufferFrameSize;
-> @@ -434,9 +434,9 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
->          return 0;
->      }
->      if (status != kAudioHardwareNoError) {
-> -        coreaudio_playback_logerr (status,
-> -                                   "Could not set samplerate %lf\n",
-> -                                   streamBasicDescription.mSampleRate);
-> +        coreaudio_playback_logerr(status,
-> +                                  "Could not set samplerate %lf\n",
-> +                                  streamBasicDescription.mSampleRate);
->          core->outputDeviceID = kAudioDeviceUnknown;
->          return status;
->      }
-> @@ -460,7 +460,7 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
->          return 0;
->      }
->      if (status != kAudioHardwareNoError || core->ioprocid == NULL) {
-> -        coreaudio_playback_logerr (status, "Could not set IOProc\n");
-> +        coreaudio_playback_logerr(status, "Could not set IOProc\n");
->          core->outputDeviceID = kAudioDeviceUnknown;
->          return status;
->      }
-> @@ -518,7 +518,7 @@ static void update_device_playback_state(coreaudioVoiceOut *core)
->          if (!isrunning) {
->              status = AudioDeviceStart(core->outputDeviceID, core->ioprocid);
->              if (status != kAudioHardwareBadDeviceError && status != kAudioHardwareNoError) {
-> -                coreaudio_logerr (status, "Could not resume playback\n");
-> +                coreaudio_logerr(status, "Could not resume playback\n");
->              }
->          }
->      } else {
-> @@ -560,7 +560,7 @@ static int coreaudio_init_out(HWVoiceOut *hw, struct audsettings *as,
->                                void *drv_opaque)
->  {
->      OSStatus status;
-> -    coreaudioVoiceOut *core = (coreaudioVoiceOut *) hw;
-> +    coreaudioVoiceOut *core = (coreaudioVoiceOut *)hw;
->      int err;
->      Audiodev *dev = drv_opaque;
->      AudiodevCoreaudioPerDirectionOptions *cpdo = dev->u.coreaudio.out;
-> @@ -569,14 +569,14 @@ static int coreaudio_init_out(HWVoiceOut *hw, struct audsettings *as,
->      /* create mutex */
->      err = pthread_mutex_init(&core->buf_mutex, NULL);
->      if (err) {
-> -        dolog("Could not create mutex\nReason: %s\n", strerror (err));
-> +        dolog("Could not create mutex\nReason: %s\n", strerror(err));
->          return -1;
->      }
->  
->      obt_as = *as;
->      as = &obt_as;
->      as->fmt = AUDIO_FORMAT_F32;
-> -    audio_pcm_init_info (&hw->info, as);
-> +    audio_pcm_init_info(&hw->info, as);
->  
->      core->frameSizeSetting = audio_buffer_frames(
->          qapi_AudiodevCoreaudioPerDirectionOptions_base(cpdo), as, 11610);
-> @@ -587,8 +587,8 @@ static int coreaudio_init_out(HWVoiceOut *hw, struct audsettings *as,
->                                              &voice_addr, handle_voice_change,
->                                              core);
->      if (status != kAudioHardwareNoError) {
-> -        coreaudio_playback_logerr (status,
-> -                                   "Could not listen to voice property change\n");
-> +        coreaudio_playback_logerr(status,
-> +                                  "Could not listen to voice property change\n");
->          return -1;
->      }
->  
-> @@ -612,7 +612,7 @@ static void coreaudio_fini_out (HWVoiceOut *hw)
->  {
->      OSStatus status;
->      int err;
-> -    coreaudioVoiceOut *core = (coreaudioVoiceOut *) hw;
-> +    coreaudioVoiceOut *core = (coreaudioVoiceOut *)hw;
->  
->      status = AudioObjectRemovePropertyListener(kAudioObjectSystemObject,
->                                                 &voice_addr,
-> @@ -627,13 +627,13 @@ static void coreaudio_fini_out (HWVoiceOut *hw)
->      /* destroy mutex */
->      err = pthread_mutex_destroy(&core->buf_mutex);
->      if (err) {
-> -        dolog("Could not destroy mutex\nReason: %s\n", strerror (err));
-> +        dolog("Could not destroy mutex\nReason: %s\n", strerror(err));
->      }
->  }
->  
->  static void coreaudio_enable_out(HWVoiceOut *hw, bool enable)
->  {
-> -    coreaudioVoiceOut *core = (coreaudioVoiceOut *) hw;
-> +    coreaudioVoiceOut *core = (coreaudioVoiceOut *)hw;
->  
->      core->enabled = enable;
->      update_device_playback_state(core);
-> @@ -644,7 +644,7 @@ static void coreaudio_enable_out(HWVoiceOut *hw, bool enable)
->      return dev;
->  }
->  
-> -static void coreaudio_audio_fini (void *opaque)
-> +static void coreaudio_audio_fini(void *opaque)
->  {
->  }
->  
-> @@ -670,7 +670,7 @@ static void coreaudio_audio_fini (void *opaque)
->      .pcm_ops        = &coreaudio_pcm_ops,
->      .max_voices_out = 1,
->      .max_voices_in  = 0,
-> -    .voice_size_out = sizeof (coreaudioVoiceOut),
-> +    .voice_size_out = sizeof(coreaudioVoiceOut),
->      .voice_size_in  = 0
->  };
->  
-> 
-> 
-
+diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
+index 211c3d096b7..2b14d4839df 100644
+--- a/rust/qemu-api/src/vmstate.rs
++++ b/rust/qemu-api/src/vmstate.rs
+@@ -72,6 +72,15 @@ pub unsafe trait VMState {
+     /// The base contents of a `VMStateField` (minus the name and offset) for
+     /// the type that is implementing the trait.
+     const BASE: VMStateField;
++
++    /// A flag that is added to another field's `VMStateField` to specify the
++    /// length's type in a variable-sized array.  If this is not a supported
++    /// type for the length (i.e. if it is not `u8`, `u16`, `u32`), using it
++    /// in a call to [`vmstate_of!`](crate::vmstate_of) will cause a
++    /// compile-time error.
++    const VARRAY_FLAG: VMStateFlags = {
++        panic!("invalid type for variable-sized array");
++    };
+ }
+ 
+ /// Internal utility function to retrieve a type's `VMStateField`;
+@@ -80,6 +89,13 @@ pub const fn vmstate_base<T: VMState>(_: PhantomData<T>) -> VMStateField {
+     T::BASE
+ }
+ 
++/// Internal utility function to retrieve a type's `VMStateFlags` when it
++/// is used as the element count of a `VMSTATE_VARRAY`; used by
++/// [`vmstate_of!`](crate::vmstate_of).
++pub const fn vmstate_varray_flag<T: VMState>(_: PhantomData<T>) -> VMStateFlags {
++    T::VARRAY_FLAG
++}
++
+ /// Return the `VMStateField` for a field of a struct.  The field must be
+ /// visible in the current scope.
+ ///
+@@ -87,18 +103,23 @@ pub const fn vmstate_base<T: VMState>(_: PhantomData<T>) -> VMStateField {
+ /// for them.
+ #[macro_export]
+ macro_rules! vmstate_of {
+-    ($struct_name:ty, $field_name:ident $(,)?) => {
++    ($struct_name:ty, $field_name:ident $([0 .. $num:ident $(* $factor:expr)?])? $(,)?) => {
+         $crate::bindings::VMStateField {
+             name: ::core::concat!(::core::stringify!($field_name), "\0")
+                 .as_bytes()
+                 .as_ptr() as *const ::std::os::raw::c_char,
+             offset: $crate::offset_of!($struct_name, $field_name),
+             // Compute most of the VMStateField from the type of the field.
++            $(.num_offset: $crate::offset_of!($struct_name, $num),)?
+             ..$crate::call_func_with_field!(
+                 $crate::vmstate::vmstate_base,
+                 $struct_name,
+                 $field_name
+-            )
++            )$(.with_varray_flag($crate::call_func_with_field!(
++                    $crate::vmstate::vmstate_varray_flag,
++                    $struct_name,
++                    $num))
++               $(.with_varray_multiply($factor))?)?
+         }
+     };
+ }
+@@ -143,6 +164,22 @@ pub const fn with_pointer_flag(mut self) -> Self {
+         self.flags = VMStateFlags(self.flags.0 | VMStateFlags::VMS_POINTER.0);
+         self
+     }
++
++    #[must_use]
++    pub const fn with_varray_flag<T: VMState>(mut self, flag: VMStateFlags) -> VMStateField {
++        assert!((self.flags.0 & VMStateFlags::VMS_ARRAY.0) != 0);
++        self.flags = VMStateFlags(self.flags.0 & !VMStateFlags::VMS_ARRAY.0);
++        self.flags = VMStateFlags(self.flags.0 | flag.0);
++        self
++    }
++
++    #[must_use]
++    pub const fn with_varray_multiply(mut self, num: u32) -> VMStateField {
++        assert!(num <= 0x7FFF_FFFFu32);
++        self.flags = VMStateFlags(self.flags.0 | VMStateFlags::VMS_MULTIPLY_ELEMENTS.0);
++        self.num = num as i32;
++        self
++    }
+ }
+ 
+ // Transparent wrappers: just use the internal type
+@@ -154,6 +191,7 @@ unsafe impl<$base> VMState for $type where $base: VMState $($where)* {
+                 size: mem::size_of::<$type>(),
+                 ..<$base as VMState>::BASE
+             };
++            const VARRAY_FLAG: VMStateFlags = <$base as VMState>::VARRAY_FLAG;
+         }
+     };
+ }
+-- 
+2.48.1
 
 
