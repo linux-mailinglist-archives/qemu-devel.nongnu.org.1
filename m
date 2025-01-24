@@ -2,42 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E8FA1AEDD
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 03:54:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95BDBA1AEE5
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 04:04:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tb9pB-0007HQ-CV; Thu, 23 Jan 2025 21:53:37 -0500
+	id 1tb9yJ-0000ut-3F; Thu, 23 Jan 2025 22:03:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tb9p4-0007Ge-UH; Thu, 23 Jan 2025 21:53:30 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1tb9yE-0000to-Vk; Thu, 23 Jan 2025 22:02:59 -0500
+Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tb9p2-0006nP-Lz; Thu, 23 Jan 2025 21:53:30 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id AFE0B4E602D;
- Fri, 24 Jan 2025 03:53:24 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id frBz-yVInoMV; Fri, 24 Jan 2025 03:53:22 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id C47A24E602B; Fri, 24 Jan 2025 03:53:22 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v2] hw/usb/hcd-ehci: Fix debug printf format string
-To: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
-Cc: philmd@linaro.org
-Message-Id: <20250124025322.C47A24E602B@zero.eik.bme.hu>
-Date: Fri, 24 Jan 2025 03:53:22 +0100 (CET)
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1tb9yC-0007tm-Tw; Thu, 23 Jan 2025 22:02:58 -0500
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Fri, 24 Jan
+ 2025 11:02:49 +0800
+Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
+ Transport; Fri, 24 Jan 2025 11:02:49 +0800
+To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
+ Stanley" <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
+ <yunlin.tang@aspeedtech.com>
+Subject: [PATCH v2 0/2] wdt/aspeed: Support software reset mode for AST2600
+Date: Fri, 24 Jan 2025 11:02:47 +0800
+Message-ID: <20250124030249.1706996-1-jamin_lin@aspeedtech.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=211.20.114.72;
+ envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -50,32 +57,24 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
+From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The variable is uint64_t so needs %ld instead of %d.
+v1:
+  Support software reset mode for AST2600
+v2:
+  Change to validate WDT_CTRL_RESET_MODE_SOC
 
-Fixes: 3ae7eb88c47 ("ehci: fix overflow in frame timer code")
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
----
- hw/usb/hcd-ehci.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Jamin Lin (2):
+  aspeed/wdt: Fix coding style
+  aspeed/wdt: Support software reset mode for AST2600
 
-diff --git a/hw/usb/hcd-ehci.c b/hw/usb/hcd-ehci.c
-index 6c4c14c895..b090f25365 100644
---- a/hw/usb/hcd-ehci.c
-+++ b/hw/usb/hcd-ehci.c
-@@ -2287,7 +2287,8 @@ static void ehci_work_bh(void *opaque)
-             ehci_update_frindex(ehci, skipped_uframes);
-             ehci->last_run_ns += UFRAME_TIMER_NS * skipped_uframes;
-             uframes -= skipped_uframes;
--            DPRINTF("WARNING - EHCI skipped %d uframes\n", skipped_uframes);
-+            DPRINTF("WARNING - EHCI skipped %"PRIu64" uframes\n",
-+                    skipped_uframes);
-         }
- 
-         for (i = 0; i < uframes; i++) {
+ hw/watchdog/wdt_aspeed.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
+
 -- 
-2.30.9
+2.34.1
 
 
