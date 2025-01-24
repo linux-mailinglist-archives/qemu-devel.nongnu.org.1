@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD31A1B2E8
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:47:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF32A1B2E4
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:46:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbGFS-0006Wi-Jn; Fri, 24 Jan 2025 04:45:10 -0500
+	id 1tbGFb-0006c3-ST; Fri, 24 Jan 2025 04:45:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tbGFP-0006W2-7B
+ id 1tbGFP-0006W5-M9
  for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:45:07 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tbGFN-0003qe-A3
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:45:06 -0500
+ id 1tbGFN-0003qo-ST
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:45:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737711904;
+ s=mimecast20190719; t=1737711905;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JBevoGoFcg9Wd4iiTpRW0rHaDELMzFnRDJIXacwfsdU=;
- b=VJePcRwPgzwsmbBL//v/KrqodU55wgM1HgE0+ahWQPXJcIogXMe3zfQvvg9VYjbNuYu8FM
- FtTFHaf+RrCygBQ3l5xFw4fJCympq6BxP4FytPxrpITLM3qFPNbjlg1NppGCGIbNF69l81
- 2ARURjDOfOgvspn5uLCQJ4ALVLi3fZg=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+SghbM/NNoU3iHbE0G8WtufvFOtxEQ/VfpTeyiNEP0U=;
+ b=YCKCam1bOJTVJtd+V7uULcla1FWgqF4FxWYqcMoy1QKdKqNu1OJHbo3q7lrAsQnbbIkPWE
+ EqYZdzVgmVmN2kHDgJv9GIcb0ZOo+mgwi9VauPuFIFFrf+TDnizqYT2W/jbbRM7u1oElKC
+ Bp2tBmXa6ZqAwtr8/4aTs2wDYIrUfkE=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-575-cGnTO2R-MlyG0IEuuftqmg-1; Fri, 24 Jan 2025 04:45:01 -0500
-X-MC-Unique: cGnTO2R-MlyG0IEuuftqmg-1
-X-Mimecast-MFC-AGG-ID: cGnTO2R-MlyG0IEuuftqmg
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-38c24ac3415so1500725f8f.2
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 01:45:01 -0800 (PST)
+ us-mta-651-I2KN4JB9P4SJNTP2ePNPRw-1; Fri, 24 Jan 2025 04:45:03 -0500
+X-MC-Unique: I2KN4JB9P4SJNTP2ePNPRw-1
+X-Mimecast-MFC-AGG-ID: I2KN4JB9P4SJNTP2ePNPRw
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-385fdff9db5so703000f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 01:45:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737711900; x=1738316700;
+ d=1e100.net; s=20230601; t=1737711901; x=1738316701;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JBevoGoFcg9Wd4iiTpRW0rHaDELMzFnRDJIXacwfsdU=;
- b=kj2DSyQQyaPQuW58LrY/UQwLPQ7kWumRdizBlfrvjq6154C0C1VyQI9gA+malwQ1+h
- XniMqxo8trBHxQRK/5rDQJUn7MGL4iCBaKsNIQXRNtUVJBtVb2BDKdh4Om8gbUDUJiLB
- RM9DGRiCHR+FHuyBls3KsSxVVIoyEm0/YnA4yt/MwUL8Pd2HEVzSHUt1p6M1uxQT+sL3
- n+Qeji8fTAyiPl5DcMp8r+xj3xdseeNLz9cUH76fJXd149FWFvx/m8qPfmbbr2eBpWC6
- dE4qQp2YcA8DuZ5BlpBsyPwDEeOW0dzwMZSXLGFkneg5UlsUW0/PrjCAt3my8S3jDEXm
- MQBg==
-X-Gm-Message-State: AOJu0YxHlvwcVOjb6gzTk7oF51LV3qHCY1ikpO1Nv53HmFOQZCJQMqrs
- sUYyjeVhMvsGfjlUUjZfO5djLruKYnnq7feKPzSCKMbSii0R8ppLkues53azgMk6dV9L9+JX421
- VXC9R4+R4wzat3LF22f0N0gRL7VzLNnPvh9O2AfTk7RPj7KluGKPYSKm0YA+UW76G3ZOBhzUaZm
- nX1tE5yrABAvDFSnLzxtzBYgipWA8CCLRF/7MdS/Q=
-X-Gm-Gg: ASbGnctPzaj7szY4Qx06Jn19PrO/SSAbpyqiS/io5Q1x8/a6/c/1zVZHnT46kRk9Lhc
- 8VBbv2yvT1Q91DwWtRh55NMEIN7vlYAPy/vBMfosy4XCBorbjDFb4FHnUn1tqeQIxxCCoUD7dAt
- 404gJPJmdeeZowGGZ5Pzzt48naIm+0v4u8ej1hiZJUxMXkgWLS0RFaMo5Lp3we6NjxX3xV9pEC0
- i/zwGQixX0dI1HLfuVjwomZRP+2yfKmOLBrbUDwSfTr/M4OT4xkDImuRQvHroIvICtrJUETXQ==
-X-Received: by 2002:a5d:59ab:0:b0:386:605:77e with SMTP id
- ffacd0b85a97d-38bf57beaebmr30842937f8f.49.1737711899645; 
- Fri, 24 Jan 2025 01:44:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGupPXe6hHHo51ER4hJGbbh5egb8AnEQVVr6m9rE9XQTJUnUwc1W1oJgvSQM1+C7VmOYvL7Iw==
-X-Received: by 2002:a5d:59ab:0:b0:386:605:77e with SMTP id
- ffacd0b85a97d-38bf57beaebmr30842818f8f.49.1737711897663; 
- Fri, 24 Jan 2025 01:44:57 -0800 (PST)
+ bh=+SghbM/NNoU3iHbE0G8WtufvFOtxEQ/VfpTeyiNEP0U=;
+ b=JJCC+TAie0/kY9w6zloZb7JGzXJHxSAsY9TYoYBPpMCuGth5gMT4b2m62d3MXB3Sh5
+ FPA7RuEh9tMyI+LGLaaiG0w0hFXNlaSaDNG1XDygGQWzdhBU3feXrqtkBJqPI53tf1YJ
+ BBEqcbT2+6A4IaXXG/S0ULoBWFAJXabJpNYArrvbg+rLq+0ktr9FlEmggsPQ+DDogosj
+ YLaRz/Ngc0FggwAcJj7AUWaTCHxJgI+dwpk3WxDAzx2vrOc+3KNUq7ZKgF7LwdfOrpSn
+ MZzNhujHNyqzFa/gvCHgIgRAEX3eaGLr0l43kWJXfMoLyMopjvzoeNyage/yNrSAzaAO
+ R8Qg==
+X-Gm-Message-State: AOJu0Yw8MFNiyNVbxh/NMY6cnxwqGRMX7HzaemozDZ1yEIapbGS3o+nR
+ J3UiBXiq27MtfeoxNZN/QUpUdnXChFzNI5dQRvA8XlqLfbRC/Q4ctJIsdQqfNYLonYYEZpSIN79
+ 2YEoxTO/senh51TPQ4/iVOgYgU84A18N0vnUtu7kpJMlXFdtcgM8sswffGqyiXwNaSVBk+GtEK3
+ pgLeWEj1alOq847WSykfRkzRmif2fx77atuWc2Dl4=
+X-Gm-Gg: ASbGncthFJlRiklDTPMflh9dq6iS93SL3kmf3xKvRDfrGe9pAdnYd24zgM2OeUwI5NZ
+ uyPIID975dACLt6PFzDWe7tVLsbiRpVxAbu2mkfjGX51JwZbl1Au6EbFRYX8ku1Hd++xpCt3vhp
+ X3CVCM8eIUqlPJfDndAHUItVw9w1kZXygVR9ZopXCrG3fqrsruy8py699ofPC2/2Nc4hpC44DZq
+ j/n8NK+JqT0TO6fb3TsY4LE21+BOmk6WatqUqSh4rQZFRhh63P5JfkFIqF2F96DNcJrREkS4w==
+X-Received: by 2002:a05:6000:4008:b0:38b:ed1c:a70d with SMTP id
+ ffacd0b85a97d-38bf55c53c8mr25158537f8f.0.1737711901511; 
+ Fri, 24 Jan 2025 01:45:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGP6mTzQ9P75WlOcIRQYeRnExACSQStsulxTNCTTwCfHzLFazt6TftK2eCUAYqFBjkjpCLG8g==
+X-Received: by 2002:a05:6000:4008:b0:38b:ed1c:a70d with SMTP id
+ ffacd0b85a97d-38bf55c53c8mr25158511f8f.0.1737711901074; 
+ Fri, 24 Jan 2025 01:45:01 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.59.125])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a1761f4sm2171855f8f.20.2025.01.24.01.44.56
+ ffacd0b85a97d-38c2a188fd0sm2207866f8f.58.2025.01.24.01.44.59
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 01:44:57 -0800 (PST)
+ Fri, 24 Jan 2025 01:45:00 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/48] target/i386: tcg: move gen_set/reset_* earlier in the
- file
-Date: Fri, 24 Jan 2025 10:44:01 +0100
-Message-ID: <20250124094442.13207-8-pbonzini@redhat.com>
+Subject: [PULL 08/48] target/i386: fix RF handling for string instructions
+Date: Fri, 24 Jan 2025 10:44:02 +0100
+Message-ID: <20250124094442.13207-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250124094442.13207-1-pbonzini@redhat.com>
 References: <20250124094442.13207-1-pbonzini@redhat.com>
@@ -106,115 +105,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow using them in the code that translates REP/REPZ, without
-forward declarations.
+RF must be set on traps and interrupts from a string instruction,
+except if they occur after the last iteration.  Ensure it is set
+before giving the main loop a chance to execute.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Link: https://lore.kernel.org/r/20241215090613.89588-7-pbonzini@redhat.com
+Link: https://lore.kernel.org/r/20241215090613.89588-8-pbonzini@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 80 ++++++++++++++++++-------------------
- 1 file changed, 40 insertions(+), 40 deletions(-)
+ target/i386/tcg/translate.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index ee536234398..6347de446a4 100644
+index 6347de446a4..141295742ae 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -725,6 +725,46 @@ static inline void gen_op_jnz_ecx(DisasContext *s, TCGLabel *label1)
-     gen_op_j_ecx(s, TCG_COND_NE, label1);
+@@ -1337,6 +1337,14 @@ static void do_gen_rep(DisasContext *s, MemOp ot,
+                        bool is_repz_nz)
+ {
+     TCGLabel *done = gen_new_label();
++    bool had_rf = s->flags & HF_RF_MASK;
++
++    /*
++     * Even if EFLAGS.RF was set on entry (such as if we're on the second or
++     * later iteration and an exception or interrupt happened), force gen_eob()
++     * not to clear the flag.  We do that ourselves after the last iteration.
++     */
++    s->flags &= ~HF_RF_MASK;
+ 
+     gen_update_cc_op(s);
+     gen_op_jz_ecx(s, done);
+@@ -1348,12 +1356,24 @@ static void do_gen_rep(DisasContext *s, MemOp ot,
+         gen_jcc(s, (JCC_Z << 1) | (nz ^ 1), done);
+     }
+ 
++    /*
++     * Traps or interrupts set RF_MASK if they happen after any iteration
++     * but the last.  Set it here before giving the main loop a chance to
++     * execute.  (For faults, seg_helper.c sets the flag as usual).
++     */
++    if (!had_rf) {
++        gen_set_eflags(s, RF_MASK);
++    }
++
+     /* Go to the main loop but reenter the same instruction.  */
+     gen_jmp_rel_csize(s, -cur_insn_len(s), 0);
+ 
+     /* CX/ECX/RCX is zero, or REPZ/REPNZ broke the repetition.  */
+     gen_set_label(done);
+     set_cc_op(s, CC_OP_DYNAMIC);
++    if (had_rf) {
++        gen_reset_eflags(s, RF_MASK);
++    }
+     gen_jmp_rel_csize(s, 0, 1);
  }
  
-+static void gen_set_hflag(DisasContext *s, uint32_t mask)
-+{
-+    if ((s->flags & mask) == 0) {
-+        TCGv_i32 t = tcg_temp_new_i32();
-+        tcg_gen_ld_i32(t, tcg_env, offsetof(CPUX86State, hflags));
-+        tcg_gen_ori_i32(t, t, mask);
-+        tcg_gen_st_i32(t, tcg_env, offsetof(CPUX86State, hflags));
-+        s->flags |= mask;
-+    }
-+}
-+
-+static void gen_reset_hflag(DisasContext *s, uint32_t mask)
-+{
-+    if (s->flags & mask) {
-+        TCGv_i32 t = tcg_temp_new_i32();
-+        tcg_gen_ld_i32(t, tcg_env, offsetof(CPUX86State, hflags));
-+        tcg_gen_andi_i32(t, t, ~mask);
-+        tcg_gen_st_i32(t, tcg_env, offsetof(CPUX86State, hflags));
-+        s->flags &= ~mask;
-+    }
-+}
-+
-+static void gen_set_eflags(DisasContext *s, target_ulong mask)
-+{
-+    TCGv t = tcg_temp_new();
-+
-+    tcg_gen_ld_tl(t, tcg_env, offsetof(CPUX86State, eflags));
-+    tcg_gen_ori_tl(t, t, mask);
-+    tcg_gen_st_tl(t, tcg_env, offsetof(CPUX86State, eflags));
-+}
-+
-+static void gen_reset_eflags(DisasContext *s, target_ulong mask)
-+{
-+    TCGv t = tcg_temp_new();
-+
-+    tcg_gen_ld_tl(t, tcg_env, offsetof(CPUX86State, eflags));
-+    tcg_gen_andi_tl(t, t, ~mask);
-+    tcg_gen_st_tl(t, tcg_env, offsetof(CPUX86State, eflags));
-+}
-+
- static void gen_helper_in_func(MemOp ot, TCGv v, TCGv_i32 n)
- {
-     switch (ot) {
-@@ -2084,46 +2124,6 @@ static void gen_interrupt(DisasContext *s, uint8_t intno)
-     s->base.is_jmp = DISAS_NORETURN;
- }
+@@ -2158,7 +2178,7 @@ gen_eob(DisasContext *s, int mode)
+         gen_set_hflag(s, HF_INHIBIT_IRQ_MASK);
+     }
  
--static void gen_set_hflag(DisasContext *s, uint32_t mask)
--{
--    if ((s->flags & mask) == 0) {
--        TCGv_i32 t = tcg_temp_new_i32();
--        tcg_gen_ld_i32(t, tcg_env, offsetof(CPUX86State, hflags));
--        tcg_gen_ori_i32(t, t, mask);
--        tcg_gen_st_i32(t, tcg_env, offsetof(CPUX86State, hflags));
--        s->flags |= mask;
--    }
--}
--
--static void gen_reset_hflag(DisasContext *s, uint32_t mask)
--{
--    if (s->flags & mask) {
--        TCGv_i32 t = tcg_temp_new_i32();
--        tcg_gen_ld_i32(t, tcg_env, offsetof(CPUX86State, hflags));
--        tcg_gen_andi_i32(t, t, ~mask);
--        tcg_gen_st_i32(t, tcg_env, offsetof(CPUX86State, hflags));
--        s->flags &= ~mask;
--    }
--}
--
--static void gen_set_eflags(DisasContext *s, target_ulong mask)
--{
--    TCGv t = tcg_temp_new();
--
--    tcg_gen_ld_tl(t, tcg_env, offsetof(CPUX86State, eflags));
--    tcg_gen_ori_tl(t, t, mask);
--    tcg_gen_st_tl(t, tcg_env, offsetof(CPUX86State, eflags));
--}
--
--static void gen_reset_eflags(DisasContext *s, target_ulong mask)
--{
--    TCGv t = tcg_temp_new();
--
--    tcg_gen_ld_tl(t, tcg_env, offsetof(CPUX86State, eflags));
--    tcg_gen_andi_tl(t, t, ~mask);
--    tcg_gen_st_tl(t, tcg_env, offsetof(CPUX86State, eflags));
--}
--
- /* Clear BND registers during legacy branches.  */
- static void gen_bnd_jmp(DisasContext *s)
- {
+-    if (s->base.tb->flags & HF_RF_MASK) {
++    if (s->flags & HF_RF_MASK) {
+         gen_reset_eflags(s, RF_MASK);
+     }
+     if (mode == DISAS_EOB_RECHECK_TF) {
 -- 
 2.48.1
 
