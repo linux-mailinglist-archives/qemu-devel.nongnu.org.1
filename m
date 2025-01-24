@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9049FA1BAD1
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:45:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 325ACA1BAF4
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:51:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbMh0-0007Db-Cn; Fri, 24 Jan 2025 11:38:03 -0500
+	id 1tbMgo-0006ux-Um; Fri, 24 Jan 2025 11:37:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tbMZa-00065Z-3g
+ id 1tbMZY-00064L-72
  for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:30:28 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tbMZS-0005rD-K0
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:30:21 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4361b6f9faeso15353985e9.1
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:30:08 -0800 (PST)
+ id 1tbMZR-00062p-MM
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:30:19 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4362f61757fso23853085e9.2
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:30:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737736207; x=1738341007; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737736210; x=1738341010; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=xCeU+LpcSryg5lQ4AtUsxFm/b07YhdAnNy4h4JOSVJ8=;
- b=jdpXH+DPMjvvIWElio+xHOBN4syCyDgu6NcT74/DhVrqqe+nvfXjyRRTVsUb7M3hPU
- 5HrORUx079jZgAoMhFSRQZg734ohfPKHJZynkXqli/ts3adeB82PsVsosuo8xN4JulGl
- AbAMp/6B5Yy0LEKnFPNRJ6FgQ9U+zzBiJcwLd03X9M2FpHNIkUM7hiikQnXJs2arLpfz
- Z8snTo483KO0NSSh6jPMuVLewQXmGX88gU/m0vU8zVx448Lq/Mc48ndIRU6ZN14NExuZ
- NxtiuYVr5WJiPy3tThrhd4IO1e4xzkXqh+qHHwUl1Y8Ol0PmfVAU7h/ExnQ0KOrAFFEg
- L2KQ==
+ :reply-to; bh=vF2AaEc13GOjZXFd5xHueWajog0n73mmADepNcW83nk=;
+ b=Kd/CAOUykEVGtdJaSe1sWeB6K97BzSroTIJ5rO8c086VeOWrLdog8+2hZUWtbqX779
+ UeCnOYc5Qs/D5yvsCuobiDRiX3yCWIk8hEtXjzXax59QbytobZ2LzsPZpRAVZ2M40zOt
+ Spi8b5T27EsQX7qFpj2azPr68btVz8ujfwE2DQmiGVsEnt5dmKpdRmajalfmiqqhwsPN
+ CysJDHV80A2g7nfNoNOcEJ69sLcH88+IR8XW/EyYK/LKHmyLryCmb5sU5YlZLSUN6wtu
+ F7K71TaT94GMnl27/od/2A7mo5ydUCXdu14n9vySN40XmnDbTqARGsJKfKsdylQ80O0A
+ Lm/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737736207; x=1738341007;
+ d=1e100.net; s=20230601; t=1737736210; x=1738341010;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xCeU+LpcSryg5lQ4AtUsxFm/b07YhdAnNy4h4JOSVJ8=;
- b=X7FQJGhDwTfdP2QniTs3yv9q+J0XqjRYlPzKSAEsxsCtxEtV3ihuKt95rC6KFnlUPj
- 0+sehUJP1hzH4IwqoXyVn2W1IrRcTLxhFRM+De6Uf4n5Jsxf5cCBizHj+EjawdM6AOri
- MZTxH7652IFktUedC6eWwqTPjaL5Y2bZ2OgPmqnu3i2UwTzFHGWNiDoTuDCoMmGYCKN7
- njn4qFHg18RxbQN4PI1GnDNd6OZPugWXv3AdaFXx5B5ZnCroawruucs62an2dc6/L508
- YW6JtoIFW2GOya2XoIRsyNv6AwAe1VixOJGh2IfxKjUCZqTny5MMBPW9cl2vTPByNiKR
- o18g==
+ bh=vF2AaEc13GOjZXFd5xHueWajog0n73mmADepNcW83nk=;
+ b=cGvuMo5TCXy0iK7MpomUnlu9J46+GnrB2abjlWjlc9gHCnq2C00zkq+KEZwZiEZJSx
+ bHYZfrw5IjqiMsYs/CDcwVO1qqMVREWZw3sTa9e1YCHNw9rCM2h+NuM5LqZwb8EJ9JuY
+ 9Q7K9k6+Z95FnqfL6qYVZ4+3MGBY0saciqx4oASdVMkhmSVKI1pX7HCvAW/PBVv0fKLP
+ YycJgntR+Av+57D1OwL++EN6COmSkBvFkjkQvrfk2eXTWqe/Yet7UJlbMyNLKpNQr1ri
+ rYv9OOTzWdpLFbJBPgpRYZkgQLpQaknENAaQ5LL5PS8tcLsOkFyL8oGUspIxuT8tTCMm
+ UAZg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVFmWoig5R+qEyH5zE+fg70v6x7wbJI0GMiXcJ+DhWy3Y5r7BrkQ9QNuExR8HKKv9nb949KZXW4iFEA@nongnu.org
-X-Gm-Message-State: AOJu0YwyS5lftaAn4gBu5sL9CpFxh2/0WpwhlkQCiDAX7PFPYoNeYLGK
- aiqLDo22atBDDi7jN5oQH1RL7LGqcSX+6ddPsxNUFPF1rzQmW7YgAmyAGG7KYlWqk6CIcf5GQla
- r
-X-Gm-Gg: ASbGncvdOuATobVcvmefv39NY7MMiM+D5n23fJnIuc/YVgblxeTxJ+Tf0lg4ArTia7f
- kQ1T6V8PCI+oma/gJApSW/THPV5Qeu2/hv3z7NbXNy2YaKSmG2D1KCNtF4hiPXHC9xTq0FaXy+a
- /nvyJ8DbkFaDI9s11eph3khEYkKdAHzZ3IB7DREHNkm8LTid55hBDFCdIxvSeUvwf3JbjVbOn2K
- LzXzsLJNnyoRU9SetEUI41T3pEPu3eBPUgoaOxbJ9Isj92NWSpMEOVWJtc0s5MG/Ds5QVZ9QJ4l
- FJrtFQv5VWE=
-X-Google-Smtp-Source: AGHT+IHfnasuJshO9PMkLeTFBXLl8vmy4FE37r20nVavj8160SOI4ISSJ3PJHv+J0NMQ67jKI02S9g==
-X-Received: by 2002:a05:600c:5110:b0:42c:b8c9:16c8 with SMTP id
- 5b1f17b1804b1-438b885b8c1mr76545395e9.10.1737736207376; 
- Fri, 24 Jan 2025 08:30:07 -0800 (PST)
+ AJvYcCXW+i/wU+aFolZ3pdV+pfzvIP95JBJ2H60XPkgoIAVhSAKBDrI0HdjHUJq35fBqlKdr1vNhegtRnWGk@nongnu.org
+X-Gm-Message-State: AOJu0YwzQNJc77hy6uVSiEJduPK9Dp9Dm7OEypYRo0pDUa10wCWa0oS8
+ mh5j6QBDlzGSf91DVqoaUPI+3MWwEc4Ag01xc+SXdbsaRjwjNIxkn8XY1nqKul7VGsgQeYJQQbV
+ B
+X-Gm-Gg: ASbGncvM7Z0Xld70FRZvnfn7HI3XF1dvFQVHJmaZKqWcx50E4OS8lkhArUfXWYpkG7k
+ y8UxJ3iGhXwYr5bSkz17utwjiVnftsHNGPylTZY5F+tR4LOHnxJVljh2yf4oyX9bULN3m91GLST
+ OEnPUoysnWmE8xTnrnq3HMSNmd4yGl9vIbgwUrneBEm6NOrAJdohD4QHjitzB6LctWM5zTp9VCP
+ 8WoXSJZ8Xjj6JDIDGDhH8kCXQF/69cBbNnAJxZpQY5OViMH2W/1zNqZdpDd/Xc/ggHEuG7yVmDP
+ qTXThv3hNKY=
+X-Google-Smtp-Source: AGHT+IEX1UTMHShC8q9HsaQL+0EzsQfDtCrsJ20olujPskLogmrt4CtHHrBmwdlkV1tsEfcxaighgw==
+X-Received: by 2002:adf:e404:0:b0:38b:f074:214c with SMTP id
+ ffacd0b85a97d-38bf5674039mr18896227f8f.30.1737736208512; 
+ Fri, 24 Jan 2025 08:30:08 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd47eecasm31683025e9.6.2025.01.24.08.30.05
+ 5b1f17b1804b1-438bd47eecasm31683025e9.6.2025.01.24.08.30.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 08:30:06 -0800 (PST)
+ Fri, 24 Jan 2025 08:30:07 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 70/76] target/arm: Implement increased precision FRECPE
-Date: Fri, 24 Jan 2025 16:28:30 +0000
-Message-Id: <20250124162836.2332150-71-peter.maydell@linaro.org>
+Subject: [PATCH 71/76] target/arm: Implement increased precision FRSQRTE
+Date: Fri, 24 Jan 2025 16:28:31 +0000
+Message-Id: <20250124162836.2332150-72-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250124162836.2332150-1-peter.maydell@linaro.org>
 References: <20250124162836.2332150-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,118 +98,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement the increased precision variation of FRECPE.  In the
+Implement the increased precision variation of FRSQRTE.  In the
 pseudocode this corresponds to the handling of the
-"increasedprecision" boolean in the FPRecipEstimate() and
-RecipEstimate() functions.
+"increasedprecision" boolean in the FPRSqrtEstimate() and
+RecipSqrtEstimate() functions.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/vfp_helper.c | 54 +++++++++++++++++++++++++++++++++++------
- 1 file changed, 46 insertions(+), 8 deletions(-)
+ target/arm/vfp_helper.c | 77 ++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 64 insertions(+), 13 deletions(-)
 
 diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
-index 1b7ecc14621..79e58c5bb2a 100644
+index 79e58c5bb2a..e63455c4bb9 100644
 --- a/target/arm/vfp_helper.c
 +++ b/target/arm/vfp_helper.c
-@@ -731,6 +731,33 @@ static int recip_estimate(int input)
-     return r;
+@@ -1013,8 +1013,36 @@ static int do_recip_sqrt_estimate(int a)
+     return estimate;
  }
  
-+/*
-+ * Increased precision version:
-+ * input is a 13 bit fixed point number
-+ * input range 2048 .. 4095 for a number from 0.5 <= x < 1.0.
-+ * result range 4096 .. 8191 for a number from 1.0 to 2.0
-+ */
-+static int recip_estimate_incprec(int input)
++static int do_recip_sqrt_estimate_incprec(int a)
 +{
-+    int a, b, r;
-+    assert(2048 <= input && input < 4096);
-+    a = (input * 2) + 1;
 +    /*
-+     * The pseudocode expresses this as an operation on infinite
-+     * precision reals where it calculates 2^25 / a and then looks
-+     * at the error between that and the rounded-down-to-integer
-+     * value to see if it should instead round up. We instead
-+     * follow the same approach as the pseudocode for the 8-bit
-+     * precision version, and calculate (2 * (2^25 / a)) as an
-+     * integer so we can do the "add one and halve" to round it.
-+     * So the 1 << 26 here is correct.
++     * The Arm ARM describes the 12-bit precision version of RecipSqrtEstimate
++     * in terms of an infinite-precision floating point calculation of a
++     * square root. We implement this using the same kind of pure integer
++     * algorithm as the 8-bit mantissa, to get the same bit-for-bit result.
 +     */
-+    b = (1 << 26) / a;
-+    r = (b + 1) >> 1;
-+    assert(4096 <= r && r < 8192);
-+    return r;
++    int64_t b, estimate;
+ 
+-static uint64_t recip_sqrt_estimate(int *exp , int exp_off, uint64_t frac)
++    assert(1024 <= a && a < 4096);
++    if (a < 2048) {
++        a = a * 2 + 1;
++    } else {
++        a = (a >> 1) << 1;
++        a = (a + 1) * 2;
++    }
++    b = 8192;
++    while (a * (b + 1) * (b + 1) < (1ULL << 39)) {
++        b += 1;
++    }
++    estimate = (b + 1) / 2;
++
++    assert(4096 <= estimate && estimate < 8192);
++
++    return estimate;
 +}
 +
- /*
-  * Common wrapper to call recip_estimate
-  *
-@@ -740,7 +767,8 @@ static int recip_estimate(int input)
-  * callee.
-  */
- 
--static uint64_t call_recip_estimate(int *exp, int exp_off, uint64_t frac)
-+static uint64_t call_recip_estimate(int *exp, int exp_off, uint64_t frac,
++static uint64_t recip_sqrt_estimate(int *exp , int exp_off, uint64_t frac,
 +                                    bool increasedprecision)
  {
-     uint32_t scaled, estimate;
-     uint64_t result_frac;
-@@ -756,12 +784,22 @@ static uint64_t call_recip_estimate(int *exp, int exp_off, uint64_t frac)
-         }
+     int estimate;
+     uint32_t scaled;
+@@ -1027,17 +1055,32 @@ static uint64_t recip_sqrt_estimate(int *exp , int exp_off, uint64_t frac)
+         frac = extract64(frac, 0, 51) << 1;
      }
  
--    /* scaled = UInt('1':fraction<51:44>) */
--    scaled = deposit32(1 << 8, 0, 8, extract64(frac, 44, 8));
--    estimate = recip_estimate(scaled);
+-    if (*exp & 1) {
+-        /* scaled = UInt('01':fraction<51:45>) */
+-        scaled = deposit32(1 << 7, 0, 7, extract64(frac, 45, 7));
 +    if (increasedprecision) {
-+        /* scaled = UInt('1':fraction<51:41>) */
-+        scaled = deposit32(1 << 11, 0, 11, extract64(frac, 41, 11));
-+        estimate = recip_estimate_incprec(scaled);
-+    } else {
-+        /* scaled = UInt('1':fraction<51:44>) */
-+        scaled = deposit32(1 << 8, 0, 8, extract64(frac, 44, 8));
-+        estimate = recip_estimate(scaled);
-+    }
++        if (*exp & 1) {
++            /* scaled = UInt('01':fraction<51:42>) */
++            scaled = deposit32(1 << 10, 0, 10, extract64(frac, 42, 10));
++        } else {
++            /* scaled = UInt('1':fraction<51:41>) */
++            scaled = deposit32(1 << 11, 0, 11, extract64(frac, 41, 11));
++        }
++        estimate = do_recip_sqrt_estimate_incprec(scaled);
+     } else {
+-        /* scaled = UInt('1':fraction<51:44>) */
+-        scaled = deposit32(1 << 8, 0, 8, extract64(frac, 44, 8));
++        if (*exp & 1) {
++            /* scaled = UInt('01':fraction<51:45>) */
++            scaled = deposit32(1 << 7, 0, 7, extract64(frac, 45, 7));
++        } else {
++            /* scaled = UInt('1':fraction<51:44>) */
++            scaled = deposit32(1 << 8, 0, 8, extract64(frac, 44, 8));
++        }
++        estimate = do_recip_sqrt_estimate(scaled);
+     }
+-    estimate = do_recip_sqrt_estimate(scaled);
  
-     result_exp = exp_off - *exp;
--    result_frac = deposit64(0, 44, 8, estimate);
+     *exp = (exp_off - *exp) / 2;
+-    return extract64(estimate, 0, 8) << 44;
 +    if (increasedprecision) {
-+        result_frac = deposit64(0, 40, 12, estimate);
++        return extract64(estimate, 0, 12) << 40;
 +    } else {
-+        result_frac = deposit64(0, 44, 8, estimate);
++        return extract64(estimate, 0, 8) << 44;
 +    }
-     if (result_exp == 0) {
-         result_frac = deposit64(result_frac >> 1, 51, 1, 1);
-     } else if (result_exp == -1) {
-@@ -830,7 +868,7 @@ uint32_t HELPER(recpe_f16)(uint32_t input, float_status *fpst)
+ }
+ 
+ uint32_t HELPER(rsqrte_f16)(uint32_t input, float_status *s)
+@@ -1076,7 +1119,7 @@ uint32_t HELPER(rsqrte_f16)(uint32_t input, float_status *s)
+ 
+     f64_frac = ((uint64_t) f16_frac) << (52 - 10);
+ 
+-    f64_frac = recip_sqrt_estimate(&f16_exp, 44, f64_frac);
++    f64_frac = recip_sqrt_estimate(&f16_exp, 44, f64_frac, false);
+ 
+     /* result = sign : result_exp<4:0> : estimate<7:0> : Zeros(2) */
+     val = deposit32(0, 15, 1, f16_sign);
+@@ -1125,12 +1168,20 @@ static float32 do_rsqrte_f32(float32 input, float_status *s, bool rpres)
+ 
+     f64_frac = ((uint64_t) f32_frac) << 29;
+ 
+-    f64_frac = recip_sqrt_estimate(&f32_exp, 380, f64_frac);
++    f64_frac = recip_sqrt_estimate(&f32_exp, 380, f64_frac, rpres);
+ 
+-    /* result = sign : result_exp<4:0> : estimate<7:0> : Zeros(15) */
++    /*
++     * result = sign : result_exp<7:0> : estimate<7:0> : Zeros(15)
++     * or for increased precision
++     * result = sign : result_exp<7:0> : estimate<11:0> : Zeros(11)
++     */
+     val = deposit32(0, 31, 1, f32_sign);
+     val = deposit32(val, 23, 8, f32_exp);
+-    val = deposit32(val, 15, 8, extract64(f64_frac, 52 - 8, 8));
++    if (rpres) {
++        val = deposit32(val, 11, 12, extract64(f64_frac, 52 - 12, 12));
++    } else {
++        val = deposit32(val, 15, 8, extract64(f64_frac, 52 - 8, 8));
++    }
+     return make_float32(val);
+ }
+ 
+@@ -1174,7 +1225,7 @@ float64 HELPER(rsqrte_f64)(float64 input, float_status *s)
+         return float64_zero;
      }
  
-     f64_frac = call_recip_estimate(&f16_exp, 29,
--                                   ((uint64_t) f16_frac) << (52 - 10));
-+                                   ((uint64_t) f16_frac) << (52 - 10), false);
+-    f64_frac = recip_sqrt_estimate(&f64_exp, 3068, f64_frac);
++    f64_frac = recip_sqrt_estimate(&f64_exp, 3068, f64_frac, false);
  
-     /* result = sign : result_exp<4:0> : fraction<51:42> */
-     f16_val = deposit32(0, 15, 1, f16_sign);
-@@ -883,7 +921,7 @@ static float32 do_recpe_f32(float32 input, float_status *fpst, bool rpres)
-     }
- 
-     f64_frac = call_recip_estimate(&f32_exp, 253,
--                                   ((uint64_t) f32_frac) << (52 - 23));
-+                                   ((uint64_t) f32_frac) << (52 - 23), rpres);
- 
-     /* result = sign : result_exp<7:0> : fraction<51:29> */
-     f32_val = deposit32(0, 31, 1, f32_sign);
-@@ -941,7 +979,7 @@ float64 HELPER(recpe_f64)(float64 input, float_status *fpst)
-         return float64_set_sign(float64_zero, float64_is_neg(f64));
-     }
- 
--    f64_frac = call_recip_estimate(&f64_exp, 2045, f64_frac);
-+    f64_frac = call_recip_estimate(&f64_exp, 2045, f64_frac, false);
- 
-     /* result = sign : result_exp<10:0> : fraction<51:0>; */
-     f64_val = deposit64(0, 63, 1, f64_sign);
+     /* result = sign : result_exp<4:0> : estimate<7:0> : Zeros(44) */
+     val = deposit64(0, 61, 1, f64_sign);
 -- 
 2.34.1
 
