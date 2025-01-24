@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B77A1BBBF
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 18:51:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB788A1BBC1
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 18:51:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbNph-0002CP-5Y; Fri, 24 Jan 2025 12:51:05 -0500
+	id 1tbNpo-0002J2-93; Fri, 24 Jan 2025 12:51:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbNpa-00029d-G0
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 12:50:59 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbNpf-0002Cu-V7
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 12:51:04 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbNpY-0004RB-U4
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 12:50:58 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-38634c35129so2127854f8f.3
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 09:50:56 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbNpe-0004Rd-A0
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 12:51:03 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-43635796b48so16027875e9.0
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 09:51:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737741055; x=1738345855; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=lF5hqMSJTCIx7rTk7yIx1IdPJjb0y4n+2mCwilvQc40=;
- b=M7loR5KzV9lymj+sMOLSrCLnUiZbr0puT5z+8qBzGfkPNVI4R2GQ9LFwRulHwe9Yze
- jkF9q4fKAfwknKsJ69xGoSTLBAGd3HpWZfRXI/K7Ol+4HlzB2ZZl0TofsEaJcj2CJSKL
- dPnKFB2P5VhExyOr5fJiSV8e1fud7QqGWNT4my91LsqRi6/mOjX393kOvIfCksfHnYPA
- EOAjoC1F0AsCchsk1rZE0mfZrNBdiWtcKGVsrFDoHp7MFoJVyIAAD4XkA/hOp7QjAtcT
- 1GWAzznvlji1Eeg6JVH0uc5U19GbrfluaoMd8/uSfOHtGmhNvpQK6o8e6ZGf3YsnRt0M
- v8Sw==
+ d=linaro.org; s=google; t=1737741060; x=1738345860; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=se+/ei82uiUe3GOlyYsBHGJGXnKSrED8GmHFVnOMzmw=;
+ b=Tgvq851RS0qlZ60dn/wJLgUauJ4TKUoaI6j0fBttP5y1g4HZbqwygxd/vpaaHovK8B
+ MlJzR8aakz/dG/Zp3/UGMB3/8KmaPyScWjF7x/7GJZnEsKlRdSYl08dqacywmlcmTXz2
+ hlAkevEfjqONWn6kIELTuFTVjCOMhWk0R/RhCmq54spWqFRlxtWzYVjgg+DqxZb8y5Fk
+ uryT6qfw9qkRYwk0MZ/kSWoIVZeTLa1I12dn0WK26e/gcVJRCHvSeXGD2/VF/d2ri1jc
+ 3Xe+iQGunMmuVfy8dpaXVXYiYs9yKPeJV5huJfRbUuGtlXhUfaliWYf1Kw+fObpyYJZj
+ UTjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737741055; x=1738345855;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=lF5hqMSJTCIx7rTk7yIx1IdPJjb0y4n+2mCwilvQc40=;
- b=MLSV35AVVra+8mD+385RGA6Vj1b/kj2RpNEMV18ilnKyIpTKSbpBWZDoqSXfmKDztJ
- EhsZz8Hkp7HHXiq7Xr1RBup1D1FeMOWpPoKMrGpinBBsEr6OMol5hAZyHBKTNr7S263l
- 4PrtnPW/YAaJcQi3Vx5x0ORYM4GyXCIm17ALoc+jFrrRXHHLi7CW+DtfSy6eq80Q51Z1
- OJz3BTMQFQU9exaZX8fT/91itCWvEfS/z12a3A0GEWlDtGzfUg67pdVohJIh+3moMViB
- dI6HkKuz3n7g/wpOswKTdrbS7RjWFz1Y2r1Iym/kwyePOep9AsqZE4pcGpeskB4do/Xi
- qlNA==
-X-Gm-Message-State: AOJu0Yy2i9DMIzHNwB6fhKxyyBRvAcVCJPM57CDKvom1gnfijjxkqp8z
- Gkc+6oIoSew0cZ5+8oEHHw3+k5gvwWHGJCu9VWWlxub1qp/a2Mm1cyLnYVhxcQvp8+QqKwijRTP
- J3hk=
-X-Gm-Gg: ASbGncvSQnawaiBke3C5a/BCol6I6QL0a6LFqAZBPpTf1pCrM8U2X3ZX8bdd4bXxaPb
- jybYVA5JwK0b2scuTxapCjdXaIDaeG27H6nNTy9URjqj9CULL+bCxqf3iC1Nx2nztvfdZuGUU0a
- xJ3D0hgARGoGYwRWEnfpz9OcKxNJ5G9guJS67YGaq5830OweDa+at7a+rK65D7alSKZYjoevmrW
- 6EB0FpfdKxrSMebt1X5HFf30fX+SW01ANb03i9Eg80YP9XYu7ZmxK386Gu3m+cWKvXnzqV4dqnD
- DzpSnJ82XWR4PAXJiihjis0Su4HXZqlQq21SrIc/KU5SLoO8l4hz758=
-X-Google-Smtp-Source: AGHT+IEfBi3tvvPMZ3Tjxv8Vqe+ppbkK5nj+di8BAXELeC4dSWrtWSK4SoDPnwLPNXU41atPTczAkA==
-X-Received: by 2002:a05:6000:402a:b0:386:3327:9d07 with SMTP id
- ffacd0b85a97d-38bf59ef829mr31301079f8f.54.1737741054716; 
- Fri, 24 Jan 2025 09:50:54 -0800 (PST)
+ d=1e100.net; s=20230601; t=1737741060; x=1738345860;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=se+/ei82uiUe3GOlyYsBHGJGXnKSrED8GmHFVnOMzmw=;
+ b=osNyRYd0uufAUFq+XdzhB4/a5iv2Y2fyiRABfOpxP04YepnHxcU/cf3HbIfJuRiQ8y
+ Q9qm9wChIoEMcGZbHph66IbalEnwEZI/I0E/ViYs0wrDJfnWRVMjUOBOKpIZGcc0N9Xk
+ tNgdNqbfKSfScCj8zJFaTX8SjAtGtWa9SXMKf9bqNqwcaWOyGY7JvZRao5UmsSHUQVtY
+ vTL98StpIiLqJ0it3Oqs/5ZYV0/bJm6B0KRsQLuDBkA6ppkgc4FANhyHu+6gmauefaG2
+ UTtM7ofK6kNaJH90ZOJoTLr1NBbzVnB4vfwqOxGg5pmHevCyHW4Nn1z23XzWnv01sqMZ
+ 1rlQ==
+X-Gm-Message-State: AOJu0Yy3XcGfME/hEa6xoNh9nxFpEHwjUf9xVDB4VugONfYSpTbYIbHZ
+ 0XlySuXEWFvkSJjvRxpdZLDSz/lxoZnHKvKDqTlKf2PPVyeISeMz7t4rLua99uC+sgRoIIhwni2
+ ERbA=
+X-Gm-Gg: ASbGncuOZHPoC5d/D8cx7BXpeXHxjB/sTgXpjMw+F6LgQnxBGE0eCUxf1UMTXRC4JoV
+ G1LZGdy1xJimCBiBWHiAceS4opL6ct+o8s0gv18axMproaIoF+Y+eb49eXG8ep92KtT07a2LMul
+ VFX1EQ+wQ44MBIUoR5MxuUFhiXW1mV09wy8fU4E4uRSGhjOUFhj3wWe9YyYbnI0cIk08urQrJwt
+ yx/niDrZhtNSnM92NfUF3NhZ0QaLZQ8mKNNQv/dZyTAgEvkoKrM3RMRspiTjfBoWxHSgzYGJSun
+ XAnSze7imhdnvmOK5UOFK7D4QY9SCIdDlhmt/KDWvW6cVI86rEDZZpQ=
+X-Google-Smtp-Source: AGHT+IHvb/V+l6MKLucRPgkhqa4uVeEipHl2wfbD0WpSvHSh8WL7BAytVoLTfBNGlP6RGSFv+O5ekw==
+X-Received: by 2002:a7b:cbce:0:b0:436:1af3:5b13 with SMTP id
+ 5b1f17b1804b1-438bd0bd2edmr41981755e9.15.1737741060169; 
+ Fri, 24 Jan 2025 09:51:00 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a17d5easm3287184f8f.25.2025.01.24.09.50.53
+ 5b1f17b1804b1-438bd48a906sm35858865e9.18.2025.01.24.09.50.58
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 24 Jan 2025 09:50:54 -0800 (PST)
+ Fri, 24 Jan 2025 09:50:59 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -66,15 +67,18 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Magnus Damm <magnus.damm@gmail.com>,
  Yoshinori Sato <ysato@users.sourceforge.jp>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/2] hw/char/sh_serial: QOM housekeeping
-Date: Fri, 24 Jan 2025 18:50:51 +0100
-Message-ID: <20250124175053.74461-1-philmd@linaro.org>
+Subject: [PATCH 1/2] hw/char/sh_serial: Delete fifo_timeout_timer in
+ DeviceUnrealize
+Date: Fri, 24 Jan 2025 18:50:52 +0100
+Message-ID: <20250124175053.74461-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250124175053.74461-1-philmd@linaro.org>
+References: <20250124175053.74461-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,16 +101,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- Parity in realize / unrealize
-- Define TypeInfo structure
+fifo_timeout_timer is created in the DeviceRealize handler,
+not in the instance_init one. For parity, delete it in
+DeviceUnrealize, rather than instance_finalize.
 
-Philippe Mathieu-Daudé (2):
-  hw/char/sh_serial: Delete fifo_timeout_timer in DeviceUnrealize
-  hw/char/sh_serial: Convert to TypeInfo
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/char/sh_serial.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
- hw/char/sh_serial.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
-
+diff --git a/hw/char/sh_serial.c b/hw/char/sh_serial.c
+index 247aeb071ac..29ac9f9e5e7 100644
+--- a/hw/char/sh_serial.c
++++ b/hw/char/sh_serial.c
+@@ -436,9 +436,9 @@ static void sh_serial_realize(DeviceState *d, Error **errp)
+     s->etu = NANOSECONDS_PER_SECOND / 9600;
+ }
+ 
+-static void sh_serial_finalize(Object *obj)
++static void sh_serial_unrealize(DeviceState *dev)
+ {
+-    SHSerialState *s = SH_SERIAL(obj);
++    SHSerialState *s = SH_SERIAL(dev);
+ 
+     timer_del(&s->fifo_timeout_timer);
+ }
+@@ -447,6 +447,10 @@ static void sh_serial_init(Object *obj)
+ {
+ }
+ 
++static void sh_serial_finalize(Object *obj)
++{
++}
++
+ static const Property sh_serial_properties[] = {
+     DEFINE_PROP_CHR("chardev", SHSerialState, chr),
+     DEFINE_PROP_UINT8("features", SHSerialState, feat, 0),
+@@ -458,6 +462,7 @@ static void sh_serial_class_init(ObjectClass *oc, void *data)
+ 
+     device_class_set_props(dc, sh_serial_properties);
+     dc->realize = sh_serial_realize;
++    dc->unrealize = sh_serial_unrealize;
+     device_class_set_legacy_reset(dc, sh_serial_reset);
+     /* Reason: part of SuperH CPU/SoC, needs to be wired up */
+     dc->user_creatable = false;
 -- 
 2.47.1
 
