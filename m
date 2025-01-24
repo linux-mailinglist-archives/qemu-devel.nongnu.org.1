@@ -2,92 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94DDAA1B2F8
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:49:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DA5A1B2FB
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:50:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbGI3-0004FZ-1U; Fri, 24 Jan 2025 04:47:51 -0500
+	id 1tbGIR-0006Xp-3Y; Fri, 24 Jan 2025 04:48:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tbGGM-0007oY-LW
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:46:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1tbGGQ-0007r6-PF
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:46:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tbGGK-0003yq-R9
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:46:06 -0500
+ id 1tbGGO-0003zJ-G6
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:46:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737711964;
+ s=mimecast20190719; t=1737711967;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JUZvvlaNtJrFbkkw9/p5GgCt5QVuzk/+d4qUzLuDLw4=;
- b=UzHJkwwELn4OGZc55oV39Nh4EmK7aT0dosPrqNSHYcLz/5+Zuz3hubaRmHtfEFXhLGyV3H
- XuS/LGlcm9YzrNPgIt5ABs9gJnBnyernjBlRnWW/2op3r+wkWdfRrK604yxd++aRHlTU1A
- 0XgRm9avu/cuRmyT51M55dBRaH4+bOc=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=14M6y43j2+I/0HjJ1yw2OhzwD6m5Rm3rJ7c4Et0oVDw=;
+ b=Wh0KrcQfYpbGSSB2dPsjKvSVUTd51fQGkdo2lKZZPmCY3J4XrZ1KNTZjdFfg2QOSvAfvZm
+ gWnz186AkpShmof/e37XodOBeSF2+6MUuIcPhBFQPyu7xr4HKc99k1Mn15XcPxPo1TgISn
+ FJ9nKOYNwh82/k1uIwcBvzj8ImB9+uM=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-130-_8Y9NHMiO4aNOYACdnAS1w-1; Fri, 24 Jan 2025 04:46:02 -0500
-X-MC-Unique: _8Y9NHMiO4aNOYACdnAS1w-1
-X-Mimecast-MFC-AGG-ID: _8Y9NHMiO4aNOYACdnAS1w
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43623bf2a83so15109445e9.0
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 01:46:02 -0800 (PST)
+ us-mta-231-Yd6b2oNGMiy0FdLMtXXyzg-1; Fri, 24 Jan 2025 04:46:05 -0500
+X-MC-Unique: Yd6b2oNGMiy0FdLMtXXyzg-1
+X-Mimecast-MFC-AGG-ID: Yd6b2oNGMiy0FdLMtXXyzg
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-436219070b4so8838835e9.1
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 01:46:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737711960; x=1738316760;
+ d=1e100.net; s=20230601; t=1737711963; x=1738316763;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JUZvvlaNtJrFbkkw9/p5GgCt5QVuzk/+d4qUzLuDLw4=;
- b=oJSNNgRQ07x9/2UjWrFIVF+cNoCXz7RIlplkv7HBvoinmFwVbR0AluJ/vvFUnSWLzF
- iBuaVg7Mi+VNdudmMxgni4K53jUia/rw2Pedm5kXzYUZ5DoCrKjzSgBbo75huw9+fSmb
- oloBWeBHHarOOAOLjTs3uchnf6jhfjRbM27GrfBwaDsZpEzQrO+rnX4KchuwTr0HoM/l
- MtqwcD/nUA/oirvGt3fNnE5l7Hj/X63uz8IMfSNkzBtGFBtVjmZQDfMQznmeNDNZZibM
- 3K+ypMLo8HJHM8g8vVpjliPbzpl5Q4gsPpk2hp36EiF//HJQGe9wErw/zbdWpn/jJnmI
- RyKg==
-X-Gm-Message-State: AOJu0YwM5WpO2S+lVsLUAJePIeS6B9utRhBWSwblyLMgbMuKmYkbaOQe
- pwuZmefevP3C+xvhdjolVUDPn/Cln6xqVyCNnHLkP5M5VBu/oedQrVOfMVYwa1IdUULAaKmhY14
- AMagUqR2QHXHClUCWOgYte2ck7TYY6obu2DsXNURLlDZULfIgi5Dp7CXKjfeH5v1BcwkY8GexzO
- O41EXdAu2JJ3XvanKpVaTNNrDCmnVd4ykhf1Mfm9Y=
-X-Gm-Gg: ASbGncsMKcOBLZG4KO75TmEUxriQNVLhAPI0mANjOJD6IyGP2pW376KzfA+YpdBuI7A
- If+uNzCblxUGjevhnT3ApAV5b8XGRkqYFmOB7o4U/Fw4tZ3G02sE/Gzi6rQoNbhB0AhzDy1Pa3Z
- MpHDK/waJQ4TOIGgl1gstMyQZSMcLdxH48/HLIaXzNJvrZu2o+29goqkZhH2pvTNYm5kQQPUirH
- /rtTzzga+1PFblZqSnFMfrBL/nfI2Lm/F9IcN0RGoKc0o2SJGIm0bZoMGWqnpRco1et5FEajQ==
-X-Received: by 2002:a05:600c:3149:b0:434:e9ee:c2d with SMTP id
- 5b1f17b1804b1-4389144eee4mr237345025e9.26.1737711960531; 
- Fri, 24 Jan 2025 01:46:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHZnPxOwuDAnNeXdA6db/f2nQUiOSJpjQN0GrFdk1loiEVEI5x4VUgQRg5UVkn2XGIQFiisRQ==
-X-Received: by 2002:a05:600c:3149:b0:434:e9ee:c2d with SMTP id
- 5b1f17b1804b1-4389144eee4mr237344715e9.26.1737711960051; 
- Fri, 24 Jan 2025 01:46:00 -0800 (PST)
+ bh=14M6y43j2+I/0HjJ1yw2OhzwD6m5Rm3rJ7c4Et0oVDw=;
+ b=Au0WVXlXouJa3yfDSzfX1drUTybpi4iVhZMlUAc0tU1WDG6t3wmxwP5buKkSVUlbo2
+ 8l9bl3mGxZJM3kQ+9QekwelfYnSKYRsHhnGyj0oBgl3LgNuGiuY78Ij3N042Y3uKIznG
+ S04wCA2OdkZzPVitbvoPswgAUNbWrRTT41w+jYiiZQboFQVIQystsHnd5D44H/4vvKk2
+ +0Q2EcoEUFZol2l+PqCGEDolyFv3sieTe5uY/ZIlheQo3wdkxEUQuSgnWOFP2TwH6DLr
+ N9Hw4+pjz+LA6tY4Le74qJNyQxJMreKaOWjNhsK5TmBZgNAxl0ns8MdeVtkkcMrU585L
+ vnsg==
+X-Gm-Message-State: AOJu0YxA1WHJyryaLLTtqI3m8gi+R9XZ3ehVbfzELkcwsIO+NToVMO4Y
+ 1hoQ/KSfLP4O1uuf5K+Vx4k4EBd1pgdF2c8hCMuEff1o2bqlXSf5qcxqWaz2Dxazn1a0qqPSrrs
+ oR4KL9BrrTRJWcF+k/RctpqCgwQyErpLcrEM4cEz0Hwnz3Au4ipVrR+vnLeaXVAbu7pnrj93Qi3
+ r/gyXS9LGmpidEMOT0FD7pUU3Z2+wSD2T886nUOAA=
+X-Gm-Gg: ASbGncvWFOq9xDCnO3YabUrJ0bk0IGOTsUM+yTwi5bXLYN/TtlJJjavtGaU0XMvc/zl
+ quTvYKlU5jVGxWLCNy91vyhgi7XtyOeXSVWIOWb01CIhJWceFS7ZV4O05TAIHPcPG38vNl/SHzK
+ ykWmxKXSg8bah3lLcG3EDE76eZ1UEr3FgRbgKvNwArjg+DhOFRqs8RUDxShZ9NhbYLbikGbQfNx
+ P2HVmmEqFxFEVB1/k0PgciC5oJNtFuWJOMep+qJlFhr5lKyh/y1Wkbun2eB8QtAyyY6Xreziw==
+X-Received: by 2002:a05:600c:3b94:b0:434:e2ea:fc94 with SMTP id
+ 5b1f17b1804b1-438913cb620mr316040725e9.11.1737711962645; 
+ Fri, 24 Jan 2025 01:46:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG3rQQxsZQyvpOIozx0hbjE0/adKr7dmqg8km34oHyV1LLaRGaqvnBlh/SqRHWK3U2nRQeKIg==
+X-Received: by 2002:a05:600c:3b94:b0:434:e2ea:fc94 with SMTP id
+ 5b1f17b1804b1-438913cb620mr316040335e9.11.1737711962087; 
+ Fri, 24 Jan 2025 01:46:02 -0800 (PST)
 Received: from [192.168.10.48] ([151.95.59.125])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd48ae56sm20569435e9.21.2025.01.24.01.45.58
+ 5b1f17b1804b1-438bd4856d8sm20627535e9.11.2025.01.24.01.46.00
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 01:45:59 -0800 (PST)
+ Fri, 24 Jan 2025 01:46:00 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 38/48] rust: pl011: extract conversion to RegisterOffset
-Date: Fri, 24 Jan 2025 10:44:32 +0100
-Message-ID: <20250124094442.13207-39-pbonzini@redhat.com>
+Subject: [PULL 39/48] rust: pl011: extract CharBackend receive logic into a
+ separate function
+Date: Fri, 24 Jan 2025 10:44:33 +0100
+Message-ID: <20250124094442.13207-40-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250124094442.13207-1-pbonzini@redhat.com>
 References: <20250124094442.13207-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
 X-Spam_bar: -----
 X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.043,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,207 +106,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As an added bonus, this also makes the new function return u32 instead
-of u64, thus factoring some casts into a single place.
+Prepare for moving all references to the registers and the FIFO into a
+separate struct.
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs | 113 +++++++++++++++++--------------
- 1 file changed, 64 insertions(+), 49 deletions(-)
+ rust/hw/char/pl011/src/device.rs | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index c8496eeb1b6..58b54547336 100644
+index 58b54547336..de5110038a5 100644
 --- a/rust/hw/char/pl011/src/device.rs
 +++ b/rust/hw/char/pl011/src/device.rs
-@@ -5,6 +5,7 @@
- use core::ptr::{addr_of, addr_of_mut, NonNull};
+@@ -6,7 +6,7 @@
  use std::{
      ffi::CStr,
-+    ops::ControlFlow,
-     os::raw::{c_int, c_uint, c_void},
+     ops::ControlFlow,
+-    os::raw::{c_int, c_uint, c_void},
++    os::raw::{c_int, c_void},
  };
  
-@@ -222,19 +223,11 @@ fn post_init(&self) {
+ use qemu_api::{
+@@ -488,6 +488,12 @@ pub fn can_receive(&self) -> bool {
+         self.read_count < self.fifo_depth()
+     }
+ 
++    pub fn receive(&mut self, ch: u32) {
++        if !self.loopback_enabled() {
++            self.put_fifo(ch)
++        }
++    }
++
+     pub fn event(&mut self, event: QEMUChrEvent) {
+         if event == QEMUChrEvent::CHR_EVENT_BREAK && !self.loopback_enabled() {
+             self.put_fifo(registers::Data::BREAK.into());
+@@ -513,7 +519,7 @@ pub fn fifo_depth(&self) -> u32 {
+         1
+     }
+ 
+-    pub fn put_fifo(&mut self, value: c_uint) {
++    pub fn put_fifo(&mut self, value: u32) {
+         let depth = self.fifo_depth();
+         assert!(depth > 0);
+         let slot = (self.read_pos + self.read_count) & (depth - 1);
+@@ -622,12 +628,9 @@ pub fn write(&mut self, offset: hwaddr, value: u64) {
+ pub unsafe extern "C" fn pl011_receive(opaque: *mut c_void, buf: *const u8, size: c_int) {
+     let mut state = NonNull::new(opaque).unwrap().cast::<PL011State>();
+     unsafe {
+-        if state.as_ref().loopback_enabled() {
+-            return;
+-        }
+         if size > 0 {
+             debug_assert!(!buf.is_null());
+-            state.as_mut().put_fifo(c_uint::from(buf.read_volatile()))
++            state.as_mut().receive(u32::from(buf.read_volatile()));
          }
      }
- 
--    pub fn read(&mut self, offset: hwaddr, _size: c_uint) -> std::ops::ControlFlow<u64, u64> {
-+    fn regs_read(&mut self, offset: RegisterOffset) -> ControlFlow<u32, u32> {
-         use RegisterOffset::*;
- 
--        let value = match RegisterOffset::try_from(offset) {
--            Err(v) if (0x3f8..0x400).contains(&(v >> 2)) => {
--                let device_id = self.get_class().device_id;
--                u32::from(device_id[(offset - 0xfe0) >> 2])
--            }
--            Err(_) => {
--                // qemu_log_mask(LOG_GUEST_ERROR, "pl011_read: Bad offset 0x%x\n", (int)offset);
--                0
--            }
--            Ok(DR) => {
-+        ControlFlow::Break(match offset {
-+            DR => {
-                 self.flags.set_receive_fifo_full(false);
-                 let c = self.read_fifo[self.read_pos];
-                 if self.read_count > 0 {
-@@ -251,39 +244,33 @@ pub fn read(&mut self, offset: hwaddr, _size: c_uint) -> std::ops::ControlFlow<u
-                 self.receive_status_error_clear.set_from_data(c);
-                 self.update();
-                 // Must call qemu_chr_fe_accept_input, so return Continue:
--                let c = u32::from(c);
--                return std::ops::ControlFlow::Continue(u64::from(c));
-+                return ControlFlow::Continue(u32::from(c));
-             }
--            Ok(RSR) => u32::from(self.receive_status_error_clear),
--            Ok(FR) => u32::from(self.flags),
--            Ok(FBRD) => self.fbrd,
--            Ok(ILPR) => self.ilpr,
--            Ok(IBRD) => self.ibrd,
--            Ok(LCR_H) => u32::from(self.line_control),
--            Ok(CR) => u32::from(self.control),
--            Ok(FLS) => self.ifl,
--            Ok(IMSC) => self.int_enabled,
--            Ok(RIS) => self.int_level,
--            Ok(MIS) => self.int_level & self.int_enabled,
--            Ok(ICR) => {
-+            RSR => u32::from(self.receive_status_error_clear),
-+            FR => u32::from(self.flags),
-+            FBRD => self.fbrd,
-+            ILPR => self.ilpr,
-+            IBRD => self.ibrd,
-+            LCR_H => u32::from(self.line_control),
-+            CR => u32::from(self.control),
-+            FLS => self.ifl,
-+            IMSC => self.int_enabled,
-+            RIS => self.int_level,
-+            MIS => self.int_level & self.int_enabled,
-+            ICR => {
-                 // "The UARTICR Register is the interrupt clear register and is write-only"
-                 // Source: ARM DDI 0183G 3.3.13 Interrupt Clear Register, UARTICR
-                 0
-             }
--            Ok(DMACR) => self.dmacr,
--        };
--        std::ops::ControlFlow::Break(value.into())
-+            DMACR => self.dmacr,
-+        })
-     }
- 
--    pub fn write(&mut self, offset: hwaddr, value: u64) {
-+    fn regs_write(&mut self, offset: RegisterOffset, value: u32) {
-         // eprintln!("write offset {offset} value {value}");
-         use RegisterOffset::*;
--        let value: u32 = value as u32;
--        match RegisterOffset::try_from(offset) {
--            Err(_bad_offset) => {
--                eprintln!("write bad offset {offset} value {value}");
--            }
--            Ok(DR) => {
-+        match offset {
-+            DR => {
-                 // ??? Check if transmitter is enabled.
-                 let ch: u8 = value as u8;
-                 // XXX this blocks entire thread. Rewrite to use
-@@ -298,22 +285,22 @@ pub fn write(&mut self, offset: hwaddr, value: u64) {
-                 self.int_level |= registers::INT_TX;
-                 self.update();
-             }
--            Ok(RSR) => {
--                self.receive_status_error_clear.reset();
-+            RSR => {
-+                self.receive_status_error_clear = 0.into();
-             }
--            Ok(FR) => {
-+            FR => {
-                 // flag writes are ignored
-             }
--            Ok(ILPR) => {
-+            ILPR => {
-                 self.ilpr = value;
-             }
--            Ok(IBRD) => {
-+            IBRD => {
-                 self.ibrd = value;
-             }
--            Ok(FBRD) => {
-+            FBRD => {
-                 self.fbrd = value;
-             }
--            Ok(LCR_H) => {
-+            LCR_H => {
-                 let new_val: registers::LineControl = value.into();
-                 // Reset the FIFO state on FIFO enable or disable
-                 if self.line_control.fifos_enabled() != new_val.fifos_enabled() {
-@@ -336,26 +323,26 @@ pub fn write(&mut self, offset: hwaddr, value: u64) {
-                 self.line_control = new_val;
-                 self.set_read_trigger();
-             }
--            Ok(CR) => {
-+            CR => {
-                 // ??? Need to implement the enable bit.
-                 self.control = value.into();
-                 self.loopback_mdmctrl();
-             }
--            Ok(FLS) => {
-+            FLS => {
-                 self.ifl = value;
-                 self.set_read_trigger();
-             }
--            Ok(IMSC) => {
-+            IMSC => {
-                 self.int_enabled = value;
-                 self.update();
-             }
--            Ok(RIS) => {}
--            Ok(MIS) => {}
--            Ok(ICR) => {
-+            RIS => {}
-+            MIS => {}
-+            ICR => {
-                 self.int_level &= !value;
-                 self.update();
-             }
--            Ok(DMACR) => {
-+            DMACR => {
-                 self.dmacr = value;
-                 if value & 3 > 0 {
-                     // qemu_log_mask(LOG_UNIMP, "pl011: DMA not implemented\n");
-@@ -570,6 +557,34 @@ pub fn post_load(&mut self, _version_id: u32) -> Result<(), ()> {
- 
-         Ok(())
-     }
-+
-+    pub fn read(&mut self, offset: hwaddr, _size: u32) -> ControlFlow<u64, u64> {
-+        match RegisterOffset::try_from(offset) {
-+            Err(v) if (0x3f8..0x400).contains(&(v >> 2)) => {
-+                let device_id = self.get_class().device_id;
-+                ControlFlow::Break(u64::from(device_id[(offset - 0xfe0) >> 2]))
-+            }
-+            Err(_) => {
-+                // qemu_log_mask(LOG_GUEST_ERROR, "pl011_read: Bad offset 0x%x\n", (int)offset);
-+                ControlFlow::Break(0)
-+            }
-+            Ok(field) => {
-+                let result = self.regs_read(field);
-+                match result {
-+                    ControlFlow::Break(value) => ControlFlow::Break(value.into()),
-+                    ControlFlow::Continue(value) => ControlFlow::Continue(value.into()),
-+                }
-+            }
-+        }
-+    }
-+
-+    pub fn write(&mut self, offset: hwaddr, value: u64) {
-+        if let Ok(field) = RegisterOffset::try_from(offset) {
-+            self.regs_write(field, value as u32);
-+        } else {
-+            eprintln!("write bad offset {offset} value {value}");
-+        }
-+    }
  }
- 
- /// Which bits in the interrupt status matter for each outbound IRQ line ?
 -- 
 2.48.1
 
