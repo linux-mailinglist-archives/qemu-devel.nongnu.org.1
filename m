@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48B09A1B694
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:04:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E96AA1B691
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:03:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbJLM-0000QL-Ap; Fri, 24 Jan 2025 08:03:28 -0500
+	id 1tbJLS-0000Sw-3E; Fri, 24 Jan 2025 08:03:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tbJKy-0000OV-GC
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tbJKy-0000OU-D5
  for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:03:05 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217])
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tbJKw-0007G8-Og
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tbJKw-0007G9-NX
  for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:03:04 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 2A2BE5C5A81;
- Fri, 24 Jan 2025 13:02:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDB4C4CED2;
- Fri, 24 Jan 2025 13:02:56 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTP id F13335C5A69;
+ Fri, 24 Jan 2025 13:02:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F5AC4CEE0;
+ Fri, 24 Jan 2025 13:02:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1737723778;
- bh=wOfvPimm++bcR+fr8JPr4UgbbfbJtbzGWJ0HL1R9UT0=;
- h=From:To:Cc:Subject:Date:From;
- b=cRdbw2RBsqpLLSJ8dI8YTzcZjLo0Kx7nxGZbjR1+MmtS5ucZKxIr4/h/X46+BmGmw
- bHNgpZOa25jcVv/cXeJ9PREuvagxTBX2CeXRSwDOphV8ls+tUnOARFEfrcTv+7b9U4
- OvdbbZyU6guTw0qqAluXPxBc1T7dvQFAPamFFn0U9yH4XiNM+HMGPuhNNM0m2498/J
- SxzRNcU8r3xGm4ddfCKnQd0/ziUsLMBIlx7g6fk2yi190pAmV+ne9rQ4s/IygrHAQ3
- S+4spKdCGe93rmjz6bkJG1WLeOTT6GJ0y1EjtDeWl5ANUnHkrjhhDv6/S8tPldwLVy
- f0/CnUeQI5Ueg==
+ s=k20201202; t=1737723780;
+ bh=0dCMgv3HdlrGef/55pmBNQDksmQaq+s2c+t9E36FqCc=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=Cs0kJaSyrWMz36F1Au/9USwvNrXgQpp3NQq/G5+wT4XDRhhhhJsLia2zK29rHtKcI
+ 5ryhg8+NoqqO+SLtkSWLtK8x9OHgzCBZH5QjKg+P2PFZdgjtakcROuEoNzYlLnV6w/
+ PN6DkGPY1cYqUyeJbakeaUdTsjj1Nq/oCV+o1dQBUwiZTwku4/4aVMesluIYL4JkIv
+ 00ZMtIhuKidxeEfqD9Eej2pV0oeiz70jdLoaxOgyJQXgyupec6IFBAjf1ODb/s2Sn9
+ luvePZCl0Ie+dqdbwv1t5QouWEFysRpkJOjL5sLCXMQQOrPLX/wXVEor1mXJ3w3Nef
+ ibCY9lG8QB44g==
 From: deller@kernel.org
 To: Laurent Vivier <laurent@vivier.eu>, Stefan Hajnoczi <stefanha@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PULL v3 0/6] Linux user fix gupnp patches
-Date: Fri, 24 Jan 2025 14:02:48 +0100
-Message-ID: <20250124130254.3134-1-deller@kernel.org>
+Subject: [PULL v3 1/6] linux-user: netlink: Add missing IFA_PROTO to
+ host_to_target_data_addr_rtattr()
+Date: Fri, 24 Jan 2025 14:02:49 +0100
+Message-ID: <20250124130254.3134-2-deller@kernel.org>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250124130254.3134-1-deller@kernel.org>
+References: <20250124130254.3134-1-deller@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -100
-X-Spam_score: -10.1
-X-Spam_bar: ----------
-X-Spam_report: (-10.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=deller@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -73
+X-Spam_score: -7.4
+X-Spam_bar: -------
+X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,44 +71,85 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-The following changes since commit 0e3aff9ec34059512d597eacfcf4d1b5d4570c50:
+Fix this warning:
+ Unknown host IFA type: 11
 
-  Merge tag 'pull-10.0-gdb-plugins-doc-updates-170125-1' of https://gitlab.com/stsquad/qemu into staging (2025-01-17 10:13:07 -0500)
-
-are available in the Git repository at:
-
-  https://github.com/hdeller/qemu-hppa.git tags/linux-user-fix-gupnp-pull-request
-
-for you to fetch changes up to 3719acc273865744b885ad9bcb141b4496c31887:
-
-  linux-user: netlink: Add missing QEMU_IFLA entries (2025-01-24 13:58:40 +0100)
-
-----------------------------------------------------------------
-linux-user: Add support for various missing netlink sockopt entries
-
-Add missing sockopt calls and thus fix building the debian gupnp package in a chroot.
-
-This fixes debian bug report:
-https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1044651
+While adding IFA_PROTO, convert all IFA_XXX values over to QEMU_IFA_XXX values
+to avoid a build failure on Ubuntu 22.04 (kernel v5.18 which does not know
+IFA_PROTO yet).
 
 Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+---
+ linux-user/fd-trans.c | 33 +++++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
 
-----------------------------------------------------------------
-
-Helge Deller (6):
-  linux-user: netlink: Add missing IFA_PROTO to
-    host_to_target_data_addr_rtattr()
-  linux-user: Use unique error messages for cmsg parsing
-  linux-user: netlink: Add IP_PKTINFO cmsg parsing
-  linux-user: netlink: Add emulation of IP_MULTICAST_IF
-  linux-user: netlink: add netlink neighbour emulation
-  linux-user: netlink: Add missing QEMU_IFLA entries
-
- linux-user/fd-trans.c     | 169 ++++++++++++++++++++++++++++++++++++--
- linux-user/syscall.c      |  34 ++++++--
- linux-user/syscall_defs.h |   6 ++
- 3 files changed, 192 insertions(+), 17 deletions(-)
-
+diff --git a/linux-user/fd-trans.c b/linux-user/fd-trans.c
+index c04a97c73a..2e714c8e56 100644
+--- a/linux-user/fd-trans.c
++++ b/linux-user/fd-trans.c
+@@ -31,6 +31,22 @@
+ #include "fd-trans.h"
+ #include "signal-common.h"
+ 
++enum {
++    QEMU_IFA_UNSPEC,
++    QEMU_IFA_ADDRESS,
++    QEMU_IFA_LOCAL,
++    QEMU_IFA_LABEL,
++    QEMU_IFA_BROADCAST,
++    QEMU_IFA_ANYCAST,
++    QEMU_IFA_CACHEINFO,
++    QEMU_IFA_MULTICAST,
++    QEMU_IFA_FLAGS,
++    QEMU_IFA_RT_PRIORITY,
++    QEMU_IFA_TARGET_NETNSID,
++    QEMU_IFA_PROTO,
++    QEMU__IFA__MAX,
++};
++
+ enum {
+     QEMU_IFLA_BR_UNSPEC,
+     QEMU_IFLA_BR_FORWARD_DELAY,
+@@ -1138,20 +1154,21 @@ static abi_long host_to_target_data_addr_rtattr(struct rtattr *rtattr)
+ 
+     switch (rtattr->rta_type) {
+     /* binary: depends on family type */
+-    case IFA_ADDRESS:
+-    case IFA_LOCAL:
++    case QEMU_IFA_ADDRESS:
++    case QEMU_IFA_LOCAL:
++    case QEMU_IFA_PROTO:
+         break;
+     /* string */
+-    case IFA_LABEL:
++    case QEMU_IFA_LABEL:
+         break;
+     /* u32 */
+-    case IFA_FLAGS:
+-    case IFA_BROADCAST:
++    case QEMU_IFA_FLAGS:
++    case QEMU_IFA_BROADCAST:
+         u32 = RTA_DATA(rtattr);
+         *u32 = tswap32(*u32);
+         break;
+     /* struct ifa_cacheinfo */
+-    case IFA_CACHEINFO:
++    case QEMU_IFA_CACHEINFO:
+         ci = RTA_DATA(rtattr);
+         ci->ifa_prefered = tswap32(ci->ifa_prefered);
+         ci->ifa_valid = tswap32(ci->ifa_valid);
+@@ -1398,8 +1415,8 @@ static abi_long target_to_host_data_addr_rtattr(struct rtattr *rtattr)
+ {
+     switch (rtattr->rta_type) {
+     /* binary: depends on family type */
+-    case IFA_LOCAL:
+-    case IFA_ADDRESS:
++    case QEMU_IFA_LOCAL:
++    case QEMU_IFA_ADDRESS:
+         break;
+     default:
+         qemu_log_mask(LOG_UNIMP, "Unknown target IFA type: %d\n",
 -- 
 2.47.0
 
