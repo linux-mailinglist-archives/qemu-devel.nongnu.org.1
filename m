@@ -2,56 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C099FA1BD08
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 20:55:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC714A1BD57
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 21:22:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbPkb-0003Y6-3r; Fri, 24 Jan 2025 14:53:57 -0500
+	id 1tbQBC-0005yA-Jl; Fri, 24 Jan 2025 15:21:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tbPkY-0003XE-Em
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 14:53:54 -0500
-Received: from nyc.source.kernel.org ([2604:1380:45d1:ec00::3])
+ (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
+ id 1tbQB9-0005xq-Tt; Fri, 24 Jan 2025 15:21:23 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tbPkW-0004by-HA
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 14:53:54 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 1AE5FA41DC9;
- Fri, 24 Jan 2025 19:52:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A3FBC4CEE0;
- Fri, 24 Jan 2025 19:53:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1737748431;
- bh=4g1ZbEPqQ2DkDr8Dr7GtwDuURpVHWKk/gleER0xnZgg=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=jF0FtP0NARXr44+u6upKXLnjUIE0RCiA1FoPSIpClrvTfAm3Q2BYG6kA0Ov4cXpdD
- ERi0r9yYZ0FsjTmTE0OXdj+3GEvllf3EBMfq2bTNS5iew5VFqLEP99G5fDjYzZXIvD
- MrxtfH5zymHVFuM6Z7Wi9EtTV4Da2e8e/XS4iuJKuaPAQ5PHnPZhilaOagCT2sr26B
- tuXQuOYtYTID2H5xiL+uW3mKDXmt0nhZP5epywjdzfwNqU0VJKzb+rfSaXg32sS8KS
- Xu1orNcRFXoWqasdXieSBeMzghbmZtJoWaYFXenqip+ffoswTFRa8u1B2+3HoCLu7s
- XBzN0iWhMH6lg==
-From: deller@kernel.org
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>
-Subject: [PULL 2/2] hw/hppa: Fix booting Linux kernel with initrd
-Date: Fri, 24 Jan 2025 20:53:45 +0100
-Message-ID: <20250124195345.15118-3-deller@kernel.org>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250124195345.15118-1-deller@kernel.org>
-References: <20250124195345.15118-1-deller@kernel.org>
+ (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
+ id 1tbQB8-0007VE-16; Fri, 24 Jan 2025 15:21:23 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50OGVH5G021311;
+ Fri, 24 Jan 2025 20:21:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=TouP20aMj1pSLfzBLhwhbtGMqfUr55jEByDOeR2nV
+ o4=; b=p3j+3jqyJl1J8vpcjoOZNdc0WzXYnr2N0ke99CprHFmGx8dK4PtMOTG8o
+ vdrjIM6qH4akNJAAKsqKW7P+oNP7TL+6O8+bKdYvePF1DWaXq4ji4IzZHTXrigym
+ ti+ki7ZB/y+wjbryv8mp0GXE15URh3egOxjomWB+us6Gevhg7XjtNoCM10m9bsjK
+ tkXcZ6crDOzt2rGw61H0j1PeVFl8htCa8wNgcNFRFmDIOw9ODsVCGj+Wg9iYhIaL
+ 3nhSYqXMS7EK18PK0eLcrfUJSu1FD/QvW9hv3Rx+5hLBAVuKNNGrTqOjLx72/eiH
+ OseZXy/UQNQ4Tmks57OiuZolObRVQ==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44c6jnkf9r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 Jan 2025 20:21:18 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50OIfuXA024241;
+ Fri, 24 Jan 2025 20:21:17 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 448q0yne3h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 Jan 2025 20:21:17 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
+ [10.241.53.104])
+ by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 50OKLGrD12386894
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 24 Jan 2025 20:21:16 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 45C3B58065;
+ Fri, 24 Jan 2025 20:21:16 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7217458052;
+ Fri, 24 Jan 2025 20:21:15 +0000 (GMT)
+Received: from li-2311da4c-2e09-11b2-a85c-c003041e9174.ibm.com.com (unknown
+ [9.61.77.196]) by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 24 Jan 2025 20:21:15 +0000 (GMT)
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+To: qemu-s390x@nongnu.org
+Cc: farman@linux.ibm.com, schnelle@linux.ibm.com, thuth@redhat.com,
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
+ clegoate@redhat.com, qemu-devel@nongnu.org
+Subject: [PATCH v3 0/2] s390x/pci: relax I/O address translation requirement
+Date: Fri, 24 Jan 2025 15:21:13 -0500
+Message-ID: <20250124202115.349386-1-mjrosato@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:45d1:ec00::3;
- envelope-from=deller@kernel.org; helo=nyc.source.kernel.org
-X-Spam_score_int: -73
-X-Spam_score: -7.4
-X-Spam_bar: -------
-X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: gJNoFh9Rx2mTEKj_1VeedGN3UYCBnjKs
+X-Proofpoint-ORIG-GUID: gJNoFh9Rx2mTEKj_1VeedGN3UYCBnjKs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-24_08,2025-01-23_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0
+ lowpriorityscore=0 suspectscore=0 adultscore=0 clxscore=1015 spamscore=0
+ bulkscore=0 malwarescore=0 mlxlogscore=892 mlxscore=0 priorityscore=1501
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501240137
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=mjrosato@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,134 +104,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+This series introduces the concept of the relaxed translation requirement
+for s390x guests in order to allow bypass of the guest IOMMU for more
+efficient PCI passthrough.
 
-Commit 20f7b890173b ("hw/hppa: Reset vCPUs calling resettable_reset()")
-broke booting the Linux kernel with initrd which may have been provided
-on the command line. The problem is, that the mentioned commit zeroes
-out initial registers which were preset with addresses for the Linux
-kernel and initrd.
+With this series, QEMU can indicate to the guest that an IOMMU is not
+strictly required for a zPCI device.  This would subsequently allow a
+guest linux to use iommu.passthrough=1 and bypass their guest IOMMU for
+PCI devices.
 
-Fix it by adding proper variables which are set shortly before starting
-the firmware.
+When this occurs, QEMU will note the behavior via an intercepted MPCIFC
+instruction and will fill the host iommu with mappings of the entire
+guest address space in response.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: 20f7b890173b ("hw/hppa: Reset vCPUs calling resettable_reset()")
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- hw/hppa/machine.c | 48 +++++++++++++++++++----------------------------
- target/hppa/cpu.h |  4 ++++
- 2 files changed, 23 insertions(+), 29 deletions(-)
+There is a kernel series that adds the relevant behavior needed to
+exploit this new feature from within a s390x linux guest.  Most
+recent version of that is at [1].
 
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index 4bcc66cd6f..0dd1908214 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -356,7 +356,6 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
-     uint64_t kernel_entry = 0, kernel_low, kernel_high;
-     MemoryRegion *addr_space = get_system_memory();
-     MemoryRegion *rom_region;
--    unsigned int smp_cpus = machine->smp.cpus;
-     SysBusDevice *s;
- 
-     /* SCSI disk setup. */
-@@ -482,8 +481,8 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
-                       kernel_low, kernel_high, kernel_entry, size / KiB);
- 
-         if (kernel_cmdline) {
--            cpu[0]->env.gr[24] = 0x4000;
--            pstrcpy_targphys("cmdline", cpu[0]->env.gr[24],
-+            cpu[0]->env.cmdline_or_bootorder = 0x4000;
-+            pstrcpy_targphys("cmdline", cpu[0]->env.cmdline_or_bootorder,
-                              TARGET_PAGE_SIZE, kernel_cmdline);
-         }
- 
-@@ -513,32 +512,22 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
-             }
- 
-             load_image_targphys(initrd_filename, initrd_base, initrd_size);
--            cpu[0]->env.gr[23] = initrd_base;
--            cpu[0]->env.gr[22] = initrd_base + initrd_size;
-+            cpu[0]->env.initrd_base = initrd_base;
-+            cpu[0]->env.initrd_end  = initrd_base + initrd_size;
-         }
-     }
- 
-     if (!kernel_entry) {
-         /* When booting via firmware, tell firmware if we want interactive
--         * mode (kernel_entry=1), and to boot from CD (gr[24]='d')
--         * or hard disc * (gr[24]='c').
-+         * mode (kernel_entry=1), and to boot from CD (cmdline_or_bootorder='d')
-+         * or hard disc (cmdline_or_bootorder='c').
-          */
-         kernel_entry = machine->boot_config.has_menu ? machine->boot_config.menu : 0;
--        cpu[0]->env.gr[24] = machine->boot_config.order[0];
-+        cpu[0]->env.cmdline_or_bootorder = machine->boot_config.order[0];
-     }
- 
--    /* We jump to the firmware entry routine and pass the
--     * various parameters in registers. After firmware initialization,
--     * firmware will start the Linux kernel with ramdisk and cmdline.
--     */
--    cpu[0]->env.gr[26] = machine->ram_size;
--    cpu[0]->env.gr[25] = kernel_entry;
--
--    /* tell firmware how many SMP CPUs to present in inventory table */
--    cpu[0]->env.gr[21] = smp_cpus;
--
--    /* tell firmware fw_cfg port */
--    cpu[0]->env.gr[19] = FW_CFG_IO_BASE;
-+    /* Keep initial kernel_entry for first boot */
-+    cpu[0]->env.kernel_entry = kernel_entry;
- }
- 
- /*
-@@ -675,18 +664,19 @@ static void hppa_machine_reset(MachineState *ms, ResetType type)
-         cpu[i]->env.gr[5] = CPU_HPA + i * 0x1000;
-     }
- 
--    /* already initialized by machine_hppa_init()? */
--    if (cpu[0]->env.gr[26] == ms->ram_size) {
--        return;
--    }
--
-     cpu[0]->env.gr[26] = ms->ram_size;
--    cpu[0]->env.gr[25] = 0; /* no firmware boot menu */
--    cpu[0]->env.gr[24] = 'c';
--    /* gr22/gr23 unused, no initrd while reboot. */
-+    cpu[0]->env.gr[25] = cpu[0]->env.kernel_entry;
-+    cpu[0]->env.gr[24] = cpu[0]->env.cmdline_or_bootorder;
-+    cpu[0]->env.gr[23] = cpu[0]->env.initrd_base;
-+    cpu[0]->env.gr[22] = cpu[0]->env.initrd_end;
-     cpu[0]->env.gr[21] = smp_cpus;
--    /* tell firmware fw_cfg port */
-     cpu[0]->env.gr[19] = FW_CFG_IO_BASE;
-+
-+    /* reset static fields to avoid starting Linux kernel & initrd on reboot */
-+    cpu[0]->env.kernel_entry = 0;
-+    cpu[0]->env.initrd_base = 0;
-+    cpu[0]->env.initrd_end = 0;
-+    cpu[0]->env.cmdline_or_bootorder = 'c';
- }
- 
- static void hppa_nmi(NMIState *n, int cpu_index, Error **errp)
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 083d4f5a56..beea42d105 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -268,6 +268,10 @@ typedef struct CPUArchState {
-     struct {} end_reset_fields;
- 
-     bool is_pa20;
-+
-+    target_ulong kernel_entry; /* Linux kernel was loaded here */
-+    target_ulong cmdline_or_bootorder;
-+    target_ulong initrd_base, initrd_end;
- } CPUHPPAState;
- 
- /**
+[1]: https://lore.kernel.org/linux-s390/20250124201717.348736-1-mjrosato@linux.ibm.com/
+
+Changes for v3:
+- use s390_get_memory_limit
+- advertise full aperture for relaxed-translation-capable devices
+
+Changes for v2:
+- Add relax-translation property, fence for older machines
+- Add a new MPCIFC failure case when direct-mapping requested but
+  the relax-translation property is set to off.
+- For direct mapping, use a memory alias to handle the SMDA offset and
+  then just let vfio handle the pinning of memory.
+
+Matthew Rosato (2):
+  s390x/pci: add support for guests that request direct mapping
+  s390x/pci: indicate QEMU supports relaxed translation for passthrough
+
+ hw/s390x/s390-pci-bus.c         | 36 +++++++++++++++++++++++++++++++--
+ hw/s390x/s390-pci-inst.c        | 13 ++++++++++--
+ hw/s390x/s390-pci-vfio.c        | 20 +++++++++++++-----
+ hw/s390x/s390-virtio-ccw.c      |  5 +++++
+ include/hw/s390x/s390-pci-bus.h |  4 ++++
+ include/hw/s390x/s390-pci-clp.h |  1 +
+ 6 files changed, 70 insertions(+), 9 deletions(-)
+
 -- 
-2.47.0
+2.48.1
 
 
