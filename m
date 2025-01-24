@@ -2,69 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DCB1A1B9DE
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:02:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68481A1B99E
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 16:47:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbM7M-0000dH-1r; Fri, 24 Jan 2025 11:01:12 -0500
+	id 1tbLtb-0004RX-Ay; Fri, 24 Jan 2025 10:46:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tbM7J-0000cV-K3
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:01:09 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tbLtX-0004RK-6Z
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 10:46:55 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tbM7H-000873-5q
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:01:09 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tbLtV-00061M-Mi
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 10:46:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737734465;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ s=mimecast20190719; t=1737733613;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=OEe58Tcphrjt5n4Vb5YX/63z8WsXcnWr+NE2mddreSw=;
- b=Nq1IypTOl6KbUGkXWwLWDifQAecKXAYAe1FK+zsIHLAfurqqJjze+NfSuuA61Du1TbT1Y2
- ijz0NpmCrrW128XIdxv0uqA0auHiao6XloYKiSzblpHEWB728PWr/g7MLtIIVwEwGEhYmy
- fijUR2cBObcNvMlaK2jCQx+LE7KQMpc=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-75-zEOCt36nNa6d4A1zk_Mhug-1; Fri,
- 24 Jan 2025 11:01:01 -0500
-X-MC-Unique: zEOCt36nNa6d4A1zk_Mhug-1
-X-Mimecast-MFC-AGG-ID: zEOCt36nNa6d4A1zk_Mhug
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3BC1319AB99E; Fri, 24 Jan 2025 15:33:43 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.93])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 25A991800348; Fri, 24 Jan 2025 15:33:39 +0000 (UTC)
-Date: Fri, 24 Jan 2025 15:33:36 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH 2/5] tests/functional: Add the ReplayKernelBase class
-Message-ID: <Z5Oy0L3zaz97qxy5@redhat.com>
-References: <20250124141529.1626877-1-thuth@redhat.com>
- <20250124141529.1626877-3-thuth@redhat.com>
+ bh=5Z8rqWgHVHOXm3tdLHuX1XKYEJ3QPuYrJlTQOr0sUMQ=;
+ b=Yyg8z2r1IHZi9FHyyhduQOLEmhef9tmWIE5/oiB0G3Y/SvMC/lZwVa1btiahoJn6/NEpn0
+ DPgLdUWn1twbr/zwIWvn1oiZCblx9mC4hat0Rvxb3GTES5MDs1ORnIHXVpCVFi6oFFiQYJ
+ wYfggBo/67EB906j6MwCxsB+wJOWNZQ=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-595-953ivmf3N82Ml0iyq-1Oig-1; Fri, 24 Jan 2025 10:46:51 -0500
+X-MC-Unique: 953ivmf3N82Ml0iyq-1Oig-1
+X-Mimecast-MFC-AGG-ID: 953ivmf3N82Ml0iyq-1Oig
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7bcf4d3c1c1so323933785a.2
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 07:46:51 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737733610; x=1738338410;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5Z8rqWgHVHOXm3tdLHuX1XKYEJ3QPuYrJlTQOr0sUMQ=;
+ b=w882BJl4YrL5xlYtYGEYM3J8llJThfsJOF0eEUFVQgWOV9I2xRKn4wmQkSFlG8qkos
+ 9CEu16kDwCCRs3NgDyfARaAZlC0oIHTqn+OD/BNvMImF3qUJiU17lrFnztBd+QvpUWun
+ +1EyZHmsaXdIbb6xE2rVzEoIUhMDkvDH1L5QcTYOQThg79kSfJbA/S/z937+hZQ38ri5
+ yMsE+XpxODAoCkXChPqqSyN+a536OeVFXRA1Cp8hDstLifzLCsmrusyaCnGK+mi3/vxg
+ 4aN4QKykajZElplv8hjkR4ff3KKKEVQrezBoAotQ+tY85akR3jxFFzO22x/5727khIe7
+ W+rg==
+X-Gm-Message-State: AOJu0Yzc/rajNBaQLEfgl+pIut7D1fbP4tjVVgO10Ra1abKgaKYXR3jH
+ lRE5o0hm8DVU0gWCyijXS4ey4q6J0N5knyebf24luCOhNLAImu0jgY7npI61lraykHc11HO2D4N
+ Sd197PoTgLi/HwtXIWFLeL1qWVFY3zYchFXnRlnUaGdf2tWycTIPM
+X-Gm-Gg: ASbGncuU0a58QZG2oA4mxbcax8RJPzbv6a6C4ekIBe4XP+RpcqOlWz4S+0IHn/t9Xrx
+ WOLwGvp883GT7KosKCL8RQBvzuo537L7H+AXuJrA/yEDMQQkb+wKM2PhXfSI7jmKtxuvug0XDny
+ PCAYV5e1/syL6hnf6gKYuuuPem/rbGApB57Kx5g31n5cv4VwlqZe7rYj+f4uul4ewSZpLhsNszT
+ UnGO7YnL0MlhGRfOLcanuLC90vDpcaeudN+3KEph0qEYdBirse2DIop7C0wzCgaTIt4+kTWFcdF
+ nP94OQtdFGm7SSyJXUwcAyEh4U0Uu1k=
+X-Received: by 2002:a05:620a:17aa:b0:7b6:c92e:2e6d with SMTP id
+ af79cd13be357-7be63288b8dmr4126741385a.52.1737733115318; 
+ Fri, 24 Jan 2025 07:38:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEU63jVJlcMMd0itD6Gw+gz428lXpNOqJxgJiZx5fUxwvbISU0gfzbvS5oWz5730WrCA/6Iqw==
+X-Received: by 2002:a05:620a:17aa:b0:7b6:c92e:2e6d with SMTP id
+ af79cd13be357-7be63288b8dmr4126739485a.52.1737733115030; 
+ Fri, 24 Jan 2025 07:38:35 -0800 (PST)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7be9aef06a3sm104310885a.83.2025.01.24.07.38.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 24 Jan 2025 07:38:34 -0800 (PST)
+Date: Fri, 24 Jan 2025 10:38:32 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Prasad Pandit <ppandit@redhat.com>
+Cc: qemu-devel@nongnu.org, farosas@suse.de, berrange@redhat.com,
+ Prasad Pandit <pjp@fedoraproject.org>
+Subject: Re: [PATCH v3 4/4] tests/qtest/migration: add postcopy test with
+ multifd
+Message-ID: <Z5Oz-Kz4rysFQ-n1@x1n>
+References: <20250121131032.1611245-1-ppandit@redhat.com>
+ <20250121131032.1611245-5-ppandit@redhat.com>
+ <Z4_Bh3ytv9REBero@x1n>
+ <CAE8KmOw-4_DSoQEVUtJQnAuGdazmLqhL-dpUi3J1y8BN7zjLLw@mail.gmail.com>
+ <Z5EYbBXkjTu98rHk@x1n>
+ <CAE8KmOwvp=LJ+79t9VVsZqf4APqSYxqCQVmYSg_5QaVD4vzLWg@mail.gmail.com>
+ <CAE8KmOywe888S-oCoO=4=oFsXuN=AfuuqvT27LGor-UTC78YoQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250124141529.1626877-3-thuth@redhat.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+In-Reply-To: <CAE8KmOywe888S-oCoO=4=oFsXuN=AfuuqvT27LGor-UTC78YoQ@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
@@ -87,28 +108,61 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 24, 2025 at 03:15:26PM +0100, Thomas Huth wrote:
-> Copy the ReplayKernelBase class from the avocado tests. We are going
-> to need it to convert the related replay tests in the following patches.
+On Fri, Jan 24, 2025 at 06:15:20PM +0530, Prasad Pandit wrote:
+> Hello Peter,
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> On Thu, 23 Jan 2025 at 16:39, Prasad Pandit <ppandit@redhat.com> wrote:
+> > On Wed, 22 Jan 2025 at 21:40, Peter Xu <peterx@redhat.com> wrote:
+> > > I believe many of the tests can be avoided, but still below is a list of
+> > > minimum tests that I think might still be good to add:
+> > >         # /x86_64/migration/postcopy/plain
+> > >         # /x86_64/migration/postcopy/recovery/tls/psk
+> > >         # /x86_64/migration/postcopy/preempt/plain
+> > >         # /x86_64/migration/postcopy/preempt/recovery/tls/psk
 > ---
->  tests/functional/replay_kernel.py | 84 +++++++++++++++++++++++++++++++
->  1 file changed, 84 insertions(+)
->  create mode 100644 tests/functional/replay_kernel.py
+> $ ../qtest/migration-test --tap -k -r
+> '/x86_64/migration/multifd+postcopy' | grep -i 'slow test'
+> # slow test /x86_64/migration/multifd+postcopy/plain executed in 1.28 secs
+> # slow test /x86_64/migration/multifd+postcopy/recovery/tls/psk
+> executed in 2.43 secs
+> # slow test /x86_64/migration/multifd+postcopy/preempt/plain executed
+> in 1.52 secs
+> # slow test /x86_64/migration/multifd+postcopy/preempt/recovery/tls/psk
+> executed in 3.32 secs
+> ---
+> * Postcopy tests are working well with setting 'multifd = true'.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Great.
 
+> 
+> > >         # /x86_64/migration/multifd/tcp/tls/psk/match
+> > >         # /x86_64/migration/multifd/tcp/plain/zstd
+> > >         # /x86_64/migration/multifd/tcp/plain/cancel
+> 
+> * Above precopy tests already enable (16) multifd channels and they
+> seem to test scenarios like: resume after migrate_cancel() or precopy
+> with compression (zstd). Enabling 'postcopy' here is not the same as
+> setting 'postcopy=true'. Do we really need to redefine these tests for
+> postcopy migration? Does compression (zstd/zlib etc.) OR
+> migrate_cancle() work with 'postcopy' migration?
 
-With regards,
-Daniel
+Since multifd doesn't work with postcopy phase, compression so far cannot
+happen in postcopy phase but only in precopy phase.
+
+So the tests I suggested was trying to make sure multifd major features (in
+this case, tls, compression, and cancellation) work like before even if we
+set postcopy-ram=on in the feature list, because after your changes merged,
+people may start always set postcopy-ram=on for all cases.
+
+OTOH, these test cases do not test anything that would happen in postcopy
+phase, they should be covered by the postcopy tests you added above.
+
+Thanks,
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Peter Xu
 
 
