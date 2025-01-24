@@ -2,92 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50F3EA1BB27
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 18:03:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 296F1A1BB39
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 18:11:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbN2V-0005qd-76; Fri, 24 Jan 2025 12:00:15 -0500
+	id 1tbNCj-00056M-Ix; Fri, 24 Jan 2025 12:10:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tbN2C-0005mf-VS
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:59:57 -0500
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tbN2A-0003nX-9W
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:59:56 -0500
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-2f43da61ba9so3348579a91.2
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:59:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737737992; x=1738342792; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=EyzSLdrnSlaoLoH41d7rkDSokRQub3XCHwJ1/lPMyoo=;
- b=rPYo7O+E5o+E3v27qPXz6j3mePiRSHT5oEhMzMsveR+wPja7Xzslei/Cdj/5IHrabz
- y3yM38OW5/kVGIymjO6zO8wGe1GIn47qn2lm7yox62ulr4c6i0oQHo43cp+UWpH5aVWs
- qdd/YxCKGZMRRZyyBtPaeCMbvv4VfLsEjaYcRAPgREdE6mxx7Wd+3ub0RjQ7kF5zC0mC
- sdeUcVX7E7ohS2Gz0rJslpOQSgm2YLCgTzf20UG1bvL6pvp8ubMF1ADw4VkznZ2HZsV2
- P8atb4Cs6IqewB/90XVMMQQcrcjYUU49UrDF4qWgJlnKauDYJ6XVddw6S1IW9QcBh1Ew
- wbpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737737992; x=1738342792;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EyzSLdrnSlaoLoH41d7rkDSokRQub3XCHwJ1/lPMyoo=;
- b=BujFYHfd7HR1WgDHol+fT48yx33a7MEG+WNwQIx2u8FPmszBgglCxrKlPTOGzIzZDG
- N1yJlYwO7wcRgvTZ7UDTJq7JXj/7xGiul8+1x/7GgFyMedSKsKDmmoB2xFbs8G4/Pcdm
- dKtBG0hYFQNKunkUTqtuTZdOEdBHOuswMfyFgYppfnJ80oBUI5bM3N/t6DRCfVHdNvUI
- VQIUPeQSgpCWcK0xdvvV5jPT+lSe18iugnwCoZPGknlaPPirWlbWs3KF4d3y5VsFFPKK
- PSf3/XTrMtv0HVDv8LwS6q9unezt+hr5QAnv6O4/ZtWXAmlszxh28PGQXZ0X4KYaEK0z
- 5NpA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVlcyfdAHJ6nwe4M6l0b4fhogtt5VydG4Ll02Z2gfCfnUlax1QSjFHW0jWl4AqzdGKlHMpai7b/KyU6@nongnu.org
-X-Gm-Message-State: AOJu0YwUwH++V9eXitek9S249ANwN41tg0wzIz96tT0nQktr+gQbKABs
- P0pSGqh3AAZHz7Ui92G/UhOqfRSlam50QpN6vAnjYJlMCpKCPPaTCeLpWiztsZM=
-X-Gm-Gg: ASbGnctltIJCzTrWg3jWUjbMO+1hh8YDpdR5kVr3IIpltxtXHcKYoVJr3woZcvuekEF
- SYnxOd0sU+ARidBGTci/I+ujyJbuh9yB6WHL6LjjxLCIPuiqDz8iMveGxttMWZ080rR+IqWFxMF
- IHAvRtCxLe/LgMu0TvvpsGwy9+MPykPplmHl+afcHBa9ZiHz4ClxlI5kp94vkasxuopveKioUac
- v46azdyMJE0vOARUd96piulxDpAMGlmZfooqMqwXhJen+d9dIFAGAjd8CAtOE/WibUL11pTe57Y
- KkJd5gmarVsZPTRwnIkrvJq2
-X-Google-Smtp-Source: AGHT+IFOVYlVzFkm1eGbZH6NyuseSSNXBSdAKJExMQXd2ARtNWYSmvU/KGoBB4vcws2TjmiJfRVY5A==
-X-Received: by 2002:a17:90b:3a05:b0:2ee:c9b6:4c42 with SMTP id
- 98e67ed59e1d1-2f782cb68fbmr48395990a91.16.1737737992611; 
- Fri, 24 Jan 2025 08:59:52 -0800 (PST)
-Received: from [192.168.163.227] ([75.147.178.105])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f7ffa5700bsm1990591a91.17.2025.01.24.08.59.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 24 Jan 2025 08:59:52 -0800 (PST)
-Message-ID: <9afcb089-2d40-4b0b-84fd-479e8cef831d@linaro.org>
-Date: Fri, 24 Jan 2025 08:59:50 -0800
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tbNCU-0004oq-5j
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 12:10:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tbNCQ-0005uM-8S
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 12:10:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737738627;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=bXgsYg9WUAufTZvCWSM3+Rce5P2yUI3NDiSYwkQVMF8=;
+ b=HaZ5Aa33WW5lSaLMx195MpuqO0MhazM6+c3lQIbP/cCOUiMkqbC/2zO5ByDivxzvWg5ZC2
+ LPSNbDAthnhvOZlHkLj8FmO5zIkLZahboSk/FFZF4yfRC64Awm9wmyvkLJtKBDPKxXPHTG
+ Y1g1+D+eYyYlR8Q15jOrSdmU9inGIOw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-121-6Aj9TfTIOV6GbUZVOFVv5Q-1; Fri,
+ 24 Jan 2025 12:10:23 -0500
+X-MC-Unique: 6Aj9TfTIOV6GbUZVOFVv5Q-1
+X-Mimecast-MFC-AGG-ID: 6Aj9TfTIOV6GbUZVOFVv5Q
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 796891B0B4C2; Fri, 24 Jan 2025 15:36:13 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.93])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 423DB1800348; Fri, 24 Jan 2025 15:36:10 +0000 (UTC)
+Date: Fri, 24 Jan 2025 15:36:06 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH 3/5] tests/functional/test_mipsel_malta: Convert the
+ mipsel replay tests
+Message-ID: <Z5OzZrq7CRBICDyG@redhat.com>
+References: <20250124141529.1626877-1-thuth@redhat.com>
+ <20250124141529.1626877-4-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/28] cpus: Un-inline cpu_has_work()
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-riscv@nongnu.org,
- qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-References: <20250121142341.17001-1-philmd@linaro.org>
- <20250121142341.17001-7-philmd@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250121142341.17001-7-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250124141529.1626877-4-thuth@redhat.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,19 +85,64 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/21/25 06:23, Philippe Mathieu-Daudé wrote:
-> In order to expand cpu_has_work(), un-inline it.
+On Fri, Jan 24, 2025 at 03:15:27PM +0100, Thomas Huth wrote:
+> Move the mipsel replay tests from tests/avocado/replay_kernel.py to
+> the functional framework. Since the functional tests should be run per
+> target, we cannot stick all replay tests in one file. Thus let's add
+> these tests to the file where we already use the same asset already.
+
+Are the replay tests liable to impact running time much ?
+
+The test timeouts are per-file, which could motivate
+a separate test_mipsel_malta_replay.py file ?
+
 > 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->   include/hw/core/cpu.h | 6 +-----
->   hw/core/cpu-system.c  | 6 ++++++
->   2 files changed, 7 insertions(+), 5 deletions(-)
+>  tests/avocado/replay_kernel.py        | 54 ---------------------------
+>  tests/functional/meson.build          |  1 +
+>  tests/functional/test_mipsel_malta.py | 30 +++++++++++++--
+>  3 files changed, 28 insertions(+), 57 deletions(-)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+> index b7719ab85f..7d233213c1 100644
+> --- a/tests/functional/meson.build
+> +++ b/tests/functional/meson.build
+> @@ -35,6 +35,7 @@ test_timeouts = {
+>    'arm_sx1' : 360,
+>    'intel_iommu': 300,
+>    'mips_malta' : 120,
+> +  'mipsel_malta' : 500,
 
-r~
+snip
+
+> +
+> +    @skipLongRuntime()
+> +    def test_replay_mips_malta32el_nanomips_4k(self):
+> +        self.do_test_replay_mips_malta32el_nanomips(self.ASSET_KERNEL_4K)
+> +
+> +    @skipLongRuntime()
+> +    def test_replay_mips_malta32el_nanomips_16k_up(self):
+> +        self.do_test_replay_mips_malta32el_nanomips(self.ASSET_KERNEL_16K)
+> +
+> +    @skipLongRuntime()
+> +    def test_replay_mips_malta32el_nanomips_64k_dbg(self):
+> +        self.do_test_replay_mips_malta32el_nanomips(self.ASSET_KERNEL_64K)
+
+Guess that answers my own question. I'd think a separate
+file for replay tests per target is nicer, so we leave the
+default executed malta tests with short timeout in meson.
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
