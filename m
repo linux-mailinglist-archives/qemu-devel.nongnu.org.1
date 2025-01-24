@@ -2,110 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3E5AA1B690
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:02:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B09A1B694
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 14:04:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbJJW-0007t1-Hg; Fri, 24 Jan 2025 08:01:34 -0500
+	id 1tbJLM-0000QL-Ap; Fri, 24 Jan 2025 08:03:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1tbJJ5-0007qJ-0P
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:01:14 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tbJKy-0000OV-GC
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:03:05 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1tbJJ2-00070G-3H
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:01:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737723662;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qhEWVaxKeikmxtBJ5SO9zg19epngSbsvs/Gow7w7f8I=;
- b=fSnsobmy4R73lVkxQpjd1mADYxJQ7xWH/2di6LPHhpgza3dnoRIlUGzp7rGMGAMczL/P3+
- 2lndRSLjOlSEXvTtkcpTIxm2YZOLLsbhNYMGandDyalxB6tSCvyv423Bjd7m5V3VoU2i2J
- YURTDzls8zooY3hWsq+8ip8Axfod9T0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-596-30D0MaJ_OwSwRk9_0h-NUw-1; Fri, 24 Jan 2025 08:01:00 -0500
-X-MC-Unique: 30D0MaJ_OwSwRk9_0h-NUw-1
-X-Mimecast-MFC-AGG-ID: 30D0MaJ_OwSwRk9_0h-NUw
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4359eb032c9so14644605e9.2
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 05:01:00 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737723659; x=1738328459;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qhEWVaxKeikmxtBJ5SO9zg19epngSbsvs/Gow7w7f8I=;
- b=SYq2UzltPHzVd7m9aji3EsVkEP5PrKflbaXU2mzJ2Tc5uExulyC41DZkKIaP2pi6BO
- dL1KxGXvsr3Nwy6bt/YWbYLkw1ACPsFoYOfjlNxxkH+zXZ4HrO7kWL7oZMfeqEq2eQHJ
- 9LF70tsZUT2vWtVKce70bZxGFIrhhAKQuxzApKRxL7owk/h+BV/Fi+cozKyrw9koav93
- 75naxk+8+jwowT8C8q377hFna9LtYI91l2IHmX5fahghjHgYyf8i7fh/uJf3XSoFWsKo
- Bs/mxPv2dLT8Yj7MrUBgSp0fXtlVJEONKnwEhGOpIyALBo69/IX3SkC3rpcLFjRq5FFe
- gpPA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUUMZUABIlaQKn8Gc7SQaeFCDOJ31Xr46Xtu4AHHhoS5urMHL/tJOAuvbT0BiIHpTGMjnmveZqniUor@nongnu.org
-X-Gm-Message-State: AOJu0YyFeA8uSxpHxLqjDTOc56vMp3SpxbfWA36PwaiuxiPD0rF1s2B3
- X815QVgdevGJil4Le871fPVHlPH8cZw8OCu3/gwlemAEuuaFo/tUIt8PjVEWl4dhoFzVQ1kWhKB
- Z01IdtUgTFJyVikdcEj8eLTtkp1/COWHuJwouQyO0CAFbZ6pdbRwl
-X-Gm-Gg: ASbGnctw+RHrt5c1Afd5Ipp2lVhPWMTqD/kcVg/80Xj91cgcaveSrlQozxzqxNx0AMo
- 2cIc0nBay/sAYZG2r6ouakiEroKFDw7HNWfpwnaEMyoBSjaiJFDBLqIhZsy4pXQ33TRW6LhXKxM
- ALez7P8TJPKXY04G3RWjMnbN3kaXqm4ipCnnw3NEYBqECvjy4wxuNbuBhiSQ3J2K4lwyj+rdCD0
- xMSrYpHsz8JrbFhe0TOEobb7lRrtq93EsRpBSPfasAcT6XN0jnuNkpm0cNkYXuhzeorFRcBdWKt
- 5Ru6DPv8GB7Jp1Q4OpKQMiqdLeMlTQxoJ0Ntxph+vg==
-X-Received: by 2002:a05:6000:1f85:b0:385:e374:be1 with SMTP id
- ffacd0b85a97d-38bf5662b18mr28603911f8f.13.1737723659232; 
- Fri, 24 Jan 2025 05:00:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHNdnSYVkLN0W7EV86sq4qrC5JldVfmcOMcj0YhiKmcOETN+KR3k8MwLJ3VyzAMUkpiTfPPDw==
-X-Received: by 2002:a05:6000:1f85:b0:385:e374:be1 with SMTP id
- ffacd0b85a97d-38bf5662b18mr28603828f8f.13.1737723658728; 
- Fri, 24 Jan 2025 05:00:58 -0800 (PST)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a1c4161sm2566964f8f.88.2025.01.24.05.00.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 05:00:58 -0800 (PST)
-Date: Fri, 24 Jan 2025 14:00:57 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
- Richard Henderson <richard.henderson@linaro.org>, Zhao Liu
- <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>, Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>, Ani Sinha <anisinha@redhat.com>,
- Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>, Yanan Wang
- <wangyanan55@huawei.com>, Cornelia Huck <cohuck@redhat.com>, "Daniel P.
- =?UTF-8?B?QmVycmFuZ8Op?=" <berrange@redhat.com>, Eric Blake
- <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti
- <mtosatti@redhat.com>, rick.p.edgecombe@intel.com, kvm@vger.kernel.org,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v6 40/60] hw/i386: add eoi_intercept_unsupported member
- to X86MachineState
-Message-ID: <20250124140057.2f2bb674@imammedo.users.ipa.redhat.com>
-In-Reply-To: <00ecb103-2f0b-479d-bae8-cb3f7bace3be@intel.com>
-References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
- <20241105062408.3533704-41-xiaoyao.li@intel.com>
- <20250123134148.036d52b0@imammedo.users.ipa.redhat.com>
- <00ecb103-2f0b-479d-bae8-cb3f7bace3be@intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tbJKw-0007G8-Og
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 08:03:04 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id 2A2BE5C5A81;
+ Fri, 24 Jan 2025 13:02:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDB4C4CED2;
+ Fri, 24 Jan 2025 13:02:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1737723778;
+ bh=wOfvPimm++bcR+fr8JPr4UgbbfbJtbzGWJ0HL1R9UT0=;
+ h=From:To:Cc:Subject:Date:From;
+ b=cRdbw2RBsqpLLSJ8dI8YTzcZjLo0Kx7nxGZbjR1+MmtS5ucZKxIr4/h/X46+BmGmw
+ bHNgpZOa25jcVv/cXeJ9PREuvagxTBX2CeXRSwDOphV8ls+tUnOARFEfrcTv+7b9U4
+ OvdbbZyU6guTw0qqAluXPxBc1T7dvQFAPamFFn0U9yH4XiNM+HMGPuhNNM0m2498/J
+ SxzRNcU8r3xGm4ddfCKnQd0/ziUsLMBIlx7g6fk2yi190pAmV+ne9rQ4s/IygrHAQ3
+ S+4spKdCGe93rmjz6bkJG1WLeOTT6GJ0y1EjtDeWl5ANUnHkrjhhDv6/S8tPldwLVy
+ f0/CnUeQI5Ueg==
+From: deller@kernel.org
+To: Laurent Vivier <laurent@vivier.eu>, Stefan Hajnoczi <stefanha@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: deller@gmx.de
+Subject: [PULL v3 0/6] Linux user fix gupnp patches
+Date: Fri, 24 Jan 2025 14:02:48 +0100
+Message-ID: <20250124130254.3134-1-deller@kernel.org>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -100
+X-Spam_score: -10.1
+X-Spam_bar: ----------
+X-Spam_report: (-10.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -122,90 +68,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 24 Jan 2025 00:45:50 +0800
-Xiaoyao Li <xiaoyao.li@intel.com> wrote:
+From: Helge Deller <deller@gmx.de>
 
-> On 1/23/2025 8:41 PM, Igor Mammedov wrote:
-> > On Tue,  5 Nov 2024 01:23:48 -0500
-> > Xiaoyao Li <xiaoyao.li@intel.com> wrote:
-> >   
-> >> Add a new bool member, eoi_intercept_unsupported, to X86MachineState
-> >> with default value false. Set true for TDX VM.  
-> > 
-> > I'd rename it to enable_eoi_intercept, by default set to true for evrything
-> > and make TDX override this to false.  
-> >>
-> >> Inability to intercept eoi causes impossibility to emulate level
-> >> triggered interrupt to be re-injected when level is still kept active.
-> >> which affects interrupt controller emulation.
-> >>
-> >> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> >> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
-> >> ---
-> >>   hw/i386/x86.c         | 1 +
-> >>   include/hw/i386/x86.h | 1 +
-> >>   target/i386/kvm/tdx.c | 2 ++
-> >>   3 files changed, 4 insertions(+)
-> >>
-> >> diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-> >> index 01fc5e656272..82faeed24ff9 100644
-> >> --- a/hw/i386/x86.c
-> >> +++ b/hw/i386/x86.c
-> >> @@ -370,6 +370,7 @@ static void x86_machine_initfn(Object *obj)
-> >>       x86ms->oem_table_id = g_strndup(ACPI_BUILD_APPNAME8, 8);
-> >>       x86ms->bus_lock_ratelimit = 0;
-> >>       x86ms->above_4g_mem_start = 4 * GiB;
-> >> +    x86ms->eoi_intercept_unsupported = false;
-> >>   }
-> >>   
-> >>   static void x86_machine_class_init(ObjectClass *oc, void *data)
-> >> diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
-> >> index d43cb3908e65..fd9a30391755 100644
-> >> --- a/include/hw/i386/x86.h
-> >> +++ b/include/hw/i386/x86.h
-> >> @@ -73,6 +73,7 @@ struct X86MachineState {
-> >>       uint64_t above_4g_mem_start;
-> >>   
-> >>       /* CPU and apic information: */
-> >> +    bool eoi_intercept_unsupported;
-> >>       unsigned pci_irq_mask;
-> >>       unsigned apic_id_limit;
-> >>       uint16_t boot_cpus;
-> >> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-> >> index 9ab4e911f78a..9dcb77e011bd 100644
-> >> --- a/target/i386/kvm/tdx.c
-> >> +++ b/target/i386/kvm/tdx.c
-> >> @@ -388,6 +388,8 @@ static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-> >>           return -EOPNOTSUPP;
-> >>       }
-> >>   
-> >> +    x86ms->eoi_intercept_unsupported = true;  
-> > 
-> > I don't particulary like accel go to its parent (machine) object and override things there
-> > and that being buried deep inside.  
-> 
-> I would suggest don't see TDX as accel but see it as a special type of 
-> x86 machine.
-> 
-> > How do you start TDX guest?
-> > Is there a machine property or something like it to enable TDX?  
-> 
-> via the "confidential-guest-support" property.
-> This series introduces tdx-guest object and we start a TDX guest by:
-> 
-> $qemu-system-x86_64 -object tdx-guest,id=tdx0 \
->      -machine ...,confidential-guest-support=tdx0
+The following changes since commit 0e3aff9ec34059512d597eacfcf4d1b5d4570c50:
 
-then the property setter would be a logical place to set
- eoi_intercept_unsupported = false
-when its value is tdx0
+  Merge tag 'pull-10.0-gdb-plugins-doc-updates-170125-1' of https://gitlab.com/stsquad/qemu into staging (2025-01-17 10:13:07 -0500)
 
-> 
-> >> +
-> >>       /*
-> >>        * Set kvm_readonly_mem_allowed to false, because TDX only supports readonly
-> >>        * memory for shared memory but not for private memory. Besides, whether a  
-> >   
-> 
+are available in the Git repository at:
+
+  https://github.com/hdeller/qemu-hppa.git tags/linux-user-fix-gupnp-pull-request
+
+for you to fetch changes up to 3719acc273865744b885ad9bcb141b4496c31887:
+
+  linux-user: netlink: Add missing QEMU_IFLA entries (2025-01-24 13:58:40 +0100)
+
+----------------------------------------------------------------
+linux-user: Add support for various missing netlink sockopt entries
+
+Add missing sockopt calls and thus fix building the debian gupnp package in a chroot.
+
+This fixes debian bug report:
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1044651
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+
+----------------------------------------------------------------
+
+Helge Deller (6):
+  linux-user: netlink: Add missing IFA_PROTO to
+    host_to_target_data_addr_rtattr()
+  linux-user: Use unique error messages for cmsg parsing
+  linux-user: netlink: Add IP_PKTINFO cmsg parsing
+  linux-user: netlink: Add emulation of IP_MULTICAST_IF
+  linux-user: netlink: add netlink neighbour emulation
+  linux-user: netlink: Add missing QEMU_IFLA entries
+
+ linux-user/fd-trans.c     | 169 ++++++++++++++++++++++++++++++++++++--
+ linux-user/syscall.c      |  34 ++++++--
+ linux-user/syscall_defs.h |   6 ++
+ 3 files changed, 192 insertions(+), 17 deletions(-)
+
+-- 
+2.47.0
 
 
