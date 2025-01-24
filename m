@@ -2,94 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45E3AA1B2FC
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:50:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5DB0A1B303
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 10:51:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbGI3-0004CQ-0Z; Fri, 24 Jan 2025 04:47:51 -0500
+	id 1tbGIT-0006eH-V2; Fri, 24 Jan 2025 04:48:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tbGGg-0007zR-KE
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:46:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <yilun.xu@linux.intel.com>)
+ id 1tbGIM-0006M8-8T
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:48:10 -0500
+Received: from mgamail.intel.com ([198.175.65.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tbGGd-00041C-Uo
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:46:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737711982;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ESHgSiSE1123xBuo1J97jzh2hkYZ9bH4zzgarY8aj/g=;
- b=J0vp8NswnYE6y24YDk5e5tObur0uyv12oQxmKZ2mAduZVtonBO6QIUeSReeTnHnQ6o7qNA
- Mtc/1W1G9MsY9ZqdRCW5ohc2THQxN+ahwLhUHN4A2xu+clV4kwFA7QZJEi+dCol7me3XcL
- B+0ZMd2/q+ezUBCoKZgncnwucAHLXmI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-224-lNUoovw2PC66eTwTR1i3EQ-1; Fri, 24 Jan 2025 04:46:20 -0500
-X-MC-Unique: lNUoovw2PC66eTwTR1i3EQ-1
-X-Mimecast-MFC-AGG-ID: lNUoovw2PC66eTwTR1i3EQ
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4362153dcd6so9086415e9.2
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 01:46:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737711978; x=1738316778;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ESHgSiSE1123xBuo1J97jzh2hkYZ9bH4zzgarY8aj/g=;
- b=VQLAfnkZcYKOLS2dTvi2wjNi/T5S3V4OGN8pYfcA4zIgnN3BAoHCKWA9vFF0LzcCex
- elWmW7xpFiex15XoHtN8MKUAyrLZbkmPynE46jbtJ1/HczjnYkE5nuX6dd2sLE8w0AcX
- u2SzcCTMCZq57FxSX6LUoVHZCb6476Wrr9VpF2QNXzuU/CXx7b/Sm1IymC3mUWWskeWI
- 8VdV8KDd7PvdDLuWVNzxAHYI54xNCZs6AGOVp0GKF7rRDFrR9dtA7ZANb8BeRpqHam5n
- vRlsaQr7cwqaMhGMLzAiuZEDITXyMYBm0MP7PGhBH+hTt5JLeOO9oKIvqppshw+Ba5b3
- F5YQ==
-X-Gm-Message-State: AOJu0YxEhm+2kpJNcl+t35rhO1wpjDvuUBv98xii/Gf/ixFE8HP49cL8
- ZPpD4eeEZk5YVE4ldsB7mmtO6/N0JjA8qzSAgaoOHcDPmEKQ2HGwLIRZpYYmNsYpGfc+2SdIzhv
- Ox3yCzeP8Bxv6xvzfoa+7HDxfaqGOYhV1AZ3njZbGEgD8LytM4BE6GA2SC0Z5jrvR3NvUSH0MnB
- HQJeiSffktdzOIeI5/kDpwnWjCurxTzn4oZ0fTVb0=
-X-Gm-Gg: ASbGncubiWmxOLHWyHb2Il769zzzvJCpfYD91WPg8/SY76rn54HXXS3COqM48uuj3AQ
- cqVkVTs/IlOY7Gn2ejL8MEYUc95eyR3eFbJkzKm62gspKN9WC2dPWLRjFIauZsBW+SRv0JylGZx
- jO4jE+Ouj4q7pCUTWQLrDNq6MvWsxwuenfTCztVeo+UfYUC2u5luZE6M0qhbTNXYSMK3tezztFO
- PK6n/TVDHxoPHHXv+QbfLfAYQCFlCUXHEIt+Z4jxZ3uyL5+VB06qQG1zFgAqbIIGKdIAzO6Dw==
-X-Received: by 2002:a05:600c:4fd6:b0:434:feb1:adcf with SMTP id
- 5b1f17b1804b1-43891436690mr223595735e9.25.1737711978175; 
- Fri, 24 Jan 2025 01:46:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHQw0q78asJ8ydf09X5+4Zdt/evkPrjtWQgWQSAs/cTYcwd1Vk+lgSSYu44GFjnIyo4jbXmQw==
-X-Received: by 2002:a05:600c:4fd6:b0:434:feb1:adcf with SMTP id
- 5b1f17b1804b1-43891436690mr223595575e9.25.1737711977857; 
- Fri, 24 Jan 2025 01:46:17 -0800 (PST)
-Received: from [192.168.10.48] ([151.95.59.125])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd4d2c0esm20278115e9.33.2025.01.24.01.46.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 01:46:16 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 48/48] rust: qemu-api: add sub-subclass to the integration tests
-Date: Fri, 24 Jan 2025 10:44:42 +0100
-Message-ID: <20250124094442.13207-49-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250124094442.13207-1-pbonzini@redhat.com>
-References: <20250124094442.13207-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <yilun.xu@linux.intel.com>)
+ id 1tbGIJ-0004Jt-7U
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 04:48:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1737712087; x=1769248087;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=ZCO/MfX8NlwMysTySYqInSrG/aVh4QrZSiFlw8U2DTU=;
+ b=lbNpEBWDFInCsG+znNzKnNhNQ+sGuG34BDe60qsyUpcErhWiJDE3vzSx
+ Zjx4qPrxMgGcq6EUqAA4ryt3GkzZUXMfaFilESEO2yGlZRUVW3+K3rA5g
+ W1HyhOjI+6NXX/u+1oZyDeiAiZLsC7/lRi34IfxQ+aZAybpnYes9x/1OM
+ AfQ6CFVyG+Nx/1khwixfoqIZ3idzR3LqeJxIhmBRKIVjY2CYEdHej0zKS
+ HvOn3vG+YANOSuuFHO1yKj9HrKEiZ54/tp9kh/P48wAHpU7+gwalpDOdi
+ lfSuycyPd+fnv8EDmkw3k9ZTiA2H5gVAv10PuGKPpDgu85RsLBMMDTiKG Q==;
+X-CSE-ConnectionGUID: VAWGa73aSZS/cnQ15ckY/A==
+X-CSE-MsgGUID: NBv7TbcdQ56/zmjnnGqa1Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11324"; a="38384681"
+X-IronPort-AV: E=Sophos;i="6.13,230,1732608000"; d="scan'208";a="38384681"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jan 2025 01:48:04 -0800
+X-CSE-ConnectionGUID: 9Ia2M76ySwGjhE/uJ2a80A==
+X-CSE-MsgGUID: tdwLn7+uRXqx0YvAArLPNg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,230,1732608000"; d="scan'208";a="138593034"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost)
+ ([10.239.159.165])
+ by orviesa002.jf.intel.com with ESMTP; 24 Jan 2025 01:48:01 -0800
+Date: Fri, 24 Jan 2025 17:47:45 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
+ David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
+ Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
+ Xu Yilun <yilun.xu@intel.com>
+Subject: Re: [PATCH 2/7] guest_memfd: Introduce an object to manage the
+ guest-memfd with RamDiscardManager
+Message-ID: <Z5NhwW/IXaLfvjvb@yilunxu-OptiPlex-7050>
+References: <590432e1-4a26-4ae8-822f-ccfbac352e6b@intel.com>
+ <2b2730f3-6e1a-4def-b126-078cf6249759@amd.com>
+ <Z462F1Dwm6cUdCcy@x1n> <ZnmfUelBs3Cm0ZHd@yilunxu-OptiPlex-7050>
+ <Z4-6u5_9NChu_KZq@x1n>
+ <95a14f7d-4782-40b3-a55d-7cf67b911bbe@amd.com>
+ <Z5C9SzXxX7M1DBE3@yilunxu-OptiPlex-7050> <Z5EgFaWIyjIiOZnv@x1n>
+ <Z5INAQjxyYhwyc+1@yilunxu-OptiPlex-7050> <Z5Jylb73kDJ6HTEZ@x1n>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.043,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z5Jylb73kDJ6HTEZ@x1n>
+Received-SPF: none client-ip=198.175.65.16;
+ envelope-from=yilun.xu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -72
+X-Spam_score: -7.3
+X-Spam_bar: -------
+X-Spam_report: (-7.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,108 +92,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- rust/qemu-api/tests/tests.rs | 56 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 53 insertions(+), 3 deletions(-)
+On Thu, Jan 23, 2025 at 11:47:17AM -0500, Peter Xu wrote:
+> On Thu, Jan 23, 2025 at 05:33:53PM +0800, Xu Yilun wrote:
+> > On Wed, Jan 22, 2025 at 11:43:01AM -0500, Peter Xu wrote:
+> > > On Wed, Jan 22, 2025 at 05:41:31PM +0800, Xu Yilun wrote:
+> > > > On Wed, Jan 22, 2025 at 03:30:05PM +1100, Alexey Kardashevskiy wrote:
+> > > > > 
+> > > > > 
+> > > > > On 22/1/25 02:18, Peter Xu wrote:
+> > > > > > On Tue, Jun 25, 2024 at 12:31:13AM +0800, Xu Yilun wrote:
+> > > > > > > On Mon, Jan 20, 2025 at 03:46:15PM -0500, Peter Xu wrote:
+> > > > > > > > On Mon, Jan 20, 2025 at 09:22:50PM +1100, Alexey Kardashevskiy wrote:
+> > > > > > > > > > It is still uncertain how to implement the private MMIO. Our assumption
+> > > > > > > > > > is the private MMIO would also create a memory region with
+> > > > > > > > > > guest_memfd-like backend. Its mr->ram is true and should be managed by
+> > > > > > > > > > RamdDiscardManager which can skip doing DMA_MAP in VFIO's region_add
+> > > > > > > > > > listener.
+> > > > > > > > > 
+> > > > > > > > > My current working approach is to leave it as is in QEMU and VFIO.
+> > > > > > > > 
+> > > > > > > > Agreed.  Setting ram=true to even private MMIO sounds hackish, at least
+> > > > > > > 
+> > > > > > > The private MMIO refers to assigned MMIO, not emulated MMIO. IIUC,
+> > > > > > > normal assigned MMIO is always set ram=true,
+> > > > > > > 
+> > > > > > > void memory_region_init_ram_device_ptr(MemoryRegion *mr,
+> > > > > > >                                         Object *owner,
+> > > > > > >                                         const char *name,
+> > > > > > >                                         uint64_t size,
+> > > > > > >                                         void *ptr)
+> > > 
+> > > [1]
+> > > 
+> > > > > > > {
+> > > > > > >      memory_region_init(mr, owner, name, size);
+> > > > > > >      mr->ram = true;
+> > > > > > > 
+> > > > > > > 
+> > > > > > > So I don't think ram=true is a problem here.
+> > > > > > 
+> > > > > > I see.  If there's always a host pointer then it looks valid.  So it means
+> > > > > > the device private MMIOs are always mappable since the start?
+> > > > > 
+> > > > > Yes. VFIO owns the mapping and does not treat shared/private MMIO any
+> > > > > different at the moment. Thanks,
+> > > > 
+> > > > mm.. I'm actually expecting private MMIO not have a host pointer, just
+> > > > as private memory do.
+> > > > 
+> > > > But I'm not sure why having host pointer correlates mr->ram == true.
+> > > 
+> > > If there is no host pointer, what would you pass into "ptr" as referenced
+> > > at [1] above when creating the private MMIO memory region?
+> > 
+> > Sorry for confusion. I mean existing MMIO region use set mr->ram = true,
+> > and unmappable region (gmem) also set mr->ram = true. So don't know why
+> > mr->ram = true for private MMIO is hackish.
+> 
+> That's exactly what I had on the question in the previous email - please
+> have a look at what QEMU does right now with memory_access_is_direct().
 
-diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
-index 526c3f4f8ea..5c3e75ed3d5 100644
---- a/rust/qemu-api/tests/tests.rs
-+++ b/rust/qemu-api/tests/tests.rs
-@@ -14,8 +14,8 @@
-     cell::{self, BqlCell},
-     declare_properties, define_property,
-     prelude::*,
--    qdev::{DeviceImpl, DeviceState, Property},
--    qom::{ObjectImpl, ParentField},
-+    qdev::{DeviceClass, DeviceImpl, DeviceState, Property},
-+    qom::{ClassInitImpl, ObjectImpl, ParentField},
-     vmstate::VMStateDescription,
-     zeroable::Zeroable,
- };
-@@ -37,6 +37,10 @@ pub struct DummyState {
- 
- qom_isa!(DummyState: Object, DeviceState);
- 
-+pub struct DummyClass {
-+    parent_class: <DeviceState as ObjectType>::Class,
-+}
-+
- declare_properties! {
-     DUMMY_PROPERTIES,
-         define_property!(
-@@ -49,7 +53,7 @@ pub struct DummyState {
- }
- 
- unsafe impl ObjectType for DummyState {
--    type Class = <DeviceState as ObjectType>::Class;
-+    type Class = DummyClass;
-     const TYPE_NAME: &'static CStr = c_str!("dummy");
- }
- 
-@@ -67,6 +71,51 @@ fn vmsd() -> Option<&'static VMStateDescription> {
-     }
- }
- 
-+// `impl<T> ClassInitImpl<DummyClass> for T` doesn't work since it violates
-+// orphan rule.
-+impl ClassInitImpl<DummyClass> for DummyState {
-+    fn class_init(klass: &mut DummyClass) {
-+        <Self as ClassInitImpl<DeviceClass>>::class_init(&mut klass.parent_class);
-+    }
-+}
-+
-+#[derive(qemu_api_macros::offsets)]
-+#[repr(C)]
-+#[derive(qemu_api_macros::Object)]
-+pub struct DummyChildState {
-+    parent: ParentField<DummyState>,
-+}
-+
-+qom_isa!(DummyChildState: Object, DeviceState, DummyState);
-+
-+pub struct DummyChildClass {
-+    parent_class: <DummyState as ObjectType>::Class,
-+}
-+
-+unsafe impl ObjectType for DummyChildState {
-+    type Class = DummyChildClass;
-+    const TYPE_NAME: &'static CStr = c_str!("dummy_child");
-+}
-+
-+impl ObjectImpl for DummyChildState {
-+    type ParentType = DummyState;
-+    const ABSTRACT: bool = false;
-+}
-+
-+impl DeviceImpl for DummyChildState {}
-+
-+impl ClassInitImpl<DummyClass> for DummyChildState {
-+    fn class_init(klass: &mut DummyClass) {
-+        <Self as ClassInitImpl<DeviceClass>>::class_init(&mut klass.parent_class);
-+    }
-+}
-+
-+impl ClassInitImpl<DummyChildClass> for DummyChildState {
-+    fn class_init(klass: &mut DummyChildClass) {
-+        <Self as ClassInitImpl<DummyClass>>::class_init(&mut klass.parent_class);
-+    }
-+}
-+
- fn init_qom() {
-     static ONCE: BqlCell<bool> = BqlCell::new(false);
- 
-@@ -85,6 +134,7 @@ fn test_object_new() {
-     init_qom();
-     unsafe {
-         object_unref(object_new(DummyState::TYPE_NAME.as_ptr()).cast());
-+        object_unref(object_new(DummyChildState::TYPE_NAME.as_ptr()).cast());
-     }
- }
- 
--- 
-2.48.1
+I see memory_access_is_direct() should exclude mr->ram_device == true, which
+is the case for normal assigned MMIO and for private assigned MMIO. So
+this func is not a problem.
 
+But I think flatview_access_allowed() is a problem that it doesn't filter
+out the private memory. When memory is converted to private, the result
+of host access can't be what you want and should be errored out. IOW,
+the host ptr is sometimes invalid.
+
+> I'm not 100% sure it'll work if the host pointer doesn't exist.
+> 
+> Let's take one user of it to be explicit: flatview_write_continue_step()
+> will try to access the ram pointer if it's direct:
+> 
+>     if (!memory_access_is_direct(mr, true)) {
+>         ...
+>     } else {
+>         /* RAM case */
+>         uint8_t *ram_ptr = qemu_ram_ptr_length(mr->ram_block, mr_addr, l,
+>                                                false, true);
+> 
+>         memmove(ram_ptr, buf, *l);
+>         invalidate_and_set_dirty(mr, mr_addr, *l);
+> 
+>         return MEMTX_OK;
+>     }
+> 
+> I don't see how QEMU could work yet if one MR set ram=true but without a
+> host pointer..
+> 
+> As discussed previously, IMHO it's okay that the pointer is not accessible,
+
+Maybe I missed something in previous discussion, I assume it is OK cause
+no address_space_rw is happening on this host ptr when memory is
+private, is it?
+
+> but still I assume QEMU assumes the pointer at least existed for a ram=on
+> MR.  I don't know whether it's suitable to set ram=on if the pointer
+> doesn't ever exist.
+
+In theory, any code logic should not depends on an invalid pointer. I
+think a NULL pointer would be much better than a invalid pointer, at
+least you can check whether to access. So if you think an invalid
+pointer is OK, a NULL pointer should be also OK.
+
+Thanks,
+Yilun
+
+> 
+> > 
+> > I think We could add another helper to create memory region for private
+> > MMIO.
+> > 
+> > > 
+> > > OTOH, IIUC guest private memory finally can also have a host pointer (aka,
+> > > mmap()-able), it's just that even if it exists, accessing it may crash QEMU
+> > > if it's private.
+> > 
+> > Not sure if I get it correct: when memory will be converted to private, QEMU
+> > should firstly unmap the host ptr, which means host ptr doesn't alway exist.
+> 
+> At least current QEMU doesn't unmap it? 
+> 
+> kvm_convert_memory() does ram_block_discard_range() indeed, but that's hole
+> punches, not unmap.  So the host pointer can always be there.
+> 
+> Even if we could have in-place gmemfd conversions in the future for guest
+> mem, we should also need the host pointer to be around, in which case (per
+> my current understand) it will even avoid hole punching but instead make
+> the page accessible (by being able to be faulted in).
+> 
+> Thanks,
+> 
+> -- 
+> Peter Xu
+> 
+> 
 
