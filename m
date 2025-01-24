@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 904C2A1BAF8
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:52:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F5CA1BAF7
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 17:52:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbMer-0002wo-Hd; Fri, 24 Jan 2025 11:35:51 -0500
+	id 1tbMgs-000785-Ow; Fri, 24 Jan 2025 11:37:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tbMZh-00069Y-7y
+ id 1tbMZh-00069U-63
  for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:30:32 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tbMZX-00063W-Fh
+ id 1tbMZX-00064S-Oh
  for qemu-devel@nongnu.org; Fri, 24 Jan 2025 11:30:23 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-43618283d48so16771765e9.1
- for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:30:13 -0800 (PST)
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-43624b2d453so24616825e9.2
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 08:30:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737736212; x=1738341012; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737736214; x=1738341014; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=mL8/LDS+VVeI+qmrE01zyxLcmb07nMFf+7bIQYAM6sc=;
- b=N199EIZRxEH5COSksEKWfqIMTRnG5mlMSpAO5KZ1lWtG9ryXNh5egiXYHgF7XDluzW
- alHyS9Zwj/Mpi+EQI0SuSLZqqjUeKsHl0Al+Vl31n79EAdEnM2/8E4hH/DStZ9DBcjO/
- HPEfcNvu35tUwqP5s5aSULxjv5G7aurD2wDYsEYRUmwNJ4zBKeAoL49ogbDpEZpSPRAn
- Ky4klRLlXoof2u62FdOpsJW/AafgcwmodlvhAK1cKHrRS/WUVlwoTWlE1WydJj2zzinL
- YNF9+xquwCH4eydORR/2tbZ0Ym0QLj1w4C60thdiCDiIYJuvwYNCiVieJOdVopyddjoq
- NEfA==
+ :reply-to; bh=oV62nQbavYpaLNeL3j3KFgn+7cVCaGdr4oQFW+y825Y=;
+ b=C/YvdDbOYdAda5mAhbwWlJQh4WkhHwNkHMBBnBNAVIpQe/vpgtdteR3stVCSXcZ6b8
+ P//VCLOFvQwKg78R4UhbciAWMNXN8aL0rWFrW7mq9cdTDLKyoc9NjuyClzabUikkuvBa
+ xEZyutPmH1yRFk27DmK12IkEM6jcFtSZLjJhi97rqtNVWdj/vUIv4/l13AIXbVZYDfrn
+ RDYWSkG43eeFe+xMfXwX0spOssMywf5SfkKZw7oz08hfJGFLedxdlRjdDvKjAJDeKOF8
+ TkEyih/KMWS/JS7LbJGBAamq0PdVKLrzA3F+pZoqd2ayDSJKc3NojamH1ECzrBgg7WyR
+ NHVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737736212; x=1738341012;
+ d=1e100.net; s=20230601; t=1737736214; x=1738341014;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mL8/LDS+VVeI+qmrE01zyxLcmb07nMFf+7bIQYAM6sc=;
- b=HsL+oH2YepC+LnucF/R/4d1Zhjx+EKXleIRsJd0cOsREUNZ1UQnpj/L4Zkz9GTpxYw
- ZtSsyCV6opY1by+lFZbKhiBeMcdtnOHJyXft5Ag3Z0oBvmUqUmDo5Kpu4IQy1n3C6i6C
- bksr5EG6M1UGmsb63JV1Ear7l1jSf+QFzu8U6zvf/kvsvj83rHUind2YCMllmBdUXsle
- n7CKB4MISbXGBF7IowYA8a83yJAKaIh/UMyX9mIXue+dtMyUGLj9KRTc+fSB/CDR1MPa
- 31aksS38pJE5h/2h/zzdM2LxuiSrYcNN7pRC5cyDlEjMGk6OnI6TxdHHlNB029FtumTN
- eXvg==
+ bh=oV62nQbavYpaLNeL3j3KFgn+7cVCaGdr4oQFW+y825Y=;
+ b=I6CtnyGltW+eHXtzdmkGUulsv25frrrIrSMyvhJe1+08xs9UZM2ccF3O/9ehG4j1+j
+ 3yaHG7c17mggzG83BHqnzYJH+6gpMM6Hr/heiN2md0dUEaAKIE//W3e1N6vx8he3x7dR
+ Ls7/RNsxfubUVhv1RC5QSdRGGxYYtHsgjcFG0gL5GQmPFKUXesYhRCOgcznlpcbZ2Rnz
+ Oo+7qmiQv2SFPsYlGsmLIbhcdC/KJ5XCP8jHHOdJko0JRUZsCdeJy8iIlOYNonPA5H/X
+ eedNv/9GAYt9zBGI/WuC3/Jqt7lrMXQTLhl0TKX2VGvhlIyNj3OqZnF5Brb8lOfyijEm
+ qhJQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV9nMkRUNTT+GfURtK0r0l2VjeJavtHsFf2vNtT6Vqlx/wC1JKXAHAukw6Dy3FuE/aIqFs8CEcoeM9h@nongnu.org
-X-Gm-Message-State: AOJu0YxnEYMhQf7bR2ko6p5V6GH4Kafxsv3Q7KYgvCm1qpXirtNWMdyZ
- sd6ro9QtAlMrGu5HWy4mf9mdwXtCoM6QXB6Kgi+99YwATsyj2/Z+v4OlgXLEwT+Dxe/dZ8PwsXX
- +
-X-Gm-Gg: ASbGnctRkojhUrVVcsLulm15x8090R9ck8mmk52+wAkiQpGlmJeL6IZmAzDleiY0Tc5
- s+Ks9w3Kr4IH/i6vtTu6mTx8diogpLSKC3neJyVcI7hbsF2z8BzYnePVbARqeMsPJb/UY+jyYPi
- cYhDTzk6Q1V1N/ficsueHIUM5xQ0b5GYVI1skaNSqLW/1ONvrBdSQu7HA4T2w713sZF3gtIMp2o
- 5reO4VDkzxtE2NCmYRjgHhGIkJ7B2L8nfgT2R1Nxjum7lWBIsGMhHnkwftblsY4HsFIn4Zm1/Da
- iNr6MsRnRQ7A+EdvhKwLcQ==
-X-Google-Smtp-Source: AGHT+IHuw9CkUWZa8xlPqE1sLO6Y1iImItEswbPzIWEVDBHkaVc/+u9rtYZSz3H5CyIEyvfYJvPeeQ==
-X-Received: by 2002:a05:600c:3420:b0:436:f3f6:9582 with SMTP id
- 5b1f17b1804b1-438913cb729mr300201085e9.8.1737736212431; 
- Fri, 24 Jan 2025 08:30:12 -0800 (PST)
+ AJvYcCWIHeIu3oXWEJKgcxUMzFycPH8OgaTWpSXMaR+5l4afIxESqK+U0ghax1Qn3GF4SkWqgWi+nedwjYoJ@nongnu.org
+X-Gm-Message-State: AOJu0YwPPvYRaHHo2q4xbJlFT34WTuql58CdOnZQGvv1rSiCOqlj7whG
+ lZYo0QIR2dJkHxEn6kDHo/nrcS8pRX+5NaPtY1GgfNk4LYfbpdzCrJrw9+Rst1iYntmS7+A17TW
+ w
+X-Gm-Gg: ASbGnct46e1ZwaPMtG+znl0L9LMapsDq4xRD6gjq8V6vri/VDwvOanL7FVLGb/21Q06
+ 5UpmUOHVg+NMGmHdwGov9QO8y7n4ezOIhIngBKBd8ks2FD7O/g4es8ISenQQ0W8/1gb1Lv1rlil
+ ZhJhUXtex1Tegts8Jod3ytQ92y5DQyYrg5RnM3jmYHSAzv00dH7UdQfEgdvWhTH4C+R0WdlB/5z
+ eO0KUlmZolBK2G+0bYxkEiFr/hiBcZfB0bS+PxGHLGXR4e6ISA/dB9bh0Wy+s00NQGzpU/Gbeor
+ KBzC6Iognh4=
+X-Google-Smtp-Source: AGHT+IFfjXYHkqnixVf07jkqK5cxyhv7+n2MrwOwbvWuJMaOntinu9OAlcbPeTGGeMz5fpKjTiWGZQ==
+X-Received: by 2002:a05:600c:35c3:b0:434:f131:1e71 with SMTP id
+ 5b1f17b1804b1-438913cf2e0mr294415915e9.8.1737736214070; 
+ Fri, 24 Jan 2025 08:30:14 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd47eecasm31683025e9.6.2025.01.24.08.30.11
+ 5b1f17b1804b1-438bd47eecasm31683025e9.6.2025.01.24.08.30.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Jan 2025 08:30:11 -0800 (PST)
+ Fri, 24 Jan 2025 08:30:13 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 74/76] target/i386: Use correct type for
- get_float_exception_flags() values
-Date: Fri, 24 Jan 2025 16:28:34 +0000
-Message-Id: <20250124162836.2332150-75-peter.maydell@linaro.org>
+Subject: [PATCH 75/76] target/i386: Wire up MXCSR.DE and FPUS.DE correctly
+Date: Fri, 24 Jan 2025 16:28:35 +0000
+Message-Id: <20250124162836.2332150-76-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250124162836.2332150-1-peter.maydell@linaro.org>
 References: <20250124162836.2332150-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,450 +98,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The softfloat get_float_exception_flags() function returns 'int', but
-in various places in target/i386 we incorrectly store the returned
-value into a uint8_t.  This currently has no ill effects because i386
-doesn't care about any of the float_flag enum values above 0x40.
-However, we want to start using float_flag_input_denormal_used, which
-is 0x4000.
+The x86 DE bit in the FPU and MXCSR status is supposed to be set
+when an input denormal is consumed. We didn't previously report
+this from softfloat, so the x86 code either simply didn't set
+the DE bit or else incorrectly wired it up to denormal_flushed,
+depending on which register you looked at.
 
-Switch to using 'int' so that we can handle all the possible valid
-float_flag_* values. This includes changing the return type of
-save_exception_flags() and the argument to merge_exception_flags().
+Now we have input_denormal_used we can wire up these DE bits
+with the semantics they are supposed to have.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/i386/ops_sse.h        | 16 +++----
- target/i386/tcg/fpu_helper.c | 82 ++++++++++++++++++------------------
- 2 files changed, 49 insertions(+), 49 deletions(-)
+ target/i386/tcg/fpu_helper.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/target/i386/ops_sse.h b/target/i386/ops_sse.h
-index f0aa1894aa2..a2e4d480399 100644
---- a/target/i386/ops_sse.h
-+++ b/target/i386/ops_sse.h
-@@ -842,7 +842,7 @@ int64_t helper_cvttsd2sq(CPUX86State *env, ZMMReg *s)
- 
- void glue(helper_rsqrtps, SUFFIX)(CPUX86State *env, ZMMReg *d, ZMMReg *s)
- {
--    uint8_t old_flags = get_float_exception_flags(&env->sse_status);
-+    int old_flags = get_float_exception_flags(&env->sse_status);
-     int i;
-     for (i = 0; i < 2 << SHIFT; i++) {
-         d->ZMM_S(i) = float32_div(float32_one,
-@@ -855,7 +855,7 @@ void glue(helper_rsqrtps, SUFFIX)(CPUX86State *env, ZMMReg *d, ZMMReg *s)
- #if SHIFT == 1
- void helper_rsqrtss(CPUX86State *env, ZMMReg *d, ZMMReg *v, ZMMReg *s)
- {
--    uint8_t old_flags = get_float_exception_flags(&env->sse_status);
-+    int old_flags = get_float_exception_flags(&env->sse_status);
-     int i;
-     d->ZMM_S(0) = float32_div(float32_one,
-                               float32_sqrt(s->ZMM_S(0), &env->sse_status),
-@@ -869,7 +869,7 @@ void helper_rsqrtss(CPUX86State *env, ZMMReg *d, ZMMReg *v, ZMMReg *s)
- 
- void glue(helper_rcpps, SUFFIX)(CPUX86State *env, ZMMReg *d, ZMMReg *s)
- {
--    uint8_t old_flags = get_float_exception_flags(&env->sse_status);
-+    int old_flags = get_float_exception_flags(&env->sse_status);
-     int i;
-     for (i = 0; i < 2 << SHIFT; i++) {
-         d->ZMM_S(i) = float32_div(float32_one, s->ZMM_S(i), &env->sse_status);
-@@ -880,7 +880,7 @@ void glue(helper_rcpps, SUFFIX)(CPUX86State *env, ZMMReg *d, ZMMReg *s)
- #if SHIFT == 1
- void helper_rcpss(CPUX86State *env, ZMMReg *d, ZMMReg *v, ZMMReg *s)
- {
--    uint8_t old_flags = get_float_exception_flags(&env->sse_status);
-+    int old_flags = get_float_exception_flags(&env->sse_status);
-     int i;
-     d->ZMM_S(0) = float32_div(float32_one, s->ZMM_S(0), &env->sse_status);
-     for (i = 1; i < 2 << SHIFT; i++) {
-@@ -1714,7 +1714,7 @@ void glue(helper_phminposuw, SUFFIX)(CPUX86State *env, Reg *d, Reg *s)
- void glue(helper_roundps, SUFFIX)(CPUX86State *env, Reg *d, Reg *s,
-                                   uint32_t mode)
- {
--    uint8_t old_flags = get_float_exception_flags(&env->sse_status);
-+    int old_flags = get_float_exception_flags(&env->sse_status);
-     signed char prev_rounding_mode;
-     int i;
- 
-@@ -1738,7 +1738,7 @@ void glue(helper_roundps, SUFFIX)(CPUX86State *env, Reg *d, Reg *s,
- void glue(helper_roundpd, SUFFIX)(CPUX86State *env, Reg *d, Reg *s,
-                                   uint32_t mode)
- {
--    uint8_t old_flags = get_float_exception_flags(&env->sse_status);
-+    int old_flags = get_float_exception_flags(&env->sse_status);
-     signed char prev_rounding_mode;
-     int i;
- 
-@@ -1763,7 +1763,7 @@ void glue(helper_roundpd, SUFFIX)(CPUX86State *env, Reg *d, Reg *s,
- void glue(helper_roundss, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s,
-                                   uint32_t mode)
- {
--    uint8_t old_flags = get_float_exception_flags(&env->sse_status);
-+    int old_flags = get_float_exception_flags(&env->sse_status);
-     signed char prev_rounding_mode;
-     int i;
- 
-@@ -1788,7 +1788,7 @@ void glue(helper_roundss, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s,
- void glue(helper_roundsd, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s,
-                                   uint32_t mode)
- {
--    uint8_t old_flags = get_float_exception_flags(&env->sse_status);
-+    int old_flags = get_float_exception_flags(&env->sse_status);
-     signed char prev_rounding_mode;
-     int i;
- 
 diff --git a/target/i386/tcg/fpu_helper.c b/target/i386/tcg/fpu_helper.c
-index 5c233fdf5b4..97b46307d56 100644
+index 97b46307d56..fd1cd823e9e 100644
 --- a/target/i386/tcg/fpu_helper.c
 +++ b/target/i386/tcg/fpu_helper.c
-@@ -198,16 +198,16 @@ void cpu_init_fp_statuses(CPUX86State *env)
-     set_float_detect_ftz(detect_ftz_after_rounding, &env->sse_status);
+@@ -215,7 +215,7 @@ static void merge_exception_flags(CPUX86State *env, int old_flags)
+                        (new_flags & float_flag_overflow ? FPUS_OE : 0) |
+                        (new_flags & float_flag_underflow ? FPUS_UE : 0) |
+                        (new_flags & float_flag_inexact ? FPUS_PE : 0) |
+-                       (new_flags & float_flag_input_denormal_flushed ? FPUS_DE : 0)));
++                       (new_flags & float_flag_input_denormal_used ? FPUS_DE : 0)));
  }
- 
--static inline uint8_t save_exception_flags(CPUX86State *env)
-+static inline int save_exception_flags(CPUX86State *env)
- {
--    uint8_t old_flags = get_float_exception_flags(&env->fp_status);
-+    int old_flags = get_float_exception_flags(&env->fp_status);
-     set_float_exception_flags(0, &env->fp_status);
-     return old_flags;
- }
- 
--static void merge_exception_flags(CPUX86State *env, uint8_t old_flags)
-+static void merge_exception_flags(CPUX86State *env, int old_flags)
- {
--    uint8_t new_flags = get_float_exception_flags(&env->fp_status);
-+    int new_flags = get_float_exception_flags(&env->fp_status);
-     float_raise(old_flags, &env->fp_status);
-     fpu_set_exception(env,
-                       ((new_flags & float_flag_invalid ? FPUS_IE : 0) |
-@@ -220,7 +220,7 @@ static void merge_exception_flags(CPUX86State *env, uint8_t old_flags)
  
  static inline floatx80 helper_fdiv(CPUX86State *env, floatx80 a, floatx80 b)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     floatx80 ret = floatx80_div(a, b, &env->fp_status);
-     merge_exception_flags(env, old_flags);
-     return ret;
-@@ -240,7 +240,7 @@ static void fpu_raise_exception(CPUX86State *env, uintptr_t retaddr)
+@@ -3251,6 +3251,7 @@ void update_mxcsr_status(CPUX86State *env)
  
- void helper_flds_FT0(CPUX86State *env, uint32_t val)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     union {
-         float32 f;
-         uint32_t i;
-@@ -253,7 +253,7 @@ void helper_flds_FT0(CPUX86State *env, uint32_t val)
- 
- void helper_fldl_FT0(CPUX86State *env, uint64_t val)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     union {
-         float64 f;
-         uint64_t i;
-@@ -271,7 +271,7 @@ void helper_fildl_FT0(CPUX86State *env, int32_t val)
- 
- void helper_flds_ST0(CPUX86State *env, uint32_t val)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     int new_fpstt;
-     union {
-         float32 f;
-@@ -288,7 +288,7 @@ void helper_flds_ST0(CPUX86State *env, uint32_t val)
- 
- void helper_fldl_ST0(CPUX86State *env, uint64_t val)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     int new_fpstt;
-     union {
-         float64 f;
-@@ -338,7 +338,7 @@ void helper_fildll_ST0(CPUX86State *env, int64_t val)
- 
- uint32_t helper_fsts_ST0(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     union {
-         float32 f;
-         uint32_t i;
-@@ -351,7 +351,7 @@ uint32_t helper_fsts_ST0(CPUX86State *env)
- 
- uint64_t helper_fstl_ST0(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     union {
-         float64 f;
-         uint64_t i;
-@@ -364,7 +364,7 @@ uint64_t helper_fstl_ST0(CPUX86State *env)
- 
- int32_t helper_fist_ST0(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     int32_t val;
- 
-     val = floatx80_to_int32(ST0, &env->fp_status);
-@@ -378,7 +378,7 @@ int32_t helper_fist_ST0(CPUX86State *env)
- 
- int32_t helper_fistl_ST0(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     int32_t val;
- 
-     val = floatx80_to_int32(ST0, &env->fp_status);
-@@ -391,7 +391,7 @@ int32_t helper_fistl_ST0(CPUX86State *env)
- 
- int64_t helper_fistll_ST0(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     int64_t val;
- 
-     val = floatx80_to_int64(ST0, &env->fp_status);
-@@ -404,7 +404,7 @@ int64_t helper_fistll_ST0(CPUX86State *env)
- 
- int32_t helper_fistt_ST0(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     int32_t val;
- 
-     val = floatx80_to_int32_round_to_zero(ST0, &env->fp_status);
-@@ -418,7 +418,7 @@ int32_t helper_fistt_ST0(CPUX86State *env)
- 
- int32_t helper_fisttl_ST0(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     int32_t val;
- 
-     val = floatx80_to_int32_round_to_zero(ST0, &env->fp_status);
-@@ -431,7 +431,7 @@ int32_t helper_fisttl_ST0(CPUX86State *env)
- 
- int64_t helper_fisttll_ST0(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     int64_t val;
- 
-     val = floatx80_to_int64_round_to_zero(ST0, &env->fp_status);
-@@ -527,7 +527,7 @@ static const int fcom_ccval[4] = {0x0100, 0x4000, 0x0000, 0x4500};
- 
- void helper_fcom_ST0_FT0(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     FloatRelation ret;
- 
-     ret = floatx80_compare(ST0, FT0, &env->fp_status);
-@@ -537,7 +537,7 @@ void helper_fcom_ST0_FT0(CPUX86State *env)
- 
- void helper_fucom_ST0_FT0(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     FloatRelation ret;
- 
-     ret = floatx80_compare_quiet(ST0, FT0, &env->fp_status);
-@@ -549,7 +549,7 @@ static const int fcomi_ccval[4] = {CC_C, CC_Z, 0, CC_Z | CC_P | CC_C};
- 
- void helper_fcomi_ST0_FT0(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     int eflags;
-     FloatRelation ret;
- 
-@@ -562,7 +562,7 @@ void helper_fcomi_ST0_FT0(CPUX86State *env)
- 
- void helper_fucomi_ST0_FT0(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     int eflags;
-     FloatRelation ret;
- 
-@@ -575,28 +575,28 @@ void helper_fucomi_ST0_FT0(CPUX86State *env)
- 
- void helper_fadd_ST0_FT0(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     ST0 = floatx80_add(ST0, FT0, &env->fp_status);
-     merge_exception_flags(env, old_flags);
- }
- 
- void helper_fmul_ST0_FT0(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     ST0 = floatx80_mul(ST0, FT0, &env->fp_status);
-     merge_exception_flags(env, old_flags);
- }
- 
- void helper_fsub_ST0_FT0(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     ST0 = floatx80_sub(ST0, FT0, &env->fp_status);
-     merge_exception_flags(env, old_flags);
- }
- 
- void helper_fsubr_ST0_FT0(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     ST0 = floatx80_sub(FT0, ST0, &env->fp_status);
-     merge_exception_flags(env, old_flags);
- }
-@@ -615,28 +615,28 @@ void helper_fdivr_ST0_FT0(CPUX86State *env)
- 
- void helper_fadd_STN_ST0(CPUX86State *env, int st_index)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     ST(st_index) = floatx80_add(ST(st_index), ST0, &env->fp_status);
-     merge_exception_flags(env, old_flags);
- }
- 
- void helper_fmul_STN_ST0(CPUX86State *env, int st_index)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     ST(st_index) = floatx80_mul(ST(st_index), ST0, &env->fp_status);
-     merge_exception_flags(env, old_flags);
- }
- 
- void helper_fsub_STN_ST0(CPUX86State *env, int st_index)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     ST(st_index) = floatx80_sub(ST(st_index), ST0, &env->fp_status);
-     merge_exception_flags(env, old_flags);
- }
- 
- void helper_fsubr_STN_ST0(CPUX86State *env, int st_index)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     ST(st_index) = floatx80_sub(ST0, ST(st_index), &env->fp_status);
-     merge_exception_flags(env, old_flags);
- }
-@@ -861,7 +861,7 @@ void helper_fbld_ST0(CPUX86State *env, target_ulong ptr)
- 
- void helper_fbst_ST0(CPUX86State *env, target_ulong ptr)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     int v;
-     target_ulong mem_ref, mem_end;
-     int64_t val;
-@@ -1136,7 +1136,7 @@ static const struct f2xm1_data f2xm1_table[65] = {
- 
- void helper_f2xm1(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     uint64_t sig = extractFloatx80Frac(ST0);
-     int32_t exp = extractFloatx80Exp(ST0);
-     bool sign = extractFloatx80Sign(ST0);
-@@ -1369,7 +1369,7 @@ static const struct fpatan_data fpatan_table[9] = {
- 
- void helper_fpatan(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     uint64_t arg0_sig = extractFloatx80Frac(ST0);
-     int32_t arg0_exp = extractFloatx80Exp(ST0);
-     bool arg0_sign = extractFloatx80Sign(ST0);
-@@ -1806,7 +1806,7 @@ void helper_fpatan(CPUX86State *env)
- 
- void helper_fxtract(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     CPU_LDoubleU temp;
- 
-     temp.d = ST0;
-@@ -1855,7 +1855,7 @@ void helper_fxtract(CPUX86State *env)
- 
- static void helper_fprem_common(CPUX86State *env, bool mod)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     uint64_t quotient;
-     CPU_LDoubleU temp0, temp1;
-     int exp0, exp1, expdiff;
-@@ -2050,7 +2050,7 @@ static void helper_fyl2x_common(CPUX86State *env, floatx80 arg, int32_t *exp,
- 
- void helper_fyl2xp1(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     uint64_t arg0_sig = extractFloatx80Frac(ST0);
-     int32_t arg0_exp = extractFloatx80Exp(ST0);
-     bool arg0_sign = extractFloatx80Sign(ST0);
-@@ -2148,7 +2148,7 @@ void helper_fyl2xp1(CPUX86State *env)
- 
- void helper_fyl2x(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     uint64_t arg0_sig = extractFloatx80Frac(ST0);
-     int32_t arg0_exp = extractFloatx80Exp(ST0);
-     bool arg0_sign = extractFloatx80Sign(ST0);
-@@ -2295,7 +2295,7 @@ void helper_fyl2x(CPUX86State *env)
- 
- void helper_fsqrt(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     if (floatx80_is_neg(ST0)) {
-         env->fpus &= ~0x4700;  /* (C3,C2,C1,C0) <-- 0000 */
-         env->fpus |= 0x400;
-@@ -2321,14 +2321,14 @@ void helper_fsincos(CPUX86State *env)
- 
- void helper_frndint(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     ST0 = floatx80_round_to_int(ST0, &env->fp_status);
-     merge_exception_flags(env, old_flags);
- }
- 
- void helper_fscale(CPUX86State *env)
- {
--    uint8_t old_flags = save_exception_flags(env);
-+    int old_flags = save_exception_flags(env);
-     if (floatx80_invalid_encoding(ST1) || floatx80_invalid_encoding(ST0)) {
-         float_raise(float_flag_invalid, &env->fp_status);
-         ST0 = floatx80_default_nan(&env->fp_status);
-@@ -2366,7 +2366,7 @@ void helper_fscale(CPUX86State *env)
-     } else {
-         int n;
-         FloatX80RoundPrec save = env->fp_status.floatx80_rounding_precision;
--        uint8_t save_flags = get_float_exception_flags(&env->fp_status);
-+        int save_flags = get_float_exception_flags(&env->fp_status);
-         set_float_exception_flags(0, &env->fp_status);
-         n = floatx80_to_int32_round_to_zero(ST1, &env->fp_status);
-         set_float_exception_flags(save_flags, &env->fp_status);
-@@ -3266,7 +3266,7 @@ void update_mxcsr_status(CPUX86State *env)
- 
+     /* Set exception flags.  */
+     set_float_exception_flags((mxcsr & FPUS_IE ? float_flag_invalid : 0) |
++                              (mxcsr & FPUS_DE ? float_flag_input_denormal_used : 0) |
+                               (mxcsr & FPUS_ZE ? float_flag_divbyzero : 0) |
+                               (mxcsr & FPUS_OE ? float_flag_overflow : 0) |
+                               (mxcsr & FPUS_UE ? float_flag_underflow : 0) |
+@@ -3267,14 +3268,8 @@ void update_mxcsr_status(CPUX86State *env)
  void update_mxcsr_from_sse_status(CPUX86State *env)
  {
--    uint8_t flags = get_float_exception_flags(&env->sse_status);
-+    int flags = get_float_exception_flags(&env->sse_status);
-     /*
-      * The MXCSR denormal flag has opposite semantics to
-      * float_flag_input_denormal_flushed (the softfloat code sets that flag
+     int flags = get_float_exception_flags(&env->sse_status);
+-    /*
+-     * The MXCSR denormal flag has opposite semantics to
+-     * float_flag_input_denormal_flushed (the softfloat code sets that flag
+-     * only when flushing input denormals to zero, but SSE sets it
+-     * only when not flushing them to zero), so is not converted
+-     * here.
+-     */
+     env->mxcsr |= ((flags & float_flag_invalid ? FPUS_IE : 0) |
++                   (flags & float_flag_input_denormal_used ? FPUS_DE : 0) |
+                    (flags & float_flag_divbyzero ? FPUS_ZE : 0) |
+                    (flags & float_flag_overflow ? FPUS_OE : 0) |
+                    (flags & float_flag_underflow ? FPUS_UE : 0) |
 -- 
 2.34.1
 
