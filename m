@@ -2,52 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6466AA1B09E
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 08:02:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7FAA1B0D1
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Jan 2025 08:26:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbDgE-0005uk-Pk; Fri, 24 Jan 2025 02:00:38 -0500
+	id 1tbE43-0007vz-Ab; Fri, 24 Jan 2025 02:25:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1tbDgB-0005sk-6e
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 02:00:35 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1tbDg8-00084F-Av
- for qemu-devel@nongnu.org; Fri, 24 Jan 2025 02:00:34 -0500
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8CxieCLOpNnLShoAA--.6516S3;
- Fri, 24 Jan 2025 15:00:27 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMDx_8eGOpNnM2ksAA--.32130S9;
- Fri, 24 Jan 2025 15:00:27 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-devel@nongnu.org,
-	Song Gao <gaosong@loongson.cn>
-Subject: [PULL 7/7] target/loongarch: Dump all generic CSR registers
-Date: Fri, 24 Jan 2025 15:00:21 +0800
-Message-Id: <20250124070021.800907-8-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20250124070021.800907-1-maobibo@loongson.cn>
-References: <20250124070021.800907-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <SRS0=CijV=UQ=kaod.org=clg@ozlabs.org>)
+ id 1tbE3v-0007tQ-2z; Fri, 24 Jan 2025 02:25:09 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=CijV=UQ=kaod.org=clg@ozlabs.org>)
+ id 1tbE3r-0002xn-Fo; Fri, 24 Jan 2025 02:25:05 -0500
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4YfTpf6Wstz4wnp;
+ Fri, 24 Jan 2025 18:24:42 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4YfTpb25rnz4wcl;
+ Fri, 24 Jan 2025 18:24:38 +1100 (AEDT)
+Message-ID: <e7b47069-22c0-4628-aaf0-28baa49b9d61@kaod.org>
+Date: Fri, 24 Jan 2025 08:24:41 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMDx_8eGOpNnM2ksAA--.32130S9
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] wdt/aspeed: Support software reset mode for AST2600
+To: Jamin Lin <jamin_lin@aspeedtech.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+Cc: troy_lee@aspeedtech.com, yunlin.tang@aspeedtech.com
+References: <20250124030249.1706996-1-jamin_lin@aspeedtech.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
+ 8NzNXBY3cH7JX3/a0jzmhDc0U61qFxVgrPqs1PQOjp7yRSFuDAnjtRqNvWkvlnRWLFq4+U5t
+ yzYe4SFMjFb6Oc0xkQmaK2flmiJNnnxPttYwKBPd98WfXMmjwAv7QfwW+OL3VlTPADgzkcqj
+ 53bfZ4VblAQrq6Ctbtu7JuUGAxSIL3XqeQlAwwLTfFGrmpY7MroE7n9Rl+hy/kuIrb/TO8n0
+ ZxYXvvhT7OmRKvbYuc5Jze6o7op/bJHlufY+AquYQ4dPxjPPVUT/DLiUYJ3oVBWFYNbzfOrV
+ RxEwNuRbycttMiZWxgflsQoHF06q/2l4ttS3zsV4TDZudMq0TbCH/uJFPFsbHUN91qwwaN/+
+ gy1j7o6aWMz+Ib3O9dK2M/j/O/Ube95mdCqN4N/uSnDlca3YDEWrV9jO1mUS/ndOkjxa34ia
+ 70FjwiSQAsyIwqbRO3CGmiOJqDa9qNvd2TJgAaS2WCw/TlBALjVQ7AyoPEoBPj31K74Wc4GS
+ Rm+FSch32ei61yFu6ACdZ12i5Edt+To+hkElzjt6db/UgRUeKfzlMB7PodK7o8NBD8outJGS
+ tsL2GRX24QvvBuusJdMiLGpNz3uqyqwzC5w0Fd34E6G94806fwARAQABzSBDw6lkcmljIExl
+ IEdvYXRlciA8Y2xnQGthb2Qub3JnPsLBeAQTAQIAIgUCW7yjdQIbAwYLCQgHAwIGFQgCCQoL
+ BBYCAwECHgECF4AACgkQUaNDx8/77KGRSxAAuMJJMhJdj7acTcFtwof7CDSfoVX0owE2FJdd
+ M43hNeTwPWlV5oLCj1BOQo0MVilIpSd9Qu5wqRD8KnN2Bv/rllKPqK2+i8CXymi9hsuzF56m
+ 76wiPwbsX54jhv/VYY9Al7NBknh6iLYJiC/pgacRCHtSj/wofemSCM48s61s1OleSPSSvJE/
+ jYRa0jMXP98N5IEn8rEbkPua/yrm9ynHqi4dKEBCq/F7WDQ+FfUaFQb4ey47A/aSHstzpgsl
+ TSDTJDD+Ms8y9x2X5EPKXnI3GRLaCKXVNNtrvbUd9LsKymK3WSbADaX7i0gvMFq7j51P/8yj
+ neaUSKSkktHauJAtBNXHMghWm/xJXIVAW8xX5aEiSK7DNp5AM478rDXn9NZFUdLTAScVf7LZ
+ VzMFKR0jAVG786b/O5vbxklsww+YXJGvCUvHuysEsz5EEzThTJ6AC5JM2iBn9/63PKiS3ptJ
+ QAqzasT6KkZ9fKLdK3qtc6yPaSm22C5ROM3GS+yLy6iWBkJ/nEYh/L/du+TLw7YNbKejBr/J
+ ml+V3qZLfuhDjW0GbeJVPzsENuxiNiBbyzlSnAvKlzda/sBDvxmvWhC+nMRQCf47mFr8Xx3w
+ WtDSQavnz3zTa0XuEucpwfBuVdk4RlPzNPri6p2KTBhPEvRBdC9wNOdRBtsP9rAPjd52d73O
+ wU0EW7yjdQEQALyDNNMw/08/fsyWEWjfqVhWpOOrX2h+z4q0lOHkjxi/FRIRLfXeZjFfNQNL
+ SoL8j1y2rQOs1j1g+NV3K5hrZYYcMs0xhmrZKXAHjjDx7FW3sG3jcGjFW5Xk4olTrZwFsZVU
+ cP8XZlArLmkAX3UyrrXEWPSBJCXxDIW1hzwpbV/nVbo/K9XBptT/wPd+RPiOTIIRptjypGY+
+ S23HYBDND3mtfTz/uY0Jytaio9GETj+fFis6TxFjjbZNUxKpwftu/4RimZ7qL+uM1rG1lLWc
+ 9SPtFxRQ8uLvLOUFB1AqHixBcx7LIXSKZEFUCSLB2AE4wXQkJbApye48qnZ09zc929df5gU6
+ hjgqV9Gk1rIfHxvTsYltA1jWalySEScmr0iSYBZjw8Nbd7SxeomAxzBv2l1Fk8fPzR7M616d
+ tb3Z3HLjyvwAwxtfGD7VnvINPbzyibbe9c6gLxYCr23c2Ry0UfFXh6UKD83d5ybqnXrEJ5n/
+ t1+TLGCYGzF2erVYGkQrReJe8Mld3iGVldB7JhuAU1+d88NS3aBpNF6TbGXqlXGF6Yua6n1c
+ OY2Yb4lO/mDKgjXd3aviqlwVlodC8AwI0SdujWryzL5/AGEU2sIDQCHuv1QgzmKwhE58d475
+ KdVX/3Vt5I9kTXpvEpfW18TjlFkdHGESM/JxIqVsqvhAJkalABEBAAHCwV8EGAECAAkFAlu8
+ o3UCGwwACgkQUaNDx8/77KEhwg//WqVopd5k8hQb9VVdk6RQOCTfo6wHhEqgjbXQGlaxKHoX
+ ywEQBi8eULbeMQf5l4+tHJWBxswQ93IHBQjKyKyNr4FXseUI5O20XVNYDJZUrhA4yn0e/Af0
+ IX25d94HXQ5sMTWr1qlSK6Zu79lbH3R57w9jhQm9emQEp785ui3A5U2Lqp6nWYWXz0eUZ0Ta
+ d2zC71Gg9VazU9MXyWn749s0nXbVLcLS0yops302Gf3ZmtgfXTX/W+M25hiVRRKCH88yr6it
+ +OMJBUndQVAA/fE9hYom6t/zqA248j0QAV/pLHH3hSirE1mv+7jpQnhMvatrwUpeXrOiEw1n
+ HzWCqOJUZ4SY+HmGFW0YirWV2mYKoaGO2YBUwYF7O9TI3GEEgRMBIRT98fHa0NPwtlTktVIS
+ l73LpgVscdW8yg9Gc82oe8FzU1uHjU8b10lUXOMHpqDDEV9//r4ZhkKZ9C4O+YZcTFu+mvAY
+ 3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
+ ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
+ KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20250124030249.1706996-1-jamin_lin@aspeedtech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=CijV=UQ=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_LOW=-0.7,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,150 +109,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CSR registers is import system control registers, it had better
-dump all CSR registers when VM is running in system mode.
+On 1/24/25 04:02, Jamin Lin wrote:
+> v1:
+>    Support software reset mode for AST2600
+> v2:
+>    Change to validate WDT_CTRL_RESET_MODE_SOC
+> 
+> Jamin Lin (2):
+>    aspeed/wdt: Fix coding style
+>    aspeed/wdt: Support software reset mode for AST2600
+> 
+>   hw/watchdog/wdt_aspeed.c | 19 +++++++++++++++++--
+>   1 file changed, 17 insertions(+), 2 deletions(-)
+> 
 
-Here is dump output example of CSR registers:
- CSR000: CRMD   b4               PRMD   4                EUEN   0                MISC   0
- CSR004: ECFG   71c1c            ESTAT  0                ERA    9000000002c31300 BADV   12022c0e0
- CSR008: BADI   2b0000
- CSR012: EENTRY 90000000046b0000
- CSR016: TLBIDX ffffffff8e000228 TLBEHI 120228000        TLBELO0 400000016f19001f TLBELO1 400000016f1a401f
- CSR024: ASID   a0004            PGDL   90000001016f0000 PGDH   9000000004680000 PGD    0
- CSR028: PWCL   5e56e            PWCH   2e4              STLBPS e                RVACFG 0
- CSR032: CPUID  0                PRCFG1 72f8             PRCFG2 3ffff000         PRCFG3 8073f2
- CSR048: SAVE0  0                SAVE1  af9c             SAVE2  12010d6a8        SAVE3  8300000
- CSR052: SAVE4  0                SAVE5  0                SAVE6  0                SAVE7  0
- CSR064: TID    0                TCFG   8f0ca15          TVAL   4cefd8b          CNTC   fffffffffe688aaa
- CSR068: TICLR  0
- CSR096: LLBCTL 1
- CSR136: TLBRENTRY 46ba000       TLBRBADV ffff8000130d81e2 TLBRERA 9000000003585cb8 TLBRSAVE ffff8000130d81e0
- CSR140: TLBRELO0 1fe00043       TLBRELO1 40             TLBREHI ffff8000130d800e TLBRPRMD 0
- CSR384: DMW0   8000000000000001 DMW1   9000000000000011 DMW2   0                DMW3   0
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- target/loongarch/cpu.c | 66 ++++++++++++++++++++++++++++++++----------
- target/loongarch/csr.c |  2 ++
- target/loongarch/csr.h |  1 +
- 3 files changed, 53 insertions(+), 16 deletions(-)
+Applied to aspeed-next.
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index a744010332..e91f4a5239 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -793,6 +793,54 @@ static ObjectClass *loongarch_cpu_class_by_name(const char *cpu_model)
-     return oc;
- }
- 
-+static void loongarch_cpu_dump_csr(CPUState *cs, FILE *f)
-+{
-+#ifndef CONFIG_USER_ONLY
-+    CPULoongArchState *env = cpu_env(cs);
-+    CSRInfo *csr_info;
-+    int64_t *addr;
-+    int i, j, len, col = 0;
-+
-+    qemu_fprintf(f, "\n");
-+
-+    /* Dump all generic CSR register */
-+    for (i = 0; i < LOONGARCH_CSR_DBG; i++) {
-+        csr_info = get_csr(i);
-+        if (!csr_info || (csr_info->flags & CSRFL_UNUSED)) {
-+            if (i == (col + 3)) {
-+                qemu_fprintf(f, "\n");
-+            }
-+
-+            continue;
-+        }
-+
-+        if ((i >  (col + 3)) || (i == col)) {
-+            col = i & ~3;
-+            qemu_fprintf(f, " CSR%03d:", col);
-+        }
-+
-+        addr = (void *)env + csr_info->offset;
-+        qemu_fprintf(f, " %s ", csr_info->name);
-+        len = strlen(csr_info->name);
-+        for (; len < 6; len++) {
-+            qemu_fprintf(f, " ");
-+        }
-+
-+        qemu_fprintf(f, "%" PRIx64, *addr);
-+        j = find_last_bit((void *)addr, BITS_PER_LONG) & (BITS_PER_LONG - 1);
-+        len += j / 4 + 1;
-+        for (; len < 22; len++) {
-+                qemu_fprintf(f, " ");
-+        }
-+
-+        if (i == (col + 3)) {
-+            qemu_fprintf(f, "\n");
-+        }
-+    }
-+    qemu_fprintf(f, "\n");
-+#endif
-+}
-+
- static void loongarch_cpu_dump_state(CPUState *cs, FILE *f, int flags)
- {
-     CPULoongArchState *env = cpu_env(cs);
-@@ -812,22 +860,8 @@ static void loongarch_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-         }
-     }
- 
--    qemu_fprintf(f, "CRMD=%016" PRIx64 "\n", env->CSR_CRMD);
--    qemu_fprintf(f, "PRMD=%016" PRIx64 "\n", env->CSR_PRMD);
--    qemu_fprintf(f, "EUEN=%016" PRIx64 "\n", env->CSR_EUEN);
--    qemu_fprintf(f, "ESTAT=%016" PRIx64 "\n", env->CSR_ESTAT);
--    qemu_fprintf(f, "ERA=%016" PRIx64 "\n", env->CSR_ERA);
--    qemu_fprintf(f, "BADV=%016" PRIx64 "\n", env->CSR_BADV);
--    qemu_fprintf(f, "BADI=%016" PRIx64 "\n", env->CSR_BADI);
--    qemu_fprintf(f, "EENTRY=%016" PRIx64 "\n", env->CSR_EENTRY);
--    qemu_fprintf(f, "PRCFG1=%016" PRIx64 ", PRCFG2=%016" PRIx64 ","
--                 " PRCFG3=%016" PRIx64 "\n",
--                 env->CSR_PRCFG1, env->CSR_PRCFG2, env->CSR_PRCFG3);
--    qemu_fprintf(f, "TLBRENTRY=%016" PRIx64 "\n", env->CSR_TLBRENTRY);
--    qemu_fprintf(f, "TLBRBADV=%016" PRIx64 "\n", env->CSR_TLBRBADV);
--    qemu_fprintf(f, "TLBRERA=%016" PRIx64 "\n", env->CSR_TLBRERA);
--    qemu_fprintf(f, "TCFG=%016" PRIx64 "\n", env->CSR_TCFG);
--    qemu_fprintf(f, "TVAL=%016" PRIx64 "\n", env->CSR_TVAL);
-+    /* csr */
-+    loongarch_cpu_dump_csr(cs, f);
- 
-     /* fpr */
-     if (flags & CPU_DUMP_FPU) {
-diff --git a/target/loongarch/csr.c b/target/loongarch/csr.c
-index 87bd24e8cd..7ea0a30450 100644
---- a/target/loongarch/csr.c
-+++ b/target/loongarch/csr.c
-@@ -9,12 +9,14 @@
- 
- #define CSR_OFF_FUNCS(NAME, FL, RD, WR)                    \
-     [LOONGARCH_CSR_##NAME] = {                             \
-+        .name   = (stringify(NAME)),                       \
-         .offset = offsetof(CPULoongArchState, CSR_##NAME), \
-         .flags = FL, .readfn = RD, .writefn = WR           \
-     }
- 
- #define CSR_OFF_ARRAY(NAME, N)                                \
-     [LOONGARCH_CSR_##NAME(N)] = {                             \
-+        .name   = (stringify(NAME##N)),                       \
-         .offset = offsetof(CPULoongArchState, CSR_##NAME[N]), \
-         .flags = 0, .readfn = NULL, .writefn = NULL           \
-     }
-diff --git a/target/loongarch/csr.h b/target/loongarch/csr.h
-index deb1aacc33..81a656baae 100644
---- a/target/loongarch/csr.h
-+++ b/target/loongarch/csr.h
-@@ -17,6 +17,7 @@ enum {
- };
- 
- typedef struct {
-+    const char *name;
-     int offset;
-     int flags;
-     GenCSRFunc readfn;
--- 
-2.43.5
+Thanks,
+
+C.
+
 
 
