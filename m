@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDFFFA1C4D6
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 19:16:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFC07A1C4DD
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 19:16:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbkft-0008FD-US; Sat, 25 Jan 2025 13:14:29 -0500
+	id 1tbkfv-0008KU-AI; Sat, 25 Jan 2025 13:14:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkfe-0008CS-1H
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkff-0008DA-K1
  for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:14:16 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkfa-0004F8-0S
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:14:12 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-437a92d7b96so32123215e9.2
- for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 10:14:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkfe-0004G1-1X
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:14:15 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4361c705434so22040945e9.3
+ for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 10:14:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737828847; x=1738433647; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737828852; x=1738433652; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dyOkRsNGVEWSIU/g0zj3C7+UfvVjzQgLwIYDoErjrzY=;
- b=j7cufMCr+elMY6jVERZ8Fx+SxovwQ0h+/COMnnW6yJ7O16eXCMYJNV3AaiKYNDR5OG
- KiVXZOy152tw9KYAi3wFgL1zUL0w6LeKihf+ct1FE/6Z0KOWx0zqLY2uMNP7SPYMPEE+
- sLTzyGN7/YRgzCx52oDY4180qkQajYB4ePPLleWk3wSo1SDyrCh9M64Dn3HCkTpWfaKD
- ewWEahHz9wtOn8vZIXz3mcKQk9e9CHyg0q4RGbqEH2AqStMEBn6v3sFIqG3yRUccUMBc
- 3CqQWQSk7s4NFun6SQ+NkTVcNoyfIfXkffzfUv8NTWFB2NgLR0UiyueL1BotIktEA3pE
- 8UIQ==
+ bh=oekQdNljsXmvRCfjRcF/YH736cTnRtLa3bqMS7/4HKc=;
+ b=bR1OGlpggt6HX8m3z2x7MOCllw3RVk5BDUY4TGdhp8kCz+DUqDqF2hxqUyW1oVkfon
+ wbpSH0FlL6ksGziFt9R0FLwimj2uO0MtrmUEoFIc1jRUMYDi2QzGO5pNjW4+tYmid5w+
+ wfE3/QLzLMjikmNm5sFiZ80lWYPZOmhjRSAuTYz7hjgK0NaRsPOykXLB2Rqwzk0UDqLk
+ 7SLo35bUoripsOX35VozZLzJKGqr3xXsYVpQvaIOQfsW5HWleZEk8wQ7aHCa4nM8Nr4q
+ r9eCKx59fG7UvEsCgfbseTcBoFhpBArUv9eNAh0SLlWKMDxb8WGYJz8/yALW1NY1uqGP
+ CaDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737828847; x=1738433647;
+ d=1e100.net; s=20230601; t=1737828852; x=1738433652;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dyOkRsNGVEWSIU/g0zj3C7+UfvVjzQgLwIYDoErjrzY=;
- b=OT5znBFscITiz5zPCUF/9FBEwXZsoBpOgVZ9gC8vgaK8qc0RJ3qxDSH3QOIngW9Lh6
- qfFGxiNLXNEiXnyVnIZfr0vefiFy+fkM2NZK4JylQRbbDFPM92RjCo5i/5lzCayX+cIa
- G6J6hnCf8WBoCn/jBsB9QHnSjCMazltkcQMcpR6Zrks4lP55DxVH2w3HN2eDfbqROVU4
- 8fxKZ15rm+iqLKfgIC0XUnH0GPglCT4mYGul3fWYEQs4da7vC0VtUdLYgUwLmAbShs52
- pHI5iH1mGHTXF52/PjyonizGhp+kQILNgPJsiz1jhZKUF0vF0Y6CPBNXvu5W4oXlsoio
- 4J3Q==
-X-Gm-Message-State: AOJu0Yw3mMPBvecZzGcWME7iRG3gOsMU9Ik+c7WqYvRlXWmuPqIfnV1m
- tD7Ju9suiR4oyKoJOsRFmLM/q9vQ7NAs/1wrknBJRtTPYuU5DGiY2MOnTwCW6fQ2APU3uumovzS
- bggc=
-X-Gm-Gg: ASbGncvibm1VqCfD9qtfdgMcthD79yViPRlwOJhiMoHOxJJU785uv0cwVr8ycYRnMwl
- 2gfyUeV0ep0oFnq1XqhAF59xHRFyW0WcO/2195H6X7RmiC88pdLAmV5x8qTwI7XO7urUIJRD+wK
- l9I8jR4OWx9zXdsjybHUuSOvqGdukm2kGwvkoJ7LfYtem0d/mUZM2aMJJERbVZs2amIeHo/doLG
- EAj8aNlQAhEff3hrk9r82UmRu+XJKxnYrpBVwwa/LezhZ35rJTSh3hx4uWj4HIwLYRF6vNH6JlJ
- LiWYyTzyuGxFdYKiHYlMjVEdvNb1Vbfgrj4bEhlacrAjEcXlhgeFERdU0jqm
-X-Google-Smtp-Source: AGHT+IEr2qoA1rRQRSxzBRg9AaVRyh1DsB0c2e066JVheh7W35FZo8o118MnJ47nSIRaQRkoz3MpFg==
-X-Received: by 2002:a05:600c:468d:b0:436:4708:9fb6 with SMTP id
- 5b1f17b1804b1-43891437546mr293523335e9.20.1737828846888; 
- Sat, 25 Jan 2025 10:14:06 -0800 (PST)
+ bh=oekQdNljsXmvRCfjRcF/YH736cTnRtLa3bqMS7/4HKc=;
+ b=ph1yTrGsvrGfjd1S3TR69oEoDDmElU93brJ6JAKdlo/FFiKm/oYRqUUrE4FbVQhs1J
+ BRRgITAcqRiE9g6m8Uxs/QQV1K6HPkSPbdizZwzIz9gDnd1pV9M7WEFBx1pwfKOI7o5N
+ tuTJKjya3tlArMe5OptybQcJMFGtQ2EvnZhp2imsFpmBIY5Rr9zwMc1YeiOjdNJTJzGr
+ QH88k9UJRaseQJT/GXQkYHedHUzR5EF33+JK177/U4nnxrPxlg/PwwUKZGHGeLn+l+rD
+ WJEwkydmrKIdHzpLMIqKF9Nh3Ni6hYKlhuT3EBC2WJ+jJDV1woOvWNYOg5Xg0EAKKCtW
+ j1WA==
+X-Gm-Message-State: AOJu0YzNTRz0mGiwMdvJKyvHzeggvGBW4THHns/KdxCKyRbd1hSS3M4K
+ ic304yEABR8Rkg2hqIpD+FUTXzhZ+/oRVB+wwYpjeaHxyet8M6Woi+Bq2STFdKuRZHYUD+4WKGK
+ 2B4I=
+X-Gm-Gg: ASbGncvPQDXL+7ra3qIG2sdGKKhUVCCiT6en2KEsWmaWq/y24MPIHF2okHfjcUc+SoK
+ ImTpgrwmvisOMk/1WfKFY70Uge7iS1DO0alSL6EVUsw87x/NpsmHl0OgUPPCLE6dyMrsqGTMouj
+ CYaz+wODEA7+L7K8TdjYg0b/WjgWuaChdy1fBL0dfBApWdTpFf6+PEOinIM4DM8Py/fQUAuvYXL
+ nvxUraqspAtWo5yqj/CnEVJ2ub8RPa53YyhJjS3NYepQr1AqirY+mO+A3BaCkbr9/4eVdNKoWRJ
+ fKHIBDkABUJdlCh79G1QDHKetZhEZjN9A+BcCxoPnz8D2MVyaw1mPjo5YW8X
+X-Google-Smtp-Source: AGHT+IFcf5NC5w3OdMEeSdE+fJzRv8eMmKrsAaFn1q2W0Qs4+hxyDFiFEoLFYJSBxaKkISXGUJ3R0Q==
+X-Received: by 2002:a05:600c:1f19:b0:434:a1d3:a30f with SMTP id
+ 5b1f17b1804b1-438b9cc072emr109914115e9.6.1737828852191; 
+ Sat, 25 Jan 2025 10:14:12 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd4857c3sm68307685e9.10.2025.01.25.10.14.05
+ 5b1f17b1804b1-438bd4900e2sm68626685e9.24.2025.01.25.10.14.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 25 Jan 2025 10:14:06 -0800 (PST)
+ Sat, 25 Jan 2025 10:14:11 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Yi Liu <yi.l.liu@intel.com>, Markus Armbruster <armbru@redhat.com>,
@@ -82,18 +82,18 @@ Cc: Yi Liu <yi.l.liu@intel.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 4/9] hw/vfio: Have VFIO_PLATFORM devices inherit from
+Subject: [PATCH 5/9] hw/display: Have RAMFB device inherit from
  DYNAMIC_SYS_BUS_DEVICE
-Date: Sat, 25 Jan 2025 19:13:38 +0100
-Message-ID: <20250125181343.59151-5-philmd@linaro.org>
+Date: Sat, 25 Jan 2025 19:13:39 +0100
+Message-ID: <20250125181343.59151-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250125181343.59151-1-philmd@linaro.org>
 References: <20250125181343.59151-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -116,62 +116,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not explain why VFIO_PLATFORM devices are user_creatable,
-have them inherit TYPE_DYNAMIC_SYS_BUS_DEVICE, to explicit
-they can optionally be plugged on TYPE_PLATFORM_BUS_DEVICE.
+Because the RAM FB device can be optionally plugged on the
+TYPE_PLATFORM_BUS_DEVICE, have it inherit TYPE_DYNAMIC_SYS_BUS_DEVICE.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/vfio/amd-xgbe.c      | 2 --
- hw/vfio/calxeda-xgmac.c | 2 --
- hw/vfio/platform.c      | 4 +---
- 3 files changed, 1 insertion(+), 7 deletions(-)
+ hw/display/ramfb-standalone.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/vfio/amd-xgbe.c b/hw/vfio/amd-xgbe.c
-index 96bd608b8dd..aaa96903db0 100644
---- a/hw/vfio/amd-xgbe.c
-+++ b/hw/vfio/amd-xgbe.c
-@@ -41,8 +41,6 @@ static void vfio_amd_xgbe_class_init(ObjectClass *klass, void *data)
-                                     &vcxc->parent_realize);
-     dc->desc = "VFIO AMD XGBE";
-     dc->vmsd = &vfio_platform_amd_xgbe_vmstate;
--    /* Supported by TYPE_VIRT_MACHINE */
+diff --git a/hw/display/ramfb-standalone.c b/hw/display/ramfb-standalone.c
+index 6c35028965d..1be106b57f2 100644
+--- a/hw/display/ramfb-standalone.c
++++ b/hw/display/ramfb-standalone.c
+@@ -72,13 +72,12 @@ static void ramfb_class_initfn(ObjectClass *klass, void *data)
+     dc->vmsd = &ramfb_dev_vmstate;
+     dc->realize = ramfb_realizefn;
+     dc->desc = "ram framebuffer standalone device";
 -    dc->user_creatable = true;
+     device_class_set_props(dc, ramfb_properties);
  }
  
- static const TypeInfo vfio_amd_xgbe_dev_info = {
-diff --git a/hw/vfio/calxeda-xgmac.c b/hw/vfio/calxeda-xgmac.c
-index 87c382e7361..b016d42b496 100644
---- a/hw/vfio/calxeda-xgmac.c
-+++ b/hw/vfio/calxeda-xgmac.c
-@@ -41,8 +41,6 @@ static void vfio_calxeda_xgmac_class_init(ObjectClass *klass, void *data)
-                                     &vcxc->parent_realize);
-     dc->desc = "VFIO Calxeda XGMAC";
-     dc->vmsd = &vfio_platform_calxeda_xgmac_vmstate;
--    /* Supported by TYPE_VIRT_MACHINE */
--    dc->user_creatable = true;
- }
- 
- static const TypeInfo vfio_calxeda_xgmac_dev_info = {
-diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
-index 1070a2113a1..f491f4dc954 100644
---- a/hw/vfio/platform.c
-+++ b/hw/vfio/platform.c
-@@ -672,13 +672,11 @@ static void vfio_platform_class_init(ObjectClass *klass, void *data)
-     dc->desc = "VFIO-based platform device assignment";
-     sbc->connect_irq_notifier = vfio_start_irqfd_injection;
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
--    /* Supported by TYPE_VIRT_MACHINE */
--    dc->user_creatable = true;
- }
- 
- static const TypeInfo vfio_platform_dev_info = {
-     .name = TYPE_VFIO_PLATFORM,
--    .parent = TYPE_SYS_BUS_DEVICE,
-+    .parent = TYPE_DYNAMIC_SYS_BUS_DEVICE,
-     .instance_size = sizeof(VFIOPlatformDevice),
-     .instance_init = vfio_platform_instance_init,
-     .class_init = vfio_platform_class_init,
+ static const TypeInfo ramfb_info = {
+     .name          = TYPE_RAMFB_DEVICE,
+-    .parent        = TYPE_SYS_BUS_DEVICE,
++    .parent        = TYPE_DYNAMIC_SYS_BUS_DEVICE,
+     .instance_size = sizeof(RAMFBStandaloneState),
+     .class_init    = ramfb_class_initfn,
+ };
 -- 
 2.47.1
 
