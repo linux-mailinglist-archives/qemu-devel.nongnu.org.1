@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AB7EA1C48C
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 18:06:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F06EA1C493
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 18:08:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbjaG-00025j-3v; Sat, 25 Jan 2025 12:04:37 -0500
+	id 1tbje4-0006u9-5x; Sat, 25 Jan 2025 12:08:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbjYr-0000gg-S6
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:03:13 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tbje1-0006tf-TL
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:08:30 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbjYq-0000bi-Ft
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:03:09 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4363ae65100so33566465e9.0
- for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 09:03:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tbje0-0001io-5C
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:08:29 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-2166651f752so57393715ad.3
+ for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 09:08:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737824587; x=1738429387; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vwxPouX1MPfj+qZCG+Ip7+cwlRNTkTH48zQoUyHbOFI=;
- b=KDEzypIcXrdoCIYcpCPP6yYxhl1MT7p9KxqvgOsHpzd9eJG4njXzq5VidXys2KL6Yq
- EooTy+pmkOd7OCDDBVQmhnpIF8o4hRG1iTH8X2fJxm4e5TDR+kOUWF/sKjWLl5lBtqYn
- aIqMiVifgOt45viUePBzs0yEYF1dE/WAvmlbZ979yZG9JOpgATwthgo8enkk8od9JYrM
- 6PJjFMHUoAF5w9x+GAsV7CvCx7bWHZkI/EsaVlTGnTk5rSFwulKfkAlPh7uELQGH2XeJ
- jyztagl7X5jO7ghFbheUECdut6QvfZIWCcZ5LBgws29kEM/f/9ADw/cPaVQUyMeEW35L
- XdOA==
+ d=linaro.org; s=google; t=1737824906; x=1738429706; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=PIKYkX99Wy5iJJ1FPJI5WnBZ2X967k3hhgIrClL25Wg=;
+ b=ws08gjVdHIYhsQ3fOe4HmtzxJMeYIz09UEPVzgTsNYA5ZKSGB+Kml11YyD/Ftv8670
+ Tci1Y9e7rztkVkrBE2htpPNlTMLwcjseWPtIOKyS44qqSSn/woHhZukIIa7+6tpEYqXS
+ kGBA7PZUCbGRoerYIALG6atkmwaERdCkdIYEz7K6G12SINfZl8UMQ7XapiayJfXBVDGo
+ IiaGr6z/ddxwCE7RCcvIb1Wq2sDN6Hv43R1+DQ49pXQxaAPlVBtnkm8cksYCrXTAifwO
+ Aat997At0cxTCINC/mBq14Z0WEVDBmaWVXdIGXb4LxtHBcuRL7lER1MrMJWg6n/9Qj6M
+ vlBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737824587; x=1738429387;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vwxPouX1MPfj+qZCG+Ip7+cwlRNTkTH48zQoUyHbOFI=;
- b=wJtrFsQPk41MHn0sfMHIOSplgbZilp2u5DYVZXsJl0A4D9beVAR6JTR/AsuSfgVLn7
- ZQ++CewR4lGQVT53e6iRTZgOxDGe58do5AwWTqZMFgh9fZmM2PNz9LE5Az62BWijzU8i
- wJ4p1/lDTSuZeuvNVckiQ3HvxTm300ZfDWbBznHCy4LJJX5j+pRVaT3qzFrTU5tpBR/8
- o727OH2gHmavIVRVtdOOOtro9oIpGQF8fr3ta9PFLC+ldMGjkpd/cAqduB2lcLPRCPy3
- y6wpY73K2+OXULQgDmgNu3gPiX6gf4niDRgm9ZRswpu3kFMsUX76xybrHS9ewMmoXjFB
- 4L9Q==
-X-Gm-Message-State: AOJu0YyBmb3LELvnUjTLpSo3rLocrZK8cKSqzIFlDV4ffmYpHl0Rqs/d
- G9KbPknBzX1UHAi/YgE4s6PalLUqmFExh852n04IKgQC8qVEKQ91Qb1xxkyVfLAA9MPJIvzuNCe
- J+pw=
-X-Gm-Gg: ASbGncu5Dm6s3//Pjgtr9lHXZkuVYPlQLWe8AkofkBcu8R97fktuEWcOX0Zm1MhLiEq
- OJnwaN1VsTJsWCk5Fs3fyz1DpO2c6oKOEQN62oujxJyotyOPnp2BnkAdjUMb2aS/R1fz3HUXGHF
- zT0HdRMJoX6jVGrg4OLCWmBzC1XKtKycKk+LEaJSrXsVjog3xI3wvBkvGQB5LlderHILYY4KV6V
- wB7MzOx13SpbPgeT/HKUumJv21/g38lnfxqxHpxb3lvATj5DbjsJfx2AWRrlT+sv0AVSnLCcnDX
- /31mlvoVO6ebEtudCBKwJ74V/56vHBH2Ol4s79/3/vZ7iZEel4FOisI=
-X-Google-Smtp-Source: AGHT+IHFBz6zGckxsY2quSxGcS6859Z+cQ6pBzEFu5wft7n93wdqwbHJFtGsb9cyytYxfM4MbE2y0g==
-X-Received: by 2002:a05:600c:8712:b0:434:a802:e9a6 with SMTP id
- 5b1f17b1804b1-438913ce0b7mr350273185e9.7.1737824586746; 
- Sat, 25 Jan 2025 09:03:06 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd507dc9sm67320765e9.19.2025.01.25.09.03.05
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 25 Jan 2025 09:03:05 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 20/24] target/sh4: Move has_work() from CPUClass to
- SysemuCPUOps
-Date: Sat, 25 Jan 2025 18:01:21 +0100
-Message-ID: <20250125170125.32855-21-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250125170125.32855-1-philmd@linaro.org>
-References: <20250125170125.32855-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1737824906; x=1738429706;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=PIKYkX99Wy5iJJ1FPJI5WnBZ2X967k3hhgIrClL25Wg=;
+ b=je0rUItaCwftlWFXdcvIHkg9WbS6f4Wn8XwbioQWJDHWcxLnrElylGbsqP60wQIUvd
+ zLMNxvxjzU9XnwxkduSyzjR5cGl8QpxIGcfpYwCXAexcJQy6/enzwIplFV1wIYxQsjua
+ fMLltA9OS0VaLOwG8+3riThR89PVXSzj23A9/CWKMByO96trshuIaJ8sqA9VmlwG5tXL
+ kAxvebUnAe1vQY85eLQ5VfqtA3FOBDrX3nuYgiiauOE+fNyCVJZAnYlBSVhNZxNVnRCq
+ oezl5mvhKFMXrtKpKNkv2sV+oeHO8f4mQA5wkzbK4fWIbihIR9VycmJ20Ov+9zTYBZVX
+ Q/0g==
+X-Gm-Message-State: AOJu0YzmtFBAZuXAxA4n7OliUOEK0Ee87vx/VGnaEst1Dae+P1YKU+hE
+ UoT/Paix1bcZhayrj9k7lIT9TqXG2gL8R5bkJbjcRs1MVqgqZPIjDr49RYY4aCdYYb6mhKHJ2WO
+ 4
+X-Gm-Gg: ASbGnct/9VAByrHUBqr+gy2EoRMeYzBDwVyAJR3o8vq1GBXQvK/F165hKCj+kHYtUdB
+ o9uYmWyY5K3v7+QCUntuwLlJ+uynfclWGT5pDcQPNY0TsGTYK29+qGhTyREQTEutqLu546sw8qY
+ jiXksjMuqvUy8oHkxlz/a9SejFnPh5igz2HVel7dSrDAVvFd8rXREsipKYKON3I/JtNo/qDeJei
+ 3HbunwEnHT+aorriS7GD9KGSOFemeUGvDcglnheBf+YT4ydA8YT3+WJV6akiQZ7bPDR/2y/1Pjh
+ 4DTx7q0q6LF+7dZ2Y4TBBg==
+X-Google-Smtp-Source: AGHT+IEwK5qY95Ai4u6dAUSq2VTZ60EIoUggQTh7WPZRncw2vg5fW2yDRw+axvXxjaoAzE1/CI7+xg==
+X-Received: by 2002:a05:6a00:21c3:b0:72a:bcc2:7748 with SMTP id
+ d2e1a72fcca58-72daf8515f4mr51221606b3a.0.1737824906409; 
+ Sat, 25 Jan 2025 09:08:26 -0800 (PST)
+Received: from [192.168.74.94] ([50.200.230.211])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-72f8a6b2cf6sm3910221b3a.49.2025.01.25.09.08.25
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 25 Jan 2025 09:08:26 -0800 (PST)
+Message-ID: <49f1651f-89f6-41ba-92cd-dac25b3eba14@linaro.org>
+Date: Sat, 25 Jan 2025 09:08:24 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 27/76] target/arm: Define FPCR AH, FIZ, NEP bits
+To: qemu-devel@nongnu.org
+References: <20250124162836.2332150-1-peter.maydell@linaro.org>
+ <20250124162836.2332150-28-peter.maydell@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250124162836.2332150-28-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,47 +100,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/sh4/cpu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On 1/24/25 08:27, Peter Maydell wrote:
+> The Armv8.7 FEAT_AFP feature defines three new control bits in
+> the FPCR:
+>   * FPCR.AH: "alternate floating point mode"; this changes floating
+>     point behaviour in a variety of ways, including:
+>      - the sign of a default NaN is 1, not 0
+>      - if FPCR.FZ is also 1, denormals detected after rounding
+>        with an unbounded exponent has been applied are flushed to zero
+>      - FPCR.FZ does not cause denormalized inputs to be flushed to zero
+>      - miscellaneous other corner-case behaviour changes
+>   * FPCR.FIZ: flush denormalized numbers to zero on input for
+>     most instructions
+>   * FPCR.NEP: makes scalar SIMD operations merge the result with
+>     higher vector elements in one of the source registers, instead
+>     of zeroing the higher elements of the destination
+> 
+> This commit defines the new bits in the FPCR, and allows them to be
+> read or written when FEAT_AFP is implemented.  Actual behaviour
+> changes will be implemented in subsequent commits.
+> 
+> Note that these are the first FPCR bits which don't appear in the
+> AArch32 FPSCR view of the register, and which share bit positions
+> with FPSR bits.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   target/arm/cpu-features.h |  5 +++++
+>   target/arm/cpu.h          |  3 +++
+>   target/arm/vfp_helper.c   | 11 ++++++++---
+>   3 files changed, 16 insertions(+), 3 deletions(-)
+> 
+> diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
+> index 30302d6c5b4..7bf24c506b3 100644
+> --- a/target/arm/cpu-features.h
+> +++ b/target/arm/cpu-features.h
+> @@ -802,6 +802,11 @@ static inline bool isar_feature_aa64_hcx(const ARMISARegisters *id)
+>       return FIELD_EX64(id->id_aa64mmfr1, ID_AA64MMFR1, HCX) != 0;
+>   }
+>   
+> +static inline bool isar_feature_aa64_afp(const ARMISARegisters *id)
+> +{
+> +    return FIELD_EX64(id->id_aa64mmfr1, ID_AA64MMFR1, AFP) != 0;
+> +}
+> +
+>   static inline bool isar_feature_aa64_tidcp1(const ARMISARegisters *id)
+>   {
+>       return FIELD_EX64(id->id_aa64mmfr1, ID_AA64MMFR1, TIDCP1) != 0;
+> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+> index 2213c277348..7ba227ac4c5 100644
+> --- a/target/arm/cpu.h
+> +++ b/target/arm/cpu.h
+> @@ -1713,6 +1713,9 @@ void vfp_set_fpscr(CPUARMState *env, uint32_t val);
+>    */
+>   
+>   /* FPCR bits */
+> +#define FPCR_FIZ    (1 << 0)    /* Flush Inputs to Zero (FEAT_AFP) */
+> +#define FPCR_AH     (1 << 1)    /* Alternate Handling (FEAT_AFP) */
+> +#define FPCR_NEP    (1 << 2)    /* SIMD scalar ops preserve elts (FEAT_AFP) */
+>   #define FPCR_IOE    (1 << 8)    /* Invalid Operation exception trap enable */
+>   #define FPCR_DZE    (1 << 9)    /* Divide by Zero exception trap enable */
+>   #define FPCR_OFE    (1 << 10)   /* Overflow exception trap enable */
+> diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
+> index 3c8f3e65887..8c79ab4fc8a 100644
+> --- a/target/arm/vfp_helper.c
+> +++ b/target/arm/vfp_helper.c
+> @@ -242,6 +242,9 @@ static void vfp_set_fpcr_masked(CPUARMState *env, uint32_t val, uint32_t mask)
+>       if (!cpu_isar_feature(any_fp16, cpu)) {
+>           val &= ~FPCR_FZ16;
+>       }
+> +    if (!cpu_isar_feature(aa64_afp, cpu)) {
+> +        val &= ~(FPCR_FIZ | FPCR_AH | FPCR_NEP);
+> +    }
 
-diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
-index 24a22724c61..80a66e1f1d6 100644
---- a/target/sh4/cpu.c
-+++ b/target/sh4/cpu.c
-@@ -82,12 +82,12 @@ static bool superh_io_recompile_replay_branch(CPUState *cs,
-     }
-     return false;
- }
--#endif
- 
- static bool superh_cpu_has_work(CPUState *cs)
- {
-     return cs->interrupt_request & CPU_INTERRUPT_HARD;
- }
-+#endif /* !CONFIG_USER_ONLY */
- 
- static int sh4_cpu_mmu_index(CPUState *cs, bool ifetch)
- {
-@@ -243,6 +243,7 @@ static const VMStateDescription vmstate_sh_cpu = {
- #include "hw/core/sysemu-cpu-ops.h"
- 
- static const struct SysemuCPUOps sh4_sysemu_ops = {
-+    .has_work = superh_cpu_has_work,
-     .get_phys_page_debug = superh_cpu_get_phys_page_debug,
- };
- #endif
-@@ -279,7 +280,6 @@ static void superh_cpu_class_init(ObjectClass *oc, void *data)
-                                        &scc->parent_phases);
- 
-     cc->class_by_name = superh_cpu_class_by_name;
--    cc->has_work = superh_cpu_has_work;
-     cc->mmu_index = sh4_cpu_mmu_index;
-     cc->dump_state = superh_cpu_dump_state;
-     cc->set_pc = superh_cpu_set_pc;
--- 
-2.47.1
+I suppose this aa64 check, without is_a64(), is ok because the a32 caller has already 
+applied FPSCR_FPCR_MASK.  And similarly for the ebf16 check below.
 
+>   
+>       if (!cpu_isar_feature(aa64_ebf16, cpu)) {
+>           val &= ~FPCR_EBF;
+
+But it does feel like we could usefully move these to vfp_set_fpcr, or such?
+
+
+r~
 
