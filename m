@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DCA9A1C47F
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 18:04:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62751A1C485
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 18:05:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbjZF-00014s-T2; Sat, 25 Jan 2025 12:03:38 -0500
+	id 1tbjaN-00028W-DR; Sat, 25 Jan 2025 12:04:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbjYc-0000fB-Bd
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:03:05 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbjYi-0000fg-Ci
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:03:12 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbjYa-0000ZU-Rr
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:02:54 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4363dc916ceso26620145e9.0
- for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 09:02:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbjYg-0000aI-Ni
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:03:00 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4363ae65100so33565665e9.0
+ for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 09:02:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737824571; x=1738429371; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737824576; x=1738429376; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jJ0qtgTntar3QVC5dx8kSZPa0KtS/nd9q7NwrkDQJ3Y=;
- b=jeIIqwa6s7kzfbzx/TlpELFAHWoZwjPZ3BWj8CH6pnzAm2Jqz1cr/BSNF0y95p9Zmj
- MfnWQulrjyDLlr7oZghRrgUFvkC3qZ5JKL7EoKaGHsxVdO72iWLxvLjpqYP7Kge0FJ3W
- r332UjQk3VFzECFqJkMi3ofF+lwnQHiEd1Xoat3T9Jle0wSxa99yVnMzNjQmtaNoDHfW
- HycYz/17EYqQIBatJGYjU88ciV2DK0eIbAVGZhZ9Yba5RPfLwHRVn1XRmqCqEKnA5exf
- ociRJAldYRknkTC8ZX1XOWdPllT2Turhr5bymawEluMaFSLnihp9s64BJXYlkqMoJ15J
- QTJA==
+ bh=WDsGnhplkgqT/f4agy456szrFVjRVVohKrpBFsRKCFM=;
+ b=lRwvMzNAa1yYJeVXu7dU3OYi4z2SSUAiWQG4n89ZlywwfGiLYb6XdG1HdC+ZG9Gg+b
+ xp49JrCw86Qb6BlCRa6CzGTQA5NoaybM9nEDKYOJsughNX9FbBwjcB3yT10lMbf7eIIv
+ yOqdUTyVkaLdSl+KORqxHPmJnLm7M6W8s4Mh6spJ1Aqz6F5kqVywm1OMrE+60UO1m9LS
+ QFo9/uyWwbkNMXIv8XUBSORLjtSKgw8lgs5uywUpNr0kPxOdLVJaOgy5tXlqVQ6gFkAQ
+ f3WBCJnJywUpyOkGIrP58HNr1qDYTYTn3xJ6MLs7+H6KqMFAbnZ5DtJsi0kw0eMTX17v
+ nl/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737824571; x=1738429371;
+ d=1e100.net; s=20230601; t=1737824576; x=1738429376;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jJ0qtgTntar3QVC5dx8kSZPa0KtS/nd9q7NwrkDQJ3Y=;
- b=QmcaQ/M/1EEPtXvTdB8aQyTo880hbvD0MwzmDiFWYgP2LylXGYoRq0tkY76FO3mDnY
- GZ7VjFMxnRdoNNT1mQwZxTk7HngTWNbr22sSHTlo6f+W1XvBQ1Q/ETLaQDt4q5yA0Yuf
- I5Mwnb33Nb7UkKLMhBil97D+6IPhMuOqaG9v9xZb3cUJ0LeMnDgX5z3HmwEIbzmEq84E
- pPvgcMCQDoJIDDreLj8pWnBkqP5hn7aOgYeDu7g3ttqp+7i+yKJP9os48YSQZuL8Vmq3
- P9DyTxRPThp7Zc0EFsxlu2IRPAw2PS59DTJ45MTM4FixEI4AphRKPnQeoB4beroZsLHK
- hetQ==
-X-Gm-Message-State: AOJu0Yzz+g9ftGkr90CPrjDCS+EMD1k8Ee9uVQdJhEW5V/DWvZHXeCjS
- qlqgZCZCdnLE9cKQohwhB/+2dkVW57+aUe46VlS5ZuVMFApPf7gD+oPOP1TaiBt0QUQUoy3HmJZ
- SB4o=
-X-Gm-Gg: ASbGncvjfJsLt56wSGSVen0YvaGG+5Ygx2OntjQn9zMZziDOyrrPrNS1YYk9o7LXquV
- GaIpns7oUPdVIry+SrCdO1kG2bSjGr/6TnK2PWac/0GYgFnnmiwQ4kfsf6AYhKv9lec75x7U4WV
- 9olewLWRvR7VGj9+KpF+p+tnJqoSxeFPE4rE5D9QHlC8TNfcG4e8XsE+A863uE3Tz3YPuOESeGl
- nYo2cEr26IbZXz+NFQuk/dtNLw7QLX/1cffXzcM6lXDLxZVeUKAkvyEiWSU26Q2dAQUQBTBs4wx
- +sOiDV8ZdPd0tmQb6jQTGPD9o3olFOpvQ6HgaiT7n/659hjnWaBjH0Q=
-X-Google-Smtp-Source: AGHT+IEv3Hzt/kTZI8gbmwC3Ks01IT10ixTeOhpPeNaRHP4VYTWkCqP1WpzyXJMc5CdLtXAbedgA1w==
-X-Received: by 2002:a05:600c:3c85:b0:434:f3d8:62db with SMTP id
- 5b1f17b1804b1-438b8841d2cmr112892245e9.2.1737824570910; 
- Sat, 25 Jan 2025 09:02:50 -0800 (PST)
+ bh=WDsGnhplkgqT/f4agy456szrFVjRVVohKrpBFsRKCFM=;
+ b=o00eEQGHCqYj40QIWbNaopANeqGFPotxKOI+Wvd6/hxM1n6gUQ6SEL18qSSpTKuwh5
+ lj02JefS7GqKsQadShBjc4p5u9Cq3MzrG8w3T97mGa0VPrvhXyqmga1pEuUU5mVuSmKt
+ Ul8a9r3DsG7uvoDNkV7bTuZ6TVXpp5tN4JuHTkZKkhG809tFTvPKCjJE69wWifikk6Ww
+ b9n8tEZvic6SVVuiGwww3xxoA4aPV+QSNVkUEEJ3gFqx/mvA5ACh5x7kuwILtn08H5Ls
+ 4n4cRIcgOW7xmWRKs7wfmHhtGGjjbVl+LdIzGVS3Rj/7//uN4HjRw5C/ECNGMQU68j2l
+ QXjw==
+X-Gm-Message-State: AOJu0Yw72GSaZAWj/LgXpzRQIO7cBUIFQjO/bKwmtYCzlifm3KlPmFcS
+ hOPf5oqf3dkVY0fcryGT3I8zAH5OTpH9Q9tbXpRjBRlOGDvBCrJawvgRWjFaQXRAnN6kYyGLIOc
+ /mus=
+X-Gm-Gg: ASbGnct06rVgVsqOVUUO8pDalcBs6VPqyQ4YyLQIwegVNNhmIJK0q80jQ7dAVOny/PC
+ DO0HzDy9+/21zp4f6c/dotU0epmIiKyhdB2EuVhR623xe7JVlFJzyplV8Lb4J53u1BvMXuAo6F0
+ n0kmOyNJqGzuiw5MkvpsyM8b/r52UNCcq+f+q23JCHFmb80OtQccb3eCeit7WxkRT4E0d11sPeu
+ ssCWL8OlvyaPh/CcNiS5kVGdDrB8hKKBiGwFF1PSl+0fj+/9eeOcU2CGrYIRN9yJc9oxnympeEt
+ ulhLDEZxpytrRPdEbjkpcf8/32YUAZY53hsi/jCpfVv5Oya1u/9w670=
+X-Google-Smtp-Source: AGHT+IHoqC6w0VYGsRgbrHQNSwaFRUCZRo78cWxL/EqZYxSxHuedeANvp5/IkPSOfrlPwIQYVZW7mQ==
+X-Received: by 2002:a05:600c:1d20:b0:434:a781:f5d9 with SMTP id
+ 5b1f17b1804b1-438913e1b1fmr389270175e9.11.1737824576219; 
+ Sat, 25 Jan 2025 09:02:56 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd485007sm67899905e9.12.2025.01.25.09.02.48
+ 5b1f17b1804b1-438bd4a283csm67871755e9.0.2025.01.25.09.02.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 25 Jan 2025 09:02:49 -0800 (PST)
+ Sat, 25 Jan 2025 09:02:55 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 17/24] target/rx: Move has_work() from CPUClass to
- SysemuCPUOps
-Date: Sat, 25 Jan 2025 18:01:18 +0100
-Message-ID: <20250125170125.32855-18-philmd@linaro.org>
+Subject: [PATCH v3 18/24] target/s390x: Restrict I/O handler installers to
+ system emulation
+Date: Sat, 25 Jan 2025 18:01:19 +0100
+Message-ID: <20250125170125.32855-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250125170125.32855-1-philmd@linaro.org>
 References: <20250125170125.32855-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,29 +101,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/rx/cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/s390x/s390x-internal.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/target/rx/cpu.c b/target/rx/cpu.c
-index aa310bd6144..79b95090e7a 100644
---- a/target/rx/cpu.c
-+++ b/target/rx/cpu.c
-@@ -187,6 +187,7 @@ static void rx_cpu_init(Object *obj)
- #include "hw/core/sysemu-cpu-ops.h"
+diff --git a/target/s390x/s390x-internal.h b/target/s390x/s390x-internal.h
+index a750e7a343a..6e2c98de97a 100644
+--- a/target/s390x/s390x-internal.h
++++ b/target/s390x/s390x-internal.h
+@@ -356,6 +356,7 @@ void cpu_inject_stop(S390CPU *cpu);
  
- static const struct SysemuCPUOps rx_sysemu_ops = {
-+    .has_work = rx_cpu_has_work,
-     .get_phys_page_debug = rx_cpu_get_phys_page_debug,
- };
  
-@@ -217,7 +218,6 @@ static void rx_cpu_class_init(ObjectClass *klass, void *data)
-                                        &rcc->parent_phases);
+ /* ioinst.c */
++#ifndef CONFIG_USER_ONLY
+ void ioinst_handle_xsch(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
+ void ioinst_handle_csch(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
+ void ioinst_handle_hsch(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
+@@ -373,6 +374,7 @@ void ioinst_handle_schm(S390CPU *cpu, uint64_t reg1, uint64_t reg2,
+ void ioinst_handle_rsch(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
+ void ioinst_handle_rchp(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
+ void ioinst_handle_sal(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
++#endif /* CONFIG_USER_ONLY */
  
-     cc->class_by_name = rx_cpu_class_by_name;
--    cc->has_work = rx_cpu_has_work;
-     cc->mmu_index = riscv_cpu_mmu_index;
-     cc->dump_state = rx_cpu_dump_state;
-     cc->set_pc = rx_cpu_set_pc;
+ 
+ /* mem_helper.c */
 -- 
 2.47.1
 
