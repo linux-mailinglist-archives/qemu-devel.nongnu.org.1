@@ -2,166 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4756A1C080
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 03:45:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2286FA1C0A7
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 04:30:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbW9S-0007h5-AF; Fri, 24 Jan 2025 21:44:02 -0500
+	id 1tbWqf-0006O9-FY; Fri, 24 Jan 2025 22:28:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nathanc@nvidia.com>)
- id 1tbW9P-0007gJ-FF; Fri, 24 Jan 2025 21:43:59 -0500
-Received: from mail-dm6nam12on20619.outbound.protection.outlook.com
- ([2a01:111:f403:2417::619]
- helo=NAM12-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1tbWqd-0006Nw-WE
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 22:28:40 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nathanc@nvidia.com>)
- id 1tbW9N-0004fB-8E; Fri, 24 Jan 2025 21:43:59 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pXVgNwMXmC+rPEIwvN/Hw9DfNXjzl/l5JHx5RC+JYjKviCT+fxHI3EhGfer+cNksOvEjp8DXiopAooB6Kp7TAmyZrIlcoa0QdvpiLzx66JTk76/FjSCj5LCrpX9kjsswDpkMPBxX+g2r6gWK3h1LGPc9E8WBq8vBATdI/ZWhysvawaHzZ8cGScxXJ8Jh2056MnZAqEZ0jR2xxrrf9G6IOsMvZd96lx8qfTUeTWU7Ign+4RBepbdakQeK8zFKS4MYRWB7U8iC/C619fjLYcmRndUVkmmQtRS/vFbQETMOGRZm4Hwi63E3mWAofNzE6z0+gnd/WXFOSIecNs9TESIH/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ogekTvyag8dflDiJ8W+ed43wIFySl/FnVNKcRBHufA8=;
- b=hogmAaJLQVaFPYtg4H2/1I5k7sA8wbQQcAj1HXtQrXbzRCPxQvSGjJCVJqhM2Cz+INwHPS5pxygLag4McjzLxmAFQMA/NCa66h4FM7SR1CD4Thmh89s/xR/24/AjK8s/WfITIFWGnJ0X4M214bngEaGRSJ9DsdDnp1aAHBWG87kP4GLiBXeLmDbjxoZhZi/KgT3e+7h1vcyTzyn95qfQLgZqH8Q4w3gLcv9hGRfbFqgTuD0I6W3l7yhiB/70v05YhHVAUklhtGL9FkYyr3/F1u1lWDhPBaAUGQLllXqLrd7KgOLlajUaQBRF+g0ctxhvDfgiNJIK5A+5Ds7pQy+bUw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ogekTvyag8dflDiJ8W+ed43wIFySl/FnVNKcRBHufA8=;
- b=eXi3DiTE6GwZIpRQicbWQ19ImF18SpzQwfopcPoObJv5ITO1DpHv70W7CIrxbPuPI7UOSQg82aqfMplke6ikTJpwn3yl13A45Rxlw+mkXS+d7EntkLAu8TXlz6n3qSJoVvWJP3899/dB0jMWDz0yg+DSQLKOPPyutsjg0OrPxLErrz7rbMB+zY7hkSur4nKa2e7h7e5JTOWwfYgwsBDus1U5zHFyOUtyxHsgVNlDcYOhrAE7TTajPjKhUtRhY/XFDxRW9Jp4GGflDSblSqtAFX4jk3lcZe9IjfJa8VDbedVgSbVK9dGHAMFJc9BAYZgIlEsjxc4qkKIOs5oaE2DYFw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB6838.namprd12.prod.outlook.com (2603:10b6:806:266::18)
- by PH0PR12MB7012.namprd12.prod.outlook.com (2603:10b6:510:21c::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.16; Sat, 25 Jan
- 2025 02:43:50 +0000
-Received: from SN7PR12MB6838.namprd12.prod.outlook.com
- ([fe80::529d:478:bc5d:b400]) by SN7PR12MB6838.namprd12.prod.outlook.com
- ([fe80::529d:478:bc5d:b400%6]) with mapi id 15.20.8356.020; Sat, 25 Jan 2025
- 02:43:50 +0000
-Message-ID: <a80c78fd-6203-4aca-a3d3-d67a68b8e595@nvidia.com>
-Date: Fri, 24 Jan 2025 18:43:48 -0800
-User-Agent: Mozilla Thunderbird
-To: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Cc: ddutile@redhat.com, eric.auger@redhat.com, jgg@nvidia.com,
- jiangkunkun@huawei.com, jonathan.cameron@huawei.com, linuxarm@huawei.com,
- nathanc@nvidia.com, nicolinc@nvidia.com, peter.maydell@linaro.org,
- qemu-arm@nongnu.org, wangzhou1@hisilicon.com, zhangfei.gao@linaro.org,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-References: <31db1f75110e46ccaffffb801e894605@huawei.com>
-Subject: RE: [RFC PATCH 0/5] hw/arm/virt: Add support for user-creatable
- nested SMMUv3
-Content-Language: en-US
-From: Nathan Chen <nathanc@nvidia.com>
-In-Reply-To: <31db1f75110e46ccaffffb801e894605@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BYAPR05CA0011.namprd05.prod.outlook.com
- (2603:10b6:a03:c0::24) To SN7PR12MB6838.namprd12.prod.outlook.com
- (2603:10b6:806:266::18)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1tbWqb-0000w3-DS
+ for qemu-devel@nongnu.org; Fri, 24 Jan 2025 22:28:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737775714;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=T3XC2bwi2CpuSIRa01VxPp22FaA7s5HczBlZj8r5WGM=;
+ b=PgblGp4MvqMgqLmHsQBbJ53lZRZp+hYB/7y1tPyZGOw+muJuSyEP1jyM2xVzchDfso6v7j
+ LCtpA5SRceL61dIWLETzdSIjrEwYrTCDfhVqWaNUcaXEcMV/IGB6/1nRZPUtTQ1FTcV5Q6
+ ENsKM++xxoZ5hvYCCEfNL/9JHE3ySJM=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-240-vgaWSx3AOxmgBA3enRQ-9w-1; Fri, 24 Jan 2025 22:28:31 -0500
+X-MC-Unique: vgaWSx3AOxmgBA3enRQ-9w-1
+X-Mimecast-MFC-AGG-ID: vgaWSx3AOxmgBA3enRQ-9w
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-aa63b02c69cso338940066b.0
+ for <qemu-devel@nongnu.org>; Fri, 24 Jan 2025 19:28:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737775709; x=1738380509;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=T3XC2bwi2CpuSIRa01VxPp22FaA7s5HczBlZj8r5WGM=;
+ b=mljf7LpKqUfBOUc6FNkeJSRMkL8U2+8GvJwofIxGov4BHEu1L8qbzRThlkWs0eGqpz
+ u83Yn/Uw1d783nNx+p4v1VnnQqJmUBrRHOlAbfQGk4KqG3z9HeYTb8mADMTPJx2Ig6qx
+ 9QsMx5zTllo6JVquh2MMlsLuUzxf6OgSdM7YaIXFXECcklD2xHhzOfmu+V/ueRms+vJ2
+ tX6MJ1sy1WijYHWIFXoWEaVGejFioAuUUqBcSBqy/dzE09e9m+E82bByrIsbvCt8IUpT
+ 8LBmG0uudFegtrw+MNWBT/oiMmdhJd/pzeVS634gZVvMD2/MUpYE7eB0+axcygSgHSLw
+ Bz0g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXB2ONz6svnNyyaUxg7VDPHBXs8Yo8qmFonTod0Ijj3cq7Cwer60eLE1ryQrzi1cPW2X9CbxTK11xK7@nongnu.org
+X-Gm-Message-State: AOJu0YyYvo+U4xI2r/XWxz83o9xbGIJZYTjLKWpHFFDZkeTfIPww0nIG
+ Na8LuQ6CmfzAwrl5L6fIJDbyHARy+F1CG1O3E24BUaJfOt5fGuDuq8myNxsEWx0QmzvJL0rLjGp
+ Om7Bks79dsOgBLgDTzJy1d8P0SUtTSl8Aim9sLM+87ej9k6bjah3lGaMscSWn+LsZSTwFqJGyY2
+ K7t1YZcFGbOnCrzL2lh55Kp/1/XF/UQ1aChUefyg==
+X-Gm-Gg: ASbGncvtnJbjI56VlQsj11BQULwO7pnTYNZeabl8yWnldEKMkbJtutqIJNYST5Heu7T
+ jfuuWsFtTpt6hZNf970E1JnfIJPSYNMkLwVXG0Vo/4wKgpV0nVQxW0sauMyK7628=
+X-Received: by 2002:a17:907:9409:b0:ab6:5558:3a69 with SMTP id
+ a640c23a62f3a-ab6629fbdefmr949625366b.19.1737775708596; 
+ Fri, 24 Jan 2025 19:28:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGV+QiwW13BxWpTKE7Iqj1isyebB80mLlhg8c+70Dldh3sklRU5bfdc3D4ZOEalaWbKf5DIe4kORz9f7gZK5Cw=
+X-Received: by 2002:a17:907:9409:b0:ab6:5558:3a69 with SMTP id
+ a640c23a62f3a-ab6629fbdefmr949623366b.19.1737775708136; Fri, 24 Jan 2025
+ 19:28:28 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB6838:EE_|PH0PR12MB7012:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3fb27978-354d-4dca-c460-08dd3cea1979
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?MnVEeCs3QjBRRUhTek9UNklkWjZ0YXZsU3NrUnZkTzdxaWFwaUpSSmIyVDJi?=
- =?utf-8?B?OFFBRGg0aEVqUmlwSjkvWERMb1lYVjh3bWkwZWNXOC93Nm5GOG5mb3FNTlJV?=
- =?utf-8?B?Q0lndVd0OEZ4OHIydjduWE9RVXRvT21Kb0JqcnBGVFhuOHhpd0N6LzF0Y0k5?=
- =?utf-8?B?UFdhT3VqYzVhS1hTVHVtRGxOQjIxU0VXdGJScHl2NmE2MVlMWllhQlBKWlVh?=
- =?utf-8?B?WnVJU2JNN1BTMHE2Y2h0cHRnRFoyL3lvVndGUjd0V3JiU1ZsR2F6ZVBpYjZw?=
- =?utf-8?B?WklQT0JBSTRVdVVDckVPajJqbVlGMTdCNUdUY09qYW9aRVpGYjZTMGdDS28x?=
- =?utf-8?B?b3Z6NGdPS0dEOG9aTHJ5NSswNmR3UEpnQjdTdFNad3NKd0cwQWJET3VSRk9P?=
- =?utf-8?B?Wldzc3BxOGl2QW5tTlp1emdrV1BXS1JTV095L2tCMnI4Uk1leDFJWnFFcFVl?=
- =?utf-8?B?NXRKdTZvT3IzenZJRkwzeGNmdnZqNmpucnRiMncybnFQSm1FZFp1ZGVvK2pC?=
- =?utf-8?B?UFdRUnFGNUNNK09CalBpaFpMUjdkbjgwbTJIZk11WGVTMlJPWVB6eUlZR0My?=
- =?utf-8?B?eStrL0pIYzlxdTByemNkMW1ZY2EzK2lGbHBzcjNpK1A5V2V4NDU3cFJkRjh6?=
- =?utf-8?B?Y0Y4aUtTK0J2Si9NaEc5Y1J6bERWY3MwRVhzV2V2V2R2OTEyS2dxM2hSRGRF?=
- =?utf-8?B?emhiaW9BNU9SWEJPTHV3dUF2WUl3RDRmZklaMjZHVkJDbnluQjZ0SzZvVFR5?=
- =?utf-8?B?MWd3Ymxma3duTUJhUHZ3R08zUGovbHRlSjNDcVBsQWVTTm9YaThiUjhoZVlk?=
- =?utf-8?B?ank5aXJTcmVxaUNjUTZjTy9YcnRKT2UzWFdndWpEbTd5MHZuMU1tZ1NuVm56?=
- =?utf-8?B?M2kxbjZBVnQ2MU1RY0xtSjdlMTlzakY3aUJHRXRIZVFrWWNkQVRpTVRUd1FY?=
- =?utf-8?B?ZFZDUkVXTys1YTFoanNMb21IbFMyYjV2WWVPU3NRckJ6SlU5K09CV2RFVlRI?=
- =?utf-8?B?RlFHU0NJZXFkMHRxeDVRbUhHZ01zZHhhYysxUHhnVG1DcDlSaDVBMXpqZTFk?=
- =?utf-8?B?SitsU21HcTBOd2VBb2xwTWZRdGRPN29BYjBianVpRkJQcXU4L1h2aWdLK0tZ?=
- =?utf-8?B?OU1Ya21QdFMrLy9hTjBhUjB3QTJPa0ZZSGVaYkpWcWFpY0RNbE40TTJwQ0dM?=
- =?utf-8?B?aU92M3JGTEZRVDkwelpaYVZXaTRYdnhCaDhRSkRWOUFQdGxEK3k4YkxZMWli?=
- =?utf-8?B?KzRheS9DVEdPOVZLNzlralJXaWt1SEwwYjJHYTdzQzI1Yk1SRzJkMDViT1dT?=
- =?utf-8?B?OGtEeUNFZHJRelFNNi9jMXN3SHhBdlJnNGlXdUgwd1NvVHdTTXRtZTRwajd3?=
- =?utf-8?B?Tkw0NFA2N0RzYnoveGppMDBScUFPNXZYcGpoQzVVZ0hMMXV0RE9xdFpISERl?=
- =?utf-8?B?bHNmREd5WnFHTDlPY1FMQ1JiZXU1SDcxa3FKQTVxMnBYS3BETkt1ejg0OGhp?=
- =?utf-8?B?b0NBcDluTWVrYzFmcTlVVW5OekNDMWs3aDJGWW00NW5JTnFYVWEyY0xQQzdS?=
- =?utf-8?B?WFJsN2ZEeWErNEtncTJBa1pReDE3SDVBZGR2UjhDcE0wN25yTDFxRCs5NEhs?=
- =?utf-8?B?bzZITVQreDJubXlqUko5OG5FbWwwMkVDK2FpTlVZak40TEhhZThZSmhjV2lp?=
- =?utf-8?B?a1JHekZVVytCeWxzUVE1bkZqMVVCWndsVDMrT0pZNUV0MGVSWTQzRi92cEFq?=
- =?utf-8?B?QklyZjQ0aHYzejladlNKMVZYczF5NmJBNkNjYnM3a3d0TFFGN3IwSDgvbXl1?=
- =?utf-8?B?em1BdGRQK2VPdjNIYjZ2T3pqYnB0Rk4yaTRPaUMyL29HR0ZMVEIwT2pkWnVt?=
- =?utf-8?Q?Dbo37vpBNDgHX?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SN7PR12MB6838.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(7416014)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WHBKcVpLU2Q3YzdNZzBNZCt4U1VLYVFQNWl5OGY0ck9vS0VsNUxRZGRtSzBZ?=
- =?utf-8?B?R2VtQktZbnowWUQwN05MMUs5TlE0VTV2WVVXbjY3V2ljTC9aWjFVQnp6UmFj?=
- =?utf-8?B?YUFxcnIwMDBpMzNnTHN0emFpTlBqcnoxVlhTa1pFVzJiUEpGQWdzZkVKWTZa?=
- =?utf-8?B?U2YxcCtxKzFWa3l0eURpZlBTZ2xycnA5czA5VC8zUzc2OVkzR2x1dmZnejI0?=
- =?utf-8?B?ZVNrWEd1QWNsdGs1WmxPM2lxOGpXdkgycGF6MVRpWTdnSVdhQjBPa2hBN01s?=
- =?utf-8?B?N3Rrb0ZVYUI1RkNWdy9NQjlqMUZSU0NuTityRC9wZ1ZTR0VhMnovR3I5b3lI?=
- =?utf-8?B?MTNIaWgyUDVmWUpWK0NnN0tDcEpGaC9oL0p6YkFuMzVSSTBOQTRkQitkYkdv?=
- =?utf-8?B?SnBna2JNTDBVa20xaHR1NnhPRVpXamlSZ2pKRng3NzhUcGhZay8vM2NNbE1M?=
- =?utf-8?B?UHV5ZyswM1h2QTNld1dYZWpGaUtLYW1RRWNLVmoyNzg5UkNNVEQzRzZ0SVVH?=
- =?utf-8?B?alg3YVRkc0pmcW9HT0pBdEYwSEF4c2hENm5OSlI2YUVxMm9GZUJoMzVoYjRo?=
- =?utf-8?B?dmhzWlc5dE1OZmgra0g3Sy9Ca29IVWRmQlUyUVgrWWFLcFc3TFZaaHRSM2NL?=
- =?utf-8?B?bktsRlB2OGExSjk4U3BhUUtrSldPSnRtUCtxaGQrWWZtRnNWZytueDMrcHVu?=
- =?utf-8?B?QWpZeU91dzhrMVdSc1dBbm1leUlWUTMxMFZRaEh3QlltTjYvajIrcUhYc1JE?=
- =?utf-8?B?YmJoRXBISzZEYWJVYXB3ZW5EUzZGWWQrV3RuVXRhY1VmMnUvTXdkMkIwTFcx?=
- =?utf-8?B?SVRQN2dBWTJBc1RxNDFUU2h3eWpZYlBoOTZMVDhqWWs3VDIwanltbGZNbGZ5?=
- =?utf-8?B?VVkwOSs5azkvTXBxQ1hETHkxTUVSNXpvVjQzcCs0OTd4Tms5OVo1TG92Q0Mr?=
- =?utf-8?B?a1llU0Nma2xzQTBkUXZGZ2lrbW5qa2pEenVxR05YbzZsM0tsbjc4UzdKYlh4?=
- =?utf-8?B?MHlacFY2RG1jRUFlbmZTZWtQOGtxZnNyTzgwQ1VBcHhhbTdHNGlHM2ZHV1gz?=
- =?utf-8?B?OFJBUUllbVRlek52ck4yT2R4RlRlbUxNUTJxcmNmSW14S0NtYlFRZy9DZ2VW?=
- =?utf-8?B?MUhDRW1aUW54VExmazFDWjVYbkw4akw5Zmk2dzNKajlZcE1OSXU3TytsTlFH?=
- =?utf-8?B?Z0tKMDgydkJYeThLYy9POXRaV1h3bFdvbmUzUjhOM1hrbTdCM3hhWGFFN2VO?=
- =?utf-8?B?YzQxbkhSRVpTVE0wWld0eUlwOHVHcXNrak9MRUFZcWREVGc3YVJ2YTY0cEJQ?=
- =?utf-8?B?UEsyZGdTUVB6T1B4cnNPQitlb25uNmdzZXI0RUt6c015aWVOdmdoZVVjaUQ3?=
- =?utf-8?B?YzhEUmk4QkZYT2RPNUtZaFZEckxSMGp3U2VKNkdkTHZHa1JCYTFzVWpwbjlj?=
- =?utf-8?B?S3J1bmFsSnJlYTBpYTBPSmV3Vm5laW9ldzhxRnpMSlRLb2NxdEN2elNvWUYx?=
- =?utf-8?B?WEhFQVVvSVFMVGdDYjJOVzZ2b2g3eThTY2l3NzA5N0k4aDBxUUZFTTJSU3hX?=
- =?utf-8?B?eXo5S0Jka2pDdkorbzY1dVdXRTZ1QTJVNXpzb2NIK1M5MU9RWHh4MzhNYVVI?=
- =?utf-8?B?NThGb01TS1NoVXo1YUp2Q2htdmNNZSs5bWEwK2lYNlkrODVVYXlHM2t6c2JO?=
- =?utf-8?B?MUc0VE5xMWh2aEVQeW1pNUQrNXF6Sm5lR2ZhMDRUR2EraHppM3lrSWNLMENn?=
- =?utf-8?B?M1lKS0VpY2h5U29uQjY3YTFZaXp2QUZ1UDhJeHBOYXFLUXV4NFdtU0RmeWs2?=
- =?utf-8?B?V29pQmgvSktjcHJ1ak5PQ0hsaW5zSW84K1ZwN1c3M0xnVDNnekpBVHZJYytU?=
- =?utf-8?B?N3B5UnR6UzBlODJEYk5kVXA3ZG80engxM05sTHhPWHc5MWIvY0Y5OFgxMnd2?=
- =?utf-8?B?V1FCcndRTXFmY2JVRUI1WG5wemRoUFNwMGE1eTFDbTB0dHB6cENFbnVEd3Fh?=
- =?utf-8?B?NTN3ZXpHVWZ1R25YQS9uSVBualNRSGFtOU1KMEtJc3ZPeHJQR21tWXRiaXdj?=
- =?utf-8?B?dGFTanIwU29XODZNeXh5UXYwUVdzV3dXL2RHMktHSHZZRXVtK3Z5UE1zc1pu?=
- =?utf-8?Q?/En/FEaPHrqftVfQqVeJFRaW5?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3fb27978-354d-4dca-c460-08dd3cea1979
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB6838.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jan 2025 02:43:50.5401 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MHdXA1/3U60kiYMu9zPpkvhEzgaL/ish9AdwV9smtwx7h7TAvDkcAJSrW3YsoDT1wpfYNCvB7/Pt095o5PsZEA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7012
-Received-SPF: softfail client-ip=2a01:111:f403:2417::619;
- envelope-from=nathanc@nvidia.com;
- helo=NAM12-DM6-obe.outbound.protection.outlook.com
+References: <20250123115613.1537173-1-anisinha@redhat.com>
+ <20250123152215.4142d24e@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20250123152215.4142d24e@imammedo.users.ipa.redhat.com>
+From: Ani Sinha <anisinha@redhat.com>
+Date: Sat, 25 Jan 2025 08:58:16 +0530
+X-Gm-Features: AWEUYZnzUWM_FCPm17gVkI83v03QUbDTHo0yOAMFUUnIn8wzAsRmn53ehEocwWo
+Message-ID: <CAK3XEhOXQSL-k22Rq=NQvHB8u-_1wFbgr1hTxpzGG8bxLEVgUQ@mail.gmail.com>
+Subject: Re: [PATCH v5] hw/i386/cpu: remove default_cpu_version and simplify
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: Sergio Lopez <slp@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Zhao Liu <zhao1.liu@intel.com>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
 X-Spam_bar: -----
 X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -178,39 +108,519 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
->>  >with an error message indicating DMA mapping failed for the
->> passthrough >devices.
->> 
->> A correction - the message indicates UEFI failed to find a mapping for
->> the boot partition ("map: no mapping found"), not that DMA mapping
->> failed. But earlier EDK debug logs still show PCI host bridge resource
->> conflicts for the passthrough devices that seem related to the VM boot
->> failure.
-> 
-> I have tried a 2023 version EFI which works. And for more recent tests I am
-> using a one built directly from,
-> https://github.com/tianocore/edk2.git master
-> 
-> Commit: 0f3867fa6ef0("UefiPayloadPkg/UefiPayloadEntry: Fix PT protection
-> in 5 level paging"
-> 
-> With both, I don’t remember seeing any boot failure and the above UEFI
-> related "map: no mapping found" error. But the Guest kernel at times
-> complaints about pci bridge window memory assignment failures.
+On Thu, Jan 23, 2025 at 7:52=E2=80=AFPM Igor Mammedov <imammedo@redhat.com>=
+ wrote:
+>
+> On Thu, 23 Jan 2025 17:26:12 +0530
+> Ani Sinha <anisinha@redhat.com> wrote:
+>
+> > commit 0788a56bd1ae3 ("i386: Make unversioned CPU models be aliases")
+> > introduced 'default_cpu_version' for PCMachineClass. This created three
+> > categories of CPU models:
+> >  - Most unversioned CPU models would use version 1 by default.
+> >  - For machines 4.0.1 and older that do not support cpu model aliases, =
+a
+> >    special default_cpu_version value of CPU_VERSION_LEGACY is used.
+>
+>
+> Testing current master:
+>  =3D=3D=3D=3D
+> ./qemu-system-x86_64 -M pc-i440fx-4.0 -cpu Haswell-v4 -monitor stdio
 > ...
-> pci 0000:10:01.0: bridge window [mem size 0x00200000 64bit pref]: can't assign; no space
-> pci 0000:10:01.0: bridge window [mem size 0x00200000 64bit pref]: failed to assign
-> pci 0000:10:00.0: bridge window [io  size 0x1000]:can't assign; no space
+> (qemu) info hotpluggable-cpus
+> Hotpluggable CPUs:
+>   type: "Haswell-v4-x86_64-cpu"
+>
+> we can run versioned on old machine types. with caveat
+> not being able to migrate to old qemu that doesn't have it
+>
+>  =3D=3D=3D=3D
+> ./qemu-system-x86_64 -M pc-i440fx-4.0 -cpu Haswell -monitor stdio
 > ...
-> 
-> But Guest still boots and worked fine so far.
+> (qemu) info hotpluggable-cpus
+> Hotpluggable CPUs:
+>   type: "Haswell-x86_64-cpu"
+>
+>  =3D=3D=3D=3D
+> ./qemu-system-x86_64 -M pc-i440fx-5.0 -cpu Haswell -monitor stdio
+> ...
+> (qemu) info hotpluggable-cpus
+> Hotpluggable CPUs:
+>   type: "Haswell-x86_64-cpu"
+>
+> non-versioned model resolves to the same type regardless of legacy
+>
+> Do we really have to keep CPU_VERSION_LEGACY code around?
+>
+> Lets assume we drop all CPU_VERSION_LEGACY code, what would change?
 
-Hi Shameer,
+From code, x86_cpu_class_get_alias_of() always returns NULL for
+legacy. Maybe somewhere the descriptions are different?
 
-Just letting you know I resolved this by increasing the MMIO region size 
-in hw/arm/virt.c to support passing through GPUs with large BAR regions 
-(VIRT_HIGH_PCIE_MMIO). Thanks for taking a look.
+To be safe, I would just wait for another 10 months to drop all legacy stuf=
+f.
 
-Thanks,
-Nathan
+>
+> >  - It was thought that future machines would use the latest value of cp=
+u
+> >    versions corresponding to default_cpu_version value of
+> >    CPU_VERSION_LATEST [1].
+> >
+> > All pc machines still use the default cpu version of 1 for
+> > unversioned cpu models. CPU_VERSION_LATEST is a moving target and
+> > changes with time. Therefore, if machines use CPU_VERSION_LATEST, it wo=
+uld
+> > mean that over a period of time, for the same machine type, the cpu ver=
+sion
+> > would be different depending on what is latest at that time. This would
+> > break guests even when they use a constant machine type. Therefore, for
+>                                     ^^^^^^^^^^^^^^^^^^
+> s/.../versioned .../
+>
+> > pc machines, use of CPU_VERSION_LATEST is not possible. Currently, only
+> > microvms use CPU_VERSION_LATEST.
+> >
+> > This change cleans up the complicated logic around default_cpu_version
+> > including getting rid of default_cpu_version property itself. A couple =
+of new
+> > flags are introduced, one for the legacy model for machines 4.0.1 and o=
+lder
+> > and other for microvms. For older machines, a new pc machine property i=
+s
+> > introduced that separates pc machine versions 4.0.1 and older from the =
+newer
+> > machines. 4.0.1 and older machines are scheduled to be deleted towards
+> > end of 2025 since they would be 6 years old by then. At that time, we c=
+an
+> > remove all logic around legacy cpus. Microvms are the only machines tha=
+t
+> > continue to use the latest cpu version. If this changes later, we can
+> > remove all logic around x86_cpu_model_last_version(). Default cpu versi=
+on
+> > for unversioned cpu models is hardcoded to the value 1 and applies
+> > unconditionally for all pc machine types of version 4.1 and above.
+> >
+> > This change also removes all complications around CPU_VERSION_AUTO
+> > including removal of the value itself.
+> >
+> > 1) See commit dcafd1ef0af227 ("i386: Register versioned CPU models")
+> >
+> > CC: imammedo@redhat.com
+> > Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> > ---
+> >  hw/i386/microvm.c     |  3 +-
+> >  hw/i386/pc.c          | 14 +++++++++
+> >  hw/i386/pc_piix.c     |  6 ++--
+> >  hw/i386/pc_q35.c      |  6 ++--
+> >  hw/i386/x86-common.c  |  4 +--
+> >  include/hw/i386/pc.h  |  7 +++--
+> >  include/hw/i386/x86.h |  2 +-
+> >  target/i386/cpu.c     | 69 ++++++++++++++++++++++---------------------
+> >  target/i386/cpu.h     | 21 +++----------
+> >  9 files changed, 67 insertions(+), 65 deletions(-)
+> >
+> > changelog:
+> > v2: explain in commit log why use of CPU_VERSION_LATEST for machines
+> > is problematic.
+> > v3: fix a bug that broke the pipeline
+> > https://gitlab.com/mstredhat/qemu/-/pipelines/1626171267
+> > when cpu versions are explicitly specified in the command line,
+> > respect that and do not enforce legacy (unversioned) cpu logic.
+> > The pipeline is green now with the fix:
+> > https://gitlab.com/anisinha/qemu/-/pipelines/1626783632
+> > v4: made changes as per Zhao's suggestions.
+> > Pipeline passes https://gitlab.com/anisinha/qemu/-/pipelines/1635829877
+> > v5: adjustment of pc_init_cpus() declaration as per Zhao's suggestion. =
+This
+> > simplifies things and also passes compilation.
+> > CI still passes https://gitlab.com/anisinha/qemu/-/pipelines/1637657451
+> >
+> > diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
+> > index a8d354aabe..ffb1b37fe5 100644
+> > --- a/hw/i386/microvm.c
+> > +++ b/hw/i386/microvm.c
+> > @@ -458,7 +458,8 @@ static void microvm_machine_state_init(MachineState=
+ *machine)
+> >
+> >      microvm_memory_init(mms);
+> >
+> > -    x86_cpus_init(x86ms, CPU_VERSION_LATEST);
+> > +    x86_cpu_uses_lastest_version();
+> > +    x86_cpus_init(x86ms);
+> >
+> >      microvm_devices_init(mms);
+> >  }
+> > diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> > index b46975c8a4..f97a519573 100644
+> > --- a/hw/i386/pc.c
+> > +++ b/hw/i386/pc.c
+> > @@ -30,6 +30,7 @@
+> >  #include "hw/hyperv/hv-balloon.h"
+> >  #include "hw/i386/fw_cfg.h"
+> >  #include "hw/i386/vmport.h"
+> > +#include "target/i386/cpu.h"
+> >  #include "system/cpus.h"
+> >  #include "hw/ide/ide-bus.h"
+> >  #include "hw/timer/hpet.h"
+> > @@ -615,6 +616,19 @@ void pc_acpi_smi_interrupt(void *opaque, int irq, =
+int level)
+> >      }
+> >  }
+> >
+> > +void pc_init_cpus(MachineState *ms)
+> > +{
+> > +    X86MachineState *x86ms =3D X86_MACHINE(ms);
+> > +    PCMachineState *pcms =3D PC_MACHINE(ms);
+> > +    PCMachineClass *pcmc =3D PC_MACHINE_GET_CLASS(pcms);
+> > +
+> > +    if (pcmc->no_versioned_cpu_model) {
+> > +        /* use legacy cpu as it does not support versions */
+> > +        x86_cpu_set_legacy_version();
+> > +    }
+> > +    x86_cpus_init(x86ms);
+> > +}
+> > +
+> >  static
+> >  void pc_machine_done(Notifier *notifier, void *data)
+> >  {
+> > diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+> > index 04d2957adc..dc684cb011 100644
+> > --- a/hw/i386/pc_piix.c
+> > +++ b/hw/i386/pc_piix.c
+> > @@ -181,7 +181,8 @@ static void pc_init1(MachineState *machine, const c=
+har *pci_type)
+> >      }
+> >
+> >      pc_machine_init_sgx_epc(pcms);
+> > -    x86_cpus_init(x86ms, pcmc->default_cpu_version);
+> > +
+> > +    pc_init_cpus(machine);
+> >
+> >      if (kvm_enabled()) {
+> >          kvmclock_create(pcmc->kvmclock_create_always);
+> > @@ -457,7 +458,6 @@ static void pc_i440fx_machine_options(MachineClass =
+*m)
+> >      ObjectClass *oc =3D OBJECT_CLASS(m);
+> >      pcmc->default_south_bridge =3D TYPE_PIIX3_DEVICE;
+> >      pcmc->pci_root_uid =3D 0;
+> > -    pcmc->default_cpu_version =3D 1;
+> >
+> >      m->family =3D "pc_piix";
+> >      m->desc =3D "Standard PC (i440FX + PIIX, 1996)";
+> > @@ -669,7 +669,7 @@ static void pc_i440fx_machine_4_0_options(MachineCl=
+ass *m)
+> >  {
+> >      PCMachineClass *pcmc =3D PC_MACHINE_CLASS(m);
+> >      pc_i440fx_machine_4_1_options(m);
+> > -    pcmc->default_cpu_version =3D CPU_VERSION_LEGACY;
+> > +    pcmc->no_versioned_cpu_model =3D true;
+> >      compat_props_add(m->compat_props, hw_compat_4_0, hw_compat_4_0_len=
+);
+> >      compat_props_add(m->compat_props, pc_compat_4_0, pc_compat_4_0_len=
+);
+> >  }
+> > diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+> > index 77536dd697..045b05da64 100644
+> > --- a/hw/i386/pc_q35.c
+> > +++ b/hw/i386/pc_q35.c
+> > @@ -187,7 +187,8 @@ static void pc_q35_init(MachineState *machine)
+> >      }
+> >
+> >      pc_machine_init_sgx_epc(pcms);
+> > -    x86_cpus_init(x86ms, pcmc->default_cpu_version);
+> > +
+> > +    pc_init_cpus(machine);
+> >
+> >      if (kvm_enabled()) {
+> >          kvmclock_create(pcmc->kvmclock_create_always);
+> > @@ -339,7 +340,6 @@ static void pc_q35_machine_options(MachineClass *m)
+> >  {
+> >      PCMachineClass *pcmc =3D PC_MACHINE_CLASS(m);
+> >      pcmc->pci_root_uid =3D 0;
+> > -    pcmc->default_cpu_version =3D 1;
+> >
+> >      m->family =3D "pc_q35";
+> >      m->desc =3D "Standard PC (Q35 + ICH9, 2009)";
+> > @@ -547,7 +547,7 @@ static void pc_q35_machine_4_0_1_options(MachineCla=
+ss *m)
+> >  {
+> >      PCMachineClass *pcmc =3D PC_MACHINE_CLASS(m);
+> >      pc_q35_machine_4_1_options(m);
+> > -    pcmc->default_cpu_version =3D CPU_VERSION_LEGACY;
+> > +    pcmc->no_versioned_cpu_model =3D true;
+> >      /*
+> >       * This is the default machine for the 4.0-stable branch. It is ba=
+sically
+> >       * a 4.0 that doesn't use split irqchip by default. It MUST hence =
+apply the
+> > diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
+> > index 008496b5b8..1ed5bc6010 100644
+> > --- a/hw/i386/x86-common.c
+> > +++ b/hw/i386/x86-common.c
+> > @@ -66,15 +66,13 @@ out:
+> >      object_unref(cpu);
+> >  }
+> >
+> > -void x86_cpus_init(X86MachineState *x86ms, int default_cpu_version)
+> > +void x86_cpus_init(X86MachineState *x86ms)
+> >  {
+> >      int i;
+> >      const CPUArchIdList *possible_cpus;
+> >      MachineState *ms =3D MACHINE(x86ms);
+> >      MachineClass *mc =3D MACHINE_GET_CLASS(x86ms);
+> >
+> > -    x86_cpu_set_default_version(default_cpu_version);
+> > -
+> >      /*
+> >       * Calculates the limit to CPU APIC ID values
+> >       *
+> > diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+> > index a558705cb9..563f765d7f 100644
+> > --- a/include/hw/i386/pc.h
+> > +++ b/include/hw/i386/pc.h
+> > @@ -92,9 +92,6 @@ struct PCMachineClass {
+> >
+> >      /* Compat options: */
+> >
+> > -    /* Default CPU model version.  See x86_cpu_set_default_version(). =
+*/
+> > -    int default_cpu_version;
+> > -
+> >      /* ACPI compat: */
+> >      bool has_acpi_build;
+> >      int pci_root_uid;
+> > @@ -125,6 +122,9 @@ struct PCMachineClass {
+> >       * check for memory.
+> >       */
+> >      bool broken_32bit_mem_addr_check;
+> > +
+> > +    /* whether the machine supports versioned cpu models */
+> > +    bool no_versioned_cpu_model;
+> >  };
+> >
+> >  #define TYPE_PC_MACHINE "generic-pc-machine"
+> > @@ -136,6 +136,7 @@ GSIState *pc_gsi_create(qemu_irq **irqs, bool pci_e=
+nabled);
+> >
+> >  /* pc.c */
+> >
+> > +void pc_init_cpus(MachineState *ms);
+> >  void pc_acpi_smi_interrupt(void *opaque, int irq, int level);
+> >
+> >  #define PCI_HOST_PROP_RAM_MEM          "ram-mem"
+> > diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
+> > index d43cb3908e..2d2b987fa1 100644
+> > --- a/include/hw/i386/x86.h
+> > +++ b/include/hw/i386/x86.h
+> > @@ -114,7 +114,7 @@ void init_topo_info(X86CPUTopoInfo *topo_info, cons=
+t X86MachineState *x86ms);
+> >  uint32_t x86_cpu_apic_id_from_index(X86MachineState *x86ms,
+> >                                      unsigned int cpu_index);
+> >
+> > -void x86_cpus_init(X86MachineState *pcms, int default_cpu_version);
+> > +void x86_cpus_init(X86MachineState *pcms);
+> >  void x86_rtc_set_cpus_count(ISADevice *rtc, uint16_t cpus_count);
+> >  void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+> >                        DeviceState *dev, Error **errp);
+> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> > index 1b9c11022c..c1f868c4dd 100644
+> > --- a/target/i386/cpu.c
+> > +++ b/target/i386/cpu.c
+> > @@ -192,6 +192,9 @@ struct CPUID2CacheDescriptorInfo cpuid2_cache_descr=
+iptors[] =3D {
+> >   */
+> >  #define CACHE_DESCRIPTOR_UNAVAILABLE 0xFF
+> >
+> > +/* default cpu version to use */
+> > +#define DEFAULT_CPU_VERSION 1
+> > +
+> >  /*
+> >   * Return a CPUID 2 cache descriptor for a given cache.
+> >   * If no known descriptor is found, return CACHE_DESCRIPTOR_UNAVAILABL=
+E
+> > @@ -5343,20 +5346,16 @@ static const X86CPUDefinition builtin_x86_defs[=
+] =3D {
+> >      },
+> >  };
+> >
+> > -/*
+> > - * We resolve CPU model aliases using -v1 when using "-machine
+> > - * none", but this is just for compatibility while libvirt isn't
+> > - * adapted to resolve CPU model versions before creating VMs.
+> > - * See "Runnability guarantee of CPU models" at
+> > - * docs/about/deprecated.rst.
+> > - */
+> > -X86CPUVersion default_cpu_version =3D 1;
+> > +static bool use_legacy_cpu;
+> > +void x86_cpu_set_legacy_version(void)
+> > +{
+> > +    use_legacy_cpu =3D true;
+> > +}
+> >
+> > -void x86_cpu_set_default_version(X86CPUVersion version)
+> > +static bool use_latest_cpu;
+> > +void x86_cpu_uses_lastest_version(void)
+> >  {
+> > -    /* Translating CPU_VERSION_AUTO to CPU_VERSION_AUTO doesn't make s=
+ense */
+> > -    assert(version !=3D CPU_VERSION_AUTO);
+> > -    default_cpu_version =3D version;
+> > +    use_latest_cpu =3D true;
+> >  }
+> >
+> >  static X86CPUVersion x86_cpu_model_last_version(const X86CPUModel *mod=
+el)
+> > @@ -5374,14 +5373,11 @@ static X86CPUVersion x86_cpu_model_last_version=
+(const X86CPUModel *model)
+> >  /* Return the actual version being used for a specific CPU model */
+> >  static X86CPUVersion x86_cpu_model_resolve_version(const X86CPUModel *=
+model)
+> >  {
+> > -    X86CPUVersion v =3D model->version;
+> > -    if (v =3D=3D CPU_VERSION_AUTO) {
+> > -        v =3D default_cpu_version;
+> > -    }
+> > -    if (v =3D=3D CPU_VERSION_LATEST) {
+> > +    if (use_latest_cpu) {
+> >          return x86_cpu_model_last_version(model);
+> >      }
+> > -    return v;
+> > +
+> > +    return model->version;
+> >  }
+> >
+> >  static const Property max_x86_cpu_properties[] =3D {
+> > @@ -5985,10 +5981,15 @@ static char *x86_cpu_class_get_alias_of(X86CPUC=
+lass *cc)
+> >      if (!cc->model || !cc->model->is_alias) {
+> >          return NULL;
+> >      }
+> > -    version =3D x86_cpu_model_resolve_version(cc->model);
+> > -    if (version <=3D 0) {
+> > +
+> > +    if (use_legacy_cpu) {
+> > +        /* legacy cpu models do not support cpu aliases */
+> >          return NULL;
+> >      }
+> > +
+> > +    version =3D x86_cpu_model_resolve_version(cc->model);
+> > +    assert(version);
+> > +
+> >      return x86_cpu_versioned_model_name(cc->model->cpudef, version);
+> >  }
+> >
+> > @@ -6002,11 +6003,7 @@ static void x86_cpu_list_entry(gpointer data, gp=
+ointer user_data)
+> >      g_autofree char *model_id =3D x86_cpu_class_get_model_id(cc);
+> >
+> >      if (!desc && alias_of) {
+> > -        if (cc->model && cc->model->version =3D=3D CPU_VERSION_AUTO) {
+> > -            desc =3D g_strdup("(alias configured by machine type)");
+> > -        } else {
+> >              desc =3D g_strdup_printf("(alias of %s)", alias_of);
+> > -        }
+> >      }
+> >      if (!desc && cc->model && cc->model->note) {
+> >          desc =3D g_strdup_printf("%s [%s]", model_id, cc->model->note)=
+;
+> > @@ -6109,13 +6106,8 @@ static void x86_cpu_definition_entry(gpointer da=
+ta, gpointer user_data)
+> >      } else {
+> >          info->deprecated =3D false;
+> >      }
+> > -    /*
+> > -     * Old machine types won't report aliases, so that alias translati=
+on
+> > -     * doesn't break compatibility with previous QEMU versions.
+> > -     */
+> > -    if (default_cpu_version !=3D CPU_VERSION_LEGACY) {
+> > -        info->alias_of =3D x86_cpu_class_get_alias_of(cc);
+> > -    }
+> > +
+> > +    info->alias_of =3D x86_cpu_class_get_alias_of(cc);
+> >
+> >      QAPI_LIST_PREPEND(*cpu_list, info);
+> >  }
+> > @@ -6287,7 +6279,12 @@ static void x86_cpu_apply_version_props(X86CPU *=
+cpu, X86CPUModel *model)
+> >      const X86CPUVersionDefinition *vdef;
+> >      X86CPUVersion version =3D x86_cpu_model_resolve_version(model);
+> >
+> > -    if (version =3D=3D CPU_VERSION_LEGACY) {
+> > +    /*
+> > +     * if the machine uses legacy cpus, use legacy cpus with no versio=
+ns
+> > +     * when no explict CPU versions are specified in the CPU definitio=
+n
+> > +     * passed from the command line.
+> > +     */
+> > +    if (version =3D=3D DEFAULT_CPU_VERSION && use_legacy_cpu) {
+> >          return;
+> >      }
+> >
+> > @@ -6317,7 +6314,11 @@ static const CPUCaches *x86_cpu_get_versioned_ca=
+che_info(X86CPU *cpu,
+> >      X86CPUVersion version =3D x86_cpu_model_resolve_version(model);
+> >      const CPUCaches *cache_info =3D model->cpudef->cache_info;
+> >
+> > -    if (version =3D=3D CPU_VERSION_LEGACY) {
+> > +    /*
+> > +     * If machine supports legacy cpus and no explicit cpu versions ar=
+e
+> > +     * specified, use the cache from the unversioned cpu definition.
+> > +     */
+> > +    if (version =3D=3D DEFAULT_CPU_VERSION && use_legacy_cpu) {
+> >          return cache_info;
+> >      }
+> >
+> > @@ -6452,7 +6453,7 @@ static void x86_register_cpudef_types(const X86CP=
+UDefinition *def)
+> >      /* Unversioned model: */
+> >      m =3D g_new0(X86CPUModel, 1);
+> >      m->cpudef =3D def;
+> > -    m->version =3D CPU_VERSION_AUTO;
+> > +    m->version =3D DEFAULT_CPU_VERSION;
+> >      m->is_alias =3D true;
+> >      x86_register_cpu_model_type(def->name, m);
+> >
+> > diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> > index b26e25ba15..bdbe54b26f 100644
+> > --- a/target/i386/cpu.h
+> > +++ b/target/i386/cpu.h
+> > @@ -2679,27 +2679,14 @@ void cpu_report_tpr_access(CPUX86State *env, TP=
+RAccess access);
+> >  void apic_handle_tpr_access_report(DeviceState *d, target_ulong ip,
+> >                                     TPRAccess access);
+> >
+> > -/* Special values for X86CPUVersion: */
+> > -
+> > -/* Resolve to latest CPU version */
+> > -#define CPU_VERSION_LATEST -1
+> > -
+> > -/*
+> > - * Resolve to version defined by current machine type.
+> > - * See x86_cpu_set_default_version()
+> > - */
+> > -#define CPU_VERSION_AUTO   -2
+> > -
+> > -/* Don't resolve to any versioned CPU models, like old QEMU versions *=
+/
+> > -#define CPU_VERSION_LEGACY  0
+> > -
+> >  typedef int X86CPUVersion;
+> >
+> >  /*
+> > - * Set default CPU model version for CPU models having
+> > - * version =3D=3D CPU_VERSION_AUTO.
+> > + * Set CPU model version to the lastest version.
+> > + * Currently, this is only used by microvm.
+> >   */
+> > -void x86_cpu_set_default_version(X86CPUVersion version);
+> > +void x86_cpu_uses_lastest_version(void);
+> > +void x86_cpu_set_legacy_version(void);
+> >
+> >  #ifndef CONFIG_USER_ONLY
+> >
+>
+
 
