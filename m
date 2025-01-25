@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3317FA1C4D0
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4BDA1C4D1
 	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 19:14:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbkfI-00088O-6A; Sat, 25 Jan 2025 13:13:52 -0500
+	id 1tbkfM-00089M-0m; Sat, 25 Jan 2025 13:13:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkfG-00087h-78
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:13:50 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkfK-000895-4n
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:13:54 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkfE-0004BI-I7
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:13:49 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-436326dcb1cso20959035e9.0
- for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 10:13:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkfI-0004C8-Mh
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:13:53 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4368a293339so35389195e9.3
+ for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 10:13:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737828826; x=1738433626; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=moGB9VY6BYgn3pI64/Eq1yuXgBP6nQhiwk+gTGBd7L0=;
- b=rllLpTaPG2wOZZeTUZWpI6Mc3lTpgHM0IwgqBbn902DneqaVTOZFJ/cE23KwO+u6xT
- bjBkhmQo3DI44KWnLzsUbsvV5COfiZT+BmmjGqmQtfV896xNHxGT8vQERxgJGc9AVS7l
- AOdSA5je8dXKnp9hkpG1eK3DPQ3XOs36vNKCYmY+7SwtEQIO47+GGTRMUNV3Gz3VPi1S
- 05WsOJgXmMQ0AM9hptsLkqtIHqeCR++GhFdYGVxRJZzdsLaFaMs/kOj5vW+6cFz8Rm3o
- EZ6sI9viKAhd/HjmfINE8ZRlTYFL344k5UKPspEIDxz9LtCvpFvN60bWoohuUTBiMMMv
- 8ifQ==
+ d=linaro.org; s=google; t=1737828831; x=1738433631; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/se+ZOUWHI4guWWCfgPKU8ovKC99g/6LRZidVGKe1oI=;
+ b=GknMRLSa0TwPL7aGa+NUapTQsmVfLpYvkuIwl9e3cChzeXZKOw3zwYpUhiD7mwsrQa
+ AaHaHMKF/Ur92+Dkj+7ZTPHHllsL+jkSNbQ88UwFgsgj1XWbllYpIUejAH0D8h4KfbKy
+ pqnNOYSB0j4GAjEk5deYZ2obM7SdFoh8fkVjqXeeIK996XlVil2bmTd+qLaX8yWeL3mW
+ KLywr33aSGfLxqeGRVOje2oMc220F2Z8xXCw2276C/vUSkMOExAWgPYBDwwX6OFXpQ8E
+ oUV15Xt89TB73ujlZGqKPHN3MmLOz1LYyTCxTdR/oCfOMeoTfa4B/T0SVtlJ5NDgFq7s
+ xZWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737828826; x=1738433626;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=moGB9VY6BYgn3pI64/Eq1yuXgBP6nQhiwk+gTGBd7L0=;
- b=fLdpKcpHvn7/p+x0CCCw/vNcvj4rzvSqI63iUjTgWFcbPFSoQZijJVsAuRZvh4sCiB
- He2/C+1viR/D/pEh1DBQlmMwXptb7kt3pSsG+KUnfx0XY3TRy/dXwwgHKEc/KXd6HxPf
- 4iBWV7v2271QTVo3M/8BmC/8j4ZBoup7Il88kZIoQmdBsJeFF2Utr+o5BoIUPYOWMT91
- 0AFwfFKMvfOC2JkQ8lj/W50Ovmje/nmOK64ki/pThq97IO5p+Ux0+Mnw3fpsl8wYJwqM
- XVmxntZBi+k5IemnV2A1LLUSXypcX61X2LyUk6F146hEfeZD0NitX/Au+R5AFe16CCoc
- e/QQ==
-X-Gm-Message-State: AOJu0YziPfLpxTq161UORy4xoCqo0RbnfG1R5sditJapWRbgmeXNmKhP
- AfpDYk5LC2itsGOH72qDGwbrVeaqPfttW/ONGLAd1xHRdT4rCBFtzkZF77dQL+33HGc7lulQwdT
- rLeA=
-X-Gm-Gg: ASbGncsSF1DRed8WWvYDBrBf6ZitlOjBwinZ+iUa6Y3rytYOeM+Wxb+UhJlus0zSoFR
- PHrlCT2QiF26pB2XKtFYo07WO1UGzS40ZfeNuD3Vhw0LDsvKs8siKNW9fCcZbnHN0Z7BlUFLmHA
- nXwr5N9QtPoqZuPl/E9AsHa38TNfl7e1TlwQC7pfYD9zFWoGXJdTdb6fN/hGQPxJWkMz68oJ9It
- Oxj4VujVn+HKmW7XXUwnhXfcNGWcEYPzFULIolNRPcm6/VHOsmh57qFHEktRGNnuWJy4AvAicvH
- jxwXjwaCwJ0QT4paO8/AhX5RwgWSjQLGMVF2G0vNyIjtsVcGqyOGXDksZoYW
-X-Google-Smtp-Source: AGHT+IFFcuv4NbqWEewutKdT/4sas20HtAvh9/vbvnAdvh7QUUP5Q6Afr6fZs6XUltdZIWZYDYhKXA==
-X-Received: by 2002:a05:600c:1d07:b0:436:488f:50a with SMTP id
- 5b1f17b1804b1-438913ef4b7mr333870305e9.17.1737828825695; 
- Sat, 25 Jan 2025 10:13:45 -0800 (PST)
+ d=1e100.net; s=20230601; t=1737828831; x=1738433631;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=/se+ZOUWHI4guWWCfgPKU8ovKC99g/6LRZidVGKe1oI=;
+ b=Tf3sa6fEtE7QUtPrI6Sghy5xypFxPMSrFQkUw08+1u1P/Yu+mbw5DTmNdK4AYcHuFd
+ 5aAKlJcozy3zdRH8apB40zwwDS9bhokweu+u7mBFwFe3Hi2IzWnojpEgNLUetoet3Nkw
+ TgCRAi+4sehgjY1KuosFcSTo3iAiQXPc4/PdmSZ119ipzhlCDnY0S0azWwMSEhebmMVn
+ ifLF2QuixtReF1G43i9Ey79NJQhGjLyWce/qpgvUgC0NoILCyz1gGEAaqZ3sTb29nBcI
+ eFMbhOKJUyxcyhO82vCGvQoS06wLQ6XILxLoWzzQzja/1F0nJzNeuYwo493lz52P9OWE
+ 2oWQ==
+X-Gm-Message-State: AOJu0YzCirW61FgRxWc0a9TfnUFk2hZwR2UDFMt1tCCjXErVindzvfGZ
+ 7AG4007d2H4iXrwx75aBJPQeWS2hj1bSFYMPN9pzGjwIVDPdDPbdvlcl+4o8Yh7Jdm/q1A2mI/v
+ SRZs=
+X-Gm-Gg: ASbGnctqgdsZWp7DN4H3AseGnbNQfQd1yIoNFbvOxAMnQykScCCzCVH1lftfBxkmIwd
+ RHbb5guABQmhyfgfZsBSNMdbrvtXV3JkTloU7l+jvpDM1OfaNWCuZt/Us6eSP5G4YRSUAgR7qMB
+ OP1FUcY1CpyN0vq75tK71+cGrHWD0O/d1Es9D+hdDpIrU1wADf0XFW4rOSiVqm37ZwE3jo7gr/6
+ 2KmBmJENvF9aIEun2i8qhgbQzn5ZVN0ErDxSv+FaHQFi+QG4CR/WOOgg13qgUEkbc3lgUAofaWw
+ tB1v+pp96yoUk9mWNze3F9YU23swdk86NE93uMY4UIPYFY96LfDNC0IQB5tF
+X-Google-Smtp-Source: AGHT+IGP2iaXKLI15CkhKDP5NBlnFOMSHwCbGSNXKLvJxawalslRdLF5wYi0CoJhDHevjTYCGWh83g==
+X-Received: by 2002:a05:600c:3d86:b0:434:f9e1:5cf8 with SMTP id
+ 5b1f17b1804b1-4389143c306mr335517805e9.31.1737828830945; 
+ Sat, 25 Jan 2025 10:13:50 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd48b000sm70555435e9.20.2025.01.25.10.13.43
+ ffacd0b85a97d-38c2a1c4e49sm6227077f8f.98.2025.01.25.10.13.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 25 Jan 2025 10:13:44 -0800 (PST)
+ Sat, 25 Jan 2025 10:13:50 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Yi Liu <yi.l.liu@intel.com>, Markus Armbruster <armbru@redhat.com>,
@@ -81,16 +82,18 @@ Cc: Yi Liu <yi.l.liu@intel.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/9] hw/sysbus/platform-bus: Introduce
- TYPE_DYNAMIC_SYS_BUS_DEVICE
-Date: Sat, 25 Jan 2025 19:13:34 +0100
-Message-ID: <20250125181343.59151-1-philmd@linaro.org>
+Subject: [PATCH 1/9] hw/sysbus: Use sizeof(BusState) in
+ main_system_bus_create()
+Date: Sat, 25 Jan 2025 19:13:35 +0100
+Message-ID: <20250125181343.59151-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250125181343.59151-1-philmd@linaro.org>
+References: <20250125181343.59151-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -113,42 +116,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some SysBus devices can optionally be dynamically plugged onto
-the sysbus-platform-bus (then virtual guests are aware of
-mmio mapping and IRQs via device tree / ACPI rules).
+Rather than using the obscure system_bus_info.instance_size,
+directly use sizeof(BusState).
 
-This series makes these devices explicit by having them implement
-the DYNAMIC_SYS_BUS_DEVICE class, which only sets 'user_creatable'
-flag to %true but makes the codebase a bit clearer (IMHO, at least
-now we can grep for DYNAMIC_SYS_BUS_DEVICE).
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/core/sysbus.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Philippe Mathieu-Daudé (9):
-  hw/sysbus: Use sizeof(BusState) in main_system_bus_create()
-  hw/sysbus: Declare QOM types using DEFINE_TYPES() macro
-  hw/sysbus: Introduce TYPE_DYNAMIC_SYS_BUS_DEVICE
-  hw/vfio: Have VFIO_PLATFORM devices inherit from
-    DYNAMIC_SYS_BUS_DEVICE
-  hw/display: Have RAMFB device inherit from DYNAMIC_SYS_BUS_DEVICE
-  hw/i386: Have X86_IOMMU devices inherit from DYNAMIC_SYS_BUS_DEVICE
-  hw/net: Have eTSEC device inherit from DYNAMIC_SYS_BUS_DEVICE
-  hw/tpm: Have TPM TIS sysbus device inherit from DYNAMIC_SYS_BUS_DEVICE
-  hw/xen: Have legacy Xen backend inherit from DYNAMIC_SYS_BUS_DEVICE
-
- include/hw/sysbus.h           |  2 ++
- include/hw/xen/xen_pvdev.h    |  3 +-
- hw/core/sysbus.c              | 53 ++++++++++++++++++++---------------
- hw/display/ramfb-standalone.c |  3 +-
- hw/i386/amd_iommu.c           |  2 --
- hw/i386/intel_iommu.c         |  2 --
- hw/i386/x86-iommu.c           |  2 +-
- hw/net/fsl_etsec/etsec.c      |  4 +--
- hw/tpm/tpm_tis_sysbus.c       |  3 +-
- hw/vfio/amd-xgbe.c            |  2 --
- hw/vfio/calxeda-xgmac.c       |  2 --
- hw/vfio/platform.c            |  4 +--
- hw/xen/xen-legacy-backend.c   |  7 ++---
- 13 files changed, 42 insertions(+), 47 deletions(-)
-
+diff --git a/hw/core/sysbus.c b/hw/core/sysbus.c
+index 9355849ff0a..f713bbfe04f 100644
+--- a/hw/core/sysbus.c
++++ b/hw/core/sysbus.c
+@@ -323,8 +323,8 @@ static void main_system_bus_create(void)
+      * assign main_system_bus before qbus_init()
+      * in order to make "if (bus != sysbus_get_default())" work
+      */
+-    main_system_bus = g_malloc0(system_bus_info.instance_size);
+-    qbus_init(main_system_bus, system_bus_info.instance_size,
++    main_system_bus = g_new0(BusState, 1);
++    qbus_init(main_system_bus, sizeof(BusState),
+               TYPE_SYSTEM_BUS, NULL, "main-system-bus");
+     OBJECT(main_system_bus)->free = g_free;
+ }
 -- 
 2.47.1
 
