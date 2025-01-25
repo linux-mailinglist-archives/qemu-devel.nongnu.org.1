@@ -2,77 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77BAEA1C4E5
+	by mail.lfdr.de (Postfix) with ESMTPS id 66118A1C4E4
 	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 19:25:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbkpf-0007az-Vf; Sat, 25 Jan 2025 13:24:36 -0500
+	id 1tbkpi-0007dT-Gs; Sat, 25 Jan 2025 13:24:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkpb-0007YL-SA
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:24:31 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkpf-0007bz-Ty
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:24:36 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkpa-0005lU-9i
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:24:31 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4361f65ca01so32838185e9.1
- for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 10:24:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkpe-0005mi-B4
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:24:35 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-385f07cd1a4so3216230f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 10:24:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737829467; x=1738434267; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=pH3VkzWRrKZh00NIZob72P+uiwg9X9nJj4i2oUk43n8=;
- b=OzA7OUmcQJ5iNzM+n+76RzQu9y3dSElehfvJH1UqWTRdXGHtWmmCQqz66Z6FoXW9bz
- WAtGjrgkpwiNFX0ez9Seafbmig081G3h6Wqpy/vbFQEu1qFbzwZVmoeRAIkho4ShlkTr
- pIowzt7ql77XQyr7Fdpd+Xk60T3Us+8pR6yU7qebAiFLmYnHb7XOuEdSllpSbo6k/W3K
- oSNq7YD2/m+LsVK56ECH3YrE7K0v+cgrqMAKta6SM+PDBb3k+Zi4yd072ncJ9S1NL4Ip
- Iq4a/GDpNoUmeDJdRIyTfSoHAfqc+0c0I7+z0wghpOcO6CVm8QtXCXY+VmiqKe9lrr9Q
- HXbA==
+ d=linaro.org; s=google; t=1737829472; x=1738434272; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3JIgbmtfxOLMYajWOv1VhSlZC2BvLUVwsARR8MibuLw=;
+ b=kV/mTQT5yAQj+nVF5fZS3MFglo+I3yhqnM2eI09nc5tOyuYvCPivKAUmAWMqSbQ25a
+ sCB2CO1uHnQaG83fvBcZhyxOesPzO43UAi9f2yYqKhqHRFKZijnB27UpxTh7PJEslhGx
+ SD5Jgynx8IrqWJnJXl9dwUlvuVMAR0VvlQk+qZwAPkVGU2tPb4yR1nfxB12CF9bhC60z
+ ZOU5psVbF2m5QJzX7ES6RFHCQ/5U3nt7FUmdxIaIB0qXdLGTV9MYwzIceWwP+qyatK3e
+ Jz1AZ6nvfqEd52UAt4nEA+gl4izip+GiYVkYM0Urxv1mOKiI1T2p3mxiaeP+u2B/IWG2
+ 2b3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737829467; x=1738434267;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=pH3VkzWRrKZh00NIZob72P+uiwg9X9nJj4i2oUk43n8=;
- b=EnlGvjU07avSIQuRs6wwEddDrxpJEPA3vF4p46sWjYgWrgkJOHslWSzB/gQYd0GHgm
- UqU1GHuM6sRDq55uYQYg4s+rn5VK7e4b1Lu8oe1QRBvYWeL8IJR1cv5V+FCRCR5dorNy
- ITrz4eHWQexRcRuqqEtFO0yXF+TWTXV6F5+WU+2t4/AWM2PY3H4cy/Go9//WoHLS//d+
- Rhxq6RWToIKQDusZqfA9A7WXmCGcP2vZvAJ+r1i2mTOXKOZXXufe7/UDRO20npWBhKcD
- A3PArcvZr0O1rrhVl3o9iyoCHdl4T2Fw6uuJH6whh0wRt2hvdUycc1ayNPLy5vs2Sq8R
- 3zgg==
-X-Gm-Message-State: AOJu0YyJR5SHWJWfGVW1hwRaHHZ3DBmys9PZ1mQzCpNkD1N3pspaHkKj
- e+YkPD619MWOWybzoG1t7SUxKlRwKA4k0Zxag/21rRHMlJitH2aKPe7jNqdDdQe49GqL6imb5RB
- JLsg=
-X-Gm-Gg: ASbGncub49oqYhCJJ69k95xTi6yrNzvhDAj7t9FWnNvzJRJvozUhAQNMonMn5HNV6EF
- wPMQsj3mkTTuk71tsacR0GGDiYiUjBaLAnlXp0GWHY5+Ksvv48Ym4Eo/Rh8cAHzAAlgNm5tmAho
- 28m4B9Q9uyiWOlpuHGhrx5YxQhUpM+iaYX4JbFFw23T8n8FvgvsNlZcSdZwQhe2lJijpSdIBkAm
- Fzy5nZP0hhZ6PAALDZNyc7ms7kqBmBWyLJ5V1jdBL69hay+Szr3wsUcoB1Y68NyNuDIK+Y0bs+E
- /Ke8LjxUlevE7SoZl3NEU1Y0qz3jw1LM6KyuIuLepzz86Qm+e8nB9AvDVucV
-X-Google-Smtp-Source: AGHT+IHB5Fsi7Lh6m6f08iKGCCTXgfwFX8GZ07kqZVQQkfWrLQoj29fPMPLVsRikNmK1GyhB8/tHug==
-X-Received: by 2002:a05:6000:18ab:b0:386:42a6:21f2 with SMTP id
- ffacd0b85a97d-38bf5655f8dmr33689314f8f.10.1737829467675; 
- Sat, 25 Jan 2025 10:24:27 -0800 (PST)
+ d=1e100.net; s=20230601; t=1737829472; x=1738434272;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=3JIgbmtfxOLMYajWOv1VhSlZC2BvLUVwsARR8MibuLw=;
+ b=RUXz+ODpw6A2E8TLvb+H1+4z0NzkSF3D/hK24FZHYXBB50Jh+HmAXYGG2/teDLGkNs
+ zh3i8ATKMwxNuR0ZuOXJHImTnFgIlDMrQSGJ+SX3pLSMc6daWAoiNDJjfHg9x8ILF5r+
+ RnKsbxYUFhm9Jgj66XMoAHzm7WyHZZTyGSu5ViQp1kaJjMYTl4+ngS4gsQisE5ZfPrMg
+ QUP+tfoWCZEd7uaOLc2k9hIz180T3pvXXjlZw+/9Hhhw3ozmr/R29/SK7L+bothL3xYT
+ iMG1Dc9TCMugjMUKIKusseNZOSrANJ8AiEXLplxZEQ5CnN9wnX5KqgausjfCnmLAO6Fa
+ dKdw==
+X-Gm-Message-State: AOJu0Yyv/Qt8AWqHUdhvRxmZLUErS1IC3GG8gdtZMMkVEDMH+n+dK50N
+ Y+84ZTh1PlDDjwoxhx/dQZe5eXCKjPMmpSDM97lfYdl4QZlprqIUbnFwqg/Qic4JUW+1GFDhqxv
+ mehI=
+X-Gm-Gg: ASbGncv8mWiC0EBL1rSrN7lPYN8K01ceIDdd4QimV7OlAV1RyJIGNfKKJYScqLgBa/e
+ DdfXJqNyg76AgOQIj1aP+DTfIPBl85et5VVnXNIT1+FtZdahKU7A5V0zw9roTtlAFrXc2dAxLeM
+ eSR0qNQhuieCbAlurbUB3EC7C5NA8AxHyNHOUoR92nGVKqgNXFWKxRpzpAEfgEkPxEii1DcB5us
+ y8f252LDH08KSxAos2LGkkzO7UaFHbZGWc23NYt1Ywsva/ZlgPGBK5WGKER2vWthxbt8yFimFiS
+ VK5TBRHwDHQt4k/LL8WWiFP8rrX8sEXK3Wllyrre1080dtBz7eUwghC/VSQ+
+X-Google-Smtp-Source: AGHT+IHLUrit+dtI5ymZoE+Qk+8OkZBPP1pEe6eccWRUdAhaVPX6uVTlOJrlPoBlu+dYRl2LtM/ftA==
+X-Received: by 2002:a5d:6d06:0:b0:385:fc70:7f6 with SMTP id
+ ffacd0b85a97d-38bf565557amr29528000f8f.7.1737829472465; 
+ Sat, 25 Jan 2025 10:24:32 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a176538sm6045863f8f.8.2025.01.25.10.24.26
+ ffacd0b85a97d-38c2a1baf65sm6248831f8f.64.2025.01.25.10.24.31
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 25 Jan 2025 10:24:26 -0800 (PST)
+ Sat, 25 Jan 2025 10:24:31 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/2] qemu/timer: Clarify QEMUTimer new/free API
-Date: Sat, 25 Jan 2025 19:24:23 +0100
-Message-ID: <20250125182425.59708-1-philmd@linaro.org>
+Subject: [PATCH 1/2] qemu/timer: Clarify timer_new*() must be freed with
+ timer_free()
+Date: Sat, 25 Jan 2025 19:24:24 +0100
+Message-ID: <20250125182425.59708-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250125182425.59708-1-philmd@linaro.org>
+References: <20250125182425.59708-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,20 +99,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update few QEMUTimer docstring and add a
-sanity check during timer initialization.
+There was not mention QEMUTimer created with timer_new*() must
+be released with timer_free() instead of g_free(), because then
+active timers are removed from the active list. Update the
+documentation mentioning timer_free().
 
-Noticed trying to understand leaks in QDev
-Realize -> Unrealize -> Realize transition.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/qemu/timer.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Philippe Mathieu-Daudé (2):
-  qemu/timer: Clarify timer_new*() must be freed with timer_free()
-  qemu/timer: Sanity check timer_list in timer_init_full()
-
- include/qemu/timer.h | 12 +++++++++++-
- util/qemu-timer.c    |  1 +
- 2 files changed, 12 insertions(+), 1 deletion(-)
-
+diff --git a/include/qemu/timer.h b/include/qemu/timer.h
+index cc167bd825b..abd2204f3be 100644
+--- a/include/qemu/timer.h
++++ b/include/qemu/timer.h
+@@ -507,6 +507,8 @@ static inline void timer_init_ms(QEMUTimer *ts, QEMUClockType type,
+  * with an AioContext---each of them runs its timer callbacks in its own
+  * AioContext thread.
+  *
++ * The timer returned must be freed using timer_free().
++ *
+  * Returns: a pointer to the timer
+  */
+ static inline QEMUTimer *timer_new_full(QEMUTimerListGroup *timer_list_group,
+@@ -530,6 +532,8 @@ static inline QEMUTimer *timer_new_full(QEMUTimerListGroup *timer_list_group,
+  * and associate it with the default timer list for the clock type @type.
+  * See timer_new_full for details.
+  *
++ * The timer returned must be freed using timer_free().
++ *
+  * Returns: a pointer to the timer
+  */
+ static inline QEMUTimer *timer_new(QEMUClockType type, int scale,
+@@ -548,6 +552,8 @@ static inline QEMUTimer *timer_new(QEMUClockType type, int scale,
+  * associated with the clock.
+  * See timer_new_full for details.
+  *
++ * The timer returned must be freed using timer_free().
++ *
+  * Returns: a pointer to the newly created timer
+  */
+ static inline QEMUTimer *timer_new_ns(QEMUClockType type, QEMUTimerCB *cb,
+@@ -566,6 +572,8 @@ static inline QEMUTimer *timer_new_ns(QEMUClockType type, QEMUTimerCB *cb,
+  * associated with the clock.
+  * See timer_new_full for details.
+  *
++ * The timer returned must be freed using timer_free().
++ *
+  * Returns: a pointer to the newly created timer
+  */
+ static inline QEMUTimer *timer_new_us(QEMUClockType type, QEMUTimerCB *cb,
+@@ -584,6 +592,8 @@ static inline QEMUTimer *timer_new_us(QEMUClockType type, QEMUTimerCB *cb,
+  * associated with the clock.
+  * See timer_new_full for details.
+  *
++ * The timer returned must be freed using timer_free().
++ *
+  * Returns: a pointer to the newly created timer
+  */
+ static inline QEMUTimer *timer_new_ms(QEMUClockType type, QEMUTimerCB *cb,
 -- 
 2.47.1
 
