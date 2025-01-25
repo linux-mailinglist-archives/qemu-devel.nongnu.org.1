@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84D3A1C32B
+	by mail.lfdr.de (Postfix) with ESMTPS id F27D2A1C32D
 	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 13:33:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbfLC-0008FC-Qs; Sat, 25 Jan 2025 07:32:46 -0500
+	id 1tbfLC-0008FQ-Qh; Sat, 25 Jan 2025 07:32:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tbfL2-0008DB-F2; Sat, 25 Jan 2025 07:32:37 -0500
+ id 1tbfL5-0008Dc-7I; Sat, 25 Jan 2025 07:32:42 -0500
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tbfKz-0005Tn-Tn; Sat, 25 Jan 2025 07:32:35 -0500
+ id 1tbfL2-0005TJ-IR; Sat, 25 Jan 2025 07:32:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737808354; x=1769344354;
+ t=1737808356; x=1769344356;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=g2Nb+4+IFvjo/YNhUOjtEgb72fVfBiMk6M52lBhjmVA=;
- b=iNzXPL/UHa2WH/USw/k54QGSlMVmp/0Y1kHNDkX6cAUNe9GGRe8JvqIR
- jdnNsGTz6qvt5gCTr4nOoXa31ipAu+0CG+QCKAjyLcxrH28ACdSy+kRpV
- hg0v4KIjtHZLlTsepLENol5IzNy4ubnDyZLI5JAPtlF9axgv5qXym/k/A
- SqxyCK+FSzgjUe6Iz864s1C+2pRioGMu4oqzq8Ac2uJyqWej7YkYNLxMW
- JxJK+vbU15LvSW98Kr65YoFkawY+tySZf24d8D6BAZcki8Qx04OxCeILe
- XjCo+u0WQq88dVtd/1X+55TLARMo28UHry6qMsgnPEd4w1v2LPYW0yyxc Q==;
-X-CSE-ConnectionGUID: 18ODjvVRRsat0x5mdvkdbw==
-X-CSE-MsgGUID: KENYnHVGRMSd943nIIh1oA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="38434706"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="38434706"
+ bh=uG8yPSeRPHsZyPZ+Zad72ZfjphYl5oyDQSD5QikG5aM=;
+ b=TnBuRoVIiBHsypTvR7FSrG6g9qIKmlWYHA8P3/mLdXlOKjLtR7useWEn
+ fvYEil4H65Z6RIFD7a+SHc5qu9uCH7t8oYvFzKA+poRphcBTmhyzTd8ev
+ 1wcah65iUPrzkpZc1V+SWwL1qe9Ri2/PtgTQ1XXj8wc/8f0xGFrewDOox
+ hED4Y0bXc9eWrCUV1jHdUZQoWRfVJOmhsiBtezYI0VJcnpO+YDiSMrmhD
+ bN+KIZuAKkTtJlvNY/PZJMfdXnq+MCKpoIK7sYo4GvLh0CSndepcCk3Oo
+ xXKsfxSqcZIfhd0jy0Fa6i81TmwVFqtc74MYHSLK80yjVZ9zrZfd7ZCz+ w==;
+X-CSE-ConnectionGUID: MBTQvNuBTJOFKlfUE7u42A==
+X-CSE-MsgGUID: CGaHuT2jTMesHmRJe5EHIg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="38434711"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="38434711"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jan 2025 04:32:32 -0800
-X-CSE-ConnectionGUID: 1jKWWoHKQPu2yQGtfejnPw==
-X-CSE-MsgGUID: SfP/7m22RgWE/3NXrvmXUQ==
+ 25 Jan 2025 04:32:35 -0800
+X-CSE-ConnectionGUID: gHZ4qDm7TEiGsE4fzd9baQ==
+X-CSE-MsgGUID: kqtPSj9YRfS4kuRIzKraOw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,234,1732608000"; d="scan'208";a="107897660"
+X-IronPort-AV: E=Sophos;i="6.13,234,1732608000"; d="scan'208";a="107897670"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa007.fm.intel.com with ESMTP; 25 Jan 2025 04:32:30 -0800
+ by fmviesa007.fm.intel.com with ESMTP; 25 Jan 2025 04:32:32 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
@@ -51,10 +51,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 03/10] rust/irq: Add a helper to convert [InterruptSource] to
- [*mut IRQState]
-Date: Sat, 25 Jan 2025 20:51:30 +0800
-Message-Id: <20250125125137.1223277-4-zhao1.liu@intel.com>
+Subject: [PATCH 04/10] rust: add bindings for gpio_{in|out} initialization
+Date: Sat, 25 Jan 2025 20:51:31 +0800
+Message-Id: <20250125125137.1223277-5-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250125125137.1223277-1-zhao1.liu@intel.com>
 References: <20250125125137.1223277-1-zhao1.liu@intel.com>
@@ -85,55 +84,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is useful to hanlde InterruptSource slice and pass it to C
-bindings.
+Wrap qdev_init_gpio_{in|out} as methods in DeviceMethods. And for
+qdev_init_gpio_in, based on FnCall, it can support idiomatic Rust
+callback without the need for C style wrapper.
 
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
 Changes since RFC:
- * New commit.
+ * Use FnCall to support gpio in callback.
+ * Place gpio_{in|out} in DeviceMethods.
+ * Accept &[InterruptSource] as the parameter of gpio_out.
 ---
- rust/qemu-api/src/irq.rs | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ rust/qemu-api/src/qdev.rs | 37 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 35 insertions(+), 2 deletions(-)
 
-diff --git a/rust/qemu-api/src/irq.rs b/rust/qemu-api/src/irq.rs
-index 638545c3a649..7dca3b9ee5a8 100644
---- a/rust/qemu-api/src/irq.rs
-+++ b/rust/qemu-api/src/irq.rs
-@@ -5,12 +5,10 @@
- //! Bindings for interrupt sources
+diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
+index 32740c873604..96ca8b8aa9ad 100644
+--- a/rust/qemu-api/src/qdev.rs
++++ b/rust/qemu-api/src/qdev.rs
+@@ -6,16 +6,17 @@
  
- use core::ptr;
--use std::{marker::PhantomData, os::raw::c_int};
-+use std::{marker::PhantomData, os::raw::c_int, slice};
+ use std::{
+     ffi::{CStr, CString},
+-    os::raw::c_void,
++    os::raw::{c_int, c_void},
+     ptr::NonNull,
+ };
  
--use crate::{
--    bindings::{qemu_set_irq, IRQState},
--    prelude::*,
--};
-+pub(crate) use crate::bindings::IRQState;
-+use crate::{bindings::qemu_set_irq, prelude::*};
+ pub use bindings::{Clock, ClockEvent, DeviceClass, DeviceState, Property, ResetType};
  
- /// Interrupt sources are used by devices to pass changes to a value (typically
- /// a boolean).  The interrupt sink is usually an interrupt controller or
-@@ -81,6 +79,16 @@ pub fn set(&self, level: T) {
-     pub(crate) const fn as_ptr(&self) -> *mut *mut IRQState {
-         self.cell.as_ptr()
+ use crate::{
+-    bindings::{self, Error, ResettableClass},
++    bindings::{self, qdev_init_gpio_in, qdev_init_gpio_out, Error, ResettableClass},
+     callbacks::FnCall,
+     cell::bql_locked,
++    irq::{IRQState, InterruptSource},
+     prelude::*,
+     qom::{ClassInitImpl, ObjectClass, ObjectImpl, Owned},
+     vmstate::VMStateDescription,
+@@ -278,6 +279,38 @@ fn do_init_clock_in(
+         // IsA<DeviceState> bound.
+         do_init_clock_in(unsafe { self.as_mut_ptr() }, name, cb, events)
      }
 +
-+    #[allow(dead_code)]
-+    pub(crate) fn as_slice_of_qemu_irq(slice: &[Self]) -> &[*mut IRQState] {
++    fn init_gpio_in<F: for<'a> FnCall<(&'a Self::Target, u32, u32)>>(&self, num_lines: u32, _f: F) {
++        unsafe extern "C" fn rust_irq_handler<T, F: for<'a> FnCall<(&'a T, u32, u32)>>(
++            opaque: *mut c_void,
++            line: c_int,
++            level: c_int,
++        ) {
++            // SAFETY: the opaque was passed as a reference to `T`
++            F::call((unsafe { &*(opaque.cast::<T>()) }, line as u32, level as u32))
++        }
++
++        let gpio_in_cb: unsafe extern "C" fn(*mut c_void, c_int, c_int) =
++            rust_irq_handler::<Self::Target, F>;
++
 +        unsafe {
-+            // SAFETY: InterruptSource has the same memory layout as *mut IRQState.
-+            // Additionally, the slice parameter itself, as a reference to a slice type,
-+            // can be converted into a valid pointer and has a valid length.
-+            slice::from_raw_parts(slice.as_ptr().cast::<*mut IRQState>(), slice.len())
++            qdev_init_gpio_in(
++                self.as_mut_ptr::<DeviceState>(),
++                Some(gpio_in_cb),
++                num_lines as c_int,
++            );
++        }
++    }
++
++    fn init_gpio_out(&self, pins: &[InterruptSource]) {
++        unsafe {
++            qdev_init_gpio_out(
++                self.as_mut_ptr::<DeviceState>(),
++                InterruptSource::as_slice_of_qemu_irq(pins).as_ptr() as *mut *mut IRQState,
++                pins.len() as c_int,
++            );
 +        }
 +    }
  }
  
- impl Default for InterruptSource {
+ impl<R: ObjectDeref> DeviceMethods for R where R::Target: IsA<DeviceState> {}
 -- 
 2.34.1
 
