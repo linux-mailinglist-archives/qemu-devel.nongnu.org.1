@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45CB6A1C479
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 18:03:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED43EA1C47E
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 18:04:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbjXk-0006nm-B3; Sat, 25 Jan 2025 12:02:00 -0500
+	id 1tbjXs-0007Dn-L5; Sat, 25 Jan 2025 12:02:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbjXH-0006Rc-1K
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:01:38 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbjXR-0006Wd-8z
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:01:50 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbjXF-0000NS-HL
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:01:30 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-435f8f29f8aso21806595e9.2
- for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 09:01:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbjXP-0000ON-1O
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:01:40 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4363dc916ceso26616915e9.0
+ for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 09:01:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737824487; x=1738429287; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=3hYPVAzpnJ23ZkjHGBfSkrx4kDLIP1Cp884q0U/4z1c=;
- b=qOxRVnLINdBw4ByoWSHXLXcL17oKMxrPbkFjKTytu4Gh6BJ/aGeBPdo7ds+WkeIRE/
- ZCojnU2Em+4nHr9QS1hxDwlcqvYM62LPhlV2ykCp0BEsoFXGkHF8KcIK8o28ZFFX0ANL
- gbDFrS6K26mmrTTBFQNJI+pUX/sZZCbTpFGFMqTT4XKDtrSipfYyFADZDg7pK5/8l5xk
- WfO375/rJG5n/m1SaoVC11cRWeRDTDTBadE/dAlyQGib/TVcUO8lXrnFoY8grkSyJSYy
- xrGQZI7Nx8pmwERGEufwWN8c9r5RPiQ+lCWPgPhBdmMHVj9xMDlDVOLUqacacCk4pQIr
- AT8Q==
+ d=linaro.org; s=google; t=1737824496; x=1738429296; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=LnxgPJtNl18qpQlYyJcdV2Lpgdr/I3RQhGnRLNDQ94c=;
+ b=kRgZgjHvtEew7p+tTewGTgswcNCdsZ7DDZ88hrqehDn5/NKf+pR4V1lrjg3F2+6L1e
+ qmdlCrXAbHJOQ8QDq7aDRmJjsyH87dxYjUbsWqMaM8tMIhe0px7wLpf23lR/FiJHdaUL
+ pgYlg8Uh7wXsmoYHH6P2FLN9IdTQmFH4Ej6r9ZgBWUYAMk4cNiBPsjccufRgIQuzF1JS
+ RzfSGGj0ZNSf1doryLwXVMpOjcPLtSgobh3L2GSgSLBxCm1750fT/120ITKx89ATiEYj
+ qOspQGwTabZfgCmEZqKc3FJOpnRyVe8tNkJnjvyDHsVZ5KFNNsGNVrxiiInkGgRhIj7n
+ CyWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737824487; x=1738429287;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3hYPVAzpnJ23ZkjHGBfSkrx4kDLIP1Cp884q0U/4z1c=;
- b=A5+tuD3U14q+MGlGgyyi+OpqAgh1j7aM+XZImyxGex4VwBR4wRm1E/9WeBo4R4eJpC
- GvugvlvVRFKTgCKHQakSUIAPhFKGGgKcpeSTKt2XFjH23TONl+ts6p/667yY3JXjiyRk
- TPkaHUHIpx1EnPFhx70f3Z72fBOimaaZnnQhtYf+YYcvTXUDCcm0ztLXHOcSt6vPIwxv
- aQrITIBLiCx1YNVYpw7KsDdZQfVs2iiUUbT3PXDRo6XSNIO+gx6eBxmFKx57NkH2qj5C
- NQmu5+2Qd5Qiv1e/7JP84t5otw6lwePyDZ9gw9MUl9dWvF9sL6hVxpwcYl530qjXSf6v
- dGBA==
-X-Gm-Message-State: AOJu0Yx4v5VESNJkxOu3yeq4xvNSyoUX9KysdJlPfhEbQze2+xn7U5cI
- 6tdBpXR3VL0Zi+Pnc4ptq2BCK77ZrcqP3k3ZBO3JdbZMEanCaYUqSshS7cSMnMHHzBUeQcXc7gN
- s694=
-X-Gm-Gg: ASbGnctvMYhvgxJAQC4255ShVBq7lV9Ma0xa7D9bV60MoXLYAqggyt307FR3mM4QnB0
- nCzWBgGjhyChGwRBV8rxzmW6V0HtGDQPgBbb0t34/A18MEEI+tKcnk4EDeQ7+dpfEURnMtGeP8k
- E4PPkfNFhXmMpaDD0krQyn5iR4Mh6CNGoKtVZIJM+WxDrXX7aANSHUE5pv62rWGmqYgvX1feLAF
- 8V8iyQaZBYd/DzlPxWvk5v0W8UKyaFZtYa1OCMnV3P+2jMYMPEX7Vm0wifHifoP7/hIfrl7bFLN
- WHcW3Y9ssYLNuNnCf2iOySr/LXCxslJdppgHH0Eikf+27Y7wlOYH/5M=
-X-Google-Smtp-Source: AGHT+IEoy6yXoECX+NuuVn7nIpfOgcwdzkCF8JNluAVk3TpkSaCDMEPhYYWsuFG0daBnM6mi0QLCgA==
-X-Received: by 2002:a05:600c:4f8e:b0:438:ad4d:cf01 with SMTP id
- 5b1f17b1804b1-438ad4dd129mr239994775e9.7.1737824487478; 
- Sat, 25 Jan 2025 09:01:27 -0800 (PST)
+ d=1e100.net; s=20230601; t=1737824496; x=1738429296;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=LnxgPJtNl18qpQlYyJcdV2Lpgdr/I3RQhGnRLNDQ94c=;
+ b=h751+q63hbtt3FZzDteGBW9um6SuyZB575GeAfMss/NHEG5A2/e1XW+NN/+xbtvpYN
+ d5XHO2ipCuuC5u9/Se8zGYrWwSXs4VYQvlP8ZM5MS44ZSq1qnMuM6ko2u1nlLybY6Dfg
+ URCPdR0FE92ErJYCgfZB15dGh1UCU9WwTvGpoRRA9SoLc81no9X5jVwC/jG1JPYapwVC
+ paqaYWBGdL0/YCBkz3moVI4vWO1oTUdEIOFBx+M4CoJxiuMWmWe+mqFhV8BUjfZhYP4E
+ qsfHCkmJYGBTD1KvldunTKiSuOA9pmPbWAm8D/81aCsnuVvZHHf6bK1XAV6omYIRE53n
+ fORA==
+X-Gm-Message-State: AOJu0Yy0B8oAnnSLYS59mi7ahSr9/j0Nk7Erfa8m1OEZUznk5v+daTr3
+ LknuUju8tZSeCzpvOfyAvsSPyOBKb/6vlLDz2gjDexTkGCDCSSUw8SEp3SnU7A97vl85QGkksDS
+ d9mE=
+X-Gm-Gg: ASbGncuyS3v9yyfU/N7JDsliZKpK5qbNJHVQO3s0lFA43PODMiqr1Ub0mr3wHiiCSRn
+ KdpQ+fSPTBnyTrG6myKhPqo0G36eWLBdY6ucU8HssRbgbYDOVEFjWPoI2CfgoiOpI4CTHtAzAKC
+ AMklwx4oGWXPSLo5vtkYqPqTHx5porkI+XrpMyaNoii+aUa33PzVze8Q2iTiYbWqH1pErniV0ZG
+ sHty2C84oqGCRjau4SicB4SpgA/5FhpV1o2R5SfhPI2Z/YBrgDybeMyc1kgnmSF1lOBYNwk/xh5
+ D6uJkU5bE2+RZyD1d5iemyGlnXIoMH+5iSZg6wkEmnkN8ejXeAq4uWY=
+X-Google-Smtp-Source: AGHT+IHUAV52JwynhHZ5iI+rOgEvQ4xiYVjH9kn4AGAOOFjcbEPm1XRxlsPqo5KMWkWthDF2yxdypg==
+X-Received: by 2002:a05:600c:1c14:b0:434:fddf:5c06 with SMTP id
+ 5b1f17b1804b1-438b8841d5amr105040825e9.1.1737824496440; 
+ Sat, 25 Jan 2025 09:01:36 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd501f1esm66511965e9.12.2025.01.25.09.01.26
+ 5b1f17b1804b1-438bd4d2c0esm66485425e9.33.2025.01.25.09.01.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 25 Jan 2025 09:01:26 -0800 (PST)
+ Sat, 25 Jan 2025 09:01:36 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 00/24] cpus: Restrict CPU has_work() handlers to system
- emulation
-Date: Sat, 25 Jan 2025 18:01:01 +0100
-Message-ID: <20250125170125.32855-1-philmd@linaro.org>
+Subject: [PATCH v3 02/24] cpus: Un-inline cpu_has_work()
+Date: Sat, 25 Jan 2025 18:01:03 +0100
+Message-ID: <20250125170125.32855-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250125170125.32855-1-philmd@linaro.org>
+References: <20250125170125.32855-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,84 +97,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Missing review: 16
+In order to expand cpu_has_work(), un-inline it.
 
-(I plan to merge this myself once reviewed)
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ include/hw/core/cpu.h | 6 +-----
+ hw/core/cpu-system.c  | 6 ++++++
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-Since v2:
-- Check mandatory SysemuCPUOps handlers in class_post_init()
-
-v1 cover:
-
-On user emulation, threads always have work to do, and
-CPUClass::has_work() is never called. Restrict it to system
-emulation, allowing to simplify a bit and reduce code built
-on user emulation.
-
-Based-on: <20250125165855.32168-1-philmd@linaro.org>
- "qom: Introduce class_post_init() handler"
-Based-on: <20250121114056.53949-1-philmd@linaro.org>
- "cpus: Prefer cached CpuClass over CPU_GET_CLASS() macro"
-
-Philippe Mathieu-Daudé (24):
-  cpus: Restrict cpu_has_work() to system emulation
-  cpus: Un-inline cpu_has_work()
-  cpus: Introduce SysemuCPUOps::has_work() handler
-  target/alpha: Move has_work() from CPUClass to SysemuCPUOps
-  target/arm: Move has_work() from CPUClass to SysemuCPUOps
-  target/avr: Move has_work() from CPUClass to SysemuCPUOps
-  target/hexagon: Remove CPUClass:has_work() handler
-  target/hppa: Move has_work() from CPUClass to SysemuCPUOps
-  target/i386: Move has_work() from CPUClass to SysemuCPUOps
-  target/loongarch: Move has_work() from CPUClass to SysemuCPUOps
-  target/m68k: Move has_work() from CPUClass to SysemuCPUOps
-  target/microblaze: Move has_work() from CPUClass to SysemuCPUOps
-  target/mips: Move has_work() from CPUClass to SysemuCPUOps
-  target/openrisc: Move has_work() from CPUClass to SysemuCPUOps
-  target/ppc: Move has_work() from CPUClass to SysemuCPUOps
-  target/riscv: Move has_work() from CPUClass to SysemuCPUOps
-  target/rx: Move has_work() from CPUClass to SysemuCPUOps
-  target/s390x: Restrict I/O handler installers to system emulation
-  target/s390x: Move has_work() from CPUClass to SysemuCPUOps
-  target/sh4: Move has_work() from CPUClass to SysemuCPUOps
-  target/sparc: Move has_work() from CPUClass to SysemuCPUOps
-  target/tricore: Move has_work() from CPUClass to SysemuCPUOps
-  target/xtensa: Move has_work() from CPUClass to SysemuCPUOps
-  cpus: Remove CPUClass::has_work() handler
-
- include/hw/core/cpu.h            | 27 +++++++++++----------------
- include/hw/core/sysemu-cpu-ops.h |  4 ++++
- include/hw/core/tcg-cpu-ops.h    |  2 +-
- target/i386/cpu.h                |  4 ++--
- target/mips/internal.h           |  4 ++--
- target/riscv/internals.h         |  4 +++-
- target/s390x/s390x-internal.h    |  5 +++++
- cpu-target.c                     |  8 ++++++++
- hw/core/cpu-common.c             | 12 ++++++------
- hw/core/cpu-system.c             |  5 +++++
- target/alpha/cpu.c               |  4 +++-
- target/arm/cpu.c                 |  4 +++-
- target/avr/cpu.c                 |  2 +-
- target/hexagon/cpu.c             |  6 ------
- target/hppa/cpu.c                |  4 +++-
- target/i386/cpu.c                |  8 +++-----
- target/loongarch/cpu.c           |  8 +++-----
- target/m68k/cpu.c                |  4 +++-
- target/microblaze/cpu.c          |  4 +++-
- target/mips/cpu.c                |  4 +++-
- target/openrisc/cpu.c            |  4 +++-
- target/ppc/cpu_init.c            |  4 +++-
- target/riscv/cpu.c               |  8 +++-----
- target/rx/cpu.c                  |  2 +-
- target/s390x/cpu-system.c        | 18 ++++++++++++++++++
- target/s390x/cpu.c               | 18 ------------------
- target/s390x/interrupt.c         |  8 ++------
- target/sh4/cpu.c                 |  4 ++--
- target/sparc/cpu.c               |  4 +++-
- target/tricore/cpu.c             |  2 +-
- target/xtensa/cpu.c              | 12 +++++-------
- 31 files changed, 113 insertions(+), 94 deletions(-)
-
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index e094d54949d..d64c823e768 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -756,11 +756,7 @@ bool cpu_virtio_is_big_endian(CPUState *cpu);
+  *
+  * Returns: %true if the CPU has work, %false otherwise.
+  */
+-static inline bool cpu_has_work(CPUState *cpu)
+-{
+-    g_assert(cpu->cc->has_work);
+-    return cpu->cc->has_work(cpu);
+-}
++bool cpu_has_work(CPUState *cpu);
+ 
+ #endif /* CONFIG_USER_ONLY */
+ 
+diff --git a/hw/core/cpu-system.c b/hw/core/cpu-system.c
+index 37d54d04bf8..16d5efee12d 100644
+--- a/hw/core/cpu-system.c
++++ b/hw/core/cpu-system.c
+@@ -23,6 +23,12 @@
+ #include "exec/tswap.h"
+ #include "hw/core/sysemu-cpu-ops.h"
+ 
++bool cpu_has_work(CPUState *cpu)
++{
++    g_assert(cpu->cc->has_work);
++    return cpu->cc->has_work(cpu);
++}
++
+ bool cpu_paging_enabled(const CPUState *cpu)
+ {
+     if (cpu->cc->sysemu_ops->get_paging_enabled) {
 -- 
 2.47.1
 
