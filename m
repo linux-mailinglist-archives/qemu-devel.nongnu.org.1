@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABE13A1C4E6
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 19:25:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85A5DA1C4E7
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 19:25:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbkpn-0007ec-65; Sat, 25 Jan 2025 13:24:43 -0500
+	id 1tbkqn-0000iP-QX; Sat, 25 Jan 2025 13:25:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkpl-0007eB-Ao
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:24:41 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkqk-0000cv-1c
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:25:42 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkpj-0005nt-ON
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:24:41 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3862b40a6e0so2264930f8f.0
- for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 10:24:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkqi-00067d-F4
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:25:41 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-38632b8ae71so2485959f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 10:25:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737829478; x=1738434278; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BvRb+A+szaUASQC+0C2N8r34T+ZA8fbAScI9edWRsk8=;
- b=qjm+tDBc2XTg9I30LGfqkkRYUXX9OnzjfJ/xtOfVr2rFfM/RE7P9b19Iuh/NKzsp/t
- cekXKQRRftcpVX6/j13VygfQvN1GuOVp3n4jevFVDk4eD2kw/R4llI7dcYFwDyk7EuYM
- x+jvUpZXPShBJ58llzKbPm25SRFRWwNKNdNjoMk15v0Ooz6FXEtOX2DimV72go3eOpwI
- lndpjkEKRlgTJYmshwhlD0NQlq1b2IRICHPcaw2dnfDqs81bnyrek5Zyee/DR9axb5f7
- 7VYHMbY3hqaG61JScDXpTHT8M/Q4KokUAg5/tlKtTDME90ZREKuEseUk+TKuXhGQpQnW
- /OBQ==
+ d=linaro.org; s=google; t=1737829539; x=1738434339; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=wQ4lTVqtpyTo781FD+1Tn//Lmj0tttf1rce8iYGm1vs=;
+ b=oPaJ4xZV8YTxZXyxAKBNyLwrF9GOZJt+MCSZU8leCdDHrT66Gs/HCcSjeX/bAMi66H
+ P52KfEZoySVXuo2kIXD/IkqZsVoijsiLJAUToJ84bwWu7usJ+bsIn7ocUSd27C3z7c1T
+ LV9bY/rhPn+OBSpKk7fTU1MtbH2CPE+ghOq2Ys9oHN7h2V+AOf/4/TBoj2nYuoxuOGwU
+ F2lY86BQyLNrXaxsgwUMdOMJ6FGCWvHnRiNWLIJhFGRqvCAv6OWQuwwptpGv2CvSRAiy
+ iAlvAQ16tGY5/QGEcpyLt/ZEuJ5vqniRnZuYjdO+SohXLsXtaAbsf6UhvGmI5wf/zpcG
+ RJJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737829478; x=1738434278;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BvRb+A+szaUASQC+0C2N8r34T+ZA8fbAScI9edWRsk8=;
- b=n6mqg5blLQ3wzz/iSYu8avcI50aYVeQESMwAc5giosBfPbkKzO2gTkSPDjTfpNWJ1j
- MT7MZ8vMx91ykZbqqyncCtt2E4jgYQeKS07jPQfk5OBB8nnrbZnRdDJKEtDZMrhA6Xmi
- RsWXAzhDrNRtllUT6iWDOlpZ28ra65b6ZPKltv41x/e9/05ectoXCLELIKUVKupi3XUS
- 5m5/dvgoV+mcivZc/d1GrfAy7y2CFB8A3R9XAcxrx1RJUgL1T6JC8o+uN4a8Aft3MDUs
- iG027K11sL6UM47zO2lRzlYM/KXXjMarSbGVmmitF1hdWcoTUzp3AGVrzKXTGmbholI/
- gTHg==
-X-Gm-Message-State: AOJu0YwftMhG0EfZXknJp4vFnxhz0qV1xHVTO7Xl2L0f6s9EAJ+XtELz
- /evUe+Vc/P5S3U9WdLRlOPnsAZTTtK5XIjIaIz65T9QYHsjzRrNKXgMVXAXgVWBddDkJVmdVyKk
- YI/I=
-X-Gm-Gg: ASbGncsgSyIQh5g4e0tDl2yR47RPFbheM7BcBB+E4S1Gviuuu09ZuzdmPA9S/QUFR1K
- QhyZ8Jz+8fXvge08QRq9zr/4UImQeypXG3LZ38+E00lSGC+7TmMIvslSszlqg69jBZ5QqFyvi7L
- RXqRuuyPgoTeGSArXelGb6zGWjXXZHq9pGgK2OKvz7/f0Gl1Vq826nd757xmmRbiQmLqwsH2PhA
- LNXl4+bVBTJJ7wD3gTYWEfjW6rlVA5sPHRr1ha6NUaCc/4Cl1hq38M0hQzjBUyWUp13ykTSaSRi
- e0Kdt+rhng/sptQrdwiuzpsXlGsiaJ/Pfnr4ljZllOK5EUbIXFvnW/6S8HWB
-X-Google-Smtp-Source: AGHT+IEG/e5B52a79+jtYsln2JUwLvWGeOYA0IM+FAgXXkx733f0iHdltm87kfPpIMKN5DYLkxxjiQ==
-X-Received: by 2002:a05:6000:156c:b0:386:1cd3:8a05 with SMTP id
- ffacd0b85a97d-38bf57ce963mr35716064f8f.54.1737829477843; 
- Sat, 25 Jan 2025 10:24:37 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1737829539; x=1738434339;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wQ4lTVqtpyTo781FD+1Tn//Lmj0tttf1rce8iYGm1vs=;
+ b=ONSy1b6ZM9QRXKUmYSHJg5lpT+PMr5Dg3YnsC1XyJcO85Vi5r2szPtL9S/9uh7Bgsk
+ O3HTIqq9Sh+wWCeUD/Y+8bYj4lcGCHwSt+93aHeNEX42mcHKoXAtZSRSfea25aO8U082
+ HcptSlM8GkZWBjBDXRKBm7Nf34YFDLeQ449aA+rlWlu7cPADMLA2iqWYJp8/EkVD1naj
+ oGySEOdrAkNxFlBAzJOb+Niw6C3ig7jef/TCLoeSv1KodLZEdnQDAVk/slKKqc1Fh8+b
+ C4REUHdClaC3RNko+CO0Ho6fEAMHEEZ62r63Q5aYXF70FgMsis7NRPRCGsVJGPrMuRUp
+ 8Bkg==
+X-Gm-Message-State: AOJu0YypQPPlGc4aJRE86p8E1s8nM2Vc3fWpBu2zal5oTp8oihrDuaiG
+ K+re9k/AYV3yr677DCpAmTMlPTiEb+YW4m71A6RQMqqS5iiCa8YiHuhA3IaU93U=
+X-Gm-Gg: ASbGncv6HohjDMdISkeAayRE5pDQcRxInSZgkn20BboyKcKTavkhvIPChdQ97RsftD0
+ +M3v9Xt2iOR1KyGG4wTriktIPcmb8prcA2kDWCmB3zEOa0T0rrOlgCozlEpAYTOXHIL+CWRXBmk
+ AWH1BOEYX8oGk5JXhFvfZG+JSm85JyPK8KIulQERdHZRmiB6sygfEiuI0fvZlDvQQkWYd5biI0N
+ x+mrVgdox7NDutretA5+9cipEehZpJ0yAUVj780P2X9zza/HuN4qXvYmi9G72A2D7ohevTrU6QC
+ u4cEouInnyFsF9KunByMZw8YavhYnqwlrcJPRTs6rVXQqZkUmuKTPQ==
+X-Google-Smtp-Source: AGHT+IGKsDxbPo7Xf5OXZg0BCZ/Xxv8DH6u9CFy0KCka0NswMtpIv+1nIVxpIWROPUnGHkOHwOdJxA==
+X-Received: by 2002:a5d:4845:0:b0:386:857:cc54 with SMTP id
+ ffacd0b85a97d-38bf5679b17mr25583820f8f.9.1737829538799; 
+ Sat, 25 Jan 2025 10:25:38 -0800 (PST)
+Received: from [192.168.69.181] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a1c42b4sm6223869f8f.99.2025.01.25.10.24.36
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 25 Jan 2025 10:24:37 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/2] qemu/timer: Sanity check timer_list in timer_init_full()
-Date: Sat, 25 Jan 2025 19:24:25 +0100
-Message-ID: <20250125182425.59708-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250125182425.59708-1-philmd@linaro.org>
-References: <20250125182425.59708-1-philmd@linaro.org>
+ ffacd0b85a97d-38c2a18931esm6268973f8f.60.2025.01.25.10.25.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 25 Jan 2025 10:25:38 -0800 (PST)
+Message-ID: <fbf13036-18b3-4aa5-b514-e6c8484ff33e@linaro.org>
+Date: Sat, 25 Jan 2025 19:25:37 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 3/4] audio: Add functions to initialize buffers
+To: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>
+Cc: qemu-devel@nongnu.org, devel@daynix.com,
+ Phil Dennis-Jordan <phil@philjordan.eu>
+References: <20250123-coreaudio-v5-0-6873df4215a0@daynix.com>
+ <20250123-coreaudio-v5-3-6873df4215a0@daynix.com>
+ <7a020e94-841a-4a3c-bdea-12c00579ef3f@linaro.org>
+ <f62af9d4-36ae-45ea-8aa6-9139502da47e@daynix.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <f62af9d4-36ae-45ea-8aa6-9139502da47e@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,43 +102,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ensure we are not re-initializing a QEMUTimer already added
-to an active list. timer_init*() functions expect either
-a recently created and zeroed QEMUTimer, or one previously
-free'd with timer_free().
+On 24/1/25 05:58, Akihiko Odaki wrote:
+> On 2025/01/23 17:43, Philippe Mathieu-Daudé wrote:
+>> Hi Akihiko,
+>>
+>> On 23/1/25 08:18, Akihiko Odaki wrote:
+>>> These functions can be used to re-initialize buffers when hardware
+>>> parameters change due to device hotplug, for example.
+>>>
+>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>> Reviewed-by: Phil Dennis-Jordan <phil@philjordan.eu>
+>>> Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+>>> ---
+>>>   audio/audio_int.h |  2 ++
+>>>   audio/audio.c     | 24 ++++++++++++++++++------
+>>>   2 files changed, 20 insertions(+), 6 deletions(-)
+>>
+>>
+>>> index 
+>>> 87b4e9b6f2f356b6e5e972eabc100cf270fcbc29..17c6bbd0ae9e6ff810c0989dbfa1710ef674ff0a 100644
+>>> --- a/audio/audio.c
+>>> +++ b/audio/audio.c
+>>> @@ -1407,12 +1407,18 @@ void audio_run(AudioState *s, const char *msg)
+>>>   #endif
+>>>   }
+>>> +void audio_generic_initialize_buffer_in(HWVoiceIn *hw)
+>>> +{
+>>> +    g_free(hw->buf_emul);
+>>> +    hw->size_emul = hw->samples * hw->info.bytes_per_frame;
+>>> +    hw->buf_emul = g_malloc(hw->size_emul);
+>>
+>> What about using g_realloc()? Otherwise LGTM.
+> 
+> g_realloc() will copy the content, which is not necessary here.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/qemu/timer.h | 2 +-
- util/qemu-timer.c    | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+Oh I missed that! Maybe worth mentioning? Anyway, just nitpicking...
 
-diff --git a/include/qemu/timer.h b/include/qemu/timer.h
-index abd2204f3be..4717693f950 100644
---- a/include/qemu/timer.h
-+++ b/include/qemu/timer.h
-@@ -407,7 +407,7 @@ int64_t timerlistgroup_deadline_ns(QEMUTimerListGroup *tlg);
-  * (or default timer list group, if NULL).
-  * The caller is responsible for allocating the memory.
-  *
-- * You need not call an explicit deinit call. Simply make
-+ * You need not call an explicit timer_deinit() call. Simply make
-  * sure it is not on a list with timer_del.
-  */
- void timer_init_full(QEMUTimer *ts,
-diff --git a/util/qemu-timer.c b/util/qemu-timer.c
-index 0e8a453eaa1..058cae6e487 100644
---- a/util/qemu-timer.c
-+++ b/util/qemu-timer.c
-@@ -354,6 +354,7 @@ void timer_init_full(QEMUTimer *ts,
-     if (!timer_list_group) {
-         timer_list_group = &main_loop_tlg;
-     }
-+    assert(ts->timer_list == NULL);
-     ts->timer_list = timer_list_group->tl[type];
-     ts->cb = cb;
-     ts->opaque = opaque;
--- 
-2.47.1
-
+hw->size_emul = hw->samples * hw->info.bytes_per_frame;
+g_free(hw->buf_emul); /* Discard previous content, no need to realloc */
+hw->buf_emul = g_malloc(hw->size_emul);
 
