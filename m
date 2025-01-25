@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2785A1C332
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 13:35:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D8CFA1C32F
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 13:33:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbfLE-0008G0-50; Sat, 25 Jan 2025 07:32:48 -0500
+	id 1tbfLH-0008Ii-T3; Sat, 25 Jan 2025 07:32:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tbfL7-0008Dm-3h; Sat, 25 Jan 2025 07:32:42 -0500
+ id 1tbfLA-0008EM-Cw; Sat, 25 Jan 2025 07:32:44 -0500
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tbfL5-0005Tn-ES; Sat, 25 Jan 2025 07:32:40 -0500
+ id 1tbfL8-0005Un-KY; Sat, 25 Jan 2025 07:32:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737808359; x=1769344359;
+ t=1737808362; x=1769344362;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Bv9++MIdsioOarcOj78lH/SZyI4MnsCAuILQhxiMHgE=;
- b=l/nE541tlCJwtNiTvWhu5yD7VsQuQqEgbMsbB6h/fIaaExsvoayxy3yV
- kAGFFeCHE4NAqhVh7aQkcY7kdUzzEEBr1PzyCrdQRovhoAy11T1cfucZW
- xh/4Bqs73m6NCQf8y6Lvb+g0ytb3ArGEdA6MsW2LdnhZzzlI2qJbjDicD
- fJNzGRZ5OTtgryZJVmP3ZeBHif2VqxsqnIMIHoGYydFSpmTTjFfoe8OGP
- 4qLXKCgnzZIIQyIpuAOF7yNXObyfqqP+USqa7mi4krCxvN/w6a6A3ogW+
- aAqsXP3kt2Y/vLtayjW7TaahE5KH1fp/1JbNFASqUNgAq7rFHGX9RV0Qm Q==;
-X-CSE-ConnectionGUID: Em5MPB/aTfaYzrVqlkJ29w==
-X-CSE-MsgGUID: CGZEneUzSwyUscbmTIYfqg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="38434716"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="38434716"
+ bh=CG+zEQTxRSGBCyngVJmO+rcdFlbWKDTPQVhDRFOBO2E=;
+ b=TnxMTzsLcPDPloB0sdpxIksLoIwVS051bHq69c5UvpHBHwNL29taCR+F
+ pnCS84qUW5vucHl2NtbB+PmnbjA//ZHfQdPF5vpH4Tt6d8pC7tDJh4HWe
+ 5wmR9P8ehLSO7t/lc+2jCL8ySuZbTLUqIH+Uj8h0GNgNEQA4YhxKySgRy
+ iM5y63w4cLWh+vvYvSAB09zQhdyhJh2l4h5hz3wcxjv/yljwpL5869dz4
+ j+PAKbp3HmhtWqbCzfjFLhNoh9oVF7eNnN+wU6Co+RMx71iXWILbCCuCm
+ 5uJEWQPoUlU+j9rVpSzVREpD6bLayGXBO9fSm2UctT1R92WBthM/ahNto A==;
+X-CSE-ConnectionGUID: xqULjQZrSdarcVbhB/zF2g==
+X-CSE-MsgGUID: dnupu+TfSVS381pRfu+tvw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="38434720"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; d="scan'208";a="38434720"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jan 2025 04:32:38 -0800
-X-CSE-ConnectionGUID: NbjuRh2QQ8GuGU+/G6HELw==
-X-CSE-MsgGUID: VaWIrpoPR5CiKHCDoDyUFQ==
+ 25 Jan 2025 04:32:41 -0800
+X-CSE-ConnectionGUID: BmSnw5WQQ9+FXMXJEeL7tw==
+X-CSE-MsgGUID: 3xo0NBwBQPG2KrEgKNBfug==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,234,1732608000"; d="scan'208";a="107897684"
+X-IronPort-AV: E=Sophos;i="6.13,234,1732608000"; d="scan'208";a="107897697"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa007.fm.intel.com with ESMTP; 25 Jan 2025 04:32:35 -0800
+ by fmviesa007.fm.intel.com with ESMTP; 25 Jan 2025 04:32:38 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
@@ -51,9 +51,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 05/10] rust: add bindings for memattrs
-Date: Sat, 25 Jan 2025 20:51:32 +0800
-Message-Id: <20250125125137.1223277-6-zhao1.liu@intel.com>
+Subject: [PATCH 06/10] rust: add bindings for timer
+Date: Sat, 25 Jan 2025 20:51:33 +0800
+Message-Id: <20250125125137.1223277-7-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250125125137.1223277-1-zhao1.liu@intel.com>
 References: <20250125125137.1223277-1-zhao1.liu@intel.com>
@@ -84,80 +84,177 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The MemTxAttrs structure contains bitfield members, and bindgen is
-unable to generate an equivalent macro definition for
-MEMTXATTRS_UNSPECIFIED.
+Add timer bindings to help handle idiomatic Rust callbacks.
 
-Therefore, manually define a global constant variable
-MEMTXATTRS_UNSPECIFIED to support calls from Rust code.
+Additionally, wrap QEMUClockType in ClockType binding to avoid unsafe
+calls in device code.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
 Changes since RFC:
- * With a boolean type unspecified field, no need to add once_cell.
- * Merge memattrs binding to memory.rs.
+ * Use FnCall to support timer callback.
+ * Only add timer_init_full() binding. timer_new() is unnecessary since
+   device (HPET) could create and allocate QEMUTimer.
+ * Implement Drop for QEMUTimer.
+ * Add ClockType binding.
 ---
- rust/qemu-api/src/memory.rs   | 16 ++++++++++++++--
- rust/qemu-api/src/zeroable.rs |  1 +
- rust/wrapper.h                |  1 +
- 3 files changed, 16 insertions(+), 2 deletions(-)
+ meson.build                |  7 +++
+ rust/qemu-api/meson.build  |  1 +
+ rust/qemu-api/src/lib.rs   |  1 +
+ rust/qemu-api/src/timer.rs | 92 ++++++++++++++++++++++++++++++++++++++
+ rust/wrapper.h             |  1 +
+ 5 files changed, 102 insertions(+)
+ create mode 100644 rust/qemu-api/src/timer.rs
 
-diff --git a/rust/qemu-api/src/memory.rs b/rust/qemu-api/src/memory.rs
-index 963d689c27d4..fff92508c68f 100644
---- a/rust/qemu-api/src/memory.rs
-+++ b/rust/qemu-api/src/memory.rs
-@@ -2,7 +2,7 @@
- // Author(s): Paolo Bonzini <pbonzini@redhat.com>
- // SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/meson.build b/meson.build
+index da91b47be48b..1ec88770a60a 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4079,6 +4079,13 @@ if have_rust
+   foreach enum : c_bitfields
+     bindgen_args += ['--bitfield-enum', enum]
+   endforeach
++  c_nocopy = [
++    'QEMUTimer',
++  ]
++  # Used to customize Drop trait
++  foreach struct : c_nocopy
++    bindgen_args += ['--no-copy', struct]
++  endforeach
  
--//! Bindings for `MemoryRegion` and `MemoryRegionOps`
-+//! Bindings for `MemoryRegion`, `MemoryRegionOps` and `MemTxAttrs`
+   # TODO: Remove this comment when the clang/libclang mismatch issue is solved.
+   #
+diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+index 80eafc7f6bd8..caed2b233991 100644
+--- a/rust/qemu-api/meson.build
++++ b/rust/qemu-api/meson.build
+@@ -29,6 +29,7 @@ _qemu_api_rs = static_library(
+       'src/qdev.rs',
+       'src/qom.rs',
+       'src/sysbus.rs',
++      'src/timer.rs',
+       'src/vmstate.rs',
+       'src/zeroable.rs',
+     ],
+diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
+index 8cc095b13f6f..88825b69cff8 100644
+--- a/rust/qemu-api/src/lib.rs
++++ b/rust/qemu-api/src/lib.rs
+@@ -24,6 +24,7 @@
+ pub mod qdev;
+ pub mod qom;
+ pub mod sysbus;
++pub mod timer;
+ pub mod vmstate;
+ pub mod zeroable;
  
- use std::{
-     ffi::{CStr, CString},
-@@ -11,7 +11,7 @@
-     ptr::addr_of,
- };
- 
--pub use bindings::hwaddr;
-+pub use bindings::{hwaddr, MemTxAttrs};
- 
- use crate::{
-     bindings::{self, device_endian, memory_region_init_io},
-@@ -189,3 +189,15 @@ unsafe impl ObjectType for MemoryRegion {
-         unsafe { CStr::from_bytes_with_nul_unchecked(bindings::TYPE_MEMORY_REGION) };
- }
- qom_isa!(MemoryRegion: Object);
+diff --git a/rust/qemu-api/src/timer.rs b/rust/qemu-api/src/timer.rs
+new file mode 100644
+index 000000000000..a1c7c7b4d9e6
+--- /dev/null
++++ b/rust/qemu-api/src/timer.rs
+@@ -0,0 +1,92 @@
++// Copyright (C) 2024 Intel Corporation.
++// Author(s): Zhao Liu <zhai1.liu@intel.com>
++// SPDX-License-Identifier: GPL-2.0-or-later
 +
-+/// A special `MemTxAttrs` constant, used to indicate that no memary
-+/// attributes are specified.
-+///
-+/// Bus masters which don't specify any attributes will get this,
-+/// which has all attribute bits clear except the topmost one
-+/// (so that we can distinguish "all attributes deliberately clear"
-+/// from "didn't specify" if necessary).
-+pub const MEMTXATTRS_UNSPECIFIED: MemTxAttrs = MemTxAttrs {
-+    unspecified: true,
-+    ..Zeroable::ZERO
++use std::os::raw::{c_int, c_void};
++
++pub use bindings::QEMUTimer;
++
++use crate::{
++    bindings::{
++        self, qemu_clock_get_ns, timer_del, timer_init_full, timer_mod, QEMUClockType,
++        QEMUTimerListGroup,
++    },
++    callbacks::FnCall,
 +};
-diff --git a/rust/qemu-api/src/zeroable.rs b/rust/qemu-api/src/zeroable.rs
-index 75742b50d4e3..9f009606b1ab 100644
---- a/rust/qemu-api/src/zeroable.rs
-+++ b/rust/qemu-api/src/zeroable.rs
-@@ -101,3 +101,4 @@ fn default() -> Self {
- impl_zeroable!(crate::bindings::MemoryRegionOps__bindgen_ty_1);
- impl_zeroable!(crate::bindings::MemoryRegionOps__bindgen_ty_2);
- impl_zeroable!(crate::bindings::MemoryRegionOps);
-+impl_zeroable!(crate::bindings::MemTxAttrs);
++
++impl QEMUTimer {
++    pub fn new() -> Self {
++        Default::default()
++    }
++
++    pub fn timer_init_full<'timer, 'opaque: 'timer, T, F>(
++        &'timer mut self,
++        timer_list_group: Option<&QEMUTimerListGroup>,
++        clk_type: QEMUClockType,
++        scale: u32,
++        attributes: u32,
++        _f: F,
++        opaque: &'opaque T,
++    ) where
++        F: for<'a> FnCall<(&'a T,)>,
++    {
++        /// timer expiration callback
++        unsafe extern "C" fn rust_timer_handler<T, F: for<'a> FnCall<(&'a T,)>>(
++            opaque: *mut c_void,
++        ) {
++            // SAFETY: the opaque was passed as a reference to `T`.
++            F::call((unsafe { &*(opaque.cast::<T>()) },))
++        }
++
++        let timer_cb: unsafe extern "C" fn(*mut c_void) = rust_timer_handler::<T, F>;
++
++        // SAFETY: the opaque outlives the timer
++        unsafe {
++            timer_init_full(
++                self,
++                if let Some(g) = timer_list_group {
++                    g as *const QEMUTimerListGroup as *mut QEMUTimerListGroup
++                } else {
++                    ::core::ptr::null_mut()
++                },
++                clk_type,
++                scale as c_int,
++                attributes as c_int,
++                Some(timer_cb),
++                (opaque as *const T).cast::<c_void>() as *mut c_void,
++            )
++        }
++    }
++
++    pub fn timer_mod(&mut self, expire_time: u64) {
++        unsafe { timer_mod(self as *mut QEMUTimer, expire_time as i64) }
++    }
++}
++
++impl Drop for QEMUTimer {
++    fn drop(&mut self) {
++        unsafe { timer_del(self as *mut QEMUTimer) }
++    }
++}
++
++pub fn qemu_clock_get_virtual_ns() -> u64 {
++    // SAFETY:
++    // Valid parameter.
++    (unsafe { qemu_clock_get_ns(QEMUClockType::QEMU_CLOCK_VIRTUAL) }) as u64
++}
++
++pub struct ClockType {
++    pub id: QEMUClockType,
++}
++
++impl ClockType {
++    pub fn get_ns(&self) -> u64 {
++        // SAFETY: cannot be created outside this module, therefore id
++        // is valid
++        (unsafe { qemu_clock_get_ns(self.id) }) as u64
++    }
++}
++
++pub const CLOCK_VIRTUAL: ClockType = ClockType {
++    id: QEMUClockType::QEMU_CLOCK_VIRTUAL,
++};
 diff --git a/rust/wrapper.h b/rust/wrapper.h
-index a9bc67af0d5f..54839ce0f510 100644
+index 54839ce0f510..a35bfbd1760d 100644
 --- a/rust/wrapper.h
 +++ b/rust/wrapper.h
-@@ -62,3 +62,4 @@ typedef enum memory_order {
- #include "qapi/error.h"
+@@ -63,3 +63,4 @@ typedef enum memory_order {
  #include "migration/vmstate.h"
  #include "chardev/char-serial.h"
-+#include "exec/memattrs.h"
+ #include "exec/memattrs.h"
++#include "qemu/timer.h"
 -- 
 2.34.1
 
