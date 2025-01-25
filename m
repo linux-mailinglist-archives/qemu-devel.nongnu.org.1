@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EA56A1C4D2
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 19:15:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F14EA1C4D5
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 19:16:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbkfw-0008Mw-KO; Sat, 25 Jan 2025 13:14:32 -0500
+	id 1tbkg2-0008Qy-Ff; Sat, 25 Jan 2025 13:14:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkfs-0008Js-94
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:14:29 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkfx-0008Oz-ER
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:14:33 -0500
 Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkfq-0004HR-QD
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:14:28 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbkfv-0004I9-VD
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 13:14:33 -0500
 Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-436326dcb1cso20961315e9.0
- for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 10:14:26 -0800 (PST)
+ 5b1f17b1804b1-43625c4a50dso20247365e9.0
+ for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 10:14:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737828865; x=1738433665; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737828870; x=1738433670; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=J6WqpNLLgPHFQ99I41LLhDNBlDQghx4mWgl59MS9KjI=;
- b=Vw1eS1UR/ixe6IVZ3f93cUh84KleEPEoYHy/09q+UTxHTrPu8GaqmLkTWIEzEdfcd3
- KZ1uJ3GTCgIOS93c4T4ehsPzejz7XKmhtQz44/9gehDKkRq+ymDAXjq7hDUuMCWuvtZd
- ya8oKEx4q66kVgQaDAqH6g2/LbGaP0Og+HB+XZfEuKIBpGqwbw22z17iq3d3zWuOcPwB
- QJo/LXGF2EHNHla9wZW2JvdQKaKd+rbocNaaMbvOTBOefQp2pwYB7P/1TEaFoze9sn84
- SzcvENoDWRpglxSyD45XDNIPdY3GbtbokaOcgJ9nII950Zum5w9iIGf5qiTIHPsFLZUq
- /p7g==
+ bh=OjNRCKPy/l7f95vUUTcVvrIiqVVOepFXrbHeokjkTeQ=;
+ b=QEeGtKyTyaRXQyqMFPgl+hD7/VA2rBivdSHvJDNPW6gkOiJnBdoo7UvHJU6itwATKe
+ pdPeP7vO47T7GSQZZjADcoHBGw20bmHfUxqf7pPgLs4rkS/RCK8b/TzGSiHA5muk8uDK
+ R2YPCP3OXHO+hf1dNeygV1esnp/f273QLcMOWMz1TJ5KIfKMRWZWGc8DDjdO2csmcc5h
+ GkIxlu+YgP2eeyQEWtuTbmCJqHeV3TLM7HHsRH2AVIhN4bYBDVwtJgAx2TiugvaILHnd
+ 6UOLIfsS2inftG/DwMW5mR9p9PI717T6dcJMyitmwJjsowEq/Jr5tGJvTmIUaqnakYjD
+ IBew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737828865; x=1738433665;
+ d=1e100.net; s=20230601; t=1737828870; x=1738433670;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J6WqpNLLgPHFQ99I41LLhDNBlDQghx4mWgl59MS9KjI=;
- b=pqgBATdfhVp4dWFAn+wOZOcbrbBXmSdMtxB+/jV3ugWhv8O9cKSv0ZzTo286VKeKGz
- BF0DrZ5S1xlwhMJLomJlUYaXcWp119Jk06ae+U632QRkj0Wuw5istnBv8EZJaeXX64TV
- w3tawkeGucrmpDFiq/4wkPIESZ4nMDrq9dfzfPRcuxoH3HJq+spQIxlGX+8NdB8md/V3
- 8ZH2h4AcLsAGi6MTJLjVKhUKYW/kqadkPxEJminnEsVvNlQsMTVAPNE1ebwl/nrZFOvF
- 2DoRydtRbaR5FQM8P32vciaShvviYIqlq9WLJstiN5g7Er/25+loHRLV1Pr18374pGDq
- fGaw==
-X-Gm-Message-State: AOJu0YwjsC44BkW/q4gnVQdYkzWYn6Ra6a44XxJ/PGMYrmVdxn04IKJq
- TFsgg3jcaLjaQehFxeIUx2n8xXvroM/ER1mH5fZskBMVEaisgx0iK8xQcK5AuovCwSTdoeGPa4m
- IWZE=
-X-Gm-Gg: ASbGncujwj8AZ3jzX715oHoyTDYlFK3xooDHYoqU9U4f402pL1uj+/KdLuKyiYjZQPq
- OPvOiAyYVwgqEGCiC4Bsc0vU4PvCGA8xF/FCIbN6ffCpXT/4mgS+Pp6pG0UMbO80cv76QeIFIL4
- 4ZzegV59eN3dm/phTU9JeF7R01ySaUalTm8SvU2o1r371HKJ/NDhlWo2eGjNfZ/o70aFh4YcQUC
- YBkm2F3u6smj/wyN6LYctogBIdfaTnK8rNv/vbd9Btab8f0o2bNILyVah40Y3SclDPEAK8JDTl9
- qAV7wZwAmm2X7+iOCoJ5eTH3r82LUyft5g6Qbh8YQKpc/1RGFp/orYJZ1azT
-X-Google-Smtp-Source: AGHT+IHtukcUsuBgToag1rm73vPOv6PLwBxDIv19SmO8jk0VeznszQ2sl5L6woNkrDfICXUGMJC2jg==
-X-Received: by 2002:a05:600c:1f86:b0:436:faeb:2a1b with SMTP id
- 5b1f17b1804b1-438913db2cfmr312879235e9.13.1737828864896; 
- Sat, 25 Jan 2025 10:14:24 -0800 (PST)
+ bh=OjNRCKPy/l7f95vUUTcVvrIiqVVOepFXrbHeokjkTeQ=;
+ b=Z/ajJpte4xYBOYwzpzynMFHfLD+1FhxdWBF41ExxBpInkcslBESfyBCZct8xgP0Yme
+ eXcV+Y05sPza+TdVj+00cv0O74ZDBBkqcEDFUCIW7Ku4qnJmUdX7KLRkXLgG39CSL+02
+ 99Nlbe8MDXd8F/8Ia1oeyez6KGignLCXT8/Dj80oaNNOJnVdWaSP2oko8kt6RY3hoIqe
+ qKmecJApu55V8v0G+A4+3+/FaTBSB4ejnOr+9ewNIw7IJlmvOr/7vw5HfPJMYLifiKPw
+ deeLZC46ow3h3Ib1YtJIACWfBnkcYwtW1KyYRXUmyAmno0vS7btqtpBCh+EeFaJCAcuJ
+ +GJw==
+X-Gm-Message-State: AOJu0YzsjVFuCAQy9VnjZ9JRukGmK8oV4PPO8Y5AoKKFStt7Lx1jSY+g
+ HKBZsGocmvmxtTZVEAJRaq9yaPza2oJoGzsSfyDDVTqJR9FzSFCf4ho3dgEi9JJxIsHl4sx6HlG
+ wvNI=
+X-Gm-Gg: ASbGncuFkhOfLOBdAKlcFgXyHbZAx50gEVeP1Bol9lXcELpR/UnpV5E3G9FgI676clX
+ KPi7ZyEr7ZBF/Xj4ukihAEUrHAUgIegQfEgpheoIMAl6m/PoutIL6t/uhYfHKM2H3eCpiRyRHyj
+ UkW5PcGC3r6HcwupuqRZ1+o4NLjYKOk9Rrb9sN91KimnSUSBRi7+mvYrKZcUkGgfvxpyDuF6jAg
+ iAay2r/jqyPf77b9iJ5/RMfiM1bP1LW8w1GzB4ui8j5CwlqJtUChVwVncYe0tsXuGhPqKUcwxsq
+ 380A2pKJmB9Ul6lWjY5RQNPBytqSd15nrYCKHtc7Ki7i/cPHEkXhbIVJavmL
+X-Google-Smtp-Source: AGHT+IGsW1rE0tr04FeKYA2KGXlK/mvTNA5dlL64lnJuwONXDJIce4w6YtcdzlGTbIKmz0lEq52uwg==
+X-Received: by 2002:a5d:4d83:0:b0:385:f195:2a8 with SMTP id
+ ffacd0b85a97d-38bf566cd2emr22422454f8f.30.1737828870120; 
+ Sat, 25 Jan 2025 10:14:30 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd4d29cesm69824895e9.35.2025.01.25.10.14.21
+ ffacd0b85a97d-38c2a176434sm6225313f8f.13.2025.01.25.10.14.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 25 Jan 2025 10:14:23 -0800 (PST)
+ Sat, 25 Jan 2025 10:14:29 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Yi Liu <yi.l.liu@intel.com>, Markus Armbruster <armbru@redhat.com>,
@@ -82,10 +82,10 @@ Cc: Yi Liu <yi.l.liu@intel.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 7/9] hw/net: Have eTSEC device inherit from
+Subject: [PATCH 8/9] hw/tpm: Have TPM TIS sysbus device inherit from
  DYNAMIC_SYS_BUS_DEVICE
-Date: Sat, 25 Jan 2025 19:13:41 +0100
-Message-ID: <20250125181343.59151-8-philmd@linaro.org>
+Date: Sat, 25 Jan 2025 19:13:42 +0100
+Message-ID: <20250125181343.59151-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250125181343.59151-1-philmd@linaro.org>
 References: <20250125181343.59151-1-philmd@linaro.org>
@@ -116,34 +116,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because the network eTSEC device can be optionally plugged on the
+Because the TPM TIS sysbus device can be optionally plugged on the
 TYPE_PLATFORM_BUS_DEVICE, have it inherit TYPE_DYNAMIC_SYS_BUS_DEVICE.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/net/fsl_etsec/etsec.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ hw/tpm/tpm_tis_sysbus.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/net/fsl_etsec/etsec.c b/hw/net/fsl_etsec/etsec.c
-index 781b9003954..3ce4fa2662d 100644
---- a/hw/net/fsl_etsec/etsec.c
-+++ b/hw/net/fsl_etsec/etsec.c
-@@ -425,14 +425,12 @@ static void etsec_class_init(ObjectClass *klass, void *data)
-     dc->realize = etsec_realize;
-     device_class_set_legacy_reset(dc, etsec_reset);
-     device_class_set_props(dc, etsec_properties);
--    /* Supported by ppce500 machine */
+diff --git a/hw/tpm/tpm_tis_sysbus.c b/hw/tpm/tpm_tis_sysbus.c
+index ee0bfe9538e..4f187690a28 100644
+--- a/hw/tpm/tpm_tis_sysbus.c
++++ b/hw/tpm/tpm_tis_sysbus.c
+@@ -133,7 +133,6 @@ static void tpm_tis_sysbus_class_init(ObjectClass *klass, void *data)
+     dc->vmsd  = &vmstate_tpm_tis_sysbus;
+     tc->model = TPM_MODEL_TPM_TIS;
+     dc->realize = tpm_tis_sysbus_realizefn;
 -    dc->user_creatable = true;
- }
+     device_class_set_legacy_reset(dc, tpm_tis_sysbus_reset);
+     tc->request_completed = tpm_tis_sysbus_request_completed;
+     tc->get_version = tpm_tis_sysbus_get_tpm_version;
+@@ -142,7 +141,7 @@ static void tpm_tis_sysbus_class_init(ObjectClass *klass, void *data)
  
- static const TypeInfo etsec_types[] = {
-     {
-         .name          = TYPE_ETSEC_COMMON,
--        .parent        = TYPE_SYS_BUS_DEVICE,
-+        .parent        = TYPE_DYNAMIC_SYS_BUS_DEVICE,
-         .instance_size = sizeof(eTSEC),
-         .class_init    = etsec_class_init,
-         .instance_init = etsec_instance_init,
+ static const TypeInfo tpm_tis_sysbus_info = {
+     .name = TYPE_TPM_TIS_SYSBUS,
+-    .parent = TYPE_SYS_BUS_DEVICE,
++    .parent = TYPE_DYNAMIC_SYS_BUS_DEVICE,
+     .instance_size = sizeof(TPMStateSysBus),
+     .instance_init = tpm_tis_sysbus_initfn,
+     .class_init  = tpm_tis_sysbus_class_init,
 -- 
 2.47.1
 
