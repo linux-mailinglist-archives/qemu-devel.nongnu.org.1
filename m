@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69E8A1C434
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 17:09:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D142EA1C43B
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 17:13:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbiiY-0006Xn-CB; Sat, 25 Jan 2025 11:09:06 -0500
+	id 1tbiie-00076l-Ie; Sat, 25 Jan 2025 11:09:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbih3-0005Ar-MD
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 11:07:36 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbih4-0005B4-P7
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 11:07:38 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbigx-0000o1-NP
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 11:07:33 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-38a88ba968aso3029461f8f.3
- for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 08:07:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbih1-0000oN-Uk
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 11:07:34 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-38634c35129so2771233f8f.3
+ for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 08:07:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737821242; x=1738426042; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737821247; x=1738426047; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WDsGnhplkgqT/f4agy456szrFVjRVVohKrpBFsRKCFM=;
- b=xCLG7wXNIxaAcdV4oUHmSbZE/aqhyt9/vHldPn3M9Wz+yvd+4f9shn9CcdMPRvNbhk
- +W9NT2SUjj6Z6Hz5ItCeHeC74SIpxZDTJLpfmwL3XqcrhK9naO4jZ9A5QtJI/Tav4hPb
- zF1/CXG56Na49s90dfeW2QSdPx7+H7ckXAWV7Qjry4CqJqQ32MWVMdY/7j6ZEBaeJ0bP
- KTLttgMtJl9X8N7zm4zqaQ+/9fBrnkHzFOO5zpfayNml09RldGPgdt8csVGUBb7992AY
- e4CqH/DPBaio/SokAMPWsC895q6SoPT7JVoEtfFgcgR1fUFaddnTv0sSqlTJq1p6VbvD
- X4iw==
+ bh=uvyBSQXbzbGPZHAiCl001qEBhi2s4blv2wiDqu84MNg=;
+ b=QAiWdEmEI6T2fjhMShEMOkvl3HoL7+Mkc0bGhgcroxRXWWtmNY2SO2SDFQ/913gVzM
+ 71xE4crFl2dNAIzVM49WkTeh6IyRtSYi1XfMsjEBrRjnnN+hYrQNRLh2qjOG3LCwEiR3
+ g9gtZvaxPSA3ao5+Jww/bpxCrHopK2Jxy/b4iNeMNB+W+5zPm4HUQnv3JauO/712q0SX
+ xuMxwgBHbP6WXhNJRSGSPmwRlDuIA/MHhM7gkpZcPPSSKOIVT57TM/OqAV9ufJEZHkcF
+ Id06py8raLO2VqPdil9Z7eZP5iM1eVmFMYUmB4U6Z2KZCg2bgk/c6A5HJHgPpqn7TWBs
+ c+vA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737821242; x=1738426042;
+ d=1e100.net; s=20230601; t=1737821247; x=1738426047;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WDsGnhplkgqT/f4agy456szrFVjRVVohKrpBFsRKCFM=;
- b=bBMkCe4UXqOZCYyMjrA0FPboKq/zV5rSbam/PL4DWQJ52JocV0cVuEcw9RAdPCfB3C
- Ox+VbDy+UCv+mJICa+G1Ehu356VyW+BaSIrNZJ5ixK0PNDcnc0wro5F/vkbMcJA7wM65
- LILwqzExSYtgQvpDY/nOcsbbKkwOI9Do0fXg6htggNGDC8lXa2IJuTQQJhj+cO4rQXhn
- t7uEKKqiB4is0VrLpNOijhem7nMk102+z/ZWvc560+KQD4unZjxxrbpHdp+O7X35UTSm
- M0t/3WHb2PXgkN7UwiQlffamx1jDXDOUoZ1DRNBQvONiVTYUZuQCx18D8tlXxft7juWi
- Sxfw==
-X-Gm-Message-State: AOJu0Yy9RTHfB0VR/RBURU6w6D3Dyoor7DLlposnMoqgHGyEqcy8mZiH
- YAkiwP5KK7A0LQkdGeSblOoSJCTKb8Rb5+icMZbYfBkzLnTcBpCcg8IbIpdQpVfiqQq9LOldbvm
- d4yc=
-X-Gm-Gg: ASbGncteRNB8fqnpooQMrXw13G5/Cy/wZRNx9g/twtqxsiElY0rpDJ02T/LiJKdk2Tf
- dPn/SgYYjXLvkTys0rn6gAsPpy+ArxK4fGdUIvoE0RWIBUBFEVRVEWH0Yt7CUGciRemZBlW7ne/
- FFgeHOGVO6ScNYY0Zdf6BdVR1yTY8xDCsWwHh5ecN+0kECTm03TwzNtBjxvh7Fcj1Ex/WiACWQC
- a+5KrlkYIg+6D3KJE+3HgXzwmJaE35UUXzXgl4iYUobr5ZztiEqqI1u4iIoGfAqfXsvJrQFloBC
- rrP0GFSxBYKi/MuBOV8kml36KgNYQtS6EYhwuNpj/LuZit+1AtdUwNCojqkV
-X-Google-Smtp-Source: AGHT+IHgrXlWe0MpSqPY6pSVu0ECjDs95xLyN659PlZB+CQUMCn2qd09IWEKr84iEcsUwM41BkWLew==
-X-Received: by 2002:a5d:648a:0:b0:385:fb8d:865b with SMTP id
- ffacd0b85a97d-38bf57be4a2mr37116557f8f.48.1737821242172; 
- Sat, 25 Jan 2025 08:07:22 -0800 (PST)
+ bh=uvyBSQXbzbGPZHAiCl001qEBhi2s4blv2wiDqu84MNg=;
+ b=vZcox9lRR1UHLVJkMaM3IJSTbr+kg0JDaYSh/Flykd/ECWfshXg0qXeIA29A1EN0oy
+ FDrhD6F+NTxrPqJy+uHlmbdCz9HtAZ3cM9yhV9kbl04QrjZMQGr5WeyG71pIeL5LBzo7
+ muEdNXe4wtLWqOr7XrzxOvhEQbDmcpfbqkI7PuNmp70rcKqOG+xoSNKsUmCA38jK1gz7
+ YLEJlETjPhCMRnrASAcXss0+zGZRQH2aWq1R84/zS5zBkaLXDO7+5mMHnbns1Djq3NSG
+ CxFjfrwJtHtFm4wIvJz7x+qRLXIVXAuLXRR8KBLDKzVUNXxcSnG8QP5gGe2MGWSE6pYp
+ 0qwg==
+X-Gm-Message-State: AOJu0YzzNLKnypm170es4YrjD0e7oJx0XzsVCHs+LUaWNXYTK1uGoi6g
+ iTSAJgCzC9WoQ3DTfa4x5AaUlLbjzdpa/qc9I0MFiycfKy715ASb6Sc8L8yjtenZPTd02dELviE
+ Q6BE=
+X-Gm-Gg: ASbGnct8w8U8dgrmpJgwsJ0ZNpAC1/X4byfQpZw4md1isli9wwkS2BpXeIaM5vaqqJd
+ T8/q+uaGlNmJaA5ElOIuo9w1Dc1SjtXrsIoT4Axcs97RBnF4qnzsLMYOP+EjNB+glWr0ls2HQ6X
+ QXSg79pFx0/CyrY/JdHcfvW29JRThYLjo23RgebcKc9XxELkBFvXCOO9KWwcDPMallkGuHyXxCU
+ Sc2LsJfklpiLxikq8OVeTSkJq+ptQ3zqJe+2/39ni0LmlCPscdUDER/+DjdJXX/8bdjHh7+S/bE
+ tvjTjMbMVOl0jokBskTyu1xGOZDpXVgZLnhKWT9DaW2kOleKhDF+v9bV3jBL
+X-Google-Smtp-Source: AGHT+IE9mfMSP7xYzxXtZf3mC4ApZLSH4ZnW32HQaiV4P8mWmyDzkfa71ppTnXGfMPbT8F4BYnud4w==
+X-Received: by 2002:a05:6000:188c:b0:38a:8d32:2741 with SMTP id
+ ffacd0b85a97d-38bf5784a95mr29584300f8f.19.1737821246761; 
+ Sat, 25 Jan 2025 08:07:26 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a1c3f5dsm6030927f8f.92.2025.01.25.08.07.21
+ ffacd0b85a97d-38c2a188fd0sm6060157f8f.58.2025.01.25.08.07.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 25 Jan 2025 08:07:21 -0800 (PST)
+ Sat, 25 Jan 2025 08:07:26 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 18/24] target/s390x: Restrict I/O handler installers to
- system emulation
-Date: Sat, 25 Jan 2025 17:05:46 +0100
-Message-ID: <20250125160552.20546-19-philmd@linaro.org>
+Subject: [PATCH v2 19/24] target/s390x: Move has_work() from CPUClass to
+ SysemuCPUOps
+Date: Sat, 25 Jan 2025 17:05:47 +0100
+Message-ID: <20250125160552.20546-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250125160552.20546-1-philmd@linaro.org>
 References: <20250125160552.20546-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,32 +98,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Move has_work() from CPUClass to SysemuCPUOps, move
+s390_cpu_has_work() to cpu-system.c so it is only build
+for system emulation binaries, restrict functions not
+used anymore on user emulation in interrupt.c.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/s390x/s390x-internal.h | 2 ++
- 1 file changed, 2 insertions(+)
+ target/s390x/s390x-internal.h |  3 +++
+ target/s390x/cpu-system.c     | 18 ++++++++++++++++++
+ target/s390x/cpu.c            | 18 ------------------
+ target/s390x/interrupt.c      |  8 ++------
+ 4 files changed, 23 insertions(+), 24 deletions(-)
 
 diff --git a/target/s390x/s390x-internal.h b/target/s390x/s390x-internal.h
-index a750e7a343a..6e2c98de97a 100644
+index 6e2c98de97a..a4ba6227ab4 100644
 --- a/target/s390x/s390x-internal.h
 +++ b/target/s390x/s390x-internal.h
-@@ -356,6 +356,7 @@ void cpu_inject_stop(S390CPU *cpu);
+@@ -245,6 +245,7 @@ bool s390_cpu_system_realize(DeviceState *dev, Error **errp);
+ void s390_cpu_finalize(Object *obj);
+ void s390_cpu_system_class_init(CPUClass *cc);
+ void s390_cpu_machine_reset_cb(void *opaque);
++bool s390_cpu_has_work(CPUState *cs);
  
+ #else
+ static inline unsigned int s390_cpu_halt(S390CPU *cpu)
+@@ -341,6 +342,7 @@ void cpu_unmap_lowcore(LowCore *lowcore);
  
- /* ioinst.c */
+ /* interrupt.c */
+ void trigger_pgm_exception(CPUS390XState *env, uint32_t code);
 +#ifndef CONFIG_USER_ONLY
- void ioinst_handle_xsch(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
- void ioinst_handle_csch(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
- void ioinst_handle_hsch(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
-@@ -373,6 +374,7 @@ void ioinst_handle_schm(S390CPU *cpu, uint64_t reg1, uint64_t reg2,
- void ioinst_handle_rsch(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
- void ioinst_handle_rchp(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
- void ioinst_handle_sal(S390CPU *cpu, uint64_t reg1, uintptr_t ra);
+ void cpu_inject_clock_comparator(S390CPU *cpu);
+ void cpu_inject_cpu_timer(S390CPU *cpu);
+ void cpu_inject_emergency_signal(S390CPU *cpu, uint16_t src_cpu_addr);
+@@ -353,6 +355,7 @@ bool s390_cpu_has_restart_int(S390CPU *cpu);
+ bool s390_cpu_has_stop_int(S390CPU *cpu);
+ void cpu_inject_restart(S390CPU *cpu);
+ void cpu_inject_stop(S390CPU *cpu);
 +#endif /* CONFIG_USER_ONLY */
  
  
- /* mem_helper.c */
+ /* ioinst.c */
+diff --git a/target/s390x/cpu-system.c b/target/s390x/cpu-system.c
+index e9f8e7cc72f..9b380e343c2 100644
+--- a/target/s390x/cpu-system.c
++++ b/target/s390x/cpu-system.c
+@@ -39,6 +39,23 @@
+ #include "system/tcg.h"
+ #include "hw/core/sysemu-cpu-ops.h"
+ 
++bool s390_cpu_has_work(CPUState *cs)
++{
++    S390CPU *cpu = S390_CPU(cs);
++
++    /* STOPPED cpus can never wake up */
++    if (s390_cpu_get_state(cpu) != S390_CPU_STATE_LOAD &&
++        s390_cpu_get_state(cpu) != S390_CPU_STATE_OPERATING) {
++        return false;
++    }
++
++    if (!(cs->interrupt_request & CPU_INTERRUPT_HARD)) {
++        return false;
++    }
++
++    return s390_cpu_has_int(cpu);
++}
++
+ /* S390CPUClass::load_normal() */
+ static void s390_cpu_load_normal(CPUState *s)
+ {
+@@ -158,6 +175,7 @@ void s390_cpu_finalize(Object *obj)
+ }
+ 
+ static const struct SysemuCPUOps s390_sysemu_ops = {
++    .has_work = s390_cpu_has_work,
+     .get_phys_page_debug = s390_cpu_get_phys_page_debug,
+     .get_crash_info = s390_cpu_get_crash_info,
+     .write_elf64_note = s390_cpu_write_elf64_note,
+diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
+index 97d41c23de7..eb2c6650989 100644
+--- a/target/s390x/cpu.c
++++ b/target/s390x/cpu.c
+@@ -126,23 +126,6 @@ static vaddr s390_cpu_get_pc(CPUState *cs)
+     return cpu->env.psw.addr;
+ }
+ 
+-static bool s390_cpu_has_work(CPUState *cs)
+-{
+-    S390CPU *cpu = S390_CPU(cs);
+-
+-    /* STOPPED cpus can never wake up */
+-    if (s390_cpu_get_state(cpu) != S390_CPU_STATE_LOAD &&
+-        s390_cpu_get_state(cpu) != S390_CPU_STATE_OPERATING) {
+-        return false;
+-    }
+-
+-    if (!(cs->interrupt_request & CPU_INTERRUPT_HARD)) {
+-        return false;
+-    }
+-
+-    return s390_cpu_has_int(cpu);
+-}
+-
+ static int s390x_cpu_mmu_index(CPUState *cs, bool ifetch)
+ {
+     return s390x_env_mmu_index(cpu_env(cs), ifetch);
+@@ -394,7 +377,6 @@ static void s390_cpu_class_init(ObjectClass *oc, void *data)
+                                        &scc->parent_phases);
+ 
+     cc->class_by_name = s390_cpu_class_by_name,
+-    cc->has_work = s390_cpu_has_work;
+     cc->mmu_index = s390x_cpu_mmu_index;
+     cc->dump_state = s390_cpu_dump_state;
+     cc->query_cpu_fast = s390_query_cpu_fast;
+diff --git a/target/s390x/interrupt.c b/target/s390x/interrupt.c
+index d68d8955b1a..4ae6e2ddeaa 100644
+--- a/target/s390x/interrupt.c
++++ b/target/s390x/interrupt.c
+@@ -30,6 +30,7 @@ void trigger_pgm_exception(CPUS390XState *env, uint32_t code)
+     /* env->int_pgm_ilen is already set, or will be set during unwinding */
+ }
+ 
++#if !defined(CONFIG_USER_ONLY)
+ void s390_program_interrupt(CPUS390XState *env, uint32_t code, uintptr_t ra)
+ {
+     if (kvm_enabled()) {
+@@ -41,7 +42,6 @@ void s390_program_interrupt(CPUS390XState *env, uint32_t code, uintptr_t ra)
+     }
+ }
+ 
+-#if !defined(CONFIG_USER_ONLY)
+ void cpu_inject_clock_comparator(S390CPU *cpu)
+ {
+     CPUS390XState *env = &cpu->env;
+@@ -225,11 +225,9 @@ bool s390_cpu_has_stop_int(S390CPU *cpu)
+ 
+     return env->pending_int & INTERRUPT_STOP;
+ }
+-#endif
+ 
+ bool s390_cpu_has_int(S390CPU *cpu)
+ {
+-#ifndef CONFIG_USER_ONLY
+     if (!tcg_enabled()) {
+         return false;
+     }
+@@ -238,7 +236,5 @@ bool s390_cpu_has_int(S390CPU *cpu)
+            s390_cpu_has_io_int(cpu) ||
+            s390_cpu_has_restart_int(cpu) ||
+            s390_cpu_has_stop_int(cpu);
+-#else
+-    return false;
+-#endif
+ }
++#endif /* !CONFIG_USER_ONLY */
 -- 
 2.47.1
 
