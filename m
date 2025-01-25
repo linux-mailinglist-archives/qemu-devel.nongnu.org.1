@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EAE1A1C43A
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 17:12:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F86A1C427
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 17:07:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbifj-0004G5-5b; Sat, 25 Jan 2025 11:06:11 -0500
+	id 1tbifp-0004IQ-B2; Sat, 25 Jan 2025 11:06:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbifg-0004FV-K1
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 11:06:08 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbifm-0004I7-F4
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 11:06:14 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbife-0000ZF-MV
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 11:06:08 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-43625c4a50dso19813095e9.0
- for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 08:06:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbifk-0000c1-SW
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 11:06:14 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4361b0ec57aso32235675e9.0
+ for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 08:06:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737821165; x=1738425965; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737821170; x=1738425970; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LnxgPJtNl18qpQlYyJcdV2Lpgdr/I3RQhGnRLNDQ94c=;
- b=L+ynEg59YTATX2djMwimpEAgxBPjEmIWqOBEnQyCEGf5EVnQRXxcmUyI8jl0EES8mn
- g18FKF6Pe0f6BaBGM8VW+30ZuNYun+79Urcbf/I0mvIn3DOL8GQicTUSXQS55F09lell
- NXmmjuouCqoqDx+bXkxHP3gC9ptfNQQoPXMVS7OjlMPMtrh2fLkoHy1i6H2SkHjFxJSE
- s+ePEKJa5Zxcq3jU1+J+TibUiKOUqUBugpBdw4KrEFpw/wefn5Wb5pn8jImk54UbMAQR
- 9cJ6nNqu6vVFanr5ADNHJ7eSXWNGq5jW6oxFZmM+sIt0+dlQ625kwawybvBjrxeUr4+S
- 0keA==
+ bh=1YoTq/Kw8BFNJbd5udCtM6rehNhaZvqVSckhQj9fm84=;
+ b=wMDHUySxNc/jdwJQSdsfaazG08wfO4dBlH28e33m/Q24uh2ySJGVL/Es3a8/zxfHl+
+ sOYAtY70BgYCz8vcozlI7KUpnnds7LKaYEqbiC02ljK0lil80ugJpcIdqT5ptdvUmWvU
+ VQNhntcKi/J2yNIvEYLvUOzEIx1ovMp+9Ct8N9FANJjgGXtquv/yb9DZUURNa1T/sHVp
+ A3URdZbAE3tqYMBkc0RT9ZNrI1zvBUp/Xnq5sLn5KUTGa3ePDkQYzy5qdBMJGXnNosve
+ K7F98VDqIW+K3OYYXJqmrMpdMttN/o3Za/1dgefoKDcOdgXJXDnsOJlww+iVAbQCNjds
+ yAiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737821165; x=1738425965;
+ d=1e100.net; s=20230601; t=1737821170; x=1738425970;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LnxgPJtNl18qpQlYyJcdV2Lpgdr/I3RQhGnRLNDQ94c=;
- b=hKDAth9BrEj7mNPy9nI1m2tSi88J74DtW7026VrmKoUoR8FOitEB3lZk9N7JYzextO
- iIm56pC2qu2XlkTwzvNzS3Oa7MAApPhbKI/A8zvxHKS9cJJZmGdmefgxfVzMMYeEljjZ
- lI2NB68njmqTAojLAfvvITqEkaCFKzi6amJCnNnaODMNUGOLJaxTbH/+k9c5PPIbPDka
- 3ptF3tplKuxhJBOiPJtpn3qg0XlIORq8g0rEAkWthUS3L6Gx1fiep1QeJLpzNJROwYOd
- +eHlgnlMPezVQDEKCxv628swl6KzVz94V1TlENPtmqQinlZIT+RCIy1JNLZ7LVP2gdzx
- 8eDw==
-X-Gm-Message-State: AOJu0Yz4VAwobDxd6keZzNoGF8yFnOU5oPdTjvKEFigYUV9IeWSwL45/
- QFmReg4rNn0iq02MMXYwmArPYTNuZulyWKv5VHrpJKdlvZy1mOoHnlXeolkKbdoM5ZmLIOel1Ln
- OZc8=
-X-Gm-Gg: ASbGncukV2U9YCl6eP2wW8ORWAygSxNc0ZPeYr87imHjSOGm5j9Qg/mzKN2wjpEKy60
- c/OCg/1VnaogUojAv3MxMf1Bq0h2D1/V2vunbR+Hzwppk+0uUhYDqsR7B+b6dj1x2d6eoAC1sKE
- xKXnXmsrQMjVBjyqNM9bszGlGZuvQb1Z+wUBN3MdfgBNYv3RqBS4FTtsVc1f77apyIHXQaJiXq6
- InkP+nf8ETsuH8Gs/Wm+Mn3LK/I8wnosclcYvW+awN+sV2t24ifZcUZ2E+setcT4hO+FhzJumMy
- wNDRpppRkZ2164qrKCGKUC08rMRs0F7hXWaRvSfPSiIxCG5P1aFysiVNd/8S
-X-Google-Smtp-Source: AGHT+IHulbjfJra9BA5XAoqH3yZculUe+FioSiRYi/YhQqd5pcfvCZTOlnSq+AeeVFwkh8hZAwU1DQ==
-X-Received: by 2002:a5d:620f:0:b0:38b:d765:7027 with SMTP id
- ffacd0b85a97d-38bf57a2675mr24349477f8f.41.1737821164688; 
- Sat, 25 Jan 2025 08:06:04 -0800 (PST)
+ bh=1YoTq/Kw8BFNJbd5udCtM6rehNhaZvqVSckhQj9fm84=;
+ b=Rpeu9mkxxcED5jGQaKCY1GT39neITJANujSKy4yI6BkBst+FVFLkSZ0qdaON+yzQmH
+ +nrR3smrLauqDla26LvL9UQlB843goeQhDddjEeRGh7oSbWIO0+5PdvGZFCizjzz8ywP
+ ZW8Z1ZfVJ7Wz66Q77wdN3wJbpzP0QP4b76AOqo8J12RD8+uRjsfvPNap3z+v8Y5ThWnq
+ NIA8jsX+YYkdbaH7qFZWDlL1pKfoTA7SMaIEjgQaiET9l5jeT2PCkAEL1XdZDsz8+O6w
+ SuYuZrMsjeC9QibSuMc5WSAVdfy76rV0opIxOXa3stjKxU1StVH/o2PuJq/ppJdv8NXy
+ msiw==
+X-Gm-Message-State: AOJu0YxcnWpuUg3KqM9hVu+dsMbrGVwGCsp4KAGAOJeKBFtYh9QCzGap
+ dIcfKcRpSWBJeguLNpojrRaZr0mTOIsKykwYQZdutZcC6MOhY0ulz3HZoWgZY2scDFEpK7KVNep
+ EYT4=
+X-Gm-Gg: ASbGnctshzzWMakCGWEnlLLIkxRizZmLPBZ8nutWvIzBZspx3QQFiAa3VsD+vIEvgVH
+ kdLmJbqe9eSTGidFDgKxscRS/MdHPgUAbWgjb05UUTfOz96EUmuvmSzo5skxzKL7Z9U9vYGts62
+ NZDLubseSfdBae+nPasxZExShzos5IWHT4y25bbfT0GGwZmatm10hXxF0KlBNFtObhrWddB6/rE
+ XM+q73z+saxDBAv87CpTcPGchDTKkpqPTTIbfS4DhYtqoH4N45Ji6aloiXAuv9fJU140ONtLxyN
+ 1iEHF083ic2VtIaLxqV3LzGiwnOQitI6+f0RSaSE9s+AAvByD7wn07mqXPGd
+X-Google-Smtp-Source: AGHT+IFq7hqygNk4iEUDU8X67GVCsaQ4kRPaRr3yMIVEjjtDJXqKhU3bVpcjZV7Lan+5bsV8KmeHcA==
+X-Received: by 2002:a05:600c:3acd:b0:438:c18c:5ad8 with SMTP id
+ 5b1f17b1804b1-438c18c5b00mr44668995e9.31.1737821170008; 
+ Sat, 25 Jan 2025 08:06:10 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a17d7bfsm5942195f8f.35.2025.01.25.08.06.03
+ 5b1f17b1804b1-438bd54c0ecsm66090525e9.30.2025.01.25.08.06.08
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 25 Jan 2025 08:06:04 -0800 (PST)
+ Sat, 25 Jan 2025 08:06:08 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 02/24] cpus: Un-inline cpu_has_work()
-Date: Sat, 25 Jan 2025 17:05:30 +0100
-Message-ID: <20250125160552.20546-3-philmd@linaro.org>
+Subject: [PATCH v2 03/24] cpus: Introduce SysemuCPUOps::has_work() handler
+Date: Sat, 25 Jan 2025 17:05:31 +0100
+Message-ID: <20250125160552.20546-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250125160552.20546-1-philmd@linaro.org>
 References: <20250125160552.20546-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,49 +97,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In order to expand cpu_has_work(), un-inline it.
+SysemuCPUOps::has_work() is similar to CPUClass::has_work(),
+but only exposed on system emulation.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/core/cpu.h | 6 +-----
- hw/core/cpu-system.c  | 6 ++++++
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ include/hw/core/sysemu-cpu-ops.h | 4 ++++
+ include/hw/core/tcg-cpu-ops.h    | 2 +-
+ hw/core/cpu-system.c             | 4 ++++
+ 3 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index e094d54949d..d64c823e768 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -756,11 +756,7 @@ bool cpu_virtio_is_big_endian(CPUState *cpu);
-  *
-  * Returns: %true if the CPU has work, %false otherwise.
+diff --git a/include/hw/core/sysemu-cpu-ops.h b/include/hw/core/sysemu-cpu-ops.h
+index 0df5b058f50..dee8a62ca98 100644
+--- a/include/hw/core/sysemu-cpu-ops.h
++++ b/include/hw/core/sysemu-cpu-ops.h
+@@ -16,6 +16,10 @@
+  * struct SysemuCPUOps: System operations specific to a CPU class
   */
--static inline bool cpu_has_work(CPUState *cpu)
--{
--    g_assert(cpu->cc->has_work);
--    return cpu->cc->has_work(cpu);
--}
-+bool cpu_has_work(CPUState *cpu);
- 
- #endif /* CONFIG_USER_ONLY */
- 
+ typedef struct SysemuCPUOps {
++    /**
++     * @has_work: Callback for checking if there is work to do.
++     */
++    bool (*has_work)(CPUState *cpu);
+     /**
+      * @get_memory_mapping: Callback for obtaining the memory mappings.
+      */
+diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
+index 2e3f1690f12..f60e5303f21 100644
+--- a/include/hw/core/tcg-cpu-ops.h
++++ b/include/hw/core/tcg-cpu-ops.h
+@@ -141,7 +141,7 @@ struct TCGCPUOps {
+      *
+      * This method must be provided. If the target does not need to
+      * do anything special for halt, the same function used for its
+-     * CPUClass::has_work method can be used here, as they have the
++     * SysemuCPUOps::has_work method can be used here, as they have the
+      * same function signature.
+      */
+     bool (*cpu_exec_halt)(CPUState *cpu);
 diff --git a/hw/core/cpu-system.c b/hw/core/cpu-system.c
-index 37d54d04bf8..16d5efee12d 100644
+index 16d5efee12d..7b16bda2250 100644
 --- a/hw/core/cpu-system.c
 +++ b/hw/core/cpu-system.c
-@@ -23,6 +23,12 @@
- #include "exec/tswap.h"
- #include "hw/core/sysemu-cpu-ops.h"
+@@ -25,6 +25,10 @@
  
-+bool cpu_has_work(CPUState *cpu)
-+{
-+    g_assert(cpu->cc->has_work);
-+    return cpu->cc->has_work(cpu);
-+}
-+
- bool cpu_paging_enabled(const CPUState *cpu)
+ bool cpu_has_work(CPUState *cpu)
  {
-     if (cpu->cc->sysemu_ops->get_paging_enabled) {
++    if (cpu->cc->sysemu_ops->has_work) {
++        return cpu->cc->sysemu_ops->has_work(cpu);
++    }
++
+     g_assert(cpu->cc->has_work);
+     return cpu->cc->has_work(cpu);
+ }
 -- 
 2.47.1
 
