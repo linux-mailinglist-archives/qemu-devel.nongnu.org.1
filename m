@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F195A1C4BB
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 18:54:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32EC6A1C4BF
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 18:56:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbkLu-0006pO-N6; Sat, 25 Jan 2025 12:53:50 -0500
+	id 1tbkO6-0001O7-AL; Sat, 25 Jan 2025 12:56:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tbkLs-0006p9-I9
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:53:48 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1tbkO1-0001Ng-OI
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:56:01 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tbkLr-00014M-4R
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:53:48 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-2166f1e589cso80437845ad.3
- for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 09:53:46 -0800 (PST)
+ id 1tbkO0-0001ZD-9I
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:56:01 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-218c8aca5f1so74675905ad.0
+ for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 09:55:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737827626; x=1738432426; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737827758; x=1738432558; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=vyvJDzClY8xuQEruomzfsjN2X2J0zHz6xOds7I0idrM=;
- b=anV6PiWfFnL5McuTlYe8w8G6Mh4tx4jyopo/xmt+q50WWQq9FREOxLzq6geppPCMmV
- 7zWpfgqdGFqwkeI4y+0VFtHzjv5w1vT8MkfjUNiNuIVcBk+o0kIK12fAxXrO3/Pi1chD
- Rakng/YIs4KC8HoLLQGMV72xTfxQJETOvKanDbK5BqbkhclpHPCWnnAxHPdVdRGsZ1Ob
- R7nBMssx45HQFlxBmVdGhtCYcBioCySXVHSOjh6Tm+2SzmvCV+Y/FUpVW8hxdhdO345f
- CXfSXCFTG/lSNWhkINfHJwPCVuqlEYNhpl1OeFQwqWHzFQDO437jzpxRuSc1WAZQ6HYg
- 3CdA==
+ bh=2Wm4E91HwVfdcP5HjbFE/OCbHsqxHFYJpSIpK5ULfc4=;
+ b=Giat6f598laNYx+H8mNozUlM4J1+VCep021EMVq5meGe3h3PL1484tkkG3Q+aO/z+u
+ AK/B5pT2Og0dNCjcMqZEj6WzU8gCO0QLuSHzV/d+n+Kf1O+2OU4K+uCBOpshYGLPxKXY
+ DF/HyyVkHh91zaZc7roIE3lC1O1wf19prMn8G52DN3zDfoD/n72jdmYENHnJS380nuDC
+ UnvyINkrXAa1J5G+z+Vke2izz39a3uz0vq7p+mgJJSwsReXc/AW7fIOOXjVmO0FQ14lf
+ U/LvOBvCW5ysV8mWp11RNikLpEHnTJB43U5Zwj+hRscZFcho5G+CllWmoDAJT7qVCTuv
+ Ex3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737827626; x=1738432426;
+ d=1e100.net; s=20230601; t=1737827758; x=1738432558;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vyvJDzClY8xuQEruomzfsjN2X2J0zHz6xOds7I0idrM=;
- b=DqMDU5ZuD6DcI1WT1aQCevOS8IVWJV6YhIBJP0tJO86oRDSoOtOvN3FXQLWoOiX461
- p1m8ji8XvMwfNiKv/x6rkS4s96RHlDZansXgKUux93lnW6Mnh0vHtf6wsfqBecAC6hs3
- +0a+M2b9sytc8SWZr3VAzrubYi8U7JgXPMcrVa3EcfkM9CtsCDomal51SVrE2EtyobIz
- +Ae89PFIQrv4xa8f50hKmqk6rustQQW2qJeDnvxkkHri4qwYuebSjPzK+feCmrbAIZhL
- 5cgcKz1OpNYPBO3PpKY7nbbPvCksRu5SOhr9tc2LV25ZbQKrLL559xtgv2I/rENVM0qd
- lUiw==
-X-Gm-Message-State: AOJu0Yz/Lx/HCvPLRMz02X2nJYEAS6+vkZIHjdiU9Y+Wau0yHF4yIjOr
- QdEvp/Y24ccS03kCFD2aPJxMDQRvUzg45784gDLdTLAIOXhjsKavFU2TrI8cZoGydI9jC+8WFzQ
- r
-X-Gm-Gg: ASbGncvTOCNprmdWqJsBczWzhw7TygAHOaraESVmInXszY0sInvjqaxTYXn/0sD6nbX
- 3SVVvHwlFhKgD5kjJElpDwRkcs2fuiwm4op56ioQ8l/DZ78PEGValwr3Bzix2c6xfjA2ubNg1d+
- RAHj/Kjs0CLSc4Op51TVoLqZ2dpFuky+6z+mO2mRBg90r0kLhz5+QPPLLEKJgeDhQxWzAxR2KMZ
- BPPr7sD4fA+P7bT2CVWPx14OYTjhGIjqyR7NGiNoDEFz5gHCohjmPEM7A1qMac1yZvhnSZr7XGP
- W3f78HEDUmrXx/XsglCsvuc2tdIl3tBu
-X-Google-Smtp-Source: AGHT+IHMt+Sc+CFthoj/er4FIQL7cOuFl6j5f2DR6GqMxER67HPAsO1HrT8SfS02V4l1GyyR8ZHLkw==
-X-Received: by 2002:a17:902:f543:b0:216:5002:7341 with SMTP id
- d9443c01a7336-21c3564e6e5mr557462825ad.44.1737827625829; 
- Sat, 25 Jan 2025 09:53:45 -0800 (PST)
+ bh=2Wm4E91HwVfdcP5HjbFE/OCbHsqxHFYJpSIpK5ULfc4=;
+ b=u0EAdMz3+FaJmbzOUutsTnk/HH0bFvp0NseZW3ClLk1oKC19iXKFlMLmkyVmxuZ+N6
+ cyixgiFpd8rccjssD8LxrSNShSq+4RJSWHRK4vpK2z2gKQzI+5JxKC6N/Yg5lhXC2tqr
+ pvgU4fzcj/KI83Fl8DkHHVJ+S6VJIgX7j+nLyrJWtvoOVh5+NG46frVR1ZFUHJcVwSEM
+ 1mjAAF53ITIGFTULIXvN/UWriZAl2xxW3rRAJMX6rBbNBdnQ8Hx5zISwRaPxecGcxciX
+ c7+Rwamo4JZFCQvHiaXmjnvBntmnu/tJXY+PTSUrM6FLODNYSGr2SdHXGkydk1EUzAri
+ fesQ==
+X-Gm-Message-State: AOJu0Yx5jOL18tpsMCLlpnLUa9DRsAqJLA1yfZZho6IzubZtISsX2NRF
+ dUr0z1FZs+YHBxuA7NBrVij2zZGOnhw7HF25KLy2Oiz2cy/xIwcgxfmYaYOHNd1+lwnL6qCAqey
+ i
+X-Gm-Gg: ASbGncuWvKOiQ1J5PPQxdMR66Zi8xZ/lHvlabU9TCohMG/2UUdOF6bbRdm79pA8Gcw2
+ vIT+1CUIcnB2zuOakcccaB/eMkitLfAWU8vzZm9XbA/WZZ4wOnfWxJIeVviqKul40uK4vyMVWQG
+ 2bbIkrw8CJ5wXHCFtA41oi6m9GBZOZFNs4W6sci59I4JD3pthjjlVfgoZLHQGU+W7kTsmUP6RTW
+ 10SQKL1OP4DEItBlAfx8Os9yNJrB70UwwJcEx/74jY/0Ueo835zpwwb0AE8ku/Vta7RbjOhqTeZ
+ YdwNkhYdY0V2jZo1kclojg==
+X-Google-Smtp-Source: AGHT+IGJMqhsP/J4wFbfx+9Pt7HocD4CeP1zr7QH+q3wNPOkLRabx40E6dBvnm5aOWhUsujh6oWlpg==
+X-Received: by 2002:a05:6a20:a105:b0:1e1:b153:4dc9 with SMTP id
+ adf61e73a8af0-1eb214983b7mr52966169637.19.1737827758697; 
+ Sat, 25 Jan 2025 09:55:58 -0800 (PST)
 Received: from [192.168.74.94] ([50.200.230.211])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21da424e779sm35045155ad.213.2025.01.25.09.53.44
+ d2e1a72fcca58-72f8a6d22e4sm3986772b3a.83.2025.01.25.09.55.58
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 25 Jan 2025 09:53:45 -0800 (PST)
-Message-ID: <06ec4933-560f-4d6c-bcce-e4649c0ee0a2@linaro.org>
-Date: Sat, 25 Jan 2025 09:53:42 -0800
+ Sat, 25 Jan 2025 09:55:58 -0800 (PST)
+Message-ID: <12b52f8b-f7a5-4bd4-b735-395a3f33b88c@linaro.org>
+Date: Sat, 25 Jan 2025 09:55:56 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 38/76] target/arm: Handle FPCR.NEP for 3-input scalar
- operations
+Subject: Re: [PATCH 39/76] target/arm: Handle FPCR.NEP for BFCVT scalar
 To: qemu-devel@nongnu.org
 References: <20250124162836.2332150-1-peter.maydell@linaro.org>
- <20250124162836.2332150-39-peter.maydell@linaro.org>
+ <20250124162836.2332150-40-peter.maydell@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250124162836.2332150-39-peter.maydell@linaro.org>
+In-Reply-To: <20250124162836.2332150-40-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,14 +101,18 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 1/24/25 08:27, Peter Maydell wrote:
-> Handle FPCR.NEP for the 3-input scalar operations which use
-> do_fmla_scalar_idx() and do_fmadd(), by making them call the
-> appropriate write_fp_*reg_merging() functions.
+> Currently we implement BFCVT scalar via do_fp1_scalar().  This works
+> even though BFCVT is a narrowing operation from 32 to 16 bits,
+> because we can use write_fp_sreg() for float16. However, FPCR.NEP
+> support requires that we use write_fp_hreg_merging() for float16
+> outputs, so we can't continue to borrow the non-narrowing
+> do_fp1_scalar() function for this. Split out trans_BFCVT_s()
+> into its own implementation that honours FPCR.NEP.
 > 
 > Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   target/arm/tcg/translate-a64.c | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
+>   target/arm/tcg/translate-a64.c | 25 +++++++++++++++++++++----
+>   1 file changed, 21 insertions(+), 4 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
