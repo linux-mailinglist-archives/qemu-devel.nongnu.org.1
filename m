@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9970BA1C486
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 18:05:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D90A1C47D
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 18:03:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbjYG-0007jT-Tk; Sat, 25 Jan 2025 12:02:32 -0500
+	id 1tbjXn-00070i-4V; Sat, 25 Jan 2025 12:02:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbjXz-0007Ld-Ig
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:02:16 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tbjX4-0006L2-3P
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:01:24 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbjXx-0000U8-VF
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:02:15 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-38634c35129so2799435f8f.3
- for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 09:02:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tbjX2-0000MN-CQ
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 12:01:17 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-21669fd5c7cso54706935ad.3
+ for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 09:01:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737824532; x=1738429332; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=SFxXNpC5yVfbLd+sXWLwj9ZcwKFDj0iGBJJhc1kZZeQ=;
- b=TKztmODiVcQDk0CNVWfLKxXA5jb137SdOmHrZduqjKQ5uO1BfmLylYj2nyPmSx7NgT
- /YIelJeW9B6NhEAFQ2wvbw/+P/fBNX+kXL/+S216Iuojo9QqsNTWZm9OPW3331Z36j6D
- dDvCdReirJzOBxEAqlaLqQz3VLgTVklDCDq73Cr6k4UZGBlCSFOt+IK289eebi0MMdIy
- 1xOipwsUeB6X/KKg3l/mKqY6gg90dzQhOnrtnR8dtMfVgV4faZ7T0U1e98df1x3VnihW
- o8ilsxNQwRRzFznl2QRGJ9bJqLe3jRrL0O0S466qJS5fJ4NQ6qbF2+ggxXIV8/pKrchR
- aTjQ==
+ d=linaro.org; s=google; t=1737824475; x=1738429275; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=kcOPA6Q2QvRKaH5kJijY1WM9qcLftyp6JJQkKS9scFo=;
+ b=wK29Tf/AAAmUkuO1GXlb3apwVUDmN6CPBxFCOmSUPMUBARbqW4mIjVMitk4wR3MjV2
+ HQlJXDJaBcfUMQ2Jx2mE9DK8n6ZSIwRO/uSV8uKpoy79bq+Gy4NDLDT/hd3s3lWX5eQ8
+ xIJ1ci1SWPxAygTBXg5hOQigOHCKqIbvPQcGg8JBuQ9/WFVYBBsaCQmSZz98QvxirPdV
+ bSvIje1bKz9zt9PMvvyxGTzzL4sneKQsTfR/Ys/hgTTeiXdiIx1DzjFrVsDr55dpJUT5
+ eq5kvthcAeggLV2MCCl13gIxyyI+sqvLhGlzLk41uHVQV2074RMONcA/G9dveXxpKQqY
+ HW9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737824532; x=1738429332;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=SFxXNpC5yVfbLd+sXWLwj9ZcwKFDj0iGBJJhc1kZZeQ=;
- b=kaBxfbKTrtBXmQZ1u82l3Rw8Gi4Vnprzg+GWuPLJg7HshcZyuhcXUq2cc2jFbdAayC
- D7zHO3nXrBlkJJjyRVkJ8DbG9qxd+6CzJ23Bi9Xp5bFzFax7ooVo2RLEnfIU7u/D78x8
- 2WzNwNvwfhN73Li8d+XJWmmsoqLIV/UX9/5KSmqeMUBblHCrz7AYX2QbEDzQV+pC6ugW
- hIvf0QZm4kEpIDyvT007BrrLrqjDl1pYs2DsjLITCk9JDGLwOT0xgk9NWRsmvVbH9Y/s
- cbxNJlUWvwiE/lLxRU5IyMM+cmsETTbDvZL+rF+LHA77Ar4bXpA9Q6XF5xynoj6LYzXl
- JSog==
-X-Gm-Message-State: AOJu0YwTt7gXXI3JeZtVGox9jcy/o7lLD4G8D98p7cgpJnTuz+zi4uwq
- xhL8MwLDyjCZtyu00dY6MCxZbJn4xSGd21CKRCGy2U9SWoL1FMz4BbFsnpiOg+pen38GrwEw94P
- INuQ=
-X-Gm-Gg: ASbGncsm88TTBm9TaBnlsWXpqv55uCuXxkcSw56g+mSiyM7pucyDOpiERWo9q45uzvJ
- ZFCm9c1i6vvl4JoXFPVPQWr0VXxm7t8mwrHcbZiMPqbOlX0zad0GDwFor27X+x8tqIwkC794aJY
- yj4oDhztvIVuGzxbAGrQwBt8DxvZrDC56RJJlr4IZ3H3XF5W3jRrXOn8udalzUrQN4PJZo+fQC6
- kro5XpGLsVJO2g4BZPMenPkTAEOS1UKNoqNLc4Q+nj0fz+ZweuqJDPir/trjd99g6iuzyE8y/fr
- anN40tzRdKFAgCbOm8x9V5KtpjrQNKgaF88c7hLZNd+otnXnyLK24PI=
-X-Google-Smtp-Source: AGHT+IFFGkIfqh2cMcDbWztbBHQXitzwJE+gpZkJs7ecNISsRijiSGAOSTdd2+U0OL1Grz/3K2EarQ==
-X-Received: by 2002:a05:6000:156c:b0:385:eb85:f111 with SMTP id
- ffacd0b85a97d-38bf577f703mr38489428f8f.14.1737824530481; 
- Sat, 25 Jan 2025 09:02:10 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a1bb057sm6050952f8f.62.2025.01.25.09.02.09
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 25 Jan 2025 09:02:10 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 09/24] target/i386: Move has_work() from CPUClass to
- SysemuCPUOps
-Date: Sat, 25 Jan 2025 18:01:10 +0100
-Message-ID: <20250125170125.32855-10-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250125170125.32855-1-philmd@linaro.org>
-References: <20250125170125.32855-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1737824475; x=1738429275;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=kcOPA6Q2QvRKaH5kJijY1WM9qcLftyp6JJQkKS9scFo=;
+ b=GSLAO0fzAdLczKNixRtnkmiOGDqqoKxV25S+zSWMioyP+cvqn0vbvrtN8DrMo82AXp
+ RVw6QPgtmDpl8n+cOzEPr2hOwywu5Z77YN6d0rHhQF+7ocYDprN6EvJP8WSh5H6H3Bvz
+ /LRW69fLFppz816RSNp2vcUUS5fOyvHI6txgBVsfBjmMvnfRM98ThixH0Car36+O9nPY
+ fVgdxVmEWbC/igL683uR4iZ0XpVNuCeoHubgd0gp3fhwFi4xJz5Rs+t/Euj3UN1AC/ur
+ WHQmZODcWuJ+gSB0+flmLW0yVprGLay7QmCOp1cUd1FtUBihDifByH+bPkpV1h3Ntisf
+ xxsQ==
+X-Gm-Message-State: AOJu0YwCDCFo/YUtN/fvWv3xWkNo4XR96ApYOH6i7JO97B5eUm1ITRPR
+ LfOGM/ZrEfs+uERG5OqAPdipzRqS4UwDs7MTnKcc66IoAp6vc7lUqcC3Jx4EdBjBFomIYBGE3Zg
+ /
+X-Gm-Gg: ASbGnctp1ABa8W+7PLj8tcwIxxK/PYk7mRnY/I8Ii5dhyOkt8zs8acGvMacZonseaN6
+ h42YTgFUyjEOkoJCuLZ8AmMPPKKi4Zqfykip9rN6r519Xu6TTLN547f/Dpj2d6WzsbhfuJ4z6n3
+ 9KEuTLc7k8oVKDGvWUK3/Vthibi9bjhxCnyL7hEsqEbZFQojAtoGoynDNr9Q4LZyJ1zQ22rQHQd
+ PqySw7UtrrvwrHgw+yXAoX/E6dlv5prRyNrlIuHUT6z0klgkrWXsaNQ//DYdqiD6ml4mlBMQ4Pj
+ VS9GEEpf3StTXHDif0EUhQ==
+X-Google-Smtp-Source: AGHT+IHpCcK7HXz0egktvN57ZevMY0z1wAUomrj+/H5MtjwYUKLV41T3kx+a/Dywo8vO6WiPqPHp2A==
+X-Received: by 2002:a05:6a00:8e09:b0:725:ef4b:de30 with SMTP id
+ d2e1a72fcca58-72dafa6b436mr55028584b3a.14.1737824474495; 
+ Sat, 25 Jan 2025 09:01:14 -0800 (PST)
+Received: from [192.168.74.94] ([50.200.230.211])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-72f8a77c560sm4033651b3a.142.2025.01.25.09.01.13
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 25 Jan 2025 09:01:14 -0800 (PST)
+Message-ID: <cf98fa32-9507-414a-95e2-83e682db349a@linaro.org>
+Date: Sat, 25 Jan 2025 09:01:12 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 26/76] target/arm: Use FPST_FPCR_F16_A64 for
+ halfprec-to-other conversions
+To: qemu-devel@nongnu.org
+References: <20250124162836.2332150-1-peter.maydell@linaro.org>
+ <20250124162836.2332150-27-peter.maydell@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250124162836.2332150-27-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,100 +101,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move has_work() from CPUClass to SysemuCPUOps,
-restrict x86_cpu_pending_interrupt() to system.
+On 1/24/25 08:27, Peter Maydell wrote:
+> We should be using the F16-specific float_status for conversions from
+> half-precision, because halfprec inputs never set Input Denormal.
+> 
+> Without FEAT_AHP, using the wrong fpst here had no effect, because
+> the only difference between the F16_A64 and A64 fpst is its handling
+> of flush-to-zero on input and output, and the helper functions
+> vfp_fcvt_f16_to_* and vfp_fcvt_*_to_f16 all explicitly squash the
+> relevant flushing flags, and flush_inputs_to_zero was the only way
+> that IDC could be set.
+> 
+> With FEAT_AHP, the FPCR.AH=1 behaviour sets IDC for
+> input_denormal_used, which we will only ignore in
+> vfp_get_fpsr_from_host() for the F16_A64 fpst; so it matters that we
+> use that one for f16 inputs (and the normal one for single/double to
+> f16 conversions).
+> 
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> ---
+>   target/arm/tcg/translate-a64.c | 9 ++++++---
+>   target/arm/tcg/translate-sve.c | 4 ++--
+>   2 files changed, 8 insertions(+), 5 deletions(-)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/i386/cpu.h | 4 ++--
- target/i386/cpu.c | 8 +++-----
- 2 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index b26e25ba15e..869b8598cd5 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2289,8 +2289,6 @@ struct X86CPUClass {
- extern const VMStateDescription vmstate_x86_cpu;
- #endif
- 
--int x86_cpu_pending_interrupt(CPUState *cs, int interrupt_request);
--
- int x86_cpu_write_elf64_note(WriteCoreDumpFunction f, CPUState *cpu,
-                              int cpuid, DumpState *s);
- int x86_cpu_write_elf32_note(WriteCoreDumpFunction f, CPUState *cpu,
-@@ -2313,6 +2311,8 @@ void x86_cpu_list(void);
- int cpu_x86_support_mca_broadcast(CPUX86State *env);
- 
- #ifndef CONFIG_USER_ONLY
-+int x86_cpu_pending_interrupt(CPUState *cs, int interrupt_request);
-+
- hwaddr x86_cpu_get_phys_page_attrs_debug(CPUState *cpu, vaddr addr,
-                                          MemTxAttrs *attrs);
- int cpu_get_pic_interrupt(CPUX86State *s);
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 1b9c11022c4..51faba4e0b4 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -8256,16 +8256,15 @@ static vaddr x86_cpu_get_pc(CPUState *cs)
-     return cpu->env.eip + cpu->env.segs[R_CS].base;
- }
- 
-+#if !defined(CONFIG_USER_ONLY)
- int x86_cpu_pending_interrupt(CPUState *cs, int interrupt_request)
- {
-     X86CPU *cpu = X86_CPU(cs);
-     CPUX86State *env = &cpu->env;
- 
--#if !defined(CONFIG_USER_ONLY)
-     if (interrupt_request & CPU_INTERRUPT_POLL) {
-         return CPU_INTERRUPT_POLL;
-     }
--#endif
-     if (interrupt_request & CPU_INTERRUPT_SIPI) {
-         return CPU_INTERRUPT_SIPI;
-     }
-@@ -8286,14 +8285,12 @@ int x86_cpu_pending_interrupt(CPUState *cs, int interrupt_request)
-                      (env->eflags & IF_MASK &&
-                       !(env->hflags & HF_INHIBIT_IRQ_MASK))))) {
-             return CPU_INTERRUPT_HARD;
--#if !defined(CONFIG_USER_ONLY)
-         } else if (env->hflags2 & HF2_VGIF_MASK) {
-             if((interrupt_request & CPU_INTERRUPT_VIRQ) &&
-                    (env->eflags & IF_MASK) &&
-                    !(env->hflags & HF_INHIBIT_IRQ_MASK)) {
-                         return CPU_INTERRUPT_VIRQ;
-             }
--#endif
-         }
-     }
- 
-@@ -8304,6 +8301,7 @@ static bool x86_cpu_has_work(CPUState *cs)
- {
-     return x86_cpu_pending_interrupt(cs, cs->interrupt_request) != 0;
- }
-+#endif /* !CONFIG_USER_ONLY */
- 
- int x86_mmu_index_pl(CPUX86State *env, unsigned pl)
- {
-@@ -8544,6 +8542,7 @@ static const Property x86_cpu_properties[] = {
- #include "hw/core/sysemu-cpu-ops.h"
- 
- static const struct SysemuCPUOps i386_sysemu_ops = {
-+    .has_work = x86_cpu_has_work,
-     .get_memory_mapping = x86_cpu_get_memory_mapping,
-     .get_paging_enabled = x86_cpu_get_paging_enabled,
-     .get_phys_page_attrs_debug = x86_cpu_get_phys_page_attrs_debug,
-@@ -8577,7 +8576,6 @@ static void x86_cpu_common_class_init(ObjectClass *oc, void *data)
- 
-     cc->class_by_name = x86_cpu_class_by_name;
-     cc->parse_features = x86_cpu_parse_featurestr;
--    cc->has_work = x86_cpu_has_work;
-     cc->mmu_index = x86_cpu_mmu_index;
-     cc->dump_state = x86_cpu_dump_state;
-     cc->set_pc = x86_cpu_set_pc;
--- 
-2.47.1
-
+r~
 
