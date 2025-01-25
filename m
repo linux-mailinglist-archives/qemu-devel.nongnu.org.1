@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08AD7A1C46F
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 18:00:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D612A1C471
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Jan 2025 18:00:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbjUv-0003wn-Q1; Sat, 25 Jan 2025 11:59:05 -0500
+	id 1tbjV1-0003yQ-1h; Sat, 25 Jan 2025 11:59:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbjUr-0003wC-LD
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 11:59:02 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbjUw-0003xR-9c
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 11:59:07 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbjUq-0008No-74
- for qemu-devel@nongnu.org; Sat, 25 Jan 2025 11:59:01 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-43626213fffso26480605e9.1
- for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 08:58:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tbjUu-0008Of-Oc
+ for qemu-devel@nongnu.org; Sat, 25 Jan 2025 11:59:06 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3863c36a731so2624465f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 08:59:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737824337; x=1738429137; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=vl8eHc07qy9w4iSjn1hsKOzQrxEbvrS/cmwezgpPirA=;
- b=HENe/ZT4HhAQ2JqJnAxYKmTyzHItT2iBPjsuTdPzp6OYGyBueJGISM/RBSZcEDNioP
- /pGanoVQrdvqJ8DW3cAEOfjfqSXnWc1bCSEAX5iPWd/bQdOB1dirB7ppSc+HUtjUGOJ7
- SR3AMg6V90z9QpKUrLCgYy1wD132hURh3QxpkE8JtnS11aOi/vGpJlxIadYgvB2w+L0P
- bkoiRadog4rT14ScyrD+83pOzGbHPOeIZs1dLwcFJZwge8wRkiKpACyMQpUpbiUn7lQ5
- uL31B8f5htXuvxJuuSDLcfNEquduh4xt3zq2yjW71cBKc3qIfiX3GWCul789u4wDHSdo
- XNZQ==
+ d=linaro.org; s=google; t=1737824343; x=1738429143; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=X7KSVe0Pu2BA5nyUjsZvrSv4yu0Zq1gmeaMsg5YcpCk=;
+ b=MW1MlkQle2TEkxFbsOvyhv67COVhN7Z/fjKq7u2Y8uCKr3H/TN8tqrXjn/kngdiacf
+ Csfjrk1OJOz7vXUxaRTXRwEzyRjVD5wgshKklx56YYiFqnk02SQkR9HGg2AtV5kFEUDk
+ qYeWRvWubKMIgUB+vS1RBt4vyLofPSsebDw0CmzF4DNRw3AKZ6BU3nI4fJJSwZF9hEKW
+ NMpA1k4XmlPa+8u1gxDD7jue929IkM46ddPETX+xmZde5DbNtJNVCfCCjApQXnk7vSju
+ s7BhtykwWvjvNyy6N6BvBEasULXehN+Qr80+dItQFNwD7+2sV2Wlhbtx2BQnSmINwSQt
+ N6eA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737824337; x=1738429137;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vl8eHc07qy9w4iSjn1hsKOzQrxEbvrS/cmwezgpPirA=;
- b=KnKbCa4fZprLYWLDWdinspLgFZXlVyh3fTGhd6ZYNc6YRmW9CoUswwJcyIKgg3UWdb
- /6roVusPzRVlGp029xN3jT7V0MEwXkgbx6IHcE7Gr/16UQ2MuVnkmaCaXaexhirJmW2M
- XWgko05KKmq6pjmmtycA82I+MjO9fd+bYlzzFH0IexTXWt4HhOhl9W3+wF40OZGeINGx
- TcxSRebSypFhKkJI7T1GEPz36g5tnYr5vJKooOvOtYlZTFfELtq1GewFAggrLSZV1QPB
- bPF2RQ+75mNgfaHMrMxUkqFnK/Xft9a1WaqyGb3DVf5dfuzrwevWTNkjYEh036THsO9I
- FLjw==
-X-Gm-Message-State: AOJu0YxmzYC8/KxP82+HXud9WFRpKdR2vWyrkqli59ibHDkdkcSQ5g+8
- CYES80/K+XKazbuOXUOBFo3WFAfLpmkz2uR3wIpSMlZIb9YryPPnLgpFgBAPxUc3hN1be6jT6UC
- B01s=
-X-Gm-Gg: ASbGncuPlbIZAWYl0TMevMNcX1N7Nv7Ime+Kmb5CM1lCwQSX7DzaPVgIC2f7M/9kuSA
- 1pzIGSGdSIX7reKjCCAD0ij0ZlslA45fW7fqdmuCzAp1ZautduNnCHgajwnPyOghfD5731l43K2
- GV1HyYDyQ2GDx/Rm27CwW+SIIAj8O+ik/vY9e9IiN8ixya8aLqu+OF8Li/DOfJYUrf3rzaNE3UL
- iHOV/dtIavH+PE+K3qdTIUZwBwZyj3jc0BASpE/eSnfF+KFpOUhztR9EVNwG7k9evbs+uB9kSM6
- PKbxM5QgEaIXk9Zyw6RgV7f37+T385F9vscdxDdALrl93b+cqL3/ciA=
-X-Google-Smtp-Source: AGHT+IEBRaAZ7+mLdhJjgm9AhOLIgHolcvpDeFIuooGkwxYtBzTJdzM0JjjqkiDmmbyjryWkAxysVg==
-X-Received: by 2002:a05:600c:21d8:b0:434:ea1a:e30c with SMTP id
- 5b1f17b1804b1-438bd0bca9amr74777855e9.13.1737824337360; 
- Sat, 25 Jan 2025 08:58:57 -0800 (PST)
+ d=1e100.net; s=20230601; t=1737824343; x=1738429143;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=X7KSVe0Pu2BA5nyUjsZvrSv4yu0Zq1gmeaMsg5YcpCk=;
+ b=CiHMTSICC6b0dlZeB9ntSrXAF1kFvZfXhPJu6/7D2Bj77KtvAcMzzU+8KOKG7av7b+
+ KFD/mt8+qhhl5nKYG4SkzQt8tHigCzdI9VLn9xtUHostxQGx6mIHNZFOHw5QAu8V+5+5
+ z7/U5VQciOazeDPrUOYCgc/zgbDKXUQihw3+MwzynSMH49xj+Yg3H3sJG8DjwV9/RhaO
+ rUbksjNcn6BOdmye3sKmatAqfXL5EMykfbGDHklkX2RtY8zIdHovDKfL/fbvCgwRtFWp
+ 0zDvRoaiZw4Xd1KFrpiJDnso2cHLbLDZIbgMDgh8jUnvbMIRFOvNTZ/0dwRNwqH2Gben
+ byjw==
+X-Gm-Message-State: AOJu0Yzo5yn7OI/iqGI+JU64IUgUwF47UIfZHP5sC1ta7ReX38nTOMEt
+ Car4Euqt5Xban7wwlHAaS4mGh+MBufIJPqrv7st1thgz3tDJCT7tTsABq09T6qowEFQzooWrAcD
+ scGY=
+X-Gm-Gg: ASbGnctGYIKOpWiM7uia4O9ps6SWMBiuB3D8CrjpKt8u36fy143s9Ezy6XHmIGK8JSw
+ VGTlaT6SROJ2jZyi0tC5ABl5dHM3dEbqfxm+atYw7/1LrVFzLihUDRIsQYQRtuOAm8C80vGQitY
+ CjqSb4HWQznyAaxkxZ7KBUPnvPU8fo0V9RX7XO07MLdDDl7wScE3dt5KsomU41IETWvph3RUCLp
+ y25gbT+7PVV5gg4YB3qEMcKMocTZoMdD2GL6QNGXi8q3wcAwn8rtBwHtgsLi7s4rWeNVAUG0Tyz
+ ijbZrIWtJLYckYovd13WndC0Ca9YocxqBtInFBS3lqz9wRnoSbX35mU=
+X-Google-Smtp-Source: AGHT+IEY/q6snjyQOBUoXWOdiFJPHuSkxSsUtir/U13sCGxAW4WnvHOwbzKXZWBGrF6VG97E7JoS1w==
+X-Received: by 2002:a05:6000:1e48:b0:385:f00a:a45b with SMTP id
+ ffacd0b85a97d-38bf5784bdamr26780412f8f.21.1737824342701; 
+ Sat, 25 Jan 2025 08:59:02 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a188a77sm6148916f8f.51.2025.01.25.08.58.56
+ ffacd0b85a97d-38c2a1bb0easm5966939f8f.77.2025.01.25.08.59.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 25 Jan 2025 08:58:56 -0800 (PST)
+ Sat, 25 Jan 2025 08:59:01 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -66,15 +67,17 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/2] qom: Introduce class_post_init() handler
-Date: Sat, 25 Jan 2025 17:58:53 +0100
-Message-ID: <20250125165855.32168-1-philmd@linaro.org>
+Subject: [PATCH 1/2] qom: Declare class_base_init() before class_init()
+Date: Sat, 25 Jan 2025 17:58:54 +0100
+Message-ID: <20250125165855.32168-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250125165855.32168-1-philmd@linaro.org>
+References: <20250125165855.32168-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,20 +100,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a class_post_init() handler to be called by parents
-*after* child class_init() handler is called. This is
-necessary to have parent class check children properly
-set some values or mandatory handlers.
+Since class_base_init() is called *before* class_init(),
+move its declaration in TypeInfo before class_init() to
+help a bit. No logical change.
 
-Philippe Mathieu-Daudé (2):
-  qom: Declare class_base_init() before class_init()
-  qom: Introduce class_post_init() handler
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/qom/object.h     | 10 +++++-----
+ qom/object.c             |  4 ++--
+ rust/qemu-api/src/qom.rs |  2 +-
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
- include/qom/object.h     | 17 ++++++++++-------
- qom/object.c             | 14 ++++++++++++--
- rust/qemu-api/src/qom.rs |  8 +++++++-
- 3 files changed, 29 insertions(+), 10 deletions(-)
-
+diff --git a/include/qom/object.h b/include/qom/object.h
+index 9192265db76..3776267e903 100644
+--- a/include/qom/object.h
++++ b/include/qom/object.h
+@@ -457,14 +457,14 @@ struct Object
+  *   assumed to be the size of the parent class.  This allows a type to avoid
+  *   implementing an explicit class type if they are not adding additional
+  *   virtual functions.
+- * @class_init: This function is called after all parent class initialization
+- *   has occurred to allow a class to set its default virtual method pointers.
+- *   This is also the function to use to override virtual methods from a parent
+- *   class.
+  * @class_base_init: This function is called for all base classes after all
+  *   parent class initialization has occurred, but before the class itself
+  *   is initialized.  This is the function to use to undo the effects of
+  *   memcpy from the parent class to the descendants.
++ * @class_init: This function is called after all parent class initialization
++ *   has occurred to allow a class to set its default virtual method pointers.
++ *   This is also the function to use to override virtual methods from a parent
++ *   class.
+  * @class_data: Data to pass to the @class_init,
+  *   @class_base_init. This can be useful when building dynamic
+  *   classes.
+@@ -486,8 +486,8 @@ struct TypeInfo
+     bool abstract;
+     size_t class_size;
+ 
+-    void (*class_init)(ObjectClass *klass, void *data);
+     void (*class_base_init)(ObjectClass *klass, void *data);
++    void (*class_init)(ObjectClass *klass, void *data);
+     void *class_data;
+ 
+     InterfaceInfo *interfaces;
+diff --git a/qom/object.c b/qom/object.c
+index ec447f14a78..1a686dff5a0 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -54,8 +54,8 @@ struct TypeImpl
+     size_t instance_size;
+     size_t instance_align;
+ 
+-    void (*class_init)(ObjectClass *klass, void *data);
+     void (*class_base_init)(ObjectClass *klass, void *data);
++    void (*class_init)(ObjectClass *klass, void *data);
+ 
+     void *class_data;
+ 
+@@ -119,8 +119,8 @@ static TypeImpl *type_new(const TypeInfo *info)
+     ti->instance_size = info->instance_size;
+     ti->instance_align = info->instance_align;
+ 
+-    ti->class_init = info->class_init;
+     ti->class_base_init = info->class_base_init;
++    ti->class_init = info->class_init;
+     ti->class_data = info->class_data;
+ 
+     ti->instance_init = info->instance_init;
+diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
+index 97901fb9084..6033228e338 100644
+--- a/rust/qemu-api/src/qom.rs
++++ b/rust/qemu-api/src/qom.rs
+@@ -486,8 +486,8 @@ pub trait ObjectImpl: ObjectType + ClassInitImpl<Self::Class> {
+         instance_finalize: Some(drop_object::<Self>),
+         abstract_: Self::ABSTRACT,
+         class_size: core::mem::size_of::<Self::Class>(),
+-        class_init: Some(rust_class_init::<Self>),
+         class_base_init: Self::CLASS_BASE_INIT,
++        class_init: Some(rust_class_init::<Self>),
+         class_data: core::ptr::null_mut(),
+         interfaces: core::ptr::null_mut(),
+     };
 -- 
 2.47.1
 
