@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F629A1CE64
-	for <lists+qemu-devel@lfdr.de>; Sun, 26 Jan 2025 21:14:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D22FA1CE5E
+	for <lists+qemu-devel@lfdr.de>; Sun, 26 Jan 2025 21:14:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tc90q-0002NF-QO; Sun, 26 Jan 2025 15:13:44 -0500
+	id 1tc912-0002rp-0v; Sun, 26 Jan 2025 15:13:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1tc90m-0002AA-R6
- for qemu-devel@nongnu.org; Sun, 26 Jan 2025 15:13:41 -0500
+ id 1tc90x-0002nh-Ao
+ for qemu-devel@nongnu.org; Sun, 26 Jan 2025 15:13:52 -0500
 Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1tc90l-0005zC-6B
- for qemu-devel@nongnu.org; Sun, 26 Jan 2025 15:13:40 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1737922405; cv=none; 
+ id 1tc90v-0005zp-AS
+ for qemu-devel@nongnu.org; Sun, 26 Jan 2025 15:13:50 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1737922413; cv=none; 
  d=zohomail.com; s=zohoarc; 
- b=JsFt0n2MfRxmKZ/gnWn1ZSLiWh84XSd2F/uwi9lkqN9RY9fa2Ie6cKipvbZ47cITajes9TvFulkArto2AdRh18vt8rm7iHrEik/UACxrrKBsSKTOB+b42bfj3xZaRKpyfs0zYuHaKEwjWGrnfbMAF6uXEA/nzP4Tz6duclMDNlQ=
+ b=GdsUS/X14jZ3BJf9TMpsSe4Qe65MujskoRw20DTOf02M6kwiNtxqjmdW9u5cQe9ZDFrLJR0ke6EDFCKBbTD7zvDRRqIg5sKDVx5oX+1RX399ubjhbWOHqrqWT0Npck2sGr6zmfsvI4Gffs3krA6fV0IVtL/g/ZIbzxu0dakwuLU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1737922405;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=6DjPZf8D+M9Sq+CuG2Gf4zXOMQo/KjX9SAibJXB048w=; 
- b=k+0U0tjjNqOuYrCjyS1pT1MRO2lqzJ3qTl9iyeSKl3gK8toJB/KFlhrt8XdiLdJmMJ5jOjVQY4hTcd9MOvy1l5BacyuVes1B623ri8P1JpzIQf5Hw8BU09qnwWu85m9QCfrfxtFGJjwXujsufdUFaUBQr3967QkajfoP1MrKiLs=
+ s=zohoarc; t=1737922413;
+ h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=zLI3qXwaXKTykWVi8Ns4VL2KGXxkbjbjmoX14lvBsJw=; 
+ b=A1oc0fMa6Og1w2PfK9sSmWfZQmxmYT6iSxQLhb0HjYv+ONiVqlq5YrRhCHU26yg0j3DRLx4yxxS4nMefAYUdcPxcr5oyBJbfzvVKmRNw4jxZ89eaApbhU0EwPdCMxWVLHYLj/LR3GaUiivP6Je0yFY5JNrjLmMS4B1ZZiEMiqEk=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
  dkim=pass  header.i=collabora.com;
  spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
  dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1737922405; 
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1737922413; 
  s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=6DjPZf8D+M9Sq+CuG2Gf4zXOMQo/KjX9SAibJXB048w=;
- b=F3hUEcPTdAtDlVMLChHEKJy4adpifhFo4lmCjEDpMldtoxE8HdZ1rDsyHL43JuLP
- pSd/YbD77/3oInT4XWq9Ky7lx9fADSysL57WG2mFg36jmjaseT164KOgHH9eSfeHWrg
- 2rBn1mdA/I9/lexzQp/KHe00lJlH2TDwHnkyHK8o=
-Received: by mx.zohomail.com with SMTPS id 1737922400241557.1894847089698;
- Sun, 26 Jan 2025 12:13:20 -0800 (PST)
+ h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=zLI3qXwaXKTykWVi8Ns4VL2KGXxkbjbjmoX14lvBsJw=;
+ b=Ou1zScb4vXNIoPuzFBMwSuRIDhBWOkoLN5g7xssJqyU+swW4iN/QWM9KuqqxaC9u
+ CejNbpt6kq2m8vQc/MYfFnMOXMu0unSIs+EQmNULGKczluol70ZgGkmJrZOsC73C2Z0
+ 6GVFnPqJtxSTgZFnceU+6E8rOJzg6QV1aayC+Gb0=
+Received: by mx.zohomail.com with SMTPS id 1737922407657401.59508614562753;
+ Sun, 26 Jan 2025 12:13:27 -0800 (PST)
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -57,15 +57,13 @@ Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
  Yiwei Zhang <zzyiwei@chromium.org>, Sergio Lopez Pascual <slp@redhat.com>
-Subject: [PATCH v6 07/10] ui/gtk: Don't disable scanout when display is
- refreshed
-Date: Sun, 26 Jan 2025 23:11:18 +0300
-Message-ID: <20250126201121.470990-8-dmitry.osipenko@collabora.com>
+Subject: [PATCH v6 08/10] docs/system: virtio-gpu: Add link to Mesa VirGL doc
+Date: Sun, 26 Jan 2025 23:11:19 +0300
+Message-ID: <20250126201121.470990-9-dmitry.osipenko@collabora.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250126201121.470990-1-dmitry.osipenko@collabora.com>
 References: <20250126201121.470990-1-dmitry.osipenko@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
 Received-SPF: pass client-ip=136.143.188.112;
@@ -94,47 +92,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Display refreshment is invoked by a timer and it erroneously disables
-the active scanout if it happens to be invoked after scanout has been
-enabled. This offending scanout-disable race condition with a timer
-can be easily hit when Qemu runs with a disabled vsync by using SDL or
-GTK displays (with vblank_mode=0 for GTK). Refreshment of display's
-content shouldn't disable the active display. Fix it by keeping the
-scanout's state unchanged when display is redrawn.
+Extend virtio-gpu documentation with a link to the Mesa VirGL
+documentation.
 
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Tested-by: Alex Bennée <alex.bennee@linaro.org>
+Suggested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 ---
- ui/gtk-egl.c     | 1 -
- ui/gtk-gl-area.c | 1 -
- 2 files changed, 2 deletions(-)
+ docs/system/devices/virtio-gpu.rst | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-index f7a428c86a8d..0d1547d63ad0 100644
---- a/ui/gtk-egl.c
-+++ b/ui/gtk-egl.c
-@@ -179,7 +179,6 @@ void gd_egl_refresh(DisplayChangeListener *dcl)
+diff --git a/docs/system/devices/virtio-gpu.rst b/docs/system/devices/virtio-gpu.rst
+index f20c60016376..f8963c1f13cf 100644
+--- a/docs/system/devices/virtio-gpu.rst
++++ b/docs/system/devices/virtio-gpu.rst
+@@ -59,7 +59,7 @@ on typical modern Linux distributions.
+ virtio-gpu virglrenderer
+ ------------------------
  
-     if (vc->gfx.glupdates) {
-         vc->gfx.glupdates = 0;
--        gtk_egl_set_scanout_mode(vc, false);
-         gd_egl_draw(vc);
-     }
- }
-diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
-index 2c9a0db42571..53d81124f211 100644
---- a/ui/gtk-gl-area.c
-+++ b/ui/gtk-gl-area.c
-@@ -148,7 +148,6 @@ void gd_gl_area_refresh(DisplayChangeListener *dcl)
+-When using virgl accelerated graphics mode in the guest, OpenGL API calls
++When using `virgl`_ accelerated graphics mode in the guest, OpenGL API calls
+ are translated into an intermediate representation (see `Gallium3D`_). The
+ intermediate representation is communicated to the host and the
+ `virglrenderer`_ library on the host translates the intermediate
+@@ -68,6 +68,7 @@ representation back to OpenGL API calls.
+ .. parsed-literal::
+     -device virtio-gpu-gl
  
-     if (vc->gfx.glupdates) {
-         vc->gfx.glupdates = 0;
--        gtk_gl_area_set_scanout_mode(vc, false);
-         gtk_gl_area_queue_render(GTK_GL_AREA(vc->gfx.drawing_area));
-     }
- }
++.. _virgl: https://docs.mesa3d.org/drivers/virgl.html
+ .. _Gallium3D: https://www.freedesktop.org/wiki/Software/gallium/
+ .. _virglrenderer: https://gitlab.freedesktop.org/virgl/virglrenderer/
+ 
 -- 
 2.47.1
 
