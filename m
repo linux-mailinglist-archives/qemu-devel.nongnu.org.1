@@ -2,94 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3E29A1C692
-	for <lists+qemu-devel@lfdr.de>; Sun, 26 Jan 2025 08:24:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E1A1A1C6EA
+	for <lists+qemu-devel@lfdr.de>; Sun, 26 Jan 2025 08:58:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tbwyZ-0005Do-37; Sun, 26 Jan 2025 02:22:35 -0500
+	id 1tbxVi-0003p2-1K; Sun, 26 Jan 2025 02:56:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <antonb@tenstorrent.com>)
- id 1tbwyO-00057R-EQ
- for qemu-devel@nongnu.org; Sun, 26 Jan 2025 02:22:25 -0500
-Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <antonb@tenstorrent.com>)
- id 1tbwyL-0004M7-Lp
- for qemu-devel@nongnu.org; Sun, 26 Jan 2025 02:22:24 -0500
-Received: by mail-oo1-xc2f.google.com with SMTP id
- 006d021491bc7-5fa2685c5c0so1541114eaf.3
- for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 23:22:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=tenstorrent.com; s=google; t=1737876140; x=1738480940; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uz1MxGS/m+B7rusrD5nYn9e+LaPbU4UbVw6Vgl0czKA=;
- b=XbX9BElYP2N5hVEwYD4Ev7bPGgR7GhQbzDpwXQeKptAkup4wzA0wENl+zIaP56Cuul
- k1dRpGx6d8SGkoLQltzdQLVx0YAUGeFzyi2DpScrHsvQRA7hczA0lx0YvMSDXA3vRcAV
- EYbp/rPKt5InS08sqNBnTHAENVnSgUtEFCR1pqd5e7+ZuKtJqXDaWKCEPT2PbgoPi0x8
- QA5F8F6v0VtJGizzyGSO0AwU5QDF0tf/ldmkKH9b5ahKuZv0EKdLrTLXCGDgFtr2h2fX
- Q3BhehfwAAIDjYfScMeeGVjw4oG22fAPyNzJ7HvkR7VeXJ6MguNySQ3Wys7uiRgrm3H7
- N7aQ==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1tbxVf-0003om-W6
+ for qemu-devel@nongnu.org; Sun, 26 Jan 2025 02:56:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1tbxVd-0007ho-Tw
+ for qemu-devel@nongnu.org; Sun, 26 Jan 2025 02:56:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737878202;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=UA1aKs2geI2UCclqvopY0JvXRSLzBy5wPgR6WfmViSA=;
+ b=fadIPKzcIJ4/AjibN6Jk92w9tffh3vKlS1QmN6XXelSPjzdH5kQiJVBo9mcCPJv3CxV/R2
+ l3XKSFLyxzAjKaNwBsyggQVDl+brJlnrtzfIy8sBLtrQe2UfpkjbfjAtzp30AXhG99h4Yn
+ UohGhcRt/SjyQWDpv067PrKAgALTI8k=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-61-UTMu__BcMoSVP3E6iRIa0g-1; Sun, 26 Jan 2025 02:56:40 -0500
+X-MC-Unique: UTMu__BcMoSVP3E6iRIa0g-1
+X-Mimecast-MFC-AGG-ID: UTMu__BcMoSVP3E6iRIa0g
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-2f5538a2356so6299142a91.2
+ for <qemu-devel@nongnu.org>; Sat, 25 Jan 2025 23:56:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737876140; x=1738480940;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1737878199; x=1738482999;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uz1MxGS/m+B7rusrD5nYn9e+LaPbU4UbVw6Vgl0czKA=;
- b=OcgRNYs5T0y5gic+gOQYocKq0stSYmq76tU3LicZyeLnN5uE1L2jeaFsxvuJnrBLSn
- v3GlDh1lfJw4ARju7VICrtFxSvvm1xgn2MblbmTF2lQ6ry66ALFaX+kS5XRjGcNVi/oF
- gWMkuM4t8xUXP05keRbM6BQamqiw0/T8X4I+SlkdEOaGQDftQpIIs8OWL9T6IRwkjIzI
- Ab11XkWM/aQ56e3GpFMjs8CAbD/QEwspcPup6XXEGwv7qesm8eB8kr7x2U0rU91X5cE8
- JcwGYnSFvEoZpso9ux2mFuAHZpm0HUQoOzkZH9VHdnYgXNgibjzEhH9IMuGeU922v2Lg
- i0Tw==
+ bh=UA1aKs2geI2UCclqvopY0JvXRSLzBy5wPgR6WfmViSA=;
+ b=EqhTWJ/EArQ7SOziRJeeRYTSNvFJ20joaRp9rnlDYiTGmtx4Pt3CM1e5NNnqa7uKGg
+ JgPzi0/KtwEskqe1RsNm9rN0WpcLYgWwGiG/gDdAXh5XrXXRG2/RQirUbaeoZU00wwYY
+ OxEMHNVzKX3uBIbRd1vHPilWHcCm+1k39zxCa2F6nfyFLiBmrDzi5RwuZuG4MtHLg6IU
+ 6r76AM8jYmmhkYvdXSSg2h+LuHkv90vTTXMcT9xgqYNAgYsVxef26a7bfEe0IjTu3Uue
+ IeAiofn5u2BcLHt8uEVAJoifLdElZj/IPCrxsSAbWC3riYVlD01ynp5AGCaTah2JODOX
+ X+Ng==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWLJ2BfzTot8T1jI+X9lRH16GC/tB4sY3n5j9HvHSePC59Uu/L7pbUME6cPtEip1VRKDkxuYTSn7eAp@nongnu.org
-X-Gm-Message-State: AOJu0YzGgdvu0kJV4PPHEr0ce1a5IcDKUd2JpofweHhXFJb/JitzbVtA
- ZLJeOgNbzhaIE6xDMB5tqB0mCEOOl10Xmp+AXlsKSViMWZKLCl92qZnu+BDIvd0=
-X-Gm-Gg: ASbGncutoza69pupqvA9oMa8aInnVkdRJCIO10ZKlEvrDo3kkZChRDqgGuSz5HzCYGs
- fQU0HKXrlYqwlOmpmFtKjFHW0j9HXA1z8r/DD0WeKND7fCLDdi/2YEZzEXQJ74O0RMgyx/ZxRZa
- 2V5A7fUp5SCjqv2jhfAD3H0pIUuZnDBYBMYodnNlvW8tGBIxPx1dKc9QXiDb/peBqlSWixrxkoJ
- te47uyhlALQi+oQt7dCp7an2EbcXZjEpqNqDcMwbQyTz7xH73X8Fk3M5MNT4PfiXczQk/aN9afo
- ZbFtxtm1V9r60qWxEWc2xPpnJMSHI6dfZHWWSzY=
-X-Google-Smtp-Source: AGHT+IFW2fL7Au6aeZykeUHYJRJwUwLndMczM9WYpgKLQ444g/Qsy9LHosf9+ZLMCPLuGMOMu//Ilg==
-X-Received: by 2002:a05:6871:10b:b0:29d:c832:7ef6 with SMTP id
- 586e51a60fabf-2b1c0cddb72mr19774250fac.39.1737876140434; 
- Sat, 25 Jan 2025 23:22:20 -0800 (PST)
-Received: from ausc-rvsw-c-01-anton.tenstorrent.com ([38.104.49.66])
- by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2b28f1d887csm1814281fac.29.2025.01.25.23.22.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 25 Jan 2025 23:22:20 -0800 (PST)
-From: Anton Blanchard <antonb@tenstorrent.com>
-To: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Anton Blanchard <antonb@tenstorrent.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH 12/12] target/riscv: handle overlap in widening instructions
- with overwrite
-Date: Sun, 26 Jan 2025 07:20:56 +0000
-Message-Id: <20250126072056.4004912-13-antonb@tenstorrent.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250126072056.4004912-1-antonb@tenstorrent.com>
-References: <20250126072056.4004912-1-antonb@tenstorrent.com>
+ AJvYcCVfDTo4CVLUXliDbxOxVf8e16s2gx43dJoVFq1/t3YY5fLe1Jo4VqpJQ+9P/YV2wqE2NJxQbRdBDvLG@nongnu.org
+X-Gm-Message-State: AOJu0YwMjpRP4xZcGp3KOczNiGUMgjT74HWHkpmNBMbcJhpJqxKvZRsS
+ KlbH5PlRU4qWTMRXQhRNJLh6HBrY+pr5XYHbmF7x4nBmk29MuLykV2l/SYUaWPuuNdT4mNAOimz
+ Lp6WNUBt9vCUiHjwY5mmUxrr0BG+xN15sWQbRcU1JhL6sN6VgS0peHv6BHXvTd0Aoj1Y+ygXghe
+ VHpopqWuYSthQVMXTJQPOmgtY809k=
+X-Gm-Gg: ASbGncuq+1cDqz0X5YNVw7lJ47EqTCVkn9AOz5bZ4hrqC8voXz7AqmV8U2FF8VO6KuJ
+ XDdHdv/sXUCYJBKQgknzLsNPbk5VqnM2kgv5RjGpIrJ1MEmpIAj3mQywKEctfyETN
+X-Received: by 2002:aa7:8884:0:b0:72a:bc6a:3a88 with SMTP id
+ d2e1a72fcca58-72dafaaf2f2mr49819488b3a.22.1737878198693; 
+ Sat, 25 Jan 2025 23:56:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFIOxLnQ7Frmf52ybq4FzvDfS6SV+W4PHntSf78cn9Gbp4mkXLcO8UspPxbyWcTLvRitT0hxA0WVyP0IeZdmKU=
+X-Received: by 2002:aa7:8884:0:b0:72a:bc6a:3a88 with SMTP id
+ d2e1a72fcca58-72dafaaf2f2mr49819470b3a.22.1737878198219; Sat, 25 Jan 2025
+ 23:56:38 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
- envelope-from=antonb@tenstorrent.com; helo=mail-oo1-xc2f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+References: <20250120173339.865681-1-eric.auger@redhat.com>
+ <CACGkMEu4oMa8Sf9QXtszeoSMj_67Csr0s7kHdYfbNnJWibu2dA@mail.gmail.com>
+ <5a55011a-af8f-483a-99fa-5cb2cdf3841f@redhat.com>
+ <CACGkMEv6ec3JLZg6ZedSHdNS5_McX7_xoV4d2MG05x_Y5t=uEA@mail.gmail.com>
+ <678babb6-f64a-4db5-ad60-494214a4e673@redhat.com>
+ <CACGkMEvyYT7-PTOwO-Jg9a8AHA0AJHoV2BY2RBrJTGKEFYL6QA@mail.gmail.com>
+ <25b5bb73-abd8-4008-905d-6c2e9e1330e2@redhat.com>
+ <SJ0PR11MB6744EBC0BB7C8CD5F33D0A4E92E32@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <CACGkMEtQT2yZf93+a3LxSCyfBEXbEDu5S2cFXuAhprDYd2-vhw@mail.gmail.com>
+ <Z5OvXaUF6sdEQLgW@x1n>
+In-Reply-To: <Z5OvXaUF6sdEQLgW@x1n>
+From: Jason Wang <jasowang@redhat.com>
+Date: Sun, 26 Jan 2025 15:56:24 +0800
+X-Gm-Features: AWEUYZlizoZHHlo7Q5mCyGe1diDQaV9OuOyd5fF7Lbr202ECVIoo59DiAyGszk8
+Message-ID: <CACGkMEtPvUZh-seF1oDLMOOSiJhdHZeywvk6vKZy+jhEY4AjCA@mail.gmail.com>
+Subject: Re: [PATCH] hw/virtio/vhost: Disable IOTLB callbacks when IOMMU gets
+ disabled
+To: Peter Xu <peterx@redhat.com>
+Cc: Eric Auger <eric.auger@redhat.com>, "Duan,
+ Zhenzhong" <zhenzhong.duan@intel.com>, 
+ "eric.auger.pro@gmail.com" <eric.auger.pro@gmail.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
+ "mst@redhat.com" <mst@redhat.com>, "sgarzare@redhat.com" <sgarzare@redhat.com>,
+ "lvivier@redhat.com" <lvivier@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,134 +117,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In these instructions vd is considered a source, so no overlap
-is allowed between vd and vs1/vs2. See:
+On Sat, Jan 25, 2025 at 12:42=E2=80=AFAM Peter Xu <peterx@redhat.com> wrote=
+:
+>
+> Hello, Jason, Eric,
+>
+> On Fri, Jan 24, 2025 at 11:30:56AM +0800, Jason Wang wrote:
+> > It might be because neither virtio bus nor virtio-net provides a
+> > shutdown method.
+> >
+> > There used to be requests to provide those to unbreak the kexec.
+> >
+> > A quick try might be to provide a .driver.shutdown to
+> > virtio_net_driver structure and reset the device there as a start.
+>
+> I didn't check virtio driver path, but if that's missing it's reasonable =
+to
+> support it indeed.
+>
+> OTOH, even with that, vhost can still hit such DMA issue if it's a
+> hard-reset, am I right?  IOW, when using QMP command "system-reset".  If =
+my
+> memory is correct, that's the problem I was working on the VFIO series,
+> rather than a clean reboot.  And that won't give guest driver chance to r=
+un
+> anything, IIUC.
 
-https://github.com/riscv/riscv-isa-manual/issues/1789
+Yes.
 
-Signed-off-by: Anton Blanchard <antonb@tenstorrent.com>
----
- target/riscv/insn_trans/trans_rvv.c.inc | 71 +++++++++++++++++++------
- 1 file changed, 56 insertions(+), 15 deletions(-)
+>
+> I am wildly suspecting a VT-d write to GCMD to disable it can also appear
+> if there's a hard reset, then when bootloading the VM the bios (or whatev=
+er
+> firmware at early stage) may want to make sure the VT-d device is
+> completely off by writting to GCMD. But that's a pure guess.. and that ma=
+y
+> or may not matter much on how we fix this problem.
+>
+> IOW, I suspect we need to fix both of them,
+>
+>   (a) for soft-reset, by making sure drivers properly quiesce DMAs
+>   proactively when VM gracefully shuts down.
+>
+>   (b) for hard-reset, by making sure QEMU reset in proper order.
+>
+> One thing to mention is for problem (b) VFIO used to have an extra
+> challenge on !FLR devices, I discussed it in patch 4's comment there.
+> Quotting from patch 4 of series:
+>
+> https://lore.kernel.org/all/20240117091559.144730-1-peterx@redhat.com
+>
+>      * (1) Device depth-first reset hierachy doesn't yet work for vIOMMUs
+>      *     (reference: resettable_cold_reset_fn())
+>      *
+>      *     Currently, vIOMMU devices are created as normal '-device'
+>      *     cmdlines.  It means in many ways it has the same attributes wi=
+th
+>      *     most of the rest devices, even if the rest devices should
+>      *     logically be under control of the vIOMMU unit.
+>      *
+>      *     One side effect of it is vIOMMU devices will be currently put
+>      *     randomly under qdev tree hierarchy, which is the source of
+>      *     device reset ordering in current QEMU (depth-first traversal).
+>      *     It means vIOMMU now can be reset before some devices.  For ful=
+ly
+>      *     emulated devices that's not a problem, because the traversal
+>      *     holds BQL for the whole process.  However it is a problem if D=
+MA
+>      *     can happen without BQL, like VFIO, vDPA or remote device proce=
+ss.
+>      *
+>      *     TODO: one ideal solution can be that we make vIOMMU the parent
+>      *     of the whole pci host bridge.  Hence vIOMMU can be reset after
+>      *     all the devices are reset and quiesced.
+>      *
+>      * (2) Some devices register its own reset functions
+>      *
+>      *     Even if above issue solved, if devices register its own reset
+>      *     functions for some reason via QEMU reset hooks, vIOMMU can sti=
+ll
+>      *     be reset before the device. One example is vfio_reset_handler(=
+)
+>      *     where FLR is not supported on the device.
+>      *
+>      *     TODO: merge relevant reset functions into the device tree rese=
+t
+>      *     framework.
+>
+> So maybe vhost doesn't have problem (2) listed above, and maybe it means
+> it's still worthwhile thinking more about problem (1), which is to change
+> the QOM tree to provide a correct topology representation when vIOMMU is
+> present: so far it should be still a pretty much orphaned object there.. =
+if
+> QEMU relies on QOM tree topology for reset order, we may need to move it =
+to
+> the right place sooner or later.
 
-diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index 2741f8bd8e..715008db79 100644
---- a/target/riscv/insn_trans/trans_rvv.c.inc
-+++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -1505,6 +1505,16 @@ static bool opivv_widen_check(DisasContext *s, arg_rmrr *a)
-            vext_check_dss(s, a->rd, a->rs1, a->rs2, a->vm);
- }
- 
-+/* OPIVV with overwrite and WIDEN */
-+static bool opivv_overwrite_widen_check(DisasContext *s, arg_rmrr *a)
-+{
-+    return require_rvv(s) &&
-+           vext_check_isa_ill(s) &&
-+           vext_check_dss(s, a->rd, a->rs1, a->rs2, a->vm) &&
-+           !is_overlapped(a->rd, 1 << MAX(s->lmul+1, 0), a->rs1, 1 << MAX(s->lmul, 0)) &&
-+           !is_overlapped(a->rd, 1 << MAX(s->lmul+1, 0), a->rs2, 1 << MAX(s->lmul, 0));
-+}
-+
- static bool do_opivv_widen(DisasContext *s, arg_rmrr *a,
-                            gen_helper_gvec_4_ptr *fn,
-                            bool (*checkfn)(DisasContext *, arg_rmrr *))
-@@ -1552,6 +1562,15 @@ static bool opivx_widen_check(DisasContext *s, arg_rmrr *a)
-            vext_check_ds(s, a->rd, a->rs2, a->vm);
- }
- 
-+/* OPIVX with overwrite and WIDEN */
-+static bool opivx_overwrite_widen_check(DisasContext *s, arg_rmrr *a)
-+{
-+    return require_rvv(s) &&
-+           vext_check_isa_ill(s) &&
-+           vext_check_ds(s, a->rd, a->rs2, a->vm) &&
-+           !is_overlapped(a->rd, 1 << MAX(s->lmul+1, 0), a->rs2, 1 << MAX(s->lmul, 0));
-+}
-+
- #define GEN_OPIVX_WIDEN_TRANS(NAME, CHECK) \
- static bool trans_##NAME(DisasContext *s, arg_rmrr *a)                    \
- {                                                                         \
-@@ -2023,13 +2042,13 @@ GEN_OPIVX_TRANS(vmadd_vx, opivx_check)
- GEN_OPIVX_TRANS(vnmsub_vx, opivx_check)
- 
- /* Vector Widening Integer Multiply-Add Instructions */
--GEN_OPIVV_WIDEN_TRANS(vwmaccu_vv, opivv_widen_check)
--GEN_OPIVV_WIDEN_TRANS(vwmacc_vv, opivv_widen_check)
--GEN_OPIVV_WIDEN_TRANS(vwmaccsu_vv, opivv_widen_check)
--GEN_OPIVX_WIDEN_TRANS(vwmaccu_vx, opivx_widen_check)
--GEN_OPIVX_WIDEN_TRANS(vwmacc_vx, opivx_widen_check)
--GEN_OPIVX_WIDEN_TRANS(vwmaccsu_vx, opivx_widen_check)
--GEN_OPIVX_WIDEN_TRANS(vwmaccus_vx, opivx_widen_check)
-+GEN_OPIVV_WIDEN_TRANS(vwmaccu_vv, opivv_overwrite_widen_check)
-+GEN_OPIVV_WIDEN_TRANS(vwmacc_vv, opivv_overwrite_widen_check)
-+GEN_OPIVV_WIDEN_TRANS(vwmaccsu_vv, opivv_overwrite_widen_check)
-+GEN_OPIVX_WIDEN_TRANS(vwmaccu_vx, opivx_overwrite_widen_check)
-+GEN_OPIVX_WIDEN_TRANS(vwmacc_vx, opivx_overwrite_widen_check)
-+GEN_OPIVX_WIDEN_TRANS(vwmaccsu_vx, opivx_overwrite_widen_check)
-+GEN_OPIVX_WIDEN_TRANS(vwmaccus_vx, opivx_overwrite_widen_check)
- 
- /* Vector Integer Merge and Move Instructions */
- static bool trans_vmv_v_v(DisasContext *s, arg_vmv_v_v *a)
-@@ -2370,6 +2389,18 @@ static bool opfvv_widen_check(DisasContext *s, arg_rmrr *a)
-            vext_check_dss(s, a->rd, a->rs1, a->rs2, a->vm);
- }
- 
-+/* Vector Widening Floating-Point Add/Subtract Instructions with overwrite */
-+static bool opfvv_overwrite_widen_check(DisasContext *s, arg_rmrr *a)
-+{
-+    return require_rvv(s) &&
-+           require_rvf(s) &&
-+           require_scale_rvf(s) &&
-+           vext_check_isa_ill(s) &&
-+           vext_check_dss(s, a->rd, a->rs1, a->rs2, a->vm) &&
-+           !is_overlapped(a->rd, 1 << MAX(s->lmul+1, 0), a->rs1, 1 << MAX(s->lmul, 0)) &&
-+           !is_overlapped(a->rd, 1 << MAX(s->lmul+1, 0), a->rs2, 1 << MAX(s->lmul, 0));
-+}
-+
- /* OPFVV with WIDEN */
- #define GEN_OPFVV_WIDEN_TRANS(NAME, CHECK)                       \
- static bool trans_##NAME(DisasContext *s, arg_rmrr *a)           \
-@@ -2409,6 +2440,16 @@ static bool opfvf_widen_check(DisasContext *s, arg_rmrr *a)
-            vext_check_ds(s, a->rd, a->rs2, a->vm);
- }
- 
-+static bool opfvf_overwrite_widen_check(DisasContext *s, arg_rmrr *a)
-+{
-+    return require_rvv(s) &&
-+           require_rvf(s) &&
-+           require_scale_rvf(s) &&
-+           vext_check_isa_ill(s) &&
-+           vext_check_ds(s, a->rd, a->rs2, a->vm) &&
-+           !is_overlapped(a->rd, 1 << MAX(s->lmul+1, 0), a->rs2, 1 << MAX(s->lmul, 0));
-+}
-+
- /* OPFVF with WIDEN */
- #define GEN_OPFVF_WIDEN_TRANS(NAME, CHECK)                       \
- static bool trans_##NAME(DisasContext *s, arg_rmrr *a)           \
-@@ -2533,14 +2574,14 @@ GEN_OPFVF_TRANS(vfmsub_vf, opfvf_check)
- GEN_OPFVF_TRANS(vfnmsub_vf, opfvf_check)
- 
- /* Vector Widening Floating-Point Fused Multiply-Add Instructions */
--GEN_OPFVV_WIDEN_TRANS(vfwmacc_vv, opfvv_widen_check)
--GEN_OPFVV_WIDEN_TRANS(vfwnmacc_vv, opfvv_widen_check)
--GEN_OPFVV_WIDEN_TRANS(vfwmsac_vv, opfvv_widen_check)
--GEN_OPFVV_WIDEN_TRANS(vfwnmsac_vv, opfvv_widen_check)
--GEN_OPFVF_WIDEN_TRANS(vfwmacc_vf, opfvf_widen_check)
--GEN_OPFVF_WIDEN_TRANS(vfwnmacc_vf, opfvf_widen_check)
--GEN_OPFVF_WIDEN_TRANS(vfwmsac_vf, opfvf_widen_check)
--GEN_OPFVF_WIDEN_TRANS(vfwnmsac_vf, opfvf_widen_check)
-+GEN_OPFVV_WIDEN_TRANS(vfwmacc_vv, opfvv_overwrite_widen_check)
-+GEN_OPFVV_WIDEN_TRANS(vfwnmacc_vv, opfvv_overwrite_widen_check)
-+GEN_OPFVV_WIDEN_TRANS(vfwmsac_vv, opfvv_overwrite_widen_check)
-+GEN_OPFVV_WIDEN_TRANS(vfwnmsac_vv, opfvv_overwrite_widen_check)
-+GEN_OPFVF_WIDEN_TRANS(vfwmacc_vf, opfvf_overwrite_widen_check)
-+GEN_OPFVF_WIDEN_TRANS(vfwnmacc_vf, opfvf_overwrite_widen_check)
-+GEN_OPFVF_WIDEN_TRANS(vfwmsac_vf, opfvf_overwrite_widen_check)
-+GEN_OPFVF_WIDEN_TRANS(vfwnmsac_vf, opfvf_overwrite_widen_check)
- 
- /* Vector Floating-Point Square-Root Instruction */
- 
--- 
-2.34.1
+Sounds like a non-trivial task, so for a hard reset, maybe we can
+proceed with Eric's proposal to deal with the reset before the device
+stops.
+
+Thanks
+
+>
+> Thanks,
+>
+> --
+> Peter Xu
+>
 
 
