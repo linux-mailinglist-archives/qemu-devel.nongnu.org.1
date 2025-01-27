@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C8E4A1D85D
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:29:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99EA4A1D86B
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:31:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcQ4T-0007CS-LZ; Mon, 27 Jan 2025 09:26:37 -0500
+	id 1tcQ4I-0005vF-Vi; Mon, 27 Jan 2025 09:26:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ49-0005qY-Pv; Mon, 27 Jan 2025 09:26:19 -0500
+ id 1tcQ49-0005qZ-SN; Mon, 27 Jan 2025 09:26:20 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ48-0003KP-F1; Mon, 27 Jan 2025 09:26:17 -0500
+ id 1tcQ48-0003KJ-6d; Mon, 27 Jan 2025 09:26:17 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id B21FDE0F86;
+ by isrv.corpit.ru (Postfix) with ESMTP id AC3B6E0F85;
  Mon, 27 Jan 2025 17:25:41 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id B718E51DB1; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
+ id B96A151DB3; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Li Zhijian <lizhijian@fujitsu.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.1 38/41] hw/cxl: Fix msix_notify: Assertion `vector <
- dev->msix_entries_nr`
-Date: Mon, 27 Jan 2025 17:17:52 +0300
-Message-Id: <20250127141803.3514882-38-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.1 39/41] make-release: only leave tarball of wrap-file
+ subprojects
+Date: Mon, 27 Jan 2025 17:17:53 +0300
+Message-Id: <20250127141803.3514882-39-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
 References: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
@@ -58,36 +58,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-This assertion always happens when we sanitize the CXL memory device.
-$ echo 1 > /sys/bus/cxl/devices/mem0/security/sanitize
+The QEMU source archive is including the sources downloaded from crates.io
+in both tarball form (in subprojects/packagecache) and expanded/patched
+form (in the subprojects directory).  The former is the more authoritative
+form, as it has a hash that can be verified in the wrap file and checked
+against the download URL, so keep that one only.  This works also with
+--disable-download; when building QEMU for the first time from the
+tarball, Meson will print something like
 
-It is incorrect to register an MSIX number beyond the device's capability.
+    Using proc-macro2-1-rs source from cache.
 
-Increase the device's MSIX number to cover the mailbox msix number(9).
+for each subproject, and then go on to extract the tarball and apply the
+overlay or the patches in subprojects/packagefiles.
 
-Fixes: 43efb0bfad2b ("hw/cxl/mbox: Wire up interrupts for background completion")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Message-Id: <20250115075834.167504-1-lizhijian@fujitsu.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 1ce979e7269a34d19ea1a65808df014d8b2acbf6)
+Reported-by: Michael Tokarev <mjt@tls.msk.ru>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2719
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit be27b5149c86f81531f8fc609baf3480fc4d9ca0)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 5cf754b38f..7cf820e179 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -843,7 +843,7 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
-     ComponentRegisters *regs = &cxl_cstate->crb;
-     MemoryRegion *mr = &regs->component_registers;
-     uint8_t *pci_conf = pci_dev->config;
--    unsigned short msix_num = 6;
-+    unsigned short msix_num = 10;
-     int i, rc;
-     uint16_t count;
+diff --git a/scripts/make-release b/scripts/make-release
+index 8dc939124c..2885e87210 100755
+--- a/scripts/make-release
++++ b/scripts/make-release
+@@ -10,6 +10,27 @@
+ # This work is licensed under the terms of the GNU GPLv2 or later.
+ # See the COPYING file in the top-level directory.
  
++function subproject_dir() {
++    if test ! -f "subprojects/$1.wrap"; then
++      error "scripts/archive-source.sh should only process wrap subprojects"
++    fi
++
++    # Print the directory key of the wrap file, defaulting to the
++    # subproject name.  The wrap file is in ini format and should
++    # have a single section only.  There should be only one section
++    # named "[wrap-*]", which helps keeping the script simple.
++    local dir
++    dir=$(sed -n \
++      -e '/^\[wrap-[a-z][a-z]*\]$/,/^\[/{' \
++      -e    '/^directory *= */!b' \
++      -e    's///p' \
++      -e    'q' \
++      -e '}' \
++      "subprojects/$1.wrap")
++
++    echo "${dir:-$1}"
++}
++
+ if [ $# -ne 2 ]; then
+     echo "Usage:"
+     echo " $0 gitrepo version"
+@@ -51,5 +72,13 @@ meson subprojects download $SUBPROJECTS
+         CryptoPkg/Library/OpensslLib/openssl \
+         MdeModulePkg/Library/BrotliCustomDecompressLib/brotli)
+ popd
+-tar --exclude=.git -cJf ${destination}.tar.xz ${destination}
++
++exclude=(--exclude=.git)
++# include the tarballs in subprojects/packagecache but not their expansion
++for sp in $SUBPROJECTS; do
++    if grep -xqF "[wrap-file]" subprojects/$sp.wrap; then
++      exclude+=(--exclude=subprojects/"$(subproject_dir $sp)")
++    fi
++done
++tar "${exclude[@]}" -cJf ${destination}.tar.xz ${destination}
+ rm -rf ${destination}
 -- 
 2.39.5
 
