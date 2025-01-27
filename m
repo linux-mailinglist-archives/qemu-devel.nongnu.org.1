@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89463A20632
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:27:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E014A205A0
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:07:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgeH-0001oi-LY; Tue, 28 Jan 2025 03:08:43 -0500
+	id 1tcgSV-0001Ik-Jb; Tue, 28 Jan 2025 02:56:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgcJ-0005Ul-0V; Tue, 28 Jan 2025 03:06:40 -0500
+ id 1tcgS8-0007t4-Tv; Tue, 28 Jan 2025 02:56:12 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgcH-0003bC-1o; Tue, 28 Jan 2025 03:06:38 -0500
+ id 1tcgS6-0000HO-IE; Tue, 28 Jan 2025 02:56:08 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6D0CEE1B7F;
- Tue, 28 Jan 2025 10:57:09 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 63968E1AE3;
+ Tue, 28 Jan 2025 10:54:25 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id DCB3E1A6332;
- Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id D2C831A62CA;
+ Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 4653B520F5; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
+ id C5F905202B; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Igor Mammedov <imammedo@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 56/58] pci: acpi: Windows 'PCI Label Id' bug workaround
-Date: Mon, 27 Jan 2025 23:25:42 +0300
-Message-Id: <20250127202547.3723716-56-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.9 02/45] bitops.h: Define bit operations on 'uint32_t'
+ arrays
+Date: Mon, 27 Jan 2025 23:25:43 +0300
+Message-Id: <20250127202630.3724367-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
-References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
+In-Reply-To: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
+References: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 From: Michael Tokarev <mjt@tls.msk.ru>
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -60,94 +63,252 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Current versions of Windows call _DSM(func=7) regardless
-of whether it is supported or not. It leads to NICs having bogus
-'PCI Label Id = 0', where none should be set at all.
+Currently bitops.h defines a set of operations that work on
+arbitrary-length bit arrays.  However (largely because they
+originally came from the Linux kernel) the bit array storage is an
+array of 'unsigned long'.  This is OK for the kernel and even for
+parts of QEMU where we don't really care about the underlying storage
+format, but it is not good for devices, where we often want to expose
+the storage to the guest and so need a type that is not
+variably-sized between host OSes.
 
-Also presence of 'PCI Label Id' triggers another Windows bug
-on localized versions that leads to hangs. The later bug is fixed
-in latest updates for 'Windows Server' but not in consumer
-versions of Windows (and there is no plans to fix it
-as far as I'm aware).
+We already have a workaround for this in the GICv3 model:
+arm_gicv3_common.h defines equivalents of the bit operations that
+work on uint32_t.  It turns out that we should also be using
+something similar in hw/intc/loongarch_extioi.c, which currently
+casts a pointer to a uint32_t array to 'unsigned long *' in
+extio_setirq(), which is both undefined behaviour and not correct on
+a big-endian host.
 
-Given it's easy, implement Microsoft suggested workaround
-(return invalid Package) so that affected Windows versions
-could boot on QEMU.
-This would effectvely remove bogus 'PCI Label Id's on NICs,
-but MS teem confirmed that flipping 'PCI Label Id' should not
-change 'Network Connection' ennumeration, so it should be safe
-for QEMU to change _DSM without any compat code.
+Define equivalents of the set_bit() function family which work
+with a uint32_t array.
 
-Smoke tested with WinXP and WS2022
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/774
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20250115125342.3883374-3-imammedo@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 0b053391985abcc40b16ac8fc4a7f6588d1d95c1)
+(Cc stable because we're about to provide a bugfix to
+loongarch_extioi which will depend on this commit.)
+
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20241108135514.4006953-2-peter.maydell@linaro.org
+(cherry picked from commit 3d7680fb18c7b17701730589d241a32e85f763a3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index 5d4bd2b710..a64ffbb0c2 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -655,6 +655,7 @@ static Aml *aml_pci_pdsm(void)
-     Aml *acpi_index = aml_local(2);
-     Aml *zero = aml_int(0);
-     Aml *one = aml_int(1);
-+    Aml *not_supp = aml_int(0xFFFFFFFF);
-     Aml *func = aml_arg(2);
-     Aml *params = aml_arg(4);
-     Aml *bnum = aml_derefof(aml_index(params, aml_int(0)));
-@@ -679,7 +680,7 @@ static Aml *aml_pci_pdsm(void)
-          */
-         ifctx1 = aml_if(aml_lnot(
-                      aml_or(aml_equal(acpi_index, zero),
--                            aml_equal(acpi_index, aml_int(0xFFFFFFFF)), NULL)
-+                            aml_equal(acpi_index, not_supp), NULL)
-                  ));
-         {
-             /* have supported functions */
-@@ -705,18 +706,30 @@ static Aml *aml_pci_pdsm(void)
-     {
-        Aml *pkg = aml_package(2);
+diff --git a/include/qemu/bitmap.h b/include/qemu/bitmap.h
+index 97806811ee..217945ef79 100644
+--- a/include/qemu/bitmap.h
++++ b/include/qemu/bitmap.h
+@@ -69,6 +69,14 @@
+ #define DECLARE_BITMAP(name,bits)                  \
+         unsigned long name[BITS_TO_LONGS(bits)]
  
--       aml_append(pkg, zero);
--       /*
--        * optional, if not impl. should return null string
--        */
--       aml_append(pkg, aml_string("%s", ""));
--       aml_append(ifctx, aml_store(pkg, ret));
--
-        aml_append(ifctx, aml_store(aml_call2("AIDX", bnum, sunum), acpi_index));
-+       aml_append(ifctx, aml_store(pkg, ret));
-        /*
--        * update acpi-index to actual value
-+        * Windows calls func=7 without checking if it's available,
-+        * as workaround Microsoft has suggested to return invalid for func7
-+        * Package, so return 2 elements package but only initialize elements
-+        * when acpi_index is supported and leave them uninitialized, which
-+        * leads elements to being Uninitialized ObjectType and should trip
-+        * Windows into discarding result as an unexpected and prevent setting
-+        * bogus 'PCI Label' on the device.
-         */
--       aml_append(ifctx, aml_store(acpi_index, aml_index(ret, zero)));
-+       ifctx1 = aml_if(aml_lnot(aml_lor(
-+                    aml_equal(acpi_index, zero), aml_equal(acpi_index, not_supp)
-+                )));
-+       {
-+           aml_append(ifctx1, aml_store(acpi_index, aml_index(ret, zero)));
-+           /*
-+            * optional, if not impl. should return null string
-+            */
-+           aml_append(ifctx1, aml_store(aml_string("%s", ""),
-+                                        aml_index(ret, one)));
-+       }
-+       aml_append(ifctx, ifctx1);
++/*
++ * This is for use with the bit32 versions of set_bit() etc;
++ * we don't currently support the full range of bitmap operations
++ * on bitmaps backed by an array of uint32_t.
++ */
++#define DECLARE_BITMAP32(name, bits)            \
++        uint32_t name[BITS_TO_U32S(bits)]
 +
-        aml_append(ifctx, aml_return(ret));
-     }
+ #define small_nbits(nbits)                      \
+         ((nbits) <= BITS_PER_LONG)
  
+diff --git a/include/qemu/bitops.h b/include/qemu/bitops.h
+index cb3526d1f4..e0424f5e25 100644
+--- a/include/qemu/bitops.h
++++ b/include/qemu/bitops.h
+@@ -18,16 +18,47 @@
+ 
+ #define BITS_PER_BYTE           CHAR_BIT
+ #define BITS_PER_LONG           (sizeof (unsigned long) * BITS_PER_BYTE)
++#define BITS_TO_LONGS(nr)       DIV_ROUND_UP(nr, BITS_PER_BYTE * sizeof(long))
++#define BITS_TO_U32S(nr)        DIV_ROUND_UP(nr, BITS_PER_BYTE * sizeof(uint32_t))
+ 
+ #define BIT(nr)                 (1UL << (nr))
+ #define BIT_ULL(nr)             (1ULL << (nr))
+-#define BIT_MASK(nr)            (1UL << ((nr) % BITS_PER_LONG))
+-#define BIT_WORD(nr)            ((nr) / BITS_PER_LONG)
+-#define BITS_TO_LONGS(nr)       DIV_ROUND_UP(nr, BITS_PER_BYTE * sizeof(long))
+ 
+ #define MAKE_64BIT_MASK(shift, length) \
+     (((~0ULL) >> (64 - (length))) << (shift))
+ 
++/**
++ * DOC: Functions operating on arrays of bits
++ *
++ * We provide a set of functions which work on arbitrary-length arrays of
++ * bits. These come in several flavours which vary in what the type of the
++ * underlying storage for the bits is:
++ *
++ * - Bits stored in an array of 'unsigned long': set_bit(), clear_bit(), etc
++ * - Bits stored in an array of 'uint32_t': set_bit32(), clear_bit32(), etc
++ *
++ * Because the 'unsigned long' type has a size which varies between
++ * host systems, the versions using 'uint32_t' are often preferable.
++ * This is particularly the case in a device model where there may
++ * be some guest-visible register view of the bit array.
++ *
++ * We do not currently implement uint32_t versions of find_last_bit(),
++ * find_next_bit(), find_next_zero_bit(), find_first_bit() or
++ * find_first_zero_bit(), because we haven't yet needed them. If you
++ * need them you should implement them similarly to the 'unsigned long'
++ * versions.
++ *
++ * You can declare a bitmap to be used with these functions via the
++ * DECLARE_BITMAP and DECLARE_BITMAP32 macros in bitmap.h.
++ */
++
++/**
++ * DOC:  'unsigned long' bit array APIs
++ */
++
++#define BIT_MASK(nr)            (1UL << ((nr) % BITS_PER_LONG))
++#define BIT_WORD(nr)            ((nr) / BITS_PER_LONG)
++
+ /**
+  * set_bit - Set a bit in memory
+  * @nr: the bit to set
+@@ -211,6 +242,141 @@ static inline unsigned long find_first_zero_bit(const unsigned long *addr,
+     return find_next_zero_bit(addr, size, 0);
+ }
+ 
++/**
++ * DOC:  'uint32_t' bit array APIs
++ */
++
++#define BIT32_MASK(nr)            (1UL << ((nr) % 32))
++#define BIT32_WORD(nr)            ((nr) / 32)
++
++/**
++ * set_bit32 - Set a bit in memory
++ * @nr: the bit to set
++ * @addr: the address to start counting from
++ */
++static inline void set_bit32(long nr, uint32_t *addr)
++{
++    uint32_t mask = BIT32_MASK(nr);
++    uint32_t *p = addr + BIT32_WORD(nr);
++
++    *p  |= mask;
++}
++
++/**
++ * set_bit32_atomic - Set a bit in memory atomically
++ * @nr: the bit to set
++ * @addr: the address to start counting from
++ */
++static inline void set_bit32_atomic(long nr, uint32_t *addr)
++{
++    uint32_t mask = BIT32_MASK(nr);
++    uint32_t *p = addr + BIT32_WORD(nr);
++
++    qatomic_or(p, mask);
++}
++
++/**
++ * clear_bit32 - Clears a bit in memory
++ * @nr: Bit to clear
++ * @addr: Address to start counting from
++ */
++static inline void clear_bit32(long nr, uint32_t *addr)
++{
++    uint32_t mask = BIT32_MASK(nr);
++    uint32_t *p = addr + BIT32_WORD(nr);
++
++    *p &= ~mask;
++}
++
++/**
++ * clear_bit32_atomic - Clears a bit in memory atomically
++ * @nr: Bit to clear
++ * @addr: Address to start counting from
++ */
++static inline void clear_bit32_atomic(long nr, uint32_t *addr)
++{
++    uint32_t mask = BIT32_MASK(nr);
++    uint32_t *p = addr + BIT32_WORD(nr);
++
++    return qatomic_and(p, ~mask);
++}
++
++/**
++ * change_bit32 - Toggle a bit in memory
++ * @nr: Bit to change
++ * @addr: Address to start counting from
++ */
++static inline void change_bit32(long nr, uint32_t *addr)
++{
++    uint32_t mask = BIT32_MASK(nr);
++    uint32_t *p = addr + BIT32_WORD(nr);
++
++    *p ^= mask;
++}
++
++/**
++ * test_and_set_bit32 - Set a bit and return its old value
++ * @nr: Bit to set
++ * @addr: Address to count from
++ */
++static inline int test_and_set_bit32(long nr, uint32_t *addr)
++{
++    uint32_t mask = BIT32_MASK(nr);
++    uint32_t *p = addr + BIT32_WORD(nr);
++    uint32_t old = *p;
++
++    *p = old | mask;
++    return (old & mask) != 0;
++}
++
++/**
++ * test_and_clear_bit32 - Clear a bit and return its old value
++ * @nr: Bit to clear
++ * @addr: Address to count from
++ */
++static inline int test_and_clear_bit32(long nr, uint32_t *addr)
++{
++    uint32_t mask = BIT32_MASK(nr);
++    uint32_t *p = addr + BIT32_WORD(nr);
++    uint32_t old = *p;
++
++    *p = old & ~mask;
++    return (old & mask) != 0;
++}
++
++/**
++ * test_and_change_bit32 - Change a bit and return its old value
++ * @nr: Bit to change
++ * @addr: Address to count from
++ */
++static inline int test_and_change_bit32(long nr, uint32_t *addr)
++{
++    uint32_t mask = BIT32_MASK(nr);
++    uint32_t *p = addr + BIT32_WORD(nr);
++    uint32_t old = *p;
++
++    *p = old ^ mask;
++    return (old & mask) != 0;
++}
++
++/**
++ * test_bit32 - Determine whether a bit is set
++ * @nr: bit number to test
++ * @addr: Address to start counting from
++ */
++static inline int test_bit32(long nr, const uint32_t *addr)
++{
++    return 1U & (addr[BIT32_WORD(nr)] >> (nr & 31));
++}
++
++/**
++ * DOC: Miscellaneous bit operations on single values
++ *
++ * These functions are a collection of useful operations
++ * (rotations, bit extract, bit deposit, etc) on single
++ * integer values.
++ */
++
+ /**
+  * rol8 - rotate an 8-bit value left
+  * @word: value to rotate
 -- 
 2.39.5
 
