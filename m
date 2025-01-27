@@ -2,71 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3896EA1D5D2
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 13:10:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 764D3A1D5A1
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 12:55:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcNw7-0003c3-As; Mon, 27 Jan 2025 07:09:51 -0500
+	id 1tcNgL-0005bB-Ky; Mon, 27 Jan 2025 06:53:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tcNvR-0003V6-9h
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 07:09:11 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tcNgF-0005ad-Qy; Mon, 27 Jan 2025 06:53:28 -0500
+Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tcNvJ-0000X7-Ha
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 07:09:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737979741;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Cki1l7UtndETUZwjLpH1MbRXENQVe807FrCj4OdFnvU=;
- b=RMBPslO1Y0+CxJqAjsBdXxbVn4ZDsFcwa/8Syc4XOV0Yjye9JrrkprV2FrXZaJo32tBSBZ
- JeI76jkeFkYSb2uKDlE+sXJBjAvHgjGU+fhcp4PwlZQNVC4ECH52LJnDXvyIx8AOw9wFaR
- oI/+HXzQFqX5leawhK7BJux5u6Cjg1o=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-42-hz5y9pxwOSWv8W6hqe7z-Q-1; Mon,
- 27 Jan 2025 07:08:59 -0500
-X-MC-Unique: hz5y9pxwOSWv8W6hqe7z-Q-1
-X-Mimecast-MFC-AGG-ID: hz5y9pxwOSWv8W6hqe7z-Q
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 954541956053; Mon, 27 Jan 2025 12:08:58 +0000 (UTC)
-Received: from kaapi.redhat.com (unknown [10.74.17.143])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9AE561800344; Mon, 27 Jan 2025 12:08:53 +0000 (UTC)
-From: Prasad Pandit <ppandit@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, farosas@suse.de, berrange@redhat.com,
- Prasad Pandit <pjp@fedoraproject.org>
-Subject: [PATCH v4 4/4] tests/qtest/migration: add postcopy tests with multifd
-Date: Mon, 27 Jan 2025 17:38:23 +0530
-Message-ID: <20250127120823.144949-5-ppandit@redhat.com>
-In-Reply-To: <20250127120823.144949-1-ppandit@redhat.com>
-References: <20250127120823.144949-1-ppandit@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tcNgD-0006fE-Qn; Mon, 27 Jan 2025 06:53:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1737978806; x=1769514806;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=p/Ns84pvmRRQ8Ec+5wKSMGcwxNxmeBZgWM/aBoB6Es4=;
+ b=b0CIrOh5I3u9tIh4M4YqcZ6Qb6IecuGgX2n+V7kJdw5n8X4qeaNL5xB4
+ jCWmeINk4q5ebij1/M4rU55Rxqpg+e1t8/iuW3q+aOQGanwXy6VXY0pPR
+ RkrsplqHjWBQXtZSKeYjUIGafS97kJOPblhvTzmYD+oAg8WDvyFhe3d2P
+ PH0k5Bf4EP0kmpJHJMaF8rYqX0EFnACIkEMjYp074jI4TeXujxQ6cPBpM
+ uC9JeWuyzVcYE+Pl381jlZ4LTVIybXz0MvbfT3DQgQx6MbmHx5KqCZ45Y
+ sgSQ5OL41+O02U2csVU9/3Y8E2Ae2q7NlJGy9tctyMvXH/hWm7ujE8ISu g==;
+X-CSE-ConnectionGUID: ds2gzJ1FTQuKRvlVyaExcA==
+X-CSE-MsgGUID: Rkoi2m9zS8eVG8lFNc0yFQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11328"; a="42096731"
+X-IronPort-AV: E=Sophos;i="6.13,238,1732608000"; d="scan'208";a="42096731"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jan 2025 03:53:23 -0800
+X-CSE-ConnectionGUID: xPPbDs0FReGqHyTLavpFZA==
+X-CSE-MsgGUID: 9LWblnFPRDyKmhCH4DlQLQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="113381902"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa003.jf.intel.com with ESMTP; 27 Jan 2025 03:53:21 -0800
+Date: Mon, 27 Jan 2025 20:12:45 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 10/10] rust: bindings for MemoryRegionOps
+Message-ID: <Z5d4PTtIRhgZ0tss@intel.com>
+References: <20250117194003.1173231-1-pbonzini@redhat.com>
+ <20250117194003.1173231-11-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=ppandit@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.299,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250117194003.1173231-11-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -56
+X-Spam_score: -5.7
+X-Spam_bar: -----
+X-Spam_report: (-5.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.299,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,285 +79,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Prasad Pandit <pjp@fedoraproject.org>
+On Fri, Jan 17, 2025 at 08:40:03PM +0100, Paolo Bonzini wrote:
+> Date: Fri, 17 Jan 2025 20:40:03 +0100
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 10/10] rust: bindings for MemoryRegionOps
+> X-Mailer: git-send-email 2.47.1
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  rust/hw/char/pl011/src/device.rs     |  43 +++---
+>  rust/hw/char/pl011/src/lib.rs        |   1 -
+>  rust/hw/char/pl011/src/memory_ops.rs |  36 -----
+>  rust/qemu-api/meson.build            |   1 +
+>  rust/qemu-api/src/lib.rs             |   1 +
+>  rust/qemu-api/src/memory.rs          | 191 +++++++++++++++++++++++++++
+>  rust/qemu-api/src/sysbus.rs          |   7 +-
+>  rust/qemu-api/src/zeroable.rs        |  12 ++
+>  8 files changed, 234 insertions(+), 58 deletions(-)
+>  delete mode 100644 rust/hw/char/pl011/src/memory_ops.rs
+>  create mode 100644 rust/qemu-api/src/memory.rs
+ 
+...
 
-Add new postcopy tests to run postcopy migration with
-multifd channels enabled. Add a boolean fields 'multifd'
-and 'postcopy_ram' to the MigrateCommon structure.
-It helps to enable multifd channels and postcopy-ram
-during migration tests.
+> @@ -490,20 +490,24 @@ impl PL011State {
+>      /// location/instance. All its fields are expected to hold unitialized
+>      /// values with the sole exception of `parent_obj`.
+>      unsafe fn init(&mut self) {
+> +        static PL011_OPS: MemoryRegionOps<PL011State> = MemoryRegionOpsBuilder::<PL011State>::new()
+> +            .read(&PL011State::read)
+> +            .write(&PL011State::write)
+> +            .native_endian()
+> +            .impl_sizes(4, 4)
+> +            .build();
+> +
 
-Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
----
- tests/qtest/migration/compression-tests.c | 13 ++++++++
- tests/qtest/migration/framework.c         | 13 ++++++++
- tests/qtest/migration/framework.h         |  4 +++
- tests/qtest/migration/postcopy-tests.c    | 23 +++++++++++++
- tests/qtest/migration/precopy-tests.c     | 19 +++++++++++
- tests/qtest/migration/tls-tests.c         | 40 +++++++++++++++++++++++
- 6 files changed, 112 insertions(+)
+Nice design. Everything was done smoothly in one go.
 
-v3: Add more qtests to cover precopy with 'postcopy-ram' attribute
-    and postcopy with multifd channels enabled.
-- https://lore.kernel.org/qemu-devel/20250121131032.1611245-1-ppandit@redhat.com/T/#t
+> +pub struct MemoryRegionOps<T>(
+> +    bindings::MemoryRegionOps,
+> +    // Note: quite often you'll see PhantomData<fn(&T)> mentioned when discussing
+> +    // covariance and contravariance; you don't need any of those to understand
+> +    // this usage of PhantomData.  Quite simply, MemoryRegionOps<T> *logically*
+> +    // holds callbacks that take an argument of type &T, except the type is erased
+> +    // before the callback is stored in the bindings::MemoryRegionOps field.
+> +    // The argument of PhantomData is a function pointer in order to represent
+> +    // that relationship; while that will also provide desirable and safe variance
+> +    // for T, variance is not the point but just a consequence.
+> +    PhantomData<fn(&T)>,
+> +);
 
-diff --git a/tests/qtest/migration/compression-tests.c b/tests/qtest/migration/compression-tests.c
-index d78f1f11f1..3252ba2f73 100644
---- a/tests/qtest/migration/compression-tests.c
-+++ b/tests/qtest/migration/compression-tests.c
-@@ -39,6 +39,17 @@ static void test_multifd_tcp_zstd(void)
-     };
-     test_precopy_common(&args);
- }
-+
-+static void test_multifd_postcopy_tcp_zstd(void)
-+{
-+    MigrateCommon args = {
-+        .postcopy_ram = true,
-+        .listen_uri = "defer",
-+        .start_hook = migrate_hook_start_precopy_tcp_multifd_zstd,
-+    };
-+
-+    test_precopy_common(&args);
-+}
- #endif /* CONFIG_ZSTD */
- 
- #ifdef CONFIG_QATZIP
-@@ -158,6 +169,8 @@ void migration_test_add_compression(MigrationTestEnv *env)
- #ifdef CONFIG_ZSTD
-     migration_test_add("/migration/multifd/tcp/plain/zstd",
-                        test_multifd_tcp_zstd);
-+    migration_test_add("/migration/multifd+postcopy/tcp/plain/zstd",
-+                       test_multifd_postcopy_tcp_zstd);
- #endif
- 
- #ifdef CONFIG_QATZIP
-diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index 4550cda129..00776f858c 100644
---- a/tests/qtest/migration/framework.c
-+++ b/tests/qtest/migration/framework.c
-@@ -427,6 +427,14 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
-         migrate_set_capability(to, "postcopy-preempt", true);
-     }
- 
-+    if (args->multifd) {
-+        migrate_set_capability(from, "multifd", true);
-+        migrate_set_capability(to, "multifd", true);
-+
-+        migrate_set_parameter_int(from, "multifd-channels", 8);
-+        migrate_set_parameter_int(to, "multifd-channels", 8);
-+    }
-+
-     migrate_ensure_non_converge(from);
- 
-     migrate_prepare_for_dirty_mem(from);
-@@ -691,6 +699,11 @@ void test_precopy_common(MigrateCommon *args)
-         return;
-     }
- 
-+    if (args->postcopy_ram) {
-+        migrate_set_capability(from, "postcopy-ram", true);
-+        migrate_set_capability(to, "postcopy-ram", true);
-+    }
-+
-     if (args->start_hook) {
-         data_hook = args->start_hook(from, to);
-     }
-diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
-index 7991ee56b6..214288ca42 100644
---- a/tests/qtest/migration/framework.h
-+++ b/tests/qtest/migration/framework.h
-@@ -193,7 +193,11 @@ typedef struct {
-      */
-     bool live;
- 
-+    /* set multifd on */
-+    bool multifd;
-+
-     /* Postcopy specific fields */
-+    bool postcopy_ram;
-     void *postcopy_data;
-     bool postcopy_preempt;
-     PostcopyRecoveryFailStage postcopy_recovery_fail_stage;
-diff --git a/tests/qtest/migration/postcopy-tests.c b/tests/qtest/migration/postcopy-tests.c
-index daf7449f2c..212a5ea600 100644
---- a/tests/qtest/migration/postcopy-tests.c
-+++ b/tests/qtest/migration/postcopy-tests.c
-@@ -79,6 +79,25 @@ static void test_postcopy_preempt_recovery(void)
-     test_postcopy_recovery_common(&args);
- }
- 
-+static void test_multifd_postcopy(void)
-+{
-+    MigrateCommon args = {
-+        .multifd = true,
-+    };
-+
-+    test_postcopy_common(&args);
-+}
-+
-+static void test_multifd_postcopy_preempt(void)
-+{
-+    MigrateCommon args = {
-+        .multifd = true,
-+        .postcopy_preempt = true,
-+    };
-+
-+    test_postcopy_common(&args);
-+}
-+
- void migration_test_add_postcopy(MigrationTestEnv *env)
- {
-     if (env->has_uffd) {
-@@ -98,6 +117,10 @@ void migration_test_add_postcopy(MigrationTestEnv *env)
-             "/migration/postcopy/recovery/double-failures/reconnect",
-             test_postcopy_recovery_fail_reconnect);
- 
-+        migration_test_add("/migration/multifd+postcopy/plain",
-+                           test_multifd_postcopy);
-+        migration_test_add("/migration/multifd+postcopy/preempt/plain",
-+                           test_multifd_postcopy_preempt);
-         if (env->is_x86) {
-             migration_test_add("/migration/postcopy/suspend",
-                                test_postcopy_suspend);
-diff --git a/tests/qtest/migration/precopy-tests.c b/tests/qtest/migration/precopy-tests.c
-index 23599b29ee..b1a4e7bbb1 100644
---- a/tests/qtest/migration/precopy-tests.c
-+++ b/tests/qtest/migration/precopy-tests.c
-@@ -33,6 +33,7 @@
- #define DIRTYLIMIT_TOLERANCE_RANGE  25  /* MB/s */
- 
- static char *tmpfs;
-+static bool postcopy_ram = false;
- 
- static void test_precopy_unix_plain(void)
- {
-@@ -472,6 +473,11 @@ static void test_multifd_tcp_cancel(void)
-     migrate_ensure_non_converge(from);
-     migrate_prepare_for_dirty_mem(from);
- 
-+    if (postcopy_ram) {
-+        migrate_set_capability(from, "postcopy-ram", true);
-+        migrate_set_capability(to, "postcopy-ram", true);
-+    }
-+
-     migrate_set_parameter_int(from, "multifd-channels", 16);
-     migrate_set_parameter_int(to, "multifd-channels", 16);
- 
-@@ -513,6 +519,10 @@ static void test_multifd_tcp_cancel(void)
-         return;
-     }
- 
-+    if (postcopy_ram) {
-+        migrate_set_capability(to2, "postcopy-ram", true);
-+    }
-+
-     migrate_set_parameter_int(to2, "multifd-channels", 16);
- 
-     migrate_set_capability(to2, "multifd", true);
-@@ -536,6 +546,13 @@ static void test_multifd_tcp_cancel(void)
-     migrate_end(from, to2, true);
- }
- 
-+static void test_multifd_postcopy_tcp_cancel(void)
-+{
-+    postcopy_ram = true;
-+    test_multifd_tcp_cancel();
-+    postcopy_ram = false;
-+}
-+
- static void calc_dirty_rate(QTestState *who, uint64_t calc_time)
- {
-     qtest_qmp_assert_success(who,
-@@ -999,6 +1016,8 @@ void migration_test_add_precopy(MigrationTestEnv *env)
-                        test_multifd_tcp_no_zero_page);
-     migration_test_add("/migration/multifd/tcp/plain/cancel",
-                        test_multifd_tcp_cancel);
-+    migration_test_add("migration/multifd+postcopy/tcp/plain/cancel",
-+                       test_multifd_postcopy_tcp_cancel);
-     if (g_str_equal(env->arch, "x86_64")
-         && env->has_kvm && env->has_dirty_ring) {
- 
-diff --git a/tests/qtest/migration/tls-tests.c b/tests/qtest/migration/tls-tests.c
-index 5704a1f992..094dc1d814 100644
---- a/tests/qtest/migration/tls-tests.c
-+++ b/tests/qtest/migration/tls-tests.c
-@@ -393,6 +393,17 @@ static void test_postcopy_recovery_tls_psk(void)
-     test_postcopy_recovery_common(&args);
- }
- 
-+static void test_multifd_postcopy_recovery_tls_psk(void)
-+{
-+    MigrateCommon args = {
-+        .start_hook = migrate_hook_start_tls_psk_match,
-+        .end_hook = migrate_hook_end_tls_psk,
-+        .multifd = true,
-+    };
-+
-+    test_postcopy_recovery_common(&args);
-+}
-+
- /* This contains preempt+recovery+tls test altogether */
- static void test_postcopy_preempt_all(void)
- {
-@@ -405,6 +416,17 @@ static void test_postcopy_preempt_all(void)
-     test_postcopy_recovery_common(&args);
- }
- 
-+static void test_multifd_postcopy_preempt_recovery_tls_psk(void)
-+{
-+    MigrateCommon args = {
-+        .start_hook = migrate_hook_start_tls_psk_match,
-+        .end_hook = migrate_hook_end_tls_psk,
-+        .multifd = true,
-+    };
-+
-+    test_postcopy_recovery_common(&args);
-+}
-+
- static void test_precopy_unix_tls_psk(void)
- {
-     g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
-@@ -649,6 +671,18 @@ static void test_multifd_tcp_tls_psk_mismatch(void)
-     test_precopy_common(&args);
- }
- 
-+static void test_multifd_postcopy_tcp_tls_psk_match(void)
-+{
-+    MigrateCommon args = {
-+        .multifd = true,
-+        .listen_uri = "defer",
-+        .start_hook = migrate_hook_start_multifd_tcp_tls_psk_match,
-+        .end_hook = migrate_hook_end_tls_psk,
-+    };
-+
-+    test_precopy_common(&args);
-+}
-+
- #ifdef CONFIG_TASN1
- static void test_multifd_tcp_tls_x509_default_host(void)
- {
-@@ -743,6 +777,10 @@ void migration_test_add_tls(MigrationTestEnv *env)
-                            test_postcopy_preempt_tls_psk);
-         migration_test_add("/migration/postcopy/preempt/recovery/tls/psk",
-                            test_postcopy_preempt_all);
-+        migration_test_add("/migration/multifd+postcopy/recovery/tls/psk",
-+                           test_multifd_postcopy_recovery_tls_psk);
-+        migration_test_add("/migration/multifd+postcopy/preempt/recovery/tls/psk",
-+                           test_multifd_postcopy_preempt_recovery_tls_psk);
-     }
- #ifdef CONFIG_TASN1
-     migration_test_add("/migration/precopy/unix/tls/x509/default-host",
-@@ -776,6 +814,8 @@ void migration_test_add_tls(MigrationTestEnv *env)
-                        test_multifd_tcp_tls_psk_match);
-     migration_test_add("/migration/multifd/tcp/tls/psk/mismatch",
-                        test_multifd_tcp_tls_psk_mismatch);
-+    migration_test_add("/migration/multifd+postcopy/tcp/tls/psk/match",
-+                       test_multifd_postcopy_tcp_tls_psk_match);
- #ifdef CONFIG_TASN1
-     migration_test_add("/migration/multifd/tcp/tls/x509/default-host",
-                        test_multifd_tcp_tls_x509_default_host);
--- 
-2.48.1
+Wow, it can be wrapped like this!
+
+> +}
+> +
+> +/// A safe wrapper around [`bindings::MemoryRegion`].  Compared to the
+> +/// underlying C struct it is marked as pinned because the QOM tree
+> +/// contains a pointer to it.
+> +pub struct MemoryRegion {
+> +    inner: bindings::MemoryRegion,
+> +    _pin: PhantomPinned,
+> +}
+> +
+> +impl MemoryRegion {
+> +    // inline to ensure that it is not included in tests, which only
+> +    // link to hwcore and qom.  FIXME: inlining is actually the opposite
+> +    // of what we want, since this is the type-erased version of the
+> +    // init_io function below.  Look into splitting the qemu_api crate.
+
+Ah, I didn't understand the issue described in this comment. Why would
+inlining affect the linking of tests?
+
+> +    #[inline(always)]
+> +    unsafe fn do_init_io(
+> +        slot: *mut bindings::MemoryRegion,
+> +        owner: *mut Object,
+> +        ops: &'static bindings::MemoryRegionOps,
+> +        name: &'static str,
+> +        size: u64,
+> +    ) {
+> +        unsafe {
+> +            let cstr = CString::new(name).unwrap();
+> +            memory_region_init_io(
+> +                slot,
+> +                owner.cast::<Object>(),
+> +                ops,
+> +                owner.cast::<c_void>(),
+> +                cstr.as_ptr(),
+> +                size,
+> +            );
+> +        }
+> +    }
+> +
+> +    pub fn init_io<T: IsA<Object>>(
+> +        &mut self,
+> +        owner: *mut T,
+> +        ops: &'static MemoryRegionOps<T>,
+> +        name: &'static str,
+
+What about &'static CStr?
+
+Then pl011 could pass `c_str!("pl011")` or `Self::TYPE_NAMSelf::TYPE_NAME`.
+
+Otherwise,
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
 
 
