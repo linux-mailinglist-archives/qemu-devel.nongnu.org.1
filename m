@@ -2,41 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF27A20610
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:23:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84664A20590
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:06:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgWo-00082N-FZ; Tue, 28 Jan 2025 03:01:02 -0500
+	id 1tcgWv-0008R0-7H; Tue, 28 Jan 2025 03:01:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgW6-0007ht-NI; Tue, 28 Jan 2025 03:00:15 -0500
+ id 1tcgWC-0007qA-23; Tue, 28 Jan 2025 03:00:21 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgW2-0001aX-NO; Tue, 28 Jan 2025 03:00:14 -0500
+ id 1tcgW8-0001c4-5H; Tue, 28 Jan 2025 03:00:18 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 07599E1B0A;
+ by isrv.corpit.ru (Postfix) with ESMTP id 0CE17E1B0B;
  Tue, 28 Jan 2025 10:54:26 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 768801A62F1;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7A8D61A62F2;
  Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 131B052079; Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
+ id 14B5F5207B; Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Igor Mammedov <imammedo@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.9 41/45] pci/msix: Fix msix pba read vector poll end
- calculation
-Date: Mon, 27 Jan 2025 23:26:22 +0300
-Message-Id: <20250127202630.3724367-41-mjt@tls.msk.ru>
+Subject: [Stable-8.2.9 42/45] tests: acpi: whitelist expected blobs
+Date: Mon, 27 Jan 2025 23:26:23 +0300
+Message-Id: <20250127202630.3724367-42-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 References: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 From: Michael Tokarev <mjt@tls.msk.ru>
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -63,31 +60,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The end vector calculation has a bug that results in polling fewer
-than required vectors when reading at a non-zero offset in PBA memory.
-
-Fixes: bbef882cc193 ("msi: add API to get notified about pending bit poll")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Message-Id: <20241212120402.1475053-1-npiggin@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Message-Id: <20250115125342.3883374-2-imammedo@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 42e2a7a0ab23784e44fcb18369e06067abc89305)
+(cherry picked from commit 1ad32644fe4c9fb25086be15a66dde1d55d3410f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: drop x86/ subdir and tables not relevant for 8.2)
 
-diff --git a/hw/pci/msix.c b/hw/pci/msix.c
-index cd817f4ca8..057a1305cd 100644
---- a/hw/pci/msix.c
-+++ b/hw/pci/msix.c
-@@ -250,7 +250,7 @@ static uint64_t msix_pba_mmio_read(void *opaque, hwaddr addr,
-     PCIDevice *dev = opaque;
-     if (dev->msix_vector_poll_notifier) {
-         unsigned vector_start = addr * 8;
--        unsigned vector_end = MIN(addr + size * 8, dev->msix_entries_nr);
-+        unsigned vector_end = MIN((addr + size) * 8, dev->msix_entries_nr);
-         dev->msix_vector_poll_notifier(dev, vector_start, vector_end);
-     }
- 
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..b96a9b60a8 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,40 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/pc/DSDT",
++"tests/data/acpi/pc/DSDT.acpierst",
++"tests/data/acpi/pc/DSDT.acpihmat",
++"tests/data/acpi/pc/DSDT.bridge",
++"tests/data/acpi/pc/DSDT.cphp",
++"tests/data/acpi/pc/DSDT.dimmpxm",
++"tests/data/acpi/pc/DSDT.hpbridge",
++"tests/data/acpi/pc/DSDT.ipmikcs",
++"tests/data/acpi/pc/DSDT.memhp",
++"tests/data/acpi/pc/DSDT.nohpet",
++"tests/data/acpi/pc/DSDT.numamem",
++"tests/data/acpi/pc/DSDT.roothp",
++"tests/data/acpi/q35/DSDT",
++"tests/data/acpi/q35/DSDT.acpierst",
++"tests/data/acpi/q35/DSDT.acpihmat",
++"tests/data/acpi/q35/DSDT.acpihmat-noinitiator",
++"tests/data/acpi/q35/DSDT.applesmc",
++"tests/data/acpi/q35/DSDT.bridge",
++"tests/data/acpi/q35/DSDT.core-count",
++"tests/data/acpi/q35/DSDT.core-count2",
++"tests/data/acpi/q35/DSDT.cphp",
++"tests/data/acpi/q35/DSDT.cxl",
++"tests/data/acpi/q35/DSDT.dimmpxm",
++"tests/data/acpi/q35/DSDT.ipmibt",
++"tests/data/acpi/q35/DSDT.ipmismbus",
++"tests/data/acpi/q35/DSDT.ivrs",
++"tests/data/acpi/q35/DSDT.memhp",
++"tests/data/acpi/q35/DSDT.mmio64",
++"tests/data/acpi/q35/DSDT.multi-bridge",
++"tests/data/acpi/q35/DSDT.nohpet",
++"tests/data/acpi/q35/DSDT.numamem",
++"tests/data/acpi/q35/DSDT.pvpanic-isa",
++"tests/data/acpi/q35/DSDT.thread-count",
++"tests/data/acpi/q35/DSDT.thread-count2",
++"tests/data/acpi/q35/DSDT.tis.tpm12",
++"tests/data/acpi/q35/DSDT.tis.tpm2",
++"tests/data/acpi/q35/DSDT.type4-count",
++"tests/data/acpi/q35/DSDT.viot",
++"tests/data/acpi/q35/DSDT.xapic",
 -- 
 2.39.5
 
