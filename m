@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E31BDA1D3D4
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 10:46:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9001FA1D3C6
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 10:44:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcLe3-0006Bj-CV; Mon, 27 Jan 2025 04:43:04 -0500
+	id 1tcLe8-0006Cs-W4; Mon, 27 Jan 2025 04:43:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tcLe0-0006BN-DO
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 04:43:00 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tcLe3-0006Bm-8f
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 04:43:03 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tcLdy-0005QE-UT
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 04:43:00 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tcLe1-0005QQ-Pt
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 04:43:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737970978;
+ s=mimecast20190719; t=1737970981;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GyUuEd+mQAYgtLNlBd/uEG9AWCHY4JYbVKG1xXpW/Ho=;
- b=dXVw/ArugUTgkz+H6yNl4ShxTRNEwpcza3eAaiqr74RuAtZZM/toPOigOLHKeJHTo++/Fh
- eaLIFupxjN76jMwc4Lex7Ep2dKPWeLq8xoGRYcuOKLttFZ2XZz7nIKBr+u63jD0ybWc3yQ
- 272Zh2dajkV+idKO4JnHiYYhFCkool0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=Ayl2E/VrUl+Llrmlcin4PivEBLaP2DgTB+tiRIfVc+M=;
+ b=DUIsyDzVQUSwOKiftsyahOEeg+Z58ONCCUkzTvsCRB1zDwACkCWcLDs00gxS8/tLr7jdE+
+ Lv3hQYaJvVbRyxj/4Ic25WHNYtE8iebF7iUR1khgtd2AJdIzkq4Q/mtb3+5jwO9+n2ivN5
+ UQfEWfG1DnizXwQ/E9M0dLiTVIiwAkE=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-634-07ednxMwNX6jwhpcBdPikQ-1; Mon,
- 27 Jan 2025 04:42:54 -0500
-X-MC-Unique: 07ednxMwNX6jwhpcBdPikQ-1
-X-Mimecast-MFC-AGG-ID: 07ednxMwNX6jwhpcBdPikQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-294-HWhXqO5ZOVG2d-KDJQ9Hlw-1; Mon,
+ 27 Jan 2025 04:42:57 -0500
+X-MC-Unique: HWhXqO5ZOVG2d-KDJQ9Hlw-1
+X-Mimecast-MFC-AGG-ID: HWhXqO5ZOVG2d-KDJQ9Hlw
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EDC2C19560B7; Mon, 27 Jan 2025 09:42:51 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EA7DF18009B8; Mon, 27 Jan 2025 09:42:55 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.63])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4D52A1800365; Mon, 27 Jan 2025 09:42:48 +0000 (UTC)
+ id 6555A18008C8; Mon, 27 Jan 2025 09:42:52 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/12] hw/sd/sdhci: Introduce a new Write Protected pin
- inverted property
-Date: Mon, 27 Jan 2025 10:42:29 +0100
-Message-ID: <20250127094239.636526-3-clg@redhat.com>
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 03/12] hw/arm/aspeed: Invert sdhci write protected pin for
+ AST2600 EVB
+Date: Mon, 27 Jan 2025 10:42:30 +0100
+Message-ID: <20250127094239.636526-4-clg@redhat.com>
 In-Reply-To: <20250127094239.636526-1-clg@redhat.com>
 References: <20250127094239.636526-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -69,7 +70,7 @@ X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.299,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,62 +90,60 @@ From: Jamin Lin <jamin_lin@aspeedtech.com>
 
 The Write Protect pin of SDHCI model is default active low to match the SDHCI
 spec. So, write enable the bit 19 should be 1 and write protected the bit 19
-should be 0 at the Present State Register (0x24). However, some boards are
-design Write Protected pin active high. In other words, write enable the bit 19
-should be 0 and write protected the bit 19 should be 1 at the
-Present State Register (0x24). To support it, introduces a new "wp-inverted"
-property and set it false by default.
+should be 0 at the Present State Register (0x24).
+
+According to the design of AST2600 EVB, the Write Protected pin is active
+high by default. To support it, introduces a new "sdhci_wp_inverted"
+property in ASPEED MACHINE State and set it true for AST2600 EVB
+and set "wp_inverted" property true of sdhci-generic model.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Acked-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/r/20241114094839.4128404-3-jamin_lin@aspeedtech.com
+Link: https://lore.kernel.org/r/20241114094839.4128404-4-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/sd/sdhci.h | 5 +++++
- hw/sd/sdhci.c         | 6 ++++++
- 2 files changed, 11 insertions(+)
+ include/hw/arm/aspeed.h | 1 +
+ hw/arm/aspeed.c         | 7 +++++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/include/hw/sd/sdhci.h b/include/hw/sd/sdhci.h
-index 6cd2822f1d13..38c08e285980 100644
---- a/include/hw/sd/sdhci.h
-+++ b/include/hw/sd/sdhci.h
-@@ -100,6 +100,11 @@ struct SDHCIState {
-     uint8_t sd_spec_version;
-     uint8_t uhs_mode;
-     uint8_t vendor;        /* For vendor specific functionality */
-+    /*
-+     * Write Protect pin default active low for detecting SD card
-+     * to be protected. Set wp_inverted to invert the signal.
-+     */
-+    bool wp_inverted;
+diff --git a/include/hw/arm/aspeed.h b/include/hw/arm/aspeed.h
+index cbeacb214ca4..9cae45a1c99c 100644
+--- a/include/hw/arm/aspeed.h
++++ b/include/hw/arm/aspeed.h
+@@ -39,6 +39,7 @@ struct AspeedMachineClass {
+     uint32_t macs_mask;
+     void (*i2c_init)(AspeedMachineState *bmc);
+     uint32_t uart_default;
++    bool sdhci_wp_inverted;
  };
- typedef struct SDHCIState SDHCIState;
  
-diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index 318587ff57ca..99dd4a4e9528 100644
---- a/hw/sd/sdhci.c
-+++ b/hw/sd/sdhci.c
-@@ -274,6 +274,10 @@ static void sdhci_set_readonly(DeviceState *dev, bool level)
- {
-     SDHCIState *s = (SDHCIState *)dev;
  
-+    if (s->wp_inverted) {
-+        level = !level;
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index 2662465ada4f..53a859a6e4aa 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -409,6 +409,12 @@ static void aspeed_machine_init(MachineState *machine)
+                              OBJECT(get_system_memory()), &error_abort);
+     object_property_set_link(OBJECT(bmc->soc), "dram",
+                              OBJECT(machine->ram), &error_abort);
++    if (amc->sdhci_wp_inverted) {
++        for (i = 0; i < bmc->soc->sdhci.num_slots; i++) {
++            object_property_set_bool(OBJECT(&bmc->soc->sdhci.slots[i]),
++                                     "wp-inverted", true, &error_abort);
++        }
 +    }
-+
-     if (level) {
-         s->prnsts &= ~SDHC_WRITE_PROTECT;
-     } else {
-@@ -1555,6 +1559,8 @@ static const Property sdhci_sysbus_properties[] = {
-                      false),
-     DEFINE_PROP_LINK("dma", SDHCIState,
-                      dma_mr, TYPE_MEMORY_REGION, MemoryRegion *),
-+    DEFINE_PROP_BOOL("wp-inverted", SDHCIState,
-+                     wp_inverted, false),
- };
- 
- static void sdhci_sysbus_init(Object *obj)
+     if (machine->kernel_filename) {
+         /*
+          * When booting with a -kernel command line there is no u-boot
+@@ -1415,6 +1421,7 @@ static void aspeed_machine_ast2600_evb_class_init(ObjectClass *oc, void *data)
+     amc->num_cs    = 1;
+     amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON |
+                      ASPEED_MAC3_ON;
++    amc->sdhci_wp_inverted = true;
+     amc->i2c_init  = ast2600_evb_i2c_init;
+     mc->default_ram_size = 1 * GiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
 -- 
 2.48.1
 
