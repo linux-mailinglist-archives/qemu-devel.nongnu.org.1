@@ -2,42 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D46CCA20541
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 08:54:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6BD3A20548
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 08:55:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgPk-0000z4-Ft; Tue, 28 Jan 2025 02:53:40 -0500
+	id 1tcgPm-0000zb-Ka; Tue, 28 Jan 2025 02:53:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgPi-0000yZ-5F; Tue, 28 Jan 2025 02:53:38 -0500
+ id 1tcgPi-0000ym-LE; Tue, 28 Jan 2025 02:53:38 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgPg-0007of-GW; Tue, 28 Jan 2025 02:53:37 -0500
+ id 1tcgPh-0007ot-5F; Tue, 28 Jan 2025 02:53:38 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B6369E1AC1;
+ by isrv.corpit.ru (Postfix) with ESMTP id B9EACE1AC2;
  Tue, 28 Jan 2025 10:52:59 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 30FCD1A62B0;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 34D1B1A62B1;
  Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 1ADA351FF7; Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
+ id 1C74E51FF9; Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Guenter Roeck <linux@roeck-us.net>,
- Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Fiona Ebner <f.ebner@proxmox.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.16 08/31] scsi: megasas: Internal cdbs have 16-byte length
-Date: Tue, 28 Jan 2025 00:41:00 +0300
-Message-Id: <20250127214124.3730126-8-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ Greg Kurz <groug@kaod.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.16 09/31] tests/9p: fix Rreaddir response name
+Date: Tue, 28 Jan 2025 00:41:01 +0300
+Message-Id: <20250127214124.3730126-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.16-20250128004119@cover.tls.msk.ru>
 References: <qemu-stable-7.2.16-20250128004119@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 From: Michael Tokarev <mjt@tls.msk.ru>
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -64,69 +60,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Host drivers do not necessarily set cdb_len in megasas io commands.
-With commits 6d1511cea0 ("scsi: Reject commands if the CDB length
-exceeds buf_len") and fe9d8927e2 ("scsi: Add buf_len parameter to
-scsi_req_new()"), this results in failures to boot Linux from affected
-SCSI drives because cdb_len is set to 0 by the host driver.
-Set the cdb length to its actual size to solve the problem.
+All 9p response types are prefixed with an "R", therefore fix
+"READDIR" -> "RREADDIR" in function rmessage_name().
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Fiona Ebner <f.ebner@proxmox.com>
-Link: https://lore.kernel.org/r/20230228171129.4094709-1-linux@roeck-us.net
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 3abb67323aeecf06a27191076ab50424ec21f334)
+Fixes: 4829469fd9ff ("tests/virtio-9p: added readdir test")
+Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Reviewed-by: Greg Kurz <groug@kaod.org>
+Message-Id: <daad7af58b403aaa2487c566032beca36664b30e.1732465720.git.qemu_oss@crudebyte.com>
+(cherry picked from commit abf0f092c1dd33b9ffa986c6924addc0a9c1d0b8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/scsi/megasas.c b/hw/scsi/megasas.c
-index 9cbbb16121..d624866bb6 100644
---- a/hw/scsi/megasas.c
-+++ b/hw/scsi/megasas.c
-@@ -1780,7 +1780,7 @@ static int megasas_handle_io(MegasasState *s, MegasasCmd *cmd, int frame_cmd)
-     uint8_t cdb[16];
-     int len;
-     struct SCSIDevice *sdev = NULL;
--    int target_id, lun_id, cdb_len;
-+    int target_id, lun_id;
+diff --git a/tests/qtest/libqos/virtio-9p-client.c b/tests/qtest/libqos/virtio-9p-client.c
+index e4a368e036..a9eb1876f0 100644
+--- a/tests/qtest/libqos/virtio-9p-client.c
++++ b/tests/qtest/libqos/virtio-9p-client.c
+@@ -238,7 +238,7 @@ static const char *rmessage_name(uint8_t id)
+         id == P9_RLINK ? "RLINK" :
+         id == P9_RUNLINKAT ? "RUNLINKAT" :
+         id == P9_RFLUSH ? "RFLUSH" :
+-        id == P9_RREADDIR ? "READDIR" :
++        id == P9_RREADDIR ? "RREADDIR" :
+         "<unknown>";
+ }
  
-     lba_count = le32_to_cpu(cmd->frame->io.header.data_len);
-     lba_start_lo = le32_to_cpu(cmd->frame->io.lba_lo);
-@@ -1789,7 +1789,6 @@ static int megasas_handle_io(MegasasState *s, MegasasCmd *cmd, int frame_cmd)
- 
-     target_id = cmd->frame->header.target_id;
-     lun_id = cmd->frame->header.lun_id;
--    cdb_len = cmd->frame->header.cdb_len;
- 
-     if (target_id < MFI_MAX_LD && lun_id == 0) {
-         sdev = scsi_device_find(&s->bus, 0, target_id, lun_id);
-@@ -1804,15 +1803,6 @@ static int megasas_handle_io(MegasasState *s, MegasasCmd *cmd, int frame_cmd)
-         return MFI_STAT_DEVICE_NOT_FOUND;
-     }
- 
--    if (cdb_len > 16) {
--        trace_megasas_scsi_invalid_cdb_len(
--            mfi_frame_desc(frame_cmd), 1, target_id, lun_id, cdb_len);
--        megasas_write_sense(cmd, SENSE_CODE(INVALID_OPCODE));
--        cmd->frame->header.scsi_status = CHECK_CONDITION;
--        s->event_count++;
--        return MFI_STAT_SCSI_DONE_WITH_ERROR;
--    }
--
-     cmd->iov_size = lba_count * sdev->blocksize;
-     if (megasas_map_sgl(s, cmd, &cmd->frame->io.sgl)) {
-         megasas_write_sense(cmd, SENSE_CODE(TARGET_FAILURE));
-@@ -1823,7 +1813,7 @@ static int megasas_handle_io(MegasasState *s, MegasasCmd *cmd, int frame_cmd)
- 
-     megasas_encode_lba(cdb, lba_start, lba_count, is_write);
-     cmd->req = scsi_req_new(sdev, cmd->index,
--                            lun_id, cdb, cdb_len, cmd);
-+                            lun_id, cdb, sizeof(cdb), cmd);
-     if (!cmd->req) {
-         trace_megasas_scsi_req_alloc_failed(
-             mfi_frame_desc(frame_cmd), target_id, lun_id);
 -- 
 2.39.5
 
