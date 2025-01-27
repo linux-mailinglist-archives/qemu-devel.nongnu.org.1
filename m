@@ -2,36 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE04CA205E0
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:21:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F778A20630
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:27:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgd3-0007QS-UA; Tue, 28 Jan 2025 03:07:26 -0500
+	id 1tcgd6-0007w1-U2; Tue, 28 Jan 2025 03:07:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgZO-0007Kz-90; Tue, 28 Jan 2025 03:03:44 -0500
+ id 1tcgZP-0007O8-GY; Tue, 28 Jan 2025 03:03:48 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgZK-0002IY-Sq; Tue, 28 Jan 2025 03:03:37 -0500
+ id 1tcgZM-0002M3-Vq; Tue, 28 Jan 2025 03:03:38 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E7E9CE1B62;
+ by isrv.corpit.ru (Postfix) with ESMTP id ED396E1B63;
  Tue, 28 Jan 2025 10:57:08 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 63A711A6315;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 67D281A6316;
  Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 15AD3520BB; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
+ id 1747E520BD; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Roman Artemev <roman.artemev@syntacore.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Denis Tomashev <denis.tomashev@syntacore.com>,
+Cc: qemu-stable@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 27/58] tcg/riscv: Fix StoreStore barrier generation
-Date: Mon, 27 Jan 2025 23:25:13 +0300
-Message-Id: <20250127202547.3723716-27-mjt@tls.msk.ru>
+Subject: [Stable-9.1.3 28/58] x86/loader: only patch linux kernels
+Date: Mon, 27 Jan 2025 23:25:14 +0300
+Message-Id: <20250127202547.3723716-28-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
@@ -62,32 +60,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On RISC-V to StoreStore barrier corresponds
-`fence w, w` not `fence r, r`
+If the binary loaded via -kernel is *not* a linux kernel (in which
+case protocol == 0), do not patch the linux kernel header fields.
 
-Cc: qemu-stable@nongnu.org
-Fixes: efbea94c76b ("tcg/riscv: Add slowpath load and store instructions")
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Denis Tomashev <denis.tomashev@syntacore.com>
-Signed-off-by: Roman Artemev <roman.artemev@syntacore.com>
-Message-ID: <e2f2131e294a49e79959d4fa9ec02cf4@syntacore.com>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit b438362a142527b97b638b7f0f35ebe11911a8d5)
+It's (a) pointless and (b) might break binaries by random patching
+and (c) changes the binary hash which in turn breaks secure boot
+verification.
+
+Background: OVMF happily loads and runs not only linux kernels but
+any efi binary via direct kernel boot.
+
+Note: Breaking the secure boot verification is a problem for linux
+kernels too, but fixed that is left for another day ...
+
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+Message-ID: <20240905141211.1253307-3-kraxel@redhat.com>
+(cherry picked from commit 57e2cc9abf5da38f600354fe920ff20e719607b4)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
-index d334857226..73bbb4cd67 100644
---- a/tcg/riscv/tcg-target.c.inc
-+++ b/tcg/riscv/tcg-target.c.inc
-@@ -1149,7 +1149,7 @@ static void tcg_out_mb(TCGContext *s, TCGArg a0)
-         insn |= 0x02100000;
+diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
+index 992ea1f25e..b52903c47f 100644
+--- a/hw/i386/x86-common.c
++++ b/hw/i386/x86-common.c
+@@ -943,7 +943,7 @@ void x86_load_linux(X86MachineState *x86ms,
+      * kernel on the other side of the fw_cfg interface matches the hash of the
+      * file the user passed in.
+      */
+-    if (!sev_enabled()) {
++    if (!sev_enabled() && protocol > 0) {
+         memcpy(setup, header, MIN(sizeof(header), setup_size));
      }
-     if (a0 & TCG_MO_ST_ST) {
--        insn |= 0x02200000;
-+        insn |= 0x01100000;
-     }
-     tcg_out32(s, insn);
- }
+ 
 -- 
 2.39.5
 
