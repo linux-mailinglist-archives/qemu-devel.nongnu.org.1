@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CAD9A1D84C
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:27:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA11A1D855
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:28:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcQ2f-0003SJ-Qq; Mon, 27 Jan 2025 09:24:46 -0500
+	id 1tcQ2e-00038X-Il; Mon, 27 Jan 2025 09:24:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ2a-0002u9-7o; Mon, 27 Jan 2025 09:24:40 -0500
+ id 1tcQ2Z-0002pX-PH; Mon, 27 Jan 2025 09:24:39 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ2Y-00030u-76; Mon, 27 Jan 2025 09:24:39 -0500
+ id 1tcQ2Y-00030v-0O; Mon, 27 Jan 2025 09:24:39 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id 3D8F4E0F6E;
+ by isrv.corpit.ru (Postfix) with ESMTP id 47050E0F6F;
  Mon, 27 Jan 2025 17:24:11 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 85C1051D89; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
+ id 8817351D8B; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
  Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.1 18/41] migration: Add more error handling to
- analyze-migration.py
-Date: Mon, 27 Jan 2025 17:17:32 +0300
-Message-Id: <20250127141803.3514882-18-mjt@tls.msk.ru>
+Subject: [Stable-9.2.1 19/41] migration: Remove unused argument in
+ vmsd_desc_field_end
+Date: Mon, 27 Jan 2025 17:17:33 +0300
+Message-Id: <20250127141803.3514882-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
 References: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
@@ -60,137 +60,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fabiano Rosas <farosas@suse.de>
 
-The analyze-migration script was seen failing in s390x in misterious
-ways. It seems we're reaching the VMSDFieldStruct constructor without
-any fields, which would indicate an empty .subsection entry, a
-VMSTATE_STRUCT with no fields or a vmsd with no fields. We don't have
-any of those, at least not without the unmigratable flag set, so this
-should never happen.
-
-Add some debug statements so that we can see what's going on the next
-time the issue happens.
-
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Message-Id: <20250109185249.23952-2-farosas@suse.de>
+Message-Id: <20250109185249.23952-3-farosas@suse.de>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
-(cherry picked from commit 86bee9e0c761a3d0e67c43b44001fd752f894cb0)
+(cherry picked from commit 2aead53d39b828f8d9d0769ffa3579dadd64d846)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/scripts/analyze-migration.py b/scripts/analyze-migration.py
-index 8a254a5b6a..f2457b1dde 100755
---- a/scripts/analyze-migration.py
-+++ b/scripts/analyze-migration.py
-@@ -429,6 +429,9 @@ def __init__(self, desc, file):
-         super(VMSDFieldStruct, self).__init__(desc, file)
-         self.data = collections.OrderedDict()
+diff --git a/migration/vmstate.c b/migration/vmstate.c
+index fa002b24e8..aa2821dec6 100644
+--- a/migration/vmstate.c
++++ b/migration/vmstate.c
+@@ -311,7 +311,7 @@ static void vmsd_desc_field_start(const VMStateDescription *vmsd,
  
-+        if 'fields' not in self.desc['struct']:
-+            raise Exception("No fields in struct. VMSD:\n%s" % self.desc)
-+
-         # When we see compressed array elements, unfold them here
-         new_fields = []
-         for field in self.desc['struct']['fields']:
-@@ -477,6 +480,10 @@ def read(self):
-                     raise Exception("Subsection %s not found at offset %x" % ( subsection['vmsd_name'], self.file.tell()))
-                 name = self.file.readstr()
-                 version_id = self.file.read32()
-+
-+                if not subsection:
-+                    raise Exception("Empty description for subsection: %s" % name)
-+
-                 self.data[name] = VMSDSection(self.file, version_id, subsection, (name, 0))
-                 self.data[name].read()
+ static void vmsd_desc_field_end(const VMStateDescription *vmsd,
+                                 JSONWriter *vmdesc,
+-                                const VMStateField *field, size_t size, int i)
++                                const VMStateField *field, size_t size)
+ {
+     if (!vmdesc) {
+         return;
+@@ -420,7 +420,7 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+                 }
  
-@@ -574,10 +581,13 @@ def __init__(self, filename):
-         }
-         self.filename = filename
-         self.vmsd_desc = None
-+        self.vmsd_json = ""
+                 written_bytes = qemu_file_transferred(f) - old_offset;
+-                vmsd_desc_field_end(vmsd, vmdesc_loop, field, written_bytes, i);
++                vmsd_desc_field_end(vmsd, vmdesc_loop, field, written_bytes);
  
--    def read(self, desc_only = False, dump_memory = False, write_memory = False):
-+    def read(self, desc_only = False, dump_memory = False,
-+             write_memory = False):
-         # Read in the whole file
-         file = MigrationFile(self.filename)
-+        self.vmsd_json = file.read_migration_debug_json()
- 
-         # File magic
-         data = file.read32()
-@@ -635,9 +645,11 @@ def read(self, desc_only = False, dump_memory = False, write_memory = False):
-         file.close()
- 
-     def load_vmsd_json(self, file):
--        vmsd_json = file.read_migration_debug_json()
--        self.vmsd_desc = json.loads(vmsd_json, object_pairs_hook=collections.OrderedDict)
-+        self.vmsd_desc = json.loads(self.vmsd_json,
-+                                    object_pairs_hook=collections.OrderedDict)
-         for device in self.vmsd_desc['devices']:
-+            if 'fields' not in device:
-+                raise Exception("vmstate for device %s has no fields" % device['name'])
-             key = (device['name'], device['instance_id'])
-             value = ( VMSDSection, device )
-             self.section_classes[key] = value
-@@ -666,31 +678,34 @@ def default(self, o):
- 
- jsonenc = JSONEncoder(indent=4, separators=(',', ': '))
- 
--if args.extract:
--    dump = MigrationDump(args.file)
-+if not any([args.extract, args.dump == "state", args.dump == "desc"]):
-+    raise Exception("Please specify either -x, -d state or -d desc")
- 
--    dump.read(desc_only = True)
--    print("desc.json")
--    f = open("desc.json", "w")
--    f.truncate()
--    f.write(jsonenc.encode(dump.vmsd_desc))
--    f.close()
--
--    dump.read(write_memory = True)
--    dict = dump.getDict()
--    print("state.json")
--    f = open("state.json", "w")
--    f.truncate()
--    f.write(jsonenc.encode(dict))
--    f.close()
--elif args.dump == "state":
--    dump = MigrationDump(args.file)
--    dump.read(dump_memory = args.memory)
--    dict = dump.getDict()
--    print(jsonenc.encode(dict))
--elif args.dump == "desc":
-+try:
-     dump = MigrationDump(args.file)
--    dump.read(desc_only = True)
--    print(jsonenc.encode(dump.vmsd_desc))
--else:
--    raise Exception("Please specify either -x, -d state or -d desc")
-+
-+    if args.extract:
-+        dump.read(desc_only = True)
-+
-+        print("desc.json")
-+        f = open("desc.json", "w")
-+        f.truncate()
-+        f.write(jsonenc.encode(dump.vmsd_desc))
-+        f.close()
-+
-+        dump.read(write_memory = True)
-+        dict = dump.getDict()
-+        print("state.json")
-+        f = open("state.json", "w")
-+        f.truncate()
-+        f.write(jsonenc.encode(dict))
-+        f.close()
-+    elif args.dump == "state":
-+        dump.read(dump_memory = args.memory)
-+        dict = dump.getDict()
-+        print(jsonenc.encode(dict))
-+    elif args.dump == "desc":
-+        dump.read(desc_only = True)
-+        print(jsonenc.encode(dump.vmsd_desc))
-+except Exception:
-+    raise Exception("Full JSON dump:\n%s", dump.vmsd_json)
+                 /* Compressed arrays only care about the first element */
+                 if (vmdesc_loop && vmsd_can_compress(field)) {
 -- 
 2.39.5
 
