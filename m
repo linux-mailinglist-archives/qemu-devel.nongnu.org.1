@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CF7BA2063F
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:28:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1308A20605
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:22:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgau-0001yj-7o; Tue, 28 Jan 2025 03:05:17 -0500
+	id 1tcga0-0000Gt-6E; Tue, 28 Jan 2025 03:04:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgZY-0007az-26; Tue, 28 Jan 2025 03:03:50 -0500
+ id 1tcgZY-0007b0-2O; Tue, 28 Jan 2025 03:03:50 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgZT-0002NS-6h; Tue, 28 Jan 2025 03:03:45 -0500
+ id 1tcgZU-0002O2-Jj; Tue, 28 Jan 2025 03:03:46 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F14A0E1B64;
+ by isrv.corpit.ru (Postfix) with ESMTP id 0008EE1B65;
  Tue, 28 Jan 2025 10:57:08 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 6B9781A6317;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6FBC71A6318;
  Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 18E8B520BF; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
+ id 1A997520C1; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
- Liu Jaloo <liu.jaloo@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 29/58] roms: re-add edk2-basetools target
-Date: Mon, 27 Jan 2025 23:25:15 +0300
-Message-Id: <20250127202547.3723716-29-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [Stable-9.1.3 30/58] pc-bios: add missing riscv64 descriptor
+Date: Mon, 27 Jan 2025 23:25:16 +0300
+Message-Id: <20250127202547.3723716-30-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
@@ -60,31 +61,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Needed to build ipxe nic roms.
+Without descriptor libvirt cannot discover the EDK II binaries via
+the qemu:///system connection.
 
-Reported-by: Liu Jaloo <liu.jaloo@gmail.com>
-Fixes: 22e11539e167 ("edk2: replace build scripts")
+Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Message-ID: <20241212090059.94167-1-heinrich.schuchardt@canonical.com>
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Message-ID: <20241212084408.1390728-1-kraxel@redhat.com>
-(cherry picked from commit 0f5715e4b5706b31b3550d8e6b88871e029c7823)
+(cherry picked from commit 74dc38d0c6c15fd57a5dee94125d13ac5b00491d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: context fix in pc-bios/descriptors/meson.build due to missing
+ v9.1.0-337-gb883fb93db "roms: Support compile the efi bios for loongarch")
 
-diff --git a/roms/Makefile b/roms/Makefile
-index dfed2b216a..31e4b97c98 100644
---- a/roms/Makefile
-+++ b/roms/Makefile
-@@ -157,6 +157,11 @@ edk2-version: edk2
- 		touch $@; \
- 	fi
- 
-+edk2-basetools: edk2-version
-+	$(PYTHON) edk2-build.py --config edk2-build.config \
-+		--silent --no-logs \
-+		--match none # build only basetools
+diff --git a/pc-bios/descriptors/60-edk2-riscv64.json b/pc-bios/descriptors/60-edk2-riscv64.json
+new file mode 100644
+index 0000000000..14811ca307
+--- /dev/null
++++ b/pc-bios/descriptors/60-edk2-riscv64.json
+@@ -0,0 +1,31 @@
++{
++    "description": "UEFI firmware for riscv64",
++    "interface-types": [
++        "uefi"
++    ],
++    "mapping": {
++        "device": "flash",
++        "executable": {
++            "filename": "@DATADIR@/edk2-riscv-code.fd",
++            "format": "raw"
++        },
++        "nvram-template": {
++            "filename": "@DATADIR@/edk2-riscv-vars.fd",
++            "format": "raw"
++        }
++    },
++    "targets": [
++        {
++            "architecture": "riscv64",
++            "machines": [
++                "virt*"
++            ]
++        }
++    ],
++    "features": [
 +
- efi: edk2-version
- 	$(PYTHON) edk2-build.py --config edk2-build.config \
- 		--version-override "$(EDK2_STABLE)$(FIRMWARE_EXTRAVERSION)" \
++    ],
++    "tags": [
++
++    ]
++}
+diff --git a/pc-bios/descriptors/meson.build b/pc-bios/descriptors/meson.build
+index 66f85d01c4..18a584e5e3 100644
+--- a/pc-bios/descriptors/meson.build
++++ b/pc-bios/descriptors/meson.build
+@@ -5,7 +5,8 @@ if unpack_edk2_blobs and get_option('install_blobs')
+     '60-edk2-aarch64.json',
+     '60-edk2-arm.json',
+     '60-edk2-i386.json',
+-    '60-edk2-x86_64.json'
++    '60-edk2-x86_64.json',
++    '60-edk2-riscv64.json'
+   ]
+     configure_file(input: files(f),
+                    output: f,
 -- 
 2.39.5
 
