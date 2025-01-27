@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5925A205DF
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:21:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7DA5A205D3
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:19:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgfN-0002tk-JX; Tue, 28 Jan 2025 03:09:57 -0500
+	id 1tcgcS-00064g-0e; Tue, 28 Jan 2025 03:06:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgbN-0003jt-9a; Tue, 28 Jan 2025 03:05:49 -0500
+ id 1tcgbQ-0003vj-0M; Tue, 28 Jan 2025 03:05:52 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgbJ-0003A5-Uo; Tue, 28 Jan 2025 03:05:40 -0500
+ id 1tcgbN-0003BB-Dq; Tue, 28 Jan 2025 03:05:42 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4A1F0E1B77;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4E3F7E1B78;
  Tue, 28 Jan 2025 10:57:09 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id BA1101A632A;
+ by tsrv.corpit.ru (Postfix) with ESMTP id BE0521A632B;
  Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 3918A520E5; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
+ id 3ACD8520E7; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Yuan Liu <yuan1.liu@intel.com>,
  Jason Zeng <jason.zeng@intel.com>, Peter Xu <peterx@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 48/58] multifd: bugfix for migration using compression
- methods
-Date: Mon, 27 Jan 2025 23:25:34 +0300
-Message-Id: <20250127202547.3723716-48-mjt@tls.msk.ru>
+Subject: [Stable-9.1.3 49/58] multifd: bugfix for incorrect migration data
+ with QPL compression
+Date: Mon, 27 Jan 2025 23:25:35 +0300
+Message-Id: <20250127202547.3723716-49-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
@@ -62,50 +62,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When compression is enabled on the migration channel and
-the pages processed are all zero pages, these pages will
-not be sent and updated on the target side, resulting in
-incorrect memory data on the source and target sides.
+When QPL compression is enabled on the migration channel and the same
+dirty page changes from a normal page to a zero page in the iterative
+memory copy, the dirty page will not be updated to a zero page again
+on the target side, resulting in incorrect memory data on the source
+and target sides.
 
-The root cause is that all compression methods call
-multifd_send_prepare_common to determine whether to compress
-dirty pages, but multifd_send_prepare_common does not update
-the IOV of MultiFDPacket_t when all dirty pages are zero pages.
+The root cause is that the target side does not record the normal pages
+to the receivedmap.
 
-The solution is to always update the IOV of MultiFDPacket_t
-regardless of whether the dirty pages are all zero pages.
+The solution is to add ramblock_recv_bitmap_set_offset in target side
+to record the normal pages.
 
-Fixes: 303e6f54f9 ("migration/multifd: Implement zero page transmission on the multifd thread.")
-Cc: qemu-stable@nongnu.org #9.0+
 Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
 Reviewed-by: Jason Zeng <jason.zeng@intel.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Message-Id: <20241218091413.140396-2-yuan1.liu@intel.com>
+Message-Id: <20241218091413.140396-3-yuan1.liu@intel.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
-(cherry picked from commit cdc3970f8597ebdc1a4c2090cfb4d11e297329ed)
+(cherry picked from commit 2588a5f99b0c3493b4690e3ff01ed36f80e830cc)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: in 9.1 this code is in migration/multifd.c, not in migration/multifd-nocomp.c)
 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index a6db05502a..0b04db9f3a 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -1690,6 +1690,7 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
- 
- bool multifd_send_prepare_common(MultiFDSendParams *p)
- {
-+    multifd_send_prepare_header(p);
-     multifd_send_zero_page_detect(p);
- 
-     if (!p->pages->normal_num) {
-@@ -1697,7 +1698,5 @@ bool multifd_send_prepare_common(MultiFDSendParams *p)
-         return false;
+diff --git a/migration/multifd-qpl.c b/migration/multifd-qpl.c
+index 9265098ee7..fea60e3937 100644
+--- a/migration/multifd-qpl.c
++++ b/migration/multifd-qpl.c
+@@ -730,6 +730,7 @@ static int multifd_qpl_recv(MultiFDRecvParams *p, Error **errp)
+         qpl->zlen[i] = be32_to_cpu(qpl->zlen[i]);
+         assert(qpl->zlen[i] <= p->page_size);
+         zbuf_len += qpl->zlen[i];
++        ramblock_recv_bitmap_set_offset(p->block, p->normal[i]);
      }
  
--    multifd_send_prepare_header(p);
--
-     return true;
- }
+     /* read compressed pages */
 -- 
 2.39.5
 
