@@ -2,95 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB38A20172
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 00:13:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0771AA2019A
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 00:27:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcYGF-0003sd-Kj; Mon, 27 Jan 2025 18:11:19 -0500
+	id 1tcYUe-0006Jx-Ch; Mon, 27 Jan 2025 18:26:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tcYGA-0003rx-KP; Mon, 27 Jan 2025 18:11:14 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tcYUc-0006Jn-4K
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 18:26:10 -0500
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tcYG8-0002up-SG; Mon, 27 Jan 2025 18:11:14 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-5d0d32cd31aso7327960a12.0; 
- Mon, 27 Jan 2025 15:11:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tcYUZ-0005Vi-FJ
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 18:26:09 -0500
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-2ee8aa26415so8613859a91.1
+ for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 15:26:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1738019470; x=1738624270; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=5OAcb13yKxdtvwr2trvtvKYqKmZygughFPR3uezWb2o=;
- b=AHJTqJgdnfBILRSFFY//YvBFPV9V+8QUrdb8ZXyfvxlKKEjX/kqU3z8JGlMerqsizP
- hrUP7aZJDHFKFPlbp5OjkCPt2IKvthzTEOKShqEJxMEkwXuoaj2fABu5yytTlXW7PZGH
- P1K3evZpEwV18Oi5VD7LJF+2uesBiXZkcrQ+a9hS22RWllmZlcHdSVbY2QHIZMlZ9XN0
- oAjUFN5JTiyzfO2oao1mUPCzS930M0MzCQIDmvtLWyRlrPe65JoNMPEtPDOVSrRj0D5r
- KT41LN1Xo2AlWwwXK9Ho2KKV1IB4D9LIb+b72XXppt5LZTooceK89waDfS/PEoGGU0xa
- GrsA==
+ d=linaro.org; s=google; t=1738020365; x=1738625165; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=gOVruBfOosdn8le90OoWbUS8+u4xO7r11rTTR1zWn7s=;
+ b=C0LrkcsVAeI7lJhezahDqZ3hE9rw94XKnlgbkH/qPI+zF1e9o4qB+oedsYkW4l0Eun
+ ndRqrZifEfv38Yh54/XTLlIX+pVrNXTvLvb2UloztmAbWW5bNgs1CklW8SDMWtx7JAD7
+ R7vMKTk3/YxNxe3wlIATnAW2X9yYd3mbKe5E2ppPT4GI99gYz7rqZByySuAagqHw1EAC
+ J0RUt1HWv2bKVz9A1/BY/J9PtbWqjgnYxKXJ6D+Ebbe1l7Sq6a9tDYZGhVlgejpCE/GU
+ Ia/q5sETEXDV8Zn7RAOZ6K3d+jupEORMlqtVc2kNNlqJclkH/ftNQPOCMs7ihsSfhJ6Q
+ mWJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738019470; x=1738624270;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=5OAcb13yKxdtvwr2trvtvKYqKmZygughFPR3uezWb2o=;
- b=UnRJPNgztAVfDPuavU+yPJ1z3re8iAgqKmVsHvWGFPaPSOCUTnQvenZo4LVlghAbpv
- 9BCbYvhm+vzWWymy4OpnJ5oPjy0Lpao8x1kQ/xzpxk4U8HXc7LYnduUZn+bciVGRJoVZ
- JBDpfB86AwYSFXYWnGFQTGU6Affr8eXw4/hpwSH86Cmgt1TIC0namEu9CFRpTOhI0iC4
- IDDnuyGuY8OzMfDwC7pXbCzSugj3N0/km1Et+E7AFebf6dkunJ+3gzXYj1+mliReeTvo
- FXQ6xaFpNKaeRbXWJPpPsFVlV1BqXqziKbZm67oaTkwp9fPCKtmPYPvoay0qhvUXUl/7
- OrpQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUIsK8srcFyjTdvmABLbMn0NNkAwP/R+cHZVQZEVNYtjtegEl6shTOJ6hW+kGJR8mpqZD1pBRtHjoU5lQ==@nongnu.org,
- AJvYcCXYbQpk/pDlqatL+cvAgWEZiscoKpaT28O5XzuVIJMQUPtrfc1CB3hb6uainQXA2LQA4xc3Hr8xlg==@nongnu.org
-X-Gm-Message-State: AOJu0YyDezOe8VwHWeZLxgSauuXZXkBrt9QR//BL2Mw63FCgCrWDv/Jz
- CeS3w57pGOAj+D0ZjsHdcoSd40CqQprNs01w3nF6ezVmlyfgVyha
-X-Gm-Gg: ASbGncsGvIy4sz66KmUQY8ECHDwtpr/CPwru04LlK2fgW/BU4glqNDFxkHTsCRMdrWW
- /SyTJzogiA3F+OAsiMztTG7LeUx4OHYBfb4WsnvpxjAkYvtVOtO+UFjbIU5ilyHWHmbPNxjJixV
- hGah+EhGeH/ydTJNMDT7gd6eFRV3i8HYf7atrVYt9hUmY2SI2YzAmqW3KL1m2oyNDHIG+kTHs/F
- MUphw1ySz6N7AmOcQAUdH/jgyhs4Lmze9rPp47xqG/oZESGRKkFqyv4L/TH4Ogi+SpkTXKnTUID
- JsbMNbmgUMabexC+1BFTTARNfUKcO1uFRf0lA7kMMp8dD6wRP1RmUbVw
-X-Google-Smtp-Source: AGHT+IEisztnD29Cs/9MwqJ5PVpVEchSi8Fa9wYfAl0rdKmq3U0DVWzzKLSCg0S9vuu7BenhcXELaQ==
-X-Received: by 2002:a05:6402:1e8e:b0:5dc:1059:6b2 with SMTP id
- 4fb4d7f45d1cf-5dc105a5ec1mr41869335a12.7.1738019469307; 
- Mon, 27 Jan 2025 15:11:09 -0800 (PST)
-Received: from [127.0.0.1] (dynamic-093-128-047-181.93.128.pool.telefonica.de.
- [93.128.47.181]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5dc1863ae37sm6246803a12.41.2025.01.27.15.11.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 Jan 2025 15:11:08 -0800 (PST)
-Date: Mon, 27 Jan 2025 23:11:07 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>, Guenter Roeck <linux@roeck-us.net>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- Andrey Smirnov <andrew.smirnov@gmail.com>, qemu-arm@nongnu.org,
- =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Laurent Vivier <lvivier@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
- qemu-block@nongnu.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_06/13=5D_hw/sd/sd=3A_Remove?=
- =?US-ASCII?Q?_legacy_sd=5Fset=5Fcb=28=29_in_favor_of_GPIOs?=
-In-Reply-To: <CAFEAcA_m29rWYQPtz=xSBsS_FXb5_L6+DGBA2o_TrLcFy6YC3g@mail.gmail.com>
-References: <20250111183711.2338-1-shentey@gmail.com>
- <20250111183711.2338-7-shentey@gmail.com>
- <CAFEAcA_m29rWYQPtz=xSBsS_FXb5_L6+DGBA2o_TrLcFy6YC3g@mail.gmail.com>
-Message-ID: <BB80F4B5-02D5-411A-95DF-9EEE91237EDB@gmail.com>
+ d=1e100.net; s=20230601; t=1738020365; x=1738625165;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=gOVruBfOosdn8le90OoWbUS8+u4xO7r11rTTR1zWn7s=;
+ b=s59+7Fu4fFbTSGeRsxl6tuA99Hyx/xcEBGQHKmFhrWLOEqulb4qVglshVPXSHODR0c
+ IdcPhRIYaB11QYuKP2lTViiuxYosXpcjbDsEAoskveXBh06evOinS46UqytjtnbYXBrF
+ Cj5Pm4gpscO+8wG3/4148lgfIbywggN8Xa47TjUYGMBu9MpTale1OQ2Qyr7CiG8D6FWp
+ mAV4tChVIf8lQSc+18CwYRZdenAfYh+t66OfcmNfGwvURqssI4BCseU8N9pV/sjAPD6G
+ n/Mh47KYOvD6AgBefRA5DwHoK3lyofAT1ZdZIxm2aQ/xNjNQ/Rct1hR8/W/XQEPY6f12
+ k2Qg==
+X-Gm-Message-State: AOJu0Yx1xbK2D7nk1KS8G3yidDekPmQ6PqOTgLq2O5T1XVa3ksqGBZ7H
+ Vaj1lOKzwdNxjbx2QMhVHqv4EcjOvuemivfM9mozWAfP08ZJdhN2IzcPFX/JMJCMu3ce693NY95
+ A
+X-Gm-Gg: ASbGncuSknbBtd4wJMn87A5HwajaiQSKXstjqW7WojVYQFwSxeg2T2JZzZfKVv5JtJt
+ TWxyh4tb4KhEJyisJKn0MO2F/UyVVb2NNYGjZcDKyrh/PUPFRFZu+RngiwvJDMZtQigKXxUIgCi
+ xwgiccnbmRyZOWJeWMuGvPF0a7kMhx9pZMnlB0qp1l/g+RWdZRKB8kjj4JrH+XIaMmxdM9QwzBs
+ kPyczWUQRJMM/q6PVzdF1H9nPuGPejf4mdOSoJLX5Ht1opKHZj0CeJhnn+Cr3MEvaA1L2GB2lVN
+ FX6+N263DQ0bUE0JxGjVYkpFwKYn/VyojuqSSEc=
+X-Google-Smtp-Source: AGHT+IH2O/a3uxU/0+LPSuTijswevzTifnK5pC8ljgFGrio7pzYQqlmo/7XO3icMGL+clO9QJlFrVA==
+X-Received: by 2002:a17:90a:c888:b0:2f6:f32e:90ac with SMTP id
+ 98e67ed59e1d1-2f782c90095mr64769850a91.11.1738020365616; 
+ Mon, 27 Jan 2025 15:26:05 -0800 (PST)
+Received: from stoup.. (174-21-71-127.tukw.qwest.net. [174.21.71.127])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2f7ffb1b31esm7833000a91.47.2025.01.27.15.26.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 27 Jan 2025 15:26:05 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org,
+	qemu-arm@nongnu.org
+Subject: [PATCH 00/22] target/arm: FEAT_AFP followups for FEAT_SME2
+Date: Mon, 27 Jan 2025 15:25:42 -0800
+Message-ID: <20250127232604.20386-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52d.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -108,47 +95,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Peter,
+
+After reviewing your AFP patch set, and starting to rebase SME2 work
+on top of that (since I'd been skipping the FPCR.AH portion of SME2),
+here are some cleanups which might be folded back into the original
+change for FPCR.AH or left as separate follow-ups.
+
+All of the FPST frobbing is because I add FPST_ZA (not included here)
+which is like FPST_FPCR_A64, but with default-nans and whose cumulative
+exception flags are ignored.  Thus it does not overlap FPST_FPCR_AH
+semantics.
+
+I've not tested this extraction heavily (i.e. just make check).
+Do you have further tests for AH=1?
 
 
-Am 27=2E Januar 2025 13:24:46 UTC schrieb Peter Maydell <peter=2Emaydell@l=
-inaro=2Eorg>:
->On Sat, 11 Jan 2025 at 18:37, Bernhard Beschow <shentey@gmail=2Ecom> wrot=
-e:
->>
->> Commit ce5dd27534b0 "hw/sd: Remove omap2_mmc device" removed the last u=
-ser of
->> sd_set_cb()=2E Rework this functionality into GPIOs=2E
->>
->> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
->> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->
->What is this for? We have a non-legacy API for "the SD controller
->needs to know when the SD card is inserted or the readonly
->status changes", which is that the controller implements the
->SDBasClass set_inserted and set_readonly methods=2E (See the pl011
->for an example=2E)
->
->I would prefer it if we used that consistently, rather than having
->two mechanisms, one using GPIO lines and one using class methods=2E
->I think we should delete the sd_set_cb() API and handling code
->entirely=2E
+r~
 
-According to the Linux MMC controller DT schema, there are actually two wa=
-ys to implement cd and wp lines [1]=2E When implementing the imx8mp-evk boa=
-rd, I thought I would need to model the GPIO style [2], hence I implemented=
- it plus the active low part on the SD card=2E Later I noticed that the car=
-d gets detected anyway without the GPIO wiring, so I'm fine if the code get=
-s removed instead=2E
 
-Best regards,
-Bernhard
+Based-on: 20250124162836.2332150-1-peter.maydell@linaro.org
+("[PATCH 00/76] target/arm: Implement FEAT_AFP and FEAT_RPRES")
 
-[1] <https://github=2Ecom/torvalds/linux/blob/v6=2E13/Documentation/device=
-tree/bindings/mmc/mmc-controller=2Eyaml#L60>
-[2] <https://github=2Ecom/torvalds/linux/blob/v6=2E13/arch/arm64/boot/dts/=
-freescale/imx8mp-evk=2Edts#L776>
 
->
->thanks
->-- PMM
+Richard Henderson (22):
+  target/arm: Rename FPST_FPCR_A32 to FPST_A32
+  target/arm: Rename FPST_FPCR_A64 to FPST_A64
+  target/arm: Rename FPST_FPCR_F16_A32 to FPST_A32_F16
+  target/arm: Rename FPST_FPCR_F16_A64 to FPST_A64_F16
+  target/arm: Rename FPST_FPCR_AH* to FPST_AH*
+  target/arm: Introduce CPUARMState.vfp.fp_status[]
+  target/arm: Remove standard_fp_status_f16
+  target/arm: Remove standard_fp_status
+  target/arm: Remove ah_fp_status_f16
+  target/arm: Remove ah_fp_status
+  target/arm: Remove fp_status_f16_a64
+  target/arm: Remove fp_status_f16_a32
+  target/arm: Remove fp_status_a64
+  target/arm: Remove fp_status_a32
+  target/arm: Simplify fp_status indexing in mve_helper.c
+  target/arm: Simplify DO_VFP_cmp in vfp_helper.c
+  target/arm: Move float*_ah_chs to vec_internal.h
+  target/arm: Introduce float*_maybe_ah_chs
+  target/arm: Use float*_maybe_ah_chs in sve_ftssel_*
+  target/arm: Use float*_maybe_ah_chs in sve_ftmad_*
+  target/arm: Use float*_maybe_ah_chs in sve_ftmad_*
+  target/arm: Use flags for AH negation in do_fmla_zpzzz_*
+
+ target/arm/cpu.h               | 107 ++++++++++++-----------
+ target/arm/tcg/translate.h     |  68 +--------------
+ target/arm/tcg/vec_internal.h  |  35 ++++++++
+ target/arm/cpu.c               |  28 +++---
+ target/arm/tcg/helper-a64.c    |  15 +---
+ target/arm/tcg/mve_helper.c    |  44 ++++------
+ target/arm/tcg/sme_helper.c    |   4 +-
+ target/arm/tcg/sve_helper.c    | 150 ++++++++++++++-------------------
+ target/arm/tcg/translate-a64.c | 100 +++++++++++-----------
+ target/arm/tcg/translate-sme.c |   4 +-
+ target/arm/tcg/translate-sve.c | 126 +++++++++++++--------------
+ target/arm/tcg/translate-vfp.c |  78 ++++++++---------
+ target/arm/tcg/vec_helper.c    |  26 +++---
+ target/arm/vfp_helper.c        |  94 ++++++++++-----------
+ 14 files changed, 405 insertions(+), 474 deletions(-)
+
+-- 
+2.43.0
+
 
