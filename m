@@ -2,38 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA74A205CE
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:18:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C92FA205C0
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:14:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgVj-00070L-JH; Tue, 28 Jan 2025 02:59:52 -0500
+	id 1tcgVf-0006Uz-FH; Tue, 28 Jan 2025 02:59:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgVY-0006Ea-Do; Tue, 28 Jan 2025 02:59:40 -0500
+ id 1tcgVY-0006JT-Qo; Tue, 28 Jan 2025 02:59:40 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgVW-0001IK-QY; Tue, 28 Jan 2025 02:59:40 -0500
+ id 1tcgVW-0001IN-Vj; Tue, 28 Jan 2025 02:59:40 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E7EBCE1B05;
+ by isrv.corpit.ru (Postfix) with ESMTP id EBD12E1B06;
  Tue, 28 Jan 2025 10:54:25 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 62FB21A62EC;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 66E4D1A62ED;
  Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 0AA575206F; Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
+ id 0C4DA52071; Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Han Han <hhan@redhat.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.9 36/45] target/i386/cpu: Fix notes for CPU models
-Date: Mon, 27 Jan 2025 23:26:17 +0300
-Message-Id: <20250127202630.3724367-36-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.9 37/45] tests/qtest/boot-serial-test: Correct HPPA
+ machine name
+Date: Mon, 27 Jan 2025 23:26:18 +0300
+Message-Id: <20250127202630.3724367-37-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 References: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 From: Michael Tokarev <mjt@tls.msk.ru>
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -60,35 +65,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes: 644e3c5d812 ("missing vmx features for Skylake-Server and Cascadelake-Server")
-Signed-off-by: Han Han <hhan@redhat.com>
-Reviewed-by: Chenyi Qiang <chenyi.qiang@intel.com>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit 93dcc9390e5ad0696ae7e9b7b3a5b08c2d1b6de6)
+Commit 7df6f751176 ("hw/hppa: Split out machine creation")
+renamed the 'hppa' machine as 'B160L', but forgot to update
+the boot serial test, which ended being skipped.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 7df6f751176 ("hw/hppa: Split out machine creation")
+Reported-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20250102100340.43014-2-philmd@linaro.org>
+(cherry picked from commit a87077316ed2f1c1c8ba8faf05feed9dbf0f2fee)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 8f318a5dc3..4331d1873f 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -3402,6 +3402,7 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-             },
-             {
-                 .version = 4,
-+                .note = "IBRS, EPT switching, no TSX",
-                 .props = (PropValue[]) {
-                     { "vmx-eptp-switching", "on" },
-                     { /* end of list */ }
-@@ -3536,7 +3537,7 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-               },
-             },
-             { .version = 4,
--              .note = "ARCH_CAPABILITIES, no TSX",
-+              .note = "ARCH_CAPABILITIES, EPT switching, no TSX",
-               .props = (PropValue[]) {
-                   { "vmx-eptp-switching", "on" },
-                   { /* end of list */ }
+diff --git a/tests/qtest/boot-serial-test.c b/tests/qtest/boot-serial-test.c
+index 6dd06aeaf4..b6dc078139 100644
+--- a/tests/qtest/boot-serial-test.c
++++ b/tests/qtest/boot-serial-test.c
+@@ -175,7 +175,7 @@ static const testdef_t tests[] = {
+       sizeof(kernel_plml605), kernel_plml605 },
+     { "arm", "raspi2b", "", "TT", sizeof(bios_raspi2), 0, bios_raspi2 },
+     /* For hppa, force bios to output to serial by disabling graphics. */
+-    { "hppa", "hppa", "-vga none", "SeaBIOS wants SYSTEM HALT" },
++    { "hppa", "B160L", "-vga none", "SeaBIOS wants SYSTEM HALT" },
+     { "aarch64", "virt", "-cpu max", "TT", sizeof(kernel_aarch64),
+       kernel_aarch64 },
+     { "arm", "microbit", "", "T", sizeof(kernel_nrf51), kernel_nrf51 },
 -- 
 2.39.5
 
