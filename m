@@ -2,44 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8453AA20641
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:29:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFDEDA20617
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:23:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgcE-0004iT-A0; Tue, 28 Jan 2025 03:06:34 -0500
+	id 1tcgZp-000801-Ru; Tue, 28 Jan 2025 03:04:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgYw-0006jx-Gj; Tue, 28 Jan 2025 03:03:14 -0500
+ id 1tcgZK-0007I6-0H; Tue, 28 Jan 2025 03:03:39 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgYu-0002HE-CU; Tue, 28 Jan 2025 03:03:09 -0500
+ id 1tcgZH-0002I3-Rc; Tue, 28 Jan 2025 03:03:33 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DB5FBE1B5F;
+ by isrv.corpit.ru (Postfix) with ESMTP id DF4B1E1B60;
  Tue, 28 Jan 2025 10:57:08 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 572021A6312;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 5B2661A6313;
  Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 10AB8520B5; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
+ id 1255C520B7; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ Dirk Herrendorfer <d.herrendoerfer@de.ibm.com>, Greg Kurz <groug@kaod.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 24/58] target/riscv: Avoid bad shift in
- riscv_cpu_do_interrupt()
-Date: Mon, 27 Jan 2025 23:25:10 +0300
-Message-Id: <20250127202547.3723716-24-mjt@tls.msk.ru>
+Subject: [Stable-9.1.3 25/58] 9pfs: fix regression regarding CVE-2023-2861
+Date: Mon, 27 Jan 2025 23:25:11 +0300
+Message-Id: <20250127202547.3723716-25-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 From: Michael Tokarev <mjt@tls.msk.ru>
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -66,53 +61,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In riscv_cpu_do_interrupt() we use the 'cause' value we got out of
-cs->exception as a shift value.  However this value can be larger
-than 31, which means that "1 << cause" is undefined behaviour,
-because we do the shift on an 'int' type.
+The released fix for this CVE:
 
-This causes the undefined behaviour sanitizer to complain
-on one of the check-tcg tests:
+  f6b0de53fb8 ("9pfs: prevent opening special files (CVE-2023-2861)")
 
-$ UBSAN_OPTIONS=print_stacktrace=1:abort_on_error=1:halt_on_error=1 ./build/clang/qemu-system-riscv64 -M virt -semihosting -display none -device loader,file=build/clang/tests/tcg/riscv64-softmmu/issue1060
-../../target/riscv/cpu_helper.c:1805:38: runtime error: shift exponent 63 is too large for 32-bit type 'int'
-    #0 0x55f2dc026703 in riscv_cpu_do_interrupt /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/clang/../../target/riscv/cpu_helper.c:1805:38
-    #1 0x55f2dc3d170e in cpu_handle_exception /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/clang/../../accel/tcg/cpu-exec.c:752:9
+caused a regression with security_model=passthrough. When handling a
+'Tmknod' request there was a side effect that 'Tmknod' request could fail
+as 9p server was trying to adjust permissions:
 
-In this case cause is RISCV_EXCP_SEMIHOST, which is 0x3f.
+  #6  close_if_special_file (fd=30) at ../hw/9pfs/9p-util.h:140
+  #7  openat_file (mode=<optimized out>, flags=2228224,
+      name=<optimized out>, dirfd=<optimized out>) at
+      ../hw/9pfs/9p-util.h:181
+  #8  fchmodat_nofollow (dirfd=dirfd@entry=31,
+      name=name@entry=0x5555577ea6e0 "mysocket", mode=493) at
+      ../hw/9pfs/9p-local.c:360
+  #9  local_set_cred_passthrough (credp=0x7ffbbc4ace10, name=0x5555577ea6e0
+      "mysocket", dirfd=31, fs_ctx=0x55555811f528) at
+      ../hw/9pfs/9p-local.c:457
+  #10 local_mknod (fs_ctx=0x55555811f528, dir_path=<optimized out>,
+      name=0x5555577ea6e0 "mysocket", credp=0x7ffbbc4ace10) at
+      ../hw/9pfs/9p-local.c:702
+  #11 v9fs_co_mknod (pdu=pdu@entry=0x555558121140,
+      fidp=fidp@entry=0x5555574c46c0, name=name@entry=0x7ffbbc4aced0,
+      uid=1000, gid=1000, dev=<optimized out>, mode=49645,
+      stbuf=0x7ffbbc4acef0) at ../hw/9pfs/cofs.c:205
+  #12 v9fs_mknod (opaque=0x555558121140) at ../hw/9pfs/9p.c:3711
 
-Use 1ULL instead to ensure that the shift is in range.
+That's because server was opening the special file to adjust permissions,
+however it was using O_PATH and it would have not returned the file
+descriptor to guest. So the call to close_if_special_file() on that branch
+was incorrect.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Fixes: 1697837ed9 ("target/riscv: Add M-mode virtual interrupt and IRQ filtering support.")
-Fixes: 40336d5b1d ("target/riscv: Add HS-mode virtual interrupt and IRQ filtering support.")
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20241128103831.3452572-1-peter.maydell@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 5311599cdc48337f2f27b1b51a80d46d75b05ed0)
+Let's lift the restriction introduced by f6b0de53fb8 such that it would
+allow to open special files on host if O_PATH flag is supplied, not only
+for 9p server's own operations as described above, but also for any client
+'Topen' request.
+
+It is safe to allow opening special files with O_PATH on host, because
+O_PATH only allows path based operations on the resulting file descriptor
+and prevents I/O such as read() and write() on that file descriptor.
+
+Fixes: f6b0de53fb8 ("9pfs: prevent opening special files (CVE-2023-2861)")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2337
+Reported-by: Dirk Herrendorfer <d.herrendoerfer@de.ibm.com>
+Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Reviewed-by: Greg Kurz <groug@kaod.org>
+Tested-by: Dirk Herrendorfer <d.herrendoerfer@de.ibm.com>
+Message-Id: <E1tJWbk-007BH4-OB@kylie.crudebyte.com>
+(cherry picked from commit d06a9d843fb65351e0e4dc42ba0c404f01ea92b3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 395a1d9140..6e8ce87d74 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1662,10 +1662,10 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-     bool async = !!(cs->exception_index & RISCV_EXCP_INT_FLAG);
-     target_ulong cause = cs->exception_index & RISCV_EXCP_INT_MASK;
-     uint64_t deleg = async ? env->mideleg : env->medeleg;
--    bool s_injected = env->mvip & (1 << cause) & env->mvien &&
--        !(env->mip & (1 << cause));
--    bool vs_injected = env->hvip & (1 << cause) & env->hvien &&
--        !(env->mip & (1 << cause));
-+    bool s_injected = env->mvip & (1ULL << cause) & env->mvien &&
-+        !(env->mip & (1ULL << cause));
-+    bool vs_injected = env->hvip & (1ULL << cause) & env->hvien &&
-+        !(env->mip & (1ULL << cause));
-     target_ulong tval = 0;
-     target_ulong tinst = 0;
-     target_ulong htval = 0;
+diff --git a/hw/9pfs/9p-util.h b/hw/9pfs/9p-util.h
+index 51c94b0116..95ee4da9bd 100644
+--- a/hw/9pfs/9p-util.h
++++ b/hw/9pfs/9p-util.h
+@@ -177,20 +177,27 @@ again:
+         return -1;
+     }
+ 
+-    if (close_if_special_file(fd) < 0) {
+-        return -1;
+-    }
+-
+-    serrno = errno;
+-    /* O_NONBLOCK was only needed to open the file. Let's drop it. We don't
+-     * do that with O_PATH since fcntl(F_SETFL) isn't supported, and openat()
+-     * ignored it anyway.
+-     */
++    /* Only if O_PATH is not set ... */
+     if (!(flags & O_PATH_9P_UTIL)) {
++        /*
++         * Prevent I/O on special files (device files, etc.) on host side,
++         * however it is safe and required to allow opening them with O_PATH,
++         * as this is limited to (required) path based operations only.
++         */
++        if (close_if_special_file(fd) < 0) {
++            return -1;
++        }
++
++        serrno = errno;
++        /*
++         * O_NONBLOCK was only needed to open the file. Let's drop it. We don't
++         * do that with O_PATH since fcntl(F_SETFL) isn't supported, and
++         * openat() ignored it anyway.
++         */
+         ret = fcntl(fd, F_SETFL, flags);
+         assert(!ret);
++        errno = serrno;
+     }
+-    errno = serrno;
+     return fd;
+ }
+ 
 -- 
 2.39.5
 
