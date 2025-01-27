@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F29FA2057B
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:03:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4748DA20625
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:26:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgUV-0007pu-UI; Tue, 28 Jan 2025 02:58:36 -0500
+	id 1tcgUa-0008B2-3k; Tue, 28 Jan 2025 02:58:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgU5-0006i7-FL; Tue, 28 Jan 2025 02:58:09 -0500
+ id 1tcgU7-0006zY-6y; Tue, 28 Jan 2025 02:58:11 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgU3-0000nG-DT; Tue, 28 Jan 2025 02:58:09 -0500
+ id 1tcgU5-0000sk-DG; Tue, 28 Jan 2025 02:58:10 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A8B53E1AF5;
+ by isrv.corpit.ru (Postfix) with ESMTP id ACA05E1AF6;
  Tue, 28 Jan 2025 10:54:25 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 23C021A62DC;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 27ADF1A62DD;
  Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id E413C5204F; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
+ id E5BC252051; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Li-Wen Hsu <lwhsu@FreeBSD.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.9 20/45] Update FreeBSD CI jobs FreeBSD 14.1
-Date: Mon, 27 Jan 2025 23:26:01 +0300
-Message-Id: <20250127202630.3724367-20-mjt@tls.msk.ru>
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.9 21/45] .gitlab-ci.d/cirrus: Remove the netbsd and
+ openbsd jobs
+Date: Mon, 27 Jan 2025 23:26:02 +0300
+Message-Id: <20250127202630.3724367-21-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 References: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
@@ -60,104 +61,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current FreeBSD CI jobs are failing installation since the
-"opencv" package is now missing there. Updating to 14.1 fixes
-the issue.
+During the past months, the netbsd and openbsd jobs in the Cirrus-CI
+were broken most of the time - the setup to run a BSD in KVM on Cirrus-CI
+from gitlab via the cirrus-run script was very fragile, and since the
+jobs were not run by default, it used to bitrot very fast.
 
-Message-Id: <20240911090149.286257-1-thuth@redhat.com>
-Reviewed-by: Li-Wen Hsu <lwhsu@FreeBSD.org>
+Now Cirrus-CI also introduce a limit on the amount of free CI minutes
+that you get there, so it is not appealing at all anymore to run
+these BSDs in this setup - it's better to run the checks locally via
+"make vm-build-openbsd" and "make vm-build-netbsd" instead. Thus let's
+remove these CI jobs now.
+
+Message-ID: <20240426113742.654748-1-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit b4358ed4fd29c21c69e492d814f0926c58caa10f)
+(cherry picked from commit cc6cb422e09592158586279fddeef107df05ecbb)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-index 49f86fadaf..cbc68a567a 100644
+index cbc68a567a..92c97eefc1 100644
 --- a/.gitlab-ci.d/cirrus.yml
 +++ b/.gitlab-ci.d/cirrus.yml
-@@ -46,13 +46,13 @@
-   variables:
-     QEMU_JOB_CIRRUS: 1
- 
--x64-freebsd-13-build:
-+x64-freebsd-14-build:
-   extends: .cirrus_build_job
-   variables:
--    NAME: freebsd-13
-+    NAME: freebsd-14
-     CIRRUS_VM_INSTANCE_TYPE: freebsd_instance
-     CIRRUS_VM_IMAGE_SELECTOR: image_family
--    CIRRUS_VM_IMAGE_NAME: freebsd-13-3
-+    CIRRUS_VM_IMAGE_NAME: freebsd-14-1
-     CIRRUS_VM_CPUS: 8
-     CIRRUS_VM_RAM: 8G
-     UPDATE_COMMAND: pkg update; pkg upgrade -y
-diff --git a/.gitlab-ci.d/cirrus/freebsd-13.vars b/.gitlab-ci.d/cirrus/freebsd-14.vars
-similarity index 58%
-rename from .gitlab-ci.d/cirrus/freebsd-13.vars
-rename to .gitlab-ci.d/cirrus/freebsd-14.vars
-index 3785afca36..7032cba031 100644
---- a/.gitlab-ci.d/cirrus/freebsd-13.vars
-+++ b/.gitlab-ci.d/cirrus/freebsd-14.vars
-@@ -1,6 +1,6 @@
- # THIS FILE WAS AUTO-GENERATED
- #
--#  $ lcitool variables freebsd-13 qemu
-+#  $ lcitool variables freebsd-14 qemu
- #
- # https://gitlab.com/libvirt/libvirt-ci
- 
-@@ -12,5 +12,6 @@ NINJA='/usr/local/bin/ninja'
- PACKAGING_COMMAND='pkg'
- PIP3='/usr/local/bin/pip-3.8'
- PKGS='alsa-lib bash bison bzip2 ca_root_nss capstone4 ccache cmocka ctags curl cyrus-sasl dbus diffutils dtc flex fusefs-libs3 gettext git glib gmake gnutls gsed gtk3 json-c libepoxy libffi libgcrypt libjpeg-turbo libnfs libslirp libspice-server libssh libtasn1 llvm lzo2 meson mtools ncurses nettle ninja opencv pixman pkgconf png py39-numpy py39-pillow py39-pip py39-sphinx py39-sphinx_rtd_theme py39-tomli py39-yaml python3 rpm2cpio sdl2 sdl2_image snappy sndio socat spice-protocol tesseract usbredir virglrenderer vte3 xorriso zstd'
-+PKGS='alsa-lib bash bison bzip2 ca_root_nss capstone4 ccache cmocka ctags curl cyrus-sasl dbus diffutils dtc flex fusefs-libs3 gettext git glib gmake gnutls gsed gtk-vnc gtk3 json-c libepoxy libffi libgcrypt libjpeg-turbo libnfs libslirp libspice-server libssh libtasn1 llvm lzo2 meson mtools ncurses nettle ninja opencv pixman pkgconf png py311-numpy py311-pillow py311-pip py311-pyyaml py311-sphinx py311-sphinx_rtd_theme py311-tomli python3 rpm2cpio sdl2 sdl2_image snappy sndio socat spice-protocol tesseract usbredir virglrenderer vte3 xorriso zstd'
- PYPI_PKGS=''
- PYTHON='/usr/local/bin/python3'
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index d4b9301311..59dd6939e7 100755
---- a/tests/lcitool/refresh
-+++ b/tests/lcitool/refresh
-@@ -199,14 +199,14 @@ try:
-     #
-     # Cirrus packages lists for GitLab
-     #
--    generate_cirrus("freebsd-13")
-+    generate_cirrus("freebsd-14")
-     generate_cirrus("macos-13")
-     generate_cirrus("macos-14")
- 
-     #
-     # VM packages lists
-     #
--    generate_pkglist("freebsd", "freebsd-13")
-+    generate_pkglist("freebsd", "freebsd-14")
- 
-     sys.exit(0)
- except Exception as ex:
-diff --git a/tests/vm/freebsd b/tests/vm/freebsd
-index b581bd17fb..9dd9805935 100755
---- a/tests/vm/freebsd
-+++ b/tests/vm/freebsd
-@@ -28,8 +28,8 @@ class FreeBSDVM(basevm.BaseVM):
-     name = "freebsd"
-     arch = "x86_64"
- 
--    link = "https://download.freebsd.org/releases/CI-IMAGES/13.2-RELEASE/amd64/Latest/FreeBSD-13.2-RELEASE-amd64-BASIC-CI.raw.xz"
--    csum = "a4fb3b6c7b75dd4d58fb0d75e4caf72844bffe0ca00e66459c028b198ffb3c0e"
-+    link = "https://download.freebsd.org/releases/CI-IMAGES/14.1-RELEASE/amd64/Latest/FreeBSD-14.1-RELEASE-amd64-BASIC-CI.raw.xz"
-+    csum = "202fe27a05427f0a86d3ebb97712745186f2776ccc4f70d95466dd99a0238ba5"
-     size = "20G"
- 
-     BUILD_SCRIPT = """
-@@ -39,7 +39,7 @@ class FreeBSDVM(basevm.BaseVM):
-         mkdir src build; cd src;
-         tar -xf /dev/vtbd1;
-         cd ../build;
--        ../src/configure --python=python3.9  --extra-ldflags=-L/usr/local/lib \
-+        ../src/configure --extra-ldflags=-L/usr/local/lib \
-                          --extra-cflags=-I/usr/local/include {configure_opts};
-         gmake --output-sync -j{jobs} {target} {verbose};
-     """
+@@ -91,40 +91,3 @@ aarch64-macos-14-base-build:
+     PKG_CONFIG_PATH: /opt/homebrew/curl/lib/pkgconfig:/opt/homebrew/ncurses/lib/pkgconfig:/opt/homebrew/readline/lib/pkgconfig
+     TEST_TARGETS: check-unit check-block check-qapi-schema check-softfloat check-qtest-x86_64
+     QEMU_JOB_OPTIONAL: 1
+-
+-
+-# The following jobs run VM-based tests via KVM on a Linux-based Cirrus-CI job
+-.cirrus_kvm_job:
+-  extends: .base_job_template
+-  stage: build
+-  image: registry.gitlab.com/libvirt/libvirt-ci/cirrus-run:master
+-  needs: []
+-  timeout: 80m
+-  script:
+-    - sed -e "s|[@]CI_REPOSITORY_URL@|$CI_REPOSITORY_URL|g"
+-          -e "s|[@]CI_COMMIT_REF_NAME@|$CI_COMMIT_REF_NAME|g"
+-          -e "s|[@]CI_COMMIT_SHA@|$CI_COMMIT_SHA|g"
+-          -e "s|[@]NAME@|$NAME|g"
+-          -e "s|[@]CONFIGURE_ARGS@|$CONFIGURE_ARGS|g"
+-          -e "s|[@]TEST_TARGETS@|$TEST_TARGETS|g"
+-      <.gitlab-ci.d/cirrus/kvm-build.yml >.gitlab-ci.d/cirrus/$NAME.yml
+-    - cat .gitlab-ci.d/cirrus/$NAME.yml
+-    - cirrus-run -v --show-build-log always .gitlab-ci.d/cirrus/$NAME.yml
+-  variables:
+-    QEMU_JOB_CIRRUS: 1
+-    QEMU_JOB_OPTIONAL: 1
+-
+-
+-x86-netbsd:
+-  extends: .cirrus_kvm_job
+-  variables:
+-    NAME: netbsd
+-    CONFIGURE_ARGS: --target-list=x86_64-softmmu,ppc64-softmmu,aarch64-softmmu
+-    TEST_TARGETS: check
+-
+-x86-openbsd:
+-  extends: .cirrus_kvm_job
+-  variables:
+-    NAME: openbsd
+-    CONFIGURE_ARGS: --target-list=i386-softmmu,riscv64-softmmu,mips64-softmmu
+-    TEST_TARGETS: check
+diff --git a/.gitlab-ci.d/cirrus/kvm-build.yml b/.gitlab-ci.d/cirrus/kvm-build.yml
+deleted file mode 100644
+index a93881aa8b..0000000000
+--- a/.gitlab-ci.d/cirrus/kvm-build.yml
++++ /dev/null
+@@ -1,31 +0,0 @@
+-container:
+-  image: fedora:35
+-  cpu: 4
+-  memory: 8Gb
+-  kvm: true
+-
+-env:
+-  CIRRUS_CLONE_DEPTH: 1
+-  CI_REPOSITORY_URL: "@CI_REPOSITORY_URL@"
+-  CI_COMMIT_REF_NAME: "@CI_COMMIT_REF_NAME@"
+-  CI_COMMIT_SHA: "@CI_COMMIT_SHA@"
+-
+-@NAME@_task:
+-  @NAME@_vm_cache:
+-    folder: $HOME/.cache/qemu-vm
+-  install_script:
+-    - dnf update -y
+-    - dnf install -y git make openssh-clients qemu-img qemu-system-x86 wget meson
+-  clone_script:
+-    - git clone --depth 100 "$CI_REPOSITORY_URL" .
+-    - git fetch origin "$CI_COMMIT_REF_NAME"
+-    - git reset --hard "$CI_COMMIT_SHA"
+-  build_script:
+-    - if [ -f $HOME/.cache/qemu-vm/images/@NAME@.img ]; then
+-        make vm-build-@NAME@ J=$(getconf _NPROCESSORS_ONLN)
+-          EXTRA_CONFIGURE_OPTS="@CONFIGURE_ARGS@"
+-          BUILD_TARGET="@TEST_TARGETS@" ;
+-      else
+-        make vm-build-@NAME@ J=$(getconf _NPROCESSORS_ONLN) BUILD_TARGET=help
+-          EXTRA_CONFIGURE_OPTS="--disable-system --disable-user --disable-tools" ;
+-      fi
 -- 
 2.39.5
 
