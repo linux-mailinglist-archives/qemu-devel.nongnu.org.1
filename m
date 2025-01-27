@@ -2,35 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08157A20571
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:01:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F6BA2057F
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:03:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgVG-0004Do-QI; Tue, 28 Jan 2025 02:59:23 -0500
+	id 1tcgVK-0004W8-7U; Tue, 28 Jan 2025 02:59:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgV7-0003dF-Bg; Tue, 28 Jan 2025 02:59:15 -0500
+ id 1tcgV8-0003gR-FZ; Tue, 28 Jan 2025 02:59:16 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgV5-0001BP-Pe; Tue, 28 Jan 2025 02:59:13 -0500
+ id 1tcgV6-0001Bb-5r; Tue, 28 Jan 2025 02:59:14 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D7F0DE1B01;
+ by isrv.corpit.ru (Postfix) with ESMTP id DBD1CE1B02;
  Tue, 28 Jan 2025 10:54:25 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 530FB1A62E8;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 56E211A62E9;
  Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 03FC452067; Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
+ id 05A6552069; Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Albert Esteve <aesteve@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.9 32/45] vhost-user: fix shared object return values
-Date: Mon, 27 Jan 2025 23:26:13 +0300
-Message-Id: <20250127202630.3724367-32-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, David Hildenbrand <david@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Eric Farman <farman@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, Janosch Frank <frankja@linux.ibm.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.9 33/45] s390x/s390-virtio-ccw: don't crash on weird RAM
+ sizes
+Date: Mon, 27 Jan 2025 23:26:14 +0300
+Message-Id: <20250127202630.3724367-33-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 References: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
@@ -61,60 +63,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VHOST_USER_BACKEND_SHARED_OBJECT_ADD and
-VHOST_USER_BACKEND_SHARED_OBJECT_REMOVE state
-in the spec that they return 0 for successful
-operations, non-zero otherwise. However,
-implementation relies on the return types
-of the virtio-dmabuf library, with opposite
-semantics (true if everything is correct,
-false otherwise). Therefore, current
-implementation violates the specification.
+KVM is not happy when starting a VM with weird RAM sizes:
 
-Revert the logic so that the implementation
-of the vhost-user handling methods matches
-the specification.
+  # qemu-system-s390x --enable-kvm --nographic -m 1234K
+  qemu-system-s390x: kvm_set_user_memory_region: KVM_SET_USER_MEMORY_REGION
+    failed, slot=0, start=0x0, size=0x244000: Invalid argument
+  kvm_set_phys_mem: error registering slot: Invalid argument
+  Aborted (core dumped)
 
-Fixes: 043e127a126bb3ceb5fc753deee27d261fd0c5ce
-Fixes: 160947666276c5b7f6bca4d746bcac2966635d79
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Albert Esteve <aesteve@redhat.com>
-Message-Id: <20241022124615.585596-1-aesteve@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit eea5aeef84e1b74f515b474d3a86377701f93750)
+Let's handle that in a better way by rejecting such weird RAM sizes
+right from the start:
+
+  # qemu-system-s390x --enable-kvm --nographic -m 1234K
+  qemu-system-s390x: ram size must be multiples of 1 MiB
+
+Message-ID: <20241219144115.2820241-2-david@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Acked-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+(cherry picked from commit 14e568ab4836347481af2e334009c385f456a734)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: remove changes fixing v8.2.0-2279-g043e127a126b
- "hw/virtio: check owner for removing objects")
 
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index f214df804b..7db7981841 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -1607,16 +1607,21 @@ vhost_user_backend_handle_shared_object_add(struct vhost_dev *dev,
-     QemuUUID uuid;
- 
-     memcpy(uuid.data, object->uuid, sizeof(object->uuid));
--    return virtio_add_vhost_device(&uuid, dev);
-+    return !virtio_add_vhost_device(&uuid, dev);
- }
- 
-+/*
-+ * Handle VHOST_USER_BACKEND_SHARED_OBJECT_REMOVE backend requests.
-+ *
-+ * Return: 0 on success, 1 on error.
-+ */
- static int
- vhost_user_backend_handle_shared_object_remove(VhostUserShared *object)
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index 2d6b86624f..d31686e105 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -184,6 +184,17 @@ static void s390_memory_init(MemoryRegion *ram)
  {
-     QemuUUID uuid;
+     MemoryRegion *sysmem = get_system_memory();
  
-     memcpy(uuid.data, object->uuid, sizeof(object->uuid));
--    return virtio_remove_resource(&uuid);
-+    return !virtio_remove_resource(&uuid);
- }
++    if (!QEMU_IS_ALIGNED(memory_region_size(ram), 1 * MiB)) {
++        /*
++         * SCLP cannot possibly expose smaller granularity right now and KVM
++         * cannot handle smaller granularity. As we don't support NUMA, the
++         * region size directly corresponds to machine->ram_size, and the region
++         * is a single RAM memory region.
++         */
++        error_report("ram size must be multiples of 1 MiB");
++        exit(EXIT_FAILURE);
++    }
++
+     /* allocate RAM for core */
+     memory_region_add_subregion(sysmem, 0, ram);
  
- static bool vhost_user_send_resp(QIOChannel *ioc, VhostUserHeader *hdr,
 -- 
 2.39.5
 
