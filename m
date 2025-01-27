@@ -2,101 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC0ACA1DD8A
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 21:46:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B86A1DDA8
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 22:00:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcVzx-0004Wk-5Y; Mon, 27 Jan 2025 15:46:21 -0500
+	id 1tcWCL-0008Sw-6M; Mon, 27 Jan 2025 15:59:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1tcVz8-0004CB-8v; Mon, 27 Jan 2025 15:45:35 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1tcWCH-0008S3-9U
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 15:59:06 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1tcVz6-0005Ik-ET; Mon, 27 Jan 2025 15:45:29 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50RFuuGg024891;
- Mon, 27 Jan 2025 20:45:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=yikQf5
- Td9iWZ+OdZ82r9eakd0DFG1AHIi5HGrRwN1Kc=; b=judsDqi6lEuxZYFPWMHDwZ
- OH8X70J1uvo+BOo0+JfxWQKU+MR90IKbShrUW8RGH0OajZTOoBe7hzVgzzz+bvtQ
- W+WHrXX2EAskqMe7rTWNBb2MEIhMFbRiEdMKslHgjQc8yOLW7NuA5NVaFIffKlUN
- UHzAtbK0T50JVuNSpabkf/imQflFBxMQu3pdv00tzzG1H0NnFK+iEpk89TmEOvJ1
- hkeVCYdJwgFzigeuNc8HFLHLIY9iaoa+dHhGhxoCX+GbuPBA3zZk+kFD6bxV0w8I
- pmDMiZ6wXPJ6W/r9mAxzQSrtXigtdbjaGRrwJO19z81pL0QpM5jHzi8a0vX9jgAg
- ==
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44e3y7vaxp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Jan 2025 20:45:25 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50RKR7Rt028072;
- Mon, 27 Jan 2025 20:45:24 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44dbsk7ygb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Jan 2025 20:45:24 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 50RKjNwS30868132
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 27 Jan 2025 20:45:23 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7A30D58053;
- Mon, 27 Jan 2025 20:45:23 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5BEEB58043;
- Mon, 27 Jan 2025 20:45:22 +0000 (GMT)
-Received: from [9.61.39.122] (unknown [9.61.39.122])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 27 Jan 2025 20:45:22 +0000 (GMT)
-Message-ID: <7738f623-e580-4ddb-9998-86ffb8a97cf4@linux.ibm.com>
-Date: Mon, 27 Jan 2025 15:45:21 -0500
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1tcWCF-0006sU-I1
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 15:59:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID;
+ bh=cMknxMmh2Ic5EV5xImTAHMVs+jwEWmwlW2VDl7CO1Ts=; b=W52ijwrKxK9/pE0qW/MTZ/gnXt
+ vkOOYFx285Qhx+kVVYe/bBnXEKIWGhFFWHq1zgqHWz6uNFcqoPvKq1Pp9imlkNTeaQh9nM9HJONuw
+ FkUArlWlSe6epr5rwVEyGk238aKx3xYJfGxa+WkVtcXMM0E9Dl3OAHxbUjG4hKltd55w9SGvdXz2J
+ blLS9Nuk0hQtn+IZ3qveIjvFxgDEraRpSL4JlPI1hhuhO9X6BYNSfKvHjwbm+4rLWfWWUT4abdb1F
+ tZARYC/MfQXOzfjCgtzAuvunCy9kLHDVkafyLMvLvnuTYZXM2a5bucAh3gIb7Q6wI8i8hFLBToRBV
+ WVm65CUvF21MG6cJXTAuir1iwb8G3rzbtnBy2flJQ/xoj2b1SYcsSkoAjTlidkW/pC/sX60oFf2zK
+ qDj7oPzi5TWEAmzUkTgtOrHHQ1UIv/LlwtPuG+646HJtUw1QIw4iUx5aJ4ZcLrdI9lYkS7Ycu1l9n
+ z4s6FmOry66gHIzR8aC6Tm8WRLzljnyEsOMW+/mzztZk7iBxJXWsbdhj/xibaVclDrCPRstFwssef
+ XXXggJnf748K0o15LLOC3UbH36wbvE2iw5ruT0lyYZN55k9WusJDxspwtnYJO3xHyyaghEy6bpfrW
+ BL0bAYoL++9nSocNk9dZGLvyDtoJlBP6BuWoeQpYk=;
+Received: from [2a02:8012:2f01:0:6e58:597a:7a31:479a]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1tcWBI-000ATP-8W; Mon, 27 Jan 2025 20:58:15 +0000
+Message-ID: <19794460-a662-4efc-81b7-d2817e1e8d99@ilande.co.uk>
+Date: Mon, 27 Jan 2025 20:58:45 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] s390x/pci: add support for guests that request
- direct mapping
-To: Niklas Schnelle <schnelle@linux.ibm.com>, qemu-s390x@nongnu.org
-Cc: farman@linux.ibm.com, thuth@redhat.com, pasic@linux.ibm.com,
- borntraeger@linux.ibm.com, richard.henderson@linaro.org,
- david@redhat.com, iii@linux.ibm.com, clegoate@redhat.com,
- qemu-devel@nongnu.org
-References: <20250124202115.349386-1-mjrosato@linux.ibm.com>
- <20250124202115.349386-2-mjrosato@linux.ibm.com>
- <c965e6300a0f93f764fbb69a52e8ee0d8414d5aa.camel@linux.ibm.com>
+To: Nicholas Papadonis <nick.papadonis.ml@gmail.com>, qemu-devel@nongnu.org
+References: <CAKD0t1JkVt4wV-EyOu4pUNzT1zkMZ8=izjFu-_0DcsYD+0+syg@mail.gmail.com>
 Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <c965e6300a0f93f764fbb69a52e8ee0d8414d5aa.camel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <CAKD0t1JkVt4wV-EyOu4pUNzT1zkMZ8=izjFu-_0DcsYD+0+syg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: mjnPYu5DCwBbaGKtr7uq2wEdNks_6E6t
-X-Proofpoint-GUID: mjnPYu5DCwBbaGKtr7uq2wEdNks_6E6t
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-27_10,2025-01-27_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015
- phishscore=0 impostorscore=0 lowpriorityscore=0 priorityscore=1501
- suspectscore=0 bulkscore=0 mlxscore=0 mlxlogscore=999 malwarescore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501270161
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=mjrosato@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+X-SA-Exim-Connect-IP: 2a02:8012:2f01:0:6e58:597a:7a31:479a
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: SPARC64 Support and Solaris 10
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,71 +100,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 26/01/2025 04:26, Nicholas Papadonis wrote:
 
->>  
->>  static void s390_pci_iommu_free(S390pciState *s, PCIBus *bus, int32_t devfn)
->> @@ -1488,6 +1518,8 @@ static const Property s390_pci_device_properties[] = {
->>      DEFINE_PROP_BOOL("interpret", S390PCIBusDevice, interp, true),
->>      DEFINE_PROP_BOOL("forwarding-assist", S390PCIBusDevice, forwarding_assist,
->>                       true),
->> +    DEFINE_PROP_BOOL("relaxed-translation", S390PCIBusDevice, rtr_allowed,
->> +                     true),
+> How is the support for SPARC64?
 > 
-> Question: Do we maybe want to default rtr_allowed to false for ISM
-> devices? Performance wise it doesn't matter much since they keep their
-> mappings fairly static and it would help us catch bugs in the handling
-> of rtr_allowed == false devices, the ISM driver and increase security.
-> 
+> Is anyone able to run Solaris 10?
 
-I've been asking myself the same.  Believe we've discussed it in the past (off-list) too.
-
-I'd be fine with that.  I think it doesn't change the line above, but I can add a check against pft in s390_pcihost_plug() after clp info is read in, along with a small comment, that changes the setting to false for ISM devices.
-
-Note that there is one side effect I can think of based on the kernel implementation - if a guest has, say, NVMe and ISM passed through with iommu.passthrough=1 specified then they would always see the "Falling back to IOMMU_DOMAIN_DMA" message for the ISM device(s) because of rtr_allowed == false.
+Not yet on the sun4u machine, but it is possible to run the sun4v OpenSPARC T1 image 
+on the niagara machine. You can find more information on the wiki at 
+https://wiki.qemu.org/Documentation/Platforms/SPARC.
 
 
->>      /*
->>       * If appropriate, reduce the size of the supported DMA aperture reported
->> -     * to the guest based upon the vfio DMA limit.
->> +     * to the guest based upon the vfio DMA limit.  This is applicable for
->> +     * devices that are guaranteed to not use relaxed translation.  If the
->> +     * device is capable of relaxed translation then we must advertise the
->> +     * full aperture.  In this case, if translation is used then we will
->> +     * rely on the vfio DMA limit counting and use RPCIT CC1 / status 16
->> +     * to request the guest free DMA mappings when necessary.
-> 
-> Not a native speaker but I think there is a "to" missing in the last
-> sentence and I'd have used "as necessary".
+ATB,
 
-'request that the' would probably work too...  But yeah, something is missing, I'll re-word.
+Mark.
 
-
->> @@ -362,6 +364,7 @@ struct S390PCIBusDevice {
->>      bool interp;
->>      bool forwarding_assist;
->>      bool aif;
->> +    bool rtr_allowed;
-> 
-> Nit: In the kernel in struct zpci_dev you used rtr_avail but "allowed"
-> in the comment, just for gerppability I'd prefer the names to match.
-
-I guess in my head, QEMU is the one allowing it and the guest kernel is checking whether or not it's available.
-
-But I have no strong opinion on the name; can rename the QEMU variable to rtr_avail
-
-> 
->>      QTAILQ_ENTRY(S390PCIBusDevice) link;
->>  };
->>  
->> @@ -389,6 +392,7 @@ int pci_chsc_sei_nt2_have_event(void);
->>  void s390_pci_sclp_configure(SCCB *sccb);
->>  void s390_pci_sclp_deconfigure(SCCB *sccb);
->>  void s390_pci_iommu_enable(S390PCIIOMMU *iommu);
->> +void s390_pci_iommu_dm_enable(S390PCIIOMMU *iommu);
-> 
-> Nit: I find "_dm_" a bit hard to map to "direct map". If you want two
-> letters I'd go for "_pt_" for "_iommu_pass_through_" or maybe
-> "_direct_map_".
-
-OK
 
