@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4A5AA2057A
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:02:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B727CA20619
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:23:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgXg-0002TB-Ts; Tue, 28 Jan 2025 03:01:53 -0500
+	id 1tcgXa-00024G-GO; Tue, 28 Jan 2025 03:01:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgWd-0008OV-8W; Tue, 28 Jan 2025 03:00:54 -0500
+ id 1tcgWd-0008OW-P0; Tue, 28 Jan 2025 03:00:55 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgWb-0001fd-9e; Tue, 28 Jan 2025 03:00:47 -0500
+ id 1tcgWc-0001jo-9r; Tue, 28 Jan 2025 03:00:47 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7C97DE1B47;
+ by isrv.corpit.ru (Postfix) with ESMTP id 81239E1B48;
  Tue, 28 Jan 2025 10:57:08 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id E9B561A62FA;
+ by tsrv.corpit.ru (Postfix) with ESMTP id F0F6C1A62FB;
  Tue, 28 Jan 2025 10:57:33 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id DD59352085; Tue, 28 Jan 2025 10:57:33 +0300 (MSK)
+ id DED9552087; Tue, 28 Jan 2025 10:57:33 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
-	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 00/58] Patch Round-up for stable 9.1.3,
- freeze on 2025-02-06
-Date: Mon, 27 Jan 2025 23:24:46 +0300
-Message-Id: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.3 01/58] hw/intc/openpic: Avoid taking address of
+ out-of-bounds array index
+Date: Mon, 27 Jan 2025 23:24:47 +0300
+Message-Id: <20250127202547.3723716-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
+References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 From: Michael Tokarev <mjt@tls.msk.ru>
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -60,139 +63,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v9.1.3:
+The clang sanitizer complains about the code in the EOI handling
+of openpic_cpu_write_internal():
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-9.1
+UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1 ./build/clang/qemu-system-ppc -M mac99,graphics=off -display none -kernel day15/invaders.elf
+../../hw/intc/openpic.c:1034:16: runtime error: index -1 out of bounds for type 'IRQSource[264]' (aka 'struct IRQSource[264]')
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior ../../hw/intc/openpic.c:1034:16 in
 
-Patch freeze is 2025-02-06, and the release is planned for 2025-02-08:
+This is because we do
+  src = &opp->src[n_IRQ];
+when n_IRQ may be -1.  This is in practice harmless because if n_IRQ
+is -1 then we don't do anything with the src pointer, but it is
+undefined behaviour. (This has been present since this device
+was first added to QEMU.)
 
-  https://wiki.qemu.org/Planning/9.1
+Rearrange the code so we only do the array index when n_IRQ is not -1.
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
+Cc: qemu-stable@nongnu.org
+Fixes: e9df014c0b ("Implement embedded IRQ controller for PowerPC 6xx/740 & 75")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Message-id: 20241105180205.3074071-1-peter.maydell@linaro.org
+(cherry picked from commit 3bf7dcd47a3da0e86a9347ce5b2b5d5a1dcb5857)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
+diff --git a/hw/intc/openpic.c b/hw/intc/openpic.c
+index 9792a11224..b35b1ee6f7 100644
+--- a/hw/intc/openpic.c
++++ b/hw/intc/openpic.c
+@@ -1032,13 +1032,14 @@ static void openpic_cpu_write_internal(void *opaque, hwaddr addr,
+         s_IRQ = IRQ_get_next(opp, &dst->servicing);
+         /* Check queued interrupts. */
+         n_IRQ = IRQ_get_next(opp, &dst->raised);
+-        src = &opp->src[n_IRQ];
+-        if (n_IRQ != -1 &&
+-            (s_IRQ == -1 ||
+-             IVPR_PRIORITY(src->ivpr) > dst->servicing.priority)) {
+-            DPRINTF("Raise OpenPIC INT output cpu %d irq %d",
+-                    idx, n_IRQ);
+-            qemu_irq_raise(opp->dst[idx].irqs[OPENPIC_OUTPUT_INT]);
++        if (n_IRQ != -1) {
++            src = &opp->src[n_IRQ];
++            if (s_IRQ == -1 ||
++                IVPR_PRIORITY(src->ivpr) > dst->servicing.priority) {
++                DPRINTF("Raise OpenPIC INT output cpu %d irq %d",
++                        idx, n_IRQ);
++                qemu_irq_raise(opp->dst[idx].irqs[OPENPIC_OUTPUT_INT]);
++            }
+         }
+         break;
+     default:
+-- 
+2.39.5
 
-Thanks!
-
-/mjt
-
---------------------------------------
-01 3bf7dcd47a3d Peter Maydell:
-   hw/intc/openpic: Avoid taking address of out-of-bounds array index
-02 3d7680fb18c7 Peter Maydell:
-   bitops.h: Define bit operations on 'uint32_t' arrays
-03 335be5bc44aa Peter Maydell:
-   hw/intc/loongarch_extioi: Use set_bit32() and clear_bit32() for s->isr
-04 d95fd9838b54 Ilya Leoshkevich:
-   linux-user: Fix strace output for s390x mmap()
-05 a8575f7fb2f2 Akihiko Odaki:
-   virtio-net: Fix size check in dhclient workaround
-06 5102f9df4a9a Kevin Wolf:
-   qdev: Fix set_pci_devfn() to visit option only once
-07 fbdea3d6c13d Jakub Jelen:
-   ssh: Do not switch session to non-blocking mode
-08 cfa3a6c54511 Pierrick Bouvier:
-   plugins: add missing export for qemu_plugin_num_vcpus
-09 87ae45e602e2 Peter Xu:
-   migration: Allow pipes to keep working for fd migrations
-10 9379ea9db3c0 Akihiko Odaki:
-   virtio-net: Add queues before loading them
-11 e8185fdc63e1 Harsh Prateek Bora:
-   ppc/spapr: fix drc index mismatch for partially enabled vcpus
-12 3abb67323aee Guenter Roeck:
-   scsi: megasas: Internal cdbs have 16-byte length
-13 abf0f092c1dd Christian Schoenebeck:
-   tests/9p: fix Rreaddir response name
-14 4ec984965079 Christian Schoenebeck:
-   tests/9p: add missing Rgetattr response name
-15 462db8fb1d40 Christian Schoenebeck:
-   tests/9p: add 'use-after-unlink' test
-16 3bc4db44430f Christian Schoenebeck:
-   9pfs: remove obsolete comment in v9fs_getattr()
-17 c81e7219e073 Christian Schoenebeck:
-   9pfs: fix 'Tgetattr' after unlink
-18 eaab44ccc59b Christian Schoenebeck:
-   tests/9p: also check 'Tgetattr' in 'use-after-unlink' test
-19 fa416ae6157a Nicholas Piggin:
-   target/ppc: Fix non-maskable interrupt while halted
-20 2fc0a78a5773 Glenn Miles:
-   target/ppc: Fix THREAD_SIBLING_FOREACH for multi-socket
-21 9162f1012576 Klaus Jensen:
-   hw/nvme: fix msix_uninit with exclusive bar
-22 6651f8f2e505 Klaus Jensen:
-   hw/nvme: take a reference on the subsystem on vf realization
-23 26dcf2be7e15 Ahmad Fatoum:
-   hw/openrisc/openrisc_sim: keep serial@90000000 as default
-24 5311599cdc48 Peter Maydell:
-   target/riscv: Avoid bad shift in riscv_cpu_do_interrupt()
-25 d06a9d843fb6 Christian Schoenebeck:
-   9pfs: fix regression regarding CVE-2023-2861
-26 04e006ab36a8 Richard Henderson:
-   tcg: Reset free_temps before tcg_optimize
-27 b438362a1425 Roman Artemev:
-   tcg/riscv: Fix StoreStore barrier generation
-28 57e2cc9abf5d Gerd Hoffmann:
-   x86/loader: only patch linux kernels
-29 0f5715e4b570 Gerd Hoffmann:
-   roms: re-add edk2-basetools target
-30 74dc38d0c6c1 Michael Tokarev:
-   pc-bios: add missing riscv64 descriptor
-31 9678b9c50572 Peter Maydell:
-   hw/intc/arm_gicv3_its: Zero initialize local DTEntry etc structs
-32 e2d98f257138 Thomas Huth:
-   meson.build: Disallow libnfs v6 to fix the broken macOS build
-33 eea5aeef84e1 Albert Esteve:
-   vhost-user: fix shared object return values
-34 3f2a05b31ee9 Maciej S. Szmigiero:
-   target/i386: Reset TSCs of parked vCPUs too on VM reset
-35 0d0141fadc90 Yong-Xuan Wang:
-   hw/intc/riscv_aplic: Fix APLIC in_clrip and clripnum write emulation
-36 14e568ab4836 David Hildenbrand:
-   s390x/s390-virtio-ccw: don't crash on weird RAM sizes
-37 591e848aca7a Alex Bennée:
-   config/targets: update aarch64_be-linux-user gdb XML list
-38 d41989e75483 Bibo Mao:
-   target/loongarch: Use actual operand size with vbsrl check
-39 b4859e8f33a7 Philippe Mathieu-Daudé:
-   docs: Correct release of TCG trace-events removal
-40 93dcc9390e5a Han Han:
-   target/i386/cpu: Fix notes for CPU models
-41 86bee9e0c761 Fabiano Rosas:
-   migration: Add more error handling to analyze-migration.py
-42 2aead53d39b8 Fabiano Rosas:
-   migration: Remove unused argument in vmsd_desc_field_end
-43 69d1f784569f Fabiano Rosas:
-   migration: Fix parsing of s390 stream
-44 c76ee1f6255c Fabiano Rosas:
-   s390x: Fix CSS migration
-45 f52965bf0eee Fabiano Rosas:
-   migration: Rename vmstate_info_nullptr
-46 9867c3a7ced1 Peter Xu:
-   migration: Dump correct JSON format for nullptr replacement
-47 35049eb0d2fc Fabiano Rosas:
-   migration: Fix arrays of pointers in JSON writer
-48 cdc3970f8597 Yuan Liu:
-   multifd: bugfix for migration using compression methods
-49 2588a5f99b0c Yuan Liu:
-   multifd: bugfix for incorrect migration data with QPL compression
-50 a87077316ed2 Philippe Mathieu-Daudé:
-   tests/qtest/boot-serial-test: Correct HPPA machine name
-51 78b0c15a563a Gabriel Barrantes:
-   backends/cryptodev-vhost-user: Fix local_error leaks
-52 bb5b7fced6b5 Phil Dennis-Jordan:
-   hw/usb/hcd-xhci-pci: Use modulo to select MSI vector as per spec
-53 694632fd4498 Sebastian Ott:
-   pci: ensure valid link status bits for downstream ports
-54 42e2a7a0ab23 Nicholas Piggin:
-   pci/msix: Fix msix pba read vector poll end calculation
-55 1ad32644fe4c Igor Mammedov:
-   tests: acpi: whitelist expected blobs
-56 0b053391985a Igor Mammedov:
-   pci: acpi: Windows 'PCI Label Id' bug workaround
-57 9fb1c9a1bb26 Igor Mammedov:
-   tests: acpi: update expected blobs
-58 1ce979e7269a Li Zhijian:
-   hw/cxl: Fix msix_notify: Assertion `vector < dev->msix_entries_nr`
 
