@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A901EA20629
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:26:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91183A205D8
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:20:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgbA-0002ET-18; Tue, 28 Jan 2025 03:05:28 -0500
+	id 1tcgaY-0001f6-55; Tue, 28 Jan 2025 03:04:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgYW-0006Kx-7a; Tue, 28 Jan 2025 03:02:45 -0500
+ id 1tcgYW-0006Kw-6H; Tue, 28 Jan 2025 03:02:45 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgYS-0002Ag-CS; Tue, 28 Jan 2025 03:02:41 -0500
+ id 1tcgYS-0002B9-CR; Tue, 28 Jan 2025 03:02:41 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C808DE1B5A;
+ by isrv.corpit.ru (Postfix) with ESMTP id CBD75E1B5B;
  Tue, 28 Jan 2025 10:57:08 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 43DCB1A630D;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 47A4A1A630E;
  Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 0823D520AB; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
+ id 09ACB520AD; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- Glenn Miles <milesg@linux.ibm.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 19/58] target/ppc: Fix non-maskable interrupt while
- halted
-Date: Mon, 27 Jan 2025 23:25:05 +0300
-Message-Id: <20250127202547.3723716-19-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Glenn Miles <milesg@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.3 20/58] target/ppc: Fix THREAD_SIBLING_FOREACH for
+ multi-socket
+Date: Mon, 27 Jan 2025 23:25:06 +0300
+Message-Id: <20250127202547.3723716-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
@@ -61,53 +61,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ppc (pnv and spapr) NMI injection code does not go through the
-asynchronous interrupt path and set a bit in env->pending_interrupts
-and raise an interrupt request that the cpu_exec() loop can see.
-Instead it injects the exception directly into registers.
+The THREAD_SIBLING_FOREACH macro wasn't excluding threads from other
+chips. Add chip_index field to the thread state and add a check for the
+new field in the macro.
 
-This can lead to cpu_exec() missing that the thread has work to do,
-if a NMI is injected while it was idle.
-
-Fix this by clearing halted when injecting the interrupt. Probably
-NMI injection should be reworked to use the interrupt request interface,
-but this seems to work as a minimal fix.
-
-Fixes: 3431648272d3 ("spapr: Add support for new NMI interface")
-Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
+Fixes: b769d4c8f4c6 ("target/ppc: Add initial flags and helpers for SMT support")
+Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
+[npiggin: set chip_index for spapr too]
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-(cherry picked from commit fa416ae6157a933ad3f7106090684759baaaf3c9)
+(cherry picked from commit 2fc0a78a57731fda50d5b01e16fd68681900f709)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index f33fc36db2..cc4ef2598c 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -2479,10 +2479,16 @@ static void ppc_deliver_interrupt(CPUPPCState *env, int interrupt)
+diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
+index a30693990b..9441d14bfc 100644
+--- a/hw/ppc/pnv_core.c
++++ b/hw/ppc/pnv_core.c
+@@ -317,6 +317,8 @@ static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp,
+     pir_spr->default_value = pir;
+     tir_spr->default_value = tir;
+ 
++    env->chip_index = pc->chip->chip_id;
++
+     if (pc->big_core) {
+         /* 2 "small cores" get the same core index for SMT operations */
+         env->core_index = core_hwid >> 1;
+diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
+index 56090abcd1..2ada5c9225 100644
+--- a/hw/ppc/spapr_cpu_core.c
++++ b/hw/ppc/spapr_cpu_core.c
+@@ -317,6 +317,7 @@ static PowerPCCPU *spapr_create_vcpu(SpaprCpuCore *sc, int i, Error **errp)
+         return NULL;
      }
- }
  
-+/*
-+ * system reset is not delivered via normal irq method, so have to set
-+ * halted = 0 to resume CPU running if it was halted. Possibly we should
-+ * move it over to using PPC_INTERRUPT_RESET rather than async_run_on_cpu.
-+ */
- void ppc_cpu_do_system_reset(CPUState *cs)
- {
-     PowerPCCPU *cpu = POWERPC_CPU(cs);
++    env->chip_index = sc->node_id;
+     env->core_index = cc->core_id;
  
-+    cs->halted = 0;
-     powerpc_excp(cpu, POWERPC_EXCP_RESET);
- }
+     cpu->node_id = sc->node_id;
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index f7a2da2bbe..4469c15708 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -1251,6 +1251,7 @@ struct CPUArchState {
+     /* For SMT processors */
+     bool has_smt_siblings;
+     int core_index;
++    int chip_index;
  
-@@ -2504,6 +2510,7 @@ void ppc_cpu_do_fwnmi_machine_check(CPUState *cs, target_ulong vector)
+ #if !defined(CONFIG_USER_ONLY)
+     /* MMU context, only relevant for full system emulation */
+@@ -1409,8 +1410,10 @@ struct CPUArchState {
  
-     /* Anything for nested required here? MSR[HV] bit? */
+ #define THREAD_SIBLING_FOREACH(cs, cs_sibling)                  \
+     CPU_FOREACH(cs_sibling)                                     \
+-        if (POWERPC_CPU(cs)->env.core_index ==                  \
+-            POWERPC_CPU(cs_sibling)->env.core_index)
++        if ((POWERPC_CPU(cs)->env.chip_index ==                 \
++             POWERPC_CPU(cs_sibling)->env.chip_index) &&        \
++            (POWERPC_CPU(cs)->env.core_index ==                 \
++             POWERPC_CPU(cs_sibling)->env.core_index))
  
-+    cs->halted = 0;
-     powerpc_set_excp_state(cpu, vector, msr);
- }
- 
+ #define SET_FIT_PERIOD(a_, b_, c_, d_)          \
+ do {                                            \
 -- 
 2.39.5
 
