@@ -2,39 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6636DA2058F
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:06:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17147A2059A
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:06:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgY6-0004fU-Th; Tue, 28 Jan 2025 03:02:19 -0500
+	id 1tcgXf-0002Q6-Gy; Tue, 28 Jan 2025 03:01:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgX9-0000wA-2G; Tue, 28 Jan 2025 03:01:19 -0500
+ id 1tcgXW-00023C-4j; Tue, 28 Jan 2025 03:01:42 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgX7-0001qT-DI; Tue, 28 Jan 2025 03:01:18 -0500
+ id 1tcgXU-0001ra-E0; Tue, 28 Jan 2025 03:01:41 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 98D2AE1B4E;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9C994E1B4F;
  Tue, 28 Jan 2025 10:57:08 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 149B81A6301;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 187991A6302;
  Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id E85C552093; Tue, 28 Jan 2025 10:57:33 +0300 (MSK)
+ id EA28C52095; Tue, 28 Jan 2025 10:57:33 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jakub Jelen <jjelen@redhat.com>,
- "Richard W . M . Jones" <rjones@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+Cc: qemu-stable@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 07/58] ssh: Do not switch session to non-blocking mode
-Date: Mon, 27 Jan 2025 23:24:53 +0300
-Message-Id: <20250127202547.3723716-7-mjt@tls.msk.ru>
+Subject: [Stable-9.1.3 08/58] plugins: add missing export for
+ qemu_plugin_num_vcpus
+Date: Mon, 27 Jan 2025 23:24:54 +0300
+Message-Id: <20250127202547.3723716-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 From: Michael Tokarev <mjt@tls.msk.ru>
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -61,49 +65,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The libssh does not handle non-blocking mode in SFTP correctly. The
-driver code already changes the mode to blocking for the SFTP
-initialization, but for some reason changes to non-blocking mode.
-This used to work accidentally until libssh in 0.11 branch merged
-the patch to avoid infinite looping in case of network errors:
-
-https://gitlab.com/libssh/libssh-mirror/-/merge_requests/498
-
-Since then, the ssh driver in qemu fails to read files over SFTP
-as the first SFTP messages exchanged after switching the session
-to non-blocking mode return SSH_AGAIN, but that message is lost
-int the SFTP internals and interpretted as SSH_ERROR, which is
-returned to the caller:
-
-https://gitlab.com/libssh/libssh-mirror/-/issues/280
-
-This is indeed an issue in libssh that we should address in the
-long term, but it will require more work on the internals. For
-now, the SFTP is not supported in non-blocking mode.
-
-Fixes: https://gitlab.com/libssh/libssh-mirror/-/issues/280
-Signed-off-by: Jakub Jelen <jjelen@redhat.com>
-Signed-off-by: Richard W.M. Jones <rjones@redhat.com>
-Message-ID: <20241113125526.2495731-1-rjones@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit fbdea3d6c13d5a75895c287a004c6f1a6bf6c164)
+Fixes: 4a448b148ca ("plugins: add qemu_plugin_num_vcpus function")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-Id: <20241112212622.3590693-2-pierrick.bouvier@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20241121165806.476008-36-alex.bennee@linaro.org>
+(cherry picked from commit cfa3a6c54511374e9ccee26d9c38ac1698fc7af2)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/block/ssh.c b/block/ssh.c
-index 27d582e0e3..5c16ff4fb6 100644
---- a/block/ssh.c
-+++ b/block/ssh.c
-@@ -865,9 +865,6 @@ static int ssh_open(BlockDriverState *bs, QDict *options, int bdrv_flags,
-         goto err;
-     }
+diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+index c71c705b69..d72d45628f 100644
+--- a/include/qemu/qemu-plugin.h
++++ b/include/qemu/qemu-plugin.h
+@@ -763,6 +763,7 @@ void qemu_plugin_register_atexit_cb(qemu_plugin_id_t id,
+                                     qemu_plugin_udata_cb_t cb, void *userdata);
  
--    /* Go non-blocking. */
--    ssh_set_blocking(s->session, 0);
--
-     if (s->attrs->type == SSH_FILEXFER_TYPE_REGULAR) {
-         bs->supported_truncate_flags = BDRV_REQ_ZERO_WRITE;
-     }
+ /* returns how many vcpus were started at this point */
++QEMU_PLUGIN_API
+ int qemu_plugin_num_vcpus(void);
+ 
+ /**
 -- 
 2.39.5
 
