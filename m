@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DBB5A1D81A
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:23:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 142A1A1D833
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:24:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcPxF-00004w-3G; Mon, 27 Jan 2025 09:19:09 -0500
+	id 1tcPzz-0003MT-Qx; Mon, 27 Jan 2025 09:22:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tcPxC-0008VX-AN
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 09:19:06 -0500
-Received: from mail-yb1-xb2a.google.com ([2607:f8b0:4864:20::b2a])
+ id 1tcPze-00037R-DM
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 09:21:42 -0500
+Received: from mail-yb1-xb32.google.com ([2607:f8b0:4864:20::b32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tcPxA-0002OO-ML
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 09:19:06 -0500
-Received: by mail-yb1-xb2a.google.com with SMTP id
- 3f1490d57ef6-e549be93d5eso7790840276.1
- for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 06:19:04 -0800 (PST)
+ id 1tcPzc-0002on-Il
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 09:21:37 -0500
+Received: by mail-yb1-xb32.google.com with SMTP id
+ 3f1490d57ef6-e3a1cfeb711so6380304276.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 06:21:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737987543; x=1738592343; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737987695; x=1738592495; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6CLGgHNii1ozqng84Wbew/T8Evy/NM7+mE0AjRrB5xk=;
- b=dTzYlYtBI1UTXNWYKWrucqEccAMkcenEmJLBhE6M004sEfGCGgt0ENhVcbDs7KR4Rh
- R1k0/hJ0Q755g79qXXdASfiNA2Dukq053mgfW8BkEdtJP1TwTbJbMv++Vv/rTai6jEE8
- gQAJNGD2wercOu396hpOF3FF3KwodDvQReB7e19W87ON2XlC28hTPM+QreUYUadfOgxv
- o9Fp/CF7Lv8cZa7TXq+D0FeXOnBRJ6oQR2NIYwZ9/yB3/I7QzuGi8l3bECW926JQwxGv
- BeH1uj8dV7brn2DXr6umMYcAzhhamfSRnsRr1pbb240cCHAu2eVFYTn3vvWbivmccoiF
- +WMA==
+ bh=IqT9Pqud4yyi1nkIL9hnP/ngJ2ww+fjlQNiSnOSjGhA=;
+ b=W+oe4XqAJLu5xB1dHIAtTwgvjLN0cmoTT6+L65JDyThbcVN71y/1rsH534+RBMK+fq
+ StzEJlqTYKQqZ4JU/khw3qUlMQMg8InbJu4pW8GcnbH5cDBCcPbErhZB0C1wJI33JJ+c
+ y1qUp1v2z5odTQM/lQCuedPC6oDovpAGmXr3ONHaWo3yE88t4h931nkoKozGoC0YSKnI
+ /o1mV94W9TMdoFgiZev6g+k2FJjyM1OoUI3MF4J8/kQ3IyIB3MoaSxkGUUFOl2Sqx+BW
+ oe7GUd4qdoJg4iTJQA5c9c7WdbEslZLOs4rK8CMl09YYwUmC4gMT+SQ9fwxyUO6QupNy
+ 9enw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737987543; x=1738592343;
+ d=1e100.net; s=20230601; t=1737987695; x=1738592495;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6CLGgHNii1ozqng84Wbew/T8Evy/NM7+mE0AjRrB5xk=;
- b=A9/789bClttVSF0IzAdaIysPR4rNkAr8ONEfNIBi9vUPTuVdHujq1Aq++Xb01vFDVz
- SZPv3DPRMxaEDPe3kylQ8EbY6awrldnOT2khtbEYMbpBcnqcc/pmzH8Sial7WOnJy9VN
- G3YIs7mMF8c24woBxahXmqhVRyBZvsO8WW9jIfPF/AJpJld4js9dCTiKjWrmjwW+YD/W
- LCdcxnUBQuVivgUPIG/unwszQc0rr3AJVPUfZkqBcdlfYE4kT+xPz+OHLWKPwfmWEM9u
- K+iY698tJjqn+/wHdJw7+SKqAUbB/c1RWcj8Z3W2huXaZCGCGIhbUY3xJACYrhNgaXY1
- fWWA==
-X-Gm-Message-State: AOJu0YwR8tHw98bBOlv9kh4ju3WgS/jY/iQdqcMFJnfAtV7MYuficHFm
- Yep3ykrmk3wBEGbXxCKL/HFfuut9OWCul5Lj/ANz0IzWOquTsReDA9ma9XaVkRrV0DKHHSPZnp0
- 2oGKHEMVfMtHniMRKKJlkL1uddPEgXB5GM4qCFPih+FXT7cUz
-X-Gm-Gg: ASbGncvgmz8OAEMAT1S1eRjoLUCmyKLCEszay536+OZKE1+XLLX0Ki2PoaJcd/bkF3j
- +Im6McZYlFKLRMoobwmrCxP1BoK3tlx4ZiyT2+B8GFY4+rh8tjbwf97EeOW83pjk=
-X-Google-Smtp-Source: AGHT+IEX3fbZ/1IfJS3x/pKCagJIwM4egehJcygLcrfMUNk/YjJW/3Eq1LT+D9dHQNNbUEu0zBT0uajbxmLEDE6fap4=
-X-Received: by 2002:a05:6902:270a:b0:e4e:4337:68e9 with SMTP id
- 3f1490d57ef6-e57b1046ba1mr31958039276.4.1737987543380; Mon, 27 Jan 2025
- 06:19:03 -0800 (PST)
+ bh=IqT9Pqud4yyi1nkIL9hnP/ngJ2ww+fjlQNiSnOSjGhA=;
+ b=Zwy64sWZDs5Ja/ZCGS05gS4EE4GnTj/oo7a04GOjhq3QIBz1Zg5ekDsrOGpOtstDm2
+ mb5ZhcOsX/RVS2U6Lk3Y/waATM1ToeNpfmF0XwNVeqFwAiEhzj3jGEQBASSym1QPO2De
+ kYnTqdG/eClgtRF0qF+TYx2/ADDggBTU1GIWZQLMgOukPSjbWmT8JEVXoviM9LahUv1p
+ SxBvBuTfotTcVeJRWsH+OaU79dI8NJJgz9Jrweb2ORb5Lh2tFTCOcoHf1FU5+WulpWrg
+ RdNEglkyL9mmncrQsUHSw6sFyKlbuCwH07/ZB2GqyErueOIpPBR11cqzJHtPReUBmBwe
+ By7A==
+X-Gm-Message-State: AOJu0Yzl7Ex9LKUVbMDnAiDWDF04Av2GTrOUgp/Uiiacp/YI//AMjAwY
+ lQH6LIF/tmCiwPqpRtkZpcaf+3E2m1ZbdL4Rk/zRgyaP7BDDwJufunhPiZjlQOpav9loJ5OQArm
+ duIQc8nEh6VXgcDSb+EJKsVP4vi88vXL/dbsSPw==
+X-Gm-Gg: ASbGncu3ktJZgAFU8iFd1HIRh5cVjhrc6UPfAgl+UzNCPbJes9Unbuos0FP9BrMnwsO
+ +a7jYLuTnoAVcMt5Gvv+BaN8GiG2odm9NT6Jr4jZcItvDB9ffYw/JkYnjfVC6fdk=
+X-Google-Smtp-Source: AGHT+IES1lnPe9WOF6RLhlvSDLSQb9z3UHaiH8CTxK2FsNtXKr3x0e0zFvPMl2ujRgc1sNUaz6/rYTP1JYFlDxsdADU=
+X-Received: by 2002:a05:6902:2b89:b0:e39:73f7:b13f with SMTP id
+ 3f1490d57ef6-e57b106357bmr25841645276.18.1737987695340; Mon, 27 Jan 2025
+ 06:21:35 -0800 (PST)
 MIME-Version: 1.0
 References: <20250110160204.74997-1-philmd@linaro.org>
- <20250110160204.74997-9-philmd@linaro.org>
-In-Reply-To: <20250110160204.74997-9-philmd@linaro.org>
+ <20250110160204.74997-10-philmd@linaro.org>
+In-Reply-To: <20250110160204.74997-10-philmd@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 27 Jan 2025 14:18:51 +0000
-X-Gm-Features: AWEUYZn9cgaSR3nCalrAJsa4i3UcG8jczD7kL__v5XWI9iHKvDIgRkisZhzWcg8
-Message-ID: <CAFEAcA-+fCQOAqxLxP=G+G15dhoNo4hyd7wbJf57dYpZ8iQhew@mail.gmail.com>
-Subject: Re: [PATCH 8/9] hw/arm/stellaris: Only map existing devices as
- unimplemented
+Date: Mon, 27 Jan 2025 14:21:24 +0000
+X-Gm-Features: AWEUYZlznFRi5lhN7GGj6NwdgjXJhdWPd5AZ8pDgARaGIOX2cLir86Q4xQHQzdk
+Message-ID: <CAFEAcA9u2YpHLPuU+268Ft=QKxTr5S_b+jtQCR1SEf7O3jNvbQ@mail.gmail.com>
+Subject: Re: [PATCH 9/9] hw/arm/stellaris: Wire GPTM[#n] output to ADC input #n
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2a;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b32;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb32.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,55 +94,103 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Fri, 10 Jan 2025 at 16:02, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
 g> wrote:
 >
+> The ADC model is very simple, and only consider the 4 GPTM
+> IRQs as trigger. Currently they are all wired to the same
+> input IRQ. This is a QDev design mistake. We could use a
+> OR_IRQ, but the ADC actually really has one input for each
+> GPTM, so have the ADC create 4 inputs and wire each GPTM
+> output to them.
+>
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->  hw/arm/stellaris.c | 20 +++++++++++++++-----
->  1 file changed, 15 insertions(+), 5 deletions(-)
+>  hw/arm/stellaris.c | 26 +++++++++++++++++---------
+>  1 file changed, 17 insertions(+), 9 deletions(-)
 >
 > diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
-> index d87587225c2..c89522332e2 100644
+> index c89522332e2..446d6595a6d 100644
 > --- a/hw/arm/stellaris.c
 > +++ b/hw/arm/stellaris.c
-> @@ -1390,11 +1390,21 @@ static void stellaris_init(MachineState *ms, stel=
+> @@ -701,8 +701,16 @@ static void stellaris_i2c_init(Object *obj)
+>      sysbus_init_mmio(sbd, &s->iomem);
+>  }
+>
+> -/* Analogue to Digital Converter.  This is only partially implemented,
+> -   enough for applications that use a combined ADC and timer tick.  */
+> +/*
+> + * Analogue to Digital Converter.
+> + *
+> + * Each of the 4 trigger inputs has a MUX for 5 inputs
+> + * (see Stellaris Data Sheet Figure 11-1: "ADC Module Block Diagram").
+> + *
+> + * This model only consider the GPTM inputs, thus MUX is not implemented=
+.
+> + */
+> +
+> +#define STELLARIS_ADC_TRIGGERS      4
+>
+>  #define STELLARIS_ADC_EM_CONTROLLER 0
+>  #define STELLARIS_ADC_EM_COMP       1
+> @@ -986,7 +994,7 @@ static void stellaris_adc_init(Object *obj)
+>      memory_region_init_io(&s->iomem, obj, &stellaris_adc_ops, s,
+>                            "adc", 0x1000);
+>      sysbus_init_mmio(sbd, &s->iomem);
+> -    qdev_init_gpio_in(dev, stellaris_adc_trigger, 1);
+> +    qdev_init_gpio_in(dev, stellaris_adc_trigger, STELLARIS_ADC_TRIGGERS=
+);
+>  }
+>
+>  /* Board init.  */
+> @@ -1061,7 +1069,7 @@ static void stellaris_init(MachineState *ms, stella=
+ris_board_info *board)
+>      DeviceState *gpio_dev[NUM_GPIO], *nvic;
+>      qemu_irq gpio_in[NUM_GPIO][8];
+>      qemu_irq gpio_out[NUM_GPIO][8];
+> -    qemu_irq adc;
+> +    DeviceState *adc;
+>      int sram_size;
+>      int flash_size;
+>      DeviceState *i2c_dev[NUM_I2C];
+> @@ -1144,15 +1152,12 @@ static void stellaris_init(MachineState *ms, stel=
 laris_board_info *board)
->      /* Add dummy regions for the devices we don't implement yet,
->       * so guest accesses don't cause unlogged crashes.
->       */
-> -    create_unimplemented_device("PWM", 0x40028000, 0x1000);
-> -    create_unimplemented_device("QEI-0", 0x4002c000, 0x1000);
-> -    create_unimplemented_device("QEI-1", 0x4002d000, 0x1000);
-> -    create_unimplemented_device("analogue-comparator", 0x4003c000, 0x100=
-0);
-> -    create_unimplemented_device("hibernation", 0x400fc000, 0x1000);
-> +    if (DEV_CAP(1, PWM)) {
-> +        create_unimplemented_device("PWM", 0x40028000, 0x1000);
-> +    }
-> +    if (DEV_CAP(2, QEI(0))) {
-> +        create_unimplemented_device("QEI-0", 0x4002c000, 0x1000);
-> +    }
-> +    if (DEV_CAP(2, QEI(0))) {
+>      sysbus_connect_irq(SYS_BUS_DEVICE(ssys_dev), 0, qdev_get_gpio_in(nvi=
+c, 28));
+>
+>      if (DEV_CAP(1, ADC)) {
+> -        dev =3D sysbus_create_varargs(TYPE_STELLARIS_ADC, 0x40038000,
+> +        adc =3D sysbus_create_varargs(TYPE_STELLARIS_ADC, 0x40038000,
+>                                      qdev_get_gpio_in(nvic, 14),
+>                                      qdev_get_gpio_in(nvic, 15),
+>                                      qdev_get_gpio_in(nvic, 16),
+>                                      qdev_get_gpio_in(nvic, 17),
+>                                      NULL);
+> -        adc =3D qdev_get_gpio_in(dev, 0);
+> -    } else {
+> -        adc =3D NULL;
+>      }
 
-Should be QEI(1), I guess.
+Here you remove the code path that initializes adc to NULL
+if the device doesn't have an ADC...
 
-> +        create_unimplemented_device("QEI-1", 0x4002d000, 0x1000);
-> +    }
-> +    if (DEV_CAP(2, COMP(0))) {
-> +        create_unimplemented_device("analogue-comparator", 0x4003c000, 0=
-x1000);
-> +    }
-> +    if (DEV_CAP(1, HIB)) {
-> +        create_unimplemented_device("hibernation", 0x400fc000, 0x1000);
-> +    }
+>      for (i =3D 0; i < NUM_GPTM; i++) {
+>          if (DEV_CAP(2, GPTM(i))) {
+> @@ -1166,9 +1171,12 @@ static void stellaris_init(MachineState *ms, stell=
+aris_board_info *board)
+>              sysbus_realize_and_unref(sbd, &error_fatal);
+>              sysbus_mmio_map(sbd, 0, 0x40030000 + i * 0x1000);
+>              sysbus_connect_irq(sbd, 0, qdev_get_gpio_in(nvic, timer_irq[=
+i]));
+> +
+>              /* TODO: This is incorrect, but we get away with it because
+>                 the ADC output is only ever pulsed.  */
+> -            qdev_connect_gpio_out(dev, 0, adc);
+> +            if (adc) {
+> +                qdev_connect_gpio_out(dev, 0, qdev_get_gpio_in(adc, i));
+> +            }
 
-Again, it would be helpful to flag up the behaviour changes here.
-I think:
+...but here you add a test on whether adc is set or not.
 
- * both boards have the PWM bit set : no change
- * both boards have COMP(0) set : no change
- * both boards have HIB set : no change
- * LM3S6965EVB sets QEI(0) and QEI(1), but LM3S811EVB does not:
-   so we are (correctly) removing the unimplemented-device regions
-   on that board type.
+>          }
+>      }
 
 thanks
 -- PMM
