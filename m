@@ -2,58 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9001FA1D3C6
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 10:44:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FDA9A1D3BA
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 10:44:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcLe8-0006Cs-W4; Mon, 27 Jan 2025 04:43:09 -0500
+	id 1tcLe9-0006Cx-JQ; Mon, 27 Jan 2025 04:43:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tcLe3-0006Bm-8f
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 04:43:03 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tcLe6-0006Cd-M9
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 04:43:06 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tcLe1-0005QQ-Pt
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 04:43:03 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tcLe4-0005Qh-QP
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 04:43:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737970981;
+ s=mimecast20190719; t=1737970983;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Ayl2E/VrUl+Llrmlcin4PivEBLaP2DgTB+tiRIfVc+M=;
- b=DUIsyDzVQUSwOKiftsyahOEeg+Z58ONCCUkzTvsCRB1zDwACkCWcLDs00gxS8/tLr7jdE+
- Lv3hQYaJvVbRyxj/4Ic25WHNYtE8iebF7iUR1khgtd2AJdIzkq4Q/mtb3+5jwO9+n2ivN5
- UQfEWfG1DnizXwQ/E9M0dLiTVIiwAkE=
+ bh=xNPwhTpaz34u5lSlNxX/kXU9REYVHuHQVuZhmQvf+KY=;
+ b=hruUGe4GhdzkkSEAz/9QfN9Q1eXIZp/+lkf4kc4clCl2247fgTxB/QtgijMXCEwbUu36Uk
+ ZENSVSzBZtkyMgvmixu0xcbMaEicQ4jfT8FYPxE1YDjEWkuODE02kV9vgGGpkAC62EqeGL
+ HVXuKfgqCyHoj1RE8mWBHyh5QJbAncM=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-294-HWhXqO5ZOVG2d-KDJQ9Hlw-1; Mon,
- 27 Jan 2025 04:42:57 -0500
-X-MC-Unique: HWhXqO5ZOVG2d-KDJQ9Hlw-1
-X-Mimecast-MFC-AGG-ID: HWhXqO5ZOVG2d-KDJQ9Hlw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-182-YYplK-hdOruu0ImGiSMU9w-1; Mon,
+ 27 Jan 2025 04:42:59 -0500
+X-MC-Unique: YYplK-hdOruu0ImGiSMU9w-1
+X-Mimecast-MFC-AGG-ID: YYplK-hdOruu0ImGiSMU9w
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EA7DF18009B8; Mon, 27 Jan 2025 09:42:55 +0000 (UTC)
+ id 2DA771800378; Mon, 27 Jan 2025 09:42:58 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.63])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6555A18008C8; Mon, 27 Jan 2025 09:42:52 +0000 (UTC)
+ id 666161800365; Mon, 27 Jan 2025 09:42:56 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 03/12] hw/arm/aspeed: Invert sdhci write protected pin for
- AST2600 EVB
-Date: Mon, 27 Jan 2025 10:42:30 +0100
-Message-ID: <20250127094239.636526-4-clg@redhat.com>
+Subject: [PULL 04/12] hw/timer/aspeed: Refactor Timer Callbacks for
+ SoC-Specific Implementations
+Date: Mon, 27 Jan 2025 10:42:31 +0100
+Message-ID: <20250127094239.636526-5-clg@redhat.com>
 In-Reply-To: <20250127094239.636526-1-clg@redhat.com>
 References: <20250127094239.636526-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -88,62 +86,207 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-The Write Protect pin of SDHCI model is default active low to match the SDHCI
-spec. So, write enable the bit 19 should be 1 and write protected the bit 19
-should be 0 at the Present State Register (0x24).
+The register set have a significant change in AST2700. The TMC00-TMC3C
+are used for TIMER0 and TMC40-TMC7C are used for TIMER1. In additional,
+TMC20-TMC3C and TMC60-TMC7C are reserved registers for TIMER0 and TIMER1,
+respectively.
 
-According to the design of AST2600 EVB, the Write Protected pin is active
-high by default. To support it, introduces a new "sdhci_wp_inverted"
-property in ASPEED MACHINE State and set it true for AST2600 EVB
-and set "wp_inverted" property true of sdhci-generic model.
+Besides, each TIMER has their own control and interrupt status register.
+In other words, users are able to set control and interrupt status for TIMER0
+in one register. Both aspeed_timer_read and aspeed_timer_write callback
+functions are not compatible AST2700.
+
+Introduce common read and write functions for ASPEED timers.
+Modify the aspeed_timer_read and aspeed_timer_write functions to delegate to
+SoC-specific callbacks first.
+Update the AST2400, AST2500, AST2600 and AST1030 specific read and write
+functions to call the common implementations for common register accesses.
+
+This refactoring improves the organization of call delegation and prepares the
+codebase for future SoC-specific specializations, such as the AST2700.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/r/20241114094839.4128404-4-jamin_lin@aspeedtech.com
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Link: https://lore.kernel.org/r/20250113064455.1660564-2-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/arm/aspeed.h | 1 +
- hw/arm/aspeed.c         | 7 +++++++
- 2 files changed, 8 insertions(+)
+ hw/timer/aspeed_timer.c | 55 ++++++++++++++++++++++++++++++-----------
+ hw/timer/trace-events   |  2 +-
+ 2 files changed, 41 insertions(+), 16 deletions(-)
 
-diff --git a/include/hw/arm/aspeed.h b/include/hw/arm/aspeed.h
-index cbeacb214ca4..9cae45a1c99c 100644
---- a/include/hw/arm/aspeed.h
-+++ b/include/hw/arm/aspeed.h
-@@ -39,6 +39,7 @@ struct AspeedMachineClass {
-     uint32_t macs_mask;
-     void (*i2c_init)(AspeedMachineState *bmc);
-     uint32_t uart_default;
-+    bool sdhci_wp_inverted;
- };
+diff --git a/hw/timer/aspeed_timer.c b/hw/timer/aspeed_timer.c
+index 4868651ad489..24ba40cbe9b4 100644
+--- a/hw/timer/aspeed_timer.c
++++ b/hw/timer/aspeed_timer.c
+@@ -239,9 +239,8 @@ static uint64_t aspeed_timer_get_value(AspeedTimer *t, int reg)
+     return value;
+ }
  
+-static uint64_t aspeed_timer_read(void *opaque, hwaddr offset, unsigned size)
++static uint64_t aspeed_timer_read_common(AspeedTimerCtrlState *s, hwaddr offset)
+ {
+-    AspeedTimerCtrlState *s = opaque;
+     const int reg = (offset & 0xf) / 4;
+     uint64_t value;
  
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 2662465ada4f..53a859a6e4aa 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -409,6 +409,12 @@ static void aspeed_machine_init(MachineState *machine)
-                              OBJECT(get_system_memory()), &error_abort);
-     object_property_set_link(OBJECT(bmc->soc), "dram",
-                              OBJECT(machine->ram), &error_abort);
-+    if (amc->sdhci_wp_inverted) {
-+        for (i = 0; i < bmc->soc->sdhci.num_slots; i++) {
-+            object_property_set_bool(OBJECT(&bmc->soc->sdhci.slots[i]),
-+                                     "wp-inverted", true, &error_abort);
-+        }
-+    }
-     if (machine->kernel_filename) {
-         /*
-          * When booting with a -kernel command line there is no u-boot
-@@ -1415,6 +1421,7 @@ static void aspeed_machine_ast2600_evb_class_init(ObjectClass *oc, void *data)
-     amc->num_cs    = 1;
-     amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON |
-                      ASPEED_MAC3_ON;
-+    amc->sdhci_wp_inverted = true;
-     amc->i2c_init  = ast2600_evb_i2c_init;
-     mc->default_ram_size = 1 * GiB;
-     aspeed_machine_class_init_cpus_defaults(mc);
+@@ -256,10 +255,11 @@ static uint64_t aspeed_timer_read(void *opaque, hwaddr offset, unsigned size)
+         value = aspeed_timer_get_value(&s->timers[(offset >> 4) - 1], reg);
+         break;
+     default:
+-        value = ASPEED_TIMER_GET_CLASS(s)->read(s, offset);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIx "\n",
++                      __func__, offset);
++        value = 0;
+         break;
+     }
+-    trace_aspeed_timer_read(offset, size, value);
+     return value;
+ }
+ 
+@@ -431,12 +431,11 @@ static void aspeed_timer_set_ctrl2(AspeedTimerCtrlState *s, uint32_t value)
+     trace_aspeed_timer_set_ctrl2(value);
+ }
+ 
+-static void aspeed_timer_write(void *opaque, hwaddr offset, uint64_t value,
+-                               unsigned size)
++static void aspeed_timer_write_common(AspeedTimerCtrlState *s, hwaddr offset,
++                                      uint64_t value)
+ {
+     const uint32_t tv = (uint32_t)(value & 0xFFFFFFFF);
+     const int reg = (offset & 0xf) / 4;
+-    AspeedTimerCtrlState *s = opaque;
+ 
+     switch (offset) {
+     /* Control Registers */
+@@ -451,11 +450,25 @@ static void aspeed_timer_write(void *opaque, hwaddr offset, uint64_t value,
+         aspeed_timer_set_value(s, (offset >> TIMER_NR_REGS) - 1, reg, tv);
+         break;
+     default:
+-        ASPEED_TIMER_GET_CLASS(s)->write(s, offset, value);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIx "\n",
++                      __func__, offset);
+         break;
+     }
+ }
+ 
++static uint64_t aspeed_timer_read(void *opaque, hwaddr offset, unsigned size)
++{
++    AspeedTimerCtrlState *s = ASPEED_TIMER(opaque);
++    return ASPEED_TIMER_GET_CLASS(s)->read(s, offset);
++}
++
++static void aspeed_timer_write(void *opaque, hwaddr offset, uint64_t value,
++                               unsigned size)
++{
++    AspeedTimerCtrlState *s = ASPEED_TIMER(opaque);
++    ASPEED_TIMER_GET_CLASS(s)->write(s, offset, value);
++}
++
+ static const MemoryRegionOps aspeed_timer_ops = {
+     .read = aspeed_timer_read,
+     .write = aspeed_timer_write,
+@@ -475,12 +488,15 @@ static uint64_t aspeed_2400_timer_read(AspeedTimerCtrlState *s, hwaddr offset)
+         break;
+     case 0x38:
+     case 0x3C:
+-    default:
+         qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIx "\n",
+                 __func__, offset);
+         value = 0;
+         break;
++    default:
++        value = aspeed_timer_read_common(s, offset);
++        break;
+     }
++    trace_aspeed_timer_read(offset, value);
+     return value;
+ }
+ 
+@@ -495,10 +511,12 @@ static void aspeed_2400_timer_write(AspeedTimerCtrlState *s, hwaddr offset,
+         break;
+     case 0x38:
+     case 0x3C:
+-    default:
+         qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIx "\n",
+                 __func__, offset);
+         break;
++    default:
++        aspeed_timer_write_common(s, offset, value);
++        break;
+     }
+ }
+ 
+@@ -514,12 +532,15 @@ static uint64_t aspeed_2500_timer_read(AspeedTimerCtrlState *s, hwaddr offset)
+         value = s->ctrl3 & BIT(0);
+         break;
+     case 0x3C:
+-    default:
+         qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIx "\n",
+                 __func__, offset);
+         value = 0;
+         break;
++    default:
++        value = aspeed_timer_read_common(s, offset);
++        break;
+     }
++    trace_aspeed_timer_read(offset, value);
+     return value;
+ }
+ 
+@@ -548,8 +569,7 @@ static void aspeed_2500_timer_write(AspeedTimerCtrlState *s, hwaddr offset,
+         break;
+ 
+     default:
+-        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIx "\n",
+-                __func__, offset);
++        aspeed_timer_write_common(s, offset, value);
+         break;
+     }
+ }
+@@ -564,12 +584,15 @@ static uint64_t aspeed_2600_timer_read(AspeedTimerCtrlState *s, hwaddr offset)
+         break;
+     case 0x38:
+     case 0x3C:
+-    default:
+         qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIx "\n",
+                 __func__, offset);
+         value = 0;
+         break;
++    default:
++        value = aspeed_timer_read_common(s, offset);
++        break;
+     }
++    trace_aspeed_timer_read(offset, value);
+     return value;
+ }
+ 
+@@ -586,10 +609,12 @@ static void aspeed_2600_timer_write(AspeedTimerCtrlState *s, hwaddr offset,
+         aspeed_timer_set_ctrl(s, s->ctrl & ~tv);
+         break;
+     case 0x38:
+-    default:
+         qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIx "\n",
+                 __func__, offset);
+         break;
++    default:
++        aspeed_timer_write_common(s, offset, value);
++        break;
+     }
+ }
+ 
+diff --git a/hw/timer/trace-events b/hw/timer/trace-events
+index 5cfc369fba46..c5b6db49f587 100644
+--- a/hw/timer/trace-events
++++ b/hw/timer/trace-events
+@@ -31,7 +31,7 @@ aspeed_timer_ctrl_overflow_interrupt(uint8_t i, bool enable) "Timer %" PRIu8 ":
+ aspeed_timer_ctrl_pulse_enable(uint8_t i, bool enable) "Timer %" PRIu8 ": %d"
+ aspeed_timer_set_ctrl2(uint32_t value) "Value: 0x%" PRIx32
+ aspeed_timer_set_value(int timer, int reg, uint32_t value) "Timer %d register %d: 0x%" PRIx32
+-aspeed_timer_read(uint64_t offset, unsigned size, uint64_t value) "From 0x%" PRIx64 ": of size %u: 0x%" PRIx64
++aspeed_timer_read(uint64_t offset, uint64_t value) "From 0x%" PRIx64 ": 0x%" PRIx64
+ 
+ # armv7m_systick.c
+ systick_reload(void) "systick reload"
 -- 
 2.48.1
 
