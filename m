@@ -2,32 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7213DA1D85F
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:29:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6454BA1D859
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:28:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcQ3r-00056u-9X; Mon, 27 Jan 2025 09:26:03 -0500
+	id 1tcQ4J-0005vG-0D; Mon, 27 Jan 2025 09:26:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ2g-0003qp-Vm; Mon, 27 Jan 2025 09:24:47 -0500
+ id 1tcQ46-0005qF-SD; Mon, 27 Jan 2025 09:26:17 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ2f-00032M-0b; Mon, 27 Jan 2025 09:24:46 -0500
+ id 1tcQ45-0003Jy-BV; Mon, 27 Jan 2025 09:26:14 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id 5DFCFE0F73;
- Mon, 27 Jan 2025 17:24:11 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id A0D61E0F83;
+ Mon, 27 Jan 2025 17:25:41 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 942AE51D95; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
+ id 9691651D97; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.1 24/41] migration: Fix arrays of pointers in JSON writer
-Date: Mon, 27 Jan 2025 17:17:38 +0300
-Message-Id: <20250127141803.3514882-24-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Yuan Liu <yuan1.liu@intel.com>,
+ Jason Zeng <jason.zeng@intel.com>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.1 25/41] multifd: bugfix for migration using compression
+ methods
+Date: Mon, 27 Jan 2025 17:17:39 +0300
+Message-Id: <20250127141803.3514882-25-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
 References: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
@@ -57,187 +59,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Yuan Liu <yuan1.liu@intel.com>
 
-Currently, if an array of pointers contains a NULL pointer, that
-pointer will be encoded as '0' in the stream. Since the JSON writer
-doesn't define a "pointer" type, that '0' will now be an uint8, which
-is different from the original type being pointed to, e.g. struct.
+When compression is enabled on the migration channel and
+the pages processed are all zero pages, these pages will
+not be sent and updated on the target side, resulting in
+incorrect memory data on the source and target sides.
 
-(we're further calling uint8 "nullptr", but that's irrelevant to the
-issue)
+The root cause is that all compression methods call
+multifd_send_prepare_common to determine whether to compress
+dirty pages, but multifd_send_prepare_common does not update
+the IOV of MultiFDPacket_t when all dirty pages are zero pages.
 
-That mixed-type array shouldn't be compressed, otherwise data is lost
-as the code currently makes the whole array have the type of the first
-element:
+The solution is to always update the IOV of MultiFDPacket_t
+regardless of whether the dirty pages are all zero pages.
 
-css = {NULL, NULL, ..., 0x5555568a7940, NULL};
-
-{"name": "s390_css", "instance_id": 0, "vmsd_name": "s390_css",
- "version": 1, "fields": [
-    ...,
-    {"name": "css", "array_len": 256, "type": "nullptr", "size": 1},
-    ...,
-]}
-
-In the above, the valid pointer at position 254 got lost among the
-compressed array of nullptr.
-
-While we could disable the array compression when a NULL pointer is
-found, the JSON part of the stream still makes part of downtime, so we
-should avoid writing unecessary bytes to it.
-
-Keep the array compression in place, but if NULL and non-NULL pointers
-are mixed break the array into several type-contiguous pieces :
-
-css = {NULL, NULL, ..., 0x5555568a7940, NULL};
-
-{"name": "s390_css", "instance_id": 0, "vmsd_name": "s390_css",
- "version": 1, "fields": [
-     ...,
-     {"name": "css", "array_len": 254, "type": "nullptr", "size": 1},
-     {"name": "css", "type": "struct", "struct": {"vmsd_name": "s390_css_img", ... }, "size": 768},
-     {"name": "css", "type": "nullptr", "size": 1},
-     ...,
-]}
-
-Now each type-discontiguous region will become a new JSON entry. The
-reader should interpret this as a concatenation of values, all part of
-the same field.
-
-Parsing the JSON with analyze-script.py now shows the proper data
-being pointed to at the places where the pointer is valid and
-"nullptr" where there's NULL:
-
-"s390_css (14)": {
-    ...
-    "css": [
-        "nullptr",
-        "nullptr",
-        ...
-        "nullptr",
-        {
-            "chpids": [
-            {
-                "in_use": "0x00",
-                "type": "0x00",
-                "is_virtual": "0x00"
-            },
-            ...
-            ]
-        },
-        "nullptr",
-    }
-
+Fixes: 303e6f54f9 ("migration/multifd: Implement zero page transmission on the multifd thread.")
+Cc: qemu-stable@nongnu.org #9.0+
+Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+Reviewed-by: Jason Zeng <jason.zeng@intel.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Message-Id: <20250109185249.23952-7-farosas@suse.de>
+Message-Id: <20241218091413.140396-2-yuan1.liu@intel.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
-(cherry picked from commit 35049eb0d2fc72bb8c563196ec75b4d6c13fce02)
+(cherry picked from commit cdc3970f8597ebdc1a4c2090cfb4d11e297329ed)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/migration/vmstate.c b/migration/vmstate.c
-index 52704c822c..82bd005a83 100644
---- a/migration/vmstate.c
-+++ b/migration/vmstate.c
-@@ -425,15 +425,19 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-             int size = vmstate_size(opaque, field);
-             uint64_t old_offset, written_bytes;
-             JSONWriter *vmdesc_loop = vmdesc;
-+            bool is_prev_null = false;
+diff --git a/migration/multifd-nocomp.c b/migration/multifd-nocomp.c
+index 55191152f9..2e4aaac285 100644
+--- a/migration/multifd-nocomp.c
++++ b/migration/multifd-nocomp.c
+@@ -362,6 +362,7 @@ int multifd_ram_flush_and_sync(void)
+ bool multifd_send_prepare_common(MultiFDSendParams *p)
+ {
+     MultiFDPages_t *pages = &p->data->u.ram;
++    multifd_send_prepare_header(p);
+     multifd_send_zero_page_detect(p);
  
-             trace_vmstate_save_state_loop(vmsd->name, field->name, n_elems);
-             if (field->flags & VMS_POINTER) {
-                 first_elem = *(void **)first_elem;
-                 assert(first_elem || !n_elems || !size);
-             }
-+
-             for (i = 0; i < n_elems; i++) {
-                 void *curr_elem = first_elem + size * i;
-                 const VMStateField *inner_field;
-+                bool is_null;
-+                int max_elems = n_elems - i;
+     if (!pages->normal_num) {
+@@ -369,8 +370,6 @@ bool multifd_send_prepare_common(MultiFDSendParams *p)
+         return false;
+     }
  
-                 old_offset = qemu_file_transferred(f);
-                 if (field->flags & VMS_ARRAY_OF_POINTER) {
-@@ -448,12 +452,39 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-                      * not follow.
-                      */
-                     inner_field = vmsd_create_fake_nullptr_field(field);
-+                    is_null = true;
-                 } else {
-                     inner_field = field;
-+                    is_null = false;
-+                }
-+
-+                /*
-+                 * Due to the fake nullptr handling above, if there's mixed
-+                 * null/non-null data, it doesn't make sense to emit a
-+                 * compressed array representation spanning the entire array
-+                 * because the field types will be different (e.g. struct
-+                 * vs. nullptr). Search ahead for the next null/non-null element
-+                 * and start a new compressed array if found.
-+                 */
-+                if (field->flags & VMS_ARRAY_OF_POINTER &&
-+                    is_null != is_prev_null) {
-+
-+                    is_prev_null = is_null;
-+                    vmdesc_loop = vmdesc;
-+
-+                    for (int j = i + 1; j < n_elems; j++) {
-+                        void *elem = *(void **)(first_elem + size * j);
-+                        bool elem_is_null = !elem && size;
-+
-+                        if (is_null != elem_is_null) {
-+                            max_elems = j - i;
-+                            break;
-+                        }
-+                    }
-                 }
+-    multifd_send_prepare_header(p);
+-
+     return true;
+ }
  
-                 vmsd_desc_field_start(vmsd, vmdesc_loop, inner_field,
--                                      i, n_elems);
-+                                      i, max_elems);
- 
-                 if (inner_field->flags & VMS_STRUCT) {
-                     ret = vmstate_save_state(f, inner_field->vmsd,
-diff --git a/scripts/analyze-migration.py b/scripts/analyze-migration.py
-index 923f174f1b..8e1fbf4c9d 100755
---- a/scripts/analyze-migration.py
-+++ b/scripts/analyze-migration.py
-@@ -502,15 +502,25 @@ def read(self):
-             field['data'] = reader(field, self.file)
-             field['data'].read()
- 
--            if 'index' in field:
--                if field['name'] not in self.data:
--                    self.data[field['name']] = []
--                a = self.data[field['name']]
--                if len(a) != int(field['index']):
--                    raise Exception("internal index of data field unmatched (%d/%d)" % (len(a), int(field['index'])))
--                a.append(field['data'])
-+            fname = field['name']
-+            fdata = field['data']
-+
-+            # The field could be:
-+            # i) a single data entry, e.g. uint64
-+            # ii) an array, indicated by it containing the 'index' key
-+            #
-+            # However, the overall data after parsing the whole
-+            # stream, could be a mix of arrays and single data fields,
-+            # all sharing the same field name due to how QEMU breaks
-+            # up arrays with NULL pointers into multiple compressed
-+            # array segments.
-+            if fname not in self.data:
-+                self.data[fname] = fdata
-+            elif type(self.data[fname]) == list:
-+                self.data[fname].append(fdata)
-             else:
--                self.data[field['name']] = field['data']
-+                tmp = self.data[fname]
-+                self.data[fname] = [tmp, fdata]
- 
-         if 'subsections' in self.desc['struct']:
-             for subsection in self.desc['struct']['subsections']:
 -- 
 2.39.5
 
