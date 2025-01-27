@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AE05A2061B
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:23:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 266FEA20602
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:22:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgcB-0004J2-5Q; Tue, 28 Jan 2025 03:06:31 -0500
+	id 1tcgeP-0001s6-Pg; Tue, 28 Jan 2025 03:08:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcga2-0000gn-2Q; Tue, 28 Jan 2025 03:04:20 -0500
+ id 1tcgaM-0001VS-Hh; Tue, 28 Jan 2025 03:04:39 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcga0-0002ft-Ib; Tue, 28 Jan 2025 03:04:17 -0500
+ id 1tcgaK-0002fv-Kk; Tue, 28 Jan 2025 03:04:38 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 16594E1B6A;
+ by isrv.corpit.ru (Postfix) with ESMTP id 18751E1B6B;
  Tue, 28 Jan 2025 10:57:09 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 8402F1A631D;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 887A51A631E;
  Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 236AB520CB; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
+ id 2515A520CD; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Yong-Xuan Wang <yongxuan.wang@sifive.com>,
- Alistair Francis <alistair.francis@wdc.com>,
+Cc: qemu-stable@nongnu.org, David Hildenbrand <david@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Eric Farman <farman@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, Janosch Frank <frankja@linux.ibm.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 35/58] hw/intc/riscv_aplic: Fix APLIC in_clrip and
- clripnum write emulation
-Date: Mon, 27 Jan 2025 23:25:21 +0300
-Message-Id: <20250127202547.3723716-35-mjt@tls.msk.ru>
+Subject: [Stable-9.1.3 36/58] s390x/s390-virtio-ccw: don't crash on weird RAM
+ sizes
+Date: Mon, 27 Jan 2025 23:25:22 +0300
+Message-Id: <20250127202547.3723716-36-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
@@ -62,50 +63,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the section "4.7 Precise effects on interrupt-pending bits"
-of the RISC-V AIA specification defines that:
+KVM is not happy when starting a VM with weird RAM sizes:
 
-"If the source mode is Level1 or Level0 and the interrupt domain
-is configured in MSI delivery mode (domaincfg.DM = 1):
-The pending bit is cleared whenever the rectified input value is
-low, when the interrupt is forwarded by MSI, or by a relevant
-write to an in_clrip register or to clripnum."
+  # qemu-system-s390x --enable-kvm --nographic -m 1234K
+  qemu-system-s390x: kvm_set_user_memory_region: KVM_SET_USER_MEMORY_REGION
+    failed, slot=0, start=0x0, size=0x244000: Invalid argument
+  kvm_set_phys_mem: error registering slot: Invalid argument
+  Aborted (core dumped)
 
-Update the riscv_aplic_set_pending() to match the spec.
+Let's handle that in a better way by rejecting such weird RAM sizes
+right from the start:
 
-Fixes: bf31cf06eb ("hw/intc/riscv_aplic: Fix setipnum_le write emulation for APLIC MSI-mode")
-Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20241029085349.30412-1-yongxuan.wang@sifive.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 0d0141fadc9063e527865ee420b2baf34e306093)
+  # qemu-system-s390x --enable-kvm --nographic -m 1234K
+  qemu-system-s390x: ram size must be multiples of 1 MiB
+
+Message-ID: <20241219144115.2820241-2-david@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Acked-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+(cherry picked from commit 14e568ab4836347481af2e334009c385f456a734)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
-index 4a262c82f0..74c82a8411 100644
---- a/hw/intc/riscv_aplic.c
-+++ b/hw/intc/riscv_aplic.c
-@@ -248,9 +248,12 @@ static void riscv_aplic_set_pending(RISCVAPLICState *aplic,
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index c483ff8064..5b055a8b25 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -180,6 +180,17 @@ static void s390_memory_init(MemoryRegion *ram)
+ {
+     MemoryRegion *sysmem = get_system_memory();
  
-     if ((sm == APLIC_SOURCECFG_SM_LEVEL_HIGH) ||
-         (sm == APLIC_SOURCECFG_SM_LEVEL_LOW)) {
--        if (!aplic->msimode || (aplic->msimode && !pending)) {
-+        if (!aplic->msimode) {
-             return;
-         }
-+        if (aplic->msimode && !pending) {
-+            goto noskip_write_pending;
-+        }
-         if ((aplic->state[irq] & APLIC_ISTATE_INPUT) &&
-             (sm == APLIC_SOURCECFG_SM_LEVEL_LOW)) {
-             return;
-@@ -261,6 +264,7 @@ static void riscv_aplic_set_pending(RISCVAPLICState *aplic,
-         }
-     }
- 
-+noskip_write_pending:
-     riscv_aplic_set_pending_raw(aplic, irq, pending);
- }
++    if (!QEMU_IS_ALIGNED(memory_region_size(ram), 1 * MiB)) {
++        /*
++         * SCLP cannot possibly expose smaller granularity right now and KVM
++         * cannot handle smaller granularity. As we don't support NUMA, the
++         * region size directly corresponds to machine->ram_size, and the region
++         * is a single RAM memory region.
++         */
++        error_report("ram size must be multiples of 1 MiB");
++        exit(EXIT_FAILURE);
++    }
++
+     /* allocate RAM for core */
+     memory_region_add_subregion(sysmem, 0, ram);
  
 -- 
 2.39.5
