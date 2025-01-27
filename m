@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25697A20627
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:26:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F087AA2061D
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:24:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcghX-0004tf-36; Tue, 28 Jan 2025 03:12:03 -0500
+	id 1tcgdF-0000HF-Cd; Tue, 28 Jan 2025 03:07:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgau-0002L3-D9; Tue, 28 Jan 2025 03:05:18 -0500
+ id 1tcgbI-0003T1-E4; Tue, 28 Jan 2025 03:05:36 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgas-00032d-MN; Tue, 28 Jan 2025 03:05:12 -0500
+ id 1tcgbG-00033R-3I; Tue, 28 Jan 2025 03:05:35 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 39717E1B73;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3D68DE1B74;
  Tue, 28 Jan 2025 10:57:09 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id A98531A6326;
+ by tsrv.corpit.ru (Postfix) with ESMTP id AD6F61A6327;
  Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 32744520DD; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
+ id 341DE520DF; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 44/58] s390x: Fix CSS migration
-Date: Mon, 27 Jan 2025 23:25:30 +0300
-Message-Id: <20250127202547.3723716-44-mjt@tls.msk.ru>
+ Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.3 45/58] migration: Rename vmstate_info_nullptr
+Date: Mon, 27 Jan 2025 23:25:31 +0300
+Message-Id: <20250127202547.3723716-45-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
@@ -61,39 +60,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit a55ae46683 ("s390: move css_migration_enabled from machine to
-css.c") disabled CSS migration globally instead of doing it
-per-instance.
+Rename vmstate_info_nullptr from "uint64_t" to "nullptr". This vmstate
+actually reads and writes just a byte, so the proper name would be
+uint8. However, since this is a marker for a NULL pointer, it's
+convenient to have a more explicit name that can be identified by the
+consumers of the JSON part of the stream.
 
-CC: Paolo Bonzini <pbonzini@redhat.com>
-CC: qemu-stable@nongnu.org #9.1
-Fixes: a55ae46683 ("s390: move css_migration_enabled from machine to css.c")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2704
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20250109185249.23952-8-farosas@suse.de>
+Change the name to "nullptr" and add support for it in the
+analyze-migration.py script. Arbitrarily use the name of the type as
+the value of the field to avoid the script showing 0x30 or '0', which
+could be confusing for readers.
+
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Message-Id: <20250109185249.23952-5-farosas@suse.de>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
-(cherry picked from commit c76ee1f6255c3988a9447d363bb17072f1ec84e1)
+(cherry picked from commit f52965bf0eeee28e89933264f1a9dbdcdaa76a7e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 5b055a8b25..1c701d0885 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -1210,6 +1210,7 @@ static void ccw_machine_2_9_instance_options(MachineState *machine)
-     s390_cpudef_featoff_greater(12, 1, S390_FEAT_ZPCI);
-     s390_cpudef_featoff_greater(12, 1, S390_FEAT_ADAPTER_INT_SUPPRESSION);
-     s390_cpudef_featoff_greater(12, 1, S390_FEAT_ADAPTER_EVENT_NOTIFICATION);
-+    css_migration_enabled = false;
+diff --git a/migration/vmstate-types.c b/migration/vmstate-types.c
+index e83bfccb9e..d70d573dbd 100644
+--- a/migration/vmstate-types.c
++++ b/migration/vmstate-types.c
+@@ -338,7 +338,7 @@ static int put_nullptr(QEMUFile *f, void *pv, size_t size,
  }
  
- static void ccw_machine_2_9_class_options(MachineClass *mc)
-@@ -1222,7 +1223,6 @@ static void ccw_machine_2_9_class_options(MachineClass *mc)
-     ccw_machine_2_10_class_options(mc);
-     compat_props_add(mc->compat_props, hw_compat_2_9, hw_compat_2_9_len);
-     compat_props_add(mc->compat_props, compat, G_N_ELEMENTS(compat));
--    css_migration_enabled = false;
+ const VMStateInfo vmstate_info_nullptr = {
+-    .name = "uint64",
++    .name = "nullptr",
+     .get  = get_nullptr,
+     .put  = put_nullptr,
+ };
+diff --git a/scripts/analyze-migration.py b/scripts/analyze-migration.py
+index fcda11f31d..923f174f1b 100755
+--- a/scripts/analyze-migration.py
++++ b/scripts/analyze-migration.py
+@@ -417,6 +417,28 @@ def __init__(self, desc, file):
+         super(VMSDFieldIntLE, self).__init__(desc, file)
+         self.dtype = '<i%d' % self.size
+ 
++class VMSDFieldNull(VMSDFieldGeneric):
++    NULL_PTR_MARKER = b'0'
++
++    def __init__(self, desc, file):
++        super(VMSDFieldNull, self).__init__(desc, file)
++
++    def __repr__(self):
++        # A NULL pointer is encoded in the stream as a '0' to
++        # disambiguate from a mere 0x0 value and avoid consumers
++        # trying to follow the NULL pointer. Displaying '0', 0x30 or
++        # 0x0 when analyzing the JSON debug stream could become
++        # confusing, so use an explicit term instead.
++        return "nullptr"
++
++    def __str__(self):
++        return self.__repr__()
++
++    def read(self):
++        super(VMSDFieldNull, self).read()
++        assert(self.data == self.NULL_PTR_MARKER)
++        return self.data
++
+ class VMSDFieldBool(VMSDFieldGeneric):
+     def __init__(self, desc, file):
+         super(VMSDFieldBool, self).__init__(desc, file)
+@@ -558,6 +580,7 @@ def getDict(self):
+     "bitmap" : VMSDFieldGeneric,
+     "struct" : VMSDFieldStruct,
+     "capability": VMSDFieldCap,
++    "nullptr": VMSDFieldNull,
+     "unknown" : VMSDFieldGeneric,
  }
- DEFINE_CCW_MACHINE(2, 9);
  
 -- 
 2.39.5
