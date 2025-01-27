@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B67DA20620
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:25:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A901EA20629
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:26:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgaL-0000xl-Ji; Tue, 28 Jan 2025 03:04:38 -0500
+	id 1tcgbA-0002ET-18; Tue, 28 Jan 2025 03:05:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgYQ-0006Ig-Px; Tue, 28 Jan 2025 03:02:44 -0500
+ id 1tcgYW-0006Kx-7a; Tue, 28 Jan 2025 03:02:45 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgYO-00025q-QW; Tue, 28 Jan 2025 03:02:38 -0500
+ id 1tcgYS-0002Ag-CS; Tue, 28 Jan 2025 03:02:41 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C4242E1B59;
+ by isrv.corpit.ru (Postfix) with ESMTP id C808DE1B5A;
  Tue, 28 Jan 2025 10:57:08 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 3FDDC1A630C;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 43DCB1A630D;
  Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 067B9520A9; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
+ id 0823D520AB; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Greg Kurz <groug@kaod.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 18/58] tests/9p: also check 'Tgetattr' in
- 'use-after-unlink' test
-Date: Mon, 27 Jan 2025 23:25:04 +0300
-Message-Id: <20250127202547.3723716-18-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ Glenn Miles <milesg@linux.ibm.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.3 19/58] target/ppc: Fix non-maskable interrupt while
+ halted
+Date: Mon, 27 Jan 2025 23:25:05 +0300
+Message-Id: <20250127202547.3723716-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
@@ -61,37 +61,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This verifies expected behaviour of previous bug fix patch.
+The ppc (pnv and spapr) NMI injection code does not go through the
+asynchronous interrupt path and set a bit in env->pending_interrupts
+and raise an interrupt request that the cpu_exec() loop can see.
+Instead it injects the exception directly into registers.
 
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Reviewed-by: Greg Kurz <groug@kaod.org>
-Message-Id: <7017658155c517b9665b75333a97c79aa2d4f3df.1732465720.git.qemu_oss@crudebyte.com>
-(cherry picked from commit eaab44ccc59b83d8dff60fca3361a9b98ec7fee6)
+This can lead to cpu_exec() missing that the thread has work to do,
+if a NMI is injected while it was idle.
+
+Fix this by clearing halted when injecting the interrupt. Probably
+NMI injection should be reworked to use the interrupt request interface,
+but this seems to work as a minimal fix.
+
+Fixes: 3431648272d3 ("spapr: Add support for new NMI interface")
+Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+(cherry picked from commit fa416ae6157a933ad3f7106090684759baaaf3c9)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/qtest/virtio-9p-test.c b/tests/qtest/virtio-9p-test.c
-index f6d7400a87..ab3a12c816 100644
---- a/tests/qtest/virtio-9p-test.c
-+++ b/tests/qtest/virtio-9p-test.c
-@@ -702,6 +702,7 @@ static void fs_use_after_unlink(void *obj, void *data,
-     g_autofree char *real_file = virtio_9p_test_path("09/doa_file");
-     g_autofree char *buf = g_malloc0(write_count);
-     struct stat st_file;
-+    struct v9fs_attr attr;
-     uint32_t fid_file;
-     uint32_t count;
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index f33fc36db2..cc4ef2598c 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -2479,10 +2479,16 @@ static void ppc_deliver_interrupt(CPUPPCState *env, int interrupt)
+     }
+ }
  
-@@ -725,6 +726,10 @@ static void fs_use_after_unlink(void *obj, void *data,
-     tunlinkat({ .client = v9p, .atPath = "09", .name = "doa_file" });
++/*
++ * system reset is not delivered via normal irq method, so have to set
++ * halted = 0 to resume CPU running if it was halted. Possibly we should
++ * move it over to using PPC_INTERRUPT_RESET rather than async_run_on_cpu.
++ */
+ void ppc_cpu_do_system_reset(CPUState *cs)
+ {
+     PowerPCCPU *cpu = POWERPC_CPU(cs);
  
-     /* file is removed, but we still have it open, so this should succeed */
-+    tgetattr({
-+        .client = v9p, .fid = fid_file, .request_mask = P9_GETATTR_BASIC,
-+        .rgetattr.attr = &attr
-+    });
-     count = twrite({
-         .client = v9p, .fid = fid_file, .offset = 0, .count = write_count,
-         .data = buf
++    cs->halted = 0;
+     powerpc_excp(cpu, POWERPC_EXCP_RESET);
+ }
+ 
+@@ -2504,6 +2510,7 @@ void ppc_cpu_do_fwnmi_machine_check(CPUState *cs, target_ulong vector)
+ 
+     /* Anything for nested required here? MSR[HV] bit? */
+ 
++    cs->halted = 0;
+     powerpc_set_excp_state(cpu, vector, msr);
+ }
+ 
 -- 
 2.39.5
 
