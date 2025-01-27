@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79CCBA2062F
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:27:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F7B4A205BE
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:14:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcghR-0004bG-D5; Tue, 28 Jan 2025 03:11:57 -0500
+	id 1tcgd3-0007QT-Vw; Tue, 28 Jan 2025 03:07:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgar-0002Gd-BY; Tue, 28 Jan 2025 03:05:15 -0500
+ id 1tcgat-0002Kn-Ns; Tue, 28 Jan 2025 03:05:15 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgap-0002mR-2v; Tue, 28 Jan 2025 03:05:08 -0500
+ id 1tcgas-00032L-2f; Tue, 28 Jan 2025 03:05:11 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 309D9E1B71;
+ by isrv.corpit.ru (Postfix) with ESMTP id 35973E1B72;
  Tue, 28 Jan 2025 10:57:09 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id A0A721A6324;
+ by tsrv.corpit.ru (Postfix) with ESMTP id A56801A6325;
  Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 2F1C9520D9; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
+ id 30B34520DB; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
  Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 42/58] migration: Remove unused argument in
- vmsd_desc_field_end
-Date: Mon, 27 Jan 2025 23:25:28 +0300
-Message-Id: <20250127202547.3723716-42-mjt@tls.msk.ru>
+Subject: [Stable-9.1.3 43/58] migration: Fix parsing of s390 stream
+Date: Mon, 27 Jan 2025 23:25:29 +0300
+Message-Id: <20250127202547.3723716-43-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
@@ -61,34 +60,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The parsing for the S390StorageAttributes section is currently leaving
+an unconsumed token that is later interpreted by the generic code as
+QEMU_VM_EOF, cutting the parsing short.
+
+The migration will issue a STATTR_FLAG_DONE between iterations, which
+the script consumes correctly, but there's a final STATTR_FLAG_EOS at
+.save_complete that the script is ignoring. Since the EOS flag is a
+u64 0x1ULL and the stream is big endian, on little endian hosts a byte
+read from it will be 0x0, the same as QEMU_VM_EOF.
+
+Fixes: 81c2c9dd5d ("tests/qtest/migration-test: Fix analyze-migration.py for s390x")
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Message-Id: <20250109185249.23952-3-farosas@suse.de>
+Message-Id: <20250109185249.23952-4-farosas@suse.de>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
-(cherry picked from commit 2aead53d39b828f8d9d0769ffa3579dadd64d846)
+(cherry picked from commit 69d1f784569fdb950f2923c3b6d00d7c1b71acc1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/migration/vmstate.c b/migration/vmstate.c
-index fa002b24e8..aa2821dec6 100644
---- a/migration/vmstate.c
-+++ b/migration/vmstate.c
-@@ -311,7 +311,7 @@ static void vmsd_desc_field_start(const VMStateDescription *vmsd,
+diff --git a/scripts/analyze-migration.py b/scripts/analyze-migration.py
+index f2457b1dde..fcda11f31d 100755
+--- a/scripts/analyze-migration.py
++++ b/scripts/analyze-migration.py
+@@ -65,6 +65,9 @@ def readvar(self, size = None):
+     def tell(self):
+         return self.file.tell()
  
- static void vmsd_desc_field_end(const VMStateDescription *vmsd,
-                                 JSONWriter *vmdesc,
--                                const VMStateField *field, size_t size, int i)
-+                                const VMStateField *field, size_t size)
- {
-     if (!vmdesc) {
-         return;
-@@ -420,7 +420,7 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-                 }
++    def seek(self, a, b):
++        return self.file.seek(a, b)
++
+     # The VMSD description is at the end of the file, after EOF. Look for
+     # the last NULL byte, then for the beginning brace of JSON.
+     def read_migration_debug_json(self):
+@@ -272,11 +275,24 @@ def __init__(self, file, version_id, device, section_key):
+         self.section_key = section_key
  
-                 written_bytes = qemu_file_transferred(f) - old_offset;
--                vmsd_desc_field_end(vmsd, vmdesc_loop, field, written_bytes, i);
-+                vmsd_desc_field_end(vmsd, vmdesc_loop, field, written_bytes);
- 
-                 /* Compressed arrays only care about the first element */
-                 if (vmdesc_loop && vmsd_can_compress(field)) {
+     def read(self):
++        pos = 0
+         while True:
+             addr_flags = self.file.read64()
+             flags = addr_flags & 0xfff
+-            if (flags & (self.STATTR_FLAG_DONE | self.STATTR_FLAG_EOS)):
++
++            if flags & self.STATTR_FLAG_DONE:
++                pos = self.file.tell()
++                continue
++            elif flags & self.STATTR_FLAG_EOS:
+                 return
++            else:
++                # No EOS came after DONE, that's OK, but rewind the
++                # stream because this is not our data.
++                if pos:
++                    self.file.seek(pos, os.SEEK_SET)
++                    return
++                raise Exception("Unknown flags %x", flags)
++
+             if (flags & self.STATTR_FLAG_ERROR):
+                 raise Exception("Error in migration stream")
+             count = self.file.read64()
 -- 
 2.39.5
 
