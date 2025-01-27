@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56981A1D462
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 11:27:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9845AA1D466
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 11:27:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcMK8-0001ct-LP; Mon, 27 Jan 2025 05:26:32 -0500
+	id 1tcMKR-0001eT-2N; Mon, 27 Jan 2025 05:26:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcMK6-0001cW-0I
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 05:26:30 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcMKA-0001du-FV
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 05:26:35 -0500
 Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcMK4-0001vx-KR
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 05:26:29 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcMK9-0001wV-37
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 05:26:34 -0500
 Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-438a3216fc2so43800505e9.1
- for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 02:26:28 -0800 (PST)
+ 5b1f17b1804b1-4361b0ec57aso45246295e9.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 02:26:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737973587; x=1738578387; darn=nongnu.org;
+ d=linaro.org; s=google; t=1737973591; x=1738578391; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=t8IO10tm7cHN5fIAfICKPQ1+7FojlYdziCm/1tH9ciA=;
- b=YJ+6Pqce8Jb3tfFsDcf4FsGLJznVGxyXJr6CQDzHVZLT+zbxkasevT0DSY5WQkuJ9v
- pXR1TpCVfuRJ5Axm+4DbE+ry/dy9VLX3z+wK2QpbDKS08hxR6E21f5eqL3iZYwAm7Fom
- ElWYA51tuK3swEXwNsJKiAdhIyxAX0t7GCa8BwAViW718SQLtsOT+Uft9LrG+iOaO90r
- 7cmFg0ktYJ/OgV6xlcml/1yJTeHCsDNhidYBDG1G5NDPB3Jmkp9ofYFnC1zHmQ43m9H2
- 0KN+t6mRrvGjwCgLt47JbGW8QY6OY3lNDe/OO/+05Ypw6S7SZuFU6riSDapmMzWUSvoe
- L9wg==
+ bh=bH5J3cRQDjcVRgPq7zp3SpsLhqrv1PdlyvsdQnQjIBk=;
+ b=hO4QeLnUNQzmx1/A9EnbkSxkQdplD/25G00bDnbdJvh0Kf6ywRWEgPtZiUP6IqQ/V2
+ GHAyWGotNNyyDjPg7IOeBW+RyqrH3PcXbDwNArrg4yj+kvvsgWrfvRanl1mh4jN5oaRe
+ AQOBpx3RyTCXtsgL7lIFSCjNcCfvGffqMwulKU/wd8PiEXoJ9RHRi+OY2tfmQDiVm2gj
+ JnDoxODhXn2kWrHh7NOJA1YsqRI9yTM7pmemiqDkRK0OrDZJPPXTnM7/8KUhAR8m2vkI
+ jEfpSsR0rbAT1Fz0dDXPHCfbjni6VFQ2pJLwSX7oeHm1okSfoG8WGxL3o6WZ0r4QylIY
+ BSKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737973587; x=1738578387;
+ d=1e100.net; s=20230601; t=1737973591; x=1738578391;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=t8IO10tm7cHN5fIAfICKPQ1+7FojlYdziCm/1tH9ciA=;
- b=FL5rTO9sdAPfpM1zqqLtim2+Zif928GkXThUVMBmLs+lHqNAHzqizzkyDwfyBi8V8V
- Teg/Pnrbk++4qvdIK6u21HWP532ROOvy1ia8ndq0HPKLwyKbm1mtGS0DnjHK1YCVNguT
- F/LYfbJYTkFXxVjra7OJfMKMX44iqKbVTXPXKn6lgd571hQd0XRI+8x+CxiC8lh8iSbb
- jlwyPq+kpt8g/o1bnbO1YbJMQa9QvEwQvsO1lEtHaRUzpv6f4F3iSnUFUEkpJdiHRcf+
- 1JNHL8nLDPPUcku7b1NnNE/dhlWDCm4rhHfUZVarWbnr9Ir52fj0B0zqr2aggIwMqEoq
- puYQ==
-X-Gm-Message-State: AOJu0YyTYRJwg2uKX7PXI0UCWWUl1rdwZ3ee3v90pV7PemmR2DNg7b9c
- +XY3HJuGZjBf4OeNxlhXg3bt7HGsw5Gys8NAPE9oZU7dRKd/vEdbFu5ITjaWO1CxBAW8qlo7SFa
- lVLs=
-X-Gm-Gg: ASbGncuMZuklxPj2HxVulsasU9M+aZ0jkBnYopaLkWigjLKd/a1Tu/XxWFGDTNhpcWJ
- 8tgdootqu6GQ3IQ9AvzzDVdj6QLGJNMimD8UJtd2AW8c+WunqZCOdDWNSPoH9c5ZRNlHiUxcLba
- MnbiYXsuHb8FgCJOWza1CyN+kK5CTveK6cy31oNbbx56pDAzZ5nInFS5d8fzKezoYyahwGoaV8a
- gNo84kHoEY4YOWcVzED+9nngbJIAv3ZX09KBMe7QgdHPNa2anyP8puxhVowkIssq9MrIviHqFgH
- FCTxS7h654UMgW+vEFpq4k/wVLN4VdWZOiFIcjQ72ECrEhxmnx4RKy8=
-X-Google-Smtp-Source: AGHT+IF3KR2EB0CNbkIIpYCWXnl9kH/1wsRFCm1vZnDqdDBjLNlVtB9zLQrIYRGhDHa40ypZtMpsjA==
-X-Received: by 2002:a05:600c:3114:b0:434:a386:6cf with SMTP id
- 5b1f17b1804b1-438913bff57mr366945245e9.2.1737973586682; 
- Mon, 27 Jan 2025 02:26:26 -0800 (PST)
+ bh=bH5J3cRQDjcVRgPq7zp3SpsLhqrv1PdlyvsdQnQjIBk=;
+ b=QI22fMu0NNUz1R5SYT1gokyAiX69x4simBygeqtESIADeQAo9EteQB8LArgAn19aYJ
+ KOz4KfkVPxaN6Ml+uvEQxaopfmA9a3yivyJyyKr0iVkVeH23ZG8PLXErUaMIwCkw2ERX
+ sLz8CWQNMBqyt2VXY3V9T9dkzNlGovQXsmdh6TwpTf9vhIDB4r27dwjSBXno3wfNFYnr
+ 0Cd8XrFUqI3q5p1A1TOiLle4gvPmPq+MamE1kpXUnLpfO8IucMh8PBUPoxbePHZ+UwZF
+ sve6fGoePQ8O5j1IlM8R1CwFMupJih7rnbGaPo4tNgbVnAuTZS1aGYHt3yNoP8drQwYY
+ lfMQ==
+X-Gm-Message-State: AOJu0YzXhUu+ZxiSE6UqJgs1RYWDyfpJyoqK9D0bZDpQqSKzam0RwSkm
+ 7TEJPFGvN6DzS45ik03DAdzdIMNOYYGS9HCVGoCOmy+hdWQx6w3IvEYqqtw7ljHjHTP1JmZDIxU
+ e/VY=
+X-Gm-Gg: ASbGncu3mNt6S4OUvD0LUreroedlj9nNJo9HRet40nstp5knv0QVQiCffRlpdeMe5mi
+ 19BhpEfp7McwbLLMhkwJuG3zFNoUkepFFESx+P8UjuKfEQiaWHWJw1Wy49xI+LdDjD1BIOhK1rA
+ 6/GNSdGCmoRfz4rVrrnTQtGU3TKGvf4H9Z06WapFGUGuP+DVeWtILHP6HqKmDu8tr6zmla+Mk6b
+ eUgWfLzyG5h3Kx+BajyHRnepfXsHHrd17cZaxeVE+dLOxFexLj7L0HvdwanYoYikneq7DTr3XeK
+ weU+EsB4XrnnjjAl1HqL6IGW3PlDfZYW9FZJWhHNAMv7/n8+4S9q4cs=
+X-Google-Smtp-Source: AGHT+IGr9lQbhGahkO9jo8M0wLf/25ncd/5hvWg4XE25yr5OCDq3oZXUCQsyehE7qygf2wHzNr4wyA==
+X-Received: by 2002:a05:600c:4fc1:b0:435:1a2:2633 with SMTP id
+ 5b1f17b1804b1-438913dee3amr354620255e9.15.1737973591413; 
+ Mon, 27 Jan 2025 02:26:31 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd507dc9sm127885575e9.19.2025.01.27.02.26.25
+ 5b1f17b1804b1-438bd57325csm127482275e9.34.2025.01.27.02.26.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 27 Jan 2025 02:26:26 -0800 (PST)
+ Mon, 27 Jan 2025 02:26:30 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
@@ -67,9 +67,10 @@ Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
  Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 01/15] hw/ppc/spapr: Restrict CONFER hypercall to TCG
-Date: Mon, 27 Jan 2025 11:26:05 +0100
-Message-ID: <20250127102620.39159-2-philmd@linaro.org>
+Subject: [PATCH v2 02/15] hw/ppc/spapr: Restrict part of PAGE_INIT hypercall
+ to TCG
+Date: Mon, 27 Jan 2025 11:26:06 +0100
+Message-ID: <20250127102620.39159-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250127102620.39159-1-philmd@linaro.org>
 References: <20250127102620.39159-1-philmd@linaro.org>
@@ -100,26 +101,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TODO: Add PPC folks why :)
+Restrict the tb_flush() call to TCG. Assert we are using KVM or TCG.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/spapr_hcall.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/ppc/spapr_hcall.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
-index f8ab7670630..dbf30358a1a 100644
+index dbf30358a1a..4f1933b8da6 100644
 --- a/hw/ppc/spapr_hcall.c
 +++ b/hw/ppc/spapr_hcall.c
-@@ -578,6 +578,8 @@ static target_ulong h_confer(PowerPCCPU *cpu, SpaprMachineState *spapr,
-     CPUState *cs = CPU(cpu);
-     SpaprCpuState *spapr_cpu;
+@@ -299,8 +299,10 @@ static target_ulong h_page_init(PowerPCCPU *cpu, SpaprMachineState *spapr,
+     if (flags & (H_ICACHE_SYNCHRONIZE | H_ICACHE_INVALIDATE)) {
+         if (kvm_enabled()) {
+             kvmppc_icbi_range(cpu, pdst, len);
+-        } else {
++        } else if (tcg_enabled()) {
+             tb_flush(CPU(cpu));
++        } else {
++            g_assert_not_reached();
+         }
+     }
  
-+    assert(tcg_enabled()); /* KVM will have handled this */
-+
-     /*
-      * -1 means confer to all other CPUs without dispatch counter check,
-      *  otherwise it's a targeted confer.
 -- 
 2.47.1
 
