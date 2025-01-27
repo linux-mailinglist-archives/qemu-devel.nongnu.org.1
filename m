@@ -2,34 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E143BA20644
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:29:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97651A20577
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:02:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgXZ-0001w0-7n; Tue, 28 Jan 2025 03:01:45 -0500
+	id 1tcgXz-0004Cv-Uv; Tue, 28 Jan 2025 03:02:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgX5-0000mD-Cp; Tue, 28 Jan 2025 03:01:19 -0500
+ id 1tcgX9-0000vk-0W; Tue, 28 Jan 2025 03:01:19 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgX3-0001pL-JJ; Tue, 28 Jan 2025 03:01:14 -0500
+ id 1tcgX5-0001q8-E6; Tue, 28 Jan 2025 03:01:18 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 90F1FE1B4C;
+ by isrv.corpit.ru (Postfix) with ESMTP id 94D54E1B4D;
  Tue, 28 Jan 2025 10:57:08 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 0CB511A62FF;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 10A011A6300;
  Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id E508D5208F; Tue, 28 Jan 2025 10:57:33 +0300 (MSK)
+ id E6B6952091; Tue, 28 Jan 2025 10:57:33 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 05/58] virtio-net: Fix size check in dhclient workaround
-Date: Mon, 27 Jan 2025 23:24:51 +0300
-Message-Id: <20250127202547.3723716-5-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.3 06/58] qdev: Fix set_pci_devfn() to visit option only
+ once
+Date: Mon, 27 Jan 2025 23:24:52 +0300
+Message-Id: <20250127202547.3723716-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
@@ -60,35 +63,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-work_around_broken_dhclient() accesses IP and UDP headers to detect
-relevant packets and to calculate checksums, but it didn't check if
-the packet has size sufficient to accommodate them, causing out-of-bound
-access hazards. Fix this by correcting the size requirement.
+pci_devfn properties accept either a string or an integer as input. To
+implement this, set_pci_devfn() first tries to visit the option as a
+string, and if that fails, it visits it as an integer instead. While the
+QemuOpts visitor happens to accept this, it is invalid according to the
+visitor interface. QObject input visitors run into an assertion failure
+when this is done.
 
-Fixes: 1d41b0c1ec66 ("Work around dhclient brokenness")
+QObject input visitors are used with the JSON syntax version of -device
+on the command line:
+
+$ ./qemu-system-x86_64 -enable-kvm -M q35 -device pcie-pci-bridge,id=pci.1,bus=pcie.0 -blockdev null-co,node-name=disk -device '{ "driver": "virtio-blk-pci", "drive": "disk", "id": "virtio-disk0", "bus": "pci.1", "addr": 1 }'
+qemu-system-x86_64: ../qapi/qobject-input-visitor.c:143: QObject *qobject_input_try_get_object(QObjectInputVisitor *, const char *, _Bool): Assertion `removed' failed.
+
+The proper way to accept both strings and integers is using the
+alternate mechanism, which tells us the type of the input before it's
+visited. With this information, we can directly visit it as the right
+type.
+
+This fixes set_pci_devfn() by using the alternate mechanism.
+
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit a8575f7fb2f213e6690b23160b04271d47fdfaa8)
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Message-ID: <20241119120353.57812-1-kwolf@redhat.com>
+Acked-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit 5102f9df4a9a7adfbd902f9515c3f8f53dba288e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index ed33a32877..cf27d5cbe5 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -1692,8 +1692,11 @@ static void virtio_net_hdr_swap(VirtIODevice *vdev, struct virtio_net_hdr *hdr)
- static void work_around_broken_dhclient(struct virtio_net_hdr *hdr,
-                                         uint8_t *buf, size_t size)
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index f13350b4fb..30e040f98e 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -794,39 +794,57 @@ static void set_pci_devfn(Object *obj, Visitor *v, const char *name,
+                           void *opaque, Error **errp)
  {
-+    size_t csum_size = ETH_HLEN + sizeof(struct ip_header) +
-+                       sizeof(struct udp_header);
+     Property *prop = opaque;
++    g_autofree GenericAlternate *alt;
+     int32_t value, *ptr = object_field_prop_ptr(obj, prop);
+     unsigned int slot, fn, n;
+-    char *str;
++    g_autofree char *str = NULL;
 +
-     if ((hdr->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM) && /* missing csum */
--        (size > 27 && size < 1500) && /* normal sized MTU */
-+        (size >= csum_size && size < 1500) && /* normal sized MTU */
-         (buf[12] == 0x08 && buf[13] == 0x00) && /* ethertype == IPv4 */
-         (buf[23] == 17) && /* ip.protocol == UDP */
-         (buf[34] == 0 && buf[35] == 67)) { /* udp.srcport == bootps */
++    if (!visit_start_alternate(v, name, &alt, sizeof(*alt), errp)) {
++        return;
++    }
++
++    switch (alt->type) {
++    case QTYPE_QSTRING:
++        if (!visit_type_str(v, name, &str, errp)) {
++            goto out;
++        }
+ 
+-    if (!visit_type_str(v, name, &str, NULL)) {
++        if (sscanf(str, "%x.%x%n", &slot, &fn, &n) != 2) {
++            fn = 0;
++            if (sscanf(str, "%x%n", &slot, &n) != 1) {
++                goto invalid;
++            }
++        }
++        if (str[n] != '\0' || fn > 7 || slot > 31) {
++            goto invalid;
++        }
++        *ptr = slot << 3 | fn;
++        break;
++
++    case QTYPE_QNUM:
+         if (!visit_type_int32(v, name, &value, errp)) {
+-            return;
++            goto out;
+         }
+         if (value < -1 || value > 255) {
+             error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
+                        name ? name : "null", "a value between -1 and 255");
+-            return;
++            goto out;
+         }
+         *ptr = value;
+-        return;
+-    }
++        break;
+ 
+-    if (sscanf(str, "%x.%x%n", &slot, &fn, &n) != 2) {
+-        fn = 0;
+-        if (sscanf(str, "%x%n", &slot, &n) != 1) {
+-            goto invalid;
+-        }
+-    }
+-    if (str[n] != '\0' || fn > 7 || slot > 31) {
+-        goto invalid;
++    default:
++        error_setg(errp, "Invalid parameter type for '%s', expected int or str",
++                   name ? name : "null");
++        goto out;
+     }
+-    *ptr = slot << 3 | fn;
+-    g_free(str);
+-    return;
++
++    goto out;
+ 
+ invalid:
+     error_set_from_qdev_prop_error(errp, EINVAL, obj, name, str);
+-    g_free(str);
++out:
++    visit_end_alternate(v, (void **) &alt);
+ }
+ 
+ static int print_pci_devfn(Object *obj, Property *prop, char *dest,
 -- 
 2.39.5
 
