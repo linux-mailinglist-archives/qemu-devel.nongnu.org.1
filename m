@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BB5A20564
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 08:59:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E67A20633
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:27:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgTG-0003Ik-7Y; Tue, 28 Jan 2025 02:57:18 -0500
+	id 1tcgTI-0003id-6v; Tue, 28 Jan 2025 02:57:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgSi-0002Bk-Pw; Tue, 28 Jan 2025 02:56:45 -0500
+ id 1tcgT3-0003Ma-N9; Tue, 28 Jan 2025 02:57:07 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgSh-0000TY-2i; Tue, 28 Jan 2025 02:56:44 -0500
+ id 1tcgT2-0000UB-5m; Tue, 28 Jan 2025 02:57:05 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7E1CAE1AEA;
+ by isrv.corpit.ru (Postfix) with ESMTP id 82449E1AEB;
  Tue, 28 Jan 2025 10:54:25 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id ED6641A62D1;
+ by tsrv.corpit.ru (Postfix) with ESMTP id F13661A62D2;
  Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id D1E9A52039; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
+ id D37D95203B; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Christian Schoenebeck <qemu_oss@crudebyte.com>,
  Greg Kurz <groug@kaod.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.9 09/45] tests/9p: fix Rreaddir response name
-Date: Mon, 27 Jan 2025 23:25:50 +0300
-Message-Id: <20250127202630.3724367-9-mjt@tls.msk.ru>
+Subject: [Stable-8.2.9 10/45] tests/9p: add missing Rgetattr response name
+Date: Mon, 27 Jan 2025 23:25:51 +0300
+Message-Id: <20250127202630.3724367-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 References: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
@@ -60,29 +60,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All 9p response types are prefixed with an "R", therefore fix
-"READDIR" -> "RREADDIR" in function rmessage_name().
+'Tgetattr' 9p request and its 'Rgetattr' response types are already used
+by test client, however this response type is yet missing in function
+rmessage_name(), so add it.
 
-Fixes: 4829469fd9ff ("tests/virtio-9p: added readdir test")
+Fixes: a6821b828404 ("tests/9pfs: compare QIDs in fs_walk_none() test")
 Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Reviewed-by: Greg Kurz <groug@kaod.org>
-Message-Id: <daad7af58b403aaa2487c566032beca36664b30e.1732465720.git.qemu_oss@crudebyte.com>
-(cherry picked from commit abf0f092c1dd33b9ffa986c6924addc0a9c1d0b8)
+Message-Id: <e183da80d390cfd7d55bdbce92f0ff6e3e5cdced.1732465720.git.qemu_oss@crudebyte.com>
+(cherry picked from commit 4ec984965079b51a9afce339af75edea6de973a2)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/tests/qtest/libqos/virtio-9p-client.c b/tests/qtest/libqos/virtio-9p-client.c
-index b8adc8d4b9..c61632fcd3 100644
+index c61632fcd3..98b77db51d 100644
 --- a/tests/qtest/libqos/virtio-9p-client.c
 +++ b/tests/qtest/libqos/virtio-9p-client.c
-@@ -238,7 +238,7 @@ static const char *rmessage_name(uint8_t id)
+@@ -235,6 +235,7 @@ static const char *rmessage_name(uint8_t id)
+         id == P9_RMKDIR ? "RMKDIR" :
+         id == P9_RLCREATE ? "RLCREATE" :
+         id == P9_RSYMLINK ? "RSYMLINK" :
++        id == P9_RGETATTR ? "RGETATTR" :
          id == P9_RLINK ? "RLINK" :
          id == P9_RUNLINKAT ? "RUNLINKAT" :
          id == P9_RFLUSH ? "RFLUSH" :
--        id == P9_RREADDIR ? "READDIR" :
-+        id == P9_RREADDIR ? "RREADDIR" :
-         "<unknown>";
- }
- 
 -- 
 2.39.5
 
