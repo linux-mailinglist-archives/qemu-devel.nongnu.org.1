@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E730A1D870
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:31:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C60E3A1D85C
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:28:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcQ4S-00071j-DU; Mon, 27 Jan 2025 09:26:36 -0500
+	id 1tcQ4M-0006Ba-J8; Mon, 27 Jan 2025 09:26:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ44-0005ph-0d; Mon, 27 Jan 2025 09:26:17 -0500
+ id 1tcQ44-0005pj-0Z; Mon, 27 Jan 2025 09:26:17 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ3z-0003J8-Ep; Mon, 27 Jan 2025 09:26:09 -0500
+ id 1tcQ3z-0003J6-DY; Mon, 27 Jan 2025 09:26:09 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id 9A92DE0F82;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9109EE0F81;
  Mon, 27 Jan 2025 17:25:41 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 98F9051D99; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
+ id 9B7D251D9B; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Yuan Liu <yuan1.liu@intel.com>,
  Jason Zeng <jason.zeng@intel.com>, Peter Xu <peterx@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.1 26/41] multifd: bugfix for incorrect migration data
- with QPL compression
-Date: Mon, 27 Jan 2025 17:17:40 +0300
-Message-Id: <20250127141803.3514882-26-mjt@tls.msk.ru>
+Subject: [Stable-9.2.1 27/41] multifd: bugfix for incorrect migration data
+ with qatzip compression
+Date: Mon, 27 Jan 2025 17:17:41 +0300
+Message-Id: <20250127141803.3514882-27-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
 References: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
@@ -76,23 +76,23 @@ to record the normal pages.
 Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
 Reviewed-by: Jason Zeng <jason.zeng@intel.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Message-Id: <20241218091413.140396-3-yuan1.liu@intel.com>
+Message-Id: <20241218091413.140396-4-yuan1.liu@intel.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
-(cherry picked from commit 2588a5f99b0c3493b4690e3ff01ed36f80e830cc)
+(cherry picked from commit a523bc52166c80d8a04d46584f9f3868bd53ef69)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/migration/multifd-qpl.c b/migration/multifd-qpl.c
-index bbe466617f..88e2344af2 100644
---- a/migration/multifd-qpl.c
-+++ b/migration/multifd-qpl.c
-@@ -679,6 +679,7 @@ static int multifd_qpl_recv(MultiFDRecvParams *p, Error **errp)
-         qpl->zlen[i] = be32_to_cpu(qpl->zlen[i]);
-         assert(qpl->zlen[i] <= multifd_ram_page_size());
-         zbuf_len += qpl->zlen[i];
+diff --git a/migration/multifd-qatzip.c b/migration/multifd-qatzip.c
+index 7b68397625..6a0e989fae 100644
+--- a/migration/multifd-qatzip.c
++++ b/migration/multifd-qatzip.c
+@@ -373,6 +373,7 @@ static int qatzip_recv(MultiFDRecvParams *p, Error **errp)
+     /* Copy each page to its appropriate location. */
+     for (int i = 0; i < p->normal_num; i++) {
+         memcpy(p->host + p->normal[i], q->out_buf + page_size * i, page_size);
 +        ramblock_recv_bitmap_set_offset(p->block, p->normal[i]);
      }
- 
-     /* read compressed pages */
+     return 0;
+ }
 -- 
 2.39.5
 
