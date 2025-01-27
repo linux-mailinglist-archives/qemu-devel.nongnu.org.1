@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D5F1A2063C
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:28:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA92A20640
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:29:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgcu-0006lX-Jo; Tue, 28 Jan 2025 03:07:20 -0500
+	id 1tcgd6-0007ou-Kd; Tue, 28 Jan 2025 03:07:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgbk-00048F-F2; Tue, 28 Jan 2025 03:06:04 -0500
+ id 1tcgbn-0004OZ-Bq; Tue, 28 Jan 2025 03:06:07 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgbi-0003C3-MI; Tue, 28 Jan 2025 03:06:03 -0500
+ id 1tcgbl-0003E2-Ba; Tue, 28 Jan 2025 03:06:06 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 53925E1B79;
+ by isrv.corpit.ru (Postfix) with ESMTP id 57ACCE1B7A;
  Tue, 28 Jan 2025 10:57:09 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id C23AE1A632C;
+ by tsrv.corpit.ru (Postfix) with ESMTP id C7A091A632D;
  Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 3C777520E9; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
+ id 3E249520EB; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
+ Gabriel Barrantes <gabriel.barrantes.dev@outlook.com>,
+ zhenwei pi <pizhenwei@bytedance.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 50/58] tests/qtest/boot-serial-test: Correct HPPA
- machine name
-Date: Mon, 27 Jan 2025 23:25:36 +0300
-Message-Id: <20250127202547.3723716-50-mjt@tls.msk.ru>
+Subject: [Stable-9.1.3 51/58] backends/cryptodev-vhost-user: Fix local_error
+ leaks
+Date: Mon, 27 Jan 2025 23:25:37 +0300
+Message-Id: <20250127202547.3723716-51-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
@@ -65,33 +65,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 7df6f751176 ("hw/hppa: Split out machine creation")
-renamed the 'hppa' machine as 'B160L', but forgot to update
-the boot serial test, which ended being skipped.
+Do not propagate error to the upper, directly output the error
+to avoid leaks.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 7df6f751176 ("hw/hppa: Split out machine creation")
-Reported-by: Thomas Huth <thuth@redhat.com>
+Fixes: 2fda101de07 ("virtio-crypto: Support asynchronous mode")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2714
+Signed-off-by: Gabriel Barrantes <gabriel.barrantes.dev@outlook.com>
+Reviewed-by: zhenwei pi <pizhenwei@bytedance.com>
+Message-Id: <DM8PR13MB50781054A4FDACE6F4FB6469B30F2@DM8PR13MB5078.namprd13.prod.outlook.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20250102100340.43014-2-philmd@linaro.org>
-(cherry picked from commit a87077316ed2f1c1c8ba8faf05feed9dbf0f2fee)
+(cherry picked from commit 78b0c15a563ac4be5afb0375602ca0a3adc6c442)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/qtest/boot-serial-test.c b/tests/qtest/boot-serial-test.c
-index 3b92fa5d50..7759e8c970 100644
---- a/tests/qtest/boot-serial-test.c
-+++ b/tests/qtest/boot-serial-test.c
-@@ -185,7 +185,7 @@ static const testdef_t tests[] = {
-       sizeof(kernel_plml605), kernel_plml605 },
-     { "arm", "raspi2b", "", "TT", sizeof(bios_raspi2), 0, bios_raspi2 },
-     /* For hppa, force bios to output to serial by disabling graphics. */
--    { "hppa", "hppa", "-vga none", "SeaBIOS wants SYSTEM HALT" },
-+    { "hppa", "B160L", "-vga none", "SeaBIOS wants SYSTEM HALT" },
-     { "aarch64", "virt", "-cpu max", "TT", sizeof(kernel_aarch64),
-       kernel_aarch64 },
-     { "arm", "microbit", "", "T", sizeof(kernel_nrf51), kernel_nrf51 },
+diff --git a/backends/cryptodev-vhost-user.c b/backends/cryptodev-vhost-user.c
+index c3283ba84a..b8e95ca8b4 100644
+--- a/backends/cryptodev-vhost-user.c
++++ b/backends/cryptodev-vhost-user.c
+@@ -281,8 +281,7 @@ static int cryptodev_vhost_user_create_session(
+         break;
+ 
+     default:
+-        error_setg(&local_error, "Unsupported opcode :%" PRIu32 "",
+-                   sess_info->op_code);
++        error_report("Unsupported opcode :%" PRIu32 "", sess_info->op_code);
+         return -VIRTIO_CRYPTO_NOTSUPP;
+     }
+ 
 -- 
 2.39.5
 
