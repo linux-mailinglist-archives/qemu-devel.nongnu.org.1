@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D34AA2061F
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:24:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FBD1A2055F
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 08:58:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgTI-0003lO-Dx; Tue, 28 Jan 2025 02:57:20 -0500
+	id 1tcgTO-0004Vl-5W; Tue, 28 Jan 2025 02:57:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgT6-0003Vv-M3; Tue, 28 Jan 2025 02:57:11 -0500
+ id 1tcgT9-0003Yo-3q; Tue, 28 Jan 2025 02:57:11 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgT4-0000ct-Ve; Tue, 28 Jan 2025 02:57:08 -0500
+ id 1tcgT7-0000dl-HB; Tue, 28 Jan 2025 02:57:10 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 89CB3E1AED;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8DCF6E1AEE;
  Tue, 28 Jan 2025 10:54:25 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 04DFF1A62D4;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 08D961A62D5;
  Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id D6E9E5203F; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
+ id D87F452041; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Christian Schoenebeck <qemu_oss@crudebyte.com>,
  Greg Kurz <groug@kaod.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.9 12/45] 9pfs: remove obsolete comment in v9fs_getattr()
-Date: Mon, 27 Jan 2025 23:25:53 +0300
-Message-Id: <20250127202630.3724367-12-mjt@tls.msk.ru>
+Subject: [Stable-8.2.9 13/45] 9pfs: fix 'Tgetattr' after unlink
+Date: Mon, 27 Jan 2025 23:25:54 +0300
+Message-Id: <20250127202630.3724367-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 References: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
@@ -60,32 +60,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The comment claims that we'd only support basic Tgetattr fields. This is
-no longer true, so remove this comment.
+With a valid file ID (FID) of an open file, it should be possible to send
+a 'Tgettattr' 9p request and successfully receive a 'Rgetattr' response,
+even if the file has been removed in the meantime. Currently this would
+fail with ENOENT.
 
-Fixes: e06a765efbe3 ("hw/9pfs: Add st_gen support in getattr reply")
+I.e. this fixes the following misbehaviour with a 9p Linux client:
+
+  open("/home/tst/filename", O_RDWR|O_CREAT|O_EXCL, 0600) = 3
+  unlink("/home/tst/filename") = 0
+  fstat(3, 0x23aa1a8) = -1 ENOENT (No such file or directory)
+
+Expected results:
+
+  open("/home/tst/filename", O_RDWR|O_CREAT|O_EXCL, 0600) = 3
+  unlink("/home/tst/filename") = 0
+  fstat(3, {st_mode=S_IFREG|0600, st_size=0, ...}) = 0
+
+This is because 9p server is always using a path name based lstat() call
+which fails as soon as the file got removed. So to fix this, use fstat()
+whenever we have an open file descriptor already.
+
+Fixes: 00ede4c2529b ("virtio-9p: getattr server implementation...")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/103
 Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Reviewed-by: Greg Kurz <groug@kaod.org>
-Message-Id: <fb364d12045217a4c6ccd0dd6368103ddb80698b.1732465720.git.qemu_oss@crudebyte.com>
-(cherry picked from commit 3bc4db44430f53387d17145bb52b330a830a03fe)
+Message-Id: <4c41ad47f449a5cc8bfa9285743e029080d5f324.1732465720.git.qemu_oss@crudebyte.com>
+(cherry picked from commit c81e7219e0736f80bfd3553676a19e2992cff41d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: pick it to stable so the next commit applies cleanly)
 
 diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-index 9a291d1b51..851e36b9a1 100644
+index 851e36b9a1..578517739a 100644
 --- a/hw/9pfs/9p.c
 +++ b/hw/9pfs/9p.c
-@@ -1596,10 +1596,6 @@ static void coroutine_fn v9fs_getattr(void *opaque)
+@@ -1596,7 +1596,13 @@ static void coroutine_fn v9fs_getattr(void *opaque)
          retval = -ENOENT;
          goto out_nofid;
      }
--    /*
--     * Currently we only support BASIC fields in stat, so there is no
--     * need to look at request_mask.
--     */
-     retval = v9fs_co_lstat(pdu, &fidp->path, &stbuf);
+-    retval = v9fs_co_lstat(pdu, &fidp->path, &stbuf);
++    if ((fidp->fid_type == P9_FID_FILE && fidp->fs.fd != -1) ||
++        (fidp->fid_type == P9_FID_DIR && fidp->fs.dir.stream))
++    {
++        retval = v9fs_co_fstat(pdu, fidp, &stbuf);
++    } else {
++        retval = v9fs_co_lstat(pdu, &fidp->path, &stbuf);
++    }
      if (retval < 0) {
          goto out;
+     }
 -- 
 2.39.5
 
