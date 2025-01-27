@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AD29A20598
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:06:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CFACA20583
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:04:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgbF-0002sn-3r; Tue, 28 Jan 2025 03:05:33 -0500
+	id 1tcgaJ-0000hc-Lw; Tue, 28 Jan 2025 03:04:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgYY-0006NB-S6; Tue, 28 Jan 2025 03:02:48 -0500
+ id 1tcgYs-0006ha-Va; Tue, 28 Jan 2025 03:03:08 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgYX-0002Cj-Fg; Tue, 28 Jan 2025 03:02:46 -0500
+ id 1tcgYr-0002Cl-H9; Tue, 28 Jan 2025 03:03:06 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CFA37E1B5C;
+ by isrv.corpit.ru (Postfix) with ESMTP id D36E8E1B5D;
  Tue, 28 Jan 2025 10:57:08 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4B7941A630F;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4F4951A6310;
  Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 0B4E9520AF; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
+ id 0D086520B1; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Klaus Jensen <k.jensen@samsung.com>,
  Jesper Wendel Devantier <foss@defmacro.it>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 21/58] hw/nvme: fix msix_uninit with exclusive bar
-Date: Mon, 27 Jan 2025 23:25:07 +0300
-Message-Id: <20250127202547.3723716-21-mjt@tls.msk.ru>
+Subject: [Stable-9.1.3 22/58] hw/nvme: take a reference on the subsystem on vf
+ realization
+Date: Mon, 27 Jan 2025 23:25:08 +0300
+Message-Id: <20250127202547.3723716-22-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
@@ -61,36 +62,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit fa905f65c554 introduced a machine compatibility parameter to
-enable an exclusive bar for msix. It failed to account for this when
-cleaning up. Make sure that if an exclusive bar is enabled, we use the
-proper cleanup routine.
+Make sure we grab a reference on the subsystem when a VF is realized.
+Otherwise, the subsytem will be unrealized automatically when the VFs
+are unregistered and unreffed.
+
+This fixes a latent bug but was not exposed until commit 08f632848008
+("pcie: Release references of virtual functions"). This was then fixed
+(or rather, hidden) by commit c613ad25125b ("pcie_sriov: Do not manually
+unrealize"), but that was then reverted (due to other issues) in commit
+b0fdaee5d1ed, exposing the bug yet again.
 
 Cc: qemu-stable@nongnu.org
-Fixes: fa905f65c554 ("hw/nvme: add machine compatibility parameter to enable msix exclusive bar")
+Fixes: 08f632848008 ("pcie: Release references of virtual functions")
 Reviewed-by: Jesper Wendel Devantier <foss@defmacro.it>
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
-(cherry picked from commit 9162f101257639cc4c7e20f72f77268b1256dd79)
+(cherry picked from commit 6651f8f2e5051f6750c2534ab3151339b3c476a2)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index fe822f63b3..fc03a70979 100644
+index fc03a70979..3b5850beda 100644
 --- a/hw/nvme/ctrl.c
 +++ b/hw/nvme/ctrl.c
-@@ -8699,7 +8699,12 @@ static void nvme_exit(PCIDevice *pci_dev)
-         pcie_sriov_pf_exit(pci_dev);
+@@ -8629,6 +8629,13 @@ static void nvme_realize(PCIDevice *pci_dev, Error **errp)
+          */
+         n->params.serial = g_strdup(pn->params.serial);
+         n->subsys = pn->subsys;
++
++        /*
++         * Assigning this link (strong link) causes an `object_unref` later in
++         * `object_release_link_property`. Increment the refcount to balance
++         * this out.
++         */
++        object_ref(OBJECT(pn->subsys));
      }
  
--    msix_uninit(pci_dev, &n->bar0, &n->bar0);
-+    if (n->params.msix_exclusive_bar && !pci_is_vf(pci_dev)) {
-+        msix_uninit_exclusive_bar(pci_dev);
-+    } else {
-+        msix_uninit(pci_dev, &n->bar0, &n->bar0);
-+    }
-+
-     memory_region_del_subregion(&n->bar0, &n->iomem);
- }
- 
+     if (!nvme_check_params(n, errp)) {
 -- 
 2.39.5
 
