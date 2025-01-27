@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 613B3A20613
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:23:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E685A2062B
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:26:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgZ3-0006Tj-P8; Tue, 28 Jan 2025 03:03:21 -0500
+	id 1tcgZa-00070B-LM; Tue, 28 Jan 2025 03:03:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgXZ-0002Km-9u; Tue, 28 Jan 2025 03:01:45 -0500
+ id 1tcgXZ-0002MA-K0; Tue, 28 Jan 2025 03:01:46 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgXX-0001w3-Go; Tue, 28 Jan 2025 03:01:44 -0500
+ id 1tcgXX-0001wE-RS; Tue, 28 Jan 2025 03:01:45 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A4667E1B51;
+ by isrv.corpit.ru (Postfix) with ESMTP id A867AE1B52;
  Tue, 28 Jan 2025 10:57:08 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 202441A6304;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 243D51A6305;
  Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id EDA7C52099; Tue, 28 Jan 2025 10:57:33 +0300 (MSK)
+ id EF4865209B; Tue, 28 Jan 2025 10:57:33 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Laurent Vivier <lvivier@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 10/58] virtio-net: Add queues before loading them
-Date: Mon, 27 Jan 2025 23:24:56 +0300
-Message-Id: <20250127202547.3723716-10-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.3 11/58] ppc/spapr: fix drc index mismatch for partially
+ enabled vcpus
+Date: Mon, 27 Jan 2025 23:24:57 +0300
+Message-Id: <20250127202547.3723716-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
@@ -62,78 +62,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Call virtio_net_set_multiqueue() to add queues before loading their
-states. Otherwise the loaded queues will not have handlers and elements
-in them will not be processed.
+In case when vcpus are explicitly enabled/disabled in a non-consecutive
+order within a libvirt xml, it results in a drc index mismatch during
+vcpu hotplug later because the existing logic uses vcpu id to derive the
+corresponding drc index which is not correct. Use env->core_index to
+derive a vcpu's drc index as appropriate to fix this issue.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 8c49756825da ("virtio-net: Add only one queue pair when realizing")
-Reported-by: Laurent Vivier <lvivier@redhat.com>
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit 9379ea9db3c0064fa2787db0794a23a30f7b2d2d)
+For ex, for the given libvirt xml config:
+  <vcpus>
+    <vcpu id='0' enabled='yes' hotpluggable='no'/>
+    <vcpu id='1' enabled='yes' hotpluggable='yes'/>
+    <vcpu id='2' enabled='no' hotpluggable='yes'/>
+    <vcpu id='3' enabled='yes' hotpluggable='yes'/>
+    <vcpu id='4' enabled='no' hotpluggable='yes'/>
+    <vcpu id='5' enabled='yes' hotpluggable='yes'/>
+    <vcpu id='6' enabled='no' hotpluggable='yes'/>
+    <vcpu id='7' enabled='no' hotpluggable='yes'/>
+  </vcpus>
+
+We see below error on guest console with "virsh setvcpus <domain> 5" :
+
+pseries-hotplug-cpu: CPU with drc index 10000002 already exists
+
+This patch fixes the issue by using correct drc index for explicitly
+enabled vcpus during init.
+
+Reported-by: Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>
+Tested-by: Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>
+Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+(cherry picked from commit e8185fdc63e1db1efba695aae568fae8a075a815)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index cf27d5cbe5..c1fe457359 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -3035,6 +3035,15 @@ static void virtio_net_set_multiqueue(VirtIONet *n, int multiqueue)
-     virtio_net_set_queue_pairs(n);
- }
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 370d7c35d3..0307953fe5 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -758,7 +758,7 @@ static void spapr_dt_cpu(CPUState *cs, void *fdt, int offset,
+     uint32_t radix_AP_encodings[PPC_PAGE_SIZES_MAX_SZ];
+     int i;
  
-+static int virtio_net_pre_load_queues(VirtIODevice *vdev)
-+{
-+    virtio_net_set_multiqueue(VIRTIO_NET(vdev),
-+                              virtio_has_feature(vdev->guest_features, VIRTIO_NET_F_RSS) ||
-+                              virtio_has_feature(vdev->guest_features, VIRTIO_NET_F_MQ));
-+
-+    return 0;
-+}
-+
- static int virtio_net_post_load_device(void *opaque, int version_id)
- {
-     VirtIONet *n = opaque;
-@@ -4013,6 +4022,7 @@ static void virtio_net_class_init(ObjectClass *klass, void *data)
-     vdc->guest_notifier_mask = virtio_net_guest_notifier_mask;
-     vdc->guest_notifier_pending = virtio_net_guest_notifier_pending;
-     vdc->legacy_features |= (0x1 << VIRTIO_NET_F_GSO);
-+    vdc->pre_load_queues = virtio_net_pre_load_queues;
-     vdc->post_load = virtio_net_post_load_virtio;
-     vdc->vmsd = &vmstate_virtio_net_device;
-     vdc->primary_unplug_pending = primary_unplug_pending;
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 9e10cbc058..10f24a58dd 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -3251,6 +3251,13 @@ virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id)
-         config_len--;
-     }
- 
-+    if (vdc->pre_load_queues) {
-+        ret = vdc->pre_load_queues(vdev);
-+        if (ret) {
-+            return ret;
-+        }
-+    }
-+
-     num = qemu_get_be32(f);
- 
-     if (num > VIRTIO_QUEUE_MAX) {
-diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index 0fcbc5c0c6..953dfca27c 100644
---- a/include/hw/virtio/virtio.h
-+++ b/include/hw/virtio/virtio.h
-@@ -210,6 +210,8 @@ struct VirtioDeviceClass {
-     void (*guest_notifier_mask)(VirtIODevice *vdev, int n, bool mask);
-     int (*start_ioeventfd)(VirtIODevice *vdev);
-     void (*stop_ioeventfd)(VirtIODevice *vdev);
-+    /* Called before loading queues. Useful to add queues before loading. */
-+    int (*pre_load_queues)(VirtIODevice *vdev);
-     /* Saving and loading of a device; trying to deprecate save/load
-      * use vmsd for new devices.
-      */
+-    drc = spapr_drc_by_id(TYPE_SPAPR_DRC_CPU, index);
++    drc = spapr_drc_by_id(TYPE_SPAPR_DRC_CPU, env->core_index);
+     if (drc) {
+         drc_index = spapr_drc_index(drc);
+         _FDT((fdt_setprop_cell(fdt, offset, "ibm,my-drc-index", drc_index)));
 -- 
 2.39.5
 
