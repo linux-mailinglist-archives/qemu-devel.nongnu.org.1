@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E31BA1D820
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:23:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D3EA1D862
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:29:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcQ04-0003ia-E2; Mon, 27 Jan 2025 09:22:04 -0500
+	id 1tcQ06-0003le-GW; Mon, 27 Jan 2025 09:22:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcPzu-0003KE-3e; Mon, 27 Jan 2025 09:21:54 -0500
+ id 1tcPzv-0003Lr-CE; Mon, 27 Jan 2025 09:21:55 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcPzs-0002pn-Cx; Mon, 27 Jan 2025 09:21:53 -0500
+ id 1tcPzs-0002pp-Dn; Mon, 27 Jan 2025 09:21:55 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id 2DFBCE0F47;
+ by isrv.corpit.ru (Postfix) with ESMTP id 36A99E0F48;
  Mon, 27 Jan 2025 17:21:25 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id A8A1651DA5; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
+ id AB10851DA7; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Phil Dennis-Jordan <phil@philjordan.eu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.1 32/41] hw/usb/hcd-xhci-pci: Use modulo to select MSI
- vector as per spec
-Date: Mon, 27 Jan 2025 17:17:46 +0300
-Message-Id: <20250127141803.3514882-32-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Sebastian Ott <sebott@redhat.com>,
+ Zhenyu Zhang <zhenyzha@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.1 33/41] pci: ensure valid link status bits for
+ downstream ports
+Date: Mon, 27 Jan 2025 17:17:47 +0300
+Message-Id: <20250127141803.3514882-33-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
 References: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,49 +60,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Phil Dennis-Jordan <phil@philjordan.eu>
+From: Sebastian Ott <sebott@redhat.com>
 
-QEMU would crash with a failed assertion if the XHCI controller
-attempted to raise the interrupt on an interrupter corresponding
-to a MSI vector with a higher index than the highest configured
-for the device by the guest driver.
+PCI hotplug for downstream endpoints on arm fails because Linux'
+PCIe hotplug driver doesn't like the QEMU provided LNKSTA:
 
-This behaviour is correct on the MSI/PCI side: per PCI 3.0 spec,
-devices must ensure they do not send MSI notifications for
-vectors beyond the range of those allocated by the system/driver
-software. Unlike MSI-X, there is no generic way for handling
-aliasing in the case of fewer allocated vectors than requested,
-so the specifics are up to device implementors. (Section
-6.8.3.4. "Sending Messages")
+  pcieport 0000:08:01.0: pciehp: Slot(2): Card present
+  pcieport 0000:08:01.0: pciehp: Slot(2): Link Up
+  pcieport 0000:08:01.0: pciehp: Slot(2): Cannot train link: status 0x2000
 
-It turns out the XHCI spec (Implementation Note in section 4.17,
-"Interrupters") requires that the host controller signal the MSI
-vector with the number computed by taking the interrupter number
-modulo the number of enabled MSI vectors.
+There's 2 cases where LNKSTA isn't setup properly:
+* the downstream device has no express capability
+* max link width of the bridge is 0
 
-This change introduces that modulo calculation, fixing the
-failed assertion. This makes the device work correctly in MSI mode
-with macOS's XHCI driver, which only allocates a single vector.
+Move the sanity checks added via 88c869198aa63
+("pci: Sanity test minimum downstream LNKSTA") outside of the
+branch to make sure downstream ports always have a valid LNKSTA.
 
-Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250112210056.16658-2-phil@philjordan.eu>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit bb5b7fced6b5d3334ab20702fc846e47bb1fb731)
+Signed-off-by: Sebastian Ott <sebott@redhat.com>
+Tested-by: Zhenyu Zhang <zhenyzha@redhat.com>
+Message-Id: <20241203121928.14861-1-sebott@redhat.com>
+Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit 694632fd44987cc4618612a38ad151047524a590)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/usb/hcd-xhci-pci.c b/hw/usb/hcd-xhci-pci.c
-index a039f5778a..516e6909d2 100644
---- a/hw/usb/hcd-xhci-pci.c
-+++ b/hw/usb/hcd-xhci-pci.c
-@@ -74,6 +74,7 @@ static bool xhci_pci_intr_raise(XHCIState *xhci, int n, bool level)
+diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
+index 0b455c8654..1b12db6fa2 100644
+--- a/hw/pci/pcie.c
++++ b/hw/pci/pcie.c
+@@ -1113,18 +1113,22 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
+         if ((lnksta & PCI_EXP_LNKSTA_NLW) > (lnkcap & PCI_EXP_LNKCAP_MLW)) {
+             lnksta &= ~PCI_EXP_LNKSTA_NLW;
+             lnksta |= lnkcap & PCI_EXP_LNKCAP_MLW;
+-        } else if (!(lnksta & PCI_EXP_LNKSTA_NLW)) {
+-            lnksta |= QEMU_PCI_EXP_LNKSTA_NLW(QEMU_PCI_EXP_LNK_X1);
+         }
+ 
+         if ((lnksta & PCI_EXP_LNKSTA_CLS) > (lnkcap & PCI_EXP_LNKCAP_SLS)) {
+             lnksta &= ~PCI_EXP_LNKSTA_CLS;
+             lnksta |= lnkcap & PCI_EXP_LNKCAP_SLS;
+-        } else if (!(lnksta & PCI_EXP_LNKSTA_CLS)) {
+-            lnksta |= QEMU_PCI_EXP_LNKSTA_CLS(QEMU_PCI_EXP_LNK_2_5GT);
+         }
      }
  
-     if (msi_enabled(pci_dev) && level) {
-+        n %= msi_nr_vectors_allocated(pci_dev);
-         msi_notify(pci_dev, n);
-         return true;
-     }
++    if (!(lnksta & PCI_EXP_LNKSTA_NLW)) {
++        lnksta |= QEMU_PCI_EXP_LNKSTA_NLW(QEMU_PCI_EXP_LNK_X1);
++    }
++
++    if (!(lnksta & PCI_EXP_LNKSTA_CLS)) {
++        lnksta |= QEMU_PCI_EXP_LNKSTA_CLS(QEMU_PCI_EXP_LNK_2_5GT);
++    }
++
+     pci_word_test_and_clear_mask(exp_cap + PCI_EXP_LNKSTA,
+                                  PCI_EXP_LNKSTA_CLS | PCI_EXP_LNKSTA_NLW);
+     pci_word_test_and_set_mask(exp_cap + PCI_EXP_LNKSTA, lnksta &
 -- 
 2.39.5
 
