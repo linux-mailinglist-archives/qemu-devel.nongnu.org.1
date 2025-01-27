@@ -2,37 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10CB4A1D7EF
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:20:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94FC5A1D844
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:26:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcPwp-0008Om-LF; Mon, 27 Jan 2025 09:18:43 -0500
+	id 1tcQ3B-00047F-Th; Mon, 27 Jan 2025 09:25:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcPwN-0008KV-Ji; Mon, 27 Jan 2025 09:18:17 -0500
+ id 1tcQ2d-0003S8-J6; Mon, 27 Jan 2025 09:24:43 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcPwL-0002J4-Hw; Mon, 27 Jan 2025 09:18:15 -0500
+ id 1tcQ2b-00031S-MW; Mon, 27 Jan 2025 09:24:43 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id 21A64E0E27;
- Mon, 27 Jan 2025 17:17:39 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 5269AE0F71;
+ Mon, 27 Jan 2025 17:24:11 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 5C08851D5F; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
+ id 5E85951D61; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Dirk Herrendorfer <d.herrendoerfer@de.ibm.com>, Greg Kurz <groug@kaod.org>,
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ wannacu <wannacu2049@gmail.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.1 01/41] 9pfs: fix regression regarding CVE-2023-2861
-Date: Mon, 27 Jan 2025 17:17:15 +0300
-Message-Id: <20250127141803.3514882-1-mjt@tls.msk.ru>
+Subject: [Stable-9.2.1 02/41] tcg: Reset free_temps before tcg_optimize
+Date: Mon, 27 Jan 2025 17:17:16 +0300
+Message-Id: <20250127141803.3514882-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
 References: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,101 +61,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-The released fix for this CVE:
+When allocating new temps during tcg_optmize, do not re-use
+any EBB temps that were used within the TB.  We do not have
+any idea what span of the TB in which the temp was live.
 
-  f6b0de53fb8 ("9pfs: prevent opening special files (CVE-2023-2861)")
+Introduce tcg_temp_ebb_reset_freed and use before tcg_optimize,
+as well as replacing the equivalent in plugin_gen_inject and
+tcg_func_start.
 
-caused a regression with security_model=passthrough. When handling a
-'Tmknod' request there was a side effect that 'Tmknod' request could fail
-as 9p server was trying to adjust permissions:
-
-  #6  close_if_special_file (fd=30) at ../hw/9pfs/9p-util.h:140
-  #7  openat_file (mode=<optimized out>, flags=2228224,
-      name=<optimized out>, dirfd=<optimized out>) at
-      ../hw/9pfs/9p-util.h:181
-  #8  fchmodat_nofollow (dirfd=dirfd@entry=31,
-      name=name@entry=0x5555577ea6e0 "mysocket", mode=493) at
-      ../hw/9pfs/9p-local.c:360
-  #9  local_set_cred_passthrough (credp=0x7ffbbc4ace10, name=0x5555577ea6e0
-      "mysocket", dirfd=31, fs_ctx=0x55555811f528) at
-      ../hw/9pfs/9p-local.c:457
-  #10 local_mknod (fs_ctx=0x55555811f528, dir_path=<optimized out>,
-      name=0x5555577ea6e0 "mysocket", credp=0x7ffbbc4ace10) at
-      ../hw/9pfs/9p-local.c:702
-  #11 v9fs_co_mknod (pdu=pdu@entry=0x555558121140,
-      fidp=fidp@entry=0x5555574c46c0, name=name@entry=0x7ffbbc4aced0,
-      uid=1000, gid=1000, dev=<optimized out>, mode=49645,
-      stbuf=0x7ffbbc4acef0) at ../hw/9pfs/cofs.c:205
-  #12 v9fs_mknod (opaque=0x555558121140) at ../hw/9pfs/9p.c:3711
-
-That's because server was opening the special file to adjust permissions,
-however it was using O_PATH and it would have not returned the file
-descriptor to guest. So the call to close_if_special_file() on that branch
-was incorrect.
-
-Let's lift the restriction introduced by f6b0de53fb8 such that it would
-allow to open special files on host if O_PATH flag is supplied, not only
-for 9p server's own operations as described above, but also for any client
-'Topen' request.
-
-It is safe to allow opening special files with O_PATH on host, because
-O_PATH only allows path based operations on the resulting file descriptor
-and prevents I/O such as read() and write() on that file descriptor.
-
-Fixes: f6b0de53fb8 ("9pfs: prevent opening special files (CVE-2023-2861)")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2337
-Reported-by: Dirk Herrendorfer <d.herrendoerfer@de.ibm.com>
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Reviewed-by: Greg Kurz <groug@kaod.org>
-Tested-by: Dirk Herrendorfer <d.herrendoerfer@de.ibm.com>
-Message-Id: <E1tJWbk-007BH4-OB@kylie.crudebyte.com>
-(cherry picked from commit d06a9d843fb65351e0e4dc42ba0c404f01ea92b3)
+Cc: qemu-stable@nongnu.org
+Fixes: fb04ab7ddd8 ("tcg/optimize: Lower TCG_COND_TST{EQ,NE} if unsupported")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2711
+Reported-by: wannacu <wannacu2049@gmail.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit 04e006ab36a8565b92d4e21dd346367fbade7d74)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/9pfs/9p-util.h b/hw/9pfs/9p-util.h
-index 51c94b0116..95ee4da9bd 100644
---- a/hw/9pfs/9p-util.h
-+++ b/hw/9pfs/9p-util.h
-@@ -177,20 +177,27 @@ again:
-         return -1;
-     }
+diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
+index 0f47bfbb48..1ef075552c 100644
+--- a/accel/tcg/plugin-gen.c
++++ b/accel/tcg/plugin-gen.c
+@@ -275,7 +275,7 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
+      * that might be live within the existing opcode stream.
+      * The simplest solution is to release them all and create new.
+      */
+-    memset(tcg_ctx->free_temps, 0, sizeof(tcg_ctx->free_temps));
++    tcg_temp_ebb_reset_freed(tcg_ctx);
  
--    if (close_if_special_file(fd) < 0) {
--        return -1;
--    }
--
--    serrno = errno;
--    /* O_NONBLOCK was only needed to open the file. Let's drop it. We don't
--     * do that with O_PATH since fcntl(F_SETFL) isn't supported, and openat()
--     * ignored it anyway.
--     */
-+    /* Only if O_PATH is not set ... */
-     if (!(flags & O_PATH_9P_UTIL)) {
-+        /*
-+         * Prevent I/O on special files (device files, etc.) on host side,
-+         * however it is safe and required to allow opening them with O_PATH,
-+         * as this is limited to (required) path based operations only.
-+         */
-+        if (close_if_special_file(fd) < 0) {
-+            return -1;
-+        }
+     QTAILQ_FOREACH_SAFE(op, &tcg_ctx->ops, link, next) {
+         switch (op->opc) {
+diff --git a/include/tcg/tcg-temp-internal.h b/include/tcg/tcg-temp-internal.h
+index 44192c55a9..98f91e68b7 100644
+--- a/include/tcg/tcg-temp-internal.h
++++ b/include/tcg/tcg-temp-internal.h
+@@ -42,4 +42,10 @@ TCGv_i64 tcg_temp_ebb_new_i64(void);
+ TCGv_ptr tcg_temp_ebb_new_ptr(void);
+ TCGv_i128 tcg_temp_ebb_new_i128(void);
+ 
++/* Forget all freed EBB temps, so that new allocations produce new temps. */
++static inline void tcg_temp_ebb_reset_freed(TCGContext *s)
++{
++    memset(s->free_temps, 0, sizeof(s->free_temps));
++}
 +
-+        serrno = errno;
-+        /*
-+         * O_NONBLOCK was only needed to open the file. Let's drop it. We don't
-+         * do that with O_PATH since fcntl(F_SETFL) isn't supported, and
-+         * openat() ignored it anyway.
-+         */
-         ret = fcntl(fd, F_SETFL, flags);
-         assert(!ret);
-+        errno = serrno;
-     }
--    errno = serrno;
-     return fd;
- }
+ #endif /* TCG_TEMP_FREE_H */
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index 0babae1b88..4578b185be 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -1489,7 +1489,7 @@ void tcg_func_start(TCGContext *s)
+     s->nb_temps = s->nb_globals;
  
+     /* No temps have been previously allocated for size or locality.  */
+-    memset(s->free_temps, 0, sizeof(s->free_temps));
++    tcg_temp_ebb_reset_freed(s);
+ 
+     /* No constant temps have been previously allocated. */
+     for (int i = 0; i < TCG_TYPE_COUNT; ++i) {
+@@ -6120,6 +6120,9 @@ int tcg_gen_code(TCGContext *s, TranslationBlock *tb, uint64_t pc_start)
+     }
+ #endif
+ 
++    /* Do not reuse any EBB that may be allocated within the TB. */
++    tcg_temp_ebb_reset_freed(s);
++
+     tcg_optimize(s);
+ 
+     reachable_code_pass(s);
 -- 
 2.39.5
 
