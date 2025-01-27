@@ -2,70 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DCC7A1D48C
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 11:31:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E868A1D43B
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 11:14:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcMOy-0002HE-GR; Mon, 27 Jan 2025 05:31:34 -0500
+	id 1tcM6r-0005ag-Mw; Mon, 27 Jan 2025 05:12:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
- id 1tcMOa-000246-M6
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 05:31:12 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tcM6k-0005aE-54; Mon, 27 Jan 2025 05:12:43 -0500
+Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
- id 1tcMOV-0002pX-SS
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 05:31:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737973861;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=6E+oCISpqR6Cdq0Z+2xhjOafmyJFtBlAc6ZEDRhnszk=;
- b=S+QEjrPRCvETaevvwr/ZV8/NvN9wfodwzDT6bP4wWLmzrEAZ5MiCj7WhjywxkIXsQkU1ia
- Qe6+bt7oFoYK5Rgc5SYeRvD/hs4QQCoGO5KmLw8pBvhPnRuiU+5LXfuG9eJ+mBL4XWWxzE
- 3BwuSt3eP0PkLkMtU7Vau0AL0ziIO4Y=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-38-NtkF_BxSNY6hbqiV_UsMOA-1; Mon,
- 27 Jan 2025 05:29:30 -0500
-X-MC-Unique: NtkF_BxSNY6hbqiV_UsMOA-1
-X-Mimecast-MFC-AGG-ID: NtkF_BxSNY6hbqiV_UsMOA
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A4E181956050; Mon, 27 Jan 2025 10:29:29 +0000 (UTC)
-Received: from speedmetal.lan (unknown [10.45.242.2])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0386F1800348; Mon, 27 Jan 2025 10:29:25 +0000 (UTC)
-From: Peter Krempa <pkrempa@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org
-Subject: [PATCH] block-backend: Fix argument order when calling
- 'qapi_event_send_block_io_error()'
-Date: Mon, 27 Jan 2025 11:29:24 +0100
-Message-ID: <09728d784888b38d7a8f09ee5e9e9c542c875e1e.1737973614.git.pkrempa@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tcM6i-0000f4-4R; Mon, 27 Jan 2025 05:12:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1737972760; x=1769508760;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=iu57v9/ANTE0Gzuc/7drSyoftYkaLDydCoSoFawrCkw=;
+ b=ChQUDCy1tV6srqmz8Z/WiPdzzlHUefKbYY+7OoeX9TbDJDuVrmvzulR7
+ j8PMTqS+SRAfsFM2Eq1jpmesIeUfLZmQD/he5Vr6z+v2DIyG1el1iPdwU
+ Do0bd1/qBovdJtp++WvbOyBB3ujoWHMM0khMpTtcu9i3ypVKL/B9EfWVA
+ Aoh+QlXUlW+tIlPDsn0d5iqPQzsEGfx3pzwPfx7xeWDY8Rd3WeJr/mhXy
+ 4mrmQcHlp4O5Aa2tubJrAHS97Fmt7yqNeOPIxDGn535Jbc5D/E9TvJYhi
+ R6ZSNO+T+7fFVd1kJRL9Doy5Nc/g2WElnnYA2uI3GbQiEJR1xqfq7EgFb w==;
+X-CSE-ConnectionGUID: If4+ovKSS/WDnG/IbG2MJg==
+X-CSE-MsgGUID: SXulBOq5SSeqm78LTt8hnA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11327"; a="42088843"
+X-IronPort-AV: E=Sophos;i="6.13,238,1732608000"; d="scan'208";a="42088843"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jan 2025 02:12:36 -0800
+X-CSE-ConnectionGUID: 7+DXXvz4T2akgpNeuEQYTQ==
+X-CSE-MsgGUID: Xkycg4MtQ4iPnFO5RN4zdg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,238,1732608000"; d="scan'208";a="108982137"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa009.fm.intel.com with ESMTP; 27 Jan 2025 02:12:35 -0800
+Date: Mon, 27 Jan 2025 18:31:59 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 08/10] rust: qdev: switch from legacy reset to Resettable
+Message-ID: <Z5dgn5MQNGEa5lry@intel.com>
+References: <20250117194003.1173231-1-pbonzini@redhat.com>
+ <20250117194003.1173231-9-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pkrempa@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.299,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250117194003.1173231-9-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -56
+X-Spam_score: -5.7
+X-Spam_bar: -----
+X-Spam_report: (-5.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.299,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,53 +79,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 7452162adec25c10 introduced 'qom-path' argument to BLOCK_IO_ERROR
-event but when the event is instantiated in 'send_qmp_error_event()' the
-arguments for 'device' and 'qom_path' in
-qapi_event_send_block_io_error() were reversed :
+> +/// Trait providing the contents of [`ResettablePhases`].
+> +pub trait ResettablePhasesImpl {
+> +    /// If not None, this is called when the object enters reset. It
+> +    /// can reset local state of the object, but it must not do anything that
+> +    /// has a side-effect on other objects, such as raising or lowering a
+> +    /// [`qemu_irq`] line or reading or writing guest memory. It takes the
+> +    /// reset's type as argument.
+> +    const ENTER: Option<fn(&Self, ResetType)> = None;
+> +
+> +    /// If not None, this is called when the object for entry into reset, once
+> +    /// every object in the system which is being reset has had its
+> +    /// @phases.enter method called. At this point devices can do actions
 
-Generated code for sending event:
+Maybe s/@phases.enter/ResettablePhasesImpl::ENTER/?
 
-  void qapi_event_send_block_io_error(const char *qom_path,
-                                      const char *device,
-                                      const char *node_name,
-                                      IoOperationType operation,
-                                      [...]
+> +    /// that affect other objects.
+> +    ///
+> +    /// If in doubt, implement this method.
+> +    const HOLD: Option<fn(&Self, ResetType)> = None;
+> +
+> +    /// If not None, this phase is called when the object leaves the reset
+> +    /// state. Actions affecting other objects are permitted.
+> +    const EXIT: Option<fn(&Self, ResetType)> = None;
+> +}
+> +
 
-Call inside send_qmp_error_event():
+...
+ 
+>  impl<T> ClassInitImpl<DeviceClass> for T
+>  where
+> -    T: ClassInitImpl<ObjectClass> + DeviceImpl,
+> +    T: ClassInitImpl<ObjectClass> + ClassInitImpl<ResettableClass> + DeviceImpl,
 
-     qapi_event_send_block_io_error(blk_name(blk),
-                                    blk_get_attached_dev_path(blk),
-                                    bs ? bdrv_get_node_name(bs) : NULL, optype,
-                                    [...]
+This constraint requires each device to explicitly implement ResettablePhasesImpl,
+even the device doesn't want to do anything for reset.
 
-This results into reporting the QOM path as the device alias and vice
-versa which in turn breaks libvirt, which expects the device alias being
-either a valid alias or empty (which would make libvirt do the lookup by
-node-name instead).
+So what about the following changes:
+ * Define 3-Phases methods in DeviceImpl.
+ * Implement ResettablePhasesImpl for all devices by passing their 3-Phases
+   methods to ResettablePhasesImpl's.
 
-Fixes: 7452162adec25c1003d5bf0079aca52913a80e0c
-Signed-off-by: Peter Krempa <pkrempa@redhat.com>
+Then device doesn't need to implement this reset trait if unnecessary.
+
+For example:
+
+--- a/rust/qemu-api/src/qdev.rs
++++ b/rust/qemu-api/src/qdev.rs
+@@ -84,7 +84,7 @@ pub trait ResettablePhasesImpl {
+ }
+
+ /// Trait providing the contents of [`DeviceClass`].
+-pub trait DeviceImpl: ObjectImpl + ResettablePhasesImpl {
++pub trait DeviceImpl: ObjectImpl {
+     /// _Realization_ is the second stage of device creation. It contains
+     /// all operations that depend on device properties and can fail (note:
+     /// this is not yet supported for Rust devices).
+@@ -106,6 +106,18 @@ fn properties() -> &'static [Property] {
+     fn vmsd() -> Option<&'static VMStateDescription> {
+         None
+     }
++
++    const RESET_ENTER: Option<fn(&Self, ResetType)> = None;
++    const RESET_HOLD: Option<fn(&Self, ResetType)> = None;
++    const RESET_EXIT: Option<fn(&Self, ResetType)> = None;
++}
++
++impl<T> ResettablePhasesImpl for T
++where T: DeviceImpl
++{
++    const ENTER: Option<fn(&Self, ResetType)> = T::RESET_ENTER;
++    const HOLD: Option<fn(&Self, ResetType)> = T::RESET_HOLD;
++    const EXIT: Option<fn(&Self, ResetType)> = T::RESET_EXIT;
+ }
+
+ /// # Safety
+
 ---
- block/block-backend.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/block/block-backend.c b/block/block-backend.c
-index c93a7525ad..981be67e5d 100644
---- a/block/block-backend.c
-+++ b/block/block-backend.c
-@@ -2136,8 +2136,8 @@ static void send_qmp_error_event(BlockBackend *blk,
-     BlockDriverState *bs = blk_bs(blk);
+Though this way add duplicate methods, it reduces the burden on the
+device developer.
 
-     optype = is_read ? IO_OPERATION_TYPE_READ : IO_OPERATION_TYPE_WRITE;
--    qapi_event_send_block_io_error(blk_name(blk),
--                                   blk_get_attached_dev_path(blk),
-+    qapi_event_send_block_io_error(blk_get_attached_dev_path(blk),
-+                                   blk_name(blk),
-                                    bs ? bdrv_get_node_name(bs) : NULL, optype,
-                                    action, blk_iostatus_is_enabled(blk),
-                                    error == ENOSPC, strerror(error));
--- 
-2.48.1
+Regards,
+Zhao
 
+>  {
+>      fn class_init(dc: &mut DeviceClass) {
+>          if <T as DeviceImpl>::REALIZE.is_some() {
+>              dc.realize = Some(rust_realize_fn::<T>);
+>          }
+> -        if <T as DeviceImpl>::RESET.is_some() {
+> -            unsafe {
+> -                bindings::device_class_set_legacy_reset(dc, Some(rust_reset_fn::<T>));
+> -            }
+> -        }
+>          if let Some(vmsd) = <T as DeviceImpl>::vmsd() {
+>              dc.vmsd = vmsd;
+>          }
+> @@ -99,6 +162,7 @@ fn class_init(dc: &mut DeviceClass) {
+>              }
+>          }
+>  
+> +        ResettableClass::interface_init::<T, DeviceState>(dc);
+>          <T as ClassInitImpl<ObjectClass>>::class_init(&mut dc.parent_class);
+>      }
+>  }
 
