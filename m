@@ -2,91 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5762BA1D5B1
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 12:57:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E81A1D5D3
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 13:10:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcNiO-0007Wm-Cl; Mon, 27 Jan 2025 06:55:40 -0500
+	id 1tcNvz-0003V4-CG; Mon, 27 Jan 2025 07:09:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcNi6-0006ze-0n
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 06:55:25 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcNi1-0007D8-PL
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 06:55:21 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-385f07cd1a4so4517926f8f.1
- for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 03:55:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1737978916; x=1738583716; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=477b2+132Twzc6vm7x293Qvrvp4aEfDDM84pZnLDz7E=;
- b=A30Hdz7DgNSk/txVVLqyttURob1pvTspsV1OrXuq6BP+rrCMsb3cR3jCvHhAU5zXy0
- 2P+inoAUoI+vsj9Bo3yDQA+WBzhol+dIdi/PR3jRbo4VU3qkW9s9ewdS2c4I1Fx69UC3
- 2USRtgLzjJeD+uvUwesUBXpzyhHwbucQYMFUpzalUN5GbnqxB7CQSSaQtrhchCyOoPen
- 6aEUiysDCL/76HzS1aBlcukYqhsDGu0e89VLb19DIpSWEOnuE5eNsceBW/XudCd4PlFA
- 54nwvd6YrgqO7uxIDTGJqcD7Tfb1zKyh2quAbuona05YUXXh7TNNPUEE8+Wlt88+P4ci
- WRyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737978916; x=1738583716;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=477b2+132Twzc6vm7x293Qvrvp4aEfDDM84pZnLDz7E=;
- b=ocZGBWulrDhIczlXs9aZMYEpFpmumQoFp6KumZLsJzAcWYQHgQwGvZiZH1Ez1UANJK
- At5XNFg1Hq6bNtBFcOEyOCCoXU/npMCUvttWXFfcMzntbynV1GeF2YpY5CyV/y75HdNU
- OmmNuZ2IumExKu+K0/dTRYVCtBfojjSBxF0GrX57wUxAJXcqASl7Yh9ZGlcjJLOvFRPj
- mS/6toQ16jA0UsDTXY/NSqPGxdTvWXNXYpqsWTGCZdnw3EVgB6zj/eZ/RNx332SqrCpG
- e018WuaknNXlwjyRYg9u4QJQ7sNw9cZpd8xmHL4S0gmzU7N06eYYv0HYIaLc43RqCegh
- lqkw==
-X-Gm-Message-State: AOJu0YyZy2/TNh6awpnmKdJJBerw0rxZ6HIKIaRWlNqzMbjswweZa5z2
- oZCf99bSqniBRynTv4jJsDUCKHX5W8aL5qficFf7R2uDgH5ZkRlIPJcVK1VMGXHAvQs/cMylHe0
- AyBc=
-X-Gm-Gg: ASbGncs/fWsJ7XvZIUBsc/Wa/QafHQXlbNifYJ05zYBZ9DQUCDI9LDo/JDM0jRnBajC
- rBEBFBjpr8K6+4UiBESWNJi3BNvgIpiIffgyG+4a90KiyJd8GJr5MBWdk9O+5jqYtqxdcLQIl50
- 7+IUQQpeP/WbxSkIfHAJU1V2S9RMZ4MnkPrGjwYTPuJ9y/A/8w9aKXbXxZ+6ezG+auSBCNVeiww
- q+AYEzKwlmjT6HzVr8EdyYFHDKUce84CfFtatsyPKMf32p+5uTiwnBMrRxPisOP1s+V8E6Onb7F
- y8c7v6M31xxZczJ133qjjIb+P8jcNPv6IXvp2yslpbwL7atYdoq5JZE=
-X-Google-Smtp-Source: AGHT+IGHWLmSvU1P39gqGXFnIhRl/32Yegnv45d7TusjfscIdD5eIgw0WV1HeMUXoBfBZqD4Icviow==
-X-Received: by 2002:a05:6000:1788:b0:385:ea2b:12cc with SMTP id
- ffacd0b85a97d-38bf56628e4mr37165113f8f.13.1737978915871; 
- Mon, 27 Jan 2025 03:55:15 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a1bbd93sm10884096f8f.76.2025.01.27.03.55.14
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 27 Jan 2025 03:55:15 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1tcNv8-0003PT-Lx
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 07:08:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1tcNv4-0000VZ-MM
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 07:08:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1737979721;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=SWg2R22CrdP3ARnTmd3o+VO3c7TD+zQxVecVhaU9edA=;
+ b=fpagPJDefE7tE77aiyadv6lBI6nJXfrTZ9XbJKC6RyJcMD9uDqth/SNwq/0BkCrqMPRPOP
+ EjBKcApCQ1JJczPZKUg/u79ivZb0A1/NZR7fczFdzBiBbu1X0FkAU8eL8AWv12uOLJV6Sp
+ WCpgAV/dd9alpreJK1O0c8ba7aQ0vGw=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-417-YN2ODuD9NW-xBi8YlB46xQ-1; Mon,
+ 27 Jan 2025 07:08:37 -0500
+X-MC-Unique: YN2ODuD9NW-xBi8YlB46xQ-1
+X-Mimecast-MFC-AGG-ID: YN2ODuD9NW-xBi8YlB46xQ
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C9DB419560A1; Mon, 27 Jan 2025 12:08:36 +0000 (UTC)
+Received: from kaapi.redhat.com (unknown [10.74.17.143])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4B3281800348; Mon, 27 Jan 2025 12:08:31 +0000 (UTC)
+From: Prasad Pandit <ppandit@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-riscv@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>, qemu-ppc@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 10/10] disas: Remove target_words_bigendian() call in
- initialize_debug_target()
-Date: Mon, 27 Jan 2025 12:54:26 +0100
-Message-ID: <20250127115426.51355-11-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250127115426.51355-1-philmd@linaro.org>
-References: <20250127115426.51355-1-philmd@linaro.org>
+Cc: peterx@redhat.com, farosas@suse.de, berrange@redhat.com,
+ Prasad Pandit <pjp@fedoraproject.org>
+Subject: [PATCH v4 0/4] Allow to enable multifd and postcopy migration together
+Date: Mon, 27 Jan 2025 17:38:19 +0530
+Message-ID: <20250127120823.144949-1-ppandit@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.299,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,57 +80,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All CPUClass implementations must implement disas_set_info()
-which sets the disassemble_info::endian value.
+From: Prasad Pandit <pjp@fedoraproject.org>
 
-Ensure that by:
+Hello,
 
-1/ assert disas_set_info() handler is not NULL
-2/ set %endian to BFD_ENDIAN_UNKNOWN before calling the
-   CPUClass::disas_set_info() handler, then assert %endian
-   is not BFD_ENDIAN_UNKNOWN after the call.
+* This series (v4) adds more 'multifd+postcopy' qtests which test
+  Precopy migration with 'postcopy-ram' attribute set. And run
+  Postcopy migrations with 'multifd' channels enabled.
+===
+$ ../qtest/migration-test --tap -k -r '/x86_64/migration/multifd+postcopy' | grep -i 'slow test'
+# slow test /x86_64/migration/multifd+postcopy/plain executed in 1.29 secs
+# slow test /x86_64/migration/multifd+postcopy/recovery/tls/psk executed in 2.48 secs
+# slow test /x86_64/migration/multifd+postcopy/preempt/plain executed in 1.49 secs
+# slow test /x86_64/migration/multifd+postcopy/preempt/recovery/tls/psk executed in 2.52 secs
+# slow test /x86_64/migration/multifd+postcopy/tcp/tls/psk/match executed in 3.62 secs
+# slow test /x86_64/migration/multifd+postcopy/tcp/plain/zstd executed in 1.34 secs
+# slow test /x86_64/migration/multifd+postcopy/tcp/plain/cancel executed in 2.24 secs
+...
+66/66 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test                 OK             148.41s   71 subtests passed
+===
 
-This allows removing the target_words_bigendian() call in disas/.
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+v3: https://lore.kernel.org/qemu-devel/20250121131032.1611245-1-ppandit@redhat.com/T/#t
+* This series (v3) passes all existing 'tests/qtest/migration/*' tests
+  and adds a new one to enable multifd channels with postcopy migration.
+
+
+v2: https://lore.kernel.org/qemu-devel/20241129122256.96778-1-ppandit@redhat.com/T/#u
+* This series (v2) further refactors the 'ram_save_target_page'
+  function to make it independent of the multifd & postcopy change.
+
+
+v1: https://lore.kernel.org/qemu-devel/20241126115748.118683-1-ppandit@redhat.com/T/#u
+* This series removes magic value (4-bytes) introduced in the
+  previous series for the Postcopy channel.
+
+
+v0: https://lore.kernel.org/qemu-devel/20241029150908.1136894-1-ppandit@redhat.com/T/#u
+* Currently Multifd and Postcopy migration can not be used together.
+  QEMU shows "Postcopy is not yet compatible with multifd" message.
+
+  When migrating guests with large (100's GB) RAM, Multifd threads
+  help to accelerate migration, but inability to use it with the
+  Postcopy mode delays guest start up on the destination side.
+
+* This patch series allows to enable both Multifd and Postcopy
+  migration together. Precopy and Multifd threads work during
+  the initial guest (RAM) transfer. When migration moves to the
+  Postcopy phase, Multifd threads are restrained and the Postcopy
+  threads start to request pages from the source side.
+
+* This series introduces magic value (4-bytes) to be sent on the
+  Postcopy channel. It helps to differentiate channels and properly
+  setup incoming connections on the destination side.
+
+
+Thank you.
 ---
- disas/disas-common.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+Prasad Pandit (4):
+  migration/multifd: move macros to multifd header
+  migration: refactor ram_save_target_page functions
+  migration: enable multifd and postcopy together
+  tests/qtest/migration: add postcopy tests with multifd
 
-diff --git a/disas/disas-common.c b/disas/disas-common.c
-index 57505823cb7..42e911e36be 100644
---- a/disas/disas-common.c
-+++ b/disas/disas-common.c
-@@ -7,7 +7,6 @@
- #include "disas/disas.h"
- #include "disas/capstone.h"
- #include "hw/core/cpu.h"
--#include "exec/tswap.h"
- #include "disas-internal.h"
- 
- 
-@@ -61,15 +60,11 @@ void disas_initialize_debug_target(CPUDebug *s, CPUState *cpu)
- 
-     s->cpu = cpu;
-     s->info.print_address_func = print_address;
--    if (target_words_bigendian()) {
--        s->info.endian = BFD_ENDIAN_BIG;
--    } else {
--        s->info.endian =  BFD_ENDIAN_LITTLE;
--    }
-+    s->info.endian =  BFD_ENDIAN_UNKNOWN;
- 
--    if (cpu->cc->disas_set_info) {
--        cpu->cc->disas_set_info(cpu, &s->info);
--    }
-+    g_assert(cpu->cc->disas_set_info);
-+    cpu->cc->disas_set_info(cpu, &s->info);
-+    g_assert(s->info.endian !=  BFD_ENDIAN_UNKNOWN);
- }
- 
- int disas_gstring_printf(FILE *stream, const char *fmt, ...)
--- 
-2.47.1
+ migration/migration.c                     | 106 ++++++++++++++--------
+ migration/multifd-nocomp.c                |   3 +-
+ migration/multifd.c                       |   5 -
+ migration/multifd.h                       |   5 +
+ migration/options.c                       |   5 -
+ migration/ram.c                           |  69 ++++----------
+ tests/qtest/migration/compression-tests.c |  13 +++
+ tests/qtest/migration/framework.c         |  13 +++
+ tests/qtest/migration/framework.h         |   4 +
+ tests/qtest/migration/postcopy-tests.c    |  23 +++++
+ tests/qtest/migration/precopy-tests.c     |  19 ++++
+ tests/qtest/migration/tls-tests.c         |  40 ++++++++
+ 12 files changed, 203 insertions(+), 102 deletions(-)
+
+--
+2.48.1
 
 
