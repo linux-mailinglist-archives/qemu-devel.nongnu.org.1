@@ -2,61 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A72CA1D44D
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 11:21:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 209DBA1D461
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 11:27:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcMEG-0007p8-G7; Mon, 27 Jan 2025 05:20:28 -0500
+	id 1tcMK4-0001bo-OJ; Mon, 27 Jan 2025 05:26:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1tcMED-0007or-9S
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 05:20:25 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1tcMEA-0001R9-2q
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 05:20:24 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YhPY96YNqz6K9CY;
- Mon, 27 Jan 2025 18:19:41 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id D542F140B73;
- Mon, 27 Jan 2025 18:20:11 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 27 Jan
- 2025 11:20:11 +0100
-Date: Mon, 27 Jan 2025 10:20:09 +0000
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-CC: <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>,
- <qemu-devel@nongnu.org>, Alex =?ISO-8859-1?Q?Benn=E9e?=
- <alex.bennee@linaro.org>, Alexandre Iooss <erdnaxe@crans.org>, Mahmoud
- Mandour <ma.mandourr@gmail.com>, <linuxarm@huawei.com>, Niyas Sait
- <niyas.sait@huawei.com>
-Subject: Re: [RFC PATCH QEMU 0/3] cxl/plugins: Hotness Monitoring Unit with
- 'real' data.
-Message-ID: <20250127102009.00002dbd@huawei.com>
-In-Reply-To: <5e0876e8-4c2c-4ba5-86dc-d9ca241b743d@linaro.org>
-References: <20250124172905.84099-1-Jonathan.Cameron@huawei.com>
- <5e0876e8-4c2c-4ba5-86dc-d9ca241b743d@linaro.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcMK2-0001bY-7G
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 05:26:26 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcMK0-0001vO-3t
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 05:26:25 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3862d16b4f5so2536555f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 02:26:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1737973582; x=1738578382; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=HWdyQXqewKLw4j1QduA+K9zB9k1/pnG1qDE+3bxWVJA=;
+ b=cU+f9Dak2Krs75maVrhawqIxoT6QGZtdh2MjzBnpTANVrjdwq+Remj6O6W49Jo10mQ
+ 5U88DhskjsYoBRoeVQ1IoqthMTQOobZo36upMdHjLAOX09FRLubPCb0reG39bBctoDLf
+ CaiqDToh2St7Oy3E31qUqvUcTIQopEvi7kQw7U+xQq2B/6x+c/rfob6MD93ws+at+klk
+ BDuNjkFW/iQEA0bist/FycsklNuACFOAW0t4+3ihDAs2EgxWj1TzlMEm1iPtmJAxInZD
+ ImJUNZplWflnOf9kGNb8jffwp4SP0a5ZAeJUD1AjzHVh4m5z0V2e7XWHlYFEjRvjkv0k
+ RG2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737973582; x=1738578382;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HWdyQXqewKLw4j1QduA+K9zB9k1/pnG1qDE+3bxWVJA=;
+ b=Nd4kXkk9mgwKPL/feOn52CXr0pzZilprm+ij6TyrZr77KC2ZA5JoYsGXQt5YNarUIp
+ 7kVoyLCRq3yx2SBAENqZbAiRLEMZDlfggI9+dppeuGNd0h0kZ0RV5ARtZ1tYftDffNAN
+ hs9SPckHfyAyUBrk6crUov7qIVlCXyLxm2IGDzO8JjNPWpR76aIg1uuMXekC3pHf+Hrn
+ ayuTLrggrEPKwSusD8uED8C2ko8KoduWQYDz+2GKLb7e9hrZkz2SWCoRFRe2PjAIfl06
+ /USj/GGcs6qj473pLzUF8tiKa8NCMi0FRuUN1VFOTze+HdMKwBc9OVTZWEnsvI+nStIr
+ MQ/Q==
+X-Gm-Message-State: AOJu0YwGX2aLT1+OXiPb5tR5PXNj06V/dWPE10Ww0dOYo12+o/viZv0g
+ dbjsnguCMO/FSbi/s/TYuOnB3De0E+tZJCE1tuKaqcnsZTwyp9NALOLkx/9GZlQtGjWmJyJZEty
+ thNw=
+X-Gm-Gg: ASbGnctk0DQ7VvW6vdOzS4mItAytyjgI1uERqmsbG0kb11vF00FTp4CfeySb/zZfGDF
+ 7AS1O+b8vZWpjatko1oA6w+Na4kYy6zjvtQ4yt3pwcBFgDD18D9Un9qdhEUG4cP32Y/k0NRPC8E
+ wWwHr6o0cXk8lp01xdQ4mFt6gYKwV443UhvdUIYsJBLIuGFk8Dr3Hd8mGIbpKsWYh18oS5iT1Rc
+ WTqevLvzbNhQCQeHDeorMWHlreyGIx47AQp5VGVaVyOdRJy8ad0MSxR47t86RAs9uszZ7vYEZDa
+ tdxIJtQbEYPpfELM9FvtzXadugDR2VF35kH+4L6y9mHjIEm9CKhAa+I=
+X-Google-Smtp-Source: AGHT+IHh0MKFEbuhYVA4CRNX5ZS2JVvyF6xhZaS1XyNSHzvbAblCIOnqXXxza7j7JQkiKOFl+lVR/g==
+X-Received: by 2002:a05:6000:1846:b0:385:df17:2148 with SMTP id
+ ffacd0b85a97d-38c2b7c1810mr9685323f8f.20.1737973581959; 
+ Mon, 27 Jan 2025 02:26:21 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38c2a176538sm10443441f8f.8.2025.01.27.02.26.21
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 27 Jan 2025 02:26:21 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 00/15] target/ppc: Move TCG code from excp_helper.c to
+ tcg-excp_helper.c
+Date: Mon, 27 Jan 2025 11:26:04 +0100
+Message-ID: <20250127102620.39159-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- frapeml500008.china.huawei.com (7.182.85.71)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.01, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,285 +95,58 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 24 Jan 2025 12:55:52 -0800
-Pierrick Bouvier <pierrick.bouvier@linaro.org> wrote:
+Since v1:
+- Keep ppc_tcg_hv_emu() within TARGET_PPC64 (patch #10)
 
-> Hi Jonathan,
->=20
-> thanks for posting this. It's a creative usage of plugins.
->=20
-> I think that your current approach, decoupling plugins, CHMU and device=20
-> model is a good thing.
->=20
-> I'm not familiar with CXL, but one question that comes to my mind is:
-> Is that mandatory to do this analysis during execution (vs dumping=20
-> binary traces from CHMU and plugin and running an analysis post execution=
-)?
+Hi,
 
-Short answer is that post run analysis isn't of much use for developing the=
- OS
-software story. It works to some degree if you are designing the tracking
-hardware or algorithms to use that hardware capture a snapshot of hotness -
-dealing with lack of counters, that sort of thing.=20
+This series is a simply a cleanup restricting TCG specific
+exception-related code to TCG, by moving code to a new unit
+named 'tcg-excp_helper.c'.
 
-The main intent of this support is to drive live usage of the data in the O=
-S.
-So it gets this hotness information and migrates more frequently accessed m=
-emory
-to a 'nearer'/lower latency memory node.
+I ended doing it as a preliminary cleanup for the "Extract
+TCG state from CPUState".
 
-=46rom an OS point of view there will be two ways it uses it:
-1) Offline application optimization  - that aligns with your suggestion of =
-offline
-   analysis but would typically still need to be live because we have to do
-   the reverse maps and work out what was allocated in particular locations.
-   Not impossible to dump that information from QEMU + the guest OS but the=
- usage
-   flow would then look quite different from what makes sense on real hardw=
-are
-   where all the data is available to the host OS directly.
-2) Migration of memory.  This will dynamically change the PA backing a VA w=
-hilst
-   applications are running. The aim being to develop how that happens, we =
-need
-   the dynamic state.
+Diffstat shows 1K lines moved, but the patches are trivial
+to review using 'git-diff --color-moved=dimmed-zebra' option.
 
-Jonathan
+Branch published as:
+ https://gitlab.com/philmd/qemu/-/tree/ppc_excp_extract_tcg
 
->=20
-> Regards,
-> Pierrick
->=20
-> On 1/24/25 09:29, Jonathan Cameron wrote:
-> > Hi All,
-> >=20
-> > This is an RFC mainly to seek feedback on the approach used, particular=
-ly
-> > the aspect of how to get data from a TCG plugin into a device model.
-> > Two options that we have tried
-> > 1. Socket over which the plugin sends data to an external server
-> >     (as seen here)
-> > 2. Register and manage a plugin from within a device model
-> >=20
-> > The external server approach keeps things loosely coupled, but at the c=
-ost
-> > of separately maintaining that server, protocol definitions etc and
-> > some overhead.
-> > The closely couple solution is neater, but I suspect might be controver=
-sial
-> > (hence I didn't start with that :)
-> >=20
-> > The code here is at best a PoC to illustrate what we have in mind
-> > It's not nice code at all, feature gaps, bugs and all!  So whilst
-> > review is always welcome I'm not requesting it for now.
-> >=20
-> > Kernel support was posted a while back but was done against fake data
-> > (still supported here if you don't provide the port parameter to the ty=
-pe3 device)
-> > https://lore.kernel.org/linux-cxl/20241121101845.1815660-1-Jonathan.Cam=
-eron@huawei.com/
-> > I'll post a minor update of that driver shortly to take into account
-> > a few specification clarifications but it should work with this without
-> > those.
-> >=20
-> > Note there are some other patches on the tree I generated this from
-> > so this may not apply to upstream. Easiest is probably to test
-> > using gitlab.com/jic23/qemu cxl-2025-01-24
-> >=20
-> > Thanks to Niyas for his suggestions on how to make all this work!
-> >=20
-> > Background
-> > ----------
-> >=20
-> > What is the Compute eXpress Link Hotness Monitoring unit and what is it=
- for?
-> > - In a tiered memory equipped server with the slow tier being attached =
-via
-> >    CXL the expectation is a given workload will benefit from putting da=
-ta
-> >    that is frequently fetched from memory in lower latency directly att=
-ached
-> >    DRAM.  Less frequently used data can be served from the CXL attached=
- memory
-> >    with no significant loss of performance.  Any data that is hot enoug=
-h to
-> >    almost always be in cache doesn't matter as it is only fetch from me=
-mory
-> >    occasionally.
-> > - Working out which memory is best places where is hard to do and in so=
-me
-> >    workloads a dynamic problem. As such we need something we can measure
-> >    to provide some indication of what data is in the wrong place.
-> >    There are existing techniques to do this (page faulting, various
-> >    CPU tracing systems, access bit scanning etc) but they all have sign=
-ificant
-> >    overheads.
-> > - Monitoring accesses on the CXL device provides a path to getting good
-> >    data without those overheads.  These units are known as CXL Hotness
-> >    Monitoring Units or CHMUs.  Loosely speaking they count accesses to
-> >    granuals of data (e.g. 4KiB pages).  Exactly how they do that and
-> >    where they sacrifice data accuracy is an implementation trade off.
-> >=20
-> > Why do we need a model that gives real data?
-> > - In general there is a need to develop software on top of these units
-> >    to move data to the right place. Hard to evaluate that if we are mak=
-ing
-> >    up the info on what is 'hot'.
-> > - Need to allow for a bunch of 'impdef' solutions. Note that CHMU
-> >    in this patch set is an oracle - it has enough counters to count
-> >    every access.  That's not realistic but it doesn't get me shouted
-> >    at by our architecture teams for giving away any secrets.
-> >    If we move forward with this, I'll probably implement a limited
-> >    counter + full CAM solution (also unrealistic, but closer to real)
-> >    I'd be very interested in contributions of other approaches (there
-> >    are lots in the literature, under the term top-k)
-> > - Resources will be constrained, so whilst a CHMU might in theory
-> >    allow monitoring everything at once, that will come with a big
-> >    accuracy cost.  We need to design the algorithms that give us
-> >    good data given those constraints.
-> >=20
-> > So we need a solution to explore the design space and develop the softw=
-are
-> > to take advantage of this hardware (there are various LSF/MM proposals
-> > on how to use this an other ways of tracking hotness).
-> > https://lore.kernel.org/all/20250123105721.424117-1-raghavendra.kt@amd.=
-com/
-> > https://lore.kernel.org/lkml/Z4XUoWlU-UgRik18@gourry-fedora-PF4VCD3F/T/
-> >=20
-> > QEMU plugins give us a way to do this.  In particular the existing
-> > Cache plugin can be easily modified to tell use what memory addresses
-> > missed at the last level of emulated cache.  We can then filter those
-> > for the memory address range that maps to CXL and feed them to our
-> > counter implementation. On the other side, each instance of CXL type 3
-> > device can connect to this server and request hotness monitoring
-> > services + provide parameters etc.  Elements such as list threshold
-> > management and overflow detection etc are in the CXL HMU QEMU device mo=
-de.
-> > As noted above, we have an alternative approach that can closely couple
-> > things, so the device model registers the plugin directly and there
-> > is no server.
-> >=20
-> > How to use it!
-> > --------------
-> >=20
-> > It runs a little slow but it runs and generates somewhat plausible outp=
-uts.
-> > I'd definitely suggest running it with the pass through optimization
-> > patch on the CXL staging tree (and a single direct connected device).
-> > Your millage will vary if you try to use other parameters, or
-> > hotness units beyond the first one (implementation far from complete!)
-> >=20
-> > To run start the server in contrib/hmu/ providing a port number to list=
-en
-> > on.
-> >=20
-> > ./chmu 4443
-> >=20
-> > Then launch QEMU with something like the following.
-> >=20
-> > qemu-system-aarch64 -icount shift=3D1 \
-> >   -plugin ../qemu/bin/native/contrib/plugins/libcache.so,port=3D4443,mi=
-ssfilterbase=3D1099511627776,missfiltersize=3D1099511627776,dcachesize=3D81=
-92,dassoc=3D4,dblksize=3D64,icachesize=3D8192,iassoc=3D4,iblksize=3D64,l2ca=
-chesize=3D32768,l2assoc=3D16,l2blksize=3D64 \
-> >   -M virt,ras=3Don,nvdimm=3Don,gic-version=3D3,cxl=3Don,hmat=3Don -m 4g=
-,maxmem=3D8g,slots=3D4 -cpu max -smp 4 \
-> >   -kernel Image \
-> >   -drive if=3Dnone,file=3Dfull.qcow2,format=3Dqcow2,id=3Dhd \
-> >   -device pcie-root-port,id=3Droot_port1 \
-> >   -device virtio-blk-pci,drive=3Dhd,x-max-bounce-buffer-size=3D512k \
-> >   -nographic -no-reboot -append 'earlycon memblock=3Ddebug root=3D/dev/=
-vda2 fsck.mode=3Dskip maxcpus=3D4 tp_printk' \
-> >   -monitor telnet:127.0.0.1:1234,server,nowait -bios QEMU_EFI.fd \
-> >   -object memory-backend-ram,size=3D4G,id=3Dmem0 \
-> >   -object memory-backend-file,id=3Dcxl-mem1,share=3Don,mem-path=3D/tmp/=
-t3_cxl1.raw,size=3D1G,align=3D256M \
-> >   -object memory-backend-file,id=3Dcxl-mem2,share=3Don,mem-path=3D/tmp/=
-t3_cxl2.raw,size=3D1G,align=3D256M \
-> >   -object memory-backend-file,id=3Dcxl-lsa1,share=3Don,mem-path=3D/tmp/=
-t3_lsa1.raw,size=3D1M,align=3D1M \
-> >    -object memory-backend-file,id=3Dcxl-mem3,share=3Don,mem-path=3D/tmp=
-/t3_cxl3.raw,size=3D1G,align=3D256M \
-> >   -object memory-backend-file,id=3Dcxl-mem4,share=3Don,mem-path=3D/tmp/=
-t3_cxl4.raw,size=3D1G,align=3D256M \
-> >   -object memory-backend-file,id=3Dcxl-lsa2,share=3Don,mem-path=3D/tmp/=
-t3_lsa2.raw,size=3D1M,align=3D1M \
-> >   -device pxb-cxl,bus_nr=3D12,bus=3Dpcie.0,id=3Dcxl.1,hdm_for_passthrou=
-gh=3Dtrue,numa_node=3D0\
-> >   -device cxl-rp,port=3D0,bus=3Dcxl.1,id=3Dcxl_rp_port0,chassis=3D0,slo=
-t=3D2 \
-> >   -device cxl-type3,bus=3Dcxl_rp_port0,volatile-memdev=3Dcxl-mem1,id=3D=
-cxl-pmem1,lsa=3Dcxl-lsa1,sn=3D3,x-speed=3D32,x-width=3D16,chmu-port=3D4443 \
-> >   -machine cxl-fmw.0.targets.0=3Dcxl.1,cxl-fmw.0.size=3D8G,cxl-fmw.0.in=
-terleave-granularity=3D1k \
-> >   -numa node,nodeid=3D0,cpus=3D0-3,memdev=3Dmem0 \
-> >   -numa node,nodeid=3D1 \
-> >   -object acpi-generic-initiator,id=3Dbob2,pci-dev=3Dbob,node=3D1 \
-> >   -numa node,nodeid=3D2 \
-> >   -object acpi-generic-port,id=3Dbob11,pci-bus=3Dcxl.1,node=3D2 \
-> >=20
-> > In the guest, create and bind the region - this brings up the CXL memory
-> > device so accesses go to the memory.
-> >=20
-> >    cd /sys/bus/cxl/devices/decoder0.0/
-> >    cat create_ram_region
-> >    echo region0 > create_ram_region
-> >    echo ram > /sys/bus/cxl/devices/decoder2.0/mode
-> >    echo ram > /sys/bus/cxl/devices/decoder3.0/mode
-> >    echo $((256 << 21)) > /sys/bus/cxl/devices/decoder2.0/dpa_size
-> >    cd /sys/bus/cxl/devices/region0/
-> >    echo 256 > interleave_granularity
-> >    echo 1 > interleave_ways
-> >    echo $((256 << 21)) > size
-> >    echo decoder2.0 > target0
-> >    echo 1 > commit
-> >    echo region0 > /sys/bus/cxl/drivers/cxl_region/bind
-> >=20
-> > Finally start perf with something like:
-> >=20
-> > ./perf record -a  -e cxl_hmu_mem0.0.0/epoch_type=3D0,access_type=3D6,\
-> > hotness_threshold=3D635,epoch_multiplier=3D4,epoch_scale=3D4,\
-> > range_base=3D0,range_size=3D4096/  ./stress.sh
-> >=20
-> > where stress.sh is
-> >=20
-> >    sleep 2
-> >    numactl --membind 3 stress-ng --vm 1 --vm-bytes 1M --vm-keep -t 5s
-> >    sleep 2
-> >=20
-> > See the results with
-> > ./perf report --dump-raw-trace | grep -A 200 HMU
-> >=20
-> > Enjoy and have a good weekend.
-> >=20
-> > Thanks,
-> >=20
-> > Jonathan
-> >=20
-> > Jonathan Cameron (3):
-> >    hw/cxl: Initial CXL Hotness Monitoring Unit Emulation
-> >    plugins: Add cache miss reporting over a socket.
-> >    contrib: Add example hotness monitoring unit server
-> >=20
-> >   include/hw/cxl/cxl.h        |   1 +
-> >   include/hw/cxl/cxl_chmu.h   | 154 ++++++++++++
-> >   include/hw/cxl/cxl_device.h |  13 +-
-> >   include/hw/cxl/cxl_pci.h    |   7 +-
-> >   contrib/hmu/hmu.c           | 312 ++++++++++++++++++++++++
-> >   contrib/plugins/cache.c     |  75 +++++-
-> >   hw/cxl/cxl-chmu.c           | 459 ++++++++++++++++++++++++++++++++++++
-> >   hw/mem/cxl_type3.c          |  25 +-
-> >   hw/cxl/meson.build          |   1 +
-> >   9 files changed, 1035 insertions(+), 12 deletions(-)
-> >   create mode 100644 include/hw/cxl/cxl_chmu.h
-> >   create mode 100644 contrib/hmu/hmu.c
-> >   create mode 100644 hw/cxl/cxl-chmu.c
-> >  =20
->=20
+Regards,
+
+Phil.
+
+Philippe Mathieu-Daudé (15):
+  hw/ppc/spapr: Restrict CONFER hypercall to TCG
+  hw/ppc/spapr: Restrict part of PAGE_INIT hypercall to TCG
+  target/ppc: Make ppc_ldl_code() declaration public
+  target/ppc: Move TCG specific exception handlers to tcg-excp_helper.c
+  target/ppc: Move ppc_ldl_code() to tcg-excp_helper.c
+  target/ppc: Ensure powerpc_checkstop() is only called under TCG
+  target/ppc: Restrict powerpc_checkstop() to TCG
+  target/ppc: Remove raise_exception_ra()
+  target/ppc: Restrict exception helpers to TCG
+  target/ppc: Restrict ppc_tcg_hv_emu() to TCG
+  target/ppc: Restrict various common helpers to TCG
+  target/ppc: Fix style in excp_helper.c
+  target/ppc: Make powerpc_excp() prototype public
+  target/ppc: Restrict ATTN / SCV / PMINSN helpers to TCG
+  target/ppc: Restrict various system helpers to TCG
+
+ target/ppc/cpu.h             |   5 -
+ target/ppc/internal.h        |  11 +-
+ hw/ppc/spapr_hcall.c         |   6 +-
+ target/ppc/excp_helper.c     | 943 +----------------------------------
+ target/ppc/tcg-excp_helper.c | 924 ++++++++++++++++++++++++++++++++++
+ target/ppc/meson.build       |   1 +
+ 6 files changed, 955 insertions(+), 935 deletions(-)
+ create mode 100644 target/ppc/tcg-excp_helper.c
+
+-- 
+2.47.1
 
 
