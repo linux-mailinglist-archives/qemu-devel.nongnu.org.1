@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FFF7A1D842
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:25:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EEFFA1D7EB
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:19:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcQ07-0003mP-VS; Mon, 27 Jan 2025 09:22:08 -0500
+	id 1tcPws-0008P4-9f; Mon, 27 Jan 2025 09:18:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcPzx-0003Ty-Nv; Mon, 27 Jan 2025 09:21:58 -0500
+ id 1tcPwX-0008LP-A7; Mon, 27 Jan 2025 09:18:35 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcPzv-0002qQ-FH; Mon, 27 Jan 2025 09:21:57 -0500
+ id 1tcPwU-0002L8-4T; Mon, 27 Jan 2025 09:18:24 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id 3CED8E0F49;
- Mon, 27 Jan 2025 17:21:25 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 387FAE0E2B;
+ Mon, 27 Jan 2025 17:17:39 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 6A57451D6B; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
+ id 6CC5551D70; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.1 07/41] hw/intc/arm_gicv3_its: Zero initialize local
- DTEntry etc structs
-Date: Mon, 27 Jan 2025 17:17:21 +0300
-Message-Id: <20250127141803.3514882-7-mjt@tls.msk.ru>
+Subject: [Stable-9.2.1 08/41] meson.build: Disallow libnfs v6 to fix the
+ broken macOS build
+Date: Mon, 27 Jan 2025 17:17:22 +0300
+Message-Id: <20250127141803.3514882-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
 References: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
@@ -61,169 +61,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 
-In the GICv3 ITS model, we have a common coding pattern which has a
-local C struct like "DTEntry dte", which is a C representation of an
-in-guest-memory data structure, and we call a function such as
-get_dte() to read guest memory and fill in the C struct.  These
-functions to read in the struct sometimes have cases where they will
-leave early and not fill in the whole struct (for instance get_dte()
-will set "dte->valid = false" and nothing else for the case where it
-is passed an entry_addr implying that there is no L2 table entry for
-the DTE).  This then causes potential use of uninitialized memory
-later, for instance when we call a trace event which prints all the
-fields of the struct.  Sufficiently advanced compilers may produce
--Wmaybe-uninitialized warnings about this, especially if LTO is
-enabled.
+The macOS builds in our CI (and possibly other very recent distros)
+are currently broken since the update to libnfs version 6 there.
+That version apparently comes with a big API breakage. v5.0.3 was
+the final release of the old API (see the libnfs commit here:
+https://github.com/sahlberg/libnfs/commit/4379837 ).
 
-Rather than trying to carefully separate out these trace events into
-"only the 'valid' field is initialized" and "all fields can be
-printed", zero-init all the structs when we define them. None of
-these structs are large (the biggest is 24 bytes) and having
-consistent behaviour is less likely to be buggy.
+Disallow version 6.x for now to get the broken CI job working
+again. Once somebody had enough time to adapt our code in
+block/nfs.c, we can revert this change again.
 
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2718
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20241218065157.209020-1-thuth@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20241213182337.3343068-1-peter.maydell@linaro.org
-(cherry picked from commit 9678b9c505725732353baefedb88b53c2eb8a184)
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit e2d98f257138b83b6a492d1da5847a7fe0930d10)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/intc/arm_gicv3_its.c b/hw/intc/arm_gicv3_its.c
-index bf31158470..752322a3e7 100644
---- a/hw/intc/arm_gicv3_its.c
-+++ b/hw/intc/arm_gicv3_its.c
-@@ -465,7 +465,7 @@ static ItsCmdResult lookup_vte(GICv3ITSState *s, const char *who,
- static ItsCmdResult process_its_cmd_phys(GICv3ITSState *s, const ITEntry *ite,
-                                          int irqlevel)
- {
--    CTEntry cte;
-+    CTEntry cte = {};
-     ItsCmdResult cmdres;
+diff --git a/meson.build b/meson.build
+index 147097c652..7a3faca61d 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1122,7 +1122,7 @@ endif
  
-     cmdres = lookup_cte(s, __func__, ite->icid, &cte);
-@@ -479,7 +479,7 @@ static ItsCmdResult process_its_cmd_phys(GICv3ITSState *s, const ITEntry *ite,
- static ItsCmdResult process_its_cmd_virt(GICv3ITSState *s, const ITEntry *ite,
-                                          int irqlevel)
- {
--    VTEntry vte;
-+    VTEntry vte = {};
-     ItsCmdResult cmdres;
- 
-     cmdres = lookup_vte(s, __func__, ite->vpeid, &vte);
-@@ -514,8 +514,8 @@ static ItsCmdResult process_its_cmd_virt(GICv3ITSState *s, const ITEntry *ite,
- static ItsCmdResult do_process_its_cmd(GICv3ITSState *s, uint32_t devid,
-                                        uint32_t eventid, ItsCmdType cmd)
- {
--    DTEntry dte;
--    ITEntry ite;
-+    DTEntry dte = {};
-+    ITEntry ite = {};
-     ItsCmdResult cmdres;
-     int irqlevel;
- 
-@@ -583,8 +583,8 @@ static ItsCmdResult process_mapti(GICv3ITSState *s, const uint64_t *cmdpkt,
-     uint32_t pIntid = 0;
-     uint64_t num_eventids;
-     uint16_t icid = 0;
--    DTEntry dte;
--    ITEntry ite;
-+    DTEntry dte = {};
-+    ITEntry ite = {};
- 
-     devid = (cmdpkt[0] & DEVID_MASK) >> DEVID_SHIFT;
-     eventid = cmdpkt[1] & EVENTID_MASK;
-@@ -651,8 +651,8 @@ static ItsCmdResult process_vmapti(GICv3ITSState *s, const uint64_t *cmdpkt,
- {
-     uint32_t devid, eventid, vintid, doorbell, vpeid;
-     uint32_t num_eventids;
--    DTEntry dte;
--    ITEntry ite;
-+    DTEntry dte = {};
-+    ITEntry ite = {};
- 
-     if (!its_feature_virtual(s)) {
-         return CMD_CONTINUE;
-@@ -761,7 +761,7 @@ static bool update_cte(GICv3ITSState *s, uint16_t icid, const CTEntry *cte)
- static ItsCmdResult process_mapc(GICv3ITSState *s, const uint64_t *cmdpkt)
- {
-     uint16_t icid;
--    CTEntry cte;
-+    CTEntry cte = {};
- 
-     icid = cmdpkt[2] & ICID_MASK;
-     cte.valid = cmdpkt[2] & CMD_FIELD_VALID_MASK;
-@@ -822,7 +822,7 @@ static bool update_dte(GICv3ITSState *s, uint32_t devid, const DTEntry *dte)
- static ItsCmdResult process_mapd(GICv3ITSState *s, const uint64_t *cmdpkt)
- {
-     uint32_t devid;
--    DTEntry dte;
-+    DTEntry dte = {};
- 
-     devid = (cmdpkt[0] & DEVID_MASK) >> DEVID_SHIFT;
-     dte.size = cmdpkt[1] & SIZE_MASK;
-@@ -886,9 +886,9 @@ static ItsCmdResult process_movi(GICv3ITSState *s, const uint64_t *cmdpkt)
- {
-     uint32_t devid, eventid;
-     uint16_t new_icid;
--    DTEntry dte;
--    CTEntry old_cte, new_cte;
--    ITEntry old_ite;
-+    DTEntry dte = {};
-+    CTEntry old_cte = {}, new_cte = {};
-+    ITEntry old_ite = {};
-     ItsCmdResult cmdres;
- 
-     devid = FIELD_EX64(cmdpkt[0], MOVI_0, DEVICEID);
-@@ -965,7 +965,7 @@ static bool update_vte(GICv3ITSState *s, uint32_t vpeid, const VTEntry *vte)
- 
- static ItsCmdResult process_vmapp(GICv3ITSState *s, const uint64_t *cmdpkt)
- {
--    VTEntry vte;
-+    VTEntry vte = {};
-     uint32_t vpeid;
- 
-     if (!its_feature_virtual(s)) {
-@@ -1030,7 +1030,7 @@ static void vmovp_callback(gpointer data, gpointer opaque)
-      */
-     GICv3ITSState *s = data;
-     VmovpCallbackData *cbdata = opaque;
--    VTEntry vte;
-+    VTEntry vte = {};
-     ItsCmdResult cmdres;
- 
-     cmdres = lookup_vte(s, __func__, cbdata->vpeid, &vte);
-@@ -1085,9 +1085,9 @@ static ItsCmdResult process_vmovi(GICv3ITSState *s, const uint64_t *cmdpkt)
- {
-     uint32_t devid, eventid, vpeid, doorbell;
-     bool doorbell_valid;
--    DTEntry dte;
--    ITEntry ite;
--    VTEntry old_vte, new_vte;
-+    DTEntry dte = {};
-+    ITEntry ite = {};
-+    VTEntry old_vte = {}, new_vte = {};
-     ItsCmdResult cmdres;
- 
-     if (!its_feature_virtual(s)) {
-@@ -1186,10 +1186,10 @@ static ItsCmdResult process_vinvall(GICv3ITSState *s, const uint64_t *cmdpkt)
- static ItsCmdResult process_inv(GICv3ITSState *s, const uint64_t *cmdpkt)
- {
-     uint32_t devid, eventid;
--    ITEntry ite;
--    DTEntry dte;
--    CTEntry cte;
--    VTEntry vte;
-+    ITEntry ite = {};
-+    DTEntry dte = {};
-+    CTEntry cte = {};
-+    VTEntry vte = {};
-     ItsCmdResult cmdres;
- 
-     devid = FIELD_EX64(cmdpkt[0], INV_0, DEVICEID);
+ libnfs = not_found
+ if not get_option('libnfs').auto() or have_block
+-  libnfs = dependency('libnfs', version: '>=1.9.3',
++  libnfs = dependency('libnfs', version: ['>=1.9.3', '<6.0.0'],
+                       required: get_option('libnfs'),
+                       method: 'pkg-config')
+ endif
 -- 
 2.39.5
 
