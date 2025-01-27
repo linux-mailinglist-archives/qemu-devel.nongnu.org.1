@@ -2,32 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACCA0A1D83A
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:24:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31768A1D85A
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:28:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcQ1Y-0000X5-5A; Mon, 27 Jan 2025 09:23:40 -0500
+	id 1tcQ36-00040x-6X; Mon, 27 Jan 2025 09:25:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ1K-00082i-JW; Mon, 27 Jan 2025 09:23:22 -0500
+ id 1tcQ2d-0003PE-Ab; Mon, 27 Jan 2025 09:24:43 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ1I-0002vD-RP; Mon, 27 Jan 2025 09:23:22 -0500
+ id 1tcQ2b-00031K-BU; Mon, 27 Jan 2025 09:24:43 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id 04401E0F56;
- Mon, 27 Jan 2025 17:22:48 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 4C6F3E0F70;
+ Mon, 27 Jan 2025 17:24:11 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 8A75851D8D; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
+ id 8CD0351D8F; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.1 20/41] migration: Fix parsing of s390 stream
-Date: Mon, 27 Jan 2025 17:17:34 +0300
-Message-Id: <20250127141803.3514882-20-mjt@tls.msk.ru>
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.1 21/41] s390x: Fix CSS migration
+Date: Mon, 27 Jan 2025 17:17:35 +0300
+Message-Id: <20250127141803.3514882-21-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
 References: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
@@ -59,63 +60,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fabiano Rosas <farosas@suse.de>
 
-The parsing for the S390StorageAttributes section is currently leaving
-an unconsumed token that is later interpreted by the generic code as
-QEMU_VM_EOF, cutting the parsing short.
+Commit a55ae46683 ("s390: move css_migration_enabled from machine to
+css.c") disabled CSS migration globally instead of doing it
+per-instance.
 
-The migration will issue a STATTR_FLAG_DONE between iterations, which
-the script consumes correctly, but there's a final STATTR_FLAG_EOS at
-.save_complete that the script is ignoring. Since the EOS flag is a
-u64 0x1ULL and the stream is big endian, on little endian hosts a byte
-read from it will be 0x0, the same as QEMU_VM_EOF.
-
-Fixes: 81c2c9dd5d ("tests/qtest/migration-test: Fix analyze-migration.py for s390x")
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Message-Id: <20250109185249.23952-4-farosas@suse.de>
+CC: Paolo Bonzini <pbonzini@redhat.com>
+CC: qemu-stable@nongnu.org #9.1
+Fixes: a55ae46683 ("s390: move css_migration_enabled from machine to css.c")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2704
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20250109185249.23952-8-farosas@suse.de>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
-(cherry picked from commit 69d1f784569fdb950f2923c3b6d00d7c1b71acc1)
+(cherry picked from commit c76ee1f6255c3988a9447d363bb17072f1ec84e1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/scripts/analyze-migration.py b/scripts/analyze-migration.py
-index f2457b1dde..fcda11f31d 100755
---- a/scripts/analyze-migration.py
-+++ b/scripts/analyze-migration.py
-@@ -65,6 +65,9 @@ def readvar(self, size = None):
-     def tell(self):
-         return self.file.tell()
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index 53c62fb77c..54f09cf096 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -1200,6 +1200,7 @@ static void ccw_machine_2_9_instance_options(MachineState *machine)
+     s390_cpudef_featoff_greater(12, 1, S390_FEAT_ZPCI);
+     s390_cpudef_featoff_greater(12, 1, S390_FEAT_ADAPTER_INT_SUPPRESSION);
+     s390_cpudef_featoff_greater(12, 1, S390_FEAT_ADAPTER_EVENT_NOTIFICATION);
++    css_migration_enabled = false;
+ }
  
-+    def seek(self, a, b):
-+        return self.file.seek(a, b)
-+
-     # The VMSD description is at the end of the file, after EOF. Look for
-     # the last NULL byte, then for the beginning brace of JSON.
-     def read_migration_debug_json(self):
-@@ -272,11 +275,24 @@ def __init__(self, file, version_id, device, section_key):
-         self.section_key = section_key
+ static void ccw_machine_2_9_class_options(MachineClass *mc)
+@@ -1212,7 +1213,6 @@ static void ccw_machine_2_9_class_options(MachineClass *mc)
+     ccw_machine_2_10_class_options(mc);
+     compat_props_add(mc->compat_props, hw_compat_2_9, hw_compat_2_9_len);
+     compat_props_add(mc->compat_props, compat, G_N_ELEMENTS(compat));
+-    css_migration_enabled = false;
+ }
+ DEFINE_CCW_MACHINE(2, 9);
  
-     def read(self):
-+        pos = 0
-         while True:
-             addr_flags = self.file.read64()
-             flags = addr_flags & 0xfff
--            if (flags & (self.STATTR_FLAG_DONE | self.STATTR_FLAG_EOS)):
-+
-+            if flags & self.STATTR_FLAG_DONE:
-+                pos = self.file.tell()
-+                continue
-+            elif flags & self.STATTR_FLAG_EOS:
-                 return
-+            else:
-+                # No EOS came after DONE, that's OK, but rewind the
-+                # stream because this is not our data.
-+                if pos:
-+                    self.file.seek(pos, os.SEEK_SET)
-+                    return
-+                raise Exception("Unknown flags %x", flags)
-+
-             if (flags & self.STATTR_FLAG_ERROR):
-                 raise Exception("Error in migration stream")
-             count = self.file.read64()
 -- 
 2.39.5
 
