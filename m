@@ -2,32 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C540A1D845
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:26:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CAD9A1D84C
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:27:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcQ1M-00081b-83; Mon, 27 Jan 2025 09:23:24 -0500
+	id 1tcQ2f-0003SJ-Qq; Mon, 27 Jan 2025 09:24:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ1G-0007kV-Vo; Mon, 27 Jan 2025 09:23:19 -0500
+ id 1tcQ2a-0002u9-7o; Mon, 27 Jan 2025 09:24:40 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ1F-0002uf-7G; Mon, 27 Jan 2025 09:23:18 -0500
+ id 1tcQ2Y-00030u-76; Mon, 27 Jan 2025 09:24:39 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id E6D3BE0F53;
- Mon, 27 Jan 2025 17:22:47 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 3D8F4E0F6E;
+ Mon, 27 Jan 2025 17:24:11 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 8338D51D87; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
+ id 85C1051D89; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
  Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.1 17/41] migration/multifd: Fix compat with QEMU < 9.0
-Date: Mon, 27 Jan 2025 17:17:31 +0300
-Message-Id: <20250127141803.3514882-17-mjt@tls.msk.ru>
+Subject: [Stable-9.2.1 18/41] migration: Add more error handling to
+ analyze-migration.py
+Date: Mon, 27 Jan 2025 17:17:32 +0300
+Message-Id: <20250127141803.3514882-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
 References: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
@@ -59,78 +60,137 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fabiano Rosas <farosas@suse.de>
 
-Commit f5f48a7891 ("migration/multifd: Separate SYNC request with
-normal jobs") changed the multifd source side to stop sending data
-along with the MULTIFD_FLAG_SYNC, effectively introducing the concept
-of a SYNC-only packet. Relying on that, commit d7e58f412c
-("migration/multifd: Don't send ram data during SYNC") later came
-along and skipped reading data from SYNC packets.
+The analyze-migration script was seen failing in s390x in misterious
+ways. It seems we're reaching the VMSDFieldStruct constructor without
+any fields, which would indicate an empty .subsection entry, a
+VMSTATE_STRUCT with no fields or a vmsd with no fields. We don't have
+any of those, at least not without the unmigratable flag set, so this
+should never happen.
 
-In a versions timeline like this:
+Add some debug statements so that we can see what's going on the next
+time the issue happens.
 
-  8.2 f5f48a7 9.0 9.1 d7e58f41 9.2
-
-The issue arises that QEMUs < 9.0 still send data along with SYNC, but
-QEMUs > 9.1 don't gather that data anymore. This leads to various
-kinds of migration failures due to desync/missing data.
-
-Stop checking for a SYNC packet on the destination and unconditionally
-unfill the packet.
-
->From now on:
-
-old -> new:
-the source sends data + sync, destination reads normally
-
-new -> new:
-source sends only sync, destination reads zeros
-
-new -> old:
-source sends only sync, destination reads zeros
-
-CC: qemu-stable@nongnu.org
-Fixes: d7e58f412c ("migration/multifd: Don't send ram data during SYNC")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2720
 Reviewed-by: Peter Xu <peterx@redhat.com>
+Message-Id: <20250109185249.23952-2-farosas@suse.de>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Message-Id: <20241213160120.23880-2-farosas@suse.de>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-(cherry picked from commit b93d897ea2f0abbe7fc341a9ac176b5ecd0f3c93)
+(cherry picked from commit 86bee9e0c761a3d0e67c43b44001fd752f894cb0)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 498e71fd10..8d0a763a72 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -252,9 +252,8 @@ static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
-     p->packet_num = be64_to_cpu(packet->packet_num);
-     p->packets_recved++;
+diff --git a/scripts/analyze-migration.py b/scripts/analyze-migration.py
+index 8a254a5b6a..f2457b1dde 100755
+--- a/scripts/analyze-migration.py
++++ b/scripts/analyze-migration.py
+@@ -429,6 +429,9 @@ def __init__(self, desc, file):
+         super(VMSDFieldStruct, self).__init__(desc, file)
+         self.data = collections.OrderedDict()
  
--    if (!(p->flags & MULTIFD_FLAG_SYNC)) {
--        ret = multifd_ram_unfill_packet(p, errp);
--    }
-+    /* Always unfill, old QEMUs (<9.0) send data along with SYNC */
-+    ret = multifd_ram_unfill_packet(p, errp);
- 
-     trace_multifd_recv_unfill(p->id, p->packet_num, p->flags,
-                               p->next_packet_size);
-@@ -1151,9 +1150,13 @@ static void *multifd_recv_thread(void *opaque)
-             flags = p->flags;
-             /* recv methods don't know how to handle the SYNC flag */
-             p->flags &= ~MULTIFD_FLAG_SYNC;
--            if (!(flags & MULTIFD_FLAG_SYNC)) {
--                has_data = p->normal_num || p->zero_num;
--            }
++        if 'fields' not in self.desc['struct']:
++            raise Exception("No fields in struct. VMSD:\n%s" % self.desc)
 +
-+            /*
-+             * Even if it's a SYNC packet, this needs to be set
-+             * because older QEMUs (<9.0) still send data along with
-+             * the SYNC packet.
-+             */
-+            has_data = p->normal_num || p->zero_num;
-             qemu_mutex_unlock(&p->mutex);
-         } else {
-             /*
+         # When we see compressed array elements, unfold them here
+         new_fields = []
+         for field in self.desc['struct']['fields']:
+@@ -477,6 +480,10 @@ def read(self):
+                     raise Exception("Subsection %s not found at offset %x" % ( subsection['vmsd_name'], self.file.tell()))
+                 name = self.file.readstr()
+                 version_id = self.file.read32()
++
++                if not subsection:
++                    raise Exception("Empty description for subsection: %s" % name)
++
+                 self.data[name] = VMSDSection(self.file, version_id, subsection, (name, 0))
+                 self.data[name].read()
+ 
+@@ -574,10 +581,13 @@ def __init__(self, filename):
+         }
+         self.filename = filename
+         self.vmsd_desc = None
++        self.vmsd_json = ""
+ 
+-    def read(self, desc_only = False, dump_memory = False, write_memory = False):
++    def read(self, desc_only = False, dump_memory = False,
++             write_memory = False):
+         # Read in the whole file
+         file = MigrationFile(self.filename)
++        self.vmsd_json = file.read_migration_debug_json()
+ 
+         # File magic
+         data = file.read32()
+@@ -635,9 +645,11 @@ def read(self, desc_only = False, dump_memory = False, write_memory = False):
+         file.close()
+ 
+     def load_vmsd_json(self, file):
+-        vmsd_json = file.read_migration_debug_json()
+-        self.vmsd_desc = json.loads(vmsd_json, object_pairs_hook=collections.OrderedDict)
++        self.vmsd_desc = json.loads(self.vmsd_json,
++                                    object_pairs_hook=collections.OrderedDict)
+         for device in self.vmsd_desc['devices']:
++            if 'fields' not in device:
++                raise Exception("vmstate for device %s has no fields" % device['name'])
+             key = (device['name'], device['instance_id'])
+             value = ( VMSDSection, device )
+             self.section_classes[key] = value
+@@ -666,31 +678,34 @@ def default(self, o):
+ 
+ jsonenc = JSONEncoder(indent=4, separators=(',', ': '))
+ 
+-if args.extract:
+-    dump = MigrationDump(args.file)
++if not any([args.extract, args.dump == "state", args.dump == "desc"]):
++    raise Exception("Please specify either -x, -d state or -d desc")
+ 
+-    dump.read(desc_only = True)
+-    print("desc.json")
+-    f = open("desc.json", "w")
+-    f.truncate()
+-    f.write(jsonenc.encode(dump.vmsd_desc))
+-    f.close()
+-
+-    dump.read(write_memory = True)
+-    dict = dump.getDict()
+-    print("state.json")
+-    f = open("state.json", "w")
+-    f.truncate()
+-    f.write(jsonenc.encode(dict))
+-    f.close()
+-elif args.dump == "state":
+-    dump = MigrationDump(args.file)
+-    dump.read(dump_memory = args.memory)
+-    dict = dump.getDict()
+-    print(jsonenc.encode(dict))
+-elif args.dump == "desc":
++try:
+     dump = MigrationDump(args.file)
+-    dump.read(desc_only = True)
+-    print(jsonenc.encode(dump.vmsd_desc))
+-else:
+-    raise Exception("Please specify either -x, -d state or -d desc")
++
++    if args.extract:
++        dump.read(desc_only = True)
++
++        print("desc.json")
++        f = open("desc.json", "w")
++        f.truncate()
++        f.write(jsonenc.encode(dump.vmsd_desc))
++        f.close()
++
++        dump.read(write_memory = True)
++        dict = dump.getDict()
++        print("state.json")
++        f = open("state.json", "w")
++        f.truncate()
++        f.write(jsonenc.encode(dict))
++        f.close()
++    elif args.dump == "state":
++        dump.read(dump_memory = args.memory)
++        dict = dump.getDict()
++        print(jsonenc.encode(dict))
++    elif args.dump == "desc":
++        dump.read(desc_only = True)
++        print(jsonenc.encode(dump.vmsd_desc))
++except Exception:
++    raise Exception("Full JSON dump:\n%s", dump.vmsd_json)
 -- 
 2.39.5
 
