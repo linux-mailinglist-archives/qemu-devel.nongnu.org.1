@@ -2,37 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 887CEA205CD
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:18:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFCF9A2056E
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:01:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgdv-0000ng-Ff; Tue, 28 Jan 2025 03:08:20 -0500
+	id 1tcgSb-0001cr-Na; Tue, 28 Jan 2025 02:56:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgcF-0005Be-6v; Tue, 28 Jan 2025 03:06:35 -0500
+ id 1tcgS6-0007r5-Gp; Tue, 28 Jan 2025 02:56:13 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgcD-0003aF-FR; Tue, 28 Jan 2025 03:06:34 -0500
+ id 1tcgS4-0000GN-Uf; Tue, 28 Jan 2025 02:56:06 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 68B8EE1B7E;
- Tue, 28 Jan 2025 10:57:09 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 5FBC9E1AE2;
+ Tue, 28 Jan 2025 10:54:25 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id D8B771A6331;
- Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id CEEB11A62C9;
+ Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 44AB4520F3; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
+ id C4D2A52029; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Igor Mammedov <imammedo@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 55/58] tests: acpi: whitelist expected blobs
-Date: Mon, 27 Jan 2025 23:25:41 +0300
-Message-Id: <20250127202547.3723716-55-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.9 01/45] hw/intc/openpic: Avoid taking address of
+ out-of-bounds array index
+Date: Mon, 27 Jan 2025 23:25:42 +0300
+Message-Id: <20250127202630.3724367-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
-References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
+In-Reply-To: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
+References: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 From: Michael Tokarev <mjt@tls.msk.ru>
@@ -60,59 +63,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20250115125342.3883374-2-imammedo@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 1ad32644fe4c9fb25086be15a66dde1d55d3410f)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: remove q35/DSDT.acpihmat-generic-x which is not present in 9.1)
+The clang sanitizer complains about the code in the EOI handling
+of openpic_cpu_write_internal():
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..3eab70014c 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,40 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/x86/pc/DSDT",
-+"tests/data/acpi/x86/pc/DSDT.acpierst",
-+"tests/data/acpi/x86/pc/DSDT.acpihmat",
-+"tests/data/acpi/x86/pc/DSDT.bridge",
-+"tests/data/acpi/x86/pc/DSDT.cphp",
-+"tests/data/acpi/x86/pc/DSDT.dimmpxm",
-+"tests/data/acpi/x86/pc/DSDT.hpbridge",
-+"tests/data/acpi/x86/pc/DSDT.ipmikcs",
-+"tests/data/acpi/x86/pc/DSDT.memhp",
-+"tests/data/acpi/x86/pc/DSDT.nohpet",
-+"tests/data/acpi/x86/pc/DSDT.numamem",
-+"tests/data/acpi/x86/pc/DSDT.roothp",
-+"tests/data/acpi/x86/q35/DSDT",
-+"tests/data/acpi/x86/q35/DSDT.acpierst",
-+"tests/data/acpi/x86/q35/DSDT.acpihmat",
-+"tests/data/acpi/x86/q35/DSDT.acpihmat-noinitiator",
-+"tests/data/acpi/x86/q35/DSDT.applesmc",
-+"tests/data/acpi/x86/q35/DSDT.bridge",
-+"tests/data/acpi/x86/q35/DSDT.core-count",
-+"tests/data/acpi/x86/q35/DSDT.core-count2",
-+"tests/data/acpi/x86/q35/DSDT.cphp",
-+"tests/data/acpi/x86/q35/DSDT.cxl",
-+"tests/data/acpi/x86/q35/DSDT.dimmpxm",
-+"tests/data/acpi/x86/q35/DSDT.ipmibt",
-+"tests/data/acpi/x86/q35/DSDT.ipmismbus",
-+"tests/data/acpi/x86/q35/DSDT.ivrs",
-+"tests/data/acpi/x86/q35/DSDT.memhp",
-+"tests/data/acpi/x86/q35/DSDT.mmio64",
-+"tests/data/acpi/x86/q35/DSDT.multi-bridge",
-+"tests/data/acpi/x86/q35/DSDT.nohpet",
-+"tests/data/acpi/x86/q35/DSDT.numamem",
-+"tests/data/acpi/x86/q35/DSDT.pvpanic-isa",
-+"tests/data/acpi/x86/q35/DSDT.thread-count",
-+"tests/data/acpi/x86/q35/DSDT.thread-count2",
-+"tests/data/acpi/x86/q35/DSDT.tis.tpm12",
-+"tests/data/acpi/x86/q35/DSDT.tis.tpm2",
-+"tests/data/acpi/x86/q35/DSDT.type4-count",
-+"tests/data/acpi/x86/q35/DSDT.viot",
-+"tests/data/acpi/x86/q35/DSDT.xapic",
+UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1 ./build/clang/qemu-system-ppc -M mac99,graphics=off -display none -kernel day15/invaders.elf
+../../hw/intc/openpic.c:1034:16: runtime error: index -1 out of bounds for type 'IRQSource[264]' (aka 'struct IRQSource[264]')
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior ../../hw/intc/openpic.c:1034:16 in
+
+This is because we do
+  src = &opp->src[n_IRQ];
+when n_IRQ may be -1.  This is in practice harmless because if n_IRQ
+is -1 then we don't do anything with the src pointer, but it is
+undefined behaviour. (This has been present since this device
+was first added to QEMU.)
+
+Rearrange the code so we only do the array index when n_IRQ is not -1.
+
+Cc: qemu-stable@nongnu.org
+Fixes: e9df014c0b ("Implement embedded IRQ controller for PowerPC 6xx/740 & 75")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Message-id: 20241105180205.3074071-1-peter.maydell@linaro.org
+(cherry picked from commit 3bf7dcd47a3da0e86a9347ce5b2b5d5a1dcb5857)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+diff --git a/hw/intc/openpic.c b/hw/intc/openpic.c
+index a6f91d4bcd..01aabac206 100644
+--- a/hw/intc/openpic.c
++++ b/hw/intc/openpic.c
+@@ -1032,13 +1032,14 @@ static void openpic_cpu_write_internal(void *opaque, hwaddr addr,
+         s_IRQ = IRQ_get_next(opp, &dst->servicing);
+         /* Check queued interrupts. */
+         n_IRQ = IRQ_get_next(opp, &dst->raised);
+-        src = &opp->src[n_IRQ];
+-        if (n_IRQ != -1 &&
+-            (s_IRQ == -1 ||
+-             IVPR_PRIORITY(src->ivpr) > dst->servicing.priority)) {
+-            DPRINTF("Raise OpenPIC INT output cpu %d irq %d",
+-                    idx, n_IRQ);
+-            qemu_irq_raise(opp->dst[idx].irqs[OPENPIC_OUTPUT_INT]);
++        if (n_IRQ != -1) {
++            src = &opp->src[n_IRQ];
++            if (s_IRQ == -1 ||
++                IVPR_PRIORITY(src->ivpr) > dst->servicing.priority) {
++                DPRINTF("Raise OpenPIC INT output cpu %d irq %d",
++                        idx, n_IRQ);
++                qemu_irq_raise(opp->dst[idx].irqs[OPENPIC_OUTPUT_INT]);
++            }
+         }
+         break;
+     default:
 -- 
 2.39.5
 
