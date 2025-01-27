@@ -2,146 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D193A1D7BE
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:07:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FEF9A1D7BD
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:07:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcPko-00013R-6J; Mon, 27 Jan 2025 09:06:23 -0500
+	id 1tcPl0-0001bu-Lh; Mon, 27 Jan 2025 09:06:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tcPju-0000s3-3s
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 09:05:28 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tcPjr-0000Qf-5L
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 09:05:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737986718;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=kpL8ryd0XOn6zpiaU8a/KxgMPhJSJ0UjVcM5zrIuUN8=;
- b=JmgS14YZcEvA2IFcDXZAKP7aOGpwntIuSYyGhM2483lyGZ1eMQcyPegscjj5+pmgUAuB8j
- H/TFmd6eyuGqeSSQBlGk+RfW/BLngDeZEx3NeeLjIHCTRszuR4tCRLBSgyulLKMYmrNlSs
- 9l4RNEQUD2d2fag5sTNc2F1NdfT4RvA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-550-5FXVDkySNQifkAnB-vcjig-1; Mon, 27 Jan 2025 09:05:16 -0500
-X-MC-Unique: 5FXVDkySNQifkAnB-vcjig-1
-X-Mimecast-MFC-AGG-ID: 5FXVDkySNQifkAnB-vcjig
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-43631d8d9c7so22791275e9.1
- for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 06:05:16 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737986715; x=1738591515;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tcPk9-00011R-NL
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 09:05:38 -0500
+Received: from mail-yb1-xb31.google.com ([2607:f8b0:4864:20::b31])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tcPk3-0000Re-8P
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 09:05:35 -0500
+Received: by mail-yb1-xb31.google.com with SMTP id
+ 3f1490d57ef6-e3978c00a5aso6804757276.1
+ for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 06:05:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1737986728; x=1738591528; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kpL8ryd0XOn6zpiaU8a/KxgMPhJSJ0UjVcM5zrIuUN8=;
- b=RL1JuFf4M9F+Y0+HPttyK6HfnWkReqoejINAvKufo7WhORXIVDFABpyfR1ROewvr63
- tT2Vvhx5c/NH4IvmzglZ/CFHBYXlqBXxemNZPrT7omuBBoH6lt4nISMRu6bQeqb3/fv+
- rw1OVdIFNzaf+ul1R8VtdVZxoucRjDORLLaYTnhuvGV6uVCgIslXgfjsR71vgL3ts0xj
- tlahQhPlRWi6vLe4qalS2MKX/XiIo4c/lzVWbpnww8wiP1WfT+1ZzdEdxfL1I8Ij24JV
- PEYFtLuAg6EExrjdXzE+IjX0doUg2yB87NEYmnWR1jBpWSJILn0780RMklcdHOpQHIPc
- hFXQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXnUdoQQxx8KqJanc+2ioONaL/Kb7AmkLz7lrjCx/pYuvxtHYu1XOE8N0yU7JHZk37xUCqk7R6VmT4t@nongnu.org
-X-Gm-Message-State: AOJu0YwgOXQKAotYMCT8+58+E9z7ONYF7AUIfFVjbwx6Og+/F9yppTVE
- PtPPNMylUfiIu5MYdzykxDTR1HDXpff/KcLcBcsVh4aQQvurmD7osMtSADJixbdbLGH3sfL6pef
- xqKnhsyvj7QNVPXVaiG8E9efnn+Ysq6Ou2awo4u+joi3xLPiy8RFA
-X-Gm-Gg: ASbGncsKC/Gfr8sEgRL1OZbhQ/wEHZanUmInm+HAvXPCVk7Oa3K2zj8pJ6f5zMvjrmj
- /T5eEXBfWOcboTHeR0TD7Oxs1/PcjdbpgmeRWlzV6CDgdTzCirdrCYwb/eqtg5v7lF7tdWEqZtU
- J3Mp3qgwb1A/FHbnSi/MdErkkBz2B6BYPDxFae5o9p9VTOLS0bOaKyRrNLeJ8MC8pI/FKISaM6C
- yrHXt8WMjAix59XeFZdhJFSA2tBswJ/i+OdSHGEMkIeRvnOqTD3Fs6v3W2k0jOBnXKibN5xJe28
- PE5HESkbZxEIUvzHu2M3TnfdP8NF7w==
-X-Received: by 2002:a05:600c:1e0d:b0:434:f2af:6e74 with SMTP id
- 5b1f17b1804b1-438b886097emr157573245e9.15.1737986715305; 
- Mon, 27 Jan 2025 06:05:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE0eD1twzunzQS1QuHuVHRc2avVF0DBRkSRcMWdFdEJPlNCQNQ76eKBCTBs04O9DijHXbKHWA==
-X-Received: by 2002:a05:600c:1e0d:b0:434:f2af:6e74 with SMTP id
- 5b1f17b1804b1-438b886097emr157572725e9.15.1737986714802; 
- Mon, 27 Jan 2025 06:05:14 -0800 (PST)
-Received: from [10.33.192.228] (nat-pool-str-t.redhat.com. [149.14.88.106])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd4856d8sm133442165e9.11.2025.01.27.06.05.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 Jan 2025 06:05:14 -0800 (PST)
-Message-ID: <c9ec5db0-3cc7-4513-ad31-69c92bfd4304@redhat.com>
-Date: Mon, 27 Jan 2025 15:05:13 +0100
+ bh=0f/+bc0kd6n9shuuZMp6H7ri9BWeXQE2RqF5LIcHtr0=;
+ b=CCdYfZdIlZwI74cnpVG6PvFb3ZkWMBKERh09FvzYNLkV6/m1IuQwB65ujx4CCLiDgo
+ 86pPvNVdlvu1RGXl5jK2QX/dktDycRfbdw9WbIETPlH35D2/MbljoGpGMXa+2AsqOrF8
+ L/2/LdV4WSgs2fJXwj/QiaKK9T8kznDF1sLVsbdkVbqJzVaLUGEcBlsE0CsE96lxEGrR
+ Rx8wGHl/rsrqFDFHYWTfYQUpXgGGaZaE4F3K2um+SvnNI1LvR1qJEmYYEBcl83bGXxHd
+ VnIlI1hlpVn+nT7R1Z7MzX+iDJAW/QN4hUirWSgQpLCJ6vjsSshZXspFhj2egDnl81rW
+ cRxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737986728; x=1738591528;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0f/+bc0kd6n9shuuZMp6H7ri9BWeXQE2RqF5LIcHtr0=;
+ b=Fa0UfLAHIAk/dYhRZu+NDJV/ZU9CnG9jtQZbeWL1brHavfK/stZiub7z5N4uSULH6f
+ /7zcCGyi8sW5YQvrJ36bm27nYJh6yaPII4qqY9KYnVlVGX17o7fE1/bKxM1KUoEHzrcn
+ Hf79JU6gmXzYt7EKXFulgRc36zL+p1uL6PpZ1bDjCt+dwRDO4qG11dgZ+OaYG91qtN2K
+ NGKOqaVa7prk+FxFUGlR3tuvlUy8ej6pk7Lan0dntX6qWnRS6on+SCLjSAw5ciozk5FP
+ p7dnO5CiKcAfXuJL3VR6vQVe7aYpgp3I7ahBpJ53HgeZtF16Oi+OP8D348WGKyON1zWp
+ f1qA==
+X-Gm-Message-State: AOJu0YyLeNdIc0vHpRooYvmLXccVh3EKr9KmIp+p5dWFDIbP3qgGvJOy
+ ftfKpQLJmsB2LdXjfKtWCn+kaPIOWIpIuPV1cd44ljxhlChYPFSWt9zLgV/iADg9gnOv29Al8lW
+ BaFTevY0eKYyMHNAS7k+AtnQw0YwDIlFs9ehqrg==
+X-Gm-Gg: ASbGncuG5t/S0NiUfvlUTbIJYmmRGtR0l+CkoLHrEf50H2PNEj3dbV422b9MDpoejuR
+ rQNvvT1P8OOhiF8j8LCYRu3NAA7fHhR+z8mFvoM/tN05rIeR2fTHSruqxQ0SPOd4=
+X-Google-Smtp-Source: AGHT+IGIgQBJPIIW7DZ3QNrLxEHMFwGrTzK3TEE4sVx+xxZPcVrcPETCaw0E0pMW5s844bbH5wOpbEaFSrChAbHg6yA=
+X-Received: by 2002:a05:6902:2e01:b0:e58:141d:b6d3 with SMTP id
+ 3f1490d57ef6-e58141db753mr15722459276.16.1737986728483; Mon, 27 Jan 2025
+ 06:05:28 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/10] target/sh4: Set disassemble_info::endian value in
- disas_set_info()
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-riscv@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org
-References: <20250127115426.51355-1-philmd@linaro.org>
- <20250127115426.51355-9-philmd@linaro.org>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250127115426.51355-9-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20250110160204.74997-1-philmd@linaro.org>
+ <20250110160204.74997-7-philmd@linaro.org>
+In-Reply-To: <20250110160204.74997-7-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 27 Jan 2025 14:05:17 +0000
+X-Gm-Features: AWEUYZlLgtIT2NpJoGkfIArakE_T3vp17KcCkow5g2Jv9sBxZMDSq4BZh342iUo
+Message-ID: <CAFEAcA_u17=F2bE42bAfHkpq_ffLPaeEZ+0i6QitX=huMVB_pA@mail.gmail.com>
+Subject: Re: [PATCH 6/9] hw/arm/stellaris: Map both I2C controllers
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b31;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb31.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -157,32 +91,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/01/2025 12.54, Philippe Mathieu-Daudé wrote:
-> Have the CPUClass::disas_set_info() callback set the
-> disassemble_info::endian field.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On Fri, 10 Jan 2025 at 16:02, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> There are 2 I2C controllers, map them both, removing
+> the unimplemented one. Keep the OLED controller on the
+> first I2C bus.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->   target/sh4/cpu.c | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
-> index e3c2aea1a64..9d3e6cb2fd7 100644
-> --- a/target/sh4/cpu.c
-> +++ b/target/sh4/cpu.c
-> @@ -134,6 +134,11 @@ static void superh_cpu_reset_hold(Object *obj, ResetType type)
->   
->   static void superh_cpu_disas_set_info(CPUState *cpu, disassemble_info *info)
->   {
-> +#if TARGET_BIG_ENDIAN
-> +    info->endian = BFD_ENDIAN_BIG;
-> +#else
-> +    info->endian = BFD_ENDIAN_LITTLE;
-> +#endif
->       info->mach = bfd_mach_sh4;
->       info->print_insn = print_insn_sh;
->   }
+>  hw/arm/stellaris.c | 21 +++++++++++++--------
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
+thanks
+-- PMM
 
