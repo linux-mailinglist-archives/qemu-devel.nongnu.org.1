@@ -2,37 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B00A20543
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 08:54:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B741A20563
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 08:59:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgPh-0000xj-IQ; Tue, 28 Jan 2025 02:53:37 -0500
+	id 1tcgPi-0000y1-4G; Tue, 28 Jan 2025 02:53:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgPf-0000x4-4c; Tue, 28 Jan 2025 02:53:35 -0500
+ id 1tcgPf-0000xY-Ov; Tue, 28 Jan 2025 02:53:35 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgPd-0007np-Cw; Tue, 28 Jan 2025 02:53:34 -0500
+ id 1tcgPd-0007o5-Va; Tue, 28 Jan 2025 02:53:35 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AE979E1ABF;
+ by isrv.corpit.ru (Postfix) with ESMTP id B265CE1AC0;
  Tue, 28 Jan 2025 10:52:59 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 295C01A62AE;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 2D39E1A62AF;
  Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 178D651FF3; Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
+ id 192BF51FF5; Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+Cc: qemu-stable@nongnu.org, Jakub Jelen <jjelen@redhat.com>,
+ "Richard W . M . Jones" <rjones@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.16 06/31] qdev: Fix set_pci_devfn() to visit option only
- once
-Date: Tue, 28 Jan 2025 00:40:58 +0300
-Message-Id: <20250127214124.3730126-6-mjt@tls.msk.ru>
+Subject: [Stable-7.2.16 07/31] ssh: Do not switch session to non-blocking mode
+Date: Tue, 28 Jan 2025 00:40:59 +0300
+Message-Id: <20250127214124.3730126-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.16-20250128004119@cover.tls.msk.ru>
 References: <qemu-stable-7.2.16-20250128004119@cover.tls.msk.ru>
@@ -63,116 +61,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pci_devfn properties accept either a string or an integer as input. To
-implement this, set_pci_devfn() first tries to visit the option as a
-string, and if that fails, it visits it as an integer instead. While the
-QemuOpts visitor happens to accept this, it is invalid according to the
-visitor interface. QObject input visitors run into an assertion failure
-when this is done.
+The libssh does not handle non-blocking mode in SFTP correctly. The
+driver code already changes the mode to blocking for the SFTP
+initialization, but for some reason changes to non-blocking mode.
+This used to work accidentally until libssh in 0.11 branch merged
+the patch to avoid infinite looping in case of network errors:
 
-QObject input visitors are used with the JSON syntax version of -device
-on the command line:
+https://gitlab.com/libssh/libssh-mirror/-/merge_requests/498
 
-$ ./qemu-system-x86_64 -enable-kvm -M q35 -device pcie-pci-bridge,id=pci.1,bus=pcie.0 -blockdev null-co,node-name=disk -device '{ "driver": "virtio-blk-pci", "drive": "disk", "id": "virtio-disk0", "bus": "pci.1", "addr": 1 }'
-qemu-system-x86_64: ../qapi/qobject-input-visitor.c:143: QObject *qobject_input_try_get_object(QObjectInputVisitor *, const char *, _Bool): Assertion `removed' failed.
+Since then, the ssh driver in qemu fails to read files over SFTP
+as the first SFTP messages exchanged after switching the session
+to non-blocking mode return SSH_AGAIN, but that message is lost
+int the SFTP internals and interpretted as SSH_ERROR, which is
+returned to the caller:
 
-The proper way to accept both strings and integers is using the
-alternate mechanism, which tells us the type of the input before it's
-visited. With this information, we can directly visit it as the right
-type.
+https://gitlab.com/libssh/libssh-mirror/-/issues/280
 
-This fixes set_pci_devfn() by using the alternate mechanism.
+This is indeed an issue in libssh that we should address in the
+long term, but it will require more work on the internals. For
+now, the SFTP is not supported in non-blocking mode.
 
-Cc: qemu-stable@nongnu.org
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: https://gitlab.com/libssh/libssh-mirror/-/issues/280
+Signed-off-by: Jakub Jelen <jjelen@redhat.com>
+Signed-off-by: Richard W.M. Jones <rjones@redhat.com>
+Message-ID: <20241113125526.2495731-1-rjones@redhat.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20241119120353.57812-1-kwolf@redhat.com>
-Acked-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit 5102f9df4a9a7adfbd902f9515c3f8f53dba288e)
+(cherry picked from commit fbdea3d6c13d5a75895c287a004c6f1a6bf6c164)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-index a91f60567a..d350789e76 100644
---- a/hw/core/qdev-properties-system.c
-+++ b/hw/core/qdev-properties-system.c
-@@ -740,39 +740,57 @@ static void set_pci_devfn(Object *obj, Visitor *v, const char *name,
-                           void *opaque, Error **errp)
- {
-     Property *prop = opaque;
-+    g_autofree GenericAlternate *alt;
-     int32_t value, *ptr = object_field_prop_ptr(obj, prop);
-     unsigned int slot, fn, n;
--    char *str;
-+    g_autofree char *str = NULL;
-+
-+    if (!visit_start_alternate(v, name, &alt, sizeof(*alt), errp)) {
-+        return;
-+    }
-+
-+    switch (alt->type) {
-+    case QTYPE_QSTRING:
-+        if (!visit_type_str(v, name, &str, errp)) {
-+            goto out;
-+        }
-+
-+        if (sscanf(str, "%x.%x%n", &slot, &fn, &n) != 2) {
-+            fn = 0;
-+            if (sscanf(str, "%x%n", &slot, &n) != 1) {
-+                goto invalid;
-+            }
-+        }
-+        if (str[n] != '\0' || fn > 7 || slot > 31) {
-+            goto invalid;
-+        }
-+        *ptr = slot << 3 | fn;
-+        break;
- 
--    if (!visit_type_str(v, name, &str, NULL)) {
-+    case QTYPE_QNUM:
-         if (!visit_type_int32(v, name, &value, errp)) {
--            return;
-+            goto out;
-         }
-         if (value < -1 || value > 255) {
-             error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
-                        name ? name : "null", "a value between -1 and 255");
--            return;
-+            goto out;
-         }
-         *ptr = value;
--        return;
--    }
-+        break;
- 
--    if (sscanf(str, "%x.%x%n", &slot, &fn, &n) != 2) {
--        fn = 0;
--        if (sscanf(str, "%x%n", &slot, &n) != 1) {
--            goto invalid;
--        }
--    }
--    if (str[n] != '\0' || fn > 7 || slot > 31) {
--        goto invalid;
-+    default:
-+        error_setg(errp, "Invalid parameter type for '%s', expected int or str",
-+                   name ? name : "null");
-+        goto out;
+diff --git a/block/ssh.c b/block/ssh.c
+index 04726d4ecb..c90d705453 100644
+--- a/block/ssh.c
++++ b/block/ssh.c
+@@ -859,9 +859,6 @@ static int ssh_file_open(BlockDriverState *bs, QDict *options, int bdrv_flags,
+         goto err;
      }
--    *ptr = slot << 3 | fn;
--    g_free(str);
--    return;
-+
-+    goto out;
  
- invalid:
-     error_set_from_qdev_prop_error(errp, EINVAL, obj, name, str);
--    g_free(str);
-+out:
-+    visit_end_alternate(v, (void **) &alt);
- }
- 
- static int print_pci_devfn(Object *obj, Property *prop, char *dest,
+-    /* Go non-blocking. */
+-    ssh_set_blocking(s->session, 0);
+-
+     if (s->attrs->type == SSH_FILEXFER_TYPE_REGULAR) {
+         bs->supported_truncate_flags = BDRV_REQ_ZERO_WRITE;
+     }
 -- 
 2.39.5
 
