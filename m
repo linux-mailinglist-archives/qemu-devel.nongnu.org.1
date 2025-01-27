@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7A42A1D854
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:28:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3E8AA1D826
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:23:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcQ1K-0007tB-Vz; Mon, 27 Jan 2025 09:23:23 -0500
+	id 1tcQ0d-0004TL-K2; Mon, 27 Jan 2025 09:22:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ1D-0007Le-Rr; Mon, 27 Jan 2025 09:23:16 -0500
+ id 1tcQ02-0003kI-1x; Mon, 27 Jan 2025 09:22:02 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ1B-0002uM-Ou; Mon, 27 Jan 2025 09:23:15 -0500
+ id 1tcPzz-0002rD-Tx; Mon, 27 Jan 2025 09:22:01 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id E16AEE0F52;
- Mon, 27 Jan 2025 17:22:47 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 5047EE0F4C;
+ Mon, 27 Jan 2025 17:21:25 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 76D3A51D7A; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
+ id 7936E51D7C; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Bibo Mao <maobibo@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.1 12/41] target/loongarch: Use actual operand size with
- vbsrl check
-Date: Mon, 27 Jan 2025 17:17:26 +0300
-Message-Id: <20250127141803.3514882-12-mjt@tls.msk.ru>
+Subject: [Stable-9.2.1 13/41] docs: Correct '-runas' and '-fsdev/-virtfs
+ proxy' indentation
+Date: Mon, 27 Jan 2025 17:17:27 +0300
+Message-Id: <20250127141803.3514882-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
 References: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
@@ -61,35 +61,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Hardcoded 32 bytes is used for vbsrl emulation check, there is
-problem when options lsx=on,lasx=off is used for vbsrl.v instruction
-in TCG mode. It injects LASX exception rather LSX exception.
+Use the same style for deprecated / removed commands.
 
-Here actual operand size is used.
-
-Cc: qemu-stable@nongnu.org
-Fixes: df97f338076 ("target/loongarch: Implement xvreplve xvinsve0 xvpickve")
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit d41989e7548397b469ec9c7be4cee699321a317e)
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(cherry picked from commit 916f50172baa91ddf0e669a9d6d2747055c0e610)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/loongarch/tcg/insn_trans/trans_vec.c.inc b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-index 92b1d22e28..ba5ca98a33 100644
---- a/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-+++ b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-@@ -5126,7 +5126,7 @@ static bool do_vbsrl_v(DisasContext *ctx, arg_vv_i *a, uint32_t oprsz)
- {
-     int i, ofs;
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index d8dc29d0a4..b1f4a51325 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -75,7 +75,7 @@ marked deprecated since 9.0, users have to ensure that all the topology members
+ described with -smp are supported by the target machine.
  
--    if (!check_vec(ctx, 32)) {
-+    if (!check_vec(ctx, oprsz)) {
-         return true;
-     }
+ ``-runas`` (since 9.1)
+-----------------------
++''''''''''''''''''''''
  
+ Use ``-run-with user=..`` instead.
+ 
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index ee6455aeee..563a614738 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -518,7 +518,7 @@ and later do not support it because the virtio-scsi device was introduced for
+ full SCSI support.  Use virtio-scsi instead when SCSI passthrough is required.
+ 
+ ``-fsdev proxy`` and ``-virtfs proxy`` (since 9.2)
+-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+ The 9p ``proxy`` filesystem backend driver was originally developed to
+ enhance security by dispatching low level filesystem operations from 9p
 -- 
 2.39.5
 
