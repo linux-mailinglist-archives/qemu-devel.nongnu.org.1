@@ -2,42 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31BBBA20547
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 08:55:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70754A20546
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 08:55:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgPf-0000vu-OS; Tue, 28 Jan 2025 02:53:35 -0500
+	id 1tcgPh-0000xg-H4; Tue, 28 Jan 2025 02:53:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgPc-0000v9-44; Tue, 28 Jan 2025 02:53:32 -0500
+ id 1tcgPc-0000vJ-K2; Tue, 28 Jan 2025 02:53:32 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgPZ-0007ms-WE; Tue, 28 Jan 2025 02:53:31 -0500
+ id 1tcgPb-0007nM-1U; Tue, 28 Jan 2025 02:53:32 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A712CE1ABD;
+ by isrv.corpit.ru (Postfix) with ESMTP id AAD42E1ABE;
  Tue, 28 Jan 2025 10:52:59 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 21C321A62AC;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 259E81A62AD;
  Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 1439E51FEF; Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
+ id 15E1D51FF1; Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.16 04/31] cirrus-ci: Remove MSYS2 jobs duplicated with
- gitlab-ci
-Date: Tue, 28 Jan 2025 00:40:56 +0300
-Message-Id: <20250127214124.3730126-4-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.16 05/31] virtio-net: Fix size check in dhclient
+ workaround
+Date: Tue, 28 Jan 2025 00:40:57 +0300
+Message-Id: <20250127214124.3730126-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.16-20250128004119@cover.tls.msk.ru>
 References: <qemu-stable-7.2.16-20250128004119@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 From: Michael Tokarev <mjt@tls.msk.ru>
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -64,162 +61,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- Various developers are reluctant to git Cirrus-CI the permissions
-  requested to access their GitHub account.
+work_around_broken_dhclient() accesses IP and UDP headers to detect
+relevant packets and to calculate checksums, but it didn't check if
+the packet has size sufficient to accommodate them, causing out-of-bound
+access hazards. Fix this by correcting the size requirement.
 
-- When we use the cirrus-run script to trigger Cirrus-CI job from
-  GitLab-CI, the GitLab-CI job is restricted to a 1h timeout
-  (often not enough).
-
-- Although Cirrus-CI VMs are more powerful than GitLab-CI ones,
-  its free plan is limited in 2 concurrent jobs.
-
-- The GitLab-CI MSYS2 jobs are a 1:1 mapping with the Cirrus-CI ones
-  (modulo the environment caching).
-
-Reduce the maintenance burden by removing the Cirrus-CI config file,
-keeping the GitLab-CI jobs.
-
-Update Yonggang Luo's maintenance file list to the new file, which
-use the same environment shell.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230322135721.61138-3-philmd@linaro.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit da80f11efeea451eaa00e347f722d867ed9ac5be)
+Fixes: 1d41b0c1ec66 ("Work around dhclient brokenness")
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+(cherry picked from commit a8575f7fb2f213e6690b23160b04271d47fdfaa8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: ignore previous changes in .cirrus.yml since it is being removed anyway)
 
-diff --git a/.cirrus.yml b/.cirrus.yml
-deleted file mode 100644
-index 4895987da4..0000000000
---- a/.cirrus.yml
-+++ /dev/null
-@@ -1,109 +0,0 @@
--env:
--  CIRRUS_CLONE_DEPTH: 1
--
--windows_msys2_task:
--  timeout_in: 90m
--  windows_container:
--    image: cirrusci/windowsservercore:2019
--    os_version: 2019
--    cpu: 8
--    memory: 8G
--  env:
--    CIRRUS_SHELL: powershell
--    MSYS: winsymlinks:native
--    MSYSTEM: MINGW64
--    MSYS2_URL: https://github.com/msys2/msys2-installer/releases/download/2022-06-03/msys2-base-x86_64-20220603.sfx.exe
--    MSYS2_FINGERPRINT: 0
--    MSYS2_PACKAGES: "
--      diffutils git grep make pkg-config sed
--      mingw-w64-x86_64-python
--      mingw-w64-x86_64-python-sphinx
--      mingw-w64-x86_64-toolchain
--      mingw-w64-x86_64-SDL2
--      mingw-w64-x86_64-SDL2_image
--      mingw-w64-x86_64-gtk3
--      mingw-w64-x86_64-glib2
--      mingw-w64-x86_64-ninja
--      mingw-w64-x86_64-jemalloc
--      mingw-w64-x86_64-lzo2
--      mingw-w64-x86_64-zstd
--      mingw-w64-x86_64-libjpeg-turbo
--      mingw-w64-x86_64-pixman
--      mingw-w64-x86_64-libgcrypt
--      mingw-w64-x86_64-libpng
--      mingw-w64-x86_64-libssh
--      mingw-w64-x86_64-snappy
--      mingw-w64-x86_64-libusb
--      mingw-w64-x86_64-usbredir
--      mingw-w64-x86_64-libtasn1
--      mingw-w64-x86_64-nettle
--      mingw-w64-x86_64-cyrus-sasl
--      mingw-w64-x86_64-curl
--      mingw-w64-x86_64-gnutls
--      mingw-w64-x86_64-libnfs
--    "
--    CHERE_INVOKING: 1
--  msys2_cache:
--    folder: C:\tools\archive
--    reupload_on_changes: false
--    # These env variables are used to generate fingerprint to trigger the cache procedure
--    # If wanna to force re-populate msys2, increase MSYS2_FINGERPRINT
--    fingerprint_script:
--      - |
--        echo $env:CIRRUS_TASK_NAME
--        echo $env:MSYS2_URL
--        echo $env:MSYS2_FINGERPRINT
--        echo $env:MSYS2_PACKAGES
--    populate_script:
--      - |
--        md -Force C:\tools\archive\pkg
--        $start_time = Get-Date
--        bitsadmin /transfer msys_download /dynamic /download /priority FOREGROUND $env:MSYS2_URL C:\tools\archive\base.exe
--        Write-Output "Download time taken: $((Get-Date).Subtract($start_time))"
--        cd C:\tools
--        C:\tools\archive\base.exe -y
--        del -Force C:\tools\archive\base.exe
--        Write-Output "Base install time taken: $((Get-Date).Subtract($start_time))"
--        $start_time = Get-Date
--
--        ((Get-Content -path C:\tools\msys64\etc\\post-install\\07-pacman-key.post -Raw) -replace '--refresh-keys', '--version') | Set-Content -Path C:\tools\msys64\etc\\post-install\\07-pacman-key.post
--        C:\tools\msys64\usr\bin\bash.exe -lc "sed -i 's/^CheckSpace/#CheckSpace/g' /etc/pacman.conf"
--        C:\tools\msys64\usr\bin\bash.exe -lc "export"
--        C:\tools\msys64\usr\bin\pacman.exe --noconfirm -Sy
--        echo Y | C:\tools\msys64\usr\bin\pacman.exe --noconfirm -Suu --overwrite=*
--        taskkill /F /FI "MODULES eq msys-2.0.dll"
--        tasklist
--        C:\tools\msys64\usr\bin\bash.exe -lc "mv -f /etc/pacman.conf.pacnew /etc/pacman.conf || true"
--        C:\tools\msys64\usr\bin\bash.exe -lc "pacman --noconfirm -Syuu --overwrite=*"
--        Write-Output "Core install time taken: $((Get-Date).Subtract($start_time))"
--        $start_time = Get-Date
--
--        C:\tools\msys64\usr\bin\bash.exe -lc "pacman --noconfirm -S --needed $env:MSYS2_PACKAGES"
--        Write-Output "Package install time taken: $((Get-Date).Subtract($start_time))"
--        $start_time = Get-Date
--
--        del -Force -ErrorAction SilentlyContinue C:\tools\msys64\etc\mtab
--        del -Force -ErrorAction SilentlyContinue C:\tools\msys64\dev\fd
--        del -Force -ErrorAction SilentlyContinue C:\tools\msys64\dev\stderr
--        del -Force -ErrorAction SilentlyContinue C:\tools\msys64\dev\stdin
--        del -Force -ErrorAction SilentlyContinue C:\tools\msys64\dev\stdout
--        del -Force -Recurse -ErrorAction SilentlyContinue C:\tools\msys64\var\cache\pacman\pkg
--        tar cf C:\tools\archive\msys64.tar -C C:\tools\ msys64
--
--        Write-Output "Package archive time taken: $((Get-Date).Subtract($start_time))"
--        del -Force -Recurse -ErrorAction SilentlyContinue c:\tools\msys64 
--  install_script:
--    - |
--      $start_time = Get-Date
--      cd C:\tools
--      ls C:\tools\archive\msys64.tar
--      tar xf C:\tools\archive\msys64.tar
--      Write-Output "Extract msys2 time taken: $((Get-Date).Subtract($start_time))"
--  script:
--    - C:\tools\msys64\usr\bin\bash.exe -lc "mkdir build"
--    - C:\tools\msys64\usr\bin\bash.exe -lc "cd build && ../configure --python=python3"
--    - C:\tools\msys64\usr\bin\bash.exe -lc "cd build && make -j8"
--    - exit $LastExitCode
--  test_script:
--    - C:\tools\msys64\usr\bin\bash.exe -lc "cd build && make V=1 check"
--    - exit $LastExitCode
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e688db1f55..83c4eacc66 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3731,8 +3731,7 @@ W: https://cirrus-ci.com/github/qemu/qemu
- Windows Hosted Continuous Integration
- M: Yonggang Luo <luoyonggang@gmail.com>
- S: Maintained
--F: .cirrus.yml
--W: https://cirrus-ci.com/github/qemu/qemu
-+F: .gitlab-ci.d/windows.yml
- 
- Guest Test Compilation Support
- M: Alex Bennée <alex.bennee@linaro.org>
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 925a5c319e..204a80ec71 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -1647,8 +1647,11 @@ static void virtio_net_hdr_swap(VirtIODevice *vdev, struct virtio_net_hdr *hdr)
+ static void work_around_broken_dhclient(struct virtio_net_hdr *hdr,
+                                         uint8_t *buf, size_t size)
+ {
++    size_t csum_size = ETH_HLEN + sizeof(struct ip_header) +
++                       sizeof(struct udp_header);
++
+     if ((hdr->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM) && /* missing csum */
+-        (size > 27 && size < 1500) && /* normal sized MTU */
++        (size >= csum_size && size < 1500) && /* normal sized MTU */
+         (buf[12] == 0x08 && buf[13] == 0x00) && /* ethertype == IPv4 */
+         (buf[23] == 17) && /* ip.protocol == UDP */
+         (buf[34] == 0 && buf[35] == 67)) { /* udp.srcport == bootps */
 -- 
 2.39.5
 
