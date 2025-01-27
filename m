@@ -2,144 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7352A1D7E5
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:15:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B2D3A1D85B
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:28:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcPsT-0007IG-IT; Mon, 27 Jan 2025 09:14:14 -0500
+	id 1tcPxA-0008QF-5T; Mon, 27 Jan 2025 09:19:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tcPsB-0007Fc-VJ
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 09:13:58 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tcPwN-0008KU-8n; Mon, 27 Jan 2025 09:18:17 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tcPs9-0001dO-1x
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 09:13:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737987231;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=KUo9JUYZWDWybvRBzs3FvJpvv1MHztGo1UsEJXYcnmI=;
- b=DIx/d0foU7wenD8p++CfrHyNUgmiA8zYYrQ619Mxtsy6YhhMrSZnJDhDdIt2DF/AK1H4vV
- aHS61eDB+HvS4qs5zFKJ+YYAKYWwWQiJAphelm5afYpZ9vxH8f9xZTRULmlH6lwKpZX7Sk
- G/L7y3LjW43Vu382hPlLKlYRVpdM/bY=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-231-AmWH5dlnOTeg4CsAG6jxPA-1; Mon, 27 Jan 2025 09:13:48 -0500
-X-MC-Unique: AmWH5dlnOTeg4CsAG6jxPA-1
-X-Mimecast-MFC-AGG-ID: AmWH5dlnOTeg4CsAG6jxPA
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4361f371908so30673305e9.0
- for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 06:13:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737987227; x=1738592027;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KUo9JUYZWDWybvRBzs3FvJpvv1MHztGo1UsEJXYcnmI=;
- b=HnlDK47VhhHbIWEOdgUGyJZRe2fGQo+iMFb/XuActALbrQB6qpyTzOd+Xf8coEzaRw
- P1MI0/Rup86POn8dM9/PeryrDwCZYOQI7gSI8KMRUkJUACAFyEZqRWvdvBjMiRftj7o/
- Iv6KToqOu9SlhRBn5GPS7aNjExOV4Rkk8t5sVtCSOCr6OEVNHW5BmMPeTJqkxDYM4Och
- tFPI8x1GuLTG3ISaX5iKUlODFvq3kxzKDChH/xtgnjr1R5l5XTiN0aQPuNcyvBqQE3LB
- qBpzE9PMzOJLovpDaAxJ5jJc59PVsjNZUqU7rRgzgRu50L0awB4e3kt6qud0/Lwoizqg
- rXKA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUrHeKQXhAsLgcSqxGrKVQZWVdATiNysnphJw/UmBBMIiUpU1vKQxZWllhX6OVHb9pmvNTh3/JaMtX1@nongnu.org
-X-Gm-Message-State: AOJu0Yyw+V6ptwuccfCS2Lzbq3KBBsM9vFFzOjpTC8fRsyOwUiLcub7l
- lE14MWwtjaM7WLFJgNBPqwWjTvNvPfmCVN1UMwRxGhg1UGHVvrVC1R4h8wo/WUpgEGpOHk7XfKg
- jt1UpsvPj+hNHdGQbQBuFMG3q+jIDt2Q0OsqhcL5+YIZrSsWQ8MWf
-X-Gm-Gg: ASbGncsdFGlAHiAf62LU/GZPouqNsVCtPDcscrrC9dEd52gY/LrOTcnit/bMEcB2pip
- t4bhuuYm7ouz83tvnqRt+0YEm74TsaG/0HowCyeWKEKi+jSSRTLyJC0LAJNQO0EN5dnStWLbVDy
- LZ/40s5Kx1BEuXiYQDdf1HzUlir0IKyz1CXGn/3jVjmvLKfggtCFoi2UtPnFlr56qRyXNzwml1c
- a6ubgVp1W6FgBdgaoM7kjYTFbM+oh6VJPZquHJuEvijneLejbICSdacfaLw/54EjzR/PcbvRtWN
- F3J/B/KOHlZ3KDuO4GBHaMdRQVbgQA==
-X-Received: by 2002:a05:600c:a07:b0:434:f9c4:a850 with SMTP id
- 5b1f17b1804b1-438913cb16emr400114455e9.10.1737987226821; 
- Mon, 27 Jan 2025 06:13:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEsXP482El/+CbTo1QizpX/xu08jsppn7qJEvnEWlSu1OsbYArdqC9svNNl8cwMZ2JM+GMwvA==
-X-Received: by 2002:a05:600c:a07:b0:434:f9c4:a850 with SMTP id
- 5b1f17b1804b1-438913cb16emr400114195e9.10.1737987226468; 
- Mon, 27 Jan 2025 06:13:46 -0800 (PST)
-Received: from [10.33.192.228] (nat-pool-str-t.redhat.com. [149.14.88.106])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd43cdbbsm133229055e9.0.2025.01.27.06.13.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 Jan 2025 06:13:46 -0800 (PST)
-Message-ID: <209cba11-2fb3-404f-bbe4-e02b8e2595dd@redhat.com>
-Date: Mon, 27 Jan 2025 15:13:45 +0100
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tcPwL-0002J5-64; Mon, 27 Jan 2025 09:18:15 -0500
+Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by isrv.corpit.ru (Postfix) with ESMTP id 273A7E0E28;
+ Mon, 27 Jan 2025 17:17:39 +0300 (MSK)
+Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
+ id 59AC551D5D; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.1 00/41] Patch Round-up for stable 9.2.1,
+ freeze on 2025-02-06
+Date: Mon, 27 Jan 2025 17:17:14 +0300
+Message-Id: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] s390x/pci: add support for guests that request
- direct mapping
-To: Matthew Rosato <mjrosato@linux.ibm.com>, qemu-s390x@nongnu.org
-Cc: farman@linux.ibm.com, schnelle@linux.ibm.com, pasic@linux.ibm.com,
- borntraeger@linux.ibm.com, richard.henderson@linaro.org, david@redhat.com,
- iii@linux.ibm.com, clegoate@redhat.com, qemu-devel@nongnu.org
-References: <20250124202115.349386-1-mjrosato@linux.ibm.com>
- <20250124202115.349386-2-mjrosato@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250124202115.349386-2-mjrosato@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -155,58 +57,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/01/2025 21.21, Matthew Rosato wrote:
-> When receiving a guest mpcifc(4) or mpcifc(6) instruction without the T
-> bit set, treat this as a request to perform direct mapping instead of
-> address translation.  In order to facilitate this, pin the entirety of
-> guest memory into the host iommu.
-> 
-> Pinning for the direct mapping case is handled via vfio and its memory
-> listener.  Additionally, ram discard settings are inherited from vfio:
-> coordinated discards (e.g. virtio-mem) are allowed while uncoordinated
-> discards (e.g. virtio-balloon) are disabled.
-> 
-> Subsequent guest DMA operations are all expected to be of the format
-> guest_phys+sdma, allowing them to be used as lookup into the host
-> iommu table.
-> 
-> Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
-> ---
-...
-> diff --git a/hw/s390x/s390-pci-inst.c b/hw/s390x/s390-pci-inst.c
-> index e386d75d58..4c108fa8c4 100644
-> --- a/hw/s390x/s390-pci-inst.c
-> +++ b/hw/s390x/s390-pci-inst.c
-> @@ -16,6 +16,7 @@
->   #include "exec/memory.h"
->   #include "qemu/error-report.h"
->   #include "system/hw_accel.h"
-> +#include "hw/boards.h"
->   #include "hw/pci/pci_device.h"
->   #include "hw/s390x/s390-pci-inst.h"
->   #include "hw/s390x/s390-pci-bus.h"
-> @@ -1008,17 +1009,25 @@ static int reg_ioat(CPUS390XState *env, S390PCIBusDevice *pbdev, ZpciFib fib,
->       }
->   
->       /* currently we only support designation type 1 with translation */
-> -    if (!(dt == ZPCI_IOTA_RTTO && t)) {
-> +    if (t && !(dt == ZPCI_IOTA_RTTO)) {
+The following patches are queued for QEMU stable v9.2.1:
 
-While you're at it, you could change that "!(dt == ZPCI_IOTA_RTTO)" into
-"dt != ZPCI_IOTA_RTTO".
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-9.2
 
->           error_report("unsupported ioat dt %d t %d", dt, t);
->           s390_program_interrupt(env, PGM_OPERAND, ra);
->           return -EINVAL;
-> +    } else if (!t && !pbdev->rtr_allowed) {
-> +        error_report("relaxed translation not allowed");
+Patch freeze is 2025-02-06, and the release is planned for 2025-02-08:
 
-Not sure, but maybe better use qemu_log_mask(LOG_GUEST_ERROR, ...) instead?
+  https://wiki.qemu.org/Planning/9.2
 
-> +        s390_program_interrupt(env, PGM_OPERAND, ra);
-> +        return -EINVAL;
->       }
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
-  Thomas
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
 
+Thanks!
+
+/mjt
+
+--------------------------------------
+01 d06a9d843fb6 Christian Schoenebeck:
+   9pfs: fix regression regarding CVE-2023-2861
+02 04e006ab36a8 Richard Henderson:
+   tcg: Reset free_temps before tcg_optimize
+03 b438362a1425 Roman Artemev:
+   tcg/riscv: Fix StoreStore barrier generation
+04 57e2cc9abf5d Gerd Hoffmann:
+   x86/loader: only patch linux kernels
+05 0f5715e4b570 Gerd Hoffmann:
+   roms: re-add edk2-basetools target
+06 74dc38d0c6c1 Heinrich Schuchardt:
+   pc-bios: add missing riscv64 descriptor
+07 9678b9c50572 Peter Maydell:
+   hw/intc/arm_gicv3_its: Zero initialize local DTEntry etc structs
+08 e2d98f257138 Thomas Huth:
+   meson.build: Disallow libnfs v6 to fix the broken macOS build
+09 3f2a05b31ee9 Maciej S. Szmigiero:
+   target/i386: Reset TSCs of parked vCPUs too on VM reset
+10 0d0141fadc90 Yong-Xuan Wang:
+   hw/intc/riscv_aplic: Fix APLIC in_clrip and clripnum write emulation
+11 14e568ab4836 David Hildenbrand:
+   s390x/s390-virtio-ccw: don't crash on weird RAM sizes
+12 d41989e75483 Bibo Mao:
+   target/loongarch: Use actual operand size with vbsrl check
+13 916f50172baa Philippe Mathieu-Daudé:
+   docs: Correct '-runas' and '-fsdev/-virtfs proxy' indentation
+14 b4859e8f33a7 Philippe Mathieu-Daudé:
+   docs: Correct release of TCG trace-events removal
+15 93dcc9390e5a Han Han:
+   target/i386/cpu: Fix notes for CPU models
+16 d127294f265e Shameer Kolothum:
+   migration/multifd: Fix compile error caused by page_size usage
+17 b93d897ea2f0 Fabiano Rosas:
+   migration/multifd: Fix compat with QEMU < 9.0
+18 86bee9e0c761 Fabiano Rosas:
+   migration: Add more error handling to analyze-migration.py
+19 2aead53d39b8 Fabiano Rosas:
+   migration: Remove unused argument in vmsd_desc_field_end
+20 69d1f784569f Fabiano Rosas:
+   migration: Fix parsing of s390 stream
+21 c76ee1f6255c Fabiano Rosas:
+   s390x: Fix CSS migration
+22 f52965bf0eee Fabiano Rosas:
+   migration: Rename vmstate_info_nullptr
+23 9867c3a7ced1 Peter Xu:
+   migration: Dump correct JSON format for nullptr replacement
+24 35049eb0d2fc Fabiano Rosas:
+   migration: Fix arrays of pointers in JSON writer
+25 cdc3970f8597 Yuan Liu:
+   multifd: bugfix for migration using compression methods
+26 2588a5f99b0c Yuan Liu:
+   multifd: bugfix for incorrect migration data with QPL compression
+27 a523bc52166c Yuan Liu:
+   multifd: bugfix for incorrect migration data with qatzip compression
+28 ec2dfb7c389b Philippe Mathieu-Daudé:
+   tests/functional/test_rx_gdbsim: Use stable URL for test_linux_sash
+29 4572dacc33e2 Keoseong Park:
+   hw/ufs: Adjust value to match CPU's endian format
+30 a87077316ed2 Philippe Mathieu-Daudé:
+   tests/qtest/boot-serial-test: Correct HPPA machine name
+31 78b0c15a563a Gabriel Barrantes:
+   backends/cryptodev-vhost-user: Fix local_error leaks
+32 bb5b7fced6b5 Phil Dennis-Jordan:
+   hw/usb/hcd-xhci-pci: Use modulo to select MSI vector as per spec
+33 694632fd4498 Sebastian Ott:
+   pci: ensure valid link status bits for downstream ports
+34 42e2a7a0ab23 Nicholas Piggin:
+   pci/msix: Fix msix pba read vector poll end calculation
+35 1ad32644fe4c Igor Mammedov:
+   tests: acpi: whitelist expected blobs
+36 0b053391985a Igor Mammedov:
+   pci: acpi: Windows 'PCI Label Id' bug workaround
+37 9fb1c9a1bb26 Igor Mammedov:
+   tests: acpi: update expected blobs
+38 1ce979e7269a Li Zhijian:
+   hw/cxl: Fix msix_notify: Assertion `vector < dev->msix_entries_nr`
+39 be27b5149c86 Paolo Bonzini:
+   make-release: only leave tarball of wrap-file subprojects
+40 cf4c26355188 Zhao Liu:
+   i386/cpu: Mark avx10_version filtered when prefix is NULL
+41 145f12ea885c Daniel P. Berrangé:
+   crypto: fix bogus error benchmarking pbkdf on fast machines
 
