@@ -2,33 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99EA4A1D86B
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:31:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD09A1D86C
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:31:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcQ4I-0005vF-Vi; Mon, 27 Jan 2025 09:26:27 -0500
+	id 1tcQ5G-000166-PO; Mon, 27 Jan 2025 09:27:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ49-0005qZ-SN; Mon, 27 Jan 2025 09:26:20 -0500
+ id 1tcQ57-0000nv-Gj; Mon, 27 Jan 2025 09:27:18 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ48-0003KJ-6d; Mon, 27 Jan 2025 09:26:17 -0500
+ id 1tcQ55-0003Pi-S1; Mon, 27 Jan 2025 09:27:17 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id AC3B6E0F85;
- Mon, 27 Jan 2025 17:25:41 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id EBCF0E0F97;
+ Mon, 27 Jan 2025 17:26:46 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id B96A151DB3; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
+ id BBF0F51DB5; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+Cc: qemu-stable@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
+ Tao Su <tao1.su@linux.intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.1 39/41] make-release: only leave tarball of wrap-file
- subprojects
-Date: Mon, 27 Jan 2025 17:17:53 +0300
-Message-Id: <20250127141803.3514882-39-mjt@tls.msk.ru>
+Subject: [Stable-9.2.1 40/41] i386/cpu: Mark avx10_version filtered when
+ prefix is NULL
+Date: Mon, 27 Jan 2025 17:17:54 +0300
+Message-Id: <20250127141803.3514882-40-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
 References: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
@@ -58,74 +59,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-The QEMU source archive is including the sources downloaded from crates.io
-in both tarball form (in subprojects/packagecache) and expanded/patched
-form (in the subprojects directory).  The former is the more authoritative
-form, as it has a hash that can be verified in the wrap file and checked
-against the download URL, so keep that one only.  This works also with
---disable-download; when building QEMU for the first time from the
-tarball, Meson will print something like
+In x86_cpu_filter_features(), if host doesn't support AVX10, the
+configured avx10_version should be marked as filtered regardless of
+whether prefix is NULL or not.
 
-    Using proc-macro2-1-rs source from cache.
+Check prefix before warn_report() instead of checking for
+have_filtered_features.
 
-for each subproject, and then go on to extract the tarball and apply the
-overlay or the patches in subprojects/packagefiles.
-
-Reported-by: Michael Tokarev <mjt@tls.msk.ru>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2719
+Cc: qemu-stable@nongnu.org
+Fixes: commit bccfb846fd52 ("target/i386: add AVX10 feature and AVX10 version property")
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Tao Su <tao1.su@linux.intel.com>
+Link: https://lore.kernel.org/r/20241106030728.553238-2-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit be27b5149c86f81531f8fc609baf3480fc4d9ca0)
+(cherry picked from commit cf4c263551886964c5d58bd7b675b13fd497b402)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/scripts/make-release b/scripts/make-release
-index 8dc939124c..2885e87210 100755
---- a/scripts/make-release
-+++ b/scripts/make-release
-@@ -10,6 +10,27 @@
- # This work is licensed under the terms of the GNU GPLv2 or later.
- # See the COPYING file in the top-level directory.
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index aff5e917db..348771bd74 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7719,8 +7719,10 @@ static bool x86_cpu_filter_features(X86CPU *cpu, bool verbose)
+             env->avx10_version = version;
+             have_filtered_features = true;
+         }
+-    } else if (env->avx10_version && prefix) {
+-        warn_report("%s: avx10.%d.", prefix, env->avx10_version);
++    } else if (env->avx10_version) {
++        if (prefix) {
++            warn_report("%s: avx10.%d.", prefix, env->avx10_version);
++        }
+         have_filtered_features = true;
+     }
  
-+function subproject_dir() {
-+    if test ! -f "subprojects/$1.wrap"; then
-+      error "scripts/archive-source.sh should only process wrap subprojects"
-+    fi
-+
-+    # Print the directory key of the wrap file, defaulting to the
-+    # subproject name.  The wrap file is in ini format and should
-+    # have a single section only.  There should be only one section
-+    # named "[wrap-*]", which helps keeping the script simple.
-+    local dir
-+    dir=$(sed -n \
-+      -e '/^\[wrap-[a-z][a-z]*\]$/,/^\[/{' \
-+      -e    '/^directory *= */!b' \
-+      -e    's///p' \
-+      -e    'q' \
-+      -e '}' \
-+      "subprojects/$1.wrap")
-+
-+    echo "${dir:-$1}"
-+}
-+
- if [ $# -ne 2 ]; then
-     echo "Usage:"
-     echo " $0 gitrepo version"
-@@ -51,5 +72,13 @@ meson subprojects download $SUBPROJECTS
-         CryptoPkg/Library/OpensslLib/openssl \
-         MdeModulePkg/Library/BrotliCustomDecompressLib/brotli)
- popd
--tar --exclude=.git -cJf ${destination}.tar.xz ${destination}
-+
-+exclude=(--exclude=.git)
-+# include the tarballs in subprojects/packagecache but not their expansion
-+for sp in $SUBPROJECTS; do
-+    if grep -xqF "[wrap-file]" subprojects/$sp.wrap; then
-+      exclude+=(--exclude=subprojects/"$(subproject_dir $sp)")
-+    fi
-+done
-+tar "${exclude[@]}" -cJf ${destination}.tar.xz ${destination}
- rm -rf ${destination}
 -- 
 2.39.5
 
