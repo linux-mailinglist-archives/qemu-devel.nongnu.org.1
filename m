@@ -2,51 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F1BA1D863
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:29:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DBB5A1D81A
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:23:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcQ5y-0001Sc-UO; Mon, 27 Jan 2025 09:28:18 -0500
+	id 1tcPxF-00004w-3G; Mon, 27 Jan 2025 09:19:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ58-0000o3-1t; Mon, 27 Jan 2025 09:27:18 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ56-0003Pq-Ao; Mon, 27 Jan 2025 09:27:17 -0500
-Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id F1AF4E0F98;
- Mon, 27 Jan 2025 17:26:46 +0300 (MSK)
-Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id BE6A851DB7; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- "Richard W . M . Jones" <rjones@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.1 41/41] crypto: fix bogus error benchmarking pbkdf on
- fast machines
-Date: Mon, 27 Jan 2025 17:17:55 +0300
-Message-Id: <20250127141803.3514882-41-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
-References: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tcPxC-0008VX-AN
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 09:19:06 -0500
+Received: from mail-yb1-xb2a.google.com ([2607:f8b0:4864:20::b2a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tcPxA-0002OO-ML
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 09:19:06 -0500
+Received: by mail-yb1-xb2a.google.com with SMTP id
+ 3f1490d57ef6-e549be93d5eso7790840276.1
+ for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 06:19:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1737987543; x=1738592343; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=6CLGgHNii1ozqng84Wbew/T8Evy/NM7+mE0AjRrB5xk=;
+ b=dTzYlYtBI1UTXNWYKWrucqEccAMkcenEmJLBhE6M004sEfGCGgt0ENhVcbDs7KR4Rh
+ R1k0/hJ0Q755g79qXXdASfiNA2Dukq053mgfW8BkEdtJP1TwTbJbMv++Vv/rTai6jEE8
+ gQAJNGD2wercOu396hpOF3FF3KwodDvQReB7e19W87ON2XlC28hTPM+QreUYUadfOgxv
+ o9Fp/CF7Lv8cZa7TXq+D0FeXOnBRJ6oQR2NIYwZ9/yB3/I7QzuGi8l3bECW926JQwxGv
+ BeH1uj8dV7brn2DXr6umMYcAzhhamfSRnsRr1pbb240cCHAu2eVFYTn3vvWbivmccoiF
+ +WMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737987543; x=1738592343;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=6CLGgHNii1ozqng84Wbew/T8Evy/NM7+mE0AjRrB5xk=;
+ b=A9/789bClttVSF0IzAdaIysPR4rNkAr8ONEfNIBi9vUPTuVdHujq1Aq++Xb01vFDVz
+ SZPv3DPRMxaEDPe3kylQ8EbY6awrldnOT2khtbEYMbpBcnqcc/pmzH8Sial7WOnJy9VN
+ G3YIs7mMF8c24woBxahXmqhVRyBZvsO8WW9jIfPF/AJpJld4js9dCTiKjWrmjwW+YD/W
+ LCdcxnUBQuVivgUPIG/unwszQc0rr3AJVPUfZkqBcdlfYE4kT+xPz+OHLWKPwfmWEM9u
+ K+iY698tJjqn+/wHdJw7+SKqAUbB/c1RWcj8Z3W2huXaZCGCGIhbUY3xJACYrhNgaXY1
+ fWWA==
+X-Gm-Message-State: AOJu0YwR8tHw98bBOlv9kh4ju3WgS/jY/iQdqcMFJnfAtV7MYuficHFm
+ Yep3ykrmk3wBEGbXxCKL/HFfuut9OWCul5Lj/ANz0IzWOquTsReDA9ma9XaVkRrV0DKHHSPZnp0
+ 2oGKHEMVfMtHniMRKKJlkL1uddPEgXB5GM4qCFPih+FXT7cUz
+X-Gm-Gg: ASbGncvgmz8OAEMAT1S1eRjoLUCmyKLCEszay536+OZKE1+XLLX0Ki2PoaJcd/bkF3j
+ +Im6McZYlFKLRMoobwmrCxP1BoK3tlx4ZiyT2+B8GFY4+rh8tjbwf97EeOW83pjk=
+X-Google-Smtp-Source: AGHT+IEX3fbZ/1IfJS3x/pKCagJIwM4egehJcygLcrfMUNk/YjJW/3Eq1LT+D9dHQNNbUEu0zBT0uajbxmLEDE6fap4=
+X-Received: by 2002:a05:6902:270a:b0:e4e:4337:68e9 with SMTP id
+ 3f1490d57ef6-e57b1046ba1mr31958039276.4.1737987543380; Mon, 27 Jan 2025
+ 06:19:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20250110160204.74997-1-philmd@linaro.org>
+ <20250110160204.74997-9-philmd@linaro.org>
+In-Reply-To: <20250110160204.74997-9-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 27 Jan 2025 14:18:51 +0000
+X-Gm-Features: AWEUYZn9cgaSR3nCalrAJsa4i3UcG8jczD7kL__v5XWI9iHKvDIgRkisZhzWcg8
+Message-ID: <CAFEAcA-+fCQOAqxLxP=G+G15dhoNo4hyd7wbJf57dYpZ8iQhew@mail.gmail.com>
+Subject: Re: [PATCH 8/9] hw/arm/stellaris: Only map existing devices as
+ unimplemented
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,102 +92,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+On Fri, 10 Jan 2025 at 16:02, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  hw/arm/stellaris.c | 20 +++++++++++++++-----
+>  1 file changed, 15 insertions(+), 5 deletions(-)
+>
+> diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
+> index d87587225c2..c89522332e2 100644
+> --- a/hw/arm/stellaris.c
+> +++ b/hw/arm/stellaris.c
+> @@ -1390,11 +1390,21 @@ static void stellaris_init(MachineState *ms, stel=
+laris_board_info *board)
+>      /* Add dummy regions for the devices we don't implement yet,
+>       * so guest accesses don't cause unlogged crashes.
+>       */
+> -    create_unimplemented_device("PWM", 0x40028000, 0x1000);
+> -    create_unimplemented_device("QEI-0", 0x4002c000, 0x1000);
+> -    create_unimplemented_device("QEI-1", 0x4002d000, 0x1000);
+> -    create_unimplemented_device("analogue-comparator", 0x4003c000, 0x100=
+0);
+> -    create_unimplemented_device("hibernation", 0x400fc000, 0x1000);
+> +    if (DEV_CAP(1, PWM)) {
+> +        create_unimplemented_device("PWM", 0x40028000, 0x1000);
+> +    }
+> +    if (DEV_CAP(2, QEI(0))) {
+> +        create_unimplemented_device("QEI-0", 0x4002c000, 0x1000);
+> +    }
+> +    if (DEV_CAP(2, QEI(0))) {
 
-We're seeing periodic reports of errors like:
+Should be QEI(1), I guess.
 
-$ qemu-img create -f luks --object secret,data=123456,id=sec0 \
-                  -o key-secret=sec0 luks-info.img 1M
-  Formatting 'luks-info.img', fmt=luks size=1048576 key-secret=sec0
-  qemu-img: luks-info.img: Unable to get accurate CPU usage
+> +        create_unimplemented_device("QEI-1", 0x4002d000, 0x1000);
+> +    }
+> +    if (DEV_CAP(2, COMP(0))) {
+> +        create_unimplemented_device("analogue-comparator", 0x4003c000, 0=
+x1000);
+> +    }
+> +    if (DEV_CAP(1, HIB)) {
+> +        create_unimplemented_device("hibernation", 0x400fc000, 0x1000);
+> +    }
 
-This error message comes from a recent attempt to workaround a
-kernel bug with measuring rusage in long running processes:
+Again, it would be helpful to flag up the behaviour changes here.
+I think:
 
-  commit c72cab5ad9f849bbcfcf4be7952b8b8946cc626e
-  Author: Tiago Pasqualini <tiago.pasqualini@canonical.com>
-  Date:   Wed Sep 4 20:52:30 2024 -0300
+ * both boards have the PWM bit set : no change
+ * both boards have COMP(0) set : no change
+ * both boards have HIB set : no change
+ * LM3S6965EVB sets QEI(0) and QEI(1), but LM3S811EVB does not:
+   so we are (correctly) removing the unimplemented-device regions
+   on that board type.
 
-    crypto: run qcrypto_pbkdf2_count_iters in a new thread
-
-Unfortunately this has a subtle bug on machines which are very fast.
-
-On the first time around the loop, the 'iterations' value is quite
-small (1 << 15), and so will run quite fast. Testing has shown that
-some machines can complete this benchmarking task in as little as
-7 milliseconds.
-
-Unfortunately the 'getrusage' data is not updated at the time of
-the 'getrusage' call, it is done asynchronously by the scheduler.
-The 7 millisecond completion time for the benchmark is short
-enough that 'getrusage' sometimes reports 0 accumulated execution
-time.
-
-As a result the 'delay_ms == 0' sanity check in the above commit
-is triggering non-deterministically on such machines.
-
-The benchmarking loop intended to run multiple times, increasing
-the 'iterations' value until the benchmark ran for > 500 ms, but
-the sanity check doesn't allow this to happen.
-
-To fix it, we keep a loop counter and only run the sanity check
-after we've been around the loop more than 5 times. At that point
-the 'iterations' value is high enough that even with infrequent
-updates of 'getrusage' accounting data on fast machines, we should
-see a non-zero value.
-
-Fixes: https://lore.kernel.org/qemu-devel/ffe542bb-310c-4616-b0ca-13182f849fd1@redhat.com/
-Fixes: https://bugzilla.redhat.com/show_bug.cgi?id=2336437
-Reported-by: Thomas Huth <thuth@redhat.com>
-Reported-by: Richard W.M. Jones <rjones@redhat.com>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20250109093746.1216300-1-berrange@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 145f12ea885c8fcfbe2d0ac5230630f071b5a9fb)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-
-diff --git a/crypto/pbkdf.c b/crypto/pbkdf.c
-index 0dd7c3aeaa..2989fc0a40 100644
---- a/crypto/pbkdf.c
-+++ b/crypto/pbkdf.c
-@@ -107,7 +107,7 @@ static void *threaded_qcrypto_pbkdf2_count_iters(void *data)
-     size_t nsalt = iters_data->nsalt;
-     size_t nout = iters_data->nout;
-     Error **errp = iters_data->errp;
--
-+    size_t scaled = 0;
-     uint64_t ret = -1;
-     g_autofree uint8_t *out = g_new(uint8_t, nout);
-     uint64_t iterations = (1 << 15);
-@@ -131,7 +131,17 @@ static void *threaded_qcrypto_pbkdf2_count_iters(void *data)
- 
-         delta_ms = end_ms - start_ms;
- 
--        if (delta_ms == 0) { /* sanity check */
-+        /*
-+         * For very small 'iterations' values, CPU (or crypto
-+         * accelerator) might be fast enough that the scheduler
-+         * hasn't incremented getrusage() data, or incremented
-+         * it by a very small amount, resulting in delta_ms == 0.
-+         * Once we've scaled 'iterations' x10, 5 times, we really
-+         * should be seeing delta_ms != 0, so sanity check at
-+         * that point.
-+         */
-+        if (scaled > 5 &&
-+            delta_ms == 0) { /* sanity check */
-             error_setg(errp, "Unable to get accurate CPU usage");
-             goto cleanup;
-         } else if (delta_ms > 500) {
-@@ -141,6 +151,7 @@ static void *threaded_qcrypto_pbkdf2_count_iters(void *data)
-         } else {
-             iterations = (iterations * 1000 / delta_ms);
-         }
-+        scaled++;
-     }
- 
-     iterations = iterations * 1000 / delta_ms;
--- 
-2.39.5
-
+thanks
+-- PMM
 
