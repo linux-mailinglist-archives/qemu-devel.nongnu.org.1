@@ -2,49 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D27A20576
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:02:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCD9A2056C
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:01:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgVG-0003wB-Q8; Tue, 28 Jan 2025 02:59:23 -0500
+	id 1tcgVC-0003ge-OJ; Tue, 28 Jan 2025 02:59:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgV4-0003Pg-OH; Tue, 28 Jan 2025 02:59:12 -0500
+ id 1tcgV0-0003HG-SB; Tue, 28 Jan 2025 02:59:08 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgUw-00013T-05; Tue, 28 Jan 2025 02:59:10 -0500
+ id 1tcgUy-00014K-Bj; Tue, 28 Jan 2025 02:59:06 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CBF49E1AFE;
+ by isrv.corpit.ru (Postfix) with ESMTP id D00B9E1AFF;
  Tue, 28 Jan 2025 10:54:25 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4704B1A62E5;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4AF2B1A62E6;
  Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id F317E52061; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
+ id 00B3F52063; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
- Liu Jaloo <liu.jaloo@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.9 29/45] roms: re-add edk2-basetools target
-Date: Mon, 27 Jan 2025 23:26:10 +0300
-Message-Id: <20250127202630.3724367-29-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.9 30/45] hw/intc/arm_gicv3_its: Zero initialize local
+ DTEntry etc structs
+Date: Mon, 27 Jan 2025 23:26:11 +0300
+Message-Id: <20250127202630.3724367-30-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 References: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 From: Michael Tokarev <mjt@tls.msk.ru>
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
-X-Spam_score_int: -3
-X-Spam_score: -0.4
-X-Spam_bar: /
-X-Spam_report: (-0.4 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,31 +64,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Needed to build ipxe nic roms.
+In the GICv3 ITS model, we have a common coding pattern which has a
+local C struct like "DTEntry dte", which is a C representation of an
+in-guest-memory data structure, and we call a function such as
+get_dte() to read guest memory and fill in the C struct.  These
+functions to read in the struct sometimes have cases where they will
+leave early and not fill in the whole struct (for instance get_dte()
+will set "dte->valid = false" and nothing else for the case where it
+is passed an entry_addr implying that there is no L2 table entry for
+the DTE).  This then causes potential use of uninitialized memory
+later, for instance when we call a trace event which prints all the
+fields of the struct.  Sufficiently advanced compilers may produce
+-Wmaybe-uninitialized warnings about this, especially if LTO is
+enabled.
 
-Reported-by: Liu Jaloo <liu.jaloo@gmail.com>
-Fixes: 22e11539e167 ("edk2: replace build scripts")
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Message-ID: <20241212084408.1390728-1-kraxel@redhat.com>
-(cherry picked from commit 0f5715e4b5706b31b3550d8e6b88871e029c7823)
+Rather than trying to carefully separate out these trace events into
+"only the 'valid' field is initialized" and "all fields can be
+printed", zero-init all the structs when we define them. None of
+these structs are large (the biggest is 24 bytes) and having
+consistent behaviour is less likely to be buggy.
+
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2718
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20241213182337.3343068-1-peter.maydell@linaro.org
+(cherry picked from commit 9678b9c505725732353baefedb88b53c2eb8a184)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/roms/Makefile b/roms/Makefile
-index 3caae36bbb..cd454cd9a4 100644
---- a/roms/Makefile
-+++ b/roms/Makefile
-@@ -156,6 +156,11 @@ edk2-version: edk2
- 		touch $@; \
- 	fi
+diff --git a/hw/intc/arm_gicv3_its.c b/hw/intc/arm_gicv3_its.c
+index 52e9aca9c6..1c7d55e011 100644
+--- a/hw/intc/arm_gicv3_its.c
++++ b/hw/intc/arm_gicv3_its.c
+@@ -465,7 +465,7 @@ static ItsCmdResult lookup_vte(GICv3ITSState *s, const char *who,
+ static ItsCmdResult process_its_cmd_phys(GICv3ITSState *s, const ITEntry *ite,
+                                          int irqlevel)
+ {
+-    CTEntry cte;
++    CTEntry cte = {};
+     ItsCmdResult cmdres;
  
-+edk2-basetools: edk2-version
-+	$(PYTHON) edk2-build.py --config edk2-build.config \
-+		--silent --no-logs \
-+		--match none # build only basetools
-+
- efi: edk2-version
- 	$(PYTHON) edk2-build.py --config edk2-build.config \
- 		--version-override "$(EDK2_STABLE)-for-qemu" \
+     cmdres = lookup_cte(s, __func__, ite->icid, &cte);
+@@ -479,7 +479,7 @@ static ItsCmdResult process_its_cmd_phys(GICv3ITSState *s, const ITEntry *ite,
+ static ItsCmdResult process_its_cmd_virt(GICv3ITSState *s, const ITEntry *ite,
+                                          int irqlevel)
+ {
+-    VTEntry vte;
++    VTEntry vte = {};
+     ItsCmdResult cmdres;
+ 
+     cmdres = lookup_vte(s, __func__, ite->vpeid, &vte);
+@@ -514,8 +514,8 @@ static ItsCmdResult process_its_cmd_virt(GICv3ITSState *s, const ITEntry *ite,
+ static ItsCmdResult do_process_its_cmd(GICv3ITSState *s, uint32_t devid,
+                                        uint32_t eventid, ItsCmdType cmd)
+ {
+-    DTEntry dte;
+-    ITEntry ite;
++    DTEntry dte = {};
++    ITEntry ite = {};
+     ItsCmdResult cmdres;
+     int irqlevel;
+ 
+@@ -583,8 +583,8 @@ static ItsCmdResult process_mapti(GICv3ITSState *s, const uint64_t *cmdpkt,
+     uint32_t pIntid = 0;
+     uint64_t num_eventids;
+     uint16_t icid = 0;
+-    DTEntry dte;
+-    ITEntry ite;
++    DTEntry dte = {};
++    ITEntry ite = {};
+ 
+     devid = (cmdpkt[0] & DEVID_MASK) >> DEVID_SHIFT;
+     eventid = cmdpkt[1] & EVENTID_MASK;
+@@ -651,8 +651,8 @@ static ItsCmdResult process_vmapti(GICv3ITSState *s, const uint64_t *cmdpkt,
+ {
+     uint32_t devid, eventid, vintid, doorbell, vpeid;
+     uint32_t num_eventids;
+-    DTEntry dte;
+-    ITEntry ite;
++    DTEntry dte = {};
++    ITEntry ite = {};
+ 
+     if (!its_feature_virtual(s)) {
+         return CMD_CONTINUE;
+@@ -761,7 +761,7 @@ static bool update_cte(GICv3ITSState *s, uint16_t icid, const CTEntry *cte)
+ static ItsCmdResult process_mapc(GICv3ITSState *s, const uint64_t *cmdpkt)
+ {
+     uint16_t icid;
+-    CTEntry cte;
++    CTEntry cte = {};
+ 
+     icid = cmdpkt[2] & ICID_MASK;
+     cte.valid = cmdpkt[2] & CMD_FIELD_VALID_MASK;
+@@ -822,7 +822,7 @@ static bool update_dte(GICv3ITSState *s, uint32_t devid, const DTEntry *dte)
+ static ItsCmdResult process_mapd(GICv3ITSState *s, const uint64_t *cmdpkt)
+ {
+     uint32_t devid;
+-    DTEntry dte;
++    DTEntry dte = {};
+ 
+     devid = (cmdpkt[0] & DEVID_MASK) >> DEVID_SHIFT;
+     dte.size = cmdpkt[1] & SIZE_MASK;
+@@ -886,9 +886,9 @@ static ItsCmdResult process_movi(GICv3ITSState *s, const uint64_t *cmdpkt)
+ {
+     uint32_t devid, eventid;
+     uint16_t new_icid;
+-    DTEntry dte;
+-    CTEntry old_cte, new_cte;
+-    ITEntry old_ite;
++    DTEntry dte = {};
++    CTEntry old_cte = {}, new_cte = {};
++    ITEntry old_ite = {};
+     ItsCmdResult cmdres;
+ 
+     devid = FIELD_EX64(cmdpkt[0], MOVI_0, DEVICEID);
+@@ -965,7 +965,7 @@ static bool update_vte(GICv3ITSState *s, uint32_t vpeid, const VTEntry *vte)
+ 
+ static ItsCmdResult process_vmapp(GICv3ITSState *s, const uint64_t *cmdpkt)
+ {
+-    VTEntry vte;
++    VTEntry vte = {};
+     uint32_t vpeid;
+ 
+     if (!its_feature_virtual(s)) {
+@@ -1030,7 +1030,7 @@ static void vmovp_callback(gpointer data, gpointer opaque)
+      */
+     GICv3ITSState *s = data;
+     VmovpCallbackData *cbdata = opaque;
+-    VTEntry vte;
++    VTEntry vte = {};
+     ItsCmdResult cmdres;
+ 
+     cmdres = lookup_vte(s, __func__, cbdata->vpeid, &vte);
+@@ -1085,9 +1085,9 @@ static ItsCmdResult process_vmovi(GICv3ITSState *s, const uint64_t *cmdpkt)
+ {
+     uint32_t devid, eventid, vpeid, doorbell;
+     bool doorbell_valid;
+-    DTEntry dte;
+-    ITEntry ite;
+-    VTEntry old_vte, new_vte;
++    DTEntry dte = {};
++    ITEntry ite = {};
++    VTEntry old_vte = {}, new_vte = {};
+     ItsCmdResult cmdres;
+ 
+     if (!its_feature_virtual(s)) {
+@@ -1186,10 +1186,10 @@ static ItsCmdResult process_vinvall(GICv3ITSState *s, const uint64_t *cmdpkt)
+ static ItsCmdResult process_inv(GICv3ITSState *s, const uint64_t *cmdpkt)
+ {
+     uint32_t devid, eventid;
+-    ITEntry ite;
+-    DTEntry dte;
+-    CTEntry cte;
+-    VTEntry vte;
++    ITEntry ite = {};
++    DTEntry dte = {};
++    CTEntry cte = {};
++    VTEntry vte = {};
+     ItsCmdResult cmdres;
+ 
+     devid = FIELD_EX64(cmdpkt[0], INV_0, DEVICEID);
 -- 
 2.39.5
 
