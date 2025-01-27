@@ -2,39 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5663DA20591
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:06:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CECDA20535
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 08:52:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgXf-0002Q9-Ic; Tue, 28 Jan 2025 03:01:51 -0500
+	id 1tcgNm-0007yh-Sl; Tue, 28 Jan 2025 02:51:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgWa-0008OQ-So; Tue, 28 Jan 2025 03:00:52 -0500
+ id 1tcgNe-0007xX-G6; Tue, 28 Jan 2025 02:51:30 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgWZ-0001ew-Ds; Tue, 28 Jan 2025 03:00:44 -0500
+ id 1tcgNT-0007Ny-5O; Tue, 28 Jan 2025 02:51:21 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 174F9E1B0E;
- Tue, 28 Jan 2025 10:54:26 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 696A0E1AAD;
+ Tue, 28 Jan 2025 10:50:50 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 86AFD1A62F5;
- Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id D3F4A1A62A7;
+ Tue, 28 Jan 2025 10:51:15 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 1A0B652081; Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
+ id C65CB51FE5; Tue, 28 Jan 2025 10:51:15 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Li Zhijian <lizhijian@fujitsu.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.9 45/45] hw/cxl: Fix msix_notify: Assertion `vector <
- dev->msix_entries_nr`
-Date: Mon, 27 Jan 2025 23:26:26 +0300
-Message-Id: <20250127202630.3724367-45-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.16 00/31] Patch Round-up for stable 7.2.16,
+ freeze on 2025-02-06
+Date: Tue, 28 Jan 2025 00:40:52 +0300
+Message-Id: <qemu-stable-7.2.16-20250128004119@cover.tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
-References: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 From: Michael Tokarev <mjt@tls.msk.ru>
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -61,35 +60,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This assertion always happens when we sanitize the CXL memory device.
-$ echo 1 > /sys/bus/cxl/devices/mem0/security/sanitize
+The following patches are queued for QEMU stable v7.2.16:
 
-It is incorrect to register an MSIX number beyond the device's capability.
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
 
-Increase the device's MSIX number to cover the mailbox msix number(9).
+Patch freeze is 2025-02-06, and the release is planned for 2025-02-08:
 
-Fixes: 43efb0bfad2b ("hw/cxl/mbox: Wire up interrupts for background completion")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Message-Id: <20250115075834.167504-1-lizhijian@fujitsu.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 1ce979e7269a34d19ea1a65808df014d8b2acbf6)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+  https://wiki.qemu.org/Planning/7.2
 
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 52647b4ac7..72d9371347 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -685,7 +685,7 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
-     ComponentRegisters *regs = &cxl_cstate->crb;
-     MemoryRegion *mr = &regs->component_registers;
-     uint8_t *pci_conf = pci_dev->config;
--    unsigned short msix_num = 6;
-+    unsigned short msix_num = 10;
-     int i, rc;
- 
-     QTAILQ_INIT(&ct3d->error_list);
--- 
-2.39.5
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
+
+Thanks!
+
+/mjt
+
+--------------------------------------
+01 3bf7dcd47a3d Peter Maydell:
+   hw/intc/openpic: Avoid taking address of out-of-bounds array index
+02 3d7680fb18c7 Peter Maydell:
+   bitops.h: Define bit operations on 'uint32_t' arrays
+03 335be5bc44aa Peter Maydell:
+   hw/intc/loongarch_extioi: Use set_bit32() and clear_bit32() for s->isr
+04 da80f11efeea Philippe Mathieu-Daudé:
+   cirrus-ci: Remove MSYS2 jobs duplicated with gitlab-ci
+05 a8575f7fb2f2 Akihiko Odaki:
+   virtio-net: Fix size check in dhclient workaround
+06 5102f9df4a9a Kevin Wolf:
+   qdev: Fix set_pci_devfn() to visit option only once
+07 fbdea3d6c13d Jakub Jelen:
+   ssh: Do not switch session to non-blocking mode
+08 3abb67323aee Guenter Roeck:
+   scsi: megasas: Internal cdbs have 16-byte length
+09 abf0f092c1dd Christian Schoenebeck:
+   tests/9p: fix Rreaddir response name
+10 4ec984965079 Christian Schoenebeck:
+   tests/9p: add missing Rgetattr response name
+11 462db8fb1d40 Christian Schoenebeck:
+   tests/9p: add 'use-after-unlink' test
+12 3bc4db44430f Christian Schoenebeck:
+   9pfs: remove obsolete comment in v9fs_getattr()
+13 c81e7219e073 Christian Schoenebeck:
+   9pfs: fix 'Tgetattr' after unlink
+14 eaab44ccc59b Christian Schoenebeck:
+   tests/9p: also check 'Tgetattr' in 'use-after-unlink' test
+15 fa416ae6157a Nicholas Piggin:
+   target/ppc: Fix non-maskable interrupt while halted
+16 26dcf2be7e15 Ahmad Fatoum:
+   hw/openrisc/openrisc_sim: keep serial@90000000 as default
+17 b438362a1425 Roman Artemev:
+   tcg/riscv: Fix StoreStore barrier generation
+18 e7fca81e1705 Alexander Bulekov:
+   fuzz: specify audiodev for usb-audio
+19 57e2cc9abf5d Gerd Hoffmann:
+   x86/loader: only patch linux kernels
+20 9678b9c50572 Peter Maydell:
+   hw/intc/arm_gicv3_its: Zero initialize local DTEntry etc structs
+21 e2d98f257138 Thomas Huth:
+   meson.build: Disallow libnfs v6 to fix the broken macOS build
+22 14e568ab4836 David Hildenbrand:
+   s390x/s390-virtio-ccw: don't crash on weird RAM sizes
+23 b4859e8f33a7 Philippe Mathieu-Daudé:
+   docs: Correct release of TCG trace-events removal
+24 93dcc9390e5a Han Han:
+   target/i386/cpu: Fix notes for CPU models
+25 78b0c15a563a Gabriel Barrantes:
+   backends/cryptodev-vhost-user: Fix local_error leaks
+26 bb5b7fced6b5 Phil Dennis-Jordan:
+   hw/usb/hcd-xhci-pci: Use modulo to select MSI vector as per spec
+27 694632fd4498 Sebastian Ott:
+   pci: ensure valid link status bits for downstream ports
+28 42e2a7a0ab23 Nicholas Piggin:
+   pci/msix: Fix msix pba read vector poll end calculation
+29 1ad32644fe4c Igor Mammedov:
+   tests: acpi: whitelist expected blobs
+30 0b053391985a Igor Mammedov:
+   pci: acpi: Windows 'PCI Label Id' bug workaround
+31 9fb1c9a1bb26 Igor Mammedov:
+   tests: acpi: update expected blobs
 
