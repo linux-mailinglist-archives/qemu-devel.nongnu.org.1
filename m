@@ -2,36 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42EE5A1D86D
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:31:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C47B4A1D818
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:23:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcQ4P-0006iG-Jx; Mon, 27 Jan 2025 09:26:33 -0500
+	id 1tcPxG-00005q-RG; Mon, 27 Jan 2025 09:19:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ47-0005qH-4d; Mon, 27 Jan 2025 09:26:17 -0500
+ id 1tcPxD-0008Vs-KN; Mon, 27 Jan 2025 09:19:07 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcQ45-0003K0-BJ; Mon, 27 Jan 2025 09:26:14 -0500
+ id 1tcPxC-0002OX-3M; Mon, 27 Jan 2025 09:19:07 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id A698DE0F84;
- Mon, 27 Jan 2025 17:25:41 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 3BB40E0E31;
+ Mon, 27 Jan 2025 17:18:40 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 9DEB751D9D; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
+ id A0C3151D9F; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.1 28/41] tests/functional/test_rx_gdbsim: Use stable URL
- for test_linux_sash
-Date: Mon, 27 Jan 2025 17:17:42 +0300
-Message-Id: <20250127141803.3514882-28-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Keoseong Park <keosung.park@samsung.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jeuk Kim <jeuk20.kim@samsung.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.1 29/41] hw/ufs: Adjust value to match CPU's endian format
+Date: Mon, 27 Jan 2025 17:17:43 +0300
+Message-Id: <20250127141803.3514882-29-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
 References: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
@@ -62,61 +59,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <f4bug@amsat.org>
+From: Keoseong Park <keosung.park@samsung.com>
 
-Yoshinori said [*] URL references on OSDN were stable, but they
-appear not to be. Mirror the artifacts on GitHub to avoid failures
-while testing on CI.
+In ufs_write_attr_value(), the value parameter is handled in the CPU's
+endian format but provided in big-endian format by the caller. Thus, it
+is converted to the CPU's endian format. The related test code is also
+fixed to reflect this change.
 
-[*] https://www.mail-archive.com/qemu-devel@nongnu.org/msg686487.html
-
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Reported-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
-Message-ID: <20200630202631.7345-1-f4bug@amsat.org>
-[huth: Adapt the patch to the new version in the functional framework]
-Message-ID: <20241229083419.180423-1-huth@tuxfamily.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit ec2dfb7c389b94d71ee825caa20b709d5df6c166)
+Fixes: 7c85332a2b3e ("hw/ufs: minor bug fixes related to ufs-test")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Keoseong Park <keosung.park@samsung.com>
+Reviewed-by: Jeuk Kim <jeuk20.kim@samsung.com>
+Message-ID: <20250107084356epcms2p2af4d86432174d76ea57336933e46b4c3@epcms2p2>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit 4572dacc33e232a7c951ba7ba7a20887fad29e71)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: fixup for missing v9.2.0-421-g65d35a4e27a8 "tests/functional: convert tests to new uncompress helper")
 
-diff --git a/tests/functional/test_rx_gdbsim.py b/tests/functional/test_rx_gdbsim.py
-index 5687f756bb..7daf1571c4 100755
---- a/tests/functional/test_rx_gdbsim.py
-+++ b/tests/functional/test_rx_gdbsim.py
-@@ -25,13 +25,16 @@ class RxGdbSimMachine(QemuSystemTest):
-     KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
- 
-     ASSET_UBOOT = Asset(
--        'https://acc.dl.osdn.jp/users/23/23888/u-boot.bin.gz',
--        '7146567d669e91dbac166384b29aeba1715beb844c8551e904b86831bfd9d046')
-+        ('https://github.com/philmd/qemu-testing-blob/raw/rx-gdbsim/rx/gdbsim/'
-+         'u-boot.bin'),
-+        'dd7dd4220cccf7aeb32227b26233bf39600db05c3f8e26005bcc2bf6c927207d')
-     ASSET_DTB = Asset(
--        'https://acc.dl.osdn.jp/users/23/23887/rx-virt.dtb',
-+        ('https://github.com/philmd/qemu-testing-blob/raw/rx-gdbsim/rx/gdbsim/'
-+         'rx-gdbsim.dtb'),
-         'aa278d9c1907a4501741d7ee57e7f65c02dd1b3e0323b33c6d4247f1b32cf29a')
-     ASSET_KERNEL = Asset(
--        'http://acc.dl.osdn.jp/users/23/23845/zImage',
-+        ('https://github.com/philmd/qemu-testing-blob/raw/rx-gdbsim/rx/gdbsim/'
-+         'zImage'),
-         'baa43205e74a7220ed8482188c5e9ce497226712abb7f4e7e4f825ce19ff9656')
- 
-     def test_uboot(self):
-@@ -40,9 +43,7 @@ def test_uboot(self):
-         """
-         self.set_machine('gdbsim-r5f562n8')
- 
--        uboot_path_gz = self.ASSET_UBOOT.fetch()
--        uboot_path = os.path.join(self.workdir, 'u-boot.bin')
--        gzip_uncompress(uboot_path_gz, uboot_path)
-+        uboot_path = self.ASSET_UBOOT.fetch()
- 
-         self.vm.set_console()
-         self.vm.add_args('-bios', uboot_path,
+diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
+index 79f786ed4e..7862bba908 100644
+--- a/hw/ufs/ufs.c
++++ b/hw/ufs/ufs.c
+@@ -1164,7 +1164,7 @@ static QueryRespCode ufs_exec_query_attr(UfsRequest *req, int op)
+         value = ufs_read_attr_value(u, idn);
+         ret = UFS_QUERY_RESULT_SUCCESS;
+     } else {
+-        value = req->req_upiu.qr.value;
++        value = be32_to_cpu(req->req_upiu.qr.value);
+         ret = ufs_write_attr_value(u, idn, value);
+     }
+     req->rsp_upiu.qr.value = cpu_to_be32(value);
+diff --git a/tests/qtest/ufs-test.c b/tests/qtest/ufs-test.c
+index 60199abbee..1f860b41c0 100644
+--- a/tests/qtest/ufs-test.c
++++ b/tests/qtest/ufs-test.c
+@@ -145,7 +145,7 @@ static void ufs_send_query(QUfs *ufs, uint8_t slot, uint8_t query_function,
+     req_upiu.qr.idn = idn;
+     req_upiu.qr.index = index;
+     req_upiu.qr.selector = selector;
+-    req_upiu.qr.value = attr_value;
++    req_upiu.qr.value = cpu_to_be32(attr_value);
+     req_upiu.qr.length = UFS_QUERY_DESC_MAX_SIZE;
+     qtest_memwrite(ufs->dev.bus->qts, req_upiu_addr, &req_upiu,
+                    sizeof(req_upiu));
 -- 
 2.39.5
 
