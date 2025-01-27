@@ -2,39 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FBEDA2059E
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:07:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC12EA20560
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 08:58:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgSu-0002pr-JD; Tue, 28 Jan 2025 02:56:57 -0500
+	id 1tcgSs-0002g0-HX; Tue, 28 Jan 2025 02:56:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgSf-00021B-NU; Tue, 28 Jan 2025 02:56:43 -0500
+ id 1tcgSg-00023I-Mp; Tue, 28 Jan 2025 02:56:43 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgSb-0000Ob-Te; Tue, 28 Jan 2025 02:56:41 -0500
+ id 1tcgSf-0000Rw-1b; Tue, 28 Jan 2025 02:56:42 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 767CBE1AE8;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7A551E1AE9;
  Tue, 28 Jan 2025 10:54:25 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id E5B401A62CF;
+ by tsrv.corpit.ru (Postfix) with ESMTP id E97151A62D0;
  Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id CEA7C52035; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
+ id D052E52037; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jakub Jelen <jjelen@redhat.com>,
- "Richard W . M . Jones" <rjones@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+Cc: qemu-stable@nongnu.org, Guenter Roeck <linux@roeck-us.net>,
+ Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Fiona Ebner <f.ebner@proxmox.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.9 07/45] ssh: Do not switch session to non-blocking mode
-Date: Mon, 27 Jan 2025 23:25:48 +0300
-Message-Id: <20250127202630.3724367-7-mjt@tls.msk.ru>
+Subject: [Stable-8.2.9 08/45] scsi: megasas: Internal cdbs have 16-byte length
+Date: Mon, 27 Jan 2025 23:25:49 +0300
+Message-Id: <20250127202630.3724367-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 References: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 From: Michael Tokarev <mjt@tls.msk.ru>
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -61,49 +64,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The libssh does not handle non-blocking mode in SFTP correctly. The
-driver code already changes the mode to blocking for the SFTP
-initialization, but for some reason changes to non-blocking mode.
-This used to work accidentally until libssh in 0.11 branch merged
-the patch to avoid infinite looping in case of network errors:
+Host drivers do not necessarily set cdb_len in megasas io commands.
+With commits 6d1511cea0 ("scsi: Reject commands if the CDB length
+exceeds buf_len") and fe9d8927e2 ("scsi: Add buf_len parameter to
+scsi_req_new()"), this results in failures to boot Linux from affected
+SCSI drives because cdb_len is set to 0 by the host driver.
+Set the cdb length to its actual size to solve the problem.
 
-https://gitlab.com/libssh/libssh-mirror/-/merge_requests/498
-
-Since then, the ssh driver in qemu fails to read files over SFTP
-as the first SFTP messages exchanged after switching the session
-to non-blocking mode return SSH_AGAIN, but that message is lost
-int the SFTP internals and interpretted as SSH_ERROR, which is
-returned to the caller:
-
-https://gitlab.com/libssh/libssh-mirror/-/issues/280
-
-This is indeed an issue in libssh that we should address in the
-long term, but it will require more work on the internals. For
-now, the SFTP is not supported in non-blocking mode.
-
-Fixes: https://gitlab.com/libssh/libssh-mirror/-/issues/280
-Signed-off-by: Jakub Jelen <jjelen@redhat.com>
-Signed-off-by: Richard W.M. Jones <rjones@redhat.com>
-Message-ID: <20241113125526.2495731-1-rjones@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit fbdea3d6c13d5a75895c287a004c6f1a6bf6c164)
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Fiona Ebner <f.ebner@proxmox.com>
+Link: https://lore.kernel.org/r/20230228171129.4094709-1-linux@roeck-us.net
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 3abb67323aeecf06a27191076ab50424ec21f334)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/block/ssh.c b/block/ssh.c
-index 2748253d4a..b2da9bb4c8 100644
---- a/block/ssh.c
-+++ b/block/ssh.c
-@@ -860,9 +860,6 @@ static int ssh_file_open(BlockDriverState *bs, QDict *options, int bdrv_flags,
-         goto err;
+diff --git a/hw/scsi/megasas.c b/hw/scsi/megasas.c
+index 32c70c9e99..984b6a3145 100644
+--- a/hw/scsi/megasas.c
++++ b/hw/scsi/megasas.c
+@@ -1781,7 +1781,7 @@ static int megasas_handle_io(MegasasState *s, MegasasCmd *cmd, int frame_cmd)
+     uint8_t cdb[16];
+     int len;
+     struct SCSIDevice *sdev = NULL;
+-    int target_id, lun_id, cdb_len;
++    int target_id, lun_id;
+ 
+     lba_count = le32_to_cpu(cmd->frame->io.header.data_len);
+     lba_start_lo = le32_to_cpu(cmd->frame->io.lba_lo);
+@@ -1790,7 +1790,6 @@ static int megasas_handle_io(MegasasState *s, MegasasCmd *cmd, int frame_cmd)
+ 
+     target_id = cmd->frame->header.target_id;
+     lun_id = cmd->frame->header.lun_id;
+-    cdb_len = cmd->frame->header.cdb_len;
+ 
+     if (target_id < MFI_MAX_LD && lun_id == 0) {
+         sdev = scsi_device_find(&s->bus, 0, target_id, lun_id);
+@@ -1805,15 +1804,6 @@ static int megasas_handle_io(MegasasState *s, MegasasCmd *cmd, int frame_cmd)
+         return MFI_STAT_DEVICE_NOT_FOUND;
      }
  
--    /* Go non-blocking. */
--    ssh_set_blocking(s->session, 0);
+-    if (cdb_len > 16) {
+-        trace_megasas_scsi_invalid_cdb_len(
+-            mfi_frame_desc(frame_cmd), 1, target_id, lun_id, cdb_len);
+-        megasas_write_sense(cmd, SENSE_CODE(INVALID_OPCODE));
+-        cmd->frame->header.scsi_status = CHECK_CONDITION;
+-        s->event_count++;
+-        return MFI_STAT_SCSI_DONE_WITH_ERROR;
+-    }
 -
-     if (s->attrs->type == SSH_FILEXFER_TYPE_REGULAR) {
-         bs->supported_truncate_flags = BDRV_REQ_ZERO_WRITE;
-     }
+     cmd->iov_size = lba_count * sdev->blocksize;
+     if (megasas_map_sgl(s, cmd, &cmd->frame->io.sgl)) {
+         megasas_write_sense(cmd, SENSE_CODE(TARGET_FAILURE));
+@@ -1824,7 +1814,7 @@ static int megasas_handle_io(MegasasState *s, MegasasCmd *cmd, int frame_cmd)
+ 
+     megasas_encode_lba(cdb, lba_start, lba_count, is_write);
+     cmd->req = scsi_req_new(sdev, cmd->index,
+-                            lun_id, cdb, cdb_len, cmd);
++                            lun_id, cdb, sizeof(cdb), cmd);
+     if (!cmd->req) {
+         trace_megasas_scsi_req_alloc_failed(
+             mfi_frame_desc(frame_cmd), target_id, lun_id);
 -- 
 2.39.5
 
