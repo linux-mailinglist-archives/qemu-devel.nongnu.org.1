@@ -2,93 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5228BA1D141
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 08:14:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F213A1D199
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 08:40:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcJJ5-0001s5-3v; Mon, 27 Jan 2025 02:13:15 -0500
+	id 1tcJiN-0001Ci-Dr; Mon, 27 Jan 2025 02:39:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1tcJJ1-0001r6-Rh
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 02:13:12 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1tcJJ0-0004Sy-6N
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 02:13:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737961988;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=42qvlL78dnfS82bVP/f5tqzc+D9Sj9D/8AjVq5MHdww=;
- b=TtDXuVCtf2FgS/zbL8UXEIqYpbD67tOrVDFy/AMzSsNe1eanSgvYo6dtqZB7T7Why7qnqK
- 5nVFLga28vZYrXW90UeTycuqEPWhKba/Na5sSoHN+9S7jl8kVp1K5OCdCbjcPxudi6fdpj
- cc+q07lCXKGLZ61ezChL6xDnYjJk304=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-333-t5HdofidPmSgkpAUXYd15Q-1; Mon, 27 Jan 2025 02:13:04 -0500
-X-MC-Unique: t5HdofidPmSgkpAUXYd15Q-1
-X-Mimecast-MFC-AGG-ID: t5HdofidPmSgkpAUXYd15Q
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-ab6930f94b7so113114766b.1
- for <qemu-devel@nongnu.org>; Sun, 26 Jan 2025 23:13:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcJiH-0001C5-32
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 02:39:18 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcJiF-0000Cn-86
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 02:39:16 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-436a39e4891so26624465e9.1
+ for <qemu-devel@nongnu.org>; Sun, 26 Jan 2025 23:39:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1737963553; x=1738568353; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Gpv2l3R1VJBW+Ge2xKFxwGte3q9zy3oa3cWK5QGMrqg=;
+ b=JCapP66Y8kQAsaK+2URdA1sokJUXLcWZOONVDE6V7VkWk1hVHnub0sQCmHqpk+ZROY
+ k0UMhC9wjkfrLrTVgdVgZcFabzFnajzu0Iy+AvvRGGwJkQyuP6ZsqPawNH+KSin/BKXg
+ 1P3FIUTqo51/zfKB51Y3KVE/ZPyvGY3+bzVxNEZT6f3Rf/e9z7M8EgrcqnLGAZvFpkf8
+ W2q2/KH1PL9Cp9cxgeoWAIZcMlvOM3WnQPDWu8oIcAvK64GLth8Q8BB3N64B0uH7xD2M
+ i4RXQdldoedc1RGc3u3ZGmmmvkJ7SyQFjT/ylgebO+RgjtvLUCo7eZjIQKH6E5vhuw6q
+ LZ/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737961983; x=1738566783;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=42qvlL78dnfS82bVP/f5tqzc+D9Sj9D/8AjVq5MHdww=;
- b=GHMoA/L8TRhP3eH/aiJSWIpdpBIuhQHQFk88S0kvHSYt8ppguoZfpOklQLHA+Ffd7V
- FpNM+4t2emqFcOONQeeNxDsXBpEfVQOdzqCMjPCyV42GregybL+f+OrCjdP/G0W8Qe99
- UdhwwFxt0TAkScnqXrOQ4HsC4TAJ2E8vUjrFb4rmK3iqyDnKey11lt0r8xXmxafqT3tP
- pjJgRZ53sItesQDyAigc5IJ1CUqySSna+Bhi4WQ8R4OyEM/6sQLa4FDngJpS1tyPjyrf
- wxjJvIieIwdQRDHB7T1KkKqTRRKwxkU1O3L5+k74f3WXYXFMxSS2cl3Qk3dqdr+pRsW8
- Z0yQ==
-X-Gm-Message-State: AOJu0YzCffWVhop8ny7aRsw0HmzsH8pn+D6iM2edmTviVkBYefeUZlNs
- uoFNTTGh0MK6cHX0/Gbk9PKFEvPon5jE5ZMDESqvqEiNRaCuGKPCOwxs1OCg6f4EAETYE7Q4dcn
- j3r07Toyttchudy9G1sNDbug9J8VheRMghyc/VGfioDyIRF+NtPFb9BH7VClwGoJgizrU/iHomd
- UHMU4UK9h4jwj+LEftyJhLYQmadPg=
-X-Gm-Gg: ASbGncsyNKa3gNf111UuFMSfEDaaO/aoOs0xN4Zgnkcva2ptZ6CMIqrDxUheBiwiWSg
- fId/ATjbGg0FzrBqNKNfV3eEE6rXhU9xirZIvtPfTnCp1QdzYOvaKPIAcn6cYcUc2
-X-Received: by 2002:a17:907:2d8c:b0:ab6:53fb:a290 with SMTP id
- a640c23a62f3a-ab653fbaaa8mr2138483066b.27.1737961983162; 
- Sun, 26 Jan 2025 23:13:03 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE2RX8m4YbyLj83FrUXfVZO39ZVU6q95oZEsPdpAN13roSSf9lOOt3SgXU7k2iBJBjgWHVgNduow4afzzfhTgM=
-X-Received: by 2002:a17:907:2d8c:b0:ab6:53fb:a290 with SMTP id
- a640c23a62f3a-ab653fbaaa8mr2138481366b.27.1737961982741; Sun, 26 Jan 2025
- 23:13:02 -0800 (PST)
+ d=1e100.net; s=20230601; t=1737963553; x=1738568353;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Gpv2l3R1VJBW+Ge2xKFxwGte3q9zy3oa3cWK5QGMrqg=;
+ b=puQAFUBZCcEg3386+j/GAlVbwRN664nu2ynKR7em9agR1J6GddQyb792TE1GSKsx9V
+ q0Q8UyDRtXrEzocZhNsTJMe0hIGe3BqbNMQ1PRXwUhlgxc9NUy4TjGPXcwk1DPfPm5N7
+ oVLJKZn7kcsi6ZGOaKov26oZ6lx2zIr8VsO64FWbPuVtcF5W0fI1AARNJuuRDhdGZs+q
+ VNWCQk1g+ZX+HCTEGNRLDB6qhR7cijUiBaXweIxhK9iuuoSGv6qK7UylMeaVxLOZDqY5
+ 2D4ZwB0q1WJBaRPHxBXy8LZIw6kk7vWXlop8H5C/DU3HvdFJeACIatUbhhHaFsBy0EKu
+ HOow==
+X-Gm-Message-State: AOJu0YxerTtj9pK7HqV7dEs7uvOOLcpcMdZ+/R5pqKkUAUiSIOqYIPk9
+ ndSFWM4r84p2xbD3rKzd0vJmudgM0C7DqpPJHeXlzmuS+92pVbYdsxd+5cn8Toy0+tJPgNHbBkD
+ YDPM=
+X-Gm-Gg: ASbGnctmS/Qdxks8zKoXzIcqDrf5f0Oekw1V5bB4+pXh+ERS1YaiLZtJNVdxCRFebx4
+ L2af6rwU33bdWKAH/J2aTQqFG+Vu083EDRDgksKNl2Ho0X4yZ7lWrAwwYm1bq9lfaKp23eIvjKD
+ rnnfyXQqqHUDERlFkcbLS7wc8HKeTK8ghSkgXoHjQfpygT1sksAfCzqltwWCNbNo/d1XEx7c+RT
+ SgyV26DDSg+xC5+D9Tz7elariopFf9Ak982i0gCOwdLkMGtgez35ZwB+BmJP7LOZoAVcvwLGKJO
+ lF8wFkzv4TSWtagYRNuG163vWyXacuGuuebEGaUZHw52fwfy
+X-Google-Smtp-Source: AGHT+IGVNKOIDIrhyJe9b/wsftL9iaX14dDk27caZYFeYEToUKsT9tv+UPV7H9UnxMTeyeLnwa8JtA==
+X-Received: by 2002:a05:600c:1d14:b0:436:46f9:4fc6 with SMTP id
+ 5b1f17b1804b1-438913d63cfmr355823035e9.8.1737963552700; 
+ Sun, 26 Jan 2025 23:39:12 -0800 (PST)
+Received: from [192.168.69.181] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-438bd47eecasm120152875e9.6.2025.01.26.23.39.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 26 Jan 2025 23:39:12 -0800 (PST)
+Message-ID: <2eff4bdc-ac87-42ae-a896-38883c515de9@linaro.org>
+Date: Mon, 27 Jan 2025 08:39:11 +0100
 MIME-Version: 1.0
-References: <20250120043847.954881-1-anisinha@redhat.com>
- <20250120043847.954881-4-anisinha@redhat.com>
-In-Reply-To: <20250120043847.954881-4-anisinha@redhat.com>
-From: Ani Sinha <anisinha@redhat.com>
-Date: Mon, 27 Jan 2025 12:42:51 +0530
-X-Gm-Features: AWEUYZloLw7zZlKAmlzYhzBI7-15W7hhGQ5XdVKmdN3COQ74zp0CfRn3eqTGrk4
-Message-ID: <CAK3XEhOddr9qx+9kuMPn8nMftO8aAJLWiX51VH4UNvAx0LnJEQ@mail.gmail.com>
-Subject: Re: [PATCH v6 3/3] tests/qtest/vmcoreinfo: add a unit test to
- exercize basic vmcoreinfo function
-To: Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Ani Sinha <anisinha@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.299,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/15] target/ppc: Restrict ppc_tcg_hv_emu() to TCG
+To: qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>
+References: <20250123215609.30432-1-philmd@linaro.org>
+ <20250123215609.30432-11-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250123215609.30432-11-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,169 +101,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 20, 2025 at 10:09=E2=80=AFAM Ani Sinha <anisinha@redhat.com> wr=
-ote:
->
-> A new qtest is written that exercizes the fw-cfg DMA based read and write=
- ops
-> to write values into vmcoreinfo fw-cfg file and read them back and verify=
- that
-> they are the same.
->
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-
-Final ping on this patch.
-
+On 23/1/25 22:56, Philippe Mathieu-Daudé wrote:
+> Make is_prefix_insn_excp() prototype but have it guarded by
+> a tcg_enabled() check. Inline part of it in powerpc_excp_books().
+> 
+> Extract POWERPC_EXCP_HV_EMU handling code to ppc_tcg_hv_emu(),
+> also exposing its prototype in "internal.h".
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  MAINTAINERS                   |  2 +
->  tests/qtest/meson.build       |  1 +
->  tests/qtest/vmcoreinfo-test.c | 90 +++++++++++++++++++++++++++++++++++
->  3 files changed, 93 insertions(+)
->  create mode 100644 tests/qtest/vmcoreinfo-test.c
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 846b81e3ec..57167c3c73 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3016,6 +3016,7 @@ F: include/system/device_tree.h
->  Dump
->  S: Supported
->  M: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> +R: Ani Sinha <anisinha@redhat.com>
->  F: dump/
->  F: hw/misc/vmcoreinfo.c
->  F: include/hw/misc/vmcoreinfo.h
-> @@ -3026,6 +3027,7 @@ F: qapi/dump.json
->  F: scripts/dump-guest-memory.py
->  F: stubs/dump.c
->  F: docs/specs/vmcoreinfo.rst
-> +F: tests/qtest/vmcoreinfo-test.c
->
->  Error reporting
->  M: Markus Armbruster <armbru@redhat.com>
-> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-> index 94b28e5a53..fc669336a6 100644
-> --- a/tests/qtest/meson.build
-> +++ b/tests/qtest/meson.build
-> @@ -57,6 +57,7 @@ qtests_i386 =3D \
->    (config_all_devices.has_key('CONFIG_AHCI_ICH9') ? ['tco-test'] : []) +=
-                    \
->    (config_all_devices.has_key('CONFIG_FDC_ISA') ? ['fdc-test'] : []) +  =
-                    \
->    (config_all_devices.has_key('CONFIG_I440FX') ? ['fw_cfg-test'] : []) +=
-                    \
-> +  (config_all_devices.has_key('CONFIG_FW_CFG_DMA') ? ['vmcoreinfo-test']=
- : []) +            \
->    (config_all_devices.has_key('CONFIG_I440FX') ? ['i440fx-test'] : []) +=
-                    \
->    (config_all_devices.has_key('CONFIG_I440FX') ? ['ide-test'] : []) +   =
-                    \
->    (config_all_devices.has_key('CONFIG_I440FX') ? ['numa-test'] : []) +  =
-                    \
-> diff --git a/tests/qtest/vmcoreinfo-test.c b/tests/qtest/vmcoreinfo-test.=
-c
-> new file mode 100644
-> index 0000000000..dcf3b5ae05
-> --- /dev/null
-> +++ b/tests/qtest/vmcoreinfo-test.c
-> @@ -0,0 +1,90 @@
-> +/*
-> + * qtest vmcoreinfo test case
-> + *
-> + * Copyright Red Hat. 2025.
-> + *
-> + * Authors:
-> + *  Ani Sinha   <anisinha@redhat.com>
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or la=
-ter.
-> + * See the COPYING file in the top-level directory.
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qemu/units.h"
-> +#include "libqos/libqos-pc.h"
-> +#include "libqtest.h"
-> +#include "standard-headers/linux/qemu_fw_cfg.h"
-> +#include "libqos/fw_cfg.h"
-> +#include "qemu/bswap.h"
-> +#include "hw/misc/vmcoreinfo.h"
-> +
-> +static void test_vmcoreinfo_write_basic(void)
+>   target/ppc/internal.h        |   3 ++
+>   target/ppc/excp_helper.c     | 101 +++++------------------------------
+>   target/ppc/tcg-excp_helper.c |  71 ++++++++++++++++++++++++
+>   3 files changed, 86 insertions(+), 89 deletions(-)
+
+I missed this code is TARGET_PPC64 ...:
+
+>   static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+>   {
+>       CPUPPCState *env = &cpu->env;
+> @@ -1310,7 +1236,15 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+>       }
+>       vector |= env->excp_prefix;
+>   
+> -    if (is_prefix_insn_excp(cpu, excp)) {
+> +    if (env->insns_flags2 & PPC2_ISA310) {
+> +        /* nothing to do */
+> +    } else if (kvm_enabled()) {
+> +        /*
+> +         * This does not load instructions and set the prefix bit correctly
+> +         * for injected interrupts with KVM. That may have to be discovered
+> +         * and set by the KVM layer before injecting.
+> +         */
+> +    } else if (tcg_enabled() && is_prefix_insn_excp(env, excp)) {
+>           msr |= PPC_BIT(34);
+>       }
+>   
+> @@ -1484,20 +1418,9 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+>           new_msr |= env->msr & ((target_ulong)1 << MSR_RI);
+>           break;
+>   #ifdef CONFIG_TCG
+> -    case POWERPC_EXCP_HV_EMU: {
+> -        uint32_t insn = ppc_ldl_code(env, env->nip);
+> -        env->spr[SPR_HEIR] = insn;
+> -        if (is_prefix_insn(env, insn)) {
+> -            uint32_t insn2 = ppc_ldl_code(env, env->nip + 4);
+> -            env->spr[SPR_HEIR] <<= 32;
+> -            env->spr[SPR_HEIR] |= insn2;
+> -        }
+> -        srr0 = SPR_HSRR0;
+> -        srr1 = SPR_HSRR1;
+> -        new_msr |= (target_ulong)MSR_HVB;
+> -        new_msr |= env->msr & ((target_ulong)1 << MSR_RI);
+> +    case POWERPC_EXCP_HV_EMU:
+> +        ppc_tcg_hv_emu(env, &new_msr, &srr0, &srr1);
+>           break;
+> -    }
+>   #endif
+
+
+> diff --git a/target/ppc/tcg-excp_helper.c b/target/ppc/tcg-excp_helper.c
+> index 268a1614597..ecc9e4de8ba 100644
+> --- a/target/ppc/tcg-excp_helper.c
+> +++ b/target/ppc/tcg-excp_helper.c
+
+... so should be this:
+
+> +void ppc_tcg_hv_emu(CPUPPCState *env, target_ulong *new_msr,
+> +                    int *srr0, int *srr1)
 > +{
-> +    QFWCFG *fw_cfg;
-> +    QOSState *qs;
-> +    FWCfgVMCoreInfo info;
-> +    size_t filesize;
-> +    uint16_t guest_format;
-> +    uint16_t host_format;
-> +    uint32_t size;
-> +    uint64_t paddr;
+> +    uint32_t insn = ppc_ldl_code(env, env->nip);
 > +
-> +    qs =3D qtest_pc_boot("-device vmcoreinfo");
-> +    fw_cfg =3D pc_fw_cfg_init(qs->qts);
+> +    env->spr[SPR_HEIR] = insn;
+> +    if (is_prefix_insn(env, insn)) {
+> +        uint32_t insn2 = ppc_ldl_code(env, env->nip + 4);
 > +
-> +    memset(&info, 0 , sizeof(info));
-> +    /* read vmcoreinfo and read back the host format */
-> +    filesize =3D qfw_cfg_read_file(fw_cfg, qs, FW_CFG_VMCOREINFO_FILENAM=
-E,
-> +                                &info, sizeof(info));
-> +    g_assert_cmpint(filesize, =3D=3D, sizeof(info));
-> +
-> +    host_format =3D le16_to_cpu(info.host_format);
-> +    g_assert_cmpint(host_format, =3D=3D, FW_CFG_VMCOREINFO_FORMAT_ELF);
-> +
-> +    memset(&info, 0 , sizeof(info));
-> +    info.guest_format =3D cpu_to_le16(FW_CFG_VMCOREINFO_FORMAT_ELF);
-> +    info.size =3D cpu_to_le32(1 * MiB);
-> +    info.paddr =3D cpu_to_le64(0xffffff00);
-> +    info.host_format =3D cpu_to_le16(host_format);
-> +
-> +    /* write the values to the host */
-> +    filesize =3D qfw_cfg_write_file(fw_cfg, qs, FW_CFG_VMCOREINFO_FILENA=
-ME,
-> +                                  &info, sizeof(info));
-> +    g_assert_cmpint(filesize, =3D=3D, sizeof(info));
-> +
-> +    memset(&info, 0 , sizeof(info));
-> +
-> +    /* now read back the values we wrote and compare that they are the s=
-ame */
-> +    filesize =3D qfw_cfg_read_file(fw_cfg, qs, FW_CFG_VMCOREINFO_FILENAM=
-E,
-> +                                &info, sizeof(info));
-> +    g_assert_cmpint(filesize, =3D=3D, sizeof(info));
-> +
-> +    size =3D le32_to_cpu(info.size);
-> +    paddr =3D le64_to_cpu(info.paddr);
-> +    guest_format =3D le16_to_cpu(info.guest_format);
-> +
-> +    g_assert_cmpint(size, =3D=3D, 1 * MiB);
-> +    g_assert_cmpint(paddr, =3D=3D, 0xffffff00);
-> +    g_assert_cmpint(guest_format, =3D=3D, FW_CFG_VMCOREINFO_FORMAT_ELF);
-> +
-> +    pc_fw_cfg_uninit(fw_cfg);
-> +    qtest_shutdown(qs);
-> +}
-> +
-> +int main(int argc, char **argv)
-> +{
-> +    const char *arch =3D qtest_get_arch();
-> +
-> +    g_test_init(&argc, &argv, NULL);
-> +
-> +    if (strcmp(arch, "i386") && strcmp(arch, "x86_64")) {
-> +        /* skip for non-x86 */
-> +        exit(EXIT_SUCCESS);
+> +        env->spr[SPR_HEIR] <<= 32;
+> +        env->spr[SPR_HEIR] |= insn2;
 > +    }
-> +
-> +    qtest_add_func("vmcoreinfo/basic-write",
-> +                   test_vmcoreinfo_write_basic);
-> +
-> +    return g_test_run();
+> +    *srr0 = SPR_HSRR0;
+> +    *srr1 = SPR_HSRR1;
+> +    *new_msr |= (target_ulong)MSR_HVB;
+> +    *new_msr |= env->msr & ((target_ulong)1 << MSR_RI);
 > +}
-> --
-> 2.45.2
->
+> +
+>   #endif /* !CONFIG_USER_ONLY */
 
 
