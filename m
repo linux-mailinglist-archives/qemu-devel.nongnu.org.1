@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE09DA20614
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:23:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19A76A20559
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 08:57:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgQI-0001XF-F8; Tue, 28 Jan 2025 02:54:14 -0500
+	id 1tcgQc-0002DS-1f; Tue, 28 Jan 2025 02:54:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgQE-0001RK-Qr; Tue, 28 Jan 2025 02:54:10 -0500
+ id 1tcgQZ-00026A-32; Tue, 28 Jan 2025 02:54:31 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgQC-000800-It; Tue, 28 Jan 2025 02:54:10 -0500
+ id 1tcgQX-000807-1w; Tue, 28 Jan 2025 02:54:30 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D52B4E1AC9;
+ by isrv.corpit.ru (Postfix) with ESMTP id D9227E1ACA;
  Tue, 28 Jan 2025 10:52:59 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4FBDE1A62B8;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 53EA01A62B9;
  Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 2898152007; Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
+ id 2A3BB52009; Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Ahmad Fatoum <a.fatoum@pengutronix.de>,
- Stafford Horne <shorne@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.16 16/31] hw/openrisc/openrisc_sim: keep serial@90000000
- as default
-Date: Tue, 28 Jan 2025 00:41:08 +0300
-Message-Id: <20250127214124.3730126-16-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Roman Artemev <roman.artemev@syntacore.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Denis Tomashev <denis.tomashev@syntacore.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.16 17/31] tcg/riscv: Fix StoreStore barrier generation
+Date: Tue, 28 Jan 2025 00:41:09 +0300
+Message-Id: <20250127214124.3730126-17-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.16-20250128004119@cover.tls.msk.ru>
 References: <qemu-stable-7.2.16-20250128004119@cover.tls.msk.ru>
@@ -62,114 +62,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We used to only have a single UART on the platform and it was located at
-address 0x90000000. When the number of UARTs was increased to 4, the
-first UART remained at it's location, but instead of being the first one
-to be registered, it became the last.
+On RISC-V to StoreStore barrier corresponds
+`fence w, w` not `fence r, r`
 
-This caused QEMU to pick 0x90000300 as the default UART, which broke
-software that hardcoded the address of 0x90000000 and expected it's
-output to be visible when the user configured only a single console.
-
-This caused regressions[1] in the barebox test suite when updating to a
-newer QEMU. As there seems to be no good reason to register the UARTs in
-inverse order, let's register them by ascending address, so existing
-software can remain oblivious to the additional UART ports.
-
-Changing the order of uart registration alone breaks Linux which
-was choosing the UART at 0x90000300 as the default for ttyS0.  To fix
-Linux we fix three things in the device tree:
-
- 1. Define stdout-path only one time for the first registered UART
-    instead of incorrectly defining for each UART.
- 2. Change the UART alias name from 'uart0' to 'serial0' as almost all
-    Linux tty drivers look for an alias starting with "serial".
- 3. Add the UART nodes so they appear in the final DTB in the
-    order starting with the lowest address and working upwards.
-
-In summary these changes mean that the QEMU default UART (serial_hd(0))
-is now setup where:
-
- * serial_hd(0) is the lowest-address UART
- * serial_hd(0) is listed first in the DTB
- * serial_hd(0) is the /chosen/stdout-path one
- * the /aliases/serial0 alias points at serial_hd(0)
-
-[1]: https://lore.barebox.org/barebox/707e7c50-aad1-4459-8796-0cc54bab32e2@pengutronix.de/T/#m5da26e8a799033301489a938b5d5667b81cef6ad
-
-Fixes: 777784bda468 ("hw/openrisc: support 4 serial ports in or1ksim")
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-[stafford: Change to serial0 alias and update change message, reverse
- uart registration order]
-Signed-off-by: Stafford Horne <shorne@gmail.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 26dcf2be7e153defa289d20317707af034aca692)
+Fixes: efbea94c76b ("tcg/riscv: Add slowpath load and store instructions")
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Denis Tomashev <denis.tomashev@syntacore.com>
+Signed-off-by: Roman Artemev <roman.artemev@syntacore.com>
+Message-ID: <e2f2131e294a49e79959d4fa9ec02cf4@syntacore.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit b438362a142527b97b638b7f0f35ebe11911a8d5)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/openrisc/openrisc_sim.c b/hw/openrisc/openrisc_sim.c
-index 35da123aef..dc1fea8cd8 100644
---- a/hw/openrisc/openrisc_sim.c
-+++ b/hw/openrisc/openrisc_sim.c
-@@ -248,7 +248,7 @@ static void openrisc_sim_serial_init(Or1ksimState *state, hwaddr base,
-     void *fdt = state->fdt;
-     char *nodename;
-     qemu_irq serial_irq;
--    char alias[sizeof("uart0")];
-+    char alias[sizeof("serial0")];
-     int i;
- 
-     if (num_cpus > 1) {
-@@ -263,7 +263,7 @@ static void openrisc_sim_serial_init(Or1ksimState *state, hwaddr base,
-         serial_irq = get_cpu_irq(cpus, 0, irq_pin);
+diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
+index 81a83e45b1..e91a7aaf0e 100644
+--- a/tcg/riscv/tcg-target.c.inc
++++ b/tcg/riscv/tcg-target.c.inc
+@@ -838,7 +838,7 @@ static void tcg_out_mb(TCGContext *s, TCGArg a0)
+         insn |= 0x02100000;
      }
-     serial_mm_init(get_system_memory(), base, 0, serial_irq, 115200,
--                   serial_hd(OR1KSIM_UART_COUNT - uart_idx - 1),
-+                   serial_hd(uart_idx),
-                    DEVICE_NATIVE_ENDIAN);
- 
-     /* Add device tree node for serial. */
-@@ -275,10 +275,13 @@ static void openrisc_sim_serial_init(Or1ksimState *state, hwaddr base,
-     qemu_fdt_setprop_cell(fdt, nodename, "clock-frequency", OR1KSIM_CLK_MHZ);
-     qemu_fdt_setprop(fdt, nodename, "big-endian", NULL, 0);
- 
--    /* The /chosen node is created during fdt creation. */
--    qemu_fdt_setprop_string(fdt, "/chosen", "stdout-path", nodename);
--    snprintf(alias, sizeof(alias), "uart%d", uart_idx);
-+    if (uart_idx == 0) {
-+        /* The /chosen node is created during fdt creation. */
-+        qemu_fdt_setprop_string(fdt, "/chosen", "stdout-path", nodename);
-+    }
-+    snprintf(alias, sizeof(alias), "serial%d", uart_idx);
-     qemu_fdt_setprop_string(fdt, "/aliases", alias, nodename);
-+
-     g_free(nodename);
+     if (a0 & TCG_MO_ST_ST) {
+-        insn |= 0x02200000;
++        insn |= 0x01100000;
+     }
+     tcg_out32(s, insn);
  }
- 
-@@ -326,11 +329,22 @@ static void openrisc_sim_init(MachineState *machine)
-                                 smp_cpus, cpus, OR1KSIM_OMPIC_IRQ);
-     }
- 
--    for (n = 0; n < OR1KSIM_UART_COUNT; ++n)
-+    /*
-+     * We create the UART nodes starting with the highest address and
-+     * working downwards, because in QEMU the DTB nodes end up in the
-+     * DTB in reverse order of creation. Correctly-written guest software
-+     * will not care about the node order (it will look at stdout-path
-+     * or the alias nodes), but for the benefit of guest software which
-+     * just looks for the first UART node in the DTB, make sure the
-+     * lowest-address UART (which is QEMU's first serial port) appears
-+     * first in the DTB.
-+     */
-+    for (n = OR1KSIM_UART_COUNT - 1; n >= 0; n--) {
-         openrisc_sim_serial_init(state, or1ksim_memmap[OR1KSIM_UART].base +
-                                         or1ksim_memmap[OR1KSIM_UART].size * n,
-                                  or1ksim_memmap[OR1KSIM_UART].size,
-                                  smp_cpus, cpus, OR1KSIM_UART_IRQ, n);
-+    }
- 
-     load_addr = openrisc_load_kernel(ram_size, kernel_filename,
-                                      &boot_info.bootstrap_pc);
 -- 
 2.39.5
 
