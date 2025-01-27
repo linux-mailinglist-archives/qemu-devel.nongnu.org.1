@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD532A20553
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 08:56:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41190A20555
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 08:57:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgSF-0007kG-7N; Tue, 28 Jan 2025 02:56:15 -0500
+	id 1tcgSF-000805-PQ; Tue, 28 Jan 2025 02:56:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgRX-0007SL-B7; Tue, 28 Jan 2025 02:55:32 -0500
+ id 1tcgRZ-0007ep-KF; Tue, 28 Jan 2025 02:55:42 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgRV-0008V3-D9; Tue, 28 Jan 2025 02:55:31 -0500
+ id 1tcgRX-0008Vr-N3; Tue, 28 Jan 2025 02:55:33 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0C95EE1AD4;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1097EE1AD5;
  Tue, 28 Jan 2025 10:53:00 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 7B8A01A62C3;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7F7561A62C4;
  Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 3A8885201D; Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
+ id 3C3225201F; Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Sebastian Ott <sebott@redhat.com>,
- Zhenyu Zhang <zhenyzha@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
+Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.16 27/31] pci: ensure valid link status bits for
- downstream ports
-Date: Tue, 28 Jan 2025 00:41:19 +0300
-Message-Id: <20250127214124.3730126-27-mjt@tls.msk.ru>
+Subject: [Stable-7.2.16 28/31] pci/msix: Fix msix pba read vector poll end
+ calculation
+Date: Tue, 28 Jan 2025 00:41:20 +0300
+Message-Id: <20250127214124.3730126-28-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.16-20250128004119@cover.tls.msk.ru>
 References: <qemu-stable-7.2.16-20250128004119@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 From: Michael Tokarev <mjt@tls.msk.ru>
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -63,61 +63,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PCI hotplug for downstream endpoints on arm fails because Linux'
-PCIe hotplug driver doesn't like the QEMU provided LNKSTA:
+The end vector calculation has a bug that results in polling fewer
+than required vectors when reading at a non-zero offset in PBA memory.
 
-  pcieport 0000:08:01.0: pciehp: Slot(2): Card present
-  pcieport 0000:08:01.0: pciehp: Slot(2): Link Up
-  pcieport 0000:08:01.0: pciehp: Slot(2): Cannot train link: status 0x2000
-
-There's 2 cases where LNKSTA isn't setup properly:
-* the downstream device has no express capability
-* max link width of the bridge is 0
-
-Move the sanity checks added via 88c869198aa63
-("pci: Sanity test minimum downstream LNKSTA") outside of the
-branch to make sure downstream ports always have a valid LNKSTA.
-
-Signed-off-by: Sebastian Ott <sebott@redhat.com>
-Tested-by: Zhenyu Zhang <zhenyzha@redhat.com>
-Message-Id: <20241203121928.14861-1-sebott@redhat.com>
-Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: bbef882cc193 ("msi: add API to get notified about pending bit poll")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Message-Id: <20241212120402.1475053-1-npiggin@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 694632fd44987cc4618612a38ad151047524a590)
+(cherry picked from commit 42e2a7a0ab23784e44fcb18369e06067abc89305)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-index 68a62da0b5..9ffc625cc2 100644
---- a/hw/pci/pcie.c
-+++ b/hw/pci/pcie.c
-@@ -999,18 +999,22 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
-         if ((lnksta & PCI_EXP_LNKSTA_NLW) > (lnkcap & PCI_EXP_LNKCAP_MLW)) {
-             lnksta &= ~PCI_EXP_LNKSTA_NLW;
-             lnksta |= lnkcap & PCI_EXP_LNKCAP_MLW;
--        } else if (!(lnksta & PCI_EXP_LNKSTA_NLW)) {
--            lnksta |= QEMU_PCI_EXP_LNKSTA_NLW(QEMU_PCI_EXP_LNK_X1);
-         }
- 
-         if ((lnksta & PCI_EXP_LNKSTA_CLS) > (lnkcap & PCI_EXP_LNKCAP_SLS)) {
-             lnksta &= ~PCI_EXP_LNKSTA_CLS;
-             lnksta |= lnkcap & PCI_EXP_LNKCAP_SLS;
--        } else if (!(lnksta & PCI_EXP_LNKSTA_CLS)) {
--            lnksta |= QEMU_PCI_EXP_LNKSTA_CLS(QEMU_PCI_EXP_LNK_2_5GT);
-         }
+diff --git a/hw/pci/msix.c b/hw/pci/msix.c
+index 4b258566d4..20e39e51b4 100644
+--- a/hw/pci/msix.c
++++ b/hw/pci/msix.c
+@@ -241,7 +241,7 @@ static uint64_t msix_pba_mmio_read(void *opaque, hwaddr addr,
+     PCIDevice *dev = opaque;
+     if (dev->msix_vector_poll_notifier) {
+         unsigned vector_start = addr * 8;
+-        unsigned vector_end = MIN(addr + size * 8, dev->msix_entries_nr);
++        unsigned vector_end = MIN((addr + size) * 8, dev->msix_entries_nr);
+         dev->msix_vector_poll_notifier(dev, vector_start, vector_end);
      }
  
-+    if (!(lnksta & PCI_EXP_LNKSTA_NLW)) {
-+        lnksta |= QEMU_PCI_EXP_LNKSTA_NLW(QEMU_PCI_EXP_LNK_X1);
-+    }
-+
-+    if (!(lnksta & PCI_EXP_LNKSTA_CLS)) {
-+        lnksta |= QEMU_PCI_EXP_LNKSTA_CLS(QEMU_PCI_EXP_LNK_2_5GT);
-+    }
-+
-     pci_word_test_and_clear_mask(exp_cap + PCI_EXP_LNKSTA,
-                                  PCI_EXP_LNKSTA_CLS | PCI_EXP_LNKSTA_NLW);
-     pci_word_test_and_set_mask(exp_cap + PCI_EXP_LNKSTA, lnksta &
 -- 
 2.39.5
 
