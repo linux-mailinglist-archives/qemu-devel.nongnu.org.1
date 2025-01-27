@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E53EAA20558
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 08:57:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0502A2062C
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:27:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgSU-00018n-CO; Tue, 28 Jan 2025 02:56:30 -0500
+	id 1tcgSR-0000c6-7f; Tue, 28 Jan 2025 02:56:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgRa-0007fN-OD; Tue, 28 Jan 2025 02:55:42 -0500
+ id 1tcgRd-0007gN-CI; Tue, 28 Jan 2025 02:55:42 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgRY-00008o-Ng; Tue, 28 Jan 2025 02:55:34 -0500
+ id 1tcgRb-00009P-Ay; Tue, 28 Jan 2025 02:55:37 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1510EE1AD6;
+ by isrv.corpit.ru (Postfix) with ESMTP id 18FCDE1AD7;
  Tue, 28 Jan 2025 10:53:00 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 836661A62C5;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 87E6F1A62C6;
  Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 3DC6B52021; Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
+ id 3F6A552023; Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Igor Mammedov <imammedo@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.16 29/31] tests: acpi: whitelist expected blobs
-Date: Tue, 28 Jan 2025 00:41:21 +0300
-Message-Id: <20250127214124.3730126-29-mjt@tls.msk.ru>
+Subject: [Stable-7.2.16 30/31] pci: acpi: Windows 'PCI Label Id' bug workaround
+Date: Tue, 28 Jan 2025 00:41:22 +0300
+Message-Id: <20250127214124.3730126-30-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.16-20250128004119@cover.tls.msk.ru>
 References: <qemu-stable-7.2.16-20250128004119@cover.tls.msk.ru>
@@ -60,55 +60,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Current versions of Windows call _DSM(func=7) regardless
+of whether it is supported or not. It leads to NICs having bogus
+'PCI Label Id = 0', where none should be set at all.
+
+Also presence of 'PCI Label Id' triggers another Windows bug
+on localized versions that leads to hangs. The later bug is fixed
+in latest updates for 'Windows Server' but not in consumer
+versions of Windows (and there is no plans to fix it
+as far as I'm aware).
+
+Given it's easy, implement Microsoft suggested workaround
+(return invalid Package) so that affected Windows versions
+could boot on QEMU.
+This would effectvely remove bogus 'PCI Label Id's on NICs,
+but MS teem confirmed that flipping 'PCI Label Id' should not
+change 'Network Connection' ennumeration, so it should be safe
+for QEMU to change _DSM without any compat code.
+
+Smoke tested with WinXP and WS2022
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/774
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20250115125342.3883374-2-imammedo@redhat.com>
+Message-Id: <20250115125342.3883374-3-imammedo@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 1ad32644fe4c9fb25086be15a66dde1d55d3410f)
+(cherry picked from commit 0b053391985abcc40b16ac8fc4a7f6588d1d95c1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: drop x86/ subdir and drop a few files not relevant for 7.2)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..7e7745db39 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,36 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/pc/DSDT",
-+"tests/data/acpi/pc/DSDT.acpierst",
-+"tests/data/acpi/pc/DSDT.acpihmat",
-+"tests/data/acpi/pc/DSDT.bridge",
-+"tests/data/acpi/pc/DSDT.cphp",
-+"tests/data/acpi/pc/DSDT.dimmpxm",
-+"tests/data/acpi/pc/DSDT.hpbridge",
-+"tests/data/acpi/pc/DSDT.ipmikcs",
-+"tests/data/acpi/pc/DSDT.memhp",
-+"tests/data/acpi/pc/DSDT.nohpet",
-+"tests/data/acpi/pc/DSDT.numamem",
-+"tests/data/acpi/pc/DSDT.roothp",
-+"tests/data/acpi/q35/DSDT",
-+"tests/data/acpi/q35/DSDT.acpierst",
-+"tests/data/acpi/q35/DSDT.acpihmat",
-+"tests/data/acpi/q35/DSDT.acpihmat-noinitiator",
-+"tests/data/acpi/q35/DSDT.applesmc",
-+"tests/data/acpi/q35/DSDT.bridge",
-+"tests/data/acpi/q35/DSDT.core-count2",
-+"tests/data/acpi/q35/DSDT.cphp",
-+"tests/data/acpi/q35/DSDT.cxl",
-+"tests/data/acpi/q35/DSDT.dimmpxm",
-+"tests/data/acpi/q35/DSDT.ipmibt",
-+"tests/data/acpi/q35/DSDT.ipmismbus",
-+"tests/data/acpi/q35/DSDT.ivrs",
-+"tests/data/acpi/q35/DSDT.memhp",
-+"tests/data/acpi/q35/DSDT.mmio64",
-+"tests/data/acpi/q35/DSDT.multi-bridge",
-+"tests/data/acpi/q35/DSDT.nohpet",
-+"tests/data/acpi/q35/DSDT.numamem",
-+"tests/data/acpi/q35/DSDT.pvpanic-isa",
-+"tests/data/acpi/q35/DSDT.tis.tpm12",
-+"tests/data/acpi/q35/DSDT.tis.tpm2",
-+"tests/data/acpi/q35/DSDT.viot",
-+"tests/data/acpi/q35/DSDT.xapic",
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index f9cdacadb1..79b68f2218 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -541,6 +541,7 @@ static Aml *aml_pci_pdsm(void)
+     Aml *acpi_index = aml_local(2);
+     Aml *zero = aml_int(0);
+     Aml *one = aml_int(1);
++    Aml *not_supp = aml_int(0xFFFFFFFF);
+     Aml *func = aml_arg(2);
+     Aml *rev = aml_arg(1);
+     Aml *params = aml_arg(4);
+@@ -586,7 +587,7 @@ static Aml *aml_pci_pdsm(void)
+          */
+         ifctx1 = aml_if(aml_lnot(
+                      aml_or(aml_equal(acpi_index, zero),
+-                            aml_equal(acpi_index, aml_int(0xFFFFFFFF)), NULL)
++                            aml_equal(acpi_index, not_supp), NULL)
+                  ));
+         {
+             /* have supported functions */
+@@ -612,18 +613,30 @@ static Aml *aml_pci_pdsm(void)
+     {
+        Aml *pkg = aml_package(2);
+ 
+-       aml_append(pkg, zero);
+-       /*
+-        * optional, if not impl. should return null string
+-        */
+-       aml_append(pkg, aml_string("%s", ""));
+-       aml_append(ifctx, aml_store(pkg, ret));
+-
+        aml_append(ifctx, aml_store(aml_call2("AIDX", bnum, sunum), acpi_index));
++       aml_append(ifctx, aml_store(pkg, ret));
+        /*
+-        * update acpi-index to actual value
++        * Windows calls func=7 without checking if it's available,
++        * as workaround Microsoft has suggested to return invalid for func7
++        * Package, so return 2 elements package but only initialize elements
++        * when acpi_index is supported and leave them uninitialized, which
++        * leads elements to being Uninitialized ObjectType and should trip
++        * Windows into discarding result as an unexpected and prevent setting
++        * bogus 'PCI Label' on the device.
+         */
+-       aml_append(ifctx, aml_store(acpi_index, aml_index(ret, zero)));
++       ifctx1 = aml_if(aml_lnot(aml_lor(
++                    aml_equal(acpi_index, zero), aml_equal(acpi_index, not_supp)
++                )));
++       {
++           aml_append(ifctx1, aml_store(acpi_index, aml_index(ret, zero)));
++           /*
++            * optional, if not impl. should return null string
++            */
++           aml_append(ifctx1, aml_store(aml_string("%s", ""),
++                                        aml_index(ret, one)));
++       }
++       aml_append(ifctx, ifctx1);
++
+        aml_append(ifctx, aml_return(ret));
+     }
+ 
 -- 
 2.39.5
 
