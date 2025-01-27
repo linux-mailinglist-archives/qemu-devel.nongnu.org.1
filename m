@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA04A205C5
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:16:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 613B3A20613
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:23:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgXj-0002lM-EH; Tue, 28 Jan 2025 03:01:55 -0500
+	id 1tcgZ3-0006Tj-P8; Tue, 28 Jan 2025 03:03:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgXW-00023W-FM; Tue, 28 Jan 2025 03:01:42 -0500
+ id 1tcgXZ-0002Km-9u; Tue, 28 Jan 2025 03:01:45 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgXU-0001re-Mb; Tue, 28 Jan 2025 03:01:42 -0500
+ id 1tcgXX-0001w3-Go; Tue, 28 Jan 2025 03:01:44 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A07AFE1B50;
+ by isrv.corpit.ru (Postfix) with ESMTP id A4667E1B51;
  Tue, 28 Jan 2025 10:57:08 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 1C3E01A6303;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 202441A6304;
  Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id EBE9A52097; Tue, 28 Jan 2025 10:57:33 +0300 (MSK)
+ id EDA7C52099; Tue, 28 Jan 2025 10:57:33 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Peter Krempa <pkrempa@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 09/58] migration: Allow pipes to keep working for fd
- migrations
-Date: Mon, 27 Jan 2025 23:24:55 +0300
-Message-Id: <20250127202547.3723716-9-mjt@tls.msk.ru>
+Subject: [Stable-9.1.3 10/58] virtio-net: Add queues before loading them
+Date: Mon, 27 Jan 2025 23:24:56 +0300
+Message-Id: <20250127202547.3723716-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 From: Michael Tokarev <mjt@tls.msk.ru>
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -64,101 +62,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Libvirt may still use pipes for old file migrations in fd: URI form,
-especially when loading old images dumped from Libvirt's compression
-algorithms.
+Call virtio_net_set_multiqueue() to add queues before loading their
+states. Otherwise the loaded queues will not have handlers and elements
+in them will not be processed.
 
-In that case, Libvirt needs to compress / uncompress the images on its own
-over the migration binary stream, and pipes are passed over to QEMU for
-outgoing / incoming migrations in "fd:" URIs.
-
-For future such use case, it should be suggested to use mapped-ram when
-saving such VM image.  However there can still be old images that was
-compressed in such way, so libvirt needs to be able to load those images,
-uncompress them and use the same pipe mechanism to pass that over to QEMU.
-
-It means, even if new file migrations can be gradually moved over to
-mapped-ram (after Libvirt start supporting it), Libvirt still needs the
-uncompressor for the old images to be able to load like before.
-
-Meanwhile since Libvirt currently exposes the compression capability to
-guest images, it may needs its own lifecycle management to move that over
-to mapped-ram, maybe can be done after mapped-ram saved the image, however
-Dan and PeterK raised concern on temporary double disk space consumption.
-I suppose for now the easiest is to enable pipes for both sides of "fd:"
-migrations, until all things figured out from Libvirt side on how to move
-on.
-
-And for "channels" QMP interface support on "migrate" / "migrate-incoming"
-commands, we'll also need to move away from pipe.  But let's leave that for
-later too.
-
-So far, still allow pipes to happen like before on both save/load sides,
-just like we would allow sockets to pass.
-
-Cc: qemu-stable <qemu-stable@nongnu.org>
-Cc: Fabiano Rosas <farosas@suse.de>
-Cc: Peter Krempa <pkrempa@redhat.com>
-Cc: Daniel P. Berrangé <berrange@redhat.com>
-Fixes: c55deb860c ("migration: Deprecate fd: for file migration")
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20241120160132.3659735-1-peterx@redhat.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
-(cherry picked from commit 87ae45e602e2943d58509e470e3a1d4ba084ab2f)
+Cc: qemu-stable@nongnu.org
+Fixes: 8c49756825da ("virtio-net: Add only one queue pair when realizing")
+Reported-by: Laurent Vivier <lvivier@redhat.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+(cherry picked from commit 9379ea9db3c0064fa2787db0794a23a30f7b2d2d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/migration/fd.c b/migration/fd.c
-index aab5189eac..9bf9be6acb 100644
---- a/migration/fd.c
-+++ b/migration/fd.c
-@@ -25,6 +25,29 @@
- #include "io/channel-util.h"
- #include "trace.h"
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index cf27d5cbe5..c1fe457359 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -3035,6 +3035,15 @@ static void virtio_net_set_multiqueue(VirtIONet *n, int multiqueue)
+     virtio_net_set_queue_pairs(n);
+ }
  
-+static bool fd_is_pipe(int fd)
++static int virtio_net_pre_load_queues(VirtIODevice *vdev)
 +{
-+    struct stat statbuf;
++    virtio_net_set_multiqueue(VIRTIO_NET(vdev),
++                              virtio_has_feature(vdev->guest_features, VIRTIO_NET_F_RSS) ||
++                              virtio_has_feature(vdev->guest_features, VIRTIO_NET_F_MQ));
 +
-+    if (fstat(fd, &statbuf) == -1) {
-+        return false;
-+    }
-+
-+    return S_ISFIFO(statbuf.st_mode);
++    return 0;
 +}
 +
-+static bool migration_fd_valid(int fd)
-+{
-+    if (fd_is_socket(fd)) {
-+        return true;
-+    }
-+
-+    if (fd_is_pipe(fd)) {
-+        return true;
-+    }
-+
-+    return false;
-+}
- 
- void fd_start_outgoing_migration(MigrationState *s, const char *fdname, Error **errp)
+ static int virtio_net_post_load_device(void *opaque, int version_id)
  {
-@@ -34,7 +57,7 @@ void fd_start_outgoing_migration(MigrationState *s, const char *fdname, Error **
-         return;
+     VirtIONet *n = opaque;
+@@ -4013,6 +4022,7 @@ static void virtio_net_class_init(ObjectClass *klass, void *data)
+     vdc->guest_notifier_mask = virtio_net_guest_notifier_mask;
+     vdc->guest_notifier_pending = virtio_net_guest_notifier_pending;
+     vdc->legacy_features |= (0x1 << VIRTIO_NET_F_GSO);
++    vdc->pre_load_queues = virtio_net_pre_load_queues;
+     vdc->post_load = virtio_net_post_load_virtio;
+     vdc->vmsd = &vmstate_virtio_net_device;
+     vdc->primary_unplug_pending = primary_unplug_pending;
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index 9e10cbc058..10f24a58dd 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -3251,6 +3251,13 @@ virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id)
+         config_len--;
      }
  
--    if (!fd_is_socket(fd)) {
-+    if (!migration_fd_valid(fd)) {
-         warn_report("fd: migration to a file is deprecated."
-                     " Use file: instead.");
-     }
-@@ -68,7 +91,7 @@ void fd_start_incoming_migration(const char *fdname, Error **errp)
-         return;
-     }
++    if (vdc->pre_load_queues) {
++        ret = vdc->pre_load_queues(vdev);
++        if (ret) {
++            return ret;
++        }
++    }
++
+     num = qemu_get_be32(f);
  
--    if (!fd_is_socket(fd)) {
-+    if (!migration_fd_valid(fd)) {
-         warn_report("fd: migration to a file is deprecated."
-                     " Use file: instead.");
-     }
+     if (num > VIRTIO_QUEUE_MAX) {
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index 0fcbc5c0c6..953dfca27c 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -210,6 +210,8 @@ struct VirtioDeviceClass {
+     void (*guest_notifier_mask)(VirtIODevice *vdev, int n, bool mask);
+     int (*start_ioeventfd)(VirtIODevice *vdev);
+     void (*stop_ioeventfd)(VirtIODevice *vdev);
++    /* Called before loading queues. Useful to add queues before loading. */
++    int (*pre_load_queues)(VirtIODevice *vdev);
+     /* Saving and loading of a device; trying to deprecate save/load
+      * use vmsd for new devices.
+      */
 -- 
 2.39.5
 
