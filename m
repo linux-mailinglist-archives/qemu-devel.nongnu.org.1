@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC0F3A1D5D1
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B2DA1D5D0
 	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 13:10:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcNw3-0003ZY-Cy; Mon, 27 Jan 2025 07:09:49 -0500
+	id 1tcNw7-0003cv-Lt; Mon, 27 Jan 2025 07:09:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tcNvA-0003Q4-J1
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 07:08:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tcNvH-0003S3-KX
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 07:09:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tcNv8-0000Vy-Es
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 07:08:51 -0500
+ id 1tcNvD-0000WT-H3
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 07:08:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737979726;
+ s=mimecast20190719; t=1737979733;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nZoro0e8aIpm3QgH5cnVqqj2gKfFFGgH2sdwpeyFU5g=;
- b=HJxnr9Ay1jFler9XTYCcp8A1Q8oiI4IkLTUtSPr7kq8zbhRkPA4W+VJ7ZNmhfFjx0fASJt
- F8+91a0Mbnwruiikqvbu1YC/YZi6/QwXSEiJH3U1ZXSCtI3Ehu4JgxxiZV6zChvLtItB0T
- jDzPWpXkR0Ur/ByXaO/wOoOatpCG5bY=
+ bh=nziMzvKUqRfCyUAdl+k805XQHeV+TEZSKfZNCwb64kY=;
+ b=bkOK2UcX0eHrI3ZIKAe9K6TdVFcvgsG2ML7YuN90C2peiCP97MCIjCbvpgO0ReWLXk4zwe
+ rvDVrgeSqfj3QM6brtokYQaoglvBLJmKnRXmH7AvXFp9S9oUATc/CQu6rRBX0PAggU+1Mv
+ LvWRdm66rOyar85R6nLNnXFBpAIqke8=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-263-UpC72XVfMvWUly0UMTSNGw-1; Mon,
- 27 Jan 2025 07:08:43 -0500
-X-MC-Unique: UpC72XVfMvWUly0UMTSNGw-1
-X-Mimecast-MFC-AGG-ID: UpC72XVfMvWUly0UMTSNGw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-424-gTzKZdogMQWZKv0VhSfXPg-1; Mon,
+ 27 Jan 2025 07:08:49 -0500
+X-MC-Unique: gTzKZdogMQWZKv0VhSfXPg-1
+X-Mimecast-MFC-AGG-ID: gTzKZdogMQWZKv0VhSfXPg
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3BEE6180887B; Mon, 27 Jan 2025 12:08:42 +0000 (UTC)
+ id BBE041828AEC; Mon, 27 Jan 2025 12:08:47 +0000 (UTC)
 Received: from kaapi.redhat.com (unknown [10.74.17.143])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E35971800348; Mon, 27 Jan 2025 12:08:37 +0000 (UTC)
+ id 159C7180034C; Mon, 27 Jan 2025 12:08:42 +0000 (UTC)
 From: Prasad Pandit <ppandit@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, farosas@suse.de, berrange@redhat.com,
  Prasad Pandit <pjp@fedoraproject.org>
-Subject: [PATCH v4 1/4] migration/multifd: move macros to multifd header
-Date: Mon, 27 Jan 2025 17:38:20 +0530
-Message-ID: <20250127120823.144949-2-ppandit@redhat.com>
+Subject: [PATCH v4 2/4] migration: refactor ram_save_target_page functions
+Date: Mon, 27 Jan 2025 17:38:21 +0530
+Message-ID: <20250127120823.144949-3-ppandit@redhat.com>
 In-Reply-To: <20250127120823.144949-1-ppandit@redhat.com>
 References: <20250127120823.144949-1-ppandit@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=ppandit@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.299,
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.299,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
@@ -85,52 +85,150 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Prasad Pandit <pjp@fedoraproject.org>
 
-Move MULTIFD_ macros to the header file so that
-they are accessible from other source files.
+Refactor ram_save_target_page legacy and multifd
+functions into one. Other than simplifying it,
+it frees 'migration_ops' object from usage, so it
+is expunged.
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
 ---
- migration/multifd.c | 5 -----
- migration/multifd.h | 5 +++++
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ migration/ram.c | 67 +++++++++++++------------------------------------
+ 1 file changed, 17 insertions(+), 50 deletions(-)
 
 v3: No change
 - https://lore.kernel.org/qemu-devel/20250121131032.1611245-1-ppandit@redhat.com/T/#t
 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index ab73d6d984..97ce831775 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -33,11 +33,6 @@
- #include "io/channel-socket.h"
- #include "yank_functions.h"
+diff --git a/migration/ram.c b/migration/ram.c
+index ce28328141..f2326788de 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -446,13 +446,6 @@ void ram_transferred_add(uint64_t bytes)
+     }
+ }
  
--/* Multiple fd's */
+-struct MigrationOps {
+-    int (*ram_save_target_page)(RAMState *rs, PageSearchStatus *pss);
+-};
+-typedef struct MigrationOps MigrationOps;
 -
--#define MULTIFD_MAGIC 0x11223344U
--#define MULTIFD_VERSION 1
+-MigrationOps *migration_ops;
 -
- typedef struct {
-     uint32_t magic;
-     uint32_t version;
-diff --git a/migration/multifd.h b/migration/multifd.h
-index bd785b9873..10149af654 100644
---- a/migration/multifd.h
-+++ b/migration/multifd.h
-@@ -49,6 +49,11 @@ bool multifd_queue_page(RAMBlock *block, ram_addr_t offset);
- bool multifd_recv(void);
- MultiFDRecvData *multifd_get_recv_data(void);
+ static int ram_save_host_page_urgent(PageSearchStatus *pss);
  
-+/* Multiple fd's */
-+
-+#define MULTIFD_MAGIC 0x11223344U
-+#define MULTIFD_VERSION 1
-+
- /* Multifd Compression flags */
- #define MULTIFD_FLAG_SYNC (1 << 0)
+ /* NOTE: page is the PFN not real ram_addr_t. */
+@@ -1958,55 +1951,36 @@ int ram_save_queue_pages(const char *rbname, ram_addr_t start, ram_addr_t len,
+ }
  
---
+ /**
+- * ram_save_target_page_legacy: save one target page
+- *
+- * Returns the number of pages written
++ * ram_save_target_page: save one target page to the precopy thread
++ * OR to multifd workers.
+  *
+  * @rs: current RAM state
+  * @pss: data about the page we want to send
+  */
+-static int ram_save_target_page_legacy(RAMState *rs, PageSearchStatus *pss)
++static int ram_save_target_page(RAMState *rs, PageSearchStatus *pss)
+ {
+     ram_addr_t offset = ((ram_addr_t)pss->page) << TARGET_PAGE_BITS;
+     int res;
+ 
++    if (!migrate_multifd()
++        || migrate_zero_page_detection() == ZERO_PAGE_DETECTION_LEGACY) {
++        if (save_zero_page(rs, pss, offset)) {
++            return 1;
++        }
++    }
++
++    if (migrate_multifd()) {
++        RAMBlock *block = pss->block;
++        return ram_save_multifd_page(block, offset);
++    }
++
+     if (control_save_page(pss, offset, &res)) {
+         return res;
+     }
+ 
+-    if (save_zero_page(rs, pss, offset)) {
+-        return 1;
+-    }
+-
+     return ram_save_page(rs, pss);
+ }
+ 
+-/**
+- * ram_save_target_page_multifd: send one target page to multifd workers
+- *
+- * Returns 1 if the page was queued, -1 otherwise.
+- *
+- * @rs: current RAM state
+- * @pss: data about the page we want to send
+- */
+-static int ram_save_target_page_multifd(RAMState *rs, PageSearchStatus *pss)
+-{
+-    RAMBlock *block = pss->block;
+-    ram_addr_t offset = ((ram_addr_t)pss->page) << TARGET_PAGE_BITS;
+-
+-    /*
+-     * While using multifd live migration, we still need to handle zero
+-     * page checking on the migration main thread.
+-     */
+-    if (migrate_zero_page_detection() == ZERO_PAGE_DETECTION_LEGACY) {
+-        if (save_zero_page(rs, pss, offset)) {
+-            return 1;
+-        }
+-    }
+-
+-    return ram_save_multifd_page(block, offset);
+-}
+-
+ /* Should be called before sending a host page */
+ static void pss_host_page_prepare(PageSearchStatus *pss)
+ {
+@@ -2093,7 +2067,7 @@ static int ram_save_host_page_urgent(PageSearchStatus *pss)
+ 
+         if (page_dirty) {
+             /* Be strict to return code; it must be 1, or what else? */
+-            if (migration_ops->ram_save_target_page(rs, pss) != 1) {
++            if (ram_save_target_page(rs, pss) != 1) {
+                 error_report_once("%s: ram_save_target_page failed", __func__);
+                 ret = -1;
+                 goto out;
+@@ -2162,7 +2136,7 @@ static int ram_save_host_page(RAMState *rs, PageSearchStatus *pss)
+             if (preempt_active) {
+                 qemu_mutex_unlock(&rs->bitmap_mutex);
+             }
+-            tmppages = migration_ops->ram_save_target_page(rs, pss);
++            tmppages = ram_save_target_page(rs, pss);
+             if (tmppages >= 0) {
+                 pages += tmppages;
+                 /*
+@@ -2360,8 +2334,6 @@ static void ram_save_cleanup(void *opaque)
+     xbzrle_cleanup();
+     multifd_ram_save_cleanup();
+     ram_state_cleanup(rsp);
+-    g_free(migration_ops);
+-    migration_ops = NULL;
+ }
+ 
+ static void ram_state_reset(RAMState *rs)
+@@ -3027,13 +2999,8 @@ static int ram_save_setup(QEMUFile *f, void *opaque, Error **errp)
+         return ret;
+     }
+ 
+-    migration_ops = g_malloc0(sizeof(MigrationOps));
+-
+     if (migrate_multifd()) {
+         multifd_ram_save_setup();
+-        migration_ops->ram_save_target_page = ram_save_target_page_multifd;
+-    } else {
+-        migration_ops->ram_save_target_page = ram_save_target_page_legacy;
+     }
+ 
+     /*
+-- 
 2.48.1
 
 
