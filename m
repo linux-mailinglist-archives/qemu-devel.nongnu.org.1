@@ -2,68 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 764D3A1D5A1
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 12:55:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B22CFA1D5F2
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 13:33:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcNgL-0005bB-Ky; Mon, 27 Jan 2025 06:53:33 -0500
+	id 1tcOHY-00049T-1m; Mon, 27 Jan 2025 07:32:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tcNgF-0005ad-Qy; Mon, 27 Jan 2025 06:53:28 -0500
-Received: from mgamail.intel.com ([198.175.65.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tcNgD-0006fE-Qn; Mon, 27 Jan 2025 06:53:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737978806; x=1769514806;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=p/Ns84pvmRRQ8Ec+5wKSMGcwxNxmeBZgWM/aBoB6Es4=;
- b=b0CIrOh5I3u9tIh4M4YqcZ6Qb6IecuGgX2n+V7kJdw5n8X4qeaNL5xB4
- jCWmeINk4q5ebij1/M4rU55Rxqpg+e1t8/iuW3q+aOQGanwXy6VXY0pPR
- RkrsplqHjWBQXtZSKeYjUIGafS97kJOPblhvTzmYD+oAg8WDvyFhe3d2P
- PH0k5Bf4EP0kmpJHJMaF8rYqX0EFnACIkEMjYp074jI4TeXujxQ6cPBpM
- uC9JeWuyzVcYE+Pl381jlZ4LTVIybXz0MvbfT3DQgQx6MbmHx5KqCZ45Y
- sgSQ5OL41+O02U2csVU9/3Y8E2Ae2q7NlJGy9tctyMvXH/hWm7ujE8ISu g==;
-X-CSE-ConnectionGUID: ds2gzJ1FTQuKRvlVyaExcA==
-X-CSE-MsgGUID: Rkoi2m9zS8eVG8lFNc0yFQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11328"; a="42096731"
-X-IronPort-AV: E=Sophos;i="6.13,238,1732608000"; d="scan'208";a="42096731"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jan 2025 03:53:23 -0800
-X-CSE-ConnectionGUID: xPPbDs0FReGqHyTLavpFZA==
-X-CSE-MsgGUID: 9LWblnFPRDyKmhCH4DlQLQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="113381902"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa003.jf.intel.com with ESMTP; 27 Jan 2025 03:53:21 -0800
-Date: Mon, 27 Jan 2025 20:12:45 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 10/10] rust: bindings for MemoryRegionOps
-Message-ID: <Z5d4PTtIRhgZ0tss@intel.com>
-References: <20250117194003.1173231-1-pbonzini@redhat.com>
- <20250117194003.1173231-11-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tcOGt-00041X-53
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 07:31:19 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tcOGr-0003MO-C4
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 07:31:18 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-435f8f29f8aso30560035e9.2
+ for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 04:31:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1737981075; x=1738585875; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=KSwYm9Ifvrp3w/cECG9Gy3rSjhlrv0zcjhWArVvCSig=;
+ b=EfUFLFQ2TC9YW1K/ijIvCWWl0pUxa7X5P5DpAT9xuN4y5G5Ys1wEd3Tq7XZVRBS3Ow
+ eEa6pFt391O5PvoCM9KGf2Vb1/FBqKUtoUsYqBzUMJOfVAr6EBkEb/ZweyJCMCyWh6V2
+ ncDHvHoET0TSOXbOxwzhs31/g5Q9EM8Eowfw5R3clXo1O3RSAMwbffdyBh+LO2O2nnxl
+ G+gJr/rq0+uqHnCvu+DHHIvTchLAbmi6XhziuF3XKATW82slSWk54OFKmeBqmqqZwsVt
+ /+gNWGB2vt/Qx37FFx8fLVEyzjpIWgcKJ/i/p8IIQ91ZfwhRdzPPQSjCrqtOS+E+2Pc8
+ VOpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1737981075; x=1738585875;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=KSwYm9Ifvrp3w/cECG9Gy3rSjhlrv0zcjhWArVvCSig=;
+ b=kUWMg9frI4ii01WDTJ1LIgfR00dIsdGFbMaWmY0brAezy4aDVXyoHBU8BedlpJHDwc
+ 1cyuOdeWJ6ZZgsmzWPLl88Ctu258h7mu9T2fDygsdLOblZvA66ocA25gVIDpfR4nq2kL
+ WM8lYezxlmbWgGVT486ZXx596WpfyOZ1f1ehRphwkcBMkY77Z6SOIDejyu95LAfJuTRc
+ 78zI4i1nwipIl3jtlH4+5o+xU2/6qoYgAFzlFv2LLa3dARBlg1UwGrYreuRNd7NQZJG3
+ T90+iTI5XquWY8vUf60CpCfs3vRYADWCG2pxIA5ofgJ0wlyrIYdyj9iJSlNfxi8lleYI
+ RuRQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVQagtswAPmUdEtbL5BpaeJWULJYtXNRhy69tsscywVC2tehEvxtrgy+VYwIjr8rTitxSjmRR4xqJ78@nongnu.org
+X-Gm-Message-State: AOJu0YwLzKrf2p5bLNM+Q6y/MgXRZUOcQF3AZtpFtJ+zS/l9LU+gesRt
+ 0bWOS4A/7wOea5XuMmdg3xIp24n1kkNmlKIxe58oHqhVAdPdOU1rA2EzSHqhCls=
+X-Gm-Gg: ASbGncu99eTnlrdwHm/pmjnFeKK+DaxbeU9dnjtwhM9ZCWeDX48sc479BLz1TJmW/c3
+ kiMT9lv6R2taJcaewkivvR2WMnHZQBT+vIJ44hlNm4vU4jjnAGr/BRPGvBx6kxLati/GpFS6njW
+ ts+f0Evy474fbjVF2WKZxpQMkag7by1bvf8V+G2kk8XS3XOTmk5vkb7RGIP0eMFIoF2dXykHBbd
+ a8KxcEEL9+7ewJTbxkOT17+i1aL5V33y/AZDzDWtQQ+gQzWc9222UAHfKtpjkBY+KZ6xYHptF4T
+ z5k9GzJPeg==
+X-Google-Smtp-Source: AGHT+IHxEvC1D1UUTu26xAWuzJiUvw5hk4nIKkBi+PJs3DH+w6tVD6vveRkbHdY8fnQb4QCNRx1QzQ==
+X-Received: by 2002:a05:600c:1e8b:b0:434:f609:1af7 with SMTP id
+ 5b1f17b1804b1-438913bf885mr386127875e9.4.1737981075421; 
+ Mon, 27 Jan 2025 04:31:15 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-438bd4857b8sm129052505e9.15.2025.01.27.04.31.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 27 Jan 2025 04:31:14 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH] qemu-options: Deprecate -old-param command line option
+Date: Mon, 27 Jan 2025 12:31:13 +0000
+Message-Id: <20250127123113.2947620-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250117194003.1173231-11-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -56
-X-Spam_score: -5.7
-X-Spam_bar: -----
-X-Spam_report: (-5.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.299,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,110 +94,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 17, 2025 at 08:40:03PM +0100, Paolo Bonzini wrote:
-> Date: Fri, 17 Jan 2025 20:40:03 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 10/10] rust: bindings for MemoryRegionOps
-> X-Mailer: git-send-email 2.47.1
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/hw/char/pl011/src/device.rs     |  43 +++---
->  rust/hw/char/pl011/src/lib.rs        |   1 -
->  rust/hw/char/pl011/src/memory_ops.rs |  36 -----
->  rust/qemu-api/meson.build            |   1 +
->  rust/qemu-api/src/lib.rs             |   1 +
->  rust/qemu-api/src/memory.rs          | 191 +++++++++++++++++++++++++++
->  rust/qemu-api/src/sysbus.rs          |   7 +-
->  rust/qemu-api/src/zeroable.rs        |  12 ++
->  8 files changed, 234 insertions(+), 58 deletions(-)
->  delete mode 100644 rust/hw/char/pl011/src/memory_ops.rs
->  create mode 100644 rust/qemu-api/src/memory.rs
+The '-old-param' command line option is specific to Arm targets; it
+is very briefly documented as "old param mode".  What this option
+actually does is change the behaviour when directly booting a guest
+kernel, so that command line arguments are passed to the kernel using
+the extremely old "param_struct" ABI, rather than the newer ATAGS or
+even newer DTB mechanisms.
+
+This support was added back in 2007 to support an old vendor kernel
+on the akita/terrier board types:
+ https://mail.gnu.org/archive/html/qemu-devel/2007-07/msg00344.html
+Even then, it was an out-of-date mechanism from the kernel's
+point of view -- the kernel has had a comment since 2001 marking
+it as deprecated. As of mid-2024, the kernel only retained
+param_struct support for the RiscPC and Footbridge platforms:
+ https://lore.kernel.org/linux-arm-kernel/2831c5a6-cfbf-4fe0-b51c-0396e5b0aeb7@app.fastmail.com/
+
+None of the board types QEMU supports need param_struct support;
+mark this option as deprecated.
+
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ docs/about/deprecated.rst | 13 +++++++++++++
+ system/vl.c               |  1 +
+ 2 files changed, 14 insertions(+)
+
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 29de49351d1..a4c7d642236 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -68,6 +68,19 @@ configurations (e.g. -smp drawers=1,books=1,clusters=1 for x86 PC machine) is
+ marked deprecated since 9.0, users have to ensure that all the topology members
+ described with -smp are supported by the target machine.
  
-...
-
-> @@ -490,20 +490,24 @@ impl PL011State {
->      /// location/instance. All its fields are expected to hold unitialized
->      /// values with the sole exception of `parent_obj`.
->      unsafe fn init(&mut self) {
-> +        static PL011_OPS: MemoryRegionOps<PL011State> = MemoryRegionOpsBuilder::<PL011State>::new()
-> +            .read(&PL011State::read)
-> +            .write(&PL011State::write)
-> +            .native_endian()
-> +            .impl_sizes(4, 4)
-> +            .build();
-> +
-
-Nice design. Everything was done smoothly in one go.
-
-> +pub struct MemoryRegionOps<T>(
-> +    bindings::MemoryRegionOps,
-> +    // Note: quite often you'll see PhantomData<fn(&T)> mentioned when discussing
-> +    // covariance and contravariance; you don't need any of those to understand
-> +    // this usage of PhantomData.  Quite simply, MemoryRegionOps<T> *logically*
-> +    // holds callbacks that take an argument of type &T, except the type is erased
-> +    // before the callback is stored in the bindings::MemoryRegionOps field.
-> +    // The argument of PhantomData is a function pointer in order to represent
-> +    // that relationship; while that will also provide desirable and safe variance
-> +    // for T, variance is not the point but just a consequence.
-> +    PhantomData<fn(&T)>,
-> +);
-
-Wow, it can be wrapped like this!
-
-> +}
-> +
-> +/// A safe wrapper around [`bindings::MemoryRegion`].  Compared to the
-> +/// underlying C struct it is marked as pinned because the QOM tree
-> +/// contains a pointer to it.
-> +pub struct MemoryRegion {
-> +    inner: bindings::MemoryRegion,
-> +    _pin: PhantomPinned,
-> +}
-> +
-> +impl MemoryRegion {
-> +    // inline to ensure that it is not included in tests, which only
-> +    // link to hwcore and qom.  FIXME: inlining is actually the opposite
-> +    // of what we want, since this is the type-erased version of the
-> +    // init_io function below.  Look into splitting the qemu_api crate.
-
-Ah, I didn't understand the issue described in this comment. Why would
-inlining affect the linking of tests?
-
-> +    #[inline(always)]
-> +    unsafe fn do_init_io(
-> +        slot: *mut bindings::MemoryRegion,
-> +        owner: *mut Object,
-> +        ops: &'static bindings::MemoryRegionOps,
-> +        name: &'static str,
-> +        size: u64,
-> +    ) {
-> +        unsafe {
-> +            let cstr = CString::new(name).unwrap();
-> +            memory_region_init_io(
-> +                slot,
-> +                owner.cast::<Object>(),
-> +                ops,
-> +                owner.cast::<c_void>(),
-> +                cstr.as_ptr(),
-> +                size,
-> +            );
-> +        }
-> +    }
-> +
-> +    pub fn init_io<T: IsA<Object>>(
-> +        &mut self,
-> +        owner: *mut T,
-> +        ops: &'static MemoryRegionOps<T>,
-> +        name: &'static str,
-
-What about &'static CStr?
-
-Then pl011 could pass `c_str!("pl011")` or `Self::TYPE_NAMSelf::TYPE_NAME`.
-
-Otherwise,
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
++``-old-param`` option for booting Arm kernels via param_struct (since 10.0)
++'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
++
++The ``-old-param`` command line option is specific to Arm targets:
++it is used when directly booting a guest kernel to pass it the
++command line and other information via the old ``param_struct`` ABI,
++rather than the newer ATAGS or DTB mechanisms. This option was only
++ever needed to support ancient kernels on some old board types
++like the ``akita`` or ``terrier``; it has been deprecated in the
++kernel since 2001. None of the board types QEMU supports need
++``param_struct`` support, so this option has been deprecated and will
++be removed in a future QEMU version.
++
+ User-mode emulator command line arguments
+ -----------------------------------------
+ 
+diff --git a/system/vl.c b/system/vl.c
+index c5678267182..32ee1ce7041 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -3438,6 +3438,7 @@ void qemu_init(int argc, char **argv)
+                 nb_prom_envs++;
+                 break;
+             case QEMU_OPTION_old_param:
++                warn_report("-old-param is deprecated");
+                 old_param = 1;
+                 break;
+             case QEMU_OPTION_rtc:
+-- 
+2.34.1
 
 
