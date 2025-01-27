@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77679A2054E
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 08:56:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 937F7A20562
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 08:59:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgQe-0002KP-VS; Tue, 28 Jan 2025 02:54:37 -0500
+	id 1tcgQg-0002MH-Gf; Tue, 28 Jan 2025 02:54:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgQc-0002IH-4p; Tue, 28 Jan 2025 02:54:34 -0500
+ id 1tcgQd-0002JQ-6l; Tue, 28 Jan 2025 02:54:35 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgQa-00081c-G6; Tue, 28 Jan 2025 02:54:33 -0500
+ id 1tcgQa-0008AJ-Kg; Tue, 28 Jan 2025 02:54:34 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DD17EE1ACB;
+ by isrv.corpit.ru (Postfix) with ESMTP id E10A0E1ACC;
  Tue, 28 Jan 2025 10:52:59 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 57E2A1A62BA;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 5BDBD1A62BB;
  Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 2BDE15200B; Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
+ id 2D8675200D; Tue, 28 Jan 2025 10:53:25 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Alexander Bulekov <alxndr@bu.edu>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.16 18/31] fuzz: specify audiodev for usb-audio
-Date: Tue, 28 Jan 2025 00:41:10 +0300
-Message-Id: <20250127214124.3730126-18-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.16 19/31] x86/loader: only patch linux kernels
+Date: Tue, 28 Jan 2025 00:41:11 +0300
+Message-Id: <20250127214124.3730126-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.16-20250128004119@cover.tls.msk.ru>
 References: <qemu-stable-7.2.16-20250128004119@cover.tls.msk.ru>
@@ -60,30 +60,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes test-failure on Fedora 40 CI.
+If the binary loaded via -kernel is *not* a linux kernel (in which
+case protocol == 0), do not patch the linux kernel header fields.
 
-Reported-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Alexander Bulekov <alxndr@bu.edu>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240527040711.311865-1-alxndr@bu.edu>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit e7fca81e170530104c36bd8f3e1d7e7c11011481)
+It's (a) pointless and (b) might break binaries by random patching
+and (c) changes the binary hash which in turn breaks secure boot
+verification.
+
+Background: OVMF happily loads and runs not only linux kernels but
+any efi binary via direct kernel boot.
+
+Note: Breaking the secure boot verification is a problem for linux
+kernels too, but fixed that is left for another day ...
+
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+Message-ID: <20240905141211.1253307-3-kraxel@redhat.com>
+(cherry picked from commit 57e2cc9abf5da38f600354fe920ff20e719607b4)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: it is in hw/i386/x86.c not hw/i386/x86-common.c in 7.2.x)
 
-diff --git a/tests/qtest/fuzz/generic_fuzz_configs.h b/tests/qtest/fuzz/generic_fuzz_configs.h
-index a825b78c14..4c3235311b 100644
---- a/tests/qtest/fuzz/generic_fuzz_configs.h
-+++ b/tests/qtest/fuzz/generic_fuzz_configs.h
-@@ -143,7 +143,8 @@ const generic_fuzz_config predefined_configs[] = {
-         "-chardev null,id=cd0 -chardev null,id=cd1 "
-         "-device usb-braille,chardev=cd0 -device usb-ccid -device usb-ccid "
-         "-device usb-kbd -device usb-mouse -device usb-serial,chardev=cd1 "
--        "-device usb-tablet -device usb-wacom-tablet -device usb-audio",
-+        "-device usb-tablet -device usb-wacom-tablet "
-+        "-device usb-audio,audiodev=snd0 -audiodev none,id=snd0",
-         .objects = "*usb* *uhci* *xhci*",
-     },{
-         .name = "pc-i440fx",
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index 80be3032cc..a2925821c5 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -1084,7 +1084,7 @@ void x86_load_linux(X86MachineState *x86ms,
+      * kernel on the other side of the fw_cfg interface matches the hash of the
+      * file the user passed in.
+      */
+-    if (!sev_enabled()) {
++    if (!sev_enabled() && protocol > 0) {
+         memcpy(setup, header, MIN(sizeof(header), setup_size));
+     }
+ 
 -- 
 2.39.5
 
