@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28257A201B4
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 00:29:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C689A201B5
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 00:29:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcYUt-0006Rr-4j; Mon, 27 Jan 2025 18:26:27 -0500
+	id 1tcYUt-0006Rq-4b; Mon, 27 Jan 2025 18:26:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tcYUh-0006LX-5l
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 18:26:15 -0500
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1tcYUi-0006MV-Q4
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 18:26:19 -0500
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tcYUd-0005XZ-LT
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 18:26:14 -0500
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2ee709715d9so6948913a91.3
- for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 15:26:11 -0800 (PST)
+ id 1tcYUe-0005Xp-Et
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 18:26:16 -0500
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-2ee67e9287fso8638659a91.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 15:26:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738020370; x=1738625170; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738020371; x=1738625171; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6vVvCoSEED6StCi5sBDfcgbMdG6XA3WhhdL8usKsqm8=;
- b=b3Say35nkh5LlZ4EeLZIf7j3CmlNnU2mTQNIKs+sA3jYP8YbqhPCWfOtIzGRtou/JE
- V83LZidyEBIXpgVmycYPDVxHo2qwfrnkzWCNUOAxI0qHzF0rdrfRgLYKjdGipAhTbTSO
- YYlnaWNN1d56vQ6glKJG9sTV8UlF9y6nqJQprUPzUfSA/RR5caC8mDzwRS4ESKL4br1W
- Pbjce1Ly3To1l7lIgFJE1zn7WcN0/e0i+eVK2Ysrx2BMFxtOKTKDi/vg6QO4c/26o241
- /0H4oZ4WuABymSJhQ8ck7Hzn7tHpPKgJMbV0SzBWKuAoUp+xI0/JRWo2rZ6YidxWdl42
- 8JRQ==
+ bh=/sdwLV8iKeS70T4jE5aOB3XPO2jkT8fDK3S2SuLEEx4=;
+ b=zVxfAI7nuE7oQwB7Gw38SnqENV6q89lAmaLvD0nQGTQhPQqqY09eiVaciwir7U9wtm
+ 31PXpKSTOBfSJqgl70ihvTYGKwHQbQR5p/PMxNs549qVG4gSfEoIGZWM1raGMWJ/vsPG
+ AsbbZ6R2LORAaNT3qOMaF9Tkl9GEIV3VEswu290ufroy7WbfGrnbOHdenNcn/v+mhUrA
+ EKFkU0POapQd/+82mKFCeqJpKAPt32cimYqdq+tU3vhNdvKjO8DFDquHpQ7CsZ3FwAjb
+ 95CyL4CEdVREyDavuBFk9gXvd0hR9ZFPScL2vaeMG20fFyvGjkAAXPcJhF2dxJ45stfg
+ KBYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738020370; x=1738625170;
+ d=1e100.net; s=20230601; t=1738020371; x=1738625171;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6vVvCoSEED6StCi5sBDfcgbMdG6XA3WhhdL8usKsqm8=;
- b=abp+qHHYxhmKsd8BzwNNwo/wLbwJoQm5MhcfgXzsVeL41BN7NZ1u2KCb2+PsfFBGXX
- XOux2hZMLoaLykTMFSRDNbeEVu2QbAbpcX48gDcpKIKZqSH0oryxMBnXV092Jm3SRpDl
- /YGXeuWybaz3POQOgv2f0DZrtrNZlBBGE7tVx4vvBYsdrpj7/stSx3tqDMwqaW5Dpjkr
- dVRKC3QBg2nxVzIo8J6xKLDiuSBaTojvzU2qxuzP9zapqYT0K+peiAHTYFEFRp8g+aJz
- LgtH/ine9f7yiFrbki6nwbvyQjU/9NY4FatvcV3xyk97MeOH4t2FAW3Ncfu4tTvHyAsk
- BdWg==
-X-Gm-Message-State: AOJu0YxbiB17U3b6PBGBAUjbDSZMAjW7tMjA2oBX7uZxXxZ3Jxj9aNXl
- mQkq2dt3djRY5SBjHDMgPdUOfdC3VqBCEqVZz/uJ1EmZqJAFjssTp2apOdoNNTWQ+8xqNn0Bh1W
- j
-X-Gm-Gg: ASbGncvKxeiGSzHyShkY7zGQhsSxyGd4IhZnbsUs+ZtNprKtpkOUc8Vvyr1TiiJROsi
- BqgiCNI/QMxvY7cl+VEBHSaGCmZ5uV4+snlFJz0JR2Y+KXYzoETxWPZprPkHSK8MnLHpEnRQzVE
- 3Ozka/Z8XvMEOgIdcAhSz4rRVy6H2+BPFyhXAab2gskZ9gAL7UBsVJVCWVx0oJ1fyP917zwt5pD
- 6QsiOw0s6nTxUbMwNpwMxHRxhbbTQDxRSwYLvuVlNP8MG5YJqAhGfVyMMYj+Qd8PmR5A0ZzfVxd
- P4T/hEKI9EpePX0l2oU0QtHEdoH0BHL9WGqWbHI=
-X-Google-Smtp-Source: AGHT+IHNB54/w6AULh5aWPnemOEaR7eAUQXk6xOoAMbwg8aSTtQLaCe4u68UFyOYobAAaIUA4G/aJA==
-X-Received: by 2002:a17:90b:534b:b0:2f6:f107:fae6 with SMTP id
- 98e67ed59e1d1-2f782d32397mr51458002a91.23.1738020370305; 
- Mon, 27 Jan 2025 15:26:10 -0800 (PST)
+ bh=/sdwLV8iKeS70T4jE5aOB3XPO2jkT8fDK3S2SuLEEx4=;
+ b=aHj/wb/hczplKt3dD7M450oakuG0Tpf48kvevqej/tB+SYhJGDeLfP0vYFT/aGcg7E
+ wCKC2g2Wb25sJD5nldB0pmkVo13QXUqTJgP5eXVfP71P7o+LAKWVssjBDx07xtyUajMq
+ dkcqMf2zNmA+SkAKFL8N5fllqXnDui7PeQVc76YWyfBEuF4W+YC+MoFXqaQl1nJpnj2V
+ d/OPqCWrajw/1kX1prj5gzGCBMQk2Go2cvE7ZicqbkXu9jAPZYvLr0b2uXk4gBFDQbuv
+ dnCwTzx4PZy7wq8cF+GSfQrRbGfxTkGJBML0I0Eb3YcrMEf0wnV4rHOXUBdAmv7Rvg+D
+ kvdQ==
+X-Gm-Message-State: AOJu0YzMrzidOGfIicb6GTFtx3YNTKnEoYFhrYF7XMfn5yB9gIBPhxqE
+ CtX92e6An7ncoOuVy5iEgC+bP+I1TyCogUgZAhuQ5KYAsC5e0wsgMXNLWddzfAqoXeROw1l40sW
+ x
+X-Gm-Gg: ASbGncvpBiJuJQF+uukN06H9JsnC2biNx5Fzw19gC2n50UwVB10+474bJ0zKcu6WDQd
+ +PxTfFNOvzS+o4ybt3nKNKFTueTS+gAROxz5IfVvShzK7RLzh7at52NMTioCi6OpysJx5erUucK
+ 98uCXacg8HHu/0FCfWKxcjJ4KkJlG+sWK4aUAdQd3UjWPFzcjLR4udMtC0PMpFh9ONxuZh27Kip
+ hf0Kx2Rd0WuamkFgQ6oAvI4/6QHgF0yvqsgrzpVKQbWWwzS3yNz0ZaYoR6arsEKwGsl7ldCzYdK
+ tG2lsmKlGpz24dLt5ckn/G0k07sZMvgq626yKMM=
+X-Google-Smtp-Source: AGHT+IF7BtDp1GPJ9KO11A05FQjresa6d0dW2orCJxhrgM6/t3BYLrQolCi+7ui4ld0i8hPJwc4BNA==
+X-Received: by 2002:a17:90b:540b:b0:2f2:8bdd:cd8b with SMTP id
+ 98e67ed59e1d1-2f782d972a2mr59914566a91.29.1738020371067; 
+ Mon, 27 Jan 2025 15:26:11 -0800 (PST)
 Received: from stoup.. (174-21-71-127.tukw.qwest.net. [174.21.71.127])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f7ffb1b31esm7833000a91.47.2025.01.27.15.26.09
+ 98e67ed59e1d1-2f7ffb1b31esm7833000a91.47.2025.01.27.15.26.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Jan 2025 15:26:09 -0800 (PST)
+ Mon, 27 Jan 2025 15:26:10 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
 	qemu-arm@nongnu.org
-Subject: [PATCH 06/22] target/arm: Introduce CPUARMState.vfp.fp_status[]
-Date: Mon, 27 Jan 2025 15:25:48 -0800
-Message-ID: <20250127232604.20386-7-richard.henderson@linaro.org>
+Subject: [PATCH 07/22] target/arm: Remove standard_fp_status_f16
+Date: Mon, 27 Jan 2025 15:25:49 -0800
+Message-ID: <20250127232604.20386-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250127232604.20386-1-richard.henderson@linaro.org>
 References: <20250127232604.20386-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,242 +98,196 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move ARMFPStatusFlavour to cpu.h with which to index
-this array.  For now, place the array in an anonymous
-union with the existing structures.  Adjust the order
-of the existing structures to match the enum.
-
-Simplify fpstatus_ptr() using the new array.
+Replace with fp_status[FPST_STD_F16].
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpu.h           | 119 +++++++++++++++++++++----------------
- target/arm/tcg/translate.h |  64 +-------------------
- 2 files changed, 70 insertions(+), 113 deletions(-)
+ target/arm/cpu.h            |  1 -
+ target/arm/cpu.c            |  4 ++--
+ target/arm/tcg/mve_helper.c | 24 ++++++++++++------------
+ target/arm/vfp_helper.c     |  8 ++++----
+ 4 files changed, 18 insertions(+), 19 deletions(-)
 
 diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index f562e0687c..c025649ff2 100644
+index c025649ff2..893a2cdd0a 100644
 --- a/target/arm/cpu.h
 +++ b/target/arm/cpu.h
-@@ -202,6 +202,61 @@ typedef struct ARMMMUFaultInfo ARMMMUFaultInfo;
+@@ -697,7 +697,6 @@ typedef struct CPUArchState {
+                 float_status ah_fp_status;
+                 float_status ah_fp_status_f16;
+                 float_status standard_fp_status;
+-                float_status standard_fp_status_f16;
+             };
+         };
  
- typedef struct NVICState NVICState;
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 8fa220a716..b887edf1d1 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -549,13 +549,13 @@ static void arm_cpu_reset_hold(Object *obj, ResetType type)
+     set_flush_to_zero(1, &env->vfp.standard_fp_status);
+     set_flush_inputs_to_zero(1, &env->vfp.standard_fp_status);
+     set_default_nan_mode(1, &env->vfp.standard_fp_status);
+-    set_default_nan_mode(1, &env->vfp.standard_fp_status_f16);
++    set_default_nan_mode(1, &env->vfp.fp_status[FPST_STD_F16]);
+     arm_set_default_fp_behaviours(&env->vfp.fp_status_a32);
+     arm_set_default_fp_behaviours(&env->vfp.fp_status_a64);
+     arm_set_default_fp_behaviours(&env->vfp.standard_fp_status);
+     arm_set_default_fp_behaviours(&env->vfp.fp_status_f16_a32);
+     arm_set_default_fp_behaviours(&env->vfp.fp_status_f16_a64);
+-    arm_set_default_fp_behaviours(&env->vfp.standard_fp_status_f16);
++    arm_set_default_fp_behaviours(&env->vfp.fp_status[FPST_STD_F16]);
+     arm_set_ah_fp_behaviours(&env->vfp.ah_fp_status);
+     set_flush_to_zero(1, &env->vfp.ah_fp_status);
+     set_flush_inputs_to_zero(1, &env->vfp.ah_fp_status);
+diff --git a/target/arm/tcg/mve_helper.c b/target/arm/tcg/mve_helper.c
+index 03ebef5ef2..911a53a23a 100644
+--- a/target/arm/tcg/mve_helper.c
++++ b/target/arm/tcg/mve_helper.c
+@@ -2814,7 +2814,7 @@ DO_VMAXMINA(vminaw, 4, int32_t, uint32_t, DO_MIN)
+             if ((mask & MAKE_64BIT_MASK(0, ESIZE)) == 0) {              \
+                 continue;                                               \
+             }                                                           \
+-            fpst = (ESIZE == 2) ? &env->vfp.standard_fp_status_f16 :    \
++            fpst = (ESIZE == 2) ? &env->vfp.fp_status[FPST_STD_F16] :   \
+                 &env->vfp.standard_fp_status;                           \
+             if (!(mask & 1)) {                                          \
+                 /* We need the result but without updating flags */     \
+@@ -2888,7 +2888,7 @@ DO_2OP_FP_ALL(vminnma, minnuma)
+                 r[e] = 0;                                               \
+                 continue;                                               \
+             }                                                           \
+-            fpst = (ESIZE == 2) ? &env->vfp.standard_fp_status_f16 :    \
++            fpst = (ESIZE == 2) ? &env->vfp.fp_status[FPST_STD_F16] :   \
+                 &env->vfp.standard_fp_status;                           \
+             if (!(tm & 1)) {                                            \
+                 /* We need the result but without updating flags */     \
+@@ -2926,7 +2926,7 @@ DO_VCADD_FP(vfcadd270s, 4, float32, float32_add, float32_sub)
+             if ((mask & MAKE_64BIT_MASK(0, ESIZE)) == 0) {              \
+                 continue;                                               \
+             }                                                           \
+-            fpst = (ESIZE == 2) ? &env->vfp.standard_fp_status_f16 :    \
++            fpst = (ESIZE == 2) ? &env->vfp.fp_status[FPST_STD_F16] :   \
+                 &env->vfp.standard_fp_status;                           \
+             if (!(mask & 1)) {                                          \
+                 /* We need the result but without updating flags */     \
+@@ -2964,7 +2964,7 @@ DO_VFMA(vfmss, 4, float32, true)
+             if ((mask & MAKE_64BIT_MASK(0, ESIZE * 2)) == 0) {          \
+                 continue;                                               \
+             }                                                           \
+-            fpst0 = (ESIZE == 2) ? &env->vfp.standard_fp_status_f16 :   \
++            fpst0 = (ESIZE == 2) ? &env->vfp.fp_status[FPST_STD_F16] :  \
+                 &env->vfp.standard_fp_status;                           \
+             fpst1 = fpst0;                                              \
+             if (!(mask & 1)) {                                          \
+@@ -3049,7 +3049,7 @@ DO_VCMLA(vcmla270s, 4, float32, 3, DO_VCMLAS)
+             if ((mask & MAKE_64BIT_MASK(0, ESIZE)) == 0) {              \
+                 continue;                                               \
+             }                                                           \
+-            fpst = (ESIZE == 2) ? &env->vfp.standard_fp_status_f16 :    \
++            fpst = (ESIZE == 2) ? &env->vfp.fp_status[FPST_STD_F16] :   \
+                 &env->vfp.standard_fp_status;                           \
+             if (!(mask & 1)) {                                          \
+                 /* We need the result but without updating flags */     \
+@@ -3084,7 +3084,7 @@ DO_2OP_FP_SCALAR_ALL(vfmul_scalar, mul)
+             if ((mask & MAKE_64BIT_MASK(0, ESIZE)) == 0) {              \
+                 continue;                                               \
+             }                                                           \
+-            fpst = (ESIZE == 2) ? &env->vfp.standard_fp_status_f16 :    \
++            fpst = (ESIZE == 2) ? &env->vfp.fp_status[FPST_STD_F16] :   \
+                 &env->vfp.standard_fp_status;                           \
+             if (!(mask & 1)) {                                          \
+                 /* We need the result but without updating flags */     \
+@@ -3117,7 +3117,7 @@ DO_2OP_FP_ACC_SCALAR(vfmas_scalars, 4, float32, DO_VFMAS_SCALARS)
+         TYPE *m = vm;                                           \
+         TYPE ra = (TYPE)ra_in;                                  \
+         float_status *fpst = (ESIZE == 2) ?                     \
+-            &env->vfp.standard_fp_status_f16 :                  \
++            &env->vfp.fp_status[FPST_STD_F16] :                 \
+             &env->vfp.standard_fp_status;                       \
+         for (e = 0; e < 16 / ESIZE; e++, mask >>= ESIZE) {      \
+             if (mask & 1) {                                     \
+@@ -3168,7 +3168,7 @@ DO_FP_VMAXMINV(vminnmavs, 4, float32, true, float32_minnum)
+             if ((mask & emask) == 0) {                                  \
+                 continue;                                               \
+             }                                                           \
+-            fpst = (ESIZE == 2) ? &env->vfp.standard_fp_status_f16 :    \
++            fpst = (ESIZE == 2) ? &env->vfp.fp_status[FPST_STD_F16] :   \
+                 &env->vfp.standard_fp_status;                           \
+             if (!(mask & (1 << (e * ESIZE)))) {                         \
+                 /* We need the result but without updating flags */     \
+@@ -3202,7 +3202,7 @@ DO_FP_VMAXMINV(vminnmavs, 4, float32, true, float32_minnum)
+             if ((mask & emask) == 0) {                                  \
+                 continue;                                               \
+             }                                                           \
+-            fpst = (ESIZE == 2) ? &env->vfp.standard_fp_status_f16 :    \
++            fpst = (ESIZE == 2) ? &env->vfp.fp_status[FPST_STD_F16] :   \
+                 &env->vfp.standard_fp_status;                           \
+             if (!(mask & (1 << (e * ESIZE)))) {                         \
+                 /* We need the result but without updating flags */     \
+@@ -3267,7 +3267,7 @@ DO_VCMP_FP_BOTH(vfcmples, vfcmple_scalars, 4, float32, !DO_GT32)
+             if ((mask & MAKE_64BIT_MASK(0, ESIZE)) == 0) {              \
+                 continue;                                               \
+             }                                                           \
+-            fpst = (ESIZE == 2) ? &env->vfp.standard_fp_status_f16 :    \
++            fpst = (ESIZE == 2) ? &env->vfp.fp_status[FPST_STD_F16] :   \
+                 &env->vfp.standard_fp_status;                           \
+             if (!(mask & 1)) {                                          \
+                 /* We need the result but without updating flags */     \
+@@ -3301,7 +3301,7 @@ DO_VCVT_FIXED(vcvt_fu, 4, uint32_t, helper_vfp_touls_round_to_zero)
+         float_status *fpst;                                             \
+         float_status scratch_fpst;                                      \
+         float_status *base_fpst = (ESIZE == 2) ?                        \
+-            &env->vfp.standard_fp_status_f16 :                          \
++            &env->vfp.fp_status[FPST_STD_F16] :                         \
+             &env->vfp.standard_fp_status;                               \
+         uint32_t prev_rmode = get_float_rounding_mode(base_fpst);       \
+         set_float_rounding_mode(rmode, base_fpst);                      \
+@@ -3427,7 +3427,7 @@ void HELPER(mve_vcvtt_hs)(CPUARMState *env, void *vd, void *vm)
+             if ((mask & MAKE_64BIT_MASK(0, ESIZE)) == 0) {              \
+                 continue;                                               \
+             }                                                           \
+-            fpst = (ESIZE == 2) ? &env->vfp.standard_fp_status_f16 :    \
++            fpst = (ESIZE == 2) ? &env->vfp.fp_status[FPST_STD_F16] :   \
+                 &env->vfp.standard_fp_status;                           \
+             if (!(mask & 1)) {                                          \
+                 /* We need the result but without updating flags */     \
+diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
+index e63455c4bb..28c2b40bd8 100644
+--- a/target/arm/vfp_helper.c
++++ b/target/arm/vfp_helper.c
+@@ -122,7 +122,7 @@ static uint32_t vfp_get_fpsr_from_host(CPUARMState *env)
+     /* FZ16 does not generate an input denormal exception.  */
+     a32_flags |= (get_float_exception_flags(&env->vfp.fp_status_f16_a32)
+           & ~float_flag_input_denormal_flushed);
+-    a32_flags |= (get_float_exception_flags(&env->vfp.standard_fp_status_f16)
++    a32_flags |= (get_float_exception_flags(&env->vfp.fp_status[FPST_STD_F16])
+           & ~float_flag_input_denormal_flushed);
  
-+/*
-+ * Enum for indexing vfp.fp_status[].
-+ *
-+ * FPST_A32: is the "normal" fp status for AArch32 insns
-+ * FPST_A64: is the "normal" fp status for AArch64 insns
-+ * FPST_A32_F16: used for AArch32 half-precision calculations
-+ * FPST_A64_F16: used for AArch64 half-precision calculations
-+ * FPST_STD: the ARM "Standard FPSCR Value"
-+ * FPST_STD_F16: used for half-precision
-+ *       calculations with the ARM "Standard FPSCR Value"
-+ * FPST_AH: used for the A64 insns which change behaviour
-+ *       when FPCR.AH == 1 (bfloat16 conversions and multiplies,
-+ *       and the reciprocal and square root estimate/step insns)
-+ * FPST_AH_F16: used for the A64 insns which change behaviour
-+ *       when FPCR.AH == 1 (bfloat16 conversions and multiplies,
-+ *       and the reciprocal and square root estimate/step insns);
-+ *       for half-precision
-+ *
-+ * Half-precision operations are governed by a separate
-+ * flush-to-zero control bit in FPSCR:FZ16. We pass a separate
-+ * status structure to control this.
-+ *
-+ * The "Standard FPSCR", ie default-NaN, flush-to-zero,
-+ * round-to-nearest and is used by any operations (generally
-+ * Neon) which the architecture defines as controlled by the
-+ * standard FPSCR value rather than the FPSCR.
-+ *
-+ * The "standard FPSCR but for fp16 ops" is needed because
-+ * the "standard FPSCR" tracks the FPSCR.FZ16 bit rather than
-+ * using a fixed value for it.
-+ *
-+ * The ah_fp_status is needed because some insns have different
-+ * behaviour when FPCR.AH == 1: they don't update cumulative
-+ * exception flags, they act like FPCR.{FZ,FIZ} = {1,1} and
-+ * they ignore FPCR.RMode. But they don't ignore FPCR.FZ16,
-+ * which means we need an ah_fp_status_f16 as well.
-+ *
-+ * To avoid having to transfer exception bits around, we simply
-+ * say that the FPSCR cumulative exception flags are the logical
-+ * OR of the flags in the four fp statuses. This relies on the
-+ * only thing which needs to read the exception flags being
-+ * an explicit FPSCR read.
-+ */
-+typedef enum ARMFPStatusFlavour {
-+    FPST_A32,
-+    FPST_A64,
-+    FPST_A32_F16,
-+    FPST_A64_F16,
-+    FPST_AH,
-+    FPST_AH_F16,
-+    FPST_STD,
-+    FPST_STD_F16,
-+} ARMFPStatusFlavour;
-+#define FPST_COUNT  8
-+
- typedef struct CPUArchState {
-     /* Regs for current mode.  */
-     uint32_t regs[16];
-@@ -631,56 +686,20 @@ typedef struct CPUArchState {
-         /* Scratch space for aa32 neon expansion.  */
-         uint32_t scratch[8];
- 
--        /* There are a number of distinct float control structures:
--         *
--         *  fp_status_a32: is the "normal" fp status for AArch32 insns
--         *  fp_status_a64: is the "normal" fp status for AArch64 insns
--         *  fp_status_fp16_a32: used for AArch32 half-precision calculations
--         *  fp_status_fp16_a64: used for AArch64 half-precision calculations
--         *  standard_fp_status : the ARM "Standard FPSCR Value"
--         *  standard_fp_status_fp16 : used for half-precision
--         *       calculations with the ARM "Standard FPSCR Value"
--         *  ah_fp_status: used for the A64 insns which change behaviour
--         *       when FPCR.AH == 1 (bfloat16 conversions and multiplies,
--         *       and the reciprocal and square root estimate/step insns)
--         *  ah_fp_status_f16: used for the A64 insns which change behaviour
--         *       when FPCR.AH == 1 (bfloat16 conversions and multiplies,
--         *       and the reciprocal and square root estimate/step insns);
--         *       for half-precision
--         *
--         * Half-precision operations are governed by a separate
--         * flush-to-zero control bit in FPSCR:FZ16. We pass a separate
--         * status structure to control this.
--         *
--         * The "Standard FPSCR", ie default-NaN, flush-to-zero,
--         * round-to-nearest and is used by any operations (generally
--         * Neon) which the architecture defines as controlled by the
--         * standard FPSCR value rather than the FPSCR.
--         *
--         * The "standard FPSCR but for fp16 ops" is needed because
--         * the "standard FPSCR" tracks the FPSCR.FZ16 bit rather than
--         * using a fixed value for it.
--         *
--         * The ah_fp_status is needed because some insns have different
--         * behaviour when FPCR.AH == 1: they don't update cumulative
--         * exception flags, they act like FPCR.{FZ,FIZ} = {1,1} and
--         * they ignore FPCR.RMode. But they don't ignore FPCR.FZ16,
--         * which means we need an ah_fp_status_f16 as well.
--         *
--         * To avoid having to transfer exception bits around, we simply
--         * say that the FPSCR cumulative exception flags are the logical
--         * OR of the flags in the four fp statuses. This relies on the
--         * only thing which needs to read the exception flags being
--         * an explicit FPSCR read.
--         */
--        float_status fp_status_a32;
--        float_status fp_status_a64;
--        float_status fp_status_f16_a32;
--        float_status fp_status_f16_a64;
--        float_status standard_fp_status;
--        float_status standard_fp_status_f16;
--        float_status ah_fp_status;
--        float_status ah_fp_status_f16;
-+        /* There are a number of distinct float control structures. */
-+        union {
-+            float_status fp_status[FPST_COUNT];
-+            struct {
-+                float_status fp_status_a32;
-+                float_status fp_status_a64;
-+                float_status fp_status_f16_a32;
-+                float_status fp_status_f16_a64;
-+                float_status ah_fp_status;
-+                float_status ah_fp_status_f16;
-+                float_status standard_fp_status;
-+                float_status standard_fp_status_f16;
-+            };
-+        };
- 
-         uint64_t zcr_el[4];   /* ZCR_EL[1-3] */
-         uint64_t smcr_el[4];  /* SMCR_EL[1-3] */
-diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
-index d4ae39c469..6f854f1031 100644
---- a/target/arm/tcg/translate.h
-+++ b/target/arm/tcg/translate.h
-@@ -670,80 +670,18 @@ static inline CPUARMTBFlags arm_tbflags_from_tb(const TranslationBlock *tb)
-     return (CPUARMTBFlags){ tb->flags, tb->cs_base };
+     a64_flags |= get_float_exception_flags(&env->vfp.fp_status_a64);
+@@ -158,7 +158,7 @@ static void vfp_clear_float_status_exc_flags(CPUARMState *env)
+     set_float_exception_flags(0, &env->vfp.fp_status_f16_a32);
+     set_float_exception_flags(0, &env->vfp.fp_status_f16_a64);
+     set_float_exception_flags(0, &env->vfp.standard_fp_status);
+-    set_float_exception_flags(0, &env->vfp.standard_fp_status_f16);
++    set_float_exception_flags(0, &env->vfp.fp_status[FPST_STD_F16]);
+     set_float_exception_flags(0, &env->vfp.ah_fp_status);
+     set_float_exception_flags(0, &env->vfp.ah_fp_status_f16);
  }
- 
--/*
-- * Enum for argument to fpstatus_ptr().
-- */
--typedef enum ARMFPStatusFlavour {
--    FPST_A32,
--    FPST_A64,
--    FPST_A32_F16,
--    FPST_A64_F16,
--    FPST_AH,
--    FPST_AH_F16,
--    FPST_STD,
--    FPST_STD_F16,
--} ARMFPStatusFlavour;
--
- /**
-  * fpstatus_ptr: return TCGv_ptr to the specified fp_status field
-  *
-  * We have multiple softfloat float_status fields in the Arm CPU state struct
-  * (see the comment in cpu.h for details). Return a TCGv_ptr which has
-  * been set up to point to the requested field in the CPU state struct.
-- * The options are:
-- *
-- * FPST_A32
-- *   for AArch32 non-FP16 operations controlled by the FPCR
-- * FPST_A64
-- *   for AArch64 non-FP16 operations controlled by the FPCR
-- * FPST_A32_F16
-- *   for AArch32 operations controlled by the FPCR where FPCR.FZ16 is to be used
-- * FPST_A64_F16
-- *   for AArch64 operations controlled by the FPCR where FPCR.FZ16 is to be used
-- * FPST_AH:
-- *   for AArch64 operations which change behaviour when AH=1 (specifically,
-- *   bfloat16 conversions and multiplies, and the reciprocal and square root
-- *   estimate/step insns)
-- * FPST_AH_F16:
-- *   ditto, but for half-precision operations
-- * FPST_STD
-- *   for A32/T32 Neon operations using the "standard FPSCR value"
-- * FPST_STD_F16
-- *   as FPST_STD, but where FPCR.FZ16 is to be used
-  */
- static inline TCGv_ptr fpstatus_ptr(ARMFPStatusFlavour flavour)
- {
-     TCGv_ptr statusptr = tcg_temp_new_ptr();
--    int offset;
-+    int offset = offsetof(CPUARMState, vfp.fp_status[flavour]);
- 
--    switch (flavour) {
--    case FPST_A32:
--        offset = offsetof(CPUARMState, vfp.fp_status_a32);
--        break;
--    case FPST_A64:
--        offset = offsetof(CPUARMState, vfp.fp_status_a64);
--        break;
--    case FPST_A32_F16:
--        offset = offsetof(CPUARMState, vfp.fp_status_f16_a32);
--        break;
--    case FPST_A64_F16:
--        offset = offsetof(CPUARMState, vfp.fp_status_f16_a64);
--        break;
--    case FPST_AH:
--        offset = offsetof(CPUARMState, vfp.ah_fp_status);
--        break;
--    case FPST_AH_F16:
--        offset = offsetof(CPUARMState, vfp.ah_fp_status_f16);
--        break;
--    case FPST_STD:
--        offset = offsetof(CPUARMState, vfp.standard_fp_status);
--        break;
--    case FPST_STD_F16:
--        offset = offsetof(CPUARMState, vfp.standard_fp_status_f16);
--        break;
--    default:
--        g_assert_not_reached();
--    }
-     tcg_gen_addi_ptr(statusptr, tcg_env, offset);
-     return statusptr;
- }
+@@ -205,11 +205,11 @@ static void vfp_set_fpcr_to_host(CPUARMState *env, uint32_t val, uint32_t mask)
+         bool ftz_enabled = val & FPCR_FZ16;
+         set_flush_to_zero(ftz_enabled, &env->vfp.fp_status_f16_a32);
+         set_flush_to_zero(ftz_enabled, &env->vfp.fp_status_f16_a64);
+-        set_flush_to_zero(ftz_enabled, &env->vfp.standard_fp_status_f16);
++        set_flush_to_zero(ftz_enabled, &env->vfp.fp_status[FPST_STD_F16]);
+         set_flush_to_zero(ftz_enabled, &env->vfp.ah_fp_status_f16);
+         set_flush_inputs_to_zero(ftz_enabled, &env->vfp.fp_status_f16_a32);
+         set_flush_inputs_to_zero(ftz_enabled, &env->vfp.fp_status_f16_a64);
+-        set_flush_inputs_to_zero(ftz_enabled, &env->vfp.standard_fp_status_f16);
++        set_flush_inputs_to_zero(ftz_enabled, &env->vfp.fp_status[FPST_STD_F16]);
+         set_flush_inputs_to_zero(ftz_enabled, &env->vfp.ah_fp_status_f16);
+     }
+     if (changed & FPCR_FZ) {
 -- 
 2.43.0
 
