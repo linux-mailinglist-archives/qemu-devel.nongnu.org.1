@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDBC3A1D249
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 09:23:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 500BAA1D28C
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 09:52:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcKO2-0002H7-Ns; Mon, 27 Jan 2025 03:22:26 -0500
+	id 1tcKpn-0000V7-B1; Mon, 27 Jan 2025 03:51:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tcKO0-0002GQ-0P; Mon, 27 Jan 2025 03:22:24 -0500
-Received: from mgamail.intel.com ([198.175.65.11])
+ id 1tcKpk-0000U5-6J; Mon, 27 Jan 2025 03:51:04 -0500
+Received: from mgamail.intel.com ([198.175.65.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tcKNx-0004JO-Dn; Mon, 27 Jan 2025 03:22:23 -0500
+ id 1tcKpg-0007VZ-Jn; Mon, 27 Jan 2025 03:51:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1737966142; x=1769502142;
+ t=1737967861; x=1769503861;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=A6CWQx7dOOYy0iRH1Pi9Ekl4iJ390pJ2cTjmmpYgulg=;
- b=fJ2UR8bv6dcsBfc3hPoe5a5eN54qgPXo7Kyd9/FajjG8MBpczngVWxVT
- I6wR1F2iqeiHTV2D4wLpfIUWvugTJhNrgL8EA6Zsg/tDPsx32toVCsteB
- ZMY2r9mPFjvr60HWIeiEoG9lrgquDqE5cN1S7KO0TGENthTUDpqQNIUxp
- 8dPJm6lMgrpwoo8jUohIaH6ZJUIrble3yD9/Nua9MwugdEIJmm8reAz3H
- Kbw325gybMXhl9bdP2WDbCmH6NPiG32cgopY30JrQ3gBW9GqXNrm/dMWB
- FL2KAnGX+JrZVLjkjuPB+5Buu6vo4sI60GqtbqePNfVgItHhgiaFAd/Re Q==;
-X-CSE-ConnectionGUID: RprspQcRRTCXiS/adDzoPA==
-X-CSE-MsgGUID: y7lGvBm2QPiuFHw1iGHuWQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11327"; a="48921854"
-X-IronPort-AV: E=Sophos;i="6.13,237,1732608000"; d="scan'208";a="48921854"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jan 2025 00:22:18 -0800
-X-CSE-ConnectionGUID: z7Ru6dXDTvOkoNZYZ4lfSw==
-X-CSE-MsgGUID: GQ7IprNCRhmp7sDNhtGyjQ==
+ bh=KNoYsFJjt1OHIm/LLCI9R/NzyPcPNRqNhS/7ZKR8CQU=;
+ b=LGsmYmqctBwgh+GMLu2Cwbvek38ZeDbO6p+ObQODfOXGrfqMyJiG4ny0
+ dZD2tN10czI2KZ6QLqWlYYRzVOYx50OHK9PWTLd4yQaZB4PeV3+xWz4/Q
+ XIfGXehah2Bh3Xgl2PU4lQa4vYkrqhMvC8Ffn4R/9wG68RArC7dCYcqqN
+ bqMUO8exq7BrAxIDhPob3WAllR6hmYcXrHuUy6gWypM/TyZsPZnZxdyvb
+ JOo1UwtpX1sKPOlmynuSXajjqJxNn8xm+IMlMe9JADSF5ilBvkH1vNH7S
+ pnTjGj7L1yLR34RNMNglo7MzF/rQ63Gu62hHQxqqh04P7LWbsyOzSiq2g w==;
+X-CSE-ConnectionGUID: I3a/4iqKQmqEwPqYROl85A==
+X-CSE-MsgGUID: 2DUxECiyRdOMnebSnP2Q6g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11327"; a="38302479"
+X-IronPort-AV: E=Sophos;i="6.13,237,1732608000"; d="scan'208";a="38302479"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jan 2025 00:50:57 -0800
+X-CSE-ConnectionGUID: ceW7WAkHR+6WzE/pCda2kg==
+X-CSE-MsgGUID: tk/HigQ5T+yLULCL+4TkzQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,237,1732608000"; d="scan'208";a="108179328"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="112398966"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa009.jf.intel.com with ESMTP; 27 Jan 2025 00:22:16 -0800
-Date: Mon, 27 Jan 2025 16:41:40 +0800
+ by fmviesa003.fm.intel.com with ESMTP; 27 Jan 2025 00:50:55 -0800
+Date: Mon, 27 Jan 2025 17:10:20 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 04/10] rust: callbacks: allow passing optional callbacks
- as ()
-Message-ID: <Z5dGxClUIceaTRaO@intel.com>
+Subject: Re: [PATCH 07/10] rust: qdev: make ObjectImpl a supertrait of
+ DeviceImpl
+Message-ID: <Z5dNfKeRnV/modpA@intel.com>
 References: <20250117194003.1173231-1-pbonzini@redhat.com>
- <20250117194003.1173231-5-pbonzini@redhat.com>
+ <20250117194003.1173231-8-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250117194003.1173231-5-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250117194003.1173231-8-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -56
 X-Spam_score: -5.7
@@ -80,33 +80,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> Date: Fri, 17 Jan 2025 20:39:57 +0100
+On Fri, Jan 17, 2025 at 08:40:00PM +0100, Paolo Bonzini wrote:
+> Date: Fri, 17 Jan 2025 20:40:00 +0100
 > From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 04/10] rust: callbacks: allow passing optional callbacks as
->  ()
+> Subject: [PATCH 07/10] rust: qdev: make ObjectImpl a supertrait of
+>  DeviceImpl
 > X-Mailer: git-send-email 2.47.1
 > 
-> In some cases, callbacks are optional.  Using "Some(function)" and "None"
-> does not work well, because when someone writes "None" the compiler does
-> not know what to use for "F" in "Option<F>".
-> 
-> Therefore, adopt () to mean a "null" callback.  It is possible to enforce
-> that a callback is valid by adding a "let _: () = F::ASSERT_IS_SOME" before
-> the invocation of F::call.
+> In practice it has to be implemented always in order to access an
+> implementation of ClassInitImpl<ObjectClass>.  Make the relationship
+> explicit in the code.
 > 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  rust/qemu-api/src/callbacks.rs | 97 ++++++++++++++++++++++++++++++++++
->  1 file changed, 97 insertions(+)
-
-Awesome trick.
+>  rust/qemu-api/src/qdev.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
-> +    /// Referring to this constant asserts that the `Self` type is an actual
-> +    /// function type, which can be used to catch incorrect use of `()`
-> +    /// at  compile time.
-
-An extra whitespace.
 
 
