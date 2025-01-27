@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B2D3A1D85B
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:28:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10CB4A1D7EF
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:20:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcPxA-0008QF-5T; Mon, 27 Jan 2025 09:19:04 -0500
+	id 1tcPwp-0008Om-LF; Mon, 27 Jan 2025 09:18:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcPwN-0008KU-8n; Mon, 27 Jan 2025 09:18:17 -0500
+ id 1tcPwN-0008KV-Ji; Mon, 27 Jan 2025 09:18:17 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcPwL-0002J5-64; Mon, 27 Jan 2025 09:18:15 -0500
+ id 1tcPwL-0002J4-Hw; Mon, 27 Jan 2025 09:18:15 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id 273A7E0E28;
+ by isrv.corpit.ru (Postfix) with ESMTP id 21A64E0E27;
  Mon, 27 Jan 2025 17:17:39 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 59AC551D5D; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
+ id 5C08851D5F; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
-	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.1 00/41] Patch Round-up for stable 9.2.1,
- freeze on 2025-02-06
-Date: Mon, 27 Jan 2025 17:17:14 +0300
-Message-Id: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ Dirk Herrendorfer <d.herrendoerfer@de.ibm.com>, Greg Kurz <groug@kaod.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.1 01/41] 9pfs: fix regression regarding CVE-2023-2861
+Date: Mon, 27 Jan 2025 17:17:15 +0300
+Message-Id: <20250127141803.3514882-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
+References: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -57,105 +58,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v9.2.1:
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-9.2
+The released fix for this CVE:
 
-Patch freeze is 2025-02-06, and the release is planned for 2025-02-08:
+  f6b0de53fb8 ("9pfs: prevent opening special files (CVE-2023-2861)")
 
-  https://wiki.qemu.org/Planning/9.2
+caused a regression with security_model=passthrough. When handling a
+'Tmknod' request there was a side effect that 'Tmknod' request could fail
+as 9p server was trying to adjust permissions:
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
+  #6  close_if_special_file (fd=30) at ../hw/9pfs/9p-util.h:140
+  #7  openat_file (mode=<optimized out>, flags=2228224,
+      name=<optimized out>, dirfd=<optimized out>) at
+      ../hw/9pfs/9p-util.h:181
+  #8  fchmodat_nofollow (dirfd=dirfd@entry=31,
+      name=name@entry=0x5555577ea6e0 "mysocket", mode=493) at
+      ../hw/9pfs/9p-local.c:360
+  #9  local_set_cred_passthrough (credp=0x7ffbbc4ace10, name=0x5555577ea6e0
+      "mysocket", dirfd=31, fs_ctx=0x55555811f528) at
+      ../hw/9pfs/9p-local.c:457
+  #10 local_mknod (fs_ctx=0x55555811f528, dir_path=<optimized out>,
+      name=0x5555577ea6e0 "mysocket", credp=0x7ffbbc4ace10) at
+      ../hw/9pfs/9p-local.c:702
+  #11 v9fs_co_mknod (pdu=pdu@entry=0x555558121140,
+      fidp=fidp@entry=0x5555574c46c0, name=name@entry=0x7ffbbc4aced0,
+      uid=1000, gid=1000, dev=<optimized out>, mode=49645,
+      stbuf=0x7ffbbc4acef0) at ../hw/9pfs/cofs.c:205
+  #12 v9fs_mknod (opaque=0x555558121140) at ../hw/9pfs/9p.c:3711
 
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
+That's because server was opening the special file to adjust permissions,
+however it was using O_PATH and it would have not returned the file
+descriptor to guest. So the call to close_if_special_file() on that branch
+was incorrect.
 
-Thanks!
+Let's lift the restriction introduced by f6b0de53fb8 such that it would
+allow to open special files on host if O_PATH flag is supplied, not only
+for 9p server's own operations as described above, but also for any client
+'Topen' request.
 
-/mjt
+It is safe to allow opening special files with O_PATH on host, because
+O_PATH only allows path based operations on the resulting file descriptor
+and prevents I/O such as read() and write() on that file descriptor.
 
---------------------------------------
-01 d06a9d843fb6 Christian Schoenebeck:
-   9pfs: fix regression regarding CVE-2023-2861
-02 04e006ab36a8 Richard Henderson:
-   tcg: Reset free_temps before tcg_optimize
-03 b438362a1425 Roman Artemev:
-   tcg/riscv: Fix StoreStore barrier generation
-04 57e2cc9abf5d Gerd Hoffmann:
-   x86/loader: only patch linux kernels
-05 0f5715e4b570 Gerd Hoffmann:
-   roms: re-add edk2-basetools target
-06 74dc38d0c6c1 Heinrich Schuchardt:
-   pc-bios: add missing riscv64 descriptor
-07 9678b9c50572 Peter Maydell:
-   hw/intc/arm_gicv3_its: Zero initialize local DTEntry etc structs
-08 e2d98f257138 Thomas Huth:
-   meson.build: Disallow libnfs v6 to fix the broken macOS build
-09 3f2a05b31ee9 Maciej S. Szmigiero:
-   target/i386: Reset TSCs of parked vCPUs too on VM reset
-10 0d0141fadc90 Yong-Xuan Wang:
-   hw/intc/riscv_aplic: Fix APLIC in_clrip and clripnum write emulation
-11 14e568ab4836 David Hildenbrand:
-   s390x/s390-virtio-ccw: don't crash on weird RAM sizes
-12 d41989e75483 Bibo Mao:
-   target/loongarch: Use actual operand size with vbsrl check
-13 916f50172baa Philippe Mathieu-Daudé:
-   docs: Correct '-runas' and '-fsdev/-virtfs proxy' indentation
-14 b4859e8f33a7 Philippe Mathieu-Daudé:
-   docs: Correct release of TCG trace-events removal
-15 93dcc9390e5a Han Han:
-   target/i386/cpu: Fix notes for CPU models
-16 d127294f265e Shameer Kolothum:
-   migration/multifd: Fix compile error caused by page_size usage
-17 b93d897ea2f0 Fabiano Rosas:
-   migration/multifd: Fix compat with QEMU < 9.0
-18 86bee9e0c761 Fabiano Rosas:
-   migration: Add more error handling to analyze-migration.py
-19 2aead53d39b8 Fabiano Rosas:
-   migration: Remove unused argument in vmsd_desc_field_end
-20 69d1f784569f Fabiano Rosas:
-   migration: Fix parsing of s390 stream
-21 c76ee1f6255c Fabiano Rosas:
-   s390x: Fix CSS migration
-22 f52965bf0eee Fabiano Rosas:
-   migration: Rename vmstate_info_nullptr
-23 9867c3a7ced1 Peter Xu:
-   migration: Dump correct JSON format for nullptr replacement
-24 35049eb0d2fc Fabiano Rosas:
-   migration: Fix arrays of pointers in JSON writer
-25 cdc3970f8597 Yuan Liu:
-   multifd: bugfix for migration using compression methods
-26 2588a5f99b0c Yuan Liu:
-   multifd: bugfix for incorrect migration data with QPL compression
-27 a523bc52166c Yuan Liu:
-   multifd: bugfix for incorrect migration data with qatzip compression
-28 ec2dfb7c389b Philippe Mathieu-Daudé:
-   tests/functional/test_rx_gdbsim: Use stable URL for test_linux_sash
-29 4572dacc33e2 Keoseong Park:
-   hw/ufs: Adjust value to match CPU's endian format
-30 a87077316ed2 Philippe Mathieu-Daudé:
-   tests/qtest/boot-serial-test: Correct HPPA machine name
-31 78b0c15a563a Gabriel Barrantes:
-   backends/cryptodev-vhost-user: Fix local_error leaks
-32 bb5b7fced6b5 Phil Dennis-Jordan:
-   hw/usb/hcd-xhci-pci: Use modulo to select MSI vector as per spec
-33 694632fd4498 Sebastian Ott:
-   pci: ensure valid link status bits for downstream ports
-34 42e2a7a0ab23 Nicholas Piggin:
-   pci/msix: Fix msix pba read vector poll end calculation
-35 1ad32644fe4c Igor Mammedov:
-   tests: acpi: whitelist expected blobs
-36 0b053391985a Igor Mammedov:
-   pci: acpi: Windows 'PCI Label Id' bug workaround
-37 9fb1c9a1bb26 Igor Mammedov:
-   tests: acpi: update expected blobs
-38 1ce979e7269a Li Zhijian:
-   hw/cxl: Fix msix_notify: Assertion `vector < dev->msix_entries_nr`
-39 be27b5149c86 Paolo Bonzini:
-   make-release: only leave tarball of wrap-file subprojects
-40 cf4c26355188 Zhao Liu:
-   i386/cpu: Mark avx10_version filtered when prefix is NULL
-41 145f12ea885c Daniel P. Berrangé:
-   crypto: fix bogus error benchmarking pbkdf on fast machines
+Fixes: f6b0de53fb8 ("9pfs: prevent opening special files (CVE-2023-2861)")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2337
+Reported-by: Dirk Herrendorfer <d.herrendoerfer@de.ibm.com>
+Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Reviewed-by: Greg Kurz <groug@kaod.org>
+Tested-by: Dirk Herrendorfer <d.herrendoerfer@de.ibm.com>
+Message-Id: <E1tJWbk-007BH4-OB@kylie.crudebyte.com>
+(cherry picked from commit d06a9d843fb65351e0e4dc42ba0c404f01ea92b3)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+diff --git a/hw/9pfs/9p-util.h b/hw/9pfs/9p-util.h
+index 51c94b0116..95ee4da9bd 100644
+--- a/hw/9pfs/9p-util.h
++++ b/hw/9pfs/9p-util.h
+@@ -177,20 +177,27 @@ again:
+         return -1;
+     }
+ 
+-    if (close_if_special_file(fd) < 0) {
+-        return -1;
+-    }
+-
+-    serrno = errno;
+-    /* O_NONBLOCK was only needed to open the file. Let's drop it. We don't
+-     * do that with O_PATH since fcntl(F_SETFL) isn't supported, and openat()
+-     * ignored it anyway.
+-     */
++    /* Only if O_PATH is not set ... */
+     if (!(flags & O_PATH_9P_UTIL)) {
++        /*
++         * Prevent I/O on special files (device files, etc.) on host side,
++         * however it is safe and required to allow opening them with O_PATH,
++         * as this is limited to (required) path based operations only.
++         */
++        if (close_if_special_file(fd) < 0) {
++            return -1;
++        }
++
++        serrno = errno;
++        /*
++         * O_NONBLOCK was only needed to open the file. Let's drop it. We don't
++         * do that with O_PATH since fcntl(F_SETFL) isn't supported, and
++         * openat() ignored it anyway.
++         */
+         ret = fcntl(fd, F_SETFL, flags);
+         assert(!ret);
++        errno = serrno;
+     }
+-    errno = serrno;
+     return fd;
+ }
+ 
+-- 
+2.39.5
+
 
