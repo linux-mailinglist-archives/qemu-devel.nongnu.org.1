@@ -2,41 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E014A205A0
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:07:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B78F9A205E2
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:21:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgSV-0001Ik-Jb; Tue, 28 Jan 2025 02:56:31 -0500
+	id 1tcgeq-0002Je-9Y; Tue, 28 Jan 2025 03:09:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgS8-0007t4-Tv; Tue, 28 Jan 2025 02:56:12 -0500
+ id 1tcgcJ-0005VP-4c; Tue, 28 Jan 2025 03:06:40 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgS6-0000HO-IE; Tue, 28 Jan 2025 02:56:08 -0500
+ id 1tcgcG-0003fL-QR; Tue, 28 Jan 2025 03:06:38 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 63968E1AE3;
- Tue, 28 Jan 2025 10:54:25 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 710D5E1B80;
+ Tue, 28 Jan 2025 10:57:09 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id D2C831A62CA;
- Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id E0E3D1A6333;
+ Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id C5F905202B; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
+ id 47FA8520F7; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.9 02/45] bitops.h: Define bit operations on 'uint32_t'
- arrays
+Cc: qemu-stable@nongnu.org, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.3 57/58] tests: acpi: update expected blobs
 Date: Mon, 27 Jan 2025 23:25:43 +0300
-Message-Id: <20250127202630.3724367-2-mjt@tls.msk.ru>
+Message-Id: <20250127202547.3723716-57-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
-References: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
+In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
+References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 From: Michael Tokarev <mjt@tls.msk.ru>
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -63,252 +60,199 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently bitops.h defines a set of operations that work on
-arbitrary-length bit arrays.  However (largely because they
-originally came from the Linux kernel) the bit array storage is an
-array of 'unsigned long'.  This is OK for the kernel and even for
-parts of QEMU where we don't really care about the underlying storage
-format, but it is not good for devices, where we often want to expose
-the storage to the guest and so need a type that is not
-variably-sized between host OSes.
+_DSM function 7 AML should have followig change:
 
-We already have a workaround for this in the GICv3 model:
-arm_gicv3_common.h defines equivalents of the bit operations that
-work on uint32_t.  It turns out that we should also be using
-something similar in hw/intc/loongarch_extioi.c, which currently
-casts a pointer to a uint32_t array to 'unsigned long *' in
-extio_setirq(), which is both undefined behaviour and not correct on
-a big-endian host.
+               If ((Arg2 == 0x07))
+               {
+  -                Local0 = Package (0x02)
+  -                    {
+  -                        Zero,
+  -                        ""
+  -                    }
+                   Local2 = AIDX (DerefOf (Arg4 [Zero]), DerefOf (Arg4 [One]
+                       ))
+  -                Local0 [Zero] = Local2
+  +                Local0 = Package (0x02) {}
+  +                If (!((Local2 == Zero) || (Local2 == 0xFFFFFFFF)))
+  +                {
+  +                    Local0 [Zero] = Local2
+  +                    Local0 [One] = ""
+  +                }
+  +
+                   Return (Local0)
+               }
+           }
 
-Define equivalents of the set_bit() function family which work
-with a uint32_t array.
-
-(Cc stable because we're about to provide a bugfix to
-loongarch_extioi which will depend on this commit.)
-
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20241108135514.4006953-2-peter.maydell@linaro.org
-(cherry picked from commit 3d7680fb18c7b17701730589d241a32e85f763a3)
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Message-Id: <20250115125342.3883374-4-imammedo@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit 9fb1c9a1bb26e111ee5fa5538070cd684de14c08)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: rebuild acpi tables for 9.1)
 
-diff --git a/include/qemu/bitmap.h b/include/qemu/bitmap.h
-index 97806811ee..217945ef79 100644
---- a/include/qemu/bitmap.h
-+++ b/include/qemu/bitmap.h
-@@ -69,6 +69,14 @@
- #define DECLARE_BITMAP(name,bits)                  \
-         unsigned long name[BITS_TO_LONGS(bits)]
- 
-+/*
-+ * This is for use with the bit32 versions of set_bit() etc;
-+ * we don't currently support the full range of bitmap operations
-+ * on bitmaps backed by an array of uint32_t.
-+ */
-+#define DECLARE_BITMAP32(name, bits)            \
-+        uint32_t name[BITS_TO_U32S(bits)]
-+
- #define small_nbits(nbits)                      \
-         ((nbits) <= BITS_PER_LONG)
- 
-diff --git a/include/qemu/bitops.h b/include/qemu/bitops.h
-index cb3526d1f4..e0424f5e25 100644
---- a/include/qemu/bitops.h
-+++ b/include/qemu/bitops.h
-@@ -18,16 +18,47 @@
- 
- #define BITS_PER_BYTE           CHAR_BIT
- #define BITS_PER_LONG           (sizeof (unsigned long) * BITS_PER_BYTE)
-+#define BITS_TO_LONGS(nr)       DIV_ROUND_UP(nr, BITS_PER_BYTE * sizeof(long))
-+#define BITS_TO_U32S(nr)        DIV_ROUND_UP(nr, BITS_PER_BYTE * sizeof(uint32_t))
- 
- #define BIT(nr)                 (1UL << (nr))
- #define BIT_ULL(nr)             (1ULL << (nr))
--#define BIT_MASK(nr)            (1UL << ((nr) % BITS_PER_LONG))
--#define BIT_WORD(nr)            ((nr) / BITS_PER_LONG)
--#define BITS_TO_LONGS(nr)       DIV_ROUND_UP(nr, BITS_PER_BYTE * sizeof(long))
- 
- #define MAKE_64BIT_MASK(shift, length) \
-     (((~0ULL) >> (64 - (length))) << (shift))
- 
-+/**
-+ * DOC: Functions operating on arrays of bits
-+ *
-+ * We provide a set of functions which work on arbitrary-length arrays of
-+ * bits. These come in several flavours which vary in what the type of the
-+ * underlying storage for the bits is:
-+ *
-+ * - Bits stored in an array of 'unsigned long': set_bit(), clear_bit(), etc
-+ * - Bits stored in an array of 'uint32_t': set_bit32(), clear_bit32(), etc
-+ *
-+ * Because the 'unsigned long' type has a size which varies between
-+ * host systems, the versions using 'uint32_t' are often preferable.
-+ * This is particularly the case in a device model where there may
-+ * be some guest-visible register view of the bit array.
-+ *
-+ * We do not currently implement uint32_t versions of find_last_bit(),
-+ * find_next_bit(), find_next_zero_bit(), find_first_bit() or
-+ * find_first_zero_bit(), because we haven't yet needed them. If you
-+ * need them you should implement them similarly to the 'unsigned long'
-+ * versions.
-+ *
-+ * You can declare a bitmap to be used with these functions via the
-+ * DECLARE_BITMAP and DECLARE_BITMAP32 macros in bitmap.h.
-+ */
-+
-+/**
-+ * DOC:  'unsigned long' bit array APIs
-+ */
-+
-+#define BIT_MASK(nr)            (1UL << ((nr) % BITS_PER_LONG))
-+#define BIT_WORD(nr)            ((nr) / BITS_PER_LONG)
-+
- /**
-  * set_bit - Set a bit in memory
-  * @nr: the bit to set
-@@ -211,6 +242,141 @@ static inline unsigned long find_first_zero_bit(const unsigned long *addr,
-     return find_next_zero_bit(addr, size, 0);
- }
- 
-+/**
-+ * DOC:  'uint32_t' bit array APIs
-+ */
-+
-+#define BIT32_MASK(nr)            (1UL << ((nr) % 32))
-+#define BIT32_WORD(nr)            ((nr) / 32)
-+
-+/**
-+ * set_bit32 - Set a bit in memory
-+ * @nr: the bit to set
-+ * @addr: the address to start counting from
-+ */
-+static inline void set_bit32(long nr, uint32_t *addr)
-+{
-+    uint32_t mask = BIT32_MASK(nr);
-+    uint32_t *p = addr + BIT32_WORD(nr);
-+
-+    *p  |= mask;
-+}
-+
-+/**
-+ * set_bit32_atomic - Set a bit in memory atomically
-+ * @nr: the bit to set
-+ * @addr: the address to start counting from
-+ */
-+static inline void set_bit32_atomic(long nr, uint32_t *addr)
-+{
-+    uint32_t mask = BIT32_MASK(nr);
-+    uint32_t *p = addr + BIT32_WORD(nr);
-+
-+    qatomic_or(p, mask);
-+}
-+
-+/**
-+ * clear_bit32 - Clears a bit in memory
-+ * @nr: Bit to clear
-+ * @addr: Address to start counting from
-+ */
-+static inline void clear_bit32(long nr, uint32_t *addr)
-+{
-+    uint32_t mask = BIT32_MASK(nr);
-+    uint32_t *p = addr + BIT32_WORD(nr);
-+
-+    *p &= ~mask;
-+}
-+
-+/**
-+ * clear_bit32_atomic - Clears a bit in memory atomically
-+ * @nr: Bit to clear
-+ * @addr: Address to start counting from
-+ */
-+static inline void clear_bit32_atomic(long nr, uint32_t *addr)
-+{
-+    uint32_t mask = BIT32_MASK(nr);
-+    uint32_t *p = addr + BIT32_WORD(nr);
-+
-+    return qatomic_and(p, ~mask);
-+}
-+
-+/**
-+ * change_bit32 - Toggle a bit in memory
-+ * @nr: Bit to change
-+ * @addr: Address to start counting from
-+ */
-+static inline void change_bit32(long nr, uint32_t *addr)
-+{
-+    uint32_t mask = BIT32_MASK(nr);
-+    uint32_t *p = addr + BIT32_WORD(nr);
-+
-+    *p ^= mask;
-+}
-+
-+/**
-+ * test_and_set_bit32 - Set a bit and return its old value
-+ * @nr: Bit to set
-+ * @addr: Address to count from
-+ */
-+static inline int test_and_set_bit32(long nr, uint32_t *addr)
-+{
-+    uint32_t mask = BIT32_MASK(nr);
-+    uint32_t *p = addr + BIT32_WORD(nr);
-+    uint32_t old = *p;
-+
-+    *p = old | mask;
-+    return (old & mask) != 0;
-+}
-+
-+/**
-+ * test_and_clear_bit32 - Clear a bit and return its old value
-+ * @nr: Bit to clear
-+ * @addr: Address to count from
-+ */
-+static inline int test_and_clear_bit32(long nr, uint32_t *addr)
-+{
-+    uint32_t mask = BIT32_MASK(nr);
-+    uint32_t *p = addr + BIT32_WORD(nr);
-+    uint32_t old = *p;
-+
-+    *p = old & ~mask;
-+    return (old & mask) != 0;
-+}
-+
-+/**
-+ * test_and_change_bit32 - Change a bit and return its old value
-+ * @nr: Bit to change
-+ * @addr: Address to count from
-+ */
-+static inline int test_and_change_bit32(long nr, uint32_t *addr)
-+{
-+    uint32_t mask = BIT32_MASK(nr);
-+    uint32_t *p = addr + BIT32_WORD(nr);
-+    uint32_t old = *p;
-+
-+    *p = old ^ mask;
-+    return (old & mask) != 0;
-+}
-+
-+/**
-+ * test_bit32 - Determine whether a bit is set
-+ * @nr: bit number to test
-+ * @addr: Address to start counting from
-+ */
-+static inline int test_bit32(long nr, const uint32_t *addr)
-+{
-+    return 1U & (addr[BIT32_WORD(nr)] >> (nr & 31));
-+}
-+
-+/**
-+ * DOC: Miscellaneous bit operations on single values
-+ *
-+ * These functions are a collection of useful operations
-+ * (rotations, bit extract, bit deposit, etc) on single
-+ * integer values.
-+ */
-+
- /**
-  * rol8 - rotate an 8-bit value left
-  * @word: value to rotate
+diff --git a/tests/data/acpi/x86/pc/DSDT b/tests/data/acpi/x86/pc/DSDT
+index c93ad6b7f8..9bb2ec932e 100644
+Binary files a/tests/data/acpi/x86/pc/DSDT and b/tests/data/acpi/x86/pc/DSDT differ
+diff --git a/tests/data/acpi/x86/pc/DSDT.acpierst b/tests/data/acpi/x86/pc/DSDT.acpierst
+index f643fa2d03..2f63056963 100644
+Binary files a/tests/data/acpi/x86/pc/DSDT.acpierst and b/tests/data/acpi/x86/pc/DSDT.acpierst differ
+diff --git a/tests/data/acpi/x86/pc/DSDT.acpihmat b/tests/data/acpi/x86/pc/DSDT.acpihmat
+index 9d3695ff28..a89af57a88 100644
+Binary files a/tests/data/acpi/x86/pc/DSDT.acpihmat and b/tests/data/acpi/x86/pc/DSDT.acpihmat differ
+diff --git a/tests/data/acpi/x86/pc/DSDT.bridge b/tests/data/acpi/x86/pc/DSDT.bridge
+index 840b45f354..380be8ef4e 100644
+Binary files a/tests/data/acpi/x86/pc/DSDT.bridge and b/tests/data/acpi/x86/pc/DSDT.bridge differ
+diff --git a/tests/data/acpi/x86/pc/DSDT.cphp b/tests/data/acpi/x86/pc/DSDT.cphp
+index dbc0141b2b..4932fd0031 100644
+Binary files a/tests/data/acpi/x86/pc/DSDT.cphp and b/tests/data/acpi/x86/pc/DSDT.cphp differ
+diff --git a/tests/data/acpi/x86/pc/DSDT.dimmpxm b/tests/data/acpi/x86/pc/DSDT.dimmpxm
+index 1294f655d4..a4d21d12f5 100644
+Binary files a/tests/data/acpi/x86/pc/DSDT.dimmpxm and b/tests/data/acpi/x86/pc/DSDT.dimmpxm differ
+diff --git a/tests/data/acpi/x86/pc/DSDT.hpbridge b/tests/data/acpi/x86/pc/DSDT.hpbridge
+index 8012b5eb31..55a11f22d1 100644
+Binary files a/tests/data/acpi/x86/pc/DSDT.hpbridge and b/tests/data/acpi/x86/pc/DSDT.hpbridge differ
+diff --git a/tests/data/acpi/x86/pc/DSDT.ipmikcs b/tests/data/acpi/x86/pc/DSDT.ipmikcs
+index 0a891baf45..852f0bbc5c 100644
+Binary files a/tests/data/acpi/x86/pc/DSDT.ipmikcs and b/tests/data/acpi/x86/pc/DSDT.ipmikcs differ
+diff --git a/tests/data/acpi/x86/pc/DSDT.memhp b/tests/data/acpi/x86/pc/DSDT.memhp
+index 9b442a64cf..cd6bbd7a9f 100644
+Binary files a/tests/data/acpi/x86/pc/DSDT.memhp and b/tests/data/acpi/x86/pc/DSDT.memhp differ
+diff --git a/tests/data/acpi/x86/pc/DSDT.nohpet b/tests/data/acpi/x86/pc/DSDT.nohpet
+index 1754c68788..52de3e7f4e 100644
+Binary files a/tests/data/acpi/x86/pc/DSDT.nohpet and b/tests/data/acpi/x86/pc/DSDT.nohpet differ
+diff --git a/tests/data/acpi/x86/pc/DSDT.numamem b/tests/data/acpi/x86/pc/DSDT.numamem
+index 9fc731d3d2..c92d6a8b4d 100644
+Binary files a/tests/data/acpi/x86/pc/DSDT.numamem and b/tests/data/acpi/x86/pc/DSDT.numamem differ
+diff --git a/tests/data/acpi/x86/pc/DSDT.roothp b/tests/data/acpi/x86/pc/DSDT.roothp
+index e654c83ebe..0198a6d956 100644
+Binary files a/tests/data/acpi/x86/pc/DSDT.roothp and b/tests/data/acpi/x86/pc/DSDT.roothp differ
+diff --git a/tests/data/acpi/x86/q35/DSDT b/tests/data/acpi/x86/q35/DSDT
+index fb89ae0ac6..3223604f7d 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT and b/tests/data/acpi/x86/q35/DSDT differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.acpierst b/tests/data/acpi/x86/q35/DSDT.acpierst
+index 46fd25400b..88dd156d95 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.acpierst and b/tests/data/acpi/x86/q35/DSDT.acpierst differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.acpihmat b/tests/data/acpi/x86/q35/DSDT.acpihmat
+index 61c5bd52a4..fe708b4403 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.acpihmat and b/tests/data/acpi/x86/q35/DSDT.acpihmat differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.acpihmat-noinitiator b/tests/data/acpi/x86/q35/DSDT.acpihmat-noinitiator
+index 3aaa2bbdf5..a9a7cec8d7 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.acpihmat-noinitiator and b/tests/data/acpi/x86/q35/DSDT.acpihmat-noinitiator differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.applesmc b/tests/data/acpi/x86/q35/DSDT.applesmc
+index 944209adea..bebf7d716c 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.applesmc and b/tests/data/acpi/x86/q35/DSDT.applesmc differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.bridge b/tests/data/acpi/x86/q35/DSDT.bridge
+index d9938dba8f..74b8553af4 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.bridge and b/tests/data/acpi/x86/q35/DSDT.bridge differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.core-count b/tests/data/acpi/x86/q35/DSDT.core-count
+index a24b04cbdb..d893781416 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.core-count and b/tests/data/acpi/x86/q35/DSDT.core-count differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.core-count2 b/tests/data/acpi/x86/q35/DSDT.core-count2
+index 3a0cb8c581..ac87bc5db0 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.core-count2 and b/tests/data/acpi/x86/q35/DSDT.core-count2 differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.cphp b/tests/data/acpi/x86/q35/DSDT.cphp
+index 20955d0aa3..6b8eca2586 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.cphp and b/tests/data/acpi/x86/q35/DSDT.cphp differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.cxl b/tests/data/acpi/x86/q35/DSDT.cxl
+index afcdc0d0ba..9755fd2c53 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.cxl and b/tests/data/acpi/x86/q35/DSDT.cxl differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.dimmpxm b/tests/data/acpi/x86/q35/DSDT.dimmpxm
+index 228374b55b..5a0ff97b9e 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.dimmpxm and b/tests/data/acpi/x86/q35/DSDT.dimmpxm differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.ipmibt b/tests/data/acpi/x86/q35/DSDT.ipmibt
+index 45f911ada5..a7e79e4983 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.ipmibt and b/tests/data/acpi/x86/q35/DSDT.ipmibt differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.ipmismbus b/tests/data/acpi/x86/q35/DSDT.ipmismbus
+index e5d6811bee..075ac613d2 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.ipmismbus and b/tests/data/acpi/x86/q35/DSDT.ipmismbus differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.ivrs b/tests/data/acpi/x86/q35/DSDT.ivrs
+index 46fd25400b..88dd156d95 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.ivrs and b/tests/data/acpi/x86/q35/DSDT.ivrs differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.memhp b/tests/data/acpi/x86/q35/DSDT.memhp
+index 5ce081187a..812ed0fd18 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.memhp and b/tests/data/acpi/x86/q35/DSDT.memhp differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.mmio64 b/tests/data/acpi/x86/q35/DSDT.mmio64
+index bdf36c4d57..3d5131761c 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.mmio64 and b/tests/data/acpi/x86/q35/DSDT.mmio64 differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.multi-bridge b/tests/data/acpi/x86/q35/DSDT.multi-bridge
+index 1db43a69e4..a98567b923 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.multi-bridge and b/tests/data/acpi/x86/q35/DSDT.multi-bridge differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.nohpet b/tests/data/acpi/x86/q35/DSDT.nohpet
+index c13e45e361..a550cf23c0 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.nohpet and b/tests/data/acpi/x86/q35/DSDT.nohpet differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.numamem b/tests/data/acpi/x86/q35/DSDT.numamem
+index ba6669437e..22b2a21705 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.numamem and b/tests/data/acpi/x86/q35/DSDT.numamem differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.pvpanic-isa b/tests/data/acpi/x86/q35/DSDT.pvpanic-isa
+index 6ad42873e9..c26f9b1ba6 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.pvpanic-isa and b/tests/data/acpi/x86/q35/DSDT.pvpanic-isa differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.thread-count b/tests/data/acpi/x86/q35/DSDT.thread-count
+index a24b04cbdb..d893781416 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.thread-count and b/tests/data/acpi/x86/q35/DSDT.thread-count differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.thread-count2 b/tests/data/acpi/x86/q35/DSDT.thread-count2
+index 3a0cb8c581..ac87bc5db0 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.thread-count2 and b/tests/data/acpi/x86/q35/DSDT.thread-count2 differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.tis.tpm12 b/tests/data/acpi/x86/q35/DSDT.tis.tpm12
+index e381ce4cbf..0a91b7ba85 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.tis.tpm12 and b/tests/data/acpi/x86/q35/DSDT.tis.tpm12 differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.tis.tpm2 b/tests/data/acpi/x86/q35/DSDT.tis.tpm2
+index a09253042c..b9c83bea1f 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.tis.tpm2 and b/tests/data/acpi/x86/q35/DSDT.tis.tpm2 differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.type4-count b/tests/data/acpi/x86/q35/DSDT.type4-count
+index edc23198cd..16b4677587 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.type4-count and b/tests/data/acpi/x86/q35/DSDT.type4-count differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.viot b/tests/data/acpi/x86/q35/DSDT.viot
+index 64e81f5711..70103820a9 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.viot and b/tests/data/acpi/x86/q35/DSDT.viot differ
+diff --git a/tests/data/acpi/x86/q35/DSDT.xapic b/tests/data/acpi/x86/q35/DSDT.xapic
+index d4acd851c6..5a6310f453 100644
+Binary files a/tests/data/acpi/x86/q35/DSDT.xapic and b/tests/data/acpi/x86/q35/DSDT.xapic differ
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index 3eab70014c..dfb8523c8b 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1,40 +1 @@
+ /* List of comma-separated changed AML files to ignore */
+-"tests/data/acpi/x86/pc/DSDT",
+-"tests/data/acpi/x86/pc/DSDT.acpierst",
+-"tests/data/acpi/x86/pc/DSDT.acpihmat",
+-"tests/data/acpi/x86/pc/DSDT.bridge",
+-"tests/data/acpi/x86/pc/DSDT.cphp",
+-"tests/data/acpi/x86/pc/DSDT.dimmpxm",
+-"tests/data/acpi/x86/pc/DSDT.hpbridge",
+-"tests/data/acpi/x86/pc/DSDT.ipmikcs",
+-"tests/data/acpi/x86/pc/DSDT.memhp",
+-"tests/data/acpi/x86/pc/DSDT.nohpet",
+-"tests/data/acpi/x86/pc/DSDT.numamem",
+-"tests/data/acpi/x86/pc/DSDT.roothp",
+-"tests/data/acpi/x86/q35/DSDT",
+-"tests/data/acpi/x86/q35/DSDT.acpierst",
+-"tests/data/acpi/x86/q35/DSDT.acpihmat",
+-"tests/data/acpi/x86/q35/DSDT.acpihmat-noinitiator",
+-"tests/data/acpi/x86/q35/DSDT.applesmc",
+-"tests/data/acpi/x86/q35/DSDT.bridge",
+-"tests/data/acpi/x86/q35/DSDT.core-count",
+-"tests/data/acpi/x86/q35/DSDT.core-count2",
+-"tests/data/acpi/x86/q35/DSDT.cphp",
+-"tests/data/acpi/x86/q35/DSDT.cxl",
+-"tests/data/acpi/x86/q35/DSDT.dimmpxm",
+-"tests/data/acpi/x86/q35/DSDT.ipmibt",
+-"tests/data/acpi/x86/q35/DSDT.ipmismbus",
+-"tests/data/acpi/x86/q35/DSDT.ivrs",
+-"tests/data/acpi/x86/q35/DSDT.memhp",
+-"tests/data/acpi/x86/q35/DSDT.mmio64",
+-"tests/data/acpi/x86/q35/DSDT.multi-bridge",
+-"tests/data/acpi/x86/q35/DSDT.nohpet",
+-"tests/data/acpi/x86/q35/DSDT.numamem",
+-"tests/data/acpi/x86/q35/DSDT.pvpanic-isa",
+-"tests/data/acpi/x86/q35/DSDT.thread-count",
+-"tests/data/acpi/x86/q35/DSDT.thread-count2",
+-"tests/data/acpi/x86/q35/DSDT.tis.tpm12",
+-"tests/data/acpi/x86/q35/DSDT.tis.tpm2",
+-"tests/data/acpi/x86/q35/DSDT.type4-count",
+-"tests/data/acpi/x86/q35/DSDT.viot",
+-"tests/data/acpi/x86/q35/DSDT.xapic",
 -- 
 2.39.5
 
