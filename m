@@ -2,41 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6F6BA2062A
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:26:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF0E6A2060E
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:23:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgcR-0005tQ-5n; Tue, 28 Jan 2025 03:06:47 -0500
+	id 1tcgcM-0005NJ-CP; Tue, 28 Jan 2025 03:06:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgaT-000286-MZ; Tue, 28 Jan 2025 03:04:48 -0500
+ id 1tcgaT-00028A-Mj; Tue, 28 Jan 2025 03:04:48 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgaS-0002lQ-2Y; Tue, 28 Jan 2025 03:04:45 -0500
+ id 1tcgaS-0002lS-3U; Tue, 28 Jan 2025 03:04:45 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 245DAE1B6E;
+ by isrv.corpit.ru (Postfix) with ESMTP id 2877FE1B6F;
  Tue, 28 Jan 2025 10:57:09 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 942CA1A6321;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 984281A6322;
  Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 2A243520D3; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
+ id 2BCC7520D5; Tue, 28 Jan 2025 10:57:34 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.3 39/58] docs: Correct release of TCG trace-events removal
-Date: Mon, 27 Jan 2025 23:25:25 +0300
-Message-Id: <20250127202547.3723716-39-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Han Han <hhan@redhat.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.3 40/58] target/i386/cpu: Fix notes for CPU models
+Date: Mon, 27 Jan 2025 23:25:26 +0300
+Message-Id: <20250127202547.3723716-40-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 References: <qemu-stable-9.1.3-20250127232536@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 From: Michael Tokarev <mjt@tls.msk.ru>
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -63,31 +60,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TCG trace-events were deprecated before the v6.2 release,
-and removed for v7.0.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Fixes: 644e3c5d812 ("missing vmx features for Skylake-Server and Cascadelake-Server")
+Signed-off-by: Han Han <hhan@redhat.com>
+Reviewed-by: Chenyi Qiang <chenyi.qiang@intel.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit b4859e8f33a7d9c793a60395f792c10190cb4f78)
+(cherry picked from commit 93dcc9390e5ad0696ae7e9b7b3a5b08c2d1b6de6)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index fc7b28e637..9166141ff7 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -1006,8 +1006,8 @@ processor IP (see `Intel discontinuance notification`_).
- TCG introspection features
- --------------------------
- 
--TCG trace-events (since 6.2)
--''''''''''''''''''''''''''''
-+TCG trace-events (removed in 7.0)
-+'''''''''''''''''''''''''''''''''
- 
- The ability to add new TCG trace points had bit rotted and as the
- feature can be replicated with TCG plugins it was removed. If
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 85ef7452c0..5494250bf8 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -3623,6 +3623,7 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+             },
+             {
+                 .version = 4,
++                .note = "IBRS, EPT switching, no TSX",
+                 .props = (PropValue[]) {
+                     { "vmx-eptp-switching", "on" },
+                     { /* end of list */ }
+@@ -3757,7 +3758,7 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+               },
+             },
+             { .version = 4,
+-              .note = "ARCH_CAPABILITIES, no TSX",
++              .note = "ARCH_CAPABILITIES, EPT switching, no TSX",
+               .props = (PropValue[]) {
+                   { "vmx-eptp-switching", "on" },
+                   { /* end of list */ }
 -- 
 2.39.5
 
