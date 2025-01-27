@@ -2,38 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBA17A2061E
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:24:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51038A2059D
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:07:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgWX-0007u7-Kc; Tue, 28 Jan 2025 03:00:50 -0500
+	id 1tcgWv-0008Pn-5j; Tue, 28 Jan 2025 03:01:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgW0-0007cw-Kw; Tue, 28 Jan 2025 03:00:11 -0500
+ id 1tcgW0-0007cx-LQ; Tue, 28 Jan 2025 03:00:11 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgVt-0001JJ-RG; Tue, 28 Jan 2025 03:00:05 -0500
+ id 1tcgVu-0001JR-78; Tue, 28 Jan 2025 03:00:06 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EFC07E1B07;
+ by isrv.corpit.ru (Postfix) with ESMTP id F3A08E1B08;
  Tue, 28 Jan 2025 10:54:25 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 6ACE91A62EE;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6EBB71A62EF;
  Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 0E03452073; Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
+ id 0FC8D52075; Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- Gabriel Barrantes <gabriel.barrantes.dev@outlook.com>,
- zhenwei pi <pizhenwei@bytedance.com>,
+Cc: qemu-stable@nongnu.org, Phil Dennis-Jordan <phil@philjordan.eu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.9 38/45] backends/cryptodev-vhost-user: Fix local_error
- leaks
-Date: Mon, 27 Jan 2025 23:26:19 +0300
-Message-Id: <20250127202630.3724367-38-mjt@tls.msk.ru>
+Subject: [Stable-8.2.9 39/45] hw/usb/hcd-xhci-pci: Use modulo to select MSI
+ vector as per spec
+Date: Mon, 27 Jan 2025 23:26:20 +0300
+Message-Id: <20250127202630.3724367-39-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 References: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
@@ -65,32 +63,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not propagate error to the upper, directly output the error
-to avoid leaks.
+QEMU would crash with a failed assertion if the XHCI controller
+attempted to raise the interrupt on an interrupter corresponding
+to a MSI vector with a higher index than the highest configured
+for the device by the guest driver.
 
-Fixes: 2fda101de07 ("virtio-crypto: Support asynchronous mode")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2714
-Signed-off-by: Gabriel Barrantes <gabriel.barrantes.dev@outlook.com>
-Reviewed-by: zhenwei pi <pizhenwei@bytedance.com>
-Message-Id: <DM8PR13MB50781054A4FDACE6F4FB6469B30F2@DM8PR13MB5078.namprd13.prod.outlook.com>
+This behaviour is correct on the MSI/PCI side: per PCI 3.0 spec,
+devices must ensure they do not send MSI notifications for
+vectors beyond the range of those allocated by the system/driver
+software. Unlike MSI-X, there is no generic way for handling
+aliasing in the case of fewer allocated vectors than requested,
+so the specifics are up to device implementors. (Section
+6.8.3.4. "Sending Messages")
+
+It turns out the XHCI spec (Implementation Note in section 4.17,
+"Interrupters") requires that the host controller signal the MSI
+vector with the number computed by taking the interrupter number
+modulo the number of enabled MSI vectors.
+
+This change introduces that modulo calculation, fixing the
+failed assertion. This makes the device work correctly in MSI mode
+with macOS's XHCI driver, which only allocates a single vector.
+
+Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250112210056.16658-2-phil@philjordan.eu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 78b0c15a563ac4be5afb0375602ca0a3adc6c442)
+(cherry picked from commit bb5b7fced6b5d3334ab20702fc846e47bb1fb731)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/backends/cryptodev-vhost-user.c b/backends/cryptodev-vhost-user.c
-index c3283ba84a..b8e95ca8b4 100644
---- a/backends/cryptodev-vhost-user.c
-+++ b/backends/cryptodev-vhost-user.c
-@@ -281,8 +281,7 @@ static int cryptodev_vhost_user_create_session(
-         break;
- 
-     default:
--        error_setg(&local_error, "Unsupported opcode :%" PRIu32 "",
--                   sess_info->op_code);
-+        error_report("Unsupported opcode :%" PRIu32 "", sess_info->op_code);
-         return -VIRTIO_CRYPTO_NOTSUPP;
+diff --git a/hw/usb/hcd-xhci-pci.c b/hw/usb/hcd-xhci-pci.c
+index 643d4643e4..560ce582b2 100644
+--- a/hw/usb/hcd-xhci-pci.c
++++ b/hw/usb/hcd-xhci-pci.c
+@@ -74,6 +74,7 @@ static bool xhci_pci_intr_raise(XHCIState *xhci, int n, bool level)
      }
  
+     if (msi_enabled(pci_dev) && level) {
++        n %= msi_nr_vectors_allocated(pci_dev);
+         msi_notify(pci_dev, n);
+         return true;
+     }
 -- 
 2.39.5
 
