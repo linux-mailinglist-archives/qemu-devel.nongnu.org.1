@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A57BA2055E
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 08:58:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6023AA2057D
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:03:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgU0-0005n3-Eo; Tue, 28 Jan 2025 02:58:04 -0500
+	id 1tcgU7-0006X5-78; Tue, 28 Jan 2025 02:58:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgTY-0005QY-2g; Tue, 28 Jan 2025 02:57:40 -0500
+ id 1tcgTc-0005a7-TL; Tue, 28 Jan 2025 02:57:42 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgTU-0000en-HG; Tue, 28 Jan 2025 02:57:35 -0500
+ id 1tcgTY-0000kD-1G; Tue, 28 Jan 2025 02:57:38 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 95645E1AF0;
+ by isrv.corpit.ru (Postfix) with ESMTP id 99165E1AF1;
  Tue, 28 Jan 2025 10:54:25 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 108811A62D7;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 143AA1A62D8;
  Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id DBCC852045; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
+ id DD79752047; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- Glenn Miles <milesg@linux.ibm.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.9 15/45] target/ppc: Fix non-maskable interrupt while
- halted
-Date: Mon, 27 Jan 2025 23:25:56 +0300
-Message-Id: <20250127202630.3724367-15-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Klaus Jensen <k.jensen@samsung.com>,
+ Jesper Wendel Devantier <foss@defmacro.it>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.9 16/45] hw/nvme: fix msix_uninit with exclusive bar
+Date: Mon, 27 Jan 2025 23:25:57 +0300
+Message-Id: <20250127202630.3724367-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 References: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
@@ -61,51 +61,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ppc (pnv and spapr) NMI injection code does not go through the
-asynchronous interrupt path and set a bit in env->pending_interrupts
-and raise an interrupt request that the cpu_exec() loop can see.
-Instead it injects the exception directly into registers.
+Commit fa905f65c554 introduced a machine compatibility parameter to
+enable an exclusive bar for msix. It failed to account for this when
+cleaning up. Make sure that if an exclusive bar is enabled, we use the
+proper cleanup routine.
 
-This can lead to cpu_exec() missing that the thread has work to do,
-if a NMI is injected while it was idle.
-
-Fix this by clearing halted when injecting the interrupt. Probably
-NMI injection should be reworked to use the interrupt request interface,
-but this seems to work as a minimal fix.
-
-Fixes: 3431648272d3 ("spapr: Add support for new NMI interface")
-Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-(cherry picked from commit fa416ae6157a933ad3f7106090684759baaaf3c9)
+Cc: qemu-stable@nongnu.org
+Fixes: fa905f65c554 ("hw/nvme: add machine compatibility parameter to enable msix exclusive bar")
+Reviewed-by: Jesper Wendel Devantier <foss@defmacro.it>
+Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+(cherry picked from commit 9162f101257639cc4c7e20f72f77268b1256dd79)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 9b8fd69b85..c718c4c863 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -2567,10 +2567,16 @@ static void ppc_deliver_interrupt(CPUPPCState *env, int interrupt)
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index 359313dbcb..94a37a3aef 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -8411,7 +8411,12 @@ static void nvme_exit(PCIDevice *pci_dev)
+         pcie_sriov_pf_exit(pci_dev);
      }
- }
  
-+/*
-+ * system reset is not delivered via normal irq method, so have to set
-+ * halted = 0 to resume CPU running if it was halted. Possibly we should
-+ * move it over to using PPC_INTERRUPT_RESET rather than async_run_on_cpu.
-+ */
- void ppc_cpu_do_system_reset(CPUState *cs)
- {
-     PowerPCCPU *cpu = POWERPC_CPU(cs);
- 
-+    cs->halted = 0;
-     powerpc_excp(cpu, POWERPC_EXCP_RESET);
- }
- 
-@@ -2592,6 +2598,7 @@ void ppc_cpu_do_fwnmi_machine_check(CPUState *cs, target_ulong vector)
- 
-     /* Anything for nested required here? MSR[HV] bit? */
- 
-+    cs->halted = 0;
-     powerpc_set_excp_state(cpu, vector, msr);
+-    msix_uninit(pci_dev, &n->bar0, &n->bar0);
++    if (n->params.msix_exclusive_bar && !pci_is_vf(pci_dev)) {
++        msix_uninit_exclusive_bar(pci_dev);
++    } else {
++        msix_uninit(pci_dev, &n->bar0, &n->bar0);
++    }
++
+     memory_region_del_subregion(&n->bar0, &n->iomem);
  }
  
 -- 
