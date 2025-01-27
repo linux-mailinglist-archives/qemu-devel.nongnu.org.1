@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744B5A1D868
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:30:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7AAFA1D86A
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:31:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcQ6a-0003d3-B3; Mon, 27 Jan 2025 09:28:48 -0500
+	id 1tcQ6c-0003kN-D5; Mon, 27 Jan 2025 09:28:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dhildenb@redhat.com>)
- id 1tcQ6M-0002mU-O6
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 09:28:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tcQ6O-0002rq-1S
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 09:28:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dhildenb@redhat.com>)
- id 1tcQ6K-0003aY-9q
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 09:28:34 -0500
+ id 1tcQ6M-0003aw-E2
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 09:28:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737988111;
+ s=mimecast20190719; t=1737988113;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZrUUBNy0gubhcUJ84Pa8i/ojzfUVmTGn9ylddZJUNjE=;
- b=dmBAqA4DbTusyOIa43Xe+88hiFHXSLfZ0IFDjGXErbZtHI7Ef+6F2FOFUCVd7n21S61BPP
- ErpgyPI1t+XNFQu4HeYzZnW+I7FRiKuRkLBlkERW594i5iMI4HdHEfR8wwB3WjjixWQrn+
- M5yAMei3kNiNfvQvzD/+SffqTynDofE=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=1RQLuVyclcQ21hUyrJVWshdy3P1WZgfMm5ztUm2h/bw=;
+ b=XJi4L7IScjVtVMb55wuTrSuyiEILbF75s5Bmbwh01mZJBYlR6HzMI14s671d/Atcz6X2Q8
+ wO1Qn6RpGvqYm8RrVnxnAcRACv3gpGNHk+f8QhbW9hOMc00quLNb4QnCfHd6wz2eKAmKEi
+ HYyNs/JmaUT/PgGu58rIaXRjvCw4zjA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-341-DSbp-K02NK2BfMi5D0AIOQ-1; Mon, 27 Jan 2025 09:28:30 -0500
-X-MC-Unique: DSbp-K02NK2BfMi5D0AIOQ-1
-X-Mimecast-MFC-AGG-ID: DSbp-K02NK2BfMi5D0AIOQ
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4361a8fc3bdso21944435e9.2
- for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 06:28:30 -0800 (PST)
+ us-mta-652-j84bU4wfP7KjePpHBirFWg-1; Mon, 27 Jan 2025 09:28:32 -0500
+X-MC-Unique: j84bU4wfP7KjePpHBirFWg-1
+X-Mimecast-MFC-AGG-ID: j84bU4wfP7KjePpHBirFWg
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-385e1fd40acso2662116f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 06:28:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737988109; x=1738592909;
+ d=1e100.net; s=20230601; t=1737988111; x=1738592911;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZrUUBNy0gubhcUJ84Pa8i/ojzfUVmTGn9ylddZJUNjE=;
- b=I0V1ZIXB/tmVW0UHfI/f9Evcpq3YsQJ6FZSOxST65JQbyApdDYaZkTwxajQSnxPd3y
- hPYo2/Q2aybVQwHqUfykabNMckpHrkNk86Noz87EE1QPLo8bIKyJJqgAgEL8mpxTXJB5
- 7YpSE3wyNxQonxgI8KznDp3RUr4yyfltqhENs6hMEnbBziVOQAwqXsmWLGx9OrP8oDbC
- wYB/UR+KUzvPaDfvx0JmU8mRXswefkHZFHs5/bzK7/Z2ifQSdKhYICxVtEh0us9mRu2/
- DK6lFh1vOfkP7VLwqb4BqV4lLUNig7PZTpWSJAFCwtALve2pX07XHb34SNPJj2rA8GpM
- zYFQ==
-X-Gm-Message-State: AOJu0YwBzKmgdbO1cIsB2k36qYjw6BZLtilA/gmCMSaAnFQeNNVLuZFH
- PccIGcqLB0M6m9a/EjmixPRy6E6W3wNhUiCbnbisYeLzMNEBJn24kt5ZnijjlrQt4yVhja/+2s9
- InYlIs6SD77kqJkJGcchTAt8xtDJZ2xnZ9JxKq6lBG2Tbq7tuqBqLx5j6mNM/O/BBKZAvmBVcjN
- yG4TO2KV+PvZjzWqZhUFv5r3bErCU26r2q9tc=
-X-Gm-Gg: ASbGncsh7jQyPRXgX/PptZWPzrB8sz/lxAzZdRHP5BbgxtEV/N/pUmrnovs4H2g+eLb
- C1NNd5mBTRNs1YK9HHq6Rq+caJanQUwscP7uS5F4cM7Ah+Jvcuamq5r1tKJbigPr0zHvz/9du85
- gwa14+0rQ2BdBxh0zJezKsH9KQkBU/VrXa2r0+74PHqdWQXeOxGkQpy86yKxyaXLfIwjJCUTR7C
- J/qGQYNeY5QbrZ9m1zJ/BYojFC3Y//KVAJiUmd0MHwiDpqvAmseQRjRkTfMtC9xMEyhCrpbKPQH
- QkD/YPXdVraJofzr6w5+f/qsENWBRLrKLI+Cu7XbnJsCQ/Wj1wXsXmmsbpKMu1z5ZQ==
-X-Received: by 2002:a05:600c:384a:b0:431:6153:a258 with SMTP id
- 5b1f17b1804b1-438913db2c3mr405571485e9.13.1737988109301; 
- Mon, 27 Jan 2025 06:28:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHI/fxi3P1i3TymQu+VgW8hWXCRQbYlmxE/I2eWnsvsI/YJWh7B/D5Z0g5DJORspqq7K41Qpg==
-X-Received: by 2002:a05:600c:384a:b0:431:6153:a258 with SMTP id
- 5b1f17b1804b1-438913db2c3mr405571055e9.13.1737988108900; 
- Mon, 27 Jan 2025 06:28:28 -0800 (PST)
+ bh=1RQLuVyclcQ21hUyrJVWshdy3P1WZgfMm5ztUm2h/bw=;
+ b=a83xEuCsiyvOeE5MVwjq4MrOR5d+4uRlvaO92mUeEFi16cTehcus3IRcfAQ49b5YOg
+ y+HYMoYHbJvdxHUpOpiRN31b/WQXjnmUYVICVfJulcIXzTzuCPHb6xlFeJCeFQXUsyGx
+ oZBD83x5iFO3TljAYw+sOXaAZVGavBnsOG0TiAL5Ag+EHPfDyxUE9Gd4y4ZO01KysyJV
+ 8OYgFdxd/n8RTU5G1gjKViJ1hPMhmJ7AUR/o175eIJnLOBy+G40Jza0dNa5m6Ak50jN1
+ x2xpD6MNhOKY389mjEh3mPL2YyCgLzhmPaxwcQvroMaG0yxzX8CfbVAjVhP4AC6lTx49
+ WMCw==
+X-Gm-Message-State: AOJu0YxXj7wEwHrpwysFLHec8Xbd+nT/aAaefnvlxDXkiHy1dusaHrUO
+ Y3Ev8+im/k1g67B5gC5GvCs4xpeyMihZS5TUi00P6rldytR2Q9CS3w+mUCw0RrxFwUfjg4c2GHx
+ 77EvX44Aih7egyLzaHPHvQCR2VvSH0MAXFyimB2+gcWx57XOwXgGDbSBi7YPmSDBYuAXin91DVQ
+ lh7F72eWkPtv9jHrAUR53GmN4xK7RiBoxVYXY=
+X-Gm-Gg: ASbGnct5E+dw8nHv9kG9hzfxHvaU6PkHi+oLOpdKNaSFjDaSZl/cfJTJ5dDPuGPAS+A
+ FlFPgZhaygVhDuYM6MzI+KQXilBv83wFJr3HZ5sad/KtF/6NoHC8u/qwyo4htgNrx32m0FIK1cG
+ oX/3A5Bh31HTlHZ934X6yRB9Pvz12e/KkYKo8sWun9LsEBsczJoBpdcbrG6mcBq3Rt88ch/e4/u
+ xSwcbdd0HDaeD78hJ5XPKTrBjj0iR3pwDWrfYwB/Z+wFXvrjxnLwuPWcf3NQ+XaXiBQYYxdTx1Z
+ cMI5XmkhoxrQLPYUGCIVegEUWLFLpuHmA/DZArqYQVZ/vGEGOdzZbbpg3sGl7tOWRQ==
+X-Received: by 2002:a5d:47af:0:b0:38b:ed7b:f77d with SMTP id
+ ffacd0b85a97d-38bf59ed576mr39492709f8f.52.1737988111642; 
+ Mon, 27 Jan 2025 06:28:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFr/nZGNiwWlsgIB+QXgYuao+fM4EChbbTxjrKpkwfiqCptXt81afFyf5OjP1zQhELU+2ax2A==
+X-Received: by 2002:a5d:47af:0:b0:38b:ed7b:f77d with SMTP id
+ ffacd0b85a97d-38bf59ed576mr39492641f8f.52.1737988110513; 
+ Mon, 27 Jan 2025 06:28:30 -0800 (PST)
 Received: from localhost
  (p200300cbc736ca00b4c324bdc2f5863c.dip0.t-ipconnect.de.
  [2003:cb:c736:ca00:b4c3:24bd:c2f5:863c])
  by smtp.gmail.com with UTF8SMTPSA id
- 5b1f17b1804b1-438bd4fa57csm140184745e9.4.2025.01.27.06.28.27
+ ffacd0b85a97d-38c2a1ca723sm11136903f8f.101.2025.01.27.06.28.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 Jan 2025 06:28:28 -0800 (PST)
+ Mon, 27 Jan 2025 06:28:30 -0800 (PST)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, David Hildenbrand <david@redhat.com>,
@@ -84,23 +84,23 @@ Cc: qemu-s390x@nongnu.org, David Hildenbrand <david@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
  Boris Fiuczynski <fiuczy@linux.ibm.com>,
  Michal Privoznik <mprivozn@redhat.com>
-Subject: [PATCH v1 1/2] virtio-mem-pci: Allow setting nvectors,
- so we can use MSI-X
-Date: Mon, 27 Jan 2025 15:28:23 +0100
-Message-ID: <20250127142824.494644-2-david@redhat.com>
+Subject: [PATCH v1 2/2] s390x/s390-virtio-ccw: Support plugging PCI-based
+ virtio memory devices
+Date: Mon, 27 Jan 2025 15:28:24 +0100
+Message-ID: <20250127142824.494644-3-david@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250127142824.494644-1-david@redhat.com>
 References: <20250127142824.494644-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=dhildenb@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=dhildenb@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -33
 X-Spam_score: -3.4
 X-Spam_bar: ---
 X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
@@ -119,67 +119,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's do it similar as virtio-balloon-pci. With this change, we can
-use virtio-mem-pci on s390x, although plugging will still fail until
-properly wired up in the machine.
+Let's just wire it up, unlocking virtio-mem-pci support on s390x.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- hw/core/machine.c          |  3 +++
- hw/virtio/virtio-mem-pci.c | 12 ++++++++++++
- 2 files changed, 15 insertions(+)
+ hw/s390x/s390-virtio-ccw.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 8f396ef803..5e1d9e12ef 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -41,6 +41,9 @@ GlobalProperty hw_compat_9_2[] = {
-     { "virtio-balloon-pci", "vectors", "0" },
-     { "virtio-balloon-pci-transitional", "vectors", "0" },
-     { "virtio-balloon-pci-non-transitional", "vectors", "0" },
-+    { "virtio-mem-pci", "vectors", "0" },
-+    { "virtio-mem-pci-transitional", "vectors", "0" },
-+    { "virtio-mem-pci-non-transitional", "vectors", "0" },
- };
- const size_t hw_compat_9_2_len = G_N_ELEMENTS(hw_compat_9_2);
- 
-diff --git a/hw/virtio/virtio-mem-pci.c b/hw/virtio/virtio-mem-pci.c
-index 1b4e9a3284..6cc5f0fd3b 100644
---- a/hw/virtio/virtio-mem-pci.c
-+++ b/hw/virtio/virtio-mem-pci.c
-@@ -22,6 +22,10 @@ static void virtio_mem_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
-     VirtIOMEMPCI *mem_pci = VIRTIO_MEM_PCI(vpci_dev);
-     DeviceState *vdev = DEVICE(&mem_pci->vdev);
- 
-+    if (vpci_dev->nvectors == DEV_NVECTORS_UNSPECIFIED) {
-+        vpci_dev->nvectors = 2;
-+    }
-+
-     virtio_pci_force_virtio_1(vpci_dev);
-     qdev_realize(vdev, BUS(&vpci_dev->bus), errp);
- }
-@@ -152,6 +156,13 @@ static void virtio_mem_pci_set_requested_size(Object *obj, Visitor *v,
-     object_property_set(OBJECT(&pci_mem->vdev), name, v, errp);
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index 3af613d4e9..71f3443a53 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -554,8 +554,7 @@ static void s390_machine_device_pre_plug(HotplugHandler *hotplug_dev,
+     if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_CCW)) {
+         virtio_ccw_md_pre_plug(VIRTIO_MD_CCW(dev), MACHINE(hotplug_dev), errp);
+     } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
+-        error_setg(errp,
+-                   "PCI-attached virtio based memory devices not supported");
++        virtio_md_pci_pre_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
+     }
  }
  
-+static const Property virtio_mem_pci_class_properties[] = {
-+    DEFINE_PROP_BIT("ioeventfd", VirtIOPCIProxy, flags,
-+                    VIRTIO_PCI_FLAG_USE_IOEVENTFD_BIT, true),
-+    DEFINE_PROP_UINT32("vectors", VirtIOPCIProxy, nvectors,
-+                       DEV_NVECTORS_UNSPECIFIED),
-+};
-+
- static void virtio_mem_pci_class_init(ObjectClass *klass, void *data)
+@@ -566,7 +565,8 @@ static void s390_machine_device_plug(HotplugHandler *hotplug_dev,
+ 
+     if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
+         s390_cpu_plug(hotplug_dev, dev, errp);
+-    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_CCW)) {
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_CCW) ||
++               object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
+         /*
+          * At this point, the device is realized and set all memdevs mapped, so
+          * qemu_maxrampagesize() will pick up the page sizes of these memdevs
+@@ -580,7 +580,11 @@ static void s390_machine_device_plug(HotplugHandler *hotplug_dev,
+                        " initial memory");
+             return;
+         }
+-        virtio_ccw_md_plug(VIRTIO_MD_CCW(dev), MACHINE(hotplug_dev), errp);
++        if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_CCW)) {
++            virtio_ccw_md_plug(VIRTIO_MD_CCW(dev), MACHINE(hotplug_dev), errp);
++        } else {
++            virtio_md_pci_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
++        }
+     }
+ }
+ 
+@@ -589,10 +593,12 @@ static void s390_machine_device_unplug_request(HotplugHandler *hotplug_dev,
  {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-@@ -164,6 +175,7 @@ static void virtio_mem_pci_class_init(ObjectClass *klass, void *data)
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-     pcidev_k->revision = VIRTIO_PCI_ABI_VERSION;
-     pcidev_k->class_id = PCI_CLASS_OTHERS;
-+    device_class_set_props(dc, virtio_mem_pci_class_properties);
+     if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
+         error_setg(errp, "CPU hot unplug not supported on this machine");
+-        return;
+     } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_CCW)) {
+         virtio_ccw_md_unplug_request(VIRTIO_MD_CCW(dev), MACHINE(hotplug_dev),
+                                      errp);
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
++        virtio_md_pci_unplug_request(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev),
++                                     errp);
+     }
+ }
  
-     mdc->get_addr = virtio_mem_pci_get_addr;
-     mdc->set_addr = virtio_mem_pci_set_addr;
+@@ -601,7 +607,9 @@ static void s390_machine_device_unplug(HotplugHandler *hotplug_dev,
+ {
+     if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_CCW)) {
+         virtio_ccw_md_unplug(VIRTIO_MD_CCW(dev), MACHINE(hotplug_dev), errp);
+-     }
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
++        virtio_md_pci_unplug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
++    }
+  }
+ 
+ static CpuInstanceProperties s390_cpu_index_to_props(MachineState *ms,
 -- 
 2.48.1
 
