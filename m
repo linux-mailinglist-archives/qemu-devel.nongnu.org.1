@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B36D7A2057C
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:03:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 713CBA20574
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:02:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgUh-0000oj-95; Tue, 28 Jan 2025 02:58:47 -0500
+	id 1tcgUk-0001K1-15; Tue, 28 Jan 2025 02:58:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgUa-0000EO-2d; Tue, 28 Jan 2025 02:58:40 -0500
+ id 1tcgUa-0000HQ-J4; Tue, 28 Jan 2025 02:58:40 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgUY-00011s-GB; Tue, 28 Jan 2025 02:58:39 -0500
+ id 1tcgUY-000128-V8; Tue, 28 Jan 2025 02:58:40 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C04F2E1AFB;
+ by isrv.corpit.ru (Postfix) with ESMTP id C43E3E1AFC;
  Tue, 28 Jan 2025 10:54:25 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 3B5CC1A62E2;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 3F4A61A62E3;
  Tue, 28 Jan 2025 10:54:51 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id EE4885205B; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
+ id EFDFA5205D; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.9 26/45] x86/loader: only patch linux kernels
-Date: Mon, 27 Jan 2025 23:26:07 +0300
-Message-Id: <20250127202630.3724367-26-mjt@tls.msk.ru>
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.9 27/45] edk2: get version + date from git submodule
+Date: Mon, 27 Jan 2025 23:26:08 +0300
+Message-Id: <20250127202630.3724367-27-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 References: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
@@ -60,37 +60,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If the binary loaded via -kernel is *not* a linux kernel (in which
-case protocol == 0), do not patch the linux kernel header fields.
+Turned out hard-coding version and date in the Makefile wasn't a bright
+idea.  Updating it on edk2 updates is easily forgotten.  Fetch the info
+from git instead.  Store in edk2-version, so this can be committed to
+the repo and is present in tarballs too.
 
-It's (a) pointless and (b) might break binaries by random patching
-and (c) changes the binary hash which in turn breaks secure boot
-verification.
-
-Background: OVMF happily loads and runs not only linux kernels but
-any efi binary via direct kernel boot.
-
-Note: Breaking the secure boot verification is a problem for linux
-kernels too, but fixed that is left for another day ...
-
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Message-ID: <20240905141211.1253307-3-kraxel@redhat.com>
-(cherry picked from commit 57e2cc9abf5da38f600354fe920ff20e719607b4)
+Message-ID: <20240327102448.61877-2-kraxel@redhat.com>
+(cherry picked from commit 6539c73dccfa8fff1f83d40f1c4477a233876071)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: it is in hw/i386/x86.c not hw/i386/x86-common.c in 8.2.x)
 
-diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-index 2b6291ad8d..672de72762 100644
---- a/hw/i386/x86.c
-+++ b/hw/i386/x86.c
-@@ -1105,7 +1105,7 @@ void x86_load_linux(X86MachineState *x86ms,
-      * kernel on the other side of the fw_cfg interface matches the hash of the
-      * file the user passed in.
-      */
--    if (!sev_enabled()) {
-+    if (!sev_enabled() && protocol > 0) {
-         memcpy(setup, header, MIN(sizeof(header), setup_size));
-     }
+diff --git a/roms/Makefile b/roms/Makefile
+index 67f709ba2d..3caae36bbb 100644
+--- a/roms/Makefile
++++ b/roms/Makefile
+@@ -52,6 +52,8 @@ SEABIOS_EXTRAVERSION="-prebuilt.qemu.org"
+ #
+ EDK2_EFIROM = edk2/BaseTools/Source/C/bin/EfiRom
+ 
++-include edk2-version
++
+ default help:
+ 	@echo "nothing is build by default"
+ 	@echo "available build targets:"
+@@ -146,10 +148,19 @@ skiboot:
+ 	$(MAKE) -C skiboot CROSS=$(powerpc64_cross_prefix)
+ 	cp skiboot/skiboot.lid ../pc-bios/skiboot.lid
+ 
+-efi:
++edk2-version: edk2
++	if test -e edk2/.git; then \
++		echo "EDK2_STABLE = $$(cd edk2; git describe --tags --match 'edk2-stable*')" > $@; \
++		echo "EDK2_DATE = $$(cd edk2; git log -1 --pretty='format:%cd' --date='format:%m/%d/%Y')" >> $@; \
++	else \
++		touch $@; \
++	fi
++
++efi: edk2-version
+ 	$(PYTHON) edk2-build.py --config edk2-build.config \
+-		--version-override "edk2-stable202302-for-qemu" \
+-		--release-date "03/01/2023"
++		--version-override "$(EDK2_STABLE)-for-qemu" \
++		--release-date "$(EDK2_DATE)" \
++		--silent --no-logs
+ 	rm -f ../pc-bios/edk2-*.fd.bz2
+ 	bzip2 --verbose ../pc-bios/edk2-*.fd
  
 -- 
 2.39.5
