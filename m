@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76A71A205D6
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:20:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0B4FA2057E
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:03:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgSo-0001uK-E4; Tue, 28 Jan 2025 02:56:50 -0500
+	id 1tcgSr-0002XF-TF; Tue, 28 Jan 2025 02:56:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgSF-0008Dt-15; Tue, 28 Jan 2025 02:56:15 -0500
+ id 1tcgSa-0001mI-6j; Tue, 28 Jan 2025 02:56:37 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcgSD-0000IV-7h; Tue, 28 Jan 2025 02:56:14 -0500
+ id 1tcgSY-0000Jg-NC; Tue, 28 Jan 2025 02:56:35 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6B4C8E1AE5;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6F293E1AE6;
  Tue, 28 Jan 2025 10:54:25 +0300 (MSK)
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id DA85D1A62CC;
+ by tsrv.corpit.ru (Postfix) with ESMTP id DE57E1A62CD;
  Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id C941D5202F; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
+ id CAE0A52031; Tue, 28 Jan 2025 10:54:50 +0300 (MSK)
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.9 04/45] linux-user: Fix strace output for s390x mmap()
-Date: Mon, 27 Jan 2025 23:25:45 +0300
-Message-Id: <20250127202630.3724367-4-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.9 05/45] virtio-net: Fix size check in dhclient workaround
+Date: Mon, 27 Jan 2025 23:25:46 +0300
+Message-Id: <20250127202630.3724367-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
 References: <qemu-stable-8.2.9-20250127232621@cover.tls.msk.ru>
@@ -61,70 +60,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-print_mmap() assumes that mmap() receives arguments via memory if
-mmap2() is present. s390x (as opposed to s390) does not fit this
-pattern: it does not have mmap2(), but mmap() still receives arguments
-via memory.
+work_around_broken_dhclient() accesses IP and UDP headers to detect
+relevant packets and to calculate checksums, but it didn't check if
+the packet has size sufficient to accommodate them, causing out-of-bound
+access hazards. Fix this by correcting the size requirement.
 
-Fix by sharing the detection logic between syscall.c and strace.c.
-
+Fixes: 1d41b0c1ec66 ("Work around dhclient brokenness")
 Cc: qemu-stable@nongnu.org
-Fixes: d971040c2d16 ("linux-user: Fix strace output for old_mmap")
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-ID: <20241120212717.246186-1-iii@linux.ibm.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit d95fd9838b540e69da9b07538ec8ad6ab9eab260)
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+(cherry picked from commit a8575f7fb2f213e6690b23160b04271d47fdfaa8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: compensate for chris architecture removal by v9.1.0-282-gbff4b02ca1f4
- "linux-user: Remove support for CRIS target")
 
-diff --git a/linux-user/strace.c b/linux-user/strace.c
-index cf26e55264..3be77c4a38 100644
---- a/linux-user/strace.c
-+++ b/linux-user/strace.c
-@@ -3803,7 +3803,7 @@ print_mmap(CPUArchState *cpu_env, const struct syscallname *name,
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 038604bbec..534faa1b88 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -1690,8 +1690,11 @@ static void virtio_net_hdr_swap(VirtIODevice *vdev, struct virtio_net_hdr *hdr)
+ static void work_around_broken_dhclient(struct virtio_net_hdr *hdr,
+                                         uint8_t *buf, size_t size)
  {
-     return print_mmap_both(cpu_env, name, arg0, arg1, arg2, arg3,
-                            arg4, arg5,
--#if defined(TARGET_NR_mmap2)
-+#ifdef TARGET_ARCH_WANT_SYS_OLD_MMAP
-                             true
- #else
-                             false
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 2a4137fc22..7ee1d61248 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -10394,10 +10394,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-         return ret;
- #ifdef TARGET_NR_mmap
-     case TARGET_NR_mmap:
--#if (defined(TARGET_I386) && defined(TARGET_ABI32)) || \
--    (defined(TARGET_ARM) && defined(TARGET_ABI32)) || \
--    defined(TARGET_M68K) || defined(TARGET_CRIS) || defined(TARGET_MICROBLAZE) \
--    || defined(TARGET_S390X)
-+#ifdef TARGET_ARCH_WANT_SYS_OLD_MMAP
-         {
-             abi_ulong *v;
-             abi_ulong v1, v2, v3, v4, v5, v6;
-diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
-index 77ba343c85..e58c627d00 100644
---- a/linux-user/syscall_defs.h
-+++ b/linux-user/syscall_defs.h
-@@ -2750,4 +2750,11 @@ struct target_sched_param {
-     abi_int sched_priority;
- };
- 
-+#if (defined(TARGET_I386) && defined(TARGET_ABI32)) || \
-+    (defined(TARGET_ARM) && defined(TARGET_ABI32)) || \
-+    defined(TARGET_M68K) || defined(TARGET_CRIS) || defined(TARGET_MICROBLAZE) \
-+    || defined(TARGET_S390X)
-+#define TARGET_ARCH_WANT_SYS_OLD_MMAP
-+#endif
++    size_t csum_size = ETH_HLEN + sizeof(struct ip_header) +
++                       sizeof(struct udp_header);
 +
- #endif
+     if ((hdr->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM) && /* missing csum */
+-        (size > 27 && size < 1500) && /* normal sized MTU */
++        (size >= csum_size && size < 1500) && /* normal sized MTU */
+         (buf[12] == 0x08 && buf[13] == 0x00) && /* ethertype == IPv4 */
+         (buf[23] == 17) && /* ip.protocol == UDP */
+         (buf[34] == 0 && buf[35] == 67)) { /* udp.srcport == bootps */
 -- 
 2.39.5
 
