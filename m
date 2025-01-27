@@ -2,106 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356E4A1D3D3
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 10:46:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF421A1D3ED
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 10:56:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcLhH-0003aO-KI; Mon, 27 Jan 2025 04:46:23 -0500
+	id 1tcLpX-0000x7-Oa; Mon, 27 Jan 2025 04:54:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tcLhA-0003Nj-Lp; Mon, 27 Jan 2025 04:46:16 -0500
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tcLpO-0000vQ-8f
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 04:54:46 -0500
+Received: from mail-yb1-xb35.google.com ([2607:f8b0:4864:20::b35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tcLh8-0005pv-Px; Mon, 27 Jan 2025 04:46:16 -0500
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-ab651f1dd36so841494166b.0; 
- Mon, 27 Jan 2025 01:46:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tcLpL-0006mv-Ux
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 04:54:46 -0500
+Received: by mail-yb1-xb35.google.com with SMTP id
+ 3f1490d57ef6-e398484b60bso6162536276.1
+ for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 01:54:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1737971173; x=1738575973; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1737971681; x=1738576481; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=musWy1n7TogM8KXZsXOnvhQhrXqQAkckhg6RXEq4Bko=;
- b=dfXvlODoGkd5A7uyB559QzK7D3xxMr+Kk5cJUd1dLFV8v7xsoVDs3NvdQjg1r2zLIO
- jAqStIrbQv9UvK/Q2LWV0GjAfJN95uCZP1H7RwZ+xgnFsOCH1C68Zvkh3k9DP/bc0crr
- RRwAr0ba6QkpHktRuqSRnL5ZCP1+5IK6QgCC7CNc13F5Q97B+vpWOU1CbshiVR6SXN0c
- rA6q1wJNR2q17Gm5P88dHLzDsgTm0uQJ3cdaXxHtFZbKPa0yoH1XJ4+OZEKVP2m5GbTq
- iFLDBTE7hCQsDR6zty89CLXLfrOxuvrGeeWBgqmJKQ+SfbXVVRv4HKTjzDeWvBfBaJ2U
- DlOQ==
+ bh=SaFx5AsSluXaTySUd0lAk0jzO07EJ6XLZxNTSbwUjHY=;
+ b=sU84f0ri3vCCLJ1hTGH7CbZPtHmWDaVvho/jU+Q88kiw4sGNOHq+YlfrXHcD9KIgXQ
+ IBCAsLGrkdiW8T7JwfBKtenCgOpzEAsleHgog17G1qgVhOJUzs7DpLcorBGonnxbO81/
+ zL5ArK3sPE9uiqxU735ZHzLCTyetmpMQVsp1yw/2aYz7qs8GS81HzSd0nHmWz+ERaNB7
+ JXbPGTK0bsqBhVMLNtW/ZDBOHjUTOU1bbH6xzkm91ha2KKLbXtKzfkY6VlcDqPX/xN33
+ z76ct6vHhGkLdGKenqPpnvQ0t4dEQ8MO/J4yERKtAmvevJ+cLiWmdEWYmVe4EVMY30W6
+ fLzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1737971173; x=1738575973;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1737971681; x=1738576481;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=musWy1n7TogM8KXZsXOnvhQhrXqQAkckhg6RXEq4Bko=;
- b=EVVoykembeN3JRXdeEl+1g0RyEeP+DplrG8/RrXd5vqUdOWPphnu6aDiAxR3PFaBzK
- zJO34cPClkyLtgEkWBcILSIKnfVoaYMuduG9+4ICGEpZw6QQgR1EakO8gY4Dw4xqVe8l
- mp0pHSavt+XcZaDdBvscGQCDF4wH5VuxD/2R8OtIYnyxcgIs1z/1aNe8i0VH1gYwal7Y
- gyRo65KmbAlg8OSyw1mmbwjJf7zxATvdCRWlqQrLvCqIqth1O2OhnhV6zht7sIq+6fjp
- Iu0uKWqM0sWySkatsnZ2VZM6ycPhCwQB/Lln9cSecA+3EcR2DpOXwcMbEArT7LmEGUpy
- 7Ecw==
+ bh=SaFx5AsSluXaTySUd0lAk0jzO07EJ6XLZxNTSbwUjHY=;
+ b=vhIZ+rTx+zKpOR2ZlswPP8sTJLGB6sf7dBzm5t1wrcQazdVM5fX1cKbFZuLFv2h0T0
+ sP0YXIEI9lS3Aqw/fr2LofLPmUEJynGRgsh4u9tNwarzBxmqLdBYpKicYItDUDNkLid9
+ HiHsFTio28hb77oK/ppQ5or9XVBR3P+48ElDprSJVEzwVSnNYATw1Ddnne0W0nikfmGD
+ N0zYVGRf4qumvismTiLLvASDrEiqSBe/OhL18qCSGmYFOsIuFbftujMT48BcjRP1Y08y
+ HUkyXunO1CykeIK0mckExs1PoWlb934pyS+Hyph5W2NU0AAH7/mbs20JLI4fQ0Nx6/sU
+ bc8w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUdXaipMBd3t1WGo8Lb+gsKBVdj/o8BYGcvZ5bCXNmkLiSHQw0Tv7EOL3zeU+nquFIzXbT0xaf3+wY=@nongnu.org,
- AJvYcCUsguGK4R0vGEOO8aNvfZ8AVNNGRKLvIrHsgmSOw57qqOu4yOi38r6E0paUA007Xf31mPc3nq7uzYqP@nongnu.org
-X-Gm-Message-State: AOJu0YxB/KNIqtiyHhGxPmYYgh0+WrQRckxK23WnWuvI8yXyUxw8tDLG
- pBiBrqU79uE4cjr7D05Pjgqqd7Pz3Mm4dTlOdlQY9DPwPMKYsv5380X7mQ==
-X-Gm-Gg: ASbGnctQajNhuH6tZefDwOXwU0gOEIh9V2PP5hd+9MvBuVEGkJQrR3WN9TW2nxoH8l1
- 7NnI3/MUxeaIOV/grPZ2mzVrUd0FF3QHJu0apIB+mA8Qju7DGJR9IuyCUeBrZ3C8S/qBk8b5Ecp
- 1Ti99uYe7hwpMTPOHSdcnByc4bP/uQShuFu3LGfMyTnc6nxImlo2Paxhz7N3n43tPUrWIGl8HAW
- VTVRjYl3OzUC1mGx5RkYVk/Aa3TPVq8AnSUh2PlEtdid21PTwejtN+U6XbXyFukZjxZlE5ugO6u
- dRIetoLVp8wJv0tJd9me0BAqB1tZ3LXrWCqxkJzynmLAzomlhsnsYWLU
-X-Google-Smtp-Source: AGHT+IHG0IaOyPVMUP/MqBB9v9/fX+0a85D1lpF7KinDYCL9eJYDjqGVvqsM8FHH5W5762wb2tK/pA==
-X-Received: by 2002:a17:907:6ea4:b0:ab2:bffb:4b5c with SMTP id
- a640c23a62f3a-ab38b24bd9emr3486146266b.18.1737971172417; 
- Mon, 27 Jan 2025 01:46:12 -0800 (PST)
-Received: from [127.0.0.1] (dynamic-093-128-047-181.93.128.pool.telefonica.de.
- [93.128.47.181]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab675e12505sm564891866b.17.2025.01.27.01.46.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 Jan 2025 01:46:12 -0800 (PST)
-Date: Mon, 27 Jan 2025 09:46:12 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-CC: Yi Liu <yi.l.liu@intel.com>, Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Anthony PERARD <anthony@xenproject.org>,
- Gustavo Romero <gustavo.romero@linaro.org>, Jason Wang <jasowang@redhat.com>, 
- qemu-ppc@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Alexander Graf <graf@amazon.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?ISO-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- xen-devel@lists.xenproject.org,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alex Williamson <alex.williamson@redhat.com>, Paul Durrant <paul@xen.org>,
- =?ISO-8859-1?Q?Cl=E9ment_Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
- =?ISO-8859-1?Q?C=E9dric_Le_Goater?= <clg@redhat.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BRFC_PATCH_9/9=5D_hw/xen=3A_Have_legacy_Xen?=
- =?US-ASCII?Q?_backend_inherit_from_DYNAMIC=5FSYS=5FBUS=5FDEVICE?=
-In-Reply-To: <20250125181343.59151-10-philmd@linaro.org>
-References: <20250125181343.59151-1-philmd@linaro.org>
- <20250125181343.59151-10-philmd@linaro.org>
-Message-ID: <9A2B297A-6270-4482-B1B6-81F518C07C1E@gmail.com>
+ AJvYcCXffXYCsraeLMamCwiZ07+ND/adne0tH9mVPZuwaI1SNN6uqpHmLFN/okh3AUTi2B/Ccz0aGhRjMI15@nongnu.org
+X-Gm-Message-State: AOJu0YxED+B+O8Daujs/3QTtkESWetqyR62z/hfC3mVejQEsrgjILNSE
+ bXh+/HfI0M38iNg330EwrM/jr+z4juA8p9EX0ivr+XsHQnPDy4KRge3lEI1eAugJTOyht7QEGEo
+ zHk5eChQm4prcTSu0depf/JKJzhu2KiTbCTeJqg==
+X-Gm-Gg: ASbGncubrGPyYhKhIOWfeFqjEUCa2oCxAk2lXw86vmV6Z0f+l3CpDumvC8rFRDwy1bn
+ hCsH7o+u/nhrSqIRTzrv+G2n319FXK1FJWEHzpyMuZZrdK7N5gtcoeA2IAWJ2Pfg=
+X-Google-Smtp-Source: AGHT+IFdfq8MVmjFTGY6IdNHjHFJGE/2PTlrrVXChNXrIH2RY6s0n6Uz2li8ZSo01vnWiwhkYGbo/9MPHO5uCTKuHWY=
+X-Received: by 2002:a05:6902:10c8:b0:e58:30dc:615b with SMTP id
+ 3f1490d57ef6-e5830dc66edmr9480156276.22.1737971681470; Mon, 27 Jan 2025
+ 01:54:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20250124162836.2332150-1-peter.maydell@linaro.org>
+ <20250124162836.2332150-3-peter.maydell@linaro.org>
+ <87r04si15d.fsf@draig.linaro.org>
+In-Reply-To: <87r04si15d.fsf@draig.linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 27 Jan 2025 09:54:30 +0000
+X-Gm-Features: AWEUYZnFn4dk-Uh-xNZQkU1dCUCT8VIaBX6KZlRlUoBeC841rKowp6mjgEaUTww
+Message-ID: <CAFEAcA-LrHsiazeVa1Zx9QrjJsaDvOe0vGtk9RQYUOpiEyDqFA@mail.gmail.com>
+Subject: Re: [PATCH 02/76] tests/tcg/x86_64/fma: Test some x86
+ fused-multiply-add cases
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b35;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb35.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,80 +95,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-Am 25=2E Januar 2025 18:13:43 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <p=
-hilmd@linaro=2Eorg>:
->Because the legacy Xen backend devices can optionally be plugged on the
->TYPE_PLATFORM_BUS_DEVICE, have it inherit TYPE_DYNAMIC_SYS_BUS_DEVICE=2E
->Remove the implicit TYPE_XENSYSDEV instance_size=2E
+On Fri, 24 Jan 2025 at 17:15, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
 >
->Untested, but I'm surprised the legacy devices work because they
->had a broken instance size (QDev instead of Sysbus=2E=2E=2E), so accesses
->of XenLegacyDevice fields were overwritting sysbus ones=2E
+> Peter Maydell <peter.maydell@linaro.org> writes:
 >
->Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
->---
-> include/hw/xen/xen_pvdev=2Eh  | 3 ++-
-> hw/xen/xen-legacy-backend=2Ec | 7 ++-----
-> 2 files changed, 4 insertions(+), 6 deletions(-)
+> > Add a test case which tests some corner case behaviour of
+> > fused-multiply-add on x86:
+> >  * 0 * Inf + SNaN should raise Invalid
+> >  * 0 * Inf + QNaN shouldh not raise Invalid
+> >  * tininess should be detected after rounding
+
+> > +static testdata tests[] =3D {
+> > +    { 0, 0x7ff0000000000000, 0x7ff000000000aaaa, false, /* 0 * Inf + S=
+NaN */
+> > +      0x7ff800000000aaaa, 1 }, /* Should be QNaN and does raise Invali=
+d */
+> > +    { 0, 0x7ff0000000000000, 0x7ff800000000aaaa, false, /* 0 * Inf + Q=
+NaN */
+> > +      0x7ff800000000aaaa, 0 }, /* Should be QNaN and does *not* raise =
+Invalid */
+> > +    /*
+> > +     * These inputs give a result which is tiny before rounding but wh=
+ich
+> > +     * becomes non-tiny after rounding. x86 is a "detect tininess afte=
+r
+> > +     * rounding" architecture, so it should give a non-denormal result=
+ and
+> > +     * not set the Underflow flag (only the Precision flag for an inex=
+act
+> > +     * result).
+> > +     */
+> > +    { 0x3fdfffffffffffff, 0x001fffffffffffff, 0x801fffffffffffff, fals=
+e,
+> > +      0x8010000000000000, 0x20 },
+> > +    /*
+> > +     * Flushing of denormal outputs to zero should also happen after
+> > +     * rounding, so setting FTZ should not affect the result or the fl=
+ags.
+> > +     * QEMU currently does not emulate this correctly because we do th=
+e
+> > +     * flush-to-zero check before rounding, so we incorrectly produce =
+a
+> > +     * zero result and set Underflow as well as Precision.
+> > +     */
+> > +#ifdef ENABLE_FAILING_TESTS
+> > +    { 0x3fdfffffffffffff, 0x001fffffffffffff, 0x801fffffffffffff, true=
+,
+> > +      0x8010000000000000, 0x20 }, /* Enabling FTZ shouldn't change fla=
+gs */
+> > +#endif
 >
->diff --git a/include/hw/xen/xen_pvdev=2Eh b/include/hw/xen/xen_pvdev=2Eh
->index 0c984440476=2E=2E48950dc2b57 100644
->--- a/include/hw/xen/xen_pvdev=2Eh
->+++ b/include/hw/xen/xen_pvdev=2Eh
->@@ -32,7 +32,8 @@ struct XenDevOps {
-> };
->=20
-> struct XenLegacyDevice {
->-    DeviceState        qdev;
->+    SysBusDevice parent_obj;
+> We could extend the multiarch/float_madds test to handle doubles as well
+> (or create a new multiarch test).
 
-This then needs sysbus=2Eh rather than qdev-core=2Eh include=2E
+This test case is specifically testing a corner case of x86
+semantics -- on Arm, for instance, you would not get the same
+result/flags, because Arm does tininess and flushing-of-denormal
+before rounding, and Arm does raise Invalid for 0 * Inf + QNaN.
+So I'm not sure that a multiarch test would be possible.
 
-Moreover, the patch in the reply needs to be inserted into the series befo=
-re this patch=2E
-
-Both are needed for the patch to compile=2E
-
-Best regards,
-Bernhard
-
->+
->     const char         *type;
->     int                dom;
->     int                dev;
->diff --git a/hw/xen/xen-legacy-backend=2Ec b/hw/xen/xen-legacy-backend=2E=
-c
->index 118c571b3a7=2E=2E4d079e35d83 100644
->--- a/hw/xen/xen-legacy-backend=2Ec
->+++ b/hw/xen/xen-legacy-backend=2Ec
->@@ -640,16 +640,14 @@ static void xendev_class_init(ObjectClass *klass, v=
-oid *data)
->     DeviceClass *dc =3D DEVICE_CLASS(klass);
->=20
->     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
->-    /* xen-backend devices can be plugged/unplugged dynamically */
->-    dc->user_creatable =3D true;
->     dc->bus_type =3D TYPE_XENSYSBUS;
-> }
->=20
-> static const TypeInfo xendev_type_info =3D {
->     =2Ename          =3D TYPE_XENBACKEND,
->-    =2Eparent        =3D TYPE_DEVICE,
->+    =2Eparent        =3D TYPE_DYNAMIC_SYS_BUS_DEVICE,
->     =2Eclass_init    =3D xendev_class_init,
->-    =2Einstance_size =3D sizeof(struct XenLegacyDevice),
->+    =2Einstance_size =3D sizeof(XenLegacyDevice),
-> };
->=20
-> static void xen_sysbus_class_init(ObjectClass *klass, void *data)
->@@ -672,7 +670,6 @@ static const TypeInfo xensysbus_info =3D {
-> static const TypeInfo xensysdev_info =3D {
->     =2Ename          =3D TYPE_XENSYSDEV,
->     =2Eparent        =3D TYPE_SYS_BUS_DEVICE,
->-    =2Einstance_size =3D sizeof(SysBusDevice),
-> };
->=20
-> static void xenbe_register_types(void)
+-- PMM
 
