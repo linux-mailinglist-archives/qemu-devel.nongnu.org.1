@@ -2,33 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C47B4A1D818
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:23:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE6BA1D823
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:23:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcPxG-00005q-RG; Mon, 27 Jan 2025 09:19:11 -0500
+	id 1tcPz7-0002L7-1c; Mon, 27 Jan 2025 09:21:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcPxD-0008Vs-KN; Mon, 27 Jan 2025 09:19:07 -0500
+ id 1tcPyT-0001uU-6G; Mon, 27 Jan 2025 09:20:26 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcPxC-0002OX-3M; Mon, 27 Jan 2025 09:19:07 -0500
+ id 1tcPyQ-0002gp-40; Mon, 27 Jan 2025 09:20:23 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id 3BB40E0E31;
- Mon, 27 Jan 2025 17:18:40 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 336B1E0F3B;
+ Mon, 27 Jan 2025 17:19:55 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id A0C3151D9F; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
+ id A3C3151DA1; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Keoseong Park <keosung.park@samsung.com>,
+Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jeuk Kim <jeuk20.kim@samsung.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.1 29/41] hw/ufs: Adjust value to match CPU's endian format
-Date: Mon, 27 Jan 2025 17:17:43 +0300
-Message-Id: <20250127141803.3514882-29-mjt@tls.msk.ru>
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.1 30/41] tests/qtest/boot-serial-test: Correct HPPA
+ machine name
+Date: Mon, 27 Jan 2025 17:17:44 +0300
+Message-Id: <20250127141803.3514882-30-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
 References: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
@@ -59,48 +62,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Keoseong Park <keosung.park@samsung.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-In ufs_write_attr_value(), the value parameter is handled in the CPU's
-endian format but provided in big-endian format by the caller. Thus, it
-is converted to the CPU's endian format. The related test code is also
-fixed to reflect this change.
+Commit 7df6f751176 ("hw/hppa: Split out machine creation")
+renamed the 'hppa' machine as 'B160L', but forgot to update
+the boot serial test, which ended being skipped.
 
-Fixes: 7c85332a2b3e ("hw/ufs: minor bug fixes related to ufs-test")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Keoseong Park <keosung.park@samsung.com>
-Reviewed-by: Jeuk Kim <jeuk20.kim@samsung.com>
-Message-ID: <20250107084356epcms2p2af4d86432174d76ea57336933e46b4c3@epcms2p2>
+Cc: qemu-stable@nongnu.org
+Fixes: 7df6f751176 ("hw/hppa: Split out machine creation")
+Reported-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 4572dacc33e232a7c951ba7ba7a20887fad29e71)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20250102100340.43014-2-philmd@linaro.org>
+(cherry picked from commit a87077316ed2f1c1c8ba8faf05feed9dbf0f2fee)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
-index 79f786ed4e..7862bba908 100644
---- a/hw/ufs/ufs.c
-+++ b/hw/ufs/ufs.c
-@@ -1164,7 +1164,7 @@ static QueryRespCode ufs_exec_query_attr(UfsRequest *req, int op)
-         value = ufs_read_attr_value(u, idn);
-         ret = UFS_QUERY_RESULT_SUCCESS;
-     } else {
--        value = req->req_upiu.qr.value;
-+        value = be32_to_cpu(req->req_upiu.qr.value);
-         ret = ufs_write_attr_value(u, idn, value);
-     }
-     req->rsp_upiu.qr.value = cpu_to_be32(value);
-diff --git a/tests/qtest/ufs-test.c b/tests/qtest/ufs-test.c
-index 60199abbee..1f860b41c0 100644
---- a/tests/qtest/ufs-test.c
-+++ b/tests/qtest/ufs-test.c
-@@ -145,7 +145,7 @@ static void ufs_send_query(QUfs *ufs, uint8_t slot, uint8_t query_function,
-     req_upiu.qr.idn = idn;
-     req_upiu.qr.index = index;
-     req_upiu.qr.selector = selector;
--    req_upiu.qr.value = attr_value;
-+    req_upiu.qr.value = cpu_to_be32(attr_value);
-     req_upiu.qr.length = UFS_QUERY_DESC_MAX_SIZE;
-     qtest_memwrite(ufs->dev.bus->qts, req_upiu_addr, &req_upiu,
-                    sizeof(req_upiu));
+diff --git a/tests/qtest/boot-serial-test.c b/tests/qtest/boot-serial-test.c
+index 3b92fa5d50..7759e8c970 100644
+--- a/tests/qtest/boot-serial-test.c
++++ b/tests/qtest/boot-serial-test.c
+@@ -185,7 +185,7 @@ static const testdef_t tests[] = {
+       sizeof(kernel_plml605), kernel_plml605 },
+     { "arm", "raspi2b", "", "TT", sizeof(bios_raspi2), 0, bios_raspi2 },
+     /* For hppa, force bios to output to serial by disabling graphics. */
+-    { "hppa", "hppa", "-vga none", "SeaBIOS wants SYSTEM HALT" },
++    { "hppa", "B160L", "-vga none", "SeaBIOS wants SYSTEM HALT" },
+     { "aarch64", "virt", "-cpu max", "TT", sizeof(kernel_aarch64),
+       kernel_aarch64 },
+     { "arm", "microbit", "", "T", sizeof(kernel_nrf51), kernel_nrf51 },
 -- 
 2.39.5
 
