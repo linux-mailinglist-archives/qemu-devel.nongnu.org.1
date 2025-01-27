@@ -2,55 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20814A1D3C2
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 10:44:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E31BDA1D3D4
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 10:46:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcLdx-0006A1-1b; Mon, 27 Jan 2025 04:42:57 -0500
+	id 1tcLe3-0006Bj-CV; Mon, 27 Jan 2025 04:43:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tcLdu-00069r-Uc
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 04:42:54 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tcLe0-0006BN-DO
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 04:43:00 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tcLdt-0005PU-Hs
- for qemu-devel@nongnu.org; Mon, 27 Jan 2025 04:42:54 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tcLdy-0005QE-UT
+ for qemu-devel@nongnu.org; Mon, 27 Jan 2025 04:43:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1737970972;
+ s=mimecast20190719; t=1737970978;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ifvU6q0Cr9WI7jkOBvYCbrw0QaRB0v618Dxm7o9kGgE=;
- b=dmXpJF+Emnt4iZCevILnz4KRBF/UQrHjgOeEaqb3zhBDps/N2FI1P9T/1DKONpsXJdHvf+
- Eluqrc7lLHqil2FFeepQoPyfmhUHyIfqBIcjvxervghZI8qoAHT9r2QMSDu/Dk4Ym9pYzz
- fwdAQgYrE1ZLTBbCAySDaGtpzLPAwQA=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=GyUuEd+mQAYgtLNlBd/uEG9AWCHY4JYbVKG1xXpW/Ho=;
+ b=dXVw/ArugUTgkz+H6yNl4ShxTRNEwpcza3eAaiqr74RuAtZZM/toPOigOLHKeJHTo++/Fh
+ eaLIFupxjN76jMwc4Lex7Ep2dKPWeLq8xoGRYcuOKLttFZ2XZz7nIKBr+u63jD0ybWc3yQ
+ 272Zh2dajkV+idKO4JnHiYYhFCkool0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-620-Y5En0zQlPbGXwJI1hXX9lw-1; Mon,
- 27 Jan 2025 04:42:49 -0500
-X-MC-Unique: Y5En0zQlPbGXwJI1hXX9lw-1
-X-Mimecast-MFC-AGG-ID: Y5En0zQlPbGXwJI1hXX9lw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-634-07ednxMwNX6jwhpcBdPikQ-1; Mon,
+ 27 Jan 2025 04:42:54 -0500
+X-MC-Unique: 07ednxMwNX6jwhpcBdPikQ-1
+X-Mimecast-MFC-AGG-ID: 07ednxMwNX6jwhpcBdPikQ
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BB74D19560A1; Mon, 27 Jan 2025 09:42:48 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EDC2C19560B7; Mon, 27 Jan 2025 09:42:51 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.63])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3F96A18008C0; Mon, 27 Jan 2025 09:42:47 +0000 (UTC)
+ id 4D52A1800365; Mon, 27 Jan 2025 09:42:48 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Cc: Kenneth Jia <kenneth_jia@asus.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 01/12] hw/arm/aspeed: fix connect_serial_hds_to_uarts
-Date: Mon, 27 Jan 2025 10:42:28 +0100
-Message-ID: <20250127094239.636526-2-clg@redhat.com>
+Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 02/12] hw/sd/sdhci: Introduce a new Write Protected pin
+ inverted property
+Date: Mon, 27 Jan 2025 10:42:29 +0100
+Message-ID: <20250127094239.636526-3-clg@redhat.com>
 In-Reply-To: <20250127094239.636526-1-clg@redhat.com>
 References: <20250127094239.636526-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -67,7 +69,7 @@ X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.299,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,38 +85,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kenneth Jia <kenneth_jia@asus.com>
+From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-In the loop, we need ignore the index increase when uart == uart_chosen
-We should increase the index only after we allocate a serial.
+The Write Protect pin of SDHCI model is default active low to match the SDHCI
+spec. So, write enable the bit 19 should be 1 and write protected the bit 19
+should be 0 at the Present State Register (0x24). However, some boards are
+design Write Protected pin active high. In other words, write enable the bit 19
+should be 0 and write protected the bit 19 should be 1 at the
+Present State Register (0x24). To support it, introduces a new "wp-inverted"
+property and set it false by default.
 
-Signed-off-by: Kenneth Jia <kenneth_jia@asus.com>
-Fixes: d2b3eaefb4d7 ("aspeed: Refactor UART init for multi-SoC machines")
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/r/5f9b0c53f1644922ba85522046e92f4c@asus.com
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+Acked-by: Cédric Le Goater <clg@redhat.com>
+Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Link: https://lore.kernel.org/r/20241114094839.4128404-3-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/hw/sd/sdhci.h | 5 +++++
+ hw/sd/sdhci.c         | 6 ++++++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index a18d4ed1fb10..2662465ada4f 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -364,11 +364,11 @@ static void connect_serial_hds_to_uarts(AspeedMachineState *bmc)
-     int uart_chosen = bmc->uart_chosen ? bmc->uart_chosen : amc->uart_default;
+diff --git a/include/hw/sd/sdhci.h b/include/hw/sd/sdhci.h
+index 6cd2822f1d13..38c08e285980 100644
+--- a/include/hw/sd/sdhci.h
++++ b/include/hw/sd/sdhci.h
+@@ -100,6 +100,11 @@ struct SDHCIState {
+     uint8_t sd_spec_version;
+     uint8_t uhs_mode;
+     uint8_t vendor;        /* For vendor specific functionality */
++    /*
++     * Write Protect pin default active low for detecting SD card
++     * to be protected. Set wp_inverted to invert the signal.
++     */
++    bool wp_inverted;
+ };
+ typedef struct SDHCIState SDHCIState;
  
-     aspeed_soc_uart_set_chr(s, uart_chosen, serial_hd(0));
--    for (int i = 1, uart = sc->uarts_base; i < sc->uarts_num; i++, uart++) {
-+    for (int i = 1, uart = sc->uarts_base; i < sc->uarts_num; uart++) {
-         if (uart == uart_chosen) {
-             continue;
-         }
--        aspeed_soc_uart_set_chr(s, uart, serial_hd(i));
-+        aspeed_soc_uart_set_chr(s, uart, serial_hd(i++));
-     }
- }
+diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+index 318587ff57ca..99dd4a4e9528 100644
+--- a/hw/sd/sdhci.c
++++ b/hw/sd/sdhci.c
+@@ -274,6 +274,10 @@ static void sdhci_set_readonly(DeviceState *dev, bool level)
+ {
+     SDHCIState *s = (SDHCIState *)dev;
  
++    if (s->wp_inverted) {
++        level = !level;
++    }
++
+     if (level) {
+         s->prnsts &= ~SDHC_WRITE_PROTECT;
+     } else {
+@@ -1555,6 +1559,8 @@ static const Property sdhci_sysbus_properties[] = {
+                      false),
+     DEFINE_PROP_LINK("dma", SDHCIState,
+                      dma_mr, TYPE_MEMORY_REGION, MemoryRegion *),
++    DEFINE_PROP_BOOL("wp-inverted", SDHCIState,
++                     wp_inverted, false),
+ };
+ 
+ static void sdhci_sysbus_init(Object *obj)
 -- 
 2.48.1
 
