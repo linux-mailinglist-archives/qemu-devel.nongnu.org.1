@@ -2,40 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EEFFA1D7EB
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:19:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDF5DA1D7EE
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Jan 2025 15:20:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcPws-0008P4-9f; Mon, 27 Jan 2025 09:18:46 -0500
+	id 1tcPxN-0000AG-T2; Mon, 27 Jan 2025 09:19:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcPwX-0008LP-A7; Mon, 27 Jan 2025 09:18:35 -0500
+ id 1tcPxJ-00009E-UR; Mon, 27 Jan 2025 09:19:13 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tcPwU-0002L8-4T; Mon, 27 Jan 2025 09:18:24 -0500
+ id 1tcPxH-0002Po-TD; Mon, 27 Jan 2025 09:19:13 -0500
 Received: from localhost.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by isrv.corpit.ru (Postfix) with ESMTP id 387FAE0E2B;
- Mon, 27 Jan 2025 17:17:39 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 495ACE0E35;
+ Mon, 27 Jan 2025 17:18:40 +0300 (MSK)
 Received: by localhost.tls.msk.ru (Postfix, from userid 1000)
- id 6CC5551D70; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
+ id 6F54151D74; Mon, 27 Jan 2025 17:18:03 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.1 08/41] meson.build: Disallow libnfs v6 to fix the
- broken macOS build
-Date: Mon, 27 Jan 2025 17:17:22 +0300
-Message-Id: <20250127141803.3514882-8-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.1 09/41] target/i386: Reset TSCs of parked vCPUs too on
+ VM reset
+Date: Mon, 27 Jan 2025 17:17:23 +0300
+Message-Id: <20250127141803.3514882-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
 References: <qemu-stable-9.2.1-20250127154029@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,38 +59,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-The macOS builds in our CI (and possibly other very recent distros)
-are currently broken since the update to libnfs version 6 there.
-That version apparently comes with a big API breakage. v5.0.3 was
-the final release of the old API (see the libnfs commit here:
-https://github.com/sahlberg/libnfs/commit/4379837 ).
+Since commit 5286c3662294 ("target/i386: properly reset TSC on reset")
+QEMU writes the special value of "1" to each online vCPU TSC on VM reset
+to reset it.
 
-Disallow version 6.x for now to get the broken CI job working
-again. Once somebody had enough time to adapt our code in
-block/nfs.c, we can revert this change again.
+However parked vCPUs don't get that handling and due to that their TSCs
+get desynchronized when the VM gets reset.
+This in turn causes KVM to turn off PVCLOCK_TSC_STABLE_BIT in its exported
+PV clock.
+Note that KVM has no understanding of vCPU being currently parked.
 
-Message-ID: <20241218065157.209020-1-thuth@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit e2d98f257138b83b6a492d1da5847a7fe0930d10)
+Without PVCLOCK_TSC_STABLE_BIT the sched clock is marked unstable in
+the guest's kvm_sched_clock_init().
+This causes a performance regressions to show in some tests.
+
+Fix this issue by writing the special value of "1" also to TSCs of parked
+vCPUs on VM reset.
+
+Reproducing the issue:
+1) Boot a VM with "-smp 2,maxcpus=3" or similar
+
+2) device_add host-x86_64-cpu,id=vcpu,node-id=0,socket-id=0,core-id=2,thread-id=0
+
+3) Wait a few seconds
+
+4) device_del vcpu
+
+5) Inside the VM run:
+# echo "t" >/proc/sysrq-trigger; dmesg | grep sched_clock_stable
+Observe the sched_clock_stable() value is 1.
+
+6) Reboot the VM
+
+7) Once the VM boots once again run inside it:
+# echo "t" >/proc/sysrq-trigger; dmesg | grep sched_clock_stable
+Observe the sched_clock_stable() value is now 0.
+
+Fixes: 5286c3662294 ("target/i386: properly reset TSC on reset")
+Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+Link: https://lore.kernel.org/r/5a605a88e9a231386dc803c60f5fed9b48108139.1734014926.git.maciej.szmigiero@oracle.com
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 3f2a05b31ee9ce2ddb6c75a9bc3f5e7f7af9a76f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/meson.build b/meson.build
-index 147097c652..7a3faca61d 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1122,7 +1122,7 @@ endif
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 801cff16a5..dec1d1c16a 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -437,6 +437,16 @@ int kvm_unpark_vcpu(KVMState *s, unsigned long vcpu_id)
+     return kvm_fd;
+ }
  
- libnfs = not_found
- if not get_option('libnfs').auto() or have_block
--  libnfs = dependency('libnfs', version: '>=1.9.3',
-+  libnfs = dependency('libnfs', version: ['>=1.9.3', '<6.0.0'],
-                       required: get_option('libnfs'),
-                       method: 'pkg-config')
- endif
++static void kvm_reset_parked_vcpus(void *param)
++{
++    KVMState *s = param;
++    struct KVMParkedVcpu *cpu;
++
++    QLIST_FOREACH(cpu, &s->kvm_parked_vcpus, node) {
++        kvm_arch_reset_parked_vcpu(cpu->vcpu_id, cpu->kvm_fd);
++    }
++}
++
+ int kvm_create_vcpu(CPUState *cpu)
+ {
+     unsigned long vcpu_id = kvm_arch_vcpu_id(cpu);
+@@ -2728,6 +2738,7 @@ static int kvm_init(MachineState *ms)
+     }
+ 
+     qemu_register_reset(kvm_unpoison_all, NULL);
++    qemu_register_reset(kvm_reset_parked_vcpus, s);
+ 
+     if (s->kernel_irqchip_allowed) {
+         kvm_irqchip_create(s);
+diff --git a/configs/targets/i386-softmmu.mak b/configs/targets/i386-softmmu.mak
+index 2ac69d5ba3..2eb0e86250 100644
+--- a/configs/targets/i386-softmmu.mak
++++ b/configs/targets/i386-softmmu.mak
+@@ -1,4 +1,5 @@
+ TARGET_ARCH=i386
+ TARGET_SUPPORTS_MTTCG=y
+ TARGET_KVM_HAVE_GUEST_DEBUG=y
++TARGET_KVM_HAVE_RESET_PARKED_VCPU=y
+ TARGET_XML_FILES= gdb-xml/i386-32bit.xml
+diff --git a/configs/targets/x86_64-softmmu.mak b/configs/targets/x86_64-softmmu.mak
+index e12ac3dc59..920e9a4200 100644
+--- a/configs/targets/x86_64-softmmu.mak
++++ b/configs/targets/x86_64-softmmu.mak
+@@ -2,4 +2,5 @@ TARGET_ARCH=x86_64
+ TARGET_BASE_ARCH=i386
+ TARGET_SUPPORTS_MTTCG=y
+ TARGET_KVM_HAVE_GUEST_DEBUG=y
++TARGET_KVM_HAVE_RESET_PARKED_VCPU=y
+ TARGET_XML_FILES= gdb-xml/i386-64bit.xml
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index c3a60b2890..ab17c09a55 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -377,6 +377,14 @@ int kvm_arch_init(MachineState *ms, KVMState *s);
+ int kvm_arch_init_vcpu(CPUState *cpu);
+ int kvm_arch_destroy_vcpu(CPUState *cpu);
+ 
++#ifdef TARGET_KVM_HAVE_RESET_PARKED_VCPU
++void kvm_arch_reset_parked_vcpu(unsigned long vcpu_id, int kvm_fd);
++#else
++static inline void kvm_arch_reset_parked_vcpu(unsigned long vcpu_id, int kvm_fd)
++{
++}
++#endif
++
+ bool kvm_vcpu_id_is_valid(int vcpu_id);
+ 
+ /* Returns VCPU ID to be used on KVM_CREATE_VCPU ioctl() */
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 8e17942c3b..2ff618fbf1 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2415,6 +2415,21 @@ void kvm_arch_after_reset_vcpu(X86CPU *cpu)
+     }
+ }
+ 
++void kvm_arch_reset_parked_vcpu(unsigned long vcpu_id, int kvm_fd)
++{
++    g_autofree struct kvm_msrs *msrs = NULL;
++
++    msrs = g_malloc0(sizeof(*msrs) + sizeof(msrs->entries[0]));
++    msrs->entries[0].index = MSR_IA32_TSC;
++    msrs->entries[0].data = 1; /* match the value in x86_cpu_reset() */
++    msrs->nmsrs++;
++
++    if (ioctl(kvm_fd, KVM_SET_MSRS, msrs) != 1) {
++        warn_report("parked vCPU %lu TSC reset failed: %d",
++                    vcpu_id, errno);
++    }
++}
++
+ void kvm_arch_do_init_vcpu(X86CPU *cpu)
+ {
+     CPUX86State *env = &cpu->env;
 -- 
 2.39.5
 
