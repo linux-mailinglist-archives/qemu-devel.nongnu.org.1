@@ -2,76 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD42A20D0E
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 16:30:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D67FA20DC2
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 16:55:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcnWp-0002PR-0L; Tue, 28 Jan 2025 10:29:27 -0500
+	id 1tcnup-0001Xs-SO; Tue, 28 Jan 2025 10:54:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tcnWi-0002Mz-IU
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 10:29:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tcnWg-0004y9-MZ
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 10:29:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738078158;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9gAgBMdzClKVT2mKK3fuQ/Y+AkGacCs7NGuvmu+0J4s=;
- b=B6jDpHxnTzO6wJmgvNRTcioSiNl0ovFLbO6YKfOqMV6sFSl8N5upS5g9UXk8cfwoplcb8n
- C6RHC3Iu1l12sU/lh+7OMGTraAw29fC54TU4faQ302+UMOmYTQFvE+yi5F2thwFD16bXxM
- ih8IO0bG7ZecBjvDDuPkkrkl2p9048U=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-391-5N9vAs3LP0K28JsTazulGQ-1; Tue,
- 28 Jan 2025 10:29:13 -0500
-X-MC-Unique: 5N9vAs3LP0K28JsTazulGQ-1
-X-Mimecast-MFC-AGG-ID: 5N9vAs3LP0K28JsTazulGQ
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C704B180189A; Tue, 28 Jan 2025 15:29:10 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.195.33])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 222A51801A62; Tue, 28 Jan 2025 15:29:06 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Hao Wu <wuhaotsh@google.com>, Tyrone Ting <kfting@nuvoton.com>,
- Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
- Radoslaw Biernacki <rad@semihalf.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 5/5] tests/functional/test_mips_malta: Convert the mips big
- endian replay tests
-Date: Tue, 28 Jan 2025 16:28:39 +0100
-Message-ID: <20250128152839.184599-6-thuth@redhat.com>
-In-Reply-To: <20250128152839.184599-1-thuth@redhat.com>
-References: <20250128152839.184599-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tcnui-0001Xd-Te
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 10:54:08 -0500
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tcnuh-0008Ux-5q
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 10:54:08 -0500
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-2eeb4d643a5so10232000a91.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 07:54:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1738079645; x=1738684445; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=w08lruw+sO/cuLE2CKI8wsZW9X6HG2fUkfIx/gONmDw=;
+ b=z8mFC+sYofahNmquvuz+Udm/7LkmXNz63lBS7HzXAgFgdsKSFbMjgB9y3epfAkLoLz
+ +NpjGLDUwwBCWUlLUPnjK39UjNo6z64cvX5n6Yq3+JJApJZls76Ah/5hCdPRfOZhQOAm
+ vSXbLIDF0v99VTmTfiBXp+Nuo2C4FA9ANVVDnGEIYovcOcWfg2QqC0K+o6H7TAGnNb1O
+ t84ClqTHIUcKjZIdKaIuBd/qvMAgE/p7uYGvxKXjVX/SbaEmeZud1vN6PQiN/5DGU4PW
+ N7MPQAgy3gEF+wf+82hGNtJzK4eAnc4k1OrCupn+w/4rgAA04HhLMJRyyDRVkZP/ck3x
+ xu2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738079645; x=1738684445;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=w08lruw+sO/cuLE2CKI8wsZW9X6HG2fUkfIx/gONmDw=;
+ b=dUQKhAHHrD1hGJCpgowzm8x13q1oV3/Lji5TmTshKJO1+1qGU/QKQuizhV/tEv9+95
+ B0IM0iWk26xM1+qy4yuJAHL9b2nWr4V4IGD2M30W5KljIEN0xU1J4MyTVWWAvg/umaOb
+ tFRvZWeyYURjW0yZconENquVMexwZxIeE7vy/85yHCnDTQNLosniJ94Ndd6z5oONWqUy
+ ZoeSywbQ3+/IuHWKb2ljOy6BeFI1R/fy3UK7oEVtwSDl3OUoeS06YwhPG7m2c3mIwg0p
+ ggci4f30Zfhs3GZB4DT9ENZ7zPwXATskcbp9XhxZCHHWs3L0h7WLRJ3bVlDZLjsIFztu
+ Gkig==
+X-Gm-Message-State: AOJu0YzxgAxNQlwvmzEueMoe4GGq869AapCErNXUGrLvcDpnCfegtYjv
+ pu2kxCZb2A4rI4W/TGAr218KLw/SFImmo1q00Kk+x8Ld8IOG7ycLQRt5tbNSvzs=
+X-Gm-Gg: ASbGnctibeWCPIXycvrgY8h1OsG6t+fsJpU35M35RzLKeUfeISTq/wE1KS1YbYt92Mo
+ 61WGe6NC9iX2Iht2W1cMFZTL24iDa1dvszWLLkIzsSPa/nSOnrSOAYt5MqJA7Zf5k3mzAglrjO7
+ hUAktXw1Hse8gNc2IlAl+hbLpWQPRNBTDgVCTi8gyQx2Ievpxkd2yD0t7CxbSfV6SwspAeZxeR2
+ 6rcq9TIfcnauN5aAohM3l5ilK63EIXhf6MLkqyHeW8+1C9lu5kvBbwpv68zKIwF15+lTm4Cb+Qh
+ 8nGszPJgRRVI1g4tsrSBB83FSOIUv9fWSunJ2feqj1CMi4Hma0WbneVgNA==
+X-Google-Smtp-Source: AGHT+IHkmJhR7pL04fva+Qhs+xjqbQUO0LJKrjmPOwyMIhxfDFWQ7xzU3JfcYPZwxfcvY6G4oskAYA==
+X-Received: by 2002:a05:6a00:330b:b0:724:59e0:5d22 with SMTP id
+ d2e1a72fcca58-72dafba2625mr65301155b3a.20.1738079644619; 
+ Tue, 28 Jan 2025 07:54:04 -0800 (PST)
+Received: from [192.168.0.4] (174-21-71-127.tukw.qwest.net. [174.21.71.127])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-72f8a6b2ce8sm9437175b3a.42.2025.01.28.07.54.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 28 Jan 2025 07:54:04 -0800 (PST)
+Message-ID: <a6d8272d-9ed3-45fe-8d74-44b836c076c1@linaro.org>
+Date: Tue, 28 Jan 2025 07:54:01 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/76] target/arm: Use vfp.fp_status_a64 in A64-only
+ helper functions
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org
+References: <20250124162836.2332150-1-peter.maydell@linaro.org>
+ <20250124162836.2332150-8-peter.maydell@linaro.org>
+ <05ed4583-704a-492c-896a-71bbd4a63a12@linaro.org>
+ <CAFEAcA-qC_osUrdhFzsd7bjv1R54UwiZXrF3sQ=aFHm8k=NkQw@mail.gmail.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAFEAcA-qC_osUrdhFzsd7bjv1R54UwiZXrF3sQ=aFHm8k=NkQw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,162 +102,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the mips big endian replay tests from tests/avocado/replay_kernel.py
-to the functional framework. Since the functional tests should be run per
-target, we cannot stick all replay tests in one file. Thus let's add
-these tests to a separate file now.
+On 1/28/25 04:35, Peter Maydell wrote:
+> On Sat, 25 Jan 2025 at 15:16, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+>>
+>> On 1/24/25 08:27, Peter Maydell wrote:
+>>> @@ -2808,7 +2808,7 @@ bool is_ebf(CPUARMState *env, float_status *statusp, float_status *oddstatusp)
+>>>         */
+>>>        bool ebf = is_a64(env) && env->vfp.fpcr & FPCR_EBF;
+>>>
+>>> -    *statusp = env->vfp.fp_status;
+>>> +    *statusp = env->vfp.fp_status_a64;
+>>>        set_default_nan_mode(true, statusp);
+>>>
+>>>        if (ebf) {
+>>
+>> Is this really correct?  !ebf includes aa32.
+> 
+> Whoops, yes. I'll drop this hunk of the patch and put in this
+> patch afterwards:
+> 
+> Author: Peter Maydell <peter.maydell@linaro.org>
+> Date:   Tue Jan 28 11:40:13 2025 +0000
+> 
+>      target/arm: Use fp_status_a64 or fp_status_a32 in is_ebf()
+> 
+>      In is_ebf(), we might be called for A64 or A32, but we have
+>      the CPUARMState* so we can select fp_status_a64 or
+>      fp_status_a32 accordingly.
+> 
+>      Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> 
+> diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+> index 011726a72d4..2ba1f7cb32e 100644
+> --- a/target/arm/tcg/vec_helper.c
+> +++ b/target/arm/tcg/vec_helper.c
+> @@ -2808,7 +2808,7 @@ bool is_ebf(CPUARMState *env, float_status
+> *statusp, float_status *oddstatusp)
+>        */
+>       bool ebf = is_a64(env) && env->vfp.fpcr & FPCR_EBF;
+> 
+> -    *statusp = env->vfp.fp_status;
+> +    *statusp = is_a64(env) ? env->vfp.fp_status_a64 : env->vfp.fp_status_a32;
+>       set_default_nan_mode(true, statusp);
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- tests/avocado/replay_kernel.py       | 54 ---------------------------
- tests/functional/meson.build         |  1 +
- tests/functional/test_mips_replay.py | 55 ++++++++++++++++++++++++++++
- 3 files changed, 56 insertions(+), 54 deletions(-)
- create mode 100755 tests/functional/test_mips_replay.py
+That'll do.
 
-diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
-index 89a0c0b997..39dbaf5e4d 100644
---- a/tests/avocado/replay_kernel.py
-+++ b/tests/avocado/replay_kernel.py
-@@ -128,24 +128,6 @@ def test_x86_64_q35(self):
- 
-         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
- 
--    def test_mips_malta(self):
--        """
--        :avocado: tags=arch:mips
--        :avocado: tags=machine:malta
--        :avocado: tags=endian:big
--        """
--        deb_url = ('http://snapshot.debian.org/archive/debian/'
--                   '20130217T032700Z/pool/main/l/linux-2.6/'
--                   'linux-image-2.6.32-5-4kc-malta_2.6.32-48_mips.deb')
--        deb_hash = 'a8cfc28ad8f45f54811fc6cf74fc43ffcfe0ba04'
--        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
--        kernel_path = self.extract_from_deb(deb_path,
--                                            '/boot/vmlinux-2.6.32-5-4kc-malta')
--        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=ttyS0'
--        console_pattern = 'Kernel command line: %s' % kernel_command_line
--
--        self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
--
-     def test_aarch64_virt(self):
-         """
-         :avocado: tags=arch:aarch64
-@@ -412,39 +394,3 @@ def test_xtensa_lx60(self):
-                    '/qac-best-of-multiarch/download/day02.tar.xz')
-         file_path = self.fetch_asset(tar_url, asset_hash=tar_hash)
-         self.do_test_advcal_2018(file_path, 'santas-sleigh-ride.elf')
--
--@skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
--class ReplayKernelSlow(ReplayKernelBase):
--    # Override the timeout, because this kernel includes an inner
--    # loop which is executed with TB recompilings during replay,
--    # making it very slow.
--    timeout = 180
--
--    def test_mips_malta_cpio(self):
--        """
--        :avocado: tags=arch:mips
--        :avocado: tags=machine:malta
--        :avocado: tags=endian:big
--        :avocado: tags=slowness:high
--        """
--        deb_url = ('http://snapshot.debian.org/archive/debian/'
--                   '20160601T041800Z/pool/main/l/linux/'
--                   'linux-image-4.5.0-2-4kc-malta_4.5.5-1_mips.deb')
--        deb_hash = 'a3c84f3e88b54e06107d65a410d1d1e8e0f340f8'
--        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
--        kernel_path = self.extract_from_deb(deb_path,
--                                            '/boot/vmlinux-4.5.0-2-4kc-malta')
--        initrd_url = ('https://github.com/groeck/linux-build-test/raw/'
--                      '8584a59ed9e5eb5ee7ca91f6d74bbb06619205b8/rootfs/'
--                      'mips/rootfs.cpio.gz')
--        initrd_hash = 'bf806e17009360a866bf537f6de66590de349a99'
--        initrd_path_gz = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
--        initrd_path = self.workdir + "rootfs.cpio"
--        archive.gzip_uncompress(initrd_path_gz, initrd_path)
--
--        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
--                               'console=ttyS0 console=tty '
--                               'rdinit=/sbin/init noreboot')
--        console_pattern = 'Boot successful.'
--        self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5,
--                    args=('-initrd', initrd_path))
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 0a7a382ef6..164699b6c4 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -157,6 +157,7 @@ tests_microblazeel_system_thorough = [
- 
- tests_mips_system_thorough = [
-   'mips_malta',
-+  'mips_replay',
-   'mips_tuxrun',
- ]
- 
-diff --git a/tests/functional/test_mips_replay.py b/tests/functional/test_mips_replay.py
-new file mode 100755
-index 0000000000..eda031ccad
---- /dev/null
-+++ b/tests/functional/test_mips_replay.py
-@@ -0,0 +1,55 @@
-+#!/usr/bin/env python3
-+#
-+# Replay tests for the big-endian 32-bit MIPS Malta board
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+from qemu_test import Asset, skipSlowTest, exec_command_and_wait_for_pattern
-+from replay_kernel import ReplayKernelBase
-+
-+
-+class MipsReplay(ReplayKernelBase):
-+
-+    ASSET_KERNEL_2_63_2 = Asset(
-+        ('http://snapshot.debian.org/archive/debian/'
-+         '20130217T032700Z/pool/main/l/linux-2.6/'
-+         'linux-image-2.6.32-5-4kc-malta_2.6.32-48_mips.deb'),
-+        '16ca524148afb0626f483163e5edf352bc1ab0e4fc7b9f9d473252762f2c7a43')
-+
-+    def test_replay_mips_malta(self):
-+        self.set_machine('malta')
-+        kernel_path = self.archive_extract(self.ASSET_KERNEL_2_63_2,
-+                                     member='boot/vmlinux-2.6.32-5-4kc-malta')
-+        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=ttyS0'
-+        console_pattern = 'Kernel command line: %s' % kernel_command_line
-+        self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
-+
-+    ASSET_KERNEL_4_5_0 = Asset(
-+        ('http://snapshot.debian.org/archive/debian/'
-+         '20160601T041800Z/pool/main/l/linux/'
-+         'linux-image-4.5.0-2-4kc-malta_4.5.5-1_mips.deb'),
-+        '526b17d5889840888b76fc2c36a0ebde182c9b1410a3a1e68203c3b160eb2027')
-+
-+    ASSET_INITRD = Asset(
-+        ('https://github.com/groeck/linux-build-test/raw/'
-+         '8584a59ed9e5eb5ee7ca91f6d74bbb06619205b8/rootfs/'
-+         'mips/rootfs.cpio.gz'),
-+        'dcfe3a7fe3200da3a00d176b95caaa086495eb158f2bff64afc67d7e1eb2cddc')
-+
-+    @skipSlowTest()
-+    def test_replay_mips_malta_cpio(self):
-+        self.set_machine('malta')
-+        kernel_path = self.archive_extract(self.ASSET_KERNEL_4_5_0,
-+                                      member='boot/vmlinux-4.5.0-2-4kc-malta')
-+        initrd_path = self.uncompress(self.ASSET_INITRD)
-+
-+        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-+                               'console=ttyS0 console=tty '
-+                               'rdinit=/sbin/init noreboot')
-+        console_pattern = 'Boot successful.'
-+        self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5,
-+                    args=('-initrd', initrd_path))
-+
-+
-+if __name__ == '__main__':
-+    ReplayKernelBase.main()
--- 
-2.48.1
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
+
+r~
 
