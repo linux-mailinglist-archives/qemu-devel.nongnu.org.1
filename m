@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D035BA206A1
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 10:04:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2840A206A8
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 10:07:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tchUv-0003Iw-PD; Tue, 28 Jan 2025 04:03:05 -0500
+	id 1tchYv-0006IR-8l; Tue, 28 Jan 2025 04:07:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tchUk-0003GU-UN
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 04:02:55 -0500
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ id 1tchYs-0006FC-RA
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 04:07:11 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tchUh-0006xd-Ob
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 04:02:54 -0500
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-ab2e308a99bso1035414366b.1
- for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 01:02:51 -0800 (PST)
+ id 1tchYq-00085a-J3
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 04:07:09 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-43621d27adeso35617355e9.2
+ for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 01:07:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738054970; x=1738659770; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738055226; x=1738660026; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gjjqAXex8o3R+VWVCq3+VLzEEhpnDBIE+N34LWU+rt8=;
- b=FK3HQ2obzKlWKUO39QNT7mdZA+v5cQykL3w6n1XzCejpbDIdZAG+4l2ZH1gSJkEdAO
- whOWWb0XrLnAmXxUcGbCOz0996xIkJLys4GIVy3Go8I3+TlzPNetiuSgycgBy1FtcPU9
- J4iiOCIFnErxeb12tqnQD0L9Ekq/KazK1safNpuicXkJogVFKbXjDaP61i7bOTREVQ3o
- McKOZG3pb2jClVaqkeC7TuYZgCFW5D8kwxt4Jq0PSaLOTb5ZUNJC8smtEN75jTVO2WGt
- KULwjpjIneqZnLJdxi87nIt/mz44HsRQjbeZOBOpzEpgyN5JXVMggZBwHcCYcox8S/J8
- fFQQ==
+ bh=RZq/ubRHzoR6krJhB/P65pDUglY/XsXX6giT21hiuyg=;
+ b=jUuLGXf+N2p3OLiedTq1gpapg3TdZda8gVHRcbQf9R8Nj2EG4I4JCCX4KR0y2WBYbu
+ NaTH/esMPn20P67jOaWCyxpEFt+0C9B1npIkKRI8EpY9oEVuKqPA8TWbZq8QpbIKTAFM
+ 7oWTkUNDocNp7bg265ftiDdm6HwEWpHrMfPUwv+zuz44oOP6dnW0WqmWIUvMVnzxzEar
+ R9OAFC0XGK1iF2i9w/RuFCzeNF9xXXp1YFxcPqR7BfPRbWQDbI5xp2HfSZrdvY3eFLhD
+ cHLKsuGHuqZGQ1jyTvL11oCZzjnKG+3MdA2ZNZfkC5CTh5vspg6uYvGj2/nGirDipALz
+ 1++Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738054970; x=1738659770;
+ d=1e100.net; s=20230601; t=1738055226; x=1738660026;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=gjjqAXex8o3R+VWVCq3+VLzEEhpnDBIE+N34LWU+rt8=;
- b=YRtxE4ujWXk8vXNwVytIu/gkKC1Nmu7Iw6xQmrOOweG2s0EMEIafREvighC65fh89u
- iwWlhbNCo+c7LmN+6etD+aKcz0cqbumuaduLYvaM9S6ovJCYO2QABOPBhkd/41xJ3UTr
- 9ROXAqnND4NwumkZpX03JkgGToHJDq0fgTPTwOpqagJ6Nzw/7W3toMVl+PxIRaRJggWU
- lnowJbZV3aydGmgbdR4dWHbsXZds4ILuBtfrEzqbLXHZptWfmLNgZy9zxj8/qrphUtr5
- ST1R4arI1S3/PY+Usmc5IBhUdlSdxgMTPXEDWj29sCK5cSweZhzPsJ7pn3cwN5pQLWj/
- McfA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX8M9Wf6zB71U5x9M9En9H6gDQWef+F0hIeXAbppWCoPbRCpCRu4lmuXy8CqOUD64nhwBROLI5oJDgE@nongnu.org
-X-Gm-Message-State: AOJu0YzeaFV2Jjt/gwPHhskKvYnw8JA5she7V4E5gXSiMGNIK62kqUy9
- PPaD1Y7ZhhkNuqvT66Tty4LH33HNxt9J9S4lTwAW6VtoJy5mugaks9VRTpKlcHY=
-X-Gm-Gg: ASbGncuWhyBDKf1NMUe+NLqaQppEE3VRj1tOukGtYrI+7Cv9AyPdZ56tcw0Tu0BfwgO
- jGevjol/EaRGqaBv1Sf2b5nl8dNssGyEXfTCBl6mZXJwbmDoeQDxTYBzgZnIURWLz3n9Yh59pMC
- GrZroc9I+Q+DbKZp4Mo6kycQBLT52Vi7AFP3TXW9Vr/zHC8hOtRg4qWEWTpgIh9MoPttS+bPdIi
- XZUaMr0t42ZJ2pjXHD1pTkRnxHpSdQmRlV8tSfpWRB/jd6dVHrcc2rNbbhwJZ+oFp8lOe1K+exQ
- /LCm2qLSEqDg2A==
-X-Google-Smtp-Source: AGHT+IG4wX6NltI+yIxIDiCtUSKLTDWzO8bditeLUvc+kUqIh0iId5trPSv/U9FBYNunumDR1/9wJQ==
-X-Received: by 2002:a17:906:6a24:b0:ab3:8f33:408a with SMTP id
- a640c23a62f3a-ab6bbbcd33emr247900266b.19.1738054969952; 
- Tue, 28 Jan 2025 01:02:49 -0800 (PST)
+ bh=RZq/ubRHzoR6krJhB/P65pDUglY/XsXX6giT21hiuyg=;
+ b=MGH8hZmGd52I5zohJe62+rSR8Re1zvRaJn3rOU57uvItdWvZKVQIByt26+ttnbJ1Zg
+ cf655r2oR3w9PGNNp/+vM8n27iHWhilbxN5Z/Bntjolgp3hEOLBnuAqd02lxIniCOY1S
+ sJ7VXPl5FGkp0YGiz87SNYx0spDHEFcpcZ9gRr9XsykfONtxA85wPqNZbl0Zxgad5O8Y
+ PPQAQHmf7sa9eSYpeYzzMIcH8ZzqDcNAxa9+K/EuXyo1eaCWyFbfWG1uLmSM8gAmSy01
+ Nh+rdagKGtv0nVMpOcdEytO3N2DM3lyye3wTkDj3l3NIDoYJz67AvoU32yWm1eT9UIOS
+ MtPg==
+X-Gm-Message-State: AOJu0YzbM6yW4fBxp5PZY1HkzQoCh3Tib3gdEcr5oF5GNlmaUIpSgrbJ
+ qts/YEBgfWvlUSktxjmHaeZZmf2wVM8neivi8EMEVOrpXNaWDY+Je7uw67ku8uI=
+X-Gm-Gg: ASbGncvfMOgz8tvU/8JHhy8bFrrNKfJgyFlosKzSrFZm47Fh8jf4jN0nnjtfuwVhc+B
+ lwnVgwXG9vnmdULGP6VFi0dMNPcNVy0lvm3VqFO3XXQfvh3rrDayXmfQRidkpGzgu+L998DRalY
+ TsuPdc9os0jzXtQria3kl7V0OZZw0qFouRKig6UCBIugvLKs11HsDEux35KqC/iH/q3z7pjk5TD
+ ggzCaaRn/V54vnnkx8ZQmrNY4A0zn7+N9FrnFE3PGNmite5i4QgHHkUjHNrTiqltvZ6ilj5EF8T
+ 97TpKmxD3q+fb2OiTWaZ/6E/
+X-Google-Smtp-Source: AGHT+IFYP+vf+Q43Adl9JnqJXMpwr7nNiw/r64fkGk+oKLCzeRcxdt2psu7lIDVcJOXVZD/7SKuw/g==
+X-Received: by 2002:a05:600c:4589:b0:434:a734:d268 with SMTP id
+ 5b1f17b1804b1-438913ed0b7mr440156125e9.14.1738055226251; 
+ Tue, 28 Jan 2025 01:07:06 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ab6760fbf38sm742420666b.143.2025.01.28.01.02.49
+ 5b1f17b1804b1-438bd48574csm163256835e9.9.2025.01.28.01.07.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Jan 2025 01:02:49 -0800 (PST)
+ Tue, 28 Jan 2025 01:07:05 -0800 (PST)
 Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 719AF5F8D1;
- Tue, 28 Jan 2025 09:02:48 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id B40B25F8D1;
+ Tue, 28 Jan 2025 09:07:04 +0000 (GMT)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- qemu-devel@nongnu.org,  peter.maydell@linaro.org,  stefanha@redhat.com,
- pbonzini@redhat.com,  berrange@redhat.com,  philmd@linaro.org,
- mark.cave-ayland@ilande.co.uk,  Liviu Ionescu <ilg@livius.net>
-Subject: Re: [PATCH 0/1] meson: Deprecate 32-bit host systems
-In-Reply-To: <9a280789-9248-4eca-b50c-048fc58e3f53@redhat.com> (Thomas Huth's
- message of "Tue, 28 Jan 2025 05:00:35 +0100")
-References: <20250128004254.33442-1-richard.henderson@linaro.org>
- <9a280789-9248-4eca-b50c-048fc58e3f53@redhat.com>
+To: Luke Craig <lacraig3@gmail.com>
+Cc: qemu-devel@nongnu.org,  Alexandre Iooss <erdnaxe@crans.org>,  Mahmoud
+ Mandour <ma.mandourr@gmail.com>,  Pierrick Bouvier
+ <pierrick.bouvier@linaro.org>
+Subject: Re: [PATCH 1/2] plugin: extend API with
+ qemu_plugin_tb_get_insn_by_vaddr
+In-Reply-To: <20250127201734.1769540-2-lacraig3@gmail.com> (Luke Craig's
+ message of "Mon, 27 Jan 2025 15:17:33 -0500")
+References: <20250127201734.1769540-1-lacraig3@gmail.com>
+ <20250127201734.1769540-2-lacraig3@gmail.com>
 User-Agent: mu4e 1.12.8; emacs 29.4
-Date: Tue, 28 Jan 2025 09:02:48 +0000
-Message-ID: <87plk72tvr.fsf@draig.linaro.org>
+Date: Tue, 28 Jan 2025 09:07:04 +0000
+Message-ID: <87jzaf2ton.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,61 +104,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> writes:
+Luke Craig <lacraig3@gmail.com> writes:
 
-> On 28/01/2025 01.42, Richard Henderson wrote:
->> Time for our biennial attempt to kill ancient hosts.
->> I've been re-working the tcg code generator a bit over the holidays.
->> One place that screams for a bit of cleanup is with 64-bit guest
->> addresses on 32-bit hosts.  Of course the best "cleanup" is to not
->> have to handle such silliness at all.
->> Two years after Thomas' last attempt,
->>    https://lore.kernel.org/qemu-devel/20230130114428.1297295-1-thuth@red=
-hat.com/
->> which resulted only in deprecation of i686 host for system
->> emulation.
->> By itself, this just isn't enough for large-scale cleanups.
->> I'll note that we've separately deprecated mips32, set to expire
->> with the end of Debian bookworm, set to enter LTS in June 2026.
->> I'll note that there is *already* no Debian support for ppc32,
->> and that I am currently unable to cross-compile that host at all.
+> ---
+>  include/qemu/qemu-plugin.h | 11 +++++++++++
+>  plugins/api.c              | 13 +++++++++++++
+>  2 files changed, 24 insertions(+)
 >
-> IIRC the biggest pushback that I got two years ago was with regards to
-> 32-bit arm: The recommended version of Raspberry Pi OS is still
-> 32-bit:
->
->  https://lore.kernel.org/qemu-devel/F852C238-77B8-4E24-9494-8D060EB78F9F@=
-livius.net/
->
-> And looking at https://www.raspberrypi.com/software/operating-systems/
-> this still seems to be the case...
->
-> So I guess the main question is now: Would it be ok to kill support
-> for 32-bit Raspberry Pi OS nowadays?
+> diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+> index 3a850aa216..a1c478c54f 100644
+> --- a/include/qemu/qemu-plugin.h
+> +++ b/include/qemu/qemu-plugin.h
+> @@ -500,6 +500,17 @@ QEMU_PLUGIN_API
+>  struct qemu_plugin_insn *
+>  qemu_plugin_tb_get_insn(const struct qemu_plugin_tb *tb, size_t idx);
+>=20=20
+> +/**
+> + * qemu_plugin_tb_get_insn_by_vaddr() - lookup handle for instruction by=
+ vaddr
+> + * @tb: opaque handle to TB passed to callback
+> + * @vaddr: virtual address of instruction
+> + *
+> + * Returns: opaque handle to instruction
+> + */
+> +QEMU_PLUGIN_API
+> +struct qemu_plugin_insn *
+> +qemu_plugin_tb_get_insn_by_vaddr(const struct qemu_plugin_tb *tb, uint64=
+_t vaddr);
+> +
+>  /**
+>   * qemu_plugin_insn_data() - copy instruction data
+>   * @insn: opaque instruction handle from qemu_plugin_tb_get_insn()
+> diff --git a/plugins/api.c b/plugins/api.c
+> index 4110cfaa23..7ff5e1c1bd 100644
+> --- a/plugins/api.c
+> +++ b/plugins/api.c
+> @@ -258,6 +258,19 @@ qemu_plugin_tb_get_insn(const struct qemu_plugin_tb =
+*tb, size_t idx)
+>      return insn;
+>  }
+>=20=20
+> +struct qemu_plugin_insn *
+> +qemu_plugin_tb_get_insn_by_vaddr(const struct qemu_plugin_tb *tb, uint64=
+_t vaddr)
+> +{
+> +    struct qemu_plugin_insn *insn;
+> +    for (size_t i =3D 0; i < tb->n; i++){
+> +        insn =3D g_ptr_array_index(tb->insns, idx);
+> +        if (insn !=3D NULL && insn->vaddr =3D=3D vaddr){
+> +            return insn;
+> +        }
+> +    }
+> +    return NULL;
+> +}
+> +
 
-I would argue yes for a few reasons.
+I don't have any fundamental objection to this. I would prefer it if the
+new helper was used by either one of the test or contrib plugins to
+ensure we don't bitrot it.
 
-  - you can't buy 32 bit only Pi's AFAICT, even the Pi Zero 2W can work
-    with a 64 bit OS.
-
-  - It's not like the versions shipping in bullseye and bookworm will
-    stop working.
-
-  - Even if we deprecate now there will likely be one more Debian
-    release cycle that gets 32 bit host support.
-
->> Showing my hand a bit, I am willing to limit deprecation to
->> 64-bit guests on 32-bit hosts.  But I'd prefer to go the whole hog:
->> unconditional support for TCG_TYPE_I64 would remove a *lot* of
->> 32-bit fallback code.
-
-I support going the whole hog. I would be curious what use cases still
-exist for an up to date 32-on-32 QEMU based emulation?=20
-
->
-> Sound like a good alternative to me!
->
->  Thomas
+>  /*
+>   * Instruction information
+>   *
 
 --=20
 Alex Benn=C3=A9e
