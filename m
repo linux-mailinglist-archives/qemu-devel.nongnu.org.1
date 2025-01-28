@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B17A20BA2
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 14:56:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9C6DA20B9E
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 14:56:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcm3d-0004i5-9D; Tue, 28 Jan 2025 08:55:13 -0500
+	id 1tcm3e-0004nb-7X; Tue, 28 Jan 2025 08:55:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcm3N-0004a4-Vg
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 08:55:03 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcm3Q-0004aj-1j
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 08:55:06 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcm3J-0006bB-F3
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 08:54:55 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-436a03197b2so38154805e9.2
- for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 05:54:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcm3N-0006bx-JP
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 08:54:58 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-436281c8a38so39833745e9.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 05:54:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738072491; x=1738677291; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738072495; x=1738677295; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Js4tcXY+4Im8Bd7IwohrqklQy95jFm8lPyjSB87jskE=;
- b=f6CYeyWGo5k2AY2zrIcK4hr9B5p4LWdHxiUsS4ERRIScORrQFPOdYKrCsypK739oOR
- NekkF+IcC2cfPTlo2WGUd5dKcxoQ73TnrsUlJ4Vrc0q6e+6l0J6oV1n86i2HMn434QSP
- j/IB+WpcUnrjzdmmjfA1u2hWYmBSfBmcSgUJ98sfgDAcfwAydQaBUKAsI1CtFe+X9XG+
- 63umuBXtNUwoRrghSVv0b3yj/wVtyEIoe6PKWQjGYOlaERzGf3TZ30Uji+I5JiMiecZg
- nkJjC+WrF7/dC8PRurFw/Y9hsS7D+tS/ZVaxtSLJlpgmRcWOE2Ox8WSFNAmDsbKLcDfn
- wLwA==
+ bh=sHTZdSk34mjGYxV+5W6LTI1L6AwP2TGsJTRkRZPId30=;
+ b=I6+cN42Ic3NNltT4lzPMeS2CHPf+hkvEmiSho1CRoBjz+jrWPAYgf7laPJD5mUrJvD
+ 86SxBB/MruLeKGOUhtb0Nhk3ArVEGTfpOIay/sV0H69loTkHB977OvvAOVVzuFvS+ZQI
+ 9UbG7/pXG4nyVpeSPmh/5LqFvLrbL4Ndek18Fco7pWP3dJJZIcoztOhaAE00b3lYzXhj
+ MhB7XhjAEhRs+Ec1ovp2wK1KYXsE7eK5qNWlgBX1N41wtINrFHJss0+Uz4hRGb6CPx3k
+ co+dU3uQB7Og2gNGPo3pGxIq3gMb938Md7zUS+w7E3Jaye5qOZOryfVIE4kION/vq2sX
+ 2UiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738072491; x=1738677291;
+ d=1e100.net; s=20230601; t=1738072495; x=1738677295;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Js4tcXY+4Im8Bd7IwohrqklQy95jFm8lPyjSB87jskE=;
- b=mOX5JcoFyKrv0jPGzHgmnADxfr89CteAFE4y/vH+6jqRJOk7sbGwM6xkc7k+IsVUu7
- vemh592Wg8BFcrRhJvzOksv77TI00wMunQq3MoP6AwwbUv2UAjr8zZ+lTfUBwunk5y+T
- RLCvMCd2sDfyzrSOyUZ4nbQmc0lQx8jM+ps+SQZua8ArYZzvFYFTtv4DHshMHKZs0FlT
- qLgaWzxZH2DzKVHmRKiWzY4RNWbt/zzksh80afjnf7m2JXuaLWjBnzEhNKNpXSxYGZvc
- 2j8PLesVgyF86EZqBSuk6UAvC8UV4JdRG4g6LiHGzMr0xWmvHA4k4fz2/kHzfPSvWGli
- 8V8g==
-X-Gm-Message-State: AOJu0YzgLywAXc8ygC9WVE7mtKyhvViqyYWblex0g7SKNWWtJhlMF7Gc
- K3LDlFWau5FkOM69OmhE3PYAfhr59CfOjM26W6iDY7FeX2VdeQ2dA5mCeEtB7yezB0ysLiMMIm1
- CzNE=
-X-Gm-Gg: ASbGncsE/ClF8Xifr3BTqo9h7bg1aMaPYSv6KD0QgrlGa48U0FYCDASBf5S6jf4bPNY
- sG4VNgXmqM9s1B9KgAgm86njYITC2ue+g/+zj/TzO+DExT13/FM9sQIcd+AntAzyOUiJ5lxqgfN
- cUHfKb7G2FH2n+1dUZ8TOUTPSY1XCwuWg2iVBOMfbzyyZAA3gFtSbw5aF9mlHcHIp1Iaphhe3Cy
- RYJzaFlY8bHQGB4mDb2KvJ+Cz/KTo1GTvc61V27uiNtF0CVgGj/URTiuem8JLsJ9ZH5AYZ1cIK+
- PsGd4awNuKW82IB9ymXh0IQxAkKnb1DDTKUCbEVp/hjW9wMAoh0bEWXZsQZYOvPOew==
-X-Google-Smtp-Source: AGHT+IGSNtpfXCfe8dFXbxfxieTzWgmRhuWBqqoUaz0qfcTjqs3qWvQKGQNy9lJrfBfPrZaRLI1U5A==
-X-Received: by 2002:a05:6000:cc3:b0:385:f47a:e9d1 with SMTP id
- ffacd0b85a97d-38bf56852bdmr28927870f8f.17.1738072490848; 
- Tue, 28 Jan 2025 05:54:50 -0800 (PST)
+ bh=sHTZdSk34mjGYxV+5W6LTI1L6AwP2TGsJTRkRZPId30=;
+ b=qPKzqUIK86ZVtDWT4SgOt712NU8/WCtXxO7wGt/OS6WYrnYJUVoWHgQ+s/V93VCL46
+ YVelrh+6kRcCcYTquH1OxZrdHnzizNZpzCU1dwWuIb4OWRkSLndpzcxFIBLJJ2W3At99
+ Wt6Ik8o1CbMaUpEG3j8JXqoQJTKQjs7aSiGzJY1GhSdmkvnzG3ASe1pEM59lCe5Idu0o
+ 6tLhv4tI3UuW0XC7Zmm8/xOxhdei7ARzXWpXA4N+UscwAv46X0vwZvuTw8l/AOyXHWSq
+ WShjl200vBk9rohvUVoBy98Xtz8C6zawxlHEshdInF2qPG7M7UjkS8a9dZrULqFiM/t+
+ ZesA==
+X-Gm-Message-State: AOJu0YzasxNsAf4BmpYeyLv0NjUkdPdxj8jymwgsBvN3BjbFCMDimLpw
+ O5fhAw/KACORDtwICGmEa/l0qbEGemtAAAJ69/+ujR6rF/JUEpg4vgz8HnhIrrsQbVHl4SVVXBE
+ sgBw=
+X-Gm-Gg: ASbGncvp6kkAzeSkcfmDWPnA5NORkdZmy+dKgf0VTWNEN4Sg7F6c1H22D4PCxwjZwVk
+ mYNJXR6jh5nEgzUjCGLRZPLwsMnlsyn2ZnMn5V12cKIRy20B90ZYrps7oJAB5IRjvMurt1emZ70
+ UmM5Z1BG5/XJ8eTh3b/MOR7a+0p3q9UhvGtAEYnY62ZTzt54Q0UDGP2uffjOPLgFPII9byIzlGI
+ k/kW3LQI6crMIyqBap/PT99ym2b0nOxtTvzoua0PSdPgYXEdWOkaYfS5hPu1QpKaoHlw+pma0ju
+ xzOc6wECXljsoQktUGZ/rGE7XilszQKfOo9twE53b9pvFRUgqXjQ50uqMH7gqtzf0Q==
+X-Google-Smtp-Source: AGHT+IH3P5VJSQPnBVjwzAbJn3gJJoSOcer8OOCQeUNJnIqXYJ5IJypeqppxpzTeV9A3I3UxD+ZHOw==
+X-Received: by 2002:a05:600c:1987:b0:436:faf1:9da with SMTP id
+ 5b1f17b1804b1-438913c68ebmr397739205e9.2.1738072495662; 
+ Tue, 28 Jan 2025 05:54:55 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a1bb057sm14374562f8f.62.2025.01.28.05.54.49
+ 5b1f17b1804b1-438bd507dc9sm172973355e9.19.2025.01.28.05.54.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 28 Jan 2025 05:54:50 -0800 (PST)
+ Tue, 28 Jan 2025 05:54:55 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -68,18 +68,17 @@ Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
  Phil Dennis-Jordan <phil@philjordan.eu>, Peter Xu <peterx@redhat.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 4/7] tests/qtest/migration: Pass accelerator arguments as
- machine option
-Date: Tue, 28 Jan 2025 14:54:26 +0100
-Message-ID: <20250128135429.8500-5-philmd@linaro.org>
+Subject: [PATCH 5/7] tests/qtest/migration: Add MigrationTestEnv::has_hvf field
+Date: Tue, 28 Jan 2025 14:54:27 +0100
+Message-ID: <20250128135429.8500-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250128135429.8500-1-philmd@linaro.org>
 References: <20250128135429.8500-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,85 +101,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The '-accel' CLI option is handler as sugar property as
-'-machine,accel='. Replace the migration tests command
-line, only using the best accelerator available (first
-hardware, then software).
+Allow tests to tune their parameters when running on HVF.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/qtest/migration/framework.c | 28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ tests/qtest/migration/framework.h | 1 +
+ tests/qtest/migration/framework.c | 1 +
+ 2 files changed, 2 insertions(+)
 
+diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
+index 7991ee56b6f..76bd4dc1a95 100644
+--- a/tests/qtest/migration/framework.h
++++ b/tests/qtest/migration/framework.h
+@@ -19,6 +19,7 @@
+ 
+ typedef struct MigrationTestEnv {
+     bool has_kvm;
++    bool has_hvf;
+     bool has_tcg;
+     bool has_uffd;
+     bool uffd_feature_thread_id;
 diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index 38a0a1a5264..e567296b014 100644
+index e567296b014..5629b8ba4e3 100644
 --- a/tests/qtest/migration/framework.c
 +++ b/tests/qtest/migration/framework.c
-@@ -214,8 +214,9 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-     const gchar *ignore_stderr;
-     g_autofree char *shmem_opts = NULL;
-     g_autofree char *shmem_path = NULL;
--    const char *kvm_opts = NULL;
--    const char *arch = qtest_get_arch();
-+    const char *accel_args = NULL;
-+    const MigrationTestEnv *env = migration_get_env();
-+    const char *arch = env->arch;
-     const char *memory_size;
-     const char *machine_alias, *machine_opts = "";
-     g_autofree char *machine = NULL;
-@@ -296,8 +297,15 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-             memory_size, shmem_path);
-     }
+@@ -945,6 +945,7 @@ MigrationTestEnv *migration_get_env(void)
+     env->arch = qtest_get_arch();
  
--    if (args->use_dirty_ring) {
--        kvm_opts = ",dirty-ring-size=4096";
-+    if (env->has_kvm) {
-+        if (args->use_dirty_ring) {
-+            accel_args = "kvm,dirty-ring-size=4096";
-+        } else {
-+            accel_args = "kvm";
-+        }
-+    } else {
-+        assert(env->has_tcg);
-+        accel_args = "tcg";
-     }
+     env->has_kvm = qtest_has_accel("kvm");
++    env->has_hvf = qtest_has_accel("hvf");
+     env->has_tcg = qtest_has_accel("tcg");
  
-     if (!qtest_has_machine(machine_alias)) {
-@@ -311,14 +319,12 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
- 
-     g_test_message("Using machine type: %s", machine);
- 
--    cmd_source = g_strdup_printf("-accel kvm%s -accel tcg "
--                                 "-machine %s,%s "
-+    cmd_source = g_strdup_printf("-machine %s,%s,accel=%s "
-                                  "-name source,debug-threads=on "
-                                  "-m %s "
-                                  "-serial file:%s/src_serial "
-                                  "%s %s %s %s",
--                                 kvm_opts ? kvm_opts : "",
--                                 machine, machine_opts,
-+                                 machine, machine_opts, accel_args,
-                                  memory_size, tmpfs,
-                                  arch_opts ? arch_opts : "",
-                                  shmem_opts ? shmem_opts : "",
-@@ -332,15 +338,13 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-                                      &src_state);
-     }
- 
--    cmd_target = g_strdup_printf("-accel kvm%s -accel tcg "
--                                 "-machine %s,%s "
-+    cmd_target = g_strdup_printf("-machine %s,%s,accel=%s "
-                                  "-name target,debug-threads=on "
-                                  "-m %s "
-                                  "-serial file:%s/dest_serial "
-                                  "-incoming %s "
-                                  "%s %s %s %s",
--                                 kvm_opts ? kvm_opts : "",
--                                 machine, machine_opts,
-+                                 machine, machine_opts, accel_args,
-                                  memory_size, tmpfs, uri,
-                                  arch_opts ? arch_opts : "",
-                                  shmem_opts ? shmem_opts : "",
+     if (!env->has_tcg && !env->has_kvm) {
 -- 
 2.47.1
 
