@@ -2,80 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C8FA212FE
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 21:17:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AE2CA2130D
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 21:20:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcryl-0002z8-PM; Tue, 28 Jan 2025 15:14:40 -0500
+	id 1tcs25-0007A5-IR; Tue, 28 Jan 2025 15:18:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tcryM-0002cI-Nn
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 15:14:12 -0500
-Received: from mail-yb1-xb35.google.com ([2607:f8b0:4864:20::b35])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tcryL-0001hu-Ao
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 15:14:10 -0500
-Received: by mail-yb1-xb35.google.com with SMTP id
- 3f1490d57ef6-e5447fae695so10687294276.2
- for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 12:14:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738095247; x=1738700047; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=BRFdytR/7KXGSQbifQGl7f025+AufHYVQHuhopQV/h4=;
- b=aYHxycyFDy5eCYGofVvGxpN+wE7aI10YKxvS74qjv9jTQVyNeCkwmwTVvX4AXW0Cb8
- 1l21TCL9+aqd7UkXVZR0ZSzg0VlSrlOpJxb1CXYV3iSMyXV/PmhI/DawG9GdckJcwBsl
- ock/qyOr0j+xkCdXyJaYl0GcseEw3Li3rKUy7nM00AuY0FFCQG+mEVwgdxhR4oxgwKPQ
- Rnk2sfQV09TTsAJSWGPbJp5QIUxl1ZKysVFvacj1OBNqCzqFSuAkXpmjpI5mEUjVxtTd
- X9iHcfEDSKwMvGcHemrBH3WzSM02vQVRv5SuCM7pO6q5zqBM/NrLhBX2KhpYp+UC4r4X
- SDHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738095247; x=1738700047;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=BRFdytR/7KXGSQbifQGl7f025+AufHYVQHuhopQV/h4=;
- b=SxcB8JVPDKFDtoW9QBM7nv6UZz9I71paKt2WKax1arPCuk13On7iWIC9AeRXANEEe4
- 83PJEhj/7kYi3gcWKlc5MCwkJ7kSFkeWazo+h6Q4tUvn1J+KMLIu6o4PPDpWO4UoHfun
- ZJ0QpLEIDiT4FaLK31i6W5CiQ93MmfnI6dfa1CKW4cC9Z8zsByr8sujmpujcyvMm9G5i
- +aWeiv25QrBSUd/C9wM/3fCo1tS3HRw7xDq77jTKVubvLyqJWznEzXO71UQN3gvwp2MT
- 9QUcc5j/Pj1G96a8kygjgiL3PwCYi5su9lIIP/aqvstP7DlW7L4+zQFvr95DrtR2aQtf
- O6Rg==
-X-Gm-Message-State: AOJu0Yz0fKNyTtrOkXwcUsk1RxoCNowmBLvNBm5wZO0RwMGC2QQLE8U8
- nrtrcum7ZNwxGaToUEBkMD0yIF3SrrxWkyduYL8qeHZhLjnI20+t0Kj6IlNryoSILZImajV30Q7
- jyGw2fAA8+stxZkUJVq9ApnvOvdyOUcIjHDPC+w==
-X-Gm-Gg: ASbGncuYK8WOlYGgiqKIFlwcTdoXywhs7eKMRz95HoNAlmARizm9I6U3oMWnjbZbTCz
- hvr1H77ssRfc8wsGHxGkRhngxYk1WAxE80kDwshk4wE6xPWP6PUi3daUqcC9twzKWLwPofahFGo
- 5WaiAZh9Tl
-X-Google-Smtp-Source: AGHT+IFT07Xnb8ns+/LqDwEy2XNedp2DLsr9e+vXRVV3aubLTbGsCLGJdbWInEVwZVEYS5Cw6cpHBHewZMxjwyHxO7E=
-X-Received: by 2002:a05:6902:707:b0:e58:33aa:3ac7 with SMTP id
- 3f1490d57ef6-e58a4bf1c42mr288415276.44.1738095246738; Tue, 28 Jan 2025
- 12:14:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tcs1z-0006l4-3P; Tue, 28 Jan 2025 15:17:56 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tcs1u-0002Db-Uv; Tue, 28 Jan 2025 15:17:54 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id DBA144E6013;
+ Tue, 28 Jan 2025 21:17:44 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id C2RltHo73Q09; Tue, 28 Jan 2025 21:17:42 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id A73ED4E602A; Tue, 28 Jan 2025 21:17:42 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id A4DFA74577C;
+ Tue, 28 Jan 2025 21:17:42 +0100 (CET)
+Date: Tue, 28 Jan 2025 21:17:42 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@redhat.com>
+cc: Thomas Huth <thuth@redhat.com>, qemu-ppc@nongnu.org, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] tests/functional: Add a ppc64 mac99 test
+In-Reply-To: <9bf6cf01-d8c4-4ed8-808d-03e6ee05bc7b@redhat.com>
+Message-ID: <c2dce6f7-7b76-7531-7013-366c9d7eac4e@eik.bme.hu>
+References: <20250128180742.1137741-1-clg@redhat.com>
+ <7bb6ab1b-169e-4752-8aee-ef87877a38b4@redhat.com>
+ <9bf6cf01-d8c4-4ed8-808d-03e6ee05bc7b@redhat.com>
 MIME-Version: 1.0
-References: <20250128104519.3981448-1-peter.maydell@linaro.org>
- <20250128104519.3981448-2-peter.maydell@linaro.org>
- <e47672f6-5788-4322-aa0a-230fe1161ef4@linaro.org>
-In-Reply-To: <e47672f6-5788-4322-aa0a-230fe1161ef4@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 28 Jan 2025 20:13:55 +0000
-X-Gm-Features: AWEUYZmrR3X2OUeLi3-5cvjbfd-IDKygsBqjRzWjf31t_5uukHSb1CGOeXOkNXk
-Message-ID: <CAFEAcA9D8ET6BoF9M5r_TMiMh3ZftO_jZke17U=AL7v03kwY4w@mail.gmail.com>
-Subject: Re: [PATCH 01/11] hw/sd/omap_mmc: Do a minimal conversion to QDev
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b35;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb35.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: multipart/mixed;
+ boundary="3866299591-684235235-1738095462=:49616"
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,29 +66,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 28 Jan 2025 at 18:51, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 1/28/25 02:45, Peter Maydell wrote:
-> > +static const TypeInfo omap_mmc_info = {
-> > +    .name = TYPE_OMAP_MMC,
-> > +    .parent = TYPE_SYS_BUS_DEVICE,
-> > +    .instance_size = sizeof(OMAPMMCState),
-> > +    .instance_init = omap_mmc_initfn,
-> > +    .class_init = omap_mmc_class_init,
-> > +};
-> > +
-> > +static void omap_mmc_register_types(void)
-> > +{
-> > +    type_register_static(&omap_mmc_info);
-> > +}
-> > +
-> > +type_init(omap_mmc_register_types)
->
-> Phil seems to be moving everything to DEFINE_TYPES now.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-I looked at that, but it wants an array of TypeInfo,
-and this is just one. So I did it this way instead.
+--3866299591-684235235-1738095462=:49616
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
--- PMM
+On Tue, 28 Jan 2025, Cédric Le Goater wrote:
+> On 1/28/25 19:20, Thomas Huth wrote:
+>> On 28/01/2025 19.07, Cédric Le Goater wrote:
+>>> The test sequence boots from disk a mac99 machine in 64-bit mode, in
+>>> which case the CPU is a PPC 970.
+>>> 
+>>> The buildroot rootfs is built with config :
+>>> 
+>>> BR2_powerpc64=y
+>>> BR2_powerpc_970=y
+>>> 
+>>> and the kernel with the g5 deconfig.
+>>> 
+>>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>>> ---
+>>>   MAINTAINERS                          |  1 +
+>>>   tests/functional/meson.build         |  2 ++
+>>>   tests/functional/test_ppc64_mac99.py | 45 ++++++++++++++++++++++++++++
+>>>   3 files changed, 48 insertions(+)
+>>>   create mode 100644 tests/functional/test_ppc64_mac99.py
+>>> 
+>>> diff --git a/MAINTAINERS b/MAINTAINERS
+>>> index 3a2291d17d7e..ebf249173f00 100644
+>>> --- a/MAINTAINERS
+>>> +++ b/MAINTAINERS
+>>> @@ -1446,6 +1446,7 @@ F: include/hw/pci-host/uninorth.h
+>>>   F: include/hw/input/adb*
+>>>   F: pc-bios/qemu_vga.ndrv
+>>>   F: tests/functional/test_ppc_mac.py
+>>> +F: tests/functional/test_ppc64_mac99.py
+>>>   Old World (g3beige)
+>>>   M: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>>> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+>>> index 01a87b03e553..821a0a7c49ac 100644
+>>> --- a/tests/functional/meson.build
+>>> +++ b/tests/functional/meson.build
+>>> @@ -41,6 +41,7 @@ test_timeouts = {
+>>>     'ppc64_powernv' : 480,
+>>>     'ppc64_pseries' : 480,
+>>>     'ppc64_tuxrun' : 420,
+>>> +  'ppc64_mac99' : 120,
+>>>     'riscv64_tuxrun' : 120,
+>>>     's390x_ccw_virtio' : 420,
+>>>     'sh4_tuxrun' : 240,
+>>> @@ -181,6 +182,7 @@ tests_ppc64_system_thorough = [
+>>>     'ppc64_powernv',
+>>>     'ppc64_pseries',
+>>>     'ppc64_tuxrun',
+>>> +  'ppc64_mac99',
+>>>   ]
+>>>   tests_riscv32_system_quick = [
+>>> diff --git a/tests/functional/test_ppc64_mac99.py 
+>>> b/tests/functional/test_ppc64_mac99.py
+>>> new file mode 100644
+>>> index 000000000000..ba582d267dae
+>>> --- /dev/null
+>>> +++ b/tests/functional/test_ppc64_mac99.py
+>>> @@ -0,0 +1,45 @@
+>>> +#!/usr/bin/env python3
+>>> +#
+>>> +# Functional test that boots a mac99 machine with a PPC970 CPU
+>>> +#
+>>> +# SPDX-License-Identifier: GPL-2.0-or-later
+>>> +
+>>> +from qemu_test import LinuxKernelTest, Asset
+>>> +from qemu_test import exec_command_and_wait_for_pattern
+>>> +
+>>> +class mac99Test(LinuxKernelTest):
+>>> +
+>>> +    ASSET_BR2_MAC99_LINUX = Asset(
+>>> +        
+>>> 'https://github.com/legoater/qemu-ppc-boot/raw/refs/heads/main/buildroot/qemu_ppc64_mac99-2023.11-8-gdcd9f0f6eb-20240105/vmlinux',
+>>> +        
+>>> 'd59307437e4365f2cced0bbd1b04949f7397b282ef349b7cafd894d74aadfbff')
+>>> +
+>>> +    ASSET_BR2_MAC99_ROOTFS = Asset(
+>>> +        
+>>> 'https://github.com/legoater/qemu-ppc-boot/raw/refs/heads/main//buildroot/qemu_ppc64_mac99-2023.11-8-gdcd9f0f6eb-20240105/rootfs.ext2',
+>>> +        
+>>> 'bbd5fd8af62f580bc4e585f326fe584e22856572633a8333178ea6d4ed4955a4')
+>>> +
+>>> +    def test_ppc64_mac99_buildroot(self):
+>>> +        self.require_netdev('user')
+>>> +
+>>> +        linux_path = self.ASSET_BR2_MAC99_LINUX.fetch()
+>>> +        rootfs_path = self.ASSET_BR2_MAC99_ROOTFS.fetch()
+>>> +
+>>> +        self.set_machine('mac99')
+>> 
+>> Nit: Move the set_machine to the top of the function, so that the assets 
+>> don't have to be fetched in case the machine is not available.
+>> 
+>> With that nit fixed:
+>> Reviewed-by: Thomas Huth <thuth@redhat.com>
+>> 
+>> 
+>>> +        self.vm.set_console()
+>>> +
+>>> +        self.vm.add_args('-kernel', linux_path,
+>>> +                         '-append', 'root=/dev/sda',
+>>> +                         '-drive', f'file={rootfs_path},format=raw',
+>>> +                         '-net', 'nic,model=sungem', '-net', 'user',
+
+The machine already has a default sungem NIC so maybe you can omit that 
+too. The user network used to be the default so even that may not be 
+needed but I'm not sure if that's still the case since libslirp was moved 
+out. Wasn't the preferred option -netdev user nowadays and -device for the 
+card?
+
+>>> +                         '-snapshot', '-nographic')
+>> 
+>> I just also noticed that we already have "-display none" in 
+>> python/qemu/machine/machine.py, so you likely don't need the -nographic 
+>> here (but looks like we've got that wrong in a bunch of tests already).
+>
+> I think we need -nographic else OpenBIOS crashes.  I will check.
+
+It should not crash but maybe it displays then on the graphics output so 
+you won't get the needed feedback on serial? Although -append 
+'console=tty<whatever it's called on that machine>' might fix that. But 
+using -nographic makes sense for a serial only test.
+
+Regards,
+BALATON Zoltan
+--3866299591-684235235-1738095462=:49616--
 
