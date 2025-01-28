@@ -2,57 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45BC7A20E39
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 17:16:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 566BDA20E42
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 17:17:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcoF5-0005Op-3y; Tue, 28 Jan 2025 11:15:11 -0500
+	id 1tcoH2-0001I9-Uw; Tue, 28 Jan 2025 11:17:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tcoF0-0005M3-EQ
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 11:15:06 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tcoEw-0002dQ-QH
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 11:15:06 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id BC6F95C6079;
- Tue, 28 Jan 2025 16:14:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54DC9C4CEE3;
- Tue, 28 Jan 2025 16:15:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1738080901;
- bh=hxMo1FNFoD+U6gmbbuqjqjojNvNGpUQwcalZq5WZRdw=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Byzi0xFoteeeECHNhMe4G7zygIdV93yBXAO6YM+sX0DoM2hB6pfbh7dQ4pqDKh6mh
- TaN7wvdJYJ0FY/BcnurvkIUcf0MQaPNPEGxw/C3Gb6WWjvCDc/yTjrDL1456rZ6tke
- /kzmDez+qaKT3R8E/gNRE74/bcD0Ky5p8rfj8INzSSSgSBU9LGSBZOnSavHJTOMs7J
- B1mimF+l5xyxV+bN1UhlX2uipv2q6L713VMJeGXfCP7GnQRtdnalsqB4Lig9W1eIha
- Wc+KBtaKJMhQK4+rPtx5MXOwxqksd7jR/VhCykIEriyZBMubgvdKWR1+wCm9o7Fkcz
- T4qdtsh8maA9Q==
-From: deller@kernel.org
-To: qemu-devel@nongnu.org,
-	Richard Henderson <richard.henderson@linaro.org>
-Cc: Helge Deller <deller@gmx.de>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 5/5] hw/hppa: Wire up Diva GSP card
-Date: Tue, 28 Jan 2025 17:14:50 +0100
-Message-ID: <20250128161450.12975-6-deller@kernel.org>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250128161450.12975-1-deller@kernel.org>
-References: <20250128161450.12975-1-deller@kernel.org>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1tcoGv-0001Gf-OZ
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 11:17:05 -0500
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1tcoGo-0003Gv-Lq
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 11:17:05 -0500
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3e6274015so10854726a12.0
+ for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 08:16:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1738081016; x=1738685816; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=3LQ/ClTRLQHNt4BKzJFSQ1S6KMu6e4COGZ7nkXwwF2I=;
+ b=jY5HeY/5QaVwC+EWTmI1JZhoJsuRilePsC3TaU09BuTBgVb585kk5MZ2sKjSzWsXlx
+ wMp0/1J+gloU9tRa8AFqFMm0hehh9xC722pCMrsJvm0nr8HKHEUqpysT6BOWqK869oSq
+ ghQ7c0I48adNk69dNbVYql+rDEYJtFrIYbvDtqY/tr2gX0jZAHCFxy5WHELmOtlshcM3
+ eWCpMgnlwfjZ49Dl0NGj1Mh9t7kELeISkJSdo/x2by2imFUvJFaal6MxCCO/sfuhzJlX
+ btIvR51eK8yI5mrj1L1xN9XbzW9xJ1EmxQf6Ildtt0moaLC9HcsgW03xfdY12vVgwQEE
+ 6PuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738081016; x=1738685816;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3LQ/ClTRLQHNt4BKzJFSQ1S6KMu6e4COGZ7nkXwwF2I=;
+ b=sLSkd2j8Wf4g6/29EbMUQKhCFY+DYzY2DXyQiBSNxcZD8y5dXGWrDa98O08olkY9Qk
+ gDZYEO3wxxPYbLpwQaZF0H3dd6kMrjWwtl1MmnR1DK9HXYm6F+K2Qpo22OrhmAWYBKDw
+ lYWdmiIAm2+a1jJwjSrhc0rVSd7pSSlsrd4cB9RaDUb8Brp0n8uuPMZ8OKQ48mODlWdr
+ P0CCQPFpuFUqOb5o5+x2y9+Id6T+1coXVVFtctdAeaTc2PwgOO1oKF8B9O0ABy+nERhh
+ sQukrst/sOoDUiVpbDIDNNxZyNF772+YSlxdU5sC7uUmqx+ibK5ne7HA2Wjw1Uf6A1rP
+ Zk4w==
+X-Gm-Message-State: AOJu0YyaLhTY6WVGa7yLUD1f302bRGvqGQtIP8x3meoU6ttdwIQvrz48
+ SGWqbQ+MmnK7ILCRZ1OlRGLRObwB907zP/1u2PbrEkMlzUFScXGPZB50UghVk9cP+dJZVtgSzLO
+ Sr4RcbOeEPnn3ESSOrkeU1jS9xUxByo97
+X-Gm-Gg: ASbGncuViC2NoJi2U3Zrss1UMrj1MYsy6nLiDUWIowa4vy8yeg/YtZ/8o5gw6+eCbjl
+ i+S8CMRgXWkDnfi+xCFHA57wBNdcUqHTSZX2LyXohP9QBFMlUiIyrHzTH5aT8vgorTcJ4+ao=
+X-Google-Smtp-Source: AGHT+IGngLilCkICpFdFa6Vm437XBCWWwcasw+Elf7wFv6/VQJdMbOLWzcjCVg/H+uh/2YDurB3D04hfy2p3poSvAJE=
+X-Received: by 2002:a05:6402:51d3:b0:5d1:22c2:6c56 with SMTP id
+ 4fb4d7f45d1cf-5db7d318a90mr41206988a12.17.1738081016306; Tue, 28 Jan 2025
+ 08:16:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -83
-X-Spam_score: -8.4
-X-Spam_bar: --------
-X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Tue, 28 Jan 2025 11:16:43 -0500
+X-Gm-Features: AWEUYZkrZf4SPzQFoSAMMjj0I90DjwDlrKYXqyZ3YgDtCPyHRXPw_rrlon-LEvY
+Message-ID: <CAJSP0QVYE1Zcws=9hoO6+B+xB-hVWv38Dtu_LM8SysAmS4qRMw@mail.gmail.com>
+Subject: Call for GSoC internship project ideas
+To: qemu-devel <qemu-devel@nongnu.org>, kvm <kvm@vger.kernel.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, "Daniel P. Berrange" <berrange@redhat.com>, 
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Alex Bennee <alex.bennee@linaro.org>, 
+ Akihiko Odaki <akihiko.odaki@gmail.com>, Zhao Liu <zhao1.liu@intel.com>, 
+ Bibo Mao <maobibo@loongson.cn>, Jamin Lin <jamin_lin@aspeedtech.com>, 
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ Fabiano Rosas <farosas@suse.de>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Hanna Reitz <hreitz@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=stefanha@gmail.com; helo=mail-ed1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -69,73 +96,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+Dear QEMU and KVM communities,
+QEMU will apply for the Google Summer of Code internship
+program again this year. Regular contributors can submit project
+ideas that they'd like to mentor by replying to this email by
+February 7th.
 
-Until now we used a standard serial-pci device to emulate a HP serial
-console.  This worked nicely with 32-bit Linux and 32-bit HP-UX, but
-64-bit HP-UX crashes with it and expects either a Diva GSP card, or a real
-64-bit capable PCI graphic card (which we don't have yet).
-In order to continue with 64-bit HP-UX, switch over to the recently
-added Diva GSP card emulation.
+About Google Summer of Code
+-----------------------------------------
+GSoC (https://summerofcode.withgoogle.com/) offers paid open
+source remote work internships to eligible people wishing to participate
+in open source development. QEMU has been doing internship for
+many years. Our mentors have enjoyed helping talented interns make
+their first open source contributions and some former interns continue
+to participate today.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
----
- hw/hppa/Kconfig   |  1 +
- hw/hppa/machine.c | 24 ++++++------------------
- 2 files changed, 7 insertions(+), 18 deletions(-)
+Who can mentor
+----------------------
+Regular contributors to QEMU and KVM can participate as mentors.
+Mentorship involves about 5 hours of time commitment per week to
+communicate with the intern, review their patches, etc. Time is also
+required during the intern selection phase to communicate with
+applicants. Being a mentor is an opportunity to help someone get
+started in open source development, will give you experience with
+managing a project in a low-stakes environment, and a chance to
+explore interesting technical ideas that you may not have time to
+develop yourself.
 
-diff --git a/hw/hppa/Kconfig b/hw/hppa/Kconfig
-index 9312c4294a..cab21045de 100644
---- a/hw/hppa/Kconfig
-+++ b/hw/hppa/Kconfig
-@@ -11,6 +11,7 @@ config HPPA_B160L
-     select LASI
-     select SERIAL_MM
-     select SERIAL_PCI
-+    select DIVA_GSP
-     select ISA_BUS
-     select I8259
-     select IDE_CMD646
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index d5de793b62..1155d9aba9 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -383,28 +383,16 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
- 
-     pci_init_nic_devices(pci_bus, mc->default_nic);
- 
--    /* BMC board: HP Powerbar SP2 Diva (with console only) */
--    pci_dev = pci_new(-1, "pci-serial");
-+    /* BMC board: HP Diva GSP */
-+    pci_dev = pci_new_multifunction(PCI_DEVFN(2, 0), "diva-serial");
-     if (!lasi_dev) {
-         /* bind default keyboard/serial to Diva card */
--        qdev_prop_set_chr(DEVICE(pci_dev), "chardev", serial_hd(0));
-+        qdev_prop_set_chr(DEVICE(pci_dev), "chardev1", serial_hd(0));
-+        qdev_prop_set_chr(DEVICE(pci_dev), "chardev2", serial_hd(1));
-+        qdev_prop_set_chr(DEVICE(pci_dev), "chardev3", serial_hd(2));
-+        qdev_prop_set_chr(DEVICE(pci_dev), "chardev4", serial_hd(3));
-     }
--    qdev_prop_set_uint8(DEVICE(pci_dev), "prog_if", 0);
-     pci_realize_and_unref(pci_dev, pci_bus, &error_fatal);
--    pci_config_set_vendor_id(pci_dev->config, PCI_VENDOR_ID_HP);
--    pci_config_set_device_id(pci_dev->config, 0x1048);
--    pci_set_word(&pci_dev->config[PCI_SUBSYSTEM_VENDOR_ID], PCI_VENDOR_ID_HP);
--    pci_set_word(&pci_dev->config[PCI_SUBSYSTEM_ID], 0x1227); /* Powerbar */
--
--    /* create a second serial PCI card when running Astro */
--    if (serial_hd(1) && !lasi_dev) {
--        pci_dev = pci_new(-1, "pci-serial-4x");
--        qdev_prop_set_chr(DEVICE(pci_dev), "chardev1", serial_hd(1));
--        qdev_prop_set_chr(DEVICE(pci_dev), "chardev2", serial_hd(2));
--        qdev_prop_set_chr(DEVICE(pci_dev), "chardev3", serial_hd(3));
--        qdev_prop_set_chr(DEVICE(pci_dev), "chardev4", serial_hd(4));
--        pci_realize_and_unref(pci_dev, pci_bus, &error_fatal);
--    }
- 
-     /* create USB OHCI controller for USB keyboard & mouse on Astro machines */
-     if (!lasi_dev && machine->enable_graphics && defaults_enabled()) {
--- 
-2.47.0
+How to propose your idea
+------------------------------
+Reply to this email with the following project idea template filled in:
 
+=== TITLE ===
+
+'''Summary:''' Short description of the project
+
+Detailed description of the project that explains the general idea,
+including a list of high-level tasks that will be completed by the
+project, and provides enough background for someone unfamiliar with
+the code base to research the idea. Typically 2 or 3 paragraphs.
+
+'''Links:'''
+* Links to mailing lists threads, git repos, or web sites
+
+'''Details:'''
+* Skill level: beginner or intermediate or advanced
+* Language: C/Python/Rust/etc
+
+More information
+----------------------
+You can find out about the process we follow here:
+Video: https://www.youtube.com/watch?v=xNVCX7YMUL8
+Slides (PDF): https://vmsplice.net/~stefan/stefanha-kvm-forum-2016.pdf
+
+The QEMU wiki page for GSoC 2024 is now available:
+https://wiki.qemu.org/Google_Summer_of_Code_2025
+
+What about Outreachy?
+-------------------------------
+We have struggled to find sponsors for the Outreachy internship
+program (https://www.outreachy.org/) in recent years. If you or your
+organization would like to sponsor an Outreachy internship, please get
+in touch.
+
+Thanks,
+Stefan
 
