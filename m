@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46474A212FC
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 21:17:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B566A21301
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 21:17:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcrxc-00022T-5L; Tue, 28 Jan 2025 15:13:24 -0500
+	id 1tcrxc-00023h-Vj; Tue, 28 Jan 2025 15:13:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tcrxZ-00021x-BA
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 15:13:21 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1tcrxa-00022R-DA
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 15:13:22 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tcrxX-0001Xu-Ly
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 15:13:21 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-43618283dedso64251125e9.3
- for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 12:13:19 -0800 (PST)
+ id 1tcrxY-0001Xw-FA
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 15:13:22 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4361f65ca01so64355955e9.1
+ for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 12:13:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738095198; x=1738699998; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738095199; x=1738699999; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=80kAnCOayAaFJolt/KSDHcWzfkBkXaKdOss7q1dLqIo=;
- b=mV8iJSD2AYUsYyapKcVNRrZ6fbKMrSYDO+SHkwAn3/VzkK1qgAH3j90ZKgPPzP4JRp
- xzzP7qDGzgIbGP+57veC3f5ool0iGfE/Atzu4cC9ITRbt7EL/AVWcaH4i5ofucriGfiR
- 5R9SKMl4tt0XomrxV9M5X1WMCioapcUqgM7Np2h/YxemaklUikrO+GUt9Q0kC6gxbTzQ
- ova+FIzuFiVIKR04/o4hvQdIumhOWnkQB5xQM3dXlw/P8GuyiJLrgI7kIO7ZrUF3c498
- fnD0mNg5pGNWxyvBLWDKhsHzNRUhsX1WiDVR78hrghZG4mVza+24XZtNXYGYEeyh19vc
- aUkg==
+ :reply-to; bh=RuYkzZqUPJ0A2DVj0fSbq4yiszjJOwyj6WBfQc5lhkE=;
+ b=voO44oTzddt4A6gtoHxmJxPQ0lpTihxpx14h0/d4LNjKtdUpSkQFy1hp3BroUqdB12
+ 1KrClim9fjIRG4Gan9VmLK8V2TMfXXEGFBFCcToZXJ7LBVTYBhOiz5MwPaOAdy9InoZs
+ 4wV+mwrbqj4OHE8QjdSKG2LPpCOhD8bNrwBJWLyRrHnn38zJciVKG+rBBue4rU7YSFPL
+ 2ewqfJXBD8wJzzjF3NKCtw+h0KWPlnYnRM2HZ8hbHz7F7XbtYtmLw1bN1MyK6pU4dtFg
+ PQpM5ZkiH2SzfqxN1X8SSLhfVi7gGezFOmllCMbUJgexJc9c+7cxX9z+GXv7YAIKwhr/
+ vGWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738095198; x=1738699998;
+ d=1e100.net; s=20230601; t=1738095199; x=1738699999;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=80kAnCOayAaFJolt/KSDHcWzfkBkXaKdOss7q1dLqIo=;
- b=PTRXpscF3cN/v3U0S8+uCGdZYiwduUsmNm8r7EDq6//ouKYy3p5OfkbRQ3IEOQ21aM
- V3qdcPhHnicezO4AFmtDbL0ePhawF3lz7WDtiOooTclSDB/VJqY87NIGWypU5T5zUYq/
- f3qje3bkMxZbeHYrn1CqiSgn1+OZQaZt1qXxF5fI9jQSYGxGGC/GvzgjKTBA+LuFcaSK
- JUNwf1DuQih/X9cQtDeHi9GZzz1k+iyHw5KlAN9rRH5s3Mb5YZkYPUYpG3sWQ7rErhmx
- P+lsAUAEp3snK61H6zXIgXdg+CPNylJ4Qs3nyad3rIRryQH2214zs2EcisO96WIKLZgN
- Dyvg==
-X-Gm-Message-State: AOJu0Yzqya93eNf6iXOFKkfKT5wmPzX50aIHU7dR2i2bsUoOEA3119NK
- /GTLoao/jNjVibblCvvexmLHCKJcnOzWew/hb+tuAh0JhGXxpBpRGq5l++QRlC+VzWtIUl4yHPE
- 7
-X-Gm-Gg: ASbGncstchY+BWsPhO7FJ7ju8NZUKoLgdagnHcav0u18UOafU/dCH6HfgFVHbIY7iFc
- 2P3F9mNU6tSI9f8CI3EtXKP9omYIlg+BpcG0g/u1RkuieD9fo2Ops7MAi/eZ2gyGDAI0vxOLkhn
- YAH71gkPbqWmQNRW/leqqRWpZbZlWzh7kttTM2WE8S4nvSBwrqhraiQMs3SaT/o30UqX72qzwEc
- itvdIKrzTY13DFuuS76kX/ZAmCfKlBhhI9OaOZwF3UgdFan7Nu05djQ2Ql0ohpteJ31xz1t/7SQ
- ibc0Z+k0B0/TBCu+umsM/Q==
-X-Google-Smtp-Source: AGHT+IGl6YdEQ5wOiqrSJk39h2G/amrjbFNHlE4Sod4+c6bo3dYfITfca7a0fClRS1PHhJJzAhDCKw==
-X-Received: by 2002:a05:600c:3b0e:b0:435:d22:9c9e with SMTP id
- 5b1f17b1804b1-438dc40d6ddmr2284615e9.19.1738095197721; 
- Tue, 28 Jan 2025 12:13:17 -0800 (PST)
+ bh=RuYkzZqUPJ0A2DVj0fSbq4yiszjJOwyj6WBfQc5lhkE=;
+ b=OrURHPjrYX+CyI4fte+GcfiRM5T98E8bg+IUQsdE23UFAclE6JoGfXShO0/NfAlFUj
+ A8+AayzvayTo3awvPRL1XdtMDYpgOgigwALO1/oSGwdyTkGWYcgs9trNz3t/KPt0taGM
+ gmIMnmNnvS1y/g5XBe4feZo+WSM4/B3YNWeGrp6w/4MU1touJr1sPlfwZSpPXHBz84Ag
+ 7D3SflunJR4t8bapAjxY8evocSsCP15SLCcSNS0DxKyjOuhO9NE+CXF/G5y9W/6jXHTh
+ GWJ1xQahTpc/HIvN4uRU3LJmISU3MPkj/Q52rifOdi3kwQdTEfIqUBaf4JJQZODZIB9A
+ q2tA==
+X-Gm-Message-State: AOJu0YwO/PmrpR5jTuBGcUfiW45OeJehSLIu44SgvKpBzxaebTWExNfq
+ dG34EcysGkFoISdMSJsV0aX3pgTcyTgHCG5Y3MHGdiVe4hNEtELvqLrv2/CmTV+GY0QTZwtrGYj
+ w
+X-Gm-Gg: ASbGncvtXOavlgNuB8YF4dsSJydccw5dETWmC3JI/DnlOXmd7MgPreiu3GW3cCpf3pg
+ wHpPjlo2E/GhfC/GI7A4t1aE3u1ADBQf1ZDc/67mETeNfd0VO9THKy2jdpMOrntRToZmM7eGC+l
+ KCwRMdDJ/AgNng4h7+We0j87Uz8Ai8H+3K9i4oftVsmHZ2N65mcyrC14kpq7It+PsQQghs3BUE+
+ v9aWoJpkP3Eky64ucZNkJoZnlr0X4yo4o3l64YNJ0xaFO8AH78FDo7xtxj6cT8bPSH4yv9ZHRnq
+ rlo9dkjV9YoQWZ0rMm/aew==
+X-Google-Smtp-Source: AGHT+IFfUf3P89+YDHlaA9MzkaeU11oXXU8bru2u/lDBLcq6Ro1ea39WD9GOpKOBFRDuthxWYsMA6g==
+X-Received: by 2002:a05:600c:4e07:b0:438:a20b:6a62 with SMTP id
+ 5b1f17b1804b1-438dc4213c2mr2200625e9.28.1738095198626; 
+ Tue, 28 Jan 2025 12:13:18 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd4fa3efsm182524105e9.2.2025.01.28.12.13.16
+ 5b1f17b1804b1-438bd4fa3efsm182524105e9.2.2025.01.28.12.13.17
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Jan 2025 12:13:16 -0800 (PST)
+ Tue, 28 Jan 2025 12:13:18 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/36] hw/arm/nrf51: Rename ARMv7MState 'cpu' -> 'armv7m'
-Date: Tue, 28 Jan 2025 20:12:39 +0000
-Message-Id: <20250128201314.44038-2-peter.maydell@linaro.org>
+Subject: [PULL 02/36] hw/arm/stellaris: Add 'armv7m' local variable
+Date: Tue, 28 Jan 2025 20:12:40 +0000
+Message-Id: <20250128201314.44038-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250128201314.44038-1-peter.maydell@linaro.org>
 References: <20250128201314.44038-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,98 +99,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The ARMv7MState object is not simply a CPU, it also
-contains the NVIC, SysTick timer, and various MemoryRegions.
-
-Rename the field as 'armv7m', like other Cortex-M boards.
+While the TYPE_ARMV7M object forward its NVIC interrupt lines,
+it is somehow misleading to name it 'nvic'. Add the 'armv7m'
+local variable for clarity, but also keep the 'nvic' variable
+behaving like before when used for wiring IRQ lines.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-id: 20250112225614.33723-2-philmd@linaro.org
+Message-id: 20250112225614.33723-3-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/nrf51_soc.h |  2 +-
- hw/arm/nrf51_soc.c         | 18 +++++++++---------
- 2 files changed, 10 insertions(+), 10 deletions(-)
+ hw/arm/stellaris.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/include/hw/arm/nrf51_soc.h b/include/hw/arm/nrf51_soc.h
-index e52a56e75e0..f88ab1b7d3e 100644
---- a/include/hw/arm/nrf51_soc.h
-+++ b/include/hw/arm/nrf51_soc.h
-@@ -30,7 +30,7 @@ struct NRF51State {
-     SysBusDevice parent_obj;
- 
-     /*< public >*/
--    ARMv7MState cpu;
-+    ARMv7MState armv7m;
- 
-     NRF51UARTState uart;
-     NRF51RNGState rng;
-diff --git a/hw/arm/nrf51_soc.c b/hw/arm/nrf51_soc.c
-index 37dd4cf5f40..dee06ab5654 100644
---- a/hw/arm/nrf51_soc.c
-+++ b/hw/arm/nrf51_soc.c
-@@ -76,16 +76,16 @@ static void nrf51_soc_realize(DeviceState *dev_soc, Error **errp)
-     }
-     /* This clock doesn't need migration because it is fixed-frequency */
-     clock_set_hz(s->sysclk, HCLK_FRQ);
--    qdev_connect_clock_in(DEVICE(&s->cpu), "cpuclk", s->sysclk);
-+    qdev_connect_clock_in(DEVICE(&s->armv7m), "cpuclk", s->sysclk);
-     /*
-      * This SoC has no systick device, so don't connect refclk.
-      * TODO: model the lack of systick (currently the armv7m object
-      * will always provide one).
+diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
+index 1bba96df14e..7303e096ef7 100644
+--- a/hw/arm/stellaris.c
++++ b/hw/arm/stellaris.c
+@@ -1031,7 +1031,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
       */
  
--    object_property_set_link(OBJECT(&s->cpu), "memory", OBJECT(&s->container),
-+    object_property_set_link(OBJECT(&s->armv7m), "memory", OBJECT(&s->container),
-                              &error_abort);
--    if (!sysbus_realize(SYS_BUS_DEVICE(&s->cpu), errp)) {
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->armv7m), errp)) {
-         return;
-     }
+     Object *soc_container;
+-    DeviceState *gpio_dev[7], *nvic;
++    DeviceState *gpio_dev[7], *armv7m, *nvic;
+     qemu_irq gpio_in[7][8];
+     qemu_irq gpio_out[7][8];
+     qemu_irq adc;
+@@ -1095,19 +1095,20 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+     qdev_prop_set_uint32(ssys_dev, "dc4", board->dc4);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(ssys_dev), &error_fatal);
  
-@@ -104,7 +104,7 @@ static void nrf51_soc_realize(DeviceState *dev_soc, Error **errp)
-     mr = sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->uart), 0);
-     memory_region_add_subregion_overlap(&s->container, NRF51_UART_BASE, mr, 0);
-     sysbus_connect_irq(SYS_BUS_DEVICE(&s->uart), 0,
--                       qdev_get_gpio_in(DEVICE(&s->cpu),
-+                       qdev_get_gpio_in(DEVICE(&s->armv7m),
-                        BASE_TO_IRQ(NRF51_UART_BASE)));
+-    nvic = qdev_new(TYPE_ARMV7M);
+-    object_property_add_child(soc_container, "v7m", OBJECT(nvic));
+-    qdev_prop_set_uint32(nvic, "num-irq", NUM_IRQ_LINES);
+-    qdev_prop_set_uint8(nvic, "num-prio-bits", NUM_PRIO_BITS);
+-    qdev_prop_set_string(nvic, "cpu-type", ms->cpu_type);
+-    qdev_prop_set_bit(nvic, "enable-bitband", true);
+-    qdev_connect_clock_in(nvic, "cpuclk",
++    armv7m = qdev_new(TYPE_ARMV7M);
++    object_property_add_child(soc_container, "v7m", OBJECT(armv7m));
++    qdev_prop_set_uint32(armv7m, "num-irq", NUM_IRQ_LINES);
++    qdev_prop_set_uint8(armv7m, "num-prio-bits", NUM_PRIO_BITS);
++    qdev_prop_set_string(armv7m, "cpu-type", ms->cpu_type);
++    qdev_prop_set_bit(armv7m, "enable-bitband", true);
++    qdev_connect_clock_in(armv7m, "cpuclk",
+                           qdev_get_clock_out(ssys_dev, "SYSCLK"));
+     /* This SoC does not connect the systick reference clock */
+-    object_property_set_link(OBJECT(nvic), "memory",
++    object_property_set_link(OBJECT(armv7m), "memory",
+                              OBJECT(get_system_memory()), &error_abort);
+     /* This will exit with an error if the user passed us a bad cpu_type */
+-    sysbus_realize_and_unref(SYS_BUS_DEVICE(nvic), &error_fatal);
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(armv7m), &error_fatal);
++    nvic = armv7m;
  
-     /* RNG */
-@@ -115,7 +115,7 @@ static void nrf51_soc_realize(DeviceState *dev_soc, Error **errp)
-     mr = sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->rng), 0);
-     memory_region_add_subregion_overlap(&s->container, NRF51_RNG_BASE, mr, 0);
-     sysbus_connect_irq(SYS_BUS_DEVICE(&s->rng), 0,
--                       qdev_get_gpio_in(DEVICE(&s->cpu),
-+                       qdev_get_gpio_in(DEVICE(&s->armv7m),
-                        BASE_TO_IRQ(NRF51_RNG_BASE)));
- 
-     /* UICR, FICR, NVMC, FLASH */
-@@ -161,7 +161,7 @@ static void nrf51_soc_realize(DeviceState *dev_soc, Error **errp)
- 
-         sysbus_mmio_map(SYS_BUS_DEVICE(&s->timer[i]), 0, base_addr);
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->timer[i]), 0,
--                           qdev_get_gpio_in(DEVICE(&s->cpu),
-+                           qdev_get_gpio_in(DEVICE(&s->armv7m),
-                                             BASE_TO_IRQ(base_addr)));
-     }
- 
-@@ -185,10 +185,10 @@ static void nrf51_soc_init(Object *obj)
- 
-     memory_region_init(&s->container, obj, "nrf51-container", UINT64_MAX);
- 
--    object_initialize_child(OBJECT(s), "armv6m", &s->cpu, TYPE_ARMV7M);
--    qdev_prop_set_string(DEVICE(&s->cpu), "cpu-type",
-+    object_initialize_child(OBJECT(s), "armv6m", &s->armv7m, TYPE_ARMV7M);
-+    qdev_prop_set_string(DEVICE(&s->armv7m), "cpu-type",
-                          ARM_CPU_TYPE_NAME("cortex-m0"));
--    qdev_prop_set_uint32(DEVICE(&s->cpu), "num-irq", 32);
-+    qdev_prop_set_uint32(DEVICE(&s->armv7m), "num-irq", 32);
- 
-     object_initialize_child(obj, "uart", &s->uart, TYPE_NRF51_UART);
-     object_property_add_alias(obj, "serial0", OBJECT(&s->uart), "chardev");
+     /* Now we can wire up the IRQ and MMIO of the system registers */
+     sysbus_mmio_map(SYS_BUS_DEVICE(ssys_dev), 0, 0x400fe000);
 -- 
 2.34.1
 
