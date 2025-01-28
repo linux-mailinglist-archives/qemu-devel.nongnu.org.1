@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44EBBA212E8
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 21:14:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F9E7A212E9
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 21:14:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcrxk-000274-Sq; Tue, 28 Jan 2025 15:13:32 -0500
+	id 1tcrxm-00028l-Dk; Tue, 28 Jan 2025 15:13:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tcrxh-00025X-5T
+ id 1tcrxh-00025k-Us
  for qemu-devel@nongnu.org; Tue, 28 Jan 2025 15:13:29 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tcrxf-0001Zc-DC
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 15:13:28 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4361f664af5so69615695e9.1
- for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 12:13:26 -0800 (PST)
+ id 1tcrxg-0001Zt-9e
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 15:13:29 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4361815b96cso41557665e9.1
+ for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 12:13:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738095206; x=1738700006; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738095207; x=1738700007; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=JXg2yjqOPUlgEXJLBc2p0xWaWiTWTQI0b81snBCtMNo=;
- b=uvlCrOtrVGm4TgbeBlonN/KwuFpOI2bThI0Rwe5YHugdcPo68viJZOInGUKzRo+ldb
- Dr+qGbqYUA/W/j8skUiqHNGYyIKVRBh0ry+XBNbvjtKpkT1of8G7GlbaS2PU7Uejj5K2
- IVeglvwaAO/SNhinKzEMH29okgKCu4YTPRBhNZEtLjBjanSzNIZBMcBsejgRtHD85gqI
- Acs7XZjDPsu1UbY02GdoeRrLDFC7sjbXW8VpgWS3tueM3S4nTNkoBn4TZ88v5oBkNJxO
- ul/OMcsk0x0ipah9X22wOAkp3O1YBgr85qeL6A/qyAJywNGMv5247pD2gBuy1l7E4Esh
- 8ipA==
+ :reply-to; bh=iOQ6dq9zHrqw31qzUJLni5cZshrkkrmLO9hIUOItrE8=;
+ b=yAhiYfz/Ft5FOkXs0FAZwluXgFVl7n7pMfw5I0S2gfh6Mff2NT3TUBHbvbPVDk0TOI
+ +0Cqye1glrhImZlDUpCfDU9Ds/LbUT5Dez7A0qnaxSKpJZsuNksBAcAEpbbhuhyvQUqw
+ c7AytDc0S/pK+5HIZH00p+pQVgu7/sj9VC3+gp9fRUvcz+Pkb6Tm9zfbFOfduu7RuLZ8
+ jCZGZDrDQTq1fLmVUMkPKguAmgu4lNl96Sa1qNLKMjT8YUymOEx5/bQJ0hyfr/W/Lhqs
+ Rxiz8v9i6SmIi7ZTvrAFc67pzs9mvvF9wNm/WddjM4jvPMSMo3Ixg19QwO9Q+T+QiPwy
+ 26bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738095206; x=1738700006;
+ d=1e100.net; s=20230601; t=1738095207; x=1738700007;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JXg2yjqOPUlgEXJLBc2p0xWaWiTWTQI0b81snBCtMNo=;
- b=tTufiM8oGthyVyJXbNuuicGxjULksNMcHv1POXBMbWp+iPg9CQnUS3qy1AFFuQzWY3
- Wbe0nbLDY5jncPL1DqlxF5mrzJs9onS9qWayQchBGcoxins4qLmSIq28sF+7jvV5PgfD
- srFUKjy7r8DirQUBQD/AZLrSdaZXh6NeSlJ8Tr0RfLKxfc6XDzTeg79Bdvk4utkU+mHv
- EhLja3gfML5miR6brzUSRHYgWQgLC9pp3hZp10u4u/AvazkVpJD32I4v+QGNz7tn6j72
- OatyOsRSn3DU1vIHlIdZPJJ+ZbV/3zISVCCM81VPCVmVqZKV8R3RyFwvm4w4O2OMG/o8
- /uow==
-X-Gm-Message-State: AOJu0YwNssgxaU/0w8fN7Kb5MY66kLAG8dFfGK1Xh1Tjw9GdufG5G1Dj
- J2bWjNZXrB2JMbX1IIMJ87htQRZw0+1EWZWvQgbjuGqQcD48FVTL4rTvkSQxUgJIeXEeJRwiMPr
- J
-X-Gm-Gg: ASbGncvjezhRYieNcntE0+9OyrckAoEQTDmfw2mIDgTHZs12+pyGgUQtStOOANMMdDv
- Vzr/I63CNSpH+B/93fFcrDyObs4yDeTG1HugVP1pGICokYiw52FNQhN2rHdjC+3Wfp5BkrAWJzh
- hm7qeIYjiRjhJicOVNek6+d/akElBXsUizRsLBEFci9+VRMs+VrTyizJtpAc4+ltkWgoHv99Ovf
- vkRsMd0M9pYCHXKLqkWfVy3bZV0HrEcAgE0N2UUmZgjgFvZxM7DRC/Z54AHZ9kwtd/YKinfurrN
- czqhc/CY9LCbwgT0Md7MDg==
-X-Google-Smtp-Source: AGHT+IE6i/8GA3YlInqWGoSVQVYsiL+QaB8suit5xQQWsAN2TrJGHGo5GhxYXBbnPlHKKfIwuMczeQ==
-X-Received: by 2002:a05:600c:4e87:b0:438:a240:c55 with SMTP id
- 5b1f17b1804b1-438dc3af833mr2296815e9.1.1738095205790; 
- Tue, 28 Jan 2025 12:13:25 -0800 (PST)
+ bh=iOQ6dq9zHrqw31qzUJLni5cZshrkkrmLO9hIUOItrE8=;
+ b=cCppPMp0jiGo3R9SGwoB/RYKuFw23GToouQDXZYBXd7fjle2sVuWPxc3xyTq8RRawa
+ iUWHqSP1T0w92e2Ngi7/vju4qcZ6QEzw5cNrlXlcqb1d8sZ+2CzZnlagUB0BpdeAvYJY
+ R7rYT1r+QSPncbiazx80FTrv9gHAkPO5xPjVQGRbrxsgHtINVNcSzPrZVyPMKkvWeErN
+ 82ImD6H888kIdZrjQTZq8Yw2pVUbCI6tnDr7Brli+bg5yAdLNeqZFQWAxylWftPZ7ktw
+ I8vItMwK2oZHjbW9HQ/XZv9oXocD9h8Y2y4orz2nwf3QiH5R4QOHBJFq/8LCTSM7M2Oc
+ /5iw==
+X-Gm-Message-State: AOJu0YwAFyk96mKYw98y8v7XaMnUagwoifo22wwiHIyT49jupGK1L1TU
+ ksIZm01g1VxJS8AJC5fDSqvgYSwH8jaEsD4B2vLs1MAOexMVyVvZzKX+MBTFxnU2s9vmhZv5SM4
+ E
+X-Gm-Gg: ASbGnctViCAlLdJF0mK25RoPQEUsYyDjtLowg4z6yrBGAXheo4Xl7mGo0j43LhiJBwA
+ dnSSnghgFDpNtUHRaXsO2SFGwTvziyzfKJnzBm4vv8jF2WRKiG/AS7IRO2hBpBI3bVl3do/zeRc
+ cJzoI1Vx9ldJT6XETeS1CW0ZmlID+d4mTYyXIG/RVQn5bS9X+YciBJNbm8/6StjUNnE/7UlL+Eg
+ AsIZdu/TEcIfrLo/sO7xsl85/Uu1slckChiLCswoqKZ1dsVbbtEkNYiv2XCC987gN6ylpeMVN5z
+ K5jenTHZLRNJwrGWcgEX3w==
+X-Google-Smtp-Source: AGHT+IEo9vCNFtr05Gmpb06MIfMkR/Mro0C9CWKz84Jj2bFr7cMppUotYOmt2krTrcU6vl/2xegMdg==
+X-Received: by 2002:a05:600c:4704:b0:431:54d9:da57 with SMTP id
+ 5b1f17b1804b1-438dc42a445mr2749935e9.30.1738095206660; 
+ Tue, 28 Jan 2025 12:13:26 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438bd4fa3efsm182524105e9.2.2025.01.28.12.13.24
+ 5b1f17b1804b1-438bd4fa3efsm182524105e9.2.2025.01.28.12.13.25
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Jan 2025 12:13:25 -0800 (PST)
+ Tue, 28 Jan 2025 12:13:26 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/36] hw/arm/stellaris: Remove incorrect unimplemented i2c-0
- at 0x40002000
-Date: Tue, 28 Jan 2025 20:12:47 +0000
-Message-Id: <20250128201314.44038-10-peter.maydell@linaro.org>
+Subject: [PULL 10/36] hw/arm/stellaris: Replace magic numbers by definitions
+Date: Tue, 28 Jan 2025 20:12:48 +0000
+Message-Id: <20250128201314.44038-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250128201314.44038-1-peter.maydell@linaro.org>
 References: <20250128201314.44038-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,40 +99,89 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-There is nothing mapped at 0x40002000.
-
-I2C#0 is already mapped at 0x40021000.
-
-Remove the invalid mapping added in commits aecfbbc97a2 & 394c8bbfb7a.
+Add definitions for the number of controllers.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20250110160204.74997-4-philmd@linaro.org
+Message-id: 20250110160204.74997-5-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/stellaris.c | 2 --
- 1 file changed, 2 deletions(-)
+ hw/arm/stellaris.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
 diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
-index 42498cc1e53..4df02138ac5 100644
+index 4df02138ac5..dd342b17d2a 100644
 --- a/hw/arm/stellaris.c
 +++ b/hw/arm/stellaris.c
-@@ -1001,7 +1001,6 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
-      * http://www.ti.com/lit/ds/symlink/lm3s6965.pdf
-      *
-      * 40000000 wdtimer
--     * 40002000 i2c (unimplemented)
-      * 40004000 GPIO
-      * 40005000 GPIO
-      * 40006000 GPIO
-@@ -1357,7 +1356,6 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
-     /* Add dummy regions for the devices we don't implement yet,
-      * so guest accesses don't cause unlogged crashes.
+@@ -49,6 +49,11 @@
+ #define NUM_IRQ_LINES 64
+ #define NUM_PRIO_BITS 3
+ 
++#define NUM_GPIO    7
++#define NUM_UART    4
++#define NUM_GPTM    4
++#define NUM_I2C     2
++
+ typedef const struct {
+     const char *name;
+     uint32_t did0;
+@@ -989,12 +994,12 @@ static const stellaris_board_info stellaris_boards[] = {
+ 
+ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+ {
+-    static const int uart_irq[] = {5, 6, 33, 34};
+-    static const int timer_irq[] = {19, 21, 23, 35};
+-    static const uint32_t gpio_addr[7] =
++    static const int uart_irq[NUM_UART] = {5, 6, 33, 34};
++    static const int timer_irq[NUM_GPTM] = {19, 21, 23, 35};
++    static const uint32_t gpio_addr[NUM_GPIO] =
+       { 0x40004000, 0x40005000, 0x40006000, 0x40007000,
+         0x40024000, 0x40025000, 0x40026000};
+-    static const int gpio_irq[7] = {0, 1, 2, 3, 4, 30, 31};
++    static const int gpio_irq[NUM_GPIO] = {0, 1, 2, 3, 4, 30, 31};
+ 
+     /* Memory map of SoC devices, from
+      * Stellaris LM3S6965 Microcontroller Data Sheet (rev I)
+@@ -1030,9 +1035,9 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
       */
--    create_unimplemented_device("i2c-0", 0x40002000, 0x1000);
-     create_unimplemented_device("i2c-2", 0x40021000, 0x1000);
-     create_unimplemented_device("PWM", 0x40028000, 0x1000);
-     create_unimplemented_device("QEI-0", 0x4002c000, 0x1000);
+ 
+     Object *soc_container;
+-    DeviceState *gpio_dev[7], *armv7m, *nvic;
+-    qemu_irq gpio_in[7][8];
+-    qemu_irq gpio_out[7][8];
++    DeviceState *gpio_dev[NUM_GPIO], *armv7m, *nvic;
++    qemu_irq gpio_in[NUM_GPIO][8];
++    qemu_irq gpio_out[NUM_GPIO][8];
+     qemu_irq adc;
+     int sram_size;
+     int flash_size;
+@@ -1124,7 +1129,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+     } else {
+         adc = NULL;
+     }
+-    for (i = 0; i < 4; i++) {
++    for (i = 0; i < NUM_GPTM; i++) {
+         if (board->dc2 & (0x10000 << i)) {
+             SysBusDevice *sbd;
+ 
+@@ -1158,7 +1163,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+     }
+ 
+ 
+-    for (i = 0; i < 7; i++) {
++    for (i = 0; i < NUM_GPIO; i++) {
+         if (board->dc4 & (1 << i)) {
+             gpio_dev[i] = sysbus_create_simple("pl061_luminary", gpio_addr[i],
+                                                qdev_get_gpio_in(nvic,
+@@ -1179,7 +1184,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+         }
+     }
+ 
+-    for (i = 0; i < 4; i++) {
++    for (i = 0; i < NUM_UART; i++) {
+         if (board->dc2 & (1 << i)) {
+             SysBusDevice *sbd;
+ 
 -- 
 2.34.1
 
