@@ -2,88 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F463A2052F
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 08:51:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55420A20570
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:01:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgLz-00073m-Rk; Tue, 28 Jan 2025 02:49:47 -0500
+	id 1tcgSW-0001VM-Tj; Tue, 28 Jan 2025 02:56:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcgLq-00072Y-VN
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 02:49:39 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcgRw-0007lc-Mh
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 02:56:02 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcgLp-0006pv-9v
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 02:49:38 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-438a3216fc2so54370515e9.1
- for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 23:49:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcgRr-0000DI-06
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 02:55:55 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-436202dd7f6so60880395e9.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Jan 2025 23:55:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738050574; x=1738655374; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738050949; x=1738655749; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=rUmyIiDaNrOoEKJwvjuDpM2uOTfEtcf4KoYX4nbPq+8=;
- b=NEfqDIZs1SWok+HR0z44M2/cUEVbJ+ydfFwIE7qFVqRYkJNOzFP++xkQmvS2Me/7K0
- zSkrot2J3+quNMIhQ4FPC8l9nNoxzra+10MXo3gW3PsFkQFtqiebNDb7UsRl5jMU3YqB
- J1LSVmJfRk2uX30f6cRPxUCFxJiWgnoChm9+6byP+hCaTVHyc8Z0r5nIavx7cCcpOsHD
- 7lU82OoX3Ryk3uEkXwy5X0Utm+89GH5CszrWUYWSzEkN1a7vkJcHi3lPE8tnhQvuc3nE
- f7LMxMrjWP7RO3rUJOZpcQsl4qziAd/fWAxflCoHbpA52M7OkrW4Q2++vQ1dsA6kODEs
- AbIQ==
+ bh=IuWgJybtWqvmOGLDQYpEV91S4HSMgGB+RXFMYZWQ394=;
+ b=opmiBsSkx4CjN7Oct2REqO8u4okTQUn5ndNNr9RpccuLIFo4boYmiOeHRtNZIETxid
+ qYvoJPRep+Z/mxZspkjlGRoml3LS0LYZRLPaRKTEn9EFIQiNvyJwZKwJtyltW1QDFush
+ XSUOsdkcnmB+J466uoH+x3efPYFc76mc56ENCD5o36l+1CCg6OhMCReDN3G29/3G0ijP
+ LxGg0KQU6J6rJ47BqohQ9326SNIAXbu1mZDEkaDYbm+D45Kx48bKF2DZyNhf/7ZG09XQ
+ SLLP+Z3ZyolX++03qyQw4kZryVKlIVn+rocv0WS1XPbfmthbXWzRGU3YNDV15lH1peNo
+ RfwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738050574; x=1738655374;
+ d=1e100.net; s=20230601; t=1738050949; x=1738655749;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rUmyIiDaNrOoEKJwvjuDpM2uOTfEtcf4KoYX4nbPq+8=;
- b=lEny4tOHJb7Lh0278SsNy4/EDU6SO+qU+QXaFgFwrq9hudzb59R30L5S4tGWDbGQiq
- TYohUtsw22UrW699icwRRiOaKNgrVz4n0yomJflYSBXa7BDkit4A4HmQm72lHUuZb+nd
- RD/5BOC8r/Lk5qrz1JWx4SlyTE71yRB3Rp1ieTzDfNDwsk4vRy8PLpPXyk6BcsLb88zK
- V8UxqTuaZpYRdxvQgWGGJ4XMe4iP/ZOvGPW15vmBUC9bl9jdh/mIZEA3/v0PtVybLgWe
- Rk6zbPsbc1ZiKirNpW0gMoKUAS0F3Y5/+DLRgPXN0C5eGJjZBaFAtGALMzTcuk2KE6g6
- gh0A==
-X-Gm-Message-State: AOJu0YwnE4c30nwHgPUzLEZMgoO+SFGytg/f7DaDYXiL1zo15uahLvBN
- KQ/+6iLpye2OdUvqa413tg29XYwL25PYJpLEuSYnJt6TEH0yWyv88UClhqFuu4w=
-X-Gm-Gg: ASbGnct5PyBeDUpXED0yHGvNxWlSWlIYEsmjwnWU+E9HApBE8ezL6FTKYl1TALCHAUB
- UM4AJYFFrx83bJYHksrp7oRpBP06t9zJzIm+dRRwi40E8MxM7q4Wn+AWHmiGPgRGZEQERaTdDfq
- gCwTVpM4TK6Uvff1j0S/bg78CeTwrNrsd+JYsJFc7AlP+5SqODmD4LkuanpYJqsTlVVwXzHm42/
- m1o+MII3maUL2ft+taZgr6axAgfAlKX74azLZFMbFyjDRnz9JDiAJO6ScQ8QiUOnq+vF4YGjt4B
- HjbHBAcpezF3XBi+j5LVzOU+z+cUpyCDNNRVrLvpg1AuI7HyQEfkBs7JkeI=
-X-Google-Smtp-Source: AGHT+IFpa8pZHjhc4X3Ns7uaW6VRofGWCMk742fvNeAaBwh7piprIE6mfhLNCfGJUSrS1VzDc8S1fg==
-X-Received: by 2002:adf:fec5:0:b0:38a:88d0:18d6 with SMTP id
- ffacd0b85a97d-38bf58e8fa8mr27202453f8f.42.1738050574101; 
- Mon, 27 Jan 2025 23:49:34 -0800 (PST)
+ bh=IuWgJybtWqvmOGLDQYpEV91S4HSMgGB+RXFMYZWQ394=;
+ b=epPJNvdDKwVJw20l7IQYABUuyZG0HjrgSAhaI63blXE9oMWH/wSM4Eh1NmfK/iowWx
+ 17uwGQMVVyOlzxF9bV6jIMcuLRRf3UGQb2XKwGNnBpIeosJYVplrbH4hjJMn4317Fcu5
+ 4gd6EQZ1pQxkhL9ZBzxSAS8hsBz3hdeFsUvySbsi6GRLsd9t8L+qJ8zox1ehhK3+wGrn
+ ecf8NfM2ej7LITeBTjMsmedIoQhz064bis/i5nLvw0rSCi0UjA4thUs9TewWS1wHtkuo
+ +AbROaSCr+YD3BnpScTdGp1YLUf/KatQQ+y4SzMVu0l8KIG0fuqmg+0exoFvtWEL0+pe
+ 2xAw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW/Hya3m5usc69f1t18rUPbx0NQWBHQ7x81Lx5xkLaST2LsXIM+RdjG7SlYq8cjGv49V1Xu+IOtfaQq@nongnu.org
+X-Gm-Message-State: AOJu0YwWWgByn37ouoI7hBXUisI+0KzqZcyPwVqJ2Ndn3iFDO7er/hOP
+ fzuiX1f0Kkhl9OULcPWDq4U1sI8KzdXTMP6U79yOZ+sM4Wow5gNPLgHg4PeLa2eioZz1bJVkBu1
+ kLmI=
+X-Gm-Gg: ASbGncsMYkDxdy1MahvIf98EQV6xbX6iotDYFLeSWG7egumMvtKIMIym+4V3S483exc
+ BwEpHoMtfTt+PRf8RwiKeXDsVWLiKSXj5mYTXCfRvuaHglBTiOksbuapjBbaX9DTsgIo+oEoJSh
+ 3EMg8/qfWEvfH3/HF4wTcWgkRE8lFI5Rcsk7z/A0s3C6Wj6UhElbzIuUn3rHOL4t2Egn/MBjG1q
+ k7Aj8pcILupHmNz15jmoyPs0PZQpYLwFElC2XygEhPIzdjgzeTSIEjlnYn1fBaQ2jFXyRC0YXGA
+ 4oPQ38uIJFnbGxaodW4D964j9WVZOZ+rzeGXr4b6QL3ZOqABxf7OD2SNxyg=
+X-Google-Smtp-Source: AGHT+IHJqQgQESqxWn7+L56tYCQdm0A/ZVa6qpgbQIGagCFW5cSRc0wFh4AuRzK9AfZRh2kyfvpVjA==
+X-Received: by 2002:a05:600c:5119:b0:434:fa61:fdfb with SMTP id
+ 5b1f17b1804b1-438913f0620mr386306645e9.18.1738050949138; 
+ Mon, 27 Jan 2025 23:55:49 -0800 (PST)
 Received: from [192.168.69.151] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a1766d8sm13732792f8f.14.2025.01.27.23.49.33
+ 5b1f17b1804b1-438bd5732edsm158318675e9.36.2025.01.27.23.55.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 Jan 2025 23:49:33 -0800 (PST)
-Message-ID: <df5c23f8-f8a4-40c3-9117-82af31e122f4@linaro.org>
-Date: Tue, 28 Jan 2025 08:49:32 +0100
+ Mon, 27 Jan 2025 23:55:48 -0800 (PST)
+Message-ID: <b8933aed-5a35-4385-9526-c60a4412070d@linaro.org>
+Date: Tue, 28 Jan 2025 08:55:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Remove Bin Meng from RISC-V maintainers
-To: Alistair Francis <alistair23@gmail.com>, palmer@dabbelt.com,
- liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, qemu-riscv@nongnu.org
-Cc: qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>
-References: <20250128060546.1374394-1-alistair.francis@wdc.com>
+Subject: Re: [PATCH] tests/functional/test_mips_malta: Fix comment about
+ endianness of the test
+To: Thomas Huth <thuth@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-trivial@nongnu.org
+References: <20250127184112.108122-1-thuth@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250128060546.1374394-1-alistair.francis@wdc.com>
+In-Reply-To: <20250127184112.108122-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,59 +102,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cc'ing work email
-
-On 28/1/25 07:05, Alistair Francis wrote:
-> Bin Meng has been a long time contributor and maintainer for QEMU RISC-V
-> and has been very beneficial to the RISC-V ecosystem.
+On 27/1/25 19:41, Thomas Huth wrote:
+> This test is for the big endian MIPS target, not for the little endian
+> target.
 > 
-> Unfortunately his email has started to bounce so this patch is removing
-> them from MAINTAINERS. If in the future Bin Meng wants to return we will
-> happily re-add them.
-> 
-> Note that I'm not removing Bin Meng as a "SD (Secure Card)" maintainer.
-> 
-> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->   MAINTAINERS | 5 +----
->   1 file changed, 1 insertion(+), 4 deletions(-)
+>   tests/functional/test_mips_malta.py | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 7be3d8f431..a0e305aa99 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -318,7 +318,6 @@ F: tests/functional/test_ppc_74xx.py
->   RISC-V TCG CPUs
->   M: Palmer Dabbelt <palmer@dabbelt.com>
->   M: Alistair Francis <alistair.francis@wdc.com>
-> -M: Bin Meng <bmeng.cn@gmail.com>
->   R: Weiwei Li <liwei1518@gmail.com>
->   R: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->   R: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-> @@ -1599,7 +1598,6 @@ F: include/hw/riscv/opentitan.h
->   F: include/hw/*/ibex_*.h
->   
->   Microchip PolarFire SoC Icicle Kit
-> -M: Bin Meng <bmeng.cn@gmail.com>
->   L: qemu-riscv@nongnu.org
->   S: Supported
->   F: docs/system/riscv/microchip-icicle-kit.rst
-> @@ -1626,7 +1624,6 @@ F: include/hw/char/shakti_uart.h
->   
->   SiFive Machines
->   M: Alistair Francis <Alistair.Francis@wdc.com>
-> -M: Bin Meng <bmeng.cn@gmail.com>
->   M: Palmer Dabbelt <palmer@dabbelt.com>
->   L: qemu-riscv@nongnu.org
->   S: Supported
-> @@ -3721,7 +3718,7 @@ S: Orphan
->   F: hw/i386/amd_iommu.?
->   
->   OpenSBI Firmware
-> -M: Bin Meng <bmeng.cn@gmail.com>
-> +L: qemu-riscv@nongnu.org
->   S: Supported
->   F: pc-bios/opensbi-*
->   F: .gitlab-ci.d/opensbi.yml
+> diff --git a/tests/functional/test_mips_malta.py b/tests/functional/test_mips_malta.py
+> index 3b15038d89..eaf372255b 100755
+> --- a/tests/functional/test_mips_malta.py
+> +++ b/tests/functional/test_mips_malta.py
+> @@ -1,6 +1,6 @@
+>   #!/usr/bin/env python3
+>   #
+> -# Functional tests for the little-endian 32-bit MIPS Malta board
+> +# Functional tests for the big-endian 32-bit MIPS Malta board
+>   #
+>   # Copyright (c) Philippe Mathieu-Daudé <f4bug@amsat.org>
+>   #
+
+Oops
+
+Fixes: 79cb4a14cb6 ("tests/functional: Convert mips32eb 4Kc Malta tests")
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
