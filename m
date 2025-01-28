@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98681A21498
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 23:49:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ABAEA21496
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 23:49:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcuNt-0002aO-Gd; Tue, 28 Jan 2025 17:48:41 -0500
+	id 1tcuNv-0002bt-NJ; Tue, 28 Jan 2025 17:48:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tcuNm-0002ZX-1G
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tcuNm-0002ZY-Nc
  for qemu-devel@nongnu.org; Tue, 28 Jan 2025 17:48:36 -0500
 Received: from nyc.source.kernel.org ([2604:1380:45d1:ec00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tcuNk-00024A-G0
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 17:48:33 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tcuNl-00024S-5a
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 17:48:34 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 6B529A41470;
- Tue, 28 Jan 2025 22:46:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14248C4CEDF;
- Tue, 28 Jan 2025 22:48:29 +0000 (UTC)
+ by nyc.source.kernel.org (Postfix) with ESMTP id B519DA4148E;
+ Tue, 28 Jan 2025 22:46:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6671DC4CED3;
+ Tue, 28 Jan 2025 22:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1738104511;
- bh=aaNhqD+qxBnqaQFsiiicFI2/J+SvMD2ciIeBWu/M9qU=;
+ s=k20201202; t=1738104512;
+ bh=1XT/07xMdO+36fCCsQzMRTN3C9LUWm0QozbepHCvoD4=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=sksK2UGT+/GsvfLSdr5mccP2rVH5P8d+HTlGhESvxofCN3cl9GdLWSnJu65jfOj2n
- 7OwlhrWpPMa+2Ia+7yYpjR4vsAbbGdKJD8iEi/YSEpQn22Lamd3geajl7DVifvSv7i
- qT5ir7EIdBKVSJdYXt1H93LqgcYqhjF4pW/qkDwFimPGtnWHFvl1Uij+XX3Fe2HmcW
- 20c6rLkRtRJb7TJrXs11mvj0llK9cxobgekkZn+4MfvMjiooPIVAHMy3NwfRMTDeRR
- HaHjHDJwzNM7OFFkhe7xisB9Lqwm4vEFZwBH//kUZOxE+p9wDROzDR53Wki1gQzHEb
- zc/qMRkE6zmdw==
+ b=Ld3EoNuPJs3S0Mnd+jrccZq6yVqUnuhlr9orI/ixj1KCdJe3Hs6z8qs38AOKZ2gLK
+ ZooaFPwiu9V2xRT2054BwdirRirlGGAD42qsH+9cDfmXEbEJotjYES1aXnNSZHbyuB
+ raohV4C+5PoEngiml+miKDjbtHUfacjME+aBw/JXl3tGLBBzmRXdFdujw6OX/ntO5W
+ UOZF6MBB5FfRDOz3qB77MSd26fYBpI9izhLIqxEXTNxe6clAhvltmQZxJXYALmNRg7
+ JBjxTgiQjNJDzQFRCB3fVehqoIg4pfOuRbijExBIrfr+tw9+KOW/Z6RDhRQ8OZGEfs
+ cZmRi5UzO+3zQ==
 From: deller@kernel.org
 To: richard.henderson@linaro.org,
 	qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH 2/4] target/hppa: Add instruction decoding for mfdiag and
- mtdiag
-Date: Tue, 28 Jan 2025 23:45:42 +0100
-Message-ID: <20250128224817.24715-3-deller@kernel.org>
+Subject: [PATCH 3/4] target/hppa: 64-bit CPUs start with space register
+ hashing enabled
+Date: Tue, 28 Jan 2025 23:45:43 +0100
+Message-ID: <20250128224817.24715-4-deller@kernel.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250128224817.24715-1-deller@kernel.org>
 References: <20250128224817.24715-1-deller@kernel.org>
@@ -70,82 +70,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Add 32- and 64-bit instruction decoding of the mfdiag and mtdiag
-instructions which modify the diagnose registers.
-
-diag_getshadowregs_pa2() and diag_putshadowregs_pa2() were added in
-commit 3bdf20819e68 based on some analysis of ODE code, but now they
-conflict with the generic mfdiag/mtdiag instructions. I believe the
-former analysis was wrong, so remove them again. Note that all diag
-instructions are badly documented, so most things are based on reverse
-engineering and thus may be wrong.
+Turn on space register hashing for 64-bit CPUs when reset.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: 3bdf20819e68 ("target/hppa: Add diag instructions to set/restore shadow registers")
 ---
- target/hppa/insns.decode |  6 ++++--
- target/hppa/translate.c  | 22 ++++++++++++++++------
- 2 files changed, 20 insertions(+), 8 deletions(-)
+ target/hppa/cpu.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/target/hppa/insns.decode b/target/hppa/insns.decode
-index 71074a64c1..4eaac750ea 100644
---- a/target/hppa/insns.decode
-+++ b/target/hppa/insns.decode
-@@ -644,10 +644,12 @@ xmpyu           001110 ..... ..... 010 .0111 .00 t:5    r1=%ra64 r2=%rb64
-     # For 32-bit PA-7300LC (PCX-L2)
-     diag_getshadowregs_pa1  000101 00 0000 0000 0001 1010 0000 0000
-     diag_putshadowregs_pa1  000101 00 0000 0000 0001 1010 0100 0000
-+    diag_mfdiag             000101 dr:5  rt:5   0000 0110 0000 0000
-+    diag_mtdiag             000101 dr:5  r1:5   0001 0110 0000 0000
+diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
+index b0bc9d35e4..c86f9190d2 100644
+--- a/target/hppa/cpu.c
++++ b/target/hppa/cpu.c
+@@ -28,6 +28,7 @@
+ #include "exec/translation-block.h"
+ #include "fpu/softfloat.h"
+ #include "tcg/tcg.h"
++#include "hw/hppa/hppa_hardware.h"
  
-     # For 64-bit PA8700 (PCX-W2)
--    diag_getshadowregs_pa2  000101 00 0111 1000 0001 1000 0100 0000
--    diag_putshadowregs_pa2  000101 00 0111 0000 0001 1000 0100 0000
-+    diag_mfdiag             000101 dr:5  0 0000 0000 1000 101  rt:5
-+    diag_mtdiag             000101 dr:5  r1:5   0001 1000 0100 0000
-   ]
-   diag_unimp                000101 i:26
- }
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index dc04f9f3c0..7b9d3deb39 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -4593,19 +4593,29 @@ static bool trans_diag_getshadowregs_pa1(DisasContext *ctx, arg_empty *a)
-     return !ctx->is_pa20 && do_getshadowregs(ctx);
- }
- 
--static bool trans_diag_getshadowregs_pa2(DisasContext *ctx, arg_empty *a)
-+static bool trans_diag_putshadowregs_pa1(DisasContext *ctx, arg_empty *a)
+ static void hppa_cpu_set_pc(CPUState *cs, vaddr value)
  {
--    return ctx->is_pa20 && do_getshadowregs(ctx);
-+    return !ctx->is_pa20 && do_putshadowregs(ctx);
+@@ -217,6 +218,10 @@ static void hppa_cpu_reset_hold(Object *obj, ResetType type)
+     memset(env, 0, offsetof(CPUHPPAState, end_reset_fields));
+ 
+     cpu_hppa_loaded_fr0(env);
++
++    /* 64-bit machines start with space-register hashing enabled in %dr2 */
++    env->dr[2] = hppa_is_pa20(env) ? HPPA64_DIAG_SPHASH_ENABLE : 0;
++
+     cpu_hppa_put_psw(env, PSW_M);
  }
  
--static bool trans_diag_putshadowregs_pa1(DisasContext *ctx, arg_empty *a)
-+static bool trans_diag_mfdiag(DisasContext *ctx, arg_diag_mfdiag *a)
- {
--    return !ctx->is_pa20 && do_putshadowregs(ctx);
-+    CHECK_MOST_PRIVILEGED(EXCP_PRIV_OPR);
-+    nullify_over(ctx);
-+    TCGv_i64 dest = dest_gpr(ctx, a->rt);
-+    tcg_gen_ld_i64(dest, tcg_env,
-+                       offsetof(CPUHPPAState, dr[a->dr]));
-+    save_gpr(ctx, a->rt, dest);
-+    return nullify_end(ctx);
- }
- 
--static bool trans_diag_putshadowregs_pa2(DisasContext *ctx, arg_empty *a)
-+static bool trans_diag_mtdiag(DisasContext *ctx, arg_diag_mtdiag *a)
- {
--    return ctx->is_pa20 && do_putshadowregs(ctx);
-+    CHECK_MOST_PRIVILEGED(EXCP_PRIV_OPR);
-+    nullify_over(ctx);
-+    tcg_gen_st_i64(load_gpr(ctx, a->r1), tcg_env,
-+                        offsetof(CPUHPPAState, dr[a->dr]));
-+    return nullify_end(ctx);
- }
- 
- static bool trans_diag_unimp(DisasContext *ctx, arg_diag_unimp *a)
 -- 
 2.47.0
 
