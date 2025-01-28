@@ -2,91 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C508A2097E
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F37A2097F
 	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 12:19:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcjbD-0001yf-GI; Tue, 28 Jan 2025 06:17:43 -0500
+	id 1tcjbx-0002Dz-V8; Tue, 28 Jan 2025 06:18:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tcjay-0001xg-Lm
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 06:17:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tcjaw-0004nl-5I
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 06:17:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738063042;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=qmJQwkSsUtnKBAYHpglBR/kDXF1RdFa71lZVqouhLng=;
- b=hrLYpxUDcuiWTLHpDtc7+Y1LWoIQniriQ6ObhQoijSWfHanVHYl8wfMTJqarCNu+o9460v
- IfiL9RwW1lOYefYt/2LG/BkUHsuG5YTwTBTd1uzhzJLBLpLgwEAyIdnxKwC3YBwk8eTM4z
- h+CoTkchvLn0kK54Zv/ToWg9e2VuQ8k=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-F_oJaxdnNUi4qMIa2GKLJA-1; Tue, 28 Jan 2025 06:17:20 -0500
-X-MC-Unique: F_oJaxdnNUi4qMIa2GKLJA-1
-X-Mimecast-MFC-AGG-ID: F_oJaxdnNUi4qMIa2GKLJA
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-436289a570eso42132035e9.0
- for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 03:17:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcjbv-0002Dh-MY
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 06:18:27 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcjbu-00053e-2a
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 06:18:27 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43624b2d453so60235585e9.2
+ for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 03:18:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1738063103; x=1738667903; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=fT2SAbuvKPbKd3z1KkDvR/xDsz8I4RjNHLW+g3/uOgc=;
+ b=DpQolaraCLV3AclTON/VVQ45IG/6YQvEHqRRsPX+TagpLt3zA8WA9ta6wd9FTdYfNq
+ tgbDozPQxkXBRFP6pqDqICmAMrfsIhvHwKmTtrvrz9nFxOLVEKGMfcWjVcmPQq0Y3VHT
+ 8SlqKQ+aSjzlqymL5QhdXw5QrPTdIE52+RI3nizj5ADUIbtCfgFt1MoEo6fo0F/rtdEK
+ F/LTGjY8GGIFCM5xPBVTAVzaO/KDCPGqnZsz82AlBCYy+Szptc8lJqxcQ0KgAVjYHUzG
+ ZiST8tMa1Upf971ZPccXsWJDv3rizWi380ebc1GHAkVAwMa6EDiR+V5eD7nNWpT+H50Y
+ bHyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738063039; x=1738667839;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1738063103; x=1738667903;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=qmJQwkSsUtnKBAYHpglBR/kDXF1RdFa71lZVqouhLng=;
- b=BaMFivY+MURLOQlxYVA9jPBI6gyBCa0t49MZGSXTflucppvtUoBLh/lq8dw5LFILf6
- 8vSAz16ppGD6b4PfF0Ddj59MrLvRsGR0Mdi8bLZzUEaG/SbkmwLYDcyH0KfFTaiOOEUw
- RSTSx/y53hnQE1wH+oglvJkz7ssM1CHuekrG8HeNzecibmU2QvuJ+r+ZD8OczDfMPB4b
- ip2pd+dtJd/jcYqkhJDsHBXUk9WB+4P4UbikKyI6SbNHgd7CVbQUenFmE/He4LSd/RKX
- E345wrUPxTwh+9hPdCM5SEAygGvevVn8amyyjHT0sx4Nk5UY/iHTtRMVZVf3J0c0sU7b
- Ny3A==
-X-Gm-Message-State: AOJu0YyV0gfPCsT0SM8tAqzMT+SgX3ZYrWPYIYniXNGiiyNEFotfyS0O
- 04/Ziifc9eI5TeFIbsFV6JfElAjL8UUcE7mm5LsewlkVnlJ7Aw0eF8JSb5K+gLv8hiP22PS5Hxv
- 1El2AUZoMj9/abYiWD5+oLxT46f7CT763i0Xl/sqCVHulAglgfUbjl5tt5p9UDLL6pW/WYcmAoo
- Fm3vHum8ih/LitXr15yaR8PfzPZFs=
-X-Gm-Gg: ASbGnctcX5MyqdrbFwR0wbg9/Lt9CigcS7g2g7I7P589VORbtJy+vL4BINMSQxCNy1h
- goYTDTCPftYr9diJFIJT7gU0Rj0oRkoaXDUMoE8MfFKzlDzjhJvCNZcINz3El3z0=
-X-Received: by 2002:a05:600c:1554:b0:434:fbe2:4f with SMTP id
- 5b1f17b1804b1-4389143b41fmr398470865e9.23.1738063039025; 
- Tue, 28 Jan 2025 03:17:19 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFf5eK6fTlxg1k8TMO1dAxuyWBnA/2L1QJ321FP5NqAwn97V0eWzTFVwlyFuJw19pOgvkZFG2LLglaU4v7KtCQ=
-X-Received: by 2002:a05:600c:1554:b0:434:fbe2:4f with SMTP id
- 5b1f17b1804b1-4389143b41fmr398470645e9.23.1738063038730; Tue, 28 Jan 2025
- 03:17:18 -0800 (PST)
+ bh=fT2SAbuvKPbKd3z1KkDvR/xDsz8I4RjNHLW+g3/uOgc=;
+ b=B+r5H+Xu3tYBLgEZMUfNlPnBZkGpXF0ZGM4DRMotDS+gBZVMELFbdTfSkSIApTS5B/
+ 7GLPVJUunqhKeZ5c2tzwDC/kYq1nqKkQ6tS7agbPWJqPjfzC38Cmnk/PqdyS1t7A1zGE
+ Nbp9G5rLolVtmOEL2DM6i2BUvt5rFrv/fYniGrYgQfs3oj35q/I6C+Qwyp3GMtF7WXUe
+ QCgn6/y5ZheKYENpdwJ6QybA6k9RfQkIcXmNSUO3qvC9Z7m5PQkKSZxpuu/JWaN+ddkw
+ Ph/XXI88XXVhDcFz1TB7P0UCs109bSGeqrJ/OAEeyHj53b51HdTPDFu7oRgldxl9PqqP
+ spKg==
+X-Gm-Message-State: AOJu0YxFZ7RsIc4CYTD5uHsOL+dDZuoucFM9ek+XS5Iw0pGN0jxcqKhC
+ dgqOyevttPnIZHSreLzvUVQssGYVdi11u5r/BjrfxyUU3UigiDsg06JN6OcSrWR+5Gb4UD4c/3x
+ 5N9s=
+X-Gm-Gg: ASbGncsRRFb+MXlL+WDw/PtaGzMNruJgsJJPBadTZnvWq3bZRECur9WRWR12MXkqHwR
+ jtGDMP2ekLOPAofvR3YSmu0hTMkqogau81Wq1WtAklzlmpFrzPl38mYfoElS6LbVQjuz/n7mwBF
+ 8/0WCTixTwqNXAuvCO2OuBJxnIfQH/g+xYZcpeNVU5yK8Q06pcaDJKJKc5f87LNyTbboITi2Hmd
+ rnDFATJAnzKXLr3dxuuBgd+kYuNmIehj3tfPbVuykfpkcXWzpVJn+/+ej+KlyOK73dNde2ak9a+
+ 41q8DL0/KvRRpk3I7z0frGm1hQ0tH4TxeGZeBVKs5E1rli8GSTnzP6Y8CKedC8AzFA==
+X-Google-Smtp-Source: AGHT+IH+qdHcEoJcFpOtnVud1J3WbJAaKIWKl6fv7LCSJoOys54P6jRa3uzMWf61KKffEYTlHNPhxw==
+X-Received: by 2002:a05:6000:2a9:b0:38a:50f7:24fa with SMTP id
+ ffacd0b85a97d-38bf57bed8emr46915786f8f.54.1738063102960; 
+ Tue, 28 Jan 2025 03:18:22 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-38c2a1764e9sm14028356f8f.17.2025.01.28.03.18.22
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 28 Jan 2025 03:18:22 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: xen-devel@lists.xenproject.org,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Markus Armbruster <armbru@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Bernhard Beschow <shentey@gmail.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/2] tests/qtest: Make qtest_has_accel() generic
+Date: Tue, 28 Jan 2025 12:18:19 +0100
+Message-ID: <20250128111821.93767-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-References: <20250127120823.144949-1-ppandit@redhat.com>
- <20250127120823.144949-5-ppandit@redhat.com>
- <874j1kufin.fsf@suse.de>
- <CAE8KmOyj0DvODhRVoyaqGaTSe+YDV8ymieFwCgnFZM0rWRuK-w@mail.gmail.com>
-In-Reply-To: <CAE8KmOyj0DvODhRVoyaqGaTSe+YDV8ymieFwCgnFZM0rWRuK-w@mail.gmail.com>
-From: Prasad Pandit <ppandit@redhat.com>
-Date: Tue, 28 Jan 2025 16:47:02 +0530
-X-Gm-Features: AWEUYZkeHRGDmE70qlhqhq5jTj91qI_0RP-q6sQFRHRcOwt8NWKwg6_rR2TD0no
-Message-ID: <CAE8KmOzCwr_vMYEGXR9RgAHb_hFp+wRznOhp+xxtDMGxaa7eGQ@mail.gmail.com>
-Subject: Re: [PATCH v4 4/4] tests/qtest/migration: add postcopy tests with
- multifd
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, peterx@redhat.com, berrange@redhat.com, 
- Prasad Pandit <pjp@fedoraproject.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,26 +101,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 28 Jan 2025 at 11:00, Prasad Pandit <ppandit@redhat.com> wrote:
-> >     for (int i = 0; i < MIGRATION_CAPABILITY__MAX; i++) {
-> >         if (args->caps[i]) {
-> >             migrate_set_capability(from, MigrationCapability_str(args->caps[i]), true);
-> >             migrate_set_capability(to, MigrationCapability_str(args->caps[i]), true);
-> >         }
-> >     }
-> >
-> > We could also set the number of channels as a default value. The tests
-> > could overwrite it from the hook if needed.
->
-> * Yes, this seems like a better option, I'll give it a try.
+In preparation of running QTests using HVF on Darwin,
+make qtest_has_accel() generic.
 
-Please see -> https://notebin.de/?317b9fc90a9a910d#dGKqq4r5pyMYU5SXYLFhd8wrzKRCxCcokTkTRBCUK7w
+Note, this also allow running other accelerators such
+Xen, WHPX, ...
 
-@Fabiano: does this look okay? If it is, I'll further remove
-corresponding boolean fields from MigrateCommon struct etc.
+Philippe Mathieu-Daudé (2):
+  tests/qtest: Extract qtest_qom_has_concrete_type() helper
+  tests/qtest: Make qtest_has_accel() generic
 
-Thank you.
----
-  - Prasad
+ tests/qtest/libqtest.c | 110 +++++++++++++++++++++++------------------
+ 1 file changed, 61 insertions(+), 49 deletions(-)
+
+-- 
+2.47.1
 
 
