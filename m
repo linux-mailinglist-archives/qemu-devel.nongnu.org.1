@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F724A20E3C
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 17:16:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B05A20E33
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 17:16:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcoEy-0005J1-Kz; Tue, 28 Jan 2025 11:15:04 -0500
+	id 1tcoF1-0005LZ-0S; Tue, 28 Jan 2025 11:15:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tcoEu-0005Hp-JU
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 11:15:00 -0500
-Received: from nyc.source.kernel.org ([147.75.193.91])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tcoEx-0005J3-Qw
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 11:15:04 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tcoEs-0002c1-Up
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 11:15:00 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tcoEv-0002ca-Sn
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 11:15:03 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 5B0D2A40FAC;
- Tue, 28 Jan 2025 16:13:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F36C4CEDF;
- Tue, 28 Jan 2025 16:14:53 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTP id C3EAB5C5B0B;
+ Tue, 28 Jan 2025 16:14:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61CC0C4CED3;
+ Tue, 28 Jan 2025 16:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1738080894;
- bh=S9HK0xeqqBFQ5Dh/ahazUko2s71TwD5ZiEw7SlIeLeU=;
+ s=k20201202; t=1738080896;
+ bh=WbGGD4NOS2h1QHYyZLIzVRv+R3c/kYBil40V5zV5alc=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=bzpGrhO1zHjZnScmLs14a/jGKsJiYEFGEUb8ZZLTU2DeYCmgD86+X084+EhCL3Jhb
- vvtaSy/z0jJK1TzJwlVwaq998ZWisYvh+Afh1RC0qeFx/n2Q3SUU+DQXNkHZB5xSUA
- cMeyxdUxwm1z/hcUSTw16Rm6QYAbQqiqpzCu47IP/KXrNvJk1X6sj22M7pkblhJi6o
- bIgBybQna2sV4CSRjcduYWUVIWYvt+GYFHDFhAGIdH7UiOqTDPreWNcE0ncAONIsnY
- momZnTw360z4ON75hhOanS5aMOrBl76KqimGbk3AfiGjm/W4B5o76Jbro6tPB3ybOj
- 4WF/osW0nMpPA==
+ b=uLAYYnymqtjbXdLzzVK8euyo9Bz2mlKKn3MtUKTV4slgmonvGL0FTtfAlrph2U+oE
+ ZaUCezAP7gyOjHgF5Y20AfqC/KJLyQwDzi3mbZ2uTjiwblZtTpv2Dkgm1FGMxgHSoO
+ 1l7WWgBx8xivjaW3qS3CsfvRLXVDeY1xRYmEfk8K4K9cHGmRf22uu2XKF/ybFtVTBY
+ +9CsbuJEGcf7eDDKlxlwmYMQ+NSyIhWYpSX4oscEdLJchd7EMTTYmXvRzk6J5TQeDv
+ 6/c3yqKw+0hS/qTqojkY5y1rI7UN+0AKxUCOpGZIPFhg7M+ZIXufLvdUKLOZTNEj1J
+ hXeJuynkFciRg==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
 Cc: Helge Deller <deller@gmx.de>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 1/5] hppa: Sync contents of hppa_hardware.h header file with
- SeaBIOS-hppa
-Date: Tue, 28 Jan 2025 17:14:46 +0100
-Message-ID: <20250128161450.12975-2-deller@kernel.org>
+Subject: [PATCH 2/5] disas/hppa: implement mfdiag/mtdiag disassembly
+Date: Tue, 28 Jan 2025 17:14:47 +0100
+Message-ID: <20250128161450.12975-3-deller@kernel.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250128161450.12975-1-deller@kernel.org>
 References: <20250128161450.12975-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=147.75.193.91; envelope-from=deller@kernel.org;
- helo=nyc.source.kernel.org
-X-Spam_score_int: -56
-X-Spam_score: -5.7
-X-Spam_bar: -----
-X-Spam_report: (-5.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -83
+X-Spam_score: -8.4
+X-Spam_bar: --------
+X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -72,94 +71,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-The hppa_hardware.h header file holds many constants for addresses and
-offsets which are needed while building the firmware (SeaBIOS-hppa) and
-while setting up the virtual machine in QEMU.
+The various PA-RISC CPUs implement different CPU-specific diag
+instructions (mfdiag, mtdiag, mfcpu, mtcpu, ...) to access CPU-internal
+diagnose/configuration registers, e.g. for cache control, managing space
+register hashing, control front panel LEDs and read status of the
+hardware reset button.
 
-This patch brings it in sync between both source code repositories.
+Those instructions are mostly undocumented, but are used by ODE, HP-UX
+and Linux.
+
+This patch adds some neccessary instructions for PCXL and PCXU CPUs.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/hppa/hppa_hardware.h | 36 ++++++++++++++++++++++++++++++++----
- 1 file changed, 32 insertions(+), 4 deletions(-)
+ disas/hppa.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/hw/hppa/hppa_hardware.h b/hw/hppa/hppa_hardware.h
-index a276240967..21c777cba6 100644
---- a/hw/hppa/hppa_hardware.h
-+++ b/hw/hppa/hppa_hardware.h
-@@ -6,6 +6,11 @@
+diff --git a/disas/hppa.c b/disas/hppa.c
+index 49e2231ae6..2b58434966 100644
+--- a/disas/hppa.c
++++ b/disas/hppa.c
+@@ -606,7 +606,7 @@ struct pa_opcode
  
- #define FIRMWARE_START  0xf0000000
- #define FIRMWARE_END    0xf0800000
-+#define FIRMWARE_HIGH   0xfffffff0  /* upper 32-bits of 64-bit firmware address */
+    In the args field, the following characters are unused:
+ 
+-	'  "         -  /   34 6789:;    '
++	'  "         -  /   34 678 :;    '
+ 	'@  C         M             [\]  '
+ 	'`    e g                     }  '
+ 
+@@ -650,6 +650,7 @@ Also these:
+    |	6 bit field length at 19,27:31 (fixed extract/deposit)
+    A    13 bit immediate at 18 (to support the BREAK instruction)
+    ^	like b, but describes a control register
++   9	like b, but describes a diagnose register
+    !    sar (cr11) register
+    D    26 bit immediate at 31 (to support the DIAG instruction)
+    $    9 bit immediate at 28 (to support POPBTS)
+@@ -1322,13 +1323,19 @@ static const struct pa_opcode pa_opcodes[] =
+ { "fdce",	0x040012c0, 0xfc00ffdf, "cZx(b)", pa10, 0},
+ { "fdce",	0x040012c0, 0xfc003fdf, "cZx(s,b)", pa10, 0},
+ { "fice",	0x040002c0, 0xfc001fdf, "cZx(S,b)", pa10, 0},
+-{ "diag",	0x14000000, 0xfc000000, "D", pa10, 0},
+ { "idtlbt",	0x04001800, 0xfc00ffff, "x,b", pa20, FLAG_STRICT},
+ { "iitlbt",	0x04000800, 0xfc00ffff, "x,b", pa20, FLAG_STRICT},
+ 
++/* completely undocumented, but used by ODE, HP-UX and Linux: */
++{ "mfcpu_pcxu",	0x140008a0, 0xfc9fffe0, "9,t", pa20, 0}, /* PCXU: mfdiag */
++{ "mtcpu_pcxu",	0x14001840, 0xfc00ffff, "x,9", pa20, 0},
 +
-+#define RAM_MAP_HIGH  0x0100000000  /* memory above 3.75 GB is mapped here */
+ /* These may be specific to certain versions of the PA.  Joel claimed
+    they were 72000 (7200?) specific.  However, I'm almost certain the
+    mtcpu/mfcpu were undocumented, but available in the older 700 machines.  */
++{ "mfcpu_c",    0x14000600, 0xfc00ffff, "9,x", pa10, 0}, /* PCXL: for dr0 and dr8 only */
++{ "mfcpu_t",    0x14001400, 0xfc9fffe0, "9,t", pa10, 0}, /* PCXL: all dr except dr0 and dr8 */
++{ "mtcpu_pcxl",	0x14000240, 0xfc00ffff, "x,9", pa11, 0}, /* PCXL: mtcpu for dr0 and dr8 */
+ { "mtcpu",	0x14001600, 0xfc00ffff, "x,^", pa10, 0},
+ { "mfcpu",	0x14001A00, 0xfc00ffff, "^,x", pa10, 0},
+ { "tocen",	0x14403600, 0xffffffff, "", pa10, 0},
+@@ -1336,6 +1343,9 @@ static const struct pa_opcode pa_opcodes[] =
+ { "shdwgr",	0x14402600, 0xffffffff, "", pa10, 0},
+ { "grshdw",	0x14400620, 0xffffffff, "", pa10, 0},
+ 
++/* instead of showing D only, show all other registers too */
++{ "diag",	0x14000000, 0xfc000000, "D  x,9,t", pa10, 0},
 +
-+#define MEM_PDC_ENTRY       0x4800  /* PDC entry address */
+ /* gfw and gfr are not in the HP PA 1.1 manual, but they are in either
+    the Timex FPU or the Mustang ERS (not sure which) manual.  */
+ { "gfw",	0x04001680, 0xfc00ffdf, "cZx(b)", pa11, 0},
+@@ -1801,6 +1811,12 @@ fput_creg (unsigned reg, disassemble_info *info)
+   (*info->fprintf_func) (info->stream, "%s", control_reg[reg]);
+ }
  
- #define DEVICE_HPA_LEN  0x00100000
- 
-@@ -18,6 +23,7 @@
- #define LASI_UART_HPA   0xffd05000
- #define LASI_SCSI_HPA   0xffd06000
- #define LASI_LAN_HPA    0xffd07000
-+#define LASI_RTC_HPA    0xffd09000
- #define LASI_LPT_HPA    0xffd02000
- #define LASI_AUDIO_HPA  0xffd04000
- #define LASI_PS2KBD_HPA 0xffd08000
-@@ -27,16 +33,23 @@
- #define CPU_HPA         0xfffb0000
- #define MEMORY_HPA      0xfffff000
- 
--#define PCI_HPA         DINO_HPA        /* PCI bus */
- #define IDE_HPA         0xf9000000      /* Boot disc controller */
-+#define ASTRO_HPA       0xfed00000
-+#define ELROY0_HPA      0xfed30000
-+#define ELROY2_HPA      0xfed32000
-+#define ELROY8_HPA      0xfed38000
-+#define ELROYc_HPA      0xfed3c000
-+#define ASTRO_MEMORY_HPA 0xfed10200
++static void
++fput_dreg (unsigned reg, disassemble_info *info)
++{
++  (*info->fprintf_func) (info->stream, "dr%d", reg);
++}
 +
-+#define SCSI_HPA        0xf1040000      /* emulated SCSI, needs to be in f region */
+ /* Print constants with sign.  */
  
- /* offsets to DINO HPA: */
- #define DINO_PCI_ADDR           0x064
- #define DINO_CONFIG_DATA        0x068
- #define DINO_IO_DATA            0x06c
- 
--#define PORT_PCI_CMD    (PCI_HPA + DINO_PCI_ADDR)
--#define PORT_PCI_DATA   (PCI_HPA + DINO_CONFIG_DATA)
-+#define PORT_PCI_CMD    hppa_port_pci_cmd
-+#define PORT_PCI_DATA   hppa_port_pci_data
- 
- #define FW_CFG_IO_BASE  0xfffa0000
- 
-@@ -46,9 +59,24 @@
- #define HPPA_MAX_CPUS   16      /* max. number of SMP CPUs */
- #define CPU_CLOCK_MHZ   250     /* emulate a 250 MHz CPU */
- 
-+#define CR_PSW_DEFAULT  6       /* used by SeaBIOS & QEMU for default PSW */
- #define CPU_HPA_CR_REG  7       /* store CPU HPA in cr7 (SeaBIOS internal) */
- #define PIM_STORAGE_SIZE 600	/* storage size of pdc_pim_toc_struct (64bit) */
- 
--#define RAM_MAP_HIGH  0x0100000000  /* memory above 3.75 GB is mapped here */
-+#define ASTRO_BUS_MODULE        0x0a            /* C3700: 0x0a, others maybe 0 ? */
-+
-+/* ASTRO Memory and I/O regions */
-+#define ASTRO_BASE_HPA            0xfffed00000
-+#define ELROY0_BASE_HPA           0xfffed30000  /* ELROY0_HPA */
-+
-+#define ROPES_PER_IOC           8       /* per Ike half or Pluto/Astro */
-+
-+#define LMMIO_DIRECT0_BASE  0x300
-+#define LMMIO_DIRECT0_MASK  0x308
-+#define LMMIO_DIRECT0_ROUTE 0x310
-+
-+/* space register hashing */
-+#define HPPA64_DIAG_SPHASH_ENABLE       0x200   /* DIAG_SPHASH_ENAB (bit 54) */
-+#define HPPA64_PDC_CACHE_RET_SPID_VAL   0xfe0   /* PDC return value on 64-bit CPU */
- 
- #endif
+ static void
+@@ -2007,6 +2023,9 @@ print_insn_hppa (bfd_vma memaddr, disassemble_info *info)
+ 		case '^':
+ 		  fput_creg (GET_FIELD (insn, 6, 10), info);
+ 		  break;
++		case '9':
++		  fput_dreg (GET_FIELD (insn, 6, 10), info);
++		  break;
+ 		case 't':
+ 		  fput_reg (GET_FIELD (insn, 27, 31), info);
+ 		  break;
 -- 
 2.47.0
 
