@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566BDA20E42
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 17:17:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A28A20EA7
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 17:34:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcoH2-0001I9-Uw; Tue, 28 Jan 2025 11:17:13 -0500
+	id 1tcoWF-0004b9-Gj; Tue, 28 Jan 2025 11:32:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1tcoGv-0001Gf-OZ
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 11:17:05 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tcoW3-0004Yz-6e
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 11:32:43 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1tcoGo-0003Gv-Lq
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 11:17:05 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5d3e6274015so10854726a12.0
- for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 08:16:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tcoVz-0005id-Jh
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 11:32:42 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-21644aca3a0so137220205ad.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 08:32:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1738081016; x=1738685816; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=3LQ/ClTRLQHNt4BKzJFSQ1S6KMu6e4COGZ7nkXwwF2I=;
- b=jY5HeY/5QaVwC+EWTmI1JZhoJsuRilePsC3TaU09BuTBgVb585kk5MZ2sKjSzWsXlx
- wMp0/1J+gloU9tRa8AFqFMm0hehh9xC722pCMrsJvm0nr8HKHEUqpysT6BOWqK869oSq
- ghQ7c0I48adNk69dNbVYql+rDEYJtFrIYbvDtqY/tr2gX0jZAHCFxy5WHELmOtlshcM3
- eWCpMgnlwfjZ49Dl0NGj1Mh9t7kELeISkJSdo/x2by2imFUvJFaal6MxCCO/sfuhzJlX
- btIvR51eK8yI5mrj1L1xN9XbzW9xJ1EmxQf6Ildtt0moaLC9HcsgW03xfdY12vVgwQEE
- 6PuQ==
+ d=linaro.org; s=google; t=1738081957; x=1738686757; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=fgdDdXBNLxyVPR81uqwioFsw91kPxcJsdwOz6elBtFY=;
+ b=vnXF1yt5XPF2+wglrYYnmDhqy3KUdDo9CQz2sA2/wLEPdt3on6LwoXHdakL0t6nwr9
+ q2xjgxZC+pif4o8a8VkdoV7LwcikXxxiPJCCb7Jw8LKh0aY9+bgLDAXmKLZ1AGMpPm2q
+ JawalyO8KHo3Jwl/zn44E2ifz/2hqkuioTkKuqYg/r8r0Pu5fRW0gUm0Ag2NiFhxMgrG
+ B7Dy+En9WZEtOyH5IeDIwLn8DuR5lYdmoqOgSTvFX49CxlzboX2REs0cKnTJuaNXNUqt
+ p8Wkz1OtDP5pkpZh7FuPZyAOxCxdTVXT63Ap580k4XV16Wk8i5UfZRgzILVEed0ljxEz
+ jhZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738081016; x=1738685816;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=3LQ/ClTRLQHNt4BKzJFSQ1S6KMu6e4COGZ7nkXwwF2I=;
- b=sLSkd2j8Wf4g6/29EbMUQKhCFY+DYzY2DXyQiBSNxcZD8y5dXGWrDa98O08olkY9Qk
- gDZYEO3wxxPYbLpwQaZF0H3dd6kMrjWwtl1MmnR1DK9HXYm6F+K2Qpo22OrhmAWYBKDw
- lYWdmiIAm2+a1jJwjSrhc0rVSd7pSSlsrd4cB9RaDUb8Brp0n8uuPMZ8OKQ48mODlWdr
- P0CCQPFpuFUqOb5o5+x2y9+Id6T+1coXVVFtctdAeaTc2PwgOO1oKF8B9O0ABy+nERhh
- sQukrst/sOoDUiVpbDIDNNxZyNF772+YSlxdU5sC7uUmqx+ibK5ne7HA2Wjw1Uf6A1rP
- Zk4w==
-X-Gm-Message-State: AOJu0YyaLhTY6WVGa7yLUD1f302bRGvqGQtIP8x3meoU6ttdwIQvrz48
- SGWqbQ+MmnK7ILCRZ1OlRGLRObwB907zP/1u2PbrEkMlzUFScXGPZB50UghVk9cP+dJZVtgSzLO
- Sr4RcbOeEPnn3ESSOrkeU1jS9xUxByo97
-X-Gm-Gg: ASbGncuViC2NoJi2U3Zrss1UMrj1MYsy6nLiDUWIowa4vy8yeg/YtZ/8o5gw6+eCbjl
- i+S8CMRgXWkDnfi+xCFHA57wBNdcUqHTSZX2LyXohP9QBFMlUiIyrHzTH5aT8vgorTcJ4+ao=
-X-Google-Smtp-Source: AGHT+IGngLilCkICpFdFa6Vm437XBCWWwcasw+Elf7wFv6/VQJdMbOLWzcjCVg/H+uh/2YDurB3D04hfy2p3poSvAJE=
-X-Received: by 2002:a05:6402:51d3:b0:5d1:22c2:6c56 with SMTP id
- 4fb4d7f45d1cf-5db7d318a90mr41206988a12.17.1738081016306; Tue, 28 Jan 2025
- 08:16:56 -0800 (PST)
+ d=1e100.net; s=20230601; t=1738081957; x=1738686757;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fgdDdXBNLxyVPR81uqwioFsw91kPxcJsdwOz6elBtFY=;
+ b=PY8eMzJCT63r4L3d0yz2uGa1pLzSMnqtshuxriG+uvu+RmDFJWVveUlVB2fyNmcDwC
+ 89jappN6iulUSBbFBeyR6Db+v50rvE3Mp9ctM5HF43YCykPZpFSFlY8i7Eb5zprjcZe9
+ WXYQQnAokB3tq+No5RVEIMojZvoKKwr3VSzN1uHrO5tcij7IL78vGz2agwPHyA6K3umB
+ lYGpG5JSmTsMyfEpJY6DzhVGKQetuIRVeUohGGZhIwicrHfbT3lx+sHANaoJI2ikzrQF
+ ehfAQ5ttP0uA/NC4F72pDauR0kaJNHIemVHxfDESAP422ltmWO1gRR+2JZxmY32gSUwu
+ baUA==
+X-Gm-Message-State: AOJu0YykQw/jkfglNbGQ7ecA5TccdFieeCEwARmtExmi6IVCIoPenYp9
+ sKWAcbHJ+8xsP0HD2y+eoanVH5d4Gw3wS6bz+eTc03Y/Mta2AEGzPi7dvGV11lX/O1xmvojgAWX
+ c
+X-Gm-Gg: ASbGncsNJAM3P7eJzWlC9z5p+K/YldlhHxJCPiCbbqKBosTKXrt/i0n6z5I6MAQkqhK
+ T4XW26vaaskLbbO+6/MoqtleYsVr6FV35+Ypi20uGXdK48jtC5WUkq59KN5haTbu66E7WPb1eeR
+ nbi6N1BoPAboBFP2l+qwDjXgwJRX2lHAJZOuirVIZH4hIQfsfVD3guv5bjDUGmduwOTlgMIqDNR
+ dj3Oe/6lJHOGPH9rqFIOaDSMKP8h4K9ZTcPkoJGLkf98rHiuB269hYFfc2xasljjP3mxLoFnUKL
+ 8A8TC5/xuEfXHEsQzrYdHrDdDdmY1pbTFSvGSBskXKhqoEiqo/O7rw6j8w==
+X-Google-Smtp-Source: AGHT+IE3kALVrJfwHJ6nqkk4BFai4LBpkbPYPdJIvSc9lYBDHXXvZ4+/pc/Vz3ubwwK9LSW8ihj5RQ==
+X-Received: by 2002:a05:6a20:4303:b0:1e1:b105:87b with SMTP id
+ adf61e73a8af0-1eb214f0f6cmr67779177637.23.1738081956732; 
+ Tue, 28 Jan 2025 08:32:36 -0800 (PST)
+Received: from [192.168.0.4] (174-21-71-127.tukw.qwest.net. [174.21.71.127])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-ac495983698sm8502363a12.55.2025.01.28.08.32.36
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 28 Jan 2025 08:32:36 -0800 (PST)
+Message-ID: <a7cded26-c448-46f2-87d3-609c76273f92@linaro.org>
+Date: Tue, 28 Jan 2025 08:32:34 -0800
 MIME-Version: 1.0
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 28 Jan 2025 11:16:43 -0500
-X-Gm-Features: AWEUYZkrZf4SPzQFoSAMMjj0I90DjwDlrKYXqyZ3YgDtCPyHRXPw_rrlon-LEvY
-Message-ID: <CAJSP0QVYE1Zcws=9hoO6+B+xB-hVWv38Dtu_LM8SysAmS4qRMw@mail.gmail.com>
-Subject: Call for GSoC internship project ideas
-To: qemu-devel <qemu-devel@nongnu.org>, kvm <kvm@vger.kernel.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, "Daniel P. Berrange" <berrange@redhat.com>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alex Bennee <alex.bennee@linaro.org>, 
- Akihiko Odaki <akihiko.odaki@gmail.com>, Zhao Liu <zhao1.liu@intel.com>, 
- Bibo Mao <maobibo@loongson.cn>, Jamin Lin <jamin_lin@aspeedtech.com>, 
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Fabiano Rosas <farosas@suse.de>, Palmer Dabbelt <palmer@dabbelt.com>, 
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Hanna Reitz <hreitz@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x535.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/arm: Drop unused AARCh64DecodeTable typedefs
+To: qemu-devel@nongnu.org
+References: <20250128135046.4108775-1-peter.maydell@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250128135046.4108775-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,69 +99,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Dear QEMU and KVM communities,
-QEMU will apply for the Google Summer of Code internship
-program again this year. Regular contributors can submit project
-ideas that they'd like to mentor by replying to this email by
-February 7th.
+On 1/28/25 05:50, Peter Maydell wrote:
+> We removed the old table-based decoder in favour of decodetree, but
+> we left a couple of typedefs that are now unused; delete them.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   target/arm/tcg/translate-a64.c | 11 -----------
+>   1 file changed, 11 deletions(-)
 
-About Google Summer of Code
------------------------------------------
-GSoC (https://summerofcode.withgoogle.com/) offers paid open
-source remote work internships to eligible people wishing to participate
-in open source development. QEMU has been doing internship for
-many years. Our mentors have enjoyed helping talented interns make
-their first open source contributions and some former interns continue
-to participate today.
+Oops.
 
-Who can mentor
-----------------------
-Regular contributors to QEMU and KVM can participate as mentors.
-Mentorship involves about 5 hours of time commitment per week to
-communicate with the intern, review their patches, etc. Time is also
-required during the intern selection phase to communicate with
-applicants. Being a mentor is an opportunity to help someone get
-started in open source development, will give you experience with
-managing a project in a low-stakes environment, and a chance to
-explore interesting technical ideas that you may not have time to
-develop yourself.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-How to propose your idea
-------------------------------
-Reply to this email with the following project idea template filled in:
 
-=== TITLE ===
+r~
 
-'''Summary:''' Short description of the project
+> 
+> diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+> index bd814849c19..155169aeafd 100644
+> --- a/target/arm/tcg/translate-a64.c
+> +++ b/target/arm/tcg/translate-a64.c
+> @@ -75,17 +75,6 @@ static int scale_by_log2_tag_granule(DisasContext *s, int x)
+>   #include "decode-sme-fa64.c.inc"
+>   #include "decode-a64.c.inc"
+>   
+> -/* Table based decoder typedefs - used when the relevant bits for decode
+> - * are too awkwardly scattered across the instruction (eg SIMD).
+> - */
+> -typedef void AArch64DecodeFn(DisasContext *s, uint32_t insn);
+> -
+> -typedef struct AArch64DecodeTable {
+> -    uint32_t pattern;
+> -    uint32_t mask;
+> -    AArch64DecodeFn *disas_fn;
+> -} AArch64DecodeTable;
+> -
+>   /* initialize TCG globals.  */
+>   void a64_translate_init(void)
+>   {
 
-Detailed description of the project that explains the general idea,
-including a list of high-level tasks that will be completed by the
-project, and provides enough background for someone unfamiliar with
-the code base to research the idea. Typically 2 or 3 paragraphs.
-
-'''Links:'''
-* Links to mailing lists threads, git repos, or web sites
-
-'''Details:'''
-* Skill level: beginner or intermediate or advanced
-* Language: C/Python/Rust/etc
-
-More information
-----------------------
-You can find out about the process we follow here:
-Video: https://www.youtube.com/watch?v=xNVCX7YMUL8
-Slides (PDF): https://vmsplice.net/~stefan/stefanha-kvm-forum-2016.pdf
-
-The QEMU wiki page for GSoC 2024 is now available:
-https://wiki.qemu.org/Google_Summer_of_Code_2025
-
-What about Outreachy?
--------------------------------
-We have struggled to find sponsors for the Outreachy internship
-program (https://www.outreachy.org/) in recent years. If you or your
-organization would like to sponsor an Outreachy internship, please get
-in touch.
-
-Thanks,
-Stefan
 
