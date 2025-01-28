@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164EBA211F8
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 20:06:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01115A211F9
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 20:07:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcqtB-0001YZ-C5; Tue, 28 Jan 2025 14:04:45 -0500
+	id 1tcqvO-0003il-3n; Tue, 28 Jan 2025 14:07:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tcqt8-0001YI-AZ
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 14:04:43 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1tcqvM-0003iV-Hr
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 14:07:00 -0500
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tcqt5-0001GC-Qk
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 14:04:41 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-21636268e43so131890985ad.2
- for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 11:04:39 -0800 (PST)
+ id 1tcqvK-0001iq-Va
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 14:07:00 -0500
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-2ee709715d9so8442960a91.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 11:06:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738091078; x=1738695878; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738091217; x=1738696017; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=30OaTN0zqpbntnWZ4GRDo0FRzUkUSiDN7VKoXqrL52E=;
- b=OjW8baYPSVKRq0XHIqw0IjPlzR/iHOCDc0ux+6ho2RJ/DdCFqBuxd9aT25gaMnGk78
- ROhyXXN89ECCcGTrJWs1yvRDBWlK5j9qqH0GnGbb64pTNXk+Kz2P3etq6+ito1OBZLKg
- UVhPswiKsdb0aKENUS7DvaPZLxE44AtxSDEw6e7ZvYSMf/7rAUTOoZGV4QXsZGemyCmO
- lig1v5LRAqLtkW8JSDnYCZPhei2/+8/A8jDaqnwwtTDfZPWcvzCkUrg65VQon6UPlP91
- D/0GRFKhBh2hfYGKo5pLGjGHEogcTiAAoAR0RBVZelLD/+eRSNnuDJjA309+RcjCY29P
- BAKg==
+ bh=ti726nle6VuOmFKb12lxrLNXk0qyBZLp9aqDlvmtN68=;
+ b=xIo8e94ZmFoH0LgB9neBZ65t0kjzvAVCclORhs0na+vn0InXodBm1EUQfxT4/wP8v1
+ QsGw0Qww1TzEyyQ06jbVzy2zkNsfcWSUD5ju0hKpfZ7GPNZIGfiEv5ltxgXaVYAzx+LW
+ Qd6+MvWY5zC+prR49wBX1iP1miiG/DfE1XAEyBkc7CqcDZjxR27N0Mb3WNQQh8SlZk1v
+ +80Y3X/4tykK9NTzIy6FsgX+AQZTJ11j6x31hNOHB0uo7lDinRFhxe2ZxD2Fe+tG3Aub
+ O7y5o6PioG+qQNMm3kcxM+24daipSwHzclXeLCyj4wMtwNLJAsC5Bd7r/BvjqJ505Y4F
+ +xKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738091078; x=1738695878;
+ d=1e100.net; s=20230601; t=1738091217; x=1738696017;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=30OaTN0zqpbntnWZ4GRDo0FRzUkUSiDN7VKoXqrL52E=;
- b=v4jcfJpTFX9JYWFYn1xNriy/u1XKbAjtiCH/46cICIUs1UtqTpKLajCz9wNtSeiTeR
- NXuuDRq8UTeayYhfz46QVo2J9a3RQij5VTisy2EIgRWnZSI5k1Z+CTALzabSTLMXSLu9
- bS36Emh134rTPgmC0sVACO+F5pefCurOT0jzXwzkyo/r40mwsUO1S+AC7jiruBnFyJI5
- yHMMKQ7WecmV9NoDUZad396x62TUQ8fehrw+edeVomPqcURTMNCe8b76T9zo/YJES2AJ
- RqbD6aw+1Iqg1xSBiTIMVIwIVANNW4c8SI2mQh6GwZYc8IKklHvYxsqKxs6IoE0z7FYO
- sCPQ==
-X-Gm-Message-State: AOJu0YwbdbVSjy3fC8LKm8II2dUkH7w43t9nyK9C3W94UilNZ2vCmizq
- wpqR6dQoisT+//5ig/KADOID8zDFF8c1RCvt7MJRyyZrFqgyLzfaguAC/gljSmSbctGOAnQ4CFS
- i
-X-Gm-Gg: ASbGnct2f95SQfg1x2RJRiJWGBW4IW6YNK1SSRFZvcaImVYo2w6rd+0t9bUMxjIpfkk
- xDSYNb+FNwpNGnssDDA6N1rSvtneB3ObNkJJ1O8GWAQvOQoV9cFGbyCxoUgCq87OAfDIVLWq68P
- ZKx40J6PB8gwxRanNTQP4EugQLeGc1soRDgQs6qF5vzbFSpluQDBObYyIMtHdt4PVTPvBiOxMR0
- JK0iXc2l+btNQBytxVMSIEXbvmvIQfE4dnd4NifoZvJtXPGFg1wPVvpy241pHb4cmpaFxjpFEjw
- kyvVY+eoOKBaEt3o/orN0pDVa1x33WSBmY03h47wKWzfpQ+Z00xQP/K1Qw==
-X-Google-Smtp-Source: AGHT+IEZTHFBCMSBgFRB3cl0ieVWbCE7r0PnJe7uAX4muqbvNpxefHNkC4CAI6NaTgjB4cvix25DOA==
-X-Received: by 2002:a17:902:7c93:b0:21b:bc95:e8d4 with SMTP id
- d9443c01a7336-21dd7dcb1e7mr2628215ad.35.1738091078515; 
- Tue, 28 Jan 2025 11:04:38 -0800 (PST)
+ bh=ti726nle6VuOmFKb12lxrLNXk0qyBZLp9aqDlvmtN68=;
+ b=egNtZtOzKz7WkiOdcHSw2o14rJ3VVpC2L9MDkMSetOpbOhewBYFdXE29ZXHZRmxO+3
+ TXen62CO6PUQiQ0laHP0pXi/o72H8cdVJHX82ZAaM7sjPaUKCXrUHD+AKndkNPxqj70L
+ 5cavDd6iO8uFIgztq9YLmlxg8YXwmkmxN59RA+ETQayqXg2COCfbV5v3KEj6Fn4BUowo
+ 7sCUX6OjLLSKQO2u5xTBbqUKGywUdeqL3wTK3FmMpraJUXV5GSs1mY0Ya1so19aKbJN/
+ vCjPDv2vLZN6tDtDLZKaXtfsDzUTusjMP0UIWbsD5XDg+ZxEwrzBSxLTjm0dRZK+O2ml
+ qb/w==
+X-Gm-Message-State: AOJu0YzsEwBVLkvBL3D4WH4YEQqqOlVdFgXN/7oPNvQx1vcnDV4nen/7
+ Pp62vKsIeF0Juk2XN/5tKQ+x7A/yp3M+G2KpXiT55DN5Zgglx+8IrjdM2E1BHjeklt43KiABMbB
+ R
+X-Gm-Gg: ASbGncvqUCR3CQVPXy3YKxM9PexK/GoLvJcTo5rgRt9ZGUvq3BEa4L/0E8x/bgNmRor
+ DqN6SnNn+3afIPfg/KIvjrh89NwDMCH82vXo1fQJUHuQvtH7GS+4uleKfkmdlDLRkthPae7Sw69
+ YeJrtKuHIw3xWFy8I/Wd9e+pyketR0pKfmRy6ub8FO+nH/mDqDImOEig9xg3MNnk2rc3aiDYZkn
+ OCfGx85MlriUgDgJIVgPrvVr5k0Uby1bIY7hqYUO0DmwWE1S2E563LDL677ybO/GxxNOqHiHg3s
+ f2bHBmT9HPQxdnxAgImUOC9Si6KLjqjinjd/iKBHUZXB8gfrOK0JvLXjTg==
+X-Google-Smtp-Source: AGHT+IGNiRBaXtB7ipZTGjN8j/O4xJK0kINQM7JHica4YDesfpFB/ci6h47uX1BdG9qDCE4WiOKd2Q==
+X-Received: by 2002:a05:6a00:44ca:b0:71e:16b3:e5dc with SMTP id
+ d2e1a72fcca58-72fd0c64f9emr387630b3a.19.1738091217166; 
+ Tue, 28 Jan 2025 11:06:57 -0800 (PST)
 Received: from [192.168.0.4] (174-21-71-127.tukw.qwest.net. [174.21.71.127])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21da3ea3c9asm85559815ad.94.2025.01.28.11.04.37
+ d2e1a72fcca58-72f8a7614f4sm9839947b3a.97.2025.01.28.11.06.56
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 Jan 2025 11:04:38 -0800 (PST)
-Message-ID: <3040b8ac-9424-4cb2-9c4d-09e319bc4b94@linaro.org>
-Date: Tue, 28 Jan 2025 11:04:36 -0800
+ Tue, 28 Jan 2025 11:06:56 -0800 (PST)
+Message-ID: <a46967cc-06cc-4c80-af21-ea03f889ca5a@linaro.org>
+Date: Tue, 28 Jan 2025 11:06:55 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/11] hw/sd/omap_mmc: Untabify
+Subject: Re: [PATCH 09/11] hw/sd: Remove unused 'enable' method from
+ SDCardClass
 To: qemu-devel@nongnu.org
 References: <20250128104519.3981448-1-peter.maydell@linaro.org>
- <20250128104519.3981448-9-peter.maydell@linaro.org>
+ <20250128104519.3981448-10-peter.maydell@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250128104519.3981448-9-peter.maydell@linaro.org>
+In-Reply-To: <20250128104519.3981448-10-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,16 +102,20 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 1/28/25 02:45, Peter Maydell wrote:
-> This is a very old source file, and still has some lingering
-> hard-coded tabs; untabify it.
+> The SDCardClass has an 'enable' method, but nothing actually invokes it.
+> The underlying implementation is sd_enable(), which is documented
+> in sdcard_legacy.h as something that should not be used and was only
+> present for the benefit of the now-removed nseries boards. Unlike
+> all the other method pointers in SDCardClass, this one doesn't have
+> an sdbus_foo() function wrapper in hw/sd/core.c.
+> 
+> Remove the unused method.
 > 
 > Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
-> I don't propose to try to bring the whole file up to modern
-> coding style, but hard-coded tabs are a particular wart.
-> ---
->   hw/sd/omap_mmc.c | 124 +++++++++++++++++++++++------------------------
->   1 file changed, 62 insertions(+), 62 deletions(-)
+>   include/hw/sd/sd.h | 1 -
+>   hw/sd/sd.c         | 1 -
+>   2 files changed, 2 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
