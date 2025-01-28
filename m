@@ -2,111 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C64A20603
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 09:22:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D035BA206A1
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 10:04:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcgbA-0002PQ-I6; Tue, 28 Jan 2025 03:05:28 -0500
+	id 1tchUv-0003Iw-PD; Tue, 28 Jan 2025 04:03:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1tcgZU-0007XL-Hp; Tue, 28 Jan 2025 03:03:48 -0500
-Received: from fout-b5-smtp.messagingengine.com ([202.12.124.148])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1tcgZP-0002MN-Ik; Tue, 28 Jan 2025 03:03:41 -0500
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal
- [10.202.2.49])
- by mailfout.stl.internal (Postfix) with ESMTP id 4CA941140122;
- Tue, 28 Jan 2025 03:03:35 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-09.internal (MEProxy); Tue, 28 Jan 2025 03:03:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-type:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm2; t=1738051415; x=
- 1738137815; bh=mTPayiI5jpxnB9+wnjAcN6+nTOeFHZYUQ0Z5D+OfENw=; b=D
- CS30vE4YgR6wRb4wTc4OntrescIs9bHLuLNQMrW27NQa48reMIr2lRJd8WQwbPSq
- dMtfBMWT3+LUC+uC8h2wu/6VB3P5b/QpVWloH9EeLkgWwEqF9qdD3+ZdOn62R0aV
- MYkU75Ysbz1mj9BOvxZeJ3t4gz5RWuZNRcCq+IWL91avI2awPoF2YHqlqLdjANT6
- rLQ0Tth/tLYnqyIQbjdd/gQ67HNGkqkr1v4D6mLbFmb9hKQadabUSFa+XxpiQEkA
- Mx41J3QQwVubTjF5cZ17T/lxjYZywcKfU9HRr0/UwnlFSVKqDHFHTm5tqZ9VX5Wa
- 3o7DXJ+QyZ5fx/WR2+C8Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:subject:subject:to
- :to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
- 1738051415; x=1738137815; bh=mTPayiI5jpxnB9+wnjAcN6+nTOeFHZYUQ0Z
- 5D+OfENw=; b=UQqEdhsE6FvjMOZ1oKnunpUzpoPV1Fedci3a+jvjYGwuP8Qb68o
- IJHJJkbqK5ufNEGA+EFWkt10uD6tnnXapUyp9WNNhA9PQYo5z6QM448G0u02L09y
- SPTZq+vBI1HESzWYff23YB4BaP0uqyGwOmmIHJDB+7LNeWNNlea6Qp0q2n0s6C4m
- vIUzQWH5YY1aVJUGEcP8/s9tao2NycEfcdkTLme0vADy3HKQFe8tkFiOlP8lTZF8
- aBElFo6fga4QE+Df6C3DxLq6AoJaQRrPOSoXsc9DEkPzT1p6c4MnUX4tk6IPUEYc
- T9VYF92GRfbmw8U5rysOD3Ajlh0DYCd7eBg==
-X-ME-Sender: <xms:VY-YZwbXHZyoBH0p3vApvoYyh2WuUJzXp9oaGK-YDrnJHQOT7muahQ>
- <xme:VY-YZ7YNYv04m_ighQugRdx-Oy2KPWRQvEfxzlQP6MJe_s0PhYET5oGXCVHKxVC27
- uXOShX6fWA9gBnB0ns>
-X-ME-Received: <xmr:VY-YZ6-yOWpc5GqekHOsBu0C5Nw6TSt39WHmfoQpkGceYAsA7R13014YiweU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudejgedgudehheejucetufdoteggodetrf
- dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
- pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
- gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesghdtreertddt
- jeenucfhrhhomhepmfhlrghushculfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnh
- htrdgukheqnecuggftrfgrthhtvghrnhepjefgjeefffdvuefhieefhffggfeuleehudek
- veejvedtuddugeeigeetffffjeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
- hmpehmrghilhhfrhhomhepihhtshesihhrrhgvlhgvvhgrnhhtrdgukhdpnhgspghrtghp
- thhtohepudegpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopeifihhlfhhrvggurd
- hmrghllhgrfigrseifuggtrdgtohhmpdhrtghpthhtohephhhrvghithiisehrvgguhhgr
- thdrtghomhdprhgtphhtthhopehphhhilhhmugeslhhinhgrrhhordhorhhgpdhrtghpth
- htohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprhgtphhtthhopehsthgv
- fhgrnhhhrgesrhgvughhrghtrdgtohhmpdhrtghpthhtohepfhgrmhesvghuphhhohhnrd
- hnvghtpdhrtghpthhtohepqhgvmhhuqdgslhhotghksehnohhnghhnuhdrohhrghdprhgt
- phhtthhopehfohhsshesuggvfhhmrggtrhhordhithdprhgtphhtthhopegrlhhishhtrg
- hirhdrfhhrrghntghishesfigutgdrtghomh
-X-ME-Proxy: <xmx:VY-YZ6q6UdEFCOS4LlZ9kE7TP4AvZ6fBKDbkduBwzDRxqGigbtXLIw>
- <xmx:VY-YZ7r6fEqyHsD0UMKluMAgO6GHaMQ_N4ZGejCeECf0Rk-WApJM8w>
- <xmx:VY-YZ4R52PAvE-Gg1vAu5EDuuKMR9duP2TuZPvUu5jyMWfXqrfDH8g>
- <xmx:VY-YZ7rmpfkwqn7kn6OLtQvr8HzE_OOT_0pNV1R9YSeL_0uevLgPnw>
- <xmx:V4-YZ2DDEJZEoz6YWD4wvHtgcTkThPaQGYyAOdsT5QnA7ar6XnVA8y85>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 28 Jan 2025 03:03:33 -0500 (EST)
-Date: Tue, 28 Jan 2025 09:03:31 +0100
-From: Klaus Jensen <its@irrelevant.dk>
-To: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Cc: "hreitz@redhat.com" <hreitz@redhat.com>,
- "philmd@linaro.org" <philmd@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "stefanha@redhat.com" <stefanha@redhat.com>,
- "fam@euphon.net" <fam@euphon.net>,
- "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
- "foss@defmacro.it" <foss@defmacro.it>,
- Alistair Francis <Alistair.Francis@wdc.com>,
- "kwolf@redhat.com" <kwolf@redhat.com>, "mst@redhat.com" <mst@redhat.com>,
- "kbusch@kernel.org" <kbusch@kernel.org>,
- "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>
-Subject: Re: [RFC 2/4] spdm: add spdm storage transport virtual header
-Message-ID: <Z5iPUztJrvJs-9A7@AALNPWKJENSEN.aal.scsc.local>
-References: <20250107052906.249973-2-wilfred.mallawa@wdc.com>
- <20250107052906.249973-5-wilfred.mallawa@wdc.com>
- <Z4DihskLy0wS9ts3@AALNPWKJENSEN.aal.scsc.local>
- <6b521ea30dfae69b447cb7c5d158ffcd0dbbf2d6.camel@wdc.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tchUk-0003GU-UN
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 04:02:55 -0500
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tchUh-0006xd-Ob
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 04:02:54 -0500
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-ab2e308a99bso1035414366b.1
+ for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 01:02:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1738054970; x=1738659770; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=gjjqAXex8o3R+VWVCq3+VLzEEhpnDBIE+N34LWU+rt8=;
+ b=FK3HQ2obzKlWKUO39QNT7mdZA+v5cQykL3w6n1XzCejpbDIdZAG+4l2ZH1gSJkEdAO
+ whOWWb0XrLnAmXxUcGbCOz0996xIkJLys4GIVy3Go8I3+TlzPNetiuSgycgBy1FtcPU9
+ J4iiOCIFnErxeb12tqnQD0L9Ekq/KazK1safNpuicXkJogVFKbXjDaP61i7bOTREVQ3o
+ McKOZG3pb2jClVaqkeC7TuYZgCFW5D8kwxt4Jq0PSaLOTb5ZUNJC8smtEN75jTVO2WGt
+ KULwjpjIneqZnLJdxi87nIt/mz44HsRQjbeZOBOpzEpgyN5JXVMggZBwHcCYcox8S/J8
+ fFQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738054970; x=1738659770;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=gjjqAXex8o3R+VWVCq3+VLzEEhpnDBIE+N34LWU+rt8=;
+ b=YRtxE4ujWXk8vXNwVytIu/gkKC1Nmu7Iw6xQmrOOweG2s0EMEIafREvighC65fh89u
+ iwWlhbNCo+c7LmN+6etD+aKcz0cqbumuaduLYvaM9S6ovJCYO2QABOPBhkd/41xJ3UTr
+ 9ROXAqnND4NwumkZpX03JkgGToHJDq0fgTPTwOpqagJ6Nzw/7W3toMVl+PxIRaRJggWU
+ lnowJbZV3aydGmgbdR4dWHbsXZds4ILuBtfrEzqbLXHZptWfmLNgZy9zxj8/qrphUtr5
+ ST1R4arI1S3/PY+Usmc5IBhUdlSdxgMTPXEDWj29sCK5cSweZhzPsJ7pn3cwN5pQLWj/
+ McfA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX8M9Wf6zB71U5x9M9En9H6gDQWef+F0hIeXAbppWCoPbRCpCRu4lmuXy8CqOUD64nhwBROLI5oJDgE@nongnu.org
+X-Gm-Message-State: AOJu0YzeaFV2Jjt/gwPHhskKvYnw8JA5she7V4E5gXSiMGNIK62kqUy9
+ PPaD1Y7ZhhkNuqvT66Tty4LH33HNxt9J9S4lTwAW6VtoJy5mugaks9VRTpKlcHY=
+X-Gm-Gg: ASbGncuWhyBDKf1NMUe+NLqaQppEE3VRj1tOukGtYrI+7Cv9AyPdZ56tcw0Tu0BfwgO
+ jGevjol/EaRGqaBv1Sf2b5nl8dNssGyEXfTCBl6mZXJwbmDoeQDxTYBzgZnIURWLz3n9Yh59pMC
+ GrZroc9I+Q+DbKZp4Mo6kycQBLT52Vi7AFP3TXW9Vr/zHC8hOtRg4qWEWTpgIh9MoPttS+bPdIi
+ XZUaMr0t42ZJ2pjXHD1pTkRnxHpSdQmRlV8tSfpWRB/jd6dVHrcc2rNbbhwJZ+oFp8lOe1K+exQ
+ /LCm2qLSEqDg2A==
+X-Google-Smtp-Source: AGHT+IG4wX6NltI+yIxIDiCtUSKLTDWzO8bditeLUvc+kUqIh0iId5trPSv/U9FBYNunumDR1/9wJQ==
+X-Received: by 2002:a17:906:6a24:b0:ab3:8f33:408a with SMTP id
+ a640c23a62f3a-ab6bbbcd33emr247900266b.19.1738054969952; 
+ Tue, 28 Jan 2025 01:02:49 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ab6760fbf38sm742420666b.143.2025.01.28.01.02.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 28 Jan 2025 01:02:49 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 719AF5F8D1;
+ Tue, 28 Jan 2025 09:02:48 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ qemu-devel@nongnu.org,  peter.maydell@linaro.org,  stefanha@redhat.com,
+ pbonzini@redhat.com,  berrange@redhat.com,  philmd@linaro.org,
+ mark.cave-ayland@ilande.co.uk,  Liviu Ionescu <ilg@livius.net>
+Subject: Re: [PATCH 0/1] meson: Deprecate 32-bit host systems
+In-Reply-To: <9a280789-9248-4eca-b50c-048fc58e3f53@redhat.com> (Thomas Huth's
+ message of "Tue, 28 Jan 2025 05:00:35 +0100")
+References: <20250128004254.33442-1-richard.henderson@linaro.org>
+ <9a280789-9248-4eca-b50c-048fc58e3f53@redhat.com>
+User-Agent: mu4e 1.12.8; emacs 29.4
+Date: Tue, 28 Jan 2025 09:02:48 +0000
+Message-ID: <87plk72tvr.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="uhLGbKEAH+7CGJCF"
-Content-Disposition: inline
-In-Reply-To: <6b521ea30dfae69b447cb7c5d158ffcd0dbbf2d6.camel@wdc.com>
-Received-SPF: pass client-ip=202.12.124.148; envelope-from=its@irrelevant.dk;
- helo=fout-b5-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -123,87 +106,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Thomas Huth <thuth@redhat.com> writes:
 
---uhLGbKEAH+7CGJCF
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On 28/01/2025 01.42, Richard Henderson wrote:
+>> Time for our biennial attempt to kill ancient hosts.
+>> I've been re-working the tcg code generator a bit over the holidays.
+>> One place that screams for a bit of cleanup is with 64-bit guest
+>> addresses on 32-bit hosts.  Of course the best "cleanup" is to not
+>> have to handle such silliness at all.
+>> Two years after Thomas' last attempt,
+>>    https://lore.kernel.org/qemu-devel/20230130114428.1297295-1-thuth@red=
+hat.com/
+>> which resulted only in deprecation of i686 host for system
+>> emulation.
+>> By itself, this just isn't enough for large-scale cleanups.
+>> I'll note that we've separately deprecated mips32, set to expire
+>> with the end of Debian bookworm, set to enter LTS in June 2026.
+>> I'll note that there is *already* no Debian support for ppc32,
+>> and that I am currently unable to cross-compile that host at all.
+>
+> IIRC the biggest pushback that I got two years ago was with regards to
+> 32-bit arm: The recommended version of Raspberry Pi OS is still
+> 32-bit:
+>
+>  https://lore.kernel.org/qemu-devel/F852C238-77B8-4E24-9494-8D060EB78F9F@=
+livius.net/
+>
+> And looking at https://www.raspberrypi.com/software/operating-systems/
+> this still seems to be the case...
+>
+> So I guess the main question is now: Would it be ok to kill support
+> for 32-bit Raspberry Pi OS nowadays?
 
-On Jan 15 02:16, Wilfred Mallawa wrote:
-> On Fri, 2025-01-10 at 10:04 +0100, Klaus Jensen wrote:
-> > On Jan=C2=A0 7 15:29, Wilfred Mallawa via wrote:
-> > > This header contains the transport encoding for an SPDM message
-> > > that
-> > > uses the SPDM over Storage transport as defined by the DMTF
-> > > DSP0286.
-> > >=20
-> > > Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-> > > ---
-> > > =C2=A0include/system/spdm-socket.h | 12 ++++++++++++
-> > > =C2=A01 file changed, 12 insertions(+)
-> > >=20
-> > > diff --git a/include/system/spdm-socket.h b/include/system/spdm-
-> > > socket.h
-> > > index 2b7d03f82d..fc007e5b48 100644
-> > > --- a/include/system/spdm-socket.h
-> > > +++ b/include/system/spdm-socket.h
-> > > @@ -88,6 +88,18 @@ bool spdm_socket_send(const int socket, uint32_t
-> > > socket_cmd,
-> > > =C2=A0 */
-> > > =C2=A0void spdm_socket_close(const int socket, uint32_t transport_typ=
-e);
-> > > =C2=A0
-> > > +/*
-> > > + * Defines the transport encoding for SPDM, this information shall
-> > > be passed
-> > > + * down to the SPDM server, when conforming to the SPDM over
-> > > Storage standard
-> > > + * as defined by DSP0286.
-> > > + */
-> > > +typedef struct QEMU_PACKED {
-> > > +=C2=A0=C2=A0=C2=A0 uint8_t security_protocol;
-> > > +=C2=A0=C2=A0=C2=A0 uint16_t security_protocol_specific;
-> > > +=C2=A0=C2=A0=C2=A0 bool inc_512;
-> > > +=C2=A0=C2=A0=C2=A0 uint32_t length;
-> > > +} StorageSpdmTransportHeader;
-> >=20
-> > Does it make sense to pack a bool? Is this defined by the SPDM server
-> > in
-> > use? I can't find the definition of this header anywhere.
-> >=20
-> This is essentially a virtual header containing essential storage
-> transport data as per DSP0286. For example, this is defined in the
-> upstream effort for=20
-> `libspmd` to add storage binding support [1] and in DSP0286 [2], this
-> is defined in section 5.1.1.
->=20
-> Current implementation of the SPDM server (i.e in `spdm-utils` only one
-> to have support for storage), will just pass this header to `libspdm`
-> to be decoded. Once decoded by `libspdm`, `spdm-utils`/server will
-> contextually check for validity of the message.
->=20
+I would argue yes for a few reasons.
 
-OK, understood.
+  - you can't buy 32 bit only Pi's AFAICT, even the Pi Zero 2W can work
+    with a 64 bit OS.
 
-> As for inc_512, it just need to be yes or no, is there a better way to
-> represent that here?
+  - It's not like the versions shipping in bullseye and bookworm will
+    stop working.
 
-It's a byte, right? Then I think using uint8_t is more clear here.
+  - Even if we deprecate now there will likely be one more Debian
+    release cycle that gets 32 bit host support.
 
---uhLGbKEAH+7CGJCF
-Content-Type: application/pgp-signature; name="signature.asc"
+>> Showing my hand a bit, I am willing to limit deprecation to
+>> 64-bit guests on 32-bit hosts.  But I'd prefer to go the whole hog:
+>> unconditional support for TCG_TYPE_I64 would remove a *lot* of
+>> 32-bit fallback code.
 
------BEGIN PGP SIGNATURE-----
+I support going the whole hog. I would be curious what use cases still
+exist for an up to date 32-on-32 QEMU based emulation?=20
 
-iQEzBAABCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmeYj1EACgkQTeGvMW1P
-DenzuQf+OsGidZbJUykxLmQhg/MTAFKNYnFXRs7aBktGca3LauAfGT/p4Y+ODihE
-Nz7E31eg+GUXVM+rc47tKMFKJ+s3X3dlf2UBr2VWUepYu77if5ShATTq+HM3bMz/
-+SgKXoZOzd6VA3nNqQ4+m8JhTa7Sf0wm2Egkt6zkavBf2I1nzygeC6lAlxloyYXt
-5d3G9Srkvitoh7a1H5GVMarq11vVg+DjExihms9QlvulsQAqM/5M+ZZte+1lXGJk
-m9517GN/uN6Pl4bEesNb02XP31lr+n3sCW6bfRopUnQvNIf4q1NISyIvumqTpImB
-n3wXKqtVGeumvEQJDYSjatirDBaoag==
-=Pp++
------END PGP SIGNATURE-----
+>
+> Sound like a good alternative to me!
+>
+>  Thomas
 
---uhLGbKEAH+7CGJCF--
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
