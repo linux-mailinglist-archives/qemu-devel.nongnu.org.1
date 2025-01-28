@@ -2,90 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31DC3A21338
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 21:40:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5162A21341
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 21:54:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcsMz-0006cv-2I; Tue, 28 Jan 2025 15:39:37 -0500
+	id 1tcsZk-0001fu-MB; Tue, 28 Jan 2025 15:52:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tcsMv-0006al-T7
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 15:39:34 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1tcsZi-0001fi-Lc
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 15:52:47 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tcsMt-0007fL-PS
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 15:39:33 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-2166022c5caso97761305ad.2
- for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 12:39:31 -0800 (PST)
+ id 1tcsZg-0001Ot-IZ
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 15:52:46 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-2166f1e589cso40784525ad.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 12:52:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738096770; x=1738701570; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738097562; x=1738702362; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=0m6gfdZfDonnsI66KDe3RyzYXNsfMO17neQ9nUSBVYE=;
- b=ihDtCu8EEwNXaF51XbEig7Em4bSMEv2eVG0SbKMRVCpiqd/Bec/2AYvwW0SxeGyvto
- npBm3PE0W2XQ0GLElF5P03dy5VZiNOOwsefc/P6EJQkKf1RSv3EefA1EfxMBcmtBY74v
- /25ap4gKZZ/LJjw+4PpK3chCd+VkMCVK4h6fr6BwrFpGGkP8ufhg2X551n2yLOY5ok3K
- 3UYJj/JwRujmPYbBq/pGJXOkS7wYWzj2tjHLc3cyPnYQWvj7VXvkPmSrjeA9HXC1qqK3
- 8Sjy/boa2bm3mfZ3NvTHKWE0HPHF02Lcs4BMidZj9tmxjqQ2rPNPQtIQWobD2XukcTYF
- Qb8g==
+ bh=+AY5k8k+TxGfxhluS8BQjjUBCxahKfmtXeetBu/eOuo=;
+ b=L6C4HsH61LD8TBbOSWyxTeXfLQvBYAwVMDmhSTO7JmVON2dwbjOUnTELGS4N6bQ14/
+ IP4/HnCh3LcpvXDRKt7McxKG6vHW3PVEgssKt6DMoOdW7uPSkLy3mRGXsM4G7Ks4groI
+ KMveWDZ589lwPt2HdbX8ZDNfSPjVTAV1fz0bZwr4AYjXJ0k6h0qIVCJB7sNi+i96LoPb
+ yn8iFybDfUOyggtQOY0BVRnD9bwEOJASnJ/Dh88U34nRSydZPl83Dh+z1Z98DdsqZ5CF
+ jaOjgj2V+X7/8xPKIqASVI2y8bkmBDHtDT/BQJ0B5jJ8JgGUcMOD29WaUkOvXY3ogX2f
+ 6d6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738096770; x=1738701570;
+ d=1e100.net; s=20230601; t=1738097562; x=1738702362;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0m6gfdZfDonnsI66KDe3RyzYXNsfMO17neQ9nUSBVYE=;
- b=Fi8nrK2KTRWxJsyudr8pP62mbM06MRj6XlXsPmgTogm7oIfS9+joatGmQtpyvjhbC0
- VmM9SaTw0TO5RViQuAZxQhVu2olMv1194CmQNNIwJO2/53BvkJgWjvnn5nYb/iYAWJpt
- WuId4o1pSzQ1L8f99JgBo00AkuA/vAjXJrG9uQg9o93C3efUJcCFh45ofJofaeNQ9YGL
- KPtga0Yq3qPE3EBUP/RtDBJokETUyxPcDTpZjBOo3aU2OrtQCgLLSnVsHGiwqoqDqDX1
- FefOfV8jWKUorhxfOx6o/keof169QnEfrcVAT0NkliRj2itlH7LhQ654X9oUN7Zdp+LD
- /JEg==
+ bh=+AY5k8k+TxGfxhluS8BQjjUBCxahKfmtXeetBu/eOuo=;
+ b=Jx6+vY7AvLNHbZuQg4zWO44QPE7a8E4Oe5dnKNxAqucPaoCrlPSlhX3H5fmK1Mfa1F
+ /Whow0wPoTbuNRtJFxMWc1PDOWDeewZ0MJFsh/uwFddme//6cXhnbN2+CSOBk9KvKtXB
+ YoDI4buG3NInwXH+zFnlqFtXAIuAXhtWrt0Yv3Aq/GaHDRzTrpt5JJxws/bzLzU9729Y
+ YD0piEc0HH4sr2GonSn26fZeGL5q1l0eQ0PQh6kHCmJOGqBxQ/cH4xaY34wD3BmW2fRQ
+ H6WgsKNDeoAAym9FZ0WnhSwN2rPGA39oJFIuyNRr/XKYFnYxEycVOnpGkq3eCHk4CWBg
+ 7GvA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXPlRLRGvE37g67gVrgPOX+bgQk5D7JvXSyEgxwSb8TvUkwbiwqVDn5LnryAm6vlKKXpZkoNbcoae8U@nongnu.org
-X-Gm-Message-State: AOJu0YyJNqAYL7lCmAkZcsnRPyQT5J3RLro9kZErK7RSBz+nruOAeJ6/
- SZfXicXDgYc4qa8ZFPdCUKq9O6NXwwTNDGBq798Cz0Sy5w+JbFN4mi9cB5D41lE=
-X-Gm-Gg: ASbGncvFaJ9u4n4KIAbpTuVd9mIbm9P020wPQoGLrCX+NU13YUdPQtyZtZajflbkPQv
- XbmYctrlgdAOa/j6rcK1xd8ONgtV1LBRSTXzVGLA11ZuQOF4OGy0+dTgmDe/F2r/I4kPkeEY2SJ
- d/XpP5h8vdg2ezVkAPRccfaj1REWbuxugmXTCZkBW4QX/x5tNwA0lmgYVSVEP8IcqbaCZM9YCNC
- 5huEsGjVVwSgRrHuVQkZBSXFgVBrNhiDkf9iRa1dv85Bp/9rm43kwBVJnzkpjCxaBX45w9h9fqG
- pdN2TIbEsgcFigaYU0iwNIsgv6dkTio7mbKhVWh8cMHL/Csm9CUo4ynxcA==
-X-Google-Smtp-Source: AGHT+IEn9YS06OeYDPQIxTG4TK6aeOsG98QHjnXvqTb++MpsGWzFfJ2DMMjIG/l31Hb1PXLRQsQmvA==
-X-Received: by 2002:a05:6a00:ad8a:b0:726:41e:b314 with SMTP id
- d2e1a72fcca58-72fd0c623femr920016b3a.19.1738096770029; 
- Tue, 28 Jan 2025 12:39:30 -0800 (PST)
+ AJvYcCXlhWBh9h6rpNcmjMBgCDcp2Cr+PHIEl92GhA9+EQ0tv+l6prXshw8RpSdw2+/gdhP0vBFU7O48V0OL@nongnu.org
+X-Gm-Message-State: AOJu0Yx3uN9LpSddmqHPhH1px7aUsBGLM6azvLdzpahKfQ7wyoOSs2rU
+ ofhxLunFT47fN2oQ0N/34WClCS8HRahdEHKL3XTv9LwRou1VM+RdWhPcwPpZgKg=
+X-Gm-Gg: ASbGnctutK9D6u8h16tF4G4zmZ2jjeZCg0eqUGih7RekN+d95ufb9an5D8sm7DdsGOx
+ 5aWuQzGCY9uRqEwa/OlSZWPFQ+1zYZX6iWXGqugmtOgEd7k5xbaG2asoAtpWsLAe4VhKnOekg10
+ eLmL/Me4eDUCErqOMeFameOPOzFzASvqTgqOdiFQn+BkdLejZsiQITjxNEoqP2Zz8nezMSWPtUN
+ IblLcpJoas24gW4iAuWjxi2nlmA0q+6RTLT+8Z8h9JXmjtqwr6DVTJmhvouD9Moe2OYz+HT6Yvb
+ AABqc74gd1oTDysJJuQocBgGXwM3duZNAl2WCdp7xDrefcAssGz+U1LoeTvRGbfRDndq
+X-Google-Smtp-Source: AGHT+IHX2b3c+1wIXKNlrq6ihzfzwVqiA1uBVnrtcveXRo1EFuqKfUsw89gpnINxgCOGI5vhU71s/g==
+X-Received: by 2002:a05:6a21:1807:b0:1e1:932e:b348 with SMTP id
+ adf61e73a8af0-1ed7a6236eamr1093398637.41.1738097561894; 
+ Tue, 28 Jan 2025 12:52:41 -0800 (PST)
 Received: from [192.168.0.4] (174-21-71-127.tukw.qwest.net. [174.21.71.127])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72f8a760e42sm10003743b3a.100.2025.01.28.12.39.29
+ d2e1a72fcca58-72f8a78dfa2sm9626014b3a.157.2025.01.28.12.52.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 Jan 2025 12:39:29 -0800 (PST)
-Message-ID: <f60d500d-f299-4d4c-b857-29e34b33416d@linaro.org>
-Date: Tue, 28 Jan 2025 12:39:28 -0800
+ Tue, 28 Jan 2025 12:52:41 -0800 (PST)
+Message-ID: <b7646baf-a07d-4ded-804c-6809173c1f6b@linaro.org>
+Date: Tue, 28 Jan 2025 12:52:39 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/1] meson: Deprecate 32-bit host systems
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, stefanha@redhat.com, pbonzini@redhat.com,
- mark.cave-ayland@ilande.co.uk, Liviu Ionescu <ilg@livius.net>
-References: <20250128004254.33442-1-richard.henderson@linaro.org>
- <9a280789-9248-4eca-b50c-048fc58e3f53@redhat.com>
- <87plk72tvr.fsf@draig.linaro.org>
- <ad6ca73a-c38a-4a9b-bdcb-ab50aa53ccd1@linaro.org>
- <Z5ii-ueFt5-5Brxz@redhat.com>
+Subject: Re: [RFC PATCH 4/9] hw/qdev: Introduce DeviceClass::[un]wire()
+ handlers
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, kvm@vger.kernel.org,
+ Zhao Liu <zhao1.liu@intel.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Peter Xu <peterx@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20250128142152.9889-1-philmd@linaro.org>
+ <20250128142152.9889-5-philmd@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <Z5ii-ueFt5-5Brxz@redhat.com>
+In-Reply-To: <20250128142152.9889-5-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,74 +110,203 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/28/25 01:27, Daniel P. Berrangé wrote:
-> I'm not sure that's the case here.
+On 1/28/25 06:21, Philippe Mathieu-Daudé wrote:
+> We are trying to understand what means "a qdev is realized".
+> One explanation was "the device is guest visible"; however
+> many devices are realized before being mapped, thus are not
+> "guest visible". Some devices map / wire their IRQs before
+> being realized (such ISA devices). There is a need for devices
+> to be "automatically" mapped/wired (see [2]) such CLI-created
+> devices, but this apply generically to dynamic machines.
 > 
-> 32-on-32 is already effectively unmaintained, so we're not suffering
-> in terms of keeping the 32-on-32 code reliable.
-
-Correct.
-
-As evidence, on i686, the absolutely easiest available 32-bit host, we have the following 
-failures with make check-functional:
-
->   2/185 qemu:func-thorough+func-aarch64-thorough+thorough / func-aarch64-aarch64_rme_virt                  ERROR             1.50s   exit status 1
->   3/185 qemu:func-thorough+func-aarch64-thorough+thorough / func-aarch64-aarch64_rme_sbsaref               ERROR             2.69s   exit status 1
->   4/185 qemu:func-thorough+func-aarch64-thorough+thorough / func-aarch64-aarch64_virt                      ERROR           206.84s   exit status 1
->  12/185 qemu:func-thorough+func-ppc64-thorough+thorough / func-ppc64-ppc64_tuxrun                          ERROR             4.95s   exit status 1
->  17/185 qemu:func-thorough+func-aarch64-thorough+thorough / func-aarch64-aarch64_aspeed                    TIMEOUT         600.01s   killed by signal 15 SIGTERM
->  24/185 qemu:func-thorough+func-ppc64-thorough+thorough / func-ppc64-ppc64_powernv                         TIMEOUT         480.01s   killed by signal 15 SIGTERM
-> 115/185 qemu:func-quick+func-x86_64 / func-x86_64-mem_addr_space                                           ERROR             8.92s   exit status 1
-> 132/185 qemu:func-thorough+func-aarch64-thorough+thorough / func-aarch64-aarch64_xlnx_versal               ERROR             0.35s   exit status 1
-> 147/185 qemu:func-thorough+func-m68k-thorough+thorough / func-m68k-m68k_q800                               ERROR             0.88s   exit status 1
-> 156/185 qemu:func-thorough+func-riscv64-thorough+thorough / func-riscv64-riscv64_tuxrun                    TIMEOUT         120.01s   killed by signal 15 SIGTERM
-> 163/185 qemu:func-thorough+func-x86_64-thorough+thorough / func-x86_64-x86_64_kvm_xen                      TIMEOUT         180.01s   killed by signal 15 SIGTERM
-> 177/185 qemu:func-thorough+func-x86_64-thorough+thorough / func-x86_64-linux_initrd                        ERROR             0.35s   exit status 1
-> 178/185 qemu:func-thorough+func-x86_64-thorough+thorough / func-x86_64-multiprocess                        ERROR             0.77s   exit status 1
-
-8 of these are due to the test asking for more RAM than the host can provide to the guest.
-
-   Output: qemu-system-aarch64: at most 2047 MB RAM can be simulated
-   Output: qemu-system-ppc64: ram size 4294967296 exceeds permitted maximum 4294967295
-   Output: qemu-system-x86_64: ram size 4294967296 exceeds permitted maximum 4294967295
-
-Some are probably trivially fixable, simply by asking for less RAM.  But the point is that 
-no one has reported the failures, and I can only conclude that no one cares about this 
-host.  And if we can't keep i686 working, then other more obscure hosts have even less chance.
-
-I'll also note that those error messages above are misleading -- in at least some of the 
-x86_64 cases the command-line is "-m 512,slots=1,maxmem=59.6G".  So we're asking to 
-reserve physical address space for almost 60G, which is not what the error message suggests.
-
-
-> We're suffering from the complexity that 32-on-32 code places on the
-> rest of the XX-on-64 code that we do care about.
+> Currently the device creation steps are expected to roughly be:
 > 
-> IOW if someone volunteered to maintain 32-on-32 that's not actually
-> solving the complexity problem, just perpetuating it.
+>    (external use)                (QDev core)                   (Device Impl)
+>     ~~~~~~~~~~~~                  ~~~~~~~~~                     ~~~~~~~~~~~
+> 
+>                                 INIT enter
+>                     ----->
+>                           +----------------------+
+>                           |    Allocate state    |
+>                           +----------------------+
+>                                                   ----->
+>                                                          +---------------------+
+>                                                          | INIT children       |
+>                                                          |                     |
+>                                                          | Alias children properties
+>                                                          |                     |
+>                                                          | Expose properties   |
+>                                  INIT exit               +---------------------+
+>                     <-----------------------------------
+>   +----------------+
+>   | set properties |
+>   |                |
+>   | set ClkIn      |
+>   +----------------+          REALIZE enter
+>                     ---------------------------------->
+>                                                         +----------------------+
+>                                                         | Use config properties|
+>                                                         |                      |
+>                                                         | Realize children     |
+>                                                         |                      |
+>                                                         | Init GPIOs/IRQs      |
+>                                                         |                      |
+>                                                         | Init MemoryRegions   |
+>                                                         +----------------------+
+>                                 REALIZE exit
+>                     <-----------------------------------                        ----  "realized" / "guest visible"
+> +-----------------+
+> | Explicit wiring:|
+> |   IRQs          |
+> |   I/O / Mem     |
+> |   ClkOut        |
+> +-----------------+             RESET enter
+>                      --------------------------------->
+>                                                         +----------------------+
+>                                                         | Reset default values |
+>                                                         +----------------------+
+> 
+> But as mentioned, various devices "wire" parts before they exit
+> the "realize" step.
+> In order to clarify, I'm trying to enforce what can be done
+> *before* and *after* realization.
+> 
+> *after* a device is expected to be stable (no more configurable)
+> and fully usable.
+> 
+> To be able to use internal/auto wiring (such ISA devices) and
+> keep the current external/explicit wiring, I propose to add an
+> extra "internal wiring" step, happening after the REALIZE step
+> as:
+> 
+>    (external use)                (QDev core)                   (Device Impl)
+>     ~~~~~~~~~~~~                  ~~~~~~~~~                     ~~~~~~~~~~~
+> 
+>                                 INIT enter
+>                     ----->
+>                           +----------------------+
+>                           |    Allocate state    |
+>                           +----------------------+
+>                                                   ----->
+>                                                          +---------------------+
+>                                                          | INIT children       |
+>                                                          |                     |
+>                                                          | Alias children properties
+>                                                          |                     |
+>                                                          | Expose properties   |
+>                                  INIT exit               +---------------------+
+>                     <-----------------------------------
+>   +----------------+
+>   | set properties |
+>   |                |
+>   | set ClkIn      |
+>   +----------------+          REALIZE enter
+>                     ---------------------------------->
+>                                                         +----------------------+
+>                                                         | Use config properties|
+>                                                         |                      |
+>                                                         | Realize children     |
+>                                                         |                      |
+>                                                         | Init GPIOs/IRQs      |
+>                                                         |                      |
+>                                                         | Init MemoryRegions   |
+>                                                         +----------------------+
+>                                 REALIZE exit       <---
+>                           +----------------------+
+>                           | Internal auto wiring |
+>                           |   IRQs               |  (i.e. ISA bus)
+>                           |   I/O / Mem          |
+>                           |   ClkOut             |
+>                           +----------------------+
+>                      <---                                                       ----  "realized"
+> +-----------------+
+> | External wiring:|
+> |   IRQs          |
+> |   I/O / Mem     |
+> |   ClkOut        |
+> +-----------------+             RESET enter                                    ----  "guest visible"
+>                      --------------------------------->
+>                                                         +----------------------+
+>                                                         | Reset default values |
+>                                                         +----------------------+
+> 
+> The "realized" point is not changed. "guest visible" concept only
+> occurs *after* wiring, just before the reset phase.
+> 
+> This change introduces the DeviceClass::wire handler within qdev
+> core realization code.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   include/hw/qdev-core.h |  7 +++++++
+>   hw/core/qdev.c         | 20 +++++++++++++++++++-
+>   2 files changed, 26 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+> index 530f3da7021..021bb7afdc0 100644
+> --- a/include/hw/qdev-core.h
+> +++ b/include/hw/qdev-core.h
+> @@ -102,7 +102,12 @@ typedef int (*DeviceSyncConfig)(DeviceState *dev, Error **errp);
+>    * @props: Properties accessing state fields.
+>    * @realize: Callback function invoked when the #DeviceState:realized
+>    * property is changed to %true.
+> + * @wire: Callback function called after @realize to connect IRQs,
+> + * clocks and map memories. Can not fail.
+> + * @unwire: Callback function to undo @wire. Called before @unrealize.
+> + * Can not fail.
+>    * @unrealize: Callback function invoked when the #DeviceState:realized
+> + * property is changed to %false. Can not fail.
+>    * property is changed to %false.
+>    * @sync_config: Callback function invoked when QMP command device-sync-config
+>    * is called. Should synchronize device configuration from host to guest part
+> @@ -171,6 +176,8 @@ struct DeviceClass {
+>        */
+>       DeviceReset legacy_reset;
+>       DeviceRealize realize;
+> +    void (*wire)(DeviceState *dev);
+> +    void (*unwire)(DeviceState *dev);
+>       DeviceUnrealize unrealize;
+>       DeviceSyncConfig sync_config;
+>   
+> diff --git a/hw/core/qdev.c b/hw/core/qdev.c
+> index 82bbdcb654e..38449255365 100644
+> --- a/hw/core/qdev.c
+> +++ b/hw/core/qdev.c
+> @@ -554,6 +554,15 @@ static void device_set_realized(Object *obj, bool value, Error **errp)
+>               }
+>          }
+>   
+> +        if (dc->wire) {
+> +            if (!dc->unwire) {
+> +                warn_report_once("wire() without unwire() for type '%s'",
+> +                                 object_get_typename(OBJECT(dev)));
+> +            }
+> +            dc->wire(dev);
+> +        }
+> +
+> +        /* At this point the device is "guest visible". */
+>          qatomic_store_release(&dev->realized, value);
+>   
+>       } else if (!value && dev->realized) {
+> @@ -573,6 +582,15 @@ static void device_set_realized(Object *obj, bool value, Error **errp)
+>            */
+>           smp_wmb();
+>   
+> +        if (dc->unwire) {
+> +            if (!dc->wire) {
+> +                error_report("disconnect() without connect() for type '%s'",
+> +                             object_get_typename(OBJECT(dev)));
+> +                abort();
+> +            }
+> +            dc->unwire(dev);
+> +        }
 
-Correct.
+Mismatched error messages (wire vs connect).
+But, really, just check both directions properly at startup.
+There's probably lots of places where devices are never unrealized.
 
-
-> So again lets be clear...
-> 
-> Either we...
-> 
->   * ...want to kill 32-on-32 code to reduce the complexity on the
->     main XX-on-64 codebase regardless of interest in 32-on-32
-> 
-> Or
-> 
->   * ...want to kill 32-on-32 code because it is buggy due to lack
->     of maintainers, but would welcome someone to step forward to
->     maintain it
-> 
-> It sounded like we were wanting the former, not the latter.
-Correct.
-
-Frankly, no one has stepped forward in the last 2 years, the last time we mooted 
-deprecating all 32-bit hosts, but got talked out of it.  So I don't think option 2 is a 
-real option.
+Otherwise, this seems sane, having a kind of post_init on the realize path, running after 
+all superclass realization is done.
 
 
 r~
