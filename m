@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B352A20B9C
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E3B4A20B9A
 	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 14:55:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcm3d-0004mJ-Nr; Tue, 28 Jan 2025 08:55:13 -0500
+	id 1tcm3h-0004pp-9j; Tue, 28 Jan 2025 08:55:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcm3X-0004eT-JA
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 08:55:09 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcm3b-0004hQ-3t
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 08:55:11 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcm3T-0006di-HD
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 08:55:06 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-385e06af753so3090609f8f.2
- for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 05:55:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tcm3X-0006pf-Fk
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 08:55:09 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-436202dd7f6so65060095e9.0
+ for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 05:55:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738072500; x=1738677300; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738072505; x=1738677305; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NfNuHQWNeJu5X2wCDgIQnnHrGGyk47oR/kdhbtMYcjw=;
- b=AEVHp+e57Gd41rHDlvEsxaCHvRpz8C8nKq/vP8rT8vuiXgYysVcVqCP3zgnncC+baq
- 2KcsT/2yAiQg9ZfIP52SaE44rrCWK8N+wX/ggl5nYp+4K0joJ1K0JyDwB8ug838MeNj2
- Ft8rwEpp5IH/y6N9krOJhZNBBc+t5Wx0zTBaqGxKLOLaVyKgwi6mw7gZOTeM4fPkVct7
- 4x8xZ8pECXzF41McTTEXjNCZHX7oONuvgmqCcedgifJ805PKk8usHhwGsaFAWIV3tFkU
- YPYJ1rcnraGUOT3lNpsAnMJCxmv9L4TiqqkkrQZI8aGYYL2DWkeggGGmVkz/TJi6EzNn
- S1bw==
+ bh=ggA0ewTkbOxosT43tBc3qZcSHcVtGttVuRMmEBH4Avg=;
+ b=WNL80UOtDKMK4bCUSLNrd/AYAhOenlo5JlXmmnioR8E+j6/jUUnFVnVYrSk9csppiZ
+ aj/EBYYv1Zws59vqO8QVFIPbByB66J154KogXoYg9vhMlPFku1afiR9qDiAzuhGboqC0
+ J2MphyOusLUGVd1WmznuydhRT/djd8JHe14tmAr4LzJ03aC/A/wpsc/7bv2huJ5uiJ6o
+ VaFVKTu7hJwaclyxmRQczIlxycau3o66gRzHfPjIV0OQgy3REFW2L3c5F3Mi+Ewh529l
+ rk9fNyFAwugTdSZ+0j6QUIwwTVow/uLJnftVjlUNn0H5Zm2kfqfAn8cryKaiSumhzeCv
+ q75w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738072500; x=1738677300;
+ d=1e100.net; s=20230601; t=1738072505; x=1738677305;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NfNuHQWNeJu5X2wCDgIQnnHrGGyk47oR/kdhbtMYcjw=;
- b=oE79qVJU37NHqyGk0FpQogPEfdCfXU2nQzdi4W5tDdJrnAEn27l5tVJoP0BjYfck+8
- 6Al0Q7FzwRcrOeIZAXBFNNitdSakQHSNQ8yo6FafBRYwZJrpoXAyIYoN4V2OpkZPQMSL
- 8Rg0Is8TFYVA5f9EESJzTAj5qMGsOHvgpL2Ue6XJvLIjx/FD5doOcfdcyamjqesWVnIY
- 02yb+qhBaDDrut+rvKZO/3TjYLWMQBA8PWcxgIQSWZhpKVnlUaIk/UH7XET+3u1URjOD
- 2VED6B3nAUwvqnksvNKz8KUTkn0Ooz1b5+oGfyrVh4TfrhFY15K6iBL7PKvoxJon2cs6
- +E3Q==
-X-Gm-Message-State: AOJu0Yw3WvZKU5LdHCwn8pGSkuFEm2A+pWoBpRfnQVZIfmrNYmDPWSiz
- ScGgFhpoQ+ziC3l/C8Fu83rOxV8WqKn91Qv1+N76ltuLCiQ5gHyDB1lmpbJ4mXqPsqAFIlxzhR8
- vyl4=
-X-Gm-Gg: ASbGncuoeIzrF3a9oWjeUUcWMXhs9EbX5niWptnTH48rgPPW+N3Re26hTiJo5Mb4StS
- 2ynx8JzRndMT4OcS1sk3s8ydCqU96t0d+TUWEr54/mNl8NIvJPRcKEyDq8odCw+Qx9y81Rzs3p5
- rWxaY1lycIIHtRCuvDLuxkXk61GVN2j3NPeQKDs1n29Y9qvMm0CObH2WZKCRyZ601bHintsjkA8
- Pr87QzMWBSwHNmuMFnzr5Z7CGei3x2j8xJd3RhZ28rRJxqSsvuhXuLy+SdTxoTJllyMRIlOuMWP
- P9LZr1Sb0Y0HCxXvQxCdHScpO64BGotsCHsmX+lukhkVgHRMJT4cDX7CU9EMBquSlg==
-X-Google-Smtp-Source: AGHT+IF6FaWdiPaqacNKbyj/s2k3FO3tLGIOMg0xoKeEAz10Xzv4C6qQkS0Cwu9Wf1A7n99AR/Eycw==
-X-Received: by 2002:adf:eb10:0:b0:385:fc00:f5d4 with SMTP id
- ffacd0b85a97d-38bf566ce7dmr31162296f8f.29.1738072500350; 
- Tue, 28 Jan 2025 05:55:00 -0800 (PST)
+ bh=ggA0ewTkbOxosT43tBc3qZcSHcVtGttVuRMmEBH4Avg=;
+ b=udJEv8QM5TR9YHtDlJI4ChCLp0aavf6G9/7kTd1siCXQ19VimhKH1PPA9g8szDDgbK
+ 9VAc0Ql0+3keUA0FO3C0HgJh/w+KQUgWsdNwwpdYNDzv0JwH/0SBAOj1ZVKJfj4QR7xa
+ te5U6/CxN6WDDwXhZpDkWv/Och9blnOnouj/QCV5/ZuFGX2znF6cbleZGGlthohDQkcw
+ QI3uXh/gh4u7t5njmkVIU8Ur/bsLEuDiPgbsafIQHcKKqmLI8gxU/X30razZwfS6dE2v
+ PPNY1MmP1n6UPIW+hfYEylqJixUnXY3O4m+QxzJw3KVzg/RKfxK7mPGGd1NdFHSUN08u
+ S3Dg==
+X-Gm-Message-State: AOJu0YxW9zFem1SdvMrDkRAQjFePhfDMSYmhkKNXlmXfAGsUHAjpCSyE
+ Al524M8+YcJkR3eUSozMOykMjgVrxKb2Mhps1yHRIecXRvwzZeAjuE925SobNxT0hAMqF7ZZip+
+ EhiE=
+X-Gm-Gg: ASbGncvyIfjybDA/CUsFNAS9KngjDWU8idV0YcV1fbAEEnlsQwi0XjLJqsmhVued76+
+ qnlsk2/KjFEYsEwwpLwJzkQAhQFENql+d/amPFnTcGi0fjC2gwdNN0Ua91DafCh8VtrjykusXuh
+ da8N1HUNmMku8bI3mrRWzFxmBxeskIsFYVrLkjbwk6zcQTWFI88T3pjzaGOGfSFjfEB3poKiaS5
+ /9DO0vibEmnvujHOwaCny6E9ZXMbdFIIhvWm14d0JPM0XRLta2I56+H9ZvGdqF6dDrKsSoO+enS
+ 2UF/pRQ5IaYK9HcOdMFHRUgvYeAZ1J3tbKjfKvTFKVCvwWyZpp1YExra+GjA20jzmg==
+X-Google-Smtp-Source: AGHT+IFAivnCEuWa+s9CJzyy+us9FOYQbCNDZooO1DNzx3Fey9h77ZbMevgirnagF4Rvye36WUD3Ug==
+X-Received: by 2002:a05:600c:4fc1:b0:434:f218:e1a8 with SMTP id
+ 5b1f17b1804b1-4389141c21cmr359787385e9.19.1738072505153; 
+ Tue, 28 Jan 2025 05:55:05 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a1bad16sm14540405f8f.68.2025.01.28.05.54.59
+ 5b1f17b1804b1-438bd573245sm170550175e9.33.2025.01.28.05.55.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 28 Jan 2025 05:54:59 -0800 (PST)
+ Tue, 28 Jan 2025 05:55:04 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -68,18 +68,18 @@ Cc: Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
  Phil Dennis-Jordan <phil@philjordan.eu>, Peter Xu <peterx@redhat.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 6/7] tests/qtest/migration: Run aarch64/HVF tests using
- GICv2
-Date: Tue, 28 Jan 2025 14:54:28 +0100
-Message-ID: <20250128135429.8500-7-philmd@linaro.org>
+Subject: [PATCH 7/7] tests/qtest/migration: Allow using accelerators different
+ of TCG / KVM
+Date: Tue, 28 Jan 2025 14:54:29 +0100
+Message-ID: <20250128135429.8500-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250128135429.8500-1-philmd@linaro.org>
 References: <20250128135429.8500-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,37 +102,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-GICv3 isn't supported on aarch64/HVF, but GICv2 is.
+There is no particular reason to restrict all the framework
+to TCG or KVM, since we can check on a per-test basis which
+accelerator is available (via MigrationTestEnv::has_$ACCEL).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-RFC: Test eventually timeouts :(
-
- tests/qtest/migration/framework.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tests/qtest/migration/framework.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
 diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index 5629b8ba4e3..30808de14e0 100644
+index 30808de14e0..e5f0712c266 100644
 --- a/tests/qtest/migration/framework.c
 +++ b/tests/qtest/migration/framework.c
-@@ -266,7 +266,7 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-     } else if (strcmp(arch, "aarch64") == 0) {
-         memory_size = "150M";
-         machine_alias = "virt";
--        machine_opts = "gic-version=3";
-+        machine_opts = env->has_hvf ? "gic-version=2" : "gic-version=3";
-         arch_opts = g_strdup_printf("-cpu max -kernel %s", bootpath);
-         start_address = ARM_TEST_MEM_START;
-         end_address = ARM_TEST_MEM_END;
-@@ -303,6 +303,8 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-         } else {
-             accel_args = "kvm";
-         }
-+    } else if (env->has_hvf) {
-+        accel_args = "hvf";
-     } else {
-         assert(env->has_tcg);
-         accel_args = "tcg";
+@@ -950,11 +950,6 @@ MigrationTestEnv *migration_get_env(void)
+     env->has_hvf = qtest_has_accel("hvf");
+     env->has_tcg = qtest_has_accel("tcg");
+ 
+-    if (!env->has_tcg && !env->has_kvm) {
+-        g_test_skip("No KVM or TCG accelerator available");
+-        return env;
+-    }
+-
+     env->has_dirty_ring = env->has_kvm && kvm_dirty_ring_supported();
+     env->has_uffd = ufd_version_check(&env->uffd_feature_thread_id);
+     env->is_x86 = !strcmp(env->arch, "i386") || !strcmp(env->arch, "x86_64");
 -- 
 2.47.1
 
