@@ -2,83 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05DBCA208F0
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 11:48:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAECCA208FC
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Jan 2025 11:51:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcj6c-0001JY-Fg; Tue, 28 Jan 2025 05:46:06 -0500
+	id 1tcjAy-0001kv-PW; Tue, 28 Jan 2025 05:50:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tcj6A-0001Ab-Ly
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 05:45:39 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1tcjAx-0001kc-5v
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 05:50:35 -0500
+Received: from mail-yb1-xb2e.google.com ([2607:f8b0:4864:20::b2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tcj67-0003bc-6e
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 05:45:38 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43618283d48so38515065e9.1
- for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 02:45:34 -0800 (PST)
+ id 1tcjAo-0004yO-NC
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 05:50:27 -0500
+Received: by mail-yb1-xb2e.google.com with SMTP id
+ 3f1490d57ef6-e3a26de697fso8131641276.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 02:50:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738061134; x=1738665934; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1738061425; x=1738666225; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yra2hKs7hlszYhHH5kmHgDMQvYtSgS7xsph+xNM9Ghs=;
- b=vzZb2v0yKdSlAauETvb1y/k4M0l9G3KtplqvCVytpdVkdgLhT305L5aReMngP11SWn
- C2ZvcXIemzqUhFiTeIQ0TL8wTwHIFwa+wyYLNYJ2nZ5J68f85YFNYKNhSwc4+tBd27Q5
- z6qU/S5jRHZR1B7Qat5xVC3JIyBrJv2yVBs6tDcIhORl18GY7ZKndQNJ5GpMWVe8KICY
- OyPEp7AU8X3JUCkKey6g3fXWL50v/tGbZNLhdk4NVbKkssvp9LFW+YYhL7dcUhgOgEuj
- vWB9JGBWDbt+7n69+JSLeXiJ2gOAgtYqXqriK/RWqHA/fQ/kMODdZfht5K4DKIcVraBo
- o0+g==
+ bh=3v34krr+R/W/GJLfn6JaO0A1nQiepmfIj00rt+nc7XI=;
+ b=e0ub/p/HtKt9vAt6VRySDThmwxmSDBrxgn4r8fcG3+1EsSdndpeZqEdJEX6acge+xd
+ fop3Z9LWzUo7/KumboUk+rKmYopKV4b2/dbJwwqPvlHKUXAcxqtMGfpVh+Pn1ZRfMtKQ
+ 4HVhM8Uof5X8Q1r3stOnyqRxZYk5aaW8yiCYbRG1N1kAwpBljHDs4w/LxwclUxNGN6S3
+ yibm14LvspW+twv9Zmg0Aeb1hexvfqmEffGGsORWiHPBTb5G0Y3itWVooXi6u7Uzk97q
+ xHhQ+iTbh/IENzqBrLaWDbmwrGV6XHfa88w1hQzBWfswCMJO3objMVhac1Jz3G7fBloA
+ blTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738061134; x=1738665934;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1738061425; x=1738666225;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yra2hKs7hlszYhHH5kmHgDMQvYtSgS7xsph+xNM9Ghs=;
- b=soGGzlC2X4qK/jQ5RMkku/VQ32M/ROfYZuWrK+w3x9dDTW9q53oRmr8//wjBy3BsQ7
- wRpw8zpD7MdUqvPERSCtpdQ8vb3D61mwoPL/hJX3ZkKmT5q/R5sbNp7S2wNz5PJWC61u
- AMVqmSwnVQBc9gRVFTlByBUotqSlZ7Ky1FvMhO/XMtQJ3uIyBLkCl+gfHqX8gHiVXrGN
- sKi2t8z2MKmkdLl8GiANRGHn+bI8fILFxX5BsKmlvCS9e6IPBk6QeF5lUqNUBIKHbEzv
- kPtz0+rzlwbUDTL/NPF5CEy8SR850z7y6pgCKBCQqDbRGgseHu09vGWzcQzldlsKbAVR
- Xoag==
+ bh=3v34krr+R/W/GJLfn6JaO0A1nQiepmfIj00rt+nc7XI=;
+ b=llFT2zxeGWrvENNTJwnEd+bMta4fxvOc736cfGC06XcJv0PnWPBHVwaYskj/sERBWZ
+ u3OrKwUOcKgQ+JrsKQKGYBWRZwWf+8ley1hu1l9xiqScO1zLrsVYIT+f3zlwHs2VjfcL
+ VDMk/EexPay3/n0uS0yh4IdKG3J+r2x+NQpJ/iVdAYiFhCdW0sCfv3QPRv5LnsR0JnKe
+ VPllgmgEdtWligqHMU3LBe/oRQh0Gs8Qq5Z7n2H6QDpLMGSIyrWbkEsnQ9tpyAx6YjKI
+ ohUau9bWzbvUGuyFgzSdAJfq6sLInn7rexMsjqLrvKBUsv1xBCwtctbhISQXsNnc1u6j
+ Sb+g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUr0wRqb5EtKa27gx4BhCqBGxpkty4fmYBDSV4CwqGZ40VYyuRRwjFTm0g/WUetwcN6ETnjbTZfYl2W@nongnu.org
-X-Gm-Message-State: AOJu0Yxfk3pRzEm5e4d4YdMRXfO6mXCQL87gw8P+2HuATcjy01/3sfeH
- eVcTWJ674mz43l7Eftiqg4A/3BKKO3C0z1JwBj9OjrS9U4eIWsjmdFFnQDjZ8PQ=
-X-Gm-Gg: ASbGncuzjAxb+u/YvkkTJOrbuMV/RFclw/nBoCqa4nYYqBoAyGM9SK9WbMzfGRwUyLd
- yhXFWZOdoe9Mc/XqNclas5ACIMk6OupGGZqK+VlgGe+7u0+OR+PTtFl3C/HX79EvipkCbIhHeLu
- uEa/yhwxYzeb9o8N35h6HjK1YhFTbEQ1qhCduVqqB86FxjL4B0pFbE78U4VubmhxdBM5wTwXcs+
- 5Rib4tB/t0rtLR+iwDyTdQOi2sqFFEsAThm/TVnCTBjln+gGir6fnBp0a/BUUc0zP8sxu0bvYeT
- YaxIqhXFjO8rsUT18TPP
-X-Google-Smtp-Source: AGHT+IHJQIHsgS2vIceUXb5NbV5V2E7pVcZuWAJal1HSPfUJxu+5dwI+aQG7JJZJDOYP+NCRrr2/PQ==
-X-Received: by 2002:adf:a1cc:0:b0:38a:a074:9f3c with SMTP id
- ffacd0b85a97d-38bf5663dbcmr35230039f8f.16.1738061133781; 
- Tue, 28 Jan 2025 02:45:33 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c2a1c418esm13920133f8f.95.2025.01.28.02.45.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Jan 2025 02:45:33 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Bin Meng <bmeng.cn@gmail.com>, Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 11/11] hw/sd: Remove unused SDState::enable
-Date: Tue, 28 Jan 2025 10:45:19 +0000
-Message-Id: <20250128104519.3981448-12-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250128104519.3981448-1-peter.maydell@linaro.org>
-References: <20250128104519.3981448-1-peter.maydell@linaro.org>
+ AJvYcCUKhf510gtObmLbYZZRQs11NyHOv7dMbcWIWyneomVmhzBttWktYlGN2IXD7uiBZ7lti2SJR8puoLo9@nongnu.org
+X-Gm-Message-State: AOJu0YwbClmJTcIKBjKTuTSFSm5/1G/ScJHpsYs1wFzPqKrxgdKZhAlC
+ UPQBIbSFbds/KLwqtkbbNbCu7OI37FE/F0gSbL0pJ4Fr5PrnKIoZymav2TD6MNqQ+X+MsngX8rR
+ J++QWyni9SSX/7rrNugPZ3jCgp5hsdr8r2uiibg==
+X-Gm-Gg: ASbGnctuGC0ffHGEpGCQDq3nrqbRzOcEoJDXWoUwFpfBVI6lKuea4gL0KDZYTlJO41Y
+ tvfAR/aYrryrKkvxfHn4uN00aOrdS3kOtT2n46eIy/+h1wG3ELc/IgTeiI+GCaXVgDWJeLCAuow
+ ==
+X-Google-Smtp-Source: AGHT+IGf0QlTdyAwJ7XFE9WBWDnIZoVSKqzGdakhyKNC/XpP9riGmVHzhlBgZYEGGXx14ZaPvjqXAQBpwZ1OiMaZNEw=
+X-Received: by 2002:a05:6902:12c5:b0:e58:173e:abcf with SMTP id
+ 3f1490d57ef6-e58173ead2fmr17795541276.8.1738061425452; Tue, 28 Jan 2025
+ 02:50:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+References: <20250125181343.59151-1-philmd@linaro.org>
+ <wkb53fhvfchqa4uvmifgitvcr7t7rfpc3hcohdhzczkzvktetx@yjveswjel3s4>
+In-Reply-To: <wkb53fhvfchqa4uvmifgitvcr7t7rfpc3hcohdhzczkzvktetx@yjveswjel3s4>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 28 Jan 2025 10:50:14 +0000
+X-Gm-Features: AWEUYZml6bfUrxGGjA2uylNFRM6bH2fiw1eM--KZHV8IsWc8hLbPBULX6GMnCq4
+Message-ID: <CAFEAcA-QOYcnJi=joKHbRmUCXK1UFOgQRgYP-fDq4h_1SkMGyQ@mail.gmail.com>
+Subject: Re: [PATCH 0/9] hw/sysbus/platform-bus: Introduce
+ TYPE_DYNAMIC_SYS_BUS_DEVICE
+To: Gerd Hoffmann <kraxel@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, Yi Liu <yi.l.liu@intel.com>, 
+ Markus Armbruster <armbru@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
+ Anthony PERARD <anthony@xenproject.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>, 
+ Jason Wang <jasowang@redhat.com>, qemu-ppc@nongnu.org, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Alexander Graf <graf@amazon.com>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>, 
+ Bernhard Beschow <shentey@gmail.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, xen-devel@lists.xenproject.org,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>, Paul Durrant <paul@xen.org>,
+ =?UTF-8?Q?Cl=C3=A9ment_Mathieu=2D=2DDrif?= <clement.mathieu--drif@eviden.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,93 +112,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that sd_enable() has been removed, SD::enable is set to true in
-sd_instance_init() and then never changed. So we can remove it.
+On Tue, 28 Jan 2025 at 10:42, Gerd Hoffmann <kraxel@redhat.com> wrote:
+>
+> On Sat, Jan 25, 2025 at 07:13:34PM +0100, Philippe Mathieu-Daud=C3=A9 wro=
+te:
+> > Some SysBus devices can optionally be dynamically plugged onto
+> > the sysbus-platform-bus (then virtual guests are aware of
+> > mmio mapping and IRQs via device tree / ACPI rules).
+>
+> Do we have some sane way to have user-pluggable sysbus devices on arm?
 
-Note that the VMSTATE_UNUSED() size argument should be '1', not
-'sizeof(bool)', as noted in the CAUTION comment in vmstate.h.
+The answer in a general sense is "no, because user pluggable
+sysbus is a weird idea". "sysbus" means "it's wired into a
+specific bit of the memory map and to specific IRQs, and whoever
+does that needs to know what IRQs and bits of memory are usable,
+and the guest OS needs to know it's there". "user-pluggable" means
+"it's all automatic and the guest can just do some kind of
+probing for what is or isn't present". All the platform bus stuff
+is a nasty mess that's working around the things people want
+to plug in not being clean devices on probeable buses :-(
+And the platform bus is only supported on the "virt" board,
+because that's the only one where QEMU is generating its
+own dtb or ACPI tables where it can tell the guest "hey,
+there's some device here".
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- hw/sd/sd.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 74bb7f39bbf..e541c57f8c3 100644
---- a/hw/sd/sd.c
-+++ b/hw/sd/sd.c
-@@ -173,7 +173,6 @@ struct SDState {
-     size_t data_size;
-     uint8_t data[512];
-     QEMUTimer *ocr_power_timer;
--    bool enable;
-     uint8_t dat_lines;
-     bool cmd_line;
- };
-@@ -292,12 +291,12 @@ static const char *sd_acmd_name(SDState *sd, uint8_t cmd)
- 
- static uint8_t sd_get_dat_lines(SDState *sd)
- {
--    return sd->enable ? sd->dat_lines : 0;
-+    return sd->dat_lines;
- }
- 
- static bool sd_get_cmd_line(SDState *sd)
- {
--    return sd->enable ? sd->cmd_line : false;
-+    return sd->cmd_line;
- }
- 
- static void sd_set_voltage(SDState *sd, uint16_t millivolts)
-@@ -976,7 +975,7 @@ static const VMStateDescription sd_vmstate = {
-         VMSTATE_UINT32(data_offset, SDState),
-         VMSTATE_UINT8_ARRAY(data, SDState, 512),
-         VMSTATE_UNUSED_V(1, 512),
--        VMSTATE_BOOL(enable, SDState),
-+        VMSTATE_UNUSED(1),
-         VMSTATE_END_OF_LIST()
-     },
-     .subsections = (const VMStateDescription * const []) {
-@@ -2146,7 +2145,7 @@ static int sd_do_command(SDState *sd, SDRequest *req,
-     sd_rsp_type_t rtype;
-     int rsplen;
- 
--    if (!sd->blk || !blk_is_inserted(sd->blk) || !sd->enable) {
-+    if (!sd->blk || !blk_is_inserted(sd->blk)) {
-         return 0;
-     }
- 
-@@ -2297,8 +2296,9 @@ static void sd_write_byte(SDState *sd, uint8_t value)
- {
-     int i;
- 
--    if (!sd->blk || !blk_is_inserted(sd->blk) || !sd->enable)
-+    if (!sd->blk || !blk_is_inserted(sd->blk)) {
-         return;
-+    }
- 
-     if (sd->state != sd_receivingdata_state) {
-         qemu_log_mask(LOG_GUEST_ERROR,
-@@ -2429,8 +2429,9 @@ static uint8_t sd_read_byte(SDState *sd)
-     uint8_t ret;
-     uint32_t io_len;
- 
--    if (!sd->blk || !blk_is_inserted(sd->blk) || !sd->enable)
-+    if (!sd->blk || !blk_is_inserted(sd->blk)) {
-         return dummy_byte;
-+    }
- 
-     if (sd->state != sd_sendingdata_state) {
-         qemu_log_mask(LOG_GUEST_ERROR,
-@@ -2664,7 +2665,6 @@ static void sd_instance_init(Object *obj)
- 
-     sd->proto = sc->proto;
-     sd->last_cmd_name = "UNSET";
--    sd->enable = true;
-     sd->ocr_power_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, sd_ocr_powerup, sd);
- }
- 
--- 
-2.34.1
-
+-- PMM
 
