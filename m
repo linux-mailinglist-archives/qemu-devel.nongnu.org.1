@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 083D0A217FB
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 08:20:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2DCEA217FA
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 08:20:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1td2Ls-000289-LS; Wed, 29 Jan 2025 02:19:08 -0500
+	id 1td2Ls-00027s-BA; Wed, 29 Jan 2025 02:19:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1td2Lp-00023E-5V
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 02:19:05 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1td2Ln-00021e-FT
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 02:19:04 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1td2Lh-0003fh-Jc
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 02:19:03 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1td2Ll-0003gd-3G
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 02:19:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738135137;
+ s=mimecast20190719; t=1738135140;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eze6jaRUaOErODMTcqq4FVwyGb8xZ9G8Z5QYQ9u0Tl4=;
- b=eAofjihwlHQ7YXVh4mWgtP/YmpvK0lZDIMEkjCaJzf7ai159337LFgk40d9/N85ZjKYm99
- iPhdxTToPzDraOjT+oWd/a+XI2KANjMVTbwZvTQLqxAhfFrsMmm/kURrphL7sSBI/1uR6r
- 1I0WAJzUy4ztVjk59KdaLp0T5LyjwfI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=IyI/sKmGzp9iUQiTh9HHoh1vQN0kavvwKghUO7Fad1E=;
+ b=SmsxNDrbGXvtMYtqI8LV3BaaBAyn0twlCq5VXxEy5fLoo76FJTF7mbfOdS1/k9HJvvNURo
+ GliQuyTwhIvg+4GBZwwYiv6LIe0AEGfH5He4oSxRFahpAPjpRWowGjc3AQF845OfytkhnO
+ 4lWvEQgq7smvTwSevtbdFPl7IjttnEU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-303-KTMcZY9CPwOM8zOBKVYovA-1; Wed,
- 29 Jan 2025 02:18:52 -0500
-X-MC-Unique: KTMcZY9CPwOM8zOBKVYovA-1
-X-Mimecast-MFC-AGG-ID: KTMcZY9CPwOM8zOBKVYovA
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-443-EkCsDZoHPjWJBXf_JG9Ukw-1; Wed,
+ 29 Jan 2025 02:18:55 -0500
+X-MC-Unique: EkCsDZoHPjWJBXf_JG9Ukw-1
+X-Mimecast-MFC-AGG-ID: EkCsDZoHPjWJBXf_JG9Ukw
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 50CD21800361; Wed, 29 Jan 2025 07:18:50 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8E71F1956083; Wed, 29 Jan 2025 07:18:54 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.105])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 85BFA1956060; Wed, 29 Jan 2025 07:18:47 +0000 (UTC)
+ id BEADC19560AA; Wed, 29 Jan 2025 07:18:50 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
@@ -51,9 +51,9 @@ Cc: Joel Stanley <joel@jms.id.au>,
  Troy Lee <troy_lee@aspeedtech.com>, Jamin Lin <jamin_lin@aspeedtech.com>,
  Steven Lee <steven_lee@aspeedtech.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH 4/5] tests/functional: Introduce a witherspoon machine test
-Date: Wed, 29 Jan 2025 08:18:19 +0100
-Message-ID: <20250129071820.1258133-5-clg@redhat.com>
+Subject: [PATCH 5/5] tests/functional: Introduce a bletchley machine test
+Date: Wed, 29 Jan 2025 08:18:20 +0100
+Message-ID: <20250129071820.1258133-6-clg@redhat.com>
 In-Reply-To: <20250129071820.1258133-1-clg@redhat.com>
 References: <20250129071820.1258133-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -86,41 +86,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use do_test_arm_aspeed_openbmc() routine to run the latest OpenBMC
-firmware build of the witherspoon BMC.
+Use do_test_arm_aspeed_openbmc() to run the latest OpenBMC firmware
+build of the bletchley BMC.
 
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
  tests/functional/meson.build                  |  2 ++
- .../functional/test_arm_aspeed_witherspoon.py | 24 +++++++++++++++++++
+ tests/functional/test_arm_aspeed_bletchley.py | 24 +++++++++++++++++++
  2 files changed, 26 insertions(+)
- create mode 100755 tests/functional/test_arm_aspeed_witherspoon.py
+ create mode 100755 tests/functional/test_arm_aspeed_bletchley.py
 
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index b7719ab85f90..5c782ceb0a98 100644
+index 5c782ceb0a98..a8eb9c9a7af5 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -22,6 +22,7 @@ test_timeouts = {
-   'acpi_bits' : 420,
-   'arm_aspeed_palmetto' : 120,
-   'arm_aspeed_romulus' : 120,
-+  'arm_aspeed_witherspoon' : 120,
+@@ -25,6 +25,7 @@ test_timeouts = {
+   'arm_aspeed_witherspoon' : 120,
    'arm_aspeed_ast2500' : 480,
    'arm_aspeed_ast2600' : 720,
++  'arm_aspeed_bletchley' : 120,
    'arm_aspeed_rainier' : 240,
-@@ -82,6 +83,7 @@ tests_arm_system_thorough = [
-   'arm_aspeed_ast1030',
-   'arm_aspeed_palmetto',
-   'arm_aspeed_romulus',
-+  'arm_aspeed_witherspoon',
+   'arm_bpim2u' : 500,
+   'arm_collie' : 180,
+@@ -86,6 +87,7 @@ tests_arm_system_thorough = [
+   'arm_aspeed_witherspoon',
    'arm_aspeed_ast2500',
    'arm_aspeed_ast2600',
++  'arm_aspeed_bletchley',
    'arm_aspeed_rainier',
-diff --git a/tests/functional/test_arm_aspeed_witherspoon.py b/tests/functional/test_arm_aspeed_witherspoon.py
+   'arm_bpim2u',
+   'arm_canona1100',
+diff --git a/tests/functional/test_arm_aspeed_bletchley.py b/tests/functional/test_arm_aspeed_bletchley.py
 new file mode 100755
-index 000000000000..12714323733a
+index 000000000000..10e6703b53cb
 --- /dev/null
-+++ b/tests/functional/test_arm_aspeed_witherspoon.py
++++ b/tests/functional/test_arm_aspeed_bletchley.py
 @@ -0,0 +1,24 @@
 +#!/usr/bin/env python3
 +#
@@ -131,18 +131,18 @@ index 000000000000..12714323733a
 +from qemu_test import Asset
 +from aspeed import AspeedTest
 +
-+class WitherspoonMachine(AspeedTest):
++class BletchleyMachine(AspeedTest):
 +
-+    ASSET_WITHERSPOON_FLASH = Asset(
-+        'https://github.com/legoater/qemu-aspeed-boot/raw/master/images/witherspoon-bmc/openbmc-20240618035022/obmc-phosphor-image-witherspoon-20240618035022.ubi.mtd',
-+        '937d9ed449ea6c6cbed983519088a42d0cafe276bcfe4fce07772ca6673f9213');
++    ASSET_BLETCHLEY_FLASH = Asset(
++        'https://github.com/legoater/qemu-aspeed-boot/raw/master/images/bletchley-bmc/openbmc-20250128071329/obmc-phosphor-image-bletchley-20250128071329.static.mtd.xz',
++        'db21d04d47d7bb2a276f59d308614b4dfb70b9c7c81facbbca40a3977a2d8844');
 +
-+    def test_arm_ast2500_witherspoon_openbmc(self):
-+        image_path = self.ASSET_WITHERSPOON_FLASH.fetch()
++    def test_arm_ast2600_bletchley_openbmc(self):
++        image_path = self.uncompress(self.ASSET_BLETCHLEY_FLASH)
 +
-+        self.do_test_arm_aspeed_openbmc('witherspoon-bmc', image=image_path,
-+                                        uboot='2016.07', cpu_id='0x0',
-+                                        soc='AST2500 rev A1');
++        self.do_test_arm_aspeed_openbmc('bletchley-bmc', image=image_path,
++                                        uboot='2019.04', cpu_id='0xf00',
++                                        soc='AST2600 rev A3');
 +
 +if __name__ == '__main__':
 +    AspeedTest.main()
