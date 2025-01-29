@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 507FBA21621
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 02:40:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF1E1A21624
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 02:41:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcx39-0000zE-Ie; Tue, 28 Jan 2025 20:39:27 -0500
+	id 1tcx3A-0000zr-1t; Tue, 28 Jan 2025 20:39:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tcx36-0000xx-82
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:24 -0500
+ id 1tcx37-0000yb-0A
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:25 -0500
 Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tcx34-0003cR-Kb
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:23 -0500
+ id 1tcx35-0003cd-9W
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:24 -0500
 Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-21654fdd5daso107156955ad.1
+ d9443c01a7336-2163b0c09afso115533505ad.0
  for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 17:39:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738114761; x=1738719561; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738114762; x=1738719562; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0TwSGVoapBQ1ELHLjm2I75YpsBvqgtWnyHQMjjwnBeQ=;
- b=L8LnO6k1sdJo2mAEUjytzF9oP/6RkQgvnGEOr24VkM3nQOzL3jRBuiM0T7c1PpDDmC
- TwVjIwi4blMgRhFyKJ+sDDi5pkM+JBxzhWscTFSuNQfwGdy43Y4Y12Zq3UwgO+bPrcw7
- dckZTH4kM2b3QEUpu4ZTtY5US7PUNiO6DFaXFZv+3wEui/knScD3EXO6JjKiL7+jDZqq
- H5LMYpLpIvfJLQPBjnr03JkK7JEq1Ov9x56h4odh9iyXEzMyAA45e1CaQaBfG96VLvDe
- 47nYP1/y8ZsmLMBLL0i403r49+Q+oLDCV+R/wg2arjnHqVYS9OtSqL9LwJZrl7s5x/HM
- xsRA==
+ bh=Q33D6yJnXJXu9dlEjHBd58w+LYInd4Y2qLPYlRCltEc=;
+ b=yyCSHKqb3d8RIygFMbXT/KF/Ivrp5GBqXXacDfWKfFa3hv8JWYpL4xJazZwPAkK334
+ b1LYpt6HWSGkZ/MKpvHM69RfBy9sAyBc3z9b0oVCzp7D+YZLjmFTfGcK5M7BmaojNr1X
+ lGVgZJfDL6t0RgcLWbdsS7MFUUMyIT/D/eLdYI/zE0fqOFtVCh0+NUf7JtnLDe+AGmCB
+ cr6As6+eQL1/VDkhn1RqiqQVDr+eK6PGlse/FBDdtem5BanF/Buy83ST5bHglE9GGZ/g
+ tTOS97/FIxLva5lOCeqFhnUu3EyxzHQEBzA9eaGmoXeaKAqwMlWB/DkzSsr7j2X493OT
+ EmQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738114761; x=1738719561;
+ d=1e100.net; s=20230601; t=1738114762; x=1738719562;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0TwSGVoapBQ1ELHLjm2I75YpsBvqgtWnyHQMjjwnBeQ=;
- b=vMNZcrVoyPYMKjmdWVklRH592ztj9gyj0cPwCxNW1OvVdT5hv8rEjCu1jEEsxrgCLT
- 52DCoWXB+HO2k/6yOAMuFPhUhFY7fawFWn95ubASq97s+L/e+pLkH+kxBHkaZoetvgM/
- lt6wJdstaHfZrRVpy1V9J1/o7iEFpT8H9t8yhfsv9XDLEjroIrtpMG2OInQlLpWus/Hr
- 5PHq8UgNvx8O+dJjaatMHkfFAUq6+wPzIxU8wQyrS9UGUFluRMVQzPjIYyh4HTH2hXgv
- S0k06M/KyvrcFitALTBV1oAwTgABm+p9g62nW9FTpMC3eTCuzTBuUgu5orVMxT6dhiwY
- YYuA==
-X-Gm-Message-State: AOJu0YxXgfq7vpqurxdhh+Rzw3o7IKK+7GVR15agcVgCBfEGRxNhIAu/
- wWW2vRoBoX/NAu0/EgjzhJbmkvkOgk9iH+xpnE5RMLkfBLiBy4PmU02yQF20jXB97/LhP86xboe
- u
-X-Gm-Gg: ASbGncsorLB/w4p2XGuIkxpKxmZ4MJ3LyFoR2qvZm038aXx5goOcTk44+Ul3eRkoTLU
- UQ9sSUYY8u1IMT5/wzK+A5hxIEMz6Q6EplCdqkzaLPG0RIiaoFqO8xsZRTSnyq4+jOU0O1Ssfje
- a5WvHrfzf80oXGWpV78l1/+GujeCylYJTR7xByUxPhw7Tcl5ZCgMDG2Y+AEXs433ym64WcCOq8S
- oTphoJWpLHR8ZYW9+ef+5HM5KYCIUJ5rnDlxxOu/iMqY78RZmZeoAt4l+UWba4jzQUTtNXlmPlR
- znAzQ9Max4+ws0091f8Mo/Yns4F91BsIQ3HrgQbFBzgbxGIFAA==
-X-Google-Smtp-Source: AGHT+IGLiZKOkeehtusuqccKMeOmO4xhHdlAElt/f8RminqM3cXFML8XUoG5HlWJabS6T7xzs4eDqQ==
-X-Received: by 2002:a17:903:244d:b0:216:1cf8:8b8 with SMTP id
- d9443c01a7336-21dd7c67e11mr14885335ad.27.1738114761302; 
+ bh=Q33D6yJnXJXu9dlEjHBd58w+LYInd4Y2qLPYlRCltEc=;
+ b=qRV4oN7MpvgTSWTvOrEIee9u56VNWQMk9MDrLHSmcegQk3V1p0omdNquk1urAPGm9R
+ N5nQE+XNDKk1RU/Z8j1b1tItBJe/khvghbeLN1wX2de8uXs87NMl8XYOj0WhRVYyNGOA
+ Ov9Zud9ZmANdS8Ni5t3/ANCcrWAY28WtG8r8Y3+pypG3jzdyH6E8Foz3usU9wdhvUQkG
+ ZVxymlq8h1HOycsTgVsFiDkidDBQ84tKvKJRtPUtav7MZGlAVrW9iSQMu6WfIFZ5Cy6u
+ hq4Zslqxv1LUhjpaRtFC6gjbxh664Kpm6Kly9F1dwmAkphIej25ASU3WcyqRE+e4i4ny
+ fMIQ==
+X-Gm-Message-State: AOJu0YwGrrGxc2PG90/e+Vvl5ZaiUuXS7bHUfTdYD64jDgHyo69vHuZA
+ caIjftnANqcvJv60hdjBRY2aIAIHxhiRuM+DVzh2aduHL3AFtzTsR98/3IP1YMiDjoDvp3V9RI0
+ s
+X-Gm-Gg: ASbGnctdBg9KIj7XGNWENK8vabiuoOQ6pPulOFFxxllt7ypGFpFphc6PXWzuWJJZD8T
+ aKeIJdcM47bIilr+HLSEn+10wgnqCB5dQPJ64zC1m14H434twm1vcDl9XVPpeRF0XNd6XyvhH+t
+ D4w2ptqEa+l34R+V+Y0J026o/R3JNg4rzfOEn5n5q79f6L527i7JIJqaWoZ+BXUCuWxP4ykqYA6
+ mvmZYNbKZDkvv7rjr1Q/jO71W5Ul3qjCiNixUfdWnYBOrVqQRebD23mdQG8/Ola9BGHx2t7qv+y
+ jOIlSqlvQec7VXSB3qfX13WaaEn1vuMU5cv3d2au6Zh+VJh7Eg==
+X-Google-Smtp-Source: AGHT+IEG+u8ABc9bgjUdLNZvWMRA1hjmls6+I6MJBvDQavjYH362r/ZGH0MBDI9NPEDrtrCsZGf5ww==
+X-Received: by 2002:a17:902:d2c5:b0:211:e812:3948 with SMTP id
+ d9443c01a7336-21dd7b681dfmr23545015ad.0.1738114761947; 
  Tue, 28 Jan 2025 17:39:21 -0800 (PST)
 Received: from stoup.. (71-212-32-190.tukw.qwest.net. [71.212.32.190])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21da3ea4200sm89341745ad.88.2025.01.28.17.39.20
+ d9443c01a7336-21da3ea4200sm89341745ad.88.2025.01.28.17.39.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Jan 2025 17:39:20 -0800 (PST)
+ Tue, 28 Jan 2025 17:39:21 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH v2 33/34] target/arm: Read fz16 from env->vfp.fpcr
-Date: Tue, 28 Jan 2025 17:38:56 -0800
-Message-ID: <20250129013857.135256-34-richard.henderson@linaro.org>
+Subject: [PATCH v2 34/34] target/arm: Sink fp_status and fpcr access into
+ do_fmlal*
+Date: Tue, 28 Jan 2025 17:38:57 -0800
+Message-ID: <20250129013857.135256-35-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250129013857.135256-1-richard.henderson@linaro.org>
 References: <20250129013857.135256-1-richard.henderson@linaro.org>
@@ -97,73 +98,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Read the bit from the source, rather than from the proxy via
-get_flush_inputs_to_zero.  This makes it clear that it does
-not matter which of the float_status structures is used.
+Sink common code from the callers into do_fmlal
+and do_fmlal_idx.  Reorder the arguments to minimize
+the re-sorting from the caller's arguments.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/vec_helper.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ target/arm/tcg/vec_helper.c | 28 ++++++++++++++++------------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
 
 diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-index bae98a34b8..03b0a6ebed 100644
+index 03b0a6ebed..25ef7af029 100644
 --- a/target/arm/tcg/vec_helper.c
 +++ b/target/arm/tcg/vec_helper.c
-@@ -2155,7 +2155,7 @@ void HELPER(gvec_fmlal_a32)(void *vd, void *vn, void *vm,
+@@ -2125,9 +2125,13 @@ static uint64_t load4_f16(uint64_t *ptr, int is_q, int is_2)
+  * as there is not yet SVE versions that might use blocking.
+  */
+ 
+-static void do_fmlal(float32 *d, void *vn, void *vm, float_status *fpst,
+-                     uint64_t negx, int negf, uint32_t desc, bool fz16)
++static void do_fmlal(float32 *d, void *vn, void *vm,
++                     CPUARMState *env, uint32_t desc,
++                     ARMFPStatusFlavour fpst_idx,
++                     uint64_t negx, int negf)
+ {
++    float_status *fpst = &env->vfp.fp_status[fpst_idx];
++    bool fz16 = env->vfp.fpcr & FPCR_FZ16;
+     intptr_t i, oprsz = simd_oprsz(desc);
+     int is_2 = extract32(desc, SIMD_DATA_SHIFT + 1, 1);
+     int is_q = oprsz == 16;
+@@ -2154,8 +2158,7 @@ void HELPER(gvec_fmlal_a32)(void *vd, void *vn, void *vm,
+     bool is_s = extract32(desc, SIMD_DATA_SHIFT, 1);
      uint64_t negx = is_s ? 0x8000800080008000ull : 0;
  
-     do_fmlal(vd, vn, vm, &env->vfp.fp_status[FPST_STD], negx, 0, desc,
--             get_flush_inputs_to_zero(&env->vfp.fp_status[FPST_A32_F16]));
-+             env->vfp.fpcr & FPCR_FZ16);
+-    do_fmlal(vd, vn, vm, &env->vfp.fp_status[FPST_STD], negx, 0, desc,
+-             env->vfp.fpcr & FPCR_FZ16);
++    do_fmlal(vd, vn, vm, env, desc, FPST_STD, negx, 0);
  }
  
  void HELPER(gvec_fmlal_a64)(void *vd, void *vn, void *vm,
-@@ -2173,7 +2173,7 @@ void HELPER(gvec_fmlal_a64)(void *vd, void *vn, void *vm,
+@@ -2172,8 +2175,7 @@ void HELPER(gvec_fmlal_a64)(void *vd, void *vn, void *vm,
+             negx = 0x8000800080008000ull;
          }
      }
-     do_fmlal(vd, vn, vm, &env->vfp.fp_status[FPST_A64], negx, negf, desc,
--             get_flush_inputs_to_zero(&env->vfp.fp_status[FPST_A64_F16]));
-+             env->vfp.fpcr & FPCR_FZ16);
+-    do_fmlal(vd, vn, vm, &env->vfp.fp_status[FPST_A64], negx, negf, desc,
+-             env->vfp.fpcr & FPCR_FZ16);
++    do_fmlal(vd, vn, vm, env, desc, FPST_A64, negx, negf);
  }
  
  void HELPER(sve2_fmlal_zzzw_s)(void *vd, void *vn, void *vm, void *va,
-@@ -2183,7 +2183,7 @@ void HELPER(sve2_fmlal_zzzw_s)(void *vd, void *vn, void *vm, void *va,
-     bool is_s = extract32(desc, SIMD_DATA_SHIFT, 1);
-     intptr_t sel = extract32(desc, SIMD_DATA_SHIFT + 1, 1) * sizeof(float16);
-     float_status *status = &env->vfp.fp_status[FPST_A64];
--    bool fz16 = get_flush_inputs_to_zero(&env->vfp.fp_status[FPST_A64_F16]);
-+    bool fz16 = env->vfp.fpcr & FPCR_FZ16;
-     int negx = 0, negf = 0;
+@@ -2205,9 +2207,13 @@ void HELPER(sve2_fmlal_zzzw_s)(void *vd, void *vn, void *vm, void *va,
+     }
+ }
  
-     if (is_s) {
-@@ -2236,7 +2236,7 @@ void HELPER(gvec_fmlal_idx_a32)(void *vd, void *vn, void *vm,
+-static void do_fmlal_idx(float32 *d, void *vn, void *vm, float_status *fpst,
+-                         uint64_t negx, int negf, uint32_t desc, bool fz16)
++static void do_fmlal_idx(float32 *d, void *vn, void *vm,
++                         CPUARMState *env, uint32_t desc,
++                         ARMFPStatusFlavour fpst_idx,
++                         uint64_t negx, int negf)
+ {
++    float_status *fpst = &env->vfp.fp_status[fpst_idx];
++    bool fz16 = env->vfp.fpcr & FPCR_FZ16;
+     intptr_t i, oprsz = simd_oprsz(desc);
+     int is_2 = extract32(desc, SIMD_DATA_SHIFT + 1, 1);
+     int index = extract32(desc, SIMD_DATA_SHIFT + 2, 3);
+@@ -2235,8 +2241,7 @@ void HELPER(gvec_fmlal_idx_a32)(void *vd, void *vn, void *vm,
+     bool is_s = extract32(desc, SIMD_DATA_SHIFT, 1);
      uint64_t negx = is_s ? 0x8000800080008000ull : 0;
  
-     do_fmlal_idx(vd, vn, vm, &env->vfp.fp_status[FPST_STD], negx, 0, desc,
--                 get_flush_inputs_to_zero(&env->vfp.fp_status[FPST_A32_F16]));
-+                 env->vfp.fpcr & FPCR_FZ16);
+-    do_fmlal_idx(vd, vn, vm, &env->vfp.fp_status[FPST_STD], negx, 0, desc,
+-                 env->vfp.fpcr & FPCR_FZ16);
++    do_fmlal_idx(vd, vn, vm, env, desc, FPST_STD, negx, 0);
  }
  
  void HELPER(gvec_fmlal_idx_a64)(void *vd, void *vn, void *vm,
-@@ -2254,7 +2254,7 @@ void HELPER(gvec_fmlal_idx_a64)(void *vd, void *vn, void *vm,
+@@ -2253,8 +2258,7 @@ void HELPER(gvec_fmlal_idx_a64)(void *vd, void *vn, void *vm,
+             negx = 0x8000800080008000ull;
          }
      }
-     do_fmlal_idx(vd, vn, vm, &env->vfp.fp_status[FPST_A64], negx, negf, desc,
--                 get_flush_inputs_to_zero(&env->vfp.fp_status[FPST_A64_F16]));
-+                 env->vfp.fpcr & FPCR_FZ16);
+-    do_fmlal_idx(vd, vn, vm, &env->vfp.fp_status[FPST_A64], negx, negf, desc,
+-                 env->vfp.fpcr & FPCR_FZ16);
++    do_fmlal_idx(vd, vn, vm, env, desc, FPST_A64, negx, negf);
  }
  
  void HELPER(sve2_fmlal_zzxw_s)(void *vd, void *vn, void *vm, void *va,
-@@ -2265,7 +2265,7 @@ void HELPER(sve2_fmlal_zzxw_s)(void *vd, void *vn, void *vm, void *va,
-     intptr_t sel = extract32(desc, SIMD_DATA_SHIFT + 1, 1) * sizeof(float16);
-     intptr_t idx = extract32(desc, SIMD_DATA_SHIFT + 2, 3) * sizeof(float16);
-     float_status *status = &env->vfp.fp_status[FPST_A64];
--    bool fz16 = get_flush_inputs_to_zero(&env->vfp.fp_status[FPST_A64_F16]);
-+    bool fz16 = env->vfp.fpcr & FPCR_FZ16;
-     int negx = 0, negf = 0;
- 
-     if (is_s) {
 -- 
 2.43.0
 
