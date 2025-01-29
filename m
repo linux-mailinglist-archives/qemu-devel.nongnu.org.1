@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F212A21635
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 02:42:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AE6CA2161F
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 02:40:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcx2y-0000sA-4w; Tue, 28 Jan 2025 20:39:16 -0500
+	id 1tcx2z-0000tK-P3; Tue, 28 Jan 2025 20:39:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tcx2u-0000q3-Op
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:12 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1tcx2v-0000qf-GF
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:13 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tcx2t-0003X4-8c
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:12 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-216728b1836so104439885ad.0
- for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 17:39:10 -0800 (PST)
+ id 1tcx2t-0003XK-Ui
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:13 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-2166f1e589cso45644185ad.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 17:39:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1738114750; x=1738719550; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=N9C9MHfxTmFfsV2AIVVMljAT4X/LA6EAwI6JuJhSI5E=;
- b=hd7jcJ5c7wo3JRb+IbBBpq+7E0MDelD/rhMtjhFY2tFiP31mmYu7yNnZly6XGQszj/
- 76qQH6N2UxpWOfyooK6NOrltu7x467z6RrzsSxIHaTax6Smv9DVtuZVgEc1VZ/G9SRdJ
- 92oICvIKZebFGLQfUV6JfhDj+oFBW0N/tNiysdgYorMZ/W5SshJ3N00rahz0Kj4+cA4f
- EVCRB+rJiAOOkj7dTP1+NFBgP5l2dpBLNGKZwaRjxeZPmT5nshM2iIUuzF9jYcl648Br
- NNp5ZNyWpxJwQC+SDHHtAY0RMOiIpFU6T+X872IaCa+03Kve48MEsP5JgYN4Eb2HhNhJ
- 24JQ==
+ bh=GA8OMBaKoWm1dr2kAwaJfnYaqSkCIQYp9JiJNnvOmTg=;
+ b=roAFD/4CwyZcTTBCq51UFh9VYMT5K2oh6RLTCkoZjvr2ya71ZlBWbs9ZXedf+HlQAL
+ ZXsYhDvNm6ogY+ZDV/dn47DxpCK1+Cde3Uk3S6Hrzg7k9YQ/TMSKw3KTUVBHiQw6yxpn
+ oSZzLZxZnoRY9HeVPej6gNgX6Xb7ZfQhI/HPFGQS0WZrlS4ajQGlkVrcm63n/sPKSMHX
+ kx4gSWbp3Hw3u/PmJrQWEUGgyirI0IemTZKFWDXEMRJKC+b9WFzmAbeF8ma6UcsHQdq4
+ YTuv+lP9+zvBh47GajcdjRc/LRzPHhhxG+g4adJT/HPzuFZQBdaXValj8dMJCDAanxuK
+ wdRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1738114750; x=1738719550;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=N9C9MHfxTmFfsV2AIVVMljAT4X/LA6EAwI6JuJhSI5E=;
- b=CL1zgI2Ggt5npLXKSoRy7jDSgbX/pXtQ/gjV/kGF9V48EZV40vzdUgXIiCIu1O+DPf
- C/nIRFpWBJ93MXcrxsSySwI9k7T5TX8uSAbMahr6EU8DwPNaXg/WXXppz469MCh7Ve3n
- +VK1Q0hyBoOs4zpYYLrFk2Ye/GiWCE8R3kQSnR4qOAbhcnMYKSQkvEQCwzBnlIjg+ij0
- wvngb2+sQ+BBlfK5CTmE6fjZGwEflZBAaI0/O/dyo2SesDegulBFD3roCclxtWSWT1q9
- 6IfKkMjfn8tPAi/NelXbwganYb2y4pkHLHnRUjDElXlmtL0xBam3087HKzGLNpIzCW3T
- 8eHw==
-X-Gm-Message-State: AOJu0YzZpaelSNhzHVwdyT86G3U7I2EGpraZi55uUOKd3HLeR0VVARoP
- scwZIdixDDoC/WoLcFipa2GLkOzvna13bKRw/jktdYGvanUtNvUFLjCgHOu250HPtS2X2QjmOXU
- q
-X-Gm-Gg: ASbGnct7bu4CnrB/z2FFbM8n4rVXiXYZn2xEKSbLLKH01LiOOxfBTOJ4Lc5pEtDiA/X
- I4DEXqLcxwpnyflBxgkrWZRj6CtksBSjqsplIt3fHDEGpbVU0X/LY8uuhJDkV4g/mEudKC6wsmP
- rSzLvjgfHdMwuarBubKOrQshF9NSSyOYMv3DnRArJkH74r9kMMva0JpOG1rJQVBt/ukm69HBjUk
- 2Gb3SoKs+ZS/4BzXYmdmvIPlMK6oZYFrBDIMK3J5yEeKc/CGGwQM/pHAxom8AiROT4T/6VM02v4
- 5swcVzFmj4XcgZvWZ0NuirQcKLTG6iZ7aF3sWyBzMgb9j96YYg==
-X-Google-Smtp-Source: AGHT+IEhq7xhkbErDZoSfynCEYjPrD0h+HxgBUD4zWjJYo3cYmycGzraZqlogAWGSv1I8dhK2/+sGg==
-X-Received: by 2002:a17:903:2406:b0:216:728b:15d8 with SMTP id
- d9443c01a7336-21dd7d7b0fcmr18423825ad.30.1738114749847; 
- Tue, 28 Jan 2025 17:39:09 -0800 (PST)
+ bh=GA8OMBaKoWm1dr2kAwaJfnYaqSkCIQYp9JiJNnvOmTg=;
+ b=AjZzfQC8VUqd2wlY0kLk2hzuGsEGZFuRNfyetN7DPVl+sYw8iDAg9THzhkEyPCQ7ZT
+ qxCTt3Y4MhZHFe9FR86D7R5oicZzVLHl7USguUgP5qqlsRUyRg7IwVKcPvmHWYw3V3c1
+ 39minNZOQBCL3VM5Nl81btUiF2K+mubAtk3CwmAHOfH/GjI7ZdjaGO+IcMh7J362zi+t
+ eEYKImsmX8Cos9Po5JsXS5ozmue6ki3WhNYXtxdzwsel/iH2HzW6uVKzVv0Wb3JS8sA2
+ eFqMQfBaIs5prGGsY1vOgpvpbeUbassIq+G5JzJRQELgjkZGCBVCozsFwt8MOnthY/Hk
+ c0sA==
+X-Gm-Message-State: AOJu0YzSOYGOqg+iYpC++jGb+XLFdVZSr9CWXdAb9jNFKMPsj8/fLjMa
+ BGPAnIGvM2AYKs1IRTbqcWrj2EPddJBvbwFIgAwctxQyeKmH41Ag/DCkioNboezvlBiHaCQNzsV
+ Y
+X-Gm-Gg: ASbGncvbwEyWBksZFWaB10s9ad3WIwaeEKjS8f8phTrduAUQpO6+cm7Vxo48XiCceTH
+ uGr11TRIsaZqa/BnK32isnBR+spvmabxroYmw5LqObOTZHRWFvJEmGAb5D4bn3nJ9KmlR/EZxRg
+ 5DuLCHhRcF8SRxPoaw2GIIWILH7T4xsz3VWjX0uxyeH8JhxvgcA7KEmv9emBga6MKYPDfywcMgp
+ 34ercPfA49TxbOOI/87+VuJYfw6tnytQu6/191VRwQXonOeWcqONHJ7v3jCHYadGMXegdfvu2c8
+ h/tJsrDRX/TgNgGhVbnNj0HmVlhuhUjEBTmRH0pTsX6Z0L2QGA==
+X-Google-Smtp-Source: AGHT+IF+oL8ssgO+RQg4KFHvb5WP2QMCKOZIDFhJtl4xLwG2rpz2Vv9pywV3/7NX4IshlYOQnd7ncw==
+X-Received: by 2002:a17:903:2a8b:b0:215:97c5:52b4 with SMTP id
+ d9443c01a7336-21dd7dccd5amr18064725ad.39.1738114750658; 
+ Tue, 28 Jan 2025 17:39:10 -0800 (PST)
 Received: from stoup.. (71-212-32-190.tukw.qwest.net. [71.212.32.190])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21da3ea4200sm89341745ad.88.2025.01.28.17.39.09
+ d9443c01a7336-21da3ea4200sm89341745ad.88.2025.01.28.17.39.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Jan 2025 17:39:09 -0800 (PST)
+ Tue, 28 Jan 2025 17:39:10 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH v2 16/34] target/arm: Simplify DO_VFP_cmp in vfp_helper.c
-Date: Tue, 28 Jan 2025 17:38:39 -0800
-Message-ID: <20250129013857.135256-17-richard.henderson@linaro.org>
+Subject: [PATCH v2 17/34] target/arm: Move float*_ah_chs to vec_internal.h
+Date: Tue, 28 Jan 2025 17:38:40 -0800
+Message-ID: <20250129013857.135256-18-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250129013857.135256-1-richard.henderson@linaro.org>
 References: <20250129013857.135256-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,39 +97,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pass ARMFPStatusFlavour index instead of fp_status[FOO].
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/vfp_helper.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ target/arm/tcg/vec_internal.h | 20 ++++++++++++++++++++
+ target/arm/tcg/helper-a64.c   | 15 +--------------
+ 2 files changed, 21 insertions(+), 14 deletions(-)
 
-diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
-index a2775a2e8d..4e242275e7 100644
---- a/target/arm/vfp_helper.c
-+++ b/target/arm/vfp_helper.c
-@@ -487,16 +487,16 @@ static void softfloat_to_vfp_compare(CPUARMState *env, FloatRelation cmp)
- void VFP_HELPER(cmp, P)(ARGTYPE a, ARGTYPE b, CPUARMState *env)  \
- { \
-     softfloat_to_vfp_compare(env, \
--        FLOATTYPE ## _compare_quiet(a, b, &env->vfp.FPST)); \
-+        FLOATTYPE ## _compare_quiet(a, b, &env->vfp.fp_status[FPST])); \
- } \
- void VFP_HELPER(cmpe, P)(ARGTYPE a, ARGTYPE b, CPUARMState *env) \
- { \
-     softfloat_to_vfp_compare(env, \
--        FLOATTYPE ## _compare(a, b, &env->vfp.FPST)); \
-+        FLOATTYPE ## _compare(a, b, &env->vfp.fp_status[FPST])); \
- }
--DO_VFP_cmp(h, float16, dh_ctype_f16, fp_status[FPST_A32_F16])
--DO_VFP_cmp(s, float32, float32, fp_status[FPST_A32])
--DO_VFP_cmp(d, float64, float64, fp_status[FPST_A32])
-+DO_VFP_cmp(h, float16, dh_ctype_f16, FPST_A32_F16)
-+DO_VFP_cmp(s, float32, float32, FPST_A32)
-+DO_VFP_cmp(d, float64, float64, FPST_A32)
- #undef DO_VFP_cmp
+diff --git a/target/arm/tcg/vec_internal.h b/target/arm/tcg/vec_internal.h
+index 094f5c169c..a673935f48 100644
+--- a/target/arm/tcg/vec_internal.h
++++ b/target/arm/tcg/vec_internal.h
+@@ -20,6 +20,8 @@
+ #ifndef TARGET_ARM_VEC_INTERNAL_H
+ #define TARGET_ARM_VEC_INTERNAL_H
  
- /* Integer to float and float to integer conversions */
++#include "fpu/softfloat.h"
++
+ /*
+  * Note that vector data is stored in host-endian 64-bit chunks,
+  * so addressing units smaller than that needs a host-endian fixup.
+@@ -265,4 +267,22 @@ float32 bfdotadd_ebf(float32 sum, uint32_t e1, uint32_t e2,
+  */
+ bool is_ebf(CPUARMState *env, float_status *statusp, float_status *oddstatusp);
+ 
++/*
++ * Negate as for FPCR.AH=1 -- do not negate NaNs.
++ */
++static inline float16 float16_ah_chs(float16 a)
++{
++    return float16_is_any_nan(a) ? a : float16_chs(a);
++}
++
++static inline float32 float32_ah_chs(float32 a)
++{
++    return float32_is_any_nan(a) ? a : float32_chs(a);
++}
++
++static inline float64 float64_ah_chs(float64 a)
++{
++    return float64_is_any_nan(a) ? a : float64_chs(a);
++}
++
+ #endif /* TARGET_ARM_VEC_INTERNAL_H */
+diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
+index ba21efd0bb..dc96c92a21 100644
+--- a/target/arm/tcg/helper-a64.c
++++ b/target/arm/tcg/helper-a64.c
+@@ -38,6 +38,7 @@
+ #ifdef CONFIG_USER_ONLY
+ #include "user/page-protection.h"
+ #endif
++#include "vec_internal.h"
+ 
+ /* C2.4.7 Multiply and divide */
+ /* special cases for 0 and LLONG_MIN are mandated by the standard */
+@@ -208,20 +209,6 @@ uint64_t HELPER(neon_cgt_f64)(float64 a, float64 b, float_status *fpst)
+     return -float64_lt(b, a, fpst);
+ }
+ 
+-static float16 float16_ah_chs(float16 a)
+-{
+-    return float16_is_any_nan(a) ? a : float16_chs(a);
+-}
+-
+-static float32 float32_ah_chs(float32 a)
+-{
+-    return float32_is_any_nan(a) ? a : float32_chs(a);
+-}
+-
+-static float64 float64_ah_chs(float64 a)
+-{
+-    return float64_is_any_nan(a) ? a : float64_chs(a);
+-}
+ /*
+  * Reciprocal step and sqrt step. Note that unlike the A32/T32
+  * versions, these do a fully fused multiply-add or
 -- 
 2.43.0
 
