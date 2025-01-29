@@ -2,111 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59B1AA22128
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 17:04:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3240A22173
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 17:12:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdAWH-000405-3p; Wed, 29 Jan 2025 11:02:25 -0500
+	id 1tdAXO-0005F9-Nk; Wed, 29 Jan 2025 11:03:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVT-0003H1-Li
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVV-0003HE-AM
  for qemu-devel@nongnu.org; Wed, 29 Jan 2025 11:01:39 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVR-0005HO-Ta
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 11:01:35 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVT-0005Hg-6i
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 11:01:37 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id BEAF0210F3;
- Wed, 29 Jan 2025 16:01:31 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 8B9661F383;
+ Wed, 29 Jan 2025 16:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738166491; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1738166493; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Uy4hgmfN5vGrY2cpQdOG8KFL5MAiz+JVZWyxkqK9XgY=;
- b=e9FSWlHF8M/Lpx2BtjVjw72OA1xQbQnyB/yM6P7bpwaKvJXMiVE5EmOzHrI91jtAmfJwIM
- Fx8dEW9ZMdvK8nb7iaxOYT4bDaCesQ0TgnQ1AoacRbWUw8U7PHZK0waygFO0D814EKH0CB
- GUXMGuPHIC9NCUu1N1QU9GHwcpLWEcQ=
+ bh=TUnVXpFQqxzjBZXmvQTIkTsUNjcdzug5M7k2BEjvNoA=;
+ b=TSKWmTIQ56yNCM13wPSFmspGltRJ9iRe2PEccMUXQVnjrlnRtuUCajKQrWOefuAuBBpQ5G
+ Lx3h9mxVvb3Y0kuAcSw6B6YN3qWQzIHJ/2r/4Wdv+RKTC7fY2rSB8zlzFE5Et+eRFksbWa
+ VGbHoqTNirSM5SF2AQ6ah/xCo5TLaVY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738166491;
+ s=susede2_ed25519; t=1738166493;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Uy4hgmfN5vGrY2cpQdOG8KFL5MAiz+JVZWyxkqK9XgY=;
- b=VlP95H8Uvb6NTMUHGJZyN13Yk2e4fG+0GQkI2Ml+jgIMlw1iWWdeTtrDxCKYzqRiScrFlG
- uBKJCUvw6xwvb9BA==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e9FSWlHF;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=VlP95H8U
+ bh=TUnVXpFQqxzjBZXmvQTIkTsUNjcdzug5M7k2BEjvNoA=;
+ b=Dy2CKKNO0AbM2qLHhl/17rjv9IcCqGg3VX8UJtUNT68qPvWrDV+M1AL3eY64561pZvUlxd
+ ogJYzqzMCvPCh0BA==
+Authentication-Results: smtp-out2.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738166491; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1738166493; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Uy4hgmfN5vGrY2cpQdOG8KFL5MAiz+JVZWyxkqK9XgY=;
- b=e9FSWlHF8M/Lpx2BtjVjw72OA1xQbQnyB/yM6P7bpwaKvJXMiVE5EmOzHrI91jtAmfJwIM
- Fx8dEW9ZMdvK8nb7iaxOYT4bDaCesQ0TgnQ1AoacRbWUw8U7PHZK0waygFO0D814EKH0CB
- GUXMGuPHIC9NCUu1N1QU9GHwcpLWEcQ=
+ bh=TUnVXpFQqxzjBZXmvQTIkTsUNjcdzug5M7k2BEjvNoA=;
+ b=TSKWmTIQ56yNCM13wPSFmspGltRJ9iRe2PEccMUXQVnjrlnRtuUCajKQrWOefuAuBBpQ5G
+ Lx3h9mxVvb3Y0kuAcSw6B6YN3qWQzIHJ/2r/4Wdv+RKTC7fY2rSB8zlzFE5Et+eRFksbWa
+ VGbHoqTNirSM5SF2AQ6ah/xCo5TLaVY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738166491;
+ s=susede2_ed25519; t=1738166493;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Uy4hgmfN5vGrY2cpQdOG8KFL5MAiz+JVZWyxkqK9XgY=;
- b=VlP95H8Uvb6NTMUHGJZyN13Yk2e4fG+0GQkI2Ml+jgIMlw1iWWdeTtrDxCKYzqRiScrFlG
- uBKJCUvw6xwvb9BA==
+ bh=TUnVXpFQqxzjBZXmvQTIkTsUNjcdzug5M7k2BEjvNoA=;
+ b=Dy2CKKNO0AbM2qLHhl/17rjv9IcCqGg3VX8UJtUNT68qPvWrDV+M1AL3eY64561pZvUlxd
+ ogJYzqzMCvPCh0BA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 759F2137DB;
- Wed, 29 Jan 2025 16:01:30 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 42572137DB;
+ Wed, 29 Jan 2025 16:01:32 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id cHecDdpQmmffPAAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 29 Jan 2025 16:01:30 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id AJQLAdxQmmffPAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 29 Jan 2025 16:01:32 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
 	Steve Sistare <steven.sistare@oracle.com>
-Subject: [PULL 12/42] migration: enhance migrate_uri_parse
-Date: Wed, 29 Jan 2025 13:00:29 -0300
-Message-Id: <20250129160059.6987-13-farosas@suse.de>
+Subject: [PULL 13/42] migration: incoming channel
+Date: Wed, 29 Jan 2025 13:00:30 -0300
+Message-Id: <20250129160059.6987-14-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250129160059.6987-1-farosas@suse.de>
 References: <20250129160059.6987-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BEAF0210F3
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; MIME_TRACE(0.00)[0:+];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- TO_DN_SOME(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_HAS_DN(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,suse.de:email,suse.de:dkim,suse.de:mid];
- RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- RCPT_COUNT_THREE(0.00)[3];
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.01
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,oracle.com:email];
+ RCVD_TLS_ALL(0.00)[]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -132,78 +120,186 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-Export migrate_uri_parse for use outside migration internals, and define
-a method migrate_is_uri that indicates when migrate_uri_parse should
-be used.
+Extend the -incoming option to allow an @MigrationChannel to be specified.
+This allows channels other than 'main' to be described on the command
+line, which will be needed for CPR.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Link: https://lore.kernel.org/r/1736967650-129648-12-git-send-email-steven.sistare@oracle.com
+Acked-by: Peter Xu <peterx@redhat.com>
+Link: https://lore.kernel.org/r/1736967650-129648-13-git-send-email-steven.sistare@oracle.com
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- include/migration/misc.h |  7 +++++++
- migration/migration.c    | 11 +++++++++++
- migration/migration.h    |  2 --
- 3 files changed, 18 insertions(+), 2 deletions(-)
+ migration/migration.c | 21 ++++++++++++++++-----
+ qemu-options.hx       | 21 +++++++++++++++++++++
+ system/vl.c           | 36 +++++++++++++++++++++++++++++++++---
+ 3 files changed, 70 insertions(+), 8 deletions(-)
 
-diff --git a/include/migration/misc.h b/include/migration/misc.h
-index 67f7ef7a0e..c660be8095 100644
---- a/include/migration/misc.h
-+++ b/include/migration/misc.h
-@@ -108,4 +108,11 @@ bool migration_in_bg_snapshot(void);
- bool migration_block_activate(Error **errp);
- bool migration_block_inactivate(void);
- 
-+/* True if @uri starts with a syntactically valid URI prefix */
-+bool migrate_is_uri(const char *uri);
-+
-+/* Parse @uri and return @channel, returning true on success */
-+bool migrate_uri_parse(const char *uri, MigrationChannel **channel,
-+                       Error **errp);
-+
- #endif
 diff --git a/migration/migration.c b/migration/migration.c
-index fce7b22ae8..b5ee98e691 100644
+index b5ee98e691..5f2540fac3 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -14,6 +14,7 @@
-  */
+@@ -695,7 +695,8 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
+     if (channels) {
+         /* To verify that Migrate channel list has only item */
+         if (channels->next) {
+-            error_setg(errp, "Channel list has more than one entries");
++            error_setg(errp, "Channel list must have only one entry, "
++                             "for type 'main'");
+             return;
+         }
+         addr = channels->value->addr;
+@@ -2054,6 +2055,7 @@ void qmp_migrate(const char *uri, bool has_channels,
+     MigrationState *s = migrate_get_current();
+     g_autoptr(MigrationChannel) channel = NULL;
+     MigrationAddress *addr = NULL;
++    MigrationChannel *channelv[MIGRATION_CHANNEL_TYPE__MAX] = { NULL };
  
- #include "qemu/osdep.h"
-+#include "qemu/ctype.h"
- #include "qemu/cutils.h"
- #include "qemu/error-report.h"
- #include "qemu/main-loop.h"
-@@ -587,6 +588,16 @@ void migrate_add_address(SocketAddress *address)
-                       QAPI_CLONE(SocketAddress, address));
+     /*
+      * Having preliminary checks for uri and channel
+@@ -2064,12 +2066,21 @@ void qmp_migrate(const char *uri, bool has_channels,
+     }
+ 
+     if (channels) {
+-        /* To verify that Migrate channel list has only item */
+-        if (channels->next) {
+-            error_setg(errp, "Channel list has more than one entries");
++        for ( ; channels; channels = channels->next) {
++            MigrationChannelType type = channels->value->channel_type;
++
++            if (channelv[type]) {
++                error_setg(errp, "Channel list has more than one %s entry",
++                           MigrationChannelType_str(type));
++                return;
++            }
++            channelv[type] = channels->value;
++        }
++        addr = channelv[MIGRATION_CHANNEL_TYPE_MAIN]->addr;
++        if (!addr) {
++            error_setg(errp, "Channel list has no main entry");
+             return;
+         }
+-        addr = channels->value->addr;
+     }
+ 
+     if (uri) {
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 90fad31590..3d1af7325b 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -4940,10 +4940,18 @@ DEF("incoming", HAS_ARG, QEMU_OPTION_incoming, \
+     "-incoming exec:cmdline\n" \
+     "                accept incoming migration on given file descriptor\n" \
+     "                or from given external command\n" \
++    "-incoming <channel>\n" \
++    "                accept incoming migration on the migration channel\n" \
+     "-incoming defer\n" \
+     "                wait for the URI to be specified via migrate_incoming\n",
+     QEMU_ARCH_ALL)
+ SRST
++The -incoming option specifies the migration channel for an incoming
++migration.  It may be used multiple times to specify multiple
++migration channel types.  The channel type is specified in <channel>,
++or is 'main' for all other forms of -incoming.  If multiple -incoming
++options are specified for a channel type, the last one takes precedence.
++
+ ``-incoming tcp:[host]:port[,to=maxport][,ipv4=on|off][,ipv6=on|off]``
+   \ 
+ ``-incoming rdma:host:port[,ipv4=on|off][,ipv6=on|off]``
+@@ -4963,6 +4971,19 @@ SRST
+     Accept incoming migration as an output from specified external
+     command.
+ 
++``-incoming <channel>``
++    Accept incoming migration on the migration channel.  For the syntax
++    of <channel>, see the QAPI documentation of ``MigrationChannel``.
++    Examples:
++    ::
++
++        -incoming '{"channel-type": "main",
++                    "addr": { "transport": "socket",
++                              "type": "unix",
++                              "path": "my.sock" }}'
++
++        -incoming main,addr.transport=socket,addr.type=unix,addr.path=my.sock
++
+ ``-incoming defer``
+     Wait for the URI to be specified via migrate\_incoming. The monitor
+     can be used to change settings (such as migration parameters) prior
+diff --git a/system/vl.c b/system/vl.c
+index c567826718..504f05b954 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -123,6 +123,7 @@
+ #include "qapi/qapi-visit-block-core.h"
+ #include "qapi/qapi-visit-compat.h"
+ #include "qapi/qapi-visit-machine.h"
++#include "qapi/qapi-visit-migration.h"
+ #include "qapi/qapi-visit-ui.h"
+ #include "qapi/qapi-commands-block-core.h"
+ #include "qapi/qapi-commands-migration.h"
+@@ -159,6 +160,8 @@ typedef struct DeviceOption {
+ static const char *cpu_option;
+ static const char *mem_path;
+ static const char *incoming;
++static const char *incoming_str[MIGRATION_CHANNEL_TYPE__MAX];
++static MigrationChannel *incoming_channels[MIGRATION_CHANNEL_TYPE__MAX];
+ static const char *loadvm;
+ static const char *accelerators;
+ static bool have_custom_ram_size;
+@@ -1813,6 +1816,30 @@ static void object_option_add_visitor(Visitor *v)
+     QTAILQ_INSERT_TAIL(&object_opts, opt, next);
  }
  
-+bool migrate_is_uri(const char *uri)
++static void incoming_option_parse(const char *str)
 +{
-+    while (*uri && *uri != ':') {
-+        if (!qemu_isalpha(*uri++)) {
-+            return false;
-+        }
++    MigrationChannelType type = MIGRATION_CHANNEL_TYPE_MAIN;
++    MigrationChannel *channel;
++    Visitor *v;
++
++    if (!strcmp(str, "defer")) {
++        channel = NULL;
++    } else if (migrate_is_uri(str)) {
++        migrate_uri_parse(str, &channel, &error_fatal);
++    } else {
++        v = qobject_input_visitor_new_str(str, "channel-type", &error_fatal);
++        visit_type_MigrationChannel(v, NULL, &channel, &error_fatal);
++        visit_free(v);
++        type = channel->channel_type;
 +    }
-+    return *uri == ':';
++
++    /* New incoming spec replaces the previous */
++    qapi_free_MigrationChannel(incoming_channels[type]);
++    incoming_channels[type] = channel;
++    incoming_str[type] = str;
++    incoming = incoming_str[MIGRATION_CHANNEL_TYPE_MAIN];
 +}
 +
- bool migrate_uri_parse(const char *uri, MigrationChannel **channel,
-                        Error **errp)
+ static void object_option_parse(const char *str)
  {
-diff --git a/migration/migration.h b/migration/migration.h
-index 0df2a187af..1d4d4e910d 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -519,8 +519,6 @@ bool check_dirty_bitmap_mig_alias_map(const BitmapMigrationNodeAliasList *bbm,
-                                       Error **errp);
- 
- void migrate_add_address(SocketAddress *address);
--bool migrate_uri_parse(const char *uri, MigrationChannel **channel,
--                       Error **errp);
- int foreach_not_ignored_block(RAMBlockIterFunc func, void *opaque);
- 
- #define qemu_ram_foreach_block \
+     QemuOpts *opts;
+@@ -2738,8 +2765,11 @@ void qmp_x_exit_preconfig(Error **errp)
+     if (incoming) {
+         Error *local_err = NULL;
+         if (strcmp(incoming, "defer") != 0) {
+-            qmp_migrate_incoming(incoming, false, NULL, true, true,
+-                                 &local_err);
++            g_autofree MigrationChannelList *channels =
++                g_new0(MigrationChannelList, 1);
++
++            channels->value = incoming_channels[MIGRATION_CHANNEL_TYPE_MAIN];
++            qmp_migrate_incoming(NULL, true, channels, true, true, &local_err);
+             if (local_err) {
+                 error_reportf_err(local_err, "-incoming %s: ", incoming);
+                 exit(1);
+@@ -3458,7 +3488,7 @@ void qemu_init(int argc, char **argv)
+                 if (!incoming) {
+                     runstate_set(RUN_STATE_INMIGRATE);
+                 }
+-                incoming = optarg;
++                incoming_option_parse(optarg);
+                 break;
+             case QEMU_OPTION_only_migratable:
+                 only_migratable = 1;
 -- 
 2.35.3
 
