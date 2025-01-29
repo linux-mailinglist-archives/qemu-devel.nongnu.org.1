@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D215A21645
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 02:43:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7F3A21640
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 02:43:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcx33-0000w2-OY; Tue, 28 Jan 2025 20:39:21 -0500
+	id 1tcx32-0000vV-S4; Tue, 28 Jan 2025 20:39:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tcx2z-0000tP-Is
+ id 1tcx2z-0000tO-Ib
  for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:17 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tcx2x-0003Yr-8R
+ id 1tcx2x-0003Yy-Og
  for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:17 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-21644aca3a0so147261225ad.3
- for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 17:39:14 -0800 (PST)
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-21634338cfdso44093865ad.2
+ for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 17:39:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1738114754; x=1738719554; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nJTNbmpjm1t2F0hdmChz/KqvE/wI6eg6xILc2dV+/BY=;
- b=jxyN8QYiqwFkmpiUmH9xAE8FHa746e73uhOpeTOZ3xvgDJ7dA2SP6vmwHPw379LLyj
- JLCtSU7ddiYVF8nij57Xc8As5uSFONLcGf2avpCbl48kCV9U0Bw5hDyrKkfClrXa2wqJ
- jJoCUzOwbomImiox3nGQGF1MW3o83Tm0ydaGYeVFlgOjKZbkxjUAB6Tg17jkR5iPzyMR
- j1+NI29Y7ahMowN5PmTFo6qrw1DSrgKKF2aYJuFki8JMUmrc0I3AnaVidSpxiAdJ5LEf
- KuVfeURE+/ke0AFcp48vuo2e2muiijHS6Qln7UK9kV3izI5CB2AsqqoJqgwIJ1Pv6Yfy
- iAZw==
+ bh=jQXFLumUgBbRiy8BtW3KvH3FB2G39x8TUOHn6sQx/Go=;
+ b=fsrAwtHO3Gir1MYSrWFr2nL6AL8joc9UHdHEeIOdgBhLCFCuP7vUH2PvnLEUx7fBN3
+ kauKPjsn4P00+LcrQzEV1qV5TAYdg92g4d2/F58L7jSXd+3rgoEKwlSXH7h+ebJusEFd
+ hsWTIzXXu51aJGwst4fzXPFVAwOAz4PjhmwbS8dojQi+MwWF7AouorASQuCa/5P2KbR+
+ KppWzAPkpecyDgaJXtEt+YWen735iwhc4LeMGLf4K1Dy+aa0X0AGaXcnA+tJIILgmRen
+ huYbdiLcZn+QjlWpSZKO2pLbVuxFQmNB2uqzRe1AknFMHnBxT0lw4h6o6D82Txu8cpBU
+ Ji4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1738114754; x=1738719554;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nJTNbmpjm1t2F0hdmChz/KqvE/wI6eg6xILc2dV+/BY=;
- b=U67uPK5tYt4gMx6VlBkJIgTlUQtW5DyYaic4h0b5FdT6Xp9lp8TOQ8modbmVtBdYJt
- ww75PK1BmHrWR0dNEtYfKpZs5x7pRJfl7rKmTTmxT5i0XOkCcGNLzqIrA7HnfNnLTsQZ
- uS1Hdt9K8MQ84DJSuFmI8xaPUyS/0L1MIVrjQPxLMWGbmvDmMUBrI6FTJdnoByXcPRkT
- IiZRbrQ9iEmcA4pznPxPhoVATg4WpVjcCIMdS5xag1MmJhJo9R5336H+sqWBZAy49Sin
- kgsiFd+D6ME1Mbg5373adXqR4E0U8lHFXjw4D+Xey2BoJ9trpg9fgyEIAX0MFI66z3ho
- w97A==
-X-Gm-Message-State: AOJu0Yztr9ZrTv0JArRjY3WO56VQRmk3NLZ9XiC7VPfEJgxZEBmovUvd
- rJoe5xAQliHEidNTA+KKWG3/oDOPDdqFajvxoMBDZz3Y8JedR/UNZqUN8Ul3Ny0EUDsI+Yvkvqj
- h
-X-Gm-Gg: ASbGnctdIiwdPWBmy27i+QRlh4NBD1lHOyVJyY468qS/16l7hdjTfnwJ7f1nIUAG7E2
- LwoiyZtytLNUcscDxnbZA8X1yclvALNUc9KFi09gBF56y3zynOkgR23Bx5lh4PwzVL4GbCVd9FX
- P8j4hcoGbL+Ue6QgYaYuWeZcX/hjA3/i5hVB7rMLwFyd1Czg2Hd0xe43fqWg1bR5ui9SA637Hh2
- lK2BAK6jduJ0SVJ3W83EFfgwoRQA4w1+ZDI7Q9BwpbvmUqM10BiBtmQ+Y9LSyq2GK8TKZpRZBqK
- ZmvTlO8dnskfXTDlgIMZhwH27RY+JrZInKEL5Qnuahs+3arZYFIvuZ3MUsoq
-X-Google-Smtp-Source: AGHT+IHBAeLR10K0ZtSVs0fsqvGuHL27TY92W8sG8+M3fiEEU9dcFmjcJmlKa0IEyBd6a02kHlV3yA==
-X-Received: by 2002:a17:902:dacb:b0:216:1357:8df8 with SMTP id
- d9443c01a7336-21dd7de15famr19978355ad.43.1738114753973; 
- Tue, 28 Jan 2025 17:39:13 -0800 (PST)
+ bh=jQXFLumUgBbRiy8BtW3KvH3FB2G39x8TUOHn6sQx/Go=;
+ b=vMCxlyFfqw+PGNHlva+eoV7+h7/Iee0qqWjNBbxGKQEYh3hleJozdhsBHdPVtiVoC0
+ +dCetnAau2yu2txf5ibD8aI+mPnwVD11KMobiSJlguEQTSqn7ySXrjOu7Mk+IAhQLdAh
+ kgBxIy8Beo9WW/kdLcfjuvwo/sTiSjNZcj7WWtdE+ZGtVSGPvte071ABKysNuPbH9TKk
+ DU4fdWuC4xtBP6QpxmZSgFaoh1HBA1zHYZeDp3QMfkZ01AEgLwH9pBUZ23mPInicZ4mC
+ ZqgVg47uxgFl2HWgWM/kCmcQiG3uIvkVmne9VXGwl3UTHrsAP7aY7dKbmLcqSPmNu8tW
+ Dvpg==
+X-Gm-Message-State: AOJu0YzENSUKj9MIhKHwlJlqfAZcLjIn96K5j0yK1K2Zcz6FuqOKu95b
+ lGQfPpdRBye4jQY2VUX+GO3YEEbUe2d4lX3lAt1UO7aLbUtudKSIw3fPLC8C/OmdmbxoXXMpngt
+ W
+X-Gm-Gg: ASbGncvQMLx9Hpwg6dvVjyoPVztNGxMpGQZ54aEcjpwSNYFKkm5y+phbCvSfPMlP2kS
+ u4CqvKIr2h86SeJd4yH/PEre+B92EPAj/F01ukWzNF7CklfEJis04gZ6R3+5at3zLodGpOHaqXM
+ +b3a5+v0289uPBhBSKqRZm1DZC+LvwqzUVf9QFvX1oRq+R9GIBK+S5J7wswA9h2s11jVTfcFPYS
+ 1Mv/BGlE1TyItFciGK7Xe/mlC8Fy6TIFSwvQ3NtvIeC5Y4e2mWc0J/0JX/LIw5/i1VzXYc1B1Kg
+ jlm6fmc7KQopLnu2sWmw3ds5B04TRXMUGEEgkQ+A6QEyr7O+Sw==
+X-Google-Smtp-Source: AGHT+IEw2hFSwq1VkiJYmyKAUsz4MsToHRcu3D3kFvVGA3ru93gmvzIsPrVnnRSpD6+DFUpYdpzKrA==
+X-Received: by 2002:a17:902:f70f:b0:212:996:353a with SMTP id
+ d9443c01a7336-21dd7c653acmr23480455ad.12.1738114754551; 
+ Tue, 28 Jan 2025 17:39:14 -0800 (PST)
 Received: from stoup.. (71-212-32-190.tukw.qwest.net. [71.212.32.190])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21da3ea4200sm89341745ad.88.2025.01.28.17.39.13
+ d9443c01a7336-21da3ea4200sm89341745ad.88.2025.01.28.17.39.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Jan 2025 17:39:13 -0800 (PST)
+ Tue, 28 Jan 2025 17:39:14 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH v2 22/34] target/arm: Use flags for AH negation in
- do_fmla_zpzzz_*
-Date: Tue, 28 Jan 2025 17:38:45 -0800
-Message-ID: <20250129013857.135256-23-richard.henderson@linaro.org>
+Subject: [PATCH v2 23/34] target/arm: Use flags for AH negation in sve_ftmad_*
+Date: Tue, 28 Jan 2025 17:38:46 -0800
+Message-ID: <20250129013857.135256-24-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250129013857.135256-1-richard.henderson@linaro.org>
 References: <20250129013857.135256-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,269 +97,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The float*_muladd functions have a flags argument that can
-perform optional negation of various operand.  We don't use
-that for "normal" arm fmla, because the muladd flags are not
-applied when an input is a NaN.  But since FEAT_AFP does not
-negate NaNs, this behaviour is exactly what we need.
-
-Since we have separate helper entry points for the various
-fmla, fmls, fnmla, fnmls instructions, it's easy to just
-pass down the exact values required so that no conditional
-branch is required within the inner loop.
+Because the operand is known to be negative, negating the operand
+is the same as taking the absolute value.  Defer this to the muladd
+operation via flags, so that it happens after NaN detection, which
+is correct for FPCR.AH.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/sve_helper.c | 93 +++++++++++++++++--------------------
- 1 file changed, 42 insertions(+), 51 deletions(-)
+ target/arm/tcg/sve_helper.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
 diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index a1f7743221..a01613f079 100644
+index a01613f079..c12b2600bd 100644
 --- a/target/arm/tcg/sve_helper.c
 +++ b/target/arm/tcg/sve_helper.c
-@@ -4814,7 +4814,7 @@ DO_ZPZ_FP(flogb_d, float64, H1_8, do_float64_logb_as_int)
- 
- static void do_fmla_zpzzz_h(void *vd, void *vn, void *vm, void *va, void *vg,
-                             float_status *status, uint32_t desc,
--                            uint16_t neg1, uint16_t neg3, bool fpcr_ah)
-+                            uint16_t neg1, uint16_t neg3, int flags)
- {
-     intptr_t i = simd_oprsz(desc);
-     uint64_t *g = vg;
-@@ -4826,16 +4826,10 @@ static void do_fmla_zpzzz_h(void *vd, void *vn, void *vm, void *va, void *vg,
-             if (likely((pg >> (i & 63)) & 1)) {
-                 float16 e1, e2, e3, r;
- 
--                e1 = *(uint16_t *)(vn + H1_2(i));
-+                e1 = *(uint16_t *)(vn + H1_2(i)) ^ neg1;
-                 e2 = *(uint16_t *)(vm + H1_2(i));
--                e3 = *(uint16_t *)(va + H1_2(i));
--                if (neg1 && !(fpcr_ah && float16_is_any_nan(e1))) {
--                    e1 ^= neg1;
--                }
--                if (neg3 && !(fpcr_ah && float16_is_any_nan(e3))) {
--                    e3 ^= neg3;
--                }
--                r = float16_muladd(e1, e2, e3, 0, status);
-+                e3 = *(uint16_t *)(va + H1_2(i)) ^ neg3;
-+                r = float16_muladd(e1, e2, e3, flags, status);
-                 *(uint16_t *)(vd + H1_2(i)) = r;
+@@ -5137,16 +5137,21 @@ void HELPER(sve_ftmad_h)(void *vd, void *vn, void *vm,
+     intptr_t x = extract32(desc, SIMD_DATA_SHIFT, 3);
+     bool fpcr_ah = extract32(desc, SIMD_DATA_SHIFT + 3, 1);
+     float16 *d = vd, *n = vn, *m = vm;
++
+     for (i = 0; i < opr_sz; i++) {
+         float16 mm = m[i];
+         intptr_t xx = x;
++        int flags = 0;
++
+         if (float16_is_neg(mm)) {
+-            if (!(fpcr_ah && float16_is_any_nan(mm))) {
++            if (fpcr_ah) {
++                flags = float_muladd_negate_product;
++            } else {
+                 mm = float16_abs(mm);
              }
-         } while (i & 63);
-@@ -4845,48 +4839,51 @@ static void do_fmla_zpzzz_h(void *vd, void *vn, void *vm, void *va, void *vg,
- void HELPER(sve_fmla_zpzzz_h)(void *vd, void *vn, void *vm, void *va,
-                               void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_h(vd, vn, vm, va, vg, status, desc, 0, 0, false);
-+    do_fmla_zpzzz_h(vd, vn, vm, va, vg, status, desc, 0, 0, 0);
+             xx += 8;
+         }
+-        d[i] = float16_muladd(n[i], mm, coeff[xx], 0, s);
++        d[i] = float16_muladd(n[i], mm, coeff[xx], flags, s);
+     }
  }
  
- void HELPER(sve_fmls_zpzzz_h)(void *vd, void *vn, void *vm, void *va,
-                               void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_h(vd, vn, vm, va, vg, status, desc, 0x8000, 0, false);
-+    do_fmla_zpzzz_h(vd, vn, vm, va, vg, status, desc, 0x8000, 0, 0);
- }
- 
- void HELPER(sve_fnmla_zpzzz_h)(void *vd, void *vn, void *vm, void *va,
-                                void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_h(vd, vn, vm, va, vg, status, desc, 0x8000, 0x8000, false);
-+    do_fmla_zpzzz_h(vd, vn, vm, va, vg, status, desc, 0x8000, 0x8000, 0);
- }
- 
- void HELPER(sve_fnmls_zpzzz_h)(void *vd, void *vn, void *vm, void *va,
-                                void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_h(vd, vn, vm, va, vg, status, desc, 0, 0x8000, false);
-+    do_fmla_zpzzz_h(vd, vn, vm, va, vg, status, desc, 0, 0x8000, 0);
- }
- 
- void HELPER(sve_ah_fmls_zpzzz_h)(void *vd, void *vn, void *vm, void *va,
-                               void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_h(vd, vn, vm, va, vg, status, desc, 0x8000, 0, true);
-+    do_fmla_zpzzz_h(vd, vn, vm, va, vg, status, desc, 0, 0,
-+                    float_muladd_negate_product);
- }
- 
- void HELPER(sve_ah_fnmla_zpzzz_h)(void *vd, void *vn, void *vm, void *va,
-                                void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_h(vd, vn, vm, va, vg, status, desc, 0x8000, 0x8000, true);
-+    do_fmla_zpzzz_h(vd, vn, vm, va, vg, status, desc, 0, 0,
-+                    float_muladd_negate_product | float_muladd_negate_c);
- }
- 
- void HELPER(sve_ah_fnmls_zpzzz_h)(void *vd, void *vn, void *vm, void *va,
-                                void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_h(vd, vn, vm, va, vg, status, desc, 0, 0x8000, true);
-+    do_fmla_zpzzz_h(vd, vn, vm, va, vg, status, desc, 0, 0,
-+                    float_muladd_negate_c);
- }
- 
- static void do_fmla_zpzzz_s(void *vd, void *vn, void *vm, void *va, void *vg,
-                             float_status *status, uint32_t desc,
--                            uint32_t neg1, uint32_t neg3, bool fpcr_ah)
-+                            uint32_t neg1, uint32_t neg3, int flags)
- {
-     intptr_t i = simd_oprsz(desc);
-     uint64_t *g = vg;
-@@ -4898,16 +4895,10 @@ static void do_fmla_zpzzz_s(void *vd, void *vn, void *vm, void *va, void *vg,
-             if (likely((pg >> (i & 63)) & 1)) {
-                 float32 e1, e2, e3, r;
- 
--                e1 = *(uint32_t *)(vn + H1_4(i));
-+                e1 = *(uint32_t *)(vn + H1_4(i)) ^ neg1;
-                 e2 = *(uint32_t *)(vm + H1_4(i));
--                e3 = *(uint32_t *)(va + H1_4(i));
--                if (neg1 && !(fpcr_ah && float32_is_any_nan(e1))) {
--                    e1 ^= neg1;
--                }
--                if (neg3 && !(fpcr_ah && float32_is_any_nan(e3))) {
--                    e3 ^= neg3;
--                }
--                r = float32_muladd(e1, e2, e3, 0, status);
-+                e3 = *(uint32_t *)(va + H1_4(i)) ^ neg3;
-+                r = float32_muladd(e1, e2, e3, flags, status);
-                 *(uint32_t *)(vd + H1_4(i)) = r;
+@@ -5163,16 +5168,21 @@ void HELPER(sve_ftmad_s)(void *vd, void *vn, void *vm,
+     intptr_t x = extract32(desc, SIMD_DATA_SHIFT, 3);
+     bool fpcr_ah = extract32(desc, SIMD_DATA_SHIFT + 3, 1);
+     float32 *d = vd, *n = vn, *m = vm;
++
+     for (i = 0; i < opr_sz; i++) {
+         float32 mm = m[i];
+         intptr_t xx = x;
++        int flags = 0;
++
+         if (float32_is_neg(mm)) {
+-            if (!(fpcr_ah && float32_is_any_nan(mm))) {
++            if (fpcr_ah) {
++                flags = float_muladd_negate_product;
++            } else {
+                 mm = float32_abs(mm);
              }
-         } while (i & 63);
-@@ -4917,48 +4908,51 @@ static void do_fmla_zpzzz_s(void *vd, void *vn, void *vm, void *va, void *vg,
- void HELPER(sve_fmla_zpzzz_s)(void *vd, void *vn, void *vm, void *va,
-                               void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_s(vd, vn, vm, va, vg, status, desc, 0, 0, false);
-+    do_fmla_zpzzz_s(vd, vn, vm, va, vg, status, desc, 0, 0, 0);
+             xx += 8;
+         }
+-        d[i] = float32_muladd(n[i], mm, coeff[xx], 0, s);
++        d[i] = float32_muladd(n[i], mm, coeff[xx], flags, s);
+     }
  }
  
- void HELPER(sve_fmls_zpzzz_s)(void *vd, void *vn, void *vm, void *va,
-                               void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_s(vd, vn, vm, va, vg, status, desc, 0x80000000, 0, false);
-+    do_fmla_zpzzz_s(vd, vn, vm, va, vg, status, desc, 0x80000000, 0, 0);
- }
- 
- void HELPER(sve_fnmla_zpzzz_s)(void *vd, void *vn, void *vm, void *va,
-                                void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_s(vd, vn, vm, va, vg, status, desc, 0x80000000, 0x80000000, false);
-+    do_fmla_zpzzz_s(vd, vn, vm, va, vg, status, desc, 0x80000000, 0x80000000, 0);
- }
- 
- void HELPER(sve_fnmls_zpzzz_s)(void *vd, void *vn, void *vm, void *va,
-                                void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_s(vd, vn, vm, va, vg, status, desc, 0, 0x80000000, false);
-+    do_fmla_zpzzz_s(vd, vn, vm, va, vg, status, desc, 0, 0x80000000, 0);
- }
- 
- void HELPER(sve_ah_fmls_zpzzz_s)(void *vd, void *vn, void *vm, void *va,
-                               void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_s(vd, vn, vm, va, vg, status, desc, 0x80000000, 0, true);
-+    do_fmla_zpzzz_s(vd, vn, vm, va, vg, status, desc, 0, 0,
-+                    float_muladd_negate_product);
- }
- 
- void HELPER(sve_ah_fnmla_zpzzz_s)(void *vd, void *vn, void *vm, void *va,
-                                void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_s(vd, vn, vm, va, vg, status, desc, 0x80000000, 0x80000000, true);
-+    do_fmla_zpzzz_s(vd, vn, vm, va, vg, status, desc, 0, 0,
-+                    float_muladd_negate_product | float_muladd_negate_c);
- }
- 
- void HELPER(sve_ah_fnmls_zpzzz_s)(void *vd, void *vn, void *vm, void *va,
-                                void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_s(vd, vn, vm, va, vg, status, desc, 0, 0x80000000, true);
-+    do_fmla_zpzzz_s(vd, vn, vm, va, vg, status, desc, 0, 0,
-+                    float_muladd_negate_c);
- }
- 
- static void do_fmla_zpzzz_d(void *vd, void *vn, void *vm, void *va, void *vg,
-                             float_status *status, uint32_t desc,
--                            uint64_t neg1, uint64_t neg3, bool fpcr_ah)
-+                            uint64_t neg1, uint64_t neg3, int flags)
- {
-     intptr_t i = simd_oprsz(desc);
-     uint64_t *g = vg;
-@@ -4970,16 +4964,10 @@ static void do_fmla_zpzzz_d(void *vd, void *vn, void *vm, void *va, void *vg,
-             if (likely((pg >> (i & 63)) & 1)) {
-                 float64 e1, e2, e3, r;
- 
--                e1 = *(uint64_t *)(vn + i);
-+                e1 = *(uint64_t *)(vn + i) ^ neg1;
-                 e2 = *(uint64_t *)(vm + i);
--                e3 = *(uint64_t *)(va + i);
--                if (neg1 && !(fpcr_ah && float64_is_any_nan(e1))) {
--                    e1 ^= neg1;
--                }
--                if (neg3 && !(fpcr_ah && float64_is_any_nan(e3))) {
--                    e3 ^= neg3;
--                }
--                r = float64_muladd(e1, e2, e3, 0, status);
-+                e3 = *(uint64_t *)(va + i) ^ neg3;
-+                r = float64_muladd(e1, e2, e3, flags, status);
-                 *(uint64_t *)(vd + i) = r;
+@@ -5193,16 +5203,21 @@ void HELPER(sve_ftmad_d)(void *vd, void *vn, void *vm,
+     intptr_t x = extract32(desc, SIMD_DATA_SHIFT, 3);
+     bool fpcr_ah = extract32(desc, SIMD_DATA_SHIFT + 3, 1);
+     float64 *d = vd, *n = vn, *m = vm;
++
+     for (i = 0; i < opr_sz; i++) {
+         float64 mm = m[i];
+         intptr_t xx = x;
++        int flags = 0;
++
+         if (float64_is_neg(mm)) {
+-            if (!(fpcr_ah && float64_is_any_nan(mm))) {
++            if (fpcr_ah) {
++                flags = float_muladd_negate_product;
++            } else {
+                 mm = float64_abs(mm);
              }
-         } while (i & 63);
-@@ -4989,43 +4977,46 @@ static void do_fmla_zpzzz_d(void *vd, void *vn, void *vm, void *va, void *vg,
- void HELPER(sve_fmla_zpzzz_d)(void *vd, void *vn, void *vm, void *va,
-                               void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_d(vd, vn, vm, va, vg, status, desc, 0, 0, false);
-+    do_fmla_zpzzz_d(vd, vn, vm, va, vg, status, desc, 0, 0, 0);
+             xx += 8;
+         }
+-        d[i] = float64_muladd(n[i], mm, coeff[xx], 0, s);
++        d[i] = float64_muladd(n[i], mm, coeff[xx], flags, s);
+     }
  }
  
- void HELPER(sve_fmls_zpzzz_d)(void *vd, void *vn, void *vm, void *va,
-                               void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_d(vd, vn, vm, va, vg, status, desc, INT64_MIN, 0, false);
-+    do_fmla_zpzzz_d(vd, vn, vm, va, vg, status, desc, INT64_MIN, 0, 0);
- }
- 
- void HELPER(sve_fnmla_zpzzz_d)(void *vd, void *vn, void *vm, void *va,
-                                void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_d(vd, vn, vm, va, vg, status, desc, INT64_MIN, INT64_MIN, false);
-+    do_fmla_zpzzz_d(vd, vn, vm, va, vg, status, desc, INT64_MIN, INT64_MIN, 0);
- }
- 
- void HELPER(sve_fnmls_zpzzz_d)(void *vd, void *vn, void *vm, void *va,
-                                void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_d(vd, vn, vm, va, vg, status, desc, 0, INT64_MIN, false);
-+    do_fmla_zpzzz_d(vd, vn, vm, va, vg, status, desc, 0, INT64_MIN, 0);
- }
- 
- void HELPER(sve_ah_fmls_zpzzz_d)(void *vd, void *vn, void *vm, void *va,
-                               void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_d(vd, vn, vm, va, vg, status, desc, INT64_MIN, 0, true);
-+    do_fmla_zpzzz_d(vd, vn, vm, va, vg, status, desc, 0, 0,
-+                    float_muladd_negate_product);
- }
- 
- void HELPER(sve_ah_fnmla_zpzzz_d)(void *vd, void *vn, void *vm, void *va,
-                                void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_d(vd, vn, vm, va, vg, status, desc, INT64_MIN, INT64_MIN, true);
-+    do_fmla_zpzzz_d(vd, vn, vm, va, vg, status, desc, 0, 0,
-+                    float_muladd_negate_product | float_muladd_negate_c);
- }
- 
- void HELPER(sve_ah_fnmls_zpzzz_d)(void *vd, void *vn, void *vm, void *va,
-                                void *vg, float_status *status, uint32_t desc)
- {
--    do_fmla_zpzzz_d(vd, vn, vm, va, vg, status, desc, 0, INT64_MIN, true);
-+    do_fmla_zpzzz_d(vd, vn, vm, va, vg, status, desc, 0, 0,
-+                    float_muladd_negate_c);
- }
- 
- /* Two operand floating-point comparison controlled by a predicate.
 -- 
 2.43.0
 
