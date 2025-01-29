@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33BB4A2164A
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 02:45:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2262BA2163D
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 02:43:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcx2s-0000o6-R6; Tue, 28 Jan 2025 20:39:10 -0500
+	id 1tcx2q-0000nD-GM; Tue, 28 Jan 2025 20:39:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tcx2n-0000mJ-Hs
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:05 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1tcx2o-0000mx-Gi
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:06 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tcx2l-0003UB-LU
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:05 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-2156e078563so89696975ad.2
- for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 17:39:03 -0800 (PST)
+ id 1tcx2m-0003UP-Gt
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:06 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-2163dc5155fso115848885ad.0
+ for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 17:39:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738114742; x=1738719542; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738114743; x=1738719543; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hnjx8Waa96G3DLJHBV92lDnt+x0jZGLfU8ED3iHDbpE=;
- b=NFqvqJYwD1LWhz40c597b3HMC0vwrQqWtsf5yWDFZ4fYFPENq6BCDhwkxD/KFBXZMZ
- IvAs/abhVwlxfIr2rp9/nrVjuXbhoBGehyQDw2pJQBXWp6hoalc6+1ZBAVgTgSGdr9ET
- ICTP6UFG73vz+Mmr/to+Bo03E1X6KoquyvFZJUOkAQCzLiIsM4v4nERqJlludA77OsPt
- AkZ70KGFK4KX5WjtSPg1QvzE/9q+k8wCVtwdYnAW8MhgdIoquzZEir78+2bxOoKyvhj7
- mez1FEMICT/C33Mp3aI8eqc1IxxIsxW3WvWCArVSuIoJg6m3qPEhe/6o6CkRUSjxPz98
- kmpQ==
+ bh=6vVvCoSEED6StCi5sBDfcgbMdG6XA3WhhdL8usKsqm8=;
+ b=mLvN5AB6Cjp1oNZC+A81K35Ih8mMG80r1PWySm2o3e7rT3IelMwa6dWlq80TgRskug
+ D6KtDfzjv29VNxotGvhsi6NOUptQUMT926YBe3TTWz+9Pp+D8Hs+b0EiqogS1IxMwAJq
+ Kb57LNo50bifrFNCozMjRK5vhv+wAFdWQg1Z68dZ1OHQLS9S97OaKfuHV5VvhYf0I6Jh
+ Fn5NDVLfZMB/nBEdWsr1jL+lc0h+83QsaUtYKRRPWKuM/WhvRE7jkiCTquBbHJ0BzBqt
+ wH84Njbww8WgrOvKjeXQGbtYi59WK+Ah06JAWd6nCvCiL2F+EV84TZ+x+pHp77nbL6Io
+ 5AVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738114742; x=1738719542;
+ d=1e100.net; s=20230601; t=1738114743; x=1738719543;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hnjx8Waa96G3DLJHBV92lDnt+x0jZGLfU8ED3iHDbpE=;
- b=dgI3DW+8A6V803PFIM1+IxKMMgVxevcpZVhh4TYz6jluUORIFHMhMEnbhN+bmpAA3k
- IoMLHRwol0uZIqb2TyX4LCoMiN/qJ3r3oNIn5Yll2Rc6CX0U3AXenpVPSyFz82R1iUVj
- ecXJlSeluowm+BT9+2mE2FNudMCbXgOf6kBM6FpMfeVZIAsOXEx7flr9XEpO4E2qQI/v
- 6JunlPl1eXzN8Xnsp9jyprPVZwTRIpykJ33RrlKWvQTv+TQldPIBptfQWzl2jRVkRXpt
- Vs/m8rwNgj2DmrgBoVOyYKG4L0ODqtJqxHkj31YPh8ejATglcB5iQ/YAN4LguWBJ4mJt
- 1W1A==
-X-Gm-Message-State: AOJu0YwRcx+x/eFmN+ia4xz3x4VIItoWUSxdZoi99JTFySTNmgdqvj4X
- RQHkLFkVNbHyUXTIhCKcxbfgyqR+QDKvDFjkgRZi5d7cOzgn8isg4nXGZI3DsU/CcefES5ibNUG
- 5
-X-Gm-Gg: ASbGncuvWQpZ4ts/1KfPMdfcz5ZrEGAHScqGcxWck55HkR+iZBWgVq9B5fZrBE53Qsv
- 9IdT1+/LnauFYVtqy7VbJ4SPO4WqNeQoS4OoSw9fFCrHAESzK5Y/SYl1PkTKntPkumoeKOCgk72
- mVfvSF9eR+Twc51nByuAExAE6pQaFoMd+Vue5RY7QdBNKH2u3HfSO6vS6gHNHIO9MdRpDrBbrM7
- QsWYwBFQyUnKtlJAP4AuMJ23RrqcoWviZ6aPpGqINa4I7iddri8iPsfi3xDGvm4HAnP1vfbbszX
- zK7WWnilSWecdt6C9RjCph3QUJV9DlbFh+Dox0xH/xR18c7CmA==
-X-Google-Smtp-Source: AGHT+IFnlcF68dE26H5PG3jah58RqYm3jI68gOrvByo2AxyE1t/jZoGkrsQOkiWqx+eATs5MhMiGcw==
-X-Received: by 2002:a17:902:ea12:b0:215:9a73:6c45 with SMTP id
- d9443c01a7336-21dd7d6e17bmr19875465ad.22.1738114742255; 
+ bh=6vVvCoSEED6StCi5sBDfcgbMdG6XA3WhhdL8usKsqm8=;
+ b=CdPkse7/K2Sm/gWzWNtv+lJX2Fp0HHoWZzGyc+D6Pyv9pGZ5TbzUNAgnlSL41ArPH/
+ ModwMqN7F72A4YVuZvnVZ/DmTHxIGZoVphUqdOhYmkZRpKw0S/XjIukKRx4kz5la+Ffp
+ f2y8g38D5UTlcYCNhgmH9MNsbRK834xu5t24zSTC1v49Ov+Dx0D7TWkTVf1vjjV7Dp6p
+ Jatte85LhdbesKn3yHEqhlDkFztUezgfZjWbbDMIihloWmKuqDzknPzAqnliqNuwsM3H
+ abGkpaYAwmWAInTKm21pku/YfnkGA98TK0QJNTmLMRE6m+DBs3wTmMJnYYPp28BciSCq
+ TjLw==
+X-Gm-Message-State: AOJu0Ywk2sYMF3PQXEEBvzCImXxtNTDoTzUll5jBrRRwYR/Dj+jFpC75
+ ZQqbF+OMTUefY9irm9pkLExRij9iHu8pdLhbOA7j81PkkFQJ8BDeT1UHiU08qaYXyEbwTV/kJca
+ 7
+X-Gm-Gg: ASbGncvVFjz91zxQ0zEX8Ct4isliyvV9tOsR5TdBpUqF/V78Xf6aZoVl2kMyFIyLD/P
+ sP3DTLlA9YcJxiYHmMdpbx1ALAEhGsQRlBo38zQJHrchtwE1OA3IEFQIrFFQmWA9GtpXLTG5uBn
+ PNKvw43uPhZiGDIXrx0QCWiGhZ8X1snyU4aszYClAVQSnobgzx7DLfODUTpAV2sOCpYbIitxc0w
+ aOf8wspFELU21UYQSK0wPqzQxLU8iYnp8BfCYYFrX7Nrxhqwb2MVhtv4zUCroOYdY9Z7zNbBOds
+ uTpxA5x7m/kdYoqCJ4jjDcAnO6bmSwznPP/7Qjp3NqT7d/5nhg==
+X-Google-Smtp-Source: AGHT+IFEj47FoLSpNWOLZJAVY9iY/GC9cMYelqnMfrRotXb789dR9pPZuFl841LiQwyoDq/DQIIEZA==
+X-Received: by 2002:a17:902:e74a:b0:216:4499:b836 with SMTP id
+ d9443c01a7336-21dd7d6637cmr18423855ad.26.1738114742989; 
  Tue, 28 Jan 2025 17:39:02 -0800 (PST)
 Received: from stoup.. (71-212-32-190.tukw.qwest.net. [71.212.32.190])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21da3ea4200sm89341745ad.88.2025.01.28.17.39.01
+ d9443c01a7336-21da3ea4200sm89341745ad.88.2025.01.28.17.39.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Jan 2025 17:39:01 -0800 (PST)
+ Tue, 28 Jan 2025 17:39:02 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH v2 05/34] target/arm: Rename FPST_FPCR_AH* to FPST_AH*
-Date: Tue, 28 Jan 2025 17:38:28 -0800
-Message-ID: <20250129013857.135256-6-richard.henderson@linaro.org>
+Subject: [PATCH v2 06/34] target/arm: Introduce CPUARMState.vfp.fp_status[]
+Date: Tue, 28 Jan 2025 17:38:29 -0800
+Message-ID: <20250129013857.135256-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250129013857.135256-1-richard.henderson@linaro.org>
 References: <20250129013857.135256-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,144 +97,242 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Move ARMFPStatusFlavour to cpu.h with which to index
+this array.  For now, place the array in an anonymous
+union with the existing structures.  Adjust the order
+of the existing structures to match the enum.
+
+Simplify fpstatus_ptr() using the new array.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate.h     | 14 +++++++-------
- target/arm/tcg/translate-a64.c |  8 ++++----
- target/arm/tcg/translate-sve.c |  8 ++++----
- 3 files changed, 15 insertions(+), 15 deletions(-)
+ target/arm/cpu.h           | 119 +++++++++++++++++++++----------------
+ target/arm/tcg/translate.h |  64 +-------------------
+ 2 files changed, 70 insertions(+), 113 deletions(-)
 
-diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
-index cc753419ed..d4ae39c469 100644
---- a/target/arm/tcg/translate.h
-+++ b/target/arm/tcg/translate.h
-@@ -678,8 +678,8 @@ typedef enum ARMFPStatusFlavour {
-     FPST_A64,
-     FPST_A32_F16,
-     FPST_A64_F16,
--    FPST_FPCR_AH,
--    FPST_FPCR_AH_F16,
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index f562e0687c..c025649ff2 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -202,6 +202,61 @@ typedef struct ARMMMUFaultInfo ARMMMUFaultInfo;
+ 
+ typedef struct NVICState NVICState;
+ 
++/*
++ * Enum for indexing vfp.fp_status[].
++ *
++ * FPST_A32: is the "normal" fp status for AArch32 insns
++ * FPST_A64: is the "normal" fp status for AArch64 insns
++ * FPST_A32_F16: used for AArch32 half-precision calculations
++ * FPST_A64_F16: used for AArch64 half-precision calculations
++ * FPST_STD: the ARM "Standard FPSCR Value"
++ * FPST_STD_F16: used for half-precision
++ *       calculations with the ARM "Standard FPSCR Value"
++ * FPST_AH: used for the A64 insns which change behaviour
++ *       when FPCR.AH == 1 (bfloat16 conversions and multiplies,
++ *       and the reciprocal and square root estimate/step insns)
++ * FPST_AH_F16: used for the A64 insns which change behaviour
++ *       when FPCR.AH == 1 (bfloat16 conversions and multiplies,
++ *       and the reciprocal and square root estimate/step insns);
++ *       for half-precision
++ *
++ * Half-precision operations are governed by a separate
++ * flush-to-zero control bit in FPSCR:FZ16. We pass a separate
++ * status structure to control this.
++ *
++ * The "Standard FPSCR", ie default-NaN, flush-to-zero,
++ * round-to-nearest and is used by any operations (generally
++ * Neon) which the architecture defines as controlled by the
++ * standard FPSCR value rather than the FPSCR.
++ *
++ * The "standard FPSCR but for fp16 ops" is needed because
++ * the "standard FPSCR" tracks the FPSCR.FZ16 bit rather than
++ * using a fixed value for it.
++ *
++ * The ah_fp_status is needed because some insns have different
++ * behaviour when FPCR.AH == 1: they don't update cumulative
++ * exception flags, they act like FPCR.{FZ,FIZ} = {1,1} and
++ * they ignore FPCR.RMode. But they don't ignore FPCR.FZ16,
++ * which means we need an ah_fp_status_f16 as well.
++ *
++ * To avoid having to transfer exception bits around, we simply
++ * say that the FPSCR cumulative exception flags are the logical
++ * OR of the flags in the four fp statuses. This relies on the
++ * only thing which needs to read the exception flags being
++ * an explicit FPSCR read.
++ */
++typedef enum ARMFPStatusFlavour {
++    FPST_A32,
++    FPST_A64,
++    FPST_A32_F16,
++    FPST_A64_F16,
 +    FPST_AH,
 +    FPST_AH_F16,
-     FPST_STD,
-     FPST_STD_F16,
- } ARMFPStatusFlavour;
-@@ -700,11 +700,11 @@ typedef enum ARMFPStatusFlavour {
-  *   for AArch32 operations controlled by the FPCR where FPCR.FZ16 is to be used
-  * FPST_A64_F16
-  *   for AArch64 operations controlled by the FPCR where FPCR.FZ16 is to be used
-- * FPST_FPCR_AH:
-+ * FPST_AH:
-  *   for AArch64 operations which change behaviour when AH=1 (specifically,
-  *   bfloat16 conversions and multiplies, and the reciprocal and square root
-  *   estimate/step insns)
-- * FPST_FPCR_AH_F16:
-+ * FPST_AH_F16:
-  *   ditto, but for half-precision operations
-  * FPST_STD
-  *   for A32/T32 Neon operations using the "standard FPSCR value"
-@@ -729,10 +729,10 @@ static inline TCGv_ptr fpstatus_ptr(ARMFPStatusFlavour flavour)
-     case FPST_A64_F16:
-         offset = offsetof(CPUARMState, vfp.fp_status_f16_a64);
-         break;
--    case FPST_FPCR_AH:
-+    case FPST_AH:
-         offset = offsetof(CPUARMState, vfp.ah_fp_status);
-         break;
--    case FPST_FPCR_AH_F16:
-+    case FPST_AH_F16:
-         offset = offsetof(CPUARMState, vfp.ah_fp_status_f16);
-         break;
-     case FPST_STD:
-@@ -755,7 +755,7 @@ static inline TCGv_ptr fpstatus_ptr(ARMFPStatusFlavour flavour)
- static inline ARMFPStatusFlavour select_fpst(DisasContext *s, MemOp esz)
- {
-     if (s->fpcr_ah) {
--        return esz == MO_16 ? FPST_FPCR_AH_F16 : FPST_FPCR_AH;
-+        return esz == MO_16 ? FPST_AH_F16 : FPST_AH;
-     } else {
-         return esz == MO_16 ? FPST_A64_F16 : FPST_A64;
-     }
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 35d409685c..715760a17b 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -6135,7 +6135,7 @@ static bool trans_BFMLAL_v(DisasContext *s, arg_qrrr_e *a)
-     if (fp_access_check(s)) {
-         /* Q bit selects BFMLALB vs BFMLALT. */
-         gen_gvec_op4_fpst(s, true, a->rd, a->rn, a->rm, a->rd,
--                          s->fpcr_ah ? FPST_FPCR_AH : FPST_A64, a->q,
-+                          s->fpcr_ah ? FPST_AH : FPST_A64, a->q,
-                           gen_helper_gvec_bfmlal);
-     }
-     return true;
-@@ -6892,7 +6892,7 @@ static bool trans_BFMLAL_vi(DisasContext *s, arg_qrrx_e *a)
-     if (fp_access_check(s)) {
-         /* Q bit selects BFMLALB vs BFMLALT. */
-         gen_gvec_op4_fpst(s, true, a->rd, a->rn, a->rm, a->rd,
--                          s->fpcr_ah ? FPST_FPCR_AH : FPST_A64,
-+                          s->fpcr_ah ? FPST_AH : FPST_A64,
-                           (a->idx << 1) | a->q,
-                           gen_helper_gvec_bfmlal_idx);
-     }
-@@ -8866,7 +8866,7 @@ TRANS(FRINTX_s, do_fp1_scalar, a, &f_scalar_frintx, -1)
++    FPST_STD,
++    FPST_STD_F16,
++} ARMFPStatusFlavour;
++#define FPST_COUNT  8
++
+ typedef struct CPUArchState {
+     /* Regs for current mode.  */
+     uint32_t regs[16];
+@@ -631,56 +686,20 @@ typedef struct CPUArchState {
+         /* Scratch space for aa32 neon expansion.  */
+         uint32_t scratch[8];
  
- static bool trans_BFCVT_s(DisasContext *s, arg_rr_e *a)
- {
--    ARMFPStatusFlavour fpsttype = s->fpcr_ah ? FPST_FPCR_AH : FPST_A64;
-+    ARMFPStatusFlavour fpsttype = s->fpcr_ah ? FPST_AH : FPST_A64;
-     TCGv_i32 t32;
-     int check;
+-        /* There are a number of distinct float control structures:
+-         *
+-         *  fp_status_a32: is the "normal" fp status for AArch32 insns
+-         *  fp_status_a64: is the "normal" fp status for AArch64 insns
+-         *  fp_status_fp16_a32: used for AArch32 half-precision calculations
+-         *  fp_status_fp16_a64: used for AArch64 half-precision calculations
+-         *  standard_fp_status : the ARM "Standard FPSCR Value"
+-         *  standard_fp_status_fp16 : used for half-precision
+-         *       calculations with the ARM "Standard FPSCR Value"
+-         *  ah_fp_status: used for the A64 insns which change behaviour
+-         *       when FPCR.AH == 1 (bfloat16 conversions and multiplies,
+-         *       and the reciprocal and square root estimate/step insns)
+-         *  ah_fp_status_f16: used for the A64 insns which change behaviour
+-         *       when FPCR.AH == 1 (bfloat16 conversions and multiplies,
+-         *       and the reciprocal and square root estimate/step insns);
+-         *       for half-precision
+-         *
+-         * Half-precision operations are governed by a separate
+-         * flush-to-zero control bit in FPSCR:FZ16. We pass a separate
+-         * status structure to control this.
+-         *
+-         * The "Standard FPSCR", ie default-NaN, flush-to-zero,
+-         * round-to-nearest and is used by any operations (generally
+-         * Neon) which the architecture defines as controlled by the
+-         * standard FPSCR value rather than the FPSCR.
+-         *
+-         * The "standard FPSCR but for fp16 ops" is needed because
+-         * the "standard FPSCR" tracks the FPSCR.FZ16 bit rather than
+-         * using a fixed value for it.
+-         *
+-         * The ah_fp_status is needed because some insns have different
+-         * behaviour when FPCR.AH == 1: they don't update cumulative
+-         * exception flags, they act like FPCR.{FZ,FIZ} = {1,1} and
+-         * they ignore FPCR.RMode. But they don't ignore FPCR.FZ16,
+-         * which means we need an ah_fp_status_f16 as well.
+-         *
+-         * To avoid having to transfer exception bits around, we simply
+-         * say that the FPSCR cumulative exception flags are the logical
+-         * OR of the flags in the four fp statuses. This relies on the
+-         * only thing which needs to read the exception flags being
+-         * an explicit FPSCR read.
+-         */
+-        float_status fp_status_a32;
+-        float_status fp_status_a64;
+-        float_status fp_status_f16_a32;
+-        float_status fp_status_f16_a64;
+-        float_status standard_fp_status;
+-        float_status standard_fp_status_f16;
+-        float_status ah_fp_status;
+-        float_status ah_fp_status_f16;
++        /* There are a number of distinct float control structures. */
++        union {
++            float_status fp_status[FPST_COUNT];
++            struct {
++                float_status fp_status_a32;
++                float_status fp_status_a64;
++                float_status fp_status_f16_a32;
++                float_status fp_status_f16_a64;
++                float_status ah_fp_status;
++                float_status ah_fp_status_f16;
++                float_status standard_fp_status;
++                float_status standard_fp_status_f16;
++            };
++        };
  
-@@ -9691,7 +9691,7 @@ static void gen_bfcvtn_hs(TCGv_i64 d, TCGv_i64 n)
- 
- static void gen_bfcvtn_ah_hs(TCGv_i64 d, TCGv_i64 n)
- {
--    TCGv_ptr fpst = fpstatus_ptr(FPST_FPCR_AH);
-+    TCGv_ptr fpst = fpstatus_ptr(FPST_AH);
-     TCGv_i32 tmp = tcg_temp_new_i32();
-     gen_helper_bfcvt_pair(tmp, n, fpst);
-     tcg_gen_extu_i32_i64(d, tmp);
-diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index 3811316a2d..cb6bb27622 100644
---- a/target/arm/tcg/translate-sve.c
-+++ b/target/arm/tcg/translate-sve.c
-@@ -3985,7 +3985,7 @@ TRANS_FEAT(FCVT_hs, aa64_sve, gen_gvec_fpst_arg_zpz,
- 
- TRANS_FEAT(BFCVT, aa64_sve_bf16, gen_gvec_fpst_arg_zpz,
-            gen_helper_sve_bfcvt, a, 0,
--           s->fpcr_ah ? FPST_FPCR_AH : FPST_A64)
-+           s->fpcr_ah ? FPST_AH : FPST_A64)
- 
- TRANS_FEAT(FCVT_dh, aa64_sve, gen_gvec_fpst_arg_zpz,
-            gen_helper_sve_fcvt_dh, a, 0, FPST_A64)
-@@ -7136,7 +7136,7 @@ TRANS_FEAT(FCVTNT_ds, aa64_sve2, gen_gvec_fpst_arg_zpz,
- 
- TRANS_FEAT(BFCVTNT, aa64_sve_bf16, gen_gvec_fpst_arg_zpz,
-            gen_helper_sve_bfcvtnt, a, 0,
--           s->fpcr_ah ? FPST_FPCR_AH : FPST_A64)
-+           s->fpcr_ah ? FPST_AH : FPST_A64)
- 
- TRANS_FEAT(FCVTLT_hs, aa64_sve2, gen_gvec_fpst_arg_zpz,
-            gen_helper_sve2_fcvtlt_hs, a, 0, FPST_A64)
-@@ -7198,7 +7198,7 @@ static bool do_BFMLAL_zzzw(DisasContext *s, arg_rrrr_esz *a, bool sel)
- {
-     return gen_gvec_fpst_zzzz(s, gen_helper_gvec_bfmlal,
-                               a->rd, a->rn, a->rm, a->ra, sel,
--                              s->fpcr_ah ? FPST_FPCR_AH : FPST_A64);
-+                              s->fpcr_ah ? FPST_AH : FPST_A64);
+         uint64_t zcr_el[4];   /* ZCR_EL[1-3] */
+         uint64_t smcr_el[4];  /* SMCR_EL[1-3] */
+diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+index d4ae39c469..6f854f1031 100644
+--- a/target/arm/tcg/translate.h
++++ b/target/arm/tcg/translate.h
+@@ -670,80 +670,18 @@ static inline CPUARMTBFlags arm_tbflags_from_tb(const TranslationBlock *tb)
+     return (CPUARMTBFlags){ tb->flags, tb->cs_base };
  }
  
- TRANS_FEAT(BFMLALB_zzzw, aa64_sve_bf16, do_BFMLAL_zzzw, a, false)
-@@ -7209,7 +7209,7 @@ static bool do_BFMLAL_zzxw(DisasContext *s, arg_rrxr_esz *a, bool sel)
-     return gen_gvec_fpst_zzzz(s, gen_helper_gvec_bfmlal_idx,
-                               a->rd, a->rn, a->rm, a->ra,
-                               (a->index << 1) | sel,
--                              s->fpcr_ah ? FPST_FPCR_AH : FPST_A64);
-+                              s->fpcr_ah ? FPST_AH : FPST_A64);
- }
+-/*
+- * Enum for argument to fpstatus_ptr().
+- */
+-typedef enum ARMFPStatusFlavour {
+-    FPST_A32,
+-    FPST_A64,
+-    FPST_A32_F16,
+-    FPST_A64_F16,
+-    FPST_AH,
+-    FPST_AH_F16,
+-    FPST_STD,
+-    FPST_STD_F16,
+-} ARMFPStatusFlavour;
+-
+ /**
+  * fpstatus_ptr: return TCGv_ptr to the specified fp_status field
+  *
+  * We have multiple softfloat float_status fields in the Arm CPU state struct
+  * (see the comment in cpu.h for details). Return a TCGv_ptr which has
+  * been set up to point to the requested field in the CPU state struct.
+- * The options are:
+- *
+- * FPST_A32
+- *   for AArch32 non-FP16 operations controlled by the FPCR
+- * FPST_A64
+- *   for AArch64 non-FP16 operations controlled by the FPCR
+- * FPST_A32_F16
+- *   for AArch32 operations controlled by the FPCR where FPCR.FZ16 is to be used
+- * FPST_A64_F16
+- *   for AArch64 operations controlled by the FPCR where FPCR.FZ16 is to be used
+- * FPST_AH:
+- *   for AArch64 operations which change behaviour when AH=1 (specifically,
+- *   bfloat16 conversions and multiplies, and the reciprocal and square root
+- *   estimate/step insns)
+- * FPST_AH_F16:
+- *   ditto, but for half-precision operations
+- * FPST_STD
+- *   for A32/T32 Neon operations using the "standard FPSCR value"
+- * FPST_STD_F16
+- *   as FPST_STD, but where FPCR.FZ16 is to be used
+  */
+ static inline TCGv_ptr fpstatus_ptr(ARMFPStatusFlavour flavour)
+ {
+     TCGv_ptr statusptr = tcg_temp_new_ptr();
+-    int offset;
++    int offset = offsetof(CPUARMState, vfp.fp_status[flavour]);
  
- TRANS_FEAT(BFMLALB_zzxw, aa64_sve_bf16, do_BFMLAL_zzxw, a, false)
+-    switch (flavour) {
+-    case FPST_A32:
+-        offset = offsetof(CPUARMState, vfp.fp_status_a32);
+-        break;
+-    case FPST_A64:
+-        offset = offsetof(CPUARMState, vfp.fp_status_a64);
+-        break;
+-    case FPST_A32_F16:
+-        offset = offsetof(CPUARMState, vfp.fp_status_f16_a32);
+-        break;
+-    case FPST_A64_F16:
+-        offset = offsetof(CPUARMState, vfp.fp_status_f16_a64);
+-        break;
+-    case FPST_AH:
+-        offset = offsetof(CPUARMState, vfp.ah_fp_status);
+-        break;
+-    case FPST_AH_F16:
+-        offset = offsetof(CPUARMState, vfp.ah_fp_status_f16);
+-        break;
+-    case FPST_STD:
+-        offset = offsetof(CPUARMState, vfp.standard_fp_status);
+-        break;
+-    case FPST_STD_F16:
+-        offset = offsetof(CPUARMState, vfp.standard_fp_status_f16);
+-        break;
+-    default:
+-        g_assert_not_reached();
+-    }
+     tcg_gen_addi_ptr(statusptr, tcg_env, offset);
+     return statusptr;
+ }
 -- 
 2.43.0
 
