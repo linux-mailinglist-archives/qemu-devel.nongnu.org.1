@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EED6A21FA4
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 15:50:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 415FBA21F7F
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 15:46:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1td9IV-0000as-KW; Wed, 29 Jan 2025 09:44:07 -0500
+	id 1td9Ig-0000ft-7S; Wed, 29 Jan 2025 09:44:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1td9IP-0000a6-T9
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 09:44:01 -0500
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ id 1td9Ib-0000f1-GH
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 09:44:13 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1td9IO-0001Ns-7v
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 09:44:01 -0500
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50TEbCoh007551;
- Wed, 29 Jan 2025 14:43:57 GMT
+ id 1td9IZ-0001Oa-Pj
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 09:44:13 -0500
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50TEXrKl011631;
+ Wed, 29 Jan 2025 14:43:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=fTaHqwDgUxlCgdHBDi56iAfZ6J91H9VUHu07rDGKWFw=; b=
- oTG8ioG4dg/MMNyzZtfFfJEh5zI80t/4oIm+STz9i7aI7QrMvLVd6vUZnmcMP9Qp
- KGZDfA4O+8BPdlwo505wxP+mz6bZb/9twRgWoTYIrZgqax+e4vm2pd08izRzJMUa
- hQsuiFB42gVJosXxlmIsD7rtxwYlf6KndC5n/xVYEff01swhHKrVFsvAM9sjozxz
- uSeiHbyOdAaWQRBokrGjN6/dxXqeZ4FNnFuxia6jqOyiY3LVLpEOw6oo12hZY8J2
- H/9bcxMP9fj1ro7jQfxF/GNqzC784jsAzOkuQIsEXALPo6DW7A1AhpU3CaOmV805
- 3ChKtjTs87sLBD4vbJJd6w==
+ corp-2023-11-20; bh=PngtgFNIRuTVuIU4bNtaaptebJWnixYeRD7cj95XLpM=; b=
+ alQ9dzMPZQOuwhrOPePnLxSGUQVx1kSRN5mrheha007d9L+JZvGUe0bKG+0iADv9
+ mNUubP4l5tiRrzpDIUjn8vdRwwluFystQTaA+XGGk4gdvceP17DDd/fgPt0D0JN+
+ HdNN7Nipuqvx1O9IRn/1bdSA3rWuW1NFQ8BcUgDgsztevJdzY2/p/F4Nebf7jhrG
+ borB2bsobX9ATMnKupmOngln16vf4lRk+iEYjCtUJs/ws+nDS+XtixPRC22kgIML
+ AT6UF27AgHxlG6ayBiEFH7xCulIURJNizr/vIErbEruGbnHLoYHrVB2Ev/KG01mG
+ DyzB7DSr+GPDaiUDt5e8PA==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44fp8e00ra-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44fnk9g3jf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 29 Jan 2025 14:43:57 +0000 (GMT)
+ Wed, 29 Jan 2025 14:43:58 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 50TDQ7aX034289; Wed, 29 Jan 2025 14:43:56 GMT
+ with ESMTP id 50TDOoKI034428; Wed, 29 Jan 2025 14:43:57 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 44cpd9s4u5-1
+ 44cpd9s4um-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 29 Jan 2025 14:43:56 +0000
+ Wed, 29 Jan 2025 14:43:57 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 50TEhf8u003307;
- Wed, 29 Jan 2025 14:43:55 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 50TEhf8w003307;
+ Wed, 29 Jan 2025 14:43:56 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 44cpd9s49q-22; Wed, 29 Jan 2025 14:43:55 +0000
+ ESMTP id 44cpd9s49q-23; Wed, 29 Jan 2025 14:43:56 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -61,9 +61,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V1 21/26] iommufd: change process ioctl
-Date: Wed, 29 Jan 2025 06:43:17 -0800
-Message-Id: <1738161802-172631-22-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V1 22/26] vfio/iommufd: invariant device name
+Date: Wed, 29 Jan 2025 06:43:18 -0800
+Message-Id: <1738161802-172631-23-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1738161802-172631-1-git-send-email-steven.sistare@oracle.com>
 References: <1738161802-172631-1-git-send-email-steven.sistare@oracle.com>
@@ -75,16 +75,16 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
  mlxlogscore=999 suspectscore=0 spamscore=0 mlxscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
  definitions=main-2501290119
-X-Proofpoint-ORIG-GUID: JtooxTb81mH3Qp9bpvuaieYI2gDB6FSw
-X-Proofpoint-GUID: JtooxTb81mH3Qp9bpvuaieYI2gDB6FSw
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Proofpoint-ORIG-GUID: FUwrt4tULkEpuUXPbFJLxcZLc6lAhtKT
+X-Proofpoint-GUID: FUwrt4tULkEpuUXPbFJLxcZLc6lAhtKT
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -32
 X-Spam_score: -3.3
 X-Spam_bar: ---
 X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.498,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,71 +102,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define the change process ioctl
+cpr-transfer will use the device name as a key to find the value
+of the device descriptor in new QEMU.  However, if the descriptor
+number is specified by a command-line fd parameter, then
+vfio_device_get_name creates a name that includes the fd number.
+This causes a chicken-and-egg problem: new QEMU must know the fd
+number to construct a name to find the fd number.
+
+To fix, create an invariant name based on the id command-line
+parameter.  If id is not defined, add a CPR blocker.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- backends/iommufd.c       | 20 ++++++++++++++++++++
- backends/trace-events    |  1 +
- include/system/iommufd.h |  2 ++
- 3 files changed, 23 insertions(+)
+ hw/vfio/helpers.c             | 18 +++++++++++++++---
+ hw/vfio/iommufd.c             |  2 ++
+ include/hw/vfio/vfio-common.h |  1 +
+ 3 files changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/backends/iommufd.c b/backends/iommufd.c
-index 6d29221..be5f6a3 100644
---- a/backends/iommufd.c
-+++ b/backends/iommufd.c
-@@ -73,6 +73,26 @@ static void iommufd_backend_class_init(ObjectClass *oc, void *data)
-     object_class_property_add_str(oc, "fd", NULL, iommufd_backend_set_fd);
+diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
+index 913796f..bd94b86 100644
+--- a/hw/vfio/helpers.c
++++ b/hw/vfio/helpers.c
+@@ -25,6 +25,8 @@
+ #include "hw/vfio/vfio-common.h"
+ #include "hw/hw.h"
+ #include "trace.h"
++#include "migration/blocker.h"
++#include "migration/cpr.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+ #include "qemu/units.h"
+@@ -636,6 +638,7 @@ bool vfio_device_get_name(VFIODevice *vbasedev, Error **errp)
+ {
+     ERRP_GUARD();
+     struct stat st;
++    bool ret = true;
+ 
+     if (vbasedev->fd < 0) {
+         if (stat(vbasedev->sysfsdev, &st) < 0) {
+@@ -653,15 +656,24 @@ bool vfio_device_get_name(VFIODevice *vbasedev, Error **errp)
+             return false;
+         }
+         /*
+-         * Give a name with fd so any function printing out vbasedev->name
++         * Give a name so any function printing out vbasedev->name
+          * will not break.
+          */
+         if (!vbasedev->name) {
+-            vbasedev->name = g_strdup_printf("VFIO_FD%d", vbasedev->fd);
++            if (vbasedev->dev->id) {
++                vbasedev->name = g_strdup(vbasedev->dev->id);
++            } else {
++                vbasedev->name = g_strdup_printf("VFIO_FD%d", vbasedev->fd);
++                error_setg(&vbasedev->cpr_id_blocker,
++                           "vfio device with fd=%d needs an id property",
++                           vbasedev->fd);
++                ret = migrate_add_blocker_modes(&vbasedev->cpr_id_blocker, errp,
++                                                MIG_MODE_CPR_TRANSFER, -1) == 0;
++            }
+         }
+     }
+ 
+-    return true;
++    return ret;
  }
  
-+bool iommufd_change_process_capable(IOMMUFDBackend *be)
-+{
-+    struct iommu_ioas_change_process args = {.size = sizeof(args)};
-+
-+    return !ioctl(be->fd, IOMMU_IOAS_CHANGE_PROCESS, &args);
-+}
-+
-+int iommufd_change_process(IOMMUFDBackend *be)
-+{
-+    struct iommu_ioas_change_process args = {.size = sizeof(args)};
-+    int ret = ioctl(be->fd, IOMMU_IOAS_CHANGE_PROCESS, &args);
-+
-+    if (ret) {
-+        ret = -errno;
-+        error_report("IOMMU_IOAS_CHANGE_PROCESS fd %d failed: %m", be->fd);
-+    }
-+    trace_iommufd_change_process(be->fd, ret);
-+    return ret;
-+}
-+
- bool iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
- {
-     int fd;
-diff --git a/backends/trace-events b/backends/trace-events
-index f478e18..9b33dc3 100644
---- a/backends/trace-events
-+++ b/backends/trace-events
-@@ -7,6 +7,7 @@ dbus_vmstate_loading(const char *id) "id: %s"
- dbus_vmstate_saving(const char *id) "id: %s"
+ void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **errp)
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 2f888e5..8308715 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -24,6 +24,7 @@
+ #include "system/reset.h"
+ #include "qemu/cutils.h"
+ #include "qemu/chardev_open.h"
++#include "migration/blocker.h"
+ #include "pci.h"
+ #include "exec/ram_addr.h"
  
- # iommufd.c
-+iommufd_change_process(int fd, int ret) "fd=%d (%d)"
- iommufd_backend_connect(int fd, bool owned, uint32_t users) "fd=%d owned=%d users=%d"
- iommufd_backend_disconnect(int fd, uint32_t users) "fd=%d users=%d"
- iommu_backend_set_fd(int fd) "pre-opened /dev/iommu fd=%d"
-diff --git a/include/system/iommufd.h b/include/system/iommufd.h
-index ac700b8..4e9c037 100644
---- a/include/system/iommufd.h
-+++ b/include/system/iommufd.h
-@@ -64,6 +64,8 @@ bool iommufd_backend_get_dirty_bitmap(IOMMUFDBackend *be, uint32_t hwpt_id,
-                                       uint64_t iova, ram_addr_t size,
-                                       uint64_t page_size, uint64_t *data,
-                                       Error **errp);
-+bool iommufd_change_process_capable(IOMMUFDBackend *be);
-+int iommufd_change_process(IOMMUFDBackend *be);
+@@ -657,6 +658,7 @@ static void iommufd_cdev_detach(VFIODevice *vbasedev)
+     iommufd_cdev_container_destroy(container);
+     vfio_put_address_space(space);
  
- #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD TYPE_HOST_IOMMU_DEVICE "-iommufd"
- #endif
++    migrate_del_blocker(&vbasedev->cpr_id_blocker);
+     iommufd_cdev_unbind_and_disconnect(vbasedev);
+     close(vbasedev->fd);
+ }
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index ca10abc..37e7c26 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -147,6 +147,7 @@ typedef struct VFIODevice {
+     VFIOMigration *migration;
+     Error *migration_blocker;
+     Error *cpr_mdev_blocker;
++    Error *cpr_id_blocker;
+     OnOffAuto pre_copy_dirty_page_tracking;
+     OnOffAuto device_dirty_page_tracking;
+     bool dirty_pages_supported;
 -- 
 1.8.3.1
 
