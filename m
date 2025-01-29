@@ -2,99 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D5DEA218BA
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 09:16:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9415EA218D6
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 09:21:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1td3EV-00039f-1C; Wed, 29 Jan 2025 03:15:35 -0500
+	id 1td3K3-0006KJ-1f; Wed, 29 Jan 2025 03:21:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1td3EG-00037m-QR
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 03:15:24 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1td3Jc-0006IB-Tg
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 03:20:53 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1td3ED-0003Hd-Bk
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 03:15:20 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1td3Jb-0004EU-2k
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 03:20:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738138516;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cLk0PP7DXX7kwB63HESm9vgBr/1hpqhZ8qpB/vFHkCs=;
- b=V5NkFDyPsVfRjlpS3AScK6j6/o8C7gtJ2vNKp2NOOWEHViIuoy2Mm7XyxzWJN4Q4ItgY9R
- 2/oHgtO1R9uYm9g0B0DT0EOIRh2Ez8C0DCyxbOC8OseMpw0+nUF4OuIKYlp6xHBYN1NsIO
- I9xQG29/HDEiXztO90zZQqK8v+zg7Rs=
+ s=mimecast20190719; t=1738138850;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=kmWDchkgNMCOHLnNxHT63tYJxxCZKeV/TOaAclkBW9w=;
+ b=jQWF2Ss0bSnPjj2lR4DpD5z/ynxYlVNoDWJHIBNCNX+FWWnBjU0x7fJO5Z1aCV7lTlkx/E
+ iaYpFgUYEUGmKLbpoPiVL8DvRWn4uzdnB6uu08ugeb/EgRRqmb2Rx2azzig5O8IrHaMtP0
+ Sh/Wz9bqAY5bioxnjSV42dMOtxJPqfo=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-470-ToDJr4PKPumrVKY7_5fuIg-1; Wed, 29 Jan 2025 03:15:14 -0500
-X-MC-Unique: ToDJr4PKPumrVKY7_5fuIg-1
-X-Mimecast-MFC-AGG-ID: ToDJr4PKPumrVKY7_5fuIg
+ us-mta-638-pRVv5uOIN42CXlnyv7vcPQ-1; Wed, 29 Jan 2025 03:20:48 -0500
+X-MC-Unique: pRVv5uOIN42CXlnyv7vcPQ-1
+X-Mimecast-MFC-AGG-ID: pRVv5uOIN42CXlnyv7vcPQ
 Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4362f893bfaso35198675e9.1
- for <qemu-devel@nongnu.org>; Wed, 29 Jan 2025 00:15:14 -0800 (PST)
+ 5b1f17b1804b1-43623bf2a83so51136095e9.0
+ for <qemu-devel@nongnu.org>; Wed, 29 Jan 2025 00:20:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738138513; x=1738743313;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1738138847; x=1738743647;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=cLk0PP7DXX7kwB63HESm9vgBr/1hpqhZ8qpB/vFHkCs=;
- b=Nsi+C4dKifbQaeDZFfp8ADnu3beRngR87A4TUs5RVDCP0GamGtf+itDhAQkN5mjjMW
- gcRB1f3gwLTx0DVC7/b4MkLZ1DobfbnBI59d59FCwTpDqhDVBs/Slta/3Hm5JBGb1rHx
- Z8iN1AGjlecM9dLgXWmLxAHwCpc/XTe92EsOHVUGk/NhtxKcOap+CtgzhZyfSQb8pFUK
- ffras+hKV0GvQg/XSPehIKsJQzlMNl3TV2TNslJepY1ENrOxoH7eguPUtxja1ysD//wJ
- boI2RFEZfBrMucGo3nnp9Pf++84JQoYh56nRMW/ve9C4UNK9piSG0sxWOjJQv3EWpbUv
- 4Icg==
-X-Gm-Message-State: AOJu0Yz5/DXmactWAFIQ/dVv1bbd9x09nFOEc0tjh5HlI4if93k2naTn
- uozK0pwV35Te7uMbub/cuFgB8YFQWZ3u6mvNXtOPMB2JsNViXyB1uvr8BQ68nEjZQXJKIYvSbbN
- /N0b9oxwBfj8uVUrrwruFwC6ADrRqhQZ5xwXMe8F0p/RiESVUcyZN
-X-Gm-Gg: ASbGncv7eOBuDCGsZn+gKo2sIkrzv0+oeKflR67zsCmr/4KWJ2XCeBc0rkrMQSaGqUe
- 0I49DYHu1KcxUFiYGMA9WzCUd2+4CMZJCUN0aMWZM1F+mgsKiyqWwQY52uDJGh3Nfqg7vem4iZm
- FKxd0zM2p/Ie5t6xSUY6TeEiVvdhLJfS31CBizeRQGuii60BQn+ZQQKzPPUwL/0a9MDHYnU+Z/6
- FfOPFTPgK5GS1FDjJoWdmLzxmiEEkiLIzyZJvXTofn0BObotXhftHZkFz/V+Ofecdzg/WEDKmiP
- 0r/lU3YKItoyuVPrchx/hzY49PIo2Rz1KUIdrNCdevcR2XEzAWre
-X-Received: by 2002:a05:600c:4e01:b0:434:f3d8:62d0 with SMTP id
- 5b1f17b1804b1-438dc3a3e77mr16138165e9.3.1738138513142; 
- Wed, 29 Jan 2025 00:15:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFhjZsdjQnrm2SsoZ9MgrYKG/me9DPHNhA4r0CsvC3R7v0HqFMxnz4kUMsYUpeUeqWIPRwTFQ==
-X-Received: by 2002:a05:600c:4e01:b0:434:f3d8:62d0 with SMTP id
- 5b1f17b1804b1-438dc3a3e77mr16137905e9.3.1738138512750; 
- Wed, 29 Jan 2025 00:15:12 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ bh=kmWDchkgNMCOHLnNxHT63tYJxxCZKeV/TOaAclkBW9w=;
+ b=KfLuKWK2TTJfbtRMT2c5LVY+oYz0H6nmhNzXkIqU60iOpddQzERNYGc7/HwsXgopY3
+ R2u4V9RaSx3jLmMERuvXYMCOZt/aos+c8v4H5CrVNp3IpwhBpsaoIgo+nWPvB0RXk09J
+ 6NCb32rOUMej0OD2HbZIXAXScK069VFErXfR1Ig2BVkuHUqumVrinsbyQUcri98gzgjy
+ 0hEw0oHT/2YSRM0Gc/lUDHTSjE/bE9y/Z44ZWcWgmf4jeOYR9KSQ2QNllKyjTQmSEKIL
+ zaxn5Yq27406IDjQDnuTSyPq4ARdvDvAV50Op9NcuKREs7WfOWZ4ViGl0FEJWVeugB3i
+ 3SBQ==
+X-Gm-Message-State: AOJu0YwiIG+UcFhfkKB/+gUL4M4kYDbMcjfu/47MyUdUL8c81+GKD/5a
+ sZik7RvBL+G57pegC6wC7Pdccmf2ywIoZMAlUrYBitPHlTYP4y4vWxtEDwcHkHr50RWB/SmyOeS
+ cHnMVu6yEJ80Ot/oKon4Zn6eY9Co1fsNdCWRZxHC7Pgqv8K+iIpxeowPSv9PZFk9vbWa6Vb+72M
+ mz/WUxMf99AZDCeVPKuQFRYxjomD6hiK5/aWc/GFk=
+X-Gm-Gg: ASbGncuXlG+jNFDDkQlZ+kRlkupLOSU+vGkAyeRmycssoQklQbVL1TG/k12NjXt5U2X
+ yUqKclgSF9/M8ZRWsQjK0+UfhouQGS9ds6U16yRADjUSzUVYC02kmSVXSjq486GNILvlt45nrdl
+ jMFB/ar6occ7QmTKbbV/82ije49C7hfJ7as9NJSfEDJRM294U9cycS1kS2rihajJvC86k+JYdtt
+ yXposOjwiVgpgBwg+tkatLcsWgAE6tif6i5hR5mtWFlFdxiM2TnvYqK1yRwjiS0dZx4cA/2bsEk
+ SkvmAQ==
+X-Received: by 2002:a05:600c:1d1e:b0:436:ed33:1535 with SMTP id
+ 5b1f17b1804b1-438dc3bf129mr15945295e9.12.1738138847147; 
+ Wed, 29 Jan 2025 00:20:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEweJxqvsTxtpXAZYVjRsKDWKJMu638NkLjAIdF/obghHTcAmSBVPrca+kwQ+jgaANhjGsSgw==
+X-Received: by 2002:a05:600c:1d1e:b0:436:ed33:1535 with SMTP id
+ 5b1f17b1804b1-438dc3bf129mr15945025e9.12.1738138846761; 
+ Wed, 29 Jan 2025 00:20:46 -0800 (PST)
+Received: from [192.168.10.3] ([151.62.97.55])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438dcc2e3a6sm13873815e9.20.2025.01.29.00.15.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 Jan 2025 00:15:11 -0800 (PST)
-Message-ID: <7d470652-6439-4b5c-afee-d74826ead969@redhat.com>
-Date: Wed, 29 Jan 2025 09:15:10 +0100
+ 5b1f17b1804b1-438dcc6de7csm13675845e9.32.2025.01.29.00.20.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 29 Jan 2025 00:20:46 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: berrange@redhat.com,
+	qemu-rust@nongnu.org
+Subject: [PATCH] gitlab-ci: include full Rust backtraces in test runs
+Date: Wed, 29 Jan 2025 09:20:45 +0100
+Message-ID: <20250129082045.1319203-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/arm/virt: Support larger highmem MMIO regions
-Content-Language: en-US
-To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
- Matt Ochs <mochs@nvidia.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Nathan Chen <nathanc@nvidia.com>, "ddutile@redhat.com" <ddutile@redhat.com>,
- Nicolin Chen <nicolinc@nvidia.com>, Ankit Agrawal <ankita@nvidia.com>
-References: <20250128160237.3379569-1-mochs@nvidia.com>
- <73f3e4cf927845809c6b10424c00c0ff@huawei.com>
- <cb91da0e-9163-4e59-a060-4a76a077c5d5@redhat.com>
- <BDF4F631-8A96-41B5-B7CE-2BD631C23A2B@nvidia.com>
- <0d303a69-0779-4309-9c00-c76afc82d324@redhat.com>
- <188a25cb7640462ba1cb81456a2fdd90@huawei.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <188a25cb7640462ba1cb81456a2fdd90@huawei.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -33
 X-Spam_score: -3.4
 X-Spam_bar: ---
@@ -116,80 +102,27 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ .gitlab-ci.d/buildtest-template.yml | 1 +
+ 1 file changed, 1 insertion(+)
 
-Hi Shameer,
-
-On 1/29/25 9:10 AM, Shameerali Kolothum Thodi wrote:
->
->> -----Original Message-----
->> From: Eric Auger <eric.auger@redhat.com>
->> Sent: Wednesday, January 29, 2025 7:56 AM
->> To: Matt Ochs <mochs@nvidia.com>; Shameerali Kolothum Thodi
->> <shameerali.kolothum.thodi@huawei.com>
->> Cc: qemu-devel@nongnu.org; Nathan Chen <nathanc@nvidia.com>;
->> ddutile@redhat.com; Nicolin Chen <nicolinc@nvidia.com>; Ankit Agrawal
->> <ankita@nvidia.com>
->> Subject: Re: [PATCH] hw/arm/virt: Support larger highmem MMIO regions
->
->>>>>> +    if (size < extended_memmap[VIRT_HIGH_PCIE_MMIO].size) {
->>>>> Not sure it is better to fallback to default size here instead of setting
->> error.
->>>> I think if the user sets a value it shall be obeyed
->>> Agreed.
->>>
->>>> Note that per the dynamic memory map algo, changing the size will also
->>>> change the base address. See
->>>>
->>>> virt_set_high_memmap(). By the wayn why do we forbid a smaller size?
->>> That’s a good point, I will remove this check.
-> Is there really a use case where a user will want a smaller size than default?
->
->>>>>> +    object_class_property_add(oc, "highmem-mmio-size", "size",
->>>>>> +                                   virt_get_highmem_mmio_size,
->>>>>> +                                   virt_set_highmem_mmio_size,
->>>>>> +                                   NULL, NULL);
->>>>>> +    object_class_property_set_description(oc, "highmem-mmio-size",
->>>>>> +                                          "Set extended MMIO memory map size");
->>>>>> +
->>>>> I think this probably needs backward compatibility to keep migration
->> happy.
->>>>> Isn't it? See the no_highmem_compact handling.
->>>> I guess if we keep the same value as default we are good. The difference
->>>> with highmem_compact is it was set by default from 7.2 onwards hence
->>>> changing the mmio layout. Here by default you keep the same IIUC.
->>> I’m not sure I see an issue since the code is directly modifying the size
->> value
->>> in the extended_memmap array.
->> I meant that if by default we keep the size value equal to 512G (the
->> existing default value), I don't think we need to care about compats.
-> Yeah. If it has default size , it should be Ok I guess. But what if,
->
-> Your source is something like,
->
-> ./qemu-new -machine virt-9.1,...,highmem-mmio-size=XXX
->
-> and has a target VM started with
->
-> ./qemu-9.1  -machine virt,...
->
-> The migration will be still successful but will have memory map differences, right?
->
-> Or the above is not considered as a valid use case and the onus of making
-> sure we are using it correctly with default size is on the user. 
-To me when you migrate the qemu cmd line is supposed to be the same on
-both src and dst. But worth to be tested.
-
-Eric
->
-> Thanks,
-> SHameer
->
->
->
->
+diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
+index 39da7698b09..4cc19239319 100644
+--- a/.gitlab-ci.d/buildtest-template.yml
++++ b/.gitlab-ci.d/buildtest-template.yml
+@@ -63,6 +63,7 @@
+   stage: test
+   image: $CI_REGISTRY_IMAGE/qemu/$IMAGE:$QEMU_CI_CONTAINER_TAG
+   script:
++    - export RUST_BACKTRACE=1
+     - source scripts/ci/gitlab-ci-section
+     - section_start buildenv "Setting up to run tests"
+     - scripts/git-submodule.sh update roms/SLOF
+-- 
+2.48.1
 
 
