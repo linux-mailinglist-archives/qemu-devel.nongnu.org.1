@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96287A217F7
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 08:20:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 094D9A217FC
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 08:20:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1td2Lp-0001vI-Ht; Wed, 29 Jan 2025 02:19:05 -0500
+	id 1td2Lr-00026y-IE; Wed, 29 Jan 2025 02:19:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1td2LX-0001te-Pa
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 02:18:47 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1td2Lb-0001vK-SU
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 02:18:59 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1td2LW-0003cI-6C
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 02:18:47 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1td2LX-0003ci-EC
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 02:18:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738135124;
+ s=mimecast20190719; t=1738135126;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=hSJhqbeXD9zbKyqqhYGAQOG/peWfx4J88UGcHCQtZDA=;
- b=hERREcUQyiDbzQg1DUlwQL3911igRCZNCtJPc0WsXhRStr3cGKP9j7EfrBKiNNFfCdmrCS
- qz+2c/fXH5FPCxf8wTDFbMtZSgXqnVK3GtThFhLNWhg4IlqNa9pYiDRvJpRu6AF5OkZXCn
- dxCK6LU+w6tVjTLmaJOqwC44BtqcgDY=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4dNyEekdIEkglrF9k+RLdVTpQz3bzIefzFUxpYG0qR4=;
+ b=DnM8RG+2n1vyoD1VftSaEQcBt69SU0C6SL93hm3zkJsNFQfIqz1Pg+p+kNCkDLeW6VrBWe
+ g/+NuvgTixD4llMmtBPj8Mz4oZ0el/YlzQNH3E1kYOrWg/qSd1foEY7b1eWbFbgbJzoodf
+ NbuU1a7QYqc+90kB0LsHsM/yEbO2yww=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-124-cJYElIMeMGyj0Fnnih5Cew-1; Wed,
- 29 Jan 2025 02:18:38 -0500
-X-MC-Unique: cJYElIMeMGyj0Fnnih5Cew-1
-X-Mimecast-MFC-AGG-ID: cJYElIMeMGyj0Fnnih5Cew
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-622-q-fV45_yPSiPs-U8mQUzig-1; Wed,
+ 29 Jan 2025 02:18:43 -0500
+X-MC-Unique: q-fV45_yPSiPs-U8mQUzig-1
+X-Mimecast-MFC-AGG-ID: q-fV45_yPSiPs-U8mQUzig
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 36F7819560B2; Wed, 29 Jan 2025 07:18:35 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 56D1419560A1; Wed, 29 Jan 2025 07:18:40 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.105])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7C46819560AA; Wed, 29 Jan 2025 07:18:23 +0000 (UTC)
+ id CE18019560BC; Wed, 29 Jan 2025 07:18:35 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
@@ -50,9 +51,12 @@ Cc: Joel Stanley <joel@jms.id.au>,
  Troy Lee <troy_lee@aspeedtech.com>, Jamin Lin <jamin_lin@aspeedtech.com>,
  Steven Lee <steven_lee@aspeedtech.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH 0/5] tests/functional: Update Aspeed OpenBMC images (resend)
-Date: Wed, 29 Jan 2025 08:18:15 +0100
-Message-ID: <20250129071820.1258133-1-clg@redhat.com>
+Subject: [PATCH 1/5] tests/functional: Introduce a new test routine for
+ OpenBMC images
+Date: Wed, 29 Jan 2025 08:18:16 +0100
+Message-ID: <20250129071820.1258133-2-clg@redhat.com>
+In-Reply-To: <20250129071820.1258133-1-clg@redhat.com>
+References: <20250129071820.1258133-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -83,33 +87,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+The OpenBMC images currently used by QEMU to test the Aspeed machines
+are rather old. To prepare an update to the latest builds, we need to
+adjust the console patterns. Introduce a new routine to preserve the
+current tests.
 
-This series updates the OpenBMC firmware images to the latest version
-for existing tests and also adds 2 new tests for Aspeed machines which
-were not tested before : witherspoon and bletchley.
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ tests/functional/aspeed.py | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-Thanks,
-
-C.
-
-Cédric Le Goater (5):
-  tests/functional: Introduce a new test routine for OpenBMC images
-  tests/functional: Update OpenBMC image of palmetto machine
-  tests/functional: Update OpenBMC image of romulus machine
-  tests/functional: Introduce a witherspoon machine test
-  tests/functional: Introduce a bletchley machine test
-
- tests/functional/aspeed.py                    | 20 +++++++++-------
- tests/functional/meson.build                  |  4 ++++
- tests/functional/test_arm_aspeed_bletchley.py | 24 +++++++++++++++++++
- tests/functional/test_arm_aspeed_palmetto.py  | 12 +++++-----
- tests/functional/test_arm_aspeed_romulus.py   | 12 +++++-----
- .../functional/test_arm_aspeed_witherspoon.py | 24 +++++++++++++++++++
- 6 files changed, 75 insertions(+), 21 deletions(-)
- create mode 100755 tests/functional/test_arm_aspeed_bletchley.py
- create mode 100755 tests/functional/test_arm_aspeed_witherspoon.py
-
+diff --git a/tests/functional/aspeed.py b/tests/functional/aspeed.py
+index b52358bb8c61..51c821944842 100644
+--- a/tests/functional/aspeed.py
++++ b/tests/functional/aspeed.py
+@@ -23,6 +23,24 @@ def do_test_arm_aspeed(self, machine, image):
+         self.wait_for_console_pattern("ftgmac100 1e660000.ethernet eth0: irq ")
+         self.wait_for_console_pattern("systemd[1]: Set hostname to")
+ 
++    def do_test_arm_aspeed_openbmc(self, machine, image, uboot='2019.04',
++                                   cpu_id='0x0', soc='AST2500 rev A1'):
++        hostname = machine.removesuffix('-bmc')
++
++        self.set_machine(machine)
++        self.vm.set_console()
++        self.vm.add_args('-drive', 'file=' + image + ',if=mtd,format=raw',
++                         '-net', 'nic', '-snapshot')
++        self.vm.launch()
++
++        self.wait_for_console_pattern(f'U-Boot {uboot}')
++        self.wait_for_console_pattern('## Loading kernel from FIT Image')
++        self.wait_for_console_pattern('Starting kernel ...')
++        self.wait_for_console_pattern(f'Booting Linux on physical CPU {cpu_id}')
++        self.wait_for_console_pattern(f'ASPEED {soc}')
++        self.wait_for_console_pattern('/init as init process')
++        self.wait_for_console_pattern(f'systemd[1]: Hostname set to <{hostname}>.')
++
+     def do_test_arm_aspeed_buildroot_start(self, image, cpu_id, pattern='Aspeed EVB'):
+         self.require_netdev('user')
+         self.vm.set_console()
 -- 
 2.48.1
 
