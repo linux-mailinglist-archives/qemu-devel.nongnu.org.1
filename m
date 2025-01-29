@@ -2,59 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EDBEA21E1B
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 14:46:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 629B2A21E15
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 14:46:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1td8NO-0007aQ-3G; Wed, 29 Jan 2025 08:45:06 -0500
+	id 1td8NQ-0007fT-IU; Wed, 29 Jan 2025 08:45:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1td8NB-0007ZU-K6
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 08:44:53 -0500
+ id 1td8NC-0007Zb-41
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 08:44:55 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1td8N9-00088e-8G
+ id 1td8NA-00088x-Ld
  for qemu-devel@nongnu.org; Wed, 29 Jan 2025 08:44:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738158289;
+ s=mimecast20190719; t=1738158292;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=eLkU0jczH9+axJY8TTBFUBAllbC/EeHNAL6GZX89o9o=;
- b=bdH/Wk00oIhhNbj4EIu4ipIHGW6rx9eKyPISZaCKOQ1F0P1ned7L88hIcJvzHvDL65ym4m
- 7oKoUQwAiV1TC+AIJTOUzlOIp+1YtxU4UIFXOTm/qGlOP3ffxcfeSHR9lNo+WZ4igXml2b
- E4paWbfF3os+HeavL8mOg9vtHIeYZQ0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=QkvyWq9gMdhHkrlDqEitBjOsFmj5r+wCqGb0Udd7APQ=;
+ b=QQD6kvfv4V5bPEGUHDWF1HObyzlEVlFdqUKLFSGKYPAJYHKgRnx59FTAUynDApNywxooG6
+ nyzKXPKWQazX4tYSv7nivqZ43SAa1Qh4pBpXcT8xKKDB2yppeNPz+0diNm29fDoqpWrJrf
+ 9RWmf0jt23nLFSgaSMb1f4tY2hhjJu0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-684-FzkuO1cAOXWl0-JRVVJHgw-1; Wed,
- 29 Jan 2025 08:44:46 -0500
-X-MC-Unique: FzkuO1cAOXWl0-JRVVJHgw-1
-X-Mimecast-MFC-AGG-ID: FzkuO1cAOXWl0-JRVVJHgw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-104-Zax800zAPbq89YtUxSvS9w-1; Wed,
+ 29 Jan 2025 08:44:49 -0500
+X-MC-Unique: Zax800zAPbq89YtUxSvS9w-1
+X-Mimecast-MFC-AGG-ID: Zax800zAPbq89YtUxSvS9w
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 73D35195605A; Wed, 29 Jan 2025 13:44:43 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CAF2918009F5; Wed, 29 Jan 2025 13:44:46 +0000 (UTC)
 Received: from dell-r430-03.lab.eng.brq2.redhat.com
  (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8B3CF1800352; Wed, 29 Jan 2025 13:44:39 +0000 (UTC)
+ id F3EBB1800961; Wed, 29 Jan 2025 13:44:43 +0000 (UTC)
 From: Igor Mammedov <imammedo@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org, richard.henderson@linaro.org, pbonzini@redhat.com,
  imp@bsdimp.com, kevans@freebsd.org, gaosong@loongson.cn, laurent@vivier.eu
-Subject: [PATCH 0/6] tcg: fix qemu crash when add assert_cpu_is_self() is
- enabled and cleanups related to cpu->created check
-Date: Wed, 29 Jan 2025 14:44:30 +0100
-Message-ID: <20250129134436.1240740-1-imammedo@redhat.com>
+Subject: [PATCH 1/6] bsd-user: drop not longer used target_reset_cpu()
+Date: Wed, 29 Jan 2025 14:44:31 +0100
+Message-ID: <20250129134436.1240740-2-imammedo@redhat.com>
+In-Reply-To: <20250129134436.1240740-1-imammedo@redhat.com>
+References: <20250129134436.1240740-1-imammedo@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
@@ -82,40 +84,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-1st 3 patches are cleanups around cpu_reset logic
-4th patch enables assert_cpu_is_self() macro on --enable-debug builds
-5th drops offending patch
-    (since my understanding of TCG is close to nill, so I'd leave it up to
-     TCG folks to fix if needed properly) 
-6th is removing no longer needed cpu->created check, since
-    by the time it's invoked, cpu->created == true
+target_reset_cpu() static inlines have no user,
+remove them.
 
-CC: alex.bennee@linaro.org
-CC: richard.henderson@linaro.org
-CC: pbonzini@redhat.com 
-CC: imp@bsdimp.com
-CC: kevans@freebsd.org
-CC: gaosong@loongson.cn
-CC: laurent@vivier.eu
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+---
+ bsd-user/aarch64/target_arch_cpu.h | 5 -----
+ bsd-user/arm/target_arch_cpu.h     | 4 ----
+ bsd-user/i386/target_arch_cpu.h    | 5 -----
+ bsd-user/riscv/target_arch_cpu.h   | 4 ----
+ bsd-user/x86_64/target_arch_cpu.h  | 5 -----
+ 5 files changed, 23 deletions(-)
 
-Igor Mammedov (6):
-  bsd-user: drop not longer used target_reset_cpu()
-  loongarch: reset vcpu after it's created
-  m68k: reset vcpu after it's created
-  tcg:tlb: use tcg_debug_assert() in assert_cpu_is_self()
-  Revert "tcg/cputlb: remove other-cpu capability from TLB flushing"
-  tcg: drop cpu->created check
-
- bsd-user/aarch64/target_arch_cpu.h |  5 ---
- bsd-user/arm/target_arch_cpu.h     |  4 ---
- bsd-user/i386/target_arch_cpu.h    |  5 ---
- bsd-user/riscv/target_arch_cpu.h   |  4 ---
- bsd-user/x86_64/target_arch_cpu.h  |  5 ---
- accel/tcg/cputlb.c                 | 53 +++++++++++++++++++++---------
- target/loongarch/cpu.c             |  2 +-
- target/m68k/cpu.c                  |  2 +-
- 8 files changed, 39 insertions(+), 41 deletions(-)
-
+diff --git a/bsd-user/aarch64/target_arch_cpu.h b/bsd-user/aarch64/target_arch_cpu.h
+index 87fbf6d677..46a448e93f 100644
+--- a/bsd-user/aarch64/target_arch_cpu.h
++++ b/bsd-user/aarch64/target_arch_cpu.h
+@@ -181,9 +181,4 @@ static inline void target_cpu_clone_regs(CPUARMState *env, target_ulong newsp)
+     pstate_write(env, 0);
+ }
+ 
+-static inline void target_cpu_reset(CPUArchState *env)
+-{
+-}
+-
+-
+ #endif /* TARGET_ARCH_CPU_H */
+diff --git a/bsd-user/arm/target_arch_cpu.h b/bsd-user/arm/target_arch_cpu.h
+index bc2eaa0bf4..b9583b0f92 100644
+--- a/bsd-user/arm/target_arch_cpu.h
++++ b/bsd-user/arm/target_arch_cpu.h
+@@ -206,8 +206,4 @@ static inline void target_cpu_clone_regs(CPUARMState *env, target_ulong newsp)
+     env->regs[0] = 0;
+ }
+ 
+-static inline void target_cpu_reset(CPUArchState *env)
+-{
+-}
+-
+ #endif /* TARGET_ARCH_CPU_H */
+diff --git a/bsd-user/i386/target_arch_cpu.h b/bsd-user/i386/target_arch_cpu.h
+index 5d4c931dec..371e702799 100644
+--- a/bsd-user/i386/target_arch_cpu.h
++++ b/bsd-user/i386/target_arch_cpu.h
+@@ -194,9 +194,4 @@ static inline void target_cpu_clone_regs(CPUX86State *env, target_ulong newsp)
+     env->regs[R_EAX] = 0;
+ }
+ 
+-static inline void target_cpu_reset(CPUArchState *env)
+-{
+-    cpu_reset(env_cpu(env));
+-}
+-
+ #endif /* TARGET_ARCH_CPU_H */
+diff --git a/bsd-user/riscv/target_arch_cpu.h b/bsd-user/riscv/target_arch_cpu.h
+index ef92f00480..d3cc5adbf4 100644
+--- a/bsd-user/riscv/target_arch_cpu.h
++++ b/bsd-user/riscv/target_arch_cpu.h
+@@ -141,8 +141,4 @@ static inline void target_cpu_clone_regs(CPURISCVState *env, target_ulong newsp)
+     env->gpr[xT0] = 0;
+ }
+ 
+-static inline void target_cpu_reset(CPUArchState *env)
+-{
+-}
+-
+ #endif /* TARGET_ARCH_CPU_H */
+diff --git a/bsd-user/x86_64/target_arch_cpu.h b/bsd-user/x86_64/target_arch_cpu.h
+index f82042e30a..8ec5c65fab 100644
+--- a/bsd-user/x86_64/target_arch_cpu.h
++++ b/bsd-user/x86_64/target_arch_cpu.h
+@@ -169,9 +169,4 @@ static inline void target_cpu_clone_regs(CPUX86State *env, target_ulong newsp)
+     env->regs[R_EAX] = 0;
+ }
+ 
+-static inline void target_cpu_reset(CPUArchState *env)
+-{
+-    cpu_reset(env_cpu(env));
+-}
+-
+ #endif /* TARGET_ARCH_CPU_H */
 -- 
 2.43.0
 
