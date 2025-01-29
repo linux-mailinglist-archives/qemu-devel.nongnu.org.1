@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF1E1A21624
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 02:41:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85338A21631
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 02:42:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcx3A-0000zr-1t; Tue, 28 Jan 2025 20:39:28 -0500
+	id 1tcx4E-0003GS-8L; Tue, 28 Jan 2025 20:40:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tcx37-0000yb-0A
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:25 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1tcx4B-0003C7-3U; Tue, 28 Jan 2025 20:40:31 -0500
+Received: from mail-ua1-x932.google.com ([2607:f8b0:4864:20::932])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tcx35-0003cd-9W
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:24 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-2163b0c09afso115533505ad.0
- for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 17:39:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1tcx49-00044Q-6M; Tue, 28 Jan 2025 20:40:30 -0500
+Received: by mail-ua1-x932.google.com with SMTP id
+ a1e0cc1a2514c-85c529e72bcso1215631241.0; 
+ Tue, 28 Jan 2025 17:40:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738114762; x=1738719562; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1738114827; x=1738719627; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Q33D6yJnXJXu9dlEjHBd58w+LYInd4Y2qLPYlRCltEc=;
- b=yyCSHKqb3d8RIygFMbXT/KF/Ivrp5GBqXXacDfWKfFa3hv8JWYpL4xJazZwPAkK334
- b1LYpt6HWSGkZ/MKpvHM69RfBy9sAyBc3z9b0oVCzp7D+YZLjmFTfGcK5M7BmaojNr1X
- lGVgZJfDL6t0RgcLWbdsS7MFUUMyIT/D/eLdYI/zE0fqOFtVCh0+NUf7JtnLDe+AGmCB
- cr6As6+eQL1/VDkhn1RqiqQVDr+eK6PGlse/FBDdtem5BanF/Buy83ST5bHglE9GGZ/g
- tTOS97/FIxLva5lOCeqFhnUu3EyxzHQEBzA9eaGmoXeaKAqwMlWB/DkzSsr7j2X493OT
- EmQQ==
+ bh=2D9o2+czZxP14WHRAWScDdFh5qIbfwgdjW+waklIuDw=;
+ b=BnFXXH4ib+SSffta/rdcEEUb0akcbYfFtlYBN4d3vv2IrPIprcCmZ9kou2HDwD88Y2
+ Z0ukm7XAVx6WZ0mDqBZf7lAHHnyvhHG7nWyHpyBAdSbMfO2f50JLCMjcy5ErrSLoK2eK
+ 1/xAKpDGlLLfTGqrQAjFaf6b9EbuXCiSHM7PpUiB6FbxmO3cDoWup+u7Jl0xZ+lZsQ9W
+ w9nATdsYJd4w12MJwqENK9O8jSYQ5ptEoha1dhxADY6It6y80E/YijSZ6G56FQM7d5qM
+ 0y3b29nroiXlP7ZscaxII8LWJeEZdYw4ENory4GH9SopGGmL1VQ5DqWFvH/nAOFxMCot
+ bxdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738114762; x=1738719562;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1738114827; x=1738719627;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Q33D6yJnXJXu9dlEjHBd58w+LYInd4Y2qLPYlRCltEc=;
- b=qRV4oN7MpvgTSWTvOrEIee9u56VNWQMk9MDrLHSmcegQk3V1p0omdNquk1urAPGm9R
- N5nQE+XNDKk1RU/Z8j1b1tItBJe/khvghbeLN1wX2de8uXs87NMl8XYOj0WhRVYyNGOA
- Ov9Zud9ZmANdS8Ni5t3/ANCcrWAY28WtG8r8Y3+pypG3jzdyH6E8Foz3usU9wdhvUQkG
- ZVxymlq8h1HOycsTgVsFiDkidDBQ84tKvKJRtPUtav7MZGlAVrW9iSQMu6WfIFZ5Cy6u
- hq4Zslqxv1LUhjpaRtFC6gjbxh664Kpm6Kly9F1dwmAkphIej25ASU3WcyqRE+e4i4ny
- fMIQ==
-X-Gm-Message-State: AOJu0YwGrrGxc2PG90/e+Vvl5ZaiUuXS7bHUfTdYD64jDgHyo69vHuZA
- caIjftnANqcvJv60hdjBRY2aIAIHxhiRuM+DVzh2aduHL3AFtzTsR98/3IP1YMiDjoDvp3V9RI0
- s
-X-Gm-Gg: ASbGnctdBg9KIj7XGNWENK8vabiuoOQ6pPulOFFxxllt7ypGFpFphc6PXWzuWJJZD8T
- aKeIJdcM47bIilr+HLSEn+10wgnqCB5dQPJ64zC1m14H434twm1vcDl9XVPpeRF0XNd6XyvhH+t
- D4w2ptqEa+l34R+V+Y0J026o/R3JNg4rzfOEn5n5q79f6L527i7JIJqaWoZ+BXUCuWxP4ykqYA6
- mvmZYNbKZDkvv7rjr1Q/jO71W5Ul3qjCiNixUfdWnYBOrVqQRebD23mdQG8/Ola9BGHx2t7qv+y
- jOIlSqlvQec7VXSB3qfX13WaaEn1vuMU5cv3d2au6Zh+VJh7Eg==
-X-Google-Smtp-Source: AGHT+IEG+u8ABc9bgjUdLNZvWMRA1hjmls6+I6MJBvDQavjYH362r/ZGH0MBDI9NPEDrtrCsZGf5ww==
-X-Received: by 2002:a17:902:d2c5:b0:211:e812:3948 with SMTP id
- d9443c01a7336-21dd7b681dfmr23545015ad.0.1738114761947; 
- Tue, 28 Jan 2025 17:39:21 -0800 (PST)
-Received: from stoup.. (71-212-32-190.tukw.qwest.net. [71.212.32.190])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21da3ea4200sm89341745ad.88.2025.01.28.17.39.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Jan 2025 17:39:21 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Subject: [PATCH v2 34/34] target/arm: Sink fp_status and fpcr access into
- do_fmlal*
-Date: Tue, 28 Jan 2025 17:38:57 -0800
-Message-ID: <20250129013857.135256-35-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250129013857.135256-1-richard.henderson@linaro.org>
-References: <20250129013857.135256-1-richard.henderson@linaro.org>
+ bh=2D9o2+czZxP14WHRAWScDdFh5qIbfwgdjW+waklIuDw=;
+ b=xPIGF7UeHDFBzvwiLBqb6+MnGP5ZsGdaEn51aoRQ0Xu89W+xr+IlRD67naD0Vznq7X
+ bJuNyPjBGxGFRE/mXNAjp2U4oz8zHcXB0IZhykOWXt4d2Z6O+XcteCq6K+7yqaW8rkD/
+ WqHSgOw4kuNt477TNyDuRd3iC0BleODyym7743RgN0CBfwDdAficTVevAHHyj1mXmgSz
+ GT5wcfgEAOb/fNLI13qtuac3uLIzd5TnI0nRgwWeV4gPJoTZw3KmhaVlOx96ut6MR99b
+ NMJTFBQVIDl/1bQbnc63p0HcArcV6SfP8tqVaZhKHx68+Kk6LCbwpCRWg5Tib4wZyzBK
+ 3u8A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWVoCxEpsoFVXT7JBr83LviLX8vfkKu10H/LkvTd4ssMKp33B4UeUGGd+sl8LX6Pwu2NieHnVhhm8tq@nongnu.org
+X-Gm-Message-State: AOJu0Yxx2A8hRYV+RftixLgZj1uegSR6aqLPltkgj7uLCTSoS53vGdK9
+ OwPJE6pflhEEx64khz2ycCaEq9xpBcWPgyNVdVcArWK3fCAh+xZuI7CyU2dMdKh2EVPykS3MBNR
+ ayCA64fsATkxFVyzRRMRsQVdlA+md0g==
+X-Gm-Gg: ASbGncuI/FLMC2cttOMksMCm7MrhZu3xJott6zIVYVqSD/N1t04UXTpHEtfeA8VrbLm
+ Q2ja5C+D2sV2AfGHDAUAgkh5mUgrZ2w6OGZOoAYab7EwQ4U4JcB/P3yVOZ8xw6ZbHqNzAjzE/DV
+ OPCyO1I8WfGAHyMVjRujrfbCqXaA==
+X-Google-Smtp-Source: AGHT+IF7ni2tyUzQpVh0E1ngv74dm/6E+7euikYTw5fq3k+6Mic6ZHldW2a/aNKiZ4NXQ9MwXr6U5AmV7ymX59fWkxo=
+X-Received: by 2002:a05:6102:3c84:b0:4af:f892:e9f0 with SMTP id
+ ada2fe7eead31-4b9a4f86a16mr1165164137.14.1738114827632; Tue, 28 Jan 2025
+ 17:40:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20250121170626.1992570-1-dbarboza@ventanamicro.com>
+ <20250121170626.1992570-2-dbarboza@ventanamicro.com>
+In-Reply-To: <20250121170626.1992570-2-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 29 Jan 2025 11:40:01 +1000
+X-Gm-Features: AWEUYZmGDJ2PfkAmmSuYmyQN0Mn4AA54CZXcYtMWMARD49v2ORsGjZs5HY-flhM
+Message-ID: <CAKmqyKPspAHSo7vrq3hp_Ys6vfXdk5M1QoNMNmTngQhufDcjpQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] target/riscv/debug.c: use wp size = 4 for 32-bit
+ CPUs
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, richard.henderson@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::932;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x932.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,92 +96,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sink common code from the callers into do_fmlal
-and do_fmlal_idx.  Reorder the arguments to minimize
-the re-sorting from the caller's arguments.
+On Wed, Jan 22, 2025 at 3:07=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+>
+> The mcontrol select bit (19) is always zero, meaning our triggers will
+> always match virtual addresses. In this condition, if the user does not
+> specify a size for the trigger, the access size defaults to XLEN.
+>
+> At this moment we're using def_size =3D 8 regardless of CPU XLEN. Use
+> def_size =3D 4 in case we're running 32 bits.
+>
+> Fixes: 95799e36c1 ("target/riscv: Add initial support for the Sdtrig exte=
+nsion")
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/tcg/vec_helper.c | 28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-index 03b0a6ebed..25ef7af029 100644
---- a/target/arm/tcg/vec_helper.c
-+++ b/target/arm/tcg/vec_helper.c
-@@ -2125,9 +2125,13 @@ static uint64_t load4_f16(uint64_t *ptr, int is_q, int is_2)
-  * as there is not yet SVE versions that might use blocking.
-  */
- 
--static void do_fmlal(float32 *d, void *vn, void *vm, float_status *fpst,
--                     uint64_t negx, int negf, uint32_t desc, bool fz16)
-+static void do_fmlal(float32 *d, void *vn, void *vm,
-+                     CPUARMState *env, uint32_t desc,
-+                     ARMFPStatusFlavour fpst_idx,
-+                     uint64_t negx, int negf)
- {
-+    float_status *fpst = &env->vfp.fp_status[fpst_idx];
-+    bool fz16 = env->vfp.fpcr & FPCR_FZ16;
-     intptr_t i, oprsz = simd_oprsz(desc);
-     int is_2 = extract32(desc, SIMD_DATA_SHIFT + 1, 1);
-     int is_q = oprsz == 16;
-@@ -2154,8 +2158,7 @@ void HELPER(gvec_fmlal_a32)(void *vd, void *vn, void *vm,
-     bool is_s = extract32(desc, SIMD_DATA_SHIFT, 1);
-     uint64_t negx = is_s ? 0x8000800080008000ull : 0;
- 
--    do_fmlal(vd, vn, vm, &env->vfp.fp_status[FPST_STD], negx, 0, desc,
--             env->vfp.fpcr & FPCR_FZ16);
-+    do_fmlal(vd, vn, vm, env, desc, FPST_STD, negx, 0);
- }
- 
- void HELPER(gvec_fmlal_a64)(void *vd, void *vn, void *vm,
-@@ -2172,8 +2175,7 @@ void HELPER(gvec_fmlal_a64)(void *vd, void *vn, void *vm,
-             negx = 0x8000800080008000ull;
-         }
-     }
--    do_fmlal(vd, vn, vm, &env->vfp.fp_status[FPST_A64], negx, negf, desc,
--             env->vfp.fpcr & FPCR_FZ16);
-+    do_fmlal(vd, vn, vm, env, desc, FPST_A64, negx, negf);
- }
- 
- void HELPER(sve2_fmlal_zzzw_s)(void *vd, void *vn, void *vm, void *va,
-@@ -2205,9 +2207,13 @@ void HELPER(sve2_fmlal_zzzw_s)(void *vd, void *vn, void *vm, void *va,
-     }
- }
- 
--static void do_fmlal_idx(float32 *d, void *vn, void *vm, float_status *fpst,
--                         uint64_t negx, int negf, uint32_t desc, bool fz16)
-+static void do_fmlal_idx(float32 *d, void *vn, void *vm,
-+                         CPUARMState *env, uint32_t desc,
-+                         ARMFPStatusFlavour fpst_idx,
-+                         uint64_t negx, int negf)
- {
-+    float_status *fpst = &env->vfp.fp_status[fpst_idx];
-+    bool fz16 = env->vfp.fpcr & FPCR_FZ16;
-     intptr_t i, oprsz = simd_oprsz(desc);
-     int is_2 = extract32(desc, SIMD_DATA_SHIFT + 1, 1);
-     int index = extract32(desc, SIMD_DATA_SHIFT + 2, 3);
-@@ -2235,8 +2241,7 @@ void HELPER(gvec_fmlal_idx_a32)(void *vd, void *vn, void *vm,
-     bool is_s = extract32(desc, SIMD_DATA_SHIFT, 1);
-     uint64_t negx = is_s ? 0x8000800080008000ull : 0;
- 
--    do_fmlal_idx(vd, vn, vm, &env->vfp.fp_status[FPST_STD], negx, 0, desc,
--                 env->vfp.fpcr & FPCR_FZ16);
-+    do_fmlal_idx(vd, vn, vm, env, desc, FPST_STD, negx, 0);
- }
- 
- void HELPER(gvec_fmlal_idx_a64)(void *vd, void *vn, void *vm,
-@@ -2253,8 +2258,7 @@ void HELPER(gvec_fmlal_idx_a64)(void *vd, void *vn, void *vm,
-             negx = 0x8000800080008000ull;
-         }
-     }
--    do_fmlal_idx(vd, vn, vm, &env->vfp.fp_status[FPST_A64], negx, negf, desc,
--                 env->vfp.fpcr & FPCR_FZ16);
-+    do_fmlal_idx(vd, vn, vm, env, desc, FPST_A64, negx, negf);
- }
- 
- void HELPER(sve2_fmlal_zzxw_s)(void *vd, void *vn, void *vm, void *va,
--- 
-2.43.0
+Alistair
 
+> ---
+>  target/riscv/debug.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/target/riscv/debug.c b/target/riscv/debug.c
+> index f6241a80be..9db4048523 100644
+> --- a/target/riscv/debug.c
+> +++ b/target/riscv/debug.c
+> @@ -478,7 +478,7 @@ static void type2_breakpoint_insert(CPURISCVState *en=
+v, target_ulong index)
+>      bool enabled =3D type2_breakpoint_enabled(ctrl);
+>      CPUState *cs =3D env_cpu(env);
+>      int flags =3D BP_CPU | BP_STOP_BEFORE_ACCESS;
+> -    uint32_t size;
+> +    uint32_t size, def_size;
+>
+>      if (!enabled) {
+>          return;
+> @@ -501,7 +501,9 @@ static void type2_breakpoint_insert(CPURISCVState *en=
+v, target_ulong index)
+>              cpu_watchpoint_insert(cs, addr, size, flags,
+>                                    &env->cpu_watchpoint[index]);
+>          } else {
+> -            cpu_watchpoint_insert(cs, addr, 8, flags,
+> +            def_size =3D riscv_cpu_mxl(env) =3D=3D MXL_RV64 ? 8 : 4;
+> +
+> +            cpu_watchpoint_insert(cs, addr, def_size, flags,
+>                                    &env->cpu_watchpoint[index]);
+>          }
+>      }
+> --
+> 2.47.1
+>
+>
 
