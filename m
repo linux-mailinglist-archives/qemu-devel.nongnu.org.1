@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B3F1A21E16
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 14:46:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3152CA21E17
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 14:46:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1td8NS-0007h6-Gt; Wed, 29 Jan 2025 08:45:10 -0500
+	id 1td8NU-0007hC-7v; Wed, 29 Jan 2025 08:45:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1td8NN-0007cb-9M
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 08:45:05 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1td8NP-0007fV-A0
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 08:45:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1td8NJ-0008Am-Ny
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 08:45:05 -0500
+ id 1td8NN-0008MU-HE
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 08:45:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738158300;
+ s=mimecast20190719; t=1738158304;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mBQt2BZ9Pble/MczGAKPnWj9zi6Lm9BXY9A2HjlrxTM=;
- b=DZ2aE6M0AnKCFsUT6tUPjsCtvIiI80b5J4fXfKw5n5Uvo2TKuWqJ4Ynv45gyKKOXTX9b68
- FX8ACVkJ6YtnyxZP/93oPRa+jiyQ/DPGoKNcfUvKCOlXzm9CbVSCMBS/ZjXGTaPZ1I9mKu
- 25yAaKTHCTyckvjr+cNb8Jiy/nU/gXk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=WondAvZ/n5a1SFkDwYqS9KCSNSrSWDpI4BteXa+G/U8=;
+ b=RoOOPB+VrdAh++HsosvMFCuWYulYlt3SIm9+IV0fQTnqAFgJLVQByrJReBXzlMzhgk77I8
+ 4PhOoGgzPtmncMH1Oc9NhHIrvunpLqoRvy6Har6P2raxdbo6Ki8C5MAG5FsZhdWAsR4NWB
+ LZYhsEm0feAynYlVOqlUF2uBNhqPbhI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-686-CruW9kk2OmaWWgH41rV15g-1; Wed,
- 29 Jan 2025 08:44:57 -0500
-X-MC-Unique: CruW9kk2OmaWWgH41rV15g-1
-X-Mimecast-MFC-AGG-ID: CruW9kk2OmaWWgH41rV15g
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-597-VRFeNc4tNQu7EsQTyMPkew-1; Wed,
+ 29 Jan 2025 08:45:01 -0500
+X-MC-Unique: VRFeNc4tNQu7EsQTyMPkew-1
+X-Mimecast-MFC-AGG-ID: VRFeNc4tNQu7EsQTyMPkew
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 17EEF1800361; Wed, 29 Jan 2025 13:44:56 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 303CE1800374; Wed, 29 Jan 2025 13:44:59 +0000 (UTC)
 Received: from dell-r430-03.lab.eng.brq2.redhat.com
  (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AD1A11800352; Wed, 29 Jan 2025 13:44:53 +0000 (UTC)
+ id 7E0FC1800955; Wed, 29 Jan 2025 13:44:56 +0000 (UTC)
 From: Igor Mammedov <imammedo@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org, richard.henderson@linaro.org, pbonzini@redhat.com,
- imp@bsdimp.com, kevans@freebsd.org, gaosong@loongson.cn, laurent@vivier.eu
-Subject: [PATCH 4/6] tcg:tlb: use tcg_debug_assert() in assert_cpu_is_self()
-Date: Wed, 29 Jan 2025 14:44:34 +0100
-Message-ID: <20250129134436.1240740-5-imammedo@redhat.com>
+ imp@bsdimp.com, kevans@freebsd.org, gaosong@loongson.cn, laurent@vivier.eu,
+ npiggin@gmail.com
+Subject: [PATCH 5/6] Revert "tcg/cputlb: remove other-cpu capability from TLB
+ flushing"
+Date: Wed, 29 Jan 2025 14:44:35 +0100
+Message-ID: <20250129134436.1240740-6-imammedo@redhat.com>
 In-Reply-To: <20250129134436.1240740-1-imammedo@redhat.com>
 References: <20250129134436.1240740-1-imammedo@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -33
 X-Spam_score: -3.4
 X-Spam_bar: ---
 X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -84,49 +86,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-that will enable assert_cpu_is_self when QEMU is configured with
-   --enable-debug
-without need for manual patching DEBUG_TLB_GATE define.
+1)
+This reverts commit 30933c4fb4f3df95ae44c4c3c86a5df049852c01.
+  ("tcg/cputlb: remove other-cpu capability from TLB flushing")
 
-Need to manually path DEBUG_TLB_GATE define to enable assert,
-let regression caused by [1] creep in unnoticed.
+The commit caused a regression which went unnoticed due to
+affected being disabled by default (DEBUG_TLB_GATE 0)
+Previous patch moved switched to using tcg_debug_assert() so that
+at least on debug builds assert_cpu_is_self() path would be exercised.
 
-1) 30933c4fb4f3d ("tcg/cputlb: remove other-cpu capability from TLB flushing")
+And that lead to exposing regression introduced by [1] with abort during tests.
+to reproduce:
+  $ configure  --target-list=x86_64-softmmu --enable-debug
+  $ make && ./qemu-system-x86_64
+
+  accel/tcg/cputlb.c:419: tlb_flush_by_mmuidx:
+    Assertion `!(cpu)->created || qemu_cpu_is_self(cpu)' failed.
+
+which is triggered by usage outside of cpu thread:
+    x86_cpu_new -> ... ->
+      x86_cpu_realizefn -> cpu_reset -> ... ->
+          tcg_cpu_reset_hold
+
+Drop offending commit for now, until a propper fix that doesn't break
+'make check' is available.
+
+PS:
+fixup g_memdup() checkpatch error s/g_memdup/g_memdup2/
+
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Suggested-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- accel/tcg/cputlb.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+I'll leave it upto TCG folz to fix it up propperly.
+
+CC: npiggin@gmail.com
+CC: richard.henderson@linaro.org
+---
+ accel/tcg/cputlb.c | 42 +++++++++++++++++++++++++++++++++---------
+ 1 file changed, 33 insertions(+), 9 deletions(-)
 
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index b4ccf0cdcb..71207d6dbf 100644
+index 71207d6dbf..db1713b3ca 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -61,8 +61,8 @@
- #  define DEBUG_TLB_LOG_GATE 0
- # endif
- #else
--# define DEBUG_TLB_GATE 0
--# define DEBUG_TLB_LOG_GATE 0
-+# define DEBUG_TLB_GATE 1
-+# define DEBUG_TLB_LOG_GATE 1
- #endif
+@@ -416,9 +416,12 @@ void tlb_flush_by_mmuidx(CPUState *cpu, uint16_t idxmap)
+ {
+     tlb_debug("mmu_idx: 0x%" PRIx16 "\n", idxmap);
  
- #define tlb_debug(fmt, ...) do { \
-@@ -74,11 +74,8 @@
-     } \
- } while (0)
+-    assert_cpu_is_self(cpu);
+-
+-    tlb_flush_by_mmuidx_async_work(cpu, RUN_ON_CPU_HOST_INT(idxmap));
++    if (cpu->created && !qemu_cpu_is_self(cpu)) {
++        async_run_on_cpu(cpu, tlb_flush_by_mmuidx_async_work,
++                         RUN_ON_CPU_HOST_INT(idxmap));
++    } else {
++        tlb_flush_by_mmuidx_async_work(cpu, RUN_ON_CPU_HOST_INT(idxmap));
++    }
+ }
  
--#define assert_cpu_is_self(cpu) do {                              \
--        if (DEBUG_TLB_GATE) {                                     \
--            g_assert(!(cpu)->created || qemu_cpu_is_self(cpu));   \
--        }                                                         \
--    } while (0)
-+#define assert_cpu_is_self(cpu)                             \
-+    tcg_debug_assert(!(cpu)->created || qemu_cpu_is_self(cpu))
+ void tlb_flush(CPUState *cpu)
+@@ -607,12 +610,28 @@ void tlb_flush_page_by_mmuidx(CPUState *cpu, vaddr addr, uint16_t idxmap)
+ {
+     tlb_debug("addr: %016" VADDR_PRIx " mmu_idx:%" PRIx16 "\n", addr, idxmap);
  
- /* run_on_cpu_data.target_ptr should always be big enough for a
-  * vaddr even on 32 bit builds
+-    assert_cpu_is_self(cpu);
+-
+     /* This should already be page aligned */
+     addr &= TARGET_PAGE_MASK;
+ 
+-    tlb_flush_page_by_mmuidx_async_0(cpu, addr, idxmap);
++    if (qemu_cpu_is_self(cpu)) {
++        tlb_flush_page_by_mmuidx_async_0(cpu, addr, idxmap);
++    } else if (idxmap < TARGET_PAGE_SIZE) {
++        /*
++         * Most targets have only a few mmu_idx.  In the case where
++         * we can stuff idxmap into the low TARGET_PAGE_BITS, avoid
++         * allocating memory for this operation.
++         */
++        async_run_on_cpu(cpu, tlb_flush_page_by_mmuidx_async_1,
++                         RUN_ON_CPU_TARGET_PTR(addr | idxmap));
++    } else {
++        TLBFlushPageByMMUIdxData *d = g_new(TLBFlushPageByMMUIdxData, 1);
++
++        /* Otherwise allocate a structure, freed by the worker.  */
++        d->addr = addr;
++        d->idxmap = idxmap;
++        async_run_on_cpu(cpu, tlb_flush_page_by_mmuidx_async_2,
++                         RUN_ON_CPU_HOST_PTR(d));
++    }
+ }
+ 
+ void tlb_flush_page(CPUState *cpu, vaddr addr)
+@@ -775,8 +794,6 @@ void tlb_flush_range_by_mmuidx(CPUState *cpu, vaddr addr,
+ {
+     TLBFlushRangeData d;
+ 
+-    assert_cpu_is_self(cpu);
+-
+     /*
+      * If all bits are significant, and len is small,
+      * this devolves to tlb_flush_page.
+@@ -797,7 +814,14 @@ void tlb_flush_range_by_mmuidx(CPUState *cpu, vaddr addr,
+     d.idxmap = idxmap;
+     d.bits = bits;
+ 
+-    tlb_flush_range_by_mmuidx_async_0(cpu, d);
++    if (qemu_cpu_is_self(cpu)) {
++        tlb_flush_range_by_mmuidx_async_0(cpu, d);
++    } else {
++        /* Otherwise allocate a structure, freed by the worker.  */
++        TLBFlushRangeData *p = g_memdup2(&d, sizeof(d));
++        async_run_on_cpu(cpu, tlb_flush_range_by_mmuidx_async_1,
++                         RUN_ON_CPU_HOST_PTR(p));
++    }
+ }
+ 
+ void tlb_flush_page_bits_by_mmuidx(CPUState *cpu, vaddr addr,
 -- 
 2.43.0
 
