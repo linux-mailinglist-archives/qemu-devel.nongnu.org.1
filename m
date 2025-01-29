@@ -2,91 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EFE3A22158
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 17:10:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59B1AA22128
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 17:04:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdAW7-0003hL-LO; Wed, 29 Jan 2025 11:02:15 -0500
+	id 1tdAWH-000405-3p; Wed, 29 Jan 2025 11:02:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVS-0003Gt-4q
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVT-0003H1-Li
  for qemu-devel@nongnu.org; Wed, 29 Jan 2025 11:01:39 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVP-0005H9-T8
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 11:01:33 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVR-0005HO-Ta
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 11:01:35 -0500
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id EF64B1F365;
- Wed, 29 Jan 2025 16:01:29 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id BEAF0210F3;
+ Wed, 29 Jan 2025 16:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738166490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1738166491; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HwsevFLOkDFD2CGqNjlyGPUrXcjTY/Q7VwMcYNR+90c=;
- b=SSCfZ8E7K6hRMQ03jCCv3RHx1I9cQkzh3upfGqExwMlyskxzEGZRgsYkk447DtR7j2izzn
- AGMLyB5iGmV2Y0WPm8EXp+NjJP4laBVbGSLC51IYM9VC+Bub6xvnzjwsTEZwK2xr+o109I
- xB4d7PfUIt+pBC3T+tTELavnCMPvVhI=
+ bh=Uy4hgmfN5vGrY2cpQdOG8KFL5MAiz+JVZWyxkqK9XgY=;
+ b=e9FSWlHF8M/Lpx2BtjVjw72OA1xQbQnyB/yM6P7bpwaKvJXMiVE5EmOzHrI91jtAmfJwIM
+ Fx8dEW9ZMdvK8nb7iaxOYT4bDaCesQ0TgnQ1AoacRbWUw8U7PHZK0waygFO0D814EKH0CB
+ GUXMGuPHIC9NCUu1N1QU9GHwcpLWEcQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738166490;
+ s=susede2_ed25519; t=1738166491;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HwsevFLOkDFD2CGqNjlyGPUrXcjTY/Q7VwMcYNR+90c=;
- b=xUnxrqRUA86HaGz/an3WZlDdfgpHanarXzxU/LcLUn/dgfEbBiqgKO5Nn1PSd5iLvgbFmU
- Jws6zxAlgLAMQHBg==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b="amgjI1f/";
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="HmLA/Uk7"
+ bh=Uy4hgmfN5vGrY2cpQdOG8KFL5MAiz+JVZWyxkqK9XgY=;
+ b=VlP95H8Uvb6NTMUHGJZyN13Yk2e4fG+0GQkI2Ml+jgIMlw1iWWdeTtrDxCKYzqRiScrFlG
+ uBKJCUvw6xwvb9BA==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e9FSWlHF;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=VlP95H8U
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738166489; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1738166491; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HwsevFLOkDFD2CGqNjlyGPUrXcjTY/Q7VwMcYNR+90c=;
- b=amgjI1f/AuI/UnSj7zDMxykHdxY+LRGa7qoVWdmY/7qS6ackKfOp6Z+1TANGTf4DFYnD/J
- mWhGv/Mz1BYBZThO415a5RRvvTpwXxHHs6XteLpTBN9roIfq9NrYfLBNIEX/YIg0r1JLwh
- Vx7HtLqQ6nI6luoTXabq9HYUdNja3KM=
+ bh=Uy4hgmfN5vGrY2cpQdOG8KFL5MAiz+JVZWyxkqK9XgY=;
+ b=e9FSWlHF8M/Lpx2BtjVjw72OA1xQbQnyB/yM6P7bpwaKvJXMiVE5EmOzHrI91jtAmfJwIM
+ Fx8dEW9ZMdvK8nb7iaxOYT4bDaCesQ0TgnQ1AoacRbWUw8U7PHZK0waygFO0D814EKH0CB
+ GUXMGuPHIC9NCUu1N1QU9GHwcpLWEcQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738166489;
+ s=susede2_ed25519; t=1738166491;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HwsevFLOkDFD2CGqNjlyGPUrXcjTY/Q7VwMcYNR+90c=;
- b=HmLA/Uk76C4KNBEIyVU77zY3TehdmVuundUnZMo+ayO+bD/dWglf5keulnXhGGox6DCaLT
- 3Py3lO2MT5JTtaCQ==
+ bh=Uy4hgmfN5vGrY2cpQdOG8KFL5MAiz+JVZWyxkqK9XgY=;
+ b=VlP95H8Uvb6NTMUHGJZyN13Yk2e4fG+0GQkI2Ml+jgIMlw1iWWdeTtrDxCKYzqRiScrFlG
+ uBKJCUvw6xwvb9BA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A95EF137DB;
- Wed, 29 Jan 2025 16:01:28 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 759F2137DB;
+ Wed, 29 Jan 2025 16:01:30 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id gN5tGthQmmffPAAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 29 Jan 2025 16:01:28 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id cHecDdpQmmffPAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 29 Jan 2025 16:01:30 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
 	Steve Sistare <steven.sistare@oracle.com>
-Subject: [PULL 11/42] hostmem-shm: preserve for cpr
-Date: Wed, 29 Jan 2025 13:00:28 -0300
-Message-Id: <20250129160059.6987-12-farosas@suse.de>
+Subject: [PULL 12/42] migration: enhance migrate_uri_parse
+Date: Wed, 29 Jan 2025 13:00:29 -0300
+Message-Id: <20250129160059.6987-13-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250129160059.6987-1-farosas@suse.de>
 References: <20250129160059.6987-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EF64B1F365
-X-Spam-Score: -3.00
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.00 / 50.00]; BAYES_HAM(-2.99)[99.94%];
+X-Rspamd-Queue-Id: BEAF0210F3
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
  R_MISSING_CHARSET(0.50)[];
  R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
@@ -99,14 +97,16 @@ X-Spamd-Result: default: False [-3.00 / 50.00]; BAYES_HAM(-2.99)[99.94%];
  RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_HAS_DN(0.00)[];
  TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email,oracle.com:email];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,suse.de:email,suse.de:dkim,suse.de:mid];
  RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
  RCPT_COUNT_THREE(0.00)[3];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.01
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -132,60 +132,78 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-Preserve memory-backend-shm memory objects during cpr-transfer.
+Export migrate_uri_parse for use outside migration internals, and define
+a method migrate_is_uri that indicates when migrate_uri_parse should
+be used.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Link: https://lore.kernel.org/r/1736967650-129648-11-git-send-email-steven.sistare@oracle.com
+Link: https://lore.kernel.org/r/1736967650-129648-12-git-send-email-steven.sistare@oracle.com
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- backends/hostmem-shm.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ include/migration/misc.h |  7 +++++++
+ migration/migration.c    | 11 +++++++++++
+ migration/migration.h    |  2 --
+ 3 files changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/backends/hostmem-shm.c b/backends/hostmem-shm.c
-index fabee41f2c..f67ad2740b 100644
---- a/backends/hostmem-shm.c
-+++ b/backends/hostmem-shm.c
-@@ -13,6 +13,7 @@
- #include "qemu/osdep.h"
- #include "system/hostmem.h"
- #include "qapi/error.h"
-+#include "migration/cpr.h"
+diff --git a/include/migration/misc.h b/include/migration/misc.h
+index 67f7ef7a0e..c660be8095 100644
+--- a/include/migration/misc.h
++++ b/include/migration/misc.h
+@@ -108,4 +108,11 @@ bool migration_in_bg_snapshot(void);
+ bool migration_block_activate(Error **errp);
+ bool migration_block_inactivate(void);
  
- #define TYPE_MEMORY_BACKEND_SHM "memory-backend-shm"
- 
-@@ -25,9 +26,9 @@ struct HostMemoryBackendShm {
- static bool
- shm_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
- {
--    g_autofree char *backend_name = NULL;
-+    g_autofree char *backend_name = host_memory_backend_get_name(backend);
-     uint32_t ram_flags;
--    int fd;
-+    int fd = cpr_find_fd(backend_name, 0);
- 
-     if (!backend->size) {
-         error_setg(errp, "can't create shm backend with size 0");
-@@ -39,13 +40,18 @@ shm_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
-         return false;
-     }
- 
-+    if (fd >= 0) {
-+        goto have_fd;
-+    }
++/* True if @uri starts with a syntactically valid URI prefix */
++bool migrate_is_uri(const char *uri);
 +
-     fd = qemu_shm_alloc(backend->size, errp);
-     if (fd < 0) {
-         return false;
-     }
-+    cpr_save_fd(backend_name, 0, fd);
++/* Parse @uri and return @channel, returning true on success */
++bool migrate_uri_parse(const char *uri, MigrationChannel **channel,
++                       Error **errp);
++
+ #endif
+diff --git a/migration/migration.c b/migration/migration.c
+index fce7b22ae8..b5ee98e691 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -14,6 +14,7 @@
+  */
  
-+have_fd:
-     /* Let's do the same as memory-backend-ram,share=on would do. */
--    backend_name = host_memory_backend_get_name(backend);
-     ram_flags = RAM_SHARED;
-     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
+ #include "qemu/osdep.h"
++#include "qemu/ctype.h"
+ #include "qemu/cutils.h"
+ #include "qemu/error-report.h"
+ #include "qemu/main-loop.h"
+@@ -587,6 +588,16 @@ void migrate_add_address(SocketAddress *address)
+                       QAPI_CLONE(SocketAddress, address));
+ }
  
++bool migrate_is_uri(const char *uri)
++{
++    while (*uri && *uri != ':') {
++        if (!qemu_isalpha(*uri++)) {
++            return false;
++        }
++    }
++    return *uri == ':';
++}
++
+ bool migrate_uri_parse(const char *uri, MigrationChannel **channel,
+                        Error **errp)
+ {
+diff --git a/migration/migration.h b/migration/migration.h
+index 0df2a187af..1d4d4e910d 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
+@@ -519,8 +519,6 @@ bool check_dirty_bitmap_mig_alias_map(const BitmapMigrationNodeAliasList *bbm,
+                                       Error **errp);
+ 
+ void migrate_add_address(SocketAddress *address);
+-bool migrate_uri_parse(const char *uri, MigrationChannel **channel,
+-                       Error **errp);
+ int foreach_not_ignored_block(RAMBlockIterFunc func, void *opaque);
+ 
+ #define qemu_ram_foreach_block \
 -- 
 2.35.3
 
