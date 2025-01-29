@@ -2,108 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE64A2211E
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 17:02:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 181C6A2216F
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 17:12:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdAWT-0004Bp-Hx; Wed, 29 Jan 2025 11:02:37 -0500
+	id 1tdAYX-00007i-BL; Wed, 29 Jan 2025 11:04:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAW2-0003YV-8a
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAW4-0003Yk-GA
  for qemu-devel@nongnu.org; Wed, 29 Jan 2025 11:02:13 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAW0-0005NZ-BH
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 11:02:09 -0500
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAW2-0005No-Fs
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 11:02:12 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 2E53C1F365;
- Wed, 29 Jan 2025 16:02:07 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 3DCBE210F3;
+ Wed, 29 Jan 2025 16:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738166527; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1738166529; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CPfLlcV5lpOA+fgRPN8dIAoJoP4HcL/I1+65LvMu2ao=;
- b=T8bYsq+D+y3hlqa/C+SeXw00jqME+wcbIkdfLmsfxHpwrBrv/SbiMamLsFKmCc8WrZ3tyS
- MMyXWFSXB7KIBuRYtU5abC1vVD5G/ni71xretZPu4Fr7SylC1TSDqlKZjXcNvYGNRzxAtk
- pcWci4dvfJDcgY9TgYNbIoRUr3aab6I=
+ bh=pPj0tXlq9RQfRMMsa7wzUhIOLHQvTsJrKzXSP/1EGEA=;
+ b=Mrfsth6ZPSFpsLg/AQYDsHog6vcPG85UkB6fRRWec9iFfUlXPYEoplJujp9/uBGfcGdQmJ
+ fAMFK3o2s9yU6jqGq5bWKwPv6avBi5HeSVswkqcE2RPJnwSyUTnmnPk/KyiBsiDY7qOoJ8
+ av4TtCREu218VYRnSCfj2fFikGSfVr0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738166527;
+ s=susede2_ed25519; t=1738166529;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CPfLlcV5lpOA+fgRPN8dIAoJoP4HcL/I1+65LvMu2ao=;
- b=VDiLJEqy/xMTbl1nRvD1PazeiYVeyIJon7CZBpek7uD4po0XGCyOPIYbXoUPKMfSLb2Ieq
- 1H4wn75oIFidwxAQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
+ bh=pPj0tXlq9RQfRMMsa7wzUhIOLHQvTsJrKzXSP/1EGEA=;
+ b=kEa/OJq8JtAeICgjVhvrJFak0pKi/X1FTXFv2R3f3ztwYMbvXZsYIsCrlvum6jMRYChOar
+ 94wQihnshKeZGDDA==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Mrfsth6Z;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="kEa/OJq8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738166527; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1738166529; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CPfLlcV5lpOA+fgRPN8dIAoJoP4HcL/I1+65LvMu2ao=;
- b=T8bYsq+D+y3hlqa/C+SeXw00jqME+wcbIkdfLmsfxHpwrBrv/SbiMamLsFKmCc8WrZ3tyS
- MMyXWFSXB7KIBuRYtU5abC1vVD5G/ni71xretZPu4Fr7SylC1TSDqlKZjXcNvYGNRzxAtk
- pcWci4dvfJDcgY9TgYNbIoRUr3aab6I=
+ bh=pPj0tXlq9RQfRMMsa7wzUhIOLHQvTsJrKzXSP/1EGEA=;
+ b=Mrfsth6ZPSFpsLg/AQYDsHog6vcPG85UkB6fRRWec9iFfUlXPYEoplJujp9/uBGfcGdQmJ
+ fAMFK3o2s9yU6jqGq5bWKwPv6avBi5HeSVswkqcE2RPJnwSyUTnmnPk/KyiBsiDY7qOoJ8
+ av4TtCREu218VYRnSCfj2fFikGSfVr0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738166527;
+ s=susede2_ed25519; t=1738166529;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CPfLlcV5lpOA+fgRPN8dIAoJoP4HcL/I1+65LvMu2ao=;
- b=VDiLJEqy/xMTbl1nRvD1PazeiYVeyIJon7CZBpek7uD4po0XGCyOPIYbXoUPKMfSLb2Ieq
- 1H4wn75oIFidwxAQ==
+ bh=pPj0tXlq9RQfRMMsa7wzUhIOLHQvTsJrKzXSP/1EGEA=;
+ b=kEa/OJq8JtAeICgjVhvrJFak0pKi/X1FTXFv2R3f3ztwYMbvXZsYIsCrlvum6jMRYChOar
+ 94wQihnshKeZGDDA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A284A137DB;
- Wed, 29 Jan 2025 16:02:05 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A59E4137DB;
+ Wed, 29 Jan 2025 16:02:07 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 2AV4GP1QmmffPAAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 29 Jan 2025 16:02:05 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id gM1hGf9QmmffPAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 29 Jan 2025 16:02:07 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Jiri Denemark <jdenemar@redhat.com>,
  Juraj Marcin <jmarcin@redhat.com>
-Subject: [PULL 31/42] migration: Synchronize all CPU states only for
- non-iterable dump
-Date: Wed, 29 Jan 2025 13:00:48 -0300
-Message-Id: <20250129160059.6987-32-farosas@suse.de>
+Subject: [PULL 32/42] migration: Adjust postcopy bandwidth during switchover
+Date: Wed, 29 Jan 2025 13:00:49 -0300
+Message-Id: <20250129160059.6987-33-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250129160059.6987-1-farosas@suse.de>
 References: <20250129160059.6987-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCVD_VIA_SMTP_AUTH(0.00)[];
- MIME_TRACE(0.00)[0:+];
- R_RATELIMIT(0.00)[to_ip_from(RLjrdmmf3juheryardexw6jb95)];
- ARC_NA(0.00)[]; TO_DN_SOME(0.00)[];
+X-Rspamd-Queue-Id: 3DCBE210F3
+X-Spam-Score: -3.01
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; MIME_TRACE(0.00)[0:+];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ TO_DN_SOME(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_HAS_DN(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email];
+ RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ RCPT_COUNT_THREE(0.00)[4];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid];
- RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.80
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -122,67 +132,76 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-Do one shot cpu sync at qemu_savevm_state_complete_precopy_non_iterable(),
-instead of coding it separately in two places.
+Precopy uses unlimited bandwidth always during switchover, it makes sense
+because this is so critical and no one would like to throttle bandwidth
+during the VM blackout.
 
-Note that in the context of qemu_savevm_state_complete_precopy(), this
-patch is also an optimization for postcopy path, in that we can avoid sync
-cpu twice during switchover: before this patch, postcopy_start() invokes
-twice on qemu_savevm_state_complete_precopy(), each of them will try to
-sync CPU info.  In reality, only one of them would be enough.
+OTOH, postcopy surprisingly didn't do that.  There's one line that in the
+middle of the postcopy switchover it tries to switch to postcopy's
+specified max-postcopy-bandwidth, but even so it's somewhere in the middle
+which is strange.
 
-For background snapshot, there's no intended functional change.
+This patch brings the two modes to always use unlimited bandwidth for
+switchover, meanwhile only apply the postcopy max bandwidth after the
+switchover is completed.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 Tested-by: Jiri Denemark <jdenemar@redhat.com>
 Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
-Link: https://lore.kernel.org/r/20250114230746.3268797-7-peterx@redhat.com
+Link: https://lore.kernel.org/r/20250114230746.3268797-8-peterx@redhat.com
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/migration.c | 6 +-----
- migration/savevm.c    | 5 +++--
- 2 files changed, 4 insertions(+), 7 deletions(-)
+ migration/migration.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
 diff --git a/migration/migration.c b/migration/migration.c
-index d8a6bc12e0..46e30a4814 100644
+index 46e30a4814..03e3631d5b 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -3749,11 +3749,7 @@ static void *bg_migration_thread(void *opaque)
-     if (migration_stop_vm(s, RUN_STATE_PAUSED)) {
-         goto fail;
-     }
--    /*
--     * Put vCPUs in sync with shadow context structures, then
--     * save their state to channel-buffer along with devices.
--     */
--    cpu_synchronize_all_states();
-+
-     if (qemu_savevm_state_complete_precopy_non_iterable(fb, false)) {
-         goto fail;
-     }
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 5e56a5d9fc..92e77ca92b 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -1531,6 +1531,9 @@ int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
-     Error *local_err = NULL;
+@@ -2629,7 +2629,6 @@ static int postcopy_start(MigrationState *ms, Error **errp)
      int ret;
+     QIOChannelBuffer *bioc;
+     QEMUFile *fb;
+-    uint64_t bandwidth = migrate_max_postcopy_bandwidth();
+     int cur_state = MIGRATION_STATUS_ACTIVE;
  
-+    /* Making sure cpu states are synchronized before saving non-iterable */
-+    cpu_synchronize_all_states();
+     /*
+@@ -2678,6 +2677,9 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+         goto fail;
+     }
+ 
++    /* Switchover phase, switch to unlimited */
++    migration_rate_set(RATE_LIMIT_DISABLED);
 +
-     QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
-         if (se->vmsd && se->vmsd->early_setup) {
-             /* Already saved during qemu_savevm_state_setup(). */
-@@ -1584,8 +1587,6 @@ int qemu_savevm_state_complete_precopy(QEMUFile *f, bool iterable_only)
+     /*
+      * Cause any non-postcopiable, but iterative devices to
+      * send out their final data.
+@@ -2694,12 +2696,6 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+         ram_postcopy_send_discard_bitmap(ms);
+     }
  
-     trace_savevm_state_complete_precopy();
+-    /*
+-     * send rest of state - note things that are doing postcopy
+-     * will notice we're in POSTCOPY_ACTIVE and not actually
+-     * wrap their state up here
+-     */
+-    migration_rate_set(bandwidth);
+     if (migrate_postcopy_ram()) {
+         /* Ping just for debugging, helps line traces up */
+         qemu_savevm_send_ping(ms->to_dst_file, 2);
+@@ -2783,6 +2779,12 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+     }
+     trace_postcopy_preempt_enabled(migrate_postcopy_preempt());
  
--    cpu_synchronize_all_states();
--
-     if (!in_postcopy || iterable_only) {
-         ret = qemu_savevm_state_complete_precopy_iterable(f, in_postcopy);
-         if (ret) {
++    /*
++     * Now postcopy officially started, switch to postcopy bandwidth that
++     * user specified.
++     */
++    migration_rate_set(migrate_max_postcopy_bandwidth());
++
+     return ret;
+ 
+ fail_closefb:
 -- 
 2.35.3
 
