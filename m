@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA7F3A21640
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A9AA2163F
 	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 02:43:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcx32-0000vV-S4; Tue, 28 Jan 2025 20:39:21 -0500
+	id 1tcx33-0000va-HQ; Tue, 28 Jan 2025 20:39:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tcx2z-0000tO-Ib
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:17 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1tcx30-0000uG-4S
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:18 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tcx2x-0003Yy-Og
+ id 1tcx2y-0003ZB-LV
  for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:17 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-21634338cfdso44093865ad.2
- for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 17:39:15 -0800 (PST)
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-2164b662090so123698955ad.1
+ for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 17:39:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738114754; x=1738719554; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738114755; x=1738719555; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jQXFLumUgBbRiy8BtW3KvH3FB2G39x8TUOHn6sQx/Go=;
- b=fsrAwtHO3Gir1MYSrWFr2nL6AL8joc9UHdHEeIOdgBhLCFCuP7vUH2PvnLEUx7fBN3
- kauKPjsn4P00+LcrQzEV1qV5TAYdg92g4d2/F58L7jSXd+3rgoEKwlSXH7h+ebJusEFd
- hsWTIzXXu51aJGwst4fzXPFVAwOAz4PjhmwbS8dojQi+MwWF7AouorASQuCa/5P2KbR+
- KppWzAPkpecyDgaJXtEt+YWen735iwhc4LeMGLf4K1Dy+aa0X0AGaXcnA+tJIILgmRen
- huYbdiLcZn+QjlWpSZKO2pLbVuxFQmNB2uqzRe1AknFMHnBxT0lw4h6o6D82Txu8cpBU
- Ji4w==
+ bh=C41uiM9HmX9DdQU14esIOGr300PL7vhMHPqRUk9JveA=;
+ b=NRHgZz/eGY7jpU3/sjw3GdP2Y3wv1PQWtEYmSmCLfETg1Tl7NCxu2eTLipZq8Rbb92
+ BaHzT9d99veiT5V2Dpcd2a5t1yXByYHdnnxefY1FsJDXNxpK4jqul7a1bpbAjXQ/2y5K
+ XgwwW9pR5eXfl3/0m6q9koIwJ1kGUqYxvr9tPqJEtZqpRFtqq6aO+lZ3PB5F9Q8kt9sW
+ UouE+dfPrKdvmVprDp/o2bQCX1YDvRx9ht1QXfmSZUXted1aDWihutpcn1Dh2pBb9uGy
+ ueqCcbwawXtzYLQDM8Kx4yuUOLreH+ojmw3tYTFqKZT8S19yDyHm/lXp/QX3WdikKMIy
+ 74PQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738114754; x=1738719554;
+ d=1e100.net; s=20230601; t=1738114755; x=1738719555;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jQXFLumUgBbRiy8BtW3KvH3FB2G39x8TUOHn6sQx/Go=;
- b=vMCxlyFfqw+PGNHlva+eoV7+h7/Iee0qqWjNBbxGKQEYh3hleJozdhsBHdPVtiVoC0
- +dCetnAau2yu2txf5ibD8aI+mPnwVD11KMobiSJlguEQTSqn7ySXrjOu7Mk+IAhQLdAh
- kgBxIy8Beo9WW/kdLcfjuvwo/sTiSjNZcj7WWtdE+ZGtVSGPvte071ABKysNuPbH9TKk
- DU4fdWuC4xtBP6QpxmZSgFaoh1HBA1zHYZeDp3QMfkZ01AEgLwH9pBUZ23mPInicZ4mC
- ZqgVg47uxgFl2HWgWM/kCmcQiG3uIvkVmne9VXGwl3UTHrsAP7aY7dKbmLcqSPmNu8tW
- Dvpg==
-X-Gm-Message-State: AOJu0YzENSUKj9MIhKHwlJlqfAZcLjIn96K5j0yK1K2Zcz6FuqOKu95b
- lGQfPpdRBye4jQY2VUX+GO3YEEbUe2d4lX3lAt1UO7aLbUtudKSIw3fPLC8C/OmdmbxoXXMpngt
- W
-X-Gm-Gg: ASbGncvQMLx9Hpwg6dvVjyoPVztNGxMpGQZ54aEcjpwSNYFKkm5y+phbCvSfPMlP2kS
- u4CqvKIr2h86SeJd4yH/PEre+B92EPAj/F01ukWzNF7CklfEJis04gZ6R3+5at3zLodGpOHaqXM
- +b3a5+v0289uPBhBSKqRZm1DZC+LvwqzUVf9QFvX1oRq+R9GIBK+S5J7wswA9h2s11jVTfcFPYS
- 1Mv/BGlE1TyItFciGK7Xe/mlC8Fy6TIFSwvQ3NtvIeC5Y4e2mWc0J/0JX/LIw5/i1VzXYc1B1Kg
- jlm6fmc7KQopLnu2sWmw3ds5B04TRXMUGEEgkQ+A6QEyr7O+Sw==
-X-Google-Smtp-Source: AGHT+IEw2hFSwq1VkiJYmyKAUsz4MsToHRcu3D3kFvVGA3ru93gmvzIsPrVnnRSpD6+DFUpYdpzKrA==
-X-Received: by 2002:a17:902:f70f:b0:212:996:353a with SMTP id
- d9443c01a7336-21dd7c653acmr23480455ad.12.1738114754551; 
- Tue, 28 Jan 2025 17:39:14 -0800 (PST)
+ bh=C41uiM9HmX9DdQU14esIOGr300PL7vhMHPqRUk9JveA=;
+ b=MB9SGE2LNvl+aYdzG/UXuwNkAScBn2VD1ICHBfnhBEQbf0x+d7wvleH26EnDFsVyps
+ KSNwjBQ0kIr8H8MXs67nhfp3HQvs0uadVZnldyZeb0OI0VTmZpTI0grH5ZBN7xTF616t
+ 84YLWlxdXQ8fgsjxejEb8iozfTnD6KFjv3ixezFjXlVyi9TQyFZ1mUB/y2wyHvMMnZk4
+ RFTtt3S1bk2v2R8ctMPvwQ+gvO0xfm/lXTtx+ZB+s+MmK5wTKwOUJ+/IuJUSwDKwDBmc
+ Q+IkiHGMGfSFIHybBmdFDkOnNKFX7XaH3AOIAsBvX5Fbu2c+iIlMsSt5NjCXt1p/Ib+c
+ 0UIw==
+X-Gm-Message-State: AOJu0YxFP4fx3rZCBW/u9Ip/xtSw0va1dtGTlFXrqgOe6nqJxeN2S3dZ
+ x+coB8lDBCi9AfrWKgfNeqBhgoqB3aPrZywcuq9bgWTeiq+g84MTKLJbaDPCeFXsGupdAacj+Ee
+ x
+X-Gm-Gg: ASbGncvPN81XZsrFq+Az9z9u1GBJ9ZiN3ocYuzczIpfL+Bc1tpLI0SynyVyKI0YSwI9
+ nsDO4XF3wnKNmlSy4eop92iqMWwMmw3Bk6YMMuwfesMq3Wl9iPFTuLoXx8e+VA2ZIUkNLDL1G8J
+ 6rkuxj+wl12pFLGJnMqkjbHPLWtvp5UrWf8rCp8rLWCdZot5458Gq7+59w8RdDbcy6Y3x3jFL3N
+ h8u2IGYbO7BnjyBlThQ79KTDT63R8Oh21BLMnRFGWUkK2UxGspx3aVP1etQF1YSAIRAySJXwvtg
+ jOMDVogk1Y6DBIhcUCPYoL+5JDX/RDb8Jezq+2PGy0OCUXi6NA==
+X-Google-Smtp-Source: AGHT+IGlPHnGF3AJnQ+qw14P+8jnS8DgmQzq0xD08uXtkAwAr3FaBqlZnvsTYCqd3gkvBElI15d3Wg==
+X-Received: by 2002:a17:903:2444:b0:212:1ebf:9a03 with SMTP id
+ d9443c01a7336-21dd7c3c86amr18780195ad.2.1738114755175; 
+ Tue, 28 Jan 2025 17:39:15 -0800 (PST)
 Received: from stoup.. (71-212-32-190.tukw.qwest.net. [71.212.32.190])
  by smtp.gmail.com with ESMTPSA id
  d9443c01a7336-21da3ea4200sm89341745ad.88.2025.01.28.17.39.14
@@ -65,16 +65,17 @@ Received: from stoup.. (71-212-32-190.tukw.qwest.net. [71.212.32.190])
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH v2 23/34] target/arm: Use flags for AH negation in sve_ftmad_*
-Date: Tue, 28 Jan 2025 17:38:46 -0800
-Message-ID: <20250129013857.135256-24-richard.henderson@linaro.org>
+Subject: [PATCH v2 24/34] target/arm: Use flags for AH negation in
+ float*_ah_mulsub_f
+Date: Tue, 28 Jan 2025 17:38:47 -0800
+Message-ID: <20250129013857.135256-25-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250129013857.135256-1-richard.henderson@linaro.org>
 References: <20250129013857.135256-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,92 +98,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because the operand is known to be negative, negating the operand
-is the same as taking the absolute value.  Defer this to the muladd
-operation via flags, so that it happens after NaN detection, which
-is correct for FPCR.AH.
+The float_muladd_negate_product flag produces the same result
+as negating either of the multiplication operands, assuming
+neither of the operands are NaNs.  But since FEAT_AFP does not
+negate NaNs, this behaviour is exactly what we need.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/sve_helper.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ target/arm/tcg/vec_helper.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index a01613f079..c12b2600bd 100644
---- a/target/arm/tcg/sve_helper.c
-+++ b/target/arm/tcg/sve_helper.c
-@@ -5137,16 +5137,21 @@ void HELPER(sve_ftmad_h)(void *vd, void *vn, void *vm,
-     intptr_t x = extract32(desc, SIMD_DATA_SHIFT, 3);
-     bool fpcr_ah = extract32(desc, SIMD_DATA_SHIFT + 3, 1);
-     float16 *d = vd, *n = vn, *m = vm;
-+
-     for (i = 0; i < opr_sz; i++) {
-         float16 mm = m[i];
-         intptr_t xx = x;
-+        int flags = 0;
-+
-         if (float16_is_neg(mm)) {
--            if (!(fpcr_ah && float16_is_any_nan(mm))) {
-+            if (fpcr_ah) {
-+                flags = float_muladd_negate_product;
-+            } else {
-                 mm = float16_abs(mm);
-             }
-             xx += 8;
-         }
--        d[i] = float16_muladd(n[i], mm, coeff[xx], 0, s);
-+        d[i] = float16_muladd(n[i], mm, coeff[xx], flags, s);
-     }
+diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+index 55bac9536f..5c1e84bf27 100644
+--- a/target/arm/tcg/vec_helper.c
++++ b/target/arm/tcg/vec_helper.c
+@@ -1563,22 +1563,19 @@ static float64 float64_mulsub_f(float64 dest, float64 op1, float64 op2,
+ static float16 float16_ah_mulsub_f(float16 dest, float16 op1, float16 op2,
+                                  float_status *stat)
+ {
+-    op1 = float16_is_any_nan(op1) ? op1 : float16_chs(op1);
+-    return float16_muladd(op1, op2, dest, 0, stat);
++    return float16_muladd(op1, op2, dest, float_muladd_negate_product, stat);
  }
  
-@@ -5163,16 +5168,21 @@ void HELPER(sve_ftmad_s)(void *vd, void *vn, void *vm,
-     intptr_t x = extract32(desc, SIMD_DATA_SHIFT, 3);
-     bool fpcr_ah = extract32(desc, SIMD_DATA_SHIFT + 3, 1);
-     float32 *d = vd, *n = vn, *m = vm;
-+
-     for (i = 0; i < opr_sz; i++) {
-         float32 mm = m[i];
-         intptr_t xx = x;
-+        int flags = 0;
-+
-         if (float32_is_neg(mm)) {
--            if (!(fpcr_ah && float32_is_any_nan(mm))) {
-+            if (fpcr_ah) {
-+                flags = float_muladd_negate_product;
-+            } else {
-                 mm = float32_abs(mm);
-             }
-             xx += 8;
-         }
--        d[i] = float32_muladd(n[i], mm, coeff[xx], 0, s);
-+        d[i] = float32_muladd(n[i], mm, coeff[xx], flags, s);
-     }
+ static float32 float32_ah_mulsub_f(float32 dest, float32 op1, float32 op2,
+                                  float_status *stat)
+ {
+-    op1 = float32_is_any_nan(op1) ? op1 : float32_chs(op1);
+-    return float32_muladd(op1, op2, dest, 0, stat);
++    return float32_muladd(op1, op2, dest, float_muladd_negate_product, stat);
  }
  
-@@ -5193,16 +5203,21 @@ void HELPER(sve_ftmad_d)(void *vd, void *vn, void *vm,
-     intptr_t x = extract32(desc, SIMD_DATA_SHIFT, 3);
-     bool fpcr_ah = extract32(desc, SIMD_DATA_SHIFT + 3, 1);
-     float64 *d = vd, *n = vn, *m = vm;
-+
-     for (i = 0; i < opr_sz; i++) {
-         float64 mm = m[i];
-         intptr_t xx = x;
-+        int flags = 0;
-+
-         if (float64_is_neg(mm)) {
--            if (!(fpcr_ah && float64_is_any_nan(mm))) {
-+            if (fpcr_ah) {
-+                flags = float_muladd_negate_product;
-+            } else {
-                 mm = float64_abs(mm);
-             }
-             xx += 8;
-         }
--        d[i] = float64_muladd(n[i], mm, coeff[xx], 0, s);
-+        d[i] = float64_muladd(n[i], mm, coeff[xx], flags, s);
-     }
+ static float64 float64_ah_mulsub_f(float64 dest, float64 op1, float64 op2,
+                                  float_status *stat)
+ {
+-    op1 = float64_is_any_nan(op1) ? op1 : float64_chs(op1);
+-    return float64_muladd(op1, op2, dest, 0, stat);
++    return float64_muladd(op1, op2, dest, float_muladd_negate_product, stat);
  }
  
+ #define DO_MULADD(NAME, FUNC, TYPE)                                        \
 -- 
 2.43.0
 
