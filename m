@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD9CDA21600
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 02:16:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACEDAA215FE
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 02:16:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcwfw-0000C4-CO; Tue, 28 Jan 2025 20:15:28 -0500
+	id 1tcwfw-0000C7-K5; Tue, 28 Jan 2025 20:15:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <itaru.kitayama@linux.dev>)
- id 1tcwfn-0000B8-Gp
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:15:20 -0500
-Received: from out-187.mta0.migadu.com ([2001:41d0:1004:224b::bb])
+ id 1tcwfo-0000B9-8g
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:15:21 -0500
+Received: from out-178.mta1.migadu.com ([95.215.58.178])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <itaru.kitayama@linux.dev>)
- id 1tcwfk-0007ht-99
- for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:15:19 -0500
+ id 1tcwfg-0007Up-6Q
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:15:20 -0500
 Content-Type: text/plain;
 	charset=utf-8
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
- t=1738113307;
+ t=1738113300;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
  bh=9aEQZOpGKMUe7hfLzlRH/vgghSpm+IMMygHT/V1+zy0=;
- b=FLi5zA8ESxxGNgtcy1CQ+BOxSWDxxF/3XVTBcXYUWODCjVv1BicS1s2I0pLRE8k2VIGL0q
- ss2fGGpnwuDU6OfEnxt1yyfA93RBUbBD9pyRuzUuMXWYQkC/8TZMyFXG3EH1Yv30O91afk
- SNaS0EnK17Lw6RruoH5CoK3dAr9Btz4=
+ b=oiAO6IjHPwN+tnP6UYUdqvikKZsz1rS088Vi/XH18ErbIG1Wda/BU4oj4MR/xPLoD4V6Om
+ jgzVSonfrjsQo5T9TRnV5OtlfK/CSZJu6QkoT+2L383C/0o5MQnzfQM4sssa4zmW/aLB+j
+ cTapmMV8UrfRejv0IXMbTuK7/bE6Mqk=
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
 Subject: Re: CXL emulation on aarch64
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
@@ -52,14 +52,16 @@ References: <0C019F50-9020-42ED-B051-998F03BFB709@linux.dev>
  <20250117094311.00000e64@huawei.com> <20250122140712.00000682@huawei.com>
 To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 X-Migadu-Flow: FLOW_OUT
-Received-SPF: pass client-ip=2001:41d0:1004:224b::bb;
- envelope-from=itaru.kitayama@linux.dev; helo=out-187.mta0.migadu.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=95.215.58.178;
+ envelope-from=itaru.kitayama@linux.dev; helo=out-178.mta1.migadu.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
