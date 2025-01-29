@@ -2,147 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FADDA21D4F
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 13:49:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4619A21D80
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 14:06:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1td7Tp-0001SI-Hj; Wed, 29 Jan 2025 07:47:41 -0500
+	id 1td7kW-0005BL-RM; Wed, 29 Jan 2025 08:04:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1td7Tn-0001S5-Dw
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 07:47:39 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1td7Tl-0007YW-Dz
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 07:47:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738154856;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=FQ1xxi88uUhUHryNzyR0nAsLxvNBLjIJPPpKvYRDcZc=;
- b=XSjeaOcx0ls1CxNEDtEmR06xfgPS5IqSD1CfptTGeY3tKMEi09aepBHABTmJwVF8cjWITs
- iIHT7/f/r4Na0iENPlz+xacWRWXllQqslwfSUiySxoM5eHJoFw5kDcY9wgs9Jf4OCyyBrp
- pfc6+yL18KZ/vpiztMLpZP38V8xK/no=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-33-dC6o6IjmM_2SwgUJp-SXGA-1; Wed, 29 Jan 2025 07:47:34 -0500
-X-MC-Unique: dC6o6IjmM_2SwgUJp-SXGA-1
-X-Mimecast-MFC-AGG-ID: dC6o6IjmM_2SwgUJp-SXGA
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-38bee9ae3b7so4454742f8f.1
- for <qemu-devel@nongnu.org>; Wed, 29 Jan 2025 04:47:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1td7kP-0005Aw-Fi; Wed, 29 Jan 2025 08:04:49 -0500
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1td7kM-0001As-RR; Wed, 29 Jan 2025 08:04:49 -0500
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-5db6890b64eso13604752a12.3; 
+ Wed, 29 Jan 2025 05:04:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1738155885; x=1738760685; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ZDj97v/S/rADZESl8M5UmWU1RD0CeOwnPIG+q/rHhjI=;
+ b=MwQ1+aJViH0KYz1tigtG2HgSwmXYrU5yWTwqQkNKhPUvu3Vpp34W6xB2UMVir7MdfI
+ kgLj0T0ViPd/lMi28xyahcdkgbELOxXA1lL8Ap9fbsXhcglow1C/tD0Fadtc9+svNiU4
+ YJtBjzTuxWMYYRa8KiFJJiT2lN6q0/rgFRSFdKcCaqTt9N+3KMbG/s06DsvRgOqX5hLM
+ /2XkpG5ddgw6yizINpR+vUYUgLMlskQIbyB9M925qVMbvg4DJoL0jYn62HwZGSstKTtF
+ TaE3kBWu0nW+FaCcKnvwA9t4Rvh8itjxKgs9l+fgr7Uvva/V+uqgGqE5XLkr4e1+GYn6
+ JjNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738154854; x=1738759654;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FQ1xxi88uUhUHryNzyR0nAsLxvNBLjIJPPpKvYRDcZc=;
- b=iuwsCnuZys4SBAnLK8O8Iq5jRNLwG2nBYMZ02h4v7wjDiKj4QY0T+q6T6xxyytEv/d
- obN6BholCNjmsAwx4Wt07kG9FnHC/DgzW8GVwaKi2SjfJVJAOE9ZCdoFO69BpOJaAh49
- jV43vO4tnxr371jkkj8tklArhIJmN1xcpyUFTeXnD78MX9nnqtwyTwdZI1fs1Mb7ia4b
- mhOTlgxzQbW3KI1FL/9fA6tWJEFLqYOjpsY1V2SDbJsqq36R711Y42EhLVEZ8PymJCII
- 3E1s19RtamV8LkZb0tVGbrNtjdPzYeTnKMHyCpRR6ZO4YxdRjL0L7jNixz/tgeHk51bF
- vsOQ==
+ d=1e100.net; s=20230601; t=1738155885; x=1738760685;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ZDj97v/S/rADZESl8M5UmWU1RD0CeOwnPIG+q/rHhjI=;
+ b=lxYbn79nmLCKZWP90r4pkE8pd7glMrxJYZ/geOCmLN33OUV/Tt1Bj4I1uhcNibo4gr
+ V/HLC42SQLtFs2fUrdDN/zuyApeqVbGTOgQmIwvsdvO0T13ahGQx/TX7UHfcFgsY3/PA
+ M8hf6qsxBv8FmM/KMc4UvN37MirFsKVsX/HtvHzqd5hNRugEIJX5eUaQwkHznhfdzx8o
+ zIZI2xCHotRChrRaKxWbZE6yAOZsAtf58WZlfjlk3Ly4JO1INz/GWxTC/wuXEZVSdZJU
+ m1kWUgEa5pv/xfdX+Mh7S4NV2+sJI+kPYkq3YrKI7yoZUQf3rl5Q2FrUhZyDpoSWHWK2
+ gxdA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUQGtqwXpmp86wByvoupRpeZAaRkqYu+JazrSs/ZOlTtfJTLCcNVgDJf3FaydLcefFGcH5lNNX0J2aZ@nongnu.org
-X-Gm-Message-State: AOJu0YyyNdqtISsApXlzU/ue63igwkoGlwf+k6hhSHqzy8rIGYrRKT0t
- lsyO2+Q1uVPHKc1G2SVzMPEinkt4vm+2Hw60aJGDyhLeopTk7L3Q09E2g9HKpNti7JKEr0L5wki
- VE3de0VWGFEJU27Yfp9vS6kfjJMez6qhMx1gDSj5f5A+/jL6bPfVv
-X-Gm-Gg: ASbGnctmbwgZ2I/AjPobEaBsbrDffcmVCT8Y0hMbUeifwMHWTvR4hiOaLJz5YQfM4kc
- snNaiEmEnL0s+U3kU+ALTnR4ScNdgmz66j3/tWG+AfvZuz8rrCEvBBYEK+dSGLCl+IyS1V8y+WM
- F4bFp5BYtlgH+Z2avCxi8zVAfpwbn86B+z7OAz3R7rdD+MVqu50SWnha5uDyTi33hDbw7z2/BPs
- n315rZ8Xnc7e0XMCIW/0q+CTJRupGLwfOvfADz6kMVW1e1nJPeGCEGmVB1qSJmFMykzgpqIxSDv
- HCLuAQ==
-X-Received: by 2002:a5d:584e:0:b0:38a:8b00:6908 with SMTP id
- ffacd0b85a97d-38c520b0b23mr2878157f8f.54.1738154853715; 
- Wed, 29 Jan 2025 04:47:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGp5b+BLCJjHjmqADg5/Ea8KEgaErytnUi109qNHUS2qL53o/ntwe49UF/OMykm1C0wlXV0bg==
-X-Received: by 2002:a5d:584e:0:b0:38a:8b00:6908 with SMTP id
- ffacd0b85a97d-38c520b0b23mr2878128f8f.54.1738154853316; 
- Wed, 29 Jan 2025 04:47:33 -0800 (PST)
-Received: from [192.168.10.3] ([151.62.97.55])
- by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-38c2a17d6b2sm17394260f8f.34.2025.01.29.04.47.31
+ AJvYcCVGlV4FA0fvCy/QNyI7T7K3nEx7xwdtuft2K+arnjHW1sdcYh8u0TucZIgf/lgtXe5Im0uasi2xZA==@nongnu.org
+X-Gm-Message-State: AOJu0Ywne7YW9JMjugpgAlTQfrbYX7L2yWNky1z15vVWbhLsNgmV8ZeQ
+ 458dDgt4rLcKmBHm0EM8MxuaIpdhK8l3G5/80HggsvyZv38R7O/I
+X-Gm-Gg: ASbGncsLoYVpDOz1zeA9IsrXu/kpTAowHNhcFyr6Q5YLm+Qrd7BgdjE8+L0QHn+UQEd
+ YXtehkLe8vDrpg+u0zQjJdGzMX924eaUvF47PB8oOfViai+1lUgg4Ek2IfKdyCzA1xdcj7irfoe
+ dZbI7tstvkMIKdIHZ+H4bbpnpECMyVWIWB5by+RdIoDx/eqkIc0jxiYXadG29Sn5njY7w3gruQx
+ aojqrF8RAvGR63jzDwraB1Xa5MUxbX/skZPmkk+rpC0UrazdJ7oQd8PqKgEvzE3DHLIrV2PIgb5
+ q66vi1hMdkkpMPturarHMjdrWNnCrun2GCcFatQuHAydmy33q/99zB6VMs7r5w==
+X-Google-Smtp-Source: AGHT+IG7NnDFoWq1LqbJ4E0HisXHzVH509lG8DS/KJoqwQkV8Nai9Z0Nel6vuR5HpTJ4WgQzv2ml3Q==
+X-Received: by 2002:a05:6402:2688:b0:5d3:ce7f:abe4 with SMTP id
+ 4fb4d7f45d1cf-5dc5efec128mr2770148a12.25.1738155884668; 
+ Wed, 29 Jan 2025 05:04:44 -0800 (PST)
+Received: from [127.0.0.1] (business-90-187-110-129.pool2.vodafone-ip.de.
+ [90.187.110.129]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5dc186d8b2csm8708169a12.76.2025.01.29.05.04.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 Jan 2025 04:47:32 -0800 (PST)
-Message-ID: <8a54600c-ff3f-42dd-b164-62a57de867df@redhat.com>
-Date: Wed, 29 Jan 2025 13:47:31 +0100
+ Wed, 29 Jan 2025 05:04:44 -0800 (PST)
+Date: Wed, 29 Jan 2025 13:04:43 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+CC: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Subject: Re: [PATCH 05/21] hw/arm: Add i.MX 8M Plus EVK board
+In-Reply-To: <CAFEAcA8E4Ao_bJTxKzJ_kQ1n+Teqw6brmJKFN9cFpraM6jTYag@mail.gmail.com>
+References: <20250120203748.4687-1-shentey@gmail.com>
+ <20250120203748.4687-6-shentey@gmail.com>
+ <CAFEAcA_NBPqbOrVJw=bDC6=dTGKBKe42XoXMm82jj7+pHEvW3Q@mail.gmail.com>
+ <4EC5E99E-804A-4154-8D61-22D1358C0F6B@gmail.com>
+ <CAFEAcA8E4Ao_bJTxKzJ_kQ1n+Teqw6brmJKFN9cFpraM6jTYag@mail.gmail.com>
+Message-ID: <DF02FBEB-2BC4-4F99-8DF0-5B0BB0FAA51C@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/1] meson: Deprecate 32-bit host systems
-To: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- stefanha@redhat.com, mark.cave-ayland@ilande.co.uk,
- Liviu Ionescu <ilg@livius.net>
-References: <20250128004254.33442-1-richard.henderson@linaro.org>
- <9a280789-9248-4eca-b50c-048fc58e3f53@redhat.com>
- <87plk72tvr.fsf@draig.linaro.org>
- <ad6ca73a-c38a-4a9b-bdcb-ab50aa53ccd1@linaro.org>
- <Z5ii-ueFt5-5Brxz@redhat.com>
- <8c0eea44-d0bf-4b86-9b1b-1c2082ab2df9@linaro.org>
- <9bf6d4b0-7a89-4110-a1e1-46bbdb2fc793@linaro.org>
- <c13e207e-06a5-4f40-b319-f4f2e59d919a@redhat.com>
- <CAFEAcA_CfVfypS5yUtT3V34CDxmAqx7wYnDoKPfHq-o=54GgAg@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <CAFEAcA_CfVfypS5yUtT3V34CDxmAqx7wYnDoKPfHq-o=54GgAg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -158,37 +106,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/29/25 13:23, Peter Maydell wrote:
-> I'm not really strongly opposed to dropping 32-bit host support,
-> but I don't think a thread on qemu-devel is exactly likely to
-> get the attention of the people who might be using this
-> functionality. (You could argue that functionality without
-> representation among the developer community is fair game
-> for being dumped even if it has users, of course.)
-On the other hand, broken tests that no one even runs among the 
-developers are not particularly significant.  It's not surprising that 
-tests do not pass the first time and need a little tweaking when trying 
-them on a new platform.
 
-There are many examples of parts of QEMU that stayed unmaintained for 
-years, working relatively well for limited use cases, and were only 
-later revamped.  Most of those that I can remember are guest side: the 
-TCG frontend for x86, ESP emulation in hw/scsi, VGA.  In fact VGA still 
-has a good number of emulation deficiencies and it's deprecated for 
-virtualization use, but no one in their right mind would suggest slating 
-it for removal.
 
-The difference with TCG of course is that TCG is in active development, 
-and therefore its 32-bit host support is not surviving passively in the 
-same way that a random device is.  Still, I think we can identify at 
-least three different parts that should be treated differently: 
-64-on-32, 32-on-32 system-mode emulation and 32-on-32 user-mode emulation.
+Am 29=2E Januar 2025 12:17:33 UTC schrieb Peter Maydell <peter=2Emaydell@l=
+inaro=2Eorg>:
+>On Tue, 28 Jan 2025 at 22:16, Bernhard Beschow <shentey@gmail=2Ecom> wrot=
+e:
+>>
+>>
+>>
+>> Am 28=2E Januar 2025 14:29:53 UTC schrieb Peter Maydell <peter=2Emaydel=
+l@linaro=2Eorg>:
+>> >On Mon, 20 Jan 2025 at 20:38, Bernhard Beschow <shentey@gmail=2Ecom> w=
+rote:
+>> >>
+>> >> diff --git a/MAINTAINERS b/MAINTAINERS
+>> >> index 846b81e3ec=2E=2Ecace8cf25b 100644
+>> >> --- a/MAINTAINERS
+>> >> +++ b/MAINTAINERS
+>> >> @@ -819,6 +819,15 @@ F: hw/pci-host/designware=2Ec
+>> >>  F: include/hw/pci-host/designware=2Eh
+>> >>  F: docs/system/arm/mcimx7d-sabre=2Erst
+>> >>
+>> >> +MCIMX8MP-EVK / i=2EMX8MP
+>> >> +M: Bernhard Beschow <shentey@gmail=2Ecom>
+>> >> +L: qemu-arm@nongnu=2Eorg
+>> >> +S: Odd Fixes
+>> >
+>> >I'd rather we didn't take on a new board model that
+>> >starts out in the "odd fixes" state=2E If you don't
+>> >have enough time to look after it, it seems unlikely
+>> >that anybody else is going to want to take it over=2E
+>>
+>> I'd look after it, but I'd also not raise expectations
+>> regarding commercial grade support=2E What state would you
+>> suggest?
+>
+>That's
+>      Maintained:  Someone actually looks after it=2E
+>(There's another step above that which is
+>      Supported:   Someone is actually paid to look after this=2E)
 
-We could and should remove 64-on-32, maybe even without a deprecation 
-period, but the rest I'm not so sure.  I don't know enough to understand 
-their maintenance cost (other than the mere existence of the 32-bit TCG 
-backends), but it's certainly not comparable to 64-on-32.
+Alright, that's what I meant=2E Will fix=2E
 
-Paolo
+Best regards,
+Bernhard
 
+>
+>thanks
+>-- PMM
 
