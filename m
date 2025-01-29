@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8D54A22168
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 17:12:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B81E9A22166
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 17:12:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdAWP-00046J-MA; Wed, 29 Jan 2025 11:02:35 -0500
+	id 1tdAXN-0005A1-5o; Wed, 29 Jan 2025 11:03:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVf-0003Iv-Af
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVg-0003JI-VD
  for qemu-devel@nongnu.org; Wed, 29 Jan 2025 11:01:52 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVb-0005J0-QK
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 11:01:45 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVf-0005JN-3U
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 11:01:48 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id ACAB71F365;
- Wed, 29 Jan 2025 16:01:42 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 71DC51F387;
+ Wed, 29 Jan 2025 16:01:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738166502; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1738166504; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vN8JojS+N0xJVWr6EVwFkYPAH1lMSOX0z+A5Ctq3e0M=;
- b=FyGyWkkGuMn5CI1p+j+KA6t5Rtq2/dxYSc7tOr3/fQ+GQGvukrtBb2dFiMuyFdh4enYVi6
- 8j5jfAwLaQ7nn0vB+jfC0svfuwbQ3vxXaKMr7skF5MAax4nBzLOKZLT3ib3tmi+hRNIfku
- pDeN90EMNrAWijZ7VUvhCrDuoiUAEz4=
+ bh=xdSdoaTnEZBeOXOT/uml7tEuGdrxBNGOwAicTO6KJd8=;
+ b=rDJtvjsNDjdxYON2CSg2ydVP9HBKdzDou8SFGRCiyNePaFMKCipySdRfUiJC09aERr0xbt
+ kptWWy/N4AQ+g+8W+N2uAoQMbxol8Hsu5Ebb0V94hg6e9mSp2w/IcMA5waOuT2QpET+yF5
+ yDZxEtVN7X3DA90B1v6hcRG2jiw1+vI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738166502;
+ s=susede2_ed25519; t=1738166504;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vN8JojS+N0xJVWr6EVwFkYPAH1lMSOX0z+A5Ctq3e0M=;
- b=eTU2ZSn1tq18RaKtW+6qJ/xvH1eatWJpBtJ3abtO1s/24JravtzSC2HsaHBruXp4jQkUlF
- 6M3fTpUZbeWlwOCQ==
+ bh=xdSdoaTnEZBeOXOT/uml7tEuGdrxBNGOwAicTO6KJd8=;
+ b=dz1vxBPzTuoeIzo/OQpp1cn1OwECphr6T82IyGVAeLf0uuA+Xa2JqUjaaCpxoDpTpOgYWM
+ hYANWoPhadpyVJCg==
 Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738166502; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1738166504; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vN8JojS+N0xJVWr6EVwFkYPAH1lMSOX0z+A5Ctq3e0M=;
- b=FyGyWkkGuMn5CI1p+j+KA6t5Rtq2/dxYSc7tOr3/fQ+GQGvukrtBb2dFiMuyFdh4enYVi6
- 8j5jfAwLaQ7nn0vB+jfC0svfuwbQ3vxXaKMr7skF5MAax4nBzLOKZLT3ib3tmi+hRNIfku
- pDeN90EMNrAWijZ7VUvhCrDuoiUAEz4=
+ bh=xdSdoaTnEZBeOXOT/uml7tEuGdrxBNGOwAicTO6KJd8=;
+ b=rDJtvjsNDjdxYON2CSg2ydVP9HBKdzDou8SFGRCiyNePaFMKCipySdRfUiJC09aERr0xbt
+ kptWWy/N4AQ+g+8W+N2uAoQMbxol8Hsu5Ebb0V94hg6e9mSp2w/IcMA5waOuT2QpET+yF5
+ yDZxEtVN7X3DA90B1v6hcRG2jiw1+vI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738166502;
+ s=susede2_ed25519; t=1738166504;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vN8JojS+N0xJVWr6EVwFkYPAH1lMSOX0z+A5Ctq3e0M=;
- b=eTU2ZSn1tq18RaKtW+6qJ/xvH1eatWJpBtJ3abtO1s/24JravtzSC2HsaHBruXp4jQkUlF
- 6M3fTpUZbeWlwOCQ==
+ bh=xdSdoaTnEZBeOXOT/uml7tEuGdrxBNGOwAicTO6KJd8=;
+ b=dz1vxBPzTuoeIzo/OQpp1cn1OwECphr6T82IyGVAeLf0uuA+Xa2JqUjaaCpxoDpTpOgYWM
+ hYANWoPhadpyVJCg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6891C137DB;
- Wed, 29 Jan 2025 16:01:41 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2DEE2137DB;
+ Wed, 29 Jan 2025 16:01:42 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id aO+2CuVQmmffPAAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 29 Jan 2025 16:01:41 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id sK/+N+ZQmmffPAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 29 Jan 2025 16:01:42 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
 	Steve Sistare <steven.sistare@oracle.com>
-Subject: [PULL 18/42] migration-test: memory_backend
-Date: Wed, 29 Jan 2025 13:00:35 -0300
-Message-Id: <20250129160059.6987-19-farosas@suse.de>
+Subject: [PULL 19/42] tests/qtest: optimize migrate_set_ports
+Date: Wed, 29 Jan 2025 13:00:36 -0300
+Message-Id: <20250129160059.6987-20-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250129160059.6987-1-farosas@suse.de>
 References: <20250129160059.6987-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
  MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
@@ -93,14 +93,15 @@ X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,suse.de:email,suse.de:mid];
  RCVD_TLS_ALL(0.00)[]
 X-Spam-Score: -2.80
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,90 +120,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-Allow each migration test to define its own memory backend, replacing
-the standard "-m <size>" specification.
+Do not query connection parameters if all port numbers are known.  This is
+more efficient, and also solves a problem for the cpr-transfer test.
+At the point where cpr-transfer calls migrate_qmp and migrate_set_ports,
+the monitor is not connected and queries are not allowed.  Port=0 is
+never used for cpr-transfer.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/1736967650-129648-18-git-send-email-steven.sistare@oracle.com
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Link: https://lore.kernel.org/r/1736967650-129648-19-git-send-email-steven.sistare@oracle.com
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration/framework.c | 15 +++++++++++----
- tests/qtest/migration/framework.h |  5 +++++
- 2 files changed, 16 insertions(+), 4 deletions(-)
+ tests/qtest/migration/migration-util.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index 4550cda129..758e14abab 100644
---- a/tests/qtest/migration/framework.c
-+++ b/tests/qtest/migration/framework.c
-@@ -221,6 +221,7 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-     g_autofree char *machine = NULL;
-     const char *bootpath;
-     g_autoptr(QList) capabilities = migrate_start_get_qmp_capabilities(args);
-+    g_autofree char *memory_backend = NULL;
+diff --git a/tests/qtest/migration/migration-util.c b/tests/qtest/migration/migration-util.c
+index 526bed74ea..0ce1413b6c 100644
+--- a/tests/qtest/migration/migration-util.c
++++ b/tests/qtest/migration/migration-util.c
+@@ -135,25 +135,32 @@ migrate_get_connect_qdict(QTestState *who)
  
-     if (args->use_shmem) {
-         if (!g_file_test("/dev/shm", G_FILE_TEST_IS_DIR)) {
-@@ -296,6 +297,12 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-             memory_size, shmem_path);
-     }
+ void migrate_set_ports(QTestState *to, QList *channel_list)
+ {
+-    QDict *addr;
++    g_autoptr(QDict) addr = NULL;
+     QListEntry *entry;
+     const char *addr_port = NULL;
  
-+    if (args->memory_backend) {
-+        memory_backend = g_strdup_printf(args->memory_backend, memory_size);
-+    } else {
-+        memory_backend = g_strdup_printf("-m %s ", memory_size);
-+    }
+-    addr = migrate_get_connect_qdict(to);
+-
+     QLIST_FOREACH_ENTRY(channel_list, entry) {
+         QDict *channel = qobject_to(QDict, qlist_entry_obj(entry));
+         QDict *addrdict = qdict_get_qdict(channel, "addr");
+ 
+-        if (qdict_haskey(addrdict, "port") &&
+-            qdict_haskey(addr, "port") &&
+-            (strcmp(qdict_get_str(addrdict, "port"), "0") == 0)) {
++        if (!qdict_haskey(addrdict, "port") ||
++            strcmp(qdict_get_str(addrdict, "port"), "0")) {
++            continue;
++        }
 +
-     if (args->use_dirty_ring) {
-         kvm_opts = ",dirty-ring-size=4096";
++        /*
++         * Fetch addr only if needed, so tests that are not yet connected to
++         * the monitor do not query it.  Such tests cannot use port=0.
++         */
++        if (!addr) {
++            addr = migrate_get_connect_qdict(to);
++        }
++
++        if (qdict_haskey(addr, "port")) {
+             addr_port = qdict_get_str(addr, "port");
+             qdict_put_str(addrdict, "port", addr_port);
+         }
      }
-@@ -314,12 +321,12 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-     cmd_source = g_strdup_printf("-accel kvm%s -accel tcg "
-                                  "-machine %s,%s "
-                                  "-name source,debug-threads=on "
--                                 "-m %s "
-+                                 "%s "
-                                  "-serial file:%s/src_serial "
-                                  "%s %s %s %s",
-                                  kvm_opts ? kvm_opts : "",
-                                  machine, machine_opts,
--                                 memory_size, tmpfs,
-+                                 memory_backend, tmpfs,
-                                  arch_opts ? arch_opts : "",
-                                  shmem_opts ? shmem_opts : "",
-                                  args->opts_source ? args->opts_source : "",
-@@ -335,13 +342,13 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-     cmd_target = g_strdup_printf("-accel kvm%s -accel tcg "
-                                  "-machine %s,%s "
-                                  "-name target,debug-threads=on "
--                                 "-m %s "
-+                                 "%s "
-                                  "-serial file:%s/dest_serial "
-                                  "-incoming %s "
-                                  "%s %s %s %s",
-                                  kvm_opts ? kvm_opts : "",
-                                  machine, machine_opts,
--                                 memory_size, tmpfs, uri,
-+                                 memory_backend, tmpfs, uri,
-                                  arch_opts ? arch_opts : "",
-                                  shmem_opts ? shmem_opts : "",
-                                  args->opts_target ? args->opts_target : "",
-diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
-index 7991ee56b6..dd2db1c000 100644
---- a/tests/qtest/migration/framework.h
-+++ b/tests/qtest/migration/framework.h
-@@ -111,6 +111,11 @@ typedef struct {
-     bool suspend_me;
-     /* enable OOB QMP capability */
-     bool oob;
-+    /*
-+     * Format string for the main memory backend, containing one %s where the
-+     * size is plugged in.  If omitted, "-m %s" is used.
-+     */
-+    const char *memory_backend;
- } MigrateStart;
+-
+-    qobject_unref(addr);
+ }
  
- typedef enum PostcopyRecoveryFailStage {
+ bool migrate_watch_for_events(QTestState *who, const char *name,
 -- 
 2.35.3
 
