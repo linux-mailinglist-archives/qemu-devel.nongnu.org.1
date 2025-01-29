@@ -2,108 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E146A22142
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 17:09:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8032A22125
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 17:03:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdAWL-00042A-2N; Wed, 29 Jan 2025 11:02:30 -0500
+	id 1tdAW6-0003Pz-0A; Wed, 29 Jan 2025 11:02:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVK-0003GI-NG
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVK-0003FE-2x
  for qemu-devel@nongnu.org; Wed, 29 Jan 2025 11:01:26 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVI-0005EF-6f
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVI-0005Et-70
  for qemu-devel@nongnu.org; Wed, 29 Jan 2025 11:01:25 -0500
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 1FD5521109;
- Wed, 29 Jan 2025 16:01:21 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id D86AA1F38D;
+ Wed, 29 Jan 2025 16:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738166481; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1738166482; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tyQ8iNi8nTPP5FzNwsYboT5UyLB4GDl+YnTjn8T3EEs=;
- b=h5+NFBYhE7yJDOhCaHmabaBELM4NdNNBfIeEv+25JMGCVLd6su2Q/8wUklq6Nau3O3Q082
- D5XQTqlKS6RrnfCcC6ExdKXSoVlAYakaG6pzir5EZYEoxUapDYLz1TRFNwwj95lFgIrJkg
- FJR7vuAytqCJwaaCesEB+uISFlzH7So=
+ bh=UhBWuoYyaNh7Eohj+j3R9Cz8Jl/GGRBfjxi2Go5tOvg=;
+ b=Eftq8nFQZ4rF6jZvmXGs4AFfp1FvYI/x2plDMI09BvwcIIWxRKtnTjYTqCA6xvA6J9t66H
+ lmoOyUMQG6KFg80Q9mxvsWuECFRxNj8nH0vHDE0dPeNSacQ6P/OBufEzOx3fVgBVkopIsS
+ VGBVkfusmfPi2363w+jsxa9uMwKE+Ng=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738166481;
+ s=susede2_ed25519; t=1738166482;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tyQ8iNi8nTPP5FzNwsYboT5UyLB4GDl+YnTjn8T3EEs=;
- b=nIi07LzbjqE88M6PV/8L+DXQlzDzAFe3XTjUfem7cDc6ZxkMMPD/ctT1Y5ZPOffjm7pVks
- T3eL66Tsh2mj82AQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
+ bh=UhBWuoYyaNh7Eohj+j3R9Cz8Jl/GGRBfjxi2Go5tOvg=;
+ b=hzTHoNqW8IdP2QepxVyBEcezL916eLLir4Bg9ao8na0Cf2yTj8CTS5MrnSM2DXJpNRC3SC
+ fAk2dPTENGW+ERBQ==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Eftq8nFQ;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hzTHoNqW
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738166481; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1738166482; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tyQ8iNi8nTPP5FzNwsYboT5UyLB4GDl+YnTjn8T3EEs=;
- b=h5+NFBYhE7yJDOhCaHmabaBELM4NdNNBfIeEv+25JMGCVLd6su2Q/8wUklq6Nau3O3Q082
- D5XQTqlKS6RrnfCcC6ExdKXSoVlAYakaG6pzir5EZYEoxUapDYLz1TRFNwwj95lFgIrJkg
- FJR7vuAytqCJwaaCesEB+uISFlzH7So=
+ bh=UhBWuoYyaNh7Eohj+j3R9Cz8Jl/GGRBfjxi2Go5tOvg=;
+ b=Eftq8nFQZ4rF6jZvmXGs4AFfp1FvYI/x2plDMI09BvwcIIWxRKtnTjYTqCA6xvA6J9t66H
+ lmoOyUMQG6KFg80Q9mxvsWuECFRxNj8nH0vHDE0dPeNSacQ6P/OBufEzOx3fVgBVkopIsS
+ VGBVkfusmfPi2363w+jsxa9uMwKE+Ng=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738166481;
+ s=susede2_ed25519; t=1738166482;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tyQ8iNi8nTPP5FzNwsYboT5UyLB4GDl+YnTjn8T3EEs=;
- b=nIi07LzbjqE88M6PV/8L+DXQlzDzAFe3XTjUfem7cDc6ZxkMMPD/ctT1Y5ZPOffjm7pVks
- T3eL66Tsh2mj82AQ==
+ bh=UhBWuoYyaNh7Eohj+j3R9Cz8Jl/GGRBfjxi2Go5tOvg=;
+ b=hzTHoNqW8IdP2QepxVyBEcezL916eLLir4Bg9ao8na0Cf2yTj8CTS5MrnSM2DXJpNRC3SC
+ fAk2dPTENGW+ERBQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CE13A137DB;
- Wed, 29 Jan 2025 16:01:19 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 951E6137DB;
+ Wed, 29 Jan 2025 16:01:21 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id uEwyI89QmmffPAAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 29 Jan 2025 16:01:19 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id eJiJFdFQmmffPAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 29 Jan 2025 16:01:21 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
 	Steve Sistare <steven.sistare@oracle.com>
-Subject: [PULL 06/42] memory: add RAM_PRIVATE
-Date: Wed, 29 Jan 2025 13:00:23 -0300
-Message-Id: <20250129160059.6987-7-farosas@suse.de>
+Subject: [PULL 07/42] machine: aux-ram-share option
+Date: Wed, 29 Jan 2025 13:00:24 -0300
+Message-Id: <20250129160059.6987-8-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250129160059.6987-1-farosas@suse.de>
 References: <20250129160059.6987-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; FUZZY_BLOCKED(0.00)[rspamd.com];
- MIME_TRACE(0.00)[0:+]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- ARC_NA(0.00)[];
+X-Spamd-Result: default: False [-0.01 / 50.00]; MID_CONTAINS_FROM(1.00)[];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; BAYES_SPAM(0.00)[13.29%];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email,oracle.com:email];
+ FROM_HAS_DN(0.00)[]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ TO_DN_SOME(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- FROM_EQ_ENVFROM(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- RCVD_COUNT_TWO(0.00)[2];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,oracle.com:email]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ RCPT_COUNT_THREE(0.00)[3]; DKIM_TRACE(0.00)[suse.de:+]
+X-Spamd-Bar: /
+X-Rspamd-Queue-Id: D86AA1F38D
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Score: -0.01
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_FILL_THIS_FORM_SHORT=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,142 +131,125 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-Define the RAM_PRIVATE flag.
+Allocate auxilliary guest RAM as an anonymous file that is shareable
+with an external process.  This option applies to memory allocated as
+a side effect of creating various devices. It does not apply to
+memory-backend-objects, whether explicitly specified on the command
+line, or implicitly created by the -m command line option.
 
-In RAMBlock creation functions, if MAP_SHARED is 0 in the flags parameter,
-in a subsequent patch the implementation may still create a shared mapping
-if other conditions require it.  Callers who specifically want a private
-mapping, eg for objects specified by the user, must pass RAM_PRIVATE.
-
-After RAMBlock creation, MAP_SHARED in the block's flags indicates whether
-the block is shared or private, and MAP_PRIVATE is omitted.
+This option is intended to support new migration modes, in which the
+memory region can be transferred in place to a new QEMU process, by sending
+the memfd file descriptor to the process.  Memory contents are preserved,
+and if the mode also transfers device descriptors, then pages that are
+locked in memory for DMA remain locked.  This behavior is a pre-requisite
+for supporting vfio, vdpa, and iommufd devices with the new modes.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Link: https://lore.kernel.org/r/1736967650-129648-6-git-send-email-steven.sistare@oracle.com
+Link: https://lore.kernel.org/r/1736967650-129648-7-git-send-email-steven.sistare@oracle.com
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- backends/hostmem-epc.c   |  2 +-
- backends/hostmem-file.c  |  2 +-
- backends/hostmem-memfd.c |  2 +-
- backends/hostmem-ram.c   |  2 +-
- include/exec/memory.h    | 10 ++++++++++
- system/physmem.c         | 15 ++++++++++++---
- 6 files changed, 26 insertions(+), 7 deletions(-)
+ hw/core/machine.c   | 22 ++++++++++++++++++++++
+ include/hw/boards.h |  1 +
+ qemu-options.hx     | 11 +++++++++++
+ system/physmem.c    |  3 +++
+ 4 files changed, 37 insertions(+)
 
-diff --git a/backends/hostmem-epc.c b/backends/hostmem-epc.c
-index eb4b95dfd7..1fa2d031e4 100644
---- a/backends/hostmem-epc.c
-+++ b/backends/hostmem-epc.c
-@@ -36,7 +36,7 @@ sgx_epc_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
- 
-     backend->aligned = true;
-     name = object_get_canonical_path(OBJECT(backend));
--    ram_flags = (backend->share ? RAM_SHARED : 0) | RAM_PROTECTED;
-+    ram_flags = (backend->share ? RAM_SHARED : RAM_PRIVATE) | RAM_PROTECTED;
-     return memory_region_init_ram_from_fd(&backend->mr, OBJECT(backend), name,
-                                           backend->size, ram_flags, fd, 0, errp);
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index c23b399496..2b11bc4f66 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -457,6 +457,22 @@ static void machine_set_mem_merge(Object *obj, bool value, Error **errp)
+     ms->mem_merge = value;
  }
-diff --git a/backends/hostmem-file.c b/backends/hostmem-file.c
-index 46321fda84..691a827819 100644
---- a/backends/hostmem-file.c
-+++ b/backends/hostmem-file.c
-@@ -82,7 +82,7 @@ file_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
  
-     backend->aligned = true;
-     name = host_memory_backend_get_name(backend);
--    ram_flags = backend->share ? RAM_SHARED : 0;
-+    ram_flags = backend->share ? RAM_SHARED : RAM_PRIVATE;
-     ram_flags |= fb->readonly ? RAM_READONLY_FD : 0;
-     ram_flags |= fb->rom == ON_OFF_AUTO_ON ? RAM_READONLY : 0;
-     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
-diff --git a/backends/hostmem-memfd.c b/backends/hostmem-memfd.c
-index d4d0620e6c..1672da9e30 100644
---- a/backends/hostmem-memfd.c
-+++ b/backends/hostmem-memfd.c
-@@ -52,7 +52,7 @@ memfd_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
- 
-     backend->aligned = true;
-     name = host_memory_backend_get_name(backend);
--    ram_flags = backend->share ? RAM_SHARED : 0;
-+    ram_flags = backend->share ? RAM_SHARED : RAM_PRIVATE;
-     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
-     ram_flags |= backend->guest_memfd ? RAM_GUEST_MEMFD : 0;
-     return memory_region_init_ram_from_fd(&backend->mr, OBJECT(backend), name,
-diff --git a/backends/hostmem-ram.c b/backends/hostmem-ram.c
-index 39aac6bf35..868ae6ca80 100644
---- a/backends/hostmem-ram.c
-+++ b/backends/hostmem-ram.c
-@@ -28,7 +28,7 @@ ram_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
-     }
- 
-     name = host_memory_backend_get_name(backend);
--    ram_flags = backend->share ? RAM_SHARED : 0;
-+    ram_flags = backend->share ? RAM_SHARED : RAM_PRIVATE;
-     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
-     ram_flags |= backend->guest_memfd ? RAM_GUEST_MEMFD : 0;
-     return memory_region_init_ram_flags_nomigrate(&backend->mr, OBJECT(backend),
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 3ee1901b52..9f73b59867 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -246,6 +246,16 @@ typedef struct IOMMUTLBEvent {
- /* RAM can be private that has kvm guest memfd backend */
- #define RAM_GUEST_MEMFD   (1 << 12)
- 
-+/*
-+ * In RAMBlock creation functions, if MAP_SHARED is 0 in the flags parameter,
-+ * the implementation may still create a shared mapping if other conditions
-+ * require it.  Callers who specifically want a private mapping, eg objects
-+ * specified by the user, must pass RAM_PRIVATE.
-+ * After RAMBlock creation, MAP_SHARED in the block's flags indicates whether
-+ * the block is shared or private, and MAP_PRIVATE is omitted.
-+ */
-+#define RAM_PRIVATE (1 << 13)
++#ifdef CONFIG_POSIX
++static bool machine_get_aux_ram_share(Object *obj, Error **errp)
++{
++    MachineState *ms = MACHINE(obj);
 +
- static inline void iommu_notifier_init(IOMMUNotifier *n, IOMMUNotify fn,
-                                        IOMMUNotifierFlag flags,
-                                        hwaddr start, hwaddr end,
++    return ms->aux_ram_share;
++}
++
++static void machine_set_aux_ram_share(Object *obj, bool value, Error **errp)
++{
++    MachineState *ms = MACHINE(obj);
++
++    ms->aux_ram_share = value;
++}
++#endif
++
+ static bool machine_get_usb(Object *obj, Error **errp)
+ {
+     MachineState *ms = MACHINE(obj);
+@@ -1162,6 +1178,12 @@ static void machine_class_init(ObjectClass *oc, void *data)
+     object_class_property_set_description(oc, "mem-merge",
+         "Enable/disable memory merge support");
+ 
++#ifdef CONFIG_POSIX
++    object_class_property_add_bool(oc, "aux-ram-share",
++                                   machine_get_aux_ram_share,
++                                   machine_set_aux_ram_share);
++#endif
++
+     object_class_property_add_bool(oc, "usb",
+         machine_get_usb, machine_set_usb);
+     object_class_property_set_description(oc, "usb",
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 2ad711e56d..e1f41b2a53 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -410,6 +410,7 @@ struct MachineState {
+     bool enable_graphics;
+     ConfidentialGuestSupport *cgs;
+     HostMemoryBackend *memdev;
++    bool aux_ram_share;
+     /*
+      * convenience alias to ram_memdev_id backend memory region
+      * or to numa container memory region
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 7090d59f6f..90fad31590 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -38,6 +38,9 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
+     "                nvdimm=on|off controls NVDIMM support (default=off)\n"
+     "                memory-encryption=@var{} memory encryption object to use (default=none)\n"
+     "                hmat=on|off controls ACPI HMAT support (default=off)\n"
++#ifdef CONFIG_POSIX
++    "                aux-ram-share=on|off allocate auxiliary guest RAM as shared (default: off)\n"
++#endif
+     "                memory-backend='backend-id' specifies explicitly provided backend for main RAM (default=none)\n"
+     "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n",
+     QEMU_ARCH_ALL)
+@@ -101,6 +104,14 @@ SRST
+         Enables or disables ACPI Heterogeneous Memory Attribute Table
+         (HMAT) support. The default is off.
+ 
++    ``aux-ram-share=on|off``
++        Allocate auxiliary guest RAM as an anonymous file that is
++        shareable with an external process.  This option applies to
++        memory allocated as a side effect of creating various devices.
++        It does not apply to memory-backend-objects, whether explicitly
++        specified on the command line, or implicitly created by the -m
++        command line option.  The default is off.
++
+     ``memory-backend='id'``
+         An alternative to legacy ``-mem-path`` and ``mem-prealloc`` options.
+         Allows to use a memory backend as main RAM.
 diff --git a/system/physmem.c b/system/physmem.c
-index e4355649e9..03fac0a64f 100644
+index 03fac0a64f..cb80ce3091 100644
 --- a/system/physmem.c
 +++ b/system/physmem.c
-@@ -1952,7 +1952,11 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, ram_addr_t max_size,
-     ERRP_GUARD();
-     RAMBlock *new_block;
-     Error *local_err = NULL;
--    int64_t file_size, file_align;
-+    int64_t file_size, file_align, share_flags;
-+
-+    share_flags = ram_flags & (RAM_PRIVATE | RAM_SHARED);
-+    assert(share_flags != (RAM_SHARED | RAM_PRIVATE));
-+    ram_flags &= ~RAM_PRIVATE;
+@@ -2114,6 +2114,9 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
  
-     /* Just support these ram flags by now. */
-     assert((ram_flags & ~(RAM_SHARED | RAM_PMEM | RAM_NORESERVE |
-@@ -2097,7 +2101,11 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
- {
-     RAMBlock *new_block;
-     Error *local_err = NULL;
--    int align;
-+    int align, share_flags;
-+
-+    share_flags = ram_flags & (RAM_PRIVATE | RAM_SHARED);
-+    assert(share_flags != (RAM_SHARED | RAM_PRIVATE));
-+    ram_flags &= ~RAM_PRIVATE;
- 
-     assert((ram_flags & ~(RAM_SHARED | RAM_RESIZEABLE | RAM_PREALLOC |
-                           RAM_NORESERVE | RAM_GUEST_MEMFD)) == 0);
-@@ -2172,7 +2180,8 @@ RAMBlock *qemu_ram_alloc_from_ptr(ram_addr_t size, void *host,
- RAMBlock *qemu_ram_alloc(ram_addr_t size, uint32_t ram_flags,
-                          MemoryRegion *mr, Error **errp)
- {
--    assert((ram_flags & ~(RAM_SHARED | RAM_NORESERVE | RAM_GUEST_MEMFD)) == 0);
-+    assert((ram_flags & ~(RAM_SHARED | RAM_NORESERVE | RAM_GUEST_MEMFD |
-+                          RAM_PRIVATE)) == 0);
-     return qemu_ram_alloc_internal(size, size, NULL, NULL, ram_flags, mr, errp);
- }
- 
+ #ifdef CONFIG_POSIX         /* ignore RAM_SHARED for Windows */
+     if (!host) {
++        if (!share_flags && current_machine->aux_ram_share) {
++            ram_flags |= RAM_SHARED;
++        }
+         if (ram_flags & RAM_SHARED) {
+             const char *name = memory_region_name(mr);
+             int fd = qemu_ram_get_shared_fd(name, errp);
 -- 
 2.35.3
 
