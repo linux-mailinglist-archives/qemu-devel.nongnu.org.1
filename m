@@ -2,86 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7C90A218FF
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 09:27:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32350A2192B
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 09:38:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1td3Pj-00087Q-Je; Wed, 29 Jan 2025 03:27:11 -0500
+	id 1td3ZW-0002vs-0M; Wed, 29 Jan 2025 03:37:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1td3Pd-00087A-Ub
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 03:27:05 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1td3Pc-00056D-EE
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 03:27:05 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4362f61757fso68626995e9.2
- for <qemu-devel@nongnu.org>; Wed, 29 Jan 2025 00:27:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738139220; x=1738744020; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=AHZiF47NWWjd2AYAWKEbCROUr9QzBMOCZsoHUD8kiic=;
- b=iDYVDkLJ83OeZDxHDeVPjn8Ob6bmUSHDHDQDl+EKI+cjn9OBrsMbBi/Lw5iqjLcdpW
- a/SN3vjDu/Pd4Zxg3D/F8mJEy0v9rKG3CjrSfQLcnwOw1yXBwv7iI2BXY5i4cXM05aUw
- sNbxnKkvVo2XQz7B0lZLQH97h3DhgPU+xxXghins5b/KqQXLDrKzS2JJzVaOIJ26b9/v
- 7QHjtHIloS81dwSPpApwGoj/dl/6QRg23PI7uLiwyl1WwpHj9B4786pRPzCOXTKO3VPG
- b6RoqAJOfWIqaObCqyjP28+zEv5MHPyrxGI48qcOog8AuanJPFw2oK87+QmZO0Xf246p
- dIjg==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1td3ZT-0002uy-8W
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 03:37:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1td3ZR-0006Vi-Mu
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 03:37:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1738139831;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Z39SMo5fMi5Iw581fDH9qIPvAtJD2ehQKZCfZcwRJGY=;
+ b=UYKzWG6I7wr3Z8przUNuprD2djTUHcqgS1doJbSerDx3Jek4qhaKV7A/VKfgIi0R8FLz4R
+ Ux2HbbtJDqcW8fK1is26JQcIQpiOztaXrx1c8XH01OwnIflNqKc+cIX6vJJ34fVpN4/YRg
+ 3D8KP7MN9v4AGl3duceUCi0BgyVm5X8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-155-FZ_xXo44ODe1f-n1zfJvYw-1; Wed, 29 Jan 2025 03:37:09 -0500
+X-MC-Unique: FZ_xXo44ODe1f-n1zfJvYw-1
+X-Mimecast-MFC-AGG-ID: FZ_xXo44ODe1f-n1zfJvYw
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43582d49dacso45334325e9.2
+ for <qemu-devel@nongnu.org>; Wed, 29 Jan 2025 00:37:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738139220; x=1738744020;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AHZiF47NWWjd2AYAWKEbCROUr9QzBMOCZsoHUD8kiic=;
- b=tgtCoRVAPes6j09ntfIIlP7plYu4jFrWyQKsK1oJ5HY6ChPNG8TyGLwIvqT/jFf2jz
- JL/KBblIbDkCNi5vjCBLL4divWEkbW68f3ee9meAqNAsxuZSHvQ8oGi7pJZYGp1RVGNj
- 4T0GRCY2mqBLdykK3yGxFbV2LyKrWTphXUydYoG9+qZYxyMV7XuTiyRDB9qjDBkOC49T
- ggQ8E2jZTsy8X+zh5bYcuvXGG1gVDnAAZBuofP1SZxurIhRq3vlZg928qhdy2dO6MoW6
- kFq8bsxUPyqY9lowA7NrV5G9qAW4jU+nGLybxkgdoeM6eG9YGSeZlgeAxMqtRU5DSok8
- IiJQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVMdPhcoui4AfpP++AOwPHcIm9ORC24s0u794C9yCxHkvgANRDJGIcon6BoJp0YtB/ltEEShVTvH1hG@nongnu.org
-X-Gm-Message-State: AOJu0YzvoQHkdew9pGoM5Rmfpx3I2XD2isvr3EAGSlUfIxz63x/hlraO
- Win5nc4QQIwm0iz49gDaB8LI1ggOUI6RrQ0TvMxJ8w8l9ntQdWU4Q05ltr7hOCg=
-X-Gm-Gg: ASbGncunm3TVw9oiwu3IQ5N3AnU5NEhg73UdaHljtKtjiXhjvdYjDOFKTvYfl4ZRSi/
- 4+ZN15lTAFHphID5YSHDRjXNwSw7NwlkObz6RQekd6+nyFGojNMJfJV2aJLF6SjrvZzyWnajTIi
- P1dpTbE4uDUYz4j7m/FBjyPiev/7WSioHVHB25TtQTcpaLN0o0OkIpLMWDpDYAfTZGhF3wKtV6S
- MEuT0FbuKf0ZNBYE6jtvIP4EE5jO3V0zkQqyWkfbcf7nqkMLT+Afe384CYA4DaZCqDKZyAbfUZy
- KlypORVkiIvqUSYnQR0tTye+gA8wSC3jVxih7gtXAI2VGyfYpfD5TU9hg58=
-X-Google-Smtp-Source: AGHT+IEqSd/3rz5Y5ORNplSWaBL8eAnVT8r6p3lyhI5cOv8lRtUUgyZW149RH7IvKocqdgMyJ9Rjsw==
-X-Received: by 2002:a05:6000:400e:b0:38a:3732:444d with SMTP id
- ffacd0b85a97d-38c5195c27dmr1733276f8f.23.1738139219814; 
- Wed, 29 Jan 2025 00:26:59 -0800 (PST)
-Received: from [192.168.69.235] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438dcc2e3a6sm14299365e9.20.2025.01.29.00.26.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 Jan 2025 00:26:59 -0800 (PST)
-Message-ID: <22ef753c-60d8-4e21-8317-e64b6d81ff5e@linaro.org>
-Date: Wed, 29 Jan 2025 09:26:58 +0100
+ d=1e100.net; s=20230601; t=1738139828; x=1738744628;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Z39SMo5fMi5Iw581fDH9qIPvAtJD2ehQKZCfZcwRJGY=;
+ b=pRHqJS7lzb89C6Efj8ZGJhVeMH5V0hJzNcv5RNgSLPqWdH5OV65Bdu9rLTfA9LkJ21
+ snNO3Ha82ds3qmCi3ei9OZjVOrGOMlSLgATYMRRW5ZRPzPRt7NWfeAkLs0VMqQ/oj2rH
+ D9JJzcXzCWhn9p1RUEonVDzjJqxuTOUprKF9Z3Kyfl9732/gmQhKDxLFn4gAsgVmA5JG
+ Tv5LEM1uHvIv6URAVRHPsA2O9cYapNX9aAg509z7aHrTqa7RPpuv6f89V1gVN0OhkaH5
+ 4DxfxyepA/Ydu2LTPQz4fWBs2LBbqm7UUdu17Vsoqw2RIgkeEdtGIXAR8DV3y7KxZgFp
+ hQcQ==
+X-Gm-Message-State: AOJu0YxbNUfqjcSmg75kOV391AwILk+Z2msfPj2YWYWnYLJWQwX/jAEQ
+ le6rpkUMrzgnVFAa+vstoxoq0yAUGNACEcamnqN3F1ukRBZODgwk07IJ9dbMYob+qZkRrpWyJf7
+ F3ShW304O0FzWzV9vncsFYVMIremIe8BvUipTJkcM3P1WlCWEwa871CPH6bT2gbA7F7ynhIMnQy
+ xp8r8WP/EOxsR4TBkmgtUTmrguCa7ezWRwADr9mqA=
+X-Gm-Gg: ASbGncsA9mxGNdbgpgDDMu34yfPyaOd9+YThLnnDOVqxakjXvCI2Phg9p5I3nzbqCVT
+ cWH4CqDr8GTZsElpDIkmlZMogWhEq9vWVZDFPsgCgsK0W2eoypfL7lPuAYkln4t7/MBWelZHspc
+ 04GBPtCdvzrE4h7TOyD/UXDoXt9A4m8w9ndZWNXcL7k36JF2hcyL4XM3DO7UJ0YKeA5MybASmw1
+ UHmIlnx6fJX81dhtc4xqm+bIMItcUuVmL0sYXoZFBVYk4yYlE7IDnxLieQvt69bsR1dIcFBjY2N
+ hjhkBA==
+X-Received: by 2002:a05:600c:1d83:b0:434:a781:f5d5 with SMTP id
+ 5b1f17b1804b1-438dc43540bmr17232275e9.30.1738139827699; 
+ Wed, 29 Jan 2025 00:37:07 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGRVnVACXbe2o5UFdWmFh32QWJzcSMoeuoo/SloXi5oWk7LyjTRgab9mbySxerp+6u4mScZCQ==
+X-Received: by 2002:a05:600c:1d83:b0:434:a781:f5d5 with SMTP id
+ 5b1f17b1804b1-438dc43540bmr17231985e9.30.1738139827318; 
+ Wed, 29 Jan 2025 00:37:07 -0800 (PST)
+Received: from [192.168.10.3] ([151.62.97.55])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-438dcc2ef08sm14586025e9.22.2025.01.29.00.37.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 29 Jan 2025 00:37:06 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-rust@nongnu.org
+Subject: [PATCH 0/2] rust: small cleanups to Cargo.toml files
+Date: Wed, 29 Jan 2025 09:37:02 +0100
+Message-ID: <20250129083705.1321407-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] gitlab-ci: include full Rust backtraces in test runs
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: berrange@redhat.com, qemu-rust@nongnu.org
-References: <20250129082045.1319203-1-pbonzini@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250129082045.1319203-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,27 +104,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/1/25 09:20, Paolo Bonzini wrote:
+Remove duplicate or stale information, and add the rustc version to
+help clippy produce good warnings.
 
-Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Paolo
 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   .gitlab-ci.d/buildtest-template.yml | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-> index 39da7698b09..4cc19239319 100644
-> --- a/.gitlab-ci.d/buildtest-template.yml
-> +++ b/.gitlab-ci.d/buildtest-template.yml
-> @@ -63,6 +63,7 @@
->     stage: test
->     image: $CI_REGISTRY_IMAGE/qemu/$IMAGE:$QEMU_CI_CONTAINER_TAG
->     script:
-> +    - export RUST_BACKTRACE=1
->       - source scripts/ci/gitlab-ci-section
->       - section_start buildenv "Setting up to run tests"
->       - scripts/git-submodule.sh update roms/SLOF
+Paolo Bonzini (2):
+  rust: remove unnecessary Cargo.toml metadata
+  rust: include rust_version in Cargo.toml
+
+ rust/hw/char/pl011/Cargo.toml          |  4 +---
+ rust/hw/char/pl011/README.md           | 31 --------------------------
+ rust/hw/char/pl011/src/device_class.rs |  1 -
+ rust/hw/char/pl011/src/lib.rs          | 14 +++++-------
+ rust/qemu-api-macros/Cargo.toml        |  4 +---
+ rust/qemu-api-macros/README.md         |  1 -
+ rust/qemu-api/Cargo.toml               |  1 +
+ 7 files changed, 9 insertions(+), 47 deletions(-)
+ delete mode 100644 rust/hw/char/pl011/README.md
+ delete mode 100644 rust/qemu-api-macros/README.md
+
+-- 
+2.48.1
 
 
