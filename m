@@ -2,85 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3298A21619
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 02:32:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E715A2163B
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 02:42:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcwwD-0007Eg-F9; Tue, 28 Jan 2025 20:32:17 -0500
+	id 1tcx2m-0000lP-Aa; Tue, 28 Jan 2025 20:39:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tcwwA-0007EQ-Gc; Tue, 28 Jan 2025 20:32:15 -0500
-Received: from mail-vk1-xa33.google.com ([2607:f8b0:4864:20::a33])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tcx2k-0000kj-Jl
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:02 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tcww8-0002MI-UO; Tue, 28 Jan 2025 20:32:14 -0500
-Received: by mail-vk1-xa33.google.com with SMTP id
- 71dfb90a1353d-518ae5060d4so1883855e0c.0; 
- Tue, 28 Jan 2025 17:32:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tcx2j-0003T8-14
+ for qemu-devel@nongnu.org; Tue, 28 Jan 2025 20:39:02 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-2164b1f05caso109556275ad.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Jan 2025 17:38:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1738114331; x=1738719131; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GDd66CP6UFkg12Zal74nSBqi1oirSeJQfa2FBkIje1w=;
- b=e4dN32r1iBwl90z3GIoJ7XzZ0/o6qwRm7YDmAcqz6T+VQo60Tgpnn1nCAB2ZRq2gBF
- t7Sp6wunKmvCu2mZawSxVWzrhYDkAZGnYYrkwZBTAV+OJJbeWSzdA2fr/tsS4gGHW+4t
- cj+3UVOG4eTbAWg13B1EzUUW/dJqJ/QGyE5dvlXmCFbBTJzzIfq+dd7zzeSbQdR64kWH
- 6VNGmgmz5c7DcpPdy8jwkpgekgszTCkSI6WjGcbkcKCyfUGM5MEtO3QRUaFn2ABsEXwo
- QKl4O3d3Av1tYad9tkEHQCyI9nhp5xy2iUuAVx52Z1lxAHQEZBVVB2rMeV0Bv/xg0AD7
- HF6A==
+ d=linaro.org; s=google; t=1738114739; x=1738719539; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=rEz/rxVFuaNhY5aNbxmZnAlfH1891I8iOgPRaSkJaMM=;
+ b=m5RP4SNkI3xFoHYNyAKuB7Pt1lGm618IDNzqtGctsiWoQ9TyrKpT8sz57aHQNaxZ7X
+ 4YDjZhacj8ccSJ4vWWPhOfvF/bifENWrNTg40MN1qzDG/ALWIBuKnfYN93PnZA5QMOus
+ QyyparGrDiBcBEbeensbB8ZoGmyuttWLXtg/btVGl4MpqZlbPL2X5B++MmrfJoAt0UhF
+ v+xlV5K3aypBnm5VbtxJ6YigsTSFc4Rj2GWMQ7+OtMggLOLwd3m3WQVjN69giiV6ru5E
+ kMY/nqWfEiTc5hbL0LzrwajNkZHybc3nv2i1qJuU6a+ROC2J3I38GBFskh6IG1o24zJN
+ 3QQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738114331; x=1738719131;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GDd66CP6UFkg12Zal74nSBqi1oirSeJQfa2FBkIje1w=;
- b=SbuTxk3OtBSJLXZTm/lIXC06aaJdmEZMnoLPu5IAuEGhLGX5eh5kK7XPZaxhdJs8RK
- W0FDsgSZvG5g5BFBRhOXxm37JpNeC+KpCjTJ45F2jPDOd4WaCYhyuCfQy9BmKucenv+c
- dtHHY6PAosrCvUpLNjgVCS+3SkJOMk+ptTAvgNvoBX3PlI76IIbcsYEXapRCZKpt/Qw9
- Q521E6LIPXMulBewY6ENSDZ/4HnBb20cLnO61SlqLHuwlzFlSEoFSmFY+Oiu/uilAgHt
- rOuwkqr6CzSSQaVO+oOREG6N4w9p6L/9tkAPdBEMMBcJFj7BqwFSyO8yS1VpMK/x9DN8
- wVew==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXNtTrL9UsyMS26UW8nzQ52z4edm2t/R8krEjlIXybmgbB7EujXTAWikD8fk77NuUdvdnyMB1d9fLZK@nongnu.org
-X-Gm-Message-State: AOJu0Yw0CH2ffNVlcjrjWOr12wGmzNfWdlt8GyG2ob9xUYTIuH0iehP4
- q9F1NQAHtaHhgUSI+o2BFZc4XhFtj1WYWd00fWl9zCv8HznrrZyVWrJDwltzaHWaChh1j/kRueV
- uNSCHgG15pXSEkNZW+oMuQtH5vrA=
-X-Gm-Gg: ASbGncuP2nDgrllVpGk0C8yqedu7FBxXGPF2jHbc1Cb23kk0fdsS7TZ4EsWc+3giilG
- 2nS13r7qaXMrMw04m1iP8Y1GmFmlriB9pfNL++OXclcnhmZI/gNbiKDrSvlvnxmEvDQ1wfq620E
- fRNbV0+p+3vwXnwDhvaXrPRKYniA==
-X-Google-Smtp-Source: AGHT+IF2oi95A+RGaTwsbi8a9Ny9RndMWYbs4BbcJ7FJH5jhJQCmta7TI/HQ4BjeapvNQA3MIPQI2Ay/NHMW1pMFduk=
-X-Received: by 2002:a05:6122:1c87:b0:517:4fca:86e2 with SMTP id
- 71dfb90a1353d-51e9e55009dmr1646575e0c.10.1738114331500; Tue, 28 Jan 2025
- 17:32:11 -0800 (PST)
+ d=1e100.net; s=20230601; t=1738114739; x=1738719539;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rEz/rxVFuaNhY5aNbxmZnAlfH1891I8iOgPRaSkJaMM=;
+ b=CqKFW/jbLkk9seqSVHWHzQubRnJcRuqV2nbhbZrLDW9KxcuVleR5UnHCpwvOYCLH1P
+ 4g6o8vcwmQGUdOU1jMkk1t5ysm48f3MnyMkwJM4CQ3inO6K8twr8AUyXUrB6Cqp3GGlQ
+ gbeQ8y5JFm+4FO8B9u/MPjKlM1roEipM6t7mUocix9yz7/gAxDKPtDcBqSi9iu7AeC3c
+ UwjOesk4GOHmpBePjWp/8r6VIxl795HryJmrK+wdrq56OPytJejsDVkX6VTDJI2YGe49
+ xp4BJ/QmArcs8eM2YWLI0sHhhMqq11dJv8EDEpqXOgu2sc8mRPakpNyg/UlKu/M0HsG5
+ nNVA==
+X-Gm-Message-State: AOJu0Yx28/ET+AtlE4NKfcIUQAmg1SG6nxTgHomlu2lWMsJpNU9zdJt0
+ K3yAG1KmRJnlvhPee7gXNtjzwpo4m6qZWKpf8CN6F1MfOhilVyxcLG8dWCgvaPm1rsjvu6INNjn
+ A
+X-Gm-Gg: ASbGncucMHiYNsP9wqgmoTm6I0GVFlULNMoUX2xnaH/NgbN7i8D2KoFK859mugbBBma
+ YJzbYMYVcHaL5oTN+XDs9Euwu05eDqlFfKls1Teh+z9lrNnX+klkkj2TyAnmF/bP+pGhWWk8e6K
+ 4XRESx49lliWklXh+xRL49hxJJs98DzW70TbG11FnSoEwOiaMAc2dj6pZ0DD0wjysjD1c6/fxc4
+ BefdqN5qZRj8yAkli3AIdWXPJFKDBGwRkakxybJ5f4QdfbBAf2/VW1n+J+WA8B/iS0LbRQHI8en
+ sPphKSRfiBb2CBtsWl6v5gvqImAh+GdNBS7SUGRhE7dfPpNizQ==
+X-Google-Smtp-Source: AGHT+IGjsOVgJjRiHz9yGggR9Zf+W/gckHUcZXfIPqOiMUXbnFbiK+cL0QbIYilFOwmd0qAtw5/vkQ==
+X-Received: by 2002:a17:903:1cb:b0:21c:2f41:f4cd with SMTP id
+ d9443c01a7336-21dd7dea7b3mr19877305ad.43.1738114738734; 
+ Tue, 28 Jan 2025 17:38:58 -0800 (PST)
+Received: from stoup.. (71-212-32-190.tukw.qwest.net. [71.212.32.190])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-21da3ea4200sm89341745ad.88.2025.01.28.17.38.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 28 Jan 2025 17:38:58 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org
+Subject: [PATCH v2 00/34] target/arm: FEAT_AFP followups for FEAT_SME2
+Date: Tue, 28 Jan 2025 17:38:23 -0800
+Message-ID: <20250129013857.135256-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20250124090539.2506448-1-max.chou@sifive.com>
-In-Reply-To: <20250124090539.2506448-1-max.chou@sifive.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 29 Jan 2025 11:31:45 +1000
-X-Gm-Features: AWEUYZl0FHbAzWllC-f8KHh0C2dNzt5v_z_jma9NJFdufcvSwA4LGRNaj5bs38Q
-Message-ID: <CAKmqyKP9R7p0YVEmjj4QSvz46JSXZEut9NRnUjTxQw-PJHujug@mail.gmail.com>
-Subject: Re: [PATCH] target/riscv: rvv: Fix incorrect vlen comparison in
- prop_vlen_set
-To: Max Chou <max.chou@sifive.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a33;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa33.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,56 +94,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 24, 2025 at 7:06=E2=80=AFPM Max Chou <max.chou@sifive.com> wrot=
-e:
->
-> In prop_vlen_set function, there is an incorrect comparison between
-> vlen(bit) and vlenb(byte).
-> This will cause unexpected error when user applies the `vlen=3D1024` cpu
-> option with a vendor predefined cpu type that the default vlen is
-> 1024(vlenb=3D128).
->
-> Signed-off-by: Max Chou <max.chou@sifive.com>
+Hi Peter,
 
-Thanks!
+I know you've sent a PR with some of this, but I don't have a
+complete tree against which to rebase.  So this is still
 
-Applied to riscv-to-apply.next
+Based-on: 20250124162836.2332150-1-peter.maydell@linaro.org
+("[PATCH 00/76] target/arm: Implement FEAT_AFP and FEAT_RPRES")
 
-Alistair
+Up to patch 22 is unchanged; after patch 22 is all new.
 
-> ---
->  target/riscv/cpu.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 3d4bd157d2c..2f53acbab59 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -2034,6 +2034,7 @@ static void prop_vlen_set(Object *obj, Visitor *v, =
-const char *name,
->                           void *opaque, Error **errp)
->  {
->      RISCVCPU *cpu =3D RISCV_CPU(obj);
-> +    uint16_t cpu_vlen =3D cpu->cfg.vlenb << 3;
->      uint16_t value;
->
->      if (!visit_type_uint16(v, name, &value, errp)) {
-> @@ -2045,10 +2046,10 @@ static void prop_vlen_set(Object *obj, Visitor *v=
-, const char *name,
->          return;
->      }
->
-> -    if (value !=3D cpu->cfg.vlenb && riscv_cpu_is_vendor(obj)) {
-> +    if (value !=3D cpu_vlen && riscv_cpu_is_vendor(obj)) {
->          cpu_set_prop_err(cpu, name, errp);
->          error_append_hint(errp, "Current '%s' val: %u\n",
-> -                          name, cpu->cfg.vlenb << 3);
-> +                          name, cpu_vlen);
->          return;
->      }
->
-> --
-> 2.34.1
->
->
+Most of them simplify floatN_muladd to use float_muladd_negate_*.
+Five of them (25, 26, 27, 31, 32) address functions missed in
+your v1 patchset.
+
+Patch 30 was easier to write with the reversion in patch 29 first.
+Obviously I wouldn't think you'd apply as-is.
+
+
+r~
+
+
+Richard Henderson (34):
+  target/arm: Rename FPST_FPCR_A32 to FPST_A32
+  target/arm: Rename FPST_FPCR_A64 to FPST_A64
+  target/arm: Rename FPST_FPCR_F16_A32 to FPST_A32_F16
+  target/arm: Rename FPST_FPCR_F16_A64 to FPST_A64_F16
+  target/arm: Rename FPST_FPCR_AH* to FPST_AH*
+  target/arm: Introduce CPUARMState.vfp.fp_status[]
+  target/arm: Remove standard_fp_status_f16
+  target/arm: Remove standard_fp_status
+  target/arm: Remove ah_fp_status_f16
+  target/arm: Remove ah_fp_status
+  target/arm: Remove fp_status_f16_a64
+  target/arm: Remove fp_status_f16_a32
+  target/arm: Remove fp_status_a64
+  target/arm: Remove fp_status_a32
+  target/arm: Simplify fp_status indexing in mve_helper.c
+  target/arm: Simplify DO_VFP_cmp in vfp_helper.c
+  target/arm: Move float*_ah_chs to vec_internal.h
+  target/arm: Introduce float*_maybe_ah_chs
+  target/arm: Use float*_maybe_ah_chs in sve_ftssel_*
+  target/arm: Use float*_maybe_ah_chs in sve_fcadd_*
+  target/arm: Use float*_maybe_ah_chs in sve_fcadd_*
+  target/arm: Use flags for AH negation in do_fmla_zpzzz_*
+  target/arm: Use flags for AH negation in sve_ftmad_*
+  target/arm: Use flags for AH negation in float*_ah_mulsub_f
+  target/arm: Handle FPCR.AH in gvec_fcmla[hsd]
+  target/arm: Handle FPCR.AH in gvec_fcmla[hs]_idx
+  target/arm: Handle FPCR.AH in sve_fcmla_zpzzz_*
+  target/arm: Split gvec_fmla_idx_* for fmls and ah_fmls
+  Revert "target/arm: Handle FPCR.AH in FMLSL"
+  target/arm: Handle FPCR.AH in gvec_fmlal_a64
+  target/arm: Handle FPCR.AH in sve2_fmlal_zzxw_s
+  target/arm: Handle FPCR.AH in sve2_fmlal_zzzw_s
+  target/arm: Read fz16 from env->vfp.fpcr
+  target/arm: Sink fp_status and fpcr access into do_fmlal*
+
+ target/arm/cpu.h               | 107 +++++-----
+ target/arm/helper.h            |  14 ++
+ target/arm/tcg/translate.h     |  68 +------
+ target/arm/tcg/vec_internal.h  |  35 ++++
+ target/arm/cpu.c               |  28 +--
+ target/arm/tcg/helper-a64.c    |  15 +-
+ target/arm/tcg/mve_helper.c    |  44 ++---
+ target/arm/tcg/sme_helper.c    |   4 +-
+ target/arm/tcg/sve_helper.c    | 234 +++++++++++-----------
+ target/arm/tcg/translate-a64.c | 125 ++++++------
+ target/arm/tcg/translate-sme.c |   4 +-
+ target/arm/tcg/translate-sve.c | 157 +++++++--------
+ target/arm/tcg/translate-vfp.c |  78 ++++----
+ target/arm/tcg/vec_helper.c    | 346 +++++++++++++++++----------------
+ target/arm/vfp_helper.c        |  94 ++++-----
+ 15 files changed, 681 insertions(+), 672 deletions(-)
+
+-- 
+2.43.0
+
 
