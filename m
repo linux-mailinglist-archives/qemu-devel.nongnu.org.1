@@ -2,58 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C19DA214FF
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 00:31:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7EDEA215C6
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 01:49:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tcv29-0003WP-CG; Tue, 28 Jan 2025 18:30:17 -0500
+	id 1tcwFW-00080R-Dk; Tue, 28 Jan 2025 19:48:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew@codeconstruct.com.au>)
- id 1tcv27-0003VV-A0; Tue, 28 Jan 2025 18:30:15 -0500
-Received: from pi.codeconstruct.com.au ([203.29.241.158]
- helo=codeconstruct.com.au)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew@codeconstruct.com.au>)
- id 1tcv23-0008OX-V9; Tue, 28 Jan 2025 18:30:14 -0500
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1tcwFM-0007zY-EJ; Tue, 28 Jan 2025 19:48:01 -0500
+Received: from mail-vk1-xa32.google.com ([2607:f8b0:4864:20::a32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1tcwFK-0002Vq-SW; Tue, 28 Jan 2025 19:48:00 -0500
+Received: by mail-vk1-xa32.google.com with SMTP id
+ 71dfb90a1353d-5160f1870f3so1857550e0c.0; 
+ Tue, 28 Jan 2025 16:47:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=codeconstruct.com.au; s=2022a; t=1738107000;
- bh=5Fe4Kd9zjpckFGitNEIbV20ei3cICRR3NvaaUVbexI4=;
- h=Subject:From:To:Cc:Date:In-Reply-To:References;
- b=PZySY69tTwJnce1/IEs79QK2+xCnKa5fKUgVE5TOucmyNw3CoJRT8LxRVPKrzuGVK
- CUE5Iq3b+VPmGNyB2UDw+LjuguX5kUVnqvo/xkqKfLAN1jRfLkMGc/yTvTxXD4lqZW
- g/wPezXhJy9LTQmcYc8nNTBv7doDyr3FHfTTECc1QQkGbJSAt7YM4+lhN0eBpc0/A1
- 688ZBuHTESsOrqyGryxwAH2haQleVCv7UDnMET+dNTpVC9YzNSYnwfYh9C/U/fmX+J
- H4qiUdeN+3xS+bO/E01pbPlt+XEs9yOileYDszAhsnYrmsoUkXHGSM/6FcXDw2U5jk
- 0XfTl+FpKOydg==
-Received: from [192.168.68.112] (58-7-145-34.dyn.iinet.net.au [58.7.145.34])
- by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 231E8734DE;
- Wed, 29 Jan 2025 07:29:58 +0800 (AWST)
-Message-ID: <bee99a3ef4821f69f6f1a2f6cfc77c3e247e5d87.camel@codeconstruct.com.au>
-Subject: Re: [PATCH 0/5] tests/functional: Update Aspeed OpenBMC images
-From: Andrew Jeffery <andrew@codeconstruct.com.au>
-To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
- qemu-arm@nongnu.org,  qemu-devel@nongnu.org
-Cc: Joel Stanley <joel@jms.id.au>, Troy Lee <troy_lee@aspeedtech.com>, Jamin
- Lin <jamin_lin@aspeedtech.com>, Steven Lee <steven_lee@aspeedtech.com>,
- Thomas Huth <thuth@redhat.com>
-Date: Wed, 29 Jan 2025 09:59:57 +1030
-In-Reply-To: <20250128214100.1196243-1-clg@redhat.com>
-References: <20250128214100.1196243-1-clg@redhat.com>
+ d=gmail.com; s=20230601; t=1738111677; x=1738716477; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lz26FLioiiDEbLzbWJndIdzGUsjgsatgdS60Qo1tt6c=;
+ b=GMLeQtlwqdhHQrU8Edd9kAD2Rp3YgloGI9/DrDN4xTXsoCSr5wDmzp9GUoYOha4Ikv
+ WviudYNspkzny0FjFb53LH/49oy7o9kNNZxCRjQpQsosemzxPmws1Um68CX41nD/L5sv
+ thHfe5fUg9hYwy0u3SlNiPtqMtkDFQTFhQv4mW0MSPzEMUOWwGLro3z8yN7jfvw2ufqs
+ 3yWpDfAiRrXidbZ+GvxGUc11yJb5ilQ+Iobdovx/Fa9VnclvxuHLEfMyHz7N11v5lwgE
+ KqgJAx9FzbDIirsUtK8lWMmQjoCKhJEnzXoNJJ2QbEl7gxbtI7M405uHAdM1dLgqt6dD
+ dDCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1738111677; x=1738716477;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=lz26FLioiiDEbLzbWJndIdzGUsjgsatgdS60Qo1tt6c=;
+ b=rE20eottmCHVgJvL0lDPAsaMH9LE1xx0/9CWxRZ1NLAstPdS5LqWji2GnH/W4qQMoG
+ uM0S3xtKG9Bb7R7qYh8wvFjulXjGMCQsJbyXe1iiviACnmQ8HO73YQE7kBzZ50kKeHc1
+ wo7gTqMg73aF0Cl41cTDZZ6skPHLnNTEbI20UZL0CmN0e4Kl8gtXWG/7xofRF+VDO8Kv
+ iW9SoZbGVjxj5vK9WeWRoLoBcM7C0MtzTsd9EmKX120gpSbrzy+SckSTg/sUHhi5HK5w
+ q5ve7IIi9MZLXcG4O5gIZonq+SoQOXshxiOGyprks7g2atp02ayQo9l2bqpE5rZ8oUCs
+ H/Rg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW/kFz4642DfyJZYLJ5oZj1mfaHP96/x7lWaLgdFE/anlv02wy8UFNFt9KtX73Mzy8Z4gE8fxUd1QB4@nongnu.org
+X-Gm-Message-State: AOJu0YwfAHZtdMdcz2Va0se0VJlAGjLBDSlEkr7T9YoIctP3hLVZId5+
+ Ix/oDncT6nGUifTEGWZ3ddlekILaGATn+biAnTdjyib7r9iGB8VeuDPULcmL0L0btMD05ZzNeXo
+ 9zP4bLzhO3Fl+WxL01sEJMxqW80U=
+X-Gm-Gg: ASbGnctBZPqEK+mC1llzeCsw9QQ48Ll8/YqatNMEd+jbRzpW4wL8B+RJpVhK34/A7p8
+ pFoLVbQJHdbvVYpIq0o/Y2SxMoUZbQdtLeCmhkv37VwNKtWVyq+iWgptTBRzn8ZJZ35/9ocYxp7
+ CkyG5LGCSRzmWe1rx6mz5GO9eH4w==
+X-Google-Smtp-Source: AGHT+IFkzih4C69SB9h0mjRMPCeGNdtxXYh7QkjPV7AXu9/lNh77T3KTh9YsrX2nJI3JGMuyb1RPXUR6b3q1Yv/UkZM=
+X-Received: by 2002:a05:6122:4011:b0:518:8753:34aa with SMTP id
+ 71dfb90a1353d-51e9e5699b0mr1750036e0c.10.1738111677271; Tue, 28 Jan 2025
+ 16:47:57 -0800 (PST)
+MIME-Version: 1.0
+References: <20250115-pmu_minor_fixes-v1-0-c32388defb02@rivosinc.com>
+ <20250115-pmu_minor_fixes-v1-1-c32388defb02@rivosinc.com>
+In-Reply-To: <20250115-pmu_minor_fixes-v1-1-c32388defb02@rivosinc.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 29 Jan 2025 10:47:31 +1000
+X-Gm-Features: AWEUYZl2ypl2sahTaOYD53IpHh4gSdrQH4ojqbrHkQvHBM-xTcFtxTTWjEam2e8
+Message-ID: <CAKmqyKO9SLuAnXNG76g-RQfUYJQZWTuUFWpzTC-hu37X2_OrUQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] target/riscv: Fix the hpmevent mask
+To: Atish Patra <atishp@rivosinc.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, liwei1518@gmail.com, 
+ zhiwei_liu@linux.alibaba.com, bin.meng@windriver.com, 
+ dbarboza@ventanamicro.com, alistair.francis@wdc.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
-MIME-Version: 1.0
-Received-SPF: pass client-ip=203.29.241.158;
- envelope-from=andrew@codeconstruct.com.au; helo=codeconstruct.com.au
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a32;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa32.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,31 +95,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi C=C3=A9dric,
+On Thu, Jan 16, 2025 at 10:51=E2=80=AFAM Atish Patra <atishp@rivosinc.com> =
+wrote:
+>
+> As per the latest privilege specification v1.13[1], the sscofpmf
+> only reserves first 8 bits of hpmeventX. Update the corresponding
+> masks accordingly.
+>
+> [1]https://github.com/riscv/riscv-isa-manual/issues/1578
+>
+> Signed-off-by: Atish Patra <atishp@rivosinc.com>
+> ---
+>  target/riscv/cpu_bits.h | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+>
+> diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+> index f97c48a3943f..b48c0af9d48e 100644
+> --- a/target/riscv/cpu_bits.h
+> +++ b/target/riscv/cpu_bits.h
+> @@ -9,6 +9,10 @@
+>                   (((uint64_t)(val) * ((mask) & ~((mask) << 1))) & \
+>                   (uint64_t)(mask)))
+>
+> +#ifndef GENMASK_ULL
+> +#define GENMASK_ULL(h, l) (((~0ULL) >> (63 - (h) + (l))) << (l))
+> +#endif
 
-On Tue, 2025-01-28 at 22:41 +0100, C=C3=A9dric Le Goater wrote:
-> Hello,
->=20
-> This series updates the OpenBMC firmware images to the latest version
-> for existing tests and also adds 2 new tests for Aspeed machines
-> which
-> were not tested before : witherspoon and bletchley.
->=20
-> Thanks,
->=20
-> C.
->=20
-> C=C3=A9dric Le Goater (5):
-> =C2=A0 tests/functional: Introduce a new test routine for OpenBMC images
-> =C2=A0 tests/functional: Update OpenBMC image of palmetto machine
-> =C2=A0 tests/functional: Update OpenBMC image of romulus machine
-> =C2=A0 tests/functional: Introduce a witherspoon machine test
-> =C2=A0 tests/functional: Introduce a bletchley machine test
+We should use the existing MAKE_64BIT_MASK() and avoid adding new mask macr=
+os
 
-The rest of the patches haven't reached my inbox. Did you send them? It
-also seems they're missing on lore :)
+Alistair
 
-https://lore.kernel.org/all/20250128214100.1196243-1-clg@redhat.com/
-
-Andrew
+> +
+>  /* Extension context status mask */
+>  #define EXT_STATUS_MASK     0x3ULL
+>
+> @@ -933,9 +937,8 @@ typedef enum RISCVException {
+>                                              MHPMEVENTH_BIT_VSINH | \
+>                                              MHPMEVENTH_BIT_VUINH)
+>
+> -#define MHPMEVENT_SSCOF_MASK               _ULL(0xFFFF000000000000)
+> -#define MHPMEVENT_IDX_MASK                 0xFFFFF
+> -#define MHPMEVENT_SSCOF_RESVD              16
+> +#define MHPMEVENT_SSCOF_MASK               GENMASK_ULL(63, 56)
+> +#define MHPMEVENT_IDX_MASK                 (~MHPMEVENT_SSCOF_MASK)
+>
+>  /* RISC-V-specific interrupt pending bits. */
+>  #define CPU_INTERRUPT_RNMI                 CPU_INTERRUPT_TGT_EXT_0
+>
+> --
+> 2.34.1
+>
+>
 
