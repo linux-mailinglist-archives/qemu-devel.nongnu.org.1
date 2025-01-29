@@ -2,81 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6D02A21D81
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 14:06:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 064AEA21D9A
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 14:13:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1td7l1-0005LU-52; Wed, 29 Jan 2025 08:05:27 -0500
+	id 1td7r1-000843-33; Wed, 29 Jan 2025 08:11:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1td7ko-0005H9-2U
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 08:05:15 -0500
-Received: from mail-yb1-xb2e.google.com ([2607:f8b0:4864:20::b2e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1td7km-0001Nk-Fu
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 08:05:13 -0500
-Received: by mail-yb1-xb2e.google.com with SMTP id
- 3f1490d57ef6-e58a7e02514so959657276.1
- for <qemu-devel@nongnu.org>; Wed, 29 Jan 2025 05:05:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738155911; x=1738760711; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=JU4TDlxCE+t7ZND6wDzoLkm61xjMqr4BdbepcimTqYU=;
- b=RRJlezexEZZY1AVdba6qETp/wwLCUJ96EkMG4Zw0RtJxuYgcM+V/C3KZq5gcnbFNFQ
- IsYbub++2LwABsfDoiOU38MsdiYFBcekcTdyYXqOxPDD3/Z8Em2W+OjbLKGOU1UnQtX5
- 2Ke8Er90W+c9AJQ/kd6ZFR4gKY41NyAaGgwcPBR4/oS4RZ3ntwSbFOQ4eqdqZBSimo0G
- FUaXfqdRp0Kev45t4mL4plGXL2b/gkpHi4SyJRdD2GGn1xsW2HOV7ExY40bRtgeeedhm
- r86pVeiZ41jLV4YDGvgxQGZKMIaq99cnccRo3hA8/b0zquLVR5HCQ+rCRqDZYhHARGDL
- DewQ==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1td7qz-00083s-3f
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 08:11:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1td7qx-0002G1-6s
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 08:11:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1738156293;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=6Ds0FKXz6e3lXFB/JQuUA/Jge19Ry9C7VmOj6Fnxkro=;
+ b=GSH1rQQNGE6vUxFMMDFaImq02kaM9nXag/gyF/gFyshy3s/PqdLH4fNFkOHfwElwj0bm8Y
+ xVlzof3KtD7d471RQOqL8irj59KPlfh9a6u4A3ivmZPP+nm64askVBfQGSlot74KUJwvNj
+ xuTWnemaF0XWt6LCQ4DCa4OxIKw0JnI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-674-K2thAohLNZSF5ucnb4aolQ-1; Wed, 29 Jan 2025 08:11:31 -0500
+X-MC-Unique: K2thAohLNZSF5ucnb4aolQ-1
+X-Mimecast-MFC-AGG-ID: K2thAohLNZSF5ucnb4aolQ
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43626224274so38841895e9.0
+ for <qemu-devel@nongnu.org>; Wed, 29 Jan 2025 05:11:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738155911; x=1738760711;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=JU4TDlxCE+t7ZND6wDzoLkm61xjMqr4BdbepcimTqYU=;
- b=O/z9t4Q22Cpb67o/1F9+OMURhEAPnEV4VGcGrF0wJDDBCh62tMWOjJfy+G5EvU9lCq
- Er/Q+dIpL354PqynG4SsPmaDEgS4wRxwpH7JEkDZV6vZzl18U6rX3XsqP84gIEXYGeJc
- RiMg8XkaN6Abtn3t6u+o+dDLdUsIjZ6KPSa1YZjk9CJTDorI0xtdWpsjpBRDeoUILcoI
- rM1yzCjDJOayiiKQsVlAYZt4A8DIMERx4cz3BY+ueaxNOuQqusRe2M1/1f0TaQIb5u4m
- VXGtPUbfPjlXml8fJwKvjFyh+mAh+di/gkSQGn6SqqJFVqCABi/p7uGa4m9h2Rz3Cxtw
- 6GBg==
-X-Gm-Message-State: AOJu0YwPfAWlgIx4xgmpnmDBD6kAyOr9SHsgF4Yv/VRmleA+oIoMXtqu
- 6oOWoHGh1E+a9oabGC1uHlJnlCbOs2fKYgJrDBYGYVh8i0Yggv0vgNiElRfvqFBPLyOEcF/1Lhd
- 71egbap3SQKxJbMFjraQTM3uzC+O+8fl5Hmi5/g==
-X-Gm-Gg: ASbGnctVax+CJU82p0h1dnJRUIz/vP6mcuNag/jpYtN+tcc6q6rVuNuYaeA6BrRePed
- Pqkn0xXX7H6yopJsRzzR1eV7/CoCEhmntuowefKNOHvE/XuTHLJ3ot4NGms4yU2Bdj6J3PdDKhg
- ==
-X-Google-Smtp-Source: AGHT+IF4hmDpYYOOoJ3jYURogwLypheEHQMigALube1PmqiIg7aK1ut2tiJ1upF2fqqejYTSaIsgrmj4agSmhi8SFvs=
-X-Received: by 2002:a05:6902:f85:b0:e57:37d5:e271 with SMTP id
- 3f1490d57ef6-e58a4bf76f3mr1899347276.47.1738155910831; Wed, 29 Jan 2025
- 05:05:10 -0800 (PST)
+ d=1e100.net; s=20230601; t=1738156289; x=1738761089;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6Ds0FKXz6e3lXFB/JQuUA/Jge19Ry9C7VmOj6Fnxkro=;
+ b=fKHaVQCMS5n4eOUx9d/kzEy1T4OwlN9ybcAr0cFib37JcPiMCLMEPB7aedAsKsg6EN
+ CJfMGN0sJxMoxkqNkDWwxh2igpCQeSY5Uk72/iNSmN8/FuxSDqY+vpkLXbbFMVs19gf8
+ zYtY5YYQ5FopBC9iSSeYyg5Dd9AY+pe8AWaKXuLURg/aAMUigYq85DKsFWpP/oi1yZO0
+ yZX5XZ8XGX2S7YwiXW00ImpfAKIZmbkIaqwiYFwALXXcB500FlFADyExRm0vS1bewtNv
+ AQJa6tn5hbzOPjqpx557zDh5RgOnj15RZnq40qKQOjx7C0omaciXKiJdmWUJhmzhkhwI
+ geEQ==
+X-Gm-Message-State: AOJu0YzNx3qryKQP4hkgPopn6RwxWoupEo6CcsiKlB47DZ/JRXdoeJb9
+ X12Q87kAUlV11XA+i9E2tfd6Tposre09Rbjl1yOBf5YfKVuQz/FiNaqUaJzzHT4Qp+2VsdawzoU
+ RDscQfJxohCdhgdQh0XDoLAu55aGuZDdD7sHfZnWK+AsK4dWUjWq3Q2X7/t7OZFs/BxjZoILMgH
+ rkn/rqTwdK/Gl0rVSHQw671JaqANKnm6lWEcmWjIc=
+X-Gm-Gg: ASbGnctLeB0R/AImfoyzbKv2xzTw2yP9T1B/UckPxPlR0WANxGumedYCRIVeIKsQjBk
+ R/Xim8RE/4ZHq/xe1I14bZkFMu/dAR+fP/sZxCf/7RwY8SeNT4Ze9td6z5RVinGu6KXaxGtmF9L
+ dVtaKYQ4INkv580+vKoTLVuSl7x7Y1PdlcfOFTu8/zincnHAzYupjAuYU5x8UJObeA2CzqBBZHT
+ O2sKSlorGbvHwQnuzesgBG0YgCMrpgfqlGA0JIr7CNu2zvqJZHGIAxhpDeJBEqj2G8jEIvxw3ae
+ h6E8CA==
+X-Received: by 2002:a05:600c:c12:b0:431:5aea:95f with SMTP id
+ 5b1f17b1804b1-438dc3cc378mr27544305e9.16.1738156289219; 
+ Wed, 29 Jan 2025 05:11:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE39BQYG/mU8HboXW1lKhPWDPhlxErWYvUuB64zvPJhgt6PtwG1bljmHn9BOAlrHIAco4hIaw==
+X-Received: by 2002:a05:600c:c12:b0:431:5aea:95f with SMTP id
+ 5b1f17b1804b1-438dc3cc378mr27543965e9.16.1738156288742; 
+ Wed, 29 Jan 2025 05:11:28 -0800 (PST)
+Received: from [192.168.10.3] ([151.62.97.55])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-438dcc819ebsm22108975e9.39.2025.01.29.05.11.28
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 29 Jan 2025 05:11:28 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PATCH v3] tcg/optimize: optimize TSTNE using smask and zmask
+Date: Wed, 29 Jan 2025 14:11:27 +0100
+Message-ID: <20250129131127.1368879-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-References: <20250124162836.2332150-1-peter.maydell@linaro.org>
- <20250124162836.2332150-25-peter.maydell@linaro.org>
- <d8d04708-ddc2-476e-9e17-8493f573d7a5@linaro.org>
-In-Reply-To: <d8d04708-ddc2-476e-9e17-8493f573d7a5@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 29 Jan 2025 13:04:59 +0000
-X-Gm-Features: AWEUYZlYfmBFHjlgH3-eArKvibNnb1YlOXjZW0f6_7TVfixUmtuqrHFG-6Gaf0w
-Message-ID: <CAFEAcA91VD57mPb4y2bzWnf-p6o6O8Q_9HCdM0HGReddBp8WsA@mail.gmail.com>
-Subject: Re: [PATCH 24/76] fpu: allow flushing of output denormals to be after
- rounding
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2e;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,47 +102,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 25 Jan 2025 at 16:42, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 1/24/25 08:27, Peter Maydell wrote:
-> > Currently we handle flushing of output denormals in uncanon_normal
-> > always before we deal with rounding.  This works for architectures
-> > that detect tininess before rounding, but is usually not the right
-> > place when the architecture detects tininess after rounding.  For
-> > example, for x86 the SDM states that the MXCSR FTZ control bit causes
-> > outputs to be flushed to zero "when it detects a floating-point
-> > underflow condition".  This means that we mustn't flush to zero if
-> > the input is such that after rounding it is no longer tiny.
-> >
-> > At least one of our guest architectures does underflow detection
-> > after rounding but flushing of denormals before rounding (MIPS MSA);
->
-> Whacky, but yes, I see that in the msa docs.
+Generalize the existing optimization of "TSTNE x,sign" and "TSTNE x,-1".
+This can be useful for example in the i386 frontend, which will generate
+tests of zero-extended registers against 0xffffffff.
 
-> BTW, I'm not keen on your "detect_*" names, without "float_" prefix like (almost?)
-> everything else.
+Ironically, on x86 hosts this is a very slight pessimization in the very
+case it's meant to optimize because
 
-Do you have a suggestion for better naming? Maybe
- set_float_detect_ftz()
- get_float_detect_ftz()
-to match set/get_float_detect_tininess()? Though "detect"
-isn't quite the right verb, I feel...
+ brcond_i64 cc_dst,$0xffffffff,tsteq,$L1
 
-And for the enum
+(test %ebx, %ebx) is 1 byte smaller than
 
-typedef enum __attribute__((__packed__)) {
-    float_ftz_after_rounding = 0,
-    float_ftz_before_rounding = 1,
-} FloatFTZDetection;
+ brcond_i64 cc_dst,$0x0,eq,$L1
 
-?
+(test %rbx, %rbx).  However, in general it is an improvement, especially
+if it avoids placing a large immediate in the constant pool.
 
-(the detect_tininess functions work on a 'bool tininess_before_rounding'
-field in float_status, but I think I prefer the enum here, since
-what we're setting doesn't have an obvious "on/off" that a bool
-would be the natural representation for, unlike e.g. flush_to_zero.)
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+	v2->v3: adjust for recent change to s_mask format
 
-thanks
--- PMM
+ tcg/optimize.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/tcg/optimize.c b/tcg/optimize.c
+index c23f0d13929..0f34b7d6068 100644
+--- a/tcg/optimize.c
++++ b/tcg/optimize.c
+@@ -765,6 +765,7 @@ static int do_constant_folding_cond1(OptContext *ctx, TCGOp *op, TCGArg dest,
+                                      TCGArg *p1, TCGArg *p2, TCGArg *pcond)
+ {
+     TCGCond cond;
++    TempOptInfo *i1;
+     bool swap;
+     int r;
+ 
+@@ -782,19 +783,21 @@ static int do_constant_folding_cond1(OptContext *ctx, TCGOp *op, TCGArg dest,
+         return -1;
+     }
+ 
++    i1 = arg_info(*p1);
++
+     /*
+      * TSTNE x,x -> NE x,0
+-     * TSTNE x,-1 -> NE x,0
++     * TSTNE x,i -> NE x,0 if i includes all nonzero bits of x
+      */
+-    if (args_are_copies(*p1, *p2) || arg_is_const_val(*p2, -1)) {
++    if (args_are_copies(*p1, *p2) ||
++        (arg_is_const(*p2) && (i1->z_mask & ~arg_info(*p2)->val) == 0)) {
+         *p2 = arg_new_constant(ctx, 0);
+         *pcond = tcg_tst_eqne_cond(cond);
+         return -1;
+     }
+ 
+-    /* TSTNE x,sign -> LT x,0 */
+-    if (arg_is_const_val(*p2, (ctx->type == TCG_TYPE_I32
+-                               ? INT32_MIN : INT64_MIN))) {
++    /* TSTNE x,i -> LT x,0 if i only includes sign bit copies */
++    if (arg_is_const(*p2) && (arg_info(*p2)->val & ~i1->s_mask) == 0) {
+         *p2 = arg_new_constant(ctx, 0);
+         *pcond = tcg_tst_ltge_cond(cond);
+         return -1;
+-- 
+2.48.1
+
 
