@@ -2,117 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD8D2A22126
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 17:03:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 882DEA22124
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 17:03:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdAW8-0003j7-Iz; Wed, 29 Jan 2025 11:02:17 -0500
+	id 1tdAXM-0004sn-QP; Wed, 29 Jan 2025 11:03:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVj-0003Jj-BW
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 11:01:52 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVl-0003LF-AS
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 11:01:56 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVh-0005K0-6P
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 11:01:51 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tdAVi-0005KL-VM
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 11:01:53 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 0BDD61F365;
- Wed, 29 Jan 2025 16:01:48 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id BC3CE21108;
+ Wed, 29 Jan 2025 16:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738166508; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1738166509; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=W0hKLwNtge3IEeKEZWAzFdq1zJGNWX+FsIZwPUvFO8Y=;
- b=JVO3iea4zC4c00+wN7eNPi9gxliTMyzai5xc7/umwEFYrOML3ssXa1yMzZONmPO3IShX8t
- BcspNtlnVvmHgIUvDuT6enASIwOAbWN+Sn+c8Lf9EXoq0LBpQ5weeG4hZ3P9brHjmoUowk
- vFR00obe+J0hu91w70/sX2EW4PM+fxQ=
+ bh=7jccUy2CdNNK+AFR9MDmMpa+JMnW6E1ZSY7XUmT22aI=;
+ b=NnlRndMBPqPfeDJ/6GN//X1d4SRcu676QOlM1A2WhC9VzaEhkm0sFTRPO1/mK2bbI2I7T4
+ c+FdLhrEQXebCnSSsQ1liSdkKcLZ4+x9/Y1D/109inVrUCWNOf+Veq6BK9R/Flo6cI6547
+ sVcGVnpCq3g4Auol2iTKT41T1YFlQQQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738166508;
+ s=susede2_ed25519; t=1738166509;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=W0hKLwNtge3IEeKEZWAzFdq1zJGNWX+FsIZwPUvFO8Y=;
- b=RF6lANcxNtvS7Bp5YQvDRG30eDF0BxW1wysFAlgiLMoEnpU/8dTCkQdArBFORqIKbvN/xU
- iuCWDf0DHmBNWjDg==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JVO3iea4;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RF6lANcx
+ bh=7jccUy2CdNNK+AFR9MDmMpa+JMnW6E1ZSY7XUmT22aI=;
+ b=/PLJISVLeDl+fbNet1nM6W3m3z1QMrilxKCoMimn3Icvqv6Z98p9d6WVmcKwhaklOqVKO0
+ 6+++e6/19WHpN9CQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1738166508; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1738166509; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=W0hKLwNtge3IEeKEZWAzFdq1zJGNWX+FsIZwPUvFO8Y=;
- b=JVO3iea4zC4c00+wN7eNPi9gxliTMyzai5xc7/umwEFYrOML3ssXa1yMzZONmPO3IShX8t
- BcspNtlnVvmHgIUvDuT6enASIwOAbWN+Sn+c8Lf9EXoq0LBpQ5weeG4hZ3P9brHjmoUowk
- vFR00obe+J0hu91w70/sX2EW4PM+fxQ=
+ bh=7jccUy2CdNNK+AFR9MDmMpa+JMnW6E1ZSY7XUmT22aI=;
+ b=NnlRndMBPqPfeDJ/6GN//X1d4SRcu676QOlM1A2WhC9VzaEhkm0sFTRPO1/mK2bbI2I7T4
+ c+FdLhrEQXebCnSSsQ1liSdkKcLZ4+x9/Y1D/109inVrUCWNOf+Veq6BK9R/Flo6cI6547
+ sVcGVnpCq3g4Auol2iTKT41T1YFlQQQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1738166508;
+ s=susede2_ed25519; t=1738166509;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=W0hKLwNtge3IEeKEZWAzFdq1zJGNWX+FsIZwPUvFO8Y=;
- b=RF6lANcxNtvS7Bp5YQvDRG30eDF0BxW1wysFAlgiLMoEnpU/8dTCkQdArBFORqIKbvN/xU
- iuCWDf0DHmBNWjDg==
+ bh=7jccUy2CdNNK+AFR9MDmMpa+JMnW6E1ZSY7XUmT22aI=;
+ b=/PLJISVLeDl+fbNet1nM6W3m3z1QMrilxKCoMimn3Icvqv6Z98p9d6WVmcKwhaklOqVKO0
+ 6+++e6/19WHpN9CQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AD951137DB;
- Wed, 29 Jan 2025 16:01:46 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 783A2137DB;
+ Wed, 29 Jan 2025 16:01:48 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id +IeHG+pQmmffPAAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 29 Jan 2025 16:01:46 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id YDmFDuxQmmffPAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 29 Jan 2025 16:01:48 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
 	Steve Sistare <steven.sistare@oracle.com>
-Subject: [PULL 21/42] migration-test: defer connection
-Date: Wed, 29 Jan 2025 13:00:38 -0300
-Message-Id: <20250129160059.6987-22-farosas@suse.de>
+Subject: [PULL 22/42] tests/qtest: enhance migration channels
+Date: Wed, 29 Jan 2025 13:00:39 -0300
+Message-Id: <20250129160059.6987-23-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250129160059.6987-1-farosas@suse.de>
 References: <20250129160059.6987-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0BDD61F365
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; MIME_TRACE(0.00)[0:+];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- TO_DN_SOME(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_HAS_DN(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,suse.de:email,suse.de:dkim,suse.de:mid];
- RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- RCPT_COUNT_THREE(0.00)[3];
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.01
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,oracle.com:email];
+ RCVD_TLS_ALL(0.00)[]
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -131,100 +120,326 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-Add an option to defer connection to the target monitor, needed by the
-cpr-transfer test.
+Change the migrate_qmp and migrate_qmp_fail channels argument to a QObject
+type so the caller can manipulate the object before passing it to the
+helper.  Define migrate_str_to_channel to aid such manipulation.
+Add a channels argument to migrate_incoming_qmp.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/1736967650-129648-21-git-send-email-steven.sistare@oracle.com
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Link: https://lore.kernel.org/r/1736967650-129648-22-git-send-email-steven.sistare@oracle.com
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration/framework.c | 22 +++++++++++++++++++---
- tests/qtest/migration/framework.h |  3 +++
- 2 files changed, 22 insertions(+), 3 deletions(-)
+ tests/qtest/migration/framework.c     | 15 ++++++--
+ tests/qtest/migration/migration-qmp.c | 53 ++++++++++++++++++++++-----
+ tests/qtest/migration/migration-qmp.h | 10 +++--
+ tests/qtest/migration/misc-tests.c    |  9 ++++-
+ tests/qtest/migration/precopy-tests.c |  6 +--
+ tests/qtest/virtio-net-failover.c     |  8 ++--
+ 6 files changed, 76 insertions(+), 25 deletions(-)
 
 diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index f7add75ed5..2611c31c1b 100644
+index 2611c31c1b..1228bd5bca 100644
 --- a/tests/qtest/migration/framework.c
 +++ b/tests/qtest/migration/framework.c
-@@ -223,6 +223,7 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-     const char *bootpath;
-     g_autoptr(QList) capabilities = migrate_start_get_qmp_capabilities(args);
-     g_autofree char *memory_backend = NULL;
-+    const char *events;
+@@ -18,6 +18,8 @@
+ #include "migration/migration-qmp.h"
+ #include "migration/migration-util.h"
+ #include "ppc-util.h"
++#include "qapi/error.h"
++#include "qapi/qmp/qjson.h"
+ #include "qapi/qmp/qlist.h"
+ #include "qemu/module.h"
+ #include "qemu/option.h"
+@@ -705,6 +707,7 @@ void test_precopy_common(MigrateCommon *args)
+ {
+     QTestState *from, *to;
+     void *data_hook = NULL;
++    QObject *out_channels = NULL;
  
-     if (args->use_shmem) {
-         if (!g_file_test("/dev/shm", G_FILE_TEST_IS_DIR)) {
-@@ -340,22 +341,30 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-                                      &src_state);
+     if (migrate_start(&from, &to, args->listen_uri, &args->start)) {
+         return;
+@@ -737,12 +740,16 @@ void test_precopy_common(MigrateCommon *args)
+         }
      }
  
-+    /*
-+     * If the monitor connection is deferred, enable events on the command line
-+     * so none are missed.  This is for testing only, do not set migration
-+     * options like this in general.
-+     */
-+    events = args->defer_target_connect ? "-global migration.x-events=on" : "";
-+
-     cmd_target = g_strdup_printf("-accel kvm%s -accel tcg "
-                                  "-machine %s,%s "
-                                  "-name target,debug-threads=on "
-                                  "%s "
-                                  "-serial file:%s/dest_serial "
-                                  "-incoming %s "
--                                 "%s %s %s %s",
-+                                 "%s %s %s %s %s",
-                                  kvm_opts ? kvm_opts : "",
-                                  machine, machine_opts,
-                                  memory_backend, tmpfs, uri,
-+                                 events,
-                                  arch_opts ? arch_opts : "",
-                                  shmem_opts ? shmem_opts : "",
-                                  args->opts_target ? args->opts_target : "",
-                                  ignore_stderr);
-     *to = qtest_init_with_env_and_capabilities(QEMU_ENV_DST, cmd_target,
--                                               capabilities, true);
-+                                               capabilities, !args->defer_target_connect);
-     qtest_qmp_set_event_callback(*to,
-                                  migrate_watch_for_events,
-                                  &dst_state);
-@@ -373,7 +382,9 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-      * to mimic as closer as that.
-      */
-     migrate_set_capability(*from, "events", true);
--    migrate_set_capability(*to, "events", true);
-+    if (!args->defer_target_connect) {
-+        migrate_set_capability(*to, "events", true);
++    if (args->connect_channels) {
++        out_channels = qobject_from_json(args->connect_channels, &error_abort);
 +    }
++
+     if (args->result == MIG_TEST_QMP_ERROR) {
+-        migrate_qmp_fail(from, args->connect_uri, args->connect_channels, "{}");
++        migrate_qmp_fail(from, args->connect_uri, out_channels, "{}");
+         goto finish;
+     }
  
-     return 0;
+-    migrate_qmp(from, to, args->connect_uri, args->connect_channels, "{}");
++    migrate_qmp(from, to, args->connect_uri, out_channels, "{}");
+ 
+     if (args->start.defer_target_connect) {
+         qtest_connect(to);
+@@ -892,7 +899,7 @@ void test_file_common(MigrateCommon *args, bool stop_src)
+      * We need to wait for the source to finish before starting the
+      * destination.
+      */
+-    migrate_incoming_qmp(to, args->connect_uri, "{}");
++    migrate_incoming_qmp(to, args->connect_uri, NULL, "{}");
+     wait_for_migration_complete(to);
+ 
+     if (stop_src) {
+@@ -928,7 +935,7 @@ void *migrate_hook_start_precopy_tcp_multifd_common(QTestState *from,
+     migrate_set_capability(to, "multifd", true);
+ 
+     /* Start incoming migration from the 1st socket */
+-    migrate_incoming_qmp(to, "tcp:127.0.0.1:0", "{}");
++    migrate_incoming_qmp(to, "tcp:127.0.0.1:0", NULL, "{}");
+ 
+     return NULL;
  }
-@@ -733,6 +744,11 @@ void test_precopy_common(MigrateCommon *args)
+diff --git a/tests/qtest/migration/migration-qmp.c b/tests/qtest/migration/migration-qmp.c
+index 9431d2beda..5610f6d15d 100644
+--- a/tests/qtest/migration/migration-qmp.c
++++ b/tests/qtest/migration/migration-qmp.c
+@@ -15,9 +15,13 @@
+ #include "migration-qmp.h"
+ #include "migration-util.h"
+ #include "qapi/error.h"
++#include "qapi/qapi-types-migration.h"
++#include "qapi/qapi-visit-migration.h"
+ #include "qapi/qmp/qdict.h"
+ #include "qapi/qmp/qjson.h"
+ #include "qapi/qmp/qlist.h"
++#include "qapi/qobject-input-visitor.h"
++#include "qapi/qobject-output-visitor.h"
  
-     migrate_qmp(from, to, args->connect_uri, args->connect_channels, "{}");
+ /*
+  * Number of seconds we wait when looking for migration
+@@ -47,8 +51,33 @@ void migration_event_wait(QTestState *s, const char *target)
+     } while (!found);
+ }
  
-+    if (args->start.defer_target_connect) {
-+        qtest_connect(to);
-+        qtest_qmp_handshake(to, NULL);
++/*
++ * Convert a string representing a single channel to an object.
++ * @str may be in JSON or dotted keys format.
++ */
++QObject *migrate_str_to_channel(const char *str)
++{
++    Visitor *v;
++    MigrationChannel *channel;
++    QObject *obj;
++
++    /* Create the channel */
++    v = qobject_input_visitor_new_str(str, "channel-type", &error_abort);
++    visit_type_MigrationChannel(v, NULL, &channel, &error_abort);
++    visit_free(v);
++
++    /* Create the object */
++    v = qobject_output_visitor_new(&obj);
++    visit_type_MigrationChannel(v, NULL, &channel, &error_abort);
++    visit_complete(v, &obj);
++    visit_free(v);
++
++    qapi_free_MigrationChannel(channel);
++    return obj;
++}
++
+ void migrate_qmp_fail(QTestState *who, const char *uri,
+-                      const char *channels, const char *fmt, ...)
++                      QObject *channels, const char *fmt, ...)
+ {
+     va_list ap;
+     QDict *args, *err;
+@@ -64,8 +93,7 @@ void migrate_qmp_fail(QTestState *who, const char *uri,
+ 
+     g_assert(!qdict_haskey(args, "channels"));
+     if (channels) {
+-        QObject *channels_obj = qobject_from_json(channels, &error_abort);
+-        qdict_put_obj(args, "channels", channels_obj);
++        qdict_put_obj(args, "channels", channels);
+     }
+ 
+     err = qtest_qmp_assert_failure_ref(
+@@ -82,7 +110,7 @@ void migrate_qmp_fail(QTestState *who, const char *uri,
+  * qobject_from_jsonf_nofail()) with "uri": @uri spliced in.
+  */
+ void migrate_qmp(QTestState *who, QTestState *to, const char *uri,
+-                 const char *channels, const char *fmt, ...)
++                 QObject *channels, const char *fmt, ...)
+ {
+     va_list ap;
+     QDict *args;
+@@ -102,10 +130,9 @@ void migrate_qmp(QTestState *who, QTestState *to, const char *uri,
+ 
+     g_assert(!qdict_haskey(args, "channels"));
+     if (channels) {
+-        QObject *channels_obj = qobject_from_json(channels, &error_abort);
+-        QList *channel_list = qobject_to(QList, channels_obj);
++        QList *channel_list = qobject_to(QList, channels);
+         migrate_set_ports(to, channel_list);
+-        qdict_put_obj(args, "channels", channels_obj);
++        qdict_put_obj(args, "channels", channels);
+     }
+ 
+     qtest_qmp_assert_success(who,
+@@ -123,7 +150,8 @@ void migrate_set_capability(QTestState *who, const char *capability,
+                              capability, value);
+ }
+ 
+-void migrate_incoming_qmp(QTestState *to, const char *uri, const char *fmt, ...)
++void migrate_incoming_qmp(QTestState *to, const char *uri, QObject *channels,
++                          const char *fmt, ...)
+ {
+     va_list ap;
+     QDict *args, *rsp;
+@@ -133,7 +161,14 @@ void migrate_incoming_qmp(QTestState *to, const char *uri, const char *fmt, ...)
+     va_end(ap);
+ 
+     g_assert(!qdict_haskey(args, "uri"));
+-    qdict_put_str(args, "uri", uri);
++    if (uri) {
++        qdict_put_str(args, "uri", uri);
 +    }
 +
-     if (args->result != MIG_TEST_SUCCEED) {
-         bool allow_active = args->result == MIG_TEST_FAIL;
-         wait_for_migration_fail(from, allow_active);
-diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
-index dd2db1c000..32f3a93632 100644
---- a/tests/qtest/migration/framework.h
-+++ b/tests/qtest/migration/framework.h
-@@ -116,6 +116,9 @@ typedef struct {
-      * size is plugged in.  If omitted, "-m %s" is used.
-      */
-     const char *memory_backend;
-+
-+    /* Do not connect to target monitor and qtest sockets in qtest_init */
-+    bool defer_target_connect;
- } MigrateStart;
++    g_assert(!qdict_haskey(args, "channels"));
++    if (channels) {
++        qdict_put_obj(args, "channels", channels);
++    }
  
- typedef enum PostcopyRecoveryFailStage {
+     /* This function relies on the event to work, make sure it's enabled */
+     migrate_set_capability(to, "events", true);
+diff --git a/tests/qtest/migration/migration-qmp.h b/tests/qtest/migration/migration-qmp.h
+index caaa78722a..faa8181d91 100644
+--- a/tests/qtest/migration/migration-qmp.h
++++ b/tests/qtest/migration/migration-qmp.h
+@@ -4,17 +4,19 @@
+ 
+ #include "migration-util.h"
+ 
++QObject *migrate_str_to_channel(const char *str);
++
+ G_GNUC_PRINTF(4, 5)
+ void migrate_qmp_fail(QTestState *who, const char *uri,
+-                      const char *channels, const char *fmt, ...);
++                      QObject *channels, const char *fmt, ...);
+ 
+ G_GNUC_PRINTF(5, 6)
+ void migrate_qmp(QTestState *who, QTestState *to, const char *uri,
+-                 const char *channels, const char *fmt, ...);
++                 QObject *channels, const char *fmt, ...);
+ 
+-G_GNUC_PRINTF(3, 4)
++G_GNUC_PRINTF(4, 5)
+ void migrate_incoming_qmp(QTestState *who, const char *uri,
+-                          const char *fmt, ...);
++                          QObject *channels, const char *fmt, ...);
+ 
+ void migration_event_wait(QTestState *s, const char *target);
+ void migrate_set_capability(QTestState *who, const char *capability,
+diff --git a/tests/qtest/migration/misc-tests.c b/tests/qtest/migration/misc-tests.c
+index 6173430748..dda3707cf3 100644
+--- a/tests/qtest/migration/misc-tests.c
++++ b/tests/qtest/migration/misc-tests.c
+@@ -11,6 +11,8 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qapi/error.h"
++#include "qapi/qmp/qjson.h"
+ #include "libqtest.h"
+ #include "migration/framework.h"
+ #include "migration/migration-qmp.h"
+@@ -205,6 +207,7 @@ static void test_validate_uuid_dst_not_set(void)
+ static void do_test_validate_uri_channel(MigrateCommon *args)
+ {
+     QTestState *from, *to;
++    QObject *channels;
+ 
+     if (migrate_start(&from, &to, args->listen_uri, &args->start)) {
+         return;
+@@ -217,7 +220,11 @@ static void do_test_validate_uri_channel(MigrateCommon *args)
+      * 'uri' and 'channels' validation is checked even before the migration
+      * starts.
+      */
+-    migrate_qmp_fail(from, args->connect_uri, args->connect_channels, "{}");
++    channels = args->connect_channels ?
++               qobject_from_json(args->connect_channels, &error_abort) :
++               NULL;
++    migrate_qmp_fail(from, args->connect_uri, channels, "{}");
++
+     migrate_end(from, to, false);
+ }
+ 
+diff --git a/tests/qtest/migration/precopy-tests.c b/tests/qtest/migration/precopy-tests.c
+index 23599b29ee..436dbd98e8 100644
+--- a/tests/qtest/migration/precopy-tests.c
++++ b/tests/qtest/migration/precopy-tests.c
+@@ -152,7 +152,7 @@ static void *migrate_hook_start_fd(QTestState *from,
+     close(pair[0]);
+ 
+     /* Start incoming migration from the 1st socket */
+-    migrate_incoming_qmp(to, "fd:fd-mig", "{}");
++    migrate_incoming_qmp(to, "fd:fd-mig", NULL, "{}");
+ 
+     /* Send the 2nd socket to the target */
+     qtest_qmp_fds_assert_success(from, &pair[1], 1,
+@@ -479,7 +479,7 @@ static void test_multifd_tcp_cancel(void)
+     migrate_set_capability(to, "multifd", true);
+ 
+     /* Start incoming migration from the 1st socket */
+-    migrate_incoming_qmp(to, "tcp:127.0.0.1:0", "{}");
++    migrate_incoming_qmp(to, "tcp:127.0.0.1:0", NULL, "{}");
+ 
+     /* Wait for the first serial output from the source */
+     wait_for_serial("src_serial");
+@@ -518,7 +518,7 @@ static void test_multifd_tcp_cancel(void)
+     migrate_set_capability(to2, "multifd", true);
+ 
+     /* Start incoming migration from the 1st socket */
+-    migrate_incoming_qmp(to2, "tcp:127.0.0.1:0", "{}");
++    migrate_incoming_qmp(to2, "tcp:127.0.0.1:0", NULL, "{}");
+ 
+     migrate_ensure_non_converge(from);
+ 
+diff --git a/tests/qtest/virtio-net-failover.c b/tests/qtest/virtio-net-failover.c
+index 08365ffa11..f04573f98c 100644
+--- a/tests/qtest/virtio-net-failover.c
++++ b/tests/qtest/virtio-net-failover.c
+@@ -773,7 +773,7 @@ static void test_migrate_in(gconstpointer opaque)
+     check_one_card(qts, true, "standby0", MAC_STANDBY0);
+     check_one_card(qts, false, "primary0", MAC_PRIMARY0);
+ 
+-    migrate_incoming_qmp(qts, uri, "{}");
++    migrate_incoming_qmp(qts, uri, NULL, "{}");
+ 
+     resp = get_failover_negociated_event(qts);
+     g_assert_cmpstr(qdict_get_str(resp, "device-id"), ==, "standby0");
+@@ -895,7 +895,7 @@ static void test_off_migrate_in(gconstpointer opaque)
+     check_one_card(qts, true, "standby0", MAC_STANDBY0);
+     check_one_card(qts, true, "primary0", MAC_PRIMARY0);
+ 
+-    migrate_incoming_qmp(qts, uri, "{}");
++    migrate_incoming_qmp(qts, uri, NULL, "{}");
+ 
+     check_one_card(qts, true, "standby0", MAC_STANDBY0);
+     check_one_card(qts, true, "primary0", MAC_PRIMARY0);
+@@ -1022,7 +1022,7 @@ static void test_guest_off_migrate_in(gconstpointer opaque)
+     check_one_card(qts, true, "standby0", MAC_STANDBY0);
+     check_one_card(qts, false, "primary0", MAC_PRIMARY0);
+ 
+-    migrate_incoming_qmp(qts, uri, "{}");
++    migrate_incoming_qmp(qts, uri, NULL, "{}");
+ 
+     check_one_card(qts, true, "standby0", MAC_STANDBY0);
+     check_one_card(qts, false, "primary0", MAC_PRIMARY0);
+@@ -1747,7 +1747,7 @@ static void test_multi_in(gconstpointer opaque)
+     check_one_card(qts, true, "standby1", MAC_STANDBY1);
+     check_one_card(qts, false, "primary1", MAC_PRIMARY1);
+ 
+-    migrate_incoming_qmp(qts, uri, "{}");
++    migrate_incoming_qmp(qts, uri, NULL, "{}");
+ 
+     resp = get_failover_negociated_event(qts);
+     g_assert_cmpstr(qdict_get_str(resp, "device-id"), ==, "standby0");
 -- 
 2.35.3
 
