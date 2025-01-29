@@ -2,56 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06518A22401
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 19:35:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D64A5A2251B
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Jan 2025 21:26:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdCsg-0002ky-Dn; Wed, 29 Jan 2025 13:33:42 -0500
+	id 1tdEcT-000467-LY; Wed, 29 Jan 2025 15:25:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tdCse-0002kq-AO
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 13:33:40 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tdEcG-00044m-4l
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 15:24:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tdCsb-0003lR-OP
- for qemu-devel@nongnu.org; Wed, 29 Jan 2025 13:33:40 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 8E4134E6019;
- Wed, 29 Jan 2025 19:33:33 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id SK_CBcdKJroa; Wed, 29 Jan 2025 19:33:30 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id DA3654E6014; Wed, 29 Jan 2025 19:33:30 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id D811F74577C;
- Wed, 29 Jan 2025 19:33:30 +0100 (CET)
-Date: Wed, 29 Jan 2025 19:33:30 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Igor Mammedov <imammedo@redhat.com>
-cc: qemu-devel@nongnu.org, alex.bennee@linaro.org, 
- richard.henderson@linaro.org, pbonzini@redhat.com, imp@bsdimp.com, 
- kevans@freebsd.org, gaosong@loongson.cn, laurent@vivier.eu, 
- npiggin@gmail.com
-Subject: Re: [PATCH 5/6] Revert "tcg/cputlb: remove other-cpu capability from
- TLB flushing"
-In-Reply-To: <20250129134436.1240740-6-imammedo@redhat.com>
-Message-ID: <82142340-a80e-49f0-8e45-aa043932e026@eik.bme.hu>
-References: <20250129134436.1240740-1-imammedo@redhat.com>
- <20250129134436.1240740-6-imammedo@redhat.com>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tdEcE-00016m-KF
+ for qemu-devel@nongnu.org; Wed, 29 Jan 2025 15:24:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1738182288;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=iqrebWusiKDKbXzQ/dfuOvpGvWxGw+HqkWLlOCM6VOU=;
+ b=Dl0tiTLdYqZNOaF3Ccw5yrTNPRKcEVm3mRv4XEkP8MZAAA1kN/5YuxqpWjMT26P+5I5g28
+ bjKUStJUXC6wM5i5afpZhHohjlZmHqOD+qv9e2+/Va/sWhkGdOFHKAdgDETCeJpuM/URTM
+ pTjV+zpgumbmKBbP4d9G124yqNR8AZc=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-156-fntTB4S4PrKJohtctnhChg-1; Wed,
+ 29 Jan 2025 15:24:45 -0500
+X-MC-Unique: fntTB4S4PrKJohtctnhChg-1
+X-Mimecast-MFC-AGG-ID: fntTB4S4PrKJohtctnhChg
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5A7A5180034F; Wed, 29 Jan 2025 20:24:42 +0000 (UTC)
+Received: from localhost (unknown [10.2.17.72])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 08D8719560AA; Wed, 29 Jan 2025 20:24:40 +0000 (UTC)
+Date: Wed, 29 Jan 2025 14:17:43 -0500
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PULL 00/36] target-arm queue
+Message-ID: <20250129191743.GA193481@fedora>
+References: <20250128201314.44038-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="48KAmklPXh+OWBah"
+Content-Disposition: inline
+In-Reply-To: <20250128201314.44038-1-peter.maydell@linaro.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,127 +82,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 29 Jan 2025, Igor Mammedov wrote:
-> 1)
-> This reverts commit 30933c4fb4f3df95ae44c4c3c86a5df049852c01.
->  ("tcg/cputlb: remove other-cpu capability from TLB flushing")
->
-> The commit caused a regression which went unnoticed due to
-> affected being disabled by default (DEBUG_TLB_GATE 0)
-> Previous patch moved switched to using tcg_debug_assert() so that
 
-The verb "moved" not needed and left from editing?
+--48KAmklPXh+OWBah
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Regards,
-BALATON Zoltan
+Applied, thanks.
 
-> at least on debug builds assert_cpu_is_self() path would be exercised.
->
-> And that lead to exposing regression introduced by [1] with abort during tests.
-> to reproduce:
->  $ configure  --target-list=x86_64-softmmu --enable-debug
->  $ make && ./qemu-system-x86_64
->
->  accel/tcg/cputlb.c:419: tlb_flush_by_mmuidx:
->    Assertion `!(cpu)->created || qemu_cpu_is_self(cpu)' failed.
->
-> which is triggered by usage outside of cpu thread:
->    x86_cpu_new -> ... ->
->      x86_cpu_realizefn -> cpu_reset -> ... ->
->          tcg_cpu_reset_hold
->
-> Drop offending commit for now, until a propper fix that doesn't break
-> 'make check' is available.
->
-> PS:
-> fixup g_memdup() checkpatch error s/g_memdup/g_memdup2/
->
-> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-> ---
-> I'll leave it upto TCG folz to fix it up propperly.
->
-> CC: npiggin@gmail.com
-> CC: richard.henderson@linaro.org
-> ---
-> accel/tcg/cputlb.c | 42 +++++++++++++++++++++++++++++++++---------
-> 1 file changed, 33 insertions(+), 9 deletions(-)
->
-> diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-> index 71207d6dbf..db1713b3ca 100644
-> --- a/accel/tcg/cputlb.c
-> +++ b/accel/tcg/cputlb.c
-> @@ -416,9 +416,12 @@ void tlb_flush_by_mmuidx(CPUState *cpu, uint16_t idxmap)
-> {
->     tlb_debug("mmu_idx: 0x%" PRIx16 "\n", idxmap);
->
-> -    assert_cpu_is_self(cpu);
-> -
-> -    tlb_flush_by_mmuidx_async_work(cpu, RUN_ON_CPU_HOST_INT(idxmap));
-> +    if (cpu->created && !qemu_cpu_is_self(cpu)) {
-> +        async_run_on_cpu(cpu, tlb_flush_by_mmuidx_async_work,
-> +                         RUN_ON_CPU_HOST_INT(idxmap));
-> +    } else {
-> +        tlb_flush_by_mmuidx_async_work(cpu, RUN_ON_CPU_HOST_INT(idxmap));
-> +    }
-> }
->
-> void tlb_flush(CPUState *cpu)
-> @@ -607,12 +610,28 @@ void tlb_flush_page_by_mmuidx(CPUState *cpu, vaddr addr, uint16_t idxmap)
-> {
->     tlb_debug("addr: %016" VADDR_PRIx " mmu_idx:%" PRIx16 "\n", addr, idxmap);
->
-> -    assert_cpu_is_self(cpu);
-> -
->     /* This should already be page aligned */
->     addr &= TARGET_PAGE_MASK;
->
-> -    tlb_flush_page_by_mmuidx_async_0(cpu, addr, idxmap);
-> +    if (qemu_cpu_is_self(cpu)) {
-> +        tlb_flush_page_by_mmuidx_async_0(cpu, addr, idxmap);
-> +    } else if (idxmap < TARGET_PAGE_SIZE) {
-> +        /*
-> +         * Most targets have only a few mmu_idx.  In the case where
-> +         * we can stuff idxmap into the low TARGET_PAGE_BITS, avoid
-> +         * allocating memory for this operation.
-> +         */
-> +        async_run_on_cpu(cpu, tlb_flush_page_by_mmuidx_async_1,
-> +                         RUN_ON_CPU_TARGET_PTR(addr | idxmap));
-> +    } else {
-> +        TLBFlushPageByMMUIdxData *d = g_new(TLBFlushPageByMMUIdxData, 1);
-> +
-> +        /* Otherwise allocate a structure, freed by the worker.  */
-> +        d->addr = addr;
-> +        d->idxmap = idxmap;
-> +        async_run_on_cpu(cpu, tlb_flush_page_by_mmuidx_async_2,
-> +                         RUN_ON_CPU_HOST_PTR(d));
-> +    }
-> }
->
-> void tlb_flush_page(CPUState *cpu, vaddr addr)
-> @@ -775,8 +794,6 @@ void tlb_flush_range_by_mmuidx(CPUState *cpu, vaddr addr,
-> {
->     TLBFlushRangeData d;
->
-> -    assert_cpu_is_self(cpu);
-> -
->     /*
->      * If all bits are significant, and len is small,
->      * this devolves to tlb_flush_page.
-> @@ -797,7 +814,14 @@ void tlb_flush_range_by_mmuidx(CPUState *cpu, vaddr addr,
->     d.idxmap = idxmap;
->     d.bits = bits;
->
-> -    tlb_flush_range_by_mmuidx_async_0(cpu, d);
-> +    if (qemu_cpu_is_self(cpu)) {
-> +        tlb_flush_range_by_mmuidx_async_0(cpu, d);
-> +    } else {
-> +        /* Otherwise allocate a structure, freed by the worker.  */
-> +        TLBFlushRangeData *p = g_memdup2(&d, sizeof(d));
-> +        async_run_on_cpu(cpu, tlb_flush_range_by_mmuidx_async_1,
-> +                         RUN_ON_CPU_HOST_PTR(p));
-> +    }
-> }
->
-> void tlb_flush_page_bits_by_mmuidx(CPUState *cpu, vaddr addr,
->
+Please update the changelog at https://wiki.qemu.org/ChangeLog/10.0 for any user-visible changes.
+
+--48KAmklPXh+OWBah
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmeaftcACgkQnKSrs4Gr
+c8hxowf/ZnTB9je361X5qpj/5RdLkPHx0f4zyEytvruhVNB7uIgeTfXW+5su2yhG
+g6V2VuU6qypvjs1OTgyPsRf5sKm9ghAao+qaYxdR/aE5y2o8bKrwgqnANvC1coMZ
+EIPtFW1MYd3sryPqLMghlHXflggs1k+HHwt9xTz0HBr4WAjcmGKi5fcz8Ccwappz
+kIA2VK72qwEqbZ+YFQyp3y2E/hyiLT5x1xrUnww0BrFCRngpm01zT5JXr/g3ayMa
+2EEqoAhQdTGytSM8Epn87iP2qr5dnKNT24dfjuBXba3V/LSQHrFNmf7+Ym53kNNU
+2T//iEdOkY+fet6YfloJztYGAZm74A==
+=MxZU
+-----END PGP SIGNATURE-----
+
+--48KAmklPXh+OWBah--
+
 
