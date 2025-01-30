@@ -2,43 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 694C4A22DD2
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 14:31:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54DE6A22DCF
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 14:30:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdUbp-0004iC-S2; Thu, 30 Jan 2025 08:29:29 -0500
+	id 1tdUbr-0004iN-PD; Thu, 30 Jan 2025 08:29:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tdUbn-0004fW-A2
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 08:29:27 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tdUbo-0004hh-Um
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 08:29:28 -0500
 Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tdUbl-0001PK-T6
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 08:29:27 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tdUbn-0001Pa-FK
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 08:29:28 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id EF3C15C03D9;
- Thu, 30 Jan 2025 13:28:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8604DC4CED2;
- Thu, 30 Jan 2025 13:29:23 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTP id 98B255C03F5;
+ Thu, 30 Jan 2025 13:28:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BA64C4CED2;
+ Thu, 30 Jan 2025 13:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1738243764;
- bh=wtPYEkp/rYjrO4/L11LpwqkfMFGmuvFU+26iDChJ36Q=;
+ s=k20201202; t=1738243766;
+ bh=EdUmbIHS6wsR+QKUpjXCHpozaxkbBLR0Vx1ZIKvUOQA=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=QYH0APFYck0qvyHcFAYeGgGfkqI9Sdt8f7CuWaBnwPrCH36hyMoTPG5TfCMBt3vXU
- c1L6objD8F2RbKKVORzN8JRtcRxwXOV1ELD2dxuTvdWfyxgSZ054Ja5LdHotz42JpV
- yjyi8IJjgK/2U4VeCDwd8Y4l+hpltUxXLtbEHPgTnClZi3eE4HOMkGcBvncOZ8a90N
- mPKoAId5sbegsrEfrdyiORCCSCuv5lDy8ee3TmisHE3jR24/2PWCHRJkHwjzyxSJXT
- lTHY4bzgGenMWVrUdgnz3QvWShuxKvybDwI9RVOLNbX9Zw07NmCbYunXqIq+i5KMYX
- h2dRgwo0/t7UA==
+ b=GW2nmuwaG7u68z50KfCKJGTsZPi+mPl0vSZTHkxWya2QuMFW1iavQZqSJ4zCR0NmY
+ Vs/H0sXg3RMcOQtEI0GNIqUQGz9dIHVdsQINLo9henL8OHRoEIX4YRmvU2uS9MVicb
+ WRS/duEPIIO1v29/dwriY0FS6yFdy8iGJE1C0l8KJWS8IKiF0xqA/Dpgf1qHUKS084
+ jVLpatEBnFvCGjbQGwmGeAYAvs6xQQue128Nh+QjWpzEheFDQ1D+hOehu2RWb8tm7l
+ 3otLger7RwcoGRk5jerBxPIjBpKGbMmRaLa84J2I5jU1weWu7992IcZYfRJoBV/uis
+ yqQR+hXX1838g==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>
 Cc: deller@gmx.de
-Subject: [PULL 4/9] target/hppa: Add CPU diagnose registers
-Date: Thu, 30 Jan 2025 14:29:09 +0100
-Message-ID: <20250130132915.16846-5-deller@kernel.org>
+Subject: [PULL 5/9] target/hppa: Drop diag_getshadowregs_pa2 and
+ diag_putshadowregs_pa2
+Date: Thu, 30 Jan 2025 14:29:10 +0100
+Message-ID: <20250130132915.16846-6-deller@kernel.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250130132915.16846-1-deller@kernel.org>
 References: <20250130132915.16846-1-deller@kernel.org>
@@ -70,52 +71,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Add the diagnose registers (%dr) to the CPUArchState. Those are mostly
-undocumented and control cache behaviour, memory behaviour, reset button
-management and many other related internal CPU things.
+diag_getshadowregs_pa2() and diag_putshadowregs_pa2() were added in
+commit 3bdf20819e68 based on some analysis of ODE code, but now they
+conflict with the generic mfdiag/mtdiag instructions. I believe the
+former analysis was wrong, so remove them again. Note that all diag
+instructions are badly documented, so most things are based on reverse
+engineering and thus may be wrong.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 3bdf20819e68 ("target/hppa: Add diag instructions to set/restore shadow registers")
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.h     | 1 +
- target/hppa/machine.c | 5 +++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ target/hppa/insns.decode |  2 --
+ target/hppa/translate.c  | 10 ----------
+ 2 files changed, 12 deletions(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index beea42d105..b858986c41 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -232,6 +232,7 @@ typedef struct CPUArchState {
-     target_ulong cr[32];     /* control registers */
-     target_ulong cr_back[2]; /* back of cr17/cr18 */
-     target_ulong shadow[7];  /* shadow registers */
-+    target_ulong dr[32];     /* diagnose registers */
+diff --git a/target/hppa/insns.decode b/target/hppa/insns.decode
+index 71074a64c1..527c453443 100644
+--- a/target/hppa/insns.decode
++++ b/target/hppa/insns.decode
+@@ -646,8 +646,6 @@ xmpyu           001110 ..... ..... 010 .0111 .00 t:5    r1=%ra64 r2=%rb64
+     diag_putshadowregs_pa1  000101 00 0000 0000 0001 1010 0100 0000
  
-     /*
-      * During unwind of a memory insn, the base register of the address.
-diff --git a/target/hppa/machine.c b/target/hppa/machine.c
-index 211bfcf640..bb47a2e689 100644
---- a/target/hppa/machine.c
-+++ b/target/hppa/machine.c
-@@ -198,6 +198,7 @@ static const VMStateField vmstate_env_fields[] = {
-     VMSTATE_UINT64(iasq_b, CPUHPPAState),
+     # For 64-bit PA8700 (PCX-W2)
+-    diag_getshadowregs_pa2  000101 00 0111 1000 0001 1000 0100 0000
+-    diag_putshadowregs_pa2  000101 00 0111 0000 0001 1000 0100 0000
+   ]
+   diag_unimp                000101 i:26
+ }
+diff --git a/target/hppa/translate.c b/target/hppa/translate.c
+index dc04f9f3c0..30fba5297a 100644
+--- a/target/hppa/translate.c
++++ b/target/hppa/translate.c
+@@ -4593,21 +4593,11 @@ static bool trans_diag_getshadowregs_pa1(DisasContext *ctx, arg_empty *a)
+     return !ctx->is_pa20 && do_getshadowregs(ctx);
+ }
  
-     VMSTATE_UINT32(fr0_shadow, CPUHPPAState),
-+    VMSTATE_UINT64_ARRAY(dr, CPUHPPAState, 32),
-     VMSTATE_END_OF_LIST()
- };
+-static bool trans_diag_getshadowregs_pa2(DisasContext *ctx, arg_empty *a)
+-{
+-    return ctx->is_pa20 && do_getshadowregs(ctx);
+-}
+-
+ static bool trans_diag_putshadowregs_pa1(DisasContext *ctx, arg_empty *a)
+ {
+     return !ctx->is_pa20 && do_putshadowregs(ctx);
+ }
  
-@@ -208,8 +209,8 @@ static const VMStateDescription * const vmstate_env_subsections[] = {
- 
- static const VMStateDescription vmstate_env = {
-     .name = "env",
--    .version_id = 3,
--    .minimum_version_id = 3,
-+    .version_id = 4,
-+    .minimum_version_id = 4,
-     .fields = vmstate_env_fields,
-     .subsections = vmstate_env_subsections,
- };
+-static bool trans_diag_putshadowregs_pa2(DisasContext *ctx, arg_empty *a)
+-{
+-    return ctx->is_pa20 && do_putshadowregs(ctx);
+-}
+-
+ static bool trans_diag_unimp(DisasContext *ctx, arg_diag_unimp *a)
+ {
+     CHECK_MOST_PRIVILEGED(EXCP_PRIV_OPR);
 -- 
 2.47.0
 
