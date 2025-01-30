@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184B3A22DEF
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 14:37:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 775F4A22DE3
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 14:35:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdUhD-0002ff-5p; Thu, 30 Jan 2025 08:35:03 -0500
+	id 1tdUhF-0002iN-Pw; Thu, 30 Jan 2025 08:35:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tdUh9-0002dp-Ey; Thu, 30 Jan 2025 08:34:59 -0500
+ id 1tdUhC-0002gN-RW; Thu, 30 Jan 2025 08:35:02 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tdUh8-0002XR-0b; Thu, 30 Jan 2025 08:34:59 -0500
+ id 1tdUhA-0002Xw-O7; Thu, 30 Jan 2025 08:35:02 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F35E3E3043;
- Thu, 30 Jan 2025 16:34:18 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 03513E3044;
+ Thu, 30 Jan 2025 16:34:19 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id E34531A7F8A;
+ by tsrv.corpit.ru (Postfix) with ESMTP id E74391A7F8B;
  Thu, 30 Jan 2025 16:34:47 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id CEC3B5240A; Thu, 30 Jan 2025 16:34:47 +0300 (MSK)
+ id D131E5240C; Thu, 30 Jan 2025 16:34:47 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 5/7] tests/functional/test_mips_malta: Fix comment about
- endianness of the test
-Date: Thu, 30 Jan 2025 16:34:45 +0300
-Message-Id: <20250130133447.873566-6-mjt@tls.msk.ru>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 6/7] licenses: Remove SPDX tags not being license identifier
+ for Linaro
+Date: Thu, 30 Jan 2025 16:34:46 +0300
+Message-Id: <20250130133447.873566-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250130133447.873566-1-mjt@tls.msk.ru>
 References: <20250130133447.873566-1-mjt@tls.msk.ru>
@@ -61,32 +61,213 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-This test is for the big endian MIPS target, not for the little endian
-target.
+Per [*]:
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Fixes: 79cb4a14cb6 ("tests/functional: Convert mips32eb 4Kc Malta tests")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+  "we're only interested in adopting SPDX for recording the
+  licensing info, [not] any other SPDX metadata."
+
+Replace the 'SPDX-FileCopyrightText' and 'SPDX-FileContributor'
+tags added by Linaro by 'Copyright (c)' and 'Authors' words
+respectively.
+
+[*] https://lore.kernel.org/qemu-devel/20241007154548.1144961-4-berrange@redhat.com/
+
+Inspired-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- tests/functional/test_mips_malta.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ accel/tcg/vcpu-state.h                           | 9 +++++++--
+ hw/misc/ivshmem-flat.c                           | 5 +++--
+ include/hw/misc/ivshmem-flat.h                   | 5 +++--
+ scripts/qom-cast-macro-clean-cocci-gen.py        | 7 +++++--
+ target/m68k/semihosting-stub.c                   | 7 +++++--
+ target/mips/tcg/system/semihosting-stub.c        | 5 +++--
+ tests/functional/test_aarch64_sbsaref.py         | 8 +++++---
+ tests/functional/test_aarch64_sbsaref_alpine.py  | 8 +++++---
+ tests/functional/test_aarch64_sbsaref_freebsd.py | 8 +++++---
+ tests/qtest/libqos/virtio-scmi.c                 | 2 +-
+ 10 files changed, 42 insertions(+), 22 deletions(-)
 
-diff --git a/tests/functional/test_mips_malta.py b/tests/functional/test_mips_malta.py
-index 3b15038d89..eaf372255b 100755
---- a/tests/functional/test_mips_malta.py
-+++ b/tests/functional/test_mips_malta.py
-@@ -1,6 +1,6 @@
- #!/usr/bin/env python3
+diff --git a/accel/tcg/vcpu-state.h b/accel/tcg/vcpu-state.h
+index e407d914df..2e3464b5ee 100644
+--- a/accel/tcg/vcpu-state.h
++++ b/accel/tcg/vcpu-state.h
+@@ -1,6 +1,11 @@
+ /*
+- * SPDX-FileContributor: Philippe Mathieu-Daudé <philmd@linaro.org>
+- * SPDX-FileCopyrightText: 2023 Linaro Ltd.
++ * TaskState helpers for QEMU
++ *
++ * Copyright (c) 2023 Linaro Ltd.
++ *
++ * Authors:
++ *   Philippe Mathieu-Daudé
++ *
+  * SPDX-License-Identifier: GPL-2.0-or-later
+  */
+ #ifndef ACCEL_TCG_VCPU_STATE_H
+diff --git a/hw/misc/ivshmem-flat.c b/hw/misc/ivshmem-flat.c
+index 33fc9425d2..40309a8ff3 100644
+--- a/hw/misc/ivshmem-flat.c
++++ b/hw/misc/ivshmem-flat.c
+@@ -1,9 +1,10 @@
+ /*
+  * Inter-VM Shared Memory Flat Device
+  *
+- * SPDX-FileCopyrightText: 2023 Linaro Ltd.
+- * SPDX-FileContributor: Gustavo Romero <gustavo.romero@linaro.org>
+  * SPDX-License-Identifier: GPL-2.0-or-later
++ * Copyright (c) 2023 Linaro Ltd.
++ * Authors:
++ *   Gustavo Romero
+  *
+  */
+ 
+diff --git a/include/hw/misc/ivshmem-flat.h b/include/hw/misc/ivshmem-flat.h
+index 97ca0ddce6..0c2b015781 100644
+--- a/include/hw/misc/ivshmem-flat.h
++++ b/include/hw/misc/ivshmem-flat.h
+@@ -1,9 +1,10 @@
+ /*
+  * Inter-VM Shared Memory Flat Device
+  *
+- * SPDX-FileCopyrightText: 2023 Linaro Ltd.
+- * SPDX-FileContributor: Gustavo Romero <gustavo.romero@linaro.org>
+  * SPDX-License-Identifier: GPL-2.0-or-later
++ * Copyright (c) 2023 Linaro Ltd.
++ * Authors:
++ *   Gustavo Romero
+  *
+  */
+ 
+diff --git a/scripts/qom-cast-macro-clean-cocci-gen.py b/scripts/qom-cast-macro-clean-cocci-gen.py
+index 2fa8438a14..5aa51d0c18 100644
+--- a/scripts/qom-cast-macro-clean-cocci-gen.py
++++ b/scripts/qom-cast-macro-clean-cocci-gen.py
+@@ -13,8 +13,11 @@
+ #           --in-place \
+ #           --dir .
  #
--# Functional tests for the little-endian 32-bit MIPS Malta board
-+# Functional tests for the big-endian 32-bit MIPS Malta board
+-# SPDX-FileContributor: Philippe Mathieu-Daudé <philmd@linaro.org>
+-# SPDX-FileCopyrightText: 2023 Linaro Ltd.
++# Copyright (c) 2023 Linaro Ltd.
++#
++# Authors:
++#   Philippe Mathieu-Daudé
++#
+ # SPDX-License-Identifier: GPL-2.0-or-later
+ 
+ import re
+diff --git a/target/m68k/semihosting-stub.c b/target/m68k/semihosting-stub.c
+index d6a5965e29..dbe669cc5f 100644
+--- a/target/m68k/semihosting-stub.c
++++ b/target/m68k/semihosting-stub.c
+@@ -1,8 +1,11 @@
+ /*
+  *  m68k/ColdFire semihosting stub
+  *
+- * SPDX-FileContributor: Philippe Mathieu-Daudé <philmd@linaro.org>
+- * SPDX-FileCopyrightText: 2024 Linaro Ltd.
++ * Copyright (c) 2024 Linaro Ltd.
++ *
++ * Authors:
++ *   Philippe Mathieu-Daudé
++ *
+  * SPDX-License-Identifier: GPL-2.0-or-later
+  */
+ 
+diff --git a/target/mips/tcg/system/semihosting-stub.c b/target/mips/tcg/system/semihosting-stub.c
+index 7ae27d746f..bb1f7aae62 100644
+--- a/target/mips/tcg/system/semihosting-stub.c
++++ b/target/mips/tcg/system/semihosting-stub.c
+@@ -1,9 +1,10 @@
+ /*
+  *  MIPS semihosting stub
+  *
+- * SPDX-FileContributor: Philippe Mathieu-Daudé <philmd@linaro.org>
+- * SPDX-FileCopyrightText: 2024 Linaro Ltd.
+  * SPDX-License-Identifier: GPL-2.0-or-later
++ * Copyright (c) 2024 Linaro Ltd.
++ * Authors:
++ *   Philippe Mathieu-Daudé
+  */
+ 
+ #include "qemu/osdep.h"
+diff --git a/tests/functional/test_aarch64_sbsaref.py b/tests/functional/test_aarch64_sbsaref.py
+index 99cfb6f29a..e6a55aecfa 100755
+--- a/tests/functional/test_aarch64_sbsaref.py
++++ b/tests/functional/test_aarch64_sbsaref.py
+@@ -2,9 +2,11 @@
  #
- # Copyright (c) Philippe Mathieu-Daudé <f4bug@amsat.org>
+ # Functional test that boots a kernel and checks the console
  #
+-# SPDX-FileCopyrightText: 2023-2024 Linaro Ltd.
+-# SPDX-FileContributor: Philippe Mathieu-Daudé <philmd@linaro.org>
+-# SPDX-FileContributor: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
++# Copyright (c) 2023-2024 Linaro Ltd.
++#
++# Authors:
++#   Philippe Mathieu-Daudé
++#   Marcin Juszkiewicz
+ #
+ # SPDX-License-Identifier: GPL-2.0-or-later
+ 
+diff --git a/tests/functional/test_aarch64_sbsaref_alpine.py b/tests/functional/test_aarch64_sbsaref_alpine.py
+index 6dbc90f30e..9faf066d18 100755
+--- a/tests/functional/test_aarch64_sbsaref_alpine.py
++++ b/tests/functional/test_aarch64_sbsaref_alpine.py
+@@ -2,9 +2,11 @@
+ #
+ # Functional test that boots a kernel and checks the console
+ #
+-# SPDX-FileCopyrightText: 2023-2024 Linaro Ltd.
+-# SPDX-FileContributor: Philippe Mathieu-Daudé <philmd@linaro.org>
+-# SPDX-FileContributor: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
++# Copyright (c) 2023-2024 Linaro Ltd.
++#
++# Authors:
++#   Philippe Mathieu-Daudé
++#   Marcin Juszkiewicz
+ #
+ # SPDX-License-Identifier: GPL-2.0-or-later
+ 
+diff --git a/tests/functional/test_aarch64_sbsaref_freebsd.py b/tests/functional/test_aarch64_sbsaref_freebsd.py
+index 77ba2ba1da..8dcb4991c3 100755
+--- a/tests/functional/test_aarch64_sbsaref_freebsd.py
++++ b/tests/functional/test_aarch64_sbsaref_freebsd.py
+@@ -2,9 +2,11 @@
+ #
+ # Functional test that boots a kernel and checks the console
+ #
+-# SPDX-FileCopyrightText: 2023-2024 Linaro Ltd.
+-# SPDX-FileContributor: Philippe Mathieu-Daudé <philmd@linaro.org>
+-# SPDX-FileContributor: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
++# Copyright (c) 2023-2024 Linaro Ltd.
++#
++# Authors:
++#   Philippe Mathieu-Daudé
++#   Marcin Juszkiewicz
+ #
+ # SPDX-License-Identifier: GPL-2.0-or-later
+ 
+diff --git a/tests/qtest/libqos/virtio-scmi.c b/tests/qtest/libqos/virtio-scmi.c
+index ce8f4d5c06..6b5bd4db42 100644
+--- a/tests/qtest/libqos/virtio-scmi.c
++++ b/tests/qtest/libqos/virtio-scmi.c
+@@ -1,7 +1,7 @@
+ /*
+  * virtio-scmi nodes for testing
+  *
+- * SPDX-FileCopyrightText: Linaro Ltd
++ * Copyright (c) Linaro Ltd.
+  * SPDX-FileCopyrightText: Red Hat, Inc.
+  * SPDX-License-Identifier: GPL-2.0-or-later
+  *
 -- 
 2.39.5
 
