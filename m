@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F480A2329A
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 18:14:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6822A232A4
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 18:16:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdY6N-0000el-Mp; Thu, 30 Jan 2025 12:13:15 -0500
+	id 1tdY6Z-0000gJ-6W; Thu, 30 Jan 2025 12:13:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tdY6J-0000dp-Ro
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 12:13:11 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tdY6O-0000ff-Qo
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 12:13:16 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tdY6I-0003CG-4W
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 12:13:11 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tdY6N-0003DX-6W
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 12:13:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738257189;
+ s=mimecast20190719; t=1738257194;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=x2wBYH1nF1e4Gs/jyRNfxVZkd6GU5b6C98eFGtW8FFw=;
- b=ex9JzPEnkiO4VbfnKs8Oe0Wq3VQGcE1mGE4WjzOAzGA1fSDFC+z9WKMBVQRO7BP6Smc88F
- mqIx4gsLImFbG9jv5umzWEV8Wxv7MeAc849qV4h0EtDPOWplkyzX6cjKVosTFBlk99FhA/
- dDt5BtwXGC9Y1N636j7fB8Xi9Pf/Pyg=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=MGyGwm7yKnpQ/lYdW8A4CneUsm3hKjEqfRfyc+9vUhY=;
+ b=Nrz7DcG2PLL7IW/yDvgklGV07+2r9HDmVo3E84rKdPOwEGNhZr8n6ju70LRvTJy5MgHx3g
+ 5hh3XJuvV0bXElJz0RdWzGz8ERzXcuOJzgCLqz6FgFlqjnPxzJQRVoFpEnsuLelb+Du+G0
+ 3qalilYxKNGdwhuhzdRKgDg2rbbufVM=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-635-bT7oymGEMuCOyrxl3Ru3jg-1; Thu,
- 30 Jan 2025 12:13:07 -0500
-X-MC-Unique: bT7oymGEMuCOyrxl3Ru3jg-1
-X-Mimecast-MFC-AGG-ID: bT7oymGEMuCOyrxl3Ru3jg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-390-2HPXZCM_OzWDZc4_t8jOYw-1; Thu,
+ 30 Jan 2025 12:13:11 -0500
+X-MC-Unique: 2HPXZCM_OzWDZc4_t8jOYw-1
+X-Mimecast-MFC-AGG-ID: 2HPXZCM_OzWDZc4_t8jOYw
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EB2271801F1C; Thu, 30 Jan 2025 17:13:06 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1104D19560A3; Thu, 30 Jan 2025 17:13:10 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.193.13])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2705730001BE; Thu, 30 Jan 2025 17:13:03 +0000 (UTC)
+ id 62CEF30001BE; Thu, 30 Jan 2025 17:13:07 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com,
  pkrempa@redhat.com, peterx@redhat.com, farosas@suse.de,
  qemu-devel@nongnu.org
-Subject: [PATCH v2 06/15] block: Fix crash on block_resize on inactive node
-Date: Thu, 30 Jan 2025 18:12:37 +0100
-Message-ID: <20250130171240.286878-7-kwolf@redhat.com>
+Subject: [PATCH v2 07/15] block: Add option to create inactive nodes
+Date: Thu, 30 Jan 2025 18:12:38 +0100
+Message-ID: <20250130171240.286878-8-kwolf@redhat.com>
 In-Reply-To: <20250130171240.286878-1-kwolf@redhat.com>
 References: <20250130171240.286878-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -33
 X-Spam_score: -3.4
 X-Spam_bar: ---
 X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -81,52 +81,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In order for block_resize to fail gracefully on an inactive node instead
-of crashing with an assertion failure in bdrv_co_write_req_prepare()
-(called from bdrv_co_truncate()), we need to check for inactive nodes
-also when they are attached as a root node and make sure that
-BLK_PERM_RESIZE isn't among the permissions allowed for inactive nodes.
-To this effect, don't enumerate the permissions that are incompatible
-with inactive nodes any more, but allow only BLK_PERM_CONSISTENT_READ
-for them.
+In QEMU, nodes are automatically created inactive while expecting an
+incoming migration (i.e. RUN_STATE_INMIGRATE). In qemu-storage-daemon,
+the notion of runstates doesn't exist. It also wouldn't necessarily make
+sense to introduce it because a single daemon can serve multiple VMs
+that can be in different states.
+
+Therefore, allow the user to explicitly open images as inactive with a
+new option. The default is as before: Nodes are usually active, except
+when created during RUN_STATE_INMIGRATE.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block.c               | 7 +++++++
- block/block-backend.c | 2 +-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ qapi/block-core.json         | 6 ++++++
+ include/block/block-common.h | 1 +
+ block.c                      | 9 +++++++++
+ 3 files changed, 16 insertions(+)
 
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index 1296ca8ae2..6029e54889 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -4683,6 +4683,11 @@
+ #
+ # @cache: cache-related options
+ #
++# @active: whether the block node should be activated (default: true).
++#     Having inactive block nodes is useful primarily for migration because it
++#     allows opening an image on the destination while the source is still
++#     holding locks for it. (Since 10.0)
++#
+ # @read-only: whether the block device should be read-only (default:
+ #     false).  Note that some block drivers support only read-only
+ #     access, either generally or in certain configurations.  In this
+@@ -4709,6 +4714,7 @@
+             '*node-name': 'str',
+             '*discard': 'BlockdevDiscardOptions',
+             '*cache': 'BlockdevCacheOptions',
++            '*active': 'bool',
+             '*read-only': 'bool',
+             '*auto-read-only': 'bool',
+             '*force-share': 'bool',
+diff --git a/include/block/block-common.h b/include/block/block-common.h
+index 338fe5ff7a..7030669f04 100644
+--- a/include/block/block-common.h
++++ b/include/block/block-common.h
+@@ -257,6 +257,7 @@ typedef enum {
+ #define BDRV_OPT_AUTO_READ_ONLY "auto-read-only"
+ #define BDRV_OPT_DISCARD        "discard"
+ #define BDRV_OPT_FORCE_SHARE    "force-share"
++#define BDRV_OPT_ACTIVE         "active"
+ 
+ 
+ #define BDRV_SECTOR_BITS   9
 diff --git a/block.c b/block.c
-index be6b71c314..fa6198bca3 100644
+index fa6198bca3..95bde42dda 100644
 --- a/block.c
 +++ b/block.c
-@@ -3077,6 +3077,13 @@ bdrv_attach_child_common(BlockDriverState *child_bs,
-     assert(child_class->get_parent_desc);
-     GLOBAL_STATE_CODE();
- 
-+    if (bdrv_is_inactive(child_bs) && (perm & ~BLK_PERM_CONSISTENT_READ)) {
-+        g_autofree char *perm_names = bdrv_perm_names(perm);
-+        error_setg(errp, "Permission '%s' unavailable on inactive node",
-+                   perm_names);
-+        return NULL;
-+    }
-+
-     new_child = g_new(BdrvChild, 1);
-     *new_child = (BdrvChild) {
-         .bs             = NULL,
-diff --git a/block/block-backend.c b/block/block-backend.c
-index d093f01f89..cc6f58ae78 100644
---- a/block/block-backend.c
-+++ b/block/block-backend.c
-@@ -253,7 +253,7 @@ static bool blk_can_inactivate(BlockBackend *blk)
-      * guest.  For block job BBs that satisfy this, we can just allow
-      * it.  This is the case for mirror job source, which is required
-      * by libvirt non-shared block migration. */
--    if (!(blk->perm & (BLK_PERM_WRITE | BLK_PERM_WRITE_UNCHANGED))) {
-+    if (!(blk->perm & ~BLK_PERM_CONSISTENT_READ)) {
-         return true;
+@@ -1573,6 +1573,10 @@ static void update_flags_from_options(int *flags, QemuOpts *opts)
+     if (qemu_opt_get_bool_del(opts, BDRV_OPT_AUTO_READ_ONLY, false)) {
+         *flags |= BDRV_O_AUTO_RDONLY;
      }
++
++    if (!qemu_opt_get_bool_del(opts, BDRV_OPT_ACTIVE, true)) {
++        *flags |= BDRV_O_INACTIVE;
++    }
+ }
  
+ static void update_options_from_flags(QDict *options, int flags)
+@@ -1799,6 +1803,11 @@ QemuOptsList bdrv_runtime_opts = {
+             .type = QEMU_OPT_BOOL,
+             .help = "Ignore flush requests",
+         },
++        {
++            .name = BDRV_OPT_ACTIVE,
++            .type = QEMU_OPT_BOOL,
++            .help = "Node is activated",
++        },
+         {
+             .name = BDRV_OPT_READ_ONLY,
+             .type = QEMU_OPT_BOOL,
 -- 
 2.48.1
 
