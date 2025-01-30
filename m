@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7A6A233B0
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 19:24:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96745A233AC
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 19:24:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdZCR-0003xZ-EI; Thu, 30 Jan 2025 13:23:35 -0500
+	id 1tdZCM-0003st-S4; Thu, 30 Jan 2025 13:23:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tdZCC-0003rX-GR
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 13:23:20 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ id 1tdZCA-0003qX-SU
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 13:23:18 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tdZC8-0000Tc-0u
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 13:23:20 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-385deda28b3so667018f8f.0
- for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 10:23:14 -0800 (PST)
+ id 1tdZC7-0000Th-Vy
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 13:23:18 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-385e3621518so668839f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 10:23:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738261391; x=1738866191; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=LiTob6eVO3/nTRL2jXJ4ehBWxJYYOLR6mf/DNOwkNQk=;
- b=g3GJIW6R2aBGGIsRpXzYc4P1aM3MkIfNytWCycnN/3qhBVXnEKSqw5EKruI73x6D4j
- TFZrpeQU3ygF94oIB3xQW0qWvi3BUnCPy6aNHn5R0fZ8x/WLDWwVjkAcpAVBfF1m+O/b
- u+ZjZlSkZdpN6aWTaddjglQpjnLzkFnRGQRQEhFZNrrI/k1k4vHkj+SGHd3yX3L5V6bm
- Fy3SQvlq5iBeZlcYoCToaEGT/A9+iGtxYmVQlZHbryuxWX6g/si3HZXTD+fm8QkRGIuk
- B2ANs3oBEP7iXz3WDwne/dTL88knkLu66Xc/R2ur9jetnZASzQRReOWjIzmOgDRdXWAc
- AWMA==
+ d=linaro.org; s=google; t=1738261392; x=1738866192; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=LMfouiukZplViqTOnGPtuKQ5CD0lpwbbbWd2NrRj/nk=;
+ b=fqZl/FX6ehva1Z+xejzq5yPYEpzJVB7DigA9UvCPTK8EJHMhg73HkHyqGB+QZz9kXc
+ tIlXZ70osZG3hCQRDnHmnIPEAbM5ZbKYwJatMpANgJFOy27ifw01lfum8AZ6ksxc6M/A
+ C7Jxfrl61EkCAlzhlGFlLIemrfccVr0KooQti4VgOZ8CH6LwVt+f3yQ665wIb1ltTCQR
+ aN7ncq60yxu9hG9El/D+YiHznfO0ZkmOn29X1L7/WlhrRPrp4TUlYBMog7owVjeq81xG
+ 4GjI2pMqMt5pQDC9yr0fCZGPiOnSaL/EqmLA0cgf5NoZANbS/XHNVQZ4bKyjJaGtPD69
+ iCOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738261391; x=1738866191;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=LiTob6eVO3/nTRL2jXJ4ehBWxJYYOLR6mf/DNOwkNQk=;
- b=g3IuGcKYuJcTk2KQq4MxubBUItEnISABt1/ro+H0d0lPMe/4k4Hdca42cX3OGYBcpg
- J9jTkALiLQbpBKqSlOwtK5mTFP23GobITtr0z0RIppf8DLXLZoA5azxWZDHFVdC8C4Q6
- RgmLoFziFk4nbCmzgbymM0dGQX/uI3lg42WVN7W8dDt2cG1/euuERSVP/RjIBzVtvigJ
- /8n2p4NwhtyAKAbTCGqnByfp8jAsHLNawTiwLrejzIHP7c6L5IMKjIMXfsb7+cfQ9pKN
- 0QHy78t//f/7AC+1BYaTMV41aiZvjRTzXq2Lo/kxmq/JykHc+a2K1vy+sTI7XooWueWN
- 1q/w==
+ d=1e100.net; s=20230601; t=1738261392; x=1738866192;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=LMfouiukZplViqTOnGPtuKQ5CD0lpwbbbWd2NrRj/nk=;
+ b=jCgOg8n3ENS8RN6IR+1IXvTV/ygMpXjhn/g/LbNfH2cMJEnAfRcjJ/8SL+R8C7ddj1
+ X8y+02HrlgIckfoXdEoBKad+RCkSqJWFKOFiDB4y7HelRuRWWDYjbEKHLxjsFa5EBUqR
+ yW6VcBoiSXNwwBWbIaTgDnXCh8qqfPqushaGze/BQ7nfuptiG4Ih1v73wMOlY2YFon+f
+ 0U7mHfEU0vldkbYWnZ5oN+RArVpxXx+XBD2dzcfdkbexKs4nknYuibXCn8x/lvll5IDA
+ xgGjB830tDfJn473x6WFijtr66iMKYvWJ1JQrRQHEcrRKYT0dQfJTbwS5xYOwAt62HQG
+ 65pw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXExUcJtwxBG+lSh1bHDWY2952SdD0Ir3e1Vh1z+gtp4MzB5grJRU46aNMHUKjIu82SVLn8P6aw6z9L@nongnu.org
-X-Gm-Message-State: AOJu0YwqLy/y/RJdVZBELPAkGaypexD6fUZuI+ur7x4CNGl3xwf4G348
- XjtcTEsM93D0+N3SagdwWOzWpJVQhw1FCJBy3t5/XGxaMOnqmtmxqk8oLY4gZ4Q=
-X-Gm-Gg: ASbGnct39V5U0+VSEmqSD05shcEhg8TJKMVjqHDx875NDA9pwiurlk32iYd7hSRv43Z
- IC16a0V1YAo2s38OwYbIew/W+kjQd8LJveiml4OXmszMP9Kp/BERw+9kjLdY0Pcv2S27lNJDbs8
- 9MQXCZQvFy5kH9hvbndq67V29CjVvkiVOTvq7aOJy0kG+TOQ015nQR8Czjv9twfawrjpTWk9CJd
- VlXOGMKjK8DzpnuPe75HFWp8wKIVoEAiXxxsLgMf2D7cCArerctLiQ4F1oyW4EqkDPEbyFdg1Wz
- os2e5prXtF0WDucy0mMcOQ==
-X-Google-Smtp-Source: AGHT+IGD9JikmYxLrxdEHhCKfC/JKg4qUSVgE4ZzgaMQIiGe+xzVUCFdOFH2xg//iRtdmAzcwRmylA==
-X-Received: by 2002:a05:6000:1567:b0:38c:5bb2:b91a with SMTP id
- ffacd0b85a97d-38c5bb2bd03mr2815729f8f.17.1738261391471; 
- Thu, 30 Jan 2025 10:23:11 -0800 (PST)
+ AJvYcCUBYhJ9MXpVe9iuOw5063ZPtfgMtSasyo6MsLAK+yz0PsYXr3x/YXADctQOC85F6+1CG+MnLs+XEyMK@nongnu.org
+X-Gm-Message-State: AOJu0Yw/9+/QSCFzI/uLSFD30x99doz3OMM6MQhzB+LUSszwYoHPvcpv
+ cTpmqJp0weB9hnkZIsVJlq4v6Hq242J6w5nuos057NcZEVPwswgNKxnZytlG2DY=
+X-Gm-Gg: ASbGncvACTUBq9Ud7RI2HUeL0oO+MhIsu4sR6wAGpEy59Aq15UVzudE1iYrW+DYCC9Q
+ plhCUThGbGxGHmleQ0ko03mjiqgTJq5FmCQVa6DmX8mWM79ateZEbvm7A9y2wsirF6lQYFe7R21
+ LiBvN87bKFixOD6C6BdWcnizYdnNNTxG+NRk4HaMQzqbItfKrco529sC18espp30PfWEoD5rJjg
+ 95WUbgfolQZ4+XAZIiDyu8m4ngzOqtBY05chNuJ6cAB+FX1MFQ0Vjg2e/weUUM3tL4iQtsd0Uvp
+ LY7M3j4Soe0mse/APJZOMg==
+X-Google-Smtp-Source: AGHT+IE0Ntzqkcvpi0/rtd9RUCq1vjf0A6C7yblnPNWB4Ert1+7WzMmsG13LS2EqDenr5fnRIuTw3g==
+X-Received: by 2002:a5d:6c6f:0:b0:38a:418e:1177 with SMTP id
+ ffacd0b85a97d-38c51949ebemr6862874f8f.11.1738261392535; 
+ Thu, 30 Jan 2025 10:23:12 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c5c101599sm2634426f8f.23.2025.01.30.10.23.10
+ ffacd0b85a97d-38c5c101599sm2634426f8f.23.2025.01.30.10.23.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 Jan 2025 10:23:10 -0800 (PST)
+ Thu, 30 Jan 2025 10:23:11 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 00/14] target/arm: Clean up some corner cases of sysreg traps
-Date: Thu, 30 Jan 2025 18:22:55 +0000
-Message-Id: <20250130182309.717346-1-peter.maydell@linaro.org>
+Subject: [PATCH 01/14] target/arm: Report correct syndrome for UNDEFINED
+ CNTPS_*_EL1 from EL2 and NS EL1
+Date: Thu, 30 Jan 2025 18:22:56 +0000
+Message-Id: <20250130182309.717346-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250130182309.717346-1-peter.maydell@linaro.org>
+References: <20250130182309.717346-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,110 +100,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While reviewing Alex's recent secure timer patchset, I noticed a
-bug where it was using CP_ACCESS_TRAP when CP_ACCESS_TRAP_UNCATEGORIZED
-was wanted, and that we were making the same mistake elsewhere in
-our existing code. This series started out as an attempt to fix
-that and also rearrange the API so that it's harder to introduce
-other instances of this bug in future. In the process I noticed
-a different bug, where we weren't handling traps to AArch32
-Monitor mode correctly, so the series fixes those as well.
+The access pseudocode for the CNTPS_TVAL_EL1, CNTPS_CTL_EL1 and
+CNTPS_CVAL_EL1 secure timer registers says that they are UNDEFINED
+from EL2 or NS EL1.  We incorrectly return CP_ACCESS_TRAP from the
+access function in these cases, which means that we report the wrong
+syndrome value to the target EL.
 
-The first four patches are fixes for the places where we were
-using CP_ACCESS_TRAP when we wanted CP_ACCESS_TRAP_UNCATEGORIZED.
-These are all situations where an attempt to access a sysreg
-should UNDEF and we were incorrectly reporting it with a
-syndrome value for a system register access trap. I've cc'd
-these to stable as they are technically bugs, but really the impact
-s very limited because I can't see a reason why any code except
-test code would deliberately attempt a sysreg access that they
-knew would take an exception and then look at the syndrome
-value for it.
+Use CP_ACCESS_TRAP_UNCATEGORIZED, which reports the correct syndrome
+value for an UNDEFINED instruction.
 
-Patches 5, 6 and 7 together fix bugs in our handling of sysreg
-traps that should go to AArch32 Monitor mode:
- * we were incorrectly triggering an UNDEF exception for these
-   rather than a Monitor Trap, so the exception would go to
-   the wrong vector table and the wrong CPU mode
- * in most cases we weren't trapping accesses from EL3
-   non-Monitor modes to Monitor mode
-This affects only:
- * trapping of ERRIDR via SCR.TERR
- * trapping of the debug channel registers via SDCR.TDCC
- * trapping of GICv3 registers via SCR.IRQ and SCR.FIQ
-because most "trap sysreg access to EL3" situations are either for
-AArch64 only registers or for trap bits that are AArch64 only.
+Cc: qemu-stable@nongnu.org
+Fixes: b4d3978c2fd ("target-arm: Add the AArch64 view of the Secure physical timer")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ target/arm/helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Patch 8 is a trivial one removing an unnecessary clause in
-an if() condition in the GIC cpuif access functions.
-
-Patches 9-13 are the API change that tries to make the bug harder to
-write: we add CP_ACCESS_TRAP_EL1 for "trap a sysreg access direct to
-EL1". After all the bugfixes in the first half of the series, the
-remaining uses of CP_ACCESS_TRAP are all in contexts where we know the
-current EL is 0, so we can directly replace them with
-CP_ACCESS_TRAP_EL1, and remove CP_ACCESS_TRAP entirely. We also rename
-CP_ACCESS_TRAP_UNCATEGORIZED to CP_ACCESS_UNDEFINED, to be a clearer
-parallel with the pseudocode's use of "UNDEFINED" in this situation.
-The resulting
-API is that an accessfn can only return:
- CP_ACCESS_OK for a success
- CP_ACCESS_UNDEFINED for an UNDEF
- CP_ACCESS_TRAP_EL{1,2,3} for a sysreg trap direct to an EL
-and everything else is invalid. UNCATEGORIZED traps never go to a
-specified target EL, and sysreg-traps always go to a specified target
-EL, matching the pseudocode which either uses "UNDEFINED" or some kind
-of SystemAccessTrap(ELx, ...).
-
-Patch 14 fixes some issues with the WFI/WFX trap code, some of
-which are like the above sysreg access check bugs (not using
-Monitor Trap, not honouring traps in EL3 not-Monitor-mode),
-plus one which I noticed while working on the code (it doesn't
-use arm_sctlr() so will look at the wrong SCTLR when in EL2&0).
-
-I've cc'd the relevant patches to stable, but I don't think
-it's very likely that anybody ever ran into these bugs, because
-they're all cases of "we did the wrong thing if code at an EL
-below EL3 tried to do something it shouldn't". I don't think that
-EL3 code generally uses the trap bits for trap-and-emulate
-of functionality, only to prevent the lower ELs messing with
-state it should not, and everything here with the exception of
-SCR.IRQ and SCR.FIQ is pretty obscure anyway.
-
-(Tested somewhat lightly, because I don't have any test images
-that test AArch32 EL3 really.)
-
-thanks
--- PMM
-
-Peter Maydell (14):
-  target/arm: Report correct syndrome for UNDEFINED CNTPS_*_EL1 from EL2
-    and NS EL1
-  target/arm: Report correct syndrome for UNDEFINED AT ops with wrong
-    NSE,NS
-  target/arm: Report correct syndrome for UNDEFINED S1E2 AT ops at EL3
-  target/arm: Report correct syndrome for UNDEFINED LOR sysregs when
-    NS=0
-  target/arm: Make CP_ACCESS_TRAPs to AArch32 EL3 be Monitor traps
-  hw/intc/arm_gicv3_cpuif: Don't downgrade monitor traps for AArch32 EL3
-  target/arm: Honour SDCR.TDCC and SCR.TERR in AArch32 EL3 non-Monitor
-    modes
-  hw/intc/arm_gicv3_cpuif(): Remove redundant tests of is_a64()
-  target/arm: Support CP_ACCESS_TRAP_EL1 as a CPAccessResult
-  target/arm: Use CP_ACCESS_TRAP_EL1 for traps that are always to EL1
-  target/arm: Use TRAP_UNCATEGORIZED for XScale CPAR traps
-  target/arm: Remove CP_ACCESS_TRAP handling
-  target/arm: Rename CP_ACCESS_TRAP_UNCATEGORIZED to CP_ACCESS_UNDEFINED
-  target/arm: Correct errors in WFI/WFE trapping
-
- target/arm/cpregs.h        | 15 +++++---
- target/arm/cpu.h           |  6 +++
- hw/intc/arm_gicv3_cpuif.c  | 15 ++------
- target/arm/debug_helper.c  |  5 ++-
- target/arm/helper.c        | 75 ++++++++++++++++++++++----------------
- target/arm/tcg/op_helper.c | 71 ++++++++++++++++++++++--------------
- 6 files changed, 107 insertions(+), 80 deletions(-)
-
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 40bdfc851a5..c5245a20aaf 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -2385,7 +2385,7 @@ static CPAccessResult gt_stimer_access(CPUARMState *env,
+     switch (arm_current_el(env)) {
+     case 1:
+         if (!arm_is_secure(env)) {
+-            return CP_ACCESS_TRAP;
++            return CP_ACCESS_TRAP_UNCATEGORIZED;
+         }
+         if (!(env->cp15.scr_el3 & SCR_ST)) {
+             return CP_ACCESS_TRAP_EL3;
+@@ -2393,7 +2393,7 @@ static CPAccessResult gt_stimer_access(CPUARMState *env,
+         return CP_ACCESS_OK;
+     case 0:
+     case 2:
+-        return CP_ACCESS_TRAP;
++        return CP_ACCESS_TRAP_UNCATEGORIZED;
+     case 3:
+         return CP_ACCESS_OK;
+     default:
 -- 
 2.34.1
 
