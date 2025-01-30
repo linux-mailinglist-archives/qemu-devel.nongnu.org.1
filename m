@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52E3A22B77
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 11:14:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AA67A22B6A
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 11:12:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdRWD-0006T4-Pd; Thu, 30 Jan 2025 05:11:29 -0500
+	id 1tdRWG-000722-UR; Thu, 30 Jan 2025 05:11:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tdRW3-000696-Cy
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:11:21 -0500
+ id 1tdRWA-0006YK-NY
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:11:26 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tdRW2-0007ND-04
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:11:19 -0500
+ id 1tdRW7-0007Nh-KJ
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:11:26 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tdRVo-00000006U0V-0uOq; Thu, 30 Jan 2025 11:11:04 +0100
+ id 1tdRVt-00000006U0g-1Zet; Thu, 30 Jan 2025 11:11:09 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,10 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v4 22/33] vfio/migration: Convert bytes_transferred counter to
- atomic
-Date: Thu, 30 Jan 2025 11:08:43 +0100
-Message-ID: <41ce794acd0714c69e212ff43ddea09cd9a47eec.1738171076.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v4 23/33] vfio/migration: Multifd device state transfer
+ support - basic types
+Date: Thu, 30 Jan 2025 11:08:44 +0100
+Message-ID: <eaf874f64709ab9ac88ef96d1656d9d9d423ec78.1738171076.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1738171076.git.maciej.szmigiero@oracle.com>
 References: <cover.1738171076.git.maciej.szmigiero@oracle.com>
@@ -66,39 +66,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-So it can be safety accessed from multiple threads.
+Add basic types and flags used by VFIO multifd device state transfer
+support.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/vfio/migration.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/vfio/migration.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index f5df5ef17080..cbb1e0b6f852 100644
+index cbb1e0b6f852..715182c4f810 100644
 --- a/hw/vfio/migration.c
 +++ b/hw/vfio/migration.c
-@@ -416,7 +416,7 @@ static ssize_t vfio_save_block(QEMUFile *f, VFIOMigration *migration)
-     qemu_put_be64(f, VFIO_MIG_FLAG_DEV_DATA_STATE);
-     qemu_put_be64(f, data_size);
-     qemu_put_buffer(f, migration->data_buffer, data_size);
--    bytes_transferred += data_size;
-+    qatomic_add(&bytes_transferred, data_size);
- 
-     trace_vfio_save_block(migration->vbasedev->name, data_size);
- 
-@@ -1038,12 +1038,12 @@ static int vfio_block_migration(VFIODevice *vbasedev, Error *err, Error **errp)
- 
- int64_t vfio_mig_bytes_transferred(void)
- {
--    return bytes_transferred;
-+    return qatomic_read(&bytes_transferred);
- }
- 
- void vfio_reset_bytes_transferred(void)
- {
--    bytes_transferred = 0;
-+    qatomic_set(&bytes_transferred, 0);
- }
+@@ -47,6 +47,7 @@
+ #define VFIO_MIG_FLAG_DEV_SETUP_STATE   (0xffffffffef100003ULL)
+ #define VFIO_MIG_FLAG_DEV_DATA_STATE    (0xffffffffef100004ULL)
+ #define VFIO_MIG_FLAG_DEV_INIT_DATA_SENT (0xffffffffef100005ULL)
++#define VFIO_MIG_FLAG_DEV_CONFIG_LOAD_READY (0xffffffffef100006ULL)
  
  /*
+  * This is an arbitrary size based on migration of mlx5 devices, where typically
+@@ -55,6 +56,15 @@
+  */
+ #define VFIO_MIG_DEFAULT_DATA_BUFFER_SIZE (1 * MiB)
+ 
++#define VFIO_DEVICE_STATE_CONFIG_STATE (1)
++
++typedef struct VFIODeviceStatePacket {
++    uint32_t version;
++    uint32_t idx;
++    uint32_t flags;
++    uint8_t data[0];
++} QEMU_PACKED VFIODeviceStatePacket;
++
+ static int64_t bytes_transferred;
+ 
+ static const char *mig_state_to_str(enum vfio_device_mig_state state)
 
