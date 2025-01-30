@@ -2,38 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA2CBA22DEC
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 14:36:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB8AA22DE9
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 14:36:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdUh8-0002as-3y; Thu, 30 Jan 2025 08:34:58 -0500
+	id 1tdUh8-0002ar-3O; Thu, 30 Jan 2025 08:34:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tdUh2-0002aG-37; Thu, 30 Jan 2025 08:34:52 -0500
+ id 1tdUh2-0002aH-Cx; Thu, 30 Jan 2025 08:34:52 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tdUh0-0002WL-7G; Thu, 30 Jan 2025 08:34:51 -0500
+ id 1tdUh0-0002WM-L8; Thu, 30 Jan 2025 08:34:52 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DCAFBE303E;
+ by isrv.corpit.ru (Postfix) with ESMTP id E38E1E303F;
  Thu, 30 Jan 2025 16:34:18 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id CBBBE1A7F85;
+ by tsrv.corpit.ru (Postfix) with ESMTP id D34A11A7F86;
  Thu, 30 Jan 2025 16:34:47 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id C377552400; Thu, 30 Jan 2025 16:34:47 +0300 (MSK)
+ id C4D0B52402; Thu, 30 Jan 2025 16:34:47 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>,
-	qemu-trivial@nongnu.org
-Subject: [PULL 0/7] Trivial patches for 2025-01-30
-Date: Thu, 30 Jan 2025 16:34:40 +0300
-Message-Id: <20250130133447.873566-1-mjt@tls.msk.ru>
+Cc: Laurent Vivier <lvivier@redhat.com>, qemu-trivial@nongnu.org,
+ akihiko.odaki@daynix.com, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 1/7] net: Fix announce_self
+Date: Thu, 30 Jan 2025 16:34:41 +0300
+Message-Id: <20250130133447.873566-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250130133447.873566-1-mjt@tls.msk.ru>
+References: <20250130133447.873566-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,56 +59,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 871af84dd599fab68c8ed414d9ecbdb2bcfc5801:
+From: Laurent Vivier <lvivier@redhat.com>
 
-  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2025-01-29 09:51:03 -0500)
+b9ad513e1876 ("net: Remove receive_raw()") adds an iovec entry
+in qemu_deliver_packet_iov() to add the virtio-net header
+in the data when QEMU_NET_PACKET_FLAG_RAW is set but forgets
+to increase the number of iovec entries in the array, so
+receive_iov() will only send the first entry (the virtio-net
+entry, full of 0) and no data. The packet will be discarded.
 
-are available in the Git repository at:
+The only user of QEMU_NET_PACKET_FLAG_RAW is announce_self.
 
-  https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
+We can see the problem with tcpdump:
 
-for you to fetch changes up to 6a784f12000582b9f0f40fadc967ad474fc27c7b:
+- QEMU parameters:
 
-  hw/i386/pc: Remove unused pc_compat_2_3 declarations (2025-01-30 13:01:22 +0300)
+  .. -monitor stdio \
+     -netdev bridge,id=netdev0,br=virbr0 \
+     -device virtio-net,mac=9a:2b:2c:2d:2e:2f,netdev=netdev0 \
 
-----------------------------------------------------------------
-trivial patches for 2025-01-30
+- HMP command:
 
-Just a few of them.  Including some bugfixes.
+  (qemu) announce_self
 
-----------------------------------------------------------------
-Dominik 'Disconnect3d' Czarnota (1):
-      gdbstub/user-target: fix gdbserver int format (%d -> %x)
+- TCP dump:
 
-Laurent Vivier (2):
-      net: Fix announce_self
-      net/dump: Correctly compute Ethernet packet offset
+  $ sudo tcpdump -nxi virbr0
 
-Michael Tokarev (1):
-      vvfat: create_long_filename: fix out-of-bounds array access
+  without the fix:
 
-Philippe Mathieu-Daudé (2):
-      licenses: Remove SPDX tags not being license identifier for Linaro
-      hw/i386/pc: Remove unused pc_compat_2_3 declarations
+    <nothing>
 
-Thomas Huth (1):
-      tests/functional/test_mips_malta: Fix comment about endianness of the test
+  with the fix:
 
- accel/tcg/vcpu-state.h                           |  9 +++++++--
- block/vvfat.c                                    | 11 +++++------
- gdbstub/user-target.c                            | 10 +++++-----
- hw/misc/ivshmem-flat.c                           |  5 +++--
- include/hw/i386/pc.h                             |  3 ---
- include/hw/misc/ivshmem-flat.h                   |  5 +++--
- net/dump.c                                       |  3 ++-
- net/net.c                                        |  1 +
- scripts/qom-cast-macro-clean-cocci-gen.py        |  7 +++++--
- target/m68k/semihosting-stub.c                   |  7 +++++--
- target/mips/tcg/system/semihosting-stub.c        |  5 +++--
- tests/functional/test_aarch64_sbsaref.py         |  8 +++++---
- tests/functional/test_aarch64_sbsaref_alpine.py  |  8 +++++---
- tests/functional/test_aarch64_sbsaref_freebsd.py |  8 +++++---
- tests/functional/test_mips_malta.py              |  2 +-
- tests/qtest/libqos/virtio-scmi.c                 |  2 +-
- 16 files changed, 56 insertions(+), 38 deletions(-)
+   ARP, Reverse Request who-is 9a:2b:2c:2d:2e:2f tell 9a:2b:2c:2d:2e:2f, length 46
+        0x0000:  0001 0800 0604 0003 9a2b 2c2d 2e2f 0000
+        0x0010:  0000 9a2b 2c2d 2e2f 0000 0000 0000 0000
+        0x0020:  0000 0000 0000 0000 0000 0000 0000
+
+Reported-by: Xiaohui Li <xiaohli@redhat.com>
+Bug: https://issues.redhat.com/browse/RHEL-73891
+Fixes: b9ad513e1876 ("net: Remove receive_raw()")
+Cc: akihiko.odaki@daynix.com
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ net/net.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/net.c b/net/net.c
+index c1bb19a523..9cded70dde 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -822,6 +822,7 @@ static ssize_t qemu_deliver_packet_iov(NetClientState *sender,
+         iov_copy[0].iov_len =  nc->vnet_hdr_len;
+         memcpy(&iov_copy[1], iov, iovcnt * sizeof(*iov));
+         iov = iov_copy;
++        iovcnt++;
+     }
+ 
+     if (nc->info->receive_iov) {
+-- 
+2.39.5
+
 
