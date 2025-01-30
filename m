@@ -2,88 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF2FA22C7D
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 12:28:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29026A22CAE
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 12:47:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdSh9-0001ZA-MA; Thu, 30 Jan 2025 06:26:51 -0500
+	id 1tdT0D-0000HT-Od; Thu, 30 Jan 2025 06:46:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdSh7-0001Yh-Dj
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 06:26:49 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdSh5-0001kz-NX
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 06:26:49 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4361f664af5so7699745e9.1
- for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 03:26:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738236406; x=1738841206; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xSaUbuyfnLvYbO/DID0qsOMcuNsSrGpZQtfLQrK9hjI=;
- b=GNjXzhqS6ZHMXEjVLrHGwoKsGY2QVYa5c+KZwACyCMuO+dLMkENBlEl0ts7HkkqneE
- JTaFA10JniLOGOBD3/0uuhE9h1ZTL+cIYgErh+3JQ9q/ybRh2lxlWoccZQDlQU6OCUBH
- H+gjRoIzi53a7Qy5UvYASVP+/K63faVu9IXTKWAxwKc5j/cz1kHUbaOsS07SPU1AoleH
- c4cvC6yUNQb+0HKf3KG9NJF7Ijhivxbp7a3V37FbU4/pY+NqDr6jYfFZuNRgDwIO49Dn
- f8GbxfEIIksa351W7ygTCTBKsuWfI9pvr6tqJZCEIvSLR1idZmfB4reFQSpH/6OpKvta
- 10+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738236406; x=1738841206;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xSaUbuyfnLvYbO/DID0qsOMcuNsSrGpZQtfLQrK9hjI=;
- b=DQZNfOmz/GzY+ly1ig4r2Sk05aXlbNrZ8VCwt+DxLBx4FevAj2IihsKUKWASbU5ggW
- OUPKLB+oQGkZAkkGr1nEfHHv7VFVIuHPYiTPnIv0b1zt4dO/KRH6zX2yL78m9tuQsaO/
- gULM04E19F4/WokN70pVmh4y7Uc1M4juVlGaPM+iRX/TqsCoGHXUzsmYrHiCCO9rr4ZH
- PGjGVzxj1DRz6OFRI0d+3J8/gjD/Q0zt2oCedQAzsoNWtjD6HHuqozx4LKzCJQ46goMi
- L2ehRepze7Ym4nRykrI60qsHnzY0CVuZS/9Lfnyix9l+sCYy6tinwKDurH5wHh2zT0dI
- Sd+g==
-X-Gm-Message-State: AOJu0Yx+bGQP3rCLdqjZ5lw4DDxERiU5NboMHSB9WDq7krT0EVnVq5gr
- hSeG328mYdVlwu8ZkobOPsA9xwpkvZLJ78CtwlQ56qJwi20DPSKj2OdLa5NfcrT53srw0Gq/sE3
- 5Xxs=
-X-Gm-Gg: ASbGncvendZYRg4SqW9zldjMjOeCCAyi7Lucpa2KeQlnpALJaobMtpc5BCk7wEpHTzf
- be2Pw5d3ZgZGjXrWW7V4NFrMGdDfIX3aupPDsg0GrZL+ejpcRivuCFq+3lTutZY4vVZBrJxTcV5
- 67p9A9QJnZk5L3amqs15vIQOaHpuWETcnNZSinYV6QWSLjb6b/SS0Ma2HTR9UWQXNxJyu4IgA81
- h9sUvNRONZgbUvAoAitJ1m5PXAiNT+PRjriiGqzRPZWB5VlWDYza+Mjg967k98K6t0K8231l3+B
- yDqMRVyUOSgAq/5WgxmXGqGygzkw3ze907UEiENqTW/bcT0E/+gmW6l9uUglmnuX5w==
-X-Google-Smtp-Source: AGHT+IFbkJG/aRJqepyrSa16zQltQVMlBfsdB1M9p398BkW2xX5cZUMVB75iY/70NYJrJbxJ8IRagw==
-X-Received: by 2002:a05:6000:1788:b0:386:459f:67e0 with SMTP id
- ffacd0b85a97d-38c5194d438mr6926474f8f.21.1738236405652; 
- Thu, 30 Jan 2025 03:26:45 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c5c1b57c1sm1694529f8f.75.2025.01.30.03.26.44
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 30 Jan 2025 03:26:45 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tdT0B-0000HF-C5; Thu, 30 Jan 2025 06:46:31 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tdT09-0004Sg-Nd; Thu, 30 Jan 2025 06:46:31 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 7BF8DE2F8D;
+ Thu, 30 Jan 2025 14:45:56 +0300 (MSK)
+Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4C4871A7E68;
+ Thu, 30 Jan 2025 14:46:25 +0300 (MSK)
+Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
+ id 41A58523D7; Thu, 30 Jan 2025 14:46:25 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v2 6/6] hw/cpu/arm: Declare CPU QOM types using DEFINE_TYPES()
- macro
-Date: Thu, 30 Jan 2025 12:26:15 +0100
-Message-ID: <20250130112615.3219-7-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250130112615.3219-1-philmd@linaro.org>
-References: <20250130112615.3219-1-philmd@linaro.org>
+Cc: qemu-trivial@nongnu.org, Samuel Thibault <samuel.thibault@gnu.org>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PATCH v2] net/slirp: libslirp 4.8.0 compatibility
+Date: Thu, 30 Jan 2025 14:46:21 +0300
+Message-Id: <20250130114621.857046-1-mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,145 +57,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When multiple QOM types are registered in the same file,
-it is simpler to use the the DEFINE_TYPES() macro. In
-particular because type array declared with such macro
-are easier to review.
+Update the code in net/slirp.c to be compatible with
+libslirp 4.8.0, which deprecated slirp_pollfds_fill()
+and started using slirp_os_socket type for sockets
+(which is a 64-bit integer on win64) for all callbacks
+starting with version 6 of the interface.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/cpu/a15mpcore.c       | 21 +++++++++------------
- hw/cpu/a9mpcore.c        | 21 +++++++++------------
- hw/cpu/arm11mpcore.c     | 21 +++++++++------------
- hw/cpu/realview_mpcore.c | 21 +++++++++------------
- 4 files changed, 36 insertions(+), 48 deletions(-)
+v2: update other callbacks too, use version 6 of the interface
 
-diff --git a/hw/cpu/a15mpcore.c b/hw/cpu/a15mpcore.c
-index 3b0897e54ee..d24ab0a6ab2 100644
---- a/hw/cpu/a15mpcore.c
-+++ b/hw/cpu/a15mpcore.c
-@@ -164,17 +164,14 @@ static void a15mp_priv_class_init(ObjectClass *klass, void *data)
-     /* We currently have no saveable state */
+ net/slirp.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
+
+diff --git a/net/slirp.c b/net/slirp.c
+index eb9a456ed4..2d2a58a6ee 100644
+--- a/net/slirp.c
++++ b/net/slirp.c
+@@ -247,7 +247,14 @@ static void net_slirp_timer_mod(void *timer, int64_t expire_timer,
+     timer_mod(&t->timer, expire_timer);
  }
  
--static const TypeInfo a15mp_priv_info = {
--    .name  = TYPE_A15MPCORE_PRIV,
--    .parent = TYPE_SYS_BUS_DEVICE,
--    .instance_size  = sizeof(A15MPPrivState),
--    .instance_init = a15mp_priv_initfn,
--    .class_init = a15mp_priv_class_init,
-+static const TypeInfo a15mp_types[] = {
-+    {
-+        .name           = TYPE_A15MPCORE_PRIV,
-+        .parent         = TYPE_SYS_BUS_DEVICE,
-+        .instance_size  = sizeof(A15MPPrivState),
-+        .instance_init  = a15mp_priv_initfn,
-+        .class_init     = a15mp_priv_class_init,
-+    },
- };
- 
--static void a15mp_register_types(void)
--{
--    type_register_static(&a15mp_priv_info);
--}
--
--type_init(a15mp_register_types)
-+DEFINE_TYPES(a15mp_types)
-diff --git a/hw/cpu/a9mpcore.c b/hw/cpu/a9mpcore.c
-index 9671585b5f9..25416c5032b 100644
---- a/hw/cpu/a9mpcore.c
-+++ b/hw/cpu/a9mpcore.c
-@@ -177,17 +177,14 @@ static void a9mp_priv_class_init(ObjectClass *klass, void *data)
-     device_class_set_props(dc, a9mp_priv_properties);
+-static void net_slirp_register_poll_fd(int fd, void *opaque)
++#if !SLIRP_CHECK_VERSION(4,8,0)
++# define slirp_os_socket int
++# define slirp_pollfds_fill_socket slirp_pollfds_fill
++# define register_poll_sock register_poll_fd
++# define unregister_poll_sock unregister_poll_fd
++#endif
++
++static void net_slirp_register_poll_sock(slirp_os_socket fd, void *opaque)
+ {
+ #ifdef WIN32
+     AioContext *ctxt = qemu_get_aio_context();
+@@ -260,7 +267,7 @@ static void net_slirp_register_poll_fd(int fd, void *opaque)
+ #endif
  }
  
--static const TypeInfo a9mp_priv_info = {
--    .name          = TYPE_A9MPCORE_PRIV,
--    .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(A9MPPrivState),
--    .instance_init = a9mp_priv_initfn,
--    .class_init    = a9mp_priv_class_init,
-+static const TypeInfo a9mp_types[] = {
-+    {
-+        .name           = TYPE_A9MPCORE_PRIV,
-+        .parent         = TYPE_SYS_BUS_DEVICE,
-+        .instance_size  =  sizeof(A9MPPrivState),
-+        .instance_init  = a9mp_priv_initfn,
-+        .class_init     = a9mp_priv_class_init,
-+    },
+-static void net_slirp_unregister_poll_fd(int fd, void *opaque)
++static void net_slirp_unregister_poll_sock(slirp_os_socket fd, void *opaque)
+ {
+ #ifdef WIN32
+     if (WSAEventSelect(fd, NULL, 0) != 0) {
+@@ -286,8 +293,8 @@ static const SlirpCb slirp_cb = {
+ #endif
+     .timer_free = net_slirp_timer_free,
+     .timer_mod = net_slirp_timer_mod,
+-    .register_poll_fd = net_slirp_register_poll_fd,
+-    .unregister_poll_fd = net_slirp_unregister_poll_fd,
++    .register_poll_socket = net_slirp_register_poll_sock,
++    .unregister_poll_socket = net_slirp_unregister_poll_sock,
+     .notify = net_slirp_notify,
  };
  
--static void a9mp_register_types(void)
--{
--    type_register_static(&a9mp_priv_info);
--}
--
--type_init(a9mp_register_types)
-+DEFINE_TYPES(a9mp_types)
-diff --git a/hw/cpu/arm11mpcore.c b/hw/cpu/arm11mpcore.c
-index 94861a06d94..b56bee6d543 100644
---- a/hw/cpu/arm11mpcore.c
-+++ b/hw/cpu/arm11mpcore.c
-@@ -152,17 +152,14 @@ static void mpcore_priv_class_init(ObjectClass *klass, void *data)
-     device_class_set_props(dc, mpcore_priv_properties);
+@@ -314,7 +321,7 @@ static int slirp_poll_to_gio(int events)
+     return ret;
  }
  
--static const TypeInfo mpcore_priv_info = {
--    .name          = TYPE_ARM11MPCORE_PRIV,
--    .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(ARM11MPCorePriveState),
--    .instance_init = mpcore_priv_initfn,
--    .class_init    = mpcore_priv_class_init,
-+static const TypeInfo arm11mp_types[] = {
-+    {
-+        .name           = TYPE_ARM11MPCORE_PRIV,
-+        .parent         = TYPE_SYS_BUS_DEVICE,
-+        .instance_size  = sizeof(ARM11MPCorePriveState),
-+        .instance_init  = mpcore_priv_initfn,
-+        .class_init     = mpcore_priv_class_init,
-+    },
- };
+-static int net_slirp_add_poll(int fd, int events, void *opaque)
++static int net_slirp_add_poll(slirp_os_socket fd, int events, void *opaque)
+ {
+     GArray *pollfds = opaque;
+     GPollFD pfd = {
+@@ -363,8 +370,8 @@ static void net_slirp_poll_notify(Notifier *notifier, void *data)
  
--static void arm11mpcore_register_types(void)
--{
--    type_register_static(&mpcore_priv_info);
--}
--
--type_init(arm11mpcore_register_types)
-+DEFINE_TYPES(arm11mp_types)
-diff --git a/hw/cpu/realview_mpcore.c b/hw/cpu/realview_mpcore.c
-index 7480b38d1ab..b1408886184 100644
---- a/hw/cpu/realview_mpcore.c
-+++ b/hw/cpu/realview_mpcore.c
-@@ -114,17 +114,14 @@ static void mpcore_rirq_class_init(ObjectClass *klass, void *data)
-     dc->realize = realview_mpcore_realize;
- }
+     switch (poll->state) {
+     case MAIN_LOOP_POLL_FILL:
+-        slirp_pollfds_fill(s->slirp, &poll->timeout,
+-                           net_slirp_add_poll, poll->pollfds);
++        slirp_pollfds_fill_socket(s->slirp, &poll->timeout,
++                                  net_slirp_add_poll, poll->pollfds);
+         break;
+     case MAIN_LOOP_POLL_OK:
+     case MAIN_LOOP_POLL_ERR:
+@@ -629,7 +636,9 @@ static int net_slirp_init(NetClientState *peer, const char *model,
  
--static const TypeInfo mpcore_rirq_info = {
--    .name          = TYPE_REALVIEW_MPCORE_RIRQ,
--    .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(mpcore_rirq_state),
--    .instance_init = mpcore_rirq_init,
--    .class_init    = mpcore_rirq_class_init,
-+static const TypeInfo realview_mpcore_types[] = {
-+    {
-+        .name           = TYPE_REALVIEW_MPCORE_RIRQ,
-+        .parent         = TYPE_SYS_BUS_DEVICE,
-+        .instance_size  = sizeof(mpcore_rirq_state),
-+        .instance_init  = mpcore_rirq_init,
-+        .class_init     = mpcore_rirq_class_init,
-+    },
- };
+     s = DO_UPCAST(SlirpState, nc, nc);
  
--static void realview_mpcore_register_types(void)
--{
--    type_register_static(&mpcore_rirq_info);
--}
--
--type_init(realview_mpcore_register_types)
-+DEFINE_TYPES(realview_mpcore_types)
+-    cfg.version = SLIRP_CHECK_VERSION(4,7,0) ? 4 : 1;
++    cfg.version =
++         SLIRP_CHECK_VERSION(4,8,0) ? 6 :
++         SLIRP_CHECK_VERSION(4,7,0) ? 4 : 1;
+     cfg.restricted = restricted;
+     cfg.in_enabled = ipv4;
+     cfg.vnetwork = net;
 -- 
-2.47.1
+2.39.5
 
 
