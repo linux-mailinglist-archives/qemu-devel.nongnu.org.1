@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A7DA22B76
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 11:14:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B337A22B51
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 11:10:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdRUi-0002Ef-Qk; Thu, 30 Jan 2025 05:09:56 -0500
+	id 1tdRUn-0002Ik-02; Thu, 30 Jan 2025 05:10:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tdRUg-0002EU-5w
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:09:54 -0500
+ id 1tdRUk-0002Hy-GT
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:09:58 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tdRUe-00073x-MQ
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:09:53 -0500
+ id 1tdRUj-00074I-0A
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:09:58 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tdRUZ-00000006TxG-04Ei; Thu, 30 Jan 2025 11:09:47 +0100
+ id 1tdRUe-00000006TxS-0eRP; Thu, 30 Jan 2025 11:09:52 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,10 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v4 07/33] io: tls: Allow terminating the TLS session
- gracefully with EOF
-Date: Thu, 30 Jan 2025 11:08:28 +0100
-Message-ID: <fdd9a0a6053ac6aed32e08cc284991a3630bbfec.1738171076.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v4 08/33] migration/multifd: Allow premature EOF on TLS
+ incoming channels
+Date: Thu, 30 Jan 2025 11:08:29 +0100
+Message-ID: <baf944c37ead5d30d7e268b2a4074d9acaac2db0.1738171076.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1738171076.git.maciej.szmigiero@oracle.com>
 References: <cover.1738171076.git.maciej.szmigiero@oracle.com>
@@ -66,70 +66,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Currently, hitting EOF on receive without sender terminating the TLS
-session properly causes the TLS channel to return an error (unless
-the channel was already shut down for read).
+Multifd send channels are terminated by calling
+qio_channel_shutdown(QIO_CHANNEL_SHUTDOWN_BOTH) in
+multifd_send_terminate_threads(), which in the TLS case essentially
+calls shutdown(SHUT_RDWR) on the underlying raw socket.
 
-Add an optional setting whether we instead just return EOF in that
-case.
+Unfortunately, this does not terminate the TLS session properly and
+the receive side sees this as a GNUTLS_E_PREMATURE_TERMINATION error.
 
-This possibility will be soon used by the migration multifd code.
+The only reason why this wasn't causing migration failures is because
+the current migration code apparently does not check for migration
+error being set after the end of the multifd receive process.
+
+However, this will change soon so the multifd receive code has to be
+prepared to not return an error on such premature TLS session EOF.
+Use the newly introduced QIOChannelTLS method for that.
+
+It's worth noting that even if the sender were to be changed to terminate
+the TLS connection properly the receive side still needs to remain
+compatible with older QEMU bit stream which does not do this.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- include/io/channel-tls.h | 11 +++++++++++
- io/channel-tls.c         |  6 ++++++
- 2 files changed, 17 insertions(+)
+ migration/multifd.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/io/channel-tls.h b/include/io/channel-tls.h
-index 26c67f17e2d3..8552c0d0266e 100644
---- a/include/io/channel-tls.h
-+++ b/include/io/channel-tls.h
-@@ -49,6 +49,7 @@ struct QIOChannelTLS {
-     QCryptoTLSSession *session;
-     QIOChannelShutdown shutdown;
-     guint hs_ioc_tag;
-+    bool premature_eof_okay;
- };
+diff --git a/migration/multifd.c b/migration/multifd.c
+index ab73d6d984cf..ceaad930e141 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -1310,6 +1310,7 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
+     Error *local_err = NULL;
+     bool use_packets = multifd_use_packets();
+     int id;
++    QIOChannelTLS *ioc_tls;
  
- /**
-@@ -143,4 +144,14 @@ void qio_channel_tls_handshake(QIOChannelTLS *ioc,
- QCryptoTLSSession *
- qio_channel_tls_get_session(QIOChannelTLS *ioc);
+     if (use_packets) {
+         id = multifd_recv_initial_packet(ioc, &local_err);
+@@ -1337,6 +1338,13 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
+     p->c = ioc;
+     object_ref(OBJECT(ioc));
  
-+/**
-+ * qio_channel_tls_set_premature_eof_okay:
-+ * @ioc: the TLS channel object
-+ *
-+ * Sets whether receiving an EOF without terminating the TLS session properly
-+ * by used the other side is considered okay or an error (the
-+ * default behaviour).
-+ */
-+void qio_channel_tls_set_premature_eof_okay(QIOChannelTLS *ioc, bool enabled);
++    ioc_tls = QIO_CHANNEL_TLS(object_dynamic_cast(OBJECT(ioc),
++                                                  TYPE_QIO_CHANNEL_TLS));
++    if (ioc_tls) {
++        /* Multifd send channels do not terminate the TLS session properly */
++        qio_channel_tls_set_premature_eof_okay(ioc_tls, true);
++    }
 +
- #endif /* QIO_CHANNEL_TLS_H */
-diff --git a/io/channel-tls.c b/io/channel-tls.c
-index aab630e5ae32..1079d6d10de1 100644
---- a/io/channel-tls.c
-+++ b/io/channel-tls.c
-@@ -147,6 +147,11 @@ qio_channel_tls_new_client(QIOChannel *master,
-     return NULL;
- }
- 
-+void qio_channel_tls_set_premature_eof_okay(QIOChannelTLS *ioc, bool enabled)
-+{
-+    ioc->premature_eof_okay = enabled;
-+}
-+
- struct QIOChannelTLSData {
-     QIOTask *task;
-     GMainContext *context;
-@@ -279,6 +284,7 @@ static ssize_t qio_channel_tls_readv(QIOChannel *ioc,
-             tioc->session,
-             iov[i].iov_base,
-             iov[i].iov_len,
-+            tioc->premature_eof_okay ||
-             qatomic_load_acquire(&tioc->shutdown) & QIO_CHANNEL_SHUTDOWN_READ,
-             errp);
-         if (ret == QCRYPTO_TLS_SESSION_ERR_BLOCK) {
+     p->thread_created = true;
+     qemu_thread_create(&p->thread, p->name, multifd_recv_thread, p,
+                        QEMU_THREAD_JOINABLE);
 
