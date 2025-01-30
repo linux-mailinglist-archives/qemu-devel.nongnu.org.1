@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3E11A22B7B
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 11:15:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDFACA22B60
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 11:12:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdRVW-0004d6-Ly; Thu, 30 Jan 2025 05:10:47 -0500
+	id 1tdRVs-00050W-J2; Thu, 30 Jan 2025 05:11:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tdRVU-0004cO-R2
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:10:44 -0500
+ id 1tdRVY-0004or-EW
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:10:48 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tdRVS-0007Ki-Q7
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:10:44 -0500
+ id 1tdRVW-0007LA-TZ
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:10:48 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tdRVO-00000006TzI-1zX9; Thu, 30 Jan 2025 11:10:38 +0100
+ id 1tdRVT-00000006TzV-2f7Q; Thu, 30 Jan 2025 11:10:43 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,9 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v4 17/33] migration/multifd: Make MultiFDSendData a struct
-Date: Thu, 30 Jan 2025 11:08:38 +0100
-Message-ID: <e7a227c97319d036dd1b06d1ea93af77ce92563d.1738171076.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v4 18/33] migration/multifd: Add
+ multifd_device_state_supported()
+Date: Thu, 30 Jan 2025 11:08:39 +0100
+Message-ID: <1a2ac534131c3bf61303dde0f7d59cfa2a90b3d3.1738171076.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1738171076.git.maciej.szmigiero@oracle.com>
 References: <cover.1738171076.git.maciej.szmigiero@oracle.com>
@@ -63,168 +64,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Xu <peterx@redhat.com>
+From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-The newly introduced device state buffer can be used for either storing
-VFIO's read() raw data, but already also possible to store generic device
-states.  After noticing that device states may not easily provide a max
-buffer size (also the fact that RAM MultiFDPages_t after all also want to
-have flexibility on managing offset[] array), it may not be a good idea to
-stick with union on MultiFDSendData.. as it won't play well with such
-flexibility.
+Since device state transfer via multifd channels requires multifd
+channels with packets and is currently not compatible with multifd
+compression add an appropriate query function so device can learn
+whether it can actually make use of it.
 
-Switch MultiFDSendData to a struct.
-
-It won't consume a lot more space in reality, after all the real buffers
-were already dynamically allocated, so it's so far only about the two
-structs (pages, device_state) that will be duplicated, but they're small.
-
-With this, we can remove the pretty hard to understand alloc size logic.
-Because now we can allocate offset[] together with the SendData, and
-properly free it when the SendData is freed.
-
-Signed-off-by: Peter Xu <peterx@redhat.com>
-[MSS: Make sure to clear possible device state payload before freeing
-MultiFDSendData, remove placeholders for other patches not included]
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- migration/multifd-device-state.c |  5 -----
- migration/multifd-nocomp.c       | 13 ++++++-------
- migration/multifd.c              | 25 +++++++------------------
- migration/multifd.h              | 15 +++++++++------
- 4 files changed, 22 insertions(+), 36 deletions(-)
+ include/migration/misc.h         | 1 +
+ migration/multifd-device-state.c | 7 +++++++
+ 2 files changed, 8 insertions(+)
 
+diff --git a/include/migration/misc.h b/include/migration/misc.h
+index 885022d21a0c..cc987e6e97af 100644
+--- a/include/migration/misc.h
++++ b/include/migration/misc.h
+@@ -114,5 +114,6 @@ bool migration_block_inactivate(void);
+ /* migration/multifd-device-state.c */
+ bool multifd_queue_device_state(char *idstr, uint32_t instance_id,
+                                 char *data, size_t len);
++bool multifd_device_state_supported(void);
+ 
+ #endif
 diff --git a/migration/multifd-device-state.c b/migration/multifd-device-state.c
-index 2207bea9bf8a..d1674b432ff2 100644
+index d1674b432ff2..cee3c44bcf2a 100644
 --- a/migration/multifd-device-state.c
 +++ b/migration/multifd-device-state.c
-@@ -16,11 +16,6 @@ static QemuMutex queue_job_mutex;
+@@ -11,6 +11,7 @@
+ #include "qemu/lockable.h"
+ #include "migration/misc.h"
+ #include "multifd.h"
++#include "options.h"
  
- static MultiFDSendData *device_state_send;
+ static QemuMutex queue_job_mutex;
  
--size_t multifd_device_state_payload_size(void)
--{
--    return sizeof(MultiFDDeviceState_t);
--}
--
- void multifd_device_state_send_setup(void)
- {
-     qemu_mutex_init(&queue_job_mutex);
-diff --git a/migration/multifd-nocomp.c b/migration/multifd-nocomp.c
-index c00804652383..ffe75256c9fb 100644
---- a/migration/multifd-nocomp.c
-+++ b/migration/multifd-nocomp.c
-@@ -25,15 +25,14 @@
+@@ -100,3 +101,9 @@ bool multifd_queue_device_state(char *idstr, uint32_t instance_id,
  
- static MultiFDSendData *multifd_ram_send;
- 
--size_t multifd_ram_payload_size(void)
-+void multifd_ram_payload_alloc(MultiFDPages_t *pages)
- {
--    uint32_t n = multifd_ram_page_count();
-+    pages->offset = g_new0(ram_addr_t, multifd_ram_page_count());
-+}
- 
--    /*
--     * We keep an array of page offsets at the end of MultiFDPages_t,
--     * add space for it in the allocation.
--     */
--    return sizeof(MultiFDPages_t) + n * sizeof(ram_addr_t);
-+void multifd_ram_payload_free(MultiFDPages_t *pages)
-+{
-+    g_clear_pointer(&pages->offset, g_free);
+     return true;
  }
- 
- void multifd_ram_save_setup(void)
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 61b061a33d35..0b61b8192231 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -105,26 +105,12 @@ struct {
- 
- MultiFDSendData *multifd_send_data_alloc(void)
- {
--    size_t max_payload_size, size_minus_payload;
-+    MultiFDSendData *new = g_new0(MultiFDSendData, 1);
- 
--    /*
--     * MultiFDPages_t has a flexible array at the end, account for it
--     * when allocating MultiFDSendData. Use max() in case other types
--     * added to the union in the future are larger than
--     * (MultiFDPages_t + flex array).
--     */
--    max_payload_size = MAX(multifd_ram_payload_size(),
--                           multifd_device_state_payload_size());
--    max_payload_size = MAX(max_payload_size, sizeof(MultiFDPayload));
--
--    /*
--     * Account for any holes the compiler might insert. We can't pack
--     * the structure because that misaligns the members and triggers
--     * Waddress-of-packed-member.
--     */
--    size_minus_payload = sizeof(MultiFDSendData) - sizeof(MultiFDPayload);
-+    multifd_ram_payload_alloc(&new->u.ram);
-+    /* Device state allocates its payload on-demand */
- 
--    return g_malloc0(size_minus_payload + max_payload_size);
-+    return new;
- }
- 
- void multifd_send_data_clear(MultiFDSendData *data)
-@@ -151,8 +137,11 @@ void multifd_send_data_free(MultiFDSendData *data)
-         return;
-     }
- 
-+    /* This also free's device state payload */
-     multifd_send_data_clear(data);
- 
-+    multifd_ram_payload_free(&data->u.ram);
 +
-     g_free(data);
- }
- 
-diff --git a/migration/multifd.h b/migration/multifd.h
-index ddc617db9acb..f7811cc0d0cb 100644
---- a/migration/multifd.h
-+++ b/migration/multifd.h
-@@ -115,9 +115,13 @@ typedef struct {
-     uint32_t num;
-     /* number of normal pages */
-     uint32_t normal_num;
-+    /*
-+     * Pointer to the ramblock.  NOTE: it's caller's responsibility to make
-+     * sure the pointer is always valid!
-+     */
-     RAMBlock *block;
--    /* offset of each page */
--    ram_addr_t offset[];
-+    /* offset array of each page, managed by multifd */
-+    ram_addr_t *offset;
- } MultiFDPages_t;
- 
- struct MultiFDRecvData {
-@@ -140,7 +144,7 @@ typedef enum {
-     MULTIFD_PAYLOAD_DEVICE_STATE,
- } MultiFDPayloadType;
- 
--typedef union MultiFDPayload {
-+typedef struct MultiFDPayload {
-     MultiFDPages_t ram;
-     MultiFDDeviceState_t device_state;
- } MultiFDPayload;
-@@ -392,12 +396,11 @@ void multifd_ram_save_cleanup(void);
- int multifd_ram_flush_and_sync(QEMUFile *f);
- bool multifd_ram_sync_per_round(void);
- bool multifd_ram_sync_per_section(void);
--size_t multifd_ram_payload_size(void);
-+void multifd_ram_payload_alloc(MultiFDPages_t *pages);
-+void multifd_ram_payload_free(MultiFDPages_t *pages);
- void multifd_ram_fill_packet(MultiFDSendParams *p);
- int multifd_ram_unfill_packet(MultiFDRecvParams *p, Error **errp);
- 
--size_t multifd_device_state_payload_size(void);
--
- void multifd_send_data_clear_device_state(MultiFDDeviceState_t *device_state);
- 
- void multifd_device_state_send_setup(void);
++bool multifd_device_state_supported(void)
++{
++    return migrate_multifd() && !migrate_mapped_ram() &&
++        migrate_multifd_compression() == MULTIFD_COMPRESSION_NONE;
++}
 
