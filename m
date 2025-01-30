@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82E82A233AB
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 19:24:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50F48A233B2
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 19:25:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdZCV-00041L-LP; Thu, 30 Jan 2025 13:23:39 -0500
+	id 1tdZCX-000434-Gz; Thu, 30 Jan 2025 13:23:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tdZCG-0003to-Qi
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 13:23:25 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1tdZCI-0003tw-LC
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 13:23:30 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tdZCE-0000Wj-QM
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 13:23:24 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3863c36a731so907438f8f.1
- for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 10:23:21 -0800 (PST)
+ id 1tdZCF-0000X5-SJ
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 13:23:26 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4362bae4d7dso8568725e9.1
+ for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 10:23:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738261401; x=1738866201; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738261402; x=1738866202; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yzUgHg6nqtrTZvIz3ixC5Nt4RQVPQXOj6ckfC4T6pic=;
- b=HwcyNL3oMwBo+d5Cx9dtQLo2wPmBss2ueuuURUumi+3Pi+v5TssmC3JjyxVNl6B+SL
- JUOCaDUqjzsg3/8laYZShSPnBQKoBOeDQkGXXsJlg03ipUHJbbjzGF0WvTWIsNVI+tJT
- Z8NEziDt7k4qPVkPPWykLfO2+yUqO/uJNe9hzj8C/+96Zw3ZLEs8mD8SKaRd8VHE+KIw
- pfSmKRd477kWuUOlhivJQExP+GMElIOK3zTLVVwL4QdGv59n4lubsa1DPQlWBWJsOxiy
- pccfSMK5IicD28ypFNrJu2nUotBUA0nH+MYBglhMFdlqDPBsdm+RFuJzjgj+Kie/k683
- 1VRQ==
+ bh=2CkHxBykkh+MkSMFpl2gMe093xK0SZ26idFhO7kRCAU=;
+ b=NjIReg6bioSEKiNfHY+RDlSS6S3o6YdBfcUE2tVLvQcjed0Yw3IDQ3vaOGStnzLGRB
+ vbpueu7j0FTwkNas8rHC5fnctrbqbohrKQpbB2BYyJ9D6tSJzjSPU0Kai9ODeZq5+zlF
+ l/d0/1WLuyys0j13Nd8OO4aofSe0/IiExxMLG3cJogvtkvFYH9Rj3VOB8VthyFk2Vxrx
+ do0RDAOreuytzvIwPcMkiV8gU1p528+OYAjDMKUWypOJFhKusMapgvPoILB0hrQx401d
+ bM3qn1VAfcEyzhuuMT1S7jEvSwdFPaTLIj3U82UpEbvfvEALAXYjyQ3aU+hPZZo8P976
+ HzFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738261401; x=1738866201;
+ d=1e100.net; s=20230601; t=1738261402; x=1738866202;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yzUgHg6nqtrTZvIz3ixC5Nt4RQVPQXOj6ckfC4T6pic=;
- b=hHWBD8VRNMx7k3JSF2DJM9QkRxth+smVldhyP15wkopid/7DXl8oDK11QnU3ez4UqR
- X5ERbpi66I2K4w/A/PEcsjBP7+/UX/FBrXcDzdUQt2TCeeK9nngpX8bXOMGdiycikw0K
- VATCLzQT6q5sqSTFjR5hGfhMku4KnH/A1II72Gn8C15O96ghxPx1PW+GoR0SP5I9MCBT
- uzloTV35BfdbXWiRREuv3v7CueJs2gndTZ3LqAWjEKbAzFrQflDrdSTrbnZvA9gBfVUy
- GOncgwJuXO3ul7ORPPTSovxyPce1NFnyqdT2VoPQwTm7hFOgUKvE1LzTXcVyUa5XJcti
- FwoQ==
+ bh=2CkHxBykkh+MkSMFpl2gMe093xK0SZ26idFhO7kRCAU=;
+ b=BngZomyeZekgT8aDiecV4FtUaG4LGHV8iIjjj5IxwJRbXZ7jcWisL0qdPchXbGjv0B
+ dZ9g2VxjRKKSfv/D58w7FOraZHOvZpbtyArOVCVMWwshGLfZkT7s5F2BkGCrJwoIP6jM
+ SEIK1NKZZpcTFStiEnAtFu9KZyCCmwOdZWe93O17FbcjuGlfXv1QiQyGJpnRHG+YgRN5
+ lwIROjLwHSpSyxi/NXIJBzxnTOoIuMjbhH4nirQy1Hz7BAYvady+sSvQRRqeJdHGv7Oh
+ Imd+FQ0IyZDKreAi7+vTAhu/SzGBFL1F+kiwzIPrfozCBOBbdryzIuvr45u5tFRs6Cby
+ Flmw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXTzQcK1ymi4Qt7iaUFuHPxGo3Lv572g0L3XLEJyq4BXGDlcI5LZl+WRXoIN2ceV96SkYMCoFRcWuVH@nongnu.org
-X-Gm-Message-State: AOJu0YyCtvJIZRJ2ZAJ314pqx3Vq7AyBPiLxGhYznsetkU0iqfYDHQbk
- n/YY5UQpThWZkMwpUQx710HhsHqVfLmr1vt98w6VsM+pnbj9KBOn8xsgtjJWcCI=
-X-Gm-Gg: ASbGncvV4IcZFAUfRCg+mc1llUsGrf97rvLoc9CxaqXEut0lXJgfHICpN2P7oDw6xPq
- ObZr4H1wD/j5/vOef/RJ0DCnX6vRdve14kd+rhMWGOVc42ov7b58FTsXK0/1whd8CPAT+8vVqCe
- YYIB/kmXG7Z2GjpgZxPaS38zhRoIKEvgs33Xhk4fQ661Pc2+acBIZarZFafeTd75syoYvM0jwG6
- ONMUT7QEJeskEke7yo9UYJ0AJTGMWtKC3LziiGkEIW6PRP9i2IG3q2P92lpA9N8n/YeZESEYn36
- 9qSflfn+nRCzVT6zfm1lRA==
-X-Google-Smtp-Source: AGHT+IE8KcPPbbX+/lcvomWZbLlt2xTmnRV4Djr3ywWNrv8azlYXfRd8F3odOCzEuERXlxchvO0xXQ==
-X-Received: by 2002:a5d:64a1:0:b0:385:f0dc:c9f4 with SMTP id
- ffacd0b85a97d-38c51967de4mr6882576f8f.20.1738261400830; 
- Thu, 30 Jan 2025 10:23:20 -0800 (PST)
+ AJvYcCXnf8+yD+nsnQFTXiDmgCMaJqudsiyvQ1sq+7BxijCI/epVQzERR9MaDSbKvPsPhXwuUXq0kxDALIkv@nongnu.org
+X-Gm-Message-State: AOJu0YwMXK46lodgI3Wjv2dTU0CEs0elWQgb5nvTi7ElkHHeEogLpWgL
+ TL6eQvUQ8gAh5UqQcKYCvkZHu3OZqixidv+IvAYoVipsA0R8Q6+3WL5gd3nRnYY=
+X-Gm-Gg: ASbGnctj+8OX/pcBMSHmwfHp0d7C51xp4He6sWjA0iVLXDxzRrCOv7QauCjcPnn5u3W
+ ZA81eicOb7+ZSYx6vwjB9dkHO10zBW0JPr9mkxmEd2pfsR0al92FJJK8/bwrzpko3idwfHzs8yM
+ DyqBOGZwYrqHmVvo/mgpTess6w28qRDr1PJgey3JEIhKr9yZfbwBL6SHNz9H1Wjf8KopZnWPGoa
+ OZwrlZHDOSEOgL4tRTjFDaPX5ZzvaDKn354jewgAXy/ubUxHXEm9dVBw8pTKFZBUHkq65GlJaRC
+ O/8tyDL3hkiLUw73CWh+Aw==
+X-Google-Smtp-Source: AGHT+IEJ2ODNjHam3bz1ESlW1/hTzD8Wq66vV2VuMFkU5yxxcDllToWcDqGGfaoFfFhi5PcQTZHSpg==
+X-Received: by 2002:a05:600c:3155:b0:434:a5bc:70fc with SMTP id
+ 5b1f17b1804b1-438dc3ae116mr78395615e9.8.1738261401931; 
+ Thu, 30 Jan 2025 10:23:21 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c5c101599sm2634426f8f.23.2025.01.30.10.23.19
+ ffacd0b85a97d-38c5c101599sm2634426f8f.23.2025.01.30.10.23.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 Jan 2025 10:23:20 -0800 (PST)
+ Thu, 30 Jan 2025 10:23:21 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 09/14] target/arm: Support CP_ACCESS_TRAP_EL1 as a
- CPAccessResult
-Date: Thu, 30 Jan 2025 18:23:04 +0000
-Message-Id: <20250130182309.717346-10-peter.maydell@linaro.org>
+Subject: [PATCH 10/14] target/arm: Use CP_ACCESS_TRAP_EL1 for traps that are
+ always to EL1
+Date: Thu, 30 Jan 2025 18:23:05 +0000
+Message-Id: <20250130182309.717346-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250130182309.717346-1-peter.maydell@linaro.org>
 References: <20250130182309.717346-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,73 +100,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the CPAccessResult enum, the CP_ACCESS_TRAP* values indicate the
-equivalent of the pseudocode AArch64.SystemAccessTrap(..., 0x18),
-causing a trap to a specified exception level with a syndrome value
-giving information about the failing instructions.  In the
-pseudocode, such traps are always taken to a specified target EL.  We
-support that for target EL of 2 or 3 via CP_ACCESS_TRAP_EL2 and
-CP_ACCESS_TRAP_EL3, but the only way to take the access trap to EL1
-currently is to use CP_ACCESS_TRAP, which takes the trap to the
-"usual target EL" (EL1 if in EL0, otherwise to the current EL).
+We currently use CP_ACCESS_TRAP in a number of access functions where
+we know we're currently at EL0; in this case the "usual target EL"
+is EL1, so CP_ACCESS_TRAP and CP_ACCESS_TRAP_EL1 behave the same.
+Use CP_ACCESS_TRAP_EL1 to more closely match the pseudocode for
+this sort of check.
 
-Add CP_ACCESS_TRAP_EL1 so that access functions can follow the
-pseudocode more closely.
-
-(Note that for the common case in the pseudocode of "trap to
-EL2 if HCR_EL2.TGE is set, otherwise trap to EL1", we handle
-this in raise_exception(), so access functions don't need to
-special case it and can use CP_ACCESS_TRAP_EL1.)
+Note that in the case of the access functions foc cacheop to
+PoC or PoU, the code was correct but the comment was wrong:
+SCTLR_EL1.UCI traps for DC CVAC, DC CIVAC, DC CVAP, DC CVADP,
+DC CVAU and IC IVAU should be system access traps, not UNDEFs.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpregs.h        | 1 +
- target/arm/tcg/op_helper.c | 6 ++++--
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ target/arm/debug_helper.c |  2 +-
+ target/arm/helper.c       | 30 +++++++++++++++---------------
+ 2 files changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
-index 1759d9defbe..fbf5798069d 100644
---- a/target/arm/cpregs.h
-+++ b/target/arm/cpregs.h
-@@ -331,6 +331,7 @@ typedef enum CPAccessResult {
-      * 0xc or 0x18).
-      */
-     CP_ACCESS_TRAP = (1 << 2),
-+    CP_ACCESS_TRAP_EL1 = CP_ACCESS_TRAP | 1,
-     CP_ACCESS_TRAP_EL2 = CP_ACCESS_TRAP | 2,
-     CP_ACCESS_TRAP_EL3 = CP_ACCESS_TRAP | 3,
+diff --git a/target/arm/debug_helper.c b/target/arm/debug_helper.c
+index c3c1eb5f628..36bffde74e9 100644
+--- a/target/arm/debug_helper.c
++++ b/target/arm/debug_helper.c
+@@ -875,7 +875,7 @@ static CPAccessResult access_tdcc(CPUARMState *env, const ARMCPRegInfo *ri,
+                                           (env->cp15.mdcr_el3 & MDCR_TDCC);
  
-diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
-index 1ba727e8e9f..c427118655d 100644
---- a/target/arm/tcg/op_helper.c
-+++ b/target/arm/tcg/op_helper.c
-@@ -781,7 +781,7 @@ const void *HELPER(access_check_cp_reg)(CPUARMState *env, uint32_t key,
-      * the other trap takes priority. So we take the "check HSTR_EL2" path
-      * for all of those cases.)
-      */
--    if (res != CP_ACCESS_OK && ((res & CP_ACCESS_EL_MASK) == 0) &&
-+    if (res != CP_ACCESS_OK && ((res & CP_ACCESS_EL_MASK) < 2) &&
-         arm_current_el(env) == 0) {
-         goto fail;
+     if (el < 1 && mdscr_el1_tdcc) {
+-        return CP_ACCESS_TRAP;
++        return CP_ACCESS_TRAP_EL1;
      }
-@@ -887,6 +887,9 @@ const void *HELPER(access_check_cp_reg)(CPUARMState *env, uint32_t key,
+     if (el < 2 && (mdcr_el2_tda || mdcr_el2_tdcc)) {
+         return CP_ACCESS_TRAP_EL2;
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 058a5af3aaf..d1e26ec9d06 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -881,7 +881,7 @@ static CPAccessResult pmreg_access(CPUARMState *env, const ARMCPRegInfo *ri,
+     uint64_t mdcr_el2 = arm_mdcr_el2_eff(env);
+ 
+     if (el == 0 && !(env->cp15.c9_pmuserenr & 1)) {
+-        return CP_ACCESS_TRAP;
++        return CP_ACCESS_TRAP_EL1;
+     }
+     if (el < 2 && (mdcr_el2 & MDCR_TPM)) {
+         return CP_ACCESS_TRAP_EL2;
+@@ -2159,7 +2159,7 @@ static CPAccessResult teehbr_access(CPUARMState *env, const ARMCPRegInfo *ri,
+                                     bool isread)
+ {
+     if (arm_current_el(env) == 0 && (env->teecr & 1)) {
+-        return CP_ACCESS_TRAP;
++        return CP_ACCESS_TRAP_EL1;
+     }
+     return teecr_access(env, ri, isread);
+ }
+@@ -2239,7 +2239,7 @@ static CPAccessResult gt_cntfrq_access(CPUARMState *env, const ARMCPRegInfo *ri,
+             cntkctl = env->cp15.c14_cntkctl;
+         }
+         if (!extract32(cntkctl, 0, 2)) {
+-            return CP_ACCESS_TRAP;
++            return CP_ACCESS_TRAP_EL1;
+         }
+         break;
+     case 1:
+@@ -2278,7 +2278,7 @@ static CPAccessResult gt_counter_access(CPUARMState *env, int timeridx,
+ 
+         /* CNT[PV]CT: not visible from PL0 if EL0[PV]CTEN is zero */
+         if (!extract32(env->cp15.c14_cntkctl, timeridx, 1)) {
+-            return CP_ACCESS_TRAP;
++            return CP_ACCESS_TRAP_EL1;
+         }
+         /* fall through */
+     case 1:
+@@ -2319,7 +2319,7 @@ static CPAccessResult gt_timer_access(CPUARMState *env, int timeridx,
+          * EL0 if EL0[PV]TEN is zero.
+          */
+         if (!extract32(env->cp15.c14_cntkctl, 9 - timeridx, 1)) {
+-            return CP_ACCESS_TRAP;
++            return CP_ACCESS_TRAP_EL1;
+         }
+         /* fall through */
+ 
+@@ -4499,7 +4499,7 @@ static CPAccessResult aa64_daif_access(CPUARMState *env, const ARMCPRegInfo *ri,
+                                        bool isread)
+ {
+     if (arm_current_el(env) == 0 && !(arm_sctlr(env, 0) & SCTLR_UMA)) {
+-        return CP_ACCESS_TRAP;
++        return CP_ACCESS_TRAP_EL1;
+     }
+     return CP_ACCESS_OK;
+ }
+@@ -4589,9 +4589,9 @@ static CPAccessResult aa64_cacheop_poc_access(CPUARMState *env,
+     /* Cache invalidate/clean to Point of Coherency or Persistence...  */
+     switch (arm_current_el(env)) {
      case 0:
-         target_el = exception_target_el(env);
-         break;
-+    case 1:
-+        assert(arm_current_el(env) < 2);
-+        break;
-     case 2:
-         assert(arm_current_el(env) != 3);
-         assert(arm_is_el2_enabled(env));
-@@ -895,7 +898,6 @@ const void *HELPER(access_check_cp_reg)(CPUARMState *env, uint32_t key,
-         assert(arm_feature(env, ARM_FEATURE_EL3));
-         break;
-     default:
--        /* No "direct" traps to EL1 */
-         g_assert_not_reached();
+-        /* ... EL0 must UNDEF unless SCTLR_EL1.UCI is set.  */
++        /* ... EL0 must trap to EL1 unless SCTLR_EL1.UCI is set.  */
+         if (!(arm_sctlr(env, 0) & SCTLR_UCI)) {
+-            return CP_ACCESS_TRAP;
++            return CP_ACCESS_TRAP_EL1;
+         }
+         /* fall through */
+     case 1:
+@@ -4609,9 +4609,9 @@ static CPAccessResult do_cacheop_pou_access(CPUARMState *env, uint64_t hcrflags)
+     /* Cache invalidate/clean to Point of Unification... */
+     switch (arm_current_el(env)) {
+     case 0:
+-        /* ... EL0 must UNDEF unless SCTLR_EL1.UCI is set.  */
++        /* ... EL0 must trap to EL1 unless SCTLR_EL1.UCI is set.  */
+         if (!(arm_sctlr(env, 0) & SCTLR_UCI)) {
+-            return CP_ACCESS_TRAP;
++            return CP_ACCESS_TRAP_EL1;
+         }
+         /* fall through */
+     case 1:
+@@ -4651,7 +4651,7 @@ static CPAccessResult aa64_zva_access(CPUARMState *env, const ARMCPRegInfo *ri,
+                 }
+             } else {
+                 if (!(env->cp15.sctlr_el[1] & SCTLR_DZE)) {
+-                    return CP_ACCESS_TRAP;
++                    return CP_ACCESS_TRAP_EL1;
+                 }
+                 if (hcr & HCR_TDZ) {
+                     return CP_ACCESS_TRAP_EL2;
+@@ -6073,7 +6073,7 @@ static CPAccessResult ctr_el0_access(CPUARMState *env, const ARMCPRegInfo *ri,
+                 }
+             } else {
+                 if (!(env->cp15.sctlr_el[1] & SCTLR_UCT)) {
+-                    return CP_ACCESS_TRAP;
++                    return CP_ACCESS_TRAP_EL1;
+                 }
+                 if (hcr & HCR_TID2) {
+                     return CP_ACCESS_TRAP_EL2;
+@@ -6372,7 +6372,7 @@ static CPAccessResult access_tpidr2(CPUARMState *env, const ARMCPRegInfo *ri,
+     if (el == 0) {
+         uint64_t sctlr = arm_sctlr(env, el);
+         if (!(sctlr & SCTLR_EnTP2)) {
+-            return CP_ACCESS_TRAP;
++            return CP_ACCESS_TRAP_EL1;
+         }
      }
- 
+     /* TODO: FEAT_FGT */
+@@ -7172,7 +7172,7 @@ static CPAccessResult access_scxtnum(CPUARMState *env, const ARMCPRegInfo *ri,
+             if (hcr & HCR_TGE) {
+                 return CP_ACCESS_TRAP_EL2;
+             }
+-            return CP_ACCESS_TRAP;
++            return CP_ACCESS_TRAP_EL1;
+         }
+     } else if (el < 2 && (env->cp15.sctlr_el[2] & SCTLR_TSCXT)) {
+         return CP_ACCESS_TRAP_EL2;
+@@ -7292,7 +7292,7 @@ static CPAccessResult access_predinv(CPUARMState *env, const ARMCPRegInfo *ri,
+     if (el == 0) {
+         uint64_t sctlr = arm_sctlr(env, el);
+         if (!(sctlr & SCTLR_EnRCTX)) {
+-            return CP_ACCESS_TRAP;
++            return CP_ACCESS_TRAP_EL1;
+         }
+     } else if (el == 1) {
+         uint64_t hcr = arm_hcr_el2_eff(env);
 -- 
 2.34.1
 
