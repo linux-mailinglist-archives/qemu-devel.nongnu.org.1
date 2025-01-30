@@ -2,148 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E1CAA2324E
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 17:52:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBBF5A23263
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 18:04:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdXlA-00017L-7A; Thu, 30 Jan 2025 11:51:20 -0500
+	id 1tdXur-0003M5-Bx; Thu, 30 Jan 2025 12:01:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tdXl8-00017C-7o
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 11:51:18 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tdXup-0003I1-2i
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 12:01:19 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tdXl6-0007Bd-Mc
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 11:51:18 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tdXun-0000lW-9C
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 12:01:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738255874;
+ s=mimecast20190719; t=1738256474;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=vSQbe4vosYMcB5B7Ti4t8tkhw8boR1ASmLvUEX8zDMk=;
- b=ZpNwecl73VeZa3Aye6yXLDQ44TE2ZLsW2xCOSsgRYjYO8geSXilh8OcDyM/roJRccFCmS1
- xh8ApFDItrEKm/UEZvqCtcjkuH9/933hoPxo/RLJ9mab5XlXwepULHhliGdLLL8yGR+d3H
- ooG7DcmeZsXL7s5U+zSqgGOHhRn/qBE=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=RgTkTXyoi13BvXnoAdM1hu4sQtRe5MUoJ/HaZZj3QnE=;
+ b=hNylrrlz68Wfp21wLXKLXSlbjGC0egV34Xqp7CofBrr0lLVJ6NEFAALMTozuxaxwW+fUw8
+ Go5ELMxKezU2dh/9BorFg+Nqv1voKHIm9aolLxeC2CfEIJH2nGqWP5ScovgG0GNt3ei4zl
+ q1kIynU5lV5+NwtH/1xtTICBUGfyrN4=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-374-HjJ1NPBKNp6rQV1kAcCL-g-1; Thu, 30 Jan 2025 11:51:12 -0500
-X-MC-Unique: HjJ1NPBKNp6rQV1kAcCL-g-1
-X-Mimecast-MFC-AGG-ID: HjJ1NPBKNp6rQV1kAcCL-g
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-43646b453bcso5242835e9.3
- for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 08:51:11 -0800 (PST)
+ us-mta-320-XUBOUvEZOoOe74vlXLUWvw-1; Thu, 30 Jan 2025 12:01:10 -0500
+X-MC-Unique: XUBOUvEZOoOe74vlXLUWvw-1
+X-Mimecast-MFC-AGG-ID: XUBOUvEZOoOe74vlXLUWvw
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-6d92f0737beso16066496d6.1
+ for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 09:01:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738255871; x=1738860671;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt
- :content-language:from:references:cc:to:subject:user-agent
- :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=vSQbe4vosYMcB5B7Ti4t8tkhw8boR1ASmLvUEX8zDMk=;
- b=IzXz0Z3LaepnP6JYTFjn9KYTXxcydZODvRSRoDJdf7tS8sfpiQDkg+/9ByvHrgRaVJ
- bLGhRdYJX5rmCW2wsRsKv/AmTg+DEPttsDHGxk5ul5ZgloXIQM7QyA9jXZTIDJcIraOk
- Z/dB83K5LZqc55ecYlthgrj2jyHyQz1nnOIIiQN38JGSBm4+5PeX7xH4DnXNomsADbIf
- A7Hvvc6PwcUhMZ3u7Q9eDwxdLJVEuDlfTC2fhnyo8XP8V7KzSioArM5fFjUkeML9tI1h
- sPc6iJBW7V/rMqeinQWf+o6tPA2ZtyQraNnqxesOucepBe4TNEcCACDoyNLfMoB90Xil
- za8g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUQrxzv7RgFPC/hXElWE2GGjCmz6wlBpIBLgdnzRSVeBh3MslBCIN/eWku+hWlZQA8FcxyZIaxhVAA+@nongnu.org
-X-Gm-Message-State: AOJu0YypXWL9C4ESGaw9oN/PRG1SamR4vz3grFAWKOUYoIpj0xOBvttC
- bFjAXWaQHgxFta9bWLODM4gbRUyZWTdaARbCEccpE2mg8+wRptDAP+2NTpln5zOzr7M+XFmvVB/
- mm3/6rECTbd+zi/VpyCQfvPOu29BITNnM7NxdFVNxsRiKtbApwVoL
-X-Gm-Gg: ASbGncvjb6o/LvRgx/+PaouCfBMsW2KT9Oh2R+vOQ3ypfGg4SFlQ26C9i2GEJyfTomW
- YsmGAeY+aCBIyyStkBilC7XM8XKxckWzCSYd/QHPRoXIiWfK9xy0ymYCmSGOH88LszLkULFoy1y
- U2G2ZnD4JxzPL5YtqUmW7yNYVieU46ix5uuK6f3/7WfUGTmLIRwe7C7zwxQtHp1actAYcFhr74F
- IhqC3x3pmb0G04CKxwjpC9Jt4ToFYFLxpKCz1GVggl98qkdtb0C0pt1m22dVW1u+r6TYaiMo94h
- 8/Cpbr0Wi9AY1lwXFLYnya8k555dV28+bcDEWIu0Cs/2NJ+i0l4oxlzTf++UaI4JG4gDnnwHj4m
- 2qdRc8VSxLoca19+41l/OWqIThVK6FWec
-X-Received: by 2002:a05:600c:4f08:b0:438:da66:fdf9 with SMTP id
- 5b1f17b1804b1-438dc3c87a5mr70162975e9.18.1738255870901; 
- Thu, 30 Jan 2025 08:51:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE+YeKPmVzedXw+G5H15HnlT3K5Bk8St8bibSxXEtr+ee9TSYkrjNyM+ePPJ1ZPHWd0MzMKxQ==
-X-Received: by 2002:a05:600c:4f08:b0:438:da66:fdf9 with SMTP id
- 5b1f17b1804b1-438dc3c87a5mr70162785e9.18.1738255870554; 
- Thu, 30 Jan 2025 08:51:10 -0800 (PST)
-Received: from ?IPV6:2003:cb:c713:3b00:16ce:8f1c:dd50:90fb?
- (p200300cbc7133b0016ce8f1cdd5090fb.dip0.t-ipconnect.de.
- [2003:cb:c713:3b00:16ce:8f1c:dd50:90fb])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438e23d443esm29966775e9.1.2025.01.30.08.51.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 30 Jan 2025 08:51:09 -0800 (PST)
-Message-ID: <3c126ed2-f7d5-49f8-98f6-be28238f1e78@redhat.com>
-Date: Thu, 30 Jan 2025 17:51:08 +0100
+ d=1e100.net; s=20230601; t=1738256469; x=1738861269;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RgTkTXyoi13BvXnoAdM1hu4sQtRe5MUoJ/HaZZj3QnE=;
+ b=tYnuiI1sRxtDlwjmF3BW8ZMuUzG5UqrpPVculugJRYcFFXgOvXecMa7FGuZmioEKm2
+ nuTm+n7zEubZ27XClV+uurVTm18dwGIXkbWELyfhcNykYZagpvjofFBIjBu9JDlsFVlB
+ WCnKUY69Xch7BPva4Jnv4/DAF/MPPMWIq5GBVhYFB/EB/JUc06l09WoP+vCv54n9VmkH
+ g4562g4iwn7QkegiPdbGAo/vyi8rIiiDGf+sh9KMx4wh14zD/SfYEOJCQPYjB6J86boH
+ XUnAG4j1i8D2/v+Phe6p3UfrxmpTKtJK/3cTN6Ycbck1Sy+dWVF0BsSntQuHwS24YVTL
+ xJGw==
+X-Gm-Message-State: AOJu0Yy4gLY/kTXw8YUN9IkWii2p7tZ25iTVqrGRIKxogwxYDjfbbIB7
+ ++4Q9YSblSPFdlhz/qk9gY647ggHOJUQTBub4zWCZTLz06hyjkQhKDBx7wI7WwsMjf4hZoMrnji
+ ZfhEPnJDdFcmEoEm6l+VpiwvOsFYb/nEh3PgZZUwYVVgCfTdvHsO4
+X-Gm-Gg: ASbGncsrifiFECKNHbYR0+tnUO5drYtApMT8oeYmi211/oIFxQg1h0EkZu7/o+73V2R
+ AajrUR33dDdo4XJD3tBNpkqA0Bsb8V9WDrP1wWZX85a4OltEl674XcP3GYLHxffA9LhB+i8ZcOc
+ xYsp26z99j07LgIQcLFS4J1dVggegXB8J54Y0q6J7tKaQlMlnhgCyAgAJRD78i8TZoqXB3OGv/h
+ Nghmet+EcU9IkmzTLkJ4UKKgnIU7vMOYJBXonADB5SMBzF4nekmLcthaN+OsNRN6N6iIYRX/hpD
+ r5QfTY53P6h7InZqtWTT+1lIFfQcSyCDebfzTjbjecwUiDXc
+X-Received: by 2002:ad4:4ee5:0:b0:6d1:9f29:2e3b with SMTP id
+ 6a1803df08f44-6e243c1c95bmr134944386d6.13.1738256467361; 
+ Thu, 30 Jan 2025 09:01:07 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGrLtblk1LblnI8m1mHmQLc23guZ8tK54bJ4yOeJOcp/08M/oGXOiJ2xV53Dcl3CANOCLrVLA==
+X-Received: by 2002:ad4:4ee5:0:b0:6d1:9f29:2e3b with SMTP id
+ 6a1803df08f44-6e243c1c95bmr134943386d6.13.1738256466617; 
+ Thu, 30 Jan 2025 09:01:06 -0800 (PST)
+Received: from x1.local (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6e2547f40a7sm7988246d6.3.2025.01.30.09.01.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 30 Jan 2025 09:01:06 -0800 (PST)
+Date: Thu, 30 Jan 2025 12:01:04 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ David Hildenbrand <david@redhat.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH] migration: ram block cpr blockers
+Message-ID: <Z5uwUNtYhQfJJlg3@x1.local>
+References: <1737135971-132839-1-git-send-email-steven.sistare@oracle.com>
+ <Z4qelNxnBcgO87go@x1n>
+ <814d9205-8ba5-48a8-9940-6f16bbb097eb@oracle.com>
+ <Z4ruhpH28-GnnTq7@x1n>
+ <20674b54-3c88-4d2c-a590-3b0ddaff86f9@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/7] guest_memfd: Introduce an object to manage the
- guest-memfd with RamDiscardManager
-To: Peter Xu <peterx@redhat.com>, Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>, Chenyi Qiang
- <chenyi.qiang@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
- Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
- Xu Yilun <yilun.xu@intel.com>
-References: <ZnmfUelBs3Cm0ZHd@yilunxu-OptiPlex-7050> <Z4-6u5_9NChu_KZq@x1n>
- <95a14f7d-4782-40b3-a55d-7cf67b911bbe@amd.com>
- <Z5C9SzXxX7M1DBE3@yilunxu-OptiPlex-7050> <Z5EgFaWIyjIiOZnv@x1n>
- <Z5INAQjxyYhwyc+1@yilunxu-OptiPlex-7050> <Z5Jylb73kDJ6HTEZ@x1n>
- <Z5NhwW/IXaLfvjvb@yilunxu-OptiPlex-7050> <Z5O4BSCjlhhu4rrw@x1n>
- <Z5WtRYSf7cjqITXH@yilunxu-OptiPlex-7050> <Z5uom-NTtekV9Crd@x1.local>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <Z5uom-NTtekV9Crd@x1.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20674b54-3c88-4d2c-a590-3b0ddaff86f9@oracle.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -33
 X-Spam_score: -3.4
@@ -168,37 +109,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30.01.25 17:28, Peter Xu wrote:
-> On Sun, Jan 26, 2025 at 11:34:29AM +0800, Xu Yilun wrote:
->>> Definitely not suggesting to install an invalid pointer anywhere.  The
->>> mapped pointer will still be valid for gmem for example, but the fault
->>> isn't.  We need to differenciate two things (1) virtual address mapping,
->>> then (2) permission and accesses on the folios / pages of the mapping.
->>> Here I think it's okay if the host pointer is correctly mapped.
->>>
->>> For your private MMIO use case, my question is if there's no host pointer
->>> to be mapped anyway, then what's the benefit to make the MR to be ram=on?
->>> Can we simply make it a normal IO memory region?  The only benefit of a
->>
->> The guest access to normal IO memory region would be emulated by QEMU,
->> while private assigned MMIO requires guest direct access via Secure EPT.
->>
->> Seems the existing code doesn't support guest direct access if
->> mr->ram == false:
+On Wed, Jan 29, 2025 at 01:20:13PM -0500, Steven Sistare wrote:
+> On 1/17/2025 6:57 PM, Peter Xu wrote:
+> > On Fri, Jan 17, 2025 at 02:10:14PM -0500, Steven Sistare wrote:
+> > > On 1/17/2025 1:16 PM, Peter Xu wrote:
+> > > > On Fri, Jan 17, 2025 at 09:46:11AM -0800, Steve Sistare wrote:
+> > > > > +/*
+> > > > > + * Return true if ram contents would be lost during CPR.
+> > > > > + * Return false for ram_device because it is remapped in new QEMU.  Do not
+> > > > > + * exclude rom, even though it is readonly, because the rom file could change
+> > > > > + * in new QEMU.  Return false for non-migratable blocks.  They are either
+> > > > > + * re-created in new QEMU, or are handled specially, or are covered by a
+> > > > > + * device-level CPR blocker.  Return false for an fd, because it is visible and
+> > > > > + * can be remapped in new QEMU.
+> > > > > + */
+> > > > > +static bool ram_is_volatile(RAMBlock *rb)
+> > > > > +{
+> > > > > +    MemoryRegion *mr = rb->mr;
+> > > > > +
+> > > > > +    return mr &&
+> > > > > +        memory_region_is_ram(mr) &&
+> > > > > +        !memory_region_is_ram_device(mr) &&
+> > > > > +        (!qemu_ram_is_shared(rb) || !qemu_ram_is_named_file(rb)) &&
+> > > > > +        qemu_ram_is_migratable(rb) &&
+> > > > > +        rb->fd < 0;
+> > > > > +}
+> > > > 
+> > > > Blocking guest_memfd looks ok, but comparing to add one more block
+> > > > notifier, can we check all ramblocks once in migrate_prepare(), and fail
+> > > > that command directly if it fails the check?
+> > > 
+> > > In an upcoming patch, I will be adding an option analogous to only-migratable which
+> > > prevents QEMU from starting if anything would block cpr-transfer.  That option
+> > > will be checked when blockers are added, like for only-migratable. migrate_prepare
+> > > is too late.
+> > > 
+> > > > OTOH, is there any simpler way to simplify the check conditions?  It'll be
+> > > > at least nice to break these checks into smaller if conditions for
+> > > > readability..
+> > > 
+> > > I thought the function header comments made it clear, but I could move each
+> > > comment next to each condition:
+> > > 
+> > >      ...
+> > >      /*
+> > >       * Return false for an fd, because it is visible and can be remapped in
+> > >       * new QEMU.
+> > >       */
+> > >      if (rb->fd >= 0) {
+> > >          return false;
+> > >      }
+> > >      ...
+> > > 
+> > > > I wonder if we could stick with looping over all ramblocks, then make sure
+> > > > each of them is on the cpr saved fd list.  It may need to make
+> > > > cpr_save_fd() always register with the name of ramblock to do such lookup,
+> > > > or maybe we could also cache the ramblock pointer in CprFd, then the lookup
+> > > > will be a pointer match check.
+> > > 
+> > > Some ramblocks are not on the list, such as named files.  Plus looping in
+> > > migrate_prepare is too late as noted above.
+> > > 
+> > > IMO what I have already implemented using blockers is clean and elegant.
+> > 
+> > OK if we need to fail it early at boot, then yes blockers are probably
+> > better.
+> > 
+> > We'll need one more cmdline parameter. I've no objection, but I don't know
+> > how to judge when it's ok to add, when it's better not.. I'll leave others
+> > to comment on this.
+> > 
+> > But still, could we check it when ramblocks are created?  So in that way
+> > whatever is forbidden is clear in its own path, I feel like that could be
+> > clearer (like what you did with gmemfd).
 > 
-> Ah it's about this, ok.
+> When the ramblock is created, we don't yet know if it is migratable. A
+> ramblock that is not migratable does not block cpr. Migratable is not known
+> until vmstate_register_ram calls qemu_ram_set_migratable.  Hence that is
+> where I evaluate conditions and install a blocker.
 > 
-> I am not sure what's the best approach, but IMHO it's still better we stick
-> with host pointer always available when ram=on.  OTOH, VFIO private regions
-> may be able to provide a special mark somewhere, just like when romd_mode
-> was done previously as below (qemu 235e8982ad39), so that KVM should still
-> apply these MRs even if they're not RAM.
+> Because that is the only place where ram_block_add_cpr_blocker is called,
+> the test qemu_ram_is_migratable() inside ram_block_add_cpr_blocker is
+> redundant, and I should delete it.
 
-I agree.
+Hmm.. sounds reasonable.
+
+> 
+> > For example, if I start to convert some of your requirements above, then
+> > memory_region_is_ram_device() implies RAM_PREALLOC.  Actually, ram_device
+> > is not the only RAM_PREALLOC user..  Say, would it also not work with all
+> > memory_region_init_ram_ptr() users (even if they're not ram_device)?  An
+> > example is, looks like virtio-gpu can create random ramblocks on the fly
+> > with prealloced buffers.  I am not sure whether they can be pinned by VFIO
+> > too.  You may know better.
+> 
+> That memory is not visible to the guest.  It is not part of system_memory,
+> and is not marked migratable.
+
+I _think_ that can still be visible at least for the virtio-gpu use case,
+which hangs under VirtIOGPUBase.hostmem.  Relevant code for reference:
+
+virtio_gpu_virgl_map_resource_blob:
+    memory_region_init_ram_ptr(mr, OBJECT(mr), "blob", size, data);
+    memory_region_add_subregion(&b->hostmem, offset, mr);
+    memory_region_set_enabled(mr, true);
+
+virtio_gpu_pci_base_realize:
+        memory_region_init(&g->hostmem, OBJECT(g), "virtio-gpu-hostmem",
+                           g->conf.hostmem);
+        pci_register_bar(&vpci_dev->pci_dev, 4,
+                         PCI_BASE_ADDRESS_SPACE_MEMORY |
+                         PCI_BASE_ADDRESS_MEM_PREFETCH |
+                         PCI_BASE_ADDRESS_MEM_TYPE_64,
+                         &g->hostmem);
+
+pci_update_mappings:
+            memory_region_add_subregion_overlap(r->address_space,
+                                                r->addr, r->memory, 1);
+
+but indeed I'm not sure how it work with migration so far, because it
+doesn't have RAM_MIGRATABLE set. So at least cpr didn't make it more
+special.  I assume this isn't something we must figure out as of now
+then.. but if you do, please kindly share.
+
+Thanks,
 
 -- 
-Cheers,
-
-David / dhildenb
+Peter Xu
 
 
