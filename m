@@ -2,47 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02903A22DE4
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 14:35:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82DC1A22E06
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 14:45:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdUhH-0002kg-FK; Thu, 30 Jan 2025 08:35:07 -0500
+	id 1tdUpt-0000he-IG; Thu, 30 Jan 2025 08:44:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tdUhE-0002hT-8p; Thu, 30 Jan 2025 08:35:04 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tdUpp-0000gq-KJ
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 08:43:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tdUhB-0002Xz-6S; Thu, 30 Jan 2025 08:35:03 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0738BE3045;
- Thu, 30 Jan 2025 16:34:19 +0300 (MSK)
-Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id EB4AC1A7F8C;
- Thu, 30 Jan 2025 16:34:47 +0300 (MSK)
-Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id D38035240E; Thu, 30 Jan 2025 16:34:47 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tdUpo-0003O7-5R
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 08:43:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1738244633;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=6mI0ox+IW4A2wveybGPBBGrr0tC1d/ufYPPDScM5z98=;
+ b=IO3DvLk+A2qHpDG+M4/NQVnTBljc38onGv7qKGeVrgqGDv0z2us+GjJ+8ejlRQSFlyq4j+
+ uyUFwfDO8fW+OsYJS9SR7GOeXBs1bghJNnej5UFN3ory4oyJ7CFfiLXT8IHquOch8evcNH
+ XFLwD9Aq8RZeX0YuTsnGCW+rdDk48rA=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-33-qeXmXs0CNHe3qVrdisvwWw-1; Thu,
+ 30 Jan 2025 08:43:52 -0500
+X-MC-Unique: qeXmXs0CNHe3qVrdisvwWw-1
+X-Mimecast-MFC-AGG-ID: qeXmXs0CNHe3qVrdisvwWw
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 73B7219560A3
+ for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 13:43:51 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.39.192.105])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id A88321800969; Thu, 30 Jan 2025 13:43:48 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 7/7] hw/i386/pc: Remove unused pc_compat_2_3 declarations
-Date: Thu, 30 Jan 2025 16:34:47 +0300
-Message-Id: <20250130133447.873566-8-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250130133447.873566-1-mjt@tls.msk.ru>
-References: <20250130133447.873566-1-mjt@tls.msk.ru>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v2 0/9]vfio: Improve error reporting when MMIO region mapping
+ fails
+Date: Thu, 30 Jan 2025 14:43:37 +0100
+Message-ID: <20250130134346.1754143-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -60,38 +80,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+Hello,
 
-We removed the implementations in commit 46a2bd52571
-("hw/i386/pc: Remove deprecated pc-i440fx-2.3 machine")
-but forgot to remove the declarations. Do it now.
+Under certain circumstances, a MMIO region of a device fails to map
+because the region is outside the supported IOVA ranges of the VM. In
+this case, PCI peer-to-peer transactions on BARs are not supported.
+This typically occurs when the IOMMU address space width is less than
+the physical address width, as can be the case on some consumer
+processors or when using a vIOMMU device with default settings.
 
-Fixes: 46a2bd52571 ("hw/i386/pc: Remove deprecated pc-i440fx-2.3 machine")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
----
- include/hw/i386/pc.h | 3 ---
- 1 file changed, 3 deletions(-)
+This series tries to clarify the error message reported to the user.
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index a558705cb9..103b54301f 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -302,9 +302,6 @@ extern const size_t pc_compat_2_5_len;
- extern GlobalProperty pc_compat_2_4[];
- extern const size_t pc_compat_2_4_len;
- 
--extern GlobalProperty pc_compat_2_3[];
--extern const size_t pc_compat_2_3_len;
--
- #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
-     static void pc_machine_##suffix##_class_init(ObjectClass *oc, void *data) \
-     { \
+Thanks,
+
+C.
+
+Changes in v2:
+
+ - Removed advices on how to resolve the issue. Diagnostic is enough.
+ - Introduced helpers
+ - Checked device type, since this only applies to PCI
+ - Added cleanup
+
+Cédric Le Goater (9):
+  util/error: Introduce warn_report_once_err()
+  vfio/pci: Replace "iommu_device" by "vIOMMU"
+  vfio: Rephrase comment in vfio_listener_region_add() error path
+  vfio: Introduce vfio_get_vfio_device()
+  vfio: Improve error reporting when MMIO region mapping fails
+  vfio: Remove reports of DMA mapping errors in backends
+  cpu: Introduce cpu_get_phys_bits()
+  vfio: Check compatibility of CPU and IOMMU address space width
+  vfio: Remove superfluous error report in vfio_listener_region_add()
+
+ include/hw/core/cpu.h            |  9 +++++
+ include/hw/core/sysemu-cpu-ops.h |  6 ++++
+ include/hw/vfio/vfio-common.h    |  1 +
+ include/qapi/error.h             |  5 +++
+ backends/iommufd.c               |  3 --
+ cpu-target.c                     |  5 +++
+ hw/core/cpu-system.c             | 11 ++++++
+ hw/vfio/common.c                 | 61 ++++++++++++++++++++++++++------
+ hw/vfio/container.c              |  2 --
+ hw/vfio/helpers.c                | 10 ++++++
+ hw/vfio/pci.c                    |  2 +-
+ target/i386/cpu.c                |  6 ++++
+ util/error.c                     |  9 +++++
+ 13 files changed, 113 insertions(+), 17 deletions(-)
+
 -- 
-2.39.5
+2.48.1
 
 
