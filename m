@@ -2,67 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82DC1A22E06
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 14:45:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D724A22E03
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 14:45:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdUpt-0000he-IG; Thu, 30 Jan 2025 08:44:01 -0500
+	id 1tdUpu-0000iQ-7n; Thu, 30 Jan 2025 08:44:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tdUpp-0000gq-KJ
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tdUpp-0000gx-Tr
  for qemu-devel@nongnu.org; Thu, 30 Jan 2025 08:43:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tdUpo-0003O7-5R
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tdUpo-0003ON-IV
  for qemu-devel@nongnu.org; Thu, 30 Jan 2025 08:43:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738244633;
+ s=mimecast20190719; t=1738244635;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=6mI0ox+IW4A2wveybGPBBGrr0tC1d/ufYPPDScM5z98=;
- b=IO3DvLk+A2qHpDG+M4/NQVnTBljc38onGv7qKGeVrgqGDv0z2us+GjJ+8ejlRQSFlyq4j+
- uyUFwfDO8fW+OsYJS9SR7GOeXBs1bghJNnej5UFN3ory4oyJ7CFfiLXT8IHquOch8evcNH
- XFLwD9Aq8RZeX0YuTsnGCW+rdDk48rA=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=55ZBXel4IZrwYGquIHw+t8dMmO4wIp7lp1UiZQ+QE78=;
+ b=PD8pA13fWVJlPiGdAPEaLmNTFLDMMuJi685WUur0mhqbGQd7owS7WsIPlsC+QxuTsaknYR
+ ZbV1U1cWu/eO768bn56C6c69V+5PmUOedg/feIWHbMjIZdDF6W5QjRaH1H3sUlbJjdzrK5
+ 4ZruzdxA7Q/ohwcpHqK5BEpsZl4la4E=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-33-qeXmXs0CNHe3qVrdisvwWw-1; Thu,
- 30 Jan 2025 08:43:52 -0500
-X-MC-Unique: qeXmXs0CNHe3qVrdisvwWw-1
-X-Mimecast-MFC-AGG-ID: qeXmXs0CNHe3qVrdisvwWw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-692-vXgtBc1dOdCa0Tsc2YXOgQ-1; Thu,
+ 30 Jan 2025 08:43:54 -0500
+X-MC-Unique: vXgtBc1dOdCa0Tsc2YXOgQ-1
+X-Mimecast-MFC-AGG-ID: vXgtBc1dOdCa0Tsc2YXOgQ
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 73B7219560A3
- for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 13:43:51 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 304C71801F19
+ for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 13:43:53 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.105])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A88321800969; Thu, 30 Jan 2025 13:43:48 +0000 (UTC)
+ id BF5A0180095D; Thu, 30 Jan 2025 13:43:51 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v2 0/9]vfio: Improve error reporting when MMIO region mapping
- fails
-Date: Thu, 30 Jan 2025 14:43:37 +0100
-Message-ID: <20250130134346.1754143-1-clg@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PATCH v2 1/9] util/error: Introduce warn_report_once_err()
+Date: Thu, 30 Jan 2025 14:43:38 +0100
+Message-ID: <20250130134346.1754143-2-clg@redhat.com>
+In-Reply-To: <20250130134346.1754143-1-clg@redhat.com>
+References: <20250130134346.1754143-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -33
 X-Spam_score: -3.4
 X-Spam_bar: ---
 X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,54 +83,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+Depending on the configuration, a passthrough device may produce
+recurring DMA mapping errors at runtime and produce a lot of
+output. It is useful to report only once.
 
-Under certain circumstances, a MMIO region of a device fails to map
-because the region is outside the supported IOVA ranges of the VM. In
-this case, PCI peer-to-peer transactions on BARs are not supported.
-This typically occurs when the IOMMU address space width is less than
-the physical address width, as can be the case on some consumer
-processors or when using a vIOMMU device with default settings.
+Cc: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ include/qapi/error.h | 5 +++++
+ util/error.c         | 9 +++++++++
+ 2 files changed, 14 insertions(+)
 
-This series tries to clarify the error message reported to the user.
-
-Thanks,
-
-C.
-
-Changes in v2:
-
- - Removed advices on how to resolve the issue. Diagnostic is enough.
- - Introduced helpers
- - Checked device type, since this only applies to PCI
- - Added cleanup
-
-Cédric Le Goater (9):
-  util/error: Introduce warn_report_once_err()
-  vfio/pci: Replace "iommu_device" by "vIOMMU"
-  vfio: Rephrase comment in vfio_listener_region_add() error path
-  vfio: Introduce vfio_get_vfio_device()
-  vfio: Improve error reporting when MMIO region mapping fails
-  vfio: Remove reports of DMA mapping errors in backends
-  cpu: Introduce cpu_get_phys_bits()
-  vfio: Check compatibility of CPU and IOMMU address space width
-  vfio: Remove superfluous error report in vfio_listener_region_add()
-
- include/hw/core/cpu.h            |  9 +++++
- include/hw/core/sysemu-cpu-ops.h |  6 ++++
- include/hw/vfio/vfio-common.h    |  1 +
- include/qapi/error.h             |  5 +++
- backends/iommufd.c               |  3 --
- cpu-target.c                     |  5 +++
- hw/core/cpu-system.c             | 11 ++++++
- hw/vfio/common.c                 | 61 ++++++++++++++++++++++++++------
- hw/vfio/container.c              |  2 --
- hw/vfio/helpers.c                | 10 ++++++
- hw/vfio/pci.c                    |  2 +-
- target/i386/cpu.c                |  6 ++++
- util/error.c                     |  9 +++++
- 13 files changed, 113 insertions(+), 17 deletions(-)
-
+diff --git a/include/qapi/error.h b/include/qapi/error.h
+index 71f8fb2c50eee9a544992d0c05263c9793956fe1..b6ea274882b9788b64d4bb213c3458d7c674a881 100644
+--- a/include/qapi/error.h
++++ b/include/qapi/error.h
+@@ -448,6 +448,11 @@ void error_free_or_abort(Error **errp);
+  */
+ void warn_report_err(Error *err);
+ 
++/*
++ * Convenience function to call warn_report_err() once.
++ */
++void warn_report_once_err(Error *err);
++
+ /*
+  * Convenience function to error_report() and free @err.
+  * The report includes hints added with error_append_hint().
+diff --git a/util/error.c b/util/error.c
+index e5e247209a9e0796074a9794f5598325f22f8d35..b8a211cccaa609a93091b86316144a0ad0a02662 100644
+--- a/util/error.c
++++ b/util/error.c
+@@ -247,6 +247,15 @@ void warn_report_err(Error *err)
+     error_free(err);
+ }
+ 
++void warn_report_once_err(Error *err)
++{
++        static bool print_once_;
++        if (!print_once_) {
++            warn_report_err(err);
++            print_once_ = true;
++        }
++}
++
+ void error_reportf_err(Error *err, const char *fmt, ...)
+ {
+     va_list ap;
 -- 
 2.48.1
 
