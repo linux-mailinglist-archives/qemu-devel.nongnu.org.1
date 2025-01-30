@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ABA6A233AA
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 19:24:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD3CA233AD
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 19:24:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdZCT-0003y1-Hf; Thu, 30 Jan 2025 13:23:37 -0500
+	id 1tdZCU-0003zB-3T; Thu, 30 Jan 2025 13:23:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tdZCJ-0003u0-MW
+ id 1tdZCK-0003u4-MZ
  for qemu-devel@nongnu.org; Thu, 30 Jan 2025 13:23:30 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tdZCG-0000Xb-Ic
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 13:23:27 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-38a25d4b9d4so654824f8f.0
- for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 10:23:24 -0800 (PST)
+ id 1tdZCH-0000Xq-Kw
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 13:23:28 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4361dc6322fso8230115e9.3
+ for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 10:23:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738261403; x=1738866203; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738261404; x=1738866204; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uM2XjXMDd682NDA4uF6pTcUgEcj+06il83UYUtiVd8Q=;
- b=MpJVdashWJ34rsFew+DRzbya8L7eE05aDBfxp8aaHi/LNiDEUYVWP1ZUwgW2mmQxLT
- /SdrjGBXE84QQt50C307Kv2PeMSCOZfwfQVPdabaMhPMX3lOSx3mcrNiTZlVUaumCKPm
- sq/sD4u/4AyRwudg0flcugyWBpiPyAkfaHJzW57uyW7QRwUs8+AwtIlQsDDIBmw5y0M2
- 9clAecp4vRXi90oEnnF/IE4GnWR3ScwRJkuP5GtbKbSek59wTmCMydZOQ1M7k9dVeGip
- xw7o2aJgE000EwipPLyptR4eBYjSekvBYY5LL/cOFJCrHRHKVWqocqiXBKmJc3HJY7nr
- cU7w==
+ bh=UzWUoCV36n6hAnw3YSCmnofxu0Xpqe1BV6caUwzw2Oc=;
+ b=MVfEXVAmUTLMODntJQPY3PjKsyHzPn5QfOGEVpdLRQuORY9KLNgJHSbn4R4QGY2KOU
+ AUDSAmYCPNpBUwJQYo7sLZMqxjyuHYB18PgFaW9PKdbaWy5UpdHaTQkTdwxStnLoOhel
+ UW3/fynh7USZ8Dke5HCac+IRgJEJYAvrIGsWnHTRFktQo91VDCvKubcwsWqkzbPYt3fc
+ TySpsl4fFgbJAdfShVBifII/EqqCQ7BAaYN+g861+fBwQxMHL8BBh1is53dzz7eqp5jZ
+ 9TCc7fmCFCBPcCxzZcTEfiz3+2jQ68oCO1/ys9fP/C/Vjb3XT+o0mlmPig502ZjpKNIp
+ OXqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738261403; x=1738866203;
+ d=1e100.net; s=20230601; t=1738261404; x=1738866204;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uM2XjXMDd682NDA4uF6pTcUgEcj+06il83UYUtiVd8Q=;
- b=RrUTCBY5CQ/AEkiVaEYjzETTsDeGofi5uwGh7Y9qOTPlxriGOdH2cmeZBQSZZW++CN
- gMLB5FLJhV0FF70Q6f6YqZDahIjVZgjpcnACNb64958cfYipYUuyIeG6xHQbk6cD4lzx
- DZ1GBLyLlelnpfbsuLLBMGnYoK9wSf6d1EC1y7seR1zK4dcXCdgs9tM9//01bt4G6qfA
- BZPdr04LNpKqMwrrx6B3pFDiggzjoBM7c2IGuBVG7sQQuq4HcjGybBSbVXcOTUpagG4n
- N+KnLorAixE8EfgwM/3gWF/tmbFYwkbzYcEQZFJ3gOz/M50/P00icJ5pFqe38EsrdClc
- 4TDg==
+ bh=UzWUoCV36n6hAnw3YSCmnofxu0Xpqe1BV6caUwzw2Oc=;
+ b=F/mZvh+2D93uxdlyJU9PRsblxt/cNDt8w32W2ycbJBeku0PrNbGP7nnnR5Eu3DOnmV
+ 8x2aj9yeYtmtg58nL+rNVzgMaM5vFjfIQl/fzp59PwdR8s6MSLZ6xQi18ZAqHwBOaEk/
+ LqlYpMYpjZ03mg6e0O9zwrnM0kJ+TxvRKDIotsQkZzMAyRUywOKbgkkvXGfHBUIa3RcB
+ uz5zMJNRCvwIosZx8vEGrjUNFkIdLHqDgLEK+/02Md+AGxc48npt9NbDi5Ui5OXn4zae
+ GYvbdxSZImkYiLxp2ioGhd4L25yUMNBosWwQ7clTi6slvAktCSwN0qvC24qSs3CW3evk
+ 18Qg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXGFMthzaRk6/7M7dnjbs4ieY7wD/n8lBvFYK7xHLiTisAjyyvq+sAcuReKAubySJlfaBwhpRJ1UJM9@nongnu.org
-X-Gm-Message-State: AOJu0YyHJrDMggNAp2LPuBQ7RpUNQBABoxxX1A/yrvnVU3jxfyVK0/Rh
- kytZPKvV2dabydpt5QdhViV+dDGE+WYQDuWifWpKmQ9P+x8zw7rRtcRzBRPHQFU=
-X-Gm-Gg: ASbGncvjUQzsWzO0+nqpTml/AlUxO0zlovQIWwMAbR0VH17BvKo0t6eajRLBjURXQA9
- YsZSFp3Wkbs/TQsQQVKzc3c2IDUrKsYX+pXKScMPwCCdbjz7hnHj0AwngB6yl3zP5gfr+RQqbX+
- E25KM/5InN/v5EKLgEcoGCsx9yxkbYi0zLRQMYk6Fw8dL5CsTEJ58cw1m39j9mt+ap5ZXDzeGpQ
- Ii3YmekuvLcRmR1ocAEUTjiP7fqbdaLMjjN7i8pees3YKW2OnWmrelJK2Sm8Kh8zZh0XBSIYckO
- iEsr7zeizvg2yVC8Jj4GbQ==
-X-Google-Smtp-Source: AGHT+IGPLxL2UDh8VWMjiUXkoevUE03LKP+A+C9UXdFH0CX4fDCMN1qUK6Gg2OA1rjPODvsRr0fr4g==
-X-Received: by 2002:a05:6000:4011:b0:385:e8b0:df13 with SMTP id
- ffacd0b85a97d-38c52095e20mr8046541f8f.40.1738261402914; 
- Thu, 30 Jan 2025 10:23:22 -0800 (PST)
+ AJvYcCUUf6rw+KUL95v60ZEtk+cNtZ60/9Ed3ElACBkggOVgf1Wqb6dgErBjhrxGK6Qxj5wyolGXbK5CUJ0o@nongnu.org
+X-Gm-Message-State: AOJu0YyyTpNRXq3q94v4JzZItNXxCN4KgxAJB8lwqGlhSugTL1vGxWwN
+ WEcXjurQjI+8yLmagvGmsBwREdvloEZ/cwd7CTXdeJs4Sw6o9ddf6wk2PtT+5HI=
+X-Gm-Gg: ASbGncv34XY0uiHV9/JqblhDvBcveYHl6LIQamkmUWrZ6i65dPIlx5I2ydH8zfbZK2Q
+ +Gl2+GUaxga7rAHnv/+xx9aydjEKDjds60oqTP2EatR7hQTazlOeTpK5YQPGkvqgKcOHjVtoms9
+ emsDRerNC9dzUq2qXfyWBXXiY8ezD+M6XCmJjhpwGX3mD4vppFeRhVpQ+W2EGcoLHOF1ZMy3/Em
+ sooONtabrwM7hpreLEGxOFZWmoYrWZeGn1msrcp8sk3AqILKke9XhE3z61RskhzN9C1m3dXVlwB
+ 7FcWBiiD/+Mm9rPYH95OZA==
+X-Google-Smtp-Source: AGHT+IHv5gF70a4Mqx8gdcoaCrYuQ74X9HkaiJE7S7DYI8dtyyZsPjQ0YXE5YOYaMCY55s/ktOPz4w==
+X-Received: by 2002:a5d:64c3:0:b0:38a:a117:3da1 with SMTP id
+ ffacd0b85a97d-38c51946048mr7119768f8f.5.1738261403930; 
+ Thu, 30 Jan 2025 10:23:23 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c5c101599sm2634426f8f.23.2025.01.30.10.23.22
+ ffacd0b85a97d-38c5c101599sm2634426f8f.23.2025.01.30.10.23.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 Jan 2025 10:23:22 -0800 (PST)
+ Thu, 30 Jan 2025 10:23:23 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 11/14] target/arm: Use TRAP_UNCATEGORIZED for XScale CPAR traps
-Date: Thu, 30 Jan 2025 18:23:06 +0000
-Message-Id: <20250130182309.717346-12-peter.maydell@linaro.org>
+Subject: [PATCH 12/14] target/arm: Remove CP_ACCESS_TRAP handling
+Date: Thu, 30 Jan 2025 18:23:07 +0000
+Message-Id: <20250130182309.717346-13-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250130182309.717346-1-peter.maydell@linaro.org>
 References: <20250130182309.717346-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,30 +99,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On XScale CPUs, there is no EL2 or AArch64, so no syndrome register.
-These traps are just UNDEFs in the traditional AArch32 sense, so
-CP_ACCESS_TRAP_UNCATEGORIZED is more accurate than CP_ACCESS_TRAP.
-This has no visible behavioural change, because the guest doesn't
-have a way to see the syndrome value we generate.
+There are no longer any uses of CP_ACCESS_TRAP in access functions,
+because we have converted them all to use either CP_ACCESS_TRAP_EL1
+or CP_ACCESS_TRAP_UNCATEGORIZED, as appropriate. Remove the handling
+of bare CP_ACCESS_TRAP from the access_check_cp_reg() helper, so that
+it now asserts if an access function returns it.
+
+Rename CP_ACCESS_TRAP to CP_ACCESS_TRAP_BIT, to make it clearer
+that this is an internal-only definition, not something that
+it makes sense to return from an access function. This should
+help to avoid future bugs where we return the wrong syndrome
+value by mistake.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/op_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/arm/cpregs.h        | 11 ++++++-----
+ target/arm/tcg/op_helper.c | 13 ++++++++-----
+ 2 files changed, 14 insertions(+), 10 deletions(-)
 
+diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
+index fbf5798069d..fb3b84baa1e 100644
+--- a/target/arm/cpregs.h
++++ b/target/arm/cpregs.h
+@@ -328,12 +328,13 @@ typedef enum CPAccessResult {
+      * Access fails due to a configurable trap or enable which would
+      * result in a categorized exception syndrome giving information about
+      * the failing instruction (ie syndrome category 0x3, 0x4, 0x5, 0x6,
+-     * 0xc or 0x18).
++     * 0xc or 0x18). These traps are always to a specified target EL,
++     * never to the usual target EL.
+      */
+-    CP_ACCESS_TRAP = (1 << 2),
+-    CP_ACCESS_TRAP_EL1 = CP_ACCESS_TRAP | 1,
+-    CP_ACCESS_TRAP_EL2 = CP_ACCESS_TRAP | 2,
+-    CP_ACCESS_TRAP_EL3 = CP_ACCESS_TRAP | 3,
++    CP_ACCESS_TRAP_BIT = (1 << 2),
++    CP_ACCESS_TRAP_EL1 = CP_ACCESS_TRAP_BIT | 1,
++    CP_ACCESS_TRAP_EL2 = CP_ACCESS_TRAP_BIT | 2,
++    CP_ACCESS_TRAP_EL3 = CP_ACCESS_TRAP_BIT | 3,
+ 
+     /*
+      * Access fails and results in an exception syndrome 0x0 ("uncategorized").
 diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
-index c427118655d..c69d2ac643f 100644
+index c69d2ac643f..fcee11e29ad 100644
 --- a/target/arm/tcg/op_helper.c
 +++ b/target/arm/tcg/op_helper.c
-@@ -764,7 +764,7 @@ const void *HELPER(access_check_cp_reg)(CPUARMState *env, uint32_t key,
+@@ -853,21 +853,24 @@ const void *HELPER(access_check_cp_reg)(CPUARMState *env, uint32_t key,
  
-     if (arm_feature(env, ARM_FEATURE_XSCALE) && ri->cp < 14
-         && extract32(env->cp15.c15_cpar, ri->cp, 1) == 0) {
--        res = CP_ACCESS_TRAP;
-+        res = CP_ACCESS_TRAP_UNCATEGORIZED;
-         goto fail;
-     }
- 
+  fail:
+     excp = EXCP_UDEF;
+-    switch (res & ~CP_ACCESS_EL_MASK) {
+-    case CP_ACCESS_TRAP:
++    switch (res) {
++        /* CP_ACCESS_TRAP* traps are always direct to a specified EL */
++    case CP_ACCESS_TRAP_EL3:
+         /*
+          * If EL3 is AArch32 then there's no syndrome register; the cases
+          * where we would raise a SystemAccessTrap to AArch64 EL3 all become
+          * raising a Monitor trap exception. (Because there's no visible
+          * syndrome it doesn't matter what we pass to raise_exception().)
+          */
+-        if ((res & CP_ACCESS_EL_MASK) == 3 && !arm_el_is_aa64(env, 3)) {
++        if (!arm_el_is_aa64(env, 3)) {
+             excp = EXCP_MON_TRAP;
+         }
+         break;
++    case CP_ACCESS_TRAP_EL2:
++    case CP_ACCESS_TRAP_EL1:
++        break;
+     case CP_ACCESS_TRAP_UNCATEGORIZED:
+-        /* Only CP_ACCESS_TRAP traps are direct to a specified EL */
+-        assert((res & CP_ACCESS_EL_MASK) == 0);
++        /* CP_ACCESS_TRAP_UNCATEGORIZED is never direct to a specified EL */
+         if (cpu_isar_feature(aa64_ids, cpu) && isread &&
+             arm_cpreg_in_idspace(ri)) {
+             /*
 -- 
 2.34.1
 
