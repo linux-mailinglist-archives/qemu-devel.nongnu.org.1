@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B337A22B51
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 11:10:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4D20A22B78
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 11:14:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdRUn-0002Ik-02; Thu, 30 Jan 2025 05:10:01 -0500
+	id 1tdRUt-0002dO-GU; Thu, 30 Jan 2025 05:10:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tdRUk-0002Hy-GT
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:09:58 -0500
+ id 1tdRUp-0002SF-Ev
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:10:03 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tdRUj-00074I-0A
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:09:58 -0500
+ id 1tdRUn-00074W-Mb
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:10:03 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tdRUe-00000006TxS-0eRP; Thu, 30 Jan 2025 11:09:52 +0100
+ id 1tdRUj-00000006Txh-1BNQ; Thu, 30 Jan 2025 11:09:57 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,10 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v4 08/33] migration/multifd: Allow premature EOF on TLS
- incoming channels
-Date: Thu, 30 Jan 2025 11:08:29 +0100
-Message-ID: <baf944c37ead5d30d7e268b2a4074d9acaac2db0.1738171076.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v4 09/33] migration: postcopy_ram_listen_thread() needs to
+ take BQL for some calls
+Date: Thu, 30 Jan 2025 11:08:30 +0100
+Message-ID: <139bf266dbd1e25a1e5a050ecb82e3e59120d705.1738171076.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1738171076.git.maciej.szmigiero@oracle.com>
 References: <cover.1738171076.git.maciej.szmigiero@oracle.com>
@@ -66,55 +66,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Multifd send channels are terminated by calling
-qio_channel_shutdown(QIO_CHANNEL_SHUTDOWN_BOTH) in
-multifd_send_terminate_threads(), which in the TLS case essentially
-calls shutdown(SHUT_RDWR) on the underlying raw socket.
+postcopy_ram_listen_thread() is a free running thread, so it needs to
+take BQL around function calls to migration methods requiring BQL.
 
-Unfortunately, this does not terminate the TLS session properly and
-the receive side sees this as a GNUTLS_E_PREMATURE_TERMINATION error.
+qemu_loadvm_state_main() needs BQL held since it ultimately calls
+"load_state" SaveVMHandlers.
 
-The only reason why this wasn't causing migration failures is because
-the current migration code apparently does not check for migration
-error being set after the end of the multifd receive process.
-
-However, this will change soon so the multifd receive code has to be
-prepared to not return an error on such premature TLS session EOF.
-Use the newly introduced QIOChannelTLS method for that.
-
-It's worth noting that even if the sender were to be changed to terminate
-the TLS connection properly the receive side still needs to remain
-compatible with older QEMU bit stream which does not do this.
+migration_incoming_state_destroy() needs BQL held since it ultimately calls
+"load_cleanup" SaveVMHandlers.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- migration/multifd.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ migration/savevm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index ab73d6d984cf..ceaad930e141 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -1310,6 +1310,7 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
-     Error *local_err = NULL;
-     bool use_packets = multifd_use_packets();
-     int id;
-+    QIOChannelTLS *ioc_tls;
+diff --git a/migration/savevm.c b/migration/savevm.c
+index b0b74140daea..0ceea9638cc1 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -2013,7 +2013,9 @@ static void *postcopy_ram_listen_thread(void *opaque)
+      * in qemu_file, and thus we must be blocking now.
+      */
+     qemu_file_set_blocking(f, true);
++    bql_lock();
+     load_res = qemu_loadvm_state_main(f, mis);
++    bql_unlock();
  
-     if (use_packets) {
-         id = multifd_recv_initial_packet(ioc, &local_err);
-@@ -1337,6 +1338,13 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
-     p->c = ioc;
-     object_ref(OBJECT(ioc));
+     /*
+      * This is tricky, but, mis->from_src_file can change after it
+@@ -2073,7 +2075,9 @@ static void *postcopy_ram_listen_thread(void *opaque)
+      * (If something broke then qemu will have to exit anyway since it's
+      * got a bad migration state).
+      */
++    bql_lock();
+     migration_incoming_state_destroy();
++    bql_unlock();
  
-+    ioc_tls = QIO_CHANNEL_TLS(object_dynamic_cast(OBJECT(ioc),
-+                                                  TYPE_QIO_CHANNEL_TLS));
-+    if (ioc_tls) {
-+        /* Multifd send channels do not terminate the TLS session properly */
-+        qio_channel_tls_set_premature_eof_okay(ioc_tls, true);
-+    }
-+
-     p->thread_created = true;
-     qemu_thread_create(&p->thread, p->name, multifd_recv_thread, p,
-                        QEMU_THREAD_JOINABLE);
+     rcu_unregister_thread();
+     mis->have_listen_thread = false;
 
