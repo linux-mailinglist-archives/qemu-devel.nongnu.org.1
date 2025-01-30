@@ -2,150 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E420DA23264
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 18:04:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A04CAA232A2
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 18:16:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdXwk-0004cW-NK; Thu, 30 Jan 2025 12:03:19 -0500
+	id 1tdY6C-0000ZB-Pu; Thu, 30 Jan 2025 12:13:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tdXwX-0004Y7-Fz
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 12:03:06 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tdY6A-0000YO-TK
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 12:13:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tdXwV-0000yb-Tt
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 12:03:05 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tdY65-00039A-GZ
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 12:13:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738256582;
+ s=mimecast20190719; t=1738257174;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Bfgt8miLEvmEJe4gjJtXIFBmltvv0Vs8icMg+ADIw2c=;
- b=ZYMz9I3LX8b5fAyr/NbWfKME0b9Uy0mkooBHmE6OUZmastubhnlR7utrLbzbjmOoJnaAFX
- 8zlgsGqLrbgqs4GyxLpsbMS7Dyyd1weCQZuPfnSkZoYNZUwv8Gf2R60DMmqoHeaGVU8ZQ6
- TgIEKf9rIn0TYfX7ktiBrAc7E0ykFuU=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-487-2GcFETWXPNuE3xTsT64Idg-1; Thu, 30 Jan 2025 12:03:01 -0500
-X-MC-Unique: 2GcFETWXPNuE3xTsT64Idg-1
-X-Mimecast-MFC-AGG-ID: 2GcFETWXPNuE3xTsT64Idg
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4359206e1e4so8763535e9.2
- for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 09:03:00 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738256580; x=1738861380;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt
- :content-language:from:references:cc:to:subject:user-agent
- :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=Bfgt8miLEvmEJe4gjJtXIFBmltvv0Vs8icMg+ADIw2c=;
- b=fDz8DqqxNx63fZlucOuWm4vIhHe7dk5XSjtUWU0/8Ane8z/4R1rekswu0j+W8eQaqA
- e0VLw3IA4NVJoj7cru1of1OKRJGQIsAZu9F58sM6uglkMbRun9n6pqhSm8DKausWp1gG
- AdQ0gOswwY3k965eDgvm2b1sRi7404RR8yG5TlV03E2J+NOCGHL532MNVPkMhrPWLu9V
- vkA1j336jOde87fYxgity6Y6tnBYa6VcXyzieilk4N9T6oxMvk0DjsUp3PerVVhtWxP8
- XcUqMOB8joa1uMNGIbQ4+RCNu+M/3eJz5CG35wfSC/wR8s+cLwWIGt2cpIBZ+3vfu9VH
- I8sg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW/8mtfju+YNiPzFT3Ogd4PMvOF6wFpmvYUcmWhumKCDHCPQfpwWDQvIkjI68t47mvtM+YEmI0kTe9K@nongnu.org
-X-Gm-Message-State: AOJu0YxLCXJ/tY2fMB3UWk8jB4BjKIGJtbMvij22et+k6BnnqkxyrS6W
- ogCFxRgouDzvW9w+48wVsZIfER2A3kIzrtZSCXKZ1s5OoWL4DsEPpdEAWf4tvrEjuRZl7Ykc8BR
- jAahn5yyp8a3Sg7ksEeskAHUk5AkEqeTeOaxWkLuig4KzUuPXJD8j
-X-Gm-Gg: ASbGncsB6KLPgsgQTCxsIn4Tiz9FnmG0mUY5OEOy4gKOT+mBVNw0FEFWC0apj5SSO/8
- YuHDwGbrYQtP3VgFKkjiYdYZA/x2HQjpXkYyXTdwRJFzFZTkELvjwu1gow3k3plFfMx47e4iLFE
- MNWFqdhXXkpEBBcsYpWwgFWaVRCsyBmh6mb6k/uSdJhade4Q+RQjizfOUQiDpy9HS+PlWaYa/iE
- KTr5cK3PjoLJcThkYpeGBIsGuwn5SfykqjKMDx0jT/DCzK5sRy8B0vZWaNiMUf5km7yGn0XZC8d
- TM2GcAHsB8n2d/+ZT+68UJqBCT/ca3Pw7KhpgIH+iWsU3AyceJR5VCh62QblVQAiXorK17GWtRq
- k82ColC856vhP4qwtvXep0GW/rYgUO3Us
-X-Received: by 2002:a05:600c:3b0a:b0:434:f753:6012 with SMTP id
- 5b1f17b1804b1-438dc3cae6cmr84005325e9.17.1738256578457; 
- Thu, 30 Jan 2025 09:02:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGJTMrJ+ZHtudEDY2UKFWTpuA46TyGJOceK2DiZsUkzLx3bBPGALFfhAxo0D71GP+vwZHTzQA==
-X-Received: by 2002:a05:600c:3b0a:b0:434:f753:6012 with SMTP id
- 5b1f17b1804b1-438dc3cae6cmr84004615e9.17.1738256577933; 
- Thu, 30 Jan 2025 09:02:57 -0800 (PST)
-Received: from ?IPV6:2003:cb:c713:3b00:16ce:8f1c:dd50:90fb?
- (p200300cbc7133b0016ce8f1cdd5090fb.dip0.t-ipconnect.de.
- [2003:cb:c713:3b00:16ce:8f1c:dd50:90fb])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438dcc81a39sm63674615e9.35.2025.01.30.09.02.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 30 Jan 2025 09:02:57 -0800 (PST)
-Message-ID: <ca2c2d71-e4c0-4ed2-afc0-04f21df1f82d@redhat.com>
-Date: Thu, 30 Jan 2025 18:02:55 +0100
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=usGPd3+ctEkVEQKIEtGtMNksxKLOXRfe9j74lWsbylQ=;
+ b=KIFJPtg2Lqo7K3u3PdTlniRSMdqnGWzH3YrqACNxCRMGE/W+oZbqKWe1271Q49hswfLI86
+ lXfszc3wderik3qUIl1zMpGqRKFGhVeJsw1NmvHVSh2m7jg2X/W7UEywrbA66k6nZczPf5
+ 6XkMhyMCJBij5+676gMAjZnPUSsyTTU=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-138-u9kRERZROZWuf9bVC-X85g-1; Thu,
+ 30 Jan 2025 12:12:50 -0500
+X-MC-Unique: u9kRERZROZWuf9bVC-X85g-1
+X-Mimecast-MFC-AGG-ID: u9kRERZROZWuf9bVC-X85g
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 40CD719560B2; Thu, 30 Jan 2025 17:12:49 +0000 (UTC)
+Received: from merkur.redhat.com (unknown [10.39.193.13])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id BD8F730001BE; Thu, 30 Jan 2025 17:12:45 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com,
+ pkrempa@redhat.com, peterx@redhat.com, farosas@suse.de,
+ qemu-devel@nongnu.org
+Subject: [PATCH v2 00/15] block: Managing inactive nodes (QSD migration)
+Date: Thu, 30 Jan 2025 18:12:31 +0100
+Message-ID: <20250130171240.286878-1-kwolf@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/6] accel/kvm: Report the loss of a large memory page
-To: =?UTF-8?Q?=E2=80=9CWilliam_Roche?= <william.roche@oracle.com>,
- kvm@vger.kernel.org, qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Cc: peterx@redhat.com, pbonzini@redhat.com, richard.henderson@linaro.org,
- philmd@linaro.org, peter.maydell@linaro.org, mtosatti@redhat.com,
- imammedo@redhat.com, eduardo@habkost.net, marcel.apfelbaum@gmail.com,
- wangyanan55@huawei.com, zhao1.liu@intel.com, joao.m.martins@oracle.com
-References: <20250127213107.3454680-1-william.roche@oracle.com>
- <20250127213107.3454680-4-william.roche@oracle.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20250127213107.3454680-4-william.roche@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -33
 X-Spam_score: -3.4
 X-Spam_bar: ---
 X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -161,61 +78,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27.01.25 22:31, “William Roche wrote:
-> From: William Roche <william.roche@oracle.com>
-> 
-> In case of a large page impacted by a memory error, provide an
-> information about the impacted large page before the memory
-> error injection message.
-> 
-> This message would also appear on ras enabled ARM platforms, with
-> the introduction of an x86 similar error injection message.
-> 
-> In the case of a large page impacted, we now report:
-> Memory Error on large page from <backend>:<address>+<fd_offset> +<page_size>
-> 
-> Signed-off-by: William Roche <william.roche@oracle.com>
-> ---
->   accel/kvm/kvm-all.c       | 11 +++++++++++
->   include/exec/cpu-common.h |  9 +++++++++
->   system/physmem.c          | 21 +++++++++++++++++++++
->   target/arm/kvm.c          |  3 +++
->   4 files changed, 44 insertions(+)
-> 
-> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> index f89568bfa3..08e14f8960 100644
-> --- a/accel/kvm/kvm-all.c
-> +++ b/accel/kvm/kvm-all.c
-> @@ -1296,6 +1296,17 @@ static void kvm_unpoison_all(void *param)
->   void kvm_hwpoison_page_add(ram_addr_t ram_addr)
->   {
->       HWPoisonPage *page;
-> +    struct RAMBlockInfo rb_info;
-> +
-> +    if (qemu_ram_block_location_info_from_addr(ram_addr, &rb_info)) {
-> +        size_t ps = rb_info.page_size;
-> +        if (ps > TARGET_PAGE_SIZE) {
-> +            uint64_t offset = ram_addr - rb_info.offset;
-> +            error_report("Memory Error on large page from %s:%" PRIx64
-> +                         "+%" PRIx64 " +%zx", rb_info.idstr,
-> +                         QEMU_ALIGN_DOWN(offset, ps), rb_info.fd_offset, ps);
-> +        }
-> +    }
+This series adds a mechanism that allows the user or management tool to
+manually activate and inactivate block nodes instead of fully relying on
+the automatic management in the migration code.
 
-Some smaller nits:
+One case where this is needed is for migration with shared storage and
+devices backed by qemu-storage-daemon, which as an external process is
+not involved in the VM migration. Management tools can manually
+orchestrate the handover in this scenario. The new qemu-iotests case
+qsd-migrate demonstrates this.
 
-1) I'd call it qemu_ram_block_info_from_addr() --  drop the "_location"
+There are other cases without qemu-storage-daemon where manual
+management is necessary. For example, after migration, the destination
+VM only activates images on 'cont', but after migrating a paused VM, the
+user may want to perform operations on a block node while the VM is
+still paused.
 
-2) Printing the fd_offset only makes sense if there is an fd, right? 
-You'd have to communicate that information as well.
+This series adds support for block exports on an inactive node (needed
+for shared storage migration with qemu-storage-daemon) only to NBD.
+Adding it to other export types will be done in a future series.
 
+v2:
+- Added a comprehensive test case that tests how inactive nodes
+  interoperate with many operations
+- Added a couple of fixes for bugs uncovered by the tests (that would
+  usually lead to crashes when an unsupported operation is performed on
+  inactive nodes)
+- Added 'active' status to query-block information
 
+Kevin Wolf (15):
+  block: Add 'active' field to BlockDeviceInfo
+  block: Inactivate external snapshot overlays when necessary
+  migration/block-active: Remove global active flag
+  block: Don't attach inactive child to active node
+  block: Allow inactivating already inactive nodes
+  block: Fix crash on block_resize on inactive node
+  block: Add option to create inactive nodes
+  block: Add blockdev-set-active QMP command
+  block: Support inactive nodes in blk_insert_bs()
+  block/export: Don't ignore image activation error in blk_exp_add()
+  block/export: Add option to allow export of inactive nodes
+  nbd/server: Support inactive nodes
+  iotests: Add filter_qtest()
+  iotests: Add qsd-migrate case
+  iotests: Add (NBD-based) tests for inactive nodes
 
-Apart from that, this series LGTM, thanks!
+ qapi/block-core.json                          |  44 ++-
+ qapi/block-export.json                        |  10 +-
+ include/block/block-common.h                  |   1 +
+ include/block/block-global-state.h            |   6 +
+ include/block/export.h                        |   3 +
+ migration/migration.h                         |   3 -
+ block.c                                       |  62 +++-
+ block/block-backend.c                         |  16 +-
+ block/export/export.c                         |  29 +-
+ block/monitor/block-hmp-cmds.c                |   5 +-
+ block/qapi.c                                  |   1 +
+ blockdev.c                                    |  48 +++
+ migration/block-active.c                      |  46 ---
+ migration/migration.c                         |   8 -
+ nbd/server.c                                  |  17 +
+ tests/qemu-iotests/iotests.py                 |   8 +
+ tests/qemu-iotests/041                        |   4 +-
+ tests/qemu-iotests/165                        |   4 +-
+ tests/qemu-iotests/184.out                    |   2 +
+ tests/qemu-iotests/191.out                    |  16 +
+ tests/qemu-iotests/273.out                    |   5 +
+ tests/qemu-iotests/tests/copy-before-write    |   3 +-
+ tests/qemu-iotests/tests/inactive-node-nbd    | 303 ++++++++++++++++++
+ .../qemu-iotests/tests/inactive-node-nbd.out  | 239 ++++++++++++++
+ tests/qemu-iotests/tests/migrate-bitmaps-test |   7 +-
+ tests/qemu-iotests/tests/qsd-migrate          | 132 ++++++++
+ tests/qemu-iotests/tests/qsd-migrate.out      |  51 +++
+ 27 files changed, 986 insertions(+), 87 deletions(-)
+ create mode 100755 tests/qemu-iotests/tests/inactive-node-nbd
+ create mode 100644 tests/qemu-iotests/tests/inactive-node-nbd.out
+ create mode 100755 tests/qemu-iotests/tests/qsd-migrate
+ create mode 100644 tests/qemu-iotests/tests/qsd-migrate.out
 
 -- 
-Cheers,
-
-David / dhildenb
+2.48.1
 
 
