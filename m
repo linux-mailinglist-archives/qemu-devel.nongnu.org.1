@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CAD3A22E07
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 14:45:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D0A1A22E04
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 14:45:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdUq5-0000n5-GX; Thu, 30 Jan 2025 08:44:13 -0500
+	id 1tdUpy-0000ke-LR; Thu, 30 Jan 2025 08:44:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tdUq4-0000mO-Bh
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 08:44:12 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tdUpw-0000jq-Em
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 08:44:04 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tdUpv-0003PH-8R
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 08:44:12 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tdUpu-0003PF-V9
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 08:44:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1738244642;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Q3oJ/f2lYBy+mVYg+gP8Eo/xbAj6TYb489HgxZY98qM=;
- b=XMTdlCcF+m84gYqj7UhPBg+viNlgzRAketvb5CtRQ80hWuUpGI1ZGjei4/NTSprLU0sKKT
- JPAX4SMkdn7LOYzW895QKxfYgzRiVvCuOwqIV3V/ghwcZ/kjspz8fsEhjSMaSZXJLY6tnk
- IQHxoZCV5RPu+Crut9nb3j+U1BMtI7I=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=LhYwL2n7iaraT9zUn/a63GO+IkCmCBew8nfdwsIZCkg=;
+ b=jBfH/daZb4DkosGZB7+Mr5Ptf5pHfi8zOXStKx8z8qnfju51kEvkwbG8ka5JOc4egM5RYt
+ UHlfTE2ICck37SBl+yUrFQ5fS8SFthxHbskWNl6BTh31Yq8584dRIGXMjfo+Kiyoh6MVnf
+ UNS/6qsTZOP49tEGDQsfyyemvlQb6Kk=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-YmdxIYXZP2aBWhXDPmbUxg-1; Thu,
- 30 Jan 2025 08:43:58 -0500
-X-MC-Unique: YmdxIYXZP2aBWhXDPmbUxg-1
-X-Mimecast-MFC-AGG-ID: YmdxIYXZP2aBWhXDPmbUxg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-404-84Dtiu2wNemYculPZyky3Q-1; Thu,
+ 30 Jan 2025 08:44:00 -0500
+X-MC-Unique: 84Dtiu2wNemYculPZyky3Q-1
+X-Mimecast-MFC-AGG-ID: 84Dtiu2wNemYculPZyky3Q
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 10EB11956080
- for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 13:43:58 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BE34019560B8
+ for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 13:43:59 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.105])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DBBFD1800955; Thu, 30 Jan 2025 13:43:56 +0000 (UTC)
+ id 95329180035D; Thu, 30 Jan 2025 13:43:58 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v2 4/9] vfio: Introduce vfio_get_vfio_device()
-Date: Thu, 30 Jan 2025 14:43:41 +0100
-Message-ID: <20250130134346.1754143-5-clg@redhat.com>
+Subject: [PATCH v2 5/9] vfio: Improve error reporting when MMIO region mapping
+ fails
+Date: Thu, 30 Jan 2025 14:43:42 +0100
+Message-ID: <20250130134346.1754143-6-clg@redhat.com>
 In-Reply-To: <20250130134346.1754143-1-clg@redhat.com>
 References: <20250130134346.1754143-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -33
 X-Spam_score: -3.4
 X-Spam_bar: ---
 X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.3,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,54 +83,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This helper will be useful in the listener handlers to extract the
-VFIO device from a memory region using memory_region_owner(). At the
-moment, we only care for PCI passthrough devices. If the need arises,
-we will add more.
+When the IOMMU address space width is smaller than the physical
+address width, a MMIO region of a device can fail to map because the
+region is outside the supported IOVA ranges of the VM. In this case,
+PCI peer-to-peer transactions on BARs are not supported.
+
+This can occur with the 39-bit IOMMU address space width, as can be
+the case on some consumer processors or when using a vIOMMU device
+with default settings. The current error message is unclear, also
+change the error report to a warning because it is a non fatal
+condition for the VM.
 
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-common.h |  1 +
- hw/vfio/helpers.c             | 10 ++++++++++
- 2 files changed, 11 insertions(+)
+ hw/vfio/common.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 0c60be5b15c70168f4f94ad7054d9bd750a162d3..ac35136a11051b079cd9d04e6becd344a0e0f7e7 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -252,6 +252,7 @@ bool vfio_device_hiod_realize(VFIODevice *vbasedev, Error **errp);
- bool vfio_attach_device(char *name, VFIODevice *vbasedev,
-                         AddressSpace *as, Error **errp);
- void vfio_detach_device(VFIODevice *vbasedev);
-+VFIODevice *vfio_get_vfio_device(Object *obj);
- 
- int vfio_kvm_device_add_fd(int fd, Error **errp);
- int vfio_kvm_device_del_fd(int fd, Error **errp);
-diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
-index 913796f437f84eece8711cb4b4b654a44040d17c..4b255d4f3a9e81f55df00c68fc71da769fd5bd04 100644
---- a/hw/vfio/helpers.c
-+++ b/hw/vfio/helpers.c
-@@ -23,6 +23,7 @@
- #include <sys/ioctl.h>
- 
- #include "hw/vfio/vfio-common.h"
-+#include "hw/vfio/pci.h"
- #include "hw/hw.h"
- #include "trace.h"
- #include "qapi/error.h"
-@@ -728,3 +729,12 @@ bool vfio_device_hiod_realize(VFIODevice *vbasedev, Error **errp)
- 
-     return HOST_IOMMU_DEVICE_GET_CLASS(hiod)->realize(hiod, vbasedev, errp);
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 62af1216fc5a9089fc718c2afe3a405d9381db32..5c9d8657d746ce30af5ae8f9122101e086a61ef5 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -555,6 +555,18 @@ static bool vfio_get_section_iova_range(VFIOContainerBase *bcontainer,
+     return true;
  }
-+
-+VFIODevice *vfio_get_vfio_device(Object *obj)
+ 
++static void vfio_device_error_append(VFIODevice *vbasedev, Error **errp)
 +{
-+    if (object_dynamic_cast(obj, TYPE_VFIO_PCI)) {
-+        return &VFIO_PCI(obj)->vbasedev;
-+    } else {
-+        return NULL;
++    /*
++     * MMIO region mapping failures are not fatal but in this case PCI
++     * peer-to-peer transactions are broken.
++     */
++    if (vbasedev && vbasedev->type == VFIO_DEVICE_TYPE_PCI) {
++        error_append_hint(errp, "%s: PCI peer-to-peer transactions "
++                          "on BARs are not supported.\n", vbasedev->name);
 +    }
 +}
++
+ static void vfio_listener_region_add(MemoryListener *listener,
+                                      MemoryRegionSection *section)
+ {
+@@ -670,7 +682,10 @@ static void vfio_listener_region_add(MemoryListener *listener,
+                    strerror(-ret));
+         if (memory_region_is_ram_device(section->mr)) {
+             /* Allow unexpected mappings not to be fatal for RAM devices */
+-            error_report_err(err);
++            VFIODevice *vbasedev =
++                vfio_get_vfio_device(memory_region_owner(section->mr));
++            vfio_device_error_append(vbasedev, &err);
++            warn_report_once_err(err);
+             return;
+         }
+         goto fail;
 -- 
 2.48.1
 
