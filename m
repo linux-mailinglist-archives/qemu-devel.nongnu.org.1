@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39BCDA22D6E
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 14:16:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE40A22D73
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 14:17:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdUOk-0007Ix-1i; Thu, 30 Jan 2025 08:15:58 -0500
+	id 1tdUPC-0007N2-Vy; Thu, 30 Jan 2025 08:16:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tdUOZ-0007Ht-Lj
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 08:15:48 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tdUOe-0007Ii-JK
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 08:15:53 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tdUOX-0008Pj-8F
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 08:15:46 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tdUOa-0008Ru-Fj
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 08:15:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738242943;
+ s=mimecast20190719; t=1738242947;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jHYEnI2nd6YTM82YQCPHozxDBQ4dSeC6QRTo1AikXvk=;
- b=ViOrTvbfPSqZvLBXcxlpqA+TXWwseyXXCew0k55RnfGIc0S86cmjIRtIzNF6c2vm04uIKH
- i0Q4QHh1qoLfpTjkBvOqgH0rqef7JciN/K5yGs6C4j2xCWVKa3vVGhiVevLs4re4Yv9845
- n7ltS0MDe2niSYXiXeFFN1D08cli7dY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=dxNpJ8n0NWJQONfwOlrs4HtxhS2jsCl2PTU9UmWLjO4=;
+ b=MvJ5CMOiThUxqpVnV9JNJYnZXW02+eTJB+XNWn9DnbveTA/xseWMd3tiQu80JJSTYcWbXG
+ yDT83PLNIwbPp7UpiGqh1IkoooPeRPg13l7UVRQ7faZl/giXxXxno60Ga+XunSGDgjfgvV
+ lHOLLbjUp0xm7WD54hH6oGDCNUw2S+U=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-663-FtycbKp9PuqNzBYs7jzBKA-1; Thu,
- 30 Jan 2025 08:15:42 -0500
-X-MC-Unique: FtycbKp9PuqNzBYs7jzBKA-1
-X-Mimecast-MFC-AGG-ID: FtycbKp9PuqNzBYs7jzBKA
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-oQvf1_U_OziYPLWn4CDTSg-1; Thu,
+ 30 Jan 2025 08:15:43 -0500
+X-MC-Unique: oQvf1_U_OziYPLWn4CDTSg-1
+X-Mimecast-MFC-AGG-ID: oQvf1_U_OziYPLWn4CDTSg
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CDABF19560B1
- for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 13:15:40 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 22D3B1800361
+ for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 13:15:43 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.95])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 558AF3003FD1; Thu, 30 Jan 2025 13:15:39 +0000 (UTC)
+ id A47F230001BE; Thu, 30 Jan 2025 13:15:41 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 01/20] tests/functional/qemu_test/decorators: Fix bad check for
- imports
-Date: Thu, 30 Jan 2025 14:15:15 +0100
-Message-ID: <20250130131535.91297-2-thuth@redhat.com>
+Subject: [PULL 02/20] tests/functional: Fix broken decorators with lamda
+ functions
+Date: Thu, 30 Jan 2025 14:15:16 +0100
+Message-ID: <20250130131535.91297-3-thuth@redhat.com>
 In-Reply-To: <20250130131535.91297-1-thuth@redhat.com>
 References: <20250130131535.91297-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -83,42 +83,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-skipIfMissingImports should use importlib.import_module() for checking
-whether a module with the name stored in the "impname" variable is
-available or not, otherwise the code tries to import a module with
-the name "impname" instead.
-(This bug hasn't been noticed before since there is another issue
-with this decorator that will be fixed by the next patch)
+The decorators that use a lambda function are currently broken
+and do not properly skip the test if the condition is not met.
+Using "return skipUnless(lambda: ...)" does not work as expected.
+To fix it, rewrite the decorators without lambda, it's simpler
+that way anyway.
 
-Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20250122134315.1448794-2-thuth@redhat.com>
+Message-ID: <20250122134315.1448794-3-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/qemu_test/decorators.py | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/functional/qemu_test/decorators.py | 44 +++++++++++-------------
+ 1 file changed, 21 insertions(+), 23 deletions(-)
 
 diff --git a/tests/functional/qemu_test/decorators.py b/tests/functional/qemu_test/decorators.py
-index df088bc090..08f58f6b40 100644
+index 08f58f6b40..3d9c02fd59 100644
 --- a/tests/functional/qemu_test/decorators.py
 +++ b/tests/functional/qemu_test/decorators.py
-@@ -2,6 +2,7 @@
- #
- # Decorators useful in functional tests
+@@ -17,15 +17,14 @@
+   @skipIfMissingCommands("mkisofs", "losetup")
+ '''
+ def skipIfMissingCommands(*args):
+-    def has_cmds(cmdlist):
+-        for cmd in cmdlist:
+-            if not which(cmd):
+-                return False
+-        return True
+-
+-    return skipUnless(lambda: has_cmds(args),
+-                      'required command(s) "%s" not installed' %
+-                      ", ".join(args))
++    has_cmds = True
++    for cmd in args:
++         if not which(cmd):
++             has_cmds = False
++             break
++
++    return skipUnless(has_cmds, 'required command(s) "%s" not installed' %
++                                ", ".join(args))
  
-+import importlib
- import os
- import platform
- from unittest import skipUnless
-@@ -97,7 +98,7 @@ def skipIfMissingImports(*args):
-     def has_imports(importlist):
-         for impname in importlist:
-             try:
--                import impname
-+                importlib.import_module(impname)
-             except ImportError:
-                 return False
-         return True
+ '''
+ Decorator to skip execution of a test if the current
+@@ -36,9 +35,9 @@ def has_cmds(cmdlist):
+   @skipIfNotMachine("x86_64", "aarch64")
+ '''
+ def skipIfNotMachine(*args):
+-    return skipUnless(lambda: platform.machine() in args,
+-                        'not running on one of the required machine(s) "%s"' %
+-                        ", ".join(args))
++    return skipUnless(platform.machine() in args,
++                      'not running on one of the required machine(s) "%s"' %
++                      ", ".join(args))
+ 
+ '''
+ Decorator to skip execution of flaky tests, unless
+@@ -95,14 +94,13 @@ def skipBigDataTest():
+   @skipIfMissingImports("numpy", "cv2")
+ '''
+ def skipIfMissingImports(*args):
+-    def has_imports(importlist):
+-        for impname in importlist:
+-            try:
+-                importlib.import_module(impname)
+-            except ImportError:
+-                return False
+-        return True
+-
+-    return skipUnless(lambda: has_imports(args),
+-                      'required import(s) "%s" not installed' %
+-                      ", ".join(args))
++    has_imports = True
++    for impname in args:
++        try:
++            importlib.import_module(impname)
++        except ImportError:
++            has_imports = False
++            break
++
++    return skipUnless(has_imports, 'required import(s) "%s" not installed' %
++                                   ", ".join(args))
 -- 
 2.48.1
 
