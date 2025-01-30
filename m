@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB72A22B7E
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 11:16:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD660A22B79
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 11:14:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdRW7-0005cx-UD; Thu, 30 Jan 2025 05:11:24 -0500
+	id 1tdRWA-0006HL-OE; Thu, 30 Jan 2025 05:11:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tdRVk-0005Bc-VI
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:11:06 -0500
+ id 1tdRVq-0005LO-8B
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:11:08 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tdRVi-0007MF-84
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:10:59 -0500
+ id 1tdRVm-0007Mj-Mv
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 05:11:05 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tdRVd-00000006U01-3r2a; Thu, 30 Jan 2025 11:10:53 +0100
+ id 1tdRVj-00000006U0E-0HN9; Thu, 30 Jan 2025 11:10:59 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,14 +31,15 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v4 20/33] vfio/migration: Add
- x-migration-load-config-after-iter VFIO property
-Date: Thu, 30 Jan 2025 11:08:41 +0100
-Message-ID: <11f12c43e098ac5e2466e456e8cf8936c54210dc.1738171076.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v4 21/33] vfio/migration: Add load_device_config_state_start
+ trace event
+Date: Thu, 30 Jan 2025 11:08:42 +0100
+Message-ID: <5116e9675a0f5894f924bc7088d359767a588bdf.1738171076.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1738171076.git.maciej.szmigiero@oracle.com>
 References: <cover.1738171076.git.maciej.szmigiero@oracle.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=145.239.82.108;
  envelope-from=mhej@vps-ovh.mhejs.net; helo=vps-ovh.mhejs.net
@@ -66,81 +67,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-This property allows configuring whether to start the config load only
-after all iterables were loaded.
-Such interlocking is required for ARM64 due to this platform VFIO
-dependency on interrupt controller being loaded first.
+And rename existing load_device_config_state trace event to
+load_device_config_state_end for consistency since it is triggered at the
+end of loading of the VFIO device config state.
 
-The property defaults to AUTO, which means ON for ARM, OFF for other
-platforms.
+This way both the start and end points of particular device config
+loading operation (a long, BQL-serialized operation) are known.
 
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/vfio/migration.c           | 25 +++++++++++++++++++++++++
- hw/vfio/pci.c                 |  3 +++
- include/hw/vfio/vfio-common.h |  1 +
- 3 files changed, 29 insertions(+)
+ hw/vfio/migration.c  | 4 +++-
+ hw/vfio/trace-events | 3 ++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index adfa752db527..d801c861d202 100644
+index d801c861d202..f5df5ef17080 100644
 --- a/hw/vfio/migration.c
 +++ b/hw/vfio/migration.c
-@@ -254,6 +254,31 @@ static int vfio_load_buffer(QEMUFile *f, VFIODevice *vbasedev,
-     return ret;
+@@ -310,6 +310,8 @@ static int vfio_load_device_config_state(QEMUFile *f, void *opaque)
+     VFIODevice *vbasedev = opaque;
+     uint64_t data;
+ 
++    trace_vfio_load_device_config_state_start(vbasedev->name);
++
+     if (vbasedev->ops && vbasedev->ops->vfio_load_config) {
+         int ret;
+ 
+@@ -328,7 +330,7 @@ static int vfio_load_device_config_state(QEMUFile *f, void *opaque)
+         return -EINVAL;
+     }
+ 
+-    trace_vfio_load_device_config_state(vbasedev->name);
++    trace_vfio_load_device_config_state_end(vbasedev->name);
+     return qemu_file_get_error(f);
  }
  
-+static bool vfio_load_config_after_iter(VFIODevice *vbasedev)
-+{
-+    if (vbasedev->migration_load_config_after_iter == ON_OFF_AUTO_ON) {
-+        return true;
-+    } else if (vbasedev->migration_load_config_after_iter == ON_OFF_AUTO_OFF) {
-+        return false;
-+    }
-+
-+    assert(vbasedev->migration_load_config_after_iter == ON_OFF_AUTO_AUTO);
-+
-+    /*
-+     * Starting the config load only after all iterables were loaded is required
-+     * for ARM64 due to this platform VFIO dependency on interrupt controller
-+     * being loaded first.
-+     *
-+     * See commit d329f5032e17 ("vfio: Move the saving of the config space to
-+     * the right place in VFIO migration").
-+     */
-+#if defined(TARGET_ARM)
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
-+
- static int vfio_save_device_config_state(QEMUFile *f, void *opaque,
-                                          Error **errp)
- {
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index ab17a98ee5b6..83090c544d95 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -3377,6 +3377,9 @@ static const Property vfio_pci_dev_properties[] = {
-                     VFIO_FEATURE_ENABLE_IGD_OPREGION_BIT, false),
-     DEFINE_PROP_ON_OFF_AUTO("enable-migration", VFIOPCIDevice,
-                             vbasedev.enable_migration, ON_OFF_AUTO_AUTO),
-+    DEFINE_PROP_ON_OFF_AUTO("x-migration-load-config-after-iter", VFIOPCIDevice,
-+                            vbasedev.migration_load_config_after_iter,
-+                            ON_OFF_AUTO_AUTO),
-     DEFINE_PROP_BOOL("migration-events", VFIOPCIDevice,
-                      vbasedev.migration_events, false),
-     DEFINE_PROP_BOOL("x-no-mmap", VFIOPCIDevice, vbasedev.no_mmap, false),
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 0c60be5b15c7..153d03745dc7 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -133,6 +133,7 @@ typedef struct VFIODevice {
-     bool no_mmap;
-     bool ram_block_discard_allowed;
-     OnOffAuto enable_migration;
-+    OnOffAuto migration_load_config_after_iter;
-     bool migration_events;
-     VFIODeviceOps *ops;
-     unsigned int num_irqs;
+diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+index cab1cf1de0a2..1bebe9877d88 100644
+--- a/hw/vfio/trace-events
++++ b/hw/vfio/trace-events
+@@ -149,7 +149,8 @@ vfio_display_edid_write_error(void) ""
+ 
+ # migration.c
+ vfio_load_cleanup(const char *name) " (%s)"
+-vfio_load_device_config_state(const char *name) " (%s)"
++vfio_load_device_config_state_start(const char *name) " (%s)"
++vfio_load_device_config_state_end(const char *name) " (%s)"
+ vfio_load_state(const char *name, uint64_t data) " (%s) data 0x%"PRIx64
+ vfio_load_state_device_data(const char *name, uint64_t data_size, int ret) " (%s) size %"PRIu64" ret %d"
+ vfio_migration_realize(const char *name) " (%s)"
 
