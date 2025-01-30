@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47E1CA22D7E
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 14:18:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A06FA22D8E
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 14:20:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdUQO-0001HW-9f; Thu, 30 Jan 2025 08:17:41 -0500
+	id 1tdUQD-0000Fl-DL; Thu, 30 Jan 2025 08:17:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tdUP4-0007SH-9Y
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tdUP4-0007SK-Cj
  for qemu-devel@nongnu.org; Thu, 30 Jan 2025 08:16:21 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tdUP0-00009M-00
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tdUP0-0000A1-FC
  for qemu-devel@nongnu.org; Thu, 30 Jan 2025 08:16:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1738242972;
+ s=mimecast20190719; t=1738242973;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NLwua+vOM51f4+UaA6AyaKl3pPxM/d7eEICWljZUaKo=;
- b=MXeLqRBCc6msnobRsjPCRykKAVzxqGd6F6Hjq7PP/ETv6J30v95QQdKhxwvnxsiPRClK3h
- 37O8R2LYB92EIPIHG3Uj/v4asTMxHE6w5XIjtVNF42/acGURt/34y9dttbGE5T6oHhnj8T
- RhaERekzExsDPVrdyt5rkAFWoh2JdCc=
+ bh=kgVS5nOLBjp9lzAmjT/70TvKJ8N7XUJI0OxS/CKpcYU=;
+ b=V2xQWS3HK0RyzrEJcXcVN9ai8FcwzJO6mV8aF9S8vRcad/mPgntvw2+T9+hDO1OlTsWLbq
+ HGoSIMyUC/v9ImLv4Hs9ShzLso6Ok9GGQu37qDHT1hSFsfsuz6TUsFz8e6xxpAb4GL3QfI
+ ADsDbAEHgPGMTYvlN7HQPST00jQ7psk=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-536-MTTHucExNEunrfq14RmS6g-1; Thu,
- 30 Jan 2025 08:16:09 -0500
-X-MC-Unique: MTTHucExNEunrfq14RmS6g-1
-X-Mimecast-MFC-AGG-ID: MTTHucExNEunrfq14RmS6g
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-324-jeaFdFeIPZ2CL3nOuQLQUw-1; Thu,
+ 30 Jan 2025 08:16:12 -0500
+X-MC-Unique: jeaFdFeIPZ2CL3nOuQLQUw-1
+X-Mimecast-MFC-AGG-ID: jeaFdFeIPZ2CL3nOuQLQUw
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0852A1800361
- for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 13:16:09 +0000 (UTC)
+ id 4EBE618009F9
+ for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 13:16:11 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.95])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 63E1130001BE; Thu, 30 Jan 2025 13:16:07 +0000 (UTC)
+ id 7BCBD30001BE; Thu, 30 Jan 2025 13:16:09 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, David Hildenbrand <david@redhat.com>
-Subject: [PULL 12/20] virtio-mem-pci: Allow setting nvectors,
- so we can use MSI-X
-Date: Thu, 30 Jan 2025 14:15:26 +0100
-Message-ID: <20250130131535.91297-13-thuth@redhat.com>
+Subject: [PULL 13/20] s390x/s390-virtio-ccw: Support plugging PCI-based virtio
+ memory devices
+Date: Thu, 30 Jan 2025 14:15:27 +0100
+Message-ID: <20250130131535.91297-14-thuth@redhat.com>
 In-Reply-To: <20250130131535.91297-1-thuth@redhat.com>
 References: <20250130131535.91297-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -83,71 +83,81 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Hildenbrand <david@redhat.com>
 
-Let's do it similar as virtio-balloon-pci. With this change, we can
-use virtio-mem-pci on s390x, although plugging will still fail until
-properly wired up in the machine.
+Let's just wire it up, unlocking virtio-mem-pci support on s390x.
 
-No need to worry about transitional/non_transitional devices, because they
-don't exist for virtio-mem.
+While at it, drop the "return;" in s390_machine_device_unplug_request(),
+to make it look like the other handlers.
 
-Signed-off-by: David Hildenbrand <david@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250128185705.1609038-2-david@redhat.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Message-ID: <20250128185705.1609038-3-david@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/core/machine.c          |  1 +
- hw/virtio/virtio-mem-pci.c | 12 ++++++++++++
- 2 files changed, 13 insertions(+)
+ hw/s390x/s390-virtio-ccw.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 8f396ef803..7b74cde10a 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -41,6 +41,7 @@ GlobalProperty hw_compat_9_2[] = {
-     { "virtio-balloon-pci", "vectors", "0" },
-     { "virtio-balloon-pci-transitional", "vectors", "0" },
-     { "virtio-balloon-pci-non-transitional", "vectors", "0" },
-+    { "virtio-mem-pci", "vectors", "0" },
- };
- const size_t hw_compat_9_2_len = G_N_ELEMENTS(hw_compat_9_2);
- 
-diff --git a/hw/virtio/virtio-mem-pci.c b/hw/virtio/virtio-mem-pci.c
-index 1b4e9a3284..6cc5f0fd3b 100644
---- a/hw/virtio/virtio-mem-pci.c
-+++ b/hw/virtio/virtio-mem-pci.c
-@@ -22,6 +22,10 @@ static void virtio_mem_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
-     VirtIOMEMPCI *mem_pci = VIRTIO_MEM_PCI(vpci_dev);
-     DeviceState *vdev = DEVICE(&mem_pci->vdev);
- 
-+    if (vpci_dev->nvectors == DEV_NVECTORS_UNSPECIFIED) {
-+        vpci_dev->nvectors = 2;
-+    }
-+
-     virtio_pci_force_virtio_1(vpci_dev);
-     qdev_realize(vdev, BUS(&vpci_dev->bus), errp);
- }
-@@ -152,6 +156,13 @@ static void virtio_mem_pci_set_requested_size(Object *obj, Visitor *v,
-     object_property_set(OBJECT(&pci_mem->vdev), name, v, errp);
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index b069303592..d9e683c5b4 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -576,8 +576,7 @@ static void s390_machine_device_pre_plug(HotplugHandler *hotplug_dev,
+     if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_CCW)) {
+         virtio_ccw_md_pre_plug(VIRTIO_MD_CCW(dev), MACHINE(hotplug_dev), errp);
+     } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
+-        error_setg(errp,
+-                   "PCI-attached virtio based memory devices not supported");
++        virtio_md_pci_pre_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
+     }
  }
  
-+static const Property virtio_mem_pci_class_properties[] = {
-+    DEFINE_PROP_BIT("ioeventfd", VirtIOPCIProxy, flags,
-+                    VIRTIO_PCI_FLAG_USE_IOEVENTFD_BIT, true),
-+    DEFINE_PROP_UINT32("vectors", VirtIOPCIProxy, nvectors,
-+                       DEV_NVECTORS_UNSPECIFIED),
-+};
-+
- static void virtio_mem_pci_class_init(ObjectClass *klass, void *data)
+@@ -588,7 +587,8 @@ static void s390_machine_device_plug(HotplugHandler *hotplug_dev,
+ 
+     if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
+         s390_cpu_plug(hotplug_dev, dev, errp);
+-    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_CCW)) {
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_CCW) ||
++               object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
+         /*
+          * At this point, the device is realized and set all memdevs mapped, so
+          * qemu_maxrampagesize() will pick up the page sizes of these memdevs
+@@ -602,7 +602,11 @@ static void s390_machine_device_plug(HotplugHandler *hotplug_dev,
+                        " initial memory");
+             return;
+         }
+-        virtio_ccw_md_plug(VIRTIO_MD_CCW(dev), MACHINE(hotplug_dev), errp);
++        if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_CCW)) {
++            virtio_ccw_md_plug(VIRTIO_MD_CCW(dev), MACHINE(hotplug_dev), errp);
++        } else {
++            virtio_md_pci_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
++        }
+     }
+ }
+ 
+@@ -611,10 +615,12 @@ static void s390_machine_device_unplug_request(HotplugHandler *hotplug_dev,
  {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-@@ -164,6 +175,7 @@ static void virtio_mem_pci_class_init(ObjectClass *klass, void *data)
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-     pcidev_k->revision = VIRTIO_PCI_ABI_VERSION;
-     pcidev_k->class_id = PCI_CLASS_OTHERS;
-+    device_class_set_props(dc, virtio_mem_pci_class_properties);
+     if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
+         error_setg(errp, "CPU hot unplug not supported on this machine");
+-        return;
+     } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_CCW)) {
+         virtio_ccw_md_unplug_request(VIRTIO_MD_CCW(dev), MACHINE(hotplug_dev),
+                                      errp);
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
++        virtio_md_pci_unplug_request(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev),
++                                     errp);
+     }
+ }
  
-     mdc->get_addr = virtio_mem_pci_get_addr;
-     mdc->set_addr = virtio_mem_pci_set_addr;
+@@ -623,7 +629,9 @@ static void s390_machine_device_unplug(HotplugHandler *hotplug_dev,
+ {
+     if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_CCW)) {
+         virtio_ccw_md_unplug(VIRTIO_MD_CCW(dev), MACHINE(hotplug_dev), errp);
+-     }
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
++        virtio_md_pci_unplug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
++    }
+  }
+ 
+ static CpuInstanceProperties s390_cpu_index_to_props(MachineState *ms,
 -- 
 2.48.1
 
