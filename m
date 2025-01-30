@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DB03A22DE8
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 14:36:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 184B3A22DEF
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 14:37:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdUhD-0002fz-LO; Thu, 30 Jan 2025 08:35:03 -0500
+	id 1tdUhD-0002ff-5p; Thu, 30 Jan 2025 08:35:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tdUh9-0002dQ-3v; Thu, 30 Jan 2025 08:34:59 -0500
+ id 1tdUh9-0002dp-Ey; Thu, 30 Jan 2025 08:34:59 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tdUh7-0002XE-E6; Thu, 30 Jan 2025 08:34:58 -0500
+ id 1tdUh8-0002XR-0b; Thu, 30 Jan 2025 08:34:59 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EF674E3042;
+ by isrv.corpit.ru (Postfix) with ESMTP id F35E3E3043;
  Thu, 30 Jan 2025 16:34:18 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id DF3531A7F89;
+ by tsrv.corpit.ru (Postfix) with ESMTP id E34531A7F8A;
  Thu, 30 Jan 2025 16:34:47 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id CC5E252408; Thu, 30 Jan 2025 16:34:47 +0300 (MSK)
+ id CEC3B5240A; Thu, 30 Jan 2025 16:34:47 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Dominik 'Disconnect3d' Czarnota <dominik.b.czarnota@gmail.com>,
- qemu-trivial@nongnu.org, qemu-stable@nongnu.org,
+Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 4/7] gdbstub/user-target: fix gdbserver int format (%d -> %x)
-Date: Thu, 30 Jan 2025 16:34:44 +0300
-Message-Id: <20250130133447.873566-5-mjt@tls.msk.ru>
+Subject: [PULL 5/7] tests/functional/test_mips_malta: Fix comment about
+ endianness of the test
+Date: Thu, 30 Jan 2025 16:34:45 +0300
+Message-Id: <20250130133447.873566-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250130133447.873566-1-mjt@tls.msk.ru>
 References: <20250130133447.873566-1-mjt@tls.msk.ru>
@@ -61,70 +61,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dominik 'Disconnect3d' Czarnota <dominik.b.czarnota@gmail.com>
+From: Thomas Huth <thuth@redhat.com>
 
-This commit fixes an incorrect format string for formatting integers
-provided to GDB when debugging a target run in QEMU user mode.
+This test is for the big endian MIPS target, not for the little endian
+target.
 
-The correct format is hexadecimal for both success and errno values,
-some of which can be seen here [0].
-
-[0] https://github.com/bminor/binutils-gdb/blob/e65a355022d0dc6b5707310876a72b5693ec0aa5/gdbserver/hostio.cc#L196-L213
-
-Signed-off-by: Dominik 'Disconnect3d' Czarnota <dominik.b.czarnota@gmail.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Fixes: e282010b2e1e ("gdbstub: Add support for info proc mappings")
-Cc: qemu-stable@nongnu.org
-Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Fixes: 79cb4a14cb6 ("tests/functional: Convert mips32eb 4Kc Malta tests")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- gdbstub/user-target.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tests/functional/test_mips_malta.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/gdbstub/user-target.c b/gdbstub/user-target.c
-index 22bf4008c0..4bfcf78aaa 100644
---- a/gdbstub/user-target.c
-+++ b/gdbstub/user-target.c
-@@ -317,9 +317,9 @@ void gdb_handle_v_file_open(GArray *params, void *user_ctx)
-     int fd = open(filename, flags, mode);
- #endif
-     if (fd < 0) {
--        g_string_printf(gdbserver_state.str_buf, "F-1,%d", errno);
-+        g_string_printf(gdbserver_state.str_buf, "F-1,%x", errno);
-     } else {
--        g_string_printf(gdbserver_state.str_buf, "F%d", fd);
-+        g_string_printf(gdbserver_state.str_buf, "F%x", fd);
-     }
-     gdb_put_strbuf();
- }
-@@ -329,7 +329,7 @@ void gdb_handle_v_file_close(GArray *params, void *user_ctx)
-     int fd = gdb_get_cmd_param(params, 0)->val_ul;
- 
-     if (close(fd) == -1) {
--        g_string_printf(gdbserver_state.str_buf, "F-1,%d", errno);
-+        g_string_printf(gdbserver_state.str_buf, "F-1,%x", errno);
-         gdb_put_strbuf();
-         return;
-     }
-@@ -352,7 +352,7 @@ void gdb_handle_v_file_pread(GArray *params, void *user_ctx)
- 
-     ssize_t n = pread(fd, buf, bufsiz, offset);
-     if (n < 0) {
--        g_string_printf(gdbserver_state.str_buf, "F-1,%d", errno);
-+        g_string_printf(gdbserver_state.str_buf, "F-1,%x", errno);
-         gdb_put_strbuf();
-         return;
-     }
-@@ -375,7 +375,7 @@ void gdb_handle_v_file_readlink(GArray *params, void *user_ctx)
-     ssize_t n = readlink(filename, buf, BUFSIZ);
- #endif
-     if (n < 0) {
--        g_string_printf(gdbserver_state.str_buf, "F-1,%d", errno);
-+        g_string_printf(gdbserver_state.str_buf, "F-1,%x", errno);
-         gdb_put_strbuf();
-         return;
-     }
+diff --git a/tests/functional/test_mips_malta.py b/tests/functional/test_mips_malta.py
+index 3b15038d89..eaf372255b 100755
+--- a/tests/functional/test_mips_malta.py
++++ b/tests/functional/test_mips_malta.py
+@@ -1,6 +1,6 @@
+ #!/usr/bin/env python3
+ #
+-# Functional tests for the little-endian 32-bit MIPS Malta board
++# Functional tests for the big-endian 32-bit MIPS Malta board
+ #
+ # Copyright (c) Philippe Mathieu-Daudé <f4bug@amsat.org>
+ #
 -- 
 2.39.5
 
