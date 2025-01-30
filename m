@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC21A233AF
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 19:24:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82E82A233AB
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Jan 2025 19:24:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdZCS-0003yC-NX; Thu, 30 Jan 2025 13:23:36 -0500
+	id 1tdZCV-00041L-LP; Thu, 30 Jan 2025 13:23:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tdZCF-0003sy-B7
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 13:23:24 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ id 1tdZCG-0003to-Qi
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 13:23:25 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tdZCD-0000WE-Lb
- for qemu-devel@nongnu.org; Thu, 30 Jan 2025 13:23:23 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3862d161947so654130f8f.3
+ id 1tdZCE-0000Wj-QM
+ for qemu-devel@nongnu.org; Thu, 30 Jan 2025 13:23:24 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3863c36a731so907438f8f.1
  for <qemu-devel@nongnu.org>; Thu, 30 Jan 2025 10:23:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738261400; x=1738866200; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738261401; x=1738866201; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FfOY/642ADAin6VFxYNR1rJN6MAtVOu/6BLcp/293aA=;
- b=fZWPrBnj3cItmlANqIkoP1Eij6As5zyGwmu2l1uGAPepW8ZcL7CWvJDIjjR5nwGZ9Z
- 2XG/9aVqi1kh7W8xjdyAsPnvHg379Lsi52iljjwgQsrGU5dKEppWtO3vG/AGS/nGG/Rj
- HLNlXYvs6MxWkQ1nix+VNRkxlFjE5ooS+f3tcSzTDiYz/OBcs3zcX/8o4O2sLs5oBnJs
- OzrvN/Q/kyR6g+H4jYwQx9dEhYstZGxiMRQLw35vRel4kb1CjmS42N7KjQfjJhjEOdcM
- Iu2mqoWY4YC/rgHKYfcZ/NNMncU0+YsfDNkSq7lvBulCjNCG4KFWFXBdr8x/tuANAE9/
- EyWA==
+ bh=yzUgHg6nqtrTZvIz3ixC5Nt4RQVPQXOj6ckfC4T6pic=;
+ b=HwcyNL3oMwBo+d5Cx9dtQLo2wPmBss2ueuuURUumi+3Pi+v5TssmC3JjyxVNl6B+SL
+ JUOCaDUqjzsg3/8laYZShSPnBQKoBOeDQkGXXsJlg03ipUHJbbjzGF0WvTWIsNVI+tJT
+ Z8NEziDt7k4qPVkPPWykLfO2+yUqO/uJNe9hzj8C/+96Zw3ZLEs8mD8SKaRd8VHE+KIw
+ pfSmKRd477kWuUOlhivJQExP+GMElIOK3zTLVVwL4QdGv59n4lubsa1DPQlWBWJsOxiy
+ pccfSMK5IicD28ypFNrJu2nUotBUA0nH+MYBglhMFdlqDPBsdm+RFuJzjgj+Kie/k683
+ 1VRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738261400; x=1738866200;
+ d=1e100.net; s=20230601; t=1738261401; x=1738866201;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FfOY/642ADAin6VFxYNR1rJN6MAtVOu/6BLcp/293aA=;
- b=xUOGfpAMd5MQqIoH6b9+v8nOU4xaCd6a4sV9n26337uKO+C9IYaKOl5PvlZr5CJCrR
- IFMUzEEIAuTX8h2looZLaO8/SnBzHi8lOgA6REnjXGfsG98p9Dkb6X2csbkKAS/cnSiG
- u4BYzEdn8j4n/jHLDqgYP4p9gj4wgzpvN1TOlkCfISZbNiqofLimfc+YJ+bMs233/+c0
- lQw3xqHAems6u0QuuKtM9+qw8hlp8eVKmO2LSizqU7Eno8X+RPUNkHS0T9oPpQnspCnJ
- dTxdQ2GPU5M8/V6VrbB2U908u+wA/RBGGCczg15aC6X5B609KOFLf9MA+sydZcDYBh4p
- /aHA==
+ bh=yzUgHg6nqtrTZvIz3ixC5Nt4RQVPQXOj6ckfC4T6pic=;
+ b=hHWBD8VRNMx7k3JSF2DJM9QkRxth+smVldhyP15wkopid/7DXl8oDK11QnU3ez4UqR
+ X5ERbpi66I2K4w/A/PEcsjBP7+/UX/FBrXcDzdUQt2TCeeK9nngpX8bXOMGdiycikw0K
+ VATCLzQT6q5sqSTFjR5hGfhMku4KnH/A1II72Gn8C15O96ghxPx1PW+GoR0SP5I9MCBT
+ uzloTV35BfdbXWiRREuv3v7CueJs2gndTZ3LqAWjEKbAzFrQflDrdSTrbnZvA9gBfVUy
+ GOncgwJuXO3ul7ORPPTSovxyPce1NFnyqdT2VoPQwTm7hFOgUKvE1LzTXcVyUa5XJcti
+ FwoQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVH6PuvGdP4Zv8P/G1SV4VA9kViN8hmbetx0g7JFQ3kX3eEd51s+TPdW69N+X3HUUdzg8XDkGlqYmfP@nongnu.org
-X-Gm-Message-State: AOJu0YyVDXGslcAcPV8aHum9oJodnJ8TbF0rC9L5pYLamvDgKT2FO5C4
- HKZge6l2KRqlnX3YVKAaZ+UqheB+k1QLwks+I2v0wcjvSy2rQyzSmtAz9JSwqNdlN/3sC2kDrvJ
- U
-X-Gm-Gg: ASbGncv390XuibvfHTj/32YyS7CEIn8z8uyoO6WZxifJGSM0BuTZ2SjOVTxD9d2s6sA
- X4B/VRfVbP+VS7QPH7Jkj/XhGEDsoIU650psXZRxitqa8S9nBFl0sPsb6s8CLrN5LKRmpiIk8JT
- /ETGo/GpHB6LTSPfhrRG/ZxFMeU22JavKEU1pjKJ8TxSw9rMOoO1bBg7xzx02MY31gVYWAK/8+N
- 8eZeheqPepBRxzgpPY0tKvWvdkPTIhRTTaXCYVZf+jSNVX0z/UsO3QNnOBfht2zIz0RGi47xI69
- MwGyHSF0W9vfBP+v3CkhkA==
-X-Google-Smtp-Source: AGHT+IGiuiMHrThD+uWTll5N2DRzacpqO1X8j2qlN8vV9ZDCgL/ut6vM/QMSQvs3Geru69+PmJUeug==
-X-Received: by 2002:a05:6000:1866:b0:385:fdc2:1808 with SMTP id
- ffacd0b85a97d-38c52094219mr7873930f8f.40.1738261399765; 
- Thu, 30 Jan 2025 10:23:19 -0800 (PST)
+ AJvYcCXTzQcK1ymi4Qt7iaUFuHPxGo3Lv572g0L3XLEJyq4BXGDlcI5LZl+WRXoIN2ceV96SkYMCoFRcWuVH@nongnu.org
+X-Gm-Message-State: AOJu0YyCtvJIZRJ2ZAJ314pqx3Vq7AyBPiLxGhYznsetkU0iqfYDHQbk
+ n/YY5UQpThWZkMwpUQx710HhsHqVfLmr1vt98w6VsM+pnbj9KBOn8xsgtjJWcCI=
+X-Gm-Gg: ASbGncvV4IcZFAUfRCg+mc1llUsGrf97rvLoc9CxaqXEut0lXJgfHICpN2P7oDw6xPq
+ ObZr4H1wD/j5/vOef/RJ0DCnX6vRdve14kd+rhMWGOVc42ov7b58FTsXK0/1whd8CPAT+8vVqCe
+ YYIB/kmXG7Z2GjpgZxPaS38zhRoIKEvgs33Xhk4fQ661Pc2+acBIZarZFafeTd75syoYvM0jwG6
+ ONMUT7QEJeskEke7yo9UYJ0AJTGMWtKC3LziiGkEIW6PRP9i2IG3q2P92lpA9N8n/YeZESEYn36
+ 9qSflfn+nRCzVT6zfm1lRA==
+X-Google-Smtp-Source: AGHT+IE8KcPPbbX+/lcvomWZbLlt2xTmnRV4Djr3ywWNrv8azlYXfRd8F3odOCzEuERXlxchvO0xXQ==
+X-Received: by 2002:a5d:64a1:0:b0:385:f0dc:c9f4 with SMTP id
+ ffacd0b85a97d-38c51967de4mr6882576f8f.20.1738261400830; 
+ Thu, 30 Jan 2025 10:23:20 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38c5c101599sm2634426f8f.23.2025.01.30.10.23.18
+ ffacd0b85a97d-38c5c101599sm2634426f8f.23.2025.01.30.10.23.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 Jan 2025 10:23:19 -0800 (PST)
+ Thu, 30 Jan 2025 10:23:20 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 08/14] hw/intc/arm_gicv3_cpuif(): Remove redundant tests of
- is_a64()
-Date: Thu, 30 Jan 2025 18:23:03 +0000
-Message-Id: <20250130182309.717346-9-peter.maydell@linaro.org>
+Subject: [PATCH 09/14] target/arm: Support CP_ACCESS_TRAP_EL1 as a
+ CPAccessResult
+Date: Thu, 30 Jan 2025 18:23:04 +0000
+Message-Id: <20250130182309.717346-10-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250130182309.717346-1-peter.maydell@linaro.org>
 References: <20250130182309.717346-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,54 +100,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the gicv3_{irq,fiq,irqfiq}_access() functions, in the
-arm_current_el(env) == 3 case we do the following test:
-    if (!is_a64(env) && !arm_is_el3_or_mon(env)) {
-        r = CP_ACCESS_TRAP_EL3;
-    }
+In the CPAccessResult enum, the CP_ACCESS_TRAP* values indicate the
+equivalent of the pseudocode AArch64.SystemAccessTrap(..., 0x18),
+causing a trap to a specified exception level with a syndrome value
+giving information about the failing instructions.  In the
+pseudocode, such traps are always taken to a specified target EL.  We
+support that for target EL of 2 or 3 via CP_ACCESS_TRAP_EL2 and
+CP_ACCESS_TRAP_EL3, but the only way to take the access trap to EL1
+currently is to use CP_ACCESS_TRAP, which takes the trap to the
+"usual target EL" (EL1 if in EL0, otherwise to the current EL).
 
-In this check, the "!is_a64(env)" is redundant, because if
-we are at EL3 and in AArch64 then arm_is_el3_or_mon() will
-return true and we will skip the if() body anyway.
+Add CP_ACCESS_TRAP_EL1 so that access functions can follow the
+pseudocode more closely.
 
-Remove the unnecessary tests.
+(Note that for the common case in the pseudocode of "trap to
+EL2 if HCR_EL2.TGE is set, otherwise trap to EL1", we handle
+this in raise_exception(), so access functions don't need to
+special case it and can use CP_ACCESS_TRAP_EL1.)
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/intc/arm_gicv3_cpuif.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ target/arm/cpregs.h        | 1 +
+ target/arm/tcg/op_helper.c | 6 ++++--
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
-index 8a715b3510b..7f1d071c198 100644
---- a/hw/intc/arm_gicv3_cpuif.c
-+++ b/hw/intc/arm_gicv3_cpuif.c
-@@ -2291,7 +2291,7 @@ static CPAccessResult gicv3_irqfiq_access(CPUARMState *env,
-             r = CP_ACCESS_TRAP_EL3;
-             break;
-         case 3:
--            if (!is_a64(env) && !arm_is_el3_or_mon(env)) {
-+            if (!arm_is_el3_or_mon(env)) {
-                 r = CP_ACCESS_TRAP_EL3;
-             }
-             break;
-@@ -2353,7 +2353,7 @@ static CPAccessResult gicv3_fiq_access(CPUARMState *env,
-             r = CP_ACCESS_TRAP_EL3;
-             break;
-         case 3:
--            if (!is_a64(env) && !arm_is_el3_or_mon(env)) {
-+            if (!arm_is_el3_or_mon(env)) {
-                 r = CP_ACCESS_TRAP_EL3;
-             }
-             break;
-@@ -2389,7 +2389,7 @@ static CPAccessResult gicv3_irq_access(CPUARMState *env,
-             r = CP_ACCESS_TRAP_EL3;
-             break;
-         case 3:
--            if (!is_a64(env) && !arm_is_el3_or_mon(env)) {
-+            if (!arm_is_el3_or_mon(env)) {
-                 r = CP_ACCESS_TRAP_EL3;
-             }
-             break;
+diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
+index 1759d9defbe..fbf5798069d 100644
+--- a/target/arm/cpregs.h
++++ b/target/arm/cpregs.h
+@@ -331,6 +331,7 @@ typedef enum CPAccessResult {
+      * 0xc or 0x18).
+      */
+     CP_ACCESS_TRAP = (1 << 2),
++    CP_ACCESS_TRAP_EL1 = CP_ACCESS_TRAP | 1,
+     CP_ACCESS_TRAP_EL2 = CP_ACCESS_TRAP | 2,
+     CP_ACCESS_TRAP_EL3 = CP_ACCESS_TRAP | 3,
+ 
+diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
+index 1ba727e8e9f..c427118655d 100644
+--- a/target/arm/tcg/op_helper.c
++++ b/target/arm/tcg/op_helper.c
+@@ -781,7 +781,7 @@ const void *HELPER(access_check_cp_reg)(CPUARMState *env, uint32_t key,
+      * the other trap takes priority. So we take the "check HSTR_EL2" path
+      * for all of those cases.)
+      */
+-    if (res != CP_ACCESS_OK && ((res & CP_ACCESS_EL_MASK) == 0) &&
++    if (res != CP_ACCESS_OK && ((res & CP_ACCESS_EL_MASK) < 2) &&
+         arm_current_el(env) == 0) {
+         goto fail;
+     }
+@@ -887,6 +887,9 @@ const void *HELPER(access_check_cp_reg)(CPUARMState *env, uint32_t key,
+     case 0:
+         target_el = exception_target_el(env);
+         break;
++    case 1:
++        assert(arm_current_el(env) < 2);
++        break;
+     case 2:
+         assert(arm_current_el(env) != 3);
+         assert(arm_is_el2_enabled(env));
+@@ -895,7 +898,6 @@ const void *HELPER(access_check_cp_reg)(CPUARMState *env, uint32_t key,
+         assert(arm_feature(env, ARM_FEATURE_EL3));
+         break;
+     default:
+-        /* No "direct" traps to EL1 */
+         g_assert_not_reached();
+     }
+ 
 -- 
 2.34.1
 
