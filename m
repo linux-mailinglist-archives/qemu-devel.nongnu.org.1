@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92F3DA24458
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 22:07:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99E9EA24463
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 22:08:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdyDr-0007b0-Bh; Fri, 31 Jan 2025 16:06:43 -0500
+	id 1tdyDw-00082o-Br; Fri, 31 Jan 2025 16:06:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyDo-0007OB-AK
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:06:40 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyDt-0007q5-Je
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:06:45 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyDm-0007sU-Ln
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:06:40 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43624b2d453so29122625e9.2
- for <qemu-devel@nongnu.org>; Fri, 31 Jan 2025 13:06:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyDr-0007t7-PC
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:06:45 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43618283dedso24845715e9.3
+ for <qemu-devel@nongnu.org>; Fri, 31 Jan 2025 13:06:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738357596; x=1738962396; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738357602; x=1738962402; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rqI9LRvktHJX4HtGOA/1PZYCP3HIyYy2w16C7Qz7++g=;
- b=xTX9GH+SuP4fZoAVIFyG9oywBY1rgpNQZd6hhbrTHZzx0oML5+trmEJk3o3jwR9M0n
- 4atxJfYz6UC1dRD1zb1c1cHp9iXD9rvQ9sevYkAj45Q3HKbR0Kc3RTw42K8VDNDTXHxd
- nM3BBz8PvD6oAGdOgTo9oGOkafWEAq65RzhDmQbH/a0sGBj+aWvoORsaPFyd6mwBjmw2
- 6EhTHaghrshloyFtjpzXb+ag4FK62eD404ruNDgXNhTyhBUBHSc+SJqv2q3hYqJi9Esz
- GDJg0CfOfIBCUvYB0hOVtgawKlpoZco8zoEDH/2IS5LFV29LZUR/D7m8lC84QNn1eGoS
- pk6g==
+ bh=mP3QyIe81tPdRVqVU2heOfv/G9r7fIu1+pBAt75OnDs=;
+ b=tENHfI9d/HRmuDYvg4470ecv26GrQ6il/wsSBVFoPlCTJ4GdJvH4uqLjsbPSYPHDy8
+ 7qL3vVgumyxh/ql398oo5CuD1StcxpLFcNk6jVHNRiyyD3v9Yw2crwoxqA2cQlfsA7tX
+ j4ZegJjRIkQQ3W01oqFC8YqUi50kVRH6ChDRtcKjH++CJdlbIRFDRHTb28ymiGnACtIv
+ ROfHv5TUYYHBZgJRvIjEhgtjcn8+lzOgSzrB7kUIgmJW69cHyMdAtQI/jnrW5jTjaFyv
+ YACJC7drMl8wEKqtKKIlcMeW0/KihLhDI+GRJ8EYXxJ8bDk6dtmlI+hE9yqQgGF4fycE
+ xWKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738357596; x=1738962396;
+ d=1e100.net; s=20230601; t=1738357602; x=1738962402;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rqI9LRvktHJX4HtGOA/1PZYCP3HIyYy2w16C7Qz7++g=;
- b=q8gbxOsLSfkjKDfhrPYNHNMUG8qy+soY7AGQrDj2B58xLFmVfh1ZP4/u0gtOJTD36i
- JnYobXU/R3oNkmEDv5Gizf+rvbJogfqppsHJ4Chbnd7oScqNGLBFwwmgHOsC2WhHs4qH
- YuNOEFPZN7UIlkmz98M17OLBoX24Acht7Td4bVJXxnfWWu/V2IUCSFUyRtqUQ+cOtMLy
- 5W7Hb2hBqjp7Vzs/a9bA3/90wGrh1/Pse3lYLmxWvLlABHC1y1htA/spVOOFSPKIDeMt
- Cx/YYAZNuFMp0pYJq/ClOFWyVjGjf7ZqOlVZ3u6yMKvJR8Y/9E7YONtpcNjBCBBdO5oy
- k4xQ==
-X-Gm-Message-State: AOJu0YwPfWC5BjNFSD8uHUN7OTsu9tinYoustBcIcGE8l9SVrsmTcnGO
- t1/IOI0R2IaX82LqH+lG/6+0lp6YpsXAgGaAcQByJy0GteJF5fOv3SWJr3ECmBVs7lVkF7GoEfx
- n8t8=
-X-Gm-Gg: ASbGnctxmaDDgT7yGjiLRiLpfZyQ61EjLdzrZgrEPGx8k4PWGgbkZU7TIUunHSiPbsd
- YvBo+FBFuJjdUak4g909mSeXX/RfHLqtbvJohKSCL4PMRU4ocstvechuSsttByVTpcH7yMdXz0m
- SaIpu8b6E5zMoPzfZ1FN3kAYF6aewe/WxrTQtKk+mhp/03GAdiaNIrxdqZv+PrODZXssIsH8YYk
- MARg7EnSOR6QSsNiM3SyvI2/hrHLRAh/zS3PmU5BG9wR56UW5xlUl7ijQnLFQObhxY+32ZytC+Y
- 2/4wmvvj0KqaAn4Y1+Uh9Y7eFxWrIH3PdWMIMs3SlQyXeblnWtA0/hEmF8fO8/hd2g==
-X-Google-Smtp-Source: AGHT+IE2UO3ZMofqihRMOa2Uoaqkcz7qTzdy+D6/6EBnsZqqnhVkX9oEh2+dPVQxFb8rkSShoEZ2Tg==
-X-Received: by 2002:a05:600c:1e02:b0:434:a802:e9a6 with SMTP id
- 5b1f17b1804b1-438dc3c22acmr146724755e9.7.1738357596422; 
- Fri, 31 Jan 2025 13:06:36 -0800 (PST)
+ bh=mP3QyIe81tPdRVqVU2heOfv/G9r7fIu1+pBAt75OnDs=;
+ b=bgbiBDz5Jy7oxin88h04b1SLJiBCcKngUtlSOGglu8qgO9RTaHdlROuzAf3oDvDhjF
+ r4qMz/nB8EyML6kVi+8sn4cUUDwlHk25XFf+eHPO94vk0ex9V5mXYq/Tzb7WElf3eArt
+ 3jTeosLqhFY4rFNhzBIi+2XOmnifSCJQsehDzAh+x0jaB/q4Lk3H5VnOmPL9Oopz5RJN
+ MNkJmq3A+QSDtnCF2HMB1l13xXUdn7EP476bLRVyjaGOLXKSMQ0DCSSqFe/+BwkV/MEs
+ V7iRqOYJdxxQoR9fNW51ktWBjW5O20RlOzbTpb++HQ+lvRVwA6kGnRwsVZpp1BIN5SOK
+ 9B3A==
+X-Gm-Message-State: AOJu0Ywuvrh68rxqnSN8KRZhD1gEbAiw+DDzkf6BHTWUgl6yDeznLG9r
+ 2AKJMGXFJxx54DWxjQbtwYZ72ZqCxXq+By3Z/AG5dTE9E3kgvv2X7Z+923Jhe9cZw9AEfooBEoC
+ bJNo=
+X-Gm-Gg: ASbGnctcnc8bjWk9FfL22vP/zis42+ak9bTtdq9KAlz2AGnHIZ71Nj3i6eXvhCpqG/6
+ i4KhRMnmv9YzVWGrFCABhdzsx6HGXwFTNUGyN1ex+RTKowXQoYc9Ol65uOmWHDkS8w8nadCXDYu
+ c7kKCKIJMEQtCsLD3LuV9fY0XBtdR7hdA2+Cs6+jFQSeNLDhBXUL+S/lJjVQvm9Hf37FWw94X20
+ kj882vnqgpCGGlJobtbrJYh5UBmxM8uKwrt6Ny3x/ztjRDK4PoIKEehJvTWH/ZogetJMCAuAOUr
+ +5P/eRHHV8+W8lU8Q07fyQKShHT8BsgD4uBegbYZrgCXQ1eLKvCL7s9iFK/usPSemg==
+X-Google-Smtp-Source: AGHT+IHylUD24vD/MV8WvidRNcN8mBde01q6GDOBZ3dPr980AWQWhAt1uZe2I5bG+Yje0BlCEmYncQ==
+X-Received: by 2002:a05:600c:5127:b0:434:f5c0:3288 with SMTP id
+ 5b1f17b1804b1-438dc421393mr119616535e9.29.1738357601798; 
+ Fri, 31 Jan 2025 13:06:41 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438dcc2e239sm100944485e9.18.2025.01.31.13.06.34
+ 5b1f17b1804b1-438e23d42d4sm68667495e9.6.2025.01.31.13.06.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 31 Jan 2025 13:06:35 -0800 (PST)
+ Fri, 31 Jan 2025 13:06:40 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 15/36] hw/ipack: Remove legacy qemu_allocate_irqs() use
-Date: Fri, 31 Jan 2025 22:04:58 +0100
-Message-ID: <20250131210520.85874-16-philmd@linaro.org>
+Subject: [PULL 16/36] hw/sh4/r2d: Convert legacy qemu_allocate_irqs() to
+ qemu_init_irqs()
+Date: Fri, 31 Jan 2025 22:04:59 +0100
+Message-ID: <20250131210520.85874-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250131210520.85874-1-philmd@linaro.org>
 References: <20250131210520.85874-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,129 +98,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No need to dynamically allocate IRQ when we know before hands
-how many we'll use. Declare the 2 of them in IPackDevice state
-and initialize them in the DeviceRealize handler.
+The FPGA exposes a fixed set of IRQs. Hold them in the FPGA
+state and initialize them in place calling qemu_init_irqs().
+
+Move r2d_fpga_irq enums earlier so we can use NR_IRQS within
+the r2d_fpga_t structure. r2d_fpga_init() returns r2d_fpga_t,
+and we dereference irq from it in r2d_init().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250121155526.29982-4-philmd@linaro.org>
+Message-Id: <20250121182445.35309-1-philmd@linaro.org>
 ---
- include/hw/ipack/ipack.h | 7 ++-----
- hw/char/ipoctal232.c     | 4 ++--
- hw/ipack/ipack.c         | 5 +----
- hw/ipack/tpci200.c       | 6 +++---
- 4 files changed, 8 insertions(+), 14 deletions(-)
+ hw/sh4/r2d.c | 38 +++++++++++++++++++++-----------------
+ 1 file changed, 21 insertions(+), 17 deletions(-)
 
-diff --git a/include/hw/ipack/ipack.h b/include/hw/ipack/ipack.h
-index cbcdda509d3..00f397fd020 100644
---- a/include/hw/ipack/ipack.h
-+++ b/include/hw/ipack/ipack.h
-@@ -12,6 +12,7 @@
- #define QEMU_IPACK_H
+diff --git a/hw/sh4/r2d.c b/hw/sh4/r2d.c
+index 2fa439819e3..d68c94e82ef 100644
+--- a/hw/sh4/r2d.c
++++ b/hw/sh4/r2d.c
+@@ -63,6 +63,12 @@
+ #define PA_VERREG 0x32
+ #define PA_OUTPORT 0x36
  
- #include "hw/qdev-core.h"
-+#include "hw/irq.h"
- #include "qom/object.h"
++enum r2d_fpga_irq {
++    PCI_INTD, CF_IDE, CF_CD, PCI_INTC, SM501, KEY, RTC_A, RTC_T,
++    SDCARD, PCI_INTA, PCI_INTB, EXT, TP,
++    NR_IRQS
++};
++
+ typedef struct {
+     uint16_t bcr;
+     uint16_t irlmsk;
+@@ -88,15 +94,10 @@ typedef struct {
  
+ /* output pin */
+     qemu_irq irl;
++    IRQState irq[NR_IRQS];
+     MemoryRegion iomem;
+ } r2d_fpga_t;
  
-@@ -19,10 +20,8 @@
- OBJECT_DECLARE_SIMPLE_TYPE(IPackBus, IPACK_BUS)
- 
- struct IPackBus {
--    /*< private >*/
-     BusState parent_obj;
- 
--    /* All fields are private */
-     uint8_t n_slots;
-     uint8_t free_slot;
-     qemu_irq_handler set_irq;
-@@ -58,13 +57,11 @@ struct IPackDeviceClass {
- };
- 
- struct IPackDevice {
--    /*< private >*/
-     DeviceState parent_obj;
--    /*< public >*/
- 
-     int32_t slot;
-     /* IRQ objects for the IndustryPack INT0# and INT1# */
--    qemu_irq *irq;
-+    IRQState irq[2];
- };
- 
- extern const VMStateDescription vmstate_ipack_device;
-diff --git a/hw/char/ipoctal232.c b/hw/char/ipoctal232.c
-index d1e5f6dad2e..a2879977fb3 100644
---- a/hw/char/ipoctal232.c
-+++ b/hw/char/ipoctal232.c
-@@ -184,9 +184,9 @@ static void update_irq(IPOctalState *dev, unsigned block)
-     unsigned intno = block / 2;
- 
-     if ((blk0->isr & blk0->imr) || (blk1->isr & blk1->imr)) {
--        qemu_irq_raise(idev->irq[intno]);
-+        qemu_irq_raise(&idev->irq[intno]);
-     } else {
--        qemu_irq_lower(idev->irq[intno]);
-+        qemu_irq_lower(&idev->irq[intno]);
-     }
- }
- 
-diff --git a/hw/ipack/ipack.c b/hw/ipack/ipack.c
-index ed75f791832..b6defae6025 100644
---- a/hw/ipack/ipack.c
-+++ b/hw/ipack/ipack.c
-@@ -55,22 +55,19 @@ static void ipack_device_realize(DeviceState *dev, Error **errp)
-     }
-     bus->free_slot = idev->slot + 1;
- 
--    idev->irq = qemu_allocate_irqs(bus->set_irq, idev, 2);
-+    qemu_init_irqs(idev->irq, ARRAY_SIZE(idev->irq), bus->set_irq, idev);
- 
-     k->realize(dev, errp);
- }
- 
- static void ipack_device_unrealize(DeviceState *dev)
- {
--    IPackDevice *idev = IPACK_DEVICE(dev);
-     IPackDeviceClass *k = IPACK_DEVICE_GET_CLASS(dev);
- 
-     if (k->unrealize) {
-         k->unrealize(dev);
-         return;
-     }
+-enum r2d_fpga_irq {
+-    PCI_INTD, CF_IDE, CF_CD, PCI_INTC, SM501, KEY, RTC_A, RTC_T,
+-    SDCARD, PCI_INTA, PCI_INTB, EXT, TP,
+-    NR_IRQS
+-};
 -
--    qemu_free_irqs(idev->irq, 2);
+ static const struct { short irl; uint16_t msk; } irqtab[NR_IRQS] = {
+     [CF_IDE] =   {  1, 1 << 9 },
+     [CF_CD] =    {  2, 1 << 8 },
+@@ -186,8 +187,8 @@ static const MemoryRegionOps r2d_fpga_ops = {
+     .endianness = DEVICE_NATIVE_ENDIAN,
+ };
+ 
+-static qemu_irq *r2d_fpga_init(MemoryRegion *sysmem,
+-                               hwaddr base, qemu_irq irl)
++static r2d_fpga_t *r2d_fpga_init(MemoryRegion *sysmem,
++                                 hwaddr base, qemu_irq irl)
+ {
+     r2d_fpga_t *s;
+ 
+@@ -197,7 +198,10 @@ static qemu_irq *r2d_fpga_init(MemoryRegion *sysmem,
+ 
+     memory_region_init_io(&s->iomem, NULL, &r2d_fpga_ops, s, "r2d-fpga", 0x40);
+     memory_region_add_subregion(sysmem, base, &s->iomem);
+-    return qemu_allocate_irqs(r2d_fpga_irq_set, s, NR_IRQS);
++
++    qemu_init_irqs(s->irq, NR_IRQS, r2d_fpga_irq_set, s);
++
++    return s;
  }
  
- static const Property ipack_device_props[] = {
-diff --git a/hw/ipack/tpci200.c b/hw/ipack/tpci200.c
-index 88eef4b8308..470a4203ae4 100644
---- a/hw/ipack/tpci200.c
-+++ b/hw/ipack/tpci200.c
-@@ -275,11 +275,11 @@ static void tpci200_write_las0(void *opaque, hwaddr addr, uint64_t val,
-                 if (ip != NULL) {
-                     if (val & STATUS_INT(i, 0)) {
-                         DPRINTF("Clear IP %c INT0# status\n", 'A' + i);
--                        qemu_irq_lower(ip->irq[0]);
-+                        qemu_irq_lower(&ip->irq[0]);
-                     }
-                     if (val & STATUS_INT(i, 1)) {
-                         DPRINTF("Clear IP %c INT1# status\n", 'A' + i);
--                        qemu_irq_lower(ip->irq[1]);
-+                        qemu_irq_lower(&ip->irq[1]);
-                     }
-                 }
+ typedef struct ResetData {
+@@ -239,13 +243,13 @@ static void r2d_init(MachineState *machine)
+     ResetData *reset_info;
+     struct SH7750State *s;
+     MemoryRegion *sdram = g_new(MemoryRegion, 1);
+-    qemu_irq *irq;
+     DriveInfo *dinfo;
+     DeviceState *dev;
+     SysBusDevice *busdev;
+     MemoryRegion *address_space_mem = get_system_memory();
+     PCIBus *pci_bus;
+     USBBus *usb_bus;
++    r2d_fpga_t *fpga;
  
-@@ -344,7 +344,7 @@ static uint64_t tpci200_read_las1(void *opaque, hwaddr addr, unsigned size)
-                 bool int_set = s->status & STATUS_INT(ip_n, intno);
-                 bool int_edge_sensitive = s->ctrl[ip_n] & CTRL_INT_EDGE(intno);
-                 if (int_set && !int_edge_sensitive) {
--                    qemu_irq_lower(ip->irq[intno]);
-+                    qemu_irq_lower(&ip->irq[intno]);
-                 }
-             }
+     cpu = SUPERH_CPU(cpu_create(machine->cpu_type));
+     env = &cpu->env;
+@@ -260,7 +264,7 @@ static void r2d_init(MachineState *machine)
+     memory_region_add_subregion(address_space_mem, SDRAM_BASE, sdram);
+     /* Register peripherals */
+     s = sh7750_init(cpu, address_space_mem);
+-    irq = r2d_fpga_init(address_space_mem, 0x04000000, sh7750_irl(s));
++    fpga = r2d_fpga_init(address_space_mem, 0x04000000, sh7750_irl(s));
  
+     dev = qdev_new("sh_pci");
+     busdev = SYS_BUS_DEVICE(dev);
+@@ -268,10 +272,10 @@ static void r2d_init(MachineState *machine)
+     pci_bus = PCI_BUS(qdev_get_child_bus(dev, "pci"));
+     sysbus_mmio_map(busdev, 0, P4ADDR(0x1e200000));
+     sysbus_mmio_map(busdev, 1, A7ADDR(0x1e200000));
+-    sysbus_connect_irq(busdev, 0, irq[PCI_INTA]);
+-    sysbus_connect_irq(busdev, 1, irq[PCI_INTB]);
+-    sysbus_connect_irq(busdev, 2, irq[PCI_INTC]);
+-    sysbus_connect_irq(busdev, 3, irq[PCI_INTD]);
++    sysbus_connect_irq(busdev, 0, &fpga->irq[PCI_INTA]);
++    sysbus_connect_irq(busdev, 1, &fpga->irq[PCI_INTB]);
++    sysbus_connect_irq(busdev, 2, &fpga->irq[PCI_INTC]);
++    sysbus_connect_irq(busdev, 3, &fpga->irq[PCI_INTD]);
+ 
+     dev = qdev_new("sysbus-sm501");
+     busdev = SYS_BUS_DEVICE(dev);
+@@ -281,13 +285,13 @@ static void r2d_init(MachineState *machine)
+     sysbus_realize_and_unref(busdev, &error_fatal);
+     sysbus_mmio_map(busdev, 0, 0x10000000);
+     sysbus_mmio_map(busdev, 1, 0x13e00000);
+-    sysbus_connect_irq(busdev, 0, irq[SM501]);
++    sysbus_connect_irq(busdev, 0, &fpga->irq[SM501]);
+ 
+     /* onboard CF (True IDE mode, Master only). */
+     dinfo = drive_get(IF_IDE, 0, 0);
+     dev = qdev_new("mmio-ide");
+     busdev = SYS_BUS_DEVICE(dev);
+-    sysbus_connect_irq(busdev, 0, irq[CF_IDE]);
++    sysbus_connect_irq(busdev, 0, &fpga->irq[CF_IDE]);
+     qdev_prop_set_uint32(dev, "shift", 1);
+     sysbus_realize_and_unref(busdev, &error_fatal);
+     sysbus_mmio_map(busdev, 0, 0x14001000);
 -- 
 2.47.1
 
