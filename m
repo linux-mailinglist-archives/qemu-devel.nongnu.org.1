@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E9F0A2447B
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 22:09:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60188A24476
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 Jan 2025 22:09:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tdyEZ-0002Lk-PG; Fri, 31 Jan 2025 16:07:27 -0500
+	id 1tdyEi-0003CO-3n; Fri, 31 Jan 2025 16:07:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyEX-000299-5N
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:07:25 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyEd-00032f-BX
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:07:31 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyEV-0007xS-3Y
- for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:07:24 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-385eed29d17so1247775f8f.0
- for <qemu-devel@nongnu.org>; Fri, 31 Jan 2025 13:07:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tdyEa-0007xl-4m
+ for qemu-devel@nongnu.org; Fri, 31 Jan 2025 16:07:31 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-437a92d7b96so24164645e9.2
+ for <qemu-devel@nongnu.org>; Fri, 31 Jan 2025 13:07:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1738357641; x=1738962441; darn=nongnu.org;
+ d=linaro.org; s=google; t=1738357646; x=1738962446; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dinpAx8ITAzxNXFcxO3+N8OMVR+J/iTRHlGIXFvtMes=;
- b=dgGmBDHF4Cv2hMkBmSx6xQ07545ZbUHSJMJM+uJOcq7GW5A8QIqenBi8UqLAM0ca14
- yiBbFa/27jJQUP3vy1wWhy+ASwq0V4pZs5cwVgmQhcel3jMjRf/3wgQ4ahP2QT+N8WQF
- MYyjyTtKAFE7SjyJHW13dZ/u32vOa4lS7/zwnyRgwIy2vN5As3wL6qg3F4fgGUm2+NEf
- Dc8qGL2YZJy2cruQt6pCBza3Ghy8d9BiI0/Uo1h2v8ZAHsY8t/CQXY7+TYG3uNNS99YI
- gaXscgwGwzeEiZUPjzP3WHQY15wkJOUJFR1M5bVV6jl5WhWN02VZK/ibD6ez8Q30zEu7
- BcWA==
+ bh=emmOs0Opw6C6HTsSGMk+16isz8yUvgEMOQYgzBPFsyk=;
+ b=BYq1nMTXQMC0tCZIoY3NepgbhsVblhfPFukSqA45hRuZNG2Mn8FXK1OCg4QSSghlsB
+ frXFx3U6vRtQqQIr7W/vOCsZ24m3YEOKDry8yGHBbkibmacroJEsTdfRZktTevjN1hOr
+ G97JHn+/SQilsEmBxU1KDLp0D1IUSsYiwNXdj4xeXMqwvIVT8HrQ8h/gTmbQs9T6JhS3
+ WWaAH4Ej3FkXrbi0oIANttRmbqI+MCX0zQYS2qlwtlTTwUTvPColXxOQmnxDl/v0LYHf
+ 0P/b9bFjCthvQ/sCpyJa3PZMdvH2wMUDcYLplU8k7vklwO4WU6rwwNl3MG9GP2o62hGh
+ RvZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1738357641; x=1738962441;
+ d=1e100.net; s=20230601; t=1738357646; x=1738962446;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dinpAx8ITAzxNXFcxO3+N8OMVR+J/iTRHlGIXFvtMes=;
- b=WbzhNQ+dGx/p2Wzfom8+OmPbffpXYYyzrn5SN3ztO322E2R7eCUqSNHYvzvNv8rolW
- 2P7MNVw+U0THNWxnZLn+odTmGps77TCw2Dsmx+UEMkpDL9ry2STSywSWJmf/+uJi1Bqs
- uT9K6H0QVKFCsa8GG6nD7Y4jtFDB1Q2xZv3/Uu/ucG1in51qQ2mCxHfTRmeSwoQ0qc5j
- x6clYCTHqMT+yXvxOB48foiwZxDSXsqoRijORCJMFedxO3/DeF6cn+I1BQLp/YiC4OCa
- zXL+B7Lm3Jww5y9JGA2UF+eMxXXwwRyLx4JQM6Q2f5VGtuHRsFvr5aBoyHEoZUpjyjIz
- UfyA==
-X-Gm-Message-State: AOJu0Yxkj6DO/xuq7hh5zW5xD9LXFmqmz9e3bB1OLrcH5Lq8WysybA8O
- mna15R42gxODk3793xCLr65M2g3SuVr11XQfHxTWO6/DXLEd4PGf+IIgGO2WGCKKHpc+PJ5Vqqg
- Fte4=
-X-Gm-Gg: ASbGncunvWrmGLlUqMstkPXlfogOw5Qg2syNXZ6FHLzShOheXPhI5OyjkSJ/t4Z5U2v
- PZ+fs+8r74+u++FrkR5iJq7NFEEBtj1/4JaMr9t89biDCydYALh2P+v96pp71IlX1iKCIBbukMk
- uIWZghhN70Cc3B9DdkE7s+qn7KYQD0fjsNE1S8zwawUdz0cvJtBhk9EVDIWISMRZ6rQxWKmiG3D
- KOAOBGS8AtK1NNhABYj+mdw0Cx7OsxifktIjCewScfK8Z3fq+aBFqQwtaTfhwaBbGM9XOXPjlNh
- 10Hvg1cQMPPT/8vl1bMGMENaJOkkbVarlv43qSJkR9oQwfvWhdv+J94MPiVxsmWNNw==
-X-Google-Smtp-Source: AGHT+IG/zQ17C2m+V7S4U3cCNp4ZyqsNKSBFaY/Ki+zGfmywGPnVisvu0SJjVeWrAd/wryanmg9+Sg==
-X-Received: by 2002:a05:6000:e06:b0:385:faec:d94d with SMTP id
- ffacd0b85a97d-38c520b69d1mr8822640f8f.51.1738357641297; 
- Fri, 31 Jan 2025 13:07:21 -0800 (PST)
+ bh=emmOs0Opw6C6HTsSGMk+16isz8yUvgEMOQYgzBPFsyk=;
+ b=LBQh+nov/WerygvJjdHUdFfpGBlwwcwSuzMCZSoI81EVQmV/AeUDvXoYmcnBC9gpQg
+ 0WqH6pL8u8f05vxEDpq0sBppTi4mERymVUW8MibsAajmEGf4HbHukkQr22s4yEvFqcT+
+ bcprIqSSWX9aY8Nnqs5K8R8CKcIwy2xPRCt85+aRDULe0u4l2smWXD8xUB7EYFK3/4Xl
+ aMemeEMK2sMGlFBsY1jla7um9PDzbK8bozhB42ko6LqIfzDLJAV+KDKvM3HKGH8BRQSB
+ ZbtEsvA3cBeeFzYr0LoS3faWO6hdaBC6CC74duhb7fNQrfRVIN62O8c11d/1HIvxWgNP
+ Hbgw==
+X-Gm-Message-State: AOJu0YxuxAwbVz3BAeQQUhnfmbv9FX2kcXu2r6YhKvVLx3AscXSAWWTc
+ dLdQtc1KPsaWJRZ89LKp7h484wdRmYXueGJIVNE/s7Zx8UZH6UMjbCj87YfHoUW3fWD0BeRejAk
+ j380=
+X-Gm-Gg: ASbGncsAPOUr057bCZHQbjphdwognQnn2c9Mst+pkqZT7fM4N4n9Hlwd6C6s3WYPnBS
+ RV8e0x60PJFpu/yyb32dq1G1qK0kp8ToMtUjQjdiTujMhPKxLbSDDh+n9ca70ibl1z4kF0TGKbv
+ IfLbp4sTc/V9FN4BUAPa4SbBWeTgXrmNhTlg5fmNfhJZoLFF1UXpnKEDQjKjyU+7qt5CuQM7SUX
+ YyjGZHJ+tohRTRzHGftxTRfL8zHtNlyPWKxmVA6x45ngyAnwgG+wne+E+i9mzqwh2dTGLtjUtnS
+ hsm7/n4clnHN5xScz8s4dP3pp5eRCJQeEdh6Rk+HizMnaSWseu3jhBhztBkEeeDKew==
+X-Google-Smtp-Source: AGHT+IF2d9Vdx1crVS7Z6VbfeQTZjJC1Gjil1ZSNN4AMLKmLw4FpsJ4F7SfY83RAwoDVIJ2lj4nveQ==
+X-Received: by 2002:a05:600c:5486:b0:436:4708:9fb6 with SMTP id
+ 5b1f17b1804b1-438dc40b42dmr104967265e9.20.1738357646012; 
+ Fri, 31 Jan 2025 13:07:26 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-438dcc6df1esm102743845e9.27.2025.01.31.13.07.20
+ ffacd0b85a97d-38c5c0ec89csm5491416f8f.6.2025.01.31.13.07.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 31 Jan 2025 13:07:20 -0800 (PST)
+ Fri, 31 Jan 2025 13:07:25 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 24/36] hw/loader: Pass ELFDATA endian order argument to
- load_elf_as()
-Date: Fri, 31 Jan 2025 22:05:07 +0100
-Message-ID: <20250131210520.85874-25-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>,
+ BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PULL 25/36] hw/loader: Pass ELFDATA endian order argument to
+ load_elf()
+Date: Fri, 31 Jan 2025 22:05:08 +0100
+Message-ID: <20250131210520.85874-26-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250131210520.85874-1-philmd@linaro.org>
 References: <20250131210520.85874-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,173 +104,643 @@ directly pass the ELFDATA, which can be unspecified using
 the ELFDATANONE value.
 
 Update the call sites:
-  0 -> ELFDATA2LSB
-  1 -> ELFDATA2MSB
-
-Note, this allow removing the target_words_bigendian() call
-in the GENERIC_LOADER device, where we pass ELFDATANONE.
+  0                 -> ELFDATA2LSB
+  1                 -> ELFDATA2MSB
+  TARGET_BIG_ENDIAN -> TARGET_BIG_ENDIAN ? ELFDATA2MSB : ELFDATA2LSB
 
 Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250127113824.50177-6-philmd@linaro.org>
+Message-Id: <20250127113824.50177-7-philmd@linaro.org>
 ---
- include/hw/loader.h      |  2 +-
- hw/arm/armv7m.c          |  2 +-
- hw/arm/boot.c            | 16 ++++++++--------
- hw/avr/boot.c            |  2 +-
- hw/core/generic-loader.c |  6 +-----
- hw/core/loader.c         |  8 ++++----
- 6 files changed, 16 insertions(+), 20 deletions(-)
+ include/hw/loader.h            | 2 +-
+ hw/alpha/dp264.c               | 4 ++--
+ hw/core/loader.c               | 5 ++---
+ hw/hppa/machine.c              | 4 ++--
+ hw/i386/multiboot.c            | 4 ++--
+ hw/i386/x86-common.c           | 4 ++--
+ hw/loongarch/boot.c            | 2 +-
+ hw/m68k/an5206.c               | 2 +-
+ hw/m68k/mcf5208.c              | 2 +-
+ hw/m68k/q800.c                 | 2 +-
+ hw/m68k/virt.c                 | 2 +-
+ hw/microblaze/boot.c           | 6 ++++--
+ hw/mips/boston.c               | 2 +-
+ hw/mips/fuloong2e.c            | 2 +-
+ hw/mips/loongson3_virt.c       | 2 +-
+ hw/mips/malta.c                | 5 +++--
+ hw/mips/mipssim.c              | 3 ++-
+ hw/openrisc/boot.c             | 2 +-
+ hw/pci-host/raven.c            | 4 ++--
+ hw/ppc/e500.c                  | 2 +-
+ hw/ppc/mac_newworld.c          | 5 +++--
+ hw/ppc/mac_oldworld.c          | 4 ++--
+ hw/ppc/pegasos2.c              | 8 ++++----
+ hw/ppc/ppc405_boards.c         | 2 +-
+ hw/ppc/ppc440_bamboo.c         | 3 ++-
+ hw/ppc/sam460ex.c              | 2 +-
+ hw/ppc/spapr.c                 | 8 ++++----
+ hw/ppc/virtex_ml507.c          | 4 ++--
+ hw/s390x/ipl.c                 | 6 +++---
+ hw/sparc/leon3.c               | 2 +-
+ hw/sparc/sun4m.c               | 5 +++--
+ hw/sparc64/sun4u.c             | 6 +++---
+ hw/tricore/triboard.c          | 2 +-
+ hw/tricore/tricore_testboard.c | 2 +-
+ hw/xtensa/sim.c                | 3 ++-
+ hw/xtensa/xtfpga.c             | 3 ++-
+ 36 files changed, 67 insertions(+), 59 deletions(-)
 
 diff --git a/include/hw/loader.h b/include/hw/loader.h
-index 8202c376043..84737c05b8d 100644
+index 84737c05b8d..784a93d6c17 100644
 --- a/include/hw/loader.h
 +++ b/include/hw/loader.h
-@@ -162,7 +162,7 @@ ssize_t load_elf_as(const char *filename,
-                     uint64_t (*elf_note_fn)(void *, void *, bool),
-                     uint64_t (*translate_fn)(void *, uint64_t),
-                     void *translate_opaque, uint64_t *pentry, uint64_t *lowaddr,
--                    uint64_t *highaddr, uint32_t *pflags, int big_endian,
-+                    uint64_t *highaddr, uint32_t *pflags, int elf_data_order,
-                     int elf_machine, int clear_lsb, int data_swab,
-                     AddressSpace *as);
+@@ -174,7 +174,7 @@ ssize_t load_elf(const char *filename,
+                  uint64_t (*elf_note_fn)(void *, void *, bool),
+                  uint64_t (*translate_fn)(void *, uint64_t),
+                  void *translate_opaque, uint64_t *pentry, uint64_t *lowaddr,
+-                 uint64_t *highaddr, uint32_t *pflags, int big_endian,
++                 uint64_t *highaddr, uint32_t *pflags, int elf_data_order,
+                  int elf_machine, int clear_lsb, int data_swab);
  
-diff --git a/hw/arm/armv7m.c b/hw/arm/armv7m.c
-index a67a890a33e..98a69846119 100644
---- a/hw/arm/armv7m.c
-+++ b/hw/arm/armv7m.c
-@@ -608,7 +608,7 @@ void armv7m_load_kernel(ARMCPU *cpu, const char *kernel_filename,
-     if (kernel_filename) {
-         image_size = load_elf_as(kernel_filename, NULL, NULL, NULL,
-                                  &entry, NULL, NULL,
--                                 NULL, 0, EM_ARM, 1, 0, as);
-+                                 NULL, ELFDATA2LSB, EM_ARM, 1, 0, as);
-         if (image_size < 0) {
-             image_size = load_image_targphys_as(kernel_filename, mem_base,
-                                                 mem_size, as);
-diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-index b44bea8a821..cbc24356fc1 100644
---- a/hw/arm/boot.c
-+++ b/hw/arm/boot.c
-@@ -798,7 +798,7 @@ static ssize_t arm_load_elf(struct arm_boot_info *info, uint64_t *pentry,
-         Elf64_Ehdr h64;
-     } elf_header;
-     int data_swab = 0;
--    bool big_endian;
-+    int elf_data_order;
-     ssize_t ret;
-     Error *err = NULL;
- 
-@@ -814,12 +814,12 @@ static ssize_t arm_load_elf(struct arm_boot_info *info, uint64_t *pentry,
+ /** load_elf_hdr:
+diff --git a/hw/alpha/dp264.c b/hw/alpha/dp264.c
+index 52a1fa310b9..570ea9edf24 100644
+--- a/hw/alpha/dp264.c
++++ b/hw/alpha/dp264.c
+@@ -144,7 +144,7 @@ static void clipper_init(MachineState *machine)
      }
+     size = load_elf(palcode_filename, NULL, cpu_alpha_superpage_to_phys,
+                     NULL, &palcode_entry, NULL, NULL, NULL,
+-                    0, EM_ALPHA, 0, 0);
++                    ELFDATA2LSB, EM_ALPHA, 0, 0);
+     if (size < 0) {
+         error_report("could not load palcode '%s'", palcode_filename);
+         exit(1);
+@@ -163,7 +163,7 @@ static void clipper_init(MachineState *machine)
  
-     if (elf_is64) {
--        big_endian = elf_header.h64.e_ident[EI_DATA] == ELFDATA2MSB;
--        info->endianness = big_endian ? ARM_ENDIANNESS_BE8
--                                      : ARM_ENDIANNESS_LE;
-+        elf_data_order = elf_header.h64.e_ident[EI_DATA];
-+        info->endianness = elf_data_order == ELFDATA2MSB ? ARM_ENDIANNESS_BE8
-+                                                         : ARM_ENDIANNESS_LE;
-     } else {
--        big_endian = elf_header.h32.e_ident[EI_DATA] == ELFDATA2MSB;
--        if (big_endian) {
-+        elf_data_order = elf_header.h32.e_ident[EI_DATA];
-+        if (elf_data_order == ELFDATA2MSB) {
-             if (bswap32(elf_header.h32.e_flags) & EF_ARM_BE8) {
-                 info->endianness = ARM_ENDIANNESS_BE8;
-             } else {
-@@ -839,8 +839,8 @@ static ssize_t arm_load_elf(struct arm_boot_info *info, uint64_t *pentry,
-     }
- 
-     ret = load_elf_as(info->kernel_filename, NULL, NULL, NULL,
--                      pentry, lowaddr, highaddr, NULL, big_endian, elf_machine,
--                      1, data_swab, as);
-+                      pentry, lowaddr, highaddr, NULL, elf_data_order,
-+                      elf_machine, 1, data_swab, as);
-     if (ret <= 0) {
-         /* The header loaded but the image didn't */
-         error_report("Couldn't load elf '%s': %s",
-diff --git a/hw/avr/boot.c b/hw/avr/boot.c
-index 6a91dcd12d0..e5a29c7218e 100644
---- a/hw/avr/boot.c
-+++ b/hw/avr/boot.c
-@@ -73,7 +73,7 @@ bool avr_load_firmware(AVRCPU *cpu, MachineState *ms,
- 
-     bytes_loaded = load_elf_as(filename, NULL, NULL, NULL,
-                                &entry, NULL, NULL,
--                               &e_flags, 0, EM_AVR, 0, 0, NULL);
-+                               &e_flags, ELFDATA2LSB, EM_AVR, 0, 0, NULL);
-     if (bytes_loaded >= 0) {
-         /* If ELF file is provided, determine CPU type reading ELF e_flags. */
-         const char *elf_cpu = avr_elf_e_flags_to_cpu_type(e_flags);
-diff --git a/hw/core/generic-loader.c b/hw/core/generic-loader.c
-index fb354693aff..d9f5c2e8325 100644
---- a/hw/core/generic-loader.c
-+++ b/hw/core/generic-loader.c
-@@ -31,7 +31,6 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "exec/tswap.h"
- #include "system/dma.h"
- #include "system/reset.h"
- #include "hw/boards.h"
-@@ -66,7 +65,6 @@ static void generic_loader_realize(DeviceState *dev, Error **errp)
- {
-     GenericLoaderState *s = GENERIC_LOADER(dev);
-     hwaddr entry;
--    int big_endian;
-     ssize_t size = 0;
- 
-     s->set_pc = false;
-@@ -134,14 +132,12 @@ static void generic_loader_realize(DeviceState *dev, Error **errp)
-         s->cpu = first_cpu;
-     }
- 
--    big_endian = target_words_bigendian();
--
-     if (s->file) {
-         AddressSpace *as = s->cpu ? s->cpu->as :  NULL;
- 
-         if (!s->force_raw) {
-             size = load_elf_as(s->file, NULL, NULL, NULL, &entry, NULL, NULL,
--                               NULL, big_endian, 0, 0, 0, as);
-+                               NULL, ELFDATANONE, 0, 0, 0, as);
- 
-             if (size < 0) {
-                 size = load_uimage_as(s->file, &entry, NULL, NULL, NULL, NULL,
+         size = load_elf(kernel_filename, NULL, cpu_alpha_superpage_to_phys,
+                         NULL, &kernel_entry, &kernel_low, NULL, NULL,
+-                        0, EM_ALPHA, 0, 0);
++                        ELFDATA2LSB, EM_ALPHA, 0, 0);
+         if (size < 0) {
+             error_report("could not load kernel '%s'", kernel_filename);
+             exit(1);
 diff --git a/hw/core/loader.c b/hw/core/loader.c
-index f1fab3e91b1..cc0631e7dd5 100644
+index cc0631e7dd5..fd25c5e01bd 100644
 --- a/hw/core/loader.c
 +++ b/hw/core/loader.c
-@@ -413,7 +413,8 @@ ssize_t load_elf(const char *filename,
+@@ -409,12 +409,11 @@ ssize_t load_elf(const char *filename,
+                  uint64_t (*elf_note_fn)(void *, void *, bool),
+                  uint64_t (*translate_fn)(void *, uint64_t),
+                  void *translate_opaque, uint64_t *pentry, uint64_t *lowaddr,
+-                 uint64_t *highaddr, uint32_t *pflags, int big_endian,
++                 uint64_t *highaddr, uint32_t *pflags, int elf_data_order,
                   int elf_machine, int clear_lsb, int data_swab)
  {
      return load_elf_as(filename, elf_note_fn, translate_fn, translate_opaque,
--                       pentry, lowaddr, highaddr, pflags, big_endian,
-+                       pentry, lowaddr, highaddr, pflags,
-+                       big_endian ? ELFDATA2MSB : ELFDATA2LSB,
+-                       pentry, lowaddr, highaddr, pflags,
+-                       big_endian ? ELFDATA2MSB : ELFDATA2LSB,
++                       pentry, lowaddr, highaddr, pflags, elf_data_order,
                         elf_machine, clear_lsb, data_swab, NULL);
  }
  
-@@ -422,14 +423,13 @@ ssize_t load_elf_as(const char *filename,
-                     uint64_t (*elf_note_fn)(void *, void *, bool),
-                     uint64_t (*translate_fn)(void *, uint64_t),
-                     void *translate_opaque, uint64_t *pentry, uint64_t *lowaddr,
--                    uint64_t *highaddr, uint32_t *pflags, int big_endian,
-+                    uint64_t *highaddr, uint32_t *pflags, int elf_data_order,
-                     int elf_machine, int clear_lsb, int data_swab,
-                     AddressSpace *as)
- {
-     return load_elf_ram_sym(filename, elf_note_fn,
-                             translate_fn, translate_opaque,
--                            pentry, lowaddr, highaddr, pflags,
--                            big_endian ? ELFDATA2MSB : ELFDATA2LSB,
-+                            pentry, lowaddr, highaddr, pflags, elf_data_order,
-                             elf_machine, clear_lsb, data_swab, as,
-                             true, NULL);
- }
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index 0dd19082146..b6135d95261 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -440,7 +440,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
+ 
+         size = load_elf(firmware_filename, NULL, translate, NULL,
+                         &firmware_entry, &firmware_low, &firmware_high, NULL,
+-                        true, EM_PARISC, 0, 0);
++                        ELFDATA2MSB, EM_PARISC, 0, 0);
+ 
+         if (size < 0) {
+             error_report("could not load firmware '%s'", firmware_filename);
+@@ -467,7 +467,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
+     if (kernel_filename) {
+         size = load_elf(kernel_filename, NULL, linux_kernel_virt_to_phys,
+                         NULL, &kernel_entry, &kernel_low, &kernel_high, NULL,
+-                        true, EM_PARISC, 0, 0);
++                        ELFDATA2MSB, EM_PARISC, 0, 0);
+ 
+         kernel_entry = linux_kernel_virt_to_phys(NULL, kernel_entry);
+ 
+diff --git a/hw/i386/multiboot.c b/hw/i386/multiboot.c
+index 1d66ca3204a..cd07a058614 100644
+--- a/hw/i386/multiboot.c
++++ b/hw/i386/multiboot.c
+@@ -202,8 +202,8 @@ int load_multiboot(X86MachineState *x86ms,
+         }
+ 
+         kernel_size = load_elf(kernel_filename, NULL, NULL, NULL, &elf_entry,
+-                               &elf_low, &elf_high, NULL, 0, I386_ELF_MACHINE,
+-                               0, 0);
++                               &elf_low, &elf_high, NULL,
++                               ELFDATA2LSB, I386_ELF_MACHINE, 0, 0);
+         if (kernel_size < 0) {
+             error_report("Error while loading elf kernel");
+             exit(1);
+diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
+index 008496b5b85..1b0671c5239 100644
+--- a/hw/i386/x86-common.c
++++ b/hw/i386/x86-common.c
+@@ -608,8 +608,8 @@ static bool load_elfboot(const char *kernel_filename,
+     uint64_t elf_note_type = XEN_ELFNOTE_PHYS32_ENTRY;
+     kernel_size = load_elf(kernel_filename, read_pvh_start_addr,
+                            NULL, &elf_note_type, &elf_entry,
+-                           &elf_low, &elf_high, NULL, 0, I386_ELF_MACHINE,
+-                           0, 0);
++                           &elf_low, &elf_high, NULL,
++                           ELFDATA2LSB, I386_ELF_MACHINE, 0, 0);
+ 
+     if (kernel_size < 0) {
+         error_report("Error while loading elf kernel");
+diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
+index bd8763c61c3..354cf458c81 100644
+--- a/hw/loongarch/boot.c
++++ b/hw/loongarch/boot.c
+@@ -243,7 +243,7 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
+     kernel_size = load_elf(info->kernel_filename, NULL,
+                            cpu_loongarch_virt_to_phys, NULL,
+                            &kernel_entry, &kernel_low,
+-                           &kernel_high, NULL, 0,
++                           &kernel_high, NULL, ELFDATA2LSB,
+                            EM_LOONGARCH, 1, 0);
+     if (kernel_size < 0) {
+         kernel_size = load_loongarch_linux_image(info->kernel_filename,
+diff --git a/hw/m68k/an5206.c b/hw/m68k/an5206.c
+index 7b8210475ec..d97399b882b 100644
+--- a/hw/m68k/an5206.c
++++ b/hw/m68k/an5206.c
+@@ -74,7 +74,7 @@ static void an5206_init(MachineState *machine)
+     }
+ 
+     kernel_size = load_elf(kernel_filename, NULL, NULL, NULL, &elf_entry,
+-                           NULL, NULL, NULL, 1, EM_68K, 0, 0);
++                           NULL, NULL, NULL, ELFDATA2MSB, EM_68K, 0, 0);
+     entry = elf_entry;
+     if (kernel_size < 0) {
+         kernel_size = load_uimage(kernel_filename, &entry, NULL, NULL,
+diff --git a/hw/m68k/mcf5208.c b/hw/m68k/mcf5208.c
+index 409bb72574c..75cc076f787 100644
+--- a/hw/m68k/mcf5208.c
++++ b/hw/m68k/mcf5208.c
+@@ -372,7 +372,7 @@ static void mcf5208evb_init(MachineState *machine)
+     }
+ 
+     kernel_size = load_elf(kernel_filename, NULL, NULL, NULL, &elf_entry,
+-                           NULL, NULL, NULL, 1, EM_68K, 0, 0);
++                           NULL, NULL, NULL, ELFDATA2MSB, EM_68K, 0, 0);
+     entry = elf_entry;
+     if (kernel_size < 0) {
+         kernel_size = load_uimage(kernel_filename, &entry, NULL, NULL,
+diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+index ca3adb9a8ae..aeed4c8ddb8 100644
+--- a/hw/m68k/q800.c
++++ b/hw/m68k/q800.c
+@@ -585,7 +585,7 @@ static void q800_machine_init(MachineState *machine)
+         }
+ 
+         kernel_size = load_elf(kernel_filename, NULL, NULL, NULL,
+-                               &elf_entry, NULL, &high, NULL, 1,
++                               &elf_entry, NULL, &high, NULL, ELFDATA2MSB,
+                                EM_68K, 0, 0);
+         if (kernel_size < 0) {
+             error_report("could not load kernel '%s'", kernel_filename);
+diff --git a/hw/m68k/virt.c b/hw/m68k/virt.c
+index 87ec39eeae1..d967bdd7438 100644
+--- a/hw/m68k/virt.c
++++ b/hw/m68k/virt.c
+@@ -228,7 +228,7 @@ static void virt_init(MachineState *machine)
+         }
+ 
+         kernel_size = load_elf(kernel_filename, NULL, NULL, NULL,
+-                               &elf_entry, NULL, &high, NULL, 1,
++                               &elf_entry, NULL, &high, NULL, ELFDATA2MSB,
+                                EM_68K, 0, 0);
+         if (kernel_size < 0) {
+             error_report("could not load kernel '%s'", kernel_filename);
+diff --git a/hw/microblaze/boot.c b/hw/microblaze/boot.c
+index 3854bc2291b..60b4ef0abe7 100644
+--- a/hw/microblaze/boot.c
++++ b/hw/microblaze/boot.c
+@@ -144,13 +144,15 @@ void microblaze_load_kernel(MicroBlazeCPU *cpu, bool is_little_endian,
+         /* Boots a kernel elf binary.  */
+         kernel_size = load_elf(kernel_filename, NULL, NULL, NULL,
+                                &entry, NULL, &high, NULL,
+-                               !is_little_endian, EM_MICROBLAZE, 0, 0);
++                               is_little_endian ? ELFDATA2LSB : ELFDATA2MSB,
++                               EM_MICROBLAZE, 0, 0);
+         base32 = entry;
+         if (base32 == 0xc0000000) {
+             kernel_size = load_elf(kernel_filename, NULL,
+                                    translate_kernel_address, NULL,
+                                    &entry, NULL, NULL, NULL,
+-                                   !is_little_endian, EM_MICROBLAZE, 0, 0);
++                                   is_little_endian ? ELFDATA2LSB : ELFDATA2MSB,
++                                   EM_MICROBLAZE, 0, 0);
+         }
+         /* Always boot into physical ram.  */
+         boot_info.bootstrap_pc = (uint32_t)entry;
+diff --git a/hw/mips/boston.c b/hw/mips/boston.c
+index 67044af962a..364c328032a 100644
+--- a/hw/mips/boston.c
++++ b/hw/mips/boston.c
+@@ -792,7 +792,7 @@ static void boston_mach_init(MachineState *machine)
+         kernel_size = load_elf(machine->kernel_filename, NULL,
+                            cpu_mips_kseg0_to_phys, NULL,
+                            &kernel_entry, NULL, &kernel_high,
+-                           NULL, 0, EM_MIPS, 1, 0);
++                           NULL, ELFDATA2LSB, EM_MIPS, 1, 0);
+ 
+         if (kernel_size > 0) {
+             int dt_size;
+diff --git a/hw/mips/fuloong2e.c b/hw/mips/fuloong2e.c
+index 16b6a5129e7..646044e2749 100644
+--- a/hw/mips/fuloong2e.c
++++ b/hw/mips/fuloong2e.c
+@@ -106,7 +106,7 @@ static uint64_t load_kernel(MIPSCPU *cpu)
+                            cpu_mips_kseg0_to_phys, NULL,
+                            &kernel_entry, NULL,
+                            &kernel_high, NULL,
+-                           0, EM_MIPS, 1, 0);
++                           ELFDATA2LSB, EM_MIPS, 1, 0);
+     if (kernel_size < 0) {
+         error_report("could not load kernel '%s': %s",
+                      loaderparams.kernel_filename,
+diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
+index 85cf1f707fa..831fddb1bd7 100644
+--- a/hw/mips/loongson3_virt.c
++++ b/hw/mips/loongson3_virt.c
+@@ -358,7 +358,7 @@ static uint64_t load_kernel(CPUMIPSState *env)
+                            cpu_mips_kseg0_to_phys, NULL,
+                            &kernel_entry,
+                            &kernel_low, &kernel_high,
+-                           NULL, 0, EM_MIPS, 1, 0);
++                           NULL, ELFDATA2LSB, EM_MIPS, 1, 0);
+     if (kernel_size < 0) {
+         error_report("could not load kernel '%s': %s",
+                      loaderparams.kernel_filename,
+diff --git a/hw/mips/malta.c b/hw/mips/malta.c
+index 4e9cccaa347..8e9cea70b13 100644
+--- a/hw/mips/malta.c
++++ b/hw/mips/malta.c
+@@ -880,8 +880,9 @@ static uint64_t load_kernel(void)
+     kernel_size = load_elf(loaderparams.kernel_filename, NULL,
+                            cpu_mips_kseg0_to_phys, NULL,
+                            &kernel_entry, NULL,
+-                           &kernel_high, NULL, TARGET_BIG_ENDIAN, EM_MIPS,
+-                           1, 0);
++                           &kernel_high, NULL,
++                           TARGET_BIG_ENDIAN ? ELFDATA2MSB : ELFDATA2LSB,
++                           EM_MIPS, 1, 0);
+     if (kernel_size < 0) {
+         error_report("could not load kernel '%s': %s",
+                      loaderparams.kernel_filename,
+diff --git a/hw/mips/mipssim.c b/hw/mips/mipssim.c
+index a294779a82b..c530688e769 100644
+--- a/hw/mips/mipssim.c
++++ b/hw/mips/mipssim.c
+@@ -73,7 +73,8 @@ static uint64_t load_kernel(void)
+     kernel_size = load_elf(loaderparams.kernel_filename, NULL,
+                            cpu_mips_kseg0_to_phys, NULL,
+                            &entry, NULL,
+-                           &kernel_high, NULL, TARGET_BIG_ENDIAN,
++                           &kernel_high, NULL,
++                           TARGET_BIG_ENDIAN ? ELFDATA2MSB : ELFDATA2LSB,
+                            EM_MIPS, 1, 0);
+     if (kernel_size < 0) {
+         error_report("could not load kernel '%s': %s",
+diff --git a/hw/openrisc/boot.c b/hw/openrisc/boot.c
+index 83c1fc6705e..0f08df812dc 100644
+--- a/hw/openrisc/boot.c
++++ b/hw/openrisc/boot.c
+@@ -32,7 +32,7 @@ hwaddr openrisc_load_kernel(ram_addr_t ram_size,
+ 
+     if (kernel_filename && !qtest_enabled()) {
+         kernel_size = load_elf(kernel_filename, NULL, NULL, NULL,
+-                               &elf_entry, NULL, &high_addr, NULL, 1,
++                               &elf_entry, NULL, &high_addr, NULL, ELFDATA2MSB,
+                                EM_OPENRISC, 1, 0);
+         entry = elf_entry;
+         if (kernel_size < 0) {
+diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
+index 918a3237a9e..e3d8d206b73 100644
+--- a/hw/pci-host/raven.c
++++ b/hw/pci-host/raven.c
+@@ -357,8 +357,8 @@ static void raven_realize(PCIDevice *d, Error **errp)
+         if (filename) {
+             if (s->elf_machine != EM_NONE) {
+                 bios_size = load_elf(filename, NULL, NULL, NULL, NULL,
+-                                     NULL, NULL, NULL, 1, s->elf_machine,
+-                                     0, 0);
++                                     NULL, NULL, NULL,
++                                     ELFDATA2MSB, s->elf_machine, 0, 0);
+             }
+             if (bios_size < 0) {
+                 bios_size = get_image_size(filename);
+diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
+index 4551157c011..26933e0457e 100644
+--- a/hw/ppc/e500.c
++++ b/hw/ppc/e500.c
+@@ -1194,7 +1194,7 @@ void ppce500_init(MachineState *machine)
+ 
+     payload_size = load_elf(filename, NULL, NULL, NULL,
+                             &bios_entry, &loadaddr, NULL, NULL,
+-                            1, PPC_ELF_MACHINE, 0, 0);
++                            ELFDATA2MSB, PPC_ELF_MACHINE, 0, 0);
+     if (payload_size < 0) {
+         /*
+          * Hrm. No ELF image? Try a uImage, maybe someone is giving us an
+diff --git a/hw/ppc/mac_newworld.c b/hw/ppc/mac_newworld.c
+index 6369961f78a..cb3dc3ab482 100644
+--- a/hw/ppc/mac_newworld.c
++++ b/hw/ppc/mac_newworld.c
+@@ -182,7 +182,8 @@ static void ppc_core99_init(MachineState *machine)
+     if (filename) {
+         /* Load OpenBIOS (ELF) */
+         bios_size = load_elf(filename, NULL, NULL, NULL, NULL,
+-                             NULL, NULL, NULL, 1, PPC_ELF_MACHINE, 0, 0);
++                             NULL, NULL, NULL,
++                             ELFDATA2MSB, PPC_ELF_MACHINE, 0, 0);
+ 
+         if (bios_size <= 0) {
+             /* or load binary ROM image */
+@@ -204,7 +205,7 @@ static void ppc_core99_init(MachineState *machine)
+         kernel_base = KERNEL_LOAD_ADDR;
+         kernel_size = load_elf(machine->kernel_filename, NULL,
+                                translate_kernel_address, NULL, NULL, NULL,
+-                               NULL, NULL, 1, PPC_ELF_MACHINE, 0, 0);
++                               NULL, NULL, ELFDATA2MSB, PPC_ELF_MACHINE, 0, 0);
+         if (kernel_size < 0) {
+             kernel_size = load_aout(machine->kernel_filename, kernel_base,
+                                     machine->ram_size - kernel_base,
+diff --git a/hw/ppc/mac_oldworld.c b/hw/ppc/mac_oldworld.c
+index 59653e174b8..0dbcea035c3 100644
+--- a/hw/ppc/mac_oldworld.c
++++ b/hw/ppc/mac_oldworld.c
+@@ -136,7 +136,7 @@ static void ppc_heathrow_init(MachineState *machine)
+     if (filename) {
+         /* Load OpenBIOS (ELF) */
+         bios_size = load_elf(filename, NULL, NULL, NULL, NULL, &bios_addr,
+-                             NULL, NULL, 1, PPC_ELF_MACHINE, 0, 0);
++                             NULL, NULL, ELFDATA2MSB, PPC_ELF_MACHINE, 0, 0);
+         /* Unfortunately, load_elf sign-extends reading elf32 */
+         bios_addr = (uint32_t)bios_addr;
+ 
+@@ -161,7 +161,7 @@ static void ppc_heathrow_init(MachineState *machine)
+         kernel_base = KERNEL_LOAD_ADDR;
+         kernel_size = load_elf(machine->kernel_filename, NULL,
+                                translate_kernel_address, NULL, NULL, NULL,
+-                               NULL, NULL, 1, PPC_ELF_MACHINE, 0, 0);
++                               NULL, NULL, ELFDATA2MSB, PPC_ELF_MACHINE, 0, 0);
+         if (kernel_size < 0) {
+             kernel_size = load_aout(machine->kernel_filename, kernel_base,
+                                     machine->ram_size - kernel_base,
+diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
+index b3c21bdc57c..0364243f4fe 100644
+--- a/hw/ppc/pegasos2.c
++++ b/hw/ppc/pegasos2.c
+@@ -160,8 +160,8 @@ static void pegasos2_init(MachineState *machine)
+     }
+     memory_region_init_rom(rom, NULL, "pegasos2.rom", PROM_SIZE, &error_fatal);
+     memory_region_add_subregion(get_system_memory(), PROM_ADDR, rom);
+-    sz = load_elf(filename, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1,
+-                  PPC_ELF_MACHINE, 0, 0);
++    sz = load_elf(filename, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
++                  ELFDATA2MSB, PPC_ELF_MACHINE, 0, 0);
+     if (sz <= 0) {
+         sz = load_image_targphys(filename, pm->vof ? 0 : PROM_ADDR, PROM_SIZE);
+     }
+@@ -239,8 +239,8 @@ static void pegasos2_init(MachineState *machine)
+ 
+     if (machine->kernel_filename) {
+         sz = load_elf(machine->kernel_filename, NULL, NULL, NULL,
+-                      &pm->kernel_entry, &pm->kernel_addr, NULL, NULL, 1,
+-                      PPC_ELF_MACHINE, 0, 0);
++                      &pm->kernel_entry, &pm->kernel_addr, NULL, NULL,
++                      ELFDATA2MSB, PPC_ELF_MACHINE, 0, 0);
+         if (sz <= 0) {
+             error_report("Could not load kernel '%s'",
+                          machine->kernel_filename);
+diff --git a/hw/ppc/ppc405_boards.c b/hw/ppc/ppc405_boards.c
+index e9f65fab70d..969cac345ac 100644
+--- a/hw/ppc/ppc405_boards.c
++++ b/hw/ppc/ppc405_boards.c
+@@ -232,7 +232,7 @@ static void boot_from_kernel(MachineState *machine, PowerPCCPU *cpu)
+ 
+     kernel_size = load_elf(machine->kernel_filename, NULL, NULL, NULL,
+                            &boot_entry, &kernel_base, NULL, NULL,
+-                           1, PPC_ELF_MACHINE, 0, 0);
++                           ELFDATA2MSB, PPC_ELF_MACHINE, 0, 0);
+     if (kernel_size < 0) {
+         error_report("Could not load kernel '%s' : %s",
+                      machine->kernel_filename, load_elf_strerror(kernel_size));
+diff --git a/hw/ppc/ppc440_bamboo.c b/hw/ppc/ppc440_bamboo.c
+index 45c5b8678d9..099fda39092 100644
+--- a/hw/ppc/ppc440_bamboo.c
++++ b/hw/ppc/ppc440_bamboo.c
+@@ -228,7 +228,8 @@ static void bamboo_init(MachineState *machine)
+         if (success < 0) {
+             uint64_t elf_entry;
+             success = load_elf(kernel_filename, NULL, NULL, NULL, &elf_entry,
+-                               NULL, NULL, NULL, 1, PPC_ELF_MACHINE, 0, 0);
++                               NULL, NULL, NULL,
++                               ELFDATA2MSB, PPC_ELF_MACHINE, 0, 0);
+             entry = elf_entry;
+         }
+         /* XXX try again as binary */
+diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
+index e74642a3b71..3ecae6a9504 100644
+--- a/hw/ppc/sam460ex.c
++++ b/hw/ppc/sam460ex.c
+@@ -479,7 +479,7 @@ static void sam460ex_init(MachineState *machine)
+ 
+             success = load_elf(machine->kernel_filename, NULL, NULL, NULL,
+                                &elf_entry, NULL, NULL, NULL,
+-                               1, PPC_ELF_MACHINE, 0, 0);
++                               ELFDATA2MSB, PPC_ELF_MACHINE, 0, 0);
+             entry = elf_entry;
+         }
+         /* XXX try again as binary */
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 623842f8064..f3a4b4235d4 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -3022,13 +3022,13 @@ static void spapr_machine_init(MachineState *machine)
+ 
+         spapr->kernel_size = load_elf(kernel_filename, NULL,
+                                       translate_kernel_address, spapr,
+-                                      NULL, &loaded_addr, NULL, NULL, 1,
+-                                      PPC_ELF_MACHINE, 0, 0);
++                                      NULL, &loaded_addr, NULL, NULL,
++                                      ELFDATA2MSB, PPC_ELF_MACHINE, 0, 0);
+         if (spapr->kernel_size == ELF_LOAD_WRONG_ENDIAN) {
+             spapr->kernel_size = load_elf(kernel_filename, NULL,
+                                           translate_kernel_address, spapr,
+-                                          NULL, &loaded_addr, NULL, NULL, 0,
+-                                          PPC_ELF_MACHINE, 0, 0);
++                                          NULL, &loaded_addr, NULL, NULL,
++                                          ELFDATA2LSB, PPC_ELF_MACHINE, 0, 0);
+             spapr->kernel_le = spapr->kernel_size > 0;
+         }
+         if (spapr->kernel_size < 0) {
+diff --git a/hw/ppc/virtex_ml507.c b/hw/ppc/virtex_ml507.c
+index ea7ab8a5694..23238119273 100644
+--- a/hw/ppc/virtex_ml507.c
++++ b/hw/ppc/virtex_ml507.c
+@@ -242,8 +242,8 @@ static void virtex_init(MachineState *machine)
+ 
+         /* Boots a kernel elf binary.  */
+         kernel_size = load_elf(kernel_filename, NULL, NULL, NULL,
+-                               &entry, NULL, &high, NULL, 1, PPC_ELF_MACHINE,
+-                               0, 0);
++                               &entry, NULL, &high, NULL,
++                               ELFDATA2MSB, PPC_ELF_MACHINE, 0, 0);
+         boot_info.bootstrap_pc = entry & 0x00ffffff;
+ 
+         if (kernel_size < 0) {
+diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
+index 4aa21c91fca..ce6f6078d74 100644
+--- a/hw/s390x/ipl.c
++++ b/hw/s390x/ipl.c
+@@ -162,8 +162,8 @@ static void s390_ipl_realize(DeviceState *dev, Error **errp)
+ 
+         bios_size = load_elf(bios_filename, NULL,
+                              bios_translate_addr, &fwbase,
+-                             &ipl->bios_start_addr, NULL, NULL, NULL, 1,
+-                             EM_S390, 0, 0);
++                             &ipl->bios_start_addr, NULL, NULL, NULL,
++                             ELFDATA2MSB, EM_S390, 0, 0);
+         if (bios_size > 0) {
+             /* Adjust ELF start address to final location */
+             ipl->bios_start_addr += fwbase;
+@@ -187,7 +187,7 @@ static void s390_ipl_realize(DeviceState *dev, Error **errp)
+     if (ipl->kernel) {
+         kernel_size = load_elf(ipl->kernel, NULL, NULL, NULL,
+                                &pentry, NULL,
+-                               NULL, NULL, 1, EM_S390, 0, 0);
++                               NULL, NULL, ELFDATA2MSB, EM_S390, 0, 0);
+         if (kernel_size < 0) {
+             kernel_size = load_image_targphys(ipl->kernel, 0, ms->ram_size);
+             if (kernel_size < 0) {
+diff --git a/hw/sparc/leon3.c b/hw/sparc/leon3.c
+index 84381254ad0..0aeaad3becc 100644
+--- a/hw/sparc/leon3.c
++++ b/hw/sparc/leon3.c
+@@ -380,7 +380,7 @@ static void leon3_generic_hw_init(MachineState *machine)
+ 
+         kernel_size = load_elf(kernel_filename, NULL, NULL, NULL,
+                                &entry, NULL, NULL, NULL,
+-                               1 /* big endian */, EM_SPARC, 0, 0);
++                               ELFDATA2MSB, EM_SPARC, 0, 0);
+         if (kernel_size < 0) {
+             kernel_size = load_uimage(kernel_filename, NULL, &entry,
+                                       NULL, NULL, NULL);
+diff --git a/hw/sparc/sun4m.c b/hw/sparc/sun4m.c
+index e070360a2c7..a48d3622c5a 100644
+--- a/hw/sparc/sun4m.c
++++ b/hw/sparc/sun4m.c
+@@ -242,7 +242,8 @@ static unsigned long sun4m_load_kernel(const char *kernel_filename,
+ #endif
+         kernel_size = load_elf(kernel_filename, NULL,
+                                translate_kernel_address, NULL,
+-                               NULL, NULL, NULL, NULL, 1, EM_SPARC, 0, 0);
++                               NULL, NULL, NULL, NULL,
++                               ELFDATA2MSB, EM_SPARC, 0, 0);
+         if (kernel_size < 0)
+             kernel_size = load_aout(kernel_filename, KERNEL_LOAD_ADDR,
+                                     RAM_size - KERNEL_LOAD_ADDR, bswap_needed,
+@@ -703,7 +704,7 @@ static void prom_init(hwaddr addr, const char *bios_name)
+     if (filename) {
+         ret = load_elf(filename, NULL,
+                        translate_prom_address, &addr, NULL,
+-                       NULL, NULL, NULL, 1, EM_SPARC, 0, 0);
++                       NULL, NULL, NULL, ELFDATA2MSB, EM_SPARC, 0, 0);
+         if (ret < 0 || ret > PROM_SIZE_MAX) {
+             ret = load_image_targphys(filename, addr, PROM_SIZE_MAX);
+         }
+diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
+index 0980b446593..8ab5cf0461f 100644
+--- a/hw/sparc64/sun4u.c
++++ b/hw/sparc64/sun4u.c
+@@ -176,8 +176,8 @@ static uint64_t sun4u_load_kernel(const char *kernel_filename,
+         bswap_needed = 0;
+ #endif
+         kernel_size = load_elf(kernel_filename, NULL, NULL, NULL, kernel_entry,
+-                               kernel_addr, &kernel_top, NULL, 1, EM_SPARCV9, 0,
+-                               0);
++                               kernel_addr, &kernel_top, NULL,
++                               ELFDATA2MSB, EM_SPARCV9, 0, 0);
+         if (kernel_size < 0) {
+             *kernel_addr = KERNEL_LOAD_ADDR;
+             *kernel_entry = KERNEL_LOAD_ADDR;
+@@ -441,7 +441,7 @@ static void prom_init(hwaddr addr, const char *bios_name)
+     filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, bios_name);
+     if (filename) {
+         ret = load_elf(filename, NULL, translate_prom_address, &addr,
+-                       NULL, NULL, NULL, NULL, 1, EM_SPARCV9, 0, 0);
++                       NULL, NULL, NULL, NULL, ELFDATA2MSB, EM_SPARCV9, 0, 0);
+         if (ret < 0 || ret > PROM_SIZE_MAX) {
+             ret = load_image_targphys(filename, addr, PROM_SIZE_MAX);
+         }
+diff --git a/hw/tricore/triboard.c b/hw/tricore/triboard.c
+index 9cc8d282ff2..f5baa8ccbb3 100644
+--- a/hw/tricore/triboard.c
++++ b/hw/tricore/triboard.c
+@@ -39,7 +39,7 @@ static void tricore_load_kernel(TriCoreCPU *cpu, const char *kernel_filename)
+ 
+     kernel_size = load_elf(kernel_filename, NULL,
+                            NULL, NULL, &entry, NULL,
+-                           NULL, NULL, 0,
++                           NULL, NULL, ELFDATA2LSB,
+                            EM_TRICORE, 1, 0);
+     if (kernel_size <= 0) {
+         error_report("no kernel file '%s'", kernel_filename);
+diff --git a/hw/tricore/tricore_testboard.c b/hw/tricore/tricore_testboard.c
+index c29db8b451c..3facfdfd611 100644
+--- a/hw/tricore/tricore_testboard.c
++++ b/hw/tricore/tricore_testboard.c
+@@ -42,7 +42,7 @@ static void tricore_load_kernel(CPUTriCoreState *env)
+ 
+     kernel_size = load_elf(tricoretb_binfo.kernel_filename, NULL,
+                            NULL, NULL, &entry, NULL,
+-                           NULL, NULL, 0,
++                           NULL, NULL, ELFDATA2LSB,
+                            EM_TRICORE, 1, 0);
+     if (kernel_size <= 0) {
+         error_report("no kernel file '%s'",
+diff --git a/hw/xtensa/sim.c b/hw/xtensa/sim.c
+index 0a1fd900376..1cea29c66d4 100644
+--- a/hw/xtensa/sim.c
++++ b/hw/xtensa/sim.c
+@@ -100,7 +100,8 @@ void xtensa_sim_load_kernel(XtensaCPU *cpu, MachineState *machine)
+     if (kernel_filename) {
+         uint64_t elf_entry;
+         int success = load_elf(kernel_filename, NULL, translate_phys_addr, cpu,
+-                               &elf_entry, NULL, NULL, NULL, TARGET_BIG_ENDIAN,
++                               &elf_entry, NULL, NULL, NULL,
++                               TARGET_BIG_ENDIAN ? ELFDATA2MSB : ELFDATA2LSB,
+                                EM_XTENSA, 0, 0);
+ 
+         if (success > 0) {
+diff --git a/hw/xtensa/xtfpga.c b/hw/xtensa/xtfpga.c
+index 9efe91933f9..3f3677f1c9a 100644
+--- a/hw/xtensa/xtfpga.c
++++ b/hw/xtensa/xtfpga.c
+@@ -398,7 +398,8 @@ static void xtfpga_init(const XtfpgaBoardDesc *board, MachineState *machine)
+ 
+         uint64_t elf_entry;
+         int success = load_elf(kernel_filename, NULL, translate_phys_addr, cpu,
+-                               &elf_entry, NULL, NULL, NULL, TARGET_BIG_ENDIAN,
++                               &elf_entry, NULL, NULL, NULL,
++                               TARGET_BIG_ENDIAN ? ELFDATA2MSB : ELFDATA2LSB,
+                                EM_XTENSA, 0, 0);
+         if (success > 0) {
+             entry_point = elf_entry;
 -- 
 2.47.1
 
